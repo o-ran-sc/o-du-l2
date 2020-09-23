@@ -82,11 +82,12 @@ typedef struct cellCfgParams
 
 typedef struct duUeCb
 {
-   uint32_t gnbDuUeF1apId; /* GNB DU UE F1AP ID */
-   uint32_t gnbCuUeF1apId; /* GNB CU UE F1AP ID */
-   UeState  ueState;
-   MacUeCfg macUeCfg;
-   RlcUeCfg rlcUeCfg;
+   uint32_t gnbDuUeF1apId;  /* GNB DU UE F1AP ID */
+   uint32_t gnbCuUeF1apId;  /* GNB CU UE F1AP ID */
+   void     *cuCellGrpInfo; /* Cell Group Info sent by CU */
+   UeState  ueState;        /* UE Active/ Ue Inactive state */
+   MacUeCfg macUeCfg;       /* Mac Ue Cfg */
+   RlcUeCfg rlcUeCfg;       /* Rlc Ue Cfg */
 }DuUeCb;
 
 typedef struct duCellCb

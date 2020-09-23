@@ -22,7 +22,7 @@ extern "C" {
 #endif
 
 /* Forward declarations */
-struct ProtocolExtensionContainer;
+struct ProtocolExtensionContainer_4624P16;
 
 /* CUtoDURRCInformation */
 typedef struct CUtoDURRCInformation {

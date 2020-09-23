@@ -175,7 +175,13 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
 		  }
 	       case EVENT_RLC_UL_UE_CREATE_RSP:
 		  {
-		     ret = unpackRlcUlUeCreateRsp(DuProcRlcUlUeCreateRsp, pst, mBuf);
+		     ret = unpackRlcUlUeCfgRsp(DuProcRlcUlUeCfgRsp, pst, mBuf);
+		     break;
+		  }
+	       case EVENT_RLC_UL_UE_RECONFIG_RSP:
+		  {
+		     //ret = unpackRlcUlUeReconfigRsp(DuProcRlcUlUeReconfigRsp, pst, mBuf);
+		     ret = unpackRlcUlUeCfgRsp(DuProcRlcUlUeCfgRsp, pst, mBuf);
 		     break;
 		  }
 	       case EVENT_UL_RRC_MSG_TRANS_TO_DU:
@@ -242,7 +248,11 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
 		     ret = unpackDuMacUeCreateRsp(DuHandleMacUeCreateRsp, pst, mBuf); 
 		     break;
 		  }
-
+               case EVENT_MAC_UE_RECONFIG_RSP:
+		  {
+		     ret = unpackDuMacUeReconfigRsp(DuHandleMacUeReconfigRsp, pst, mBuf); 
+		     break;
+		  }
 	       default:
 		  {
 		     DU_LOG("\nDU_APP : Invalid event received at duActvTsk from ENTMAC");

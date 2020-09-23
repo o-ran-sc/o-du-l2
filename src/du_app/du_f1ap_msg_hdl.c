@@ -82,6 +82,7 @@ void FreeDUConfigUpdate(F1AP_PDU_t *f1apDuCfg);
 uint8_t sctpSend(Buffer *mBuf, uint8_t itfType);
 uint8_t BuildInitialUlBWP(BWP_UplinkDedicated_t *ulBwp);
 uint8_t procUeContextSetupReq(F1AP_PDU_t *f1apMsg);
+//uint8_t BuildAndSendUeContextSetupRsp(MacUeCfgRsp *cfgRsp);
 
 /*******************************************************************
  *
@@ -5236,7 +5237,7 @@ uint8_t BuildAndSendInitialRrcMsgTransfer(uint32_t gnbDuUeF1apId, uint16_t crnti
  *
  * @details
  *
- *    Function : FreeUeSetupRsp
+ *    Function : FreeUeContextSetupRsp
  *
  *    Functionality:
  *       Free the memory allocated for UE Setup response
@@ -5246,40 +5247,97 @@ uint8_t BuildAndSendInitialRrcMsgTransfer(uint32_t gnbDuUeF1apId, uint16_t crnti
  *         RFAILED - failure
  *
  * ****************************************************************/
-void FreeUeSetupRsp(F1AP_PDU_t *f1apMsg)
+void FreeUeContextSetupRsp(F1AP_PDU_t *f1apMsg)
 {
    uint8_t idx;
-   UEContextSetupResponse_t     *ueSetRsp;
+   UEContextSetupResponse_t *ueSetRsp = NULLP;
 
    if(f1apMsg)
    {
       if(f1apMsg->choice.successfulOutcome)
       {
-         ueSetRsp = &f1apMsg->choice.successfulOutcome->value.choice.\
-	    UEContextSetupResponse;
-         if(ueSetRsp->protocolIEs.list.array)
+	 ueSetRsp = &f1apMsg->choice.successfulOutcome->value.choice.\
+		    UEContextSetupResponse;
+	 if(ueSetRsp->protocolIEs.list.array)
 	 {
-	    for(idx = 0; idx < ueSetRsp->protocolIEs.list.size; idx++)
+	    for(idx = 0; idx < ueSetRsp->protocolIEs.list.count; idx++)
 	    {
-	      DU_FREE(ueSetRsp->protocolIEs.list.array[idx],\
-                sizeof(UEContextSetupResponseIEs_t));
+	       if(ueSetRsp->protocolIEs.list.array[idx])
+	       {
+		  switch(ueSetRsp->protocolIEs.list.array[idx]->id)
+		  {
+		     case ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID:
+			break;
+		     case ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID:
+			break;
+		     case ProtocolIE_ID_id_DUtoCURRCInformation:
+			{
+			   CellGroupConfig_t *cellGrpCfg = NULLP;
+			   cellGrpCfg  = &ueSetRsp->protocolIEs.list.array[idx]->value.choice.\
+					 DUtoCURRCInformation.cellGroupConfig;
+			   if(cellGrpCfg->buf != NULLP)
+			   {
+			      DU_FREE(cellGrpCfg->buf, cellGrpCfg->size);
+			      cellGrpCfg = NULLP;
+			   }
+			   break;
+			}
+		     default:
+		        DU_LOG("\nDUAPP: Invalid Id %ld at FreeUeContextSetupRsp()", ueSetRsp->protocolIEs.list.array[idx]->id);
+		        break;
+		  }
+		  DU_FREE(ueSetRsp->protocolIEs.list.array[idx],\
+			sizeof(UEContextSetupResponseIEs_t));
+	       }
 	    }
-            DU_FREE(ueSetRsp->protocolIEs.list.array, \
-	       ueSetRsp->protocolIEs.list.size);
+	    DU_FREE(ueSetRsp->protocolIEs.list.array, \
+		  ueSetRsp->protocolIEs.list.size);
 	 }
-         DU_FREE(f1apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcome_t));
+	 DU_FREE(f1apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcome_t));
       }
       DU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
    }
 }
 
+uint8_t BuildUeCntxtDuToCuInfo(CellGroupConfig_t *duToCuCellGrp, CellGroupConfigRrc_t *duCellGrpCfg)
+{
+   asn_enc_rval_t        encRetVal;
+
+   xer_fprint(stdout, &asn_DEF_CellGroupConfigRrc, duCellGrpCfg);
+   memset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+   encBufSize = 0;
+   encRetVal = aper_encode(&asn_DEF_CellGroupConfigRrc, 0, duCellGrpCfg, PrepFinalEncBuf, encBuf);
+   /* Encode results */
+   if(encRetVal.encoded == ENCODE_FAIL)
+   {
+      DU_LOG( "\n F1AP : Could not encode UeCntxtDuToCuInfo (at %s)\n",\
+	    encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+      return RFAILED;
+   }
+   else
+   {
+      DU_LOG("\n F1AP : Created APER encoded buffer for UeCntxtDuToCuInfo\n");
+      for(int i=0; i< encBufSize; i++)
+      {
+	 printf("%x",encBuf[i]);
+      }
+   }
+   duToCuCellGrp->size = encBufSize;
+   DU_ALLOC(duToCuCellGrp->buf, duToCuCellGrp->size);
+   if(!duToCuCellGrp->buf)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in UeCntxtDuToCuInfo");
+   }
+   memcpy(duToCuCellGrp->buf, encBuf, duToCuCellGrp->size);
+   return ROK;
+}
 /*******************************************************************
  *
  * @brief Builds and sends the UE Setup Response
  *
  * @details
  *
- *    Function : BuildAndSendUESetRsp
+ *    Function : BuildAndSendUeContextSetupRsp
  *
  *    Functionality: Constructs the UE Setup Response and sends
  *                   it to the DU through SCTP.
@@ -5290,14 +5348,18 @@ void FreeUeSetupRsp(F1AP_PDU_t *f1apMsg)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildAndSendUESetRsp()
+uint8_t BuildAndSendUeContextSetupRsp(MacUeCfgRsp *cfgRsp)
 {
-   uint8_t   ret = RFAILED;
    uint8_t   elementCnt;
-   uint8_t   idx;
-   F1AP_PDU_t   *f1apMsg = NULL;
-   UEContextSetupResponse_t	*ueSetRsp;
+   uint8_t   idx, cellIdx;
+   uint8_t   ret = RFAILED;
+   uint32_t  gnbCuUeF1apId;   /* gNB-CU UE F1AP Id */
+   uint32_t  gnbDuUeF1apId;   /* gNB-DU UE F1AP Id */
    asn_enc_rval_t  encRetVal;        /* Encoder return value */
+   F1AP_PDU_t               *f1apMsg = NULLP;
+   UEContextSetupResponse_t *ueSetRsp = NULLP;
+   CellGroupConfigRrc_t     *cellGrpCfg = NULLP;
+   DuUeCb                   *ueCb = NULLP;
 
    DU_LOG("\n F1AP : Building UE Context Setup Response\n");
 
@@ -5320,17 +5382,17 @@ uint8_t BuildAndSendUESetRsp()
       }
 
       f1apMsg->choice.successfulOutcome->procedureCode = \
-	 ProcedureCode_id_UEContextSetup;
+							 ProcedureCode_id_UEContextSetup;
       f1apMsg->choice.successfulOutcome->criticality = Criticality_reject;
       f1apMsg->choice.successfulOutcome->value.present = \
-	 SuccessfulOutcome__value_PR_UEContextSetupResponse;
+							 SuccessfulOutcome__value_PR_UEContextSetupResponse;
 
       ueSetRsp =
 	 &f1apMsg->choice.successfulOutcome->value.choice.UEContextSetupResponse;
-      elementCnt = 2;
+      elementCnt = 3;
       ueSetRsp->protocolIEs.list.count = elementCnt;
       ueSetRsp->protocolIEs.list.size = \
-	elementCnt * sizeof(UEContextSetupResponse_t *);
+					elementCnt * sizeof(UEContextSetupResponse_t *);
 
       /* Initialize the UESetup members */
       DU_ALLOC(ueSetRsp->protocolIEs.list.array, \
@@ -5347,30 +5409,56 @@ uint8_t BuildAndSendUESetRsp()
 	       sizeof(UEContextSetupResponseIEs_t));
 	 if(ueSetRsp->protocolIEs.list.array[idx] == NULLP)
 	 {
-	     DU_LOG(" F1AP : Memory allocation for UE Setup Response failed");
-	     break;
+	    DU_LOG(" F1AP : Memory allocation for UE Setup Response failed");
+	    break;
 	 }
+      }
+      if(cfgRsp->ueIdx <= MAX_NUM_UE)
+      {
+	 cellIdx = cfgRsp->cellId-1;
+	 gnbDuUeF1apId = duCb.actvCellLst[cellIdx]->ueCb[(cfgRsp->ueIdx) - 1].gnbDuUeF1apId;
+	 gnbCuUeF1apId = duCb.actvCellLst[cellIdx]->ueCb[(cfgRsp->ueIdx) - 1].gnbCuUeF1apId;
+	 ueCb = &duCb.actvCellLst[cellIdx]->ueCb[(cfgRsp->ueIdx)-1];
       }
 
       idx = 0;
-
       /*GNB CU UE F1AP ID*/
       ueSetRsp->protocolIEs.list.array[idx]->id	= \
-	 ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID;
+						  ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID;
       ueSetRsp->protocolIEs.list.array[idx]->criticality = Criticality_reject;
       ueSetRsp->protocolIEs.list.array[idx]->value.present = \
-	 UEContextSetupResponseIEs__value_PR_GNB_CU_UE_F1AP_ID;
-      ueSetRsp->protocolIEs.list.array[idx]->value.choice.GNB_CU_UE_F1AP_ID = CU_ID;
+							     UEContextSetupResponseIEs__value_PR_GNB_CU_UE_F1AP_ID;
+      ueSetRsp->protocolIEs.list.array[idx]->value.choice.GNB_CU_UE_F1AP_ID = gnbCuUeF1apId;
 
       /*GNB DU UE F1AP ID*/
       idx++;
       ueSetRsp->protocolIEs.list.array[idx]->id	= \
-         ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID;
+						  ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID;
       ueSetRsp->protocolIEs.list.array[idx]->criticality = Criticality_reject;
       ueSetRsp->protocolIEs.list.array[idx]->value.present = \
-         UEContextSetupResponseIEs__value_PR_GNB_DU_UE_F1AP_ID;
-      ueSetRsp->protocolIEs.list.array[idx]->value.choice.GNB_DU_UE_F1AP_ID = DU_ID;
+							     UEContextSetupResponseIEs__value_PR_GNB_DU_UE_F1AP_ID;
+      ueSetRsp->protocolIEs.list.array[idx]->value.choice.GNB_DU_UE_F1AP_ID = gnbCuUeF1apId;
 
+
+      /*DUtoCURRC Information */
+      idx++;
+      ueSetRsp->protocolIEs.list.array[idx]->id  = \
+						   ProtocolIE_ID_id_DUtoCURRCInformation;
+      ueSetRsp->protocolIEs.list.array[idx]->criticality = Criticality_reject;
+      ueSetRsp->protocolIEs.list.array[idx]->value.present =\
+							    UEContextSetupResponseIEs__value_PR_DUtoCURRCInformation;
+      if(ueCb->cuCellGrpInfo)
+      {
+	 cellGrpCfg = (CellGroupConfigRrc_t*)ueCb->cuCellGrpInfo;
+	 if(cellGrpCfg)
+	 {
+	    ret = BuildUeCntxtDuToCuInfo(&ueSetRsp->protocolIEs.list.array[idx]->value.\
+		  choice.DUtoCURRCInformation.cellGroupConfig, cellGrpCfg);
+	 }
+	 DU_FREE(ueCb->cuCellGrpInfo, sizeof(CellGroupConfigRrc_t));
+	 if(!ret)
+	    break;
+      }
 
       xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
 
@@ -5404,10 +5492,9 @@ uint8_t BuildAndSendUESetRsp()
       ret = ROK;
       break;
    }
-
-   FreeUeSetupRsp(f1apMsg);
-   return ret;;
-}/* End of BuildAndSendUESetRsp */
+   FreeUeContextSetupRsp(f1apMsg);
+   return ret;
+}/* End of BuildAndSendUeContextSetupRsp */
 
 
 /*******************************************************************

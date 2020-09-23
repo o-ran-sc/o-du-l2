@@ -195,7 +195,7 @@ typedef struct ueDlCb
 {
    DlHarqEnt  dlHarqEnt;      /* DL HARQ entity */
    uint8_t    numDlLc;        /* Number of downlink logical channels */
-   DlLcCb     lcCb[MAX_NUM_LOGICAL_CHANNELS];  /* Downlink dedicated logical channels */
+   DlLcCb     lcCbList[MAX_NUM_LOGICAL_CHANNELS];  /* Downlink dedicated logical channels */
 }UeDlCb;
 
 /* UE Cb */

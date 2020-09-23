@@ -23,6 +23,182 @@
 #include "odu_common_codec.h"
 #include "cu_stub_sctp.h"
 #include "cu_f1ap_msg_hdl.h"
+/*header files needed for Ue Context Setup */
+#include<ProtocolIE-Field.h>
+#include "ProtocolExtensionField.h"
+#include "F1AP-PDU.h"
+#include "ProtocolExtensionContainer.h"
+#include "CellGroupConfigRrc.h"
+#include "MAC-CellGroupConfig.h"
+#include "SchedulingRequestConfig.h"
+#include "SchedulingRequestToAddMod.h"
+#include "BSR-Config.h"
+#include "TAG-Config.h"
+#include "TAG.h"
+#include "PHR-Config.h"
+#include "RLC-Config.h"
+#include "UL-AM-RLC.h"
+#include "DL-AM-RLC.h"
+#include "LogicalChannelConfig.h"
+#include "RLC-BearerConfig.h"
+#include "PhysicalCellGroupConfig.h"
+#include "SpCellConfig.h"
+#include "ServingCellConfig.h"
+#include "ControlResourceSet.h"
+#include "SearchSpace.h"
+#include "PDCCH-Config.h"
+#include "PDSCH-TimeDomainResourceAllocation.h"
+#include "PDSCH-TimeDomainResourceAllocationList.h"
+#include "DMRS-DownlinkConfig.h"
+#include "PDSCH-Config.h"
+#include "BWP-DownlinkDedicated.h"
+#include "PUSCH-TimeDomainResourceAllocation.h"
+#include "PUSCH-TimeDomainResourceAllocationList.h"
+#include "DMRS-UplinkConfig.h"
+#include "PUSCH-Config.h"
+#include "SRS-ResourceId.h"
+#include "SRS-Resource.h"
+#include "SRS-ResourceSet.h"
+#include "SRS-Config.h"
+#include "BWP-UplinkDedicated.h"
+#include "PUSCH-ServingCellConfig.h"
+#include "UplinkConfig.h"
+#include "PDSCH-ServingCellConfig.h"
+
+/* MACRO for CUtoDURRCInformation */
+#define CELL_GRP_ID 1
+#define FREQ_DOM_RSRC_SIZE 6
+#define NUM_SYMBOLS_PER_SLOT 14       /* Number of symbols within a slot */
+#define CORESET0_END_PRB   48
+#define CORESET1_NUM_PRB   24
+#define PDCCH_CTRL_RSRC_SET_ONE_ID  1
+#define PDCCH_CTRL_RSRC_SET_ONE_DURATION 2  /* Duration for control resource set id i */
+#define PDCCH_CTRL_RSRC_SET_ONE_PRECOD_GRANULARITY 1   /* Precoded granularity */
+#define PDCCH_SRCH_SPC_TWO_ID 2
+#define NR_PCI 1
+#define SCRAMBLING_ID  NR_PCI
+#define DMRS_ADDITIONAL_POS  0          /* DMRS Additional poistion */
+#define PDCCH_SYMBOL_WITHIN_SLOT 128     /* Symbol within Slot Value */
+#define PDCCH_SRCH_SPC_TWO_AGG_LVL1_CANDIDATE 7   /* Num of candidate at aggregation level 1 */
+#define PDCCH_SRCH_SPC_TWO_AGG_LVL2_CANDIDATE 7   /* Num of candidate at aggregation level 2 */
+#define PDCCH_SRCH_SPC_TWO_AGG_LVL4_CANDIDATE 4   /* Num of candidate at aggregation level 4 */
+#define PDCCH_SRCH_SPC_TWO_AGG_LVL8_CANDIDATE 2   /* Num of candidate at aggregation level 8 */
+#define PDCCH_SRCH_SPC_TWO_AGG_LVL16_CANDIDATE 1  /* Num of candidate at aggregation level 16 */
+#define PDCCH_SRCH_SPC_TWO_UE_SPEC_DCI_FORMAT  0  /* format 0-0 and 1-0 */
+#define PDCCH_SERACH_SPACE_DCI_FORMAT 0
+
+/* MACRO Ddefine for PDSCH Configuration */
+#define PDSCH_K0  0
+#define PDSCH_START_SYMBOL  2
+#define PDSCH_LENGTH_SYMBOL 12
+#define PDSCH_RES_ALLOC_TYPE       1          /* Resource allocation type */
+#define PDSCH_MAX_CODEWORD_SCH_BY_DCI 0       /* Max num of codewords scheduled by DCI */
+#define PDSCH_RBG_SIZE   0                    /* 0: config1 */
+#define PDSCH_NUM_HARQ_PROC 5
+#define PDSCH_MAPPING_TYPE_A 0
+#define PDSCH_MAPPING_TYPE_B 1
+
+/* MACRO Define for PUSCH Configuration */
+#define PUSCH_K2  3
+#define PUSCH_START_SYMBOL  0
+#define PUSCH_LENGTH_SYMBOL 14
+
+#define PUSCH_MSG3_DELTA_PREAMBLE 0
+#define PUSCH_P0_NOMINAL_WITH_GRANT -70
+#define PUSCH_TRANSFORM_PRECODER    1      /* 1: Disabled */
+#define PUSCH_MAX_MIMO_LAYERS       1
+#define PUSCH_PROCESS_TYPE2_ENABLED false
+#define PUSCH_MAPPING_TYPE_A        0
+#define PUSCH_MAPPING_TYPE_B        1
+
+/* MACRO defines for SRC config */
+#define SRS_RSRC_ID  1
+#define SRS_RSET_ID  1
+#define SRS_COMB_OFFSET_N2   0
+#define SRS_CYCLIC_SHIFT_N2  0
+#define SRS_FREQ_DOM_POS     0
+#define SRS_FREQ_DOM_SHIFT   0
+#define C_SRS 0
+#define B_SRS 0
+#define B_HOP 0
+#define SRS_SEQ_ID 0
+#define APERIODIC_SRS_RESRC_TRIGGER 1 
+
+/* Macro definitions for DUtoCuRrcContainer */
+#define CELL_GRP_ID 1
+#define SCH_REQ_ID  0
+#define SR_PROHIBIT_TMR 5
+#define SR_TRANS_MAX 2
+#define PERIODIC_BSR_TMR 2
+#define RETX_BSR_TMR     5
+#define SR_DELAY_TMR     6
+#define TAG_ID 0
+#define TIME_ALIGNMENT_TMR 7
+#define PHR_PERIODIC_TMR 7
+#define PHR_PROHIBHIT_TMR 0
+#define PHR_PWR_FACTOR_CHANGE 3
+#define PHR_MODE_OTHER_CG 0
+#define RLC_LCID 1 
+#define SRB_ID_1 1
+#define SN_FIELD_LEN 0
+#define T_POLL_RETRANSMIT 8 
+#define POLL_PDU 0
+#define POLL_BYTE 43
+#define MAX_RETX_THRESHOLD 5
+#define T_REASSEMBLY 8
+#define T_STATUS_PROHIBHIT 7
+#define MAC_LC_PRIORITY 1
+#define PRIORTISIED_BIT_RATE 15
+#define BUCKET_SIZE_DURATION 5
+#define LC_GRP 0
+#define P_NR_FR1 0
+#define PDSCH_HARQ_ACK_CODEBOOK 1
+#define SERV_CELL_IDX 0
+#define RLM_SYNC_OUT_SYNC_THRESHOLD 0
+#define ACTIVE_DL_BWP_ID 0
+#define ACTIVE_UL_BWP_ID 0
+#define SCRAMBLING_ID  NR_PCI
+#define DMRS_ADDITIONAL_POS  0          /* DMRS Additional poistion */
+#define RES_ALLOC_TYPE       1          /* Resource allocation type */
+
+/* global variables */
+uint8_t BuildULTnlInforet=RFAILED;
+uint8_t Nrcgiret=RFAILED;
+uint8_t SplCellListret=RFAILED;
+uint8_t SRBSetupret=RFAILED;
+uint8_t cuToDuContainerRet=RFAILED;
+
+/*******************************************************************
+ *
+ * @brief Configures the DU Parameters
+ *
+ * @details
+ *
+ *    Function : calcSliv
+ *
+ *    Functionality:
+ *       - calculate SLIV value from start and length field
+ *
+ * @params[in] start symbol
+ * @params[in] length of symbols
+ * @return SLIV value
+ *
+ * ****************************************************************/
+uint16_t calcSliv(uint8_t startSymbol, uint8_t lengthSymbol)
+{
+   uint16_t sliv = 0;
+   if((lengthSymbol-1) <= 7)
+   {
+      sliv = NUM_SYMBOLS_PER_SLOT * (lengthSymbol-1) + startSymbol;
+   }
+   else
+   {
+      sliv = NUM_SYMBOLS_PER_SLOT * (NUM_SYMBOLS_PER_SLOT - lengthSymbol + 1) \
+	     + (NUM_SYMBOLS_PER_SLOT - 1 - startSymbol);
+   }
+   return sliv;
+}
+
 
 /*******************************************************************
 *
@@ -1034,152 +1210,6 @@ S16 BuildAndSendDLRRCMessageTransfer()
    return ROK;
 }/* End of BuildAndSendDLRRCMessageTransfer */
 
-/*******************************************************************
- *
- * @brief Builds and sends the UE Setup Response
- *
- * @details
- *
- *    Function : BuildAndSendUESetRsp
- *
- *    Functionality: Constructs the UE Setup Response and sends
- *                   it to the DU through SCTP.
- *
- * @params[in] 
- *
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-S16 BuildAndSendUESetRsp()
-{
-	S16  ret;
-	U8   elementCnt;
-	U8   cellCnt;
-	U8   ieId;
-	U8   idx;
-	U8   drbCnt;
-	U8   drbId;
-	F1AP_PDU_t      						*f1apMsg = NULL;
-   UEContextSetupResponse_t			*ueSetRsp;
-	asn_enc_rval_t  						encRetVal;        /* Encoder return value */
-
-	DU_LOG("\n F1AP : Building UE Context Setup Response\n");
-
-	CU_ALLOC(f1apMsg, sizeof(F1AP_PDU_t));
-	if(f1apMsg == NULLP)
-	{
-		DU_LOG(" F1AP : Memory allocation for F1AP-PDU failed");
-		return RFAILED;
-	}
-
-	f1apMsg->present = F1AP_PDU_PR_successfulOutcome;
-	CU_ALLOC(f1apMsg->choice.successfulOutcome,
-			sizeof(SuccessfulOutcome_t));
-	if(f1apMsg->choice.successfulOutcome == NULLP)
-	{
-		DU_LOG(" F1AP : Memory allocation for	F1AP-PDU failed");
-		CU_FREE(f1apMsg,sizeof(F1AP_PDU_t));
-		return RFAILED;
-	}
-
-	f1apMsg->choice.successfulOutcome->procedureCode = \
-													ProcedureCode_id_UEContextSetup;
-	f1apMsg->choice.successfulOutcome->criticality = Criticality_reject;
-	f1apMsg->choice.successfulOutcome->value.present = \
-		      		   SuccessfulOutcome__value_PR_UEContextSetupResponse;
-	ueSetRsp =
-		&f1apMsg->choice.successfulOutcome->value.choice.UEContextSetupResponse;
-	elementCnt = 2;
-	ueSetRsp->protocolIEs.list.count = elementCnt;
-	ueSetRsp->protocolIEs.list.size = \
-									elementCnt * sizeof(UEContextSetupResponse_t *);
-
-	/* Initialize the UESetup members */
-	CU_ALLOC(ueSetRsp->protocolIEs.list.array, \
-				ueSetRsp->protocolIEs.list.size);
-	if(ueSetRsp->protocolIEs.list.array == NULLP)
-	{
-		DU_LOG(" F1AP : Memory allocation for UE Setup Response failed");
-		CU_FREE(f1apMsg->choice.successfulOutcome,
-				sizeof(SuccessfulOutcome_t));
-		CU_FREE(f1apMsg,(Size)sizeof(F1AP_PDU_t));
-		return RFAILED;
-	}
-
-	for(idx=0; idx<elementCnt; idx++)
-	{
-		CU_ALLOC(ueSetRsp->protocolIEs.list.array[idx],\
-										sizeof(UEContextSetupResponseIEs_t));
-		if(ueSetRsp->protocolIEs.list.array[idx] == NULLP)
-		{
-			for(ieId=0; ieId<idx; ieId++)
-			{
-				CU_FREE(ueSetRsp->protocolIEs.list.array[ieId],\
-						sizeof(UEContextSetupResponseIEs_t));
-			}
-			CU_FREE(ueSetRsp->protocolIEs.list.array,\
-						 ueSetRsp->protocolIEs.list.size);
-			CU_FREE(f1apMsg->choice.successfulOutcome,\
-												sizeof(SuccessfulOutcome_t));
-			CU_FREE(f1apMsg,sizeof(F1AP_PDU_t));
-			return RFAILED;
-		}
-	}
-
-	idx = 0;
-
-	/*GNB CU UE F1AP ID*/
-	ueSetRsp->protocolIEs.list.array[idx]->id	= \
-					 			                 ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID;
-	ueSetRsp->protocolIEs.list.array[idx]->criticality	= 	Criticality_reject;
-	ueSetRsp->protocolIEs.list.array[idx]->value.present = \
-		                 		UEContextSetupResponseIEs__value_PR_GNB_CU_UE_F1AP_ID;
-	ueSetRsp->protocolIEs.list.array[idx]->value.choice.GNB_CU_UE_F1AP_ID = CU_ID;
-	
-	/*GNB DU UE F1AP ID*/
-	idx++;
-	ueSetRsp->protocolIEs.list.array[idx]->id	= \
-					 			                 ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID;
-	ueSetRsp->protocolIEs.list.array[idx]->criticality	= 	Criticality_reject;
-	ueSetRsp->protocolIEs.list.array[idx]->value.present = \
-		                 		UEContextSetupResponseIEs__value_PR_GNB_DU_UE_F1AP_ID;
-	ueSetRsp->protocolIEs.list.array[idx]->value.choice.GNB_DU_UE_F1AP_ID = DU_ID;
-	
-
-	xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
-
-	/* Encode the F1SetupRequest type as APER */
-	cmMemset((U8 *)encBuf, 0, ENC_BUF_MAX_LEN);
-	encBufSize = 0;
-	encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apMsg, PrepFinalEncBuf,\
-			encBuf);
-	/* Encode results */
-	if(encRetVal.encoded == ENCODE_FAIL)
-	{
-		DU_LOG( "\n F1AP : Could not encode UE Context Setup Request structure (at %s)\n",\
-				encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
-		return RFAILED;
-	}
-	else
-	{
-		DU_LOG("\n F1AP : Created APER encoded buffer for UE Context Setup Request\n");
-		for(int i=0; i< encBufSize; i++)
-		{
-			printf("%x",encBuf[i]);
-		}
-	}
-
-	/* Sending  msg  */
-	if(SendF1APMsg(CU_APP_MEM_REG,CU_POOL)	!=	ROK)
-	{
-		DU_LOG("\n F1AP : Sending	UE Context Setup Request Failed");
-		return RFAILED;
-	}
-
-	return ROK;
-}/* End of BuildAndSendUESetRsp */
-
 uint8_t procInitULRRCMsg(F1AP_PDU_t *f1apMsg)
 {
    uint8_t idx;
@@ -2082,7 +2112,2725 @@ void FreeUESetReq(F1AP_PDU_t  *f1apMsg)
       CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
    }
 }
+/**Filling cell group info **/
+/*******************************************************************
+ *
+ * @brief Build Control resource set to add/modify list 
+ *
+ * @details
+ *
+ *    Function : BuildControlRSetToAddModList
+ *
+ *    Functionality: Build Control resource set to add/modify list
+ *
+ * @params[in] 
+ * struct PDCCH_Config__controlResourceSetToAddModList *controlRSetList
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildControlRSetToAddModList
+(
+struct PDCCH_Config__controlResourceSetToAddModList *controlRSetList
+)
+{
+   uint8_t idx;
+   uint8_t elementCnt;
+   uint8_t numBytes, bitsUnused;
+   struct ControlResourceSet *controlRSet;
+   uint8_t freqDomainResource[FREQ_DOM_RSRC_SIZE] = {0};
+   uint8_t coreset0EndPrb, coreset1StartPrb, coreset1NumPrb;
 
+
+   elementCnt = 1;
+   controlRSetList->list.count = elementCnt;
+   controlRSetList->list.size = \
+       elementCnt * sizeof(struct ControlResourceSet *);
+
+   controlRSetList->list.array = NULLP;
+   CU_ALLOC(controlRSetList->list.array, controlRSetList->list.size);
+   if(!controlRSetList->list.array)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in BuildControlRSetToAddModList");
+      return RFAILED;
+   }
+
+   for(idx = 0; idx < elementCnt; idx++)
+   {
+      controlRSetList->list.array[idx] = NULLP;
+      CU_ALLOC(controlRSetList->list.array[idx], sizeof(struct ControlResourceSet));
+      if(!controlRSetList->list.array[idx])
+      {
+         DU_LOG("\nF1AP : Memory allocation failed in BuildControlRSetToAddModList");
+         return RFAILED;
+      }
+   }
+
+   idx=0;
+   controlRSet = controlRSetList->list.array[idx];
+
+   controlRSet->controlResourceSetId = PDCCH_CTRL_RSRC_SET_ONE_ID;
+
+	/* Values taken from reference logs :
+	 * size 6 bytes
+	 * 3 LSBs unsued
+	 * Bit string stored ff0000000000
+	 */
+   numBytes = 6;
+   bitsUnused = 3;
+   controlRSet->frequencyDomainResources.size = numBytes * sizeof(uint8_t);
+
+   controlRSet->frequencyDomainResources.buf = NULLP;
+	CU_ALLOC(controlRSet->frequencyDomainResources.buf, \
+	   controlRSet->frequencyDomainResources.size);
+	if(!controlRSet->frequencyDomainResources.buf)
+	{
+	   DU_LOG("\nF1AP : Memory allocation failed in BuildControlRSetToAddModList");
+		return RFAILED;
+   }
+
+   memset(controlRSet->frequencyDomainResources.buf, 0, FREQ_DOM_RSRC_SIZE);
+   coreset0EndPrb = CORESET0_END_PRB;
+   coreset1StartPrb = coreset0EndPrb + 6;
+   coreset1NumPrb = CORESET1_NUM_PRB;
+   /* calculate the PRBs */
+   schAllocFreqDomRscType0(((coreset1StartPrb)/6), (coreset1NumPrb/6), freqDomainResource);
+   memcpy(controlRSet->frequencyDomainResources.buf, freqDomainResource, FREQ_DOM_RSRC_SIZE);
+   controlRSet->frequencyDomainResources.bits_unused = bitsUnused;
+
+   controlRSet->duration = PDCCH_CTRL_RSRC_SET_ONE_DURATION;
+   controlRSet->cce_REG_MappingType.present = \
+      ControlResourceSet__cce_REG_MappingType_PR_nonInterleaved;
+
+   controlRSet->precoderGranularity = PDCCH_CTRL_RSRC_SET_ONE_PRECOD_GRANULARITY;
+   controlRSet->tci_StatesPDCCH_ToAddList = NULLP;
+	controlRSet->tci_StatesPDCCH_ToReleaseList = NULLP;
+	controlRSet->tci_PresentInDCI = NULLP;
+#if 0
+   uint8_t tciStateIdx;
+
+   CU_ALLOC(controlRset->tci_StatesPDCCH_ToAddList, \
+      sizeof(struct ControlResourceSet__tci_StatesPDCCH_ToAddList));
+   if(!controlRset->tci_StatesPDCCH_ToAddList)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in BuildControlRSetToAddModList");
+      return RFAILED;
+   }
+
+   elementCnt = 1;
+   controlRset->tci_StatesPDCCH_ToAddList->list.count = elementCnt;
+   controlRset->tci_StatesPDCCH_ToAddList->list.size = elementCnt * sizeof(TCI_StateId_t *);
+   CU_ALLOC(controlRset->tci_StatesPDCCH_ToAddList->list.array, \
+      controlRset->tci_StatesPDCCH_ToAddList->list.size)
+   if(!controlRset->tci_StatesPDCCH_ToAddList->list.array)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in BuildControlRSetToAddModList");
+      return RFAILED;
+   }
+   
+   for(tciStateIdx = 0; tciStateIdx <elementCntl; tciStateIdx++)
+   {
+      CU_ALLOC(controlRset->tci_StatesPDCCH_ToAddList->list.array[tciStateIdx], sizeof(TCI_StateId_t));
+      if(!controlRset->tci_StatesPDCCH_ToAddList->list.array[tciStateIdx])
+      {
+         DU_LOG("\nF1AP : Memory allocation failed in BuildControlRSetToAddModList");
+         return RFAILED;
+      }
+   }
+
+   tciStateIdx = 0;
+   /* TODO */
+   *(controlRset->tci_StatesPDCCH_ToAddList->list.array[tciStateIdx]);
+
+   CU_ALLOC(controlRset->tci_PresentInDCI, sizeof(long));
+   if(!controlRset->tci_PresentInDCI)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in BuildControlRSetToAddModList");
+      return RFAILED;
+   }
+   /* TODO */
+   *(controlRset->tci_PresentInDCI);
+#endif
+
+   controlRSet->pdcch_DMRS_ScramblingID = NULLP;
+   CU_ALLOC(controlRSet->pdcch_DMRS_ScramblingID, sizeof(long));
+   if(!controlRSet->pdcch_DMRS_ScramblingID)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in BuildControlRSetToAddModList");
+      return RFAILED;
+   }
+   *(controlRSet->pdcch_DMRS_ScramblingID) = SCRAMBLING_ID;
+
+   return ROK;
+} /* End BuildControlRSetToAddModList */
+
+/*******************************************************************
+ *
+ * @brief Build search space to add/modify list
+ *
+ * @details
+ *
+ *    Function : BuildSearchSpcToAddModList
+ *
+ *    Functionality: Build search space to add/modify list
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildSearchSpcToAddModList
+(
+struct PDCCH_Config__searchSpacesToAddModList *searchSpcList
+)
+{
+   uint8_t idx;
+	uint8_t numBytes;
+	uint8_t byteIdx;
+	uint8_t bitsUnused;
+   uint8_t elementCnt;
+   struct SearchSpace *searchSpc;
+
+   elementCnt = 1;
+   searchSpcList->list.count = elementCnt;
+   searchSpcList->list.size = elementCnt * sizeof(struct SearchSpace *);
+
+	searchSpcList->list.array = NULLP;
+   CU_ALLOC(searchSpcList->list.array, searchSpcList->list.size);
+   if(!searchSpcList->list.array)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in BuildSearchSpcToAddModList");
+      return RFAILED;
+   }
+
+   for(idx = 0; idx < elementCnt; idx++)
+   {
+	   searchSpcList->list.array[idx] = NULLP;
+      CU_ALLOC(searchSpcList->list.array[idx], sizeof(struct SearchSpace));
+      if(!searchSpcList->list.array[idx])
+      {
+         DU_LOG("\nF1AP : Memory allocation failed in BuildSearchSpcToAddModList");
+         return RFAILED;
+      }
+   }
+
+   idx = 0;
+   searchSpc = searchSpcList->list.array[idx];
+
+   searchSpc->searchSpaceId = PDCCH_SRCH_SPC_TWO_ID;
+
+   searchSpc->controlResourceSetId = NULLP;
+   CU_ALLOC(searchSpc->controlResourceSetId, sizeof(ControlResourceSetId_t));
+   if(!searchSpc->controlResourceSetId)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in BuildSearchSpcToAddModList");
+      return RFAILED;
+   }
+   *(searchSpc->controlResourceSetId) = PDCCH_CTRL_RSRC_SET_ONE_ID;
+
+   searchSpc->monitoringSlotPeriodicityAndOffset = NULLP;
+   CU_ALLOC(searchSpc->monitoringSlotPeriodicityAndOffset, \
+      sizeof(struct SearchSpace__monitoringSlotPeriodicityAndOffset));
+   if(!searchSpc->monitoringSlotPeriodicityAndOffset)
+	{
+	   DU_LOG("\nF1AP : Memory allocation failed in BuildSearchSpcToAddModList");
+		return RFAILED;
+	}
+   searchSpc->monitoringSlotPeriodicityAndOffset->present = \
+	   SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl1;
+  
+   searchSpc->duration = NULLP;
+   searchSpc->monitoringSymbolsWithinSlot = NULLP;
+	CU_ALLOC(searchSpc->monitoringSymbolsWithinSlot, sizeof(BIT_STRING_t));
+	if(!searchSpc->monitoringSymbolsWithinSlot)
+	{
+	   DU_LOG("\nF1AP : Memory allocation failed in BuildSearchSpcToAddModList");
+		return RFAILED;
+	}
+   
+	/* Values taken from reference logs :
+	 * size 2 bytes
+	 * 2 LSBs unsued
+	 * Bit string stores 8000
+	 */
+   numBytes = 2;
+	bitsUnused = 2;
+
+   searchSpc->monitoringSymbolsWithinSlot->size = numBytes * sizeof(uint8_t);
+	searchSpc->monitoringSymbolsWithinSlot->buf = NULLP;
+	CU_ALLOC(searchSpc->monitoringSymbolsWithinSlot->buf, \
+	   searchSpc->monitoringSymbolsWithinSlot->size);
+	if(!searchSpc->monitoringSymbolsWithinSlot->buf)
+	{
+	   DU_LOG("\nF1AP : Memory allocation failed in BuildSearchSpcToAddModList");
+		return RFAILED;
+	}
+
+	byteIdx = 0;
+	searchSpc->monitoringSymbolsWithinSlot->buf[byteIdx++] = \
+	 PDCCH_SYMBOL_WITHIN_SLOT /* setting MSB to 128 i.e. 0x80 */;
+	searchSpc->monitoringSymbolsWithinSlot->buf[byteIdx++] = 0;
+	searchSpc->monitoringSymbolsWithinSlot->bits_unused = bitsUnused;
+
+   searchSpc->nrofCandidates = NULLP;
+   CU_ALLOC(searchSpc->nrofCandidates, sizeof(struct SearchSpace__nrofCandidates));
+   if(!searchSpc->nrofCandidates)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in BuildSearchSpcToAddModList");
+      return RFAILED;
+   }
+
+   searchSpc->nrofCandidates->aggregationLevel1 = \
+	   PDCCH_SRCH_SPC_TWO_AGG_LVL1_CANDIDATE;
+   searchSpc->nrofCandidates->aggregationLevel2 = \
+	   PDCCH_SRCH_SPC_TWO_AGG_LVL2_CANDIDATE;
+   searchSpc->nrofCandidates->aggregationLevel4 = \
+	   PDCCH_SRCH_SPC_TWO_AGG_LVL4_CANDIDATE;
+   searchSpc->nrofCandidates->aggregationLevel8 = \
+	   PDCCH_SRCH_SPC_TWO_AGG_LVL8_CANDIDATE;
+   searchSpc->nrofCandidates->aggregationLevel16 = \
+	   PDCCH_SRCH_SPC_TWO_AGG_LVL16_CANDIDATE;
+
+   searchSpc->searchSpaceType = NULLP;
+   CU_ALLOC(searchSpc->searchSpaceType, sizeof(struct SearchSpace__searchSpaceType));
+   if(!searchSpc->searchSpaceType)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in BuildSearchSpcToAddModList");
+      return RFAILED;
+   }
+   
+   searchSpc->searchSpaceType->present = SearchSpace__searchSpaceType_PR_ue_Specific;
+
+   searchSpc->searchSpaceType->choice.ue_Specific = NULLP;
+   CU_ALLOC(searchSpc->searchSpaceType->choice.ue_Specific, \
+      sizeof(struct SearchSpace__searchSpaceType__ue_Specific));
+   if(!searchSpc->searchSpaceType->choice.ue_Specific)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in BuildSearchSpcToAddModList");
+      return RFAILED;
+   }  
+   searchSpc->searchSpaceType->choice.ue_Specific->dci_Formats = \
+	   PDCCH_SRCH_SPC_TWO_UE_SPEC_DCI_FORMAT;
+
+   return ROK;
+}/* End BuildSearchSpcToAddModList */
+
+/*******************************************************************
+ *
+ * @brief Builds BWP DL dedicated PDCCH config
+ *
+ * @details
+ *
+ *    Function : BuildBWPDlDedPdcchCfg
+ *
+ *    Functionality: Builds BWP DL dedicated PDCCH config
+ *
+ * @params[in] struct PDCCH_Config *pdcchCfg
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildBWPDlDedPdcchCfg(struct PDCCH_Config *pdcchCfg)
+{
+   pdcchCfg->controlResourceSetToAddModList = NULLP;
+   CU_ALLOC(pdcchCfg->controlResourceSetToAddModList, \
+      sizeof(struct PDCCH_Config__controlResourceSetToAddModList));
+   if(!pdcchCfg->controlResourceSetToAddModList)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in BuildBWPDlDedPdcchCfg");
+      return RFAILED;
+   }
+
+	if(BuildControlRSetToAddModList(pdcchCfg->controlResourceSetToAddModList) != ROK)
+	{
+	   return RFAILED;
+	}
+  
+   pdcchCfg->controlResourceSetToReleaseList = NULLP;
+
+   pdcchCfg->searchSpacesToAddModList = NULLP;
+	CU_ALLOC(pdcchCfg->searchSpacesToAddModList, \
+	   sizeof(struct PDCCH_Config__searchSpacesToAddModList));
+	if(!pdcchCfg->searchSpacesToAddModList)
+	{
+	   DU_LOG("\nF1AP : Memory allocation failed in BuildBWPDlDedPdcchCfg");
+		return RFAILED;
+	}
+  
+	if(BuildSearchSpcToAddModList(pdcchCfg->searchSpacesToAddModList) != ROK)
+	{
+	   return RFAILED;
+	}
+   
+   pdcchCfg->searchSpacesToReleaseList = NULLP;
+	pdcchCfg->downlinkPreemption = NULLP;
+	pdcchCfg->tpc_PUSCH = NULLP;
+	pdcchCfg->tpc_PUCCH = NULLP;
+	pdcchCfg->tpc_SRS = NULLP;
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Builds DMRS DL PDSCH Mapping type A
+ *
+ * @details
+ *
+ *    Function : BuildDMRSDLPdschMapTypeA
+ *
+ *    Functionality: Builds DMRS DL PDSCH Mapping type A
+ *
+ * @params[in]
+ * struct PDSCH_Config__dmrs_DownlinkForPDSCH_MappingTypeA *dmrsDlCfg
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildDMRSDLPdschMapTypeA
+(
+struct PDSCH_Config__dmrs_DownlinkForPDSCH_MappingTypeA *dmrsDlCfg
+)
+{
+   dmrsDlCfg->present = PDSCH_Config__dmrs_DownlinkForPDSCH_MappingTypeA_PR_setup;
+	dmrsDlCfg->choice.setup = NULLP;
+   CU_ALLOC(dmrsDlCfg->choice.setup, sizeof(struct DMRS_DownlinkConfig));
+   if(!dmrsDlCfg->choice.setup)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in BuildBWPDlDedPdschCfg");
+      return RFAILED;
+   }
+        
+	dmrsDlCfg->choice.setup->dmrs_Type = NULLP;
+	dmrsDlCfg->choice.setup->dmrs_AdditionalPosition = NULLP;
+   CU_ALLOC(dmrsDlCfg->choice.setup->dmrs_AdditionalPosition, sizeof(long));
+   if(!dmrsDlCfg->choice.setup->dmrs_AdditionalPosition)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in BuildDMRSDLPdschMapTypeA");
+      return RFAILED;
+   }
+   *(dmrsDlCfg->choice.setup->dmrs_AdditionalPosition) = DMRS_ADDITIONAL_POS;
+         
+	dmrsDlCfg->choice.setup->maxLength = NULLP;
+	dmrsDlCfg->choice.setup->scramblingID0 = NULLP;
+	dmrsDlCfg->choice.setup->scramblingID1 = NULLP;
+	dmrsDlCfg->choice.setup->phaseTrackingRS = NULLP;
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Builds TCI states to add/modify list
+ *
+ * @details
+ *
+ *    Function : BuildTCIStatesToAddModList
+ *
+ *    Functionality:Builds TCI states to add/modify list
+ *
+ * @params[in] 
+ * struct PDSCH_Config__tci_StatesToAddModList *tciStatesList
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildTCIStatesToAddModList(struct PDSCH_Config__tci_StatesToAddModList *tciStatesList)
+{
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Builds PDSCH time domain allocation list
+ *
+ * @details
+ *
+ *    Function : BuildPdschTimeDomAllocList
+ *
+ *    Functionality: Builds PDSCH time domain allocation list
+ *
+ * @params[in] 
+ * struct PDSCH_Config__pdsch_TimeDomainAllocationList *timeDomAllocList
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildPdschTimeDomAllocList
+(
+struct PDSCH_Config__pdsch_TimeDomainAllocationList *timeDomAllocList
+)
+{
+   uint8_t idx;
+   uint8_t elementCnt;
+	struct PDSCH_TimeDomainResourceAllocation *timeDomAlloc;
+
+   timeDomAllocList->present = \
+	   PDSCH_Config__pdsch_TimeDomainAllocationList_PR_setup;
+
+   timeDomAllocList->choice.setup = NULLP;
+   CU_ALLOC(timeDomAllocList->choice.setup, \
+	   sizeof(struct PDSCH_TimeDomainResourceAllocationList));
+   if(!timeDomAllocList->choice.setup)
+	{
+	   DU_LOG("\nF1AP : Memory allocation failed in BuildPdschTimeDomAllocList");
+		return RFAILED;
+	}
+         
+	elementCnt = 1;
+	timeDomAllocList->choice.setup->list.count = elementCnt;
+	timeDomAllocList->choice.setup->list.size = \
+	   elementCnt * sizeof(struct PDSCH_TimeDomainResourceAllocation *);
+
+	timeDomAllocList->choice.setup->list.array = NULLP;
+	CU_ALLOC(timeDomAllocList->choice.setup->list.array, \
+	   timeDomAllocList->choice.setup->list.size);
+	if(!timeDomAllocList->choice.setup->list.array)
+	{
+	   DU_LOG("\nF1AP : Memory allocation failed in BuildPdschTimeDomAllocList");
+		return RFAILED;
+	}
+
+	for(idx = 0; idx < elementCnt; idx++)
+	{
+	   timeDomAllocList->choice.setup->list.array[idx] = NULLP;
+	   CU_ALLOC(timeDomAllocList->choice.setup->list.array[idx], \
+		   sizeof(struct PDSCH_TimeDomainResourceAllocation));
+		if(!timeDomAllocList->choice.setup->list.array[idx])
+		{
+		   DU_LOG("\nF1AP : Memory allocation failed in BuildPdschTimeDomAllocList");
+			return RFAILED;
+		}
+	}
+
+	idx = 0;
+	timeDomAlloc = timeDomAllocList->choice.setup->list.array[idx];
+
+   timeDomAlloc->k0 = NULLP;
+	timeDomAlloc->mappingType = PDSCH_MAPPING_TYPE_A;
+	timeDomAlloc->startSymbolAndLength = \
+	   calcSliv(PDSCH_START_SYMBOL, PDSCH_LENGTH_SYMBOL);
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Builds PDSCH PRB Bundling type
+ *
+ * @details
+ *
+ *    Function : BuildPdschPrbBundlingType
+ *
+ *    Functionality: Builds PDSCH PRB Bundling type
+ *
+ * @params[in] 
+ * struct PDSCH_Config__prb_BundlingType *prbBndlType
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildPdschPrbBundlingType
+(
+struct PDSCH_Config__prb_BundlingType *prbBndlType
+)
+{
+   prbBndlType->present = PDSCH_Config__prb_BundlingType_PR_staticBundling;
+
+   prbBndlType->choice.staticBundling = NULLP;
+	CU_ALLOC(prbBndlType->choice.staticBundling, \
+	   sizeof(struct PDSCH_Config__prb_BundlingType__staticBundling));
+	if(!prbBndlType->choice.staticBundling)
+	{
+	   DU_LOG("\nF1AP : Memory allocation failed in BuildPdschPrbBundlingType");
+		return RFAILED;
+	}
+	prbBndlType->choice.staticBundling->bundleSize = NULLP;
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Builds BWP DL dedicated PDSCH config 
+ *
+ * @details
+ *
+ *    Function : BuildBWPDlDedPdschCfg
+ *
+ *    Functionality: Builds BWP DL dedicated PDSCH config
+ *
+ * @params[in] struct PDSCH_Config *pdschCfg
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildBWPDlDedPdschCfg(struct PDSCH_Config *pdschCfg)
+{
+   pdschCfg->dataScramblingIdentityPDSCH = NULLP;
+
+   pdschCfg->dmrs_DownlinkForPDSCH_MappingTypeA = NULLP;
+   CU_ALLOC(pdschCfg->dmrs_DownlinkForPDSCH_MappingTypeA, \
+      sizeof(struct PDSCH_Config__dmrs_DownlinkForPDSCH_MappingTypeA));
+   if(!pdschCfg->dmrs_DownlinkForPDSCH_MappingTypeA)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in BuildBWPDlDedPdschCfg");
+      return RFAILED;
+   }
+
+   if(BuildDMRSDLPdschMapTypeA(pdschCfg->dmrs_DownlinkForPDSCH_MappingTypeA) != ROK)
+   {
+      return RFAILED;
+   }
+
+   pdschCfg->dmrs_DownlinkForPDSCH_MappingTypeB = NULLP;
+   pdschCfg->tci_StatesToAddModList = NULLP;
+   pdschCfg->tci_StatesToReleaseList = NULLP;
+	pdschCfg->vrb_ToPRB_Interleaver = NULLP;
+#if 0
+   CU_ALLOC(pdschCfg->tci_StatesToAddModList, sizeof(struct PDSCH_Config__tci_StatesToAddModList));
+   if(!pdschCfg->tci_StatesToAddModList)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in BuildBWPDlDedPdschCfg");
+      return RFAILED;
+   }
+   if(BuildTCIStatesToAddModList(pdschCfg->tci_StatesToAddModList) != ROK)
+   {
+      return RFAILED;
+   }
+#endif
+
+	pdschCfg->resourceAllocation = RES_ALLOC_TYPE;
+
+   pdschCfg->pdsch_TimeDomainAllocationList = NULLP;
+	CU_ALLOC(pdschCfg->pdsch_TimeDomainAllocationList, \
+	   sizeof(struct PDSCH_Config__pdsch_TimeDomainAllocationList));
+   if(!pdschCfg->pdsch_TimeDomainAllocationList)
+	{
+      DU_LOG("\nF1AP : Memory allocation failed in BuildBWPDlDedPdschCfg");
+		return RFAILED;
+	}
+	if(BuildPdschTimeDomAllocList(pdschCfg->pdsch_TimeDomainAllocationList) != ROK)
+	{
+	   return RFAILED;
+	}
+   pdschCfg->pdsch_AggregationFactor = NULLP;
+	pdschCfg->rateMatchPatternToAddModList = NULLP;
+	pdschCfg->rateMatchPatternToReleaseList = NULLP;
+	pdschCfg->rateMatchPatternGroup1 = NULLP;
+	pdschCfg->rateMatchPatternGroup2 = NULLP;
+	pdschCfg->rbg_Size = PDSCH_RBG_SIZE;
+	pdschCfg->mcs_Table = NULLP;
+
+	pdschCfg->maxNrofCodeWordsScheduledByDCI = NULLP;
+	CU_ALLOC(pdschCfg->maxNrofCodeWordsScheduledByDCI, sizeof(long));
+	if(!pdschCfg->maxNrofCodeWordsScheduledByDCI)
+	{
+	   DU_LOG("\nF1AP : Memory allocation failed in BuildBWPDlDedPdschCfg");
+		return RFAILED;
+	}
+	*(pdschCfg->maxNrofCodeWordsScheduledByDCI) = PDSCH_MAX_CODEWORD_SCH_BY_DCI;
+	
+	if(BuildPdschPrbBundlingType(&pdschCfg->prb_BundlingType) != ROK)
+	{
+	   return RFAILED;
+	}
+
+	pdschCfg->zp_CSI_RS_ResourceToAddModList = NULLP;
+	pdschCfg->zp_CSI_RS_ResourceToReleaseList = NULLP;
+	pdschCfg->aperiodic_ZP_CSI_RS_ResourceSetsToAddModList = NULLP;
+	pdschCfg->aperiodic_ZP_CSI_RS_ResourceSetsToReleaseList = NULLP;
+	pdschCfg->sp_ZP_CSI_RS_ResourceSetsToAddModList = NULLP;
+	pdschCfg->sp_ZP_CSI_RS_ResourceSetsToReleaseList = NULLP;
+   pdschCfg->p_ZP_CSI_RS_ResourceSet = NULLP;
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Builds intitial DL BWP
+ * @details
+ *
+ *    Function : BuildInitialDlBWP 
+ *
+ *    Functionality: Builds intitial DL BWP in spCellCfgDed
+ *
+ * @params[in] BWP_DownlinkDedicated_t *dlBwp
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildInitialDlBWP(BWP_DownlinkDedicated_t *dlBwp)
+{
+   dlBwp->pdcch_Config = NULLP;
+   CU_ALLOC(dlBwp->pdcch_Config, sizeof(struct BWP_DownlinkDedicated__pdcch_Config));
+	if(!dlBwp->pdcch_Config)
+	{
+	   DU_LOG("\nF1AP : Memory Allocation failure in BuildInitialDlBWP");
+      return RFAILED;
+	}
+	dlBwp->pdcch_Config->present = BWP_DownlinkDedicated__pdcch_Config_PR_setup; 
+
+   dlBwp->pdcch_Config->choice.setup = NULLP;
+	CU_ALLOC(dlBwp->pdcch_Config->choice.setup, sizeof(struct PDCCH_Config));
+   if(!dlBwp->pdcch_Config->choice.setup)
+   {
+	   DU_LOG("\nF1AP : Memory Allocation failure in BuildInitialDlBWP");
+		return RFAILED;
+	}
+   if(BuildBWPDlDedPdcchCfg(dlBwp->pdcch_Config->choice.setup) != ROK)
+	{
+	   return RFAILED;
+	}
+
+   dlBwp->pdsch_Config = NULLP;
+	CU_ALLOC(dlBwp->pdsch_Config, sizeof(struct BWP_DownlinkDedicated__pdsch_Config));
+	if(!dlBwp->pdsch_Config)
+	{
+	   DU_LOG("\nF1AP : Memory Allocation failure in BuildInitialDlBWP");
+		return RFAILED;
+	}
+	dlBwp->pdsch_Config->present = BWP_DownlinkDedicated__pdsch_Config_PR_setup;
+
+   dlBwp->pdsch_Config->choice.setup = NULLP;
+   CU_ALLOC(dlBwp->pdsch_Config->choice.setup, sizeof(struct PDSCH_Config));
+   if(!dlBwp->pdsch_Config->choice.setup)
+   {
+      DU_LOG("\nF1AP : Memory Allocation failure in BuildInitialDlBWP");
+		return RFAILED;
+	}
+
+   if(BuildBWPDlDedPdschCfg(dlBwp->pdsch_Config->choice.setup) != ROK)
+	{
+	   return RFAILED;
+	}
+
+   dlBwp->sps_Config = NULLP;
+   dlBwp->radioLinkMonitoringConfig = NULLP; 
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Builds DMRS UL Pusch Mapping type A
+ *
+ * @details
+ *
+ *    Function : BuildDMRSULPuschMapTypeA
+ *
+ *    Functionality: Builds DMRS UL Pusch Mapping type A
+ *
+ * @params[in] 
+ *    struct PUSCH_Config__dmrs_UplinkForPUSCH_MappingTypeA *dmrsUlCfg
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildDMRSULPuschMapTypeA
+(
+struct PUSCH_Config__dmrs_UplinkForPUSCH_MappingTypeA *dmrsUlCfg
+)
+{
+   dmrsUlCfg->present = PUSCH_Config__dmrs_UplinkForPUSCH_MappingTypeA_PR_setup;
+   dmrsUlCfg->choice.setup= NULLP;
+   CU_ALLOC(dmrsUlCfg->choice.setup, sizeof(DMRS_UplinkConfig_t));
+   if(!dmrsUlCfg->choice.setup)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in BuildDMRSULPuschMapTypeA");
+      return RFAILED;
+   }
+         
+   dmrsUlCfg->choice.setup->dmrs_Type = NULLP;
+	dmrsUlCfg->choice.setup->dmrs_AdditionalPosition = NULLP;
+   CU_ALLOC(dmrsUlCfg->choice.setup->dmrs_AdditionalPosition, sizeof(long));
+   if(!dmrsUlCfg->choice.setup->dmrs_AdditionalPosition)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in BuildDMRSULPuschMapTypeA");
+      return RFAILED;
+   }
+   *(dmrsUlCfg->choice.setup->dmrs_AdditionalPosition) = DMRS_ADDITIONAL_POS; 
+
+	dmrsUlCfg->choice.setup->phaseTrackingRS = NULLP;
+	dmrsUlCfg->choice.setup->maxLength = NULLP;
+   dmrsUlCfg->choice.setup->transformPrecodingDisabled = NULLP;
+   CU_ALLOC(dmrsUlCfg->choice.setup->transformPrecodingDisabled, \
+      sizeof(struct DMRS_UplinkConfig__transformPrecodingDisabled));
+   if(!dmrsUlCfg->choice.setup->transformPrecodingDisabled)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in BuildDMRSULPuschMapTypeA");
+      return RFAILED;
+   }
+
+   dmrsUlCfg->choice.setup->transformPrecodingDisabled->scramblingID0 = NULLP;
+   CU_ALLOC(dmrsUlCfg->choice.setup->transformPrecodingDisabled->scramblingID0,\
+      sizeof(long));
+   if(!dmrsUlCfg->choice.setup->transformPrecodingDisabled->scramblingID0)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in BuildDMRSULPuschMapTypeA");
+      return RFAILED;
+   }
+   *(dmrsUlCfg->choice.setup->transformPrecodingDisabled->scramblingID0) = SCRAMBLING_ID;
+
+	dmrsUlCfg->choice.setup->transformPrecodingDisabled->scramblingID1 = NULLP;
+	dmrsUlCfg->choice.setup->transformPrecodingEnabled = NULLP;
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Build PUSCH time domain allocation list
+ *
+ * @details
+ *
+ *    Function : BuildPuschTimeDomAllocList
+ *
+ *    Functionality: Build PUSCH time domain allocation list
+ *
+ * @params[in] 
+ * struct PUSCH_Config__pusch_TimeDomainAllocationList *timeDomAllocList
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildPuschTimeDomAllocList
+(
+struct PUSCH_Config__pusch_TimeDomainAllocationList *timeDomAllocList
+)
+{
+   uint8_t idx;
+   uint8_t elementCnt;
+   PUSCH_TimeDomainResourceAllocation_t  *timeDomAlloc;
+
+   timeDomAllocList->present = PUSCH_Config__pusch_TimeDomainAllocationList_PR_setup;
+   timeDomAllocList->choice.setup = NULLP;
+   CU_ALLOC(timeDomAllocList->choice.setup, \
+      sizeof(struct PUSCH_TimeDomainResourceAllocationList));
+   if(!timeDomAllocList->choice.setup)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in BuildPuschTimeDomAllocList");
+      return RFAILED;
+   }
+         
+   elementCnt = 1;
+   timeDomAllocList->choice.setup->list.count = elementCnt;
+   timeDomAllocList->choice.setup->list.size = \
+      elementCnt * sizeof(PUSCH_TimeDomainResourceAllocation_t *);
+	timeDomAllocList->choice.setup->list.array = NULLP;
+   CU_ALLOC(timeDomAllocList->choice.setup->list.array, \
+      timeDomAllocList->choice.setup->list.size);
+   if(!timeDomAllocList->choice.setup->list.array)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in BuildPuschTimeDomAllocList");
+      return RFAILED;
+   }
+
+   for(idx = 0; idx < elementCnt; idx++)
+   {
+	   timeDomAllocList->choice.setup->list.array[idx] = NULLP;
+      CU_ALLOC(timeDomAllocList->choice.setup->list.array[idx],\
+         sizeof(PUSCH_TimeDomainResourceAllocation_t));
+      if(!timeDomAllocList->choice.setup->list.array[idx])
+      {
+         DU_LOG("\nF1AP : Memory allocation failed in BuildPuschTimeDomAllocList");
+         return RFAILED;
+      }
+   }
+
+   idx = 0;
+   timeDomAlloc = timeDomAllocList->choice.setup->list.array[idx];
+   CU_ALLOC(timeDomAlloc->k2, sizeof(long));
+   if(!timeDomAlloc->k2)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in BuildPuschTimeDomAllocList");
+      return RFAILED;
+   }
+   *(timeDomAlloc->k2) = PUSCH_K2;
+   timeDomAlloc->mappingType = PUSCH_MAPPING_TYPE_A;
+   timeDomAlloc->startSymbolAndLength = calcSliv(PUSCH_START_SYMBOL, PUSCH_LENGTH_SYMBOL);
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Builds BWP UL dedicated PUSCH Config
+ *
+ * @details
+ *
+ *    Function : BuildBWPUlDedPuschCfg
+ *
+ *    Functionality:
+ *      Builds BWP UL dedicated PUSCH Config
+ *
+ * @params[in] : PUSCH_Config_t *puschCfg
+ *    
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildBWPUlDedPuschCfg(PUSCH_Config_t *puschCfg)
+{
+   puschCfg->dataScramblingIdentityPUSCH = NULLP;
+   CU_ALLOC(puschCfg->dataScramblingIdentityPUSCH, sizeof(long));
+   if(!puschCfg->dataScramblingIdentityPUSCH)
+   {
+      DU_LOG("\nF1AP: Memory allocation failed in BuildBWPUlDedPuschCfg");
+      return RFAILED;
+   }
+   *(puschCfg->dataScramblingIdentityPUSCH) = SCRAMBLING_ID;
+
+   puschCfg->txConfig = NULLP;
+	puschCfg->dmrs_UplinkForPUSCH_MappingTypeA = NULLP;
+   CU_ALLOC(puschCfg->dmrs_UplinkForPUSCH_MappingTypeA, \
+      sizeof(struct PUSCH_Config__dmrs_UplinkForPUSCH_MappingTypeA));
+   if(!puschCfg->dmrs_UplinkForPUSCH_MappingTypeA)
+   {
+      DU_LOG("\nF1AP: Memory allocation failed in BuildBWPUlDedPuschCfg");
+      return RFAILED;
+   }
+
+   if(BuildDMRSULPuschMapTypeA(puschCfg->dmrs_UplinkForPUSCH_MappingTypeA) != ROK)
+   {
+      return RFAILED;
+   }
+
+   puschCfg->dmrs_UplinkForPUSCH_MappingTypeB = NULLP;
+	puschCfg->pusch_PowerControl = NULLP;
+	puschCfg->frequencyHopping = NULLP;
+	puschCfg->frequencyHoppingOffsetLists = NULLP;
+   puschCfg->resourceAllocation = RES_ALLOC_TYPE;
+
+   puschCfg->pusch_TimeDomainAllocationList = NULLP;
+   CU_ALLOC(puschCfg->pusch_TimeDomainAllocationList, \
+      sizeof(struct PUSCH_Config__pusch_TimeDomainAllocationList));
+   if(!puschCfg->pusch_TimeDomainAllocationList)
+   {
+      DU_LOG("\nF1AP: Memory allocation failed in BuildBWPUlDedPuschCfg");
+      return RFAILED;
+   }
+
+   if(BuildPuschTimeDomAllocList(puschCfg->pusch_TimeDomainAllocationList) != ROK)
+   {
+      return RFAILED;
+   }
+
+   puschCfg->pusch_AggregationFactor = NULLP;
+	puschCfg->mcs_Table = NULLP;
+	puschCfg->mcs_TableTransformPrecoder = NULLP;
+   puschCfg->transformPrecoder = NULLP;
+   CU_ALLOC(puschCfg->transformPrecoder, sizeof(long));
+   if(!puschCfg->transformPrecoder)
+   {
+      DU_LOG("\nF1AP: Memory allocation failed in BuildBWPUlDedPuschCfg");
+      return RFAILED;
+   }
+   *(puschCfg->transformPrecoder) = PUSCH_TRANSFORM_PRECODER;
+
+	puschCfg->codebookSubset = NULLP;
+	puschCfg->maxRank = NULLP;
+	puschCfg->rbg_Size = NULLP;
+	puschCfg->uci_OnPUSCH = NULLP;
+	puschCfg->tp_pi2BPSK = NULLP;
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fills SRS resource to add/modify list 
+ *
+ * @details
+ *
+ *    Function : BuildSrsRsrcAddModList
+ *
+ *    Functionality: Fills SRS resource to add/modify list
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildSrsRsrcAddModList(struct SRS_Config__srs_ResourceToAddModList *resourceList)
+{
+   uint8_t   elementCnt;
+   uint8_t   rsrcIdx;
+
+   elementCnt = 1;
+   resourceList->list.count = elementCnt;
+   resourceList->list.size = elementCnt * sizeof(SRS_Resource_t *);
+   resourceList->list.array = NULLP;
+   CU_ALLOC(resourceList->list.array, resourceList->list.size);
+   if(!resourceList->list.array)
+   {
+      DU_LOG("\nF1AP: Memory allocation failed in BuildSrsRsrcAddModList");
+      return RFAILED;
+   }
+ 
+   for(rsrcIdx = 0; rsrcIdx < resourceList->list.count; rsrcIdx++)
+   {
+      CU_ALLOC(resourceList->list.array[rsrcIdx], sizeof(SRS_Resource_t));
+      if(!resourceList->list.array[rsrcIdx])
+      {
+         DU_LOG("\nF1AP: Memory allocation failed in BuildSrsRsrcAddModList");
+         return RFAILED;
+      }
+   }
+
+   rsrcIdx = 0;
+   resourceList->list.array[rsrcIdx]->srs_ResourceId = SRS_RSRC_ID;
+   resourceList->list.array[rsrcIdx]->nrofSRS_Ports = SRS_Resource__nrofSRS_Ports_port1;
+   resourceList->list.array[rsrcIdx]->transmissionComb.present = SRS_Resource__transmissionComb_PR_n2;
+
+   resourceList->list.array[rsrcIdx]->transmissionComb.choice.n2 = NULLP;
+   CU_ALLOC(resourceList->list.array[rsrcIdx]->transmissionComb.choice.n2, \
+      sizeof(struct SRS_Resource__transmissionComb__n2));
+   if(!resourceList->list.array[rsrcIdx]->transmissionComb.choice.n2)
+   {
+      DU_LOG("\nF1AP: Memory allocation failed in BuildSrsRsrcAddModList");
+      return RFAILED;
+   }
+   resourceList->list.array[rsrcIdx]->transmissionComb.choice.n2->combOffset_n2\
+	   = SRS_COMB_OFFSET_N2;
+   resourceList->list.array[rsrcIdx]->transmissionComb.choice.n2->cyclicShift_n2\
+	   = SRS_CYCLIC_SHIFT_N2;
+
+   resourceList->list.array[rsrcIdx]->resourceMapping.startPosition = \
+	   PUSCH_START_SYMBOL;
+   resourceList->list.array[rsrcIdx]->resourceMapping.nrofSymbols =  \
+      SRS_Resource__resourceMapping__nrofSymbols_n1;
+   resourceList->list.array[rsrcIdx]->resourceMapping.repetitionFactor = \
+      SRS_Resource__resourceMapping__repetitionFactor_n1;
+
+   resourceList->list.array[rsrcIdx]->freqDomainPosition = SRS_FREQ_DOM_POS;
+   resourceList->list.array[rsrcIdx]->freqDomainShift = SRS_FREQ_DOM_SHIFT;
+   resourceList->list.array[rsrcIdx]->freqHopping.c_SRS = C_SRS;
+   resourceList->list.array[rsrcIdx]->freqHopping.b_SRS = B_SRS;
+   resourceList->list.array[rsrcIdx]->freqHopping.b_hop = B_HOP;
+   resourceList->list.array[rsrcIdx]->groupOrSequenceHopping = \
+      SRS_Resource__groupOrSequenceHopping_neither;
+
+   /* Setting resource type to aperiodic for intergration purposes */
+   resourceList->list.array[rsrcIdx]->resourceType.present = \
+	   SRS_Resource__resourceType_PR_aperiodic;
+   resourceList->list.array[rsrcIdx]->resourceType.choice.aperiodic = NULLP;
+   CU_ALLOC(resourceList->list.array[rsrcIdx]->resourceType.choice.aperiodic,
+      sizeof(struct SRS_Resource__resourceType__aperiodic));
+   if(!resourceList->list.array[rsrcIdx]->resourceType.choice.aperiodic)
+   {
+      DU_LOG("\nF1AP: Memory allocation failed in BuildSrsRsrcAddModList");
+      return RFAILED;
+   }
+   resourceList->list.array[rsrcIdx]->sequenceId = SRS_SEQ_ID;
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Build SRS resource set Add/mod list
+ *
+ * @details
+ *
+ *    Function : BuildSrsRsrcSetAddModList
+ *
+ *    Functionality: Build SRS resource set Add/mod list
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildSrsRsrcSetAddModList
+(
+struct SRS_Config__srs_ResourceSetToAddModList *rsrcSetList
+)
+{
+   uint8_t  elementCnt;
+   uint8_t  rSetIdx;
+	uint8_t  rsrcIdx;
+	struct SRS_ResourceSet__srs_ResourceIdList *rsrcIdList;
+
+   elementCnt = 1;
+   rsrcSetList->list.count = elementCnt;
+   rsrcSetList->list.size = elementCnt * sizeof(SRS_ResourceSet_t *);
+   rsrcSetList->list.array = NULLP;
+   CU_ALLOC(rsrcSetList->list.array, rsrcSetList->list.size);
+   if(!rsrcSetList->list.array)
+   {
+      DU_LOG("\nF1AP: Memory allocation failed in BuildSrsRsrcSetAddModList");
+      return RFAILED;
+   }
+
+   for(rSetIdx = 0; rSetIdx < rsrcSetList->list.count; rSetIdx++)
+   {
+      CU_ALLOC(rsrcSetList->list.array[rSetIdx], sizeof(SRS_ResourceSet_t));
+      if(!rsrcSetList->list.array[rSetIdx])
+      {
+         DU_LOG("\nF1AP: Memory allocation failed in BuildSrsRsrcSetAddModList");
+         return RFAILED;
+      }
+   }
+
+   rSetIdx = 0;
+   rsrcSetList->list.array[rSetIdx]->srs_ResourceSetId = SRS_RSET_ID;
+
+	/* Fill Resource Id list in resource set */
+	rsrcSetList->list.array[rSetIdx]->srs_ResourceIdList = NULLP;
+	CU_ALLOC(rsrcSetList->list.array[rSetIdx]->srs_ResourceIdList,\
+	   sizeof(struct SRS_ResourceSet__srs_ResourceIdList));
+	if(!rsrcSetList->list.array[rSetIdx]->srs_ResourceIdList)
+	{
+	   DU_LOG("\nF1AP: Memory allocation failed in BuildSrsRsrcSetAddModList");
+		return RFAILED;
+	}
+
+	elementCnt = 1;
+	rsrcIdList = rsrcSetList->list.array[rSetIdx]->srs_ResourceIdList;
+	rsrcIdList->list.count = elementCnt;
+	rsrcIdList->list.size = elementCnt * sizeof(SRS_ResourceId_t *);
+	rsrcIdList->list.array = NULLP;
+	CU_ALLOC(rsrcIdList->list.array, rsrcIdList->list.size);
+	if(!rsrcIdList->list.array)
+	{
+	   DU_LOG("\nF1AP: Memory allocation failed in BuildSrsRsrcSetAddModList");
+		return RFAILED;
+	}
+
+	for(rsrcIdx = 0; rsrcIdx < rsrcIdList->list.count; rsrcIdx++)
+	{
+	   CU_ALLOC(rsrcIdList->list.array[rsrcIdx], sizeof(SRS_ResourceId_t));
+		if(!rsrcIdList->list.array[rsrcIdx])
+		{
+		   DU_LOG("\nF1AP: Memory allocation failed in BuildSrsRsrcSetAddModList");
+			return RFAILED;
+		}
+	}
+
+	rsrcIdx = 0;
+	*rsrcIdList->list.array[rsrcIdx] = SRS_RSRC_ID;
+
+	/* Fill resource type */
+   rsrcSetList->list.array[rSetIdx]->resourceType.present = \
+      SRS_ResourceSet__resourceType_PR_aperiodic;
+
+   rsrcSetList->list.array[rSetIdx]->resourceType.choice.aperiodic = NULLP;
+   CU_ALLOC(rsrcSetList->list.array[rSetIdx]->resourceType.choice.aperiodic, \
+      sizeof(struct SRS_ResourceSet__resourceType__aperiodic));
+   if(!rsrcSetList->list.array[rSetIdx]->resourceType.choice.aperiodic)
+   {
+	   DU_LOG("\nF1AP: Memory allocation failed in BuildSrsRsrcSetAddModList");
+		return RFAILED;
+	}
+   rsrcSetList->list.array[rSetIdx]->resourceType.choice.aperiodic->aperiodicSRS_ResourceTrigger \
+	   = APERIODIC_SRS_RESRC_TRIGGER;
+
+	/* TODO : Fill values for below IEs as expected by Viavi */
+ 	rsrcSetList->list.array[rSetIdx]->resourceType.choice.aperiodic->csi_RS = NULLP;
+   rsrcSetList->list.array[rSetIdx]->resourceType.choice.aperiodic->slotOffset = NULLP;
+  
+
+   rsrcSetList->list.array[rSetIdx]->usage = SRS_ResourceSet__usage_codebook;
+	rsrcSetList->list.array[rSetIdx]->alpha = NULLP;
+	rsrcSetList->list.array[rSetIdx]->p0 = NULLP;
+	rsrcSetList->list.array[rSetIdx]->pathlossReferenceRS = NULLP;
+	rsrcSetList->list.array[rSetIdx]->srs_PowerControlAdjustmentStates = NULLP;
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Builds BWP UL dedicated SRS Config
+ *
+ * @details
+ *
+ *    Function : BuildBWPUlDedSrsCfg
+ *
+ *    Functionality: Builds BWP UL dedicated SRS Config
+ *
+ * @params[in] SRS Config 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildBWPUlDedSrsCfg(SRS_Config_t *srsCfg)
+{
+   srsCfg->srs_ResourceSetToReleaseList = NULLP;
+   srsCfg->srs_ResourceSetToAddModList = NULLP;
+   CU_ALLOC(srsCfg->srs_ResourceSetToAddModList, \
+      sizeof(struct SRS_Config__srs_ResourceSetToAddModList));
+   if(!srsCfg->srs_ResourceSetToAddModList)
+   {
+      DU_LOG("\nF1AP: Memory allocation failed in BuildBWPUlDedSrsCfg");
+      return RFAILED;
+   }
+   if(BuildSrsRsrcSetAddModList(srsCfg->srs_ResourceSetToAddModList) != ROK)
+   {
+      return RFAILED;
+   }
+
+   srsCfg->srs_ResourceToReleaseList = NULLP;
+
+   /* Resource to Add/Modify list */
+   srsCfg->srs_ResourceToAddModList = NULLP;
+   CU_ALLOC(srsCfg->srs_ResourceToAddModList, \
+      sizeof(struct SRS_Config__srs_ResourceToAddModList));
+   if(!srsCfg->srs_ResourceToAddModList)
+   {
+      DU_LOG("\nF1AP: Memory allocation failed in BuildBWPUlDedSrsCfg");
+      return RFAILED;
+   }
+
+   if(BuildSrsRsrcAddModList(srsCfg->srs_ResourceToAddModList) != ROK)
+   {
+      return RFAILED;
+   }
+
+   srsCfg->tpc_Accumulation = NULLP;
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Builds inital UL BWP
+ *
+ * @details
+ *
+ *    Function : BuildInitialUlBWP
+ *
+ *    Functionality: Builds initial UL BWP
+ *
+ * @params[in] BWP_UplinkDedicated_t *ulBwp
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildInitialUlBWP(BWP_UplinkDedicated_t *ulBwp)
+{
+   ulBwp->pucch_Config = NULLP;
+
+   /* Fill BWP UL dedicated PUSCH config */
+	ulBwp->pusch_Config = NULLP;
+   CU_ALLOC(ulBwp->pusch_Config, sizeof(struct BWP_UplinkDedicated__pusch_Config));
+   if(!ulBwp->pusch_Config)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in BuildInitialUlBWP");
+      return RFAILED;
+   }
+   
+   ulBwp->pusch_Config->present = BWP_UplinkDedicated__pusch_Config_PR_setup;
+   ulBwp->pusch_Config->choice.setup = NULLP;
+   CU_ALLOC(ulBwp->pusch_Config->choice.setup, sizeof(PUSCH_Config_t));
+   if(!ulBwp->pusch_Config->choice.setup)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in BuildInitialUlBWP");
+      return RFAILED;
+   }
+
+   if(BuildBWPUlDedPuschCfg(ulBwp->pusch_Config->choice.setup) != ROK)
+   {
+      return RFAILED;
+   }
+
+	ulBwp->configuredGrantConfig = NULLP;
+
+   /* Fill BPW UL dedicated SRS config */
+	ulBwp->srs_Config = NULLP;
+   CU_ALLOC(ulBwp->srs_Config, sizeof(struct BWP_UplinkDedicated__srs_Config));
+   if(!ulBwp->srs_Config)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in BuildInitialUlBWP");
+      return RFAILED;
+   }
+
+   ulBwp->srs_Config->present = BWP_UplinkDedicated__srs_Config_PR_setup;
+   ulBwp->srs_Config->choice.setup = NULLP;
+   CU_ALLOC(ulBwp->srs_Config->choice.setup, sizeof(SRS_Config_t));
+   if(!ulBwp->srs_Config->choice.setup)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in BuildInitialUlBWP");
+      return RFAILED;
+   }
+
+   if(BuildBWPUlDedSrsCfg(ulBwp->srs_Config->choice.setup) != ROK)
+   {
+      return RFAILED;   
+   }
+
+	ulBwp->beamFailureRecoveryConfig = NULLP;
+   
+   return ROK;
+}
+
+/*******************************************************************
+*
+* @brief Builds Pusch Serving cell Config
+*
+* @details
+*
+*    Function : BuildPuschSrvCellCfg
+*
+*    Functionality: Builds Pusch Serving cell Config
+*
+* @params[in] struct UplinkConfig__pusch_ServingCellConfig *puschCfg
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t BuildPuschSrvCellCfg(struct UplinkConfig__pusch_ServingCellConfig *puschCfg)
+{
+   puschCfg->present = UplinkConfig__pusch_ServingCellConfig_PR_setup;
+   puschCfg->choice.setup = NULLP;
+   CU_ALLOC(puschCfg->choice.setup, sizeof(struct PUSCH_ServingCellConfig));
+   if(!puschCfg->choice.setup)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in BuildPuschSrvCellCfg");
+      return RFAILED;
+   }
+
+   puschCfg->choice.setup->codeBlockGroupTransmission = NULLP;
+	puschCfg->choice.setup->rateMatching = NULLP;
+	puschCfg->choice.setup->xOverhead = NULLP;
+   puschCfg->choice.setup->ext1 = NULLP;
+   CU_ALLOC(puschCfg->choice.setup->ext1, sizeof(struct PUSCH_ServingCellConfig__ext1));
+   if(!puschCfg->choice.setup->ext1)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in BuildPuschSrvCellCfg");
+      return RFAILED;
+   }
+
+   puschCfg->choice.setup->ext1->maxMIMO_Layers = NULLP;
+   CU_ALLOC(puschCfg->choice.setup->ext1->maxMIMO_Layers, sizeof(long));
+   if(!puschCfg->choice.setup->ext1->maxMIMO_Layers)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in BuildPuschSrvCellCfg");
+      return RFAILED;
+   }
+   *(puschCfg->choice.setup->ext1->maxMIMO_Layers) = PUSCH_MAX_MIMO_LAYERS;
+
+   puschCfg->choice.setup->ext1->processingType2Enabled= NULLP;
+   CU_ALLOC(puschCfg->choice.setup->ext1->processingType2Enabled,sizeof(BOOLEAN_t));
+   if(!puschCfg->choice.setup->ext1->processingType2Enabled)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in BuildPuschSrvCellCfg");
+      return RFAILED;
+   }
+   *(puschCfg->choice.setup->ext1->processingType2Enabled) = PUSCH_PROCESS_TYPE2_ENABLED;
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Builds UL config
+ * @details
+ *
+ *    Function : BuildUlCfg 
+ *
+ *    Functionality: Builds UL config in spCellCfgDed
+ *
+ * @params[in] UplinkConfig_t *ulCfg
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildUlCfg(UplinkConfig_t *ulCfg)
+{
+   ulCfg->initialUplinkBWP = NULLP;
+   CU_ALLOC(ulCfg->initialUplinkBWP, sizeof(BWP_UplinkDedicated_t));
+	if(!ulCfg->initialUplinkBWP)
+	{
+	   DU_LOG("\nF1AP : Memory Allocation failed in BuildUlCfg");
+		return RFAILED;
+	}
+
+   if(BuildInitialUlBWP(ulCfg->initialUplinkBWP) != ROK)
+	{
+	   return RFAILED;
+	}
+
+   ulCfg->uplinkBWP_ToReleaseList = NULLP;
+	ulCfg->uplinkBWP_ToAddModList = NULLP;
+	ulCfg->firstActiveUplinkBWP_Id = NULLP;
+   CU_ALLOC(ulCfg->firstActiveUplinkBWP_Id, sizeof(BWP_Id_t));
+   if(!ulCfg->firstActiveUplinkBWP_Id)
+   {
+      DU_LOG("\nF1AP : Memory Allocation failed in BuildUlCfg");
+      return RFAILED;
+   }
+   *(ulCfg->firstActiveUplinkBWP_Id) = ACTIVE_UL_BWP_ID;
+
+   ulCfg->pusch_ServingCellConfig = NULLP;
+   CU_ALLOC(ulCfg->pusch_ServingCellConfig, \
+      sizeof(struct UplinkConfig__pusch_ServingCellConfig));
+   if(!ulCfg->pusch_ServingCellConfig)
+   {
+      DU_LOG("\nF1AP : Memory Allocation failed in BuildUlCfg");
+      return RFAILED;
+   }
+
+   if(BuildPuschSrvCellCfg(ulCfg->pusch_ServingCellConfig) != ROK)
+   {
+      return RFAILED;
+   }
+   
+	ulCfg->carrierSwitching = NULLP;
+	ulCfg->ext1 = NULLP;
+	return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Builds PDSCH serving cell config
+ * @details
+ *
+ *    Function : BuildPdschSrvCellCfg
+ *
+ *    Functionality: Builds PDSCH serving cell config in spCellCfgDed
+ *
+ * @params[in] struct ServingCellConfig__pdsch_ServingCellConfig *pdschCfg 
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildPdschSrvCellCfg(struct ServingCellConfig__pdsch_ServingCellConfig *pdschCfg)
+{
+   pdschCfg->present =  ServingCellConfig__pdsch_ServingCellConfig_PR_setup;
+   pdschCfg->choice.setup = NULLP;
+   CU_ALLOC(pdschCfg->choice.setup, sizeof( struct PDSCH_ServingCellConfig));
+   if(!pdschCfg->choice.setup)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in BuildPdschSrvCellCfg");
+      return RFAILED;
+   }
+
+   pdschCfg->choice.setup->codeBlockGroupTransmission = NULLP;
+	pdschCfg->choice.setup->xOverhead = NULLP;
+   pdschCfg->choice.setup->nrofHARQ_ProcessesForPDSCH = NULLP;
+   CU_ALLOC(pdschCfg->choice.setup->nrofHARQ_ProcessesForPDSCH, sizeof(long));
+   if(!pdschCfg->choice.setup->nrofHARQ_ProcessesForPDSCH)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in BuildPdschSrvCellCfg");
+      return RFAILED;
+   }
+   *(pdschCfg->choice.setup->nrofHARQ_ProcessesForPDSCH)= PDSCH_NUM_HARQ_PROC;
+	pdschCfg->choice.setup->pucch_Cell = NULLP;
+	pdschCfg->choice.setup->ext1 = NULLP;
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Builds CSI Meas config
+ * @details
+ *
+ *    Function : BuildCsiMeasCfg 
+ *
+ *    Functionality: Builds CSI Meas config in spCellCfgDed
+ *
+ * @params[in] struct ServingCellConfig__csi_MeasConfig *csiMeasCfg
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildCsiMeasCfg(struct ServingCellConfig__csi_MeasConfig *csiMeasCfg)
+{
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Builds Spcell config dedicated
+ * @details
+ *
+ *    Function : BuildSpCellCfgDed
+ *
+ *    Functionality: Builds sp cell config dedicated in spCellCfg
+ *
+ * @params[in] ServingCellConfig_t srvCellCfg
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildSpCellCfgDed(ServingCellConfig_t *srvCellCfg)
+{
+   srvCellCfg->tdd_UL_DL_ConfigurationDedicated = NULLP;
+
+   srvCellCfg->initialDownlinkBWP = NULLP;
+   CU_ALLOC(srvCellCfg->initialDownlinkBWP, sizeof(BWP_DownlinkDedicated_t));
+	if(!srvCellCfg->initialDownlinkBWP)
+	{
+		DU_LOG("\nF1AP : Memory allocation failure in BuildSpCellCfgDed");
+		return RFAILED;
+	}
+
+   if(BuildInitialDlBWP(srvCellCfg->initialDownlinkBWP) != ROK)
+	{
+		DU_LOG("\nF1AP : BuildInitialDlBWP failed");
+		return RFAILED;
+	}
+   srvCellCfg->downlinkBWP_ToReleaseList = NULLP;
+	srvCellCfg->downlinkBWP_ToAddModList = NULLP;
+
+   srvCellCfg->firstActiveDownlinkBWP_Id = NULLP;
+	CU_ALLOC(srvCellCfg->firstActiveDownlinkBWP_Id, sizeof(long));
+	if(!srvCellCfg->firstActiveDownlinkBWP_Id)
+	{
+		DU_LOG("\nF1AP : Memory allocation failure in BuildSpCellCfgDed");
+		return RFAILED;
+	}
+	*(srvCellCfg->firstActiveDownlinkBWP_Id) = ACTIVE_DL_BWP_ID;
+
+	srvCellCfg->bwp_InactivityTimer = NULLP;
+
+   srvCellCfg->defaultDownlinkBWP_Id = NULLP;
+	CU_ALLOC(srvCellCfg->defaultDownlinkBWP_Id, sizeof(long));
+	if(!srvCellCfg->defaultDownlinkBWP_Id)
+	{
+		DU_LOG("\nF1AP : Memory allocation failure in BuildSpCellCfgDed");
+		return RFAILED;
+	}
+	*(srvCellCfg->defaultDownlinkBWP_Id) = ACTIVE_DL_BWP_ID;
+
+   srvCellCfg->uplinkConfig = NULLP;
+   CU_ALLOC(srvCellCfg->uplinkConfig, sizeof(UplinkConfig_t));
+	if(!srvCellCfg->uplinkConfig)
+	{
+		DU_LOG("\nF1AP : Memory allocation failure in BuildSpCellCfgDed");
+		return RFAILED;
+	}
+
+   if(BuildUlCfg(srvCellCfg->uplinkConfig) != ROK)
+	{
+		DU_LOG("\nF1AP : BuildUlCfg failed");
+		return RFAILED;
+	}
+	srvCellCfg->supplementaryUplink = NULLP;
+	srvCellCfg->pdcch_ServingCellConfig = NULLP;
+
+   srvCellCfg->pdsch_ServingCellConfig = NULLP;
+	CU_ALLOC(srvCellCfg->pdsch_ServingCellConfig, sizeof(struct	ServingCellConfig__pdsch_ServingCellConfig));
+	if(!srvCellCfg->pdsch_ServingCellConfig)
+	{
+		DU_LOG("\nF1AP : Memory allocation failure in BuildSpCellCfgDed");
+		return RFAILED;
+	}
+
+   if(BuildPdschSrvCellCfg(srvCellCfg->pdsch_ServingCellConfig) != ROK)
+	{
+		DU_LOG("\nF1AP : BuildPdschSrvCellCfg failed");
+		return RFAILED;
+	}
+
+   srvCellCfg->csi_MeasConfig = NULLP;
+#if 0
+	CU_ALLOC(srvCellCfg->csi_MeasConfig, sizeof(struct	ServingCellConfig__csi_MeasConfig))
+	if(!srvCellCfg->csi_MeasConfig)
+	{
+		DU_LOG("\nF1AP : Memory allocation failure in BuildSpCellCfgDed");
+		return RFAILED;
+	}
+
+   if(BuildCsiMeasCfg(srvCellCfg->csi_MeasConfig) != ROK)
+	{
+		DU_LOG("\nF1AP : BuildCsiMeasCfg failed");
+		return RFAILED;
+	}
+#endif
+   srvCellCfg->sCellDeactivationTimer = NULLP;
+	srvCellCfg->crossCarrierSchedulingConfig = NULLP;
+	srvCellCfg->tag_Id = TAG_ID;
+   srvCellCfg->dummy = NULLP;
+   srvCellCfg->pathlossReferenceLinking = NULLP;
+   srvCellCfg->servingCellMO = NULLP;
+   srvCellCfg->ext1 = NULLP;
+
+	return ROK;
+}
+/*******************************************************************
+ *
+ * @brief Builds Spcell config 
+ *
+ * @details
+ *
+ *    Function : BuildSpCellCfg 
+ *
+ *    Functionality: Builds sp cell config in DuToCuRrcContainer
+ *
+ * @params[in] SpCellConfig_t spCellCfg
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildSpCellCfg(SpCellConfig_t *spCellCfg)
+{
+
+   spCellCfg->servCellIndex = NULLP;
+	CU_ALLOC(spCellCfg->servCellIndex, sizeof(long));
+	if(!spCellCfg->servCellIndex)
+	{
+		DU_LOG("\nF1AP : Memory allocation failure in BuildSpCellCfg");
+		return RFAILED;
+	}
+   *(spCellCfg->servCellIndex) = SERV_CELL_IDX;
+
+   spCellCfg->reconfigurationWithSync = NULLP;
+	spCellCfg->rlf_TimersAndConstants = NULLP;
+   spCellCfg->rlmInSyncOutOfSyncThreshold = NULLP;
+	CU_ALLOC(spCellCfg->rlmInSyncOutOfSyncThreshold, sizeof(long));
+	if(!spCellCfg->rlmInSyncOutOfSyncThreshold)
+	{
+		DU_LOG("\nF1AP : Memory allocation failure in BuildSpCellCfg");
+		return RFAILED;
+	}
+   *(spCellCfg->rlmInSyncOutOfSyncThreshold) = RLM_SYNC_OUT_SYNC_THRESHOLD;
+
+   spCellCfg->spCellConfigDedicated = NULLP;
+   CU_ALLOC(spCellCfg->spCellConfigDedicated, sizeof(ServingCellConfig_t));
+	if(!spCellCfg->spCellConfigDedicated)
+	{
+		DU_LOG("\nF1AP : Memory allocation failure in BuildSpCellCfg");
+		return RFAILED;
+	}
+   if(BuildSpCellCfgDed(spCellCfg->spCellConfigDedicated) != ROK)
+	{
+		DU_LOG("\nF1AP : BuildSpCellCfgDed failed");
+		return RFAILED;
+	}
+	return ROK;
+}
+/*******************************************************************
+*
+* @brief Builds Phy cell group config 
+*
+* @details
+*
+*    Function : BuildPhyCellGrpCfg 
+*
+*    Functionality: Builds Phy cell group config in DuToCuRrcContainer
+*
+* @params[in] PhysicalCellGroupConfig_t *phyCellGrpCfg 
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t BuildPhyCellGrpCfg(PhysicalCellGroupConfig_t *phyCellGrpCfg)
+{
+   phyCellGrpCfg->harq_ACK_SpatialBundlingPUCCH = NULLP;
+	phyCellGrpCfg->harq_ACK_SpatialBundlingPUSCH = NULLP;
+
+   phyCellGrpCfg->p_NR_FR1 = NULLP;
+	CU_ALLOC(phyCellGrpCfg->p_NR_FR1, sizeof(long));
+	if(!phyCellGrpCfg->p_NR_FR1)
+	{
+		DU_LOG("\nF1AP : Memory allocation failure in BuildPhyCellGrpCfg");
+		return RFAILED;
+	}
+   *(phyCellGrpCfg->p_NR_FR1)             = P_NR_FR1;
+	phyCellGrpCfg->pdsch_HARQ_ACK_Codebook = PDSCH_HARQ_ACK_CODEBOOK;
+	phyCellGrpCfg->tpc_SRS_RNTI = NULLP;
+	phyCellGrpCfg->tpc_PUCCH_RNTI = NULLP;
+	phyCellGrpCfg->tpc_PUSCH_RNTI = NULLP;
+	phyCellGrpCfg->sp_CSI_RNTI = NULLP;
+	phyCellGrpCfg->cs_RNTI = NULLP;
+	phyCellGrpCfg->ext1 = NULLP;
+	phyCellGrpCfg->ext2 = NULLP;
+
+	return ROK;
+}
+
+/*******************************************************************
+*
+* @brief Builds tag config 
+*
+* @details
+*
+*    Function : BuildTagConfig 
+*
+*    Functionality: Builds tag config in MacCellGroupConfig
+*
+* @params[in] TAG_Config *tag_Config
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t BuildTagConfig(struct TAG_Config *tagConfig)
+{
+	struct TAG_Config__tag_ToAddModList *tagList;
+   uint8_t                     idx, elementCnt;
+
+   tagConfig->tag_ToReleaseList = NULLP;
+   tagConfig->tag_ToAddModList = NULLP;
+   CU_ALLOC(tagConfig->tag_ToAddModList, sizeof(struct TAG_Config__tag_ToAddModList));
+	if(!tagConfig->tag_ToAddModList)
+	{
+		DU_LOG("\nF1AP : Memory allocation failure in BuildTagConfig");
+		return RFAILED;
+	}
+
+	elementCnt = 1; //ODU_VALUE_ONE;
+	tagList = tagConfig->tag_ToAddModList;
+	tagList->list.count = elementCnt;
+	tagList->list.size  =  elementCnt * sizeof(struct TAG *);
+
+   tagList->list.array = NULLP;
+	CU_ALLOC(tagList->list.array, tagList->list.size);
+	if(!tagList->list.array)
+	{
+		DU_LOG("\nF1AP : Memory allocation failure in BuildTagConfig");
+		return RFAILED;
+	}
+
+	for(idx=0; idx<tagList->list.count; idx++)
+	{
+	   tagList->list.array[idx] = NULLP;
+		CU_ALLOC(tagList->list.array[idx], sizeof(struct TAG));
+		if(!tagList->list.array[idx])
+		{
+			DU_LOG("\nF1AP : Memory allocation failure in BuildTagConfig");
+			return RFAILED;
+		}
+	}
+
+	idx = 0;
+	tagList->list.array[idx]->tag_Id = TAG_ID;
+	tagList->list.array[idx]->timeAlignmentTimer = TIME_ALIGNMENT_TMR;
+
+   return ROK;
+}
+
+/*******************************************************************
+*
+* @brief Builds PHR Config 
+*
+* @details
+*
+*    Function : BuildPhrConfig
+*
+*    Functionality: Builds phrConfig in MacCellGroupConfig
+*
+* @params[in] PHR Config *
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t BuildPhrConfig(struct MAC_CellGroupConfig__phr_Config *phrConfig)
+{
+
+   phrConfig->present = MAC_CellGroupConfig__phr_Config_PR_setup;
+	phrConfig->choice.setup = NULLP;
+	CU_ALLOC(phrConfig->choice.setup, sizeof(struct PHR_Config));
+	if(!phrConfig->choice.setup)
+	{
+		DU_LOG("\nF1AP : Memory allocation failure in BuildPhrConfig");
+		return RFAILED;
+	}
+
+	phrConfig->choice.setup->phr_PeriodicTimer        = PHR_PERIODIC_TMR;
+	phrConfig->choice.setup->phr_ProhibitTimer        = PHR_PROHIBHIT_TMR;
+   phrConfig->choice.setup->phr_Tx_PowerFactorChange = PHR_PWR_FACTOR_CHANGE;
+	phrConfig->choice.setup->multiplePHR              = false;
+	phrConfig->choice.setup->dummy                    = false;
+	phrConfig->choice.setup->phr_Type2OtherCell       = false;
+	phrConfig->choice.setup->phr_ModeOtherCG          = PHR_MODE_OTHER_CG;
+
+	return ROK;
+}
+
+/*******************************************************************
+*
+* @brief Builds BSR Config 
+*
+* @details
+*
+*    Function : BuildBsrConfig
+*
+*    Functionality: Builds BuildBsrConfig in MacCellGroupConfig
+*
+* @params[in] BSR_Config *bsrConfig
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t BuildBsrConfig(struct BSR_Config *bsrConfig)
+{
+   bsrConfig->periodicBSR_Timer = PERIODIC_BSR_TMR;
+	bsrConfig->retxBSR_Timer     = RETX_BSR_TMR;
+	bsrConfig->logicalChannelSR_DelayTimer = NULLP;
+
+   return ROK;
+}
+
+/*******************************************************************
+*
+* @brief Builds scheduling request config 
+*
+* @details
+*
+*    Function : BuildSchedulingReqConfig 
+*
+*    Functionality: Builds BuildSchedulingReqConfig in MacCellGroupConfig
+*
+* @params[in] SchedulingRequestConfig *schedulingRequestConfig
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t BuildSchedulingReqConfig(struct SchedulingRequestConfig *schedulingRequestConfig)
+{
+	struct SchedulingRequestConfig__schedulingRequestToAddModList *schReqList;
+   uint8_t                     idx, elementCnt;
+
+   schedulingRequestConfig->schedulingRequestToAddModList = NULLP;
+	CU_ALLOC(schedulingRequestConfig->schedulingRequestToAddModList,
+			sizeof(struct SchedulingRequestConfig__schedulingRequestToAddModList));
+	if(!schedulingRequestConfig->schedulingRequestToAddModList)
+	{
+		DU_LOG("\nF1AP : Memory allocation failure in BuildSchedulingReqConfig");
+		return RFAILED;
+	}
+
+	elementCnt = 1; //ODU_VALUE_ONE;
+	schReqList = schedulingRequestConfig->schedulingRequestToAddModList;
+	schReqList->list.count = elementCnt;
+   schReqList->list.size  = elementCnt * sizeof(struct SchedulingRequestToAddMod *);
+
+   schReqList->list.array = NULLP;
+   CU_ALLOC(schReqList->list.array, schReqList->list.size);
+	if(!schReqList->list.array)
+	{
+		DU_LOG("\nF1AP : Memory allocation failure in BuildSchedulingReqConfig");
+		return RFAILED;
+	}
+
+   for(idx=0;idx<schReqList->list.count; idx++)
+	{
+	   schReqList->list.array[idx] = NULLP;
+		CU_ALLOC(schReqList->list.array[idx], sizeof(struct SchedulingRequestToAddMod));
+		if(!schReqList->list.array[idx])
+		{
+			DU_LOG("\nF1AP : Memory allocation failure in BuildSchedulingReqConfig");
+			return RFAILED;
+		}
+	}
+
+	idx = 0;
+	schReqList->list.array[idx]->schedulingRequestId = SCH_REQ_ID;
+
+   schReqList->list.array[idx]->sr_ProhibitTimer = NULLP;
+	CU_ALLOC(schReqList->list.array[idx]->sr_ProhibitTimer, sizeof(long));
+	if(!schReqList->list.array[idx]->sr_ProhibitTimer)
+	{
+		DU_LOG("\nF1AP : Memory allocation failure in BuildSchedulingReqConfig");
+		return RFAILED;
+	}
+   *(schReqList->list.array[idx]->sr_ProhibitTimer) = SR_PROHIBIT_TMR;
+	schReqList->list.array[idx]->sr_TransMax = SR_TRANS_MAX;
+	schedulingRequestConfig->schedulingRequestToReleaseList = NULLP;
+
+	return ROK;
+}
+/*******************************************************************
+*
+* @brief Builds Mac cell group config 
+*
+* @details
+*
+*    Function : BuildMacCellGrpCfg 
+*
+*    Functionality: Builds Mac cell group config in DuToCuRrcContainer
+*
+* @params[in] MAC_CellGroupConfig_t *macCellGrpCfg
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t BuildMacCellGrpCfg(MAC_CellGroupConfig_t *macCellGrpCfg)
+{
+   macCellGrpCfg->drx_Config = NULLP;
+   macCellGrpCfg->schedulingRequestConfig = NULLP;
+	CU_ALLOC(macCellGrpCfg->schedulingRequestConfig, sizeof(struct SchedulingRequestConfig));
+	if(!macCellGrpCfg->schedulingRequestConfig)
+	{
+		DU_LOG("\nF1AP : Memory allocation failure in BuildMacCellGrpCfg");
+		return RFAILED;
+	}
+
+	if(BuildSchedulingReqConfig(macCellGrpCfg->schedulingRequestConfig) != ROK)
+	{
+	   DU_LOG("\nF1AP : BuildSchedulingReqConfig failed");
+		return RFAILED;
+	}
+
+   macCellGrpCfg->bsr_Config = NULLP;
+   CU_ALLOC(macCellGrpCfg->bsr_Config, sizeof(struct BSR_Config));
+	if(!macCellGrpCfg->bsr_Config)
+	{
+		DU_LOG("\nF1AP : Memory allocation failure in BuildMacCellGrpCfg");
+		return RFAILED;
+	}
+
+   if(BuildBsrConfig(macCellGrpCfg->bsr_Config) != ROK)
+	{
+      DU_LOG("\nF1AP : BuildBsrConfig failed");
+	   return RFAILED;
+	}
+
+   macCellGrpCfg->tag_Config = NULLP;
+   CU_ALLOC(macCellGrpCfg->tag_Config, sizeof(struct TAG_Config));
+	if(!macCellGrpCfg->tag_Config)
+	{
+		DU_LOG("\nF1AP : Memory allocation failure in BuildMacCellGrpCfg");
+		return RFAILED;
+	}
+
+   if(BuildTagConfig(macCellGrpCfg->tag_Config) != ROK)
+	{
+	   DU_LOG("\nF1AP : BuildTagConfig failed");
+	   return RFAILED;
+   }
+
+   macCellGrpCfg->phr_Config = NULLP;
+   CU_ALLOC(macCellGrpCfg->phr_Config, sizeof(struct MAC_CellGroupConfig__phr_Config));
+	if(!macCellGrpCfg->phr_Config)
+	{
+		DU_LOG("\nF1AP : Memory allocation failure in BuildMacCellGrpCfg");
+		return RFAILED;
+	}
+
+   if(BuildPhrConfig(macCellGrpCfg->phr_Config) != ROK)
+	{
+	   DU_LOG("\nF1AP : BuildPhrConfig failed");
+	   return RFAILED;
+   }
+
+   macCellGrpCfg->skipUplinkTxDynamic = false;
+	macCellGrpCfg->ext1 = NULLP;
+
+	return ROK;
+}
+ /*******************************************************************
+ *
+ * @brief Frees memeory allocated for SearchSpcToAddModList
+ *
+ * @details
+ *
+ *    Function : FreeSearchSpcToAddModList
+ *
+ *    Functionality: Deallocating memory of SearchSpcToAddModList
+ *
+ * @params[in] struct PDCCH_Config__searchSpacesToAddModList *searchSpcList
+ *
+ * @return void
+ *
+ 4221 * ****************************************************************/
+void FreeSearchSpcToAddModList(struct PDCCH_Config__searchSpacesToAddModList *searchSpcList)
+{
+    uint8_t idx1=0;
+    uint8_t idx2=0;
+    struct  SearchSpace *searchSpc=NULLP;
+
+    if(searchSpcList->list.array)
+	 {
+	    if(searchSpcList->list.array[idx2])
+	    {
+          searchSpc = searchSpcList->list.array[idx2];
+	       if(searchSpc->controlResourceSetId)
+	       {
+	          if(searchSpc->monitoringSlotPeriodicityAndOffset)
+	          {
+	             if(searchSpc->monitoringSymbolsWithinSlot)
+	             {
+	                if(searchSpc->monitoringSymbolsWithinSlot->buf)
+	                {
+	                   if(searchSpc->nrofCandidates)
+	                   {
+	                      if(searchSpc->searchSpaceType)
+	                      {
+	                         CU_FREE(searchSpc->searchSpaceType->choice.ue_Specific,\
+	                         sizeof(struct SearchSpace__searchSpaceType__ue_Specific));
+	                      	 CU_FREE(searchSpc->searchSpaceType, sizeof(struct
+									 SearchSpace__searchSpaceType));
+	                      }
+	                      CU_FREE(searchSpc->nrofCandidates,
+	                      sizeof(struct SearchSpace__nrofCandidates));
+	                   }
+	                   CU_FREE(searchSpc->monitoringSymbolsWithinSlot->buf, \
+	                   searchSpc->monitoringSymbolsWithinSlot->size);
+	                }
+	                CU_FREE(searchSpc->monitoringSymbolsWithinSlot,
+	                sizeof(BIT_STRING_t));
+	             }
+	             CU_FREE(searchSpc->monitoringSlotPeriodicityAndOffset, \
+	             sizeof(struct SearchSpace__monitoringSlotPeriodicityAndOffset));
+	          }
+	          CU_FREE(searchSpc->controlResourceSetId,
+	          sizeof(ControlResourceSetId_t));
+		     }
+		  }
+		  for(idx1 = 0; idx1 < searchSpcList->list.count; idx1++)
+	     {
+	         CU_FREE(searchSpcList->list.array[idx1],
+				sizeof(struct SearchSpace));
+		  }
+		  CU_FREE(searchSpcList->list.array,searchSpcList->list.size);
+	 }
+}
+ /*******************************************************************
+ *
+ * @brief Frees memory allocated for PdschTimeDomAllocList
+ *
+ * @details
+ *
+ *    Function : FreePdschTimeDomAllocList
+ *
+ *    Functionality: Deallocating memory of PdschTimeDomAllocList
+ *
+ * @params[in] struct PDSCH_Config__pdsch_TimeDomainAllocationList *timeDomAllocList
+ *
+ * @return void
+ *
+ 4221 * ****************************************************************/
+void FreePdschTimeDomAllocList( struct PDSCH_Config__pdsch_TimeDomainAllocationList *timeDomAllocList)
+{
+   uint8_t idx1=0;
+	
+	if(timeDomAllocList->choice.setup)
+   {
+      if(timeDomAllocList->choice.setup->list.array)
+      {
+          for(idx1 = 0; idx1 <timeDomAllocList->choice.setup->list.count ; idx1++)
+          {
+             CU_FREE(timeDomAllocList->choice.setup->list.array[idx1],
+             sizeof(struct PDSCH_TimeDomainResourceAllocation));
+          }
+          CU_FREE(timeDomAllocList->choice.setup->list.array, \
+          timeDomAllocList->choice.setup->list.size);
+      }
+      CU_FREE(timeDomAllocList->choice.setup,\
+      sizeof(struct PDSCH_TimeDomainResourceAllocationList));
+   }
+}
+ /*******************************************************************
+ *
+ * @brief Frees memory allocated for PuschTimeDomAllocList
+ *
+ *@details
+ *
+ *    Function : FreePuschTimeDomAllocList
+ *
+ *    Functionality: Deallocating memory of PuschTimeDomAllocList
+ *
+ * @params[in] PUSCH_Config_t *puschCfg
+ *
+ * @return void
+ *
+ 4221 * ****************************************************************/
+void FreePuschTimeDomAllocList(PUSCH_Config_t *puschCfg)
+{
+    uint8_t idx1=0;
+	 uint8_t idx2=0;
+    struct PUSCH_Config__pusch_TimeDomainAllocationList *timeDomAllocList_t=NULLP;
+
+    if(puschCfg->pusch_TimeDomainAllocationList)
+    {
+       timeDomAllocList_t=puschCfg->pusch_TimeDomainAllocationList;
+       if(timeDomAllocList_t->choice.setup)
+       {
+          if(timeDomAllocList_t->choice.setup->list.array)
+          {
+             CU_FREE(timeDomAllocList_t->choice.setup->list.array[idx2]->k2, sizeof(long));
+             for(idx1 = 0; idx1<timeDomAllocList_t->choice.setup->list.count; idx1++)
+             {
+                CU_FREE(timeDomAllocList_t->choice.setup->list.array[idx1],\
+				    sizeof(PUSCH_TimeDomainResourceAllocation_t));
+				 }
+				 CU_FREE(timeDomAllocList_t->choice.setup->list.array, \
+             timeDomAllocList_t->choice.setup->list.size);
+          }
+          CU_FREE(timeDomAllocList_t->choice.setup, \
+	       sizeof(struct PUSCH_TimeDomainResourceAllocationList));
+       }
+		 CU_FREE(puschCfg->transformPrecoder, sizeof(long));
+       CU_FREE(puschCfg->pusch_TimeDomainAllocationList, \
+		 sizeof(struct PUSCH_Config__pusch_TimeDomainAllocationList));
+    }
+
+}
+ /*******************************************************************
+ *
+ * @brief Frees memory allocated for InitialUlBWP
+ *
+ * @details
+ *
+ *    Function : FreeInitialUlBWP
+ *
+ *    Functionality: Deallocating memory of InitialUlBWP
+ *
+ * @params[in] BWP_UplinkDedicated_t *ulBwp
+ *
+ * @return void
+ *
+ * ****************************************************************/
+void FreeInitialUlBWP(BWP_UplinkDedicated_t *ulBwp)
+{
+    uint8_t  rSetIdx, rsrcIdx;
+    SRS_Config_t   *srsCfg = NULLP;
+    PUSCH_Config_t *puschCfg = NULLP;
+    struct PUSCH_Config__dmrs_UplinkForPUSCH_MappingTypeA *dmrsUlCfg = NULLP;
+	 struct SRS_Config__srs_ResourceSetToAddModList *rsrcSetList = NULLP;
+	 struct SRS_ResourceSet__srs_ResourceIdList *rsrcIdList = NULLP;
+	 struct SRS_Config__srs_ResourceToAddModList *resourceList = NULLP;
+
+	 if(ulBwp->pusch_Config)
+    {
+       if(ulBwp->pusch_Config->choice.setup)
+       {
+          puschCfg=ulBwp->pusch_Config->choice.setup;
+          if(puschCfg->dataScramblingIdentityPUSCH)
+          {
+             if(puschCfg->dmrs_UplinkForPUSCH_MappingTypeA)
+             {
+                FreePuschTimeDomAllocList(puschCfg);
+                dmrsUlCfg=puschCfg->dmrs_UplinkForPUSCH_MappingTypeA;
+					 if(dmrsUlCfg->choice.setup)
+                {
+                   if(dmrsUlCfg->choice.setup->dmrs_AdditionalPosition)
+                   {
+                      if(dmrsUlCfg->choice.setup->transformPrecodingDisabled)
+                      {
+                         CU_FREE(dmrsUlCfg->choice.setup->transformPrecodingDisabled->scramblingID0,\
+								 sizeof(long));
+								 CU_FREE(dmrsUlCfg->choice.setup->transformPrecodingDisabled,
+                         sizeof(struct DMRS_UplinkConfig__transformPrecodingDisabled));
+							 }
+							 CU_FREE(dmrsUlCfg->choice.setup->dmrs_AdditionalPosition,
+							 sizeof(long));
+						 }
+						 CU_FREE(dmrsUlCfg->choice.setup,sizeof(DMRS_UplinkConfig_t));
+                }
+					 CU_FREE(puschCfg->dmrs_UplinkForPUSCH_MappingTypeA, \
+					 sizeof(struct PUSCH_Config__dmrs_UplinkForPUSCH_MappingTypeA));
+				 }
+             CU_FREE(puschCfg->dataScramblingIdentityPUSCH, sizeof(long));
+          }
+          CU_FREE(ulBwp->pusch_Config->choice.setup, sizeof(PUSCH_Config_t));
+	    }
+		 CU_FREE(ulBwp->pusch_Config, sizeof(struct BWP_UplinkDedicated__pusch_Config));
+
+		 /* Free SRS-Config */
+		 if(ulBwp->srs_Config)
+		 {
+		    if(ulBwp->srs_Config->choice.setup)
+			 {
+			    srsCfg = ulBwp->srs_Config->choice.setup;
+
+				 /* Free Resource Set to add/mod list */
+			    if(srsCfg->srs_ResourceSetToAddModList)
+				 {
+				    rsrcSetList = srsCfg->srs_ResourceSetToAddModList;
+					 if(rsrcSetList->list.array)
+					 {
+					    rSetIdx = 0;
+
+						 /* Free SRS resource Id list in this SRS resource set */
+						 if(rsrcSetList->list.array[rSetIdx]->srs_ResourceIdList)
+						 {
+						    rsrcIdList = rsrcSetList->list.array[rSetIdx]->srs_ResourceIdList;
+
+						    if(rsrcIdList->list.array)
+							 {
+							    for(rsrcIdx = 0; rsrcIdx < rsrcIdList->list.count; rsrcIdx++)
+								 {
+								    CU_FREE(rsrcIdList->list.array[rsrcIdx], sizeof(SRS_ResourceId_t));
+							    }
+							    CU_FREE(rsrcIdList->list.array, rsrcIdList->list.size);
+							 }
+						    CU_FREE(rsrcSetList->list.array[rSetIdx]->srs_ResourceIdList,\
+							    sizeof(struct SRS_ResourceSet__srs_ResourceIdList));
+						 }
+
+						 /* Free resource type info for this SRS resource set */
+						 CU_FREE(rsrcSetList->list.array[rSetIdx]->resourceType.choice.aperiodic, \
+						    sizeof(struct SRS_ResourceSet__resourceType__aperiodic));
+
+						 /* Free memory for each resource set */
+					    for(rSetIdx = 0; rSetIdx < rsrcSetList->list.count; rSetIdx++)
+						 {
+						    CU_FREE(rsrcSetList->list.array[rSetIdx], sizeof(SRS_ResourceSet_t));
+						 }
+					    CU_FREE(rsrcSetList->list.array, rsrcSetList->list.size); 
+					 }
+				    CU_FREE(srsCfg->srs_ResourceSetToAddModList, \
+					    sizeof(struct SRS_Config__srs_ResourceSetToAddModList));
+				 }
+
+				 /* Free resource to add/modd list */
+				 if(srsCfg->srs_ResourceToAddModList)
+				 {
+				    resourceList = srsCfg->srs_ResourceToAddModList;
+					 if(resourceList->list.array)
+					 {
+					    rsrcIdx = 0;
+						 CU_FREE(resourceList->list.array[rsrcIdx]->transmissionComb.choice.n2,\
+						    sizeof(struct SRS_Resource__transmissionComb__n2));
+					    CU_FREE(resourceList->list.array[rsrcIdx]->resourceType.choice.aperiodic,\
+						    sizeof(struct SRS_Resource__resourceType__aperiodic));
+
+					    for(rsrcIdx = 0; rsrcIdx < resourceList->list.count; rsrcIdx++)
+						 {
+						    CU_FREE(resourceList->list.array[rsrcIdx], sizeof(SRS_Resource_t));
+                   }
+					    CU_FREE(resourceList->list.array, resourceList->list.size);
+					 }
+				    CU_FREE(srsCfg->srs_ResourceToAddModList, \
+					    sizeof(struct SRS_Config__srs_ResourceToAddModList));
+				 }
+
+			    CU_FREE(ulBwp->srs_Config->choice.setup, sizeof(SRS_Config_t));
+			 }
+		    CU_FREE(ulBwp->srs_Config, sizeof(struct BWP_UplinkDedicated__srs_Config));
+       }
+	 }
+}	
+ /*******************************************************************
+ *
+ * @brief Frees memory allocated for initialUplinkBWP
+ *
+ * @details
+ *
+ *    Function : FreeinitialUplinkBWP
+ *
+ *    Functionality: Deallocating memory of initialUplinkBWP
+ *
+ * @params[in] UplinkConfig_t *ulCfg
+ *
+ * @return void
+ *         
+ *
+ * ****************************************************************/
+void FreeinitialUplinkBWP(UplinkConfig_t *ulCfg)
+{
+   BWP_UplinkDedicated_t *ulBwp=NULLP; 
+   struct UplinkConfig__pusch_ServingCellConfig *puschCfg=NULLP;
+   
+	if(ulCfg->initialUplinkBWP)
+	{
+	   ulBwp=ulCfg->initialUplinkBWP;
+	   if(ulCfg->firstActiveUplinkBWP_Id)
+	   {
+	      if(ulCfg->pusch_ServingCellConfig)
+	      {
+	         puschCfg=ulCfg->pusch_ServingCellConfig;
+	         if(puschCfg->choice.setup)
+	         {
+	            if(puschCfg->choice.setup->ext1)
+	            {
+	                CU_FREE(puschCfg->choice.setup->ext1->\
+						 processingType2Enabled,sizeof(BOOLEAN_t));
+	                CU_FREE(puschCfg->choice.setup->ext1->\
+						 maxMIMO_Layers,sizeof(long));
+						 CU_FREE(puschCfg->choice.setup->ext1, \
+						 sizeof(struct PUSCH_ServingCellConfig__ext1));
+					}
+	            CU_FREE(puschCfg->choice.setup, sizeof(struct PUSCH_ServingCellConfig));
+	         }
+	         CU_FREE(ulCfg->pusch_ServingCellConfig, sizeof(struct UplinkConfig__pusch_ServingCellConfig));
+	      }
+	      CU_FREE(ulCfg->firstActiveUplinkBWP_Id, sizeof(BWP_Id_t));
+	   }
+	   FreeInitialUlBWP(ulBwp);
+	   CU_FREE(ulCfg->initialUplinkBWP, sizeof(BWP_UplinkDedicated_t));
+	}
+}
+ /*******************************************************************
+ *
+ * @brief Frees emmory allocated for BWPDlDedPdschCfg
+ *
+ * @details
+ *
+ *    Function : FreeBWPDlDedPdschCfg
+ *
+ *    Functionality: Deallocating memory of BWPDlDedPdschCfg
+ *
+ * @params[in] BWP_DownlinkDedicated_t *dlBwp
+ *
+ * @return void
+ *
+ *
+ * ****************************************************************/
+void FreeBWPDlDedPdschCfg(BWP_DownlinkDedicated_t *dlBwp)
+{
+   struct PDSCH_Config *pdschCfg=NULLP;
+	struct PDSCH_Config__prb_BundlingType *prbBndlType=NULLP;
+   struct PDSCH_Config__pdsch_TimeDomainAllocationList *timeDomAllocList=NULLP;
+   struct PDSCH_Config__dmrs_DownlinkForPDSCH_MappingTypeA *dmrsDlCfg=NULLP;
+
+	if(dlBwp->pdsch_Config->choice.setup)
+   {
+      pdschCfg=dlBwp->pdsch_Config->choice.setup;
+      if(pdschCfg->dmrs_DownlinkForPDSCH_MappingTypeA)
+      {
+          if(pdschCfg->pdsch_TimeDomainAllocationList)
+          {
+             timeDomAllocList=pdschCfg->pdsch_TimeDomainAllocationList;
+             if(pdschCfg->maxNrofCodeWordsScheduledByDCI)
+             {
+                prbBndlType=&pdschCfg->prb_BundlingType;
+                CU_FREE(prbBndlType->choice.staticBundling,\
+                sizeof(struct PDSCH_Config__prb_BundlingType__staticBundling));
+                CU_FREE(pdschCfg->maxNrofCodeWordsScheduledByDCI, sizeof(long));
+             }
+             FreePdschTimeDomAllocList(timeDomAllocList);
+             CU_FREE(pdschCfg->pdsch_TimeDomainAllocationList, \
+             sizeof(struct PDSCH_Config__pdsch_TimeDomainAllocationList));
+          }
+          dmrsDlCfg=pdschCfg->dmrs_DownlinkForPDSCH_MappingTypeA;
+          if(dmrsDlCfg->choice.setup)
+          {
+             CU_FREE(dmrsDlCfg->choice.setup->dmrs_AdditionalPosition,
+             sizeof(long));
+             CU_FREE(dmrsDlCfg->choice.setup, sizeof(struct DMRS_DownlinkConfig));
+          }
+          CU_FREE(pdschCfg->dmrs_DownlinkForPDSCH_MappingTypeA, \
+          sizeof(struct PDSCH_Config__dmrs_DownlinkForPDSCH_MappingTypeA));
+       }
+       CU_FREE(dlBwp->pdsch_Config->choice.setup, sizeof(struct PDSCH_Config));
+    }
+}
+ /*******************************************************************
+ *
+ * @brief Frees emmory allocated for BWPDlDedPdcchCfg
+ *
+ * @details
+ *
+ *    Function : FreeBWPDlDedPdcchCfg
+ *
+ *    Functionality: Deallocating memory of BWPDlDedPdcchCfg
+ *
+ * @params[in] BWP_DownlinkDedicated_t *dlBwp
+ *
+ * @return void
+ *         
+ *
+ * ****************************************************************/
+void FreeBWPDlDedPdcchCfg(BWP_DownlinkDedicated_t *dlBwp)
+{
+   uint8_t idx1=0;
+	uint8_t idx2=0;
+	struct PDCCH_Config *pdcchCfg=NULLP;
+   struct ControlResourceSet *controlRSet=NULLP;
+	struct PDCCH_Config__controlResourceSetToAddModList *controlRSetList=NULLP;
+
+	if(dlBwp->pdcch_Config->choice.setup)
+   {
+      pdcchCfg=dlBwp->pdcch_Config->choice.setup;
+      if(pdcchCfg->controlResourceSetToAddModList)
+      {
+         controlRSetList = pdcchCfg->controlResourceSetToAddModList;
+         if(controlRSetList->list.array)
+         {
+            controlRSet = controlRSetList->list.array[idx2];
+            if(controlRSet)
+            {
+               if(controlRSet->frequencyDomainResources.buf)
+               {
+                  if(controlRSet->pdcch_DMRS_ScramblingID)
+                  {
+                     if(pdcchCfg->searchSpacesToAddModList)
+                     {
+                         FreeSearchSpcToAddModList(pdcchCfg->searchSpacesToAddModList);
+                         CU_FREE(pdcchCfg->searchSpacesToAddModList, \
+                         sizeof(struct PDCCH_Config__searchSpacesToAddModList));
+                     }
+                     CU_FREE(controlRSet->pdcch_DMRS_ScramblingID, sizeof(long));
+                  }
+						CU_FREE(controlRSet->frequencyDomainResources.buf, \
+						controlRSet->frequencyDomainResources.size);
+					}
+				}
+            for(idx1 = 0; idx1 <controlRSetList->list.count; idx1++)
+            {
+               CU_FREE(controlRSetList->list.array[idx1], sizeof(struct ControlResourceSet));
+            }
+				CU_FREE(controlRSetList->list.array, controlRSetList->list.size);
+			}
+			CU_FREE(pdcchCfg->controlResourceSetToAddModList, \
+			sizeof(struct PDCCH_Config__controlResourceSetToAddModList));
+		}
+		CU_FREE(dlBwp->pdcch_Config->choice.setup, sizeof(struct PDCCH_Config));
+	}
+}
+/*******************************************************************
+*
+* @brief Builds RLC Config
+*
+* @details
+*
+*    Function : BuildRlcConfig
+*
+*    Functionality: Builds RLC Config in BuildRlcBearerToAddModList 
+*
+* @params[in] RLC_Config *rlcConfig
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t BuildRlcConfig(struct RLC_Config *rlcConfig)
+{
+
+   rlcConfig->present = RLC_Config_PR_am;
+
+   rlcConfig->choice.am = NULLP;
+   CU_ALLOC(rlcConfig->choice.am, sizeof(struct RLC_Config__am));
+	if(!rlcConfig->choice.am)
+	{
+		DU_LOG("\nF1AP : Memory allocation failure in BuildRlcConfig");
+		return RFAILED;
+	}
+
+   /* UL */
+	rlcConfig->choice.am->ul_AM_RLC.sn_FieldLength = NULLP;
+   CU_ALLOC(rlcConfig->choice.am->ul_AM_RLC.sn_FieldLength, sizeof(SN_FieldLengthAM_t));
+	if(!rlcConfig->choice.am->ul_AM_RLC.sn_FieldLength)
+	{
+		DU_LOG("\nF1AP : Memory allocation failure in BuildRlcConfig");
+		return RFAILED;
+	}
+   *(rlcConfig->choice.am->ul_AM_RLC.sn_FieldLength) = SN_FIELD_LEN;
+	rlcConfig->choice.am->ul_AM_RLC.t_PollRetransmit  = T_POLL_RETRANSMIT;
+	rlcConfig->choice.am->ul_AM_RLC.pollPDU           = POLL_PDU;
+	rlcConfig->choice.am->ul_AM_RLC.pollByte          = POLL_BYTE;
+	rlcConfig->choice.am->ul_AM_RLC.maxRetxThreshold  = MAX_RETX_THRESHOLD;
+
+   /* DL */
+   rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength = NULLP;
+   CU_ALLOC(rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength, sizeof(SN_FieldLengthAM_t)); 
+	if(!rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength)
+	{
+		DU_LOG("\nF1AP : Memory allocation failure in BuildRlcConfig");
+		return RFAILED;
+	}
+	*(rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength) = SN_FIELD_LEN;
+   rlcConfig->choice.am->dl_AM_RLC.t_Reassembly      = T_REASSEMBLY;
+	rlcConfig->choice.am->dl_AM_RLC.t_StatusProhibit  = T_STATUS_PROHIBHIT;
+	
+   return ROK;
+}
+
+/*******************************************************************
+*
+* @brief Builds MAC LC Config
+*
+* @details
+*
+*    Function : BuildMacLCConfig 
+*
+*    Functionality: Builds MAC LC Config in BuildRlcBearerToAddModList 
+*
+* @params[in] struct LogicalChannelConfig macLcConfig
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t BuildMacLCConfig(struct LogicalChannelConfig *macLcConfig)
+{
+
+   macLcConfig->ul_SpecificParameters = NULLP;
+   CU_ALLOC(macLcConfig->ul_SpecificParameters, sizeof(struct LogicalChannelConfig__ul_SpecificParameters));
+	if(!macLcConfig->ul_SpecificParameters)
+	{
+		DU_LOG("\nF1AP : Memory allocation failure in BuildMacLCConfig");
+		return RFAILED;
+	}
+
+   macLcConfig->ul_SpecificParameters->priority = MAC_LC_PRIORITY;
+	macLcConfig->ul_SpecificParameters->prioritisedBitRate =	PRIORTISIED_BIT_RATE;
+	macLcConfig->ul_SpecificParameters->bucketSizeDuration =	BUCKET_SIZE_DURATION;
+   macLcConfig->ul_SpecificParameters->allowedServingCells = NULLP;
+	macLcConfig->ul_SpecificParameters->allowedSCS_List = NULLP;
+	macLcConfig->ul_SpecificParameters->maxPUSCH_Duration = NULLP;
+   macLcConfig->ul_SpecificParameters->configuredGrantType1Allowed = NULLP;
+
+   macLcConfig->ul_SpecificParameters->logicalChannelGroup = NULLP;
+   CU_ALLOC(macLcConfig->ul_SpecificParameters->logicalChannelGroup,	sizeof(long));
+   if(!macLcConfig->ul_SpecificParameters->logicalChannelGroup)
+	{
+		DU_LOG("\nF1AP : Memory allocation failure in BuildMacLCConfig");
+		return RFAILED;
+	}
+   *(macLcConfig->ul_SpecificParameters->logicalChannelGroup) = LC_GRP;
+
+   macLcConfig->ul_SpecificParameters->schedulingRequestID = NULLP;
+	CU_ALLOC(macLcConfig->ul_SpecificParameters->schedulingRequestID,	sizeof(SchedulingRequestId_t));
+	if(!macLcConfig->ul_SpecificParameters->schedulingRequestID)
+	{
+		DU_LOG("\nF1AP : Memory allocation failure in BuildMacLCConfig");
+		return RFAILED;
+	}
+   *(macLcConfig->ul_SpecificParameters->schedulingRequestID) = SCH_REQ_ID;
+
+	macLcConfig->ul_SpecificParameters->logicalChannelSR_Mask = false;
+	macLcConfig->ul_SpecificParameters->logicalChannelSR_DelayTimerApplied = false;
+	macLcConfig->ul_SpecificParameters->bitRateQueryProhibitTimer = NULLP;
+
+   return ROK;
+}
+/*******************************************************************
+*
+* @brief Builds RLC Bearer to Add/Mod list
+*
+* @details
+*
+*    Function :BuildRlcBearerToAddModList 
+*
+*    Functionality: Builds RLC Bearer to Add/Mod list in DuToCuRrcContainer
+*
+* @params[in] rlc_BearerToAddModList
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t BuildRlcBearerToAddModList(struct CellGroupConfigRrc__rlc_BearerToAddModList *rlcBearerList)
+{
+   uint8_t                     idx, elementCnt;
+
+   elementCnt = 1;
+   rlcBearerList->list.count = elementCnt;
+	rlcBearerList->list.size  = elementCnt * sizeof(struct RLC_BearerConfig *);
+
+   rlcBearerList->list.array = NULLP;
+	CU_ALLOC(rlcBearerList->list.array, rlcBearerList->list.size);
+	if(!rlcBearerList->list.array)
+	{
+		DU_LOG("\nF1AP : Memory allocation failure in BuildRlcBearerToAddModList");
+		return RFAILED;
+	}
+
+   for(idx=0; idx<rlcBearerList->list.count; idx++)
+	{
+	   rlcBearerList->list.array[idx] = NULLP;
+		CU_ALLOC(rlcBearerList->list.array[idx], sizeof(struct RLC_BearerConfig));
+		if(!rlcBearerList->list.array[idx])
+		{
+			DU_LOG("\nF1AP : Memory allocation failure in BuildRlcBearerToAddModList");
+			return RFAILED;
+		}
+	}
+
+   idx = 0;
+	rlcBearerList->list.array[idx]->logicalChannelIdentity = RLC_LCID;
+
+	CU_ALLOC(rlcBearerList->list.array[idx]->servedRadioBearer, sizeof(struct RLC_BearerConfig__servedRadioBearer));
+	if(!rlcBearerList->list.array[idx]->servedRadioBearer)
+	{
+		DU_LOG("\nF1AP : Memory allocation failure in BuildRlcBearerToAddModList");
+		return RFAILED;
+	}
+
+	rlcBearerList->list.array[idx]->servedRadioBearer->present = RLC_BearerConfig__servedRadioBearer_PR_srb_Identity;
+   rlcBearerList->list.array[idx]->servedRadioBearer->choice.srb_Identity = SRB_ID_1;
+
+   rlcBearerList->list.array[idx]->reestablishRLC = NULLP;
+   rlcBearerList->list.array[idx]->rlc_Config = NULLP;
+   CU_ALLOC(rlcBearerList->list.array[idx]->rlc_Config, sizeof(struct RLC_Config));
+	if(!rlcBearerList->list.array[idx]->rlc_Config)
+	{
+		DU_LOG("\nF1AP : Memory allocation failure in BuildRlcBearerToAddModList");
+		return RFAILED;
+	}
+
+   if(BuildRlcConfig(rlcBearerList->list.array[idx]->rlc_Config) != ROK)
+	{
+		DU_LOG("\nF1AP : BuildRlcConfig failed");
+		return RFAILED;
+	}
+
+   rlcBearerList->list.array[idx]->mac_LogicalChannelConfig = NULLP;
+   CU_ALLOC(rlcBearerList->list.array[idx]->mac_LogicalChannelConfig, sizeof(struct LogicalChannelConfig));
+	if(!rlcBearerList->list.array[idx]->mac_LogicalChannelConfig)
+	{
+		DU_LOG("\nF1AP : Memory allocation failure in BuildRlcBearerToAddModList");
+		return RFAILED;
+	}
+
+	if(BuildMacLCConfig(rlcBearerList->list.array[idx]->mac_LogicalChannelConfig) != ROK)
+	{
+		DU_LOG("\nF1AP : BuildMacLCConfig failed");
+		return RFAILED;
+	}
+
+	return ROK;
+}
+
+uint8_t fillCellGrpCfg(CellGroupConfig_t *cellGrp)
+{
+   uint8_t               ret = RFAILED;
+   CellGroupConfigRrc_t  cellGrpCfg;
+   asn_enc_rval_t        encRetVal;
+
+   while(true)
+   {
+      cellGrpCfg.cellGroupId = CELL_GRP_ID;
+
+      cellGrpCfg.rlc_BearerToAddModList = NULLP;
+      CU_ALLOC(cellGrpCfg.rlc_BearerToAddModList, sizeof(struct CellGroupConfigRrc__rlc_BearerToAddModList));
+      if(!cellGrpCfg.rlc_BearerToAddModList)
+      {
+	 DU_LOG("\nF1AP : Memory allocation failure in CellGrpConfig");
+	 break;
+      }
+      if(BuildRlcBearerToAddModList(cellGrpCfg.rlc_BearerToAddModList) != ROK)
+      {
+	 DU_LOG("\nF1AP : fillCellGrpCfg failed");
+	 break;
+      }
+
+      cellGrpCfg.rlc_BearerToReleaseList = NULLP;
+      cellGrpCfg.mac_CellGroupConfig = NULLP;
+      CU_ALLOC(cellGrpCfg.mac_CellGroupConfig, sizeof(MAC_CellGroupConfig_t));
+      if(!cellGrpCfg.mac_CellGroupConfig)
+      {
+	 DU_LOG("\nF1AP : Memory allocation failure in fillCellGrpCfg");
+	 break;
+      }
+      if(BuildMacCellGrpCfg(cellGrpCfg.mac_CellGroupConfig) != ROK)
+      {
+	 DU_LOG("\nF1AP : BuildMacCellGrpCfg failed");
+	 break;
+      }
+
+
+      cellGrpCfg.physicalCellGroupConfig = NULLP;
+      CU_ALLOC(cellGrpCfg.physicalCellGroupConfig, sizeof(PhysicalCellGroupConfig_t));
+      if(!cellGrpCfg.physicalCellGroupConfig)
+      {
+	 DU_LOG("\nF1AP : Memory allocation failure in BuildDuToCuRrcContainer");
+	 break;
+      }
+      if(BuildPhyCellGrpCfg(cellGrpCfg.physicalCellGroupConfig) != ROK)
+      {
+	 DU_LOG("\nF1AP : BuildPhyCellGrpCfg failed");
+	 break;
+      }
+
+      cellGrpCfg.spCellConfig = NULLP;
+      CU_ALLOC(cellGrpCfg.spCellConfig, sizeof(SpCellConfig_t));
+      if(!cellGrpCfg.spCellConfig)
+      {
+	 DU_LOG("\nF1AP : Memory allocation failure in BuildDuToCuRrcContainer");
+	 break;
+      }
+      if(BuildSpCellCfg(cellGrpCfg.spCellConfig) != ROK)
+      {
+	 DU_LOG("\nF1AP : BuildSpCellCfg failed");
+	 break;
+      }
+
+      cellGrpCfg.sCellToAddModList = NULLP;
+      cellGrpCfg.sCellToReleaseList = NULLP;
+      cellGrpCfg.ext1 = NULLP;
+
+      /* encode cellGrpCfg into duToCuRrcContainer */
+      xer_fprint(stdout, &asn_DEF_CellGroupConfigRrc, &cellGrpCfg);
+      cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_CellGroupConfigRrc, 0, &cellGrpCfg, PrepFinalEncBuf, encBuf);
+      /* Encode results */
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+	 DU_LOG( "\n F1AP : Could not encode DuToCuRrcContainer (at %s)\n",\
+	       encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+	 break;
+      }
+      else
+      {
+	 DU_LOG("\n F1AP : Created APER encoded buffer for DuToCuRrcContainer\n");
+	 for(int i=0; i< encBufSize; i++)
+	 {
+	    printf("%x",encBuf[i]);
+	 }
+      }
+
+      cellGrp->size = encBufSize;
+      CU_ALLOC(cellGrp->buf, cellGrp->size);
+      if(!cellGrp->buf)
+      {
+	 DU_LOG("\nF1AP : Memory allocation failed in BuildDuToCuRrcContainer");
+	 break;
+      }
+      memcpy(cellGrp->buf, encBuf, cellGrp->size);
+      ret = ROK;
+      break;
+   }
+   return ROK;
+}
+
+uint8_t fillCuToDuContainer(CUtoDURRCInformation_t *rrcMsg)
+{
+   uint8_t elementCnt = 0;
+   uint8_t ret = ROK;
+   uint8_t idx, idx2, rrcBufLen;
+
+   elementCnt = 1;
+   CU_ALLOC(rrcMsg->iE_Extensions, sizeof(ProtocolExtensionContainer_4624P16_t));
+   if(rrcMsg->iE_Extensions)
+   {
+      rrcMsg->iE_Extensions->list.count = elementCnt;
+      rrcMsg->iE_Extensions->list.size = elementCnt * sizeof(CUtoDURRCInformation_ExtIEs_t);
+
+      /* Initialize the CUtoDURRCInformation_ExtIEs */
+      CU_ALLOC(rrcMsg->iE_Extensions->list.array, rrcMsg->iE_Extensions->list.size);
+
+      if(rrcMsg->iE_Extensions->list.array == NULLP)
+      {
+         DU_LOG(" F1AP : Memory allocation for CUtoDURRCInformation_ExtIEs failed");
+         ret = RFAILED;
+      }
+
+      for(idx=0; idx<elementCnt; idx++)
+      {
+         CU_ALLOC(rrcMsg->iE_Extensions->list.array[idx], sizeof(CUtoDURRCInformation_ExtIEs_t));
+         if(rrcMsg->iE_Extensions->list.array[idx] == NULLP)
+         {
+            ret = RFAILED;
+         }
+      }
+      idx = 0;
+      /* Filling CellGroupConfig_t IE */
+      rrcMsg->iE_Extensions->list.array[idx]->id = ProtocolIE_ID_id_CellGroupConfig;
+      rrcMsg->iE_Extensions->list.array[idx]->criticality = Criticality_ignore; 
+      rrcMsg->iE_Extensions->list.array[idx]->extensionValue.present  =\
+      CUtoDURRCInformation_ExtIEs__extensionValue_PR_CellGroupConfig;
+      ret = fillCellGrpCfg(&rrcMsg->iE_Extensions->list.array[idx]->extensionValue.choice.CellGroupConfig);
+   }
+   return ret;
+}
 /*******************************************************************
  *
  * @brief Builds and sends the UE Setup Request 
@@ -2225,6 +4973,7 @@ uint8_t BuildAndSendUESetReq(uint8_t cuUeF1apId, uint8_t duUeF1apId, \
       ueSetReq->protocolIEs.list.array[idx]->criticality	= 	Criticality_reject;
       ueSetReq->protocolIEs.list.array[idx]->value.present = \
 							     UEContextSetupRequestIEs__value_PR_CUtoDURRCInformation;
+      cuToDuContainerRet = fillCuToDuContainer(&ueSetReq->protocolIEs.list.array[idx]->value.choice.CUtoDURRCInformation);
 
       /*Special Cells to be SetupList*/
       idx++;
@@ -2472,6 +5221,7 @@ void F1APMsgHdlr(Buffer *mBuf)
 	    {
 	       DU_LOG("\nF1AP : Received ULRRCMessageTransfer");
 	       procUlRrcMsg(f1apMsg);
+	       break;
 	    }
             default:
             {
@@ -2479,6 +5229,22 @@ void F1APMsgHdlr(Buffer *mBuf)
                return;
             }
          }/* End of switch(initiatingMessage) */
+         break;
+      }
+      case F1AP_PDU_PR_successfulOutcome :
+      {
+         switch(f1apMsg->choice.successfulOutcome->value.present)
+	 {
+            case SuccessfulOutcome__value_PR_UEContextSetupResponse:
+	    {
+               break;
+	    }
+            default:
+            {
+               DU_LOG("\nF1AP : Invalid type of successful outcome message [%d]",f1apMsg->choice.successfulOutcome->value.present);
+               return;
+            }
+	 }
          break;
       }
 

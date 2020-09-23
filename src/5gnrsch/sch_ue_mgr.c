@@ -37,6 +37,13 @@ SchUeCfgRspFunc SchUeCfgRspOpts[] =
    packSchUeCfgRsp       /* LWLC */
 };
 
+/* local defines */
+SchUeReCfgRspFunc SchUeReCfgRspOpts[] =
+{
+   packSchUeCfgRsp,      /* LC */
+   MacProcSchUeReconfigRsp,   /* TC */
+   packSchUeCfgRsp       /* LWLC */
+};
 
 /*******************************************************************
  *
@@ -73,6 +80,104 @@ void SchSendUeCfgRspToMac(SchUeCfg *ueCfg, Inst inst,\
    SchUeCfgRspOpts[rspPst.selector](&rspPst, cfgRsp);
 }
 
+/*******************************************************************
+ *
+ * @brief Fill and send UE ReCfg response to MAC
+ *
+ * @details
+ *
+ *    Function : SchSendUeReCfgRspToMac
+ *
+ *    Functionality: Fill and send UE cfg response to MAC
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void SchSendUeReCfgRspToMac(SchUeCfg *ueCfg, Inst inst,\
+      SchMacRsp result, SchUeCfgRsp *cfgRsp)
+{
+   Pst rspPst;
+
+   DU_LOG("\nSCH: Sending UE Reconfig response to MAC");
+
+   cfgRsp->cellId = ueCfg->cellId;
+   cfgRsp->crnti = ueCfg->crnti;
+   GET_UE_IDX(ueCfg->crnti, cfgRsp->ueIdx);
+   cfgRsp->rsp = result;   
+
+   /* Filling response post */
+   memset(&rspPst, 0, sizeof(Pst));
+   FILL_PST_SCH_TO_MAC(rspPst, inst);
+   rspPst.event = EVENT_UE_RECONFIG_RSP_TO_MAC;
+
+   SchUeReCfgRspOpts[rspPst.selector](&rspPst, cfgRsp);
+}
+
+/*******************************************************************
+ *
+ * @brief Fills SCH DL CB Info
+ *
+ * @details
+ *
+ *    Function : fillSchDlCb
+ *
+ *    Functionality: Fills SCH DL CB Info
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t fillSchDlCb(SchDlCb *dlCb, SchUeCfg *ueCfg)
+{
+   uint8_t lcIdx = 0;
+   uint8_t ueLcIdx = 0;
+
+   /* Update Sch Dl Cb Lc Context */
+   if(ueCfg->numLcToAdd > 0 && ueCfg->numLcToAdd < MAX_NUM_LOGICAL_CHANNELS)
+   {
+      for(lcIdx = 0; lcIdx < ueCfg->numLcToAdd; lcIdx++)
+      {
+         dlCb->dlLcCfgList[lcIdx].lcId = \
+	    ueCfg->lcCfgToAddList[lcIdx].lcId;
+         dlCb->dlLcCfgList[lcIdx].lcState = SCH_LC_STATE_ACTIVE;
+         dlCb->numDlLc++;
+      }
+   }
+   if(ueCfg->numLcToMod > 0 && ueCfg->numLcToMod < MAX_NUM_LOGICAL_CHANNELS)
+   {
+      for(lcIdx = 0; lcIdx < dlCb->numDlLc; lcIdx++)
+      {
+         for(ueLcIdx = 0; ueLcIdx < dlCb->numDlLc; ueLcIdx++)
+	 {
+            if(dlCb->dlLcCfgList[lcIdx].lcId == ueCfg->lcCfgToModList[lcIdx].lcId)
+	    {
+               dlCb->dlLcCfgList[lcIdx].lcId = ueCfg->lcCfgToModList[lcIdx].lcId;
+               dlCb->dlLcCfgList[lcIdx].lcState = SCH_LC_STATE_ACTIVE;
+	    }
+	 }
+      }
+   }
+   if(ueCfg->numLcToDel > 0 && ueCfg->numLcToDel < MAX_NUM_LOGICAL_CHANNELS)
+   {
+      for(lcIdx = 0; lcIdx < dlCb->numDlLc; lcIdx++)
+      {
+         for(ueLcIdx = 0; ueLcIdx < dlCb->numDlLc; ueLcIdx++)
+	 {
+            if(dlCb->dlLcCfgList[lcIdx].lcId == ueCfg->lcCfgToModList[lcIdx].lcId)
+	    {
+               dlCb->dlLcCfgList[lcIdx].lcId = 0;
+               dlCb->dlLcCfgList[lcIdx].lcState = SCH_LC_STATE_INACTIVE;
+	       (dlCb->numDlLc)--;
+	    }
+	 }
+      }
+   }
+   return ROK;
+}
 /*******************************************************************
  *
  * @brief Hanles Ue create request from MAC
@@ -155,6 +260,7 @@ uint8_t MacSchUeCreateReq(Pst *pst, SchUeCfg *ueCfg)
    ueCb->srRcvd = false;
    for(idx=0; idx<MAX_NUM_LOGICAL_CHANNEL_GROUPS; idx++)
       ueCb->bsrInfo[idx].dataVol = 0;
+   fillSchDlCb(&ueCb->dlInfo, ueCfg);
 
    SchSendUeCfgRspToMac(ueCfg, inst, RSP_OK, &cfgRsp);
    return ROK;
@@ -315,7 +421,90 @@ uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo puschInfo, DciInfo *dciInfo)
    return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Hanles Ue Reconfig request from MAC
+ *
+ * @details
+ *
+ *    Function : MacSchUeReconfigReq
+ *
+ *    Functionality: Hanles Ue Reconfig request from MAC
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t MacSchUeReconfigReq(Pst *pst, SchUeCfg *ueCfg)
+{
+   uint8_t      idx;
+   uint16_t     ueIdx;
+   SchCellCb    *cellCb;
+   SchUeCb      *ueCb;
+   SchUeCfgRsp  cfgRsp;
+   Inst         inst = pst->dstInst - 1;
 
+   DU_LOG("\nSCH : UE Reconfig Request for CRNTI[%d]", ueCfg->crnti);
+
+   memset(&cfgRsp, 0, sizeof(SchUeCfgRsp));
+
+   if(!ueCfg)
+   {
+      DU_LOG("\nSCH : UE Reconifg request failed");
+      return RFAILED;
+   }
+
+   /* Search of cell cb */
+   for(idx = 0; idx < MAX_NUM_CELL; idx++)
+   {
+      cellCb = schCb[inst].cells[idx];
+      if(cellCb->cellId == ueCfg->cellId)
+	 break;
+   }
+   if(idx == MAX_NUM_CELL)
+   {
+      DU_LOG("\nSCH : Ue Reconfig request failed. Invalid cell id %d", ueCfg->cellId);
+      SchSendUeReCfgRspToMac(ueCfg, inst, RSP_NOK, &cfgRsp);
+      return ROK;
+   }
+
+   /* Check if max number of UE configured */
+   if(cellCb->numActvUe > MAX_NUM_UE)
+   {
+      DU_LOG("SCH : Max number of UE [%d] already configured", MAX_NUM_UE);
+      SchSendUeReCfgRspToMac(ueCfg, inst, RSP_NOK, &cfgRsp);
+      return ROK;
+   }
+
+   /* Search if UE already configured */
+   GET_UE_IDX(ueCfg->crnti, ueIdx);
+   ueCb = &cellCb->ueCb[ueIdx -1];
+   if(ueCb)
+   {
+      if((ueCb->crnti == ueCfg->crnti) && (ueCb->state == SCH_UE_STATE_ACTIVE))
+      {
+         /* Fill received Ue Configuration in UeCb */
+         memset(ueCb, 0, sizeof(SchUeCb));
+
+         GET_UE_IDX(ueCfg->crnti, ueCb->ueIdx);
+         ueCb->crnti = ueCfg->crnti;
+         memcpy(&ueCb->ueCfg, ueCfg, sizeof(SchUeCfg));
+         ueCb->state = SCH_UE_STATE_ACTIVE;
+         cellCb->numActvUe++;
+
+         ueCb->cellCb = cellCb;
+         ueCb->srRcvd = false;
+         for(idx=0; idx<MAX_NUM_LOGICAL_CHANNEL_GROUPS; idx++)
+            ueCb->bsrInfo[idx].dataVol = 0;
+
+         fillSchDlCb(&ueCb->dlInfo, ueCfg);
+
+         SchSendUeReCfgRspToMac(ueCfg, inst, RSP_OK, &cfgRsp);
+      }
+   }
+   return ROK;
+}
 /**********************************************************************
   End of file
  **********************************************************************/

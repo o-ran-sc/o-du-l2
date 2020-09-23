@@ -57,6 +57,8 @@
 /* MAX values */
 #define MAX_NUM_CELL 1
 #define MAX_NUM_UE   1
+#define MAX_DRB_LCID 30
+#define MIN_DRB_LCID 4
 
 /* 5G ORAN phy delay */
 #define PHY_DELTA 2
