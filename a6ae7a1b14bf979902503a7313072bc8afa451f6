@@ -1,0 +1,412 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "502387fc_fe16ea96",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1142,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-23T11:11:36Z",
+      "side": 1,
+      "message": "pst must come first",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "926069c8_71f96a5a",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1323,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-23T11:11:36Z",
+      "side": 1,
+      "message": "memory allocated above must be freed",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b939ad52_ee9f1618",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1384,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-23T11:11:36Z",
+      "side": 1,
+      "message": "uecb is already there. that must only be updated",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0516d1b5_57abbcdd",
+        "filename": "src/5gnrrlc/rlc.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-23T11:11:36Z",
+      "side": 1,
+      "message": "avoid global variables",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cfd3caaa_f408fed0",
+        "filename": "src/5gnrrlc/rlc_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-23T11:11:36Z",
+      "side": 1,
+      "message": "whats the difference between the if and else of the events?",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e885e690_78939196",
+        "filename": "src/5gnrrlc/rlc_mgr.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-23T11:11:36Z",
+      "side": 1,
+      "message": "can we not do away with extern?",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2874a075_86991012",
+        "filename": "src/cm/du_app_mac_inf.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-23T11:11:36Z",
+      "side": 1,
+      "message": "done use global variables. static variable can be used within the function instead of this.",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "20c91282_dbb908ea",
+        "filename": "src/cm/du_app_mac_inf.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-23T11:11:36Z",
+      "side": 1,
+      "message": "why is temp needed in this code?",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "26d0aa3a_f5d6e221",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1145,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-23T11:11:36Z",
+      "side": 1,
+      "message": "corresponding pack function?",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6a984c39_b4930a40",
+        "filename": "src/cm/du_app_rlc_inf.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-23T11:11:36Z",
+      "side": 1,
+      "message": "same comment as mac file",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8170cdca_41dfd366",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 543,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-23T11:11:36Z",
+      "side": 1,
+      "message": "pack?",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1c0af6d3_d256b220",
+        "filename": "src/codec_utils/F1AP/ProtocolExtensionField.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 783,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-23T11:11:36Z",
+      "side": 1,
+      "message": "do other Extensionfield files also contain this? we need to ponder a little more regarding this.\nIt doesnt appear to be the right way of fixing this issue",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2ae500cc_1b134acd",
+        "filename": "src/codec_utils/common/odu_common_codec.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-23T11:11:36Z",
+      "side": 1,
+      "message": "all of the code has same logic except for value. Only that can be calculated separate",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "feb64eb2_cfe73463",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-23T11:11:36Z",
+      "side": 1,
+      "message": "please get rid of this logic to check retValues. Follow what has been done in DU APP",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "552fbf88_991a9aeb",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 756,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-23T11:11:36Z",
+      "side": 1,
+      "message": "the typecasted value can be directly sent rather than sending the type",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "70d5f412_9340fa6a",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-23T11:11:36Z",
+      "side": 1,
+      "message": "these files must not appear everywhere as inclusion. They must be included only in du_f1ap files. The code must be restructured to take care of the same.",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4001c58f_efd3f80e",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 567,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-23T11:11:36Z",
+      "side": 1,
+      "message": "is the scrambling id always fixed?",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "01860690_44d4ebca",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 931,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-23T11:11:36Z",
+      "side": 1,
+      "message": "this will then become \"add\" only function. check what is received from CU and then fill the rb to add/mod/del number",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9bc4be1f_db4ec63c",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 939,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-23T11:11:36Z",
+      "side": 1,
+      "message": "make this function generic so it can be resued for DRBs and SRB2 as well",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a366da44_6b9b9ead",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1229,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-23T11:11:36Z",
+      "side": 1,
+      "message": "lets move to memset of pst inside FILL_PST macro itself",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3182f7a5_46ecd35c",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1590,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-23T11:11:36Z",
+      "side": 1,
+      "message": "the start symbol and lenght can be derived. please do the same while sending to mac/sch",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fd39ccf5_fffc99fe",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1744,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-23T11:11:36Z",
+      "side": 1,
+      "message": "we did fill pusch cfg during uecb creation as well. Can that not be resued?\nALso, dont use ASN structures in this file",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e57de01e_554e93ff",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2586,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-23T11:11:36Z",
+      "side": 1,
+      "message": "why is this still a TODO?",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7fc41316_f22ef137",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2694,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-23T11:11:36Z",
+      "side": 1,
+      "message": "this response must be used to send ue ctxt response",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
