@@ -12,6 +12,7 @@
 #include <asn_application.h>
 
 /* Including external dependencies */
+#include "ProtocolIE-ID.h"
 #include "ProtocolExtensionID.h"
 #include "Criticality.h"
 #include <ANY.h>
@@ -778,7 +779,8 @@ typedef struct CriticalityDiagnostics_IE_Item_ExtIEs {
 	asn_struct_ctx_t _asn_ctx;
 } CriticalityDiagnostics_IE_Item_ExtIEs_t;
 typedef struct CUtoDURRCInformation_ExtIEs {
-	ProtocolExtensionID_t	 id;
+	//ProtocolExtensionID_t	 id;
+	ProtocolIE_ID_t  id;
 	Criticality_t	 criticality;
 	struct CUtoDURRCInformation_ExtIEs__extensionValue {
 		CUtoDURRCInformation_ExtIEs__extensionValue_PR present;

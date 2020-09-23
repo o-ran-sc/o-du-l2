@@ -574,6 +574,7 @@ typedef struct rlcUlCb
    CmHashListCp   cellLstCp;      /*!< Hashlist of CellCb */
    CmHashListCp   ueLstCp;        /*!< Hashlist of UeCb */
    CmHashListCp   transIdLstCp;   /*!< Hashlist of cfg trans */
+   uint8_t        rlcUlUdxEventType;  /*!<Ue Create/ReConfig> */
 /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
    RlcL2Cb        rlcL2Cb; /*!< Control Block for L2 Measurements in RLC */

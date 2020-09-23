@@ -23,7 +23,7 @@
  *
  * @details
  *
- *     Function: schAllocFreqDomRscType0
+ *     Function: freqDomRscAllocType0
  *     
  *     This function does allocation in frequency domain resource.
  *     This is a bitmap defining  non-overlapping groups of 6 PRBs in ascending order.
@@ -33,7 +33,7 @@
  *  @param[in]  freqDomain - 6 bytes of info, each bit represents a group of 6 PRB.
  *  @return   void
  **/
-void schAllocFreqDomRscType0(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain)
+void freqDomRscAllocType0(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain)
 {
    uint8_t remBits = prbSize; /* each bit represents 6 PRBs */
    uint8_t firstByte = 1;
@@ -75,8 +75,51 @@ void schAllocFreqDomRscType0(uint16_t startPrb, uint16_t prbSize, uint8_t *freqD
    }
 }
 
+uint8_t getDrbLcId()
+{
+   static uint8_t macLcId = MIN_DRB_LCID;
 
+   if(macLcId >= MIN_DRB_LCID && macLcId <  MAX_DRB_LCID)
+   {
+      macLcId = macLcId % MAX_DRB_LCID;
+   }
+   else
+   {
+      macLcId = MIN_DRB_LCID;
+   }
+   return macLcId++;
+}
 
+/*******************************************************************
+ *
+ * @brief Configures the DU Parameters
+ *
+ * @details
+ *
+ *    Function : calcSliv
+ *
+ *    Functionality:
+ *       - calculate SLIV value from start and length field
+ *
+ * @params[in] start symbol
+ * @params[in] length of symbols
+ * @return SLIV value
+ *
+ * ****************************************************************/
+uint16_t calcSliv(uint8_t startSymbol, uint8_t lengthSymbol)
+{
+   uint16_t sliv = 0;
+   if((lengthSymbol-1) <= 7)
+   {
+      sliv = NUM_SYMBOLS_PER_SLOT * (lengthSymbol-1) + startSymbol;
+   }
+   else
+   {
+      sliv = NUM_SYMBOLS_PER_SLOT * (NUM_SYMBOLS_PER_SLOT - lengthSymbol + 1) \
+	     + (NUM_SYMBOLS_PER_SLOT - 1 - startSymbol);
+   }
+   return sliv;
+}
 /**********************************************************************
          End of file
 **********************************************************************/

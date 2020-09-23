@@ -51,13 +51,14 @@
  *  @params[in]  Pointer to RlcCfgCfm
  *               Pointer to RlcUeCfgRsp
  *
- *  @return void
+ *  @return ROK/RFAILED
  * 
  *****************************************************************/
 
-void fillRlcUlUeCfgRsp(RlcUeCfgRsp *rlcCfgRsp, RlcCfgCfmInfo *rlcCRsp)
+uint8_t fillRlcUlUeCfgRsp(RlcUeCfgRsp *rlcCfgRsp, RlcCfgCfmInfo *rlcCRsp)
 {
    uint8_t idx;
+   uint8_t ret = ROK;
  
    rlcCfgRsp->cellId = rlcCRsp->cellId;
    rlcCfgRsp->ueIdx  = rlcCRsp->ueId;
@@ -67,13 +68,17 @@ void fillRlcUlUeCfgRsp(RlcUeCfgRsp *rlcCfgRsp, RlcCfgCfmInfo *rlcCRsp)
       {
          rlcCfgRsp->result = RLC_DU_APP_RSP_OK;
 	 rlcCfgRsp->reason = rlcCRsp->entCfgCfm[idx].status.reason;
+	 ret = ROK;
       }
       else
       {
          rlcCfgRsp->result = RLC_DU_APP_RSP_NOK;
 	 rlcCfgRsp->reason = rlcCRsp->entCfgCfm[idx].status.reason;
+	 ret = RFAILED;
+	 break;
       }
    }
+   return ret;
 }
 
 /*******************************************************************
@@ -118,6 +123,73 @@ void fillEntModeAndDir(uint8_t *entMode, uint8_t *direction, RlcMode rlcMode)
     break;
    }
 }
+
+/*******************************************************************
+ *
+ * @brief fills LC Cfgs to be Added in RLC
+ *
+ * @details
+ *
+ *    Function : fillRlcLcCfgList
+ *
+ *    Functionality:
+ *      fills LC Cfgs to be Added in RLC
+ *
+ * @params[in] 
+ *             RlcBearerCfg pointer
+ *             RlcEntCfgInfo pointer
+ *             Config Type 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fillRlcLcCfgList(RlcBearerCfg *duRlcUeCfg, RlcEntCfgInfo *rlcUeCfg, uint8_t cfgType)
+{
+   uint8_t lChRbIdx = 0;
+
+   rlcUeCfg->rbId                  = duRlcUeCfg->rbId;
+   rlcUeCfg->rbType                = duRlcUeCfg->rbType;   // SRB or DRB
+   rlcUeCfg->lCh[lChRbIdx].lChId   = duRlcUeCfg->lcId;   
+   rlcUeCfg->lCh[lChRbIdx].type    = duRlcUeCfg->lcType;
+   fillEntModeAndDir(&rlcUeCfg->entMode, &rlcUeCfg->dir, duRlcUeCfg->rlcMode);
+   rlcUeCfg->cfgType               = cfgType;
+   switch(rlcUeCfg->entMode)
+   {
+
+      case CM_LTE_MODE_AM:
+         {
+            /* DL AM INFO */
+            rlcUeCfg->m.amInfo.dl.snLen       = duRlcUeCfg->u.amCfg.dlAmCfg.snLenDl; 
+            rlcUeCfg->m.amInfo.dl.pollRetxTmr = duRlcUeCfg->u.amCfg.dlAmCfg.pollRetxTmr;
+            rlcUeCfg->m.amInfo.dl.pollPdu     = duRlcUeCfg->u.amCfg.dlAmCfg.pollPdu; 
+            rlcUeCfg->m.amInfo.dl.pollByte    = duRlcUeCfg->u.amCfg.dlAmCfg.pollByte; 
+            rlcUeCfg->m.amInfo.dl.maxRetx     = duRlcUeCfg->u.amCfg.dlAmCfg.maxRetxTh;
+
+            /* UL AM INFO */
+            lChRbIdx++;   //lChRbIdx = 1, indicates UL AM
+            rlcUeCfg->lCh[lChRbIdx].lChId    = duRlcUeCfg->lcId;   
+            rlcUeCfg->lCh[lChRbIdx].type     = duRlcUeCfg->lcType;
+            rlcUeCfg->m.amInfo.ul.snLen      = duRlcUeCfg->u.amCfg.ulAmCfg.snLenUl; 
+            rlcUeCfg->m.amInfo.ul.staProhTmr = duRlcUeCfg->u.amCfg.ulAmCfg.statProhTmr;
+            rlcUeCfg->m.amInfo.ul.reOrdTmr   = duRlcUeCfg->u.amCfg.ulAmCfg.reAssemTmr;
+            break;
+         }
+      case CM_LTE_MODE_UM:
+         {
+            /* UL UM CONFIG */
+            rlcUeCfg->m.umInfo.ul.snLen    = duRlcUeCfg->u.umBiDirCfg.ulUmCfg.snLenUlUm; 
+            rlcUeCfg->m.umInfo.ul.reOrdTmr = duRlcUeCfg->u.umBiDirCfg.ulUmCfg.reAssemTmr;
+
+            /* DL UM CONFIG */
+            rlcUeCfg->m.umInfo.dl.snLen = duRlcUeCfg->u.umBiDirCfg.dlUmCfg.snLenDlUm; 
+            break;
+         }
+      default:
+         break;
+   }/* End of switch(entMode) */
+   return ROK;
+}
+
 /*******************************************************************
  *
  * @brief Handles Ue Create Request from DU APP
@@ -137,9 +209,8 @@ void fillEntModeAndDir(uint8_t *entMode, uint8_t *direction, RlcMode rlcMode)
  * ****************************************************************/
 uint8_t RlcUlProcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg)
 {
-   uint8_t idx;
    uint8_t ret = ROK;
-   uint8_t lChRbIdx;
+   uint8_t lcIdx;
    RlcCfgInfo *rlcUeCfg = NULLP;
 
    RlcCb *rlcUeCb = NULLP;
@@ -151,63 +222,108 @@ uint8_t RlcUlProcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg)
 
       rlcUeCfg->ueId    = ueCfg->ueIdx;
       rlcUeCfg->cellId  = ueCfg->cellId;
-      rlcUeCfg->numEnt  = ueCfg->numLcs;
+      rlcUeCfg->numEnt  = ueCfg->numLcsToAdd;
       rlcUeCfg->transId = getTransId();
- 
-      for(idx = 0; idx < ueCfg->numLcs; idx++)
+
+      if(ueCfg->numLcsToAdd > 0 )
       {
-         lChRbIdx = 0;
-         rlcUeCfg->entCfg[idx].rbId           = ueCfg->rlcBearerCfg[idx].rbId;
-         rlcUeCfg->entCfg[idx].rbType         = ueCfg->rlcBearerCfg[idx].rbType;   // SRB or DRB
-         rlcUeCfg->entCfg[idx].lCh[lChRbIdx].lChId   = ueCfg->rlcBearerCfg[idx].lcId;   
-         rlcUeCfg->entCfg[idx].lCh[lChRbIdx].type    = ueCfg->rlcBearerCfg[idx].lcType;
-         fillEntModeAndDir(&rlcUeCfg->entCfg[idx].entMode, &rlcUeCfg->entCfg[idx].dir,\
-            ueCfg->rlcBearerCfg[idx].rlcMode);
-         rlcUeCfg->entCfg[idx].cfgType        = CKW_CFG_ADD;
-         switch(rlcUeCfg->entCfg[idx].entMode)
-         {
-
-            case CM_LTE_MODE_AM:
-            {
-               /* DL AM INFO */
-               rlcUeCfg->entCfg[idx].m.amInfo.dl.snLen = ueCfg->rlcBearerCfg[idx].u.amCfg.dlAmCfg.snLenDl; 
-               rlcUeCfg->entCfg[idx].m.amInfo.dl.pollRetxTmr = ueCfg->rlcBearerCfg[idx].u.amCfg.dlAmCfg.pollRetxTmr;
-               rlcUeCfg->entCfg[idx].m.amInfo.dl.pollPdu = ueCfg->rlcBearerCfg[idx].u.amCfg.dlAmCfg.pollPdu; 
-               rlcUeCfg->entCfg[idx].m.amInfo.dl.pollByte = ueCfg->rlcBearerCfg[idx].u.amCfg.dlAmCfg.pollByte; 
-               rlcUeCfg->entCfg[idx].m.amInfo.dl.maxRetx = ueCfg->rlcBearerCfg[idx].u.amCfg.dlAmCfg.maxRetxTh;
-
-               /* UL AM INFO */
-	       lChRbIdx++;   //lChRbIdx = 1, indicates UL AM
-               rlcUeCfg->entCfg[idx].lCh[lChRbIdx].lChId   = ueCfg->rlcBearerCfg[idx].lcId;   
-               rlcUeCfg->entCfg[idx].lCh[lChRbIdx].type    = ueCfg->rlcBearerCfg[idx].lcType;
-               rlcUeCfg->entCfg[idx].m.amInfo.ul.snLen = ueCfg->rlcBearerCfg[idx].u.amCfg.ulAmCfg.snLenUl; 
-               rlcUeCfg->entCfg[idx].m.amInfo.ul.staProhTmr = ueCfg->rlcBearerCfg[idx].u.amCfg.ulAmCfg.statProhTmr;
-               rlcUeCfg->entCfg[idx].m.amInfo.ul.reOrdTmr = ueCfg->rlcBearerCfg[idx].u.amCfg.ulAmCfg.reAssemTmr;
-               break;
-            }
-            case CM_LTE_MODE_UM:
-            {
-               /* UL UM CONFIG */
-               rlcUeCfg->entCfg[idx].m.umInfo.ul.snLen = ueCfg->rlcBearerCfg[idx].u.umBiDirCfg.ulUmCfg.snLenUlUm; 
-               rlcUeCfg->entCfg[idx].m.umInfo.ul.reOrdTmr = ueCfg->rlcBearerCfg[idx].u.umBiDirCfg.ulUmCfg.reAssemTmr;
-
-               /* DL UM CONFIG */
-               rlcUeCfg->entCfg[idx].m.umInfo.dl.snLen = ueCfg->rlcBearerCfg[idx].u.umBiDirCfg.dlUmCfg.snLenDlUm; 
-               break;
-            }
-            default:
-               break;
-         }/* End of switch(entMode) */
+         for(lcIdx = 0; (lcIdx < rlcUeCfg->numEnt && lcIdx < ueCfg->numLcsToAdd); lcIdx++)
+	 {
+            ret  = fillRlcLcCfgList(&ueCfg->rlcBearerCfgToAdd[lcIdx], &rlcUeCfg->entCfg[lcIdx], CKW_CFG_ADD);
+	    if(ret)
+	    {
+               DU_LOG("\nRLC: Failed at fillLcsToAdd ");
+	    }
+	 }
       }
       ret = RlcProcCfgReq(pst, rlcUeCfg);
-      }
-      else
+   }
+   else
+   {
+      DU_LOG("\nRLC: Failed to allocate memory ");
+      ret = RFAILED;
+   }
+   RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueCfg, sizeof(RlcUeCfg));
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Handles Ue Reconfig Request from DU APP
+ *
+ * @details
+ *
+ *    Function : RlcUlProcUeReconfigReq
+ *
+ *    Functionality:
+ *      Handles Ue Reconfig Request from DU APP
+ *
+ * @params[in] Post structure pointer
+ *             RlcUeCfg pointer 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t RlcUlProcUeReconfigReq(Pst *pst, RlcUeCfg *ueCfg)
+{
+   uint8_t ret = ROK;
+   uint8_t lcIdx = 0, lcModIdx, lcDelIdx;
+   RlcCfgInfo *rlcUeCfg = NULLP;
+
+   RlcCb *rlcUeCb = NULLP;
+   rlcUeCb = RLC_GET_RLCCB(pst->dstInst);
+   RLC_ALLOC(rlcUeCb, rlcUeCfg, sizeof(RlcCfgInfo));
+   if(rlcUeCfg)
+   {
+      memset(rlcUeCfg, 0, sizeof(RlcCfgInfo));
+
+      rlcUeCfg->ueId    = ueCfg->ueIdx;
+      rlcUeCfg->cellId  = ueCfg->cellId;
+      rlcUeCfg->numEnt  = (ueCfg->numLcsToAdd + ueCfg->numLcsToMod + ueCfg->numLcsToDel);
+      rlcUeCfg->transId = getTransId();
+
+      if(ueCfg->numLcsToAdd > 0 )
       {
-         DU_LOG("\nRLC: Failed to allocate memory ");
-         ret = RFAILED;
+         for(lcIdx = 0; (lcIdx < rlcUeCfg->numEnt && lcIdx < ueCfg->numLcsToAdd); lcIdx++)
+         {
+            ret  = fillRlcLcCfgList(&ueCfg->rlcBearerCfgToAdd[lcIdx], &rlcUeCfg->entCfg[lcIdx], CKW_CFG_ADD);
+	    if(ret)
+	    {
+               DU_LOG("\nRLC: Failed while adding Lcs ");
+	    }
+	 }
       }
-      RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueCfg, sizeof(RlcUeCfg));
-      return ret;
+      if(ueCfg->numLcsToMod > 0)
+      {
+         for(lcModIdx = 0; (lcIdx < rlcUeCfg->numEnt && lcModIdx < ueCfg->numLcsToMod); lcIdx++,lcModIdx++)
+	 {
+            ret  = fillRlcLcCfgList(&ueCfg->rlcBearerCfgToMod[lcModIdx], &rlcUeCfg->entCfg[lcIdx], CKW_CFG_MODIFY);
+	    if(ret)
+	    {
+               DU_LOG("\nRLC: Failed while modifying Lcs ");
+	    }
+	 }
+      }
+      if(ueCfg->numLcsToDel > 0)
+      {
+         for(lcDelIdx = 0; (lcIdx < rlcUeCfg->numEnt && lcDelIdx < ueCfg->numLcsToDel); lcIdx++,lcModIdx++)
+	 {
+            ret  = fillRlcLcCfgList(&ueCfg->rlcBearerCfgToDel[lcDelIdx], &rlcUeCfg->entCfg[lcIdx], CKW_CFG_DELETE);
+	    if(ret)
+	    {
+               DU_LOG("\nRLC: Failed while deleting Lcs ");
+	    }
+	 }
+      }
+      ret = RlcProcCfgReq(pst, rlcUeCfg);
+   }
+   else
+   {
+      DU_LOG("\nRLC: Failed to allocate memory ");
+      ret = RFAILED;
+   }
+   RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueCfg, sizeof(RlcUeCfg));
+   return ret;
 }
 /*******************************************************************
 *

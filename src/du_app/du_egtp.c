@@ -24,8 +24,6 @@
 #include "cm_inet.h"
 #include "legtp.h"
 #include "cm_inet.x"
-#include "du_app_mac_inf.h"
-#include "du_cfg.h"
 #include "du_egtp.h"
 #include "du_utils.h"
 
