@@ -214,7 +214,7 @@ EXTERN S16 RlcUiKwuUbndReq ARGS((Pst *pst,
  *   -# ROK
  *   -# RFAILED
  */
-EXTERN S16 RlcUiKwuDatReq ARGS((Pst *pst,
+EXTERN S16 RlcProcDlData ARGS((Pst *pst,
          KwuDatReqInfo* datReq,
          Buffer *buf));
 
@@ -231,12 +231,12 @@ EXTERN S16 RlcUiKwuDatReq ARGS((Pst *pst,
  *   -# ROK
  *   -# RFAILED
  */
-EXTERN S16 RlcUiKwuDatInd ARGS((Pst *pst,
+EXTERN S16 rlcSendUlDataToDu ARGS((Pst *pst,
          KwuDatIndInfo* datInd,
          Buffer *mBuf));
 
 /**
- *@details This primitive is used by RLC as the confirmation for the RlcUiKwuDatReq
+ *@details This primitive is used by RLC as the confirmation for the RlcProcDlData
  to the service user (RLC/PDCP). It is used only in AM mode data transfers for
  RLC.
 

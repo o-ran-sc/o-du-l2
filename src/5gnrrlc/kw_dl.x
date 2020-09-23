@@ -644,7 +644,7 @@ EXTERN Void rlcTmmQSdu ARGS ((RlcCb *gCb,
                             RlcDlRbCb *rbCb,
                             KwuDatReqInfo *datReqInfo,
                             Buffer *mBuf));
-EXTERN Void rlcTmmSndToLi ARGS ((RlcCb     *gCb,
+EXTERN Void rlcTmmSendToMac ARGS ((RlcCb     *gCb,
                                 SuId     suId,
                                 RlcDlRbCb *rbCb, 
                                 RguCStaIndInfo *staInd));
@@ -676,7 +676,7 @@ EXTERN Void rlcUmmFreeDlRbCb ARGS ((RlcCb *gCb, RlcDlRbCb *rbCb));
 
 EXTERN S32 rlcAmmCalculateBo ARGS ((RlcAmDl *amDl));
 
-EXTERN Void rlcAmmSendDStaRsp ARGS ((RlcCb *gCb, RlcDlRbCb *rbCb, RlcAmDl *amDl));
+EXTERN Void rlcAmmSendDedLcBoSta ARGS ((RlcCb *gCb, RlcDlRbCb *rbCb, RlcAmDl *amDl));
 
 EXTERN Void rlcAmmQSdu ARGS((RlcCb *gCb,
                             RlcDlRbCb *rbCb,
@@ -722,7 +722,7 @@ EXTERN Void rlcUtlRemovTxBuf ARGS ((CmLListCp      *txBufLst,
                                   RlcCb              *gCb
                                   ));
 
-EXTERN S16 rlcUtlSndDStaRsp ARGS ((RlcCb *gCb,
+EXTERN S16 rlcUtlSendDedLcBoSta ARGS ((RlcCb *gCb,
                                   RlcDlRbCb *rbCb,
                                   S32 bo,
                                   S32 estHdrSz,
@@ -740,7 +740,7 @@ EXTERN Void rlcUtlCalcLiForSdu ARGS ((RlcCb *gCb,
                                      MsgLen msgLen,
                                      S16 *pduSz));
 
-EXTERN S16 rlcUtlSndToLi ARGS ((RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo));
+EXTERN S16 rlcUtlSendToMac ARGS ((RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo));
 
 EXTERN Void rlcUtlIncrementKwuStsSduTx ARGS((RlcKwuSapCb *rlckwuSap));
 

@@ -1203,12 +1203,6 @@ uint8_t duHdlEgtpTnlMgmtCfm(EgtpTnlEvt tnlEvtCfm)
    if(tnlEvtCfm.cfmStatus.status == LCM_PRIM_OK)
    {
       DU_LOG("\nDU_APP : Tunnel management confirm OK");
-
-#ifdef EGTP_TEST
-      duSendUeCreateReqToRlc();
-
-      duSendEgtpTestData();
-#endif      
    }
    else
    {

@@ -26,6 +26,8 @@
 #include "lwr_mac_upr_inf.h"
 #include "mac.h"
 
+extern uint16_t gCrntiCount;
+
 /*******************************************************************
  *
  * @brief pack the bits
@@ -190,15 +192,22 @@ void fillRarPdu(RarInfo *rarInfo)
  * @return void
  *
  * ****************************************************************/
-void createMacRaCb(uint16_t cellId, uint16_t crnti)
+void createMacRaCb(RachIndInfo *rachIndInfo)
 {
-   uint8_t idx = 0; /* supporting 1 UE */
-   uint16_t cellIdx;
+   uint8_t  ueIdx = 0;
+   uint16_t crnti = 0;
+   uint16_t cellIdx = 0;
 
-   GET_CELL_IDX(cellId, cellIdx);
+   GET_NEW_CRNTI(crnti);
+   GET_UE_IDX(crnti, ueIdx);
+   GET_CELL_IDX(rachIndInfo->cellId, cellIdx);
 
-   macCb.macCell[cellIdx]->macRaCb[idx].cellId = cellId;
-   macCb.macCell[cellIdx]->macRaCb[idx].crnti = crnti;
+   /* store in rach ind structure */
+   rachIndInfo->crnti  = crnti;
+
+   /* store in raCb */
+   macCb.macCell[cellIdx]->macRaCb[ueIdx-1].cellId = rachIndInfo->cellId;
+   macCb.macCell[cellIdx]->macRaCb[ueIdx-1].crnti  = crnti;
 }
 
 /*************************************************
@@ -214,17 +223,14 @@ void createMacRaCb(uint16_t cellId, uint16_t crnti)
  *             msg4Pdu pointer
  ************************************************/
 
-void fillMsg4DlData(uint16_t cellId, MacDlData *dlData, uint8_t *msg4Pdu)
+void fillMsg4DlData(MacDlData *dlData, uint16_t msg4PduLen, uint8_t *msg4Pdu)
 {
    uint8_t idx = 0;
    uint16_t idx2;
-   uint16_t cellIdx;
-
-   GET_CELL_IDX(cellId, cellIdx);
 
    dlData->numPdu = 1;
    dlData->pduInfo[idx].lcId = MAC_LCID_CCCH;
-   dlData->pduInfo[idx].pduLen = macCb.macCell[cellIdx]->macRaCb[idx].msg4PduLen;
+   dlData->pduInfo[idx].pduLen = msg4PduLen;
    for(idx2 = 0; idx2 <  dlData->pduInfo[idx].pduLen; idx2++)
    {
       dlData->pduInfo[idx].dlPdu[idx2] = msg4Pdu[idx2];
