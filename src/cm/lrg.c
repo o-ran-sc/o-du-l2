@@ -253,13 +253,13 @@ Configuration Confirm from MAC to LM.
 *      -# ROK
 **/
 #ifdef ANSI
-S16 cmPkLrgCfgCfm
+uint8_t cmPkLrgCfgCfm
 (
 Pst * pst,
 RgMngmt * cfm
 )
 #else
-S16 cmPkLrgCfgCfm(pst, cfm)
+uint8_t cmPkLrgCfgCfm(pst, cfm)
 Pst * pst;
 RgMngmt * cfm;
 #endif
@@ -351,13 +351,13 @@ Configuration Confirm from SCH to LM.
 *      -# ROK
 **/
 #ifdef ANSI
-S16 cmPkLrgSchCfgCfm
+uint8_t cmPkLrgSchCfgCfm
 (
 Pst * pst,
 RgMngmt * cfg
 )
 #else
-S16 cmPkLrgSchCfgCfm(pst, cfg)
+uint8_t cmPkLrgSchCfgCfm(pst, cfg)
 Pst * pst;
 RgMngmt * cfg;
 #endif

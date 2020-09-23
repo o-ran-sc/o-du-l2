@@ -22,6 +22,12 @@
 #define MAC_MEM_REGION   4
 #define MAC_POOL         1
 
+#define GET_NEW_CRNTI(_cellIdx, _crnti)                     \
+{                                                           \
+   _crnti =  macCb.macCell[_cellIdx]->crntiCount;            \
+   (macCb.macCell[_cellIdx]->crntiCount)++;                  \
+}
+
 /* allocate and zero out a MAC static buffer */
 #define MAC_ALLOC(_datPtr, _size)                            \
 {                                                            \

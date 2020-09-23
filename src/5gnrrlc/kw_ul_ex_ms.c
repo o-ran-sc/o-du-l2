@@ -58,6 +58,7 @@ static int RLOG_FILE_ID=206;
 #include "kw_ul.x"
 #include "kw_udx.x"
 
+#include "rlc_mac_inf.h"
 #include "du_app_rlc_inf.h"
 
 #ifdef TENB_STATS 
@@ -430,9 +431,9 @@ Buffer *mBuf;           /* message buffer */
                      break;
                   }
 
-               case EVTRLCULDAT:    /* Dedicated Channel Data request */
+               case EVENT_UL_DATA_TO_RLC:    /* UL Data request */
                   {
-                     ret = unpackRcvdUlData(RlcProcUlData, pst, mBuf);
+                     ret = unpackRlcUlData(RlcProcUlData, pst, mBuf);
                      break;
                   }
 

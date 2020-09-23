@@ -546,7 +546,7 @@ RlcUdxDlStaPdu   *pStaPdu;
    }
    
    AMDL.pStaPdu = pStaPdu;
-   rlcAmmSendDStaRsp(tRlcCb, rbCb, &AMDL);             
+   rlcAmmSendDedLcBoSta(tRlcCb, rbCb, &AMDL);             
 
    return  (ROK);
 }

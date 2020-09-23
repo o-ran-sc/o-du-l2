@@ -477,12 +477,12 @@ EXTERN Void rlcDbmUlShutdown ARGS ((RlcCb *gCb));
  *                    Transparent Mode Functions 
  ***************************************************************************/
 #ifdef CCPU_OPT
-EXTERN Void rlcTmmRcvFrmLi ARGS ((RlcCb *gCb, 
+EXTERN Void rlcTmmRcvFrmMac ARGS ((RlcCb *gCb, 
                                        RlcUlRbCb *rbCb,
                                        CmLteRnti tCrnti, 
                                        Buffer *pdu));
 #else /* CCPU_OPT */
-EXTERN Void rlcTmmRcvFrmLi ARGS ((RlcCb *gCb,
+EXTERN Void rlcTmmRcvFrmMac ARGS ((RlcCb *gCb,
                                        RlcUlRbCb *rbCb,
                                        Buffer *pdu));
 #endif /* CCPU_OPT */
@@ -550,9 +550,9 @@ EXTERN Void rlcUtlDelRecBuf ARGS ((CmLListCp        *recBufLst,
                                   RlcCb              *gCb
                                   ));
 
-EXTERN S16 rlcUtlRcvFrmLi ARGS ((RlcCb *gCb, KwDatIndInfo *datIndInfo));
+EXTERN S16 rlcUtlRcvFrmMac ARGS ((RlcCb *gCb, KwDatIndInfo *datIndInfo));
 
-EXTERN S16 rlcUtlSndDatInd ARGS ((RlcCb *gCb,RlcUlRbCb *rbCb, Buffer *sdu));
+EXTERN S16 rlcUtlSendUlDataToDu ARGS ((RlcCb *gCb,RlcUlRbCb *rbCb, Buffer *sdu));
 
 #ifdef LTE_L2_MEAS
 EXTERN S16 rlcUtlHdlL2TmrExp   ARGS (( RlcCb *gCb, RlcL2MeasEvtCb *measEvtCb));

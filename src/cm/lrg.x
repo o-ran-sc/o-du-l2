@@ -533,12 +533,12 @@ typedef uint8_t (*LrgSchCfgReq)     ARGS((
         RgMngmt    *cfg                /* Management Structure */
      ));
 
-typedef S16 (*LrgCfgCfm)     ARGS((
+typedef uint8_t (*LrgCfgCfm)     ARGS((
         Pst        *pst,               /* Post Structure */
         RgMngmt    *cfg                /* Management Structure */
      ));
 
-typedef S16 (*LrgSchCfgCfm)     ARGS((
+typedef uint8_t (*LrgSchCfgCfm)     ARGS((
         Pst        *pst,               /* Post Structure */
         RgMngmt    *cfg                /* Management Structure */
      ));
@@ -999,7 +999,7 @@ EXTERN S16 cmUnpkLrgSchL2MeasStopCfm ARGS((
 #endif
 /** @brief This API is used to send a 
 Configuration Confirm from MAC to LM. */
-EXTERN S16 cmPkLrgCfgCfm ARGS((
+EXTERN uint8_t cmPkLrgCfgCfm ARGS((
    Pst *                pst,
    RgMngmt *            cfm
 ));
@@ -1012,7 +1012,7 @@ EXTERN S16 cmUnpkLrgCfgCfm ARGS((
 ));
 /** @brief This API is used to send a 
 Configuration Confirm from SCH to LM. */
-EXTERN S16 cmPkLrgSchCfgCfm ARGS((
+EXTERN uint8_t cmPkLrgSchCfgCfm ARGS((
    Pst *                pst,
    RgMngmt *            cfg
 ));

@@ -95,9 +95,9 @@ typedef enum
 
 typedef enum
 {
-   LC_STATE_INACTIVE,
-   LC_STATE_ACTIVE
-}LcState;
+   MAC_LC_STATE_INACTIVE,
+   MAC_LC_STATE_ACTIVE
+}MacLcState;
 
 typedef struct macDlSlot
 {
@@ -164,14 +164,14 @@ typedef struct ulLcCb
 {
    uint8_t   lcId;      /* Logical Channel Id */
    uint8_t   lcGrpId;   /* Logical Channel group */
-   LcState   lcActive;  /* Is LC active ? */
+   MacLcState lcActive;  /* Is LC active ? */
 }UlLcCb;
 
 /* Downlink dedicated logical channel info */
 typedef struct dlLcCb
 {
    uint8_t   lcId;      /* Logical channel Id */ 
-   LcState   lcState;  /* Is LC active ? */
+   MacLcState   lcState;  /* Is LC active ? */
 }DlLcCb;
 
 /* BSR Information */
@@ -214,6 +214,7 @@ typedef struct macUeCb
 struct macCellCb
 {
    uint16_t    cellId;
+   uint16_t    crntiCount;
    MacRaCbInfo macRaCb[MAX_NUM_UE];
    MacDlSlot   dlSlot[MAX_SLOT_SUPPORTED];
    MacUlSlot   ulSlot[MAX_SLOT_SUPPORTED];
@@ -232,9 +233,11 @@ typedef struct macCb
 
 /* global variable */
 MacCb macCb;
+
+/* Function declarations */
 void fillRarPdu(RarInfo *rarInfo);
-void createMacRaCb(uint16_t cellId, uint16_t crnti);
-void fillMsg4DlData(uint16_t cellId, MacDlData *dlData, uint8_t *msg4Pdu);
+void createMacRaCb(RachIndInfo *rachIndInfo);
+void fillMsg4DlData(MacDlData *dlData, uint16_t msg4PduLen, uint8_t *msg4Pdu);
 void fillMacCe(MacCeInfo  *macCeData, uint8_t *msg3Pdu);
 void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint8_t *msg4TxPdu, uint16_t tbSize);
 uint8_t unpackRxData(uint16_t cellId, SlotIndInfo slotInfo, RxDataIndPdu *rxDataIndPdu);
@@ -244,6 +247,7 @@ uint8_t macProcUlCcchInd(uint16_t cellId, uint16_t crnti, uint16_t rrcContSize, 
 uint8_t macProcShortBsr(uint16_t cellId, uint16_t crnti, uint8_t lcgId, uint32_t bufferSize);
 uint8_t macProcUlData(uint16_t cellId, uint16_t rnti, SlotIndInfo slotInfo, \
    uint8_t lcId, uint16_t pduLen, uint8_t *pdu);
+uint8_t sendSchedResultRptToRlc(DlSchedInfo dlInfo, SlotIndInfo slotInfo);
 #endif
 /**********************************************************************
   End of file
