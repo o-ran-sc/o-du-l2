@@ -99,7 +99,7 @@ PRIVATE CONSTANT LrgCfgCfm RgMiLrgCfgCfmMt[RG_MAX_LRG_USR] =
 #ifdef SM 
    SmMiLrgCfgCfm,                  /* 1 - Tightly coupled SM */
 #else
-   PtMiLrgCfgCfm,                  /* 1 - Tightly coupled SM  */
+   //PtMiLrgCfgCfm,                  /* 1 - Tightly coupled SM  */
 #endif
 };
 
@@ -114,7 +114,7 @@ PRIVATE CONSTANT LrgSchCfgCfm RgMiLrgSchCfgCfmMt[RG_MAX_LRG_USR] =
 #ifdef SM 
    SmMiLrgSchCfgCfm,                  /* 1 - Tightly coupled SM */
 #else
-   PtMiLrgSchCfgCfm,                  /* 1 - Tightly coupled SM  */
+   //PtMiLrgSchCfgCfm,                  /* 1 - Tightly coupled SM  */
 #endif
 };
 

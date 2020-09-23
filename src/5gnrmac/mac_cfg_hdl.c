@@ -20,17 +20,17 @@
 #include "common_def.h"
 #include "lrg.h"
 #include "lrg.x"
-#include "rgu.h"
-#include "rgu.x"
 #include "du_app_mac_inf.h"
 #include "mac_sch_interface.h"
 #include "lwr_mac_upr_inf.h"
 #include "mac.h"
+#include "rlc_mac_inf.h"
 #include "mac_upr_inf_api.h"
 #include "lwr_mac.h"
 #include "lwr_mac_fsm.h"
 #include "mac_utils.h"
 
+extern uint16_t gCrntiCount;
 uint8_t MacSchCellCfgReq(Pst *pst, MacCellCfg  *macCellCfg);
 
 packMacCellCfgConfirm packMacCellCfmOpts[] =
@@ -146,6 +146,9 @@ uint8_t MacProcCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
    }
    memcpy(macCb.macCell[cellIdx]->macCellCfg.sib1Cfg.sib1Pdu, macCellCfg->sib1Cfg.sib1Pdu, \
 	 macCb.macCell[cellIdx]->macCellCfg.sib1Cfg.sib1PduLen);
+
+   /* Initializing global variable */
+   gCrntiCount = ODU_START_CRNTI;
 
    /* Send cell cfg to scheduler */
    ret = MacSchCellCfgReq(pst, macCellCfg);
