@@ -62,9 +62,11 @@ extern uint8_t puschDeltaTable[MAX_MU_PUSCH];
 uint16_t calculateRaRnti(uint8_t symbolIdx, uint8_t slotIdx, uint8_t freqIdx)
 {
    uint16_t raRnti = 0;
-	uint8_t ulCarrierIdx = 0; /* configured to 0 */
+   uint8_t ulCarrierIdx = 0; /* configured to 0 */
+   
    raRnti = (1+symbolIdx+(14*slotIdx)+(14*80*freqIdx)+(14*80*8*ulCarrierIdx));
-	return raRnti;
+   
+   return raRnti;
 }
 
 /**
@@ -82,7 +84,10 @@ uint16_t calculateRaRnti(uint8_t symbolIdx, uint8_t slotIdx, uint8_t freqIdx)
  **/
 void createSchRaCb(uint16_t tcrnti, Inst schInst)
 {
-   schCb[schInst].cells[schInst]->raCb[0].tcrnti = tcrnti;
+   uint8_t ueIdx = 0;
+
+   GET_UE_IDX(tcrnti, ueIdx);
+   schCb[schInst].cells[schInst]->raCb[ueIdx -1].tcrnti = tcrnti;
 }
 
 /**
@@ -100,8 +105,8 @@ void createSchRaCb(uint16_t tcrnti, Inst schInst)
  *  @param[out]  msg3NumRb
  *  @return  void
  **/
-uint8_t schAllocMsg3Pusch(Inst schInst, uint16_t slot, uint16_t *msg3StartRb,
-uint8_t *msg3NumRb)
+uint8_t schAllocMsg3Pusch(Inst schInst, uint16_t slot, uint16_t crnti, \
+   uint16_t *msg3StartRb, uint8_t *msg3NumRb)
 {
    SchCellCb      *cell         = NULLP;
    SchUlSlotInfo  *schUlSlotInfo    = NULLP;
@@ -153,6 +158,7 @@ uint8_t *msg3NumRb)
    tbSize = 0;  /* since nPrb has been incremented, recalculating tbSize */
    tbSize = schCalcTbSizeFromNPrb(numRb, mcs, numPdschSymbols);
 
+   schUlSlotInfo->schPuschInfo->crnti             = crnti;
    schUlSlotInfo->schPuschInfo->harqProcId        = SCH_HARQ_PROC_ID;
    schUlSlotInfo->schPuschInfo->resAllocType      = SCH_ALLOC_TYPE_1;
    schUlSlotInfo->schPuschInfo->fdAlloc.startPrb  = startRb;
@@ -220,7 +226,7 @@ uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst)
    createSchRaCb(rachInd->crnti,schInst);
 
    /* allocate resources for msg3 */
-   ret = schAllocMsg3Pusch(schInst, rarSlot, &msg3StartRb, &msg3NumRb);
+   ret = schAllocMsg3Pusch(schInst, rarSlot, rachInd->crnti, &msg3StartRb, &msg3NumRb);
    if(ret == ROK)
    {
       /* fill RAR info */
@@ -296,15 +302,15 @@ uint8_t schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t of
    bwp->cyclicPrefix       = initialBwp->bwp.cyclicPrefix;
 
    /* fill the PDCCH PDU */
-   pdcch->coreset0Cfg.startSymbolIndex = firstSymbol;
-   pdcch->coreset0Cfg.durationSymbols = numSymbols;
-   memcpy(pdcch->coreset0Cfg.freqDomainResource,FreqDomainResource,6);
-   pdcch->coreset0Cfg.cceRegMappingType = 1; /* coreset0 is always interleaved */
-   pdcch->coreset0Cfg.regBundleSize = 6;    /* spec-38.211 sec 7.3.2.2 */
-   pdcch->coreset0Cfg.interleaverSize = 2;  /* spec-38.211 sec 7.3.2.2 */
-   pdcch->coreset0Cfg.coreSetType = 0;
-   pdcch->coreset0Cfg.shiftIndex = pci;
-   pdcch->coreset0Cfg.precoderGranularity = 0; /* sameAsRegBundle */
+   pdcch->coresetCfg.startSymbolIndex = firstSymbol;
+   pdcch->coresetCfg.durationSymbols = numSymbols;
+   memcpy(pdcch->coresetCfg.freqDomainResource, FreqDomainResource, FREQ_DOM_RSRC_SIZE);
+   pdcch->coresetCfg.cceRegMappingType = 1; /* coreset0 is always interleaved */
+   pdcch->coresetCfg.regBundleSize = 6;    /* spec-38.211 sec 7.3.2.2 */
+   pdcch->coresetCfg.interleaverSize = 2;  /* spec-38.211 sec 7.3.2.2 */
+   pdcch->coresetCfg.coreSetType = 0;
+   pdcch->coresetCfg.shiftIndex = pci;
+   pdcch->coresetCfg.precoderGranularity = 0; /* sameAsRegBundle */
    pdcch->numDlDci = 1;
    pdcch->dci.rnti = raRnti; /* RA-RNTI */
    pdcch->dci.scramblingId = pci;

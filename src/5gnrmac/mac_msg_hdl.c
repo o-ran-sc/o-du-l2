@@ -19,11 +19,10 @@
 /* header include files -- defines (.h)  */
 #include "common_def.h"
 #include "lrg.h"
-#include "rgu.h"
 #include "lrg.x"
-#include "rgu.x"
 #include "du_app_mac_inf.h"
 #include "mac_sch_interface.h"
+#include "rlc_mac_inf.h"
 #include "mac_upr_inf_api.h"
 #include "lwr_mac.h"
 #ifdef INTEL_FAPI
@@ -38,8 +37,10 @@
 
 extern MacCb  macCb;
 
-extern void sendToLowerMac(uint16_t msgType, uint32_t msgLen, void *msg);
-uint16_t buildMacPdu(RlcMacData *dlData);
+uint16_t buildMacPdu(RlcData *dlData);
+#ifdef EGTP_TEST
+void macStubBuildUlData(Buffer *mBuf);
+#endif
 
 /* Function pointer for sending crc ind from MAC to SCH */
 MacSchCrcIndFunc macSchCrcIndOpts[]=
@@ -79,7 +80,7 @@ MacSchSrUciIndFunc macSchSrUciIndOpts[]=
  *
  * @details
  *
- *    Function : sendDlRlcBoInfoMacToSch
+ *    Function : sendDlRlcBoInfoToSch
  *
  *    Functionality:
  *       Sends DL BO Info to SCH
@@ -89,7 +90,7 @@ MacSchSrUciIndFunc macSchSrUciIndOpts[]=
  *         RFAILED - failure
  *
  ****************************************************************/
-uint8_t sendDlRlcBoInfoMacToSch(DlRlcBOInfo *dlBoInfo)
+uint8_t sendDlRlcBoInfoToSch(DlRlcBoInfo *dlBoInfo)
 {
    Pst pst;
 
@@ -196,7 +197,7 @@ uint8_t fapiMacRxDataInd(Pst *pst, RxDataInd *rxDataInd)
  *
  * @details
  *
- *    Function : MacRlcProcDlData 
+ *    Function : MacProcRlcDlData 
  *
  *    Functionality:
  *      Processes DL data from RLC
@@ -207,8 +208,57 @@ uint8_t fapiMacRxDataInd(Pst *pst, RxDataInd *rxDataInd)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint16_t MacRlcProcDlData(Pst* pst, SpId spId, RlcMacData *dlData)
+uint8_t MacProcRlcDlData(Pst* pstInfo, RlcData *dlData)
 {
+   uint8_t pduIdx;
+   uint8_t  *txPdu;
+   uint16_t tbSize;
+   MacDlData macDlData;
+   MacDlSlot *currDlSlot = NULLP;
+
+   DU_LOG("\nMAC: Received DL data for sfn=%d slot=%d", \
+      dlData->slotInfo.sfn, dlData->slotInfo.slot);
+
+   /* Copy the pdus to be muxed into mac Dl data */
+   macDlData.numPdu = dlData->numPdu;
+   for(pduIdx = 0;  pduIdx < dlData->numPdu; pduIdx++)
+   {
+      macDlData.pduInfo[pduIdx].lcId = dlData->pduInfo[pduIdx].lcId;
+      macDlData.pduInfo[pduIdx].pduLen = dlData->pduInfo[pduIdx].pduLen;
+      macDlData.pduInfo[pduIdx].dlPdu = dlData->pduInfo[pduIdx].pduBuf;
+   }
+
+   /* Store DL data in the scheduled slot */
+   currDlSlot = &macCb.macCell[dlData->cellId -1]->dlSlot[dlData->slotInfo.slot];
+   if(currDlSlot)
+   {
+      if(currDlSlot->dlInfo.dlMsgAlloc)
+      {
+	 tbSize = currDlSlot->dlInfo.dlMsgAlloc->dlMsgPdschCfg.codeword[0].tbSize;
+	 MAC_ALLOC(txPdu, tbSize);
+	 if(!txPdu)
+	 {
+	    DU_LOG("\nMAC : Memory allocation failed in MacProcRlcDlData");
+	    return RFAILED;
+	 }
+	 macMuxPdu(&macDlData, NULLP, txPdu, tbSize);
+
+	 currDlSlot->dlInfo.dlMsgAlloc->dlMsgInfo.dlMsgPduLen = tbSize;
+	 currDlSlot->dlInfo.dlMsgAlloc->dlMsgInfo.dlMsgPdu = txPdu;
+      }
+   }
+
+   /* Free memory */
+   for(pduIdx = 0; pduIdx < dlData->numPdu; pduIdx++)
+   {
+      MAC_FREE_SHRABL_BUF(pstInfo->region, pstInfo->pool, dlData->pduInfo[pduIdx].pduBuf,\
+         dlData->pduInfo[pduIdx].pduLen);
+   }
+   if(pstInfo->selector == ODU_SELECTOR_LWLC)
+   {
+      MAC_FREE_SHRABL_BUF(pstInfo->region, pstInfo->pool, dlData, sizeof(RlcData));
+   }
+
    return ROK;
 }
 
@@ -236,16 +286,16 @@ uint8_t macProcUlData(uint16_t cellId, uint16_t rnti, SlotIndInfo slotInfo, \
 uint8_t lcId, uint16_t pduLen, uint8_t *pdu)
 {
    Pst         pst;
-   RlcMacData  *ulData;
+   RlcData  *ulData;
 
    /* Filling RLC Ul Data*/
-   MAC_ALLOC_SHRABL_BUF(ulData, sizeof(RlcMacData));
+   MAC_ALLOC_SHRABL_BUF(ulData, sizeof(RlcData));
    if(!ulData)
    {
       DU_LOG("\nMAC : Memory allocation failed while sending UL data to RLC");
       return RFAILED;
    }
-   memset(ulData, 0, sizeof(RlcMacData));
+   memset(ulData, 0, sizeof(RlcData));
    ulData->cellId = cellId; 
    ulData->rnti = rnti;
    memcpy(&ulData->slotInfo, &slotInfo, sizeof(SlotIndInfo));
@@ -263,7 +313,7 @@ uint8_t lcId, uint16_t pduLen, uint8_t *pdu)
 
    /* Filling Post and send to RLC */
    memset(&pst, 0, sizeof(Pst));
-   FILL_PST_MAC_TO_RLC(pst, 0, EVTRLCULDAT);
+   FILL_PST_MAC_TO_RLC(pst, 0, EVENT_UL_DATA_TO_RLC);
    MacSendUlDataToRlc(&pst, ulData);
 
    return ROK;
@@ -276,7 +326,7 @@ uint8_t lcId, uint16_t pduLen, uint8_t *pdu)
  *
  * @details
  *
- *    Function : MacRlcProcBOStatus
+ *    Function : MacProcRlcBOStatus
  *
  *    Functionality:
  *      Processes BO status from RLC
@@ -287,11 +337,78 @@ uint8_t lcId, uint16_t pduLen, uint8_t *pdu)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint16_t MacRlcProcBOStatus(Pst* pst, SpId spId, RlcMacBOStatus*      boStatus)
+uint8_t MacProcRlcBoStatus(Pst* pst, RlcBoStatus* boStatus)
 {
+   DlRlcBoInfo  dlBoInfo;
+
+   dlBoInfo.cellId = boStatus->cellId;
+   GET_CRNTI(dlBoInfo.crnti, boStatus->ueIdx);
+   dlBoInfo.lcId = boStatus->lcId;
+   dlBoInfo.dataVolume = boStatus->bo;
+
+   sendDlRlcBoInfoToSch(&dlBoInfo); 
+
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      MAC_FREE_SHRABL_BUF(pst->region, pst->pool, boStatus, sizeof(RlcBoStatus));
+   }
+
    return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Send LC schedule result report to RLC
+ *
+ * @details
+ *
+ *    Function : sendSchRptToRlc 
+ *
+ *    Functionality: Send LC schedule result report to RLC
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t sendSchedRptToRlc(DlSchedInfo dlInfo, SlotIndInfo slotInfo)
+{
+   Pst      pst;
+   uint8_t  lcIdx;
+   RlcSchedResultRpt  *schedRpt = NULLP;
+   
+   MAC_ALLOC_SHRABL_BUF(schedRpt, sizeof(RlcSchedResultRpt));
+   if(!schedRpt)
+   {
+      DU_LOG("\nMAC: Memory allocation failure in sendSchResultRepToRlc");
+      return RFAILED;
+   }
+   DU_LOG("\nMAC: Send scheduled result report for sfn %d slot %d", slotInfo.sfn, slotInfo.slot);
+
+   schedRpt->cellId = dlInfo.cellId;
+   schedRpt->rnti = dlInfo.dlMsgAlloc->crnti;
+   schedRpt->numLc = dlInfo.dlMsgAlloc->numLc;
+   schedRpt->slotInfo.sfn = slotInfo.sfn;
+   schedRpt->slotInfo.slot = slotInfo.slot;
+
+   for(lcIdx = 0; lcIdx < schedRpt->numLc; lcIdx++)
+   {
+      schedRpt->lcSch[lcIdx].lcId = dlInfo.dlMsgAlloc->lcSchInfo[lcIdx].lcId;
+      schedRpt->lcSch[lcIdx].bufSize = dlInfo.dlMsgAlloc->lcSchInfo[lcIdx].schBytes;
+      schedRpt->lcSch[lcIdx].commCh = false;
+   }
+
+   /* Fill Pst */
+   FILL_PST_MAC_TO_RLC(pst, RLC_DL_INST, EVENT_SCHED_RESULT_TO_RLC);
+   if(MacSendSchedResultRptToRlc(&pst, schedRpt) != ROK)
+   {
+      DU_LOG("\nMAC: Failed to send Schedule result report to RLC");
+      MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, schedRpt, sizeof(RlcSchedResultRpt));
+      return RFAILED;
+   }
+
+   return ROK;
+}
 
 /*******************************************************************
  *
@@ -370,10 +487,11 @@ uint8_t MacProcCellStopReq(Pst *pst, MacCellStopInfo  *cellStopInfo)
  * ****************************************************************/
 uint8_t MacProcDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo)
 {
+   uint8_t  ueIdx = 0;
    uint16_t cellIdx;
    uint16_t idx;
-   DlRlcBOInfo  dlBoInfo;
-   memset(&dlBoInfo, 0, sizeof(DlRlcBOInfo));
+   DlRlcBoInfo  dlBoInfo;
+   memset(&dlBoInfo, 0, sizeof(DlRlcBoInfo));
 
    DU_LOG("\nMAC : Handling DL CCCH IND");
 
@@ -381,32 +499,31 @@ uint8_t MacProcDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo)
 
    dlBoInfo.cellId = dlCcchIndInfo->cellId;
    dlBoInfo.crnti = dlCcchIndInfo->crnti;
-   dlBoInfo.numLc = 0;
 
    if(dlCcchIndInfo->msgType == RRC_SETUP)
    {
-      dlBoInfo.boInfo[dlBoInfo.numLc].lcId = SRB_ID_0;    // SRB ID 0 for msg4
-      dlBoInfo.boInfo[SRB_ID_0].dataVolume = \
-         dlCcchIndInfo->dlCcchMsgLen;
-      dlBoInfo.numLc++;
+      dlBoInfo.lcId = SRB0_LCID;    // SRB ID 0 for msg4
+      dlBoInfo.dataVolume = dlCcchIndInfo->dlCcchMsgLen;
 
       /* storing Msg4 Pdu in raCb */
-      if(macCb.macCell[cellIdx]->macRaCb[0].crnti == dlCcchIndInfo->crnti)
+      GET_UE_IDX(dlBoInfo.crnti, ueIdx);
+      ueIdx = ueIdx -1;
+      if(macCb.macCell[cellIdx]->macRaCb[ueIdx].crnti == dlCcchIndInfo->crnti)
       {
-	 macCb.macCell[cellIdx]->macRaCb[0].msg4PduLen = dlCcchIndInfo->dlCcchMsgLen;
-	 MAC_ALLOC(macCb.macCell[cellIdx]->macRaCb[0].msg4Pdu, \
-	    macCb.macCell[cellIdx]->macRaCb[0].msg4PduLen);
-	 if(macCb.macCell[cellIdx]->macRaCb[0].msg4Pdu)
+	 macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4PduLen = dlCcchIndInfo->dlCcchMsgLen;
+	 MAC_ALLOC(macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4Pdu, \
+	    macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4PduLen);
+	 if(macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4Pdu)
 	 {
 	    for(idx = 0; idx < dlCcchIndInfo->dlCcchMsgLen; idx++)
 	    {
-	       macCb.macCell[cellIdx]->macRaCb[0].msg4Pdu[idx] =\
+	       macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4Pdu[idx] =\
 	          dlCcchIndInfo->dlCcchMsg[idx];
 	    }
 	 }
       }
    }
-   sendDlRlcBoInfoMacToSch(&dlBoInfo);
+   sendDlRlcBoInfoToSch(&dlBoInfo);
 
    MAC_FREE_SHRABL_BUF(pst->region, pst->pool, dlCcchIndInfo->dlCcchMsg, \
 	 dlCcchIndInfo->dlCcchMsgLen);

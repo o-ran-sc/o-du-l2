@@ -59,6 +59,7 @@ static int RLOG_FILE_ID=195;
 #include "kw_udx.x"
 #include "kw_dl.x"
 #include "du_app_rlc_inf.h"
+#include "rlc_mac_inf.h"
 
 #include "ctf.h"
 S16 rlcUtlDlBatchProcPkts(Void);
@@ -182,7 +183,7 @@ Reason reason;              /* reason */
    tRlcCb->init.acnt    = TRUE;          /* enable accounting */
    tRlcCb->init.usta    = TRUE;          /* enable unsolicited status */
    tRlcCb->init.trc     = FALSE;         /* enable trace */
-   tRlcCb->init.procId  = SFndProcId();
+   tRlcCb->init.procId  = ODU_GET_PROCID();
 
    rlcCb[inst] = tRlcCb;
 
@@ -284,7 +285,7 @@ Buffer *mBuf;           /* message buffer */
 #ifdef LCKWU
                case KWU_EVT_DAT_REQ:              /* Data request */
                   {
-                     ret = cmUnpkKwuDatReq(RlcUiKwuDatReq, pst, mBuf);
+                     //ret = cmUnpkKwuDatReq(rlcProcDlData, pst, mBuf);
                      break;
                   }
 #endif /* LCKWU */
@@ -409,13 +410,13 @@ Buffer *mBuf;           /* message buffer */
 #ifdef L2_L3_SPLIT
                case KWU_EVT_CPLANE_DAT_REQ:       /* C-Plane Data request */
                   {
-                     ret = cmUnpkKwuDatReq(RlcUiKwuDatReq, pst, mBuf);
+                     ret = cmUnpkKwuDatReq(rlcProcDlData, pst, mBuf);
                      break;
                   }
 #else
                case KWU_EVT_DAT_REQ:              /* Data request */
                   {
-                     ret = cmUnpkKwuDatReq(RlcUiKwuDatReq, pst, mBuf);
+                     //ret = cmUnpkKwuDatReq(rlcProcDlData, pst, mBuf);
                      break;
                   }
 #endif
@@ -460,13 +461,13 @@ Buffer *mBuf;           /* message buffer */
                case KWU_EVT_CPLANE_DAT_REQ:       /* C-Plane Data request */
                case KWU_EVT_UPLANE_DAT_REQ:       /* U-Plane Data request */
                   {
-                     ret = cmUnpkKwuDatReq(RlcUiKwuDatReq, pst, mBuf);
+                     ret = cmUnpkKwuDatReq(rlcProcDlData, pst, mBuf);
                      break;
                   }
 #else
                case KWU_EVT_DAT_REQ:              /* Data request */
                   {
-                     ret = cmUnpkKwuDatReq(RlcUiKwuDatReq, pst, mBuf);
+                     //ret = cmUnpkKwuDatReq(rlcProcDlData, pst, mBuf);
                      break;
                   }
 #endif
@@ -500,9 +501,9 @@ Buffer *mBuf;           /* message buffer */
                      ret = cmUnpkRguBndCfm(RlcLiRguBndCfm, pst, mBuf );
                      break;
                   }
-               case EVTSCHREP:    /* Dedicated Channel Status Response */
+               case EVENT_SCHED_RESULT_TO_RLC: 
                   {
-                     ret = unpackSchedRep(RlcMacProcSchedRep, pst, mBuf);
+                     ret = unpackSchedResultRpt(RlcProcSchedResultRpt, pst, mBuf);
                      break;
                   }
                   /* kw005.201 added support for L2 Measurement */

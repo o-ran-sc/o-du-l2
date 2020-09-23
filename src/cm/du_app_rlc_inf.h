@@ -27,9 +27,6 @@
 #define EVENT_DL_RRC_MSG_TRANS_TO_RLC 213
 #define EVENT_RRC_DELIVERY_MSG_TRANS_TO_DU 214
 
-/* Macro for Ue Context */
-#define MAX_NUM_LOGICAL_CHANNELS 11
-
 #define RB_ID_SRB 0
 #define RB_ID_DRB 1
 
@@ -483,7 +480,7 @@ typedef struct rlcUeCfg
    uint16_t     cellId;
    uint8_t      ueIdx;
    uint8_t      numLcs;
-   RlcBearerCfg rlcBearerCfg[MAX_NUM_LOGICAL_CHANNELS];
+   RlcBearerCfg rlcBearerCfg[MAX_NUM_LC];
 }RlcUeCfg;
 
 typedef struct rlcUeCfgRsp

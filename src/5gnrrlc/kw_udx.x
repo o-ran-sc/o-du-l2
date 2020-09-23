@@ -135,164 +135,164 @@ typedef S16 (*UdxL2MeasStopReq) ARGS((Pst* pst,
 #endif
 
 #ifdef LCUDX
-EXTERN S16 cmPkUdxBndCfm ARGS((Pst* pst, SuId suId,U8  status ));
-EXTERN S16 cmPkUdxBndReq ARGS((Pst* pst, SuId suId,SpId  spId ));
-EXTERN S16 cmPkUdxUbndReq ARGS((Pst* pst, SuId suId,Reason reason));
-EXTERN S16 cmPkUdxCfgReq ARGS((Pst *pst, SpId spId, RlcCfgInfo *cfgInfo));
-EXTERN S16 cmPkUdxCfgCfm ARGS(( Pst* pst,SuId suId,RlcCfgCfmInfo *cfmInfo));
-EXTERN S16 cmPkUdxStaUpdReq ARGS((Pst* pst,SpId spId,CmLteRlcId *rlcId,
+S16 cmPkUdxBndCfm ARGS((Pst* pst, SuId suId,U8  status ));
+S16 cmPkUdxBndReq ARGS((Pst* pst, SuId suId,SpId  spId ));
+S16 cmPkUdxUbndReq ARGS((Pst* pst, SuId suId,Reason reason));
+S16 cmPkUdxCfgReq ARGS((Pst *pst, SpId spId, RlcCfgInfo *cfgInfo));
+S16 cmPkUdxCfgCfm ARGS(( Pst* pst,SuId suId,RlcCfgCfmInfo *cfmInfo));
+S16 cmPkUdxStaUpdReq ARGS((Pst* pst,SpId spId,CmLteRlcId *rlcId,
                                RlcUdxStaPdu         *pStaPdu ));
-EXTERN S16 cmPkUdxUeIdChgReq ARGS((Pst *pst, SpId spId, U32 transId, 
+S16 cmPkUdxUeIdChgReq ARGS((Pst *pst, SpId spId, U32 transId, 
                                   CkwUeInfo *ueInfo, CkwUeInfo *newUeInfo));
-EXTERN S16 cmPkUdxUeIdChgCfm ARGS((Pst *pst, SuId suId, U32 transId, 
+S16 cmPkUdxUeIdChgCfm ARGS((Pst *pst, SuId suId, U32 transId, 
                                    CmStatus status));
 
 
-EXTERN S16 cmPkUdxStaUpdCfm ARGS((Pst* pst,SuId  suId,CmLteRlcId  *rlcId,
+S16 cmPkUdxStaUpdCfm ARGS((Pst* pst,SuId  suId,CmLteRlcId  *rlcId,
                              RlcUdxBufLst  *pBufLst));
 
-EXTERN S16 cmPkUdxStaPduReq ARGS(( Pst* pst,SpId  spId, CmLteRlcId *rlcId,
+S16 cmPkUdxStaPduReq ARGS(( Pst* pst,SpId  spId, CmLteRlcId *rlcId,
                              RlcUdxDlStaPdu  *pStaPdu ));
-EXTERN S16 cmPkUdxStaProhTmrStart ARGS((Pst *pst, 
+S16 cmPkUdxStaProhTmrStart ARGS((Pst *pst, 
                                         SpId spId, 
                                         CmLteRlcId *rlcId));
 
 #ifdef LTE_L2_MEAS
-EXTERN S16 cmPkUdxL2MeasReq ARGS((Pst *pst, RlcL2MeasReqEvt *measReqEvt)); 
-EXTERN S16 cmPkUdxL2MeasSendReq ARGS((Pst *pst, U8 measType)); 
-EXTERN S16 cmPkUdxL2MeasStopReq ARGS((Pst *pst, U8 measType)); 
+S16 cmPkUdxL2MeasReq ARGS((Pst *pst, RlcL2MeasReqEvt *measReqEvt)); 
+S16 cmPkUdxL2MeasSendReq ARGS((Pst *pst, U8 measType)); 
+S16 cmPkUdxL2MeasStopReq ARGS((Pst *pst, U8 measType)); 
 #endif
 
-EXTERN S16 cmUnpkUdxBndCfm ARGS((UdxBndCfm func,Pst* pst, Buffer *mBuf ));
-EXTERN S16 cmUnpkUdxBndReq ARGS((UdxBndReq func,Pst* pst, Buffer *mBuf ));
-EXTERN S16 cmUnpkUdxUbndReq ARGS((UdxUbndReq func,Pst* pst, Buffer *mBuf));
-EXTERN S16 cmUnpkUdxCfgReq ARGS((UdxCfgReq func,Pst *pst, Buffer *mBuf));
-EXTERN S16 cmUnpkUdxCfgCfm ARGS((UdxCfgCfm func , Pst* pst,Buffer *mBuf));
-EXTERN S16 cmUnpkUdxStaUpdReq ARGS((UdxStaUpdReq func,Pst* pst,Buffer *mBuf));
-EXTERN S16 cmUnpkUdxUeIdChgReq ARGS((UdxUeIdChgReq func,Pst *pst, Buffer *mBuf)); 
-EXTERN S16 cmUnpkUdxUeIdChgCfm ARGS((UdxUeIdChgCfm func,Pst *pst, Buffer *mBuf)); 
+S16 cmUnpkUdxBndCfm ARGS((UdxBndCfm func,Pst* pst, Buffer *mBuf ));
+S16 cmUnpkUdxBndReq ARGS((UdxBndReq func,Pst* pst, Buffer *mBuf ));
+S16 cmUnpkUdxUbndReq ARGS((UdxUbndReq func,Pst* pst, Buffer *mBuf));
+S16 cmUnpkUdxCfgReq ARGS((UdxCfgReq func,Pst *pst, Buffer *mBuf));
+S16 cmUnpkUdxCfgCfm ARGS((UdxCfgCfm func , Pst* pst,Buffer *mBuf));
+S16 cmUnpkUdxStaUpdReq ARGS((UdxStaUpdReq func,Pst* pst,Buffer *mBuf));
+S16 cmUnpkUdxUeIdChgReq ARGS((UdxUeIdChgReq func,Pst *pst, Buffer *mBuf)); 
+S16 cmUnpkUdxUeIdChgCfm ARGS((UdxUeIdChgCfm func,Pst *pst, Buffer *mBuf)); 
 
-EXTERN S16 cmUnpkUdxStaUpdCfm ARGS((UdxStaUpdCfm func,Pst* pst,Buffer *mBuf));
+S16 cmUnpkUdxStaUpdCfm ARGS((UdxStaUpdCfm func,Pst* pst,Buffer *mBuf));
 
-EXTERN S16 cmUnpkUdxStaPduReq ARGS((UdxStaPduReq func, Pst* pst, Buffer *mBuf));
+S16 cmUnpkUdxStaPduReq ARGS((UdxStaPduReq func, Pst* pst, Buffer *mBuf));
 
-EXTERN S16 cmUnpkUdxStaProhTmrStart ARGS((UdxStaProhTmrStart func,
+S16 cmUnpkUdxStaProhTmrStart ARGS((UdxStaProhTmrStart func,
                                           Pst* pst,
                                           Buffer *mBuf));
 
 #ifdef LTE_L2_MEAS
-EXTERN S16 cmUnpkUdxL2MeasReq ARGS((UdxL2MeasReq func, Pst* pst, Buffer *mBuf));
-EXTERN S16 cmUnpkUdxL2MeasSendReq ARGS((UdxL2MeasSendReq func, Pst* pst, Buffer *mBuf));
-EXTERN S16 cmUnpkUdxL2MeasStopReq ARGS((UdxL2MeasStopReq func, Pst* pst, Buffer *mBuf));
+S16 cmUnpkUdxL2MeasReq ARGS((UdxL2MeasReq func, Pst* pst, Buffer *mBuf));
+S16 cmUnpkUdxL2MeasSendReq ARGS((UdxL2MeasSendReq func, Pst* pst, Buffer *mBuf));
+S16 cmUnpkUdxL2MeasStopReq ARGS((UdxL2MeasStopReq func, Pst* pst, Buffer *mBuf));
 #endif
 #endif
 
 #ifdef KW
-EXTERN S16 rlcUlUdxBndReq ARGS((Pst* pst, SuId suId, SpId spId));
+S16 rlcUlUdxBndReq ARGS((Pst* pst, SuId suId, SpId spId));
 
-EXTERN S16 rlcDlUdxBndReq ARGS((Pst* pst, SuId suId, SpId spId));
+S16 rlcDlUdxBndReq ARGS((Pst* pst, SuId suId, SpId spId));
 
-EXTERN S16 rlcDlUdxBndCfm ARGS((Pst* pst, SuId suId, U8 status));
+S16 rlcDlUdxBndCfm ARGS((Pst* pst, SuId suId, U8 status));
 
-EXTERN S16 rlcUlUdxBndCfm ARGS((Pst* pst, SuId suId, U8 status));
+S16 rlcUlUdxBndCfm ARGS((Pst* pst, SuId suId, U8 status));
 
-EXTERN S16 rlcDlUdxCfgCfm ARGS((Pst* pst, SuId suId, RlcCfgCfmInfo *cfmInfo));
+S16 rlcDlUdxCfgCfm ARGS((Pst* pst, SuId suId, RlcCfgCfmInfo *cfmInfo));
 
-EXTERN S16 rlcUlUdxCfgCfm ARGS((Pst* pst, SuId suId, RlcCfgCfmInfo *cfmInfo));
+S16 rlcUlUdxCfgCfm ARGS((Pst* pst, SuId suId, RlcCfgCfmInfo *cfmInfo));
 
-EXTERN S16 rlcDlUdxUeIdChgCfm ARGS((Pst *pst, 
+S16 rlcDlUdxUeIdChgCfm ARGS((Pst *pst, 
                                    SuId suId, 
                                    U32 transId,  
                                    CmStatus status));
 
-EXTERN S16 rlcUlUdxUeIdChgCfm ARGS((Pst *pst, 
+S16 rlcUlUdxUeIdChgCfm ARGS((Pst *pst, 
                                    SuId suId, 
                                    U32 transId, 
                                    CmStatus status));
 
-EXTERN S16 rlcUlUdxUbndReq ARGS((Pst* pst, SuId suId, Reason reason));
+S16 rlcUlUdxUbndReq ARGS((Pst* pst, SuId suId, Reason reason));
 
-EXTERN S16 rlcDlUdxUbndReq ARGS((Pst* pst, SuId suId, Reason reason));
+S16 rlcDlUdxUbndReq ARGS((Pst* pst, SuId suId, Reason reason));
 
-EXTERN S16 rlcUlUdxUeIdChgReq ARGS((Pst *pst, 
+S16 rlcUlUdxUeIdChgReq ARGS((Pst *pst, 
                                    SpId spId, 
                                    U32 transId, 
                                    CkwUeInfo *ueInfo, 
                                    CkwUeInfo *newUeInfo));
 
-EXTERN S16 rlcUlUdxCfgReq ARGS((Pst *pst, SpId spId, RlcCfgInfo *cfgInfo));
+S16 rlcUlUdxCfgReq ARGS((Pst *pst, SpId spId, RlcCfgInfo *cfgInfo));
 
-EXTERN S16 rlcDlUdxCfgReq ARGS((Pst *pst, SpId spId, RlcCfgInfo *cfgInfo));
+S16 rlcDlUdxCfgReq ARGS((Pst *pst, SpId spId, RlcCfgInfo *cfgInfo));
 
-EXTERN S16 rlcUlUdxStaUpdReq ARGS((Pst* pst,
+uint8_t rlcUlUdxStaUpdReq ARGS((Pst* pst,
                                   SpId spId,
                                   CmLteRlcId *rlcId,
                                   RlcUdxStaPdu *pStaPdu));
 
-EXTERN S16 rlcDlUdxStaUpdReq ARGS((Pst* pst,
+S16 rlcDlUdxStaUpdReq ARGS((Pst* pst,
                                   SpId spId,
                                   CmLteRlcId *rlcId,
                                   RlcUdxStaPdu *pStaPdu));
 
-EXTERN S16 rlcDlUdxStaUpdCfm ARGS((Pst* pst,
+S16 rlcDlUdxStaUpdCfm ARGS((Pst* pst,
                                   SuId suId,
                                   CmLteRlcId *rlcId,
                                   RlcUdxBufLst *pBufLst));
 
-EXTERN S16 rlcUlUdxStaUpdCfm ARGS((Pst* pst,
+S16 rlcUlUdxStaUpdCfm ARGS((Pst* pst,
                                   SuId suId,
                                   CmLteRlcId *rlcId,
                                   RlcUdxBufLst *pBufLst));
 
-EXTERN S16 rlcUlUdxStaPduReq ARGS((Pst *pst,
+uint8_t rlcUlUdxStaPduReq ARGS((Pst *pst,
                                   SpId spId,
                                   CmLteRlcId *rlcId,
                                   RlcUdxDlStaPdu *pStaPdu ));
 
-EXTERN S16 rlcDlUdxStaPduReq ARGS((Pst *pst,
+S16 rlcDlUdxStaPduReq ARGS((Pst *pst,
                                   SpId spId,
                                   CmLteRlcId *rlcId,
                                   RlcUdxDlStaPdu *pStaPdu));
 
-EXTERN S16 rlcDlUdxUeIdChgReq ARGS((Pst *pst, 
+S16 rlcDlUdxUeIdChgReq ARGS((Pst *pst, 
                                    SpId spId, 
                                    U32 transId, 
                                    CkwUeInfo *ueInfo, 
                                    CkwUeInfo *newUeInfo));
 
-EXTERN S16 rlcDlUdxCfgReq ARGS((Pst *pst, SpId spId, RlcCfgInfo *cfgInfo));
+S16 rlcDlUdxCfgReq ARGS((Pst *pst, SpId spId, RlcCfgInfo *cfgInfo));
 
 
-EXTERN S16 rlcUlUdxStaUpdCfm ARGS((Pst* pst,
+S16 rlcUlUdxStaUpdCfm ARGS((Pst* pst,
                                   SuId suId,
                                   CmLteRlcId *rlcId,
                                   RlcUdxBufLst *pBufLst));
 
-EXTERN S16 rlcDlUdxStaPduReq ARGS((Pst *pst,
+S16 rlcDlUdxStaPduReq ARGS((Pst *pst,
                                   SpId spId,
                                   CmLteRlcId *rlcId,
                                   RlcUdxDlStaPdu *pStaPdu));
 
-EXTERN S16 rlcUlUdxStaProhTmrStart ARGS((Pst *pst,
+S16 rlcUlUdxStaProhTmrStart ARGS((Pst *pst,
                                         SpId spId,
                                         CmLteRlcId *rlcId ));
 
-EXTERN S16 rlcDlUdxStaProhTmrStart ARGS((Pst *pst,
+uint8_t rlcDlUdxStaProhTmrStart ARGS((Pst *pst,
                                         SpId spId,
                                         CmLteRlcId *rlcId ));
 
 #ifdef LTE_L2_MEAS
-EXTERN S16 rlcDlUdxL2MeasReq ARGS((Pst *pst, RlcL2MeasReqEvt *measReqEvt)); 
+S16 rlcDlUdxL2MeasReq ARGS((Pst *pst, RlcL2MeasReqEvt *measReqEvt)); 
 
-EXTERN S16 rlcDlUdxL2MeasSendReq ARGS((Pst *pst, U8 status)); 
+S16 rlcDlUdxL2MeasSendReq ARGS((Pst *pst, U8 status)); 
 
-EXTERN S16 rlcDlUdxL2MeasStopReq ARGS((Pst *pst, U8 status)); 
+S16 rlcDlUdxL2MeasStopReq ARGS((Pst *pst, U8 status)); 
 
-EXTERN S16 rlcUlUdxL2MeasReq ARGS((Pst* pst, RlcL2MeasReqEvt *measReqEvt));
+S16 rlcUlUdxL2MeasReq ARGS((Pst* pst, RlcL2MeasReqEvt *measReqEvt));
 
-EXTERN S16 rlcUlUdxL2MeasSendReq ARGS((Pst *pst, U8 status));
+S16 rlcUlUdxL2MeasSendReq ARGS((Pst *pst, U8 status));
 
-EXTERN S16 rlcUlUdxL2MeasStopReq ARGS((Pst* pst, U8 measType));
+S16 rlcUlUdxL2MeasStopReq ARGS((Pst* pst, U8 measType));
 #endif
 
 #endif

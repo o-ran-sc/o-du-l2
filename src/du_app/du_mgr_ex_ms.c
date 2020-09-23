@@ -71,7 +71,7 @@ uint8_t duActvInit(Ent entity, Inst inst, Region region, Reason reason)
 
    memset(&duCb, 0, sizeof(DuCb));
 
-   duCb.init.procId  = SFndProcId();
+   duCb.init.procId  = ODU_GET_PROCID();
    duCb.init.ent     = entity;
    duCb.init.inst    = inst;
    duCb.init.region  = region;
@@ -166,11 +166,6 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
 		  }
 	       case LKW_EVT_STA_IND:
 		  {
-		     break;
-		  }
-	       case KWU_EVT_DAT_IND:
-		  {
-		     ret = cmUnpkKwuDatInd(duHdlRlcUlData, pst, mBuf);
 		     break;
 		  }
 	       case EVENT_RLC_UL_UE_CREATE_RSP:

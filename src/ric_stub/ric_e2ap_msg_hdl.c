@@ -542,7 +542,7 @@ void E2APMsgHdlr(Buffer *mBuf)
    ODU_PRINT_MSG(mBuf, 0,0);
  
    /* Copy mBuf into char array to decode it */
-   ODU_FIND_MSG_LEN(mBuf, &recvBufLen);
+   ODU_GET_MSG_LEN(mBuf, &recvBufLen);
    RIC_ALLOC(recvBuf, (Size)recvBufLen);
 
    if(recvBuf == NULLP)

@@ -520,7 +520,7 @@ S16 cuEgtpDecodeHdr(Buffer *mBuf)
    U8       extHdrLen = 0;        /* Extension hdr length */
    Bool     extPres = FALSE;      /* Flag for indication of S, E or P presense flag */
 
-   ODU_FIND_MSG_LEN(mBuf, &bufLen);
+   ODU_GET_MSG_LEN(mBuf, &bufLen);
 
    /* Decode version */
    ODU_REM_PRE_MSG(&tmpByte[0], mBuf);
@@ -676,7 +676,7 @@ S16 BuildAppMsg(EgtpMsg  *egtpMsg)
    MsgLen    mLen;
  
    mLen = 0;
-   ODU_FIND_MSG_LEN(mBuf, &mLen);
+   ODU_GET_MSG_LEN(mBuf, &mLen);
 
    cmMemset((U8 *)&ipv4Hdr, 0, sizeof(CmIpv4Hdr));
    ipv4Hdr.length = CM_IPV4_HDRLEN + mLen;
@@ -785,7 +785,7 @@ S16 BuildEgtpMsg(EgtpMsg *egtpMsg)
       teidCb->preEncodedHdr.hdr[EGTP_MAX_HDR_LEN - 1] &= ~(EGTP_MASK_BIT3);
    }
  
-   ODU_FIND_MSG_LEN(egtpMsg->msg, &tPduSize);
+   ODU_GET_MSG_LEN(egtpMsg->msg, &tPduSize);
 
    /*Adjust the header to fill the correct length*/
    msgLen = tPduSize +  (EGTP_MAX_HDR_LEN - hdrLen) - 0x08;

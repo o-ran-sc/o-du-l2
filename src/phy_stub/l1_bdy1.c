@@ -356,6 +356,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
    {
       msg5Sent = true;
       type = MSG_TYPE_MSG5;
+      msg5ShortBsrSent = false;
    }
 
 

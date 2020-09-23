@@ -622,16 +622,8 @@ CkwUeInfo *newUeInfo;          /* Config Info */
 
 
 
-S16  rlcUlUdxStaPduReq
-(
-Pst*                pst,
-SpId                spId,
-CmLteRlcId          *rlcId,
-RlcUdxDlStaPdu       *pStaPdu
-)
+uint8_t rlcUlUdxStaPduReq(Pst* pst, SpId spId, CmLteRlcId *rlcId, RlcUdxDlStaPdu *pStaPdu)
 {
-   TRC3(rlcUlUdxStaPduReq);
-
    return ((*rlcUlUdxStaPduReqMt[pst->selector])(pst,spId, rlcId, pStaPdu));
 }
 
@@ -647,25 +639,8 @@ RlcUdxDlStaPdu       *pStaPdu
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-S16  rlcUlUdxStaUpdReq
-(
-Pst*                pst,
-SpId                spId,
-CmLteRlcId          *rlcId,
-RlcUdxStaPdu         *pStaPdu
-)
-#else
-S16 rlcUlUdxStaUpdReq(pst, rlcId, pStaPdu)
-Pst*                pst;
-SpId                spId;
-CmLteRlcId          *rlcId;
-RlcUdxStaPdu         *pStaPdu;
-#endif
+uint8_t rlcUlUdxStaUpdReq(Pst* pst, SpId spId, CmLteRlcId *rlcId, RlcUdxStaPdu *pStaPdu)
 {
-
-   TRC3(rlcUlUdxStaUpdReq);
-
    return ((*rlcUlUdxStaUpdReqMt[pst->selector])(pst,spId, rlcId, pStaPdu));
 } /* end of RlcUlmDlmStaUpd*/
 

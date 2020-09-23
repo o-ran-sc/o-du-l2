@@ -1203,12 +1203,6 @@ uint8_t duHdlEgtpTnlMgmtCfm(EgtpTnlEvt tnlEvtCfm)
    if(tnlEvtCfm.cfmStatus.status == LCM_PRIM_OK)
    {
       DU_LOG("\nDU_APP : Tunnel management confirm OK");
-
-#ifdef EGTP_TEST
-      duSendUeCreateReqToRlc();
-
-      duSendEgtpTestData();
-#endif      
    }
    else
    {
@@ -1282,7 +1276,7 @@ uint8_t duSendEgtpTestData()
    MsgLen    mLen;
 
    mLen = 0;
-   ODU_FIND_MSG_LEN(mBuf, &mLen);
+   ODU_GET_MSG_LEN(mBuf, &mLen);
 
    memset((uint8_t *)&ipv4Hdr, 0, sizeof(CmIpv4Hdr));
    ipv4Hdr.length = CM_IPV4_HDRLEN + mLen;

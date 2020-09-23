@@ -201,24 +201,6 @@ EXTERN S16 RlcUiKwuUbndReq ARGS((Pst *pst,
          Reason reason));
 
 /**
- *@details This primitive is used by RRC to transfer the SDU data to the RLC.
- RLC will send the data to logical channels in the form of PDUs by assembling 
- [concatenating/segmenting/retransmission (in case of AM), concatenating if
- required (in case of UM)] SDUs received from the service user (RRC/PDCP).
-
- * @param[in] pst    -  Pointer to the pst structure
- * @param[in] spId   -  Service provider ID
- * @param[in] datReq -  Data request parameter
- * @param[in] buf    -  RLC SDU
- * @return  S16 
- *   -# ROK
- *   -# RFAILED
- */
-EXTERN S16 RlcUiKwuDatReq ARGS((Pst *pst,
-         KwuDatReqInfo* datReq,
-         Buffer *buf));
-
-/**
  *@details This primitive is used by RLC to transfer the SDU data to the service
  user (RRC/PDCP) recieved from the peer RLC. RLC will send the data to service
  user (RRC/PDCP) by reassembling the PDUs recieved from the peer RLC.
@@ -231,12 +213,12 @@ EXTERN S16 RlcUiKwuDatReq ARGS((Pst *pst,
  *   -# ROK
  *   -# RFAILED
  */
-EXTERN S16 RlcUiKwuDatInd ARGS((Pst *pst,
-         KwuDatIndInfo* datInd,
-         Buffer *mBuf));
+EXTERN S16 rlcSendUlDataToDu ARGS((Pst *pst,
+       KwuDatIndInfo* datInd,
+       Buffer *mBuf));
 
 /**
- *@details This primitive is used by RLC as the confirmation for the RlcUiKwuDatReq
+ *@details This primitive is used by RLC as the confirmation for the RlcProcDlData
  to the service user (RLC/PDCP). It is used only in AM mode data transfers for
  RLC.
 
