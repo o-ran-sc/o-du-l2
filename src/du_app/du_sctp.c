@@ -624,7 +624,7 @@ uint8_t  processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, uint32
 {
    uint8_t ret = ROK;
    CM_INET_FD_SET(sockFd, &pollParams->readFd);
-   ret = cmInetSelect(&pollParams->readFd, NULLP, timeoutPtr, &pollParams->numFd);
+   ret = cmInetSelect(&pollParams->readFd, NULLP, timeoutPtr, (int16_t *)&pollParams->numFd);
    if(CM_INET_FD_ISSET(sockFd, &pollParams->readFd))
    {
       CM_INET_FD_CLR(sockFd, &pollParams->readFd);

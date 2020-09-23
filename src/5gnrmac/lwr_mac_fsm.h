@@ -32,7 +32,8 @@
 typedef enum{
    SI_RNTI_TYPE,
    RA_RNTI_TYPE,
-   TC_RNTI_TYPE
+   TC_RNTI_TYPE,
+   C_RNTI_TYPE
 }RntiType;
 
 uint8_t lwr_mac_procInvalidEvt(void *msg);
@@ -44,6 +45,9 @@ uint8_t lwr_mac_procStartReqEvt(void *msg);
 uint8_t lwr_mac_procStopReqEvt(void *msg);
 void sendToLowerMac(uint16_t, uint32_t, void *);
 void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg);
+uint16_t fillUlTtiReq(SlotIndInfo currTimingInfo);
+uint16_t fillDlTtiReq(SlotIndInfo currTimingInfo);
+uint16_t fillUlDciReq(SlotIndInfo currTimingInfo);
 
 typedef uint8_t (*lwrMacFsmHdlr)(void *);
 #endif

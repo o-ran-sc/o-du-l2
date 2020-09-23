@@ -16,37 +16,12 @@
 ################################################################################
 *******************************************************************************/
 
-#include "common_def.h"
+/* This file stores defines used at RLC lower mac interface */
 
-/*******************************************************************
- *
- * @brief Reverse fixed buffer
- *
- * @details
- *
- *    Function : reverseFixBuf
- *
- *    Functionality: Reverse fixed buffer
- *
- * @params[in] Fixed buffer to be reversed
- *             Buffer length
- * @return void
- *
- * ****************************************************************/
-void reverseFixBuf(uint8_t *buf, uint16_t len)
-{
-   uint8_t idx, revIdx;
-   uint8_t temp;
-
-   for(idx = 0, revIdx = len-1; idx < len/2; idx++, revIdx--)
-   {
-      temp = buf[idx];
-      buf[idx] = buf[revIdx];
-      buf[revIdx] = temp;
-   }
-   return;
-}
+uint8_t RlcSendBoStatusToMac(Pst *pst, RlcBoStatus *staRsp);
+uint8_t RlcSendDlDataToMac(Pst *pst, RlcData *dlData);
 
 /**********************************************************************
          End of file
 **********************************************************************/
+

@@ -540,43 +540,43 @@ struct rlcDlUeCb
 /****************************************************************************
  *                    Configuration Functions 
  ***************************************************************************/ 
-EXTERN S16 rlcCfgAddDlRb ARGS ((RlcCb *gCb, 
+S16 rlcCfgAddDlRb ARGS ((RlcCb *gCb, 
                               CmLteRnti ueId, 
                               CmLteCellId cellId, 
                               RlcEntCfgInfo *entCfg, 
                               RlcEntCfgCfmInfo *entCfm));
 
-EXTERN S16 rlcCfgReCfgDlRb ARGS ((RlcCb *gCb, 
+S16 rlcCfgReCfgDlRb ARGS ((RlcCb *gCb, 
                                  CmLteRnti ueId, 
                                  CmLteCellId cellId, 
                                  RlcEntCfgInfo *entCfg, 
                                  RlcEntCfgCfmInfo *entCfm));
 
-EXTERN S16 rlcCfgDelDlRb ARGS ((RlcCb *gCb, 
+S16 rlcCfgDelDlRb ARGS ((RlcCb *gCb, 
                                CmLteRnti ueId, 
                                CmLteCellId cellId, 
                                RlcEntCfgInfo *entCfg, 
                                RlcEntCfgCfmInfo *entCfm));
 
-EXTERN S16 rlcCfgDelDlUe ARGS ((RlcCb *gCb, 
+S16 rlcCfgDelDlUe ARGS ((RlcCb *gCb, 
                                CmLteRnti ueId, 
                                CmLteCellId cellId, 
                                RlcEntCfgInfo *entCfg, 
                                RlcEntCfgCfmInfo *entCfm));
 
-EXTERN S16 rlcCfgReEstDlRb ARGS ((RlcCb *gCb, 
+S16 rlcCfgReEstDlRb ARGS ((RlcCb *gCb, 
                                  CmLteRnti ueId, 
                                  CmLteCellId cellId, 
                                  Bool sndReEst,
                                  RlcEntCfgInfo *entCfg, 
                                  RlcEntCfgCfmInfo *entCfm));
 
-EXTERN S16 rlcCfgDelDlCell ARGS ((RlcCb *gCb, 
+S16 rlcCfgDelDlCell ARGS ((RlcCb *gCb, 
                                  CmLteCellId cellId, 
                                  RlcEntCfgInfo *entCfg,
                                  RlcEntCfgCfmInfo *entCfm));
 
-EXTERN S16 rlcCfgDlUeIdChng ARGS ((RlcCb *gCb, 
+S16 rlcCfgDlUeIdChng ARGS ((RlcCb *gCb, 
                                   CkwUeInfo *ueInfo, 
                                   CkwUeInfo *newUeInfo, 
                                   CmStatus  *status));
@@ -584,226 +584,226 @@ EXTERN S16 rlcCfgDlUeIdChng ARGS ((RlcCb *gCb,
 /****************************************************************************
  *                    DBM module Functions 
  ***************************************************************************/
-EXTERN S16 rlcDbmDlInit ARGS ((RlcCb *gCb));
+S16 rlcDbmDlInit ARGS ((RlcCb *gCb));
 
-EXTERN Void rlcDbmDlDeInit ARGS ((RlcCb *gCb));
+Void rlcDbmDlDeInit ARGS ((RlcCb *gCb));
 
-EXTERN S16 rlcDbmCreateDlUeCb ARGS ((RlcCb *gCb,     
+S16 rlcDbmCreateDlUeCb ARGS ((RlcCb *gCb,     
                                     CmLteRnti ueId,   
                                     CmLteCellId cellId,
                                     RlcDlUeCb **ueCb));
 
-EXTERN S16 rlcDbmFetchDlUeCb ARGS ((RlcCb *gCb,        
+uint8_t rlcDbmFetchDlUeCb ARGS ((RlcCb *gCb,        
                                    CmLteRnti ueId,      
                                    CmLteCellId cellId,     
                                    RlcDlUeCb **ueCb));
 
-EXTERN Void rlcDbmDelDlUeCb ARGS ((RlcCb *gCb,       
+Void rlcDbmDelDlUeCb ARGS ((RlcCb *gCb,       
                                   RlcDlUeCb *ueCb, 
                                   Bool abortFlag));
 
-EXTERN Void rlcDbmDelAllDlUe ARGS ((RlcCb *gCb));
+Void rlcDbmDelAllDlUe ARGS ((RlcCb *gCb));
 
-EXTERN S16 rlcDbmCreateDlCellCb ARGS ((RlcCb *gCb,      
-                                      CmLteCellId cellId,   
-                                      RlcDlCellCb **cellCb));
+S16 rlcDbmCreateDlCellCb ARGS ((RlcCb *gCb,      
+                                    CmLteCellId cellId,   
+                                    RlcDlCellCb **cellCb));
 
-EXTERN S16 rlcDbmFetchDlCellCb ARGS ((RlcCb *gCb, 
+uint8_t rlcDbmFetchDlCellCb ARGS ((RlcCb *gCb, 
                                      CmLteCellId cellId, 
                                      RlcDlCellCb **cellCb));
 
-EXTERN Void rlcDbmDelDlCellCb ARGS ((RlcCb *gCb, RlcDlCellCb *cellCb));
+Void rlcDbmDelDlCellCb ARGS ((RlcCb *gCb, RlcDlCellCb *cellCb));
 
-EXTERN Void rlcDbmDelAllDlCell ARGS ((RlcCb *gCb));
+Void rlcDbmDelAllDlCell ARGS ((RlcCb *gCb));
 
-EXTERN Void rlcDbmFetchDlRbCbByRbId ARGS ((RlcCb *gCb, 
+Void rlcDbmFetchDlRbCbByRbId ARGS ((RlcCb *gCb, 
                                           CmLteRlcId *rlcId, 
                                           RlcDlRbCb **rbCb));
 
-EXTERN Void rlcDbmFetchDlRbCbFromLchId ARGS ((RlcCb *gCb,       
+Void rlcDbmFetchDlRbCbFromLchId ARGS ((RlcCb *gCb,       
                                              CmLteRnti ueId,     
                                              CmLteCellId cellId,    
                                              CmLteLcId lcId,      
                                              RlcDlRbCb **rbCb));
 
-EXTERN Void rlcDbmDelAllDlRb ARGS ((RlcCb *gCb, RlcDlRbCb **rbCbLst, U8 numRbCb));
+Void rlcDbmDelAllDlRb ARGS ((RlcCb *gCb, RlcDlRbCb **rbCbLst, U8 numRbCb));
 
-EXTERN S16 rlcDbmDlShutdown ARGS ((RlcCb *gCb));
+S16 rlcDbmDlShutdown ARGS ((RlcCb *gCb));
 
-EXTERN Void rlcUtlGetCurrTime ARGS((U32 *time));
-EXTERN Void rlcUtlTrigPdbFlowCntrl ARGS((RlcCb *gCb, RlcDlRbCb *rbCb, U32 pktAdmitCnt ));
+Void rlcUtlGetCurrTime ARGS((U32 *time));
+Void rlcUtlTrigPdbFlowCntrl ARGS((RlcCb *gCb, RlcDlRbCb *rbCb, U32 pktAdmitCnt ));
 #ifdef LTE_L2_MEAS
-EXTERN Void rlcDbmDelAllDlL2MeasTbFrmUe ARGS ((RlcCb *gCb, RlcDlUeCb *ueCb));
+Void rlcDbmDelAllDlL2MeasTbFrmUe ARGS ((RlcCb *gCb, RlcDlUeCb *ueCb));
 
 #endif
 
 /****************************************************************************
  *                    Transparent Mode Functions 
  ***************************************************************************/
-EXTERN Void rlcTmmQSdu ARGS ((RlcCb *gCb,
+Void rlcTmmQSdu ARGS ((RlcCb *gCb,
                             RlcDlRbCb *rbCb,
                             KwuDatReqInfo *datReqInfo,
                             Buffer *mBuf));
-EXTERN Void rlcTmmSndToLi ARGS ((RlcCb     *gCb,
+Void rlcTmmSendToMac ARGS ((RlcCb     *gCb,
                                 SuId     suId,
                                 RlcDlRbCb *rbCb, 
                                 RguCStaIndInfo *staInd));
 
-EXTERN Void rlcDlTmmReEstablish ARGS ((RlcCb *gCb, RlcDlRbCb *rbCb));
+Void rlcDlTmmReEstablish ARGS ((RlcCb *gCb, RlcDlRbCb *rbCb));
 
 /****************************************************************************
  *                    Unacknowledged Mode Functions 
  ***************************************************************************/
-EXTERN Void rlcUmmQSdu ARGS ((RlcCb *gCb, 
+Void rlcUmmQSdu ARGS ((RlcCb *gCb, 
                              RlcDlRbCb *rbCb,
                              KwuDatReqInfo *datReq, 
                              Buffer *mBuf));
 
-EXTERN Void rlcUmmDiscSdu ARGS ((RlcCb *gCb, RlcDlRbCb *rbCb, U32 sduId));
+Void rlcUmmDiscSdu ARGS ((RlcCb *gCb, RlcDlRbCb *rbCb, U32 sduId));
 
-EXTERN Void rlcDlUmmReEstablish ARGS ((RlcCb *gCb, 
+Void rlcDlUmmReEstablish ARGS ((RlcCb *gCb, 
                                       CmLteRlcId rlcId, 
                                       Bool sndReEst,
                                       RlcDlRbCb *rbCb));
 
-EXTERN Void rlcUmmProcessSdus ARGS ((RlcCb *gCb,RlcDlRbCb *rbCb,RlcDatReq *datReq));
+Void rlcUmmProcessSdus ARGS ((RlcCb *gCb,RlcDlRbCb *rbCb,RlcDatReq *datReq));
 
-EXTERN Void rlcUmmFreeDlRbCb ARGS ((RlcCb *gCb, RlcDlRbCb *rbCb));
+Void rlcUmmFreeDlRbCb ARGS ((RlcCb *gCb, RlcDlRbCb *rbCb));
 
 /****************************************************************************
  *                    Acknowledged Mode Functions 
  ***************************************************************************/
 
-EXTERN S32 rlcAmmCalculateBo ARGS ((RlcAmDl *amDl));
+S32 rlcAmmCalculateBo ARGS ((RlcAmDl *amDl));
 
-EXTERN Void rlcAmmSendDStaRsp ARGS ((RlcCb *gCb, RlcDlRbCb *rbCb, RlcAmDl *amDl));
+Void rlcAmmSendDedLcBoStatus ARGS ((RlcCb *gCb, RlcDlRbCb *rbCb, RlcAmDl *amDl));
 
-EXTERN Void rlcAmmQSdu ARGS((RlcCb *gCb,
+Void rlcAmmQSdu ARGS((RlcCb *gCb,
                             RlcDlRbCb *rbCb,
                             Buffer *mBuf, 
                             KwuDatReqInfo *datReq));
 
-EXTERN Void rlcAmmProcessSdus ARGS((RlcCb *gCb, 
+void rlcAmmProcessSdus ARGS((RlcCb *gCb, 
                                    RlcDlRbCb *rbCb, 
                                    RlcDatReq *rlcDatReq,
-                                   Bool staPduPres));
+                                   bool staPduPres));
 
-EXTERN Void rlcAmmDlReEstablish ARGS((RlcCb *gCb, 
+Void rlcAmmDlReEstablish ARGS((RlcCb *gCb, 
                                      CmLteRlcId rlcId, 
                                      RlcDlRbCb *rbCb));
 
-EXTERN Void rlcAmmDlHndlStatusPdu ARGS ((RlcCb  *gCb,
+Void rlcAmmDlHndlStatusPdu ARGS ((RlcCb  *gCb,
                                         RlcDlRbCb  *rbCb,
                                         RlcUdxStaPdu *pStaPdu));
 
-EXTERN S16 rlcAmmDiscSdu ARGS((RlcCb *gCb, RlcDlRbCb *rbCb, U32 sduId));
+S16 rlcAmmDiscSdu ARGS((RlcCb *gCb, RlcDlRbCb *rbCb, U32 sduId));
 
-EXTERN Void rlcAmmPollRetxTmrExp ARGS((RlcCb *gCB, RlcDlRbCb *rbCb));
+Void rlcAmmPollRetxTmrExp ARGS((RlcCb *gCB, RlcDlRbCb *rbCb));
 
-EXTERN Void rlcAmmFreeDlRbCb ARGS ((RlcCb *gCb, RlcDlRbCb *rbCb));
+Void rlcAmmFreeDlRbCb ARGS ((RlcCb *gCb, RlcDlRbCb *rbCb));
 
 /****************************************************************************
  *                    Utility Functions 
  ***************************************************************************/
 
-EXTERN Void rlcUtlStoreTxBuf ARGS ((CmLListCp        *txBufLst,
+Void rlcUtlStoreTxBuf ARGS ((CmLListCp        *txBufLst,
                                     RlcTx       *txBuf,
                                     RlcSn              sn
                                    ));
-EXTERN RlcTx* rlcUtlGetTxBuf ARGS ((CmLListCp        *txBufLst,
+RlcTx* rlcUtlGetTxBuf ARGS ((CmLListCp        *txBufLst,
                                   RlcSn              sn
                                   ));
-EXTERN Void rlcUtlDelTxBuf ARGS ((CmLListCp        *txBufLst,
+Void rlcUtlDelTxBuf ARGS ((CmLListCp        *txBufLst,
                                   RlcTx            *txBuf,
                                   RlcCb              *gCb
                                   ));
-EXTERN Void rlcUtlRemovTxBuf ARGS ((CmLListCp      *txBufLst,
+Void rlcUtlRemovTxBuf ARGS ((CmLListCp      *txBufLst,
                                   RlcTx            *txBuf,
                                   RlcCb              *gCb
                                   ));
 
-EXTERN S16 rlcUtlSndDStaRsp ARGS ((RlcCb *gCb,
+uint8_t rlcUtlSendDedLcBoStatus ARGS ((RlcCb *gCb,
                                   RlcDlRbCb *rbCb,
-                                  S32 bo,
-                                  S32 estHdrSz,
-                                  Bool staPduPrsnt,
-                                  U32 staPduBo));
+                                  int32_t bo,
+                                  int32_t estHdrSz,
+                                  bool staPduPrsnt,
+                                  uint32_t staPduBo));
 
 #ifdef LTE_L2_MEAS_RLC
-EXTERN Void rlcUtlEmptySduQ ARGS ((RlcCb *gCb, RlcDlRbCb *rbCb, CmLListCp *sduQ));
+Void rlcUtlEmptySduQ ARGS ((RlcCb *gCb, RlcDlRbCb *rbCb, CmLListCp *sduQ));
 #else /* LTE_L2_MEAS */
-EXTERN Void rlcUtlEmptySduQ ARGS ((RlcCb *gCb,CmLListCp *sduQ));
+Void rlcUtlEmptySduQ ARGS ((RlcCb *gCb,CmLListCp *sduQ));
 #endif /* LTE_L2_MEAS */
 
-EXTERN Void rlcUtlCalcLiForSdu ARGS ((RlcCb *gCb,
+Void rlcUtlCalcLiForSdu ARGS ((RlcCb *gCb,
                                      U16 numLi, 
                                      MsgLen msgLen,
                                      S16 *pduSz));
 
-EXTERN S16 rlcUtlSndToLi ARGS ((RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo));
+uint8_t rlcUtlSendToMac ARGS ((RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo));
 
-EXTERN Void rlcUtlIncrementKwuStsSduTx ARGS((RlcKwuSapCb *rlckwuSap));
+Void rlcUtlIncrementKwuStsSduTx ARGS((RlcKwuSapCb *rlckwuSap));
 
-EXTERN Void rlcUtlIncrementGenStsBytesAndPdusSent ARGS((RlcGenSts *genSts, 
+Void rlcUtlIncrementGenStsBytesAndPdusSent ARGS((RlcGenSts *genSts, 
                                                        Buffer *pdu));
 
-EXTERN Void rlcUtlFreeDlMemory ARGS ((RlcCb *gCb));
+Void rlcUtlFreeDlMemory ARGS ((RlcCb *gCb));
 
-EXTERN Void rlcUtlInitToBeFreed ARGS ((RlcCb *gCb, RlcDlDataToBeFreed *toBeFreed));
+Void rlcUtlInitToBeFreed ARGS ((RlcCb *gCb, RlcDlDataToBeFreed *toBeFreed));
 
-EXTERN Void rlcUtlInitializeSelfPst ARGS((RlcCb *gCb));
+Void rlcUtlInitializeSelfPst ARGS((RlcCb *gCb));
 
-EXTERN Void rlcUtlRaiseDlCleanupEvent ARGS((RlcCb *gCb));
+Void rlcUtlRaiseDlCleanupEvent ARGS((RlcCb *gCb));
 
-EXTERN Void rlcUtlAddSduToBeFreedQueue ARGS((RlcCb *gCb, RlcSdu *sdu));
+Void rlcUtlAddSduToBeFreedQueue ARGS((RlcCb *gCb, RlcSdu *sdu));
 
-EXTERN Void rlcUtlAddReTxPduToBeFreedQueue ARGS((RlcCb *gCb, RlcRetx *retx));
+Void rlcUtlAddReTxPduToBeFreedQueue ARGS((RlcCb *gCb, RlcRetx *retx));
 
-EXTERN Void rlcUtlAddTxPduToBeFreedQueue ARGS((RlcCb *gCb, RlcTx *pdu));
+Void rlcUtlAddTxPduToBeFreedQueue ARGS((RlcCb *gCb, RlcTx *pdu));
 
 #ifdef LTE_L2_MEAS
-EXTERN S16 rlcUtlL2MeasDlInit ARGS((RlcCb *gCb));
+S16 rlcUtlL2MeasDlInit ARGS((RlcCb *gCb));
 #endif
 
 /****************************************************************************
  *                    Debug Functions 
  ***************************************************************************/
-EXTERN Void ResetRLCStats ARGS((Void));
+Void ResetRLCStats ARGS((Void));
 
-EXTERN Void PrintRLCStats ARGS((Void));
+Void PrintRLCStats ARGS((Void));
 
-EXTERN Void DumpRLCDlDebugInformation ARGS((Void));
+Void DumpRLCDlDebugInformation ARGS((Void));
 
 /****************************************************************************
  *                    Activation Functions 
  ***************************************************************************/
-EXTERN S16 rlcDlActvInit ARGS ((Ent ent,Inst inst,Region region,Reason reason)); 
+S16 rlcDlActvInit ARGS ((Ent ent,Inst inst,Region region,Reason reason)); 
 
-EXTERN S16 rlcDlActvTsk ARGS ((Pst *pst, Buffer *mBuf));
+S16 rlcDlActvTsk ARGS ((Pst *pst, Buffer *mBuf));
 
-EXTERN Bool rlcDlUtlIsReestInProgress ARGS ((RlcDlRbCb *rbCb));
+bool rlcDlUtlIsReestInProgress ARGS ((RlcDlRbCb *rbCb));
 
-EXTERN Void rlcDlUtlResetReestInProgress ARGS ((RlcDlRbCb *rbCb));
+Void rlcDlUtlResetReestInProgress ARGS ((RlcDlRbCb *rbCb));
 
-EXTERN Void rlcDlUtlResetReestInProgress ARGS (( RlcDlRbCb *rbCb));
+Void rlcDlUtlResetReestInProgress ARGS (( RlcDlRbCb *rbCb));
 
-EXTERN Void rlcDlUtlSetReestInProgressForAllRBs ARGS ((RlcCb *gCb, RlcDlUeCb
+Void rlcDlUtlSetReestInProgressForAllRBs ARGS ((RlcCb *gCb, RlcDlUeCb
          *ueCb));
-EXTERN Void rlcDlUtlSetReestInProgressForRB ARGS (( RlcCb *gCb, RlcDlRbCb *rbCb));
+Void rlcDlUtlSetReestInProgressForRB ARGS (( RlcCb *gCb, RlcDlRbCb *rbCb));
 
 #ifdef LTE_L2_MEAS
-EXTERN Void rlcUtlUpdateContainedSduLst ARGS ((
+Void rlcUtlUpdateContainedSduLst ARGS ((
 U8  sduIdx, 
 RlcContSduLst  *contSduLst
 ));
-EXTERN Void rlcUtlUpdateOutStandingSduLst ARGS ((
+Void rlcUtlUpdateOutStandingSduLst ARGS ((
 RlcL2MeasDlIpTh   *dlIpThPut, 
 U8               sduIdx, 
 MsgLen           sduLen, 
 U32              sduId,
 Bool             newIdx
 ));
-EXTERN Void rlcUtlUpdateBurstSdus ARGS((
+Void rlcUtlUpdateBurstSdus ARGS((
 RlcCb            *gCb,         
 RlcDlRbCb        *rbCb,
 RlcContSduLst    *contSduLst,
@@ -811,38 +811,43 @@ S32             dataVol,
 U32             schPduSz
 ));
 
-EXTERN RlcL2MeasTb * rlcUtlGetCurMeasTb ARGS((
+RlcL2MeasTb * rlcUtlGetCurMeasTb ARGS((
 RlcCb     *gCb,
 RlcDlRbCb *rbCb
 ));
 
-EXTERN S16 rlcUtlSndDlL2MeasNCfm ARGS((RlcCb *gCb,
+S16 rlcUtlSndDlL2MeasNCfm ARGS((RlcCb *gCb,
                                       RlcL2MeasReqEvt *measReqEvt,
                                       RlcL2MeasCfmEvt *measCfmEvt));
 
-EXTERN S16 rlcUtlSndDlL2MeasCfm  ARGS ((RlcCb *gCb, RlcL2MeasEvtCb *measEvtCb));
+S16 rlcUtlSndDlL2MeasCfm  ARGS ((RlcCb *gCb, RlcL2MeasEvtCb *measEvtCb));
 
-EXTERN S16 rlcUtlProcHarqInd  ARGS (( RlcCb *gCb, RguHarqStatusInd *staInd, RlcDlUeCb *ueCb, 
+S16 rlcUtlProcHarqInd  ARGS (( RlcCb *gCb, RguHarqStatusInd *staInd, RlcDlUeCb *ueCb, 
                                      U8 tbIdx));
-EXTERN Void rlcUtlResetDlL2MeasInRlcRb ARGS ((RlcCb *gCb,
+Void rlcUtlResetDlL2MeasInRlcRb ARGS ((RlcCb *gCb,
                                             RlcL2MeasCb *measCb,
                                             U8 measType));
 
-EXTERN S16 RlcMiLkwL2MeasStopCfm ARGS((Pst *pst, U8  measType,U8  status));
+S16 RlcMiLkwL2MeasStopCfm ARGS((Pst *pst, U8  measType,U8  status));
 
-EXTERN S16 rlcUtlValidateIpThL2Meas ARGS((RlcL2MeasReqEvt *measReqEvt, 
+S16 rlcUtlValidateIpThL2Meas ARGS((RlcL2MeasReqEvt *measReqEvt, 
                                      RlcL2MeasCfmEvt *measCfmEvt)); 
                                     
-EXTERN S16 rlcFetchLchInfo ARGS ((RlcL2MeasReqEvt *measReqEvt,
+S16 rlcFetchLchInfo ARGS ((RlcL2MeasReqEvt *measReqEvt,
                                  RlcL2MeasCfmEvt *measCfmEvt,
                                  U16             ueId,
                                  CmLteLcId *lChId,
                                  U8 *numLch));
 
-EXTERN S16 rlcUtlNotifyMacUlIp ARGS ((RlcL2MeasCb *measCb,U16 ueIdx, Bool enable,
+S16 rlcUtlNotifyMacUlIp ARGS ((RlcL2MeasCb *measCb,U16 ueIdx, Bool enable,
                                     CmLteLcId  *lChId, U8 *numLCh));
 #endif
-EXTERN Void rlcUtlFreeDlMem ARGS(( Void));
+
+uint8_t rlcProcDlData(Pst *pst, KwuDatReqInfo* datReq, Buffer *buf);
+uint8_t rlcProcCommLcSchedRpt(Pst *pst, SuId suId, RguCStaIndInfo  *staInd);
+uint8_t rlcProcDedLcSchedRpt(Pst *pst, SuId suId, RguDStaIndInfo  *staInd);
+
+Void rlcUtlFreeDlMem ARGS(( Void));
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

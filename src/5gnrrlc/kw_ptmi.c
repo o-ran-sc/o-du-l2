@@ -57,36 +57,6 @@
 /* local defines */
 #define MAXKWMI 2               /* max. layer management interfaces */
 
-#ifndef LCKWMILKW
-#define PTKWLKW
-#endif
-
-
-#ifndef SM
-#define PTKWLKW
-#endif
-
-
-
-#ifdef PTKWLKW
-/* portable functions */
-
-PRIVATE S16 PtMiRlcConfigCfm    ARGS((Pst *pst, RlcMngmt *cfm));
-PRIVATE S16 PtMiLkwCntrlCfm  ARGS((Pst *pst, RlcMngmt *cfm));
-PRIVATE S16 PtMiLkwStaInd    ARGS((Pst *pst, RlcMngmt *usta));
-
-PRIVATE S16 PtMiLkwStaCfm    ARGS((Pst *pst, RlcMngmt *cfm));
-PRIVATE S16 PtMiLkwStsCfm    ARGS((Pst *pst, Action action,
-                                RlcMngmt *cfm));
-PRIVATE S16 PtMiLkwTrcInd    ARGS((Pst *pst, RlcMngmt *trc,
-                                Buffer *mBuf));
-/* kw005.201 added support for L2 Measurement */
-#ifdef LTE_L2_MEAS
-PRIVATE S16 PtMiLkwL2MeasCfm   ARGS((Pst *pst, RlcL2MeasCfmEvt *measEvt));
-PRIVATE S16 PtMiLkwL2MeasStopCfm   ARGS((Pst *pst, U8 measType,U8 status));
-#endif /*  LTE_L2_MEAS */
-#endif /* PTKWLKW */
-
 
 /*********************************************************************
  *             Primitives for LKW interface 
@@ -97,13 +67,9 @@ PRIVATE RlcConfigCfm rlcMiRlcConfigCfmMt[MAXKWMI] =
 {
 #ifdef LCKWMILKW
    packRlcConfigCfm,            /* 0 - loosely coupled - fc */
-#else
-   PtMiRlcConfigCfm,            /* 0 - tightly coupled portable */
 #endif /* LCRLMILKW */
 #ifdef SM
    SmMiRlcConfigCfm,            /* 1 - tightly coupled layer management*/
-#else
-   PtMiRlcConfigCfm,            /* 1 - tightly coupled portable */
 #endif /* SM */
 };
 
@@ -113,13 +79,9 @@ PRIVATE LkwCntrlCfm kwMiLkwCntrlCfmMt[MAXKWMI] =
 {
 #ifdef LCKWMILKW 
    cmPkLkwCntrlCfm,          /* 0 - loosely coupled - fc */
-#else
-   PtMiLkwCntrlCfm,          /* 0 - tightly coupled portable */
 #endif /* LCRLMILKW */
 #ifdef SM
    SmMiLkwCntrlCfm,          /* 1 - tightly coupled layer management*/
-#else
-   PtMiLkwCntrlCfm,          /* 1 - tightly coupled portable */
 #endif /* SM */
 };
 
@@ -129,13 +91,9 @@ PRIVATE LkwStaInd kwMiLkwStaIndMt[MAXKWMI] =
 {
 #ifdef LCKWMILKW 
    cmPkLkwStaInd,            /* 0 - loosely coupled  */
-#else
-   PtMiLkwStaInd,            /* 0 - tightly coupled, portable */
 #endif /* LCKWMILKW */
 #ifdef SM
    SmMiLkwStaInd,            /* 1 - tightly coupled, layer management */
-#else
-   PtMiLkwStaInd,            /* 1 - tightly coupled, portable */
 #endif /* SM */
 };
 
@@ -145,13 +103,9 @@ PRIVATE LkwStaCfm kwMiLkwStaCfmMt[MAXKWMI] =
 {
 #ifdef LCKWMILKW 
    cmPkLkwStaCfm,            /* 0 - loosely coupled  */
-#else
-   PtMiLkwStaCfm,            /* 0 - tightly coupled, portable */
 #endif /* LCKWMILKW */
 #ifdef SM
    SmMiLkwStaCfm,            /* 1 - tightly coupled, layer management */
-#else
-   PtMiLkwStaCfm,            /* 1 - tightly coupled, portable */
 #endif /* SM */
 };
 
@@ -161,13 +115,9 @@ PRIVATE LkwStsCfm kwMiLkwStsCfmMt[MAXKWMI] =
 {
 #ifdef LCKWMILKW
    cmPkLkwStsCfm,            /* 0 - loosely coupled  */
-#else
-   PtMiLkwStsCfm,            /* 0 - tightly coupled, portable */
 #endif /* LCRLMILKW */
 #ifdef SM
    SmMiLkwStsCfm,            /* 1 - tightly coupled, layer management */
-#else
-   PtMiLkwStsCfm,            /* 1 - tightly coupled, portable */
 #endif /* SM */
 };
 
@@ -177,13 +127,9 @@ PRIVATE LkwTrcInd kwMiLkwTrcIndMt[MAXKWMI] =
 {
 #ifdef LCKWMILKW
    cmPkLkwTrcInd,            /* 0 - loosely coupled  */
-#else
-   PtMiLkwTrcInd,            /* 0 - tightly coupled, portable */
 #endif /* LCKWMILKW */
 #ifdef SM
    SmMiLkwTrcInd,            /* 1 - tightly coupled, layer management */
-#else
-   PtMiLkwTrcInd,            /* 1 - tightly coupled, portable */
 #endif /* SM */
 };
 
@@ -193,26 +139,18 @@ PRIVATE CONSTANT LkwL2MeasCfm rlcMiLkwL2MeasCfmMt[] =
 {
 #ifdef LCKWMILKW
    cmPkLkwL2MeasCfm,
-#else
-   PtMiLkwL2MeasCfm,
 #endif
 #ifdef SM
    SmMiLkwL2MeasCfm,
-#else
-   PtMiLkwL2MeasCfm,
 #endif
 };
 PRIVATE CONSTANT LkwL2MeasStopCfm RlcMiLkwL2MeasStopCfmMt[] =
 {
 #ifdef LCKWMILKW
    cmPkLkwL2MeasStopCfm,
-#else
-   PtMiLkwL2MeasStopCfm,
 #endif
 #ifdef SM
    SmMiLkwL2MeasStopCfm,
-#else
-   PtMiLkwL2MeasStopCfm,
 #endif
 };
 #endif /*  LTE_L2_MEAS */
@@ -495,285 +433,6 @@ U8  status;
 
 }
 #endif /*  LTE_L2_MEAS */
-#ifdef PTKWLKW
-
-
-/*************************************************************************
- *                         Porting Functions
- ************************************************************************/
-/*
- *
- *       Fun:   configuration  Confirm
- *
- *       Desc:  This function is used to confirm the receipt of configuration
- *              request from layer management.
- *
- *       Ret:   ROK      - ok
- *
- *       Notes: None
- *
- *       File:  kw_ptmi.c
- *
- */
-
-#ifdef ANSI
-S16 PtMiRlcConfigCfm
-(
-Pst *pst,                    /* post structure */
-RlcMngmt *cfm                 /* Layer Management structure */
-)
-#else
-S16 PtMiRlcConfigCfm(pst, cfm)
-Pst *pst;                    /* post structure */
-RlcMngmt *cfm;                /* Layer Management structure */
-#endif
-{
-   TRC3(PtMiRlcConfigCfm)
-
-   UNUSED(pst);
-   UNUSED(cfm);
-
-   TRC2(PtMiRlcConfigCfm() : function is not implemented)
-
-   return ROK;
-} /* end of PtMiRlcConfigCfm */
-
-/*
- *
- *       Fun:   Control Confirmation
- *
- *       Desc:  This function is the portable version of used to
- *              confirm the receipt of configuration request from
- *              layer management.
- *
- *       Ret:   ROK      - ok
- *
- *       Notes: None
- *
- *       File:  kw_ptmi.c
- *
- */
-
-#ifdef ANSI
-PRIVATE S16 PtMiLkwCntrlCfm
-(
-Pst *pst,                 /* Post structure */
-RlcMngmt *cfm              /* Layer Management structure */
-)
-#else
-PRIVATE S16 PtMiLkwCntrlCfm(pst, cfm)
-Pst *pst;                 /* Post structure */
-RlcMngmt *cfm;             /* Layer Management structure */
-#endif
-{
-   TRC3(PtMiLkwCntrlCfm);
-
-   UNUSED(pst);
-   UNUSED(cfm);
-
-   TRC2(PtMiLkwCntrlCfm() :  function is not implemented)
-
-   return ROK;
-} /* end of PtMiLkwCntrlCfm */
-
-
-/*
- *
- *       Fun:   unsolicited status indication
- *
- *       Desc:  This function is the portable version  used to
- *              send the status indication to the layer manager
- *
- *       Ret:   ROK      - ok
- *
- *       Notes: None
- *
- *       File:  kw_ptmi.c
- *
- */
-#ifdef ANSI
-PRIVATE S16 PtMiLkwStaInd
-(
-Pst *pst,                    /* post structure */
-RlcMngmt *usta                /* unsolicited status */
-)
-#else
-PRIVATE S16 PtMiLkwStaInd(pst, usta)
-Pst *pst;                    /* post structure */
-RlcMngmt *usta;               /* unsolicited status */
-#endif
-{
-   TRC3(PtMiLkwStaInd)
-
-   UNUSED(pst);
-   UNUSED(usta);
-
-   TRC2(PtMiLkwStaInd() : function is not implemented)
-
-   return ROK;
-} /* end of PtMiLkwStaInd */
-
-
-/*
- *
- *       Fun:   portable function for solicited status confirmation
- *
- *       Desc:  This function is the portable version  used to
- *              send the status confirmation to the layer manager
- *
- *       Ret:   ROK      - ok
- *
- *       Notes: None
- *
- *       File:  kw_ptmi.c
- *
- */
-#ifdef ANSI
-PRIVATE S16 PtMiLkwStaCfm
-(
-Pst *pst,                    /* post structure */
-RlcMngmt *cfm                 /* solicited status confirmation */
-)
-#else
-PRIVATE S16 PtMiLkwStaCfm(pst, cfm)
-Pst *pst;                    /* post structure */
-RlcMngmt *cfm;                /* solicited status confirmation */
-#endif
-{
-   TRC3(PtMiLkwStaCfm)
-
-   UNUSED(pst);
-   UNUSED(cfm);
-
-   return ROK;
-} /* end of PtMiLkwStaCfm */
-
-
-/*
- *
- *       Fun:   portable function for statistics confirmation
- *
- *       Desc:  This function is the portable version  used to
- *              send the statistics confirmation to the layer manager
- *
- *       Ret:   ROK      - ok
- *
- *       Notes: None
- *
- *       File:  kw_ptmi.c
- *
- */
-#ifdef ANSI
-PRIVATE S16 PtMiLkwStsCfm
-(
-Pst *pst,                    /* post structure */
-Action action,               /* action */
-RlcMngmt *cfm                 /* statistics confirmation */
-)
-#else
-PRIVATE S16 PtMiLkwStsCfm(pst, action, cfm)
-Pst *pst;                    /* post structure */
-Action action;               /* action */
-RlcMngmt *cfm;                /* statistics confirmation */
-#endif
-{
-   TRC3(PtMiLkwStsCfm)
-
-   UNUSED(pst);
-   UNUSED(action);
-   UNUSED(cfm);
-
-   return ROK;
-} /* end of PtMiLkwStsCfm */
-
-
-/*
- *
- *       Fun:   portable function for trace indication
- *
- *       Desc:  This function is the portable version  used to
- *              send trace indication to the layer manager
- *
- *       Ret:   ROK      - ok
- *
- *       Notes: None
- *
- *       File:  kw_ptmi.c
- *
- */
-#ifdef ANSI
-PRIVATE S16 PtMiLkwTrcInd
-(
-Pst *pst,                    /* post structure */
-RlcMngmt *trc,                /* trace indication */
-Buffer *mBuf                 /* message buffer */
-)
-#else
-PRIVATE S16 PtMiLkwTrcInd(pst, trc, mBuf)
-Pst *pst;                    /* post structure */
-RlcMngmt *trc;                /* trace indication */
-Buffer *mBuf;                /* message buffer */
-#endif
-{
-   TRC3(PtMiLkwTrcInd)
-
-   UNUSED(pst);
-   UNUSED(trc);
-   UNUSED(mBuf);
-
-   return ROK;
-} /* end of PtMiLkwTrcInd */
-
-/* kw005.201 added support for L2 Measurement */
-#ifdef LTE_L2_MEAS
-#ifdef ANSI
-PRIVATE S16 PtMiLkwL2MeasCfm
-(
-Pst * pst,
-RlcL2MeasCfmEvt * measEvt
-)
-#else
-PRIVATE S16 PtMiLkwL2MeasCfm(pst, measEvt)
-Pst * pst;
-RlcL2MeasCfmEvt * measEvt;
-#endif
-{
-
-   TRC3(PtMiLkwL2MeasCfm)
-
-   UNUSED(pst);
-   UNUSED(measEvt);
-
-   return ROK;
-
-}
-#ifdef ANSI
-PRIVATE S16 PtMiLkwL2MeasStopCfm
-(
-Pst * pst,
-U8 measType,
-U8 status
-)
-#else
-PRIVATE S16 PtMiLkwL2MeasStopCfm(pst, measType,status)
-Pst * pst;
-U8  measType;
-U8  status;
-#endif
-{
-
-   TRC3(PtMiLkwL2MeasStopCfm)
-
-   UNUSED(pst);
-   UNUSED(measType);
-   UNUSED(status);
-
-   return ROK;
-
-}
-#endif /*  LTE_L2_MEAS */
-#endif /* PTKWLKW */
-
 
 /********************************************************************30**
 

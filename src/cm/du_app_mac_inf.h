@@ -42,17 +42,12 @@
 #define SS_MONITORING_SYMBOL     0x2000; /* symbol-0, set 14th bit */
 #define SIB1_MCS  4
 
-#define SRB_ID_0 0
-#define SRB_ID_1 1
-
 /* Macro for Ue Context */
-#define MAX_NUM_LOGICAL_CHANNELS 11
 #define MAX_NUM_SR_CFG_PER_CELL_GRP 8   /* Max number of scheduling request config per cell group */
 #define MAC_NUM_TAGS 4                  /* Max number of timing advance groups */
 #define MAX_NUM_BWP  4                  /* Max number of BWP per serving cell */
 #define MAX_NUM_CRSET  3                /* Max number of control resource set in add/modify/release list */
 #define MAX_NUM_SEARCH_SPC  10          /* Max number of search space in add/modify/release list */
-#define FREQ_DOM_RSRC_SIZE  6           /* i.e. 6 bytes because Size of frequency domain resource is 45 bits */
 #define MONITORING_SYMB_WITHIN_SLOT_SIZE 2  /* i.e. 2 bytes because size of monitoring symbols within slot is 14 bits */
 #define MAX_NUM_DL_ALLOC 16             /* Max number of pdsch time domain downlink allocation */
 #define MAX_NUM_UL_ALLOC 16             /* Max number of pusch time domain uplink allocation */
@@ -963,7 +958,7 @@ typedef struct macUeCfg
    SpCellCfg spCellCfg;
    MaxAggrBitRate *maxAggrBitRate;
    uint8_t numLcs;
-   LcCfg lcCfgList[MAX_NUM_LOGICAL_CHANNELS];
+   LcCfg lcCfgList[MAX_NUM_LC];
 }MacUeCfg;
 
 typedef struct nrcgi

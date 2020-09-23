@@ -34,9 +34,6 @@
      File:     kw_umm_dl.c
 
 **********************************************************************/
-static const char* RLOG_MODULE_NAME="RLC";
-static int RLOG_MODULE_ID=2048;
-static int RLOG_FILE_ID=239;
 /** 
  * @file kw_umm_dl.c
  * @brief RLC Unacknowledged Mode downlink module
@@ -78,7 +75,7 @@ extern U32 buffer_occ;
 extern U32 dlrate_kwu;
 #endif
 
-PRIVATE Void rlcUmmEstHdrSz ARGS ((RlcUmDl *umUl));
+PRIVATE void rlcUmmEstHdrSz ARGS ((RlcUmDl *umUl));
 
 PRIVATE Void rlcUmmCreatePdu ARGS ((RlcCb *gCb,
                                   RlcDlRbCb *rbCb, 
@@ -106,26 +103,10 @@ PRIVATE Void rlcUmmCreatePdu ARGS ((RlcCb *gCb,
  *
  * @return  Void
 */  
-#ifdef ANSI
-Void rlcUmmQSdu       
-(
-RlcCb            *gCb,
-RlcDlRbCb        *rbCb, 
-KwuDatReqInfo   *datReq,  
-Buffer          *mBuf 
-)
-#else
-Void rlcUmmQSdu(gCb,rbCb,datReq,mBuf)
-RlcCb            *gCb;
-RlcDlRbCb        *rbCb;
-KwuDatReqInfo   *datReq; 
-Buffer          *mBuf;
-#endif
+void rlcUmmQSdu(RlcCb *gCb, RlcDlRbCb *rbCb, KwuDatReqInfo *datReq, Buffer *mBuf)
 {
    MsgLen   len;    /* SDU buffer length */
    RlcSdu    *sdu;   /* SDU */
-
-   TRC2(rlcUmmQSdu)
 
    RLC_UPD_L2_DL_TOT_SDU_STS(gCb,rbCb);
 
@@ -133,19 +114,18 @@ Buffer          *mBuf;
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if ( sdu == NULLP )
    {
-      RLOG_ARG2(L_FATAL,DBG_RBID,rbCb->rlcId.rbId,
-               "Memory allocation failed UEID:%d CELLID:%d",
+      DU_LOG("\nRLC : Memory allocation failed in rlcUmmQSdu for UEID:%d CELLID:%d",\
                rbCb->rlcId.ueId,
                rbCb->rlcId.cellId);
-      SPutMsg(mBuf);
-      RETVOID;
+      ODU_PUT_MSG_BUF(mBuf);
+      return;
    }
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
 
 /* Discard new changes starts */
    rlcUtlGetCurrTime(&sdu->arrTime);
 /* Discard new changes ends */
-   SFndLenMsg(mBuf,&len);
+   ODU_GET_MSG_LEN(mBuf,&len);
 
    sdu->mBuf = mBuf;
    sdu->sduSz = len;
@@ -170,7 +150,7 @@ Buffer          *mBuf;
 
    if(!rlcDlUtlIsReestInProgress(rbCb))
    {
-      rlcUtlSndDStaRsp(gCb,rbCb,rbCb->m.umDl.bo,rbCb->m.umDl.estHdrSz,FALSE,0);
+      rlcUtlSendDedLcBoStatus(gCb,rbCb,rbCb->m.umDl.bo,rbCb->m.umDl.estHdrSz,FALSE,0);
    }
    
    /* kw005.201 added support for L2 Measurement */
@@ -183,7 +163,7 @@ Buffer          *mBuf;
    }
 #endif
 
-   RETVOID;    
+   return;    
 }
 
 
@@ -205,45 +185,29 @@ Buffer          *mBuf;
  *    -# ROK       In case of success
  *    -# RFAILED   If allocation of Sdu fails
 */  
-#ifdef ANSI
-Void rlcUmmProcessSdus
-(
-RlcCb       *gCb,
-RlcDlRbCb   *rbCb,   
-RlcDatReq   *datReq   
-)
-#else
-Void rlcUmmProcessSdus(gCb, rbCb, datReq)
-RlcCb       *gCb;
-RlcDlRbCb   *rbCb; 
-RlcDatReq   *datReq;
-#endif
+void rlcUmmProcessSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *datReq)
 {
    CmLList     *firstNode;   /* First Node in SDU queue */
-   U8          fi=0;           /* Framing Info */
+   uint8_t      fi=0;           /* Framing Info */
    Buffer      *pdu;         /* Buffer for holding the formed PDU */
    KwPduInfo   *pduInfo;     /* PDU Info pointer */
-   S16         pduSz;        /* PDU Size to be constructed */
+   int16_t     pduSz;        /* PDU Size to be constructed */
    
    /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
    RlcContSduLst         contSduLst;  /*Contained sduLst */
-   S32                  dataVol    = rbCb->m.umDl.bo;
-   U32*                 totMacGrant= &(datReq->totMacGrant);
+   int32_t               dataVol    = rbCb->m.umDl.bo;
+   uint32_t*             totMacGrant= &(datReq->totMacGrant);
    RlcL2MeasDlIpTh       *dlIpThPut = &rbCb->l2MeasIpThruput.dlIpTh;
-   U8                   *sduIdx    = &dlIpThPut->lastSduIdx;
-   Bool                 newIdx = FALSE;
-   S32                  oldBo;
+   uint8_t               *sduIdx    = &dlIpThPut->lastSduIdx;
+   bool                  newIdx = FALSE;
+   int32_t               oldBo;
    RlclchInfo            lchInfo = {0};
-   U32                  segSduCnt = 0;
+   uint32_t              segSduCnt = 0;
 #endif
    Ticks                curTime  = 0;
-   S16                  timeDiff = 0;
+   int16_t              timeDiff = 0;
    RlcSdu                *sdu;
-
-
-   TRC2(rlcUmmProcessSdus)
-
 
    pdu = NULLP;
 
@@ -409,7 +373,7 @@ RlcDatReq   *datReq;
          }
          else
          {
-            SCatMsg(pdu, sdu->mBuf ,M1M2);
+            ODU_CAT_MSG(pdu, sdu->mBuf ,M1M2);
          }
          rbCb->m.umDl.bo -= sdu->sduSz;
 
@@ -431,10 +395,8 @@ RlcDatReq   *datReq;
             {
                 /* Could not transmit what MAC asked for because the number 
                  * of PDUs to be transmitted has reached maximum. */
-               RLOG_ARG2(L_DEBUG,DBG_RBID,rbCb->rlcId.rbId, 
-                        "Maximum Pdu limit has been reached UEID:%d CELLID:%d",
-                        rbCb->rlcId.ueId,
-                        rbCb->rlcId.cellId);
+	       DU_LOG("\nRLC: rlcUmmProcessSdus: Maximum Pdu limit has been reached\
+	          UEID:%d CELLID:%d", rbCb->rlcId.ueId, rbCb->rlcId.cellId);
                break;
             }
          }
@@ -478,7 +440,7 @@ RlcDatReq   *datReq;
       {
          Buffer *remSdu;
        
-         SSegMsg(sdu->mBuf,pduSz,&remSdu);
+         ODU_SEGMENT_MSG(sdu->mBuf,pduSz,&remSdu);
         
 #ifdef LTE_L2_MEAS
         if(RLC_MEAS_IS_DL_IP_MEAS_ON_FOR_RB(gCb, rbCb))
@@ -510,7 +472,7 @@ RlcDatReq   *datReq;
          }
          else 
          {
-            SCatMsg(pdu, sdu->mBuf, M1M2);
+            ODU_CAT_MSG(pdu, sdu->mBuf, M1M2);
             RLC_FREE_BUF_WC(sdu->mBuf);
          }
 
@@ -588,7 +550,7 @@ RlcDatReq   *datReq;
       datReq->boRep.oldestSduArrTime = 
         ((RlcSdu *)(rbCb->m.umDl.sduQ.first->node))->arrTime;
    }
-   RETVOID; 
+   return; 
 }
 
 /**
@@ -656,29 +618,13 @@ RlcDlRbCb       *rbCb;
  *
  * @return  Void
 */ 
-#ifdef ANSI
-PRIVATE Void rlcUmmCreatePdu
-(
-RlcCb        *gCb,
-RlcDlRbCb    *rbCb,           
-Buffer      *pdu,           
-U8          fi, 
-KwPduInfo   *datReqPduInfo
-)
-#else
-PRIVATE Void rlcUmmCreatePdu(gCb, rbCb, pdu, fi, datReqPduInfo)
-RlcCb        *gCb;
-RlcDlRbCb    *rbCb;          
-Buffer      *pdu;           
-U8          fi;
-KwPduInfo   *datReqPduInfo
-#endif
+void rlcUmmCreatePdu(RlcCb *gCb, RlcDlRbCb *rbCb, Buffer *pdu, uint8_t fi, KwPduInfo *datReqPduInfo)
 {
-   RlcSn   sn;        /*  Sequence Number */
-   U32    liCount;   /*  LI count */
-   U8     e = 0;     /* Extension Bit */
-   U32    count;     /* Loop Counter */
-   U32    hdrSz;
+   RlcSn     sn;        /*  Sequence Number */
+   uint32_t  liCount;   /*  LI count */
+   uint8_t   e = 0;     /* Extension Bit */
+   uint32_t  count;     /* Loop Counter */
+   uint32_t  hdrSz;
 
    /* create a big array to store the header, assuming 3 bytes per 2 L1s 
     * (2 bytes if only a single LI) and 2 bytes for the 
@@ -686,16 +632,13 @@ KwPduInfo   *datReqPduInfo
     * size of header = ( NumLi /2 ) * 3 + (NumLi % 2) * 2 + 2;
     * where NumLi = Number of Length Indicators to be sent
    */
-   U8 hdr[((RLC_MAX_DL_LI >> 1) * 3) + ((RLC_MAX_DL_LI & 0x01) << 1) + 2];
-   U32 idx = 0; /* To index to the hdr array */
+   uint8_t hdr[((RLC_MAX_DL_LI >> 1) * 3) + ((RLC_MAX_DL_LI & 0x01) << 1) + 2];
+   uint32_t idx = 0; /* To index to the hdr array */
    
    /* Note: idx is not checked against crossing the hdr array bound as 
     * liCount will be < RLC_MAX_DL_LI and as per the size calculated above; 
     * idx cannot cross the array
     */
-
-   TRC2(rlcUmmCreatePdu) 
-
 
    /* stats updated before for bytes sent before adding RLC headers */
    rlcUtlIncrementGenStsBytesAndPdusSent(&gCb->genSts, pdu);
@@ -773,10 +716,10 @@ KwPduInfo   *datReqPduInfo
    rbCb->m.umDl.vtUs = (rbCb->m.umDl.vtUs + 1) & rbCb->m.umDl.modBitMask;
 
    /* add the header to the beginning of the pdu */
-   SAddPreMsgMultInOrder(hdr, idx, pdu);
+   ODU_ADD_PRE_MSG_MULT_IN_ORDER(hdr, idx, pdu);
 
    datReqPduInfo->mBuf[datReqPduInfo->numPdu++] = pdu;
-   RETVOID;
+   return;
 }
 
 /**
@@ -792,15 +735,7 @@ KwPduInfo   *datReqPduInfo
  *
  * @return  Void
 */ 
-#ifdef ANSI
-PRIVATE Void rlcUmmEstHdrSz
-(
-RlcUmDl *umDl          
-)
-#else
-PRIVATE Void rlcUmmEstHdrSz(umDl)
-RlcUmDl *umDl;          
-#endif
+void rlcUmmEstHdrSz(RlcUmDl *umDl)
 {
    /* The header size is estimated as :
           If sdu count = 0 then 0
@@ -809,7 +744,7 @@ RlcUmDl *umDl;
     */   
    umDl->estHdrSz = (umDl->sduQ.count)?((umDl->sduQ.count << 1) + 1) : 0;
    
-   RETVOID;
+   return;
 }
 
 /**

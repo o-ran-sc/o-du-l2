@@ -34,10 +34,6 @@
      File:     kw_umm_ul.c
 
 **********************************************************************/
-static const char* RLOG_MODULE_NAME="RLC";
-static int RLOG_MODULE_ID=2048;
-static int RLOG_FILE_ID=240;
-
 /** 
  * @file kw_umm_ul.c
  * @brief RLC Unacknowledged Mode uplink module
@@ -69,12 +65,12 @@ static int RLOG_FILE_ID=240;
 
 #define RLC_MODULE (RLC_DBGMASK_UM | RLC_DBGMASK_UL)
 
-PRIVATE S16 rlcUmmExtractHdr ARGS ((RlcCb *gCb, 
+uint8_t rlcUmmExtractHdr ARGS ((RlcCb *gCb, 
                                    RlcUlRbCb *rbCb,
                                    Buffer *pdu,
                                    RlcUmHdr *umHdr));
 
-PRIVATE Void rlcUmmReAssembleSdus ARGS ((RlcCb *gCb,
+void rlcUmmReAssembleSdus ARGS ((RlcCb *gCb,
                                         RlcUlRbCb *rbCb,
                                         RlcUmRecBuf *umRecBuf));
 
@@ -96,7 +92,7 @@ extern U32 isMemThreshReached(Region region);
  *
  * @return  Void
 */ 
-PRIVATE Void rlcUmmFindNextVRUR (RlcUmUl* umUl, RlcSn nextSn)
+void rlcUmmFindNextVRUR (RlcUmUl* umUl, RlcSn nextSn)
 {
    RlcSn ur = RLC_UM_GET_VALUE(umUl->vrUr, *umUl);
    
@@ -127,8 +123,7 @@ PRIVATE Void rlcUmmFindNextVRUR (RlcUmUl* umUl, RlcSn nextSn)
  *
  * @return  Void
 */
-PRIVATE S16 rlcUmmCheckSnInReordWindow (RlcSn sn, 
-                                       CONSTANT RlcUmUl* CONSTANT umUl)  
+int16_t rlcUmmCheckSnInReordWindow (RlcSn sn, CONSTANT RlcUmUl* CONSTANT umUl)  
 {
    return (RLC_UM_GET_VALUE(sn, *umUl) < RLC_UM_GET_VALUE(umUl->vrUh, *umUl)); 
 }
@@ -150,51 +145,20 @@ PRIVATE S16 rlcUmmCheckSnInReordWindow (RlcSn sn,
 */
 /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
-
-#ifdef ANSI
-Void rlcUmmProcessPdus
-(
-RlcCb      *gCb,
-RlcUlRbCb  *rbCb,                   /* Rb Control Block */
-KwPduInfo *pduInfo,                 /* Pdu  data and related information */
-U32       ttiCnt                  /* ttiCnt received from MAC */
-)
+void rlcUmmProcessPdus(RlcCb *gCb, RlcUlRbCb  *rbCb, KwPduInfo *pduInfo, uint32_t ttiCnt)
 #else
-Void rlcUmmProcessPdus(rbCb,pduInfo,ttiCnt)
-RlcCb      *gCb;
-RlcUlRbCb  *rbCb;                   /* Rb Control Block */
-KwPduInfo *pduInfo;                /* Pdu  data and related information */
-U32       ttiCnt;                  /* ttiCnt received from MAC */
-#endif
-#else
-#ifdef ANSI
-Void rlcUmmProcessPdus
-(
-RlcCb      *gCb,
-RlcUlRbCb  *rbCb,                /* Rb Control Block */
-KwPduInfo *pduInfo              /* Pdu  data and related information */
-)
-#else
-Void rlcUmmProcessPdus(rbCb,pduInfo)
-RlcCb      *gCb;
-RlcUlRbCb  *rbCb;                /* Rb Control Block */
-KwPduInfo *pduInfo;             /* Pdu  data and related information */
-#endif
+void rlcUmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
 #endif
 {
-   RlcSn          *vrUh;      /* vr(uh) */
-   RlcSn          *vrUr;      /* vr(ur) */
+   RlcSn         *vrUh;      /* vr(uh) */
+   RlcSn         *vrUr;      /* vr(ur) */
    RlcSn         *vrUx;      /* vr(ux) */
-   U16          curSn;      /* Current Sequence Number */
-   U32          pduCount;   /* PDU count */
-   U32          count;      /* Loop counter */
+   uint16_t      curSn;      /* Current Sequence Number */
+   uint32_t      pduCount;   /* PDU count */
+   uint32_t      count;      /* Loop counter */
    RlcUmRecBuf   **recBuf;   /* UM Reception Buffer */
 
-   Bool         tmrRunning;   /* Boolean for checking Tmr */
-/* kw005.201 added support for L2 Measurement */
-
-   TRC2(rlcUmmProcessPdus)
-
+   bool         tmrRunning;   /* Boolean for checking Tmr */
 
    count = 0;
 
@@ -217,9 +181,9 @@ KwPduInfo *pduInfo;             /* Pdu  data and related information */
 #ifndef RGL_SPECIFIC_CHANGES
 #ifndef TENB_ACC
 #ifndef LTE_PAL_ENB
-      extern U32 ulrate_rgu;
+      extern uint32_t ulrate_rgu;
       MsgLen len;
-      SFndLenMsg(pdu, &len);
+      ODU_GET_MSG_LEN(pdu, &len);
       ulrate_rgu += len;
 #endif
 #endif      
@@ -229,13 +193,10 @@ KwPduInfo *pduInfo;             /* Pdu  data and related information */
 #if (ERRCLASS & ERRCLS_ADD_RES)
       if (tmpRecBuf == NULLP)
       {   
-         RLOG_ARG2(L_FATAL, DBG_RBID,rbCb->rlcId.rbId,
-                  "Memory allocation failed UEID:%d CELLID:%d",
-                  rbCb->rlcId.ueId,
-                  rbCb->rlcId.cellId);
-         SPutMsg(pdu);
-
-         RETVOID;
+         DU_LOG("\nRLC : rlcUmmProcessPdus: Memory allocation failed UEID:%d CELLID:%d",\
+            rbCb->rlcId.ueId, rbCb->rlcId.cellId);
+         ODU_PUT_MSG_BUF(pdu);
+	 return;
       }
 #endif /* ERRCLASS & ERRCLS_ADD_RES */      
       /* ccpu00142274 - UL memory based flow control*/ 
@@ -246,7 +207,7 @@ KwPduInfo *pduInfo;             /* Pdu  data and related information */
 #ifndef XEON_SPECIFIC_CHANGES    
      if(isMemThreshReached(rlcCb[0]->init.region) == TRUE)
      {
-        extern U32 rlculdrop;
+        extern uint32_t rlculdrop;
         rlculdrop++;
         RLC_FREE_BUF(pdu);
         RLC_FREE_WC(gCb, tmpRecBuf, sizeof(RlcUmRecBuf));
@@ -262,16 +223,14 @@ KwPduInfo *pduInfo;             /* Pdu  data and related information */
       /* get the pdu header */
       if (rlcUmmExtractHdr(gCb, rbCb, pdu, &(tmpRecBuf->umHdr)))  
       {
-         RLOG_ARG2(L_ERROR,DBG_RBID,rbCb->rlcId.rbId,
-                  "Header Extraction Failed UEID:%d CELLID:%d",
-                  rbCb->rlcId.ueId,
-                  rbCb->rlcId.cellId);
+         DU_LOG("\nRLC : rlcUmmProcessPdus: Header Extraction Failed UEID:%d CELLID:%d",\
+             rbCb->rlcId.ueId, rbCb->rlcId.cellId);
 
          /* Header extraction is a problem. 
           * log an error and free the allocated memory */
          /* ccpu00136940 */
          RLC_FREE_WC(gCb, tmpRecBuf, sizeof(RlcUmRecBuf));
-         SPutMsg(pdu);
+         ODU_PUT_MSG_BUF(pdu);
          count++;
          /* kw005.201 ccpu00117318, updating the statistics */
          gCb->genSts.errorPdusRecv++;
@@ -288,11 +247,8 @@ KwPduInfo *pduInfo;             /* Pdu  data and related information */
           (seqNum < ur)) 
       {
          /* PDU needs to be discarded */
-         RLOG_ARG3(L_DEBUG,DBG_RBID,rbCb->rlcId.rbId,
-                  "Received a duplicate pdu with sn %d UEID:%d CELLID:%d",
-                  curSn,
-                  rbCb->rlcId.ueId,
-                  rbCb->rlcId.cellId);
+         DU_LOG("\nRLC : rlcUmmProcessPdus: Received a duplicate pdu with sn %d \
+	    UEID:%d CELLID:%d", curSn, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
 
          RLC_FREE_BUF(pdu);
          RLC_FREE_WC(gCb, tmpRecBuf, sizeof(RlcUmRecBuf));
@@ -313,7 +269,7 @@ KwPduInfo *pduInfo;             /* Pdu  data and related information */
       recBuf[curSn] = tmpRecBuf;
 
       recBuf[curSn]->pdu = pdu;
-      SFndLenMsg(pdu,&(recBuf[curSn]->pduSz));
+      ODU_GET_MSG_LEN(pdu,&(recBuf[curSn]->pduSz));
       /* kw005.201 ccpu00117318, updating the statistics */
       gCb->genSts.bytesRecv += recBuf[curSn]->pduSz;
       
@@ -401,7 +357,7 @@ KwPduInfo *pduInfo;             /* Pdu  data and related information */
 #ifdef LTE_L2_MEAS
    rlcUtlCalUlIpThrPutIncTTI(gCb, rbCb,ttiCnt);
 #endif /* LTE_L2_MEAS */
-   RETVOID;   
+   return;   
 }
 
 /**
@@ -417,31 +373,16 @@ KwPduInfo *pduInfo;             /* Pdu  data and related information */
  *
  * @return  Void
 */
-#ifdef ANSI
-PRIVATE Void rlcUmmReAssembleSdus
-(
-RlcCb         *gCb,
-RlcUlRbCb     *rbCb,   
-RlcUmRecBuf   *umRecBuf 
-)
-#else
-PRIVATE Void rlcUmmReAssembleSdus(gCb,rbCb,umRecBuf)
-RlcCb         *gCb;
-RlcUlRbCb     *rbCb;     
-RlcUmRecBuf   *umRecBuf; 
-#endif
+void rlcUmmReAssembleSdus(RlcCb *gCb, RlcUlRbCb *rbCb, RlcUmRecBuf *umRecBuf)
 {
-   U32      liCount;        /* LI count */
-   U32      count;          /* Loop counter */
-   U8       fi;             /* Framing Info */
-   U16      sn;             /* Sequence Number of current PDU */
-   MsgLen   len;            /* PDU Length */
-   Buffer   *sdu;           /* SDU to be sent to upper layer */
-   Buffer   *remPdu;        /* Remaining PDU */
-   Buffer   **partialSdu;   /* Partial SDU */
-
-   TRC2(rlcUmmReAssembleSdus)  
-
+   uint32_t  liCount;        /* LI count */
+   uint32_t  count;          /* Loop counter */
+   uint8_t   fi;             /* Framing Info */
+   uint16_t  sn;             /* Sequence Number of current PDU */
+   MsgLen    len;            /* PDU Length */
+   Buffer    *sdu;           /* SDU to be sent to upper layer */
+   Buffer    *remPdu;        /* Remaining PDU */
+   Buffer    **partialSdu;   /* Partial SDU */
 
    liCount = umRecBuf->umHdr.numLi;
    fi = umRecBuf->umHdr.fi;
@@ -455,13 +396,13 @@ RlcUmRecBuf   *umRecBuf;
       {
          if (!(umRecBuf->pdu))
          {
-            RETVOID;
+            return;
          }
-         SFndLenMsg(umRecBuf->pdu,&len);
+         ODU_GET_MSG_LEN(umRecBuf->pdu,&len);
       }
          
       /* get the sdu out of the pdu */
-      SSegMsg(umRecBuf->pdu,len,&remPdu);
+      ODU_SEGMENT_MSG(umRecBuf->pdu,len,&remPdu);
       sdu = umRecBuf->pdu;
       umRecBuf->pdu = remPdu;
       
@@ -493,11 +434,11 @@ RlcUmRecBuf   *umRecBuf;
             if ((*partialSdu) && 
                 (sn == ((rbCb->m.umUl.sn + 1) & rbCb->m.umUl.modBitMask)))
             {
-               SCatMsg(*partialSdu,sdu,M1M2);
+               ODU_CAT_MSG(*partialSdu,sdu,M1M2);
                RLC_FREE_BUF(sdu);
                if (liCount > 0 || !(fi & 1))
                {
-                  rlcUtlSndDatInd(gCb,rbCb,*partialSdu);
+                  rlcUtlSendUlDataToDu(gCb,rbCb,*partialSdu);
                   *partialSdu = NULLP;
                }
             }
@@ -524,7 +465,7 @@ RlcUmRecBuf   *umRecBuf;
             
             if (liCount > 0 || !( fi & 1))
             {
-               rlcUtlSndDatInd(gCb,rbCb,sdu);
+               rlcUtlSendUlDataToDu(gCb,rbCb,sdu);
             }
             else
             {
@@ -545,7 +486,7 @@ RlcUmRecBuf   *umRecBuf;
          }
          else
          {
-            rlcUtlSndDatInd(gCb, rbCb, sdu);
+            rlcUtlSendUlDataToDu(gCb, rbCb, sdu);
          }
       }
       /*  
@@ -553,12 +494,12 @@ RlcUmRecBuf   *umRecBuf;
          just send the SDU to the upper layer */
       else
       {
-         rlcUtlSndDatInd(gCb, rbCb, sdu);
+         rlcUtlSendUlDataToDu(gCb, rbCb, sdu);
       }
    }
    rbCb->m.umUl.sn = sn;
 
-   RETVOID;
+   return;
 }
 
 /**
@@ -650,50 +591,30 @@ RlcUlRbCb     *rbCb;
  *      -# TRUE 
  *      -# FALSE
 */
-#ifdef ANSI
-PRIVATE S16 rlcUmmExtractHdr
-(
-RlcCb       *gCb,
-RlcUlRbCb   *rbCb, 
-Buffer     *pdu, 
-RlcUmHdr    *umHdr 
-)
-#else
-PRIVATE S16 rlcUmmExtractHdr(gCb, rbCb, pdu, umHdr)
-RlcCb       *gCb;
-RlcUlRbCb   *rbCb; 
-Buffer     *pdu; 
-RlcUmHdr    *umHdr; 
-#endif
+uint8_t rlcUmmExtractHdr(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *pdu, RlcUmHdr *umHdr)
 {
-   U8        e;         /* Extension Bit */
+   uint8_t   e;         /* Extension Bit */
    Data      dst[2];    /* Destination Buffer */
-   S32       totalSz;   /* Sum of LIs */
+   int32_t   totalSz;   /* Sum of LIs */
    MsgLen    pduSz;     /* PDU size */
 #if (ERRCLASS & ERRCLS_DEBUG)
-   S16       ret;       /* Return Value */
+   uint8_t   ret;       /* Return Value */
 #endif
 
-   TRC3(rlcUmmExtractHdr)
-
-
-   SFndLenMsg(pdu,&pduSz);
+   ODU_GET_MSG_LEN(pdu,&pduSz);
  
    if ( rbCb->m.umUl.snLen == 1)
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
-      ret = SRemPreMsg(dst,pdu);
+      ret = ODU_REM_PRE_MSG(dst,pdu);
       if (ret != ROK)
       {
-         RLOG_ARG2(L_ERROR,DBG_RBID,rbCb->rlcId.rbId,
-                  "SRemPreMsg Failed for 5 bit SN UEID:%d CELLID:%d",
-                  rbCb->rlcId.ueId,
-                  rbCb->rlcId.cellId);
-
+         DU_LOG("\nRLC : rlcUmmExtractHdr : ODU_REM_PRE_MSG Failed for 5 bit SN \
+	    UEID:%d CELLID:%d", rbCb->rlcId.ueId, rbCb->rlcId.cellId);
          return RFAILED;
       }
 #else
-      SRemPreMsg(dst,pdu);
+      ODU_REM_PRE_MSG(dst,pdu);
 #endif
       pduSz--;
       umHdr->sn = (dst[0]) & 0x1F; 
@@ -704,17 +625,15 @@ RlcUmHdr    *umHdr;
    {
       /* snLen - sequnce length will be 10 bits requiring 2 bytes */ 
 #if (ERRCLASS & ERRCLS_DEBUG)
-      ret = SRemPreMsgMult(dst,2,pdu);
+      ret = ODU_REM_PRE_MSG_MULT(dst,2,pdu);
       if (ret != ROK)
       {
-         RLOG_ARG2(L_ERROR,DBG_RBID,rbCb->rlcId.rbId,
-                  "SRemPreMsgMult Failed for 10 bits SN UEID:%d CELLID:%d",
-                  rbCb->rlcId.ueId,
-                  rbCb->rlcId.cellId);
+         DU_LOG("\nRLC : rlcUmmExtractHdr : ODU_REM_PRE_MSG_MULT Failed for 10 bits SN \
+	    UEID:%d CELLID:%d", rbCb->rlcId.ueId, rbCb->rlcId.cellId);
          return RFAILED;
       }
 #else
-      SRemPreMsgMult(dst,2,pdu);
+      ODU_REM_PRE_MSG_MULT(dst,2,pdu);
 #endif
       pduSz -= 2;
    
@@ -734,42 +653,31 @@ RlcUmHdr    *umHdr;
    while(e && umHdr->numLi < RLC_MAX_UL_LI )
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
-      ret = SRemPreMsgMult(dst,2,pdu);
+      ret = ODU_REM_PRE_MSG_MULT(dst,2,pdu);
       if (ret != ROK)
       {
-         RLOG_ARG2(L_ERROR,DBG_RBID,rbCb->rlcId.rbId,
-                  "SRemPreMsgMult Failed UEID:%d CELLID:%d",
-                  rbCb->rlcId.ueId,
-                  rbCb->rlcId.cellId);
+         DU_LOG("\nRLC : rlcUmmExtractHdr : ODU_REM_PRE_MSG_MULT Failed UEID:%d CELLID:%d",\
+            rbCb->rlcId.ueId, rbCb->rlcId.cellId);
          return RFAILED;
       }
 #else
-      SRemPreMsgMult(dst,2,pdu);
+      ODU_REM_PRE_MSG_MULT(dst,2,pdu);
 #endif
       umHdr->li[umHdr->numLi] = ((dst[0]) & 0x7F) << 4;
       umHdr->li[umHdr->numLi] |= dst[1] >> 4;
       if ( 0 == umHdr->li[umHdr->numLi] )
       {
-         RLOG_ARG2(L_ERROR,DBG_RBID,rbCb->rlcId.rbId,
-                  "Received LI as 0 UEID:%d CELLID:%d",
-                  rbCb->rlcId.ueId,
-                  rbCb->rlcId.cellId);
+         DU_LOG("\nRLC : rlcUmmExtractHdr : Received LI as 0 UEID:%d CELLID:%d",
+            rbCb->rlcId.ueId, rbCb->rlcId.cellId);
          return RFAILED; 
       }
       totalSz += umHdr->li[umHdr->numLi];
       if ( pduSz <=  totalSz )
       {
-         RLOG_ARG3(L_ERROR,DBG_RBID,rbCb->rlcId.rbId,
-                  "SN [%d]: UEID:%d CELLID:%d",
-                  umHdr->sn, 
-                  rbCb->rlcId.ueId,
-                  rbCb->rlcId.cellId);
-         RLOG_ARG4(L_ERROR,DBG_RBID,rbCb->rlcId.rbId,
-                  "Corrupted PDU as TotSz[%lu] PduSz[%lu] UEID:%d CELLID:%d ",
-                  totalSz, 
-                  pduSz,
-                  rbCb->rlcId.ueId,
-                  rbCb->rlcId.cellId);
+         DU_LOG("\nRLC : rlcUmmExtractHdr : SN [%d]: UEID:%d CELLID:%d",\
+            umHdr->sn, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
+         DU_LOG("\nRLC : rlcUmmExtractHdr : Corrupted PDU as TotSz[%d] PduSz[%d] \
+	    UEID:%d CELLID:%d ", totalSz, pduSz, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
          return RFAILED; /* the situation where in the PDU size 
                             is something that does not match with 
                             the size in LIs*/
@@ -786,27 +694,23 @@ RlcUmHdr    *umHdr;
 
 
 #if (ERRCLASS & ERRCLS_DEBUG)
-         ret = SRemPreMsg(dst,pdu);
+         ret = ODU_REM_PRE_MSG(dst,pdu);
          if (ret != ROK)
          {
-            RLOG_ARG2(L_ERROR,DBG_RBID,rbCb->rlcId.rbId,
-                     "SRemPreMsg Failed UEID:%d CELLID:%d",
-                     rbCb->rlcId.ueId,
-                     rbCb->rlcId.cellId);
+            DU_LOG("\nRLC : rlcUmmExtractHdr : ODU_REM_PRE_MSG Failed UEID:%d CELLID:%d",
+               rbCb->rlcId.ueId, rbCb->rlcId.cellId);
             return RFAILED;
          }
 #else
-         SRemPreMsg(dst,pdu);
+         ODU_REM_PRE_MSG(dst,pdu);
 #endif
          umHdr->li[umHdr->numLi] |= ( dst[0] );    /* The first byte lies in 
                                                    the first 8 bits.We want 
                                                    them in the last 8 bits */
          if ( 0 == umHdr->li[umHdr->numLi] )
          {
-            RLOG_ARG2(L_ERROR,DBG_RBID,rbCb->rlcId.rbId,
-                     "Received LI as 0 UEID:%d CELLID:%d",
-                     rbCb->rlcId.ueId,
-                     rbCb->rlcId.cellId);
+            DU_LOG("\nRLC : rlcUmmExtractHdr :Received LI as 0 UEID:%d CELLID:%d",
+               rbCb->rlcId.ueId, rbCb->rlcId.cellId);
             return RFAILED; 
          }
          totalSz += umHdr->li[umHdr->numLi];

@@ -26,15 +26,15 @@
 #define RLC_DL_INST   1
 
 /* Fill Pst structure for sending msg from RLC to DUAPP */
-#define FILL_PST_RLC_TO_DUAPP(_pst, _procId, _srcInst, _event) \
+#define FILL_PST_RLC_TO_DUAPP(_pst, _srcInst, _event) \
 {                                                              \
    _pst.selector    = ODU_SELECTOR_LWLC;                       \
-   _pst.srcEnt      = ENTRLC;                                   \
+   _pst.srcEnt      = ENTRLC;                                  \
    _pst.dstEnt      = ENTDUAPP;                                \
    _pst.dstInst     = 0;                                       \
    _pst.srcInst     = _srcInst;                                \
-   _pst.dstProcId   = _procId;                                 \
-   _pst.srcProcId   = _procId;                                 \
+   _pst.dstProcId   = ODU_GET_PROCID();                        \
+   _pst.srcProcId   = ODU_GET_PROCID();                        \
    if(_srcInst == RLC_UL_INST)                                 \
    {                                                           \
       _pst.region   = RLC_MEM_REGION_UL;                       \
@@ -50,7 +50,30 @@
    _pst.intfVer     = 0;                                       \
 }
 
-void reverseFixBuf(uint8_t *buf, uint16_t len);
+#define FILL_PST_RLC_TO_MAC(_pst, _srcInst, _event)    \
+{                                                      \
+   pst.selector  = ODU_SELECTOR_LWLC;                  \
+   pst.srcEnt    = ENTRLC;                             \
+   pst.dstEnt    = ENTMAC;                             \
+   pst.dstInst   = 0;                                  \
+   pst.srcInst   = _srcInst;                           \
+   pst.dstProcId = ODU_GET_PROCID();                   \
+   pst.srcProcId = ODU_GET_PROCID();                   \
+   if(_srcInst == RLC_UL_INST)                         \
+   {                                                   \
+      pst.region    = RLC_MEM_REGION_UL;               \
+   }                                                   \
+   else if(_srcInst == RLC_DL_INST)                    \
+   {                                                   \
+      pst.region    = RLC_MEM_REGION_DL;               \
+   }                                                   \
+   pst.pool      = RLC_POOL;                           \
+   pst.event     = _event;                             \
+   pst.route     = 0;                                  \
+   pst.prior     = 0;                                  \
+   pst.intfVer   = 0;                                  \
+}
+
 uint16_t getTransId();
 
 /**********************************************************************

@@ -618,20 +618,20 @@ EXTERN RlcCb *rlcCb[MAX_RLC_INSTANCES];   /*!< RLC global control block */
 /****************************************************************************
  *                      EXTERN Declarations
  ***************************************************************************/
-EXTERN S16 rlcGetSId ARGS((SystemId *s));
+S16 rlcGetSId ARGS((SystemId *s));
 
-EXTERN Void rlcTmrExpiry ARGS((PTR cb, S16 tmrEvnt));
+Void rlcTmrExpiry ARGS((PTR cb, S16 tmrEvnt));
 
-EXTERN S16 rlcLmmSendTrc ARGS ((RlcCb *gCb, Event event, Buffer *mBuf));
+S16 rlcLmmSendTrc ARGS ((RlcCb *gCb, Event event, Buffer *mBuf));
 
-EXTERN Void rlcStartTmr ARGS((RlcCb *gCb, PTR cb, S16 tmrEvnt));
+void rlcStartTmr ARGS((RlcCb *gCb, PTR cb, S16 tmrEvnt));
 
-EXTERN Void rlcStopTmr  ARGS((RlcCb *gCb, PTR cb, U8 tmrType));
+void rlcStopTmr  ARGS((RlcCb *gCb, PTR cb, U8 tmrType));
 
-EXTERN Bool rlcChkTmr ARGS((RlcCb *gCb,PTR cb, S16 tmrEvnt));
+bool rlcChkTmr ARGS((RlcCb *gCb,PTR cb, S16 tmrEvnt));
 
 #ifdef LTE_L2_MEAS
-EXTERN Void rlcLmmSendAlarm ARGS (( RlcCb *gCb,
+Void rlcLmmSendAlarm ARGS (( RlcCb *gCb,
                                    U16 category, 
                                    U16 event, 
                                    U16 cause, 
@@ -639,17 +639,17 @@ EXTERN Void rlcLmmSendAlarm ARGS (( RlcCb *gCb,
                                    U32 ueId, 
                                    U8 qci));
 
-EXTERN S16 RlcMiRlcDlL2MeasReq ARGS (( Pst *pst, RlcL2MeasReqEvt *measReqEvt ));
-EXTERN S16 RlcMiRlcDlL2MeasSendReq ARGS((Pst *pst,U8 measType));
-EXTERN S16 RlcMiRlcDlL2MeasStopReq ARGS((Pst *pst,U8 measType));
-EXTERN S16 RlcMiRlcUlL2MeasReq ARGS (( Pst *pst, RlcL2MeasReqEvt *measReqEvt ));
-EXTERN S16 RlcMiRlcUlL2MeasSendReq ARGS((Pst *pst,U8 measType));
-EXTERN S16 RlcMiRlcUlL2MeasStopReq ARGS((Pst *pst,U8 measType));
-EXTERN Void rlcUtlPlcMeasDatInL2Sts ARGS((RlcL2Cntr *measData, 
+S16 RlcMiRlcDlL2MeasReq ARGS (( Pst *pst, RlcL2MeasReqEvt *measReqEvt ));
+S16 RlcMiRlcDlL2MeasSendReq ARGS((Pst *pst,U8 measType));
+S16 RlcMiRlcDlL2MeasStopReq ARGS((Pst *pst,U8 measType));
+S16 RlcMiRlcUlL2MeasReq ARGS (( Pst *pst, RlcL2MeasReqEvt *measReqEvt ));
+S16 RlcMiRlcUlL2MeasSendReq ARGS((Pst *pst,U8 measType));
+S16 RlcMiRlcUlL2MeasStopReq ARGS((Pst *pst,U8 measType));
+Void rlcUtlPlcMeasDatInL2Sts ARGS((RlcL2Cntr *measData, 
                                          RlcL2MeasRbCb *rbL2Cb,
                                          U8 measType));
 #else /* LTE_L2_MEAS */
-EXTERN Void rlcLmmSendAlarm ARGS ((RlcCb *gCb,
+Void rlcLmmSendAlarm ARGS ((RlcCb *gCb,
                                   U16 category, 
                                   U16 event, 
                                   U16 cause, 
