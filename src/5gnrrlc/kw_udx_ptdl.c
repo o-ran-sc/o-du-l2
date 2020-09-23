@@ -428,23 +428,8 @@ CmStatus      status;
 } /* end of rlcDlUdxBndCfm */
 
 
-
-#ifdef ANSI
-S16 rlcDlUdxStaProhTmrStart
-(
-Pst                 *pst,                       /* post structure */
-SuId                suId,                      /* Service User Id */
-CmLteRlcId          *rlcId
-)
-#else
-S16 rlcDlUdxStaProhTmrStart(pst, suId, rlcId)
-Pst           *pst;            /* post structure */
-SuId          suId;            /* Service User Id */
-CmLteRlcId    *rlcId;
-#endif
+uint8_t rlcDlUdxStaProhTmrStart(Pst *pst, SuId suId, CmLteRlcId *rlcId)
 {
-   TRC3(rlcDlUdxStaProhTmrStart)
-
    /* jump to specific primitive depending on configured selector */
    (*rlcDlUdxStaProhTmrStartMt[pst->selector])(pst, suId, rlcId);
 

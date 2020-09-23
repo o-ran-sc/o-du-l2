@@ -361,11 +361,11 @@ typedef struct rlcL2MeasCfmEvt
 
 /* Control primitives towards LTE RLC */
 /* Pointer functions to pack/unpack primitives */
-typedef S16 (*RlcConfigReq)   ARGS((Pst *pst, RlcMngmt *cfg));
-typedef S16 (*RlcConfigCfm)   ARGS((Pst *pst, RlcMngmt *cfgCfm));
+typedef uint8_t (*RlcConfigReq)   ARGS((Pst *pst, RlcMngmt *cfg));
+typedef uint8_t (*RlcConfigCfm)   ARGS((Pst *pst, RlcMngmt *cfgCfm));
 
-typedef S16 (*LkwCntrlReq) ARGS((Pst *pst, RlcMngmt *cntl));
-typedef S16 (*LkwCntrlCfm) ARGS((Pst *pst, RlcMngmt *cntlCfm));
+typedef uint8_t (*LkwCntrlReq) ARGS((Pst *pst, RlcMngmt *cntl));
+typedef uint8_t (*LkwCntrlCfm) ARGS((Pst *pst, RlcMngmt *cntlCfm));
 
 typedef S16 (*LkwStaInd)   ARGS((Pst *pst, RlcMngmt *staInd)); 
 typedef S16 (*LkwStaReq)   ARGS((Pst *pst, RlcMngmt *staReq));
@@ -393,7 +393,7 @@ typedef S16 (*LkwL2MeasStopCfm)   ARGS((Pst *pst, U8 measType,U8 status));
 @return ROK if success , RFAILED if failure
 
 */
-EXTERN S16 RlcMiRlcConfigReq ARGS((Pst *pst, RlcMngmt *cfg));
+uint8_t RlcMiRlcConfigReq ARGS((Pst *pst, RlcMngmt *cfg));
 
 /**
 @details This function is called by the RlcMiRlcConfigReq function for responding to configuration requests.The cfm field in the RlcMngmt  structure contains the response value.
@@ -402,7 +402,7 @@ EXTERN S16 RlcMiRlcConfigReq ARGS((Pst *pst, RlcMngmt *cfg));
 @param[in] cfm  - Configuration management structure
 @return ROK if success , RFAILED if failure
 */
-EXTERN S16 RlcMiRlcConfigCfm ARGS((Pst *pst, RlcMngmt *cfgCfm));
+S16 RlcMiRlcConfigCfm ARGS((Pst *pst, RlcMngmt *cfgCfm));
 
 /**
 @details
@@ -415,7 +415,7 @@ control request primitive is confirmed by a RlcMiLkwCntrlCfm primitive.
 @param[in] cntl - Configuration management structure
 @return ROK if success , RFAILED if failure
 */
-EXTERN S16 RlcMiLkwCntrlReq ARGS((Pst *pst, RlcMngmt *cntl));
+uint8_t RlcMiLkwCntrlReq ARGS((Pst *pst, RlcMngmt *cntl));
 
 /**
 @details
@@ -425,7 +425,7 @@ This function is called by the RlcMiLkwCntrlReq function to send a control confi
 @param[in] cfm  - Configuration management structure
 @return ROK if success , RFAILED if failure
 */
-EXTERN S16 RlcMiLkwCntrlCfm ARGS((Pst *pst, RlcMngmt *cntlCfm));
+S16 RlcMiLkwCntrlCfm ARGS((Pst *pst, RlcMngmt *cntlCfm));
 
 /**
 @details
@@ -436,7 +436,7 @@ P,KWSAP, or CKSAP.
 @param[in] cfg  - Configuration management structure
 @return ROK if success , RFAILED if failure
 */
-EXTERN S16 RlcMiLkwStaReq ARGS((Pst *pst, RlcMngmt *staInd));
+S16 RlcMiLkwStaReq ARGS((Pst *pst, RlcMngmt *staInd));
 
 /**
 @details
@@ -447,7 +447,7 @@ us information to the layer manager.
 @param[in] stacfm - Configuration management structure
 @return ROK if success , RFAILED if failure
 */
-EXTERN S16 RlcMiLkwStaCfm ARGS((Pst *pst, RlcMngmt *staCfm));
+S16 RlcMiLkwStaCfm ARGS((Pst *pst, RlcMngmt *staCfm));
 
 /**
 @details
@@ -458,7 +458,7 @@ This function processes statistics requests received from the layer manager. Aft
 @param[in] sts   - Configuration management structure
 @return ROK if success , RFAILED if failure
 */
-EXTERN S16 RlcMiLkwStsReq ARGS((Pst *pst, Action, RlcMngmt *sts));
+S16 RlcMiLkwStsReq ARGS((Pst *pst, Action, RlcMngmt *sts));
 /**
 @details
 This function is called by the RlcMiLkwStsReq function for responding to statisti
@@ -469,7 +469,7 @@ cs requests.
 @param[in] cfg  - Configuration management structure
 @return ROK if success , RFAILED if failure
 */
-EXTERN S16 RlcMiLkwStsCfm ARGS((Pst *pst, Action action, RlcMngmt *stsCfm));
+S16 RlcMiLkwStsCfm ARGS((Pst *pst, Action action, RlcMngmt *stsCfm));
 /**
 @details
 This function is used by RLC module to send unsolicited trace indications to
@@ -480,7 +480,7 @@ the layer manager, when tracing is enabled by the layer manager through a previo
 @param[in] buf  - buffer 
 @return ROK if success , RFAILED if failure
 */
-EXTERN S16 RlcMiLkwTrcInd ARGS ((Pst *pst, RlcMngmt *trc, Buffer *mBuf));
+S16 RlcMiLkwTrcInd ARGS ((Pst *pst, RlcMngmt *trc, Buffer *mBuf));
 
 /**
 @details This function is used by RLC to send unsolicited status information to the layer manager, when the unsolicited status flag is enabled by the layer manager through a previous control request.
@@ -499,9 +499,9 @@ for Measurement  responding to statisti cs requests.
 @param[in] measEvt - Measurement Request structure
 @return ROK if success , RFAILED if failure
 */
-EXTERN S16 RlcMiLkwL2MeasReq ARGS((Pst *pst, RlcL2MeasReqEvt *measEvt));
-EXTERN S16 RlcMiLkwL2MeasStopReq ARGS((Pst *pst,U8 measType));
-EXTERN S16 RlcMiLkwL2MeasSendReq ARGS((Pst *pst,U8 measType));
+S16 RlcMiLkwL2MeasReq ARGS((Pst *pst, RlcL2MeasReqEvt *measEvt));
+S16 RlcMiLkwL2MeasStopReq ARGS((Pst *pst,U8 measType));
+S16 RlcMiLkwL2MeasSendReq ARGS((Pst *pst,U8 measType));
 /**
 @details This function can be used by PDCP to send the measurement values
 after doing L2 measurement that was requested by the layer manager.
@@ -510,13 +510,13 @@ after doing L2 measurement that was requested by the layer manager.
 @param[in] measEvt - Measurement confirmation structure
 @return ROK if success , RFAILED if failure
 */
-EXTERN S16 RlcMiLkwL2MeasCfm ARGS((Pst *pst, RlcL2MeasCfmEvt *measCfm));
-EXTERN S16 RlcMiLkwL2MeasStopCfm ARGS((Pst *pst, U8 measType, U8 status));
+S16 RlcMiLkwL2MeasCfm ARGS((Pst *pst, RlcL2MeasCfmEvt *measCfm));
+S16 RlcMiLkwL2MeasStopCfm ARGS((Pst *pst, U8 measType, U8 status));
 #endif /*  LTE_L2_MEAS */
 
-EXTERN S16 RlcMiLkwStaInd ARGS((Pst *pst, RlcMngmt *staReq));
+S16 RlcMiLkwStaInd ARGS((Pst *pst, RlcMngmt *staReq));
 
-EXTERN Void rlcSendLmAlarm ARGS ((
+Void rlcSendLmAlarm ARGS ((
       U16 category,
       U16  event,
       U16 cause,
@@ -524,79 +524,79 @@ EXTERN Void rlcSendLmAlarm ARGS ((
       U32 ueId));
 
 #ifdef SM
-EXTERN S16 SmMiRlcConfigCfm   ARGS((
+S16 SmMiRlcConfigCfm   ARGS((
        Pst *,
        RlcMngmt *
        ));
 
-EXTERN S16 SmMiLkwCntrlCfm ARGS((
+S16 SmMiLkwCntrlCfm ARGS((
        Pst *,
        RlcMngmt *
        ));
 
-EXTERN S16 SmMiLkwStaInd   ARGS((
+S16 SmMiLkwStaInd   ARGS((
        Pst *,
        RlcMngmt *
        ));
 
-EXTERN S16 SmMiLkwStaCfm   ARGS((
+S16 SmMiLkwStaCfm   ARGS((
        Pst *,
        RlcMngmt *
        ));
 
-EXTERN S16 SmMiLkwStsCfm   ARGS((
+S16 SmMiLkwStsCfm   ARGS((
        Pst *,
        Action,
        RlcMngmt *
        ));
 
-EXTERN S16 SmMiLkwTrcInd   ARGS((
+S16 SmMiLkwTrcInd   ARGS((
        Pst *,
        RlcMngmt *,
        Buffer *
        ));
 
-EXTERN S16 SmMiLkwStsReq   ARGS((
+S16 SmMiLkwStsReq   ARGS((
        Pst *,
        Action,
        RlcMngmt *
        ));
 
-EXTERN S16 SmMiLkwStaReq   ARGS((
+S16 SmMiLkwStaReq   ARGS((
        Pst *,
        RlcMngmt *
        ));
 
-EXTERN S16 SmMiLkwCntrlReq ARGS((
+S16 SmMiLkwCntrlReq ARGS((
        Pst *,
        RlcMngmt *
        ));
 
-EXTERN S16 SmMiRlcConfigReq   ARGS((
+S16 SmMiRlcConfigReq   ARGS((
        Pst *,
        RlcMngmt *
        ));
 
 /* lkw_x_001.main_2, added support for L2 measurement */
 #ifdef LTE_L2_MEAS
-EXTERN S16 SmMiLkwL2MeasReq   ARGS((
+S16 SmMiLkwL2MeasReq   ARGS((
          Pst *,
          RlcL2MeasReqEvt *
          ));
-EXTERN S16 SmMiLkwL2MeasStopReq ARGS((
+S16 SmMiLkwL2MeasStopReq ARGS((
        Pst            *pst,
        U8             measType
       ));
 
-EXTERN S16 SmMiLkwL2MeasSendReq ARGS((
+S16 SmMiLkwL2MeasSendReq ARGS((
          Pst            *pst,
          U8             measType
          ));
-EXTERN S16 SmMiLkwL2MeasCfm   ARGS((
+S16 SmMiLkwL2MeasCfm   ARGS((
          Pst *,
          RlcL2MeasCfmEvt *
          ));
-EXTERN S16 SmMiLkwL2MeasStopCfm ARGS((
+S16 SmMiLkwL2MeasStopCfm ARGS((
          Pst     *pst,          
          U8      measType,
          U8      status
@@ -604,186 +604,186 @@ EXTERN S16 SmMiLkwL2MeasStopCfm ARGS((
 #endif /*  LTE_L2_MEAS */
 #endif
 
-EXTERN S16 smKwActvInit    ARGS((Ent ent, Inst inst, Region region, Reason reason));
-EXTERN S16 smKwActvTsk     ARGS((Pst *pst, Buffer *mBuf));
+S16 smKwActvInit    ARGS((Ent ent, Inst inst, Region region, Reason reason));
+S16 smKwActvTsk     ARGS((Pst *pst, Buffer *mBuf));
 
 /* pack/unpack functions */
 #ifdef LCLKW 
-EXTERN S16 packRlcConfigReq     ARGS((
+S16 packRlcConfigReq     ARGS((
        Pst *,
        RlcMngmt *
        ));
 
-EXTERN S16 packRlcConfigCfm     ARGS((
+uint8_t packRlcConfigCfm     ARGS((
        Pst *,
        RlcMngmt *
        ));
 
 
-EXTERN S16 cmPkLkwCntrlReq   ARGS((
+S16 cmPkLkwCntrlReq   ARGS((
        Pst *,
        RlcMngmt *
        ));
 
-EXTERN S16 cmPkLkwCntrlCfm   ARGS((
+uint8_t cmPkLkwCntrlCfm   ARGS((
        Pst *,
        RlcMngmt *
        ));
 
-EXTERN S16 cmPkLkwStaInd     ARGS((
+S16 cmPkLkwStaInd     ARGS((
        Pst *,
        RlcMngmt *
        ));
 
-EXTERN S16 cmPkLkwStaReq     ARGS((
+S16 cmPkLkwStaReq     ARGS((
        Pst *,
        RlcMngmt *
        ));
 
-EXTERN S16 cmPkLkwStaCfm     ARGS((
+S16 cmPkLkwStaCfm     ARGS((
        Pst *,
        RlcMngmt *
        ));
 
-EXTERN S16 cmPkLkwStsReq     ARGS((
-       Pst *,
-       Action,
-       RlcMngmt *
-       ));
-
-EXTERN S16 cmPkLkwStsCfm     ARGS((
+S16 cmPkLkwStsReq     ARGS((
        Pst *,
        Action,
        RlcMngmt *
        ));
 
-EXTERN S16 cmPkLkwTrcInd     ARGS((
+S16 cmPkLkwStsCfm     ARGS((
+       Pst *,
+       Action,
+       RlcMngmt *
+       ));
+
+S16 cmPkLkwTrcInd     ARGS((
        Pst *,
        RlcMngmt *,
        Buffer *
        ));
 
-EXTERN S16 unpackRlcConfigReq   ARGS((
+uint8_t unpackRlcConfigReq   ARGS((
        RlcConfigReq,
        Pst *,
        Buffer *
        ));
 
-EXTERN S16 unpackRlcConfigCfm   ARGS((
+uint8_t unpackRlcConfigCfm   ARGS((
        RlcConfigCfm,
        Pst *,
        Buffer *
        ));
 
-EXTERN S16 cmUnpkLkwCntrlReq ARGS((
+S16 cmUnpkLkwCntrlReq ARGS((
        RlcConfigReq,
        Pst *,
        Buffer *
        ));
 
-EXTERN S16 cmUnpkLkwCntrlCfm ARGS((
+S16 cmUnpkLkwCntrlCfm ARGS((
        RlcConfigCfm,
        Pst *,
        Buffer *
        ));
 
-EXTERN S16 cmUnpkLkwStaInd   ARGS((
+S16 cmUnpkLkwStaInd   ARGS((
        LkwStaInd,
        Pst *,
        Buffer *
        ));
 
-EXTERN S16 cmUnpkLkwStaReq   ARGS((
+S16 cmUnpkLkwStaReq   ARGS((
        LkwStaReq,
        Pst *,
        Buffer *
        ));
 
-EXTERN S16 cmUnpkLkwStaCfm   ARGS((
+S16 cmUnpkLkwStaCfm   ARGS((
        LkwStaCfm,
        Pst *,
        Buffer *
        ));
 
-EXTERN S16 cmUnpkLkwStsReq   ARGS((
+S16 cmUnpkLkwStsReq   ARGS((
        LkwStsReq,
        Pst *,
        Buffer *
        ));
 
-EXTERN S16 cmUnpkLkwStsCfm   ARGS((
+S16 cmUnpkLkwStsCfm   ARGS((
        LkwStsCfm,
        Pst *, Buffer *
        ));
 
 
-EXTERN S16 cmUnpkLkwTrcInd   ARGS((
+S16 cmUnpkLkwTrcInd   ARGS((
        LkwTrcInd,
        Pst *,
        Buffer *));
 
 /* lkw_x_001.main_2, added support for L2 measurement */
 #ifdef LTE_L2_MEAS
-EXTERN S16 cmPkLkwL2MeasReq ARGS((
+S16 cmPkLkwL2MeasReq ARGS((
          Pst * pst,
          RlcL2MeasReqEvt * measReqEvt
          ));
-EXTERN S16 cmUnpkLkwL2MeasReq ARGS((
+S16 cmUnpkLkwL2MeasReq ARGS((
          LkwL2MeasReq func,
          Pst *pst,
          Buffer *mBuf
          ));
-EXTERN S16 cmPkLkwL2MeasCfm ARGS((
+S16 cmPkLkwL2MeasCfm ARGS((
          Pst * pst,
          RlcL2MeasCfmEvt *measCfmEvt
          ));
-EXTERN S16 cmUnpkLkwL2MeasCfm ARGS((
+S16 cmUnpkLkwL2MeasCfm ARGS((
          LkwL2MeasCfm func,
          Pst *pst,
          Buffer *mBuf
          ));
-EXTERN S16 cmPkRlcL2MeasReqInfo ARGS((
+S16 cmPkRlcL2MeasReqInfo ARGS((
          RlcL2MeasReqInfo * measReqInfo,
          Buffer *mBuf
          ));
-EXTERN S16 cmUnpkRlcL2MeasReqInfo ARGS((
+S16 cmUnpkRlcL2MeasReqInfo ARGS((
          RlcL2MeasReqInfo * measReqInfo,
          Buffer *mBuf
          ));
-EXTERN S16 cmPkRlcL2MeasCfmInfo ARGS((
+S16 cmPkRlcL2MeasCfmInfo ARGS((
          RlcL2MeasCfmInfo * measCfmInfo,
          Buffer *mBuf,
          U8 measType
          ));
-EXTERN S16 cmUnpkRlcL2MeasCfmInfo ARGS((
+S16 cmUnpkRlcL2MeasCfmInfo ARGS((
          RlcL2MeasCfmInfo * measCfmInfo,
          Buffer *mBuf,
          U8 measType
          ));
-EXTERN S16 cmPkLkwL2MeasStopReq ARGS((
+S16 cmPkLkwL2MeasStopReq ARGS((
          Pst * pst,
          U8 measType
          ));
-EXTERN S16 cmUnpkLkwL2MeasStopReq ARGS((
+S16 cmUnpkLkwL2MeasStopReq ARGS((
          LkwL2MeasStopReq func,
          Pst *pst,
          Buffer *mBuf
          ));
-EXTERN S16 cmPkLkwL2MeasSendReq ARGS((
+S16 cmPkLkwL2MeasSendReq ARGS((
          Pst * pst,
          U8 measType
          ));
-EXTERN S16 cmUnpkLkwL2MeasSendReq ARGS((
+S16 cmUnpkLkwL2MeasSendReq ARGS((
          LkwL2MeasSendReq func,
          Pst *pst,
          Buffer *mBuf
          ));
-EXTERN S16 cmPkLkwL2MeasStopCfm ARGS((
+S16 cmPkLkwL2MeasStopCfm ARGS((
          Pst * pst,
          U8 measType,
          U8 status
          ));
-EXTERN S16 cmUnpkLkwL2MeasStopCfm ARGS((
+S16 cmUnpkLkwL2MeasStopCfm ARGS((
          LkwL2MeasStopCfm func,
          Pst *pst,
          Buffer *mBuf

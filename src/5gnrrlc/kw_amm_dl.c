@@ -135,9 +135,9 @@ PRIVATE Void  rlcAssembleSdus ARGS ((RlcCb *gCb,
                                     RlcDlRbCb *rbCb, 
                                     RlcDatReq *rlcDatReq));
 
-PRIVATE Bool rlcAmmDlCheckAndSetPoll ARGS ((RlcCb *gCb,
+bool rlcAmmDlCheckAndSetPoll ARGS ((RlcCb *gCb,
                                            RlcDlRbCb *rbCb, 
-                                           Bool newPdu, 
+                                           bool newPdu, 
                                            MsgLen bufSz));
 
 PRIVATE Void rlcAmmCreatePdu ARGS ((RlcCb *gCb,
@@ -251,28 +251,17 @@ KwuDatCfmInfo   **datCfm
  * 
  * @return  Void
 */
-#ifdef ANSI
-Void rlcAmmSendDStaRsp
-(
-RlcCb       *gCb,
-RlcDlRbCb   *rbCb,
-RlcAmDl     *amDl
-)
-#else
-Void rlcAmmSendDStaRsp(gCb, rbCb, amDl)
-RlcCb       *gCb;
-RlcDlRbCb   *rbCb;
-RlcAmDl     *amDl;
-#endif
+void rlcAmmSendDedLcBoStatus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcAmDl *amDl)
 {
-   S32 bo = rlcAmmCalculateBo(amDl);
+   int32_t bo = rlcAmmCalculateBo(amDl);
 
    if(bo)
    {
-      rlcUtlSndDStaRsp(gCb, rbCb, bo, amDl->estHdrSz, amDl->cntrlBo ?TRUE:FALSE,amDl->cntrlBo);
+      rlcUtlSendDedLcBoStatus(gCb, rbCb, bo, amDl->estHdrSz, \
+         amDl->cntrlBo ?TRUE:FALSE,amDl->cntrlBo);
    }
    
-   RETVOID;
+   return;
 }
 
 /**
@@ -1001,7 +990,7 @@ RlcUdxStaPdu   *pStaPdu;
       canged inside the above called functions */
    if (oldRetxBo != AMDL.retxBo)
    {
-      rlcAmmSendDStaRsp(gCb, rbCb, &AMDL);
+      rlcAmmSendDedLcBoStatus(gCb, rbCb, &AMDL);
    }
 
    RETVOID;
@@ -1083,31 +1072,16 @@ U32 kwRxSdu;
  * @return Void
  *      -# RETVOID
 */
-#ifdef ANSI
-Void rlcAmmQSdu
-(
-RlcCb            *gCb,
-RlcDlRbCb        *rbCb,
-Buffer          *mBuf,
-KwuDatReqInfo   *datReq
-)
-#else
-Void rlcAmmQSdu(gCb, rbCb, mBuf, datReq)
-RlcCb            *gCb;
-RlcDlRbCb        *rbCb;
-Buffer          *mBuf;
-KwuDatReqInfo   *datReq;
-#endif
+void rlcAmmQSdu(RlcCb *gCb, RlcDlRbCb *rbCb, Buffer *mBuf, KwuDatReqInfo *datReq)
 {
    RlcSdu       *sdu;
 #ifdef LTE_L2_MEAS
 #ifndef L2_L3_SPLIT
 #ifdef TENB_STATS
-   U32         rlcWinSz; 
+   uint32_t         rlcWinSz; 
 #endif
 #endif
 #endif
-   TRC2(rlcAmmQSdu)
 
    /* Allocate sdu */
    RLC_ALLOC_WC(gCb,sdu, sizeof(RlcSdu)); 
@@ -1115,11 +1089,9 @@ KwuDatReqInfo   *datReq;
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if (sdu == NULLP)
    {
-      RLOG_ARG2(L_FATAL,DBG_RBID,rbCb->rlcId.rbId,
-               "Memory allocation failed UEID:%d CELLID:%d",
-               rbCb->rlcId.ueId,
-               rbCb->rlcId.cellId);
-      RETVOID;
+      DU_LOG("\n RLC : rlcAmmQSdu : Memory allocation failed UEID:%d CELLID:%d",\
+         rbCb->rlcId.ueId, rbCb->rlcId.cellId);
+      return;
    }
 #endif /* ERRCLASS & ERRCLS_RES */
 
@@ -1128,7 +1100,7 @@ KwuDatReqInfo   *datReq;
    rlcUtlGetCurrTime(&sdu->arrTime);
    /* Discard new changes ends */
    /* Assign values to sdu */
-   SFndLenMsg(mBuf, &sdu->sduSz);
+   ODU_FIND_MSG_LEN(mBuf, &sdu->sduSz);
 
    sdu->mBuf = mBuf;
    sdu->actSz = sdu->sduSz;
@@ -1139,7 +1111,7 @@ KwuDatReqInfo   *datReq;
 #ifndef RGL_SPECIFIC_CHANGES
 #ifdef MSPD
 {
-extern U32 dlrate_kwu;
+extern uint32_t dlrate_kwu;
 dlrate_kwu += sdu->sduSz;
 }
 #endif
@@ -1148,11 +1120,8 @@ dlrate_kwu += sdu->sduSz;
     * queue */
    if (AMDL.nxtTx == NULLP)
    {
-      RLOG_ARG2(L_UNUSED,DBG_RBID, rbCb->rlcId.rbId,
-               "rlcAmmQSdu: Received SDU will be transmitted next"
-               "UEID:%d CELLID:%d",
-                rbCb->rlcId.ueId,
-                rbCb->rlcId.cellId);
+      DU_LOG("\nRLC : rlcAmmQSdu: Received SDU will be transmitted next \
+         UEID:%d CELLID:%d", rbCb->rlcId.ueId, rbCb->rlcId.cellId);
       AMDL.nxtTx = sdu;
    }
 
@@ -1199,10 +1168,10 @@ dlrate_kwu += sdu->sduSz;
 
    if(!rlcDlUtlIsReestInProgress(rbCb))
    {
-      rlcAmmSendDStaRsp(gCb, rbCb, &AMDL);
+      rlcAmmSendDedLcBoStatus(gCb, rbCb, &AMDL);
    }
 
-   RETVOID;
+   return;
 } 
 
 /**
@@ -1221,24 +1190,10 @@ dlrate_kwu += sdu->sduSz;
  *  @return Void 
  *
  */
-#ifdef ANSI
-PRIVATE Void rlcAmmDlAssembleCntrlInfo 
-(
-RlcCb       *gCb,
-RlcDlRbCb   *rbCb,
-RlcDatReq   *rlcDatReq
-)
-#else
-PRIVATE Void rlcAmmDlAssembleCntrlInfo(gCb, rbCb, rlcDatReq)
-RlcCb       *gCb;
-RlcDlRbCb   *rbCb;
-RlcDatReq   *rlcDatReq;
-#endif
+void rlcAmmDlAssembleCntrlInfo(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
 {
    RlcUdxDlSapCb   *sapCb;
    MsgLen         macHdrEstmt;
-
-   TRC2(rlcAmmDlAssembleCntrlInfo)
 
    macHdrEstmt = (rbCb->m.amDl.cntrlBo < 256) ?
                   RLC_MAC_HDR_SZ2 : RLC_MAC_HDR_SZ3;
@@ -1255,7 +1210,7 @@ RlcDatReq   *rlcDatReq;
       rlcAmmCreateStatusPdu(gCb,rbCb,rlcDatReq);
 
       sapCb = RLC_GET_DL_SAPCB(gCb, rbCb);
-	   rlcDlUdxStaProhTmrStart(&(gCb->u.dlCb->udxDlSap->pst), 
+      rlcDlUdxStaProhTmrStart(&(gCb->u.dlCb->udxDlSap->pst), 
                              sapCb->suId, &(rbCb->rlcId));
 	  
       /* Update number of pdus in pduInfo */
@@ -1273,7 +1228,7 @@ RlcDatReq   *rlcDatReq;
       gRlcStats.amRlcStats.numDLStaPduSent++;
    }
 
-   RETVOID;
+   return;
 }
 
 /**
@@ -1303,25 +1258,8 @@ RlcDatReq   *rlcDatReq;
  * @return Void
  *
  */
-#ifdef ANSI
-Void rlcAmmProcessSdus
-(
-RlcCb       *gCb,
-RlcDlRbCb   *rbCb,
-RlcDatReq   *rlcDatReq,
-Bool       fillCtrlPdu
-)
-#else
-Void rlcAmmProcessSdus(gCb, rbCb, rlcDatReq,fillCtrlPdu)
-RlcCb       *gCb;
-RlcDlRbCb   *rbCb;
-RlcDatReq   *rlcDatReq;
-Bool       fillCtrlPdu;
-#endif    
+void rlcAmmProcessSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq, bool fillCtrlPdu)
 {
-   TRC2(rlcAmmProcessSdus)
-
-
    /* Assemble control information. fillCtrlPdu parameter check is added for CA
     * It is used to force cntrl Pdu scheduling on PCell. for Non CA case this
     * flag will always be TRUE. In CA case, for PCELL it is TRUE and for SCEll
@@ -1342,10 +1280,8 @@ Bool       fillCtrlPdu;
       }
       else
       {
-         RLOG_ARG2(L_ERROR, DBG_RBID, rbCb->rlcId.rbId,
-                  "Miscomputation of control Bo. UEID:%d CELLID:%d",
-                  rbCb->rlcId.ueId,
-                  rbCb->rlcId.cellId);
+         DU_LOG("\nRLC: rlcAmmProcessSdus: Miscomputation of control Bo. \
+	    UEID:%d CELLID:%d", rbCb->rlcId.ueId, rbCb->rlcId.cellId);
       }
       AMDL.cntrlBo = 0;
    }   
@@ -1381,7 +1317,7 @@ Bool       fillCtrlPdu;
    {
       gRlcStats.amRlcStats.numDLBytesUnused += rlcDatReq->pduSz;
    }
-   RETVOID;
+   return;
 } 
 
 /**
@@ -1402,28 +1338,11 @@ Bool       fillCtrlPdu;
  * @return  Void
  *
  */
-#ifdef ANSI
-PRIVATE Void rlcSplitPdu
-(
-RlcCb       *gCb,
-RlcDlRbCb   *rbCb,
-RlcRetx     *crnt,
-RlcRetx     *next,
-U16        size
-)
-#else
-PRIVATE Void rlcSplitPdu(gCb, rbCb, crnt, next, size)
-RlcCb       *gCb;
-RlcDlRbCb   *rbCb;
-RlcRetx     *crnt;
-RlcRetx     *next;
-U16        size;
-#endif
+void rlcSplitPdu(RlcCb *gCb, RlcDlRbCb *rbCb, RlcRetx *crnt, RlcRetx *next, uint16_t size)
 {
-   U8            si;
+   uint8_t        si;
    RlcAmDl        *amDl = &AMDL;
 
-   TRC2(rlcSplitPdu)
    /* Set the SN for the new segment */
    next->amHdr.sn = crnt->amHdr.sn;
 
@@ -1459,7 +1378,7 @@ U16        size;
    next->sduMap.sduSz = next->segSz;
 
    /* Segment the payload into two parts based on the size passed */
-   SSegMsg(crnt->seg, size, &next->seg);
+   ODU_SEGMENT_MSG(crnt->seg, size, &next->seg);
    next->retxCnt     = crnt->retxCnt;
    next->yetToConst  = TRUE;
    next->pendingReTrans    = crnt->pendingReTrans;
@@ -1496,7 +1415,7 @@ U16        size;
    AMDL.nxtRetx = next;
    amDl->estHdrSz += next->hdrSz;
    
-   RETVOID;
+   return;
 }
 
 /**
@@ -1524,35 +1443,20 @@ U16        size;
  * @return  Void
  *
  */
-#ifdef ANSI
-PRIVATE Void rlcResegRetxPdus 
-(
-RlcCb       *gCb,
-RlcDlRbCb   *rbCb,
-RlcDatReq   *rlcDatReq
-)
-#else
-PRIVATE Void rlcResegRetxPdus(gCb, rbCb, rlcDatReq)
-RlcCb       *gCb;
-RlcDlRbCb   *rbCb;
-RlcDatReq   *rlcDatReq;
-#endif
+void rlcResegRetxPdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
 {
    RlcAmDl   *amDl;
    RlcRetx   *retx;
-   U8       hdr[RLC_MAX_HDRSZ];
-   U16      idx; 
+   uint8_t   hdr[RLC_MAX_HDRSZ];
+   uint16_t  idx; 
    Buffer   *pdu;
    MsgLen   pduSz; 
 #ifdef LTE_L2_MEAS
-   U16        sduIdx;
+   uint16_     sduIdx;
    RlcL2MeasTb *l2MeasTb;
    RlclchInfo  *lchInfo;
-   U8         numSdus;
+   uint8_t     numSdus;
 #endif
-
-   TRC2(rlcResegRetxPdus)
-
 
    amDl  = &AMDL;
 #ifdef LTE_L2_MEAS
@@ -1561,14 +1465,14 @@ RlcDatReq   *rlcDatReq;
    l2MeasTb = rlcUtlGetCurMeasTb(gCb, rbCb);
    if (l2MeasTb == NULLP)
    {
-      RETVOID;
+      return;
    }
    /* TODO : This lcid needs to be searched in case of normal Tx */
    /* In retx here, its fine as this will be higher priority */
    lchInfo = &l2MeasTb->lchInfo[l2MeasTb->numLchInfo];
    if (l2MeasTb->numLchInfo >= RLC_MAX_ACTV_DRB)
    {
-      RETVOID;
+      return;
    }
    l2MeasTb->numLchInfo++;
    lchInfo->lcId = rbCb->lch.lChId;
@@ -1578,7 +1482,7 @@ RlcDatReq   *rlcDatReq;
    while ((rlcDatReq->pduSz > 0) && (amDl->nxtRetx != NULLP)&&
           (rlcDatReq->pduInfo.numPdu < RLC_MAX_PDU))
    {
-      U16 tmpSz;
+      uint16_t tmpSz;
       
       retx = amDl->nxtRetx;
       /* kw003.201 : Add header size to seg size to determine if the      */
@@ -1592,27 +1496,24 @@ RlcDatReq   *rlcDatReq;
       /* kw003.201 - We should have at least one more than basic header */
       if (rlcDatReq->pduSz <= retx->hdrSz)
       {
-         RETVOID;
+         return;
       }
       rlcGetNxtRetx(gCb, &(amDl->nxtRetx));
 
       /* Send retx buf without segmentation */
       if (rlcDatReq->pduSz >= pduSz)
       {
-         U8 pollBit;
+         uint8_t pollBit;
          
-         RLOG_ARG2(L_DEBUG,DBG_RBID,rbCb->rlcId.rbId, 
-                  "rlcResegRetxPdus: Send retx buf without segmentation "
-                  "UEID:%d CELLID:%d", 
-                  rbCb->rlcId.ueId,
-                  rbCb->rlcId.cellId);
+         DU_LOG("\nRLC: rlcResegRetxPdus: Send retx buf without segmentation "
+            "UEID:%d CELLID:%d", rbCb->rlcId.ueId, rbCb->rlcId.cellId);
 
          if (retx->yetToConst)
          {
             /* Construct hdr with the available hdr values */ 
             rlcConstructAmHdr(&retx->amHdr, hdr, amDl->snLen, &idx);
             /* Add header to the pdu/segment */
-            SAddPreMsgMultInOrder(hdr, idx + 1, retx->seg);
+            ODU_ADD_PRE_MSG_MULT_IN_ORDER(hdr, idx + 1, retx->seg);
             retx->yetToConst = FALSE;
          } 
 
@@ -1645,10 +1546,8 @@ RlcDatReq   *rlcDatReq;
          
          /* Segment this pdu / portion of pdu. Insert this segment into */
          /* retxLst and update offset                                   */
-         RLOG_ARG2(L_DEBUG,DBG_RBID,rbCb->rlcId.rbId,
-                  "rlcResegRetxPdus: Segment retx buf UEID:%d CELLID:%d",
-                  rbCb->rlcId.ueId,
-                  rbCb->rlcId.cellId);
+         DU_LOG("\nRLC: rlcResegRetxPdus: Segment retx buf UEID:%d CELLID:%d",
+            rbCb->rlcId.ueId, rbCb->rlcId.cellId);
 
          /* Eliminate fixed header size if the pdu is segmented for the */
          /* first time                                                  */
@@ -1676,7 +1575,7 @@ RlcDatReq   *rlcDatReq;
          }
          if (rlcDatReq->pduSz <= 0)
          {
-            RETVOID;
+            return;
          }
 
          /* Allocate memory for tracking a new segment */
@@ -1684,11 +1583,9 @@ RlcDatReq   *rlcDatReq;
 #if (ERRCLASS & ERRCLS_ADD_RES)
          if (tNode == NULLP)
          {
-            RLOG_ARG2(L_FATAL,DBG_RBID,rbCb->rlcId.rbId,
-                     "Memory allocation failed UEID:%d CELLID:%d",
-                     rbCb->rlcId.ueId,
-                     rbCb->rlcId.cellId);
-            RETVOID;
+            DU_LOG("\nRLC: rlcResegRetxPdus: Memory allocation failed UEID:%d CELLID:%d",
+               rbCb->rlcId.ueId, rbCb->rlcId.cellId);
+            return;
          }
 #endif /* ERRCLASS & ERRCLS_RES */
 
@@ -1722,7 +1619,7 @@ RlcDatReq   *rlcDatReq;
 #endif
          /* Construct hdr with the available hdr values */
          rlcConstructAmHdr(&retx->amHdr, hdr, amDl->snLen, &idx);
-         SAddPreMsgMultInOrder(hdr, idx + 1, retx->seg);
+         ODU_ADD_PRE_MSG_MULT_IN_ORDER(hdr, idx + 1, retx->seg);
 
          retx->hdrSz = idx + 1;
 
@@ -1746,22 +1643,14 @@ RlcDatReq   *rlcDatReq;
       amDl->retxBo -= retx->segSz;
    }
 #ifndef ALIGN_64BIT
-   RLOG_ARG3(L_DEBUG,DBG_RBID,rbCb->rlcId.rbId, 
-                 "rlcResegRetxPdus: retxBo after resegmentation = %ld"
-                 "UEID:%d CELLID:%d", 
-                 amDl->retxBo,
-                 rbCb->rlcId.ueId,
-                 rbCb->rlcId.cellId);
+   DU_LOG("\nRLC: rlcResegRetxPdus: retxBo after resegmentation = %ld"
+      "UEID:%d CELLID:%d", amDl->retxBo, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
 #else
-   RLOG_ARG3(L_DEBUG,DBG_RBID,rbCb->rlcId.rbId,
-                 "rlcResegRetxPdus: retxBo after resegmentation = %d "
-                 "UEID:%d CELLID:%d", 
-                 amDl->retxBo,
-                 rbCb->rlcId.ueId,
-                 rbCb->rlcId.cellId);
+   DU_LOG("\nRLC: rlcResegRetxPdus: retxBo after resegmentation = %d "
+      "UEID:%d CELLID:%d", amDl->retxBo, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
 #endif
 
-   RETVOID;
+   return;
 }
 
 
@@ -1785,60 +1674,45 @@ RlcDatReq   *rlcDatReq;
  * @return  Void 
  *
  */
-#ifdef ANSI
-PRIVATE Void rlcAssembleSdus 
-(
-RlcCb       *gCb,
-RlcDlRbCb   *rbCb,
-RlcDatReq   *rlcDatReq
-)
-#else
-PRIVATE Void rlcAssembleSdus (gCb, rbCb, rlcDatReq)
-RlcCb       *gCb;
-RlcDlRbCb   *rbCb;
-RlcDatReq   *rlcDatReq;
-#endif
+void rlcAssembleSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
 {
    Buffer          *pdu         = NULLP;
    MsgLen          macGrntSz    = rlcDatReq->pduSz;
    RlcAmDl          *amDl        = &AMDL;
    RlcSdu           *sdu         = amDl->nxtTx;
    RlcSduMap        sduMap;
-   Bool            nxtTxUpd     = FALSE;
+   bool            nxtTxUpd     = FALSE;
    KwuDiscSduInfo  *discSduInfo = NULLP;
    RlcKwuSapCb* rlckwuSap = gCb->u.dlCb->rlcKwuDlSap + RLC_UI_PDCP;
 #ifdef LTE_L2_MEAS
    RlcContSduLst     contSduLst;  /*Contained sduLst */
-   S32              dataVol    = amDl->bo;
-   U32              *totMacGrant = &rlcDatReq->totMacGrant;
+   int32_t           dataVol    = amDl->bo;
+   uint32_t          *totMacGrant = &rlcDatReq->totMacGrant;
    RlcL2MeasDlIpTh   *dlIpThPut = &rbCb->l2MeasIpThruput.dlIpTh;
-   U8               *sduIdx    = &dlIpThPut->lastSduIdx;
-   Bool             newIdx;
-   Bool             isSduSegmented;
-   S32              oldBo;
+   uint8_t           *sduIdx    = &dlIpThPut->lastSduIdx;
+   bool             newIdx;
+   bool             isSduSegmented;
+   int32_t          oldBo;
    RlclchInfo        lchInfo;
    RlclchInfo        *dstLchInfo;
-   U32              segSduCnt = 0;
-   U32              lchIdx;
-   U32              numSdus = 0;
-   U32              currSduIdx = 0;
+   uint32_t          segSduCnt = 0;
+   uint32_t          lchIdx;
+   uint32_t          numSdus = 0;
+   uint32_t          currSduIdx = 0;
    RlcL2MeasTb       *l2MeasTb;
 #endif
    /* Discard new changes starts */
    Ticks                timeDiff = 0;
    Ticks                curTime  = 0;
-   U8                   numNewPdu = 0;
+   uint8_t              numNewPdu = 0;
    RlcTx                 *txBuf = NULLP;
    /* Discard new changes ends */
-   VOLATILE U32         startTime = 0;
-   U32                  hdrEstmt;
-   U32                  fixedHdrSz;
-   U32                  pduSz;
+   VOLATILE uint32_t    startTime = 0;
+   uint32_t             hdrEstmt;
+   uint32_t             fixedHdrSz;
+   uint32_t             pduSz;
    RlcAmHdr              *amHdr = NULLP;
    RlcDlPduInfo          *pduInfo = NULLP;
-
-   TRC2(rlcAssembleSdus)
-
 
 #ifdef LTE_L2_MEAS   
    contSduLst.numSdus = 0; 
@@ -1857,11 +1731,9 @@ RlcDatReq   *rlcDatReq;
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if (discSduInfo == NULLP)
    {
-      RLOG_ARG2(L_FATAL,DBG_RBID,rbCb->rlcId.rbId, 
-               "Memory allocation failed UEID:%d CELLID:%d",
-               rbCb->rlcId.ueId,
-               rbCb->rlcId.cellId);
-      RETVOID;
+      DU_LOG("\nRLC: rlcAssembleSdus: Memory allocation failed UEID:%d CELLID:%d",
+         rbCb->rlcId.ueId, rbCb->rlcId.cellId);
+      return;
    }
 #endif /* ERRCLASS & ERRCLS_RES */
 
@@ -1912,11 +1784,8 @@ RlcDatReq   *rlcDatReq;
             /* store the info for sending it to PDCP */
             if(discSduInfo->numSduIds > 500)
             {
-               RLOG_ARG2(L_ERROR,DBG_RBID, rbCb->rlcId.rbId, 
-                     "This is a big error, we shouldn't be here"
-                     "UEID:%d CELLID:%d",
-                     rbCb->rlcId.ueId,
-                     rbCb->rlcId.cellId);
+               DU_LOG("\nRLC: rlcAssembleSdus: This is a big error, we shouldn't be here"
+                  "UEID:%d CELLID:%d", rbCb->rlcId.ueId, rbCb->rlcId.cellId);
                break;
             }
 
@@ -1938,7 +1807,7 @@ RlcDatReq   *rlcDatReq;
                sdu = NULLP;
 
             /*stopping Task*/
-            SStopTask(startTime, PID_RLC_AMM_DISC_SDUS);
+            ODU_STOP_TASK(startTime, PID_RLC_AMM_DISC_SDUS);
             continue;
          }
       }
@@ -1992,13 +1861,11 @@ RlcDatReq   *rlcDatReq;
 #if (ERRCLASS & ERRCLS_ADD_RES)
          if (txBuf == NULLP)
          {
-            U32 avblMem = 0;
+            uint32_t avblMem = 0;
             SRegInfoShow(gCb->init.region, &avblMem);
-            RLOG_ARG2(L_FATAL,DBG_RBID,rbCb->rlcId.rbId, 
-                  "Memory allocation failed UEID:%d CELLID:%d",
-                  rbCb->rlcId.ueId,
-                  rbCb->rlcId.cellId);
-            RETVOID;
+            DU_LOG("\nRLC: rlcAssembleSdus: Memory allocation failed UEID:%d CELLID:%d",
+               rbCb->rlcId.ueId, rbCb->rlcId.cellId);
+            return;
          }
 #endif /* ERRCLASS & ERRCLS_RES */
 
@@ -2013,13 +1880,11 @@ RlcDatReq   *rlcDatReq;
 #if (ERRCLASS & ERRCLS_ADD_RES)
       if (pduInfo == NULLP)
       {
-         U32 avblMem = 0;
+         uint32_t avblMem = 0;
          SRegInfoShow(gCb->init.region, &avblMem);
-         RLOG_ARG2(L_FATAL,DBG_RBID,rbCb->rlcId.rbId, 
-               "Memory allocation failed UEID:%d CELLID:%d",
-               rbCb->rlcId.ueId,
-               rbCb->rlcId.cellId);
-         RETVOID;
+         DU_LOG("\nRLC: rlcAssembleSdus: Memory allocation failed UEID:%d CELLID:%d",
+            rbCb->rlcId.ueId, rbCb->rlcId.cellId);
+         return;
       }
 #endif /* ERRCLASS & ERRCLS_RES */
 
@@ -2138,7 +2003,7 @@ RlcDatReq   *rlcDatReq;
 #endif
 
          /* Segment the SDU to the size of the PDU and update header Info */
-         SSegMsg(sdu->mBuf, macGrntSz, &remSeg);
+         ODU_SEGMENT_MSG(sdu->mBuf, macGrntSz, &remSeg);
          pdu = sdu->mBuf;      
          sdu->mBuf = remSeg;
 
@@ -2268,21 +2133,10 @@ RlcDatReq   *rlcDatReq;
    }
 
 
-#ifndef ALIGN_64BIT
-   RLOG_ARG3(L_UNUSED,DBG_RBID,rbCb->rlcId.rbId, 
-         "rlcAssembleSdus: BO after assembly = %ld UEID:%d CELLID:%d",
-         amDl->bo,
-         rbCb->rlcId.ueId,
-         rbCb->rlcId.cellId);
-#else
-   RLOG_ARG3(L_UNUSED,DBG_RBID,rbCb->rlcId.rbId,
-         "rlcAssembleSdus: BO after assembly = %d UEID:%d CELLID:%d",
-         amDl->bo,
-         rbCb->rlcId.ueId,
-         rbCb->rlcId.cellId);
-#endif
+   DU_LOG("\nRLC: rlcAssembleSdus: BO after assembly = %d UEID:%d CELLID:%d",
+      amDl->bo, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
 
-   RETVOID;
+   return;
 }
 
 /**
@@ -2308,28 +2162,11 @@ RlcDatReq   *rlcDatReq;
  *      -# 0 - Poll bit is not set
  *
  */
-#ifdef ANSI
-PRIVATE Bool rlcAmmDlCheckAndSetPoll
-(
-RlcCb       *gCb,
-RlcDlRbCb   *rbCb,
-Bool       newPdu,
-MsgLen     bufSz
-)
-#else
-PRIVATE Bool rlcAmmDlCheckAndSetPoll(gCb, rbCb, newPdu, bufSz)
-RlcCb       *gCb;
-RlcDlRbCb   *rbCb;
-Bool       newPdu;
-MsgLen     bufSz;
-#endif
+bool rlcAmmDlCheckAndSetPoll(RlcCb *gCb, RlcDlRbCb *rbCb, bool newPdu, MsgLen bufSz)
 { 
-   Bool     pollBit = FALSE;
+   bool     pollBit = FALSE;
    RlcAmDl   *amDl = &(rbCb->m.amDl);
 
-   TRC2(rlcAmmDlCheckAndSetPoll)
-
- 
    /* If it's a new PDU increment PDU without poll and bytes without poll
     and check if they cross the configured number of poll pdu and poll bytes*/ 
    if (newPdu)
@@ -2359,11 +2196,8 @@ MsgLen     bufSz;
 
       amDl->pollSn = (amDl->txNext - 1) & amDl->snModMask;
 
-      RLOG_ARG3(L_UNUSED,DBG_RBID,rbCb->rlcId.rbId, 
-                "rlcAmmDlCheckAndSetPoll: Poll SN = %d UEID:%d CELLID:%d", 
-                amDl->pollSn,
-                rbCb->rlcId.ueId,
-                rbCb->rlcId.cellId);
+      DU_LOG("\nRLC: rlcAmmDlCheckAndSetPoll: Poll SN = %d UEID:%d CELLID:%d", 
+         amDl->pollSn, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
 
       /* kw005.201: Fix for poll retransmission timer. 
        * Timer is stopped if it is already running and 
@@ -2397,32 +2231,14 @@ MsgLen     bufSz;
  *  @return  Void
  *
  */
-#ifdef ANSI
-PRIVATE Void rlcAmmCreatePdu
-(  
-RlcCb       *gCb,
-RlcDlRbCb   *rbCb,
-RlcAmHdr    *amHdr,
-RlcDlPduInfo *pduInfo,
-Buffer     *pdu
-)
-#else
-PRIVATE Void rlcAmmCreatePdu(gCb, rbCb, pduInfo, amHdr, pdu)
-RlcCb       *gCb;
-RlcDlRbCb   *rbCb;
-RlcAmHdr    *amHdr;
-RlcDlPduInfo *pduInfo;
-Buffer     *pdu;
-#endif
+void rlcAmmCreatePdu(RlcCb *gCb, RlcDlRbCb *rbCb, RlcAmHdr *amHdr,
+RlcDlPduInfo *pduInfo, Buffer *pdu)
 {
-   U8       hdr[RLC_MAX_HDRSZ];
-   U16      idx;
+   uint8_t   hdr[RLC_MAX_HDRSZ];
+   uint16_t  idx;
    RlcTx     *txBuf;
-   MsgLen   pduSz;
+   MsgLen    pduSz;
    RlcAmDl   *amDl = &(rbCb->m.amDl);
-
-   TRC2(rlcAmmCreatePdu)
-
 
    /* Update sn */
    amHdr->sn = amDl->txNext;
@@ -2436,7 +2252,7 @@ Buffer     *pdu;
    }
 
    /* Update hdr Info */
-   SFndLenMsg(pdu, &pduSz);
+   ODU_FIND_MSG_LEN(pdu, &pduSz);
 
    /* passing newPDU = TRUE*/
    amHdr->p = rlcAmmDlCheckAndSetPoll(gCb,rbCb, TRUE, pduSz);
@@ -2445,7 +2261,7 @@ Buffer     *pdu;
    rlcConstructAmHdr(amHdr, hdr, amDl->snLen, &idx);
 
    /* Concatenate hdr and data */
-   SAddPreMsgMultInOrder(hdr, idx+1, pdu);
+   ODU_ADD_PRE_MSG_MULT_IN_ORDER(hdr, idx+1, pdu);
    
    txBuf = rlcUtlGetTxBuf(amDl->txBufLst, amHdr->sn);
    rlcCpyMsg(gCb,pdu,&(pduInfo->pdu));
@@ -2465,7 +2281,7 @@ Buffer     *pdu;
 
    gCb->genSts.bytesSent += pduSz;
    
-   RETVOID;
+   return;
 }
 
 /**
@@ -2575,7 +2391,7 @@ RlcRetx        *retx;
             rbCb->m.amDl.cntrlBo = 0;
             rbCb->m.amDl.retxBo = 0;
             /* Sending BO update to SCH */
-            rlcUtlSndDStaRsp(gCb, rbCb, 0,0,0,0);
+            rlcUtlSendDedLcBoStatus(gCb, rbCb, 0,0,0,0);
             rlcAmmSndStaInd(gCb, rbCb, retx);
             gRlcStats.amRlcStats.numDLMaxRetx++;
          }
@@ -2824,21 +2640,9 @@ RlcRetx     *retx;
  *  @return  Void 
  *
  */
-#ifdef ANSI
-PRIVATE Void rlcGetNxtRetx 
-(
-RlcCb     *gCb,
-RlcRetx   **retx
-)
-#else
-PRIVATE Void rlcGetNxtRetx(gCb, retx)
-RlcCb     *gCb;
-RlcRetx   **retx;
-#endif
+void rlcGetNxtRetx(RlcCb *gCb, RlcRetx **retx)
 {
    CmLList *tNode;
-
-   TRC2(rlcGetNxtRetx);
 
    do
    {
@@ -2856,7 +2660,7 @@ RlcRetx   **retx;
       }
    }while((*retx)->pendingReTrans == FALSE);
 
-   RETVOID;
+   return;
 }
 
 /**
@@ -3074,7 +2878,7 @@ RlcDlRbCb   *rbCb;
             AMDL.nxtRetx = retx;
          }
          
-         rlcAmmSendDStaRsp(gCb, rbCb, &AMDL);         
+         rlcAmmSendDedLcBoStatus(gCb, rbCb, &AMDL);         
          RETVOID;
       }
       /* Get the last node in retxLst */
@@ -3084,7 +2888,7 @@ RlcDlRbCb   *rbCb;
       if (retx != NULLP)
       {
          rlcAmmDlMarkPduForReTx(gCb, rbCb, retx);
-         rlcAmmSendDStaRsp(gCb, rbCb, &AMDL);         
+         rlcAmmSendDedLcBoStatus(gCb, rbCb, &AMDL);         
       }
    }
 
@@ -3275,24 +3079,8 @@ KwuDatCfmInfo   **datCfm;
  * @return Void            
  *
  */
-#ifdef ANSI
-PRIVATE Void rlcConstructAmHdr
-(
-RlcAmHdr   *amHdr,
-U8        *hdr,
-U8         snLen,
-U16       *idx
-)
-#else
-PRIVATE Void rlcConstructAmHdr(amHdr, hdr, snLen, idx)
-RlcAmHdr   *amHdr;
-U8        *hdr;
-U8         snLen;
-U16       *idx;
-#endif
+void rlcConstructAmHdr(RlcAmHdr *amHdr, uint8_t *hdr, uint8_t snLen, uint16_t *idx)
 {
-   TRC2(rlcConstructAmHdr);
-                                                            
    *idx = 0;
     hdr[0] = RLC_DATA_BITMASK;
     
@@ -3321,7 +3109,7 @@ U16       *idx;
       hdr[(*idx)] = (U8)(amHdr->so & 0xFF);
    }                                                        
 
-   RETVOID;
+   return;
 }
 
 /**
@@ -3519,34 +3307,19 @@ RlcDlRbCb   *rbCb;
  * @return Void
  *
  */
-#ifdef ANSI
-PRIVATE Void rlcAmmCreateStatusPdu
-(
-RlcCb       *gCb,
-RlcDlRbCb   *rbCb,
-RlcDatReq   *rlcDatReq
-)
-#else
-PRIVATE Void rlcAmmCreateStatusPdu(gCb, rbCb, rlcDatReq)
-RlcCb       *gCb;
-RlcDlRbCb   *rbCb;
-RlcDatReq   *rlcDatReq;
-#endif
+void rlcAmmCreateStatusPdu(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
 {
     RlcSn          sn;                      /* sequence number */
     RlcSn          ack_sn;                  /* Ack sequence number */
     Buffer        *mBuf;           /* control pdu buffer */
     MsgLen        cntrlPduSz;          /* control pdu size */
-    U8            cntrlPdu[RLC_MAX_CNTRL_FIELDS];   /* control pdu to be added to mBuf */
+    uint8_t       cntrlPdu[RLC_MAX_CNTRL_FIELDS];   /* control pdu to be added to mBuf */
     RlcUdxDlStaPdu   *pStaPdu;
-    U16             bytesToEncode = 0; /* bytes required to encode the STATUS PDU */
-    U16             encIdx = 0;
-    U16             prevEncIdx = 0;
+    uint16_t         bytesToEncode = 0; /* bytes required to encode the STATUS PDU */
+    uint16_t         encIdx = 0;
+    uint16_t         prevEncIdx = 0;
     RlcNackInfo      *rlcNackInfo;
-    U16           nkCnt = 0;
-
-    TRC2(rlcAmmCreateStatusPdu)
-
+    uint16_t         nkCnt = 0;
 
     pStaPdu = AMDL.pStaPdu;
 
@@ -3668,12 +3441,8 @@ RlcDatReq   *rlcDatReq;
         /* set ACK SN */
        {
 
-          RLOG_ARG3(L_UNUSED,DBG_RBID,rbCb->rlcId.rbId, 
-                "rlcAssembleCntrlInfo: ACK PDU's SN = %d"
-                "UEID:%d CELLID:%d",
-                ack_sn,
-                rbCb->rlcId.ueId,
-                rbCb->rlcId.cellId);
+          DU_LOG("\nRLC: rlcAssembleCntrlInfo: ACK PDU's SN = %d"\
+             "UEID:%d CELLID:%d", ack_sn, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
 
           cntrlPdu[0] |= (ack_sn & 0xF00)>> 8; 
           cntrlPdu[1] =  (U8)ack_sn;
@@ -3790,13 +3559,8 @@ RlcDatReq   *rlcDatReq;
        /* set ACK SN */
        {
 
-          RLOG_ARG3(L_UNUSED,DBG_RBID,rbCb->rlcId.rbId, 
-                "rlcAssembleCntrlInfo: ACK PDU's SN = %d"
-                "UEID:%d CELLID:%d",
-                ack_sn,
-                rbCb->rlcId.ueId,
-                rbCb->rlcId.cellId);
-
+          DU_LOG("\nRLC: rlcAssembleCntrlInfo: ACK PDU's SN = %d"
+             "UEID:%d CELLID:%d", ack_sn, rbCb->rlcId.ueId,rbCb->rlcId.cellId);
 
           cntrlPdu[0] |=  (ack_sn & 0x3C000) >> 14;
           cntrlPdu[1] =  (ack_sn & 0x3FC0) >> 6;
@@ -3807,11 +3571,9 @@ RlcDatReq   *rlcDatReq;
     else
     {
        /* ERROR Log */
-       RLOG_ARG3(L_ERROR,DBG_RBID,rbCb->rlcId.rbId, 
-             "rlcAssembleCntrlInfo:Conf SN LEN  %d  is INVALID !!!! UEID:%d CELLID:%d",
-             rbCb->m.amDl.snLen,
-             rbCb->rlcId.ueId,
-             rbCb->rlcId.cellId);
+       DU_LOG("\nRLC: rlcAssembleCntrlInfo:Conf SN LEN  %d  is INVALID !!!! \
+          UEID:%d CELLID:%d", rbCb->m.amDl.snLen, rbCb->rlcId.ueId,
+	  rbCb->rlcId.cellId);
     }
 
 
@@ -3825,13 +3587,13 @@ RlcDatReq   *rlcDatReq;
 #endif
 
     cntrlPduSz = encIdx;
-    SAddPstMsgMult (cntrlPdu, cntrlPduSz, mBuf);
+    ODU_ADD_POST_MSG_MULT(cntrlPdu, cntrlPduSz, mBuf);
 
     rlcDatReq->pduSz -= cntrlPduSz;
     /* Add mBuf to AMDL.mBuf */
     AMDL.mBuf = mBuf;
  
-    RETVOID;
+    return;
 }
 
 #ifdef RLC_STA_PROC_IN_MAC/* RLC Status PDU Processing */

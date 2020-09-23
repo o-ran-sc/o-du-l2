@@ -25,11 +25,11 @@
      Desc:     Source code for RLC Utility Module
                This file contains following functions
 
-                  --rlcUtlSndToLi
-                  --rlcUtlRcvFrmLi
+                  --rlcUtlSendToMac
+                  --rlcUtlRcvFrmMac
                   --rlcUtlEmptySduQ
-                  --rlcUtlSndDStaRsp
-                  --rlcUtlSndDatInd 
+                  --rlcUtlSendDedLcBoStatus
+                  --rlcUtlSendUlDataToDu 
                   --kwUtlShutDown
 
      File:     kw_utl_dl.c
@@ -70,6 +70,10 @@ static int RLOG_FILE_ID=209;
 #include "kw.x"            /* RLC includes */
 #include "kw_udx.x"        /* UDX interface includes */
 #include "kw_dl.x"         /* RLC downlink includes */
+
+#include "rlc_utils.h"
+#include "rlc_mac_inf.h"
+#include "rlc_lwr_inf_api.h"
 
 #include "ss_rbuf.h"
 #include "ss_rbuf.x" 
@@ -209,45 +213,36 @@ Void PrintRLCStats(Void)
  *    This function stores DL PDU info for all logical channels
  *    of per UE grant per TTI and sends to MAC
  *
- *    Function : RlcLiRguDDatReq 
+ *    Function : rlcSendDedLcDlData 
  *
  * @params[in] 
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-#ifdef ANSI
-S16 RlcLiRguDDatReq
-(
-Pst               *post,
-SpId              spId,
-RguDDatReqInfo    *datReqInfo
-)
-#else
-S16 RlcLiRguDDatReq(post, spId, datReqInfo)
-Pst               *post;
-SpId              spId;
-RguDDatReqInfo    *datReqInfo;
-#endif
+uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
 {
-   U8               ueIdx;      /* UE info list iterator */ 
-   U8               tbIdx;      /* TB info list iterator */
-   U8               lchIdx;     /* Lch info list iterator */
-   U8               pduIdx;     /* RLC PDU list iterator */
+   uint8_t          ueIdx;      /* UE info list iterator */ 
+   uint8_t          tbIdx;      /* TB info list iterator */
+   uint8_t          lchIdx;     /* Lch info list iterator */
+   uint8_t          pduIdx;     /* RLC PDU list iterator */
    RguDDatReqPerUe  datPerUe;   /* DL data info per UE */
    RguDatReqTb      datPerTb;   /* DL data info per TB */
    RguLchDatReq     datPerLch;  /* DL data info per Lch */
-   RlcMacData       *dlData;    /* DL data to be sent to MAC */
-
-   TRC3(RlcLiRguDDatReq)
+   RlcData          *dlData;    /* DL data to be sent to MAC */
+   Pst              pst;        /* Post structure */
+   uint16_t         pduLen;     /* PDU length */
+   uint16_t         copyLen;    /* Number of bytes copied */
 
    dlData = NULLP;
-   RLC_ALLOC_SHRABL_BUF(post->region, post->pool,
-                       dlData, sizeof(RlcMacData));
+   RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL,
+                       dlData, sizeof(RlcData));
 #if (ERRCLASS & ERRCLS_ADD_RES)
-   if ( datReqInfo == NULLP )
+   if ( dlData == NULLP )
    {
-      RLOG0(L_FATAL,"Memory allocation failed");
+      DU_LOG("\nRLC: rlcSendDedLcDlData: Memory allocation failed for dl data");
+      RLC_FREE_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL,
+          datReqInfo, sizeof(RguDDatReqInfo));
       return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
@@ -256,11 +251,14 @@ RguDDatReqInfo    *datReqInfo;
    {
       datPerUe = datReqInfo->datReq[ueIdx];
 
-      cmMemset((U8 *)dlData, 0, sizeof(RlcMacData));
+      memset((uint8_t *)dlData, 0, sizeof(RlcData));
 
       dlData->cellId = datReqInfo->cellId;
       dlData->rnti = datPerUe.rnti;
-      //dlData->timeToTx = datPerUe.transId; /* Derive timing info from transId */
+
+      /* Retrieving sfn/slot from transId. It was filled in RlcProcSchedResultRpt */
+      dlData->slotInfo.sfn = datPerUe.transId >> 16;
+      dlData->slotInfo.slot = datPerUe.transId & 0xffff;
       dlData->numPdu = 0;
 
       for(tbIdx = 0; tbIdx < datPerUe.nmbOfTbs; tbIdx++)
@@ -273,22 +271,58 @@ RguDDatReqInfo    *datReqInfo;
             {
                dlData->pduInfo[dlData->numPdu].commCh = FALSE;
                dlData->pduInfo[dlData->numPdu].lcId = datPerLch.lcId;
-               dlData->pduInfo[dlData->numPdu].pduBuf = datPerLch.pdu.mBuf[pduIdx];
+
+               /* Copy Message to fixed buffer to send */
+	       ODU_FIND_MSG_LEN(datPerLch.pdu.mBuf[pduIdx], (MsgLen *)&pduLen);
+	       RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL,
+	          dlData->pduInfo[dlData->numPdu].pduBuf, pduLen);
+
+	       if (dlData->pduInfo[dlData->numPdu].pduBuf == NULLP )
+	       {
+	          DU_LOG("\nRLC: rlcSendDedLcDlData: Memory allocation failed");
+		  for(pduIdx = 0; pduIdx < dlData->numPdu; pduIdx++)
+		  {
+		     RLC_FREE_SHRABL_BUF(pst.region, pst.pool, dlData->pduInfo[pduIdx].pduBuf,\
+		       dlData->pduInfo[pduIdx].pduLen);
+		  }
+		  RLC_FREE_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL,
+		     dlData, sizeof(RlcData));
+		  RLC_FREE_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL,
+		     datReqInfo, sizeof(RguDDatReqInfo));
+		  return RFAILED;
+	       }
+
+               ODU_COPY_MSG_TO_FIX_BUF(datPerLch.pdu.mBuf[pduIdx], 0, pduLen, \
+	          dlData->pduInfo[dlData->numPdu].pduBuf, (MsgLen *)&copyLen);
+	       dlData->pduInfo[dlData->numPdu].pduLen = pduLen;
+
+               /* Free message */
+	       ODU_PUT_MSG_BUF(datPerLch.pdu.mBuf[pduIdx]);
+
                dlData->numPdu++;
             }/* For per PDU */
          }/* For Data per Lch */
       }/* For Data per Tb */
-      RlcMacSendDlData(post, spId, dlData);
+
+      /* Sending DL Data per UE to MAC */
+      memset(&pst, 0, sizeof(Pst));
+      FILL_PST_RLC_TO_MAC(pst, post->dstProcId, RLC_DL_INST, EVENT_DL_DATA_TO_MAC);
+      if(RlcSendDlDataToMac(&pst, dlData) != ROK)
+      {
+         for(pduIdx = 0; pduIdx < dlData->numPdu; pduIdx++)
+	 {
+	    RLC_FREE_SHRABL_BUF(pst.region, pst.pool, dlData->pduInfo[pduIdx].pduBuf,\
+	       dlData->pduInfo[pduIdx].pduLen);
+	 }
+         RLC_FREE_SHRABL_BUF(pst.region, pst.pool, dlData, sizeof(RlcData));
+      }
    } /* For Data per UE */
 
-   /* Check if to be freed here */
-   
-   RLC_FREE_SHRABL_BUF(post->region, 
-            post->pool, 
+   RLC_FREE_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL,
             datReqInfo, sizeof(RguDDatReqInfo));
    
    return ROK;
-}/* End of RlcLiRguDDatReq */
+}/* End of rlcSendDedLcDlData */
 
 /**
  *
@@ -310,55 +344,40 @@ RguDDatReqInfo    *datReqInfo;
  *      -# RFAILED
  *
  */
-#ifdef ANSI
-S16 rlcUtlSndToLi
-(
-RlcCb            *gCb,
-SuId            suId,
-KwDStaIndInfo   *staIndInfo
-)
-#else
-S16 rlcUtlSndToLi(gCb, suId, staIndInfo)
-RlcCb            *gCb;
-SuId            suId;
-KwDStaIndInfo   *staIndInfo; 
-#endif
+uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
 {
+   uint16_t         ueIdx;
    RlcDlUeCb         *ueCb;         /* UE control block */
-   U32              count;         /* Loop Counter */
-   U32              numTb;         /* Number of Tbs */
+   uint32_t          count;         /* Loop Counter */
+   uint32_t          numTb;         /* Number of Tbs */
    RlcDlRbCb         *rbCb;         /* RB Control Block */
    RlcDatReq         datReq;        /* PDUs Information */
    RguDDatReqInfo   *datReqInfo;   /* Data Request Information */
-   RlcRguSapCb       *rguSap;       /* MAC SAP CB */
-   U32              totNumPdu;     /* Total number of PDUS */
+   RlcRguSapCb      *rguSap;       /* MAC SAP CB */
+   uint32_t         totNumPdu;     /* Total number of PDUS */
    RguStaIndTb      *staIndTb = NULLP;
    RguDatReqTb      *datReqTb = NULLP;
    RguDStaIndPerUe  *staInd = NULLP;
 #ifdef LTE_L2_MEAS   
-    U32 grantPerLch[RGU_MAX_LC] = {0};
+   uint32_t   grantPerLch[RGU_MAX_LC] = {0};
 #endif
 /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS_LOSS_DELAY
-   U8        snIdx1;
-   U8        snIdx2;
+   uint8_t        snIdx1;
+   uint8_t        snIdx2;
 #endif /* LTE_L2_MEAS */
-   U32 idx;
+   uint32_t  idx;
 
 //Debug
-   U32 staIndSz=0,datIndSz = 0;
-   TRC2(rlcUtlSndToLi)
-
+   uint32_t staIndSz=0,datIndSz = 0;
 
    datReqInfo = NULLP;
-   RLC_ALLOC_SHRABL_BUF(gCb->u.dlCb->rguDlSap->pst.region,
-                       gCb->u.dlCb->rguDlSap->pst.pool,
+   RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL,
                        datReqInfo,sizeof(RguDDatReqInfo));
 #if (ERRCLASS & ERRCLS_ADD_RES)
       if ( datReqInfo == NULLP )
       {
-         RLOG_ARG0(L_FATAL,DBG_CELLID,staIndInfo->cellId,
-                  "Memory allocation failed");
+         DU_LOG("\nRLC: rlcUtlSendToMac: Memory allocation failed");
          return RFAILED;
       }
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
@@ -366,12 +385,12 @@ KwDStaIndInfo   *staIndInfo;
    {
       staInd = &staIndInfo->staInd[idx];
       /* Fetch Ue control block */
-      if(ROK != rlcDbmFetchDlUeCb(gCb,staInd->rnti,staIndInfo->cellId,&ueCb))
+      GET_UE_IDX(staInd->rnti, ueIdx);
+      if(ROK != rlcDbmFetchDlUeCb(gCb, ueIdx, staIndInfo->cellId,&ueCb))
       {
          /* Fetch UeCb failed */
-         RLOG_ARG1(L_ERROR, DBG_CELLID,staIndInfo->cellId, 
-                  "UeId[%u]:ueCb not found",
-                  staInd->rnti);
+         DU_LOG("\nRLC: rlcUtlSendToMac: UeId[%u]:ueCb not found",
+            staInd->rnti);
          /* If ueCb is not found for current rnti then continue to look for next rnti*/
          continue; 
       }
@@ -428,15 +447,15 @@ KwDStaIndInfo   *staIndInfo;
                   continue;
                }
                totNumPdu += datReq.pduInfo.numPdu;
-               cmMemcpy((U8 *)(&(datReqTb->lchData[count].pdu)),
-                     (U8 *)(&(datReq.pduInfo)),sizeof(KwPduInfo));
+               memcpy(&(datReqTb->lchData[count].pdu),
+                  &(datReq.pduInfo),sizeof(KwPduInfo));
 
 //Debug
-               U8 numPdu = 0;
+               uint8_t numPdu = 0;
                for (;numPdu < datReqTb->lchData[count].pdu.numPdu ; numPdu ++)
                {
                   MsgLen len = 0;
-                  SFndLenMsg(datReqTb->lchData[count].pdu.mBuf[numPdu],&len);
+                  ODU_FIND_MSG_LEN(datReqTb->lchData[count].pdu.mBuf[numPdu],&len);
                   datIndSz += len; 
                }
                datReqTb->lchData[count].setMaxUlPrio = FALSE;
@@ -495,7 +514,7 @@ KwDStaIndInfo   *staIndInfo;
                datReqTb->lchData[count].boReport.oldestSduArrTime = 
                                              datReq.boRep.oldestSduArrTime;
                /* kw004.201 Used SSI function to initialize the variable */
-               cmMemset( (U8 *)&datReq, 0, sizeof(RlcDatReq) ); 
+               memset(&datReq, 0, sizeof(RlcDatReq) ); 
             }
          }
 #ifdef LTE_L2_MEAS
@@ -539,16 +558,9 @@ KwDStaIndInfo   *staIndInfo;
    }
    datReqInfo->cellId  = staIndInfo->cellId;
    datReqInfo->nmbOfUeGrantPerTti = staIndInfo->nmbOfUeGrantPerTti;
-   /* If trace flag is enabled send the trace indication */
-   if(TRUE == gCb->init.trc )
-   {
-      /* Populate the trace params */
-      rlcLmmSendTrc(gCb,EVTRGUDDATREQ, NULLP);
-   }
 
    rguSap = &(gCb->u.dlCb->rguDlSap[suId]);
-//Debug
-   RlcLiRguDDatReq(&rguSap->pst,rguSap->spId,datReqInfo); 
+   rlcSendDedLcDlData(&rguSap->pst,rguSap->spId,datReqInfo); 
    return ROK;
 }
 
@@ -572,58 +584,38 @@ KwDStaIndInfo   *staIndInfo;
  *      -# ROK 
  *      -# RFAILED
  */
-#ifdef ANSI
-S16 rlcUtlSndDStaRsp
-(
-RlcCb       *gCb,
-RlcDlRbCb   *rbCb,     
-S32        bo,        
-S32        estHdrSz,  
-Bool       staPduPrsnt,
-U32        staPduBo
-)
-#else
-S16 rlcUtlSndDStaRsp(gCb,rbCb,bo,estHdrSz,staPduPrsnt,staPduBo)
-RlcCb       *gCb;
-RlcDlRbCb   *rbCb;      
-S32        bo;         
-S32        estHdrSz;   
-Bool       staPduPrsnt;
-U32        staPduBo;
-#endif
+uint8_t rlcUtlSendDedLcBoStatus(RlcCb *gCb, RlcDlRbCb *rbCb, int32_t bo, \
+   int32_t estHdrSz, bool staPduPrsnt, uint32_t staPduBo)
 {
-   RlcMacBOStatus   boStatus;      /* Buffer occupancy status information */
-   RlcRguSapCb       *rguSap;       /* MAC SAP Information */
-   TRC3(rlcUtlSndDStaRsp)
+   Pst           pst;           /* Post info */
+   RlcBoStatus   *boStatus;      /* Buffer occupancy status information */
+
 #ifndef TENB_ACC
-   if ((rbCb->lastRprtdBoToMac > (U32)8000) && (rbCb->boUnRprtdCnt < (U32)5) 
+   if ((rbCb->lastRprtdBoToMac > (uint32_t)8000) && (rbCb->boUnRprtdCnt < (uint32_t)5) 
        && (!staPduPrsnt) && ((CM_LTE_MODE_AM == rbCb->mode ) && (AMDL.nxtRetx == NULLP)))
    {
       rbCb->boUnRprtdCnt++;
       return ROK;
    }
 #endif
+   rbCb->boUnRprtdCnt = (uint32_t)0;
+   rbCb->lastRprtdBoToMac = (uint32_t)bo;
 
-   rguSap = &(gCb->u.dlCb->rguDlSap[rbCb->rguSapId]);
+   RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL, \
+      boStatus, sizeof(RlcBoStatus));
 
-   rbCb->boUnRprtdCnt = (U32)0;
-   rbCb->lastRprtdBoToMac = (U32)bo;
+   boStatus->cellId = rbCb->rlcId.cellId;
+   boStatus->ueIdx = rbCb->rlcId.ueId;
+   boStatus->commCh = FALSE; 
+   boStatus->lcId = rbCb->lch.lChId;
+   boStatus->bo = bo;
 
-   boStatus.cellId = rbCb->rlcId.cellId;
-   boStatus.rnti = rbCb->rlcId.ueId;
-   boStatus.commCh = FALSE; 
-   boStatus.lcId = rbCb->lch.lChId;
-   boStatus.bo = bo;
-
-   /* If trace flag is enabled send the trace indication */
-   if(gCb->init.trc == TRUE)
-   {
-      /* Populate the trace params */
-      rlcLmmSendTrc(gCb, EVTRLCBOSTA, NULLP);
-   }
+   FILL_PST_RLC_TO_MAC(pst, ODU_FIND_PROCID(), RLC_DL_INST, EVENT_BO_STATUS_TO_MAC);
    /* Send Status Response to MAC layer */
-   RlcMacSendBOStatus(&rguSap->pst,rguSap->spId,&boStatus);
-
+   if(RlcSendBoStatusToMac(&pst, boStatus) != ROK)
+   {
+      RLC_FREE_SHRABL_BUF(pst.region, pst.pool, boStatus, sizeof(RlcBoStatus));
+   }
 
    return ROK;
 }
@@ -722,24 +714,8 @@ CmLListCp   *sduQ;
  *
  * @return  void 
  */
-#ifdef ANSI
-Void rlcUtlCalcLiForSdu
-(
-RlcCb     *gCb,
-U16      numLi, 
-MsgLen   msgLen,
-S16      *pduSz 
-)
-#else
-Void rlcUtlCalcLiForSdu(gCb,numLi,msgLen,pduSz)
-RlcCb     *gCb;
-U16      numLi; 
-MsgLen   msgLen;
-S16      *pduSz;
-#endif 
+void rlcUtlCalcLiForSdu(RlcCb *gCb, uint16_t numLi, MsgLen msgLen, int16_t *pduSz)
 {
-   TRC2(rlcUtlCalcLiForSdu)
-
    if ( (*pduSz > msgLen)  && (msgLen < RLC_2K_BYTE))
    {
       if(0 == (numLi & RLC_BIT0)) /* check if number of LIs are odd or even */
@@ -753,7 +729,7 @@ S16      *pduSz;
          *pduSz -= 1;
       }
    }
-   RETVOID;
+   return;
 }
 
 /**
@@ -803,7 +779,7 @@ RlcDlRbCb *rbCb;
       rbCb->m.umDl.estHdrSz= 0;
    }
 
-   rlcUtlSndDStaRsp(gCb, rbCb, 0, 0, FALSE,0);
+   rlcUtlSendDedLcBoStatus(gCb, rbCb, 0, 0, FALSE,0);
 
    RETVOID;
 }
@@ -819,18 +795,8 @@ RlcDlRbCb *rbCb;
  *          TRUE  : Re-establishment is in progress
  *          FALSE : Re-establishment is not in progress
  */
-#ifdef ANSI
-Bool rlcDlUtlIsReestInProgress
-(
-RlcDlRbCb *rbCb
-)
-#else
-Bool rlcDlUtlIsReestInProgress(rbCb)
-RlcDlRbCb *rbCb;
-#endif 
+bool rlcDlUtlIsReestInProgress(RlcDlRbCb *rbCb)
 {
-   TRC2(rlcDlUtlSetReestInProgressForRB)
-
    return (rbCb->reestInProgress);
 }
 
@@ -926,18 +892,10 @@ RlcDlUeCb *ueCb;
  *
  * @return  Void
  */
-#ifdef ANSI
-Void rlcUtlIncrementKwuStsSduTx
-(
-RlcKwuSapCb *rlckwuSap 
-)
-#else
-Void rlcUtlIncrementKwuStsSduTx(rlckwuSap)
-RlcKwuSapCb *rlckwuSap;
-#endif
+void rlcUtlIncrementKwuStsSduTx(RlcKwuSapCb *rlckwuSap)
 {
    rlckwuSap->sts.sduTx++;
-   RETVOID;
+   return;
 }
 
 /**
@@ -950,23 +908,13 @@ RlcKwuSapCb *rlckwuSap;
  *
  * @return  Void
  */
-#ifdef ANSI
-Void rlcUtlIncrementGenStsBytesAndPdusSent
-(
-RlcGenSts   *genSts,
-Buffer     *pdu   
-)
-#else
-Void rlcUtlIncrementGenStsBytesAndPdusSent(genSts, pdu)
-RlcGenSts   *genSts;
-Buffer     *pdu; 
-#endif
+void rlcUtlIncrementGenStsBytesAndPdusSent(RlcGenSts *genSts, Buffer *pdu)
 {
    MsgLen bytesSent;
-   SFndLenMsg(pdu, &bytesSent);
+   ODU_FIND_MSG_LEN(pdu, &bytesSent);
    genSts->bytesSent += bytesSent;
    genSts->pdusSent++;
-   RETVOID;
+   return;
 }
 
 /**
@@ -1038,24 +986,16 @@ RlcCb *gCb;
  *
  * @return  Void
  */
-#ifdef ANSI
-Void rlcUtlRaiseDlCleanupEvent
-(
-RlcCb *gCb  
-)
-#else
-Void rlcUtlRaiseDlCleanupEvent(gCb)
-RlcCb *gCb;
-#endif
+void rlcUtlRaiseDlCleanupEvent(RlcCb *gCb)
 {
 #ifdef KWSELFPSTDLCLEAN
    if(!gCb->u.dlCb->eventInQueue)
    {
-      SPstTsk(&gCb->u.dlCb->selfPst, gCb->u.dlCb->selfPstMBuf);
+      ODU_POST_TASK(&gCb->u.dlCb->selfPst, gCb->u.dlCb->selfPstMBuf);
       gCb->u.dlCb->eventInQueue = TRUE;
    }
 #endif
-   RETVOID;
+   return;
 }
 
 /**
@@ -1067,20 +1007,10 @@ RlcCb *gCb;
  *
  * @return  Void
  */
-#ifdef ANSI
-Void rlcUtlAddSduToBeFreedQueue
-(
-RlcCb    *gCb,
-RlcSdu   *sdu
-)
-#else
-Void rlcUtlAddSduToBeFreedQueue(gCb, sdu)
-RlcCb    *gCb;
-RlcSdu   *sdu;
-#endif
+void rlcUtlAddSduToBeFreedQueue(RlcCb *gCb, RlcSdu *sdu)
 {
    cmLListAdd2Tail(&(gCb->u.dlCb->toBeFreed.sduLst), &(sdu->lstEnt));
-   RETVOID;
+   return;
 }
 
 /**
@@ -2246,18 +2176,8 @@ Void;
  *  @return  Void
  */
 
-#ifdef ANSI
-void rlcUtlGetCurrTime
-(
- U32  *currTime
-)
-#else
-void rlcUtlGetCurrTime(U32 *currTime)
-U32   *currTime;
-#endif
+void rlcUtlGetCurrTime(uint32_t  *currTime)
 {
-   TRC2(rlcUtlGetCurrTime)
-
    /* Need t define else part for PAL */
    *currTime = SGetTtiCount();
 }
@@ -2359,30 +2279,16 @@ U32        pktAdmitCnt;
  *
  *  @return  Void
  */
-#ifdef ANSI
-Void rlcUtlStoreTxBuf 
-(
-CmLListCp        *txBufLst,
-RlcTx             *txBuf,
-RlcSn              sn
-)
-#else
-Void rlcUtlStoreTxBuf(txBufLst, txBuf, sn)
-CmLListCp        *txBufLst;
-RlcTx             *txBuf;
-RlcSn              sn;
-#endif
+void rlcUtlStoreTxBuf(CmLListCp *txBufLst, RlcTx *txBuf, RlcSn sn)
 {
-   U32             hashKey; 
+   uint32_t   hashKey; 
 
-   TRC3(kwUtlStoretxBuf)
-   //printf("S-sn(%d)\n", sn);
    hashKey = (sn % RLC_TX_BUF_BIN_SIZE );
    txBuf->sn = sn; 
    txBuf->lnk.node = (PTR)txBuf;
    cmLListAdd2Tail(&(txBufLst[hashKey]), &txBuf->lnk);
 
-   RETVOID;
+   return;
 } /* rlcUtlStoreRecBuf */
 
 /**
@@ -2399,25 +2305,12 @@ RlcSn              sn;
  *
  *  @return  Void
  */
-#ifdef ANSI
-RlcTx* rlcUtlGetTxBuf 
-(
-CmLListCp        *txBufLst,
-RlcSn             sn
-)
-#else
-RlcTx* rlcUtlGetTxBuf(txBufLst, sn)
-CmLListCp        *txBufLst;
-RlcSn             sn;
-#endif
+RlcTx* rlcUtlGetTxBuf(CmLListCp *txBufLst, RlcSn sn)
 {
-   U32                 hashKey; 
+   uint32_t            hashKey; 
    CmLListCp           *txBufLstCp;
-   RlcTx                *txBuf;
+   RlcTx               *txBuf;
    CmLList             *node = NULLP;
-
-   TRC3(rlcUtlGetTxBuf)
-   //printf("G-sn(%d)\n", sn);
 
    hashKey = (sn % RLC_TX_BUF_BIN_SIZE ); 
  
@@ -2432,7 +2325,7 @@ RlcSn             sn;
       }
       CM_LLIST_NEXT_NODE(txBufLstCp, node);
    }
-   return (NULLP);
+   return NULLP;
 } /* rlcUtlStoreTxBuf */
 /**
  *

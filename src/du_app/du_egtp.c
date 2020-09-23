@@ -572,7 +572,7 @@ uint8_t egtpHdlDatInd(EgtpMsg egtpMsg)
       teidCb->preEncodedHdr.hdr[EGTP_MAX_HDR_LEN - 1] &= ~(EGTP_MASK_BIT3);
    }
 
-   ODU_FIND_MSG_LEN(egtpMsg.msg, &tPduSize);
+   ODU_FIND_MSG_LEN(egtpMsg.msg, (int16_t *)&tPduSize);
 
    /*Adjust the header to fill the correct length*/
    msgLen = tPduSize +  (EGTP_MAX_HDR_LEN - hdrLen) - 0x08;
@@ -752,7 +752,8 @@ uint8_t egtpSendMsg(Buffer *mBuf)
    dstAddr.port = EGTP_DFLT_PORT;
    dstAddr.address = egtpCb.dstCb.dstIp;
 
-   ret = cmInetSendMsg(&(egtpCb.dstCb.sendTptSrvr.sockFd), &dstAddr, &info, mBuf, &txLen, CM_INET_NO_FLAG);
+   ret = cmInetSendMsg(&(egtpCb.dstCb.sendTptSrvr.sockFd), &dstAddr, &info, \
+      mBuf, (int16_t *)&txLen, CM_INET_NO_FLAG);
    if(ret != ROK && ret != RWOULDBLOCK)
    {
       DU_LOG("\nEGTP : Failed sending the message");
@@ -825,7 +826,8 @@ uint8_t egtpRecvMsg()
    while(nMsg < EGTP_MAX_MSG_RECV)
    {
       bufLen = -1;
-      ret = cmInetRecvMsg(&(egtpCb.recvTptSrvr.sockFd), &fromAddr, &memInfo, &recvBuf, &bufLen, CM_INET_NO_FLAG);
+      ret = cmInetRecvMsg(&(egtpCb.recvTptSrvr.sockFd), &fromAddr, &memInfo, \
+         &recvBuf, (int16_t *)&bufLen, CM_INET_NO_FLAG);
       if(ret == ROK && recvBuf != NULLP)
       {  
          DU_LOG("\nEGTP : Received DL Message[%d]\n", nMsg+1);
@@ -861,7 +863,7 @@ uint8_t egtpDecodeHdr(Buffer *mBuf, EgtpMsg  *egtpMsg)
    uint8_t       extHdrLen = 0;        /* Extension hdr length */
    bool     extPres = FALSE;      /* Flag for indication of S, E or P presense flag */
  
-   ODU_FIND_MSG_LEN(mBuf, &bufLen);
+   ODU_FIND_MSG_LEN(mBuf, (int16_t *)&bufLen);
  
    /* Decode first byte and storing in temporary variable */
    ODU_REM_PRE_MSG(&tmpByte[0], mBuf);

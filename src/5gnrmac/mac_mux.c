@@ -25,6 +25,7 @@
 #include "mac_sch_interface.h"
 #include "lwr_mac_upr_inf.h"
 #include "mac.h"
+#include "mac_utils.h"
 
 /*******************************************************************
  *
@@ -190,15 +191,26 @@ void fillRarPdu(RarInfo *rarInfo)
  * @return void
  *
  * ****************************************************************/
-void createMacRaCb(uint16_t cellId, uint16_t crnti)
+void createMacRaCb(RachIndInfo *rachIndInfo)
 {
-   uint8_t idx = 0; /* supporting 1 UE */
-   uint16_t cellIdx;
+   uint8_t  ueIdx = 0;
+   uint16_t crnti = 0;
+   uint16_t cellIdx = 0;
 
-   GET_CELL_IDX(cellId, cellIdx);
+   GET_CELL_IDX(rachIndInfo->cellId, cellIdx);
+   
+   crnti = getNewCrnti(&macCb.macCell[cellIdx]->crntiMap);
+   if(crnti == -1)
+      return;
 
-   macCb.macCell[cellIdx]->macRaCb[idx].cellId = cellId;
-   macCb.macCell[cellIdx]->macRaCb[idx].crnti = crnti;
+   GET_UE_IDX(crnti, ueIdx);
+
+   /* store in rach ind structure */
+   rachIndInfo->crnti  = crnti;
+
+   /* store in raCb */
+   macCb.macCell[cellIdx]->macRaCb[ueIdx-1].cellId = rachIndInfo->cellId;
+   macCb.macCell[cellIdx]->macRaCb[ueIdx-1].crnti  = crnti;
 }
 
 /*************************************************
@@ -214,17 +226,14 @@ void createMacRaCb(uint16_t cellId, uint16_t crnti)
  *             msg4Pdu pointer
  ************************************************/
 
-void fillMsg4DlData(uint16_t cellId, MacDlData *dlData, uint8_t *msg4Pdu)
+void fillMsg4DlData(MacDlData *dlData, uint16_t msg4PduLen, uint8_t *msg4Pdu)
 {
    uint8_t idx = 0;
    uint16_t idx2;
-   uint16_t cellIdx;
-
-   GET_CELL_IDX(cellId, cellIdx);
 
    dlData->numPdu = 1;
    dlData->pduInfo[idx].lcId = MAC_LCID_CCCH;
-   dlData->pduInfo[idx].pduLen = macCb.macCell[cellIdx]->macRaCb[idx].msg4PduLen;
+   dlData->pduInfo[idx].pduLen = msg4PduLen;
    for(idx2 = 0; idx2 <  dlData->pduInfo[idx].pduLen; idx2++)
    {
       dlData->pduInfo[idx].dlPdu[idx2] = msg4Pdu[idx2];
@@ -266,11 +275,11 @@ void fillMacCe(MacCeInfo *macCeInfo, uint8_t *msg3Pdu)
  *    Functionality:
  *     The MAC PDU will be MUXed and formed
  *
- * @params[in] MacDlData *, MacCeInfo *, msg4TxPdu *, tbSize
+ * @params[in] MacDlData *, MacCeInfo *, txPdu *, tbSize
  * @return void
  * ****************************************************************/
 
-void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint8_t *msg4TxPdu, uint16_t tbSize)
+void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint8_t *txPdu, uint16_t tbSize)
 {
    uint8_t bytePos = 0;
    uint8_t bitPos = 7;
@@ -291,24 +300,27 @@ void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint8_t *msg4TxPdu, uint
    uint8_t lenFieldSize = 0;      /* 8-bit or 16-bit L field  */
 
    /* PACK ALL MAC CE */
-   for(idx = 0; idx < macCeData->numCes; idx++)
+   if(macCeData != NULLP)
    {
-      lcid = macCeData->macCe[idx].macCeLcid;
-      switch(lcid)
+      for(idx = 0; idx < macCeData->numCes; idx++)
       {
-	 case MAC_LCID_CRI:
-	    {
-	       /* Packing fields into MAC PDU R/R/LCID */
-	       packBytes(macPdu, &bytePos, &bitPos, RBit, (RBitSize * 2));
-	       packBytes(macPdu, &bytePos, &bitPos, lcid, lcidSize);
-	       memcpy(&macPdu[bytePos], macCeData->macCe[idx].macCeValue,\
-		     MAX_CRI_SIZE);
-	       bytePos += MAX_CRI_SIZE;
+	 lcid = macCeData->macCe[idx].macCeLcid;
+	 switch(lcid)
+	 {
+	    case MAC_LCID_CRI:
+	       {
+		  /* Packing fields into MAC PDU R/R/LCID */
+		  packBytes(macPdu, &bytePos, &bitPos, RBit, (RBitSize * 2));
+		  packBytes(macPdu, &bytePos, &bitPos, lcid, lcidSize);
+		  memcpy(&macPdu[bytePos], macCeData->macCe[idx].macCeValue,\
+			MAX_CRI_SIZE);
+		  bytePos += MAX_CRI_SIZE;
+		  break;
+	       }
+	    default:
+	       DU_LOG("\n MAC: Invalid LCID %d in mac pdu",lcid);
 	       break;
-	    }
-	 default:
-	    DU_LOG("\n MAC: Invalid LCID %d in mac pdu",lcid);
-	    break;
+	 }
       }
    }
 
@@ -319,6 +331,7 @@ void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint8_t *msg4TxPdu, uint
       switch(lcid)
       {
 	 case MAC_LCID_CCCH:
+	 case MAC_LCID_MIN ... MAC_LCID_MAX :
 	    {
 	       lenField = dlData->pduInfo[idx].pduLen;
 	       if(dlData->pduInfo[idx].pduLen > 255)
@@ -357,10 +370,10 @@ void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint8_t *msg4TxPdu, uint
       packBytes(macPdu, &bytePos, &bitPos, lcid, lcidSize);
    }
 
-   /*Storing the muxed pdu in macRaCb */
-   if(msg4TxPdu != NULLP)
+   /*Storing the muxed pdu */
+   if(txPdu != NULLP)
    {
-      memcpy(msg4TxPdu, macPdu, tbSize);
+      memcpy(txPdu, macPdu, tbSize);
    }
 }
 

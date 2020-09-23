@@ -22,7 +22,8 @@
 uint8_t MacDuAppSlotInd(Pst *pst, SlotIndInfo *slotInfo);
 uint8_t MacDuAppStopInd(Pst *pst, MacCellStopInfo *cellStopId);
 uint8_t MacDuAppUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo);
-uint8_t MacSendUlDataToRlc(Pst *pst, RlcMacData *ulData);
+uint8_t MacSendUlDataToRlc(Pst *pst, RlcData *ulData);
+uint8_t MacSendSchedResultRptToRlc(Pst *pst, RlcSchedResultRpt *schedRpt);
 
 /**********************************************************************
          End of file
