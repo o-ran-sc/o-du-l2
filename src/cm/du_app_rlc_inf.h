@@ -25,8 +25,9 @@
 #define EVENT_RLC_UL_UE_CREATE_REQ  210
 #define EVENT_RLC_UL_UE_CREATE_RSP 211    /*!< Config Confirm */
 #define EVENT_UL_RRC_MSG_TRANS_TO_DU  212
+#define EVENT_RLC_UL_UE_RECONFIG_REQ  213
+#define EVENT_RLC_UL_UE_RECONFIG_RSP  214
 
-#define RB_ID_SRB 0
 #define RB_ID_DRB 1
 
 #define RB_TYPE_SRB 0        /* Signalling Radio Bearer */
@@ -478,8 +479,12 @@ typedef struct rlcUeCfg
 {
    uint16_t     cellId;
    uint8_t      ueIdx;
-   uint8_t      numLcs;
-   RlcBearerCfg rlcBearerCfg[MAX_NUM_LOGICAL_CHANNELS];
+   uint8_t      numLcsToAdd;
+   RlcBearerCfg rlcBearerCfgToAdd[MAX_NUM_LOGICAL_CHANNELS];
+   uint8_t      numLcsToMod;
+   RlcBearerCfg rlcBearerCfgToMod[MAX_NUM_LOGICAL_CHANNELS];
+   uint8_t      numLcsToDel;
+   RlcBearerCfg rlcBearerCfgToDel[MAX_NUM_LOGICAL_CHANNELS];
 }RlcUeCfg;
 
 typedef struct rlcUeCfgRsp
@@ -516,6 +521,15 @@ typedef uint8_t (*RlcUlRrcMsgToDuFunc) ARGS((
    Pst           *pst,
    RlcUlRrcMsgInfo *ulRrcMsgInfo));
 
+typedef uint8_t (*DuRlcUlUeReconfigReq) ARGS((
+   Pst           *pst,
+   RlcUeCfg      *ueCfg ));
+
+/* UE Reconfig Response from RLC to DU APP*/
+typedef uint8_t (*RlcUlDuUeReconfigRsp) ARGS((
+   Pst          *pst,
+   RlcUeCfgRsp  *ueCfgRsp));
+
 /* Function Declarations */
 uint8_t packDuRlcUlUeCreateReq(Pst *pst, RlcUeCfg *ueCfg);
 uint8_t unpackRlcUlUeCreateReq(DuRlcUlUeCreateReq func, Pst *pst, Buffer *mBuf);
@@ -526,6 +540,10 @@ uint8_t DuProcRlcUlUeCreateRsp(Pst *pst, RlcUeCfgRsp *cfgRsp);
 uint8_t packRlcUlRrcMsgToDu(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo);
 uint8_t DuProcRlcUlRrcMsgTrans(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo);
 uint8_t unpackRlcUlRrcMsgToDu(RlcUlRrcMsgToDuFunc func, Pst *pst, Buffer *mBuf);
+uint8_t unpackRlcUlUeReconfigReq(DuRlcUlUeReconfigReq func, Pst *pst, Buffer *mBuf);
+uint8_t RlcUlProcUeReconfigReq(Pst *pst, RlcUeCfg *ueCfg);
+uint8_t unpackRlcUlUeReconfigRsp(RlcUlDuUeReconfigRsp func, Pst *pst, Buffer *mBuf);
+uint8_t DuProcRlcUlUeReconfigRsp(Pst *pst, RlcUeCfgRsp *cfgRsp);
 
 #endif /* RLC_INF_H */
 

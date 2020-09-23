@@ -115,7 +115,7 @@ uint8_t fillBitString(BIT_STRING_t *id, uint8_t unusedBits, uint8_t byteSize, ui
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t bitStringToInt(BIT_STRING_t *bitString, uint16_t *val)
+uint8_t bitStringToInt(BIT_STRING_t *bitString, void *val, DataType type)
 {
    uint16_t idx;
    if(bitString->buf == NULL || bitString->size <= 0)
@@ -123,16 +123,55 @@ uint8_t bitStringToInt(BIT_STRING_t *bitString, uint16_t *val)
       DU_LOG("\nDU_APP : Bit string is empty");
       return RFAILED;
    }
-
-   for(idx=0; idx< bitString->size-1; idx++)
+   else
    {
-      *val |= bitString->buf[idx];
-      *val <<= 8;
-    }
-   *val |= bitString->buf[idx];
-   *val >>= bitString->bits_unused;
+      switch(type)
+      {
+         case UINT8:
+	 {
+           uint8_t *value = NULLP;
+           value = (uint8_t *)val;
+           for(idx=0; idx< bitString->size-1; idx++)
+           {
+              *value |= bitString->buf[idx];
+              *value <<= 8;
+           }
+           *value |= bitString->buf[idx];
+           *value >>= bitString->bits_unused;
 
-   return ROK;
+           break;
+	 }
+         case UINT16:
+	 {  
+            uint16_t *value = NULLP;
+            value = (uint16_t *)val;
+            for(idx=0; idx< bitString->size-1; idx++)
+            {
+               *value |= bitString->buf[idx];
+               *value <<= 8;
+            }
+            *value |= bitString->buf[idx];
+            *value >>= bitString->bits_unused;
+            break;
+	 }
+         case UINT32:
+	 {
+            uint32_t *value = NULLP;
+            value = (uint32_t *)val;
+            for(idx=0; idx< bitString->size-1; idx++)
+            {
+               *value |= bitString->buf[idx];
+               *value <<= 8;
+            }
+            *value |= bitString->buf[idx];
+            *value >>= bitString->bits_unused;
+            break;
+	 }
+         default: 
+	    return RFAILED;
+      }
+      return ROK;
+   }
 }
 
 

@@ -19,6 +19,25 @@
 #include "common_def.h"
 #include "du_app_mac_inf.h"
 
+uint8_t macLcId = MIN_DRB_LCID;
+
+uint8_t getMacDrbLcId()
+{
+   uint8_t temp;
+
+   if(macLcId > MAX_DRB_LCID)
+   {
+      temp = MIN_DRB_LCID;
+      macLcId = MIN_DRB_LCID;
+   }
+   else if(macLcId >= MIN_DRB_LCID)
+   {
+      temp = macLcId;
+      macLcId++;
+   }
+   return temp;
+}
+
 /**************************************************************************
  * @brief Function to pack Loose Coupled 
  *        MAC cell config parameters required by MAC
@@ -818,6 +837,76 @@ uint8_t packDuMacUeCreateRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
  *
  * ****************************************************************/
 uint8_t unpackDuMacUeCreateRsp(DuMacUeCreateRspFunc func, Pst *pst, Buffer *mBuf)
+{
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      MacUeCfgRsp *cfgRsp;
+
+      /* unpack the address of the structure */
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&cfgRsp, mBuf);
+      ODU_PUT_MSG(mBuf);
+      return (*func)(pst, cfgRsp);
+   }
+
+   ODU_PUT_MSG(mBuf);
+   return RFAILED;
+}
+
+/*******************************************************************
+ *
+ * @brief Unpacks UE Reconfig Request received from DU APP
+ *
+ * @details
+ *
+ *    Function : unpackMacUeReconfigReq
+ *
+ *    Functionality:
+ *         Unpacks UE Reconfig Request received from DU APP
+ *
+ * @params[in] Pointer to Handler
+ *             Post structure pointer
+ *             Message Buffer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t unpackMacUeReconfigReq(DuMacUeReconfigReq func, Pst *pst, Buffer *mBuf)
+{
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      MacUeCfg *ueCfg;
+
+      /* unpack the address of the structure */
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&ueCfg, mBuf);
+      ODU_PUT_MSG(mBuf);
+      return (*func)(pst, ueCfg);
+   }
+   else
+   {
+      /* Nothing to do for other selectors */
+      DU_LOG("\n Only LWLC supported for UE Create Request ");
+      ODU_PUT_MSG(mBuf);
+   }
+
+   return RFAILED;
+}
+
+/*******************************************************************
+ *
+ * @brief Unpack UE Reconfig Response from MAC to DU APP
+ *
+ * @details
+ *
+ *    Function : unpackDuMacUeReconfigRsp
+ *
+ *    Functionality: Unpack UE Reconfig Response from MAC to DU APP
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t unpackDuMacUeReconfigRsp(DuMacUeReconfigRspFunc func, Pst *pst, Buffer *mBuf)
 {
    if(pst->selector == ODU_SELECTOR_LWLC)
    {

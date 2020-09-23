@@ -752,7 +752,8 @@ uint8_t procE2SetupRsp(E2AP_PDU_t *e2apMsg)
 				   memcpy(e2apMsgDb.plmn, e2SetRspMsg->protocolIEs.list.array[idx]\
 					 ->value.choice.GlobalRIC_ID.pLMN_Identity.buf, recvBufLen);
 				}
-            bitStringToInt(&e2SetRspMsg->protocolIEs.list.array[idx]->value.choice.GlobalRIC_ID.ric_ID, &e2apMsgDb.ricId);
+            bitStringToInt(&e2SetRspMsg->protocolIEs.list.array[idx]->value.choice.GlobalRIC_ID.ric_ID, \
+	       &e2apMsgDb.ricId, UINT16);
             /*TODO : e2apMsgDb.plmn memory to be deallocated after the usage */
 			   break;
          }

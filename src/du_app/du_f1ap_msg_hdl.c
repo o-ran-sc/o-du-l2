@@ -85,6 +85,7 @@ uint8_t Nrcgiret=RFAILED;
 uint8_t SplCellListret=RFAILED;
 uint8_t SRBSetupret=RFAILED;
 uint8_t BuildInitialUlBWP(BWP_UplinkDedicated_t *ulBwp);
+uint8_t procUeContextSetupReq(F1AP_PDU_t *f1apMsg);
 
 /*******************************************************************
  *
@@ -6358,6 +6359,11 @@ void F1APMsgHdlr(Buffer *mBuf)
 						procDlRrcMsgTrans(f1apMsg);
 						break;
 					}
+                                case InitiatingMessage__value_PR_UEContextSetupRequest:
+		                        {
+		                           procUeContextSetupReq(f1apMsg);
+		                           break;
+		                        }
 
 				default:
 					{

@@ -19,6 +19,25 @@
 #include "common_def.h"
 #include "du_app_rlc_inf.h"
 
+uint8_t rlcLcId = MIN_DRB_LCID;
+
+uint8_t getRlcDrbLcId()
+{
+   uint8_t temp;
+
+   if(rlcLcId > MAX_DRB_LCID)
+   {
+      temp = MIN_DRB_LCID;
+      rlcLcId = MIN_DRB_LCID;
+   }
+   else if(rlcLcId >= MIN_DRB_LCID)
+   {
+      temp = rlcLcId;
+      rlcLcId++;
+   }
+   return temp;
+}
+
 /*******************************************************************
  *
  * @brief Packs and Sends UE create Request from DUAPP to RLC
@@ -252,6 +271,81 @@ uint8_t unpackRlcUlRrcMsgToDu(RlcUlRrcMsgToDuFunc func, Pst *pst, Buffer *mBuf)
    return RFAILED;
 }
 
+/*******************************************************************
+ *
+ * @brief Unpacks UE Reconfig Request received from DU APP
+ *
+ * @details
+ *
+ *    Function : unpackRlcUlUeReconfigReq
+ *
+ *    Functionality:
+ *         Unpacks UE Create Request received from DU APP
+ *
+ * @params[in] Pointer to Handler
+ *             Post structure pointer
+ *             Message Buffer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t unpackRlcUlUeReconfigReq(DuRlcUlUeReconfigReq func, Pst *pst, Buffer *mBuf)
+{
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      RlcUeCfg *ueCfg;
+      /* unpack the address of the structure */
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&ueCfg, mBuf);
+      ODU_PUT_MSG(mBuf);
+      return (*func)(pst, ueCfg);
+   }
+   else
+   {
+      /* Nothing to do for other selectors */
+      DU_LOG("\nRLC: Only LWLC supported for UE Create Request ");
+      ODU_PUT_MSG(mBuf);
+   }
+
+   return RFAILED;
+}
+
+/*******************************************************************
+ *
+ * @brief Unpacks UE Reconfig Response received from DU APP
+ *
+ * @details
+ *
+ *    Function : unpackRlcUlUeReconfigRsp
+ *
+ *    Functionality:
+ *         Unpacks UE Reconfig Response received from DU APP
+ *
+ * @params[in] Pointer to Handler
+ *             Post structure pointer
+ *             Message Buffer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t unpackRlcUlUeReconfigRsp(RlcUlDuUeReconfigRsp func, Pst *pst, Buffer *mBuf)
+{
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      RlcUeCfgRsp *cfgRsp;
+      /* unpack the address of the structure */
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&cfgRsp, mBuf);
+      ODU_PUT_MSG(mBuf);
+      return (*func)(pst, cfgRsp);
+   }
+   else
+   {
+      /* Nothing to do for other selectors */
+      DU_LOG("\nRLC: Only LWLC supported for UE Create Response ");
+      ODU_PUT_MSG(mBuf);
+   }
+
+   return RFAILED;
+}
 
 /**********************************************************************
          End of file

@@ -60,6 +60,7 @@ static int RLOG_FILE_ID=205;
 #include "kw_dl.h"
 #include "kw_ul.h"
 #include "kw_udx.h"
+#include "rlc.h"
 
 /* extern (.x) include files */
 #include "lkw.x"           /* LKW */
@@ -281,7 +282,7 @@ RlcCfgInfo   *cfg;
 
    static U32  transCount;
 
-
+   
    TRC3(RlcProcCfgReq)
       
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -292,6 +293,7 @@ RlcCfgInfo   *cfg;
    }
 #endif
    tRlcCb = RLC_GET_RLCCB(pst->dstInst);
+   rlcUdxActionType = pst->event;
 
    RLC_ALLOC(tRlcCb, cfgTmpData, sizeof (RlcUlCfgTmpData));
 

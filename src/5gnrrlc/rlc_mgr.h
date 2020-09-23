@@ -17,8 +17,8 @@
 *******************************************************************************/
 
 /* This file stores defines used at RLC interface */
-extern void fillRlcUlUeCfgRsp(RlcUeCfgRsp *rlcCfgRsp, RlcCfgCfmInfo *rlcCRsp);
-uint8_t SendRlcUlUeCreateRspToDu(Pst *pst, RlcCfgCfmInfo *cfgRsp);
+extern uint8_t fillRlcUlUeCfgRsp(RlcUeCfgRsp *rlcCfgRsp, RlcCfgCfmInfo *rlcCRsp);
+uint8_t SendRlcUlUeRspToDu(Pst *pst, RlcCfgCfmInfo *cfgRsp);
 
 /**********************************************************************
          End of file
