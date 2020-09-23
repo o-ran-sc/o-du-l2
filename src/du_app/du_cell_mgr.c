@@ -69,7 +69,7 @@ uint8_t procCellsToBeActivated(Cells_to_be_Activated_List_t cellsToActivate)
       Cells_to_be_Activated_List_Item_t cell = cellsToActivate.list.array[idx]->\
           value.choice.Cells_to_be_Activated_List_Item;
 
-      bitStringToInt(&cell.nRCGI.nRCellIdentity, &nci);
+      bitStringToInt(&cell.nRCGI.nRCellIdentity, &nci, UINT16);
       if(nci <= 0 || nci > MAX_NUM_CELL)
       {
          DU_LOG("\nDU APP : Invalid NCI %d", nci);

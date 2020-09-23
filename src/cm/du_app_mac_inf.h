@@ -44,6 +44,8 @@
 
 #define SRB_ID_0 0
 #define SRB_ID_1 1
+#define SRB_ID_2 2
+#define SRB_ID_3 3
 
 /* Macro for Ue Context */
 #define MAX_NUM_LOGICAL_CHANNELS 11
@@ -73,6 +75,8 @@
 #define EVENT_MAC_DL_CCCH_IND        207
 #define EVENT_MAC_UE_CREATE_REQ      208
 #define EVENT_MAC_UE_CREATE_RSP      209
+#define EVENT_MAC_UE_RECONFIG_REQ    210
+#define EVENT_MAC_UE_RECONFIG_RSP    211
 
 typedef enum
 {
@@ -269,13 +273,13 @@ typedef enum
 
 typedef enum 
 {
-   CCE_REG_MAPPINGTYPE_PR_INTERLEAVED,
+   CCE_REG_MAPPINGTYPE_PR_INTERLEAVED = 1,
    CCE_REG_MAPPINGTYPE_PR_NONINTERLEAVED
 }REGMappingType;
 
 typedef enum
 {
-   SLOTPERIODICITYANDOFFSET_PR_SL1,
+   SLOTPERIODICITYANDOFFSET_PR_SL1 = 1,
    SLOTPERIODICITYANDOFFSET_PR_SL2,
    SLOTPERIODICITYANDOFFSET_PR_SL4,
    SLOTPERIODICITYANDOFFSET_PR_SL5,
@@ -300,9 +304,14 @@ typedef enum
 
 typedef enum
 {
-   SEARCHSPACETYPE_PR_COMMON,
+   SEARCHSPACETYPE_PR_COMMON = 1,
    SEARCHSPACETYPE_PR_UE_SPECIFIC
 }SearchSpaceType;
+typedef enum
+{
+   QOS_NON_DYNAMIC = 1,
+   QOS_DYNAMIC
+}QosType;
 
 typedef enum
 {
@@ -350,9 +359,23 @@ typedef enum
 
 typedef enum
 {
-   TYPE_STATIC_BUNDLING,
+   TYPE_STATIC_BUNDLING = 1,
    TYPE_DYNAMIC_BUNDLING
 }BundlingType;
+
+typedef enum
+{
+   SET2_SIZE_N4,
+   SET2_SIZE_WIDEBAND
+}BundlingSizeSet2;
+
+typedef enum
+{
+   SET1_SIZE_N4,
+   SET1_SIZE_WIDEBAND,
+   SET1_SIZE_N2_WIDEBAND,
+   SET1_SIZE_N4_WIDEBAND
+}BundlingSizeSet1;
 
 typedef enum
 {
@@ -742,6 +765,19 @@ typedef struct pdschTimeDomRsrcAlloc
    uint8_t           startSymbolAndLength;
 }PdschTimeDomRsrcAlloc;
 
+typedef struct pdschBundling
+{
+   struct staticBundling
+   {
+     BundlingSizeSet2 size;
+   }StaticBundling;
+   struct dynamicBundling
+   {
+     BundlingSizeSet1 sizeSet1;
+     BundlingSizeSet2 sizeSet2;
+   }DynamicBundling;
+}PdschBundling;
+
 /* DMRS downlink configuration */
 typedef struct dmrsDlCfg
 {
@@ -758,6 +794,7 @@ typedef struct pdschConfig
    RBGSize                 rbgSize;
    CodeWordsSchedDci       numCodeWordsSchByDci;                    /* Number of code words scheduled by DCI */
    BundlingType            bundlingType;
+   PdschBundling           bundlingInfo;
 }PdschConfig;
 
 /* Initial Downlink BWP */
@@ -822,6 +859,7 @@ typedef struct puschTimeDomRsrcAlloc
 /* PUSCH Configuration */
 typedef struct puschCfg
 {
+   uint8_t                 dataScramblingId;
    DmrsUlCfg               dmrsUlCfgForPuschMapTypeA;
    ResAllocType            resourceAllocType;
    uint8_t                 numTimeDomRsrcAlloc;
@@ -917,7 +955,7 @@ typedef struct grbQosInfo
 
 typedef struct drbQos
 {
-   uint8_t  fiveQiType;   /* Dynamic or non-dynamic */ 
+   QosType  fiveQiType;   /* Dynamic or non-dynamic */ 
    union
    {
       NonDynFiveQi   nonDyn5Qi;
@@ -948,9 +986,8 @@ typedef struct lcCfg
    uint8_t lcId;
    DrbQosInfo *drbQos; 
    Snssai  *snssai;
-   UlLcCfg *ulLcCfg;
+   UlLcCfg ulLcCfg;
    DlLcCfg dlLcCfg;
-
 }LcCfg;
 
 typedef struct macUeCfg
@@ -962,8 +999,12 @@ typedef struct macUeCfg
    PhyCellGrpCfg phyCellGrpCfg;
    SpCellCfg spCellCfg;
    MaxAggrBitRate *maxAggrBitRate;
-   uint8_t numLcs;
-   LcCfg lcCfgList[MAX_NUM_LOGICAL_CHANNELS];
+   uint8_t numLcsToAdd;
+   LcCfg lcCfgToAddList[MAX_NUM_LOGICAL_CHANNELS];
+   uint8_t numLcsToMod;
+   LcCfg lcCfgToModList[MAX_NUM_LOGICAL_CHANNELS];
+   uint8_t numLcsToDel;
+   LcCfg lcCfgToDelList[MAX_NUM_LOGICAL_CHANNELS];
 }MacUeCfg;
 
 typedef struct nrcgi
@@ -1060,6 +1101,17 @@ typedef uint8_t (*DuMacUeCreateRspFunc) ARGS((
 	 Pst           *pst, 
 	 MacUeCfgRsp   *cfgRsp));
 
+/* UE Reconfig Request from DU APP to MAC*/
+typedef uint8_t (*DuMacUeReconfigReq) ARGS((
+	 Pst           *pst,
+	 MacUeCfg      *ueCfg ));
+
+/* UE Reconfig Response from MAC to DU APP */
+typedef uint8_t (*DuMacUeReconfigRspFunc) ARGS((
+	 Pst           *pst, 
+	 MacUeCfgRsp   *cfgRsp));
+
+uint8_t getMacDrbLcId();
 uint8_t packMacSlotInd(Pst *pst, SlotIndInfo *slotInfo );
 uint8_t unpackMacSlotInd(DuMacSlotInd func, Pst *pst, Buffer *mBuf);
 uint8_t duHandleSlotInd(Pst *pst, SlotIndInfo *slotInfo);
@@ -1091,6 +1143,12 @@ uint8_t packDuMacUeCreateRsp(Pst *pst, MacUeCfgRsp *cfgRsp);
 uint8_t unpackDuMacUeCreateRsp(DuMacUeCreateRspFunc func, Pst *pst, Buffer *mBuf);
 uint8_t DuHandleMacUeCreateRsp(Pst *pst, MacUeCfgRsp *cfgRsp);
 uint8_t sendStopIndMacToDuApp(uint16_t cellId);
+uint8_t packDuMacUeReconfigReq(Pst *pst, MacUeCfg *ueCfg);
+uint8_t unpackMacUeReconfigReq(DuMacUeReconfigReq func, Pst *pst, Buffer *mBuf);
+uint8_t MacProcUeReconfigReq(Pst *pst, MacUeCfg *ueCfg);
+uint8_t packDuMacUeReconfigRsp(Pst *pst, MacUeCfgRsp *cfgRsp);
+uint8_t unpackDuMacUeReconfigRsp(DuMacUeReconfigRspFunc func, Pst *pst, Buffer *mBuf);
+uint8_t DuHandleMacUeReconfigRsp(Pst *pst, MacUeCfgRsp *cfgRsp);
 #endif
 
 /**********************************************************************

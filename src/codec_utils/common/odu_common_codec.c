@@ -115,24 +115,39 @@ uint8_t fillBitString(BIT_STRING_t *id, uint8_t unusedBits, uint8_t byteSize, ui
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t bitStringToInt(BIT_STRING_t *bitString, uint16_t *val)
+uint8_t bitStringToInt(BIT_STRING_t *bitString, void *val, DataType type)
 {
    uint16_t idx;
+   uint32_t *value = NULLP;
+
    if(bitString->buf == NULL || bitString->size <= 0)
    {
       DU_LOG("\nDU_APP : Bit string is empty");
       return RFAILED;
    }
-
-   for(idx=0; idx< bitString->size-1; idx++)
+   else
    {
-      *val |= bitString->buf[idx];
-      *val <<= 8;
-    }
-   *val |= bitString->buf[idx];
-   *val >>= bitString->bits_unused;
-
-   return ROK;
+      if(type == UINT8)
+      {
+         value = (uint8_t *)val;
+      }
+      else if(type == UINT16)
+      {
+         value = (uint16_t *)val;
+      }
+      else
+      {
+         value = (uint32_t *)val;
+      }
+      for(idx=0; idx< bitString->size-1; idx++)
+      {
+         *value |= bitString->buf[idx];
+         *value <<= 8;
+      }
+      *value |= bitString->buf[idx];
+      *value >>= bitString->bits_unused;
+      return ROK;
+   }
 }
 
 
