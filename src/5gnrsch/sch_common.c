@@ -293,7 +293,7 @@ uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
    schUlSlotInfo = cell->schUlSlotInfo[ulTimingInfo.slot]; 
    if(schUlSlotInfo->schPuschInfo)
    {
-      ulSchedInfo.crnti = cell->raCb[0].tcrnti;
+      ulSchedInfo.crnti = schUlSlotInfo->schPuschInfo->crnti;
       ulSchedInfo.dataType |= SCH_DATATYPE_PUSCH;
       memcpy(&ulSchedInfo.schPuschInfo, schUlSlotInfo->schPuschInfo,
 	    sizeof(SchPuschInfo));
@@ -337,7 +337,7 @@ uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t schDlRsrcAllocMsg4(Msg4Alloc *msg4Alloc, SchCellCb *cell, uint16_t slot)
+uint8_t schDlRsrcAllocMsg4(DlMsgAlloc *msg4Alloc, SchCellCb *cell, uint16_t slot)
 {
    uint8_t coreset0Idx = 0;
    uint8_t numRbs = 0;
@@ -351,8 +351,8 @@ uint8_t schDlRsrcAllocMsg4(Msg4Alloc *msg4Alloc, SchCellCb *cell, uint16_t slot)
    uint8_t mcs = 4;  /* MCS fixed to 4 */
    SchBwpDlCfg *initialBwp;
 
-   PdcchCfg *pdcch = &msg4Alloc->msg4PdcchCfg;
-   PdschCfg *pdsch = &msg4Alloc->msg4PdschCfg;
+   PdcchCfg *pdcch = &msg4Alloc->dlMsgPdcchCfg;
+   PdschCfg *pdsch = &msg4Alloc->dlMsgPdschCfg;
    BwpCfg *bwp = &msg4Alloc->bwp;
 
    initialBwp   = &cell->cellCfg.schInitialDlBwp;
@@ -395,7 +395,7 @@ uint8_t schDlRsrcAllocMsg4(Msg4Alloc *msg4Alloc, SchCellCb *cell, uint16_t slot)
    pdcch->coreset0Cfg.shiftIndex = cell->cellCfg.phyCellId;
    pdcch->coreset0Cfg.precoderGranularity = 0; /* sameAsRegBundle */
    pdcch->numDlDci = 1;
-   pdcch->dci.rnti = cell->schDlSlotInfo[slot]->msg4Info->crnti;
+   pdcch->dci.rnti = cell->schDlSlotInfo[slot]->dlMsgInfo->crnti;
    pdcch->dci.scramblingId = cell->cellCfg.phyCellId;
    pdcch->dci.scramblingRnti = 0;
    pdcch->dci.cceIndex = 4; /* considering SIB1 is sent at cce 0-1-2-3 */
@@ -411,7 +411,7 @@ uint8_t schDlRsrcAllocMsg4(Msg4Alloc *msg4Alloc, SchCellCb *cell, uint16_t slot)
    /* fill the PDSCH PDU */
    uint8_t cwCount = 0;
    pdsch->pduBitmap = 0; /* PTRS and CBG params are excluded */
-   pdsch->rnti = cell->schDlSlotInfo[slot]->msg4Info->crnti;
+   pdsch->rnti = cell->schDlSlotInfo[slot]->dlMsgInfo->crnti;
    pdsch->pduIndex = 0;
    pdsch->numCodewords = 1;
    for(cwCount = 0; cwCount < pdsch->numCodewords; cwCount++)
@@ -470,6 +470,120 @@ uint16_t schAllocPucchResource(SchCellCb *cell,uint16_t crnti, uint16_t slot)
    schUlSlotInfo->pucchPres = true;
    schUlSlotInfo->schPucchInfo.rnti = crnti;
 
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fills pdcch and pdsch info for dedicated DL msg
+ *
+ * @details
+ *
+ *    Function : schDlRsrcAllocDlMsg
+ *
+ *    Functionality:
+ *       Fills pdcch and pdsch info for dl msg
+ *
+ * @params[in]
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t schDlRsrcAllocDlMsg(DlMsgAlloc *dlMsgAlloc, SchCellCb *cell, uint16_t crnti,
+      uint16_t accumalatedSize, uint16_t slot)
+{
+   uint8_t ueIdx;
+   uint8_t offset = 0;
+   uint16_t tbSize = 0;
+   uint8_t numPdschSymbols = 12; /* considering pdsch region from 2 to 13 */
+   uint8_t mcs = 4;  /* MCS fixed to 4 */
+
+   PdcchCfg *pdcch = &dlMsgAlloc->dlMsgPdcchCfg;
+   PdschCfg *pdsch = &dlMsgAlloc->dlMsgPdschCfg;
+   BwpCfg *bwp = &dlMsgAlloc->bwp;
+   GET_UE_IDX(crnti, ueIdx);
+   SchUeCb ueCb  = cell->ueCb[ueIdx-1];
+   SchControlRsrcSet coreset1 = ueCb.ueCfg.spCellCfg.servCellCfg.initDlBwp.pdcchCfg.cRSetToAddModList[0];
+   SchPdschConfig pdschCfg = ueCb.ueCfg.spCellCfg.servCellCfg.initDlBwp.pdschCfg;
+
+   /* fill BWP */
+   bwp->freqAlloc.numPrb = MAX_NUM_RB;
+   bwp->freqAlloc.startPrb = 0;
+   bwp->subcarrierSpacing = cell->cellCfg.sib1SchCfg.bwp.subcarrierSpacing;
+   bwp->cyclicPrefix = cell->cellCfg.sib1SchCfg.bwp.cyclicPrefix;
+
+   /* fill the PDCCH PDU */
+   //Considering coreset1 also starts from same symbol as coreset0
+   pdcch->coreset0Cfg.startSymbolIndex = coresetIdxTable[0][3];
+   pdcch->coreset0Cfg.durationSymbols = coreset1.duration;
+   memcpy(pdcch->coreset0Cfg.freqDomainResource, coreset1.freqDomainRsrc, FREQ_DOM_RSRC_SIZE);
+   pdcch->coreset0Cfg.cceRegMappingType = coreset1.cceRegMappingType; /* non-interleaved */
+   pdcch->coreset0Cfg.regBundleSize = 6;   /* must be 6 for non-interleaved */
+   pdcch->coreset0Cfg.interleaverSize = 0; /* NA for non-interleaved */
+   pdcch->coreset0Cfg.coreSetType = 1; /* non PBCH coreset */
+   //Considering number of RBs in coreset1 is same as coreset0
+   pdcch->coreset0Cfg.coreSetSize = coresetIdxTable[0][1];
+   pdcch->coreset0Cfg.shiftIndex = cell->cellCfg.phyCellId;
+   pdcch->coreset0Cfg.precoderGranularity =  coreset1.precoderGranularity;
+   pdcch->numDlDci = 1;
+   pdcch->dci.rnti = ueCb.crnti;
+   pdcch->dci.scramblingId = cell->cellCfg.phyCellId;
+   pdcch->dci.scramblingRnti = 0;
+   pdcch->dci.cceIndex = 0; /* 0-3 for UL and 4-7 for DL */
+   pdcch->dci.aggregLevel = 4;
+   pdcch->dci.beamPdcchInfo.numPrgs = 1;
+   pdcch->dci.beamPdcchInfo.prgSize = 1;
+   pdcch->dci.beamPdcchInfo.digBfInterfaces = 0;
+   pdcch->dci.beamPdcchInfo.prg[0].pmIdx = 0;
+   pdcch->dci.beamPdcchInfo.prg[0].beamIdx[0] = 0;
+   pdcch->dci.txPdcchPower.powerValue = 0;
+   pdcch->dci.txPdcchPower.powerControlOffsetSS = 0;
+
+   /* fill the PDSCH PDU */
+   uint8_t cwCount = 0;
+   pdsch->pduBitmap = 0; /* PTRS and CBG params are excluded */
+   pdsch->rnti = ueCb.crnti;
+   pdsch->pduIndex = 0;
+   pdsch->numCodewords = 1;
+   for(cwCount = 0; cwCount < pdsch->numCodewords; cwCount++)
+   {
+      pdsch->codeword[cwCount].targetCodeRate = 308;
+      pdsch->codeword[cwCount].qamModOrder = 2;
+      pdsch->codeword[cwCount].mcsIndex = 4; /* mcs configured to 4 */
+      pdsch->codeword[cwCount].mcsTable = 0; /* notqam256 */
+      pdsch->codeword[cwCount].rvIndex = 0;
+      tbSize = schCalcTbSize(accumalatedSize);
+      pdsch->codeword[cwCount].tbSize = tbSize;
+   }
+   pdsch->dataScramblingId = cell->cellCfg.phyCellId;
+   pdsch->numLayers = 1;
+   pdsch->transmissionScheme = 0;
+   pdsch->refPoint = 0;
+   pdsch->dmrs.dlDmrsSymbPos = 2;
+   pdsch->dmrs.dmrsConfigType = 0; /* type-1 */
+   pdsch->dmrs.dlDmrsScramblingId = cell->cellCfg.phyCellId;
+   pdsch->dmrs.scid = 0;
+   pdsch->dmrs.numDmrsCdmGrpsNoData = 1;
+   pdsch->dmrs.dmrsPorts = 0;
+   pdsch->dmrs.mappingType      = DMRS_MAP_TYPE_A; /* Setting to Type-A */
+   pdsch->dmrs.nrOfDmrsSymbols  = NUM_DMRS_SYMBOLS;
+   pdsch->dmrs.dmrsAddPos       = pdschCfg.dmrsDlCfgForPdschMapTypeA.addPos;
+   pdsch->pdschFreqAlloc.resourceAllocType = 1; /* RAT type-1 RIV format */
+   /* the RB numbering starts from coreset0, and PDSCH is always above SSB */
+   pdsch->pdschFreqAlloc.freqAlloc.startPrb = offset + SCH_SSB_NUM_PRB;/* HLAL TODO: check */
+   pdsch->pdschFreqAlloc.freqAlloc.numPrb = schCalcNumPrb(tbSize,mcs,numPdschSymbols);
+   pdsch->pdschFreqAlloc.vrbPrbMapping = 0; /* non-interleaved */
+   pdsch->pdschTimeAlloc.timeAlloc.startSymb = pdschCfg.timeDomRsrcAllociList[0].startSymbol;
+   pdsch->pdschTimeAlloc.timeAlloc.numSymb = pdschCfg.timeDomRsrcAllociList[0].symbolLength;
+   pdsch->beamPdschInfo.numPrgs = 1;
+   pdsch->beamPdschInfo.prgSize = 1;
+   pdsch->beamPdschInfo.digBfInterfaces = 0;
+   pdsch->beamPdschInfo.prg[0].pmIdx = 0;
+   pdsch->beamPdschInfo.prg[0].beamIdx[0] = 0;
+   pdsch->txPdschPower.powerControlOffset = 0;
+   pdsch->txPdschPower.powerControlOffsetSS = 0;
+
+   pdcch->dci.pdschCfg = pdsch;
    return ROK;
 }
 

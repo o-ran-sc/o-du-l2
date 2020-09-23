@@ -168,11 +168,6 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
 		  {
 		     break;
 		  }
-	       case KWU_EVT_DAT_IND:
-		  {
-		     ret = cmUnpkKwuDatInd(duHdlRlcUlData, pst, mBuf);
-		     break;
-		  }
 	       case EVENT_RLC_UL_UE_CREATE_RSP:
 		  {
 		     ret = unpackRlcUlUeCreateRsp(DuProcRlcUlUeCreateRsp, pst, mBuf);

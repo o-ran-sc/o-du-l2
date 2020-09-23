@@ -57,7 +57,6 @@
 #define MAX_NUMBER_OF_CRC_IND_BITS 1
 #define MAX_NUMBER_OF_UCI_IND_BITS 1
 #define MAX_SR_BITS_IN_BYTES       1
-#define MAX_NUM_LOGICAL_CHANNELS   11
 #define MAX_NUM_LOGICAL_CHANNEL_GROUPS 8
 /* can we have a common numslot numscs between mac sch */
 #define MAX_SLOTS 10
@@ -73,9 +72,6 @@
 #define MAX_NUM_UL_ALLOC 16             /* Max number of pusch time domain uplink allocation */
 
 #define SD_SIZE   3
-#define CCCH_LCID  0
-#define SRB1_LCID  1
-#define SRB2_LCID  2
 
 #define ADD_DELTA_TO_TIME(crntTime, toFill, incr)          \
 {                                                          \
@@ -673,7 +669,7 @@ typedef struct rarAlloc
    PdschCfg rarPdschCfg;
 }RarAlloc;
 
-typedef struct msg4Info
+typedef struct dlMsgInfo
 {
    uint16_t crnti;
    uint8_t  ndi;
@@ -683,24 +679,43 @@ typedef struct msg4Info
    uint8_t  pucchResInd;
    uint8_t  harqFeedbackInd;
    uint8_t  dciFormatId;
-   uint8_t  *msg4Pdu;
-   uint16_t  msg4PduLen;
-}Msg4Info;
+   bool     isMsg4Pdu;
+   uint8_t  *dlMsgPdu;
+   uint16_t  dlMsgPduLen;
+}DlMsgInfo;
 
+#if 0
 typedef struct msg4Alloc
 {
-   Msg4Info msg4Info;
+   DlMsgInfo msg4Info;
    BwpCfg bwp;
    PdcchCfg msg4PdcchCfg;
    PdschCfg msg4PdschCfg;
 }Msg4Alloc;
+#endif
+
+typedef struct lcSchInfo
+{
+   uint8_t   lcId;
+   uint16_t  schBytes; /* Number of scheduled bytes */
+}LcSchInfo;
+
+typedef struct dlMsgAlloc
+{
+   uint16_t   crnti;
+   uint8_t    numLc;
+   LcSchInfo  lcSchInfo[MAX_NUM_LC]; /* Scheduled LC info */
+   BwpCfg     bwp;
+   PdcchCfg   dlMsgPdcchCfg;
+   PdschCfg   dlMsgPdschCfg;
+   DlMsgInfo  dlMsgInfo;
+}DlMsgAlloc;
 
 typedef struct schSlotValue
 {
    SlotIndInfo currentTime;
    SlotIndInfo broadcastTime;
    SlotIndInfo rarTime;
-   SlotIndInfo msg4Time;
    SlotIndInfo dlMsgTime;
    SlotIndInfo ulDciTime;
 }SchSlotValue;
@@ -772,10 +787,13 @@ typedef struct dlSchedInfo
    RarAlloc *rarAlloc;
 
    /* Allocation from MSG4 */
-   Msg4Alloc *msg4Alloc;
+   //Msg4Alloc *msg4Alloc;
 
    /* UL grant in response to BSR */
    DciInfo    *ulGrant;
+
+   /* Allocation from dedicated DL msg */
+   DlMsgAlloc *dlMsgAlloc;
 
 }DlSchedInfo;
 
@@ -789,6 +807,7 @@ typedef struct tbInfo
 
 typedef struct schPuschInfo
 {
+   uint16_t         crnti;
    uint8_t          harqProcId;   /* HARQ Process ID */
    uint8_t          resAllocType; /* Resource allocation type */
    FreqDomainAlloc  fdAlloc;      /* Freq domain allocation */
@@ -855,9 +874,9 @@ typedef struct dlRlcBOInfo
 {
    uint16_t    cellId;
    uint16_t    crnti;
-   uint16_t    numLc;
-   BOInfo      boInfo[MAX_NUM_LOGICAL_CHANNELS];
-}DlRlcBOInfo;
+   uint8_t     lcId;
+   uint32_t    dataVolume;
+}DlRlcBoInfo;
 
 /* Info of Scheduling Request to Add/Modify */
 typedef struct schSchedReqInfo
@@ -1190,7 +1209,7 @@ typedef struct schUeCfg
    SchSpCellCfg       spCellCfg;
    SchAggrMaxBitRate  *aggrMaxBitRate;
    uint8_t            numLc;
-   SchLcCfg           lcCfgList[MAX_NUM_LOGICAL_CHANNELS];
+   SchLcCfg           lcCfgList[MAX_NUM_LC];
 }SchUeCfg;
 
 typedef struct schUeCfgRsp
@@ -1258,7 +1277,7 @@ typedef uint8_t (*MacSchCrcIndFunc) ARGS((
 
 typedef uint8_t (*MacSchDlRlcBoInfoFunc) ARGS((
 	 Pst         *pst,         /* Post structure */
-	 DlRlcBOInfo *dlBoInfo));   /* DL BO Info */
+	 DlRlcBoInfo *dlBoInfo));   /* DL BO Info */
 
 typedef uint8_t (*MacSchUeCreateReqFunc) ARGS((
 	 Pst         *pst,           /* Post structure */
@@ -1299,8 +1318,8 @@ uint8_t packMacSchRachInd(Pst *pst, RachIndInfo *rachInd);
 uint8_t MacSchRachInd(Pst *pst, RachIndInfo *rachInd);
 uint8_t packMacSchCrcInd(Pst *pst, CrcIndInfo *crcInd);
 uint8_t MacSchCrcInd(Pst *pst, CrcIndInfo *crcInd);
-uint8_t packMacSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo);
-uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo);
+uint8_t packMacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo);
+uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo);
 uint8_t packMacSchUeCreateReq(Pst *pst, SchUeCfg *ueCfgToSch);
 uint8_t MacSchUeCreateReq(Pst *pst, SchUeCfg *ueCfgToSch);
 uint8_t packSchUeCfgRsp(Pst *pst, SchUeCfgRsp *cfgRsp);
