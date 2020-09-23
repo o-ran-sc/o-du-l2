@@ -35,7 +35,16 @@ uint8_t BuildAndSendDUConfigUpdate();
 uint8_t BuildAndSendInitialRrcMsgTransfer(uint32_t gnbDuUeF1apId, uint16_t crnti, uint16_t rrcContSize, 
           uint8_t *rrcContainer);
 uint8_t BuildAndSendULRRCMessageTransfer(DuUeCb  ueCb, uint8_t lcId,  uint16_t msgLen, uint8_t *rrcMsg);
-
+uint8_t duProcUeSetupRequest(F1UeSetupReq *ueSetupReqDb);
+uint8_t BuildAndSendUeContextSetupRsp(uint8_t ueIdx, uint8_t cellIdx);
+uint8_t buildUlLcCfg(UlLcCfg *f1UlLcCfg, void *ulLcInfo);
+uint8_t BuildRlcLcCfg(uint8_t rbId, uint8_t lcId, uint8_t rbType, uint8_t rlcMode,\
+   void *f1LcCfg, RlcBearerCfg *lcCfg);
+uint8_t fillMacSrbCfg(uint8_t rbId, LcCfg *lcCfg, void *ulLc);
+uint8_t BuildMacCellCfg(MacUeCfg *macUeCfg, void *cellGrp);
+void freeDrbList(uint8_t drbs, F1UeSetupReq *ueSetupDb);
+void freeUeReCfgCellGrpInfo(MacUeCfg *macUeCfg);
+uint8_t getCellGrpCfg(void *ueCbCellGrp, void *ueReqCellGrp);
 /**********************************************************************
          End of file
 **********************************************************************/

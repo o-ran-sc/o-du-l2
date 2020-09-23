@@ -54,6 +54,12 @@ typedef enum
    SCH_UE_STATE_ACTIVE
 }SchUeState;
 
+typedef enum
+{
+   SCH_LC_STATE_INACTIVE,
+   SCH_LC_STATE_ACTIVE
+}SchLcState;
+
 /**
  * @brief
  * Structure holding LTE MAC's General Configuration information.
@@ -116,7 +122,18 @@ typedef struct bsrInfo
    uint32_t   dataVol;   /* Data volume requested in bytes */
 }BsrInfo;
 
+typedef struct schDlCfg
+{
+   uint8_t lcId;
+   SchLcState lcState;
+}SchDlCfg;
 
+typedef struct schDlCb
+{
+   uint8_t numDlLc;
+   SchDlCfg dlLcCfgList[MAX_NUM_LOGICAL_CHANNELS];
+
+}SchDlCb;
 
 /**
  * @brief
@@ -131,6 +148,7 @@ typedef struct schUeCb
    SchCellCb  *cellCb;
    bool       srRcvd;
    BsrInfo    bsrInfo[MAX_NUM_LOGICAL_CHANNEL_GROUPS];
+   SchDlCb    dlInfo;
 }SchUeCb;
 
 /**
