@@ -872,16 +872,16 @@ uint8_t createUeCb(MacUeCfg *ueCfg)
    for(lcIdx = 0; lcIdx < ueCfg->numLcs; lcIdx++)
    {
       ueCb->dlInfo.lcCb[ueCb->dlInfo.numDlLc].lcId = ueCfg->lcCfgList[lcIdx].lcId;
-      ueCb->dlInfo.lcCb[ueCb->dlInfo.numDlLc].lcState = LC_STATE_ACTIVE;
+      ueCb->dlInfo.lcCb[ueCb->dlInfo.numDlLc].lcState = MAC_LC_STATE_ACTIVE;
       ueCb->dlInfo.numDlLc++;
    }
 
    /* Copy RA Cb */
    for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
    {
-      if(macCb.macCell[cellIdx]->macRaCb[ueIdx].crnti == ueCb->crnti)
+      if(macCb.macCell[cellIdx]->macRaCb[ueIdx -1].crnti == ueCb->crnti)
       {
-	 ueCb->raCb = &macCb.macCell[cellIdx]->macRaCb[ueIdx];
+	 ueCb->raCb = &macCb.macCell[cellIdx]->macRaCb[ueIdx -1];
 	 break;
       }
    }

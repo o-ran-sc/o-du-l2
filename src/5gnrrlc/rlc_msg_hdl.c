@@ -34,6 +34,7 @@
 #include "kw_err.h"
 #include "kw.x"
 
+#include "rlc_mac_inf.h"
 #include "du_app_rlc_inf.h"
 #include "rlc_utils.h"
 
@@ -265,6 +266,202 @@ uint8_t RlcProcDlRrcMsgTransfer(Pst *pst, RlcDlRrcMsgInfo *dlRrcMsgInfo)
    RLC_SHRABL_STATIC_BUF_FREE(RLC_MEM_REGION_DL, RLC_POOL, datReqInfo, sizeof(KwuDatReqInfo));
    RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, dlRrcMsgInfo->rrcMsg, dlRrcMsgInfo->msgLen);
    RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, dlRrcMsgInfo, sizeof(RlcDlRrcMsgInfo));
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Process UL data from UE
+ *
+ * @details
+ *
+ *    Function : RlcProcUlData
+ *
+ *    Functionality:
+ *       This function receives the PDU from MAC.
+ *       seggregates common and dedicated logical channel
+ *       PDU and call respective handler.
+ *
+ * @params[in]
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t RlcProcUlData(Pst *pst, RlcData *ulData)
+{
+   uint8_t              idx;
+   uint8_t              lcId;                    /* Logical Channel */
+   uint8_t              numDLch = 0;             /* Number of dedicated logical channel */
+   bool            dLchPduPres;             /* PDU received on dedicated logical channel */
+   RguLchDatInd    dLchData[RGU_MAX_LC];  /* PDU info on dedicated logical channel */
+   RguDDatIndInfo  *dLchUlDat;               /* UL data on dedicated logical channel */
+   RguCDatIndInfo  *cLchUlDat;               /* UL data on common logical channel */
+   uint16_t        copyLen;
+
+   /* Initializing dedicated logical channel Database */
+   for(idx = 0; idx < RGU_MAX_LC; idx++)
+   {
+      dLchData[idx].lcId = idx;
+      dLchData[idx].pdu.numPdu = 0;
+   }
+   dLchPduPres = FALSE;
+
+   /* Seggregate PDUs received on common and dedicated channels
+    * and call common channel's handler */
+   for(idx = 0; idx< ulData->numPdu; idx++)
+   {
+      if(ulData->pduInfo[idx].commCh)
+      {
+         RLC_SHRABL_STATIC_BUF_ALLOC(RLC_MEM_REGION_UL, RLC_POOL, cLchUlDat, \
+	    sizeof(RguCDatIndInfo));
+         memset(cLchUlDat, 0, sizeof(RguCDatIndInfo));
+
+         cLchUlDat->cellId = ulData->cellId;
+         GET_UE_IDX(ulData->rnti, cLchUlDat->rnti);
+         cLchUlDat->lcId   = ulData->pduInfo[idx].lcId;
+
+         /* Copy fixed buffer to message */
+         if(ODU_GET_MSG_BUF(RLC_MEM_REGION_UL, RLC_POOL, &cLchUlDat->pdu) != ROK)
+         {
+            DU_LOG("\nRLC : Memory allocation failed at RlcProcUlData");
+            return RFAILED;
+         }
+         reverseFixBuf(ulData->pduInfo[idx].pduBuf, ulData->pduInfo[idx].pduLen);
+         ODU_COPY_FIX_BUF_TO_MSG(ulData->pduInfo[idx].pduBuf, cLchUlDat->pdu, 0, \
+               ulData->pduInfo[idx].pduLen, (MsgLen *)&copyLen);
+
+         RlcLiRguCDatInd(pst, 0, cLchUlDat);
+      }
+      else
+      {
+         if(!dLchPduPres)
+         {
+            RLC_SHRABL_STATIC_BUF_ALLOC(RLC_MEM_REGION_UL, RLC_POOL, dLchUlDat, \
+	       sizeof(RguDDatIndInfo));
+            dLchPduPres = TRUE;
+         }
+
+	 /* Copy fixed buffer to message */
+	 lcId = ulData->pduInfo[idx].lcId;
+	 if(ODU_GET_MSG_BUF(RLC_MEM_REGION_UL, RLC_POOL, \
+		  &dLchData[lcId].pdu.mBuf[dLchData[lcId].pdu.numPdu]) != ROK)
+	 {
+	    DU_LOG("\nRLC : Memory allocation failed at RlcMacProcUlData");
+	    return RFAILED;
+	 }
+	 reverseFixBuf(ulData->pduInfo[idx].pduBuf, ulData->pduInfo[idx].pduLen);
+	 ODU_COPY_FIX_BUF_TO_MSG(ulData->pduInfo[idx].pduBuf, \
+	       dLchData[lcId].pdu.mBuf[dLchData[lcId].pdu.numPdu],\
+	       0, ulData->pduInfo[idx].pduLen, (MsgLen *)&copyLen);
+
+         dLchData[lcId].pdu.numPdu++;
+      }
+   }
+
+   /* If any PDU received on dedicated logical channel, copy into RguDDatIndInfo
+    * and call its handler */
+   if(dLchPduPres)
+   {
+      dLchUlDat->cellId = ulData->cellId;
+      dLchUlDat->rnti   = ulData->rnti;
+
+      for(idx = 0; idx < RGU_MAX_LC; idx++)
+      {
+         if(dLchData[idx].pdu.numPdu)
+         {
+            memcpy(&dLchUlDat->lchData[numDLch], &dLchData[idx], sizeof(RguLchDatInd));
+            numDLch++;
+         }
+      }
+      dLchUlDat->numLch = numDLch;
+      RlcLiRguDDatInd(pst, 0, dLchUlDat);
+   }
+
+   RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ulData, sizeof(RlcData));
+   return ROK;
+
+}/* End of RlcProcUlData */
+
+/*******************************************************************
+ *
+ * @brief Handler for extracting common and dedicated channel
+ *      Scheduling result report.
+ *
+ * @details
+ *
+ *    Function : RlcProcSchedResultRpt
+ *
+ *    Functionality:
+ *     Handler for extracting common and dedicated channel
+ *      Scheduling result report
+ *
+ * @params[in]
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t RlcProcSchedResultRpt(Pst *pst, RlcSchedResultRpt *schRep)
+{
+   uint8_t idx;                     /* Iterator */
+   uint8_t nmbDLch = 0;                 /* Number of dedicated logical channles */
+   RguCStaIndInfo   *cLchSchInfo;    /* Common logical channel scheduling result */
+   RguDStaIndInfo   *dLchSchInfo;  /* Dedicated logical channel scheduling result */
+
+   DU_LOG("\nRLC : Received scheduling report from MAC");
+
+   for(idx=0; idx < schRep->numLc; idx++)
+   {
+      /* If it is common channel, fill status indication information
+       * and trigger the handler for each common lch separately */
+      if(schRep->lcSch[idx].commCh)
+      {
+          RLC_SHRABL_STATIC_BUF_ALLOC(RLC_MEM_REGION_DL, RLC_POOL, cLchSchInfo, \
+	     sizeof(RguCStaIndInfo));
+          memset(cLchSchInfo, 0, sizeof(RguCStaIndInfo));
+
+          cLchSchInfo->cellId  = schRep->cellId;
+          cLchSchInfo->lcId    = schRep->lcSch[idx].lcId;
+          cLchSchInfo->transId = schRep->slotInfo.sfn;
+	  cLchSchInfo->transId = (cLchSchInfo->transId << 16) | schRep->slotInfo.slot;
+          cLchSchInfo->rnti = schRep->rnti;
+          RlcLiRguCStaInd(pst, 0, cLchSchInfo);
+
+      }
+      else
+      {
+          /* Fill status info structure if at least one dedicated channel
+           * scheduling report is received */
+          if(nmbDLch == 0)
+          {
+             RLC_SHRABL_STATIC_BUF_ALLOC(RLC_MEM_REGION_DL, RLC_POOL, dLchSchInfo, \
+	        sizeof(RguDStaIndInfo));
+             dLchSchInfo->cellId = schRep->cellId;
+             dLchSchInfo->nmbOfUeGrantPerTti = 1;
+             dLchSchInfo->staInd[0].rnti = schRep->rnti;
+	     dLchSchInfo->staInd[0].transId = schRep->slotInfo.sfn;
+	     dLchSchInfo->staInd[0].transId = \
+	        (dLchSchInfo->staInd[0].transId << 16) | schRep->slotInfo.slot; 
+             dLchSchInfo->staInd[0].nmbOfTbs = 1;
+             dLchSchInfo->staInd[0].fillCtrlPdu = true; 
+          }
+
+          /* Fill logical channel scheduling info */
+	  dLchSchInfo->staInd[0].staIndTb[0].lchStaInd[nmbDLch].lcId = \
+	     schRep->lcSch[idx].lcId;
+	  dLchSchInfo->staInd[0].staIndTb[0].lchStaInd[nmbDLch].totBufSize = \
+	     schRep->lcSch[idx].bufSize;
+          nmbDLch++;
+      }
+   }
+
+   /* Calling handler for all dedicated channels scheduling*/
+   if(nmbDLch)
+   {
+      dLchSchInfo->staInd[0].staIndTb[0].nmbLch = nmbDLch;
+      RlcLiRguDStaInd(pst, 0, dLchSchInfo);
+   }
+
+   RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, schRep, sizeof(RlcSchedResultRpt));
    return ROK;
 }
 
