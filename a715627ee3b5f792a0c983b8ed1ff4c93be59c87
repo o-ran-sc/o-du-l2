@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "23fe393f_2ebfe079",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-23T08:24:33Z",
+      "side": 1,
+      "message": "move it before func declarations",
+      "revId": "a715627ee3b5f792a0c983b8ed1ff4c93be59c87",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ea680999_96f6d6a2",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-09-23T08:24:33Z",
+      "side": 1,
+      "message": "Message can be Msg. The func name is too long",
+      "revId": "a715627ee3b5f792a0c983b8ed1ff4c93be59c87",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
