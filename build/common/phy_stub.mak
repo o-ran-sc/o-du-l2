@@ -41,6 +41,7 @@ include $(COM_BUILD_DIR)/compile.mak
 
 I_OPTS+=-I$(ROOT_DIR)/src/mt
 I_OPTS+=-I$(ROOT_DIR)/src/5gnrmac
+I_OPTS+=-I$(ROOT_DIR)/src/intel_fapi
 
 
 #-------------------------------------------------------------#

@@ -57,6 +57,7 @@ lib:$(LIB_DIR)/librg.a
 include $(COM_BUILD_DIR)/compile.mak
 
 I_OPTS+=-I$(ROOT_DIR)/src/5gnrsch
+I_OPTS+=-I$(ROOT_DIR)/src/intel_fapi
 
 #-------------------------------------------------------------#
 #Linker macros             
