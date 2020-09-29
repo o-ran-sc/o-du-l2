@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "8bf5d096_5fc8c49d",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1142,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-29T08:29:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "502387fc_fe16ea96",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "926069c8_71f96a5a",
         "filename": "src/5gnrmac/mac_ue_mgr.c",
         "patchSetId": 1
@@ -33,6 +51,24 @@
       "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8d58bacf_78ba7ba6",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1323,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-29T08:29:47Z",
+      "side": 1,
+      "message": "agreed. handled the deallocation in fillLogicalChannelCfg()",
+      "parentUuid": "926069c8_71f96a5a",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "aee29c32_4d29be96",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1384,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-29T08:29:47Z",
+      "side": 1,
+      "message": "createUeCb() is modified to support Ue create request and reconfig request.\nSo in case of reconfig request, it will only update the values.",
+      "parentUuid": "b939ad52_ee9f1618",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0516d1b5_57abbcdd",
         "filename": "src/5gnrrlc/rlc.h",
         "patchSetId": 1
@@ -67,6 +121,24 @@
       "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "91ccdd08_cfcc99e3",
+        "filename": "src/5gnrrlc/rlc.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-29T08:29:47Z",
+      "side": 1,
+      "message": "ok. As discussed i have made rlcUlUdxEventType in RlcUlCb, which holds the type of pst event triggered to Rlc",
+      "parentUuid": "0516d1b5_57abbcdd",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "b4fbc155_40836825",
+        "filename": "src/5gnrrlc/rlc_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-29T08:29:47Z",
+      "side": 1,
+      "message": "done.\nAs discussed, I have differentiated the Ue create and Ue reconfig rsp in DU handler",
+      "parentUuid": "cfd3caaa_f408fed0",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e885e690_78939196",
         "filename": "src/5gnrrlc/rlc_mgr.h",
         "patchSetId": 1
@@ -101,6 +191,24 @@
       "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "af09054d_16bf3093",
+        "filename": "src/5gnrrlc/rlc_mgr.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-29T08:29:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e885e690_78939196",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "dbf34669_cbe27385",
+        "filename": "src/cm/du_app_mac_inf.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-29T08:29:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2874a075_86991012",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "20c91282_dbb908ea",
         "filename": "src/cm/du_app_mac_inf.c",
         "patchSetId": 1
@@ -135,6 +261,24 @@
       "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "76c33ca1_c34ae194",
+        "filename": "src/cm/du_app_mac_inf.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-29T08:29:47Z",
+      "side": 1,
+      "message": "removed temp and optimised the code",
+      "parentUuid": "20c91282_dbb908ea",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -155,6 +299,24 @@
     },
     {
       "key": {
+        "uuid": "eb598c80_56e91363",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1145,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-29T08:29:47Z",
+      "side": 1,
+      "message": "I was using packUeCreate function for reconfig as well. Since unpacks are different for both \nadded corresponding pack functions now",
+      "parentUuid": "26d0aa3a_f5d6e221",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6a984c39_b4930a40",
         "filename": "src/cm/du_app_rlc_inf.c",
         "patchSetId": 1
@@ -172,6 +334,24 @@
     },
     {
       "key": {
+        "uuid": "18f88a8b_8ff133de",
+        "filename": "src/cm/du_app_rlc_inf.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-29T08:29:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6a984c39_b4930a40",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8170cdca_41dfd366",
         "filename": "src/cm/du_app_rlc_inf.h",
         "patchSetId": 1
@@ -186,6 +366,24 @@
       "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8eb4f599_6ec3b2ac",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 543,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-29T08:29:47Z",
+      "side": 1,
+      "message": "added pack functions",
+      "parentUuid": "8170cdca_41dfd366",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -223,6 +421,24 @@
     },
     {
       "key": {
+        "uuid": "680da781_935a3575",
+        "filename": "src/codec_utils/common/odu_common_codec.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-29T08:29:47Z",
+      "side": 1,
+      "message": "agreed. I have optimized the code accordingly",
+      "parentUuid": "2ae500cc_1b134acd",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "feb64eb2_cfe73463",
         "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
         "patchSetId": 1
@@ -237,6 +453,24 @@
       "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4d0eb3dc_e6227855",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-29T08:29:47Z",
+      "side": 1,
+      "message": "ok. working on this",
+      "parentUuid": "feb64eb2_cfe73463",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -274,6 +508,24 @@
     },
     {
       "key": {
+        "uuid": "98f1d5b0_653bf8a9",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-29T08:29:47Z",
+      "side": 1,
+      "message": "agreed. As discussed will be addressing in next checkin",
+      "parentUuid": "70d5f412_9340fa6a",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4001c58f_efd3f80e",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 1
@@ -288,6 +540,24 @@
       "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a8b14c97_6676d035",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 567,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-29T08:29:47Z",
+      "side": 1,
+      "message": "no it is not fixed. This param will be overwritten in ue context setup req.",
+      "parentUuid": "4001c58f_efd3f80e",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -308,6 +578,24 @@
     },
     {
       "key": {
+        "uuid": "8db20715_191c354b",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 931,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-29T08:29:47Z",
+      "side": 1,
+      "message": "I have addressed this comment, in fillRlcReCfgRbList().\nHere we are creating UeCb, so have harcoding the values.\nAlso In Ue Context setup request we will always get RLc to Add List,\nOnly in Ue modifcation Request we will get RLc to add/mod/del\nAt that time we can resuse these functions and logic.",
+      "parentUuid": "01860690_44d4ebca",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9bc4be1f_db4ec63c",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 1
@@ -325,6 +613,24 @@
     },
     {
       "key": {
+        "uuid": "7127e53d_c4eea883",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 939,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-29T08:29:47Z",
+      "side": 1,
+      "message": "ok i have addressed this in fillRlcSrbLcList() and fillRlcDrbLcList()",
+      "parentUuid": "9bc4be1f_db4ec63c",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a366da44_6b9b9ead",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 1
@@ -339,6 +645,24 @@
       "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a1022ea4_1d43e286",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1229,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-29T08:29:47Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "a366da44_6b9b9ead",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -376,6 +700,24 @@
     },
     {
       "key": {
+        "uuid": "e4e1d2f2_c9ae5e8c",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1744,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-29T08:29:47Z",
+      "side": 1,
+      "message": "In ueCb creation all values are hardcoded but in ue context, pusch cfg is filled to what cu has sent. So that cannot be reused.",
+      "parentUuid": "fd39ccf5_fffc99fe",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e57de01e_554e93ff",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 1
@@ -393,6 +735,24 @@
     },
     {
       "key": {
+        "uuid": "7c1d322f_fb466e2b",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2586,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-29T08:29:47Z",
+      "side": 1,
+      "message": "the patch when i raised, at that time DL RRC changes were in review state.\nso those changes are not reflected here.\nnext patch will be latest repo.",
+      "parentUuid": "e57de01e_554e93ff",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7fc41316_f22ef137",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 1
@@ -407,6 +767,24 @@
       "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "81330e1e_4a637d8e",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2694,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-09-29T08:29:47Z",
+      "side": 1,
+      "message": "yes agreed. made the changes and will be posting in next patch",
+      "parentUuid": "7fc41316_f22ef137",
+      "revId": "a6ae7a1b14bf979902503a7313072bc8afa451f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
