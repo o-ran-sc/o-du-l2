@@ -117,7 +117,7 @@ uint8_t procCellsToBeActivated(Cells_to_be_Activated_List_t cellsToActivate)
 *    Functionality: Processes F1 Setup Response sent by CU
 *
 * @params[in] F1AP_PDU_t ASN decoded F1AP message
-* @return ROK     - success
+* @return ROK     - success 
 *         RFAILED - failure
 *
 * ****************************************************************/
@@ -184,34 +184,6 @@ uint8_t procF1SetupRsp(F1AP_PDU_t *f1apMsg)
  
    return ret;
 }
-
-/*******************************************************************
- *
- * @brief Processes GNB DU config update ack
- *
- * @details
- *
- *    Function : procGNBDUCfgUpdAck
- *
- *    Functionality: Processes GNB DU config update ack
- *
- * @params[in] F1AP_PDU_t ASN decoded F1AP message
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-uint8_t procGNBDUCfgUpdAck(F1AP_PDU_t *f1apMsg)
-{
-   DU_LOG("\nF1AP : GNB-DU config update acknowledgment received");
-/* TODO :Check the deallocation */
-#if 0
-   DU_FREE(gNBDuCfgAck->protocolIEs.list.array,(Size)elementCnt * sizeof(GNBDUConfigurationUpdateAcknowledgeIEs_t));
-   DU_FREE(f1apMsg->choice.successfulOutcome,(Size)sizeof(SuccessfulOutcome_t));
-   DU_FREE(f1apMsg,(Size)sizeof(F1AP_PDU_t));
-#endif
-    return ROK;
-}
-
 
 /**********************************************************************
   End of file
