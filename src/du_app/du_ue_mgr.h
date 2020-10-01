@@ -23,11 +23,20 @@
 
 uint8_t duHdlRlcUlData(Pst *pst, KwuDatIndInfo* datInd, Buffer *mBuf);
 uint8_t cmPkKwuDatReq(Pst * pst,KwuDatReqInfo* datReq,Buffer * mBuf);
+uint8_t duProcRrcMsgTrans(uint8_t srbId, uint8_t *dlCcchMsg, uint16_t  dlCcchMsgSize, \
+   uint32_t gnbDuUeF1apId, uint32_t gnbCuUeF1apId);
+uint8_t duBuildAndSendDlCcchInd(uint16_t *cellId, uint16_t *crnti, \
+  DlCcchMsgType msgType, uint8_t *dlCcchMsg, uint16_t dlCcchMsgSize);
+uint8_t duCreateUeCb(UeCcchCtxt *ueCcchCtxt, uint32_t gnbCuUeF1apId);
 uint8_t duBuildAndSendUeCreateReqToMac(uint16_t cellId, uint8_t ueIdx,\
    uint16_t crnti, MacUeCfg *duMacUeCfg);
 uint8_t duBuildAndSendUeCreateReqToRlc(uint16_t cellId, uint8_t ueIdx, RlcUeCfg *duRlcUeCfg);
-uint8_t duCreateUeCb(UeCcchCtxt *ueCcchCtxt, uint32_t gnbCuUeF1apId);
 uint8_t duProcUlCcchInd(UlCcchIndInfo *ulCcchIndInfo);
+uint8_t duBuildAndSendDlRrcMsgToRlc(uint16_t cellId, RlcUeCfg ueCfg, \
+   uint8_t lcId, bool deliveryStaReq, uint16_t rrcMsgLen, uint8_t *rrcMsg);
+uint8_t BuildAndSendInitialRrcMsgTransfer(uint32_t gnbDuUeF1apId, uint16_t crnti, \
+   uint16_t rrcContSize, uint8_t *rrcContainer);
+uint8_t duProcUeSetupRequest(F1UeSetupReq *ueSetupReqDb);
 #endif
 
 /**********************************************************************

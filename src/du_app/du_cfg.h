@@ -993,6 +993,16 @@ typedef struct f1EgtpParams
    uint32_t  maxTunnelId;
 }F1EgtpParams;
 
+typedef struct f1UeSetupReq
+{
+   bool     deliveryStaReq; 
+   uint8_t  cellIdx;
+   uint8_t  *rrcMsg;
+   uint16_t rrcMsgLen;
+   uint32_t gnbDuUeF1apId; 
+   uint32_t gnbCuUeF1apId;
+}F1UeSetupReq;
+
 typedef struct schedulerCfg
 {
    uint8_t   numTxAntPorts;    /*!< Number of Tx antenna ports */
