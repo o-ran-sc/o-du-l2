@@ -20,8 +20,7 @@
 #ifndef __DU_CELL_MGR_H__
 #define __DU_CELL_MGR_H__
 
-uint8_t duSendSchGnbCfg();
-uint8_t duSendSchGnbCfgToMac(RgrCfgReqInfo *cfgReq, uint32_t trans_id);
+uint8_t procCellsToBeActivated(uint16_t nci, uint16_t nRPci);
 #endif
 /**********************************************************************
   End of file
