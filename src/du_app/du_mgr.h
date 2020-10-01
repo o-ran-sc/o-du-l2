@@ -194,6 +194,7 @@ uint8_t duSendEgtpDatInd(Buffer *mBuf);
 uint8_t duHdlSchCfgComplete(Pst *pst, RgMngmt *cfm);
 uint8_t duBuildAndSendMacCellStartReq();
 uint8_t duBuildAndSendMacCellStopReq();
+uint8_t duBuildAndSendMacCellCfg();
 #endif
 
 /**********************************************************************

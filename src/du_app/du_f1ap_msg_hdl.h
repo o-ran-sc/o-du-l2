@@ -29,11 +29,10 @@
 #define CELL_INDEX      0
 
 void F1APMsgHdlr(Buffer *mBuf);
+uint8_t sctpSend(Buffer *mBuf, uint8_t itfType);
 uint8_t procF1SetupRsp(F1AP_PDU_t *f1apMsg);
 uint8_t BuildAndSendF1SetupReq();
 uint8_t BuildAndSendDUConfigUpdate();
-uint8_t BuildAndSendInitialRrcMsgTransfer(uint32_t gnbDuUeF1apId, uint16_t crnti, uint16_t rrcContSize, 
-          uint8_t *rrcContainer);
 uint8_t BuildAndSendULRRCMessageTransfer(DuUeCb  ueCb, uint8_t lcId,  uint16_t msgLen, uint8_t *rrcMsg);
 
 /**********************************************************************
