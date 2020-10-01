@@ -30,10 +30,7 @@
 #include "du_app_rlc_inf.h"
 #include "du_cfg.h"
 #include "du_utils.h"
-#include<ProtocolIE-Field.h>
-#include "F1AP-PDU.h"
 #include "du_mgr.h"
-#include "du_f1ap_msg_hdl.h"
 #include "du_ue_mgr.h"
 
 #ifdef EGTP_TEST
@@ -147,6 +144,72 @@ uint8_t duHdlRlcUlData(Pst *pst, KwuDatIndInfo* datInd, Buffer *mBuf)
    return ROK;
 }
 
+/******************************************************************
+ *
+ * @brief Process DL RRC Msg recevied from F1AP
+ *
+ * @details
+ *
+ *    Function : duProcRrcMsgTrans
+ *
+ *    Functionality: Process DL RRC Msg recevied from F1AP
+ *
+ * @params[in] dlCcchMsg - uint8_t*
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t duProcRrcMsgTrans(uint8_t srbId, uint8_t *dlCcchMsg, uint16_t  dlCcchMsgSize, \
+   uint32_t gnbDuUeF1apId, uint32_t gnbCuUeF1apId)
+{
+   uint8_t idx, ret;
+   uint16_t crnti, cellId;
+
+   ret = ROK;
+   for(idx=0; idx<duCb.numUe; idx++)
+   {
+      if(gnbDuUeF1apId == duCb.ueCcchCtxt[idx].gnbDuUeF1apId)
+      {
+         crnti  = duCb.ueCcchCtxt[idx].crnti;
+         cellId = duCb.ueCcchCtxt[idx].cellId;
+         break;
+      }
+   }
+   if(srbId == SRB_ID_1) //RRC connection setup
+   {
+      if(dlCcchMsg)
+      {
+         ret = duBuildAndSendDlCcchInd(&cellId, &crnti, RRC_SETUP, dlCcchMsg, dlCcchMsgSize);
+         if(ret)
+         {
+            DU_LOG("\nDU_APP: Falied at duBuildAndSendDlCcchInd()");
+         }
+	 else
+	 {
+            if(duCb.actvCellLst[cellId-1]->numActvUes < MAX_NUM_UE)
+            {
+               ret = duCreateUeCb(&duCb.ueCcchCtxt[idx], gnbCuUeF1apId);
+               if(ret)
+               {
+                  DU_LOG("\nDU_APP: Failed at duCreateUeCb for cellId [%d]", duCb.ueCcchCtxt[idx].cellId);
+               }
+            }
+            else
+            {
+               DU_LOG("\nDU_APP: Max Active UEs has reached");
+               ret = RFAILED;
+            }
+	 }
+      }
+      else
+      {
+         DU_LOG("\nDU_APP: Received dlCcchMsg is NULL at procDlRrcMsgTrans()");
+      }
+   }
+   return ret;
+
+}
 /******************************************************************
  *
  * @brief Builds and Sends DL CCCH Ind to MAC
@@ -285,226 +348,6 @@ uint8_t duBuildAndSendDlRrcMsgToRlc(uint16_t cellId, RlcUeCfg ueCfg, \
 
    return ROK;
 } 
-
-/*******************************************************************
- *
- * @brief Process UE context setup request from CU
- *
- * @details
- *
- *    Function : procUeCintextSetupReq
- *
- *    Functionality: Process UE context setup request from CU
- *
- * @params[in] F1AP message
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-uint8_t procUeContextSetupReq(F1AP_PDU_t *f1apMsg)
-{
-   uint8_t    ret = ROK;
-   uint8_t    ieIdx, byteIdx, ueIdx;
-   uint8_t    *rrcMsg = NULLP;
-   uint16_t   rrcMsgLen;
-   uint16_t   cellId, cellIdx;
-   uint32_t   gnbDuUeF1apId;    /* GNB DU UE F1AP ID */
-   uint32_t   gnbCuUeF1apId;    /* GNB CU UE F1AP ID */
-   bool       deliveryStaReq = false;   /* RRC msg delivery status request */
-   DuUeCb     *ueCb = NULLP;
-   UEContextSetupRequest_t   *ueSetReq = NULLP;
-  
-   ueSetReq = &f1apMsg->choice.initiatingMessage->value.choice.UEContextSetupRequest;
-
-   /* TODO : fetch remaining values from f1ap msg */
-   for(ieIdx=0; ieIdx < ueSetReq->protocolIEs.list.count; ieIdx++)
-   {
-      switch(ueSetReq->protocolIEs.list.array[ieIdx]->id)
-      {
-         case ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID:
-	    {
-	       gnbCuUeF1apId = ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_CU_UE_F1AP_ID;
-	       break;
-            }
-	 case ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID:
-	    {
-	       gnbDuUeF1apId = ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_UE_F1AP_ID;
-	       break;
-	    }
-         case ProtocolIE_ID_id_ServCellIndex:
-	    {
-	       cellIdx = ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.ServCellIndex;
-	       break;
-	    }
-         case ProtocolIE_ID_id_RRCContainer: 
-            {
-               rrcMsgLen = ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.size;
-               DU_ALLOC_SHRABL_BUF(rrcMsg, rrcMsgLen);
-	       if(!rrcMsg)
-	       {
-	          DU_LOG("\nDU APP : Memory allocation failed for RRC Msg in procUeCtxtSetupReq");
-	          return RFAILED;
-	       }
-	       memcpy(rrcMsg, ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.buf,\
-	          rrcMsgLen);
-	       break;
-            }
-         case ProtocolIE_ID_id_RRCDeliveryStatusRequest:
-	    {
-               deliveryStaReq = true;	       
-	       break;
-	    }
-	 default:
-	    {
-	       break;
-	    }
-      }
-   }
-
-   cellId = duCb.actvCellLst[cellIdx]->cellId;
-   for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
-   {
-      if((duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbCuUeF1apId == gnbCuUeF1apId) &&
-         (duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbDuUeF1apId == gnbDuUeF1apId &&
-	 duCb.actvCellLst[cellIdx]->ueCb[ueIdx].ueState == UE_ACTIVE))
-      {
-         ueCb = &duCb.actvCellLst[cellIdx]->ueCb[ueIdx];
-	 break;
-      }
-   }
-
-   /* TODO :  send RB config to MAC/RLC */
-
-   /* Sending DL RRC Message to RLC */
-   if(ueIdx != MAX_NUM_UE)
-   {
-      ret = duBuildAndSendDlRrcMsgToRlc(cellId, ueCb->rlcUeCfg, SRB_ID_1, \
-               deliveryStaReq,  rrcMsgLen, rrcMsg); 
-   }
-   else
-   {
-      DU_LOG("\nDU APP : No UE found for CuUeF1apId[%d] and DuUeF1apId[%d]", \
-         gnbCuUeF1apId, gnbDuUeF1apId);
-      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, rrcMsg, rrcMsgLen);
-      ret = RFAILED;
-   }
-
-   return ret;
-}
-
-/******************************************************************
- *
- * @brief Processes DL RRC Message Transfer  sent by CU
- *
- * @details
- *
- *    Function : procDlRrcMsgTrans 
- *
- *    Functionality: Processes DL RRC Message Transfer sent by CU
- *
- * @params[in] F1AP_PDU_t ASN decoded F1AP message
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg)
-{
-   DLRRCMessageTransfer_t *dlRrcMsg = NULLP;
-   uint8_t                *dlCcchMsg = NULLP;
-   uint8_t                idx, ret, srbId;
-   uint16_t               idx2, crnti, cellId, dlCcchMsgSize;
-   uint32_t               gnbCuUeF1apId, gnbDuUeF1apId;
-
-
-   DU_LOG("\nDU_APP : DL RRC message transfer Recevied");
-   dlRrcMsg = &f1apMsg->choice.initiatingMessage->value.choice.DLRRCMessageTransfer;
-
-   ret = ROK;
-
-   for(idx=0; idx<dlRrcMsg->protocolIEs.list.count; idx++)
-   {
-      switch(dlRrcMsg->protocolIEs.list.array[idx]->id)
-      {
-	 case ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID:
-	    {
-	       gnbCuUeF1apId = dlRrcMsg->protocolIEs.list.array[idx]->value.choice.GNB_CU_UE_F1AP_ID;
-	       break;
-	    }
-	 case ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID:
-	    {
-	       gnbDuUeF1apId = dlRrcMsg->protocolIEs.list.array[idx]->value.choice.GNB_DU_UE_F1AP_ID;
-	       break;
-	    }
-	 case ProtocolIE_ID_id_SRBID:
-	    {
-	       srbId = dlRrcMsg->protocolIEs.list.array[idx]->value.choice.SRBID;
-	       break;
-	    }
-	 case ProtocolIE_ID_id_ExecuteDuplication:
-	    break;
-
-	 case ProtocolIE_ID_id_RRCContainer:
-	    {
-	       if(dlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.size > 0)
-	       {
-		  dlCcchMsgSize = dlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.size;
-		  DU_ALLOC(dlCcchMsg, dlCcchMsgSize);
-		  for(idx2 = 0; idx2 < dlCcchMsgSize; idx2++)
-		  {
-		     dlCcchMsg[idx2] = \
-		        dlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf[idx2];
-		  }
-	       }
-	       else
-	       {
-		  DU_LOG("\nDU_APP : RRC Container Size is invalid:%ld",\
-			dlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.size);
-	       }
-	       break;
-	    }
-
-	 default:
-	    DU_LOG("\nDU_APP : Invalid IE received in DL RRC Msg Transfer:%ld",
-		  dlRrcMsg->protocolIEs.list.array[idx]->id);
-      }
-   }
-
-   for(idx=0; idx<duCb.numUe; idx++)
-   {
-      if(gnbDuUeF1apId == duCb.ueCcchCtxt[idx].gnbDuUeF1apId)
-      {
-	 crnti  = duCb.ueCcchCtxt[idx].crnti;
-	 cellId = duCb.ueCcchCtxt[idx].cellId;
-	 break;
-      }
-   }
-   if(srbId == SRB_ID_1) //RRC connection setup
-   {
-      ret = duBuildAndSendDlCcchInd(&cellId, &crnti, RRC_SETUP, dlCcchMsg, dlCcchMsgSize);
-      if(ret)
-      {
-	 DU_LOG("\nDU_APP: Falied at duBuildAndSendDlCcchInd()");
-      }
-      else
-      {
-	 if(duCb.actvCellLst[cellId-1]->numActvUes < MAX_NUM_UE)
-	 {
-	    ret = duCreateUeCb(&duCb.ueCcchCtxt[idx], gnbCuUeF1apId);
-	    if(ret)
-	    {
-	       DU_LOG("\nDU_APP: Failed at duCreateUeCb for cellId [%d]", duCb.ueCcchCtxt[idx].cellId);
-	       ret = RFAILED;
-	    }
-	 }
-	 else
-	 {
-	    DU_LOG("\nDU_APP: Max Active UEs has reached");
-	    ret = RFAILED;
-	 }
-      }
-   }            
-   return ret;
-}
 
 /******************************************************************
  *
@@ -1328,6 +1171,63 @@ uint8_t DuProcRlcUlUeCreateRsp(Pst *pst, RlcUeCfgRsp *cfgRsp)
       DU_LOG("\nDU_APP: Received RLC Ue Create Response is NULL");
       ret = RFAILED;
    }
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Process UE context setup request from CU
+ *
+ * @details
+ *
+ *    Function : duProcUeSetupRequest
+ *
+ *    Functionality: Process UE context setup request from CU
+ *
+ * @params[in] F1AP message
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t duProcUeSetupRequest(uint8_t cellIdx, bool deliveryStaReq, uint16_t rrcMsgLen,\
+   uint8_t *rrcMsg, uint32_t gnbDuUeF1apId, uint32_t gnbCuUeF1apId)
+{
+   uint8_t ret, ueIdx, cellId;
+   DuUeCb     *ueCb = NULLP;
+
+   ret = ROK;
+   cellId = duCb.actvCellLst[cellIdx]->cellId;
+   for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
+   {
+      if((duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbCuUeF1apId == gnbCuUeF1apId) &&
+       (duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbDuUeF1apId == gnbDuUeF1apId &&
+        duCb.actvCellLst[cellIdx]->ueCb[ueIdx].ueState == UE_ACTIVE))
+      {
+         ueCb = &duCb.actvCellLst[cellIdx]->ueCb[ueIdx];
+         break;
+      }
+   }
+
+   /* TODO :  send RB config to MAC/RLC */
+
+   /* Sending DL RRC Message to RLC */
+   if(ueIdx != MAX_NUM_UE)
+   {
+      if(rrcMsg)
+      {
+         ret = duBuildAndSendDlRrcMsgToRlc(cellId, ueCb->rlcUeCfg, SRB_ID_1, \
+            deliveryStaReq,  rrcMsgLen, rrcMsg);
+      }
+   }
+   else
+   {
+      DU_LOG("\nDU APP : No UE found for CuUeF1apId[%d] and DuUeF1apId[%d]", \
+       gnbCuUeF1apId, gnbDuUeF1apId);
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, rrcMsg, rrcMsgLen);
+      ret = RFAILED;
+   }
+
    return ret;
 }
 /**********************************************************************
