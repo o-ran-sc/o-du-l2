@@ -42,29 +42,29 @@ U32 sduId = 0;
 
 DuMacDlCcchInd packMacDlCcchIndOpts[] =
 {
-   packMacDlCcchInd,   /* Loose coupling */
-   MacProcDlCcchInd,    /* TIght coupling */
-   packMacDlCcchInd    /* Light weight-loose coupling */
+   packMacDlCcchInd,           /* Loose coupling */
+   MacProcDlCcchInd,           /* TIght coupling */
+   packMacDlCcchInd            /* Light weight-loose coupling */
 };
 
 DuMacUeCreateReq packMacUeCreateReqOpts[] =
 {
    packDuMacUeCreateReq,       /* Loose coupling */
-   MacProcUeCreateReq,          /* TIght coupling */
+   MacProcUeCreateReq,         /* TIght coupling */
    packDuMacUeCreateReq,       /* Light weight-loose coupling */
 };
 
 DuRlcUlUeCreateReq packRlcUlUeCreateReqOpts[] =
 {
-   packDuRlcUlUeCreateReq,       /* Loose coupling */
-   RlcUlProcUeCreateReq,          /* TIght coupling */
-   packDuRlcUlUeCreateReq,       /* Light weight-loose coupling */
+   packDuRlcUlUeCreateReq,     /* Loose coupling */
+   RlcUlProcUeCreateReq,       /* TIght coupling */
+   packDuRlcUlUeCreateReq,     /* Light weight-loose coupling */
 };
 
 DuDlRrcMsgToRlcFunc duSendDlRrcMsgToRlcOpts[] =
 {
    packDlRrcMsgToRlc,          /* Loose coupling */ 
-   RlcProcDlRrcMsgTransfer,       /* Tight coupling */
+   RlcProcDlRrcMsgTransfer,    /* Tight coupling */
    packDlRrcMsgToRlc           /* Light weight-loose coupling */
 };
 
