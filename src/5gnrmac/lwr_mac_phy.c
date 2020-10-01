@@ -210,7 +210,7 @@ void LwrMacRecvPhyMsg()
 	 if(l1Msg)
 	 {
 	    l1MsgPtr = WLS_PA2VA(wlsHdlr, l1Msg); 
-	    handlePhyMessages(msgType, msgSize, l1MsgPtr);
+	    procPhyMessages(msgType, msgSize, l1MsgPtr);
 	 }
 	 numToGet--;
       }

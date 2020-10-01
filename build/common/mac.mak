@@ -58,6 +58,7 @@ include $(COM_BUILD_DIR)/compile.mak
 
 I_OPTS+=-I$(ROOT_DIR)/src/5gnrsch
 I_OPTS+=-I$(ROOT_DIR)/src/intel_fapi
+I-OPTS+=-I$(ROOT_DIR)/src/wls_lib
 
 #-------------------------------------------------------------#
 #Linker macros             

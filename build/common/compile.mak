@@ -101,7 +101,7 @@ xCPP_OPTS+=-g -pipe -pedantic -Wall -Werror -Wno-comment -Wshadow \
     -Wcast-qual -fno-strict-aliasing -fsigned-char -lstdc++ 
 
 # Include path settings
-I_OPTS+=-I$(SRC_DIR) -I$(ROOT_DIR)/src/cm -I$(ROOT_DIR)/src/mt -I$(ROOT_DIR)/src/rlog
+I_OPTS+=-I$(SRC_DIR) -I$(ROOT_DIR)/src/cm -I$(ROOT_DIR)/src/mt -I$(ROOT_DIR)/src/rlog -I$(ROOT_DIR)/src/wls_lib
 I_OPTS+=$(PLTFRM_INCLUDES)
 .SUFFIXES:.c .o
 
