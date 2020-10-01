@@ -16,6 +16,24 @@
       "revId": "9c929d38c3bc6ae39ed658d0a7297612e5525b00",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6145c0f5_5d07ef94",
+        "filename": "build/common/compile.mak",
+        "patchSetId": 1
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-01T12:58:23Z",
+      "side": 1,
+      "message": "yes. Compilation fails if not included.",
+      "parentUuid": "934cf927_15536af2",
+      "revId": "9c929d38c3bc6ae39ed658d0a7297612e5525b00",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
