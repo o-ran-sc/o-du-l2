@@ -1852,6 +1852,35 @@ uint8_t DuProcRlcUlRrcMsgTrans(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo)
    return ROK;
 }
 
+/*******************************************************************
+*
+* @brief Process RRC delivery report from RLC
+*
+* @details
+*
+*    Function : DuProcRlcRrcDeliveryReportTrans
+*
+*    Functionality: Process RRC delivery Message from RLC
+*
+* @params[in] Post structure
+*             UL RRC Message Info
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t DuProcRlcRrcDeliveryReportTrans(Pst *pst, RrcDeliveryReport *rrcDeliveryReport)
+{
+       DuUeCb   ueCb;
+       uint8_t  ret = RFAILED;
+
+       ueCb = duCb.actvCellLst[rrcDeliveryReport->cellId -1]->ueCb[rrcDeliveryReport->ueIdx -1];
+       ret = BuildAndSendRrcDeliveryReport(ueCb.gnbCuUeF1apId, ueCb.gnbDuUeF1apId,rrcDeliveryReport);
+
+       DU_FREE_SHRABL_BUF(pst->region, pst->pool, rrcDeliveryReport, sizeof(RrcDeliveryReport));
+       return ret;
+}
+
+
 /**********************************************************************
   End of file
  **********************************************************************/
