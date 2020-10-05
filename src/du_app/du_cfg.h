@@ -254,6 +254,7 @@
 #define SCRAMBLING_ID  NR_PCI
 #define DMRS_ADDITIONAL_POS  0          /* DMRS Additional poistion */
 #define RES_ALLOC_TYPE       1          /* Resource allocation type */
+#define PDCP_SN 1
 
 #ifdef EGTP_TEST
 #define UE_ID 1
