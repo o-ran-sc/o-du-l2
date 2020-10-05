@@ -36,7 +36,7 @@
 
 #include "du_app_rlc_inf.h"
 #include "rlc_utils.h"
-
+#include "rlc_upr_inf_api.h"
 /*******************************************************************
  *
  * @brief Fills RLC UL UE Cfg Rsp from RlcCRsp 
@@ -209,8 +209,48 @@ uint8_t RlcUlProcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg)
       RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueCfg, sizeof(RlcUeCfg));
       return ret;
 }
-
 /*******************************************************************
+*
+* @brief filling the structure of rrc delivery msg info
+*
+* @details
+*
+*    Function : fillRrcDeliveryMsgInfo
+*
+*    Functionality: filling the structure of rrc delivery msg info
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t fillRrcDeliveryMsgInfo( RlcDlRrcMsgInfo *dlRrcMsgInfo )
+{
+    Pst             pst;
+    RrcDeliveryReportInfo *rrcDelivery;
+
+    RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL, rrcDelivery, sizeof(RrcDeliveryReportInfo));
+
+    if(rrcDelivery)
+    {
+       rrcDelivery->cellId = dlRrcMsgInfo->cellId;
+       rrcDelivery->ueIdx  = dlRrcMsgInfo->ueIdx;
+       rrcDelivery->srbId  = dlRrcMsgInfo->lcId ;
+       rrcDelivery->rrcDeliveryStatus.deliveryStatus    = PDCP_SN;
+       rrcDelivery->rrcDeliveryStatus.triggeringMessage = PDCP_SN;
+
+       /* Sending UL RRC Message transfeer to DU APP */
+       memset(&pst, 0, sizeof(Pst));
+       FILL_PST_RLC_TO_DUAPP(pst, SFndProcId(), RLC_UL_INST, EVENT_RRC_DELIVERY_MSG_TRANS_TO_DU);
+       rlcSendRrcDeliveryMsgToDu(&pst, rrcDelivery);
+    }
+    else
+    {
+       DU_LOG("\nRLC : Memory allocation failed");
+    }
+
+   return ROK;
+}
+/* ****************************************************************
  *
  * @brief Process the DL RRC Message from DU APP
  *
@@ -260,6 +300,12 @@ uint8_t RlcProcDlRrcMsgTransfer(Pst *pst, RlcDlRrcMsgInfo *dlRrcMsgInfo)
 	 (MsgLen *)&copyLen);
 
    RlcUiKwuDatReq(pst, datReqInfo, mBuf);
+   
+   /* RRC Delivery report is only send when RRC Delivery status report is true in DL RRC Message */
+   if(dlRrcMsgInfo->deliveryStaRpt)
+   {
+      fillRrcDeliveryMsgInfo(dlRrcMsgInfo);
+   }
 
    /* Free memory allocated by du app */
    RLC_SHRABL_STATIC_BUF_FREE(RLC_MEM_REGION_DL, RLC_POOL, datReqInfo, sizeof(KwuDatReqInfo));
@@ -267,7 +313,6 @@ uint8_t RlcProcDlRrcMsgTransfer(Pst *pst, RlcDlRrcMsgInfo *dlRrcMsgInfo)
    RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, dlRrcMsgInfo, sizeof(RlcDlRrcMsgInfo));
    return ROK;
 }
-
 /**********************************************************************
          End of file
 **********************************************************************/

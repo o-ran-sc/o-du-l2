@@ -17,7 +17,7 @@
 *******************************************************************************/
 
 uint8_t rlcSendUlRrcMsgToDu(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo);
-
+uint8_t rlcSendRrcDeliveryMsgToDu(Pst *pst, RrcDeliveryReportInfo *rrcDelivery);
 /**********************************************************************
          End of file
 **********************************************************************/
