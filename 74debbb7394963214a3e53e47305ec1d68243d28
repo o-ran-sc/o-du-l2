@@ -1,0 +1,157 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0a49130c_db76df1b",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-05T13:18:41Z",
+      "side": 1,
+      "message": "use of global variables and extern to be reduced, try accessing via macCb",
+      "revId": "74debbb7394963214a3e53e47305ec1d68243d28",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "312b8627_37597430",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-05T13:18:41Z",
+      "side": 1,
+      "message": "Is extern required here ?",
+      "revId": "74debbb7394963214a3e53e47305ec1d68243d28",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2e0fae3f_800e6d43",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-05T13:18:41Z",
+      "side": 1,
+      "message": "we have already included the corresponding .h here.\nIs extern required here?",
+      "revId": "74debbb7394963214a3e53e47305ec1d68243d28",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "98eaf1cf_0d090133",
+        "filename": "src/5gnrrlc/kw_tmm_dl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 544,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-05T13:18:41Z",
+      "side": 1,
+      "message": "memset of pst to be handled in FILL_PST",
+      "revId": "74debbb7394963214a3e53e47305ec1d68243d28",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b6b2df99_f2b92abb",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-05T13:18:41Z",
+      "side": 1,
+      "message": "use of global variables has to be minimised",
+      "revId": "74debbb7394963214a3e53e47305ec1d68243d28",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3ed4a4c1_7088ffd1",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 690,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-05T13:18:41Z",
+      "side": 1,
+      "message": "this function can be optimised",
+      "revId": "74debbb7394963214a3e53e47305ec1d68243d28",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "43f37ff2_0091eea8",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 711,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-05T13:18:41Z",
+      "side": 1,
+      "message": "what if we receive SRB3?",
+      "revId": "74debbb7394963214a3e53e47305ec1d68243d28",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7443ec41_fef36511",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-05T13:18:41Z",
+      "side": 1,
+      "message": "this can be moved into a another function.\nand schProcessSlotInd() can be optimized.",
+      "revId": "74debbb7394963214a3e53e47305ec1d68243d28",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bf68e637_b09fe0d1",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-05T13:18:41Z",
+      "side": 1,
+      "message": "before starting while check\nif(cell-\u003eschDlSlotInfo[dlSchedInfo.schSlotValue.dlMsgTime.slot]-\u003ededMsgInfo !\u003d NULLP)\nas followed in other msgs",
+      "revId": "74debbb7394963214a3e53e47305ec1d68243d28",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
