@@ -37,6 +37,14 @@
 #include "du_app_rlc_inf.h"
 #include "rlc_utils.h"
 
+uint8_t fillRrcDeliveryMsgInfo();
+/* Function pointer array for RRC delivery report transfer */
+RlcRrcDeliveryMsgToDuFunc rlSendRrcDeliveryMsgToDuOpts[]=
+{
+   packRrcDeliveryMsgToDu,          /* 0 - Loosely coupled */
+   DuProcRlcRrcDeliveryMsgTrans,    /* 1 - Tightly coupled */
+   packRrcDeliveryMsgToDu           /* 2 - Light weight loosely coupled */
+};
 /*******************************************************************
  *
  * @brief Fills RLC UL UE Cfg Rsp from RlcCRsp 
@@ -260,7 +268,7 @@ uint8_t RlcProcDlRrcMsgTransfer(Pst *pst, RlcDlRrcMsgInfo *dlRrcMsgInfo)
 	 (MsgLen *)&copyLen);
 
    RlcUiKwuDatReq(pst, datReqInfo, mBuf);
-
+   fillRrcDeliveryMsgInfo();
    /* Free memory allocated by du app */
    RLC_SHRABL_STATIC_BUF_FREE(RLC_MEM_REGION_DL, RLC_POOL, datReqInfo, sizeof(KwuDatReqInfo));
    RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, dlRrcMsgInfo->rrcMsg, dlRrcMsgInfo->msgLen);
@@ -268,6 +276,47 @@ uint8_t RlcProcDlRrcMsgTransfer(Pst *pst, RlcDlRrcMsgInfo *dlRrcMsgInfo)
    return ROK;
 }
 
+/*******************************************************************
+*
+* @brief filling the structure of rrc delivery msg info
+*
+* @details
+*
+*    Function : fillRrcDeliveryMsgInfo
+*
+*    Functionality: filling the structure of rrc delivery msg info 
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t fillRrcDeliveryMsgInfo()
+{
+   Pst             pst;
+   RrcDeliveryReportInfo *rrcDelivery;
+
+   RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL, rrcDelivery, sizeof(RrcDeliveryReportInfo));
+
+   if(rrcDelivery)
+   {
+      rrcDelivery->cellId = 1; 
+      rrcDelivery->ueIdx  = 1;
+      rrcDelivery->lcId   = 1;
+      rrcDelivery->rrcDeliveryStatus = 1;
+
+      /* Sending UL RRC Message transfeer to DU APP */
+      memset(&pst, 0, sizeof(Pst));
+      FILL_PST_RLC_TO_DUAPP(pst, SFndProcId(), RLC_UL_INST, EVENT_RRC_DELIVERY_MSG_TRANS_TO_DU);
+      rlcSendRrcDeliveryMsgToDu(&pst, rrcDelivery);
+   }
+   else
+   {
+      DU_LOG("\nRLC : Memory allocation failed");
+   }
+   
+  return ROK;
+
+}
 /**********************************************************************
          End of file
 **********************************************************************/

@@ -2472,6 +2472,13 @@ void F1APMsgHdlr(Buffer *mBuf)
 	    {
 	       DU_LOG("\nF1AP : Received ULRRCMessageTransfer");
 	       procUlRrcMsg(f1apMsg);
+	       break;
+	    }
+	    
+	    case InitiatingMessage__value_PR_RRCDeliveryReport:
+	    {
+	       DU_LOG("\nF1AP : Received RRC delivery report");
+	        break;
 	    }
             default:
             {
