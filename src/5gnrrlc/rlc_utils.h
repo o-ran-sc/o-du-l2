@@ -50,6 +50,7 @@
    _pst.intfVer     = 0;                                       \
 }
 
+#define PDCP_SN 1
 void reverseFixBuf(uint8_t *buf, uint16_t len);
 uint16_t getTransId();
 

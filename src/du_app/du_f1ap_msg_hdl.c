@@ -2559,7 +2559,7 @@ uint8_t BuildRlcBearerToAddModList(struct CellGroupConfigRrc__rlc_BearerToAddMod
    controlRSet = controlRSetList->list.array[idx];
 
    controlRSet->controlResourceSetId = PDCCH_CTRL_RSRC_SET_ONE_ID;
- 
+
    /* size 6 bytes
     * 3 LSBs unsued
     * Bit string stored ff0000000000
@@ -5428,12 +5428,12 @@ void FreeF1ResetReq(F1AP_PDU_t *f1apMsg)
 {
    uint8_t idx =0 ;
    Reset_t *f1ResetMsg;
-   
+
    if(f1apMsg)
    {
       if(f1apMsg->choice.initiatingMessage)
       {
-         f1ResetMsg = &f1apMsg->choice.initiatingMessage->value.choice.Reset;
+	 f1ResetMsg = &f1apMsg->choice.initiatingMessage->value.choice.Reset;
 
 	 if(f1ResetMsg->protocolIEs.list.array)
 	 {
@@ -5729,53 +5729,53 @@ uint8_t BuildAndSendF1ResetAck()
 }
 
 /*******************************************************************
-*
-* @brief Processes GNB DU config update ack
-*
-* @details
-*
-*    Function : procGNBDUCfgUpdAck
-*
-*    Functionality: Processes GNB DU config update ack
-*
-* @params[in] F1AP_PDU_t ASN decoded F1AP message
-* @return ROK     - success
-*         RFAILED - failure
-*
-* ****************************************************************/
+ *
+ * @brief Processes GNB DU config update ack
+ *
+ * @details
+ *
+ *    Function : procGNBDUCfgUpdAck
+ *
+ *    Functionality: Processes GNB DU config update ack
+ *
+ * @params[in] F1AP_PDU_t ASN decoded F1AP message
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
 uint8_t procGNBDUCfgUpdAck(F1AP_PDU_t *f1apMsg)
 {
-    DU_LOG("\nF1AP : GNB-DU config update acknowledgment received");
+   DU_LOG("\nF1AP : GNB-DU config update acknowledgment received");
 #if 0
-    if(BuildAndSendF1ResetReq() != ROK)
-    {
-       return RFAILED;
-    }
+   if(BuildAndSendF1ResetReq() != ROK)
+   {
+      return RFAILED;
+   }
 #endif
-    /* TODO :Check the deallocation */
+   /* TODO :Check the deallocation */
 
 #if 0
-    DU_FREE(gNBDuCfgAck->protocolIEs.list.array,(Size)elementCnt * sizeof(GNBDUConfigurationUpdateAcknowledgeIEs_t));
-    DU_FREE(f1apMsg->choice.successfulOutcome,(Size)sizeof(SuccessfulOutcome_t));
-    DU_FREE(f1apMsg,(Size)sizeof(F1AP_PDU_t));
+   DU_FREE(gNBDuCfgAck->protocolIEs.list.array,(Size)elementCnt * sizeof(GNBDUConfigurationUpdateAcknowledgeIEs_t));
+   DU_FREE(f1apMsg->choice.successfulOutcome,(Size)sizeof(SuccessfulOutcome_t));
+   DU_FREE(f1apMsg,(Size)sizeof(F1AP_PDU_t));
 #endif
-    return ROK;
+   return ROK;
 }
 /******************************************************************
-*
-* @brief Processes DL RRC Message Transfer  sent by CU
-*
-* @details
-*
-*    Function : procDlRrcMsgTrans
-*
-*    Functionality: Processes DL RRC Message Transfer sent by CU
-*
-* @params[in] F1AP_PDU_t ASN decoded F1AP message
-* @return ROK     - success
-*         RFAILED - failure
-*
-* ****************************************************************/
+ *
+ * @brief Processes DL RRC Message Transfer  sent by CU
+ *
+ * @details
+ *
+ *    Function : procDlRrcMsgTrans
+ *
+ *    Functionality: Processes DL RRC Message Transfer sent by CU
+ *
+ * @params[in] F1AP_PDU_t ASN decoded F1AP message
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
 uint8_t procF1ResetReq(F1AP_PDU_t *f1apMsg)
 {
    /* we are currently not supporting Ue release. right now we are supporting only init case of fireset */
@@ -5790,27 +5790,213 @@ uint8_t procF1ResetReq(F1AP_PDU_t *f1apMsg)
    {
       switch(f1ResetMsg->protocolIEs.list.array[idx]->id)
       {
-         case ProtocolIE_ID_id_TransactionID:
-           break;
+	 case ProtocolIE_ID_id_TransactionID:
+	    break;
 
-         case ProtocolIE_ID_id_Cause:
-           break;
+	 case ProtocolIE_ID_id_Cause:
+	    break;
 
-	case ProtocolIE_ID_id_ResetType:
-	{
-	   DU_LOG("\nReceived F1 Reset request");
-	   break;
-        }
+	 case ProtocolIE_ID_id_ResetType:
+	    {
+	       DU_LOG("\nReceived F1 Reset request");
+	       break;
+	    }
 
-	default:
-	   break;
+	 default:
+	    break;
       }
    }
    ret = BuildAndSendF1ResetAck();
    DU_LOG("\nUE release is not supported for now");
    return ret;
 }
+
 /*******************************************************************
+ *
+ * @brief free the RRC delivery report
+ *
+ * @details
+ *
+ *    Function : freeRrcDeliveryReport
+ *
+ *    Functionality: free the RRC delivery report
+ *
+ * @params[in]
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void freeRrcDeliveryReport(F1AP_PDU_t  *f1apMsg )
+{
+   uint8_t idx=0;
+   RRCDeliveryReport_t *rrcDeliveryReport= NULLP;
+
+   if(f1apMsg)
+   {
+      if(f1apMsg->choice.initiatingMessage)
+      {
+	 rrcDeliveryReport = &f1apMsg->choice.initiatingMessage->value.choice.RRCDeliveryReport;
+	 if(rrcDeliveryReport->protocolIEs.list.array)
+	 {
+	    for(idx =0 ;idx <rrcDeliveryReport->protocolIEs.list.count ;
+		  idx++)
+	    {
+	       if(rrcDeliveryReport->protocolIEs.list.array[idx])
+	       {
+		  DU_FREE(rrcDeliveryReport->protocolIEs.list.array[idx],
+			sizeof(RRCDeliveryReportIEs_t));
+	       }   
+	    }
+	    DU_FREE(rrcDeliveryReport->protocolIEs.list.array,
+		  rrcDeliveryReport->protocolIEs.list.size);
+	 }
+	 DU_FREE(f1apMsg->choice.initiatingMessage,sizeof(InitiatingMessage_t));
+      }
+      DU_FREE(f1apMsg,
+	    sizeof(F1AP_PDU_t));
+   }
+}
+
+/*******************************************************************
+*
+* @brief Builds and sends the RRC delivery report
+*
+* @details
+*
+*    Function : BuildAndSendRrcDeliveryReport
+*
+*    Functionality: Builds and sends the RRC delivery report
+*
+* @params[in]
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t BuildAndSendRrcDeliveryReport(uint32_t gnbCuUeF1apId, uint32_t gnbDuUeF1apId, RrcDeliveryReport
+*rrcDelivery)
+{
+   uint8_t             ret = RFAILED;
+   uint8_t             idx    = 0;
+   uint8_t             idx1   = 0;
+   uint8_t             elementCnt = 0;
+   F1AP_PDU_t          *f1apMsg = NULLP;
+   asn_enc_rval_t      encRetVal;  
+   RRCDeliveryReport_t *rrcDeliveryReport= NULLP;
+
+   do{
+
+      DU_LOG("\nF1AP : Building RRC delivery Message Transfer Message\n");
+      DU_ALLOC(f1apMsg, sizeof(F1AP_PDU_t));
+      if(f1apMsg == NULLP)
+      {
+	 DU_LOG(" F1AP : Memory allocation for F1AP-PDU failed");
+	 break;
+      }
+      f1apMsg->present = F1AP_PDU_PR_initiatingMessage;
+      DU_ALLOC(f1apMsg->choice.initiatingMessage,sizeof(InitiatingMessage_t));
+      if(f1apMsg->choice.initiatingMessage == NULLP)
+      {
+	 DU_LOG(" F1AP : Memory allocation for  F1AP-PDU  failed");
+	 break;
+      }
+      f1apMsg->choice.initiatingMessage->procedureCode = ProcedureCode_id_RRCDeliveryReport;
+      f1apMsg->choice.initiatingMessage->criticality   = Criticality_ignore;
+      f1apMsg->choice.initiatingMessage->value.present = InitiatingMessage__value_PR_RRCDeliveryReport;
+
+      rrcDeliveryReport = &f1apMsg->choice.initiatingMessage->value.choice.RRCDeliveryReport;
+      elementCnt = 4;
+      rrcDeliveryReport->protocolIEs.list.count = elementCnt;
+      rrcDeliveryReport->protocolIEs.list.size = elementCnt * sizeof(RRCDeliveryReportIEs_t *);
+
+      /* Initialize the F1Setup members */
+      DU_ALLOC(rrcDeliveryReport->protocolIEs.list.array, rrcDeliveryReport->protocolIEs.list.size);
+      if(rrcDeliveryReport->protocolIEs.list.array == NULLP)
+      {
+	 DU_LOG(" F1AP : Memory allocation for RRC Delivery  failed");
+	 break;
+      }
+      for(idx =0 ;idx <elementCnt; idx++)
+      {
+	 DU_ALLOC(rrcDeliveryReport->protocolIEs.list.array[idx], sizeof(RRCDeliveryReportIEs_t));
+	 if(rrcDeliveryReport->protocolIEs.list.array[idx] == NULLP)
+	 {
+	    break;
+	 }
+      }
+
+      idx1 = 0;
+
+      /*GNB CU UE F1AP ID*/
+      rrcDeliveryReport->protocolIEs.list.array[idx1]->id = ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID;
+      rrcDeliveryReport->protocolIEs.list.array[idx1]->criticality = Criticality_reject;
+      rrcDeliveryReport->protocolIEs.list.array[idx1]->value.present = RRCDeliveryReportIEs__value_PR_GNB_CU_UE_F1AP_ID;
+      rrcDeliveryReport->protocolIEs.list.array[idx1]->value.choice.GNB_CU_UE_F1AP_ID = gnbCuUeF1apId;
+
+      /*GNB DU UE F1AP ID*/
+      idx1++;
+      rrcDeliveryReport->protocolIEs.list.array[idx1]->id = ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID;
+      rrcDeliveryReport->protocolIEs.list.array[idx1]->criticality = Criticality_reject;
+      rrcDeliveryReport->protocolIEs.list.array[idx1]->value.present = RRCDeliveryReportIEs__value_PR_GNB_DU_UE_F1AP_ID;
+      rrcDeliveryReport->protocolIEs.list.array[idx1]->value.choice.GNB_DU_UE_F1AP_ID = gnbDuUeF1apId;
+
+      /*RRC delivery status*/
+      idx1++;
+      rrcDeliveryReport->protocolIEs.list.array[idx1]->id = ProtocolIE_ID_id_RRCDeliveryStatus;
+      rrcDeliveryReport->protocolIEs.list.array[idx1]->criticality = Criticality_ignore;
+      rrcDeliveryReport->protocolIEs.list.array[idx1]->value.present = RRCDeliveryReportIEs__value_PR_RRCDeliveryStatus;
+      rrcDeliveryReport->protocolIEs.list.array[idx1]->value.choice.RRCDeliveryStatus.delivery_status =
+      rrcDelivery->rrcDeliveryStatus.deliveryStatus;
+      rrcDeliveryReport->protocolIEs.list.array[idx1]->value.choice.RRCDeliveryStatus.triggering_message =
+      rrcDelivery->rrcDeliveryStatus.triggeringMessage;
+
+      /* SRB ID */ 
+      idx1++;
+      rrcDeliveryReport->protocolIEs.list.array[idx1]->id = ProtocolIE_ID_id_SRBID;
+      rrcDeliveryReport->protocolIEs.list.array[idx1]->criticality = Criticality_ignore;
+      rrcDeliveryReport->protocolIEs.list.array[idx1]->value.present = RRCDeliveryReportIEs__value_PR_SRBID;
+      rrcDeliveryReport->protocolIEs.list.array[idx1]->value.choice.SRBID =  rrcDelivery->srbId;
+
+      xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
+
+      /* Encode the RRC DELIVERY REPORT type as APER */
+      memset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apMsg, PrepFinalEncBuf,\
+	    encBuf);
+
+      /* Encode results */
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+	 DU_LOG("\nF1AP : Could not encode RRC Delivery Msg structure (at %s)\n",\
+	       encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+	 break;
+      }
+      else
+      {
+	 DU_LOG("\nF1AP : Created APER encoded buffer for RRC Delivery Msg \n");
+	 for(idx=0; idx< encBufSize; idx++)
+	 {
+	    printf("%x",encBuf[idx]);
+	 }
+      }
+
+      /* Sending msg */
+      if(SendF1APMsg(DU_APP_MEM_REGION, DU_POOL) != ROK)
+      {
+	 DU_LOG("\nF1AP : Sending RRC delivery  msg request failed");
+	 break;
+      }
+      ret = ROK;
+      break;
+
+   }while(true);
+
+   freeRrcDeliveryReport(f1apMsg);
+   return ret;
+}
+									        
+/*****************************************************************i
  *
  * @brief Handles received F1AP message and sends back response  
  *
@@ -5883,8 +6069,8 @@ void F1APMsgHdlr(Buffer *mBuf)
 	    switch(f1apMsg->choice.successfulOutcome->value.present)
 	    {
 	       case SuccessfulOutcome__value_PR_ResetAcknowledge:
-	          {
-                      DU_LOG("\nF1AP : F1ResetAcknowledge is received successfully ");
+		  {
+		     DU_LOG("\nF1AP : F1ResetAcknowledge is received successfully ");
 		     break;
 		  }
 	       case SuccessfulOutcome__value_PR_F1SetupResponse:
@@ -5914,11 +6100,11 @@ void F1APMsgHdlr(Buffer *mBuf)
 	    switch(f1apMsg->choice.initiatingMessage->value.present)
 	    {
 	       case InitiatingMessage__value_PR_Reset:
-	       {
-	           DU_LOG("\nF1AP : F1 reset request received");
-		   procF1ResetReq(f1apMsg);
-		   break;
-	       }
+		  {
+		     DU_LOG("\nF1AP : F1 reset request received");
+		     procF1ResetReq(f1apMsg);
+		     break;
+		  }
 	       case InitiatingMessage__value_PR_DLRRCMessageTransfer:
 		  {
 		     procDlRrcMsgTrans(f1apMsg);

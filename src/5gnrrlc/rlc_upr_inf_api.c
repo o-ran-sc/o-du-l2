@@ -26,6 +26,12 @@ RlcUlRrcMsgToDuFunc rlcSendUlRrcMsgToDuOpts[] =
    packRlcUlRrcMsgToDu        /* 2 - Light weight loosely coupled */
 };
 
+RlcRrcDeliveryReportToDuFunc rlcSendRrcDeliveryReportToDuOpts[]=
+{
+   packRrcDeliveryReportToDu,          /* 0 - Loosely coupled */
+   DuProcRlcRrcDeliveryReport,    /* 1 - Tightly coupled */
+   packRrcDeliveryReportToDu           /* 2 - Light weight loosely coupled */
+};
 /*******************************************************************
  *
  * @brief Sends UL RRC Message Info to DU APP
@@ -47,6 +53,26 @@ uint8_t rlcSendUlRrcMsgToDu(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo)
    return (*rlcSendUlRrcMsgToDuOpts[pst->selector])(pst, ulRrcMsgInfo);
 }
 
+/*******************************************************************
+*
+* @brief Sends RRC delivery Message Info to DU APP
+*
+* @details
+*
+*    Function : rlcSendRrcDeliveryReportToDu
+*
+*    Functionality:  Sends RRC delivery Message Info to DU APP
+*
+* @params[in] Pst structure
+*             RRC delivery Msg Info
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t rlcSendRrcDeliveryReportToDu(Pst *pst, RrcDeliveryReport *rrcDelivery) 
+{
+   return (*rlcSendRrcDeliveryReportToDuOpts[pst->selector])(pst, rrcDelivery);
+}
 /**********************************************************************
          End of file
 **********************************************************************/
