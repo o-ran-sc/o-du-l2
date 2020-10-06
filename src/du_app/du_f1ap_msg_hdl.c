@@ -28,6 +28,7 @@
 #include "E2AP-PDU.h"
 #include "du_mgr_main.h"
 #include "du_utils.h"
+/* header files required to access ASN struct */
 #include "GNB-DU-System-Information.h"
 #include "CellGroupConfigRrc.h"
 #include "MAC-CellGroupConfig.h"
