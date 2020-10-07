@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "997c3727_002485f3",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-07T06:46:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0a49130c_db76df1b",
+      "revId": "74debbb7394963214a3e53e47305ec1d68243d28",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "312b8627_37597430",
         "filename": "src/5gnrmac/mac_msg_hdl.c",
         "patchSetId": 5
@@ -33,6 +51,24 @@
       "revId": "74debbb7394963214a3e53e47305ec1d68243d28",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1d5c9491_fa090334",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-07T06:46:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "312b8627_37597430",
+      "revId": "74debbb7394963214a3e53e47305ec1d68243d28",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "bb1cc6e3_617308d1",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-07T06:46:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2e0fae3f_800e6d43",
+      "revId": "74debbb7394963214a3e53e47305ec1d68243d28",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "98eaf1cf_0d090133",
         "filename": "src/5gnrrlc/kw_tmm_dl.c",
         "patchSetId": 5
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "482c5c05_5c497331",
+        "filename": "src/5gnrrlc/kw_tmm_dl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 544,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-07T06:46:50Z",
+      "side": 1,
+      "message": "Done. Let keep this for precaution.",
+      "parentUuid": "98eaf1cf_0d090133",
+      "revId": "74debbb7394963214a3e53e47305ec1d68243d28",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b6b2df99_f2b92abb",
         "filename": "src/5gnrsch/sch.c",
         "patchSetId": 5
@@ -84,6 +156,24 @@
       "revId": "74debbb7394963214a3e53e47305ec1d68243d28",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "044b27fb_517752c5",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-07T06:46:50Z",
+      "side": 1,
+      "message": "Done. Moved both the global var to schCellCb",
+      "parentUuid": "b6b2df99_f2b92abb",
+      "revId": "74debbb7394963214a3e53e47305ec1d68243d28",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -121,6 +211,24 @@
     },
     {
       "key": {
+        "uuid": "0198dc54_fa22f78b",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 711,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-07T06:46:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "43f37ff2_0091eea8",
+      "revId": "74debbb7394963214a3e53e47305ec1d68243d28",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7443ec41_fef36511",
         "filename": "src/5gnrsch/sch_slot_ind.c",
         "patchSetId": 5
@@ -152,6 +260,24 @@
       "revId": "74debbb7394963214a3e53e47305ec1d68243d28",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "984d398b_a349135f",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-07T06:46:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bf68e637_b09fe0d1",
+      "revId": "74debbb7394963214a3e53e47305ec1d68243d28",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
