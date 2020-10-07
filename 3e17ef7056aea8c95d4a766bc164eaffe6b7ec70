@@ -1,0 +1,242 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "89002749_0be638fa",
+        "filename": "src/cm/du_app_rlc_inf.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T08:36:45Z",
+      "side": 1,
+      "message": "looks like a common function. Move to common_def",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a995c078_85b98a47",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 554,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T08:36:45Z",
+      "side": 1,
+      "message": "why keep it commented? Remove it",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dd521809_04c0abc9",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1005,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T08:36:45Z",
+      "side": 1,
+      "message": "can these common structures be moved to common_def with a suitable name?",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b2f612d1_7088abb3",
+        "filename": "src/codec_utils/common/odu_common_codec.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T08:36:45Z",
+      "side": 1,
+      "message": "did you try making everything uint32_t ?",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7c2e6d70_0cfcc5ed",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T08:36:45Z",
+      "side": 1,
+      "message": "wrong description",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a24b929d_272db1e0",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2085,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T08:36:45Z",
+      "side": 1,
+      "message": "why only nrcgi?",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "53de042c_0eff29a4",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2210,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T08:36:45Z",
+      "side": 1,
+      "message": "remve\"sch\" and give suitable name since this is a generic function now",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f7b90fdf_69199a5d",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2295,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T08:36:45Z",
+      "side": 1,
+      "message": "this must be taken care of at scheduler as well. are we?",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4cb911bf_aed8b845",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 5415,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T08:36:45Z",
+      "side": 1,
+      "message": "explain this check?",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "83233876_5a8257ff",
+        "filename": "src/du_app/du_mgr_ex_ms.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T08:36:45Z",
+      "side": 1,
+      "message": "can we not mac ue config and reconfig as well, similar to rlc?",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "34fd483b_c6faea4c",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2108,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T08:36:45Z",
+      "side": 1,
+      "message": "do we always give priority 1 to all???",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fd68d866_3e001f97",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2788,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T08:36:45Z",
+      "side": 1,
+      "message": "function name looks bizarre. Follow convention as other functions",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "de6b68d1_d1ce84ad",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2960,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T08:36:45Z",
+      "side": 1,
+      "message": "we have to free all memory within the msg in case of failure.",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f0a1813d_63165e0c",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2980,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T08:36:45Z",
+      "side": 1,
+      "message": "we have to free all memory within the msg in case of failure.",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
