@@ -1,0 +1,582 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "df2f9a08_b309d12f",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2687,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T18:15:54Z",
+      "side": 1,
+      "message": "wrong desc",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b8932063_9ab3b55e",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2724,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T18:15:54Z",
+      "side": 1,
+      "message": "why not intialize this as well?",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "323c6787_7365eb6b",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2756,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T18:15:54Z",
+      "side": 1,
+      "message": "is this still a TODO?",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "59ec85b7_a8e9048a",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3470,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T18:15:54Z",
+      "side": 1,
+      "message": "Lets just call it a DL msg rather than dedicated",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b55203dc_37ff112f",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3582,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T18:15:54Z",
+      "side": 1,
+      "message": "why do we need both?",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2fe21943_bf068141",
+        "filename": "src/5gnrmac/mac.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T18:15:54Z",
+      "side": 1,
+      "message": "how is this different from numActvUe?",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9d068c58_fe022615",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T18:15:54Z",
+      "side": 1,
+      "message": "How is CRNTI count same as start crnti?",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a1020fb5_420ae15d",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T18:15:54Z",
+      "side": 1,
+      "message": "are these prints going to be removed? If no, they must be formatted",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "576a2d48_cfae7b9b",
+        "filename": "src/5gnrrlc/kw_amm_dl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T18:15:54Z",
+      "side": 1,
+      "message": "replace Sta with Status",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "03b4b838_d5f9f797",
+        "filename": "src/5gnrrlc/kw_ptmi.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T18:15:54Z",
+      "side": 1,
+      "message": "if we are commenting out the portable functions, we might as well remove the above #ifdef and keep the code clean",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b290672f_6f46e4ee",
+        "filename": "src/5gnrrlc/kw_utl_dl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T18:15:54Z",
+      "side": 1,
+      "message": "change to DU_LOG",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d646bf77_3ce7c137",
+        "filename": "src/5gnrrlc/kw_utl_dl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T18:15:54Z",
+      "side": 1,
+      "message": "what calculation is this?Where is transId updated with SFN and slot values?",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2db5711d_0a9ee22b",
+        "filename": "src/5gnrrlc/kw_utl_dl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T18:15:54Z",
+      "side": 1,
+      "message": "free dlData",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "52f5ed2b_5c38bca9",
+        "filename": "src/5gnrrlc/kw_utl_dl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T18:15:54Z",
+      "side": 1,
+      "message": "free dlData-\u003epduInfo[dlData-\u003enumPdu].pduBuf",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "414ff6e9_d20edb7f",
+        "filename": "src/5gnrrlc/kw_utl_dl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 643,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T18:15:54Z",
+      "side": 1,
+      "message": "this is not being used here. Better to remove it",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "24fbcd5d_91196d86",
+        "filename": "src/5gnrrlc/kw_utl_dl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 661,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T18:15:54Z",
+      "side": 1,
+      "message": "what function is this?",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4b39084a_5d6ff5e5",
+        "filename": "src/5gnrrlc/kw_utl_ul.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T18:15:54Z",
+      "side": 1,
+      "message": "remove ss_ files if not required",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b8620c81_30a7211f",
+        "filename": "src/5gnrrlc/kw_utl_ul.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T18:15:54Z",
+      "side": 1,
+      "message": "what\u0027s the difference between du_app_rlc_inf and rlc_upr_inf_api? T\u003dRLC has only 1 upper interface.",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "911ebd3f_b26057a3",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T18:15:54Z",
+      "side": 1,
+      "message": "null check?",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0976fe86_8a936df3",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T18:15:54Z",
+      "side": 1,
+      "message": "free cLchUlDat",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "acdede94_13ea4940",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T18:15:54Z",
+      "side": 1,
+      "message": "add comment to explain why the reverse",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eae4b7af_a6bfd93b",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T18:15:54Z",
+      "side": 1,
+      "message": "free previously allocated memory",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f2025244_e7ef8866",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T18:15:54Z",
+      "side": 1,
+      "message": "add MAX_LC to common_def since its used across layers",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "93e4e3da_ce273825",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 441,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T18:15:54Z",
+      "side": 1,
+      "message": "why 0th index?",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1f7fc4f6_bb1e92ed",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T18:15:54Z",
+      "side": 1,
+      "message": "this interface file must not exist in SCH files",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aedbdf23_d180f67e",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T18:15:54Z",
+      "side": 1,
+      "message": "format the log",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7774d302_3552a33c",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T18:15:54Z",
+      "side": 1,
+      "message": "if the structure is indexed by lcId, why is lcId needed as a structure member?",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d6508969_dfce2195",
+        "filename": "src/cm/lkw.x",
+        "patchSetId": 6
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T18:15:54Z",
+      "side": 1,
+      "message": "can we get rid of EXTERN?",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "068330dc_de85be65",
+        "filename": "src/cm/lrg.x",
+        "patchSetId": 6
+      },
+      "lineNbr": 1015,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T18:15:54Z",
+      "side": 1,
+      "message": "check if we can remove EXTERN from all these functions",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c156653a_97678136",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T18:15:54Z",
+      "side": 1,
+      "message": "check if these can be moved to common_def",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1ec3fc50_a78d7212",
+        "filename": "src/cm/rgu.x",
+        "patchSetId": 6
+      },
+      "lineNbr": 636,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T18:15:54Z",
+      "side": 1,
+      "message": "can we not move these declarations out as well?",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6ff8c0b6_d1a0d335",
+        "filename": "src/cm/rlc_mac_inf.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T18:15:54Z",
+      "side": 1,
+      "message": "this struct array is indexed by LCID. No need to have LCID as structure member",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dab157e6_abaadd6d",
+        "filename": "src/cm/rlc_mac_inf.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T18:15:54Z",
+      "side": 1,
+      "message": "club function pointers",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "32884fed_b3a26e21",
+        "filename": "src/du_app/du_mgr_ex_ms.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-07T18:15:54Z",
+      "side": 1,
+      "message": "where is DAT IND handled now?",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
