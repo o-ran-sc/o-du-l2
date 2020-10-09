@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "e9997eb4_f3b260a1",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2687,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-09T12:00:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "df2f9a08_b309d12f",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b8932063_9ab3b55e",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 6
@@ -33,6 +51,24 @@
       "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "422a0ebc_728a7f29",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2724,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-09T12:00:25Z",
+      "side": 1,
+      "message": "This is calculated later, so initializing it to 0",
+      "parentUuid": "b8932063_9ab3b55e",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "83133146_5e2b7b2d",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2756,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-09T12:00:25Z",
+      "side": 1,
+      "message": "Done. Removed comment",
+      "parentUuid": "323c6787_7365eb6b",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "59ec85b7_a8e9048a",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 6
@@ -67,6 +121,24 @@
       "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c8833fdd_e211c6fd",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3470,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-09T12:00:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "59ec85b7_a8e9048a",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "4572ae80_2ae7bf39",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3582,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-09T12:00:25Z",
+      "side": 1,
+      "message": "Done. Removed the second check",
+      "parentUuid": "b55203dc_37ff112f",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2fe21943_bf068141",
         "filename": "src/5gnrmac/mac.h",
         "patchSetId": 6
@@ -101,6 +191,24 @@
       "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eb28e55d_99c6bba7",
+        "filename": "src/5gnrmac/mac.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-09T12:00:25Z",
+      "side": 1,
+      "message": "replaced crniCount with crntiMap (an 8-bits bitmap) to allocate an unused crnit when new ue is created",
+      "parentUuid": "2fe21943_bf068141",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "c2f33d27_36f0fb55",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-09T12:00:25Z",
+      "side": 1,
+      "message": "Removed this. since crntiCount is now replaced with crntiMap which is initialized to 0",
+      "parentUuid": "9d068c58_fe022615",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a1020fb5_420ae15d",
         "filename": "src/5gnrmac/mac_slot_ind.c",
         "patchSetId": 6
@@ -135,6 +261,24 @@
       "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0a2b9a97_a07ed4a3",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-09T12:00:25Z",
+      "side": 1,
+      "message": "Done. Removed",
+      "parentUuid": "a1020fb5_420ae15d",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -155,6 +299,24 @@
     },
     {
       "key": {
+        "uuid": "e153c019_4f897e45",
+        "filename": "src/5gnrrlc/kw_amm_dl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-09T12:00:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "576a2d48_cfae7b9b",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "03b4b838_d5f9f797",
         "filename": "src/5gnrrlc/kw_ptmi.c",
         "patchSetId": 6
@@ -169,6 +331,24 @@
       "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6b12edbf_585bc435",
+        "filename": "src/5gnrrlc/kw_ptmi.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-09T12:00:25Z",
+      "side": 1,
+      "message": "Removed.",
+      "parentUuid": "03b4b838_d5f9f797",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -189,6 +369,24 @@
     },
     {
       "key": {
+        "uuid": "23a75538_5d3141dd",
+        "filename": "src/5gnrrlc/kw_utl_dl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-09T12:00:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b290672f_6f46e4ee",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d646bf77_3ce7c137",
         "filename": "src/5gnrrlc/kw_utl_dl.c",
         "patchSetId": 6
@@ -203,6 +401,24 @@
       "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fa4a6edb_0713d095",
+        "filename": "src/5gnrrlc/kw_utl_dl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-09T12:00:25Z",
+      "side": 1,
+      "message": "The seed code stores sfn/slot in one 32-bit variablei i.e transId.\nTransId is filled in RlcProcSchedResultRpt() in rlc_msg_hdl.c\nHere, the sfn-slot value is retrieved from transId and sent with dl data to MAC",
+      "parentUuid": "d646bf77_3ce7c137",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -223,6 +439,24 @@
     },
     {
       "key": {
+        "uuid": "338eacd2_89f5b90b",
+        "filename": "src/5gnrrlc/kw_utl_dl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-09T12:00:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2db5711d_0a9ee22b",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "52f5ed2b_5c38bca9",
         "filename": "src/5gnrrlc/kw_utl_dl.c",
         "patchSetId": 6
@@ -237,6 +471,24 @@
       "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c5d54484_5888600e",
+        "filename": "src/5gnrrlc/kw_utl_dl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-09T12:00:25Z",
+      "side": 1,
+      "message": "Present in the loop above",
+      "parentUuid": "52f5ed2b_5c38bca9",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -257,6 +509,24 @@
     },
     {
       "key": {
+        "uuid": "b965268d_c2b0a838",
+        "filename": "src/5gnrrlc/kw_utl_dl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 643,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-09T12:00:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "414ff6e9_d20edb7f",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "24fbcd5d_91196d86",
         "filename": "src/5gnrrlc/kw_utl_dl.c",
         "patchSetId": 6
@@ -271,6 +541,24 @@
       "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e45af0eb_d822d9d6",
+        "filename": "src/5gnrrlc/kw_utl_dl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 661,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-09T12:00:25Z",
+      "side": 1,
+      "message": "this was used to send trace indication to layer manager.\nRemoved now",
+      "parentUuid": "24fbcd5d_91196d86",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -291,6 +579,24 @@
     },
     {
       "key": {
+        "uuid": "123e94bc_9834be01",
+        "filename": "src/5gnrrlc/kw_utl_ul.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-09T12:00:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4b39084a_5d6ff5e5",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b8620c81_30a7211f",
         "filename": "src/5gnrrlc/kw_utl_ul.c",
         "patchSetId": 6
@@ -305,6 +611,24 @@
       "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "23e7e30f_c825c600",
+        "filename": "src/5gnrrlc/kw_utl_ul.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-09T12:00:25Z",
+      "side": 1,
+      "message": "du-app_rlc_inf is the interface file.\nrlc_upr_inf_api is a rlc-specific file that stores function pointer array for APIs towards du-app. It is similar to kw_ptui, kw_ptmi files",
+      "parentUuid": "b8620c81_30a7211f",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -325,6 +649,24 @@
     },
     {
       "key": {
+        "uuid": "a5c9e11a_777390eb",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-09T12:00:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "911ebd3f_b26057a3",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0976fe86_8a936df3",
         "filename": "src/5gnrrlc/rlc_msg_hdl.c",
         "patchSetId": 6
@@ -339,6 +681,24 @@
       "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "32807b41_ac29f815",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-09T12:00:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0976fe86_8a936df3",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -359,6 +719,24 @@
     },
     {
       "key": {
+        "uuid": "034f8218_abd6e821",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-09T12:00:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "acdede94_13ea4940",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "eae4b7af_a6bfd93b",
         "filename": "src/5gnrrlc/rlc_msg_hdl.c",
         "patchSetId": 6
@@ -373,6 +751,24 @@
       "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ae85404e_4cd5ac45",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-09T12:00:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eae4b7af_a6bfd93b",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -393,6 +789,24 @@
     },
     {
       "key": {
+        "uuid": "68dea0c8_2821576f",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-09T12:00:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f2025244_e7ef8866",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "93e4e3da_ce273825",
         "filename": "src/5gnrrlc/rlc_msg_hdl.c",
         "patchSetId": 6
@@ -407,6 +821,24 @@
       "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2300f5b8_25c5c43b",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 441,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-09T12:00:25Z",
+      "side": 1,
+      "message": "MAC sends Scheduling report for one UE at a time. Hence filling only the 0th index of staInd .\nAdded comment for better understanding,",
+      "parentUuid": "93e4e3da_ce273825",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -427,6 +859,24 @@
     },
     {
       "key": {
+        "uuid": "25e2c490_c767fcb9",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-09T12:00:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1f7fc4f6_bb1e92ed",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "aedbdf23_d180f67e",
         "filename": "src/5gnrsch/sch_slot_ind.c",
         "patchSetId": 6
@@ -441,6 +891,24 @@
       "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6fc2d48d_34054996",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-09T12:00:25Z",
+      "side": 1,
+      "message": "Removed log",
+      "parentUuid": "aedbdf23_d180f67e",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -461,6 +929,24 @@
     },
     {
       "key": {
+        "uuid": "058a40e6_9850341d",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-09T12:00:25Z",
+      "side": 1,
+      "message": "Done. Removed LC Id",
+      "parentUuid": "7774d302_3552a33c",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d6508969_dfce2195",
         "filename": "src/cm/lkw.x",
         "patchSetId": 6
@@ -475,6 +961,24 @@
       "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "da619763_368a0c56",
+        "filename": "src/cm/lkw.x",
+        "patchSetId": 6
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-09T12:00:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6508969_dfce2195",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -495,6 +999,24 @@
     },
     {
       "key": {
+        "uuid": "d57f1349_029e6820",
+        "filename": "src/cm/lrg.x",
+        "patchSetId": 6
+      },
+      "lineNbr": 1015,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-09T12:00:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "068330dc_de85be65",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c156653a_97678136",
         "filename": "src/cm/mac_sch_interface.h",
         "patchSetId": 6
@@ -509,6 +1031,24 @@
       "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ccd4d0ed_c4569e9a",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-09T12:00:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c156653a_97678136",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -529,6 +1069,24 @@
     },
     {
       "key": {
+        "uuid": "3c8b5241_8381e497",
+        "filename": "src/cm/rgu.x",
+        "patchSetId": 6
+      },
+      "lineNbr": 636,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-09T12:00:25Z",
+      "side": 1,
+      "message": "moved to kw_dl.x and kw_ul.x",
+      "parentUuid": "1ec3fc50_a78d7212",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6ff8c0b6_d1a0d335",
         "filename": "src/cm/rlc_mac_inf.h",
         "patchSetId": 6
@@ -543,6 +1101,24 @@
       "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cc32006e_4abd12f0",
+        "filename": "src/cm/rlc_mac_inf.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-09T12:00:25Z",
+      "side": 1,
+      "message": "When sched result report is filled, it is not indexed by lc id.",
+      "parentUuid": "6ff8c0b6_d1a0d335",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -563,6 +1139,24 @@
     },
     {
       "key": {
+        "uuid": "5aa57fb8_e087fe37",
+        "filename": "src/cm/rlc_mac_inf.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-09T12:00:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dab157e6_abaadd6d",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "32884fed_b3a26e21",
         "filename": "src/du_app/du_mgr_ex_ms.c",
         "patchSetId": 6
@@ -577,6 +1171,24 @@
       "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2b50c14a_543e9adf",
+        "filename": "src/du_app/du_mgr_ex_ms.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-09T12:00:25Z",
+      "side": 1,
+      "message": "EVENT_UL_RRC_MSG_TRANS_TO_DU is the new event added to handle ul data",
+      "parentUuid": "32884fed_b3a26e21",
+      "revId": "b96b53b7c23f3e0d6feb7726d73b96b9806ac906",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
