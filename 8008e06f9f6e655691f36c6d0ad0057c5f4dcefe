@@ -1,0 +1,157 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a1a194cd_d1c2a0de",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T10:01:59Z",
+      "side": 1,
+      "message": "change these index names",
+      "revId": "8008e06f9f6e655691f36c6d0ad0057c5f4dcefe",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e95834f6_65c17198",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 710,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T10:01:59Z",
+      "side": 1,
+      "message": "add prints for memory allocation failure",
+      "revId": "8008e06f9f6e655691f36c6d0ad0057c5f4dcefe",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8e693dd1_3520709d",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 756,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T10:01:59Z",
+      "side": 1,
+      "message": "set cause to \"action desirable for radio reasons\"",
+      "revId": "8008e06f9f6e655691f36c6d0ad0057c5f4dcefe",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5bddd874_1a880f19",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 764,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T10:01:59Z",
+      "side": 1,
+      "message": "what is the difference between reset_All and part of f1 interface?",
+      "revId": "8008e06f9f6e655691f36c6d0ad0057c5f4dcefe",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "71b610b8_0683bc10",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T10:01:59Z",
+      "side": 1,
+      "message": "spelling",
+      "revId": "8008e06f9f6e655691f36c6d0ad0057c5f4dcefe",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cc723d67_b5210e3b",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2563,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T10:01:59Z",
+      "side": 1,
+      "message": "Remove this comment, since we are not assigning values from reference logs",
+      "revId": "8008e06f9f6e655691f36c6d0ad0057c5f4dcefe",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5ec093bf_7e4e306d",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 5471,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T10:01:59Z",
+      "side": 1,
+      "message": "where is this triggered?",
+      "revId": "8008e06f9f6e655691f36c6d0ad0057c5f4dcefe",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f68f5385_32a490f4",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 5531,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T10:01:59Z",
+      "side": 1,
+      "message": "Update cause to \"action desirable for radio reasons\"",
+      "revId": "8008e06f9f6e655691f36c6d0ad0057c5f4dcefe",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6a2cfa05_1b205782",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 5802,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T10:01:59Z",
+      "side": 1,
+      "message": "We must not exit! add a print, received reset from CU. Make sure we dont have any UE contexts here, if yes, add a print UE release not supported",
+      "revId": "8008e06f9f6e655691f36c6d0ad0057c5f4dcefe",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
