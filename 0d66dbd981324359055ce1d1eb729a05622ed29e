@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7ef9c388_16ecb1ad",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T10:41:49Z",
+      "side": 1,
+      "message": "This function must be invoked only if rrc delivery rpt is set to true in the DL RRC Message",
+      "revId": "0d66dbd981324359055ce1d1eb729a05622ed29e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f58bc895_6b91bd11",
+        "filename": "src/5gnrrlc/rlc_upr_inf_api.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T10:41:49Z",
+      "side": 1,
+      "message": "change name",
+      "revId": "0d66dbd981324359055ce1d1eb729a05622ed29e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e65688c2_74ff6510",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 5544,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T10:41:49Z",
+      "side": 1,
+      "message": "this must not be lcid according to spec",
+      "revId": "0d66dbd981324359055ce1d1eb729a05622ed29e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
