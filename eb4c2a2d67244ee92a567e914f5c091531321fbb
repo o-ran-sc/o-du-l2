@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b52d1543_81575a52",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T09:05:09Z",
+      "side": 1,
+      "message": "may not be required. Follow how calNPrb is made i.e., by adding declaration sch_utils.h file",
+      "revId": "eb4c2a2d67244ee92a567e914f5c091531321fbb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fd63b173_bb2984ea",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T09:05:09Z",
+      "side": 1,
+      "message": "Add comment that since nPrb has been incremented, recalculating tbSize",
+      "revId": "eb4c2a2d67244ee92a567e914f5c091531321fbb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f60b9edf_86aa3846",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 532,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T09:05:09Z",
+      "side": 1,
+      "message": "update function name",
+      "revId": "eb4c2a2d67244ee92a567e914f5c091531321fbb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
