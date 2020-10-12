@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7190711a_fbf3c1f7",
+        "filename": "build/o1/install_netconf.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T15:19:04Z",
+      "side": 1,
+      "message": "O-RAN footer must be the first lines in any file.\nAlso, hope this script has been tested",
+      "revId": "eec23a874af6f03acfb9ae8ae617fd935d9d97d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "77edad7f_44c2646f",
+        "filename": "build/o1/install_netconf.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T15:19:04Z",
+      "side": 1,
+      "message": "Mode doesn\u0027t look relevant to O1 build",
+      "revId": "eec23a874af6f03acfb9ae8ae617fd935d9d97d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9ebd2a7a_1058ac29",
+        "filename": "build/o1/install_netconf.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T15:19:04Z",
+      "side": 1,
+      "message": "O-RAN file tailer missing. Please refer to other files",
+      "revId": "eec23a874af6f03acfb9ae8ae617fd935d9d97d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
