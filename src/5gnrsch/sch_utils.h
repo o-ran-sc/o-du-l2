@@ -89,6 +89,7 @@ extern int8_t searchSpaceIdxTable[MAX_SEARCH_SPACE_INDEX][4];
 void schAllocFreqDomRscType0(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain);
 uint16_t schCalcTbSize(uint16_t payLoadSize);
 uint16_t schCalcNumPrb(uint16_t tbSize, uint16_t mcs, uint8_t numSymbols);
+uint16_t schCalcTbSizeFromNPrb(uint16_t numPrb, uint16_t mcs, uint8_t numSymbols);
 SchUeCb* schGetUeCb(SchCellCb *cellCb, uint16_t crnti);
 void schInitUlSlot(SchUlSlotInfo *schUlSlotInfo);
 void schInitDlSlot(SchDlSlotInfo *schDlSlotInfo);

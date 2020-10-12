@@ -118,7 +118,6 @@ uint8_t *msg3NumRb)
    uint8_t    numPdschSymbols= 14;
    uint16_t   tbSize         = 0;
 
-
    cell = schCb[schInst].cells[schInst];
    //	puschMu = cell->cellCfg.puschMu;
    delta = puschDeltaTable[puschMu];
@@ -151,6 +150,9 @@ uint8_t *msg3NumRb)
       DU_LOG("SCH: Memory allocation failed in schAllocMsg3Pusch");
       return RFAILED;
    }
+   tbSize = 0;  /* since nPrb has been incremented, recalculating tbSize */
+   tbSize = schCalcTbSizeFromNPrb(numRb, mcs, numPdschSymbols);
+
    schUlSlotInfo->schPuschInfo->harqProcId        = SCH_HARQ_PROC_ID;
    schUlSlotInfo->schPuschInfo->resAllocType      = SCH_ALLOC_TYPE_1;
    schUlSlotInfo->schPuschInfo->fdAlloc.startPrb  = startRb;
@@ -159,8 +161,8 @@ uint8_t *msg3NumRb)
    schUlSlotInfo->schPuschInfo->tdAlloc.numSymb   = symbLen;
    schUlSlotInfo->schPuschInfo->tbInfo.mcs	       = mcs;
    schUlSlotInfo->schPuschInfo->tbInfo.ndi        = 1; /* new transmission */
-   schUlSlotInfo->schPuschInfo->tbInfo.rv	        = 0;
-   schUlSlotInfo->schPuschInfo->tbInfo.tbSize     = 24; /*Considering 2 PRBs */
+   schUlSlotInfo->schPuschInfo->tbInfo.rv	  = 0;
+   schUlSlotInfo->schPuschInfo->tbInfo.tbSize     = tbSize; /*Considering 2 PRBs */
    schUlSlotInfo->schPuschInfo->dmrsMappingType   = DMRS_MAP_TYPE_A;  /* Setting Type-A */
    schUlSlotInfo->schPuschInfo->nrOfDmrsSymbols   = NUM_DMRS_SYMBOLS;
    schUlSlotInfo->schPuschInfo->dmrsAddPos        = DMRS_ADDITIONAL_POS;

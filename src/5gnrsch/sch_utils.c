@@ -524,7 +524,53 @@ uint16_t schCalcNumPrb(uint16_t tbSize, uint16_t mcs, uint8_t numSymbols)
    numPrb = ceil((float)nre / nreDash);   
    return numPrb;
 }
+/**
+* @brief calculation of transport block size.
+*
+* @details
+*
+*     Function: schCalcTbSizeFromNPrb
+*
+*     This function calculates the transport block size
+*
+*  @param[in]  nPrb is num PRB
+*  @param[in]  mcs
+*  @param[in]  number of symbols
+*  @return   tbSize
+**/
+uint16_t schCalcTbSizeFromNPrb(uint16_t numPrb, uint16_t mcs, uint8_t numSymbols)
+{   
+   uint16_t tbSize = 0;
+   uint16_t tbsIndex = 0;
+   uint16_t nre = 0;
+   uint16_t nreDash = 0;
+   uint8_t  qm     = mcsTable[mcs][1];
+   uint16_t rValue = mcsTable[mcs][2];
+   uint8_t  numLayer = 1;       /* v value */
+   
+   /* formula used for calculation of rbSize, 38.213 section 5.1.3.2 *
+   * Ninfo = Nre . R . Qm . v   where [ NInfo is tbSize]                *
+   * Nre' = Nsc . NsymPdsch - NdmrsSymb - Noh                        *
+   * Nre = min(156,Nre') . nPrb                                      */
+   
+   nreDash = ceil( (12 * numSymbols) - NUM_DMRS_SYMBOLS - 0);
+  
+   if(nreDash > 156)
+      nreDash = 156;
 
+   nre = nreDash * numPrb;
+   tbSize = ceil(nre * qm * numLayer * rValue/1024.0);
+   tbSize = ceil(tbSize/8.0);
+   
+   while(tbSize > tbSizeTable[tbsIndex])
+   {
+      tbsIndex++;
+   }
+   tbSize = tbSizeTable[tbsIndex];
+
+   return tbSize;
+
+}
 /**
  * @brief fetching ueCb from cellCb
  *
