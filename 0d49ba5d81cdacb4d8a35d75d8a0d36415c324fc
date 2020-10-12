@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9b26e20a_01c0da98",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1257,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T14:27:28Z",
+      "side": 1,
+      "message": "DU_LOG already has a printf as well. This is duplicate",
+      "revId": "0d49ba5d81cdacb4d8a35d75d8a0d36415c324fc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9a4f5f32_e56ed3ed",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1267,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T14:27:28Z",
+      "side": 1,
+      "message": "change to extractCellsToBeActivated",
+      "revId": "0d49ba5d81cdacb4d8a35d75d8a0d36415c324fc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7e7fa1b1_246bfa2a",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1569,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T14:27:28Z",
+      "side": 1,
+      "message": "Use better names for indices. Also, declare them all in a single line. This is generic comment for all functions",
+      "revId": "0d49ba5d81cdacb4d8a35d75d8a0d36415c324fc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c87e574d_a8f49f5d",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1595,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T14:27:28Z",
+      "side": 1,
+      "message": "This function is very big. Modularize",
+      "revId": "0d49ba5d81cdacb4d8a35d75d8a0d36415c324fc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e37440cc_cc8e703c",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2038,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T14:27:28Z",
+      "side": 1,
+      "message": "Receiving this ACK must still be signalled to DU APP",
+      "revId": "0d49ba5d81cdacb4d8a35d75d8a0d36415c324fc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4aec96d0_fe48bef0",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1193,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T14:27:28Z",
+      "side": 1,
+      "message": "We can instead use a structure within DU APP, instead of sending so many params individually",
+      "revId": "0d49ba5d81cdacb4d8a35d75d8a0d36415c324fc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
