@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d00d2480_8c3025cb",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T08:01:36Z",
+      "side": 1,
+      "message": "no need of new variable. Use the same tbSize",
+      "revId": "55ed0fd6d9f72658cfa65feca22ac321d957f886",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "36e3df7e_f2519e42",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T08:01:36Z",
+      "side": 1,
+      "message": "follow below:\ntbSize \u003d 0;\ntbSize \u003d schCalcTransportBlockSize(numRb, mcs, numPdschSymbols);",
+      "revId": "55ed0fd6d9f72658cfa65feca22ac321d957f886",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a71eb0f0_366bf9af",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 536,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T08:01:36Z",
+      "side": 1,
+      "message": "prb is not in bytes. nPrb is num PRB",
+      "revId": "55ed0fd6d9f72658cfa65feca22ac321d957f886",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "743a9778_b0d8e621",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 541,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T08:01:36Z",
+      "side": 1,
+      "message": "change name to schCalcTbSizeFromNPrb",
+      "revId": "55ed0fd6d9f72658cfa65feca22ac321d957f886",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bfd8369a_a65e3a08",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 551,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T08:01:36Z",
+      "side": 1,
+      "message": "Add comment afterformula: tbSize \u003d NInfo",
+      "revId": "55ed0fd6d9f72658cfa65feca22ac321d957f886",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2e23acff_6c04165d",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 559,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T08:01:36Z",
+      "side": 1,
+      "message": "indentation",
+      "revId": "55ed0fd6d9f72658cfa65feca22ac321d957f886",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
