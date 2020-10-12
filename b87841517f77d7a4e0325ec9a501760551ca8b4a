@@ -1,0 +1,242 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b22ea31b_a47edfc3",
+        "filename": "build/common/o1.mak",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T14:59:05Z",
+      "side": 1,
+      "message": "LOG, BAK and DB are not required here",
+      "revId": "b87841517f77d7a4e0325ec9a501760551ca8b4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2fdbc1b1_ae27a489",
+        "filename": "build/common/o1.mak",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T14:59:05Z",
+      "side": 1,
+      "message": "Do you need these files?",
+      "revId": "b87841517f77d7a4e0325ec9a501760551ca8b4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9062d5b2_9376f711",
+        "filename": "build/common/o1.mak",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T14:59:05Z",
+      "side": 1,
+      "message": "All files must end with file tailer provided by O-RAN. Please refer to other files in the repo",
+      "revId": "b87841517f77d7a4e0325ec9a501760551ca8b4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "58dec0c4_41fff339",
+        "filename": "build/o1/makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T14:59:05Z",
+      "side": 1,
+      "message": "Since this is a separate binary, add only those flags that are needed.",
+      "revId": "b87841517f77d7a4e0325ec9a501760551ca8b4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ae0d00a1_6045fc28",
+        "filename": "build/o1/makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T14:59:05Z",
+      "side": 1,
+      "message": "IS FDD/TDD mode relevant here?",
+      "revId": "b87841517f77d7a4e0325ec9a501760551ca8b4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c3c1eb7a_a9d74dc1",
+        "filename": "build/o1/makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T14:59:05Z",
+      "side": 1,
+      "message": "CNM is not relevant here",
+      "revId": "b87841517f77d7a4e0325ec9a501760551ca8b4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a5720848_01572c53",
+        "filename": "build/o1/makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T14:59:05Z",
+      "side": 1,
+      "message": "Only ODU flag is required. Rest are irrelevant for your compilation",
+      "revId": "b87841517f77d7a4e0325ec9a501760551ca8b4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6eacf40a_7aae8395",
+        "filename": "build/o1/makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T14:59:05Z",
+      "side": 1,
+      "message": "remove checks for TDD, CA_ENABLE. Use TEST_STUB only if you are using it in new code",
+      "revId": "b87841517f77d7a4e0325ec9a501760551ca8b4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4d2f7260_dd6f820b",
+        "filename": "build/o1/makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T14:59:05Z",
+      "side": 1,
+      "message": "remove MODE. Retain OAM_ENABLE, if you are using in your code",
+      "revId": "b87841517f77d7a4e0325ec9a501760551ca8b4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7fab3eda_9c30c2a8",
+        "filename": "build/o1/makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T14:59:05Z",
+      "side": 1,
+      "message": "remove this and below 2 lines",
+      "revId": "b87841517f77d7a4e0325ec9a501760551ca8b4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e323d38d_99516610",
+        "filename": "build/o1/makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T14:59:05Z",
+      "side": 1,
+      "message": "remove mode since this binary is independent of mode",
+      "revId": "b87841517f77d7a4e0325ec9a501760551ca8b4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3cd7a383_ddc3fc6b",
+        "filename": "build/o1/makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T14:59:05Z",
+      "side": 1,
+      "message": "change to \"Preparing directories for O1 Build\"",
+      "revId": "b87841517f77d7a4e0325ec9a501760551ca8b4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1dba7c22_21b91216",
+        "filename": "build/o1/makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T14:59:05Z",
+      "side": 1,
+      "message": "For this image, the only clean_o1 is relevant. We dont need to add a target called clean_all",
+      "revId": "b87841517f77d7a4e0325ec9a501760551ca8b4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "18984a38_61394f12",
+        "filename": "build/o1/makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-12T14:59:05Z",
+      "side": 1,
+      "message": "Change to \"O1 BUILD COMPLETE\"",
+      "revId": "b87841517f77d7a4e0325ec9a501760551ca8b4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
