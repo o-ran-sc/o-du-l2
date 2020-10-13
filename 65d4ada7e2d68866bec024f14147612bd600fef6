@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "418c60bf_f63b0ebb",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T07:43:04Z",
+      "side": 1,
+      "message": "change to a more relevant index name",
+      "revId": "65d4ada7e2d68866bec024f14147612bd600fef6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "570265a3_2d31f5b0",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 709,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T07:43:04Z",
+      "side": 1,
+      "message": "mention function name in the log for every mem allocation",
+      "revId": "65d4ada7e2d68866bec024f14147612bd600fef6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "178608cb_15a34e87",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 5750,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T07:43:04Z",
+      "side": 1,
+      "message": "keep the trigger commented put during submission",
+      "revId": "65d4ada7e2d68866bec024f14147612bd600fef6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "654bc3a8_b0d01934",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 5782,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T07:43:04Z",
+      "side": 1,
+      "message": "As discussed, msg processing must be there. However, F1 reset is as init only and we are currently not supporting Ue release.",
+      "revId": "65d4ada7e2d68866bec024f14147612bd600fef6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "df0f84f8_fc5c0762",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 5887,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T07:43:04Z",
+      "side": 1,
+      "message": "Add a print to show msg has been received",
+      "revId": "65d4ada7e2d68866bec024f14147612bd600fef6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
