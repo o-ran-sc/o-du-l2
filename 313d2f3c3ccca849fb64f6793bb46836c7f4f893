@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3234ebb4_9d09e013",
+        "filename": "src/5gnrmac/mac_demux.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-13T08:12:50Z",
+      "side": 1,
+      "message": "when we receive msg5 from PHY, macRaCb context to be removed",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ea6ed98c_072f4908",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-13T08:12:50Z",
+      "side": 1,
+      "message": "is the cellId updated for msg4 as well ?",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d5dba4b6_bc09058a",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-13T08:12:50Z",
+      "side": 1,
+      "message": "are we forming the muxed PDU for dl dedicated msg ?",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "003e0952_2fb0255f",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-13T08:12:50Z",
+      "side": 1,
+      "message": "macRaCb context to be freed after we receive msg5 from PHY",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "971dc159_555976ed",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-13T08:12:50Z",
+      "side": 1,
+      "message": "this check to be modifed, \nif(dlSchedInfo-\u003edlMsgAlloc-\u003edlMsgInfo.isMsg4Pdu)\n  - then fillMsg4Pdu\nelse\n  - send dl dedicated muxed Pdu",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "646577e7_f35be4de",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 687,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-13T08:12:50Z",
+      "side": 1,
+      "message": "Can be removed, if not used",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
