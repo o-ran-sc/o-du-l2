@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1be0d10c_21a07cf8",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2819,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:59:21Z",
+      "side": 1,
+      "message": "add log that resetAck is recevied",
+      "revId": "02a04cc12cdbf94858d85c13db93076e0e9fbb39",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f52b5704_d3b9f9b2",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 5644,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:59:21Z",
+      "side": 1,
+      "message": "remove \"from cu to du\"",
+      "revId": "02a04cc12cdbf94858d85c13db93076e0e9fbb39",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "afebe252_0fe2a81f",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 5750,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:59:21Z",
+      "side": 1,
+      "message": "Don\u0027t comment like this. Use #if 0.",
+      "revId": "02a04cc12cdbf94858d85c13db93076e0e9fbb39",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8e121294_eede8669",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 5785,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:59:21Z",
+      "side": 1,
+      "message": "remove \"from cu to du\"",
+      "revId": "02a04cc12cdbf94858d85c13db93076e0e9fbb39",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "627e5607_6947c6fc",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 5800,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:59:21Z",
+      "side": 1,
+      "message": "remove \"from cu\"\nfix spelling\nprint reset type",
+      "revId": "02a04cc12cdbf94858d85c13db93076e0e9fbb39",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8f865f44_c4dcbccf",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 5917,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:59:21Z",
+      "side": 1,
+      "message": "remove \"from cu to du\"",
+      "revId": "02a04cc12cdbf94858d85c13db93076e0e9fbb39",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
