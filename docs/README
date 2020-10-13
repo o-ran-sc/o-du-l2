@@ -2,8 +2,8 @@ Directory Structure :
 ---------------------
 1. l2/build/ : contains files required to compile the code
    a. common : contains individual module's makefile
-   b. config : contains SSI memory configuration
-   c. odu    : contains main makefile to generate an executable binary
+   b. odu    : contains main makefile to generate an executable binary
+   c. scripts: contains scripts for logging
 
 2. l2/docs/  : contains README and other configuration files for building docs
 	
