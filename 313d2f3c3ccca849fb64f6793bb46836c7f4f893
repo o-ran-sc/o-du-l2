@@ -101,6 +101,57 @@
       "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "382db777_ad813ccf",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-13T12:07:55Z",
+      "side": 1,
+      "message": "memory alloc to be done only if the size is \u003e0",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5afc6983_7f9b2f8f",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 429,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-13T12:07:55Z",
+      "side": 1,
+      "message": "memory alloc check to be added",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f4a850f0_11a9e4ea",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-13T12:07:55Z",
+      "side": 1,
+      "message": "return RFAILED if the size is invalid",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
     }
   ]
 }
