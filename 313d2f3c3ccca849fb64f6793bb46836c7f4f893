@@ -2,6 +2,91 @@
   "comments": [
     {
       "key": {
+        "uuid": "ab41fa10_d5dba5cf",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 2880,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "How is this different from the check above?",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "477758e6_da6747d0",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 2917,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c9b9c009_981dc2c8",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 3223,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "This log can be fit into the same if condition as above",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "48ac3e1b_89edc90a",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 3341,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "Dont we need a WLS guard here?",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "781060df_a394232c",
+        "filename": "src/5gnrmac/mac.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "Can we skip \"Result\" ?",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3234ebb4_9d09e013",
         "filename": "src/5gnrmac/mac_demux.c",
         "patchSetId": 9
@@ -13,6 +98,159 @@
       "writtenOn": "2020-10-13T08:12:50Z",
       "side": 1,
       "message": "when we receive msg5 from PHY, macRaCb context to be removed",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7ab91e88_42a425b5",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "Drop \"Mac\"",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8f1e5f21_f78c74b4",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "Does a direct copy work here? Do we need a memcpy/strcpy?",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e48049cd_6b61eec5",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "Add check if dlMsgAlloc is null or not",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c58d0497_9cdafff9",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "what about currDlSlot, dlMsgAlloc, etc, when do they get freed?",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3978d82b_1092a2a4",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "shouldn\u0027t we be using memcpy?",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8bc470c2_52ed3209",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "isn\u0027t this flow used for common channels too?",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c1864dc9_054f6873",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "Since this macro specififcally returns UEIDX, it can return it as \"-1\" itself instead of using ueIdx-1 everywhere",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c3c6bf85_5788062d",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "since length is known, memcpy may work as well. Please check",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "99cdc3fa_3696387b",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "memcpy is better?",
       "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -53,6 +291,23 @@
     },
     {
       "key": {
+        "uuid": "5dbd5322_41b5e795",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "Same comment as previous file. Better for macro to return ueIdx-1 itself",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "003e0952_2fb0255f",
         "filename": "src/5gnrmac/mac_slot_ind.c",
         "patchSetId": 9
@@ -87,6 +342,449 @@
     },
     {
       "key": {
+        "uuid": "36be9680_d57bde60",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "Mux must be carried out for all DL msgs?",
+      "parentUuid": "971dc159_555976ed",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4b7baa74_fb3b91d1",
+        "filename": "src/5gnrmac/rg_ptui.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "remove Pt if not being used",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c1d033bf_2e509944",
+        "filename": "src/5gnrrlc/kw.x",
+        "patchSetId": 9
+      },
+      "lineNbr": 621,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "are these S16 types removed as part of another check-in?",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cb798628_6d8f9207",
+        "filename": "src/5gnrrlc/kw_amm_dl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "all other PRIVATES can also be removed?",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3101acb7_a7315b13",
+        "filename": "src/5gnrrlc/kw_amm_dl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "why do we need return? its a void function",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "be348ac8_d7c57fe7",
+        "filename": "src/5gnrrlc/kw_amm_dl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1174,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "aren\u0027t these leading to warnings since they are all void functions?",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "632efbfc_1fc5dacb",
+        "filename": "src/5gnrrlc/kw_amm_ul.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "drop PRIVATE here too",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "93415f94_705a6ffa",
+        "filename": "src/5gnrrlc/kw_dl.x",
+        "patchSetId": 9
+      },
+      "lineNbr": 543,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "S16 could have been changed too. Must be taken up in another checkin",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6f8d9076_39496d67",
+        "filename": "src/5gnrrlc/kw_lim.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "what flag is this? Do we need it?",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "72016392_1c795044",
+        "filename": "src/5gnrrlc/kw_tmm_dl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 480,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "why do we need rguSap? We know where to post",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "30af1af4_fda71fca",
+        "filename": "src/5gnrrlc/kw_udx.x",
+        "patchSetId": 9
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "why not change return type of all functions with next check-in",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dd057f45_053f538d",
+        "filename": "src/5gnrrlc/kw_utl_dl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "can we not eliminate spid concept?",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "256c7fac_6b360836",
+        "filename": "src/5gnrrlc/kw_utl_dl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 454,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "move declaration to beginning of block",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c53ef7ce_a9bfa816",
+        "filename": "src/5gnrrlc/kw_utl_ul.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "delete",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1011370b_c469527a",
+        "filename": "src/5gnrrlc/kw_utl_ul.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "Free ulRrcMsgInfo",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eedba37f_e52f5aae",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "Lets move the reverse part to the definition of macro itself and add comment there as to why reversing is required",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4d161a7e_e1cdb013",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 688,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "this piece of code can be optimized. We can check for the invalid LC and rest of the code has lot of common lines.",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8b6f5808_e81c5906",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "This can be moved to common_def.h",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "be047f42_ec7ba370",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "prach will still need tcrnti",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c828d6d7_fe3e9fb9",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 504,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "move real pieces of code after all declarations",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "42178c89_53389481",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 517,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "why are we filling coreset0Cfg. Wasn\u0027t this renamed to coresetCfg within pdcch?",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "54c45f3c_d0e600c3",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 532,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "let\u0027s revisit this. If cceIdx is 0-3 and 4-7, aggr level must be 8 and not 4",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3f02af96_f6e8b395",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 573,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "Let\u0027s discuss this. SSB_NUM_PRB is not applicable to corest1",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a79b4283_0e52087d",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "is ulDciTime missing?",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5a7b5bb2_a5c27245",
+        "filename": "src/cm/lrg.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "As part of another check0in, this kind of #ifdef ANSI must also be removed",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f5264713_64433417",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 683,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "pduLen before pdu",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "646577e7_f35be4de",
         "filename": "src/cm/mac_sch_interface.h",
         "patchSetId": 9
@@ -104,6 +802,23 @@
     },
     {
       "key": {
+        "uuid": "2807306f_2eda15d0",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 708,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "Isn\u0027t bwp already a part of pdcch?",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "382db777_ad813ccf",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 9
@@ -115,6 +830,23 @@
       "writtenOn": "2020-10-13T12:07:55Z",
       "side": 1,
       "message": "memory alloc to be done only if the size is \u003e0",
+      "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "74e7a5a8_17def4e6",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-13T17:48:02Z",
+      "side": 1,
+      "message": "why are we hard cording deliveryStatusReq to false?",
       "revId": "313d2f3c3ccca849fb64f6793bb46836c7f4f893",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
