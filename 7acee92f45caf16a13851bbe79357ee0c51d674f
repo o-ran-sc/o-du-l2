@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e01cf2b7_a431b72c",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 5478,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-14T13:15:34Z",
+      "side": 1,
+      "message": "drop \"received\"",
+      "revId": "7acee92f45caf16a13851bbe79357ee0c51d674f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "58a7a318_3f86bb27",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 5719,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-14T13:15:34Z",
+      "side": 1,
+      "message": "F1 reset Ack, not response",
+      "revId": "7acee92f45caf16a13851bbe79357ee0c51d674f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
