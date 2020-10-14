@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e10e0602_2a55ebfd",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 703,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-14T08:11:41Z",
+      "side": 1,
+      "message": "Drop \"from cu to du\"",
+      "revId": "f6e8dd811fa4faeb63e96ab29fdc5daebfc43aa9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fa76f5a4_1e40fc8d",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 796,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-14T08:11:41Z",
+      "side": 1,
+      "message": "Please drop \"from cu to du\". This comment was given for previous patch as well. Check your functions for this trace and edit",
+      "revId": "f6e8dd811fa4faeb63e96ab29fdc5daebfc43aa9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "385941a6_aedc35f9",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2682,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-14T08:11:41Z",
+      "side": 1,
+      "message": "drop \"du to cu\" , \"cu to du\", etc. Please raise new patch after resolving all  comments from previous",
+      "revId": "f6e8dd811fa4faeb63e96ab29fdc5daebfc43aa9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
