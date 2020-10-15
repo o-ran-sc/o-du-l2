@@ -1,0 +1,174 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f24bed4f_44904b1a",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-15T08:57:54Z",
+      "side": 1,
+      "message": "move to header file",
+      "revId": "e2ea9d546729bc749737aef8951aeec7f26001a3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c2dc7d67_c1ff0714",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-15T08:57:54Z",
+      "side": 1,
+      "message": "add comment on why this is being done",
+      "revId": "e2ea9d546729bc749737aef8951aeec7f26001a3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "39db7989_f487d11c",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-15T08:57:54Z",
+      "side": 1,
+      "message": "take cellId, ueIdx, lcid as function parameters",
+      "revId": "e2ea9d546729bc749737aef8951aeec7f26001a3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "58cab1d8_3e90e40e",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-15T08:57:54Z",
+      "side": 1,
+      "message": "use macro and how about pdcp sn?",
+      "revId": "e2ea9d546729bc749737aef8951aeec7f26001a3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a7ed8f57_6f6e60cd",
+        "filename": "src/5gnrrlc/rlc_upr_inf_api.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-15T08:57:54Z",
+      "side": 1,
+      "message": "message is called rrc delivery report. Change function names accordingly",
+      "revId": "e2ea9d546729bc749737aef8951aeec7f26001a3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "526e9819_d19a1164",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 527,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-15T08:57:54Z",
+      "side": 1,
+      "message": "this must be called srbId, as mentioned in spec",
+      "revId": "e2ea9d546729bc749737aef8951aeec7f26001a3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9e6a9d58_973ab6db",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5519,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-15T08:57:54Z",
+      "side": 1,
+      "message": "This break on memory failure will quit onlyt the for loop at line 5514, not the outer most while(true)",
+      "revId": "e2ea9d546729bc749737aef8951aeec7f26001a3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "afba32c9_a3eb38cb",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5543,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-15T08:57:54Z",
+      "side": 1,
+      "message": "delivery status is being filled at RLC? use that",
+      "revId": "e2ea9d546729bc749737aef8951aeec7f26001a3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fefe5d81_9c59eff9",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5551,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-15T08:57:54Z",
+      "side": 1,
+      "message": "Why hardocde? this was filled in RLC!!!",
+      "revId": "e2ea9d546729bc749737aef8951aeec7f26001a3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e59f8585_3f351ead",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1877,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-15T08:57:54Z",
+      "side": 1,
+      "message": "no need to send whole of ueCb, you only need du and cu f1ap ue Ids. Use the rrcDeliveryRpt recevied from RLC to fill the ASN structure",
+      "revId": "e2ea9d546729bc749737aef8951aeec7f26001a3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
