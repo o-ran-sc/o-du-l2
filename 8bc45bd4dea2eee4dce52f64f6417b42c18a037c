@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "63432be4_49dee2e4",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 1001,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-15T16:42:36Z",
+      "side": 1,
+      "message": "msgLen before msg",
+      "revId": "8bc45bd4dea2eee4dce52f64f6417b42c18a037c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e42e33eb_bc2881c0",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 1002,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-15T16:42:36Z",
+      "side": 1,
+      "message": "these 2 Ids must be the first in the structure. Order:\ncellIdx\ngnbDuUeF1apId\ngnbDuCuUeF1apId\ndeliveryStatReq\nrrcMsgLen\nrrcMsg",
+      "revId": "8bc45bd4dea2eee4dce52f64f6417b42c18a037c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e2c1a46c_b3fd8505",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-15T16:42:36Z",
+      "side": 1,
+      "message": "check if these can be removed form this file. They have nothing to do with F!AP interface",
+      "revId": "8bc45bd4dea2eee4dce52f64f6417b42c18a037c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "efcbda9c_2180a42a",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1253,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-15T16:42:36Z",
+      "side": 1,
+      "message": "We must eliminate writing into duCb as much as possible.  Also, this message must be forwarded to dU APP to signal F1 setup Response. duCb.f1Status \u003d true must be done there",
+      "revId": "8bc45bd4dea2eee4dce52f64f6417b42c18a037c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "97a34eb3_682b06e3",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 5264,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-15T16:42:36Z",
+      "side": 1,
+      "message": "use of this variable?? eliminate this logic",
+      "revId": "8bc45bd4dea2eee4dce52f64f6417b42c18a037c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "daa51e65_a1918f52",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 5408,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-15T16:42:36Z",
+      "side": 1,
+      "message": "what is this variabe for?",
+      "revId": "8bc45bd4dea2eee4dce52f64f6417b42c18a037c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7ca571f4_d7d2c1cf",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 5528,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-15T16:42:36Z",
+      "side": 1,
+      "message": "since msg size is known, memcpy may work, we can eliminate this for loop",
+      "revId": "8bc45bd4dea2eee4dce52f64f6417b42c18a037c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
