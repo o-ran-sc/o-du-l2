@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "861a039d_b3c5c78d",
+        "filename": "src/5gnrrlc/kw_dl_ex_ms.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-16T12:59:23Z",
+      "side": 1,
+      "message": "As part of a separate check-in, this flag must be checked and removed",
+      "revId": "1f7fbe0da83d4815e44a9fcf3b2d7b720dfb2683",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
