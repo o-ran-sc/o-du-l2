@@ -16,6 +16,24 @@
       "revId": "f99f45886c82d413c2a0399304ccad24c1a03e27",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cd1d0fd4_02ae4514",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1871,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2020-10-16T10:49:35Z",
+      "side": 1,
+      "message": "removed .",
+      "parentUuid": "b84e3bc4_5b64abb5",
+      "revId": "f99f45886c82d413c2a0399304ccad24c1a03e27",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
