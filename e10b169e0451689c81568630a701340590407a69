@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e59760c8_936d65dd",
+        "filename": "src/5gnrmac/lwr_mac_utils.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-16T10:33:09Z",
+      "side": 1,
+      "message": "ODU_GET_PROCID",
+      "revId": "e10b169e0451689c81568630a701340590407a69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9a17652b_4516e668",
+        "filename": "src/5gnrrlc/kw_amm_ul.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-16T10:33:09Z",
+      "side": 1,
+      "message": "can be changed uint16_t",
+      "revId": "e10b169e0451689c81568630a701340590407a69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f3620241_78a06998",
+        "filename": "src/5gnrrlc/kw_amm_ul.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 532,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-16T10:33:09Z",
+      "side": 1,
+      "message": "Can be changed to ODU_GET_MSG_LEN",
+      "revId": "e10b169e0451689c81568630a701340590407a69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dd430cac_02551e90",
+        "filename": "src/5gnrrlc/kw_amm_ul.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 771,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-16T10:33:09Z",
+      "side": 1,
+      "message": "U8 to uint8_t",
+      "revId": "e10b169e0451689c81568630a701340590407a69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3509db6f_4e8c6160",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-16T10:33:09Z",
+      "side": 1,
+      "message": "there is a macro for \"6\". the freq domain size. please check common_def.h",
+      "revId": "e10b169e0451689c81568630a701340590407a69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "23f32921_75e0df99",
+        "filename": "src/5gnrsch/sch_utils.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-16T10:33:09Z",
+      "side": 1,
+      "message": "follow same concept for all FILL PST macros. Some take proc Id as argument",
+      "revId": "e10b169e0451689c81568630a701340590407a69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
