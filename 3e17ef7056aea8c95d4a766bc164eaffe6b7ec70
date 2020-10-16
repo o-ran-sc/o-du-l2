@@ -2,6 +2,57 @@
   "comments": [
     {
       "key": {
+        "uuid": "b5b7edc0_bcd30f9d",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 931,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-16T12:29:48Z",
+      "side": 1,
+      "message": "lcCbList for that lcIdx is memset now",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dbd2d516_c0522d1d",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1187,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-16T12:29:48Z",
+      "side": 1,
+      "message": "raCb will not exist after Msg4, \nthis comment is taken care in BO Changes",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4dd92581_aca4a8d3",
+        "filename": "src/cm/du_app_mac_inf.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-16T12:29:48Z",
+      "side": 1,
+      "message": "check logic while assigning LcId",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "89002749_0be638fa",
         "filename": "src/cm/du_app_rlc_inf.c",
         "patchSetId": 3
@@ -16,6 +67,24 @@
       "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5bcd327a_37061135",
+        "filename": "src/cm/du_app_rlc_inf.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-16T12:29:48Z",
+      "side": 1,
+      "message": "this function is common to du and rlc only\nso i am keeping it in \"du_app_rlc_inf.c\"",
+      "parentUuid": "89002749_0be638fa",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -36,6 +105,24 @@
     },
     {
       "key": {
+        "uuid": "4028607a_96d3351c",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 554,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-16T12:29:48Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "a995c078_85b98a47",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dd521809_04c0abc9",
         "filename": "src/cm/mac_sch_interface.h",
         "patchSetId": 3
@@ -50,6 +137,24 @@
       "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ac73c231_f5c96ef9",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1005,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-16T12:29:48Z",
+      "side": 1,
+      "message": "yes they are common structure,\nbut in future we might have to support some other SCH/MAC\nSo in have kept the du_mac struct in du_app_mac_inf.h \nand Mac_sch struct in mac_sch_interface.h",
+      "parentUuid": "dd521809_04c0abc9",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +192,24 @@
     },
     {
       "key": {
+        "uuid": "5fd884ae_f705c3f8",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-16T12:29:48Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "7c2e6d70_0cfcc5ed",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a24b929d_272db1e0",
         "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
         "patchSetId": 3
@@ -101,6 +224,24 @@
       "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e52bd85b_d5a9c6d3",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2085,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-16T12:29:48Z",
+      "side": 1,
+      "message": "NrCgi is nested struct which holds plmnId and CellId\nInside freeNrCgi, plmnId and cellId both are freed",
+      "parentUuid": "a24b929d_272db1e0",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -121,6 +262,24 @@
     },
     {
       "key": {
+        "uuid": "7527c90c_cc4ee21d",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2210,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-16T12:29:48Z",
+      "side": 1,
+      "message": "agreed. changed to freqDomRscAllocType0",
+      "parentUuid": "53de042c_0eff29a4",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f7b90fdf_69199a5d",
         "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
         "patchSetId": 3
@@ -135,6 +294,58 @@
       "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "72a20a06_1eaa16f8",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2295,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-16T12:29:48Z",
+      "side": 1,
+      "message": "yes we are adding the search space to add Mod list in sch as well",
+      "parentUuid": "f7b90fdf_69199a5d",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "76259128_4c0638bf",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2628,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-16T12:29:48Z",
+      "side": 1,
+      "message": "Removed the dependency of calSliv here",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2ad91793_14952bb3",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 5145,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-16T12:29:48Z",
+      "side": 1,
+      "message": "renamed to BuildAndSendUeContextSetupReq",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -155,6 +366,24 @@
     },
     {
       "key": {
+        "uuid": "ed39ed80_f20fdd83",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 5415,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-16T12:29:48Z",
+      "side": 1,
+      "message": "to check if the received uedIx is valid or not\ni have removed this check now,\nas this error handling is now performed before calling BuildAndSendUeContextSetupRsp()",
+      "parentUuid": "4cb911bf_aed8b845",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "83233876_5a8257ff",
         "filename": "src/du_app/du_mgr_ex_ms.c",
         "patchSetId": 3
@@ -169,6 +398,24 @@
       "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b42f1a28_b1be2fd4",
+        "filename": "src/du_app/du_mgr_ex_ms.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-16T12:29:48Z",
+      "side": 1,
+      "message": "agreed.",
+      "parentUuid": "83233876_5a8257ff",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -189,6 +436,109 @@
     },
     {
       "key": {
+        "uuid": "98e20053_628924e9",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2108,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-16T12:29:48Z",
+      "side": 1,
+      "message": "no for SRB1 and SRB3 priority is 1\nfor SRB2 priority is 3.\nchanged code accordingly",
+      "parentUuid": "34fd483b_c6faea4c",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "69d3ea23_e2d14042",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2144,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-16T12:29:48Z",
+      "side": 1,
+      "message": "cpy the priority level in lcp",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c2583f72_25494be6",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2587,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-16T12:29:48Z",
+      "side": 1,
+      "message": "extract the cu asn, store the values and use that struct to make generic function",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4473dadf_abca3857",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2624,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-16T12:29:48Z",
+      "side": 1,
+      "message": "function name",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f8207ffa_91b911f0",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2636,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-16T12:29:48Z",
+      "side": 1,
+      "message": "rename the params to readable",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "75404dea_528ecf77",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2654,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-16T12:29:48Z",
+      "side": 1,
+      "message": "if else statments to be optimised",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fd68d866_3e001f97",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 3
@@ -203,6 +553,41 @@
       "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eb822481_c1ea53ef",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2788,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-16T12:29:48Z",
+      "side": 1,
+      "message": "ok changed to getCellGroupInfoInCuToDuCont()",
+      "parentUuid": "fd68d866_3e001f97",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "35165855_1443e6ec",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2945,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-16T12:29:48Z",
+      "side": 1,
+      "message": "Proceeding only if ueCb is found",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -223,6 +608,24 @@
     },
     {
       "key": {
+        "uuid": "321af564_98593a56",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2960,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-16T12:29:48Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "de6b68d1_d1ce84ad",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f0a1813d_63165e0c",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 3
@@ -237,6 +640,24 @@
       "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0f242985_dbaab9f1",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2980,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-16T12:29:48Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "f0a1813d_63165e0c",
+      "revId": "3e17ef7056aea8c95d4a766bc164eaffe6b7ec70",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
