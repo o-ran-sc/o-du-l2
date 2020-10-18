@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "e857cf2f_48ddfd8c",
+        "filename": "build/common/o1.mak",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2020-10-18T18:23:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b22ea31b_a47edfc3",
+      "revId": "b87841517f77d7a4e0325ec9a501760551ca8b4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2fdbc1b1_ae27a489",
         "filename": "build/common/o1.mak",
         "patchSetId": 2
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "0edee8e6_0f1a3489",
+        "filename": "build/common/o1.mak",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2020-10-18T18:23:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2fdbc1b1_ae27a489",
+      "revId": "b87841517f77d7a4e0325ec9a501760551ca8b4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9062d5b2_9376f711",
         "filename": "build/common/o1.mak",
         "patchSetId": 2
@@ -47,6 +83,24 @@
       "writtenOn": "2020-10-12T14:59:05Z",
       "side": 1,
       "message": "All files must end with file tailer provided by O-RAN. Please refer to other files in the repo",
+      "revId": "b87841517f77d7a4e0325ec9a501760551ca8b4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2cda9bf7_31b2c28e",
+        "filename": "build/common/o1.mak",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2020-10-18T18:23:25Z",
+      "side": 1,
+      "message": "Not seen in makefiles",
+      "parentUuid": "9062d5b2_9376f711",
       "revId": "b87841517f77d7a4e0325ec9a501760551ca8b4a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "25115d31_c6375e52",
+        "filename": "build/o1/makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2020-10-18T18:23:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "58dec0c4_41fff339",
+      "revId": "b87841517f77d7a4e0325ec9a501760551ca8b4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ae0d00a1_6045fc28",
         "filename": "build/o1/makefile",
         "patchSetId": 2
@@ -84,6 +156,24 @@
       "revId": "b87841517f77d7a4e0325ec9a501760551ca8b4a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "51ca032e_1fd6e7d0",
+        "filename": "build/o1/makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2020-10-18T18:23:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ae0d00a1_6045fc28",
+      "revId": "b87841517f77d7a4e0325ec9a501760551ca8b4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -104,6 +194,24 @@
     },
     {
       "key": {
+        "uuid": "83cbc72e_3dc3077f",
+        "filename": "build/o1/makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2020-10-18T18:23:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c3c1eb7a_a9d74dc1",
+      "revId": "b87841517f77d7a4e0325ec9a501760551ca8b4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a5720848_01572c53",
         "filename": "build/o1/makefile",
         "patchSetId": 2
@@ -118,6 +226,24 @@
       "revId": "b87841517f77d7a4e0325ec9a501760551ca8b4a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9a568a62_573172eb",
+        "filename": "build/o1/makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2020-10-18T18:23:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a5720848_01572c53",
+      "revId": "b87841517f77d7a4e0325ec9a501760551ca8b4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -138,6 +264,24 @@
     },
     {
       "key": {
+        "uuid": "1e37e932_06d7bdef",
+        "filename": "build/o1/makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2020-10-18T18:23:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6eacf40a_7aae8395",
+      "revId": "b87841517f77d7a4e0325ec9a501760551ca8b4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4d2f7260_dd6f820b",
         "filename": "build/o1/makefile",
         "patchSetId": 2
@@ -152,6 +296,24 @@
       "revId": "b87841517f77d7a4e0325ec9a501760551ca8b4a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "916347f5_3a73d344",
+        "filename": "build/o1/makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2020-10-18T18:23:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4d2f7260_dd6f820b",
+      "revId": "b87841517f77d7a4e0325ec9a501760551ca8b4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -172,6 +334,24 @@
     },
     {
       "key": {
+        "uuid": "1c2c2f21_704b66e5",
+        "filename": "build/o1/makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2020-10-18T18:23:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7fab3eda_9c30c2a8",
+      "revId": "b87841517f77d7a4e0325ec9a501760551ca8b4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e323d38d_99516610",
         "filename": "build/o1/makefile",
         "patchSetId": 2
@@ -186,6 +366,24 @@
       "revId": "b87841517f77d7a4e0325ec9a501760551ca8b4a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "04ee5609_440d5653",
+        "filename": "build/o1/makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2020-10-18T18:23:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e323d38d_99516610",
+      "revId": "b87841517f77d7a4e0325ec9a501760551ca8b4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -206,6 +404,24 @@
     },
     {
       "key": {
+        "uuid": "debcaa86_2d14adda",
+        "filename": "build/o1/makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2020-10-18T18:23:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3cd7a383_ddc3fc6b",
+      "revId": "b87841517f77d7a4e0325ec9a501760551ca8b4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1dba7c22_21b91216",
         "filename": "build/o1/makefile",
         "patchSetId": 2
@@ -217,6 +433,24 @@
       "writtenOn": "2020-10-12T14:59:05Z",
       "side": 1,
       "message": "For this image, the only clean_o1 is relevant. We dont need to add a target called clean_all",
+      "revId": "b87841517f77d7a4e0325ec9a501760551ca8b4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b3316241_d0c8cd60",
+        "filename": "build/o1/makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2020-10-18T18:23:25Z",
+      "side": 1,
+      "message": "clean_o1 deletes only the .o, .bin and .lib files\nclean_all deletes the ./bin ./lib and ./obj directories too",
+      "parentUuid": "1dba7c22_21b91216",
       "revId": "b87841517f77d7a4e0325ec9a501760551ca8b4a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -237,6 +471,24 @@
       "revId": "b87841517f77d7a4e0325ec9a501760551ca8b4a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9a6368d1_d4051f5c",
+        "filename": "build/o1/makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2020-10-18T18:23:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "18984a38_61394f12",
+      "revId": "b87841517f77d7a4e0325ec9a501760551ca8b4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
