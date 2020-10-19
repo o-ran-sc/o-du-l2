@@ -42,61 +42,61 @@ extern "C" {
 #endif
 extern Void SsRngBufEnable ARGS((Void));
 extern Void SsRngBufDisable ARGS((Void));
-extern S16 SCreateSRngBuf ARGS((U32 id, Region region, Pool pool, U32 elmSize, U32 rngSize));
-extern S16 SDestroySRngBuf ARGS((U32 id, Region region, Pool pool));
-extern S16 SAttachSRngBuf ARGS((U32 id, U32 ent, U32 txRx));
-extern S16 SEnqSRngBuf ARGS((U32 id, Void* elem));
-extern S16 SDeqSRngBuf ARGS((U32 id, Void* elem));
-extern Void* SRngGetWIndx ARGS((U32 rngId));
-extern Void* SRngGetRIndx ARGS((U32 rngId));
-extern Void SRngIncrRIndx ARGS((U32 rngId));
-extern Void SRngIncrWIndx ARGS((U32 rngId));
-extern S16  isRngEmpty ARGS((U32 rngId));
-extern S16 SConnectSRngBuf ARGS((U32 id,  U32 rxEnt));
-EXTERN S16 SGetNumElemInRng ARGS(( U32 id));
+extern S16 SCreateSRngBuf ARGS((uint32_t id, Region region, Pool pool, uint32_t elmSize, uint32_t rngSize));
+extern S16 SDestroySRngBuf ARGS((uint32_t id, Region region, Pool pool));
+extern S16 SAttachSRngBuf ARGS((uint32_t id, uint32_t ent, uint32_t txRx));
+extern S16 SEnqSRngBuf ARGS((uint32_t id, Void* elem));
+extern S16 SDeqSRngBuf ARGS((uint32_t id, Void* elem));
+extern Void* SRngGetWIndx ARGS((uint32_t rngId));
+extern Void* SRngGetRIndx ARGS((uint32_t rngId));
+extern Void SRngIncrRIndx ARGS((uint32_t rngId));
+extern Void SRngIncrWIndx ARGS((uint32_t rngId));
+extern S16  isRngEmpty ARGS((uint32_t rngId));
+extern S16 SConnectSRngBuf ARGS((uint32_t id,  uint32_t rxEnt));
+EXTERN S16 SGetNumElemInRng ARGS(( uint32_t id));
 extern S16 SPrintSRngStats ARGS((Void));
 extern S16 pjBatchProc ARGS((Void));
-extern U32 ssRngBufStatus;
+extern uint32_t ssRngBufStatus;
 
 #define SS_RNG_BUF_STATUS() ssRngBufStatus
 /* Ring Buffer Structure */
 typedef struct
 {
-   U32 size;    /* Number of elements in a ring */
-   U32 read;    /* Read Index incremented by Deque operation */
-   U32 write;   /* Write index incremented by Enque operation */
-   U32 type;    /* sizeof user specified ring element structure */
+   uint32_t size;    /* Number of elements in a ring */
+   uint32_t read;    /* Read Index incremented by Deque operation */
+   uint32_t write;   /* Write index incremented by Enque operation */
+   uint32_t type;    /* sizeof user specified ring element structure */
    Void* elem;  /* pointer to the allocated ring Elements */
 }SsRngBuf;
 
 /* Ring Cfg Table */
 typedef struct
 {
-   U32 rngSize;
-   U32 elemSize;
+   uint32_t rngSize;
+   uint32_t elemSize;
 } SsRngCfg;
 
 /* Global Ring Buffer Info structure */
 typedef struct
 {
    SsRngBuf* r_addr;     // Address of allocated ring
-   U32 txEnt;          // Tx Entity id
-   U32 rxEnt;          // Rx Entity id
-   U32 n_write;        // Number of Enque operations
-   U32 n_read;         // Number of Deque operations
-   U32 nReadFail;      // Number of Deque failures due to ring empty
-   U32 nWriteFail;     // Number of Enque failures due to ring full
-   U32 rngState;       /* Ring Buffer State */
-   U32 pktDrop;        // Number of pkts dropped due to  buffer full
-   U32 nPktProc;       // Debug counter for pkts processed per tti
-   U32 pktRate;        // Debug counter for icpu pkt rate
+   uint32_t txEnt;          // Tx Entity id
+   uint32_t rxEnt;          // Rx Entity id
+   uint32_t n_write;        // Number of Enque operations
+   uint32_t n_read;         // Number of Deque operations
+   uint32_t nReadFail;      // Number of Deque failures due to ring empty
+   uint32_t nWriteFail;     // Number of Enque failures due to ring full
+   uint32_t rngState;       /* Ring Buffer State */
+   uint32_t pktDrop;        // Number of pkts dropped due to  buffer full
+   uint32_t nPktProc;       // Debug counter for pkts processed per tti
+   uint32_t pktRate;        // Debug counter for icpu pkt rate
 } SsRngBufTbl;
 
 /* Global Structure for updating Ring buffer for Flow Control */
 typedef struct
 {
-   U16 dlRngBuffCnt;   /* Dl Ring Buffer Count */
-   U16 ulRngBuffCnt;   /* Ul Ring Buffer Count */
+   uint16_t dlRngBuffCnt;   /* Dl Ring Buffer Count */
+   uint16_t ulRngBuffCnt;   /* Ul Ring Buffer Count */
 }SsRngBufCnt;
 
 /* Ring Buffer Id Enum */
@@ -208,12 +208,12 @@ typedef struct
 EXTERN  SsRngBufTbl SsRngInfoTbl[SS_RNG_BUF_MAX];
 
 #if (defined (MAC_FREE_RING_BUF) || defined (RLC_FREE_RING_BUF))
-extern S16 mtAddBufToRing(SsRngBufId ringId,void *bufPtr,U8 freeType);
+extern S16 mtAddBufToRing(SsRngBufId ringId,void *bufPtr,uint8_t freeType);
 #ifdef XEON_SPECIFIC_CHANGES
 typedef struct rgKwBufFreeInfo
 {
    Void    *bufToFree;
-   U8      freeType; /* 0- SPutMsg, 1->SPutStaticBuffer*/
+   uint8_t      freeType; /* 0- SPutMsg, 1->SPutStaticBuffer*/
 }RgKwFreeInfo;
 #endif
 #endif

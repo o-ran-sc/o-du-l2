@@ -42,19 +42,19 @@ extern "C" {
 typedef struct cmTimer         /* timer structure */
 {
    S16 tmrEvnt;                /* Timer Event */
-   U32 tqExpire;               /* Timing Queue Expiry */
+   uint32_t tqExpire;               /* Timing Queue Expiry */
    PTR cb;                     /* Pointer to start of control block list */
    struct cmTimer *next;       /* Next item in the timing queue */
    struct cmTimer *prev;       /* Previous item in the timing queue */
-   U8     ent2bUpd;            /* TRUE, if the timer block is not in the
+   uint8_t     ent2bUpd;            /* TRUE, if the timer block is not in the
                                   proper bin */
-   U16   entIdx;                /* Current entry index */
+   uint16_t   entIdx;                /* Current entry index */
 } CmTimer;
 
 typedef struct cmTqCp          /*  timing queue control point */
 {
-   U32 nxtEnt;                 /* next Entry */
-   U32 tmrLen;                 /* length of timer (MODULO is -1) */
+   uint32_t nxtEnt;                 /* next Entry */
+   uint32_t tmrLen;                 /* length of timer (MODULO is -1) */
    CmTimer *tmp;               /* Temporary  variable used in cmPrcTmr */
 } CmTqCp;
 
@@ -71,9 +71,9 @@ typedef struct cmTmrArg
    CmTimer    *timers;         /* timers array */
    PTR        cb;              /* control block pointer */
    S16        evnt;            /* event */
-   U32        wait;            /* wait */
-   U8         tNum;            /* timer number */
-   U8         max;             /* max timers */
+   uint32_t        wait;            /* wait */
+   uint8_t         tNum;            /* timer number */
+   uint8_t         max;             /* max timers */
 } CmTmrArg;
 
 
@@ -81,7 +81,7 @@ typedef struct cmTmrArg
 
 typedef Void (*PFV) ARGS((PTR, S16));
 
-extern Void cmInitTimers ARGS((CmTimer* timers, U8 max));
+extern Void cmInitTimers ARGS((CmTimer* timers, uint8_t max));
 extern Void cmPlcCbTq ARGS((CmTmrArg* arg));
 extern Void cmRmvCbTq ARGS((CmTmrArg* arg));
 extern Void cmPrcTmr ARGS((CmTqCp* tqCp, CmTqType* tq, PFV func));

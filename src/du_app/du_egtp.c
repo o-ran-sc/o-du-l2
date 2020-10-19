@@ -165,22 +165,22 @@ uint8_t egtpActvTsk(Pst *pst, Buffer *mBuf)
  * ***********************************************************************/
 uint8_t egtpCfgReq(Pst *pst, EgtpConfig egtpCfg)
 {
-   uint8_t ret;          /* Return value */
-   Pst rspPst;      /* Response Pst structure */
+   uint8_t  ret;          /* Return value */
+   Pst      rspPst;      /* Response Pst structure */
    CmStatus cfgCfm; /* Configuration Confirm */
 
    memcpy((uint8_t *)&egtpCb.egtpCfg, (uint8_t *)&egtpCfg, (PTR)sizeof(EgtpConfig));
 
-   egtpCb.recvTptSrvr.addr.address = CM_INET_NTOH_U32(egtpCb.egtpCfg.localIp.ipV4Addr);
+   egtpCb.recvTptSrvr.addr.address = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.localIp.ipV4Addr);
    egtpCb.recvTptSrvr.addr.port = EGTP_DFLT_PORT;
 
-   egtpCb.dstCb.dstIp = CM_INET_NTOH_U32(egtpCb.egtpCfg.destIp.ipV4Addr);
+   egtpCb.dstCb.dstIp = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.destIp.ipV4Addr);
    egtpCb.dstCb.dstPort = egtpCb.egtpCfg.destPort;
-   egtpCb.dstCb.sendTptSrvr.addr.address = CM_INET_NTOH_U32(egtpCb.egtpCfg.localIp.ipV4Addr);
+   egtpCb.dstCb.sendTptSrvr.addr.address = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.localIp.ipV4Addr);
    egtpCb.dstCb.sendTptSrvr.addr.port = egtpCb.egtpCfg.localPort;
    egtpCb.dstCb.numTunn = 0;
 
-   ret = cmHashListInit(&(egtpCb.dstCb.teIdLst), 1024, sizeof(EgtpTeIdCb), FALSE, CM_HASH_KEYTYPE_U32MOD, DU_APP_MEM_REGION, DU_POOL);
+   ret = cmHashListInit(&(egtpCb.dstCb.teIdLst), 1024, sizeof(EgtpTeIdCb), FALSE, CM_HASH_KEYTYPE_UINT32_MOD, DU_APP_MEM_REGION, DU_POOL);
 
    if(ret != ROK)
    {
@@ -410,9 +410,9 @@ uint8_t egtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt)
  * ***************************************************************************/
 uint8_t egtpTnlAdd(EgtpTnlEvt tnlEvt)
 {
-   uint8_t   ret;
-   EgtpTeIdCb   *teidCb;    /* Tunnel endpoint control block */
-   EgtpMsgHdr   preDefHdr; /* pre-define header for this tunnel */
+   uint8_t    ret;
+   EgtpTeIdCb *teidCb;    /* Tunnel endpoint control block */
+   EgtpMsgHdr preDefHdr; /* pre-define header for this tunnel */
 
    DU_LOG("\nEGTP : Tunnel addition : LocalTeid[%d] Remote Teid[%d]", tnlEvt.lclTeid, tnlEvt.remTeid);
 
@@ -539,11 +539,11 @@ uint8_t egtpTnlDel(EgtpTnlEvt tnlEvt)
  * ****************************************************************/
 uint8_t egtpHdlDatInd(EgtpMsg egtpMsg)
 {
-   EgtpTeIdCb   *teidCb = NULLP;
-   uint16_t tPduSize;
+   EgtpTeIdCb  *teidCb = NULLP;
+   uint16_t    tPduSize;
    uint8_t     hdrLen;
    uint32_t    msgLen;
-   EgtpMsgHdr   *msgHdr;
+   EgtpMsgHdr  *msgHdr;
 
    DU_LOG("\nEGTP : Received Data Indication");
 
@@ -630,10 +630,10 @@ uint8_t egtpHdlDatInd(EgtpMsg egtpMsg)
  * ****************************************************************/
 uint8_t egtpEncodeHdr(uint8_t *preEncodedHdr, EgtpMsgHdr *preDefHdr, uint8_t *hdrIdx)
 {
-   uint8_t         tmpByte = 0;                 /* Stores one byte of data for enc */
-   uint8_t         cnt     = EGTP_MAX_HDR_LEN;  /* Stores the position */
+   uint8_t    tmpByte = 0;                 /* Stores one byte of data for enc */
+   uint8_t    cnt     = EGTP_MAX_HDR_LEN;  /* Stores the position */
    bool       extPres = FALSE;             /* Flag for indication of S, E or P presense flag */
-   uint16_t        nwWord = 0;
+   uint16_t   nwWord = 0;
    
    /* Encoding header */
    tmpByte |= EGTP_MASK_BIT6;   /* Setting 6th LSB of 1st byte as version */
@@ -741,8 +741,8 @@ uint8_t egtpEncodeHdr(uint8_t *preEncodedHdr, EgtpMsgHdr *preDefHdr, uint8_t *hd
  * ****************************************************************/
 uint8_t egtpSendMsg(Buffer *mBuf)
 {
-   uint8_t            ret;
-   uint16_t         txLen;
+   uint8_t        ret;
+   uint16_t       txLen;
    CmInetMemInfo  info;
    CmInetAddr     dstAddr;
 
@@ -806,9 +806,9 @@ uint8_t egtpSlotInd()
 
 uint8_t egtpRecvMsg()
 {
-   uint8_t             ret;           /* Return value */
-   uint8_t             nMsg;          /* Number of messages to read from UDP socked */
-   uint16_t         bufLen;        /* Length of received buffer */
+   uint8_t        ret;           /* Return value */
+   uint8_t        nMsg;          /* Number of messages to read from UDP socked */
+   uint16_t       bufLen;        /* Length of received buffer */
    Buffer         *recvBuf;      /* Received buffer */
    CmInetAddr     fromAddr;      /* Egtp data sender address */
    CmInetMemInfo  memInfo;       /* Buffer allocation info */
@@ -855,13 +855,13 @@ uint8_t egtpHdlRecvData(Buffer *mBuf)
 
 uint8_t egtpDecodeHdr(Buffer *mBuf, EgtpMsg  *egtpMsg)
 {
-   uint8_t       tmpByte[5];         /* Holds 5 byte of data after Decoding */
-   uint8_t       version = 0;         /* Holds the version type, decoded */
+   uint8_t    tmpByte[5];         /* Holds 5 byte of data after Decoding */
+   uint8_t    version = 0;         /* Holds the version type, decoded */
    uint16_t   msgLen  = 0;         /* Holds the msgLen from the Hdr */
    uint16_t   bufLen  = 0;         /* Holds the total buffer length */
-   uint8_t       extHdrType = 0;       /* Holds the Extension hdr type */
-   uint8_t       extHdrLen = 0;        /* Extension hdr length */
-   bool     extPres = FALSE;      /* Flag for indication of S, E or P presense flag */
+   uint8_t    extHdrType = 0;       /* Holds the Extension hdr type */
+   uint8_t    extHdrLen = 0;        /* Extension hdr length */
+   bool       extPres = FALSE;      /* Flag for indication of S, E or P presense flag */
  
    ODU_GET_MSG_LEN(mBuf, (int16_t *)&bufLen);
  

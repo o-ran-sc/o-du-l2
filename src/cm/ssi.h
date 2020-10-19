@@ -127,7 +127,7 @@
 #ifdef MSVER2                         /* mos version 2 */
 #define MINBUFSIZE      (PTRALIGN(sizeof(SBuf)))
 #define SBUFSIZE(size)  (size < (Size) MINBUFSIZE ? (Size) MINBUFSIZE : (Size)PTRALIGN(size))
-#define SLockId           U8     /* lock type */
+#define SLockId           uint8_t     /* lock type */
 #define SInitLock(l, t)   ((*l) = ROK)
 #define SLock(l)          ((*l) = ROK)
 #define SUnlock(l)        ((*l) = ROK)
@@ -1933,10 +1933,10 @@
 #define OWNREGION DFLT_REGION     /* own region */ 
 
 /* lock data types */
-#define SsSemaId                        U8
-#define SLockId                         U8
+#define SsSemaId                        uint8_t
+#define SLockId                         uint8_t
 /* ssi_h_001.main_143: Additions */
-#define SLockInfo                       U8
+#define SLockInfo                       uint8_t
 
 /* basic lock types */
 #define SS_LOCK_MUTEX                   1
@@ -2144,17 +2144,17 @@
  * allocation/de-allocation from static memory pool 
  */
 #ifdef SS_HISTOGRAM_SUPPORT 
-#define SGetSBuf(region, pool, bufPtr, size) SGetSBufNew(region,pool,bufPtr,size, __LINE__, (U8*)__FILE__)
-#define SPutSBuf(region, pool, buf, size) SPutSBufNew(region, pool, buf, size, __LINE__, (U8*)__FILE__)
-#define SGetMsg(region, pool, mBufPtr) SGetMsgNew(region, pool, mBufPtr, __LINE__,  (U8*)__FILE__)
-#define SPutMsg(mBuf) SPutMsgNew(mBuf, __LINE__,  (U8*)__FILE__)
+#define SGetSBuf(region, pool, bufPtr, size) SGetSBufNew(region,pool,bufPtr,size, __LINE__, (uint8_t*)__FILE__)
+#define SPutSBuf(region, pool, buf, size) SPutSBufNew(region, pool, buf, size, __LINE__, (uint8_t*)__FILE__)
+#define SGetMsg(region, pool, mBufPtr) SGetMsgNew(region, pool, mBufPtr, __LINE__,  (uint8_t*)__FILE__)
+#define SPutMsg(mBuf) SPutMsgNew(mBuf, __LINE__,  (uint8_t*)__FILE__)
 #elif defined(SS_LIGHT_MEM_LEAK_STS)
-#define SGetSBuf(region, pool, bufPtr, size) SGetSBufNew(region,pool,bufPtr,size, __LINE__, (U8*)__func__)
-#define SGetMsg(region, pool, mBufPtr) SGetMsgNew(region, pool, mBufPtr, __LINE__, (U8*)__func__)
-#define SGetDBuf(region, pool, bufPtr) SGetDBufNew(region,pool,bufPtr, __LINE__, (U8*)__func__)
-#define SPutSBuf(region, pool, buf, size) SPutSBufNew(region, pool, buf, size, __LINE__, (U8 *)__func__)
-#define SPutMsg(mBuf) SPutMsgNew(mBuf, __LINE__,  (U8*)__func__)
-#define SPutDBuf(region, pool, buf) SPutDBufNew(region, pool, buf, __LINE__, (U8*)__func__)
+#define SGetSBuf(region, pool, bufPtr, size) SGetSBufNew(region,pool,bufPtr,size, __LINE__, (uint8_t*)__func__)
+#define SGetMsg(region, pool, mBufPtr) SGetMsgNew(region, pool, mBufPtr, __LINE__, (uint8_t*)__func__)
+#define SGetDBuf(region, pool, bufPtr) SGetDBufNew(region,pool,bufPtr, __LINE__, (uint8_t*)__func__)
+#define SPutSBuf(region, pool, buf, size) SPutSBufNew(region, pool, buf, size, __LINE__, (uint8_t *)__func__)
+#define SPutMsg(mBuf) SPutMsgNew(mBuf, __LINE__,  (uint8_t*)__func__)
+#define SPutDBuf(region, pool, buf) SPutDBufNew(region, pool, buf, __LINE__, (uint8_t*)__func__)
 #endif /* SS_HISTOGRAM_SUPPORT */
 /* ssi_h_001.main_142 Readwrite additions */
 /* ssi_h_001.main_144 Readwrite locks Guarded */
@@ -2365,7 +2365,7 @@
 #define GetTIMETICK() 0
 #endif
 #ifdef PHY_SHUTDOWN_ENABLE
-#define stop_printf(...) do {EXTERN U8 sndPhyShutDwn;printf(__VA_ARGS__); mtStopHndlr(); sndPhyShutDwn = 1;} while (0)
+#define stop_printf(...) do {EXTERN uint8_t sndPhyShutDwn;printf(__VA_ARGS__); mtStopHndlr(); sndPhyShutDwn = 1;} while (0)
 #else
 #define stop_printf(...) do {printf(__VA_ARGS__); mtStopHndlr(); exit(-1);} while (0)
 #endif
@@ -2389,7 +2389,7 @@
 #ifdef MS_MUBUF_CORRUPTION /* Should be enabled when debugging mbuf corruption */
 #define MS_BUF_ADD_CALLER()\
 {\
-   extern U32 cmFreeCaller[4];\
+   extern uint32_t cmFreeCaller[4];\
    if(cmFreeCaller[MxGetCpuID()] == NULLP)\
       cmFreeCaller[MxGetCpuID()] = __return_address()-4;\
 }

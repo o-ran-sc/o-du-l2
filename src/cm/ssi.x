@@ -42,7 +42,7 @@ extern "C" {
 
 typedef S16 Status;               /* status */
 
-typedef U32 Ticks;                /* system clock ticks */
+typedef uint32_t Ticks;                /* system clock ticks */
 
 #ifdef LONG_MSG
 typedef S32 MsgLen;               /* message length */
@@ -53,13 +53,13 @@ typedef S16 MsgLen;               /* message length */
 typedef S16 Order;                /* message or queue order */
 
 #ifdef DOS
-typedef U16 Size;                 /* size (for number of bytes per region or per s-pool) */
+typedef uint16_t Size;                 /* size (for number of bytes per region or per s-pool) */
 #else
-typedef U32 Size;                 /* size (for number of bytes per region or per s-pool) */
+typedef uint32_t Size;                 /* size (for number of bytes per region or per s-pool) */
 typedef S32 PtrOff;               /* signed pointer offset */
 #endif
 
-typedef U32 QLen;                 /* queue length */
+typedef uint32_t QLen;                 /* queue length */
 
 typedef QLen BufQLen;             /* buffer queue length */
 
@@ -67,18 +67,18 @@ typedef S16 RegSize;              /* region size (for number of regions per proc
 
 typedef S16 DPoolSize;            /* dynamic pool size (for number of buffers per d-pool) */
 
-typedef U16 Random;               /* random number */
+typedef uint16_t Random;               /* random number */
 
 typedef S16 Seq;                  /* sequence */
 /* ssi_x_001.main_64 Additions */
-typedef U32 CoreId;               /* core id */
+typedef uint32_t CoreId;               /* core id */
 
 /* Error */
-typedef U32 ErrCls;               /* Error Class */
+typedef uint32_t ErrCls;               /* Error Class */
 
-typedef U32 ErrCode;              /* Error Code  */
+typedef uint32_t ErrCode;              /* Error Code  */
 
-typedef U32 ErrVal;               /* Error Value */
+typedef uint32_t ErrVal;               /* Error Value */
 
 typedef S16 VectNmb;              /* vector number */
 
@@ -161,9 +161,9 @@ struct ss_buffer                  /* buffer - typdef'd earlier */
          MsgLen msgLen;           /* message length */
          S16 refCnt;              /* reference count */
          Pst pst;                 /* post (optional) */
-         U32 wsU32[2];            /* workspace unsigned 32 bit values (optional) */
-         U16 wsU16[1];            /* workspace unsigned 16 bit values (optional) */
-         U8  wsU8[2];             /* workspace unsigned 8 bit values (optional) */
+         uint32_t wsuint32[2];            /* workspace unsigned 32 bit values (optional) */
+         uint16_t wsuint16[1];            /* workspace unsigned 16 bit values (optional) */
+         uint8_t  wsuint8[2];             /* workspace unsigned 8 bit values (optional) */
       } msg;                      /* message buffer */
   
       struct
@@ -244,7 +244,7 @@ typedef struct ss_dat             /* data buffer */
    MsgLen endIdx;                 /* end index (2b) */
    MsgLen size;                   /* size (2b) */
    Pool pool;                     /* size (1b); Not used for MOS as of now */
-   U8 spare;                      /* spare for alignment (1b) */
+   uint8_t spare;                      /* spare for alignment (1b) */
    Data data[DSIZE];              /* data (4b) */
 } Dat;
 
@@ -255,7 +255,7 @@ typedef struct ss_msg             /* message buffer */
    Buffer *nxtDBuf;               /* next DBuf */
    MsgLen msgLen;                 /* message length */
    Pool pool;                     /* size (1b); Not used for MOS as of now */
-   U8 spare;                      /* spare for alingment */
+   uint8_t spare;                      /* spare for alingment */
 } Msg;
   
 /* buffer - typedef'd earlier */
@@ -264,8 +264,8 @@ struct ss_buffer                  /* buffer - typedef'd earlier */
 {
    DChn dChn;                     /* dynamic chain */
    S8 bufType;                    /* buffer type */
-   U8 spare1;                     /* spare for alignment */
-   U16 spare2;                    /* spare for alignment */
+   uint8_t spare1;                     /* spare for alignment */
+   uint16_t spare2;                    /* spare for alignment */
    union {
       Dat dat;                    /* data buffer */
       Msg msg;                    /* message buffer */
@@ -279,8 +279,8 @@ struct sBuf                       /* static buffer - typedef'd earlier */
    SChn sChn;                     /* static chain */
    Size size;                     /* size */
    S8 bufType;                    /* buffer type */
-   U8 spare1;                     /* spare 1 */
-   U16 spare2;                    /* spare 2 */
+   uint8_t spare1;                     /* spare 1 */
+   uint16_t spare2;                    /* spare 2 */
 };
 
 EXTERN  S16 msOptInd;
@@ -380,10 +380,10 @@ struct ss_buffer                  /* buffer - typedef'd earlier */
 {
    Buffer *fwd;                   /* forward chain pointer for queues */
    Buffer *bck;                   /* backward chain pointer for queues */
-   U16 mPid;                      /* VRTXsa memory partition ID */
+   uint16_t mPid;                      /* VRTXsa memory partition ID */
    S16 start;                     /* starting index of message in byte array */
    S16 end;                       /* ending index of message in byte array */
-   U16 status;                    /* buffer status */
+   uint16_t status;                    /* buffer status */
 };
 
 /* chain */
@@ -446,7 +446,7 @@ typedef struct ss_dat             /* data buffer */
    MsgLen endIdx;                 /* end index */
    MsgLen size;                   /* size */
    Pool pool;                     /* pool id */
-   U8 spare;                      /* spare */
+   uint8_t spare;                      /* spare */
    Data *data;                    /* data */
 } Dat;
 
@@ -456,7 +456,7 @@ typedef struct ss_msg             /* message buffer */
    Buffer *nxtDBuf;               /* next DBuf */
    MsgLen msgLen;                 /* message length */
    Pool pool;                     /* pool id */
-   U8 spare;                      /* spare */
+   uint8_t spare;                      /* spare */
 } Msg;
   
 /* buffer - typedef'd earlier */
@@ -465,8 +465,8 @@ struct ss_buffer                  /* buffer - typedef'd earlier */
 {
    DChn dChn;                     /* dynamic chain */
    S8 bufType;                    /* buffer type */
-   U8 spare1;                     /* spare for alignment */
-   U16 spare2;                    /* spare for alignment */
+   uint8_t spare1;                     /* spare for alignment */
+   uint16_t spare2;                    /* spare for alignment */
    union {
       Dat dat;                    /* data buffer */
       Msg msg;                    /* message buffer */
@@ -530,7 +530,7 @@ struct ss_queue                   /* queue - typdef'd earlier */
 {
    RyDChn dChn;
    QLen crntSize;                 /* current size */
-   U16  ryChanId;                 /* relay channel Id */
+   uint16_t  ryChanId;                 /* relay channel Id */
 };
 
 /* buffer - typedef'd earlier */
@@ -610,7 +610,7 @@ typedef struct ss_dat             /* data buffer */
    MsgLen endIdx;                 /* end index */
    MsgLen size;                   /* size */
    Pool pool;                     /* pool id */
-   U8 spare;                      /* spare */
+   uint8_t spare;                      /* spare */
    Data *data;                    /* data */
 } Dat;
 
@@ -620,7 +620,7 @@ typedef struct ss_msg             /* message buffer */
    Buffer *nxtDBuf;               /* next DBuf */
    MsgLen msgLen;                 /* message length */
    Pool pool;                     /* pool id */
-   U8 spare;                      /* spare */
+   uint8_t spare;                      /* spare */
 } Msg;
   
 /* buffer - typedef'd earlier */
@@ -629,8 +629,8 @@ struct ss_buffer                  /* buffer - typedef'd earlier */
 {
    DChn dChn;                     /* dynamic chain */
    S8 bufType;                    /* buffer type */
-   U8 spare1;                     /* spare for alignment */
-   U16 spare2;                    /* spare for alignment */
+   uint8_t spare1;                     /* spare for alignment */
+   uint16_t spare2;                    /* spare for alignment */
    union {
       Dat dat;                    /* data buffer */
       Msg msg;                    /* message buffer */
@@ -644,8 +644,8 @@ struct sBuf
    SChn sChn;                     /* static chain */
    Size size;                     /* size */
    S8 bufType;                    /* buffer type */
-   U8 spare1;                     /* spare 1 */
-   U16 spare2;                    /* spare 2 */
+   uint8_t spare1;                     /* spare 1 */
+   uint16_t spare2;                    /* spare 2 */
 };
 
 typedef S32 MtRwLockId;
@@ -687,9 +687,9 @@ struct ss_buffer                  /* buffer - typedef'd earlier */
 /* task related stuff */
 /* data range modified */
 #ifndef SS_MULTIPLE_PROCS
-typedef U8  SSTskId;             /* System Task Id */
+typedef uint8_t  SSTskId;             /* System Task Id */
 #else /* SS_MULTIPLE_PROCS */
-typedef U16 SSTskId;             /* System Task Id */
+typedef uint16_t SSTskId;             /* System Task Id */
 #endif /* SS_MULTIPLE_PROCS */
 
 typedef S32 SSTskPrior;          /* System Task Priority */
@@ -709,9 +709,9 @@ EXTERN  S16 msArgc;
 /* task related stuff */
 /* data range modified */
 #ifndef SS_MULTIPLE_PROCS
-typedef U8  SSTskId;             /* System Task Id */
+typedef uint8_t  SSTskId;             /* System Task Id */
 #else /* SS_MULTIPLE_PROCS */
-typedef U16 SSTskId;             /* System Task Id */
+typedef uint16_t SSTskId;             /* System Task Id */
 #endif /* SS_MULTIPLE_PROCS */
 
 typedef S32 SSTskPrior;          /* System Task Priority */
@@ -730,8 +730,8 @@ struct ssmsgb
    struct ssmsgb        *b_next;     /* next message */
    struct ssmsgb        *b_prev;     /* previous message */
    struct ssmsgb        *b_cont;     /* next message block */
-   U8                   *b_rptr;     /* 1st unread data byte of buffer */
-   U8                   *b_wptr;     /* 1st unwritten data byte of buffer */
+   uint8_t                   *b_rptr;     /* 1st unread data byte of buffer */
+   uint8_t                   *b_wptr;     /* 1st unwritten data byte of buffer */
    struct ssdatab       *b_datap;    /* pointer to data block */
 };
 
@@ -748,7 +748,7 @@ typedef struct ssQueue
 /* Memory CTL operations structure */
 typedef struct sMemCtl
 {
-   U8 op;                           /* operation */
+   uint8_t op;                           /* operation */
 
    union
    {
@@ -773,28 +773,28 @@ typedef struct sMemCtl
 /* ssi_x_001.main_57 : Additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
 #ifdef SSI_DEBUG_LEVEL1
-typedef S16 (*SsAlloc) ARGS((Void *, Size *, U32, Data **, U32, U32, U8*, U8, Bool));
+typedef S16 (*SsAlloc) ARGS((Void *, Size *, uint32_t, Data **, uint32_t, uint32_t, uint8_t*, uint8_t, Bool));
 #else
-typedef S16 (*SsAlloc) ARGS((Void *, Size *, U32, Data **, U32, U8*, U8, Bool));
+typedef S16 (*SsAlloc) ARGS((Void *, Size *, uint32_t, Data **, uint32_t, uint8_t*, uint8_t, Bool));
 #endif /* SSI_DEBUG_LEVEL1 */
-typedef S16 (*SsFree) ARGS((Void *, Data *, Size, U32, U8*, U8, Bool));
+typedef S16 (*SsFree) ARGS((Void *, Data *, Size, uint32_t, uint8_t*, uint8_t, Bool));
 typedef S16 (*SsCtl) ARGS((Void *, Event, SMemCtl *));
 #elif defined(SS_LIGHT_MEM_LEAK_STS)
-typedef S16 (*SsAlloc) ARGS((Void *, Size *, U32 , Data **, U32, U32 , U8 *));
-typedef S16 (*SsFree) ARGS((Void *, Data *, Size, U32, U8 *));
+typedef S16 (*SsAlloc) ARGS((Void *, Size *, uint32_t , Data **, uint32_t, uint32_t , uint8_t *));
+typedef S16 (*SsFree) ARGS((Void *, Data *, Size, uint32_t, uint8_t *));
 typedef S16 (*SsCtl) ARGS((Void *, Event, SMemCtl *));
 #else
 #ifdef SSI_DEBUG_LEVEL1
-typedef S16 (*SsAlloc) ARGS((Void *, Size *, U32, Data **, U32));
+typedef S16 (*SsAlloc) ARGS((Void *, Size *, uint32_t, Data **, uint32_t));
 #else
 #ifdef T2K_MEM_LEAK_DBG
-typedef S16 (*SsAlloc) ARGS((Void *, Size *, U32, Data **,char*, U32));
+typedef S16 (*SsAlloc) ARGS((Void *, Size *, uint32_t, Data **,char*, uint32_t));
 #else
-typedef S16 (*SsAlloc) ARGS((Void *, Size *, U32, Data **));
+typedef S16 (*SsAlloc) ARGS((Void *, Size *, uint32_t, Data **));
 #endif
 #endif /* SSI_DEBUG_LEVEL1 */
 #ifdef T2K_MEM_LEAK_DBG
-typedef S16 (*SsFree) ARGS((Void *, Data *, Size,char*, U32));
+typedef S16 (*SsFree) ARGS((Void *, Data *, Size,char*, uint32_t));
 #else
 typedef S16 (*SsFree) ARGS((Void *, Data *, Size));
 #endif
@@ -806,7 +806,7 @@ typedef S16 (*SsCtl) ARGS((Void *, Event, SMemCtl *));
 typedef struct sRegInfo
 {
    Void         *regCb;            /* region control block pointer */
-   U32          flags;             /* region characteristics flags  */
+   uint32_t          flags;             /* region characteristics flags  */
 /* ssi_x_001.main_64 Additions */
 #ifdef SS_CAVIUM
    cvmx_arena_list_t  regArena;    /* arena for the region */
@@ -858,7 +858,7 @@ typedef S32     SCondId;           /* condition Id */
 /*
 typedef struct entInfo
 {
-   U8                 entid;
+   uint8_t                 entid;
 }EntInfo;
 
 typedef struct secondIndex
@@ -877,7 +877,7 @@ typedef struct firstIndex
 
 /* procId and control block added */ 
 #ifndef SS_MULTIPLE_PROCS
-typedef S16  (*PAIFS16) ARGS((Ent ent,Inst inst,Region region,Reason reason ));
+typedef uint8_t  (*PAIFS16) ARGS((Ent ent,Inst inst,Region region,Reason reason ));
 /* ssi_x_001.main_54 */
 /* ssi_x_001.main_53 */
 /* ssi_x_001.main_69: Removed the SS_MT_TMR guard from PAIFTMRS16
@@ -885,7 +885,7 @@ typedef S16  (*PAIFS16) ARGS((Ent ent,Inst inst,Region region,Reason reason ));
 
 typedef S16  (*PAIFTMRS16) ARGS((Ent ent, Inst inst));
 #else
-typedef S16  (*PAIFS16) ARGS((ProcId proc, 
+typedef uint8_t (*PAIFS16) ARGS((ProcId proc, 
                               Ent ent,
                               Inst inst,
                               Region region,
@@ -918,7 +918,7 @@ struct uProc
    ProcId low;                        /* procId low value */
    ProcId high;                       /* procId high value */
    ActvTsk actvTsk;                   /* activation function for drvr task */ 
-   U16 isFlag;                        /* interrupt service flag */
+   uint16_t isFlag;                        /* interrupt service flag */
    ISTsk isTsk;                       /* interrupt service task */
 };
  
@@ -936,22 +936,22 @@ EXTERN  uint8_t tst ARGS((void ));
 EXTERN  S16 rdConQ ARGS((Data data));
 
 EXTERN  S16 SPkS8 ARGS((S8 val,Buffer *mBuf));
-EXTERN  S16 oduUnpackUInt8 ARGS((U8 val,Buffer *mBuf));
+EXTERN  S16 oduUnpackUInt8 ARGS((uint8_t val,Buffer *mBuf));
 EXTERN  S16 SPkS16 ARGS((S16 val,Buffer *mBuf));
-EXTERN  S16 oduUnpackUInt16 ARGS((U16 val,Buffer *mBuf));
+EXTERN  S16 oduUnpackUInt16 ARGS((uint16_t val,Buffer *mBuf));
 EXTERN  S16 SPkS32 ARGS((S32 val,Buffer *mBuf));
-EXTERN  S16 oduUnpackUInt32 ARGS((U32 val,Buffer *mBuf));
+EXTERN  S16 oduUnpackUInt32 ARGS((uint32_t val,Buffer *mBuf));
 /* ssi_x_001.main_49 : added packing of F32 and F64*/
 #ifdef SS_FLOAT
 EXTERN  S16 SPkF32 ARGS((F32 val,Buffer *mBuf));
 EXTERN  S16 SPkF64 ARGS((F64 val,Buffer *mBuf));
 #endif /* SS_FLOAT */
 EXTERN  S16 SUnpkS8 ARGS((S8 *val,Buffer *mBuf));
-EXTERN  S16 oduPackUInt8 ARGS((U8 *val,Buffer *mBuf));
+EXTERN  S16 oduPackUInt8 ARGS((uint8_t *val,Buffer *mBuf));
 EXTERN  S16 SUnpkS16 ARGS((S16 *val,Buffer *mBuf));
-EXTERN  S16 oduPackUInt16 ARGS((U16 *val,Buffer *mBuf));
+EXTERN  S16 oduPackUInt16 ARGS((uint16_t *val,Buffer *mBuf));
 EXTERN  S16 SUnpkS32 ARGS((S32 *val,Buffer *mBuf));
-EXTERN  S16 oduPackUInt32 ARGS((U32 *val,Buffer *mBuf));
+EXTERN  S16 oduPackUInt32 ARGS((uint32_t *val,Buffer *mBuf));
 /* ssi_x_001.main_49 : added unpacking of F32 and F64*/
 #ifdef SS_FLOAT
 EXTERN  S16 SUnpkF32 ARGS((F32 *val,Buffer *mBuf));
@@ -977,15 +977,15 @@ EXTERN  S16 SRemQueue ARGS((Buffer **bufPtr,Queue *q,QLen idx));
 #ifdef T2K_MEM_LEAK_DBG
 #define SGetDBuf(region,pool,buf) SGetDBufNew(region,pool,buf,__FILE__,__LINE__)
 #define SPutDBuf(region,pool,buf) SPutDBufNew(region,pool,buf,file,line)
-EXTERN  S16 SGetDBufNew ARGS((Region region,Pool pool,Buffer * *bufPtr,char*,U32));
-EXTERN  S16 SPutDBufNew ARGS((Region region,Pool pool,Buffer *buf,char*,U32));
+EXTERN  S16 SGetDBufNew ARGS((Region region,Pool pool,Buffer * *bufPtr,char*,uint32_t));
+EXTERN  S16 SPutDBufNew ARGS((Region region,Pool pool,Buffer *buf,char*,uint32_t));
 EXTERN  S16 SAttachPtrToBufNew ARGS((Region   region, Pool     pool, Data
-         *ptr, MsgLen   totalLen, Buffer** mBuf, char* file, U32 line));
+         *ptr, MsgLen   totalLen, Buffer** mBuf, char* file, uint32_t line));
 #define SAttachPtrToBuf(region,pool,ptr,totalLen,mBuf) SAttachPtrToBufNew(region,pool,ptr,totalLen,mBuf,__FILE__,__LINE__)
 #define SPutZbcDBuf(region,buf) SPutZbcDBufNew(region,buf,__FILE__,__LINE__)
 #elif SS_LIGHT_MEM_LEAK_STS
-EXTERN  S16 SGetDBufNew ARGS((Region region,Pool pool,Buffer * *bufPtr,U32 line,U8 *fnName));
-EXTERN  S16 SPutDBufNew ARGS((Region region,Pool pool,Buffer *buf, U32 line, U8 *fnName));
+EXTERN  S16 SGetDBufNew ARGS((Region region,Pool pool,Buffer * *bufPtr,uint32_t line,uint8_t *fnName));
+EXTERN  S16 SPutDBufNew ARGS((Region region,Pool pool,Buffer *buf, uint32_t line, uint8_t *fnName));
 #else
 
 EXTERN  S16 SGetDBuf ARGS((Region region,Pool pool,Buffer * *bufPtr));
@@ -995,11 +995,11 @@ EXTERN  S16 SPutDBuf ARGS((Region region,Pool pool,Buffer *buf));
 #ifdef T2K_MEM_LEAK_DBG
 #define SGetDBuf(region,pool,buf) SGetDBufNew(region,pool,buf,__FILE__,__LINE__)
 #define SPutDBuf(region,pool,buf) SPutDBufNew(region,pool,buf,__FILE__,__LINE__)
-EXTERN  S16 SGetDBufNew ARGS((Region region,Pool pool,Buffer * *bufPtr,char*,U32));
-EXTERN  S16 SPutDBufNew ARGS((Region region,Pool pool,Buffer *buf,char*,U32));
+EXTERN  S16 SGetDBufNew ARGS((Region region,Pool pool,Buffer * *bufPtr,char*,uint32_t));
+EXTERN  S16 SPutDBufNew ARGS((Region region,Pool pool,Buffer *buf,char*,uint32_t));
 #elif SS_LIGHT_MEM_LEAK_STS
-EXTERN  S16 SGetDBufNew ARGS((Region region,Pool pool,Buffer * *bufPtr,U32 line,U8 *fnName));
-EXTERN  S16 SPutDBufNew ARGS((Region region,Pool pool,Buffer *buf, U32 line, U8 *fnName));
+EXTERN  S16 SGetDBufNew ARGS((Region region,Pool pool,Buffer * *bufPtr,uint32_t line,uint8_t *fnName));
+EXTERN  S16 SPutDBufNew ARGS((Region region,Pool pool,Buffer *buf, uint32_t line, uint8_t *fnName));
 #else
 EXTERN  S16 SGetDBuf ARGS((Region region,Pool pool,Buffer * *bufPtr));
 EXTERN  S16 SPutDBuf ARGS((Region region,Pool pool,Buffer *buf));
@@ -1013,24 +1013,24 @@ EXTERN Void *ssGetIccHdl ARGS((Region region));
 /* ssi_x_001.main_57 : Additions */
 /* ssi_x_001.main_59 : Added compile time flag */
 #ifdef SS_LIGHT_MEM_LEAK_STS
-EXTERN  S16 SGetMsgNew ARGS((Region region, Pool pool, Buffer * *mBufPtr, U32 line, U8 *fnName));
-EXTERN  S16 SGetSBufNew ARGS((Region region,Pool pool, Data * *bufPtr, Size size, U32 line, U8* fnName));
-EXTERN  S16 SPutMsgNew ARGS((Buffer *mBuf, U32 line,  U8 *fnName));
-EXTERN  S16 SPutSBufNew ARGS((Region region, Pool pool, Data *buf, Size size, U32 line, U8 *fnName));
+EXTERN  S16 SGetMsgNew ARGS((Region region, Pool pool, Buffer * *mBufPtr, uint32_t line, uint8_t *fnName));
+EXTERN  S16 SGetSBufNew ARGS((Region region,Pool pool, Data * *bufPtr, Size size, uint32_t line, uint8_t* fnName));
+EXTERN  S16 SPutMsgNew ARGS((Buffer *mBuf, uint32_t line,  uint8_t *fnName));
+EXTERN  S16 SPutSBufNew ARGS((Region region, Pool pool, Data *buf, Size size, uint32_t line, uint8_t *fnName));
 #else /*SS_LIGHT_MEM_LEAK_STS */
 #ifdef SS_HISTOGRAM_SUPPORT 
-EXTERN  S16 SPutMsgNew ARGS((Buffer *mBuf, U32 line,  U8 *fileName));
-EXTERN  S16 SGetMsgNew ARGS((Region region, Pool pool, Buffer * *mBufPtr, U32 line,  U8 *fileName));
-EXTERN  S16 SGetSBufNew ARGS((Region region,Pool pool, Data * *bufPtr, Size size, U32 line, U8 *fileName));
-EXTERN  S16 SPutSBufNew ARGS((Region region, Pool pool, Data *buf, Size size, U32 line, U8 *fileName));
+EXTERN  S16 SPutMsgNew ARGS((Buffer *mBuf, uint32_t line,  uint8_t *fileName));
+EXTERN  S16 SGetMsgNew ARGS((Region region, Pool pool, Buffer * *mBufPtr, uint32_t line,  uint8_t *fileName));
+EXTERN  S16 SGetSBufNew ARGS((Region region,Pool pool, Data * *bufPtr, Size size, uint32_t line, uint8_t *fileName));
+EXTERN  S16 SPutSBufNew ARGS((Region region, Pool pool, Data *buf, Size size, uint32_t line, uint8_t *fileName));
 #else
 /*ssi_x_001.main_67 : RMIOS specific changes*/
 #ifndef SS_RMIOS
 #ifdef T2K_MEM_LEAK_DBG
 #define SPutMsg(mBuf) SPutMsgNew(mBuf,__FILE__,__LINE__)
 #define SGetMsg(region,pool,mBuf) SGetMsgNew(region,pool,mBuf,__FILE__,__LINE__)
-EXTERN  S16 SPutMsgNew ARGS((Buffer *mBuf,char*, U32));
-EXTERN  S16 SGetMsgNew ARGS((Region region, Pool pool, Buffer * *mBufPtr, char*,U32));
+EXTERN  S16 SPutMsgNew ARGS((Buffer *mBuf,char*, uint32_t));
+EXTERN  S16 SGetMsgNew ARGS((Region region, Pool pool, Buffer * *mBufPtr, char*,uint32_t));
 #else
 EXTERN  S16 SPutMsg ARGS((Buffer *mBuf));
 EXTERN  S16 SGetMsg ARGS((Region region, Pool pool, Buffer * *mBufPtr));
@@ -1043,11 +1043,11 @@ EXTERN  S16 SGetMsgRmi ARGS((char *file, int line, Region region, Pool pool, Buf
 #endif
 #if (defined(SSI_STATIC_MEM_LEAK_DETECTION)|| defined(T2K_MEM_LEAK_DBG))
 #define SGetSBuf(region,pool,bufPtr,size) SGetSBuf1(region,pool,bufPtr,size,__FILE__,__LINE__)
-EXTERN  S16 SGetSBuf1 ARGS((Region region,Pool pool, Data * *bufPtr, Size size, char* file, U32 line));
+EXTERN  S16 SGetSBuf1 ARGS((Region region,Pool pool, Data * *bufPtr, Size size, char* file, uint32_t line));
 EXTERN void DumpStaticMemLeakFiles ARGS((void));
 EXTERN void DumpT2kMemLeakInfoToFile ARGS((void)); 
 #define SPutSBuf(region,pool,buf,size) SPutSBuf1(region,pool,buf,size,__FILE__,__LINE__)
-EXTERN  S16 SPutSBuf1 ARGS((Region region, Pool pool, Data *buf, Size size, char*, U32));
+EXTERN  S16 SPutSBuf1 ARGS((Region region, Pool pool, Data *buf, Size size, char*, uint32_t));
 #else
 EXTERN  S16 SGetSBuf ARGS((Region region,Pool pool, Data * *bufPtr, Size size));
 EXTERN  S16 SPutSBuf ARGS((Region region, Pool pool, Data *buf, Size size));
@@ -1058,10 +1058,10 @@ EXTERN  S16 SPutSBuf ARGS((Region region, Pool pool, Data *buf, Size size));
 #ifdef T2K_MEM_LEAK_DBG
 #define SGetSBufWls(region,pool,bufPtr,size) SGetSBufWls1(region,pool,bufPtr,size,__FILE__,__LINE__) 
 #define SPutSBufWls(region,pool,bufPtr,size) SPutSBufWls1(region,pool,bufPtr,size,__FILE__,__LINE__) 
-EXTERN S16 SPutSBufWls1(Region region, Pool pool, Data *ptr, Size size,char* file, U32 line);
-EXTERN S16 SGetSBufWls1(Region region, Pool pool, Data **ptr, Size size,char* file, U32 line);  
+EXTERN S16 SPutSBufWls1(Region region, Pool pool, Data *ptr, Size size,char* file, uint32_t line);
+EXTERN S16 SGetSBufWls1(Region region, Pool pool, Data **ptr, Size size,char* file, uint32_t line);  
 #define SAttachWlsPtrToMBuf(region,pool,bufPtr,rPtr,size,pLen,mBuf) SAttachWlsPtrToMBuf1(region,pool,bufPtr,rPtr,size,pLen,mBuf,__FILE__,__LINE__)
-EXTERN S16 SAttachWlsPtrToMBuf1(Region region, Pool pool, Data *ptr, Data *readPtr, MsgLen totalLen, MsgLen ptrLen, Buffer** mBuf,char* file, U32 line);
+EXTERN S16 SAttachWlsPtrToMBuf1(Region region, Pool pool, Data *ptr, Data *readPtr, MsgLen totalLen, MsgLen ptrLen, Buffer** mBuf,char* file, uint32_t line);
 #define SAttachPtrToMBuf(region,pool,bufPtr,size,pLen,mBuf) SAttachPtrToMBuf1(region,pool,bufPtr,size,pLen,mBuf,__FILE__,__LINE__)
 
 #else
@@ -1070,8 +1070,8 @@ EXTERN S16 SGetSBufWls(Region region, Pool pool, Data **ptr, Size size);
 EXTERN S16 SAttachWlsPtrToMBuf(Region region, Pool pool, Data *ptr, Data *readPtr, MsgLen totalLen, MsgLen ptrLen, Buffer** mBuf);
 #endif
 #endif
-EXTERN  S16 SGetStaticBuffer ARGS((Region region,Pool pool, Data * *bufPtr, Size size, U8 memType));
-EXTERN  S16 SPutStaticBuffer ARGS((Region region, Pool pool, Data *buf, Size size, U8 memType));
+EXTERN  S16 SGetStaticBuffer ARGS((Region region,Pool pool, Data * *bufPtr, Size size, uint8_t memType));
+EXTERN  S16 SPutStaticBuffer ARGS((Region region, Pool pool, Data *buf, Size size, uint8_t memType));
 /* ssi_x_001.main_65: Additions */
 #ifdef SS_SEUM_CAVIUM
 EXTERN S16 ssInitRcvWork ARGS((void));
@@ -1099,8 +1099,8 @@ EXTERN  S16 SRemPstMsg ARGS((Data *dataPtr,Buffer *mBuf));
 #define SAddPreMsgMult(src, cnt, mBuf) SAddPreMsgMult1(src, cnt, mBuf, __FILE__,__LINE__)
 #define SAddPstMsgMult(src, cnt, mBuf) SAddPstMsgMult1(src, cnt, mBuf, __FILE__,__LINE__)
 
-EXTERN  S16 SAddPreMsgMult1 ARGS((Data *src,MsgLen cnt,Buffer *mBuf, char *file, U32 line));
-EXTERN  S16 SAddPstMsgMult1 ARGS((Data *src,MsgLen cnt,Buffer *mBuf, char *file, U32 line));
+EXTERN  S16 SAddPreMsgMult1 ARGS((Data *src,MsgLen cnt,Buffer *mBuf, char *file, uint32_t line));
+EXTERN  S16 SAddPstMsgMult1 ARGS((Data *src,MsgLen cnt,Buffer *mBuf, char *file, uint32_t line));
 #else
 EXTERN  S16 SAddPreMsgMult ARGS((Data *src,MsgLen cnt,Buffer *mBuf));
 EXTERN  S16 SAddPstMsgMult ARGS((Data *src,MsgLen cnt,Buffer *mBuf));
@@ -1116,7 +1116,7 @@ EXTERN  S16 SFndLenMsg ARGS((Buffer *mBuf,MsgLen *lngPtr));
 EXTERN  S16 SCatMsg ARGS((Buffer *mBuf1,Buffer *mBuf2,Order order));
 #ifdef T2K_MEM_LEAK_DBG
 #define SSegMsg(mBuf1, idx, mBuf2) SSegMsgNew(mBuf1, idx, mBuf2, __FILE__, __LINE__)
-EXTERN  S16 SSegMsgNew ARGS((Buffer *mBuf1,MsgLen idx,Buffer **mBuf2,char*,U32));
+EXTERN  S16 SSegMsgNew ARGS((Buffer *mBuf1,MsgLen idx,Buffer **mBuf2,char*,uint32_t));
 #else
 EXTERN  S16 SSegMsg ARGS((Buffer *mBuf1,MsgLen idx,Buffer **mBuf2));
 #endif
@@ -1130,9 +1130,9 @@ EXTERN  S16 SCompressMsg ARGS((Buffer *mBuf));
 #define SAddMsgRef(mBuf,region,pool,dstBuf) SAddMsgRefNew(mBuf,region,pool,dstBuf,__FILE__,__LINE__)
 #define SCpyMsgMsg(mBuf,region,pool, dstBuf) SCpyMsgMsgNew(mBuf,region,pool, dstBuf, __FILE__, __LINE__)
 EXTERN  S16 SAddMsgRefNew ARGS((Buffer *mBuf, Region region, Pool pool, 
-            Buffer **dstBuf,char*,U32));
+            Buffer **dstBuf,char*,uint32_t));
 EXTERN  S16 SCpyMsgMsgNew ARGS((Buffer *mBuf, Region region, Pool pool, 
-            Buffer **dstBuf,char* , U32));
+            Buffer **dstBuf,char* , uint32_t));
 #else
 EXTERN  S16 SCpyMsgMsg ARGS((Buffer *mBuf, Region region, Pool pool, 
             Buffer **dstBuf));
@@ -1146,7 +1146,7 @@ EXTERN Void SIncMsgLen ARGS((Buffer *mBuf));
 #endif
 #endif
 EXTERN  S16 SChkRes ARGS((Region region,Pool pool,Status *status));
-EXTERN  S16 SChkResUtl ARGS((Region region,U8 *wSum));
+EXTERN  S16 SChkResUtl ARGS((Region region,uint8_t *wSum));
 EXTERN  S16 SSetDateTime ARGS((DateTime *dt));
 EXTERN  S16 SGetDateTime ARGS((DateTime *dt));
 #ifdef L2_OPTMZ
@@ -1159,14 +1159,14 @@ EXTERN  S16 SGetEpcTime ARGS((EpcTime *et));
 /* ssi_x_001.main_48: Added Timestamp changes */
 EXTERN  S16 SGetTimeStamp ARGS(( S8    *ts));
 EXTERN  S16 SGetSysTime ARGS((Ticks *sysTime));
-EXTERN  S16 SGetRefTime ARGS((U32 refTime, U32 *sec, U32 *usec));
+EXTERN  S16 SGetRefTime ARGS((uint32_t refTime, uint32_t *sec, uint32_t *usec));
 EXTERN  S16 SRandom ARGS((Random *value));
 EXTERN  S16 SError ARGS((Seq seq,Reason reason));
 EXTERN  Void SLogError ARGS((Ent ent, Inst inst, ProcId procId, Txt *file,
                        S32 line, ErrCls errCls, ErrCode errCode,
                        ErrVal errVal, Txt *errDesc));
 /* ssi_x_001.main_49 : added prototype for SGetSystemTsk() */
-EXTERN U32 SGetSystemTsk ARGS ((Void));
+EXTERN uint32_t SGetSystemTsk ARGS ((Void));
 /* changes to support multiple processors in single SSI */
 /* multiple proc id changes: 
    these functions are not supported with multiple proc Ids */ 
@@ -1254,14 +1254,14 @@ typedef S8 SsAffinityMode;
 
 
 typedef struct {
-  U32 numCores;                   /* total number of cores available */
-  U32 threadsPerCore;             /* total number of threads available per core */
-  U32 threadRegister[SS_MAX_CORES]; /* available threads per core */
+  uint32_t numCores;                   /* total number of cores available */
+  uint32_t threadsPerCore;             /* total number of threads available per core */
+  uint32_t threadRegister[SS_MAX_CORES]; /* available threads per core */
 } SCpuInfo;
 
 EXTERN S16 SRegCpuInfo ARGS((SCpuInfo *cpuInfo));
-EXTERN S16 SSetAffinity ARGS((SSTskId *tskId, SsAffinityMode mode, U32 coreId, SSTskId *tskAssociatedTskId));
-EXTERN S16 SGetAffinity ARGS((SSTskId *tskId, U32 *coreId));
+EXTERN S16 SSetAffinity ARGS((SSTskId *tskId, SsAffinityMode mode, uint32_t coreId, SSTskId *tskAssociatedTskId));
+EXTERN S16 SGetAffinity ARGS((SSTskId *tskId, uint32_t *coreId));
 
 #endif /* SS_MULTICORE_SUPPORT || SS_AFFINITY_SUPPORT*/
 
@@ -1276,14 +1276,14 @@ EXTERN S16 SRemDBufPre ARGS((Buffer *mBuf, Buffer **dBuf));
 EXTERN S16 SGetDataRx ARGS((Buffer *dBuf, MsgLen pad, Data **dat, MsgLen *mLen));
 EXTERN S16 SGetDataTx ARGS((Buffer *dBuf, Data **dat, MsgLen *mLen));
 EXTERN S16 SUpdMsg ARGS((Buffer *mBuf, Buffer *dBuf, MsgLen mLen));
-EXTERN S16 SCacheFlush ARGS( (U16 cache_type, Data *addr, Size size));
-EXTERN S16 SCacheInvalidate ARGS( (U16 cache_type, Data *addr, Size size));
+EXTERN S16 SCacheFlush ARGS( (uint16_t cache_type, Data *addr, Size size));
+EXTERN S16 SCacheInvalidate ARGS( (uint16_t cache_type, Data *addr, Size size));
 EXTERN S16 SAlignDBufEven ARGS((Buffer *dBuf));
-EXTERN S16 SAlignDBuf ARGS((Buffer *dBuf, U32 align));
+EXTERN S16 SAlignDBuf ARGS((Buffer *dBuf, uint32_t align));
 EXTERN S16 SInitNxtDBuf ARGS((Buffer *mBuf));
 EXTERN S16 SGetNxtDBuf ARGS((Buffer *mBuf, Buffer **dBuf));
 EXTERN S16 SChkNxtDBuf ARGS((Buffer *mBuf));
-EXTERN S16 SSetIntPend ARGS((U16 id, Bool flag));
+EXTERN S16 SSetIntPend ARGS((uint16_t id, Bool flag));
 EXTERN S16 SChkMsg ARGS((Buffer *mBuf));
 EXTERN  S16 SDeregInitTskTmr ARGS((Ent ent,Inst inst));
 EXTERN  S16 SExitTsk ARGS((void ));
@@ -1297,7 +1297,7 @@ EXTERN  S16 SPutVect ARGS((VectNmb vectNmb,PIF vectFnct));
 #ifdef WINNT_KERN
 EXTERN  S16 SPutIsrDpr ARGS((VectNmb vectNmb, Void *context, PIF isrFnct, 
                              PIF dprFnct));
-EXTERN  S16 SSyncInt   ARGS((U16 adapterNmb, PFVOID syncFnct, 
+EXTERN  S16 SSyncInt   ARGS((uint16_t adapterNmb, PFVOID syncFnct, 
                              Void *syncContext));
 #endif
 EXTERN  S16 SInitSema ARGS((Region region, Sema *sema));
@@ -1404,19 +1404,19 @@ EXTERN S16 SRegDynRegion ARGS((Region region, SRegInfo *regInfo));
 #ifndef SS_FAP
  /* ssi_x_001.main_57 : Additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
-EXTERN S16 SAlloc ARGS((Region region, Size *size, U32 flags, Data **ptr,U32 line, U8 *fileName, U8 entId));
-EXTERN S16 SFree ARGS((Region region, Data *ptr, Size size, U32 line, U8 *fileName, U8 entId));
+EXTERN S16 SAlloc ARGS((Region region, Size *size, uint32_t flags, Data **ptr,uint32_t line, uint8_t *fileName, uint8_t entId));
+EXTERN S16 SFree ARGS((Region region, Data *ptr, Size size, uint32_t line, uint8_t *fileName, uint8_t entId));
 #else
 #ifdef T2K_MEM_LEAK_DBG
 #define SAlloc(region,size,flags,ptr) SAllocNew(region,size,flags,ptr,file,line)
 #define SFree(region,ptr,size) SFreeNew(region,ptr,size,file,line)
-EXTERN S16 SAllocNew ARGS((Region region, Size *size, U32 flags, Data **ptr,char*,U32));
-EXTERN S16 SFreeNew ARGS((Region region, Data *ptr, Size size,char*,U32));
+EXTERN S16 SAllocNew ARGS((Region region, Size *size, uint32_t flags, Data **ptr,char*,uint32_t));
+EXTERN S16 SFreeNew ARGS((Region region, Data *ptr, Size size,char*,uint32_t));
 #elif defined(SS_LIGHT_MEM_LEAK_STS)
-EXTERN S16 SAlloc ARGS((Region region, Size *size, U32 flags, Data **ptr,U32 line, U8 *fnName));
-EXTERN S16 SFree ARGS((Region region, Data *ptr, Size size, U32 line, U8 *fnName));
+EXTERN S16 SAlloc ARGS((Region region, Size *size, uint32_t flags, Data **ptr,uint32_t line, uint8_t *fnName));
+EXTERN S16 SFree ARGS((Region region, Data *ptr, Size size, uint32_t line, uint8_t *fnName));
 #else
-EXTERN S16 SAlloc ARGS((Region region, Size *size, U32 flags, Data **ptr));
+EXTERN S16 SAlloc ARGS((Region region, Size *size, uint32_t flags, Data **ptr));
 EXTERN S16 SFree ARGS((Region region, Data *ptr, Size size));
 #endif
 #endif
@@ -1445,13 +1445,13 @@ EXTERN Void SExit         ARGS((void));
 EXTERN S16 SThreadYield  ARGS((void));
 #endif /* SS_OLD_THREAD */
 
-EXTERN S16 SInitLock     ARGS((SLockId *lock,U8 type));
+EXTERN S16 SInitLock     ARGS((SLockId *lock,uint8_t type));
 EXTERN S16 SLock         ARGS((SLockId *lock));
 EXTERN S16 SUnlock       ARGS((SLockId *lock));
 EXTERN S16 SDestroyLock  ARGS((SLockId *lock));
 
 
-EXTERN S16 SInitSemaphore ARGS((SsSemaId *sem, U8 value));
+EXTERN S16 SInitSemaphore ARGS((SsSemaId *sem, uint8_t value));
 EXTERN S16 SWaitSemaphore ARGS((SsSemaId *sem));
 EXTERN S16 SPostSemaphore ARGS((SsSemaId *sem));
 EXTERN S16 SDestroySemaphore ARGS((SsSemaId *sem));
@@ -1459,9 +1459,9 @@ EXTERN S16 SDestroySemaphore ARGS((SsSemaId *sem));
 /* multiple proc id changes: 
    new function required to implement multiple procIds */
 #ifdef SS_MULTIPLE_PROCS
-EXTERN S16 SAddProcIdLst ARGS((U16 numPIds, ProcId *pIdLst));
-EXTERN S16 SRemProcIdLst ARGS((U16 numPIds, ProcId *pIdLst));
-EXTERN S16 SGetProcIdLst ARGS((U16 *numPIds, ProcId *pIdLst));
+EXTERN S16 SAddProcIdLst ARGS((uint16_t numPIds, ProcId *pIdLst));
+EXTERN S16 SRemProcIdLst ARGS((uint16_t numPIds, ProcId *pIdLst));
+EXTERN S16 SGetProcIdLst ARGS((uint16_t *numPIds, ProcId *pIdLst));
 #endif /* SS_MULTIPLE_PROCS */
 
 #endif /* SS */
@@ -1513,20 +1513,20 @@ EXTERN S16 SDestroySTsk ARGS((SSTskId tskId));
 EXTERN S16 SGetBufRegionPool ARGS((Buffer *mBuf, Region *region, Pool *pool));
 #endif /* SS_ENABLE_MACROS */
 
-EXTERN S16 SInitLock     ARGS((SLockId *lock,U8 type));
+EXTERN S16 SInitLock     ARGS((SLockId *lock,uint8_t type));
 EXTERN S16 SLock         ARGS((SLockId *lock));
 EXTERN S16 SUnlock       ARGS((SLockId *lock));
 EXTERN S16 SDestroyLock  ARGS((SLockId *lock));
 
-EXTERN S16 SInitSemaphore ARGS((SsSemaId *sem, U8 value));
+EXTERN S16 SInitSemaphore ARGS((SsSemaId *sem, uint8_t value));
 EXTERN S16 SWaitSemaphore ARGS((SsSemaId *sem));
 EXTERN S16 SPostSemaphore ARGS((SsSemaId *sem));
 EXTERN S16 SDestroySemaphore ARGS((SsSemaId *sem));
 /* functions required to implement multiple procIds */ 
 #ifdef SS_MULTIPLE_PROCS
-EXTERN S16 SAddProcIdLst ARGS((U16 numPIds, ProcId *pIdLst));
-EXTERN S16 SRemProcIdLst ARGS((U16 numPIds, ProcId *pIdLst));
-EXTERN S16 SGetProcIdLst ARGS((U16 *numPIds, ProcId *pIdLst));
+EXTERN S16 SAddProcIdLst ARGS((uint16_t numPIds, ProcId *pIdLst));
+EXTERN S16 SRemProcIdLst ARGS((uint16_t numPIds, ProcId *pIdLst));
+EXTERN S16 SGetProcIdLst ARGS((uint16_t *numPIds, ProcId *pIdLst));
 #endif /* SS_MULTIPLE_PROCS */
 
 #endif /* PORTVER */
@@ -1573,14 +1573,14 @@ EXTERN  S16 SGetDepSId ARGS((SystemId *s));
  */
 /* ssi_x_001.main_51 : Added control flag as these are only used by windows */
 #ifdef SS_WIN
-EXTERN S16 WTInitLock     ARGS((SLockId *lock,U8 type));
+EXTERN S16 WTInitLock     ARGS((SLockId *lock,uint8_t type));
 EXTERN S16 WTLock         ARGS((SLockId *lock));
 EXTERN S16 WTUnlock       ARGS((SLockId *lock));
 EXTERN S16 WTDestroyLock  ARGS((SLockId *lock));
 #endif /* End of SS_WIN */
  /* ssi_x_001.main_57 : Additions */
 #ifdef SS_LOGGER_SUPPORT  
-EXTERN S16 SRegLogCfg ARGS(( U8 mode, S8 *path, U32 size, S8 *IPA, U16 port));
+EXTERN S16 SRegLogCfg ARGS(( uint8_t mode, S8 *path, uint32_t size, S8 *IPA, uint16_t port));
 EXTERN S16 SWrtLogBuf ARGS(( Txt *buf ));
 /* ssi_x_001.main_60 */
 EXTERN S16 SDeregLogCfg ARGS((Void ));
@@ -1590,15 +1590,15 @@ EXTERN S16 SDeregLogCfg ARGS((Void ));
 EXTERN S16 SRegForHstGrm ARGS((Ent ent));
 EXTERN S16 SHstGrmInfoShow ARGS((Ent *entId));
 EXTERN S16 SFillEntIds ARGS((Void));
-EXTERN S16 SGetEntInd ARGS((Ent *entId, U8 *fileName));
+EXTERN S16 SGetEntInd ARGS((Ent *entId, uint8_t *fileName));
 #endif /* SS_HISTOGRAM_SUPPORT */
 /* ssi_x_001.main_68  Multiple declaration removed , one already in cm_task.x */
 /* ssi_x_001.main_61: Lock support guraded under the flag */
 #ifdef SS_LOCK_SUPPORT
-EXTERN S16 SLockNew ARGS((SLockInfo *LockId, U8 lockType));
-EXTERN S16 SInitLockNew ARGS((SLockInfo *LockId, U8 lockType));
-EXTERN S16 SUnlockNew ARGS((SLockInfo *LockId, U8 lockType));
-EXTERN S16 SDestroyLockNew ARGS((SLockInfo *LockId, U8 lockType));
+EXTERN S16 SLockNew ARGS((SLockInfo *LockId, uint8_t lockType));
+EXTERN S16 SInitLockNew ARGS((SLockInfo *LockId, uint8_t lockType));
+EXTERN S16 SUnlockNew ARGS((SLockInfo *LockId, uint8_t lockType));
+EXTERN S16 SDestroyLockNew ARGS((SLockInfo *LockId, uint8_t lockType));
 #endif /* SS_LOCK_SUPPORT */
 EXTERN S8* SGetConfigPath ARGS((Void));
 
@@ -1607,7 +1607,7 @@ EXTERN S16 SCpyPartMsg ARGS((Buffer *srcBuf, MsgLen idx, MsgLen cnt, Buffer *dst
 EXTERN S16 SRepPartMsg ARGS((Buffer *srcBuf, MsgLen idx, MsgLen cnt, Buffer *dstBuf));
 EXTERN S16 SMovPartMsg ARGS((Buffer *srcBuf, MsgLen idx, Buffer *dstBuf));
 EXTERN S16 SPkMsgMult ARGS((Data *src, MsgLen cnt, Buffer *mBuf));
-EXTERN S16 SGetReadPtr ARGS((Buffer *mBuf, U8** data, MsgLen *len));
+EXTERN S16 SGetReadPtr ARGS((Buffer *mBuf, uint8_t** data, MsgLen *len));
 
 typedef enum
 {
@@ -1619,18 +1619,18 @@ EXTERN S16 SReInitTmr ARGS((Void ));
 #endif
 /* ssi_x_001.main_69: Added MSPD debug macro */
 #ifdef MSPD
-extern U32 ysGT;
+extern uint32_t ysGT;
 extern char ys_global_printbuf[256];
 EXTERN Void rbCallstackShow ARGS((Void));
-EXTERN Void rbCallstackShowForCore ARGS((U32 coreId));
-EXTERN U32 MacGetTick ARGS ((void));
+EXTERN Void rbCallstackShowForCore ARGS((uint32_t coreId));
+EXTERN uint32_t MacGetTick ARGS ((void));
 #endif /* MSPD */
 #ifdef LTE_L2_MEAS
-extern U64  glblTtiCnt;
+extern uint64_t  glblTtiCnt;
 #endif
 
-EXTERN S16 SStartTask ARGS((VOLATILE U32 *startTime, U32 tarkId));
-EXTERN S16 SStopTask ARGS((VOLATILE U32 startTime,U32 taskId));
+EXTERN S16 SStartTask ARGS((VOLATILE uint32_t *startTime, uint32_t tarkId));
+EXTERN S16 SStopTask ARGS((VOLATILE uint32_t startTime,uint32_t taskId));
 #ifdef MSPD_MLOG_NEW
 /* Removed for C++ Compilation
 EXTERN unsigned int MLogTask (unsigned int taskid, unsigned int resourceid , 
@@ -1697,7 +1697,7 @@ EXTERN unsigned int MLogTask (unsigned int taskid, unsigned int resourceid ,
 EXTERN Void ssMlogInit(Void);
 EXTERN Void ssMlogIncrCounter(Void);
 EXTERN Void ssMemlogInit(Void);
-EXTERN Void ssMemlog(char *, U32 size);
+EXTERN Void ssMemlog(char *, uint32_t size);
 EXTERN Void ssMemlogWrite(Void);
 
 #endif /* TENB_T2K3K_SPECIFIC_CHANGES */
@@ -1724,14 +1724,14 @@ EXTERN Void ssRegMainThread(Void);
 
 #ifdef T2K_MEM_LEAK_DBG
 #define ssGetDBufOfSize(region,size,dBuf) ssGetDBufOfSizeNew(region,size,dBuf,__FILE__,__LINE__)
-S16 ssGetDBufOfSizeNew ARGS((Region region, Size size, Buffer **dBuf,char*,U32));
+S16 ssGetDBufOfSizeNew ARGS((Region region, Size size, Buffer **dBuf,char*,uint32_t));
 #else
 EXTERN  S16 ssGetDBufOfSize(Region region,Size size,Buffer **dBuf);
 #endif
 
 /* ssi_x_001.main_69: Added MSPD debug macro */
 #ifdef MSPD
-EXTERN void SEND_DBG_MSG(U8 *str, ...);
+EXTERN void SEND_DBG_MSG(uint8_t *str, ...);
 #endif
 
 #endif /* __SSIX__ */

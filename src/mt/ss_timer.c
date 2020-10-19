@@ -163,10 +163,10 @@ S16 units;                  /* period units*/
 PFS16 tmrFnct;              /* timer function, typically SActvTmr */
 #endif
 {
-	S16 ret;
-	/* ss015.301 - Enclosed all timer activation functions in a union. */
-	SsTmrActvFn ssTmrActvFn;
-	/* ss041.103 - Moved handling to STmrRegHndlr */
+   S16 ret;
+   /* ss015.301 - Enclosed all timer activation functions in a union. */
+   SsTmrActvFn ssTmrActvFn;
+   /* ss041.103 - Moved handling to STmrRegHndlr */
 
    TRC1(SRegCfgTmr);
 
@@ -343,13 +343,13 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
 #endif /* SS_MULTIPLE_PROCS */
 {
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   U8 i;
+   uint8_t i;
 #endif
    S16 ret;
    SsTmrEntry *tmr;
 #ifdef SS_MULTIPLE_PROCS
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   U16 procIdIdx;
+   uint16_t procIdIdx;
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 #endif /* SS_MULTPLE_PROCS */
 
@@ -517,7 +517,7 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
 #else
             && (osCp.tmrTbl[i].ssTmrActvFn.actvFnc.tmrActvFn == ssTmrActvFn.actvFnc.tmrActvFn)
 #endif
-            && (osCp.tmrTbl[i].interval == (U32) ((period * SS_TICKS_SEC) / units)))
+            && (osCp.tmrTbl[i].interval == (uint32_t) ((period * SS_TICKS_SEC) / units)))
       {
          /* is this timer in use ? (unexpired) */
          if (osCp.tmrTbl[i].used == TRUE)
@@ -545,7 +545,7 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
 #endif /* SS_MULTIPLE_PROCS */
    tmr->ownerEnt  = ent;
    tmr->ownerInst = inst;
-   tmr->interval  = (U32) ((period * SS_TICKS_SEC) / units);
+   tmr->interval  = (uint32_t) ((period * SS_TICKS_SEC) / units);
    tmr->ssTmrActvFn.mtFlag = ssTmrActvFn.mtFlag;
 
    /* ss041.103 */
@@ -822,7 +822,7 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
    SsTmrEntry *tmr;
 #ifdef SS_MULTIPLE_PROCS
 #if (ERRCLASS & ERRCLS_INT_PAR)
-   U16 procIdIdx;
+   uint16_t procIdIdx;
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 #endif /* SS_MULTIPLE_PROCS */
 
@@ -980,7 +980,7 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
 #else
             &&  osCp.tmrTbl[idx].ssTmrActvFn.actvFnc.tmrActvFn == ssTmrActvFn.actvFnc.tmrActvFn
 #endif
-            &&  osCp.tmrTbl[idx].interval == (U32) ((period * SS_TICKS_SEC) / units))
+            &&  osCp.tmrTbl[idx].interval == (uint32_t) ((period * SS_TICKS_SEC) / units))
       {
          break;
       }

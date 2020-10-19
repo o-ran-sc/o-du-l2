@@ -65,7 +65,7 @@ static int RLOG_FILE_ID=195;
 S16 rlcUtlDlBatchProcPkts(Void);
 S16 rlcDlBatchProc(Void);
 #if (defined(MAC_RLC_HARQ_STA_RBUF) && defined(LTE_L2_MEAS))
-U32 isDatReqProcessed;
+uint32_t isDatReqProcessed;
 void rlcUtlDlBatchProcHqStaInd ARGS ((Void));
 #endif
 
@@ -74,7 +74,7 @@ EXTERN S16 rlcDlBatchProcSplit  ARGS((Void));
 #endif
 //UDAY
 #ifdef L2_OPTMZ
-U32 rlcAmmStaPduList[512] = {0};
+uint32_t rlcAmmStaPduList[512] = {0};
 EXTERN S16 ssGetDBufOfSize ARGS((Region region, Size size, Buffer **dBuf));
 #endif
 S16 rlcDlInitExt ARGS (( Void ));
@@ -196,7 +196,7 @@ Reason reason;              /* reason */
       SGetMsg(1, 0 , &mBuf);
       ssGetDBufOfSize(1 , 1800, &bufPtr);
       SUpdMsg(mBuf, bufPtr, 0);
-      rlcAmmStaPduList[i] = (U32)mBuf; 
+      rlcAmmStaPduList[i] = (uint32_t)mBuf; 
    }
 #endif
    /* call external function for intialization */

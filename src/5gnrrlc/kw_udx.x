@@ -45,21 +45,21 @@ extern "C" {
 
 typedef struct rlcNackInfo
 {
-   U8 nackRange;
-   U8 isSegment;
-   U32 sn;      /*!< Nack Sn */
-   U16 soStart; /*!< Segment offset start */
-   U16 soEnd;   /*!< Segment offset End */
+   uint8_t nackRange;
+   uint8_t isSegment;
+   uint32_t sn;      /*!< Nack Sn */
+   uint16_t soStart; /*!< Segment offset start */
+   uint16_t soEnd;   /*!< Segment offset End */
 }RlcNackInfo;
 
 typedef struct rlcUdxStaPdu
 {
-   U32 ackSn;
+   uint32_t ackSn;
    /* TODO : RLC_MAX_NACK_CNT should set to MAx SR delay 
       It is tradeoff to consider array based instead of dynamic
       as there are chances where we might loose Status information
       on spill over*/
-   U8 nackCnt;         /* Cnt of Nacks in the array*/
+   uint8_t nackCnt;         /* Cnt of Nacks in the array*/
    RlcNackInfo nackInfo[RLC_MAX_NACK_CNT];
 }RlcUdxStaPdu;
 
@@ -72,10 +72,10 @@ typedef struct rlcUdxBufLst
 
 typedef struct rlcStatusPdu
 {
-   U32         ackSn;
+   uint32_t     ackSn;
    RlcNackInfo  nackInfo[RLC_MAX_NACK_CNT];
-   U16         nackCount;
-   U16         controlBo;
+   uint16_t     nackCount;
+   uint16_t     controlBo;
 }RlcUdxDlStaPdu;
 /* ### Umapathi*/
 
@@ -83,7 +83,7 @@ typedef struct rlcStatusPdu
   * @brief
   * UDX APIs
   */
-typedef S16 (*UdxBndCfm) ARGS((Pst* pst, SuId suId,U8  status ));
+typedef S16 (*UdxBndCfm) ARGS((Pst* pst, SuId suId,uint8_t  status ));
 
 typedef S16 (*UdxBndReq) ARGS((Pst* pst, SuId suId,SpId  spId ));
 
@@ -100,13 +100,13 @@ typedef S16 (*UdxStaUpdReq) ARGS((Pst* pst,
 
 typedef S16 (*UdxUeIdChgReq) ARGS((Pst *pst, 
                                    SpId spId, 
-                                   U32 transId, 
+                                   uint32_t transId, 
                                    CkwUeInfo *ueInfo, 
                                    CkwUeInfo *newUeInfo));
 
 typedef S16 (*UdxUeIdChgCfm) ARGS((Pst *pst, 
                                    SuId suId, 
-                                   U32 transId, 
+                                   uint32_t transId, 
                                    CmStatus status));
 
 typedef S16 (*UdxStaUpdCfm) ARGS((Pst* pst,
@@ -128,23 +128,23 @@ typedef S16 (*UdxL2MeasReq) ARGS((Pst* pst,
                                 RlcL2MeasReqEvt *measReqEvt));
 
 typedef S16 (*UdxL2MeasSendReq) ARGS((Pst* pst,
-                                    U8 measType));
+                                    uint8_t measType));
 
 typedef S16 (*UdxL2MeasStopReq) ARGS((Pst* pst,
-                                    U8 measType));
+                                    uint8_t measType));
 #endif
 
 #ifdef LCUDX
-S16 cmPkUdxBndCfm ARGS((Pst* pst, SuId suId,U8  status ));
+S16 cmPkUdxBndCfm ARGS((Pst* pst, SuId suId,uint8_t  status ));
 S16 cmPkUdxBndReq ARGS((Pst* pst, SuId suId,SpId  spId ));
 S16 cmPkUdxUbndReq ARGS((Pst* pst, SuId suId,Reason reason));
 S16 cmPkUdxCfgReq ARGS((Pst *pst, SpId spId, RlcCfgInfo *cfgInfo));
 S16 cmPkUdxCfgCfm ARGS(( Pst* pst,SuId suId,RlcCfgCfmInfo *cfmInfo));
 S16 cmPkUdxStaUpdReq ARGS((Pst* pst,SpId spId,CmLteRlcId *rlcId,
                                RlcUdxStaPdu         *pStaPdu ));
-S16 cmPkUdxUeIdChgReq ARGS((Pst *pst, SpId spId, U32 transId, 
+S16 cmPkUdxUeIdChgReq ARGS((Pst *pst, SpId spId, uint32_t transId, 
                                   CkwUeInfo *ueInfo, CkwUeInfo *newUeInfo));
-S16 cmPkUdxUeIdChgCfm ARGS((Pst *pst, SuId suId, U32 transId, 
+S16 cmPkUdxUeIdChgCfm ARGS((Pst *pst, SuId suId, uint32_t transId, 
                                    CmStatus status));
 
 
@@ -159,8 +159,8 @@ S16 cmPkUdxStaProhTmrStart ARGS((Pst *pst,
 
 #ifdef LTE_L2_MEAS
 S16 cmPkUdxL2MeasReq ARGS((Pst *pst, RlcL2MeasReqEvt *measReqEvt)); 
-S16 cmPkUdxL2MeasSendReq ARGS((Pst *pst, U8 measType)); 
-S16 cmPkUdxL2MeasStopReq ARGS((Pst *pst, U8 measType)); 
+S16 cmPkUdxL2MeasSendReq ARGS((Pst *pst, uint8_t measType)); 
+S16 cmPkUdxL2MeasStopReq ARGS((Pst *pst, uint8_t measType)); 
 #endif
 
 S16 cmUnpkUdxBndCfm ARGS((UdxBndCfm func,Pst* pst, Buffer *mBuf ));
@@ -192,9 +192,9 @@ S16 rlcUlUdxBndReq ARGS((Pst* pst, SuId suId, SpId spId));
 
 S16 rlcDlUdxBndReq ARGS((Pst* pst, SuId suId, SpId spId));
 
-S16 rlcDlUdxBndCfm ARGS((Pst* pst, SuId suId, U8 status));
+S16 rlcDlUdxBndCfm ARGS((Pst* pst, SuId suId, uint8_t status));
 
-S16 rlcUlUdxBndCfm ARGS((Pst* pst, SuId suId, U8 status));
+S16 rlcUlUdxBndCfm ARGS((Pst* pst, SuId suId, uint8_t status));
 
 S16 rlcDlUdxCfgCfm ARGS((Pst* pst, SuId suId, RlcCfgCfmInfo *cfmInfo));
 
@@ -202,12 +202,12 @@ S16 rlcUlUdxCfgCfm ARGS((Pst* pst, SuId suId, RlcCfgCfmInfo *cfmInfo));
 
 S16 rlcDlUdxUeIdChgCfm ARGS((Pst *pst, 
                                    SuId suId, 
-                                   U32 transId,  
+                                   uint32_t transId,  
                                    CmStatus status));
 
 S16 rlcUlUdxUeIdChgCfm ARGS((Pst *pst, 
                                    SuId suId, 
-                                   U32 transId, 
+                                   uint32_t transId, 
                                    CmStatus status));
 
 S16 rlcUlUdxUbndReq ARGS((Pst* pst, SuId suId, Reason reason));
@@ -216,7 +216,7 @@ S16 rlcDlUdxUbndReq ARGS((Pst* pst, SuId suId, Reason reason));
 
 S16 rlcUlUdxUeIdChgReq ARGS((Pst *pst, 
                                    SpId spId, 
-                                   U32 transId, 
+                                   uint32_t transId, 
                                    CkwUeInfo *ueInfo, 
                                    CkwUeInfo *newUeInfo));
 
@@ -256,7 +256,7 @@ S16 rlcDlUdxStaPduReq ARGS((Pst *pst,
 
 S16 rlcDlUdxUeIdChgReq ARGS((Pst *pst, 
                                    SpId spId, 
-                                   U32 transId, 
+                                   uint32_t transId, 
                                    CkwUeInfo *ueInfo, 
                                    CkwUeInfo *newUeInfo));
 
@@ -284,15 +284,15 @@ uint8_t rlcDlUdxStaProhTmrStart ARGS((Pst *pst,
 #ifdef LTE_L2_MEAS
 S16 rlcDlUdxL2MeasReq ARGS((Pst *pst, RlcL2MeasReqEvt *measReqEvt)); 
 
-S16 rlcDlUdxL2MeasSendReq ARGS((Pst *pst, U8 status)); 
+S16 rlcDlUdxL2MeasSendReq ARGS((Pst *pst, uint8_t status)); 
 
-S16 rlcDlUdxL2MeasStopReq ARGS((Pst *pst, U8 status)); 
+S16 rlcDlUdxL2MeasStopReq ARGS((Pst *pst, uint8_t status)); 
 
 S16 rlcUlUdxL2MeasReq ARGS((Pst* pst, RlcL2MeasReqEvt *measReqEvt));
 
-S16 rlcUlUdxL2MeasSendReq ARGS((Pst *pst, U8 status));
+S16 rlcUlUdxL2MeasSendReq ARGS((Pst *pst, uint8_t status));
 
-S16 rlcUlUdxL2MeasStopReq ARGS((Pst* pst, U8 measType));
+S16 rlcUlUdxL2MeasStopReq ARGS((Pst* pst, uint8_t measType));
 #endif
 
 #endif

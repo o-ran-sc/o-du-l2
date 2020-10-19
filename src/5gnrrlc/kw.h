@@ -106,7 +106,7 @@
 {                                                                   \
    SGetSBuf(_cb->init.region, _cb->init.pool, (Data **)&_buf,       \
                 (Size) _size);                                     \
-      cmMemset((U8 *)(_buf), 0, _size);                             \
+      cmMemset((uint8_t *)(_buf), 0, _size);                             \
 }
 
 #define RLC_RMV_SDU(_cb,_sduQ,_sdu)                    \
@@ -159,7 +159,7 @@
  if (SGetStaticBuffer(_region, _pool, (Data **)&_buf,                \
                 (Size) _size, 0) == ROK)                                \
    {                                                                 \
-      cmMemset((U8 *)(_buf), 0, _size);                              \
+      cmMemset((uint8_t *)(_buf), 0, _size);                              \
    }                                                                 \
    else                                                              \
    {                                                                 \
@@ -172,7 +172,7 @@
  if (SGetSBuf(_cb->init.region, _cb->init.pool, (Data **)&_buf,      \
                 (Size) _size) == ROK)                                \
    {                                                                 \
-      cmMemset((U8 *)(_buf), 0, _size);                              \
+      cmMemset((uint8_t *)(_buf), 0, _size);                              \
    }                                                                 \
    else                                                              \
    {                                                                 \
@@ -292,9 +292,9 @@
 
 #define RLC_FREE_BUF_WC(_buf)    SPutMsg((_buf));
 
-#define RLC_MEM_CPY(_dst, _src, _size)  cmMemcpy((U8*)_dst, (U8 *)_src, _size); 
+#define RLC_MEM_CPY(_dst, _src, _size)  cmMemcpy((uint8_t*)_dst, (uint8_t *)_src, _size); 
 
-#define RLC_MEM_ZERO(_buf, _size) cmMemset((U8 *)(_buf), 0, _size);
+#define RLC_MEM_ZERO(_buf, _size) cmMemset((uint8_t *)(_buf), 0, _size);
 
 #define RLC_GET_MEM_REGION(_cb) (_cb->init.region)
 
@@ -303,7 +303,7 @@
 #define RLC_GET_MEM_POOL_ADDRESS(_cb) (&_cb->init.pool)
 
 /* Memset to value */
-#define RLC_MEM_SET(_arg, _val, _size) cmMemset((U8 *)_arg, (U8)_val, _size); 
+#define RLC_MEM_SET(_arg, _val, _size) cmMemset((uint8_t *)_arg, (uint8_t)_val, _size); 
 
 /* Alarms */
 /* Send an alarm for sapId events */
@@ -835,7 +835,7 @@
 /* Update poll bit in the buffer */
 #define RLC_UPD_POLL_BIT(_gCb, _retx, _poll)                \
 {                                                          \
-   U8 fHdr;                                                \
+   uint8_t fHdr;                                                \
                                                            \
    if (_poll != _retx->amHdr.p)                            \
    {                                                       \
@@ -959,7 +959,7 @@ do                                                       \
 {                                                             \
    S8 _buf[60];                                               \
    DateTime dt;                                               \
-   cmMemset((U8 *)(&dt), 0, sizeof(DateTime));                \
+   cmMemset((uint8_t *)(&dt), 0, sizeof(DateTime));                \
    SGetDateTime(&dt);                                         \
    sprintf(_buf, "date: %02d/%02d/%04d time: %02d:%02d:%02d", \
      (int)dt.month,(int)dt.day,(int)dt.year + 1900,           \
@@ -980,7 +980,7 @@ do                                                          \
 #define RLC_PRNT_MEMINFO(_cb)                                  \
 do                                                            \
 {                                                             \
-   U32  _memInfo;                                             \
+   uint32_t  _memInfo;                                             \
    if(_cb->init.dbgMask & (RLC_DBGMASK_MEM_INFO))              \
    {                                                          \
      RLC_PRNT_HLINE(_cb,("\nMemory Information:\n"));          \

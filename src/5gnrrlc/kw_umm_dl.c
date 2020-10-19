@@ -69,10 +69,10 @@
 
 /* variables for logging :declared in BRDCM cl */
 #ifndef TENB_ACC
-extern U32 dldrops_kwu_um;
-extern U32 dlpkt_um;
-extern U32 buffer_occ;
-extern U32 dlrate_kwu;
+extern uint32_t dldrops_kwu_um;
+extern uint32_t dlpkt_um;
+extern uint32_t buffer_occ;
+extern uint32_t dlrate_kwu;
 #endif
 
 PRIVATE void rlcUmmEstHdrSz ARGS ((RlcUmDl *umUl));
@@ -80,7 +80,7 @@ PRIVATE void rlcUmmEstHdrSz ARGS ((RlcUmDl *umUl));
 PRIVATE Void rlcUmmCreatePdu ARGS ((RlcCb *gCb,
                                   RlcDlRbCb *rbCb, 
                                   Buffer *pdu,
-                                  U8 fi,
+                                  uint8_t fi,
                                   KwPduInfo *datReqPduInfo));
 
 /** @addtogroup ummode */
@@ -515,7 +515,7 @@ void rlcUmmProcessSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *datReq)
       if ((lchInfo.numSdus != 0) && (l2MeasTb != NULLP) &&
           (l2MeasTb->numLchInfo < RLC_MAX_ACTV_DRB))
       {   
-         cmMemcpy((U8 *) &l2MeasTb->lchInfo[l2MeasTb->numLchInfo], (U8 *) &lchInfo, sizeof(RlclchInfo));
+         cmMemcpy((uint8_t *) &l2MeasTb->lchInfo[l2MeasTb->numLchInfo], (uint8_t *) &lchInfo, sizeof(RlclchInfo));
          l2MeasTb->numLchInfo++;
       }
       l2MeasTb->txSegSduCnt += segSduCnt;
@@ -599,7 +599,7 @@ RlcDlRbCb       *rbCb;
       for SRB 1 */
    rlcDlUtlResetReestInProgress(rbCb);
    
-   RETVOID;
+   return;
 }
 /**
  * @brief   Handler to create the header and complete a PDU.
@@ -768,13 +768,13 @@ Void rlcUmmDiscSdu
 (
 RlcCb       *gCb,
 RlcDlRbCb   *rbCb,                
-U32        sduId                
+uint32_t        sduId                
 )
 #else
 Void rlcUmmDiscSdu(gCb,rbCb,sduId)
 RlcCb       *gCb;
 RlcDlRbCb   *rbCb;                
-U32        sduId;                
+uint32_t        sduId;                
 #endif
 {
    CmLList *tmpNode;  /* Temporary Node in SDU queue */
@@ -796,7 +796,7 @@ U32        sduId;
       }
    }
 
-   RETVOID;
+   return;
 }
 
 /*
@@ -831,7 +831,7 @@ RlcDlRbCb   *rbCb;
    cmLListCatLList(&(gCb->u.dlCb->toBeFreed.sduLst),&(rbCb->m.umDl.sduQ));
    rlcUtlRaiseDlCleanupEvent(gCb);
 
-   RETVOID;
+   return;
 } /* rlcUmmFreeDlRbCb */
 
 /********************************************************************30**

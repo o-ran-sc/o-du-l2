@@ -78,7 +78,7 @@ void rlInitL2SocSpecific(void)
    g_l2LogBufStartPtr     = g_l2rlogBuf + sizeof(g_l2LogBufLen);
 
 #endif
-   RETVOID;
+   return;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -107,7 +107,7 @@ void processL2LogBuff(void)
 
       l2rlogBuf_post = g_l2LogBufBasePtr;   /* copy logBufferPointer for later use */
       /* Set L2 Log Buffer length in first 4 bytes of flat buffer */
-      *((U32*) g_l2LogBufBasePtr) = g_l2LogBufLen; /* Set L2 Log Buffer length in 
+      *((uint32_t*) g_l2LogBufBasePtr) = g_l2LogBufLen; /* Set L2 Log Buffer length in 
                                                first 4 bytes of flat buffer */
 
       /* Re-setting pointer so that L2 will use this to write logs */
@@ -120,7 +120,7 @@ void processL2LogBuff(void)
 
    }
 #endif   
-   RETVOID; 
+   return; 
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -136,13 +136,13 @@ void processL2LogBuff(void)
 void rlGetL2LogBufPtr
 (
    void *mBuf,
-   U32 *logLen,
+   uint32_t *logLen,
    Data **logPtr
 )
 {
    /* Get Buffer pointer and length */
    *logPtr = ((Data *)mBuf) + sizeof(logLen);
-   *logLen = *((U32 *) mBuf);
+   *logLen = *((uint32_t *) mBuf);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -157,10 +157,10 @@ void rlGetL2LogBufPtr
 void rlInvalidateL2LogsInCache
 (
    Data *ptr,
-   U32   len
+   uint32_t   len
 )
 {
-   RETVOID;
+   return;
 }
 
 /**********************************************************************

@@ -48,7 +48,7 @@ EgtpGlobalCb egtpCb;
 S16 egtpActvInit()
 {
   DU_LOG("\n\nEGTP : Initializing");
-  cmMemset ((U8 *)&egtpCb, 0, sizeof(EgtpGlobalCb));
+  cmMemset ((uint8_t *)&egtpCb, 0, sizeof(EgtpGlobalCb));
   protType = CM_INET_PROTO_UDP;
   return ROK;
 }
@@ -121,20 +121,20 @@ uint8_t egtpInitReq()
  * ***********************************************************************/
 S16 cuEgtpCfgReq()
 {
-   U8 ret;
+   uint8_t ret;
 
-   cmMemcpy((U8 *)&egtpCb.egtpCfg, (U8 *)&cuCfgParams.egtpParams, (PTR)sizeof(EgtpParams));
+   cmMemcpy((uint8_t *)&egtpCb.egtpCfg, (uint8_t *)&cuCfgParams.egtpParams, (PTR)sizeof(EgtpParams));
 
-   egtpCb.recvTptSrvr.addr.address = CM_INET_NTOH_U32(egtpCb.egtpCfg.localIp.ipV4Addr);
+   egtpCb.recvTptSrvr.addr.address = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.localIp.ipV4Addr);
    egtpCb.recvTptSrvr.addr.port = EGTP_DFLT_PORT;
 
-   egtpCb.dstCb.dstIp = CM_INET_NTOH_U32(egtpCb.egtpCfg.destIp.ipV4Addr);
+   egtpCb.dstCb.dstIp = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.destIp.ipV4Addr);
    egtpCb.dstCb.dstPort = egtpCb.egtpCfg.destPort;
-   egtpCb.dstCb.sendTptSrvr.addr.address = CM_INET_NTOH_U32(egtpCb.egtpCfg.localIp.ipV4Addr);
+   egtpCb.dstCb.sendTptSrvr.addr.address = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.localIp.ipV4Addr);
    egtpCb.dstCb.sendTptSrvr.addr.port = egtpCb.egtpCfg.localPort;
    egtpCb.dstCb.numTunn = 0;
 
-   ret = cmHashListInit(&(egtpCb.dstCb.teIdLst), 1024, sizeof(EgtpTeIdCb), FALSE, CM_HASH_KEYTYPE_U32MOD, CU_APP_MEM_REG, CU_POOL);
+   ret = cmHashListInit(&(egtpCb.dstCb.teIdLst), 1024, sizeof(EgtpTeIdCb), FALSE, CM_HASH_KEYTYPE_UINT32_MOD, CU_APP_MEM_REG, CU_POOL);
 
    if(ret != ROK)
    {
@@ -169,7 +169,7 @@ S16 cuEgtpCfgReq()
 S16 cuEgtpSrvOpenReq(Pst *pst)
 {
 
-   U8 ret;
+   uint8_t ret;
 
    DU_LOG("\nEGTP : Received open server request");
  
@@ -289,11 +289,11 @@ S16 cuEgtpTnlAdd(EgtpTnlEvt tnlEvt)
    }
 
 
-   cmMemset((U8 *)teidCb, 0, sizeof(EgtpTeIdCb));
+   cmMemset((uint8_t *)teidCb, 0, sizeof(EgtpTeIdCb));
    teidCb->teId = tnlEvt.lclTeid;
    teidCb->remTeId = tnlEvt.remTeid;
 
-   ret = cmHashListInsert(&(egtpCb.dstCb.teIdLst), (PTR)teidCb, (U8 *)&(teidCb->teId), sizeof(U32));
+   ret = cmHashListInsert(&(egtpCb.dstCb.teIdLst), (PTR)teidCb, (uint8_t *)&(teidCb->teId), sizeof(uint32_t));
    if(ret != ROK)
    {
       DU_LOG("\nEGTP : Failed to insert in hash list");
@@ -303,14 +303,14 @@ S16 cuEgtpTnlAdd(EgtpTnlEvt tnlEvt)
    egtpCb.dstCb.numTunn++;
 
    /* Encoding pre-defined header */
-   cmMemset((U8*)&preDefHdr, 0, sizeof(EgtpMsgHdr));
+   cmMemset((uint8_t*)&preDefHdr, 0, sizeof(EgtpMsgHdr));
    preDefHdr.msgType = EGTPU_MSG_GPDU;
    preDefHdr.teId = teidCb->remTeId;
    preDefHdr.extHdr.pdcpNmb.pres = FALSE;
    preDefHdr.extHdr.udpPort.pres = FALSE;
    preDefHdr.nPdu.pres = FALSE;
    
-   cuEgtpEncodeHdr((U8 *)teidCb->preEncodedHdr.hdr, &preDefHdr, &(teidCb->preEncodedHdr.cnt));
+   cuEgtpEncodeHdr((uint8_t *)teidCb->preEncodedHdr.hdr, &preDefHdr, &(teidCb->preEncodedHdr.cnt));
 
 /*   SPutSBuf(CU_APP_MEM_REG, CU_POOL, (Data *)teidCb, (Size)sizeof(EgtpTeIdCb));*/
 
@@ -340,7 +340,7 @@ S16 cuEgtpTnlMod(EgtpTnlEvt tnlEvt)
 
    printf("\nTunnel modification : LocalTeid[%d] Remote Teid[%d]", tnlEvt.lclTeid, tnlEvt.remTeid);
 
-   cmHashListFind(&(egtpCb.dstCb.teIdLst), (U8 *)&(tnlEvt.teId), sizeof(U32), 0, (PTR *)&teidCb);
+   cmHashListFind(&(egtpCb.dstCb.teIdLst), (uint8_t *)&(tnlEvt.teId), sizeof(uint32_t), 0, (PTR *)&teidCb);
    if(teidCb == NULLP)
    {
       printf("\nTunnel id not found");
@@ -374,7 +374,7 @@ S16 cuEgtpTnlDel(EgtpTnlEvt tnlEvt)
 
    DU_LOG("\nEGTP : Tunnel deletion : Local Teid[%d] Remote Teid[%d]", tnlEvt.lclTeid, tnlEvt.remTeid);
    
-   cmHashListFind(&(egtpCb.dstCb.teIdLst), (U8 *)&(tnlEvt.lclTeid), sizeof(U32), 0, (PTR *)&teidCb);
+   cmHashListFind(&(egtpCb.dstCb.teIdLst), (uint8_t *)&(tnlEvt.lclTeid), sizeof(uint32_t), 0, (PTR *)&teidCb);
    if(teidCb == NULLP)
    {
       DU_LOG("\nEGTP : Tunnel id[%d] not configured", tnlEvt.lclTeid);
@@ -405,12 +405,12 @@ S16 cuEgtpTnlDel(EgtpTnlEvt tnlEvt)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 cuEgtpEncodeHdr(U8 *preEncodedHdr, EgtpMsgHdr *preDefHdr, U8 *hdrIdx)
+S16 cuEgtpEncodeHdr(uint8_t *preEncodedHdr, EgtpMsgHdr *preDefHdr, uint8_t *hdrIdx)
 {
-   U8         tmpByte = 0;                 /* Stores one byte of data for enc */
-   U8         cnt     = EGTP_MAX_HDR_LEN;  /* Stores the position */
+   uint8_t         tmpByte = 0;                 /* Stores one byte of data for enc */
+   uint8_t         cnt     = EGTP_MAX_HDR_LEN;  /* Stores the position */
    Bool       extPres = FALSE;             /* Flag for indication of S, E or P presense flag */
-   U16        nwWord = 0;
+   uint16_t        nwWord = 0;
 
    /* Encoding header */
    tmpByte |= EGTP_MASK_BIT6;   /* Setting 6th LSB of 1st byte as version */
@@ -441,12 +441,12 @@ S16 cuEgtpEncodeHdr(U8 *preEncodedHdr, EgtpMsgHdr *preDefHdr, U8 *hdrIdx)
    /* Encode Tunnel endpoint */
    preEncodedHdr[--cnt] = 0;
    preEncodedHdr[--cnt] = 0;
-   nwWord = (U16)(GetHiWord(preDefHdr->teId));
-   preEncodedHdr[--cnt] = (U8)(GetHiByte(nwWord));
-   preEncodedHdr[--cnt] = (U8)(GetLoByte(nwWord));
-   nwWord = (U16)(GetLoWord(preDefHdr->teId));
-   preEncodedHdr[--cnt] = (U8)(GetHiByte(nwWord));
-   preEncodedHdr[--cnt] = (U8)(GetLoByte(nwWord));
+   nwWord = (uint16_t)(GetHiWord(preDefHdr->teId));
+   preEncodedHdr[--cnt] = (uint8_t)(GetHiByte(nwWord));
+   preEncodedHdr[--cnt] = (uint8_t)(GetLoByte(nwWord));
+   nwWord = (uint16_t)(GetLoWord(preDefHdr->teId));
+   preEncodedHdr[--cnt] = (uint8_t)(GetHiByte(nwWord));
+   preEncodedHdr[--cnt] = (uint8_t)(GetLoByte(nwWord));
     
    /* Encode sequence number */
    if(preDefHdr->seqNum.pres)
@@ -512,12 +512,12 @@ S16 cuEgtpHdlRecvMsg(Buffer *mBuf)
 S16 cuEgtpDecodeHdr(Buffer *mBuf)
 {
    EgtpMsg  egtpMsg;
-   U8       tmpByte[5];         /* Holds one byte of data after Dec */
-   U8       version = 0;         /* Holds the version type, decoded */
+   uint8_t       tmpByte[5];         /* Holds one byte of data after Dec */
+   uint8_t       version = 0;         /* Holds the version type, decoded */
    MsgLen   msgLen  = 0;         /* Holds the msgLen from the Hdr */
    MsgLen   bufLen  = 0;         /* Holds the total buffer length */
-   U8       extHdrType = 0;       /* Holds the Extension hdr type */
-   U8       extHdrLen = 0;        /* Extension hdr length */
+   uint8_t       extHdrType = 0;       /* Holds the Extension hdr type */
+   uint8_t       extHdrLen = 0;        /* Extension hdr length */
    Bool     extPres = FALSE;      /* Flag for indication of S, E or P presense flag */
 
    ODU_GET_MSG_LEN(mBuf, &bufLen);
@@ -626,7 +626,7 @@ S16 cuEgtpDecodeHdr(Buffer *mBuf)
 
 S16 cuEgtpDatReq()
 {
-   U8 cnt = 0;
+   uint8_t cnt = 0;
    EgtpMsg  egtpMsg;
 
    /* Build Application message that is supposed to come from app to egtp */
@@ -678,12 +678,12 @@ S16 BuildAppMsg(EgtpMsg  *egtpMsg)
    mLen = 0;
    ODU_GET_MSG_LEN(mBuf, &mLen);
 
-   cmMemset((U8 *)&ipv4Hdr, 0, sizeof(CmIpv4Hdr));
+   cmMemset((uint8_t *)&ipv4Hdr, 0, sizeof(CmIpv4Hdr));
    ipv4Hdr.length = CM_IPV4_HDRLEN + mLen;
    ipv4Hdr.hdrVer = 0x45;
    ipv4Hdr.proto = 1;
-   ipv4Hdr.srcAddr = CM_INET_NTOH_U32(egtpCb.egtpCfg.localIp.ipV4Addr);
-   ipv4Hdr.destAddr = CM_INET_NTOH_U32(egtpCb.egtpCfg.destIp.ipV4Addr);
+   ipv4Hdr.srcAddr = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.localIp.ipV4Addr);
+   ipv4Hdr.destAddr = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.destIp.ipV4Addr);
  
    /* Packing IPv4 header into buffer */
    S16          ret, cnt, idx;
@@ -756,11 +756,11 @@ S16 BuildEgtpMsg(EgtpMsg *egtpMsg)
 {
    EgtpTeIdCb   *teidCb = NULLP;
    MsgLen tPduSize;
-   U8     hdrLen;
-   U32    msgLen;
+   uint8_t     hdrLen;
+   uint32_t    msgLen;
    EgtpMsgHdr   *msgHdr;
  
-   cmHashListFind(&(egtpCb.dstCb.teIdLst), (U8 *)&(egtpMsg->msgHdr.teId), sizeof(U32), 0, (PTR *)&teidCb);
+   cmHashListFind(&(egtpCb.dstCb.teIdLst), (uint8_t *)&(egtpMsg->msgHdr.teId), sizeof(uint32_t), 0, (PTR *)&teidCb);
    if(teidCb == NULLP)
    {
       DU_LOG("\nEGTP : Tunnel id[%d] not configured", egtpMsg->msgHdr.teId);
@@ -793,15 +793,15 @@ S16 BuildEgtpMsg(EgtpMsg *egtpMsg)
    /***********************************************
     * Fill the length field of the message header *
     ***********************************************/
-   teidCb->preEncodedHdr.hdr[EGTP_MAX_HDR_LEN - 3] = (U8)GetHiByte(msgLen);
-   teidCb->preEncodedHdr.hdr[EGTP_MAX_HDR_LEN - 4] = (U8)GetLoByte(msgLen);
+   teidCb->preEncodedHdr.hdr[EGTP_MAX_HDR_LEN - 3] = (uint8_t)GetHiByte(msgLen);
+   teidCb->preEncodedHdr.hdr[EGTP_MAX_HDR_LEN - 4] = (uint8_t)GetLoByte(msgLen);
 
    /*Update the sequence number*/
    if(egtpMsg->msgHdr.seqNum.pres)
    {
       teidCb->preEncodedHdr.hdr[EGTP_MAX_HDR_LEN - 1] |= (EGTP_MASK_BIT2);
-      teidCb->preEncodedHdr.hdr[EGTP_MAX_HDR_LEN - 9] = (U8)GetHiByte(egtpMsg->msgHdr.seqNum.val);
-      teidCb->preEncodedHdr.hdr[EGTP_MAX_HDR_LEN - 10] = (U8)GetLoByte(egtpMsg->msgHdr.seqNum.val);
+      teidCb->preEncodedHdr.hdr[EGTP_MAX_HDR_LEN - 9] = (uint8_t)GetHiByte(egtpMsg->msgHdr.seqNum.val);
+      teidCb->preEncodedHdr.hdr[EGTP_MAX_HDR_LEN - 10] = (uint8_t)GetLoByte(egtpMsg->msgHdr.seqNum.val);
    }
    else
    {

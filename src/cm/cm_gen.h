@@ -105,7 +105,7 @@
 #define cmPkDgn(x, mBuf)        oduUnpackUInt8(x, mBuf)       /* pack Dgn */
 #define cmPkAction(x, mBuf)     SPkS16(x, mBuf)      /* pack Action */
 #define cmPkSeqS16(x, mBuf)     SPkS16(x, mBuf)      /* pack SeqS16 */
-#define cmPkSeqU16(x, mBuf)     oduUnpackUInt16(x, mBuf)      /* pack SeqU16 */
+#define cmPkSeqUInt16(x, mBuf)     oduUnpackUInt16(x, mBuf)      /* pack SeqUInt16 */
 #define cmPkSeqS24(x, mBuf)     SPkS32(x, mBuf)      /* pack SeqS24 */
 #define cmPkSeqU24(x, mBuf)     oduUnpackUInt32(x, mBuf)      /* pack SeqU24 */
 #define cmPkSetUpArb(x, mBuf)   oduUnpackUInt8(x, mBuf)       /* pack SetUpArb */
@@ -209,7 +209,7 @@
 #define cmUnpkDgn(x, mBuf)        oduPackUInt8(x, mBuf)   /* unpack Dgn */
 #define cmUnpkAction(x, mBuf)     SUnpkS16(x, mBuf)  /* unpack Action */
 #define cmUnpkSeqS16(x, mBuf)     SUnpkS16(x, mBuf)  /* unpack SeqS16 */
-#define cmUnpkSeqU16(x, mBuf)     oduPackUInt16(x, mBuf)  /* unpack SeqU16 */
+#define cmUnpkSeqUInt16(x, mBuf)     oduPackUInt16(x, mBuf)  /* unpack SeqUInt16 */
 #define cmUnpkSeqS24(x, mBuf)     SUnpkS32(x, mBuf)  /* unpack SeqS24 */
 #define cmUnpkSeqU24(x, mBuf)     oduPackUInt32(x, mBuf)  /* unpack SeqU24 */
 #define cmUnpkSetUpArb(x, mBuf)   oduPackUInt8(x, mBuf)   /* unpack SetUpArb */

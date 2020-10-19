@@ -58,15 +58,15 @@ static int RLOG_MODULE_ID=4096;
 
 
 /* local defines */
-PRIVATE S16 rgSCHDbmInitUeCbLst ARGS(( RgSchCellCb *cellCb, U16 numBins));
+PRIVATE S16 rgSCHDbmInitUeCbLst ARGS(( RgSchCellCb *cellCb, uint16_t numBins));
 #ifdef LTE_TDD
-PRIVATE S16 rgSCHDbmInitUeTfuPendLst ARGS(( RgSchCellCb *cellCb, U16 numBins));
+PRIVATE S16 rgSCHDbmInitUeTfuPendLst ARGS(( RgSchCellCb *cellCb, uint16_t numBins));
 #endif
 PRIVATE Void rgSCHDbmInitDedLcLst ARGS((RgSchUeCb *ueCb));
 PRIVATE Void rgSCHDbmInitCmnLcLst ARGS((RgSchCellCb *cellCb));
 #ifdef LTEMAC_SPS
 PRIVATE S16 rgSCHDbmInitSpsUeCbLst ARGS((RgSchCellCb *cellCb,
-                      U16 numBins));
+                      uint16_t numBins));
 #endif
 PRIVATE Void rgSCHDbmInitRaCbLst ARGS(( RgSchCellCb *cellCb));
 #ifndef LTE_TDD
@@ -171,12 +171,12 @@ RgSchCellCb       *cellCb;
 PRIVATE S16 rgSCHDbmInitUeCbLst
 (
 RgSchCellCb    *cellCb,
-U16            numBins
+uint16_t            numBins
 )
 #else
 PRIVATE S16 rgSCHDbmInitUeCbLst(cellCb, numBins)
 RgSchCellCb    *cellCb;
-U16            numBins;
+uint16_t            numBins;
 #endif
 {
    RgSchUeCellInfo ueCellInfo;
@@ -184,7 +184,7 @@ U16            numBins;
 
    /* Fix: syed It is better to compute offset dynamically
     * rather than hardcoding it as 0 */      
-   return (cmHashListInit(&cellCb->ueLst, numBins, (U16)((PTR)&(ueCellInfo.ueLstEnt) - (PTR)&ueCellInfo), FALSE, 
+   return (cmHashListInit(&cellCb->ueLst, numBins, (uint16_t)((PTR)&(ueCellInfo.ueLstEnt) - (PTR)&ueCellInfo), FALSE, 
                CM_HASH_KEYTYPE_CONID,
                rgSchCb[cellCb->instIdx].rgSchInit.region, 
                rgSchCb[cellCb->instIdx].rgSchInit.pool));
@@ -239,18 +239,18 @@ RgSchCellCb       *cellCb;
 PRIVATE S16 rgSCHDbmInitSpsUeCbLst
 (
 RgSchCellCb       *cellCb,
-U16               numBins
+uint16_t               numBins
 )
 #else
 PRIVATE S16 rgSCHDbmInitSpsUeCbLst(cellCb, numBins)
 RgSchCellCb       *cellCb;
-U16               numBins;
+uint16_t               numBins;
 #endif
 {
    RgSchUeCb ue;
    TRC2(rgSCHDbmInitSpsUeCbLst)
 
-   return (cmHashListInit(&cellCb->spsUeLst, numBins, (U16) ((PTR) &(ue.spsUeLstEnt) - (PTR) &ue), FALSE, 
+   return (cmHashListInit(&cellCb->spsUeLst, numBins, (uint16_t) ((PTR) &(ue.spsUeLstEnt) - (PTR) &ue), FALSE, 
                CM_HASH_KEYTYPE_CONID,
                rgSchCb[cellCb->instIdx].rgSchInit.region, 
                rgSchCb[cellCb->instIdx].rgSchInit.pool));
@@ -320,7 +320,7 @@ RgSchUeCb         *ueCb;
    ueCellInfo = ueCb->cellInfo[ueCb->cellIdToCellIdxMap[RG_SCH_CELLINDEX(cellCb)]];
 
    return (cmHashListInsert(&cellCb->ueLst, (PTR)ueCellInfo, 
-      (U8 *)&ueCb->ueId, (U16)sizeof(ueCb->ueId)));
+      (uint8_t *)&ueCb->ueId, (uint16_t)sizeof(ueCb->ueId)));
 
 }  /* rgSCHDbmInsUeCb */
 
@@ -354,7 +354,7 @@ RgSchUeCb         *ueCb;
    TRC2(rgSCHDbmInsSpsUeCb)
 
    return (cmHashListInsert(&cellCb->spsUeLst, (PTR)ueCb, 
-      (U8 *)&ueCb->spsRnti, (U16)sizeof(ueCb->spsRnti)));
+      (uint8_t *)&ueCb->spsRnti, (uint16_t)sizeof(ueCb->spsRnti)));
 
 }  /* end of rgSCHDbmInsSpsUeCb */
 
@@ -389,7 +389,7 @@ CmLteRnti      ueId;
 
    TRC2(rgSCHDbmGetUeCb)
 
-   cmHashListFind(&cellCb->ueLst, (U8 *)&ueId,
+   cmHashListFind(&cellCb->ueLst, (uint8_t *)&ueId,
       sizeof(ueId), 0, (PTR *)&ueCellInfo);
 
    return (!ueCellInfo?NULLP:ueCellInfo->ue);
@@ -425,7 +425,7 @@ CmLteRnti         spsRnti;
 
    TRC2(rgSCHDbmGetSpsUeCb)
 
-   cmHashListFind(&cellCb->spsUeLst, (U8 *)&spsRnti,
+   cmHashListFind(&cellCb->spsUeLst, (uint8_t *)&spsRnti,
       sizeof(spsRnti), 0, (PTR *)&ueCb);
    return (ueCb);
 }  /* rgSCHDbmGetSpsUeCb */
@@ -535,7 +535,7 @@ RgSchCellCb       *cellCb;
 RgSchUeCb         *ueCb;
 #endif
 {
-   U8 lcCnt = 0;
+   uint8_t lcCnt = 0;
    RgSchCmnUlUe *ueUl = RG_SCH_CMN_GET_UL_UE(ueCb, cellCb);
 
    TRC2(rgSCHDbmDelL2MUe)
@@ -698,7 +698,7 @@ PRIVATE Void rgSCHDbmInitDedLcLst(ueCb)
 RgSchUeCb       *ueCb;
 #endif
 {
-   U8 idx;
+   uint8_t idx;
    
    TRC2(rgSCHDbmInitDedLcLst);
 
@@ -710,7 +710,7 @@ RgSchUeCb       *ueCb;
    }
 
    /* Stack Crash problems for TRACE5 Changes. Added the return below */
-   RETVOID;
+   return;
   
 
 } /* rgSCHDbmInitDedLcLst */
@@ -740,7 +740,7 @@ PRIVATE Void rgSCHDbmInitCmnLcLst(cellCb)
 RgSchCellCb       *cellCb;
 #endif
 {
-   U8 idx;
+   uint8_t idx;
    
    TRC2(rgSCHDbmInitCmnLcLst);
 
@@ -750,7 +750,7 @@ RgSchCellCb       *cellCb;
    }
 
    /* Stack Crash problems for TRACE5 Changes. Added the return below */
-   RETVOID;
+   return;
 
 } /* rgSCHDbmInitCmnLcLst */
 
@@ -828,7 +828,7 @@ RgSchDlLcCb       *dlLcCb;
    ueCb->dl.lcCb[dlLcCb->lcId - 1] = NULLP;
 
    /* Stack Crash problems for TRACE5 Changes. Added the return below */
-   RETVOID;
+   return;
 
 }  /* rgSCHDbmDelDlDedLcCb */
 
@@ -888,7 +888,7 @@ RgSchDlLcCb* rgSCHDbmGetFirstDlDedLcCb(ueCb)
 RgSchUeCb         *ueCb; 
 #endif
 {
-   U8 idx;
+   uint8_t idx;
    TRC2(rgSCHDbmGetFirstDlDedLcCb)
    
    for(idx = 0; idx < RGSCH_DEDLC_MAX_LCID; idx++)
@@ -925,7 +925,7 @@ RgSchUeCb         *ueCb;
 RgSchDlLcCb       *lcCb;
 #endif
 {
-   U8 idx;
+   uint8_t idx;
    TRC2(rgSCHDbmGetNextDlDedLcCb);
 
    if (!lcCb)
@@ -968,7 +968,7 @@ RgSchCellCb       *cellCb;
 CmLteLcId         lcId;
 #endif
 {
-   U8 idx;
+   uint8_t idx;
 
    TRC2(rgSCHDbmGetCmnLcCb)
 
@@ -1135,7 +1135,7 @@ RgSchClcDlLcCb   *cmnDlLcCb;
    cellCb->cmnLcCb[RGSCH_BCCH_BCH_IDX].boLst = cmnDlLcCb->boLst;
 
    /* Stack Crash problems for TRACE5 Changes. Added the return below */
-   RETVOID;
+   return;
 
 }  /* rgSCHDbmInsBcchOnBch */
 
@@ -1179,7 +1179,7 @@ RgSchClcDlLcCb   *cmnDlLcCb;
    }
 
    /* Stack Crash problems for TRACE5 Changes. Added the return below */
-   RETVOID;
+   return;
 
 }  /* rgSCHDbmInsBcchOnDlsch */
 
@@ -1213,7 +1213,7 @@ RgSchClcDlLcCb   *cmnDlLcCb;
    cellCb->cmnLcCb[RGSCH_PCCH_IDX].boLst = cmnDlLcCb->boLst;
 
    /* Stack Crash problems for TRACE5 Changes. Added the return below */
-   RETVOID;
+   return;
 
 }  /* rgSCHDbmInsPcch */
 
@@ -1241,7 +1241,7 @@ RgSchClcDlLcCb       *cmnDlLcCb;
    TRC2(rgSCHDbmInitCmnLcBoLst)
 
    cmLListInit(&cmnDlLcCb->boLst);
-   RETVOID;
+   return;
 }  /* rgSCHDbmInitCmnLcBoLst */
 
 /**
@@ -1274,7 +1274,7 @@ RgSchClcBoRpt     *cmnBoRpt;
    cmnBoRpt->boLstEnt.prev = NULLP;
    cmnBoRpt->boLstEnt.node = (PTR)cmnBoRpt;
    cmLListAdd2Tail(&cmnDlLcCb->boLst, &cmnBoRpt->boLstEnt);
-   RETVOID;
+   return;
 }  /* rgSCHDbmInsCmnLcBoRpt */
 
 
@@ -1302,7 +1302,7 @@ RgSchCellCb       *cellCb;
    TRC2(rgSCHDbmInitRaCbLst)
 
    cmLListInit(&cellCb->raInfo.raCbLst);
-   RETVOID;
+   return;
 }  /* rgSCHDbmInitRaCbLst */
 
 
@@ -1368,7 +1368,7 @@ PRIVATE Void rgSCHDbmInitRaReqLst(cellCb)
 RgSchCellCb       *cellCb;
 #endif
 {
-   U8 idx;
+   uint8_t idx;
 
    TRC2(rgSCHDbmInitRaReqLst)
 
@@ -1378,7 +1378,7 @@ RgSchCellCb       *cellCb;
    {
       cmLListInit(&cellCb->raInfo.raReqLst[idx]);
    }
-   RETVOID;
+   return;
 }  /* rgSCHDbmInitRaReqLst */
 #endif
 
@@ -1406,7 +1406,7 @@ RgSchCellCb       *cellCb;
    TRC2(rgSCHDbmInitCrntRgrCfgLst)
 
    cmLListInit(&cellCb->rgCfgInfo.crntRgrCfgLst);
-   RETVOID;
+   return;
 }  /* rgSCHDbmInitCrntRgrCfgLst */
 
 /**
@@ -1433,7 +1433,7 @@ RgSchCellCb       *cellCb;
    TRC2(rgSCHDbmInitPndngRgrCfgLst)
 
    cmLListInit(&cellCb->rgCfgInfo.pndngRgrCfgLst);
-   RETVOID;
+   return;
 }  /* rgSCHDbmInitPndngRgrCfgLst */
 
 /**
@@ -1465,7 +1465,7 @@ RgSchCfgElem      *cfgElem;
    cfgElem->cfgReqLstEnt.next = NULLP;
    cfgElem->cfgReqLstEnt.prev = NULLP;
    cmLListAdd2Tail(&cellCb->rgCfgInfo.crntRgrCfgLst, &cfgElem->cfgReqLstEnt);
-   RETVOID;
+   return;
 }  /* rgSCHDbmInsCrntRgrCfgElem */
 
 /**
@@ -1498,7 +1498,7 @@ RgSchCfgElem      *cfgElem;
    cfgElem->cfgReqLstEnt.prev = NULLP;
    cfgElem->cfgReqLstEnt.node = (PTR)cfgElem;
    cmLListAdd2Tail(&cellCb->rgCfgInfo.pndngRgrCfgLst, &cfgElem->cfgReqLstEnt);
-   RETVOID;
+   return;
 }  /* rgSCHDbmInsPndngRgrCfgElem */
 
 /**
@@ -1697,17 +1697,17 @@ RgSchCfgElem      *cfgElem;
 S16 rgSCHDbmRntiDbInit
 (
 RgSchCellCb       *cellCb,
-U16            rntiStart,
-U16            maxRntis
+uint16_t            rntiStart,
+uint16_t            maxRntis
 )
 #else
 S16 rgSCHDbmRntiDbInit(cellCb, rntiStart, maxRntis)
 RgSchCellCb       *cellCb;
-U16            rntiStart;
-U16            maxRntis;
+uint16_t            rntiStart;
+uint16_t            maxRntis;
 #endif
 {
-   U16 rnti;
+   uint16_t rnti;
    RgSchRntiLnk   *rntiPool;
 
    TRC2(rgSCHDbmRntiDbInit)
@@ -1734,7 +1734,7 @@ U16            maxRntis;
    }
    else
    {
-      U16 idx;
+      uint16_t idx;
       rntiPool[0].rnti = rnti++;
       rntiPool[0].prv = NULLP;
       rntiPool[0].nxt = &rntiPool[1];
@@ -1786,7 +1786,7 @@ RgSchCellCb       *cellCb;
    cmLListInit(&cellCb->rntiDb.rntiGuardPool);
 
    /* Stack Crash problems for TRACE5 Changes. Added the return below */
-   RETVOID;
+   return;
 
 } /* rgSCHDbmRntiDbDeInit */
 
@@ -1872,7 +1872,7 @@ RgSchRntiLnk      *rntiLnk;
 #ifdef EMTC_ENABLE
       if(ROK==rgSCHDbmPutEmtcRnti(cellCb,rntiLnk))
 {      
-RETVOID;
+return;
 }
 #endif
    rntiLnk->nxt = NULLP;
@@ -1891,7 +1891,7 @@ RETVOID;
    cellCb->rntiDb.count++;
 
    /* Stack Crash problems for TRACE5 Changes. Added the return below */
-   RETVOID;
+   return;
 
 } /* rgSCHDbmRlsRnti */
 
@@ -1914,12 +1914,12 @@ RETVOID;
 PRIVATE S16 rgSCHDbmInitUeTfuPendLst
 (
 RgSchCellCb    *cellCb,
-U16            numBins
+uint16_t            numBins
 )
 #else
 PRIVATE S16 rgSCHDbmInitUeTfuPendLst(cellCb, numBins)
 RgSchCellCb    *cellCb;
-U16            numBins;
+uint16_t            numBins;
 #endif
 {
    RgSchUePucchRecpInfo pucchInfo;
@@ -1927,7 +1927,7 @@ U16            numBins;
 
    /* Fix: syed It is better to compute offset dynamically
     * rather than hardcoding it as 0 */      
-   if(cmHashListInit(&cellCb->ueTfuPendLst, numBins, (U16)((PTR)&(pucchInfo.hashLstEnt) - (PTR)&pucchInfo), FALSE, 
+   if(cmHashListInit(&cellCb->ueTfuPendLst, numBins, (uint16_t)((PTR)&(pucchInfo.hashLstEnt) - (PTR)&pucchInfo), FALSE, 
                CM_HASH_KEYTYPE_CONID,
                rgSchCb[cellCb->instIdx].rgSchInit.region, 
                rgSchCb[cellCb->instIdx].rgSchInit.pool) != ROK)

@@ -77,7 +77,7 @@ CmLListCp *lCp;               /* list control point */
    lCp->crnt  = (CmLList *)NULLP;
    lCp->count = 0;
 
-   RETVOID;
+   return;
 } /* end of cmLListInit */
 
 
@@ -112,7 +112,7 @@ CmLList   *node;              /* node to be added */
 
 #ifdef ERRCHK
    if (lCp == (CmLListCp *)NULLP)
-      RETVOID;
+      return;
 #endif
  
    lCp->count++;
@@ -124,11 +124,11 @@ CmLList   *node;              /* node to be added */
    if (!node->next)
    {
       lCp->last = node;
-      RETVOID;
+      return;
    }
    
    node->next->prev = node;
-   RETVOID;
+   return;
 } /* end of cmLListAdd2Head */
 
 
@@ -161,7 +161,7 @@ CmLList   *node;              /* node to be added */
 
 #ifdef ERRCHK
    if (lCp == (CmLListCp *)NULLP)
-      RETVOID;
+      return;
 #endif
  
    lCp->count++;
@@ -173,11 +173,11 @@ CmLList   *node;              /* node to be added */
    if (!node->prev)
    {
       lCp->first = node;
-      RETVOID;
+      return;
    }
    
    node->prev->next = node;
-   RETVOID;
+   return;
 } /* end of cmLListAdd2Tail */
 
 
@@ -210,7 +210,7 @@ CmLList   *node;              /* node to be added */
 
 #ifdef ERRCHK
    if (!lCp)
-      RETVOID;
+      return;
 #endif
  
    lCp->count++;
@@ -219,7 +219,7 @@ CmLList   *node;              /* node to be added */
    {
      lCp->crnt = lCp->first = lCp->last = node;
      node->next = NULLP;
-     RETVOID;
+     return;
    }
 
    node->next = lCp->crnt;
@@ -232,7 +232,7 @@ CmLList   *node;              /* node to be added */
       lCp->first = node;
    lCp->crnt = node;
    
-   RETVOID;
+   return;
 } /* end of cmLListInsCrnt */
 
 /* cm_llist_c_001.main_7 - Add function */
@@ -265,7 +265,7 @@ CmLList   *node;              /* node to be added */
 
 #ifdef ERRCHK
    if (!lCp)
-      RETVOID;
+      return;
 #endif
  
    lCp->count++;
@@ -273,7 +273,7 @@ CmLList   *node;              /* node to be added */
    if (lCp->count == 1)
    {
      lCp->crnt = lCp->first = lCp->last = node;
-     RETVOID;
+     return;
    }
 
    node->prev = lCp->crnt;
@@ -286,7 +286,7 @@ CmLList   *node;              /* node to be added */
       lCp->last = node;
    lCp->crnt = node;
    
-   RETVOID;
+   return;
 } /* end of cmLListInsAfterCrnt */
 
 
@@ -393,7 +393,7 @@ Void cmLListCatLList(list1, list2)
    /*-- if the second list is empty nothing to do --*/
    if(list2->count == 0)
    {
-      RETVOID;
+      return;
    }
 
    /*-- if the first list is empty make first the same as second*/
@@ -415,7 +415,7 @@ Void cmLListCatLList(list1, list2)
 
    cmLListInit(list2);
 
-   RETVOID;
+   return;
 } /*-- end of cmLListCatLList --*/
 
 /**********************************************************************

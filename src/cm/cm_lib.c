@@ -197,16 +197,16 @@ EXTERN Size regMemSize;
 *
 */
 #ifdef ANSI
-U8 *cmMemcpy
+uint8_t *cmMemcpy
 (
-U8           *tgt,
-CONSTANT U8  *src,
+uint8_t           *tgt,
+CONSTANT uint8_t  *src,
 PTR          len
 )
 #else
-U8 *cmMemcpy(tgt, src, len)
-U8           *tgt;
-CONSTANT U8  *src;
+uint8_t *cmMemcpy(tgt, src, len)
+uint8_t           *tgt;
+CONSTANT uint8_t  *src;
 PTR          len;
 #endif
 {
@@ -216,8 +216,8 @@ PTR          len;
 #ifdef MS_MBUF_CORRUPTION /* checking for valid memory address */
 if ((tgt > startPtr128) && (tgt < (startPtr128+regMemSize)))
 {
-   if ((*((U32 *)(tgt + 4)) == 0xDEADDEAD) || (*((U32 *)(tgt + 24)) == 0xDEADDEAD) ||
-      (*((U32 *)(tgt + 44)) == 0xDEADDEAD) || (*((U32 *)(tgt + 80)) == 0xDEADDEAD))
+   if ((*((uint32_t *)(tgt + 4)) == 0xDEADDEAD) || (*((uint32_t *)(tgt + 24)) == 0xDEADDEAD) ||
+      (*((uint32_t *)(tgt + 44)) == 0xDEADDEAD) || (*((uint32_t *)(tgt + 80)) == 0xDEADDEAD))
    {
       Data *crashPtr=NULLP;
       *crashPtr = 9;
@@ -225,8 +225,8 @@ if ((tgt > startPtr128) && (tgt < (startPtr128+regMemSize)))
 }
 if ((src > startPtr128) && (src < (startPtr128+regMemSize)))
 {
-   if ((*((U32 *)(src + 4)) == 0xDEADDEAD) || (*((U32 *)(src + 24)) == 0xDEADDEAD) ||
-      (*((U32 *)(src + 44)) == 0xDEADDEAD) || (*((U32 *)(src + 80)) == 0xDEADDEAD))
+   if ((*((uint32_t *)(src + 4)) == 0xDEADDEAD) || (*((uint32_t *)(src + 24)) == 0xDEADDEAD) ||
+      (*((uint32_t *)(src + 44)) == 0xDEADDEAD) || (*((uint32_t *)(src + 80)) == 0xDEADDEAD))
    {
       Data *crashPtr=NULLP;
       *crashPtr = 9;
@@ -234,7 +234,7 @@ if ((src > startPtr128) && (src < (startPtr128+regMemSize)))
 }
 #endif 
 #if (MEMCPY_AVAIL) /* memcpy is available */
-   return ((U8 *) memcpy((Void *)tgt, (CONSTANT Void *)src, (size_t)len));
+   return ((uint8_t *) memcpy((Void *)tgt, (CONSTANT Void *)src, (size_t)len));
 #else
    while (len--)
       *tgt++ = *src++;
@@ -265,14 +265,14 @@ if ((src > startPtr128) && (src < (startPtr128+regMemSize)))
 #ifdef ANSI
 S16 cmMemcmp
 (
-CONSTANT U8     *s1,
-CONSTANT U8     *s2,
+CONSTANT uint8_t     *s1,
+CONSTANT uint8_t     *s2,
 PTR             len
 )
 #else
 S16 cmMemcmp (s1, s2, len)
-CONSTANT U8     *s1;
-CONSTANT U8     *s2;
+CONSTANT uint8_t     *s1;
+CONSTANT uint8_t     *s2;
 PTR             len;
 #endif
 {
@@ -312,16 +312,16 @@ PTR             len;
 *
 */
 #ifdef ANSI
-U8 *cmMemset
+uint8_t *cmMemset
 (
-U8           *str,
-U8           val,
+uint8_t           *str,
+uint8_t           val,
 PTR          len
 )
 #else
-U8 *cmMemset(str, val, len)
-U8           *str;
-U8           val;
+uint8_t *cmMemset(str, val, len)
+uint8_t           *str;
+uint8_t           val;
 PTR          len;
 #endif
 {
@@ -330,8 +330,8 @@ PTR          len;
 #if MS_MBUF_CORRUPTION /* checking for valid memory address */
 if ((str > startPtr128) && (str < (startPtr128+regMemSize)))
 {
-   if ((*((U32 *)(str + 4)) == 0xDEADDEAD) || (*((U32 *)(str + 24)) == 0xDEADDEAD) ||
-      (*((U32 *)(str + 44)) == 0xDEADDEAD) || (*((U32 *)(str + 80)) == 0xDEADDEAD))
+   if ((*((uint32_t *)(str + 4)) == 0xDEADDEAD) || (*((uint32_t *)(str + 24)) == 0xDEADDEAD) ||
+      (*((uint32_t *)(str + 44)) == 0xDEADDEAD) || (*((uint32_t *)(str + 80)) == 0xDEADDEAD))
    {
       Data *crashPtr=NULLP;
       *crashPtr = 9;
@@ -393,13 +393,13 @@ if ((str > startPtr128) && (str < (startPtr128+regMemSize)))
 #ifdef ANSI
 S16 cmStrcmp
 (
-CONSTANT U8 *s1,
-CONSTANT U8 *s2
+CONSTANT uint8_t *s1,
+CONSTANT uint8_t *s2
 )
 #else
 S16 cmStrcmp (s1, s2)
-CONSTANT U8 *s1;
-CONSTANT U8 *s2;
+CONSTANT uint8_t *s1;
+CONSTANT uint8_t *s2;
 #endif
 {
    /*cm_lib_c_001.main_14 : Fix for TRACE5 feature crash due to missing TRC MACRO*/
@@ -458,14 +458,14 @@ CONSTANT U8 *s2;
 #ifdef ANSI
 S16 cmStrncmp
 (
-CONSTANT U8  *s1,
-CONSTANT U8  *s2,
+CONSTANT uint8_t  *s1,
+CONSTANT uint8_t  *s2,
 MsgLen       len /* cm_lib_c_001.main_12: Changing from S16 to MsgLen.*/
 )
 #else
 S16 cmStrncmp (s1, s2, len)
-CONSTANT U8  *s1;
-CONSTANT U8  *s2;
+CONSTANT uint8_t  *s1;
+CONSTANT uint8_t  *s2;
 MsgLen       len;
 #endif
 {
@@ -513,12 +513,12 @@ MsgLen       len;
 #ifdef ANSI
 MsgLen cmStrlen
 (
-CONSTANT U8 *s
+CONSTANT uint8_t *s
 )
 #else
 /* cm_lib_c_001.main_12: Changing from S16 to MsgLen.*/
 MsgLen cmStrlen (s)
-CONSTANT U8 *s;
+CONSTANT uint8_t *s;
 #endif
 {
 #if (STRLEN_AVAIL)

@@ -112,7 +112,7 @@ CrgCfgReqInfo *crgCfgReq;
 #endif
 {
    S16             ret;
-   U8              cfmStatus = CRG_CFG_CFM_OK;
+   uint8_t         cfmStatus = CRG_CFG_CFM_OK;
    RgErrInfo       errInfo;
    Bool            isCfmRqrd = TRUE;
 
@@ -398,7 +398,7 @@ Bool            *isCfmRqrd;
 
 #ifdef LTE_ADV
          /*ERAB- multicell fix*/
-         cmMemcpy( (U8*)&(ue->cfgCfmInfo.transId), (U8*)&transId,
+         cmMemcpy( (uint8_t*)&(ue->cfgCfmInfo.transId), (uint8_t*)&transId,
                sizeof(CrgCfgTransId));
 #endif
          ret = rgCFGCrgLcRecfg(inst,cell, ue, ulLc,
@@ -505,7 +505,7 @@ CrgCfgTransId transId;
 {
 
    S16            ret;
-   VOLATILE U32   startTime=0;
+   VOLATILE uint32_t   startTime=0;
 
    TRC2(rgCOMHndlDelReq);
    

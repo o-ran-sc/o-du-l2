@@ -98,7 +98,7 @@ typedef enum
 typedef struct
 {
 	time_t tv_sec;
-	U32	ms_tti;
+	uint32_t	ms_tti;
 } __attribute__ ((__packed__)) LOGTIME;
 
 typedef struct
@@ -108,7 +108,7 @@ typedef struct
 	unsigned int argType 	:2;
 	unsigned int logLevel	:3;
 	unsigned int numOfArgs	:3;
-	U16			len;
+	uint16_t			len;
 } __attribute__ ((__packed__)) LOGDATA;
 
 typedef struct
@@ -120,22 +120,22 @@ typedef struct
 typedef struct
 {
 	LOGDATA logData;
-	U32 arg1;
-	U32 arg2;
-	U32 arg3;
-	U32 arg4;
+	uint32_t arg1;
+	uint32_t arg2;
+	uint32_t arg3;
+	uint32_t arg4;
    char unusedByte[19]; /* To make it as 50 byte */
 }  __attribute__ ((__packed__)) ARG4DATA;
 
 typedef struct
 {
 	LOGDATA logData;
-	U8		  splEnum;
-	U32 splArg;
-	U32 arg1;
-	U32 arg2;
-	U32 arg3;
-	U32 arg4;
+	uint8_t		  splEnum;
+	uint32_t splArg;
+	uint32_t arg1;
+	uint32_t arg2;
+	uint32_t arg3;
+	uint32_t arg4;
    char unusedByte[14]; /* To make it as 50 byte */
 }  __attribute__ ((__packed__)) SPL_ARGDATA;
 
@@ -143,11 +143,11 @@ typedef enum _endian {little_endian, big_endian} EndianType;
 
 typedef struct
 {
-	U16			version;
-	U32			dummy32;
-	U8				endianType;
+	uint16_t			version;
+	uint32_t			dummy32;
+	uint8_t				endianType;
 	char			szTimeZone[RLOG_TIME_ZONE_LEN+1];
-	U16			END_MARKER;
+	uint16_t			END_MARKER;
    time_t      time_sec;
 } __attribute__ ((__packed__)) FILE_HEADER;
 
@@ -156,10 +156,10 @@ typedef struct
 typedef struct {
 	
 	char	szTaskName[RLOG_MAX_TAX_NAME];
-	U8*	logBuff;	 	/* LOG Buffer */
-	U32 	logBufLen;  /* Data Written till now */
-	U32	logReadPos; /* Reader thread position */
-	U8 	listIndex;	/* Index to global list */
+	uint8_t*	logBuff;	 	/* LOG Buffer */
+	uint32_t 	logBufLen;  /* Data Written till now */
+	uint32_t	logReadPos; /* Reader thread position */
+	uint8_t 	listIndex;	/* Index to global list */
 
 } THREAD_DATA;
 
@@ -172,18 +172,18 @@ extern void rlProcessLogBufFromL2(void *mBuf);
 extern void rlInitL2SocSpecific(void);
 //extern void processL2LogBuff(void);
 extern void rlProcessTicks(void);
-extern void rlGetL2LogBufPtr (void *mBuf, U32 *logLen,U8 **logPtr);
-extern void rlInvalidateL2LogsInCache(U8 *ptr,U32 len);
+extern void rlGetL2LogBufPtr (void *mBuf, uint32_t *logLen,uint8_t **logPtr);
+extern void rlInvalidateL2LogsInCache(uint8_t *ptr,uint32_t len);
 
-extern U8     *g_l2rlogBuf;        /* buffer pointer for shared memory allocation */
-extern U8     *g_l2LogBufStartPtr; /* buffer pointer where logs has to be written */
-extern U8     *g_l2LogBufBasePtr;  /* Base pointer for log buffer */
-extern U8     *g_logBufRcvdFromL2; /* Buffer pointer received from L2 at L3*/
-extern U8     *g_l2LogBaseBuff;    /* Base log buffer received at L3 */
-extern U32     g_l2LogBufLen;      /* Log Buffer length written at L2 */
-extern U32     startL2Logging;     /* flag to start processing of L2 logs */
-extern U32     g_l2logBuffPos;     /* Log Buffer block which is in use for L2 logging */
-extern U8      g_writeCirBuf;      /* Flag to indicate whether to write logs or not */
+extern uint8_t     *g_l2rlogBuf;        /* buffer pointer for shared memory allocation */
+extern uint8_t     *g_l2LogBufStartPtr; /* buffer pointer where logs has to be written */
+extern uint8_t     *g_l2LogBufBasePtr;  /* Base pointer for log buffer */
+extern uint8_t     *g_logBufRcvdFromL2; /* Buffer pointer received from L2 at L3*/
+extern uint8_t     *g_l2LogBaseBuff;    /* Base log buffer received at L3 */
+extern uint32_t     g_l2LogBufLen;      /* Log Buffer length written at L2 */
+extern uint32_t     startL2Logging;     /* flag to start processing of L2 logs */
+extern uint32_t     g_l2logBuffPos;     /* Log Buffer block which is in use for L2 logging */
+extern uint8_t      g_writeCirBuf;      /* Flag to indicate whether to write logs or not */
 //extern Pst    g_rlog_pst;
 
 #endif /* __RL_H__*/

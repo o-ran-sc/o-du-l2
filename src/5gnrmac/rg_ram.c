@@ -104,7 +104,7 @@ RgUeCb      *ue;
    rgFreeSBuf(inst,(Data **)&ue, sizeof(*ue));
 
    /* Stack Crash problem for TRACE5 changes. Added the return below */
-   RETVOID;
+   return;
 
 }  /* rgRAMFreeUeCb */
 
@@ -259,10 +259,10 @@ RgInfRarInfo        *rarInfo;
 RgErrInfo           *err;
 #endif
 {
-   U8       idx1,idx2;
+   uint8_t  idx1,idx2;
    Buffer   *rarPdu;
    RgDlSf   *dlSf;
-   U8       idx;
+   uint8_t  idx;
 
    TRC2(rgHndlRaResp)
 

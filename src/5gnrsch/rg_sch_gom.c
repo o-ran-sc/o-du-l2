@@ -73,32 +73,32 @@ PRIVATE S16 rgSCHGomHndlDelReq ARGS((RgSchCb  *instCb,SpId spId,
          RgrDel  *del,RgSchErrInfo  *errInfo));
 #ifdef LTE_ADV
 PRIVATE S16 rgSCHGomHndlSCellActDeactReq ARGS((RgSchCb *instCb, SpId spId,
-         RgrSCellActDeactEvnt  *sCellActDeactEvnt, RgSchErrInfo *errInfo, U8 action));
+         RgrSCellActDeactEvnt  *sCellActDeactEvnt, RgSchErrInfo *errInfo, uint8_t action));
 #endif /* LTE_ADV */
 #ifdef EMTC_ENABLE
 EXTERN S16 rgSchEmtcGetSiWinPerd ARGS((
 RgSchCellCb   *cell,
-U16  *siWinSize,
-U16  *minPeriod 
+uint16_t  *siWinSize,
+uint16_t  *minPeriod 
 ));
 extern S16 rgSCHEmtcUtlCalMcsAndNPrb
 (
  RgSchCellCb         *cell,
- U8                  cfgType,
+ uint8_t                  cfgType,
  MsgLen              msgLen,
- U8                  siId
+ uint8_t                  siId
  );
 
 EXTERN S32 rgSCHEmtcUtlGetAllwdCchTbSzForSI ARGS(
 (
-U32 bo
+uint32_t bo
 ));
 
 EXTERN Void rgSCHEmtcWarningSiCfg ARGS(
 (
 RgSchCellCb             *cell,
 RgrWarningSiCfgReqInfo  *warningSiCfgReqInfo,
-U16                     idx
+uint16_t                     idx
 ));
 #endif
 
@@ -155,7 +155,7 @@ RgrCfgReqInfo *cfgReqInfo;
    SpId          spId = 0;
    CmLteCellId   cellId;
    RgSchCellCb   *cell = NULLP;    
-   U8            cfmStatus = RGR_CFG_CFM_NOK;
+   uint8_t            cfmStatus = RGR_CFG_CFM_NOK;
 #ifdef DEBUGP
    Inst          inst = (instCb->rgSchInit.inst );
 #endif
@@ -264,7 +264,7 @@ RgrCfgReqInfo *cfgReqInfo;
 #endif
 {
    SpId          spId = 0;
-   U8              cfmStatus = RGR_CFG_CFM_OK;
+   uint8_t              cfmStatus = RGR_CFG_CFM_OK;
    S16             ret;
    RgSchErrInfo    errInfo;
 #ifdef DEBUGP
@@ -389,7 +389,7 @@ RgrCfgReqInfo *rgrCfgReq;
 #endif
 {
    S16                ret;
-   U32                sfDiff;
+   uint32_t                sfDiff;
    RgSchCfgElem       *rgrCfgElem  = NULLP;
    CmLteTimingInfo    actvTime; 
    Inst               inst = cell->instIdx;
@@ -398,13 +398,13 @@ RgrCfgReqInfo *rgrCfgReq;
 
    /* Allocate memory for config Element */
    ret = rgSCHUtlAllocSBuf(inst, (Data **)&rgrCfgElem, sizeof(RgSchCfgElem));
-   if ((ret != ROK) || ((U8 *)rgrCfgElem == NULLP))
+   if ((ret != ROK) || ((uint8_t *)rgrCfgElem == NULLP))
    {
       return RFAILED;
    }
 
    /* Initialize the configuration element */
-   cmMemcpy((U8*)rgrCfgElem->rgrCfg.transId.trans,(U8*)transId.trans,
+   cmMemcpy((uint8_t*)rgrCfgElem->rgrCfg.transId.trans,(uint8_t*)transId.trans,
          sizeof(transId.trans));
    rgrCfgElem->rgrCfg.reg = reg;
    rgrCfgElem->rgrCfg.pool = pool;
@@ -676,7 +676,7 @@ RgSchErrInfo   *errInfo;
  *  @param[in]  RgSchCb      *instCb
  *  @param[in]  SpId         spId
  *  @param[in]  RgrSCellActDeactEvnt  *sCellActDeactEvnt
- *  @param[in]  U8 action
+ *  @param[in]  uint8_t action
  *  @param[out] RgSchErrInfo *errInfo
  *  @return  S16
  *      -# ROK 
@@ -689,7 +689,7 @@ RgSchCb               *instCb,
 SpId                   spId,
 RgrSCellActDeactEvnt  *sCellActDeactEvnt,
 RgSchErrInfo          *errInfo,
-U8                    action
+uint8_t                    action
 )
 #else
 PRIVATE S16 rgSCHGomHndlSCellActDeactReq(instCb, spId, sCellActDeactEvnt, errInfo, action)
@@ -697,12 +697,12 @@ RgSchCb               *instCb;
 SpId                  spId;
 RgrSCellActDeactEvnt  *sCellActDeactEvnt; 
 RgSchErrInfo          *errInfo;
-U8                    action;
+uint8_t                    action;
 #endif
 {
    RgSchUeCb    *ue = NULLP;
-   U16          idx = 0;
-   U16          sCellIdx = 0;
+   uint16_t          idx = 0;
+   uint16_t          sCellIdx = 0;
    RgSchCellCb  *cell = instCb->rgrSap[spId].cell;
    Inst         inst = (instCb->rgSchInit.inst);
 
@@ -966,7 +966,7 @@ RgSchErrInfo  *errInfo;
 #ifdef DEBUGP
    Inst      inst = (instCb->rgSchInit.inst);
 #endif
-   VOLATILE U32     startTime=0;
+   VOLATILE uint32_t     startTime=0;
 
    TRC2(rgSCHGomHndlDelReq);
    
@@ -987,7 +987,7 @@ RgSchErrInfo  *errInfo;
          if(ret == ROK)
          {
             /* TODO::Needs to be revisited after tti flow CaDev Start */
-            U8 idx = (U8)((instCb->rgrSap[spId].cell->cellId - instCb->genCfg.startCellId)&(CM_LTE_MAX_CELLS-1));
+            uint8_t idx = (uint8_t)((instCb->rgrSap[spId].cell->cellId - instCb->genCfg.startCellId)&(CM_LTE_MAX_CELLS-1));
             instCb->cells[idx] = NULLP;
             /* CaDev End */
             instCb->rgrSap[spId].cell = NULLP;
@@ -1158,17 +1158,17 @@ RgrSiCfgReqInfo *cfgReqInfo;
    RgSchCellCb  *cell = instCb->rgrSap[spId].cell;
    Inst         inst = (instCb->rgSchInit.inst );
    RgSchErrInfo    errInfo;
-   U8           cfmStatus = RGR_CFG_CFM_NOK;
+   uint8_t           cfmStatus = RGR_CFG_CFM_NOK;
    MsgLen       msgLen = 0, pduLen;
    S32          tbSz   = 0;
-   U8           nPrb   = 0; 
-   U8           mcs    = 0;
+   uint8_t           nPrb   = 0; 
+   uint8_t           mcs    = 0;
 
    TRC2(rgSCHGomHndlSiCfg);
 
 
    /* check if cell does not exists */
-   if (((U8 *)cell == NULLP) || (cell->cellId != cfgReqInfo->cellId))
+   if (((uint8_t *)cell == NULLP) || (cell->cellId != cfgReqInfo->cellId))
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cfgReqInfo->cellId,"Cell Control block does not exist"
                );
@@ -1252,7 +1252,7 @@ RgrSiCfgReqInfo *cfgReqInfo;
             return RFAILED;
          }
 
-         cmMemset((U8*)padding,(U8)0,nmPadBytes);
+         cmMemset((uint8_t*)padding,(uint8_t)0,nmPadBytes);
 
 #ifdef MS_MBUF_CORRUPTION 
    MS_BUF_ADD_ALLOC_CALLER();
@@ -1355,7 +1355,7 @@ RgrSiCfgReqInfo *cfgReqInfo;
          }
          else /* Initial Si cfg  or si recfg where numSi did not change */
          {
-            U8 bitMask;
+            uint8_t bitMask;
             /* Initial Si cfg */
             if (cell->siCb.crntSiInfo.siInfo[cfgReqInfo->siId-1].si == NULLP)
             {
@@ -1460,19 +1460,19 @@ RgrWarningSiCfgReqInfo *warningSiCfgReqInfo;
 #endif
 {
    RgSchCellCb       *cell = instCb->rgrSap[spId].cell;
-   U8                 cfmStatus = RGR_CFG_CFM_NOK;
-   U16                idx;
-   U8                 siId = warningSiCfgReqInfo->siId; 
-   U8                 j, mcs=0, nPrb=0;
+   uint8_t                 cfmStatus = RGR_CFG_CFM_NOK;
+   uint16_t                idx;
+   uint8_t                 siId = warningSiCfgReqInfo->siId; 
+   uint8_t                 j, mcs=0, nPrb=0;
    RgSchWarningSiSeg  *warningSiMsg;
    RgSchWarningSiPdu  *pduNode;
    CmLList            *node;
    MsgLen             msgLen = 0;
    Bool               freeNodeFound = FALSE;
-   U16                siWinSize = 0;
-   U16                minPeriod = 0;
+   uint16_t                siWinSize = 0;
+   uint16_t                minPeriod = 0;
 #ifdef EMTC_ENABLE
-   U8                 isEmtc = warningSiCfgReqInfo->emtcEnable;
+   uint8_t                 isEmtc = warningSiCfgReqInfo->emtcEnable;
 #endif
 
    TRC2(rgSCHGomHndlWarningSiCfg);
@@ -1489,7 +1489,7 @@ RgrWarningSiCfgReqInfo *warningSiCfgReqInfo;
       minPeriod = cell->siCfg.minPeriodicity;
    }
    /* check if cell does not exists */
-   if (((U8 *)cell == NULLP) || 
+   if (((uint8_t *)cell == NULLP) || 
          (cell->cellId != warningSiCfgReqInfo->cellId) ||
          (warningSiCfgReqInfo->siId > 
           ((minPeriod * 10)/siWinSize)))
@@ -1641,7 +1641,7 @@ Void rgSCHGomHndlWarningSiStopReq
 Region        reg,
 Pool          pool,
 RgSchCb       *instCb,
-U8            siId,
+uint8_t            siId,
 RgrCfgTransId transId,
 SpId          spId
 )
@@ -1650,13 +1650,13 @@ Void rgSCHGomHndlWarningSiStopReq(reg, pool, instCb, siId, transId, spId)
 Region        reg;
 Pool          pool;
 RgSchCb       *instCb;
-U8            siId;
+uint8_t            siId;
 RgrCfgTransId transId;
 SpId          spId;
 #endif
 {
    RgSchCellCb        *cell = instCb->rgrSap[spId].cell;
-   U16                idx;
+   uint16_t                idx;
    CmLList            *node;
    RgSchWarningSiPdu  *warningSiPdu;
    Buffer             *pdu;
@@ -1667,8 +1667,8 @@ SpId          spId;
    {
       if(cell->siCb.warningSi[idx].siId == siId)
       {
-         if ((cmMemcmp ((U8 *)&cell->siCb.warningSi[idx].warningSiMsg.transId, 
-                     (U8 *)&transId, sizeof(RgrCfgTransId))) == 0)
+         if ((cmMemcmp ((uint8_t *)&cell->siCb.warningSi[idx].warningSiMsg.transId, 
+                     (uint8_t *)&transId, sizeof(RgrCfgTransId))) == 0)
          {
             /* ccpu00136659: CMAS ETWS design changes */
             CM_LLIST_FIRST_NODE(&cell->siCb.warningSi[idx].warningSiMsg.segLstCp, node);
@@ -1688,7 +1688,7 @@ SpId          spId;
          }
       }
    }
-   RETVOID;
+   return;
 }
 
 #endif/*RGR_SI_SCH */
@@ -1800,13 +1800,13 @@ S16 rgSCHGomHndlLoadInf(reg, pool, instCb, spId, transId, loadInfReq)
    RgSchCellCb  *cell = instCb->rgrSap[spId].cell;
    Inst         inst  = (instCb->rgSchInit.inst );
    RgSchErrInfo errInfo;
-   U16 i;
+   uint16_t i;
 
    TRC2(rgSCHGomHndlLoadInf);
 
 
    /* check if cell does not exists */
-   if (((U8 *)cell == NULLP) || (cell->cellId != loadInfReq->cellId))
+   if (((uint8_t *)cell == NULLP) || (cell->cellId != loadInfReq->cellId))
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,loadInfReq->cellId,"Cell Control block does not exist"
              "for load cellId:%d",loadInfReq->cellId);

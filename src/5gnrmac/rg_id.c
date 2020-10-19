@@ -113,10 +113,10 @@ SystemId *s;                /* system id */
    s->mRev = sId.mRev;
    s->bVer = sId.bVer;
    s->bRev = sId.bRev;
-   cmMemcpy((U8 *)s->ptNmb, (U8 *)sId.ptNmb, LRG_MAX_PT_NUM_SIZE); 
+   cmMemcpy((uint8_t *)s->ptNmb, (uint8_t *)sId.ptNmb, LRG_MAX_PT_NUM_SIZE); 
 
    /* Stack Crash Problem for TRACE5 Changes. Added the return below */
-  RETVOID; 
+  return; 
   
 } /* end of rgGetSid */
 
