@@ -1,0 +1,480 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "720ca371_70798baf",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1255,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-19T16:50:39Z",
+      "side": 1,
+      "message": "can we not remove the commented lines?",
+      "revId": "01764cb256a6e625e7dbce7d5f8ba112a5ec0454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "62d04680_907b0ab5",
+        "filename": "src/5gnrmac/lwr_mac_phy.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-19T16:50:39Z",
+      "side": 1,
+      "message": "Is ret needed to be int16? Check what values could SGetSBufWls() return. Can we make ret as uint8_t",
+      "revId": "01764cb256a6e625e7dbce7d5f8ba112a5ec0454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "37d96438_bfb37e4a",
+        "filename": "src/5gnrmac/rg_cfg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2145,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-19T16:50:39Z",
+      "side": 1,
+      "message": "replace with return. Change in other functions too.",
+      "revId": "01764cb256a6e625e7dbce7d5f8ba112a5ec0454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f6c7e2d4_47cfd034",
+        "filename": "src/5gnrmac/rg_dbm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-19T16:50:39Z",
+      "side": 1,
+      "message": "looks like RETVOID was missed when all other RETVALUE was replaces with return. Please check at all places",
+      "revId": "01764cb256a6e625e7dbce7d5f8ba112a5ec0454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c20a91c5_d1730519",
+        "filename": "src/5gnrmac/rg_lmm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1415,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-19T16:50:39Z",
+      "side": 1,
+      "message": "align the parameters",
+      "revId": "01764cb256a6e625e7dbce7d5f8ba112a5ec0454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cefce465_3162c332",
+        "filename": "src/5gnrmac/rg_ram.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-19T16:50:39Z",
+      "side": 1,
+      "message": "fix alignment",
+      "revId": "01764cb256a6e625e7dbce7d5f8ba112a5ec0454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b21078dd_18afb187",
+        "filename": "src/5gnrrlc/kw.x",
+        "patchSetId": 1
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-19T16:50:39Z",
+      "side": 1,
+      "message": "replace U64 as well at all places",
+      "revId": "01764cb256a6e625e7dbce7d5f8ba112a5ec0454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b94fac7e_c4a5cc89",
+        "filename": "src/5gnrrlc/kw_udx_dl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 756,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-19T16:50:39Z",
+      "side": 1,
+      "message": "fix alignment at all places",
+      "revId": "01764cb256a6e625e7dbce7d5f8ba112a5ec0454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d46f6dd7_72be4250",
+        "filename": "src/5gnrrlc/kw_utl_dl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1177,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-19T16:50:39Z",
+      "side": 1,
+      "message": "double semi colon",
+      "revId": "01764cb256a6e625e7dbce7d5f8ba112a5ec0454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9a1af5d3_45f1d484",
+        "filename": "src/5gnrsch/sch_utils.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-19T16:50:39Z",
+      "side": 1,
+      "message": "can we use uint8_t for return type?",
+      "revId": "01764cb256a6e625e7dbce7d5f8ba112a5ec0454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8dbffff0_cf2d019d",
+        "filename": "src/cm/cm_gen.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-19T16:50:39Z",
+      "side": 1,
+      "message": "cmPkSeqUInt16",
+      "revId": "01764cb256a6e625e7dbce7d5f8ba112a5ec0454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5e163288_688e895c",
+        "filename": "src/cm/cm_gen.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-19T16:50:39Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "01764cb256a6e625e7dbce7d5f8ba112a5ec0454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f49f7646_e132a37d",
+        "filename": "src/cm/cm_hash.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-19T16:50:39Z",
+      "side": 1,
+      "message": "call it cmHashFuncUInt32Mod",
+      "revId": "01764cb256a6e625e7dbce7d5f8ba112a5ec0454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "95c238be_12f43084",
+        "filename": "src/cm/cm_hash.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-19T16:50:39Z",
+      "side": 1,
+      "message": "Revert the name of variables \nor rename as firstUInt32",
+      "revId": "01764cb256a6e625e7dbce7d5f8ba112a5ec0454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "10301863_6c03fe2e",
+        "filename": "src/cm/cm_hash.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-19T16:50:39Z",
+      "side": 1,
+      "message": "call it CM_HASH_KEYTYPE_UINT32_MOD",
+      "revId": "01764cb256a6e625e7dbce7d5f8ba112a5ec0454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2d960a1c_a34f50e0",
+        "filename": "src/cm/cm_hash.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-19T16:50:39Z",
+      "side": 1,
+      "message": "Rename like CM_HASHKEYLEN_UINT8",
+      "revId": "01764cb256a6e625e7dbce7d5f8ba112a5ec0454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "54773a87_7c58cc46",
+        "filename": "src/cm/cm_inet.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-19T16:50:39Z",
+      "side": 1,
+      "message": "rename like CM_INET_HTON_UINT16",
+      "revId": "01764cb256a6e625e7dbce7d5f8ba112a5ec0454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a4509535_fc93e56f",
+        "filename": "src/cm/cm_inet.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-19T16:50:39Z",
+      "side": 1,
+      "message": "rename all names like mentioned above. \nAll macros should be in capital letters",
+      "revId": "01764cb256a6e625e7dbce7d5f8ba112a5ec0454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "359515e4_febfbf0b",
+        "filename": "src/cm/cm_inet.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-19T16:50:39Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "01764cb256a6e625e7dbce7d5f8ba112a5ec0454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aaa76e2a_5085060f",
+        "filename": "src/cm/envind.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-19T16:50:39Z",
+      "side": 1,
+      "message": "remove the definition of U8/U16/U32/U64 from envdep.h",
+      "revId": "01764cb256a6e625e7dbce7d5f8ba112a5ec0454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b3a60edd_01950187",
+        "filename": "src/cm/gen.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 2457,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-19T16:50:39Z",
+      "side": 1,
+      "message": "rename to cmPkSeqUInt16",
+      "revId": "01764cb256a6e625e7dbce7d5f8ba112a5ec0454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "11cc3072_3e37a657",
+        "filename": "src/cm/gen.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 2564,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-19T16:50:39Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "01764cb256a6e625e7dbce7d5f8ba112a5ec0454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cf5c0e6c_ae37103d",
+        "filename": "src/cm/gen.x",
+        "patchSetId": 1
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-19T16:50:39Z",
+      "side": 1,
+      "message": "SeqUInt16",
+      "revId": "01764cb256a6e625e7dbce7d5f8ba112a5ec0454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "60c637cb_69c58956",
+        "filename": "src/cm/gen.x",
+        "patchSetId": 1
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-19T16:50:39Z",
+      "side": 1,
+      "message": "rename arr 64 as above",
+      "revId": "01764cb256a6e625e7dbce7d5f8ba112a5ec0454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "72bec4fc_17d7c038",
+        "filename": "src/cm/gen.x",
+        "patchSetId": 1
+      },
+      "lineNbr": 866,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-19T16:50:39Z",
+      "side": 1,
+      "message": "MACRO name should be always capital\nuse UINT16 instead of uint16_t",
+      "revId": "01764cb256a6e625e7dbce7d5f8ba112a5ec0454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2237e644_e592f863",
+        "filename": "src/cm/ssi.x",
+        "patchSetId": 1
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-19T16:50:39Z",
+      "side": 1,
+      "message": "rename wsUInt32",
+      "revId": "01764cb256a6e625e7dbce7d5f8ba112a5ec0454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "def88f87_9224d8c2",
+        "filename": "src/cu_stub/cu_stub_sctp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-19T16:50:39Z",
+      "side": 1,
+      "message": "rename",
+      "revId": "01764cb256a6e625e7dbce7d5f8ba112a5ec0454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1eb88718_7a2d49f2",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-19T16:50:39Z",
+      "side": 1,
+      "message": "can return type be uint8_t",
+      "revId": "01764cb256a6e625e7dbce7d5f8ba112a5ec0454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
