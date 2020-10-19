@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "31f94a5e_6bb2ea0d",
+        "filename": "build/common/env.mak",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-19T11:24:05Z",
+      "side": 1,
+      "message": "is this used? Else can be removed",
+      "revId": "24fc4fc1af4bcd9ca625d35c73ca7e7336e40801",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5ca07e66_f5cb0fdf",
+        "filename": "build/common/ric_stub.mak",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-19T11:24:05Z",
+      "side": 1,
+      "message": "remove LOG, BAK and DB. This must be removed from all files",
+      "revId": "24fc4fc1af4bcd9ca625d35c73ca7e7336e40801",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f56b2541_bfafc1df",
+        "filename": "build/common/rlc.mak",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-19T11:24:05Z",
+      "side": 1,
+      "message": "add tailer",
+      "revId": "24fc4fc1af4bcd9ca625d35c73ca7e7336e40801",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
