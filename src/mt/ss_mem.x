@@ -51,7 +51,7 @@ typedef struct ssRegionEntry
 
    Void         *regCb;                         /* control block */
 
-   U32          flags;                          /* flags */
+   uint32_t          flags;                          /* flags */
 
    SsPoolEntry  poolTbl[SS_MAX_POOLS_PER_REG];  /* pool table */
    SsCntr       numPools;                       /* count of pools */
@@ -70,31 +70,31 @@ typedef struct ssRegionEntry
 typedef struct ssMemBktDbgInfo
 {
    Size         size;         /* Size of the block */
-   U32          numBlks;      /* Total number of blocks in the bucket */
-   U32          numAlloc;     /* Number of blocks allocated */
+   uint32_t          numBlks;      /* Total number of blocks in the bucket */
+   uint32_t          numAlloc;     /* Number of blocks allocated */
 }SsMemBktDbgInfo;
 
 typedef struct ssMemDbgInfo
 {
    Region       region;        /* Region  Id of the memory */
-   U16          numBkts;       /* Number of buckets in bktDbgTbl */
+   uint16_t          numBkts;       /* Number of buckets in bktDbgTbl */
    SsMemBktDbgInfo      bktDbgTbl[SS_MAX_BKT_PER_DBGTBL];
    Size         heapSize;      /* Size of the heap pool */
    Size         heapAlloc;          /* Total allocated memory */
-   U32          availmem;
+   uint32_t          availmem;
 #if (ERRCLASS & ERRCLS_DEBUG)
-   U16       numFragBlk;       /* Number of fragmented block */
+   uint16_t       numFragBlk;       /* Number of fragmented block */
 #endif /* ERRCLASS & ERRCLS_DEBUG */
 }SsMemDbgInfo;
 
 /* ss036.103 - Addition of  prototypes for memory statistics */
-EXTERN S16 SRegInfoShow  ARGS((Region region, U32 *availmem));
+EXTERN S16 SRegInfoShow  ARGS((Region region, uint32_t *availmem));
 EXTERN S16 SGetRegInfo ARGS((Region region, SsMemDbgInfo *dbgInfo));
 #ifdef XEON_SPECIFIC_CHANGES
-EXTERN S16 SRegReachedMemThreshold ARGS((Region region, U8 maxBkt));
+EXTERN S16 SRegReachedMemThreshold ARGS((Region region, uint8_t maxBkt));
 #endif
 #ifdef SSI_DEBUG_LEVEL1
-EXTERN S16 SPrintRegMemStatusInfo ARGS((Region region, U8 typeFlag));
+EXTERN S16 SPrintRegMemStatusInfo ARGS((Region region, uint8_t typeFlag));
 EXTERN Void SRegMemErrHdlr ARGS((Region region, Data *ptr, S16 errCode));
 EXTERN S16 SPrintRegMemProfile ARGS((Region region));
 #endif /* SSI_DEBUG_LEVEL1 */

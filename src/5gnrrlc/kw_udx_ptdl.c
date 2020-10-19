@@ -59,9 +59,9 @@
 #define UDX_MAX_SEL   3
 
 #ifndef LCKWULUDX
-PRIVATE S16 PtDlUdxBndCfm ARGS(( Pst *pst,SuId suId,U8 status ));
+PRIVATE S16 PtDlUdxBndCfm ARGS(( Pst *pst,SuId suId,uint8_t status ));
 PRIVATE S16 PtDlUdxCfgCfm ARGS((Pst *pst, SuId suId, RlcCfgCfmInfo *cfmInfo));
-PRIVATE S16 PtDlUdxUeIdChgCfm ARGS(( Pst *pst, SuId suId,U32 transId, 
+PRIVATE S16 PtDlUdxUeIdChgCfm ARGS(( Pst *pst, SuId suId,uint32_t transId, 
                                      CmStatus status));
 PRIVATE S16  PtDlUdxStaUpdCfm ARGS(( Pst* pst,SuId suId,CmLteRlcId *rlcId,
                               RlcUdxBufLst *pBufLst));
@@ -92,13 +92,13 @@ PRIVATE S16 PtDlUdxBndCfm
 (
 Pst *pst,                       /* post structure */
 SuId suId,                      /* Service User Id */
-U8   status                     /* Status */
+uint8_t   status                     /* Status */
 )
 #else
 PRIVATE S16 PtDlUdxBndCfm(pst, suId, status)
 Pst *pst;                       /* post structure */
 SuId suId;                      /* Service User Id */
-U8   status;                    /* Status */
+uint8_t   status;                    /* Status */
 #endif
 {
 
@@ -172,14 +172,14 @@ PRIVATE S16 PtDlUdxUeIdChgCfm
 (
 Pst *pst,                       /* post structure */
 SuId suId,                      /* Service User Id */
-U32       transId,
+uint32_t      transId,
 CmStatus      status
 )
 #else
 PRIVATE S16 PtDlUdxUeIdChgCfm(pst, suId, status)
 Pst           *pst;            /* post structure */
 SuId          suId;            /* Service User Id */
-U32           transId;
+uint32_t      transId;
 CmStatus      status;
 #endif
 {
@@ -314,13 +314,13 @@ S16 rlcDlUdxBndCfm
 (
 Pst *pst,                       /* post structure */
 SuId suId,                      /* Service User Id */
-U8   status                     /* Status */
+uint8_t   status                     /* Status */
 )
 #else
 S16 rlcDlUdxBndCfm(pst, suId, status)
 Pst *pst;                       /* post structure */
 SuId suId;                      /* Service User Id */
-U8   status;                    /* Status */
+uint8_t   status;                    /* Status */
 #endif
 {
 
@@ -400,14 +400,14 @@ S16 rlcDlUdxUeIdChgCfm
 (
 Pst *pst,                       /* post structure */
 SuId suId,                      /* Service User Id */
-U32           transId,
+uint32_t      transId,
 CmStatus      status
 )
 #else
 S16 rlcDlUdxUeIdChgCfm(pst, suId, status)
 Pst           *pst;            /* post structure */
 SuId          suId;            /* Service User Id */
-U32           transId;
+uint32_t      transId;
 CmStatus      status;
 #endif
 {

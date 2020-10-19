@@ -287,7 +287,7 @@ Buffer *mBuf;
 *
 *  @param[in]   Pst*  pst
 *  @param[in]   SuId  suId
-*  @param[in]   U8  status
+*  @param[in]   uint8_t  status
 *  @return   S16
 *      -# ROK
 **/
@@ -296,13 +296,13 @@ S16 cmPkRguBndCfm
 (
 Pst* pst,
 SuId suId,
-U8 status
+uint8_t status
 )
 #else
 S16 cmPkRguBndCfm(pst, suId, status)
 Pst* pst;
 SuId suId;
-U8 status;
+uint8_t status;
 #endif
 {
    Buffer *mBuf = NULLP;
@@ -348,7 +348,7 @@ U8 status;
 *
 *  @param[in]   Pst*  pst
 *  @param[in]   SuId  suId
-*  @param[in]   U8  status
+*  @param[in]   uint8_t  status
 *  @return   S16
 *      -# ROK
 **/
@@ -367,7 +367,7 @@ Buffer *mBuf;
 #endif
 {
    SuId suId;
-   U8 status;
+   uint8_t status;
    
 
    if (SUnpkS16(&suId, mBuf) != ROK) {
@@ -466,7 +466,7 @@ RguL2MUlThrpMeasReqInfo *param;
 Buffer *mBuf;
 #endif
 {
-   U8 loop;
+   uint8_t loop;
 
    CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
    CMCHKUNPK(cmUnpkLteRnti, &param->rnti, mBuf);
@@ -678,7 +678,7 @@ RguHarqStatusInd  *harqStatusInd;
 {
 
    Buffer   *mBuf;
-   U8       idx;
+   uint8_t       idx;
    RguHarqStatusInd *harqStaInd = NULL;
 
 #ifdef XEON_SPECIFIC_CHANGES
@@ -801,7 +801,7 @@ Buffer *mBuf;
 {
    RguHarqStatusInd    *hqStaInd;  
    SuId                suId;
-   U8                  idx;
+   uint8_t                  idx;
 
 
    if (SUnpkS16(&suId, mBuf) != ROK) {
@@ -891,7 +891,7 @@ RguUeFlowCntrlInfo *param;
 Buffer             *mBuf;
 #endif
 {
-  U32 idx;
+  uint32_t idx;
 
 
   for(idx=(param->numLcs - 1); idx >= 0; idx--)
@@ -915,7 +915,7 @@ RguFlowCntrlInd *param;
 Buffer          *mBuf;
 #endif
 {
-  U32 idx;
+  uint32_t idx;
 
 
   for (idx=(param->numUes - 1); idx >= 0; idx--)
@@ -1027,7 +1027,7 @@ RguUeFlowCntrlInfo *param;
 Buffer           *mBuf;
 #endif
 {
-  U32 idx;
+  uint32_t idx;
   CMCHKUNPK(cmUnpkLteRnti, &param->ueId, mBuf);
   CMCHKUNPK(oduPackUInt32, &param->numLcs, mBuf);
   for(idx=0; idx < param->numLcs; idx++)
@@ -1049,7 +1049,7 @@ RguFlowCntrlInd *param;
 Buffer           *mBuf;
 #endif
 {
-  U32 idx; 
+  uint32_t idx; 
   
 
   CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);

@@ -247,7 +247,7 @@ extern "C" {
 #if (!(defined(WIN32)) && !(defined(CMINETFLATBUF)))
 /* Added another function parameter */
 PRIVATE S16 buildRecvBuf ARGS((CmInetMemInfo *info, MsgLen len, 
-                               CmInetIovec rxArr[], Buffer *dBuf[], U16 maxSize,
+                               CmInetIovec rxArr[], Buffer *dBuf[], uint16_t maxSize,
                                struct msghdr *msg, Bool isStrmMsg));
 PRIVATE S16 buildRecvMsg ARGS((CmInetMemInfo *info, CmInetIovec rxArr[], 
                                S16 numBduf, MsgLen msgLen, Buffer *dBufs[], 
@@ -257,7 +257,7 @@ PRIVATE S16 buildRecvMsg ARGS((CmInetMemInfo *info, CmInetIovec rxArr[],
  */
 PRIVATE S16 buildSendIovec ARGS((Buffer *mBuf, MsgLen msgLen, 
                                  CmInetIovec txArr[], S16 numDBuf, 
-                                 S16 *numIovElems, U32 *strtEndDBufNum,
+                                 S16 *numIovElems, uint32_t *strtEndDBufNum,
                                  MsgLen *ioLen)); 
 #endif /* (defined(WIN32)) && !(defined(CMINETFLATBUF)) */
 
@@ -267,29 +267,29 @@ PRIVATE S16 buildSendIovec ARGS((Buffer *mBuf, MsgLen msgLen,
 #ifdef IPV6_SUPPORTED
 #ifdef IPV6_OPTS_SUPPORTED
 PRIVATE S16 cmInet6BuildSendHBHOpts    ARGS((CmInetIpv6HBHHdrArr *hbhOptsArr, 
-                                            U8 *cmsgBuf, U32 *curMsgIdx, 
-                                            U8 hdrId));
+                                            uint8_t *cmsgBuf, uint32_t *curMsgIdx, 
+                                            uint8_t hdrId));
 PRIVATE S16 cmInet6BuildSendRouteOpts  ARGS((CmInetIpv6RtHdr *rtOptsArr, 
-                                            U8 *cmsgBuf, U32 *curMsgIdx));
+                                            uint8_t *cmsgBuf, uint32_t *curMsgIdx));
 
-PRIVATE S16 cmInet6BuildRecvRtHdr      ARGS((U8 *cmsgData, U32 rtDataLen, 
+PRIVATE S16 cmInet6BuildRecvRtHdr      ARGS((uint8_t *cmsgData, uint32_t rtDataLen, 
                                             CmInetIpv6RtHdr0 *rtHdr0, 
                                             CmInetIpv6RtHdr *rtOptsArr,
                                             CmInetMemInfo *info));
-PRIVATE S16 cmInet6BuildRecvHopOptsArr ARGS((U8 *cmsgData, U32 hbhDataLen, 
+PRIVATE S16 cmInet6BuildRecvHopOptsArr ARGS((uint8_t *cmsgData, uint32_t hbhDataLen, 
                                             CmInetIpv6HBHHdrArr *hbhOptsArr, 
-                                            U8 hdrId, CmInetMemInfo *info));
-PRIVATE S16 cmInet6GetHopLimitValue    ARGS((U8 *cmsgData, U32 hopLimitDataLen,
+                                            uint8_t hdrId, CmInetMemInfo *info));
+PRIVATE S16 cmInet6GetHopLimitValue    ARGS((uint8_t *cmsgData, uint32_t hopLimitDataLen,
                                             CmInetIpv6HdrParm *ipv6HdrParam));
 
 #ifdef SS_LINUX
-PRIVATE S16 cmInetBuildSendHoplimit        ARGS((U32 hoplimit, U8 *cmsgBuf, 
-                                            U32 *curMsgIdx));
+PRIVATE S16 cmInetBuildSendHoplimit        ARGS((uint32_t hoplimit, uint8_t *cmsgBuf, 
+                                            uint32_t *curMsgIdx));
 #endif /* SS_LINUX */
 #ifdef LOCAL_INTF
 PRIVATE S16 cmInet6BuildSendPktinfo         ARGS((CmInetIpAddr6 *srcAddr,
-                                            U8 *cmsgBuf, U32 *curMsgIdx,
-                                            U8 protType));
+                                            uint8_t *cmsgBuf, uint32_t *curMsgIdx,
+                                            uint8_t protType));
 #endif /* LOCAL_INTF */
 #endif /* IPV6_OPTS_SUPPORTED */
 #endif /* IPV6_SUPPORTED */
@@ -324,16 +324,16 @@ Txt   prntBuf[CMINET_PRNT_BUF_SIZE];
 S16 cmInetPoll
 (
 CmInetPollFd  *pollFdArr,               /* poll FD Array */
-U32               numFds,               /* Number of Fds to be monitored */
+uint32_t               numFds,               /* Number of Fds to be monitored */
 S16              *numRdyFds,            /* number of ready descriptors */
-U32              timeout                /* timeout value for Poll */
+uint32_t              timeout                /* timeout value for Poll */
 )
 #else
 S16 cmInetPoll(pollFdArr,numFds,numRdyFds,timeout)
 CmInetPollFd  *pollFdArr;               /* poll FD Array */
-U32               numFds;               /* Number of Fds to be monitored */
+uint32_t               numFds;               /* Number of Fds to be monitored */
 S16              *numRdyFds;            /* number of ready descriptors */
-U32               timeout;              /* timeout value for Poll */
+uint32_t               timeout;              /* timeout value for Poll */
 #endif
 {
    S32  ret;
@@ -419,14 +419,14 @@ S16 cmInetPollSetFd
 CmInetFd         *sockFd,               /* socket file descriptor */
 CmInetPollFd  *pollFdArr,               /* poll FD Array */
 S16               idx,                  /* poll Fd Array Index */
-U16               eventMask             /* Event Mask to be set */
+uint16_t               eventMask             /* Event Mask to be set */
 )
 #else
 S16 cmInetPollSetFd(sockFd,pollFdArr,idx,eventMask)
 CmInetFd         *sockFd;               /* socket file descriptor */
 CmInetPollFd  *pollFdArr;               /* poll FD Array */
 S16              idx;                   /* poll Fd Array Index */
-U16              eventMask;             /* Event Mask to be set */
+uint16_t              eventMask;             /* Event Mask to be set */
 #endif
 {
    
@@ -514,13 +514,13 @@ S16 cmInetPollFdIsSet
 (
 CmInetPollFd  *pollFdArr,            /* poll FD Array */
 S16               idx,               /* poll Fd Array Index */
-U16               eventMask          /* Event Mask to be set */
+uint16_t               eventMask          /* Event Mask to be set */
 )
 #else
 S16 cmInetPollFdIsSet(pollFdArr,idx,eventMask)
 CmInetPollFd  *pollFdArr;            /* poll FD Array */
 S16               idx;               /* poll Fd Array Index */
-U16               eventMask;         /* Event Mask to be set */
+uint16_t               eventMask;         /* Event Mask to be set */
 #endif
 {
    S16  ret;
@@ -573,13 +573,13 @@ S16 cmInetPollClearFdREvent
 (
 CmInetPollFd  *pollFdArr,            /* poll FD Array */
 S16               idx,               /* poll Fd Array Index */
-U16               eventMask          /* Event Mask to be set */
+uint16_t               eventMask          /* Event Mask to be set */
 )
 #else
 S16 cmInetPollClearFdREvent(sockFd,pollFdArr,eventMask)
 CmInetPollFd  *pollFdArr;            /* poll FD Array */
 S16               idx;               /* poll Fd Array Index */
-U16               eventMask;         /* Event Mask to be set */
+uint16_t               eventMask;         /* Event Mask to be set */
 #endif
 {
 
@@ -664,13 +664,13 @@ S16 cmInetPollClearFdEvent
 (
 CmInetPollFd  *pollFdArr,            /* poll FD Array */
 S16               idx,               /* poll Fd Array Index */
-U16               eventMask          /* Event Mask to be set */
+uint16_t               eventMask          /* Event Mask to be set */
 )
 #else
 S16 cmInetPollClearFdEvent(sockFd,pollFdArr,eventMask)
 CmInetPollFd   *pollFdArr;            /* poll FD Array */
 S16             idx;                  /* poll Fd Array Index */
-U16             eventMask;            /* Event Mask to be set */
+uint16_t             eventMask;            /* Event Mask to be set */
 #endif
 {
 
@@ -902,7 +902,7 @@ CmInetMemInfo  *info,           /* buffer allocation info */
 MsgLen          len,            /* message length */
 CmInetIovec     rxArr[],        /* gather array */
 Buffer         *dBuf[],         /* allocated dBufs */
-U16             maxSize,        /* size of rxArr/dBuf array */       
+uint16_t             maxSize,        /* size of rxArr/dBuf array */       
 struct msghdr  *msg,            /* message header for recvmsg() */           
 Bool           isStrmMsg        /* Is a TCP message */
 )
@@ -912,14 +912,14 @@ PRIVATE S16 buildRecvBuf(info, len, rxArr, dBuf, maxSize, msg, isStrmMsg)
    MsgLen           len;           /* message length */        
    CmInetIovec      rxArr[];       /* gather array */         
    Buffer          *dBuf[];        /* allocated dBufs */
-   U16              maxSize;       /* size of rxArr/dBuf array */       
+   uint16_t              maxSize;       /* size of rxArr/dBuf array */       
    struct msghdr   *msg;           /* message header for recvmsg() */        
    Bool            isStrmMsg;      /* Is a TCP message */
 #endif
 {
    S16     ret;                 /* temporary return value */
-   U16     numBuf;              /* number of dBufs */
-   U16     i;                   /* dBuf index counter */
+   uint16_t     numBuf;              /* number of dBufs */
+   uint16_t     i;                   /* dBuf index counter */
    Data   *dPtr;                /* data pointer */
    /* cm_inet_c_001.main_47: 102069 Changed from S32 to MsgLen for bufLen*/
    MsgLen  bufLen;              /* entire receive buffer length, if S16 
@@ -949,7 +949,7 @@ PRIVATE S16 buildRecvBuf(info, len, rxArr, dBuf, maxSize, msg, isStrmMsg)
 
 #ifdef T2K_MEM_LEAK_DBG
    char * file = __FILE__;
-   U32  line   = __LINE__;
+   uint32_t  line   = __LINE__;
    ret = SGetDBuf(info->region, info->pool, &dBuf[numBuf]); 
 #else
    ret = SGetDBuf(info->region, info->pool, &dBuf[numBuf]); 
@@ -979,7 +979,7 @@ PRIVATE S16 buildRecvBuf(info, len, rxArr, dBuf, maxSize, msg, isStrmMsg)
 
 #ifdef SS_LINUX
   rxArr[numBuf].iov_base = (Void*)dPtr;  
-  rxArr[numBuf].iov_len = (U32)dLen;    
+  rxArr[numBuf].iov_len = (uint32_t)dLen;    
 #else
   rxArr[numBuf].iov_base = (S8*)dPtr;
   rxArr[numBuf].iov_len = dLen;
@@ -1010,7 +1010,7 @@ PRIVATE S16 buildRecvBuf(info, len, rxArr, dBuf, maxSize, msg, isStrmMsg)
       }
 #ifdef SS_LINUX
       rxArr[numBuf].iov_base = (Void*)dPtr;  
-      rxArr[numBuf].iov_len = (U32)dLen;    
+      rxArr[numBuf].iov_len = (uint32_t)dLen;    
 #else
       rxArr[numBuf].iov_base = (S8*)dPtr;
       rxArr[numBuf].iov_len = dLen;
@@ -1126,7 +1126,7 @@ cleanup:
    {
 #ifdef T2K_MEM_LEAK_DBG
    char * file = __FILE__;
-   U32  line   = __LINE__;
+   uint32_t  line   = __LINE__;
    SPutDBuf(info->region, info->pool, dBufs[i]);
 #else
    SPutDBuf(info->region, info->pool, dBufs[i]);
@@ -1165,7 +1165,7 @@ MsgLen         msgLen,          /* Length of mBuf */
 CmInetIovec    txArr[],         /* transmit scatter vector array */ 
 S16            numDBufs,        /* Maximum number of dBufs to use */
 S16            *numIovElems,    /* Number of iov elements in array */
-U32            *strtEndDBufNum, /* dBuf number to start and end */
+uint32_t            *strtEndDBufNum, /* dBuf number to start and end */
 MsgLen         *ioLen           /* cm_inet_c_001.main_50 - Len of dbuf packed into IO-vector */ 
 )
 #else
@@ -1176,7 +1176,7 @@ MsgLen         msgLen;          /* Length of mBuf */
 CmInetIovec    txArr[];         /* transmit scatter vector array */ 
 S16            numDBufs;        /* Maximum number of dBufs to use */
 S16            *numIovElems;    /* Number of iov elements in array */
-U32            *strtEndDBufNum; /* dBuf number to start and end */
+uint32_t            *strtEndDBufNum; /* dBuf number to start and end */
 MsgLen         *ioLen;          /* cm_inet_c_001.main_50 - Len of dbuf packed into IO-vector */ 
 #endif
 {
@@ -1186,7 +1186,7 @@ MsgLen         *ioLen;          /* cm_inet_c_001.main_50 - Len of dbuf packed in
    Buffer      *dBuf;
    Data        *dPtr;
    MsgLen      allocLen;
-   U32         dBufsToSkip;
+   uint32_t         dBufsToSkip;
 
    /* Initialisations */
    (*numIovElems) = 0;
@@ -1297,23 +1297,23 @@ MsgLen         *ioLen;          /* cm_inet_c_001.main_50 - Len of dbuf packed in
 #ifdef IPV6_SUPPORTED
 S16 cmInetSocket
 (
-U8        type,                 /* socket type */
+uint8_t        type,                 /* socket type */
 CmInetFd *sockFd,               /* socket file descriptor */
-U8       protocol,              /* protocol value */
-U8       domain                 /* domain */
+uint8_t       protocol,              /* protocol value */
+uint8_t       domain                 /* domain */
 )
 #else
 S16 cmInetSocket
 (
-U8        type,                 /* socket type */
+uint8_t        type,                 /* socket type */
 CmInetFd *sockFd,               /* socket file descriptor */
-U8       protocol               /* protocol value */
+uint8_t       protocol               /* protocol value */
 )
 #endif /* IPV6_SUPPORTED */
 #else   /* CM_INET2 */ 
 S16 cmInetSocket
 (
-U8        type,                 /* socket type */
+uint8_t        type,                 /* socket type */
 CmInetFd *sockFd                /* socket file descriptor */
 )
 #endif /* CM_INET2 */ 
@@ -1321,26 +1321,26 @@ CmInetFd *sockFd                /* socket file descriptor */
 #ifdef CM_INET2  
 #ifdef IPV6_SUPPORTED
 S16 cmInetSocket(type, sockFd, protocol, domain)
-U8        type;                 /* socket type */
+uint8_t        type;                 /* socket type */
 CmInetFd *sockFd;               /* socket file descriptor */
-U8        protocol;             /* protocol value */
-U8        domain;               /* domain */
+uint8_t        protocol;             /* protocol value */
+uint8_t        domain;               /* domain */
 #else
 S16 cmInetSocket(type, sockFd, protocol)
-U8        type;                 /* socket type */
+uint8_t        type;                 /* socket type */
 CmInetFd *sockFd;               /* socket file descriptor */
-U8        protocol;             /* protocol value */
+uint8_t        protocol;             /* protocol value */
 #endif /* IPV6_SUPPORTED */
 #else /* CM_INET2 */ 
 S16 cmInetSocket(type, sockFd)
-U8        type;                 /* socket type */
+uint8_t        type;                 /* socket type */
 CmInetFd *sockFd;               /* socket file descriptor */
 #endif /* CM_INET2 */ 
 #endif /* ANSI */
 {
    S32 ret;                     /* temporary return value */
 
-   U32 optVal;
+   uint32_t optVal;
 
 #if (defined(WIN32) && defined(WIN2K))
    S32 bytesReturned;
@@ -1501,10 +1501,10 @@ CmInetAddr *myAddr;             /* locale Internet address/port */
 #ifdef IPV6_SUPPORTED 
    struct sockaddr_in6 srcAddr6; /* local IPV6 address/port */
 #ifdef CMINETDBG
-   U16    port;
+   uint16_t    port;
 #endif /* CMINETDBG */
 #endif /* IPV6_SUPPORTED */
-   U32    sizeOfAddr;            /* sizeof address passed to the bind call */
+   uint32_t    sizeOfAddr;            /* sizeof address passed to the bind call */
    CmInetSockAddr *sockAddrPtr; 
 
 
@@ -1522,7 +1522,7 @@ CmInetAddr *myAddr;             /* locale Internet address/port */
    {
       memset(&srcAddr6, 0, sizeof(srcAddr6));
       srcAddr6.sin6_family      = AF_INET6;
-      srcAddr6.sin6_port        = CM_INET_HTON_U16(myAddr->u.ipv6Addr.port);
+      srcAddr6.sin6_port        = CM_INET_HTON_UINT16(myAddr->u.ipv6Addr.port);
       CM_INET_COPY_IPV6ADDR(&srcAddr6.sin6_addr, 
                             &myAddr->u.ipv6Addr.ipv6NetAddr);
       sizeOfAddr               = sizeof(struct sockaddr_in6);
@@ -1532,16 +1532,16 @@ CmInetAddr *myAddr;             /* locale Internet address/port */
    {
       memset(&srcAddr, 0, sizeof(srcAddr));
       srcAddr.sin_family      = AF_INET;
-      srcAddr.sin_port        = CM_INET_HTON_U16(myAddr->u.ipv4Addr.port);
-      srcAddr.sin_addr.s_addr = CM_INET_HTON_U32(myAddr->u.ipv4Addr.address);
+      srcAddr.sin_port        = CM_INET_HTON_UINT16(myAddr->u.ipv4Addr.port);
+      srcAddr.sin_addr.s_addr = CM_INET_HTON_UINT32(myAddr->u.ipv4Addr.address);
       sizeOfAddr               = sizeof(struct sockaddr_in);
       sockAddrPtr              = (CmInetSockAddr *)&srcAddr;
    }
 #else 
    memset(&srcAddr, 0, sizeof(srcAddr));
    srcAddr.sin_family      = AF_INET;
-   srcAddr.sin_port        = CM_INET_HTON_U16(myAddr->port);
-   srcAddr.sin_addr.s_addr = CM_INET_HTON_U32(myAddr->address);
+   srcAddr.sin_port        = CM_INET_HTON_UINT16(myAddr->port);
+   srcAddr.sin_addr.s_addr = CM_INET_HTON_UINT32(myAddr->address);
    sizeOfAddr              = sizeof(struct sockaddr_in);
    sockAddrPtr             = (CmInetSockAddr *)&srcAddr;
 #endif /* IPV6_SUPPORTED */
@@ -1614,19 +1614,19 @@ S16 cmInetSctpBindx
 (
 CmInetFd          *sockFd,       /* socket file descriptor */ 
 CmInetNetAddrLst  *addrLst,      /* local Internet address list */
-U16                port          /* port number */
+uint16_t                port          /* port number */
 )
 #else
 S16 cmInetSctpBindx(sockFd, addrLst, port)
 CmInetFd          *sockFd;       /* socket file descriptor */ 
 CmInetNetAddrLst  *addrLst;      /* locale Internet address list */
-U16                port;         /* port number */
+uint16_t                port;         /* port number */
 #endif
 {
    S32    ret;                     /* temporary return value */
    S32    idx;
    S32    idx4 = 0;
-   U32    ipv4_array_size = 0;
+   uint32_t    ipv4_array_size = 0;
    struct sockaddr_in  addrs[CM_INET_NUM_NET_ADDR];
 #ifndef IPV6_SUPPORTED
    Data   address_array[(CM_INET_NUM_NET_ADDR * sizeof(struct sockaddr_in))];
@@ -1637,19 +1637,19 @@ U16                port;         /* port number */
 #ifdef SUN_KSCTP
    Data   *tempAddrPtr = NULLP;
 #endif 
-   U32    addresses_array_size = 0;
+   uint32_t    addresses_array_size = 0;
 #ifdef IPV6_SUPPORTED 
 #ifdef SUN_KSCTP
    S8     *addrString = NULLP;
-   U32    addrLen = 0;
+   uint32_t    addrLen = 0;
    S8     ipv4Format[23] = "::ffff:";
 #endif /* SUN_KSCTP */
    S32    idx6 = 0;
-   U32    ipv6_array_size = 0;
+   uint32_t    ipv6_array_size = 0;
    struct sockaddr_in6 addrs6[CM_INET_NUM_NET_ADDR];
 #endif /* IPV6_SUPPORTED */
    struct sockaddr *sockAddrPtr = NULLP;
-   U32    sockAddrLen = 0;
+   uint32_t    sockAddrLen = 0;
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* error check on parameters */
@@ -1713,7 +1713,7 @@ U16                port;         /* port number */
          }
 
          addrs6[idx6].sin6_family      = AF_INET6;
-         addrs6[idx6].sin6_port        = CM_INET_HTON_U16(port);
+         addrs6[idx6].sin6_port        = CM_INET_HTON_UINT16(port);
          CM_INET_COPY_IPV6ADDR((addrs6[idx6].sin6_addr.s6_addr), &(addrLst->addrs[idx].u.ipv6NetAddr));
          idx6++;
       }
@@ -1743,10 +1743,10 @@ U16                port;         /* port number */
          }
 
          addrs6[idx6].sin6_family      = AF_INET6;
-         addrs6[idx6].sin6_port        = CM_INET_HTON_U16(port);
-         addrLst->addrs[idx].u.ipv4NetAddr = CM_INET_HTON_U32(addrLst->addrs[idx].u.ipv4NetAddr);
+         addrs6[idx6].sin6_port        = CM_INET_HTON_UINT16(port);
+         addrLst->addrs[idx].u.ipv4NetAddr = CM_INET_HTON_UINT32(addrLst->addrs[idx].u.ipv4NetAddr);
          cmInetNtoa(addrLst->addrs[idx].u.ipv4NetAddr, &addrString);
-         addrLen = cmStrlen((U8*)addrString);
+         addrLen = cmStrlen((uint8_t*)addrString);
          memcpy((ipv4Format+7), addrString, addrLen);
          ipv4Format[7+addrLen] = '\0';
          cmInetPton6((CmInetIpAddr6*)(addrs6[idx6].sin6_addr.s6_addr), ipv4Format);
@@ -1755,8 +1755,8 @@ U16                port;         /* port number */
          ipv4_array_size += sizeof(struct sockaddr_in);
          addresses_array_size += sizeof(struct sockaddr_in);
          addrs[idx4].sin_family      = AF_INET;
-         addrs[idx4].sin_port        = CM_INET_HTON_U16(port);
-         addrs[idx4].sin_addr.s_addr = CM_INET_HTON_U32(addrLst->addrs[idx].u.ipv4NetAddr);
+         addrs[idx4].sin_port        = CM_INET_HTON_UINT16(port);
+         addrs[idx4].sin_addr.s_addr = CM_INET_HTON_UINT32(addrLst->addrs[idx].u.ipv4NetAddr);
          idx4++;
 #endif /* SUN_KSCTP */
       }
@@ -1764,8 +1764,8 @@ U16                port;         /* port number */
       ipv4_array_size += sizeof(struct sockaddr_in);
       addresses_array_size += sizeof(struct sockaddr_in);
       addrs[idx4].sin_family      = AF_INET;
-      addrs[idx4].sin_port        = CM_INET_HTON_U16(port);
-      addrs[idx4].sin_addr.s_addr = CM_INET_HTON_U32(addrLst->addrs[idx].u.ipv4NetAddr);
+      addrs[idx4].sin_port        = CM_INET_HTON_UINT16(port);
+      addrs[idx4].sin_addr.s_addr = CM_INET_HTON_UINT32(addrLst->addrs[idx].u.ipv4NetAddr);
       idx4++;
 #endif /* IPV6_SUPPORTED */
    }
@@ -1894,29 +1894,29 @@ S16 cmInetSctpConnectx
 CmInetFd          *sockFd,       /* socket file descriptor */ 
 CmInetNetAddr     *primAddr,     /* primary destination Internet address */
 CmInetNetAddrLst  *addrLst,      /* destination Internet address list */
-U16                port          /* port number */
+uint16_t                port          /* port number */
 )
 #else
 S16 cmInetSctpConnectx(sockFd, primAddr, addrLst, port)
 CmInetFd          *sockFd;       /* socket file descriptor */ 
 CmInetNetAddr     *primAddr;     /* primary destination Internet address */
 CmInetNetAddrLst  *addrLst;      /* destination Internet address list */
-U16                port;         /* port number */
+uint16_t                port;         /* port number */
 #endif
 {
    S32   ret;   
-   U32   cnt;
+   uint32_t   cnt;
    /* cm_inet_c_001.main_46: Removed SS_LINUX flag */
    S32   idx;
 
 /* cm_inet_c_001.main_64: New variable used as an argument for sctp_connectx */
 #ifdef SCTP_CONNECTX_NEW
-   U32    assocId = 0;
+   uint32_t    assocId = 0;
 #endif   
-   U32    addresses_array_size = 0;
-   U32    idx4 = 0;
+   uint32_t    addresses_array_size = 0;
+   uint32_t    idx4 = 0;
    struct sockaddr_in  addrs[CM_INET_NUM_NET_ADDR];
-   U32    ipv4_array_size = 0;
+   uint32_t    ipv4_array_size = 0;
 
 #ifndef IPV6_SUPPORTED
    Data   address_array[(CM_INET_NUM_NET_ADDR * sizeof(struct sockaddr_in))];
@@ -1927,16 +1927,16 @@ U16                port;         /* port number */
 #ifdef IPV6_SUPPORTED
 #ifdef SUN_KSCTP
    S8     *addrString = NULLP;
-   U32    addrLen = 0;
+   uint32_t    addrLen = 0;
    S8     ipv4Format[23] = "::ffff:";
    CmInetIpAddr ipv4NetAddr;
 #endif /* SUN_KSCTP */
-   U32    idx6 = 0;
+   uint32_t    idx6 = 0;
    struct sockaddr_in6  addrs6[CM_INET_NUM_NET_ADDR];
-   U32    ipv6_array_size = 0;
+   uint32_t    ipv6_array_size = 0;
 #endif /* IPV6_SUPPORTED */
 #ifndef SS_LINUX
-   U32    sockAddrLen = 0;
+   uint32_t    sockAddrLen = 0;
 #endif /* sockAddrLen */
 
 #ifndef SS_LINUX
@@ -2008,7 +2008,7 @@ U16                port;         /* port number */
       }
 
       addrs6[idx6].sin6_family      = AF_INET6;
-      addrs6[idx6].sin6_port        = CM_INET_HTON_U16(port);
+      addrs6[idx6].sin6_port        = CM_INET_HTON_UINT16(port);
       CM_INET_COPY_IPV6ADDR(&(addrs6[idx6].sin6_addr.s6_addr), &(primAddr->u.ipv6NetAddr));
       addresses_array_size += sizeof(struct sockaddr_in6);
       ipv6_array_size += sizeof(struct sockaddr_in6);
@@ -2036,10 +2036,10 @@ U16                port;         /* port number */
          return RFAILED;
       }
       addrs6[idx6].sin6_family      = AF_INET6;
-      addrs6[idx6].sin6_port        = CM_INET_HTON_U16(port);
-      ipv4NetAddr = CM_INET_HTON_U32(primAddr->u.ipv4NetAddr);
+      addrs6[idx6].sin6_port        = CM_INET_HTON_UINT16(port);
+      ipv4NetAddr = CM_INET_HTON_UINT32(primAddr->u.ipv4NetAddr);
       cmInetNtoa(ipv4NetAddr, &addrString);
-      addrLen = cmStrlen((U8*)addrString);
+      addrLen = cmStrlen((uint8_t*)addrString);
       memcpy((ipv4Format+7), addrString, addrLen);
       ipv4Format[7+addrLen] = '\0';
       cmInetPton6((CmInetIpAddr6*)&(addrs6[idx6].sin6_addr), ipv4Format);
@@ -2048,8 +2048,8 @@ U16                port;         /* port number */
       idx6++;
 #else
       addrs[idx4].sin_family      = AF_INET;
-      addrs[idx4].sin_port        = CM_INET_HTON_U16(port);
-      addrs[idx4].sin_addr.s_addr = CM_INET_HTON_U32(primAddr->u.ipv4NetAddr);
+      addrs[idx4].sin_port        = CM_INET_HTON_UINT16(port);
+      addrs[idx4].sin_addr.s_addr = CM_INET_HTON_UINT32(primAddr->u.ipv4NetAddr);
       addresses_array_size += sizeof(struct sockaddr_in);
       ipv4_array_size += sizeof(struct sockaddr_in);
       idx4++;
@@ -2057,8 +2057,8 @@ U16                port;         /* port number */
    }
 #else 
    addrs[idx4].sin_family      = AF_INET;
-   addrs[idx4].sin_port        = CM_INET_HTON_U16(port);
-   addrs[idx4].sin_addr.s_addr = CM_INET_HTON_U32(primAddr->u.ipv4NetAddr);
+   addrs[idx4].sin_port        = CM_INET_HTON_UINT16(port);
+   addrs[idx4].sin_addr.s_addr = CM_INET_HTON_UINT32(primAddr->u.ipv4NetAddr);
    addresses_array_size += sizeof(struct sockaddr_in);
    ipv4_array_size += sizeof(struct sockaddr_in);
    idx4++;
@@ -2114,7 +2114,7 @@ U16                port;         /* port number */
             }
 
             addrs6[idx6].sin6_family      = AF_INET6;
-            addrs6[idx6].sin6_port        = CM_INET_HTON_U16(port);
+            addrs6[idx6].sin6_port        = CM_INET_HTON_UINT16(port);
             CM_INET_COPY_IPV6ADDR(&(addrs6[idx6].sin6_addr.s6_addr),
                                   &(addrLst->addrs[idx].u.ipv6NetAddr));
             addresses_array_size += sizeof(struct sockaddr_in6);
@@ -2143,10 +2143,10 @@ U16                port;         /* port number */
                return RFAILED;
             }
             addrs6[idx6].sin6_family      = AF_INET6;
-            addrs6[idx6].sin6_port        = CM_INET_HTON_U16(port);
-            ipv4NetAddr = CM_INET_HTON_U32(addrLst->addrs[idx].u.ipv4NetAddr);
+            addrs6[idx6].sin6_port        = CM_INET_HTON_UINT16(port);
+            ipv4NetAddr = CM_INET_HTON_UINT32(addrLst->addrs[idx].u.ipv4NetAddr);
             cmInetNtoa(ipv4NetAddr, &addrString);
-            addrLen = cmStrlen((U8*)addrString);
+            addrLen = cmStrlen((uint8_t*)addrString);
             memcpy((ipv4Format+7), addrString, addrLen);
             ipv4Format[7+addrLen] = '\0';
             cmInetPton6((CmInetIpAddr6*)(addrs6[idx6].sin6_addr.s6_addr), ipv4Format);
@@ -2155,8 +2155,8 @@ U16                port;         /* port number */
             idx6++;
 #else
             addrs[idx4].sin_family      = AF_INET;
-            addrs[idx4].sin_port        = CM_INET_HTON_U16(port);
-            addrs[idx4].sin_addr.s_addr = CM_INET_HTON_U32(addrLst->addrs[idx].u.ipv4NetAddr);
+            addrs[idx4].sin_port        = CM_INET_HTON_UINT16(port);
+            addrs[idx4].sin_addr.s_addr = CM_INET_HTON_UINT32(addrLst->addrs[idx].u.ipv4NetAddr);
             addresses_array_size += sizeof(struct sockaddr_in);
             ipv4_array_size += sizeof(struct sockaddr_in);
             idx4++;
@@ -2164,8 +2164,8 @@ U16                port;         /* port number */
          }
 #else 
          addrs[idx4].sin_family      = AF_INET;
-         addrs[idx4].sin_port        = CM_INET_HTON_U16(port);
-         addrs[idx4].sin_addr.s_addr = CM_INET_HTON_U32(addrLst->addrs[idx].u.ipv4NetAddr);
+         addrs[idx4].sin_port        = CM_INET_HTON_UINT16(port);
+         addrs[idx4].sin_addr.s_addr = CM_INET_HTON_UINT32(addrLst->addrs[idx].u.ipv4NetAddr);
          addresses_array_size += sizeof(struct sockaddr_in);
          ipv4_array_size += sizeof(struct sockaddr_in);
          idx4++;
@@ -2356,13 +2356,13 @@ U16                port;         /* port number */
 S16 cmInetSctpPeelOff
 (
 CmInetFd          *sockFd,       /* socket file descriptor */ 
-U32                assocId,      /* association id */
+uint32_t                assocId,      /* association id */
 CmInetFdType      *assocFd       /* association fd */
 )
 #else
 S16 cmInetSctpPeelOff(sockFd, assocId, assocFd)
 CmInetFd          *sockFd;       /* socket file descriptor */ 
-U32                assocId;      /* association id */
+uint32_t                assocId;      /* association id */
 CmInetFdType      *assocFd;      /* association fd */
 #endif
 {
@@ -2423,30 +2423,30 @@ S16 cmInetSctpSendMsg
 (
 CmInetFd        *sockFd,       /* socket file descriptor */ 
 CmInetNetAddr   *dstAddr,      /* destination Internet address/port */
-U16              port,         /* destination port no. */
+uint16_t              port,         /* destination port no. */
 CmInetMemInfo   *info,         /* buffer allocation info */
 Buffer          *mBuf,         /* buffer structure to send */
 MsgLen          *len,          /* number of actually sent octets */
-U16              strmId,       /* sctp stream identifier */
+uint16_t              strmId,       /* sctp stream identifier */
 Bool             unorderFlg,   /* flag to enable the unordered delivery */
-U16              ttl,          /* time to live */
-U32              ppId,         /* opaque value passed along with the message */
-U32              context       /* value to be passed back, if error occurs */
+uint16_t              ttl,          /* time to live */
+uint32_t              ppId,         /* opaque value passed along with the message */
+uint32_t              context       /* value to be passed back, if error occurs */
 )
 #else
 S16 cmInetSctpSendMsg(sockFd, dstAddr, port, info, mBuf, len, strmId, 
                              unorderFlg, ttl, ppId, context)
 CmInetFd        *sockFd;       /* socket file descriptor */ 
 CmInetNetAddr   *dstAddr;      /* destination Internet address/port */
-U16              port;         /* destination port no. */
+uint16_t              port;         /* destination port no. */
 CmInetMemInfo   *info;         /* buffer allocation info */
 Buffer          *mBuf;         /* buffer structure to send */
 MsgLen          *len;          /* number of actually sent octets */
-U16              strmId;       /* sctp stream identifier */
+uint16_t              strmId;       /* sctp stream identifier */
 Bool             unorderFlg;   /* flag to enable the unordered delivery */
-U16              ttl;          /* time to live */
-U32              ppId;         /* opaque value passed along with the message */
-U32              context;      /* value to be passed back, if error occurs */
+uint16_t              ttl;          /* time to live */
+uint32_t              ppId;         /* opaque value passed along with the message */
+uint32_t              context;      /* value to be passed back, if error occurs */
 #endif
 {
    S32     ret;   
@@ -2454,7 +2454,7 @@ U32              context;      /* value to be passed back, if error occurs */
    MsgLen  msgLen = 0;              /* message length */    
    MsgLen  bufLen = 0;              /* send buffer length */     
    Data   *sendBuf = NULLP;             /* plain send buffer */
-   U32     flags;
+   uint32_t     flags;
    CmInetSockAddr *sockAddrPtr = NULLP;
    /* cm_inet_c_001.main_58 : Fix for klockwork issue */
    MsgLen          sockAddrLen = 0; 
@@ -2462,7 +2462,7 @@ U32              context;      /* value to be passed back, if error occurs */
 #ifdef IPV6_SUPPORTED
 #ifdef SUN_KSCTP
    S8     *addrString = NULLP;
-   U32    addrLen = 0;
+   uint32_t    addrLen = 0;
    S8     ipv4Format[23] = "::ffff:";
    CmInetIpAddr ipv4NetAddr;
 #endif /* SUN_KSCTP */
@@ -2492,7 +2492,7 @@ U32              context;      /* value to be passed back, if error occurs */
    }
    /* max message length is limited to control the memory usage */
    /* casting bufLen to avoid warnings */
-   if ((bufLen > 0) && ((U32)bufLen > CM_INET_MAX_MSG_LEN))
+   if ((bufLen > 0) && ((uint32_t)bufLen > CM_INET_MAX_MSG_LEN))
    {
       return RFAILED;
    }
@@ -2534,7 +2534,7 @@ U32              context;      /* value to be passed back, if error occurs */
          }
 
          addr6.sin6_family      = AF_INET6;
-         addr6.sin6_port        = CM_INET_HTON_U16(port);
+         addr6.sin6_port        = CM_INET_HTON_UINT16(port);
          CM_INET_COPY_IPV6ADDR(&addr6.sin6_addr.s6_addr, &dstAddr->u.ipv6NetAddr); 
          sockAddrLen = sizeof(struct sockaddr_in6);
          sockAddrPtr = (CmInetSockAddr*)&addr6;
@@ -2562,10 +2562,10 @@ U32              context;      /* value to be passed back, if error occurs */
             return RFAILED;
          }
          addr6.sin6_family      = AF_INET6;
-         addr6.sin6_port        = CM_INET_HTON_U16(port);
-         ipv4NetAddr = CM_INET_HTON_U32(dstAddr->u.ipv4NetAddr);
+         addr6.sin6_port        = CM_INET_HTON_UINT16(port);
+         ipv4NetAddr = CM_INET_HTON_UINT32(dstAddr->u.ipv4NetAddr);
          cmInetNtoa(ipv4NetAddr, &addrString);
-         addrLen = cmStrlen((U8*)addrString);
+         addrLen = cmStrlen((uint8_t*)addrString);
          memcpy((ipv4Format+7), addrString, addrLen);
          ipv4Format[7+addrLen] = '\0';
          cmInetPton6((CmInetIpAddr6*)(addr6.sin6_addr.s6_addr), ipv4Format);
@@ -2573,16 +2573,16 @@ U32              context;      /* value to be passed back, if error occurs */
          sockAddrPtr = (CmInetSockAddr*)&addr6;
 #else
          addr.sin_family      = AF_INET;
-         addr.sin_port        = CM_INET_HTON_U16(port);
-         addr.sin_addr.s_addr = CM_INET_HTON_U32(dstAddr->u.ipv4NetAddr);
+         addr.sin_port        = CM_INET_HTON_UINT16(port);
+         addr.sin_addr.s_addr = CM_INET_HTON_UINT32(dstAddr->u.ipv4NetAddr);
          sockAddrLen = sizeof(struct sockaddr_in);
          sockAddrPtr = (CmInetSockAddr*)&addr;
 #endif /* SUN_KSCTP */
       }
 #else 
       addr.sin_family      = AF_INET;
-      addr.sin_port        = CM_INET_HTON_U16(port);
-      addr.sin_addr.s_addr = CM_INET_HTON_U32(dstAddr->u.ipv4NetAddr);
+      addr.sin_port        = CM_INET_HTON_UINT16(port);
+      addr.sin_addr.s_addr = CM_INET_HTON_UINT32(dstAddr->u.ipv4NetAddr);
       /* cm_inet_c_001.main_58 : Fix for Klockwork issue */
       sockAddrLen = (MsgLen)sizeof(struct sockaddr_in);
       sockAddrPtr = (CmInetSockAddr*)&addr;
@@ -2618,7 +2618,7 @@ U32              context;      /* value to be passed back, if error occurs */
 #endif
    }
    /*cm_inet_c_001.main_54: converting ppid to network*/
-   ppId = CM_INET_HTON_U32(ppId);
+   ppId = CM_INET_HTON_UINT32(ppId);
    ret = sctp_sendmsg(sockFd->fd, (Void*)sendBuf, bufLen, 
          (struct sockaddr*)sockAddrPtr, (size_t)sockAddrLen, 
          ppId, flags, strmId, ttl, context);
@@ -2679,12 +2679,12 @@ S16 cmInetSctpRecvMsg
 (
 CmInetFd               *sockFd,       /* socket file descriptor */ 
 CmInetNetAddr          *srcAddr,      /* source Internet address/port */
-U16                    *port,         /* source port no. */
+uint16_t                    *port,         /* source port no. */
 CmInetMemInfo          *meminfo,      /* buffer allocation info */
 Buffer                 **mBuf,         /* buffer structure received */
 MsgLen                 *len,          /* number of octets received */
 CmInetSctpSndRcvInfo   *sinfo,        /* sctp send-receive info */ 
-U32                    *flag,         /* flags */
+uint32_t                    *flag,         /* flags */
 CmInetSctpNotification *ntfy        /* notification parameters */
 )
 #else
@@ -2692,12 +2692,12 @@ S16 cmInetSctpRecvMsg(sockFd, srcAddr, port, meminfo, mBuf, len,
                              sinfo, flag, ntfy)
 CmInetFd               *sockFd;       /* socket file descriptor */ 
 CmInetNetAddr          *srcAddr;      /* source Internet address/port */
-U16                    *port;         /* source port no. */
+uint16_t                    *port;         /* source port no. */
 CmInetMemInfo          *meminfo;      /* buffer allocation info */
 Buffer                 **mBuf;        /* buffer structure received */
 MsgLen                 *len;          /* number of octets received */
 CmInetSctpSndRcvInfo   *sinfo;        /* sctp send-receive info */ 
-U32                    *flag;         /* flags */
+uint32_t                    *flag;         /* flags */
 CmInetSctpNotification *ntfy;         /* notification parameters */
 #endif
 {
@@ -2783,15 +2783,15 @@ CmInetSctpNotification *ntfy;         /* notification parameters */
 #ifdef IPV6_SUPPORTED 
    if (addr.ss_family == AF_INET6)
    {
-       U8 ipv4Format[12] = {0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0xff,0xff};
+       uint8_t ipv4Format[12] = {0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0xff,0xff};
        pAddr6 = (struct sockaddr_in6*)&addr;
-       *port = CM_INET_NTOH_U16(pAddr6->sin6_port);
+       *port = CM_INET_NTOH_UINT16(pAddr6->sin6_port);
 
       if((cmMemcmp(ipv4Format, pAddr6->sin6_addr.s6_addr, 12)) == 0)
       {
          srcAddr->type          = CM_INET_IPV4ADDR_TYPE;
-         memcpy(&srcAddr->u.ipv4NetAddr, ((pAddr6->sin6_addr.s6_addr) + 12), sizeof(U32));
-         srcAddr->u.ipv4NetAddr = CM_INET_HTON_U32(srcAddr->u.ipv4NetAddr);
+         memcpy(&srcAddr->u.ipv4NetAddr, ((pAddr6->sin6_addr.s6_addr) + 12), sizeof(uint32_t));
+         srcAddr->u.ipv4NetAddr = CM_INET_HTON_uint32_t(srcAddr->u.ipv4NetAddr);
       }
 
       else
@@ -2803,15 +2803,15 @@ CmInetSctpNotification *ntfy;         /* notification parameters */
    else 
    {
       pAddr = (struct sockaddr_in*)&addr;
-      *port = CM_INET_NTOH_U16(pAddr->sin_port);
+      *port = CM_INET_NTOH_UINT16(pAddr->sin_port);
       srcAddr->type          = CM_INET_IPV4ADDR_TYPE;
-      srcAddr->u.ipv4NetAddr = CM_INET_NTOH_U32(pAddr->sin_addr.s_addr);
+      srcAddr->u.ipv4NetAddr = CM_INET_NTOH_UINT32(pAddr->sin_addr.s_addr);
    }
 #else 
    pAddr = (struct sockaddr_in*)&addr;
-   *port = CM_INET_NTOH_U16(pAddr->sin_port);
+   *port = CM_INET_NTOH_UINT16(pAddr->sin_port);
    srcAddr->type          = CM_INET_IPV4ADDR_TYPE;
-   srcAddr->u.ipv4NetAddr = CM_INET_NTOH_U32(pAddr->sin_addr.s_addr);
+   srcAddr->u.ipv4NetAddr = CM_INET_NTOH_UINT32(pAddr->sin_addr.s_addr);
 #endif /* IPV6_SUPPORTED */
 
    /* fill sndrcv info */
@@ -2819,7 +2819,7 @@ CmInetSctpNotification *ntfy;         /* notification parameters */
    sinfo->ssn        = info.sinfo_ssn;
    sinfo->flags      = info.sinfo_flags;
    /*cm_inet_c_001.main_54: converting ppid to host*/
-   sinfo->ppid       = CM_INET_NTOH_U32(info.sinfo_ppid);
+   sinfo->ppid       = CM_INET_NTOH_UINT32(info.sinfo_ppid);
    sinfo->context    = info.sinfo_context;
    sinfo->timetolive = info.sinfo_timetolive;
    sinfo->tsn        = info.sinfo_tsn;
@@ -2913,12 +2913,12 @@ CmInetSctpNotification *ntfy;         /* notification parameters */
             {
                pAddr = (struct sockaddr_in*)&(sctpNtfy->sn_paddr_change.spc_aaddr);
                ntfy->u.paddrChange.addr.type = CM_INET_IPV4ADDR_TYPE;
-               ntfy->u.paddrChange.addr.u.ipv4NetAddr = CM_INET_NTOH_U32(pAddr->sin_addr.s_addr);
+               ntfy->u.paddrChange.addr.u.ipv4NetAddr = CM_INET_NTOH_UINT32(pAddr->sin_addr.s_addr);
             }
 #else 
             pAddr = (struct sockaddr_in*)&(sctpNtfy->sn_paddr_change.spc_aaddr);
             ntfy->u.paddrChange.addr.type = CM_INET_IPV4ADDR_TYPE;
-            ntfy->u.paddrChange.addr.u.ipv4NetAddr = CM_INET_NTOH_U32(pAddr->sin_addr.s_addr);
+            ntfy->u.paddrChange.addr.u.ipv4NetAddr = CM_INET_NTOH_UINT32(pAddr->sin_addr.s_addr);
 #endif /* IPV6_SUPPORTED */
 
             ntfy->u.paddrChange.error   = sctpNtfy->sn_paddr_change.spc_error;
@@ -3048,20 +3048,20 @@ CmInetSctpNotification *ntfy;         /* notification parameters */
 S16 cmInetSctpGetPAddrs
 (
 CmInetFd             *sockFd,       /* socket file descriptor */ 
-U32                   assocId,      /* association id */
+uint32_t                   assocId,      /* association id */
 CmInetNetAddrLst     *addrlst       /* peer address list */
 )
 #else
 S16 cmInetSctpGetPAddrs(sockFd, assocId, addrlst)
 CmInetFd             *sockFd;       /* socket file descriptor */ 
-U32                   assocId;      /* association id */
+uint32_t                   assocId;      /* association id */
 CmInetNetAddrLst     *addrlst;      /* peer address list */
 #endif
 {
    /* cm_inet_c_001.main_58 : Fix for Klockwork issue */
    S32   cnt;
    S32   idx;
-   U8    *byteAddress;   
+   uint8_t    *byteAddress;   
    struct sockaddr    *peerAddrList;
    struct sockaddr_in *pAddr;
 #ifdef IPV6_SUPPORTED
@@ -3095,7 +3095,7 @@ CmInetNetAddrLst     *addrlst;      /* peer address list */
          return RFAILED;
       }
 
-   byteAddress = (U8*)peerAddrList;
+   byteAddress = (uint8_t*)peerAddrList;
    for (idx = 0; idx < cnt; idx++)
    {
 #ifdef IPV6_SUPPORTED 
@@ -3131,19 +3131,19 @@ CmInetNetAddrLst     *addrlst;      /* peer address list */
       {
          pAddr = (struct sockaddr_in*)byteAddress;
          addrlst->addrs[idx].type          = CM_INET_IPV4ADDR_TYPE;
-         addrlst->addrs[idx].u.ipv4NetAddr = CM_INET_NTOH_U32(pAddr->sin_addr.s_addr);
+         addrlst->addrs[idx].u.ipv4NetAddr = CM_INET_NTOH_UINT32(pAddr->sin_addr.s_addr);
          byteAddress += sizeof(struct sockaddr_in);
       }
 #else 
       pAddr = (struct sockaddr_in*)byteAddress;
       addrlst->addrs[idx].type          = CM_INET_IPV4ADDR_TYPE;
-      addrlst->addrs[idx].u.ipv4NetAddr = CM_INET_NTOH_U32(pAddr->sin_addr.s_addr);
+      addrlst->addrs[idx].u.ipv4NetAddr = CM_INET_NTOH_UINT32(pAddr->sin_addr.s_addr);
       byteAddress += sizeof(struct sockaddr_in);
 #endif /* IPV6_SUPPORTED */
    }
 
    /* cm_inet_c_001.main_58 : Fix for klockwork issue */
-   addrlst->count = (U8)cnt;   
+   addrlst->count = (uint8_t)cnt;   
 
    sctp_freepaddrs(peerAddrList);
 
@@ -3168,15 +3168,15 @@ CmInetNetAddrLst     *addrlst;      /* peer address list */
 S16 cmInetGetOpt
 (
 CmInetFd *sockFd,               /* socket file descriptor */ 
-U32       level,                /* option level */
-U32       type,                 /* option type */
+uint32_t       level,                /* option level */
+uint32_t       type,                 /* option type */
 Ptr       value                 /* option value */ 
 ) 
 #else
 S16 cmInetGetOpt(sockFd, level, type, value)
 CmInetFd *sockFd;               /* socket file descriptor */ 
-U32       level;                /* option level */
-U32       type;                 /* option type */
+uint32_t       level;                /* option level */
+uint32_t       type;                 /* option type */
 Ptr       value;                /* option value */
 #endif
 {
@@ -3331,7 +3331,7 @@ Ptr       value;                /* option value */
          if (status.sstat_primary.spinfo_address.ss_family == AF_INET6)
          {
             pAddr6 = (struct sockaddr_in6*)&(status.sstat_primary.spinfo_address);
-            pSctpStatus->primary.port = CM_INET_NTOH_U16(pAddr6->sin6_port);
+            pSctpStatus->primary.port = CM_INET_NTOH_UINT16(pAddr6->sin6_port);
 
             pSctpStatus->primary.addr.type = CM_INET_IPV6ADDR_TYPE;
             CM_INET_COPY_IPV6ADDR(&pSctpStatus->primary.addr.u.ipv6NetAddr, 
@@ -3340,15 +3340,15 @@ Ptr       value;                /* option value */
          else 
          {
             pAddr = (struct sockaddr_in*)&(status.sstat_primary.spinfo_address);
-            pSctpStatus->primary.port = CM_INET_NTOH_U16(pAddr->sin_port);
+            pSctpStatus->primary.port = CM_INET_NTOH_UINT16(pAddr->sin_port);
             pSctpStatus->primary.addr.type          = CM_INET_IPV4ADDR_TYPE;
-            pSctpStatus->primary.addr.u.ipv4NetAddr = CM_INET_NTOH_U32(pAddr->sin_addr.s_addr);
+            pSctpStatus->primary.addr.u.ipv4NetAddr = CM_INET_NTOH_UINT32(pAddr->sin_addr.s_addr);
          }
 #else 
          pAddr = (struct sockaddr_in*)&(status.sstat_primary.spinfo_address);
-         pSctpStatus->primary.port = CM_INET_NTOH_U16(pAddr->sin_port);
+         pSctpStatus->primary.port = CM_INET_NTOH_UINT16(pAddr->sin_port);
          pSctpStatus->primary.addr.type          = CM_INET_IPV4ADDR_TYPE;
-         pSctpStatus->primary.addr.u.ipv4NetAddr = CM_INET_NTOH_U32(pAddr->sin_addr.s_addr);
+         pSctpStatus->primary.addr.u.ipv4NetAddr = CM_INET_NTOH_UINT32(pAddr->sin_addr.s_addr);
 #endif /* IPV6_SUPPORTED */
 
          pSctpStatus->primary.assocId = status.sstat_primary.spinfo_assoc_id;
@@ -3394,21 +3394,21 @@ Ptr       value;                /* option value */
 
             pAddr6 = (struct sockaddr_in6*)&(addrInfo.spinfo_address);
             pAddr6->sin6_family      = AF_INET6;
-            pAddr6->sin6_port        = CM_INET_HTON_U16(pPeerAddrInfo->port);
+            pAddr6->sin6_port        = CM_INET_HTON_UINT16(pPeerAddrInfo->port);
             CM_INET_COPY_IPV6ADDR(&pAddr6->sin6_addr.s6_addr, &pPeerAddrInfo->addr.u.ipv6NetAddr); 
          }
          else 
          {
             pAddr = (struct sockaddr_in*)&(addrInfo.spinfo_address);
             pAddr->sin_family      = AF_INET;
-            pAddr->sin_port        = CM_INET_HTON_U16(pPeerAddrInfo->port);
-            pAddr->sin_addr.s_addr = CM_INET_HTON_U32(pPeerAddrInfo->addr.u.ipv4NetAddr);
+            pAddr->sin_port        = CM_INET_HTON_UINT16(pPeerAddrInfo->port);
+            pAddr->sin_addr.s_addr = CM_INET_HTON_UINT32(pPeerAddrInfo->addr.u.ipv4NetAddr);
          }
 #else 
          pAddr = (struct sockaddr_in*)&(addrInfo.spinfo_address);
          pAddr->sin_family      = AF_INET;
-         pAddr->sin_port        = CM_INET_HTON_U16(pPeerAddrInfo->port);
-         pAddr->sin_addr.s_addr = CM_INET_HTON_U32(pPeerAddrInfo->addr.u.ipv4NetAddr); 
+         pAddr->sin_port        = CM_INET_HTON_UINT16(pPeerAddrInfo->port);
+         pAddr->sin_addr.s_addr = CM_INET_HTON_UINT32(pPeerAddrInfo->addr.u.ipv4NetAddr); 
 #endif /* IPV6_SUPPORTED */
 
          /* Not validating the address, whether Addr is a valid address or not */
@@ -3459,21 +3459,21 @@ Ptr       value;                /* option value */
 
                pAddr6 = (struct sockaddr_in6*)&(addrParams.spp_address);
                pAddr6->sin6_family      = AF_INET6;
-               pAddr6->sin6_port        = CM_INET_HTON_U16(pPeerAddrParams->s.port);
+               pAddr6->sin6_port        = CM_INET_HTON_UINT16(pPeerAddrParams->s.port);
                CM_INET_COPY_IPV6ADDR(&pAddr6->sin6_addr.s6_addr, &pPeerAddrParams->s.addr.u.ipv6NetAddr); 
             }
             else 
             {
                pAddr = (struct sockaddr_in*)&(addrParams.spp_address);
                pAddr->sin_family      = AF_INET;
-               pAddr->sin_port        = CM_INET_HTON_U16(pPeerAddrParams->s.port);
-               pAddr->sin_addr.s_addr = CM_INET_HTON_U32(pPeerAddrParams->s.addr.u.ipv4NetAddr);
+               pAddr->sin_port        = CM_INET_HTON_UINT16(pPeerAddrParams->s.port);
+               pAddr->sin_addr.s_addr = CM_INET_HTON_UINT32(pPeerAddrParams->s.addr.u.ipv4NetAddr);
             }
 #else 
             pAddr = (struct sockaddr_in*)&(addrParams.spp_address);
             pAddr->sin_family      = AF_INET;
-            pAddr->sin_port        = CM_INET_HTON_U16(pPeerAddrParams->s.port);
-            pAddr->sin_addr.s_addr = CM_INET_HTON_U32(pPeerAddrParams->s.addr.u.ipv4NetAddr);
+            pAddr->sin_port        = CM_INET_HTON_UINT16(pPeerAddrParams->s.port);
+            pAddr->sin_addr.s_addr = CM_INET_HTON_UINT32(pPeerAddrParams->s.addr.u.ipv4NetAddr);
 #endif /* IPV6_SUPPORTED */
          }
          else
@@ -3769,7 +3769,7 @@ S16 cmInetConnect(sockFd, servAddr)
 #ifdef IPV6_SUPPORTED 
    struct sockaddr_in6 dstAddr6; /* foreign Internet IPV6 address/port */
 #ifdef CMINETDBG
-   U16            port;
+   uint16_t            port;
 #endif /* CMINETDBG */
 #endif /* IPV6_SUPPORTED */
    S32    sizeOfAddr;
@@ -3790,7 +3790,7 @@ S16 cmInetConnect(sockFd, servAddr)
    {
       memset(&dstAddr6, 0, sizeof(dstAddr6));
       dstAddr6.sin6_family     = AF_INET6;
-      dstAddr6.sin6_port       = CM_INET_HTON_U16(servAddr->u.ipv6Addr.port);
+      dstAddr6.sin6_port       = CM_INET_HTON_UINT16(servAddr->u.ipv6Addr.port);
       CM_INET_COPY_IPV6ADDR(&dstAddr6.sin6_addr, 
                             &servAddr->u.ipv6Addr.ipv6NetAddr);
       sizeOfAddr              = sizeof(struct sockaddr_in6);
@@ -3800,16 +3800,16 @@ S16 cmInetConnect(sockFd, servAddr)
    {
       memset(&dstAddr, 0, sizeof(dstAddr));
       dstAddr.sin_family      = AF_INET;
-      dstAddr.sin_port        = CM_INET_HTON_U16(servAddr->u.ipv4Addr.port);
-      dstAddr.sin_addr.s_addr = CM_INET_HTON_U32(servAddr->u.ipv4Addr.address);
+      dstAddr.sin_port        = CM_INET_HTON_UINT16(servAddr->u.ipv4Addr.port);
+      dstAddr.sin_addr.s_addr = CM_INET_HTON_UINT32(servAddr->u.ipv4Addr.address);
       sizeOfAddr              = sizeof(struct sockaddr_in);
       sockAddrPtr             = (CmInetSockAddr *)&dstAddr;
    }
 #else
    memset(&dstAddr, 0, sizeof(dstAddr));
    dstAddr.sin_family      = AF_INET;
-   dstAddr.sin_port        = CM_INET_HTON_U16(servAddr->port);
-   dstAddr.sin_addr.s_addr = CM_INET_HTON_U32(servAddr->address);
+   dstAddr.sin_port        = CM_INET_HTON_UINT16(servAddr->port);
+   dstAddr.sin_addr.s_addr = CM_INET_HTON_UINT32(servAddr->address);
    sizeOfAddr              = sizeof(struct sockaddr_in);
    sockAddrPtr             = (CmInetSockAddr *)&dstAddr;
 #endif /* IPV6_SUPPORTED */
@@ -4006,7 +4006,7 @@ CmInetFd   *newSockFd;  /* socket file descriptor for new connection*/
    CmInetSockAddr sockAddr;  
 #endif /* IPV6_SUPPORTED */
 
-   U32 optVal;
+   uint32_t optVal;
 
    /* added */
 
@@ -4102,22 +4102,22 @@ CmInetFd   *newSockFd;  /* socket file descriptor for new connection*/
    {
       peerAddr = (struct sockaddr_in *)&sockAddr;
       fromAddr->type = CM_INET_IPV4ADDR_TYPE;
-      fromAddr->u.ipv4Addr.port    = CM_INET_NTOH_U16(peerAddr->sin_port);
+      fromAddr->u.ipv4Addr.port    = CM_INET_NTOH_UINT16(peerAddr->sin_port);
       fromAddr->u.ipv4Addr.address = 
-                              CM_INET_NTOH_U32(peerAddr->sin_addr.s_addr);
+                              CM_INET_NTOH_UINT32(peerAddr->sin_addr.s_addr);
    }
    else if (addrLen == sizeof(struct sockaddr_in6))
    {
       peerAddr6 = (struct sockaddr_in6 *)&sockAddr;
       fromAddr->type = CM_INET_IPV6ADDR_TYPE;
-      fromAddr->u.ipv6Addr.port    = CM_INET_NTOH_U16(peerAddr6->sin6_port);
+      fromAddr->u.ipv6Addr.port    = CM_INET_NTOH_UINT16(peerAddr6->sin6_port);
       CM_INET_COPY_IPV6ADDR(&fromAddr->u.ipv6Addr.ipv6NetAddr, 
                             &peerAddr6->sin6_addr);
    }
 #else
    peerAddr = (struct sockaddr_in *)&sockAddr;
-   fromAddr->port    = CM_INET_NTOH_U16(peerAddr->sin_port);
-   fromAddr->address = CM_INET_NTOH_U32(peerAddr->sin_addr.s_addr);
+   fromAddr->port    = CM_INET_NTOH_UINT16(peerAddr->sin_port);
+   fromAddr->address = CM_INET_NTOH_UINT32(peerAddr->sin_addr.s_addr);
 #endif /* IPV6_SUPPORTED */
    return ROK;
 } /* end of cmInetAccept */ 
@@ -4142,19 +4142,19 @@ CmInetFd   *newSockFd;  /* socket file descriptor for new connection*/
 #ifdef ANSI
 PRIVATE S16 cmInet4FillTos
 (
-U8  tos,        /* tos value to be filled in ipheader */
-U8  *cmsgBuf,   /* flat buffer where to build ext hdrs */
-U32 *curMsgIdx  /* idx in cmsgBuf where HBH/Dest ext hdr ends */
+uint8_t  tos,        /* tos value to be filled in ipheader */
+uint8_t  *cmsgBuf,   /* flat buffer where to build ext hdrs */
+uint32_t *curMsgIdx  /* idx in cmsgBuf where HBH/Dest ext hdr ends */
 )
 #else
 PRIVATE S16 cmInet4FillTos(tos, cmsgBuf, curMsgIdx, protType)
-U8   tos;       /* tos value to be filled in ipheader */
-U8  *cmsgBuf;   /* flat buffer where to build ext hdrs */
-U32 *curMsgIdx; /* idx in cmsgBuf where HBH/Dest ext hdr ends */
+uint8_t   tos;       /* tos value to be filled in ipheader */
+uint8_t  *cmsgBuf;   /* flat buffer where to build ext hdrs */
+uint32_t *curMsgIdx; /* idx in cmsgBuf where HBH/Dest ext hdr ends */
 #endif /* ANSI */
 {
    struct cmsghdr *tempHdr;
-   U8     len;
+   uint8_t     len;
 
 
       len = 0;
@@ -4169,7 +4169,7 @@ U32 *curMsgIdx; /* idx in cmsgBuf where HBH/Dest ext hdr ends */
    /* fill up level & type of cmsghdr structure */
    tempHdr->cmsg_level = IPPROTO_IPV6;
    tempHdr->cmsg_type = IP_TOS;
-   (*(U8*)CMSG_DATA(tempHdr)) = tos;
+   (*(uint8_t*)CMSG_DATA(tempHdr)) = tos;
    len = CMSG_SPACE(sizeof tos); 
 
 
@@ -4247,20 +4247,20 @@ S16             flags;          /* additional control flags, unused */
    S16      numDBufs;           /* number of dBufs in message */
    struct   msghdr msg;         /* sendmsg() message header */
    MsgLen   msgLen;             /* message length */ 
-   U32      strtEndDBufNum;     /* starting/ending DBuf number */ 
+   uint32_t      strtEndDBufNum;     /* starting/ending DBuf number */ 
    MsgLen   unSentLen;          /* sent len */
 #ifdef IPV6_SUPPORTED 
-   U32    curMsgIdx;            /* indx in cmsgData where to write an ext hdr */
+   uint32_t    curMsgIdx;            /* indx in cmsgData where to write an ext hdr */
    /* added for IPv6 ext hdr */
 #if (defined(SS_LINUX) || defined(_XPG4_2))
    /* alloc from stack for IPv6 ancill data */
-   U8     cmsgData[CM_INET_IPV6_ANCIL_DATA];
+   uint8_t     cmsgData[CM_INET_IPV6_ANCIL_DATA];
 #endif /* SS_LINUX || _XPG4_2 */
 #else
-   U32    curMsgIdx;            /* indx in cmsgData where to write an ext hdr */
+   uint32_t    curMsgIdx;            /* indx in cmsgData where to write an ext hdr */
 #if (defined(SS_LINUX) || defined(_XPG4_2))
    /* alloc from stack for IPv4 ancill data */ 
-    U8     cmsgData[CM_INET_IPV4_ANCIL_DATA];
+    uint8_t     cmsgData[CM_INET_IPV4_ANCIL_DATA];
 #endif /* SS_LINUX || _XPG4_2 */
 #endif /* IPV6_SUPPORTED */   
 #endif /* WIN32 | CMINETFLATBUF */  
@@ -4271,7 +4271,7 @@ S16             flags;          /* additional control flags, unused */
 #endif /* IPV8_SUPPORTED */
    CmInetSockAddr *sockAddrPtr;
    /* cm_inet_c_001.main_58 : Fix for klockwork issue */
-   U32            sizeOfAddr;    
+   uint32_t            sizeOfAddr;    
 
    /* cm_inet_c_001.main_50 - Added for partial send handling */
    /* cm_inet_c_001.main_59: Protected under if not defined WIN32*/
@@ -4311,7 +4311,7 @@ S16             flags;          /* additional control flags, unused */
       {
          memset(&remAddr6, 0, sizeof(remAddr6));
          remAddr6.sin6_family = AF_INET6;
-         remAddr6.sin6_port   = CM_INET_HTON_U16(dstAddr->u.ipv6Addr.port);
+         remAddr6.sin6_port   = CM_INET_HTON_UINT16(dstAddr->u.ipv6Addr.port);
          CM_INET_COPY_IPV6ADDR(&remAddr6.sin6_addr, 
                &dstAddr->u.ipv6Addr.ipv6NetAddr); 
          sizeOfAddr = sizeof(remAddr6);
@@ -4321,17 +4321,17 @@ S16             flags;          /* additional control flags, unused */
       {
          memset(&remAddr, 0, sizeof(remAddr));
          remAddr.sin_family = AF_INET;
-         remAddr.sin_port   = CM_INET_HTON_U16(dstAddr->u.ipv4Addr.port);
+         remAddr.sin_port   = CM_INET_HTON_UINT16(dstAddr->u.ipv4Addr.port);
          remAddr.sin_addr.s_addr = 
-            CM_INET_HTON_U32(dstAddr->u.ipv4Addr.address);
+            CM_INET_HTON_UINT32(dstAddr->u.ipv4Addr.address);
          sizeOfAddr = sizeof(remAddr);
          sockAddrPtr = (CmInetSockAddr *)&remAddr;
       }
 #else
 /*      memset(&remAddr, 0, sizeof(remAddr)); */
       remAddr.sin_family      = AF_INET;
-      remAddr.sin_port        = CM_INET_HTON_U16(dstAddr->port);
-      remAddr.sin_addr.s_addr = CM_INET_HTON_U32(dstAddr->address);
+      remAddr.sin_port        = CM_INET_HTON_UINT16(dstAddr->port);
+      remAddr.sin_addr.s_addr = CM_INET_HTON_UINT32(dstAddr->address);
       sizeOfAddr = sizeof(remAddr);
       sockAddrPtr = (CmInetSockAddr *)&remAddr;
 #endif /* IPV6_SUPPORTED */
@@ -4346,7 +4346,7 @@ S16             flags;          /* additional control flags, unused */
    }
    /* max message length is limited to control the memory usage */
    /* casting bufLen to avoid warnings */
-   if ((bufLen > 0) && ((U32)bufLen > CM_INET_MAX_MSG_LEN))
+   if ((bufLen > 0) && ((uint32_t)bufLen > CM_INET_MAX_MSG_LEN))
    {
       return RFAILED;
    }
@@ -4506,7 +4506,7 @@ S16             flags;          /* additional control flags, unused */
             (ipHdrParams->u.hdrParmIpv4.tos.val != 0))
       {
          cmInet4FillTos(ipHdrParams->u.hdrParmIpv4.tos.val, 
-               (U8 *)(cmsgData + curMsgIdx), &curMsgIdx);
+               (uint8_t *)(cmsgData + curMsgIdx), &curMsgIdx);
          msg.msg_control = cmsgData;     /* pointer to Ancillary Data */
          msg.msg_controllen = curMsgIdx; /* total length of ancillary Data */
       } 
@@ -4517,8 +4517,8 @@ S16             flags;          /* additional control flags, unused */
 #ifdef SS_LINUX
       if(ipHdrParams->u.ipv6HdrParm.ttl.pres == TRUE)
       {
-         cmInetBuildSendHoplimit((U32)ipHdrParams->u.ipv6HdrParm.ttl.val,
-               (U8 *)(cmsgData + curMsgIdx), &curMsgIdx);  
+         cmInetBuildSendHoplimit((uint32_t)ipHdrParams->u.ipv6HdrParm.ttl.val,
+               (uint8_t *)(cmsgData + curMsgIdx), &curMsgIdx);  
       }
 #endif /* SS_LINUX */
 
@@ -4528,7 +4528,7 @@ S16             flags;          /* additional control flags, unused */
       {  
          cmInet6BuildSendPktinfo(
                &ipHdrParams->u.ipv6HdrParm.srcAddr6.u.ipv6NetAddr, 
-               (U8 *)(cmsgData + curMsgIdx), &curMsgIdx,
+               (uint8_t *)(cmsgData + curMsgIdx), &curMsgIdx,
                sockFd->protType);
       }
 #endif /* LOCAL_INTF */
@@ -4540,7 +4540,7 @@ S16             flags;          /* additional control flags, unused */
          /* build HBH ext header in cmsgData starting at indx 0 */
          cmInet6BuildSendHBHOpts(
                &ipHdrParams->u.ipv6HdrParm.ipv6ExtHdr.hbhOptsArr, 
-               (U8 *)(cmsgData + curMsgIdx), &curMsgIdx, 0);                           
+               (uint8_t *)(cmsgData + curMsgIdx), &curMsgIdx, 0);                           
 
       /* now copy the elements from the Destination Option array one by
        * one to the Flat Buffer cmsgData. Start filling at indx curMsgIdx 
@@ -4549,14 +4549,14 @@ S16             flags;          /* additional control flags, unused */
          /* build Dest opt hdr starting at (cmsgData + curMsgIdx) */
          cmInet6BuildSendDestOpts(
                &(ipHdrParams->u.ipv6HdrParm.ipv6ExtHdr.destOptsArr),
-               (U8 *)(cmsgData + curMsgIdx), &curMsgIdx, 1);
+               (uint8_t *)(cmsgData + curMsgIdx), &curMsgIdx, 1);
 
       /* copy Route header to to the Flat Buffer cmsgData */
       if (ipHdrParams->u.ipv6HdrParm.ipv6ExtHdr.rtOptsPrsnt == TRUE)
          /* curMsgIdx will be the indx where Dest opt ends in cmsgData */
          cmInet6BuildSendRouteOpts(
                &ipHdrParams->u.ipv6HdrParm.ipv6ExtHdr.rtOptsArr,
-               (U8 *)(cmsgData + curMsgIdx), &curMsgIdx);
+               (uint8_t *)(cmsgData + curMsgIdx), &curMsgIdx);
 
       /* msghrd struc's msg_control will point cmsgData and msg_controllen
        * will be the curMsgIdx */ 
@@ -4757,21 +4757,21 @@ S16             flags;          /* additional control flags, unused */
    S16      numDBufs;           /* number of dBufs in message */
    struct   msghdr msg;         /* sendmsg() message header */
    MsgLen   msgLen;             /* message length */ 
-   U32      strtEndDBufNum;     /* starting/ending DBuf number */ 
+   uint32_t      strtEndDBufNum;     /* starting/ending DBuf number */ 
    MsgLen   unSentLen;          /* sent len */
 #ifdef IPV6_SUPPORTED 
    /* added for IPv6 ext hdr */
 #ifdef IPV6_OPTS_SUPPORTED
-   U32    curMsgIdx;            /* indx in cmsgData where to write an ext hdr */
+   uint32_t    curMsgIdx;            /* indx in cmsgData where to write an ext hdr */
 #if (defined(SS_LINUX) || defined(_XPG4_2))
    /* alloc from stack for IPv6 ancill data */
-   U8     cmsgData[CM_INET_IPV6_ANCIL_DATA];
+   uint8_t     cmsgData[CM_INET_IPV6_ANCIL_DATA];
 #endif /* SS_LINUX || _XPG4_2 */
 #endif /* IPV6_OPTS_SUPPORTED */
 #else
 #if (defined(SS_LINUX) || defined(_XPG4_2))
    /* alloc from stack for IPv4 ancill data */ 
-   /* U8     cmsgData[CM_INET_IPV4_ANCIL_DATA];*/
+   /* uint8_t     cmsgData[CM_INET_IPV4_ANCIL_DATA];*/
 #endif /* SS_LINUX || _XPG4_2 */
 #endif /* IPV6_SUPPORTED */   
 #endif /* WIN32 | CMINETFLATBUF */  
@@ -4782,7 +4782,7 @@ S16             flags;          /* additional control flags, unused */
 #endif /* IPV8_SUPPORTED */
    CmInetSockAddr *sockAddrPtr;
    /* cm_inet_c_001.main_58 : Fix for klockwork issue */
-   U32            sizeOfAddr;    
+   uint32_t            sizeOfAddr;    
 
    /* cm_inet_c_001.main_50 - Added for partial send handling */
    /* cm_inet_c_001.main_59: Protected under if not defined WIN32*/
@@ -4824,7 +4824,7 @@ S16             flags;          /* additional control flags, unused */
       {
          memset(&remAddr6, 0, sizeof(remAddr6));
          remAddr6.sin6_family = AF_INET6;
-         remAddr6.sin6_port   = CM_INET_HTON_U16(dstAddr->u.ipv6Addr.port);
+         remAddr6.sin6_port   = CM_INET_HTON_UINT16(dstAddr->u.ipv6Addr.port);
          CM_INET_COPY_IPV6ADDR(&remAddr6.sin6_addr, 
                &dstAddr->u.ipv6Addr.ipv6NetAddr); 
          sizeOfAddr = sizeof(remAddr6);
@@ -4834,17 +4834,17 @@ S16             flags;          /* additional control flags, unused */
       {
          memset(&remAddr, 0, sizeof(remAddr));
          remAddr.sin_family = AF_INET;
-         remAddr.sin_port   = CM_INET_HTON_U16(dstAddr->u.ipv4Addr.port);
+         remAddr.sin_port   = CM_INET_HTON_UINT16(dstAddr->u.ipv4Addr.port);
          remAddr.sin_addr.s_addr = 
-            CM_INET_HTON_U32(dstAddr->u.ipv4Addr.address);
+            CM_INET_HTON_UINT32(dstAddr->u.ipv4Addr.address);
          sizeOfAddr = sizeof(remAddr);
          sockAddrPtr = (CmInetSockAddr *)&remAddr;
       }
 #else
 /*      memset(&remAddr, 0, sizeof(remAddr)); */
       remAddr.sin_family      = AF_INET;
-      remAddr.sin_port        = CM_INET_HTON_U16(dstAddr->port);
-      remAddr.sin_addr.s_addr = CM_INET_HTON_U32(dstAddr->address);
+      remAddr.sin_port        = CM_INET_HTON_UINT16(dstAddr->port);
+      remAddr.sin_addr.s_addr = CM_INET_HTON_UINT32(dstAddr->address);
       sizeOfAddr = sizeof(remAddr);
       sockAddrPtr = (CmInetSockAddr *)&remAddr;
 #endif /* IPV6_SUPPORTED */
@@ -4859,7 +4859,7 @@ S16             flags;          /* additional control flags, unused */
    }
    /* max message length is limited to control the memory usage */
    /* casting bufLen to avoid warnings */
-   if ((bufLen > 0) && ((U32)bufLen > CM_INET_MAX_MSG_LEN))
+   if ((bufLen > 0) && ((uint32_t)bufLen > CM_INET_MAX_MSG_LEN))
    {
       return RFAILED;
    }
@@ -5022,8 +5022,8 @@ S16             flags;          /* additional control flags, unused */
 #ifdef SS_LINUX
       if(ipHdrParams->u.ipv6HdrParm.ttl.pres == TRUE)
       {
-         cmInetBuildSendHoplimit((U32)ipHdrParams->u.ipv6HdrParm.ttl.val,
-               (U8 *)(cmsgData + curMsgIdx), &curMsgIdx);  
+         cmInetBuildSendHoplimit((uint32_t)ipHdrParams->u.ipv6HdrParm.ttl.val,
+               (uint8_t *)(cmsgData + curMsgIdx), &curMsgIdx);  
       }
 #endif /* SS_LINUX */
 
@@ -5033,7 +5033,7 @@ S16             flags;          /* additional control flags, unused */
       {  
          cmInet6BuildSendPktinfo(
                &ipHdrParams->u.ipv6HdrParm.srcAddr6.u.ipv6NetAddr, 
-               (U8 *)(cmsgData + curMsgIdx), &curMsgIdx,
+               (uint8_t *)(cmsgData + curMsgIdx), &curMsgIdx,
                sockFd->protType);
       }
 #endif /* LOCAL_INTF */
@@ -5045,7 +5045,7 @@ S16             flags;          /* additional control flags, unused */
          /* build HBH ext header in cmsgData starting at indx 0 */
          cmInet6BuildSendHBHOpts(
                &ipHdrParams->u.ipv6HdrParm.ipv6ExtHdr.hbhOptsArr, 
-               (U8 *)(cmsgData + curMsgIdx), &curMsgIdx, 0);                           
+               (uint8_t *)(cmsgData + curMsgIdx), &curMsgIdx, 0);                           
 
       /* now copy the elements from the Destination Option array one by
        * one to the Flat Buffer cmsgData. Start filling at indx curMsgIdx 
@@ -5054,14 +5054,14 @@ S16             flags;          /* additional control flags, unused */
          /* build Dest opt hdr starting at (cmsgData + curMsgIdx) */
          cmInet6BuildSendDestOpts(
                &(ipHdrParams->u.ipv6HdrParm.ipv6ExtHdr.destOptsArr),
-               (U8 *)(cmsgData + curMsgIdx), &curMsgIdx, 1);
+               (uint8_t *)(cmsgData + curMsgIdx), &curMsgIdx, 1);
 
       /* copy Route header to to the Flat Buffer cmsgData */
       if (ipHdrParams->u.ipv6HdrParm.ipv6ExtHdr.rtOptsPrsnt == TRUE)
          /* curMsgIdx will be the indx where Dest opt ends in cmsgData */
          cmInet6BuildSendRouteOpts(
                &ipHdrParams->u.ipv6HdrParm.ipv6ExtHdr.rtOptsArr,
-               (U8 *)(cmsgData + curMsgIdx), &curMsgIdx);
+               (uint8_t *)(cmsgData + curMsgIdx), &curMsgIdx);
 
       /* msghrd struc's msg_control will point cmsgData and msg_controllen
        * will be the curMsgIdx */ 
@@ -5207,22 +5207,22 @@ S16             flags;          /* additional control flags, unused */
 PRIVATE S16 cmInet6BuildSendPktinfo
 (
 CmInetIpAddr6 *srcAddr, /* src ip addr to set on outgoing packet */
-U8  *cmsgBuf,   /* flat buffer where to build ext hdrs */
-U32 *curMsgIdx, /* idx in cmsgBuf where HBH/Dest ext hdr ends */
-U8   protType   /* whether IPv4/IPv6 socket */
+uint8_t  *cmsgBuf,   /* flat buffer where to build ext hdrs */
+uint32_t *curMsgIdx, /* idx in cmsgBuf where HBH/Dest ext hdr ends */
+uint8_t   protType   /* whether IPv4/IPv6 socket */
 )
 #else
 PRIVATE S16 cmInet6BuildSendPktinfo(srcAddr, cmsgBuf, curMsgIdx, protType)
 CmInetIpAddr6 *srcAddr; /* src ip addr to set on outgoing packet */
-U8  *cmsgBuf;   /* flat buffer where to build ext hdrs */
-U32 *curMsgIdx; /* idx in cmsgBuf where HBH/Dest ext hdr ends */
-U8   protType;  /* whether IPv4/IPv6 socket */
+uint8_t  *cmsgBuf;   /* flat buffer where to build ext hdrs */
+uint32_t *curMsgIdx; /* idx in cmsgBuf where HBH/Dest ext hdr ends */
+uint8_t   protType;  /* whether IPv4/IPv6 socket */
 #endif /* ANSI */
 {
    struct cmsghdr *tempHdr;
    struct in6_pktinfo *ipv6Pktinfo;
    struct in6_addr lpBkAddr;
-   U8     len;
+   uint8_t     len;
 
 
       len = 0;
@@ -5323,19 +5323,19 @@ U8   protType;  /* whether IPv4/IPv6 socket */
 #ifdef ANSI
 PRIVATE S16 cmInetBuildSendHoplimit
 (
-U32   hoplimit,  /* the hoplimit value to be set on outgoing packet */
-U8  *cmsgBuf,   /* flat buffer where to build ext hdrs */
-U32 *curMsgIdx  /* idx in cmsgBuf where HBH/Dest ext hdr ends */
+uint32_t   hoplimit,  /* the hoplimit value to be set on outgoing packet */
+uint8_t  *cmsgBuf,   /* flat buffer where to build ext hdrs */
+uint32_t *curMsgIdx  /* idx in cmsgBuf where HBH/Dest ext hdr ends */
 )
 #else
 PRIVATE S16 cmInetBuildSendHoplimit(hoplimit, cmsgBuf, curMsgIdx)
-U32  hoplimit;  /* the hoplimit value to be sent on outgoing packet */
-U8  *cmsgBuf;   /* flat buffer where to build ext hdrs */
-U32 *curMsgIdx; /* idx in cmsgBuf where HBH/Dest ext hdr ends */
+uint32_t  hoplimit;  /* the hoplimit value to be sent on outgoing packet */
+uint8_t  *cmsgBuf;   /* flat buffer where to build ext hdrs */
+uint32_t *curMsgIdx; /* idx in cmsgBuf where HBH/Dest ext hdr ends */
 #endif /* ANSI */
 {
    struct cmsghdr *tempHdr; 
-   U8    len;
+   uint8_t    len;
 
 
       len = 0;
@@ -5394,21 +5394,21 @@ U32 *curMsgIdx; /* idx in cmsgBuf where HBH/Dest ext hdr ends */
 PRIVATE S16 cmInet6BuildSendHBHOpts
 (
 CmInetIpv6HBHHdrArr *hbhOptsArr,/* IPv6 extensions headers HBH/Dest opts */
-U8 *cmsgBuf,                    /* flat buffer where to build ext hdrs */
-U32 *curMsgIdx,                 /* idx in cmsgBuf where HBH/Dest ext hdr ends */
-U8 hdrId                        /* 0: HBH hdr, 1:Dest Hdr */
+uint8_t *cmsgBuf,                    /* flat buffer where to build ext hdrs */
+uint32_t *curMsgIdx,                 /* idx in cmsgBuf where HBH/Dest ext hdr ends */
+uint8_t hdrId                        /* 0: HBH hdr, 1:Dest Hdr */
 )
 #else
 PRIVATE S16 cmInet6BuildSendHBHOpts(hbhOptsArr, cmsgBuf, curMsgIdx, hdrId)
 CmInetIpv6HBHHdrArr *hbhOptsArr;/* IPv6 extensions headers HBH/Dest opts */
-U8 *cmsgBuf;                    /* flat buffer where to build ext hdrs */
-U32 *curMsgIdx;                 /* idx in cmsgBuf where HBH/Dest ext hdr ends */
-U8 hdrId;                       /* 0: HBH hdr, 1:Dest Hdr */
+uint8_t *cmsgBuf;                    /* flat buffer where to build ext hdrs */
+uint32_t *curMsgIdx;                 /* idx in cmsgBuf where HBH/Dest ext hdr ends */
+uint8_t hdrId;                       /* 0: HBH hdr, 1:Dest Hdr */
 #endif
 {
    struct cmsghdr *tempHdr; 
-   U8    len;
-   U8    optsIdx;
+   uint8_t    len;
+   uint8_t    optsIdx;
 
 
       len = 0;
@@ -5516,20 +5516,20 @@ U8 hdrId;                       /* 0: HBH hdr, 1:Dest Hdr */
 PRIVATE S16 cmInet6BuildSendRouteOpts
 (
 CmInetIpv6RtHdr *rtOptsArr,  /* IPv6 destination options array */
-U8 *cmsgBuf,                 /* flat buffer where to build ext hdrs */
-U32 *curMsgIdx               /* idx in cmsgBuf where to start building RT hdr */
+uint8_t *cmsgBuf,                 /* flat buffer where to build ext hdrs */
+uint32_t *curMsgIdx               /* idx in cmsgBuf where to start building RT hdr */
 )
 #else
 PRIVATE S16 cmInet6BuildSendRouteOpts(rtOptsArr, cmsgBuf, curMsgIdx)
 CmInetIpv6RtHdr *rtOptsArr;  /* IPv6 destination options array */
-U8 *cmsgBuf;                 /* flat buffer where to build ext hdrs */
-U32 *curMsgIdx;              /* idx in cmsgBuf where to start building RT hd */
+uint8_t *cmsgBuf;                 /* flat buffer where to build ext hdrs */
+uint32_t *curMsgIdx;              /* idx in cmsgBuf where to start building RT hd */
 #endif /* ANSI */
 {
    struct cmsghdr *tempHdr;
    CmInetIpv6RtHdr0 *tempRtHdr;
-   U8    len; 
-   U8    addrIdx;
+   uint8_t    len; 
+   uint8_t    addrIdx;
 
 
    len = 0;
@@ -5610,27 +5610,27 @@ U32 *curMsgIdx;              /* idx in cmsgBuf where to start building RT hd */
 #ifdef ANSI
 PRIVATE S16 cmInet6BuildRecvHopOptsArr
 (
-U8 *cmsgData,                    /* flat buffer where to build ext hdrs */
-U32 hbhDataLen,                  /* byte len of cmsghdr + hbh ancil data */
+uint8_t *cmsgData,                    /* flat buffer where to build ext hdrs */
+uint32_t hbhDataLen,                  /* byte len of cmsghdr + hbh ancil data */
 CmInetIpv6HBHHdrArr *hbhOptsArr, /* IPv6 extensions headers */
-U8 hdrId,                        /* 0: HBH, 1: DEST */
+uint8_t hdrId,                        /* 0: HBH, 1: DEST */
 CmInetMemInfo   *info            /* Memory information */
 )
 #else
 PRIVATE S16 cmInet6BuildRecvHopOptsArr(cmsgData, hbhDataLen, hbhOptsArr, hdrId, 
                                       info)
-U8 *cmsgData;                    /* flat buffer where to build ext hdrs  */
-U32 hbhDataLen;                  /* byte len of cmsghdr + hbh ancil data */
+uint8_t *cmsgData;                    /* flat buffer where to build ext hdrs  */
+uint32_t hbhDataLen;                  /* byte len of cmsghdr + hbh ancil data */
 CmInetIpv6HBHHdrArr *hbhOptsArr; /* IPv6 extensions headers */
-U8 hdrId;                        /* 0: HBH, 1: DEST */
+uint8_t hdrId;                        /* 0: HBH, 1: DEST */
 CmInetMemInfo   *info;           /* Memory information */
 #endif /* ANSI */
 {
-   U32 curDataIdx;       /* to keep track where we are in the hbh Data */
-   U8  optsIdx;          /* how many hbh opts present in data */
-   U8  numOpts;          /* number of hbh opts present in data */
-   U8  tempLen;
-   U8  tempType;
+   uint32_t curDataIdx;       /* to keep track where we are in the hbh Data */
+   uint8_t  optsIdx;          /* how many hbh opts present in data */
+   uint8_t  numOpts;          /* number of hbh opts present in data */
+   uint8_t  tempLen;
+   uint8_t  tempType;
    S16 ret;
 
 
@@ -5654,7 +5654,7 @@ CmInetMemInfo   *info;           /* Memory information */
       numOpts += 1;
 
       /* get type */ 
-      tempType = *(U8 *)(cmsgData + curDataIdx);
+      tempType = *(uint8_t *)(cmsgData + curDataIdx);
       curDataIdx += 1;               
 
       /* take care of pad1 option */
@@ -5666,7 +5666,7 @@ CmInetMemInfo   *info;           /* Memory information */
       }
 
       /* get length */
-      tempLen = *(U8 *)(cmsgData + curDataIdx);
+      tempLen = *(uint8_t *)(cmsgData + curDataIdx);
 
       /* 1 is to skip length. tempLen to skip the value field */
       curDataIdx += (1 + tempLen);
@@ -5824,23 +5824,23 @@ CmInetMemInfo   *info;           /* Memory information */
 #ifdef ANSI
 PRIVATE S16 cmInet6BuildRecvRtHdr
 (
-U8 *cmsgData,              /* flat buffer where to build Route hdr */ 
-U32 rtDataLen,             /* byte len of cmsghdr struc+rtHdr ancil data */
+uint8_t *cmsgData,              /* flat buffer where to build Route hdr */ 
+uint32_t rtDataLen,             /* byte len of cmsghdr struc+rtHdr ancil data */
 CmInetIpv6RtHdr0 *rtHdr0,  /* rtHeader0 struct that precedes IPV6 addrss */
 CmInetIpv6RtHdr *rtOptsArr,/* IPv6 extensions headers */
 CmInetMemInfo   *info      /* Memory information */
 )
 #else
 PRIVATE S16 cmInet6BuildRecvRtHdr(cmsgData, rtDataLen, rtHdr0, rtOptsArr, info)
-U8 *cmsgData;              /* flat buffer where to build Route hdr */
-U32 rtDataLen;             /* byte len of cmsghdr struc+rtHdr ancil data */
+uint8_t *cmsgData;              /* flat buffer where to build Route hdr */
+uint32_t rtDataLen;             /* byte len of cmsghdr struc+rtHdr ancil data */
 CmInetIpv6RtHdr0 *rtHdr0;  /* rtHeader0 struct that precedes IPV6 addrss */
 CmInetIpv6RtHdr *rtOptsArr;/* IPv6 extensions headers */
 CmInetMemInfo   *info;     /* Memory information */
 #endif /* ANSI */
 {
-   U32 curDataIdx;         /* to keep track where we are in hbh Data */
-   U8 i;                   /* loop counter */
+   uint32_t curDataIdx;         /* to keep track where we are in hbh Data */
+   uint8_t i;                   /* loop counter */
    S16 ret;                /* temporary return value */
 
    
@@ -5922,19 +5922,19 @@ CmInetMemInfo   *info;     /* Memory information */
 #ifdef ANSI
 PRIVATE S16 cmInet6GetHopLimitValue
 (
-U8 *cmsgData,        /* flat buffer where to build ext hdrs */
-U32 hopLimitDataLen, /* byte len of cmsghdr + hbh ancil data */
+uint8_t *cmsgData,        /* flat buffer where to build ext hdrs */
+uint32_t hopLimitDataLen, /* byte len of cmsghdr + hbh ancil data */
 CmInetIpv6HdrParm *ipv6HdrParam /* ipv6 header parameters */ 
 )
 #else
 PRIVATE S16 cmInet6GetHopLimitValue(cmsgData, hopLimitDataLen, ipv6HdrParam)
-U8 *cmsgData;         /* flat buffer where to build ext hdrs */
-U32 hopLimitDataLen;  /* byte len of cmsghdr + hbh ancil data */
+uint8_t *cmsgData;         /* flat buffer where to build ext hdrs */
+uint32_t hopLimitDataLen;  /* byte len of cmsghdr + hbh ancil data */
 CmInetIpv6HdrParm *ipv6HdrParam; /* ipv6 header parameters */
 #endif /* ANSI */
 {
-   U16 curDataIdx;       /* to keep track where we are in the ancillary Data */
-   U32 *hopLimitValue;   /* ttl/hoplimit value */
+   uint16_t curDataIdx;       /* to keep track where we are in the ancillary Data */
+   uint32_t *hopLimitValue;   /* ttl/hoplimit value */
 
    hopLimitValue = NULL;
    curDataIdx = 0;                
@@ -5949,8 +5949,8 @@ CmInetIpv6HdrParm *ipv6HdrParam; /* ipv6 header parameters */
    ipv6HdrParam->ttl.pres = TRUE;
 
    /* the first byte will be the HopLimit value */
-   hopLimitValue = (U32 *)(cmsgData);
-   ipv6HdrParam->ttl.val = (U8)(*hopLimitValue);
+   hopLimitValue = (uint32_t *)(cmsgData);
+   ipv6HdrParam->ttl.val = (uint8_t)(*hopLimitValue);
 
    return ROK;
 }
@@ -6050,14 +6050,14 @@ S32              flags;         /* additional control flags */
 {
 #if (defined(WIN32) || defined(CMINETFLATBUF))
    S32           ret;            /* temporary return value */
-   U32           pendLen;        /* pending data length */
+   uint32_t           pendLen;        /* pending data length */
    S32           recvLen;        /* number of received octets by recvmsg() */
    MsgLen        bufLen;         /* entire number of received octets */
    MsgLen        curLen;         /* current number of octets in buffer */ 
    Data         *recvBuf;        /* receive buffer */
    Data         *bufPtr;         /* current buffer position */   
    Buffer       *mBuf;           /* received message */ 
-   U32           remAddrLen;     /* length of remote address */
+   uint32_t           remAddrLen;     /* length of remote address */
    struct sockaddr_in  *remAddr;    /* remote Internet address */       
 #ifdef IPV6_SUPPORTED 
    struct sockaddr_in6  *remAddr6;  /* remote Internet address */       
@@ -6068,8 +6068,8 @@ S32              flags;         /* additional control flags */
 #else
    S32           ret;            /* temporary return value */
   /* cm_inet_c_001.main_58: Fix for g++ compilation warning */
-   U16           i;              /* index */
-   U32           pendLen;        /* pending data length */
+   uint16_t           i;              /* index */
+   uint32_t           pendLen;        /* pending data length */
    S32           numBuf;         /* number of allocated dBufs */
    S32           recvLen;        /* number of received octets by recvmsg() */
    MsgLen        bufLen;         /* entire number of received octets */
@@ -6097,13 +6097,13 @@ S32              flags;         /* additional control flags */
 #endif /* LOCAL_INTF */   
 
 #if (defined(SS_LINUX) || defined(_XPG4_2))
-   U8                   ancillData[CM_INET_IPV6_ANCIL_DATA];
+   uint8_t                   ancillData[CM_INET_IPV6_ANCIL_DATA];
    /* from stack for IPv6 ancill data */
 #endif
 #else
    CmInetSockAddr       remSockAddr;     /* to get packet's src IP address */
 #if (defined(SS_LINUX) || defined(_XPG4_2))
-   U8                   ancillData[CM_INET_IPV4_ANCIL_DATA];
+   uint8_t                   ancillData[CM_INET_IPV4_ANCIL_DATA];
    /* from stack for IPv4 ancill data */
 #endif
 #endif /* IPV6_SUPPORTED */
@@ -6199,7 +6199,7 @@ S32              flags;         /* additional control flags */
          /* cm_inet_c_001.main_50: 
           * cm_inet_c_001.main_56: Removed comment for cm_inet_c_001.main_50 as
           * the current patch changes its functionality */
-         U8  readBuf[1]; /* declaration of variable for Peek */
+         uint8_t  readBuf[1]; /* declaration of variable for Peek */
 
          /* 
           * cm_inet_c_001.main_56:
@@ -6233,7 +6233,7 @@ S32              flags;         /* additional control flags */
    }
 
    /* check if there are enough pending data to read */
-   if ((*len == CM_INET_READ_ANY) || ((U32)*len <= pendLen))
+   if ((*len == CM_INET_READ_ANY) || ((uint32_t)*len <= pendLen))
    {
       if (*len == CM_INET_READ_ANY)
       {
@@ -6488,7 +6488,7 @@ S32              flags;         /* additional control flags */
          {
             remAddr6 = (struct sockaddr_in6 *)&remSockAddr;
             fromAddr->type = CM_INET_IPV6ADDR_TYPE;
-            fromAddr->u.ipv6Addr.port = CM_INET_NTOH_U16(remAddr6->sin6_port);
+            fromAddr->u.ipv6Addr.port = CM_INET_NTOH_UINT16(remAddr6->sin6_port);
             CM_INET_COPY_IPV6ADDR(&fromAddr->u.ipv6Addr.ipv6NetAddr, 
                   &remAddr6->sin6_addr);
          }
@@ -6496,13 +6496,13 @@ S32              flags;         /* additional control flags */
          {
             remAddr = (struct sockaddr_in *)&remSockAddr;
             fromAddr->type = CM_INET_IPV4ADDR_TYPE;
-            fromAddr->u.ipv4Addr.port = CM_INET_NTOH_U16(remAddr->sin_port);
-            fromAddr->u.ipv4Addr.address = CM_INET_NTOH_U32(remAddr->sin_addr.s_addr);
+            fromAddr->u.ipv4Addr.port = CM_INET_NTOH_UINT16(remAddr->sin_port);
+            fromAddr->u.ipv4Addr.address = CM_INET_NTOH_UINT32(remAddr->sin_addr.s_addr);
          }
 #else
          remAddr = (struct sockaddr_in *)&remSockAddr;
-         fromAddr->port    = CM_INET_NTOH_U16(remAddr->sin_port);
-         fromAddr->address = CM_INET_NTOH_U32(remAddr->sin_addr.s_addr);
+         fromAddr->port    = CM_INET_NTOH_UINT16(remAddr->sin_port);
+         fromAddr->address = CM_INET_NTOH_UINT32(remAddr->sin_addr.s_addr);
 #endif /* IPV6_SUPPORTED */
       }   
 
@@ -6547,12 +6547,12 @@ S32              flags;         /* additional control flags */
                 * of TCP ignore this error condition. The user will call 
                 * cmInetRecvMsg again */
                /* cm_inet_c_001.main_62:Warning fix */
-               if (sockFd->type != (U8)CM_INET_STREAM)/* G++ */
+               if (sockFd->type != (uint8_t)CM_INET_STREAM)/* G++ */
                {
 
 #ifdef T2K_MEM_LEAK_DBG
 		       char * file = __FILE__;
-		       U32  line   = __LINE__;
+		       uint32_t  line   = __LINE__;
 #endif
 
                   /* cleanup  the dBuf array */
@@ -6572,7 +6572,7 @@ S32              flags;         /* additional control flags */
                   /* update the message structure */
 #ifdef SS_LINUX
                   rxArr[0].iov_base = (Void*)recvBuf;  
-                  rxArr[0].iov_len = (U32)bufLen;    
+                  rxArr[0].iov_len = (uint32_t)bufLen;    
 #else
                   rxArr[0].iov_base = (S8*)recvBuf;
                   rxArr[0].iov_len = bufLen;
@@ -6635,7 +6635,7 @@ S32              flags;         /* additional control flags */
                { 
                 #ifdef T2K_MEM_LEAK_DBG
                    char * file = __FILE__;
-                   U32  line   = __LINE__;
+                   uint32_t  line   = __LINE__;
                 #endif
 
                   SPutDBuf(info->region, info->pool, dBufs[i]);   
@@ -6735,7 +6735,7 @@ S32              flags;         /* additional control flags */
                      {
                         /* build up HBH opt array from recvd ancillary data */
                         ret = cmInet6BuildRecvHopOptsArr(
-                              (U8 *)CMSG_DATA(cmsgptr), cmsgptr->cmsg_len, 
+                              (uint8_t *)CMSG_DATA(cmsgptr), cmsgptr->cmsg_len, 
                               &ipHdrParams->u.ipv6HdrParm.ipv6ExtHdr.hbhOptsArr,
                               0, info);
                         if (ret != ROK)
@@ -6752,7 +6752,7 @@ S32              flags;         /* additional control flags */
                      {
                         /* build up Dest opt array from recvd ancillary data */
                         ret = cmInet6BuildRecvDstOptsArr(
-                              (U8 *)CMSG_DATA(cmsgptr), cmsgptr->cmsg_len, 
+                              (uint8_t *)CMSG_DATA(cmsgptr), cmsgptr->cmsg_len, 
                               &ipHdrParams->u.ipv6HdrParm.ipv6ExtHdr.destOptsArr,
                               1, info); 
                         if (ret != ROK)
@@ -6764,7 +6764,7 @@ S32              flags;         /* additional control flags */
                      {
                         /* build up Route Hdr from recvd ancillary data */
                         ret = cmInet6BuildRecvRtHdr(
-                              (U8 *)CMSG_DATA(cmsgptr), cmsgptr->cmsg_len, &rtHdr0,
+                              (uint8_t *)CMSG_DATA(cmsgptr), cmsgptr->cmsg_len, &rtHdr0,
                               &ipHdrParams->u.ipv6HdrParm.ipv6ExtHdr.rtOptsArr, 
                               info);
                         if (ret != ROK)
@@ -6775,7 +6775,7 @@ S32              flags;         /* additional control flags */
                      else if(cmsgptr->cmsg_type == IPV6_HOPLIMIT)
                      {
                         /* get the received hoplimit */
-                        ret = cmInet6GetHopLimitValue((U8 *)CMSG_DATA(cmsgptr),
+                        ret = cmInet6GetHopLimitValue((uint8_t *)CMSG_DATA(cmsgptr),
                               cmsgptr->cmsg_len, &ipHdrParams->u.ipv6HdrParm);
                         if (ret != ROK)
                            return (ret);
@@ -6838,7 +6838,7 @@ S32              flags;         /* additional control flags */
                remAddr6 = (struct sockaddr_in6 *)&remSockAddr;
                fromAddr->type = CM_INET_IPV6ADDR_TYPE;
                fromAddr->u.ipv6Addr.port = 
-                  CM_INET_NTOH_U16(remAddr6->sin6_port);
+                  CM_INET_NTOH_UINT16(remAddr6->sin6_port);
                CM_INET_COPY_IPV6ADDR(&fromAddr->u.ipv6Addr.ipv6NetAddr, 
                      &remAddr6->sin6_addr);
             }
@@ -6846,14 +6846,14 @@ S32              flags;         /* additional control flags */
             {
                remAddr = (struct sockaddr_in *)&remSockAddr;
                fromAddr->type = CM_INET_IPV4ADDR_TYPE;
-               fromAddr->u.ipv4Addr.port = CM_INET_NTOH_U16(remAddr->sin_port);
+               fromAddr->u.ipv4Addr.port = CM_INET_NTOH_UINT16(remAddr->sin_port);
                fromAddr->u.ipv4Addr.address = 
-                  CM_INET_NTOH_U32(remAddr->sin_addr.s_addr);
+                  CM_INET_NTOH_UINT32(remAddr->sin_addr.s_addr);
             }
 #else
             remAddr = (struct sockaddr_in *)&remSockAddr;
-            fromAddr->port    = CM_INET_NTOH_U16(remAddr->sin_port);
-            fromAddr->address = CM_INET_NTOH_U32(remAddr->sin_addr.s_addr);
+            fromAddr->port    = CM_INET_NTOH_UINT16(remAddr->sin_port);
+            fromAddr->address = CM_INET_NTOH_UINT32(remAddr->sin_addr.s_addr);
 #endif /* IPV6_SUPPORTED */
          }
 
@@ -7201,7 +7201,7 @@ S16 cmInetPeekNew(sockFd, fromAddr, info, dataPos, dataLen, data)
          remAddr6 = (struct sockaddr_in6 *)&remSockAddr;
          fromAddr->type = CM_INET_IPV6ADDR_TYPE;
          fromAddr->u.ipv6Addr.port = 
-            CM_INET_NTOH_U16(remAddr6->sin6_port);
+            CM_INET_NTOH_UINT16(remAddr6->sin6_port);
          CM_INET_COPY_IPV6ADDR(&fromAddr->u.ipv6Addr.ipv6NetAddr, 
                &remAddr6->sin6_addr);
       }
@@ -7209,14 +7209,14 @@ S16 cmInetPeekNew(sockFd, fromAddr, info, dataPos, dataLen, data)
       {
          remAddr = (struct sockaddr_in *)&remSockAddr;
          fromAddr->type = CM_INET_IPV4ADDR_TYPE;
-         fromAddr->u.ipv4Addr.port = CM_INET_NTOH_U16(remAddr->sin_port);
+         fromAddr->u.ipv4Addr.port = CM_INET_NTOH_UINT16(remAddr->sin_port);
          fromAddr->u.ipv4Addr.address = 
-            CM_INET_NTOH_U32(remAddr->sin_addr.s_addr);
+            CM_INET_NTOH_UINT32(remAddr->sin_addr.s_addr);
       } 
 #else
       remAddr = (struct sockaddr_in *)&remSockAddr;
-      fromAddr->port    = CM_INET_NTOH_U16(remAddr->sin_port);
-      fromAddr->address = CM_INET_NTOH_U32(remAddr->sin_addr.s_addr);
+      fromAddr->port    = CM_INET_NTOH_UINT16(remAddr->sin_port);
+      fromAddr->address = CM_INET_NTOH_UINT32(remAddr->sin_addr.s_addr);
 #endif /* IPV6_SUPPORTED */
    }
 
@@ -7271,11 +7271,11 @@ Data            *data;          /* read data */
    MsgLen       i;                 /* index */
    MsgLen       j;                 /* index */
    S32          ret;               /* temporary return value */
-   U32          timeout;           /* timeout for cmInetSelect() */ 
-   U32         *timeoutPtr;        /* pointer to timeout */
+   uint32_t          timeout;           /* timeout for cmInetSelect() */ 
+   uint32_t         *timeoutPtr;        /* pointer to timeout */
    S16          numFdS;            /* number of ready descriptors */
    /* cm_inet_c_001.main_45 - fixing the UMR issue in 64bit linux */
-   U32          pendLen = 0;           /* pending data length */
+   uint32_t          pendLen = 0;           /* pending data length */
    S32          recvLen;           /* number of received octets */
    S32          remAddrLen;        /* length of remote address length */
    CmInetFdSet  readFdS;           /* socket file descriptor set */
@@ -7481,7 +7481,7 @@ Data            *data;          /* read data */
                remAddr6 = (struct sockaddr_in6 *)&remSockAddr;
                fromAddr->type = CM_INET_IPV6ADDR_TYPE;
                fromAddr->u.ipv6Addr.port = 
-                  CM_INET_NTOH_U16(remAddr6->sin6_port);
+                  CM_INET_NTOH_UINT16(remAddr6->sin6_port);
                CM_INET_COPY_IPV6ADDR(&fromAddr->u.ipv6Addr.ipv6NetAddr, 
                      &remAddr6->sin6_addr);
             }
@@ -7489,14 +7489,14 @@ Data            *data;          /* read data */
             {
                remAddr = (struct sockaddr_in *)&remSockAddr;
                fromAddr->type = CM_INET_IPV4ADDR_TYPE;
-               fromAddr->u.ipv4Addr.port = CM_INET_NTOH_U16(remAddr->sin_port);
+               fromAddr->u.ipv4Addr.port = CM_INET_NTOH_UINT16(remAddr->sin_port);
                fromAddr->u.ipv4Addr.address = 
-                  CM_INET_NTOH_U32(remAddr->sin_addr.s_addr);
+                  CM_INET_NTOH_UINT32(remAddr->sin_addr.s_addr);
             } 
 #else
             remAddr = (struct sockaddr_in *)&remSockAddr;
-            fromAddr->port    = CM_INET_NTOH_U16(remAddr->sin_port);
-            fromAddr->address = CM_INET_NTOH_U32(remAddr->sin_addr.s_addr);
+            fromAddr->port    = CM_INET_NTOH_UINT16(remAddr->sin_port);
+            fromAddr->address = CM_INET_NTOH_UINT32(remAddr->sin_addr.s_addr);
 #endif /* IPV6_SUPPORTED */
          }   
 
@@ -7689,14 +7689,14 @@ S16 cmInetSelect
 (
 CmInetFdSet *readFdS,           /* read socket descriptor file set */  
 CmInetFdSet *writeFdS,          /* write socket descriptor file set */
-U32         *mSecTimeout,       /* timeout in msecs */
+uint32_t         *mSecTimeout,       /* timeout in msecs */
 S16         *numFdS             /* number of ready descriptors */
 )
 #else
 S16 cmInetSelect(readFdS, writeFdS, mSecTimeout, numFdS)
 CmInetFdSet *readFdS;           /* read socket descriptor file set */  
 CmInetFdSet *writeFdS;          /* write socket descriptor file set */
-U32         *mSecTimeout;       /* timeout in msecs */
+uint32_t         *mSecTimeout;       /* timeout in msecs */
 S16         *numFdS;            /* number of ready descriptors */
 #endif
 {
@@ -7940,21 +7940,21 @@ S16         *numFdS;            /* number of ready descriptors */
 S16 cmInetSetOpt
 (
 CmInetFd *sockFd,               /* socket file descriptor */ 
-U32       level,                /* option level */
-U32       type,                 /* option type */
+uint32_t       level,                /* option level */
+uint32_t       type,                 /* option type */
 Ptr       value                 /* option value */ 
 ) 
 #else
 S16 cmInetSetOpt(sockFd, level, type, value)
 CmInetFd *sockFd;               /* socket file descriptor */ 
-U32       level;                /* option level */
-U32       type;                 /* option type */
+uint32_t       level;                /* option level */
+uint32_t       type;                 /* option type */
 Ptr       value;                /* option value */
 #endif
 {
    S32  ret = ROK;              /* temporary return value */
-   U32  disable = 0;            /* disable option */
-   U32  enable = 1;             /* enable option */
+   uint32_t  disable = 0;            /* disable option */
+   uint32_t  enable = 1;             /* enable option */
 
    /* added for IPv4 options */
 #ifdef IPV4_OPTS_SUPPORTED
@@ -7969,8 +7969,8 @@ Ptr       value;                /* option value */
 
 #if (defined(SUNOS)|| defined(WIN32) || defined(SS_PS) || defined(SS_VW_MCAST)\
       || defined(HPOS))
-   U8   lpEnable = 1;           /* multicast loop enable */
-   U8   lpDisable = 0;          /* multicast loop disable */
+   uint8_t   lpEnable = 1;           /* multicast loop enable */
+   uint8_t   lpDisable = 0;          /* multicast loop disable */
 #endif /* SUNOS || WIN32 || SS_PS || SS_VW_MCAST || HPOS */
 
 #ifdef WIN32
@@ -7985,8 +7985,8 @@ Ptr       value;                /* option value */
 #endif /* SUNOS || WIN32  || SS_PS || SS_VW_MCAST || HPOS */
 
 #ifdef IPV6_SUPPORTED
-   U32    loopEna = 1;     /* IPv6 multicast loop enable */
-   U32    loopDis = 0;     /* IPv6 multicast loop disable */
+   uint32_t    loopEna = 1;     /* IPv6 multicast loop enable */
+   uint32_t    loopDis = 0;     /* IPv6 multicast loop disable */
    struct ipv6_mreq     *stMreq6Ptr;
    /* cm_inet_c_001.main_44 : some operating system doesnt have icmp6_filter. so 
       this flag is gaurded under ICMPV6_FILTER_SUPPORTED. so if user want this 
@@ -8029,7 +8029,7 @@ Ptr       value;                /* option value */
    CmInetSctpAssocParams      *pSctpAssocParams;
 #endif
 
-   U32    *optVal;
+   uint32_t    *optVal;
 
 
    /* cm_inet_c_001.main_58 : Added NULL check for value field */ 
@@ -8049,14 +8049,14 @@ Ptr       value;                /* option value */
    switch (type)
    {
       case CM_INET_OPT_BLOCK:
-         optVal = (U32*)value;
+         optVal = (uint32_t*)value;
          switch(*optVal)
          {
             case CM_INET_OPT_ENABLE:
 
 #ifdef WIN32
                /* cm_inet_c_001.main_59: Fix for compilation warning */
-               ret = ioctlsocket(sockFd->fd, FIONBIO, (U32 *)&disable);
+               ret = ioctlsocket(sockFd->fd, FIONBIO, (uint32_t *)&disable);
 #else
 #ifdef SS_PS
                ret = ioctl(sockFd->fd, FIONBIO, (char*)&disable);
@@ -8075,7 +8075,7 @@ Ptr       value;                /* option value */
             case CM_INET_OPT_DISABLE:
 #ifdef WIN32
               /* cm_inet_c_001.main_59: Fix for compilation warning */
-              ret = ioctlsocket(sockFd->fd, FIONBIO, (U32 *)&enable); 
+              ret = ioctlsocket(sockFd->fd, FIONBIO, (uint32_t *)&enable); 
 #else
 #ifdef SS_PS
                ret = ioctl(sockFd->fd, FIONBIO, (char*)&enable);
@@ -8098,7 +8098,7 @@ Ptr       value;                /* option value */
          break;
 
       case CM_INET_OPT_REUSEADDR:
-         optVal = (U32*)value;
+         optVal = (uint32_t*)value;
          if (*optVal == CM_INET_OPT_ENABLE)
          {
 #ifdef WIN32
@@ -8130,7 +8130,7 @@ Ptr       value;                /* option value */
          break;
 
       case CM_INET_OPT_BROADCAST:
-         optVal = (U32*)value;
+         optVal = (uint32_t*)value;
          if (*optVal == CM_INET_OPT_ENABLE)
          {
 #ifdef WIN32
@@ -8154,7 +8154,7 @@ Ptr       value;                /* option value */
          break; 
 
       case CM_INET_OPT_KEEPALIVE:
-         optVal = (U32*)value;
+         optVal = (uint32_t*)value;
          if (*optVal == CM_INET_OPT_ENABLE)
          {
 #ifdef WIN32
@@ -8178,19 +8178,19 @@ Ptr       value;                /* option value */
          break;
 
       case CM_INET_OPT_RX_BUF_SIZE:
-         optVal = (U32*)value;
+         optVal = (uint32_t*)value;
          ret = setsockopt(sockFd->fd, level, SO_RCVBUF, 
                (char*)optVal, sizeof(*optVal));
          break;
 
       case CM_INET_OPT_TX_BUF_SIZE:
-         optVal = (U32*)value;
+         optVal = (uint32_t*)value;
          ret = setsockopt(sockFd->fd, level, SO_SNDBUF, 
                (char*)optVal, sizeof(*optVal));
          break;
 
       case CM_INET_OPT_TCP_NODELAY:
-         optVal = (U32*)value;
+         optVal = (uint32_t*)value;
          if (*optVal == CM_INET_OPT_ENABLE)
          {
 #ifdef WIN32
@@ -8225,11 +8225,11 @@ Ptr       value;                /* option value */
 
          /* Copy the addresses to stMreq structure */
 #ifdef SS_PS
-         stMreq.imr_mcastaddr.s_addr = CM_INET_HTON_U32(mCast->mCastAddr);
+         stMreq.imr_mcastaddr.s_addr = CM_INET_HTON_UINT32(mCast->mCastAddr);
 #else
-         stMreq.imr_multiaddr.s_addr = CM_INET_HTON_U32(mCast->mCastAddr);
+         stMreq.imr_multiaddr.s_addr = CM_INET_HTON_UINT32(mCast->mCastAddr);
 #endif
-         stMreq.imr_interface.s_addr = CM_INET_HTON_U32(mCast->localAddr);
+         stMreq.imr_interface.s_addr = CM_INET_HTON_UINT32(mCast->localAddr);
 
          ret = setsockopt(sockFd->fd, level, IP_ADD_MEMBERSHIP,
                (char*)&stMreq, sizeof(stMreq));
@@ -8240,11 +8240,11 @@ Ptr       value;                /* option value */
 
          /* Copy the addresses to stMreq structure */
 #ifdef SS_PS
-         stMreq.imr_mcastaddr.s_addr = CM_INET_HTON_U32(mCast->mCastAddr);
+         stMreq.imr_mcastaddr.s_addr = CM_INET_HTON_UINT32(mCast->mCastAddr);
 #else
-         stMreq.imr_multiaddr.s_addr = CM_INET_HTON_U32(mCast->mCastAddr);
+         stMreq.imr_multiaddr.s_addr = CM_INET_HTON_UINT32(mCast->mCastAddr);
 #endif
-         stMreq.imr_interface.s_addr = CM_INET_HTON_U32(mCast->localAddr);
+         stMreq.imr_interface.s_addr = CM_INET_HTON_UINT32(mCast->localAddr);
 
          ret = setsockopt(sockFd->fd, level, IP_DROP_MEMBERSHIP,
                (char*)&stMreq, sizeof(stMreq));
@@ -8257,7 +8257,7 @@ Ptr       value;                /* option value */
             support CM_INET_OPT_BSD_COMPAT */
 #ifndef CMINET_BSDCOMPAT
       case CM_INET_OPT_BSD_COMPAT:
-         optVal = (U32*)value;
+         optVal = (uint32_t*)value;
          if (*optVal == CM_INET_OPT_ENABLE)
          {
             ret = setsockopt(sockFd->fd, level, SO_BSDCOMPAT,
@@ -8278,7 +8278,7 @@ Ptr       value;                /* option value */
 #if (defined(SUNOS)|| defined(WIN32) || defined(SS_PS) || defined(SS_VW) \
       || defined(HPOS))
       case CM_INET_OPT_HDR_INCLD:
-         optVal = (U32*)value;
+         optVal = (uint32_t*)value;
          if (*optVal == CM_INET_OPT_ENABLE)
          {
 #ifdef WIN32 
@@ -8307,7 +8307,7 @@ Ptr       value;                /* option value */
             This socket option is MUST be set (when this server is opened)
             if the RSVP server wants to intercept raw RSVP packets. */
       case CM_INET_OPT_IP_ROUTER_ALERT:
-         optVal = (U32*)value;
+         optVal = (uint32_t*)value;
          if (*optVal == CM_INET_OPT_ENABLE)
          {   
             ret = setsockopt(sockFd->fd, level, IP_ROUTER_ALERT,
@@ -8359,7 +8359,7 @@ Ptr       value;                /* option value */
 #if (defined(SS_LINUX) && (!defined(SS_VW) && !defined(WIN32)))
 #ifdef LOCAL_INTF
       case CM_INET_OPT_IPV4_PKTINFO:
-         optVal = (U32*)value;
+         optVal = (uint32_t*)value;
          if (*optVal == CM_INET_OPT_ENABLE)
          {   
             /* set IP_PKTINFO option when IP_ROUTER_ALERT is set in linux */
@@ -8385,7 +8385,7 @@ Ptr       value;                /* option value */
 #endif /* SUNOS || WIN32 || SS_PS || SS_VW || HPOS */
 
       case CM_INET_OPT_DONTFRAGMENT:
-         optVal = (U32*)value;
+         optVal = (uint32_t*)value;
          if (*optVal == CM_INET_OPT_ENABLE)
          {
 #ifdef WIN32
@@ -8405,13 +8405,13 @@ Ptr       value;                /* option value */
          /* also add these 2 options for VxWorks */         
 #if (defined(SUNOS)|| defined(WIN32) || defined(HPOS) || defined(SS_VW))
       case CM_INET_OPT_TOS:
-         optVal = (U32*)value;
+         optVal = (uint32_t*)value;
          ret = setsockopt(sockFd->fd, level, IP_TOS,
                (char*)optVal, sizeof(*optVal));
          break;
 
       case CM_INET_OPT_TTL:
-         optVal = (U32*)value;
+         optVal = (uint32_t*)value;
          ret = setsockopt(sockFd->fd, level, IP_TTL,
                (char*)optVal, sizeof(*optVal));
          break;
@@ -8421,7 +8421,7 @@ Ptr       value;                /* option value */
 #if (defined(SUNOS)|| defined(WIN32) || defined(SS_PS) || defined(SS_VW_MCAST) \
       || defined(HPOS))
       case CM_INET_OPT_MCAST_LOOP:
-         optVal = (U32*)value;
+         optVal = (uint32_t*)value;
          if (*optVal == CM_INET_OPT_ENABLE)
          {
 #ifdef SS_VW            
@@ -8445,28 +8445,28 @@ Ptr       value;                /* option value */
          break;
 
       case CM_INET_OPT_MCAST_IF:
-         optVal = (U32*)value;
-         *optVal = CM_INET_HTON_U32((U32)*optVal); 
+         optVal = (uint32_t*)value;
+         *optVal = CM_INET_HTON_UINT32((uint32_t)*optVal); 
          ret = setsockopt(sockFd->fd, level, IP_MULTICAST_IF,
                (char *)optVal, sizeof(struct in_addr));
          break;
 
       case CM_INET_OPT_MCAST_TTL:
-         optVal = (U32*)value;
+         optVal = (uint32_t*)value;
          /* remove CONSTANT in setsockopt for VW */
 #ifdef SS_VW      
          ret = setsockopt(sockFd->fd, level, IP_MULTICAST_TTL,
-               (char *)optVal, sizeof(U8));
+               (char *)optVal, sizeof(uint8_t));
 #else
          ret = setsockopt(sockFd->fd, level, IP_MULTICAST_TTL,
-               (CONSTANT char *)optVal, sizeof(U8));
+               (CONSTANT char *)optVal, sizeof(uint8_t));
 #endif /* SS_VW */         
          break;
 #endif /* SUNOS || WIN32 || SS_PS || SS_VW_MCAST || HPOS */
 
 #ifdef IPV6_SUPPORTED
       case CM_INET_OPT_IPV6_TTL:
-         optVal = (U32*)value;
+         optVal = (uint32_t*)value;
          ret = setsockopt(sockFd->fd, level, IPV6_UNICAST_HOPS,
                (char*)optVal, sizeof(*optVal));
          break;
@@ -8484,7 +8484,7 @@ Ptr       value;                /* option value */
          break;
 
       case CM_INET_OPT_MCAST6_LOOP:  
-         optVal = (U32*)value;
+         optVal = (uint32_t*)value;
          if (*optVal == CM_INET_OPT_ENABLE)
          {
             ret = setsockopt(sockFd->fd, level, IPV6_MULTICAST_LOOP,
@@ -8499,13 +8499,13 @@ Ptr       value;                /* option value */
 
       case CM_INET_OPT_MCAST6_IF:
          ret = setsockopt(sockFd->fd, level, IPV6_MULTICAST_IF,
-               (U32 *)value, sizeof(U32));
+               (uint32_t *)value, sizeof(uint32_t));
          break;
 
       case CM_INET_OPT_MCAST6_HOPS:
-         optVal = (U32*)value;
+         optVal = (uint32_t*)value;
          ret = setsockopt(sockFd->fd, level, IPV6_MULTICAST_HOPS,
-               (char *)optVal, sizeof(U32));
+               (char *)optVal, sizeof(uint32_t));
          break;
 
          /* cm_inet_c_001.main_44 : some operating system doesnt have icmp6_filter. so 
@@ -8524,13 +8524,13 @@ Ptr       value;                /* option value */
          /* added new options */
 #ifdef IPV6_OPTS_SUPPORTED
       case CM_INET_OPT_RECVIPV6_HOPLIM:
-         optVal = (U32*)value;
+         optVal = (uint32_t*)value;
 #ifdef SS_LINUX         
          ret = setsockopt(sockFd->fd, level, IPV6_HOPLIMIT,
-               (char *)optVal, sizeof(U32)); 
+               (char *)optVal, sizeof(uint32_t)); 
 #else
          ret = setsockopt(sockFd->fd, level, IPV6_HOPLIMIT,
-               (char *)optVal, sizeof(U32)); 
+               (char *)optVal, sizeof(uint32_t)); 
          /* enable the reception of IPv6 HopLimit value as ancillary data */
          ret = setsockopt(sockFd->fd, level, IPV6_RECVHOPLIMIT,
                (char*)&enable, sizeof(enable)); 
@@ -8539,35 +8539,35 @@ Ptr       value;                /* option value */
          break;
 
       case CM_INET_OPT_RECVIPV6_HBHOPTS:
-         optVal = (U32*)value;
+         optVal = (uint32_t*)value;
 #ifdef SS_LINUX
          ret = setsockopt(sockFd->fd, level, IPV6_HOPOPTS,
-               (char *)optVal, sizeof(U32));
+               (char *)optVal, sizeof(uint32_t));
 #else
          ret = setsockopt(sockFd->fd, level, IPV6_RECVHOPOPTS,
-               (char *)optVal, sizeof(U32)); 
+               (char *)optVal, sizeof(uint32_t)); 
 #endif /* SS_LINUX */          
          break;
 
       case CM_INET_OPT_RECVIPV6_DSTOPTS:
-         optVal = (U32*)value;
+         optVal = (uint32_t*)value;
 #ifdef SS_LINUX         
          ret = setsockopt(sockFd->fd, level, IPV6_DSTOPTS,
-               (char *)optVal, sizeof(U32));
+               (char *)optVal, sizeof(uint32_t));
 #else         
          ret = setsockopt(sockFd->fd, level, IPV6_RECVDSTOPTS,
-               (char *)optVal, sizeof(U32));
+               (char *)optVal, sizeof(uint32_t));
 #endif /* SS_LINUX */
          break;
 
       case CM_INET_OPT_RECVIPV6_RTHDR:
-         optVal = (U32*)value;
+         optVal = (uint32_t*)value;
 #ifdef SS_LINUX         
          ret = setsockopt(sockFd->fd, level, IPV6_RTHDR,
-               (char *)optVal, sizeof(U32));
+               (char *)optVal, sizeof(uint32_t));
 #else
          ret = setsockopt(sockFd->fd, level, IPV6_RECVRTHDR,
-               (char *)optVal, sizeof(U32));
+               (char *)optVal, sizeof(uint32_t));
 #endif /* SS_LINUX */         
          break;      
 
@@ -8579,7 +8579,7 @@ Ptr       value;                /* option value */
           * type, then it will fail here due to above reason */
 #ifdef SS_LINUX
       case CM_INET_OPT_IP_ROUTER_ALERT6:
-         optVal = (U32*)value;
+         optVal = (uint32_t*)value;
          if(*optVal == CM_INET_OPT_ENABLE)
             ret = setsockopt(sockFd->fd, IPPROTO_IPV6, IPV6_ROUTER_ALERT,
                   (char *)&enable, sizeof(enable));          
@@ -8593,10 +8593,10 @@ Ptr       value;                /* option value */
 
 #ifdef LOCAL_INTF         
       case CM_INET_OPT_IPV6_PKTINFO:
-         optVal = (U32*)value;
+         optVal = (uint32_t*)value;
 #ifdef SS_LINUX         
          ret = setsockopt(sockFd->fd, level, IPV6_PKTINFO,
-               (char *)optVal, sizeof(U32));
+               (char *)optVal, sizeof(uint32_t));
 #else         
          ret = setsockopt(sockFd->fd, level, IPV6_RECVPKTINFO,
                (char *)&enable, sizeof(enable));
@@ -8687,21 +8687,21 @@ Ptr       value;                /* option value */
 
             pAddr6 = (struct sockaddr_in6*)&(setPrim.ssp_addr);
             pAddr6->sin6_family      = AF_INET6;
-            pAddr6->sin6_port        = CM_INET_HTON_U16(pSctpPrimAddr->port);
+            pAddr6->sin6_port        = CM_INET_HTON_UINT16(pSctpPrimAddr->port);
             CM_INET_COPY_IPV6ADDR(&pAddr6->sin6_addr.s6_addr, &pSctpPrimAddr->addr.u.ipv6NetAddr); 
          }
          else 
          {
             pAddr = (struct sockaddr_in*)&(setPrim.ssp_addr);
             pAddr->sin_family      = AF_INET;
-            pAddr->sin_port        = CM_INET_HTON_U16(pSctpPrimAddr->port);
-            pAddr->sin_addr.s_addr = CM_INET_HTON_U32(pSctpPrimAddr->addr.u.ipv4NetAddr);
+            pAddr->sin_port        = CM_INET_HTON_UINT16(pSctpPrimAddr->port);
+            pAddr->sin_addr.s_addr = CM_INET_HTON_UINT32(pSctpPrimAddr->addr.u.ipv4NetAddr);
          }
 #else 
          pAddr = (struct sockaddr_in*)&(setPrim.ssp_addr);
          pAddr->sin_family      = AF_INET;
-         pAddr->sin_port        = CM_INET_HTON_U16(pSctpPrimAddr->port);
-         pAddr->sin_addr.s_addr = CM_INET_HTON_U32(pSctpPrimAddr->addr.u.ipv4NetAddr);
+         pAddr->sin_port        = CM_INET_HTON_UINT16(pSctpPrimAddr->port);
+         pAddr->sin_addr.s_addr = CM_INET_HTON_UINT32(pSctpPrimAddr->addr.u.ipv4NetAddr);
 #endif /* IPV6_SUPPORTED */
 
          setPrim.ssp_assoc_id   = pSctpPrimAddr->assocId;
@@ -8742,21 +8742,21 @@ Ptr       value;                /* option value */
 
                pAddr6 = (struct sockaddr_in6*)&(addrParams.spp_address);
                pAddr6->sin6_family      = AF_INET6;
-               pAddr6->sin6_port        = CM_INET_HTON_U16(pSctpPAddrParams->s.port);
+               pAddr6->sin6_port        = CM_INET_HTON_UINT16(pSctpPAddrParams->s.port);
                CM_INET_COPY_IPV6ADDR(&pAddr6->sin6_addr.s6_addr, &pSctpPAddrParams->s.addr.u.ipv6NetAddr); 
             }
             else 
             {
                pAddr = (struct sockaddr_in*)&(addrParams.spp_address);
                pAddr->sin_family      = AF_INET;
-               pAddr->sin_port        = CM_INET_HTON_U16(pSctpPAddrParams->s.port);
-               pAddr->sin_addr.s_addr = CM_INET_HTON_U32(pSctpPAddrParams->s.addr.u.ipv4NetAddr);
+               pAddr->sin_port        = CM_INET_HTON_UINT16(pSctpPAddrParams->s.port);
+               pAddr->sin_addr.s_addr = CM_INET_HTON_UINT32(pSctpPAddrParams->s.addr.u.ipv4NetAddr);
             }
 #else 
             pAddr = (struct sockaddr_in*)&(addrParams.spp_address);
             pAddr->sin_family      = AF_INET;
-            pAddr->sin_port        = CM_INET_HTON_U16(pSctpPAddrParams->s.port);
-            pAddr->sin_addr.s_addr = CM_INET_HTON_U32(pSctpPAddrParams->s.addr.u.ipv4NetAddr);
+            pAddr->sin_port        = CM_INET_HTON_UINT16(pSctpPAddrParams->s.port);
+            pAddr->sin_addr.s_addr = CM_INET_HTON_UINT32(pSctpPAddrParams->s.addr.u.ipv4NetAddr);
 #endif /* IPV6_SUPPORTED */
          }
          else
@@ -8775,7 +8775,7 @@ Ptr       value;                /* option value */
 
          addrParams.spp_assoc_id   = pSctpPAddrParams->assocId;
          /*cm_inet_c_001.main_58  : fix for klockwork issue */
-         addrParams.spp_pathmaxrxt = (U16)pSctpPAddrParams->pathMaxRxt;
+         addrParams.spp_pathmaxrxt = (uint16_t)pSctpPAddrParams->pathMaxRxt;
 #ifdef SUN_KSCTP
          if (pSctpPAddrParams->hbEnblFlag == CM_INET_OPT_ENABLE)
             addrParams.spp_hbinterval = pSctpPAddrParams->hbInterval;
@@ -8861,7 +8861,7 @@ Ptr       value;                /* option value */
 #ifdef SS_LINUX
 #ifdef CM_ICMP_FILTER_SUPPORT
       case CM_INET_OPT_ICMP_FILTER:
-         optVal = (U32*)value;
+         optVal = (uint32_t*)value;
          ret = setsockopt(sockFd->fd, level, ICMP_FILTER,
                optVal, sizeof(icmpFilter));
          break;
@@ -8916,13 +8916,13 @@ Ptr       value;                /* option value */
 S16 cmInetGetNumRead
 (
 CmInetFd *sockFd,               /* socket file descriptor */
-U32      *dataLen               /* number of pending octets */
+uint32_t      *dataLen               /* number of pending octets */
 /* removed 3rd argument memInfo */
 )
 #else
 S16 cmInetGetNumRead(sockFd, dataLen)
 CmInetFd *sockFd;               /* socket file descriptor */
-U32      *dataLen;              /* number of pending octets */
+uint32_t      *dataLen;              /* number of pending octets */
 /* removed 3rd argument memInfo */
 #endif
 {
@@ -8944,7 +8944,7 @@ U32      *dataLen;              /* number of pending octets */
       pending data in the socket recv buffer */
 #ifdef WIN32
    /* cm_inet_c_001.main_59: Fix for compilation warning */
-   ret = ioctlsocket(sockFd->fd, FIONREAD, (U32 *)dataLen);  
+   ret = ioctlsocket(sockFd->fd, FIONREAD, (uint32_t *)dataLen);  
 #else 
 #ifdef SS_PS
    ret = ioctl(sockFd->fd, FIOREAD, (char*)dataLen);
@@ -9055,7 +9055,7 @@ CmInetIpAddrTbl *addrTbl;          /* Address Table of IPV4 Addresses */
 #endif
 {
 #ifndef SS_VW
-   U8            numAddrs;       /* Number of Addresses */
+   uint8_t            numAddrs;       /* Number of Addresses */
 #endif /* SS_VW */
 
 #if (defined(WIN32) || defined(SS_LINUX) || defined(HPOS))
@@ -9115,7 +9115,7 @@ CmInetIpAddrTbl *addrTbl;          /* Address Table of IPV4 Addresses */
             (hostid->h_addr_list[numAddrs] != NULLP))
       {
          addrTbl->netAddr[addrTbl->count++] = 
-            CM_INET_NTOH_U32 (*((U32 *) hostid->h_addr_list[numAddrs]));
+            CM_INET_NTOH_UINT32 (*((uint32_t *) hostid->h_addr_list[numAddrs]));
          numAddrs += 1;
       }
    }
@@ -9162,7 +9162,7 @@ CmInetIpAddrTbl *addrTbl;          /* Address Table of IPV4 Addresses */
             (hostid.h_addr_list[numAddrs] != NULLP))
       {
          addrTbl->netAddr[addrTbl->count++] = 
-            CM_INET_NTOH_U32 (*((U32 *) hostid.h_addr_list[numAddrs]));
+            CM_INET_NTOH_UINT32 (*((uint32_t *) hostid.h_addr_list[numAddrs]));
          numAddrs += 1;
       }
    }
@@ -9218,7 +9218,7 @@ CmInetIpAddrArr *addrArr;          /* Array of addressed filled in */
 #else   
 #ifdef SUNOS
 #ifndef SS_LINUX
-   U8     numAddrs=0;              /* Number of addresses */
+   uint8_t     numAddrs=0;              /* Number of addresses */
    int    err=0;                   /* error code */
    struct hostent *hostid;       /* host information */
 #endif /* SS_LINUX */
@@ -9296,7 +9296,7 @@ CmInetIpAddrArr *addrArr;          /* Array of addressed filled in */
          {
             addrArr->u.ipv4AddrArr.count ++;
             addrArr->u.ipv4AddrArr.netAddr[numAddrs] =
-               CM_INET_NTOH_U32 (*((U32 *) hostid->h_addr_list[numAddrs]));
+               CM_INET_NTOH_UINT32 (*((uint32_t *) hostid->h_addr_list[numAddrs]));
             numAddrs += 1;
          }
       }
@@ -9330,7 +9330,7 @@ CmInetIpAddrArr *addrArr;          /* Array of addressed filled in */
 *      Fun:   cmInetAddr
 *
 *      Desc:  Converts an ASCII string containig an internet address
-*             ("xxx.xxx.xxx.xxx") into a CmInetIpAddr (U32) format.
+*             ("xxx.xxx.xxx.xxx") into a CmInetIpAddr (uint32_t) format.
 *             This function is a wrapper for the inet_addr() call.
 *
 *      Ret:   ROK     - successful
@@ -9363,7 +9363,7 @@ CmInetIpAddr *address;          /* 4 byte interent address */
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
    *address = inet_addr(asciiAddr);
-   if (*address == (U32)ERR_INADDRNONE)
+   if (*address == (uint32_t)ERR_INADDRNONE)
    {
       /* asciiAddr does not contain a valid internet address */ 
       return RFAILED;
@@ -9444,17 +9444,17 @@ S8           **asciiAddr;       /* ascii address representation */
 
 #ifdef ANSI
 S16 cmInetNtop(
-U8             type,              /* ip address type */
+uint8_t             type,              /* ip address type */
 Void           *address,         /* 4/16 byte interent address */
 S8             *asciiAddr,      /* ascii adress representation */
-U32            len
+uint32_t            len
 )
 #else
 S16 cmInetNtop(type,address, asciiAddr,len)
-U8             type;              /* ip address type */  
+uint8_t             type;              /* ip address type */  
 Void           *address;         /* 4/16 byte interent address */
 S8             *asciiAddr;      /* ascii adress representation */
-U32            len;
+uint32_t            len;
 #endif
 {
                              
@@ -9573,7 +9573,7 @@ S8            *asciiAddr;       /* ascii address representation */
 
 #ifdef WIN32
    struct sockaddr_storage ss;
-   U32    sslen = sizeof(ss);
+   uint32_t    sslen = sizeof(ss);
 #endif /* WIN32 */
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -9663,7 +9663,7 @@ S16 cmInetInit(Void)
 #endif
 {
 #ifdef WIN32
-   U16     version;
+   uint16_t     version;
    S32     err;
    WSADATA data;
 
@@ -9759,7 +9759,7 @@ CmInetAddr *locAddr;
 #ifdef UNIX
    socklen_t size;
 #else
-   U32  size;
+   uint32_t  size;
 #endif /* SS_LINUX */
    S32  errCode;
    /*cm_inet_c_001.main_58  : fix for klockwork issue */
@@ -9793,9 +9793,9 @@ CmInetAddr *locAddr;
             sockAddr = (struct sockaddr_in *)&lclSockAddr;
 #ifdef IPV6_SUPPORTED
             locAddr->type = CM_INET_IPV4ADDR_TYPE;
-            locAddr->u.ipv4Addr.port = CM_INET_NTOH_U16(sockAddr->sin_port);
+            locAddr->u.ipv4Addr.port = CM_INET_NTOH_UINT16(sockAddr->sin_port);
 #else
-            locAddr->port = CM_INET_NTOH_U16(sockAddr->sin_port);
+            locAddr->port = CM_INET_NTOH_UINT16(sockAddr->sin_port);
 #endif /* IPV6_SUPPORTED */
             return ROK;
 
@@ -9826,7 +9826,7 @@ CmInetAddr *locAddr;
    {
       sockAddr6 = (struct sockaddr_in6 *)&lclSockAddr;
       locAddr->type = CM_INET_IPV6ADDR_TYPE;
-      locAddr->u.ipv6Addr.port = CM_INET_NTOH_U16(sockAddr6->sin6_port);
+      locAddr->u.ipv6Addr.port = CM_INET_NTOH_UINT16(sockAddr6->sin6_port);
       CM_INET_COPY_IPV6ADDR(&locAddr->u.ipv6Addr.ipv6NetAddr, 
             &sockAddr6->sin6_addr);
    }
@@ -9834,14 +9834,14 @@ CmInetAddr *locAddr;
    {
       sockAddr = (struct sockaddr_in *)&lclSockAddr;
       locAddr->type = CM_INET_IPV4ADDR_TYPE;
-      locAddr->u.ipv4Addr.port = CM_INET_NTOH_U16(sockAddr->sin_port);
+      locAddr->u.ipv4Addr.port = CM_INET_NTOH_UINT16(sockAddr->sin_port);
       locAddr->u.ipv4Addr.address = 
-         CM_INET_NTOH_U32(sockAddr->sin_addr.s_addr);
+         CM_INET_NTOH_UINT32(sockAddr->sin_addr.s_addr);
    }
 #else
    sockAddr = (struct sockaddr_in *)&lclSockAddr;
-   locAddr->port    = CM_INET_NTOH_U16(sockAddr->sin_port);
-   locAddr->address = CM_INET_NTOH_U32(sockAddr->sin_addr.s_addr);
+   locAddr->port    = CM_INET_NTOH_UINT16(sockAddr->sin_port);
+   locAddr->address = CM_INET_NTOH_UINT32(sockAddr->sin_addr.s_addr);
 #endif /* IPV6_SUPPORTED */
    return ROK;
 }/* end of cmInetGetSockName() */
@@ -9879,9 +9879,9 @@ CmInetFdSetInfo *fdSetInfo;
 #endif
 {
 #if (defined(SUNOS) || defined(SS_LINUX) || defined(SS_VW) || defined(HPOS))
-   U16   arIdx;
-   U8    curByte;
-   U8    bitPos;
+   uint16_t   arIdx;
+   uint8_t    curByte;
+   uint8_t    bitPos;
    CmInetFdSet *fdSet;
 #endif /* SUNOS || SS_LINUX || SS_VW */
 
@@ -9900,7 +9900,7 @@ CmInetFdSetInfo *fdSetInfo;
 #if (defined(SUNOS) || defined(SS_LINUX) || defined(SS_VW)|| defined(HPOS))
    /* Check if we are on a big endian machine */
    arIdx = 0x01;
-   if (*(U8 *)&arIdx)
+   if (*(uint8_t *)&arIdx)
       fdSetInfo->bigEndian = FALSE;
    else
       fdSetInfo->bigEndian = TRUE;
@@ -9915,7 +9915,7 @@ CmInetFdSetInfo *fdSetInfo;
    for (arIdx = 1; arIdx < 256; arIdx++)
    {
       /* cm_inet_c_001.main_54: Fix for Klockworks issue */
-      curByte = (U8)arIdx;
+      curByte = (uint8_t)arIdx;
       bitPos = 0;
 
       while(bitPos < 8)
@@ -9979,12 +9979,12 @@ CmInetFdType    *sockFd;
 {
   /*cm_inet_c_001.main_58 : Fix for klockwork issue */
 #if (!defined (WIN32))
-   U32 sizOfFdSetArElem;  
-   U8 bytesScanned;
+   uint32_t sizOfFdSetArElem;  
+   uint8_t bytesScanned;
    Bool found;
-   U32 curIdx;
-   U8 *tempByte;
-   U8 bitPos;
+   uint32_t curIdx;
+   uint8_t *tempByte;
+   uint8_t bitPos;
 #endif /* !defined (WIN32) */
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -10033,9 +10033,9 @@ CmInetFdType    *sockFd;
          {
             /* Walk through the bytes in this element */
 #if (defined(SS_LINUX)  &&  !defined(_GNU_SOURCE))
-            tempByte = (U8 *)&fdSet->__fds_bits[curIdx];
+            tempByte = (uint8_t *)&fdSet->__fds_bits[curIdx];
 #else
-            tempByte = (U8 *)&fdSet->fds_bits[curIdx];
+            tempByte = (uint8_t *)&fdSet->fds_bits[curIdx];
 #endif /* SS_LINUX */
 
             /* Set the starting byte offset */
@@ -10049,7 +10049,7 @@ CmInetFdType    *sockFd;
                {
                   bitPos = fdSetInfo->ar[*tempByte];
                   /* cm_inet_c_001.main_54: Fix for Klockworks issue */
-                  fdSetInfo->arIdx = (U16)curIdx;
+                  fdSetInfo->arIdx = (uint16_t)curIdx;
                   /* Calculate fd depending on where we are */
                   *sockFd = ((bytesScanned << 3) + bitPos);
                   *sockFd += (curIdx  * (sizOfFdSetArElem << 3));
@@ -10103,29 +10103,29 @@ CmInetFdType    *sockFd;
 #ifdef ANSI
 S16 cmInetConvertStrToIpAddr
 (
-U16                len,                /* Length of IP address */
-U8                 *val,               /* Domain Name String */
+uint16_t                len,                /* Length of IP address */
+uint8_t                 *val,               /* Domain Name String */
 CmInetNetAddr      *address            /* IP Address */
 )
 #else
 S16 cmInetConvertStrToIpAddr(len, val, address)
-U16                len;                /* Length of IP address */
-U8                 *val;               /* Domain Name String */
+uint16_t                len;                /* Length of IP address */
+uint8_t                 *val;               /* Domain Name String */
 CmInetNetAddr      *address;           /* IP Address */
 #endif
 {
-   U8              idx;                /* Index for string*/
-   U8              ipv4[CM_INET_IPV4ADDR_SIZE]; /* IPV4 Address bytes */
+   uint8_t              idx;                /* Index for string*/
+   uint8_t              ipv4[CM_INET_IPV4ADDR_SIZE]; /* IPV4 Address bytes */
 #ifdef IPV6_SUPPORTED
-   U16             *ipv6;                 /* IPV6 Address bytes */
-   U16             ipv6Reg[8];           /* regular IPV6 Address bytes */
-   U16             ipv6Cmp[8];           /* compressed IPV6 Address bytes */
-   U8              numBlk;               /* number of blocks in IPV6 addr */
+   uint16_t             *ipv6;                 /* IPV6 Address bytes */
+   uint16_t             ipv6Reg[8];           /* regular IPV6 Address bytes */
+   uint16_t             ipv6Cmp[8];           /* compressed IPV6 Address bytes */
+   uint8_t              numBlk;               /* number of blocks in IPV6 addr */
    Bool            compressed;           /* IPV6 in compressed format */
-   U8              ipv6Idx;              /* counter for IPV6 */
-   U8              blkBeginIdx;          /* IPV6, char index for the 
+   uint8_t              ipv6Idx;              /* counter for IPV6 */
+   uint8_t              blkBeginIdx;          /* IPV6, char index for the 
                                             beginning of the block */
-   U8              i;                    /* counter for IPV6 */
+   uint8_t              i;                    /* counter for IPV6 */
    S16             retVal;               /* return value */
    Bool            embedIPV4 = FALSE;    /* IPV4 embedded in IPV6 ? */
 #endif /* IPV6_SUPPORTED*/
@@ -10181,7 +10181,7 @@ CmInetNetAddr      *address;           /* IP Address */
    if (val[idx] == '.')
    {
       idx++;
-      cmInetAsciiToIpv4(3, &(ipv4[1]), (U16)(len - idx), &(val[idx]));
+      cmInetAsciiToIpv4(3, &(ipv4[1]), (uint16_t)(len - idx), &(val[idx]));
 
       address->type = CM_INET_IPV4ADDR_TYPE;
       CM_INET_GET_IPV4_ADDR_FRM_STRING(address->u.ipv4NetAddr, ipv4);
@@ -10271,10 +10271,10 @@ CmInetNetAddr      *address;           /* IP Address */
             numBlk = 7; /* copy from the last block */
          } /* else, no embedded IPV4 */
 
-         /* type cast U8 over -1 becasue we want to copy the last block,
+         /* type cast uint8_t over -1 becasue we want to copy the last block,
             ipv6Cmp[0]
             */
-         for (i = ipv6Idx; i != (U8) (-1); i --)
+         for (i = ipv6Idx; i != (uint8_t) (-1); i --)
          {
             ipv6Reg[numBlk] = ipv6Cmp[i];
             numBlk--;
@@ -10325,21 +10325,21 @@ CmInetNetAddr      *address;           /* IP Address */
 #ifdef ANSI 
 S16  cmInetAsciiToIpv4
 (
-U8                 numBytes,           /* number of Byte to convert */
-U8                 *ipv4Addr,          /* IPV4 Address */
-U16                len,                /* Length of IP address */
-U8                 *val                /* Domain Name String */
+uint8_t                 numBytes,           /* number of Byte to convert */
+uint8_t                 *ipv4Addr,          /* IPV4 Address */
+uint16_t                len,                /* Length of IP address */
+uint8_t                 *val                /* Domain Name String */
 )
 #else
 S16 cmInetAsciiToIpv4(numBytes, ipv4Addr, len, val)
-U8                 numBytes;           /* number of Byte to convert */
-U8                 *ipv4Addr;          /* IPV4 Address */
-U16                len;                /* Length of IP address */
-U8                 *val;               /* Domain Name String */
+uint8_t                 numBytes;           /* number of Byte to convert */
+uint8_t                 *ipv4Addr;          /* IPV4 Address */
+uint16_t                len;                /* Length of IP address */
+uint8_t                 *val;               /* Domain Name String */
 #endif
 {
-   U8              byteCount;          /* Byte Count */
-   U8              idx;                /* Index for string*/
+   uint8_t              byteCount;          /* Byte Count */
+   uint8_t              idx;                /* Index for string*/
 
 
       idx = 0;
@@ -10463,7 +10463,7 @@ CmInetAddrInfo           *res;          /* Link list of addrInfo structure */
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* error check on parameters */
    if (res == NULLP) 
-      RETVOID;   
+      return;   
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
    freeaddrinfo(res); 
@@ -10512,10 +10512,10 @@ S32              flags;         /* additional control flags */
 
 #if (defined(WIN32) || defined(CMINETFLATBUF))
    S32           ret;            /* temporary return value */
-   U32           pendLen;        /* pending data length */
+   uint32_t           pendLen;        /* pending data length */
    S32           recvLen;        /* number of received octets by recvmsg() */
    MsgLen        curLen;         /* current number of octets in buffer */ 
-   U32           remAddrLen;     /* length of remote address */
+   uint32_t           remAddrLen;     /* length of remote address */
    struct sockaddr_in  *remAddr;    /* remote Internet address */       
 #ifdef IPV6_SUPPORTED 
    struct sockaddr_in6 remSockAddr; /* to get packet's source IP address */
@@ -10525,30 +10525,30 @@ S32              flags;         /* additional control flags */
 #else
    S32           ret;            /* temporary return value */
    MsgLen        curLen;         /* current number of octets in buffer */ 
-   U32           pendLen;        /* pending data length */
+   uint32_t           pendLen;        /* pending data length */
    S32           recvLen;        /* number of received octets by recvmsg() */
    struct msghdr msg;            /* message header */ 
    CmInetIovec  rxArr[CM_INET_MAX_DBUF]; /* dynamic gather array */
-   U32           remAddrLen;     /* length of remote address */
+   uint32_t           remAddrLen;     /* length of remote address */
 #ifdef IPV6_SUPPORTED 
    struct sockaddr_in6 remSockAddr;/* to get packet's source IP address */
 
 #if (defined(SS_LINUX) || defined(_XPG4_2))
-   U8                   ancillData[CM_INET_IPV6_ANCIL_DATA];
+   uint8_t                   ancillData[CM_INET_IPV6_ANCIL_DATA];
    /* from stack for IPv6 ancill data */
 #endif
 #else
    CmInetSockAddr       remSockAddr;     /* to get packet's src IP address */
 #if (defined(SS_LINUX) || defined(_XPG4_2))
-   U8                   ancillData[CM_INET_IPV4_ANCIL_DATA];
+   uint8_t                   ancillData[CM_INET_IPV4_ANCIL_DATA];
    /* from stack for IPv4 ancill data */
 #endif
 #endif /* IPV6_SUPPORTED */
 #endif /* WIN32 | CMINETFLATBUF */
 
    /* used by getsockopt */
-   U32          errValue;                /* error value */
-   U32          optLen;                  /* option length */
+   uint32_t          errValue;                /* error value */
+   uint32_t          optLen;                  /* option length */
 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -10630,7 +10630,7 @@ S32              flags;         /* additional control flags */
          }
          else
          {
-            U8 tempBuf;
+            uint8_t tempBuf;
             /* added separate recvfrom calls different OS */
 #if( defined(SS_VW) || defined(HPOS) || defined(SS_PS))
             recvLen = recvfrom(sockFd->fd, (S8 *)&tempBuf, pendLen, 0, 
@@ -10754,7 +10754,7 @@ S32              flags;         /* additional control flags */
       /* update the message structure */
 #ifdef SS_LINUX
       rxArr[0].iov_base = (Void*)recvTempBuf;  
-      rxArr[0].iov_len = (U32)curLen;    
+      rxArr[0].iov_len = (uint32_t)curLen;    
 #else
       rxArr[0].iov_base = (S8*)recvTempBuf;
       rxArr[0].iov_len = curLen; 

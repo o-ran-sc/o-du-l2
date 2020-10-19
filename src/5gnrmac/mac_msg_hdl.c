@@ -146,7 +146,7 @@ uint8_t fapiMacCrcInd(Pst *pst, CrcInd *crcInd)
    DU_LOG("\nMAC : Received CRC indication");
    GET_CELL_IDX(crcInd->cellId, cellIdx);
    /* Considering one pdu and one preamble */ 
-   crcIndInfo.cellId = macCb.macCell[cellIdx]->cellId;;
+   crcIndInfo.cellId = macCb.macCell[cellIdx]->cellId;
    crcIndInfo.crnti = crcInd->crcInfo[0].rnti;
    crcIndInfo.timingInfo.sfn = crcInd->timingInfo.sfn;
    crcIndInfo.timingInfo.slot = crcInd->timingInfo.slot;
@@ -206,9 +206,9 @@ uint8_t fapiMacRxDataInd(Pst *pst, RxDataInd *rxDataInd)
  * ****************************************************************/
 uint8_t MacProcRlcDlData(Pst* pstInfo, RlcData *dlData)
 {
-   uint8_t pduIdx;
-   uint8_t  *txPdu;
-   uint16_t tbSize;
+   uint8_t   pduIdx;
+   uint8_t   *txPdu;
+   uint16_t  tbSize;
    MacDlData macDlData;
    MacDlSlot *currDlSlot = NULLP;
 
@@ -281,7 +281,7 @@ uint8_t macProcUlData(uint16_t cellId, uint16_t rnti, SlotIndInfo slotInfo, \
 uint8_t lcId, uint16_t pduLen, uint8_t *pdu)
 {
    Pst         pst;
-   RlcData  *ulData;
+   RlcData     *ulData;
 
    /* Filling RLC Ul Data*/
    MAC_ALLOC_SHRABL_BUF(ulData, sizeof(RlcData));
@@ -482,9 +482,9 @@ uint8_t MacProcCellStopReq(Pst *pst, MacCellStopInfo  *cellStopInfo)
  * ****************************************************************/
 uint8_t MacProcDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo)
 {
-   uint8_t  ueIdx = 0;
-   uint16_t cellIdx;
-   uint16_t idx;
+   uint8_t      ueIdx = 0;
+   uint16_t     cellIdx;
+   uint16_t     idx;
    DlRlcBoInfo  dlBoInfo;
    memset(&dlBoInfo, 0, sizeof(DlRlcBoInfo));
 
@@ -638,7 +638,7 @@ uint8_t buildAndSendSrInd(UciInd *macUciInd, uint8_t crnti)
    memset(&srUciInd, 0, sizeof(SrUciIndInfo));
 
    GET_CELL_IDX(macUciInd->cellId, cellIdx);
-   srUciInd.cellId       = macCb.macCell[cellIdx]->cellId;;
+   srUciInd.cellId       = macCb.macCell[cellIdx]->cellId;
    srUciInd.crnti        = crnti;
    srUciInd.slotInd.sfn  = macUciInd->slotInd.sfn;
    srUciInd.slotInd.slot = macUciInd->slotInd.slot;

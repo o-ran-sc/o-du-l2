@@ -54,7 +54,7 @@ typedef enum
 
 typedef struct wlsBlockToFree
 {
-   void *ptr;
+   void     *ptr;
    uint32_t size;
 }WlsBlockToFree;
 

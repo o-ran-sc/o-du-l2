@@ -45,123 +45,123 @@ extern "C" {
 
 typedef struct tsInfL2CellStats
 {
-   U32   cellId;
+   uint32_t   cellId;
    struct schCellStats{ 
-      U32   msg4Fail;
-      U32   msg3Fail;
-      U32   dlSumCw0Cqi;
-      U32   dlNumCw0Cqi;
-      U32   dlSumCw1Cqi;
-      U32   dlNumCw1Cqi;
-      U32   dlSumCw0iTbs;
-      U32   dlNumCw0iTbs;
-      U32   dlSumCw1iTbs;
-      U32   dlNumCw1iTbs;
-      U32   riCnt[4]; /* Rank = 1..4 */
-      U32   dlNack[2][4];
-      U32   dlAckNack[2][4]; /* [CW_CNT][RV_CNT] */
-      U32   dlDtx[2][4];
-      U32   ulNack[4];
-      U32   ulAckNack[4];    /* [RV_CNT] */
-      U32   ulDtx[4];
-      U32   dlPrbUsage[10]; /* dlPrbUsage[0] to have overall PRB usage */
-      U32   ulPrbUsage[10]; /* dlPrbUsage[0] to have overall PRB usage */
-      U32   dlPdbRatio[10];
-      U32   avgTtiProcTime; /* In us */
-      U32   cntTtiProcTime1000; /* Count of instances where TTI proc time was
+      uint32_t   msg4Fail;
+      uint32_t   msg3Fail;
+      uint32_t   dlSumCw0Cqi;
+      uint32_t   dlNumCw0Cqi;
+      uint32_t   dlSumCw1Cqi;
+      uint32_t   dlNumCw1Cqi;
+      uint32_t   dlSumCw0iTbs;
+      uint32_t   dlNumCw0iTbs;
+      uint32_t   dlSumCw1iTbs;
+      uint32_t   dlNumCw1iTbs;
+      uint32_t   riCnt[4]; /* Rank = 1..4 */
+      uint32_t   dlNack[2][4];
+      uint32_t   dlAckNack[2][4]; /* [CW_CNT][RV_CNT] */
+      uint32_t   dlDtx[2][4];
+      uint32_t   ulNack[4];
+      uint32_t   ulAckNack[4];    /* [RV_CNT] */
+      uint32_t   ulDtx[4];
+      uint32_t   dlPrbUsage[10]; /* dlPrbUsage[0] to have overall PRB usage */
+      uint32_t   ulPrbUsage[10]; /* dlPrbUsage[0] to have overall PRB usage */
+      uint32_t   dlPdbRatio[10];
+      uint32_t   avgTtiProcTime; /* In us */
+      uint32_t   cntTtiProcTime1000; /* Count of instances where TTI proc time was
       greater than 1000us */
-      U32   cntTtiProcTime900; /* Count of instances where TTI proc time was
+      uint32_t   cntTtiProcTime900; /* Count of instances where TTI proc time was
       greater than 900us and less than 1000us */
-      U32   cntTtiProcTime800;
-      U32   cntTtiProcTime700;
-      U32   cntTtiProcTime600;
-      U32   cntTtiProcTime500;
+      uint32_t   cntTtiProcTime800;
+      uint32_t   cntTtiProcTime700;
+      uint32_t   cntTtiProcTime600;
+      uint32_t   cntTtiProcTime500;
 #ifdef RG_5GTF
-      U32   dl5gtfUePick;
-      U32   dl5gtfRbAllocPass;
-      U32   dl5gtfRbAllocFail;
-      U32   dl5gtfFnlzPass;
-      U32   dl5gtfFnlzFail;
-      U32   dl5gtfBoUpd;
-      U32   dl5gtfPdcchSend;
-      U32   dl5gtfPdschCons;
+      uint32_t   dl5gtfUePick;
+      uint32_t   dl5gtfRbAllocPass;
+      uint32_t   dl5gtfRbAllocFail;
+      uint32_t   dl5gtfFnlzPass;
+      uint32_t   dl5gtfFnlzFail;
+      uint32_t   dl5gtfBoUpd;
+      uint32_t   dl5gtfPdcchSend;
+      uint32_t   dl5gtfPdschCons;
 
-      U32   ul5gtfSrRecv;
-      U32   ul5gtfBsrRecv;
-      U32   ul5gtfUeSchPick;
-      U32   ul5gtfPdcchSchd;
-      U32   ul5gtfAllocAllocated;
-      U32   ul5gtfUeRbAllocDone;
-      U32   ul5gtfUeRmvFnlzZeroBo;
-      U32   ul5gtfUeFnlzReAdd;
-      U32   ul5gtfPdcchSend;
-      U32   ul5gtfRbAllocFail;
+      uint32_t   ul5gtfSrRecv;
+      uint32_t   ul5gtfBsrRecv;
+      uint32_t   ul5gtfUeSchPick;
+      uint32_t   ul5gtfPdcchSchd;
+      uint32_t   ul5gtfAllocAllocated;
+      uint32_t   ul5gtfUeRbAllocDone;
+      uint32_t   ul5gtfUeRmvFnlzZeroBo;
+      uint32_t   ul5gtfUeFnlzReAdd;
+      uint32_t   ul5gtfPdcchSend;
+      uint32_t   ul5gtfRbAllocFail;
 #endif
-      U32   ulSumCqi;
-      U32   ulNumCqi;
-      U32   ulSumiTbs;
-      U32   ulNumiTbs;
-      U32   dlTtlTpt;
-      U32   ulTtlTpt;
+      uint32_t   ulSumCqi;
+      uint32_t   ulNumCqi;
+      uint32_t   ulSumiTbs;
+      uint32_t   ulNumiTbs;
+      uint32_t   dlTtlTpt;
+      uint32_t   ulTtlTpt;
    }sch;
    struct rlcCellStats{ 
-      U32   maxRlcSrbRetxFail;
-      U32   maxRlcDrbRetxFail;
-      U32   reOdrTmrExp;
+      uint32_t   maxRlcSrbRetxFail;
+      uint32_t   maxRlcDrbRetxFail;
+      uint32_t   reOdrTmrExp;
    }rlc;
 }TSInfL2CellStats;
 
 typedef struct tsInfL2UeStats
 {
-   U32 rnti;
+   uint32_t rnti;
    struct nonPersistentUeStats{
       struct schUeStats{
-         U32 dlTxOccns;
-         U32 dlRetxOccns;
-         U32 dlPrbUsg;
-         U32 dlNackCnt[2]; /* [CW_CNT] */
-         U32 dlAckNackCnt[2]; /* [CW_CNT] */
-         U32 dlDtxCnt[2]; /* [CW_CNT] */
-         U32 dlSumCw0Cqi;
-         U32 dlNumCw0Cqi;
-         U32 dlSumCw1Cqi;
-         U32 dlNumCw1Cqi;
-         U32 dlSumCw0iTbs;
-         U32 dlNumCw0iTbs;
-         U32 dlSumCw1iTbs;
-         U32 dlNumCw1iTbs;
-         U32 cqiDropCnt;
-         U32 dlPdbLvl[5]; /* PDB Levels */ 
-         U32 riCnt[4]; /* Rank = 1..4 */
-         U32 dlBo;
-         U32 dlTpt;
-         U32 ulTxOccns;
-         U32 ulRetxOccns;
-         U32 ulPrbUsg;
-         U32 ulAckNackCnt;
-         U32 ulNackCnt;
-         U32 ulDtxCnt;
-         U32 ulSumCqi;
-         U32 ulNumCqi;
-         U32 ulSumiTbs;
-         U32 ulNumiTbs;
-         U32 ulTpt;
+         uint32_t dlTxOccns;
+         uint32_t dlRetxOccns;
+         uint32_t dlPrbUsg;
+         uint32_t dlNackCnt[2]; /* [CW_CNT] */
+         uint32_t dlAckNackCnt[2]; /* [CW_CNT] */
+         uint32_t dlDtxCnt[2]; /* [CW_CNT] */
+         uint32_t dlSumCw0Cqi;
+         uint32_t dlNumCw0Cqi;
+         uint32_t dlSumCw1Cqi;
+         uint32_t dlNumCw1Cqi;
+         uint32_t dlSumCw0iTbs;
+         uint32_t dlNumCw0iTbs;
+         uint32_t dlSumCw1iTbs;
+         uint32_t dlNumCw1iTbs;
+         uint32_t cqiDropCnt;
+         uint32_t dlPdbLvl[5]; /* PDB Levels */ 
+         uint32_t riCnt[4]; /* Rank = 1..4 */
+         uint32_t dlBo;
+         uint32_t dlTpt;
+         uint32_t ulTxOccns;
+         uint32_t ulRetxOccns;
+         uint32_t ulPrbUsg;
+         uint32_t ulAckNackCnt;
+         uint32_t ulNackCnt;
+         uint32_t ulDtxCnt;
+         uint32_t ulSumCqi;
+         uint32_t ulNumCqi;
+         uint32_t ulSumiTbs;
+         uint32_t ulNumiTbs;
+         uint32_t ulTpt;
       }sch[L2_STATS_MAX_CELLS];
       struct pdcpUeStats{
-         U32 dlPdcpDropCnt;
-         U32 dlPdcpAckWaitDropCnt;
-         U32 dlFlowCtrlDropCnt;
+         uint32_t dlPdcpDropCnt;
+         uint32_t dlPdcpAckWaitDropCnt;
+         uint32_t dlFlowCtrlDropCnt;
       }pdcp;
       struct rlcUeStats{
-         U32 ulReOdrTmrExpCnt;
-         U32 dlMaxPktsInSduQ;
-         U32 dlMaxWindowSz;
+         uint32_t ulReOdrTmrExpCnt;
+         uint32_t dlMaxPktsInSduQ;
+         uint32_t dlMaxWindowSz;
       }rlc;
    }nonPersistent;
    struct persistentUeStats{
-      U32 activatedSCells;
-      U32 numActivation;
-      U32 numDeactivation;
+      uint32_t activatedSCells;
+      uint32_t numActivation;
+      uint32_t numDeactivation;
    }persistent;
 }TSInfL2UeStats;
 
@@ -171,13 +171,13 @@ typedef struct tsInfStatsCb
    Bool sockSend;
    Bool fileSend;
    Bool consPrint;
-   U32  statsPer;
-   U32  sockPort;
+   uint32_t  statsPer;
+   uint32_t  sockPort;
    Bool startSockSend;
-   U8   cmdForFileStats;
+   uint8_t   cmdForFileStats;
    char fileName[100];
    FILE *fptr;
-   U32  enbIp;
+   uint32_t  enbIp;
 }TSInfStatsCb;
 
 typedef Void (*TSInfL2UeStatsInd) ARGS((

@@ -274,9 +274,9 @@ PRIVATE Void dumpRLCUlRbInformation(RlcUlRbCb* ulRbCb)
 {
    if(ulRbCb->mode == CM_LTE_MODE_UM)
    {
-      U32 i;
-      U32 pdusInReceptionBuffer = 0;
-      U32 windSz  = ulRbCb->m.umUl.umWinSz << 1;
+      uint32_t i;
+      uint32_t pdusInReceptionBuffer = 0;
+      uint32_t windSz  = ulRbCb->m.umUl.umWinSz << 1;
 
       for(i = 0; i< windSz; i++)
       {
@@ -294,10 +294,10 @@ PRIVATE Void dumpRLCUlRbInformation(RlcUlRbCb* ulRbCb)
    }
    else if(ulRbCb->mode == CM_LTE_MODE_AM)
    {
-      U32 i;
-      U32 pdusInReceptionBuffer = 0;
-      U32 totalSegs = 0;
-      U32 windSz  = RLC_AM_GET_WIN_SZ(ulRbCb->m.amUl.snLen) << 1;
+      uint32_t i;
+      uint32_t pdusInReceptionBuffer = 0;
+      uint32_t totalSegs = 0;
+      uint32_t windSz  = RLC_AM_GET_WIN_SZ(ulRbCb->m.amUl.snLen) << 1;
       
       for(i = 0; i< windSz; i++)
       {
@@ -330,7 +330,7 @@ Void DumpRLCUlDebugInformation(Void)
                                    (PTR) ueCb, 
                                    (PTR *)&ueCb))
    {
-      U32 i;
+      uint32_t i;
       for(i = 0; i< RLC_MAX_SRB_PER_UE; i++)
       {
          RlcUlRbCb* ulRbCb = ueCb->srbCb[i]; 
@@ -375,7 +375,7 @@ Void DumpRLCUlDebugInformation(Void)
  */
 S16 rlcUtlL2MeasUlInit(RlcCb *gCb)
 {
-   U16             cntr;
+   uint16_t             cntr;
 
    gCb->u.ulCb->rlcL2Cb.rlcNumMeas=0;
    for(cntr = 0; cntr < LKW_MAX_L2MEAS; cntr++)
@@ -405,16 +405,16 @@ S16 rlcUtlL2MeasUlInit(RlcCb *gCb)
 (
 RlcCb                  *gCb,
 RlcUlRbCb              *rbCb,
-U32                   ttiCnt
+uint32_t               ttiCnt
 )
 #else
 Void rlcUtlCalUlIpThrPutIncTTI(gCb, rbCb, ttiCnt)
 RlcCb                  *gCb;
 RlcUlRbCb              *rbCb;
-U32                   ttiCnt;
+uint32_t               ttiCnt;
 #endif
 {
-   VOLATILE U32     startTime = 0;
+   VOLATILE uint32_t     startTime = 0;
 
       /*starting Task*/
       SStartTask(&startTime, PID_RLC_IP_TPT_INCTTI);
@@ -481,21 +481,21 @@ U32                   ttiCnt;
 #ifdef ANSI
  Void rlcUtlCalUlIpThrPut
 (
-RlcCb                  *gCb,
-RlcUlRbCb              *rbCb,
-Buffer                *pdu,
-U32                   ttiCnt
+RlcCb        *gCb,
+RlcUlRbCb    *rbCb,
+Buffer       *pdu,
+uint32_t     ttiCnt
 )
 #else
 Void rlcUtlCalUlIpThrPut(gCb, rbCb, pdu, ttiCnt)
-   RlcCb                  *gCb;
-   RlcUlRbCb              *rbCb;
-   Buffer                *pdu;
-   U32                   ttiCnt;
+RlcCb        *gCb;
+RlcUlRbCb    *rbCb;
+Buffer       *pdu;
+uint32_t     ttiCnt;
 #endif
 {
    MsgLen        rlcSduSz = 0;  /*Holds length of Rlc Sdu*/
-   VOLATILE U32     startTime = 0;
+   VOLATILE uint32_t     startTime = 0;
 
    /*starting Task*/
    SStartTask(&startTime, PID_RLC_IP_TPT_INCVOL);
@@ -547,7 +547,7 @@ RlcL2MeasEvtCb *measEvtCb;
 {
 
 #ifdef LTE_L2_MEAS_RLC
-   U16             qciIdx;
+   uint16_t             qciIdx;
    RlcL2MeasCb     *measCb;
    
    /* Clean up the RB data structures */
@@ -600,16 +600,15 @@ RlcCb                  *gCb;
 RlcL2MeasEvtCb         *measEvtCb;
 #endif
 {
-   U32                     qciIdx;
-   RlcL2MeasCb              *measCb;
-   RlcL2MeasCfmEvt          measCfmEvt;
-
-   U64                     ulDataVol;
-   U64                     ulTime;
-   U16                     cntr;
+   uint32_t            qciIdx;
+   RlcL2MeasCb         *measCb;
+   RlcL2MeasCfmEvt     measCfmEvt;
+   uint64_t            ulDataVol;
+   uint64_t            ulTime;
+   uint16_t            cntr;
    /* Discard new changes starts */
-   U8                      qci = 0;
-   U32                     cfmIdx =0;
+   uint8_t             qci = 0;
+   uint32_t            cfmIdx =0;
    /* Discard new changes ends */
 
    /* kw006.201 ccpu00120058 emoved 64 bit compilation warning */
@@ -734,31 +733,30 @@ S16 rlcUtlValidateL2Meas
 RlcL2MeasReqEvt *measReqEvt,
 RlcL2MeasCfmEvt *measCfmEvt,
 CmLteLcId      *lChId,
-U8             *numLCh
+uint8_t             *numLCh
 )
 #else
 S16 rlcUtlValidateL2Meas(measReqEvt, measCfmEvt, lChId, numLCh)
 RlcL2MeasReqEvt *measReqEvt;
 RlcL2MeasCfmEvt *measCfmEvt;
 CmLteLcId      *lChId;
-U8             *numLCh;
+uint8_t             *numLCh;
 #endif
 {
-   U8          measType;
-   S16         ret;
-   U8          qciIdx;
-   U8          qci;
-   U8          idx;
-   U8         *qciVal;
-   U8          numQci;
+   uint8_t    measType;
+   S16        ret;
+   uint8_t    qciIdx;
+   uint8_t    qci;
+   uint8_t    idx;
+   uint8_t    *qciVal;
+   uint8_t    numQci;
    RlcUlRbCb  *rbCb;
-
-   RlcUlUeCb   *ueCb;
+   RlcUlUeCb  *ueCb;
    RbCb       **rbCbLst;
-   U8         rbIdx;
-   U8         lsbNibble = 0;
-   U8         msbNibble = 0;
-   U8         numFaild = 0;
+   uint8_t    rbIdx;
+   uint8_t    lsbNibble = 0;
+   uint8_t    msbNibble = 0;
+   uint8_t    numFaild = 0;
 
    idx = 0;
    rbCb = NULLP;
@@ -830,7 +828,7 @@ U8             *numLCh;
    {
       qci = qciVal[qciIdx];
       ret = cmHashListFind(&(rlcCb.rlcL2Cb.qciHlCp), 
-            (U8 *)&qci, (U16)sizeof(qci), 0, (PTR *)&rbCb);
+            (uint8_t *)&qci, (uint16_t)sizeof(qci), 0, (PTR *)&rbCb);
       if(ret != ROK)
       {
          measCfmEvt->val.nonIpThMeas.measCfm[measCfmEvt->val.nonIpThMeas.numCfm].qci = qci;
@@ -882,9 +880,9 @@ RlcL2MeasReqEvt *measReqEvt;
 RlcL2MeasCfmEvt *measCfmEvt;
 #endif
 {
-   U8      measType;
-   U8         lsbNibble = 0;
-   U8         msbNibble = 0;
+   uint8_t      measType;
+   uint8_t         lsbNibble = 0;
+   uint8_t         msbNibble = 0;
 
    measType = measReqEvt->measReq.measType;
    /* Check for the range of measType */
@@ -934,18 +932,18 @@ Void rlcUtlResetUlL2MeasInRlcRb
 (
 RlcCb       *gCb,
 RlcL2MeasCb *measCb,
-U8             measType
+uint8_t      measType
 )
 #else
 Void rlcUtlResetUlL2MeasInRlcRb(measCb, measType)
 RlcCb       *gCb;
 RlcL2MeasCb *measCb;
-U8             measType;
+uint8_t     measType;
 #endif
 {
-   U32           rbIdx;
-   U32           ueIdx;
-   U32           qciIdx;
+   uint32_t           rbIdx;
+   uint32_t           ueIdx;
+   uint32_t           qciIdx;
    RlcUlUeCb         *ueCb = NULL;
 
 
@@ -1004,13 +1002,13 @@ Void rlcUtlPlcMeasDatInL2Sts
 (
 RlcL2Cntr       *measData, 
 RlcL2MeasRbCb   *rbL2Cb,
-U8             measType
+uint8_t         measType
 )
 #else
 Void rlcUtlPlcMeasDatInL2Sts(measData, rbL2Cb, measType)
 RlcL2Cntr       *measData; 
 RlcL2MeasRbCb   *rbL2Cb;
-U8             measType;
+uint8_t         measType;
 #endif
 {
    /* We should check the number of measType in the request. This can be done 
@@ -1089,7 +1087,7 @@ RlcAmRecBuf* rlcUtlGetRecBuf(CmLListCp *recBufLst, RlcSn sn)
 {
    uint32_t            hashKey; 
    CmLListCp           *recBufLstCp;
-   RlcAmRecBuf          *recBuf;
+   RlcAmRecBuf         *recBuf;
    CmLList             *node = NULLP;
 
    hashKey = (sn % RLC_RCV_BUF_BIN_SIZE ); 
@@ -1123,7 +1121,7 @@ RlcAmRecBuf* rlcUtlGetRecBuf(CmLListCp *recBufLst, RlcSn sn)
  */
 void rlcUtlDelRecBuf(CmLListCp *recBufLst, RlcAmRecBuf *recBuf, RlcCb *gCb)
 {
-   uint32_t                 hashKey; 
+   uint32_t            hashKey; 
    CmLListCp           *recBufLstCp;
 
    hashKey = (recBuf->amHdr.sn % RLC_RCV_BUF_BIN_SIZE ); 

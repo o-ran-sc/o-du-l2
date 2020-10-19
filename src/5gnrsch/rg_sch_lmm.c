@@ -70,10 +70,10 @@ Void rgSCHCmnInit ARGS((Void));
 /* forward references */
 extern int schActvInit(Ent entity, Inst instId, Region region, Reason reason);
 #ifdef UNUSE_FUN
-PRIVATE U16 rgSCHLmmSapCfg ARGS((
+PRIVATE uint16_t rgSCHLmmSapCfg ARGS((
    Inst           inst,
    RgCfg          *cfg,
-   U8             sapIdx,
+   uint8_t             sapIdx,
    Elmnt          sapType
 ));
 #endif
@@ -84,8 +84,8 @@ PRIVATE Void rgSCHLmmShutdown ARGS((
 
 void printSchCellInfo(void)
 {
-   U8 idx=0;
-   U8 inst=0;
+   uint8_t idx=0;
+   uint8_t inst=0;
    for (idx = 0; idx < rgSchCb[inst].numSaps; idx++)
    {
       /* Unbind all the TFU SAP */
@@ -112,29 +112,29 @@ void printSchCellInfo(void)
  *     reason for success/failure of this function.
  *     
  *  @param[in]  RgCfg *cfg, the Configuaration information 
- *  @return  U16
+ *  @return  uint16_t
  *      -# LCM_REASON_GENCFG_NOT_DONE
  *      -# LCM_REASON_INVALID_SAP
  *      -# LCM_REASON_NOT_APPL
  **/
 #ifdef UNUSE_FUN
 #ifdef ANSI
-PRIVATE U16 rgSCHLmmSapCfg
+PRIVATE uint16_t rgSCHLmmSapCfg
 (
 Inst  dInst,
 RgCfg *cfg,            /* Configuaration information */
-U8    sapIdx,          /* SAP index */
+uint8_t    sapIdx,          /* SAP index */
 Elmnt sapType             /* SAP Type */
 )
 #else
-PRIVATE U16 rgSCHLmmSapCfg(dInst, cfg, sapIdx, sapType)
+PRIVATE uint16_t rgSCHLmmSapCfg(dInst, cfg, sapIdx, sapType)
 Inst  dInst;
 RgCfg *cfg;            /* Configuaration information */
-U8    sapIdx;          /* SAP index */
+uint8_t    sapIdx;          /* SAP index */
 Elmnt sapType;            /* SAP Type */
 #endif
 {
-   U16                  ret = LCM_REASON_NOT_APPL;
+   uint16_t                  ret = LCM_REASON_NOT_APPL;
    RgSchLowSapCfgInfo   *lowSapCfg = NULLP;
    RgSchUpSapCfgInfo    *upSapCfg = NULLP;
    Inst  inst = (dInst - SCH_INST_START);
@@ -286,13 +286,13 @@ Inst inst;
 #endif
 {
    Inst          dInst = inst + SCH_INST_START;
-   U8            idx;
+   uint8_t            idx;
 #ifdef LTE_L2_MEAS
    CmLList       *lnk = NULLP;
    RgSchCb       *instCb =  &rgSchCb[inst];
    RgSchCellCb   *cell = NULLP;
    RgSchL2MeasCb *measCb;
-   U8            ulAllocIdx;
+   uint8_t            ulAllocIdx;
    RgSchCmnUlCell *cellUl;
    RgSchClcBoRpt  *bo = NULL;
 #endif
@@ -415,7 +415,7 @@ Inst inst;
    /* Set Config done in TskInit */
    rgSchCb[inst].rgSchInit.cfgDone = FALSE;
 
-   RETVOID;
+   return;
 }
 
 
@@ -543,7 +543,7 @@ Pst           *cfmPst;
          break;
    }
    RgMiLrgSchCntrlCfm(cfmPst, cfm);
-   RETVOID;
+   return;
 }
 
 
@@ -576,7 +576,7 @@ RgMngmt       *cfm;
 Pst           *cfmPst;
 #endif
 {
-   U8       idx;
+   uint8_t       idx;
 
    /* TODO Pass InstId instead of using InstId from cfmPst */
    Inst      inst = (cfmPst->srcInst - SCH_INST_START); /* Scheduler instance Id */
@@ -585,7 +585,7 @@ Pst           *cfmPst;
    switch(cntrl->hdr.elmId.elmnt)
    {
       case STTFUSAP:
-         idx = (U8)cntrl->t.cntrl.s.rgSapCntrl.suId;
+         idx = (uint8_t)cntrl->t.cntrl.s.rgSapCntrl.suId;
          if (idx > LRG_MAX_SAPS_PER_INST)
          {
             cfm->cfm.status = LCM_PRIM_NOK;
@@ -628,7 +628,7 @@ Pst           *cfmPst;
                   
                   rgSCHUtlTfuBndReq(inst, rgSchCb[inst].tfuSap[idx].sapCfg.suId, 
                                  rgSchCb[inst].tfuSap[idx].sapCfg.spId);
-                 RETVOID; 
+                 return; 
                }
                break;
             case AUBND:
@@ -683,7 +683,7 @@ Pst           *cfmPst;
          }
          break;
       case STRGRSAP:
-         idx = (U8)cntrl->t.cntrl.s.rgSapCntrl.spId;
+         idx = (uint8_t)cntrl->t.cntrl.s.rgSapCntrl.spId;
          if (idx > LRG_MAX_SAPS_PER_INST)
          {
             cfm->cfm.status = LCM_PRIM_NOK;
@@ -706,7 +706,7 @@ Pst           *cfmPst;
          }
          break;
       case STRGMSAP:
-         idx = (U8)cntrl->t.cntrl.s.rgSapCntrl.spId;
+         idx = (uint8_t)cntrl->t.cntrl.s.rgSapCntrl.spId;
          if (idx > LRG_MAX_SAPS_PER_INST)
          {
             cfm->cfm.status = LCM_PRIM_NOK;
@@ -731,10 +731,10 @@ Pst           *cfmPst;
 
        default:
          /* Would never come here. */
-         RETVOID;
+         return;
    }
    RgMiLrgSchCntrlCfm(cfmPst, cfm);
-   RETVOID;
+   return;
 }
 
 
@@ -783,7 +783,7 @@ RgMngmt       *cfm;
    cfmPst->region    = cfm->hdr.response.mem.region;
    cfmPst->pool      = cfm->hdr.response.mem.pool;
 
-   RETVOID;
+   return;
 }
 
 
@@ -800,7 +800,7 @@ RgMngmt       *cfm;
  *     code based on "tmrEvnt".
  *     
  *  @param[in]  S16   tmrEvnt, the Timer Event    
- *  @param[in]  U32   tmrVal,  the Wait Time
+ *  @param[in]  uint32_t   tmrVal,  the Wait Time
  *  @param[in]  PTR   cb,  Entry for which Timer expired
  *  @return  S16
  *      -# ROK
@@ -810,14 +810,14 @@ S16 rgSCHLmmStartTmr
 (
 Inst               inst,
 S16                tmrEvnt,            /* Timer Event */
-U32                tmrVal,             /* Wait Time */
+uint32_t                tmrVal,             /* Wait Time */
 PTR                cb                  /* Entry for which Timer Expired */
 )
 #else
 S16 rgSCHLmmStartTmr(inst, tmrEvnt, tmrVal, cb)
 Inst               inst;             /* scheduler instance ID */
 S16                tmrEvnt;            /* Timer Event */
-U32                tmrVal;             /* Wait Time */
+uint32_t                tmrVal;             /* Wait Time */
 PTR                cb;                 /* Entry for which Timer Expired */
 #endif
 {
@@ -877,7 +877,7 @@ PTR                cb;                 /* Entry for which Timer Expired */
 #endif
 {
    CmTmrArg   arg;
-   U8         i;
+   uint8_t         i;
    S16        ret; 
 
    ret = RFAILED;
@@ -951,22 +951,22 @@ S16 tmrEvnt;          /* Timer Event */
          tfuSap->numBndRetries++;
          if(tfuSap->numBndRetries > RGSCH_MAX_BNDRETRY)
          {
-            rgSCHLmmStaInd((U8)(tfuSap->sapCfg.sapPst.srcInst - SCH_INST_START),
-                           (U16)LCM_CATEGORY_INTERFACE, (U16)LCM_EVENT_BND_FAIL,
-                           (U16)LCM_CAUSE_TMR_EXPIRED, (RgUstaDgn *)NULLP);
+            rgSCHLmmStaInd((uint8_t)(tfuSap->sapCfg.sapPst.srcInst - SCH_INST_START),
+                           (uint16_t)LCM_CATEGORY_INTERFACE, (uint16_t)LCM_EVENT_BND_FAIL,
+                           (uint16_t)LCM_CAUSE_TMR_EXPIRED, (RgUstaDgn *)NULLP);
          }
          else
          {
             /* Restart the bind timer */
             if (tfuSap->sapCfg.bndTmr.enb == TRUE)
             {
-               ret = rgSCHLmmStartTmr((U8)(tfuSap->sapCfg.sapPst.srcInst - SCH_INST_START),
+               ret = rgSCHLmmStartTmr((uint8_t)(tfuSap->sapCfg.sapPst.srcInst - SCH_INST_START),
                                   RGSCH_BNDREQ_TMR, 
-                                 (U32)tfuSap->sapCfg.bndTmr.val, cb);
+                                 (uint32_t)tfuSap->sapCfg.bndTmr.val, cb);
             }
 
             /* Send bind request */
-            rgSCHUtlTfuBndReq((U8)(tfuSap->sapCfg.sapPst.srcInst - SCH_INST_START), 
+            rgSCHUtlTfuBndReq((uint8_t)(tfuSap->sapCfg.sapPst.srcInst - SCH_INST_START), 
             tfuSap->sapCfg.suId, tfuSap->sapCfg.spId);
          }
          break;
@@ -996,7 +996,7 @@ S16 tmrEvnt;          /* Timer Event */
  *     
  *  @param[in]   Pst *pst, Post Structure
  *  @param[in]   SuId suId, Service user ID
- *  @param[in]   U8 status, Status
+ *  @param[in]   uint8_t status, Status
  *  @return  S16
  *      -# ROK
  **/
@@ -1005,13 +1005,13 @@ S16 rgSCHLmmBndCfm
 (
 Pst *pst,               /* Post Structure */
 SuId suId,              /* Service user ID */
-U8 status               /* Status */
+uint8_t status               /* Status */
 )
 #else
 S16 rgSCHLmmBndCfm(pst,suId,status)
 Pst *pst;               /* Post Structure */
 SuId suId;              /* Service user Id */
-U8 status;              /* Status */
+uint8_t status;              /* Status */
 #endif
 {
    S16       ret = ROK;
@@ -1054,7 +1054,7 @@ U8 status;              /* Status */
          cntrlCfm.cfm.status = LCM_PRIM_OK;
          cntrlCfm.cfm.reason = LCM_REASON_NOT_APPL;
         /* Sending Status Indication to Layer Manager */
-         rgSCHLmmStaInd((U8)(rgSchCb[inst].tfuSap->sapCfg.sapPst.srcInst - SCH_INST_START),
+         rgSCHLmmStaInd((uint8_t)(rgSchCb[inst].tfuSap->sapCfg.sapPst.srcInst - SCH_INST_START),
                LCM_CATEGORY_INTERFACE, LCM_EVENT_BND_OK,
                LCM_CAUSE_LYR_SPECIFIC, (RgUstaDgn *)NULLP);
          break;
@@ -1090,9 +1090,9 @@ U8 status;              /* Status */
  *     This API is used by the other modules of MAC to send a unsolicited
  *     status indication to the Layer Manager.
  *     
- *  @param[in]  U16 category, the Alarm category
- *  @param[in]  U16 event, the Alarm event
- *  @param[in]  U16 cause, the cause of the Alarm
+ *  @param[in]  uint16_t category, the Alarm category
+ *  @param[in]  uint16_t event, the Alarm event
+ *  @param[in]  uint16_t cause, the cause of the Alarm
  *  @param[in]  RgUstaDgn *dgn, Alarm Diagonostics
  *  @return  S16
  *      -# ROK
@@ -1101,17 +1101,17 @@ U8 status;              /* Status */
 S16 rgSCHLmmStaInd
 (
 Inst inst,
-U16  category,
-U16  event,
-U16  cause,
+uint16_t  category,
+uint16_t  event,
+uint16_t  cause,
 RgUstaDgn *dgn
 )
 #else
 S16 rgSCHLmmStaInd(inst, category, event, cause, dgn) 
 Inst inst;
-U16 category;
-U16 event;
-U16 cause;
+uint16_t category;
+uint16_t event;
+uint16_t cause;
 RgUstaDgn *dgn;
 #endif
 {
@@ -1121,7 +1121,6 @@ RgUstaDgn *dgn;
    {
       return ROK;
    }
-
    memset(&usta, 0, sizeof(RgMngmt));
 
    SGetDateTime(&usta.t.usta.cmAlarm.dt);

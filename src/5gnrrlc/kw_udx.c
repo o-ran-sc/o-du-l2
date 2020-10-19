@@ -56,16 +56,16 @@
 #ifdef ANSI
 PRIVATE S16 cmUnpkUdxStruct
 (
-Buffer *srcMBuf,
-U32  offset,
-U8     *dstBuf,
-U32    size
+Buffer    *srcMBuf,
+uint32_t  offset,
+uint8_t   *dstBuf,
+uint32_t  size
 )
 #else
 PRIVATE S16 cmUnpkUdxStruct(dstMBuf,srcBuf,size)
-Buffer *srcMBuf;
-U32  offset;
-U8     *dstBuf;
+Buffer    *srcMBuf;
+uint32_t  offset;
+uint8_t   *dstBuf;
 MsgLen    size;
 #endif
 {
@@ -91,15 +91,15 @@ MsgLen    size;
 #ifdef ANSI
 PRIVATE S16 cmPkUdxStruct
 (
-U8     *srcBuf,
-MsgLen    size,
-Buffer *dstMBuf
+uint8_t  *srcBuf,
+MsgLen   size,
+Buffer   *dstMBuf
 )
 #else
 PRIVATE S16 cmPkUdxStruct(dstMBuf,srcBuf,size)
-U8     *srcBuf;
-MsgLen    size;
-Buffer *dstMBuf;
+uint8_t *srcBuf;
+MsgLen  size;
+Buffer  *dstMBuf;
 #endif
 {
 
@@ -224,13 +224,13 @@ S16 cmPkUdxBndCfm
 (
 Pst *pst,
 SuId suId,
-U8 status
+uint8_t status
 )
 #else
 S16 cmPkUdxBndCfm(pst, suId, status)
 Pst *pst;
 SuId suId;
-U8 status;
+uint8_t status;
 #endif
 {
     S16 ret1;
@@ -307,7 +307,7 @@ RlcCfgInfo        *cfgInfo;
 #ifdef LCUDX
        case UDX_SEL_LC:
           {
-             cmPkUdxStruct((U8 *)cfgInfo, sizeof(RlcCfgInfo),mBuf);
+             cmPkUdxStruct((uint8_t *)cfgInfo, sizeof(RlcCfgInfo),mBuf);
              /* Need Not free CfgInfo here as it is stored 
                 in UL */
              break;
@@ -376,7 +376,7 @@ RlcCfgCfmInfo     *cfgCfmInfo;
 #ifdef LCUDX
        case UDX_SEL_LC:
           {
-             cmPkUdxStruct((U8 *)cfgCfmInfo, sizeof(RlcCfgCfmInfo),mBuf);
+             cmPkUdxStruct((uint8_t *)cfgCfmInfo, sizeof(RlcCfgCfmInfo),mBuf);
              /* Need to free the cfgCfmInfo here as it is allocated 
                                         buffer call SPutStaticBuffer */
              SPutStaticBuffer(pst->region,pst->pool,(Data *) cfgCfmInfo,
@@ -416,7 +416,7 @@ S16 cmPkUdxUeIdChgReq
 (
 Pst               *pst,
 SpId              spId,
-U32               transId,
+uint32_t          transId,
 CkwUeInfo         *ueInfo,
 CkwUeInfo         *newUeInfo
 )
@@ -424,7 +424,7 @@ CkwUeInfo         *newUeInfo
 S16 cmPkUdxUeIdChgReq(pst, spId, transId, ueInfo, newUeInfo)
 Pst               *pst;
 SpId              spId;
-U32               transId;
+uint32_t          transId;
 CkwUeInfo         *ueInfo;
 CkwUeInfo         *newUeInfo;
 #endif
@@ -452,8 +452,8 @@ CkwUeInfo         *newUeInfo;
 #ifdef LCUDX
        case UDX_SEL_LC:
        {
-            cmPkUdxStruct((U8 *)newUeInfo, sizeof(CkwUeInfo),mBuf);
-            cmPkUdxStruct((U8 *)ueInfo, sizeof(CkwUeInfo),mBuf);
+            cmPkUdxStruct((uint8_t *)newUeInfo, sizeof(CkwUeInfo),mBuf);
+            cmPkUdxStruct((uint8_t *)ueInfo, sizeof(CkwUeInfo),mBuf);
             /* No need to free ueInfo here as it is stored */
             break;
        }
@@ -496,14 +496,14 @@ S16 cmPkUdxUeIdChgCfm
 (
 Pst               *pst,
 SuId              suId,
-U32               transId,
+uint32_t               transId,
 CmStatus          status
 )
 #else
 S16 cmPkUdxUeIdChgCfm(pst, suId, transId, status)
 Pst               *pst;
 SuId              suId;
-U32               transId;
+uint32_t               transId;
 CmStatus          status;
 #endif
 {
@@ -583,8 +583,8 @@ RlcUdxBufLst       *pStaPdu;
     {
        case UDX_SEL_LC:
        {
-         cmPkUdxStruct((U8 *)pStaPdu, sizeof(RlcUdxBufLst),mBuf);
-         cmPkUdxStruct((U8 *)rlcId, sizeof(CmLteRlcId),mBuf);
+         cmPkUdxStruct((uint8_t *)pStaPdu, sizeof(RlcUdxBufLst),mBuf);
+         cmPkUdxStruct((uint8_t *)rlcId, sizeof(CmLteRlcId),mBuf);
          break;
        }
        case UDX_SEL_LWLC:
@@ -649,7 +649,7 @@ CmLteRlcId        *rlcId;
     {
        case UDX_SEL_LC:
        {
-         cmPkUdxStruct((U8 *)rlcId, sizeof(CmLteRlcId),mBuf);
+         cmPkUdxStruct((uint8_t *)rlcId, sizeof(CmLteRlcId),mBuf);
          break;
        }
        case UDX_SEL_LWLC:
@@ -715,8 +715,8 @@ RlcUdxStaPdu       *pStaPdu;
     {
        case UDX_SEL_LC:
        {
-         cmPkUdxStruct((U8 *)pStaPdu, sizeof(RlcUdxStaPdu),mBuf);
-         cmPkUdxStruct((U8 *)rlcId, sizeof(CmLteRlcId),mBuf);
+         cmPkUdxStruct((uint8_t *)pStaPdu, sizeof(RlcUdxStaPdu),mBuf);
+         cmPkUdxStruct((uint8_t *)rlcId, sizeof(CmLteRlcId),mBuf);
          SPutStaticBuffer(pst->region,pst->pool,(Data *) pStaPdu,
                           sizeof(RlcUdxStaPdu),0);
 
@@ -786,8 +786,8 @@ RlcUdxDlStaPdu     *pStaPdu;
     {
        case UDX_SEL_LC:
        {
-         cmPkUdxStruct((U8 *)pStaPdu, sizeof(RlcUdxDlStaPdu),mBuf);
-         cmPkUdxStruct((U8 *)rlcId, sizeof(CmLteRlcId),mBuf);
+         cmPkUdxStruct((uint8_t *)pStaPdu, sizeof(RlcUdxDlStaPdu),mBuf);
+         cmPkUdxStruct((uint8_t *)rlcId, sizeof(CmLteRlcId),mBuf);
          /* Free status Pdu here for LC */
          SPutStaticBuffer(pst->region,pst->pool,(Data *) pStaPdu,
                           sizeof(RlcUdxDlStaPdu),0);
@@ -851,7 +851,7 @@ RlcL2MeasReqEvt    *measReqEvt;
     {
        case UDX_SEL_LC:
        {
-         cmPkUdxStruct((U8 *)measReqEvt, sizeof(RlcL2MeasReqEvt),mBuf);
+         cmPkUdxStruct((uint8_t *)measReqEvt, sizeof(RlcL2MeasReqEvt),mBuf);
          break;
        }
        case UDX_SEL_LWLC:
@@ -880,12 +880,12 @@ RlcL2MeasReqEvt    *measReqEvt;
 S16 cmPkUdxL2MeasSendReq
 (
 Pst              *pst,
-U8               measType
+uint8_t          measType
 )
 #else
 S16 cmPkUdxL2MeasSendReq(pst, measReqEvt)
 Pst               *pst;
-U8                measType
+uint8_t           measType
 #endif
 {
     S16    ret1;
@@ -934,12 +934,12 @@ U8                measType
 S16 cmPkUdxL2MeasStopReq
 (
 Pst              *pst,
-U8               measType
+uint8_t          measType
 )
 #else
 S16 cmPkUdxL2MeasStopReq(pst, measType)
 Pst               *pst;
-U8                measType
+uint8_t           measType
 #endif
 {
     S16    ret1;
@@ -1079,7 +1079,7 @@ Buffer         *mBuf;
 #endif
 {
     SuId       suId = 0;
-    U8         status = 0;
+    uint8_t         status = 0;
     
     CMCHKUNPKLOG(SUnpkS16, &suId, mBuf, EUDXXXX, pst);
     CMCHKUNPKLOG(oduPackUInt8, &status, mBuf, EUDXXXX, pst);
@@ -1130,7 +1130,7 @@ Buffer            *mBuf;
        case UDX_SEL_LC:
        {
 #if(ERRCLASS & ERRCLS_DEBUG)
-          ret1 = cmUnpkUdxStruct(mBuf,0,(U8 *)&tmpCfgInfo,sizeof(RlcCfgInfo));
+          ret1 = cmUnpkUdxStruct(mBuf,0,(uint8_t *)&tmpCfgInfo,sizeof(RlcCfgInfo));
           if(ret1 != ROK)
           {
              SPutMsg(mBuf);
@@ -1140,7 +1140,7 @@ Buffer            *mBuf;
              return ( ret1 );
           }
 #else
-         cmUnpkUdxStruct(mBuf,0,(U8 *)&tmpCfgInfo,sizeof(RlcCfgInfo));
+         cmUnpkUdxStruct(mBuf,0,(uint8_t *)&tmpCfgInfo,sizeof(RlcCfgInfo));
 #endif /* ERRCLASS & ERRCLS_DEBUG */
           cfgInfo = &tmpCfgInfo;
           break;
@@ -1210,7 +1210,7 @@ Buffer            *mBuf;
               return (ret1);
            }
 
-          ret1 = cmUnpkUdxStruct(mBuf,0,(U8 *)cfgCfmInfo, sizeof(RlcCfgCfmInfo));
+          ret1 = cmUnpkUdxStruct(mBuf,0,(uint8_t *)cfgCfmInfo, sizeof(RlcCfgCfmInfo));
 #if(ERRCLASS & ERRCLS_DEBUG)
           if(ret1 != ROK)
           {
@@ -1263,7 +1263,7 @@ Buffer            *mBuf;
 #endif
 {
     SpId      spId = 0;
-    U32       transId = 0;
+    uint32_t  transId = 0;
     CkwUeInfo tmpUeInfo;
     CkwUeInfo tmpNewUeInfo;
     CkwUeInfo *ueInfo;
@@ -1277,8 +1277,8 @@ Buffer            *mBuf;
 #ifdef LCUDX
        case UDX_SEL_LC:
        {
-          cmUnpkUdxStruct(mBuf,0,(U8 *)&tmpNewUeInfo, sizeof(CkwUeInfo));
-          cmUnpkUdxStruct(mBuf,sizeof(CkwUeInfo),(U8 *)&tmpUeInfo, sizeof(CkwUeInfo));
+          cmUnpkUdxStruct(mBuf,0,(uint8_t *)&tmpNewUeInfo, sizeof(CkwUeInfo));
+          cmUnpkUdxStruct(mBuf,sizeof(CkwUeInfo),(uint8_t *)&tmpUeInfo, sizeof(CkwUeInfo));
 
           ueInfo =  &tmpUeInfo;
           newUeInfo =  &tmpNewUeInfo;
@@ -1332,7 +1332,7 @@ Buffer            *mBuf;
 #endif
 {
     SuId      suId = 0;
-    U32       transId = 0;
+    uint32_t  transId = 0;
     CmStatus  status;
     
     memset(&status, 0, sizeof(CmStatus));
@@ -1451,8 +1451,8 @@ Buffer            *mBuf;
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
               return (ret1);
            }
-          ret1 = cmUnpkUdxStruct(mBuf,0,(U8 *)pStaPdu, sizeof(RlcUdxStaPdu));
-          ret1 = cmUnpkUdxStruct(mBuf,sizeof(RlcUdxStaPdu),(U8 *)&tmpRlcId,sizeof(CmLteRlcId));
+          ret1 = cmUnpkUdxStruct(mBuf,0,(uint8_t *)pStaPdu, sizeof(RlcUdxStaPdu));
+          ret1 = cmUnpkUdxStruct(mBuf,sizeof(RlcUdxStaPdu),(uint8_t *)&tmpRlcId,sizeof(CmLteRlcId));
           rlcId = &tmpRlcId; 
           break;
        }
@@ -1521,8 +1521,8 @@ Buffer            *mBuf;
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
               return (ret1);
            }
-          ret1 = cmUnpkUdxStruct(mBuf,0, (U8 *)pStaPdu, sizeof(RlcUdxDlStaPdu));
-          ret1 = cmUnpkUdxStruct(mBuf,sizeof(RlcUdxDlStaPdu),(U8 *)&tmpRlcId,sizeof(CmLteRlcId));
+          ret1 = cmUnpkUdxStruct(mBuf,0, (uint8_t *)pStaPdu, sizeof(RlcUdxDlStaPdu));
+          ret1 = cmUnpkUdxStruct(mBuf,sizeof(RlcUdxDlStaPdu),(uint8_t *)&tmpRlcId,sizeof(CmLteRlcId));
           rlcId = &tmpRlcId; 
            break;
        }
@@ -1575,7 +1575,7 @@ Buffer            *mBuf;
     {
        case UDX_SEL_LC:
        {
-          cmUnpkUdxStruct(mBuf,0,(U8 *)&tmpRlcId,sizeof(CmLteRlcId));
+          cmUnpkUdxStruct(mBuf,0,(uint8_t *)&tmpRlcId,sizeof(CmLteRlcId));
           rlcId = &tmpRlcId;
           break;
        }
@@ -1625,7 +1625,7 @@ Buffer           *mBuf;
     {
        case UDX_SEL_LC:
        {
-          cmUnpkUdxStruct(mBuf,0,(U8 *)&tmpMeasReqEvt,sizeof(RlcL2MeasReqEvt));
+          cmUnpkUdxStruct(mBuf,0,(uint8_t *)&tmpMeasReqEvt,sizeof(RlcL2MeasReqEvt));
           measReqEvt = &tmpMeasReqEvt;
           break;
        }
@@ -1665,7 +1665,7 @@ Pst                *pst;
 Buffer             *mBuf;
 #endif
 {
-    U8     measType = 0;  /* KW_FIX */
+    uint8_t     measType = 0;  /* KW_FIX */
 
     switch (pst->selector)
     {
@@ -1706,7 +1706,7 @@ Pst                  *pst;
 Buffer               *mBuf;
 #endif
 {
-    U8     measType = 0; /* KW_FIX */
+    uint8_t     measType = 0; /* KW_FIX */
 
     switch (pst->selector)
     {

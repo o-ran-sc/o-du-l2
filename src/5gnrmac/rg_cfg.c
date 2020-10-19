@@ -595,16 +595,16 @@ RgErrInfo    *errInfo;
 #ifdef ANSI
 S16 rgCFGVldtCrgUeReset
 (
-Inst       inst,
-CrgRst     *reset,
+Inst        inst,
+CrgRst      *reset,
 RgCellCb    **cell,
 RgUeCb      **ue,
 RgErrInfo   *errInfo
 )
 #else
 S16 rgCFGVldtCrgUeReset(inst,reset, cell, ue, errInfo)
-Inst       inst;
-CrgRst     *reset;
+Inst        inst;
+CrgRst      *reset;
 RgCellCb    **cell;
 RgUeCb      **ue;
 RgErrInfo   *errInfo;
@@ -673,7 +673,7 @@ RgErrInfo   *errInfo;
 {
    S16        ret;
    RgCellCb   *cell = NULLP;
-   U8         idx;
+   uint8_t    idx;
    SuId       rguUlSapId = 0;
    SuId       rguDlSapId = 0;
    /* RLC SAP to allocate flowCntrlInd buffer*/
@@ -754,7 +754,7 @@ RgErrInfo   *errInfo;
       memset(&cell->ulSf[idx], 0, sizeof(RgUlSf));
    }
 
-   cell->ttiCycle = (U32)RG_TTI_CYCLE_INVLD;   
+   cell->ttiCycle = (uint32_t)RG_TTI_CYCLE_INVLD;   
 #endif
    /* Update Statistics */
    rgUpdtCellCnt(inst,RG_CFG_ADD);
@@ -807,7 +807,7 @@ RgCellCb    *cell;
    RgUeCb     *ueCb = NULLP;
    SuId       rguUlSapId = 0;
    SuId       rguDlSapId = 0;
-   U8 	     idx;
+   uint8_t    idx;
    RgErrInfo  errInfo;
 
 #ifdef LTE_ADV
@@ -921,7 +921,7 @@ Bool            *isCfmRqrd;
 #endif
 {
    RgUeCb     *ue = NULLP;
-   U8          idx = 0;
+   uint8_t     idx = 0;
    Inst        dstMacInst;
    RgPrgUeSCellCfgInfo ueSCellCb;
    Pst          dstInstPst;
@@ -1359,14 +1359,14 @@ S16 rgCFGCrgUeReset
 (
 RgCellCb    *cell,
 RgUeCb      *ue,
-CrgRst     *reset,
+CrgRst      *reset,
 RgErrInfo   *errInfo
 )
 #else
 S16 rgCFGCrgUeReset(cell, ue, reset, errInfo)
 RgCellCb    *cell;
 RgUeCb      *ue;
-CrgRst     *reset;
+CrgRst      *reset;
 RgErrInfo   *errInfo;
 #endif
 {
@@ -1414,8 +1414,8 @@ CrgDel      *cellDelInfo;
 RgErrInfo   *errInfo;
 #endif
 {
-   RgCellCb      *cell;
-   U8 idx;
+   RgCellCb *cell;
+   uint8_t  idx;
 
 
    errInfo->errCause = RGERR_CFG_CRG_CELL_DEL;
@@ -1652,7 +1652,7 @@ RgUeCb        **ue;
 RgErrInfo     *errInfo;
 #endif
 {
-   U8         dirVld   = FALSE;
+   uint8_t         dirVld   = FALSE;
 
    errInfo->errCause = RGERR_CFG_INVALID_CRG_DED_LC_CFG;
 
@@ -1755,7 +1755,7 @@ RgCellCb      **cell;
 RgErrInfo     *errInfo;
 #endif
 {
-   U8         dirVld  = FALSE;
+   uint8_t dirVld  = FALSE;
 
    errInfo->errCause = RGERR_CFG_INVALID_CRG_CMN_LC_CFG;
 
@@ -2027,7 +2027,7 @@ PRIVATE Void rgCFGFreeUeUlAlloc(cell)
 RgCellCb      *cell;
 #endif
 {
-   U8    sfIdx;
+   uint8_t    sfIdx;
    Inst inst = cell->macInst - RG_INST_START;
    
    for(sfIdx = 0; sfIdx < RG_NUM_UL_SUB_FRAMES; sfIdx++)
@@ -2098,7 +2098,7 @@ RgCellCb      *cell;
    RGDBGINFO(inst,(rgPBuf(inst), "Cell freed\n"));
 
   /* Stack Crash Problem for TRACE5 Changes. Added return below */
-  RETVOID; 
+  return; 
 }  /* rgCFGFreeCellCb */
 
 
@@ -2148,7 +2148,7 @@ RgCellCb      *cell;
 
 
   /* Stack Crash Problem for TRACE5 Changes. Added return below */
-  RETVOID; 
+  return; 
 }  /* rgCFGFreeInactvCellCb */
 
 
@@ -2194,7 +2194,7 @@ RgUeCb      *ue;
 
 
   /* Stack Crash Problem for TRACE5 Changes. Added return below */
-  RETVOID; 
+  return; 
 }  /* rgCFGFreeUeCb */
 
 /***********************************************************
@@ -2227,7 +2227,7 @@ RgCellCb      *cell;
 
 
   /* Stack Crash Problem for TRACE5 Changes. Added return below */
-  RETVOID; 
+  return; 
 }  /* rgCFGFreeCmnLcLst */
 
 
@@ -2274,7 +2274,7 @@ RgCellCb      *cell;
 
 
   /* Stack Crash Problem for TRACE5 Changes. Added return below */
-  RETVOID; 
+  return; 
 }  /* rgCFGFreeUeLst */
 
 #ifdef LTEMAC_SPS
@@ -2384,12 +2384,12 @@ RgInfCellReg*       regReq;
 /*Added Ue for Onging L2 Meas*/
 #ifdef LTE_L2_MEAS
 /*LTE_L2_MEAS_PHASE2*/
-S16 rgAddToL2MeasPerQci(RgCellCb  *cell,U8 qci)
+S16 rgAddToL2MeasPerQci(RgCellCb  *cell,uint8_t qci)
 {
- S16      ret = ROK;	
- CmLList   *lnk;
- RgL2MeasCb  *measCb;
- U16          idx;
+ S16        ret = ROK;	
+ CmLList    *lnk;
+ RgL2MeasCb *measCb;
+ uint16_t   idx;
  
  lnk = cell->l2mList.first;
   while(lnk != NULLP )

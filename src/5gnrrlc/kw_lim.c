@@ -102,19 +102,19 @@ EXTERN "C" {
 #ifdef ANSI
 S16 RlcLiRguBndCfm
 (
-Pst    *pst,   
-SuId   suId, 
-U8     status 
+Pst     *pst,   
+SuId    suId, 
+uint8_t status 
 )
 #else
 S16 RlcLiRguBndCfm (pst, suId, status)
-Pst    *pst; 
-SuId   suId;
-U8     status;
+Pst     *pst; 
+SuId    suId;
+uint8_t status;
 #endif
 {
-   U16          event;     /* Event */
-   U16          cause;     /* Cause */
+   uint16_t      event;     /* Event */
+   uint16_t      cause;     /* Cause */
    RlcRguSapCb   *rguSap;   /* RGU SAP Control Block */
    RlcCb         *tRlcCb;
 
@@ -485,8 +485,8 @@ RguFlowCntrlInd  *flowCntrlInd;
 {
    RlcCb       *tRlcCb; 
    RlcDlRbCb   *rbCb = NULLP;
-   U32        idx;
-   U32        lcIdx;
+   uint32_t    idx;
+   uint32_t    lcIdx;
 
    tRlcCb = RLC_GET_RLCCB(pst->dstInst);
    for (idx = 0; idx < flowCntrlInd->numUes; idx++)
@@ -567,10 +567,10 @@ RguHarqStatusInd   *staInd;
 {
 
    RlcUeKey   ueKey;
-   S16       ret; 
-   RlcDlUeCb    *ueCb;
-   U8        tbIdx;
-   RlcCb       *tRlcCb; 
+   S16        ret; 
+   RlcDlUeCb  *ueCb;
+   uint8_t    tbIdx;
+   RlcCb      *tRlcCb; 
 
    tRlcCb = RLC_GET_RLCCB(pst->dstInst);
    ueKey.cellId = staInd->cellId;

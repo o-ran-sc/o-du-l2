@@ -159,13 +159,13 @@ S16 cmPkCkwBndCfm
 (
 Pst *pst,
 SuId suId,
-U8 status
+uint8_t status
 )
 #else
 S16 cmPkCkwBndCfm(pst, suId, status)
 Pst *pst;
 SuId suId;
-U8 status;
+uint8_t status;
 #endif
 {
     S16 ret1;
@@ -541,7 +541,7 @@ Buffer         *mBuf;
 
     for (idx = param->numEnt-1; idx >= 0; idx--)
     {
-       CMCHKPK(cmPkRlcEntCfgCfmInfo, &(param->entCfgCfm[(U8)idx]), mBuf);
+       CMCHKPK(cmPkRlcEntCfgCfmInfo, &(param->entCfgCfm[(uint8_t)idx]), mBuf);
     }
 
     CMCHKPK(oduUnpackUInt8, param->numEnt, mBuf);
@@ -681,7 +681,7 @@ S16 cmPkCkwUeIdChgReq
 (
 Pst               *pst,
 SpId              spId,
-U32               transId,
+uint32_t               transId,
 CkwUeInfo         *ueInfo,
 CkwUeInfo         *newUeInfo
 )
@@ -689,7 +689,7 @@ CkwUeInfo         *newUeInfo
 S16 cmPkCkwUeIdChgReq(pst, spId, transId, ueInfo, newUeInfo)
 Pst               *pst;
 SpId              spId;
-U32               transId;
+uint32_t               transId;
 CkwUeInfo         *ueInfo;
 CkwUeInfo         *newUeInfo;
 #endif
@@ -752,7 +752,7 @@ S16 cmPkCkwUeIdChgCfm
 (
 Pst               *pst,
 SuId              suId,
-U32               transId,
+uint32_t               transId,
 CkwUeInfo         *ueInfo,
 CmStatus          status
 )
@@ -760,7 +760,7 @@ CmStatus          status
 S16 cmPkCkwUeIdChgCfm(pst, suId, transId, ueInfo, status)
 Pst               *pst;
 SuId              suId;
-U32               transId;
+uint32_t               transId;
 CkwUeInfo         *ueInfo;
 CmStatus          status;
 #endif
@@ -907,7 +907,7 @@ Buffer         *mBuf;
 #endif
 {
     SuId       suId = 0;
-    U8         status = 0;
+    uint8_t         status = 0;
     
 
     CMCHKUNPKLOG(SUnpkS16, &suId, mBuf, ECKW028, pst);
@@ -1139,7 +1139,7 @@ Pst            *pst;
 Buffer         *mBuf;
 #endif
 {
-    U8         idx;
+    uint8_t         idx;
 
 
     CMCHKUNPKLOG(oduPackUInt32, &(param->transId), mBuf, ECKW030, pst);
@@ -1262,7 +1262,7 @@ Pst            *pst;
 Buffer         *mBuf;
 #endif
 {
-    U8         idx;
+    uint8_t         idx;
 
 
     CMCHKUNPKLOG(oduPackUInt32, &(param->transId), mBuf, ECKW031, pst);
@@ -1415,7 +1415,7 @@ Buffer            *mBuf;
 {
     S16       ret1;
     SpId      spId = 0;
-    U32       transId = 0;
+    uint32_t       transId = 0;
     CkwUeInfo *ueInfo = NULLP;
     CkwUeInfo *newUeInfo = NULLP;
     
@@ -1513,7 +1513,7 @@ Buffer            *mBuf;
 {
     S16       ret1;
     SuId      suId = 0;
-    U32       transId = 0;
+    uint32_t       transId = 0;
     CkwUeInfo *ueInfo = NULLP;
     CmStatus  status;
     

@@ -210,7 +210,7 @@ S16 RgMiLrgSchL2MeasReq(pst, measInfo)
 #if (ERRCLASS & ERRCLS_ADD_RES) 
    CmLList             *lnk;
 #endif
-   U32                 idx;
+   uint32_t                 idx;
    RgSchL2MeasCb       *measCb = NULLP;
 #ifdef DEBUGP
    Inst      inst = (pst->dstInst - SCH_INST_START); /* Scheduler instance Id */
@@ -322,7 +322,7 @@ S16 RgMiLrgSchL2MeasStopReq(pst, measInfo)
    CmLList             *node = NULLP;
    RgSchL2MeasCb       *measCb = NULLP;
    LrgSchMeasCfmInfo measCfm;
-   U8                  idx;
+   uint8_t                  idx;
 
    for (idx = 0; idx < instCb->numSaps; idx++)
    {
@@ -400,7 +400,7 @@ S16 RgMiLrgSchL2MeasSendReq(pst, measInfo)
    S16                 ret = ROK;
    RgSchCellCb         *cell;
    RgSchCb             *instCb =  &rgSchCb[(pst->dstInst - SCH_INST_START)];
-   U8                  idx;
+   uint8_t                  idx;
 
    cell = NULLP;
    for (idx = 0; idx < instCb->numSaps; idx++)
@@ -645,8 +645,8 @@ RgrSiCfgReqInfo *cfgReqInfo;
 #endif
 {
    S16       ret       = ROK;
-   U8        cfmStatus = RGR_CFG_CFM_NOK;
-   U8        prntTrans[RGR_CFG_TRANSID_SIZE+1];
+   uint8_t        cfmStatus = RGR_CFG_CFM_NOK;
+   uint8_t        prntTrans[RGR_CFG_TRANSID_SIZE+1];
    Inst      instId = pst->dstInst-SCH_INST_START;
 
    memcpy(prntTrans, transId.trans, RGR_CFG_TRANSID_SIZE);
@@ -758,8 +758,8 @@ RgrWarningSiCfgReqInfo *warningSiCfgReqInfo;
 {
    Inst     instId = pst->dstInst-SCH_INST_START;
    S16      ret    = ROK;
-   U8       cfmStatus = RGR_CFG_CFM_NOK;
-   U8       prntTrans[RGR_CFG_TRANSID_SIZE+1];
+   uint8_t       cfmStatus = RGR_CFG_CFM_NOK;
+   uint8_t       prntTrans[RGR_CFG_TRANSID_SIZE+1];
 
    memcpy(prntTrans, transId.trans, RGR_CFG_TRANSID_SIZE);
    prntTrans[RGR_CFG_TRANSID_SIZE] = '\0';
@@ -861,14 +861,14 @@ S16 RgUiRgrWarningSiStopReq
 Pst           *pst,
 SpId          spId,
 RgrCfgTransId transId,
-U8            siId
+uint8_t            siId
 )
 #else
 S16 RgUiRgrWarningSiStopReq(pst,spId, transId, siId)
 Pst           *pst;
 SpId          spId;
 RgrCfgTransId transId;
-U8            siId;
+uint8_t            siId;
 #endif
 {         
    Inst         instId = pst->dstInst-SCH_INST_START;
@@ -942,7 +942,7 @@ S16 RgUiRgrLoadInfReq(pst, spId, transId, loadInfReq)
 #endif
 {
    S16       ret       = ROK;
-   U8        prntTrans[RGR_CFG_TRANSID_SIZE+1];
+   uint8_t        prntTrans[RGR_CFG_TRANSID_SIZE+1];
    Inst      instId = pst->dstInst-SCH_INST_START;
 
    memcpy(prntTrans, transId.trans, RGR_CFG_TRANSID_SIZE);
@@ -1323,16 +1323,16 @@ RgInfSfDatInd    *subfrmInfo;
    RgSchCmnUlUeSpsInfo   *ulSpsUe ;
 #endif
    /* RRM_RBC_X */
-   U32                   idx;
+   uint32_t                   idx;
    /* RRM_RBC_Y */
    
 #ifdef LTE_L2_MEAS
-   U8               qci;
-   U16              datIndActQci = 0;
-   U16              combDatIndActQci = 0; /* Prev and Latest Dat Ind combined */
-   U16              tempUeActQci = 0; /* UE specific Active QCIs */
-   U16              diffBits = 0;
-   U8               lcCount;
+   uint8_t               qci;
+   uint16_t              datIndActQci = 0;
+   uint16_t              combDatIndActQci = 0; /* Prev and Latest Dat Ind combined */
+   uint16_t              tempUeActQci = 0; /* UE specific Active QCIs */
+   uint16_t              diffBits = 0;
+   uint8_t               lcCount;
 #endif
 
    /* No need to chk for cell being NULL as MAC wouldn't have found instance if
@@ -1647,11 +1647,11 @@ RgInfL2MeasCfm     *measCfm;
    CmLList           *lnk;
    RgSchL2MeasCb     *measCb = NULLP;
    RgSchCb           *instCb =  &rgSchCb[inst];
-   U32               idx;
+   uint32_t               idx;
    LrgSchMeasCfmInfo schMeasCfm;
-   U8                qciVal;
-   U8                idx1; /*LTE_L2_MEAS_PHASE2*/ 
-   U8                qciVal1;
+   uint8_t                qciVal;
+   uint8_t                idx1; /*LTE_L2_MEAS_PHASE2*/ 
+   uint8_t                qciVal1;
 
    /* Find the cellCb using cellId in measInfo. Iterate through all cells
     * in rgrsapCb in RgschCb */
@@ -1796,7 +1796,7 @@ RgInfL2MeasCfm     *measCfm;
  *           
  *  @param[in]  Pst   *pst 
  *  @param[in]  SuId  suId 
- *  @param[in]  U8    status
+ *  @param[in]  uint8_t    status
  *  @return  S16
  *      -# ROK 
  *      -# RFAILED 
@@ -1806,13 +1806,13 @@ S16 RgLiTfuSchBndCfm
 (
 Pst     *pst,
 SuId    suId, 
-U8      status
+uint8_t      status
 )
 #else
 S16 RgLiTfuSchBndCfm(pst, suId, status)
 Pst     *pst; 
 SuId    suId; 
-U8      status;
+uint8_t      status;
 #endif
 {
    S16 ret;
@@ -2711,13 +2711,13 @@ S16 RgLiTfuErrInd
 (
 Pst                *pst, 
 SuId               suId, 
-TfuErrIndInfo       *errInd
+TfuErrIndInfo      *errInd
 )
 #else
 S16 RgLiTfuErrInd(pst, suId, errInd)
 Pst                *pst; 
 SuId               suId; 
-TfuErrIndInfo       *errInd;
+TfuErrIndInfo      *errInd;
 #endif
 {
    S16   ret = ROK;

@@ -1620,7 +1620,7 @@ Elmnt elmnt;
 Buffer *mBuf;
 #endif
 {
-    U8 subAction;            /* sub action */     
+    uint8_t subAction;            /* sub action */     
 
 
     switch( elmnt )
@@ -2153,7 +2153,7 @@ Elmnt elmnt;
 Buffer *mBuf;
 #endif
 {
-   U8 subAction;
+   uint8_t subAction;
    RlcDbgCntrl *dbgCntrl;
    RlcTrcCntrl *trcCntrl;
 
@@ -2578,8 +2578,8 @@ RlcL2MeasReqInfo *param;
 Buffer *mBuf;
 #endif
 {
-   U8 idx;
-   U16 idx1;
+   uint8_t idx;
+   uint16_t idx1;
 
 
    if((param->measType & LKW_L2MEAS_DL_IP) ||
@@ -2617,12 +2617,12 @@ Buffer *mBuf;
 S16 cmPkLkwL2MeasStopReq
 (
 Pst *pst,
-U8  measType
+uint8_t  measType
 )
 #else
 S16 cmPkLkwL2MeasStopReq(pst, measType)
 Pst *pst;
-U8 measType;
+uint8_t measType;
 #endif
 {
    Buffer *mBuf = NULLP;
@@ -2644,12 +2644,12 @@ U8 measType;
 S16 cmPkLkwL2MeasSendReq
 (
 Pst *pst,
-U8  measType
+uint8_t  measType
 )
 #else
 S16 cmPkLkwL2MeasSendReq(pst, measType)
 Pst *pst;
-U8 measType;
+uint8_t measType;
 #endif
 {
    Buffer *mBuf = NULLP;
@@ -2793,8 +2793,8 @@ RlcL2MeasReqInfo *param;
 Buffer *mBuf;
 #endif
 {
-   U8 idx;
-   U16 idx1; 
+   uint8_t idx;
+   uint16_t idx1; 
 
 
    CMCHKUNPK(oduPackUInt8, &param->measType, mBuf);
@@ -2844,7 +2844,7 @@ Pst *pst;
 Buffer *mBuf;
 #endif
 {
-   U8 measType;
+   uint8_t measType;
 
    CMCHKUNPK(oduPackUInt8, &measType, mBuf);
    SPutMsg(mBuf);
@@ -2865,7 +2865,7 @@ Pst *pst;
 Buffer *mBuf;
 #endif
 {
-   U8    measType;
+   uint8_t    measType;
 
 
    CMCHKUNPK(oduPackUInt8, &measType, mBuf); 
@@ -2886,8 +2886,8 @@ RlcL2MeasCfmEvt *measCfmEvt;
 #endif
 {
    Buffer *mBuf = NULLP;
-   U8 idx;
-   U8 idx1;
+   uint8_t idx;
+   uint8_t idx1;
 
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
@@ -2984,13 +2984,13 @@ S16 cmPkRlcL2MeasCfmInfo
 (
 RlcL2MeasCfmInfo *param,
 Buffer *mBuf,
-U8 measType
+uint8_t measType
 )
 #else
 S16 cmPkRlcL2MeasCfmInfo(param, mBuf, measType)
 RlcL2MeasCfmInfo *param;
 Buffer *mBuf;
-U8 measType;
+uint8_t measType;
 #endif
 {
 
@@ -3027,13 +3027,11 @@ Pst *pst;
 Buffer *mBuf;
 #endif
 {
-   U8 idx;
-   U16 idx1;
+   uint8_t idx;
+   uint16_t idx1;
    RlcL2MeasCfmEvt measCfmEvt;
 
-
    memset(&measCfmEvt, 0 , sizeof(RlcL2MeasCfmEvt));
-
    if (oduPackUInt32(&measCfmEvt.transId, mBuf) != ROK) {
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -3114,13 +3112,13 @@ S16 cmUnpkRlcL2MeasCfmInfo
 (
 RlcL2MeasCfmInfo *param,
 Buffer *mBuf,
-U8 measType
+uint8_t measType
 )
 #else
 S16 cmUnpkRlcL2MeasCfmInfo(param, mBuf, measType)
 RlcL2MeasCfmInfo *param;
 Buffer *mBuf;
-U8 measType;
+uint8_t measType;
 #endif
 {
 
@@ -3148,14 +3146,14 @@ U8 measType;
 S16 cmPkLkwL2MeasStopCfm
 (
 Pst * pst,
-U8 measType,
-U8 status
+uint8_t measType,
+uint8_t status
 )
 #else
 S16 cmPkLkwL2MeasStopCfm(pst, measType,status)
 Pst * pst;
-U8  measType;
-U8  status
+uint8_t  measType;
+uint8_t  status
 #endif
 {
    Buffer *mBuf = NULLP;
@@ -3188,8 +3186,8 @@ Pst *pst;
 Buffer *mBuf;
 #endif
 {
-   U8 measType;
-   U8 status;
+   uint8_t measType;
+   uint8_t status;
    CMCHKUNPK(oduPackUInt8,  &measType, mBuf);
    CMCHKUNPK(oduPackUInt8,  &status, mBuf);
    SPutMsg(mBuf);

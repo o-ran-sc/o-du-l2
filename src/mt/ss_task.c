@@ -860,7 +860,7 @@ ActvTsk actvTsk;                /* activation function */
    SsTTskEntry *tTsk;
 /* ss029.103: addition: multiple procIds related changes */ 
 #ifdef SS_MULTIPLE_PROCS
-   U16 procIdIdx;
+   uint16_t procIdIdx;
 #endif
 
 
@@ -1166,7 +1166,7 @@ ActvTsk cbTsk;
    SsIdx idx;
 	S16   ret = ROK;
 #ifdef SS_MULTIPLE_PROCS
-   U16 procIdIdx;
+   uint16_t procIdIdx;
 #endif /* SS_MULTIPLE_PROCS */
 
 
@@ -1289,7 +1289,7 @@ Inst inst;                      /* instance */
    SsTmrEntry  *tmr;
 /* ss029.103: addition: multiple procIds related changes */ 
 #ifdef SS_MULTIPLE_PROCS
-   U16 procIdIdx;
+   uint16_t procIdIdx;
 #endif /* SS_MULTIPLE_PROCS */
  /* ss002.301 Additions */
    Buffer *mBuf;
@@ -1806,25 +1806,25 @@ SSTskId *tskId;                 /* filled in with system task ID */
 #ifdef ANSI
 S16 SRegLogCfg
 (
-U8 mode,
+uint8_t mode,
 S8 *path,
-U32 size,
+uint32_t size,
 S8 *IPA,
-U16 port
+uint16_t port
 )
 #else
 S16 SRegLogCfg(mode, path, size, IPA, port)
-U8 mode;
+uint8_t mode;
 S8 *path;
-U32 size;
+uint32_t size;
 S8 *IPA;
-U16 port
+uint16_t port
 #endif
 {
 
 #ifdef WIN32
    WSADATA wsaData;
-	U32 iRes;
+	uint32_t iRes;
 #endif
 
    /*ss013.301: Fixed Warnings for 32/64 bit compilation*/ 
@@ -1977,7 +1977,7 @@ S8 *logBuf
 #endif
 {
    S8 *buffer;
-   PRIVATE U16 logFileCnt = 0;
+   PRIVATE uint16_t logFileCnt = 0;
    S8 newFileName[SS_MAX_PATH];
 #ifdef WIN32
    size_t writeNum;
@@ -1991,12 +1991,12 @@ S8 *logBuf
 
 	if (osCp.logger.opt & 0x01)
 	{
-      writeNum = fwrite(buffer, sizeof(U8), cmStrlen((U8 *)buffer), 
+      writeNum = fwrite(buffer, sizeof(uint8_t), cmStrlen((uint8_t *)buffer), 
 		                  osCp.logger.filep);
 	}
 	if (osCp.logger.opt & 0x02)
 	{
-      writeNum = sendto(osCp.logger.socketdes, buffer, cmStrlen((U8 *)buffer), 0, (struct sockaddr*)&osCp.logger.remoteAddr, sizeof(osCp.logger.remoteAddr));
+      writeNum = sendto(osCp.logger.socketdes, buffer, cmStrlen((uint8_t *)buffer), 0, (struct sockaddr*)&osCp.logger.remoteAddr, sizeof(osCp.logger.remoteAddr));
       /*ss013.301 : Returned after sending to socket*/
       return ROK;
 	}
@@ -2200,7 +2200,7 @@ S16 SRegCpuInfo (cpuInfo)
 SCpuInfo *cpuInfo;  /* Information about the cores/threads per core */
 #endif
 {
-   U32 coreCount = 0;
+   uint32_t coreCount = 0;
 
    /*ss013.301 :Fix for TRACE5 feature crash due to missing TRC MACRO*/
    /* check the number of cores */
@@ -2219,7 +2219,7 @@ SCpuInfo *cpuInfo;  /* Information about the cores/threads per core */
    /* if the cpu register is supplied then use it */
    for (; coreCount < cpuInfo->numCores; coreCount++)
    {
-      U32 thrCnt = 0;
+      uint32_t thrCnt = 0;
       for (;thrCnt < SS_MAX_THREADS_PER_CORE;thrCnt++)
       {
          osCp.mCInfo.coreInfo[coreCount].tskPerCoreLst[thrCnt] = -1;
@@ -2257,12 +2257,12 @@ SCpuInfo *cpuInfo;  /* Information about the cores/threads per core */
 S16 SGetAffinity
 (
 SSTskId *tskId,                  /* filled in with system task ID */
-U32 *coreId                      /* the core/processor id to which the affinity is set */
+uint32_t *coreId                      /* the core/processor id to which the affinity is set */
 )
 #else
 S16 SGetAffinity(tskId, coreId)
 SSTskId *tskId;                 /* filled in with system task ID */
-U32 *coreId;                    /* the core/processor id to which the affinity is set */
+uint32_t *coreId;                    /* the core/processor id to which the affinity is set */
 #endif
 {
    S16 ret;
@@ -2302,14 +2302,14 @@ S16 SSetAffinity
 (
 SSTskId *tskId,                  /* filled in with system task ID */
 SsAffinityMode mode,             /* the mode according to which the affinty is set */
-U32 coreId,                      /* the core/processor id to which the affinity has to be set */
+uint32_t coreId,                      /* the core/processor id to which the affinity has to be set */
 SSTskId *tskAssociatedTskId      /* filled in with system task ID of the associated layer */
 )
 #else
 S16 SSetAffinity(tskId, mode, coreId, tskAssociatedTskId)
 SSTskId *tskId;                 /* filled in with system task ID */
 SsAffinityMode mode;            /* the mode according to which the affinty is set */
-U32 coreId;                     /* the core/processor id to which the affinity has to be set */
+uint32_t coreId;                     /* the core/processor id to which the affinity has to be set */
 SSTskId *tskAssociatedTskId;    /* filled in with system task ID of the associated layer */
 #endif
 {
@@ -2337,7 +2337,7 @@ SSTskId *tskAssociatedTskId;    /* filled in with system task ID of the associat
    {
        case SS_AFFINITY_MODE_DEFAULT:
        {
-           U32 coreCounter = 0, coreIndex = 0;
+           uint32_t coreCounter = 0, coreIndex = 0;
            S8 repeatFlag = 1;
            SEARCH_FOR_CORE:
               /*ss013.301: Fixed Warnings for 32/64 bit compilation*/ 
@@ -2438,7 +2438,7 @@ SSTskId *tskAssociatedTskId;    /* filled in with system task ID of the associat
           case SS_AFFINITY_MODE_ASSOC:
           {
               /* search for the associated tsk id in osCp */
-              U32 coreIndex = 0, threadIndex = 0;
+              uint32_t coreIndex = 0, threadIndex = 0;
               Bool tskNotFound = TRUE;
               for (;tskNotFound && coreIndex < SS_MAX_CORES; coreIndex++)
               {
@@ -2535,8 +2535,8 @@ SSTskId *tskAssociatedTskId;    /* filled in with system task ID of the associat
              } /* end if */
              else if (coreId == SS_DEFAULT_CORE)
              {
-                 U32 coreCounter = 0;
-                 U32 coreIndex = 0;
+                 uint32_t coreCounter = 0;
+                 uint32_t coreIndex = 0;
                  /*ss013.301: Fixed Warnings for 32/64 bit compilation*/ 
                  for (coreIndex = osCp.mCInfo.currentCore;  
                       coreCounter < osCp.mCInfo.cpuInfo.numCores; 
@@ -2652,7 +2652,7 @@ SSTskId tskId;                  /* system task to be destroyed */
 	/* ss002.301 Additions */
 /*ss013.301 : changes related to SS_AFFINITY_SUPPORT*/
 #if defined(SS_MULTICORE_SUPPORT) || defined(SS_AFFINITY_SUPPORT)
-   U32 tskInd = 0;
+   uint32_t tskInd = 0;
 #endif /* SS_MULTICORE_SUPPORT || SS_AFFINITY_SUPPORT*/
 
 
@@ -2873,10 +2873,10 @@ SSTskId tskId;                  /* system task to be destroyed */
       if (osCp.sTskTbl[tskInd].tskId == sTsk->tskId)
       {
           /* search for the tskId in coreInfo */
-          U32 coreId = 0;
+          uint32_t coreId = 0;
           for (coreId = 0; coreId < SS_MAX_CORES; coreId++)
           {
-             U32 thrId = 0;
+             uint32_t thrId = 0;
              for (thrId = 0; thrId < SS_MAX_THREADS_PER_CORE; thrId++)
              {
                 if (sTsk->tskId == osCp.mCInfo.coreInfo[coreId].tskPerCoreLst[thrId])
@@ -2988,7 +2988,7 @@ SSTskId sTskId;                 /* system task to use */
    SsSTskEntry *sTsk;
 /* ss029.103: addition: multiple procIds related changes */ 
 #ifdef SS_MULTIPLE_PROCS
-   U16 procIdIdx;
+   uint16_t procIdIdx;
 #endif /* SS_MULTIPLE_PROCS */
 #ifdef SS_MULTICORE_SUPPORT
    SsTTskEntry *tTsk;
@@ -3448,7 +3448,7 @@ Inst inst;                      /* instance ID of the task */
    SsSTskEntry *sTsk;
 /* ss029.103: addition: multiple procIds related changes */ 
 #ifdef SS_MULTIPLE_PROCS
-   U16 procIdIdx;
+   uint16_t procIdIdx;
 #endif /* SS_MULTIPLE_PROCS */
 
 
@@ -3777,8 +3777,8 @@ Buffer *mBuf;                   /* message to post */
 #endif
 /* ss029.103: addition: multiple procIds related changes */ 
 #ifdef SS_MULTIPLE_PROCS
-   U16 srcProcIdIdx;
-   U16 dstProcIdIdx;
+   uint16_t srcProcIdIdx;
+   uint16_t dstProcIdIdx;
 #endif /* SS_MULTIPLE_PROCS */
 /*ss004.301: Cavium changes */
 #ifdef SS_SEUM_CAVIUM
@@ -3791,7 +3791,7 @@ Buffer *mBuf;                   /* message to post */
    Pst  tempPst;
 
 #ifdef MSPD_MLOG_NEW
-   U32 t = MacGetTick();
+   uint32_t t = MacGetTick();
 #endif
  
 
@@ -3880,7 +3880,7 @@ Buffer *mBuf;                   /* message to post */
       /* copy the Pst structure into a local duplicate */
       for (i = 0;  i < (S16)sizeof(Pst);  i++)
       {
-         *(((U8 *)(&nPst)) + i) = *(((U8 *) pst) + i);
+         *(((uint8_t *)(&nPst)) + i) = *(((uint8_t *) pst) + i);
       }
       pst = &nPst;
 #ifdef SS_DRVR_SUPPORT
@@ -4046,7 +4046,7 @@ Buffer *mBuf;                   /* message to post */
             {
                for (j = 0;  j < (S16)sizeof(Pst);  j++)
                {
-                  *(((U8 *)(&nPst)) + j) = *(((U8 *) pst) + j);
+                  *(((uint8_t *)(&nPst)) + j) = *(((uint8_t *) pst) + j);
                }
                pst = &nPst;
                nPstUsed = TRUE;
@@ -4184,7 +4184,7 @@ Buffer *mBuf;                   /* message to post */
    /* plug the Pst structure into the message information portion */
    msgInfo = (SsMsgInfo *) (mBuf->b_rptr);
    for (i = 0;  i < (S16 )sizeof(Pst);  i++)
-      *(((U8 *)(&msgInfo->pst)) + i) = *(((U8 *) &(tempPst)) + i);
+      *(((uint8_t *)(&msgInfo->pst)) + i) = *(((uint8_t *) &(tempPst)) + i);
 
 /* ss004.301 : Cavium cahnges */
 #ifdef SS_SEUM_CAVIUM
@@ -4403,7 +4403,7 @@ Ent *ent;                        /* entity */
 #endif
 {
 
-   U32 tskCnt = 0;
+   uint32_t tskCnt = 0;
 
    /* Get the tapa task entity Ids from the osCp structure */
    for(tskCnt = 0; tskCnt < osCp.numTTsks; tskCnt++)
@@ -4443,7 +4443,7 @@ Ent ent;                        /* entity */
 #endif
 {
 
-   U32 tskCnt = 0;
+   uint32_t tskCnt = 0;
    S16 r = 0;
 
 
@@ -4507,7 +4507,7 @@ Bool  *hstReg;                        /* entity */
 #endif
 {
 
-   U32 tskCnt = 0;
+   uint32_t tskCnt = 0;
    Bool found = FALSE;
    *hstReg = 0;
 
@@ -4536,11 +4536,11 @@ Bool  *hstReg;                        /* entity */
 #ifdef ANSI
 S16 SInitWatchdog
 (
-U16 port
+uint16_t port
 )
 #else
 S16 SInitWatchdog(port)
-U16 port;
+uint16_t port;
 #endif
 {
  return ssdInitWatchDog(port);
@@ -4549,19 +4549,19 @@ U16 port;
 #ifdef ANSI
 S16 SRegCfgWd
 (
-U32 numNodes,
-U8  *addr[],
-U16 port[],
-U32 timeout,
+uint32_t numNodes,
+uint8_t  *addr[],
+uint16_t port[],
+uint32_t timeout,
 WdUserCallback callback,
 void *data
 )
 #else
 S16 SRegCfgWd(numNodes, addr, port, timeout, callback, data)
-U32 numNodes;
-U8  *addr[];
-U16 port[];
-U32 timeout;
+uint32_t numNodes;
+uint8_t  *addr[];
+uint16_t port[];
+uint32_t timeout;
 WdUserCallback callback;
 void *data;
 #endif
@@ -4643,11 +4643,11 @@ void;
 #ifdef ANSI
 S16 SStartHrtBt
 (
-U8 timeInterval /* time interval */
+uint8_t timeInterval /* time interval */
 )
 #else
 S16 SStartHrtBt(timeInterval)
-U8 timeInterval;
+uint8_t timeInterval;
 #endif
 {
 
@@ -4716,7 +4716,7 @@ Buffer *mBuf;               /* message buffer */
    DateTime dt;
 #endif /* DEBUGP */
    Txt prntBuf[PRNTSZE];
-   U16           n;
+   uint16_t           n;
    S16			  err;
    struct sockaddr_in tmpaddr;
    Txt           hbMsg[SS_WD_HB_MSG_SIZE];
@@ -4815,8 +4815,8 @@ ProcId procId,
 Ent ent,                       /* entity */
 Inst inst,
 Event *curEvent,
-U32 *curEvtTime,
-U64 *totTime
+uint32_t *curEvtTime,
+uint64_t *totTime
 )
 #else
 S16 SGetThrdProf(sTskId, procId, ent, inst, evnt, curEvent, curEvtTime, totTime)
@@ -4825,8 +4825,8 @@ ProcId procId;
 Ent ent;                      /* entity */
 Inst inst;
 Event *curEvent;
-U32 *curEvtTime;
-U64 *totTime;
+uint32_t *curEvtTime;
+uint64_t *totTime;
 #endif
 #else
 #ifdef ANSI
@@ -4836,8 +4836,8 @@ SSTskId *sTskId,
 Ent ent,                       /* entity */
 Inst inst,
 Event *curEvent,
-U32 *curEvtTime,
-U64 *totTime
+uint32_t *curEvtTime,
+uint64_t *totTime
 )
 #else
 S16 SGetThrdProf(sTskId, ent, inst, curEvent,curEvtTime, totTime)
@@ -4845,8 +4845,8 @@ SSTskId *sTskId;
 Ent ent;                      /* entity */
 Inst inst;
 Event *curEvent;
-U32 *curEvtTime;
-U64 *totTime;
+uint32_t *curEvtTime;
+uint64_t *totTime;
 #endif
 #endif /* SS_MULTIPLE_PROCS */
 {
@@ -4854,7 +4854,7 @@ U64 *totTime;
    SsIdx idx;
    SsTTskEntry *tTsk;
 #ifdef SS_MULTIPLE_PROCS
-   U16 procIdIdx;
+   uint16_t procIdIdx;
 #endif
 
 
@@ -4932,11 +4932,11 @@ U64 *totTime;
 #ifdef ANSI
 S16 SRegTskInfo
 (
-U8 *cfgFile
+uint8_t *cfgFile
 )
 #else
 S16 SRegTskInfo(cfgFile)
-U8 *cfgFile;
+uint8_t *cfgFile;
 #endif
 {
    return cmCfgrTskReg(cfgFile); 

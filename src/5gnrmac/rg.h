@@ -52,8 +52,8 @@
 
 #define RG_MAC_HDR_SIZE 250
 #define RG_MAC_CE_SIZE  250
-U32 MacPtrAddress;
-U32 macHeader[2];
+uint32_t MacPtrAddress;
+uint32_t macHeader[2];
 
 #define RG_ADD_DBuf(_dBuf,_size,_mBuf)\
 { \
@@ -62,7 +62,7 @@ U32 macHeader[2];
   ssGetDBufOfSize(mInfo->region,_size, &_dBuf); \
   SUpdMsg(_mBuf, _dBuf,0);\
   _dBuf->b_wptr = _dBuf->b_rptr =  (_dBuf->b_datap->db_base + 5);\
-  MacPtrAddress = (U32)_dBuf->b_wptr;\
+  MacPtrAddress = (uint32_t)_dBuf->b_wptr;\
 }
 #endif
 
@@ -427,7 +427,7 @@ toFill.slot = (RG_NUM_SUB_FRAMES_5G + crntTime.slot - (dcr)) % (RG_NUM_SUB_FRAME
 #ifdef L2_OPTMZ
 #define RG_FREE_TB(_tb)\
 {\
-   U32 lchIdx, pduIdx;\
+   uint32_t lchIdx, pduIdx;\
    SResetMBuf(_tb->macHdr);\
    SResetMBuf(_tb->macCes);\
    _tb->tbPres = FALSE;\
@@ -451,7 +451,7 @@ toFill.slot = (RG_NUM_SUB_FRAMES_5G + crntTime.slot - (dcr)) % (RG_NUM_SUB_FRAME
 
 #define RG_FREE_SAVED_TB(_tb)\
 {\
-   U32 lchIdx, pduIdx;\
+   uint32_t lchIdx, pduIdx;\
    RG_FREE_MSG(_tb->macHdr);\
    RG_FREE_MSG(_tb->macCes);\
    _tb->tbPres = FALSE;\
@@ -491,7 +491,7 @@ toFill.slot = (RG_NUM_SUB_FRAMES_5G + crntTime.slot - (dcr)) % (RG_NUM_SUB_FRAME
  **********************************************************/
 #define RG_DROP_RGUDDATREQ_MBUF(_datReq)\
 {\
-   U32 idx5,idx6,idx7;\
+   uint32_t idx5,idx6,idx7;\
    for (idx5=0; idx5 < _datReq.nmbOfTbs; idx5++)\
    {\
       for (idx6=0; idx6 < _datReq.datReqTb[idx5].nmbLch; idx6++)\

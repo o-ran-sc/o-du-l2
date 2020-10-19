@@ -325,24 +325,24 @@
 #define CM_INET_FD_ZERO(_fdSet)            FD_ZERO(_fdSet)
 
 /* macros to convert from network to host byteorder and vice versa */
-#define CM_INET_NTOH_U32(_long)  ntohl(_long)
-#define CM_INET_HTON_U32(_long)  htonl(_long)
-#define CM_INET_NTOH_U16(_word)  ntohs(_word)
-#define CM_INET_HTON_U16(_word)  htons(_word)
+#define CM_INET_NTOH_UINT32(_long)  ntohl(_long)
+#define CM_INET_HTON_UINT32(_long)  htonl(_long)
+#define CM_INET_NTOH_UINT16(_word)  ntohs(_word)
+#define CM_INET_HTON_UINT16(_word)  htons(_word)
 
-/* peeks a U8 from the given position */
-#define CM_INET_PEEK_U8(_sockFd, _fromAddr, _info, _pos, _octet, _ret)  \
-   _ret = cmInetPeek(_sockFd, _fromAddr, _info, _pos, sizeof(U8), &_octet)  
+/* peeks a uint8_t from the given position */
+#define CM_INET_PEEK_UINT8(_sockFd, _fromAddr, _info, _pos, _octet, _ret)  \
+   _ret = cmInetPeek(_sockFd, _fromAddr, _info, _pos, sizeof(uint8_t), &_octet)  
           
 /* 
- * peeks a U16 from the given position (it is supposed that the U16 is 
+ * peeks a uint16_t from the given position (it is supposed that the uint16_t is 
  * represented in big endian representation within the data stream) 
  */
-#define CM_INET_PEEK_U16(_sockFd, _fromAddr, _info, _pos, _word, _ret)  \
+#define CM_INET_PEEK_UINT16(_sockFd, _fromAddr, _info, _pos, _word, _ret)  \
    {  \
-      U8 _tempWord[2];  \
+      uint8_t _tempWord[2];  \
       \
-      _ret = cmInetPeek(_sockFd, _fromAddr, _info, _pos, sizeof(U16), _tempWord);  \
+      _ret = cmInetPeek(_sockFd, _fromAddr, _info, _pos, sizeof(uint16_t), _tempWord);  \
       if (_ret == ROK)  \
       {  \
          _word = ((_tempWord[0] << 8) + (_tempWord[1]));  \
@@ -350,14 +350,14 @@
    }
 
 /* 
- * peeks a U32 from the given position (it is supposed that the U32 is 
+ * peeks a uint32_t from the given position (it is supposed that the uint32_t is 
  * represented in big endian representation within the data stream)
  */
-#define CM_INET_PEEK_U32(_sockFd, _fromAddr, _info, _pos, _long, _ret)  \
+#define CM_INET_PEEK_UINT32(_sockFd, _fromAddr, _info, _pos, _long, _ret)  \
    {  \
-      U8 _tempLong[4];  \
+      uint8_t _tempLong[4];  \
       \
-      _ret = cmInetPeek(_sockFd, _fromAddr, _info, _pos, sizeof(U32), _tempLong);  \
+      _ret = cmInetPeek(_sockFd, _fromAddr, _info, _pos, sizeof(uint32_t), _tempLong);  \
       if (_ret == ROK)  \
       {  \
          _long = ((_tempLong[0] << 24) + (_tempLong[1] << 16)  \
@@ -397,7 +397,7 @@
 #ifdef IPV6_OPTS_SUPPORTED
 #define CM_INET_FREE_IPV6_HDRPARM(_region, _pool, _hdrParmIpv6) \
 { \
-   U8 numOpts; \
+   uint8_t numOpts; \
    if( _hdrParmIpv6->ipv6ExtHdr.hbhHdrPrsnt) \
    { \
       for(numOpts = _hdrParmIpv6->ipv6ExtHdr.hbhOptsArr.numHBHOpts;  \
@@ -534,8 +534,8 @@
 
 #define CM_INET_GET_IPV4_ADDR_FRM_STRING(_value, _str)                    \
 {                                                                         \
-   U16     _hiWord;                                                       \
-   U16     _loWord;                                                       \
+   uint16_t     _hiWord;                                                       \
+   uint16_t     _loWord;                                                       \
                                                                           \
    _hiWord = 0;                                                           \
    _loWord = 0;                                                           \

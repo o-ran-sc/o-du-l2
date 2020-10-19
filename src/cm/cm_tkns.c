@@ -219,7 +219,7 @@ TknStrOSXL *tknStr;             /* token string */
 Buffer     *mBuf;               /* message buffer */
 #endif
 {
-   U16 ndx;
+   uint16_t ndx;
 
 
    if(tknStr->pres)
@@ -267,8 +267,8 @@ TknStrBSXL *tknStr;             /* token string */
 Buffer     *mBuf;               /* message buffer */
 #endif
 {
-   U16 ndx;
-   U16 len;
+   uint16_t ndx;
+   uint16_t len;
 
 
    if(tknStr->pres)
@@ -320,7 +320,7 @@ TknStrBMP4 *tknStr;             /* token string */
 Buffer     *mBuf;               /* message buffer */
 #endif
 {
-   U8 ndx;
+   uint8_t ndx;
 
 
    if(tknStr->pres)
@@ -368,7 +368,7 @@ TknStrBMPXL *tknStr;             /* token string */
 Buffer      *mBuf;               /* message buffer */
 #endif
 {
-   U16 ndx;
+   uint16_t ndx;
 
 
    if(tknStr->pres)
@@ -414,7 +414,7 @@ TknStrUNI4 *tknStr;             /* token string */
 Buffer     *mBuf;               /* message buffer */
 #endif
 {
-   U8 ndx;
+   uint8_t ndx;
 
 
    if(tknStr->pres)
@@ -462,7 +462,7 @@ TknStrUNIXL *tknStr;             /* token string */
 Buffer      *mBuf;               /* message buffer */
 #endif
 {
-   U16 ndx;
+   uint16_t ndx;
 
 
    if(tknStr->pres)
@@ -655,7 +655,7 @@ Buffer     *mBuf;               /* message buffer */
 Ptr         ptr;                /* pointer to control memory block */
 #endif
 {
-   U16 ndx;
+   uint16_t ndx;
 
    CMCHKUNPK(oduPackUInt8, &tknStr->pres, mBuf);
 
@@ -709,8 +709,8 @@ Ptr         ptr;                /* pointer to control memory block */
 Buffer     *mBuf;               /* message buffer */
 #endif
 {
-   U16 ndx;
-   U16 len;
+   uint16_t ndx;
+   uint16_t len;
 
 
    CMCHKUNPK(oduPackUInt8, &tknStr->pres, mBuf);
@@ -767,7 +767,7 @@ TknStrBMP4 *tknStr;             /* token string */
 Buffer     *mBuf;               /* message buffer */
 #endif
 {
-   U8 ndx;
+   uint8_t ndx;
 
 
    /* Token Header */
@@ -817,7 +817,7 @@ Buffer      *mBuf;               /* message buffer */
 Ptr          ptr;                /* pointer to control memory block */
 #endif
 {
-   U16 ndx;
+   uint16_t ndx;
 
 
    CMCHKUNPK(oduPackUInt8, &tknStr->pres, mBuf);
@@ -870,7 +870,7 @@ TknStrUNI4 *tknStr;             /* token string */
 Buffer     *mBuf;               /* message buffer */
 #endif
 {
-   U8 ndx;
+   uint8_t ndx;
 
 
    /* Token Header */
@@ -920,7 +920,7 @@ Buffer      *mBuf;               /* message buffer */
 Ptr          ptr;                /* pointer to control memory block */
 #endif
 {
-   U16 ndx;
+   uint16_t ndx;
 
 
    CMCHKUNPK(oduPackUInt8, &tknStr->pres, mBuf);

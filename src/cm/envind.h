@@ -205,28 +205,28 @@
 
 /* RG: changed the order of parentheses to make the casts more accurate */
 
-#define GetHiByte(w)   (((U16)(w) >> 8) & 0xff)      /* get hi byte from word */
-#define GetLoByte(w)   ((U16)(w) & 0xff)             /* get lo byte from word */
-#define GetHiWord(l)   (((U32)(l) >> 16) & 0xffffL)  /* get hi word of long */
-#define GetLoWord(l)   ((U32)(l) & 0xffffL)          /* get lo word of long */
+#define GetHiByte(w)   (((uint16_t)(w) >> 8) & 0xff)      /* get hi byte from word */
+#define GetLoByte(w)   ((uint16_t)(w) & 0xff)             /* get lo byte from word */
+#define GetHiWord(l)   (((uint32_t)(l) >> 16) & 0xffffL)  /* get hi word of long */
+#define GetLoWord(l)   ((uint32_t)(l) & 0xffffL)          /* get lo word of long */
 
 /* envind_h_001_102: add 64 bit support */
 #if (defined(ALPHA) || defined(BIT_64))
-#define GetLo32Bit(l) ((U64)(l) & 0xffffffffL) /*get lo 32 bits */
-#define GetHi32Bit(l) (((U64)(l) >> 32) & 0xffffffffL) /*get hi 32 bits */
+#define GetLo32Bit(l) ((uint64_t)(l) & 0xffffffffL) /*get lo 32 bits */
+#define GetHi32Bit(l) (((uint64_t)(l) >> 32) & 0xffffffffL) /*get hi 32 bits */
 #endif
 
 /* RG: changed put macros so the target does not have to be cleared before use */
 
-#define PutHiByte(w,b) (U16) (((U16)(b) << 8) | ((U16)(w) & 0x00ff))      /* put hi byte to word */
-#define PutLoByte(w,b) (U16) (((U16)(b) & 0xff) | ((U16)(w) & 0xff00))             /* put lo byte to word */
-#define PutHiWord(l,w) (U32) (((U32)(w) << 16) | ((U32)(l) & (U32)0x0000ffff)) /* put hi word to long */
-#define PutLoWord(l,w) (U32) (((U32)(w) & 0xffff) | ((U32)(l) & (U32)0xffff0000))         /* put lo word to long */
+#define PutHiByte(w,b) (uint16_t) (((uint16_t)(b) << 8) | ((uint16_t)(w) & 0x00ff))      /* put hi byte to word */
+#define PutLoByte(w,b) (uint16_t) (((uint16_t)(b) & 0xff) | ((uint16_t)(w) & 0xff00))             /* put lo byte to word */
+#define PutHiWord(l,w) (uint32_t) (((uint32_t)(w) << 16) | ((uint32_t)(l) & (uint32_t)0x0000ffff)) /* put hi word to long */
+#define PutLoWord(l,w) (uint32_t) (((uint32_t)(w) & 0xffff) | ((uint32_t)(l) & (uint32_t)0xffff0000))         /* put lo word to long */
 
 /* envind_h_001_102: add 64 bit support */
 #if (defined(ALPHA) || defined(BIT_64))
-#define PutLo32Bit(l,w) (U64) (((U64)(w) & 0xffffffff) | ((U64)(l) & (U64)0xffffffff00000000))  /* put lo 32 bits */
-#define PutHi32Bit(l,w) (U64) (((U64)(w) << 32) | ((U64)(l) & (U64)0x00000000ffffffff))         /* put hi 32 bits */
+#define PutLo32Bit(l,w) (uint64_t) (((uint64_t)(w) & 0xffffffff) | ((uint64_t)(l) & (uint64_t)0xffffffff00000000))  /* put lo 32 bits */
+#define PutHi32Bit(l,w) (uint64_t) (((uint64_t)(w) << 32) | ((uint64_t)(l) & (uint64_t)0x00000000ffffffff))         /* put hi 32 bits */
 #endif
 
 #define Char(c)        ((c) & 0x7f)             /* truncate to 7 bits */

@@ -73,7 +73,7 @@ RgSchUeCellInfo  *sCell
   *   @param[in]  RgSchCellCb    *cell
   *   @param[in]  Ptr            cb
   *   @param[in]  S16            tmrEvnt
-  *   @param[in]  U32            tmrVal
+  *   @param[in]  uint32_t            tmrVal
   *   @return  Void
   */
 #ifdef ANSI
@@ -82,14 +82,14 @@ Void rgSCHTmrStartTmr
 RgSchCellCb *cell,
 Ptr         cb,
 S16         tmrEvnt,
-U32         tmrVal
+uint32_t         tmrVal
 )
 #else
 Void rgSCHTmrStartTmr (cell, cb, tmrEvnt, tmrVal)
 RgSchCellCb *cell;
 Ptr         cb;
 S16         tmrEvnt;
-U32         tmrVal;
+uint32_t         tmrVal;
 #endif
 {
    CmTmrArg          arg;
@@ -147,7 +147,7 @@ U32         tmrVal;
       case RG_SCH_TMR_BSR:
          {
 #ifdef NO_BSR_SR_5GTF
-            RETVOID;
+            return;
 #endif
             arg.timers = &(ue->bsrTmr);
             break;
@@ -174,7 +174,7 @@ U32         tmrVal;
       default:
          RLOG_ARG0(L_ERROR,DBG_INSTID,cell->instIdx,  
             "rgSCHTmrStartTmr() Incorrect Timer event");
-         RETVOID;
+         return;
    }
 
    arg.tqCp = &(cell->tqCp);
@@ -185,7 +185,7 @@ U32         tmrVal;
    arg.max  = 1;
    arg.tNum = NOTUSED;
    cmPlcCbTq(&arg);
-   RETVOID;
+   return;
 
 } /* end of */ 
 
@@ -271,7 +271,7 @@ Ptr           cb;
       case RG_SCH_TMR_BSR:
          {
 #ifdef NO_BSR_SR_5GTF
-            RETVOID;
+            return;
 #endif
             arg.timers = &(ue->bsrTmr);
             break;
@@ -300,7 +300,7 @@ Ptr           cb;
       default:
          RLOG_ARG0(L_ERROR,DBG_INSTID,cell->instIdx,  
             "rgSCHTmrStopTmr() Incorrect Timer event");
-         RETVOID;
+         return;
    }
 
    arg.tqCp = &(cell->tqCp);
@@ -311,7 +311,7 @@ Ptr           cb;
    arg.max  = 0;
    arg.tNum = NOTUSED;
    cmRmvCbTq(&arg);
-   RETVOID;
+   return;
 } /* end of */ 
 
  /** @brief This function handles timer expiry.
@@ -368,11 +368,11 @@ S16         tmrEvnt;
          break;
       case RG_SCH_TMR_UL_MEASGAP:
       case RG_SCH_TMR_UL_ACKNACK:
-         rgSCHMeasGapANRepUlInactvTmrExpry (ue, (U8)tmrEvnt);
+         rgSCHMeasGapANRepUlInactvTmrExpry (ue, (uint8_t)tmrEvnt);
          break;
       case RG_SCH_TMR_DL_ACKNACK:
       case RG_SCH_TMR_DL_MEASGAP:
-         rgSCHMeasGapANRepDlInactvTmrExpry (ue, (U8)tmrEvnt);
+         rgSCHMeasGapANRepDlInactvTmrExpry (ue, (uint8_t)tmrEvnt);
          break;
       case RG_SCH_TMR_TA:
 #ifdef EMTC_ENABLE
@@ -424,9 +424,9 @@ S16         tmrEvnt;
            RLOG_ARG0(L_ERROR,DBG_INSTID,ue->cell->instIdx,  
                  "rgSCHTmrProcTmr() Incorrect Timer event");
         }
-         RETVOID;
+         return;
    }
-   RETVOID;
+   return;
 } /* end of */ 
 
 

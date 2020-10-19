@@ -81,7 +81,7 @@ Void TSL2AllocStatsMem(region, pool)
  Pool   pool;
 #endif
 {
-   U32 cnt=0;
+   uint32_t cnt=0;
 
    cmLListInit(&inUseL2UeStatsLst);     
    cmLListInit(&freeL2UeStatsLst);      
@@ -115,7 +115,7 @@ Void TSL2AllocStatsMem(region, pool)
         l2UeStats[cnt] = statsCb;
    }
 
-   RETVOID;
+   return;
 }
 
 /*
@@ -133,11 +133,11 @@ Void TSL2AllocStatsMem(region, pool)
 #ifdef ANSI
 TSL2UeStatsCb* TSL2AllocUeStatsBlk 
 (
- U16   rnti
+ uint16_t   rnti
 )
 #else
 TSL2UeStatsCb* TSL2AllocUeStatsBlk(rnti)
- U16   rnti;
+ uint16_t   rnti;
 #endif
 {
    CmLList          *tmp = NULLP;
@@ -152,7 +152,7 @@ TSL2UeStatsCb* TSL2AllocUeStatsBlk(rnti)
    statsCb = (TSL2UeStatsCb *)(tmp->node);
    cmLListAdd2Tail(&inUseL2UeStatsLst, tmp);
 
-   statsCb->stats.rnti = (U32)rnti;
+   statsCb->stats.rnti = (uint32_t)rnti;
    statsCb->inUse = TRUE;
 
    return (statsCb);
@@ -173,12 +173,12 @@ TSL2UeStatsCb* TSL2AllocUeStatsBlk(rnti)
 #ifdef ANSI
 Void TSL2DeallocUeStatsBlk 
 (
- U16              rnti,
+ uint16_t       rnti,
  TSL2UeStatsCb  *statsCb
 )
 #else
 Void TSL2DeallocUeStatsBlk(rnti, statsCb)
- U16              rnti;
+ uint16_t       rnti;
  TSL2UeStatsCb  *statsCb;
 #endif
 {
@@ -187,7 +187,7 @@ Void TSL2DeallocUeStatsBlk(rnti, statsCb)
    freeL2UeStatsLst.crnt = freeL2UeStatsLst.first;
    cmLListInsAfterCrnt(&freeL2UeStatsLst, &statsCb->lnk);
 
-   RETVOID;
+   return;
 }
 
 /*
@@ -205,11 +205,11 @@ Void TSL2DeallocUeStatsBlk(rnti, statsCb)
 #ifdef ANSI
 TSL2CellStatsCb* TSL2AllocCellStatsBlk 
 (
- U32 cellId
+ uint32_t cellId
 )
 #else
 TSL2CellStatsCb* TSL2AllocCellStatsBlk(cellId)
- U32 cellId;
+ uint32_t cellId;
 #endif
 {
    if (cellId != 1)
@@ -235,15 +235,15 @@ TSL2CellStatsCb* TSL2AllocCellStatsBlk(cellId)
 #ifdef ANSI
 Void TSL2DeallocCellStatsBlk 
 (
- U32 cellId
+ uint32_t cellId
 )
 #else
 Void TSL2DeallocCellStatsBlk(cellId)
- U32 cellId;
+ uint32_t cellId;
 #endif
 {
 
-   RETVOID;
+   return;
 }
 
 /*
@@ -273,12 +273,12 @@ Void TSL2SendStatsToApp(pst, suId)
  SuId   suId;
 #endif
 {
-   U32 idx;
+   uint32_t idx;
 
    for (idx = 0; idx < L2_STATS_MAX_UES; idx++)
    {
       TSL2UeStatsCb *statsCb = l2UeStats[idx];
-      U32 rnti;
+      uint32_t rnti;
       if (statsCb->inUse != TRUE)
       {
          continue;
@@ -305,7 +305,7 @@ Void TSL2SendStatsToApp(pst, suId)
    for (idx = 0; idx < L2_STATS_MAX_CELLS; idx++)
    {
       TSL2CellStatsCb *statsCellCb = l2CellStats[idx];
-      U32 cellId;
+      uint32_t cellId;
       if (pst->selector == 0)
       {
          /* Loose Coupling */
@@ -322,7 +322,7 @@ Void TSL2SendStatsToApp(pst, suId)
       memset(l2CellStats[idx], 0x00, sizeof(TSInfL2CellStats));
       statsCellCb->cellId = cellId;
    }
-   RETVOID;
+   return;
 }
 #endif /* TENB_STATS */
 /**********************************************************************

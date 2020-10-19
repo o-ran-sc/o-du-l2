@@ -835,7 +835,7 @@
 /* Update poll bit in the buffer */
 #define RLC_UPD_POLL_BIT(_gCb, _retx, _poll)                \
 {                                                          \
-   U8 fHdr;                                                \
+   uint8_t fHdr;                                                \
                                                            \
    if (_poll != _retx->amHdr.p)                            \
    {                                                       \
@@ -980,7 +980,7 @@ do                                                          \
 #define RLC_PRNT_MEMINFO(_cb)                                  \
 do                                                            \
 {                                                             \
-   U32  _memInfo;                                             \
+   uint32_t  _memInfo;                                             \
    if(_cb->init.dbgMask & (RLC_DBGMASK_MEM_INFO))              \
    {                                                          \
      RLC_PRNT_HLINE(_cb,("\nMemory Information:\n"));          \

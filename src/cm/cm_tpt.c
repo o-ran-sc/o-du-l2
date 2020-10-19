@@ -158,8 +158,8 @@ CmIpv6NetAddr            *pkParam;
 Buffer                   *mBuf;        /* message buffer */
 #endif
 {
-   U8 num;
-   U8 *ptr = (U8*)pkParam;
+   uint8_t num;
+   uint8_t *ptr = (uint8_t*)pkParam;
 
 
    for(num = 0; num < CM_IPV6ADDR_SIZE; num++)
@@ -229,7 +229,7 @@ CmNetAddrTbl            *pkParam;      /* Network Address Table */
 Buffer                  *mBuf;         /* message buffer */
 #endif
 {
-   U16                  idx;           /* Loop Index */
+   uint16_t                  idx;           /* Loop Index */
    CmNetAddr            *netAddr;      /* Network Address */
 
 
@@ -515,7 +515,7 @@ CmSockParam              *pkParam;
 Buffer                   *mBuf;        /* message buffer */
 #endif
 {
-   U32 num;
+   uint32_t num;
 
 
    if( pkParam->numOpts > CM_MAX_SOCK_OPTS)
@@ -559,7 +559,7 @@ TlsTptParam              *pkParam;     /**/
 Buffer                   *mBuf;        /* message buffer */
 #endif
 {
-   U32 num;
+   uint32_t num;
 
 
    if( pkParam->numOpts > CM_MAX_SOCK_OPTS)
@@ -701,8 +701,8 @@ CmIpv6NetAddr            *unpkParam;   /* IPv6 address */
 Buffer                   *mBuf;        /* message buffer */
 #endif
 {
-   U32 num;
-   U8 *ptr = (U8*)unpkParam;
+   uint32_t num;
+   uint8_t *ptr = (uint8_t*)unpkParam;
 
 
    ptr += (CM_INET_IPV6ADDR_SIZE - 1);
@@ -774,7 +774,7 @@ CmNetAddrTbl            *unpkParam;    /* Network Address Table */
 Buffer                  *mBuf;         /* message buffer */
 #endif
 {
-   U16                  idx;           /* Loop Index */
+   uint16_t                  idx;           /* Loop Index */
    CmNetAddr            *netAddr;      /* Network Address */
    
 
@@ -1021,7 +1021,7 @@ CmSockParam              *unpkParam;   /* socket parameters */
 Buffer                   *mBuf;        /* message buffer */
 #endif
 {
-   U32 num;
+   uint32_t num;
 
 
    CMCHKUNPK(oduPackUInt8, &unpkParam->listenQSize, mBuf);
@@ -1067,7 +1067,7 @@ TlsTptParam              *unpkParam;   /* TLS parameters */
 Buffer                   *mBuf;        /* message buffer */
 #endif
 {
-   U32 num;
+   uint32_t num;
 
 
    CMCHKUNPK(SUnpkS16, &unpkParam->ctxId, mBuf);
@@ -1190,10 +1190,10 @@ Buffer                  *mBuf;      /* message buffer */
          CMCHKPK(cmPkTknStr64, &pkParam->u.hdrParmIpv4.ipv4HdrOpt, mBuf);
 #endif /* IPV4_OPTS_SUPPORTED */
          
-         CMCHKPK(cmPkTknU8, &pkParam->u.hdrParmIpv4.ttl, mBuf);
-         CMCHKPK(cmPkTknU8, &pkParam->u.hdrParmIpv4.tos, mBuf);
-         CMCHKPK(cmPkTknU8, &pkParam->u.hdrParmIpv4.dfBit, mBuf); 
-         CMCHKPK(cmPkTknU8, &pkParam->u.hdrParmIpv4.proto, mBuf);
+         CMCHKPK(cmPkTknUInt8, &pkParam->u.hdrParmIpv4.ttl, mBuf);
+         CMCHKPK(cmPkTknUInt8, &pkParam->u.hdrParmIpv4.tos, mBuf);
+         CMCHKPK(cmPkTknUInt8, &pkParam->u.hdrParmIpv4.dfBit, mBuf); 
+         CMCHKPK(cmPkTknUInt8, &pkParam->u.hdrParmIpv4.proto, mBuf);
          break;
 
       case CM_HDRPARM_IPV6:
@@ -1204,7 +1204,7 @@ Buffer                  *mBuf;      /* message buffer */
          CMCHKPK(cmPkCmIpv6ExtHdr, &pkParam->u.hdrParmIpv6.ipv6ExtHdr, mBuf);
 #endif /* IPV6_OPTS_SUPPORTED */
          CMCHKPK(cmPkCmNetAddr, &pkParam->u.hdrParmIpv6.srcAddr6, mBuf); 
-         CMCHKPK(cmPkTknU8, &pkParam->u.hdrParmIpv6.ttl, mBuf);          
+         CMCHKPK(cmPkTknUInt8, &pkParam->u.hdrParmIpv6.ttl, mBuf);          
 #endif /* IPV6_SUPPORTED */ 
          break;
    
@@ -1332,7 +1332,7 @@ CmIpv6RtHdr             *pkParam;   /* IPV6 Route hdr */
 Buffer                   *mBuf;     /* message buffer */
 #endif
 {
-   U8 idx;
+   uint8_t idx;
    
 
    /* pack all IPV6 addrs in the route hdr */
@@ -1376,7 +1376,7 @@ Buffer                  *mBuf;       /* message buffer */
 Mem                     *memInfo;    /* meminfo to allocate for Route hdr */
 #endif
 {
-   U8 idx;  /* array index */
+   uint8_t idx;  /* array index */
    S32 retVal; /* temporary return value */
    
    
@@ -1478,7 +1478,7 @@ Buffer                  *mBuf;     /* message buffer */
 #endif
 {
 
-   U8 numOptions;
+   uint8_t numOptions;
 
    
    /* pack all HBH options */
@@ -1515,7 +1515,7 @@ CmIpv6DestOptsHdr       *pkParam;  /* IPV6 Dest opt */
 Buffer                  *mBuf;     /* message buffer */
 #endif
 {
-   U8 optLen;
+   uint8_t optLen;
    
 
    for(optLen = 0; optLen < pkParam->length; optLen++)
@@ -1557,7 +1557,7 @@ Mem                     *memInfo;  /* meminfo to allocate mem for dest opt */
 #endif
 {
    S32 retVal;                        /* temporary return value */
-   U8 optLen;                      /* length of value field */
+   uint8_t optLen;                      /* length of value field */
 
   
    /* unpack type, length */
@@ -1610,7 +1610,7 @@ Buffer                  *mBuf;      /* message buffer */
 Mem                     *memInfo;   /* meminfo to allocate mem for dest opts */
 #endif
 {
-   U8 numOptions;
+   uint8_t numOptions;
    S16 retVal;
    
 
@@ -1664,7 +1664,7 @@ CmIpv6HBHHdrArr         *pkParam;  /* IPV6 HopByHop options */
 Buffer                  *mBuf;     /* message buffer */
 #endif
 {
-   U8 numOptions;
+   uint8_t numOptions;
    
 
    for(numOptions = 0; numOptions<pkParam->numHBHOpts; numOptions++)
@@ -1701,7 +1701,7 @@ CmIpv6HBHHdr            *pkParam;  /* individual IPV6 HBH options */
 Buffer                  *mBuf;     /* message buffer */
 #endif
 {
-   U8 optLen;
+   uint8_t optLen;
 
 
    /* pack value field */
@@ -1746,7 +1746,7 @@ Mem                     *memInfo;  /* meminfo to allocate mem for HBH opt */
 #endif
 {
    S32 retVal;                     /* temporary return value */
-   U8 optLen;                      /* length of value field */
+   uint8_t optLen;                      /* length of value field */
   
    
    CMCHKUNPK(oduPackUInt8, &unpkParam->type, mBuf);   
@@ -1798,7 +1798,7 @@ Buffer                *mBuf;       /* message buffer */
 Mem                   *memInfo;    /* meminfo to allocate space for HBH opt */
 #endif
 {
-   U8 numOptions; 
+   uint8_t numOptions; 
    S16 retVal;
 
 
@@ -1877,10 +1877,10 @@ Buffer                   *mBuf;     /* message buffer */
          break;
 
       case CM_HDRPARM_IPV4:
-         CMCHKUNPK(cmUnpkTknU8, &unpkParam->u.hdrParmIpv4.proto, mBuf);
-         CMCHKUNPK(cmUnpkTknU8, &unpkParam->u.hdrParmIpv4.dfBit, mBuf);
-         CMCHKUNPK(cmUnpkTknU8, &unpkParam->u.hdrParmIpv4.tos, mBuf);
-         CMCHKUNPK(cmUnpkTknU8, &unpkParam->u.hdrParmIpv4.ttl, mBuf);
+         CMCHKUNPK(cmUnpkTknUInt8, &unpkParam->u.hdrParmIpv4.proto, mBuf);
+         CMCHKUNPK(cmUnpkTknUInt8, &unpkParam->u.hdrParmIpv4.dfBit, mBuf);
+         CMCHKUNPK(cmUnpkTknUInt8, &unpkParam->u.hdrParmIpv4.tos, mBuf);
+         CMCHKUNPK(cmUnpkTknUInt8, &unpkParam->u.hdrParmIpv4.ttl, mBuf);
 #ifdef IPV4_OPTS_SUPPORTED
          CMCHKUNPK(cmUnpkTknStr64, &unpkParam->u.hdrParmIpv4.ipv4HdrOpt, mBuf);
 #endif /* IPV4_OPTS_SUPPORTED */
@@ -1888,7 +1888,7 @@ Buffer                   *mBuf;     /* message buffer */
 
       case CM_HDRPARM_IPV6:
 #ifdef IPV6_SUPPORTED         
-         CMCHKUNPK(cmUnpkTknU8, &unpkParam->u.hdrParmIpv6.ttl, mBuf);
+         CMCHKUNPK(cmUnpkTknUInt8, &unpkParam->u.hdrParmIpv6.ttl, mBuf);
    
          CMCHKUNPK(cmUnpkCmNetAddr, 
                    &unpkParam->u.hdrParmIpv6.srcAddr6, mBuf);

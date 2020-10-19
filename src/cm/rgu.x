@@ -49,7 +49,7 @@ extern "C" {
  */
 typedef struct rguPduInfo
 {
-   U8     numPdu;                 /*!< Number of PDUs */ 
+   uint8_t     numPdu;                 /*!< Number of PDUs */ 
    Buffer *mBuf[RGU_MAX_PDU];     /*!< numPdu data buffers */
 } RguPduInfo;
 
@@ -61,13 +61,13 @@ typedef struct rguDBoReport
 {
    S32  bo;                /*!< Buffer occupancy reported by RLC */
 #ifdef CCPU_OPT
-   U16  estRlcHdrSz;       /*!< Estimated RLC header size */
+   uint16_t  estRlcHdrSz;       /*!< Estimated RLC header size */
    Bool staPduPrsnt;       /*!< Indicates whether the BO includes
                                 a status PDU as well */
 #endif
-   U32  staPduBo;          /*!< Indicates the Status PDU BO. 
+   uint32_t  staPduBo;          /*!< Indicates the Status PDU BO. 
                                 This is included in bo */
-   U32  oldestSduArrTime;
+   uint32_t  oldestSduArrTime;
 } RguDBoReport;
 
 /**
@@ -78,9 +78,9 @@ typedef struct rguCDatReqInfo
    CmLteCellId     cellId;          /*!< CELL ID */
    CmLteLcId       lcId;            /*!< Logical channel ID */
    CmLteLcType     lcType;          /*!< Logical channel Type */
-   U32             transId;         /*!< Transaction ID */
+   uint32_t             transId;         /*!< Transaction ID */
 #ifdef EMTC_ENABLE
-   U8              pnb;            /*Paging narrowBand on which UE performs Paging*/
+   uint8_t              pnb;            /*Paging narrowBand on which UE performs Paging*/
 #endif
    union{
    CmLteTimingInfo timeToTx;        /*!< Actual time when PHY transmits
@@ -111,15 +111,15 @@ typedef struct rguLchDatReq
 typedef struct rguLchmapInfo
 {
    CmLteLcId lChId;                  /*!< Logical channel Id */
-   U16       snList[RGU_MAX_LC];     /*!< Set of sequence numbers */
+   uint16_t       snList[RGU_MAX_LC];     /*!< Set of sequence numbers */
 }RguLchMapInfo;
 /**
  * @brief Sequence Number mapping info per TB 
  * */
 typedef struct rguSnMapInfo
 {
-   U32            tbId;               /*!< TB id for which sn info map */
-   U8             numLch;             /*!< Number of Ded Logical Channels */
+   uint32_t            tbId;               /*!< TB id for which sn info map */
+   uint8_t             numLch;             /*!< Number of Ded Logical Channels */
    RguLchMapInfo  lchMap[RGU_MAX_LC]; /*!< LC to SN Mapping Info*/
 } RguSnMapInfo;
 
@@ -130,11 +130,11 @@ typedef struct rguHarqStatusInd
 {
    CmLteCellId   cellId;                    /*!< Cell Id*/
    CmLteRnti     ueId;                      /*!< ue Id*/
-   U8            numTbs;                    /*!< Number of Tbs present */
+   uint8_t            numTbs;                    /*!< Number of Tbs present */
  
-   U32           tbId[RGU_MAX_TB];          /*!< tbId provided by RLC in
+   uint32_t           tbId[RGU_MAX_TB];          /*!< tbId provided by RLC in
                                                  DatReq  */                                                                                 
-   U16           status[RGU_MAX_TB];        /*!< Status back to RLC ACK/NACK*/
+   uint16_t           status[RGU_MAX_TB];        /*!< Status back to RLC ACK/NACK*/
 } RguHarqStatusInd;
 
 /*
@@ -154,8 +154,8 @@ typedef struct rguL2MUlThrpMeasReqInfo
 {
    CmLteCellId   cellId;                    /*!< Cell Id*/
    CmLteRnti     rnti;                      /*!< UE Id*/
-   U8            numLcId;                   /*!< Number of LC Ids configured */
-   U8            lcId[RGU_MAX_LC];          /*!< LC ID indices that are 
+   uint8_t            numLcId;                   /*!< Number of LC Ids configured */
+   uint8_t            lcId[RGU_MAX_LC];          /*!< LC ID indices that are 
                                               configured */
    Bool          enbMeas;                   /*!< Indication to enable/disable 
                                                measurement for the LC ID*/
@@ -167,13 +167,13 @@ typedef struct rguL2MUlThrpMeasReqInfo
  */
 typedef struct rguDatReqTb
 {
-   U8           nmbLch;              /*!< Number of logical channels of a UE 
+   uint8_t           nmbLch;              /*!< Number of logical channels of a UE 
                                           that have data for this TB */
    RguLchDatReq lchData[RGU_MAX_LC]; /*!< Data Buffers and BO of  
                                           logical channels for this TB */
 /* rgu_x_001.main_3 - ADD - L2M Support */
 #ifdef LTE_L2_MEAS
-   U32          tbId;                /*!< RLC's internal tbId maintained
+   uint32_t          tbId;                /*!< RLC's internal tbId maintained
                                           per UE */  
 #endif /* LTE_L2_MEAS */
 }RguDatReqTb;
@@ -184,8 +184,8 @@ typedef struct rguDatReqTb
 typedef struct rguDDatReqPerUe
 {
    CmLteRnti     rnti;         /*!< UE ID */
-   U32           transId;      /*!< Transaction ID */
-   U8            nmbOfTbs;     /*!< Number of TBs. Relevant for MIMO */
+   uint32_t           transId;      /*!< Transaction ID */
+   uint8_t            nmbOfTbs;     /*!< Number of TBs. Relevant for MIMO */
    RguDatReqTb   datReqTb[2];  /*!< DatReq info for MAX 2 TBs */ 
 } RguDDatReqPerUe;
 
@@ -195,7 +195,7 @@ typedef struct rguDDatReqPerUe
 typedef struct rguDDatReqInfo
 {
    CmLteCellId        cellId;                        /*!< CELL ID */
-   U8                 nmbOfUeGrantPerTti;                 /*!< Number of TBs. Relevant for MIMO */
+   uint8_t                 nmbOfUeGrantPerTti;                 /*!< Number of TBs. Relevant for MIMO */
    RguDDatReqPerUe    datReq[RGU_MAX_NUM_UE_PER_TTI];    /*!< Pointer to DatReq for MAX UEs configured Per TTI */ 
 } RguDDatReqInfo;
 
@@ -235,7 +235,7 @@ typedef enum rguL2MUlThrpSegInd
  */
 typedef struct rgL2MeasUlThrpTimInfo 
 {
-   U32                 thrpTimeUl;      /*!< Difference in Timing values T1, T2 */
+   uint32_t                 thrpTimeUl;      /*!< Difference in Timing values T1, T2 */
    RguL2MUlThrpSegInd  firstLastSegInd;         /*!< Indication of Data Burst */
 }RgL2MeasUlThrpTimInfo;
 
@@ -257,12 +257,12 @@ typedef struct rguDDatIndInfo
 {
    CmLteCellId  cellId;              /*!< CELL ID */
    CmLteRnti    rnti;                /*!< UE ID */
-   U8           numLch;              /*!< Number of logical channels within
+   uint8_t           numLch;              /*!< Number of logical channels within
                                        the UE that has data */
    RguLchDatInd lchData[MAX_NUM_LC]; /*!< Data buffers of logical channels */
 #ifdef LTE_L2_MEAS
-   U32          ttiCnt;              /*!< The Current TTI in the Cell */
-   U8           burstInd;            /*!< Indicates the Burst Start or End */
+   uint32_t          ttiCnt;              /*!< The Current TTI in the Cell */
+   uint8_t           burstInd;            /*!< Indicates the Burst Start or End */
 #endif
 } RguDDatIndInfo;
 
@@ -276,8 +276,8 @@ typedef struct rguCStaRspInfo
    CmLteLcType  lcType;         /*!< Logical channel type */
    S32 bo;                      /*!< Buffer occupancy reported by RLC */
 #ifdef EMTC_ENABLE
-   U8          emtcDiReason;   /*!< Reason for DI message to send. */
-   U8          pnb;            /*paging narrowBand on which UE will perform paging*/
+   uint8_t          emtcDiReason;   /*!< Reason for DI message to send. */
+   uint8_t          pnb;            /*paging narrowBand on which UE will perform paging*/
 #endif
    union                        /*!< lcType in the primitive is 
                                      the union selector */
@@ -307,7 +307,7 @@ typedef struct rguCStaIndInfo
 {
    CmLteCellId cellId;       /*!< CELL ID */
    CmLteLcId   lcId;         /*!< Logical channel ID */
-   U32         transId;      /*!< Transaction ID */
+   uint32_t         transId;      /*!< Transaction ID */
    CmLteRnti   rnti;         /*!< Temporary CRNTI */
 #ifdef EMTC_ENABLE
    Bool                isEmtcPaging;      /*!< To Identify whether Paging is EMTC or Lagecy */
@@ -330,13 +330,13 @@ typedef struct rguLchStaInd
  */
 typedef struct rguStaIndTb
 {
-   U8           nmbLch;               /*!< Number of logical channels scheduled
+   uint8_t           nmbLch;               /*!< Number of logical channels scheduled
                                            for this TB */
    RguLchStaInd lchStaInd[RGU_MAX_LC];/*!< Buffer size allocated for scheduled 
                                            logical channels for this TB */
 #ifdef LTE_L2_MEAS
-   U32          tbId;                /*!< RLC internal TB id */                                           
-   U16          status;              /*!< Status back to RLC ACK/NACK/RGU_NACK_LOSS */
+   uint32_t          tbId;                /*!< RLC internal TB id */                                           
+   uint16_t          status;              /*!< Status back to RLC ACK/NACK/RGU_NACK_LOSS */
 #endif
 }RguStaIndTb;
 /**
@@ -345,8 +345,8 @@ typedef struct rguStaIndTb
 typedef struct rguDStaIndPerUe
 {
    CmLteRnti     rnti;        /*!< UE ID */
-   U32           transId;     /*!< Transaction ID */
-   U8            nmbOfTbs;    /*!< Number of TBs. Relevant for MIMO */
+   uint32_t           transId;     /*!< Transaction ID */
+   uint8_t            nmbOfTbs;    /*!< Number of TBs. Relevant for MIMO */
    RguStaIndTb   staIndTb[2]; /*!< StaInd info for MAX 2 TBs */
    Bool          fillCtrlPdu; /*!< Flag to fill RLC control PDU */
 } RguDStaIndPerUe;
@@ -357,7 +357,7 @@ typedef struct rguDStaIndPerUe
 typedef struct rguDStaIndInfo
 {
    CmLteCellId      cellId;                       /*!< CELL ID */
-   U8               nmbOfUeGrantPerTti;                /*!< Number of TBs. Relevant for MIMO */
+   uint8_t               nmbOfUeGrantPerTti;                /*!< Number of TBs. Relevant for MIMO */
    RguDStaIndPerUe  staInd[RGU_MAX_NUM_UE_PER_TTI];   /*!< StaInd info for MAX number of UEs per TTI */
 } RguDStaIndInfo;
 
@@ -367,8 +367,8 @@ typedef struct rguDStaIndInfo
 typedef struct rguLcFlowCntrlInfo
 {
   CmLteLcId   lcId; 
-  U32         pktAdmitCnt; 
-  U32         maxBo4FlowCtrl; /*!< MAX BO of Queued SDUs at RLC beyond which Flow is Controlled */
+  uint32_t         pktAdmitCnt; 
+  uint32_t         maxBo4FlowCtrl; /*!< MAX BO of Queued SDUs at RLC beyond which Flow is Controlled */
 }RguLcFlowCntrlInfo;
 
 /**
@@ -377,7 +377,7 @@ typedef struct rguLcFlowCntrlInfo
 typedef struct rguUeFlowCntrlInfo 
 {
   CmLteRnti            ueId;
-  U32                  numLcs;
+  uint32_t                  numLcs;
   RguLcFlowCntrlInfo   lcInfo[RGU_MAX_LC];
 }RguUeFlowCntrlInfo;  
 
@@ -387,13 +387,13 @@ typedef struct rguUeFlowCntrlInfo
 typedef struct rguFlowCntrlInd
 {
    CmLteCellId         cellId;                       /*!< CELL ID */
-   U32                 numUes;
+   uint32_t                 numUes;
    RguUeFlowCntrlInfo  ueFlowCntrlInfo[RGU_MAX_NUM_UE_PER_TTI];
 }RguFlowCntrlInd;  
 typedef struct rguInfoRingElem 
 {
   SpId         spId;
-  U8           event;
+  uint8_t           event;
   Void         *msg;
 }RguInfoRingElem;
 
@@ -415,7 +415,7 @@ typedef S16 (*RguUbndReq) ARGS((
 typedef S16 (*RguBndCfm) ARGS((
    Pst*                 pst,
    SuId                 suId,
-   U8                   status));
+   uint8_t                   status));
 /** @brief Data Request from RLC to MAC for forwarding SDUs on common
  * channel for transmission */
 typedef S16 (*RguCDatReq) ARGS((
@@ -513,7 +513,7 @@ EXTERN S16 RgUiRguUbndReq ARGS((Pst* pst,SpId spId,Reason reason));
  * @param status Status of the bind request. 
  * @return ROK/RFAILED
 */
-EXTERN S16 RgUiRguBndCfm ARGS((Pst* pst,SuId suId,U8 status));
+EXTERN S16 RgUiRguBndCfm ARGS((Pst* pst,SuId suId,uint8_t status));
 /** @brief Data Request from RLC to MAC for forwarding SDUs on common
  * channel for transmission 
  * @param pst Pointer to the post structure.
@@ -621,7 +621,7 @@ EXTERN S16 RlcLiRguUbndReq ARGS((
 EXTERN S16 RlcLiRguBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
-   U8                   status
+   uint8_t                   status
 ));
 /** @brief Request from RLC to MAC for forwarding SDUs on common
  * channel for transmission */
@@ -697,7 +697,7 @@ EXTERN S16 cmUnpkRguUbndReq ARGS((
 EXTERN S16 cmPkRguBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
-   U8                   status
+   uint8_t                   status
 ));
 /** @brief Confirmation from MAC to RLC for the bind/Unbind 
  * request for the interface saps */

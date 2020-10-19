@@ -49,29 +49,29 @@ extern "C" {
   @brief Transaction ID between MAC and RRC. */
 typedef struct crgCfgTransId
 {
-   U8 trans[CRG_CFG_TRANSID_SIZE]; /*!< RRC transaction ID */
+   uint8_t trans[CRG_CFG_TRANSID_SIZE]; /*!< RRC transaction ID */
 } CrgCfgTransId;
 
 /** 
   @brief Bandwidth configuration per cell. */
 typedef struct crgBwCfg
 {
-   U8 dlTotalBw;            /*!< Total Dowlink Bandwidth */
-   U8 ulTotalBw;            /*!< Total Uplink Bandwidth  */
+   uint8_t dlTotalBw;            /*!< Total Dowlink Bandwidth */
+   uint8_t ulTotalBw;            /*!< Total Uplink Bandwidth  */
 } CrgBwCfg;
 
 /** 
   @brief RACH configuration per cell. */
 typedef struct crgRachCfg
 {
-   U8  maxMsg3Tx;            /*!< Maximum number of message 3 transmissions */
+   uint8_t  maxMsg3Tx;            /*!< Maximum number of message 3 transmissions */
 } CrgRachCfg;
 
 #ifdef LTE_ADV
 /** @brief UE secondary cell config params to MAC*/
 typedef struct crgUeSCellInfo
 {
-  U16                  sCellId;       /*!< This will be secondary cellId */
+  uint16_t                  sCellId;       /*!< This will be secondary cellId */
   Inst                 macInst;       /*!< MAC instance for SCell */
   SuId                 rguUlSapId;    /*!< MAC-RLC UL Sap ID */ 
   SuId                 rguDlSapId;    /*!< MAC-RLC DL SAP ID */
@@ -83,7 +83,7 @@ typedef struct crgUeSecCellInfo
 {
   Bool                 isSCellCfgPres; /*!<  Bool indicates whether configuration
                                    is present */
-  U8                   numSCells;                        /*!< Number of SCells
+  uint8_t                   numSCells;                        /*!< Number of SCells
                                                           */
   CrgUeSCellInfo       ueSCellCfg[CRG_MAX_SCELL_PER_UE]; /*!< Secondary cell 
                                                            configuration per UE */
@@ -103,7 +103,7 @@ typedef struct crgCellCfg
    SpId          rguDlSapId;   /*!< RLC DL SAP Id for common channels */
 #endif
 #ifdef EMTC_ENABLE
-   U8            emtcEnable;
+   uint8_t            emtcEnable;
 #endif
 } CrgCellCfg;
 
@@ -111,7 +111,7 @@ typedef struct crgCellCfg
   @brief Uplink HARQ configuration per UE. */
 typedef struct crgUeUlHqCfg
 {
-   U8 maxUlHqTx;           /*!< Maximum number of UL HARQ transmissions */
+   uint8_t maxUlHqTx;           /*!< Maximum number of UL HARQ transmissions */
 } CrgUeUlHqCfg;
 
 /* crg_x_001.main_3 - Changes for MIMO feature addition */
@@ -154,7 +154,7 @@ typedef struct crgUeCfg
   @brief Logical channel configuration information for downlink logical channels. */
 typedef struct crgDlLchCfg 
 {
-   U8             dlTrchType; /*!< Indicates type of DL transport channel:
+   uint8_t             dlTrchType; /*!< Indicates type of DL transport channel:
                                    Validated only for BCCH at MAC. DL Transport
                                    channel type can take following values:<br>
                                    CM_LTE_TRCH_BCH<br> 
@@ -166,12 +166,12 @@ typedef struct crgDlLchCfg
   @brief Logical channel configuration information for uplink logical channels. */
 typedef struct crgUlLchCfg
 {
-   U8             ulTrchType; /*!< Indicates type of UL transport channel:
+   uint8_t             ulTrchType; /*!< Indicates type of UL transport channel:
                                    Validated only for BCCH at MAC. 
                                    UL Transport channel type can take following values:<br>
                                    CM_LTE_TRCH_RACH<br>
                                    CM_LTE_TRCH_UL_SCH */  
-   U8             lcgId;      /*!< Logical channel group ID */
+   uint8_t             lcgId;      /*!< Logical channel group ID */
 } CrgUlLchCfg;
 
 /* crg_x_001.main_2: Documentation update */
@@ -189,7 +189,7 @@ typedef struct crgLchCfg
                                       CM_LTE_LCH_DCCH<br>
                                       CM_LTE_LCH_DTCH */  
                             
-   U8            dir;        /*!< Indicates Direction. Direction can take following 
+   uint8_t            dir;        /*!< Indicates Direction. Direction can take following 
                                   values:<br>
                                   CRG_DIR_TX<br>
                                   CRG_DIR_RX<br>
@@ -199,7 +199,7 @@ typedef struct crgLchCfg
    CrgUlLchCfg   ulInfo;     /*!< Uplink logical channel configuration info */
    /* crg_x_001.main_5 - ADD - Members corresponding to LTE_L2_MEAS */
 #ifdef LTE_L2_MEAS
-   U8 qci;                   /*!< QCI for the logical channel.
+   uint8_t qci;                   /*!< QCI for the logical channel.
                                   Valid Range:[0-255] (Actual QCI - 1). */
 
 #endif /* LTE_L2_MEAS */
@@ -209,7 +209,7 @@ typedef struct crgLchCfg
   @brief Basic configuration information for MAC. */
 typedef struct crgCfg
 {
-   U8 cfgType;               /*!< Indicates configuration type */
+   uint8_t cfgType;               /*!< Indicates configuration type */
    union crgCfgU  
    {
       CrgCellCfg  cellCfg;   /*!< Cell configuration */
@@ -263,7 +263,7 @@ typedef struct crgLchRecfg
    
    struct ulRecfgS 
    {
-      U8             lcgId;  /*!< Logical channel group ID */
+      uint8_t             lcgId;  /*!< Logical channel group ID */
    } ulRecfg;                /*!< Uplink logical channel reconfiguration information */
 
 } CrgLchRecfg;
@@ -272,7 +272,7 @@ typedef struct crgLchRecfg
   @brief Basic reconfiguration information for MAC. */
 typedef struct crgRecfg
 {
-   U8 recfgType;                /*!< Indicates reconfiguration type */
+   uint8_t recfgType;                /*!< Indicates reconfiguration type */
    union crgRecfgU
    {
       CrgCellRecfg  cellRecfg;  /*!< Cell Reconfig information */
@@ -286,7 +286,7 @@ typedef struct crgRecfg
   @brief Basic Delete information for MAC. */
 typedef struct crgDel
 {
-   U8 delType;               /*!< Indicates configuration item to be deleted */
+   uint8_t delType;               /*!< Indicates configuration item to be deleted */
    union crgDelU
    {
       struct cellDelS 
@@ -305,7 +305,7 @@ typedef struct crgDel
          CmLteCellId cellId; /*!< Cell ID */
          CmLteRnti   crnti;  /*!< CRNTI for DTCH and DCCH */
          CmLteLcId   lcId;   /*!< Logical channel ID */
-         U8          dir;    /*!< Indicates Direction. Direction can take following 
+         uint8_t          dir;    /*!< Indicates Direction. Direction can take following 
                                   values:<br>
                                   CRG_DIR_TX<br>
                                   CRG_DIR_RX<br>
@@ -325,7 +325,7 @@ typedef struct crgRst
   @brief Config/Reconfig/Delete information for MAC. */
 typedef struct crgCfgReqInfo 
 {
-   U8  action;               /*!< Determines cfg/recfg/del/reset */
+   uint8_t  action;               /*!< Determines cfg/recfg/del/reset */
    union cfgReqInfoU
    {
       CrgCfg   cfgInfo;      /*!< Configuration related infomation */
@@ -348,7 +348,7 @@ typedef S16 (*CrgBndReq) ARGS((
 typedef S16 (*CrgBndCfm) ARGS((
    Pst*                 pst,
    SuId                 suId,
-   U8                   status));
+   uint8_t                   status));
 /** @brief Request from RRC to MAC to unbind the interface SAPs. */
 typedef S16 (*CrgUbndReq) ARGS((
    Pst*                 pst,
@@ -366,7 +366,7 @@ typedef S16 (*CrgCfgCfm) ARGS((
    Pst*                 pst,
    SuId                 suId,
    CrgCfgTransId        transId,
-   U8                   status));
+   uint8_t                   status));
 
 /** @brief Request from RRC to MAC to bind the interface SAPs. */
 EXTERN S16 RgUiCrgBndReq ARGS((
@@ -379,7 +379,7 @@ EXTERN S16 RgUiCrgBndReq ARGS((
 EXTERN S16 RgUiCrgBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
-   U8                   status
+   uint8_t                   status
 ));
 /** @brief Request from RRC to MAC to Unbind the interface SAPs. */
 EXTERN S16 RgUiCrgUbndReq ARGS((
@@ -400,7 +400,7 @@ EXTERN S16 RgUiCrgCfgCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    CrgCfgTransId        transId,
-   U8                   status
+   uint8_t                   status
 ));
 
 #ifdef NH
@@ -415,7 +415,7 @@ EXTERN S16 NhLiCrgBndReq ARGS((
 EXTERN S16 NhLiCrgBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
-   U8                   status
+   uint8_t                   status
 ));
 /** @brief Request from RRC to MAC to Unbind the interface SAPs. */
 EXTERN S16 NhLiCrgUbndReq ARGS((
@@ -436,7 +436,7 @@ EXTERN S16 NhLiCrgCfgCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    CrgCfgTransId        transId,
-   U8                   status
+   uint8_t                   status
 ));
 #endif
 
@@ -458,7 +458,7 @@ EXTERN S16 cmUnpkCrgBndReq ARGS((
 EXTERN S16 cmPkCrgBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
-   U8                   status
+   uint8_t                   status
 ));
 /** @brief Confirmation from MAC to RRC for the bind/unbind 
  * request for the interface SAPs. */
@@ -499,7 +499,7 @@ EXTERN S16 cmPkCrgCfgCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    CrgCfgTransId        transId,
-   U8                   status
+   uint8_t                   status
 ));
 /** @brief Configuration Confirm from MAC to RRC. */
 EXTERN S16 cmUnpkCrgCfgCfm ARGS((
@@ -678,7 +678,7 @@ EXTERN S16 DmUiCrgBndReq ARGS((
 EXTERN S16 DmUiCrgBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
-   U8                   status
+   uint8_t                   status
 ));
 /** @brief Request from RRC to MAC to unbind the interface SAPs. */
 EXTERN S16 DmUiCrgUbndReq ARGS((
@@ -699,7 +699,7 @@ EXTERN S16 DmUiCrgCfgCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    CrgCfgTransId        transId,
-   U8                   status
+   uint8_t                   status
 ));
 #endif
 

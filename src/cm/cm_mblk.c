@@ -47,7 +47,7 @@
 EXTERN pthread_t tmpRegTidMap[20];
 #define CM_MEM_GET_REGION(_region)                        \
 {                                                         \
-   U8  _regCnt;                                           \
+   uint8_t  _regCnt;                                           \
    _region = 0xFF;                                        \
                                                           \
    for(_regCnt = 0; _regCnt < 12; _regCnt++)              \
@@ -218,7 +218,7 @@ Mem             *sMem;      /* Static Memory region and pool */
   /* Intialise Memory Control Point */
   CM_INIT_MEMCP(memCp,maxBlkSize,sMem);
 
-  RETVOID;
+  return;
 
 } /* End of cmInitMemCp */ 
 
@@ -280,7 +280,7 @@ Ptr          *allocPtr; /* location to place pointer */
   { 
     /* if a chunk is already there */
     if( (cb->memAllocated + size) <= 
-           (U32)(cb->maxSize + sizeof(CmMemList)) )
+           (uint32_t)(cb->maxSize + sizeof(CmMemList)) )
     {
       /* Requested memory is available in present chunk */
       *allocPtr = (Ptr) cb->runPtr;
@@ -501,11 +501,11 @@ Ptr          *allocPtr; /* location to place pointer */
   { 
     /* if a chunk is already there */
     if( (cb->memAllocated + size) <= 
-           (U32)(cb->maxSize + sizeof(CmMemList)) )
+           (uint32_t)(cb->maxSize + sizeof(CmMemList)) )
     {
       /* Requested memory is available in present chunk */
       *allocPtr = (Ptr) cb->runPtr;
-      //memset(*allocPtr, (U8 )0, 
+      //memset(*allocPtr, (uint8_t )0, 
         //   (PTR)(size) );
       cb->memAllocated += size;
       cb->runPtr += size;
@@ -632,7 +632,7 @@ Ptr    memPtr;     /* Link List CP */
     count--;
   }
 
-  RETVOID;   
+  return;   
 
 } /* End of cmFreeMem */
 
@@ -672,11 +672,11 @@ CmMemList   *node;              /* node to be added */
    if (!node->prev)
    {
       lCp->first = node;
-      RETVOID;
+      return;
    }
    
    node->prev->next = node;
-   RETVOID;
+   return;
 
 } /* end of cmAddMemNode */
 
@@ -722,7 +722,7 @@ CmMemStatus     *status;  /* memory region,pool and status */
   status->maxBlkSize   = memCp->memCb.maxSize;
   status->memAllocated = memCp->memCb.memAllocated;
 
-  RETVOID;
+  return;
 
 } /* End of cmGetMemStatus */ 
 
