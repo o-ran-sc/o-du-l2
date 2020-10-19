@@ -95,7 +95,6 @@ export BUILD
 export I_OPTS
 
 # Add to the linker options the platform specific components
-#L_OPTS+=-lnsl -lrt -lm -lpthread -lsctp
 L_OPTS+=-lnsl -lrt -lm -lpthread -lsctp #-L/root/intel/phy/wls_lib/lib -lwls                         \
         -lhugetlbfs -lnuma -ldl -L/root/intel/dpdk-19.11/x86_64-native-linuxapp-gcc/lib             \
         -ldpdk -lrte_gso -lrte_pmd_atlantic -lrte_pmd_iavf -lrte_pmd_tap -lrte_acl                  \
@@ -182,8 +181,7 @@ du:
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_e2ap.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_rrc.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/du_app.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
-		#$(Q)$(MAKE) -f $(COM_BUILD_DIR)/f1ap.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
-		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/kw.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
+		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/rlc.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/cm.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/mac.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/sch.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
@@ -201,7 +199,7 @@ clean_odu:
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_f1ap.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_e2ap.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_rrc.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
-		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/kw.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
+		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/rlc.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/cm.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/mac.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/sch.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
@@ -292,3 +290,6 @@ odu: prepare_dirs copy_build
 cu_stub: prepare_cu_dirs cu link_cu
 ric_stub: prepare_ric_dirs ric link_ric
 
+#**********************************************************************
+#         End of file
+#**********************************************************************
