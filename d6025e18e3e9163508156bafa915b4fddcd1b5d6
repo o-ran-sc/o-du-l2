@@ -1,0 +1,259 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "00a9e968_60d09bb9",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1003,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-19T10:37:52Z",
+      "side": 1,
+      "message": "to be moved from du_cfg.h",
+      "revId": "d6025e18e3e9163508156bafa915b4fddcd1b5d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b76b9045_fa943b0c",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 5426,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-19T10:37:52Z",
+      "side": 1,
+      "message": "void to RLC_Config_t",
+      "revId": "d6025e18e3e9163508156bafa915b4fddcd1b5d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7fcdddb8_882895b5",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 5515,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-19T10:37:52Z",
+      "side": 1,
+      "message": "to be moved in ueCb creation",
+      "revId": "d6025e18e3e9163508156bafa915b4fddcd1b5d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c6723373_a833aa63",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 5547,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-19T10:37:52Z",
+      "side": 1,
+      "message": "this part is not needed and to be moved in ue_mgr ueCb",
+      "revId": "d6025e18e3e9163508156bafa915b4fddcd1b5d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9145e192_599f853a",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 5554,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-19T10:37:52Z",
+      "side": 1,
+      "message": "Srb and Drb can be clubbed in one func",
+      "revId": "d6025e18e3e9163508156bafa915b4fddcd1b5d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "432fad89_12f9ce99",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 6752,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-19T10:37:52Z",
+      "side": 1,
+      "message": "ieIdx",
+      "revId": "d6025e18e3e9163508156bafa915b4fddcd1b5d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1c1617dd_f82fe43a",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 6819,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-19T10:37:52Z",
+      "side": 1,
+      "message": "default config to be setup in DU",
+      "revId": "d6025e18e3e9163508156bafa915b4fddcd1b5d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "32422822_148cf2e6",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 6868,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-19T10:37:52Z",
+      "side": 1,
+      "message": "rsp to cu is required here\nIE -\u003esrb To be setup failed",
+      "revId": "d6025e18e3e9163508156bafa915b4fddcd1b5d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "92ba46f5_facfdd3c",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 6916,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-19T10:37:52Z",
+      "side": 1,
+      "message": "LcId \u003d DTCH",
+      "revId": "d6025e18e3e9163508156bafa915b4fddcd1b5d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "416d1f06_67c99e9f",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 6966,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-19T10:37:52Z",
+      "side": 1,
+      "message": "rsp to be sent in ue context response",
+      "revId": "d6025e18e3e9163508156bafa915b4fddcd1b5d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aa8ed6ca_09f51c35",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 6968,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-19T10:37:52Z",
+      "side": 1,
+      "message": "directly check MAX Lc reached",
+      "revId": "d6025e18e3e9163508156bafa915b4fddcd1b5d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a87b51e4_48af3bb8",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 7048,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-19T10:37:52Z",
+      "side": 1,
+      "message": "f1 to be prefixed in function name",
+      "revId": "d6025e18e3e9163508156bafa915b4fddcd1b5d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "48898358_82d7a530",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 754,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-19T10:37:52Z",
+      "side": 1,
+      "message": "to fill default configs for Rlc Mode",
+      "revId": "d6025e18e3e9163508156bafa915b4fddcd1b5d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "62511a7d_d1a4d627",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1286,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-19T10:37:52Z",
+      "side": 1,
+      "message": "name modification",
+      "revId": "d6025e18e3e9163508156bafa915b4fddcd1b5d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "55460e51_0acdbace",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1352,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-19T10:37:52Z",
+      "side": 1,
+      "message": "send it in Context setup Rsp, if if Db not found",
+      "revId": "d6025e18e3e9163508156bafa915b4fddcd1b5d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
