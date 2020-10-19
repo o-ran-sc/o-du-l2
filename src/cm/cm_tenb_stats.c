@@ -197,7 +197,7 @@ PRIVATE Void TSInfUtlPackUeInfo(mBuf, stats)
 #endif
 {
    S32 i;
-   U32 k;
+   uint32_t k;
 
    TRC2(TSInfUtlPackUeInfo)
 
@@ -396,7 +396,7 @@ PRIVATE Void TSInfUtlUnpkUeInfo(mBuf, stats)
 #endif
 {
    S32 i;
-   U32 k;
+   uint32_t k;
 
    TRC2(TSInfUtlUnpkUeInfo)
 

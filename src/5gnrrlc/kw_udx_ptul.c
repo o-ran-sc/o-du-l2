@@ -61,7 +61,7 @@ PRIVATE S16 PtUlUdxUbndReq ARGS((Pst* pst, SuId suId,Reason reason));
 PRIVATE S16 PtUlUdxCfgReq ARGS((Pst *pst, SpId spId, RlcCfgInfo *cfgInfo));
 PRIVATE S16 PtUlUdxStaUpdReq ARGS((Pst* pst,SpId spId,CmLteRlcId *rlcId,
                                 RlcUdxStaPdu         *pStaPdu ));
-PRIVATE S16 PtUlUdxUeIdChgReq ARGS((Pst *pst, SpId spId, U32 transId, 
+PRIVATE S16 PtUlUdxUeIdChgReq ARGS((Pst *pst, SpId spId, uint32_t transId, 
                                    CkwUeInfo *ueInfo, CkwUeInfo *newUeInfo));
 PRIVATE S16 PtUlUdxStaPduReq ARGS(( Pst* pst,SpId  spId, CmLteRlcId *rlcId,
                              RlcUdxDlStaPdu  *pStaPdu ));
@@ -150,7 +150,7 @@ PRIVATE S16 PtUlUdxUeIdChgReq
 (
 Pst *pst,                      /* post structure */
 SpId spId,                     /* Service User Id */
-U32      transId,              /* transaction Id */
+uint32_t      transId,              /* transaction Id */
 CkwUeInfo *ueInfo,             /* Config Info */
 CkwUeInfo *newUeInfo           /* Config Info */
 )
@@ -158,7 +158,7 @@ CkwUeInfo *newUeInfo           /* Config Info */
 PRIVATE S16 PtUlUdxUeIdChgReq(pst, spId,transId, ueInfo, newUeInfo)
 Pst *pst;                      /* post structure */
 SpId spId;                     /* Service User Id */
-U32      transId;              /* transaction Id */
+uint32_t      transId;              /* transaction Id */
 CkwUeInfo *ueInfo;             /* Config Info */
 CkwUeInfo *newUeInfo;          /* Config Info */
 #endif
@@ -265,12 +265,12 @@ RlcL2MeasReqEvt      *measReqEvt;
 PRIVATE S16  PtUlUdxL2MeasSendReq
 (
 Pst*                pst,
-U8                  status
+uint8_t                  status
 )
 #else
 PRIVATE S16 PtUlUdxL2MeasSendReq(pst, status )
 Pst*                pst;
-U8                  status
+uint8_t                  status
 #endif
 {
 
@@ -295,12 +295,12 @@ U8                  status
 PRIVATE S16  PtUlUdxL2MeasStopReq
 (
 Pst*                pst,
-U8                  status
+uint8_t                  status
 )
 #else
 PRIVATE S16 PtUlUdxL2MeasStopReq(pst, status )
 Pst*                pst;
-U8                  status
+uint8_t                  status
 #endif
 {
 
@@ -598,7 +598,7 @@ S16 rlcUlUdxUeIdChgReq
 (
 Pst *pst,                      /* post structure */
 SpId spId,                     /* Service User Id */
-U32      transId,              /* transaction Id */
+uint32_t      transId,              /* transaction Id */
 CkwUeInfo *ueInfo,             /* Config Info */
 CkwUeInfo *newUeInfo           /* Config Info */
 )
@@ -606,7 +606,7 @@ CkwUeInfo *newUeInfo           /* Config Info */
 S16 rlcUlUdxUeIdChgReq(pst, spId,transId, ueInfo, newUeInfo)
 Pst *pst;                      /* post structure */
 SpId spId;                     /* Service User Id */
-U32      transId;              /* transaction Id */
+uint32_t      transId;              /* transaction Id */
 CkwUeInfo *ueInfo;             /* Config Info */
 CkwUeInfo *newUeInfo;          /* Config Info */
 #endif
@@ -691,12 +691,12 @@ RlcL2MeasReqEvt      *measReqEvt;
 S16  rlcUlUdxL2MeasSendReq
 (
 Pst*                pst,
-U8                  measType
+uint8_t                  measType
 )
 #else
 S16 rlcUlUdxL2MeasSendReq(pst,measReqEvt)
 Pst*                pst;
-U8                  measType;
+uint8_t                  measType;
 #endif
 {
 
@@ -721,12 +721,12 @@ U8                  measType;
 S16  rlcUlUdxL2MeasStopReq
 (
 Pst*                pst,
-U8                  measType
+uint8_t                  measType
 )
 #else
 S16 rlcUlUdxL2MeasStopReq(pst,measReqEvt)
 Pst*                pst;
-U8                  measType;
+uint8_t                  measType;
 #endif
 {
 

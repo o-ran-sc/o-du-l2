@@ -259,10 +259,10 @@ RgInfRarInfo        *rarInfo;
 RgErrInfo           *err;
 #endif
 {
-   U8       idx1,idx2;
+   uint8_t       idx1,idx2;
    Buffer   *rarPdu;
    RgDlSf   *dlSf;
-   U8       idx;
+   uint8_t       idx;
 
    TRC2(rgHndlRaResp)
 

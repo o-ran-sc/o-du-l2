@@ -51,11 +51,11 @@ typedef Data CmMmEntry;
 /* Size-To-Bucket map table structure */ 
 struct cmMmMapBkt
 {
-   U16   bktIdx;              /* The index to the memory bucket */
+   uint16_t   bktIdx;              /* The index to the memory bucket */
 
 #if (ERRCLASS & ERRCLS_DEBUG)
-   U16   numReq;              /* Number of the allocation request */
-   U16   numFailure;          /* Number of allocation failure form the bucket */
+   uint16_t   numReq;              /* Number of the allocation request */
+   uint16_t   numFailure;          /* Number of allocation failure form the bucket */
 #endif
 
 };
@@ -69,7 +69,7 @@ struct cmMmBlkSetElement
 {
    CmLList    memSetNode;     /* Linked list of the first pointer of the 
                                  bucket */
-   U32        numFreeBlks;    /* Number of Free Blocks avilable in the current
+   uint32_t        numFreeBlks;    /* Number of Free Blocks avilable in the current
                                  set */
    CmMmEntry  *nextBktPtr;    /* Address of the first bucket which will be
                                  used for the allocation */
@@ -81,7 +81,7 @@ struct cmMmBlkSetElement
  * will be used in global region  */
 struct cmMmGlobalBktCb
 {
-   U8           poolId;          /* Pool Id */
+   uint8_t           poolId;          /* Pool Id */
    Size         size;            /* Size of the pool */
    CmLListCp    listValidBktSet; /* LList Cp used to store the nodes of memory element
                                     node which holds valid pointers */
@@ -89,10 +89,10 @@ struct cmMmGlobalBktCb
                                     node which holds invalid information */
    CmMmEntry    *startAddr;      /* Starting address */
    CmMmEntry    *next;           /* Next address which will be allocated */
-   U32          numBlks;          /* Total number of buckets configured */
-   U32          bucketSetSize;
-   U32          bktFailCnt;      /* bucket alloc failure count */
-   U32          bktNoFitCnt;     /* number of blocks not fit */
+   uint32_t          numBlks;          /* Total number of buckets configured */
+   uint32_t          bucketSetSize;
+   uint32_t          bktFailCnt;      /* bucket alloc failure count */
+   uint32_t          bktNoFitCnt;     /* number of blocks not fit */
    SLockId      bucketLock;      /* Lock used for the allocation/freeing of
                                     the set of buckets */
 };
@@ -103,22 +103,22 @@ struct cmMmGlobalBktCb
  * is used in the system taks local region */
 struct cmMmDynBktCb
 {
-   U8                 poolId;                   /* Pool Id */
+   uint8_t                 poolId;                   /* Pool Id */
    Size               size;                     /* Size of the pool */
    CmLListCp          memBlkSetElem;            /* Memory set element likend list */
    CmMmBlkSetElement *crntMemBlkSetElem;        /* Pointer to the current memort block set */
    CmMmEntry         *startAddr;               /* Starting address */
    CmMmEntry         *next;                    /* Next address which will be allocated */
-   U32               numBktAlloc;              /* Total number of buckets allocted */
-   U32               numBkt;                   /* Total number of buckets configured */
-   U16               bucketSetSize;            /* Size of bucket sets */
-   U16               blkSetRelThreshold;       /* Upper threshold of bucket count upon
+   uint32_t               numBktAlloc;              /* Total number of buckets allocted */
+   uint32_t               numBkt;                   /* Total number of buckets configured */
+   uint16_t               bucketSetSize;            /* Size of bucket sets */
+   uint16_t               blkSetRelThreshold;       /* Upper threshold of bucket count upon
                                                   reaching will free the set to global region */
-   U16               blkSetAcquireThreshold;   /* Lower threshold of bucket count upon
+   uint16_t               blkSetAcquireThreshold;   /* Lower threshold of bucket count upon
                                                   reaching will request the set from
                                                   global region */
-   U32               bktFailCnt;                /* bucket alloc failure count */
-   U32               bktNoFitCnt;               /* number of blocks not fit */
+   uint32_t               bktFailCnt;                /* bucket alloc failure count */
+   uint32_t               bktNoFitCnt;               /* number of blocks not fit */
 };
 
 /* The individual Task regionCb which will be associate with every system
@@ -128,7 +128,7 @@ struct cmMmDynBktCb
 struct cmMmDynRegCb
 {
    Region          region;                   /* Region  Id of the memory */
-   U16             bktSize[CMM_MAX_BKT_ENT]; /* Bucket Size */
+   uint16_t             bktSize[CMM_MAX_BKT_ENT]; /* Bucket Size */
    void            *iccHdl;                  /* Handler used for ICC memory */
    SsAlloc         alloc;                    /* allocation function pointer */
    SsFree          free;                     /* deallocation function pointer */
@@ -138,11 +138,11 @@ struct cmMmDynRegCb
 struct cmMmDynRegCb
 {
    Region          region;                  /* Region  Id of the memory */
-   U8              regType;                 /* Region Type, static or dynamic or global */
-   U8              numBktBlk;               /* Keeps the count of number of bucket set blocks */
-   U16             numBkts;                 /* Number of buckets in the Bucket Pool */
+   uint8_t              regType;                 /* Region Type, static or dynamic or global */
+   uint8_t              numBktBlk;               /* Keeps the count of number of bucket set blocks */
+   uint16_t             numBkts;                 /* Number of buckets in the Bucket Pool */
    Size            bktSize;                 /* Size of the memory used for the bucket pool */
-   U16             bktQnPwr;                /* Quantum size of the bucket pool */
+   uint16_t             bktQnPwr;                /* Quantum size of the bucket pool */
    Size            bktMaxBlkSize;           /* Maximum size of block in the bucket pool */
    CmMmDynBktCb    bktTbl[CMM_MAX_BKT_ENT]; /* Pointer to the memory bkt tbl */
    SsAlloc         alloc;                   /* allocation function pointer */
@@ -156,7 +156,7 @@ struct cmMmDynRegCb
 struct cmMmGlobRegCb
 {
    Region           region;                  /* Region  Id of the memory */
-   U16              numBkts;                 /* Number of buckets in the Bucket Pool */
+   uint16_t              numBkts;                 /* Number of buckets in the Bucket Pool */
    CmMmGlobalBktCb  bktTbl[CMM_MAX_BKT_ENT]; /* Pointer to the memory bkt tbl */
 };
 
@@ -193,7 +193,7 @@ typedef struct cmMemEntries         CmMemEntries;
 struct cmMmBktCfg
 {
    Size  size;              /* Size of the memory block */
-   U32   numBlks;           /* Number of the block in the bucket */
+   uint32_t   numBlks;           /* Number of the block in the bucket */
 };
 
 /* Memory Region configuration structure. */ 
@@ -201,13 +201,13 @@ struct cmMmRegCfg
 {
    Size      size;          /* Size of the memory */
    Data     *vAddr;         /* Start address of the memory */
-   U8        lType;         /* Lock Type to be used */
+   uint8_t        lType;         /* Lock Type to be used */
  
-   U8        chFlag;        /* Flag defines the memory region characteristics */
+   uint8_t        chFlag;        /* Flag defines the memory region characteristics */
    Data     *pAddr;         /* Physical address of the memory block: Valid 
                                if CMM_REG_PHY_VALID bit of chFlag is set */
    Size      bktQnSize;     /* Quatum size of the memory block */
-   U16       numBkts;       /* Number of buckets in the Bucket Pool */
+   uint16_t       numBkts;       /* Number of buckets in the Bucket Pool */
  
    CmMmBktCfg  bktCfg[CMM_MAX_BKT_ENT];  /* Bucket configuration structure */
 };
@@ -219,29 +219,29 @@ struct cmMmRegCfg
 #ifdef SS_HISTOGRAM_SUPPORT 
 struct cmMemEntries /* Entry information */
 {
-   U32              line; /* Line Number where memory allocation primitive used */
-   U32              allocBytes; /* Granted Byte */
-   U32              allocOverFlow; /* If the value of allocBytes overflows then we use this variable */
-   U32              freedBytes; /* Freed Bytes */
-   U32              freeOverFlow; /* If the value of freeByte overflows then we use this value */
-   U32              wastedBytes; /* Difference between Granted and Requested bytes */
-   U32              bucketAllocReq; /* No of times this Bucket used */
-   U32              bucketFreeReq; /* No of times this Bucket freed */
-   U32              entId; /* Tapa task used this bucket */
-   U32              key; /* combination of file name and line */
-   U8               fileName[CMM_HIST_MAX_FILENAME]; /* File Name where memory allocation primitive used */
+   uint32_t              line; /* Line Number where memory allocation primitive used */
+   uint32_t              allocBytes; /* Granted Byte */
+   uint32_t              allocOverFlow; /* If the value of allocBytes overflows then we use this variable */
+   uint32_t              freedBytes; /* Freed Bytes */
+   uint32_t              freeOverFlow; /* If the value of freeByte overflows then we use this value */
+   uint32_t              wastedBytes; /* Difference between Granted and Requested bytes */
+   uint32_t              bucketAllocReq; /* No of times this Bucket used */
+   uint32_t              bucketFreeReq; /* No of times this Bucket freed */
+   uint32_t              entId; /* Tapa task used this bucket */
+   uint32_t              key; /* combination of file name and line */
+   uint8_t               fileName[CMM_HIST_MAX_FILENAME]; /* File Name where memory allocation primitive used */
 };
 
 struct cmHstGrmHashListEnt    /* hash list entry */
 {
    CmMemEntries      entries[CMM_HIST_MAX_MEM_ENTRY_PER_BIN]; /* Number of entires in each bin */
-   U32               numOfEntries; /*Number of entries in hash list */
+   uint32_t               numOfEntries; /*Number of entries in hash list */
 };
 
 struct cmHstGrmHashListCp /* Hash List control pointer */
 {
    CmHstGrmHashListEnt   hashList[CMM_HIST_MAX_MEM_BIN]; /* Number of bins in hash list */
-   U16                   totalNumEntries; /* Total number of bins */
+   uint16_t                   totalNumEntries; /* Total number of bins */
 };
 
 #endif /* SS_HISTOGRAM_SUPPORT */
@@ -252,9 +252,9 @@ struct cmHstGrmHashListCp /* Hash List control pointer */
 struct cmMmBlkHdr
 {
    /* trSignature shall always be maintained as the first element in this structure */
-   U8          trSignature[CMM_TRAMPLING_SIGNATURE_LEN];  /* signature to detect trampling */
+   uint8_t          trSignature[CMM_TRAMPLING_SIGNATURE_LEN];  /* signature to detect trampling */
    CmMmBlkHdr  *nextBlk;         /* pointer to the next memory block header */
-   U32         memFlags;         /* Free/Static/Dynamic */
+   uint32_t         memFlags;         /* Free/Static/Dynamic */
    Size        requestedSize;    /* requested size for which this mem blk has been allocated */
 };
 #endif /* SSI_DEBUG_LEVEL1 */
@@ -269,12 +269,12 @@ struct cmMmBkt                /* Bucket Structure */
    CmMmEntry   *next;         /* Pointer to the next memory block */
 #endif /* SSI_DEBUG_LEVEL1 */
    Size         size;         /* Size of the block */
-   U32          numBlks;      /* Total number of blocks in the bucket */
-   U32          maxAlloc;     /* Maximum number of blocks allocated till now */
-   U32          numAlloc;     /* Number of blocks allocated */
+   uint32_t          numBlks;      /* Total number of blocks in the bucket */
+   uint32_t          maxAlloc;     /* Maximum number of blocks allocated till now */
+   uint32_t          numAlloc;     /* Number of blocks allocated */
    SLockId      bktLock;      /* Lock to protect the bucket pool */ 
-   U32          bktFailCnt;   /* bucket alloc failure count */
-   U32          bktNoFitCnt;  /* number of blocks not fit */
+   uint32_t          bktFailCnt;   /* bucket alloc failure count */
+   uint32_t          bktNoFitCnt;  /* number of blocks not fit */
 /* cm_mem_x_001.main_9 - addition of statistics related data */
 #ifdef SSI_DEBUG_LEVEL1
    Data         *bktStartPtr;   /* maintains the start address of the memory block in the bucket */
@@ -282,7 +282,7 @@ struct cmMmBkt                /* Bucket Structure */
    StsCntr      numDeallocAttempts;   /* total number of de-allocation attempts */
    Size         staticMemUsed;   /* amount of memory used for static allocations */
    Size         dynamicMemUsed;   /* amount of memory used for dynamic allocations */
-   U8           trampleCount;   /* incremented everytime a trampling is detected in any block of the bucket */
+   uint8_t           trampleCount;   /* incremented everytime a trampling is detected in any block of the bucket */
 #endif /*SSI_DEBUG_LEVEL1*/
 /* cm_mem_x_001.main_11: Additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
@@ -299,8 +299,8 @@ struct cmHEntry
 /* cm_mem_x_001.main_9 - addition to provide trampling and double-free detections support */
 #ifdef SSI_DEBUG_LEVEL1
   /* trSignature shall always be maintianed as the first element in this structure */
-  U8         trSignature[CMM_TRAMPLING_SIGNATURE_LEN];  /* signature to detect trampling */
-  U32        memFlags;          /* flag to maintain the memory status */
+  uint8_t         trSignature[CMM_TRAMPLING_SIGNATURE_LEN];  /* signature to detect trampling */
+  uint32_t        memFlags;          /* flag to maintain the memory status */
   Size       requestedSize;     /* size of the heap entry block */
 #endif /* SSI_DEBUG_LEVEL1 */
   CmHEntry  *next;             /* Pointer to the next entry block */
@@ -317,11 +317,11 @@ struct cmMmHeapCb
    Size      minSize;          /* Minimum size that can be allocated */
    SLockId   heapLock;         /* Lock to protect the heap pool */
 #if (ERRCLASS & ERRCLS_DEBUG)
-   U16       numFragBlk;       /* Number of fragmented block */
-   U16       numReq;           /* Number of allocation request */
-   U16       numFailure;       /* Number of allocation failure */
+   uint16_t       numFragBlk;       /* Number of fragmented block */
+   uint16_t       numReq;           /* Number of allocation request */
+   uint16_t       numFailure;       /* Number of allocation failure */
 #endif
-   U32       heapAllocCnt;     /* Number of blocks from heap */
+   uint32_t       heapAllocCnt;     /* Number of blocks from heap */
 /* cm_mem_x_001.main_9 - addition of statistics related data */
 #ifdef SSI_DEBUG_LEVEL1
    Size     staticHeapMemUsed; /* amount of heap memory used for static allocations */
@@ -330,7 +330,7 @@ struct cmMmHeapCb
                         /* Update this in cmMmHeapInit if cmHEntry is changed */
    StsCntr      numAllocAttempts;   /* total number of allocation attempts in heap */
    StsCntr      numDeallocAttempts;   /* total number of de-allocation attempts in heap */
-   U8	    trampleCount;	/* incremented everytime a trampling is detected in any block of the heap */
+   uint8_t	    trampleCount;	/* incremented everytime a trampling is detected in any block of the heap */
 #endif /* SSI_DEBUG_LEVEL1 */
  /* cm_mem_x_001.main_11: Additions */
 #ifdef SS_HISTOGRAM_SUPPORT
@@ -344,15 +344,15 @@ struct cmMmHeapCb
 #ifdef SSI_DEBUG_LEVEL1
 struct cmMmHashListEnt    /* hash list entry */
 {
-   U32  size;             /* pointer to key */
-   U32  numAttempts;      /* number of attempts */
+   uint32_t  size;             /* pointer to key */
+   uint32_t  numAttempts;      /* number of attempts */
 };
 
 struct cmMmHashListCp
 {
    CmMmHashListEnt  *hashList;
-   U16  numOfbins;
-   U16  numOfEntries;
+   uint16_t  numOfbins;
+   uint16_t  numOfEntries;
 };
 #endif /* SSI_DEBUG_LEVEL1 */
 
@@ -362,14 +362,14 @@ struct cmMmRegCb
    Region       region;        /* Region  Id of the memory */
    SRegInfo     regInfo;       /* Region information block */
 
-   U8           chFlag;        /* Flag defines the region characteristics */
+   uint8_t           chFlag;        /* Flag defines the region characteristics */
    Data        *pAddr;         /* Physical address of the memory block.
                                   Valid if CMM_REG_PHY_VALID bit is set */
  
    Size         bktSize;       /* Size of the memory used for the bucket pool */
-   U16          bktQnPwr;      /* Quantum size of the bucket pool */
+   uint16_t          bktQnPwr;      /* Quantum size of the bucket pool */
    Size         bktMaxBlkSize; /* Maximum size of block in the bucket pool */
-   U16          numBkts;       /* Number of buckets in the Bucket Pool */
+   uint16_t          numBkts;       /* Number of buckets in the Bucket Pool */
 
    CmMmMapBkt   mapTbl[CMM_MAX_MAP_ENT]; /* size-to-bucket map table */
    CmMmBkt      bktTbl[CMM_MAX_BKT_ENT]; /* Pointer to the memory bkt tbl */
@@ -399,12 +399,12 @@ typedef struct _memHash
 typedef struct _memAllocInfo
 {
    CmHashListEnt         ent;
-   U32                   memAddr;
+   uint32_t                   memAddr;
    Size                  reqSz;
    Size                  allocSz;
-   U16                   bktIdx;
-   U8                    moduleId;
-   U8                    bTrcSz;
+   uint16_t                   bktIdx;
+   uint8_t                    moduleId;
+   uint8_t                    bTrcSz;
    PTR                   backTrace;
 }MemAllocInfo; 
 
@@ -445,11 +445,11 @@ EXTERN S16 cmMmRegDeInit ARGS(( CmMmRegCb *regCb));
 EXTERN Void cmInitMemLeakMdl    ARGS((Void));
 /* cm_mem_x_001.main_12 : Additions */
 EXTERN Void cmDeinitMemLeakMdl    ARGS((Void));
-EXTERN Void cmStorAllocBlk      ARGS((U32 addr, Size reqSz, Size allocSz,
-                                      U16 bktIdx));
-EXTERN Void cmRlsAllocBlk       ARGS((U32 addr));
-EXTERN U8   cmMemGetModuleId    ARGS((S8 **funNm, S32 traceSize));
-EXTERN S16  cmMemGetStrMtchIdx  ARGS((U8 strtIdx, U8 endIdx,
+EXTERN Void cmStorAllocBlk      ARGS((uint32_t addr, Size reqSz, Size allocSz,
+                                      uint16_t bktIdx));
+EXTERN Void cmRlsAllocBlk       ARGS((uint32_t addr));
+EXTERN uint8_t   cmMemGetModuleId    ARGS((S8 **funNm, S32 traceSize));
+EXTERN S16  cmMemGetStrMtchIdx  ARGS((uint8_t strtIdx, uint8_t endIdx,
                                       S8 *str, S8 **strLst));
 EXTERN Void cmMemOpenMemLkFile  ARGS((S8 *arg));
 EXTERN Void SLogLkInfo          ARGS((Void));
@@ -478,19 +478,19 @@ EXTERN Void DumpRLCUlDebugInformation         ARGS((Void));
 EXTERN Void printMacCellInfo                  ARGS((Void));
 EXTERN Void printSchCellInfo                  ARGS((Void));
 
-EXTERN U32 isMemThreshReached    ARGS((Region region));
+EXTERN uint32_t isMemThreshReached    ARGS((Region region));
 
 EXTERN S16 cmMmStatRegInit       ARGS((Region region, CmMmRegCb *regCb, CmMmRegCfg *cfg));
 EXTERN S16 cmMmGlobRegInit       ARGS((CmMmGlobRegCb *regCb));
 EXTERN S16 cmMmDynRegInit        ARGS((CmMmDynRegCb  *regCb));
 #ifdef USE_MALLOC
-EXTERN S16 ssGetDynMemBlkSet  ARGS((U8 bktIdx, CmMmBlkSetElement *dynMemSetElem));
-EXTERN S16 ssPutDynMemBlkSet  ARGS((U8 bktIdx, CmMmBlkSetElement *dynMemSetElem));
+EXTERN S16 ssGetDynMemBlkSet  ARGS((uint8_t bktIdx, CmMmBlkSetElement *dynMemSetElem));
+EXTERN S16 ssPutDynMemBlkSet  ARGS((uint8_t bktIdx, CmMmBlkSetElement *dynMemSetElem));
 #else
-EXTERN S16 ssPutDynMemBlkSet ARGS((U8 bktIdx,CmMmBlkSetElement *dynMemSetElem,
-                                   U32 doNotBlockForLock));
-EXTERN S16 ssGetDynMemBlkSet  ARGS((U8 bktIdx, CmMmBlkSetElement *dynMemSetElem,
-                                   U32 doNotBlockForLock));
+EXTERN S16 ssPutDynMemBlkSet ARGS((uint8_t bktIdx,CmMmBlkSetElement *dynMemSetElem,
+                                   uint32_t doNotBlockForLock));
+EXTERN S16 ssGetDynMemBlkSet  ARGS((uint8_t bktIdx, CmMmBlkSetElement *dynMemSetElem,
+                                   uint32_t doNotBlockForLock));
 #endif /* USE_MALLOC */
 #endif /* SS_LOCKLESS_MEMORY */
 #ifdef __cplusplus

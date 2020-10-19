@@ -68,7 +68,7 @@
 
 PRIVATE Void rlcTmmSendBoSta ARGS((RlcCb *gCb, RlcDlRbCb *rbCb, 
                                  MsgLen bo, KwuDatReqInfo *datReqInfo));
-extern U32 rgMacGT ;  
+extern uint32_t rgMacGT ;  
 /** @addtogroup tmmode */
 /*@{*/
 

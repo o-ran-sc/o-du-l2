@@ -75,7 +75,7 @@ static int RLOG_FILE_ID=193;
 
 
 #ifdef TENB_STATS
-EXTERN TSL2UeStatsCb* TSL2MapUeStatsBlk (U16 rnti);
+EXTERN TSL2UeStatsCb* TSL2MapUeStatsBlk (uint16_t rnti);
 #endif
 /** 
  * @file gp_dbm_dl.c
@@ -108,10 +108,10 @@ RlcCb *gCb;
 
    /* Initialize ueCb Hash List */
    if(ROK != cmHashListInit(&(gCb->u.dlCb->ueLstCp), 
-                            (U16) RLC_UE_LIST_BUCKET_SIZE,
-                            (U16) 0, 
+                            (uint16_t) RLC_UE_LIST_BUCKET_SIZE,
+                            (uint16_t) 0, 
                             (Bool) FALSE, 
-                            (U16) CM_HASH_KEYTYPE_CONID,
+                            (uint16_t) CM_HASH_KEYTYPE_CONID,
                             RLC_GET_MEM_REGION(gCb), 
                             RLC_GET_MEM_POOL(gCb)))
    {   
@@ -121,10 +121,10 @@ RlcCb *gCb;
 
    /* Initialize cellCb Hash List */
    if(ROK != cmHashListInit(&(gCb->u.dlCb->cellLstCp), 
-                            (U16) RLC_CELL_LIST_BUCKET_SIZE,
-                            (U16) 0, 
+                            (uint16_t) RLC_CELL_LIST_BUCKET_SIZE,
+                            (uint16_t) 0, 
                             (Bool) FALSE, 
-                            (U16) CM_HASH_KEYTYPE_CONID,
+                            (uint16_t) CM_HASH_KEYTYPE_CONID,
                             RLC_GET_MEM_REGION(gCb), 
                             RLC_GET_MEM_POOL(gCb)))
    {
@@ -137,10 +137,10 @@ RlcCb *gCb;
 #ifdef LTE_L2_MEAS_RLC
    /* Initialize qcI Hash List */
    if(ROK != cmHashListInit(&(rlcCb.rlcL2Cb.qciHlCp), 
-                            (U16) RLC_QCI_LIST_BUCKET_SIZE,
-                            (U16) 0, 
+                            (uint16_t) RLC_QCI_LIST_BUCKET_SIZE,
+                            (uint16_t) 0, 
                             (Bool) TRUE, 
-                            (U16) CM_HASH_KEYTYPE_DEF,
+                            (uint16_t) CM_HASH_KEYTYPE_DEF,
                             rlcCb.init.region, 
                             rlcCb.init.pool))
    {
@@ -152,10 +152,10 @@ RlcCb *gCb;
    
    /* Initialize tbHlCp Hash List */
    if(ROK != cmHashListInit(&(rlcCb.rlcL2Cb.tbHlCp), 
-                            (U16) RLC_TB_LIST_BUCKET_SIZE,
-                            (U16) 0, 
+                            (uint16_t) RLC_TB_LIST_BUCKET_SIZE,
+                            (uint16_t) 0, 
                             (Bool) FALSE, 
-                            (U16) CM_HASH_KEYTYPE_DEF,
+                            (uint16_t) CM_HASH_KEYTYPE_DEF,
                             rlcCb.init.region, 
                             rlcCb.init.pool))
    {
@@ -342,16 +342,16 @@ Void rlcDbmDelAllDlRb
 (
 RlcCb       *gCb,
 RlcDlRbCb   **rbCbLst,
-U8         numRbCb 
+uint8_t         numRbCb 
 )
 #else
 Void rlcDbmDelAllDlRb(gCb, rbCbLst, numRbCb)
 RlcCb       *gCb;
 RlcDlRbCb   **rbCbLst;
-U8         numRbCb;   
+uint8_t         numRbCb;   
 #endif
 {
-   U32 idx;
+   uint32_t idx;
 
    TRC3(rlcDbmDelAllDlRb)
 
@@ -444,8 +444,8 @@ RlcDlUeCb      **ueCb;
 
    if (ROK != cmHashListInsert(&(gCb->u.dlCb->ueLstCp), 
                                (PTR)tUeCb, 
-                               (U8 *)&(tUeCb->ueId),
-                               (U16) sizeof(CmLteRnti)))
+                               (uint8_t *)&(tUeCb->ueId),
+                               (uint16_t) sizeof(CmLteRnti)))
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cellId,
             "UeId[%u] HashList Insertion Failed",
@@ -603,7 +603,7 @@ RlcCb      *gCb;
 RlcDlUeCb  *ueCb;
 #endif
 {
-   U8           tbIdx;
+   uint8_t           tbIdx;
    RlcL2MeasTb   *l2MeasTb = NULLP;
    for(tbIdx = 0; tbIdx < RLC_MAX_TB_PER_UE; tbIdx++)
    { 
@@ -665,8 +665,8 @@ RlcDlCellCb    **cellCb;
 
    if(ROK != cmHashListInsert(&(gCb->u.dlCb->cellLstCp), 
                               (PTR) tCellCb,
-                              (U8 *)&(tCellCb->cellId), 
-                              (U16) sizeof(CmLteCellId)))
+                              (uint8_t *)&(tCellCb->cellId), 
+                              (uint16_t) sizeof(CmLteCellId)))
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cellId,"HashList Insertion Failed");
       return RFAILED;
@@ -697,7 +697,7 @@ uint8_t rlcDbmFetchDlCellCb(RlcCb *gCb, CmLteCellId  cellId, RlcDlCellCb **cellC
    *cellCb = NULLP;
    
    if(ROK != cmHashListFind(&(gCb->u.dlCb->cellLstCp), 
-                            (U8 *)&(cellId),
+                            (uint8_t *)&(cellId),
                             sizeof(CmLteCellId), 
                             RLC_DEF_SEQ_NUM, 
                             (PTR*) cellCb))

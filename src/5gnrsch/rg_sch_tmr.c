@@ -73,7 +73,7 @@ RgSchUeCellInfo  *sCell
   *   @param[in]  RgSchCellCb    *cell
   *   @param[in]  Ptr            cb
   *   @param[in]  S16            tmrEvnt
-  *   @param[in]  U32            tmrVal
+  *   @param[in]  uint32_t            tmrVal
   *   @return  Void
   */
 #ifdef ANSI
@@ -82,14 +82,14 @@ Void rgSCHTmrStartTmr
 RgSchCellCb *cell,
 Ptr         cb,
 S16         tmrEvnt,
-U32         tmrVal
+uint32_t         tmrVal
 )
 #else
 Void rgSCHTmrStartTmr (cell, cb, tmrEvnt, tmrVal)
 RgSchCellCb *cell;
 Ptr         cb;
 S16         tmrEvnt;
-U32         tmrVal;
+uint32_t         tmrVal;
 #endif
 {
    CmTmrArg          arg;
@@ -376,11 +376,11 @@ S16         tmrEvnt;
          break;
       case RG_SCH_TMR_UL_MEASGAP:
       case RG_SCH_TMR_UL_ACKNACK:
-         rgSCHMeasGapANRepUlInactvTmrExpry (ue, (U8)tmrEvnt);
+         rgSCHMeasGapANRepUlInactvTmrExpry (ue, (uint8_t)tmrEvnt);
          break;
       case RG_SCH_TMR_DL_ACKNACK:
       case RG_SCH_TMR_DL_MEASGAP:
-         rgSCHMeasGapANRepDlInactvTmrExpry (ue, (U8)tmrEvnt);
+         rgSCHMeasGapANRepDlInactvTmrExpry (ue, (uint8_t)tmrEvnt);
          break;
       case RG_SCH_TMR_TA:
 #ifdef EMTC_ENABLE

@@ -291,7 +291,7 @@ Buffer *mBuf;
 *
 *  @param[in]   Pst*  pst
 *  @param[in]   SuId  suId
-*  @param[in]   U8  status
+*  @param[in]   uint8_t  status
 *  @return   S16
 *      -# ROK
 **/
@@ -300,13 +300,13 @@ S16 cmPkRguBndCfm
 (
 Pst* pst,
 SuId suId,
-U8 status
+uint8_t status
 )
 #else
 S16 cmPkRguBndCfm(pst, suId, status)
 Pst* pst;
 SuId suId;
-U8 status;
+uint8_t status;
 #endif
 {
    Buffer *mBuf = NULLP;
@@ -353,7 +353,7 @@ U8 status;
 *
 *  @param[in]   Pst*  pst
 *  @param[in]   SuId  suId
-*  @param[in]   U8  status
+*  @param[in]   uint8_t  status
 *  @return   S16
 *      -# ROK
 **/
@@ -372,7 +372,7 @@ Buffer *mBuf;
 #endif
 {
    SuId suId;
-   U8 status;
+   uint8_t status;
    
    TRC3(cmUnpkRguBndCfm)
 
@@ -473,7 +473,7 @@ RguL2MUlThrpMeasReqInfo *param;
 Buffer *mBuf;
 #endif
 {
-   U8 loop;
+   uint8_t loop;
    TRC3(cmUnpkRguL2MUlThrpMeasReqInfo);
 
    CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
@@ -688,7 +688,7 @@ RguHarqStatusInd  *harqStatusInd;
 {
 
    Buffer   *mBuf;
-   U8       idx;
+   uint8_t       idx;
    RguHarqStatusInd *harqStaInd = NULL;
 
    TRC3(cmPkRguHqStaInd)
@@ -707,7 +707,7 @@ RguHarqStatusInd  *harqStatusInd;
       return RFAILED;
    }
 
-   cmMemcpy((U8 *)harqStaInd, (U8 *)harqStatusInd, sizeof(RguHarqStatusInd));
+   cmMemcpy((uint8_t *)harqStaInd, (uint8_t *)harqStatusInd, sizeof(RguHarqStatusInd));
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
@@ -812,7 +812,7 @@ Buffer *mBuf;
 {
    RguHarqStatusInd    *hqStaInd;  
    SuId                suId;
-   U8                  idx;
+   uint8_t                  idx;
 
    TRC3(cmUnpkRguHqStaInd)
 
@@ -904,7 +904,7 @@ RguUeFlowCntrlInfo *param;
 Buffer             *mBuf;
 #endif
 {
-  U32 idx;
+  uint32_t idx;
 
   TRC3(cmPkRguUeFlowCntrlInfo);
 
@@ -929,7 +929,7 @@ RguFlowCntrlInd *param;
 Buffer          *mBuf;
 #endif
 {
-  U32 idx;
+  uint32_t idx;
 
   TRC3(cmPkRguFlowCntrlInfo);
 
@@ -1044,7 +1044,7 @@ RguUeFlowCntrlInfo *param;
 Buffer           *mBuf;
 #endif
 {
-  U32 idx;
+  uint32_t idx;
   TRC3(cmUnpkRguUeFlowCntrlInfo);
   CMCHKUNPK(cmUnpkLteRnti, &param->ueId, mBuf);
   CMCHKUNPK(oduPackUInt32, &param->numLcs, mBuf);
@@ -1067,7 +1067,7 @@ RguFlowCntrlInd *param;
 Buffer           *mBuf;
 #endif
 {
-  U32 idx; 
+  uint32_t idx; 
   
   TRC3(cmUnpkRguFlowCntrlInfo);
 

@@ -163,7 +163,7 @@ PRIVATE Void rgSCHSc1UlSchdUeTxLst ARGS((
 RgSchCellCb         *cell,
 CmLListCp             *ueTxLst,
 RgSchCmnUlRbAllocInfo *allocInfo,
-U8                    *remUe
+uint8_t                    *remUe
 ));
 PRIVATE Void rgSCHSc1DlProcRmvFrmRetx ARGS((
 RgSchCellCb                *cell,
@@ -260,7 +260,7 @@ RgSchUeCb      *ue;
    CmLList         *node;
    RgSchDlHqProcCb *hqP;
    RgSchDlLcCb     *svc;
-   U8              idx;
+   uint8_t              idx;
    TRC2(rgSCHSc1DlActvtUe);
 
    /* Add UE's HqProcs From UERetxLst to CellRetxLst */
@@ -574,7 +574,7 @@ RgSchDlSf                  *subFrm;
 RgSchCmnDlRbAllocInfo      *allocInfo;
 #endif
 {
-   U8                   i;
+   uint8_t                   i;
    CmLListCp            *retxLst;
    CmLList              *node;
    RgSchDlHqProcCb      *hqP;
@@ -584,7 +584,7 @@ RgSchCmnDlRbAllocInfo      *allocInfo;
 #if (defined(LTEMAC_SPS) || (!defined(LTE_TDD)))
    CmLteTimingInfo      schdTime;
 #endif
-   U32                  effBo;
+   uint32_t                  effBo;
    RgSchUeCb            *ue = NULLP;
 #ifdef LTEMAC_HDFDD
    Bool                 dlAllowed = FALSE;
@@ -728,7 +728,7 @@ RgSchDlHqProcCb      *hqProc;
  *  @param[in]  RgSchCellCb            *cell
  *  @param[in]  RgSchDlSf              *subFrm
  *  @param[in]  RgSchDlLcCb            *svc
- *  @param[in]  U32                    bo
+ *  @param[in]  uint32_t                    bo
  *  @param[in]  RgSchCmnDlRbAllocInfo  *allocInfo
  *  @return  S16 
  *
@@ -739,7 +739,7 @@ PRIVATE S16 rgSCHSc1DlDedSvcAlloc
 RgSchCellCb                *cell,
 RgSchDlSf                  *subFrm,
 RgSchDlLcCb                *svc,
-U32                        bo,
+uint32_t                        bo,
 RgSchCmnDlRbAllocInfo      *allocInfo
 )
 #else
@@ -747,14 +747,14 @@ PRIVATE S16 rgSCHSc1DlDedSvcAlloc(cell, subFrm, svc, bo, allocInfo)
 RgSchCellCb                *cell;
 RgSchDlSf                  *subFrm;
 RgSchDlLcCb                *svc;
-U32                        bo;
+uint32_t                        bo;
 RgSchCmnDlRbAllocInfo      *allocInfo;
 #endif
 {
    RgSchUeCb               *ue;
    RgSchDlHqProcCb         *proc;
-   U16                     rlcHdrEstmt;
-   U32                     effBo;
+   uint16_t                     rlcHdrEstmt;
+   uint32_t                     effBo;
    RgSchCmnDlCell          *cmnCellDl = RG_SCH_CMN_GET_DL_CELL(cell);
    RgSchCmnDlSvc           *svcCmn = RG_SCH_CMN_GET_DL_SVC(svc);
    RgSchSc1DlSvc           *svcSc1;
@@ -951,7 +951,7 @@ RgSchCmnDlRbAllocInfo      *allocInfo;
    CmLList              *node;
    RgSchUeCb            *ue = NULLP;
    RgSchDlLcCb          *svc;
-   U8                   i;
+   uint8_t                   i;
    RgSchSc1DlSvc        *svcSc1;
    RgSchSc1DlUe         *ueDl;
    RgSchSc1DlCell       *sc1CellDl = RG_GET_SC1_CELL_DL(cell);
@@ -2092,7 +2092,7 @@ PRIVATE Void rgSCHSc1DlDeinitQueues(cellDl)
 RgSchSc1DlCell *cellDl;
 #endif
 {
-   U8          i;
+   uint8_t          i;
    TRC2(rgSCHSc1DlDeinitQueues);
 
    for (i = 0; i < RG_SC1_DL_NUM_Q; ++i)
@@ -2241,7 +2241,7 @@ S16 rgSCHSc1DlUeHqEntInit(cell, hqEnt)
 {
    RgSchSc1DlHqProc   *hqSpcSch;
    RgSchDlHqProcCb    *hqP;
-   U8                 cnt;
+   uint8_t                 cnt;
    TRC2(rgSCHSc1DlUeHqEntInit);
    /* making use of hqE->sch for one shot allocation 
     * of RgSchSc1DlHqProc structures */
@@ -2367,7 +2367,7 @@ RgSchErrInfo *err;
       RgSchDlHqProcCb    *hqP;
       Pst                pst;
       RgInfRlsHqInfo     *rlsHqBufs = &(cell->rlsHqArr[cell->crntHqIdx]);
-      U8                 i;
+      uint8_t                 i;
 
       /* Prepare TB2 release information to be sent to MAC */
       rlsHqBufs->numUes = 0;
@@ -2427,7 +2427,7 @@ RgSchUeCb    *ue;
 {
    RgSchSc1DlUe         *sc1Ue;
    RgSchDlLcCb          *svc;
-   U32                  idx;
+   uint32_t                  idx;
 
    TRC2(rgSCHSc1DlRmvUeFrmPrioQs);
 
@@ -2479,7 +2479,7 @@ RgSchUeCb    *ue;
    RgSchSc1DlCell       *cellDl = RG_GET_SC1_CELL_DL(cell);
    RgSchDlHqProcCb      *hqP;
    RgSchCmnDlHqProc     *hqProcDl;
-   U8                   i;
+   uint8_t                   i;
    RgSchDlHqEnt          *hqEnt = RG_SCH_CMN_GET_UE_HQE(ue, cell);
 
    TRC2(rgSCHSc1DlInactvtUe);
@@ -2544,8 +2544,8 @@ RgSchUeCb    *ue;
 #endif
 {
    RgSchDlHqProcCb      *hqP;
-   U8                   i;
-   U8                   j;
+   uint8_t                   i;
+   uint8_t                   j;
    RgSchDlHqEnt          *hqEnt = RG_SCH_CMN_GET_UE_HQE(ue, cell);
 
    TRC2(rgSCHSc1DlSuspendUe);
@@ -2880,7 +2880,7 @@ RgSchCmnDlRbAllocInfo *allocInfo;
    CmLList              *node;
    RgSchDlHqProcCb      *proc;
    RgSchUeCb            *ue;
-   U32                  effBo;
+   uint32_t                  effBo;
    RgSchCmnDlCell       *cellCmnDl = RG_SCH_CMN_GET_DL_CELL(cell);
    RgSchCmnDlUe         *cmnUeDl; 
    RgSchSc1DlUe         *ueDl;
@@ -3085,7 +3085,7 @@ PRIVATE Void rgSCHSc1DlInitQueues(cellDl)
 RgSchSc1DlCell *cellDl;
 #endif
 {
-   U8            i;
+   uint8_t            i;
    TRC2(rgSCHSc1DlInitQueues);
 
    for (i = 0; i < RG_SC1_DL_NUM_Q; ++i)
@@ -3223,7 +3223,7 @@ PRIVATE Void rgSCHSc1DlSprTxTbDstn
 RgSchCellCb    *cell,
 RgSchUeCb      *ue,
 RgSchDlHqTbCb  *tbInfo,
-U32            *effAlloc,
+uint32_t            *effAlloc,
 CmLList        **node
 )
 #else
@@ -3231,17 +3231,17 @@ PRIVATE Void rgSCHSc1DlSprTxTbDstn(cell, ue, tbInfo, effAlloc, node)
 RgSchCellCb    *cell;
 RgSchUeCb      *ue;
 RgSchDlHqTbCb  *tbInfo;
-U32            *effAlloc;
+uint32_t            *effAlloc;
 CmLList        **node;
 #endif
 {
    RgSchDlLcCb        *svc;
    RgSchSc1DlSvc      *svcSc1;
    RgSchSc1DlUe       *ueDl = RG_GET_SC1_UE_DL(ue, cell);
-   U32                bytes;
+   uint32_t                bytes;
    RgSchLchAllocInfo  lchSchdData;
-   U32                effBo;
-   U32                rlcHdrEstmt;
+   uint32_t                effBo;
+   uint32_t                rlcHdrEstmt;
 
    TRC2(rgSCHSc1DlSprTxTbDstn);
 
@@ -3357,7 +3357,7 @@ PRIVATE Void rgSCHSc1DlNewTxTbDstn
 RgSchCellCb    *cell,
 RgSchUeCb      *ue,
 RgSchDlHqTbCb  *tbInfo,
-U32            *effAlloc,
+uint32_t            *effAlloc,
 CmLList        **node
 )
 #else
@@ -3365,14 +3365,14 @@ PRIVATE Void rgSCHSc1DlNewTxTbDstn(cell, ue, tbInfo, effAlloc, node)
 RgSchCellCb    *cell;
 RgSchUeCb      *ue;
 RgSchDlHqTbCb  *tbInfo;
-U32            *effAlloc;
+uint32_t            *effAlloc;
 CmLList        **node;
 #endif
 {
    RgSchDlLcCb        *svc;
    RgSchSc1DlSvc      *svcSc1 = NULLP;
    RgSchSc1DlUe       *ueDl = RG_GET_SC1_UE_DL(ue, cell);
-   U32                bytes;
+   uint32_t                bytes;
    RgSchLchAllocInfo  lchSchdData;
    CmLList            *prev = NULLP;
 
@@ -3525,11 +3525,11 @@ RgSchUeCb      *ue;
                                  /*cell added as part of CA dev*/
    /* 3.1 MIMO Distribute data of each TB across services */
    RgSchDlRbAlloc *dlAllocCb = RG_SCH_CMN_GET_ALLOCCB_FRM_UE(ue, cell);
-   U32                remTb1Bytes = dlAllocCb->tbInfo[0].bytesAlloc;
-   U32                remTb2Bytes = dlAllocCb->tbInfo[1].bytesAlloc;
-   U32                effAlloc = 0;
+   uint32_t                remTb1Bytes = dlAllocCb->tbInfo[0].bytesAlloc;
+   uint32_t                remTb2Bytes = dlAllocCb->tbInfo[1].bytesAlloc;
+   uint32_t                effAlloc = 0;
    /*ccpu00120365-ADD-added to code to check if second TB is utilized */
-   U32                tb2Bytes = 0;
+   uint32_t                tb2Bytes = 0;
 
    TRC2(rgSCHSc1DlNewTxUeFnlz);
 
@@ -3708,8 +3708,8 @@ RgSchCmnDlRbAllocInfo *cellAllocInfo;
    RgSchSc1DlUe     *sc1DlUe;
    RgSchDlHqProcCb  *hqP;
    RgSchDlHqTbCb    *newTxTbInfo;
-   U32              effAlloc;
-   U32              remTbBytes;
+   uint32_t              effAlloc;
+   uint32_t              remTbBytes;
    RgSchDlRbAlloc   *ueAllocInfo; 
    RgSchDlRbAlloc *dlAllocCb;
 
@@ -4051,14 +4051,14 @@ S16 rgSCHSc1UlLchDel
 RgSchCellCb      *cell,
 RgSchUeCb        *ue,
 CmLteLcId        lcId,
-U8               lcgId
+uint8_t               lcgId
 )
 #else
 S16 rgSCHRrUlLchDel(cell, ue, lcId, lcgId)
 RgSchCellCb      *cell;
 RgSchUeCb        *ue;
 CmLteLcId        lcId;
-U8               lcgId;
+uint8_t               lcgId;
 #endif
 {
   return  (ROK);
@@ -4612,7 +4612,7 @@ RgSchCellCb       *cell;
  *     
  *  @param[in]  RgSchCellCb           *cell
  *  @param[out] RgSchCmnUlRbAllocInfo *allocInfo 
- *  @param[in] U8                     remUe 
+ *  @param[in] uint8_t                     remUe 
  *  @return Void 
  **/
 #ifdef ANSI
@@ -4620,13 +4620,13 @@ PRIVATE Void rgSCHSc1UlSchdForDataTrans
 (
 RgSchCellCb           *cell,
 RgSchCmnUlRbAllocInfo *allocInfo,
-U8                    remUe
+uint8_t                    remUe
 )
 #else
 PRIVATE Void rgSCHSc1UlSchdForDataTrans(cell, allocInfo, remUe)
 RgSchCellCb           *cell;
 RgSchCmnUlRbAllocInfo *allocInfo;
-U8                    remUe;
+uint8_t                    remUe;
 #endif
 {
    RgSchSc1UlCell    *sc1UlCell  = RG_GET_SC1_CELL_UL(cell);
@@ -4663,7 +4663,7 @@ U8                    remUe;
  *     
  *  @param[in]  CmLListCp             *ueTxLst
  *  @param[out] RgSchCmnUlRbAllocInfo *allocInfo 
- *  @param[in] U8                     *remUe 
+ *  @param[in] uint8_t                     *remUe 
  *  @return Void 
  **/
 #ifdef ANSI
@@ -4672,14 +4672,14 @@ PRIVATE Void rgSCHSc1UlSchdUeTxLst
 RgSchCellCb           *cell,
 CmLListCp             *ueTxLst,
 RgSchCmnUlRbAllocInfo *allocInfo,
-U8                    *remUe
+uint8_t                    *remUe
 )
 #else
 PRIVATE Void rgSCHSc1UlSchdUeTxLst(cell, ueTxLst, allocInfo, remUe)
 RgSchCellCb           *cell;
 CmLListCp             *ueTxLst;
 RgSchCmnUlRbAllocInfo *allocInfo;
-U8                    *remUe;
+uint8_t                    *remUe;
 #endif
 {
    RgSchUeCb         *ue;
@@ -4744,7 +4744,7 @@ U8                    *remUe;
  *     
  *  @param[in]  RgSchCellCb           *cell
  *  @param[out] RgSchCmnUlRbAllocInfo *allocInfo 
- *  @param[out] U8                    *remUe 
+ *  @param[out] uint8_t                    *remUe 
  *  @return Void 
  **/
 #ifdef ANSI
@@ -4752,13 +4752,13 @@ PRIVATE Void rgSCHSc1UlSchdForContRes
 (
 RgSchCellCb           *cell,
 RgSchCmnUlRbAllocInfo *allocInfo,
-U8                    *remUe
+uint8_t                    *remUe
 )
 #else
 PRIVATE Void rgSCHSc1UlSchdForContRes(cell, allocInfo, remUe)
 RgSchCellCb           *cell;
 RgSchCmnUlRbAllocInfo *allocInfo;
-U8                    *remUe;
+uint8_t                    *remUe;
 #endif
 {
    RgSchSc1UlCell    *sc1UlCell  = RG_GET_SC1_CELL_UL(cell);
@@ -4831,7 +4831,7 @@ RgSchCmnUlRbAllocInfo *allocInfo;
 #endif
 {
    RgSchCmnUlCell  *cellUl = RG_SCH_CMN_GET_UL_CELL(cell);
-   U8               remUe = cellUl->maxUeNewTxPerTti;
+   uint8_t               remUe = cellUl->maxUeNewTxPerTti;
 
    TRC2(rgSCHSc1UlNewTx);
 
@@ -5037,7 +5037,7 @@ RgSchUeCb           *ue;
  *  @param[in]  RgSchCellCb  *cell
  *  @param[in]  RgSchUeCb    *ue
  *  @param[in]  RgSchLcgCb   *lcg
- *  @param[in]  U8           bsr
+ *  @param[in]  uint8_t           bsr
  *  @return  Void
  **/
 #ifdef ANSI
@@ -5046,14 +5046,14 @@ Void rgSCHSc1UpdBsrShort
 RgSchCellCb  *cell,
 RgSchUeCb    *ue,
 RgSchLcgCb   *lcg,
-U8           bsr
+uint8_t           bsr
 )
 #else
 Void rgSCHSc1UpdBsrShort(cell, ue, lcg, bsr)
 RgSchCellCb  *cell;
 RgSchUeCb    *ue;
 RgSchLcgCb   *lcg;
-U8           bsr;
+uint8_t           bsr;
 #endif
 {
    TRC2(rgSCHSc1UpdBsrShort);
@@ -5074,7 +5074,7 @@ U8           bsr;
  *  @param[in]  RgSchCellCb  *cell
  *  @param[in]  RgSchUeCb    *ue
  *  @param[in]  RgSchLcgCb   *lcg
- *  @param[in]  U8           bsr
+ *  @param[in]  uint8_t           bsr
  *  @return  Void 
  **/
 #ifdef ANSI
@@ -5083,14 +5083,14 @@ Void rgSCHSc1UpdBsrTrunc
 RgSchCellCb  *cell,
 RgSchUeCb    *ue,
 RgSchLcgCb   *lcg,
-U8           bsr
+uint8_t           bsr
 )
 #else
 Void rgSCHSc1UpdBsrTrunc(cell, ue, lcg, bsr)
 RgSchCellCb  *cell;
 RgSchUeCb    *ue;
 RgSchLcgCb   *lcg;
-U8           bsr;
+uint8_t           bsr;
 #endif
 {
    TRC2(rgSCHSc1UpdBsrTrunc);
@@ -5110,7 +5110,7 @@ U8           bsr;
  *
  *  @param[in]  RgSchCellCb  *cell
  *  @param[in]  RgSchUeCb    *ue
- *  @param[in]  U8 bsArr[]
+ *  @param[in]  uint8_t bsArr[]
  *  @return  Void 
  **/
 #ifdef ANSI
@@ -5118,13 +5118,13 @@ Void rgSCHSc1UpdBsrLong
 (
 RgSchCellCb  *cell,
 RgSchUeCb    *ue,
-U8           *bsArr
+uint8_t           *bsArr
 )
 #else
 Void rgSCHSc1UpdBsrLong(cell, ue, bsArr)
 RgSchCellCb  *cell;
 RgSchUeCb    *ue;
-U8           *bsArr;
+uint8_t           *bsArr;
 #endif
 {
    TRC2(rgSCHSc1UpdBsrLong);

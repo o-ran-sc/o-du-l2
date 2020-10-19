@@ -64,8 +64,8 @@ static int RLOG_FILE_ID=189;
 
 //UDAY
 #ifdef L2_OPTMZ
-extern U32 rlcAmmStaPduList[512];
- U32 rlcAmmStaPduListCnt = 0;
+extern uint32_t rlcAmmStaPduList[512];
+ uint32_t rlcAmmStaPduListCnt = 0;
 #endif
 
 
@@ -74,7 +74,7 @@ extern U32 rlcAmmStaPduList[512];
 **/
 #define RLC_MODULE (RLC_DBGMASK_AM | RLC_DBGMASK_DL)
 
-U32 rlcStatusPduCnt, rlcStatusAckCnt, rlcStatusNcnt, rlcSduSndCnt;
+uint32_t rlcStatusPduCnt, rlcStatusAckCnt, rlcStatusNcnt, rlcSduSndCnt;
 
 /* local defines */
 
@@ -151,9 +151,9 @@ PRIVATE Void rlcAmmSndStaInd ARGS ((RlcCb *gCb,RlcDlRbCb *rbCb, RlcRetx *retx));
 PRIVATE Void rlcGetNxtRetx ARGS ((RlcCb *gCb, RlcRetx **retx));
 
 PRIVATE Void rlcConstructAmHdr ARGS ((RlcAmHdr *amHdr, 
-                                     U8 *hdr,
-                                     U8  snLen,
-                                     U16 *idx));
+                                     uint8_t *hdr,
+                                     uint8_t  snLen,
+                                     uint16_t *idx));
 
 PRIVATE Void rlcAmmDlUpdateTxAndReTxBufForAckSn ARGS ((RlcCb *gCb,
                                                       RlcDlRbCb *rbCb, 
@@ -206,7 +206,7 @@ RlcAmDl        *amDl,
 RlcNackInfo    *nackInfo,
 CmLList       *retxNode,
 RlcNackInfo    *nackSnInfo,
-U8            idx
+uint8_t            idx
 ));
 
 PRIVATE Void rlcAmmDlUpdTxAndReTxBufForLessThanNackSn ARGS(
@@ -664,7 +664,7 @@ PRIVATE Void rlcAmmDlUpdateTxAndReTxBufForNackSn(gCb, rbCb, nackSnInfo, retxNode
 * @param[in]RlcNackInfo    *nackSnInfo,
 * @param[in]RlcRetx        *retx;
 * @param[in]RlcSn          sn, 
-* @param[in]U8            idx
+* @param[in]uint8_t            idx
  * 
  * @return Void
  *            
@@ -676,7 +676,7 @@ RlcAmDl        *amDl,
 RlcNackInfo    *nackInfo,
 CmLList        *retxNode,
 RlcNackInfo    *nackSnInfo,
-U8            idx
+uint8_t            idx
 )
 #else
 PRIVATE Void RlcDlAmmGetNackSnInfoFrmNackRangeIdx(amDl, nackInfo, retxNode, nackSnInfo, idx)
@@ -685,7 +685,7 @@ RlcAmDl        *amDl;
 RlcNackInfo    *nackInfo;
 CmLList       *retxNode;
 RlcNackInfo    *nackSnInfo;
-U8            idx;
+uint8_t            idx;
 )
 #endif
 {
@@ -710,7 +710,7 @@ U8            idx;
       while(node)
       {
          RlcDlPduInfo *pduInfo = (RlcDlPduInfo *)(node->node);
-         U16         pduSoEnd = pduInfo->amHdr.so + pduInfo->sduMap.sduSz - 1; 
+         uint16_t         pduSoEnd = pduInfo->amHdr.so + pduInfo->sduMap.sduSz - 1; 
          if((!idx) && (pduInfo->amHdr.so == nackInfo->soStart))
          {
             nackSnInfo->isSegment = TRUE;
@@ -863,7 +863,7 @@ RlcUdxStaPdu   *pStaPdu;
       RlcSn   transWinStartSn = AMDL.txNextAck; /*used to track the SN from which 
                                            to start processing the transmission
                                            buffer */
-      U32    idx = 0;
+      uint32_t    idx = 0;
 
       /* if any NACKs then txNextAck should be equal to the first NACK_SN*/
       txNextAck = pStaPdu->nackInfo[0].sn;
@@ -920,7 +920,7 @@ RlcUdxStaPdu   *pStaPdu;
          }
          else
          {
-            U8 idx1 = 0;
+            uint8_t idx1 = 0;
             /* Update issegment, soStart, soEnd ,sn  in nackSnInfo and handle
              * nack sn*/
             do
@@ -1048,7 +1048,7 @@ RlcAmDl *amDl;
    
    return bo;
 }
-U32 kwRxSdu;
+uint32_t kwRxSdu;
 
 /**
  * @brief Handler to queue the SDUs received from PDCP
@@ -2716,8 +2716,8 @@ RlcDlRbCb     *rbCb;
    newAmDl->snLen   = oldAmDl->snLen;
    newAmDl->snModMask   = oldAmDl->snModMask;
    newAmDl->pollRetxTmrInt = oldAmDl->pollRetxTmrInt;
-   rbCb->boUnRprtdCnt = (U32)0;
-   rbCb->lastRprtdBoToMac = (U32)0;
+   rbCb->boUnRprtdCnt = (uint32_t)0;
+   rbCb->lastRprtdBoToMac = (uint32_t)0;
    cmInitTimers(&(resetRb->m.amDl.pollRetxTmr), 1); 
 /* AGHOSH changes end */
  
@@ -2754,7 +2754,7 @@ RlcDlRbCb     *rbCb;
 
    /* allocate the TX array again */
 #ifndef  LTE_TDD
-   U32 hashIndex;
+   uint32_t hashIndex;
    RLC_ALLOC(gCb,
 		   resetRb->m.amDl.txBufLst,
 		   (RLC_TX_BUF_BIN_SIZE * sizeof(CmLListCp)));
@@ -2803,13 +2803,13 @@ S16 rlcAmmDiscSdu
 (
 RlcCb       *gCb,
 RlcDlRbCb   *rbCb,
-U32        sduId 
+uint32_t        sduId 
 )
 #else
 S16 rlcAmmDiscSdu(gCb, rbCb, sduId)
 RlcCb       *gCb;
 RlcDlRbCb   *rbCb;  
-U32        sduId; 
+uint32_t        sduId; 
 #endif
 {
    TRC2(rlcAmmDiscSdu);
@@ -3088,25 +3088,25 @@ void rlcConstructAmHdr(RlcAmHdr *amHdr, uint8_t *hdr, uint8_t snLen, uint16_t *i
     hdr[0] = hdr[0] | ((amHdr->si & 0x3) << 4);
    if(snLen == RLC_AM_CFG_12BIT_SN_LEN)
    {
-      hdr[0] = hdr[0] | (U8)((amHdr->sn & 0xF00) >> 8);
-      hdr[1] =  (U8)(amHdr->sn & 0x0FF);
+      hdr[0] = hdr[0] | (uint8_t)((amHdr->sn & 0xF00) >> 8);
+      hdr[1] =  (uint8_t)(amHdr->sn & 0x0FF);
       (*idx)++;
    }
    else
    {
-      hdr[0] = hdr[0] | (U8)((amHdr->sn & 0x30000) >> 16);
-      hdr[1] =  (U8)((amHdr->sn & 0xFF00) >> 8);
+      hdr[0] = hdr[0] | (uint8_t)((amHdr->sn & 0x30000) >> 16);
+      hdr[1] =  (uint8_t)((amHdr->sn & 0xFF00) >> 8);
       (*idx)++;
-      hdr[2] =  (U8)(amHdr->sn & 0xFF);
+      hdr[2] =  (uint8_t)(amHdr->sn & 0xFF);
       (*idx)++;
    }
     
    if ((amHdr->si == RLC_SI_MID_SEG) || (amHdr->si == RLC_SI_LAST_SEG))                                      
    {
       (*idx)++;
-      hdr[(*idx)] = (U8)((amHdr->so & 0xFF00)>> 8);
+      hdr[(*idx)] = (uint8_t)((amHdr->so & 0xFF00)>> 8);
       (*idx)++;
-      hdr[(*idx)] = (U8)(amHdr->so & 0xFF);
+      hdr[(*idx)] = (uint8_t)(amHdr->so & 0xFF);
    }                                                        
 
    return;
@@ -3445,7 +3445,7 @@ void rlcAmmCreateStatusPdu(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
              "UEID:%d CELLID:%d", ack_sn, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
 
           cntrlPdu[0] |= (ack_sn & 0xF00)>> 8; 
-          cntrlPdu[1] =  (U8)ack_sn;
+          cntrlPdu[1] =  (uint8_t)ack_sn;
        }
 
     }
@@ -3494,13 +3494,13 @@ void rlcAmmCreateStatusPdu(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
              }
 
              /* 18 BIT Nack SN encode */
-             cntrlPdu[encIdx] = (U8)((sn & 0x3FC00) >> 10);
+             cntrlPdu[encIdx] = (uint8_t)((sn & 0x3FC00) >> 10);
 
              /* Next Octet */
-             cntrlPdu[encIdx + 1] = (U8)((sn & 0x3FC) >> 2);
+             cntrlPdu[encIdx + 1] = (uint8_t)((sn & 0x3FC) >> 2);
 
              /* Next Octet */
-             cntrlPdu[encIdx + 2] = (U8)((sn & 0x3)<< 6);
+             cntrlPdu[encIdx + 2] = (uint8_t)((sn & 0x3)<< 6);
 
              if (rlcNackInfo->isSegment)
              {
@@ -3512,11 +3512,11 @@ void rlcAmmCreateStatusPdu(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
                 /* Add soStart and soEnd */
                 /* SOstart */
                 cntrlPdu[encIdx + 3] = (rlcNackInfo->soStart) >> 8;
-                cntrlPdu[encIdx + 4] = (U8)rlcNackInfo->soStart;
+                cntrlPdu[encIdx + 4] = (uint8_t)rlcNackInfo->soStart;
 
                 /* SOend */
                 cntrlPdu[encIdx + 5] = (rlcNackInfo->soEnd) >> 8; 
-                cntrlPdu[encIdx + 6] = (U8)(rlcNackInfo->soEnd);
+                cntrlPdu[encIdx + 6] = (uint8_t)(rlcNackInfo->soEnd);
              }
 
              if (rlcNackInfo->nackRange)
@@ -3615,15 +3615,15 @@ Buffer     *pdu;
 RlcExtHdr   *hdrInfo;
 #endif
 {
-   U8   hdr;
-   U8   pLen = hdrInfo->pLen;
-   U8   len  = (U8)hdrInfo->len;
-   U16  val;
-   U8   tHdr;
-   U8   fLen;
-   U8   rLen;
-   /* U8   rLen1 = 0; */
-   U16  tVal;
+   uint8_t   hdr;
+   uint8_t   pLen = hdrInfo->pLen;
+   uint8_t   len  = (uint8_t)hdrInfo->len;
+   uint16_t  val;
+   uint8_t   tHdr;
+   uint8_t   fLen;
+   uint8_t   rLen;
+   /* uint8_t   rLen1 = 0; */
+   uint16_t  tVal;
 
    TRC2(rlcAmmExtractElmnt);
 
@@ -3691,7 +3691,7 @@ SuId       suId,
 RlcCb       *gCb,
 RlcDlRbCb   *rbCb,
 Buffer     *cntrlPdu,
-U8         *fByte
+uint8_t         *fByte
 )
 #else
 PRIVATE Void rgAmmUlHndlStatusPdu(udxPst,suId,gCb, rbCb, cntrlPdu, fByte)
@@ -3700,17 +3700,17 @@ SuId       suId;
 RlcCb       *gCb;
 RlcDlRbCb   *rbCb;
 Buffer     *cntrlPdu;
-U8         *fByte;
+uint8_t         *fByte;
 #endif
 {
-   U8             e1;
+   uint8_t             e1;
    RlcExtHdr       hdrInfo;
    RlcUdxStaPdu    *pStaPdu;
-   U8             e3; /* NACK RANGE : 5GNR */
-   U32            snLen;
-   U32            snRange;
-   U32            resrvdBitsAckSn;
-   U32            resrvdBitsNackSn;
+   uint8_t             e3; /* NACK RANGE : 5GNR */
+   uint32_t            snLen;
+   uint32_t            snRange;
+   uint32_t            resrvdBitsAckSn;
+   uint32_t            resrvdBitsNackSn;
 
 
    TRC2(rgAmmUlHndlStatusPdu)
@@ -3774,7 +3774,7 @@ U8         *fByte;
    /* Check if NACK Exists */
    hdrInfo.len = RLC_E1_LEN;
    rgAmmExtractElmnt(gCb, cntrlPdu, &hdrInfo);
-   e1 = (U8)hdrInfo.val;
+   e1 = (uint8_t)hdrInfo.val;
    RLCDBGP_DETAIL(gCb, "rgAmmUlHndlStatusPdu: ACK SN = %d \n", pStaPdu->ackSn);
 
    /* Extract the Reserved Bits after ACK SN field */
@@ -3792,22 +3792,22 @@ U8         *fByte;
 
       hdrInfo.len = RLC_E1_LEN;
       rgAmmExtractElmnt(gCb, cntrlPdu, &hdrInfo);
-      e1 = (U8)hdrInfo.val;
+      e1 = (uint8_t)hdrInfo.val;
 
       /* Extract e2 */
       /* hdrInfo.len = RLC_E1_LEN; --> previusly stored value (for e1) is
          already present*/
       rgAmmExtractElmnt(gCb, cntrlPdu, &hdrInfo);
-      /*  e2 = (U8) hdrInfo.val;*/
+      /*  e2 = (uint8_t) hdrInfo.val;*/
 
       /* Store e2 value */
-      pStaPdu->nackInfo[pStaPdu->nackCnt].isSegment = (U8) hdrInfo.val;
+      pStaPdu->nackInfo[pStaPdu->nackCnt].isSegment = (uint8_t) hdrInfo.val;
 
       /* Extract e3 : 5GNR */
       /* hdrInfo.len = RLC_E1_LEN; --> previusly stored value (for e1) is
          already present*/
       rgAmmExtractElmnt(gCb, cntrlPdu, &hdrInfo);
-      e3 = (U8) hdrInfo.val;
+      e3 = (uint8_t) hdrInfo.val;
 
       /* Extract Reserved Bits after NACK SN */
       hdrInfo.len = resrvdBitsNackSn;
@@ -3841,7 +3841,7 @@ U8         *fByte;
          /* Extract NACK range field */
          hdrInfo.len = RLC_NACK_RANGE_LEN;
          rgAmmExtractElmnt(gCb, cntrlPdu, &hdrInfo);
-         snRange = (U8)hdrInfo.val;
+         snRange = (uint8_t)hdrInfo.val;
 
          pStaPdu->nackInfo[pStaPdu->nackCnt].nackRange = snRange;
 
@@ -3872,8 +3872,8 @@ S16 rlcProcDlStatusPdu(Pst *udxPst,SuId suId,
 {
    RlcDlRbCb      *rbCb = NULLP;   
    RlcDlUeCb      *ueCb = NULLP; 
-   U8        fByte;
-   U8        temp;
+   uint8_t        fByte;
+   uint8_t        temp;
    S16       retVal = RFAILED;
    RlcCb      *gCb;
    Pst       dlRlcPst = *udxPst;

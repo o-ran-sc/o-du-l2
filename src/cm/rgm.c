@@ -207,7 +207,7 @@ Reason reason;
 *
 *  @param[in]   Pst*  pst
 *  @param[in]   SuId  suId
-*  @param[in]   U8  status
+*  @param[in]   uint8_t  status
 *  @return   S16
 *      -# ROK
 **/
@@ -216,13 +216,13 @@ S16 cmPkLwLcRgmBndCfm
 (
 Pst* pst,
 SuId suId,
-U8 status
+uint8_t status
 )
 #else
 S16 cmPkLwLcRgmBndCfm(pst, suId, status)
 Pst* pst;
 SuId suId;
-U8 status;
+uint8_t status;
 #endif
 {
    Buffer *mBuf = NULLP;
@@ -260,7 +260,7 @@ U8 status;
 *
 *  @param[in]   Pst*  pst
 *  @param[in]   SuId  suId
-*  @param[in]   U8  status
+*  @param[in]   uint8_t  status
 *  @return   S16
 *      -# ROK
 **/
@@ -279,7 +279,7 @@ Buffer *mBuf;
 #endif
 {
    SuId suId;
-   U8 status;
+   uint8_t status;
    
    TRC3(cmUnpkLwLcRgmBndCfm)
 
@@ -327,7 +327,7 @@ RgmPrbRprtCfg  * prbRprtCfg;
 #endif
 {
    Buffer *mBuf = NULLP;
-   U32 len = sizeof(RgmPrbRprtCfg);
+   uint32_t len = sizeof(RgmPrbRprtCfg);
    TRC3(cmPkLwLcRgmCfgPrbRprt)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
@@ -731,7 +731,7 @@ Buffer *mBuf;
 *
 *  @param[in]   Pst*  pst
 *  @param[in]   SuId  suId
-*  @param[in]   U8  status
+*  @param[in]   uint8_t  status
 *  @return   S16
 *      -# ROK
 **/
@@ -740,13 +740,13 @@ S16 cmPkRgmBndCfm
 (
 Pst* pst,
 SuId suId,
-U8 status
+uint8_t status
 )
 #else
 S16 cmPkRgmBndCfm(pst, suId, status)
 Pst* pst;
 SuId suId;
-U8 status;
+uint8_t status;
 #endif
 {
    Buffer *mBuf = NULLP;
@@ -784,7 +784,7 @@ U8 status;
 *
 *  @param[in]   Pst*  pst
 *  @param[in]   SuId  suId
-*  @param[in]   U8  status
+*  @param[in]   uint8_t  status
 *  @return   S16
 *      -# ROK
 **/
@@ -803,7 +803,7 @@ Buffer *mBuf;
 #endif
 {
    SuId suId;
-   U8 status;
+   uint8_t status;
    
    TRC3(cmUnpkRgmBndCfm)
 
@@ -917,7 +917,7 @@ RgmPrbRprtCfg  * prbRprtCfg;
 #endif
 {
    Buffer *mBuf = NULLP;
-   U32 len = sizeof(RgmPrbRprtCfg);
+   uint32_t len = sizeof(RgmPrbRprtCfg);
    TRC3(cmPkRgmCfgPrbRprt)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
@@ -1129,7 +1129,7 @@ S16 cmUnpkPrbRprtInd(prbRprtInd, mBuf)
    Buffer *mBuf;
 #endif
 {
-   U32 idx = 0;
+   uint32_t idx = 0;
 
    TRC3(cmUnpkPrbRprtInd);
 
@@ -1305,11 +1305,11 @@ S16 cmUnpkTransModeInd(transModeInd, mBuf)
    Buffer *mBuf;
 #endif
 {
-   U32 tmpModeEnum;
+   uint32_t tmpModeEnum;
    TRC3(cmUnpkTransModeInd);
    CMCHKUNPK(oduPackUInt8, &transModeInd->bCellId, mBuf);
    CMCHKUNPK(oduPackUInt16, &transModeInd->usCrnti, mBuf);
-   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpModeEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&tmpModeEnum, mBuf);
    transModeInd->eMode = (RgmTxnMode)tmpModeEnum;
    return ROK;
 }

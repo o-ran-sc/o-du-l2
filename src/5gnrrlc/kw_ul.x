@@ -75,11 +75,11 @@ typedef struct rlcUmRecBuf
 */
 typedef struct rlcUmUl
 {
-   U8           snLen;         /**< Sequence number length */
-   U8           reOrdTmrInt;   /**< Timer Interval */
+   uint8_t           snLen;         /**< Sequence number length */
+   uint8_t           reOrdTmrInt;   /**< Timer Interval */
    RlcUmRecBuf   **recBuf;      /**< Reception buffer */
    RlcSn         umWinSz;       /**< UM window size */
-   U16          modBitMask;    /**< Bitmask for modulus to wrap around variables */
+   uint16_t          modBitMask;    /**< Bitmask for modulus to wrap around variables */
    RlcSn         sn;            /**< Sequence number */
    RlcSn         vrUr;          /**< VR(UR) - Receive state variable */
    RlcSn         vrUh;          /**< VR(UH) - Highest received state variable */
@@ -107,7 +107,7 @@ typedef struct rlcSeg
    CmLList   lstEnt;   /**< List entry for PDU segment */
    Buffer    *seg;     /**< PDU segment */
    MsgLen    segSz;    /**< Buffer Size */
-   U16       soEnd;    /**< Segment Offset End */
+   uint16_t       soEnd;    /**< Segment Offset End */
    RlcAmHdr   amHdr;    /**< AM header */
 }RlcSeg;
 
@@ -134,7 +134,7 @@ typedef struct rlcAmRecBuf
    RlcAmHdr     amHdr;         /**< AM header Info */
    CmLListCp   segLst;        /**< PDU Segments list */
    RlcSeg       *expByteSeg;   /**< Next expected byte segment */
-   U16         expSo;         /**< Next expected seg offset */
+   uint16_t         expSo;         /**< Next expected seg offset */
    Bool        allRcvd;       /**< All bytes received or not */
    Bool        isDelvUpperLayer; /**< Is it sent to upper layer */ 
 }RlcAmRecBuf;
@@ -180,15 +180,15 @@ typedef struct rlcAmUl
    Bool         staTrg;                /**< Whether status trigger occured */
    Buffer       *partialSdu;           /**< Partially received SDU */
    RlcSn         expSn;                 /**< Expected SN for reassembly */
-   U16          expSo;                 /**< Expected SO for reassembly */
+   uint16_t          expSo;                 /**< Expected SO for reassembly */
    CmTimer      staProhTmr;            /**< T_status_prohibit Timer */
-   U16          staProhTmrInt;         /**< Timer Interval */
+   uint16_t          staProhTmrInt;         /**< Timer Interval */
    CmTimer      reOrdTmr;              /**< T_reordering Timer */
-   U8           reOrdTmrInt;           /**< Timer Interval */
+   uint8_t           reOrdTmrInt;           /**< Timer Interval */
    Bool         gatherStaPduInfo;      /**< Gather STATUS PDU creation info*/
    Bool         isOutOfSeq;            /**< To identify whether packets are Out-Of-Seq or not */
-   U8           snLen;                 /*!< Sequence number length:12 bit or 18 bit : 5GNR RLC */
-   U32          snModMask;             /*!< (2 Pwr SnLen - 1): 5GNR RLC */
+   uint8_t           snLen;                 /*!< Sequence number length:12 bit or 18 bit : 5GNR RLC */
+   uint32_t          snModMask;             /*!< (2 Pwr SnLen - 1): 5GNR RLC */
 }RlcAmUl;
 
 /*@}*/
@@ -220,18 +220,18 @@ typedef struct _rlcUlRbCb
 #ifdef LTE_L2_MEAS
    RlcL2MeasRbCb    rbL2Cb;              /**< RB measurement L2 Cb */
    RlcUlUeCb        *ueCb;              /*!< Pointer to UeCb  */
-   U8              qci;                 /**< qci of the RB */
+   uint8_t              qci;                 /**< qci of the RB */
    RlcL2MeasIpThruput l2MeasIpThruput;   /**< Holds related parameter for
                                              DL/Ul ip throughput>*/
 #endif /* LTE_L2_MEAS */
    CmLteRlcId     rlcId;      /**< RLC Identifier */
    RlcLchInfo      lch;        /**< Logical Channel Info */
    CmLteRlcMode   mode;       /**< Entity Mode */
-   U8             dir;        /**< Direction for UL/DL */
+   uint8_t             dir;        /**< Direction for UL/DL */
    Inst           inst;       /**< Tapa where Rb created Instance id */
    SpId           k1wuSapId;   /**< KWU sap Id, to get the KwuSapCb */
    SpId           udxSapId;   /**< KWU sap Id, to get the KwuSapCb */
-   U32            transId;    /**< Transaction Id for RLC */
+   uint32_t            transId;    /**< Transaction Id for RLC */
    union          
    {
       RlcUmUl   umUl;   /**< UM  mode Ul elements */
@@ -291,8 +291,8 @@ struct rlcUlUeCb
    RlcUlLch         lCh[RLC_MAX_LCH_PER_UE];    /**< Logical channels of an UE*/
 /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
-   U32             firstPacketTTI;            /*!< is first packet of the burst */
-   U16             numActRb[LKW_MAX_QCI];     /**< number of RBs Active */
+   uint32_t             firstPacketTTI;            /*!< is first packet of the burst */
+   uint16_t             numActRb[LKW_MAX_QCI];     /**< number of RBs Active */
    Bool              isUlBurstActive;   /*!<Has the Burst started for UL IP Thrpt meas */
 #endif /* LTE_L2_MEAS */
 };
@@ -329,8 +329,8 @@ typedef struct rlcUlCfgTmpData
 {
    CmHashListEnt    transHlEnt;                  /**< List Entry of 
                                                    Transaction*/
-   U32              transId;                     /**< Locally generated Transaction Id */
-   U32              uprLyrTransId;               /**< Transaction Id generated by upper layer. 
+   uint32_t              transId;                     /**< Locally generated Transaction Id */
+   uint32_t              uprLyrTransId;               /**< Transaction Id generated by upper layer. 
                                                       This is used while sending confirm to the User Layer */
    CmLteCellId      cellId;                      /**< Cell Id */
    CmLteRnti        ueId;                        /**< Ue Id */
@@ -459,12 +459,12 @@ Void rlcDbmFetchUlRbCbFromLchId ARGS ((RlcCb *gCb,
 
 Void rlcDbmDelAllUlRb ARGS ((RlcCb *gCb, 
                                    RlcUlRbCb **rbCbLst, 
-                                   U8 numRbCb));
+                                   uint8_t numRbCb));
 
 S16 rlcDbmAddUlTransaction ARGS((RlcCb *gCb, RlcUlCfgTmpData *cfg));
 
 S16 rlcDbmFindUlTransaction ARGS((RlcCb *gCb, 
-                                        U32 transId, 
+                                        uint32_t transId, 
                                         RlcUlCfgTmpData **cfg));
 
 S16 rlcDbmDelUlTransaction ARGS((RlcCb *gCb, RlcUlCfgTmpData *cfg));
@@ -497,7 +497,7 @@ Void rlcTmmUlReEstablish ARGS ((RlcCb *gCb, RlcUlRbCb *rbCb));
 Void rlcUmmProcessPdus ARGS((RlcCb *gCb,
                                   RlcUlRbCb *rbCb, 
                                   KwPduInfo *pduInfo,
-                                  U32 ttiCnt));
+                                  uint32_t ttiCnt));
 #else 
 Void rlcUmmProcessPdus ARGS ((RlcCb *gCb, 
                                     RlcUlRbCb *rbCb,
@@ -523,7 +523,7 @@ Void rlcAmmUlReEstablish ARGS((RlcCb *gCb,
 Void rlcAmmProcessPdus ARGS((RlcCb *gCb,
                                   RlcUlRbCb *rbCb, 
                                   KwPduInfo *pduInfo,
-                                  U32 ttiCnt));
+                                  uint32_t ttiCnt));
 #else
 Void rlcAmmProcessPdus ARGS((RlcCb *gCb, 
                                   RlcUlRbCb *rbCb,
@@ -560,12 +560,12 @@ S16 rlcUtlHdlL2TmrExp   ARGS (( RlcCb *gCb, RlcL2MeasEvtCb *measEvtCb));
 
 Void rlcUtlCalUlIpThrPutIncTTI ARGS ((RlcCb *gCb, 
                                              RlcUlRbCb  *rbCb,
-                                             U32 ttiCnt));
+                                             uint32_t ttiCnt));
 
 Void rlcUtlCalUlIpThrPut ARGS((RlcCb *gCb, 
                                      RlcUlRbCb *rbCb, 
                                      Buffer *pdu, 
-                                     U32 ttiCnt));
+                                     uint32_t ttiCnt));
 
 S16 rlcUtlSndUlL2MeasCfm  ARGS ((RlcCb *gCb, RlcL2MeasEvtCb *measEvtCb));
 
@@ -577,7 +577,7 @@ S16 rlcUtlL2MeasUlInit ARGS((RlcCb *gCb));
 
 Void rlcUtlResetUlL2MeasInRlcRb ARGS((RlcCb *gCb,
                                            RlcL2MeasCb *measCb,
-                                           U8 measType));
+                                           uint8_t measType));
 
 S16 rlcUtlValidateIpThL2Meas ARGS ((RlcL2MeasReqEvt *measReqEvt,
          RlcL2MeasCfmEvt *measCfmEvt));

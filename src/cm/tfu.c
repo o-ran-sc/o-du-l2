@@ -199,13 +199,13 @@ S16 cmPkTfuBndCfm
 (
 Pst * pst,
 SuId suId,
-U8 status
+uint8_t status
 )
 #else
 S16 cmPkTfuBndCfm(pst, suId, status)
 Pst * pst;
 SuId suId;
-U8 status;
+uint8_t status;
 #endif
 {
    Buffer *mBuf = NULLP;
@@ -276,7 +276,7 @@ Buffer *mBuf;
 #endif
 {
    SuId suId;
-   U8 status;
+   uint8_t status;
    
    TRC3(cmUnpkTfuBndCfm)
 
@@ -583,13 +583,13 @@ S16 cmPkTfuSchBndCfm
 (
 Pst * pst,
 SuId suId,
-U8 status
+uint8_t status
 )
 #else
 S16 cmPkTfuSchBndCfm(pst, suId, status)
 Pst * pst;
 SuId suId;
-U8 status;
+uint8_t status;
 #endif
 {
    Buffer *mBuf = NULLP;
@@ -660,7 +660,7 @@ Buffer *mBuf;
 #endif
 {
    SuId suId;
-   U8 status;
+   uint8_t status;
    
    TRC3(cmUnpkTfuSchBndCfm)
 
@@ -4387,7 +4387,7 @@ Buffer *mBuf;
    S32 i;
    TRC3(cmUnpkTfuAllocMapOrRiv)
 
-   CMCHKUNPK(oduPackUInt32, (U32 *)&param->type, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->type, mBuf);
       switch(param->type) {
          case TFU_ALLOC_TYPE_RIV:
             CMCHKUNPK(oduPackUInt32, &param->u.riv, mBuf);
@@ -7020,7 +7020,7 @@ Buffer *mBuf;
    TRC3(cmUnpkTfuDciInfo)
 
 
-   CMCHKUNPK(oduPackUInt32, (U32 *)&param->dciFormat, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->dciFormat, mBuf);
       switch(param->dciFormat) {
          case TFU_DCI_FORMAT_0:
             CMCHKUNPK(cmUnpkTfuDciFormat0Info, &param->u.format0Info, mBuf);
@@ -7307,7 +7307,7 @@ Buffer *mBuf;
    TRC3(cmUnpkTfuPdcchCceInfo)
 
    CMCHKUNPK(oduPackUInt8, &param->cceIdx, mBuf);
-   CMCHKUNPK(cmUnpkLteAggrLvl,(U32 *)&param->aggrLvl, mBuf);
+   CMCHKUNPK(cmUnpkLteAggrLvl,(uint32_t *)&param->aggrLvl, mBuf);
    return ROK;
 }
 
@@ -7391,7 +7391,7 @@ Buffer *mBuf;
 
    TRC3(cmUnpkTfuCqiPucchMode10)
 
-   CMCHKUNPK(oduPackUInt32, (U32 *)&param->type, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->type, mBuf);
       switch(param->type) {
          case TFU_RPT_RI:
             CMCHKUNPK(oduPackUInt8, &param->u.ri, mBuf);
@@ -7563,7 +7563,7 @@ Buffer *mBuf;
 
    TRC3(cmUnpkTfuCqiPucchMode11)
 
-   CMCHKUNPK(oduPackUInt32, (U32 *)&param->type, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->type, mBuf);
       switch(param->type) {
          case TFU_RPT_RI:
             CMCHKUNPK(oduPackUInt8, &param->u.ri, mBuf);
@@ -7825,7 +7825,7 @@ Buffer *mBuf;
 
    TRC3(cmUnpkTfuCqiPucchMode20)
 
-   CMCHKUNPK(oduPackUInt32, (U32 *)&param->type, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->type, mBuf);
       switch(param->type) {
          case TFU_RPT_RI:
             CMCHKUNPK(oduPackUInt8, &param->u.ri, mBuf);
@@ -8169,7 +8169,7 @@ Buffer *mBuf;
 
    TRC3(cmUnpkTfuCqiPucchMode21)
 
-   CMCHKUNPK(oduPackUInt32, (U32 *)&param->type, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->type, mBuf);
       switch(param->type) {
          case TFU_RPT_RI:
             CMCHKUNPK(oduPackUInt8, &param->u.ri, mBuf);
@@ -8269,7 +8269,7 @@ Buffer *mBuf;
    TRC3(cmUnpkTfuDlCqiPucch)
 
    CMCHKUNPK(oduPackUInt8, &param->cellIdx, mBuf);
-   CMCHKUNPK(oduPackUInt32, (U32 *)&param->mode, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->mode, mBuf);
       switch(param->mode) {
          case TFU_PUCCH_CQI_MODE10:
             CMCHKUNPK(cmUnpkTfuCqiPucchMode10, &param->u.mode10Info, mBuf);
@@ -9013,7 +9013,7 @@ Buffer *mBuf;
    TRC3(cmUnpkTfuDlCqiPusch)
 
    CMCHKUNPK(oduPackUInt8, &param->cellIdx, mBuf);
-   CMCHKUNPK(oduPackUInt32, (U32 *)&param->mode, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->mode, mBuf);
    CMCHKUNPK(cmUnpkTknU8, &param->ri, mBuf);
    switch(param->mode) {
       case TFU_PUSCH_CQI_MODE_12:
@@ -9056,18 +9056,18 @@ Buffer *mBuf;
 #ifdef ANSI
 S16 cmPkTfuDlCqiInfo
 (
-U8 selector,
+uint8_t selector,
 TfuDlCqiInfo *param,
 Buffer *mBuf
 )
 #else
 S16 cmPkTfuDlCqiInfo(selector, param, mBuf)
-U8 selector;
+uint8_t selector;
 TfuDlCqiInfo *param;
 Buffer *mBuf;
 #endif
 {
-   U32 idx;
+   uint32_t idx;
 
    TRC3(cmPkTfuDlCqiInfo)
 
@@ -9108,19 +9108,19 @@ Buffer *mBuf;
 #ifdef ANSI
 S16 cmUnpkTfuDlCqiInfo
 (
-U8 selector,
+uint8_t selector,
 TfuDlCqiInfo *param,
 Buffer *mBuf
 )
 #else
 S16 cmUnpkTfuDlCqiInfo(selector, param, mBuf)
-U8 selector;
+uint8_t selector;
 TfuDlCqiInfo *param;
 Buffer *mBuf;
 #endif
 {
 
-   U8 idx;
+   uint8_t idx;
    TRC3(cmUnpkTfuDlCqiInfo)
 
    switch(selector) {
@@ -9177,7 +9177,7 @@ Buffer *mBuf;
 #endif
 {
    CmLList *node;
-   U32 count;
+   uint32_t count;
    TfuUeRecpReqInfo *tfuUeRecpReqInfo;
 
    TRC3(cmPkTfuRecpReqInfo)
@@ -9241,7 +9241,7 @@ Buffer *mBuf;
 #endif
 {
 
-   U32 count, loopCnt;
+   uint32_t count, loopCnt;
    TfuUeRecpReqInfo *tfuUeRecpReqInfo;
 
    TRC3(cmUnpkTfuRecpReqInfo)
@@ -9352,7 +9352,7 @@ Buffer *mBuf;
    CMCHKUNPK(cmUnpkLteRnti, &param->crnti, mBuf);
 #endif
    CMCHKUNPK(oduPackUInt16, &param->nCce, mBuf);
-   CMCHKUNPK(cmUnpkLteAggrLvl, (U32*)&param->aggrLvl, mBuf);
+   CMCHKUNPK(cmUnpkLteAggrLvl, (uint32_t*)&param->aggrLvl, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->dciNumOfBits, mBuf);
    CMCHKUNPK(cmUnpkTfuDciInfo, &param->dci, mBuf);
 #ifdef TFU_5GTF 
@@ -9497,7 +9497,7 @@ Buffer *mBuf;
    TfuPdcchInfo   *tfuPdcchInfo;
    TfuPhichInfo *tfuPhichInfo;
    CmLList *node;
-   U32 count;
+   uint32_t count;
 
    TRC3(cmPkTfuCntrlReqInfo)
 #ifdef EMTC_ENABLE
@@ -9602,7 +9602,7 @@ Buffer *mBuf;
 {
 
    TfuPdcchInfo *tfuPdcchInfo;
-   U32 count, loopCnt;
+   uint32_t count, loopCnt;
    TfuPhichInfo *tfuPhichInfo;
 
    TRC3(cmUnpkTfuCntrlReqInfo)
@@ -9795,7 +9795,7 @@ Buffer *mBuf;
 
    TRC3(cmUnpkTfuPdschDciInfo)
 
-   CMCHKUNPK(oduPackUInt32, (U32 *)&param->format, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->format, mBuf);
       switch(param->format) {
          case TFU_DCI_FORMAT_1:
             CMCHKUNPK(cmUnpkTfuDciFormat1AllocInfo, &param->u.format1AllocInfo, mBuf);
@@ -9958,9 +9958,9 @@ Buffer *mBuf;
 {
 
    S32 i;
-   U8  tbMask = 0;
+   uint8_t  tbMask = 0;
 #ifdef L2_OPTMZ
-   U32 lchIdx, pduIdx;
+   uint32_t lchIdx, pduIdx;
 #endif
 
    TRC3(cmPkTfuDatReqPduInfo)
@@ -10075,10 +10075,10 @@ Buffer *mBuf;
 #endif
 {
 
-   U8 i;
-   U8  tbMask = 0;
+   uint8_t i;
+   uint8_t  tbMask = 0;
 #ifdef L2_OPTMZ
-   U32 lchIdx, pduIdx;
+   uint32_t lchIdx, pduIdx;
 #endif
    TRC3(cmUnpkTfuDatReqPduInfo)
 
@@ -10103,10 +10103,10 @@ Buffer *mBuf;
       CMCHKUNPK(cmUnpkBuffer, &param->tbInfo[i].macHdr, mBuf);
       CMCHKUNPK(cmUnpkBuffer, &param->tbInfo[i].macCes, mBuf);
       CMCHKUNPK(oduPackUInt32, &param->tbInfo[i].padSize, mBuf);
-      CMCHKUNPK(oduPackUInt32, (U32 *)&param->tbInfo[i].numLch, mBuf);
+      CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->tbInfo[i].numLch, mBuf);
       for(lchIdx = 0; lchIdx < param->tbInfo[i].numLch; lchIdx++)
       {
-         CMCHKUNPK(oduPackUInt32, (U32 *)&param->tbInfo[i].lchInfo[lchIdx].numPdu,
+         CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->tbInfo[i].lchInfo[lchIdx].numPdu,
                mBuf);
          for(pduIdx = 0; pduIdx < param->tbInfo[i].lchInfo[lchIdx].numPdu;
                pduIdx++)
@@ -10128,7 +10128,7 @@ Buffer *mBuf;
 
    CMCHKUNPK(oduPackUInt8, &param->puschRptUsd, mBuf);
    CMCHKUNPK(cmUnpkTfuDlCqiPuschInfo, &param->puschPmiInfo, mBuf);
-   CMCHKUNPK(oduPackUInt32, (U32 *)&param->transMode, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->transMode, mBuf);
    CMCHKUNPK(cmUnpkTknU32, &param->doa, mBuf);
    CMCHKUNPK(oduUnpackBool, &param->isTApres, mBuf);
 /* tfu_c_001.main_7. Added changes of TFU_UPGRADE */
@@ -10188,7 +10188,7 @@ Buffer *mBuf;
 {
 
    CmLList *node;
-   U32 count;
+   uint32_t count;
    TfuDatReqPduInfo *tfuDatReqPduInfo;
 
    TRC3(cmPkTfuDatReqInfo)
@@ -10244,7 +10244,7 @@ Buffer *mBuf;
 #endif
 {
 
-   U32 count, loopCnt;
+   uint32_t count, loopCnt;
    TfuDatReqPduInfo *tfuDatReqPduInfo;
 
    TRC3(cmUnpkTfuDatReqInfo)
@@ -10370,7 +10370,7 @@ Buffer *mBuf;
 {
 
    CmLList *node;
-   U32 count;
+   uint32_t count;
    TfuDatInfo *tfuDatInfo;
 
    TRC3(cmPkTfuDatIndInfo)
@@ -10428,7 +10428,7 @@ Buffer *mBuf;
 #endif
 {
 
-   U32 count, loopCnt;
+   uint32_t count, loopCnt;
    TfuDatInfo *tfuDatInfo;
 
    TRC3(cmUnpkTfuDatIndInfo)
@@ -10560,7 +10560,7 @@ Buffer *mBuf;
 {
 
    CmLList *node;
-   U32 count;
+   uint32_t count;
    TfuSrInfo *tfuSrInfo;
 
    TRC3(cmPkTfuSrIndInfo)
@@ -10613,7 +10613,7 @@ Buffer *mBuf;
 #endif
 {
 
-   U32 count, loopCnt;
+   uint32_t count, loopCnt;
    TfuSrInfo *tfuSrInfo;
 
    TRC3(cmUnpkTfuSrIndInfo)
@@ -10716,13 +10716,13 @@ Buffer *mBuf;
 
    CMCHKUNPK(cmUnpkLteRnti, &param->rnti, mBuf);
 /* ACC-TDD ccpu00130520 */
-   CMCHKUNPK(oduPackUInt32, (U32 *)&param->hqFdbkMode, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->hqFdbkMode, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->noOfTbs, mBuf);
 #ifdef TFU_TDD
    CMCHKUNPK(oduPackUInt8, &param->M, mBuf);
 #endif
    for (i=0; i<TFU_MAX_HARQ_FDBKS; i++) {
-      CMCHKUNPK(oduPackUInt32, (U32 *)&param->isAck[i], mBuf);
+      CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->isAck[i], mBuf);
    }
    CMCHKUNPK(oduPackUInt8, &param->isPusch, mBuf);
    return ROK;
@@ -10763,7 +10763,7 @@ Buffer *mBuf;
 {
 
    CmLList *node;
-   U32 count;
+   uint32_t count;
    TfuHqInfo *tfuHqInfo;
 
    TRC3(cmPkTfuHqIndInfo)
@@ -10817,7 +10817,7 @@ Buffer *mBuf;
 #endif
 {
 
-   U32 count, loopCnt;
+   uint32_t count, loopCnt;
    TfuHqInfo *tfuHqInfo;
 
    TRC3(cmUnpkTfuHqIndInfo)
@@ -11030,7 +11030,7 @@ Buffer *mBuf;
 {
 
    CmLList *node;
-   U32 count;
+   uint32_t count;
    TfuUlCqiRpt *tfuUlCqiRpt;
 
    TRC3(cmPkTfuUlCqiIndInfo)
@@ -11086,7 +11086,7 @@ Buffer *mBuf;
 #endif
 {
 
-   U32 count, loopCnt;
+   uint32_t count, loopCnt;
    TfuUlCqiRpt *tfuUlCqiRpt;
 
    TRC3(cmUnpkTfuUlCqiIndInfo)
@@ -11220,7 +11220,7 @@ Buffer *mBuf;
 {
 
    CmLList *node;
-   U32 count;
+   uint32_t count;
    TfuDlCqiRpt *tfuDlCqiRpt;
 
    TRC3(cmPkTfuDlCqiIndInfo)
@@ -11274,7 +11274,7 @@ Buffer *mBuf;
 #endif
 {
 
-   U32 count, loopCnt;
+   uint32_t count, loopCnt;
    TfuDlCqiRpt *tfuDlCqiRpt;
 
    TRC3(cmUnpkTfuDlCqiIndInfo)
@@ -11404,7 +11404,7 @@ Buffer *mBuf;
 {
 
    CmLList *node;
-   U32 count;
+   uint32_t count;
    TfuCrcInfo *tfuCrcIndInfo;
 
    TRC3(cmPkTfuCrcIndInfo)
@@ -11463,7 +11463,7 @@ Buffer *mBuf;
 #endif
 {
 
-   U32 count, loopCnt;
+   uint32_t count, loopCnt;
    TfuCrcInfo *tfuCrcIndInfo;
 
    TRC3(cmUnpkTfuCrcIndInfo)
@@ -11594,7 +11594,7 @@ Buffer *mBuf;
 {
 
    CmLList *node;
-   U32 count;
+   uint32_t count;
    TfuTimingAdvInfo *tfuTimingAdvInfo;
 
    TRC3(cmPkTfuTimingAdvIndInfo)
@@ -11648,7 +11648,7 @@ Buffer *mBuf;
 #endif
 {
 
-   U32 count, loopCnt;
+   uint32_t count, loopCnt;
    TfuTimingAdvInfo *tfuTimingAdvInfo;
 
    TRC3(cmUnpkTfuTimingAdvIndInfo)
@@ -12229,7 +12229,7 @@ Buffer *mBuf;
 {
 
    CmLList *node;
-   U32 count;
+   uint32_t count;
    TfuPucchDeltaPwr *tfuPucchDeltaPwr;
 
    TRC3(cmPkTfuPucchDeltaPwrIndInfo)
@@ -12284,7 +12284,7 @@ Buffer *mBuf;
 #endif
 {
 
-   U32 count, loopCnt;
+   uint32_t count, loopCnt;
    TfuPucchDeltaPwr *tfuPucchDeltaPwr;
 
    TRC3(cmUnpkTfuPucchDeltaPwrIndInfo)
@@ -12720,7 +12720,7 @@ Buffer *mBuf;
 
    TRC3(cmUnpkTfuDlCqiPuschInfo)
 
-   CMCHKUNPK(oduPackUInt32, (U32 *)&param->mode, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->mode, mBuf);
       switch(param->mode) {
          case TFU_PUSCH_CQI_MODE_12:
             CMCHKUNPK(cmUnpkTfuCqiPuschMode12, &param->u.mode12Info, mBuf);
@@ -12846,7 +12846,7 @@ Buffer *mBuf;
 {
 
    CmLList *node;
-   U32 count;
+   uint32_t count;
    TfuDoaRpt *tfuDoaRpt;
    TRC3(cmPkTfuDoaIndInfo)
 
@@ -12900,7 +12900,7 @@ Buffer *mBuf;
 #endif
 {
 
-   U32 count, loopCnt;
+   uint32_t count, loopCnt;
    TfuDoaRpt *tfuDoaRpt;
    TRC3(cmUnpkTfuDoaIndInfo)
 
@@ -13050,7 +13050,7 @@ Buffer *mBuf;
 {
 
    CmLList *node;
-   U32 count;
+   uint32_t count;
    TfuSrsRpt *tfuSrsRpt;
 
    TRC3(cmPkTfuSrsIndInfo)
@@ -13106,7 +13106,7 @@ Buffer *mBuf;
 #endif
 {
 
-   U32 count, loopCnt;
+   uint32_t count, loopCnt;
    TfuSrsRpt *tfuSrsRpt;
 
    TRC3(cmUnpkTfuSrsIndInfo)
@@ -13264,7 +13264,7 @@ Buffer *mBuf;
 #endif
 {
 
-   U32 count;
+   uint32_t count;
    TfuRawCqiRpt *tfuRawCqiRpt;
    CmLList *node;
 
@@ -13320,7 +13320,7 @@ Buffer *mBuf;
 #endif
 {
 
-   U32 count, loopCnt;
+   uint32_t count, loopCnt;
    TfuRawCqiRpt *tfuRawCqiRpt;
 
    TRC3(cmUnpkTfuRawCqiIndInfo)
@@ -13420,7 +13420,7 @@ Buffer *mBuf;
    S32 i;
    TRC3(cmUnpkTfuUePucchHqRecpInfo)
 
-   CMCHKUNPK(oduPackUInt32, (U32 *)&param->hqFdbkMode, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->hqFdbkMode, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->hqSz, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->pucchResCnt, mBuf);
    for (i=0; i<TFU_MAX_HQ_RES; i++) {
@@ -13517,7 +13517,7 @@ Buffer *mBuf;
 {
    TRC3(cmUnpkTfuUePucchHqRecpInfo)
 
-   CMCHKUNPK(oduPackUInt32, (U32 *)&param->hqFdbkMode, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->hqFdbkMode, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->hqSz, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->pucchResCnt, mBuf);
 #ifdef LTE_ADV
@@ -13783,12 +13783,12 @@ Buffer *mBuf;
 
    TRC3(cmUnpkTfuUePucchSrsRecpInfo)
 
-   CMCHKUNPK(oduPackUInt32, (U32 *)&param->srsBw, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->srsBw, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->nRrc, mBuf);
-   CMCHKUNPK(oduPackUInt32, (U32 *)&param->srsHopBw, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->srsHopBw, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->transComb, mBuf);
    CMCHKUNPK(oduPackUInt16, &param->srsCfgIdx, mBuf);
-   CMCHKUNPK(oduPackUInt32, (U32 *)&param->srsCyclicShft, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->srsCyclicShft, mBuf);
    return ROK;
 }
 
@@ -13995,7 +13995,7 @@ Buffer *mBuf;
 
    TRC3(cmUnpkTfuUePucchRecpReq)
 
-   CMCHKUNPK(oduPackUInt32, (U32 *)&param->uciInfo, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->uciInfo, mBuf);
    CMCHKUNPK(cmUnpkTfuUePucchCqiRecpInfo, &param->cqiInfo, mBuf);
    CMCHKUNPK(cmUnpkTfuUePucchSrRecpInfo, &param->srInfo, mBuf);
    CMCHKUNPK(cmUnpkTfuUePucchHqRecpInfo, &param->hqInfo, mBuf);
@@ -14104,7 +14104,7 @@ Buffer *mBuf;
    CMCHKUNPK(oduPackUInt16, &param->size, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->rbStart, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->numRb, mBuf);
-   CMCHKUNPK(oduPackUInt32, (U32 *)&param->modType, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->modType, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->nDmrs, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->hoppingEnbld, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->hoppingBits, mBuf);
@@ -14160,7 +14160,7 @@ Buffer *mBuf;
 #endif
 {
 
-   U32 idx = 0;
+   uint32_t idx = 0;
    TRC3(cmPkTfuUePuschCqiRecpInfo)
 
    CMCHKPK(oduUnpackUInt8, param->riBetaOff, mBuf);
@@ -14207,7 +14207,7 @@ Buffer *mBuf;
 #endif
 {
 
-   U32 idx;
+   uint32_t idx;
    TRC3(cmUnpkTfuUePuschCqiRecpInfo)
 
    CMCHKUNPK(oduPackUInt8, &param->reportType, mBuf);
@@ -14304,7 +14304,7 @@ Buffer *mBuf;
    CMCHKUNPK(oduPackUInt8, &param->hqBetaOff, mBuf);
 
 #ifdef TFU_TDD
-   CMCHKUNPK(oduPackUInt32, (U32 *)&param->hqFdbkMode, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->hqFdbkMode, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->nBundled, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->ulDai, mBuf);
 #endif
@@ -14403,7 +14403,7 @@ Buffer *mBuf;
 
    TRC3(cmUnpkTfuUePuschRecpReq)
 
-   CMCHKUNPK(oduPackUInt32, (U32 *)&param->rcpInfo, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->rcpInfo, mBuf);
    CMCHKUNPK(cmUnpkTfuUeUlSchRecpInfo, &param->ulSchInfo, mBuf);
    CMCHKUNPK(cmUnpkTfuUePuschCqiRecpInfo, &param->cqiRiInfo, mBuf);
    CMCHKUNPK(cmUnpkTfuUePuschHqRecpInfo, &param->hqInfo, mBuf);
@@ -14503,7 +14503,7 @@ Buffer *mBuf;
 #ifdef TFU_5GTF
    CMCHKUNPK(oduPackUInt8, &param->groupId, mBuf);
 #endif /* TFU_5GTF */
-   CMCHKUNPK(oduPackUInt32, (U32 *)&param->type, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->type, mBuf);
       switch(param->type) {
          case TFU_RECP_REQ_PUCCH:
             CMCHKUNPK(cmUnpkTfuUePucchRecpReq, &param->t.pucchRecpReq, mBuf);
@@ -14638,7 +14638,7 @@ Buffer *mBuf;
 #endif
    TRC3(cmUnpkTfuUePucchRecpReq)
 
-   CMCHKUNPK(oduPackUInt32, (U32 *)&param->hqType, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->hqType, mBuf);
       switch(param->hqType) {
    
 #ifndef TFU_TDD
@@ -14662,7 +14662,7 @@ Buffer *mBuf;
          default :
             return RFAILED;
       }
-   CMCHKUNPK(oduPackUInt32, (U32 *)&param->type, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->type, mBuf);
 
 #ifdef TFU_TDD
    CMCHKUNPK(oduPackUInt8, &param->multCnt, mBuf);
@@ -14774,7 +14774,7 @@ Buffer *mBuf;
    CMCHKUNPK(oduPackUInt8, &param->rv, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->nDmrs, mBuf);
    CMCHKUNPK(oduPackUInt16, &param->size, mBuf);
-   CMCHKUNPK(oduPackUInt32, (U32 *)&param->modType, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->modType, mBuf);
    return ROK;
 }
 
@@ -14880,9 +14880,9 @@ Buffer *mBuf;
    CMCHKUNPK(oduPackUInt8, &param->nDmrs, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->expCqi, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->expHarq, mBuf);
-   CMCHKUNPK(oduPackUInt32, (U32 *)&param->mode, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->mode, mBuf);
    CMCHKUNPK(oduPackUInt16, &param->size, mBuf);
-   CMCHKUNPK(oduPackUInt32, (U32 *)&param->modType, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->modType, mBuf);
    return ROK;
 }
 
@@ -14973,7 +14973,7 @@ Buffer *mBuf;
    TRC3(cmUnpkTfuUeRecpReqInfo)
 
    CMCHKUNPK(cmUnpkLteRnti, &param->rnti, mBuf);
-   CMCHKUNPK(oduPackUInt32, (U32 *)&param->type, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->type, mBuf);
       switch(param->type) {
          case TFU_RECP_REQ_PUCCH:
             CMCHKUNPK(cmUnpkTfuUePucchRecpReq, &param->t.pucchRecpReq, mBuf);

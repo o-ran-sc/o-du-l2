@@ -84,12 +84,12 @@ LwrMacCb   lwrMacCb;
 extern MacCb  macCb;
 
 /* forward references */
-PRIVATE U16 rgLMMGenCfg ARGS((
+PRIVATE uint16_t rgLMMGenCfg ARGS((
    Inst           inst,
    RgCfg          *cfg           
 ));
 
-PRIVATE U16 rgLMMSapCfg ARGS((
+PRIVATE uint16_t rgLMMSapCfg ARGS((
    Inst           inst,
    RgCfg          *cfg,
    Elmnt          sapType
@@ -160,7 +160,7 @@ Reason reason;         /* reason */
 
    macInst = inst - RG_INST_START;
    /* Initialize the MAC TskInit structure to zero */
-   cmMemset ((U8 *)&rgCb[macInst], 0, sizeof(RgCb));
+   cmMemset ((uint8_t *)&rgCb[macInst], 0, sizeof(RgCb));
 
    /* Initialize the MAC TskInit with received values */
    rgCb[macInst].rgInit.ent = entity;
@@ -246,8 +246,8 @@ Pst      *pst;    /* post structure  */
 RgMngmt  *cfg;    /* config structure  */
 #endif    
 {
-   U16       ret = LCM_PRIM_OK;
-   U16       reason = LCM_REASON_NOT_APPL;
+   uint16_t       ret = LCM_PRIM_OK;
+   uint16_t       reason = LCM_REASON_NOT_APPL;
    RgMngmt   cfm;
    Pst       cfmPst;
    Inst      inst;
@@ -265,7 +265,7 @@ RgMngmt  *cfg;    /* config structure  */
    /* Fill the post structure for sending the confirmation */
    rgLMMFillCfmPst(pst, &cfmPst, cfg);
 
-   cmMemset((U8 *)&cfm, 0, sizeof(RgMngmt));
+   cmMemset((uint8_t *)&cfm, 0, sizeof(RgMngmt));
 
 #ifdef LMINT3
    cfm.hdr.transId = cfg->hdr.transId;
@@ -348,7 +348,7 @@ RgMngmt  *sts;    /* statistics structure  */
    /* Fill the post structure for sending the confirmation */
    rgLMMFillCfmPst(pst, &cfmPst, sts);
 
-   cmMemset((U8 *)&cfm, 0, sizeof(RgMngmt));
+   cmMemset((uint8_t *)&cfm, 0, sizeof(RgMngmt));
 
 #ifdef LMINT3
    cfm.hdr.transId = sts->hdr.transId;
@@ -373,7 +373,7 @@ RgMngmt  *sts;    /* statistics structure  */
    {
       case STGEN:
          {
-            cmMemcpy((U8 *)&(cfm.t.sts.s.genSts), (U8 *)&rgCb[inst].genSts,
+            cmMemcpy((uint8_t *)&(cfm.t.sts.s.genSts), (uint8_t *)&rgCb[inst].genSts,
                   sizeof(RgGenSts));
             /* check if action is read and reset */
             if(sts->t.sts.action == ARST)
@@ -384,7 +384,7 @@ RgMngmt  *sts;    /* statistics structure  */
 #ifdef MAC_SCH_STATS
             {
                RgGenSts *genSts = &(cfm.t.sts.s.genSts);
-               U8       cqi = 0;
+               uint8_t       cqi = 0;
                for(cqi=0; cqi <= 14; cqi++)
                {
                   /* Filling DL ACK/NACK stats */
@@ -434,9 +434,9 @@ RgMngmt  *sts;    /* statistics structure  */
                /* Reset statistics */
                if(sts->t.sts.action == ZEROSTS)
                {
-                  cmMemset((U8 *)&hqRetxStats, 0, \
+                  cmMemset((uint8_t *)&hqRetxStats, 0, \
                         sizeof(RgSchHqRetxStats));
-                  cmMemset((U8 *)&hqFailStats, 0, \
+                  cmMemset((uint8_t *)&hqFailStats, 0, \
                         sizeof(RgSchNackAckStats));
                }
             }
@@ -444,30 +444,30 @@ RgMngmt  *sts;    /* statistics structure  */
          }
          break;
       case STRGUSAP:
-         cmMemcpy((U8 *)&(cfm.t.sts.s.rguSts), (U8 *)&rgCb[inst].rguSap[sts->t.sts.sapInst].sapSts,
+         cmMemcpy((uint8_t *)&(cfm.t.sts.s.rguSts), (uint8_t *)&rgCb[inst].rguSap[sts->t.sts.sapInst].sapSts,
                   sizeof(RgSapSts));
 
          /* check if action is read and reset */
          if(sts->t.sts.action == ARST)
-            cmMemset((U8 *)&rgCb[inst].rguSap[sts->t.sts.sapInst].sapSts, 0, sizeof(RgSapSts));
+            cmMemset((uint8_t *)&rgCb[inst].rguSap[sts->t.sts.sapInst].sapSts, 0, sizeof(RgSapSts));
 
          break;
       case STCRGSAP:
-         cmMemcpy((U8 *)&(cfm.t.sts.s.crgSts), (U8 *)&rgCb[inst].crgSap.sapSts,
+         cmMemcpy((uint8_t *)&(cfm.t.sts.s.crgSts), (uint8_t *)&rgCb[inst].crgSap.sapSts,
                   sizeof(RgSapSts));
 
          /* check if action is read and reset */
          if(sts->t.sts.action == ARST)
-            cmMemset((U8 *)&rgCb[inst].crgSap.sapSts, 0, sizeof(RgSapSts));
+            cmMemset((uint8_t *)&rgCb[inst].crgSap.sapSts, 0, sizeof(RgSapSts));
 
          break;
       case STTFUSAP:
-         cmMemcpy((U8 *)&(cfm.t.sts.s.tfuSts), (U8 *)&rgCb[inst].tfuSap.sapSts,
+         cmMemcpy((uint8_t *)&(cfm.t.sts.s.tfuSts), (uint8_t *)&rgCb[inst].tfuSap.sapSts,
                   sizeof(RgSapSts));
 
          /* check if action is read and reset */
          if(sts->t.sts.action == ARST)
-            cmMemset((U8 *)&rgCb[inst].tfuSap.sapSts, 0, sizeof(RgSapSts));
+            cmMemset((uint8_t *)&rgCb[inst].tfuSap.sapSts, 0, sizeof(RgSapSts));
 
          break;
       default:
@@ -530,7 +530,7 @@ RgMngmt  *sta;    /* status structure  */
       SPutSBuf(pst->region, pst->pool, (Data *)sta->t.ssta.s.sysId.ptNmb, LRG_MAX_PT_NUM_SIZE);
    }
    
-   cmMemset((U8 *)&cfm, 0, sizeof(RgMngmt));
+   cmMemset((uint8_t *)&cfm, 0, sizeof(RgMngmt));
    cfm.hdr.elmId.elmnt = sta->hdr.elmId.elmnt;
 
 #ifdef LMINT3
@@ -547,7 +547,7 @@ RgMngmt  *sta;    /* status structure  */
          RLOG0(L_ERROR, "Memory Unavailable for Confirmation");
          return ROK;
       } 
-      cmMemset((U8 *)(cfm.t.ssta.s.sysId.ptNmb), 0, LRG_MAX_PT_NUM_SIZE);
+      cmMemset((uint8_t *)(cfm.t.ssta.s.sysId.ptNmb), 0, LRG_MAX_PT_NUM_SIZE);
       rgGetSId(&cfm.t.ssta.s.sysId);
       cfm.cfm.status = LCM_PRIM_NOK;
       cfm.cfm.reason = LCM_REASON_GENCFG_NOT_DONE;
@@ -568,7 +568,7 @@ RgMngmt  *sta;    /* status structure  */
             RLOG0(L_ERROR, "Memory Unavailable for Confirmation");
             return ROK;
          } 
-         cmMemset((U8 *)(cfm.t.ssta.s.sysId.ptNmb), 0, LRG_MAX_PT_NUM_SIZE);
+         cmMemset((uint8_t *)(cfm.t.ssta.s.sysId.ptNmb), 0, LRG_MAX_PT_NUM_SIZE);
          rgGetSId(&cfm.t.ssta.s.sysId);
          cfm.cfm.status = LCM_PRIM_OK;
          cfm.cfm.reason = LCM_REASON_NOT_APPL;
@@ -578,8 +578,8 @@ RgMngmt  *sta;    /* status structure  */
          cfm.cfm.status = LCM_PRIM_OK;
          cfm.cfm.reason = LCM_REASON_NOT_APPL;
          SGetDateTime(&cfm.t.ssta.dt);
-         cmMemcpy((U8 *)&(cfm.t.ssta.s.rguSapSta), 
-				(U8 *)&rgCb[inst].rguSap[sta->t.ssta.sapInst].sapSta,
+         cmMemcpy((uint8_t *)&(cfm.t.ssta.s.rguSapSta), 
+				(uint8_t *)&rgCb[inst].rguSap[sta->t.ssta.sapInst].sapSta,
             sizeof(RgSapSta));
          RgMiLrgStaCfm(&cfmPst, &cfm);
          break;
@@ -587,7 +587,7 @@ RgMngmt  *sta;    /* status structure  */
          cfm.cfm.status = LCM_PRIM_OK;
          cfm.cfm.reason = LCM_REASON_NOT_APPL;
          SGetDateTime(&cfm.t.ssta.dt);
-         cmMemcpy((U8 *)&(cfm.t.ssta.s.crgSapSta), (U8 *)&rgCb[inst].crgSap.sapSta,
+         cmMemcpy((uint8_t *)&(cfm.t.ssta.s.crgSapSta), (uint8_t *)&rgCb[inst].crgSap.sapSta,
          sizeof(RgSapSta));
          RgMiLrgStaCfm(&cfmPst, &cfm);
          break;
@@ -595,7 +595,7 @@ RgMngmt  *sta;    /* status structure  */
          cfm.cfm.status = LCM_PRIM_OK;
          cfm.cfm.reason = LCM_REASON_NOT_APPL;
          SGetDateTime(&cfm.t.ssta.dt);
-         cmMemcpy((U8 *)&(cfm.t.ssta.s.tfuSapSta), (U8 *)&rgCb[inst].tfuSap.sapSta,
+         cmMemcpy((uint8_t *)&(cfm.t.ssta.s.tfuSapSta), (uint8_t *)&rgCb[inst].tfuSap.sapSta,
          sizeof(RgSapSta));
          RgMiLrgStaCfm(&cfmPst, &cfm);
          break;
@@ -656,7 +656,7 @@ RgMngmt  *cntrl;  /* control structure  */
 
    rgLMMFillCfmPst(pst, &cfmPst, cntrl);
 
-   cmMemset((U8 *)&cfm, 0, sizeof(RgMngmt));
+   cmMemset((uint8_t *)&cfm, 0, sizeof(RgMngmt));
 #ifdef LMINT3
    cfm.hdr.transId = cntrl->hdr.transId;
 #endif
@@ -711,26 +711,26 @@ RgMngmt  *cntrl;  /* control structure  */
  *     
  *  @param[in]  Inst        inst
  *  @param[in]  RgCfg *cfg, the Configuaration information 
- *  @return  U16
+ *  @return  uint16_t
  *      -# LCM_REASON_GENCFG_NOT_DONE
  *      -# LCM_REASON_INVALID_SAP
  *      -# LCM_REASON_NOT_APPL
  **/
 #ifdef ANSI
-PRIVATE U16 rgLMMSapCfg
+PRIVATE uint16_t rgLMMSapCfg
 (
 Inst  inst,
 RgCfg *cfg,            /* Configuaration information */
 Elmnt sapType             /* Sap Type */
 )
 #else
-PRIVATE U16 rgLMMSapCfg(inst,cfg,sapType)
+PRIVATE uint16_t rgLMMSapCfg(inst,cfg,sapType)
 Inst  inst;
 RgCfg *cfg;            /* Configuaration information */
 Elmnt sapType;            /* Sap Type */
 #endif
 {
-   U16               ret = LCM_REASON_NOT_APPL;
+   uint16_t               ret = LCM_REASON_NOT_APPL;
    RgLowSapCfgInfo   *lowSapCfg = NULLP;
    RgUpSapCfgInfo    *upSapCfg = NULLP;
    RgUpSapCb          *upSapCb  = NULLP;
@@ -834,7 +834,7 @@ Elmnt sapType;            /* Sap Type */
          lowSapCfg->sapPst.prior = cfg->s.tfuSap.prior;
          lowSapCfg->suId = cfg->s.tfuSap.suId;
          lowSapCfg->spId = cfg->s.tfuSap.spId;
-         cmMemcpy((U8 *)&lowSapCfg->bndTmr, (U8 *)&cfg->s.tfuSap.bndTmr,
+         cmMemcpy((uint8_t *)&lowSapCfg->bndTmr, (uint8_t *)&cfg->s.tfuSap.bndTmr,
                    sizeof(TmrCfg));
          break;
       default:
@@ -859,24 +859,24 @@ Elmnt sapType;            /* Sap Type */
  *     
  *  @param[in]  Inst        inst
  *  @param[in]  RgCfg *cfg, the Configuaration information 
- *  @return  U16
+ *  @return  uint16_t
  *      -# LCM_REASON_NOT_APPL 
  *      -# LCM_REASON_INVALID_MSGTYPE
  *      -# LCM_REASON_MEM_NOAVAIL
  **/
 #ifdef ANSI
-PRIVATE U16 rgLMMGenCfg
+PRIVATE uint16_t rgLMMGenCfg
 (
 Inst inst,
 RgCfg *cfg            /* Configuaration information */
 )
 #else
-PRIVATE U16 rgLMMGenCfg(inst,cfg)
+PRIVATE uint16_t rgLMMGenCfg(inst,cfg)
 Inst inst;
 RgCfg *cfg;            /* Configuaration information */
 #endif
 {
-   U16    ret = LCM_REASON_NOT_APPL;
+   uint16_t    ret = LCM_REASON_NOT_APPL;
 
    TRC2(rgLMMGenCfg)
 
@@ -892,7 +892,7 @@ RgCfg *cfg;            /* Configuaration information */
       return (LCM_REASON_INVALID_PAR_VAL);
    }
    /* Update the Pst structure for LM interface */
-   cmMemcpy((U8 *)&rgCb[inst].rgInit.lmPst, (U8 *)&cfg->s.genCfg.lmPst,
+   cmMemcpy((uint8_t *)&rgCb[inst].rgInit.lmPst, (uint8_t *)&cfg->s.genCfg.lmPst,
              sizeof(Pst));
 
    rgCb[inst].rgInit.lmPst.srcProcId = rgCb[inst].rgInit.procId;
@@ -930,15 +930,15 @@ RgCfg *cfg;            /* Configuaration information */
    for (int idx = 0; idx < rgCb[inst].numRguSaps; idx++)
    {
       rgCb[inst].rguSap[idx].sapSta.sapState = LRG_NOT_CFG;
-      cmMemset((U8 *)&rgCb[inst].rguSap[idx], 0, sizeof(RgUpSapCb));
+      cmMemset((uint8_t *)&rgCb[inst].rguSap[idx], 0, sizeof(RgUpSapCb));
    }
    rgCb[inst].tfuSap.sapSta.sapState = LRG_NOT_CFG;
    /* Initialize the timer blocks */
    cmInitTimers(rgCb[inst].tmrBlk, RG_MAX_TIMER);
    /* Initialzie the timer queue */   
-   cmMemset((U8 *)&rgCb[inst].tmrTq, 0, sizeof(CmTqType)*RG_TQ_SIZE);
+   cmMemset((uint8_t *)&rgCb[inst].tmrTq, 0, sizeof(CmTqType)*RG_TQ_SIZE);
    /* Initialize the timer control point */
-   cmMemset((U8 *)&rgCb[inst].tmrTqCp, 0, sizeof(CmTqCp));
+   cmMemset((uint8_t *)&rgCb[inst].tmrTqCp, 0, sizeof(CmTqCp));
    rgCb[inst].tmrTqCp.tmrLen = RG_TQ_SIZE;
 #if 0
    /* Timer Registration request to SSI */
@@ -990,7 +990,7 @@ Inst inst;
 #endif
 {
    RgCellCb   *cell = rgCb[inst].cell;
-   U8 idx;
+   uint8_t idx;
 
    TRC2(rgLMMShutdown)
 
@@ -1091,8 +1091,8 @@ Pst           *cfmPst;
                rgCb[inst].rgInit.trc = TRUE;
                rgCb[inst].trcLen = cntrl->t.cntrl.s.trcLen;
                /*Store the response and TransId for sending the Traces */
-               cmMemcpy((U8 *)&rgCb[inst].genCfg.trcResp.response, 
-               (U8 *)&cntrl->hdr.response, sizeof(Resp));
+               cmMemcpy((uint8_t *)&rgCb[inst].genCfg.trcResp.response, 
+               (uint8_t *)&cntrl->hdr.response, sizeof(Resp));
                rgCb[inst].genCfg.trcResp.transId = cntrl->hdr.transId;
                
                break;
@@ -1100,8 +1100,8 @@ Pst           *cfmPst;
             /* Enable Unsolicited Status (alarms) */
                rgCb[inst].rgInit.usta = TRUE;
                /*Store the response and TransId for sending the Alarms */
-               cmMemcpy((U8 *)&rgCb[inst].genCfg.ustaResp.response, 
-               (U8 *)&cntrl->hdr.response, sizeof(Resp));
+               cmMemcpy((uint8_t *)&rgCb[inst].genCfg.ustaResp.response, 
+               (uint8_t *)&cntrl->hdr.response, sizeof(Resp));
                rgCb[inst].genCfg.ustaResp.transId = cntrl->hdr.transId;
                break;
             case SADBG:
@@ -1227,8 +1227,8 @@ Pst           *cfmPst;
                   rgCb[inst].tfuSap.numBndRetries++;
                   /* Store the response and TransId for sending 
                    * the Control confirm */
-                  cmMemcpy((U8 *)&rgCb[inst].genCfg.bndCfmResp.response,
-                           (U8 *)&cntrl->hdr.response, sizeof(Resp));
+                  cmMemcpy((uint8_t *)&rgCb[inst].genCfg.bndCfmResp.response,
+                           (uint8_t *)&cntrl->hdr.response, sizeof(Resp));
                   rgCb[inst].genCfg.bndCfmResp.transId = cntrl->hdr.transId;
 
                   /* Sending Status Indication to Layer Manager */
@@ -1275,7 +1275,7 @@ Pst           *cfmPst;
                      rgLMMStopTmr(inst,RG_BNDREQ_TMR, (PTR)&rgCb[inst].tfuSap);
                   }
                }
-               cmMemset((U8 *)&rgCb[inst].tfuSap, 0, sizeof(RgLowSapCb));
+               cmMemset((uint8_t *)&rgCb[inst].tfuSap, 0, sizeof(RgLowSapCb));
                rgCb[inst].tfuSap.sapSta.sapState = LRG_NOT_CFG;
                cfm->cfm.status = LCM_PRIM_OK;
                cfm->cfm.reason = LCM_REASON_NOT_APPL;
@@ -1292,7 +1292,7 @@ Pst           *cfmPst;
          switch(cntrl->t.cntrl.action)
          {
             case ADEL:
-               cmMemset((U8 *)&rgCb[inst].rguSap[cntrl->t.cntrl.instId], 0, sizeof(RgUpSapCb));
+               cmMemset((uint8_t *)&rgCb[inst].rguSap[cntrl->t.cntrl.instId], 0, sizeof(RgUpSapCb));
                rgCb[inst].rguSap[cntrl->t.cntrl.instId].sapSta.sapState = LRG_NOT_CFG;
                cfm->cfm.status = LCM_PRIM_OK;
                cfm->cfm.reason = LCM_REASON_NOT_APPL;
@@ -1309,7 +1309,7 @@ Pst           *cfmPst;
          switch(cntrl->t.cntrl.action)
          {
             case ADEL:
-               cmMemset((U8 *)&rgCb[inst].crgSap, 0, sizeof(RgUpSapCb));
+               cmMemset((uint8_t *)&rgCb[inst].crgSap, 0, sizeof(RgUpSapCb));
                rgCb[inst].crgSap.sapSta.sapState = LRG_NOT_CFG;
                cfm->cfm.status = LCM_PRIM_OK;
                cfm->cfm.reason = LCM_REASON_NOT_APPL;
@@ -1395,7 +1395,7 @@ RgMngmt       *cfm;
  *     
  *  @param[in]  Inst        inst
  *  @param[in]  S16   tmrEvnt, the Timer Event    
- *  @param[in]  U32   tmrVal,  the Wait Time
+ *  @param[in]  uint32_t   tmrVal,  the Wait Time
  *  @param[in]  PTR   cb,  Entry for which Timer expired
  *  @return  S16
  *      -# ROK
@@ -1405,14 +1405,14 @@ S16 rgLMMStartTmr
 (
 Inst               inst,
 S16                tmrEvnt,            /* Timer Event */
-U32                tmrVal,             /* Wait Time */
+uint32_t                tmrVal,             /* Wait Time */
 PTR                cb                  /* Entry for which Timer Expired */
 )
 #else
 S16 rgLMMStartTmr(tmrEvnt, tmrVal, cb)
 Inst               inst;
 S16                tmrEvnt;            /* Timer Event */
-U32                tmrVal;             /* Wait Time */
+uint32_t                tmrVal;             /* Wait Time */
 PTR                cb;                 /* Entry for which Timer Expired */
 #endif
 {
@@ -1423,7 +1423,7 @@ PTR                cb;                 /* Entry for which Timer Expired */
    UNUSED(tmrEvnt);
 
    /* Initialize the arg structure */
-   cmMemset((U8 *)&arg, 0, sizeof(CmTmrArg));
+   cmMemset((uint8_t *)&arg, 0, sizeof(CmTmrArg));
 
    arg.tqCp = &rgCb[inst].tmrTqCp;
    arg.tq = rgCb[inst].tmrTq;
@@ -1474,7 +1474,7 @@ PTR                cb;                 /* Entry for which Timer Expired */
 #endif
 {
    CmTmrArg   arg;
-   U8         i;
+   uint8_t         i;
    S16        ret; 
 
    TRC2(rgLMMStopTmr)
@@ -1487,7 +1487,7 @@ PTR                cb;                 /* Entry for which Timer Expired */
       if(rgCb[inst].tmrBlk[i].tmrEvnt == tmrEvnt)
       {
          /* Initialize the arg structure */
-         cmMemset((U8 *)&arg, 0, sizeof(CmTmrArg));
+         cmMemset((uint8_t *)&arg, 0, sizeof(CmTmrArg));
 
          arg.tqCp = &rgCb[inst].tmrTqCp;
          arg.tq = rgCb[inst].tmrTq;
@@ -1589,9 +1589,9 @@ S16 tmrEvnt;          /* Timer Event */
  *     status indication to the Layer Manager.
  *     
  *  @param[in]  Inst        inst
- *  @param[in]  U16 category, the Alarm category
- *  @param[in]  U16 event, the Alarm event
- *  @param[in]  U16 cause, the cause of the Alarm
+ *  @param[in]  uint16_t category, the Alarm category
+ *  @param[in]  uint16_t event, the Alarm event
+ *  @param[in]  uint16_t cause, the cause of the Alarm
  *  @param[in]  RgUstaDgn *dgn, Alarm Diagonostics
  *  @return  S16
  *      -# ROK
@@ -1600,17 +1600,17 @@ S16 tmrEvnt;          /* Timer Event */
 S16 rgLMMStaInd
 (
 Inst inst,
-U16 category,
-U16 event,
-U16 cause,
+uint16_t category,
+uint16_t event,
+uint16_t cause,
 RgUstaDgn *dgn
 )
 #else
 S16 rgLMMStaInd(inst,category, event, cause, dgn) 
 Inst inst;
-U16 category;
-U16 event;
-U16 cause;
+uint16_t category;
+uint16_t event;
+uint16_t cause;
 RgUstaDgn *dgn;
 #endif
 {
@@ -1623,7 +1623,7 @@ RgUstaDgn *dgn;
       return ROK;
    }
 
-   cmMemset((U8 *)&usta, 0, sizeof(RgMngmt));
+   cmMemset((uint8_t *)&usta, 0, sizeof(RgMngmt));
 
    SGetDateTime(&usta.t.usta.cmAlarm.dt);
    usta.t.usta.cmAlarm.category = category;
@@ -1631,7 +1631,7 @@ RgUstaDgn *dgn;
    usta.t.usta.cmAlarm.cause = cause;
    if (dgn != NULLP)
    {
-      cmMemcpy((U8 *)&usta.t.usta.dgn, (U8 *)dgn, sizeof(RgUstaDgn));
+      cmMemcpy((uint8_t *)&usta.t.usta.dgn, (uint8_t *)dgn, sizeof(RgUstaDgn));
    }
 
    rgCb[inst].rgInit.lmPst.selector = rgCb[inst].genCfg.ustaResp.response.selector;
@@ -1657,7 +1657,7 @@ RgUstaDgn *dgn;
  *     
  *  @param[in]  Inst        inst
  *  @param[in]   Buffer *srcMbuf, the Message Buffer .
- *  @param[in]   U8 event, the trace event.
+ *  @param[in]   uint8_t event, the trace event.
  *  @return Void 
  **/
 #ifdef ANSI
@@ -1665,13 +1665,13 @@ Void rgLMMTrcInd
 (
 Inst   inst,
 Buffer *srcMbuf,    /* Message Buffer */
-U8 event            /* event */
+uint8_t event            /* event */
 )
 #else
 Void rgLMMTrcInd(inst,srcMbuf,event)
 Inst   inst;
 Buffer *srcMbuf;    /* Message Buffer */
-U8 event;           /* event */
+uint8_t event;           /* event */
 #endif
 {
    Buffer   *dstMbuf = NULLP;   
@@ -1690,7 +1690,7 @@ U8 event;           /* event */
       RETVOID;
    }
    
-   cmMemset((U8 *)&trc, 0, sizeof(RgMngmt));
+   cmMemset((uint8_t *)&trc, 0, sizeof(RgMngmt));
 
    pst = rgCb[inst].rgInit.lmPst;
    pst.selector = rgCb[inst].genCfg.trcResp.response.selector;
@@ -1809,7 +1809,7 @@ U8 event;           /* event */
  *     
  *  @param[in]   Pst *pst, Post Structure
  *  @param[in]   SuId suId, Service user ID
- *  @param[in]   U8 status, Status
+ *  @param[in]   uint8_t status, Status
  *  @return  S16
  *      -# ROK
  **/
@@ -1818,13 +1818,13 @@ S16 rgLMMBndCfm
 (
 Pst *pst,               /* Post Structure */
 SuId suId,              /* Service user ID */
-U8 status               /* Status */
+uint8_t status               /* Status */
 )
 #else
 S16 rgLMMBndCfm(pst,suId,status)
 Pst *pst;               /* Post Structure */
 SuId suId;              /* Service user ID */
-U8 status;              /* Status */
+uint8_t status;              /* Status */
 #endif
 {
    Inst      inst = pst->dstInst - RG_INST_START;
@@ -1862,7 +1862,7 @@ U8 status;              /* Status */
    cfmPst.region = rgCb[inst].genCfg.bndCfmResp.response.mem.region;
    cfmPst.pool = rgCb[inst].genCfg.bndCfmResp.response.mem.pool;
    
-   cmMemset((U8 *)&cntrlCfm, 0, sizeof(RgMngmt));
+   cmMemset((uint8_t *)&cntrlCfm, 0, sizeof(RgMngmt));
 
    switch(status)
    {

@@ -34,7 +34,7 @@
    _ret = SGetSBuf(CU_APP_MEM_REG, CU_POOL,                  \
                      (Data **)&_datPtr, _size);              \
    if(_ret == ROK)                                           \
-      cmMemset((U8*)_datPtr, 0, _size);                      \
+      cmMemset((uint8_t*)_datPtr, 0, _size);                      \
    else                                                      \
       _datPtr = NULLP;                                       \
 }
@@ -49,38 +49,38 @@
 typedef struct ipAddr
 {
  Bool ipV4Pres;
- U32  ipV4Addr;
+ uint32_t  ipV4Addr;
  Bool ipV6Pres;
- U8   ipV6Addr[MAX_IPV6_LEN];
+ uint8_t   ipV6Addr[MAX_IPV6_LEN];
 }SctpIpAddr;
 
 typedef struct RrcVersion
 {
-  U8    rrcVer;     /* Latest RRC Version */
-  U32   extRrcVer;  /* Latest RRC version extended */
+  uint8_t    rrcVer;     /* Latest RRC Version */
+  uint32_t   extRrcVer;  /* Latest RRC version extended */
 }RrcVersion;
 
 typedef struct egtpParams
 {
    SctpIpAddr  localIp;
-   U16         localPort;
+   uint16_t         localPort;
    SctpIpAddr  destIp;
-   U16         destPort;
-   U32       minTunnelId;
-   U32       maxTunnelId;
+   uint16_t         destPort;
+   uint32_t       minTunnelId;
+   uint32_t       maxTunnelId;
 }EgtpParams;
 
 typedef struct CuSctpParams
 {
    SctpIpAddr  duIpAddr;
-   U16         duPort;
+   uint16_t         duPort;
    SctpIpAddr  cuIpAddr;
-   U16         cuPort;
+   uint16_t         cuPort;
 }CuSctpParams;
 
 typedef struct cuCfgParams
 {
-   U32              cuId;
+   uint32_t              cuId;
    char             cuName[CU_DU_NAME_LEN_MAX];
    CuSctpParams     sctpParams;
    Plmn             plmn;

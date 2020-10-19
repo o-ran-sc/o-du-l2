@@ -168,7 +168,7 @@ Buffer *mBuf;
 *
 *  @param[in]   Pst*  pst
 *  @param[in]   SuId  suId
-*  @param[in]   U8  status
+*  @param[in]   uint8_t  status
 *  @return   S16
 *      -# ROK
 **/
@@ -177,13 +177,13 @@ S16 cmPkCrgBndCfm
 (
 Pst* pst,
 SuId suId,
-U8 status
+uint8_t status
 )
 #else
 S16 cmPkCrgBndCfm(pst, suId, status)
 Pst* pst;
 SuId suId;
-U8 status;
+uint8_t status;
 #endif
 {
    Buffer *mBuf = NULLP;
@@ -230,7 +230,7 @@ U8 status;
 *
 *  @param[in]   Pst*  pst
 *  @param[in]   SuId  suId
-*  @param[in]   U8  status
+*  @param[in]   uint8_t  status
 *  @return   S16
 *      -# ROK
 **/
@@ -249,7 +249,7 @@ Buffer *mBuf;
 #endif
 {
    SuId suId;
-   U8 status;
+   uint8_t status;
    
    TRC3(cmUnpkCrgBndCfm)
 
@@ -568,7 +568,7 @@ Buffer *mBuf;
 *  @param[in]   Pst*  pst
 *  @param[in]   SuId  suId
 *  @param[in]   CrgCfgTransId  transId
-*  @param[in]   U8  status
+*  @param[in]   uint8_t  status
 *  @return   S16
 *      -# ROK
 **/
@@ -578,14 +578,14 @@ S16 cmPkCrgCfgCfm
 Pst* pst,
 SuId suId,
 CrgCfgTransId transId,
-U8 status
+uint8_t status
 )
 #else
 S16 cmPkCrgCfgCfm(pst, suId, transId, status)
 Pst* pst;
 SuId suId;
 CrgCfgTransId transId;
-U8 status;
+uint8_t status;
 #endif
 {
    Buffer *mBuf = NULLP;
@@ -642,7 +642,7 @@ U8 status;
 *  @param[in]   Pst*  pst
 *  @param[in]   SuId  suId
 *  @param[in]   CrgCfgTransId  transId
-*  @param[in]   U8  status
+*  @param[in]   uint8_t  status
 *  @return   S16
 *      -# ROK
 **/
@@ -662,7 +662,7 @@ Buffer *mBuf;
 {
    SuId suId;
    CrgCfgTransId transId;
-   U8 status;
+   uint8_t status;
    
    TRC3(cmUnpkCrgCfgCfm)
 
@@ -1144,7 +1144,7 @@ Buffer *mBuf;
    S8 idx;
    for(idx = param->numSCells - 1; idx >= 0; idx--)
    {
-      CMCHKPK(cmPkCrgUeSCellCfg, &param->ueSCellCfg[(U8)idx], mBuf);
+      CMCHKPK(cmPkCrgUeSCellCfg, &param->ueSCellCfg[(uint8_t)idx], mBuf);
    }
 
    CMCHKPK(oduUnpackUInt8, param->numSCells, mBuf);
@@ -1180,7 +1180,7 @@ CrgUeSecCellInfo *param;
 Buffer *mBuf;
 #endif
 {
-   U8 idx;
+   uint8_t idx;
 
    CMCHKUNPK(oduPackUInt8, &param->isSCellCfgPres, mBuf);
    if(TRUE == param->isSCellCfgPres)
@@ -1305,7 +1305,7 @@ CrgUeCfg *param;
 Buffer *mBuf;
 #endif
 {
-   U32 tmpEnum;
+   uint32_t tmpEnum;
    
    TRC3(cmUnpkCrgUeCfg)
 
@@ -1313,7 +1313,7 @@ Buffer *mBuf;
    CMCHKUNPK(cmUnpkLteRnti, &param->crnti, mBuf);
    CMCHKUNPK(cmUnpkCrgUeUlHqCfg, &param->ueUlHqCfg, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->txMode.pres, mBuf);
-   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&tmpEnum, mBuf);
    param->txMode.tm = (CrgTxMode) tmpEnum;
 #ifdef TENB_MULT_CELL_SUPPRT
    CMCHKUNPK(SUnpkS16, &param->rguUlSapId, mBuf);
@@ -1818,7 +1818,7 @@ Buffer *mBuf;
    CMCHKUNPK(cmUnpkLteRnti, &param->newCrnti, mBuf);
    CMCHKUNPK(cmUnpkCrgUeUlHqCfg, &param->ueUlHqRecfg, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->txMode.pres, mBuf);
-   CMCHKUNPK(oduPackUInt32, (U32 *)&param->txMode.tm, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->txMode.tm, mBuf);
 #ifdef LTE_ADV 
       CMCHKUNPK(cmUnpkCrgUeSecCellInfo, &param->crgSCellCfg, mBuf);
 #endif /* LTE_ADV */

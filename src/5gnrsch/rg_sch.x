@@ -49,13 +49,13 @@
 
 typedef struct rgSchHistNode
 {
-   U32 line;
+   uint32_t line;
    S8* file;
    const S8* func;
    Void * dbgVal; /* This is specific to the data struct being debug
                      for example if the debugging is done fo list
                      then this should contain the node address */
-   U32 action;
+   uint32_t action;
 }RgSchHistNode;
 
 #define MAX_HIST_NODES    50
@@ -65,7 +65,7 @@ typedef struct rgSchHistNode
 
 typedef struct rgSchHistInfo
 {
-   U32 histCount;
+   uint32_t histCount;
    RgSchHistNode hist[MAX_HIST_NODES];
 }RgSchHistInfo;
 
@@ -116,7 +116,7 @@ typedef struct rgSchDlLcCb       RgSchDlLcCb;
 typedef struct _rgSchdApis       RgSchdApis;
 #ifdef LTE_TDD
 typedef struct rgSchTddPhichOffInfo    RgSchTddPhichOffInfo;
-typedef U8 RgSchTddNpValTbl[RGSCH_TDD_MAX_P_PLUS_ONE_VAL];
+typedef uint8_t RgSchTddNpValTbl[RGSCH_TDD_MAX_P_PLUS_ONE_VAL];
 #endif
 /* Added support for SPS*/
 #ifdef LTEMAC_SPS
@@ -152,16 +152,16 @@ struct _rgSchdApis
    Void (*rgSCHFreeDlLc) ARGS((RgSchCellCb *cell, RgSchUeCb *ue, RgSchDlLcCb *dlLc));
    Void (*rgSCHFreeLcg) ARGS((RgSchCellCb *cell, RgSchUeCb *ue, RgSchLcgCb *lcg));
    S16 (*rgSCHRgrLchDel) ARGS((RgSchCellCb *cell, RgSchUeCb *ue,CmLteLcId lcId, \
-                             U8 lcgId));
+                             uint8_t lcgId));
    Void (*rgSCHActvtUlUe) ARGS((RgSchCellCb *cell, RgSchUeCb *ue));
    Void (*rgSCHActvtDlUe) ARGS((RgSchCellCb *cell, RgSchUeCb *ue));
    Void (*rgSCHHdlUlTransInd) ARGS((RgSchCellCb *cell, RgSchUeCb *ue,
             CmLteTimingInfo timingInfo));
    Void (*rgSCHUeReset) ARGS((RgSchCellCb *cell, RgSchUeCb *ue));
-   S16 (*rgSCHUpdBsrShort) ARGS((RgSchCellCb *cell, RgSchUeCb *ue, RgSchLcgCb *ulLcg, U8 bsr, RgSchErrInfo *err));
-   S16 (*rgSCHUpdBsrTrunc) ARGS((RgSchCellCb *cell, RgSchUeCb *ue, RgSchLcgCb *ulLcg, U8 bsr, RgSchErrInfo *err));
-   S16 (*rgSCHUpdBsrLong) ARGS((RgSchCellCb *cell, RgSchUeCb *ue, U8 bsArr[], RgSchErrInfo *err));
-   S16 (*rgSCHUpdPhr) ARGS((RgSchCellCb *cell, RgSchUeCb *ue, U8 phr, RgSchErrInfo *err));
+   S16 (*rgSCHUpdBsrShort) ARGS((RgSchCellCb *cell, RgSchUeCb *ue, RgSchLcgCb *ulLcg, uint8_t bsr, RgSchErrInfo *err));
+   S16 (*rgSCHUpdBsrTrunc) ARGS((RgSchCellCb *cell, RgSchUeCb *ue, RgSchLcgCb *ulLcg, uint8_t bsr, RgSchErrInfo *err));
+   S16 (*rgSCHUpdBsrLong) ARGS((RgSchCellCb *cell, RgSchUeCb *ue, uint8_t bsArr[], RgSchErrInfo *err));
+   S16 (*rgSCHUpdPhr) ARGS((RgSchCellCb *cell, RgSchUeCb *ue, uint8_t phr, RgSchErrInfo *err));
    S16 (*rgSCHUpdExtPhr) ARGS((RgSchCellCb *cell, RgSchUeCb *ue, RgInfExtPhrCEInfo * extPhr, RgSchErrInfo *err));
 #ifdef RG_UNUSED
    S16 (*rgSCHUpdUlHqProc) ARGS((RgSchCellCb *cell, RgSchUlHqProcCb *curProc,
@@ -183,9 +183,9 @@ struct _rgSchdApis
    RgSchUlAlloc *(*rgSCHFirstRcptnReq) ARGS((RgSchCellCb *cell));
    RgSchUlAlloc *(*rgSCHNextRcptnReq) ARGS((RgSchCellCb *cell,
             RgSchUlAlloc *alloc));
-   RgSchUlAlloc *(*rgSCHFirstHqFdbkAlloc) ARGS((RgSchCellCb *cell, U8 idx));
+   RgSchUlAlloc *(*rgSCHFirstHqFdbkAlloc) ARGS((RgSchCellCb *cell, uint8_t idx));
    RgSchUlAlloc *(*rgSCHNextHqFdbkAlloc) ARGS((RgSchCellCb *cell,
-            RgSchUlAlloc *alloc,U8 idx));
+            RgSchUlAlloc *alloc,uint8_t idx));
    Void (*rgSCHDlProcAddToRetx) ARGS((RgSchCellCb *cell,RgSchDlHqProcCb *hqP));
    Void (*rgSCHDlCqiInd) ARGS((RgSchCellCb *cell, RgSchUeCb *ue,
             Bool isPucchInfo, Void *dlCqi, CmLteTimingInfo timingInfo));
@@ -205,12 +205,12 @@ Void (*rgSCHSrsInd) ARGS((RgSchCellCb *cell, RgSchUeCb *ue,
    Void (*rgSCHDlProcAck) ARGS((RgSchCellCb *cell, RgSchDlHqProcCb *hqP));
    Void (*rgSCHDlProcDtx) ARGS((RgSchCellCb *cell, RgSchDlHqProcCb *hqP));
    Void (*rgSCHDlRelPdcchFbk) ARGS((RgSchCellCb *cell, RgSchUeCb * ue,
-            U8 isAck));
+            uint8_t isAck));
    Void (*rgSCHUlSpsRelInd) ARGS((RgSchCellCb *cell, RgSchUeCb * ue,
             Bool isExplRel));
 
    Void (*rgSCHUlSpsActInd) ARGS((RgSchCellCb *cell, RgSchUeCb * ue,
-            U16 sduSuze));
+            uint16_t sduSuze));
 
    Void (*rgSCHUlCrcFailInd) ARGS((RgSchCellCb *cell, RgSchUeCb * ue,
            CmLteTimingInfo    crcTime));
@@ -297,14 +297,14 @@ typedef RgrUeSrSetupCfg RgSchUeSrSetupCfg;
  */
 typedef struct rgSchIotRes
 {
-   U32                   resType;
+   uint32_t                   resType;
    PTR                   allctdBy;
    CmLteTimingInfo       timeStart;
    CmLteTimingInfo       timeEnd;
-   U32                   tSize;
-   U8                    freqStart;
-   U8                    freqEnd;
-   U32                   fSize;
+   uint32_t                   tSize;
+   uint8_t                    freqStart;
+   uint8_t                    freqEnd;
+   uint32_t                   fSize;
    CmLList               lnk; /*!< Link to other Fragments or Allocs in resMngmt */
    CmLList               cbLnk; /*!< Link to other allocs in a given control block (ueCb) */
    CmLList               resLnk;/*!<Link to resList in UE*/
@@ -319,11 +319,11 @@ typedef struct rgSchIotRes
  */
 typedef struct rgSchIotResCb
 {
-   U32            poolSz;
+   uint32_t            poolSz;
    RgSchIotRes    *resources;
    CmLListCp      resPool;
-   U8             maxFreqSz;   /*!< Max Number of RBs/SCs/CCEs per Subframe */
-   U32            deltaTime;   /*!< PDCCH/PUSCH/PDSCH Delta w.r.t current time */
+   uint8_t             maxFreqSz;   /*!< Max Number of RBs/SCs/CCEs per Subframe */
+   uint32_t            deltaTime;   /*!< PDCCH/PUSCH/PDSCH Delta w.r.t current time */
    RgSchIotRes    *contRes;    /*!< Represents continuous availability of resource
                                     in frequency and time domain */
    CmLListCp      fragList;    /*!< Represents list of fragmented resourcesi b4
@@ -358,15 +358,15 @@ CmLList         *lnk
 
 S16 rgSCHUtlIotResMngmtInit ARGS((
    RgSchCellCb *cell,
-   U32         pdcchPoolSz,
-   U32         pdcchDelta,
-   U32         pdcchMaxFreqSz,
-   U32         pdschPoolSz,
-   U32         pdschDelta,
-   U32         pdschMaxFreqSz,
-   U32         puschPoolSz,
-   U32         puschDelta,
-   U32         puschMaxFreqSz
+   uint32_t         pdcchPoolSz,
+   uint32_t         pdcchDelta,
+   uint32_t         pdcchMaxFreqSz,
+   uint32_t         pdschPoolSz,
+   uint32_t         pdschDelta,
+   uint32_t         pdschMaxFreqSz,
+   uint32_t         puschPoolSz,
+   uint32_t         puschDelta,
+   uint32_t         puschMaxFreqSz
    ));
 
 Void rgSCHUtlIotResMngmtDeinit ARGS((
@@ -375,10 +375,10 @@ Void rgSCHUtlIotResMngmtDeinit ARGS((
 
 RgSchIotRes *rgSCHUtlIotAllocRes ARGS((
    RgSchIotResCb   *resCb,
-   U32             fStart,
-   U32             fSize,
+   uint32_t             fStart,
+   uint32_t             fSize,
    CmLteTimingInfo tStart,
-   U32             tSize,
+   uint32_t             tSize,
    Bool            isForEnable
    ));
 
@@ -400,11 +400,11 @@ Void rgSCHUtlIotAllocRls ARGS((
 
 RgSchIotRes *rgSCHUtlEmtcAllocRes ARGS((
    RgSchIotResCb   *resCb,
-   U32             *fStart,
-   U32             *fEnd,
+   uint32_t             *fStart,
+   uint32_t             *fEnd,
    CmLteTimingInfo tStart,
-   U32             tSize,
-   U32             numPrb,
+   uint32_t             tSize,
+   uint32_t             numPrb,
    Bool            isRetx
    ));
 
@@ -414,15 +414,15 @@ S16 rgSCHUtlEmtcResPrcTti ARGS((
 
 S16 rgSCHUtlEmtcResMngmtInit ARGS((
    RgSchCellCb *cell,
-   U32         pdschPoolSz,
-   U32         pdschDelta,
-   U32         pdschMaxFreqSz,
-   U32         puschPoolSz,
-   U32         puschDelta,
-   U32         puschMaxFreqSz,
-   U32         pucchPoolSz,
-   U32         pucchDelta,
-   U32         pucchMaxFreqSz
+   uint32_t         pdschPoolSz,
+   uint32_t         pdschDelta,
+   uint32_t         pdschMaxFreqSz,
+   uint32_t         puschPoolSz,
+   uint32_t         puschDelta,
+   uint32_t         puschMaxFreqSz,
+   uint32_t         pucchPoolSz,
+   uint32_t         pucchDelta,
+   uint32_t         pucchMaxFreqSz
    ));
 
 Void rgSCHUtlEmtcResMngmtDeinit ARGS((
@@ -458,10 +458,10 @@ typedef struct rgSchPerPucchCb
 
 typedef struct rgSchUePCqiSrsSrCfgIdxTbl
 {
-   U16     min;          /*!< start ISRB Index */
-   U16     max;          /*!< end ISRB Index */
-   U16     peri;         /*!< SRS Periodicity in ms */
-   U16     offset;        /*!< Offset with ISRB value */
+   uint16_t     min;          /*!< start ISRB Index */
+   uint16_t     max;          /*!< end ISRB Index */
+   uint16_t     peri;         /*!< SRS Periodicity in ms */
+   uint16_t     offset;        /*!< Offset with ISRB value */
 }RgSchUePCqiSrsSrCfgIdxTbl;
 
 /**
@@ -471,11 +471,11 @@ typedef struct rgSchUePCqiSrsSrCfgIdxTbl
 
 typedef struct rgSchUeSrsCfgIdxTbl
 {
-   U16     min;      /*!< start ISRB Index */
-   U16     max;      /*!< end ISRB Index */
-   U16     peri;    /*!< SRS Periodicity in ms */
-   U16     offset1;  /*!< Offset with ISRB value */
-   U16     offset2;  /*!< Offset with ISRB value */
+   uint16_t     min;      /*!< start ISRB Index */
+   uint16_t     max;      /*!< end ISRB Index */
+   uint16_t     peri;    /*!< SRS Periodicity in ms */
+   uint16_t     offset1;  /*!< Offset with ISRB value */
+   uint16_t     offset2;  /*!< Offset with ISRB value */
 
 }RgSchUeSrsCfgIdxTbl;
 
@@ -494,8 +494,8 @@ typedef enum rgSchSfType
 */
 typedef struct rgSchUeGrp
 {
-   U8      beamBitMask;    /*!<  Beam bit mask */
-   //U8      numUe;       /*!<  Ue present in Group */
+   uint8_t      beamBitMask;    /*!<  Beam bit mask */
+   //uint8_t      numUe;       /*!<  Ue present in Group */
 }RgSchUeGrp;
 
 /**
@@ -505,13 +505,13 @@ typedef struct rgSch5gtfCellCb
 {
    RgSchUeGrp      ueGrp5gConf[MAX_5GTF_GROUP];   /*!<  Contains all the group configured */
    RgSchSfType     dynConfig[MAX_5GTF_SUBFRAME_INFO];  /*!<  Get config from config file as of now */
-   U8              numUes;
-   U8              uePerGrpPerTti; /*!< Num of UEs to be scheduled in a group per TTI */
-   U8              ueGrpPerTti;   /*!< Num of Groups to ne scheduled per Tti */
-   U8              numCCs;
-   U8              bwPerCC;
-   U8              cfi;
-   U8              totVrbg;
+   uint8_t              numUes;
+   uint8_t              uePerGrpPerTti; /*!< Num of UEs to be scheduled in a group per TTI */
+   uint8_t              ueGrpPerTti;   /*!< Num of Groups to ne scheduled per Tti */
+   uint8_t              numCCs;
+   uint8_t              bwPerCC;
+   uint8_t              cfi;
+   uint8_t              totVrbg;
 }RgSch5gtfCellCb;
 
 #endif // 5GTF
@@ -522,15 +522,15 @@ typedef struct rgSch5gtfCellCb
 typedef struct rgSchUeSrsCb
 {
     RgSchUeUlSrsCfg     srsCfg;     /*!< SRS Specific configuration */
-    U16                 peri;       /*!< Periodicity */
-    U16                  offset;     /*!< subframe Offset */
-    U16                  nSrsTrIdx;
+    uint16_t                 peri;       /*!< Periodicity */
+    uint16_t                  offset;     /*!< subframe Offset */
+    uint16_t                  nSrsTrIdx;
                                    /*!< Next Tranmission instance
                                        Referenence: 36.213 Section:8.2
                                       ((10*sfn +sf-sfOffset))/mod(peri))  */
     CmLList             srsLstEnt;      /*!< SRS List for next tranmission instance subframe */
-    U8                selectedAnt;    /*!< Selected Antenna for SRS Reception*/
-    U16                 srsDist;    /*!<  crnt Distance to get RI Transmission */
+    uint8_t                selectedAnt;    /*!< Selected Antenna for SRS Reception*/
+    uint16_t                 srsDist;    /*!<  crnt Distance to get RI Transmission */
     Bool                srsRecpPrcsd; /*!< SRS Recpeption processed as part of PUCCH
                                           // or PUSCH processing in current TTI or not */
 
@@ -546,10 +546,10 @@ typedef struct rgSchUeSrsCb
 
 typedef struct rgSchUeBwSubSzBwParts
 {
-   U8 rbStart;   /* RB Start */
-   U8 rbEnd;     /* RB End */
-   U8 subSize;   /* k */
-   U8 bwParts;   /* J */
+   uint8_t rbStart;   /* RB Start */
+   uint8_t rbEnd;     /* RB End */
+   uint8_t subSize;   /* k */
+   uint8_t bwParts;   /* J */
 
 }RgSchUeBwSubSzBwParts;
 
@@ -577,11 +577,11 @@ typedef enum
 typedef struct rgSchUePCqiCb
 {
    RgrUePrdDlCqiCfg     cqiCfg;        /*!< Cqi Pmi Configuration */
-   U16                  cqiPeri;       /*!< Periodicity */
-   U16                  cqiOffset;     /*!< CQI offset */
-   U16                  riOffset;      /*!< RI Offset */
-   U16                  riPeri;        /*!< RI periodicity */
-   U16                  nCqiTrIdx;
+   uint16_t                  cqiPeri;       /*!< Periodicity */
+   uint16_t                  cqiOffset;     /*!< CQI offset */
+   uint16_t                  riOffset;      /*!< RI Offset */
+   uint16_t                  riPeri;        /*!< RI periodicity */
+   uint16_t                  nCqiTrIdx;
                                       /*!< Next Active Tranmission instace index ,
                                           precompute CQI/PMI
                                           Transmission Instance
@@ -597,12 +597,12 @@ typedef struct rgSchUePCqiCb
              few will be used for subbands.
    */
 
-   U16                nRiTrIdx;      /*!< Next Active Transmission instance for RI
+   uint16_t                nRiTrIdx;      /*!< Next Active Transmission instance for RI
                                           Transmission Instance Referenence:
                                           36.213 Section:8.2 */
-   U16                riDist;        /*!<  crnt Distance to get RI Transmission */
-   U16                h;             /*!< Precompute and store H */
-   U8                 riNumBits;     /*Precomputed value as it doesn't change
+   uint16_t                riDist;        /*!<  crnt Distance to get RI Transmission */
+   uint16_t                h;             /*!< Precompute and store H */
+   uint8_t                 riNumBits;     /*Precomputed value as it doesn't change
                                         on-the-fly */
    /* 1. In the case where wideband RI reporting is configured
          (Mode 1-0 or  1-1)
@@ -617,16 +617,16 @@ typedef struct rgSchUePCqiCb
           interf input */
    Bool               isWb;    /*! < Is True when a WideBand CQI is to be
                                     Transmitted in a SubBand CQI Config*/
-   U8                 bpIdx;   /*Index of the Bandwidth Part*/
-   U8                 label;   /*Label L associated */
-   U8                 J;       /*Number of Bandwidth Parts*/
+   uint8_t                 bpIdx;   /*Index of the Bandwidth Part*/
+   uint8_t                 label;   /*Label L associated */
+   uint8_t                 J;       /*Number of Bandwidth Parts*/
 
    CmLList            cqiLstEnt;/*!< List CQI UEs for next transmission
                                      instance */
    CmLList            riLstEnt; /*!< List RI UEs for next transmission
                                      instance */
    Bool               invalidateCqi; /*!< If TRUE, ignore the WB/SB CQI report*/
-   U8                 perRiVal;      /*!< Latest Periodic RI value reported */
+   uint8_t                 perRiVal;      /*!< Latest Periodic RI value reported */
    Bool               riRecpPrcsd;   /*!< RI Recpeption processed as part of
                                           PUCCH or PUSCH processing in current
                                           TTI or not */
@@ -646,7 +646,7 @@ typedef struct rgSchUePCqiCb
                                             CQI CB */
    RgSchHistInfo     histElem;
 #ifdef EMTC_ENABLE
-   U8 		     rgSchPucchRepNumCount;  /*!< CQI repetition count for CATM1 */
+   uint8_t 		     rgSchPucchRepNumCount;  /*!< CQI repetition count for CATM1 */
 #endif
 }RgSchUePCqiCb;
 
@@ -657,10 +657,10 @@ typedef struct rgSchUePCqiCb
 
 typedef struct rgSchUeSrCfgIdx
 {
-   U16     sIsr;      /*!< Start ISR Index */
-   U16     eIsr;      /*!< End   ISR Index */
-   U16     peri;      /*!< SR Periodicity */
-   U16     offset;    /*!< offset */
+   uint16_t     sIsr;      /*!< Start ISR Index */
+   uint16_t     eIsr;      /*!< End   ISR Index */
+   uint16_t     peri;      /*!< SR Periodicity */
+   uint16_t     offset;    /*!< offset */
 }RgSchUeSrCfgIdx;
 #ifdef RG_UNUSED
 /* Reference : 36.213 Table 10.1-5 */
@@ -681,10 +681,10 @@ RgSchUeSrCfgIdx  schUeSrCfgIdx[RG_SCH_ISR_INDX_MAX]=
 typedef struct rgSchUeSrCb
 {
     RgSchUeSrCfg         srCfg;    /*!< SR configuration */
-    U16                  offset;   /*!< SR offset */
-    U16                  peri;     /*!< SR periodicity */
+    uint16_t                  offset;   /*!< SR offset */
+    uint16_t                  peri;     /*!< SR periodicity */
 
-    U16                  nSrTrIdx;    /*!< Next Active Tranmission Instance Index ,
+    uint16_t                  nSrTrIdx;    /*!< Next Active Tranmission Instance Index ,
                                      Referenence: 36.213 Section:10.1 */
 
    /*
@@ -692,7 +692,7 @@ typedef struct rgSchUeSrCb
    */
 
 #ifdef EMTC_ENABLE
-   U8 		     rgSchPucchRepNumCount;  /*!< SR repetition count for CATM1 */
+   uint8_t 		     rgSchPucchRepNumCount;  /*!< SR repetition count for CATM1 */
 #endif
    CmLList           srLstEnt;      /*!< Next Transmission instance SR UE list */
 
@@ -722,15 +722,15 @@ typedef enum rgSchCqiReqField
 typedef struct rgSchUeACqiCb
 {
  RgrUeAprdDlCqiCfg aCqiCfg;/*!< Cqi Pmi Configuration */
- U8                L; /*Unique Label through which positioning of Subbands
+ uint8_t                L; /*Unique Label through which positioning of Subbands
                         will be conveyed by the UE */
- U8                N;  /*Total Bandwidth / Num of Subbands*/
- U8                M; /*Number of Selected Subbands*/
- U8                riNumBits;
- U8                k; /*k - SB size. 36.213 Tables:7.2.1-3, 7.2.1-5*/
- U8                cqiPmiSzR1;  /*CQIPMI Size for Rank =1*/
- U8                cqiPmiSzRn1; /*CQIPMI Size for Rank > 1*/
- U32               aCqiTrigWt;  /* Metric to track Aperiodic CQI Trigger occassion */ 
+ uint8_t                N;  /*Total Bandwidth / Num of Subbands*/
+ uint8_t                M; /*Number of Selected Subbands*/
+ uint8_t                riNumBits;
+ uint8_t                k; /*k - SB size. 36.213 Tables:7.2.1-3, 7.2.1-5*/
+ uint8_t                cqiPmiSzR1;  /*CQIPMI Size for Rank =1*/
+ uint8_t                cqiPmiSzRn1; /*CQIPMI Size for Rank > 1*/
+ uint32_t               aCqiTrigWt;  /* Metric to track Aperiodic CQI Trigger occassion */ 
  RgSchCqiReqField  cqiReqField; /* Cqi Request field. This Value can be 00 01 10 11, based upon 
                                    the cell present in which trigger list form App */ 
 }RgSchUeACqiCb;
@@ -747,9 +747,9 @@ typedef enum
 
 /*ccpu00116923 - ADD - SRS present support*/
 #ifdef LTE_TDD
-typedef U8 RgSchTddCellSpSrsSubfrmTbl[RGSCH_CELLSP_SRS_SF_CONFIGS][RGSCH_NUM_SUB_FRAMES];
+typedef uint8_t RgSchTddCellSpSrsSubfrmTbl[RGSCH_CELLSP_SRS_SF_CONFIGS][RGSCH_NUM_SUB_FRAMES];
 #else
-typedef U8 RgSchFddCellSpSrsSubfrmTbl[RGSCH_CELLSP_SRS_SF_CONFIGS][RGSCH_NUM_SUB_FRAMES];
+typedef uint8_t RgSchFddCellSpSrsSubfrmTbl[RGSCH_CELLSP_SRS_SF_CONFIGS][RGSCH_NUM_SUB_FRAMES];
 #endif
 
 
@@ -786,10 +786,10 @@ typedef struct rgSchUePucchRecpInfo
   */
 typedef struct rgSchTddSubfrmInfo
 {
-   U8 switchPoints;     /*!< Number of DL-UL switch points */
-   U8 numFrmHf1;        /*!< Number of subframes for half frame 1
+   uint8_t switchPoints;     /*!< Number of DL-UL switch points */
+   uint8_t numFrmHf1;        /*!< Number of subframes for half frame 1
                              Present for both 5ms and 10ms periodicity */
-   U8 numFrmHf2;        /*!< Number of subframes for half frame 2
+   uint8_t numFrmHf2;        /*!< Number of subframes for half frame 2
                              Present only for 5ms periodicity */
 } RgSchTddSubfrmInfo;
 
@@ -799,24 +799,24 @@ typedef struct rgSchTddSubfrmInfo
   */
 typedef struct rgSchTddDlAscSetIdxK
 {
-   U8 numFdbkSubfrms;                        /*!< Number of Feedbacks for DL Subframes */
-   U8 subfrmNum[RGSCH_NUM_SUB_FRAMES-1];     /*!< List of Subframe Number */
+   uint8_t numFdbkSubfrms;                        /*!< Number of Feedbacks for DL Subframes */
+   uint8_t subfrmNum[RGSCH_NUM_SUB_FRAMES-1];     /*!< List of Subframe Number */
 } RgSchTddDlAscSetIdxK;
 
 /** @brief PRACH Information for a frequency resource. */
 typedef struct rgrSchTddPrachInfo
 {
-   U8     freqIdx;          /*!< Frequency Index */
-   U8     sfn;              /*!< Even/Odd/All Radio Frames */
-   U8     halfFrm;          /*!< First/Second Half Frame */
-   U8     ulStartSfIdx;     /*!< Uplink Start Subframe Index*/
+   uint8_t     freqIdx;          /*!< Frequency Index */
+   uint8_t     sfn;              /*!< Even/Odd/All Radio Frames */
+   uint8_t     halfFrm;          /*!< First/Second Half Frame */
+   uint8_t     ulStartSfIdx;     /*!< Uplink Start Subframe Index*/
 } RgSchTddPrachInfo;
 
 /** @brief PRACH resource Information for each of the
  *  frequency resources. */
 typedef struct rgrSchTddPrachRscInfo
 {
-   U8                 numRsc;                             /*!< Number of frequency resources*/
+   uint8_t                 numRsc;                             /*!< Number of frequency resources*/
    RgSchTddPrachInfo  prachInfo[RGSCH_TDD_MAX_FREQ_RSRC]; /*!< PRACH Information */
 } RgSchTddPrachRscInfo;
 
@@ -826,12 +826,12 @@ typedef struct rgrSchTddPrachRscInfo
   */
 struct rgSchTddSplSubfrmInfo
 {
-   U8   norDlDwPts;        /*!< DL Normal CP: DwPTS in Ts */
-   U8   norDlNorUpPts;     /*!< DL Normal CP: UL Normal CP:UpPTS in Ts */
-   U8   norDlExtUpPts;     /*!< DL Normal CP: UL Extended CP: UpPTS in Ts */
-   U8   extDlDwPts;        /*!< DL Extended CP: DwPTS in Ts */
-   U8   extDlNorUpPts;     /*!< DL Extended CP: UL Normal CP:UpPTS in Ts */
-   U8   extDlExtUpPts;     /*!< DL Extended CP: UL Extended CP: UpPTS in Ts */
+   uint8_t   norDlDwPts;        /*!< DL Normal CP: DwPTS in Ts */
+   uint8_t   norDlNorUpPts;     /*!< DL Normal CP: UL Normal CP:UpPTS in Ts */
+   uint8_t   norDlExtUpPts;     /*!< DL Normal CP: UL Extended CP: UpPTS in Ts */
+   uint8_t   extDlDwPts;        /*!< DL Extended CP: DwPTS in Ts */
+   uint8_t   extDlNorUpPts;     /*!< DL Extended CP: UL Normal CP:UpPTS in Ts */
+   uint8_t   extDlExtUpPts;     /*!< DL Extended CP: UL Extended CP: UpPTS in Ts */
 };
 
 /**
@@ -841,11 +841,11 @@ struct rgSchTddSplSubfrmInfo
   */
 typedef struct rgSchTddRachRspInfo
 {
-   U8    sfnOffset;                    /*!< SFN offset with respect to
+   uint8_t    sfnOffset;                    /*!< SFN offset with respect to
                                              expected RACH available for
                                              scheduling */
-   U8    numSubfrms;                   /* Number of subframes present */
-   U8    subframe[RGSCH_NUM_SUB_FRAMES];  /*!< List of Subframe numbers */
+   uint8_t    numSubfrms;                   /* Number of subframes present */
+   uint8_t    subframe[RGSCH_NUM_SUB_FRAMES];  /*!< List of Subframe numbers */
 } RgSchTddRachRspInfo;
 
 typedef RgSchTddRachRspInfo RgSchTddRachDelInfo;
@@ -857,7 +857,7 @@ typedef RgSchTddRachRspInfo RgSchTddRachDelInfo;
   */
 typedef struct rgSchTddRachRspLst
 {
-   U8                   numRadiofrms;   /*!< Number of radio frames */
+   uint8_t                   numRadiofrms;   /*!< Number of radio frames */
    RgSchTddRachRspInfo  rachRsp[2];     /*!< RACH Occasions for which response
                                           can be sent */
    RgSchTddRachDelInfo  delInfo;        /*!< Previous RACH responses for
@@ -873,8 +873,8 @@ typedef struct rgSchTddRachRspLst
   */
 typedef struct rgSchTddUlAscInfo
 {
-   U8    subframe;         /*!< Subframe number */
-   U8    sfnOffset;        /*!< SFN offset with respect to expected
+   uint8_t    subframe;         /*!< Subframe number */
+   uint8_t    sfnOffset;        /*!< SFN offset with respect to expected
                                 UL data reception time */
 } RgSchTddUlAscInfo;
 
@@ -885,8 +885,8 @@ typedef struct rgSchTddUlAscInfo
   */
 typedef struct rgSchTddPuschOffInfo
 {
-   U8    subframe;         /*!< Subframe number */
-   U8    sfnOffset;        /*!< SFN offset with respect to expected
+   uint8_t    subframe;         /*!< Subframe number */
+   uint8_t    sfnOffset;        /*!< SFN offset with respect to expected
                                 UL data reception time */
 } RgSchTddPuschOffInfo;
 
@@ -897,11 +897,11 @@ typedef struct rgSchTddPuschOffInfo
   */
 struct rgSchTddPhichOffInfo
 {
-   U8    numSubfrms;       /*!< Number of subframes */
+   uint8_t    numSubfrms;       /*!< Number of subframes */
 /* ACC-TDD */
-   U8    subframe;         /*!< The Uplink Subframe number corresponding
+   uint8_t    subframe;         /*!< The Uplink Subframe number corresponding
                                 to the phich */
-   U8    sfnOffset;        /*!< SFN offset with respect to expected
+   uint8_t    sfnOffset;        /*!< SFN offset with respect to expected
                                 UL data reception time */
 };
 
@@ -912,10 +912,10 @@ struct rgSchTddPhichOffInfo
   */
 typedef struct rgSchTddDlFdbkInfo
 {
-   U8    subframe;      /*!< Subframe number */
-   U8    sfnOffset;     /*!< SFN offset with respect to current
+   uint8_t    subframe;      /*!< Subframe number */
+   uint8_t    sfnOffset;     /*!< SFN offset with respect to current
                              scheduled time */
-   U8    m;             /*!< m factor used in Downlink Association
+   uint8_t    m;             /*!< m factor used in Downlink Association
                              Set Index */
 #ifdef LTE_ADV /*Naw:: This is not correct */
    CmLListCp n1PucchResLst;        /*!< List for storing the used N1 resource */
@@ -929,8 +929,8 @@ typedef struct rgSchTddDlFdbkInfo
   */
 typedef struct rgSchTddSplSubfrmCfg
 {
-   U16   dwPts;      /*!< DwPTS in OFDM Symbol Duration */
-   U16   upPts;      /*!< UpPTS in OFDM Symbol Duration */
+   uint16_t   dwPts;      /*!< DwPTS in OFDM Symbol Duration */
+   uint16_t   upPts;      /*!< UpPTS in OFDM Symbol Duration */
    Bool  isDlDataAllowed; /*!< To allow scheduling of DL data on 
                                special subframe */
 } RgSchTddSplSubfrmCfg;
@@ -941,16 +941,16 @@ typedef struct rgSchTddSplSubfrmCfg
   */
 typedef struct rgSchTddANInfo
 {
-   U16    sfn;           /*!< ACK/NACK is sent for PDU in this SFN */
-   U8     subframe;      /*!< ACK/NACK is sent for PDU in this subframe */
-   U8     dlDai;         /*!< Downlink Assignment Index for
+   uint16_t    sfn;           /*!< ACK/NACK is sent for PDU in this SFN */
+   uint8_t     subframe;      /*!< ACK/NACK is sent for PDU in this subframe */
+   uint8_t     dlDai;         /*!< Downlink Assignment Index for
                                                     UL-DL Configuration 1-6 */
-   U8     ulDai;         /*!< DAI for uplink */
-   U8     latestMIdx;    /*!< Last transmitted DL subframe 'm' index */
-   U8     n1ResTpcIdx;    /*!< N1 Res idx for scell assigned in TPC command */
+   uint8_t     ulDai;         /*!< DAI for uplink */
+   uint8_t     latestMIdx;    /*!< Last transmitted DL subframe 'm' index */
+   uint8_t     n1ResTpcIdx;    /*!< N1 Res idx for scell assigned in TPC command */
    Bool   isSpsOccasion; /*!< To indicate the presence of SPS occasion */
 #ifdef LTE_ADV
-   U8     wUlDai;        /*!< Max Ul dai in all the cells */
+   uint8_t     wUlDai;        /*!< Max Ul dai in all the cells */
 #endif
 } RgSchTddANInfo;
 #endif
@@ -961,31 +961,31 @@ typedef struct rgSchTddANInfo
   */
 typedef struct rgSchUlIMcsInfo
 {
-   U8 qm;
-   U8 iTbs;
+   uint8_t qm;
+   uint8_t iTbs;
 } RgSchUlIMcsTbl[29];
 EXTERN RgSchUlIMcsTbl rgUlIMcsTbl;
 
 typedef struct rgSchUeCatTbl
 {
-   U32    maxUlBits;/*Maximum number of
+   uint32_t    maxUlBits;/*Maximum number of
                       bits of an UL-SCH
                       transport block
                       transmitted within a
                       TTI*/
-   U32    maxDlBits[4];/*Maximum number of 
+   uint32_t    maxDlBits[4];/*Maximum number of 
                       bits of a DLSCH
                       transport block 
                       received within a TTI*/
 /* correcting DL harq softbuffer limitation logic */
-   U32    maxSftChBits;/*Total number of soft channel bits*/
+   uint32_t    maxSftChBits;/*Total number of soft channel bits*/
    Bool   ul64qamSup;/*Support for 64QAM in UL*/
 /* Changes for MIMO feature addition */
 /* Removed dependency on MIMO compile-time flag */
-   U32    maxDlTbBits;/*Maximum number of DL-SCH 
+   uint32_t    maxDlTbBits;/*Maximum number of DL-SCH 
                         transport block bits 
                         received within a TTI*/
-   U8     maxTxLyrs;/*Maximum number of supported 
+   uint8_t     maxTxLyrs;/*Maximum number of supported 
                       layers for spatial multiplexing 
                       in DL*/
 } RgSchUeCatTbl[CM_MAX_UE_CAT_SUPP + 1];
@@ -993,22 +993,22 @@ EXTERN RgSchUeCatTbl rgUeCatTbl;
 
 /* Changes for MIMO feature addition */
 /* Removed dependency on MIMO compile-time flag */
-typedef U32 RgSchTbSzTbl[RGSCH_MAX_NUM_LYR_PERCW][RGSCH_NUM_ITBS][RGSCH_MAX_NUM_RB];
+typedef uint32_t RgSchTbSzTbl[RGSCH_MAX_NUM_LYR_PERCW][RGSCH_NUM_ITBS][RGSCH_MAX_NUM_RB];
 
 #ifdef LTE_TDD
-typedef U8 RgSchRaPrmblToRaFrmTbl[RGSCH_MAX_TDD_RA_PREAMBLE_FMT+1];
+typedef uint8_t RgSchRaPrmblToRaFrmTbl[RGSCH_MAX_TDD_RA_PREAMBLE_FMT+1];
 #else
 /* Added matrix 'rgRaPrmblToRaFrmTbl' for computation of RA
    sub-frames from preamble format */
-typedef U8 RgSchRaPrmblToRaFrmTbl[RGSCH_MAX_RA_PREAMBLE_FMT+1];
+typedef uint8_t RgSchRaPrmblToRaFrmTbl[RGSCH_MAX_RA_PREAMBLE_FMT+1];
 #endif
 EXTERN RgSchRaPrmblToRaFrmTbl rgRaPrmblToRaFrmTbl;
 
-EXTERN U8 rgRvTable[4];
+EXTERN uint8_t rgRvTable[4];
 
 typedef struct rgDciFmt
 {
-   U8            dciType;
+   uint8_t            dciType;
    union
    {
       RgDciFmt1AInfo   dci1a;
@@ -1026,12 +1026,12 @@ typedef enum rgSchPdcchSearchSpace
   * Information about one PDCCH.
   */
 typedef struct rgSchPdcch {
-   U8             nCce;    /*!< CCE index */
+   uint8_t             nCce;    /*!< CCE index */
    CmLteAggrLvl   aggrLvl; /*!< Aggregation level */
    TfuDciInfo     dci;     /*!< PDCCH format */
-   U16            rnti;    /*!< RNTI to who the PDCCH is allocated */
+   uint16_t            rnti;    /*!< RNTI to who the PDCCH is allocated */
 #if (defined (LTE_TDD))
-   U8                dlDai;          /*!< DAI associated with this PDCCH.
+   uint8_t                dlDai;          /*!< DAI associated with this PDCCH.
                                           THis is used for F1BCS resource calulcation */
 #endif
   /* Added support for SPS*/
@@ -1039,7 +1039,7 @@ typedef struct rgSchPdcch {
    CmLteTimingInfo relFbkTiming; /*!< Feebback timing information for release
                                    PDCCH */
    Bool           isSpsRnti; /*!< TRUE if rnti is SPS RNTI */
-   U16            crnti;    /*!< CRNTI to who the PDCCH is allocated */
+   uint16_t            crnti;    /*!< CRNTI to who the PDCCH is allocated */
 #endif
    CmLList        lnk;     /*!< To link PDCCHs in a subframe */
 #ifdef EMTC_ENABLE   
@@ -1047,7 +1047,7 @@ typedef struct rgSchPdcch {
 #endif   
    RgSchUeCb      *ue;     /*!< Pointer to the UE Control Block */
    RgSchPdcchSearchSpace pdcchSearchSpace; /*!< Search Space from this PDCCH allocated */
-   U8             dciNumOfBits; /*!< Size of DCI in bits */
+   uint8_t             dciNumOfBits; /*!< Size of DCI in bits */
 } RgSchPdcch;
 
 /**
@@ -1055,22 +1055,22 @@ typedef struct rgSchPdcch {
   * PDCCH information for cell.
   */
 typedef struct rgSchPdcchInfo {
-   U8             *map;    /*!< Bit map of PDCCHs */
-   U8             currCfi;       /*!< Number of CCEs */
-   U16            nCce;    /*!< Total CCEs */
+   uint8_t             *map;    /*!< Bit map of PDCCHs */
+   uint8_t             currCfi;       /*!< Number of CCEs */
+   uint16_t            nCce;    /*!< Total CCEs */
    CmLListCp      pdcchs;  /*!< List of RgSchPdcch */
 } RgSchPdcchInfo;
 
 typedef struct rgSchPhich
 {
    CmLList        lnk;        /*!< To link PHICHs in a subframe */
-   U8             hqFeedBack; /*!< Harq Feed Back */
-   U8             rbStart;    /*!< Starting RB */
-   U8             nDmrs;      /*!< 3 bits for DMRS cyclic shift */
+   uint8_t             hqFeedBack; /*!< Harq Feed Back */
+   uint8_t             rbStart;    /*!< Starting RB */
+   uint8_t             nDmrs;      /*!< 3 bits for DMRS cyclic shift */
    /* changes for passing iphich at TFU;*/
    Bool           isForMsg3;  /*! < Phich Ack/Nack conveyed for MSG 3 */
 #ifdef LTE_TDD
-   U8             iPhich;     /*!< For determining phich group */
+   uint8_t             iPhich;     /*!< For determining phich group */
 #endif
 } RgSchPhich;
 
@@ -1083,20 +1083,20 @@ typedef struct rgSchBcchTb
 {
    RgSchPdcch     *pdcch;
    Buffer         *tb;
-   U16            tbSize;
+   uint16_t            tbSize;
 } RgSchBcchTb;
 
 typedef struct rgSchPcchTb
 {
    RgSchPdcch     *pdcch;
    Buffer         *tb;
-   U16            tbSize;
+   uint16_t            tbSize;
 } RgSchPcchTb;
 
 typedef struct rgSchRaRspAlloc
 {
-   U16            raRnti;
-   U32            tbSz;
+   uint16_t            raRnti;
+   uint32_t            tbSz;
    TknU8          backOffInd; /*!< Backoff index value */
    CmLListCp      raRspLst;   /*!< List of RaCbs */
    CmLListCp      contFreeUeLst; /*! List of HandOver or PdcchOrder UEs */
@@ -1106,7 +1106,7 @@ typedef struct rgSchRaRspAlloc
 typedef struct rgSchBchTb
 {
    Buffer         *tb;    /*!< BCH data for this frame */
-   U16            tbSize; /*!< Non-Zero if bch data is scheduled for this SF */
+   uint16_t            tbSize; /*!< Non-Zero if bch data is scheduled for this SF */
 }RgSchBchTb;
 
 /* Added support for SPS*/
@@ -1116,13 +1116,13 @@ typedef struct rgSchBchTb
   @brief Downlink Resource allocation type information. */
 struct rgSchDlSfAllocInfo
 {
-  U32 raType0Mask;       /*!< RBG allocation mask for type 0*/
-  U32 raType1Mask[RG_SCH_NUM_RATYPE1_32BIT_MASK]; /*!< RA Type 1
+  uint32_t raType0Mask;       /*!< RBG allocation mask for type 0*/
+  uint32_t raType1Mask[RG_SCH_NUM_RATYPE1_32BIT_MASK]; /*!< RA Type 1
                                                     allocation mask */
-  U32 raType1UsedRbs[RG_SCH_NUM_RATYPE1_32BIT_MASK];/*!< RA Type 1 Used RBs
+  uint32_t raType1UsedRbs[RG_SCH_NUM_RATYPE1_32BIT_MASK];/*!< RA Type 1 Used RBs
                                                      per subset */
-  U32 nxtRbgSubset;     /*!< Next RBG subset to be used for allocation */
-  U32 raType2Mask[RG_SCH_NUM_RATYPE2_32BIT_MASK];
+  uint32_t nxtRbgSubset;     /*!< Next RBG subset to be used for allocation */
+  uint32_t raType2Mask[RG_SCH_NUM_RATYPE2_32BIT_MASK];
                         /*!< Mask for resource allocation type 2 */
 };
 #endif /* LTEMAC_SPS */
@@ -1132,8 +1132,8 @@ struct rgSchDlSfAllocInfo
   @brief RGR RB range for SFR */
 typedef struct rgrPwrHiCCRange
 {
-   U8   startRb;  /*<! Start RB for power high cell centre user */
-   U8   endRb;    /*<! End RB for power high cell centre user */
+   uint8_t   startRb;  /*<! Start RB for power high cell centre user */
+   uint8_t   endRb;    /*<! End RB for power high cell centre user */
 } RgrPwrHiCCRange;
 
 typedef struct rgSchSFRTotalPoolInfo
@@ -1149,23 +1149,23 @@ typedef struct rgSchSFRTotalPoolInfo
    Bool            CCRetx;            /* to check if there is any CC retransmission */
    Bool            CC1;               /* Cell centre pool 1 */  
    Bool            CC2;               /* cell centre pool 2 */
-   U8              CCPool1BwAvlbl;    /* Cell Centre Bw available for Pool1 */  
-   U8              CCPool2BwAvlbl;    /* Cell Centre Bw available for Pool2 */
-   U8              CEPoolBwAvlbl;     /* Cell Edge Bw available for CE Pool */
+   uint8_t              CCPool1BwAvlbl;    /* Cell Centre Bw available for Pool1 */  
+   uint8_t              CCPool2BwAvlbl;    /* Cell Centre Bw available for Pool2 */
+   uint8_t              CEPoolBwAvlbl;     /* Cell Edge Bw available for CE Pool */
 }RgSchSFRTotalPoolInfo;
 
 typedef struct rgSchSFRPoolInfo
 {
    /*Fixed RB Range of the Pool. Fixed by user configuration*/
-   U16               poolstartRB;
-   U16               poolendRB;								  
-   U16               bw;         /*!< Number of RBs in the pool */
+   uint16_t               poolstartRB;
+   uint16_t               poolendRB;								  
+   uint16_t               bw;         /*!< Number of RBs in the pool */
    /*Dynamic Values */
-   U8                type2Start; /*!< Start RB for the next type 2 allocation */
-   U8                type2End;   /*!< End position of Type2 allocation with  in the bit mask */
-   U8                type0End;   /*!< End position of Type0 allocation with   in the bit mask */
+   uint8_t                type2Start; /*!< Start RB for the next type 2 allocation */
+   uint8_t                type2End;   /*!< End position of Type2 allocation with  in the bit mask */
+   uint8_t                type0End;   /*!< End position of Type0 allocation with   in the bit mask */
 
-   U16               bwAlloced;  /*!< Number of RBs already allocated by DLFS */
+   uint16_t               bwAlloced;  /*!< Number of RBs already allocated by DLFS */
    Bool              CCPool2Exists;  /*!< To check if the last pool in the RB allocation is a CC pool */  
    struct rgSchSFRPoolInfo * adjCCPool; /*!< The CC pool adjacent to this CE Pool SFR_FIX */
    RgrPwrHiCCRange   pwrHiCCRange; /*!< Power High Range which can be used by CC user based on RNTP info */
@@ -1174,44 +1174,44 @@ typedef struct rgSchSFRPoolInfo
                 
 typedef struct rgSchPuschBwInfo
 {
-   U8 numSb;         /*!< PUSCH BW in subbands */
-   U8 startRb;       /*!< Starting RB for PUSCH BW */
+   uint8_t numSb;         /*!< PUSCH BW in subbands */
+   uint8_t startRb;       /*!< Starting RB for PUSCH BW */
 }RgSchPuschBwInfo; 
  
 typedef struct rgSchDynCfiCb
 {
-   U8               isDynCfiEnb;     /*!< Dynamic CFI feature Flag */
-   U8               maxCfi;          /*!< max possible CFI in the cell */ 
-   U8               switchOvrWinLen; /*!< Length of Switchover window */
-   U16              cceFailCnt;      /*!< Number of CCE allocation Failures in a 
+   uint8_t               isDynCfiEnb;     /*!< Dynamic CFI feature Flag */
+   uint8_t               maxCfi;          /*!< max possible CFI in the cell */ 
+   uint8_t               switchOvrWinLen; /*!< Length of Switchover window */
+   uint16_t              cceFailCnt;      /*!< Number of CCE allocation Failures in a 
                                            CCE failure sample period */            
-   U16              *cceFailSamples; /*!< Array holding samples of Avg number 
+   uint16_t              *cceFailSamples; /*!< Array holding samples of Avg number 
                                            of CCE allocation failures */
-   U16              cceFailSum;      /*!< Moving sum of the CCE faliures of 
+   uint16_t              cceFailSum;      /*!< Moving sum of the CCE faliures of 
                                           N samples */
-   U16              cfiStepUpTtiCnt; /*!< No.of TTIs to take decision for CFI 
+   uint16_t              cfiStepUpTtiCnt; /*!< No.of TTIs to take decision for CFI 
                                           step Up */
-   U16              cceUsed;         /*!< Total CCEs used in current monitoring 
+   uint16_t              cceUsed;         /*!< Total CCEs used in current monitoring 
                                           interval */
-   U16              lowCceCnt;       /*!< Number of TTI in which CCEs used is 
+   uint16_t              lowCceCnt;       /*!< Number of TTI in which CCEs used is 
                                           less than available CCEs in 
                                           lower CFI */
-   U16              cfiStepDownTtiCnt; /*!< No.of TTIs to take decision for CFI 
+   uint16_t              cfiStepDownTtiCnt; /*!< No.of TTIs to take decision for CFI 
                                             step Down */
-   U32              cfiSwitches;     /*!< Total number of CFI switches */       
-   U32              cfiIncr;         /*!< Total number of CFI increments */
-   U32              cfiDecr;         /*!< Total number of CFI decrements */
+   uint32_t              cfiSwitches;     /*!< Total number of CFI switches */       
+   uint32_t              cfiIncr;         /*!< Total number of CFI increments */
+   uint32_t              cfiDecr;         /*!< Total number of CFI decrements */
                                      /*!< Total CCE per CFI */ 
-   U8               cfi2NCceTbl[RG_SCH_MAX_MPHICH][RG_SCH_CMN_MAX_CFI]; 
+   uint8_t               cfi2NCceTbl[RG_SCH_MAX_MPHICH][RG_SCH_CMN_MAX_CFI]; 
                                                                
-   U8               numFailSamples;    /*!< Number of CCE Allocation Failure 
+   uint8_t               numFailSamples;    /*!< Number of CCE Allocation Failure 
                                             samples */
-   U16              failSamplePrd;     /*!< Failure Sample Period */
-   U16              ttiCnt;            /*!< TTI count to track monitoring period
+   uint16_t              failSamplePrd;     /*!< Failure Sample Period */
+   uint16_t              ttiCnt;            /*!< TTI count to track monitoring period
                                             and sample period expiry */  
    RgSchPuschBwInfo bwInfo[RG_SCH_CMN_MAX_CFI]; /*!< PUSCH BW info */ 
-   U8               pdcchSfIdx;        /*!< Subframe Idx for CFI applying */
-   U8               prevCceFailIdx;   /*!< To maintain Previous Index of 
+   uint8_t               pdcchSfIdx;        /*!< Subframe Idx for CFI applying */
+   uint8_t               prevCceFailIdx;   /*!< To maintain Previous Index of 
                                            CCE failure array */  
    Bool             switchOvrInProgress; /*!< Switchover is in progress */
    Bool             dynCfiRecfgPend; /*!< Flag for pending dynamic cfi reconfig */    
@@ -1225,39 +1225,39 @@ typedef struct rgSchDynCfiCb
   */
 typedef struct rgSchSfBeamInfo
 {
-   U16      totVrbgAvail;        /*!< Total VRBG available */
-	//U16      totRb;               /*!<  Total RB per Beam */
-	U16      totVrbgRequired;     /*!<  total Rbs requested for beam */
-   U16      totVrbgAllocated;    /*!<  total Rbs allocated for beam */
-   U16      vrbgStart;           /*!<  VRBG start for beam */
+   uint16_t      totVrbgAvail;        /*!< Total VRBG available */
+	//uint16_t      totRb;               /*!<  Total RB per Beam */
+	uint16_t      totVrbgRequired;     /*!<  total Rbs requested for beam */
+   uint16_t      totVrbgAllocated;    /*!<  total Rbs allocated for beam */
+   uint16_t      vrbgStart;           /*!<  VRBG start for beam */
 } RgSchSfBeamInfo;
 #endif
 
 typedef struct rgSchDlSf
 {
-   U8                cceCnt;       /*!< Number of CCEs used in the subframe */
+   uint8_t                cceCnt;       /*!< Number of CCEs used in the subframe */
    Bool              isCceFailure; /*!< TRUE if PDCCH allocation is failed for 
                                         this subframe */
-   U8                dlUlBothCmplt; /*!< To track that DL and UL both scheduling
+   uint8_t                dlUlBothCmplt; /*!< To track that DL and UL both scheduling
                                          is done */
-   U8                sfNum;      /*!< Number of the subframe */
-   U16               bw;         /*!< Number of RBs in the cell */
-   U16               bwAlloced;  /*!< Number of RBs already allocated by DLFS */
-   U16               bwAssigned; /*!< Number of RBs already allocated by scheduler */
+   uint8_t                sfNum;      /*!< Number of the subframe */
+   uint16_t               bw;         /*!< Number of RBs in the cell */
+   uint16_t               bwAlloced;  /*!< Number of RBs already allocated by DLFS */
+   uint16_t               bwAssigned; /*!< Number of RBs already allocated by scheduler */
 /* LTE_ADV_FLAG_REMOVED_START */
    RgSchSFRTotalPoolInfo  sfrTotalPoolInfo; /* SFR Pool Info*/
    TknStrOSXL        rntpInfo;   /* RNTP Info for the complete subframe*/
 /* LTE_ADV_FLAG_REMOVED_END */
 
-   U8                type2Start; /*!< Start RB for the next type 2 allocation */
-   U8                type2End;   /*!< End position of Type2 allocation with
+   uint8_t                type2Start; /*!< Start RB for the next type 2 allocation */
+   uint8_t                type2End;   /*!< End position of Type2 allocation with
                                       in the bit mask */
-   U8                type0End;   /*!< End position of Type0 allocation with
+   uint8_t                type0End;   /*!< End position of Type0 allocation with
                                       in the bit mask */
-   U8                lstRbgDfct; /*!< The last RBG deficit RBs, Ex. if DLBW = 97,
+   uint8_t                lstRbgDfct; /*!< The last RBG deficit RBs, Ex. if DLBW = 97,
                                   * RBGsz = 4, lstRbgDfct = 3 */
    Bool              txDone;     /*!< Flag to indicate if transmission is done*/
-   U32               numDlActvUes; /* 4UE_TTI_DELTA: num of active Ues */
+   uint32_t               numDlActvUes; /* 4UE_TTI_DELTA: num of active Ues */
    RgSchBchTb        bch;        /*!< BCH data for this frame */
    RgSchBcchTb       bcch;       /*!< BCCH allocation for this frame */
    RgSchPcchTb       pcch;       /*!< PCCH allocation for this frame */
@@ -1269,13 +1269,13 @@ typedef struct rgSchDlSf
    Void              *laaCb;
    CmLListCp         msg4HqPLst;   /*!< Msg4 Hq Procs that are scheduled in Perticular SF */
    /* CA dev End */
-   U8                remUeCnt;   /*!< Remaining number of UEs that can be scheduled */
+   uint8_t                remUeCnt;   /*!< Remaining number of UEs that can be scheduled */
    Bool              schdAmbrNxt;/*!< Flag indicates to pick an AMBR LC after GBR LC */
    /*[ccpu00138609]-ADD- Counter to track the number of Msg4/DL CCCH UEs */ 
-   U8                schdCcchUe; /*!< Num of Msg4/DL CCCH UEs scheduled in 
+   uint8_t                schdCcchUe; /*!< Num of Msg4/DL CCCH UEs scheduled in 
                                       the DL Sf */ 
 #ifdef LTE_TDD
-   U8                   nCce;       /*!< Number of CCEs */
+   uint8_t                   nCce;       /*!< Number of CCEs */
    RgSchTddPhichOffInfo phichOffInfo;  /*!< PHICH Information */
    RgSchTddDlFdbkInfo   dlFdbkInfo; /*!< HARQ Ack/Nack feedback expected time */
    RgSchTddUlAscInfo    ulAscInfo;  /*!< UL Association set Information */
@@ -1293,7 +1293,7 @@ typedef struct rgSchDlSf
 #ifdef LTEMAC_SPS
    Bool              isSPSOcc;    /*!< TRUE if this SF has SPS Occasion allocation */
    RgSchDlSfAllocInfo dlSfAllocInfo;/*!< Allocation information for DL SF */
-   U32               spsAllocdBw;   /*!< Number of RBs allocated for SPS */
+   uint32_t               spsAllocdBw;   /*!< Number of RBs allocated for SPS */
    RgSchPdcch        *relPdcch;     /*!< Only one release PDCCH scheduled per
                                       sub-frame */
 #ifdef LTE_TDD
@@ -1305,17 +1305,17 @@ typedef struct rgSchDlSf
                                      *   for release PDCCH (DL) */
 #endif
 #endif
-   U32      schedLcCount;          /*!< Num of LCs scheduled in this TTI */
-   U32      totalLcCntOfSlctdUes;  /*!< total Lc count of all UE's selected in 
+   uint32_t      schedLcCount;          /*!< Num of LCs scheduled in this TTI */
+   uint32_t      totalLcCntOfSlctdUes;  /*!< total Lc count of all UE's selected in 
                                     *   this TTI*/
-   U32      totPrbReq;             /*!< Sum of PRBs required by selected UEs
+   uint32_t      totPrbReq;             /*!< Sum of PRBs required by selected UEs
                                         in this subframe */
 #ifdef BEST_EFFORT_2_UE_PER_TTI
-  U32       beTotPrbReq;
+  uint32_t       beTotPrbReq;
 #endif
                                     
   /* CA dev Start */
-   U8      dlIdx;
+   uint8_t      dlIdx;
   /* CA dev Start */
 #ifdef LTE_ADV
    CmLListCp n1PucchResLst;        /*!< List for storing the used N3 resource */
@@ -1323,8 +1323,8 @@ typedef struct rgSchDlSf
 #endif
 #ifdef RG_5GTF
    RgSchSfBeamInfo  sfBeamInfo[MAX_5GTF_BEAMS];      /*!< Per info Beam per sf*/
-   U8               numGrpPerTti;     /*!< number of Group per TTI*/
-	U8               numUePerGrp;      /*!< number of UE per group in TTI*/
+   uint8_t               numGrpPerTti;     /*!< number of Group per TTI*/
+	uint8_t               numUePerGrp;      /*!< number of UE per group in TTI*/
 #endif
 } RgSchDlSf;
 
@@ -1333,8 +1333,8 @@ typedef struct rgSchDlSf
   @brief Downlink Resource allocation type 0 information. */
 typedef struct rgSchDlRbAllocRaType0
 {
-   U8 numDlAlloc;          /*!< Number of downlink allocations */
-   U32 dlAllocBitMask;     /*!< Downlink allocations done for the UE */
+   uint8_t numDlAlloc;          /*!< Number of downlink allocations */
+   uint32_t dlAllocBitMask;     /*!< Downlink allocations done for the UE */
 } RgSchDlRbAllocRaType0;
 
 /* Added support for SPS*/
@@ -1343,11 +1343,11 @@ typedef struct rgSchDlRbAllocRaType0
   @brief Downlink Resource allocation type 1 information. */
 typedef struct rgSchDlRbAllocRaType1
 {
-   U8 numDlAlloc;          /*!< Number of downlink allocations */
-   U8 shift;               /*!< Indicates if the shift is triggered in the
+   uint8_t numDlAlloc;          /*!< Number of downlink allocations */
+   uint8_t shift;               /*!< Indicates if the shift is triggered in the
                                 allocation */
-   U8 rbgSubset;           /*!< RBG subset number selected for the allocation*/
-   U32 dlAllocBitMask;     /*!< Downlink allocations done for the UE */
+   uint8_t rbgSubset;           /*!< RBG subset number selected for the allocation*/
+   uint32_t dlAllocBitMask;     /*!< Downlink allocations done for the UE */
 } RgSchDlRbAllocRaType1;
 #endif /* LTEMAC_SPS */
 /**
@@ -1355,25 +1355,25 @@ typedef struct rgSchDlRbAllocRaType1
 typedef struct rgSchDlRbAllocRaType2
 {
    Bool        isLocal;       /*!< True if localised VRB */
-   U8          rbStart;       /*!< Starting RB */
-   U8          numRb;         /*!< Number of RBs */
+   uint8_t          rbStart;       /*!< Starting RB */
+   uint8_t          numRb;         /*!< Number of RBs */
 } RgSchDlRbAllocRaType2;
 
 
 typedef struct rgSchcmnDlGrnt
 {
-   U16     schdTime;       /*!< Time at which Harq proc has been scheduled */
-   U8      rbStrt;         /*!< Starting RB of the allocation */
-   U8      numRb;          /*!< Number of RBs allocated */
-   U8      iMcs;           /*!< Index to the MCS */
-   U8      rv;             /*!< RV for HARQ (re)transmission */
-   U8      rvIdx;          /*!< RVIdx for HARQ(re)transmission */
+   uint16_t     schdTime;       /*!< Time at which Harq proc has been scheduled */
+   uint8_t      rbStrt;         /*!< Starting RB of the allocation */
+   uint8_t      numRb;          /*!< Number of RBs allocated */
+   uint8_t      iMcs;           /*!< Index to the MCS */
+   uint8_t      rv;             /*!< RV for HARQ (re)transmission */
+   uint8_t      rvIdx;          /*!< RVIdx for HARQ(re)transmission */
 #ifdef RG_5GTF   /* ToDo:: Anoop need to check for other fields required*/
-   U8      vrbgStart;
-   U8      numVrbg;
-   U16     rbAssign;
-   U8      xPDSCHRange;
-   U8      SCID;
+   uint8_t      vrbgStart;
+   uint8_t      numVrbg;
+   uint16_t     rbAssign;
+   uint8_t      xPDSCHRange;
+   uint8_t      SCID;
    TfuDciFormat dciFormat;  /*!< DCI format for the allocation */
 	/* ToDo */
 #endif
@@ -1387,14 +1387,14 @@ typedef struct rgSchDlTbAllocInfo
    Bool          schdlngForTb;/*!< Indicates if this TB has been scheduled */
    /*ccpu00120365:-ADD-is this TB disabled. Refer to 36.213-7.1.7.2 */
    Bool          isDisabled; /*!< Indicates if this TB is disabled */
-   U32           bytesReq;    /*!< Number of bytes required to be allocated
+   uint32_t           bytesReq;    /*!< Number of bytes required to be allocated
                                  for each TB: filled in by RR/MAX C/I/PFS */
-   U32           bytesAlloc;  /*!< Num of bytes allocated for each TB */
-   U8            iTbs;        /*!< Itbs for allocation for this allocation
+   uint32_t           bytesAlloc;  /*!< Num of bytes allocated for each TB */
+   uint8_t            iTbs;        /*!< Itbs for allocation for this allocation
                                * of TB */
-   U8            imcs;        /*!< Imcs for allocation for this allocation
+   uint8_t            imcs;        /*!< Imcs for allocation for this allocation
                                * of TB */
-   U8            noLyr;       /*!< No. of SM layers for this TB transmission */
+   uint8_t            noLyr;       /*!< No. of SM layers for this TB transmission */
    RgSchDlHqTbCb *tbCb;       /*!< address of TB Control Block */
 #ifdef RG_5GTF
    RgSchDlCmnGrnt   cmnGrnt;     /*! < Alloc info to store 5GTF RAR sched */
@@ -1410,8 +1410,8 @@ typedef struct rgSchMimoAllocInfo
                          * with RETX in case of TM3 and TM4 */
    Bool    swpFlg;      /*!< Swap Flag to indicate TB to CW association
                          * incase of 2 TB transmission */
-   U8      precIdxInfo; /*!< Precoding index information stored */
-   U8      numTxLyrs;   /*!< Number of SM layers scheduled for Transmission */
+   uint8_t      precIdxInfo; /*!< Precoding index information stored */
+   uint8_t      numTxLyrs;   /*!< Number of SM layers scheduled for Transmission */
 }RgSchMimoAllocInfo;
 
 
@@ -1421,12 +1421,12 @@ typedef struct rgSchDlRbAlloc
 {
    CmLteRnti rnti;          /*!< RNTI for allocation: used only for RARs and
                                  dedicated transmissions */
-   U8 rbsReq;               /*!< Number of RBs required to be allocated:
+   uint8_t rbsReq;               /*!< Number of RBs required to be allocated:
                                  filled in by RR/MAX C/I/PFS */
    RgSchDlSf *dlSf;         /*!< DL sub-frame for which allocation is to be
                                  done: filled in by RR/MAX C/I/PFS */
    TfuDciFormat dciFormat;  /*!< DCI format for the allocation */
-   U8 raType;               /*!< Resource allocation Type */
+   uint8_t raType;               /*!< Resource allocation Type */
    RgSchPdcch *pdcch;       /*!< Pointer to allocated PDCCH */
    union allocInfoU
    {
@@ -1438,20 +1438,20 @@ typedef struct rgSchDlRbAlloc
 #endif
       RgSchDlRbAllocRaType2 raType2;  /*!< Resource allocation type 2 information */
    } allocInfo;             /*!< Resource allocation information */
-   U8 rbsAlloc;             /*!< Number of RBs allocated */
-   U8      numRapids;       /*!< Number of RAPIDs serviced within RAR*/
+   uint8_t rbsAlloc;             /*!< Number of RBs allocated */
+   uint8_t      numRapids;       /*!< Number of RAPIDs serviced within RAR*/
    /* Nprb indication at PHY for common Ch */
-   U8      nPrb;            /*!< NPRB column num. either 2 or 3 */
-   U32     raIndex;
+   uint8_t      nPrb;            /*!< NPRB column num. either 2 or 3 */
+   uint32_t     raIndex;
    Bool    schdFirst;
    /* Add BI sub-header size to the tbSize requirement */
-   U8      biEstmt;
+   uint8_t      biEstmt;
    RgSchMimoAllocInfo mimoAllocInfo; /*!< Mimo specific allocation params */
    RgSchDlTbAllocInfo tbInfo[2]; /*!< Allocation information for each TB. */
 
    /* Added support for SPS*/
 #ifdef LTEMAC_SPS
-   U8      cqiForTx;     /*!< Assumed value of CQI at which transmission is
+   uint8_t      cqiForTx;     /*!< Assumed value of CQI at which transmission is
                            scheduled */
    RgSchDlSfAllocInfo resAllocInfo; /*!< Resource allocation information for
                                       the current allocation for
@@ -1467,7 +1467,7 @@ typedef struct rgSchDlRbAlloc
    RgSchEmtcDlRbAlloc  emtcAllocInfo; /*!< EMTC DL RB alloc Info */
 #endif
 #ifdef RG_5GTF
-   U8                  vrbgReq;
+   uint8_t                  vrbgReq;
 #endif
 } RgSchDlRbAlloc;
 
@@ -1477,31 +1477,31 @@ typedef struct rgSchDlRbAlloc
   */
 typedef struct rgSchUlGrnt
 {
-   U8           iMcs;       /*!< Original MCS index */
-   U8           iMcsCrnt;   /*!< Current MCS index of the grant */
-   U8           hop;        /*!< Hopping flag, set to 0 in this version */
-   U8           rbStart;    /*!< Start Resource block of allocation */
-   U8           numRb;      /*!< Number of resource blocks allocated */
-   U8           tpc;        /*!< TPC command for the uplink grant */
-   U8           nDmrs;      /*!< n1DMRS for the uplink grant */
-   U8           delayBit;   /*!< Delay bit, for msg3 grant, set to 1 */
+   uint8_t           iMcs;       /*!< Original MCS index */
+   uint8_t           iMcsCrnt;   /*!< Current MCS index of the grant */
+   uint8_t           hop;        /*!< Hopping flag, set to 0 in this version */
+   uint8_t           rbStart;    /*!< Start Resource block of allocation */
+   uint8_t           numRb;      /*!< Number of resource blocks allocated */
+   uint8_t           tpc;        /*!< TPC command for the uplink grant */
+   uint8_t           nDmrs;      /*!< n1DMRS for the uplink grant */
+   uint8_t           delayBit;   /*!< Delay bit, for msg3 grant, set to 1 */
    /* Added for Uplink Adaptive retransmission */
    Bool         isRtx;      /*!< To indicate if this grant is for a RETX */
    /* To include the length and ModOrder in DataRecp Req. */
-   U16          datSz;      /*!< Length of the Data */
+   uint16_t          datSz;      /*!< Length of the Data */
    TfuModScheme modOdr;     /*!< Modulation order */
 #ifdef RG_5GTF
-   U8           vrbgStart;
-   U8           numVrbg;
-   U16          rbAssign;
-   U8           xPUSCHRange;
-   U8           SCID;
-   U8           PMI;
-   U8           uciOnxPUSCH;
-   U8           hqProcId;
+   uint8_t           vrbgStart;
+   uint8_t           numVrbg;
+   uint16_t          rbAssign;
+   uint8_t           xPUSCHRange;
+   uint8_t           SCID;
+   uint8_t           PMI;
+   uint8_t           uciOnxPUSCH;
+   uint8_t           hqProcId;
    Bool         ndi;
    TfuDciFormat dciFrmt;
-   U8           numLyr;
+   uint8_t           numLyr;
 #endif
 } RgSchUlGrnt;
 
@@ -1514,9 +1514,9 @@ typedef struct rgSchUlGrnt
 struct rgSchUlRetxAlloc
 {
    CmLteRnti       rnti;      /*!< RNTI */
-   U8              numSb;     /*!< Number of subbands */
-   U32             tbSz;      /*!< Transmission Block Size */
-   U8              iMcs;      /*!< Original MCS index */
+   uint8_t              numSb;     /*!< Number of subbands */
+   uint32_t             tbSz;      /*!< Transmission Block Size */
+   uint8_t              iMcs;      /*!< Original MCS index */
    RgSchUeCb       *ue;       /*!< UE assocated with allocation */
    Bool            forMsg3;   /*!< If allocation is for Msg3 */
    /* PHR handling for MSG3 */
@@ -1526,9 +1526,9 @@ struct rgSchUlRetxAlloc
 #endif
 #ifdef RG_5GTF
    TfuDciFormat dciFrmt;
-   U8           numLyr;
-   U8           vrbgStart;
-   U8           numVrbg;
+   uint8_t           numLyr;
+   uint8_t           vrbgStart;
+   uint8_t           numVrbg;
    TfuModScheme modOdr;     /*!< Modulation order */
 #endif
 };
@@ -1539,8 +1539,8 @@ struct rgSchUlRetxAlloc
  */
 typedef struct rgSchUlHole
 {
-   U8 start;      /*!< Beginning of hole */
-   U8 num;        /*!< Number of elements making up the hole */
+   uint8_t start;      /*!< Beginning of hole */
+   uint8_t num;        /*!< Number of elements making up the hole */
    struct rgSchUlHole *prv; /*!< Previous hole */
    struct rgSchUlHole *nxt; /*!< Next hole */
    struct rgSchUlAlloc *nxtAlloc; /*!< Next allocation */
@@ -1555,8 +1555,8 @@ struct rgSchUlAlloc
 {
    RgSchUlHqProcCb *hqProc;         /*!< HARQ process */
    CmLteRnti       rnti;            /*!< RNTI */
-   U8              sbStart;         /*!< Subband start idx */
-   U8              numSb;           /*!< Number of subbands */
+   uint8_t              sbStart;         /*!< Subband start idx */
+   uint8_t              numSb;           /*!< Number of subbands */
    RgSchUlGrnt     grnt;            /*!< Grant info */
    /* Not keeping grant attributes now */
    RgSchPdcch      *pdcch;          /*!< Associated PDCCH */
@@ -1590,7 +1590,7 @@ struct rgSchUlAlloc
  */
 typedef struct rgSchUlAllocMem
 {
-   U8            maxAllocs;     /*!< Maximum possible allocations per subframe */
+   uint8_t            maxAllocs;     /*!< Maximum possible allocations per subframe */
    RgSchUlAlloc  *firstFree;    /*!< First free index */
    RgSchUlAlloc  *allocs;       /*!< Array of 'maxAllocs' elems */
 } RgSchUlAllocMem;
@@ -1601,7 +1601,7 @@ typedef struct rgSchUlAllocMem
  */
 typedef struct rgSchUlAllocDb
 {
-   U8              count;      /*!< Number of allocations */
+   uint8_t              count;      /*!< Number of allocations */
    RgSchUlAlloc    *first;     /*!< First allocation */
    RgSchUlAllocMem mem;        /*!< Alloc pool management */
 } RgSchUlAllocDb;
@@ -1612,7 +1612,7 @@ typedef struct rgSchUlAllocDb
  */
 typedef struct rgSchUlHoleMem
 {
-   U8           maxHoles;     /*!< Maximum possible holes per subframe */
+   uint8_t           maxHoles;     /*!< Maximum possible holes per subframe */
    RgSchUlHole  *firstFree;    /*!< First free index */
    RgSchUlHole  *holes;        /*!< Array of 'maxHoles' elems */
 } RgSchUlHoleMem;
@@ -1623,7 +1623,7 @@ typedef struct rgSchUlHoleMem
   */
 typedef struct rgSchUlHoleDb
 {
-   U8             count;           /*!< Number of holes */
+   uint8_t             count;           /*!< Number of holes */
    RgSchUlHole    *first;       /*!< First hole */
    RgSchUlHoleMem mem;        /*!< Hole pool management */
 } RgSchUlHoleDb;
@@ -1634,32 +1634,32 @@ typedef struct rgSchUlHoleDb
   */
 typedef struct rgSchUlSf
 {
-   U8               idx;      /*!< Identifier for uplink subframe (range: 0-7)
+   uint8_t               idx;      /*!< Identifier for uplink subframe (range: 0-7)
                                 - maps to HARQ proc ID */
    CmLListCp        reTxLst;  /*!< Retransmission List*/
 #ifdef LTE_TDD
    RgSchTddPuschOffInfo puschOffset; /*!< PUSCH offset information */
-   U8               ulSfIdx;  /*!< The Uplink subframe number 
+   uint8_t               ulSfIdx;  /*!< The Uplink subframe number 
                                    in the TDD frame. Range [2-9]
                                    Used only in TDD Cfg 0  */ 
 #endif
-   U32              totPrb;    /*!< Total PRB used in this sub frame */
+   uint32_t              totPrb;    /*!< Total PRB used in this sub frame */
    /* ccpu00129725 -DEL- removed Platform flag */
    /* Fix:ccpu00120610 add a counter to keep track of remaining allocations */
-   U8               *allocCountRef; /*!< Allocation count in this
+   uint8_t               *allocCountRef; /*!< Allocation count in this
                                 *  subframe, it is a reference to the actual
                                 *  counter held in allocDb (no additional
                                 *  logic needed to maintain this) */
    /* Added for Uplink Adaptive retransmission */
    RgSchUlAllocDb   *allocDb;  /*!< Allocation info */
    RgSchUlHoleDb    *holeDb;   /*!< Holes info */
-   U8               availSubbands; /*!< Number of total available subbands
+   uint8_t               availSubbands; /*!< Number of total available subbands
                                     * for the current sub-frame */
-   U8   numACqiCount;        /*!< Used to Restrict 2 Aperiodic cqi per TTI*/ 
+   uint8_t   numACqiCount;        /*!< Used to Restrict 2 Aperiodic cqi per TTI*/ 
 #ifdef RG_5GTF
    RgSchSfBeamInfo  sfBeamInfo[MAX_5GTF_BEAMS];      /*!< Per info Beam per sf*/
-   U8               numGrpPerTti;     /*!< number of Group per TTI*/
-	U8               numUePerGrp;      /*!< number of UE per group in TTI*/
+   uint8_t               numGrpPerTti;     /*!< number of Group per TTI*/
+	uint8_t               numUePerGrp;      /*!< number of UE per group in TTI*/
 #endif
 } RgSchUlSf;
 
@@ -1671,19 +1671,19 @@ typedef struct rgSchUlSf
 typedef struct rgSchClcBoRpt
 {
    CmLList         boLstEnt;  /*!< Linked list entity for BO list */
-   U32             bo;        /*!< Bo in bytes */
+   uint32_t             bo;        /*!< Bo in bytes */
    CmLteTimingInfo timeToTx;  /*!< Time at which the BO needs to be satisfied
                                    (data to be sent to PHY) */
 #ifdef EMTC_ENABLE
-   U8              emtcDIReason;   /*!< Reason for DI message to send. */
-   U8              pnb;            /*!< Paging narrowBand on which Ue performs reception of paging*/
+   uint8_t              emtcDIReason;   /*!< Reason for DI message to send. */
+   uint8_t              pnb;            /*!< Paging narrowBand on which Ue performs reception of paging*/
 #endif
    CmLteTimingInfo maxTimeToTx;
-   U8              retxCnt;
-   U16             i;
-   U8              nPrb;      /*! NPRB column. Allowed values {2,3} */
+   uint8_t              retxCnt;
+   uint16_t             i;
+   uint8_t              nPrb;      /*! NPRB column. Allowed values {2,3} */
    /* Corrected allocation for common channels */
-   U8              mcs;
+   uint8_t              mcs;
 } RgSchClcBoRpt;
 
 /**
@@ -1692,7 +1692,7 @@ typedef struct rgSchClcBoRpt
   */
 typedef struct rgSchClcDlLcCb
 {
-   U8              lcId;                     /*!< Logical channel ID */
+   uint8_t              lcId;                     /*!< Logical channel ID */
    Bool            si;
    CmLListCp       boLst;                    /*!< List of BOs reported (RgSchClcBoRpt) */
 } RgSchClcDlLcCb;
@@ -1703,8 +1703,8 @@ typedef struct rgSchClcDlLcCb
   */
 typedef struct rgSchSrsTxOffst
 {
-   U8 count;                       /*!< Number of offsets in the array */
-   U8 offst[RGSCH_MAX_SRS_TX_OFFSET]; /*!< SRS TX offset value */
+   uint8_t count;                       /*!< Number of offsets in the array */
+   uint8_t offst[RGSCH_MAX_SRS_TX_OFFSET]; /*!< SRS TX offset value */
 } RgSchSrsTxOffst;
 
 /**
@@ -1720,7 +1720,7 @@ typedef struct rgSchSrsCfg
    RgSchSrsTxOffst srsTxOffst;    /*!< Transmission offset for SRS */
 /*ccpu00116923 - ADD - SRS present support*/
 #ifdef TFU_UPGRADE
-    U8           srsSubFrameCfg;/*!< SRS subframe configuration index per cell.
+    uint8_t           srsSubFrameCfg;/*!< SRS subframe configuration index per cell.
                                      Range - [0-15] */
 #endif
 } RgSchSrsCfg;
@@ -1763,7 +1763,7 @@ typedef struct rgSchCfgCb
   */
 typedef struct rgSchRntiLnk
 {
-   U16 rnti;                /*!< RNTI */
+   uint16_t rnti;                /*!< RNTI */
    /*Fix: Overcome race condition between MAC and Scheduler delete*/
    CmLList rntiGrdPoolLnk;     /*!< Link for RNTI guard pool*/
    struct rgSchRntiLnk *prv;   /*!< Link to previous RNTI */
@@ -1776,9 +1776,9 @@ typedef struct rgSchRntiLnk
   */
 typedef struct rgSchRntiDb
 {
-   U16  rntiStart;         /*!< Start RNTI */
-   U16  maxRntis;          /*!< Maximum number of RNTIs managed by MAC */
-   U16  count;
+   uint16_t  rntiStart;         /*!< Start RNTI */
+   uint16_t  maxRntis;          /*!< Maximum number of RNTIs managed by MAC */
+   uint16_t  count;
    RgSchRntiLnk *freeRnti;   /*!< first free RNTI in the list */
    RgSchRntiLnk *lastRnti;   /*!< last RNTI in the list */
    RgSchRntiLnk *rntiPool;   /*!< Linked list of RNTIs */
@@ -1794,9 +1794,9 @@ typedef struct rgSchRntiDb
 typedef struct rgSchRaInfoCb
 {
 #ifdef LTE_TDD
-   U8              maxRaSize;                /*!< Number of RA-RNTIs stored
+   uint8_t              maxRaSize;                /*!< Number of RA-RNTIs stored
                                                   across radio frames */
-   U8              lstSize;                  /*!< list size */
+   uint8_t              lstSize;                  /*!< list size */
    CmLListCp       *raReqLst;                 /*!< Each array elem is linked
                                                    list of RgRaReqInfo
                                                    (per ra-rnti) */
@@ -1821,9 +1821,9 @@ typedef struct rgSchDrxUlHqProcCb
    CmLList harqRTTEnt;   /*!< Entry into the HARQ RTT timer list */
    CmLList harqRetxEnt;   /*!< Entry into the harqRetxQ */
 
-   U16     rttIndx;    /*!< Current Index into HARQ RTT Q */
-   U16     reTxIndx;   /*!< Current Index into Re-Tx Q */
-   U8      retxTmrReduction; /*!< Due to platform specific timing diff between
+   uint16_t     rttIndx;    /*!< Current Index into HARQ RTT Q */
+   uint16_t     reTxIndx;   /*!< Current Index into Re-Tx Q */
+   uint8_t      retxTmrReduction; /*!< Due to platform specific timing diff between
                                  UL HARQ processing and UL Scheduling, the 
                                  drx retx timer may start at a later time, than
                                  actual. That delay in starting the timer is 
@@ -1839,24 +1839,24 @@ typedef struct rgSchDrxUlHqProcCb
   */
 struct rgSchUlHqProcCb
 {
-   U8                ndi;          /*!< NDI */
-   U8                remTx;        /*!< Number of remaining transmissions */
+   uint8_t                ndi;          /*!< NDI */
+   uint8_t                remTx;        /*!< Number of remaining transmissions */
    RgSchUlAlloc      *alloc;       /*!< Uplink allocation */
    /* Renamed rcvdDatInd to rcvdCrcInd */
    Bool              rcvdCrcInd;   /*!< Set to true when data rcvd, false when
                                decode failure. */
-   U8                rvIdx;        /*!< Redundancy version index */
+   uint8_t                rvIdx;        /*!< Redundancy version index */
    TknU8             rvIdxPhy;     /*!< Whatever is given by PHY. To be inspected in case
                                of NACK.Always initialised to 'not present' */
    CmLList           reTxLnk;      /*!< Retransmission List */
    RgSchUlRetxAlloc  reTxAlloc;    /*!< Retransmission allocation
                                         information */
    Bool              isRetx;       /*!< Awaiting retransmission */
-   U8                procId;       /*!< HARQ Process ID */
-   U8                ulSfIdx;      /*!< UL Subframe Index */
+   uint8_t                procId;       /*!< HARQ Process ID */
+   uint8_t                ulSfIdx;      /*!< UL Subframe Index */
 #ifdef LTE_TDD
    /* Changes for passing iPhich at TFU*/
-   U8                iPhich;       /*!< Needed to Calculate PHICH
+   uint8_t                iPhich;       /*!< Needed to Calculate PHICH
                                         location. For TDD only */
 #endif
 #ifdef LTEMAC_SPS
@@ -1881,16 +1881,16 @@ struct rgSchUlHqProcCb
   */
 typedef struct rgSchUlHqCb
 {
-   U8           maxHqRetx;        /*!< Maximum number of harq
+   uint8_t           maxHqRetx;        /*!< Maximum number of harq
                                    * re-transmissions */
-   U8              numHqPrcs; /*!< Number of HARQ Processes */
+   uint8_t              numHqPrcs; /*!< Number of HARQ Processes */
 #ifdef LTE_TDD
    RgSchUlHqProcCb *hqProcCb; /*!< Uplink harq process info */
 #else
    RgSchUlHqProcCb hqProcCb[RGSCH_NUM_UL_HQ_PROC]; /*!< Uplink harq process info */
 #endif
 #ifdef LTE_L2_MEAS
-   U8          numBusyHqProcs;    /*!< Total Num of Hq procs in use */
+   uint8_t          numBusyHqProcs;    /*!< Total Num of Hq procs in use */
 #endif
 #ifdef EMTC_ENABLE
    void       *sch;
@@ -1911,9 +1911,9 @@ typedef struct rgSchUlHqCb
  * */
 typedef struct rgSchRaPreambles
 {
-   U8               dedPream;    /*!< Dedicated RA Preamble received */
-   U8               preamGrpA;   /*!< Randomly selected preambles in low range */
-   U8               preamGrpB;   /*!< Randomly selected preambles in high range */
+   uint8_t               dedPream;    /*!< Dedicated RA Preamble received */
+   uint8_t               preamGrpA;   /*!< Randomly selected preambles in low range */
+   uint8_t               preamGrpB;   /*!< Randomly selected preambles in high range */
 }RgSchRaPreambles;
 
 /**
@@ -1924,8 +1924,8 @@ typedef struct rgSchAvgPrbDl
 {
    Bool             cntActive;   /* Set to TRUE if counting activated */
    CmLteTimingInfo  startTime;   /*!< Start Time */
-   U8               timePrd;     /*!< Period For which meas to be done */
-   U32              prbCount;    /*!< PRB Count Updated every Per TTI */
+   uint8_t               timePrd;     /*!< Period For which meas to be done */
+   uint32_t              prbCount;    /*!< PRB Count Updated every Per TTI */
 } RgSchAvgPrbDl;
 
 /**
@@ -1936,8 +1936,8 @@ typedef struct rgSchAvgPrbUl
 {
    Bool             cntActive;   /*!< Set to TRUE if counting activated */
    CmLteTimingInfo  startTime;   /*!< Start Time */
-   U8               timePrd;     /*!< Period For which meas to be done */
-   U32              prbCount;    /*!< PRB Count Updated every Per TTI */
+   uint8_t               timePrd;     /*!< Period For which meas to be done */
+   uint32_t              prbCount;    /*!< PRB Count Updated every Per TTI */
 } RgSchAvgPrbUl;
 
 /** @brief
@@ -1951,17 +1951,17 @@ struct rgSchL2MeasCb
    RgInfPrbCfm        avgPrbQciUl;   /*!< Used to store result from MAC */
    Bool               cfmRcvd;       /*!< Used to check if confirm received from MAC */
                                      /*!< For average PRB usage in UL */
-   U16                sfnCycle;      /*<! Count of Num of SFN wraps */  
-   U32                dlTotalBw;     /*!< Total DL Bw between meas Req and Meas Send Req */
-   U32                ulTotalBw;     /*!< Total UL Bw between meas Req and Meas Send Req */
+   uint16_t                sfnCycle;      /*<! Count of Num of SFN wraps */  
+   uint32_t                dlTotalBw;     /*!< Total DL Bw between meas Req and Meas Send Req */
+   uint32_t                ulTotalBw;     /*!< Total UL Bw between meas Req and Meas Send Req */
 };
 
 typedef struct rgSchTbCnt
 {
-   U32    tbTransDlTotalCnt;  /*!< Total DL TB count */
-   U32    tbTransDlFaulty;    /*!< Total DL Faulty TB count */ 
-   U32    tbTransUlTotalCnt;  /*!< Total UL TB count */
-   U32    tbTransUlFaulty;    /*!< Total UL Faulty TB count */
+   uint32_t    tbTransDlTotalCnt;  /*!< Total DL TB count */
+   uint32_t    tbTransDlFaulty;    /*!< Total DL Faulty TB count */ 
+   uint32_t    tbTransUlTotalCnt;  /*!< Total UL TB count */
+   uint32_t    tbTransUlFaulty;    /*!< Total UL Faulty TB count */
 }RgSchTbCnt;   
 #endif /* LTE_L2_MEAS */
 /** @brief
@@ -1969,30 +1969,30 @@ typedef struct rgSchTbCnt
  *  */
 struct rgSchQciCb
 {
-   U8     qci;              /*!< QCI of the Logical Channel */
-   U32    dlPrbCount;       /*!< Cumulative Prb Count for this QCI */
-   U32    dlUeCount;        /*!<  Cumulative number of active UE's */
-   U32    dlTotal_UeCount;  /*!< Cummulative count added for every sampling
+   uint8_t     qci;              /*!< QCI of the Logical Channel */
+   uint32_t    dlPrbCount;       /*!< Cumulative Prb Count for this QCI */
+   uint32_t    dlUeCount;        /*!<  Cumulative number of active UE's */
+   uint32_t    dlTotal_UeCount;  /*!< Cummulative count added for every sampling
                               Occasion*/
-   U32    ulUeCount;        /*!<  Cumulative number of active UE's */
-   U32    ulTotal_UeCount;  /*!< Cummulative count added for every sampling
+   uint32_t    ulUeCount;        /*!<  Cumulative number of active UE's */
+   uint32_t    ulTotal_UeCount;  /*!< Cummulative count added for every sampling
                               Occasion*/
 };
 struct rgSchLcgCb
 {
    /* Right now not keeping associated logical channels, searching for
     * associated channels needed only during config */
-   U8    lcgId;  /*!< Group ID */
+   uint8_t    lcgId;  /*!< Group ID */
    Void  *sch;
 #ifdef LTE_L2_MEAS
-   U8               numLch;                    /*!< Number fo LC's for this LCG*/
+   uint8_t               numLch;                    /*!< Number fo LC's for this LCG*/
    RgSchUlLcCb      *lcArray[RGSCH_MAX_LC_PER_UE]; /*!< Dedicated Uplink logical
                                                  channel per LCG */
 #endif /* LTE_L2_MEAS */
    /* Added support for SPS*/
 #ifdef LTEMAC_SPS
-   U8    lcCnt;
-   U8    lcId[RGR_MAX_SPS_LC];
+   uint8_t    lcCnt;
+   uint8_t    lcId[RGR_MAX_SPS_LC];
 #endif
 };
 
@@ -2003,8 +2003,8 @@ struct rgSchLcgCb
 struct rgSchUlLcCb
 {
    Bool          isValid; /*!< If this struct holds valid values*/
-   U8            lcId;    /*!< Logical channel ID */
-   U8            lcgArrIdx;    /*!< Index of this LC in the LCG Array*/
+   uint8_t            lcId;    /*!< Logical channel ID */
+   uint8_t            lcgArrIdx;    /*!< Index of this LC in the LCG Array*/
    RgSchLcgCb    *lcg;    /*!< Logical channel group */
    RgrLchQosCfg  ulQos;   /*!< UL Qos parameters */
    /* After Merging from 2.1 to 2.2 */
@@ -2017,16 +2017,16 @@ struct rgSchUlLcCb
   */
 typedef struct rgSchHoPoUeGrnt
 {
-   U8      rapId;         /*!< dedicated rapId */
-   U8      hop;           /*!< Hopping flag, set to 0 in this version */
-   U8      rbStart;       /*!< Start Resource block of allocation */
-   U8      numRb;         /*!< Number of resource blocks allocated */
-   U8      tpc;           /*!< TPC command for the uplink grant */
-   U8      iMcsCrnt;      /*!< Current MCS index of the grant */
+   uint8_t      rapId;         /*!< dedicated rapId */
+   uint8_t      hop;           /*!< Hopping flag, set to 0 in this version */
+   uint8_t      rbStart;       /*!< Start Resource block of allocation */
+   uint8_t      numRb;         /*!< Number of resource blocks allocated */
+   uint8_t      tpc;           /*!< TPC command for the uplink grant */
+   uint8_t      iMcsCrnt;      /*!< Current MCS index of the grant */
    TknU16  ta;            /*!< Timing Adjustment */
    CmLList raRspLnk;      /*!< To link UE to RaRsp cont free list */
    /* Added support for SPS*/
-   U16     datSz;         /*!< Length of the Data */
+   uint16_t     datSz;         /*!< Length of the Data */
    Bool    cqiReqBit;     /*!< Aperiodic CQI is requested or not */
 } RgSchHoPoUeGrnt;
 
@@ -2036,11 +2036,11 @@ typedef struct rgSchHoPoUeGrnt
   */
 typedef struct  rgSchCmnSpsUlUeSchdInfo
 {
-   U32             allocBwMask[RGSCH_SPS_ULBW_MASK_LEN]; /*!< Bitmask indicating the allocation info 
+   uint32_t             allocBwMask[RGSCH_SPS_ULBW_MASK_LEN]; /*!< Bitmask indicating the allocation info 
                                       for the UE. Bit set at position 'x'
                                       indicates subband 'x' is allocated */
-   U8              scaledCqi;    /*!< Assumed value of CQI for transmission */
-   U16             actvSfLstIdx; /*!< Index into cell-wide UL SPS sub-frame 
+   uint8_t              scaledCqi;    /*!< Assumed value of CQI for transmission */
+   uint16_t             actvSfLstIdx; /*!< Index into cell-wide UL SPS sub-frame 
                                       table during activation */
    CmLteTimingInfo ulSpsActvOcc; /*!< Time at which SPS is activated/reactivated
                                       for the UE */
@@ -2064,10 +2064,10 @@ typedef struct rgSchCmnUlUeSpsInfo
                                               activation/reactivation/release */
    Bool                    isUlSpsActv;   /*!< Indicates if UE's UL SPS is 
                                               active currently */
-   U8                      measGapMask[RGSCH_SPS_MG_MASK_LEN];  /*!< Indicates the UL sub-frames with 
+   uint8_t                      measGapMask[RGSCH_SPS_MG_MASK_LEN];  /*!< Indicates the UL sub-frames with 
                                                ongoing measurement gap. Mask is
                                                of size (80/8) */
-   U8                      state;         /*!< State of the UE: can be one of
+   uint8_t                      state;         /*!< State of the UE: can be one of
                                                ACTV_REACTV_SENT (pdcch for 
                                                (re)activation sent),REL_SENT, 
                                                ULSPS_ACTV */
@@ -2076,26 +2076,26 @@ typedef struct rgSchCmnUlUeSpsInfo
    RgSchCmnSpsUlUeSchdInfo ulSpsSchdInfo; /*!< Scheduled info for UL SPS 
                                                active UE */
 
-   U8                      spsOccIdx;         /*!< N value for nxt sps occasion */
+   uint8_t                      spsOccIdx;         /*!< N value for nxt sps occasion */
 
-   U32                     packetSize;       /*!< Packet size for SPS - SPS allocation*/
-   U32                     spsSduSize;       /*!< SDU Size recvd on SPS Occasion*/
-   U32                     spsGrantSize;     /*!< Grant size for SPS allocation */
+   uint32_t                     packetSize;       /*!< Packet size for SPS - SPS allocation*/
+   uint32_t                     spsSduSize;       /*!< SDU Size recvd on SPS Occasion*/
+   uint32_t                     spsGrantSize;     /*!< Grant size for SPS allocation */
 
    CmLteTimingInfo         lastSpsDatRecvdTime; /*!< timing info on which the  
                                                      SPS data is recieved*/
    CmLListCp               *spsList; /*!< Pointer to the SPS list of which
                                       UE is a part */
-   U32                     actPdcchCrcFailCount; /*!< Num of consecutive CRC fails for 
+   uint32_t                     actPdcchCrcFailCount; /*!< Num of consecutive CRC fails for 
                                                    SPS Activation PDCCH */
-   U32                     crcFailCntSpsOcc;     /*!< Consecutive CRC fail for SPS Occasion
+   uint32_t                     crcFailCntSpsOcc;     /*!< Consecutive CRC fail for SPS Occasion
                                          TX */
-   U32                     relPdcchSntCnt;     /*!< Num ber Rel PDCCH sent to UE*/
+   uint32_t                     relPdcchSntCnt;     /*!< Num ber Rel PDCCH sent to UE*/
 #ifdef RGSCH_SPS_STATS
-   U32                     crcFailStats;
-   U32                     crcPassStats;
-   U32                     totalBsr;
-   U32                     numBsrRpt;
+   uint32_t                     crcFailStats;
+   uint32_t                     crcPassStats;
+   uint32_t                     totalBsr;
+   uint32_t                     numBsrRpt;
 #endif
 } RgSchCmnUlUeSpsInfo;
 
@@ -2110,7 +2110,7 @@ typedef struct rgSchUeUlCb
    RgSchUlLcCb      lcCb[RGSCH_MAX_LC_PER_UE]; /*!< Dedicated Uplink logical channel
                                               information */
    RgSchLcgCb       lcgArr[RGSCH_MAX_LCG_PER_UE]; /*!< Logical channel groups */
-   U8               ulInactvMask; /*!< Bitmask indicating if UE is inactive for UL scheduling */
+   uint8_t               ulInactvMask; /*!< Bitmask indicating if UE is inactive for UL scheduling */
    CmLList          ulInactvLnk;  /*!< Link to the inactive UE List for UL */
    RgSchHoPoUeGrnt  rarGrnt;      /*!< UE's RAR grant Information */
    RgrUeTxAntSelCfg ulTxAntSel;/*!< UL Transmit antenna selection Cfg Info */
@@ -2121,37 +2121,37 @@ typedef struct rgSchUeUlCb
    /* Added support for SPS*/
 #ifdef LTEMAC_SPS
    RgrUeSpsUlCfg    ulSpsCfg;       /*!< UL SPS configuration information */
-   U8               explicitRelCnt; /*!< Number of subframes after sending
+   uint8_t               explicitRelCnt; /*!< Number of subframes after sending
                                          release to consider it successful */
-   U16              spsPrdcty;      /*!< Shall store the SPS periodicity of the
+   uint16_t              spsPrdcty;      /*!< Shall store the SPS periodicity of the
                                          UE. Needed to round-off in case of
                                          TDD */
    CmLteTimingInfo   relPdcchSchdTime;     /*!< This field holds the scheduled time 
                                           of SPS rel PDCCH*/
 #endif
 #ifdef LTE_L2_MEAS
-   U32               nPrb;          /*!< Number of resource block allocated */
+   uint32_t               nPrb;          /*!< Number of resource block allocated */
 #endif
 #ifdef TFU_UPGRADE
-   U8                betaHqOffst; /*!< Delta HARQ offset used in the case where HARQ
+   uint8_t                betaHqOffst; /*!< Delta HARQ offset used in the case where HARQ
                              feedback is multiplexed with PUSCH data.  */
-   U8                betaCqiOffst;/*!< Beta offset for CQI[0-15]. Given by RRC*/
-   U8                betaRiOffst;/*!Beta offset for RI[0-15]. Given by RRC */
+   uint8_t                betaCqiOffst;/*!< Beta offset for CQI[0-15]. Given by RRC*/
+   uint8_t                betaRiOffst;/*!Beta offset for RI[0-15]. Given by RRC */
 #endif
-   U32               cqiRiSz;   /*!<Size of Periodic/Aperiodic CQI or RI depending
+   uint32_t               cqiRiSz;   /*!<Size of Periodic/Aperiodic CQI or RI depending
                                      on the occassion */
-   U32               betaOffstVal; /*!< beta offset of CQI or RI depending 
+   uint32_t               betaOffstVal; /*!< beta offset of CQI or RI depending 
                                      on the occassion*/
-   U32               maxBytesPerUePerTti;         /*!< Maximum bytes that can be allocated 
+   uint32_t               maxBytesPerUePerTti;         /*!< Maximum bytes that can be allocated 
                                        *   in 1 scheduling instance per UE */
-   U32               minReqBytes;     /*!< The buffer amount of lcg0 */
-   U32               totalBsr;        /*!< Total BSR as reported by UE (in bytes) */
-   U32               nonLcg0Bs;       /*!< Total BSR for LCG1/LCG2/LCG3 */
-   U32               nonGbrLcgBs;     /*!< Total BSR as reported by UE (in bytes) for non-GBR LCG's*/
-   U32               effBsr;          /*!< BSR yet to be satisfied in allocations */
+   uint32_t               minReqBytes;     /*!< The buffer amount of lcg0 */
+   uint32_t               totalBsr;        /*!< Total BSR as reported by UE (in bytes) */
+   uint32_t               nonLcg0Bs;       /*!< Total BSR for LCG1/LCG2/LCG3 */
+   uint32_t               nonGbrLcgBs;     /*!< Total BSR as reported by UE (in bytes) for non-GBR LCG's*/
+   uint32_t               effBsr;          /*!< BSR yet to be satisfied in allocations */
 
-   U32               cfgdAmbr;        /*!< Byte rate of UE Ambr per Refresh Cycle */
-   U32               effAmbr;         /*!< Remaining Bytes of Byte rate available in a refresh Cycle */
+   uint32_t               cfgdAmbr;        /*!< Byte rate of UE Ambr per Refresh Cycle */
+   uint32_t               effAmbr;         /*!< Remaining Bytes of Byte rate available in a refresh Cycle */
    CmLteTimingInfo   ulTransTime;     /*!< Timing info of the latest reception of 
                                      any UL data/signal from UE */
 #ifdef LTEMAC_SPS
@@ -2172,9 +2172,9 @@ typedef struct rgSchUeUlCb
   */
 typedef struct rgSchCcchSchdInfo
 {
-   U32     totBytes;       /*!< Total bytes allocated */
+   uint32_t     totBytes;       /*!< Total bytes allocated */
    CmLList retxLnk;        /*!< To link hqP to retx Queues */
-   U8      rvIdx;          /*!< Rv Index */
+   uint8_t      rvIdx;          /*!< Rv Index */
 } RgSchCcchSchdInfo;
 
 /**
@@ -2183,18 +2183,18 @@ typedef struct rgSchCcchSchdInfo
   */
 typedef struct rgSchDlGrnt
 {
-   U16     schdTime;       /*!< Time at which Harq proc has been scheduled */
-   U8      rbStrt;         /*!< Starting RB of the allocation */
-   U8      numRb;          /*!< Number of RBs allocated */
-   U8      iMcs;           /*!< Index to the MCS */
-   U8      rv;             /*!< RV for HARQ (re)transmission */
-   U8      rvIdx;          /*!< RVIdx for HARQ(re)transmission */
+   uint16_t     schdTime;       /*!< Time at which Harq proc has been scheduled */
+   uint8_t      rbStrt;         /*!< Starting RB of the allocation */
+   uint8_t      numRb;          /*!< Number of RBs allocated */
+   uint8_t      iMcs;           /*!< Index to the MCS */
+   uint8_t      rv;             /*!< RV for HARQ (re)transmission */
+   uint8_t      rvIdx;          /*!< RVIdx for HARQ(re)transmission */
 #ifdef RG_5GTF   /* ToDo:: Anoop need to check for other fields required*/
-   U8      vrbgStart;
-   U8      numVrbg;
-   U16     rbAssign;
-   U8      xPDSCHRange;
-   U8      SCID;
+   uint8_t      vrbgStart;
+   uint8_t      numVrbg;
+   uint16_t     rbAssign;
+   uint8_t      xPDSCHRange;
+   uint8_t      SCID;
    TfuDciFormat dciFormat;  /*!< DCI format for the allocation */
 	/* ToDo */
 #endif
@@ -2206,8 +2206,8 @@ typedef struct rgSchDlGrnt
   */
 typedef struct rgSchLchAllocInfo
 {
-   U8       lcId;       /*!< Logical channel ID */
-   U32      schdData;   /*!< Scheduled logical channel data */
+   uint8_t       lcId;       /*!< Logical channel ID */
+   uint32_t      schdData;   /*!< Scheduled logical channel data */
 } RgSchLchAllocInfo;
 
 /** @brief This structure is part of the downlink HARQ process, this structure
@@ -2218,9 +2218,9 @@ typedef struct rgSchDrxDlHqProcCb
    CmLList harqRTTEnt;   /*!< Entry into the HARQ RTT timer list */
    CmLList harqRetxEnt;   /*!< Entry into the harqRetxQ */
 
-   U16     rttIndx;    /*!< Current Index into HARQ RTT Q */
-   U16     reTxIndx;   /*!< Current Index into Re-Tx Q */
-   U8      retxTmrReduction; /*!< Due to platform specific timing diff between
+   uint16_t     rttIndx;    /*!< Current Index into HARQ RTT Q */
+   uint16_t     reTxIndx;   /*!< Current Index into Re-Tx Q */
+   uint8_t      retxTmrReduction; /*!< Due to platform specific timing diff between
                                  DL HARQ processing and DL Scheduling, the 
                                  drx retx timer may start at a later time, than
                                  actual. That delay in starting the timer is 
@@ -2244,62 +2244,62 @@ typedef enum
   */
 struct rgSchDlHqTbCb
 {
-   U8                tbIdx;          /*!< Index of this TB (0/1). Initialized
+   uint8_t                tbIdx;          /*!< Index of this TB (0/1). Initialized
                                           at HqEnt allocation */
-   U32               tbSz;           /*!< TB size scheduled for this TB */
-   U8                txCntr;         /*!< Transmission counter */
-   U8                ndi;            /*!< New Data Indicator 0 or 1*/
+   uint32_t               tbSz;           /*!< TB size scheduled for this TB */
+   uint8_t                txCntr;         /*!< Transmission counter */
+   uint8_t                ndi;            /*!< New Data Indicator 0 or 1*/
    TknU8             schdTa;      /*!< TA scheduled to be sent */
    /* CR timer implementation changes*/
-   U8                contResCe;
-   U8                numLch;         /*!< No. of DL Logical Channels scheduled
+   uint8_t                contResCe;
+   uint8_t                numLch;         /*!< No. of DL Logical Channels scheduled
                                           for this TB */
    CmLteTimingInfo   timingInfo;     /*!< This field holds the scheduled time */
    RgSchLchAllocInfo lchSchdDataArr[RGSCH_MAX_NUM_DED_LC];
    RgSchLchAllocInfo *lchSchdData;
    RgSchCcchSchdInfo ccchSchdInfo;/*!< CCCH TX/RETX scheduler Info */
-   U8                fbkRepCntr;     /*!< Counter to ANRep Feedback */
-   U8                fbkRecpRepCntr; /*!< Counter to ANRep Feedback */
+   uint8_t                fbkRepCntr;     /*!< Counter to ANRep Feedback */
+   uint8_t                fbkRecpRepCntr; /*!< Counter to ANRep Feedback */
    CmLList           anRepLnk[6];    /*!< Links for ANRep we need
                                           these many links to
                                           simultaneously hold the
                                           hqProcs in multiple
                                           subframes. */
    RgSchDlSf         *crntSubfrm[6]; /*!< Pointer to subframes */
-   U8          ackCount;   /*!< Counter for ACKs */
-   U8          isAckNackDtx; /* ACK or NACK or DTX*/
-   U8          nackCount;  /* NACK Counter */
-   U8          dtxCount;   /* DTX Counter */
+   uint8_t          ackCount;   /*!< Counter for ACKs */
+   uint8_t          isAckNackDtx; /* ACK or NACK or DTX*/
+   uint8_t          nackCount;  /* NACK Counter */
+   uint8_t          dtxCount;   /* DTX Counter */
    RgSchDlGrnt       dlGrnt;      /*!< Scheduler grant */
    Bool              taSnt;       /*!< TA sent or not */
 #ifdef LTE_TDD
    CmLteTimingInfo   fdbkTime;    /*!< Expected feedback time */
-   U8                m;           /*!< Subframe Order Index within the subframe
+   uint8_t                m;           /*!< Subframe Order Index within the subframe
                                        downlink association index K */
    RgSchTddSfType    sfType;      /*!< Identifies the first Tx subframe type */ 
-   U8                pucchFdbkIdx;/*!< DL subframe idx for which fdbk is expected */
-   U8                dai;          /*!< DAI associated with this TB.
+   uint8_t                pucchFdbkIdx;/*!< DL subframe idx for which fdbk is expected */
+   uint8_t                dai;          /*!< DAI associated with this TB.
                                           THis is used for F1BCS resource calulcation */
 #ifdef XEON_TDD_SPCL
-   U8                initTxNumRbs;/*!< Number of Rbs Allocated in First TX */
+   uint8_t                initTxNumRbs;/*!< Number of Rbs Allocated in First TX */
 #endif
 
 #endif
    /* 3.1 MIMO */
-   U8                numLyrs;     /*!< Number of layers using which this TB is
+   uint8_t                numLyrs;     /*!< Number of layers using which this TB is
                                        being transmitted */
    RgSchHqTbState    state;       /*!< State of this Trasport Block */
    RgSchDlHqProcCb   *hqP;        /*!< Reference to the TB container */
    /* Freeing up the HARQ proc blocked for
     * indefinite time in case of Retx */
-   U8                cntrRetxAllocFail; /*!< Number of times allocation failed
+   uint8_t                cntrRetxAllocFail; /*!< Number of times allocation failed
                                             for the retransmission of this TB */
 #ifdef LTE_ADV
    TknU8             schdSCellActCe;   /* !< SCell Act values and whether
                                           scheduled or not */
 #endif
-  U32                firstSchedTime; /*!< First time when the TB was scheduled */
-  U8                 minRlcReordrTmr; /*!< Min RLC reorder timer of all LCs
+  uint32_t                firstSchedTime; /*!< First time when the TB was scheduled */
+  uint8_t                 minRlcReordrTmr; /*!< Min RLC reorder timer of all LCs
                                         scheduled in this hqP*/
 };
 
@@ -2313,15 +2313,15 @@ struct rgSchDlHqProcCb
    CmLList           lnk;         /*!< To link with other HARQ processes */
    RgSchDlHqEnt      *hqE;        /*!< HARQ entity */
 #ifdef LTE_TDD
-   U8                txCntr;      /*!< Transmission counter */
+   uint8_t                txCntr;      /*!< Transmission counter */
 #endif
-   U8                procId;      /*!< Harq process ID */
+   uint8_t                procId;      /*!< Harq process ID */
    Void              *sch;        /*!< Cmn sched Hq control block */
    /* 3.1 MIMO */
    RgSchDlHqTbCb     tbInfo[2];   /*!< TB related information for 1+1(if any) TBs */
    RgSchDrxDlHqProcCb   drxCb;   /*!< DRX control block */
 #ifdef TFU_UPGRADE
-   U8                tbCnt;     /*!< Count of the number TBs being sent with a
+   uint8_t                tbCnt;     /*!< Count of the number TBs being sent with a
                                   Reception Requesti */
 #endif
 #ifdef LTEMAC_SPS
@@ -2338,7 +2338,7 @@ struct rgSchDlHqProcCb
                                  scheduling grant over this hqProc */
    Bool cwSwpEnabled;         /*!< Set if CW swap enabled */
 /*f1b_Sprint3*/
-   U8        tpc;           /*!< TPC command to be used for Secondary cell
+   uint8_t        tpc;           /*!< TPC command to be used for Secondary cell
                               N1PUCCH resource Index*/
 /*f1b_Sprint3*/
    /*CA Dev Start*/
@@ -2349,22 +2349,22 @@ struct rgSchDlHqProcCb
 #ifdef EMTC_ENABLE
    Void               *emtcHqInfo;/*!< emtc specfic hq info */
 #endif
-   U8                dlDai;        /*!< DL DAI assosciated with this harq proc */
-   U8                ulDai;        /*!< UL DAI assosciated with this harq proc */
+   uint8_t                dlDai;        /*!< DL DAI assosciated with this harq proc */
+   uint8_t                ulDai;        /*!< UL DAI assosciated with this harq proc */
 #ifdef BRDCM
    /*CA Dev End*/
-   U32               isPuschFdbk;
+   uint32_t               isPuschFdbk;
 #endif
    Void *         laaCb;
    CmLListCp   *hqPLst;    /*!< pointer to either inUse of free list of hqE */
    TfuDciFormat prevDciFormat; /*!< Previous alloction DCI format used for ERR Ind prcessing */
 
    /* LAA DBG Only */
-   U32 tbSizeAtEstimate[2];
-   U32 tbSizeAtFnlz[2];
-   U32 tbSizeOfMvdTb[2];
-   U32 itbsAtEstimate[2];
-   U32 prbAtEstimate;
+   uint32_t tbSizeAtEstimate[2];
+   uint32_t tbSizeAtFnlz[2];
+   uint32_t tbSizeOfMvdTb[2];
+   uint32_t itbsAtEstimate[2];
+   uint32_t prbAtEstimate;
 };
 
 /**
@@ -2377,7 +2377,7 @@ struct rgSchDlHqEnt
    RgSchUeCb    *ue;       /*!< Parent UE */
    CmLListCp    free;      /*!< List of free HARQ processes */
    CmLListCp    inUse;     /*!< List of in-use HARQ processes */
-   U8           maxHqTx;   /*!< Maximum number of harq transmissions */
+   uint8_t           maxHqTx;   /*!< Maximum number of harq transmissions */
    RgSchDlHqProcCb *msg4Proc; /*!< Points to MSG4 HARQ process */
 #ifdef RGR_V1
    /* CR timer changes*/
@@ -2385,7 +2385,7 @@ struct rgSchDlHqEnt
               to identify feedback for CCCH SDU
               transmissions done without cont res CE*/
 #endif
-   U8              numHqPrcs; /*!< Number of HARQ Processes */
+   uint8_t              numHqPrcs; /*!< Number of HARQ Processes */
 #ifdef LTE_TDD
    RgSchDlHqProcCb *procs; /*!< Downlink harq processes */
 #else
@@ -2415,14 +2415,14 @@ typedef enum rgSchTaState
   */
 typedef struct rgSchUeDlTaCb
 {
-  U16       cfgTaTmr; /*!< Configured TA timer value */
-  U8        ta;       /*!< TA value for UE */
-  U8        numRemSf; /*!< Number of subframes left to apply TA */
+  uint16_t       cfgTaTmr; /*!< Configured TA timer value */
+  uint8_t        ta;       /*!< TA value for UE */
+  uint8_t        numRemSf; /*!< Number of subframes left to apply TA */
   RgSchTaState state;    /*!< Indicates HARQ state for TA */
   /*rg003.301[ccpu00121813] ADD added new var*/
   Bool     outStndngTa;  /*!< if new TA is rcvd before it gets
                                applied at UE*/
-  U8       outStndngTaval; /*!< outstanding TA val */
+  uint8_t       outStndngTaval; /*!< outstanding TA val */
 } RgSchUeDlTaCb;
 
 /**
@@ -2431,8 +2431,8 @@ typedef struct rgSchUeDlTaCb
   */
 struct rgSchDlLcCb
 {
-   U8            lcId;    /*!< Logical channel ID */
-   U32           bo;
+   uint8_t            lcId;    /*!< Logical channel ID */
+   uint32_t           bo;
    RgSchUeCb     *ue;     /* UE to which this LC belongs to */
    /* Not validating DlQos for DCCH */
    CmLteLcType   lcType;   /* Logical channel Type*/
@@ -2442,15 +2442,15 @@ struct rgSchDlLcCb
    RgrLchSpsCfg   dlLcSpsCfg;  /*!< SPS configuration for DL logical channel */
 #endif
 #ifdef CCPU_OPT
-   U16           estRlcHdrSz;  /*!< Estimated RLC header size */
+   uint16_t           estRlcHdrSz;  /*!< Estimated RLC header size */
    Bool          staPduPrsnt;  /*!< Indicate the status pdu present or not*/
 #endif
-   U32           staPduBo;     /*!< Indicate the Status PDU BO.
+   uint32_t           staPduBo;     /*!< Indicate the Status PDU BO.
                                     This amount is already included in original BO */
    Void          *sch;        /*!< Holds Scheduler Info pointer */
-   U32           prbsReqd;    /*!< PRBs reqd in DL for each UE in MUE scenario*/
+   uint32_t           prbsReqd;    /*!< PRBs reqd in DL for each UE in MUE scenario*/
    CmLList       schdLnk;     /*!< Link to ueCb inserted in toBeSchdList in DL*/
-   U32           oldestSduArrTime; /*!< oldest SDU arrival time for this LC */
+   uint32_t           oldestSduArrTime; /*!< oldest SDU arrival time for this LC */
    CmLList       lcFlowCntrlEnt; /*!<link to Lc in flow Cntrl lst */
    CmLList       lcPdbFbkLnk;  /*!<link to LC in LC flow contrl monitoring lst */
    Bool          setMaxUlPrio; /*!<set if Poll bit is sent in the PDU */
@@ -2462,28 +2462,28 @@ struct rgSchDlLcCb
 
 typedef struct rgSchN1PucchResCb
 {
-   U16 n1PucchIdx;  /* !< N1 resource */ 
+   uint16_t n1PucchIdx;  /* !< N1 resource */ 
    CmLList n1Lnk;  /* !< Link for adding into dlsf N1 used list */
 }RgSchN1PucchResCb;
 typedef struct rgSchN3PucchResCb
 {
-   U16 n3PucchIdx;  /* !< N3 resource */ 
+   uint16_t n3PucchIdx;  /* !< N3 resource */ 
    CmLList n3Lnk;   /* !< Link for adding into dlsf N3 used list */
-   U8 sCellIdx;      /* !< Allocated by which scell */ 
+   uint8_t sCellIdx;      /* !< Allocated by which scell */ 
 }RgSchN3PucchResCb;
 
 typedef struct rgSchSCellN3ResCb
 {
-  U8                 antP0N3ResCount; /* !< Number of N3 res for antenna port 0*/
-  U8                 antP1N3ResCount;  /* !< Number of N3 res for antenna port 0*/
+  uint8_t                 antP0N3ResCount; /* !< Number of N3 res for antenna port 0*/
+  uint8_t                 antP1N3ResCount;  /* !< Number of N3 res for antenna port 0*/
   RgSchN3PucchResCb  antP0N3Res[RG_SCH_MAX_NUM_N3PUCCH_PER_UE]; /* !< Antenna Port 0 N3 resources*/
   RgSchN3PucchResCb  antP1N3Res[RG_SCH_MAX_NUM_N3PUCCH_PER_UE]; /* !< Antenna Port 1 N3 resources*/
 }RgSchSCellN3ResCb;
 
 typedef struct rgSchSCellN1ResCb
 {
-  U8                 cw1N1ResCount; /* !< Number of N1 res for CW 1*/
-  U8                 cw2N1ResCount;  /* !< Number of N1 res for CW 2*/
+  uint8_t                 cw1N1ResCount; /* !< Number of N1 res for CW 1*/
+  uint8_t                 cw2N1ResCount;  /* !< Number of N1 res for CW 2*/
   RgSchN1PucchResCb  cw1N1Res[RG_SCH_MAX_NUM_N1PUCCH_PER_UE]; /* !< CW1 N1 resources*/
   RgSchN1PucchResCb  cw2N1Res[RG_SCH_MAX_NUM_N1PUCCH_PER_UE];  /* !< CW2 N1 resources*/
 }RgSchSCellN1ResCb;
@@ -2491,15 +2491,15 @@ typedef struct rgSchSCellN1ResCb
 #ifdef LTE_ADV
 typedef struct rgSchN3PucchRes
 {
-   U16 n3PucchIdx;  /* !< N3 resource */
-   U8  tpcIdx;
+   uint16_t n3PucchIdx;  /* !< N3 resource */
+   uint8_t  tpcIdx;
 }RgSchN3PucchRes;
 #endif
 typedef struct rgSchDlHqInfo
 {
 /*f1b_Sprint3*/
 #ifdef LTE_TDD
-   U8                     numOfCells; /*!<This will be used to store number of unique cells in
+   uint8_t                     numOfCells; /*!<This will be used to store number of unique cells in
                                         this subframe*/
    Bool                   isSCellPdschPres; /*!< Flag to indicate whether any PDSCH transmission
                                              present in secondary cell. Used for CSI/HARQ collision
@@ -2508,7 +2508,7 @@ typedef struct rgSchDlHqInfo
    Bool                   isPuschHarqRecpPres;/*!< Flag to indicate pusch recp req is pres or not */
    RgrSchFrmt1b3TypEnum   uciFrmtTyp; /*!< Store value of format1b or format3.
                                        */
-   U8                     totalTbCnt; /*!<  This will be used to store total number of TBs 
+   uint8_t                     totalTbCnt; /*!<  This will be used to store total number of TBs 
                                         across all harqProcs.It will be used to identify 
                                         PUCCH format type to be used in this SF*/
    CmLList                dlSfUeLnk; /*!< list entry into dlsf->ueLst */
@@ -2530,8 +2530,8 @@ typedef struct rgSchDlHqInfo
 typedef struct rgUeMeasGapCfg
 {
    Bool isMesGapEnabled;    /*!< Is Measuremnet gap enabled or disabled */
-   U8   gapPrd;             /*!< Gap period 40ms/80ms */
-   U8   gapOffst;           /*!< Gap offset - Vaue is 0 to 1*/
+   uint8_t   gapPrd;             /*!< Gap period 40ms/80ms */
+   uint8_t   gapOffst;           /*!< Gap offset - Vaue is 0 to 1*/
 } RgUeMeasGapCfg;
 
 /**
@@ -2539,9 +2539,9 @@ typedef struct rgUeMeasGapCfg
 typedef struct rgSchUeMeasGapCb
 {
    Bool              isMesGapEnabled;/*!< TRUE if Measurement gap is enabled for this UE */
-   U8                isMeasuring;  /*!< Set to TRUE during measurement gap */
-   U8                gapPrd;     /*!< Measurement gap period configuration for the UE */
-   U8                gapOffst;   /*!< Measurement gap offset for the UE */
+   uint8_t                isMeasuring;  /*!< Set to TRUE during measurement gap */
+   uint8_t                gapPrd;     /*!< Measurement gap period configuration for the UE */
+   uint8_t                gapOffst;   /*!< Measurement gap offset for the UE */
    CmLList           measQLnk;   /*!< To Link to the measurement gap list */
    CmLList           ackNakQLnk; /*!< To Link to the ACK NACK Rep list */
    CmTimer           measGapTmr;  /*!< Timer for Measurement Gap */
@@ -2554,10 +2554,10 @@ typedef struct rgSchUeMeasGapCb
 typedef struct rgSchUeAckNakRepCb
 {
    Bool        isAckNackEnabled;  /*!< Is ACK/NACK Enabled*/
-   U8          isAckNakRep;  /*!< Set to TRUE during ACK-NACK repetition prd */
-   U8          cfgRepCnt;         /*!< Configured value for the repetition counter */
-   U8          repCntr;           /*!< Actual repetition counter */
-   U16         pucchRes;          /*!< PUCCH resource for repetition */
+   uint8_t          isAckNakRep;  /*!< Set to TRUE during ACK-NACK repetition prd */
+   uint8_t          cfgRepCnt;         /*!< Configured value for the repetition counter */
+   uint8_t          repCntr;           /*!< Actual repetition counter */
+   uint16_t         pucchRes;          /*!< PUCCH resource for repetition */
    CmTimer     ackNakRepUlInactvTmr; /*!< UL Inactive timer for ack-nack repetition */
    CmTimer     ackNakRepDlInactvTmr; /*!< DL Inactive timer for ack-nack repetition */
    CmTimer     ackNakRepTmr;      /*!< Timer for ack-nack repetition */
@@ -2598,14 +2598,14 @@ typedef struct rgSchUeMimoInfo
 */
 typedef struct rgSchCqiRawPuschMode31
 {
-   U8                            wideBCqiCw0;    /*!< Length of Wideband CQI Codeword 0 */
-   U8                            totLenSbDiffCqiCw0;    /*!< Length of SubBand Differential CQI Codeword 0 */
-   U8                            r1WideBCqiCw1;    /*!< Length of Wideband CQI Codeword 1 for Rank =1*/
-   U8                            r1TotLenSbDiffCqiCw1;    /*!< Length of SubBand Differential CQI Codeword 1 for Rank = 1*/
-   U8                            rg1WideBCqiCw1;    /*!< Length of Wideband CQI Codeword 1 for Rank > 1*/
-   U8                            rg1TotLenSbDiffCqiCw1;    /*!< Length of SubBand Differential CQI Codeword 1 for Rank > 1*/
-   U8                            r1PmiBitLen;   /*!< Length of PMI Bits for Rank = 1*/
-   U8                            rg1PmiBitLen;   /*!< Length of PMI Bits for Rank > 1*/
+   uint8_t                            wideBCqiCw0;    /*!< Length of Wideband CQI Codeword 0 */
+   uint8_t                            totLenSbDiffCqiCw0;    /*!< Length of SubBand Differential CQI Codeword 0 */
+   uint8_t                            r1WideBCqiCw1;    /*!< Length of Wideband CQI Codeword 1 for Rank =1*/
+   uint8_t                            r1TotLenSbDiffCqiCw1;    /*!< Length of SubBand Differential CQI Codeword 1 for Rank = 1*/
+   uint8_t                            rg1WideBCqiCw1;    /*!< Length of Wideband CQI Codeword 1 for Rank > 1*/
+   uint8_t                            rg1TotLenSbDiffCqiCw1;    /*!< Length of SubBand Differential CQI Codeword 1 for Rank > 1*/
+   uint8_t                            r1PmiBitLen;   /*!< Length of PMI Bits for Rank = 1*/
+   uint8_t                            rg1PmiBitLen;   /*!< Length of PMI Bits for Rank > 1*/
 } RgSchCqiRawPuschMode31;
 
 /** @brief This structure that stores the length of Bits that
@@ -2613,8 +2613,8 @@ typedef struct rgSchCqiRawPuschMode31
 */
 typedef struct rgSchCqiRawPuschMode30
 {
-   U8                     wideBCqiCw;    /*!< Length of Wideband CQI */
-   U8                     totLenSbDiffCqi;    /*!< Length of SubBand Differential CQI */
+   uint8_t                     wideBCqiCw;    /*!< Length of Wideband CQI */
+   uint8_t                     totLenSbDiffCqi;    /*!< Length of SubBand Differential CQI */
 } RgSchCqiRawPuschMode30;
 
 /** @brief This structure that stores the length of Bits that
@@ -2622,15 +2622,15 @@ typedef struct rgSchCqiRawPuschMode30
 */
 typedef struct rgSchCqiRawPuschMode22
 {
-   U8                            wideBCqiCw0;    /*!< Length of Wideband CQI Codeword 0 */
-   U8                            sBDiffCqiCw0;    /*!< Length of SubBand Differential CQI Codeword 0 */
-   U8                            r1WideBCqiCw1;    /*!< Length of Wideband CQI Codeword 1  for Rank =1 */
-   U8                            r1SbDiffCqiCw1;    /*!< Length of SubBand Differential CQI Codeword 1 for Rank =1*/
-   U8                            rg1WideBCqiCw1;    /*!< Length of Wideband CQI Codeword 1  for Rank > 1*/
-   U8                            rg1SbDiffCqiCw1;    /*!< Length of SubBand Differential CQI Codeword 1 for Rank >1*/
-   U8                           posOfM;   /*!< Position of M selected SubBands */
-   U8                           r1PmiBitLen;   /*!< Length of PMI Bits for Rank =1*/
-   U8                           rg1PmiBitLen;   /*!< Length of PMI Bits for Rank >1*/
+   uint8_t                            wideBCqiCw0;    /*!< Length of Wideband CQI Codeword 0 */
+   uint8_t                            sBDiffCqiCw0;    /*!< Length of SubBand Differential CQI Codeword 0 */
+   uint8_t                            r1WideBCqiCw1;    /*!< Length of Wideband CQI Codeword 1  for Rank =1 */
+   uint8_t                            r1SbDiffCqiCw1;    /*!< Length of SubBand Differential CQI Codeword 1 for Rank =1*/
+   uint8_t                            rg1WideBCqiCw1;    /*!< Length of Wideband CQI Codeword 1  for Rank > 1*/
+   uint8_t                            rg1SbDiffCqiCw1;    /*!< Length of SubBand Differential CQI Codeword 1 for Rank >1*/
+   uint8_t                           posOfM;   /*!< Position of M selected SubBands */
+   uint8_t                           r1PmiBitLen;   /*!< Length of PMI Bits for Rank =1*/
+   uint8_t                           rg1PmiBitLen;   /*!< Length of PMI Bits for Rank >1*/
 } RgSchCqiRawPuschMode22;
 
 /** @brief This structure that stores the length of Bits that
@@ -2638,9 +2638,9 @@ typedef struct rgSchCqiRawPuschMode22
 */
 typedef struct rgSchCqiRawPuschMode20
 {
-   U8                     wideBCqiCw;    /*!< Length of Wideband CQI */
-   U8                     subBandDiffCqi;    /*!< Length of SubBand Differential CQI */
-   U8                     posOfM;   /*!< Position of M selected SubBands */
+   uint8_t                     wideBCqiCw;    /*!< Length of Wideband CQI */
+   uint8_t                     subBandDiffCqi;    /*!< Length of SubBand Differential CQI */
+   uint8_t                     posOfM;   /*!< Position of M selected SubBands */
 } RgSchCqiRawPuschMode20;
 
 /** @brief This structure that stores the length of Bits that
@@ -2648,11 +2648,11 @@ typedef struct rgSchCqiRawPuschMode20
 */
 typedef struct rgSchCqiRawPuschMode12
 {
-   U8                     wideBCqiCw0;    /*!< Length of Wideband CQI Codeword 0 */
-   U8                     r1WideBCqiCw1;    /*!< Length of Wideband CQI Codeword 1 for Rank =1*/
-   U8                     rg1WideBCqiCw1;    /*!< Length of Wideband CQI Codeword for Rank > 1 */
-   U8                     r1TotalPmiBitLen;   /*!< Aggregate length of PMI Bits for Rank =1 */
-   U8                     rg1TotalPmiBitLen;  /*!< Aggregate length of PMI Bits for Rank > 1 */
+   uint8_t                     wideBCqiCw0;    /*!< Length of Wideband CQI Codeword 0 */
+   uint8_t                     r1WideBCqiCw1;    /*!< Length of Wideband CQI Codeword 1 for Rank =1*/
+   uint8_t                     rg1WideBCqiCw1;    /*!< Length of Wideband CQI Codeword for Rank > 1 */
+   uint8_t                     r1TotalPmiBitLen;   /*!< Aggregate length of PMI Bits for Rank =1 */
+   uint8_t                     rg1TotalPmiBitLen;  /*!< Aggregate length of PMI Bits for Rank > 1 */
 } RgSchCqiRawPuschMode12;
 
 
@@ -2675,20 +2675,20 @@ typedef struct rgSchDlCqiRawPusch
 
 typedef struct rgSchPuschRawCqiInfoPerCell
 {
-   U8                   sCellIdx;        /*!< Serving cell idx of the cell for
+   uint8_t                   sCellIdx;        /*!< Serving cell idx of the cell for
                                               this cqi info*/
    RgSchDlCqiRawPusch   puschRawCqiInfo; /*!< Raw CQI Bit Width for  PUSCH */
 } RgSchPuschRawCqiInfoPerCell;
 
 typedef struct rgSchPuschRawCqiInfoForSCells 
 {
-   U8                          numOfCells;   /* Num of cells for which Apcqi is comming*/
+   uint8_t                          numOfCells;   /* Num of cells for which Apcqi is comming*/
    RgSchPuschRawCqiInfoPerCell cqiBitWidth[CM_LTE_MAX_CELLS];
 } RgSchPuschRawCqiInfoForSCells;
 
 typedef struct rgSchPucchRawCqiInfoPerCell
 {
-  U8 sCellIdx;                          /*!< Serving cell idx of the cell for
+  uint8_t sCellIdx;                          /*!< Serving cell idx of the cell for
                                              this cqi info*/
   TfuDlCqiPucch        pucchRawCqiInfo;  /*!< Raw CQI Bit Width for PUCCH */
 } RgSchPucchRawCqiInfoPerCell;
@@ -2768,8 +2768,8 @@ struct rgSchUeCellInfo
    CmHashListEnt        ueLstEnt;  /*!< Hash List entity for UE List */
    RgSchUeCb            *ue;        /*!< Pointer to UECB */
 #ifdef LTE_ADV
-   U8                    sCellIdx;   /*!< Serving Cell Index  */
-   U16                   sCellId;    /*!< Secondary Cell Id */
+   uint8_t                    sCellIdx;   /*!< Serving Cell Index  */
+   uint16_t                   sCellId;    /*!< Secondary Cell Id */
    RgSCellStateEnum      sCellState; /* !< For holding the current state of the sec cell */
    CmLList               sCellLnk;   /*!< Node for adding this UE in secondary cell */
 #endif
@@ -2780,10 +2780,10 @@ struct rgSchUeCellInfo
    RgrUeTxModeCfg       txMode;       /*!< UE transmission mode in Secondary */
 #ifdef LTE_TDD
    RgSchTddANInfo       *anInfo;       /*!< ACK/NACK related Information */
-   U8                   nextFreeANIdx; /*!< Next Available ANInfo Index */
+   uint8_t                   nextFreeANIdx; /*!< Next Available ANInfo Index */
 
 #endif
-   U8                    reqForCqi;     /*!< set to True if Aperiodic CQI from UE is required */
+   uint8_t                    reqForCqi;     /*!< set to True if Aperiodic CQI from UE is required */
 #ifdef TFU_UPGRADE
    RgSchUeACqiCb         acqiCb;        /* ! < Aperiodic CQI Report Control Block*/
    RgSchUePCqiCb         cqiCb;      /*!< Periodic CQI PMI RI Control Block */
@@ -2791,9 +2791,9 @@ struct rgSchUeCellInfo
                                          ref: RRC 36.331, 6.3.2, PDSCH-Config*/
    /* RgSchUeRawCqiBitWidthInfo  rawCqiBitW[MAX_CQI_RI_RPT_BUFF]; */
 #endif
-   U8                   cqiRiWritIdx; /*!< write index to be used whenever CQI/RI reception
+   uint8_t                   cqiRiWritIdx; /*!< write index to be used whenever CQI/RI reception
                              request is being filled*/
-   U8                   cqiRiReadIdx; /*!< Read index to be used whenevr CQI/RI indication 
+   uint8_t                   cqiRiReadIdx; /*!< Read index to be used whenevr CQI/RI indication 
                              is recieved from PHY*/
    CmTimer              deactTmr;        /*!< SCell deactivation timer */
    CmTimer              actDelayTmr;        /*!< SCell  timer */
@@ -2817,7 +2817,7 @@ UE */
    RgSchDlLcCb   *lcCb[RGSCH_MAX_LC_PER_UE];/*!< Dedicated Downlink logical channels in
 UE */
    RgrUeDlCqiCfg  ueDlCqiCfg;    /*!< UE DL CQI config */
-   U8             dlInactvMask;  /*!< Bitmask indicating if UE is inactive for DL scheduling */
+   uint8_t             dlInactvMask;  /*!< Bitmask indicating if UE is inactive for DL scheduling */
    RgSchCqiReqField reqForCqi;   /*!< set to True if Aperiodic CQI from UE is required */
    Bool             pCqiPrsnt;     /*!< set to True if periodic CQI from UE is expected */
    Bool             acqiResGrntd;  /*!< Aperiodic CQI resources granted in RB Estimation */
@@ -2834,7 +2834,7 @@ UE */
    RgSchPdcch      spsOccPdcch;      /*!< PDCCH information for SPS ocassion */
 #endif
    /* CA dev Start */
-   U8 numHqDlSfInfo;
+   uint8_t numHqDlSfInfo;
 #ifdef LTE_TDD
    RgSchDlHqInfo *dlSfHqInfo;
 #else
@@ -2846,10 +2846,10 @@ UE */
 #endif
 #endif  
    /* Moved from rgSchCmnDlUe to Here, as this shouldn't be present per cell*/
-   U32            ambrCfgd; /*!< UE's configured AMBR scaled to Refresh Cycle */ 
+   uint32_t            ambrCfgd; /*!< UE's configured AMBR scaled to Refresh Cycle */ 
    /* CA dev End */
    /* Added to restrict max TB Bits in case of more than one CCs for a UE */
-   U32            aggTbBits;        /*!< Aggregated Transport Block Bits this UE can receive per TTI*/
+   uint32_t            aggTbBits;        /*!< Aggregated Transport Block Bits this UE can receive per TTI*/
    CmLteTimingInfo lstSchTime;      /*!< Last Time UE got Scheduled */
 
 } RgSchUeDlCb;
@@ -2866,10 +2866,10 @@ UE */
 
 typedef struct rgSchUeHdFddSfInfo
 {
-  U16             sfn;                   /*!< Store the sfn for updated state
+  uint16_t             sfn;                   /*!< Store the sfn for updated state
                                               Default Value= 0xffff
                                           */
-  U8              subFrmDir;
+  uint8_t              subFrmDir;
                                          /*!< 0x00= DFLT
                                               0x01= DL DATA +(OPT:CNTRL INFO)
                                               0x02= DL CNTRL
@@ -2900,21 +2900,21 @@ typedef struct rgSchDrxUeCb
    Bool     srRcvd;   /*!< TRUE if SR is received from the UE. */
    Bool     raRcvd;   /*!< TRUE if Random access request is received using a
                         dedicated preamble for this UE. */
-   U16      onDurTmrLen;   /*!< Length of onDuration Timer [1 - 200]. */
-   U16      drxStartOffset;   /*!< Value of the DRX Starting Offset [0 - 2559]. */
+   uint16_t      onDurTmrLen;   /*!< Length of onDuration Timer [1 - 200]. */
+   uint16_t      drxStartOffset;   /*!< Value of the DRX Starting Offset [0 - 2559]. */
    S16      onDurExpDistance;   /*!< Keeps track of actual distance */
 
-   U16       drxRetransTmrLen; /*!< Length of DRX Retransmission timer [1 - 33].*/
+   uint16_t       drxRetransTmrLen; /*!< Length of DRX Retransmission timer [1 - 33].*/
 
-   U16      inactvtyTmrLen;   /*!< Length of drx-Inactivity Timer [1 - 2560]. */
+   uint16_t      inactvtyTmrLen;   /*!< Length of drx-Inactivity Timer [1 - 2560]. */
    S16      drxInactDistance;   /*!< Keeps track of actual distance */
 
    Bool     isLongCycle;
-   U16      longDrxCycle;   /*!< Value of the DRX long cycle [10 - 2560]. */
+   uint16_t      longDrxCycle;   /*!< Value of the DRX long cycle [10 - 2560]. */
 
    Bool     isShortCycleCfgd;   /*!< TRUE if short cycle is enabled. */
-   U8       shortCycleTmrLen;   /*!< Value of DRX short cycle Timer [1-16]. */
-   U16      shortDrxCycle;   /*!< Value of the DRX short cycle [2 - 640]. */
+   uint8_t       shortCycleTmrLen;   /*!< Value of DRX short cycle Timer [1-16]. */
+   uint16_t      shortDrxCycle;   /*!< Value of the DRX short cycle [2 - 640]. */
    S16      drxShortCycleDistance;   /*!< Keeps track of actual distance */
 
 
@@ -2928,16 +2928,16 @@ typedef struct rgSchDrxUeCb
 /* The following elements track current indices into the drxQ present at the
  * cell level. These indicies help in fast deletion in case of UE Delete,
  * otherwise it might have required a linear search. */
-   U16      onDurIndx;   /*!< The current index for onDuration Queue. */
-   U16      onDurExpIndx;   /*!< The current index for onDuration Queue. */
-   U16      drxInactvIndx;   /*!< The current index for drx-InactityTmr Queue. */
-   U16      shortCycleIndx;   /*!< The current index for Short Cycle Queue. */
+   uint16_t      onDurIndx;   /*!< The current index for onDuration Queue. */
+   uint16_t      onDurExpIndx;   /*!< The current index for onDuration Queue. */
+   uint16_t      drxInactvIndx;   /*!< The current index for drx-InactityTmr Queue. */
+   uint16_t      shortCycleIndx;   /*!< The current index for Short Cycle Queue. */
 
-   U8       shortCycleTmr;   /*!< Counter to keep track of Short DRX Cycle. */
-   U32      drxDlInactvMask;  /*!< Downlink Mask to track InActivity */
-   U32      drxUlInactvMask;  /*!< Uplink Mask to track InActivity */
-   U32      drxDlInactvMaskPerCell[CM_LTE_MAX_CELLS]; /*!< Downlink Mask to track InActivity per cell */
-   U32      drxUlInactvMaskPerCell[CM_LTE_MAX_CELLS]; /*!< Uplink Mask to track InActivity per cell */
+   uint8_t       shortCycleTmr;   /*!< Counter to keep track of Short DRX Cycle. */
+   uint32_t      drxDlInactvMask;  /*!< Downlink Mask to track InActivity */
+   uint32_t      drxUlInactvMask;  /*!< Uplink Mask to track InActivity */
+   uint32_t      drxDlInactvMaskPerCell[CM_LTE_MAX_CELLS]; /*!< Downlink Mask to track InActivity per cell */
+   uint32_t      drxUlInactvMaskPerCell[CM_LTE_MAX_CELLS]; /*!< Uplink Mask to track InActivity per cell */
 } RgSchDrxUeCb;
 
 
@@ -2947,7 +2947,7 @@ typedef struct rgSchDrxUeCb
 #ifdef RGR_CQI_REPT
 typedef struct RgSchCqiInfo
 {
-   U8        cqiCount;                  /* To keep track of CQI reports
+   uint8_t        cqiCount;                  /* To keep track of CQI reports
                                            received so far */
    RgrUeCqiRept cqiRept[RGR_CQIRPTS_MAXN]; /* Array to maintain CQI reports */
 }RgSchCqiInfo;
@@ -2968,54 +2968,54 @@ typedef struct rgSchLteAdvUeCb
 /*<! Sizes of DCI 0/1/1A/2/2A */
 typedef struct rgSchUeDciSize {
 #ifdef EMTC_ENABLE   
-   U8 cmnSize[TFU_DCI_FORMAT_6_2+1]; /*!< DCI 0/1A/6-0A/6-1A final size in common Search Space and scrambled by C-RNTI */
-   U8 dedSize[TFU_DCI_FORMAT_6_2+1]; /*!< DCI 0/1/1A/2/2A/6-0A/6-1A final size in UE Search Space and scrambled by C-RNTI */
+   uint8_t cmnSize[TFU_DCI_FORMAT_6_2+1]; /*!< DCI 0/1A/6-0A/6-1A final size in common Search Space and scrambled by C-RNTI */
+   uint8_t dedSize[TFU_DCI_FORMAT_6_2+1]; /*!< DCI 0/1/1A/2/2A/6-0A/6-1A final size in UE Search Space and scrambled by C-RNTI */
 #else   
-   U8 cmnSize[TFU_DCI_FORMAT_1A+1]; /*!< DCI 0/1A final size in common Search Space and scrambled by C-RNTI */
-   U8 dedSize[TFU_DCI_FORMAT_2A+1]; /*!< DCI 0/1/1A/2/2A final size in UE Search Space and scrambled by C-RNTI */
+   uint8_t cmnSize[TFU_DCI_FORMAT_1A+1]; /*!< DCI 0/1A final size in common Search Space and scrambled by C-RNTI */
+   uint8_t dedSize[TFU_DCI_FORMAT_2A+1]; /*!< DCI 0/1/1A/2/2A final size in UE Search Space and scrambled by C-RNTI */
 #endif   
-   U8 noUlCcSize[TFU_DCI_FORMAT_2A+1]; /*!< DCI 1/1A final size in UE/Common Search Space when the cell 
+   uint8_t noUlCcSize[TFU_DCI_FORMAT_2A+1]; /*!< DCI 1/1A final size in UE/Common Search Space when the cell 
                                         is SCell and no corresponding UL CC configured */
 } RgSchUeDciSize;
 
 #ifdef RG_PFS_STATS
 typedef struct rgSchPerRefreshStats {
-   U32  remGbr;
-   U32  remDeltaMbr;
-   U32  totByteSchd;
-   U32  lcSchdOcc;
+   uint32_t  remGbr;
+   uint32_t  remDeltaMbr;
+   uint32_t  totByteSchd;
+   uint32_t  lcSchdOcc;
 }RgSchPerRefreshStats;
 
 typedef struct rgSchLcStats
 {
    //Bool           isLcCntSet;
-   //U32            schdOccCnt; 
-   U32            ueSchdOcc[CM_LTE_MAX_CELLS];
-   U32            gbrSatisfiedCnt;
+   //uint32_t            schdOccCnt; 
+   uint32_t            ueSchdOcc[CM_LTE_MAX_CELLS];
+   uint32_t            gbrSatisfiedCnt;
    Bool           ignoredFirstRefresh;
-   U32            gbrRefreshCycleCnt;
-   U32            totGbrBytesSchd;
-   U32            totMbrBytesSchd;
-   U32            achvdFracDataRate;
+   uint32_t            gbrRefreshCycleCnt;
+   uint32_t            totGbrBytesSchd;
+   uint32_t            totMbrBytesSchd;
+   uint32_t            achvdFracDataRate;
    Bool           isRecvdBo;
 #define RGSCH_NUM_STATS_PER_REFRESH 50
-   U32            startIdx;
-   U32            lastIdx;
-   U32            favCellCnt[CM_LTE_MAX_CELLS];
+   uint32_t            startIdx;
+   uint32_t            lastIdx;
+   uint32_t            favCellCnt[CM_LTE_MAX_CELLS];
    RgSchPerRefreshStats perRefresh[RGSCH_NUM_STATS_PER_REFRESH];
 }RgSchLcStats;
 
 typedef struct rgSchCqiStats
 {
-   U32            totalCqiOcc;
-   U32            avgCqi;
+   uint32_t            totalCqiOcc;
+   uint32_t            avgCqi;
 }RgSchCqiStats;
 
 typedef struct rgSchPfsStats
 {
    RgSchLcStats   lcStats[RGSCH_MAX_LC_PER_UE];
-   //U32            ueSchdOcc[CM_LTE_MAX_CELLS];
-   U32            refreshCycleCnt;
+   //uint32_t            ueSchdOcc[CM_LTE_MAX_CELLS];
+   uint32_t            refreshCycleCnt;
    RgSchCqiStats  cqiStats[CM_LTE_MAX_CELLS];
    Bool           isCaUe;
 }RgSchPfsStats;
@@ -3028,14 +3028,14 @@ typedef struct rgSchPfsStats
   */
 typedef struct rgSch5gtfUeCb
 {
-   U8              grpId;      // Group Id 
-   U8              BeamId;     // Beam Id of UE
-   U8              numCC;      // num Carrier configured for UE
-   U8              mcs;        // MCS configured
-   U8              maxPrb;     // Max Prb configured for UE 
+   uint8_t              grpId;      // Group Id 
+   uint8_t              BeamId;     // Beam Id of UE
+   uint8_t              numCC;      // num Carrier configured for UE
+   uint8_t              mcs;        // MCS configured
+   uint8_t              maxPrb;     // Max Prb configured for UE 
    CmLteTimingInfo nxtCqiRiOccn;   /*!< Next CQI RI Occn */
-   U16             cqiRiPer;   /*!< CQI RI periodicity in SFs */
-   U8              rank;       /*!< Latest Rank Report from UE */
+   uint16_t             cqiRiPer;   /*!< CQI RI periodicity in SFs */
+   uint8_t              rank;       /*!< Latest Rank Report from UE */
 }RgSch5gtfUeCb;
 #endif
 
@@ -3045,16 +3045,16 @@ typedef struct rgSch5gtfUeCb
   */
 struct rgSchUeCb
 {
-   U32                  totalBo; /*!<Sum of DL BO across all logical channels*/
-   U32                  totalPrbRequired;/*!<Num of PRB reqd to satisfy DL totlBo*/
+   uint32_t                  totalBo; /*!<Sum of DL BO across all logical channels*/
+   uint32_t                  totalPrbRequired;/*!<Num of PRB reqd to satisfy DL totlBo*/
    /* Added support for SPS*/
 #ifdef LTEMAC_SPS
    CmHashListEnt        spsUeLstEnt;  /*!< Hash List entity for UE List */
-   U32                  spsOccasionCnt; /*!< Total number of SPS occasion cnt*/
+   uint32_t                  spsOccasionCnt; /*!< Total number of SPS occasion cnt*/
 #endif
 #ifdef CQI_CONFBITMASK_DROP
-   U8                   cqiConfBitMask;
-   U8                   prevCqi; 
+   uint8_t                   cqiConfBitMask;
+   uint8_t                   prevCqi; 
 #endif
    RgSchRntiLnk         *rntiLnk;  /*!< Link to RNTI for the UE */
    CmLteRnti            ueId;      /*!< UE identifier */
@@ -3067,7 +3067,7 @@ struct rgSchUeCb
    CmLteTimingInfo      relPdcchTxTime; /*!< Time at which release pdcch is
                                              transmitted */
 #ifdef LTE_TDD
-   U8                   relPdcchValm;   /*!< 'm' for relPdcch */
+   uint8_t                   relPdcchValm;   /*!< 'm' for relPdcch */
 #endif
    CmLteTimingInfo relPdcchFbkTiming;/*!< Release PDCCH feedback timing for
                                           the UE: value used by DHM */
@@ -3082,7 +3082,7 @@ struct rgSchUeCb
                                                               indication */
    CmLteTimingInfo      macCeRptTime;/*!< Timing info of the last received
                                        *  MAC CE (BSR/PHR) */
-   U32                  y[RGSCH_NUM_SUB_FRAMES]; /*!< 'Y' values calculated 
+   uint32_t                  y[RGSCH_NUM_SUB_FRAMES]; /*!< 'Y' values calculated 
                                                      using C-RNTI and subframe
                                                      no based on formula
                                                      present in sec 9.1.1 of 
@@ -3108,7 +3108,7 @@ struct rgSchUeCb
                                       */
    struct
    {
-      U32          bo;            /*!< Buffer occupancy for
+      uint32_t          bo;            /*!< Buffer occupancy for
                                     CCCH */
    } dlCcchInfo;                  /*!< Params for DL
                                     CCCH */
@@ -3144,14 +3144,14 @@ struct rgSchUeCb
                                              tmr has to be started for DL */
 #ifdef TFU_UPGRADE
   
-   U8     validTxAnt;  /*! < Tx Antenna selected after computing the CQI among two Antennas*/
+   uint8_t     validTxAnt;  /*! < Tx Antenna selected after computing the CQI among two Antennas*/
 
-   U8     cqiRiWritIdx; /*!< write index to be used whenever CQI/RI reception
+   uint8_t     cqiRiWritIdx; /*!< write index to be used whenever CQI/RI reception
                              request is being filled*/
-   U8     cqiRiReadIdx; /*!< Read index to be used whenevr CQI/RI indication 
+   uint8_t     cqiRiReadIdx; /*!< Read index to be used whenevr CQI/RI indication 
                              is recieved from PHY*/
    RgSchUeRawCqiBitWidthInfo  rawCqiBitW[MAX_CQI_RI_RPT_BUFF];
-   U8     initNumRbs; /* No. of RBs allocated for UL Data New Transmission */
+   uint8_t     initNumRbs; /* No. of RBs allocated for UL Data New Transmission */
 #endif
 
 /* ccpu00117452 - MOD - Changed macro name from
@@ -3175,12 +3175,12 @@ struct rgSchUeCb
 
 
 #ifdef LTE_L2_MEAS
-   U8 qciActiveLCs[LRG_MAX_QCI]; /* This structure has number of active LCs per 
+   uint8_t qciActiveLCs[LRG_MAX_QCI]; /* This structure has number of active LCs per 
                                     Qci for this UE */ /* L2_COUNTERS */
-   U16 ulActiveLCs;     /* This is a bitmask - Each bit representing a QCI
+   uint16_t ulActiveLCs;     /* This is a bitmask - Each bit representing a QCI
                            LSB - QCI 1 ... When bit is set, UE has an active
                            LC for that QCI */
-   U16 lastDatIndLCs;     /* This is a bitmask - Each bit representing a QCI
+   uint16_t lastDatIndLCs;     /* This is a bitmask - Each bit representing a QCI
                             for which Data for received in UL 
                            LSB - QCI 1 ... When bit is set, UE has an active
                            LC for that QCI */
@@ -3197,8 +3197,8 @@ struct rgSchUeCb
    U64             absTimeBo;
    U64             absTimeSched;
 #endif
-   U8           refreshOffset; /*!< UE referesh offset */
-   U8              csgMmbrSta;        /*!< CSG Membership status configured */
+   uint8_t           refreshOffset; /*!< UE referesh offset */
+   uint8_t              csgMmbrSta;        /*!< CSG Membership status configured */
 #ifdef TENB_STATS
    TSL2UeStatsCb   *tenbStats; /*!< UE Stats Holder */
 #endif
@@ -3212,7 +3212,7 @@ struct rgSchUeCb
 #endif
 #ifdef LTE_ADV
    TknU32          sCellDeactTmrVal; /* !< SCell Deactivation Timer Value */
-   U8              f1bCsAVal; /* !< A value mentioned in table 10.12.2.1-1 of 36.213. This will tell
+   uint8_t              f1bCsAVal; /* !< A value mentioned in table 10.12.2.1-1 of 36.213. This will tell
                             the max number of tbs possible based on TM mode of each configured 
                             scell. It is used only for F1B with channel selection*/
 #endif
@@ -3222,23 +3222,23 @@ struct rgSchUeCb
    RgrSchFrmt1b3TypEnum  uciFrmtTyp; /*!< Store value of format1bcs or format3.It
                                        is updated from upper layer*/
 /*f1b_Sprint3*/
-   U8             numSCells; /* !< number of configured SCells */
-   U8             cellIdToCellIdxMap[CM_LTE_MAX_CELLS]; /*!< Mapping info of Cell Id to Cell Idx */
+   uint8_t             numSCells; /* !< number of configured SCells */
+   uint8_t             cellIdToCellIdxMap[CM_LTE_MAX_CELLS]; /*!< Mapping info of Cell Id to Cell Idx */
 
    RgSchUeCellInfo *cellInfo[CM_LTE_MAX_CELLS]; /*!< DL Sec Cell Information */
 #ifdef TFU_UPGRADE
    RgSchUePCqiCb   *nPCqiCb;  /*!< Pointer to Periodic Cqi CB for which next CQI is expected*/
    RgSchUePCqiCb   *nPRiCb;   /*!< Pointer to Periodic Cqi CB for which next RI is expected*/
 #endif
-   U8              remBoCnt;     /*!< count of occurence when BO is not fullfilled
+   uint8_t              remBoCnt;     /*!< count of occurence when BO is not fullfilled
                                 in a TTI */
-   U8              *zeroBoCnt;   /*!< pointer of count of occurence when BO is
+   uint8_t              *zeroBoCnt;   /*!< pointer of count of occurence when BO is
                                    Zero */
 #ifdef LTE_ADV
    Bool            isScellExplicitDeAct; /*!< TRUE when SCELL deactivation timer is Infinity/Not configured */
    Bool            allocCmnUlPdcch;  /*!< If this flag is TRUE, allocate PDCCH from Common
                                         search space */
-   U8              simulAckNackCQIFormat3; /* !< Flag for simultanious A/N and CQI on PUCCH Format 3 */
+   uint8_t              simulAckNackCQIFormat3; /* !< Flag for simultanious A/N and CQI on PUCCH Format 3 */
 #endif
    RgSchUeDciSize  dciSize;          /*!< DCI Sizes */
    RgrAccessStratumRls accessStratumRls; /*!< UE Release */
@@ -3297,7 +3297,7 @@ typedef struct rgSchLowSapCb
 {
    RgSchLowSapCfgInfo sapCfg;          /*!< SAP configuration info */
    RgSapSta           sapSta;          /*!< SAP Status */
-   U8                 numBndRetries;   /*!< Number of Bind Retries */
+   uint8_t                 numBndRetries;   /*!< Number of Bind Retries */
    RgSchCellCb        *cell;           /*!< Cell associated with this SAP */
    CmTimer            tmrBlk;       /*!< Timer Block associated with this SAP */
 }RgSchLowSapCb;
@@ -3323,14 +3323,14 @@ typedef enum sfnEnum
 
 typedef struct rgSchConfigIdx
 {
-   U8         configurationIndex; /* New RGR Cell cfg */
+   uint8_t         configurationIndex; /* New RGR Cell cfg */
    SfnEnum    sfn;
-   U8         subframes[10];
+   uint8_t         subframes[10];
 } RgSchConfigIdx;
 
 typedef struct rgSchRapId
 {
-   U8                rapId;
+   uint8_t                rapId;
    CmLteTimingInfo   lastAllocPRACHMaskIdx;
 } RgSchRapId;
 
@@ -3367,13 +3367,13 @@ typedef struct rgSchAckNakRepCb
   */
 typedef struct rgSchBwRbgInfo
 {
-   U8     numRbs;        /*!< Total number of RBs for which information is
+   uint8_t     numRbs;        /*!< Total number of RBs for which information is
                               stored */
-   U8     numRbgs;       /*!< Number of RBGs for the BW (rounded off to the
+   uint8_t     numRbgs;       /*!< Number of RBGs for the BW (rounded off to the
                               closest RBG number */
-   U8     rbgSize;        /*!< RBG size */
-   U8     lastRbgSize;    /*!< Last RBG size : in number of RBs */
-   U8     rbgSubsetSize[RG_SCH_NUM_RATYPE1_SUBSETS]; /*!< RBG Subset 0,1,2,3
+   uint8_t     rbgSize;        /*!< RBG size */
+   uint8_t     lastRbgSize;    /*!< Last RBG size : in number of RBs */
+   uint8_t     rbgSubsetSize[RG_SCH_NUM_RATYPE1_SUBSETS]; /*!< RBG Subset 0,1,2,3
                                                           sizes: number of RBs
                                                       */
 }RgSchBwRbgInfo;
@@ -3419,8 +3419,8 @@ typedef struct rgSchDRXCellCb
 typedef struct sib1Info
 {
    Buffer *sib1;
-   U8      mcs;
-   U8      nPrb; 
+   uint8_t      mcs;
+   uint8_t      nPrb; 
    MsgLen  msgLen;
 }RgSchSib1Info;
 
@@ -3428,8 +3428,8 @@ typedef struct sib1Info
 typedef struct siInfo
 {
    Buffer *si;
-   U8      mcs;
-   U8      nPrb; 
+   uint8_t      mcs;
+   uint8_t      nPrb; 
    MsgLen  msgLen;
 }RgSchSiInfo;
 
@@ -3446,12 +3446,12 @@ typedef struct rgSchSiCfgInfo
   @brief SI Context information per SI. */
 typedef struct rgSchSiCtx
 {
-   U8   siId;             /*!< SI Id */
+   uint8_t   siId;             /*!< SI Id */
    CmLteTimingInfo timeToTx;   /*!< Time at which the SI for this SI
                                     context need to be scheduled.*/
    CmLteTimingInfo maxTimeToTx;/*!< Max Time to TX for this SI */
-   U8              retxCntRem; /*!< SI retransmit count remaining */
-   U16             i;          /*!< Value used to calculate the Riv of SI */
+   uint8_t              retxCntRem; /*!< SI retransmit count remaining */
+   uint16_t             i;          /*!< Value used to calculate the Riv of SI */
    Bool           warningSiFlag; /*!< Flag for Warning SI */
 } RgSchSiCtx;
 
@@ -3462,8 +3462,8 @@ typedef struct warningSiPdu
 {
    CmLList lnk;
    Buffer *pdu;
-   U8      mcs;
-   U8      nPrb; 
+   uint8_t      mcs;
+   uint8_t      nPrb; 
    MsgLen  msgLen;
 }RgSchWarningSiPdu;
 
@@ -3485,8 +3485,8 @@ typedef struct warningSi
    /* ccpu00136659: CMAS ETWS design changes */
    RgSchWarningSiSeg      warningSiMsg;
                           /*!< Each node contains LList of si segments. */
-   U8                     siId; /*!< Warning SI ID */
-   U8                     idx; /*!< Warning SI Idx in RgSchWarningSiInfo */
+   uint8_t                     siId; /*!< Warning SI ID */
+   uint8_t                     idx; /*!< Warning SI Idx in RgSchWarningSiInfo */
 }RgSchWarningSiInfo;
 
 /**
@@ -3520,7 +3520,7 @@ typedef struct rgSchSiCb
 /* R8 Upgrade */
 typedef struct rgSchBiInfo
 {
-   U16             prevBiTime;   /*!< Previous BI Value in ms Calculated and
+   uint16_t             prevBiTime;   /*!< Previous BI Value in ms Calculated and
                                    Sent in Previous Response */
    CmLteTimingInfo biTime;       /*!< Time at which previous BI sent */
 } RgSchBiInfo;
@@ -3528,9 +3528,9 @@ typedef struct rgSchBiInfo
 /* RRM_SP1_START */
 typedef struct rgSchQciPrbUsage
 {
-   U8  qci;          /*!< QCI of the Logical Channel */
-   U32 dlTotPrbUsed; /*!<  total PRB used for DL within one interval*/
-   U32 ulTotPrbUsed; /*!< total PRB used for UL within one interval*/
+   uint8_t  qci;          /*!< QCI of the Logical Channel */
+   uint32_t dlTotPrbUsed; /*!<  total PRB used for DL within one interval*/
+   uint32_t ulTotPrbUsed; /*!< total PRB used for UL within one interval*/
 }RgSchQciPrbUsage;
 
 /* RRM_SP1_END */
@@ -3538,7 +3538,7 @@ typedef struct rgSchQciPrbUsage
 typedef struct rgSchPrbUsage
 {
    Bool prbRprtEnabld; /*!< reporting is enabled or not*/
-   U16 rprtPeriod; /*!< reporting interval to send PRB usage to the 
+   uint16_t rprtPeriod; /*!< reporting interval to send PRB usage to the 
                         RRM (in subframes)*/
    CmLteTimingInfo startTime; /*!< timing information when the summation is 
                                    started in terms of sfn and subframe*/
@@ -3567,9 +3567,9 @@ typedef struct rgSchLteAdvFeatureCb
    RgrAbsConfig               absCfg; /*!< Configuration of ABS feature */
    RgSchAbsSfEnum             absDlSfInfo; /*< Flag to indicate current scheduling 
                                              DL subframe is ABS subframe or not */
-   U8                         absPatternDlIdx;
-   U32                        absLoadTtiCnt;                   
-   U32                        absLoadInfo[RGR_ABS_PATTERN_LEN];
+   uint8_t                         absPatternDlIdx;
+   uint32_t                        absLoadTtiCnt;                   
+   uint32_t                        absLoadInfo[RGR_ABS_PATTERN_LEN];
 } RgSchLteAdvFeatureCb;
 /* LTE_ADV_FLAG_REMOVED_END */
 
@@ -3577,20 +3577,20 @@ typedef struct rgSchLteAdvFeatureCb
  * mentioned, baseSize is the final size of the DCI */
 typedef struct rgSchCellDciSize {
 #ifdef EMTC_ENABLE   
-   U8 baseSize[TFU_DCI_FORMAT_6_2+1]; /*!< Fixed Base Size of DCI 0/1/1A/6-0A/6-1A/6-0B/6-1B/6-2 without any adjustment */
-   U8 size[TFU_DCI_FORMAT_6_2+1]; /*!< DCI 0/1A final size in common Search Space and not scrambled by C-RNTI
+   uint8_t baseSize[TFU_DCI_FORMAT_6_2+1]; /*!< Fixed Base Size of DCI 0/1/1A/6-0A/6-1A/6-0B/6-1B/6-2 without any adjustment */
+   uint8_t size[TFU_DCI_FORMAT_6_2+1]; /*!< DCI 0/1A final size in common Search Space and not scrambled by C-RNTI
                                       DCi 3/3A final sizes
                                       DCI 2/2A final sizes 
                                       DCI 6-0A/6-0B final sizes 
                                       DCI 6-1A/6-1B final sizes 
                                       DCI 6-2 final sizes */
 #else                                      
-   U8 baseSize[TFU_DCI_FORMAT_1A+1]; /*!< Fixed Base Size of DCI 0/1/1A without any adjustment */
-   U8 size[TFU_DCI_FORMAT_3A+1]; /*!< DCI 0/1A final size in common Search Space and not scrambled by C-RNTI
+   uint8_t baseSize[TFU_DCI_FORMAT_1A+1]; /*!< Fixed Base Size of DCI 0/1/1A without any adjustment */
+   uint8_t size[TFU_DCI_FORMAT_3A+1]; /*!< DCI 0/1A final size in common Search Space and not scrambled by C-RNTI
                                       DCi 3/3A final sizes
                                       DCI 2/2A final sizes */
 #endif                                      
-   U8 dci0HopSize;               /*!< DCI 0 Hop Size */
+   uint8_t dci0HopSize;               /*!< DCI 0 Hop Size */
 } RgSchCellDciSize;
 
 /**
@@ -3599,10 +3599,10 @@ typedef struct rgSchCellDciSize {
   */
 typedef struct rgSchMeasCb
 {
-   U32 dlTpt; /*!< DL Bytes served in a fixed time PERIOD */
-   U32 dlBytesCnt; /*!< DL Bytes served from start of this time period */
-   U32 ulTpt; /*!< DL Bytes served in a fixed time PERIOD */
-   U32 ulBytesCnt; /*!< UL Bytes served from start of this time period */
+   uint32_t dlTpt; /*!< DL Bytes served in a fixed time PERIOD */
+   uint32_t dlBytesCnt; /*!< DL Bytes served from start of this time period */
+   uint32_t ulTpt; /*!< DL Bytes served in a fixed time PERIOD */
+   uint32_t ulBytesCnt; /*!< UL Bytes served from start of this time period */
 }RgSchMeasCb;
 
 /**
@@ -3611,8 +3611,8 @@ typedef struct rgSchMeasCb
   */
 typedef struct rgSchThrsldsCb
 {
-   U8 maxDlItbs;
-   U8 maxUlItbs;
+   uint8_t maxDlItbs;
+   uint8_t maxUlItbs;
 }RgSchThrsldsCb;
 /**
   * @brief
@@ -3620,13 +3620,13 @@ typedef struct rgSchThrsldsCb
   */
 typedef struct rgSchCpuOvrLdCntrlCb 
 {
-   U8  cpuOvrLdIns;
-   U32 tgtDlTpt;
-   U32 tgtUlTpt;
-   U8  dlNxtIndxDecNumUeTti; /*!< Total DL num UE per TTI reduction instruction applied */
-   U8  ulNxtIndxDecNumUeTti; /*!< Total UL num UE per TTI reduction instruction applied */
-   U8  maxUeNewTxPerTti[10]; /*!< list of subframe  where DL num UE per TTI reduction applied */
-   U8  maxUeNewRxPerTti[10]; /*!< list of subframe  where UL num UE per TTI reduction applied */
+   uint8_t  cpuOvrLdIns;
+   uint32_t tgtDlTpt;
+   uint32_t tgtUlTpt;
+   uint8_t  dlNxtIndxDecNumUeTti; /*!< Total DL num UE per TTI reduction instruction applied */
+   uint8_t  ulNxtIndxDecNumUeTti; /*!< Total UL num UE per TTI reduction instruction applied */
+   uint8_t  maxUeNewTxPerTti[10]; /*!< list of subframe  where DL num UE per TTI reduction applied */
+   uint8_t  maxUeNewRxPerTti[10]; /*!< list of subframe  where UL num UE per TTI reduction applied */
 }RgSchCpuOvrLdCntrlCb; 
 
 /**
@@ -3638,9 +3638,9 @@ struct rgSchCellCb
    CmLteCellId   cellId;           /*!< Cell ID */
    Inst          instIdx;          /*!< Index of the scheduler instance */
    Inst          macInst;          /*!< Index of the MAC instance */
-   U8            schTickDelta;     /* 4UE_TTI_DELTA */
+   uint8_t            schTickDelta;     /* 4UE_TTI_DELTA */
    Bool          stopSiSch;        /*!< If TRUE Bcch,Pcch Scheduling is not done */
-   U8            stopDlSch;        /*!< If TRUE DL scheduling is not done */ 
+   uint8_t            stopDlSch;        /*!< If TRUE DL scheduling is not done */ 
    Bool          stopUlSch;        /*!< If TRUE UL scheduling is not done */
    Bool          isDlDataAllwd;    /*!< FALSE for Uplink subframes */ 
    RgrDlHqCfg    dlHqCfg;          /*!< HARQ related configuration */
@@ -3653,11 +3653,11 @@ struct rgSchCellCb
 
    Bool            isCpUlExtend;       /*!< Cyclic prefix : TRUE-extended/FALSE-normal */
    Bool            isCpDlExtend;       /*!< Cyclic prefix : TRUE-extended/FALSE-normal */
-   U8              numTxAntPorts;    /*!< Number of Tx antenna ports */
+   uint8_t              numTxAntPorts;    /*!< Number of Tx antenna ports */
    RgrBwCfg        bwCfg;            /*!< Bandwidth Configuration */
-   U8              pbchRbStart;      /*!< Indicates the Start RB of the center 6 RBs of DL BW */
-   U8              pbchRbEnd;        /*!< Indicates the Start RB of the center 6 RBs of DL BW */
-   U8              numCellRSPerSf;   /*!< Indicates the number of cell specific
+   uint8_t              pbchRbStart;      /*!< Indicates the Start RB of the center 6 RBs of DL BW */
+   uint8_t              pbchRbEnd;        /*!< Indicates the Start RB of the center 6 RBs of DL BW */
+   uint8_t              numCellRSPerSf;   /*!< Indicates the number of cell specific
                                           Reference symbols in a Subframe */
    RgrPhichCfg     phichCfg;         /*!< PHICH Config Information */
    RgrPucchCfg     pucchCfg;         /*!< PUCCH Config Information */
@@ -3681,8 +3681,8 @@ struct rgSchCellCb
    CmLteTimingInfo rcpReqTime;       /*!< SFN, SF for UL reception Request */ 
    RgSchCfgCfb     rgCfgInfo;        /*!< Control block for configuration related
                                           information  */
-   U8              ulCcchId;         /*!< LcId for uplink CCCH */
-   U8              dlCcchId;         /*!< LcId for downlink CCCH */
+   uint8_t              ulCcchId;         /*!< LcId for uplink CCCH */
+   uint8_t              dlCcchId;         /*!< LcId for downlink CCCH */
    RgSchClcDlLcCb  cmnLcCb[RGSCH_MAX_CMN_LC_CB]; /*!< BCCH/PCCH logical channel control block */
    CmHashListCp    ueLst;                     /*!< Hash list of UE control
                                                    blocks: RgSchUeCb */
@@ -3706,7 +3706,7 @@ struct rgSchCellCb
    CmLListCp       pdcchLst;         /*!< List of free RgSchPdcch structures */
    CmTqCp          tqCp;
    CmTqType        tq[RGSCH_UE_TQ_SIZE];
-   U8              crntSfIdx;       /*!< Current index for allocation */
+   uint8_t              crntSfIdx;       /*!< Current index for allocation */
 #ifdef LTE_TDD
    RgInfSfAlloc    sfAllocArr[RGSCH_SF_ALLOC_SIZE]; /*!< Subframe Allocation
                                             info to be sent to MAC */
@@ -3716,7 +3716,7 @@ struct rgSchCellCb
 #endif
    RgInfRlsHqInfo  rlsHqArr[RGSCH_NUM_SUB_FRAMES]; /*!< Harq Release
                                             info to be sent to MAC */
-   U8              crntHqIdx;       /*!< Current index for Harq release info */
+   uint8_t              crntHqIdx;       /*!< Current index for Harq release info */
    RgSchLowSapCb   *tfuSap;
 /* Added for sending TTI tick to RRM */
 #if (defined(RGR_RRM_TICK) || defined(RGR_CQI_REPT))
@@ -3726,7 +3726,7 @@ struct rgSchCellCb
    RgSchUpSapCb    *rgmSap;         /*!< Pointer to the cell's RGM SAP
                                       Control Block */
 #ifdef RGR_RRM_TICK
-   U8               rrmTtiIndPrd;   /*!< Periodicity of TTI indication from
+   uint8_t               rrmTtiIndPrd;   /*!< Periodicity of TTI indication from
                                          MAC towards RGR user. Range [1-255]. A
                                          value of 1 means one tick per System
                                          Frame and 2 means one tick per 2 System
@@ -3737,9 +3737,9 @@ struct rgSchCellCb
    RgSchAckNakRepCb  ackNakRepCb;  /*!< Ack-Nack Repetition control block */
 #ifdef LTE_TDD
    RgSchTddRachRspLst   *rachRspLst;     /*!< List of awaiting RACH responses */
-   U8                   numDlSubfrms;    /*!< Number of DL subframes */
-   U8                   ulDlCfgIdx;      /*!< UL-DL Configuration Index */
-   U8                   ackNackFdbkArrSize; /*!< Maximum Number of Ack/Nack 
+   uint8_t                   numDlSubfrms;    /*!< Number of DL subframes */
+   uint8_t                   ulDlCfgIdx;      /*!< UL-DL Configuration Index */
+   uint8_t                   ackNackFdbkArrSize; /*!< Maximum Number of Ack/Nack 
                                                feedback information to be 
                                                stored */
    S8                   tddHqSfnCycle;   /*!< Counter to keep track of the
@@ -3759,12 +3759,12 @@ struct rgSchCellCb
                                             N1 resources for scell in case of F1B CS */
 #else
    RgSchDlSf          *subFrms[RGSCH_NUM_DL_slotS];
-   U16             nCce;
+   uint16_t             nCce;
 #endif
    RgSchDynCfiCb         dynCfiCb;        /*!< Dynamic CFI control block */  
 /* Changes for MIMO feature addition */
-   U8                   noOfRbgs;       /*!< Number of RBGs for this bw */
-   U8                   rbgSize;        /*!< RBG Size */
+   uint8_t                   noOfRbgs;       /*!< Number of RBGs for this bw */
+   uint8_t                   rbgSize;        /*!< RBG Size */
    /* Added support for SPS*/
 #ifdef LTEMAC_SPS
    RgSchBwRbgInfo     dlBwRbgInfo; /*!< RBG information for the configured
@@ -3786,7 +3786,7 @@ struct rgSchCellCb
    RgSchTbCnt        dlUlTbCnt;             /*!< Count of DL and UL TB transmitteed and Faulty 
                                               TB (for wich NACK is received) */
 #endif /* LTE_L2_MEAS */
-   U8                ulAvailBw;            /*!< Total Uplink band width available
+   uint8_t                ulAvailBw;            /*!< Total Uplink band width available
                                               for this sub frame */
 #ifdef TFU_UPGRADE
  RgSchPerPucchCb   pCqiSrsSrLst[RG_SCH_PCQI_SRS_SR_TRINS_SIZE];
@@ -3804,7 +3804,7 @@ struct rgSchCellCb
    RgSchSiCb       siCb;            /*!< SI Control Block */
 #endif /*RGR_SI_SCH */
    RgSchPrbUsage prbUsage; /*!< measures average PRB usage for configured interval*/
-   U16  t300TmrVal; /*!< t300Timer value configured in Frames */
+   uint16_t  t300TmrVal; /*!< t300Timer value configured in Frames */
 /* LTE_ADV_FLAG_REMOVED_START */
    TknStrOSXL            rntpAggrInfo;    /*!< RNTP Info */
    RgrLoadInfReqInfo     loadInfReqInfo;  /*!< Consists startRb & endRb 
@@ -3813,18 +3813,18 @@ struct rgSchCellCb
    RgSchLteAdvFeatureCb  lteAdvCb;        /*!< Control block for LTE Adv 
                                                features */
 /* LTE_ADV_FLAG_REMOVED_END */
-   U32   dlNumUeSchedPerTti[RG_MAX_NUM_UE_PER_TTI]; /*!<DL mUe/Tti histograms*/
-   U32   ulNumUeSchedPerTti[RG_MAX_NUM_UE_PER_TTI]; /*!<UL mUe/Tti histograms*/
+   uint32_t   dlNumUeSchedPerTti[RG_MAX_NUM_UE_PER_TTI]; /*!<DL mUe/Tti histograms*/
+   uint32_t   ulNumUeSchedPerTti[RG_MAX_NUM_UE_PER_TTI]; /*!<UL mUe/Tti histograms*/
    Bool  overLoadBackOffEnab; /*!< Overload Rach Backoff enable/disable */
-   U8    overLoadBackOffval;  /*!< Overload Rach BackOff value */
-   U8    refreshUeCnt[RGSCH_MAX_REFRESH_OFFSET];  /*! To maintain number of UE refreshed per subframe */
-   U8    minDlResNonCsg;     /*!< Minimum DL resources reserved for Non CSG UEs */
-   U8    minUlResNonCsg;     /*!< Minimum UL resources reserved for CSG UEs */
+   uint8_t    overLoadBackOffval;  /*!< Overload Rach BackOff value */
+   uint8_t    refreshUeCnt[RGSCH_MAX_REFRESH_OFFSET];  /*! To maintain number of UE refreshed per subframe */
+   uint8_t    minDlResNonCsg;     /*!< Minimum DL resources reserved for Non CSG UEs */
+   uint8_t    minUlResNonCsg;     /*!< Minimum UL resources reserved for CSG UEs */
    Bool isAutoCfgModeEnb;     /*!< Indicates Auto config of TM mode is enabled or
                                disabled. True - Enabled, False - Disabled */
    CmLListCp lcMonitorLst;         /*LC Lst used for flow cntrl */
-   U32       prbCnt;         /*!<PRB usage in flow control interval*/
-   U32       maxPrbCnt;      /*!<Max PRB cnt after which Flow Cntrl 
+   uint32_t       prbCnt;         /*!<PRB usage in flow control interval*/
+   uint32_t       maxPrbCnt;      /*!<Max PRB cnt after which Flow Cntrl 
                                can be triggered */
    RgSchCpuOvrLdCntrlCb cpuOvrLdCntrl; /*!< CPU Overload control state info */
    RgSchMeasCb          measurements;  /*!< Cell level measurements */
@@ -3838,15 +3838,15 @@ struct rgSchCellCb
    Bool             isPucchFormat3Sptd;
 #endif
 #ifdef RG_PFS_STATS
-   U32              totalPrb;
-   U32              totalTime;
+   uint32_t              totalPrb;
+   uint32_t              totalTime;
 #endif
    Void *            laaCb;
 #ifdef EMTC_ENABLE
    /* TODO:: Below members need to be moved
     * to emtc specific files and have void * 
     * here */
-   U8                    emtcEnable;
+   uint8_t                    emtcEnable;
    Void                  *emtcCb;
    RgSchRntiDb           emtcRntiDb;           /*!< RNTIs DB: range of rntis to be managed by MAC */
 #endif
@@ -3862,10 +3862,10 @@ struct rgSchCellCb
   */
 typedef struct rgSchGenCb
 {
-   U8              tmrRes;           /*!< Timer resolution */
+   uint8_t              tmrRes;           /*!< Timer resolution */
    RgSchLmResponse *bndCfmResp;       /*!< Respones value for Bind Confirm */
    RgSchLmResponse ustaResp;         /*!< Respones value for Alarms */
-   U8              startCellId;      /*!< Starting Cell Id */
+   uint8_t              startCellId;      /*!< Starting Cell Id */
 #ifdef LTE_ADV
    Bool            forceCntrlSrbBoOnPCel; /*!< value 1 means force scheduling
                                                of RLC control BO and SRB BO on
@@ -3914,7 +3914,7 @@ typedef struct rgSchGenCb
 
 typedef struct rgSchDynTddSfType
 {
-  U8              sfType;  /*!< 0= NOT Defined 
+  uint8_t              sfType;  /*!< 0= NOT Defined 
                                 1= DL Cntrl + DL Data
                                 2= DL Cntrl + DL Data + UL Cntrl
                                 3= DL Cntrl + UL Data
@@ -3928,7 +3928,7 @@ typedef struct rgSchDynTddSfType
 typedef struct rgSchDynTddCb
 {
    Bool                 isDynTddEnbld; /*!< Is dynamic TDD enabled */
-   U8                   crntDTddSfIdx; /*!< Pivot Index corresponding 
+   uint8_t                   crntDTddSfIdx; /*!< Pivot Index corresponding 
                                             cell's current subframe */ 
    RgSchDynTddSfType    sfInfo[RG_SCH_DYNTDD_MAX_SFINFO]; 
 }RgSchDynTddCb;
@@ -3943,15 +3943,15 @@ struct _rgSchCb
 {
    TskInit       rgSchInit;                    /*!< Task Init info */
    RgSchGenCb    genCfg;                    /*!< General Config info */
-   U8            numSaps;                   /*!< Num RGR Saps = Num TFU Saps */
+   uint8_t            numSaps;                   /*!< Num RGR Saps = Num TFU Saps */
    RgSchUpSapCb  *rgrSap;                    /*!< RGR SAP Control Block */
    RgSchLowSapCb *tfuSap;                    /*!< TFU SAP Control Block */
    RgSchUpSapCb  *rgmSap;                    /*!< TFU SAP Control Block */
    CmTqCp        tmrTqCp;                   /*!< Timer Task Queue Cntrl Point */
    CmTqType      tmrTq[RGSCH_TQ_SIZE];         /*!< Timer Task Queue */
-   U8            rgSchDlDelta;                /* 4UE_TTI_DELTA */
-   U8            rgSchCmnDlDelta;
-   U8            rgSchUlDelta;
+   uint8_t            rgSchDlDelta;                /* 4UE_TTI_DELTA */
+   uint8_t            rgSchCmnDlDelta;
+   uint8_t            rgSchUlDelta;
    RgSchCellCb   *cells[CM_LTE_MAX_CELLS];  /* Array to store cellCb ptr */  
    RgrSchedEnbCfg rgrSchedEnbCfg;                  /*!< eNB level RR/PFS Config */
    Void          *rgSchEnbPfsDl;             /*!< eNB level PFS DL Block */
@@ -4007,9 +4007,9 @@ struct rgSchRaCb
    RgSchRaState    raState;       /*!< Random access state */
    struct
    {
-      U32          bo;            /*!< Buffer occupancy for CCCH */
+      uint32_t          bo;            /*!< Buffer occupancy for CCCH */
    } dlCcchInfo;                  /*!< Params for DL CCCH */
-   U8              msg3HqProcId;  /*!< Msg3 Harq Process ID */
+   uint8_t              msg3HqProcId;  /*!< Msg3 Harq Process ID */
    /*ccpu00128820 - DEL - msg3HqProcRef is delete for Msg3 alloc double delete issue*/
    RgSchUlHqProcCb msg3HqProc;    /*!< msg3HqProcRef points to this initially */
    RgSchUeCb       *ue;           /*!< NULL initially */
@@ -4017,12 +4017,12 @@ struct rgSchRaCb
    TknU8           phr;           /*!< To store the PHR, if received along with
                                        Msg3 */
    CmLList         rspLnk;        /*!< Used to link RACB to a frame for resp */
-   U8              rapId;         /*!< RAP ID */
+   uint8_t              rapId;         /*!< RAP ID */
    TknU16          ta;            /*!< Timing Adjustment */
    RgSchUlGrnt     msg3Grnt; /*!< Msg3 grant as given by the UL Sched */
-   U32             y[RGSCH_NUM_SUB_FRAMES]; /*!< y values using tmpCrnti by DLSCHED */
+   uint32_t             y[RGSCH_NUM_SUB_FRAMES]; /*!< y values using tmpCrnti by DLSCHED */
    RgSchDlHqEnt    *dlHqE;     /*!< DL HARQ module */
-   U8              ccchCqi;     /*!< DL Cqi obtained from RaReq and Used for CCCH */
+   uint8_t              ccchCqi;     /*!< DL Cqi obtained from RaReq and Used for CCCH */
    RgSchDlRbAlloc  rbAllocInfo; /*!< RB Allocation Info for MSG4 Trans/Retrans */
    /* PHR handling for MSG3 */
    CmLteTimingInfo msg3AllocTime; /*!< Allocation time for msg3 grant */
@@ -4033,7 +4033,7 @@ struct rgSchRaCb
    CmLteTimingInfo expiryTime; /*!< Expiry time for Guard/Contention
              Resolution timers */
 
-   U32             ccchSduBo;   /*!<To store CCCH SDU BO if it arrives while
+   uint32_t             ccchSduBo;   /*!<To store CCCH SDU BO if it arrives while
               ContRes CE is transmitting or retransmitting*/
 #endif
 #ifdef EMTC_ENABLE
@@ -4048,17 +4048,17 @@ struct rgSchRaCb
   */
 struct rgSchErrInfo
 {
-   U8    errType;    /*!< Error Type */
-   U16   errCause;   /*!< Cause of Error */
+   uint8_t    errType;    /*!< Error Type */
+   uint16_t   errCause;   /*!< Cause of Error */
 };
 
 /* Global Variables */
 #ifdef LTE_TDD
 
 #ifdef LTEMAC_SPS
-EXTERN U8 rgSchTddSpsDlMaxRetxTbl[RGSCH_MAX_TDD_UL_DL_CFG]; 
+EXTERN uint8_t rgSchTddSpsDlMaxRetxTbl[RGSCH_MAX_TDD_UL_DL_CFG]; 
 #endif
-typedef U8 RgSchTddUlDlSubfrmTbl[RGSCH_MAX_TDD_UL_DL_CFG][RGSCH_NUM_SUB_FRAMES];
+typedef uint8_t RgSchTddUlDlSubfrmTbl[RGSCH_MAX_TDD_UL_DL_CFG][RGSCH_NUM_SUB_FRAMES];
 EXTERN RgSchTddUlDlSubfrmTbl rgSchTddUlDlSubfrmTbl;
 
 typedef struct rgSchTddSplSubfrmInfo RgSchTddSplSubfrmInfoTbl[RGSCH_MAX_TDD_SPL_SUBFRM_CFG];
@@ -4069,33 +4069,33 @@ EXTERN RgSchTddDlAscSetIdxKTbl rgSchTddDlAscSetIdxKTbl;
 /* ccpu00132282 */
 EXTERN RgSchTddDlAscSetIdxKTbl rgSchTddDlHqPucchResCalTbl;
 
-typedef U8 RgSchTddPhichMValTbl[RGSCH_MAX_TDD_UL_DL_CFG][RGSCH_NUM_SUB_FRAMES];
+typedef uint8_t RgSchTddPhichMValTbl[RGSCH_MAX_TDD_UL_DL_CFG][RGSCH_NUM_SUB_FRAMES];
 EXTERN RgSchTddPhichMValTbl rgSchTddPhichMValTbl;
 
-typedef U8 RgSchTddKPhichTbl[RGSCH_MAX_TDD_UL_DL_CFG][RGSCH_NUM_SUB_FRAMES];
+typedef uint8_t RgSchTddKPhichTbl[RGSCH_MAX_TDD_UL_DL_CFG][RGSCH_NUM_SUB_FRAMES];
 EXTERN RgSchTddKPhichTbl rgSchTddKPhichTbl;
 
 typedef RgSchTddPhichOffInfo RgSchTddPhichOffInfoTbl[RGSCH_MAX_TDD_UL_DL_CFG][RGSCH_NUM_SUB_FRAMES];
 
-typedef U8 RgSchTddUlAscIdxKDashTbl[RGSCH_MAX_TDD_UL_DL_CFG-1][RGSCH_NUM_SUB_FRAMES];
+typedef uint8_t RgSchTddUlAscIdxKDashTbl[RGSCH_MAX_TDD_UL_DL_CFG-1][RGSCH_NUM_SUB_FRAMES];
 EXTERN RgSchTddUlAscIdxKDashTbl rgSchTddUlAscIdxKDashTbl;
 
 #ifdef LTEMAC_SPS
-typedef U8 RgSchTddInvDlAscSetIdxTbl[RGSCH_MAX_TDD_UL_DL_CFG][RGSCH_NUM_SUB_FRAMES];
+typedef uint8_t RgSchTddInvDlAscSetIdxTbl[RGSCH_MAX_TDD_UL_DL_CFG][RGSCH_NUM_SUB_FRAMES];
 EXTERN RgSchTddInvDlAscSetIdxTbl rgSchTddInvDlAscSetIdxTbl;
 #endif
 
-typedef U8 RgSchTddPuschTxKTbl[RGSCH_MAX_TDD_UL_DL_CFG][RGSCH_NUM_SUB_FRAMES];
+typedef uint8_t RgSchTddPuschTxKTbl[RGSCH_MAX_TDD_UL_DL_CFG][RGSCH_NUM_SUB_FRAMES];
 EXTERN RgSchTddPuschTxKTbl rgSchTddPuschTxKTbl;
 
-typedef U8 RgSchTddUlNumHarqProcTbl[RGSCH_MAX_TDD_UL_DL_CFG];
+typedef uint8_t RgSchTddUlNumHarqProcTbl[RGSCH_MAX_TDD_UL_DL_CFG];
 EXTERN RgSchTddUlNumHarqProcTbl rgSchTddUlNumHarqProcTbl;
 
-typedef U8 RgSchTddDlNumHarqProcTbl[RGSCH_MAX_TDD_UL_DL_CFG];
+typedef uint8_t RgSchTddDlNumHarqProcTbl[RGSCH_MAX_TDD_UL_DL_CFG];
 EXTERN RgSchTddDlNumHarqProcTbl rgSchTddDlNumHarqProcTbl;
 
 /* Number of ACK/NACK Feedback to be stored based on UL-DL Configuration Index */
-typedef U8 RgSchTddANFdbkMapTbl[RGSCH_MAX_TDD_UL_DL_CFG];
+typedef uint8_t RgSchTddANFdbkMapTbl[RGSCH_MAX_TDD_UL_DL_CFG];
 EXTERN RgSchTddANFdbkMapTbl rgSchTddANFdbkMapTbl;
 
 /* Number of UL subframes */
@@ -4103,51 +4103,51 @@ typedef RgSchTddSubfrmInfo RgSchTddMaxUlSubfrmTbl[RGSCH_MAX_TDD_UL_DL_CFG];
 EXTERN RgSchTddMaxUlSubfrmTbl rgSchTddMaxUlSubfrmTbl;
 
 /* Number of UL subframes */
-typedef U8 RgSchTddNumUlSubfrmTbl[RGSCH_MAX_TDD_UL_DL_CFG][RGSCH_NUM_SUB_FRAMES];
+typedef uint8_t RgSchTddNumUlSubfrmTbl[RGSCH_MAX_TDD_UL_DL_CFG][RGSCH_NUM_SUB_FRAMES];
 EXTERN RgSchTddNumUlSubfrmTbl rgSchTddNumUlSubfrmTbl;
 
 /* Number of low UL subframes Indices*/
-typedef U8 RgSchTddLowUlSubfrmIdxTbl[RGSCH_MAX_TDD_UL_DL_CFG][RGSCH_NUM_SUB_FRAMES];
+typedef uint8_t RgSchTddLowUlSubfrmIdxTbl[RGSCH_MAX_TDD_UL_DL_CFG][RGSCH_NUM_SUB_FRAMES];
 EXTERN RgSchTddLowUlSubfrmIdxTbl rgSchTddLowUlSubfrmIdxTbl;
 
 /* Number of high UL subframes Indices*/
-typedef U8 RgSchTddHighUlSubfrmIdxTbl[RGSCH_MAX_TDD_UL_DL_CFG][RGSCH_NUM_SUB_FRAMES];
+typedef uint8_t RgSchTddHighUlSubfrmIdxTbl[RGSCH_MAX_TDD_UL_DL_CFG][RGSCH_NUM_SUB_FRAMES];
 EXTERN RgSchTddHighUlSubfrmIdxTbl rgSchTddHighUlSubfrmIdxTbl;
 
 /* Number of low DL subframes Indices*/
-typedef U8 RgSchTddLowDlSubfrmIdxTbl[RGSCH_MAX_TDD_UL_DL_CFG][RGSCH_NUM_SUB_FRAMES];
+typedef uint8_t RgSchTddLowDlSubfrmIdxTbl[RGSCH_MAX_TDD_UL_DL_CFG][RGSCH_NUM_SUB_FRAMES];
 EXTERN RgSchTddLowDlSubfrmIdxTbl rgSchTddLowDlSubfrmIdxTbl;
 
 /* Number of high DL subframes Indices*/
-typedef U8 RgSchTddHighDlSubfrmIdxTbl[RGSCH_MAX_TDD_UL_DL_CFG][RGSCH_NUM_SUB_FRAMES];
+typedef uint8_t RgSchTddHighDlSubfrmIdxTbl[RGSCH_MAX_TDD_UL_DL_CFG][RGSCH_NUM_SUB_FRAMES];
 EXTERN RgSchTddHighDlSubfrmIdxTbl rgSchTddHighDlSubfrmIdxTbl;
 
 /* Number of DL subframes and Special subframes with DwPTS */
-typedef U8 RgSchTddNumDlSubfrmTbl[RGSCH_MAX_TDD_UL_DL_CFG][RGSCH_NUM_SUB_FRAMES];
+typedef uint8_t RgSchTddNumDlSubfrmTbl[RGSCH_MAX_TDD_UL_DL_CFG][RGSCH_NUM_SUB_FRAMES];
 EXTERN RgSchTddNumDlSubfrmTbl rgSchTddNumDlSubfrmTbl;
 
 /* Number of DL subframes and Special subframes with DwPTS */
 typedef RgSchTddSubfrmInfo RgSchTddMaxDlSubfrmTbl[RGSCH_MAX_TDD_UL_DL_CFG];
 EXTERN RgSchTddMaxDlSubfrmTbl rgSchTddMaxDlSubfrmTbl;
 
-typedef U8 RgSchTddMsg3SubfrmTbl[RGSCH_MAX_TDD_UL_DL_CFG][RGSCH_NUM_SUB_FRAMES];
+typedef uint8_t RgSchTddMsg3SubfrmTbl[RGSCH_MAX_TDD_UL_DL_CFG][RGSCH_NUM_SUB_FRAMES];
 EXTERN RgSchTddMsg3SubfrmTbl rgSchTddMsg3SubfrmTbl;
 #ifdef LTEMAC_SPS
 typedef RgSchTddMsg3SubfrmTbl RgSchTddSpsUlRsrvTbl;
 EXTERN RgSchTddMsg3SubfrmTbl rgSchTddSpsUlRsrvTbl;
 #endif
 
-typedef U8 RgSchTddRlsDlSubfrmTbl[RGSCH_MAX_TDD_UL_DL_CFG][RGSCH_NUM_SUB_FRAMES];
+typedef uint8_t RgSchTddRlsDlSubfrmTbl[RGSCH_MAX_TDD_UL_DL_CFG][RGSCH_NUM_SUB_FRAMES];
 EXTERN RgSchTddRlsDlSubfrmTbl rgSchTddRlsDlSubfrmTbl;
 
 
-EXTERN U8 rgSchTddPucchTxTbl[RGSCH_MAX_TDD_UL_DL_CFG][RGSCH_NUM_SUB_FRAMES];
+EXTERN uint8_t rgSchTddPucchTxTbl[RGSCH_MAX_TDD_UL_DL_CFG][RGSCH_NUM_SUB_FRAMES];
 
 #endif
 #ifdef LTE_ADV
 EXTERN RgSchCellCb* rgSchUtlGetCellCb ARGS((
 Inst         inst,
-U16          cellId
+uint16_t          cellId
 ));
 
 EXTERN Void rgSCHSCellDlUeReset ARGS((
@@ -4196,8 +4196,8 @@ RgSchUeCb                  *ue
 
 EXTERN Void rgSCHSCellHndlFdbkInd ARGS((
 RgSchDlHqProcCb   *hqP,
-U8                tbIdx,
-U8                fdbk,
+uint8_t                tbIdx,
+uint8_t                fdbk,
 Bool              maxHqRetxReached
 ));
 
@@ -4208,8 +4208,8 @@ RgSchUeCellInfo *sCell
 EXTERN S16 rgSCHSCellTrigActDeact ARGS((
 RgSchCellCb  *cell,
 RgSchUeCb    *ueCb,
-U8            sCellIdx,
-U8            action
+uint8_t            sCellIdx,
+uint8_t            action
 ));
 
 EXTERN S16 rgSCHSCellDelUe ARGS((
@@ -4225,7 +4225,7 @@ RgSchUeCb      *ue
 EXTERN Void rgSCHSCellSelectAndActDeAct ARGS ((
 RgSchCellCb  *PCell,
 RgSchUeCb    *ueCb,
-U8           action
+uint8_t           action
 ));
 
 EXTERN S16 rgSCHSCellPCqiCfg ARGS((
@@ -4234,7 +4234,7 @@ RgSchCellCb  *secCellCb,
 RgSchUeCb    *ueCb,
 RgrUePrdDlCqiCfg  *cqiCfg,
 CmLteUeCategory   ueCat,
-U8            sCellIdx
+uint8_t            sCellIdx
 ));
 
 EXTERN Void rgSCHUtlSndUeSCellDel2Mac ARGS ((
@@ -4242,7 +4242,7 @@ RgSchCellCb    *cell,
 CmLteRnti      rnti
 ));
 
-EXTERN U8 rgSCHUtlGetMaxTbSupp ARGS ((
+EXTERN uint8_t rgSCHUtlGetMaxTbSupp ARGS ((
 RgrTxMode txMode
 ));
 #endif/*LTE_ADV*/
@@ -4252,7 +4252,7 @@ EXTERN Void rgSCHTmrStartTmr ARGS((
          RgSchCellCb *cellCb,
          Ptr         cb,
          S16         tmrEvnt,
-         U32         tmrVal));
+         uint32_t         tmrVal));
 
 EXTERN Void rgSCHTmrStopTmr ARGS((
          RgSchCellCb *cellCb,
@@ -4320,18 +4320,18 @@ EXTERN S16 rgSCHTomTimingAdvInd ARGS((
  * APIs exposed by LMM
  */
 EXTERN S16 rgSCHLmmStartTmr ARGS ((Inst instId, S16 tmrEvnt,
-         U32 tmrVal, PTR cb));
+         uint32_t tmrVal, PTR cb));
 EXTERN S16 rgSCHLmmStopTmr ARGS((Inst instId, S16 tmrEvnt, PTR cb));
 EXTERN S16 rgSCHLmmTmrExpiry ARGS((PTR cb, S16 tmrEvnt));
 /* This function invokes a Control Confirmation to the LM from scheduler. */
-EXTERN S16 rgSCHLmmBndCfm ARGS((Pst *pst, SuId suId, U8 status));
+EXTERN S16 rgSCHLmmBndCfm ARGS((Pst *pst, SuId suId, uint8_t status));
 EXTERN S16 schActvTmr ARGS((Ent entity, Inst inst));
 /* To send a Unsolicited Status Indication to Layer Manager */
-EXTERN S16 rgSCHLmmStaInd ARGS((Inst instId, U16 category, U16 event,
-                          U16 cause, RgUstaDgn *dgn));
+EXTERN S16 rgSCHLmmStaInd ARGS((Inst instId, uint16_t category, uint16_t event,
+                          uint16_t cause, RgUstaDgn *dgn));
 EXTERN S16 schActvTsk ARGS((Pst *pst, Buffer *mBuf));
 EXTERN Void SchFillCfmPst ARGS((Pst    *reqPst,Pst *cfmPst,RgMngmt  *cfm));
-EXTERN U16 SchInstCfg ARGS((RgCfg    *cfg, Inst inst));
+EXTERN uint16_t SchInstCfg ARGS((RgCfg    *cfg, Inst inst));
 EXTERN Void printSchCellInfo ARGS((Void));
 EXTERN Void rgSCHLmmGenCntrl ARGS((RgMngmt *cntrl,RgMngmt  *cfm,Pst *cfmPst));
 EXTERN Void rgSCHLmmSapCntrl ARGS((RgMngmt *cntrl,RgMngmt *cfm,Pst *cfmPst));
@@ -4415,24 +4415,24 @@ EXTERN S16 rgSCHGomHndlSiCfg ARGS(( Region   reg, Pool   pool,
                   RgSchCb       *instCb, SpId    spId,
                   RgrCfgTransId transId, RgrSiCfgReqInfo *cfgReqInfo));
 EXTERN S16 rgSCHUtlRgrSiCfgCfm ARGS ((Inst inst, SpId spId,
-                                  RgrCfgTransId transId,U8 status));
+                                  RgrCfgTransId transId,uint8_t status));
 
 EXTERN S16 rgSCHGomHndlWarningSiCfg ARGS(( Region   reg, Pool   pool,
                   RgSchCb       *instCb, SpId    spId, RgrCfgTransId transId,
                   RgrWarningSiCfgReqInfo *warningSiCfgReqInfo));
 
 EXTERN Void rgSCHGomHndlWarningSiStopReq ARGS(( Region   reg, Pool   pool,
-                  RgSchCb       *instCb, U8            siId, 
+                  RgSchCb       *instCb, uint8_t            siId, 
                   RgrCfgTransId transId, SpId    spId));
 
-EXTERN S16 rgSCHUtlRgrWarningSiCfgCfm ARGS ((Inst inst, SpId spId, U8 siId,
-                                  RgrCfgTransId transId,U8 status));
+EXTERN S16 rgSCHUtlRgrWarningSiCfgCfm ARGS ((Inst inst, SpId spId, uint8_t siId,
+                                  RgrCfgTransId transId,uint8_t status));
 #endif /* RGR_SI_SCH */
 /* LTE_ADV_FLAG_REMOVED_START */
 EXTERN S16 rgSchDSFRRntpInfoInit ARGS ((TknStrOSXL *rntpPtr, RgSchCellCb  *cell,
-                                           U16 bw));
+                                           uint16_t bw));
 EXTERN S16 rgSchDSFRRntpInfoFree ARGS ((TknStrOSXL *rntpPtr, RgSchCellCb  *cell,
-                                           U16 bw));
+                                           uint16_t bw));
 EXTERN S16 rgSchUpdtRNTPInfo ARGS ((RgSchCellCb *cell, RgSchDlSf  *sf,
                                 RgrLoadInfReqInfo       *loadInfReq));
 EXTERN S16 rgSCHCfgVldtRgrLoadInf ARGS(( Inst inst, RgrLoadInfReqInfo *loadInfReq,
@@ -4457,7 +4457,7 @@ EXTERN S16 rgSCHRamVldtUeCfg ARGS((
 RgSchCellCb  *cell,
 RgrUeCfg     *ueCfg
 ));
-EXTERN S16 rgSCHRamProcRaReq     ARGS((U8 raReqCnt, RgSchCellCb *cell, CmLteRnti raRnti,
+EXTERN S16 rgSCHRamProcRaReq     ARGS((uint8_t raReqCnt, RgSchCellCb *cell, CmLteRnti raRnti,
                                     TfuRachInfo  *raReqInd,
                                     CmLteTimingInfo timingInfo, 
                                     RgSchUeCb *ue,
@@ -4488,7 +4488,7 @@ EXTERN S16 rgSCHCmnBsrTmrExpry ARGS(( RgSchUeCb  *ueCb));
 #ifdef LTE_TDD
 EXTERN S16 rgSCHRamDelRaReq      ARGS((RgSchCellCb *cell,
                                        CmLteTimingInfo timingInfo,
-                                       U8 raIdx));
+                                       uint8_t raIdx));
 #endif
 EXTERN S16 rgSCHRamAddToRaInfoSchdLst(RgSchCellCb   *cell, RgSchRaCb *raCb);
 
@@ -4503,7 +4503,7 @@ EXTERN Void rgSCHUhmProcDatInd ARGS((RgSchCellCb *cell, RgSchUeCb *ue,
          CmLteTimingInfo frm));
 #else /* MAC_SCH_STATS */
 EXTERN Void rgSCHUhmProcDatInd ARGS((RgSchCellCb *cell, RgSchUeCb *ue,
-         CmLteTimingInfo frm, U8 cqi));
+         CmLteTimingInfo frm, uint8_t cqi));
 #endif
 EXTERN Void rgSCHUhmProcMsg3DatInd ARGS((RgSchUlHqProcCb *hqProc));
 EXTERN Void rgSCHUhmProcMsg3Failure ARGS((RgSchUlHqProcCb *hqProc));
@@ -4512,11 +4512,11 @@ EXTERN Void rgSCHUhmProcHqFailure ARGS((RgSchCellCb *cell, RgSchUeCb *ue,
          CmLteTimingInfo frm, TknU8 rv));
 #else /* MAC_SCH_STATS */
 EXTERN Void rgSCHUhmProcHqFailure ARGS((RgSchCellCb *cell, RgSchUeCb *ue,
-         CmLteTimingInfo frm, TknU8 rv, U8 cqi));
+         CmLteTimingInfo frm, TknU8 rv, uint8_t cqi));
 #endif
 EXTERN RgSchUlHqProcCb* rgSCHUhmGetUlHqProc ARGS((RgSchCellCb      *cell, RgSchUeCb *ue,
-         U8 idx));
-EXTERN Void rgSCHUhmNewTx ARGS((RgSchUlHqProcCb *hqProc, U8 maxHqRetx,
+         uint8_t idx));
+EXTERN Void rgSCHUhmNewTx ARGS((RgSchUlHqProcCb *hqProc, uint8_t maxHqRetx,
          RgSchUlAlloc *alloc));
 EXTERN Void rgSCHUhmFreeProc ARGS((RgSchUlHqProcCb *hqProc,
          RgSchCellCb      *cell));
@@ -4527,7 +4527,7 @@ EXTERN Void rgSCHUhmRgrUeRecfg ARGS(( RgSchCellCb *cellCb, RgSchUeCb *ueCb,
           RgrUeRecfg *ueRecfg));
 EXTERN Void rgSCHUhmFreeUe ARGS(( RgSchCellCb *cellCb, RgUeUlHqCb *hqEnt));
 EXTERN S16 rgSCHUhmAppendPhich ARGS(( RgSchCellCb *cellCb,
-          CmLteTimingInfo frm, U8 idx));
+          CmLteTimingInfo frm, uint8_t idx));
 
 /* APIs exposed by DBM */
 EXTERN S16 rgSCHDbmInitCell ARGS((RgSchCellCb *cellCb));
@@ -4576,7 +4576,7 @@ EXTERN RgSchCfgElem* rgSCHDbmDelCrntRgrCfgElem ARGS(( RgSchCellCb *cellCb,
 EXTERN RgSchCfgElem* rgSCHDbmDelPndngRgrCfgElem ARGS(( RgSchCellCb *cellCb,
                                                 RgSchCfgElem *cfgElem));
 
-EXTERN S16 rgSCHDbmRntiDbInit ARGS(( RgSchCellCb *cellCb, U16 rntiStart, U16 maxRntis));
+EXTERN S16 rgSCHDbmRntiDbInit ARGS(( RgSchCellCb *cellCb, uint16_t rntiStart, uint16_t maxRntis));
 EXTERN Void rgSCHDbmRntiDbDeInit ARGS(( RgSchCellCb *cellCb));
 EXTERN RgSchRntiLnk* rgSCHDbmGetRnti ARGS(( RgSchCellCb *cellCb));
 EXTERN Void rgSCHDbmRlsRnti ARGS(( RgSchCellCb *cellCb, RgSchRntiLnk *rntiLnk));
@@ -4636,26 +4636,26 @@ EXTERN S16 rgSCHDhmGetCcchSduHqProc ARGS((RgSchUeCb *ueCb, CmLteTimingInfo timeI
 EXTERN S16 rgSCHDhmGetMsg4HqProc ARGS((RgSchRaCb *raCb, CmLteTimingInfo timeInfo));
 EXTERN Void rgSCHDhmRlsHqProc ARGS((RgSchDlHqProcCb *hqP));
 /* ccpu00118350 : Correcting NDI manipulation of Harq */
-EXTERN Void rgSCHDhmRlsHqpTb ARGS((RgSchDlHqProcCb *hqP, U8 tbIdx, Bool togNdi));
+EXTERN Void rgSCHDhmRlsHqpTb ARGS((RgSchDlHqProcCb *hqP, uint8_t tbIdx, Bool togNdi));
 EXTERN Void rgSCHUtlDlHqPTbAddToTx ARGS((RgSchDlSf *subFrm,
-RgSchDlHqProcCb *hqP, U8 tbIdx ));
+RgSchDlHqProcCb *hqP, uint8_t tbIdx ));
 EXTERN Void rgSCHDhmHqTbRetx ARGS(( RgSchDlHqEnt *hqE,
-CmLteTimingInfo timingInfo, RgSchDlHqProcCb *hqP, U8 tbIdx));
+CmLteTimingInfo timingInfo, RgSchDlHqProcCb *hqP, uint8_t tbIdx));
 EXTERN Void rgSCHUtlDlHqPTbAddToTx ARGS((RgSchDlSf *subFrm,
-RgSchDlHqProcCb *hqP, U8 tbIdx ));
+RgSchDlHqProcCb *hqP, uint8_t tbIdx ));
 EXTERN Void rgSCHDhmHqTbRetx ARGS(( RgSchDlHqEnt *hqE,
-CmLteTimingInfo timingInfo, RgSchDlHqProcCb *hqP, U8 tbIdx));
+CmLteTimingInfo timingInfo, RgSchDlHqProcCb *hqP, uint8_t tbIdx));
 #ifdef RG_UNUSED
-EXTERN S16 rgSCHDhmGetHqProcFrmId ARGS((RgSchCellCb *cell, RgSchUeCb *ue, U8 idx,
+EXTERN S16 rgSCHDhmGetHqProcFrmId ARGS((RgSchCellCb *cell, RgSchUeCb *ue, uint8_t idx,
                                     RgSchDlHqProcCb **hqP));
 #endif
 /* Changes for MIMO feature addition */
 EXTERN Void rgSCHDhmSchdTa ARGS((RgSchUeCb *ueCb, RgSchDlHqTbCb *tbInfo));
-EXTERN S16 rgSCHDhmHqFdbkInd ARGS((Void *cb, U8 cbType, RgSchCellCb *cellCb,
+EXTERN S16 rgSCHDhmHqFdbkInd ARGS((Void *cb, uint8_t cbType, RgSchCellCb *cellCb,
                      CmLteTimingInfo timingInfo, RgTfuHqInfo *fdbk, RgInfRlsHqInfo
                                     *rlsHqBufs,RgSchErrInfo *err));
 #ifdef EMTC_ENABLE
-EXTERN S16 rgSCHDhmEmtcHqFdbkInd ARGS((Void *cb, U8 cbType, RgSchCellCb *cellCb,
+EXTERN S16 rgSCHDhmEmtcHqFdbkInd ARGS((Void *cb, uint8_t cbType, RgSchCellCb *cellCb,
                      CmLteTimingInfo timingInfo, RgTfuHqInfo *fdbk, RgInfRlsHqInfo
                                     *rlsHqBufs,RgSchErrInfo *err));
 EXTERN S16 rgSCHUtlAddToResLst 
@@ -4667,7 +4667,7 @@ EXTERN S16 rgSCHUtlAddToResLst
 /*CA Dev Start */
 EXTERN S16 rgSCHDhmPrcFdbkForTb(RgSchCellCb *cell,RgSchUeCb  *ue,
                                RgSchDlHqProcCb *hqP,RgSchDlSf *sf,Bool isMsg4,
-                               U16 rnti,U8 tbCnt,CmLteTimingInfo timingInfo, U8 isAck,
+                               uint16_t rnti,uint8_t tbCnt,CmLteTimingInfo timingInfo, uint8_t isAck,
                                RgInfRlsHqInfo *rlsHqBufs,RgSchErrInfo *err
                                );
 /*CA Dev End */
@@ -4680,7 +4680,7 @@ EXTERN Void rgSCHDhmRgrCellCfg ARGS((RgSchCellCb *cellCb, RgrCellCfg *cellCfg,
 EXTERN Void rgSCHDhmRgrCellRecfg ARGS((RgSchCellCb *cellCb, RgrCellRecfg
                                     *cellRecfg, RgSchErrInfo *err));
 EXTERN Void rgSCHDhmFreeUe ARGS((RgSchUeCb *ueCb));
-EXTERN Void rgSCHDhmUpdTa ARGS((RgSchCellCb *cellCb, RgSchUeCb *ueCb, U8 ta));
+EXTERN Void rgSCHDhmUpdTa ARGS((RgSchCellCb *cellCb, RgSchUeCb *ueCb, uint8_t ta));
 EXTERN Void rgSCHDhmProcTAExp ARGS((RgSchUeCb *ue));
 /* Changes for MIMO feature addition */
 EXTERN S16 rgSCHDhmAddLcData ARGS((Inst inst, RgSchLchAllocInfo *lchData,
@@ -4690,15 +4690,15 @@ timingInfo));
 
 #ifdef LTE_TDD
 EXTERN S16 rgSCHDhmTddRlsSubFrm ARGS((RgSchCellCb *cell, CmLteTimingInfo uciTimingInfo));
-EXTERN S16 rgSCHCfgVldtTddDrxCycCfg ARGS((RgSchCellCb  *cell, U16 drxCycle, 
-                                    U8 onDurTmr, U16 offSet));
+EXTERN S16 rgSCHCfgVldtTddDrxCycCfg ARGS((RgSchCellCb  *cell, uint16_t drxCycle, 
+                                    uint8_t onDurTmr, uint16_t offSet));
 #endif
 /* Added support for SPS*/
 #ifdef LTEMAC_SPS
 EXTERN S16 rgSCHDhmGetHqProcFrmId ARGS((
 RgSchCellCb           *cell,
 RgSchUeCb               *ue,
-U8                      idx,
+uint8_t                      idx,
 RgSchDlHqProcCb         **hqP
 ));
 #endif /* LTEMAC_SPS */
@@ -4744,11 +4744,11 @@ CmLListCp           *ulInactvUeLst
 ));
 EXTERN Void rgSCHMeasGapANRepDlInactvTmrExpry ARGS((
 RgSchUeCb           *ue,
-U8                   tmrEvnt
+uint8_t                   tmrEvnt
 ));
 EXTERN Void rgSCHMeasGapANRepUlInactvTmrExpry ARGS((
 RgSchUeCb           *ue,
-U8                   tmrEvnt
+uint8_t                   tmrEvnt
 ));
 EXTERN Void rgSCHMeasGapANRepTmrExpry ARGS((
 RgSchUeCb           *ue
@@ -4790,7 +4790,7 @@ EXTERN  S16 rgSchFillL2MeasCfm ARGS((
          RgSchCellCb       *cell,
          RgSchL2MeasCb     *measCb,
          LrgSchMeasCfmInfo *cfm,
-         U32               measTime
+         uint32_t               measTime
 ));
 EXTERN Void rgSchL2mFillCfmPst ARGS((
          Pst    *pst,
@@ -4799,7 +4799,7 @@ EXTERN Void rgSchL2mFillCfmPst ARGS((
 ));
 EXTERN S16 rgSCHL2Meas ARGS((
          RgSchCellCb  *cell,
-         U8           isCalrCrcInd
+         uint8_t           isCalrCrcInd
 ));
 #endif /* LTE_L2_MEAS */
 /* Added changes of TFU_UPGRADE */
@@ -4810,18 +4810,18 @@ F64 x,
 F64 n
 ));
 
- EXTERN U32 rgSCHUtlParse ARGS
+ EXTERN uint32_t rgSCHUtlParse ARGS
   ((
- U8 *buff,
- U8 startPos,
- U8 endPos,
- U8 buffSize
+ uint8_t *buff,
+ uint8_t startPos,
+ uint8_t endPos,
+ uint8_t buffSize
  ));
 
- EXTERN  U8 rgSCHUtlFindDist ARGS
+ EXTERN  uint8_t rgSCHUtlFindDist ARGS
 ((
-U16    crntTime,
-U16    tempIdx
+uint16_t    crntTime,
+uint16_t    tempIdx
 ));
 #endif
 EXTERN Bool rgSCHUtlPdcchAvail ARGS((RgSchCellCb *cell, RgSchPdcchInfo
@@ -4831,15 +4831,15 @@ EXTERN Void rgSCHUtlPdcchPut ARGS((RgSchCellCb *cell, RgSchPdcchInfo *pdcchInfo,
 #ifdef LTE_TDD
 /* Changes for passing iPhich at TFU interface*/
 EXTERN S16 rgSCHUtlAddPhich  ARGS((RgSchCellCb *cellCb, CmLteTimingInfo frm,
-         U8 hqFeedBack, U8 nDmrs, U8 rbStart, U8 iPhich));
+         uint8_t hqFeedBack, uint8_t nDmrs, uint8_t rbStart, uint8_t iPhich));
 #else
 EXTERN S16 rgSCHUtlAddPhich  ARGS((RgSchCellCb *cellCb, CmLteTimingInfo frm,
-         U8 hqFeedBack, U8 nDmrs, U8 rbStart,Bool isForMsg3));
+         uint8_t hqFeedBack, uint8_t nDmrs, uint8_t rbStart,Bool isForMsg3));
 #endif
 EXTERN RgSchDlSf* rgSCHUtlSubFrmGet ARGS((RgSchCellCb *cell,
          CmLteTimingInfo frm));
 EXTERN Void rgSCHUtlSubFrmPut ARGS((RgSchCellCb *cell, RgSchDlSf *sf));
-EXTERN U8 rgSCHUtlLog32bitNbase2 ARGS((U32 n));
+EXTERN uint8_t rgSCHUtlLog32bitNbase2 ARGS((uint32_t n));
 /* Added support for SPS*/
 
 
@@ -4848,30 +4848,30 @@ EXTERN RgSchDlHqProcCb * rgSCHDhmSpsDlGetHqProc ARGS((RgSchCellCb *cell, RgSchUe
 CmLteTimingInfo  timingInfo));
 #endif
 #ifdef LTE_TDD
-EXTERN U8 rgSCHUtlCalcNCce ARGS((U8 bw, RgrPhichNg ng, U8 cfi, U8 mPhich,
-                                 U8 numAntna, Bool isEcp));
+EXTERN uint8_t rgSCHUtlCalcNCce ARGS((uint8_t bw, RgrPhichNg ng, uint8_t cfi, uint8_t mPhich,
+                                 uint8_t numAntna, Bool isEcp));
 #else
-EXTERN U8 rgSCHUtlCalcNCce ARGS((U8 bw, RgrPhichNg ng, U8 cfi, U8 numAntna, Bool
+EXTERN uint8_t rgSCHUtlCalcNCce ARGS((uint8_t bw, RgrPhichNg ng, uint8_t cfi, uint8_t numAntna, Bool
 isEcp));
 #endif
 #ifdef LTE_TDD
 /* Changes for passing iPhich at TFU interface*/
-EXTERN S16 rgSCHUtlGetPhichInfo ARGS((RgSchUlHqProcCb *hqProc, U8 *rbStartRef,
-         U8 *nDmrsRef, U8 *iPhich));
+EXTERN S16 rgSCHUtlGetPhichInfo ARGS((RgSchUlHqProcCb *hqProc, uint8_t *rbStartRef,
+         uint8_t *nDmrsRef, uint8_t *iPhich));
 #else
-EXTERN S16 rgSCHUtlGetPhichInfo ARGS((RgSchUlHqProcCb *hqProc, U8 *rbStartRef,
-         U8 *nDmrsRef));
+EXTERN S16 rgSCHUtlGetPhichInfo ARGS((RgSchUlHqProcCb *hqProc, uint8_t *rbStartRef,
+         uint8_t *nDmrsRef));
 #endif
 /*  Added changes of TFU_UPGRADE */
 #ifndef TFU_UPGRADE
 /* To include the length and ModOrder in DataRecp Req. */
 /* Updating NDI and HARQ proc Id */
 EXTERN S16 rgSCHUtlAllocRcptInfo ARGS((RgSchUlAlloc *alloc, CmLteRnti *rnti,
-           U8 *iMcsRef, U8 *rbStartRef, U8 *numRbRef, U8 *rvRef, U16 *size,
+           uint8_t *iMcsRef, uint8_t *rbStartRef, uint8_t *numRbRef, uint8_t *rvRef, uint16_t *size,
            TfuModScheme *modType,Bool *isRtx,
-U8 *nDmrs,
+uint8_t *nDmrs,
 Bool *ndi,
-U8 *hqPId));
+uint8_t *hqPId));
 #else
 EXTERN S16 rgSCHUtlAllocRcptInfo ARGS((
          RgSchCellCb             *cell,
@@ -4891,7 +4891,7 @@ EXTERN S16 rgSCHUtlRgrUeCfg ARGS((RgSchCellCb *cell, RgSchUeCb *ue,
 EXTERN S16 rgSCHUtlRgrLcCfg ARGS((RgSchCellCb *cell, RgSchUeCb *ue,
          RgSchDlLcCb *dl, RgrLchCfg *cfg,RgSchErrInfo *errInfo));
 EXTERN S16 rgSCHUtlRgrLcDel ARGS((RgSchCellCb *cell, RgSchUeCb *ue, 
-         CmLteLcId lcId, U8 lcgId));
+         CmLteLcId lcId, uint8_t lcgId));
 EXTERN S16 rgSCHUtlRgrLcRecfg ARGS ((RgSchCellCb *cell,RgSchUeCb *ue,
       RgSchDlLcCb *dlLc,RgrLchRecfg *recfg,RgSchErrInfo *err));
 EXTERN S16 rgSCHUtlRgrLcgCfg ARGS ((RgSchCellCb *cell,RgSchUeCb *ue,
@@ -4899,7 +4899,7 @@ EXTERN S16 rgSCHUtlRgrLcgCfg ARGS ((RgSchCellCb *cell,RgSchUeCb *ue,
 EXTERN S16 rgSCHUtlRgrLcgRecfg ARGS ((RgSchCellCb *cell,RgSchUeCb *ue,
          RgrLcgRecfg *recfg,RgSchErrInfo *err));
 EXTERN Void rgSCHUtlRgrLcgDel ARGS ((RgSchCellCb *cell,RgSchUeCb *ue,
-         U8 lcgId));
+         uint8_t lcgId));
 EXTERN Void rgSCHUtlDlCqiInd ARGS((RgSchCellCb *cell, RgSchUeCb *ue,
          TfuDlCqiRpt *dlCqiInd, CmLteTimingInfo timingInfo));
 
@@ -4923,9 +4923,9 @@ CmLteTimingInfo    timingInfo
 EXTERN S16 rgSCHUtlGetCfgPerOff ARGS
 ((
 RgSchPerTbl     tbl,
-U16             cfgIdx, 
-U16             *peri, 
-U16             *offset
+uint16_t             cfgIdx, 
+uint16_t             *peri, 
+uint16_t             *offset
 ));
 #endif
 
@@ -4936,11 +4936,11 @@ EXTERN Void rgSCHUtlDlTARpt ARGS((RgSchCellCb *cell, RgSchUeCb *ue));
 EXTERN Void rgSCHUtlDlRlsSubFrm ARGS((RgSchCellCb *cell, CmLteTimingInfo subFrm));
 EXTERN Void rgSCHUtlDlProcAddToRetx ARGS((RgSchCellCb *cell,
          RgSchDlHqProcCb *hqP));
-EXTERN S16 rgSCHUtlRegSch ARGS((U8 schIdx, RgSchdApis *apis));
+EXTERN S16 rgSCHUtlRegSch ARGS((uint8_t schIdx, RgSchdApis *apis));
 EXTERN Void rgSCHUtlDlHqProcAddToTx ARGS((RgSchDlSf *subFrm, RgSchDlHqProcCb *hqP));
 /* Changes for MIMO feature addition */
 EXTERN Void rgSCHUtlDlHqPTbRmvFrmTx ARGS((RgSchDlSf *subFrm,
-         RgSchDlHqProcCb *hqP, U8 tbIdx, Bool isRepeating));
+         RgSchDlHqProcCb *hqP, uint8_t tbIdx, Bool isRepeating));
 EXTERN S16 rgSCHUtlRgrUeRecfg ARGS((RgSchCellCb *cell, RgSchUeCb *ue,
          RgrUeRecfg *recfg, RgSchErrInfo *err));
 EXTERN Void rgSCHUtlFreeDlLc ARGS((RgSchCellCb *cell, RgSchUeCb *ue,
@@ -4961,18 +4961,18 @@ EXTERN S16 rgSCHUtlContResUlGrant ARGS((RgSchCellCb *cell, RgSchUeCb *ue,
          RgSchErrInfo *err));
 EXTERN S16 rgSCHUtlSrRcvd ARGS((RgSchCellCb *cell, RgSchUeCb *ue,
          CmLteTimingInfo, RgSchErrInfo *err));
-EXTERN Void rgSCHUtlUpdBsrShort ARGS((RgSchCellCb *cell, RgSchUeCb *ue, U8 lcgId,
-         U8 bsr, RgSchErrInfo *err));
-EXTERN Void rgSCHUtlUpdBsrTrunc ARGS((RgSchCellCb *cell, RgSchUeCb *ue, U8 lcgId,
-         U8 bsr, RgSchErrInfo *err));
+EXTERN Void rgSCHUtlUpdBsrShort ARGS((RgSchCellCb *cell, RgSchUeCb *ue, uint8_t lcgId,
+         uint8_t bsr, RgSchErrInfo *err));
+EXTERN Void rgSCHUtlUpdBsrTrunc ARGS((RgSchCellCb *cell, RgSchUeCb *ue, uint8_t lcgId,
+         uint8_t bsr, RgSchErrInfo *err));
 EXTERN Void rgSCHUtlUpdBsrLong ARGS((RgSchCellCb *cell, RgSchUeCb *ue,
-         U8 bsr1,U8 bsr2,U8 bsr3,U8 bsr4, RgSchErrInfo *err));
+         uint8_t bsr1,uint8_t bsr2,uint8_t bsr3,uint8_t bsr4, RgSchErrInfo *err));
 EXTERN S16 rgSCHUtlUpdPhr ARGS((RgSchCellCb *cell, RgSchUeCb *ue,
-         U8 phr, RgSchErrInfo *err));
+         uint8_t phr, RgSchErrInfo *err));
 EXTERN S16 rgSCHUtlUpdExtPhr ARGS(( RgSchCellCb  *cell, RgSchUeCb *ue,
 RgInfExtPhrCEInfo * extPhr, RgSchErrInfo *err));
-EXTERN S16 rgSCHUtlDataRcvd ARGS((RgSchCellCb *cell, RgSchUeCb *ue, U8 numLc,
-         RgSchUlLcCb *lcArr[], U16 bytesArr[], RgSchErrInfo *err));
+EXTERN S16 rgSCHUtlDataRcvd ARGS((RgSchCellCb *cell, RgSchUeCb *ue, uint8_t numLc,
+         RgSchUlLcCb *lcArr[], uint16_t bytesArr[], RgSchErrInfo *err));
 EXTERN Void rgSCHUtlUlCqiInd ARGS(( RgSchCellCb *cell, RgSchUeCb *ue,
                                     TfuUlCqiRpt *ulCqiInfo));
 EXTERN Void rgSCHUtlPucchDeltaPwrInd ARGS(( RgSchCellCb *cell, RgSchUeCb *ue,
@@ -4983,9 +4983,9 @@ EXTERN Void rgSCHUtlUlHqProcForUe ARGS((RgSchCellCb *cell, CmLteTimingInfo frm,
 EXTERN RgSchUlAlloc *rgSCHUtlFirstRcptnReq ARGS((RgSchCellCb *cell));
 EXTERN RgSchUlAlloc *rgSCHUtlNextRcptnReq ARGS((RgSchCellCb *cell,
          RgSchUlAlloc *alloc));
-EXTERN RgSchUlAlloc *rgSCHUtlFirstHqFdbkAlloc ARGS((RgSchCellCb *cell, U8 idx));
+EXTERN RgSchUlAlloc *rgSCHUtlFirstHqFdbkAlloc ARGS((RgSchCellCb *cell, uint8_t idx));
 EXTERN RgSchUlAlloc *rgSCHUtlNextHqFdbkAlloc ARGS((RgSchCellCb *cell,
-         RgSchUlAlloc *alloc, U8 idx));
+         RgSchUlAlloc *alloc, uint8_t idx));
 EXTERN S16 rgSCHUtlTfuBndReq ARGS((Inst inst, SuId suId, SpId spId));
 EXTERN S16 rgSCHUtlTfuUBndReq ARGS((Inst inst, RgSchLowSapCfgInfo sapCfg, Reason reason));
 #ifdef EMTC_ENABLE
@@ -5000,7 +5000,7 @@ EXTERN S16  rgSCHUtlAllocSBuf  ARGS((Inst inst, Data **pData, Size size));
 /* ccpu00117052 - MOD - Passing double pointer
 for proper NULLP assignment*/
 EXTERN Void rgSCHUtlFreeSBuf   ARGS((Inst inst, Data **data, Size size));
-EXTERN Void rgSCHUtlFillDgnParams ARGS((Inst inst, RgUstaDgn *dgn,U8 dgnType));
+EXTERN Void rgSCHUtlFillDgnParams ARGS((Inst inst, RgUstaDgn *dgn,uint8_t dgnType));
 EXTERN Void rgSCHUtlGetPstToLyr ARGS((Pst *pst,RgSchCb *schCb,Inst macInst));
 EXTERN S16 rgSCHUtlFillRgInfCmnLcInfo ARGS((RgSchDlSf *sf,RgInfSfAlloc *sfAlloc,
                                  CmLteLcId lcId, Bool sendInd));
@@ -5016,13 +5016,13 @@ EXTERN S16 rgSCHUtlUpdSch ARGS((RgInfSfDatInd *subfrmInfo, RgSchCellCb *cellCb,
 EXTERN S16 rgSCHUtlHndlCcchBoUpdt ARGS((RgSchCellCb *cell,RgInfCmnBoRpt *boRpt));
 EXTERN S16 rgSCHUtlHndlBcchPcchBoUpdt ARGS((RgSchCellCb *cell,RgInfCmnBoRpt
         *boUpdt));
-EXTERN S16 rgSCHUtlRgrBndCfm ARGS ((Inst inst, SuId suId,U8 status));
+EXTERN S16 rgSCHUtlRgrBndCfm ARGS ((Inst inst, SuId suId,uint8_t status));
 /* Added for sending TTI tick to RRM */
 #ifdef RGR_RRM_TICK
 EXTERN S16 rgSCHUtlRgrTtiInd ARGS ((RgSchCellCb *cell, RgrTtiIndInfo *ttiInd));
 #endif
 EXTERN S16 schSendCfgCfm ARGS ((Region reg, Pool pool, \
-         RgrCfgTransId transId, U8 status));
+         RgrCfgTransId transId, uint8_t status));
 EXTERN S16 rgSCHUtlProcMsg3 ARGS((RgInfSfDatInd *subfrmInfo, RgSchCellCb  *cellCb,
             RgSchUeCb   *ueCb, CmLteRnti  rnti,RgInfUeDatInd  *pdu,
             RgSchErrInfo *err ));
@@ -5045,11 +5045,11 @@ EXTERN S16 rgSCHUtlUlActvtUe ARGS((RgSchCellCb *cell, RgSchUeCb *ue));
 EXTERN Void rgSCHUtlHdlUlTransInd ARGS((RgSchCellCb *cell, RgSchUeCb *ue,
                                    CmLteTimingInfo timingInfo));
 #ifdef TFU_UPGRADE
-EXTERN Void rgSCHUtlUpdACqiTrigWt ARGS((RgSchUeCb *ue,RgSchUeCellInfo *sCellInfo, U8 isAck));
+EXTERN Void rgSCHUtlUpdACqiTrigWt ARGS((RgSchUeCb *ue,RgSchUeCellInfo *sCellInfo, uint8_t isAck));
 #endif
 /* Nprb indication at PHY for common Ch */
 /* Corrected allocation for common channels */
-EXTERN S32 rgSCHUtlGetAllwdCchTbSz ARGS((U32 bo, U8 *nPrb, U8 *mcs
+EXTERN S32 rgSCHUtlGetAllwdCchTbSz ARGS((uint32_t bo, uint8_t *nPrb, uint8_t *mcs
 ));
 /* CR timer changes*/
 EXTERN S16 rgSCHUtlUpdtBo ARGS((RgSchCellCb  *cell,
@@ -5074,19 +5074,19 @@ EXTERN Void rgSCHUtlFreeWarningSiSeg  ARGS((Region reg,Pool pool,
                                             CmLListCp *siPduLst));
 EXTERN Void rgSCHUtlFreeWarningSiPdu  ARGS((RgSchCellCb *cell));
 EXTERN Buffer *rgSCHUtlGetWarningSiPdu ARGS((RgSchCellCb *cell));
-EXTERN S16 rgSCHUtlGetMcsAndNPrb ARGS((RgSchCellCb *cell, U8 *nPrb, U8 *mcs, MsgLen *msgLen));
-EXTERN S16 rgSCHUtlCalMcsAndNPrb ARGS((RgSchCellCb *cell, U8 cfgType, MsgLen msgLen, U8 siId));
+EXTERN S16 rgSCHUtlGetMcsAndNPrb ARGS((RgSchCellCb *cell, uint8_t *nPrb, uint8_t *mcs, MsgLen *msgLen));
+EXTERN S16 rgSCHUtlCalMcsAndNPrb ARGS((RgSchCellCb *cell, uint8_t cfgType, MsgLen msgLen, uint8_t siId));
 #endif/*RGR_SI_SCH*/
 
 #ifdef LTE_TDD
-EXTERN S16 rgSCHUtlAllocUeANFdbkInfo ARGS((RgSchUeCb *ue,U8 servCellIdx));
-EXTERN Void rgSCHUtlDelUeANFdbkInfo ARGS((RgSchUeCb *ue,U8 servCellIdx));
+EXTERN S16 rgSCHUtlAllocUeANFdbkInfo ARGS((RgSchUeCb *ue,uint8_t servCellIdx));
+EXTERN Void rgSCHUtlDelUeANFdbkInfo ARGS((RgSchUeCb *ue,uint8_t servCellIdx));
 EXTERN S16 rgSCHUtlInitUeANFdbkInfo ARGS((RgSchTddANInfo *anInfo));
-EXTERN RgSchTddANInfo* rgSCHUtlGetUeANFdbkInfo ARGS((RgSchUeCb *ueCb, CmLteTimingInfo *timeInfo,U8 servCellIdx));
-EXTERN U8  rgSCHUtlGetDlSfIdx ARGS((RgSchCellCb *cell, CmLteTimingInfo *timeInfo));
+EXTERN RgSchTddANInfo* rgSCHUtlGetUeANFdbkInfo ARGS((RgSchUeCb *ueCb, CmLteTimingInfo *timeInfo,uint8_t servCellIdx));
+EXTERN uint8_t  rgSCHUtlGetDlSfIdx ARGS((RgSchCellCb *cell, CmLteTimingInfo *timeInfo));
 EXTERN Void rgSCHUtlPrachCfgInit ARGS((RgSchCellCb *cell, RgrCellCfg *cellCfg ));
 EXTERN Void rgSCHUtlGetNxtDlSfInfo ARGS((CmLteTimingInfo curDlTime, RgSchCellCb  *cell, RgSchDlSf *dlSf, RgSchDlSf **nxtDlsf, CmLteTimingInfo *nxtDlTime));
-EXTERN Void rgSCHUtlGetPrevDlSfInfo ARGS((RgSchCellCb * cell, CmLteTimingInfo curDlTime, CmLteTimingInfo *prevDlTime, U8 *numSubfrm));
+EXTERN Void rgSCHUtlGetPrevDlSfInfo ARGS((RgSchCellCb * cell, CmLteTimingInfo curDlTime, CmLteTimingInfo *prevDlTime, uint8_t *numSubfrm));
 #endif
 EXTERN Void rgSCHCmnDlSch ARGS
 ((
@@ -5132,7 +5132,7 @@ RgSchCellCb        *cell
 EXTERN S16 rgSCHUtlSpsActInd ARGS((
 RgSchCellCb        *cellCb,
 RgSchUeCb          *ueCb,
-U16                spsSduSize
+uint16_t                spsSduSize
 ));
 
 EXTERN Void rgSCHUtlHdlCrcFailInd ARGS((
@@ -5152,8 +5152,8 @@ RgSchUeCb       *ue
 EXTERN S16 rgSCHUtlUlSfInit ARGS((
          RgSchCellCb  *cell,
          RgSchUlSf    *sf,
-         U8           idx,
-         U8           maxUePerSf
+         uint8_t           idx,
+         uint8_t           maxUePerSf
          ));
 EXTERN Void rgSCHUtlUlSfDeinit ARGS((
          RgSchCellCb *cell,
@@ -5161,7 +5161,7 @@ EXTERN Void rgSCHUtlUlSfDeinit ARGS((
          ));
 EXTERN RgSchUlAlloc *rgSCHUtlUlAllocGetHole ARGS((
          RgSchUlSf *sf,
-         U8 numRb,
+         uint8_t numRb,
          RgSchUlHole *hole
          ));
 EXTERN RgSchUlAlloc *rgSCHUtlUlAllocGetCompHole ARGS((
@@ -5170,7 +5170,7 @@ EXTERN RgSchUlAlloc *rgSCHUtlUlAllocGetCompHole ARGS((
          ));
 EXTERN RgSchUlAlloc *rgSCHUtlUlAllocGetPartHole ARGS((
          RgSchUlSf *sf,
-         U8 numRb,
+         uint8_t numRb,
          RgSchUlHole *hole
          ));
 EXTERN Void rgSCHUtlUlAllocRls ARGS((
@@ -5256,7 +5256,7 @@ EXTERN Void rgSCHUtlUlHoleRls ARGS((
 EXTERN S16 rgSCHUtlUlAllocMemInit ARGS((
          RgSchCellCb     *cell,
          RgSchUlAllocMem *mem,
-         U8 maxAllocs
+         uint8_t maxAllocs
          ));
 EXTERN Void rgSCHUtlUlAllocMemDeinit ARGS((
          RgSchCellCb     *cell,
@@ -5265,7 +5265,7 @@ EXTERN Void rgSCHUtlUlAllocMemDeinit ARGS((
 EXTERN S16 rgSCHUtlUlHoleMemInit ARGS((
          RgSchCellCb    *cell,
          RgSchUlHoleMem *mem,
-         U8 maxHoles,
+         uint8_t maxHoles,
          RgSchUlHole **holeRef
          ));
 EXTERN Void rgSCHUtlUlHoleMemDeinit ARGS((
@@ -5288,8 +5288,8 @@ EXTERN Void rgSCHUtlUlHoleMemRls ARGS((
          ));
 EXTERN RgSchUlAlloc *rgSCHUtlUlGetSpfcAlloc ARGS((
          RgSchUlSf       *sf,
-         U8              startSb,
-         U8              numSb
+         uint8_t              startSb,
+         uint8_t              numSb
 ));
 /******* </AllocHolesMemMgmnt>: END *****/
 
@@ -5314,7 +5314,7 @@ EXTERN S16 rgSCHDrxSrInd ARGS((RgSchCellCb *cell,RgSchUeCb *ue));
 
 EXTERN Void rgSCHDrxStrtInActvTmr ARGS((RgSchCellCb *cell,
                                        CmLListCp *ueLst,
-                                       U8 direction));
+                                       uint8_t direction));
 EXTERN S16 rgSCHUtlGetDrxSchdUesInDl ARGS((RgSchCellCb *cellCb,
                                         RgSchUeCb       *ueCb,
                                         RgSchDlHqProcCb *dlHq,
@@ -5324,11 +5324,11 @@ EXTERN S16 rgSCHUtlGetDrxSchdUesInDl ARGS((RgSchCellCb *cellCb,
                                         CmLListCp       *ulInActvLst));
 EXTERN Void rgSCHDrxStartHarqRTTTmr ARGS((RgSchCellCb     *cell,
                                           RgSchDlHqProcCb *hqP,
-                                          U8              tbCnt));
+                                          uint8_t              tbCnt));
 EXTERN Void rgSCHDrxUeHqReset ARGS((RgSchCellCb   *cell,
                                    RgSchUeCb     *ue,
                                    RgSchDlHqEnt  *hqE,
-                                   U8            cellIdx));
+                                   uint8_t            cellIdx));
 
 #ifdef TFU_UPGRADE
 #ifdef LTE_TDD
@@ -5351,7 +5351,7 @@ EXTERN Void rgSCHCmnHdFddPtUlMrk ARGS((
 EXTERN Void rgSCHCmnHdFddChkUlAllow ARGS((
          RgSchCellCb *cellCb,
          RgSchUeCb *ueCb,
-         U8 *flag));
+         uint8_t *flag));
 EXTERN Void rgSCHCmnHdFddChkDlAllow ARGS((
          RgSchCellCb *cellCb,
          RgSchUeCb *ueCb,
@@ -5368,7 +5368,7 @@ EXTERN Void rgSCHCmnHdFddUpdDLMark ARGS((
          RgSchCellCb *cellCb,
          RgSchUeCb *ueCb));
 EXTERN Void rgSCHHdFddGetSfn ARGS((
-         U16 *sfn,
+         uint16_t *sfn,
          CmLteTimingInfo timeInfo,
          S16 offset));
 #endif /* ifdef LTEMAC_HDFDD */
@@ -5385,7 +5385,7 @@ S16 rgSCHUtlFillSndStaInd ARGS((
 RgSchCellCb        *cell,
 RgSchUeCb          *ue,
 RgrStaIndInfo      *staInfo,
-U8                 numCqiRept
+uint8_t                 numCqiRept
 ));
 #endif /* End of RGR_CQI_REPT */
 S16 rgSCHUtlRgrUeStaInd ARGS((
@@ -5428,7 +5428,7 @@ CmLteRnti      newRnti
 S16 rgSCHUtlRgmBndCfm ARGS((
 Inst          instId,
 SuId          suId,
-U8            status
+uint8_t            status
 ));
 Void rgSCHDhmDelHqEnt ARGS((
 RgSchCellCb       *cell,
@@ -5454,46 +5454,46 @@ S16 rgSCHUtlUpdAvgPrbUsage ARGS((
 RgSchCellCb          *cell
 ));
 
-U8 rgSchUtlCfg0ReTxIdx ARGS((
+uint8_t rgSchUtlCfg0ReTxIdx ARGS((
 RgSchCellCb    *cell,
 CmLteTimingInfo phichTime,
-U8              hqFdbkIdx
+uint8_t              hqFdbkIdx
 ));
 
 EXTERN S16 rgSCHUtlBuildNSendLcgReg ARGS((
 RgSchCellCb    *cell,
 CmLteRnti      crnti,
-U8             lcgId,
+uint8_t             lcgId,
 Bool           isGbr
 ));
 
 EXTERN Void rgSCHUtlPdcchInit ARGS((
          RgSchCellCb *cell,
          RgSchDlSf   *subFrm,
-         U16          nCce));
+         uint16_t          nCce));
 EXTERN Void rgSCHDynCfiReCfg ARGS((
          RgSchCellCb   *cell,
          Bool          isDynCfiEnb
 ));
 Void rgSchUtlCalcTotalPrbReq ARGS((RgSchCellCb  *cell,
                                           RgSchUeCb    *ue,
-                                          U32           bo,
-                                          U32          *prbReqrd));
-EXTERN U8 rgSchUtlGetNumSbs ARGS((
+                                          uint32_t           bo,
+                                          uint32_t          *prbReqrd));
+EXTERN uint8_t rgSchUtlGetNumSbs ARGS((
 RgSchCellCb    *cell,
 RgSchUeCb      *ue,
-U32            *numSbs
+uint32_t            *numSbs
 ));
 
-EXTERN U8 rgSchUtlSortInsUeLst ARGS((
+EXTERN uint8_t rgSchUtlSortInsUeLst ARGS((
 RgSchCellCb    *cell,
 CmLListCp    *ueLst,
 CmLList      *node,
-U8           subbandRequired
+uint8_t           subbandRequired
 ));
 EXTERN S16 rgSCHUtlResetCpuOvrLdState ARGS((
  RgSchCellCb *cell, 
- U8          cnrtCpuOvrLdIns
+ uint8_t          cnrtCpuOvrLdIns
 ));
 EXTERN Void rgSCHUtlCpuOvrLdAdjItbsCap ARGS((
  RgSchCellCb *cell
@@ -5520,8 +5520,8 @@ RgSchUePCqiCb     *cqiCb
 EXTERN Void rgSCHTomUtlGetTrigSet ARGS((
    RgSchCellCb       *cell,
    RgSchUeCb	     *ueCb,
-   U8                cqiReq,
-   U8                *triggerSet
+   uint8_t                cqiReq,
+   uint8_t                *triggerSet
 ));
 
 EXTERN Void rgSCHUtlUpdUeDciSize ARGS((
@@ -5535,7 +5535,7 @@ RgSchCellCb       *cell
 
 EXTERN Void rgSchCmnPreDlSch ARGS ((
  RgSchCellCb        **cell,
- U8                 nCell,
+ uint8_t                 nCell,
  RgSchCellCb        **cellLst
  ));
 
@@ -5543,9 +5543,9 @@ EXTERN Void rgSchCmnPstDlSch ARGS ((
  RgSchCellCb        *cell
  ));
 
-EXTERN U8 rgSCHCmnGetBiIndex ARGS ((
+EXTERN uint8_t rgSCHCmnGetBiIndex ARGS ((
 RgSchCellCb   *cell,
-U32           ueCount
+uint32_t           ueCount
 ));
 
 EXTERN uint8_t SchSendCfgCfm(Pst *pst, RgMngmt *cfm);

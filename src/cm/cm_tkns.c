@@ -223,7 +223,7 @@ TknStrOSXL *tknStr;             /* token string */
 Buffer     *mBuf;               /* message buffer */
 #endif
 {
-   U16 ndx;
+   uint16_t ndx;
 
    TRC2(cmPkTknStrOSXL)
 
@@ -272,8 +272,8 @@ TknStrBSXL *tknStr;             /* token string */
 Buffer     *mBuf;               /* message buffer */
 #endif
 {
-   U16 ndx;
-   U16 len;
+   uint16_t ndx;
+   uint16_t len;
 
    TRC2(cmPkTknStrBSXL)
 
@@ -326,7 +326,7 @@ TknStrBMP4 *tknStr;             /* token string */
 Buffer     *mBuf;               /* message buffer */
 #endif
 {
-   U8 ndx;
+   uint8_t ndx;
 
    TRC2(cmPkTknStrBMP4)
 
@@ -375,7 +375,7 @@ TknStrBMPXL *tknStr;             /* token string */
 Buffer      *mBuf;               /* message buffer */
 #endif
 {
-   U16 ndx;
+   uint16_t ndx;
 
    TRC2(cmPkTknStrBMPXL)
 
@@ -422,7 +422,7 @@ TknStrUNI4 *tknStr;             /* token string */
 Buffer     *mBuf;               /* message buffer */
 #endif
 {
-   U8 ndx;
+   uint8_t ndx;
 
    TRC2(cmPkTknStrUNI4)
 
@@ -471,7 +471,7 @@ TknStrUNIXL *tknStr;             /* token string */
 Buffer      *mBuf;               /* message buffer */
 #endif
 {
-   U16 ndx;
+   uint16_t ndx;
 
    TRC2(cmPkTknStrUNIXL)
 
@@ -669,7 +669,7 @@ Buffer     *mBuf;               /* message buffer */
 Ptr         ptr;                /* pointer to control memory block */
 #endif
 {
-   U16 ndx;
+   uint16_t ndx;
 
    TRC2(cmUnpkTknStrOSXL)
 
@@ -725,8 +725,8 @@ Ptr         ptr;                /* pointer to control memory block */
 Buffer     *mBuf;               /* message buffer */
 #endif
 {
-   U16 ndx;
-   U16 len;
+   uint16_t ndx;
+   uint16_t len;
 
    TRC2(cmUnpkTknStrBSXL)
 
@@ -784,7 +784,7 @@ TknStrBMP4 *tknStr;             /* token string */
 Buffer     *mBuf;               /* message buffer */
 #endif
 {
-   U8 ndx;
+   uint8_t ndx;
 
    TRC2(cmUnpkTknStrBMP4)
 
@@ -835,7 +835,7 @@ Buffer      *mBuf;               /* message buffer */
 Ptr          ptr;                /* pointer to control memory block */
 #endif
 {
-   U16 ndx;
+   uint16_t ndx;
 
    TRC2(cmUnpkTknStrBMPXL)
 
@@ -889,7 +889,7 @@ TknStrUNI4 *tknStr;             /* token string */
 Buffer     *mBuf;               /* message buffer */
 #endif
 {
-   U8 ndx;
+   uint8_t ndx;
 
    TRC2(cmUnpkTknStrUNI4)
 
@@ -940,7 +940,7 @@ Buffer      *mBuf;               /* message buffer */
 Ptr          ptr;                /* pointer to control memory block */
 #endif
 {
-   U16 ndx;
+   uint16_t ndx;
 
    TRC2(cmUnpkTknStrUNIXL)
 

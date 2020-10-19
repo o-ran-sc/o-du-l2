@@ -31,7 +31,7 @@
 #define MAX_RETRY 5
 
 /* Global variable declaration */
-U8   socket_type;      /* Socket type */
+uint8_t   socket_type;      /* Socket type */
 Bool nonblocking;      /* Blocking/Non-blocking socket */
 Bool connUp;           /* Is connection up */
 int  assocId;          /* Assoc Id of connected assoc */
@@ -41,8 +41,8 @@ CuSctpParams sctpCfg;            /* SCTP configurations at DU */
 typedef struct
 {
    S16           numFd;
-   U16           port;   
-   U32           flag;
+   uint16_t           port;   
+   uint32_t           flag;
    Buffer        *mBuf;
    MsgLen        bufLen; 
    CmInetNetAddr addr;
@@ -53,8 +53,8 @@ typedef struct
 
 typedef struct
 {
-   U16              destPort;         /* DU PORTS */
-   U16              srcPort;
+   uint16_t              destPort;         /* DU PORTS */
+   uint16_t              srcPort;
    Bool             bReadFdSet;
    CmInetFd         sockFd;           /* Socket file descriptor */
    CmInetAddr       peerAddr;
@@ -74,7 +74,7 @@ S16 fillDestNetAddr(CmInetNetAddr *destAddrPtr, SctpIpAddr *dstIpPtr);
 S16 sctpSetSockOpts(CmInetFd *sock_Fd);
 S16 sctpSockPoll();
 S16 sctpAccept(CmInetFd *lstnSock_Fd, CmInetAddr *peerAddr, CmInetFd *sock_Fd);
-S16 processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, U32 *timeoutPtr, CmInetMemInfo *memInfo);
+S16 processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, uint32_t *timeoutPtr, CmInetMemInfo *memInfo);
 #endif
 
 /**********************************************************************

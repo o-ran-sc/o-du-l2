@@ -79,8 +79,8 @@ RgSchUeCb                  *ue
 
 Void rgSCHSCellHndlFdbkInd ARGS((
 RgSchDlHqProcCb   *hqP,
-U8                tbIdx,
-U8                fdbk,
+uint8_t                tbIdx,
+uint8_t                fdbk,
 Bool              maxHqRetxReached
 ));
 
@@ -93,7 +93,7 @@ RgSchUeCellInfo *sCell
 Void rgSCHSCellDelUeSCell ARGS((
 RgSchCellCb  *cellCb,
 RgSchUeCb    *ueCb,
-U8            sCellIdx
+uint8_t            sCellIdx
 ));
 
 S16 rgSCHSCellDelUe ARGS((
@@ -107,13 +107,13 @@ RgSchCellCb  *secCellCb,
 RgSchUeCb    *ueCb,
 RgrUePrdDlCqiCfg  *cqiCfg,
 CmLteUeCategory   ueCat,
-U8            sCellIdx
+uint8_t            sCellIdx
 ));
 #endif
 PRIVATE S16 rgSCHSCellTrgMacHqEReset ARGS((
 Inst          inst,
-U16           secCellId,
-U16           rnti
+uint16_t           secCellId,
+uint16_t           rnti
 ));
 
 
@@ -145,8 +145,8 @@ RgSchDlHqTbCb     *tbInfo;
 #endif
 {
 
-   U8   bitVal = 0;
-   U8   sCellActDeactBitMask = 0;
+   uint8_t   bitVal = 0;
+   uint8_t   sCellActDeactBitMask = 0;
    TRC3(rgSCHSCellSchdActDeactCe);
 
    /* Change the state of all Scells waiting for
@@ -159,7 +159,7 @@ RgSchDlHqTbCb     *tbInfo;
      * 0 for deactivation
      * */
 
-   for(U8 idx = 1; idx <= RG_SCH_MAX_SCELL ; idx++)
+   for(uint8_t idx = 1; idx <= RG_SCH_MAX_SCELL ; idx++)
    {
       if(ueCb->cellInfo[idx] != NULLP)
       {
@@ -322,15 +322,15 @@ RgSchUeCellInfo  *sCellInfo
 #ifdef DEBUGP
    Inst   inst = ueCb->cell->instIdx;
 #endif
-   U16    tempIdx; 
+   uint16_t    tempIdx; 
    RgrUePrdDlCqiCfg  *cqiCfg;
-   U8     j;  /*Bandwidth Parts*/
-   U16    riTrInsTime; 
-   U16    periodicity; 
-   U16    cqiTrInstTime; 
+   uint8_t     j;  /*Bandwidth Parts*/
+   uint16_t    riTrInsTime; 
+   uint16_t    periodicity; 
+   uint16_t    cqiTrInstTime; 
    RgSchUePCqiCb *cqiCb = NULLP;
    CmLteTimingInfo timingInfo;
-   U16    crntTime;           
+   uint16_t    crntTime;           
 #endif
 
    TRC3(rgSCHSCellActivation);
@@ -450,8 +450,8 @@ RgSchUeCellInfo  *sCellInfo
             % RG_SCH_PCQI_SRS_SR_TRINS_SIZE;
          if(periodicity >= RG_SCH_PCQI_SRS_SR_TRINS_SIZE)
          {  
-            cqiCb->riDist = rgSCHUtlFindDist((U16)(crntTime + TFU_RECPREQ_DLDELTA),
-                  (U16) tempIdx);
+            cqiCb->riDist = rgSCHUtlFindDist((uint16_t)(crntTime + TFU_RECPREQ_DLDELTA),
+                  (uint16_t) tempIdx);
          }
          else
          {
@@ -661,8 +661,8 @@ RgSchUeCellInfo *sCellInfo
  *
  *     Invoked by: CommonScheduler
  *
- *  @param[in]  U16        sCellId
- *  @param[in]  U16        rnti
+ *  @param[in]  uint16_t        sCellId
+ *  @param[in]  uint16_t        rnti
  *  @return  Void
  *
  **/
@@ -670,14 +670,14 @@ RgSchUeCellInfo *sCellInfo
 PRIVATE S16 rgSCHSCellTrgMacHqEReset
 (
 Inst          inst,
-U16           secCellId,
-U16           rnti
+uint16_t           secCellId,
+uint16_t           rnti
 )
 #else
 PRIVATE S16 rgSCHSCellTrgMacHqEReset(inst,secCellId,rnti)
 Inst          inst;
-U16           secCellId;
-U16           rnti;
+uint16_t           secCellId;
+uint16_t           rnti;
 #endif
 {
    Pst               pst;
@@ -727,15 +727,15 @@ U16           rnti;
 Void rgSCHSCellHndlFdbkInd
 (
 RgSchDlHqProcCb   *hqP,
-U8                tbIdx,
-U8                fdbk,
+uint8_t                tbIdx,
+uint8_t                fdbk,
 Bool              maxHqRetxReached
 )
 #else
 Void rgSCHSCellHndlFdbkInd(hqP, tbIdx, fdbk,maxHqRetxReached)
 RgSchDlHqProcCb   *hqP;
-U8                tbIdx;
-U8                fdbk;
+uint8_t                tbIdx;
+uint8_t                fdbk;
 Bool              maxHqRetxReached;
 #endif
 {
@@ -754,7 +754,7 @@ Bool              maxHqRetxReached;
          {
             hqP->tbInfo[tbIdx].schdSCellActCe.pres =  FALSE;
 
-            for(U8 idx = 1; idx <= RG_SCH_MAX_SCELL ; idx++)
+            for(uint8_t idx = 1; idx <= RG_SCH_MAX_SCELL ; idx++)
             {
                if(ueCb->cellInfo[idx] != NULLP) 
                {
@@ -784,7 +784,7 @@ Bool              maxHqRetxReached;
             if(TRUE == maxHqRetxReached)
             {
                hqP->tbInfo[tbIdx].schdSCellActCe.pres =  FALSE;
-               for(U8 idx = 1; idx <= RG_SCH_MAX_SCELL ; idx++)
+               for(uint8_t idx = 1; idx <= RG_SCH_MAX_SCELL ; idx++)
                {
                   if(ueCb->cellInfo[idx] != NULLP) 
                   {
@@ -883,8 +883,8 @@ RgSchUeCellInfo *sCellInfo;
  *
  *  @param[in]  RgSchCellCb *cellCb
  *  @param[in]  RgSchUeCb   *ueCb
- *  @param[in]  U8           sCellIdx
- *  @param[in]  U8           action
+ *  @param[in]  uint8_t           sCellIdx
+ *  @param[in]  uint8_t           action
  *
  *  @return  ROK/RFAILED
  *
@@ -894,15 +894,15 @@ S16 rgSCHSCellTrigActDeact
 (
 RgSchCellCb  *cell,
 RgSchUeCb    *ueCb,
-U8            sCellIdx,
-U8            action
+uint8_t            sCellIdx,
+uint8_t            action
 )
 #else
 S16 rgSCHSCellTrigActDeact(cell,ueCb,sCellIdx,action)
 RgSchCellCb  *cell,
 RgSchUeCb    *ueCb;
-U8            sCellIdx;
-U8            action;
+uint8_t            sCellIdx;
+uint8_t            action;
 #endif
 {
    Inst inst = cell->instIdx;
@@ -1019,13 +1019,13 @@ PRIVATE S16 rgSCHSCellSelectForAct
 (
 RgSchCellCb  *cell,
 RgSchUeCb    *ueCb,
-U8           *sCellIdx
+uint8_t           *sCellIdx
 )
 #else
 PRIVATE S16 rgSCHSCellSelectForAct(cell, ueCb)
 RgSchCellCb  *cell;
 RgSchUeCb    *ueCb;
-U8           *sCellIdx;
+uint8_t           *sCellIdx;
 #endif
 {
    TRC3(rgSCHSCellSelectAndAct);
@@ -1053,7 +1053,7 @@ U8           *sCellIdx;
  *
  *  @param[in]  RgSchCellCb *cellCb
  *  @param[in]  RgSchUeCb   *ueCb
- *  @param[in]  U8          action
+ *  @param[in]  uint8_t          action
  *
  *  @return  Void
  *
@@ -1063,16 +1063,16 @@ Void rgSCHSCellSelectAndActDeAct
 (
 RgSchCellCb  *pCell,
 RgSchUeCb    *ueCb,
-U8           action
+uint8_t           action
 )
 #else
 Void rgSCHSCellSelectAndActDeAct(pCell, ueCb, action)
 RgSchCellCb  *pCell;
 RgSchUeCb    *ueCb;
-U8           action;
+uint8_t           action;
 #endif
 {
-   U8  sCellIdx = 0;
+   uint8_t  sCellIdx = 0;
    S16 ret = ROK;
 
    switch (action)
@@ -1113,7 +1113,7 @@ U8           action;
  *
  *  @param[in]  RgSchCellCb  *cellCb
  *  @param[in]  RgSchUeCb    *ueCb
- *  @param[in]  U8            idx
+ *  @param[in]  uint8_t            idx
  *  @return  ROK/RFAILED
  *
  **/
@@ -1122,13 +1122,13 @@ Void rgSCHSCellDelUeSCell
 (
 RgSchCellCb  *cellCb,
 RgSchUeCb    *ueCb,
-U8            sCellIdx
+uint8_t            sCellIdx
 )
 #else
 Void rgSCHSCellDelUeSCell(cellCb,ueCb,sCellIdx)
 RgSchCellCb  *cellCb;
 RgSchUeCb    *ueCb;
-U8            sCellIdx;
+uint8_t            sCellIdx;
 #endif
 {
    RgUeUlHqCb       *ulHqEnt;
@@ -1219,7 +1219,7 @@ RgSchUeCb    *ueCb;
 
    TRC3(rgSCHSCellDelUe);
 
-   for(U8 idx = 1; idx <= RG_SCH_MAX_SCELL ; idx++)
+   for(uint8_t idx = 1; idx <= RG_SCH_MAX_SCELL ; idx++)
    {
       rgSCHSCellDelUeSCell(cellCb,ueCb,idx);
    }
@@ -1267,7 +1267,7 @@ RgSchCellCb  *secCellCb,
 RgSchUeCb    *ueCb,
 RgrUePrdDlCqiCfg  *cqiCfg,
 CmLteUeCategory   ueCat,
-U8            sCellIdx
+uint8_t            sCellIdx
 )
 #else
 S16 rgSCHSCellPCqiCfg(priCellCb,secCellCb,ueCb,cqiCfg,ueCat,sCellIdx)
@@ -1276,11 +1276,11 @@ RgSchCellCb       *secCellCb;
 RgSchUeCb         *ueCb;
 RgrUePrdDlCqiCfg  *cqiCfg;
 CmLteUeCategory    ueCat;
-U8                sCellIdx;
+uint8_t                sCellIdx;
 #endif
 {
-   U8     j;  /*Bandwidth Parts*/
-   U8     temp; 
+   uint8_t     j;  /*Bandwidth Parts*/
+   uint8_t     temp; 
 #ifdef DEBUGP
    Inst   inst = priCellCb->instIdx;
 #endif
@@ -1310,7 +1310,7 @@ U8                sCellIdx;
    if (cqiCfg->type == RGR_SCH_PCQI_SETUP)
    {   
       /*  1. Copy the Received CQI Cfg parameters to ueCb  */
-      cmMemcpy((U8 *)&cqiCb->cqiCfg, (U8 *)cqiCfg, 
+      cmMemcpy((uint8_t *)&cqiCb->cqiCfg, (uint8_t *)cqiCfg, 
             sizeof(RgrUePrdDlCqiCfg));
 
       /*  2. Compute Periodic CQI Periodicity and subframe offset   */
@@ -1330,7 +1330,7 @@ U8                sCellIdx;
 
       if(RGR_UE_PCQI_SB_REP == cqiCfg->cqiSetup.cqiRepType)
       {
-         U8     k;  /*SubBand Size (RB) */
+         uint8_t     k;  /*SubBand Size (RB) */
          RG_SCH_GET_CQI_J_VAL(secCellCb->bwCfg.dlTotalBw, j);
          RG_SCH_GET_CQI_K_VAL(secCellCb->bwCfg.dlTotalBw, k);
          cqiCb->J = j; /*Number of Bandwidth Parts*/
@@ -1438,7 +1438,7 @@ RgSchUeCb                  *ue;
    RgSchCmnCell *cellSch;
    TRC3(rgSCHSCellDlUeReset);
 
-   for(U8 idx = 1; idx <= RG_SCH_MAX_SCELL ; idx++)
+   for(uint8_t idx = 1; idx <= RG_SCH_MAX_SCELL ; idx++)
    {
       if(ue->cellInfo[idx] != NULLP) 
       {
@@ -1484,7 +1484,7 @@ RgSchDlLcCb                *svc;
 {
    RgSchCmnCell *cellSch = RG_SCH_CMN_GET_CELL(cell);
    TRC3(rgSCHSCellDlLcCfg);
-   for(U8 idx = 1; idx <= RG_SCH_MAX_SCELL ; idx++)
+   for(uint8_t idx = 1; idx <= RG_SCH_MAX_SCELL ; idx++)
    {
       if(ue->cellInfo[idx] != NULLP) 
       {
@@ -1526,7 +1526,7 @@ RgSchDlLcCb                *svc;
 {
    RgSchCmnCell *cellSch = RG_SCH_CMN_GET_CELL(cell);
    TRC3(rgSCHSCellDlLcDel);
-   for(U8 idx = 1; idx <= RG_SCH_MAX_SCELL ; idx++)
+   for(uint8_t idx = 1; idx <= RG_SCH_MAX_SCELL ; idx++)
    {
       if(ue->cellInfo[idx] != NULLP) 
       {
@@ -1576,7 +1576,7 @@ RgSchDlLcCb                *svc;
    {
       cellSch->apisDl->rgSCHDlDedBoUpd(ue->cell, ue, svc);
    }
-   for(U8 idx = 1; idx <= RG_SCH_MAX_SCELL ; idx++)
+   for(uint8_t idx = 1; idx <= RG_SCH_MAX_SCELL ; idx++)
    {
       if((ue->cellInfo[idx] != NULLP) &&
             (ue->cellInfo[idx]->sCellState == RG_SCH_SCELL_ACTIVE) &&
@@ -1601,17 +1601,17 @@ RgSchDlLcCb                *svc;
  *
  *  @param[in] RgSchUePCqiCb *cqiCb1
  *  @param[in] RgSchUePCqiCb *cqiCb2
- *  @return U8 cqiCb cell idx which has the higher priority
+ *  @return uint8_t cqiCb cell idx which has the higher priority
  *
  **/
 #ifdef ANSI
-PRIVATE U8  rgSCHUtlSCellCmpCqiCfg
+PRIVATE uint8_t  rgSCHUtlSCellCmpCqiCfg
 (
 RgSchUePCqiCb *cqiCb1,
 RgSchUePCqiCb *cqiCb2
 )
 #else
-PRIVATE U8  rgSCHUtlSCellCmpCqiCfg(cqiCb1, cqiCb2)
+PRIVATE uint8_t  rgSCHUtlSCellCmpCqiCfg(cqiCb1, cqiCb2)
 RgSchUePCqiCb     *cqiCb1;
 RgSchUePCqiCb     *cqiCb2;
 #endif
@@ -1678,17 +1678,17 @@ S16 rgSCHUtlSCellHndlCqiCollsn(cqiCb)
 RgSchUePCqiCb     *cqiCb;
 #endif
 {
-   U32 nPCqiServCellIdx;
-   U32 minPCqiTrIdx;
-   U32 scellPCqiTrIdx;
-   U32 pCqiTrIdx;
+   uint32_t nPCqiServCellIdx;
+   uint32_t minPCqiTrIdx;
+   uint32_t scellPCqiTrIdx;
+   uint32_t pCqiTrIdx;
    RgSchCellCb       *priCellCb = cqiCb->servCellInfo->ue->cell;
    RgSchUeCb         *ueCb = cqiCb->servCellInfo->ue;
-   U16 crntSfIdx;
-   U32 cellIdx;
-   U32 sCellCnt = 0;
+   uint16_t crntSfIdx;
+   uint32_t cellIdx;
+   uint32_t sCellCnt = 0;
    CmLteTimingInfo timingInfo;
-   U8 idx = 0;
+   uint8_t idx = 0;
    TRC3(rgSCHUtlSCellHndlCqiCollsn);
 
 #ifdef xLTE_TDD
@@ -1789,15 +1789,15 @@ S16 rgSCHUtlSCellHndlRiCollsn(cqiCb)
 RgSchUePCqiCb     *cqiCb;
 #endif
 {
-   U32 nPRiServCellIdx;
-   U32 minPRiTrIdx;
-   U32 scellPRiTrIdx;
-   U32 pRiTrIdx;
+   uint32_t nPRiServCellIdx;
+   uint32_t minPRiTrIdx;
+   uint32_t scellPRiTrIdx;
+   uint32_t pRiTrIdx;
    RgSchCellCb       *priCellCb = cqiCb->servCellInfo->ue->cell;
    RgSchUeCb         *ueCb = cqiCb->servCellInfo->ue;
-   U16 crntSfIdx;
-   U32 cellIdx;
-   U32 sCellCnt = 0;
+   uint16_t crntSfIdx;
+   uint32_t cellIdx;
+   uint32_t sCellCnt = 0;
    CmLteTimingInfo timingInfo;
    TRC3(rgSCHUtlSCellHndlRiCollsn);
 
@@ -1913,7 +1913,7 @@ RgSchUeCb                  *ue;
    S16 retVal = RFAILED;
    TRC3(rgSCHSCellIsActive);
 
-   for(U8 idx = 1; idx <= RG_SCH_MAX_SCELL ; idx++)
+   for(uint8_t idx = 1; idx <= RG_SCH_MAX_SCELL ; idx++)
    {
       if((ue->cellInfo[idx] != NULLP) &&
          (ue->cellInfo[idx]->cell->cellId == cell->cellId)&&

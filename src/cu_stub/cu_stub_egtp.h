@@ -47,8 +47,8 @@
 #define EGTP_MASK_BIT7                   0x40
 #define EGTP_MASK_BIT8                   0x80
 
-U8         sockType;
-U8         protType;
+uint8_t         sockType;
+uint8_t         protType;
 
 typedef enum egtpMsgType
 {
@@ -75,8 +75,8 @@ typedef struct egtpMsgHdr
    TknU8      nPdu;                      /**< N-PDU Number */
    TknU32     seqNum;                    /**< Sequence Number */
    EgtpExtHdr extHdr;                       /**< Extension headers present flag */
-   U32        teId;                         /**< Tunnel Endpoint Id */
-   U8         msgType;                      /**< eGTP-U Message Type */
+   uint32_t        teId;                         /**< Tunnel Endpoint Id */
+   uint8_t         msgType;                      /**< eGTP-U Message Type */
 }EgtpMsgHdr;
  
 typedef struct egtpMsg
@@ -87,9 +87,9 @@ typedef struct egtpMsg
 
 typedef struct egtpTnlEvt
 {
-   U8  action;
-   U32 lclTeid;
-   U32 remTeid;
+   uint8_t  action;
+   uint32_t lclTeid;
+   uint32_t remTeid;
 }EgtpTnlEvt;
 
 typedef struct egtpTptSrvr
@@ -100,21 +100,21 @@ typedef struct egtpTptSrvr
 
 typedef struct EgtpTeIdCb
 {
-   U32 teId;              /* Local tunnel id */
-   U32 remTeId;           /* Remote tunnel id */
+   uint32_t teId;              /* Local tunnel id */
+   uint32_t remTeId;           /* Remote tunnel id */
    struct
    {
-      U8 hdr[EGTP_MAX_HDR_LEN];
-      U8 cnt;
+      uint8_t hdr[EGTP_MAX_HDR_LEN];
+      uint8_t cnt;
    }preEncodedHdr;        /* Pre-encoded header for PDUs on this tunnel */
 }EgtpTeIdCb;
 
 typedef struct egtpDstCb
 {
    CmInetIpAddr  dstIp;          /* destination IP */
-   U16           dstPort;        /* Remote port that sends data */
+   uint16_t           dstPort;        /* Remote port that sends data */
    EgtpTptSrvr   sendTptSrvr;    /* Transport server for sending UDP msg to */
-   U32           numTunn;        /* Number of tunnels */
+   uint32_t           numTunn;        /* Number of tunnels */
    CmHashListCp  teIdLst;        /* Tunnel Id list for this destination */
 }EgtpDstCb;
 
@@ -133,7 +133,7 @@ S16 cuEgtpTnlMgmtReq(EgtpTnlEvt tnlEvt);
 S16 cuEgtpTnlAdd(EgtpTnlEvt tnlEvt);
 S16 cuEgtpTnlMod(EgtpTnlEvt tnlEvt);
 S16 cuEgtpTnlDel(EgtpTnlEvt tnlEvt);
-S16 cuEgtpEncodeHdr(U8 *preEncodedHdr, EgtpMsgHdr *preDefHdr, U8 *hdrIdx);
+S16 cuEgtpEncodeHdr(uint8_t *preEncodedHdr, EgtpMsgHdr *preDefHdr, uint8_t *hdrIdx);
 S16 cuEgtpHdlRecvMsg(Buffer *mBuf);
 S16 cuEgtpDatReq();
 S16 BuildAppMsg(EgtpMsg  *egtpMsg);

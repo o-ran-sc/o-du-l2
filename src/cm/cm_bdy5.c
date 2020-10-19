@@ -110,8 +110,8 @@ PFV      func;           /* function */
 #endif
 {
 /**/
-   U32 expire;
-   U32 entry;
+   uint32_t expire;
+   uint32_t entry;
    S16 event;
    PTR cb;
    CmTimer *tmp1;
@@ -140,7 +140,7 @@ PFV      func;           /* function */
    ++tqCp->nxtEnt;
    expire = tqCp->nxtEnt;
    /* cm_bdy5_c_002.113 - Modification for SRegCfgTmr support */
-   entry = (U32) (expire % (U32)(tqCp->tmrLen));
+   entry = (uint32_t) (expire % (uint32_t)(tqCp->tmrLen));
 
    tmp2 = &tq[entry].first;
    while ((tmp1 = *tmp2) != NULLP)
@@ -180,13 +180,13 @@ PFV      func;           /* function */
 #endif
 {
 /**/
-   U32 expire;
-   U32 entry, entry1;
+   uint32_t expire;
+   uint32_t entry, entry1;
    S16 event;
    CmTqType *tqEnt, *tqEnt1; 
    PTR cb;
    CmTimer *tmp1;
-   VOLATILE U32     startTime = 0;
+   VOLATILE uint32_t     startTime = 0;
    
    TRC2(cmPrcTmr)
  
@@ -214,7 +214,7 @@ PFV      func;           /* function */
    ++tqCp->nxtEnt;
    expire = tqCp->nxtEnt;
 	tqCp->tmrLen = 1;
-   entry = (U32) (expire % (U32)(tqCp->tmrLen));
+   entry = (uint32_t) (expire % (uint32_t)(tqCp->tmrLen));
   
    tqCp->tmp = (tqEnt = &tq[entry])->first;
    while ((tmp1 = tqCp->tmp) != NULLP)
@@ -238,7 +238,7 @@ PFV      func;           /* function */
          }
          else
          {
-            entry1 = (U32) (tmp1->tqExpire % (U32)(tqCp->tmrLen));
+            entry1 = (uint32_t) (tmp1->tqExpire % (uint32_t)(tqCp->tmrLen));
             tqEnt1 = &tq[entry1];
             CM_RMV_TQCP(tqEnt, tmp1);
             tmp1->entIdx = entry1; 
@@ -272,16 +272,16 @@ PFV      func;           /* function */
 Void cmInitTimers
 (
 CmTimer *timers,     /* timer list */
-U8 max               /* maximum tmrs */
+uint8_t max               /* maximum tmrs */
 )
 #else
 Void cmInitTimers(timers, max)
 CmTimer *timers;     /* timer list */
-U8 max;              /* maximum tmrs */
+uint8_t max;              /* maximum tmrs */
 #endif
 {
    CmTimer *tPtr;
-   REG1 U8 i;
+   REG1 uint8_t i;
 
    TRC2(cmInitTimers)
 
@@ -323,17 +323,17 @@ CmTmrArg *arg;
 {
 /*added FAP modifications*/
 #ifdef SS_FAP
-   REG1 U8 tmrNum;
+   REG1 uint8_t tmrNum;
    /* cm_bdy5_c_001.main_20 - Modification for SRegCfgTmr support */
-   U32 ent;
-   U32 expire;
+   uint32_t ent;
+   uint32_t expire;
    CmTimer **tmp;
 
    TRC2(cmPlcCbTq)
 
    expire = (arg->tqCp->nxtEnt + arg->wait);
    /* cm_bdy5_c_002.113 - Modification for SRegCfgTmr support */
-   ent = (U32)(expire % (U32)(arg->tqCp->tmrLen));
+   ent = (uint32_t)(expire % (uint32_t)(arg->tqCp->tmrLen));
 
    for (tmrNum = 0; tmrNum < arg->max; tmrNum++)
    {
@@ -354,15 +354,15 @@ CmTmrArg *arg;
    }
    RETVOID;
 #else
-   REG1 U8 tmrNum;
-   U32 ent;
+   REG1 uint8_t tmrNum;
+   uint32_t ent;
    CmTqType *tq;
    CmTimer  *target;
-   U32 expire;
+   uint32_t expire;
    TRC2(cmPlcCbTq)
  
    expire = (arg->tqCp->nxtEnt + arg->wait);
-   ent = (U32)(expire % (U32)(arg->tqCp->tmrLen));
+   ent = (uint32_t)(expire % (uint32_t)(arg->tqCp->tmrLen));
  
    for (tmrNum = 0; tmrNum < arg->max; tmrNum++)
    {
@@ -446,7 +446,7 @@ CmTmrArg *arg;
 /*Added FAP modifications*/
 #ifdef SS_FAP
 /* cm_bdy5_c_002.113 - Modification for SRegCfgTmr support */
-   U32 ent;
+   uint32_t ent;
    CmTimer *target;
    CmTimer *tmp1;
    CmTimer **tmp2;
@@ -457,7 +457,7 @@ CmTmrArg *arg;
    if (target->tmrEvnt != TMR_NONE)
    {
       /* cm_bdy5_c_002.113 - Modification for SRegCfgTmr support */
-      ent = (U32) (target->tqExpire % (U32)(arg->tqCp->tmrLen));
+      ent = (uint32_t) (target->tqExpire % (uint32_t)(arg->tqCp->tmrLen));
       tmp2 = &arg->tq[ent].first;
 
       while ((tmp1 = *tmp2) != NULLP)
@@ -479,7 +479,7 @@ CmTmrArg *arg;
    }
    RETVOID;
 #else
-   U32 ent;
+   uint32_t ent;
    CmTimer  *target;
    CmTqType *tq;
    
@@ -489,7 +489,7 @@ CmTmrArg *arg;
    target = &arg->timers[arg->tNum];
    if (target->tmrEvnt != TMR_NONE)
    {
-      ent = (U32) (target->entIdx);
+      ent = (uint32_t) (target->entIdx);
       tq = &arg->tq[ent];
  
       /* 

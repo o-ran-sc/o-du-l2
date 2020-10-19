@@ -421,7 +421,7 @@ Bool                isExplRel
 Void rgSCHCmnSpsUlProcActInd ARGS((
 RgSchCellCb         *cell,
 RgSchUeCb           *ue,
-U16                 spsSduSize
+uint16_t                 spsSduSize
 ))
 {
 

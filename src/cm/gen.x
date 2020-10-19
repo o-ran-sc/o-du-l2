@@ -45,9 +45,9 @@ extern "C" {
 
 typedef S8 Txt;                   /* text */
 
-typedef U8 Ent;                   /* entity */
+typedef uint8_t Ent;                   /* entity */
 
-typedef U8 Inst;                  /* instance */
+typedef uint8_t Inst;                  /* instance */
 
 typedef struct entityId           /* entity id */
 {
@@ -73,34 +73,34 @@ typedef struct elmntId            /* element id */
    ElmntInst3 elmntInst3;         /* element instance 3 */
 } ElmntId;
 
-typedef U8 Region;                /* region */
+typedef uint8_t Region;                /* region */
 
-typedef U8 Pool;                  /* pool */
+typedef uint8_t Pool;                  /* pool */
 
-typedef U8 Prior;                 /* priority */
+typedef uint8_t Prior;                 /* priority */
 
 typedef Prior Priority;           /* priority */
 
-typedef U8 Route;                 /* route */
+typedef uint8_t Route;                 /* route */
 
-typedef U8 Data;                  /* data */
+typedef uint8_t Data;                  /* data */
 
-typedef U8 Selector;              /* selector */
+typedef uint8_t Selector;              /* selector */
 
 typedef S16 Reason;               /* reason */
 
-typedef U16 ProcId;               /* processor id */
+typedef uint16_t ProcId;               /* processor id */
 
-typedef U8 Event;                 /* event */
+typedef uint8_t Event;                 /* event */
 
-typedef U32 TranId;               /* transaction Id */
+typedef uint32_t TranId;               /* transaction Id */
 
 typedef S16 IntNum;               /* Interface Number */
 
-typedef U16 TranNum;              /* Transaction Number */
+typedef uint16_t TranNum;              /* Transaction Number */
 
-typedef U16     CmIntfId;         /* Interface identifier       */
-typedef U16     CmIntfVer;        /* Interface version          */
+typedef uint16_t     CmIntfId;         /* Interface identifier       */
+typedef uint16_t     CmIntfVer;        /* Interface version          */
 
 #ifdef TDS_ROLL_UPGRADE_SUPPORT
 typedef struct  cmIntf            /* Attributes of an interface */
@@ -113,22 +113,22 @@ typedef struct  cmIntf            /* Attributes of an interface */
 /* post structure *** ALIGNED & ORDERED *** */
 typedef struct pst                /* parameters for SPstTsk */
 {
-   ProcId dstProcId;              /* destination processor id (U16) */
-   ProcId srcProcId;              /* source processor id      (U16) */
+   ProcId dstProcId;              /* destination processor id (uint16_t) */
+   ProcId srcProcId;              /* source processor id      (uint16_t) */
 
-   Ent dstEnt;                    /* destination entity       (U8)  */
-   Inst dstInst;                  /* destination instance     (U8)  */
-   Ent srcEnt;                    /* source entity            (U8)  */
-   Inst srcInst;                  /* source instance          (U8)  */
+   Ent dstEnt;                    /* destination entity       (uint8_t)  */
+   Inst dstInst;                  /* destination instance     (uint8_t)  */
+   Ent srcEnt;                    /* source entity            (uint8_t)  */
+   Inst srcInst;                  /* source instance          (uint8_t)  */
 
-   Prior prior;                   /* priority                 (U8)  */   
-   Route route;                   /* route                    (U8)  */
-   Event event;                   /* event                    (U8)  */
-   Region region;                 /* region                   (U8)  */
+   Prior prior;                   /* priority                 (uint8_t)  */   
+   Route route;                   /* route                    (uint8_t)  */
+   Event event;                   /* event                    (uint8_t)  */
+   Region region;                 /* region                   (uint8_t)  */
 
-   Pool pool;                     /* pool                     (U8)  */
-   Selector selector;             /* selector                 (U8)  */
-   CmIntfVer intfVer;             /* interface version        (U16) */
+   Pool pool;                     /* pool                     (uint8_t)  */
+   Selector selector;             /* selector                 (uint8_t)  */
+   CmIntfVer intfVer;             /* interface version        (uint16_t) */
 } Pst;
 
 /* systemId structure */
@@ -148,20 +148,20 @@ typedef struct systemId           /* system id */
  */
 typedef struct protAddr
 {
-   U16      protType;                  /* Protocol Type */
-   U8       len;                       /* Protocol Address Length in bytes */
-   U8       preLen;                    /* prefix length in bits */
-   U8       address[MAX_PROTADDR_LEN]; /* Protocol Address */ 
+   uint16_t      protType;                  /* Protocol Type */
+   uint8_t       len;                       /* Protocol Address Length in bytes */
+   uint8_t       preLen;                    /* prefix length in bits */
+   uint8_t       address[MAX_PROTADDR_LEN]; /* Protocol Address */ 
 #ifdef CM_ARI2
    Bool     autoSysIdPres;         /* Is Autonomous System Id Present */
-   U32      autoSysId;                 /* Autonomous System Id */
+   uint32_t      autoSysId;                 /* Autonomous System Id */
 #endif /* CM_ARI2 */
 
 }ProtAddr;
 
 typedef struct protAddrTbl
 {
-   U8         count;                 /* Number of addresses */
+   uint8_t         count;                 /* Number of addresses */
    ProtAddr   addr[MAX_PROT_ADDRS];  /* Protocol Address List */
 }ProtAddrTbl;
 
@@ -169,20 +169,20 @@ typedef struct protAddrTbl
 
 typedef struct addrs              /* address */
 {
-   U8 length;                     /* length (bytes or nibbles) */
-   U8 strg[ADRLEN];               /* address */
+   uint8_t length;                     /* length (bytes or nibbles) */
+   uint8_t strg[ADRLEN];               /* address */
 } Addrs;
 
 typedef struct shrtAddr           /* short address */
 {
-   U8 length;                     /* length bytes */
-   U8 strg[SHRTADRLEN];           /* address */
+   uint8_t length;                     /* length bytes */
+   uint8_t strg[SHRTADRLEN];           /* address */
 } ShrtAddrs;
 
 typedef struct lngAddr            /* long address */
 {
-   U8 length;                     /* length bytes */
-   U8 strg[LNGADRLEN];            /* address */
+   uint8_t length;                     /* length bytes */
+   uint8_t strg[LNGADRLEN];            /* address */
 } LngAddrs;
 
 /* bndCfg structure */
@@ -190,9 +190,9 @@ typedef struct lngAddr            /* long address */
 typedef struct bndCfg             /* bind configuration */
 {
    Txt *usrId;                    /* user id */
-   U8 bufOwnshp;                  /* buffer ownership */
-   U8 flcTyp;                     /* flow control type */
-   U8 wdw;                        /* window */
+   uint8_t bufOwnshp;                  /* buffer ownership */
+   uint8_t flcTyp;                     /* flow control type */
+   uint8_t wdw;                        /* window */
    Ent ent;                       /* entity */
    Inst inst;                     /* instance */
    Region region;                 /* region */
@@ -207,9 +207,9 @@ typedef struct bndCfg             /* bind configuration */
 /* Circular Buffer Structure */
 #ifdef CBUF_ENABLE
 typedef struct cb {
-   U32 cBufIdx;
-   U32 cBufSize;
-   U8 *cBufPtr;
+   uint32_t cBufIdx;
+   uint32_t cBufSize;
+   uint8_t *cBufPtr;
    S8 tmpBuf[CBUFPRNTSZE];
 }cBuffer;
 #endif /* CBUF_ENABLE */
@@ -231,13 +231,13 @@ typedef struct tskInit            /* task initialization */
    Bool usta;                     /* unsolicited status */
    Bool trc;                      /* trace */
 #ifdef DEBUGP
-   U32 dbgMask;                   /* debug mask */
+   uint32_t dbgMask;                   /* debug mask */
    Txt prntBuf[255];          /* print buffer */
 #endif
    Txt *prntCirBuf; /* print buffer for each system task */
 #ifdef SS_DIAG
    /* gen_x_001.main_96 :Added logmask */
-   U32 logMask;                   /* Logging mask */
+   uint32_t logMask;                   /* Logging mask */
 #endif
    BndCfg lmBnd;                  /* layer management bind */
    ProcId procId;                 /* processor id */
@@ -258,7 +258,7 @@ typedef struct tskInit            /* task initialization */
 
 typedef S32 Cntr;                 /* counter */
  
-typedef U32 StsCntr;              /* Statistics counter */
+typedef uint32_t StsCntr;              /* Statistics counter */
 
 typedef S16 LnkNmb;               /* link number */
 
@@ -272,100 +272,100 @@ typedef S16 SuInstId;             /* service user instance id */
 
 typedef S16 SpInstId;             /* service provider instance id */
 
-typedef U16 PortId;               /* port id */
+typedef uint16_t PortId;               /* port id */
 
-typedef U8 Sapi;                  /* service access point id */
+typedef uint8_t Sapi;                  /* service access point id */
  
-typedef U8 Tei;                   /* terminal endpoint id */
+typedef uint8_t Tei;                   /* terminal endpoint id */
 
-typedef U8 Ces;                   /* connection endpoint suffix */
+typedef uint8_t Ces;                   /* connection endpoint suffix */
 
-typedef U32 Dlci;                 /* data link control identifier */ 
+typedef uint32_t Dlci;                 /* data link control identifier */ 
 
-typedef U16 CalRef;               /* call Reference */
+typedef uint16_t CalRef;               /* call Reference */
 
 typedef S16 Origin;               /* origin */
 
-typedef U16 NwId;                 /* Network Identifier */
+typedef uint16_t NwId;                 /* Network Identifier */
 
 typedef S16 Swtch;                /* switch */
 
-typedef U8 Cause;                 /* cause code */
+typedef uint8_t Cause;                 /* cause code */
 
-typedef U8 Dgn;                   /* diagnostic code */
+typedef uint8_t Dgn;                   /* diagnostic code */
 
 typedef S16 Action;               /* action */
 
 typedef S16 SeqS16;               /* signed 16 bit sequence number */
  
-typedef U16 SeqU16;               /* unsigned 16 bit sequence number */
+typedef uint16_t Sequint16_t;               /* unsigned 16 bit sequence number */
  
 typedef S32 SeqS24;               /* signed 24 bit sequence number */
  
-typedef U32 SeqU24;               /* unsigned 24 bit sequence number */
+typedef uint32_t SeqU24;               /* unsigned 24 bit sequence number */
  
-typedef U8 SetUpArb;              /* set up arbitration (PASSIVE/ACTIVE) */
+typedef uint8_t SetUpArb;              /* set up arbitration (PASSIVE/ACTIVE) */
  
-typedef U8 EvntType;              /* event type */
+typedef uint8_t EvntType;              /* event type */
 
-typedef U8 State;                 /* state */
+typedef uint8_t State;                 /* state */
 
-typedef U8 Mode;                  /* mode */
+typedef uint8_t Mode;                  /* mode */
 
 typedef S32 ConnId;               /* connection id */
 
-typedef U32 UConnId;              /* unsigned connection id */
+typedef uint32_t UConnId;              /* unsigned connection id */
 
-typedef U16 ProtId;               /* protocol id */
+typedef uint16_t ProtId;               /* protocol id */
 
-typedef U16 ChannelId;            /* channel id */
+typedef uint16_t ChannelId;            /* channel id */
 
-typedef U8  Arr64U8[64];            /* Array of 64 of type U8*/
+typedef uint8_t  Arr64uint8_t[64];            /* Array of 64 of type uint8_t*/
 
-typedef U16 Efa;                  /* Envelope Address Function */
+typedef uint16_t Efa;                  /* Envelope Address Function */
 
-typedef U32 BitState;             /* Sa Bit ID and Value */
+typedef uint32_t BitState;             /* Sa Bit ID and Value */
 
-typedef U8  CChanId;               /* V5UA Channel ID */
+typedef uint8_t  CChanId;               /* V5UA Channel ID */
 
-typedef U16 MibOpCode;            /* Op code for Mib Request MIB_REQUEST_GET,
+typedef uint16_t MibOpCode;            /* Op code for Mib Request MIB_REQUEST_GET,
                                      MIB_REQUEST_GET_FIRST, MIB_REQUEST */
 
-typedef U16 MibStatus;            /* Status returned in Mib Cfm */
+typedef uint16_t MibStatus;            /* Status returned in Mib Cfm */
 
-typedef U16 MibTblType;           /* table type */
+typedef uint16_t MibTblType;           /* table type */
 
 typedef S32 MibReqId;             /* request identifier */
 
-typedef U8  UstaType;             /* unsolicited status type */
+typedef uint8_t  UstaType;             /* unsolicited status type */
 typedef S8  ChannelNo;            /* Channel Number */
 
 /* ATM typedefs */
 
 #ifndef CMFILE_REORG_1
 
-typedef U16 AtmVpci;              /* ATM virtual path connection id */
-typedef U16 AtmVpi;               /* ATM virtual path id */
+typedef uint16_t AtmVpci;              /* ATM virtual path connection id */
+typedef uint16_t AtmVpi;               /* ATM virtual path id */
 
 
-typedef U16 AtmVci;               /* ATM virtual channel id */
+typedef uint16_t AtmVci;               /* ATM virtual channel id */
 
-typedef U8 AtmLp;                 /* ATM loss priority */
+typedef uint8_t AtmLp;                 /* ATM loss priority */
 
-typedef U8 AtmCi;                 /* ATM congestion indication */
+typedef uint8_t AtmCi;                 /* ATM congestion indication */
 
-typedef U8 AtmRs;                 /* ATM reception status */
+typedef uint8_t AtmRs;                 /* ATM reception status */
 
-typedef U8 AtmUu;                 /* ATM user-to-user field in CPCS PDUs */
+typedef uint8_t AtmUu;                 /* ATM user-to-user field in CPCS PDUs */
 
-typedef U32 AtmUui;               /* ATM user-to-user indication field in SSCOP PDUs */
+typedef uint32_t AtmUui;               /* ATM user-to-user indication field in SSCOP PDUs */
 
-typedef U8 AtmPt;                 /* ATM cell payload type */
+typedef uint8_t AtmPt;                 /* ATM cell payload type */
 
 typedef struct atmQos             /* ATM quality of service */
 {
-   U8 qosFwd;                     /* qos in forward  direction */
-   U8 qosBwd;                     /* qos in backward direction */
+   uint8_t qosFwd;                     /* qos in forward  direction */
+   uint8_t qosBwd;                     /* qos in backward direction */
 } AtmQos;
 
 /* Vitual channel structure */
@@ -386,39 +386,39 @@ typedef struct atmVccId         /* VCC id */
 /* VCC table */
 typedef struct atmVccTbl                  /* VCC table */
 {
-   U16        count;                      /* number of VCCs */
+   uint16_t        count;                      /* number of VCCs */
    AtmVccId   tbl[MAX_ATMVCCTBL_SZ];      /* VCC list */
 } AtmVccTbl;
 
 /* Generic ATM address */
 typedef struct atmAddr
 {
-   U8    type;                  /* type of Address (AESA or E.164) */
-   U8    len;                   /* length (bytes) */
-   U8    strg[ADRLEN];          /* address string */
+   uint8_t    type;                  /* type of Address (AESA or E.164) */
+   uint8_t    len;                   /* length (bytes) */
+   uint8_t    strg[ADRLEN];          /* address string */
 } AtmAddr;
 
 /* ATM address table */
 typedef struct atmAddrTbl            /* ATM address table */
 {
-   U16      count;                   /* number of ATM addresses */
+   uint16_t      count;                   /* number of ATM addresses */
    AtmAddr  tbl[MAX_ATMADDRTBL_SZ];  /* ATM address list */
 } AtmAddrTbl;
 
 typedef struct atmTfcDesc         /* ATM traffic descriptor */
 {
-   U32  fwdPeakCellRate0;         /* forward  peak  cell rate, CLP = 0   */
-   U32  bwdPeakCellRate0;         /* backward peak  cell rate, CLP = 0   */
-   U32  fwdPeakCellRate1;         /* forward  peak  cell rate, CLP = 0+1 */
-   U32  bwdPeakCellRate1;         /* backward peak  cell rate, CLP = 0+1 */
-   U32  fwdSustCellRate0;         /* forward  sust. cell rate, CLP = 0   */
-   U32  bwdSustCellRate0;         /* backward sust. cell rate, CLP = 0   */
-   U32  fwdSustCellRate1;         /* forward  sust. cell rate, CLP = 0+1 */
-   U32  bwdSustCellRate1;         /* backward sust. cell rate, CLP = 0+1 */
-   U32  fwdMeanBurstSize0;        /* forward  mean burst size, CLP = 0   */
-   U32  bwdMeanBurstSize0;        /* backward mean burst size, CLP = 0   */
-   U32  fwdMeanBurstSize1;        /* forward  mean burst size, CLP = 0+1 */
-   U32  bwdMeanBurstSize1;        /* backward mean burst size, CLP = 0+1 */
+   uint32_t  fwdPeakCellRate0;         /* forward  peak  cell rate, CLP = 0   */
+   uint32_t  bwdPeakCellRate0;         /* backward peak  cell rate, CLP = 0   */
+   uint32_t  fwdPeakCellRate1;         /* forward  peak  cell rate, CLP = 0+1 */
+   uint32_t  bwdPeakCellRate1;         /* backward peak  cell rate, CLP = 0+1 */
+   uint32_t  fwdSustCellRate0;         /* forward  sust. cell rate, CLP = 0   */
+   uint32_t  bwdSustCellRate0;         /* backward sust. cell rate, CLP = 0   */
+   uint32_t  fwdSustCellRate1;         /* forward  sust. cell rate, CLP = 0+1 */
+   uint32_t  bwdSustCellRate1;         /* backward sust. cell rate, CLP = 0+1 */
+   uint32_t  fwdMeanBurstSize0;        /* forward  mean burst size, CLP = 0   */
+   uint32_t  bwdMeanBurstSize0;        /* backward mean burst size, CLP = 0   */
+   uint32_t  fwdMeanBurstSize1;        /* forward  mean burst size, CLP = 0+1 */
+   uint32_t  bwdMeanBurstSize1;        /* backward mean burst size, CLP = 0+1 */
    Bool bstEffortReq;             /* best effort requested */
    Bool fwdTagReq;                /* tagging requested in forward  direction */
    Bool bwdTagReq;                /* tagging requested in backward direction */
@@ -443,45 +443,45 @@ typedef S16 StopBits;             /* stop bits */
 
 /* tcp/ip typedefs */
 
-typedef U32 IpAddr;               /* IP address */
+typedef uint32_t IpAddr;               /* IP address */
 
-typedef U16 Port;                 /* TCP/UDP port */
+typedef uint16_t Port;                 /* TCP/UDP port */
 
-typedef U8 Cmd;                   /* command */
+typedef uint8_t Cmd;                   /* command */
 
-typedef U8 Flags;                 /* TCP/UDP flags */
+typedef uint8_t Flags;                 /* TCP/UDP flags */
 
-typedef U8 Ttl;                   /* time to live */
+typedef uint8_t Ttl;                   /* time to live */
 
-typedef U8 Prec;                  /* TCP/UDP precedence */
+typedef uint8_t Prec;                  /* TCP/UDP precedence */
 
-typedef U32 Window;               /* TCP/UDP window */
+typedef uint32_t Window;               /* TCP/UDP window */
 
-typedef U8 MtpStatus;             /* MTP status */
+typedef uint8_t MtpStatus;             /* MTP status */
 
-typedef U8 Credit;                /* credit */
+typedef uint8_t Credit;                /* credit */
 
 /* ISUP typedefs */
 
-typedef U32 CirId;                /* circuit Id */
+typedef uint32_t CirId;                /* circuit Id */
 
-typedef U16 Cic;                  /* cic */
+typedef uint16_t Cic;                  /* cic */
 
-typedef U32 SiInstId;             /* instance id */
+typedef uint32_t SiInstId;             /* instance id */
 
 /* B-ISUP typedefs */
 
-typedef U32 BiInstId;             /* instance id */
+typedef uint32_t BiInstId;             /* instance id */
 
 /* TUP typedefs */
 
-typedef U32 TpInstId;             /* instance id */
+typedef uint32_t TpInstId;             /* instance id */
 
 /* LLC/SNAP definitions */
 
-typedef U32 Oui;                 /* 3-octet OUI in SNAP header */
-typedef U16 Pid;                 /* 2-octet protocol id in SNAP header */
-typedef U32 LlcId;               /* LLC id */
+typedef uint32_t Oui;                 /* 3-octet OUI in SNAP header */
+typedef uint16_t Pid;                 /* 2-octet protocol id in SNAP header */
+typedef uint32_t LlcId;               /* LLC id */
 
 
 #ifndef CMFILE_REORG_1
@@ -489,16 +489,16 @@ typedef U32 LlcId;               /* LLC id */
 /* q.93b typedefs */
  
 typedef S32 AmInstId;             /* service user/provider instance id */
-typedef U16 AmEndptRefType;       /* endpoint reference */
-typedef U32 AmSeqNmb;             /* sequence number */
+typedef uint16_t AmEndptRefType;       /* endpoint reference */
+typedef uint32_t AmSeqNmb;             /* sequence number */
  
 /* q.saal typedefs */
  
-typedef U16 AsErrorCode;          /* q.saal error code (Q.SAAL1 Appendix 1) */
+typedef uint16_t AsErrorCode;          /* q.saal error code (Q.SAAL1 Appendix 1) */
 
 /* ume typedefs */
 
-typedef U32 UmInteger;            /* ume integer */
+typedef uint32_t UmInteger;            /* ume integer */
  
 typedef struct umObjId            /* ume object identifier */
 {
@@ -515,51 +515,51 @@ typedef struct umMib UmMib;       /* ume mib */
 
 /* general typedefs */
 
-typedef U16 LecId;               /* LEC Id */
-typedef U8  Protocol;            /* protocol */
-typedef U8  Version;             /* version */
-typedef U16 OpCode;              /* op code in control frames */
-typedef U16 LaneStatus;          /* status in control frames */
-typedef U32 TransId;             /* transaction id */
-typedef U16 LaneFlags;           /* flags in control frames */
-typedef U8  LanType;             /* LAN type */
-typedef U8  MtuIdx;              /* max frame size - index */
-typedef U16 MtuVal;              /* max frame size - value */
-typedef U16 Tag;                 /* tag indicating LAN destination type */
-typedef U8  VccNature;           /* VCC nature - SVC, PVC, etc. */
-typedef U8  VccType;             /* VCC type - control, data, etc */
-typedef U8  ProfileId;           /* HCC profile id */
+typedef uint16_t LecId;               /* LEC Id */
+typedef uint8_t  Protocol;            /* protocol */
+typedef uint8_t  Version;             /* version */
+typedef uint16_t OpCode;              /* op code in control frames */
+typedef uint16_t LaneStatus;          /* status in control frames */
+typedef uint32_t TransId;             /* transaction id */
+typedef uint16_t LaneFlags;           /* flags in control frames */
+typedef uint8_t  LanType;             /* LAN type */
+typedef uint8_t  MtuIdx;              /* max frame size - index */
+typedef uint16_t MtuVal;              /* max frame size - value */
+typedef uint16_t Tag;                 /* tag indicating LAN destination type */
+typedef uint8_t  VccNature;           /* VCC nature - SVC, PVC, etc. */
+typedef uint8_t  VccType;             /* VCC type - control, data, etc */
+typedef uint8_t  ProfileId;           /* HCC profile id */
 
 
 typedef struct lanName          /* LAN name */
 {
-   U8 length;                   /* length of string */
-   U8 strg[MAX_LANNAME];        /* name string */
+   uint8_t length;                   /* length of string */
+   uint8_t strg[MAX_LANNAME];        /* name string */
 } LanName;
 
 /* LAN destination typedefs */
 
 typedef struct macAddr          /* MAC address */
 {
-   U8 strg[MACADDRLEN];         /* address string */
+   uint8_t strg[MACADDRLEN];         /* address string */
 } MacAddr;
 
 typedef struct macAddrTblEntry  /* entry in table of MAC addresses */
 {
-   U8 proxyClass;               /* proxy class - local, learned */
+   uint8_t proxyClass;               /* proxy class - local, learned */
    MacAddr macAddr;             /* MAC address */
 } MacAddrTblEntry;
 
 typedef struct macAddrTbl       /* table of MAC addresses */
 {
-   U8 count;                    /* number of entries */
+   uint8_t count;                    /* number of entries */
    MacAddrTblEntry tbl[MAX_MACADDRTBL]; /* table of MAC addresses */
 } MacAddrTbl;
 
 typedef struct rd               /* route designator */
 {
-   U16 lanId;                   /* LAN id, segment id - 12 bits */
-   U8  bridgeId;                /* bridge id - 4 bits */
+   uint16_t lanId;                   /* LAN id, segment id - 12 bits */
+   uint8_t  bridgeId;                /* bridge id - 4 bits */
 } Rd;
 
 typedef struct rdTblEntry       /* entry in table of route designators */
@@ -569,7 +569,7 @@ typedef struct rdTblEntry       /* entry in table of route designators */
 
 typedef struct rdTbl            /* table of route designators */
 {
-   U8 count;                    /* number of entries */
+   uint8_t count;                    /* number of entries */
    RdTblEntry tbl[MAX_RDTBL];/* table of route designator */
 } RdTbl;
 
@@ -602,15 +602,15 @@ typedef struct laneCtrlHdr      /* control frame header */
    Addrs      dstAtmAddr;       /* target ATM address */
    LanType    lanType;          /* LAN type */
    MtuIdx     mtuIdx;           /* MTU */
-   U8         nmbTLV;           /* number of TLV entries in list */
+   uint8_t         nmbTLV;           /* number of TLV entries in list */
    LanName    lanName;          /* LAN name */
 } LaneCtrlHdr;
 
 typedef struct laneTLVEnt       /* type-length-value entry */
 {
-   U32 type;                    /* type of value */
-   U8  length;                  /* length of value */
-   U8  value[MAX_TLV_LEN];      /* value */
+   uint32_t type;                    /* type of value */
+   uint8_t  length;                  /* length of value */
+   uint8_t  value[MAX_TLV_LEN];      /* value */
 } LaneTLVEnt;
 
 typedef struct laneCfg          /* configuration frame */
@@ -630,12 +630,12 @@ typedef struct laneCtrlFrame    /* all control frames */
 /* PNNI typedefs */
 
 /* pnni port id */
-typedef U32 PnPortId;
+typedef uint32_t PnPortId;
 
 /* pnni node Id */
 typedef struct pnNodeId
 {
-   U8 id[PN_NODEID_LEN];
+   uint8_t id[PN_NODEID_LEN];
 } PnNodeId;
 
 #endif /* CMFILE_REORG_1 */
@@ -647,239 +647,239 @@ typedef struct pnNodeId
 typedef struct octStrg            /* octet string */
 {
    S32 length;                    /* length */
-   U8 val[MF_SIZE_TKNSTR];        /* value */
+   uint8_t val[MF_SIZE_TKNSTR];        /* value */
 } OctStrg;
 
 typedef struct tknHdr             /* token header */
 {
-   U8   pres;                     /* present */
-   U8   spare1;                   /* for 16 bit alignment */
-   U16  spare2;                   /* for 32 bit alignment */
+   uint8_t   pres;                     /* present */
+   uint8_t   spare1;                   /* for 16 bit alignment */
+   uint16_t  spare2;                   /* for 32 bit alignment */
 #ifdef ALIGN_64BIT
-   U32  spare3;                   /* for 64 bit alignment */
+   uint32_t  spare3;                   /* for 64 bit alignment */
 #endif
 } TknHdr;
 
 typedef struct elmtHdr            /* element header */
 {
-   U8   pres;                     /* present */
-   U8   actnInd;                  /* action indicator */
-   U16  compInd;                  /* for alignment */
+   uint8_t   pres;                     /* present */
+   uint8_t   actnInd;                  /* action indicator */
+   uint16_t  compInd;                  /* for alignment */
 #ifdef ALIGN_64BIT
-   U32  spare;                    /* for 64 bit alignment */
+   uint32_t  spare;                    /* for 64 bit alignment */
 #endif
 } ElmtHdr;
 
 /* token typedefs */
 
-typedef struct tknU8              /* token U8 */
+typedef struct tknU8              /* token uint8_t */
 {
-   U8   pres;                     /* present flag */
-   U8   val;                      /* value */
-   U16  spare1;                   /* for alignment */
+   uint8_t   pres;                     /* present flag */
+   uint8_t   val;                      /* value */
+   uint16_t  spare1;                   /* for alignment */
 #ifdef ALIGN_64BIT
-   U32  spare2;                   /* for 64 bit alignment */
+   uint32_t  spare2;                   /* for 64 bit alignment */
 #endif
 } TknU8;
 
 typedef struct tknS8              /* token S8 */
 {
-   U8   pres;                     /* present flag */
+   uint8_t   pres;                     /* present flag */
    S8   val;                      /* value */
-   U16  spare1;                   /* for alignment */
+   uint16_t  spare1;                   /* for alignment */
 #ifdef ALIGN_64BIT
-   U32  spare2;                   /* for 64 bit alignment */
+   uint32_t  spare2;                   /* for 64 bit alignment */
 #endif
 } TknS8;
 
-typedef struct tknU16             /* token U16 */
+typedef struct tknU16             /* token uint16_t */
 {
-   U8   pres;                     /* present flag */
-   U8   spare1;                   /* for alignment */
-   U16  val;                      /* value */
+   uint8_t   pres;                     /* present flag */
+   uint8_t   spare1;                   /* for alignment */
+   uint16_t  val;                      /* value */
 #ifdef ALIGN_64BIT
-   U32  spare2;                   /* for 64 bit alignment */
+   uint32_t  spare2;                   /* for 64 bit alignment */
 #endif
 } TknU16;
 
-typedef struct tknU32             /* token U32 */
+typedef struct tknU32             /* token uint32_t */
 {
-   U8   pres;                     /* present flag */
-   U8   spare1;                   /* for alignment */
-   U16  spare2;                   /* for alignment */
-   U32  val;                      /* value */
+   uint8_t   pres;                     /* present flag */
+   uint8_t   spare1;                   /* for alignment */
+   uint16_t  spare2;                   /* for alignment */
+   uint32_t  val;                      /* value */
 } TknU32;
 
 typedef struct tknS32             /* token S32 */
 {
-   U8   pres;                     /* present flag */
-   U8   spare1;                   /* for alignment */
-   U16  spare2;                   /* for alignment */
+   uint8_t   pres;                     /* present flag */
+   uint8_t   spare1;                   /* for alignment */
+   uint16_t  spare2;                   /* for alignment */
    S32  val;                      /* value */
 } TknS32;
 
 typedef struct tknStrS            /* token string */
 {
-   U8   pres;                     /* present flag */
-   U8   len;                      /* length */
-   U16  spare1;                   /* for alignment */
+   uint8_t   pres;                     /* present flag */
+   uint8_t   len;                      /* length */
+   uint16_t  spare1;                   /* for alignment */
 #ifdef ALIGN_64BIT
-   U32  spare2;                   /* for 64 bit alignment */
-   U8   val[(MF_SIZE_TKNSTRS + 7) & 0xff8]; /* string value */
+   uint32_t  spare2;                   /* for 64 bit alignment */
+   uint8_t   val[(MF_SIZE_TKNSTRS + 7) & 0xff8]; /* string value */
 #else
-   U8   val[(MF_SIZE_TKNSTRS + 3) & 0xffc]; /* string value */
+   uint8_t   val[(MF_SIZE_TKNSTRS + 3) & 0xffc]; /* string value */
 #endif
 } TknStrS;
 
 typedef struct tknStrM            /* token string */
 {
-   U8   pres;                     /* present flag */
-   U8   len;                      /* length */
-   U16  spare1;                   /* for alignment */
+   uint8_t   pres;                     /* present flag */
+   uint8_t   len;                      /* length */
+   uint16_t  spare1;                   /* for alignment */
 #ifdef ALIGN_64BIT
-   U32  spare2;                   /* for 64 bit alignment */
-   U8   val[(MF_SIZE_TKNSTRM + 7) & 0xff8]; /* string value */
+   uint32_t  spare2;                   /* for 64 bit alignment */
+   uint8_t   val[(MF_SIZE_TKNSTRM + 7) & 0xff8]; /* string value */
 #else
-   U8   val[(MF_SIZE_TKNSTRM + 3) & 0xffc]; /* string value */
+   uint8_t   val[(MF_SIZE_TKNSTRM + 3) & 0xffc]; /* string value */
 #endif
 } TknStrM;
 
 typedef struct tknStr             /* token string */
 {
-   U8   pres;                     /* present flag */
-   U8   len;                      /* length */
-   U16  spare1;                   /* for alignment */
+   uint8_t   pres;                     /* present flag */
+   uint8_t   len;                      /* length */
+   uint16_t  spare1;                   /* for alignment */
 #ifdef ALIGN_64BIT
-   U32  spare2;                   /* for 64 bit alignment */
-   U8   val[(MF_SIZE_TKNSTR + 7) & 0xff8]; /* string value */
+   uint32_t  spare2;                   /* for 64 bit alignment */
+   uint8_t   val[(MF_SIZE_TKNSTR + 7) & 0xff8]; /* string value */
 #else
-   U8   val[(MF_SIZE_TKNSTR + 3) & 0xffc]; /* string value */
+   uint8_t   val[(MF_SIZE_TKNSTR + 3) & 0xffc]; /* string value */
 #endif
 } TknStr;
 
 typedef struct tknStrE            /* token string extended */
 {
-   U8   pres;                     /* present flag */
-   U8   len;                      /* length */
-   U16  spare1;                   /* for alignment */
+   uint8_t   pres;                     /* present flag */
+   uint8_t   len;                      /* length */
+   uint16_t  spare1;                   /* for alignment */
 #ifdef ALIGN_64BIT
-   U32  spare2;                   /* for 64 bit alignment */
-   U8   val[(MF_SIZE_TKNSTRE + 7) & 0xff8]; /* string value */
+   uint32_t  spare2;                   /* for 64 bit alignment */
+   uint8_t   val[(MF_SIZE_TKNSTRE + 7) & 0xff8]; /* string value */
 #else
-   U8   val[(MF_SIZE_TKNSTRE + 3) & 0xffc]; /* string value */
+   uint8_t   val[(MF_SIZE_TKNSTRE + 3) & 0xffc]; /* string value */
 #endif
 } TknStrE;
 
 typedef struct tknStrXL           /* token string extra long */
 {
-   U16  len;                      /* length */
-   U8   pres;                     /* present flag */
-   U8   spare1;                   /* for alignment */
+   uint16_t  len;                      /* length */
+   uint8_t   pres;                     /* present flag */
+   uint8_t   spare1;                   /* for alignment */
 #ifdef ALIGN_64BIT
-   U32  spare2;                   /* for 64 bit alignment */
+   uint32_t  spare2;                   /* for 64 bit alignment */
 #endif
-   U8   *val;                     /* string value (use allocated memory) */
+   uint8_t   *val;                     /* string value (use allocated memory) */
 } TknStrXL;
  
 typedef struct tknStr4            /* token string */
 {
-   U8   pres;                     /* present flag */
-   U8   len;                      /* length */
-   U16  spare1;                   /* for alignment */
+   uint8_t   pres;                     /* present flag */
+   uint8_t   len;                      /* length */
+   uint16_t  spare1;                   /* for alignment */
 #ifdef ALIGN_64BIT
-   U32  spare2;                   /* for 64 bit alignment */
-   U8   val[8];                   /* string value - 8 byte alligned */
+   uint32_t  spare2;                   /* for 64 bit alignment */
+   uint8_t   val[8];                   /* string value - 8 byte alligned */
 #else
-   U8   val[4];                   /* string value - 4 byte alligned */
+   uint8_t   val[4];                   /* string value - 4 byte alligned */
 #endif /* ALIGN_64BIT */
 } TknStr4;
 
 typedef struct tknStr12           /* token string */
 {
-   U8   pres;                     /* present flag */
-   U8   len;                      /* length */
-   U16  spare1;                   /* for alignment */
+   uint8_t   pres;                     /* present flag */
+   uint8_t   len;                      /* length */
+   uint16_t  spare1;                   /* for alignment */
 #ifdef ALIGN_64BIT
-   U32  spare2;                   /* for 64 bit alignment */
-   U8   val[16];                  /* string value - 8 byte alligned */
+   uint32_t  spare2;                   /* for 64 bit alignment */
+   uint8_t   val[16];                  /* string value - 8 byte alligned */
 #else
-   U8   val[12];                  /* string value - 4 byte alligned */
+   uint8_t   val[12];                  /* string value - 4 byte alligned */
 #endif /* ALIGN_64BIT */
 } TknStr12;
 
 typedef struct tknStr32           /* token string */
 {
-   U8   pres;                     /* present flag */
-   U8   len;                      /* length */
-   U16  spare1;                   /* for alignment */
+   uint8_t   pres;                     /* present flag */
+   uint8_t   len;                      /* length */
+   uint16_t  spare1;                   /* for alignment */
 #ifdef ALIGN_64BIT
-   U32  spare2;                   /* for 64 bit alignment */
+   uint32_t  spare2;                   /* for 64 bit alignment */
 #endif
-   U8   val[32];                  /* string value - 4 byte alligned */
+   uint8_t   val[32];                  /* string value - 4 byte alligned */
 } TknStr32;
 
 typedef struct tknStr64           /* token string */
 {
-   U8   pres;                     /* present flag */
-   U8   len;                      /* length */
-   U16  spare1;                   /* for alignment */
+   uint8_t   pres;                     /* present flag */
+   uint8_t   len;                      /* length */
+   uint16_t  spare1;                   /* for alignment */
 #ifdef ALIGN_64BIT
-   U32  spare2;                   /* for 64 bit alignment */
+   uint32_t  spare2;                   /* for 64 bit alignment */
 #endif
-   U8   val[64];                  /* string value - 4 byte alligned */
+   uint8_t   val[64];                  /* string value - 4 byte alligned */
 } TknStr64;
 
 typedef struct tknStr132          /* token string */
 {
-   U8   pres;                     /* present flag */
-   U8   len;                      /* length */
-   U16  spare1;                   /* for alignment */
+   uint8_t   pres;                     /* present flag */
+   uint8_t   len;                      /* length */
+   uint16_t  spare1;                   /* for alignment */
 #ifdef ALIGN_64BIT
-   U32  spare2;                   /* for 64 bit alignment */
-   U8   val[136];                 /* string value - 8 byte alligned */
+   uint32_t  spare2;                   /* for 64 bit alignment */
+   uint8_t   val[136];                 /* string value - 8 byte alligned */
 #else
-   U8   val[132];                 /* string value - 4 byte alligned */
+   uint8_t   val[132];                 /* string value - 4 byte alligned */
 #endif /* ALIGN_64BIT */
 } TknStr132;
 
 typedef struct tknStr256          /* token string */
 {
-   U8   pres;                     /* present flag */
-   U8   len;                      /* length */
-   U16  spare1;                   /* for alignment */
+   uint8_t   pres;                     /* present flag */
+   uint8_t   len;                      /* length */
+   uint16_t  spare1;                   /* for alignment */
 #ifdef ALIGN_64BIT
-   U32  spare2;                   /* for 64 bit alignment */
+   uint32_t  spare2;                   /* for 64 bit alignment */
 #endif
-   U8   val[256];                 /* string value - 4 byte alligned */
+   uint8_t   val[256];                 /* string value - 4 byte alligned */
 } TknStr256;
 
 typedef struct tknOid             /* Object Identifier */
 {
-   U8   pres;                     /* present flag */
-   U8   len;                      /* length */
-   U16  spare1;                   /* for alignment */
+   uint8_t   pres;                     /* present flag */
+   uint8_t   len;                      /* length */
+   uint16_t  spare1;                   /* for alignment */
 #ifdef ALIGN_64BIT
-   U32  spare2;                   /* for 64 bit alignment */
+   uint32_t  spare2;                   /* for 64 bit alignment */
 #endif
-   /* gen_x_001.main_81 : changed val from U32 to U16 with comilation flag
-    * TKNOID_U16 */
-#ifndef TKNOID_U16
-   U32  val[32];                  /* max 32 integers of less than 64k value */
+   /* gen_x_001.main_81 : changed val from uint32_t to uint16_t with comilation flag
+    * TKNOID_uint16_t */
+#ifndef TKNOID_uint16_t
+   uint32_t  val[32];                  /* max 32 integers of less than 64k value */
 #else
-   U16  val[32];                  /* max 32 integers of less than 64k value */
+   uint16_t  val[32];                  /* max 32 integers of less than 64k value */
 #endif
 } TknOid;
 
 typedef struct tknBits            /* token bits */
 {
-   U8   pres;                     /* present flag */
-   U8   len;                      /* for alignment */
-   U16  spare1;                   /* for alignment */
+   uint8_t   pres;                     /* present flag */
+   uint8_t   len;                      /* for alignment */
+   uint16_t  spare1;                   /* for alignment */
 #ifdef ALIGN_64BIT
-   U32  spare2;                   /* for 64 bit alignment */
-   U8   val[(MF_SIZE_TKNBITS + 7) & 0xff8]; /* string value */
+   uint32_t  spare2;                   /* for 64 bit alignment */
+   uint8_t   val[(MF_SIZE_TKNBITS + 7) & 0xff8]; /* string value */
 #else
-   U8   val[(MF_SIZE_TKNBITS + 3) & 0xffc]; /* string value */
+   uint8_t   val[(MF_SIZE_TKNBITS + 3) & 0xffc]; /* string value */
 #endif
 } TknBits;
 
@@ -914,7 +914,7 @@ typedef struct redirNmb           /* redirecting number tokens */
 
 typedef struct srvClass           /* service class */          
 {                                                       
-   U8 type;                       /* type */                 
+   uint8_t type;                       /* type */                 
    union                                                
    {                                                    
       struct                      /* frame relay */                                
@@ -933,14 +933,14 @@ typedef struct srvClass           /* service class */
 
 typedef struct _ip           /* ip header */
 {
-   U8     ip_hl;            /* header length */
+   uint8_t     ip_hl;            /* header length */
    Prec   ip_tos;           /* type of service */
-   U16    ip_len;           /* total length */
-   U16    ip_id;            /* identification */
-   U16    ip_off;           /* fragment offset field */
+   uint16_t    ip_len;           /* total length */
+   uint16_t    ip_id;            /* identification */
+   uint16_t    ip_off;           /* fragment offset field */
    Ttl    ip_ttl;           /* time to live */
-   U8     ip_p;             /* protocol */
-   U16    ip_sum;           /* checksum */
+   uint8_t     ip_p;             /* protocol */
+   uint16_t    ip_sum;           /* checksum */
    IpAddr ip_src;           /* source address */
    IpAddr ip_dst;           /* dest address */
 } Ip;
@@ -1461,7 +1461,7 @@ typedef struct mem                /* memory */
 {
    Region region;                 /* region */
    Pool pool;                     /* pool */
-   U16 spare;                     /* spare for alignment */
+   uint16_t spare;                     /* spare for alignment */
 } Mem;  
    
 typedef Mem MemoryId;             /* memory id */
@@ -1477,10 +1477,10 @@ typedef struct resp
 
 typedef struct tds_header       /* header */
 {
-   U16 msgLen;                  /* message length   - optional */
-   U8 msgType;                  /* message type     - mandatory */
-   U8 version;                  /* version          - optional */
-   U16 seqNmb;                  /* sequence number  - optional */
+   uint16_t msgLen;                  /* message length   - optional */
+   uint8_t msgType;                  /* message type     - mandatory */
+   uint8_t version;                  /* version          - optional */
+   uint16_t seqNmb;                  /* sequence number  - optional */
    EntityId entId;              /* entity id        - mandatory */
    ElmntId elmId;               /* element id       - mandatory */
 #ifdef LMINT3
@@ -1492,7 +1492,7 @@ typedef struct tds_header       /* header */
 typedef struct tmrCfg           /* timer configuration structure */
 {
    Bool enb;                    /* enable */
-   U16 val;                     /* value */
+   uint16_t val;                     /* value */
 } TmrCfg;
 
 typedef struct asyncCfg         /* asynchronous configuration */
@@ -1508,16 +1508,16 @@ typedef struct asyncCfg         /* asynchronous configuration */
   
 typedef struct dateTime           /* date and time */
 {
-   U8 month;                      /* month */
-   U8 day;                        /* day */
-   U8 year;                       /* year */
-   U8 hour;                       /* hour - 24 hour clock */
-   U8 min;                        /* minute */
-   U8 sec;                        /* second */
-   U8 tenths;                     /* tenths of second */
+   uint8_t month;                      /* month */
+   uint8_t day;                        /* day */
+   uint8_t year;                       /* year */
+   uint8_t hour;                       /* hour - 24 hour clock */
+   uint8_t min;                        /* minute */
+   uint8_t sec;                        /* second */
+   uint8_t tenths;                     /* tenths of second */
    /*-- gen_x_001.main_90 - Added variable for microseconds in DateTime--*/
 #ifdef SS_DATETIME_USEC
-   U32 usec;                      /* micro seconds */
+   uint32_t usec;                      /* micro seconds */
 #endif /*-- SS_DATETIME_USEC --*/
 } DateTime;
 /* gen_x_001.main_94: Additions */
@@ -1527,28 +1527,28 @@ typedef U64 EpcTime;
 /* common status */
 typedef struct cmStatus
 {
-   U16 status;       /* status of request */
-   U16 reason;       /* failure reason */
+   uint16_t status;       /* status of request */
+   uint16_t reason;       /* failure reason */
 }CmStatus;    
 
 /* common alarm */
 typedef struct cmAlarm
 {
    DateTime dt;      /* data and time */
-   U16 category;     /* alarm category*/
-   U16 event;        /* alarm event */
-   U16 cause;        /* alarm cause */
+   uint16_t category;     /* alarm category*/
+   uint16_t event;        /* alarm event */
+   uint16_t cause;        /* alarm cause */
 }CmAlarm;    
   
 /* duration structure */
   
 typedef struct duration           /* duration */
 {
-   U8 days;                       /* days */
-   U8 hours;                      /* hours */
-   U8 mins;                       /* minutes */
-   U8 secs;                       /* seconds */
-   U8 tenths;                     /* tenths of seconds */
+   uint8_t days;                       /* days */
+   uint8_t hours;                      /* hours */
+   uint8_t mins;                       /* minutes */
+   uint8_t secs;                       /* seconds */
+   uint8_t tenths;                     /* tenths of seconds */
 } Duration;
 
 
@@ -1563,9 +1563,9 @@ typedef struct ssmsgb Buffer;
 #ifdef FLAT_BUFFER_OPT
 typedef struct _flatBuffer
 {
-   U8* startAddr;
-   U8* ptr;
-   U32 len;
+   uint8_t* startAddr;
+   uint8_t* ptr;
+   uint32_t len;
 }FlatBuffer;
 #endif
 
@@ -1585,20 +1585,20 @@ typedef struct ss_buffer Buffer;  /* forward definition - buffer */
 
 typedef struct tknBuf
 {
-   U8      pres;                  /* Present Flag */
-   U8      spare1;                /* for alignment */
-   U16     spare2;                /* for 32 bit alignment */
+   uint8_t      pres;                  /* Present Flag */
+   uint8_t      spare1;                /* for alignment */
+   uint16_t     spare2;                /* for 32 bit alignment */
 #ifdef ALIGN_64BIT
-   U32     spare3;                /* for 64 bit alignment */
+   uint32_t     spare3;                /* for 64 bit alignment */
 #endif
    Buffer  *val;                  /* Buffer type (use allocated memory) */
 } TknBuf;
 
 /* defining the CmIpAddr and CmIpAddr6 */
 /* socket typedefs and structs */
-typedef U32 CmIpAddr;        /* 4 byte IP address */
+typedef uint32_t CmIpAddr;        /* 4 byte IP address */
 #ifdef IPV6_SUPPORTED
-typedef U8  CmIpAddr6[16];   /* 16 byte IPV6 address */
+typedef uint8_t  CmIpAddr6[16];   /* 16 byte IPV6 address */
 #endif /* IPV6_SUPPORTED */
 
 /* common packing functions */
@@ -1617,7 +1617,7 @@ EXTERN S16 cmPkAddrs    ARGS((Addrs    *addrs,    Buffer *mBuf));
 EXTERN S16 cmPkProtAddr ARGS((ProtAddr *protAddr, Buffer *mBuf));
 EXTERN S16 cmPkProtAddrTbl ARGS((ProtAddrTbl *protAddr, Buffer *mBuf));
 EXTERN S16 cmPkShrtAddrs ARGS((ShrtAddrs    *addrs,    Buffer *mBuf));
-EXTERN S16 cmPkAddrMask ARGS((U8    *mask,    Buffer *mBuf));
+EXTERN S16 cmPkAddrMask ARGS((uint8_t    *mask,    Buffer *mBuf));
 EXTERN S16 cmPkBndCfg   ARGS((BndCfg   *bndCfg,   Buffer *mBuf));
 EXTERN S16 cmPkPst      ARGS((Pst      *pst,      Buffer *mBuf));
 EXTERN S16 cmPkElmtHdr  ARGS((ElmtHdr  *m,        Buffer *mBuf));
@@ -1669,7 +1669,7 @@ EXTERN S16 cmUnpkAddrs    ARGS((Addrs    *addrs,    Buffer *mBuf));
 EXTERN S16 cmUnpkProtAddr ARGS((ProtAddr *protAddr, Buffer *mBuf));
 EXTERN S16 cmUnpkProtAddrTbl ARGS((ProtAddrTbl *protAddr, Buffer *mBuf));
 EXTERN S16 cmUnpkShrtAddrs ARGS((ShrtAddrs    *addrs,    Buffer *mBuf));
-EXTERN S16 cmUnpkAddrMask ARGS((U8    *mask,    Buffer *mBuf));
+EXTERN S16 cmUnpkAddrMask ARGS((uint8_t    *mask,    Buffer *mBuf));
 EXTERN S16 cmUnpkBndCfg   ARGS((BndCfg   *bndCfg,   Buffer *mBuf));
 EXTERN S16 cmUnpkPst      ARGS((Pst      *pst,      Buffer *mBuf));
 EXTERN S16 cmUnpkElmtHdr  ARGS((ElmtHdr  *m,        Buffer *mBuf));

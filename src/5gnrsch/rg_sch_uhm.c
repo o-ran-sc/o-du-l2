@@ -63,13 +63,13 @@
 /* forward references */
 
 #ifdef EMTC_ENABLE
-   U32 gUlRetxPassCntr = 0;
-   /*EXTERN U32 gUlRetxFailCntr;
-   EXTERN U32 gUlCrcPassCounter;
-   EXTERN U32 gUlCrcFailCounter;*/
+   uint32_t gUlRetxPassCntr = 0;
+   /*EXTERN uint32_t gUlRetxFailCntr;
+   EXTERN uint32_t gUlCrcPassCounter;
+   EXTERN uint32_t gUlCrcFailCounter;*/
 #endif
-U8 rgRvIdxTable[] = {0, 3, 1, 2}; /* This gives rvIdx for a given rv */
-U8 rgRvTable[] = {0, 2, 3 ,1};    /* This gives rv for a given rvIdx */
+uint8_t rgRvIdxTable[] = {0, 3, 1, 2}; /* This gives rvIdx for a given rv */
+uint8_t rgRvTable[] = {0, 2, 3 ,1};    /* This gives rv for a given rvIdx */
 
 #ifdef EMTC_ENABLE
 Void rgSCHCmnEmtcHdlHarqProcFail
@@ -126,14 +126,14 @@ Void rgSCHUhmProcDatInd
 RgSchCellCb          *cell,
 RgSchUeCb            *ue,
 CmLteTimingInfo      frm,
-U8                   cqi
+uint8_t                   cqi
 )
 #else
 Void rgSCHUhmProcDatInd(cell, ue, frm, cqi)
 RgSchCellCb          *cell;
 RgSchUeCb            *ue;
 CmLteTimingInfo      frm;
-U8                   cqi;
+uint8_t                   cqi;
 #endif
 #endif /* MAC_SCH_STATS */
 {
@@ -141,7 +141,7 @@ U8                   cqi;
 #ifdef UL_LA
    RgSchCmnUlUe   *ueUl = RG_SCH_CMN_GET_UL_UE(ue, cell);
    S32            iTbs;
-   U8             maxiTbs = rgSchCmnUlCqiToTbsTbl[cell->isCpUlExtend]
+   uint8_t             maxiTbs = rgSchCmnUlCqiToTbsTbl[cell->isCpUlExtend]
                                                  [ueUl->maxUlCqi];
 #endif
 
@@ -303,7 +303,7 @@ RgSchCellCb          *cell,
 RgSchUeCb            *ue,
 CmLteTimingInfo      frm,
 TknU8                rv,
-U8                   cqi
+uint8_t                   cqi
 )
 #else
 Void rgSCHUhmProcHqFailure(cell, ue, frm, rv, cqi)
@@ -311,7 +311,7 @@ RgSchCellCb          *cell;
 RgSchUeCb            *ue;
 CmLteTimingInfo      frm;
 TknU8                rv;
-U8                   cqi;
+uint8_t                   cqi;
 #endif
 #endif /* MAC_SCH_STATS */
 {
@@ -344,7 +344,7 @@ U8                   cqi;
 #ifdef MAC_SCH_STATS
    /** Stats update over here */
    {
-      static U32 retxCnt = 0;
+      static uint32_t retxCnt = 0;
       ++retxCnt;
       hqFailStats.ulCqiStat[cqi - 1].numOfNacks++;
    }
@@ -391,13 +391,13 @@ RgSchUlHqProcCb* rgSCHUhmGetUlHqProc
 (
 RgSchCellCb      *cell,
 RgSchUeCb        *ue, 
-U8               idx
+uint8_t               idx
 )
 #else
 RgSchUlHqProcCb* rgSCHUhmGetUlHqProc(cell, ue, idx)
 RgSchCellCb      *cell;
 RgSchUeCb        *ue; 
-U8               idx;
+uint8_t               idx;
 #endif
 {
    RgSchCmnUlUe *ueUl = RG_SCH_CMN_GET_UL_UE(ue, cell);
@@ -433,13 +433,13 @@ U8               idx;
 Void rgSCHUhmNewTx
 (
 RgSchUlHqProcCb *hqProc,
-U8              maxHqRetx,
+uint8_t              maxHqRetx,
 RgSchUlAlloc    *alloc
 )
 #else
 Void rgSCHUhmNewTx(hqProc, maxHqRetx, alloc)
 RgSchUlHqProcCb *hqProc;
-U8              maxHqRetx;
+uint8_t              maxHqRetx;
 RgSchUlAlloc    *alloc;
 #endif
 {
@@ -490,7 +490,7 @@ RgSchCellCb      *cell;
 {
 #ifdef LTE_L2_MEAS
    RgSchUeCb         *ueCb;
-   U8 qci = 1;
+   uint8_t qci = 1;
 #endif
    TRC2(rgSCHUhmFreeProc);
 
@@ -500,7 +500,7 @@ RgSchCellCb      *cell;
       ueCb = hqProc->alloc->ue;
       if (ueCb && cell)
       {
-         U32 nonLcg0ReportedBs = ((RgSchCmnLcg *)(ueCb->ul.lcgArr[1].sch))->reportedBs + \
+         uint32_t nonLcg0ReportedBs = ((RgSchCmnLcg *)(ueCb->ul.lcgArr[1].sch))->reportedBs + \
                                ((RgSchCmnLcg *)(ueCb->ul.lcgArr[2].sch))->reportedBs + \
                                ((RgSchCmnLcg *)(ueCb->ul.lcgArr[3].sch))->reportedBs;
          ((RgUeUlHqCb*)hqProc->hqEnt)->numBusyHqProcs--;
@@ -622,7 +622,7 @@ RgSchUeCb         *ueCb;
 RgrUeCfg          *ueCfg;
 #endif
 {
-   U8 i;
+   uint8_t i;
    RgSchCmnUlUe *ueUl = RG_SCH_CMN_GET_UL_UE(ueCb, cellCb);
    
    TRC2(rgSCHUhmRgrUeCfg);
@@ -762,19 +762,19 @@ S16 rgSCHUhmAppendPhich
 (
 RgSchCellCb            *cellCb,
 CmLteTimingInfo        frm,
-U8                     idx
+uint8_t                     idx
 )
 #else
 S16 rgSCHUhmAppendPhich (cellCb, frm, idx)
 RgSchCellCb            *cellCb;
 CmLteTimingInfo        frm;
-U8                     idx;
+uint8_t                     idx;
 #endif
 {
-   U8              nDmrs;
-   U8              rbStart;
+   uint8_t              nDmrs;
+   uint8_t              rbStart;
 #ifdef LTE_TDD
-   U8              iPhich;
+   uint8_t              iPhich;
 #endif
    RgSchUlAlloc    *ulAlloc;
 #ifdef LTEMAC_HDFDD

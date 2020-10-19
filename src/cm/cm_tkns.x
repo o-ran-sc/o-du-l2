@@ -46,47 +46,47 @@ typedef TknU8 TknBool;
 
 typedef struct tknS16        
 {
-   U8   pres;                     /* present flag */
-   U8   spare1;                   /* for alignment */
+   uint8_t   pres;                     /* present flag */
+   uint8_t   spare1;                   /* for alignment */
    S16  val;                      /* value */
 #ifdef ALIGN_64BIT
-   U32  spare2;                   /* for 64 bit alignment */
+   uint32_t  spare2;                   /* for 64 bit alignment */
 #endif
 } TknS16;
 
 /* Token TknStr8 */
 typedef struct tknStr8            /* token string */
 {
-   U8   pres;                     /* present flag */
-   U8   len;                      /* length */
-   U16  spare1;                   /* for alignment */
+   uint8_t   pres;                     /* present flag */
+   uint8_t   len;                      /* length */
+   uint16_t  spare1;                   /* for alignment */
 #ifdef ALIGN_64BIT
-   U32  spare2;                   /* for 64 bit alignment */
+   uint32_t  spare2;                   /* for 64 bit alignment */
 #endif
-   U8   val[8];                  /* string value - 4 byte alligned */
+   uint8_t   val[8];                  /* string value - 4 byte alligned */
 } TknStr8;
 
 /* Token TknStr16 */
 typedef struct tknStr16            /* token string */
 {
-   U8   pres;                     /* present flag */
-   U8   len;                      /* length */
-   U16  spare1;                   /* for alignment */
+   uint8_t   pres;                     /* present flag */
+   uint8_t   len;                      /* length */
+   uint16_t  spare1;                   /* for alignment */
 #ifdef ALIGN_64BIT
-   U32  spare2;                   /* for 64 bit alignment */
+   uint32_t  spare2;                   /* for 64 bit alignment */
 #endif
-   U8   val[16];                  /* string value - 4 byte alligned */
+   uint8_t   val[16];                  /* string value - 4 byte alligned */
 } TknStr16;
 
 typedef struct tknStrOSXL
 {
-   U8   pres;                    /* present flag */
-   U8   spare1;                  /* spare */
-   U16   len;                    /* length */
+   uint8_t   pres;                    /* present flag */
+   uint8_t   spare1;                  /* spare */
+   uint16_t   len;                    /* length */
 #ifdef ALIGN_64BIT
-   U32  spare2;                  /* for 64 bit alignment */
+   uint32_t  spare2;                  /* for 64 bit alignment */
 #endif
-   U8   *val;                    /* string value - 4 byte alligned */
+   uint8_t   *val;                    /* string value - 4 byte alligned */
 } TknStrOSXL;
 
 /* Token TknBStr32 : length field indicates number of Bits present */
@@ -103,25 +103,25 @@ typedef TknStrOSXL TknStrBSXL;
 /* Token TknStrBMP4 */
 typedef struct tknStrBMP4         /* token string */
 {
-   U8   pres;                     /* present flag */
-   U8   len;                      /* length */
-   U16  spare1;                   /* for alignment */
+   uint8_t   pres;                     /* present flag */
+   uint8_t   len;                      /* length */
+   uint16_t  spare1;                   /* for alignment */
 #ifdef ALIGN_64BIT
-   U32  spare2;                   /* for 64 bit alignment */
+   uint32_t  spare2;                   /* for 64 bit alignment */
 #endif
-   U16   val[4];                  /* string value - 4 byte alligned */
+   uint16_t   val[4];                  /* string value - 4 byte alligned */
 } TknStrBMP4;
 
 /* Token TknStrBMPXL */
 typedef struct tknStrBMPXL
 {
-   U8   pres;                    /* present flag */
-   U8   spare1;                  /* spare */
-   U16   len;                    /* length */
+   uint8_t   pres;                    /* present flag */
+   uint8_t   spare1;                  /* spare */
+   uint16_t   len;                    /* length */
 #ifdef ALIGN_64BIT
-   U32  spare2;                  /* for 64 bit alignment */
+   uint32_t  spare2;                  /* for 64 bit alignment */
 #endif
-   U16   *val;                   /* string value - 4 byte alligned */
+   uint16_t   *val;                   /* string value - 4 byte alligned */
 } TknStrBMPXL;
 
 
@@ -132,24 +132,24 @@ typedef struct tknStrBMPXL
 /* Token TknStrUNI4 */
 typedef struct tknStrUNI4         /* token string */
 {
-   U8   pres;                     /* present flag */
-   U8   len;                      /* length */
-   U16  spare1;                   /* for alignment */
+   uint8_t   pres;                     /* present flag */
+   uint8_t   len;                      /* length */
+   uint16_t  spare1;                   /* for alignment */
 #ifdef ALIGN_64BIT
-   U32  spare2;                   /* for 64 bit alignment */
+   uint32_t  spare2;                   /* for 64 bit alignment */
 #endif
-   U32   val[4];                  /* string value - 4 byte alligned */
+   uint32_t   val[4];                  /* string value - 4 byte alligned */
 } TknStrUNI4;
 
 typedef struct tknStrUNIXL       /* Universal String */
 {
-   U8   pres;                    /* present flag */
-   U8   spare1;                  /* spare */
-   U16  len;                     /* length */
+   uint8_t   pres;                    /* present flag */
+   uint8_t   spare1;                  /* spare */
+   uint16_t  len;                     /* length */
 #ifdef ALIGN_64BIT
-   U32  spare2;                  /* for 64 bit alignment */
+   uint32_t  spare2;                  /* for 64 bit alignment */
 #endif
-   U32  *val;                    /* string value- 4 byte alligned */ 
+   uint32_t  *val;                    /* string value- 4 byte alligned */ 
 } TknStrUNIXL;
 
 /* common packing functions */

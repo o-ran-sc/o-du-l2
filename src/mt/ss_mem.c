@@ -401,21 +401,21 @@ S16 SAlloc
 (
 Region region,                  /* region ID */
 Size *size,                     /* size of block required/allocated */
-U32 flags,                      /* allocation flags */
+uint32_t flags,                      /* allocation flags */
 Data **ptr,                      /* filled with pointer to block */
-U32   line,
-U8    *fileName,
-U8    entId
+uint32_t   line,
+uint8_t    *fileName,
+uint8_t    entId
 )
 #else
 S16 SAlloc(region, size, flags, ptr, line, fileName, entId)
 Region region;                  /* region ID */
 Size *size;                     /* size of block required/allocated */
-U32 flags;                      /* allocation flags */
+uint32_t flags;                      /* allocation flags */
 Data **ptr;                     /* filled with pointer to block */
-U32   line;
-U8   *fileName;
-U8    entId;
+uint32_t   line;
+uint8_t   *fileName;
+uint8_t    entId;
 #endif
 #else
 #ifdef T2K_MEM_LEAK_DBG
@@ -423,10 +423,10 @@ S16 SAllocNew
 (
 Region region,                  /* region ID */
 Size *size,                     /* size of block required/allocated */
-U32 flags,                      /* allocation flags */
+uint32_t flags,                      /* allocation flags */
 Data **ptr,                      /* filled with pointer to block */
 char* file,
-U32 line
+uint32_t line
 )
 #else
 #ifdef ANSI
@@ -434,14 +434,14 @@ S16 SAlloc
 (
 Region region,                  /* region ID */
 Size *size,                     /* size of block required/allocated */
-U32 flags,                      /* allocation flags */
+uint32_t flags,                      /* allocation flags */
 Data **ptr                      /* filled with pointer to block */
 )
 #else
 S16 SAlloc(region, size, flags, ptr)
 Region region;                  /* region ID */
 Size *size;                     /* size of block required/allocated */
-U32 flags;                      /* allocation flags */
+uint32_t flags;                      /* allocation flags */
 Data **ptr;                     /* filled with pointer to block */
 #endif
 #endif
@@ -603,18 +603,18 @@ S16 SFree
 Region region,                  /* region ID */
 Data *ptr,                      /* pointer to the allocated block */
 Size size,                      /* size of block */
-U32  line,
-U8   *fileName,
-U8   entId
+uint32_t  line,
+uint8_t   *fileName,
+uint8_t   entId
 )
 #else
 S16 SFree(region, ptr, size, line, fileName, entId)
 Region region;                  /* region ID */
 Data *ptr;                      /* pointer to the allocated block */
 Size size;                      /* size of block */
-U32  line;
-U8   *fileName;
-U8   entId;
+uint32_t  line;
+uint8_t   *fileName;
+uint8_t   entId;
 #endif
 #else
 #ifdef ANSI
@@ -625,7 +625,7 @@ Region region,                  /* region ID */
 Data *ptr,                      /* pointer to the allocated block */
 Size size,                       /* size of block */
 char* file,
-U32 line
+uint32_t line
 )
 #else
 S16 SFree
@@ -820,16 +820,16 @@ Ent      *entId;
 {
     /*ss012.301 : Increased Buffer size to fix segmentation fault*/
     Txt   					prntBuf[511];  /* Buffer to print on the console */
-	U16   					ret = ROK;     /* return value */
+	uint16_t   					ret = ROK;     /* return value */
 	Ent   					tapaTsk[SS_MAX_TTSKS]; /* List of tapa task */
-	U32   					tskCnt = 0;   /* Tapa task Count */
-	U32   					regCnt = 0;   /* Region count */
-	U32   					bktCnt = 0;   /* Bucket count in each region */
+	uint32_t   					tskCnt = 0;   /* Tapa task Count */
+	uint32_t   					regCnt = 0;   /* Region count */
+	uint32_t   					bktCnt = 0;   /* Bucket count in each region */
 	CmHstGrmHashListCp 	*hashListCp = NULLP; /* Hash List ponter of bucket */
-	U32                  binCnt = 0;   
-	U32                  entCnt = 0;
+	uint32_t                  binCnt = 0;   
+	uint32_t                  entCnt = 0;
 	CmMemEntries        *entry = NULLP;
-	U32                  blkSize = 0;
+	uint32_t                  blkSize = 0;
    
    TRC1(SRegInfoShow);
 

@@ -131,12 +131,12 @@ Buffer *mBuf;               /* message buffer */
 #ifdef ANSI
 S16 oduUnpackUInt8
 (
-U8 val,                     /* value */
+uint8_t val,                     /* value */
 Buffer *mBuf                /* message buffer */
 )
 #else
 S16 oduUnpackUInt8(val, mBuf)
-U8 val;                     /* value */
+uint8_t val;                     /* value */
 Buffer *mBuf;               /* message buffer */
 #endif
 {
@@ -217,12 +217,12 @@ Buffer *mBuf;               /* message buffer */
 #ifdef ANSI
 S16 oduUnpackUInt16
 (
-U16 val,                    /* value */
+uint16_t val,                    /* value */
 Buffer *mBuf                /* message buffer */
 )
 #else
 S16 oduUnpackUInt16(val, mBuf)
-U16 val;                    /* value */
+uint16_t val;                    /* value */
 Buffer *mBuf;               /* message buffer */
 #endif
 {
@@ -274,23 +274,23 @@ S32 val;                    /* value */
 Buffer *mBuf;               /* message buffer */
 #endif
 {
-   U16 tmp;                 /* temporary value */
+   uint16_t tmp;                 /* temporary value */
    Data pkArray[4];         /* packing array */
    S16 ret;                 /* return code */
   
    TRC1(SPkS32)
 #ifndef FCSPKINT        /* backward compatibility, packing order */
-   tmp = (U16) GetHiWord(val);
+   tmp = (uint16_t) GetHiWord(val);
    pkArray[0] = (Data) GetHiByte(tmp);
    pkArray[1] = (Data) GetLoByte(tmp);
-   tmp = (U16) GetLoWord(val);
+   tmp = (uint16_t) GetLoWord(val);
    pkArray[2] = (Data) GetHiByte(tmp);
    pkArray[3] = (Data) GetLoByte(tmp);
 #else                   /* forward compatibility, packing order */
-   tmp = (U16) GetHiWord(val);
+   tmp = (uint16_t) GetHiWord(val);
    pkArray[3] = (Data) GetHiByte(tmp);
    pkArray[2] = (Data) GetLoByte(tmp);
-   tmp = (U16) GetLoWord(val);
+   tmp = (uint16_t) GetLoWord(val);
    pkArray[1] = (Data) GetHiByte(tmp);
    pkArray[0] = (Data) GetLoByte(tmp);
 #endif
@@ -322,32 +322,32 @@ Buffer *mBuf;               /* message buffer */
 #ifdef ANSI
 S16 oduUnpackUInt32
 (
-U32 val,                    /* value */
+uint32_t val,                    /* value */
 Buffer *mBuf                /* message buffer */
 )
 #else
 S16 oduUnpackUInt32(val, mBuf)
-U32 val;                    /* value */
+uint32_t val;                    /* value */
 Buffer *mBuf;               /* message buffer */
 #endif
 {
-   U16 tmp;                 /* temporary value */
+   uint16_t tmp;                 /* temporary value */
    Data pkArray[4];         /* packing array */
    S16 ret;                 /* return code */
   
    TRC1(oduUnpackUInt32)
 #ifndef FCSPKINT        /* backward compatibility, packing order */
-   tmp = (U16) GetHiWord(val);
+   tmp = (uint16_t) GetHiWord(val);
    pkArray[0] = (Data) GetHiByte(tmp);
    pkArray[1] = (Data) GetLoByte(tmp);
-   tmp = (U16) GetLoWord(val);
+   tmp = (uint16_t) GetLoWord(val);
    pkArray[2] = (Data) GetHiByte(tmp);
    pkArray[3] = (Data) GetLoByte(tmp);
 #else                   /* forward compatibility, packing order */
-   tmp = (U16) GetHiWord(val);
+   tmp = (uint16_t) GetHiWord(val);
    pkArray[3] = (Data) GetHiByte(tmp);
    pkArray[2] = (Data) GetLoByte(tmp);
-   tmp = (U16) GetLoWord(val);
+   tmp = (uint16_t) GetLoWord(val);
    pkArray[1] = (Data) GetHiByte(tmp);
    pkArray[0] = (Data) GetLoByte(tmp);
 #endif
@@ -549,12 +549,12 @@ Buffer *mBuf;               /* message buffer */
 #ifdef ANSI
 S16 oduPackUInt8
 (
-U8 *val,                    /* pointer to value */
+uint8_t *val,                    /* pointer to value */
 Buffer *mBuf                /* message buffer */
 )
 #else
 S16 oduPackUInt8(val, mBuf)
-U8 *val;                    /* pointer to value */
+uint8_t *val;                    /* pointer to value */
 Buffer *mBuf;               /* message buffer */
 #endif
 {
@@ -577,7 +577,7 @@ Buffer *mBuf;               /* message buffer */
    if (ret != ROK)
       SSLOGERROR(ERRCLS_DEBUG, ESS253, (ErrVal)ret, "SRemPreMsg() failed");
 #endif
-   *val = (U8) tmp;
+   *val = (uint8_t) tmp;
    return (ret);
 } /* end of oduPackUInt8 */
   
@@ -607,7 +607,7 @@ S16 *val;                   /* pointer to value */
 Buffer *mBuf;               /* message buffer */
 #endif
 {
-   U16 tmp16;               /* temporary value */
+   uint16_t tmp16;               /* temporary value */
    Data unpkArray[2];       /* unpacking array */
    S16 ret;                 /* return code */
    TRC1(SUnpkS16)
@@ -629,11 +629,11 @@ Buffer *mBuf;               /* message buffer */
 #endif
    tmp16 = 0; 
 #ifndef FCSPKINT            /* backward compatibility, packing order */
-   tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[1]);
-   tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[0]);
+   tmp16 = (uint16_t) PutHiByte(tmp16, (uint8_t) unpkArray[1]);
+   tmp16 = (uint16_t) PutLoByte(tmp16, (uint8_t) unpkArray[0]);
 #else                       /* forward compatibility, packing order */
-   tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[0]);
-   tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[1]);
+   tmp16 = (uint16_t) PutHiByte(tmp16, (uint8_t) unpkArray[0]);
+   tmp16 = (uint16_t) PutLoByte(tmp16, (uint8_t) unpkArray[1]);
 #endif
    *val = (S16) tmp16;
    return (ret);
@@ -657,16 +657,16 @@ Buffer *mBuf;               /* message buffer */
 #ifdef ANSI
 S16 oduPackUInt16
 (
-U16 *val,                   /* pointer to value */
+uint16_t *val,                   /* pointer to value */
 Buffer *mBuf                /* message buffer */
 )
 #else
 S16 oduPackUInt16(val, mBuf)
-U16 *val;                   /* pointer to value */
+uint16_t *val;                   /* pointer to value */
 Buffer *mBuf;               /* message buffer */
 #endif
 {
-   U16 tmp16;               /* temporary value */
+   uint16_t tmp16;               /* temporary value */
    Data unpkArray[2];       /* unpacking array */
    S16 ret;                 /* return code */
    TRC1(oduPackUInt16)
@@ -688,11 +688,11 @@ Buffer *mBuf;               /* message buffer */
 #endif
    tmp16 = 0; 
 #ifndef FCSPKINT            /* backward compatibility, packing order */
-   tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[1]);
-   tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[0]);
+   tmp16 = (uint16_t) PutHiByte(tmp16, (uint8_t) unpkArray[1]);
+   tmp16 = (uint16_t) PutLoByte(tmp16, (uint8_t) unpkArray[0]);
 #else                       /* forward compatibility, packing order */
-   tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[0]);
-   tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[1]);
+   tmp16 = (uint16_t) PutHiByte(tmp16, (uint8_t) unpkArray[0]);
+   tmp16 = (uint16_t) PutLoByte(tmp16, (uint8_t) unpkArray[1]);
 #endif
    *val = tmp16;
    return (ret);
@@ -725,8 +725,8 @@ S32 *val;                   /* pointer to value */
 Buffer *mBuf;               /* message buffer */
 #endif
 {
-   U16 tmp16;               /* temporary value */
-   U32 tmp32;               /* temporary value */
+   uint16_t tmp16;               /* temporary value */
+   uint32_t tmp32;               /* temporary value */
    Data unpkArray[4];       /* unpacking array */
    S16 ret;                 /* return code */
    TRC1(SUnpkS32)
@@ -749,19 +749,19 @@ Buffer *mBuf;               /* message buffer */
    tmp16 = 0;
    tmp32 = 0; 
 #ifndef FCSPKINT            /* backward compatibility, packing order */
-   tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[3]);
-   tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[2]);
-   tmp32 = (U32) PutHiWord(tmp32, (U16) tmp16);
-   tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[1]);
-   tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[0]);
-   tmp32 = (U32) PutLoWord(tmp32, (U16) tmp16);
+   tmp16 = (uint16_t) PutHiByte(tmp16, (uint8_t) unpkArray[3]);
+   tmp16 = (uint16_t) PutLoByte(tmp16, (uint8_t) unpkArray[2]);
+   tmp32 = (uint32_t) PutHiWord(tmp32, (uint16_t) tmp16);
+   tmp16 = (uint16_t) PutHiByte(tmp16, (uint8_t) unpkArray[1]);
+   tmp16 = (uint16_t) PutLoByte(tmp16, (uint8_t) unpkArray[0]);
+   tmp32 = (uint32_t) PutLoWord(tmp32, (uint16_t) tmp16);
 #else                       /* forward compatibility, packing order */
-   tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[0]);
-   tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[1]);
-   tmp32 = (U32) PutHiWord(tmp32, (U16) tmp16);
-   tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[2]);
-   tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[3]);
-   tmp32 = (U32) PutLoWord(tmp32, (U16) tmp16);
+   tmp16 = (uint16_t) PutHiByte(tmp16, (uint8_t) unpkArray[0]);
+   tmp16 = (uint16_t) PutLoByte(tmp16, (uint8_t) unpkArray[1]);
+   tmp32 = (uint32_t) PutHiWord(tmp32, (uint16_t) tmp16);
+   tmp16 = (uint16_t) PutHiByte(tmp16, (uint8_t) unpkArray[2]);
+   tmp16 = (uint16_t) PutLoByte(tmp16, (uint8_t) unpkArray[3]);
+   tmp32 = (uint32_t) PutLoWord(tmp32, (uint16_t) tmp16);
 #endif
    *val = (S32) tmp32;
    return (ret);
@@ -785,17 +785,17 @@ Buffer *mBuf;               /* message buffer */
 #ifdef ANSI
 S16 oduPackUInt32
 (
-U32 *val,                   /* pointer to value */
+uint32_t *val,                   /* pointer to value */
 Buffer *mBuf                /* message buffer */
 )
 #else
 S16 oduPackUInt32(val, mBuf)
-U32 *val;                   /* pointer to value */
+uint32_t *val;                   /* pointer to value */
 Buffer *mBuf;               /* message buffer */
 #endif
 {
-   U16 tmp16;               /* temporary value */
-   U32 tmp32;               /* temporary value */
+   uint16_t tmp16;               /* temporary value */
+   uint32_t tmp32;               /* temporary value */
    Data unpkArray[4];       /* unpacking array */
 #ifdef ERRCLASS
    S16 ret;                 /* return code */
@@ -821,19 +821,19 @@ Buffer *mBuf;               /* message buffer */
    tmp16 = 0;
    tmp32 = 0; 
 #ifndef FCSPKINT            /* backward compatibility, packing order */
-   tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[3]);
-   tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[2]);
-   tmp32 = (U32) PutHiWord(tmp32, (U16) tmp16);
-   tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[1]);
-   tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[0]);
-   tmp32 = (U32) PutLoWord(tmp32, (U16) tmp16);
+   tmp16 = (uint16_t) PutHiByte(tmp16, (uint8_t) unpkArray[3]);
+   tmp16 = (uint16_t) PutLoByte(tmp16, (uint8_t) unpkArray[2]);
+   tmp32 = (uint32_t) PutHiWord(tmp32, (uint16_t) tmp16);
+   tmp16 = (uint16_t) PutHiByte(tmp16, (uint8_t) unpkArray[1]);
+   tmp16 = (uint16_t) PutLoByte(tmp16, (uint8_t) unpkArray[0]);
+   tmp32 = (uint32_t) PutLoWord(tmp32, (uint16_t) tmp16);
 #else                       /* forward compatibility, packing order */
-   tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[0]);
-   tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[1]);
-   tmp32 = (U32) PutHiWord(tmp32, (U16) tmp16);
-   tmp16 = (U16) PutHiByte(tmp16, (U8) unpkArray[2]);
-   tmp16 = (U16) PutLoByte(tmp16, (U8) unpkArray[3]);
-   tmp32 = (U32) PutLoWord(tmp32, (U16) tmp16);
+   tmp16 = (uint16_t) PutHiByte(tmp16, (uint8_t) unpkArray[0]);
+   tmp16 = (uint16_t) PutLoByte(tmp16, (uint8_t) unpkArray[1]);
+   tmp32 = (uint32_t) PutHiWord(tmp32, (uint16_t) tmp16);
+   tmp16 = (uint16_t) PutHiByte(tmp16, (uint8_t) unpkArray[2]);
+   tmp16 = (uint16_t) PutLoByte(tmp16, (uint8_t) unpkArray[3]);
+   tmp32 = (uint32_t) PutLoWord(tmp32, (uint16_t) tmp16);
 #endif
    *val = tmp32;
    return (ret);

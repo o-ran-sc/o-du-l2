@@ -47,7 +47,7 @@
 EXTERN pthread_t tmpRegTidMap[20];
 #define CM_MEM_GET_REGION(_region)                        \
 {                                                         \
-   U8  _regCnt;                                           \
+   uint8_t  _regCnt;                                           \
    _region = 0xFF;                                        \
                                                           \
    for(_regCnt = 0; _regCnt < 12; _regCnt++)              \
@@ -137,7 +137,7 @@ Ptr             *ptr;       /* Location to place allocated event ptr */
      return RFAILED;
 
   /* Reset the contents */
-  cmMemset((U8 *)allocPtr, (U8 )0, 
+  cmMemset((uint8_t *)allocPtr, (uint8_t )0, 
            (PTR)(maxBlkSize + sizeof(CmMemList)) );
 
   /* The above allocated memory chunk is structured as follows 
@@ -283,7 +283,7 @@ Ptr          *allocPtr; /* location to place pointer */
   { 
     /* if a chunk is already there */
     if( (cb->memAllocated + size) <= 
-           (U32)(cb->maxSize + sizeof(CmMemList)) )
+           (uint32_t)(cb->maxSize + sizeof(CmMemList)) )
     {
       /* Requested memory is available in present chunk */
       *allocPtr = (Ptr) cb->runPtr;
@@ -310,7 +310,7 @@ Ptr          *allocPtr; /* location to place pointer */
   /* Reset the contents */
   /* Initialise above allocated structure */
   /* cm_mblk_c_001.101: use blkSize instead of cb->maxSize */
-  cmMemset((U8 *)cb->initPtr, (U8 )0, 
+  cmMemset((uint8_t *)cb->initPtr, (uint8_t )0, 
            (PTR)(blkSize + sizeof(CmMemList) ));
 
   /* The above allocated memory chunk is structured as follows 
@@ -401,7 +401,7 @@ Ptr             *ptr;       /* Location to place allocated event ptr */
      return RFAILED;
 
   /* Reset the contents */
-  cmMemset((U8 *)allocPtr, (U8 )0, 
+  cmMemset((uint8_t *)allocPtr, (uint8_t )0, 
            (PTR)(sizeof(CmMemList)) );
 
   /* The above allocated memory chunk is structured as follows 
@@ -506,11 +506,11 @@ Ptr          *allocPtr; /* location to place pointer */
   { 
     /* if a chunk is already there */
     if( (cb->memAllocated + size) <= 
-           (U32)(cb->maxSize + sizeof(CmMemList)) )
+           (uint32_t)(cb->maxSize + sizeof(CmMemList)) )
     {
       /* Requested memory is available in present chunk */
       *allocPtr = (Ptr) cb->runPtr;
-      //cmMemset((U8 *)*allocPtr, (U8 )0, 
+      //cmMemset((uint8_t *)*allocPtr, (uint8_t )0, 
         //   (PTR)(size) );
       cb->memAllocated += size;
       cb->runPtr += size;
@@ -535,7 +535,7 @@ Ptr          *allocPtr; /* location to place pointer */
   /* Reset the contents */
   /* Initialise above allocated structure */
   /* cm_mblk_c_001.101: use blkSize instead of cb->maxSize */
-  cmMemset((U8 *)cb->initPtr, (U8 )0, 
+  cmMemset((uint8_t *)cb->initPtr, (uint8_t )0, 
            (PTR)(sizeof(CmMemList)));
   /* The above allocated memory chunk is structured as follows 
 

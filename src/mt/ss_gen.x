@@ -41,7 +41,7 @@ struct cmMmGlobRegCb;
 /* ss029.103: addition: multiple procIds related changes */ 
 #ifdef SS_MULTIPLE_PROCS
 typedef struct {
-   U16 free;
+   uint16_t free;
    ProcId procId[SS_MAX_PROCS];
 } ProcIdLst;
 #endif /* SS_MULTIPLE_PROCS */
@@ -55,11 +55,11 @@ typedef struct {
 
 
   /* the currently used core */
-  U32 currentCore;
+  uint32_t currentCore;
   
   /*COMMENT: add the thread id for use on hyperthreading machines */
   struct {
-    U32 thrs;                     /* available no. of threads per core */
+    uint32_t thrs;                     /* available no. of threads per core */
     S8 exclusive;                 /* exclusive flag */
     SSTskId tskPerCoreLst[SS_MAX_THREADS_PER_CORE]; /* System tasks running on this core */
   } coreInfo[SS_MAX_CORES];
@@ -70,9 +70,9 @@ typedef struct {
 /* ss002.301: Modifications */
 #ifdef SS_THREAD_PROFILE
 #ifdef SS_MULTIPLE_PROCS
-EXTERN S16 SGetThrdProf(SSTskId *sTskId,ProcId procId,Ent ent,Inst inst,Event *curEvent,U32 *curEvtTime,U64 *totTime);
+EXTERN S16 SGetThrdProf(SSTskId *sTskId,ProcId procId,Ent ent,Inst inst,Event *curEvent,uint32_t *curEvtTime,U64 *totTime);
 #else
-EXTERN S16 SGetThrdProf(SSTskId *sTskId,Ent ent,Inst inst,Event *curEvent,U32 *curEvtTime,U64 *totTime);
+EXTERN S16 SGetThrdProf(SSTskId *sTskId,Ent ent,Inst inst,Event *curEvent,uint32_t *curEvtTime,U64 *totTime);
 #endif /* SS_MULTIPLE_PROCS */
 #endif /* SS_THERAD_PROFILE */
 
@@ -86,13 +86,13 @@ typedef struct {
 #else
    struct in_addr addr;       /* configured node addr */
 #endif /* SS_WATCHDOG_IPV6 */
-   U16 port;       /* configured watchdog port */
-   U8 status;      /* HB ACK status */
+   uint16_t port;       /* configured watchdog port */
+   uint8_t status;      /* HB ACK status */
 } watchDogStatus;
 
 typedef struct ssWd {
-   U32            timeout;                 /* configured HB timer */
-   U8             watchdogStop;            /* watchdog stop flag */
+   uint32_t            timeout;                 /* configured HB timer */
+   uint8_t             watchdogStop;            /* watchdog stop flag */
    int            numNodes;                /* configured nodes */
 #ifdef SS_WIN
    unsigned int   sock;                    /* HB socket descriptor */
@@ -116,10 +116,10 @@ typedef struct ssWdCp{
    SsWd                  globWd;
    SLockId               wdLock;
 } SsWdCp;
-EXTERN S16 SInitWatchdog(U16 port);
-EXTERN S16 SRegCfgWd(U32 numNodes, U8 *addr[], U16 port[], U32 timeout, WdUserCallback callback, void *data);
+EXTERN S16 SInitWatchdog(uint16_t port);
+EXTERN S16 SRegCfgWd(uint32_t numNodes, uint8_t *addr[], uint16_t port[], uint32_t timeout, WdUserCallback callback, void *data);
 EXTERN S16 SDeregCfgWd(void);
-EXTERN S16 SStartHrtBt(U8 timeInterval);
+EXTERN S16 SStartHrtBt(uint8_t timeInterval);
 EXTERN S16 SStopHrtBt(void);
 #endif /* SS_WATCHDOG */
 
@@ -139,13 +139,13 @@ typedef struct sloggerInfo
      S32             socketdes;
      struct sockaddr_in remoteAddr;
    
-     U16             curNumFlush;
-     U16             maxNumFlush;
+     uint16_t             curNumFlush;
+     uint16_t             maxNumFlush;
      
      S8              buffer[SS_MAX_LOGBUF_SIZE];
-     U32             maxBufSiz;        /*The size of this is determined by the 
+     uint32_t             maxBufSiz;        /*The size of this is determined by the 
                                             system on which its running.*/
-     U32             curBufSiz;
+     uint32_t             curBufSiz;
      SLockId         bufLock;            /* lock for global buffer access */
 } SLoggerInfo;
 #endif /*  SS_LOGGER_SUPPORT  */
@@ -162,7 +162,7 @@ typedef struct _MtWls
 #ifdef NTL_LIB
 typedef struct _MtNtl
 {
-   U32        hdl;
+   uint32_t        hdl;
 }SsMtNtl;
 #endif   /* NTL_LIB */
 
@@ -209,7 +209,7 @@ typedef struct ssos
    SLockId              sTskTblLock;            /* lock for table access */
 
 
-   U8                   dmndQLookupTbl[256];    /* demand queue lookup table */
+   uint8_t                   dmndQLookupTbl[256];    /* demand queue lookup table */
 
 
 #ifdef SS_DRVR_SUPPORT
@@ -267,7 +267,7 @@ typedef struct ssos
 #endif /* SS_WATCHDOG */
 
 #ifdef SS_HISTOGRAM_SUPPORT
-   U8                    entId[26][26];
+   uint8_t                    entId[26][26];
 #endif /* SS_HISTOGRAM_SUPPORT */
 
 #ifdef SS_LOGGER_SUPPORT
@@ -375,15 +375,15 @@ EXTERN S16 ssdDeregDrvrTsk ARGS((SsDrvrTskEntry *));
 
 /* ss029.103: addition: support function to implement multiple procIds */ 
 #ifdef SS_MULTIPLE_PROCS
-EXTERN U16 SGetProcIdIdx ARGS((ProcId proc));
+EXTERN uint16_t SGetProcIdIdx ARGS((ProcId proc));
 #endif /* SS_MULTIPLE_PROCS */
 
 /* multi-core support */
 /*ss013.301 : changes for SS_AFFINITY_SUPPORT*/
 #if defined(SS_MULTICORE_SUPPORT) || defined(SS_AFFINITY_SUPPORT)
  
-EXTERN S16 ssdSetAffinity ARGS((SSTskId *tskId, U32 coreId));
-EXTERN S16 ssdGetAffinity ARGS((SSTskId *tskId, U32 *coreId));
+EXTERN S16 ssdSetAffinity ARGS((SSTskId *tskId, uint32_t coreId));
+EXTERN S16 ssdGetAffinity ARGS((SSTskId *tskId, uint32_t *coreId));
 #endif /* SS_MULTICORE_SUPPORT || SS_AFFINITY_SUPPORT */
 
 /* ss001.301: additions */
@@ -405,22 +405,22 @@ EXTERN S16 ssdWatchDgActvTmr ARGS(( Void ));
 EXTERN Void ssdWatchDgTmrEvt ARGS(( PTR cb, S16 event ));
 EXTERN S16 watchDgActvTsk ARGS(( Pst *pst, Buffer *mBuf));
 EXTERN S16 watchDgRcvrActvTsk ARGS(( Pst *pst, Buffer *mBuf ));
-EXTERN S16 ssdSndHrtBtMsg ARGS(( Bool  restart, U32 type));
-EXTERN Void ssdStartWatchDgTmr ARGS(( void *cb, S16 event, U16 wait));
+EXTERN S16 ssdSndHrtBtMsg ARGS(( Bool  restart, uint32_t type));
+EXTERN Void ssdStartWatchDgTmr ARGS(( void *cb, S16 event, uint16_t wait));
 EXTERN Void ssdStopWatchDgTmr ARGS(( void *cb, S16 event));
 EXTERN S16 ssdInitWatchDgPst ARGS((Pst *pst)); 	
-EXTERN S16 ssdInitWatchDog ARGS((U16 port));
+EXTERN S16 ssdInitWatchDog ARGS((uint16_t port));
 #endif
 
 #ifdef SS_FBSED_TSK_REG
-EXTERN S16 SRegTskInfo ARGS((U8 *cfgFile));  
+EXTERN S16 SRegTskInfo ARGS((uint8_t *cfgFile));  
 #endif
 /* ss002.301 Readwrite lock additions */
 #ifdef SS_LOCK_SUPPORT
-EXTERN S16 ssdLockNew ARGS((SLockInfo *LockId, U8 locktype));
-EXTERN S16 ssdInitLockNew ARGS((SLockInfo *LockId, U8 lockType));
-EXTERN S16 ssdUnlockNew ARGS((SLockInfo *LockId, U8 lockType));
-EXTERN S16 ssdDestroyLockNew ARGS((SLockInfo *LockId, U8 lockType));
+EXTERN S16 ssdLockNew ARGS((SLockInfo *LockId, uint8_t locktype));
+EXTERN S16 ssdInitLockNew ARGS((SLockInfo *LockId, uint8_t lockType));
+EXTERN S16 ssdUnlockNew ARGS((SLockInfo *LockId, uint8_t lockType));
+EXTERN S16 ssdDestroyLockNew ARGS((SLockInfo *LockId, uint8_t lockType));
 #endif /* SS_LOCK_SUPPORT */
 
 #ifdef SSI_STATIC_MEM_LEAK_DETECTION
@@ -429,7 +429,7 @@ EXTERN S16 ssdDestroyLockNew ARGS((SLockInfo *LockId, U8 lockType));
 
 typedef struct _listInfo
 {
-   U32 nextIdx;
+   uint32_t nextIdx;
 }ListInfo;
 
 typedef struct _eachAllocInfo
@@ -437,16 +437,16 @@ typedef struct _eachAllocInfo
    ListInfo listInfo;
    /* other info should come here */
    char *file;
-   U32 lineNo;
-   U32 age;
+   uint32_t lineNo;
+   uint32_t age;
    void *ptr;
-   U32 size;
+   uint32_t size;
    /* end of other info */
 }EachAllocInfo;
 
 typedef struct _staticMemAllocationInfo
 {
-   U32 nextFreeIdx;
+   uint32_t nextFreeIdx;
    EachAllocInfo allocations[MAX_MEM_ALLOCATIONS];
 }StaticMemAllocInfo;
 

@@ -77,7 +77,7 @@ PRIVATE RgSchCmnUlPwrCqiToPwrTbl rgSchPwrCqiToPwrTbl;
 
 /* This table maps a given number of RBs (given by array index)
  * to the power in dB that these many RBs map to. */
-CONSTANT U8 rgSchPwrRbToPwrTbl[111] = { 0,    /* First entry is dummy */
+CONSTANT uint8_t rgSchPwrRbToPwrTbl[111] = { 0,    /* First entry is dummy */
    0,  3,  4,  6,  7,  7,  8,  9,  9,  10,
    10, 10, 11, 11, 11, 12, 12, 12, 12, 13,
    13, 13, 13, 13, 14, 14, 14, 14, 14, 14,
@@ -94,7 +94,7 @@ CONSTANT U8 rgSchPwrRbToPwrTbl[111] = { 0,    /* First entry is dummy */
 
 /* This table maps power (in dB) to number of RBs */
 /* The array size comes from max power in rgSchPwrRbToPwrTbl */
-CONSTANT U8 rgSchPwrToRbTbl[20+1] = {
+CONSTANT uint8_t rgSchPwrToRbTbl[20+1] = {
   1, 1, 2, 2, 3, 4, 5, 6, 7, 9, 11,
   13, 17, 21, 26, 33, 41, 52, 65, 82, 103 
 };
@@ -102,36 +102,36 @@ CONSTANT U8 rgSchPwrToRbTbl[20+1] = {
 
 
 PRIVATE S8 rgSCHPwrGetCqiPwr ARGS((
-         U8                  cqi
+         uint8_t                  cqi
          ));
 PRIVATE S8 rgSCHPwrGetCqiPwrForUe ARGS((
          RgSchCellCb          *cell,
          RgSchUeCb          *ue,
-         U8                  cqi
+         uint8_t                  cqi
          ));
 PRIVATE S8 rgSCHPwrCalcEfficncyPwr ARGS((
-         U32                 eff
+         uint32_t                 eff
          ));
 PRIVATE S8 rgSCHPwrGetDelta2FrmCqi ARGS((
-         U8                  crntCqi,
-         U8                  trgCqi,
+         uint8_t                  crntCqi,
+         uint8_t                  trgCqi,
          RgSchUeCb           *ue,
          RgSchCellCb         *cell
          ));
 PRIVATE Void rgSCHPwrGetPuschTpc ARGS((
-         U8                  isAcc,
+         uint8_t                  isAcc,
          S8                  delta,
          S8                  availPwr,
-         U8                 *tpc,
+         uint8_t                 *tpc,
          S8                 *tpcDelta
          ));
-PRIVATE U8 rgSCHPwrGetMaxRb ARGS((
+PRIVATE uint8_t rgSCHPwrGetMaxRb ARGS((
          RgSchCellCb          *cell,
          S8                  pwr
          ));
-PRIVATE U8 rgSCHPwrRbToPwr ARGS((
+PRIVATE uint8_t rgSCHPwrRbToPwr ARGS((
          RgSchCellCb          *cell,
-         U8                  numRb
+         uint8_t                  numRb
          ));
 PRIVATE Void rgSCHPwrSchedPucchRnti ARGS((
          RgSchCellCb          *cell,
@@ -157,37 +157,37 @@ PRIVATE Void rgSCHPwrSchedPuschRnti ARGS((
          ));
 PRIVATE Void rgSCHPwrGetPucchFmt3TpcForUe ARGS((
          RgSchUeCb            *ue,
-         U8                   *tpc,
+         uint8_t                   *tpc,
          S8                   *delta
          ));
 PRIVATE Void rgSCHPwrGetPucchFmt3aTpcForUe ARGS((
          RgSchUeCb            *ue,
-         U8                   *tpc,
+         uint8_t                   *tpc,
          S8                   *delta
          ));
 PRIVATE Void rgSCHPwrGetPuschFmt3TpcForUe ARGS((
          RgSchUeCb            *ue,
-         U8                   *tpc,
+         uint8_t                   *tpc,
          S8                   *delta
          ));
 PRIVATE Void rgSCHPwrGetPuschFmt3aTpcForUe ARGS((
          RgSchUeCb            *ue,
-         U8                   *tpc,
+         uint8_t                   *tpc,
          S8                   *delta
          ));
 PRIVATE Void rgSCHPwrGetAcc1bitTpc ARGS((
          S8                    remPwr,
-         U8                   *tpc,
+         uint8_t                   *tpc,
          S8                   *delta
          ));
 PRIVATE Void rgSCHPwrGetAcc2bitTpc ARGS((
          S8                   remPwr,
-         U8                  *tpc,
+         uint8_t                  *tpc,
          S8                  *delta
          ));
 PRIVATE Void rgSCHPwrGetAbsTpc ARGS((
          S8                   remPwr,
-         U8                  *tpc,
+         uint8_t                  *tpc,
          S8                  *delta
          ));
 PRIVATE Void rgSCHPwrOnPucchGrpPwrForUe  ARGS((
@@ -326,29 +326,29 @@ PRIVATE Void rgSCHPwrRmvSchdPuschTpcRntiCb ARGS((
          ));
 PRIVATE S16 rgSCHPwrChkPucchTpcRntiIdx ARGS((
          RgSchCmnTpcRntiCb     *cb,
-         U8                     idx
+         uint8_t                     idx
          ));
 PRIVATE S16 rgSCHPwrChkPuschTpcRntiIdx ARGS((
          RgSchCmnTpcRntiCb     *cb,
-         U8                     idx
+         uint8_t                     idx
          ));
 PRIVATE S16 rgSCHPwrChkUniqPucchTpcRntiIdx ARGS((
          RgSchCmnTpcRntiCb     *cb,
-         U8                     idx
+         uint8_t                     idx
          ));
 PRIVATE S16 rgSCHPwrChkUniqPuschTpcRntiIdx ARGS((
          RgSchCmnTpcRntiCb     *cb,
-         U8                     idx
+         uint8_t                     idx
          ));
 PRIVATE S16 rgSCHPwrChkTpcRntiIdx ARGS((
          RgSchCmnTpcRntiCb     *cb,
-         U8                     idx
+         uint8_t                     idx
          ));
 PRIVATE S8 rgSCHPwrGetPhValFromPhr ARGS((
-         U8                    phr
+         uint8_t                    phr
          ));
 PRIVATE S8 rgSCHPwrGetPCMaxValFromPCMax ARGS((
-         U8                    pCMax
+         uint8_t                    pCMax
          ));
 
 /* local defines */
@@ -377,7 +377,7 @@ Void
 Void rgSCHPwrInit()
 #endif
 {
-   U8             idx;
+   uint8_t             idx;
    TRC2(rgSCHPwrInit);
 
    rgSchPwrCqiToPwrTbl[0] = 0;  /* This should never be used anyway */
@@ -395,7 +395,7 @@ Void rgSCHPwrInit()
  *     Desc : Returns power corresponding to coding efficiency
  *            when beta pusch is assumed 1.
  *
- *     Ret  : U8
+ *     Ret  : uint8_t
  *
  *     Notes:
  *
@@ -405,11 +405,11 @@ Void rgSCHPwrInit()
 #ifdef ANSI
 PRIVATE S8 rgSCHPwrGetCqiPwr
 (
-U8                  cqi
+uint8_t                  cqi
 )
 #else
 PRIVATE S8 rgSCHPwrGetCqiPwr(cqi)
-U8                  cqi;
+uint8_t                  cqi;
 #endif
 {
    TRC2(rgSCHPwrGetCqiPwr);
@@ -424,7 +424,7 @@ U8                  cqi;
  *     Desc : If MCS control is enabled for UE, returns
  *            power corresponding to CQI, else 0.
  *
- *     Ret  : U8
+ *     Ret  : uint8_t
  *
  *     Notes:
  *
@@ -436,13 +436,13 @@ PRIVATE S8 rgSCHPwrGetCqiPwrForUe
 (
 RgSchCellCb        *cell,
 RgSchUeCb          *ue,
-U8                  cqi
+uint8_t                  cqi
 )
 #else
 PRIVATE S8 rgSCHPwrGetCqiPwrForUe(cell, ue, cqi)
 RgSchCellCb        *cell;
 RgSchUeCb          *ue;
-U8                  cqi;
+uint8_t                  cqi;
 #endif
 {
    RgSchCmnUeUlPwrCb     *uePwr = RG_SCH_PWR_GETUEPWR(ue, cell);
@@ -462,7 +462,7 @@ U8                  cqi;
  *     Desc : Computes power corresponding to a coding
  *            efficiency.
  *
- *     Ret  : U8
+ *     Ret  : uint8_t
  *
  *     Notes: Assumes beta pusch to be 1
  *
@@ -472,11 +472,11 @@ U8                  cqi;
 #ifdef ANSI
 PRIVATE S8 rgSCHPwrCalcEfficncyPwr
 (
-U32                 eff
+uint32_t                 eff
 )
 #else
 PRIVATE S8 rgSCHPwrCalcEfficncyPwr(eff)
-U32                 eff;
+uint32_t                 eff;
 #endif
 {
    F64          ks = 1.25; /* or F64 */
@@ -509,16 +509,16 @@ U32                 eff;
  *
  *  @param[in]  RgSchCellCb  *cell
  *  @param[in]  RgSchUeCb    *ue
- *  @return  U8
+ *  @return  uint8_t
  **/
 #ifdef ANSI
-U8 rgSCHPwrPuschTpcForUe
+uint8_t rgSCHPwrPuschTpcForUe
 (
 RgSchCellCb *cell,
 RgSchUeCb   *ue
 )
 #else
-U8 rgSCHPwrPuschTpcForUe(cell, ue)
+uint8_t rgSCHPwrPuschTpcForUe(cell, ue)
 RgSchCellCb *cell;
 RgSchUeCb   *ue;
 #endif
@@ -555,13 +555,13 @@ RgSchUeCb   *ue;
  *  @return  Void
  **/
 #ifdef ANSI
-U8 rgSCHPwrGetMaxUlRb
+uint8_t rgSCHPwrGetMaxUlRb
 (
 RgSchCellCb *cell,
 RgSchUeCb   *ue
 )
 #else
-U8 rgSCHPwrGetMaxUlRb(cell, ue)
+uint8_t rgSCHPwrGetMaxUlRb(cell, ue)
 RgSchCellCb *cell;
 RgSchUeCb   *ue;
 #endif
@@ -622,15 +622,15 @@ RgSchUeCb   *ue;
    RgSchCmnUlCell *cellUl      = RG_SCH_CMN_GET_UL_CELL(cell);
    S8                  delta;
 #ifdef TFU_UPGRADE
-   U8                  cqi     = ueUl->validUlCqi;
+   uint8_t                  cqi     = ueUl->validUlCqi;
    S32                 tmp;
 #else
-   U8                  cqi     = ueUl->crntUlCqi[0];
+   uint8_t                  cqi     = ueUl->crntUlCqi[0];
 #endif
    Bool                isAcc   = uePwr->isAccumulated;
-   U8                  tpc;
+   uint8_t                  tpc;
    S8                  availPwr;
-   U8                  maxRb;
+   uint8_t                  maxRb;
 
    UNUSED(cell);
 
@@ -703,16 +703,16 @@ RgSchUeCb   *ue;
  *
  *  @param[in]  RgSchCellCb  *cell
  *  @param[in]  RgSchUeCb    *ue
- *  @return  U8
+ *  @return  uint8_t
  **/
 #ifdef ANSI
-U8 rgSCHPwrPucchTpcForUe
+uint8_t rgSCHPwrPucchTpcForUe
 (
 RgSchCellCb *cell,
 RgSchUeCb   *ue
 )
 #else
-U8 rgSCHPwrPucchTpcForUe(cell, ue)
+uint8_t rgSCHPwrPucchTpcForUe(cell, ue)
 RgSchCellCb *cell;
 RgSchUeCb   *ue;
 #endif
@@ -742,16 +742,16 @@ RgSchUeCb   *ue;
 #ifdef ANSI
 PRIVATE S8 rgSCHPwrGetDelta2FrmCqi
 (
-U8                  crntCqi,
-U8                  trgCqi,
+uint8_t                  crntCqi,
+uint8_t                  trgCqi,
 RgSchUeCb           *ue,
 RgSchCellCb         *cell
 
 )
 #else
 PRIVATE S8 rgSCHPwrGetDelta2FrmCqi(crntCqi, trgCqi)
-U8                  crntCqi;
-U8                  trgCqi;
+uint8_t                  crntCqi;
+uint8_t                  trgCqi;
 RgSchUeCb           *ue;
 RgSchCellCb         *cell;
 #endif
@@ -796,18 +796,18 @@ RgSchCellCb         *cell;
 #ifdef ANSI
 PRIVATE Void rgSCHPwrGetPuschTpc
 (
-U8                  isAcc,
+uint8_t                  isAcc,
 S8                  delta,
 S8                  availPwr,
-U8                 *tpc,
+uint8_t                 *tpc,
 S8                 *tpcDelta
 )
 #else
 PRIVATE Void rgSCHPwrGetPuschTpc(isAcc, delta, availPwr, tpc, tpcDelta)
-U8                  isAcc;
+uint8_t                  isAcc;
 S8                  delta;
 S8                  availPwr;
-U8                 *tpc;
+uint8_t                 *tpc;
 S8                 *tpcDelta;
 #endif
 {
@@ -836,7 +836,7 @@ S8                 *tpcDelta;
  *            expected to be supported by the passed
  *            power headroom.
  *
- *     Ret  : U8
+ *     Ret  : uint8_t
  *
  *     Notes:
  *
@@ -844,13 +844,13 @@ S8                 *tpcDelta;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE U8 rgSCHPwrGetMaxRb
+PRIVATE uint8_t rgSCHPwrGetMaxRb
 (
 RgSchCellCb        *cell,
 S8                  pwr
 )
 #else
-PRIVATE U8 rgSCHPwrGetMaxRb(cell, pwr)
+PRIVATE uint8_t rgSCHPwrGetMaxRb(cell, pwr)
 RgSchCellCb        *cell;
 S8                  pwr;
 #endif
@@ -871,7 +871,7 @@ S8                  pwr;
    {
       return (cellUl->maxUlBwPerUe);
    }
-   return (RGSCH_MIN(cellUl->maxUlBwPerUe,rgSchPwrToRbTbl[(U8)pwr]));
+   return (RGSCH_MIN(cellUl->maxUlBwPerUe,rgSchPwrToRbTbl[(uint8_t)pwr]));
 }  /* rgSCHPwrGetMaxRb */
 
 /***********************************************************
@@ -880,7 +880,7 @@ S8                  pwr;
  *
  *     Desc : Get the power corresponding to number of RBs
  *
- *     Ret  : U8
+ *     Ret  : uint8_t
  *
  *     Notes:
  *
@@ -888,15 +888,15 @@ S8                  pwr;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE U8 rgSCHPwrRbToPwr
+PRIVATE uint8_t rgSCHPwrRbToPwr
 (
 RgSchCellCb          *cell,
-U8                  numRb
+uint8_t                  numRb
 )
 #else
-PRIVATE U8 rgSCHPwrRbToPwr(cell,numRb)
+PRIVATE uint8_t rgSCHPwrRbToPwr(cell,numRb)
 RgSchCellCb          *cell;
-U8                  numRb;
+uint8_t                  numRb;
 #endif
 {
 #ifndef NO_ERRCLS
@@ -1153,8 +1153,8 @@ Bool                 *sched;
 {
    CmLListCp         *lst;
    CmLList           *lnk;
-   U8                *tpcCmds;
-   U8                 tpc;
+   uint8_t                *tpcCmds;
+   uint8_t                 tpc;
    S8                 delta;
    Bool               atleastOne;
    TRC2(rgSCHPwrSchedPucchRnti);
@@ -1209,7 +1209,7 @@ Bool                 *sched;
       pdcch->dci.u.format3Info.isPucch = TRUE;
 
       /* Fill TPC 1 (corresponding to no power change) initially */
-      cmMemset((U8 *)tpcCmds, 1, sizeof(pdcch->dci.u.format3Info.tpcCmd));
+      cmMemset((uint8_t *)tpcCmds, 1, sizeof(pdcch->dci.u.format3Info.tpcCmd));
 
       for (atleastOne = FALSE, lnk = lst->first; lnk; lnk = lnk->next)
       {
@@ -1284,8 +1284,8 @@ Bool                 *sched;
 {
    CmLListCp         *lst;
    CmLList           *lnk;
-   U8                *tpcCmds;
-   U8                 tpc;
+   uint8_t                *tpcCmds;
+   uint8_t                 tpc;
    S8                 delta;
    Bool               atleastOne;
    TRC2(rgSCHPwrSchedPuschRnti);
@@ -1339,7 +1339,7 @@ Bool                 *sched;
       tpcCmds = pdcch->dci.u.format3Info.tpcCmd;
 
       /* Fill TPC 1 (corresponding to no power change) initially */
-      cmMemset((U8 *)tpcCmds, 1, sizeof(pdcch->dci.u.format3Info.tpcCmd));
+      cmMemset((uint8_t *)tpcCmds, 1, sizeof(pdcch->dci.u.format3Info.tpcCmd));
 
       for (atleastOne = FALSE, lnk = lst->first; lnk; lnk = lnk->next)
       {
@@ -1398,13 +1398,13 @@ Bool                 *sched;
 PRIVATE Void rgSCHPwrGetPucchFmt3TpcForUe
 (
 RgSchUeCb            *ue,
-U8                   *tpc,
+uint8_t                   *tpc,
 S8                   *delta
 )
 #else
 PRIVATE Void rgSCHPwrGetPucchFmt3TpcForUe(ue, tpc, delta)
 RgSchUeCb            *ue;
-U8                   *tpc;
+uint8_t                   *tpc;
 S8                   *delta;
 #endif
 {
@@ -1432,13 +1432,13 @@ S8                   *delta;
 PRIVATE Void rgSCHPwrGetPucchFmt3aTpcForUe
 (
 RgSchUeCb            *ue,
-U8                   *tpc,
+uint8_t                   *tpc,
 S8                   *delta
 )
 #else
 PRIVATE Void rgSCHPwrGetPucchFmt3aTpcForUe(ue, tpc, delta)
 RgSchUeCb            *ue;
-U8                   *tpc;
+uint8_t                   *tpc;
 S8                   *delta;
 #endif
 {
@@ -1466,13 +1466,13 @@ S8                   *delta;
 PRIVATE Void rgSCHPwrGetPuschFmt3TpcForUe
 (
 RgSchUeCb            *ue,
-U8                   *tpc,
+uint8_t                   *tpc,
 S8                   *delta
 )
 #else
 PRIVATE Void rgSCHPwrGetPuschFmt3TpcForUe(ue, tpc, delta)
 RgSchUeCb            *ue;
-U8                   *tpc;
+uint8_t                   *tpc;
 S8                   *delta;
 #endif
 {
@@ -1501,13 +1501,13 @@ S8                   *delta;
 PRIVATE Void rgSCHPwrGetPuschFmt3aTpcForUe
 (
 RgSchUeCb            *ue,
-U8                   *tpc,
+uint8_t                   *tpc,
 S8                   *delta
 )
 #else
 PRIVATE Void rgSCHPwrGetPuschFmt3aTpcForUe(ue, tpc, delta)
 RgSchUeCb            *ue;
-U8                   *tpc;
+uint8_t                   *tpc;
 S8                   *delta;
 #endif
 {
@@ -1537,13 +1537,13 @@ S8                   *delta;
 PRIVATE Void rgSCHPwrGetAcc1bitTpc
 (
 S8                    remPwr,
-U8                   *tpc,
+uint8_t                   *tpc,
 S8                   *delta
 )
 #else
 PRIVATE Void rgSCHPwrGetAcc1bitTpc(remPwr, tpc, delta)
 S8                    remPwr;
-U8                   *tpc;
+uint8_t                   *tpc;
 S8                   *delta;
 #endif
 {
@@ -1583,13 +1583,13 @@ S8                   *delta;
 PRIVATE Void rgSCHPwrGetAcc2bitTpc
 (
 S8                   remPwr,
-U8                  *tpc,
+uint8_t                  *tpc,
 S8                  *delta
 )
 #else
 PRIVATE Void rgSCHPwrGetAcc2bitTpc(remPwr, tpc, delta)
 S8                   remPwr;
-U8                  *tpc;
+uint8_t                  *tpc;
 S8                  *delta;
 #endif
 {
@@ -1600,8 +1600,8 @@ S8                  *delta;
     *  2      1
     *  3      3
     */
-   U8            tpcs[3]   = {1, 2, 2};
-   U8            deltas[3] = {0, 1, 1};
+   uint8_t            tpcs[3]   = {1, 2, 2};
+   uint8_t            deltas[3] = {0, 1, 1};
    TRC2(rgSCHPwrGetAcc2bitTpc);
    if (remPwr <= -1)
    {
@@ -1615,8 +1615,8 @@ S8                  *delta;
    }
    else
    {
-      *tpc   = tpcs[(U8)remPwr];
-      *delta = deltas[(U8)remPwr];
+      *tpc   = tpcs[(uint8_t)remPwr];
+      *delta = deltas[(uint8_t)remPwr];
    }
    RETVOID;
 }  /* rgSCHPwrGetAcc2bitTpc */
@@ -1638,13 +1638,13 @@ S8                  *delta;
 PRIVATE Void rgSCHPwrGetAbsTpc
 (
 S8                   remPwr,
-U8                  *tpc,
+uint8_t                  *tpc,
 S8                  *delta
 )
 #else
 PRIVATE Void rgSCHPwrGetAbsTpc(remPwr, tpc, delta)
 S8                   remPwr;
-U8                  *tpc;
+uint8_t                  *tpc;
 S8                  *delta;
 #endif
 {
@@ -1964,7 +1964,7 @@ RgSchUlSf            *sf;
  *
  *  @param[in]  RgSchCellCb  *cell
  *  @param[in]  RgSchUeCb    *ue
- *  @param[in]  U8           pwrDelta
+ *  @param[in]  uint8_t           pwrDelta
  *  @return  Void
  **/
 #ifdef ANSI
@@ -2176,7 +2176,7 @@ RgInfExtPhrCEInfo     *extPhr;
 RgSchCmnAllocRecord   *allocInfo;
 #endif
 {
-   U8 idx;
+   uint8_t idx;
    RgInfExtPhrSCellInfo  *servCellPhr;
    S8                     pCMax;
 
@@ -2232,9 +2232,9 @@ RgSchCmnAllocRecord   *allocInfo;
  *
  *  @param[in]  RgSchCellCb         *cell
  *  @param[in]  RgSchUeCb           *ue
- *  @param[in]  U8                   phr
+ *  @param[in]  uint8_t                   phr
  *  @param[in]  RgSchCmnAllocRecord  allocInfo
- *  @param[in]  U8                   maxUePwr
+ *  @param[in]  uint8_t                   maxUePwr
  *  @return  Void
  **/
 #ifdef ANSI
@@ -2242,7 +2242,7 @@ Void rgSCHPwrUpdPhr
 (
 RgSchCellCb           *cell,
 RgSchUeCb             *ue,
-U8                     phr,
+uint8_t                     phr,
 RgSchCmnAllocRecord   *allocInfo,
 S8                     maxUePwr 
 )
@@ -2250,14 +2250,14 @@ S8                     maxUePwr
 Void rgSCHPwrUpdPhr(cell, ue, phr, allocInfo, maxUePwr)
 RgSchCellCb           *cell;
 RgSchUeCb             *ue;
-U8                     phr;
+uint8_t                     phr;
 RgSchCmnAllocRecord   *allocInfo;
 S8                     maxUePwr;
 #endif
 {
    RgSchCmnUeUlPwrCb     *uePwr   = RG_SCH_PWR_GETUEPWR(ue, cell);
-   U8                     rbPwr;
-   U8                     effPwr;
+   uint8_t                     rbPwr;
+   uint8_t                     effPwr;
    RgSchCmnUlCell *cellUl = RG_SCH_CMN_GET_UL_CELL(cell);
 
    TRC2(rgSCHPwrUpdPhr);
@@ -2312,7 +2312,7 @@ S8                     maxUePwr;
  *
  *  @param[in]  RgSchCellCb         *cell
  *  @param[in]  RgSchUeCb           *ue
- *  @param[in]  U8                   numRb
+ *  @param[in]  uint8_t                   numRb
  *  @return  Void
  **/
 #ifdef ANSI
@@ -2393,7 +2393,7 @@ RgSchUeCb             *ue;
  *
  *  @param[in]  RgSchCellCb         *cell
  *  @param[in]  RgSchUeCb           *ue
- *  @param[in]  U8                   numRb
+ *  @param[in]  uint8_t                   numRb
  *  @return  Void
  **/
 #ifdef ANSI
@@ -2401,13 +2401,13 @@ Void rgSCHPwrRecordRbAlloc
 (
 RgSchCellCb           *cell,
 RgSchUeCb             *ue,
-U8                     numRb
+uint8_t                     numRb
 )
 #else
 Void rgSCHPwrRecordRbAlloc(cell, ue, numRb)
 RgSchCellCb           *cell;
 RgSchUeCb             *ue;
-U8                     numRb;
+uint8_t                     numRb;
 #endif
 {
    RgSchCmnUeUlPwrCb     *uePwr   = RG_SCH_PWR_GETUEPWR(ue, cell);
@@ -2465,7 +2465,7 @@ RgrCellCfg           *cfg;
    RgSchCmnUlPwrCb       *cellPwr = RG_SCH_PWR_GETCELLPWR(cell);
    CmLteRnti              rnti;
    CmLteRnti              startRnti;
-   U16                    size;
+   uint16_t                    size;
    Bool                   isFmt3a;
    TRC2(rgSCHPwrCellCfg);
 
@@ -2827,8 +2827,8 @@ RgrUeUlPwrCfg        *pwrCfg;
    RgSchCmnUeUlPwrCb     *uePwr       = RG_SCH_PWR_GETUEPWR(ue, cell);
    RgSchCmnTpcRntiCb     *pucchRntiCb = NULLP;
    RgSchCmnTpcRntiCb     *puschRntiCb = NULLP;
-   U8                     pucchIdx    = 0;
-   U8                     puschIdx    = 0;
+   uint8_t                     pucchIdx    = 0;
+   uint8_t                     puschIdx    = 0;
    TRC2(rgSCHPwrApplyUePwrCfg);
 
    /* Validate Pucch group power control config */
@@ -2881,8 +2881,8 @@ RgrUeUlPwrCfg        *pwrCfg;
 #ifndef ALIGN_64BIT
       RLOG_ARG4(L_UNUSED,DBG_CELLID,cell->cellId,
                "<GRP_PWR>PucchRntiCb cfgdUes(%ld %lu %lu) UEID:%d",
-               pucchRntiCb->cfgdUes.count,((U32)pucchRntiCb->cfgdUes.first),
-               ((U32)pucchRntiCb->cfgdUes.last),ue->ueId);
+               pucchRntiCb->cfgdUes.count,((uint32_t)pucchRntiCb->cfgdUes.first),
+               ((uint32_t)pucchRntiCb->cfgdUes.last),ue->ueId);
       RLOG_ARG3(L_UNUSED,DBG_CELLID,cell->cellId,
                "UEID:%d isFmt3a(%u) ueNode(%ld)",
                ue->ueId,pucchRntiCb->isFmt3a,
@@ -2890,8 +2890,8 @@ RgrUeUlPwrCfg        *pwrCfg;
       RLOG_ARG4(L_UNUSED,DBG_CELLID,cell->cellId,
                "toBeSchdUes(%ld %lu %lu) tpcRnti(%u)", 
                pucchRntiCb->toBeSchdUes.count, 
-               ((U32)pucchRntiCb->toBeSchdUes.first),
-               ((U32)pucchRntiCb->toBeSchdUes.last), 
+               ((uint32_t)pucchRntiCb->toBeSchdUes.first),
+               ((uint32_t)pucchRntiCb->toBeSchdUes.last), 
                pucchRntiCb->tpcRnti);
 #else
       RLOG_ARG4(L_UNUSED,DBG_CELLID,cell->cellId,
@@ -3285,7 +3285,7 @@ Bool                  isFmt3a;
 {
    TRC2(rgSCHPwrInitTpcRntiCb);
 
-   cmMemset((U8 *)cb, 0, sizeof(*cb));
+   cmMemset((uint8_t *)cb, 0, sizeof(*cb));
    cb->tpcRnti = rnti;
    cb->isFmt3a = isFmt3a;
    /* Not initialising lists as memset 0 takes care of it */
@@ -3321,7 +3321,7 @@ CmLteRnti   tpcRnti;
 #endif
 {
    RgSchCmnUlPwrCb       *cellPwr = RG_SCH_PWR_GETCELLPWR(cell);
-   U16                    idx;
+   uint16_t                    idx;
    TRC2(rgSCHPwrGetPucchRntiCb);
 
    if (!cellPwr->tpcPucchRntiCnt)
@@ -3366,7 +3366,7 @@ CmLteRnti   tpcRnti;
 #endif
 {
    RgSchCmnUlPwrCb       *cellPwr = RG_SCH_PWR_GETCELLPWR(cell);
-   U16                    idx;
+   uint16_t                    idx;
    TRC2(rgSCHPwrGetPuschRntiCb);
 
    if (!cellPwr->tpcPuschRntiCnt)
@@ -3956,12 +3956,12 @@ RgSchCmnTpcRntiCb     *cb;
 PRIVATE S16 rgSCHPwrChkPucchTpcRntiIdx
 (
 RgSchCmnTpcRntiCb     *cb,
-U8                     idx
+uint8_t                     idx
 )
 #else
 PRIVATE S16 rgSCHPwrChkPucchTpcRntiIdx(cb, idx)
 RgSchCmnTpcRntiCb     *cb;
-U8                     idx;
+uint8_t                     idx;
 #endif
 {
    TRC2(rgSCHPwrChkPucchTpcRntiIdx);
@@ -3996,12 +3996,12 @@ U8                     idx;
 PRIVATE S16 rgSCHPwrChkPuschTpcRntiIdx
 (
 RgSchCmnTpcRntiCb     *cb,
-U8                     idx
+uint8_t                     idx
 )
 #else
 PRIVATE S16 rgSCHPwrChkPuschTpcRntiIdx(cb, idx)
 RgSchCmnTpcRntiCb     *cb;
-U8                     idx;
+uint8_t                     idx;
 #endif
 {
    TRC2(rgSCHPwrChkPuschTpcRntiIdx);
@@ -4034,12 +4034,12 @@ U8                     idx;
 PRIVATE S16 rgSCHPwrChkUniqPucchTpcRntiIdx
 (
 RgSchCmnTpcRntiCb     *cb,
-U8                     idx
+uint8_t                     idx
 )
 #else
 PRIVATE S16 rgSCHPwrChkUniqPucchTpcRntiIdx(cb, idx)
 RgSchCmnTpcRntiCb     *cb;
-U8                     idx;
+uint8_t                     idx;
 #endif
 {
    CmLList           *lnk;
@@ -4074,12 +4074,12 @@ U8                     idx;
 PRIVATE S16 rgSCHPwrChkUniqPuschTpcRntiIdx
 (
 RgSchCmnTpcRntiCb     *cb,
-U8                     idx
+uint8_t                     idx
 )
 #else
 PRIVATE S16 rgSCHPwrChkUniqPuschTpcRntiIdx(cb, idx)
 RgSchCmnTpcRntiCb     *cb;
-U8                     idx;
+uint8_t                     idx;
 #endif
 {
    CmLList           *lnk;
@@ -4114,12 +4114,12 @@ U8                     idx;
 PRIVATE S16 rgSCHPwrChkTpcRntiIdx
 (
 RgSchCmnTpcRntiCb     *cb,
-U8                     idx
+uint8_t                     idx
 )
 #else
 PRIVATE S16 rgSCHPwrChkTpcRntiIdx(cb, idx)
 RgSchCmnTpcRntiCb     *cb;
-U8                     idx;
+uint8_t                     idx;
 #endif
 {
    TRC2(rgSCHPwrChkTpcRntiIdx);
@@ -4160,11 +4160,11 @@ U8                     idx;
 #ifdef ANSI
 PRIVATE S8 rgSCHPwrGetPCMaxValFromPCMax
 (
-U8                    pCMax
+uint8_t                    pCMax
 )
 #else
 PRIVATE S8 rgSCHPwrGetPCMaxValFromPCMax(pCMax)
-U8                    pCMax;
+uint8_t                    pCMax;
 #endif
 {
    TRC2(rgSCHPwrGetPCMaxValFromPCMax);
@@ -4191,11 +4191,11 @@ U8                    pCMax;
 #ifdef ANSI
 PRIVATE S8 rgSCHPwrGetPhValFromPhr
 (
-U8                    phr
+uint8_t                    phr
 )
 #else
 PRIVATE S8 rgSCHPwrGetPhValFromPhr(phr)
-U8                    phr;
+uint8_t                    phr;
 #endif
 {
    TRC2(rgSCHPwrGetPhValFromPhr);

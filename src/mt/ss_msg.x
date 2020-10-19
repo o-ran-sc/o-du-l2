@@ -37,7 +37,7 @@ extern "C" {
 
 
 /* pool type -- dynamic or static */
-typedef U8              SsPoolType;
+typedef uint8_t              SsPoolType;
 
 
 
@@ -72,7 +72,7 @@ typedef struct ssPoolEntry
 /* event information--what kind of message is this */
 typedef struct ssEventInfo
 {
-   U8 event;                                    /* event type */
+   uint8_t event;                                    /* event type */
    union
    {
       struct

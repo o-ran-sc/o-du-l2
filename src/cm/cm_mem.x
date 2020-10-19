@@ -86,7 +86,7 @@ typedef struct cmMemEntries         CmMemEntries;
 struct cmMmBktCfg
 {
    Size  size;              /* Size of the memory block */
-   U32   numBlks;           /* Number of the block in the bucket */
+   uint32_t   numBlks;           /* Number of the block in the bucket */
 };
 
 /* Memory Region configuration structure. */ 
@@ -94,13 +94,13 @@ struct cmMmRegCfg
 {
    Size      size;          /* Size of the memory */
    Data     *vAddr;         /* Start address of the memory */
-   U8        lType;         /* Lock Type to be used */
+   uint8_t        lType;         /* Lock Type to be used */
  
-   U8        chFlag;        /* Flag defines the memory region characteristics */
+   uint8_t        chFlag;        /* Flag defines the memory region characteristics */
    Data     *pAddr;         /* Physical address of the memory block: Valid 
                                if CMM_REG_PHY_VALID bit of chFlag is set */
    Size      bktQnSize;     /* Quatum size of the memory block */
-   U16       numBkts;       /* Number of buckets in the Bucket Pool */
+   uint16_t       numBkts;       /* Number of buckets in the Bucket Pool */
  
    CmMmBktCfg  bktCfg[CMM_MAX_BKT_ENT];  /* Bucket configuration structure */
 };
@@ -112,29 +112,29 @@ struct cmMmRegCfg
 #ifdef SS_HISTOGRAM_SUPPORT 
 struct cmMemEntries /* Entry information */
 {
-   U32              line; /* Line Number where memory allocation primitive used */
-   U32              allocBytes; /* Granted Byte */
-   U32              allocOverFlow; /* If the value of allocBytes overflows then we use this variable */
-   U32              freedBytes; /* Freed Bytes */
-   U32              freeOverFlow; /* If the value of freeByte overflows then we use this value */
-   U32              wastedBytes; /* Difference between Granted and Requested bytes */
-   U32              bucketAllocReq; /* No of times this Bucket used */
-   U32              bucketFreeReq; /* No of times this Bucket freed */
-   U32              entId; /* Tapa task used this bucket */
-   U32              key; /* combination of file name and line */
-   U8               fileName[CMM_HIST_MAX_FILENAME]; /* File Name where memory allocation primitive used */
+   uint32_t              line; /* Line Number where memory allocation primitive used */
+   uint32_t              allocBytes; /* Granted Byte */
+   uint32_t              allocOverFlow; /* If the value of allocBytes overflows then we use this variable */
+   uint32_t              freedBytes; /* Freed Bytes */
+   uint32_t              freeOverFlow; /* If the value of freeByte overflows then we use this value */
+   uint32_t              wastedBytes; /* Difference between Granted and Requested bytes */
+   uint32_t              bucketAllocReq; /* No of times this Bucket used */
+   uint32_t              bucketFreeReq; /* No of times this Bucket freed */
+   uint32_t              entId; /* Tapa task used this bucket */
+   uint32_t              key; /* combination of file name and line */
+   uint8_t               fileName[CMM_HIST_MAX_FILENAME]; /* File Name where memory allocation primitive used */
 };
 
 struct cmHstGrmHashListEnt    /* hash list entry */
 {
    CmMemEntries      entries[CMM_HIST_MAX_MEM_ENTRY_PER_BIN]; /* Number of entires in each bin */
-   U32               numOfEntries; /*Number of entries in hash list */
+   uint32_t               numOfEntries; /*Number of entries in hash list */
 };
 
 struct cmHstGrmHashListCp /* Hash List control pointer */
 {
    CmHstGrmHashListEnt   hashList[CMM_HIST_MAX_MEM_BIN]; /* Number of bins in hash list */
-   U16                   totalNumEntries; /* Total number of bins */
+   uint16_t                   totalNumEntries; /* Total number of bins */
 };
 
 #endif /* SS_HISTOGRAM_SUPPORT */
@@ -145,28 +145,28 @@ struct cmHstGrmHashListCp /* Hash List control pointer */
 struct cmMmBlkHdr
 {
    /* trSignature shall always be maintained as the first element in this structure */
-   U8          trSignature[CMM_TRAMPLING_SIGNATURE_LEN];  /* signature to detect trampling */
+   uint8_t          trSignature[CMM_TRAMPLING_SIGNATURE_LEN];  /* signature to detect trampling */
    CmMmBlkHdr  *nextBlk;         /* pointer to the next memory block header */
-   U32         memFlags;         /* Free/Static/Dynamic */
+   uint32_t         memFlags;         /* Free/Static/Dynamic */
    Size        requestedSize;    /* requested size for which this mem blk has been allocated */
 #ifdef SS_LIGHT_MEM_LEAK_STS
-   U32         timeStamp;        /* Time stamp */
-   U32         lineNo;
-   U32         allocQueueIndx;
-   U8          *currFuncName;
+   uint32_t         timeStamp;        /* Time stamp */
+   uint32_t         lineNo;
+   uint32_t         allocQueueIndx;
+   uint8_t          *currFuncName;
 #endif
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL2
    CmHashListEnt         ent;    /* hash list entry  */
    Size                  reqSz;  /* Requested size */
    Size                  allocSz;/* Allocated size */
-   U8                    bktIdx; /* Bucket ID */
+   uint8_t                    bktIdx; /* Bucket ID */
    Void                  *backTrace[BRDCM_MEM_LEAK_BTRACE]; /* Back trace */
 #endif
 };
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
 typedef struct cmMmBlkTail
 {
-   U8     trSignature[CMM_TRAMPLING_SIGNATURE_LEN];  /* signature to detect trampling */
+   uint8_t     trSignature[CMM_TRAMPLING_SIGNATURE_LEN];  /* signature to detect trampling */
 }CmMmBlkTail;
 typedef struct memLkInfo
 {
@@ -195,12 +195,12 @@ struct cmMmBkt                /* Bucket Structure */
 #endif
 #endif /* SSI_DEBUG_LEVEL1 */
    Size         size;         /* Size of the block */
-   U32          numBlks;      /* Total number of blocks in the bucket */
-   U32          maxAlloc;     /* Maximum number of blocks allocated till now */
-   U32          numAlloc;     /* Number of blocks allocated */
+   uint32_t          numBlks;      /* Total number of blocks in the bucket */
+   uint32_t          maxAlloc;     /* Maximum number of blocks allocated till now */
+   uint32_t          numAlloc;     /* Number of blocks allocated */
    SLockId      bktLock;      /* Lock to protect the bucket pool */ 
-   U32          bktFailCnt;   /* bucket alloc failure count */
-   U32          bktNoFitCnt;  /* number of blocks not fit */
+   uint32_t          bktFailCnt;   /* bucket alloc failure count */
+   uint32_t          bktNoFitCnt;  /* number of blocks not fit */
 /* cm_mem_x_001.main_9 - addition of statistics related data */
 #if (defined(SSI_DEBUG_LEVEL1) || defined(BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1))
    Data         *bktStartPtr;   /* maintains the start address of the memory block in the bucket */
@@ -208,7 +208,7 @@ struct cmMmBkt                /* Bucket Structure */
    StsCntr      numDeallocAttempts;   /* total number of de-allocation attempts */
    Size         staticMemUsed;   /* amount of memory used for static allocations */
    Size         dynamicMemUsed;   /* amount of memory used for dynamic allocations */
-   U8           trampleCount;   /* incremented everytime a trampling is detected in any block of the bucket */
+   uint8_t           trampleCount;   /* incremented everytime a trampling is detected in any block of the bucket */
 #endif /*SSI_DEBUG_LEVEL1*/
 /* cm_mem_x_001.main_11: Additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
@@ -220,11 +220,11 @@ struct cmMmBkt                /* Bucket Structure */
 /* Size-To-Bucket map table structure */ 
 struct cmMmMapBkt
 {
-   U16   bktIdx;              /* The index to the memory bucket */
+   uint16_t   bktIdx;              /* The index to the memory bucket */
 
 #if (ERRCLASS & ERRCLS_DEBUG)
-   U16   numReq;              /* Number of the allocation request */
-   U16   numFailure;          /* Number of allocation failure form the bucket */
+   uint16_t   numReq;              /* Number of the allocation request */
+   uint16_t   numFailure;          /* Number of allocation failure form the bucket */
 #endif
 
 };
@@ -235,8 +235,8 @@ struct cmHEntry
 /* cm_mem_x_001.main_9 - addition to provide trampling and double-free detections support */
 #ifdef SSI_DEBUG_LEVEL1
   /* trSignature shall always be maintianed as the first element in this structure */
-  U8         trSignature[CMM_TRAMPLING_SIGNATURE_LEN];  /* signature to detect trampling */
-  U32        memFlags;          /* flag to maintain the memory status */
+  uint8_t         trSignature[CMM_TRAMPLING_SIGNATURE_LEN];  /* signature to detect trampling */
+  uint32_t        memFlags;          /* flag to maintain the memory status */
   Size       requestedSize;     /* size of the heap entry block */
 #endif /* SSI_DEBUG_LEVEL1 */
   CmHEntry  *next;             /* Pointer to the next entry block */
@@ -253,11 +253,11 @@ struct cmMmHeapCb
    Size      minSize;          /* Minimum size that can be allocated */
    SLockId   heapLock;         /* Lock to protect the heap pool */
 #if (ERRCLASS & ERRCLS_DEBUG)
-   U16       numFragBlk;       /* Number of fragmented block */
-   U16       numReq;           /* Number of allocation request */
-   U16       numFailure;       /* Number of allocation failure */
+   uint16_t       numFragBlk;       /* Number of fragmented block */
+   uint16_t       numReq;           /* Number of allocation request */
+   uint16_t       numFailure;       /* Number of allocation failure */
 #endif
-   U32       heapAllocCnt;     /* Number of blocks from heap */
+   uint32_t       heapAllocCnt;     /* Number of blocks from heap */
 /* cm_mem_x_001.main_9 - addition of statistics related data */
 #ifdef SSI_DEBUG_LEVEL1
    Size     staticHeapMemUsed; /* amount of heap memory used for static allocations */
@@ -266,7 +266,7 @@ struct cmMmHeapCb
                         /* Update this in cmMmHeapInit if cmHEntry is changed */
    StsCntr      numAllocAttempts;   /* total number of allocation attempts in heap */
    StsCntr      numDeallocAttempts;   /* total number of de-allocation attempts in heap */
-   U8	    trampleCount;	/* incremented everytime a trampling is detected in any block of the heap */
+   uint8_t	    trampleCount;	/* incremented everytime a trampling is detected in any block of the heap */
 #endif /* SSI_DEBUG_LEVEL1 */
  /* cm_mem_x_001.main_11: Additions */
 #ifdef SS_HISTOGRAM_SUPPORT
@@ -280,15 +280,15 @@ struct cmMmHeapCb
 #ifdef SSI_DEBUG_LEVEL1
 struct cmMmHashListEnt    /* hash list entry */
 {
-   U32  size;             /* pointer to key */
-   U32  numAttempts;      /* number of attempts */
+   uint32_t  size;             /* pointer to key */
+   uint32_t  numAttempts;      /* number of attempts */
 };
 
 struct cmMmHashListCp
 {
    CmMmHashListEnt  *hashList;
-   U16  numOfbins;
-   U16  numOfEntries;
+   uint16_t  numOfbins;
+   uint16_t  numOfEntries;
 };
 #endif /* SSI_DEBUG_LEVEL1 */
 
@@ -298,14 +298,14 @@ struct cmMmRegCb
    Region       region;        /* Region  Id of the memory */
    SRegInfo     regInfo;       /* Region information block */
 
-   U8           chFlag;        /* Flag defines the region characteristics */
+   uint8_t           chFlag;        /* Flag defines the region characteristics */
    Data        *pAddr;         /* Physical address of the memory block.
                                   Valid if CMM_REG_PHY_VALID bit is set */
  
    Size         bktSize;       /* Size of the memory used for the bucket pool */
-   U16          bktQnPwr;      /* Quantum size of the bucket pool */
+   uint16_t          bktQnPwr;      /* Quantum size of the bucket pool */
    Size         bktMaxBlkSize; /* Maximum size of block in the bucket pool */
-   U16          numBkts;       /* Number of buckets in the Bucket Pool */
+   uint16_t          numBkts;       /* Number of buckets in the Bucket Pool */
 
    CmMmMapBkt   mapTbl[CMM_MAX_MAP_ENT]; /* size-to-bucket map table */
    CmMmBkt      bktTbl[CMM_MAX_BKT_ENT]; /* Pointer to the memory bkt tbl */
@@ -330,24 +330,24 @@ struct cmMmRegCb
 typedef struct allocInfo
 {
    Void   *memAddr;
-   U8     used;
+   uint8_t     used;
 }AllocInfo;
 
 typedef struct memLeakCb
 {
   SLockId    memLock;
-  U8         isStarted;
+  uint8_t         isStarted;
   AllocInfo  allocInfo[CM_MAX_ALLOC_ENTERIES];
-  U32        queue[CM_MAX_ALLOC_ENTERIES];
-  U32        head;
-  U32        tail;
+  uint32_t        queue[CM_MAX_ALLOC_ENTERIES];
+  uint32_t        head;
+  uint32_t        tail;
 }MemLeakCb;
 
 EXTERN Void cmInitMemLeak     ARGS((Void));
 EXTERN Void cmDeinitMemLeak   ARGS((Void));
 EXTERN Void cmStartStopLeakLog   ARGS((Void));
-EXTERN U32  cmStorAllocBlk       ARGS((Void *addr));
-EXTERN Void cmRlsAllocBlk        ARGS((U32 indx));
+EXTERN uint32_t  cmStorAllocBlk       ARGS((Void *addr));
+EXTERN Void cmRlsAllocBlk        ARGS((uint32_t indx));
 EXTERN Void cmPrintLeakLog       ARGS((Void));
 #endif /* SS_LIGHT_MEM_LEAK_STS */
 
@@ -366,13 +366,13 @@ typedef struct _memAllocInfo
 #ifdef BIT_64
    U64                   memAddr;
 #else
-   U32                   memAddr;
+   uint32_t                   memAddr;
 #endif
    Size                  reqSz;
    Size                  allocSz;
-   U16                   bktIdx;
-   U8                    moduleId;
-   U8                    bTrcSz;
+   uint16_t                   bktIdx;
+   uint8_t                    moduleId;
+   uint8_t                    bTrcSz;
    PTR                   backTrace;
 }MemAllocInfo; 
 
@@ -410,19 +410,19 @@ U64  t2k_MEM_LEAK_START_ADDR;
 typedef struct _t2kMemLeakInfo
 {
    U64 address; /* 0 means it is free */
-   U32 size;    /* size of the block */
-   U32 age; /* in ticks, when it was allocated */
-   U32 lineNo;  /* lineNo in the file from where allocation was done */
+   uint32_t size;    /* size of the block */
+   uint32_t age; /* in ticks, when it was allocated */
+   uint32_t lineNo;  /* lineNo in the file from where allocation was done */
    char* fileName; /* from where allocation was done */
-   U32 prevRemLineNo;  /* lineNo in the file from where allocation was done */
+   uint32_t prevRemLineNo;  /* lineNo in the file from where allocation was done */
    char* prevRemFileName; /* from where allocation was done */
-   U32 lastDelLineNum;  /* lineNo in the file from where allocation was done */
+   uint32_t lastDelLineNum;  /* lineNo in the file from where allocation was done */
    char* lastDelFileName; /* from where allocation was done */
 }T2kMeamLeakInfo;
 
 typedef struct _regMemLeakInfo
 {
-   U32             numActvRegions;
+   uint32_t             numActvRegions;
    T2kMeamLeakInfo *gMemLeakInfo[SS_MAX_REGS]; /* Allocate using calloc(system Call ) size T2K_MEM_LEAK_INFO_TABLE_SIZE*/
    U64             regStartAddr[SS_MAX_REGS];  /* start Address of Region  */
    pthread_mutex_t memLock[SS_MAX_REGS];  /*  Region Lock */
@@ -442,7 +442,7 @@ EXTERN S16 cmMmRegDeInit ARGS(( CmMmRegCb *regCb));
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL2
 EXTERN Void cmRlsAllocBlk       ARGS((CmMmBlkHdr *ptrHdr, CmMmRegCb *regCb));
 EXTERN Void cmStorAllocBlk      ARGS((CmMmBlkHdr  *ptrHdr, Size reqSz, Size allocSz,
-                                      U16 bktIdx, CmMmRegCb *regCb));
+                                      uint16_t bktIdx, CmMmRegCb *regCb));
 #endif
 #ifdef SS_MEM_LEAK_STS
 EXTERN Void cmInitMemLeakMdl    ARGS((Void));
@@ -450,15 +450,15 @@ EXTERN Void cmInitMemLeakMdl    ARGS((Void));
 EXTERN Void cmDeinitMemLeakMdl    ARGS((Void));
 #ifdef BIT_64
 EXTERN Void cmStorAllocBlk      ARGS((U64 addr, Size reqSz, Size allocSz,
-                                      U16 bktIdx));
+                                      uint16_t bktIdx));
 EXTERN Void cmRlsAllocBlk       ARGS((U64 addr));
 #else
-EXTERN Void cmStorAllocBlk      ARGS((U32 addr, Size reqSz, Size allocSz,
-                                      U16 bktIdx));
-EXTERN Void cmRlsAllocBlk       ARGS((U32 addr));
+EXTERN Void cmStorAllocBlk      ARGS((uint32_t addr, Size reqSz, Size allocSz,
+                                      uint16_t bktIdx));
+EXTERN Void cmRlsAllocBlk       ARGS((uint32_t addr));
 #endif
-EXTERN U8   cmMemGetModuleId    ARGS((S8 **funNm, S32 traceSize));
-EXTERN S16  cmMemGetStrMtchIdx  ARGS((U8 strtIdx, U8 endIdx,
+EXTERN uint8_t   cmMemGetModuleId    ARGS((S8 **funNm, S32 traceSize));
+EXTERN S16  cmMemGetStrMtchIdx  ARGS((uint8_t strtIdx, uint8_t endIdx,
                                       S8 *str, S8 **strLst));
 EXTERN Void cmMemOpenMemLkFile  ARGS((S8 *arg));
 EXTERN Void SLogLkInfo          ARGS((Void));
@@ -481,24 +481,24 @@ EXTERN S16 cmMmRegIsBlkSane ARGS((CmMmBlkHdr *blkPtr, Size size));
 #endif
 #ifdef SS_HISTOGRAM_SUPPORT
 #ifdef SSI_DEBUG_LEVEL1
-EXTERN S16  cmAllocNL ARGS((Void *regionCb, Size *size, U32 flags, Data **ptr, U32  memType, U32 line, U8 *fileName, U8 entId, Bool hstReg));
+EXTERN S16  cmAllocNL ARGS((Void *regionCb, Size *size, uint32_t flags, Data **ptr, uint32_t  memType, uint32_t line, uint8_t *fileName, uint8_t entId, Bool hstReg));
 #else
-EXTERN S16  cmAllocNL ARGS((Void *regionCb, Size *size, U32 flags, Data **ptr, U32 line, U8 *fileName, U8 entId, Bool hstReg));
+EXTERN S16  cmAllocNL ARGS((Void *regionCb, Size *size, uint32_t flags, Data **ptr, uint32_t line, uint8_t *fileName, uint8_t entId, Bool hstReg));
 #endif
 #elif defined(SS_LIGHT_MEM_LEAK_STS)
-EXTERN S16  cmAllocNL ARGS((Void   *regionCb,Size   *size,U32     flags,Data  **ptr,U32     memType,U32     lineNo,U8     *funcName));
+EXTERN S16  cmAllocNL ARGS((Void   *regionCb,Size   *size,uint32_t     flags,Data  **ptr,uint32_t     memType,uint32_t     lineNo,uint8_t     *funcName));
 #else
 #if (defined(SSI_DEBUG_LEVEL1) || defined(BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1))
-EXTERN S16  cmAllocNL ARGS((Void *regionCb, Size *size, U32 flags, Data **ptr, U32  memType));
+EXTERN S16  cmAllocNL ARGS((Void *regionCb, Size *size, uint32_t flags, Data **ptr, uint32_t  memType));
 #else
-EXTERN S16  cmAllocNL ARGS((Void *regionCb, Size *size, U32 flags, Data **ptr));
+EXTERN S16  cmAllocNL ARGS((Void *regionCb, Size *size, uint32_t flags, Data **ptr));
 #endif
 #endif
 
 #ifdef SS_HISTOGRAM_SUPPORT
-EXTERN S16  cmFreeNL ARGS((Void *regionCb, Data *ptr, Size size, U32 line, U8 *fileName, U8 entId, Bool hstReg));
+EXTERN S16  cmFreeNL ARGS((Void *regionCb, Data *ptr, Size size, uint32_t line, uint8_t *fileName, uint8_t entId, Bool hstReg));
 #elif defined(SS_LIGHT_MEM_LEAK_STS)
-EXTERN S16  cmFreeNL ARGS((Void   *regionCb,Data   *ptr, Size    size,U32     lineNo,U8      *funcName));
+EXTERN S16  cmFreeNL ARGS((Void   *regionCb,Data   *ptr, Size    size,uint32_t     lineNo,uint8_t      *funcName));
 #else
 EXTERN S16  cmFreeNL ARGS((Void *regionCb, Data *ptr, Size size));
 #endif

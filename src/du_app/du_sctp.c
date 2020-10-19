@@ -212,7 +212,7 @@ uint8_t fillAddrLst(CmInetNetAddrLst *addrLstPtr, F1IpAddr *ipAddr)
 { 
    addrLstPtr->count++;
    addrLstPtr->addrs[(addrLstPtr->count - 1)].type = CM_INET_IPV4ADDR_TYPE;
-   addrLstPtr->addrs[(addrLstPtr->count - 1)].u.ipv4NetAddr = CM_INET_NTOH_U32(ipAddr->ipV4Addr);
+   addrLstPtr->addrs[(addrLstPtr->count - 1)].u.ipv4NetAddr = CM_INET_NTOH_uint32_t(ipAddr->ipV4Addr);
 
    return ROK;
 }
@@ -239,7 +239,7 @@ uint8_t fillDestNetAddr(CmInetNetAddr *destAddrPtr, F1IpAddr *dstIpPtr)
 {
    /* Filling destination address */
    destAddrPtr->type = CM_INET_IPV4ADDR_TYPE;
-   destAddrPtr->u.ipv4NetAddr = CM_INET_NTOH_U32(dstIpPtr->ipV4Addr);
+   destAddrPtr->u.ipv4NetAddr = CM_INET_NTOH_uint32_t(dstIpPtr->ipV4Addr);
    return ROK;
 }
 

@@ -259,7 +259,7 @@ RlcCfgInfo   *cfg;
 #endif
 {
    RlcCfgCfmInfo   *cfgCfm; 
-   U8              idx;    
+   uint8_t              idx;    
    RlcCb            *tRlcCb;
    Pst             *pstUdxCfm;
 
@@ -438,7 +438,7 @@ S16 rlcDlUdxUeIdChgReq
 (
 Pst         *pst, 
 SpId        spId, 
-U32         transId, 
+uint32_t         transId, 
 CkwUeInfo   *ueInfo,
 CkwUeInfo   *newUeInfo
 )
@@ -446,7 +446,7 @@ CkwUeInfo   *newUeInfo
 S16 rlcDlUdxUeIdChgReq(pst,spId,transId,ueInfo,newUeInfo)
 Pst         *pst;
 SpId        spId;
-U32         transId;
+uint32_t         transId;
 CkwUeInfo   *ueInfo;
 CkwUeInfo   *newUeInfo;
 #endif
@@ -618,9 +618,9 @@ Pst            *pst;
 RlcL2MeasReqEvt *measReqEvt;
 #endif
 {
-   U32            cntr;
-   U8             measType;
-   VOLATILE U32     startTime = 0;
+   uint32_t            cntr;
+   uint8_t             measType;
+   VOLATILE uint32_t     startTime = 0;
    RlcCb     *tRlcCb;
 
    TRC3(rlcDlUdxL2MeasReq);
@@ -648,7 +648,7 @@ RlcL2MeasReqEvt *measReqEvt;
    else
    {
       /* for nonIpThroughput meas, enable only for the sent QCIs */
-      U32 i;
+      uint32_t i;
       for(i = 0; i < LKW_MAX_QCI; i++)
       {
          tRlcCb->u.dlCb->rlcL2Cb.measOn[i] |= measType;
@@ -685,20 +685,20 @@ After receving this request, RLC stops L2 Measurement
 S16 rlcDlUdxL2MeasStopReq
 (
 Pst            *pst,
-U8             measType
+uint8_t             measType
 )
 #else
 S16 rlcDlUdxL2MeasStopReq (pst, measType)
 Pst            *pst;
-U8             measType;
+uint8_t             measType;
 #endif
 {
   /* S16 ret = ROK;*/
    RlcL2MeasEvtCb *measEvtCb = NULLP;
-   U16            cntr;
-   U8             status = ROK;
+   uint16_t            cntr;
+   uint8_t             status = ROK;
 /*   RlcL2MeasCfmEvt          measCfmEvt;  */
-   VOLATILE U32     startTime = 0;
+   VOLATILE uint32_t     startTime = 0;
    RlcCb     *tRlcCb=NULLP;
    TRC3(rlcDlUdxMeasStopReq);
    
@@ -706,7 +706,7 @@ U8             measType;
    SStartTask(&startTime, PID_RLC_MEAS_STOP);
 
    tRlcCb =  RLC_GET_RLCCB(pst->dstInst);
-/*   cmMemset((U8*)&measCfmEvt, 0, sizeof(RlcL2MeasCfmEvt)); */
+/*   cmMemset((uint8_t*)&measCfmEvt, 0, sizeof(RlcL2MeasCfmEvt)); */
    /* reset the counters for the measurement type passed */
    for(cntr = 0; cntr < LKW_MAX_L2MEAS; cntr++)
    {
@@ -747,18 +747,18 @@ After receving this request, RLC sends L2 Measurement
 S16 rlcDlUdxL2MeasSendReq
 (
 Pst            *pst,
-U8             measType
+uint8_t             measType
 )
 #else
 S16 rlcDlUdxL2MeasSendReq (pst, measType)
 Pst            *pst;
-U8             measType;
+uint8_t             measType;
 #endif
 {
    RlcL2MeasEvtCb *measEvtCb;
-   U16            cntr;
+   uint16_t            cntr;
    
-   VOLATILE U32     startTime = 0;
+   VOLATILE uint32_t     startTime = 0;
    RlcCb     *tRlcCb;
    TRC3(rlcDlUdxMeasSendReq);
 

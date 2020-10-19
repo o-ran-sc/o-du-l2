@@ -1251,7 +1251,7 @@ uint32_t getParamValue(fapi_uint16_tlv_t *tlv, uint16_t type)
    /*TO DO: malloc to SSI memory */
    if(type == FAPI_UINT_8)
    {
-      //temp = (uint8_t *)malloc(valueLen * sizeof(U8));
+      //temp = (uint8_t *)malloc(valueLen * sizeof(uint8_t));
       //memcpy(temp, posPtr, valueLen);
       return(*(uint8_t *)posPtr);
    }

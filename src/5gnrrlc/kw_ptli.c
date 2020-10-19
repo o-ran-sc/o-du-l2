@@ -303,7 +303,7 @@ Void;
 
 #ifndef SS_RBUF
    RguDedDatInd1 *rguDatInd = NULLP;
-   U8 rngBufDeqIndx = 0;
+   uint8_t rngBufDeqIndx = 0;
 
    elmIndx = SRngGetRIndx(SS_RNG_BUF_ULMAC_TO_ULRLC);
    while(NULLP != elmIndx)
@@ -372,8 +372,8 @@ Void rlcUtlFreeUlRBuf()
 {
    RguDDatIndInfo *datInd;
    PTR            elem;
-   U8             numLch;
-   U8             numPdu;
+   uint8_t             numLch;
+   uint8_t             numPdu;
 
    TRC2(rlcUtlFreeUlRBuf)
    /* Free SS_RNG_BUF_ULMAC_TO_ULRLC  */
@@ -418,7 +418,7 @@ Void              *staRsp;
    if (NULLP != elem)
    {
       staRspInfo = (RguDStaRspInfo *)elem;
-      cmMemcpy((U8 *)staRspInfo, (U8 *)staRsp, sizeof(RguDStaRspInfo)); 
+      cmMemcpy((uint8_t *)staRspInfo, (uint8_t *)staRsp, sizeof(RguDStaRspInfo)); 
       staRspInfo->post = *post;
       SRngIncrWIndx(SS_RNG_BUF_DLRLC_TO_DLMAC);
       SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC].pktRate++;

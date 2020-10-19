@@ -52,12 +52,12 @@ typedef CmInetIpv4Addr  CmIpv4TptAddr;
 typedef CmInetIpAddr    CmIpv4NetAddr;
 
 #ifndef IPV6_SUPPORTED
-typedef U8  CmInetIpAddr6[16];   /* 16 byte IPV6 address */
+typedef uint8_t  CmInetIpAddr6[16];   /* 16 byte IPV6 address */
 
 /* IPV6 Address */
 typedef struct cmInetIpv6Addr
 {
-   U16             port;
+   uint16_t             port;
    CmInetIpAddr6   ipv6NetAddr;
 } CmInetIpv6Addr;
 #endif /* IPV6_SUPPORTED */
@@ -71,7 +71,7 @@ typedef CmInetIpAddr6   CmIpv6NetAddr;
 /* Network address */
 typedef struct cmNetAddr
 {
-   U8   type;      /* type of network address */
+   uint8_t   type;      /* type of network address */
    union
    {
       CmIpv4NetAddr  ipv4NetAddr; /* IP network address */
@@ -82,7 +82,7 @@ typedef struct cmNetAddr
 /* list of addresses */
 typedef struct _cmNetAddrTbl
 {
-   U16             count;              /* Number of Table Entries */
+   uint16_t             count;              /* Number of Table Entries */
    CmNetAddr       netAddr[CM_MAX_NET_ADDR]; /* IPV4/IPV6 addresses */
 }CmNetAddrTbl;
 
@@ -92,7 +92,7 @@ typedef struct _cmNetAddrTbl
 typedef struct cmTptLocalInf
 {
    Bool      intfPrsnt;   /* valid intf is present or not */
-   U32       localIf;     /* interface index IPv4(32 bit) or IPv6(32 bit) */
+   uint32_t       localIf;     /* interface index IPv4(32 bit) or IPv6(32 bit) */
    CmNetAddr localIfAddr; /* interface address */
 }CmTptLocalInf;
 #endif /* LOCAL_INTF */
@@ -113,7 +113,7 @@ typedef CmInetMCastInf6 CmNetMCastInf6;
 /* Transport address */
 typedef struct cmTptAddr
 {
-   U8   type;                     /* type of transport address */
+   uint8_t   type;                     /* type of transport address */
    union
    {
       CmIpv4TptAddr  ipv4TptAddr; /* IP transport address */
@@ -129,7 +129,7 @@ typedef struct cmTptAddr
 /* Array of Transport Addresses */
 typedef struct cmTptAddrLst 
 {
-   U8            nmb;                        /* Number of Network Addresses */
+   uint8_t            nmb;                        /* Number of Network Addresses */
    CmTptAddr     tptAddr[CM_MAX_NET_ADDR];   /* List of Network Addresses */
 } CmTptAddrLst;
 
@@ -147,21 +147,21 @@ typedef CmInetSctpAssocParams      CmSctpAssocParams;
 /* Socket Options */
 typedef struct cmSockOpts
 {
-   U32  level;                    /* option level */
-   U32  option;                   /* option name */
+   uint32_t  level;                    /* option level */
+   uint32_t  option;                   /* option name */
    union                          /* option parameters */
    {
 #ifdef CM_INET2
 #ifdef IPV6_SUPPORTED 
       CmNetMCastInf6 mCastInfo6; /* IPV6 multicast information */
-      U32            infId;      /* IPV6 multicast outgoing interface */
+      uint32_t            infId;      /* IPV6 multicast outgoing interface */
 #endif /* IPV6_SUPPORTED */
       CmNetMCastInf  mCastInfo;  /* multicast information */
 #else
       CmNetAddr     mCastAddr;   /* multicast information */
 #endif /* CM_INET2 */
       CmNetAddr     lclAddr;     /* local outgoing interface */
-      U32           value;       /* option value */
+      uint32_t           value;       /* option value */
 /*cm_tpt_x_001.main_12 Updated for TUCL 2.1 Release (Kernel SCTP Support) */
 #ifdef CM_LKSCTP
       CmSockLinger           sockLinger;
@@ -182,8 +182,8 @@ typedef struct cmSockOpts
 /* socket parameters */
 typedef struct cmSockParam
 {
-   U8             listenQSize;    /* listen queue size */
-   U8             numOpts;        /* number of socket options */
+   uint8_t             listenQSize;    /* listen queue size */
+   uint8_t             numOpts;        /* number of socket options */
    CmSockOpts sockOpts[CM_MAX_SOCK_OPTS]; /* socket options */
 } CmSockParam;
 
@@ -191,8 +191,8 @@ typedef struct cmSockParam
 typedef struct tlsTptParam
 {
    S16          ctxId;
-   U8           listenQSize;
-   U8           numOpts;
+   uint8_t           listenQSize;
+   uint8_t           numOpts;
    CmSockOpts   sockOpts[CM_MAX_SOCK_OPTS];
 
 } TlsTptParam;
@@ -202,7 +202,7 @@ typedef struct tlsTptParam
 #ifdef CM_LKSCTP
 typedef struct sctpSockParam
 {
-   U8           numOpts;        /* number of socket options */
+   uint8_t           numOpts;        /* number of socket options */
    CmSockOpts   sockOpts[CM_MAX_SOCK_OPTS]; /* socket options */
 } SctpSockParam;
 #endif
@@ -210,7 +210,7 @@ typedef struct sctpSockParam
 /* Transport parameters */
 typedef struct cmTptParam
 {
-   U8   type;                      /* type of transport parameters */
+   uint8_t   type;                      /* type of transport parameters */
 
    union
    {
@@ -249,38 +249,38 @@ typedef struct cmIpv4HdrParm
 /* structure to hold TLV of each HBH option */
 typedef struct cmIpv6HBHHdr
 {
-   U8 type;
-   U8 length;
-   U8 *value;
+   uint8_t type;
+   uint8_t length;
+   uint8_t *value;
 } CmIpv6HBHHdr;
 
 /* structure to hold TLV of each Destination option */
 typedef struct cmIpv6DestOptsHdr
 {
-   U8 type;
-   U8 length;
-   U8 *value;
+   uint8_t type;
+   uint8_t length;
+   uint8_t *value;
 } CmIpv6DestOptsHdr;
 
 /* structure to hold IPV6 addresses of the Route header */
 typedef struct cmIpv6RtHdr
 {
-   U8 numAddrs;               
-   U32 slMap;
+   uint8_t numAddrs;               
+   uint32_t slMap;
    CmIpv6NetAddr *ipv6Addrs;   
 } CmIpv6RtHdr;
 
 /* array of all HBH options */
 typedef struct cmIpv6HBHHdrArr
 {
-   U8 numHBHOpts;
+   uint8_t numHBHOpts;
    CmIpv6HBHHdr *hbhOpts; 
 } CmIpv6HBHHdrArr;
 
 /* array of all Destination options */
 typedef struct cmIpv6DestOptsArr
 {
-   U8 numDestOpts;
+   uint8_t numDestOpts;
    CmIpv6DestOptsHdr *destOpts;
 } CmIpv6DestOptsArr;
 
@@ -316,7 +316,7 @@ typedef struct cmIpv6HdrParm
 /* IP header paramters */
 typedef struct cmIpHdrParm 
 { 
-   U8       type;                  /* Type of IP header parameters */
+   uint8_t       type;                  /* Type of IP header parameters */
    union 
    {
       CmIpv4HdrParm  hdrParmIpv4;  /* IPv4 header parameters */
@@ -330,16 +330,16 @@ typedef struct cmIpHdrParm
 /* IPv4 header */
 typedef struct cmIpv4Hdr 
 {
-   U8    hdrVer;                   /* Header and Version */
-   U8    tos;                      /* Type Of Service */
+   uint8_t    hdrVer;                   /* Header and Version */
+   uint8_t    tos;                      /* Type Of Service */
    S16   length;                   /* Total length */
-   U16   id;                       /* Identification */
+   uint16_t   id;                       /* Identification */
    S16   off;                      /* Flags and Offset */
-   U8    ttl;                      /* Time to Live */
-   U8    proto;                    /* Protocol */
-   U16   chkSum;                   /* Checksum */
-   U32   srcAddr;                  /* Source Address */
-   U32   destAddr;                 /* Destination Address */
+   uint8_t    ttl;                      /* Time to Live */
+   uint8_t    proto;                    /* Protocol */
+   uint16_t   chkSum;                   /* Checksum */
+   uint32_t   srcAddr;                  /* Source Address */
+   uint32_t   destAddr;                 /* Destination Address */
 
 } CmIpv4Hdr;
 
@@ -351,12 +351,12 @@ typedef struct cmIpv6Hdr
    {
       struct ip6_hdrctl
       {
-         U32      ip6_un1_flow;
-         U16      ip6_un1_plen;
-         U8       ip6_un1_nxt;
-         U8       ip6_un1_hlim;
+         uint32_t      ip6_un1_flow;
+         uint16_t      ip6_un1_plen;
+         uint8_t       ip6_un1_nxt;
+         uint8_t       ip6_un1_hlim;
       } ip6_un1;
-      U8    ip6_un2_vfc;
+      uint8_t    ip6_un2_vfc;
    } ip6_ctlun;
    CmIpv6NetAddr  ip6_src;
    CmIpv6NetAddr  ip6_dst;
@@ -365,18 +365,18 @@ typedef struct cmIpv6Hdr
 
 typedef struct cmIcmpError 
 {
-   U8    errType;                  /* ICMP Error Type */
-   U32   errCodeMask;              /* ICMP Error Code Mask */
+   uint8_t    errType;                  /* ICMP Error Type */
+   uint32_t   errCodeMask;              /* ICMP Error Code Mask */
 
 } CmIcmpError;
 
 /* ICMP v4 filter parameters */
 typedef struct cmIcmpv4Filter
 {
-   U8    icmpMsgFlag;              /* Flag to listen to any ICMP msgs */
-   U8    allMsg;                   /* Flag to listen to ICMP messages */
-   U8    protocol;                 /* ICMP packets with protocol only */
-   U8    num;                      /* Number of valid type - code 
+   uint8_t    icmpMsgFlag;              /* Flag to listen to any ICMP msgs */
+   uint8_t    allMsg;                   /* Flag to listen to ICMP messages */
+   uint8_t    protocol;                 /* ICMP packets with protocol only */
+   uint8_t    num;                      /* Number of valid type - code 
                                     * combinations in the error array */
    CmIcmpError icmpError[CM_MAX_ICMP_ERROR]; /* Error type & Code array */
 
@@ -385,9 +385,9 @@ typedef struct cmIcmpv4Filter
 #ifdef IPV6_SUPPORTED
 typedef struct cmIcmpv6Filter
 {
-   U8    icmpMsgFlag;              /* Flag to listen to any ICMP msgs */
-   U8    allMsg;                   /* Flag to listen to all ICMP messages */
-   U8    num;                      /* Number of valid type - code 
+   uint8_t    icmpMsgFlag;              /* Flag to listen to any ICMP msgs */
+   uint8_t    allMsg;                   /* Flag to listen to all ICMP messages */
+   uint8_t    num;                      /* Number of valid type - code 
                                     * combinations in the error array */
    CmIcmpError icmpError[CM_MAX_ICMP_ERROR]; /* Error type & Code array */
 
@@ -397,7 +397,7 @@ typedef struct cmIcmpv6Filter
 /* ICMP filter paramters */
 typedef struct cmIcmpFilter 
 {
-  U8 type;                        /* ICMP version */
+  uint8_t type;                        /* ICMP version */
   union 
   {
     CmIcmpv4Filter icmpv4Filter;  /* ICMPv4 filter structure */
@@ -411,32 +411,32 @@ typedef struct cmIcmpFilter
 /* ICMP header */
 typedef struct cmIcmpv4Hdr 
 {
-   U8    icmpType;                /* Type of message */
-   U8    icmpCode;                /* Message code */
-   U16   chkSum;                  /* Ones complement cksum of struct */
+   uint8_t    icmpType;                /* Type of message */
+   uint8_t    icmpCode;                /* Message code */
+   uint16_t   chkSum;                  /* Ones complement cksum of struct */
    
    union 
    {
-      U8   ihPptr;                /* ICMP parameter problem */
-      U32  rdrctAddr;             /* ICMP redirect address */
+      uint8_t   ihPptr;                /* ICMP parameter problem */
+      uint32_t  rdrctAddr;             /* ICMP redirect address */
       struct idSeq 
       {
          S16   icdId;             /* Identifier */                          
          S16   icdSeq;            /* Sequence Number */
       } u1;
-      U32 ihVoid;                 
+      uint32_t ihVoid;                 
    } u2;
    
    union 
    {
       struct idTime
       {
-         U32  itOtime;            /* Original time stamp */
-         U32  itRtime;            /* Received time stamp */
-         U32  itTtime;            /* Transmit time stamp */
+         uint32_t  itOtime;            /* Original time stamp */
+         uint32_t  itRtime;            /* Received time stamp */
+         uint32_t  itTtime;            /* Transmit time stamp */
       } s;
       CmIpv4Hdr icmpIpHdr;        /* IP header */
-      U32     id_mask;
+      uint32_t     id_mask;
    } u3;
 
 } CmIcmpv4Hdr;
@@ -444,15 +444,15 @@ typedef struct cmIcmpv4Hdr
 #ifdef IPV6_SUPPORTED
 typedef struct cmIcmpv6Hdr
 {
-   U8    icmp6_type;              /* type field */
-   U8    icmp6_code;              /* code field */
-   U16   icmp6_cksum;             /* checksum field */
+   uint8_t    icmp6_type;              /* type field */
+   uint8_t    icmp6_code;              /* code field */
+   uint16_t   icmp6_cksum;             /* checksum field */
 
    union
    {
-      U32   icmp6_un_data32[1];   /* type-specific field */
-      U16   icmp6_un_data16[2];   /* type-specific field */ 
-      U8    icmp6_un_data8[4];    /* type-specific field */
+      uint32_t   icmp6_un_data32[1];   /* type-specific field */
+      uint16_t   icmp6_un_data16[2];   /* type-specific field */ 
+      uint8_t    icmp6_un_data8[4];    /* type-specific field */
    } icmp6_dataun;
 } CmIcmpv6Hdr;
 #endif /* IPV6_SUPPORTED */
