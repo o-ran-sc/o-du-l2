@@ -101,17 +101,17 @@ S16 rlcUlUdxBndCfm
 (
 Pst    *pst,  
 SuId   suId, 
-U8     status 
+uint8_t status 
 )
 #else
 S16 rlcUlUdxBndCfm (pst, suId, status)
 Pst    *pst; 
 SuId   suId;   
-U8     status; 
+uint8_t status; 
 #endif
 {
-   U16            event;        
-   U16            cause;       
+   uint16_t        event;        
+   uint16_t        cause;       
    RlcUdxUlSapCb   *udxSap;   /* RGU SAP Control Block */
    RlcCb           *tRlcCb;
 
@@ -319,14 +319,14 @@ S16 rlcUlUdxUeIdChgCfm
 (
 Pst        *pst,          
 SuId       suId,           
-U32        transId,
+uint32_t        transId,
 CmStatus   status
 )
 #else
 S16 rlcUlUdxUeIdChgCfm (pst, suId, cfmInfo)
 Pst        *pst;         
 SuId       suId;        
-U32        transId;
+uint32_t        transId;
 CmStatus   status;
 #endif
 {
@@ -452,8 +452,8 @@ RlcCfgCfmInfo    *cfgCfm;
 #endif
 {
    RlcCfgInfo   *cfg;
-   U32          idx;
-   U32          maxEnt;
+   uint32_t     idx;
+   uint32_t     maxEnt;
    
    cfg = cfgTmpData->cfgInfo;
    maxEnt = (cfg->numEnt < CKW_MAX_ENT_CFG)? cfg->numEnt:CKW_MAX_ENT_CFG;

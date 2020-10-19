@@ -99,13 +99,13 @@ S16 cmPkKwuBndCfm
 (
 Pst * pst,
 SuId suId,
-U8 status
+uint8_t status
 )
 #else
 S16 cmPkKwuBndCfm(pst, suId, status)
 Pst * pst;
 SuId suId;
-U8 status;
+uint8_t status;
 #endif
 {
    S16    ret1;
@@ -516,7 +516,7 @@ KwuDatCfmInfo *param;
 Buffer *mBuf;
 #endif
 {
-   register U32 iter;
+   register uint32_t iter;
 
    for(iter = 0; iter < param->numSduIds; iter++)
    {
@@ -696,7 +696,7 @@ Buffer *mBuf;
 
    for (i = (param->numSdu - 1); i >= 0; i--)
    {
-      CMCHKPK(oduUnpackUInt32, param->sduId[(U16)i], mBuf);
+      CMCHKPK(oduUnpackUInt32, param->sduId[(uint16_t)i], mBuf);
    }
    CMCHKPK(oduUnpackUInt32, param->numSdu, mBuf);
    CMCHKPK(cmPkLteRlcId, &param->rlcId, mBuf);
@@ -1116,7 +1116,7 @@ Buffer *mBuf;
 #endif
 {
    SuId suId = 0;
-   U8 status = 0;
+   uint8_t status = 0;
 
 
    CMCHKUNPKLOG(SUnpkS16, &suId, mBuf, EKWU022, pst);
@@ -1559,7 +1559,7 @@ KwuStaIndInfo *param;
 Buffer *mBuf;
 #endif
 {
-   U32 i;
+   uint32_t i;
 
 
    CMCHKUNPK(cmUnpkLteRlcId, &param->rlcId, mBuf);
@@ -1667,9 +1667,7 @@ Buffer *mBuf;
    SuId          suId = 0;
    CmLteRlcId    rlcId;
 
-
    memset(&rlcId, 0, sizeof(CmLteRlcId));
-
    CMCHKUNPK(SUnpkS16, &(suId), mBuf);
    switch(pst->selector)
    {

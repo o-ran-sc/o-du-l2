@@ -60,10 +60,10 @@ static int RLOG_MODULE_ID=4096;
 #include "rg_sch_cmn.x"
 
 #ifdef RGSCH_SPS_STATS
-extern U32 rgNumSPSSchedDropMaxRetx;
-extern U32 rgNumActDtx;
+extern uint32_t rgNumSPSSchedDropMaxRetx;
+extern uint32_t rgNumActDtx;
 #endif
-U32  nackSf[10];
+uint32_t  nackSf[10];
 
 
 
@@ -73,7 +73,7 @@ RgSchHqRetxStats  hqRetxStats;
 #endif /* MAC_SCH_STATS */
 //Chandan Stats Collection
 #ifdef DLHQ_STATS
-U32 statsCnt;
+uint32_t statsCnt;
 RgSchDlHqStats dlHqStats[10000] = {{0,0,0}};
 #endif
 
@@ -84,7 +84,7 @@ RgSchDlHqStats dlHqStats[10000] = {{0,0,0}};
  * The below table is based on Table 7.3-X from 36.213 and 
  * table 79 from FAPIv1.1 doc
  */
-U8 rgSchNumOfAcksToAckNack[RG_SCH_MAX_NUM_EXPECTED_ACKS][RG_SCH_NUM_FDBK_VALUE] = {
+uint8_t rgSchNumOfAcksToAckNack[RG_SCH_MAX_NUM_EXPECTED_ACKS][RG_SCH_NUM_FDBK_VALUE] = {
 {TFU_HQFDB_ACK,     TFU_HQFDB_NACK,    TFU_HQFDB_NACK},
 {TFU_HQFDB_NACK,    TFU_HQFDB_ACK,     TFU_HQFDB_NACK},
 {TFU_HQFDB_NACK,    TFU_HQFDB_NACK,    TFU_HQFDB_ACK},
@@ -101,48 +101,48 @@ U8 rgSchNumOfAcksToAckNack[RG_SCH_MAX_NUM_EXPECTED_ACKS][RG_SCH_NUM_FDBK_VALUE] 
  
 /* local externs */
 
-PRIVATE Void rgSCHDhmFdbkIndHndlTa ARGS((RgSchDlHqProcCb *hqP, U8 tbIdx, U8 fdbk,
+PRIVATE Void rgSCHDhmFdbkIndHndlTa ARGS((RgSchDlHqProcCb *hqP, uint8_t tbIdx, uint8_t fdbk,
             Bool maxHqRetxReached));
 void rgEmtcsetNullSubFrm ARGS((RgSchDlHqProcCb *hqP));
 #ifndef LTE_TDD
 PRIVATE S16 rgSCHDhmProcHqFdbkAckNackRep ARGS((
 RgSchDlHqProcCb      *hqP,
 RgSchDlSf            *sf,
-U8                   tbCnt,
-U8                   *isAck
+uint8_t                   tbCnt,
+uint8_t                   *isAck
 ));
 #endif
 #ifdef DL_LA
 PRIVATE S16 rgSCHDhmUpdateAckNackHistory ARGS((
         RgSchCellCb             *cell,
         RgSchUeCb               *ueCb,
-        U8                      hqfdbk,
-        U8                      tbCnt
+        uint8_t                      hqfdbk,
+        uint8_t                      tbCnt
         ));
 #endif
 #ifdef LTE_TDD
 PRIVATE Void rgSCHDhmPrcSplBundlFdbk ARGS((
         RgSchCellCb  *cell,
         TfuHqInfo    *fdbk,
-        U8            hqCnt
+        uint8_t            hqCnt
         ));
 #ifdef LTE_ADV
 PRIVATE Void rgSchGetHqFdbkPosForM1 ARGS((
         RgSchUeCb            *ue,
         RgSchDlHqProcCb      *hqP,
-        U8                  *isAck, 
+        uint8_t                  *isAck, 
         RgTfuHqInfo          *fdbk,
-        U8                   tbIdx,
+        uint8_t                   tbIdx,
         RgSchTddANInfo       *anInfo
         ));
 PRIVATE Void rgSchGetHqFdbkPosForM234 ARGS((
         RgSchUeCb            *ue,
         RgSchDlHqProcCb      *hqP,
-        U8                   *isAck, 
+        uint8_t                   *isAck, 
         RgTfuHqInfo          *fdbk,
-        U8                   tbIdx,
+        uint8_t                   tbIdx,
         RgSchTddANInfo       *anInfo,
-        U8                    M,
+        uint8_t                    M,
         CmLteTimingInfo      timeInfo
         ));
 #endif/*LTE_ADV*/
@@ -162,11 +162,11 @@ RgSchCellCb   *cell
 #endif
 
 #ifdef CA_DBG
-extern U32 gPCellTb1AckCount,gPCellTb2AckCount,gPCellTb1NackCount,gPCellTb2NackCount;
-extern U32 gSCellSchedCount,gPrimarySchedCount;
-extern U32 gSCellTb1AckCount,gSCellTb2AckCount,gSCellTb1NackCount,gSCellTb2NackCount;
-extern U32 gPCellTb1DtxCount, gPCellTb2DtxCount, gSCellTb1DtxCount, gSCellTb2DtxCount;
-extern U32 gHqFdbkCount;
+extern uint32_t gPCellTb1AckCount,gPCellTb2AckCount,gPCellTb1NackCount,gPCellTb2NackCount;
+extern uint32_t gSCellSchedCount,gPrimarySchedCount;
+extern uint32_t gSCellTb1AckCount,gSCellTb2AckCount,gSCellTb1NackCount,gSCellTb2NackCount;
+extern uint32_t gPCellTb1DtxCount, gPCellTb2DtxCount, gSCellTb1DtxCount, gSCellTb2DtxCount;
+extern uint32_t gHqFdbkCount;
 
 #endif
 #ifdef EMTC_ENABLE
@@ -174,7 +174,7 @@ EXTERN Void rgSCHEmtcUtlDlHqPTbRmvFrmTx
 (
 RgSchEmtcDlSf               *subFrm,
 RgSchDlHqProcCb            *hqP,
-U8                         tbIdx,
+uint8_t                         tbIdx,
 Bool                       isRepeting
 );
 EXTERN RgSchEmtcDlSf* rgSCHEmtcUtlSubFrmGet
@@ -214,7 +214,7 @@ Void rgSCHDhmHqEntReset(hqE)
 #endif
 {
    RgSchDlHqProcCb   *hqP;
-   U8                i;
+   uint8_t                i;
    cmLListInit(&hqE->inUse);     
    cmLListInit(&hqE->free);      
    for (i=0; i < hqE->numHqPrcs; i++)
@@ -256,7 +256,7 @@ Void rgSCHDhmHqEntReset(hqE)
       rgSCHLaaResetDlHqProcCb(hqP);
 #endif
    }
-   RETVOID;
+   return;
 } /* rgSCHDhmHqEntReset */
 
 /**
@@ -297,7 +297,7 @@ RgSchRaCb       *raCb;
    ue->ul.ulInactvMask &= ~(RG_HQENT_INACTIVE);
    rgSCHCmnDlInitHqEnt(ue->cell, ue->cellInfo[0]->hqEnt);
    
-   RETVOID;
+   return;
 }
 
 /**
@@ -330,7 +330,7 @@ RgSchDlHqEnt      **hqE;
 
    if (!(*hqE))
    {
-      RETVOID;    
+      return;    
    }
 
    rgSCHCmnDlDeInitHqEnt(cell, *hqE);
@@ -338,7 +338,7 @@ RgSchDlHqEnt      **hqE;
    rgSCHUtlFreeSBuf(cell->instIdx, (Data **)hqE, 
        sizeof(RgSchDlHqEnt));
    
-   RETVOID;
+   return;
 }
 
 #ifdef ANSI
@@ -537,7 +537,7 @@ RgSchDlHqProcCb         **hqP;
  *  @param[in]  RgSchDlHqEnt     *hqE
  *  @param[in]  CmLteTimingInfo  timingInfo
  *  @param[out] RgDlHqProc       *hqP
- *  @param[in]  U8               tbIdx
+ *  @param[in]  uint8_t               tbIdx
  *  @return  Void      
  *
  **/
@@ -547,23 +547,23 @@ Void rgSCHDhmHqTbRetx
 RgSchDlHqEnt            *hqE,
 CmLteTimingInfo         timingInfo,
 RgSchDlHqProcCb         *hqP,
-U8                      tbIdx
+uint8_t                      tbIdx
 )
 #else
 Void rgSCHDhmHqTbRetx(hqE, timingInfo, hqP, tbIdx)
 RgSchDlHqEnt            *hqE;
 CmLteTimingInfo         timingInfo;
 RgSchDlHqProcCb         *hqP;
-U8                      tbIdx;
+uint8_t                      tbIdx;
 #endif
 {
-   U8 othrTbIdx = tbIdx ^ 1;
+   uint8_t othrTbIdx = tbIdx ^ 1;
 
    hqP->tbInfo[tbIdx].timingInfo = timingInfo;
 
    if (hqE->msg4Proc == hqP)
    {
-       RETVOID;
+       return;
    }
    /* fix for ccpu00118633 No Hq proc Avl end*/
       
@@ -581,7 +581,7 @@ U8                      tbIdx;
 
     hqP->tbInfo[tbIdx].cntrRetxAllocFail = 0;
 
-   RETVOID;
+   return;
 } /* rgSCHDhmHqTbRetx */
 
 /**
@@ -774,7 +774,7 @@ CmLteTimingInfo         timingInfo;
  *     Invoked by: scheduler and HARQ processing
  *     
  *  @param[in]  RgDlHqProc    *hqP
- *  @param[in]  U8            tbIdx
+ *  @param[in]  uint8_t            tbIdx
  *  @param[in]  Bool          togNdi 
  *  @return  Void      
  *
@@ -783,25 +783,25 @@ CmLteTimingInfo         timingInfo;
 Void rgSCHDhmRlsHqpTb
 (
 RgSchDlHqProcCb         *hqP,
-U8                      tbIdx,
+uint8_t                      tbIdx,
 Bool                    togNdi
 ) 
 #else
 Void rgSCHDhmRlsHqpTb(hqP, tbIdx, togNdi) 
 RgSchDlHqProcCb         *hqP;
-U8                      tbIdx;
+uint8_t                      tbIdx;
 Bool                    togNdi;
 #endif
 {
    RgSchDlHqEnt         *hqE;
-   U8                   othrTbIdx = tbIdx ^ 1;
+   uint8_t                   othrTbIdx = tbIdx ^ 1;
 #ifdef LTEMAC_SPS
    RgSchCmnDlHqProc        *cmnHqDl;
 #endif
    /* L2_COUNTERS */
 #ifdef LTE_L2_MEAS
    RgSchDlLcCb*         lcCb = NULLP;
-   U8                   numLch = 0;
+   uint8_t                   numLch = 0;
 #endif
 
    /* Reset all tbInfo values */
@@ -814,11 +814,11 @@ Bool                    togNdi;
       RgSchUeCb      *ueCb  = hqP->hqE->ue;
       RgSchCmnUe     *cmnUe = (RgSchCmnUe*)ueCb->sch;
       RgSchCmnDlUe   *dlUe  = RG_SCH_CMN_GET_DL_UE(ueCb,hqE->cell);/*CA dev*/
-      U8             cqi    = dlUe->mimoInfo.cwInfo[0].cqi;
+      uint8_t             cqi    = dlUe->mimoInfo.cwInfo[0].cqi;
       /* to get retransmission, decreasing transmission counter */
-      U16            numDlRetx = hqP->tbInfo[0].txCntr-1; 
-      U8             tbs       = dlUe->mimoInfo.cwInfo[0].iTbs[0];
-      static U32 retxCnt1      = 0;
+      uint16_t            numDlRetx = hqP->tbInfo[0].txCntr-1; 
+      uint8_t             tbs       = dlUe->mimoInfo.cwInfo[0].iTbs[0];
+      static uint32_t retxCnt1      = 0;
 
       RG_SCH_CMN_DL_TBS_TO_MCS(tbs, \
             hqRetxStats.dlCqiStat[(cqi - 1)].mcs);
@@ -907,7 +907,7 @@ Bool                    togNdi;
       /* Add the proc to the free list */
       //cmLListAdd2Tail(&hqE->free, &hqP->lnk);
       rgSCHDhmHqPAdd2FreeLst(hqP);
-      RETVOID;
+      return;
    }
 #ifdef RGR_V1
    /* MS_WORKAROUND : syed The check (hqE->ccchSduProc != NULLP)
@@ -938,7 +938,7 @@ Bool                    togNdi;
       /* Add the proc to the free list */
       //cmLListAdd2Tail(&hqE->free, &hqP->lnk);
       rgSCHDhmHqPAdd2FreeLst(hqP);
-      RETVOID;
+      return;
    }
 #endif
       
@@ -999,7 +999,7 @@ rgEmtcsetNullSubFrm(hqP);
    
    hqP->tbInfo[tbIdx].cntrRetxAllocFail = 0;
 
-   RETVOID;
+   return;
 } /* rgSCHDhmRlsHqpTb */
 
 /**
@@ -1037,10 +1037,10 @@ RgSchDlHqProcCb         *hqP;
       RgSchUeCb      *ueCb  = hqP->hqE->ue;
       RgSchCmnUe     *cmnUe = (RgSchCmnUe*)ueCb->sch;
       RgSchCmnDlUe   *dlUe  = RG_SCH_CMN_GET_DL_UE(ueCb,hqE->cell);/*CA dev*/
-      U8             cqi    = dlUe->mimoInfo.cwInfo[0].cqi;
+      uint8_t             cqi    = dlUe->mimoInfo.cwInfo[0].cqi;
       /* to get retransmission, decreasing transmission counter */
-      U16            numDlRetx = hqP->tbInfo[0].txCntr-1; 
-      U8             tbs       = dlUe->mimoInfo.cwInfo[0].iTbs[0];
+      uint16_t            numDlRetx = hqP->tbInfo[0].txCntr-1; 
+      uint8_t             tbs       = dlUe->mimoInfo.cwInfo[0].iTbs[0];
 
       RG_SCH_CMN_DL_TBS_TO_MCS(tbs, hqRetxStats.dlCqiStat[(cqi - 1)].mcs);
 
@@ -1077,7 +1077,7 @@ rgEmtcsetNullSubFrm(hqP);
    hqP->tbCnt = 0;
 #endif
 
-   RETVOID;
+   return;
 } /* rgSCHDhmRlsHqProc */
 
 #ifdef LTEMAC_SPS
@@ -1091,7 +1091,7 @@ rgEmtcsetNullSubFrm(hqP);
  *     Invoked by: ROM
  *     
  *  @param[in]  RgSchUeCb     *ue
- *  @param[in]  U8            idx
+ *  @param[in]  uint8_t            idx
  *  @param[in]  RgDlHqProc    **hqP
  *  @return  S16       
  *         -#   ROK     if successful
@@ -1103,14 +1103,14 @@ S16 rgSCHDhmGetHqProcFrmId
 (
 RgSchCellCb           *cell,
 RgSchUeCb               *ue,
-U8                      idx,
+uint8_t                      idx,
 RgSchDlHqProcCb         **hqP
 )
 #else
 S16 rgSCHDhmGetHqProcFrmId(cell, ue, idx, hqP)
 RgSchCellCb           *cell;
 RgSchUeCb               *ue;
-U8                      idx;
+uint8_t                      idx;
 RgSchDlHqProcCb         **hqP;
 #endif
 {
@@ -1151,7 +1151,7 @@ CmLteTimingInfo         timingInfo;
 #endif
 {
    RgSchDlHqEnt         *hqE;
-   U8                    idx;
+   uint8_t                    idx;
    RgSchDlHqProcCb       *hqProc = NULLP;
    CmLList               *tmp = NULLP;
 
@@ -1218,8 +1218,8 @@ CmLteTimingInfo         timingInfo;
  *     feedback indication received.
  *           
  *  @param[in]  RgSchDlHqProcCb   *hqP
- *  @param[in]  U8                tbIdx
- *  @param[in]  U8                fdbk
+ *  @param[in]  uint8_t                tbIdx
+ *  @param[in]  uint8_t                fdbk
  *  @return     Void
  *      -# None.
  **/
@@ -1227,15 +1227,15 @@ CmLteTimingInfo         timingInfo;
 PRIVATE Void rgSCHDhmFdbkIndHndlTa
 (
 RgSchDlHqProcCb   *hqP,
-U8                tbIdx,
-U8                fdbk,
+uint8_t                tbIdx,
+uint8_t                fdbk,
 Bool              maxHqRetxReached
 )
 #else
 PRIVATE Void rgSCHDhmFdbkIndHndlTa(hqP, tbIdx, fdbk,maxHqRetxReached)
 RgSchDlHqProcCb   *hqP;
-U8                tbIdx;
-U8                fdbk;
+uint8_t                tbIdx;
+uint8_t                fdbk;
 Bool              maxHqRetxReached;
 #endif
 {
@@ -1296,7 +1296,7 @@ Bool              maxHqRetxReached;
          break;
    }
 
-   RETVOID;
+   return;
 } /* rgSCHDhmFdbkIndHndlTa */
 
 /* 3.1 MIMO: TA cmd details at TB level rather than Hq Level */
@@ -1332,7 +1332,7 @@ RgSchDlHqTbCb     *tbInfo;
    tbInfo->schdTa.pres    = PRSNT_NODEF;
    tbInfo->schdTa.val     = ueCb->dl.taCb.ta;
 
-   RETVOID;
+   return;
 } /* rgSCHDhmSchdTa */
 
 #ifdef LTE_TDD
@@ -1349,9 +1349,9 @@ RgSchDlHqTbCb     *tbInfo;
  *  @param[in]  CmLteTimingInfo    timeInfo
  *  @param[in]  Bool               *isMsg4
  *  @param[out] RgSchDlHqProcCb    **hqPrcs
- *  @param[out] U8                 *numTbs
+ *  @param[out] uint8_t                 *numTbs
  *  @param[out] S8                 *tbStrtIdx
- *  @param[out] U8                 *cntHqPrcs
+ *  @param[out] uint8_t                 *cntHqPrcs
  *  @return     S16
  **/
 #ifdef ANSI
@@ -1361,9 +1361,9 @@ RgSchDlHqEnt            *hqE,
 CmLteTimingInfo         timeInfo,
 Bool                    *isMsg4,
 RgSchDlHqProcCb         **hqPrcs,
-U8                      *numTbs,
+uint8_t                      *numTbs,
 S8                      *tbStrtIdx,
-U8                      *cntHqPrcs,
+uint8_t                      *cntHqPrcs,
 RgSchCellCb             *cell
 )
 #else
@@ -1373,9 +1373,9 @@ RgSchDlHqEnt            *hqE;
 CmLteTimingInfo         timeInfo;
 Bool                    *isMsg4;
 RgSchDlHqProcCb         **hqPrcs;
-U8                      *numTbs;
+uint8_t                      *numTbs;
 S8                      *tbStrtIdx;
-U8                      *cntHqPrcs;
+uint8_t                      *cntHqPrcs;
 RgSchCellCb             *cell;
 #endif
 {
@@ -1383,10 +1383,10 @@ RgSchCellCb             *cell;
    RgSchDlHqProcCb      *hqP;
    CmLteTimingInfo      schdSfTime;
    RgSchTddDlAscSetIdxK ascIdx;
-   U8                   noFdbks;
-   U8                   i;
-   U8                   idx;
-   U8                   dlIdx;
+   uint8_t                   noFdbks;
+   uint8_t                   i;
+   uint8_t                   idx;
+   uint8_t                   dlIdx;
    CmLListCp            *lnk;
    CmLList              *node;
 
@@ -1491,7 +1491,7 @@ RgSchCellCb             *cell;
  *  @param[in]  RgSchDlHqEnt    *hqE
  *  @param[in]  CmLteTimingInfo timeInfo
  *  @param[in]  Bool            *isMsg4
- *  @param[out] U8              *numTbs
+ *  @param[out] uint8_t              *numTbs
  *  @param[out] S8              *tbStrtIdx 
  *  @return     RgSchDlHqProcCb*
  *      -# RgSchDlHqProcCb* 
@@ -1539,7 +1539,7 @@ RgSchDlSf               *sf;
  *           
  *  @param[in]  RgSchCellCb             *cell
  *  @param[in]  RgSchDlHqProcCb         *hqP
- *  @param[in]  U8                      tbCnt
+ *  @param[in]  uint8_t                      tbCnt
  *  @param[out] Bool                    *isMaxRetx
  *  @return    Void
  *             -#None.
@@ -1550,19 +1550,19 @@ Void rgSCHDhmHqTbTrnsFail
 (
 RgSchCellCb             *cell,
 RgSchDlHqProcCb         *hqP,
-U8                      tbCnt,
+uint8_t                      tbCnt,
 Bool                    *isMaxRetx
 )
 #else
 Void rgSCHDhmHqTbTrnsFail(cell, hqP, tbCnt, isMaxRetx)
 RgSchCellCb             *cell;
 RgSchDlHqProcCb         *hqP;
-U8                      tbCnt;
+uint8_t                      tbCnt;
 Bool                    *isMaxRetx;
 #endif
 {
    RgSchDlHqEnt         *hqE;
-   U8                   maxHqTx;
+   uint8_t                   maxHqTx;
 
    hqE = hqP->hqE;
 
@@ -1576,7 +1576,7 @@ Bool                    *isMaxRetx;
                "rgSCHDhmHqTbTrnsFail contRes exp(): tmpCRNTI = %u",
                hqP->hqE->raCb->tmpCrnti);
          rgSCHRamMsg4Done(cell, (RgSchRaCb *)hqP->hqE->raCb);
-         RETVOID;
+         return;
       }
 #endif
       maxHqTx  = cell->dlHqCfg.maxMsg4HqTx;
@@ -1592,8 +1592,8 @@ Bool                    *isMaxRetx;
       RgSchUeCb      *ueCb  = hqE->ue;
       RgSchCmnUe     *cmnUe = (RgSchCmnUe*)ueCb->sch;
       RgSchCmnDlUe   *dlUe  = RG_SCH_CMN_GET_DL_UE(ueCb,hqE->cell);/*CA dev*/
-      U8             tbs    = dlUe->mimoInfo.cwInfo[0].iTbs[0];
-      static U32 retxCnt    = 0;
+      uint8_t             tbs    = dlUe->mimoInfo.cwInfo[0].iTbs[0];
+      static uint32_t retxCnt    = 0;
 
       {
          ++retxCnt;
@@ -1658,7 +1658,7 @@ Bool                    *isMaxRetx;
                /* CA Dev End*/
                break;
          }
-         RETVOID;
+         return;
       }
       /* extra:check if already removed as part of other TB processing
        * then donot remove from InUse Q */
@@ -1719,10 +1719,10 @@ Bool                    *isMaxRetx;
       *isMaxRetx = TRUE; 
    }
 
-   RETVOID;
+   return;
 } /* rgSCHDhmHqTbTrnsFail */
 
-U32 rgHqRvStats[2][4][2] = {{{0, 0}, {0, 0}, {0, 0}, {0, 0}}, 
+uint32_t rgHqRvStats[2][4][2] = {{{0, 0}, {0, 0}, {0, 0}, {0, 0}}, 
                                    {{0, 0}, {0, 0}, {0, 0}, {0, 0}}};
 #ifdef LTE_TDD
 #ifdef LTE_ADV
@@ -1734,29 +1734,29 @@ U32 rgHqRvStats[2][4][2] = {{{0, 0}, {0, 0}, {0, 0}, {0, 0}},
  *           
  *  @param[in]  RgSchUeCb            *ue,
  *  @param[in]  RgSchDlHqProcCb      *hqP,
- *  @param[in]  U8                 *isAck, 
+ *  @param[in]  uint8_t                 *isAck, 
  *  @param[in]  RgTfuHqInfo          *fdbk,
- *  @param[in]  U8                   tbIdx,
+ *  @param[in]  uint8_t                   tbIdx,
  *  @param[in]  RgSchTddANInfo       *anInfo;
- *  @return     RETVOID
+ *  @return     void
  **/
 #ifdef ANSI
 PRIVATE Void rgSchGetHqFdbkPosForM1
 (
  RgSchUeCb            *ue,
  RgSchDlHqProcCb      *hqP,
- U8                  *isAck, 
+ uint8_t                  *isAck, 
  RgTfuHqInfo          *fdbk,
- U8                   tbIdx,
+ uint8_t                   tbIdx,
  RgSchTddANInfo       *anInfo
  )
 #else
 PRIVATE Void rgSchGetHqFdbkPosForM1(ue,hqP,isAck,fdbk,tbIdx,anInfo)
  RgSchUeCb            *ue;
  RgSchDlHqProcCb      *hqP;
- U8                   *isAck;
+ uint8_t                   *isAck;
  RgTfuHqInfo          *fdbk;
- U8                   tbIdx;
+ uint8_t                   tbIdx;
  RgSchTddANInfo       *anInfo;
 #endif
 {
@@ -1783,7 +1783,7 @@ PRIVATE Void rgSchGetHqFdbkPosForM1(ue,hqP,isAck,fdbk,tbIdx,anInfo)
             {
                   if(RG_SCH_IS_CELL_SEC(ue,hqP->hqE->cell)) 
                   {
-                     U8 cellIdx = rgSchUtlGetServCellIdx(hqP->hqE->cell->instIdx,
+                     uint8_t cellIdx = rgSchUtlGetServCellIdx(hqP->hqE->cell->instIdx,
                            hqP->hqE->cell->cellId,
                            hqP->hqE->ue);
 
@@ -1840,7 +1840,7 @@ PRIVATE Void rgSchGetHqFdbkPosForM1(ue,hqP,isAck,fdbk,tbIdx,anInfo)
             break;
       }
    }
-   RETVOID;
+   return;
 }/* End of rgSchGetHqFdbkPosForM1 */
 
 /** * @brief Function to decode the position of HarqFb for M>=2 cases.
@@ -1851,41 +1851,41 @@ PRIVATE Void rgSchGetHqFdbkPosForM1(ue,hqP,isAck,fdbk,tbIdx,anInfo)
  *           
  *  @param[in]  RgSchUeCb            *ue,
  *  @param[in]  RgSchDlHqProcCb      *hqP,
- *  @param[in]  U8                   *isAck, 
+ *  @param[in]  uint8_t                   *isAck, 
  *  @param[in]  RgTfuHqInfo          *fdbk,
- *  @param[in]  U8                   tbIdx,
+ *  @param[in]  uint8_t                   tbIdx,
  *  @param[in]  RgSchTddANInfo       *anInfo;
  *  @param[in]  CmLteTimingInfo      timeInfo;
- *  @return     RETVOID
+ *  @return     void
  **/
 #ifdef ANSI
 PRIVATE Void rgSchGetHqFdbkPosForM234
 (
  RgSchUeCb            *ue,
  RgSchDlHqProcCb      *hqP,
- U8                   *isAck, 
+ uint8_t                   *isAck, 
  RgTfuHqInfo          *fdbk,
- U8                   tbIdx,
+ uint8_t                   tbIdx,
  RgSchTddANInfo       *anInfo,
- U8                   M,
+ uint8_t                   M,
  CmLteTimingInfo      timeInfo
  )
 #else
 PRIVATE Void rgSchGetHqFdbkPosForM234(ue,hqP,isAck,fdbk,tbIdx,anInfo,M,timeInfo)
  RgSchUeCb            *ue;
  RgSchDlHqProcCb      *hqP;
- U8                  *isAck;
+ uint8_t                  *isAck;
  RgTfuHqInfo          *fdbk;
- U8                   tbIdx;
+ uint8_t                   tbIdx;
  RgSchTddANInfo       *anInfo;
- U8                    M;
+ uint8_t                    M;
  CmLteTimingInfo      timeInfo;
 #endif
 {
-   U8                   fdbkIdx;
+   uint8_t                   fdbkIdx;
    Bool                 isSCell;
    RgSchTddANInfo       *pCellAnInfo;
-   U8                   incr = 0;
+   uint8_t                   incr = 0;
 
    if(NULLP != ue)
    {
@@ -1978,7 +1978,7 @@ PRIVATE Void rgSchGetHqFdbkPosForM234(ue,hqP,isAck,fdbk,tbIdx,anInfo,M,timeInfo)
          dlHqStats[statsCnt].sf = hqP->tbInfo[tbIdx].timingInfo.slot; 
          dlHqStats[statsCnt].ack = *isAck;
          dlHqStats[statsCnt].fdbkIdx = fdbkIdx;
-         dlHqStats[statsCnt].ue = hqP->hqE->ue->ueId;;
+         dlHqStats[statsCnt].ue = hqP->hqE->ue->ueId;
          if (anInfo)
             dlHqStats[statsCnt].ulDai = incr;
          if(TRUE == fdbk->isPusch)
@@ -2005,7 +2005,7 @@ PRIVATE Void rgSchGetHqFdbkPosForM234(ue,hqP,isAck,fdbk,tbIdx,anInfo,M,timeInfo)
       }
 #endif
    }/*ue*/
-   RETVOID;
+   return;
 }/*rgSchGetHqFdbkPosForM234*/
 #endif/*LTE_ADV*/
 
@@ -2022,7 +2022,7 @@ PRIVATE Void rgSchGetHqFdbkPosForM234(ue,hqP,isAck,fdbk,tbIdx,anInfo,M,timeInfo)
  *
  *
  *  @param[in]  Void                *cb
- *  @param[in]  U8                  cbType
+ *  @param[in]  uint8_t                  cbType
  *  @param[in]  RgSchCellCb         cellCb
  *  @param[in]  CmLteTimingInfo     timeInfo 
  *  @param[in]  TfuHqInfo           *fdbk
@@ -2036,7 +2036,7 @@ PRIVATE Void rgSchGetHqFdbkPosForM234(ue,hqP,isAck,fdbk,tbIdx,anInfo,M,timeInfo)
 S16 rgSCHDhmHqFdbkInd
 (
 Void                 *cb,
-U8                   cbType,
+uint8_t                   cbType,
 RgSchCellCb          *cellCb,
 CmLteTimingInfo      timeInfo,
 TfuHqInfo            *fdbk,
@@ -2046,7 +2046,7 @@ RgSchErrInfo         *err
 #else
 S16 rgSCHDhmHqFdbkInd(cb, cbType, cellCb, timeInfo, fdbk, rlsHqBufs, err)
 Void                    *cb;
-U8                      cbType;
+uint8_t                      cbType;
 RgSchCellCb             *cellCb;
 CmLteTimingInfo         timeInfo;
 TfuHqInfo               *fdbk;
@@ -2061,21 +2061,21 @@ RgSchErrInfo            *err;
    RgSchDlSf         *sf;
    Bool              isMsg4 = FALSE;
    RgSchRaCb         *raCb = NULLP;
-   U16               rnti=0;
+   uint16_t               rnti=0;
    /* Maximum possible HARQ processes in UL-DL configuration 5 that is
     * given feedback at a time */
    RgSchDlHqProcCb   *hqPrcs[(RGSCH_NUM_SUB_FRAMES-1)*5];  /*MAX 5 Cells*/
-   U8                numTb[(RGSCH_NUM_SUB_FRAMES-1)*5];
+   uint8_t                numTb[(RGSCH_NUM_SUB_FRAMES-1)*5];
    S8                tbStrtIdx[(RGSCH_NUM_SUB_FRAMES-1)*5];
-   U8                hqCnt;
-   U8                idx;
+   uint8_t                hqCnt;
+   uint8_t                idx;
    RgSchTddANInfo    *anInfo = NULLP;
-   U8                isAck = 0;
-   U8                tbCnt;
+   uint8_t                isAck = 0;
+   uint8_t                tbCnt;
    RgrTddAckNackMode ackNackMode;
    Bool              hqRls = FALSE;
    RgSchDlSf         *nxtDlsf = NULLP;
-   /* U8                rcvCnt = 0; */
+   /* uint8_t                rcvCnt = 0; */
    CmLteTimingInfo   nxtfrm = {0,0};
    Bool              anUpd = FALSE;
    Bool              maxHqRetxReached;
@@ -2085,13 +2085,13 @@ RgSchErrInfo            *err;
 
 #if ((defined LTEMAC_SPS_AN_MUX) || (defined LTE_ADV))
    RgSchTddDlAscSetIdxK    ascIdx;
-   U8                      noFdbks;
+   uint8_t                      noFdbks;
 #endif
 
 #ifdef LTEMAC_SPS_AN_MUX
    Bool                    isPusch   = FALSE;   
-   U8                      tmpIdx;
-   U8                      hIdx;   
+   uint8_t                      tmpIdx;
+   uint8_t                      hIdx;   
    /* Subframes in which transmissions are scheduled and whose feedback can come
     * in this subframe. Used only for Multiplexing mode */
    CmLteTimingInfo         schdSfTime[RGSCH_TDD_MAX_FDBK];
@@ -2100,7 +2100,7 @@ RgSchErrInfo            *err;
 #endif
 #endif
 #ifdef LTE_ADV
-   U8                  sCellActCePres = 0;
+   uint8_t                  sCellActCePres = 0;
 #endif
 /* LTEMAC_SPS_AN_MUX*/
    RgrSchFrmt1b3TypEnum uciFrmtTyp  = RG_SCH_UCI_FORMAT1A_1B; 
@@ -2224,7 +2224,7 @@ RgSchErrInfo            *err;
      if(ue)
      {
 #ifdef LTE_ADV
-        U8 servCellIdx = rgSchUtlGetServCellIdx(hqPrcs[idx]->hqE->cell->instIdx,
+        uint8_t servCellIdx = rgSchUtlGetServCellIdx(hqPrcs[idx]->hqE->cell->instIdx,
         hqPrcs[idx]->hqE->cell->cellId,ue);
 
         if(ue->cellInfo[servCellIdx]->sCellState != RG_SCH_SCELL_ACTIVE)  
@@ -2595,9 +2595,9 @@ RgSchErrInfo            *err;
       if(ackNackMode == RGR_TDD_ACKNACK_MODE_MULT)
       {
          CmLteTimingInfo txTime;
-         U8   ulDlCfgIdx = 0;
-         U8   maxFdbks   = 0;
-         U8   itr        = 0;
+         uint8_t   ulDlCfgIdx = 0;
+         uint8_t   maxFdbks   = 0;
+         uint8_t   itr        = 0;
 
          ulDlCfgIdx  = cellCb->ulDlCfgIdx;
 
@@ -2738,10 +2738,10 @@ RgSchUeCb            *ue,
 RgSchDlHqProcCb      *hqP,
 RgSchDlSf            *sf,
 Bool                 isMsg4,
-U16                  rnti,
-U8                   tbCnt,
+uint16_t                  rnti,
+uint8_t                   tbCnt,
 CmLteTimingInfo      timingInfo,
-U8                   isAck,
+uint8_t                   isAck,
 RgInfRlsHqInfo       *rlsHqBufs,
 RgSchErrInfo         *err
 )
@@ -2752,10 +2752,10 @@ RgSchUeCb               *ue;
 RgSchDlHqProcCb         *hqP;
 RgSchDlSf               *sf;
 Bool                    isMsg4;
-U16                     rnti;
-U8                      tbCnt;
+uint16_t                     rnti;
+uint8_t                      tbCnt;
 CmLteTimingInfo         timingInfo;
-U8                      isAck;
+uint8_t                      isAck;
 RgInfRlsHqInfo          *rlsHqBufs;
 RgSchErrInfo            *err;
 #endif
@@ -3009,7 +3009,7 @@ RgSchErrInfo            *err;
  *  @param[in]  RgrSchFrmt1b3TypEnum uciFrmtTyp, 
  *  @param[in]  Bool                 *isAck, 
  *  @param[in]  RgTfuHqInfo          *fdbk,
- *  @return     RETVOID
+ *  @return     void
  **/
 #ifdef ANSI
 Void rgSchGetHqFdbkPos
@@ -3018,7 +3018,7 @@ Void rgSchGetHqFdbkPos
  RgSchUeCb            *ue,
  RgSchDlHqProcCb      *hqP,
  RgrSchFrmt1b3TypEnum uciFrmtTyp, 
- U8                  *isAck, 
+ uint8_t                  *isAck, 
  RgTfuHqInfo          *fdbk
  )
 #else
@@ -3027,7 +3027,7 @@ Void rgSchGetHqFdbkPos(cell,ue,hqP,uciFrmtTyp,isAck,fdbk)
  RgSchUeCb            *ue;
  RgSchDlHqProcCb      *hqP;
  RgrSchFrmt1b3TypEnum uciFrmtTyp;
- U8                  *isAck;
+ uint8_t                  *isAck;
  RgTfuHqInfo          *fdbk;
 #endif
 {
@@ -3035,7 +3035,7 @@ Void rgSchGetHqFdbkPos(cell,ue,hqP,uciFrmtTyp,isAck,fdbk)
    {
       isAck[0] = fdbk->isAck[0];
       isAck[1] = fdbk->isAck[1];
-      RETVOID;
+      return;
    }
 #ifdef LTE_ADV
    /* LAA Making all ack for LAA CELL */
@@ -3044,7 +3044,7 @@ Void rgSchGetHqFdbkPos(cell,ue,hqP,uciFrmtTyp,isAck,fdbk)
    {
       isAck[0] = TRUE;
       isAck[1] = TRUE;
-      RETVOID;
+      return;
    }
 
    if((ue != NULLP))
@@ -3072,7 +3072,7 @@ Void rgSchGetHqFdbkPos(cell,ue,hqP,uciFrmtTyp,isAck,fdbk)
                if(RG_SCH_IS_CELL_SEC(ue,hqP->hqE->cell)) 
                {
 #ifdef LTE_ADV
-                  U8 servCellIdx = rgSchUtlGetServCellIdx(hqP->hqE->cell->instIdx,
+                  uint8_t servCellIdx = rgSchUtlGetServCellIdx(hqP->hqE->cell->instIdx,
                         hqP->hqE->cell->cellId,
                         ue);
 
@@ -3189,26 +3189,26 @@ Void rgSchGetHqFdbkPos(cell,ue,hqP,uciFrmtTyp,isAck,fdbk)
       }
    }
 #endif
-   RETVOID;
+   return;
 }/* End of rgSchGetHqFdbkPos */
 #ifdef LTE_ADV
 #ifdef ANSI
 Void rgSchGetHqFdbkPosFormat3
 (
  RgSchDlHqProcCb      *hqP,
- U8                   *isAck,
+ uint8_t                   *isAck,
  TfuHqFdbk            *fdbk
  )
 #else
 Void rgSchGetHqFdbkPosFormat3(hqP,isAck,fdbk)
  RgSchDlHqProcCb      *hqP;
- U8                  *isAck;
+ uint8_t                  *isAck;
  TfuHqFdbk           *fdbk;
 #endif
 {
-   U8 cellIdx = RG_SCH_CMN_GET_CELL_IDX_FROM_HQP(hqP);
-   isAck[0] = (U8)fdbk[cellIdx]; 
-   isAck[1] = (U8)fdbk[cellIdx + 1]; 
+   uint8_t cellIdx = RG_SCH_CMN_GET_CELL_IDX_FROM_HQP(hqP);
+   isAck[0] = (uint8_t)fdbk[cellIdx]; 
+   isAck[1] = (uint8_t)fdbk[cellIdx + 1]; 
 }
 #endif
 /** * @brief Handler for HARQ feedback received for DL transmission.
@@ -3223,7 +3223,7 @@ Void rgSchGetHqFdbkPosFormat3(hqP,isAck,fdbk)
  *     
  *           
  *  @param[in]  Void                *cb
- *  @param[in]  U8                  cbType
+ *  @param[in]  uint8_t                  cbType
  *  @param[in]  RgSchCellCb         *cell
  *  @param[in]  RgTfuHarqAckIndInfo *fdbk
  *  @param[in]  RgInfRlsHqInfo      *rlsHqBufs
@@ -3256,9 +3256,9 @@ RgSchErrInfo         *err;
    S16                  ret = ROK;
    RgSchDlSf            *sf;
    Bool                 isMsg4 = FALSE;
-   U16                  rnti=0;
-   U16                  procId=0;
-   U8                   hqPCount = 0;
+   uint16_t                  rnti=0;
+   uint16_t                  procId=0;
+   uint8_t                   hqPCount = 0;
    RgInfRlsHqInfo       *rlsHqBufs = NULLP;
 
    RGSCHDECRFRMCRNTTIME(timingInfo, timingInfo, 4); 
@@ -3288,7 +3288,7 @@ RgSchErrInfo         *err;
       {
          rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].rnti = rnti;
          rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].hqProcId = 
-            (U8)procId;
+            (uint8_t)procId;
          rlsHqBufs->numUes++;
       }
       hqPCount--;
@@ -3309,7 +3309,7 @@ RgSchErrInfo         *err;
  *     
  *           
  *  @param[in]  Void                *cb
- *  @param[in]  U8                  cbType
+ *  @param[in]  uint8_t                  cbType
  *  @param[in]  RgSchCellCb         *cell
  *  @param[in]  RgTfuHarqAckIndInfo *fdbk
  *  @param[in]  RgInfRlsHqInfo      *rlsHqBufs
@@ -3322,7 +3322,7 @@ RgSchErrInfo         *err;
 S16 rgSCHDhmHqFdbkInd
 (
 Void                 *cb, 
-U8                   cbType,
+uint8_t                   cbType,
 RgSchCellCb          *cell,
 CmLteTimingInfo      timingInfo,
 RgTfuHqInfo          *fdbk,
@@ -3332,7 +3332,7 @@ RgSchErrInfo         *err
 #else
 S16 rgSCHDhmHqFdbkInd(cb, cbType, cell, timingInfo, fdbk, rlsHqBufs, err)
 Void                    *cb;
-U8                      cbType;
+uint8_t                      cbType;
 RgSchCellCb             *cell;
 CmLteTimingInfo         timingInfo;
 RgTfuHqInfo             *fdbk;
@@ -3352,13 +3352,13 @@ RgSchErrInfo            *err;
    RgSchDlSf            *sf;
    Bool                 isMsg4 = FALSE;
    RgSchRaCb            *raCb = NULLP;
-   U16                  rnti=0;
+   uint16_t                  rnti=0;
   /* Added Insure Fixes Of UR.Initialized procId  */
-   U16                  procId=0;
-   /* DTX Change: Bool is converted into U8*/
-   U8                   isAck[2]={0}; /*Changed to Array of 2*/
-   U8                   tbCnt;
-   U8                   hqPCount = 0;
+   uint16_t                  procId=0;
+   /* DTX Change: Bool is converted into uint8_t*/
+   uint8_t                   isAck[2]={0}; /*Changed to Array of 2*/
+   uint8_t                   tbCnt;
+   uint8_t                   hqPCount = 0;
 
 #ifdef LTEMAC_SPS
    CmLteTimingInfo      fdbkRcptTime = timingInfo;
@@ -3427,8 +3427,8 @@ RgSchErrInfo            *err;
       RgSchUeCb      *ueCb  = hqE->ue;
       RgSchCmnUe     *cmnUe = (RgSchCmnUe*)ueCb->sch;
       RgSchCmnDlUe   *dlUe  = RG_SCH_CMN_GET_DL_UE(ueCb,hqE->cell);/*CA dev*/
-      U8             tbs    = dlUe->mimoInfo.cwInfo[0].iTbs[0];
-      static U32 retxCnt    = 0;
+      uint8_t             tbs    = dlUe->mimoInfo.cwInfo[0].iTbs[0];
+      static uint32_t retxCnt    = 0;
 
       if (fdbk->isAck[0] == TFU_HQFDB_ACK)
       {
@@ -3547,7 +3547,7 @@ RgSchErrInfo            *err;
       {
          rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].rnti = rnti;
          rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].hqProcId = 
-            (U8)procId;
+            (uint8_t)procId;
          rlsHqBufs->numUes++;
       }
       hqPCount--;
@@ -3573,7 +3573,7 @@ RgSchErrInfo            *err;
       {
          rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].rnti = rnti;
          rlsHqBufs->ueHqInfo[rlsHqBufs->numUes].hqProcId = 
-            (U8)procId;
+            (uint8_t)procId;
          rlsHqBufs->numUes++;
       }
       hqPCount--;
@@ -3648,7 +3648,7 @@ RgSchErrInfo      *err;
       }
       rgSCHTmrStartTmr (cell, ueCb, RG_SCH_TMR_TA, ueCb->dl.taCb.cfgTaTmr);
    }
-   RETVOID;
+   return;
 }  /* rgSCHDhmRgrUeCfg */
 
 
@@ -3689,7 +3689,7 @@ RgSchErrInfo   *err;
    PTR         pUeCb;/* previous UE Control block */
    PTR         nUeCb;/* next UE control block */
    S16         ret;
-   U8          idx;
+   uint8_t          idx;
 
    UNUSED(err);
 
@@ -3734,7 +3734,7 @@ RgSchErrInfo   *err;
      cell->tq[idx].first = NULLP;
      cell->tq[idx].tail  = NULLP;
    }
-   RETVOID;
+   return;
 }  /* rgSCHDhmRgrCellCfg */
 
 /**
@@ -3800,7 +3800,7 @@ RgSchErrInfo   *err;
          }
       }
    }
-   RETVOID;
+   return;
 }  /* rgSCHDhmRgrCellRecfg */
 
 /**
@@ -3865,7 +3865,7 @@ RgSchUeCb          *ueCb;
       rgSCHCmnRmvFrmTaLst(ueCb->cell, ueCb);
    }
 
-   RETVOID;
+   return;
 
 }  /* rgSCHDhmFreeUe */
 
@@ -3880,7 +3880,7 @@ RgSchUeCb          *ueCb;
  *           
  *  @param[in]  RgSchCellCb   *cell 
  *  @param[in]  RgSchUeCb     *ueCb 
- *  @param[in]  U8         ta
+ *  @param[in]  uint8_t         ta
  *
  *  @return     None.
  *
@@ -3890,13 +3890,13 @@ Void rgSCHDhmUpdTa
 (
 RgSchCellCb    *cell,
 RgSchUeCb      *ueCb,
-U8             ta
+uint8_t             ta
 )
 #else
 Void rgSCHDhmUpdTa(cell, ueCb, ta)
 RgSchCellCb    *cell;
 RgSchUeCb      *ueCb;
-U8             ta;
+uint8_t             ta;
 #endif
 {
 
@@ -3929,7 +3929,7 @@ U8             ta;
       ueCb->dl.taCb.outStndngTaval =  ta;
    }
 
-   RETVOID;
+   return;
 }  /* rgSCHDhmUpdTa */
 
  /** @brief This function handles the TA timer expiry.
@@ -3960,7 +3960,7 @@ Void rgSCHDhmProcTAExp (ueCb)
    /* Ask scheduler to schedule this UE */
    ueCb->dl.taCb.state     =  RGSCH_TA_TOBE_SCHEDULED;
    rgSCHUtlDlTARpt(ueCb->cell, ueCb);  
-   RETVOID;
+   return;
 } /* end of rgSCHDhmProcTAExp */ 
 
 /* 3.1 MIMO: LC details at TB level rather than Hq Level */
@@ -4040,8 +4040,8 @@ CmLteTimingInfo      uciTimingInfo;
 {
    CmLteTimingInfo         dlSfTime;
    RgSchTddDlAscSetIdxK    ascIdx;
-   U8                      noFdbks;
-   U8                      i;
+   uint8_t                      noFdbks;
+   uint8_t                      i;
 
    ascIdx = 
       rgSchTddDlAscSetIdxKTbl[cellCb->ulDlCfgIdx][uciTimingInfo.slot];
@@ -4061,7 +4061,7 @@ CmLteTimingInfo      uciTimingInfo;
 }/* rgSCHDhmTddRlsSubFrm */
 
 #ifdef TFU_TDD
-U32 macDtx = 0;
+uint32_t macDtx = 0;
 #endif
 /**
  * @brief Handler for Removing the HARQ process from a dlsf.
@@ -4098,14 +4098,14 @@ CmLteTimingInfo      uciTimingInfo;
    CmLteTimingInfo         nxtfrm = {0,0};
    RgSchDlHqProcCb         *tmpHqProc;
    RgSchTddDlAscSetIdxK    ascIdx;
-   U8                      noFdbks;
+   uint8_t                      noFdbks;
    S16                     i;
    RgSchDlSf               *nxtDlsf = NULLP;
    CmLList                 *node;
    CmLList                 *hqPNode;
-   U8                      idx;
+   uint8_t                      idx;
    /*ccpu00130018 -MOD -Initiatizing with FALSE*/ 
-   U8                      maxRetx=FALSE;
+   uint8_t                      maxRetx=FALSE;
    RgSchTddANInfo          *anInfo = NULLP;
    RgSchDlHqTbCb           *tbCb;
    RgSchUeCb               *ue = NULLP;
@@ -4201,7 +4201,7 @@ CmLteTimingInfo      uciTimingInfo;
                      /* Update feedback time for this process so that 
                       * next subframe its picked up */
 #ifdef LTE_ADV
-                     U8 servCellIdx = rgSchUtlGetServCellIdx(
+                     uint8_t servCellIdx = rgSchUtlGetServCellIdx(
                            tmpHqProc->hqE->cell->instIdx,
                            tmpHqProc->hqE->cell->cellId,
                            ue);
@@ -4288,7 +4288,7 @@ CmLteTimingInfo      uciTimingInfo;
             /* Update feedback time for this process so that 
              * next subframe its picked up */
 #ifdef LTE_ADV
-            U8 servCellIdx = rgSchUtlGetServCellIdx(
+            uint8_t servCellIdx = rgSchUtlGetServCellIdx(
                   tmpHqProc->hqE->cell->instIdx,
                   tmpHqProc->hqE->cell->cellId,
                   ue);
@@ -4385,7 +4385,7 @@ CmLteTimingInfo      timingInfo;
    Bool              maxRetx;
    CmLList           *node;
    CmLList           *hqPNode;
-   U8                idx;
+   uint8_t                idx;
    RgSchDlHqTbCb     *tbCb;
    RgSchUeCb         *ue;
 
@@ -4525,7 +4525,7 @@ CmLteTimingInfo      timingInfo;
  *     - Set isSpsHqProc = TRUE
  *     
  *  @param[in]  RgSchUeCb        *ue
- *  @param[in]  U8            idx
+ *  @param[in]  uint8_t            idx
  *  @return  S16       
  *         -#   ROK     if successful
  *         -#   RFAILED otherwise
@@ -4535,12 +4535,12 @@ CmLteTimingInfo      timingInfo;
 S16 rgSCHDhmMarkSpsHqProc
 (
 RgSchUeCb               *ue,
-U8                      idx
+uint8_t                      idx
 )
 #else
 S16 rgSCHDhmMarkSpsHqProc(ue, idx)
 RgSchUeCb               *ue;
-U8                      idx;
+uint8_t                      idx;
 #endif
 {
    RgSchDlHqProcCb      *hqP;
@@ -4566,8 +4566,8 @@ U8                      idx;
  *           
  *  @param[in]  RgSchDlHqProcCb     *hqP
  *  @param[in]  RgSchDlSf           *sf                  
- *  @param[in]  U8                  tbCnt
- *  @param[in]  U8                  *isAck
+ *  @param[in]  uint8_t                  tbCnt
+ *  @param[in]  uint8_t                  *isAck
  *  @return     S16
  *      -# ROK 
  *      -# RFAILED 
@@ -4577,15 +4577,15 @@ PRIVATE S16 rgSCHDhmProcHqFdbkAckNackRep
 (
 RgSchDlHqProcCb      *hqP,
 RgSchDlSf            *sf,
-U8                   tbCnt,
-U8                   *isAck
+uint8_t                   tbCnt,
+uint8_t                   *isAck
 )
 #else
 PRIVATE S16 rgSCHDhmProcHqFdbkAckNackRep(hqP,sf,tbCnt,isAck)
 RgSchDlHqProcCb      *hqP;
 RgSchDlSf            *sf;
-U8                   tbCnt;
-U8                   *isAck;
+uint8_t                   tbCnt;
+uint8_t                   *isAck;
 #endif
 {
       /* Check if this is repeating UE */
@@ -4764,16 +4764,16 @@ PRIVATE S16 rgSCHDhmUpdateAckNackHistory
 (
 RgSchCellCb             *cell,
 RgSchUeCb               *ueCb,
-U8                      hqfdbk,
-U8                      tbCnt
+uint8_t                      hqfdbk,
+uint8_t                      tbCnt
 )
 #else
 PRIVATE S16 rgSCHDhmUpdateAckNackHistory(cell, ueCb, hqfdbk, tbCnt)
 (
 RgSchCellCb             *cell;
 RgSchUeCb               *ueCb;
-U8                      hqfdbk;
-U8                      tbCnt;
+uint8_t                      hqfdbk;
+uint8_t                      tbCnt;
 )
 #endif
 {
@@ -4809,22 +4809,22 @@ S16 rgSCHDhmUpdBlerBasediTbsEff
 (
 RgSchCellCb             *cell,
 RgSchUeCb               *ueCb,
-U8                      tbCnt
+uint8_t                      tbCnt
 )
 #else
 S16 rgSCHDhmUpdBlerBasediTbsEff(cell, ueCb, tbCnt)
 (
 RgSchCellCb             *cell;
 RgSchUeCb               *ueCb;
-U8                      tbCnt;
+uint8_t                      tbCnt;
 )
 #endif
 {
    S32            iTbs;
    RgSchCmnDlUe  *ueDl;
    RgSchCmnCell  *cellSch = RG_SCH_CMN_GET_CELL(cell);
-   U8             cfi = cellSch->dl.currCfi;
-   U8             maxiTbs = (*(RgSchCmnCqiToTbs *)(cellSch->dl.cqiToTbsTbl[0][cfi]))[RG_SCH_CMN_MAX_CQI - 1];
+   uint8_t             cfi = cellSch->dl.currCfi;
+   uint8_t             maxiTbs = (*(RgSchCmnCqiToTbs *)(cellSch->dl.cqiToTbsTbl[0][cfi]))[RG_SCH_CMN_MAX_CQI - 1];
    maxiTbs                = RG_SCH_DL_MAX_ITBS;
 
    ueDl = RG_SCH_CMN_GET_DL_UE(ueCb,cell);
@@ -4883,7 +4883,7 @@ U8                      tbCnt;
  *          4 = DTX (UE did not transmit anything)
  *                
  *  @param[in]  TfuHqInfo    *fdbk
- *  @param[in]  U8            hqCnt 
+ *  @param[in]  uint8_t            hqCnt 
  *  @return  Void 
  *
  **/
@@ -4892,18 +4892,18 @@ PRIVATE Void rgSCHDhmPrcSplBundlFdbk
 (
 RgSchCellCb  *cell,
 TfuHqInfo    *fdbk,
-U8            hqCnt
+uint8_t            hqCnt
 )
 #else
 PRIVATE Void rgSCHDhmPrcSplBundlFdbk(cell, fdbk, hqCnt)
 (
 RgSchCellCb  *cell;
 TfuHqInfo    *fdbk;
-U8            hqCnt;
+uint8_t            hqCnt;
 )
 #endif
 {
-   U8       numOfAcks;
+   uint8_t       numOfAcks;
    
    /* Num of ACKs reported by UE */
    numOfAcks = fdbk->isAck[0];
@@ -4925,7 +4925,7 @@ U8            hqCnt;
       the PDSCH trasnmission (spatial bundling). So we have 
       to assume same feedback for both codewords */ 
 #ifdef LTE_ADV
-   for(U8 idx = 1 ; idx < TFU_MAX_HARQ_FDBKS; idx++)
+   for(uint8_t idx = 1 ; idx < TFU_MAX_HARQ_FDBKS; idx++)
    {
       fdbk->isAck[idx] = fdbk->isAck[0]; 
    }
@@ -4933,7 +4933,7 @@ U8            hqCnt;
    fdbk->isAck[1] = fdbk->isAck[0]; 
 #endif
    
-   RETVOID;
+   return;
 }
 #endif
 
@@ -4989,7 +4989,7 @@ RgSchDlHqProcCb         *hqP;
    rgSCHLaaHndlHqProcFree(hqP);
 #endif
 
-   RETVOID;
+   return;
 } /* rgSCHDhmHqPAdd2FreeLst */
 
 
@@ -5041,7 +5041,7 @@ RgSchDlHqProcCb         *hqP;
    }
 #endif
 
-   RETVOID;
+   return;
 } /* rgSCHDhmHqPAdd2InUseLst */
 
 /**
@@ -5101,7 +5101,7 @@ RgSchDlHqProcCb         *hqP;
    }
 #endif
 
-   RETVOID;
+   return;
 } /* rgSCHDhmHqPDelFrmFreeLst */
 
 
@@ -5164,7 +5164,7 @@ RgSchDlHqProcCb         *hqP;
    }
 #endif
 
-   RETVOID;
+   return;
 } /* rgSCHDhmHqPDelFrmInUseLst */
 
 

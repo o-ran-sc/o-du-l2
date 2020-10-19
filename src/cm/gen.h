@@ -223,7 +223,7 @@
 #define AM_CV_TMPFAIL          41    /* Temporary failure */
 #define AM_CV_ACCINFODISC      43    /* access info discarded */
 #define AM_CV_NOVCCAVAIL       45    /* no VPCI/VCI unavailable */
-#define AM_CV_RESAIL       47    /* resources unavailable, unspecified */
+#define AM_CV_RESAIL           47    /* resources unavailable, unspecified */
 #define AM_CV_QOSUNAVAIL       49    /* Quality of Service unavailable */
 #define AM_CV_RATEUNAVAIL      51    /* UNI 3.0: user cell rate unavailable */
 #define AM_CV_REQPVPCVCCUNAV   53    /* PNNI: Requested Called party soft PVPC/PVCC not available */
@@ -2342,7 +2342,7 @@
 #define CBUF_WRITE(_class,_argList)                                   \
 {                                                                     \
    S32 tmpLen = 0;                                                    \
-   U32 idx;                                                            \
+   uint32_t idx;                                                            \
    tmpLen = sprintf _argList;                                         \
    if(CBUFPRNTSZE >= tmpLen)                                              \
    {                                                                  \
@@ -2358,10 +2358,10 @@
 #define CBUF_DATA_PRINT(_class)                                       \
 {                                                                     \
     S8 *tmpBuf = NULLP ;\
-    U32 cBufIdx;                                                             \
-    U32 tmpIdx=0;                                                           \
+    uint32_t cBufIdx;                                                             \
+    uint32_t tmpIdx=0;                                                           \
     SGetSBuf((_class).region,(_class).pool,                  \
-         (U8 **)&tmpBuf,(_class).cBuf.cBufSize);                                \
+         (uint8_t **)&tmpBuf,(_class).cBuf.cBufSize);                                \
     memset(tmpBuf,0,(_class).cBuf.cBufSize);                      \
     for(cBufIdx = (_class).cBuf.cBufIdx; cBufIdx < (_class).cBuf.cBufSize; cBufIdx++)            \
     {                                                                 \
@@ -2375,7 +2375,7 @@
     }                                                                 \
    SPrint(tmpBuf); \
    SPutSBuf((_class).region,(_class).pool,                            \
-         (U8 *)tmpBuf,(_class).cBuf.cBufSize);                        \
+         (uint8_t *)tmpBuf,(_class).cBuf.cBufSize);                        \
 }
 #else
 
@@ -2394,7 +2394,7 @@
 
 /* system services typedefs */
 
-#define oduPackBool(x, mBuf)       oduUnpackUInt8(x, mBuf)       /* pack Bool */
+#define oduPackBool(x, mBuf)    oduUnpackUInt8(x, mBuf)       /* pack Bool */
 #define cmPkStatus(x, mBuf)     SPkS16(x, mBuf)      /* pack Status */
 #define cmPkTicks(x, mBuf)      oduUnpackUInt32(x, mBuf)      /* pack Ticks */
 #define cmPkQLen(x, mBuf)       SPkS16(x, mBuf)      /* pack QLen */
@@ -2454,9 +2454,9 @@
 #define cmPkDgn(x, mBuf)        oduUnpackUInt8(x, mBuf)       /* pack Dgn */
 #define cmPkAction(x, mBuf)     SPkS16(x, mBuf)      /* pack Action */
 #define cmPkSeqS16(x, mBuf)     SPkS16(x, mBuf)      /* pack SeqS16 */
-#define cmPkSeqU16(x, mBuf)     oduUnpackUInt16(x, mBuf)      /* pack SeqU16 */
+#define cmPkSeqUInt16(x, mBuf)  oduUnpackUInt16(x, mBuf)      /* pack SeqUInt16 */
 #define cmPkSeqS24(x, mBuf)     SPkS32(x, mBuf)      /* pack SeqS24 */
-#define cmPkSeqU24(x, mBuf)     oduUnpackUInt32(x, mBuf)      /* pack SeqU24 */
+#define cmPkSeqUInt24(x, mBuf)  oduUnpackUInt32(x, mBuf)      /* pack SeqUInt24 */
 #define cmPkSetUpArb(x, mBuf)   oduUnpackUInt8(x, mBuf)       /* pack SetUpArb */
 #define cmPkEvntType(x, mBuf)   oduUnpackUInt8(x, mBuf)       /* pack EvntType */
 #define cmPkState(x, mBuf)      oduUnpackUInt8(x, mBuf)       /* pack State */
@@ -2501,7 +2501,7 @@
 
 /* system services typedefs */
 
-#define oduUnpackBool(x, mBuf)       oduPackUInt8(x, mBuf)     /* unpack Bool */
+#define oduUnpackBool(x, mBuf)    oduPackUInt8(x, mBuf)     /* unpack Bool */
 #define cmUnpkStatus(x, mBuf)     SUnpkS16(x, mBuf)    /* unpack Status */
 #define cmUnpkTicks(x, mBuf)      oduPackUInt32(x, mBuf)    /* unpack Ticks */
 #define cmUnpkQLen(x, mBuf)       SUnpkS16(x, mBuf)    /* unpack QLen */
@@ -2561,9 +2561,9 @@
 #define cmUnpkDgn(x, mBuf)        oduPackUInt8(x, mBuf)   /* unpack Dgn */
 #define cmUnpkAction(x, mBuf)     SUnpkS16(x, mBuf)  /* unpack Action */
 #define cmUnpkSeqS16(x, mBuf)     SUnpkS16(x, mBuf)  /* unpack SeqS16 */
-#define cmUnpkSeqU16(x, mBuf)     oduPackUInt16(x, mBuf)  /* unpack SeqU16 */
+#define cmUnpkSeqUInt16(x, mBuf)  oduPackUInt16(x, mBuf)  /* unpack SeqUInt16 */
 #define cmUnpkSeqS24(x, mBuf)     SUnpkS32(x, mBuf)  /* unpack SeqS24 */
-#define cmUnpkSeqU24(x, mBuf)     oduPackUInt32(x, mBuf)  /* unpack SeqU24 */
+#define cmUnpkSeqUInt24(x, mBuf)  oduPackUInt32(x, mBuf)  /* unpack SeqUInt24 */
 #define cmUnpkSetUpArb(x, mBuf)   oduPackUInt8(x, mBuf)   /* unpack SetUpArb */
 #define cmUnpkEvntType(x, mBuf)   oduPackUInt8(x, mBuf)   /* unpack EvntType */
 #define cmUnpkState(x, mBuf)      oduPackUInt8(x, mBuf)   /* unpack State */
@@ -2649,14 +2649,14 @@
 #endif /* CMFILE_REORG_1 */
 
 #define cmPkTranId(x, mBuf)    oduUnpackUInt32(x, mBuf)      /* Pack transaction Id */
-#define cmUnpkTranId(x, mBuf)    oduPackUInt32(x, mBuf)  /* unpack transaction Id */
+#define cmUnpkTranId(x, mBuf)  oduPackUInt32(x, mBuf)  /* unpack transaction Id */
 
 #ifdef L2_L3_SPLIT
 typedef struct _debugInfo
 {
-   U32   mBuf;
-   U32   res[8];
-   U32   count;
+   uint32_t   mBuf;
+   uint32_t   res[8];
+   uint32_t   count;
 } DebugInfo;
 
 EXTERN DebugInfo debugInfo;

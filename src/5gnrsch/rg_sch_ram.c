@@ -186,7 +186,7 @@ RgrUeCfg     *ueCfg;
 #ifdef ANSI
 S16 rgSCHRamProcRaReq
 (
-U8                raReqCnt,
+uint8_t                raReqCnt,
 RgSchCellCb       *cell,
 CmLteRnti         raRnti,
 TfuRachInfo       *raReqInd,
@@ -196,7 +196,7 @@ RgSchErrInfo      *err
 )
 #else
 S16 rgSCHRamProcRaReq(raReqCnt, cell, raRnti, raReqInd, timingInfo, ue, err)
-U8                raReqCnt;
+uint8_t                raReqCnt;
 RgSchCellCb       *cell;
 CmLteRnti         raRnti;
 TfuRachInfo       *raReqInd;
@@ -206,10 +206,10 @@ RgSchErrInfo      *err;
 #endif
 {
    RgSchRaReqInfo *raReqInfo;
-   U16            raIndex;
+   uint16_t            raIndex;
 #ifdef LTE_TDD
-   U8             fid;
-   U8             tid;
+   uint8_t             fid;
+   uint8_t             tid;
 #endif
 
 
@@ -439,7 +439,7 @@ RgSchErrInfo   *err;
 {
    /* Releasing HARQ processes of old UE when ue
     *           reconfig with new crnti */
-  /* U32 cnt; */
+  /* uint32_t cnt; */
    RgSchDlHqEnt          **hqEnt = &(RG_SCH_CMN_GET_UE_HQE(ue, cell));
    RgSchCmnUlUe *ueUl = RG_SCH_CMN_GET_UL_UE(ue, cell);
 
@@ -707,7 +707,7 @@ RgInfCmnBoRpt     *staRsp;
 {
 
    /* Update Bo in RaCb */
-   raCb->dlCcchInfo.bo = (U32)(staRsp->bo);
+   raCb->dlCcchInfo.bo = (uint32_t)(staRsp->bo);
    /* SR_RACH_STATS : MSG4 WITH CCCH SDU */
    rgNumMsg4WithCCCHSdu++;
 
@@ -1063,19 +1063,19 @@ RgSchCellCb  *cell;
 #endif
 {
    RgSchRaCb   *raCb;
-   U16         raSfn;
-   U16         crntSfn;
-   U16         dist;       /* Number of frames between raCb's creation and crnt
+   uint16_t         raSfn;
+   uint16_t         crntSfn;
+   uint16_t         dist;       /* Number of frames between raCb's creation and crnt
                               frame */
-   U8          idx;
-   U32         maxCnt;
+   uint8_t          idx;
+   uint32_t         maxCnt;
 #ifndef LTE_TDD
-   U8          winGap;        
-   U8          raIdx;
+   uint8_t          winGap;        
+   uint8_t          raIdx;
    RgSchRaReqInfo *raReqInfo;
 #else
    CmLteTimingInfo      frm;
-   U8                   raIdx;
+   uint8_t                   raIdx;
 #endif
 
 
@@ -1193,13 +1193,13 @@ RgSchCellCb    *cell;
 {
    RgSchRaReqInfo  *raReqInfo;
    RgSchRaCb       *raCb;
-   U8              idx;
-   U8              raCbCnt;
+   uint8_t              idx;
+   uint8_t              raCbCnt;
    Inst            inst = cell->instIdx;
-   U8              lstSz;
+   uint8_t              lstSz;
 #ifdef LTE_TDD
-   U8              maxUlSubframes;
-   U8              maxDlSubframes;
+   uint8_t              maxUlSubframes;
+   uint8_t              maxDlSubframes;
 #endif
 
 
@@ -1296,7 +1296,7 @@ RgSchRaCb  *raCb;
       /* Delete RACB and release RNTI */
       rgSCHRamDelRaCb(cell, raCb, TRUE);
    }
-   RETVOID;
+   return;
 }
 
 #ifdef ANSI
@@ -1331,7 +1331,7 @@ RgSchRaCb  *raCb;
             raCb->rntiLnk->rnti);   
    rgSCHRamAddToRaInfoSchdLst(cell, raCb);
    /* MSG4 Fix End */    
-   RETVOID;
+   return;
    
 }
 /**
@@ -1441,7 +1441,7 @@ RgSchCellCb        *cell;
  *
  *  @param[in,out] RgSchCellCb      *cell
  *  @param[in]     CmLteTimingInfo  timingInfo
- *  @param[in]     U8               raIdx
+ *  @param[in]     uint8_t               raIdx
  *  @return  S16
  *      -# ROK
  **/
@@ -1450,24 +1450,24 @@ S16 rgSCHRamDelRaReq
 (
 RgSchCellCb          *cell,
 CmLteTimingInfo      timingInfo,
-U8                   raIdx
+uint8_t                   raIdx
 )
 #else
 S16 rgSCHRamDelRaReq(cell, timingInfo, raIdx)
 RgSchCellCb          *cell;
 CmLteTimingInfo      timingInfo;
-U8                   raIdx;
+uint8_t                   raIdx;
 #endif
 {
-   U8                   subfrmIdx;
+   uint8_t                   subfrmIdx;
    RgSchTddRachRspLst   *rachRsp;
-   U16                   sfnIdx;
+   uint16_t                   sfnIdx;
    S16                  calcSfn;
-   U8                   subfrm;
+   uint8_t                   subfrm;
    RgSchRaReqInfo       *raReqInfo;
-   U8                   idx;
-   U8                   i;
-   U8                   raRntiIdx;
+   uint8_t                   idx;
+   uint8_t                   i;
+   uint8_t                   raRntiIdx;
    CmLteRnti            raRnti;
 
 
@@ -1607,7 +1607,7 @@ Bool            isEmtc;
    {
       rgSCHUtlUlAllocRls(sf, alloc);
    }
-   RETVOID;
+   return;
 }
 
 /**********************************************************************

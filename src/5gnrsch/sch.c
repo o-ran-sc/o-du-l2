@@ -113,7 +113,7 @@ uint8_t schActvInit(Ent entity, Inst instId, Region region, Reason reason)
  *     reason for success/failure of this function.
  *     
  *  @param[in]  RgCfg *cfg, the Configuaration information 
- *  @return  U16
+ *  @return  uint16_t
  *      -# LCM_REASON_NOT_APPL 
  *      -# LCM_REASON_INVALID_MSGTYPE
  *      -# LCM_REASON_MEM_NOAVAIL
@@ -193,8 +193,8 @@ uint8_t SchInstCfg(RgCfg *cfg, Inst  dInst)
  **/
 uint8_t SchProcGenCfgReq(Pst *pst, RgMngmt *cfg)
 {
-   uint8_t       ret = LCM_PRIM_OK;
-   uint16_t       reason = LCM_REASON_NOT_APPL;
+   uint8_t   ret = LCM_PRIM_OK;
+   uint16_t  reason = LCM_REASON_NOT_APPL;
    RgMngmt   cfm;
    Pst       cfmPst;
 

@@ -67,15 +67,15 @@ typedef struct egtpTnlEvt
 /*Extension Header */
 typedef struct egtpExtHdr
 {
-   TknU16   udpPort;                       /**< UDP Port */
-   TknU16   pdcpNmb;                       /**< PDCP Number */
+   TknUInt16   udpPort;                       /**< UDP Port */
+   TknUInt16   pdcpNmb;                       /**< PDCP Number */
 }EgtpExtHdr;
 
 /*Structure for MsgHdr */
 typedef struct egtpMsgHdr
 {
-   TknU8      nPdu;                      /**< N-PDU Number */
-   TknU32     seqNum;                    /**< Sequence Number */
+   TknUInt8      nPdu;                      /**< N-PDU Number */
+   TknUInt32     seqNum;                    /**< Sequence Number */
    EgtpExtHdr extHdr;                       /**< Extension headers present flag */
    uint32_t        teId;                         /**< Tunnel Endpoint Id */
    uint8_t         msgType;                      /**< eGTP-U Message Type */

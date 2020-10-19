@@ -75,7 +75,7 @@ RgUeCb            *prevUeCb,
 RgCellCb          *cellCb,
 TfuDatInfo        *datInfo,
 RgInfCeInfo       *ceInfo,
-U16               slot
+uint16_t          slot
 ));
 
 PRIVATE S16 rgTOMProcCCCHSduInDatInd ARGS((
@@ -84,7 +84,7 @@ RgUeCb            *prevUeCb,
 RgCellCb          *cellCb,
 TfuDatInfo        *datInfo,
 RgInfCeInfo       *ceInfo,
-U16               slot
+uint16_t           slot
 ));
 
 S16 rgHndlFlowCntrl
@@ -126,7 +126,7 @@ PRIVATE S16 rgTomUtlPrepareL2MUlThrpInfo ARGS
      TB, which is not guaranteed if higher Range values are used */
    /* Note: taking value 10 for BSR index 1 */
 #ifndef MAC_5GTF_UPDATE
-PRIVATE U32 rgLwrBsrTbl[64] = {
+PRIVATE uint32_t rgLwrBsrTbl[64] = {
    0, 10, 10, 12, 14, 17, 19, 22, 26,
    31, 36, 42, 49, 57, 67, 78, 91,
    107, 125, 146, 171, 200, 234, 274, 321,
@@ -138,7 +138,7 @@ PRIVATE U32 rgLwrBsrTbl[64] = {
 };
 #else
 
-PRIVATE U32 rgLwrBsrTbl[64] = {
+PRIVATE uint32_t rgLwrBsrTbl[64] = {
 0,10,13,16,19,23,29,35,43,53,65,80,98,120,147,181,223,274,337,414,
 509,625,769,945,1162,1429,1757,2161,2657,3267,4017,4940,6074,7469,
 9185,11294,13888,17077,20999,25822,31752,39045,48012,59039,72598,
@@ -156,9 +156,9 @@ PRIVATE U32 rgLwrBsrTbl[64] = {
 }
 
 /* global variables */
-U32 rgUlrate_tfu;
+uint32_t rgUlrate_tfu;
 #ifdef EMTC_ENABLE
-EXTERN U32 grgUlrate_tfu;
+EXTERN uint32_t grgUlrate_tfu;
 #endif
 
 /** @brief This function fills the PDSCH data of a downlink subframe 
@@ -201,7 +201,7 @@ PRIVATE S16 rgTOMUtlFillDatReqPdus(datInfo, dlSf, cellCb, err)
    TfuDatReqPduInfo *datReq=NULLP;
  /* Moving node declaration to limited scope for optimization */
    RgDlHqProcCb     *hqCb;
-   U8               idx;
+   uint8_t               idx;
    Inst             inst = cellCb->macInst - RG_INST_START;
 
 
@@ -468,7 +468,7 @@ S16 rgTOMUtlProcDlSf (dlSf, cellCb, err)
    return ROK;
 } /* end of */
 
-U32  rgMacGT;
+uint32_t  rgMacGT;
 
 /** @brief This function allocates the RgMacPdu that will be populated by DEMUX
  * with the SubHeaders list and the values of the Control elements.
@@ -500,7 +500,7 @@ Inst             inst;
 
    Mem               evntMem;
    RgUstaDgn         dgn;      /* Alarm diagnostics structure */
-   VOLATILE U32      startTime=0;
+   VOLATILE uint32_t      startTime=0;
 
 
    evntMem.region = rgCb[inst].rgInit.region;
@@ -574,7 +574,7 @@ PRIVATE Void rgTOMUtlFreePduEvnt (pdu, error)
       }
    }
    RG_FREE_MEM(pdu);
-   RETVOID;
+   return;
 } /* end of rgTOMUtlFreePduEvnt */ 
 
 /** @brief This function allocates the RgMacPdu that will be populated by DEMUX
@@ -607,7 +607,7 @@ RgInfSfDatInd **sfInfo;
 
    Mem               evntMem;
    RgUstaDgn         dgn;      /* Alarm diagnostics structure */
-   VOLATILE U32      startTime=0;
+   VOLATILE uint32_t      startTime=0;
 
 
    evntMem.region = rgCb[inst].rgInit.region;
@@ -660,7 +660,7 @@ RgInfSfDatInd *sfInfo;
 {
 
    RG_FREE_MEM(sfInfo);
-   RETVOID;
+   return;
 } /* end of rgTOMUtlFreePduEvnt */
 
 #ifdef LTE_L2_MEAS
@@ -695,9 +695,9 @@ PRIVATE S16 rgTomUtlPrepareL2MUlThrpInfo(cellCb,ueCb,dDatInd)
    RgRguDedDatInd    *dDatInd;
 #endif
 {
-   U8 lcId;
-   U8 lcgId;
-   U8 loop;
+   uint8_t lcId;
+   uint8_t lcgId;
+   uint8_t loop;
 
    dDatInd->burstInd = RGU_L2M_UL_BURST_END;
    for(loop=0;loop<dDatInd->numLch;loop++)
@@ -740,7 +740,7 @@ PRIVATE S16 rgTomUtlPrepareL2MUlThrpInfo(cellCb,ueCb,dDatInd)
  * @param  [in] RgUeCb     *ueCb
  * @param  [in] CmLteRnti  rnti
  * @param  [in] RgMacPdu   *pdu
- * @param  [out] U32       *lcgBytes
+ * @param  [out] uint32_t       *lcgBytes
  *  
  *  @return  S16
  *      -# ROK 
@@ -758,9 +758,9 @@ PRIVATE S16 rgTOMUtlProcMsg
  RgMacPdu      *pdu,
  Bool          isSpsRnti,
  Bool          *spsToBeActvtd,
- U16           *sduSize,
- U16           slot,
- U32           *lcgBytes
+ uint16_t      *sduSize,
+ uint16_t      slot,
+ uint32_t      *lcgBytes
  )
 #else
 PRIVATE S16 rgTOMUtlProcMsg(cellCb, ueCb, pdu, isSpsRnti,spsToBeActvtd,sduSize, slot, lcgBytes)
@@ -769,9 +769,9 @@ PRIVATE S16 rgTOMUtlProcMsg(cellCb, ueCb, pdu, isSpsRnti,spsToBeActvtd,sduSize, 
    RgMacPdu      *pdu;
    Bool          isSpsRnti;
    Bool          *spsToBeActvtd;
-   U16           *sduSize;
-   U16           slot;
-   U32           *lcgBytes;
+   uint16_t      *sduSize;
+   uint16_t      slot;
+   uint32_t      *lcgBytes;
 #endif   
 #else /* LTEMAC_SPS */
 #ifdef ANSI
@@ -780,16 +780,16 @@ PRIVATE S16 rgTOMUtlProcMsg
  RgCellCb      *cellCb, 
  RgUeCb        *ueCb,
  RgMacPdu      *pdu,
- U16           slot,
- U32           *lcgBytes
+ uint16_t      slot,
+ uint32_t      *lcgBytes
  )
 #else
 PRIVATE S16 rgTOMUtlProcMsg(cellCb, ueCb, pdu, slot, lcgBytes)
    RgCellCb      *cellCb; 
    RgUeCb        *ueCb;
    RgMacPdu      *pdu;
-   U16           slot;
-   U32           *lcgByes;
+   uint16_t       slot;
+   uint32_t       *lcgByes;
 #endif  
 #endif
 {
@@ -807,17 +807,17 @@ PRIVATE S16 rgTOMUtlProcMsg(cellCb, ueCb, pdu, slot, lcgBytes)
 #endif
 
 #ifdef LTE_L2_MEAS
-   U8                idx1;
-   U8                idx2;
-   RgUlSf            *ulSf;
-   U16               totalBytesRcvd = 0;
-   U16               sduLen[RGU_MAX_LC] = {0};
-   U8                qciVal[RGU_MAX_LC] = {0};
-   U8                numPrb = 0;
+   uint8_t                idx1;
+   uint8_t                idx2;
+   RgUlSf                 *ulSf;
+   uint16_t               totalBytesRcvd = 0;
+   uint16_t               sduLen[RGU_MAX_LC] = {0};
+   uint8_t                qciVal[RGU_MAX_LC] = {0};
+   uint8_t                numPrb = 0;
 
 #endif
-   U8                lcgId;
-   MsgLen            bufSz;
+   uint8_t                lcgId;
+   MsgLen                 bufSz;
 
   /* Moved outside of LTE_L2_MEAS
     *          scope as this pointer will now be used to 
@@ -1131,21 +1131,21 @@ PRIVATE S16 rgTOMUtlInsSchInfo
 (
 RgMacPdu *pdu,
 RgInfSfDatInd *sfInfo,
-RgInfCeInfo *ceInfo,
-CmLteRnti   rnti,
-Bool        spsToBeActvtd,
-U16         sduSize,
-U32         *lcgBytes
+RgInfCeInfo   *ceInfo,
+CmLteRnti      rnti,
+Bool           spsToBeActvtd,
+uint16_t       sduSize,
+uint32_t       *lcgBytes
 )
 #else
 PRIVATE S16 rgTOMUtlInsSchInfo (pdu, sfInfo, ceInfo, rnti,spsToBeActvtd,sduSize, lcgBytes)
 RgMacPdu *pdu;
-RgInfSfDatInd *sfInfo;
-RgInfCeInfo *ceInfo;
-CmLteRnti   rnti;
-Bool        spsToBeActvtd;
-U16         sduSize;
-U32         *lcgBytes;
+RgInfSfDatInd   *sfInfo;
+RgInfCeInfo 	*ceInfo;
+CmLteRnti        rnti;
+Bool             spsToBeActvtd;
+uint16_t         sduSize;
+uint32_t         *lcgBytes;
 #endif
 
 #else
@@ -1156,7 +1156,7 @@ RgMacPdu *pdu,
 RgInfSfDatInd *sfInfo,
 RgInfCeInfo *ceInfo,
 CmLteRnti   rnti,
-U32         *lcgBytes
+uint32_t    *lcgBytes
 )
 #else
 PRIVATE S16 rgTOMUtlInsSchInfo (pdu, sfInfo, ceInfo, rnti, lcgBytes)
@@ -1164,14 +1164,14 @@ RgMacPdu *pdu;
 RgInfSfDatInd *sfInfo;
 RgInfCeInfo *ceInfo;
 CmLteRnti   rnti;
-U32         *lcgBytes;
+uint32_t    *lcgBytes;
 #endif
 #endif
 {
    S16            ret;
    RgInfUeDatInd *ueInfo;
-   U32           lcgId = 0;
-   U32           idx = 0;
+   uint32_t       lcgId = 0;
+   uint32_t       idx = 0;
 
 
    RG_TOM_INF_ALLOC(sfInfo, sizeof(RgInfUeDatInd), ueInfo, ret);
@@ -1262,15 +1262,15 @@ Inst             inst;
    CmLList           *node;
    TfuDatInfo        *datInfo;
    RgLowSapCb        *tfuSap;
-   U16               slot;
+   uint16_t          slot;
 #ifdef LTEMAC_SPS
    Bool              isSpsRnti=FALSE;
    Pst               schPst1;  
   // RgInfSpsRelInfo   relInfo;
-	Bool              spsToBeActvtd = FALSE;
-   U16               sduSize = 0;
+   Bool              spsToBeActvtd = FALSE;
+   uint16_t          sduSize = 0;
 #endif
-   U32               lcgBytes[RGINF_MAX_LCG_PER_UE];
+   uint32_t          lcgBytes[RGINF_MAX_LCG_PER_UE];
 
 
 #ifdef STUB_TTI_HANDLING_5GTF 
@@ -1323,7 +1323,7 @@ Inst             inst;
    {
       datInfo = (TfuDatInfo*)node->node;
       {
-         //extern U32 ulrate_tfu;
+         //extern uint32_t ulrate_tfu;
          MsgLen len;
          SFndLenMsg(datInfo->mBuf, &len);
 #ifdef STUB_TTI_HANDLING_5GTF         
@@ -1449,9 +1449,9 @@ Inst             inst;
      rgTOML2MCompileActiveLCs (cellCb, ueCb, pdu, &ceInfo);
 #endif
 #ifdef LTEMAC_SPS
-         if ((ret = rgTOMUtlProcMsg(cellCb, ueCb, pdu, isSpsRnti,&spsToBeActvtd,&sduSize, slot, (U32 *)&lcgBytes)) != ROK)
+         if ((ret = rgTOMUtlProcMsg(cellCb, ueCb, pdu, isSpsRnti,&spsToBeActvtd,&sduSize, slot, (uint32_t *)&lcgBytes)) != ROK)
 #else
-         if ((ret = rgTOMUtlProcMsg (cellCb, ueCb, pdu, slot, (U32 *)&lcgBytes)) != ROK)
+         if ((ret = rgTOMUtlProcMsg (cellCb, ueCb, pdu, slot, (uint32_t *)&lcgBytes)) != ROK)
 #endif /* LTEMAC_SPS */
          {
             rgTOMUtlFreePduEvnt (pdu, TRUE);
@@ -1465,9 +1465,9 @@ Inst             inst;
 
       
 #ifdef LTEMAC_SPS
-      if(rgTOMUtlInsSchInfo(pdu, sfInfo, &ceInfo, datInfo->rnti,spsToBeActvtd,sduSize, (U32 *)&lcgBytes) != ROK)
+      if(rgTOMUtlInsSchInfo(pdu, sfInfo, &ceInfo, datInfo->rnti,spsToBeActvtd,sduSize, (uint32_t *)&lcgBytes) != ROK)
 #else
-      if(rgTOMUtlInsSchInfo(pdu, sfInfo, &ceInfo, datInfo->rnti, (U32 *)&lcgBytes) != ROK)
+      if(rgTOMUtlInsSchInfo(pdu, sfInfo, &ceInfo, datInfo->rnti, (uint32_t *)&lcgBytes) != ROK)
 #endif
       
       {
@@ -1492,10 +1492,10 @@ Inst             inst;
    /* Update PRB used for all GBR QCIs to scheduler */
     memcpy( &sfInfo->qcisUlPrbCnt[0],
               &cellCb->qcisUlPrbCnt[0],
-             (RGM_MAX_QCI_REPORTS * sizeof(U32)));
+             (RGM_MAX_QCI_REPORTS * sizeof(uint32_t)));
     /* clear the cellCb ul prb value */
     memset(&cellCb->qcisUlPrbCnt[0], 0, 
-             (RGM_MAX_QCI_REPORTS * sizeof(U32)));
+             (RGM_MAX_QCI_REPORTS * sizeof(uint32_t)));
 
    /* RRM_RBC_Y */
 
@@ -1782,7 +1782,7 @@ RgInfUlUeInfo       *ueInfo;
 #endif
 {
    Inst           inst = cell->macInst - RG_INST_START;
-   U8             idx;
+   uint8_t        idx;
    RgUlSf         *ulSf;
    S16            ret;
 
@@ -1860,7 +1860,7 @@ Inst                inst;
 RgDlSf              *dlSf;
 #endif
 {
-   U8               idx;
+   uint8_t          idx;
 
 
    if(dlSf->txDone == FALSE)
@@ -1894,18 +1894,18 @@ RgDlSf              *dlSf;
       RLC-MAC */
    dlSf->statIndDone = FALSE;
 #endif
-	 if (dlSf->tbs.count)
-	 {
-      U8           i;
+   if (dlSf->tbs.count)
+   {
+      uint8_t      i;
       CmLList      *node;
       RgDlHqProcCb *hqP;
-       RGDBGERRNEW(inst, (rgPBuf(inst),
+      RGDBGERRNEW(inst, (rgPBuf(inst),
                 "Error Stale TBs in Subframes TBS list\n"));
       node = dlSf->tbs.first;
-		  while(node)
-		  {
-         hqP = (RgDlHqProcCb*)node->node;
-         node = node->next;
+      while(node)
+      {
+          hqP = (RgDlHqProcCb*)node->node;
+          node = node->next;
           if (hqP)
           {
 		     for(i=0;i< RG_MAX_TB_PER_UE;i++)
@@ -1925,7 +1925,7 @@ RgDlSf              *dlSf;
    cmLListInit(&dlSf->tbs);
    dlSf->txDone = FALSE;
    dlSf->numRaRsp = 0;
-   RETVOID;
+   return;
 }
 
 /**
@@ -1959,8 +1959,8 @@ RgInfSfAlloc        *sfInfo;
 {
    RguFlowCntrlInd  *flowCntrlInd;
    Pst              *pst;
-   U32              ueIdx;
-   U32              lcIdx;
+   uint32_t         ueIdx;
+   uint32_t         lcIdx;
 
    pst = &cell->rguDlSap->sapCfg.sapPst;
    /* flowCntrlInd is alloced in cell init time and will be re-used throughout */
@@ -2028,7 +2028,7 @@ RgInfSfAlloc        *sfInfo;
    RgCellCb       *cell;
    RgDlSf         *dlSf;
    RgErrInfo      err;
-   VOLATILE U32   startTime=0;
+   VOLATILE uint32_t   startTime=0;
    Inst           inst;
 
 
@@ -2167,7 +2167,7 @@ RgUeCb            *prevUeCb,
 RgCellCb          *cellCb,
 TfuDatInfo        *datInfo,
 RgInfCeInfo       *ceInfo,
-U16               slot
+uint16_t               slot
 )
 #else
 PRIVATE S16 rgTOMProcCrntiCEInDatInd( pdu, prevUeCb, cellCb, datInfo, ceInfo, slot)
@@ -2176,7 +2176,7 @@ RgUeCb            *prevUeCb;
 RgCellCb          *cellCb;
 TfuDatInfo        *datInfo;
 RgInfCeInfo       *ceInfo;
-U16               slot;
+uint16_t               slot;
 #endif
 {
    RgUeCb *ueCb = NULLP;
@@ -2185,7 +2185,7 @@ U16               slot;
 
 #ifdef LTEMAC_SPS
    Bool spsToBeActvtd;
-   U16  sduSize;
+   uint16_t  sduSize;
 #endif
 
 
@@ -2268,7 +2268,7 @@ RgUeCb            *prevUeCb,
 RgCellCb          *cellCb,
 TfuDatInfo        *datInfo,
 RgInfCeInfo       *ceInfo,
-U16               slot 
+uint16_t               slot 
 )
 #else
 PRIVATE S16 rgTOMProcCCCHSduInDatInd( pdu, prevUeCb, cellCb, datInfo, ceInfo, slot)
@@ -2277,7 +2277,7 @@ RgUeCb            *prevUeCb;
 RgCellCb          *cellCb;
 TfuDatInfo        *datInfo;
 RgInfCeInfo       *ceInfo;
-U16               slot;
+uint16_t               slot;
 #endif
 {
    RgUeCb *ueCb = NULLP;
@@ -2285,7 +2285,7 @@ U16               slot;
 
 #ifdef LTEMAC_SPS
    Bool spsToBeActvtd;
-   U16  sduSize;
+   uint16_t  sduSize;
 #endif
 
 
@@ -2370,8 +2370,8 @@ PRIVATE S16 rgTOMUtlL2MStoreBufSz (ueCb, ceInfo)
  RgInfCeInfo *ceInfo;
 #endif
 {
-   U8 lcgId;
-   U8 bsr;
+   uint8_t lcgId;
+   uint8_t bsr;
 
    if(ceInfo->bitMask & RG_TRUNC_BSR_CE_PRSNT)
    {

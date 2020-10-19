@@ -255,8 +255,8 @@ RlcCfgInfo   *cfg;
 #endif
 {
    RlcCfgCfmInfo   *cfgCfm; 
-   U8              idx;    
-   RlcCb            *tRlcCb;
+   uint8_t         idx;    
+   RlcCb           *tRlcCb;
    Pst             *pstUdxCfm;
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -432,7 +432,7 @@ S16 rlcDlUdxUeIdChgReq
 (
 Pst         *pst, 
 SpId        spId, 
-U32         transId, 
+uint32_t    transId, 
 CkwUeInfo   *ueInfo,
 CkwUeInfo   *newUeInfo
 )
@@ -440,7 +440,7 @@ CkwUeInfo   *newUeInfo
 S16 rlcDlUdxUeIdChgReq(pst,spId,transId,ueInfo,newUeInfo)
 Pst         *pst;
 SpId        spId;
-U32         transId;
+uint32_t    transId;
 CkwUeInfo   *ueInfo;
 CkwUeInfo   *newUeInfo;
 #endif
@@ -610,9 +610,9 @@ Pst            *pst;
 RlcL2MeasReqEvt *measReqEvt;
 #endif
 {
-   U32            cntr;
-   U8             measType;
-   VOLATILE U32     startTime = 0;
+   uint32_t  cntr;
+   uint8_t   measType;
+   VOLATILE  uint32_t     startTime = 0;
    RlcCb     *tRlcCb;
 
    /*starting Task*/
@@ -638,7 +638,7 @@ RlcL2MeasReqEvt *measReqEvt;
    else
    {
       /* for nonIpThroughput meas, enable only for the sent QCIs */
-      U32 i;
+      uint32_t i;
       for(i = 0; i < LKW_MAX_QCI; i++)
       {
          tRlcCb->u.dlCb->rlcL2Cb.measOn[i] |= measType;
@@ -675,20 +675,20 @@ After receving this request, RLC stops L2 Measurement
 S16 rlcDlUdxL2MeasStopReq
 (
 Pst            *pst,
-U8             measType
+uint8_t         measType
 )
 #else
 S16 rlcDlUdxL2MeasStopReq (pst, measType)
 Pst            *pst;
-U8             measType;
+uint8_t         measType;
 #endif
 {
   /* S16 ret = ROK;*/
    RlcL2MeasEvtCb *measEvtCb = NULLP;
-   U16            cntr;
-   U8             status = ROK;
+   uint16_t        cntr;
+   uint8_t         status = ROK;
 /*   RlcL2MeasCfmEvt          measCfmEvt;  */
-   VOLATILE U32     startTime = 0;
+   VOLATILE uint32_t     startTime = 0;
    RlcCb     *tRlcCb=NULLP;
    
    /*starting Task*/
@@ -736,18 +736,18 @@ After receving this request, RLC sends L2 Measurement
 S16 rlcDlUdxL2MeasSendReq
 (
 Pst            *pst,
-U8             measType
+uint8_t         measType
 )
 #else
 S16 rlcDlUdxL2MeasSendReq (pst, measType)
 Pst            *pst;
-U8             measType;
+uint8_t         measType;
 #endif
 {
    RlcL2MeasEvtCb *measEvtCb;
-   U16            cntr;
+   uint16_t            cntr;
    
-   VOLATILE U32     startTime = 0;
+   VOLATILE uint32_t     startTime = 0;
    RlcCb     *tRlcCb;
 
    tRlcCb =  RLC_GET_RLCCB(pst->dstInst);

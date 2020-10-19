@@ -39,7 +39,7 @@
 #include "ss_rbuf.h"
 #include "ss_rbuf.x"
 
-U32 ssRngBufStatus = 0;
+uint32_t ssRngBufStatus = 0;
 
 /* Global Ring Loop Up Table */
 SsRngBufTbl SsRngInfoTbl[SS_RNG_BUF_MAX];
@@ -65,19 +65,19 @@ Desc: Creates Ring Buffer for the given Id.
 #ifdef ANSI
 S16 SCreateSRngBuf
 (
-U32 id,  
+uint32_t id,  
 Region region,
 Pool pool,
-U32 elmSize,
-U32 rngSize
+uint32_t elmSize,
+uint32_t rngSize
 )
 #else
 S16 SCreateSRngBuf (id, region, pool, elmSize, rngSize)
-U32 id; 
+uint32_t id; 
 Region region;
 Pool pool;
-U32 elmSize;
-U32 rngSize;
+uint32_t elmSize;
+uint32_t rngSize;
 #endif
 {
    SsRngBuf* ring;
@@ -152,15 +152,15 @@ Desc: Attach the calling Entity to a ring buffer
 #ifdef ANSI
 S16 SAttachSRngBuf
 (
-U32 id,  
-U32 ent,
-U32 txRx
+uint32_t id,  
+uint32_t ent,
+uint32_t txRx
 )
 #else
 S16 SAttachSRngBuf (id, ent, txRx)
-U32 id;
-U32 ent;
-U32 txRx;
+uint32_t id;
+uint32_t ent;
+uint32_t txRx;
 #endif
 {
     /* Retrive Buffer from Global Info Table */
@@ -206,13 +206,13 @@ Desc: Establish a pipe between producer and consumer
 #ifdef ANSI
 S16 SConnectSRngBuf
 (
-U32 id,  
-U32 rxEnt
+uint32_t id,  
+uint32_t rxEnt
 )
 #else
 S16 SConnectSRngBuf (id, rxEnt)
-U32 id;
-U32 rxEnt;
+uint32_t id;
+uint32_t rxEnt;
 #endif
 {
    /* Send to Reciever ENT*/ 
@@ -251,7 +251,7 @@ inline static S16 IsEmpty(SsRngBuf* rBuf)
    return (rBuf->write == rBuf->read); 
 }
 
-S16 isRngEmpty(U32 id)
+S16 isRngEmpty(uint32_t id)
 {
    return (IsEmpty(SsRngInfoTbl[id].r_addr));
 }
@@ -262,19 +262,19 @@ Desc: Perform Queue operation on Ring bufer
 #ifdef ANSI
 S16 SEnqSRngBuf 
 (
-U32 id, 
+uint32_t id, 
 Void* elem
 )
 #else
 S16 SEnqSRngBuf(id,elem) 
-U32 id;
+uint32_t id;
 Void* elem;
 #endif
 {
-   U8* w_ptr;
-   U8 i=0;
-   U8 *element = (U8 *)elem;
-   U32 wrIndex;
+   uint8_t* w_ptr;
+   uint8_t i=0;
+   uint8_t *element = (uint8_t *)elem;
+   uint32_t wrIndex;
    /* TBD To replace id with ring addr when SAttachSRngBuf is used*/
    /* Retrive Buffer from Id */
    SsRngBuf* ring = SsRngInfoTbl[id].r_addr;
@@ -284,13 +284,13 @@ Void* elem;
         return RFAILED;
    }
    /* TBD Avoid multiplication for optimisation */
-   w_ptr = (U8*)ring->elem + (ring->write * ring->type);
+   w_ptr = (uint8_t*)ring->elem + (ring->write * ring->type);
    /* TBD Avoid for loop - use memcpy */
    for( i=0; i < ring->type; i++)
    {
-      *(U8*)w_ptr = *(U8*)element;
+      *(uint8_t*)w_ptr = *(uint8_t*)element;
       w_ptr++;
-      (U8*)element++;
+      (uint8_t*)element++;
    }
    /* Increment write index */
     wrIndex = ring->write + 1 ;
@@ -303,11 +303,11 @@ Void* elem;
 #ifdef ANSI
 S16 SGetNumElemInRng
 (
-U32 id
+uint32_t id
 )
 #else
 S16 SGetNumElemInRng (id)
-U32 id;
+uint32_t id;
 #endif
 {
 
@@ -322,19 +322,19 @@ Desc: Perform DeQueue operation on Ring bufer
 #ifdef ANSI
 S16 SDeqSRngBuf
 (
-U32 id,
+uint32_t id,
 Void *elem
 )
 #else
 S16 SDeqSRngBuf (id,elem)
-U8 id;
+uint8_t id;
 Void *elem;
 #endif
 {
-   U8* r_ptr;
-   U8 i=0;
-   U8 *element = (U8 *)elem;
-   U32 rdIndex;
+   uint8_t* r_ptr;
+   uint8_t i=0;
+   uint8_t *element = (uint8_t *)elem;
+   uint32_t rdIndex;
    /* Retrive Buffer from Id*/
    SsRngBuf* ring  = SsRngInfoTbl[id].r_addr;
    if(IsEmpty(ring))
@@ -342,11 +342,11 @@ Void *elem;
        SsRngInfoTbl[id].nReadFail++;
        return RFAILED;
    }
-   r_ptr = (U8*)ring->elem + (ring->read * ring->type);
+   r_ptr = (uint8_t*)ring->elem + (ring->read * ring->type);
    for(i=0; i<ring->type; i++)
    {
-      *(U8*)element = *r_ptr;
-      (U8*)element++;
+      *(uint8_t*)element = *r_ptr;
+      (uint8_t*)element++;
       r_ptr++;
    }
    // Avoiding % operation for wrap around
@@ -359,13 +359,13 @@ Void *elem;
 #ifdef ANSI
 S16 SDestroySRngBuf 
 (
-U32 id,
+uint32_t id,
 Region region,
 Pool pool
 )
 #else
 S16 SDestroySRngBuf(id, region, pool)
-U32 id;
+uint32_t id;
 Region region;
 Pool pool;
 #endif
@@ -397,7 +397,7 @@ S16 SPrintSRngStats ()
 Void;
 #endif
 {
-U32 i; 
+uint32_t i; 
 
    Txt   prntBuf[100];
 
@@ -464,11 +464,11 @@ U32 i;
 #ifdef ANSI
 Void* SRngGetWIndx
 (
-U32 rngId
+uint32_t rngId
 )
 #else
 Void* SRngGetWIndx (rngId)
-U32 rngId;
+uint32_t rngId;
 #endif
 {
    /* Retrive Buffer from Id*/
@@ -480,18 +480,18 @@ U32 rngId;
    }
    else
    {
-      return (((U8 *)ring->elem) + (ring->type * ring->write));
+      return (((uint8_t *)ring->elem) + (ring->type * ring->write));
    }
 }
 
 #ifdef ANSI
 Void* SRngGetRIndx
 (
-U32 rngId
+uint32_t rngId
 )
 #else
 Void* SRngGetRIndx (rngId)
-U32 rngId;
+uint32_t rngId;
 #endif
 {
    /* Retrive Buffer from Id*/
@@ -503,21 +503,21 @@ U32 rngId;
    }
    else
    {
-      return (((U8 *)ring->elem) + (ring->type * ring->read));
+      return (((uint8_t *)ring->elem) + (ring->type * ring->read));
    }
 }
 
 #ifdef ANSI
 Void SRngIncrWIndx
 (
-U32 rngId
+uint32_t rngId
 )
 #else
 Void SRngIncrWIndx (rngId)
-U32 rngId;
+uint32_t rngId;
 #endif
 {
-   U32 wrIndex;
+   uint32_t wrIndex;
    /* Retrive Buffer from Id*/
    SsRngBuf* ring  = SsRngInfoTbl[rngId].r_addr;
    wrIndex = ring->write + 1;
@@ -529,14 +529,14 @@ U32 rngId;
 #ifdef ANSI
 Void SRngIncrRIndx
 (
-U32 rngId
+uint32_t rngId
 )
 #else
 Void SRngIncrRIndx (rngId)
-U32 rngId;
+uint32_t rngId;
 #endif
 {
-   U32 rdIndex;
+   uint32_t rdIndex;
    /* Retrive Buffer from Id*/
    SsRngBuf* ring  = SsRngInfoTbl[rngId].r_addr;
    rdIndex = ring->read + 1;
@@ -546,7 +546,7 @@ U32 rngId;
 }
 #ifdef XEON_SPECIFIC_CHANGES
 #if (defined (MAC_FREE_RING_BUF) || defined (RLC_FREE_RING_BUF))
-S16 mtAddBufToRing(SsRngBufId ringId,void *bufPtr,U8 freeType)
+S16 mtAddBufToRing(SsRngBufId ringId,void *bufPtr,uint8_t freeType)
 {
    S16 ret1 = ROK;
    

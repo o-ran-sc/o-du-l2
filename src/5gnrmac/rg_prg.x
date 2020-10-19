@@ -47,7 +47,7 @@ typedef TfuDatReqTbInfo    RgPrgDatReqTbInfo;
 /** 
   * @brief Typedef for uplink Dedicated Logical channel group Id.
   */
-typedef U8                 RgPrgLteLcgId;
+typedef uint8_t                 RgPrgLteLcgId;
 
 /** 
   * @brief Structure to hold uplink Dedicated Logical channel info.
@@ -62,9 +62,9 @@ typedef U8                 RgPrgLteLcgId;
 typedef struct rgPrgUlLcInfo
 {
    CmLteLcId     lcId;    /*!< Logical channel ID */
-   RgPrgLteLcgId      lcgId;    /*!< Logical channel group */
+   RgPrgLteLcgId lcgId;    /*!< Logical channel group */
 #ifdef LTE_L2_MEAS
-   U8              qci;     /*!< QCI for this logical channel control block */
+   uint8_t       qci;     /*!< QCI for this logical channel control block */
 
    Bool          measOn;   /*!< TRUE if Timing Info needs to be fetched for
                              Scheduled UL IP throughput else FALSE */
@@ -85,7 +85,7 @@ typedef struct rgPrgLcgInfo
    /* Right now not keeping associated logical channels, searching for
     * associated channels needed only during config */
    RgPrgLteLcgId    lcgId;   /*!< Group ID */
-   U8               lcCount; /*!< Lc count */
+   uint8_t          lcCount; /*!< Lc count */
    Bool             isGbr;   /*!< Indicate if LCG is GBR LCG */
 }RgPrgLcgInfo;
 
@@ -120,7 +120,7 @@ typedef struct rgPrgUeSCellCfgInfo
    CmLteRnti            ueId;            /*!< UE identifier */
    CmLteCellId          cellId;          /*!< Cell ID */
 
-   U8                   maxUlHqRetx;     /*!< Maximum number of harq
+   uint8_t              maxUlHqRetx;     /*!< Maximum number of harq
                                           * re-transmissions */ 
    RgPrgUlLcInfo        ulLcInfo[RG_MAX_LC_PER_UE];  /*!< Dedicated Uplink 
                                                 logical channel information */
@@ -149,8 +149,8 @@ typedef struct rgPrgCfgCfmInfo
 {
    CmLteRnti       ueId;    /*!< UE identifier */
    CmLteCellId     sCellId;  /*!< SCell ID */
-   U8              status;  /*!< Status: OK/NOK */
-   U8              event;   /*!< type of event */ 
+   uint8_t         status;  /*!< Status: OK/NOK */
+   uint8_t         event;   /*!< type of event */ 
 }RgPrgCfgCfmInfo;
 
 /** 
@@ -185,7 +185,7 @@ typedef struct rgPrgUeSCellLchModInfo
 
    struct ulLchRecfgS
    {
-      U8             lcgId;  /*!< Logical channel group ID */
+      uint8_t  lcgId;  /*!< Logical channel group ID */
    } ulLchRecfg;                /*!< Uplink logical channel reconfiguration
                                information */
 }RgPrgUeSCellLchModInfo;
@@ -204,7 +204,7 @@ typedef struct rgPrgUeSCellLchDelInfo
    CmLteCellId cellId;       /*!< Cell ID */
    CmLteRnti   crnti;        /*!< CRNTI for DTCH and DCCH */
    CmLteLcId   lcId;         /*!< Logical channel ID */
-   U8          dir;          /*!< Indicates Direction. Direction can take following
+   uint8_t     dir;          /*!< Indicates Direction. Direction can take following
                             values:<br>
                             PRG_DIR_TX<br>
                             PRG_DIR_RX<br>
@@ -225,12 +225,12 @@ typedef struct rgPrgUeSCellLchDelInfo
    */
 typedef struct rgPrgUlLchCfg
 {
-   U8             ulTrchType; /*!< Indicates type of UL transport channel:
+   uint8_t             ulTrchType; /*!< Indicates type of UL transport channel:
                                    Validated only for BCCH at MAC. 
                                    UL Transport channel type can take following values:<br>
                                    CM_LTE_TRCH_RACH<br>
                                    CM_LTE_TRCH_UL_SCH */  
-   U8             lcgId;      /*!< Logical channel group ID */
+   uint8_t             lcgId;      /*!< Logical channel group ID */
 } RgPrgUlLchCfg;
 
 
@@ -247,7 +247,7 @@ typedef struct rgPrgUlLchCfg
 */
 typedef struct rgPrgDlLchCfg 
 {
-   U8             dlTrchType; /*!< Indicates type of DL transport channel:
+   uint8_t             dlTrchType; /*!< Indicates type of DL transport channel:
                                    Validated only for BCCH at MAC. DL Transport
                                    channel type can take following values:<br>
                                    CM_LTE_TRCH_BCH<br> 
@@ -291,7 +291,7 @@ typedef struct rgPrgUeSCellLchAddInfo
                                       CM_LTE_LCH_DCCH<br>
                                       CM_LTE_LCH_DTCH */  
                             
-   U8            dir;        /*!< Indicates Direction. Direction can take following 
+   uint8_t        dir;        /*!< Indicates Direction. Direction can take following 
                                   values:<br>
                                   PRG_DIR_TX<br>
                                   PRG_DIR_RX<br>
@@ -300,7 +300,7 @@ typedef struct rgPrgUeSCellLchAddInfo
    RgPrgDlLchCfg   dlInfo;     /*!< Downlink logical channel configuration info */
    RgPrgUlLchCfg   ulInfo;     /*!< Uplink logical channel configuration info */
 #ifdef LTE_L2_MEAS
-   U8 qci;                   /*!< QCI for the logical channel.
+   uint8_t qci;                   /*!< QCI for the logical channel.
                                   Valid Range:[0-255] (Actual QCI - 1). */
 
 #endif /* LTE_L2_MEAS */

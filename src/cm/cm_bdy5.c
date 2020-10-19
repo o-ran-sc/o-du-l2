@@ -86,7 +86,7 @@
 *
 *       Desc:  Handle a timer entry
 *
-*       Ret:   RETVOID
+*       Ret:   void
 *
 *       Notes: 
 *
@@ -110,8 +110,8 @@ PFV      func;           /* function */
 #endif
 {
 /**/
-   U32 expire;
-   U32 entry;
+   uint32_t expire;
+   uint32_t entry;
    S16 event;
    PTR cb;
    CmTimer *tmp1;
@@ -139,7 +139,7 @@ PFV      func;           /* function */
    ++tqCp->nxtEnt;
    expire = tqCp->nxtEnt;
    /* cm_bdy5_c_002.113 - Modification for SRegCfgTmr support */
-   entry = (U32) (expire % (U32)(tqCp->tmrLen));
+   entry = (uint32_t) (expire % (uint32_t)(tqCp->tmrLen));
 
    tmp2 = &tq[entry].first;
    while ((tmp1 = *tmp2) != NULLP)
@@ -159,7 +159,7 @@ PFV      func;           /* function */
       else
          tmp2 = &tmp1->next;
    }
-   RETVOID;
+   return;
 } /* end of cmPrcTmr */
 
 #else /* not defined SS_FAP */
@@ -179,13 +179,13 @@ PFV      func;           /* function */
 #endif
 {
 /**/
-   U32 expire;
-   U32 entry, entry1;
+   uint32_t expire;
+   uint32_t entry, entry1;
    S16 event;
    CmTqType *tqEnt, *tqEnt1; 
    PTR cb;
    CmTimer *tmp1;
-   VOLATILE U32     startTime = 0;
+   VOLATILE uint32_t     startTime = 0;
    
  
    /*starting Task*/
@@ -212,7 +212,7 @@ PFV      func;           /* function */
    ++tqCp->nxtEnt;
    expire = tqCp->nxtEnt;
 	tqCp->tmrLen = 1;
-   entry = (U32) (expire % (U32)(tqCp->tmrLen));
+   entry = (uint32_t) (expire % (uint32_t)(tqCp->tmrLen));
   
    tqCp->tmp = (tqEnt = &tq[entry])->first;
    while ((tmp1 = tqCp->tmp) != NULLP)
@@ -236,7 +236,7 @@ PFV      func;           /* function */
          }
          else
          {
-            entry1 = (U32) (tmp1->tqExpire % (U32)(tqCp->tmrLen));
+            entry1 = (uint32_t) (tmp1->tqExpire % (uint32_t)(tqCp->tmrLen));
             tqEnt1 = &tq[entry1];
             CM_RMV_TQCP(tqEnt, tmp1);
             tmp1->entIdx = entry1; 
@@ -247,7 +247,7 @@ PFV      func;           /* function */
 
    /*stoping Task*/
    SStopTask(startTime, PID_CM_PRC_TMR);
-   RETVOID;
+   return;
 } /* end of cmPrcTmr */
 #endif /* SS_FAP */
 
@@ -259,7 +259,7 @@ PFV      func;           /* function */
 *
 *       Desc:  initialize timers
 *
-*       Ret:   RETVOID
+*       Ret:   void
 *
 *       Notes: Connection Oriented Control
 *
@@ -270,16 +270,16 @@ PFV      func;           /* function */
 Void cmInitTimers
 (
 CmTimer *timers,     /* timer list */
-U8 max               /* maximum tmrs */
+uint8_t max               /* maximum tmrs */
 )
 #else
 Void cmInitTimers(timers, max)
 CmTimer *timers;     /* timer list */
-U8 max;              /* maximum tmrs */
+uint8_t max;              /* maximum tmrs */
 #endif
 {
    CmTimer *tPtr;
-   REG1 U8 i;
+   REG1 uint8_t i;
 
 
    for (i = 0, tPtr = timers; i < max; i++, tPtr++)
@@ -291,7 +291,7 @@ U8 max;              /* maximum tmrs */
       tPtr->prev = (struct cmTimer *)NULLP;
       tPtr->ent2bUpd = FALSE;
    }
-   RETVOID;
+   return;
 } /* end of cmInitTimers */
 
 /*
@@ -300,7 +300,7 @@ U8 max;              /* maximum tmrs */
 *
 *       Desc:   Places Control Block on Timing Queue
 *
-*       Ret:    RETVOID
+*       Ret:    void
 *
 *       Notes:  None
 *
@@ -320,16 +320,16 @@ CmTmrArg *arg;
 {
 /*added FAP modifications*/
 #ifdef SS_FAP
-   REG1 U8 tmrNum;
+   REG1 uint8_t tmrNum;
    /* cm_bdy5_c_001.main_20 - Modification for SRegCfgTmr support */
-   U32 ent;
-   U32 expire;
+   uint32_t ent;
+   uint32_t expire;
    CmTimer **tmp;
 
 
    expire = (arg->tqCp->nxtEnt + arg->wait);
    /* cm_bdy5_c_002.113 - Modification for SRegCfgTmr support */
-   ent = (U32)(expire % (U32)(arg->tqCp->tmrLen));
+   ent = (uint32_t)(expire % (uint32_t)(arg->tqCp->tmrLen));
 
    for (tmrNum = 0; tmrNum < arg->max; tmrNum++)
    {
@@ -345,19 +345,19 @@ CmTmrArg *arg;
             tmp = &((*tmp)->next);
          *tmp = &arg->timers[tmrNum];
 
-         RETVOID;
+         return;
       }
    }
-   RETVOID;
+   return;
 #else
-   REG1 U8 tmrNum;
-   U32 ent;
+   REG1 uint8_t tmrNum;
+   uint32_t ent;
    CmTqType *tq;
    CmTimer  *target;
-   U32 expire;
+   uint32_t expire;
  
    expire = (arg->tqCp->nxtEnt + arg->wait);
-   ent = (U32)(expire % (U32)(arg->tqCp->tmrLen));
+   ent = (uint32_t)(expire % (uint32_t)(arg->tqCp->tmrLen));
  
    for (tmrNum = 0; tmrNum < arg->max; tmrNum++)
    {
@@ -375,10 +375,10 @@ CmTmrArg *arg;
          /* Place the timer block in the timer list */
          CM_PLC_TQCP(tq, target); 
  
-         RETVOID;
+         return;
       }
    }
-   RETVOID;
+   return;
 #endif
 } /* end of cmPlcCbTq */
  
@@ -388,7 +388,7 @@ CmTmrArg *arg;
 *
 *       Desc:   Places Control Block on Timing Queue
 *
-*       Ret:    RETVOID
+*       Ret:    void
 *
 *       Notes:  None
 *
@@ -410,7 +410,7 @@ CmTmrArg *arg;
    arg->timers[arg->tNum].tqExpire = arg->tqCp->nxtEnt + arg->wait;
    arg->timers[arg->tNum].ent2bUpd = TRUE; 
  
-   RETVOID;
+   return;
 } /* end of cmRstCbTq */
 
 /*
@@ -419,7 +419,7 @@ CmTmrArg *arg;
 *
 *       Desc:   Removes control block from Timing Queue
 *
-*       Ret:    RETVOID
+*       Ret:    void
 *
 *       Notes:  None
 *
@@ -440,7 +440,7 @@ CmTmrArg *arg;
 /*Added FAP modifications*/
 #ifdef SS_FAP
 /* cm_bdy5_c_002.113 - Modification for SRegCfgTmr support */
-   U32 ent;
+   uint32_t ent;
    CmTimer *target;
    CmTimer *tmp1;
    CmTimer **tmp2;
@@ -450,7 +450,7 @@ CmTmrArg *arg;
    if (target->tmrEvnt != TMR_NONE)
    {
       /* cm_bdy5_c_002.113 - Modification for SRegCfgTmr support */
-      ent = (U32) (target->tqExpire % (U32)(arg->tqCp->tmrLen));
+      ent = (uint32_t) (target->tqExpire % (uint32_t)(arg->tqCp->tmrLen));
       tmp2 = &arg->tq[ent].first;
 
       while ((tmp1 = *tmp2) != NULLP)
@@ -470,16 +470,16 @@ CmTmrArg *arg;
             tmp2 = &tmp1->next;
       }
    }
-   RETVOID;
+   return;
 #else
-   U32 ent;
+   uint32_t ent;
    CmTimer  *target;
    CmTqType *tq;
    
    target = &arg->timers[arg->tNum];
    if (target->tmrEvnt != TMR_NONE)
    {
-      ent = (U32) (target->entIdx);
+      ent = (uint32_t) (target->entIdx);
       tq = &arg->tq[ent];
  
       /* 
@@ -496,7 +496,7 @@ CmTmrArg *arg;
       target->cb = NULLP;
  
    }
-   RETVOID;
+   return;
 #endif
 } /* end of cmRmvCbTq */
  

@@ -53,7 +53,7 @@ typedef struct ssdSTskEntry
    SLockId              lock;
 
 #ifdef SS_MULTICORE_SUPPORT
-   U32                  lwpId;
+   uint32_t                  lwpId;
 #endif /* SS_MULTICORE_SUPPORT */
 } SsdSTskEntry;
 
@@ -128,20 +128,20 @@ typedef struct ssdOs
 typedef struct mtBktCfg
 {
    Size         blkSize;                /* bucket quantum size */
-   U32          numBlks;                /* the total blocks in the bucket */
+   uint32_t          numBlks;                /* the total blocks in the bucket */
 } MtBktCfg;
 
 typedef struct mtRegCfg
 {
    Region       regionId;
-   U16          numBkts;
+   uint16_t          numBkts;
    Size         heapsize;
    MtBktCfg     bkt[SS_MAX_POOLS_PER_REG];
 } MtRegCfg;
 
 typedef struct mtMemCfg
 {
-   U8           numRegions;
+   uint8_t           numRegions;
    MtRegCfg     region[SS_MAX_REGS];
 } MtMemCfg;
 
@@ -162,7 +162,7 @@ typedef struct sLockInfo
 }SLockInfo;
 #endif /* SS_LOCK_SUPPORT */
 
-extern U32 gt[128];
+extern uint32_t gt[128];
 #endif  /*  __MTSSX__  */
 
 

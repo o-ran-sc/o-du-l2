@@ -121,8 +121,8 @@ ISTsk isTsk;                    /* interrupt service function */
 
 /* ss029.103: modification: multiple procId related changes */ 
 #ifdef SS_MULTIPLE_PROCS
-   U16 count;
-   U16 i;
+   uint16_t count;
+   uint16_t i;
    ProcId procIdLst[SS_MAX_PROCS];
 #endif /* SS_MULTIPLE_PROCS */
 

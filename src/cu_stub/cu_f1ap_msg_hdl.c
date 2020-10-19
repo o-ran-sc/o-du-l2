@@ -92,7 +92,7 @@ S16 SendF1APMsg(Region region, Pool pool)
 
 S16 BuildNrCellId(BIT_STRING_t *nrcell)
 {
-   U8 tmp;
+   uint8_t tmp;
    for (tmp = 0 ; tmp < nrcell->size-1; tmp++)
    {
       nrcell->buf[tmp] = 0;
@@ -123,8 +123,8 @@ S16 BuildNrCellId(BIT_STRING_t *nrcell)
  * ****************************************************************/
 S16 BuildAndSendF1SetupRsp()
 {
-   U8    idx,ieIdx;
-   U8    elementCnt,cellCnt;
+   uint8_t    idx,ieIdx;
+   uint8_t    elementCnt,cellCnt;
    F1AP_PDU_t         *f1apMsg = NULL;
    F1SetupResponse_t  *f1SetupRsp;
    GNB_CU_Name_t      *cuName;
@@ -350,7 +350,7 @@ S16 BuildAndSendF1SetupRsp()
    rrcVer = &f1SetupRsp->protocolIEs.list.array[idx]->value.choice.RRC_Version;
    rrcVer->latest_RRC_Version.size = RRC_SIZE; 
 
-   CU_ALLOC(rrcVer->latest_RRC_Version.buf, sizeof(U8));
+   CU_ALLOC(rrcVer->latest_RRC_Version.buf, sizeof(uint8_t));
    if(rrcVer->latest_RRC_Version.buf == NULLP)
    {  
       CU_FREE(cuName->buf, sizeof(cuName->size));
@@ -372,7 +372,7 @@ S16 BuildAndSendF1SetupRsp()
    CU_ALLOC(rrcVer->iE_Extensions,sizeof(ProtocolExtensionContainer_4624P81_t));
    if(rrcVer->iE_Extensions == NULLP)
    {
-      CU_FREE(rrcVer->latest_RRC_Version.buf, sizeof(U8));
+      CU_FREE(rrcVer->latest_RRC_Version.buf, sizeof(uint8_t));
       CU_FREE(cuName->buf, sizeof(cuName->size));
       for(ieIdx=0; ieIdx<elementCnt; ieIdx++)
       {
@@ -393,7 +393,7 @@ S16 BuildAndSendF1SetupRsp()
    {
       CU_FREE(rrcVer->iE_Extensions,\
 	    sizeof(ProtocolExtensionContainer_4624P81_t));
-      CU_FREE(rrcVer->latest_RRC_Version.buf, sizeof(U8));
+      CU_FREE(rrcVer->latest_RRC_Version.buf, sizeof(uint8_t));
       CU_FREE(cuName->buf, sizeof(cuName->size));
       for(ieIdx=0; ieIdx<elementCnt; ieIdx++)
       {
@@ -414,7 +414,7 @@ S16 BuildAndSendF1SetupRsp()
 	    sizeof(struct RRC_Version_ExtIEs *));
       CU_FREE(rrcVer->iE_Extensions,\
 	    sizeof(ProtocolExtensionContainer_4624P81_t));
-      CU_FREE(rrcVer->latest_RRC_Version.buf, sizeof(U8));
+      CU_FREE(rrcVer->latest_RRC_Version.buf, sizeof(uint8_t));
       CU_FREE(cuName->buf, sizeof(cuName->size));
       for(ieIdx=0; ieIdx<elementCnt; ieIdx++)
       {
@@ -433,10 +433,10 @@ S16 BuildAndSendF1SetupRsp()
    rrcVer->iE_Extensions->list.array[0]->extensionValue.present = \
 								  RRC_Version_ExtIEs__extensionValue_PR_Latest_RRC_Version_Enhanced;
    rrcVer->iE_Extensions->list.array[0]->extensionValue.choice.\
-      Latest_RRC_Version_Enhanced.size = 3*sizeof(U8);
+      Latest_RRC_Version_Enhanced.size = 3*sizeof(uint8_t);
    CU_ALLOC(rrcVer->iE_Extensions->list.\
 	 array[0]->extensionValue.choice.Latest_RRC_Version_Enhanced.buf,\
-	 3*sizeof(U8));
+	 3*sizeof(uint8_t));
    if(rrcVer->iE_Extensions->list.\
 	 array[0]->extensionValue.choice.Latest_RRC_Version_Enhanced.buf == NULLP)
    {
@@ -446,7 +446,7 @@ S16 BuildAndSendF1SetupRsp()
 	    sizeof(struct RRC_Version_ExtIEs *));
       CU_FREE(rrcVer->iE_Extensions,\
 	    sizeof(ProtocolExtensionContainer_4624P81_t));
-      CU_FREE(rrcVer->latest_RRC_Version.buf, sizeof(U8));
+      CU_FREE(rrcVer->latest_RRC_Version.buf, sizeof(uint8_t));
       CU_FREE(cuName->buf, sizeof(cuName->size));
       for(ieIdx=0; ieIdx<elementCnt; ieIdx++)
       {
@@ -474,7 +474,7 @@ S16 BuildAndSendF1SetupRsp()
    encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apMsg, PrepFinalEncBuf, encBuf);
 
    /* Clean up */
-   CU_FREE(rrcVer->latest_RRC_Version.buf, sizeof(U8));
+   CU_FREE(rrcVer->latest_RRC_Version.buf, sizeof(uint8_t));
    CU_FREE(cuName->buf, sizeof(cuName->size));
    for(idx=0; idx<elementCnt; idx++)
    {
@@ -531,8 +531,8 @@ S16 BuildAndSendF1SetupRsp()
 
 S16 BuildAndSendDUUpdateAck()
 {
-   U8   idx;
-   U8   elementCnt;
+   uint8_t   idx;
+   uint8_t   elementCnt;
    F1AP_PDU_t *f1apMsg = NULL;
    GNBDUConfigurationUpdateAcknowledge_t *gNBDuCfgAck;
    asn_enc_rval_t enRetVal; /* Encoder return value */
@@ -1304,7 +1304,7 @@ uint8_t fillDlDcchRrcMsg(RRCContainer_t *rrcContainer)
 	       {
 		  /* encode DL-DCCH message into RRC Container */
 		  xer_fprint(stdout, &asn_DEF_DL_DCCH_MessageType, &dl_DCCH_Msg);
-		  cmMemset((U8 *)encBuf, 0, ENC_BUF_MAX_LEN);
+		  memset(encBuf, 0, ENC_BUF_MAX_LEN);
 		  encBufSize = 0;
 		  encRetVal = aper_encode(&asn_DEF_DL_DCCH_MessageType, 0, &dl_DCCH_Msg, PrepFinalEncBuf, encBuf);
 		  /* Encode results */
@@ -1570,12 +1570,12 @@ uint8_t BuildAndSendDLRRCMessageTransfer(uint8_t rrcMsgType)
 S16 BuildAndSendUESetRsp()
 {
    S16  ret;
-   U8   elementCnt;
-   U8   cellCnt;
-   U8   ieId;
-   U8   idx;
-   U8   drbCnt;
-   U8   drbId;
+   uint8_t   elementCnt;
+   uint8_t   cellCnt;
+   uint8_t   ieId;
+   uint8_t   idx;
+   uint8_t   drbCnt;
+   uint8_t   drbId;
    F1AP_PDU_t      						*f1apMsg = NULL;
    UEContextSetupResponse_t			*ueSetRsp;
    asn_enc_rval_t  						encRetVal;        /* Encoder return value */

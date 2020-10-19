@@ -5405,7 +5405,7 @@ uint8_t BuildAndSendUESetRsp()
    }
 
    FreeUeSetupRsp(f1apMsg);
-   return ret;;
+   return ret;
 }/* End of BuildAndSendUESetRsp */
 
 /*******************************************************************
@@ -5707,7 +5707,7 @@ uint8_t BuildAndSendF1ResetAck()
       }
       else
       {
-	 DU_LOG("\nF1AP : Created APER encoded buffer for F1SetupResponse\n");
+	 DU_LOG("\nF1AP : Created APER encoded buffer for F1ResetAck\n");
 	 for(int i=0; i< encBufSize; i++)
 	 {
 	    printf("%x",encBuf[i]);

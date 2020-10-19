@@ -46,18 +46,18 @@
 
 #define CM_HASH_KEYTYPE_STR         3  /* Hash Function for Strings */
 
-#define CM_HASH_KEYTYPE_U32MOD      4  /* Mods the key with number of bins
-                                        * useful if key is U32 numeric */
+#define CM_HASH_KEYTYPE_UINT32_MOD      4  /* Mods the key with number of bins
+                                        * useful if key is uint32_t numeric */
 
 #define CM_HASH_KEYTYPE_CONID       5  /* Uses diff computation for keylen
-                                         < U32. Ideal fo conId type params */
+                                         < uint32_t. Ideal fo conId type params */
 
 #define CM_HASH_KEYTYPE_BCD8        6  /* Converts the 8 BCD coded octets 
-                                        * into 2 U32s and then adds 2 
-                                        * U32s to get one U32. Then applies the 
-                                        * U32Mod technique to get the index */
+                                        * into 2 uint32_ts and then adds 2 
+                                        * uint32_ts to get one uint32_t. Then applies the 
+                                        * uint32_tMod technique to get the index */
 #define CM_HASH_KEYTYPE_ANY         7  /* Converts a variable length key into
-                                        * a U32 which is then mapped to number
+                                        * a uint32_t which is then mapped to number
                                         * of hash bins
                                         */
 
@@ -66,9 +66,9 @@
 
 /* CONSTANTS for CmHashFuncConId */
 /* cm_hash_h_001.main_13 : Fixed for 64 Bit */
-#define CM_HASHKEYLEN_U32              sizeof(U32)  /* size of U32 */
-#define CM_HASHKEYLEN_U16              sizeof(U16)  /* size of U16 */
-#define CM_HASHKEYLEN_U8               sizeof(U8)  /* size of U8 */
+#define CM_HASHKEYLEN_UINT32              sizeof(uint32_t)  /* size of uint32_t */
+#define CM_HASHKEYLEN_UINT16              sizeof(uint16_t)  /* size of uint16_t */
+#define CM_HASHKEYLEN_UINT8               sizeof(uint8_t)  /* size of uint8_t */
 
 /* query types */
 

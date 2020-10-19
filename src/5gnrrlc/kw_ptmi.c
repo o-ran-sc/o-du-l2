@@ -403,14 +403,14 @@ RlcL2MeasCfmEvt *measEvt;
 S16 RlcMiLkwL2MeasStopCfm
 (  
 Pst *pst,
-U8  measType,
-U8  status
+uint8_t  measType,
+uint8_t  status
 )
 #else
 S16 RlcMiLkwL2MeasStopCfm(pst, measType,status)
 Pst *pst;
-U8  measType;
-U8  status;
+uint8_t  measType;
+uint8_t  status;
 #endif
 {
 

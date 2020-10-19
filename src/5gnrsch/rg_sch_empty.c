@@ -67,7 +67,8 @@ Void rgSCHCmnSpsInit
 Void rgSCHCmnSpsInit ()
 #endif /* ANSI */
 {
-   RETVOID;
+
+   return;
 }
 
 /**
@@ -153,7 +154,7 @@ RgSchUeCb          *ue;
 #endif /* ANSI */
 {
 
-   RETVOID;
+   return;
 }
 
 /**
@@ -205,7 +206,7 @@ RgSchCellCb        *cell;
 #endif /* ANSI */
 {
 
-   RETVOID;
+   return;
 }
 
 /**
@@ -246,7 +247,7 @@ RgSchUeCb    *ue,
 RgSchCellCb  *cell
 ))
 {
-   RETVOID;
+   return;
 }
 
 S16 rgSCHCmnSpsDlLcRecfg ARGS((
@@ -267,7 +268,7 @@ RgSchUeCb        *ue,
 RgSchLcgCb       *lcg
 ))
 {
-   RETVOID;
+   return;
 }
 
 Void rgSCHCmnSpsDlLcDel ARGS((
@@ -276,7 +277,7 @@ RgSchUeCb          *ue,
 RgSchDlLcCb        *dlLc
 ))
 {
-   RETVOID;
+   return;
 }
 
 S16 rgSCHCmnSpsUlTti ARGS((
@@ -295,7 +296,7 @@ RgSchDlLcCb            *dlLc
 ))
 {
 
-   RETVOID;
+   return;
 }
 
 Void rgSCHCmnSpsDlProcAddToRetx ARGS((
@@ -304,7 +305,7 @@ RgSchDlHqProcCb       *hqP
 ))
 {
 
-   RETVOID;
+   return;
 }
 
 Void rgSCHCmnSpsDlCqiIndHndlr ARGS((
@@ -314,7 +315,7 @@ CmLteTimingInfo      timingInfo
 ))
 {
 
-   RETVOID;
+   return;
 }
 
 S16 rgSCHCmnSpsUlCqiInd ARGS((
@@ -342,7 +343,7 @@ RgSchUeCb           *ue
 ))
 {
 
-   RETVOID;
+   return;
 }
 
 Void rgSCHCmnSpsDlRelPdcchFbk ARGS((
@@ -352,7 +353,7 @@ Bool                  isAck
 ))
 {
 
-   RETVOID;
+   return;
 }
 
 Void rgSCHCmnSpsDlProcAck ARGS((
@@ -361,7 +362,7 @@ RgSchDlHqProcCb       *hqP
 ))
 {
 
-   RETVOID;
+   return;
 }
 
 Void rgSCHCmnSpsDlUeReset ARGS((
@@ -370,7 +371,7 @@ RgSchUeCb           *ue
 ))
 {
 
-   RETVOID;
+   return;
 }
 
 Void rgSCHCmnSpsUlUeReset ARGS((
@@ -379,7 +380,7 @@ RgSchUeCb           *ue
 ))
 {
 
-   RETVOID;
+   return;
 }
 
 Void rgSCHCmnSpsUlProcRelInd ARGS((
@@ -389,17 +390,17 @@ Bool                isExplRel
 ))
 {
 
-   RETVOID;
+   return;
 }
 
 Void rgSCHCmnSpsUlProcActInd ARGS((
 RgSchCellCb         *cell,
 RgSchUeCb           *ue,
-U16                 spsSduSize
+uint16_t                 spsSduSize
 ))
 {
 
-   RETVOID;
+   return;
 }
 
 S16 rgSCHCmnSpsUlProcCrcInd ARGS((
@@ -429,7 +430,7 @@ RgSchDlSf             *dlSf
 ))
 {
 
-   RETVOID;
+   return;
 }
 
 

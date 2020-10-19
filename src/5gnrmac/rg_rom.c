@@ -119,9 +119,9 @@ RgRguDedDatReq *datReq;
 #if 0
    RgCellCb     *cell;
    RgUeCb       *ue;
-   U8           idx1,idx2;
+   uint8_t           idx1,idx2;
    RgDlHqProcCb *hqProc;
-   U8           hqPId;
+   uint8_t           hqPId;
    RgErrInfo    err;
    Pst          schPst;
    RgInfDedBoRpt boRpt;
@@ -134,8 +134,8 @@ RgRguDedDatReq *datReq;
 #ifdef LTEMAC_DLUE_TMGOPTMZ
    S16 ret;
 #endif
-   U32 idx;
-   //U8  datReqFailCnt = 0;
+   uint32_t idx;
+   //uint8_t  datReqFailCnt = 0;
 
 
    if (((cell = rgCb[inst].cell) == NULLP) 
@@ -160,8 +160,8 @@ RgRguDedDatReq *datReq;
    for(idx = 0; idx < datReq->nmbOfUeGrantPerTti; idx++)
    {
 
-      timingInfo.slot = (U8)((datReq->datReq[idx].transId >> 8) & 0XFF);
-      timingInfo.sfn = (U16)((datReq->datReq[idx].transId >> 16) & 0xFFFF);
+      timingInfo.slot = (uint8_t)((datReq->datReq[idx].transId >> 8) & 0XFF);
+      timingInfo.sfn = (uint16_t)((datReq->datReq[idx].transId >> 16) & 0xFFFF);
       sf = &cell->subFrms[(timingInfo.slot % RG_NUM_SUB_FRAMES)];
 
       if( (sf->txDone == TRUE) ||
@@ -180,7 +180,7 @@ RgRguDedDatReq *datReq;
          rgUpdtRguDedSts(inst,cell->rguDlSap,RG_RGU_SDU_DROP, datReq);
 #ifdef CA_DBG
          {
-            EXTERN U32 dbgDelayedDatReqInMac;
+            EXTERN uint32_t dbgDelayedDatReqInMac;
             dbgDelayedDatReqInMac++;
          }
 #endif /* CA_DBG */         
@@ -221,7 +221,7 @@ RgRguDedDatReq *datReq;
             continue;
       }
 
-      hqPId = (U8)(datReq->datReq[idx].transId);
+      hqPId = (uint8_t)(datReq->datReq[idx].transId);
       hqPId = hqPId >> 2;
       /* get harq process and invoke DHM */
       rgDHMGetHqProcFrmId(ue, hqPId, &hqProc);
@@ -375,8 +375,8 @@ RgRguCmnDatReq *datReq;
       /*Get the timing Info*/
       /* ADD Changes for Downlink UE Timing Optimization */
 #ifdef LTEMAC_DLUE_TMGOPTMZ
-      timingInfo.slot = (U8)((datReq->transId >> 8) & 0XFF);
-      timingInfo.sfn = (U16)((datReq->transId >> 16) & 0xFFFF);
+      timingInfo.slot = (uint8_t)((datReq->transId >> 8) & 0XFF);
+      timingInfo.sfn = (uint16_t)((datReq->transId >> 16) & 0xFFFF);
 #endif
    } 
    else
@@ -386,8 +386,8 @@ RgRguCmnDatReq *datReq;
       /*Get the timing Info*/
       /* ADD Changes for Downlink UE Timing Optimization */
 #ifdef LTEMAC_DLUE_TMGOPTMZ
-      timingInfo.slot = (U8)(datReq->transId & 0XFF);
-      timingInfo.sfn = (U16)((datReq->transId >> 8) & 0xFFFF);
+      timingInfo.slot = (uint8_t)(datReq->transId & 0XFF);
+      timingInfo.sfn = (uint16_t)((datReq->transId >> 8) & 0xFFFF);
 #endif
    }
 
@@ -448,7 +448,7 @@ RgErrInfo      *err;
 {
    Inst     inst = cell->macInst - RG_INST_START;
    RgUeCb   *ue;
-   U8       hqPId;
+   uint8_t   hqPId;
    RgDlHqProcCb *hqProc;
    CmLteTimingInfo timingInfo;
    RgDlSf   *sf;
@@ -472,8 +472,8 @@ RgErrInfo      *err;
       }
    }
 
-   timingInfo.slot = (U8)((datReq->transId >> 8) & 0XFF);
-   timingInfo.sfn = (U16)((datReq->transId >> 16) & 0xFFFF);
+   timingInfo.slot = (uint8_t)((datReq->transId >> 8) & 0XFF);
+   timingInfo.sfn = (uint16_t)((datReq->transId >> 16) & 0xFFFF);
    sf = &cell->subFrms[(timingInfo.slot % RG_NUM_SUB_FRAMES)];
 
    if( (sf->txDone == TRUE) ||
@@ -490,7 +490,7 @@ RgErrInfo      *err;
       return RFAILED;
    }
 
-   hqPId = (U8)(datReq->transId);
+   hqPId = (uint8_t)(datReq->transId);
    hqPId = hqPId >> 2;
 
    /* get harq process and invoke DHM */
@@ -557,8 +557,9 @@ RgErrInfo      *err;
    RgUstaDgn   dgn;      /* Alarm diagnostics structure */
 #endif
 
-   timingInfo.slot = (U8)(datReq->transId & 0XFF);
-   timingInfo.sfn = (U16)((datReq->transId >> 8) & 0xFFFF);
+
+   timingInfo.slot = (uint8_t)(datReq->transId & 0XFF);
+   timingInfo.sfn = (uint16_t)((datReq->transId >> 8) & 0xFFFF);
    sf = &cell->subFrms[(timingInfo.slot % RG_NUM_SUB_FRAMES)];
 
    if( (sf->txDone == TRUE) ||
@@ -796,8 +797,8 @@ RgRguL2MUlThrpMeasReq *measReq;
 {
    RgCellCb   *cell;
    RgUeCb     *ue;
-   U8         lcgId;
-   U8         loop;
+   uint8_t    lcgId;
+   uint8_t    loop;
 
    if(((cell = rgCb[inst].cell) != NULLP)
       &&(cell->cellId == measReq->cellId))
@@ -927,7 +928,7 @@ RgErrInfo      *err;
          This assumes that BO is not received more than 4 frames in advance from the enodeb application */
    if (cell->bcchBchInfo.lcId == staRsp->lcId)
    {
-      U16 nextBchSfn;
+      uint16_t nextBchSfn;
 
       nextBchSfn = (cell->crntTime.sfn + 4 - (cell->crntTime.sfn%4)) % RG_MAX_SFN;
       if ((staRsp->u.timeToTx.sfn != nextBchSfn) ||

@@ -97,7 +97,7 @@ CrgUeCfg       *ueCfg;
 #endif
 {
    ueCb->ul.hqEnt.maxHqRetx = (ueCfg->ueUlHqCfg.maxUlHqTx - 1); 
-   RETVOID;
+   return;
 }  /* rgUHMCrgUeCfg */
 
 /**
@@ -134,7 +134,7 @@ CrgUeRecfg     *ueRecfg;
 {
 
    ueCb->ul.hqEnt.maxHqRetx = (ueRecfg->ueUlHqRecfg.maxUlHqTx - 1); 
-   RETVOID;
+   return;
 }  /* rgUHMCrgUeCfg */
 
 /**********************************************************************
