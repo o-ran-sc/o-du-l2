@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "430be512_37d11c21",
+        "filename": "build/o1/install_netconf.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-19T08:06:28Z",
+      "side": 1,
+      "message": "This file can be renamed as install_lib.sh. This was this file can be further enhanced to install all required binaries from O-DU High perspective as a whole.",
+      "revId": "40776cae6111d39dca6b21f78d25b3afeaa8733a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
