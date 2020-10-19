@@ -14,27 +14,6 @@
 #   limitations under the License.                                             #
 ################################################################################
 
-#/********************************************************************16**
-#
-#       Name:   gNodeB Sample Application
-#
-#       Type:   make file
-#
-#       Desc:   Compile, assemble and link product software for
-#               various configurations. Further comments are
-#               embedded in the file. 
-#
-#               This file supports a variety of environments and
-#               build targets. The default build target will be the
-#               portable target for the Linu 2.4.x with GNU C(gcc)
-#
-#       Env:    Linux 2.4.x with GNU C (gcc)
-#
-#       File:  compile.mak
-#
-#********************************************************************21*/
-#=======================================================================
-
 STOPTS=-DENB 
 
 Q=
@@ -140,3 +119,6 @@ $(CPP_OBJS_WO_LOG):$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(HDR_FILES)
 	$(Q)$(CC) -c -o $@ $(CPP_OPTS) $(I_OPTS) $(ALL_FLAGS) $(TEXT_LOGGING) $(MOD_FLAGS) \
     $(PLTFRM_FLAGS) $<
 
+#**********************************************************************
+#         End of file
+#**********************************************************************

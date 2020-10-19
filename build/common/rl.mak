@@ -42,20 +42,6 @@ C_OBJS_WO_LOG=$(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(C_SRCS))
 #-------------------------------------------------------------#
 rlPOSTPROCOPTS=-DSS_LINUX -DUSE_RLOG_DATA_TYPES
 
-#-------------------------------------------------------------#
-#-------------------------------------------------------------#
-#Compiler macros             
-#-------------------------------------------------------------#
-#$(OBJ_DIR)/rl_rlog.$(OBJ):$(rlSRCS)
-#	@echo -e "Compiling $(COLOR) $< $(REVERT_COLOR)..."
-#	$(Q) $(CC) -c $(COPTS) $(IOPTS) $(POPTS) $(IN_DIR)/rl_rlog.$(SRC) -rdynamic -o $(OBJ_DIR)/rl_rlog.$(OBJ)
-#$(OBJ_DIR)/rl_common.$(OBJ):$(rlSRCS)
-#	@echo -e "Compiling $(COLOR) $< $(REVERT_COLOR)..."
-#	$(Q) $(CC) -c $(COPTS) $(IOPTS) $(POPTS) $(IN_DIR)/rl_common.$(SRC) -o $(OBJ_DIR)/rl_common.$(OBJ)
-#$(OBJ_DIR)/rl_platform.$(OBJ):$(rlSRCS)
-#	@echo -e "Compiling $(COLOR) $< $(REVERT_COLOR)..."
-#	$(Q) $(CC) -c $(COPTS) $(IOPTS) $(POPTS) $(IN_DIR)/rl_platform.$(SRC) -o $(OBJ_DIR)/rl_platform.$(OBJ)
-
 lib:$(LIB_DIR)/librl.a
 
 include $(COM_BUILD_DIR)/compile.mak
@@ -76,5 +62,6 @@ clean:
 	@echo -e "$(COLOR_RED)Clearing binary logging$(REVERT_COLOR)"
 	$(Q)rm -f $(LIB_DIR)/librl.a $(C_OBJS_WO_LOG)
 
-
-
+#**********************************************************************
+#         End of file
+#**********************************************************************
