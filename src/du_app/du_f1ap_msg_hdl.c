@@ -5405,7 +5405,7 @@ uint8_t BuildAndSendUESetRsp()
    }
 
    FreeUeSetupRsp(f1apMsg);
-   return ret;;
+   return ret;
 }/* End of BuildAndSendUESetRsp */
 
 /*******************************************************************
@@ -5694,7 +5694,7 @@ uint8_t BuildAndSendF1ResetAck()
       xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
 
       /* Encode the F1SetupRequest type as UPER */
-      cmMemset((U8 *)encBuf, 0, ENC_BUF_MAX_LEN);
+      cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
       encBufSize = 0;
       encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apMsg, PrepFinalEncBuf, encBuf);
 

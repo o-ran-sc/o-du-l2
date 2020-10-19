@@ -55,7 +55,7 @@
 #include "rg_sch.x"        /* typedefs for Scheduler */
 #include "rg_sch_cmn.x"    /* typedefs for Scheduler */
 /* local defines */
-U32 dlPrbCnt;
+uint32_t dlPrbCnt;
 #ifdef LTE_L2_MEAS
 
 static const char* RLOG_MODULE_NAME="MAC";
@@ -92,20 +92,20 @@ S16 rgSchFillL2MeasCfm
 RgSchCellCb       *cell,
 RgSchL2MeasCb     *measCb,
 LrgSchMeasCfmInfo *cfm,
-U32               measTime   
+uint32_t               measTime   
 )
 #else
 S16 rgSchFillL2MeasCfm(cell, measCb, cfm, measTime)
 RgSchCellCb       *cell;
 RgSchL2MeasCb     *measCb;
 LrgSchMeasCfmInfo *cfm;
-U32               measTime;
+uint32_t               measTime;
 #endif
 {
-   U8                 idx;
+   uint8_t                 idx;
    LrgSchMeasReqInfo  *measInfo;
-   U8                 qciVal = 0;
-   U32                 sampOc = 0;
+   uint8_t                 qciVal = 0;
+   uint32_t                 sampOc = 0;
 
    TRC3(rgSchFillL2MeasCfm)
    
@@ -339,7 +339,7 @@ Bool              isErr;
 
    TRC3(rgSchL2mSndCfm)
 
-   cmMemset((U8 *)&cfm, (U8)0, sizeof(LrgSchMeasCfmInfo));
+   cmMemset((uint8_t *)&cfm, (uint8_t)0, sizeof(LrgSchMeasCfmInfo));
    cfm.hdr.transId  = measInfo->hdr.transId;
    cfm.measType     = measInfo->measType;
    cfm.cellId       = measInfo->cellId;
@@ -397,7 +397,7 @@ LrgSchMeasReqInfo *measInfo;
    cfmPst->region    = measInfo->hdr.response.mem.region;
    cfmPst->pool      = measInfo->hdr.response.mem.pool;
 
-   RETVOID;
+   return;
 } /* rgSchL2mFillCfmPst */
 
 /** @brief This function inserts the MeasCb in to data base
@@ -429,7 +429,7 @@ LrgSchMeasReqInfo *measInfo;
 {
    CmLList   *lnk, *node;
    RgSchL2MeasCb   *oldMeasCb;
-   U32              diffTime;
+   uint32_t              diffTime;
    
    TRC3(rgSchL2mInsertMeasCb)
    /* 
@@ -488,7 +488,7 @@ RgSchCellCb       *cell;
    CmLteTimingInfo    frm;
    RgSchDlSf          *sf = NULLP;
 #ifdef LTE_TDD
-   U8                 idx;
+   uint8_t                 idx;
 #endif
 
    TRC3(rgSchL2CalDlPrbCount)
@@ -507,7 +507,7 @@ RgSchCellCb       *cell;
 #else
    cell->avgPrbDl.prbCount += sf->bwAssigned;
 #endif
-   RETVOID;
+   return;
 }
 
 /** @brief This function calculates the up link prb count 
@@ -532,7 +532,7 @@ RgSchCellCb       *cell;
    RgSchUlSf        *sf = NULLP;
    RgSchCmnUlCell   *cellUl = RG_SCH_CMN_GET_UL_CELL(cell);
 #ifdef LTE_TDD
-   U8                 idx;
+   uint8_t                 idx;
 #endif
 
    TRC3(rgSchL2CalUlPrbCount)
@@ -548,7 +548,7 @@ RgSchCellCb       *cell;
    sf = &cellUl->ulSfArr[cellUl->schdIdx];
    cell->avgPrbUl.prbCount += sf->totPrb;
 #endif
-   RETVOID;
+   return;
 }
 /** @brief This function allocates memory from the heap
  *
@@ -587,7 +587,7 @@ RgSchErrInfo      err;
                   "Allocation of RgSchL2MeasCb failed");
       return (NULLP);
    }
-   cmMemcpy((U8 *)&measCb->measReq, (U8 *)measInfo, sizeof(LrgSchMeasReqInfo));
+   cmMemcpy((uint8_t *)&measCb->measReq, (uint8_t *)measInfo, sizeof(LrgSchMeasReqInfo));
    RGSCHCPYTIMEINFO(cell->crntTime, measCb->startTime);
 
    measCb->dlTotalBw = 0;
@@ -630,8 +630,8 @@ RgSchErrInfo      err;
 #endif    
 {
    RgSchL2MeasCb *measCb;
-   U8            idx;
-   U8            qciVal;
+   uint8_t            idx;
+   uint8_t            qciVal;
 
    TRC3(rgSchL2mMeasReq)
 
@@ -644,7 +644,7 @@ RgSchErrInfo      err;
                 "Allocation of RgSchL2MeasCb failed");
        return RFAILED;
    }
-   /*cmMemcpy((U8 *)&measCb->measReq, (CONSTANT U8 *)measInfo,\
+   /*cmMemcpy((uint8_t *)&measCb->measReq, (CONSTANT uint8_t *)measInfo,\
              sizeof(LrgSchMeasReqInfo));*/
    rgSchL2mInsertMeasCb(cell, measCb, measInfo);
   
@@ -681,7 +681,7 @@ RgSchErrInfo      err;
    {
       RgInfL2MeasReq    measReq;
       Pst               pst;
-      cmMemset((U8 *)&measReq, 0, sizeof(RgInfL2MeasReq));
+      cmMemset((uint8_t *)&measReq, 0, sizeof(RgInfL2MeasReq));
       measReq.transId  = measInfo->hdr.transId;
       measReq.measType = measInfo->measType;
       measReq.timePrd  = measInfo->timePrd;
@@ -715,32 +715,32 @@ RgSchErrInfo      err;
 S16 rgSCHL2Meas
 (
 RgSchCellCb  *cell,
-U8 isCalrCrcInd
+uint8_t isCalrCrcInd
 )
 #else
 S16 rgschL2Meas(cell,isCalrCrcInd)
 RgSchCellCb  *cell;
-U8 isCalrCrcInd
+uint8_t isCalrCrcInd
 #endif
 {
    CmLList           *node = NULLP;
    RgSchL2MeasCb     *measCb = NULLP;
-   U8                idx;
+   uint8_t                idx;
    LrgSchMeasCfmInfo measCfm;
-   U8                qciVal = 0;
-   U32               sfDiff;
-   U32               meas;
+   uint8_t                qciVal = 0;
+   uint32_t               sfDiff;
+   uint32_t               meas;
 #ifdef LTE_TDD
-   U8                sfIdx;
+   uint8_t                sfIdx;
    Bool              isDlDataAllowed;  
-   U8                rem;
-   U32               numDlSf;
-   U32               numUlSf;
+   uint8_t                rem;
+   uint32_t               numDlSf;
+   uint32_t               numUlSf;
 #endif
    TRC3(rgSCHL2Meas)
 
       node = cell->l2mList.first;
-   cmMemset((U8 *)&measCfm, 0, sizeof(LrgSchMeasCfmInfo));
+   cmMemset((uint8_t *)&measCfm, 0, sizeof(LrgSchMeasCfmInfo));
    while(node != NULLP)
    {
       measCb = (RgSchL2MeasCb *)node->node;
@@ -809,7 +809,7 @@ U8 isCalrCrcInd
          }
          RgMiLrgSchL2MeasCfm(&(rgSchCb[cell->instIdx].rgSchInit.lmPst),
                &measCfm);
-         cmMemset((U8 *)&measCfm, 0, sizeof(LrgSchMeasCfmInfo));
+         cmMemset((uint8_t *)&measCfm, 0, sizeof(LrgSchMeasCfmInfo));
          
          /* Delete this measCb from the list */
          if(measCb->measReq.timePrd > 0)
@@ -823,7 +823,7 @@ U8 isCalrCrcInd
             measCb->startTime = cell->crntTime;
             measCb->sfnCycle = 0;
             measCb->cfmRcvd = FALSE;
-            cmMemset((U8 *)&measCb->avgPrbQciUl, 0, sizeof(LrgAvgPrbQCICfm));
+            cmMemset((uint8_t *)&measCb->avgPrbQciUl, 0, sizeof(LrgAvgPrbQCICfm));
             cell->sndL2Meas = FALSE;
          } 
          /* ccpu00117052 - MOD - Passing double pointer

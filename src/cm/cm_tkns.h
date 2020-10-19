@@ -33,9 +33,9 @@
 
 
 /* defines */
-#define cmPkTknPres(x, mBuf)       cmPkTknU8(x, mBuf)
+#define cmPkTknPres(x, mBuf)       cmPkTknUInt8(x, mBuf)
 
-#define cmUnpkTknPres(x, mBuf)     cmUnpkTknU8(x, mBuf)
+#define cmUnpkTknPres(x, mBuf)     cmUnpkTknUInt8(x, mBuf)
 
 
 /* packing and unpacking for token bit strings */

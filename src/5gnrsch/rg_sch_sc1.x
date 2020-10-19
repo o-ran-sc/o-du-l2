@@ -74,7 +74,7 @@ typedef struct rgSc1UlUe
    CmLList      txLnk;      /* Lnk to one of Transmission Queues */
    CmLList      contResLnk; /* Lnk to one of Cont Res Queue */
    Bool         srRcvd;     /* TRUE if SR reported is yet to be satisfied */
-   U8           qId;        /* Id of the Tx Q to which this UE belongs */
+   uint8_t           qId;        /* Id of the Tx Q to which this UE belongs */
 } RgSchSc1UlUe;
 
 /**
@@ -85,14 +85,14 @@ typedef struct rgSc1DlUe
 {
    CmLList           prioLnk; /*!< To link UE into priority queues */
    CmLListCp         gbrSvcs; /*!< List of GBR services */
-   U8                prio;    /*!< Current priority of UE for DL */
+   uint8_t                prio;    /*!< Current priority of UE for DL */
    CmLListCp         ambrLst; /*!< To maintain services per priority for a UE */
    RgSchDlLcCb       *ambrSvc;/*!< Points to the current AMBR service */
-   U32               ambr;    /*!< UE's Remaining AMBR */
-   U32               effAmbr; /*!< min(svc->bo, ambr)*/
+   uint32_t               ambr;    /*!< UE's Remaining AMBR */
+   uint32_t               effAmbr; /*!< min(svc->bo, ambr)*/
    CmLListCp         schdSvcs; /*!< List of services for which 
                                  allocation requested */
-   U8                taReqBytes;/*!< Set to the Number of bytes Requested for TA
+   uint8_t                taReqBytes;/*!< Set to the Number of bytes Requested for TA
                                   allocation */
    CmLListCp         retxHqProcs; /*!< List of RETX Hq Procs in suspension */
    CmLListCp         lcsWithData; /*!< List of services with non-zero effBo */
@@ -104,8 +104,8 @@ typedef struct rgSc1DlUe
   */
 typedef struct rgSc1DlHqProc {
    CmLList        retxLnkUe; /*!< To link retransmitting HARQ processes in ue */
-   U8             cqi;     /*!< CQI at which the allocation was made */
-   U8             prio;    /*!< Priority of the allocation */
+   uint8_t             cqi;     /*!< CQI at which the allocation was made */
+   uint8_t             prio;    /*!< Priority of the allocation */
 }RgSchSc1DlHqProc;
 
 /**
@@ -113,17 +113,17 @@ typedef struct rgSc1DlHqProc {
   * Downlink service information for SC1 scheduler per UE.
   */
 typedef  struct rgSc1DlSvc {
-   U32          gbr;     /*!< Pending GBR to be satisfied     */
-   U32          mbr;     /*!< Pending MBR to be satisfied     */
-   U32          bo;      /*!< BO yet to be satisfied */
-   U32          effGbr;  /*!< GBR/BO, lower of the two        */
-   U32          effMbr;  /*!< MBR/BO, lower of the two        */
+   uint32_t          gbr;     /*!< Pending GBR to be satisfied     */
+   uint32_t          mbr;     /*!< Pending MBR to be satisfied     */
+   uint32_t          bo;      /*!< BO yet to be satisfied */
+   uint32_t          effGbr;  /*!< GBR/BO, lower of the two        */
+   uint32_t          effMbr;  /*!< MBR/BO, lower of the two        */
    CmLList      gbrLnk;  /*!< used to maintain svcs to be refreshed */
    CmLList      prioLnk; /*!< Used to queue up services on UE */
    CmLList      schdSvcLnk; /*!< Used to queue up services on UE 
                              * scheduled svcs list */
-   U32          reqBytes; /*!< Set to number of bytes Req for Allocation */
-   U16          hdrEstimate; /*!< RLC Hdr est computed during SVC allocn */
+   uint32_t          reqBytes; /*!< Set to number of bytes Req for Allocation */
+   uint16_t          hdrEstimate; /*!< RLC Hdr est computed during SVC allocn */
    CmLList      lcWithDataLnk;/*!< Used to maintain svc in ue's 
                                *   lcsWithData List */
 } RgSchSc1DlSvc;
@@ -287,18 +287,18 @@ EXTERN Void rgSCHSc1UpdBsrShort ARGS((
 RgSchCellCb  *cell,
 RgSchUeCb    *ue,
 RgSchLcgCb   *lcg,
-U8           bsr
+uint8_t           bsr
 ));
 EXTERN Void rgSCHSc1UpdBsrTrunc ARGS((
 RgSchCellCb  *cell,
 RgSchUeCb    *ue,
 RgSchLcgCb   *lcg,
-U8           bsr
+uint8_t           bsr
 ));
 EXTERN Void rgSCHSc1UpdBsrLong ARGS((
 RgSchCellCb  *cell,
 RgSchUeCb    *ue,
-U8 bsArr[]
+uint8_t bsArr[]
 ));
 EXTERN Void rgSCHSc1ContResUlGrant ARGS((
 RgSchCellCb  *cell,
@@ -354,7 +354,7 @@ EXTERN S16 rgSCHSc1UlLchDel ARGS((
 RgSchCellCb      *cell,
 RgSchUeCb        *ue,
 CmLteLcId        lcId,
-U8               lcgId
+uint8_t               lcgId
 ));
 #ifdef __cplusplus
 }

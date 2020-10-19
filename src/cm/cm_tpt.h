@@ -294,7 +294,7 @@
 #define CM_TPT_FREE_IPV6_HDRPARM(_region, _pool, _hdrParm) \
 { \
    CmIpv6HdrParm *_hdrParmIpv6; \
-   U8 numOpts; \
+   uint8_t numOpts; \
    if (_hdrParm->type == CM_HDRPARM_IPV6) \
    { \
       _hdrParmIpv6 = &_hdrParm->u.hdrParmIpv6; \

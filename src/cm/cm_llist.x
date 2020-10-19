@@ -53,7 +53,7 @@ struct cmLListCp
    CmLList *first;       /* first entry in list */
    CmLList *last;        /* last entry in list */
    CmLList *crnt;        /* entry last accessed */
-   U32     count;        /* number of entries */
+   uint32_t     count;        /* number of entries */
 };
 
 EXTERN Void     cmLListInit     ARGS ((CmLListCp *lList));

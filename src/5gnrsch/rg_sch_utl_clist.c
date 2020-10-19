@@ -67,7 +67,7 @@ RgSchRrCListCp *lCp;               /* list control point */
    lCp->crnt  = (RgSchRrCList *)NULLP;
    lCp->count = 0;
 
-   RETVOID;
+   return;
 } /* end of rgSCHRrCListInit */
 
 /* LTE_ADV_FLAG_REMOVED_START */
@@ -97,7 +97,7 @@ Void rgSCHRrCListAdd2Crnt(lCp, node)
    TRC2(rgSCHRrCListAdd2Crnt);
 #ifdef ERRCHK
    if (lCp == (RgSchRrCListCp *)NULLP)
-      RETVOID;
+      return;
 #endif
 
    lCp->count++;
@@ -110,7 +110,7 @@ Void rgSCHRrCListAdd2Crnt(lCp, node)
 
       lCp->crnt = lCp->first;
 
-      RETVOID;
+      return;
    }
 
    node->next = lCp->crnt;
@@ -118,7 +118,7 @@ Void rgSCHRrCListAdd2Crnt(lCp, node)
    lCp->crnt->prev->next = node;
    lCp->crnt->prev = node;
 
-   RETVOID;
+   return;
 }
 /* LTE_ADV_FLAG_REMOVED_END */
 
@@ -151,7 +151,7 @@ RgSchRrCList   *node;              /* node to be added */
 
 #ifdef ERRCHK
    if (lCp == (RgSchRrCListCp *)NULLP)
-      RETVOID;
+      return;
 #endif
  
    lCp->count++;
@@ -164,7 +164,7 @@ RgSchRrCList   *node;              /* node to be added */
 
       lCp->crnt = lCp->first;
 
-      RETVOID;
+      return;
    }
 
    node->next = lCp->first;
@@ -172,7 +172,7 @@ RgSchRrCList   *node;              /* node to be added */
    lCp->first->prev->next = node;
    lCp->first->prev = node;
 
-   RETVOID;
+   return;
 } /* end of rgSCHRrCListAdd2Tail */
 
 /*
@@ -286,7 +286,7 @@ RgSchRrCList *node;                /* node to be inserted */
 
 #ifdef ERRCHK
    if (lCp == (RgSchRrCListCp *)NULLP)
-      RETVOID;
+      return;
 #endif
 
    crnt = lCp->crnt;
@@ -299,7 +299,7 @@ RgSchRrCList *node;                /* node to be inserted */
 
    lCp->count++;
 
-   RETVOID;
+   return;
 }
 
 /********************************************************************30**

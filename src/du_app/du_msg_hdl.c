@@ -55,6 +55,7 @@ extern uint8_t egtpHdlDatInd(EgtpMsg egtpMsg);
 extern uint8_t BuildAndSendDUConfigUpdate();
 extern uint16_t getTransId();
 extern uint8_t cmPkLrgSchCfgReq(Pst * pst,RgMngmt * cfg);
+uint8_t BuildAndSendRrcDeliveryReport(uint32_t gnbCuUeF1apId, uint32_t gnbDuUeF1apId, RrcDeliveryReport *rrcDelivery);
 
 packMacCellCfgReq packMacCellCfgOpts[] =
 {
@@ -178,8 +179,8 @@ uint8_t duBuildRlcCfg(Inst inst)
 uint8_t duBuildRlcLsapCfg(Ent ent, Inst inst, uint8_t lsapInst)
 {
 
-   RlcMngmt    rlcMngmt;
-   RlcSapCfg   *lSap = NULLP;
+   RlcMngmt   rlcMngmt;
+   RlcSapCfg  *lSap = NULLP;
    Pst        pst;
 
    DU_SET_ZERO(&rlcMngmt, sizeof(RlcMngmt));
@@ -254,8 +255,8 @@ uint8_t duBuildRlcLsapCfg(Ent ent, Inst inst, uint8_t lsapInst)
  ***************************************************************************/
 uint8_t duBuildRlcUsapCfg(uint8_t elemId, Ent ent, Inst inst)
 {
-   RlcMngmt    rlcMngmt;
-   RlcSapCfg   *uSap = NULLP;
+   RlcMngmt   rlcMngmt;
+   RlcSapCfg  *uSap = NULLP;
    Pst        pst;
 
    DU_SET_ZERO(&rlcMngmt, sizeof(RlcMngmt));
@@ -321,9 +322,9 @@ uint8_t duBuildRlcUsapCfg(uint8_t elemId, Ent ent, Inst inst)
  ***************************************************************************/
 uint8_t duProcCfgComplete()
 {
-   uint8_t ret = ROK;
+   uint8_t         ret = ROK;
    static uint16_t cellId = 0;
-   uint16_t idx;
+   uint16_t        idx;
    for(idx=0; idx< DEFAULT_CELLS; idx++)
    {
       DuCellCb *cell = NULLP;
@@ -887,8 +888,8 @@ uint8_t duHdlMacCfgComplete(Pst *pst, RgMngmt *cfm)
  ***************************************************************************/
 uint8_t duBindUnbindRlcToMacSap(uint8_t inst, uint8_t action)
 {
-   RlcCntrl  *cntrl = NULLP;
-   RlcMngmt  rlcMngmt;
+   RlcCntrl *cntrl = NULLP;
+   RlcMngmt rlcMngmt;
    Pst      pst;
 
    TRC2(smBindKwToRguSap)
@@ -1282,8 +1283,8 @@ uint8_t duSendEgtpTestData()
    ipv4Hdr.length = CM_IPV4_HDRLEN + mLen;
    ipv4Hdr.hdrVer = 0x45;
    ipv4Hdr.proto = 1;
-   ipv4Hdr.srcAddr = CM_INET_NTOH_U32(duCfgParam.egtpParams.localIp.ipV4Addr);
-   ipv4Hdr.destAddr = CM_INET_NTOH_U32(duCfgParam.egtpParams.destIp.ipV4Addr);
+   ipv4Hdr.srcAddr = CM_INET_NTOH_UINT32(duCfgParam.egtpParams.localIp.ipV4Addr);
+   ipv4Hdr.destAddr = CM_INET_NTOH_UINT32(duCfgParam.egtpParams.destIp.ipV4Addr);
 
    /* Packing IPv4 header into buffer */
    uint8_t          ret, cnt, idx;

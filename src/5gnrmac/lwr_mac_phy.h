@@ -39,10 +39,10 @@ typedef enum
 /* allocate static buffer from WLS memory */
 #define WLS_MEM_ALLOC(_datPtr, _size)                        \
 {                                                            \
-   int16_t _ret;                                             \
+   uint8_t _ret;                                             \
    _ret = SGetSBufWls(0, 0, (Data **)&_datPtr, _size);       \
    if(_ret == ROK)                                           \
-      memset((U8*)_datPtr, 0, _size);                      \
+      memset((uint8_t*)_datPtr, 0, _size);                      \
    else                                                      \
       _datPtr = NULLP;                                       \
 }                                                              
@@ -54,7 +54,7 @@ typedef enum
 
 typedef struct wlsBlockToFree
 {
-   void *ptr;
+   void     *ptr;
    uint32_t size;
 }WlsBlockToFree;
 

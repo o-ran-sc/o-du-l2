@@ -76,7 +76,7 @@ void rlcUmmReAssembleSdus ARGS ((RlcCb *gCb,
 
 #ifndef TENB_ACC
 #ifndef LTE_PAL_ENB
-extern U32 isMemThreshReached(Region region);
+extern uint32_t isMemThreshReached(Region region);
 #endif
 #endif
 /**
@@ -571,7 +571,7 @@ RlcUlRbCb     *rbCb;
    /* In the UM Mode always send reestablish-indication to Upper Latyer*/
    RlcUiKwuReEstCmpInd(&rlcKwSap->pst, rlcKwSap->suId, *rlcId);
 
-   RETVOID;
+   return;
 }
 
 /**
@@ -689,7 +689,7 @@ uint8_t rlcUmmExtractHdr(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *pdu, RlcUmHdr *umH
    
       if ( e && umHdr->numLi < RLC_MAX_UL_LI)
       {
-         U8 tmp = ((dst[1]) & 0x08) >> 3;
+         uint8_t tmp = ((dst[1]) & 0x08) >> 3;
          umHdr->li[umHdr->numLi] = ( dst[1] & 0x07) << 8;
 
 
@@ -845,7 +845,7 @@ RlcUlRbCb   *rbCb;
    }
    RLC_FREE_WC(gCb,rbCb->m.umUl.recBuf, (windSz ) * sizeof(RlcUmRecBuf*));
    rbCb->m.umUl.recBuf = NULLP;
-   RETVOID;
+   return;
 } 
 
 

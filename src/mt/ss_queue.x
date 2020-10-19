@@ -45,7 +45,7 @@ typedef struct ssDmndQ
                                                  * bitmask */
    Queue      queue[SS_MAX_NUM_DQ];             /* the queues */
 #ifndef TENB_RTLIN_CHANGES
-   U8         bitMask[SS_DQ_BIT_MASK_LEN];      /* bit mask */
+   uint8_t         bitMask[SS_DQ_BIT_MASK_LEN];      /* bit mask */
 #endif
 } SsDmndQ;
 

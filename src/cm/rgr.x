@@ -247,7 +247,7 @@ typedef enum _rgrSiPerd
    RGR_SI_PERD_512 = 512   /**< SI Periodicity 512 RF */
 } RgrSiPeriodicity;
 
-/*rgr_x_001.main_11 ccpu00115364 ADD changed U8 to enum for modPrd*/
+/*rgr_x_001.main_11 ccpu00115364 ADD changed uint8_t to enum for modPrd*/
 /*modification period = (modificationPeriodCoeff * defaultPagingCycle)%m*/
 /*where modificationPeriodCoeff={2,4,8,16} defaultPagingCycle={32,64,128,256}*/
 /**
@@ -404,16 +404,16 @@ typedef enum rgrSchFrmt1b3TypEnum
 /** @brief Transaction ID between MAC and RRM */
 typedef struct rgrCfgTransId
 {
-   U8 trans[RGR_CFG_TRANSID_SIZE]; /*!< RRM Transaction ID */
+   uint8_t trans[RGR_CFG_TRANSID_SIZE]; /*!< RRM Transaction ID */
 } RgrCfgTransId;
 
 /** @brief  Downlink HARQ configuration per Cell */
 typedef struct rgrDlHqCfg
 {
-   U8  maxDlHqTx;            /*!< Maximum number of DL HARQ Transmissions.
+   uint8_t  maxDlHqTx;            /*!< Maximum number of DL HARQ Transmissions.
                                   Minimum value is 1, maximum can be defined
                                   by the user */    
-   U8  maxMsg4HqTx;          /*!< Maximum msg4(Random Access) HARQ Transmissions
+   uint8_t  maxMsg4HqTx;          /*!< Maximum msg4(Random Access) HARQ Transmissions
                                   Minimum value is 1, Maximum can be defined by
                                   the user */
 } RgrDlHqCfg;
@@ -422,21 +422,21 @@ typedef struct rgrDlHqCfg
 typedef struct rgrRntiCfg
 {
    CmLteRnti startRnti;      /*!< Start RNTI for the range managed by MAC */
-   U16       size;           /*!< Indicates contiguous range of RNTI managed by
+   uint16_t       size;           /*!< Indicates contiguous range of RNTI managed by
                                   MAC */
 } RgrRntiCfg;
 
 /** @brief Downlink common channel code rate configuration per cell */
 typedef struct rgrDlCmnCodeRateCfg
 {
-   U16 bcchPchRaCodeRate;    /*!< BCCH on DLSCH, PCH and RARsp coding rate.
+   uint16_t bcchPchRaCodeRate;    /*!< BCCH on DLSCH, PCH and RARsp coding rate.
                               * This defines the actual number of bits per 1024
                               * physical layer bits  */
-   U16 pdcchCodeRate;        /*!< PDCCH code rate defines actual number of bits
+   uint16_t pdcchCodeRate;        /*!< PDCCH code rate defines actual number of bits
                               * per 1024 physical layer bits. This is used to
                               * calculate aggregation level for PDCCH meant 
                               * for broadcasting RNTIs  */
-   U8  ccchCqi;              /*!< Default CQI to be used for Msg4 in case where 
+   uint8_t  ccchCqi;              /*!< Default CQI to be used for Msg4 in case where 
                               * no CQI is available for the UE. ccchCqi ranges
                               * from 1 to 15.*/
 } RgrDlCmnCodeRateCfg;
@@ -444,22 +444,22 @@ typedef struct rgrDlCmnCodeRateCfg
 /** @brief Control Format Indicator (CFI) configuration per cell */
 typedef struct rgrCfiCfg
 {
-   U8 cfi;                   /*!< CFI for PDCCH: a value in set {1,2,3} */
+   uint8_t cfi;                   /*!< CFI for PDCCH: a value in set {1,2,3} */
 } RgrCfiCfg;
 
 /** @brief PUSCH sub-band configuration per cell */
 typedef struct rgrPuschSubBandCfg
 {
-  U8 subbandStart;           /*!< Sub-band start */
-  U8 numSubbands;            /*!< Number of equal sized sub-bands */
-  U8 size;                   /*!< Size of a sub-band */ 
-  U8 dmrs[RGR_MAX_SUBBANDS]; /*!< DMRS information per sub-band */
+  uint8_t subbandStart;           /*!< Sub-band start */
+  uint8_t numSubbands;            /*!< Number of equal sized sub-bands */
+  uint8_t size;                   /*!< Size of a sub-band */ 
+  uint8_t dmrs[RGR_MAX_SUBBANDS]; /*!< DMRS information per sub-band */
 } RgrPuschSubBandCfg;
 
 /** @brief Uplink common channel code rate configuration per cell */
 typedef struct rgrUlCmnCodeRateCfg
 {
-   U8 ccchCqi;              /*!< CCCH CQI index, also used as default
+   uint8_t ccchCqi;              /*!< CCCH CQI index, also used as default
                              *  initial CQI for UEs */
 } RgrUlCmnCodeRateCfg;
 
@@ -468,15 +468,15 @@ typedef struct rgrUlCmnCodeRateCfg
 /** @brief Target Uplink CQI to achieve through group power control configured per cell */
 typedef struct rgrUlTrgCqiCfg
 {
-   U8 trgCqi;                /*!< Target UL CQI to be achieved through power 
+   uint8_t trgCqi;                /*!< Target UL CQI to be achieved through power 
                                control.Range is defined is between 1 to 15 */
 } RgrUlTrgCqiCfg;
 /** 
   @brief Bandwidth configuration per cell */
 typedef struct rgrBwCfg
 {
-   U8 dlTotalBw;            /*!< Total Dowlink Bandwidth */
-   U8 ulTotalBw;            /*!< Total Uplink Bandwidth  */
+   uint8_t dlTotalBw;            /*!< Total Dowlink Bandwidth */
+   uint8_t ulTotalBw;            /*!< Total Uplink Bandwidth  */
 } RgrBwCfg;
 
 /** 
@@ -491,12 +491,12 @@ typedef struct rgrPhichCfg
   @brief PUCCH configuration per cell */
 typedef struct rgrPucchCfg
 {
-   U8  resourceSize;       /*!< PUCCH resource-size or N^(2)_RB (in RBs) */
-   U16 n1PucchAn;          /*!< N^(1)_PUCCH */
-   U8  deltaShift;         /*!< Delta Shift for PUCCH: a value in set {1,2,3} */ 
-   U8  cyclicShift;        /*!< Cyclic Shift for PUCCH (N^(1)_CS): a value in
+   uint8_t  resourceSize;       /*!< PUCCH resource-size or N^(2)_RB (in RBs) */
+   uint16_t n1PucchAn;          /*!< N^(1)_PUCCH */
+   uint8_t  deltaShift;         /*!< Delta Shift for PUCCH: a value in set {1,2,3} */ 
+   uint8_t  cyclicShift;        /*!< Cyclic Shift for PUCCH (N^(1)_CS): a value in
                              range [0-7] */ 
-   U8  maxPucchRb;         /*!< The max number of RBs for PUCCH. This will be
+   uint8_t  maxPucchRb;         /*!< The max number of RBs for PUCCH. This will be
                                 used to limit the max CFI value when dynamic
                                 CFI feature is enabled. If there is no 
                                 limitation on the max PUCCH RBs, this variable
@@ -511,32 +511,32 @@ typedef struct rgrSrsCfg
    RgrSrsCfgPrd srsCfgPrdEnum; /*!< SRS configuration period (in subframes).*/
    RgrSrsBwCfg  srsBwEnum;     /*!< SRS Bandwidth configuration per cell.
                                  Range - [0-7] */
-   U8           srsSubFrameCfg;/*!< SRS subframe configuration index per cell.
+   uint8_t           srsSubFrameCfg;/*!< SRS subframe configuration index per cell.
                                  Range - [0-15] */
 } RgrSrsCfg;
 /** 
   @brief RACH configuration per cell */
 typedef struct rgrRachCfg
 {
-   U8  preambleFormat;        /*!< RACH Preamble format: a value in set {0,1,2,3} */
-   U8  raWinSize;             /*!< RA Window size */
+   uint8_t  preambleFormat;        /*!< RACH Preamble format: a value in set {0,1,2,3} */
+   uint8_t  raWinSize;             /*!< RA Window size */
   /** @brief Ocassion at Which Random Access Is Expected */
    struct raOccasionS
    {
-      U8       size;         /*!< Number of subframe numbers */
+      uint8_t       size;         /*!< Number of subframe numbers */
       RgrRaSfn sfnEnum;      /*!< System Frame Number */
-      U8       subFrameNum[RGR_MAX_SUBFRAME_NUM]; /*!< Subframe numbers */
+      uint8_t       subFrameNum[RGR_MAX_SUBFRAME_NUM]; /*!< Subframe numbers */
    } raOccasion;             /*!< Random access occasions */
-   U8  maxMsg3Tx;            /*!< Maximum number of message 3 transmissions */
-   U8  numRaPreamble;        /*!< Number of RA Preambles */
-   U8  sizeRaPreambleGrpA;   /*!< Size of RA Preamble in Group A */
-   U16 msgSizeGrpA;          /*!< MESSAGE_SIZE_GROUP_A */ 
-   U8  prachResource;        /*!< N^RA_PRB: PRACH resource for random access */
+   uint8_t  maxMsg3Tx;            /*!< Maximum number of message 3 transmissions */
+   uint8_t  numRaPreamble;        /*!< Number of RA Preambles */
+   uint8_t  sizeRaPreambleGrpA;   /*!< Size of RA Preamble in Group A */
+   uint16_t msgSizeGrpA;          /*!< MESSAGE_SIZE_GROUP_A */ 
+   uint8_t  prachResource;        /*!< N^RA_PRB: PRACH resource for random access */
 /**@name RGR_V1 */
 /**@{ */
 #ifdef RGR_V1
    /* rgr_x_001.main_7: [ccpu00112372] Added contention resolution timer */
-   U8  contResTmr;           /*!< Contention resolution timer */
+   uint8_t  contResTmr;           /*!< Contention resolution timer */
 #endif
 /**@} */
 } RgrRachCfg;
@@ -546,17 +546,17 @@ typedef struct rgrRachCfg
 */
 typedef struct rgrSiCfg
 {
-   U8  siWinSize;  /*!< SI window size */
-   U8  retxCnt;    /*!< Retransmission count */
+   uint8_t  siWinSize;  /*!< SI window size */
+   uint8_t  retxCnt;    /*!< Retransmission count */
    /* rgr_x_001.main_5-ADD-Added for SI Enhancement. */
 /**@name RGR_SI_SCH */
 /**@{ */
 #ifdef RGR_SI_SCH
-/*rgr_x_001.main_11 ccpu00115364 MOD changed U8 to enum for modPrd*/
+/*rgr_x_001.main_11 ccpu00115364 MOD changed uint8_t to enum for modPrd*/
    RgrModPeriodicity  modPrd;     /*!< Modificiation Period for SI */  
-   U8  numSi;      /*!<Number of SIs, SI Id starts from 1 */
+   uint8_t  numSi;      /*!<Number of SIs, SI Id starts from 1 */
    RgrSiPeriodicity siPeriodicity[RGR_MAX_NUM_SI]; /*!<Periodicities of SIs */
-   U16              minPeriodicity;  /*!< Minimum Periodicity Configured */
+   uint16_t              minPeriodicity;  /*!< Minimum Periodicity Configured */
 #endif/*RGR_SI_SCH*/
 /**@} */
 } RgrSiCfg;
@@ -566,7 +566,7 @@ typedef struct rgrSiCfg
 typedef struct rgrTpcRntiCfg
 {
    CmLteRnti startTpcRnti;   /*!< Start RNTI for TPC */
-   U16       size;           /*!< Indicates contiguous range of RNTI */
+   uint16_t       size;           /*!< Indicates contiguous range of RNTI */
 } RgrTpcRntiCfg;
 
 /* rgr_x_001.main_6 : documentation update. */
@@ -592,11 +592,11 @@ typedef struct rgrUlPwrCfg
  * @brief Cell-specific hopping configuration */
 typedef struct rgrPuschCfg
 {
-   U8       numSubBands; /*!< Number of sub-bands 
+   uint8_t       numSubBands; /*!< Number of sub-bands 
                             Currently this is unused parameter */
    Bool     isIntraHop;  /*!< Hopping mode inter/intra subframe
                              Currently this is unused parameter */
-   U8       hopOffst;    /*!< Hopping offset {0 ... 98} 
+   uint8_t       hopOffst;    /*!< Hopping offset {0 ... 98} 
                               Currently this is unused parameter*/
 } RgrPuschCfg;
 
@@ -605,15 +605,15 @@ typedef struct rgrPuschCfg
 typedef struct rgrCodeBookRstCfg
 {
    Bool   pres;          /*!< Code Book restriction present ?*/
-   U32    pmiBitMap[2];  /*!< Array for number of Bits for ports and TX Mode*/
+   uint32_t    pmiBitMap[2];  /*!< Array for number of Bits for ports and TX Mode*/
 } RgrCodeBookRstCfg;
 /**
  *  @brief Range of PDCCH Order Preamble Set managed by MAC */
 typedef struct rgrPreambleSetCfg
 {
    Bool    pres;      /*!< Indicates if other configuration fields are valid */
-   U8      start;     /*!< Start Preamble ID for the range managed by MAC */
-   U8      size;      /*!< Indicates contiguous range of premables managaed by
+   uint8_t      start;     /*!< Start Preamble ID for the range managed by MAC */
+   uint8_t      size;      /*!< Indicates contiguous range of premables managaed by
                         MAC */
 } RgrPreambleSetCfg; 
 
@@ -629,7 +629,7 @@ typedef struct rgrCmnLchCfg
                                CM_LTE_LCH_CCCH
                                CM_LTE_LCH_DCCH
                                CM_LTE_LCH_DTCH */  
-   U8            dir;        /*!< Indicates Direction. Direction can take following 
+   uint8_t            dir;        /*!< Indicates Direction. Direction can take following 
                                   values:
                                   RGR_DIR_TX
                                   RGR_DIR_RX
@@ -651,9 +651,9 @@ typedef struct rgrCmnLchCfg
   @brief RGR configuration for DLFS scheduler */ 
 typedef struct rgrDlfsCfg
 {
-  U8 isDlFreqSel;            /*!< Indicates if resource allocation is frequency
+  uint8_t isDlFreqSel;            /*!< Indicates if resource allocation is frequency
                                   selective or not */
-  U8 thresholdCqi;           /*!< This value is used by the DL frequency 
+  uint8_t thresholdCqi;           /*!< This value is used by the DL frequency 
                                selective   scheduler. This is the threshold
                                value below which the sub-band is not
                                considered for allocation for a frequency
@@ -701,8 +701,8 @@ typedef enum _rgrAbsPatternType
   @brief RGR RB range for SFR */
 typedef struct rgrSfrRbRange
 {
-   U8   startRb;  /*<! Start RB for cell edge user */
-   U8   endRb;    /*<! End RB for cell edge user */
+   uint8_t   startRb;  /*<! Start RB for cell edge user */
+   uint8_t   endRb;    /*<! End RB for cell edge user */
 } RgrSfrRbRange;
 
 #ifdef TFU_UPGRADE
@@ -737,16 +737,16 @@ typedef struct rgrDsfrConfig
 typedef struct rgrAbsConfig
 {
    RgrFeatureStatus status; /*!< Indicate feature is enabled or disabled */            
-   U32  absPatternType; /*!< Indicate it as Mute and/or Transmit type */
-   U8   absPattern[RGR_ABS_PATTERN_LEN]; /*!< ABS pattern */
-   U32  absLoadPeriodicity; /*!< ABS Load Ind periodicity in msec */ 
+   uint32_t  absPatternType; /*!< Indicate it as Mute and/or Transmit type */
+   uint8_t   absPattern[RGR_ABS_PATTERN_LEN]; /*!< ABS pattern */
+   uint32_t  absLoadPeriodicity; /*!< ABS Load Ind periodicity in msec */ 
 } RgrAbsConfig;
 
 /**
   @brief RGR configuration for LTE Advanced feature */
 typedef struct rgrLteAdvancedCellConfig
 {
-   U32                        pres;   /*!< To indicate presence of feature config */
+   uint32_t                        pres;   /*!< To indicate presence of feature config */
    RgrAbsConfig               absCfg; /*!< Configuration of ABS feature */
    RgrSfrConfig               sfrCfg; /*!< Configuration of SFR feature */
    RgrDsfrConfig              dsfrCfg;/*!< Configuration of DSFR feature */
@@ -759,10 +759,10 @@ typedef struct rgrLteAdvancedCellConfig
 /** @brief PRACH resource information for TDD */
 typedef struct rgrTddPrachInfo
 {
-   U8        freqIdx;          /*!< Frequency Index */
+   uint8_t        freqIdx;          /*!< Frequency Index */
    RgrRaSfn  sfn;              /*!< Even/Odd/All Radio Frames */
-   U8        halfFrm;          /*!< First/Second Half Frame */
-   U8        ulStartSfIdx;     /*!< Uplink Start Subframe Index;
+   uint8_t        halfFrm;          /*!< First/Second Half Frame */
+   uint8_t        ulStartSfIdx;     /*!< Uplink Start Subframe Index;
                                     RGR_TDD_SPL_UL_IDX must be used
                                     to configure special subframes */
 } RgrTddPrachInfo;
@@ -770,7 +770,7 @@ typedef struct rgrTddPrachInfo
 /** @brief Set of PRACH information for TDD */
 typedef struct rgrTddPrachRscInfo
 {
-   U8               numRsc;           /*!< Number of PRACH resources*/
+   uint8_t               numRsc;           /*!< Number of PRACH resources*/
    RgrTddPrachInfo  prachInfo[RGR_TDD_MAX_FREQ_RSRC];     /*!< PRACH information */
 } RgrTddPrachRscInfo;
 #endif /* LTE_TDD */
@@ -779,11 +779,11 @@ typedef struct rgrTddPrachRscInfo
 /** @brief set of PF Scheduler Parameters */ 
 typedef struct rgrEnbPfs
 {
-   U8           tptCoeffi;    /*!< Downlink Throughput Coeffiecient
+   uint8_t           tptCoeffi;    /*!< Downlink Throughput Coeffiecient
                                           Range 0 -10 */
-   U8           fairCoeffi;   /*!< Downlink Fairness Coeffiecient
+   uint8_t           fairCoeffi;   /*!< Downlink Fairness Coeffiecient
                                          Range 0 -10 */
-   U32          qciWgt[RGR_MAX_NUM_QCI];   /*!< Downlink Qci Weights */
+   uint32_t          qciWgt[RGR_MAX_NUM_QCI];   /*!< Downlink Qci Weights */
 } RgrEnbPfs;
 
 /** 
@@ -818,13 +818,13 @@ typedef struct rgrCellCntrlCmdCfg
       struct rachOvrLd
       {
          Bool backOffEnb; /*!< backoff RACH during overlaod */
-         U8   backOffVal; /*!< backoff value during overload */
+         uint8_t   backOffVal; /*!< backoff value during overload */
       }rachOvrLd;
 
       /** @brief CPU OverLoad Cntrl Cmd Description */
       struct cpuOvrLd
       {
-         U8 instruction;  /*!< CPU Over Load Cntrl Instruction */
+         uint8_t instruction;  /*!< CPU Over Load Cntrl Instruction */
       }cpuOvrLd;
    }cmdDesc;
 } RgrCellCntrlCmdCfg;
@@ -837,14 +837,14 @@ typedef struct rgrCellCntrlCmdCfg
   */
 typedef struct macSchedGnbCfg
 {
-   U8         numTxAntPorts;    /*!< Number of Tx antenna ports */
-   U8         ulSchdType;     /*!< Indicates which UL scheduler to use, range
+   uint8_t         numTxAntPorts;    /*!< Number of Tx antenna ports */
+   uint8_t         ulSchdType;     /*!< Indicates which UL scheduler to use, range
                                * is 0..(number of schedulers - 1) */
-   U8         dlSchdType;     /*!< Indicates which DL scheduler to use, range
+   uint8_t         dlSchdType;     /*!< Indicates which DL scheduler to use, range
                                * is 0..(number of schedulers - 1) */
-   U8         numCells;       /*!< Max number of cells */
-   U8         maxUlUePerTti;  /*!< Max number of UE in UL per TTI */
-   U8         maxDlUePerTti;  /*!< Max number of UE in DL per TTI */
+   uint8_t         numCells;       /*!< Max number of cells */
+   uint8_t         maxUlUePerTti;  /*!< Max number of UE in UL per TTI */
+   uint8_t         maxDlUePerTti;  /*!< Max number of UE in DL per TTI */
 }MacSchedGnbCfg;
 /**
   * @brief
@@ -853,15 +853,15 @@ typedef struct macSchedGnbCfg
   */
 typedef struct rgrSchedEnbCfg
 {
-   U8         numTxAntPorts;    /*!< Number of Tx antenna ports */
-   U8         dlSchdType;     /*!< Indicates which DL scheduler to use, range
+   uint8_t         numTxAntPorts;    /*!< Number of Tx antenna ports */
+   uint8_t         dlSchdType;     /*!< Indicates which DL scheduler to use, range
                                * is 0..(number of schedulers - 1) */
    union       rgrDlSchInfoS
    {
       RgrEnbPfs     dlPfs;      /*!< Information related to DL PFS 
                                   Scheduler */
    } dlSchInfo;
-   U8         ulSchdType;     /*!< Indicates which UL scheduler to use, range
+   uint8_t         ulSchdType;     /*!< Indicates which UL scheduler to use, range
                                 is 0..(number of schedulers - 1) */
    union       rgrUlSchInfoS
    {
@@ -872,7 +872,7 @@ typedef struct rgrSchedEnbCfg
                                   There is no range defined for the  
                                   values, However the product of all
                                   three priorities must not exceed the
-                                  range of U32 */
+                                  range of uint32_t */
    } ulSchInfo;
    RgrCellAccsMode     accsMode;       /*!< Cell Access Mode */ 
 #ifdef RG_5GTF
@@ -891,11 +891,11 @@ TODO: Check if this is to be added to re-configuration as well
 /* SPS_DEV */
 typedef struct rgrSpsCellCfg
 {
-   U8        maxSpsDlBw; /*!< BW used of SPS Scheduling */ 
+   uint8_t        maxSpsDlBw; /*!< BW used of SPS Scheduling */ 
                                                             
-   U16       maxSpsUePerDlSf; /*!< Maximum DL SPS UEs that can be 
+   uint16_t       maxSpsUePerDlSf; /*!< Maximum DL SPS UEs that can be 
                                                            scheduled in a TTI */
-   U16       maxSpsUePerUlSf; /*!< Maximum UL SPS UEs that can be scheduled
+   uint16_t       maxSpsUePerUlSf; /*!< Maximum UL SPS UEs that can be scheduled
                                 in a TTI */
 } RgrSpsCellCfg;
 
@@ -904,8 +904,8 @@ typedef struct rgrSpsCellCfg
  */
 typedef struct rgrCellCsgParamCfg
 {
-   U8   minDlResNonCsg;  /*!< Min PDSCH Resources for Non-CSG Members */
-   U8   minUlResNonCsg;  /*!< Min PUSCH Resources for Non-CSG Members */
+   uint8_t   minDlResNonCsg;  /*!< Min PDSCH Resources for Non-CSG Members */
+   uint8_t   minUlResNonCsg;  /*!< Min PUSCH Resources for Non-CSG Members */
 } RgrCellCsgParamCfg;
 
 /** @brief LAA Cell Configuration */
@@ -917,62 +917,62 @@ typedef struct rgrLteUCfg
 /* emtc */
 typedef struct rgrEmtcSiSchedInfo
 {
-   U8   emtcSiNarrowBand; /*!< narrowband assigned to SI */
-   U16  emtcSiTbs;         /*!< tbs value for SI */
+   uint8_t   emtcSiNarrowBand; /*!< narrowband assigned to SI */
+   uint16_t  emtcSiTbs;         /*!< tbs value for SI */
 }RgrEmtcSiSchedInfo;
 
 typedef struct rgrEmtcPrmbleMap
 {
-     U8  firstPreamble;       /*!< for each CE mode, starting preamble */
-     U8  lastPreamble;        /*!< for each CE mode, starting preamble */
+     uint8_t  firstPreamble;       /*!< for each CE mode, starting preamble */
+     uint8_t  lastPreamble;        /*!< for each CE mode, starting preamble */
 }RgrEmtcPrmbleMap;
 
 typedef struct rgrEmtcRachCElevelInfoLst
 {
-   U8                emtcRarHopping;         /*!< by defualt off */
-   U16               raEmtcWinSize;          /*!< RA Window size */
-   U16               raEmtcContResTmr;       /*!< Contension Resolution */
-   U16               emtcPreambleTransMax;   /*!< PreambleTransMax  */
+   uint8_t                emtcRarHopping;         /*!< by defualt off */
+   uint16_t               raEmtcWinSize;          /*!< RA Window size */
+   uint16_t               raEmtcContResTmr;       /*!< Contension Resolution */
+   uint16_t               emtcPreambleTransMax;   /*!< PreambleTransMax  */
    RgrEmtcPrmbleMap  emtcPreambleMap;           /*!< preamble mapping Info */ 
 }RgrEmtcRachCElevelInfoLst;
 
 typedef struct rgrEmtcRachCfg
 {
-   U8 emtcCeLvlSupported;
+   uint8_t emtcCeLvlSupported;
    RgrEmtcRachCElevelInfoLst ceLevelInfo[RGR_MAX_CE_LEVEL]; /* for all CE levels 0,1,2,3*/
 }RgrEmtcRachCfg;
 
 typedef struct rgrEmtcPdschCfg
 {
-   U16 emtcMaxRepCeModeA;   /*!< max repetition for CE ModeA */ 
-   U16 emtcMaxRepCeModeB;   /*!< max repetition for CE ModeB */ 
+   uint16_t emtcMaxRepCeModeA;   /*!< max repetition for CE ModeA */ 
+   uint16_t emtcMaxRepCeModeB;   /*!< max repetition for CE ModeB */ 
 }RgrEmtcPdschCfg;
 
 typedef struct rgrEmtcPuschCfg
 {
-   U16 emtcMaxRepCeModeA;  /*!< max repetition for CE ModeA */ 
-   U16 emtcMaxRepCeModeB;  /*!< max repetition for CE ModeB */
-   U8  emtcHoppingOffset;  /*!< Hopping offset */
+   uint16_t emtcMaxRepCeModeA;  /*!< max repetition for CE ModeA */ 
+   uint16_t emtcMaxRepCeModeB;  /*!< max repetition for CE ModeB */
+   uint8_t  emtcHoppingOffset;  /*!< Hopping offset */
 }RgrEmtcPuschCfg;
 
 typedef struct rgrEmtcPrachCEParamLst
 {
-   U8   emtcPrachCfgIdx;         /*!< Prach config index */
-   U8   emtcPrachFreqOffset;     /*!< Prach Frequency Offset */
-   U16  emtcPrachStartSubFrame;  /*!< Starting sub frame */
-   U8   emtcMaxPremAttemptCE;    /*!< max preamble attempt  CE */
-   U8   emtcNumRepPerPreambleAtt;/*!< num of repetition per preamble attempt*/
-   U8   emtcNumMpdcchNBtoMonitor;/*!< num of Mpddch NB to monitor */
-   U8   emtcMpdcchNBtoMonitor[RGR_MAX_NUM_MPDCCH_MONITOR];/*!<  Mpddch NB to monitor */
-   U16  emtcMpdcchNumRep;        /*!< num of Mpddch Number of repetition */
-   U8   emtcPrachHoppingCfg;     /*!< num of Prach Hopping config */
+   uint8_t   emtcPrachCfgIdx;         /*!< Prach config index */
+   uint8_t   emtcPrachFreqOffset;     /*!< Prach Frequency Offset */
+   uint16_t  emtcPrachStartSubFrame;  /*!< Starting sub frame */
+   uint8_t   emtcMaxPremAttemptCE;    /*!< max preamble attempt  CE */
+   uint8_t   emtcNumRepPerPreambleAtt;/*!< num of repetition per preamble attempt*/
+   uint8_t   emtcNumMpdcchNBtoMonitor;/*!< num of Mpddch NB to monitor */
+   uint8_t   emtcMpdcchNBtoMonitor[RGR_MAX_NUM_MPDCCH_MONITOR];/*!<  Mpddch NB to monitor */
+   uint16_t  emtcMpdcchNumRep;        /*!< num of Mpddch Number of repetition */
+   uint8_t   emtcPrachHoppingCfg;     /*!< num of Prach Hopping config */
 }RgrEmtcPrachCEParamLst;
 
 typedef struct rgrEmtcPrachCfg
 {
-   U8           emtcMpdcchStartSFCssRaFdd;  /*!< mdpcch start SubFrame Ra type2 */
-   U8           emtcPrachHopingOffset;      /*!< prach hopping offset value */
-   U8           emtcInitialCElevel;         /*!< Initial CE level to start with */
+   uint8_t           emtcMpdcchStartSFCssRaFdd;  /*!< mdpcch start SubFrame Ra type2 */
+   uint8_t           emtcPrachHopingOffset;      /*!< prach hopping offset value */
+   uint8_t           emtcInitialCElevel;         /*!< Initial CE level to start with */
    RgrEmtcPrachCEParamLst emtcPrachCEparmLst[RGR_MAX_CE_LEVEL];
 }RgrEmtcPrachCfg;
 
@@ -980,11 +980,11 @@ typedef struct rgrEmtcPrachCfg
 /*Changes by Simran*/
 typedef struct rgrFddDownlinkOrTddSubframeBitmapLC
 {
-   U8 sfnPtnChoice;
+   uint8_t sfnPtnChoice;
    union
    {
-      U16 ptn10;
-      U32 ptn40[2];
+      uint16_t ptn10;
+      uint32_t ptn40[2];
    }u;
 }RgrFddDownlinkOrTddSubframeBitmapLC;
 
@@ -993,43 +993,43 @@ typedef struct rgrEmtcSiCfg
 {
    Bool             siHoppingEnable;      /*!< SI Hopping enabled or not */
    RgrModPeriodicity  modPrd;     /*!< Modificiation Period for SI */  
-   U8               siWinSizeBr;          /*!< SI window size */
-   U8               sib1Repetition;       /*!< sib1-br repetition */
-   U8               siRepetition;         /*!< SI repetition pattern
+   uint8_t               siWinSizeBr;          /*!< SI window size */
+   uint8_t               sib1Repetition;       /*!< sib1-br repetition */
+   uint8_t               siRepetition;         /*!< SI repetition pattern
                                                everyRF,every2ndRF,every4thRF,every8thRF*/
-   U16              startSymbolLc;
+   uint16_t              startSymbolLc;
    /*Changes by Simran*/
    RgrFddDownlinkOrTddSubframeBitmapLC    fddDLOrTddSfBitmapLC;
-   //U16              fddDlOrTddSfBitmapBR; /*!< 10 bit value for sending SI*/
+   //uint16_t              fddDlOrTddSfBitmapBR; /*!< 10 bit value for sending SI*/
    RgrEmtcSiSchedInfo schdInfo[RGR_MAX_NUM_SI];
-   U8               numSi;      /*!<Number of SIs, SI Id starts from 1 */
+   uint8_t               numSi;      /*!<Number of SIs, SI Id starts from 1 */
    RgrSiPeriodicity siPeriodicity[RGR_MAX_NUM_SI]; /*!<Periodicities of SIs */
 } RgrEmtcSiCfg;
 
 typedef struct rgrEmtcPucchCfg
 {
-   U16       emtcN1pucchAnInfoLst[RGR_MAX_CE_LEVEL];  /*!< Max CE level is 4 */
-   U8        emtcPucchNumRepCEMsg4Lvl0;           /*!< update the level 0 */
-   U8        emtcPucchNumRepCEMsg4Lvl1;           /*!< update the level 1 */
-   U8        emtcPucchNumRepCEMsg4Lvl2;           /*!< update the level 2 */
-   U8        emtcPucchNumRepCEMsg4Lvl3;           /*!< update the level 3 */
+   uint16_t       emtcN1pucchAnInfoLst[RGR_MAX_CE_LEVEL];  /*!< Max CE level is 4 */
+   uint8_t        emtcPucchNumRepCEMsg4Lvl0;           /*!< update the level 0 */
+   uint8_t        emtcPucchNumRepCEMsg4Lvl1;           /*!< update the level 1 */
+   uint8_t        emtcPucchNumRepCEMsg4Lvl2;           /*!< update the level 2 */
+   uint8_t        emtcPucchNumRepCEMsg4Lvl3;           /*!< update the level 3 */
 }RgrEmtcPucchCfg;
 
 typedef struct rgrEmtcRntiCfg
 {
    CmLteRnti rntiCeModeAStart;      /*!< EMTC Start RNTI for the range managed by MAC */
    CmLteRnti rntiCeModeARange;      /*!< EMTC Range of RNTI for the CEMODE A */
-   U16       rntiCeModeBStart;      /*!< EMTC Start RNTI for the range managed by MAC */
+   uint16_t       rntiCeModeBStart;      /*!< EMTC Start RNTI for the range managed by MAC */
    CmLteRnti rntiCeModeBRange;      /*!< EMTC Range of RNTI for the CEMODE B */
-   U16       size;           /*!< Indicates contiguous range of RNTI managed by EMTC
+   uint16_t       size;           /*!< Indicates contiguous range of RNTI managed by EMTC
                                   MAC */
 } RgrEmtcRntiCfg;
 
 typedef struct rgrEmtcCellCfg
 {
-   U16               pci;            /*!< Physical Cell ID */
-   U32               emtcT300Tmr;    /*!< T300 timer as per Rel13 */
-   U32               emtcT301Tmr;    /*!< T301 timer as per Rel13 */
+   uint16_t               pci;            /*!< Physical Cell ID */
+   uint32_t               emtcT300Tmr;    /*!< T300 timer as per Rel13 */
+   uint32_t               emtcT301Tmr;    /*!< T301 timer as per Rel13 */
    RgrEmtcSiCfg      emtcSiCfg;      /*!< SI configuration */
    RgrEmtcRachCfg    emtcRachCfg;    /*!< Rach config as per Rel13*/
    RgrEmtcPdschCfg   emtcPdschCfg;   /*!< Pdsch config as per Rel13*/
@@ -1037,9 +1037,9 @@ typedef struct rgrEmtcCellCfg
    RgrEmtcPrachCfg   emtcPrachCfg;   /*!< Prach config as per Rel13*/
    RgrEmtcPucchCfg   emtcPucchCfg;   /*!< Pucch config as per Rel13*/
    RgrEmtcRntiCfg    emtcMacRnti;
-   U8                emtcPdschNbIdx;
-   U8                emtcMpdcchNbIdx;
-   U8                emtcPuschNbIdx;
+   uint8_t                emtcPdschNbIdx;
+   uint8_t                emtcMpdcchNbIdx;
+   uint8_t                emtcPuschNbIdx;
 }RgrEmtcCellCfg;
 
 #endif
@@ -1056,12 +1056,12 @@ typedef enum rgSchSfType
 typedef struct rgr5gtfCellCfg
 {
    RgSchSfType     dynConfig[MAX_5GTF_SUBFRAME_INFO];
-   U8              uePerGrp;
-   U8              ueGrpPerTti;
-   U8              numUes;
-   U8              numOfCC;
-   U8              bwPerCC;
-   U8              cfi;
+   uint8_t              uePerGrp;
+   uint8_t              ueGrpPerTti;
+   uint8_t              numUes;
+   uint8_t              numOfCC;
+   uint8_t              bwPerCC;
+   uint8_t              cfi;
 }Rgr5gtfCellCfg;
 #endif
 
@@ -1083,7 +1083,7 @@ typedef enum rgrDlUlTxPrdcty
 typedef struct rgrSlotCfg
 {
 Bool duplexMode;  /*!< FDD:0, TDD:1 */
-U32  slotFrmt[RGR_MAX_SLOTS_IN_10MS]; /*!< Least significant 2 bits indicates:
+uint32_t  slotFrmt[RGR_MAX_SLOTS_IN_10MS]; /*!< Least significant 2 bits indicates:
                                         00-DL, 01-UL, 10-Flexi, 11-Mixed
                                         Rest 28 bits indicates 14 symbols
                                         types(DL/UL/Flexi) 2 bits for
@@ -1100,11 +1100,11 @@ typedef struct rgrCellCfg
 
 #if 0
    CmLteCellId         cellId;         /*!< Cell ID */
-   U16                 pci;            /*!< Physical Cell ID */
-   U8                  maxMsg3PerUlSlot; /*!< Maximum MSG3 that may be scheduled
+   uint16_t                 pci;            /*!< Physical Cell ID */
+   uint8_t                  maxMsg3PerUlSlot; /*!< Maximum MSG3 that may be scheduled
                                             per uplink slot */
-   U8                  maxUePerUlSlot;   /*!<Maximum UE scheduled per UL slot */
-   U8                  maxUePerDlSlot;   /*!<Maximum UE scheduled per DL in a TTI */
+   uint8_t                  maxUePerUlSlot;   /*!<Maximum UE scheduled per UL slot */
+   uint8_t                  maxUePerDlSlot;   /*!<Maximum UE scheduled per DL in a TTI */
    Bool                isCpUlExtend;   /*!< Cyclic prefix: TRUE-extended, 
                                          FALSE-normal for UL */
    Bool                isCpDlExtend;   /*!< Cyclic prefix: TRUE-extended, 
@@ -1122,23 +1122,23 @@ typedef struct rgrCellCfg
    RgrPreambleSetCfg   macPreambleSet; /*!< Range of PDCCH Order Preamble IDs
                                          to be managed by MAC */
 
-   U16                bcchTxPwrOffset; /*!< Tx Pwr Offset for BCCH tx on PDSCH.
+   uint16_t                bcchTxPwrOffset; /*!< Tx Pwr Offset for BCCH tx on PDSCH.
                                          Offset to the reference signal 
                                          power. Value: 0 -> 10000, 
                                          representing -6 dB to 4 dB in 0.001
                                          dB steps */                                    
-   U16                pcchTxPwrOffset; /*!< Tx Pwr Offset for PCCH tx.
+   uint16_t                pcchTxPwrOffset; /*!< Tx Pwr Offset for PCCH tx.
                                          Offset to the reference signal 
                                          power. Value: 0 -> 10000, 
                                          representing -6 dB to 4 dB in 0.001
                                          dB steps */                                    
-   U16                rarTxPwrOffset; /*!< Tx Pwr Offset for RAR tx.
+   uint16_t                rarTxPwrOffset; /*!< Tx Pwr Offset for RAR tx.
                                         Offset to the reference signal 
                                         power. Value: 0 -> 10000, 
                                         representing -6 dB to 4 dB in 0.001
                                         dB steps */          
-   U8                   nrMu; /*!<Indicates the number of Slot for a radio frame*/
-   U8                   tbScalingField;/*!< TB Scaling Factor used while
+   uint8_t                   nrMu; /*!<Indicates the number of Slot for a radio frame*/
+   uint8_t                   tbScalingField;/*!< TB Scaling Factor used while
                                          calucating TBS for P-RNTI, or
                                          RA-RNTI*/
    RgrSlotCfg        slotCfg;         /*!< Slot config as per 38.211, sec
@@ -1179,46 +1179,46 @@ typedef struct rgrCellCfg
 #ifdef RGR_V1
    /* rgr_x_001.main_7: [ccpu00112789] Added configuration for maximum number
       of  MSG3s */
-   U8                  maxMsg3PerUlSf; /*!< Maximum MSG3 that may be scheduled
+   uint8_t                  maxMsg3PerUlSf; /*!< Maximum MSG3 that may be scheduled
                                          per uplink subframe */
 #endif /* RGR_V1 */
    /** @} */
-   U8                  maxUePerUlSf;   /*!< Maximum UEs that may be scheduled
+   uint8_t                  maxUePerUlSf;   /*!< Maximum UEs that may be scheduled
                                          per uplink subframe. Currently this is
                                          unused parameter */
-   U8                  maxUePerDlSf;   /*!< Maximum UE to be considered for DL 
+   uint8_t                  maxUePerDlSf;   /*!< Maximum UE to be considered for DL 
                                          scheduling in a TTI.Currently this is
                                          unused parameter */
    /*[ccpu00138609]-ADD- Max limit for Msg4/DL CCCH Ues */
-   U8                  maxCcchPerDlSf; /*!< Max num of Msg4/DL CCCH SDU UEs that
+   uint8_t                  maxCcchPerDlSf; /*!< Max num of Msg4/DL CCCH SDU UEs that
                                          can be scheduled per TTI. It cannot 
                                          exceed max UE per Dl sf. If set as
                                          0, this will be a don't care 
                                          parameter */ 
-   U8                  maxUlBwPerUe;   /*!< Maximum number of RBs that can be  
+   uint8_t                  maxUlBwPerUe;   /*!< Maximum number of RBs that can be  
                                          allocated to an UE in an UL subframe
                                          Maximum value is defined by 
                                          RG_SCH_CMN_MAX_UL_BW_PER_UE in   
                                          rg_env.h. This can be modified as
                                          per need basis */
-   U8                  maxDlBwPerUe;   /*!< Maximum number of RBs that can be    
+   uint8_t                  maxDlBwPerUe;   /*!< Maximum number of RBs that can be    
                                          allocated to an UE in an DL subframe  
                                          Maximum value is defined by     
                                          RG_SCH_CMN_MAX_DL_BW_PER_UE in
                                          rg_env.h. This can be modified as 
                                          per need basis */
-   U8                  maxDlRetxBw;    /*!< Maximum number of RBs that can be     
+   uint8_t                  maxDlRetxBw;    /*!< Maximum number of RBs that can be     
                                          allocated for retransmission in DL
                                          Maximum value is defined by 
                                          RG_SCH_CMN_MAX_DL_RETX_BW in   
                                          rg_env.h. This can be modified as   
                                          per need basis */
-   U8                  maxDlUeNewTxPerTti; /*!< Maximum number of UEs that can  
+   uint8_t                  maxDlUeNewTxPerTti; /*!< Maximum number of UEs that can  
                                              be scheduled for a new DL    
                                              transmission in a TTI. Value should
                                              be configured by the user as per  
                                              specific needs */ 
-   U8                  maxUlUeNewTxPerTti;  /*!< Maximum number of UEs that can 
+   uint8_t                  maxUlUeNewTxPerTti;  /*!< Maximum number of UEs that can 
                                               be scheduled for a new UL 
                                               transmission in a TTI. Value should 
                                               be configured by the user as per  
@@ -1234,7 +1234,7 @@ typedef struct rgrCellCfg
    S8                  pMax;           /*!< To limit the Cell Uplink 
                                          transmission power */
 
-   U8                  dlfsSchdType;   /*!< Indicates which DLFS scheduler to use, range
+   uint8_t                  dlfsSchdType;   /*!< Indicates which DLFS scheduler to use, range
                                         * is 0..(number of schedulers - 1) */
    RgrDlHqCfg          dlHqCfg;        /*!< HARQ related configuration */ 
    RgrRntiCfg          macRnti;        /*!< Range of RNTIs to be managed by MAC */   
@@ -1257,15 +1257,15 @@ typedef struct rgrCellCfg
    RgrPuschCfg         puschCfg;       /*!< Cell-specific hopping configuration */
    RgrPreambleSetCfg   macPreambleSet; /*!< Range of PDCCH Order Preamble IDs
                                          to be managed by MAC */
-   U8                  numCmnLcs;      /*!< Number of common logical channels*/
+   uint8_t                  numCmnLcs;      /*!< Number of common logical channels*/
    RgrCmnLchCfg        cmnLcCfg[RGR_MAX_CMN_LC_PER_CELL];  /*!< Configuration for 
                                                              common logical channels */
    RgrCellCsgParamCfg  csgParamCfg;    /* Cell-specific configuration for CSG */
    /** @name LTE_TDD */
    /** @{ */
 #ifdef LTE_TDD
-   U8                  ulDlCfgIdx;     /*!< UL-DL configuration index*/
-   U8                  spclSfCfgIdx;   /*!< Special Subframe configuration index*/
+   uint8_t                  ulDlCfgIdx;     /*!< UL-DL configuration index*/
+   uint8_t                  spclSfCfgIdx;   /*!< Special Subframe configuration index*/
    RgrTddPrachRscInfo  prachRscInfo;   /*!< PRACH information */
 #endif /* LTE_TDD */
    /** @} */
@@ -1273,7 +1273,7 @@ typedef struct rgrCellCfg
    /* rgr_x_001.main_4: Added 0 as valid value to shut off RGR TICKs. */
    /** @name RGR_RRM_TICK */
    /** @{ */
-   U8                  rrmTtiIndPrd;   /*!< Periodicity of TTI indication from
+   uint8_t                  rrmTtiIndPrd;   /*!< Periodicity of TTI indication from
                                          MAC towards RGR user. Range [0-255]. A
                                          value of 1 means one tick per System
                                          Frame and 2 means one tick per 2 System
@@ -1288,32 +1288,32 @@ typedef struct rgrCellCfg
    RgrLteAdvancedCellConfig  rgrLteAdvCfg; /*!< RGR Configuration of LTE Adv */
    /* LTE_ADV_FLAG_REMOVED_END */
 #ifdef AIRSPAN
-   U8                dlCqiOverrideFloor;
-   U8                dlCqiOverrideCeil;
-   U8                ulCqiOverrideFloor;
-   U8                ulCqiOverrideCeil;
+   uint8_t                dlCqiOverrideFloor;
+   uint8_t                dlCqiOverrideCeil;
+   uint8_t                ulCqiOverrideFloor;
+   uint8_t                ulCqiOverrideCeil;
 #endif  
    /** @} */
-   U16 t300TmrVal;               /*!< t300Timer value configured in Frames */
+   uint16_t t300TmrVal;               /*!< t300Timer value configured in Frames */
 
    /* ccpu00132314-ADD-Tx power offsets for Common PDSCH transmissions */                                   
-   U16                bcchTxPwrOffset; /*!< Tx Pwr Offset for BCCH tx on PDSCH.
+   uint16_t                bcchTxPwrOffset; /*!< Tx Pwr Offset for BCCH tx on PDSCH.
                                          Offset to the reference signal 
                                          power. Value: 0 -> 10000, 
                                          representing -6 dB to 4 dB in 0.001
                                          dB steps */                                    
-   U16                pcchTxPwrOffset; /*!< Tx Pwr Offset for PCCH tx.
+   uint16_t                pcchTxPwrOffset; /*!< Tx Pwr Offset for PCCH tx.
                                          Offset to the reference signal 
                                          power. Value: 0 -> 10000, 
                                          representing -6 dB to 4 dB in 0.001
                                          dB steps */                                    
-   U16                rarTxPwrOffset; /*!< Tx Pwr Offset for RAR tx.
+   uint16_t                rarTxPwrOffset; /*!< Tx Pwr Offset for RAR tx.
                                         Offset to the reference signal 
                                         power. Value: 0 -> 10000, 
                                         representing -6 dB to 4 dB in 0.001
                                         dB steps */          
    /* ccpu00138898 - Added Tx pwr offset for PHICH Tx*/
-   U16                phichTxPwrOffset; /*!< Tx Pwr Offset for PHICH tx.
+   uint16_t                phichTxPwrOffset; /*!< Tx Pwr Offset for PHICH tx.
                                           Offset to the reference signal 
                                           power. Value: 0 -> 10000, 
                                           representing -6 dB to 4 dB in 0.001
@@ -1346,8 +1346,8 @@ typedef struct rgrUeAprdDlCqiCfg
    RgrAprdCqiMode     aprdModeEnum;   /*!< Aperiodic CQI reporting mode */
    /* These two fields are only valid for Pcell*/
 #ifdef LTE_ADV
-   U8                 triggerSet1;    /*!< Trigger set one*/
-   U8                 triggerSet2;    /*!< Trigger set two*/
+   uint8_t                 triggerSet1;    /*!< Trigger set one*/
+   uint8_t                 triggerSet2;    /*!< Trigger set two*/
 #endif
 } RgrUeAprdDlCqiCfg;
 
@@ -1362,12 +1362,12 @@ typedef struct rgrUePrdDlCqiCfg
    RgrPrdCqiMode       prdModeEnum;   /*!< Peiodic CQI reporting mode. */
    RgrCqiPrdicity      prdicityEnum;  /*!< Periodicity values for CQI. 
                                            Currently, this is unused parameter. */
-   U8                  subframeOffst; /*!< Subframe offset. 
+   uint8_t                  subframeOffst; /*!< Subframe offset. 
                                            Currently, this is unused parameter. */
    S8                  cqiOffst;      /*!< Delta^cqi_offset: (actual_value*10).
                                            Currently, this is unused parameter. */ 
-   U8                  k;             /*!< k value: range [1-4] */
-   U16                 cqiPmiCfgIdx;  /*!< CQI-PMI configuration index. */
+   uint8_t                  k;             /*!< k value: range [1-4] */
+   uint16_t                 cqiPmiCfgIdx;  /*!< CQI-PMI configuration index. */
 } RgrUePrdDlCqiCfg;
 
 #else /* TFU_UPGRADE */
@@ -1378,13 +1378,13 @@ typedef struct rgrUePrdDlCqiCfg
 /* Reference: 36.313: CQI-ReportPeriodic */
 typedef struct rgrUeDlPCqiSetup
 {
-      U16  cqiPResIdx;  /*!< cqi-PUCCH-ResourceIndex (0.. 1185) */
-      U16  cqiPCfgIdx;  /*!< cqi-pmi-ConfigIndex (0..1023) */
-      U8   cqiRepType;  /*!< Wideband CQI = 1  Subband CQI =2 */
-      U8   k;           /*!< Ref: 36.213 [23, 7.2.2] (1..4). 
+      uint16_t  cqiPResIdx;  /*!< cqi-PUCCH-ResourceIndex (0.. 1185) */
+      uint16_t  cqiPCfgIdx;  /*!< cqi-pmi-ConfigIndex (0..1023) */
+      uint8_t   cqiRepType;  /*!< Wideband CQI = 1  Subband CQI =2 */
+      uint8_t   k;           /*!< Ref: 36.213 [23, 7.2.2] (1..4). 
                              Valid only for Subband CQI */
-      U8   riEna;       /*!< Rand Indicator is Enabled TRUE(1) FALSE(0) */
-      U16  riCfgIdx;    /*!< ri-ConfigIndex    (0..1023)  */
+      uint8_t   riEna;       /*!< Rand Indicator is Enabled TRUE(1) FALSE(0) */
+      uint16_t  riCfgIdx;    /*!< ri-ConfigIndex    (0..1023)  */
       Bool sANCQI;      /*!< simultaneousAckNackAndCQI TRUE(1) FALSE(0) */
       RgrPrdCqiMode prdModeEnum;   /*!< Peiodic CQI reporting mode */
 }RgrUeDlPCqiSetup;
@@ -1395,7 +1395,7 @@ typedef struct rgrUeDlPCqiSetup
 */
 typedef struct  rgrUeDlPCqiCfg
 {
-   U8                 type;               /*!< Setup(1) or Release(0) */    
+   uint8_t                 type;               /*!< Setup(1) or Release(0) */    
    RgrUeDlPCqiSetup   cqiSetup;           /*!< Periodic CQI Setup */
 } RgrUePrdDlCqiCfg;
 
@@ -1450,7 +1450,7 @@ typedef enum rgrUlSrsCycShiftInfo
 */
 typedef struct rgrUeUlSrsSetupCfg 
 {
-   U16               srsCfgIdx;         /*!< SRS Configuration Index ISRS   
+   uint16_t               srsCfgIdx;         /*!< SRS Configuration Index ISRS   
                                             Ref:  36.213: Table 8.2-1; Range: 0-636*/
    RgrUlSrsBwInfo    srsBw;        /*!< SRS Bandwidth */
    RgrUlSrsHoBwInfo  srsHopBw;     /*!< SRS Hoping Bandwidth */
@@ -1465,8 +1465,8 @@ typedef struct rgrUeUlSrsSetupCfg
                                      same value for all the UEs configured for
                                      the same  cell. */
 /* rgr_x_001.main_13 - DEL - Removed the redeclaration of sANSrs and added the proper comment termination  above  */
-   U8                txComb;       /*!< Tranmission Comb: 0..1 */
-   U8                fDomPosi;     /*!< Frequency Domain Position */
+   uint8_t                txComb;       /*!< Tranmission Comb: 0..1 */
+   uint8_t                fDomPosi;     /*!< Frequency Domain Position */
 }RgrUeUlSrsSetupCfg;
 
 
@@ -1488,8 +1488,8 @@ typedef enum rgrUeDsrTransMax
 */
 typedef struct rgrUeSrSetupCfg
 {
-   U16              srResIdx;       /*!< Range: 0-2047; Reference: SchedulingRequestConfig  */
-   U8               srCfgIdx;       /*!< Range: 0 -155; Reference: SchedulingRequestConfig */
+   uint16_t              srResIdx;       /*!< Range: 0-2047; Reference: SchedulingRequestConfig  */
+   uint8_t               srCfgIdx;       /*!< Range: 0 -155; Reference: SchedulingRequestConfig */
    /*ccpu00131601:DEL - dTMax will not be required by scheduler */
 }RgrUeSrSetupCfg;
 
@@ -1507,7 +1507,7 @@ typedef struct rgrUeSrCfg
 */
 typedef struct  rgrUeUlSrsCfg
 {
-   U8                      type;      /*!< Release=0 Setup =1 */
+   uint8_t                      type;      /*!< Release=0 Setup =1 */
    RgrUeUlSrsSetupCfg      srsSetup;  /*!< SRS Setup Configuration */
 
 }RgrUeUlSrsCfg;
@@ -1517,17 +1517,17 @@ typedef struct  rgrUeUlSrsCfg
 #ifdef LTE_ADV/* Sprint 3*/
 typedef struct rgrUePucchFormat3Cfg
 {
-   U8  sCellAckN3ResAntP0Count;
-   U8  sCellAckN3ResAntP1Count;
-   U16 sCellAckN3ResAntP0[4];
-   U16 sCellAckN3ResAntP1[4];
+   uint8_t  sCellAckN3ResAntP0Count;
+   uint8_t  sCellAckN3ResAntP1Count;
+   uint16_t sCellAckN3ResAntP0[4];
+   uint16_t sCellAckN3ResAntP1[4];
 }RgrUePucchFormat3Cfg;
 typedef struct rgrUePucchFormat1BCSCfg
 {
-   U8  sCellAckN1ResTb1Count; /* !< num of N1 res for TB1 */
-   U8  sCellAckN1ResTb2Count; /* !< num of N1 res for TB2 */
-   U16 sCellAckN1ResTb1[4];   /*!< TB1 N1 resources */
-   U16 sCellAckN1ResTb2[4];   /* !< TB2 N1 resources */
+   uint8_t  sCellAckN1ResTb1Count; /* !< num of N1 res for TB1 */
+   uint8_t  sCellAckN1ResTb2Count; /* !< num of N1 res for TB2 */
+   uint16_t sCellAckN1ResTb1[4];   /*!< TB1 N1 resources */
+   uint16_t sCellAckN1ResTb2[4];   /* !< TB2 N1 resources */
 }RgrUePucchFormat1BCSCfg;
 typedef struct rgrUeSCellAckPucchCfg
 {
@@ -1549,9 +1549,9 @@ typedef struct rgrUeSCellAckPucchCfg
 typedef struct rgrUePuschDedCfg 
 {
    Bool   pres;       /*! Prsent TRUE(1)/FALSE(0) */ 
-   U8     bACKIdx;    /*! betaOffset-ACK-Index (0..15) */
-   U8     bRIIdx;     /*! betaOffset-RI-Index (0..15) */  
-   U8     bCQIIdx;    /*! betaOffset-CQI-Index (0..15) */
+   uint8_t     bACKIdx;    /*! betaOffset-ACK-Index (0..15) */
+   uint8_t     bRIIdx;     /*! betaOffset-RI-Index (0..15) */  
+   uint8_t     bCQIIdx;    /*! betaOffset-CQI-Index (0..15) */
 }RgrUePuschDedCfg;
 /** 
 * @brief Downlink CQI reporting related configuration per UE
@@ -1567,15 +1567,15 @@ typedef struct rgrUeDlCqiCfg
 typedef struct rgrUeMeasGapCfg
 {
    Bool isMesGapEnabled;    /*!< Is Measuremnet Gap enabled or disabled */
-   U8   gapPrd;             /*!< Gap period 40ms/80ms */
-   U8   gapOffst;           /*!< Gap offset - Vaue is 0 to 1*/
+   uint8_t   gapPrd;             /*!< Gap period 40ms/80ms */
+   uint8_t   gapOffst;           /*!< Gap offset - Vaue is 0 to 1*/
 } RgrUeMeasGapCfg;
 /**
  @brief DRX Long Cycle Offset */
 typedef struct rgrDrxLongCycleOffst
 {
-   U16      longDrxCycle;   /*!< DRX Long Cycle value in subframes*/
-   U16      drxStartOffst;  /*!< DRX Long Cycle offset value in subframes*/ 
+   uint16_t      longDrxCycle;   /*!< DRX Long Cycle value in subframes*/
+   uint16_t      drxStartOffst;  /*!< DRX Long Cycle offset value in subframes*/ 
 } RgrDrxLongCycleOffst;
 
 /**
@@ -1583,8 +1583,8 @@ typedef struct rgrDrxLongCycleOffst
 typedef struct rgrDrxShortDrx
 {
    Bool    pres;             /*!< Short cycle is configured or not */
-   U16     shortDrxCycle;    /*!< DRX Short Cycle value in sub-frames*/
-   U8      drxShortCycleTmr; /*!< Value in multiples of Short DRX Cycles*/
+   uint16_t     shortDrxCycle;    /*!< DRX Short Cycle value in sub-frames*/
+   uint8_t      drxShortCycleTmr; /*!< Value in multiples of Short DRX Cycles*/
 } RgrDrxShortDrx;
 
 /**
@@ -1603,16 +1603,16 @@ typedef struct rgrUeDrxCfg
                                                 only a enum SETUP*/
 #endif
 /** @} */
-   U16                    drxOnDurTmr;       /*!< DRX On-duration Timer value in
+   uint16_t                    drxOnDurTmr;       /*!< DRX On-duration Timer value in
                                              PDCCH subframes */
-   U16                   drxInactvTmr;      /*!< DRX Inactivity Timer value in
+   uint16_t                   drxInactvTmr;      /*!< DRX Inactivity Timer value in
                                               PDCCH subframes */
-   U16                    drxRetxTmr;        /*!< DRX Retransmission Timer value in PDCCH
+   uint16_t                    drxRetxTmr;        /*!< DRX Retransmission Timer value in PDCCH
                                               subframes */
    RgrDrxLongCycleOffst  drxLongCycleOffst; /*!< DRX Long cycle and offset, values in subframes */
    RgrDrxShortDrx        drxShortDrx;       /*!< DRX Short cycle value and offset */
 #ifdef EMTC_ENABLE
-   U16                   emtcDrxUlRetxTmr;  /*Rel13 Drx Ul Retx Timer */
+   uint16_t                   emtcDrxUlRetxTmr;  /*Rel13 Drx Ul Retx Timer */
    Bool                  isEmtcUe;
    Bool                  drxOnDurTmrR13Pres;
    Bool                  drxRetxTmrR13Pres;
@@ -1623,7 +1623,7 @@ typedef struct rgrUeDrxCfg
  * @brief UE capability Configuration */
 typedef struct rgrUeCapCfg
 {
-   U8   pwrClass;        /*!< Power class per UE */
+   uint8_t   pwrClass;        /*!< Power class per UE */
    Bool intraSfFeqHop;   /*!< Intra subframe frequency hopping for PUSCH */
    Bool resAloocType1;   /*!< Resource allocation type 1 for PDSCH */
    Bool simCqiAckNack;   /*!< Simultaneous CQI and ACK/NACK on PUCCH */
@@ -1639,7 +1639,7 @@ typedef struct rgrUeAckNackRepCfg
                                              variable can be used in reconfiguration
                                              also to stop/release the ACK/NACK
                                              Repetition */
-   U16                  pucchAckNackRep;   /*!< n1PUCCH-AN-Rep */
+   uint16_t                  pucchAckNackRep;   /*!< n1PUCCH-AN-Rep */
    RgrAckNackRepFactor  ackNackRepFactor;  /*!< ACK/NACK Repetition factor */
 } RgrUeAckNackRepCfg;
 
@@ -1656,8 +1656,8 @@ typedef struct rgrUeTxModeCfg
   @brief Uplink HARQ configuration per UE */
 typedef struct rgrUeUlHqCfg
 {
-   U8 maxUlHqTx;           /*!< Maximum number of UL HARQ transmissions */
-   U8 deltaHqOffst;        /*!< Delta HARQ offset 
+   uint8_t maxUlHqTx;           /*!< Maximum number of UL HARQ transmissions */
+   uint8_t deltaHqOffst;        /*!< Delta HARQ offset 
                                 Currently this is unused parameter */
 } RgrUeUlHqCfg;
 /** 
@@ -1666,7 +1666,7 @@ typedef struct rgrUeGrpPwrCfg
 {
    Bool            pres;            /*!< Indicates presence of UE PUCCH/PUSCH group power configuration */  
    CmLteRnti       tpcRnti;         /*!< TPC PUCCH/PUSCH RNTI for UE */
-   U8              idx;             /*!< Index for format 3/3A */
+   uint8_t              idx;             /*!< Index for format 3/3A */
 } RgrUeGrpPwrCfg;
 /** 
   @brief Uplink power configuration per UE */
@@ -1678,9 +1678,9 @@ typedef struct rgrUeUlPwrCfg
    Bool           isDeltaMCSEnabled; /*!< To indicate Delta MCS Enabled */
    S8             p0UePusch;         /*!< P_0UE_PUSCH*/
    S8             p0UePucch;         /*!< P_0_PUCCH*/
-   U8             pSRSOffset;        /*!< P_SRS_OFFSET 
+   uint8_t             pSRSOffset;        /*!< P_SRS_OFFSET 
                                           Currently this is unused parameter */
-   U8             trgCqi;            /*!< CQI to aim for during PUSCH power
+   uint8_t             trgCqi;            /*!< CQI to aim for during PUSCH power
                                       *  control. Zero indicates absence, where
                                       *  cell-wide trgCqi is used */
 } RgrUeUlPwrCfg;
@@ -1689,15 +1689,15 @@ typedef struct rgrUeUlPwrCfg
 typedef struct rgrUeQosCfg
 {
    Bool ambrPres;   /*!< Indicates presence of AMBR */  
-   U32  dlAmbr;     /*!< DL AMBR value for UE (bytes/sec): Optional */
-   U32  ueBr;       /*!< UL Byte Rate value for UE (bytes/sec): Optional */
+   uint32_t  dlAmbr;     /*!< DL AMBR value for UE (bytes/sec): Optional */
+   uint32_t  ueBr;       /*!< UL Byte Rate value for UE (bytes/sec): Optional */
 } RgrUeQosCfg;
 /** 
   @brief Time Alignment timer configuration per UE */
 typedef struct rgrUeTaTmrCfg
 {
    Bool       pres;          /*!< rgr_x_001.main_7: Pres=NOTPRSNT indicates taTmr INFINITY */
-   U16        taTmr;         /*!< Timer configuration (in subframes) */
+   uint16_t        taTmr;         /*!< Timer configuration (in subframes) */
 } RgrUeTaTmrCfg;
 /** @name RGR_V1 */
 /** @{ */
@@ -1710,10 +1710,10 @@ typedef struct rgrUeBsrTmrCfg
 {
    Bool      isPrdBsrTmrPres; /*!< Indicates if periodic BSR timer is present
                               */
-   U16       prdBsrTmr;       /*!< periodicBSR-Timer configuration
+   uint16_t       prdBsrTmr;       /*!< periodicBSR-Timer configuration
                                    (in subframes): Value 0xFFFF indicates
                                    'Infinity' */
-   U16       retxBsrTmr;      /*!< retxBSR-Timer configuration (in subframes)
+   uint16_t       retxBsrTmr;      /*!< retxBSR-Timer configuration (in subframes)
                                    : Mandatory parameter */
 } RgrUeBsrTmrCfg;
 #endif
@@ -1725,19 +1725,19 @@ typedef struct rgrUeBsrTmrCfg
 typedef struct rgrUeSpsDlCfg
 {
    Bool        isDlSpsEnabled;   /*!< Bool indicating if DL SPS is enabled */
-   U8          numSpsHqProc;      /*!< Number of SPS harq Proc: Value in set
+   uint8_t          numSpsHqProc;      /*!< Number of SPS harq Proc: Value in set
                                    [1..8] */
-   U8          numPucchVal;      /*!< Count for configured PUCCH values */
-   U32         n1PucchVal[4];    /*!< Array of n1Pucch values */
+   uint8_t          numPucchVal;      /*!< Count for configured PUCCH values */
+   uint32_t         n1PucchVal[4];    /*!< Array of n1Pucch values */
    RgrSpsPrd   dlSpsPrdctyEnum;  /*!< Periodicity for DL SPS */
-   U16         explicitRelCnt;   /*!< Number of SPS ocassions with BO = 0 after 
+   uint16_t         explicitRelCnt;   /*!< Number of SPS ocassions with BO = 0 after 
                                which SPS is released */
 } RgrUeSpsDlCfg;
 
 typedef struct rgrUlSpsLcInfo
 {
    Bool  isSpsEnabled;
-   U8    lcId;
+   uint8_t    lcId;
 }RgrUlSpsLcInfo;
 
 /** 
@@ -1760,7 +1760,7 @@ typedef struct rgrUeSpsUlCfg
       S8             p0UePuschVal;     /*!< Value in range [-8....7] */
    } pwrCfg;
    RgrSpsPrd         ulSpsPrdctyEnum;  /*!< Periodicity for UL SPS */
-   U8                lcCnt;            /*!< Number of logical channels */
+   uint8_t                lcCnt;            /*!< Number of logical channels */
    RgrUlSpsLcInfo    spsLcInfo[RGR_MAX_SPS_LC];/*!< Array of SPS logical channels -
                                                All these are assumed to be 
                                                mapped onto SPS lcg with ID=1 */
@@ -1804,7 +1804,7 @@ typedef struct rgrUeTxAntSelCfg
   @brief PUSH n CQI Reporting related configuration for an UE*/
 typedef struct rgrUeCqiReptCfg
 {
-   U8   numColltdCqiRept;      /*!< Number of CQI reports to be sent in PUSH n
+   uint8_t   numColltdCqiRept;      /*!< Number of CQI reports to be sent in PUSH n
                                  Reporting */
 }RgrUeCqiReptCfg;
 
@@ -1812,8 +1812,8 @@ typedef struct rgrUeCqiReptCfg
   @brief CQI for subband number subBandIdx */
 typedef struct rgrSubBandCqiInfo
 {
-   U8 cqi[2];     /*!< Subband CQI for two codewords */
-   U8 subBandIdx; /*!< Index of the subband starting from 0, 
+   uint8_t cqi[2];     /*!< Subband CQI for two codewords */
+   uint8_t subBandIdx; /*!< Index of the subband starting from 0, 
                        in ascending order of frequency */
 } RgrSubBandCqiInfo;
 
@@ -1822,10 +1822,10 @@ typedef struct rgrSubBandCqiInfo
   @brief A CQI Report used in PUSH n Reporting*/
 typedef struct rgrUeCqiRept
 {
-   U8                  cqi[2];    /*!< Wideband CQI Value for two codewords*/
-   U8                  cqiMode;   /*!< Reporting mode by which CQI was reported */
+   uint8_t                  cqi[2];    /*!< Wideband CQI Value for two codewords*/
+   uint8_t                  cqiMode;   /*!< Reporting mode by which CQI was reported */
    RgrSubBandCqiInfo   sbCqiInfo[RGR_MAX_DL_CQI_SUBBAND];
-   U8                  numSubBand;/*!< Number of Subbands for which CQI is 
+   uint8_t                  numSubBand;/*!< Number of Subbands for which CQI is 
                                        being reported */
 } RgrUeCqiRept;
 
@@ -1835,7 +1835,7 @@ typedef struct rgrUeCqiRept
 typedef struct RgrUeCqiInfo
 {
    RgrUeCqiRept cqiRept[RGR_CQIRPTS_MAXN];    /*!< CQI reports */
-   U8 numCqiRept;       /*!< Number of CQI reports present */
+   uint8_t numCqiRept;       /*!< Number of CQI reports present */
 } RgrUeCqiInfo;
 
 /*rgr_x_001.main_11 ADD added changes for CQI management*/
@@ -1855,12 +1855,12 @@ typedef struct rgrStaIndInfo
 typedef struct rgrLoadInfIndInfo
 {
    CmLteCellId       cellId;             /*!< Cell ID   */
-   U16               bw;                 /*!< Bandwidth */
-   U32               type;
+   uint16_t               bw;                 /*!< Bandwidth */
+   uint32_t               type;
    union
    {
       TknStrOSXL     rntpInfo;           /*!< RNTP Info */
-      U32            absLoadInfo[RGR_ABS_PATTERN_LEN]; 
+      uint32_t            absLoadInfo[RGR_ABS_PATTERN_LEN]; 
    } u;
 }RgrLoadInfIndInfo;
 /* LTE_ADV_FLAG_REMOVED_END */
@@ -1891,7 +1891,7 @@ typedef struct rgrUePdschDedCfg
 /* @brief UE Configuration for LTE Adv feature */
 typedef struct rgrLteAdvancedUeConfig
 {
-   U32      pres;
+   uint32_t      pres;
    Bool     isUeCellEdge;  /*! Flag to indicate UE is cell edge or cell center */
    Bool     isAbsUe;       /*! Flag to indicate ABS UE or Not */
 } RgrLteAdvancedUeConfig;
@@ -1915,40 +1915,40 @@ typedef enum RgrAccessStratumRls
 typedef struct rgrExtaddgrp2
 {
    Bool pres;
-   U8  csiNumRep;// MAPPING
-   U8  mpddchPdschHop;
-   U8  mpdcchStartUESSFDD;// MAPPING
-   U16  mpdcchNumRep;// MAPPING
-   U32  mpddchNB;//1.. maxAvailNarrowBands-r13
+   uint8_t  csiNumRep;// MAPPING
+   uint8_t  mpddchPdschHop;
+   uint8_t  mpdcchStartUESSFDD;// MAPPING
+   uint16_t  mpdcchNumRep;// MAPPING
+   uint32_t  mpddchNB;//1.. maxAvailNarrowBands-r13
 }RgrExtaddgrp2;
 
 typedef struct rgrRbAssignment
 {
- U8 numPRBpairs; // MAPPING
- U8 rbAssignment[5];
+ uint8_t numPRBpairs; // MAPPING
+ uint8_t rbAssignment[5];
 }RgrRbAssignment;
 typedef  struct rgrEpdcchAddModLst
 {
-   U8 setConfigId;
-   U8   transmissionType;
+   uint8_t setConfigId;
+   uint8_t   transmissionType;
    RgrRbAssignment   resBlkAssignment;
-   U32 dmrsScrambSeq;
-   U32 pucchResStartoffset;
-   TknU32   pdschRemapQLcfgId;
-   TknU8  mpdcchNumPRBpair; // MAPPING
+   uint32_t dmrsScrambSeq;
+   uint32_t pucchResStartoffset;
+   TknUInt32   pdschRemapQLcfgId;
+   TknUInt8  mpdcchNumPRBpair; // MAPPING
    RgrExtaddgrp2 extaddgrp2;
 }RgrEpdcchAddModLst;
 
 typedef struct rgrSubFrmPatCfg
 {
    Bool pres;
-   U8 measSfPatFDD[5];
+   uint8_t measSfPatFDD[5];
 }RgrSubFrmPatCfg;
 typedef struct rgrEpdcchConfigRel11
 {  
    Bool pres;
    RgrSubFrmPatCfg sfPtn;
-   TknU32 startSymbolr11;
+   TknUInt32 startSymbolr11;
    RgrEpdcchAddModLst  epdcchAddModLst[RGR_MAX_EPDCCH_SET];
 }RgrEpdcchConfigRel11;
 
@@ -1959,8 +1959,8 @@ typedef struct rgrUeEmtcRecfg
 typedef struct rgrPucchRepCfgRel13
 {
 	Bool isPucchRepPres;
-	U8 modeANumPucchRepFormat1;
-	U8 modeANumPucchRepFormat2;
+	uint8_t modeANumPucchRepFormat1;
+	uint8_t modeANumPucchRepFormat2;
 
 }RgrPucchRepCfgRel13;
 
@@ -1970,18 +1970,18 @@ typedef struct rgrUeEmtcCfg
    Bool pres;
    RgrEpdcchConfigRel11 emtcEpdcchCfg;
    RgrPucchRepCfgRel13 emtcPucchRepCfg;
-   U8                  pdschReptLevModeA;
+   uint8_t                  pdschReptLevModeA;
 }RgrUeEmtcCfg;
 #endif
 
 #ifdef RG_5GTF
 typedef struct rgrUe5gtfCfg
 {
-   U8              grpId;
-   U8              BeamId;
-   U8              numCC;
-   U8              mcs;
-   U8              maxPrb;
+   uint8_t              grpId;
+   uint8_t              BeamId;
+   uint8_t              numCC;
+   uint8_t              mcs;
+   uint8_t              maxPrb;
 }RgrUe5gtfCfg;
 #endif
 
@@ -2018,7 +2018,7 @@ typedef struct rgrUeCfg
    RgrUeCapCfg        ueCapCfg;         /*!< UE Capabilty reconfiguration */
    RgrCodeBookRstCfg  ueCodeBookRstCfg; /*!< Number of bits in code book for
                                             transmission modes */
-   TknU8              dedPreambleId;    /*!< If present, then mapping exists at
+   TknUInt8              dedPreambleId;    /*!< If present, then mapping exists at
                                           RGR user with CRNTI */
 /** @name LTE_TDD */
 /** @{ */
@@ -2073,7 +2073,7 @@ typedef struct rgrUeCfg
    RgrLteAdvancedUeConfig ueLteAdvCfg; /*!< LTE Adv configuration per UE */
    /* LTE_ADV_FLAG_REMOVED_END */
    RgrAccessStratumRls accessStratumRls; /*!< UE Access Stratum Release */
-   U8        csgMmbrSta;     /* CSG Membership status, refer RgrUeCsgMbrStatus */
+   uint8_t        csgMmbrSta;     /* CSG Membership status, refer RgrUeCsgMbrStatus */
 #ifdef EMTC_ENABLE
    RgrUeEmtcCfg emtcUeCfg;
 #endif
@@ -2085,10 +2085,10 @@ typedef struct rgrUeCfg
   @brief QCI, GBR, and MBR configuration for dedicated logical channels */
 typedef struct rgrLchQosCfg
 {
-   U8 qci;                   /*!< QCI for the logical channel. 
+   uint8_t qci;                   /*!< QCI for the logical channel. 
                                   Valid Range:[0-255] (Actual QCI - 1). */
-   U32 gbr;                  /*!< GBR value for a logical channel (bytes/sec). */
-   U32 mbr;                  /*!< MBR value for a logical channel (bytes/sec). */
+   uint32_t gbr;                  /*!< GBR value for a logical channel (bytes/sec). */
+   uint32_t mbr;                  /*!< MBR value for a logical channel (bytes/sec). */
 } RgrLchQosCfg;
 /*rgr_x_001.main_9 - Added support for SPS*/
 /**    
@@ -2111,7 +2111,7 @@ typedef struct rgrDlLchCfg
    RgrLchQosCfg   dlQos;      /*!< DL QoS parameters: Only for dedicated channels */
    /*rgr_x_001.main_9 - Added support for SPS*/
    RgrLchSpsCfg   dlSpsCfg;   /*!< SPS configuration for DL logical channel */
-   U8 rlcReorderTmr;          /*!< RLC reordering timer required for LAA*/
+   uint8_t rlcReorderTmr;          /*!< RLC reordering timer required for LAA*/
 } RgrDlLchCfg;
 
 /** 
@@ -2119,21 +2119,21 @@ typedef struct rgrDlLchCfg
 typedef struct rgrUlLchCfg
 {
   CmLteLcId   lcId;    /*!< LC ID for uplink logical channel*/
-  U8          qci;     /*!< QCI associated with LC ID */
+  uint8_t          qci;     /*!< QCI associated with LC ID */
 } RgrUlLchCfg;
 /** 
   @brief Logical channel group configuration information for uplink logical channels */
 typedef struct rgrUlLcgCfg
 {
-   U8             lcgId;      /*!< Logical channel group ID */
+   uint8_t             lcgId;      /*!< Logical channel group ID */
 /*rgr_x_001.main_11 ADD added changes for L2 measurements*/
 #ifdef LTE_L2_MEAS
-   U8             numLch;      /*!< Number of LC's for this group in Uplink */
+   uint8_t             numLch;      /*!< Number of LC's for this group in Uplink */
    RgrUlLchCfg    lchUlCfg[RGR_MAX_LC_PER_LCG]; /*!< Logical Channel details for
                                                  this LCG*/
 #endif /*LTE_L2_MEAS */
-   U32            gbr;      /*!< Commulative UL GBR of all LC mapping to this LCG */
-   U32            mbr;      /*!< Commulative UL MBR of all LC mapping to this LCG */
+   uint32_t            gbr;      /*!< Commulative UL GBR of all LC mapping to this LCG */
+   uint32_t            mbr;      /*!< Commulative UL MBR of all LC mapping to this LCG */
 } RgrUlLcgCfg;
 
 /** 
@@ -2141,8 +2141,8 @@ typedef struct rgrUlLcgCfg
 typedef struct rgrUlLchQciCfg
 {
    CmLteLcId lcId;           /*!< Logical channel ID */
-   U8        qci;            /*!< Qci */
-   U8        lcgId;          /*!< Logical channel group ID */
+   uint8_t        qci;            /*!< Qci */
+   uint8_t        lcgId;          /*!< Logical channel group ID */
 }RgrUlLchQciCfg;
 
 /** 
@@ -2161,7 +2161,7 @@ typedef struct rgrLchCfg
                                       CM_LTE_LCH_DTCH */  
    RgrDlLchCfg   dlInfo;     /*!< Downlink logical channel configuration information */
    RgrUlLchQciCfg    ulLchQciInfo;  /*!< Uplink logical channel configuration information */
-   U8             lcgId;      /*!< Logical channel group ID */
+   uint8_t             lcgId;      /*!< Logical channel group ID */
 } RgrLchCfg;
 
 /** @brief Set of parameters for logical channelgroup Configuration */
@@ -2176,7 +2176,7 @@ typedef struct rgrLcgCfg
 /** @brief Basic configuration structure at RRM */
 typedef struct rgrCfg
 {
-   U8 cfgType;                /*!< Indicates configuration type */
+   uint8_t cfgType;                /*!< Indicates configuration type */
    union                      /*!< cfgType is selector */ 
    { 
       RgrCellCfg      cellCfg;   /*!< Cell configuration */
@@ -2201,7 +2201,7 @@ typedef struct rgrActvTime
 typedef struct rgrCellRecfg
 {
    CmLteCellId         cellId;        /*!< Cell ID */
-   U32                 recfgTypes;    /*!< Bitmask indicating reconfiguration types */
+   uint32_t                 recfgTypes;    /*!< Bitmask indicating reconfiguration types */
    RgrActvTime         recfgActvTime; /*!< Activation Time for cell reconfiguration */
    RgrDlHqCfg          dlHqRecfg;     /*!< DL HARQ related reconfiguration */ 
    RgrCfiCfg           cfiRecfg;      /*!< CFI reconfiguration for PDCCH */
@@ -2222,7 +2222,7 @@ typedef struct rgrCellRecfg
 #ifdef RGR_SI_SCH
    RgrSiCfg            siReCfg;       /*!<SI Re-Configuration structure */
 #endif
-   U16                 t300TmrVal;    /*!< t300Timer value configured in Frames */
+   uint16_t                 t300TmrVal;    /*!< t300Timer value configured in Frames */
    /* LTE_ADV_FLAG_REMOVED_START */
    RgrLteAdvancedCellConfig rgrLteAdvCfg; /*!< RGR Configuration of LTE Adv for a cell */
    /* LTE_ADV_FLAG_REMOVED_END */
@@ -2248,7 +2248,7 @@ typedef struct rgrCellRecfg
  */
 typedef struct rgrSCellActDeactInfo 
 {
-   U8          sCellIdx;    /*!< sCell Index to be activated */
+   uint8_t          sCellIdx;    /*!< sCell Index to be activated */
 }RgrSCellActDeactInfo;
 
 /**
@@ -2262,7 +2262,7 @@ typedef struct rgrSCellActDeactInfo
 typedef struct rgrSCellActDeactEvnt 
 {
    CmLteRnti          crnti;       /*!< UE ID: To fetch UeCb in a cell*/
-   U8                 numOfSCells;    /* !<No of SCells to be Activated */
+   uint8_t                 numOfSCells;    /* !<No of SCells to be Activated */
    RgrSCellActDeactInfo    sCellActDeactInfo[RGR_MAX_SCELL_PER_UE]; 
                       /* !<SCH SCell Activation Deactivation Information */
 } RgrSCellActDeactEvnt;
@@ -2282,7 +2282,7 @@ typedef struct rgrUeUlPwrDedSCellCfg
    Bool           isAccumulated;     /*!< To indicate if accumulation is enabled */
    Bool           isDeltaMCSEnabled; /*!< To indicate Delta MCS Enabled */
    S8             p0UePusch;         /*!< P_0UE_PUSCH*/
-   U8             pSRSOffset;        /*!< P_SRS_OFFSET 
+   uint8_t             pSRSOffset;        /*!< P_SRS_OFFSET 
                                        Currently this is unused parameter */
 
 } RgrUeUlPwrDedSCellCfg;
@@ -2291,9 +2291,9 @@ typedef struct rgrUeUlPwrDedSCellCfg
 /** @brief UE Downlink secondary cell config params */
 typedef struct rgrUeSecCellCfg 
 {
-  U8                   sCellIdx;
-  U16                  sCellId;         /*!< This will be secondary cellId */
-  TknU32               sCellDeActTmr;     /*!< for Activating the sCell for UE */
+  uint8_t                   sCellIdx;
+  uint16_t                  sCellId;         /*!< This will be secondary cellId */
+  TknUInt32               sCellDeActTmr;     /*!< for Activating the sCell for UE */
   RgrUeDlCqiCfg        ueSCellDlCqiCfg; /*!< Secondary cell dedicated configuration */
 #ifdef TFU_UPGRADE 
   RgrUePdschDedCfg     uePdschDedCfg;   /*!< Secondary cell dedicated configuration */
@@ -2309,7 +2309,7 @@ typedef struct rgrUeSecCellCfg
 typedef struct rgrUeSecCellInfo 
 {
   Bool                useExtBSRSizes; /*!< If TRUE used R10 Extended BSR Size Table*/
-  U8                  numSCells;
+  uint8_t                  numSCells;
   RgrUeSecCellCfg     ueSCellDedCfg[RGR_MAX_SCELL_PER_UE]; /*!< Secondary cell configuration per
 UE */
 }RgrUeSecCellInfo;
@@ -2317,14 +2317,14 @@ UE */
 /** @brief Configuration of every SCell for a UE*/
 typedef struct rgrUeDlSecCellRelInfo 
 {
-  U8                   sCellIdx;  /*!< This will be secondary cell Idx */
-  U16                  sCellId;   /*!< This will be secondary cellId */
+  uint8_t                   sCellIdx;  /*!< This will be secondary cell Idx */
+  uint16_t                  sCellId;   /*!< This will be secondary cellId */
 }RgrUeDlSecCellRelInfo;
 
 /** @brief Configuration for SCell Release for a UE*/
 typedef struct rgrUeSecCellRelInfo 
 {
-  U8                   numSCells; /*!< This will be the number of secondary cells*/
+  uint8_t                   numSCells; /*!< This will be the number of secondary cells*/
   RgrUeDlSecCellRelInfo   ueSCellRelDedCfg[RGR_MAX_SCELL_PER_UE]; /*!< Secondary cell configuration per
 UE */
 }RgrUeSecCellRelInfo;
@@ -2338,11 +2338,11 @@ typedef struct rgrUeRecfg
    CmLteRnti          oldCrnti;          /*!< Old UE ID */
    CmLteRnti          newCrnti;          /*!< New UE ID: This value must match
                                          'oldCrnti', if no CRNTI change during reconfiguration */ 
-   /*rgr_x_001.main_11 : changing RecfgTypes to U32 
+   /*rgr_x_001.main_11 : changing RecfgTypes to uint32_t 
     * as all 16 bits are exhausted*/
    /* LTE_ADV_FLAG_REMOVED_START */
    /* KW fix for LTE_ADV */
-   U32                ueRecfgTypes;      /*!< Bitmask indicating UE reconfiguration items */
+   uint32_t                ueRecfgTypes;      /*!< Bitmask indicating UE reconfiguration items */
    /* LTE_ADV_FLAG_REMOVED_END */
    RgrUeTxModeCfg     txMode;            /*!< UE transmission mode */
    RgrUeAprdDlCqiCfg  aprdDlCqiRecfg;    /*!< Aperiodic CQI-related information */
@@ -2424,10 +2424,10 @@ typedef struct rgrUeRecfg
    RgrUeSecCellInfo     ueSCellCfgInfo;/*!< Secondary cell dedicated informaton
                                          per UE */
    RgrUeSCellAckPucchCfg        sCellAckN1ResCfg; /*!< N1ResCfg for SCell ack feedback */
-   U8                 simulAckNackCQIFormat3;
+   uint8_t                 simulAckNackCQIFormat3;
 #endif /* LTE_ADV */
    RgrAccessStratumRls    accessStratumRls; /*!< UE Access Stratum Release */
-   U8        csgMmbrSta;     /* CSG Membership status, refer RgrUeCsgMbrStatus */
+   uint8_t        csgMmbrSta;     /* CSG Membership status, refer RgrUeCsgMbrStatus */
 #ifdef EMTC_ENABLE
    RgrUeEmtcRecfg emtcUeRecfg;
 #endif
@@ -2440,7 +2440,7 @@ typedef struct rgrLchRecfg
    CmLteRnti   crnti;        /*!< CRNTI for DTCH and DCCH */
    CmLteLcId   lcId;         /*!< Logical channel ID */
    /*rgr_x_001.main_9 - Added support for SPS*/
-   U8          recfgTypes;   /*!< Reconfiguration type for DL LC */
+   uint8_t          recfgTypes;   /*!< Reconfiguration type for DL LC */
    
 /** @brief Reconfiguration Parameters during the DownLink */
 struct dlRecfgS 
@@ -2451,7 +2451,7 @@ struct dlRecfgS
    } dlRecfg;                /*!< Downlink logical channel reconfiguration information */
    
    RgrUlLchQciCfg ulLchQciInfo;
-   U8             lcgId;      /*!< Logical channel group ID */
+   uint8_t             lcgId;      /*!< Logical channel group ID */
 } RgrLchRecfg;
 
 /** @brief Set of parameters Corresponding To Logical channel group Reconfiguration */
@@ -2462,21 +2462,21 @@ typedef struct rgrLcgRecfg
    /** @brief Uplink Reconfiguration Parameters for logical channel Groups */   
    struct ullcgRecfgS
    {
-      U8             lcgId;     /*!< Logical channel group ID */
+      uint8_t             lcgId;     /*!< Logical channel group ID */
 #ifdef RG_UNUSED
-      U8             numLch;      /*!< Number of LC's for this group in Uplink */
+      uint8_t             numLch;      /*!< Number of LC's for this group in Uplink */
       RgrUlLchCfg    lchUlCfg[RGR_MAX_LC_PER_LCG]; /*!< Logical Channel details for
                                                         this LCG*/
 #endif /*LTE_L2_MEAS */
-      U32            gbr;     /*!< Commulative UL GBR of all LC mapping to this LCG */
-      U32            mbr;     /*!< Commulative UL MBR of all LC mapping to this LCG */
+      uint32_t            gbr;     /*!< Commulative UL GBR of all LC mapping to this LCG */
+      uint32_t            mbr;     /*!< Commulative UL MBR of all LC mapping to this LCG */
    } ulRecfg;
 }RgrLcgRecfg;
 
 /** @brief Basic reconfiguration structure at RRM */
 typedef struct rgrRecfg
 {
-   U8 recfgType;             /*!< Indicates reconfiguration type */
+   uint8_t recfgType;             /*!< Indicates reconfiguration type */
    union                     /*!< Reconfiguration type is selector */
    {
       RgrCellRecfg  cellRecfg; /*!< Cell reconfiguration */
@@ -2489,7 +2489,7 @@ typedef struct rgrRecfg
   @brief Basic Delete information for MAC */
 typedef struct rgrDel
 {
-   U8 delType;               /*!< Indicates configuration item to be deleted */
+   uint8_t delType;               /*!< Indicates configuration item to be deleted */
    /** @brief Indicates The Cell/UE/Logical Channel Group to be deleted  */ 
    union rgrDelU
    {
@@ -2512,7 +2512,7 @@ typedef struct rgrDel
          CmLteCellId cellId; /*!< Cell ID */
          CmLteRnti   crnti;  /*!< CRNTI for DTCH and DCCH */
          CmLteLcId   lcId;   /*!< Logical channel ID */
-         U8          lcgId;  /*!< Logical channel group ID */
+         uint8_t          lcgId;  /*!< Logical channel group ID */
       } lchDel;              /*!< Logical channel delete information */
       
       /** @brief Delete The Logical channel groups */
@@ -2520,7 +2520,7 @@ typedef struct rgrDel
       {
          CmLteCellId cellId; /*!< Cell ID */
          CmLteRnti   crnti;  /*!< CRNTI for DTCH and DCCH */
-         U8          lcgId;  /*!< Logical channel group ID */
+         uint8_t          lcgId;  /*!< Logical channel group ID */
       } lcgDel;
 #ifdef LTE_ADV
       /** @brief Delete Secondary cell for a UE */
@@ -2528,7 +2528,7 @@ typedef struct rgrDel
       {
          CmLteCellId          cellId;           /*!< Cell ID */
          CmLteRnti            crnti;            /*!< UE ID: CRNTI */
-         U32                  ueDelTypes;       /*!< Bitmask indicating UE reconfiguration items */
+         uint32_t                  ueDelTypes;       /*!< Bitmask indicating UE reconfiguration items */
          RgrUeSecCellRelInfo  ueSCellRelCfgInfo;/*!< Secondary cell dedicated informaton*/
       } ueScellRel;
 #endif   
@@ -2575,9 +2575,9 @@ typedef enum rgrPaLevel
 
 typedef struct rgrPrbCfg
 {
-   U8                isSonIcicEnable;
-   U8                numCellEdgeUEs;
-   U8                numCellCentreUEs;
+   uint8_t                isSonIcicEnable;
+   uint8_t                numCellEdgeUEs;
+   uint8_t                numCellCentreUEs;
    CmLteRnti         cellEdgeUe[RG_SCH_MAX_UE];      /*!< List of cell Edge UE's */
    CmLteRnti         cellCentreUe[RG_SCH_MAX_UE];   /*!< List of cell centre UE's */
    RgrPaLevel        paLevelPerPrb[RGR_SCH_MAX_PA_PER_PRB]; /*!< Mapping of PRB to Pa Values */
@@ -2598,7 +2598,7 @@ typedef struct rgrSonCfg
 typedef struct rgrCfgReqInfo
 {
 
-   U8  action;               /*!< Determines configuration/reconfiguration */
+   uint8_t  action;               /*!< Determines configuration/reconfiguration */
    union                     /*!< Action is selector */
    {
       RgrCfg   cfgInfo;      /*!< Configuration information at RRM */
@@ -2621,8 +2621,8 @@ typedef struct rgrCfgReqInfo
 typedef struct rgrTtiIndInfo
 {
    CmLteCellId       cellId;       /*!< Cell ID */
-   U16               hSfn;          /*!< Hyper System Frame Number */
-   U16               sfn;          /*!< System Frame Number */
+   uint16_t               hSfn;          /*!< Hyper System Frame Number */
+   uint16_t               sfn;          /*!< System Frame Number */
 } RgrTtiIndInfo;
 /** @} */
 
@@ -2638,7 +2638,7 @@ typedef struct rgrSiCfgReqInfo
 {
    CmLteCellId    cellId;  /*! Cell Id */
    RgrSiCfgType   cfgType; /*! MIB/SIB1/SI */
-   U8             siId; /*! SI ID, if cfgType is SI. 
+   uint8_t             siId; /*! SI ID, if cfgType is SI. 
                              SI ID starts from 1  */
    Buffer         *pdu; /*! PDU, one of MIB/SIB1/SI */
 }RgrSiCfgReqInfo;
@@ -2649,9 +2649,9 @@ typedef struct rgrSiCfgReqInfo
  */
 typedef struct rgrWarningSiCfgReqInfo
 {
-   U8             emtcEnable; /*! indicates EMTC enabled or not */
+   uint8_t             emtcEnable; /*! indicates EMTC enabled or not */
    CmLteCellId    cellId;  /*! Cell Id */
-   U8             siId; /*! SI ID */
+   uint8_t             siId; /*! SI ID */
    CmLListCp      siPduLst; /*! list of PDUs,each corresponding to one segment*/
 }RgrWarningSiCfgReqInfo;
 
@@ -2672,7 +2672,7 @@ typedef struct rgrUeStaIndInfo
 {
    CmLteCellId       cellId;       /*!< Cell ID */
    CmLteRnti         crnti;        /*!< UE identifier UE ID: CRNTI */
-   U8                status;       /*!< Status */
+   uint8_t                status;       /*!< Status */
 }RgrUeStaIndInfo;
 /** @} */
 
@@ -2685,8 +2685,8 @@ typedef struct rgrUeStaIndInfo
 typedef struct rgrLoadInfReqInfo
 {
    CmLteCellId    cellId;             /*! Cell Id */
-   U8             rgrCcPHighStartRb;  /*! Start RB for power high cell centre user */
-   U8             rgrCcPHighEndRb;    /*! End RB for power high cell centre use */
+   uint8_t             rgrCcPHighStartRb;  /*! Start RB for power high cell centre user */
+   uint8_t             rgrCcPHighEndRb;    /*! End RB for power high cell centre use */
 }RgrLoadInfReqInfo;
 /* LTE_ADV_FLAG_REMOVED_END */
 /** @} */
@@ -2745,7 +2745,7 @@ typedef S16 (*RgrTtiInd) ARGS((
 typedef S16 (*RgrBndCfm) ARGS((
    Pst*                 pst,
    SuId                 suId,
-   U8                   status));
+   uint8_t                   status));
 
 /** @brief Request from RRM to MAC to unbind the interface SAPs.
  *
@@ -2780,7 +2780,7 @@ typedef S16 (*RgrCfgReq) ARGS((
 EXTERN S16 cmPkRgrCfgCfm ARGS((
    Pst*                 pst,
    RgrCfgTransId        transId,
-   U8                   status
+   uint8_t                   status
 ));
 
 /** @brief Configuration confirm from MAC to RRM. 
@@ -2796,7 +2796,7 @@ EXTERN S16 cmPkRgrCfgCfm ARGS((
 typedef S16 (*RgrCfgCfm) ARGS((
    Pst*                 pst,
    RgrCfgTransId        transId,
-   U8                   status));
+   uint8_t                   status));
 /* rgr_x_001.main_5-ADD-Added for SI Enhancement. */
 
 /** @name RGR_SI_SCH */
@@ -2832,7 +2832,7 @@ typedef S16 (*RgrSiCfgCfm) ARGS((
    Pst*                 pst,
    SuId                 suId,
    RgrCfgTransId        transId,
-   U8                   status));
+   uint8_t                   status));
 
 /** @brief SI Configuration Request primitive for warning SI configuration
  *  
@@ -2868,8 +2868,8 @@ typedef S16 (*RgrWarningSiCfgCfm) ARGS((
    Pst*                 pst,
    SuId                 suId,
    RgrCfgTransId        transId,
-   U8                   siId,
-   U8                   status));
+   uint8_t                   siId,
+   uint8_t                   status));
 
 /** @brief SI Configuration stop Request primitive for warning SI configuration
  *
@@ -2885,7 +2885,7 @@ typedef S16 (*RgrWarningSiStopReq) ARGS((
    Pst               *pst,
    SpId              spId,
    RgrCfgTransId     transId,
-   U8                siId ));
+   uint8_t                siId ));
 
 #endif /*RGR_SI_SCH*/
 
@@ -3196,7 +3196,7 @@ Buffer *mBuf
 EXTERN S16 RgUiRgrBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
-   U8                   status
+   uint8_t                   status
 ));
 
 /** @brief Request from RRM to MAC to unbind the interface SAPs. 
@@ -3228,7 +3228,7 @@ EXTERN S16 RgUiRgrUbndReq ARGS((
 EXTERN S16 RgUiRgrCfgCfm ARGS((
    Pst*                 pst,
    RgrCfgTransId        transId,
-   U8                   status
+   uint8_t                   status
 ));
 /* rgr_x_001.main_5-ADD-Added for SI Enhancement. */
 /** @name RGR_SI_SCH */
@@ -3268,7 +3268,7 @@ EXTERN S16 RgUiRgrSiCfgCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    RgrCfgTransId        transId,
-   U8                   status
+   uint8_t                   status
 ));
 
 /** @brief SI Configuration Confirm from MAC to RRM.
@@ -3306,8 +3306,8 @@ EXTERN S16 RgUiRgrWarningSiCfgCfm ARGS((
    Pst*              pst,
    SuId              suId,
    RgrCfgTransId     transId,
-   U8                siId,
-   U8                status
+   uint8_t                siId,
+   uint8_t                status
 ));
 
 /** @brief SI Configuration Confirm from MAC to RRM.
@@ -3324,7 +3324,7 @@ EXTERN S16 RgUiRgrWarningSiStopReq ARGS((
    Pst           *pst,
    SpId          spId,
    RgrCfgTransId transId,
-   U8            siId
+   uint8_t            siId
 ));
 
 #endif /*RGR_SI_SCH*/
@@ -3447,13 +3447,13 @@ EXTERN S16 NxLiRgrTtiInd ARGS((
  * 
  * @param[in] Pst*  pst    A pointer to post structure.
  * @param[in] SuId  suId   Service User SAP Id.
- * @param[in] U8    status An information on status confirmation.
+ * @param[in] uint8_t    status An information on status confirmation.
  * @return S16
  */
 EXTERN S16 NxLiRgrBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
-   U8                   status
+   uint8_t                   status
 ));
 
 /** @brief Request from RRM to MAC to unbind the interface SAPs 
@@ -3501,7 +3501,7 @@ EXTERN S16 NxLiRgrCfgCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    RgrCfgTransId        transId,
-   U8                   status
+   uint8_t                   status
 ));
 /* rgr_x_001.main_5-ADD-Added for SI Enhancement. */
 /** @name RGR_SI_SCH */
@@ -3515,14 +3515,14 @@ EXTERN S16 NxLiRgrCfgCfm ARGS((
 * @param[in]  Pst*      pst        A pointer to post structure.
 * @param[in]  SuId      suId       Service User SAP Id.
 * @param[in]  RgrCfgTransId transId RRM to MAC transaction Id
-* @param[in]  U8        status      An information on confirmation status.
+* @param[in]  uint8_t        status      An information on confirmation status.
 * @return S16
 */
 EXTERN S16 NxLiRgrSiCfgCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    RgrCfgTransId        transId,
-   U8                   status
+   uint8_t                   status
 ));
 
 
@@ -3531,8 +3531,8 @@ EXTERN S16 NxLiRgrWrngSiCfgCfm ARGS((
 Pst*                 pst,
 SuId                 suId,
 RgrCfgTransId        transId,
-U8                   siId,
-U8                   status
+uint8_t                   siId,
+uint8_t                   status
 ));
 
 
@@ -3541,7 +3541,7 @@ EXTERN S16 NxLiRgrStopWrngSiCfgCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    RgrCfgTransId        transId,
-   U8                   status
+   uint8_t                   status
 ));
 
 /* PH04_CMAS : end */
@@ -3553,17 +3553,17 @@ EXTERN S16 NxLiRgrStopWrngSiCfgCfm ARGS((
 * 
 * @param[in]  Pst*      pst        A pointer to post structure.
 * @param[in]  SuId      suId       Service User SAP Id.
-* @param[in]  U8        siId       SI Index
+* @param[in]  uint8_t        siId       SI Index
 * @param[in]  RgrCfgTransId transId RRM to MAC transaction Id
-* @param[in]  U8        status      An information on confirmation status.
+* @param[in]  uint8_t        status      An information on confirmation status.
 * @return S16
 */
 EXTERN S16 NxLiRgrWarningSiCfgCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    RgrCfgTransId        transId,
-   U8                   siId,
-   U8                   status
+   uint8_t                   siId,
+   uint8_t                   status
 ));
 
 /** @brief SI Configuration request from RRM to MAC for 
@@ -3613,13 +3613,13 @@ EXTERN S16 NxLiRgrWarningSiCfgReq ARGS((
  *
  * @param[in] Pst*             pst      A pointer to post structure.
  * @param[in] SpId             spId     Service Provider SAP Id.
- * @param[in] U8               siId     SI Index
+ * @param[in] uint8_t               siId     SI Index
  */
 EXTERN S16 NxLiRgrWarningSiStopReq ARGS((
    Pst*                       pst,
    SpId                       spId,
    RgrCfgTransId              transId,
-   U8                         siId
+   uint8_t                         siId
 )); 
  
 #endif/*RGR_SI_SCH */
@@ -3728,7 +3728,7 @@ EXTERN S16 cmUnpkRgrTtiIndInfo ARGS((
 EXTERN S16 cmPkRgrBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
-   U8                   status
+   uint8_t                   status
 ));
 
 EXTERN S16 cmUnpkRgrBndCfm ARGS((
@@ -3969,7 +3969,7 @@ EXTERN S16 cmPkRgrWarningSiStopReq ARGS((
    Pst                 *pst,
    SpId                spId,
    RgrCfgTransId       transId,
-   U8                  siId
+   uint8_t                  siId
 ));
 
 EXTERN S16 cmUnpkRgrWarningSiStopReq ARGS((
@@ -3983,8 +3983,8 @@ EXTERN S16 cmPkRgrWarningSiCfgCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    RgrCfgTransId        transId,
-   U8                   siId,
-   U8                   status
+   uint8_t                   siId,
+   uint8_t                   status
 ));
 
 EXTERN S16 cmUnpkRgrWarningSiCfgCfm ARGS((
@@ -4021,7 +4021,7 @@ EXTERN S16 cmPkRgrSiCfgCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    RgrCfgTransId        transId,
-   U8                   status
+   uint8_t                   status
 ));
 
 EXTERN S16 cmUnpkRgrSiCfgCfm ARGS((
@@ -4491,7 +4491,7 @@ EXTERN S16 DmUiRgrBndReq ARGS((
 EXTERN S16 DmUiRgrBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
-   U8                   status
+   uint8_t                   status
 ));
 /** @brief Request from RRM to MAC to unbind the interface SAPs */
 EXTERN S16 DmUiRgrUbndReq ARGS((
@@ -4512,7 +4512,7 @@ EXTERN S16 DmUiRgrCfgCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    RgrCfgTransId        transId,
-   U8                   status
+   uint8_t                   status
 ));
 #endif
 /** @brief Sta Indication from Scheduler to RRM 

@@ -48,9 +48,9 @@ EXTERN "C" {
    Logical Channel Information */
 typedef struct ckwLChInfo
 {
-   U8                   lChId;               /*!< Logical Channel ID.
+   uint8_t                   lChId;               /*!< Logical Channel ID.
                                                   The allowed values are [1..10] */
-   U8                   type;                /*!< Logical Channel Type - 
+   uint8_t                   type;                /*!< Logical Channel Type - 
                                                   BCCH/PCCH/CCCH/DTCH/DCCH */
 }CkwLChInfo;
 
@@ -60,13 +60,13 @@ typedef struct rlcUmInfo
 {
    struct   _umDl
    {
-      U8                snLen;               /*!< Sequence Number length in bits. Allowed values are 6 and 12*/
+      uint8_t                snLen;               /*!< Sequence Number length in bits. Allowed values are 6 and 12*/
    }dl;                                      /*!< Downlink */
    struct   _umUl
    {
-      U8                snLen;               /*!< Sequence Number length in bits.*/
+      uint8_t                snLen;               /*!< Sequence Number length in bits.*/
                                              /*!< Allowed values are 6 and 12*/
-      U8                reOrdTmr;            /*!< T_reordering Timer in msec */
+      uint8_t                reOrdTmr;            /*!< T_reordering Timer in msec */
    }ul;                                      /*!< Uplink */
 }RlcUmInfo;
 
@@ -76,23 +76,23 @@ typedef struct rlcAmInfo
 {
    struct   _amDl
    {
-      U8                snLen;               /*!< Sequence Number length in
+      uint8_t                snLen;               /*!< Sequence Number length in
                                                bits. Allowed values are 12 and 18 */
-      U16               pollRetxTmr;         /*!< T_poll_retransmit Timer in msec */
+      uint16_t               pollRetxTmr;         /*!< T_poll_retransmit Timer in msec */
       S16               pollPdu;             /*!< Used to trigger a poll for every pollPdu.*/
                                              /*!< This field indicates the number of PDUs */
       /* Patch ckw_x_001.main_5 */
                                              /* !<For Infinite, RLC expects value 0xFFFF */
       S32               pollByte;            /*!< Poll_Byte in bytes. */
                                              /*!<For Infinite RLC expects value 0xFFFFFFFF */
-      U8                maxRetx;             /*!< Max_Retx_Threshold */
+      uint8_t                maxRetx;             /*!< Max_Retx_Threshold */
    }dl;                                      /*!< Down link */
    struct   _amUl
    {
-      U8                snLen;               /*!< Sequence Number length in
+      uint8_t                snLen;               /*!< Sequence Number length in
                                                bits. Allowed values are 12 and 18 */
-      U16               staProhTmr;          /*!< T_status_prohibit Timer in msec*/
-      U8                reOrdTmr;            /*!< T_reordering Timer in msec*/
+      uint16_t               staProhTmr;          /*!< T_status_prohibit Timer in msec*/
+      uint8_t                reOrdTmr;            /*!< T_reordering Timer in msec*/
    }ul;                                      /*!< Up link */
 }RlcAmInfo;
 
@@ -102,7 +102,7 @@ typedef union rlcTmInfo
 {
    struct   _tmDl
    {
-      U32               buffSize;            /*!< Buffer Size in bytes */
+      uint32_t               buffSize;            /*!< Buffer Size in bytes */
    }dl;                                      /*!< Down link */
 }RlcTmInfo;
 
@@ -110,13 +110,13 @@ typedef union rlcTmInfo
    Entity Configuration Information */
 typedef struct rlcEntCfgInfo
 {
-   U8                   cfgType;             /*!< Type of Configuration - 
+   uint8_t                   cfgType;             /*!< Type of Configuration - 
                                              ADD/MODIFY/DELETE/RE-ESTABLISH/
                                              DELTEUE */
-   U8                   rbId;                /* RB ID. The allowed
+   uint8_t                   rbId;                /* RB ID. The allowed
                                                 Values are [0..255] */
-   U8                   rbType;              /* Type of the RB - can be SRB or DRB */
-   U8                   qci;                 /*!< qCI value Associated with that RB */
+   uint8_t                   rbType;              /* Type of the RB - can be SRB or DRB */
+   uint8_t                   qci;                 /*!< qCI value Associated with that RB */
    CkwLChInfo           lCh[CM_LTE_MAX_LOGCH_PER_RB];  /*!< Logical channel
                                                         information
                                                 In case of AM mode: 
@@ -125,7 +125,7 @@ typedef struct rlcEntCfgInfo
                                                 In case of TM/UM idx 0 is only
                                                 applicable */
    CmLteRlcMode         entMode;             /*!< Entity mode: AM, UM or TM */
-   U8                   dir;                 /*!< Direction: It can be either
+   uint8_t                   dir;                 /*!< Direction: It can be either
                                                UL / DL for TM mode 
                                                UL / DL or BOTH for UM mode 
                                                and for AM its always for both UL 
@@ -148,10 +148,10 @@ typedef struct rlcEntCfgInfo
    Configuration Information from RRC to RLC */
 typedef struct rlcCfgInfo
 {
-   U32                  transId;             /*!< Transaction Id */
+   uint32_t                  transId;             /*!< Transaction Id */
    CmLteRnti            ueId;                /*!< UE ID */
    CmLteCellId          cellId;              /*!< Cell ID */
-   U8                   numEnt;              /*!< Number of entities to
+   uint8_t                   numEnt;              /*!< Number of entities to
                                                configure */
    RlcEntCfgInfo        entCfg[CKW_MAX_ENT_CFG];  /*!< Array of Entities to be
                                               configure */
@@ -161,8 +161,8 @@ typedef struct rlcCfgInfo
    Entity Configuration Confirmation Information */
 typedef struct rlcEntCfgCfmInfo
 {
-   U8                   rbId;                /*!< rb ID */
-   U8                   rbType;              /*!< RB type - can be SRB or DRB */
+   uint8_t                   rbId;                /*!< rb ID */
+   uint8_t                   rbType;              /*!< RB type - can be SRB or DRB */
    CmStatus             status;              /*!< Status of the confirmation */
 }RlcEntCfgCfmInfo;
 
@@ -170,10 +170,10 @@ typedef struct rlcEntCfgCfmInfo
    Configuration Confirmation Informatin RLC to RRC */
 typedef struct rlcCfgCfmInfo
 {
-   U32                  transId;             /*!< Transaction Id */
+   uint32_t                  transId;             /*!< Transaction Id */
    CmLteRnti            ueId;                /*!< UE ID */
    CmLteCellId          cellId;              /*!< Cell ID */
-   U8                   numEnt;              /*!< Number of entities configured */
+   uint8_t                   numEnt;              /*!< Number of entities configured */
    RlcEntCfgCfmInfo     entCfgCfm[CKW_MAX_ENT_CFG];   /*!< Array of Entity cfg
                                                          confiramations */
 }RlcCfgCfmInfo;
@@ -191,13 +191,13 @@ typedef struct ckwUeInfo
 typedef S16 (*RlcCfgReq)     ARGS((Pst *pst, RlcCfgInfo *cfgInfo));
 typedef S16 (*RlcCfgCfm)     ARGS((Pst *pst, SuId suId, RlcCfgCfmInfo *cfmInfo));
 
-typedef S16 (*CkwUeIdChgReq) ARGS((Pst *pst, SpId spId, U32 transId, 
+typedef S16 (*CkwUeIdChgReq) ARGS((Pst *pst, SpId spId, uint32_t transId, 
                                    CkwUeInfo *ueInfo, CkwUeInfo *newUeInfo));
-typedef S16 (*CkwUeIdChgCfm) ARGS((Pst *pst, SuId suId, U32 transId, 
+typedef S16 (*CkwUeIdChgCfm) ARGS((Pst *pst, SuId suId, uint32_t transId, 
                                    CkwUeInfo *ueInfo, CmStatus status));
 
 typedef S16 (*CkwBndReq)     ARGS((Pst *pst, SuId suId, SpId spId));
-typedef S16 (*CkwBndCfm)     ARGS((Pst *pst, SuId suId, U8 status));
+typedef S16 (*CkwBndCfm)     ARGS((Pst *pst, SuId suId, uint8_t status));
 typedef S16 (*CkwUbndReq)    ARGS((Pst *pst, SpId spId, Reason reason));
 
 /** 
@@ -235,7 +235,7 @@ CM_BND_OK: Bind request succeeded\n
 CM_BND_NOK: Error encountered during the processing of the bind request.
  * @return ROK
  */
-EXTERN S16 RlcUiCkwBndCfm ARGS((Pst *pst, SuId suId, U8 status));
+EXTERN S16 RlcUiCkwBndCfm ARGS((Pst *pst, SuId suId, uint8_t status));
 
 /** 
  * @details The RLC service user initiates this primitive for performing
@@ -308,7 +308,7 @@ EXTERN S16 RlcUiRlcCfgCfm ARGS((Pst *pst, SuId suId, RlcCfgCfmInfo *cfmInfo));
  * @param[in] newUeInfo -  New UE Id Info for existing UE context. 
  * @return ROK
  */
-EXTERN S16 RlcUiCkwUeIdChgReq ARGS((Pst *pst, SpId spId, U32 transId,
+EXTERN S16 RlcUiCkwUeIdChgReq ARGS((Pst *pst, SpId spId, uint32_t transId,
                                    CkwUeInfo *ueInfo, CkwUeInfo *newUeInfo));
 
 /**
@@ -333,7 +333,7 @@ EXTERN S16 RlcUiCkwUeIdChgReq ARGS((Pst *pst, SpId spId, U32 transId,
  * information.
  * @return ROK
  */
-EXTERN S16 RlcUiCkwUeIdChgCfm  ARGS((Pst *pst, SuId suId, U32 transId, 
+EXTERN S16 RlcUiCkwUeIdChgCfm  ARGS((Pst *pst, SuId suId, uint32_t transId, 
                                    CkwUeInfo *ueInfo, CmStatus status));
 
 /* RRC Extern declarations */
@@ -350,7 +350,7 @@ EXTERN S16 NhLiCkwUbndReq ARGS((
 
 EXTERN S16 NhLiCkwBndCfm ARGS((Pst *pst,
          SuId suId,
-         U8 status));
+         uint8_t status));
 
 EXTERN S16 NhLiRlcCfgReq ARGS((
          Pst *pst,
@@ -362,11 +362,11 @@ EXTERN S16 NhLiRlcCfgCfm ARGS((Pst *pst,
          RlcCfgCfmInfo* cfmInfo));
 
 EXTERN S16 NhLiCkwUeIdChgReq ARGS((Pst *pst, 
-         SpId spId, U32 transId,
+         SpId spId, uint32_t transId,
          CkwUeInfo *ueInfo, CkwUeInfo *newUeInfo));
 
 EXTERN S16 NhLiCkwUeIdChgCfm  ARGS((Pst *pst, 
-         SuId suId, U32 transId, 
+         SuId suId, uint32_t transId, 
          CkwUeInfo *ueInfo, CmStatus status));
 
 #endif /* NH */
@@ -385,7 +385,7 @@ EXTERN S16 DmUiCkwUbndReq ARGS((
 
 EXTERN S16 DmUiCkwBndCfm ARGS((Pst *pst,
          SuId suId,
-         U8 status));
+         uint8_t status));
 
 EXTERN S16 DmUiRlcCfgReq ARGS((
          Pst *pst,
@@ -397,11 +397,11 @@ EXTERN S16 DmUiRlcCfgCfm ARGS((Pst *pst,
          RlcCfgCfmInfo* cfmInfo));
 
 EXTERN S16 DmUiCkwUeIdChgReq ARGS((Pst *pst, 
-         SpId spId, U32 transId,
+         SpId spId, uint32_t transId,
          CkwUeInfo *ueInfo, CkwUeInfo *newUeInfo));
 
 EXTERN S16 DmUiCkwUeIdChgCfm  ARGS((Pst *pst, 
-         SuId suId, U32 transId, 
+         SuId suId, uint32_t transId, 
          CkwUeInfo *ueInfo, CmStatus status));
 
 #endif /* DM */
@@ -473,7 +473,7 @@ Reason reason
 EXTERN S16 cmPkCkwBndCfm ARGS ((
 Pst *pst,
 SuId suId,
-U8 status
+uint8_t status
 ));
 
 EXTERN S16 packUeCreateReq ARGS ((
@@ -490,7 +490,7 @@ RlcCfgCfmInfo     *cfgCfmInfo
 EXTERN S16 cmPkCkwUeIdChgReq ARGS ((
 Pst                *pst, 
 SpId               spId, 
-U32                transId,
+uint32_t                transId,
 CkwUeInfo          *ueInfo,
 CkwUeInfo          *newUeInfo
 ));
@@ -498,7 +498,7 @@ CkwUeInfo          *newUeInfo
 EXTERN S16 cmPkCkwUeIdChgCfm  ARGS ((
 Pst                *pst, 
 SuId               suId, 
-U32                transId, 
+uint32_t                transId, 
 CkwUeInfo          *ueInfo, 
 CmStatus           status
 ));

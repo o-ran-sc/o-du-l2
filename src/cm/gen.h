@@ -2336,13 +2336,13 @@
          &(_class).cBuf.cBufPtr,size);                                \
    (_class).cBuf.cBufSize = size;                                     \
    (_class).cBuf.cBufIdx = 0;                                          \
-   cmMemset((U8 *)(_class).cBuf.cBufPtr,'|',size);                      \
+   cmMemset((uint8_t *)(_class).cBuf.cBufPtr,'|',size);                      \
 }
 
 #define CBUF_WRITE(_class,_argList)                                   \
 {                                                                     \
    S32 tmpLen = 0;                                                    \
-   U32 idx;                                                            \
+   uint32_t idx;                                                            \
    tmpLen = sprintf _argList;                                         \
    if(CBUFPRNTSZE >= tmpLen)                                              \
    {                                                                  \
@@ -2358,11 +2358,11 @@
 #define CBUF_DATA_PRINT(_class)                                       \
 {                                                                     \
     S8 *tmpBuf = NULLP ;\
-    U32 cBufIdx;                                                             \
-    U32 tmpIdx=0;                                                           \
+    uint32_t cBufIdx;                                                             \
+    uint32_t tmpIdx=0;                                                           \
     SGetSBuf((_class).region,(_class).pool,                  \
-         (U8 **)&tmpBuf,(_class).cBuf.cBufSize);                                \
-    cmMemset((U8 *)tmpBuf,0,(_class).cBuf.cBufSize);                      \
+         (uint8_t **)&tmpBuf,(_class).cBuf.cBufSize);                                \
+    cmMemset((uint8_t *)tmpBuf,0,(_class).cBuf.cBufSize);                      \
     for(cBufIdx = (_class).cBuf.cBufIdx; cBufIdx < (_class).cBuf.cBufSize; cBufIdx++)            \
     {                                                                 \
        tmpBuf[tmpIdx++] = (_class).cBuf.cBufPtr[cBufIdx];                             \
@@ -2375,7 +2375,7 @@
     }                                                                 \
    SPrint(tmpBuf); \
    SPutSBuf((_class).region,(_class).pool,                            \
-         (U8 *)tmpBuf,(_class).cBuf.cBufSize);                        \
+         (uint8_t *)tmpBuf,(_class).cBuf.cBufSize);                        \
 }
 #else
 
@@ -2454,9 +2454,9 @@
 #define cmPkDgn(x, mBuf)        oduUnpackUInt8(x, mBuf)       /* pack Dgn */
 #define cmPkAction(x, mBuf)     SPkS16(x, mBuf)      /* pack Action */
 #define cmPkSeqS16(x, mBuf)     SPkS16(x, mBuf)      /* pack SeqS16 */
-#define cmPkSeqU16(x, mBuf)     oduUnpackUInt16(x, mBuf)      /* pack SeqU16 */
+#define cmPkSeqUInt16(x, mBuf)     oduUnpackUInt16(x, mBuf)      /* pack SeqUInt16 */
 #define cmPkSeqS24(x, mBuf)     SPkS32(x, mBuf)      /* pack SeqS24 */
-#define cmPkSeqU24(x, mBuf)     oduUnpackUInt32(x, mBuf)      /* pack SeqU24 */
+#define cmPkSeqUInt24(x, mBuf)     oduUnpackUInt32(x, mBuf)      /* pack SeqUInt24 */
 #define cmPkSetUpArb(x, mBuf)   oduUnpackUInt8(x, mBuf)       /* pack SetUpArb */
 #define cmPkEvntType(x, mBuf)   oduUnpackUInt8(x, mBuf)       /* pack EvntType */
 #define cmPkState(x, mBuf)      oduUnpackUInt8(x, mBuf)       /* pack State */
@@ -2561,9 +2561,9 @@
 #define cmUnpkDgn(x, mBuf)        oduPackUInt8(x, mBuf)   /* unpack Dgn */
 #define cmUnpkAction(x, mBuf)     SUnpkS16(x, mBuf)  /* unpack Action */
 #define cmUnpkSeqS16(x, mBuf)     SUnpkS16(x, mBuf)  /* unpack SeqS16 */
-#define cmUnpkSeqU16(x, mBuf)     oduPackUInt16(x, mBuf)  /* unpack SeqU16 */
+#define cmUnpkSeqUInt16(x, mBuf)     oduPackUInt16(x, mBuf)  /* unpack SeqUInt16 */
 #define cmUnpkSeqS24(x, mBuf)     SUnpkS32(x, mBuf)  /* unpack SeqS24 */
-#define cmUnpkSeqU24(x, mBuf)     oduPackUInt32(x, mBuf)  /* unpack SeqU24 */
+#define cmUnpkSeqUInt24(x, mBuf)     oduPackUInt32(x, mBuf)  /* unpack SeqUInt24 */
 #define cmUnpkSetUpArb(x, mBuf)   oduPackUInt8(x, mBuf)   /* unpack SetUpArb */
 #define cmUnpkEvntType(x, mBuf)   oduPackUInt8(x, mBuf)   /* unpack EvntType */
 #define cmUnpkState(x, mBuf)      oduPackUInt8(x, mBuf)   /* unpack State */
@@ -2654,9 +2654,9 @@
 #ifdef L2_L3_SPLIT
 typedef struct _debugInfo
 {
-   U32   mBuf;
-   U32   res[8];
-   U32   count;
+   uint32_t   mBuf;
+   uint32_t   res[8];
+   uint32_t   count;
 } DebugInfo;
 
 EXTERN DebugInfo debugInfo;

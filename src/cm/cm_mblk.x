@@ -44,7 +44,7 @@ typedef struct cmMemCb
 {
    Size      maxSize;      /* Size of memory chunk */ 
    Mem       sMem;         /* Static memory region and pool */ 
-   U32       memAllocated; /* amount of memory already allocated */
+   uint32_t       memAllocated; /* amount of memory already allocated */
    PTR       initPtr;      /* Initial pointer */
    PTR       runPtr;       /* Start of avaliable memory chunk */ 
 } CmMemCb;
@@ -70,7 +70,7 @@ typedef struct cmMemListCp
 {
    CmMemList *first;       /* first entry in list */
    CmMemList *last;        /* last entry in list */
-   U32       count;        /* number of entries */
+   uint32_t       count;        /* number of entries */
    CmMemCb   memCb;        /* Memory Control Block */
 }CmMemListCp;
 
@@ -80,7 +80,7 @@ typedef struct cmMemListCp
 typedef struct cmMemStatus
 {
    Mem       sMem;          /* Static Memory region,pool */
-   U32       memBlkCnt;     /* Memory Blocks Count */ 
+   uint32_t       memBlkCnt;     /* Memory Blocks Count */ 
    Size      maxBlkSize;    /* Size of memory Block */
    Size      memAllocated;  /* Memory allocated off chunk */
 } CmMemStatus;

@@ -29,8 +29,8 @@
 *****************************************************************************/
 
 #include <stdio.h>
+#include "stdint.h"
 #include "rl_common.h"
-
 /* String representation of Log Levels */
 const char* g_logStr[L_MAX_LOG_LEVEL] =
 {

@@ -149,8 +149,8 @@ uint8_t duCheckReqStatus(CmStatus *cfm)
 
 uint8_t duSctpCfgReq(SctpParams sctpCfg)
 {
-   uint8_t ret = ROK;
-	CmStatus cfm;
+   uint8_t  ret = ROK;
+   CmStatus cfm;
 
 /* Fill F1 Params */
    f1Params.destIpAddr.ipV4Pres  = sctpCfg.cuIpAddr.ipV4Pres;
@@ -212,7 +212,7 @@ uint8_t fillAddrLst(CmInetNetAddrLst *addrLstPtr, F1IpAddr *ipAddr)
 { 
    addrLstPtr->count++;
    addrLstPtr->addrs[(addrLstPtr->count - 1)].type = CM_INET_IPV4ADDR_TYPE;
-   addrLstPtr->addrs[(addrLstPtr->count - 1)].u.ipv4NetAddr = CM_INET_NTOH_U32(ipAddr->ipV4Addr);
+   addrLstPtr->addrs[(addrLstPtr->count - 1)].u.ipv4NetAddr = CM_INET_NTOH_UINT32(ipAddr->ipV4Addr);
 
    return ROK;
 }
@@ -239,7 +239,7 @@ uint8_t fillDestNetAddr(CmInetNetAddr *destAddrPtr, F1IpAddr *dstIpPtr)
 {
    /* Filling destination address */
    destAddrPtr->type = CM_INET_IPV4ADDR_TYPE;
-   destAddrPtr->u.ipv4NetAddr = CM_INET_NTOH_U32(dstIpPtr->ipV4Addr);
+   destAddrPtr->u.ipv4NetAddr = CM_INET_NTOH_UINT32(dstIpPtr->ipV4Addr);
    return ROK;
 }
 
@@ -332,8 +332,8 @@ uint8_t establishReq(DuSctpDestCb *paramPtr)
 
 uint8_t duSctpAssocReq(uint8_t itfType)
 {
-   uint8_t ret = ROK;
-	CmStatus cfm;
+   uint8_t      ret = ROK;
+   CmStatus     cfm;
    DuSctpDestCb *paramPtr = NULLP;
 
    DU_ALLOC(paramPtr, sizeof(DuSctpDestCb));
@@ -696,9 +696,9 @@ uint8_t  processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, uint32
  * ****************************************************************/
 uint8_t sctpSockPoll()
 {
-   uint8_t ret       = ROK;
-   uint32_t           timeout;
-   uint32_t           *timeout_Ptr;
+   uint8_t  ret       = ROK;
+   uint32_t timeout;
+   uint32_t *timeout_Ptr;
    CmInetMemInfo memInfo;
    sctpSockPollParams f1PollParams, e2PollParams;
 

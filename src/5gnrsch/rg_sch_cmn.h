@@ -306,7 +306,7 @@ extern "C" {
       } \
       else { \
          if (tb->dlGrnt.iMcs < 29) {\
-            U8 _iTbs;\
+            uint8_t _iTbs;\
             RG_SCH_CMN_DL_MCS_TO_TBS(tb->dlGrnt.iMcs, _iTbs);\
             RG_SCH_CMN_ITBS_TO_RETX_IMCS(_iTbs, retxMcs); \
          } \
@@ -424,7 +424,7 @@ extern "C" {
 
 #define RGSCHCMNADDTOCRNTTIME(crntTime, toFill, incr) \
 {\
-   U32 absoluteTime;\
+   uint32_t absoluteTime;\
    absoluteTime = crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G + crntTime.slot;\
    absoluteTime += incr;\
    toFill.sfn = (absoluteTime /RGSCH_NUM_SUB_FRAMES_5G)% 1024;\
@@ -544,7 +544,7 @@ extern "C" {
 
 #define RG_SCH_CMN_DL_COUNT_ONES(_bitMask, _size, _numOnes)\
 {\
-   U8 _pos = 0;\
+   uint8_t _pos = 0;\
    *_numOnes = 0;\
    for (_pos = 0; _pos < _size; ++_pos)\
    {\
@@ -554,7 +554,7 @@ extern "C" {
 
 #define RG_SCH_CMN_DL_GET_START_POS(_allocedBitmask, _size, _startPos)\
 {\
-   U8 _pos = 0;\
+   uint8_t _pos = 0;\
    for (_pos = 0; _pos < _size; ++_pos)\
    {\
       if ((_allocedBitmask & (1 << (31 -_pos))))\
@@ -737,7 +737,7 @@ extern "C" {
    
 #define RG_SCH_CMN_UPD_RBS_TO_ADD(_CELL,_DLSF,_ALLCINFO,_RBSREQ,_RBSTOADD) \
 {\
-          U8  addtlRbsAvl;\
+          uint8_t  addtlRbsAvl;\
           addtlRbsAvl = rgSCHCmnFindNumAddtlRbsAvl(_CELL,_DLSF,_ALLCINFO);\
           if(_RBSREQ > addtlRbsAvl)\
           {\
@@ -793,7 +793,7 @@ extern "C" {
 /* LTE_ADV_FLAG_REMOVED_START */
 #define RG_SCH_CMN_SFR_UPD_RBS_TO_ADD_IN_POOL(_CELL,_DLSF,_POOLINFO,_ALLCINFO,_RBSREQ,_RBSTOADD) \
 {\
-   U8  addtlRbsAvl;\
+   uint8_t  addtlRbsAvl;\
    addtlRbsAvl = rgSCHCmnSFRFindNumAddtlRbsAvl(_CELL,_DLSF,_POOLINFO,_ALLCINFO);\
    if(_RBSREQ > addtlRbsAvl)\
    {\

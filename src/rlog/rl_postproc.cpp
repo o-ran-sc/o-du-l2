@@ -52,7 +52,7 @@
 #include <arpa/inet.h>
 #include "rl_interface.h"
 #include "rl_rlog.h"
-
+//#include "stdint.h"
 #define TEST_MODE
 
 namespace cmdlinearg {
@@ -86,7 +86,7 @@ static struct option long_options[] =
 std::map<unsigned short, std::string> g_mFileInfo;
 std::map<LOGID, LOG_INFO> g_mLogInfo;
 FILE* g_fp=stderr;
-U32 g_ttiCount = 0;
+uint32_t g_ttiCount = 0;
 time_t g_basetimeSec;
 
 void readCmdLineArgs(int argc,char **argv);
@@ -179,7 +179,7 @@ unsigned long EndianSwap32(unsigned long x)
     return y;
 }
 
-void print_hex(const char* str, const U8 *p, int len)
+void print_hex(const char* str, const uint8_t *p, int len)
 {
   fprintf(stderr, "%s HEX \n", str);
   for(int i=0; i<len; i++ ) fprintf(stderr, "%d ", p[i]);
@@ -357,7 +357,7 @@ bool readFileLogs(int fd, ARGDATA & log)
     return false;
   }
 #else
-   U16 size = RLOG_FIXED_LENGTH_BUFFER_SIZE - sizeof(LOGDATA);
+   uint16_t size = RLOG_FIXED_LENGTH_BUFFER_SIZE - sizeof(LOGDATA);
 //  if( log.logData.len && read(fd, (void*)log.buf, size) <= 0 ) {
   if( read(fd, (void*)log.buf, size) <= 0 ) {
     return false;
@@ -581,9 +581,9 @@ void printLogTime(LOGTIME & ltime)
 {
   struct tm* tm;
   time_t curTimeSec;
-  U32 secElapsedFromBeg;
-  U32 ttiNum; 
-  U32 miliseconds;
+  uint32_t secElapsedFromBeg;
+  uint32_t ttiNum; 
+  uint32_t miliseconds;
 
   ttiNum = ltime.ms_tti;
   secElapsedFromBeg = ttiNum/1000;
