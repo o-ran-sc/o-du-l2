@@ -14,9 +14,6 @@
 #   limitations under the License.                                             #
 ################################################################################
 
-##-------------------------------------------------------------#
-#Makefile for product RG - script generated.
-#-------------------------------------------------------------#
 include ../common/rsys_fancy.mak
 include ../common/env.mak
 COLOR=$(COLOR_GREEN)
@@ -74,3 +71,6 @@ clean:
 	@echo -e "$(COLOR_RED)Cleaing MAC$(REVERT_COLOR)"
 	$(Q)\rm -f $(LIB_DIR)/librg.a $(C_OBJS)
 
+#**********************************************************************
+#         End of file
+#**********************************************************************

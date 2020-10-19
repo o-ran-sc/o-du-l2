@@ -23,9 +23,6 @@ COLOR=$(COLOR_RED)
 SRC_DIR=$(ROOT_DIR)/src/codec_utils/common
 C_SRCS=$(wildcard $(SRC_DIR)/*.c)
 C_OBJS=$(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(C_SRCS))
-LOG_FILES=$(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.i,$(C_SRCS))
-BAK_FILES=$(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.i.bak,$(C_SRCS))
-DB_FILES =$(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.i.db,$(C_SRCS))
 
 lib: $(LIB_DIR)/libasn_common.a
 include $(COM_BUILD_DIR)/compile.mak
@@ -33,9 +30,9 @@ include $(COM_BUILD_DIR)/compile.mak
 #-------------------------------------------------------------#
 #Linker macros
 #-------------------------------------------------------------#
-$(LIB_DIR)/libasn_common.a:$(C_OBJS) $(C_WO_PED_OBJS)
+$(LIB_DIR)/libasn_common.a:$(C_OBJS)
 		  @echo -e "Creating Archive $(COLOR) $@ $(REVERT_COLOR)"
-		  $(Q)ar -cr $(LIB_DIR)/libasn_common.a $(C_OBJS) $(C_WO_PED_OBJS)
+		  $(Q)ar -cr $(LIB_DIR)/libasn_common.a $(C_OBJS)
 
 
 #-------------------------------------------------------------#
@@ -44,5 +41,8 @@ $(LIB_DIR)/libasn_common.a:$(C_OBJS) $(C_WO_PED_OBJS)
 clean:
 		  @echo -e "$(COLOR_RED)Cleaning ASN$(REVERT_COLOR)"
 		  @echo $(SRC_DIR) $(CM_DIR)
-		  $(Q)\rm -f $(LIB_DIR)/libasn_common.a $(C_OBJS) $(C_WO_PED_OBJS) $(LOG_FILES) $(BAK_FILES)
+		  $(Q)\rm -f $(LIB_DIR)/libasn_common.a $(C_OBJS)
 
+#**********************************************************************
+#         End of file
+#**********************************************************************
