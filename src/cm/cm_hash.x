@@ -46,8 +46,8 @@ typedef struct cmHashListCp CmHashListCp;     /*  hash list control point */
 
 /* hash function */
 
-typedef S16 (* CmHashFunc) ARGS((CmHashListCp *hashListCp, U8 *key, 
-                                  U16 keyLen, U16 *idx));
+typedef S16 (* CmHashFunc) ARGS((CmHashListCp *hashListCp, uint8_t *key, 
+                                  uint16_t keyLen, uint16_t *idx));
 
 /* list entry */
 typedef struct cmListEnt CmListEnt;      /* list entry */
@@ -65,7 +65,7 @@ struct cmListBinEnt                /* Bin entry */
 {
    CmListEnt *next;                /* next entry in list */
    CmListEnt *prev;                /* prev entry in list */
-   U16 nmbEnt;                     /* current number of entries */
+   uint16_t nmbEnt;                     /* current number of entries */
 };
 #endif
 
@@ -75,9 +75,9 @@ struct cmListBinEnt                /* Bin entry */
 typedef struct cmHashListEnt       /* hash list entry */
 {
    CmListEnt list;                 /* list pointers */
-   U8  *key;                       /* pointer to key */
-   U16 keyLen;                     /* length of key */
-   U16 hashVal;                    /* computed hash value */
+   uint8_t  *key;                       /* pointer to key */
+   uint16_t keyLen;                     /* length of key */
+   uint16_t hashVal;                    /* computed hash value */
 } CmHashListEnt;
 
 /* hash list control point */
@@ -91,15 +91,15 @@ struct cmHashListCp        /*  hash list control point */
 #endif
    Region region;                  /* memory region to allocate bins */
    Pool pool;                      /* memory pool to allocate bins */
-   U16 nmbBins;                    /* number of hash list bins */
-   U16 binBitMask;                 /* number of bits if nmbBins is power of 2 */
-   U8  nmbBinBits;                 /* number of bits to represent nmbBins */
+   uint16_t nmbBins;                    /* number of hash list bins */
+   uint16_t binBitMask;                 /* number of bits if nmbBins is power of 2 */
+   uint8_t  nmbBinBits;                 /* number of bits to represent nmbBins */
 #ifndef CM_MT_HASH_BIN
-   U16 nmbEnt;                     /* current number of entries */
+   uint16_t nmbEnt;                     /* current number of entries */
 #endif
-   U16 offset;                     /* offset of CmHashListEnt in entries */
+   uint16_t offset;                     /* offset of CmHashListEnt in entries */
    Bool dupFlg;                    /* allow duplicate keys */
-   U16  keyType;                   /* key type for selecting hash functions */
+   uint16_t  keyType;                   /* key type for selecting hash functions */
    CmHashFunc hashFunc;            /* hash function for this key type */
 };
 
@@ -108,10 +108,10 @@ struct cmHashListCp        /*  hash list control point */
 
 EXTERN S16 cmHashListInit ARGS((
               CmHashListCp *hashListCp,  /* hash list to initialize */
-              U16          nmbBins,      /* number of hash list bins */
-              U16          offset,       /* offset of CmHashListEnt in entries */
+              uint16_t          nmbBins,      /* number of hash list bins */
+              uint16_t          offset,       /* offset of CmHashListEnt in entries */
               Bool         dupFlg,       /* allow duplicate keys */
-              U16          keyType,      /* key type for selecting hash fn */
+              uint16_t          keyType,      /* key type for selecting hash fn */
               Region       region,       /* memory region to allocate bins */
               Pool         pool));       /* memory pool to allocate bins */
 
@@ -121,8 +121,8 @@ EXTERN S16 cmHashListDeinit ARGS((
 EXTERN S16 cmHashListInsert ARGS((
               CmHashListCp *hashListCp,  /* hash list to add to */
               PTR          entry,        /* entry to add */
-              U8           *key,         /* pointer to key */
-              U16          keyLen));     /* length of key */
+              uint8_t           *key,         /* pointer to key */
+              uint16_t          keyLen));     /* length of key */
 
 EXTERN S16 cmHashListDelete ARGS((
               CmHashListCp *hashListCp,  /* hash list to delete from */
@@ -130,9 +130,9 @@ EXTERN S16 cmHashListDelete ARGS((
 
 EXTERN S16 cmHashListFind ARGS((
               CmHashListCp *hashListCp,  /* hash list to search */
-              U8           *key,         /* pointer to key */
-              U16          keyLen,       /* length of key */
-              U16          seqNmb,       /* used in case of duplicate keys */
+              uint8_t           *key,         /* pointer to key */
+              uint16_t          keyLen,       /* length of key */
+              uint16_t          seqNmb,       /* used in case of duplicate keys */
               PTR          *entry));     /* entry to be returned */
 
 EXTERN S16 cmHashListGetNext ARGS((
@@ -143,7 +143,7 @@ EXTERN S16 cmHashListGetNext ARGS((
 #ifdef CM_MT_HASH_BIN
 EXTERN S16 cmHashListBinGetNextEntry ARGS((
               CmHashListCp *hashListCp,    /* hash list to get from */
-              U16          binIdx,         /* Index of the bin */
+              uint16_t          binIdx,         /* Index of the bin */
               PTR          prevEnt,        /* previous entry */
               PTR          *entry));       /* entry to be returned */
 #endif
@@ -152,16 +152,16 @@ EXTERN S16 cmHashListBinGetNextEntry ARGS((
  */
 EXTERN S16 cmHashListQuery ARGS((
               CmHashListCp *hashListCp,    /* hash list to query */
-              U8           queryType,      /* type of query */
-              U16          *result));      /* result of query */
+              uint8_t           queryType,      /* type of query */
+              uint16_t          *result));      /* result of query */
 
 /* Hash list with open addressing
  */
 EXTERN S16 cmHashListOAInsert ARGS((
               CmHashListCp *hashListCp,  /* hash list to add to */
               PTR          entry,        /* entry to add */
-              U8           *key,         /* pointer to key */
-              U16          keyLen));     /* length of key */
+              uint8_t           *key,         /* pointer to key */
+              uint16_t          keyLen));     /* length of key */
 
 #ifdef __cplusplus
 }

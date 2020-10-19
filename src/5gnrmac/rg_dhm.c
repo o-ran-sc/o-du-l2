@@ -84,7 +84,7 @@ PRIVATE Void rgDHMBldTfuDatReq ARGS((RgCellCb *cellCb, RgDlSf *dlSf, RgDlHqProcC
 S16 rgDHMFreeHqProcTB
 (
 RgDlHqProcCb         *hqP,
-U8                   tbIndex
+uint8_t                   tbIndex
 );
 
 #endif
@@ -116,16 +116,16 @@ S16 rgDHMHqEntInit
 (
 Inst               inst,
 RgDlHqEnt          *hqE,
-U8                 maxHqProcs
+uint8_t                 maxHqProcs
 )
 #else
 S16 rgDHMHqEntInit(inst,hqE, maxHqProcs)
 Inst               inst,
 RgDlHqEnt          *hqE;
-U8                 maxHqProcs;
+uint8_t                 maxHqProcs;
 #endif
 {
-   U8 idx1,idx2;
+   uint8_t idx1,idx2;
 #ifdef L2_OPTMZ
    Buffer  *hdrDBuf = NULLP;
    Buffer  *ceDBuf = NULLP;
@@ -209,7 +209,7 @@ RgCellCb *cell;
 RgDlHqEnt          *hqE;
 #endif
 {
-   U8       i = 0;
+   uint8_t       i = 0;
 
    TRC2(rgDHMUeReset)
 
@@ -226,7 +226,7 @@ RgDlHqEnt          *hqE;
 #endif
       }
    }
-   RETVOID;
+   return;
 } /* rgDHMUeReset*/
 
 /**
@@ -272,7 +272,7 @@ Inst inst;
    {
       RG_FREE_MSG(*mBuf);
    }
-   RETVOID;
+   return;
 }
 /**
  * @brief This function is called to release the 
@@ -303,8 +303,8 @@ Inst inst;
 #endif
 {
    RgCb *rgCbP = &rgCb[inst];
-   U8 start = rgCbP->bufCnt;
-   U8 end = 0;
+   uint8_t start = rgCbP->bufCnt;
+   uint8_t end = 0;
 
    TRC2(rgDHMFreeTbBufs)
 
@@ -322,7 +322,7 @@ Inst inst;
       SPutMsg(rgCbP->bufToFree[start]);
    }
    rgCbP->bufCnt = end;
-   RETVOID;
+   return;
 } /* rgDHMFreeTbBufs */
 
 #ifdef ANSI
@@ -336,8 +336,8 @@ Inst inst;
 #endif
 {
    RgCb *rgCbP = &rgCb[inst];
-   U8 start = rgCbP->bufCnt;
-   U8 end = 0;
+   uint8_t start = rgCbP->bufCnt;
+   uint8_t end = 0;
 
    TRC2(rgDHMFreeAllTbBufs)
 
@@ -347,7 +347,7 @@ Inst inst;
       SPutMsg(rgCbP->bufToFree[start]);
    }
    rgCbP->bufCnt = end;
-   RETVOID;
+   return;
 } /* rgDHMFreeTbBufs */
 
 
@@ -372,19 +372,19 @@ S16 rgDHMRlsHqProcTB
 (
 RgCellCb             *cell,
 RgDlHqProcCb         *hqP,
-U8                   tbIndex
+uint8_t                   tbIndex
 )
 #else
 S16 rgDHMRlsHqProcTB(cell, hqP, tbIndex)
 RgCellCb             *cell;
 RgDlHqProcCb         *hqP;
-U8                   tbIndex;
+uint8_t                   tbIndex;
 #endif
 {
-    U8                    idx;
+    uint8_t                    idx;
 #ifdef L2_OPTMZ
     RgTfuDatReqTbInfo     *tb;   /* TB to be sent to CL/PHY*/
-   // U32 lchIdx, pduIdx;
+   // uint32_t lchIdx, pduIdx;
 #endif
 
    TRC2(rgDHMRlsHqProcTB)
@@ -451,7 +451,7 @@ U8                   tbIndex;
  *     Invoked by: ROM
  *     
  *  @param[in]  RgUeCb        *ue
- *  @param[in]  U8            idx
+ *  @param[in]  uint8_t            idx
  *  @param[in]  RgDlHqProc    **hqP
  *  @return  S16       
  *         -#   ROK     if successful
@@ -462,13 +462,13 @@ U8                   tbIndex;
 S16 rgDHMGetHqProcFrmId
 (
 RgUeCb               *ue,
-U8                   idx,
+uint8_t                   idx,
 RgDlHqProcCb         **hqP
 )
 #else
 S16 rgDHMGetHqProcFrmId(ue, idx, hqP)
 RgUeCb               *ue;
-U8                   idx;
+uint8_t                   idx;
 RgDlHqProcCb         **hqP;
 #endif
 {
@@ -480,7 +480,7 @@ RgDlHqProcCb         **hqP;
    return ROK;
 } /* rgDHMGetHqProcFrmId */
 
-/*PRIVATE U32 dataAvl; */
+/*PRIVATE uint32_t dataAvl; */
 /**
  * @brief Handler for sending data to PHY
  *
@@ -518,7 +518,7 @@ RgDlHqProcCb    *hqP;
 RgErrInfo       *err;
 #endif
 {
-   U8 i;
+   uint8_t i;
    Inst               inst = cellCb->macInst - RG_INST_START;
    RgTfuDatReqPduInfo   *datReq;
    RgBldPduInfo      bldPdu;
@@ -703,18 +703,18 @@ RgDlSf            *dlSf;
 RgErrInfo      *err;
 #endif
 {
-//   U32            len;
-   U8             i;
-   U8             j;
+//   uint32_t            len;
+   uint8_t             i;
+   uint8_t             j;
    RgBldPduInfo   bldPdu;
-   U8             tbIndex;
+   uint8_t             tbIndex;
 #ifdef L2_OPTMZ
    RgTfuDatReqTbInfo     *tb;
 #endif
 
    TRC2(rgDHMHndlDedDatReq);
 
-   tbIndex = (U8)(datReq->transId & 0x03);
+   tbIndex = (uint8_t)(datReq->transId & 0x03);
    /* Accept all the data requests even if delayed in case nothing
     * has been sent earlier on the harq proc.
     */
@@ -728,7 +728,7 @@ RgErrInfo      *err;
          {
             j++;
          } 
-         rgDHMRlsHqProcTB(rgCb[inst].cell, hqProc, (U8)(j+1));
+         rgDHMRlsHqProcTB(rgCb[inst].cell, hqProc, (uint8_t)(j+1));
       }
       return RFAILED;
    }
@@ -751,7 +751,7 @@ RgErrInfo      *err;
             {
                j++;
             }
-            rgDHMRlsHqProcTB(rgCb[inst].cell, hqProc, (U8)(j+1));
+            rgDHMRlsHqProcTB(rgCb[inst].cell, hqProc, (uint8_t)(j+1));
             printf("\nrgDHMHndlDedDatReq:: hqP %p \n", (Void *)hqProc);
          }
          return RFAILED;
@@ -800,7 +800,7 @@ RgErrInfo      *err;
             {
                j++;
             }
-            rgDHMRlsHqProcTB(rgCb[inst].cell, hqProc, (U8)(j+1));
+            rgDHMRlsHqProcTB(rgCb[inst].cell, hqProc, (uint8_t)(j+1));
          }
          return RFAILED;
       }
@@ -931,10 +931,10 @@ RgErrInfo       *err;
 #endif
 {
    SuId            rguDlSpId;/*need to use spID instead of suID*/
-   U8              idx;
-   U8              ueIdx;
-   U8              lcIdx;
-   U8              tbIndex=0,idx1;
+   uint8_t              idx;
+   uint8_t              ueIdx;
+   uint8_t              lcIdx;
+   uint8_t              tbIndex=0,idx1;
    RgDlSf          *dlSf = &cell->subFrms[(timingInfo.slot % RG_NUM_SUB_FRAMES)];
    Inst            inst = cell->macInst - RG_INST_START;
 //   Bool            isDStaReqrd = FALSE;
@@ -945,8 +945,8 @@ RgErrInfo       *err;
    RgUeCb         *ue;
    RgDlHqProcCb   *hqP;
    RgInfUeAlloc   *allocInfo;
-   U8             activeSapCnt = 0;
-   U8             staIndCnt    = 0;
+   uint8_t             activeSapCnt = 0;
+   uint8_t             staIndCnt    = 0;
 #ifdef LTE_ADV
    Bool           hqPAdded     = FALSE;
 #endif
@@ -955,8 +955,8 @@ RgErrInfo       *err;
 #endif
 
    TRC2(rgDHMSndConsolidatedStaInd)
-   cmMemset ((U8 *)dStaInd, 0, (sizeof(RgRguDedStaInd *) * rgCb[inst].numRguSaps));
-   cmMemset ((U8 *)rguDlSap, 0, (sizeof(RgUpSapCb  *) * rgCb[inst].numRguSaps));
+   cmMemset ((uint8_t *)dStaInd, 0, (sizeof(RgRguDedStaInd *) * rgCb[inst].numRguSaps));
+   cmMemset ((uint8_t *)rguDlSap, 0, (sizeof(RgUpSapCb  *) * rgCb[inst].numRguSaps));
 
    /* Send StaInd for the scheduled UEs */
    for(ueIdx = 0; ueIdx < ueInfo->numUes; ueIdx++)
@@ -1280,7 +1280,7 @@ RgErrInfo       *err;
  *  @return     Void
  *              None 
  **/
-//U8 crashFlag = 0;
+//uint8_t crashFlag = 0;
 #ifdef ANSI
 PRIVATE Void rgDHMBldTfuDatReq
 (
@@ -1306,10 +1306,10 @@ RgTfuDatReqPduInfo *datReq;
 #endif
 #endif
 
-   U8 i;
+   uint8_t i;
 
 #ifdef L2_OPTMZ
-   U32 lchIdx, pduIdx;
+   uint32_t lchIdx, pduIdx;
 #endif
    TRC2(rgDHMBldTfuDatReq)
  
@@ -1430,7 +1430,7 @@ RgTfuDatReqPduInfo *datReq;
          datReq->nmbOfTBs++;
       }
    }
-   RETVOID;
+   return;
 }  /* rgDHMBldTfuDatReq */
 
 
@@ -1455,16 +1455,16 @@ RgTfuDatReqPduInfo *datReq;
 S16 rgDHMFreeHqProcTB
 (
 RgDlHqProcCb         *hqP,
-U8                   tbIndex
+uint8_t                   tbIndex
 )
 #else
 S16 rgDHMFreeHqProcTB(hqP, tbIndex)
 RgDlHqProcCb         *hqP;
-U8                   tbIndex;
+uint8_t                   tbIndex;
 #endif
 {
    RgTfuDatReqTbInfo     *tb;   /* TB to be sent to CL/PHY*/
-   U8                    idx;
+   uint8_t                    idx;
 
    TRC2(rgDHMFreeHqProcTB)
 
@@ -1522,7 +1522,7 @@ Inst               inst;
 RgDlHqEnt          *hqE;
 #endif
 {
-   U8             i;
+   uint8_t             i;
    TRC2(rgDHMFreeUe)
 
    if(hqE->procs)
@@ -1548,7 +1548,7 @@ RgDlHqEnt          *hqE;
                             assignment */
    }
 
-   RETVOID;
+   return;
 
 }  /* rgDHMFreeUe */
 /**
@@ -1605,7 +1605,7 @@ RgInfResetHqEnt*     hqEntInfo;
 
    return ROK;
 }
-U32 gSaveVal;
+uint32_t gSaveVal;
 
 /**
  * @brief Function for handling RaResp request received from scheduler to MAC
@@ -1642,13 +1642,13 @@ RgInfRlsHqInfo      *rlshqUeInfo;
    RgCellCb       *cell = NULLP;
    RgUeCb         *ue;
    RgDlHqProcCb   *hqP;
-   U8             idx1,idx2;
+   uint8_t             idx1,idx2;
 #ifdef LTE_L2_MEAS
-   U8                tbId;
+   uint8_t                tbId;
    RguHarqStatusInd  hqStaInd;
    Bool              isValidTbId = FALSE;
 #endif
-   U32        startTime=0;
+   uint32_t        startTime=0;
    
    TRC2(RgSchMacRlsHqReq)
 

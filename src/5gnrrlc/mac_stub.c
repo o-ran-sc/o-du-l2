@@ -34,7 +34,7 @@ void macStubBuildUlData(Buffer *mBuf)
    /* filling IPv4 header */
    CmIpv4Hdr ipv4Hdr;
    MsgLen    mLen;
-   U32 ipv4_du, ipv4_cu;
+   uint32_t ipv4_du, ipv4_cu;
    
    cmInetAddr((S8*)DU_IP_V4_ADDR, &ipv4_du);
    cmInetAddr((S8*)CU_IP_V4_ADDR, &ipv4_cu);
@@ -42,12 +42,12 @@ void macStubBuildUlData(Buffer *mBuf)
    mLen = 0;
    SFndLenMsg(mBuf, &mLen);
  
-   cmMemset((U8 *)&ipv4Hdr, 0, sizeof(CmIpv4Hdr));
+   cmMemset((uint8_t *)&ipv4Hdr, 0, sizeof(CmIpv4Hdr));
    ipv4Hdr.length = CM_IPV4_HDRLEN + mLen;
    ipv4Hdr.hdrVer = 0x45;
    ipv4Hdr.proto = 1;
-   ipv4Hdr.srcAddr = CM_INET_NTOH_U32(ipv4_du);
-   ipv4Hdr.destAddr = CM_INET_NTOH_U32(ipv4_cu);
+   ipv4Hdr.srcAddr = CM_INET_NTOH_UINT32(ipv4_du);
+   ipv4Hdr.destAddr = CM_INET_NTOH_UINT32(ipv4_cu);
   
    /* Packing IPv4 header into buffer */
    S16          ret, cnt, idx;

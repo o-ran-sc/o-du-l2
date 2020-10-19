@@ -79,11 +79,11 @@ S16 rlcValidateRbCfgParams (RlcCb *gCb, CmLteRnti ueId, CmLteCellId cellId,
  *      -# RFAILED 
  *
 */
-PRIVATE S16 rlcHdlMeasUlUeIdChg(RlcCb *gCb, U8 cellId,U8 oldUeId, U8 newUeId)
+PRIVATE S16 rlcHdlMeasUlUeIdChg(RlcCb *gCb, uint8_t cellId,uint8_t oldUeId, uint8_t newUeId)
 {
    RlcL2MeasCb    *measCb    = NULLP;
-   U16           cntr;
-   U16          ueIdx = 0;     
+   uint16_t           cntr;
+   uint16_t          ueIdx = 0;     
 
    for(cntr = 0; cntr < LKW_MAX_L2MEAS; cntr++)
    {
@@ -117,11 +117,11 @@ PRIVATE S16 rlcHdlMeasUlUeIdChg(RlcCb *gCb, U8 cellId,U8 oldUeId, U8 newUeId)
  *      -# RFAILED 
  *
 */
-PRIVATE S16 rlcDelFrmUlL2Meas(RlcCb *gCb, U8 cellId,U8 ueId)
+PRIVATE S16 rlcDelFrmUlL2Meas(RlcCb *gCb, uint8_t cellId,uint8_t ueId)
 {
    RlcL2MeasCb    *measCb    = NULLP;
-   U16           cntr;
-   U16          ueIdx = 0;     
+   uint16_t           cntr;
+   uint16_t          ueIdx = 0;     
 
    for(cntr = 0; cntr < LKW_MAX_L2MEAS; cntr++)
    {
@@ -147,7 +147,7 @@ PRIVATE S16 rlcDelFrmUlL2Meas(RlcCb *gCb, U8 cellId,U8 ueId)
 
 
       {
-         U32 myIdx =0;
+         uint32_t myIdx =0;
          S16                  ret;           /* Return value */
             RlcUlUeCb             *ueCb = NULL;  
 
@@ -165,18 +165,18 @@ PRIVATE S16 rlcDelFrmUlL2Meas(RlcCb *gCb, U8 cellId,U8 ueId)
 }
 
 
-PRIVATE S16 rlcAddToUlL2Meas(RlcCb *gCb, RlcUlRbCb *rlcRbCb,U8 cellId,U8 ueId)
+PRIVATE S16 rlcAddToUlL2Meas(RlcCb *gCb, RlcUlRbCb *rlcRbCb,uint8_t cellId,uint8_t ueId)
 {
    RlcL2MeasCb    *measCb    = NULLP;
-   U16           cntr;
-   U16           cntr1;
-   U16            ueIdx = 0;
-   U16            qciIdx = 0;
-   U16           *numQci;
+   uint16_t           cntr;
+   uint16_t           cntr1;
+   uint16_t            ueIdx = 0;
+   uint16_t            qciIdx = 0;
+   uint16_t           *numQci;
    #ifndef XEON_SPECIFIC_CHANGES
-   U8             freeIdx = gCb->genCfg.maxUe;
+   uint8_t             freeIdx = gCb->genCfg.maxUe;
    #else
-   U16	         freeIdx = LKW_MAX_UE;
+   uint16_t	         freeIdx = LKW_MAX_UE;
    #endif 
 
    for(cntr = 0; cntr < LKW_MAX_L2MEAS; cntr++)
@@ -263,7 +263,7 @@ PRIVATE S16 rlcAddToUlL2Meas(RlcCb *gCb, RlcUlRbCb *rlcRbCb,U8 cellId,U8 ueId)
                ueIdx = freeIdx;
             }
             measCb->val.ipThMeas.ueInfoLst[ueIdx].isValid = TRUE;
-            cmMemset((U8 *)&measCb->val.ipThMeas.ueInfoLst[ueIdx].measData[0],0x00,(sizeof(RlcL2Cntr) *LKW_MAX_QCI));
+            cmMemset((uint8_t *)&measCb->val.ipThMeas.ueInfoLst[ueIdx].measData[0],0x00,(sizeof(RlcL2Cntr) *LKW_MAX_QCI));
             measCb->val.ipThMeas.ueInfoLst[ueIdx].numQci = 0;
          }
          measCb->val.ipThMeas.ueInfoLst[ueIdx].ueId = ueId;
@@ -676,7 +676,7 @@ RlcUlCfgTmpData   *cfgTmpData;
             {
                if (( cfgTmpData->cellCb->rbCb[cfgToValidate->rbId] != NULLP))
                {
-                  cfgEntData->entUlCfgCfm.status.reason =  CKW_CFG_REAS_RB_PRSNT;;
+                  cfgEntData->entUlCfgCfm.status.reason =  CKW_CFG_REAS_RB_PRSNT;
                   return RFAILED;
                }
             }
@@ -714,7 +714,7 @@ RlcUlCfgTmpData   *cfgTmpData;
                      cfgEntData->rbCb);
                if(cfgEntData->rbCb != NULLP)
                {
-                  cfgEntData->entUlCfgCfm.status.reason =  CKW_CFG_REAS_RB_PRSNT;;
+                  cfgEntData->entUlCfgCfm.status.reason =  CKW_CFG_REAS_RB_PRSNT;
                   return RFAILED;
                }
             }
@@ -728,7 +728,7 @@ RlcUlCfgTmpData   *cfgTmpData;
          /*Allocating the memory for receive buffer */
          if(CM_LTE_MODE_UM == cfgToValidate->entMode)
          {
-            U16 winLen;
+            uint16_t winLen;
         
             
             cfgEntData->rbCb->m.umUl.umWinSz = RLC_POWER(2, 
@@ -741,7 +741,7 @@ RlcUlCfgTmpData   *cfgTmpData;
          else if(CM_LTE_MODE_AM == cfgToValidate->entMode)
          {
 #ifndef LTE_TDD 
-             U32 hashIndex;
+             uint32_t hashIndex;
               RLC_ALLOC(gCb,
                     cfgEntData->rbCb->m.amUl.recBufLst,
                     (RLC_RCV_BUF_BIN_SIZE * sizeof(CmLListCp )));
@@ -1018,7 +1018,7 @@ RlcUlCfgTmpData   *cfgTmpData;
          break;
       }
    }
-   RETVOID;
+   return;
 }
 
 
@@ -1061,7 +1061,7 @@ RlcUlCfgTmpData   *cfgTmpData;
    /* Check for ueId is present or not */
    if ( cfgTmpData->ueId == 0 )
    {
-      cfgEntData->entUlCfgCfm.status.reason =  CKW_CFG_REAS_UE_UNKWN;;
+      cfgEntData->entUlCfgCfm.status.reason =  CKW_CFG_REAS_UE_UNKWN;
       RLOG_ARG1(L_ERROR,DBG_UEID,cfgTmpData->ueId, 
             "UeId is 0 for CELLID;%d",
             cfgTmpData->cellId);
@@ -1074,7 +1074,7 @@ RlcUlCfgTmpData   *cfgTmpData;
       RLOG_ARG1(L_ERROR,DBG_CELLID, cfgTmpData->cellId,
             "UeId [%d]: UeCb not found",
             cfgTmpData->ueId);
-      cfgEntData->entUlCfgCfm.status.reason =  CKW_CFG_REAS_UE_UNKWN;;
+      cfgEntData->entUlCfgCfm.status.reason =  CKW_CFG_REAS_UE_UNKWN;
       return RFAILED;
    }
    return ROK;
@@ -1111,7 +1111,7 @@ RlcUlCfgTmpData   *cfgTmpData;
    rlcDelFrmUlL2Meas(gCb,cfgTmpData->cellId,cfgTmpData->ueId);
 #endif
    rlcDbmDelUlUeCb(gCb,cfgTmpData->ueCb, FALSE);
-   RETVOID;
+   return;
 }
   
 
@@ -1158,7 +1158,7 @@ RlcUlCfgTmpData   *cfgTmpData;
    /* Check for cellId is present or not */
    if ( cellId == 0 )
    {
-      cfgEntData->entUlCfgCfm.status.reason =  CKW_CFG_REAS_CELL_UNKWN;;
+      cfgEntData->entUlCfgCfm.status.reason =  CKW_CFG_REAS_CELL_UNKWN;
       RLOG_ARG0(L_ERROR,DBG_CELLID,cellId , "CellId is 0");
       return RFAILED;
    }
@@ -1167,7 +1167,7 @@ RlcUlCfgTmpData   *cfgTmpData;
    rlcDbmFetchUlCellCb(gCb,cellId, &cfgTmpData->cellCb);
    if (!cfgTmpData->cellCb)
    {
-      cfgEntData->entUlCfgCfm.status.reason =  CKW_CFG_REAS_CELL_UNKWN;;
+      cfgEntData->entUlCfgCfm.status.reason =  CKW_CFG_REAS_CELL_UNKWN;
       RLOG_ARG0(L_ERROR, DBG_CELLID,cellId, "CellCb not found");
       return RFAILED;
    }
@@ -1202,7 +1202,7 @@ RlcUlCfgTmpData   *cfgInfo;
    TRC3(rlcCfgApplyDelUlCell)
    
    rlcDbmDelUlCellCb(gCb,cfgInfo->cellCb);
-   RETVOID;
+   return;
 }
 
 /** 
@@ -1328,7 +1328,7 @@ RlcUlEntTmpData   *cfgEntData;
             break;
          }
    }
-   RETVOID;
+   return;
 }
 
 /** 
@@ -1439,8 +1439,8 @@ RlcUlCfgTmpData   *cfgTmpData;
    cfgTmpData->ueCb->cellId =newUeInfo->cellId;
    if(ROK != cmHashListInsert(&(gCb->u.ulCb->ueLstCp),
                               (PTR)cfgTmpData->ueCb, 
-                              (U8 *)&(cfgTmpData->ueCb->ueId),
-                              (U16) sizeof(CmLteRnti)))
+                              (uint8_t *)&(cfgTmpData->ueCb->ueId),
+                              (uint16_t) sizeof(CmLteRnti)))
 
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,newUeInfo->cellId,
@@ -1448,7 +1448,7 @@ RlcUlCfgTmpData   *cfgTmpData;
             newUeInfo->ueId);
    }
 
-   RETVOID;
+   return;
 }
 /********************************************************************30**
 

@@ -106,7 +106,7 @@ SpId    spId;
 
    /* Get the lower SAP control block from the layer control block. */
    tfuSap = &(rgCb[inst].tfuSap);
-   (Void)cmMemcpy ((U8*)&pst, (U8*)&(tfuSap->sapCfg.sapPst), sizeof(Pst));
+   (Void)cmMemcpy ((uint8_t*)&pst, (uint8_t*)&(tfuSap->sapCfg.sapPst), sizeof(Pst));
    if((ret = RgLiTfuBndReq (&pst, suId, spId)) != ROK)
    {
       RLOG0(L_ERROR,"Call to RgLiTfuBndReq() failed");
@@ -155,7 +155,7 @@ Reason  reason;
 
    /* Get the lower SAP control block from the layer control block. */
    tfuSap = &(rgCb[inst].tfuSap);
-   cmMemcpy ((U8*)&pst, (U8*)&(tfuSap->sapCfg.sapPst), sizeof(Pst));
+   cmMemcpy ((uint8_t*)&pst, (uint8_t*)&(tfuSap->sapCfg.sapPst), sizeof(Pst));
    if((ret = RgLiTfuUbndReq (&pst, tfuSap->sapCfg.spId, reason)) != ROK)
    {
       RLOG0(L_ERROR,"Call to RgLiTfuUbndReq() failed");
@@ -177,7 +177,7 @@ Reason  reason;
  *           
  *  @param[in]  Pst   *pst 
  *  @param[in]  SuId  suId 
- *  @param[in]  U8    status
+ *  @param[in]  uint8_t    status
  *  @return  S16
  *      -# ROK 
  *      -# RFAILED 
@@ -187,13 +187,13 @@ S16 RgLiTfuBndCfm
 (
 Pst     *pst,
 SuId    suId, 
-U8      status
+uint8_t      status
 )
 #else
 S16 RgLiTfuBndCfm(pst, suId, status)
 Pst     *pst; 
 SuId    suId; 
-U8      status;
+uint8_t      status;
 #endif
 {
    Inst inst;
@@ -309,7 +309,7 @@ PRIVATE Void rgLIMUtlFreeDatIndEvnt(datInd, error)
       }
    }
    RG_FREE_MEM(datInd);
-   RETVOID;
+   return;
 } /* end of rgLIMUtlFreeDatIndEvnt*/
 
 /**
@@ -345,7 +345,7 @@ TfuDatIndInfo    *datInd;
 {
    Inst             inst;
    S16              ret;
-   VOLATILE U32     startTime=0;
+   VOLATILE uint32_t     startTime=0;
 
    TRC3(RgLiTfuDatInd);
 
@@ -414,7 +414,7 @@ PRIVATE Void rgLIMUtlFreeDatReqEvnt(datReq, error)
 
    TfuDatReqPduInfo *datInfo;
    CmLList          *node;
-   U8               i;
+   uint8_t               i;
 
    TRC2(rgLIMUtlFreeDatReqEvnt);
    /* Steps of freeing up the TfuDatReq.
@@ -446,7 +446,7 @@ PRIVATE Void rgLIMUtlFreeDatReqEvnt(datReq, error)
       }
    }
    RG_FREE_MEM(datReq);
-   RETVOID;
+   return;
 } /* end of rgLIMUtlFreeDatReqEvnt*/
 #endif
 /**

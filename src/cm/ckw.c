@@ -161,13 +161,13 @@ S16 cmPkCkwBndCfm
 (
 Pst *pst,
 SuId suId,
-U8 status
+uint8_t status
 )
 #else
 S16 cmPkCkwBndCfm(pst, suId, status)
 Pst *pst;
 SuId suId;
-U8 status;
+uint8_t status;
 #endif
 {
     S16 ret1;
@@ -552,7 +552,7 @@ Buffer         *mBuf;
 
     for (idx = param->numEnt-1; idx >= 0; idx--)
     {
-       CMCHKPK(cmPkRlcEntCfgCfmInfo, &(param->entCfgCfm[(U8)idx]), mBuf);
+       CMCHKPK(cmPkRlcEntCfgCfmInfo, &(param->entCfgCfm[(uint8_t)idx]), mBuf);
     }
 
     CMCHKPK(oduUnpackUInt8, param->numEnt, mBuf);
@@ -694,7 +694,7 @@ S16 cmPkCkwUeIdChgReq
 (
 Pst               *pst,
 SpId              spId,
-U32               transId,
+uint32_t               transId,
 CkwUeInfo         *ueInfo,
 CkwUeInfo         *newUeInfo
 )
@@ -702,7 +702,7 @@ CkwUeInfo         *newUeInfo
 S16 cmPkCkwUeIdChgReq(pst, spId, transId, ueInfo, newUeInfo)
 Pst               *pst;
 SpId              spId;
-U32               transId;
+uint32_t               transId;
 CkwUeInfo         *ueInfo;
 CkwUeInfo         *newUeInfo;
 #endif
@@ -766,7 +766,7 @@ S16 cmPkCkwUeIdChgCfm
 (
 Pst               *pst,
 SuId              suId,
-U32               transId,
+uint32_t               transId,
 CkwUeInfo         *ueInfo,
 CmStatus          status
 )
@@ -774,7 +774,7 @@ CmStatus          status
 S16 cmPkCkwUeIdChgCfm(pst, suId, transId, ueInfo, status)
 Pst               *pst;
 SuId              suId;
-U32               transId;
+uint32_t               transId;
 CkwUeInfo         *ueInfo;
 CmStatus          status;
 #endif
@@ -924,7 +924,7 @@ Buffer         *mBuf;
 #endif
 {
     SuId       suId = 0;
-    U8         status = 0;
+    uint8_t         status = 0;
     
     TRC3(cmUnpkCkwBndCfm)
 
@@ -1162,7 +1162,7 @@ Pst            *pst;
 Buffer         *mBuf;
 #endif
 {
-    U8         idx;
+    uint8_t         idx;
 
     TRC3(cmUnpkRlcCfgCfmInfo)
 
@@ -1287,7 +1287,7 @@ Pst            *pst;
 Buffer         *mBuf;
 #endif
 {
-    U8         idx;
+    uint8_t         idx;
 
     TRC3(cmUnpkRlcCfgInfo)
 
@@ -1352,7 +1352,7 @@ Buffer            *mBuf;
        return (ret1);
     }
 
-    cmMemset((U8 *)cfgCfmInfo, 0, sizeof(RlcCfgCfmInfo));
+    cmMemset((uint8_t *)cfgCfmInfo, 0, sizeof(RlcCfgCfmInfo));
 
     CMCHKUNPK(SUnpkS16, &suId, mBuf);
 
@@ -1443,7 +1443,7 @@ Buffer            *mBuf;
 {
     S16       ret1;
     SpId      spId = 0;
-    U32       transId = 0;
+    uint32_t       transId = 0;
     CkwUeInfo *ueInfo = NULLP;
     CkwUeInfo *newUeInfo = NULLP;
     
@@ -1466,7 +1466,7 @@ Buffer            *mBuf;
        return (ret1);
     }
 
-    cmMemset((U8 *)ueInfo, 0, sizeof(CkwUeInfo));
+    cmMemset((uint8_t *)ueInfo, 0, sizeof(CkwUeInfo));
 
     ret1 = cmUnpkCkwUeInfo((ueInfo), mBuf);
 #if(ERRCLASS & ERRCLS_DEBUG)
@@ -1493,7 +1493,7 @@ Buffer            *mBuf;
        return (ret1);
     }
 
-    cmMemset((U8 *)newUeInfo, 0, sizeof(CkwUeInfo));
+    cmMemset((uint8_t *)newUeInfo, 0, sizeof(CkwUeInfo));
 
     ret1 = cmUnpkCkwUeInfo((newUeInfo), mBuf);
 #if(ERRCLASS & ERRCLS_DEBUG)
@@ -1542,13 +1542,13 @@ Buffer            *mBuf;
 {
     S16       ret1;
     SuId      suId = 0;
-    U32       transId = 0;
+    uint32_t       transId = 0;
     CkwUeInfo *ueInfo = NULLP;
     CmStatus  status;
     
     TRC3(cmUnpkCkwUeIdChgCfm)
 
-    cmMemset((U8 *)&status, (U8)0, (PTR)sizeof(CmStatus));
+    cmMemset((uint8_t *)&status, (uint8_t)0, (PTR)sizeof(CmStatus));
 
     CMCHKUNPK(SUnpkS16, &suId, mBuf);
     CMCHKUNPKLOG(oduPackUInt32, &transId, mBuf, ECKW042, pst);
@@ -1567,7 +1567,7 @@ Buffer            *mBuf;
        return (ret1);
     }
 
-    cmMemset((U8 *)ueInfo, 0, sizeof(CkwUeInfo));
+    cmMemset((uint8_t *)ueInfo, 0, sizeof(CkwUeInfo));
 
     ret1 = cmUnpkCkwUeInfo((ueInfo), mBuf);
 #if(ERRCLASS & ERRCLS_DEBUG)

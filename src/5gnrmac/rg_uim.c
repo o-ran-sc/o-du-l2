@@ -76,8 +76,8 @@ static int RLOG_FILE_ID=178;
 #if defined(SPLIT_RLC_DL_TASK) && defined(RLC_MAC_STA_RSP_RBUF)
 S16 rgBatchProc(Void);
 #endif
-U8 rgRguDlSap;
-U8 rgRguUlSap;
+uint8_t rgRguDlSap;
+uint8_t rgRguUlSap;
 /**
  * @brief Handler for Bind request.
  *
@@ -265,7 +265,7 @@ Reason reason;
  *           
  *  @param[in] Inst        inst
  *  @param[in]  SuId          suId
- *  @param[in]  U8            status
+ *  @param[in]  uint8_t            status
  *  @return  S16
  *      -# ROK 
  *      -# RFAILED 
@@ -275,13 +275,13 @@ S16 rgUIMRguBndCfm
 (
 Inst inst,
 SpId spId,
-U8 status
+uint8_t status
 )
 #else
 S16 rgUIMRguBndCfm(inst,spId, status)
 Inst          inst;
 SpId          spId;
-U8            status;
+uint8_t            status;
 #endif
 {
    S16  ret = ROK;
@@ -334,10 +334,10 @@ RguDDatReqInfo  *datReq;
    S16   ret = ROK;
    Inst  inst;
 #ifndef NO_ERRCLS 
-   U32   id;
-   U32   id1;
-   U32   id2;
-   U32   id3;
+   uint32_t   id;
+   uint32_t   id1;
+   uint32_t   id2;
+   uint32_t   id3;
 #endif
    
    TRC3(RgUiRguDDatReq)
@@ -547,7 +547,7 @@ RguDStaRspInfo  *staRsp;
    Inst  inst;
 
    S16              ret       = ROK;
-   VOLATILE U32     startTime = 0;
+   VOLATILE uint32_t     startTime = 0;
 
    TRC3(RgUiRguDStaRsp)
 
@@ -1133,7 +1133,7 @@ Reason reason;
  *           
  *  @param[in] Inst        inst
  *  @param[in]  SuId          suId
- *  @param[in]  U8            status
+ *  @param[in]  uint8_t            status
  *  @return  S16
  *      -# ROK 
  *      -# RFAILED 
@@ -1143,13 +1143,13 @@ S16 rgUIMCrgBndCfm
 (
 Inst  inst,
 SuId suId,
-U8 status
+uint8_t status
 )
 #else
 S16 rgUIMCrgBndCfm(inst,suId, status)
 Inst          inst;
 SuId          suId;
-U8            status;
+uint8_t            status;
 #endif
 {
    TRC2(rgUIMCrgBndCfm)
@@ -1202,15 +1202,15 @@ CrgCfgReqInfo *cfgReqInfo;
 {
    Inst      inst;
    S16       ret       = ROK;
-   U8        cfmStatus = 0x00ff;
-   U8        prntTrans[CRG_CFG_TRANSID_SIZE+1];
+   uint8_t        cfmStatus = 0x00ff;
+   uint8_t        prntTrans[CRG_CFG_TRANSID_SIZE+1];
 
    TRC3(RgUiCrgCfgReq);
 
    RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
    /* Ensuring transId is always Null terminated. */
-   cmMemcpy((U8 *)prntTrans, (U8 *)transId.trans, CRG_CFG_TRANSID_SIZE);
+   cmMemcpy((uint8_t *)prntTrans, (uint8_t *)transId.trans, CRG_CFG_TRANSID_SIZE);
    prntTrans[CRG_CFG_TRANSID_SIZE] = '\0';
 
 
@@ -1281,7 +1281,7 @@ CrgCfgReqInfo *cfgReqInfo;
  *           
  *  @param[in] Inst        inst
  *  @param[in]  CrgCfgTransId transId
- *  @param[in]  U8            status
+ *  @param[in]  uint8_t            status
  *  @return  S16
  *      -# ROK 
  *      -# RFAILED 
@@ -1291,21 +1291,21 @@ S16 rgUIMCrgCfgCfm
 (
 Inst      inst,
 CrgCfgTransId transId,
-U8            status
+uint8_t            status
 )
 #else
 S16 rgUIMCrgCfgCfm(inst,transId, status)
 Inst      inst;
 CrgCfgTransId transId;
-U8            status;
+uint8_t            status;
 #endif
 {
    S16  ret = ROK;
-   U8   prntTrans[CRG_CFG_TRANSID_SIZE+1];
+   uint8_t   prntTrans[CRG_CFG_TRANSID_SIZE+1];
 
    TRC2(rgUIMCrgCfgCfm)
    
-   cmMemcpy((U8 *)prntTrans, (U8 *)transId.trans, CRG_CFG_TRANSID_SIZE);
+   cmMemcpy((uint8_t *)prntTrans, (uint8_t *)transId.trans, CRG_CFG_TRANSID_SIZE);
    prntTrans[CRG_CFG_TRANSID_SIZE] = '\0';
 
 
@@ -1334,7 +1334,7 @@ Void;
    Pst pst = {0};
    SpId spId = 0;
    RguDStaRspInfo  *staRsp;
-   U32 elmIndx = 0;
+   uint32_t elmIndx = 0;
 #ifndef LTE_ADV
 /* Fill pst */
    pst.srcProcId = 1;
@@ -1352,7 +1352,7 @@ Void;
 #else
 #endif
   
-   elmIndx = (U32)SRngGetRIndx(SS_RNG_BUF_DLRLC_TO_DLMAC);
+   elmIndx = (uint32_t)SRngGetRIndx(SS_RNG_BUF_DLRLC_TO_DLMAC);
    while(NULLP != elmIndx)
    {
       staRsp = (RguDStaRspInfo *)elmIndx;
@@ -1365,7 +1365,7 @@ Void;
       staRsp = NULLP;
       SRngIncrRIndx(SS_RNG_BUF_DLRLC_TO_DLMAC);
 
-      if((elmIndx = (U32)SRngGetRIndx(SS_RNG_BUF_DLRLC_TO_DLMAC)) == NULLP)
+      if((elmIndx = (uint32_t)SRngGetRIndx(SS_RNG_BUF_DLRLC_TO_DLMAC)) == NULLP)
       break;
    }
    return ROK;

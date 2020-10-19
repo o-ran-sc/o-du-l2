@@ -73,11 +73,11 @@ char g_logDir[MAX_FILENAME_LEN];
 char g_fileList[RLOG_MAX_FILES][MAX_FILENAME_LEN];
 #ifdef RLOG_USE_CIRCULAR_BUFFER
 static THREAD_DATA *g_pSingCirBuff = NULL;
-static U16 g_prevLogOffset=0;
+static uint16_t g_prevLogOffset=0;
 #endif
 #ifndef RLOG_ENABLE_TEXT_LOGGING 
-static volatile U32 g_rlogPositionIndex=0;
-U32 gIpType = CM_IPV4ADDR_TYPE; 
+static volatile uint32_t g_rlogPositionIndex=0;
+uint32_t gIpType = CM_IPV4ADDR_TYPE; 
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -95,10 +95,10 @@ Data  *g_l2LogBufStartPtr = NULLP;
 Data  *g_l2LogBufBasePtr = NULLP;
 Data  *g_logBufRcvdFromL2 = NULLP;
 Data  *g_l2LogBaseBuff = NULLP;
-U32    g_logBufLenRcvdFromL2 = 0;
-U32    g_l2LogBufLen = 0;
-U32    startL2Logging = 0;
-U32    g_l2logBuffPos = 0;
+uint32_t    g_logBufLenRcvdFromL2 = 0;
+uint32_t    g_l2LogBufLen = 0;
+uint32_t    startL2Logging = 0;
+uint32_t    g_l2logBuffPos = 0;
 /* end */
 #endif /* Binary Logging */
 
@@ -115,25 +115,25 @@ int g_logLevel = 1;
 int g_logLevel = L_MAX_LOG_LEVEL;
 #endif
 /* MAX Log Files 1 */
-U8 g_nMaxLogFiles = 1; 
+uint8_t g_nMaxLogFiles = 1; 
 
 /* Max File Size limit for each log file */
-U32 g_uiMaxFileSizeLimit = MAX_FILE_SIZE; 
+uint32_t g_uiMaxFileSizeLimit = MAX_FILE_SIZE; 
 
 /* Default circular buffer size 100Kb*/
-U32 g_cirMaxBufferSize = RLOG_MAX_CIRBUF_SIZE; 
+uint32_t g_cirMaxBufferSize = RLOG_MAX_CIRBUF_SIZE; 
 
 /* Default mask for each module is disabled */
-U32 g_modMask = 0; 
+uint32_t g_modMask = 0; 
 
 /* Remote Logging port */
-static U32 g_nLogPort = RLOG_REMOTE_LOGGING_PORT;
+static uint32_t g_nLogPort = RLOG_REMOTE_LOGGING_PORT;
 
 /* Current File Number index */
 int  g_nCurrFileIdx = 0; 
 
 /* Remote logging flag */
-static U8 g_bRemoteLoggingDisabled=1;
+static uint8_t g_bRemoteLoggingDisabled=1;
 
 /* Global file descriptor for L2 & L3 */
 static int g_fd;
@@ -152,13 +152,13 @@ static int g_nThreadsRegistered;
 pthread_mutex_t g_logmutex, g_condmutex;
 pthread_cond_t g_cond;
 
-U8 g_writeCirBuf = 0;
+uint8_t g_writeCirBuf = 0;
 
 static int thread_signalled;
 #endif
 
 /* TTI Count */
-static U32 numTtiTicks;
+static uint32_t numTtiTicks;
 /* Console input handling parameters */
 static int g_kIdx, g_action, g_storeKeys;
 static char g_keyBuf[32];
@@ -190,15 +190,15 @@ THREAD_DATA* rlRegisterThread(const char* taskName);
 extern void (*rlSigHandler)(int);
 /* L2 Logging */
 void rlInitL2Log(void);
-U32 g_rlogWriteCount = 0;
-U32 g_maxRlogCount   = 50;
-U32 g_logsDropCnt    = 0;
+uint32_t g_rlogWriteCount = 0;
+uint32_t g_maxRlogCount   = 50;
+uint32_t g_logsDropCnt    = 0;
 RLLogCntLmt g_rlLogCntLimit = RL_LOG_COUNT_LIMIT_STOP;
 
 #ifndef RLOG_ENABLE_TEXT_LOGGING 
 void readL2LogBuff(void);
 S16 rlValidateL2LogBuf(void);
-void  rlSetL2LogBuf(U8 *l2LogBuf,U32 l2logLen);
+void  rlSetL2LogBuf(uint8_t *l2LogBuf,uint32_t l2logLen);
 void rlResetL2LogBuf(void);
 #endif
 
@@ -206,16 +206,16 @@ void rlResetL2LogBuf(void);
 #ifndef RLOG_ENABLE_TEXT_LOGGING
 EndianType getCPU_Endian(Void);
 void storeFileHeader(FILE* fp);
-void saveLogDataFromCpul(const void* buf, U16 len);
-void saveLogData(const void* buf, U16 len, U32 g_rlogWritePosIndex);
-void sendToPostProcessor(const void* buf, U16 len);
+void saveLogDataFromCpul(const void* buf, uint16_t len);
+void saveLogData(const void* buf, uint16_t len, uint32_t g_rlogWritePosIndex);
+void sendToPostProcessor(const void* buf, uint16_t len);
 void getLogTimeStr(char* ts);
 #endif
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // @param[in] modMask - bit mask for any particular module.
 // Sets or clears bit for the particular module. If mask value is zero all bits are cleared.
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void rlSetModuleMask(U32 modMask)
+void rlSetModuleMask(uint32_t modMask)
 {
 	g_modMask =  (modMask == 0 ) ? 0 : (g_modMask ^ modMask);
 }
@@ -224,7 +224,7 @@ void rlSetModuleMask(U32 modMask)
 // @param[in] - maxFileSize - Maximum file size in MB.
 // @brief This function sets the limit to log file size.
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void rlSetLogFileSizeLimit(U32 maxFileSize)
+void rlSetLogFileSizeLimit(uint32_t maxFileSize)
 {
 	g_uiMaxFileSizeLimit = (maxFileSize == 0) ? MAX_FILE_SIZE : maxFileSize*1048576;
 }
@@ -233,7 +233,7 @@ void rlSetLogFileSizeLimit(U32 maxFileSize)
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void rlSetNumOfLogFiles(U8 nMaxFiles)
+void rlSetNumOfLogFiles(uint8_t nMaxFiles)
 {
 	if( nMaxFiles > RLOG_MAX_FILES || nMaxFiles == 0 ) {
 		g_nMaxLogFiles = RLOG_MAX_FILES;
@@ -256,7 +256,7 @@ void rlSetRemoteLoggingFlag(S32 flag)
 // @param[in] port - Server port
 // @brief Use this API to configure port for remote logging application.
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void rlSetLogPort(U32 port)
+void rlSetLogPort(uint32_t port)
 {
 	g_nLogPort = port;
 }
@@ -303,7 +303,7 @@ void rlSetLogLevel(R_LOG_LEVEL logLevel)
 // @param[in] bufSize - Circulaer buffer size in multiples of 1Kb or 1024 bytes.
 // This function is called to set circular buffer size for each thread.
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void rlSetCircularBufferSize(U32 bufSize)
+void rlSetCircularBufferSize(uint32_t bufSize)
 {
 	g_cirMaxBufferSize = bufSize*1024;
    g_cirMaxBufferSize = (g_cirMaxBufferSize/50) * 50;
@@ -362,7 +362,7 @@ void rlPrintConfiguration(void)
 #define CHECK_FILE_SIZE if( ++g_nWrites == 200 ) \
 { \
 	g_nWrites = 0; \
-	logLev1(L_TIME_REFERENCE, L_ALWAYS, (U32)time(NULL));\
+	logLev1(L_TIME_REFERENCE, L_ALWAYS, (uint32_t)time(NULL));\
 } 
 #else
 #define CHECK_FILE_SIZE
@@ -377,12 +377,12 @@ void rlPrintConfiguration(void)
 		createNewLogFile(); \
 	}\
 	g_nWrites = 0; \
-	logLev1(L_TIME_REFERENCE, L_ALWAYS, (U32)time(NULL));\
+	logLev1(L_TIME_REFERENCE, L_ALWAYS, (uint32_t)time(NULL));\
 } 
 #else
 #define CHECK_FILE_SIZE if( ++g_nWrites == 200 ) \
 { \
-	if( g_fp && ( (U32)(ftell(g_fp)) > g_uiMaxFileSizeLimit) ) { \
+	if( g_fp && ( (uint32_t)(ftell(g_fp)) > g_uiMaxFileSizeLimit) ) { \
 		createNewLogFile(); \
 	}\
 	g_nWrites = 0; \
@@ -412,7 +412,7 @@ THREAD_DATA* rlRegisterThread(const char* taskName)
 	pthread_mutex_lock(&g_logmutex);
 
 	/* Allocate circular buffer */
-	pThrData->logBuff = (U8*) rlAlloc(g_cirMaxBufferSize);
+	pThrData->logBuff = (uint8_t*) rlAlloc(g_cirMaxBufferSize);
 
 	if( pThrData->logBuff == NULL ) {
 #ifndef ALIGN_64BIT
@@ -504,7 +504,7 @@ void* cirBufReaderThread(void* arg)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void readCircularBuffers()
 {
-   U32 i, writerPos;
+   uint32_t i, writerPos;
 
    /* Check if process is L2. If L2 then return from here */
    if (SFndProcId() == TENB_L2_PROC_ID) 
@@ -602,7 +602,7 @@ EndianType getCPU_Endian(Void)
     unsigned short x;
     unsigned char c;
  
-    x = 0x0001;;
+    x = 0x0001;
     c = *(unsigned char *)(&x);
 
 	return ( c == 0x01 ) ? little_endian : big_endian;
@@ -641,7 +641,7 @@ void storeFileHeader(FILE* fp)
 // remote application can connect & receive binary logs. If circular buffer is enabled, it creates 
 // thread key, which is used to store & retrieve thread specific buffers and data.
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void rlInitLog(U8 type)
+void rlInitLog(uint8_t type)
 {
 #ifdef SS_RBUF    
         /* Initilize the signal handler */
@@ -1030,7 +1030,7 @@ void logLevH(PSTR strLogLevel, PSTR modName, PSTR file, int lineno, PSTR fmtStr,
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void logLevE(PSTR strLogLevel, PSTR modName, PSTR file, int lineno, PSTR fmtStr, R_SPL_ARG splType,
-		U32 splVal, U32 arg1, U32 arg2, U32 arg3, U32 arg4, ...)
+		uint32_t splVal, uint32_t arg1, uint32_t arg2, uint32_t arg3, uint32_t arg4, ...)
 {
 	int microseconds=0;
 
@@ -1058,7 +1058,7 @@ void logLev0(PSTR strLogLevel, PSTR modName, PSTR file, int lineno, PSTR fmtStr,
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void logLev1(PSTR strLogLevel, PSTR modName, PSTR file, int lineno, PSTR fmtStr, U32 arg1, ...)
+void logLev1(PSTR strLogLevel, PSTR modName, PSTR file, int lineno, PSTR fmtStr, uint32_t arg1, ...)
 {
 	int microseconds=0;
 
@@ -1072,7 +1072,7 @@ void logLev1(PSTR strLogLevel, PSTR modName, PSTR file, int lineno, PSTR fmtStr,
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void logLev2(PSTR strLogLevel, PSTR modName, PSTR file, int lineno, PSTR fmtStr, U32 arg1, U32 arg2, ...)
+void logLev2(PSTR strLogLevel, PSTR modName, PSTR file, int lineno, PSTR fmtStr, uint32_t arg1, uint32_t arg2, ...)
 {
 	int microseconds=0;
 
@@ -1087,7 +1087,7 @@ void logLev2(PSTR strLogLevel, PSTR modName, PSTR file, int lineno, PSTR fmtStr,
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void logLev3(PSTR strLogLevel, PSTR modName, PSTR file, int lineno, PSTR fmtStr, 
-		U32 arg1, U32 arg2, U32 arg3, ...)
+		uint32_t arg1, uint32_t arg2, uint32_t arg3, ...)
 {
 	int microseconds=0;
 
@@ -1102,7 +1102,7 @@ void logLev3(PSTR strLogLevel, PSTR modName, PSTR file, int lineno, PSTR fmtStr,
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void logLev4(PSTR strLogLevel, PSTR modName, PSTR file, int lineno, PSTR fmtStr, 
-		U32 arg1, U32 arg2, U32 arg3, U32 arg4, ...)
+		uint32_t arg1, uint32_t arg2, uint32_t arg3, uint32_t arg4, ...)
 {
 	int microseconds=0;
 
@@ -1137,7 +1137,7 @@ void logLevN(int logLevel, const char* modName, const char* file, int lineno, co
 
 #define RLOG_SAVE_TIME(_logTime) _logTime.ms_tti=numTtiTicks;
 
-void saveLogDataFromCpul(const void* buf, U16 len)
+void saveLogDataFromCpul(const void* buf, uint16_t len)
 {
 #ifdef RLOG_USE_CIRCULAR_BUFFER
    THREAD_DATA* p = (THREAD_DATA*) g_pSingCirBuff;
@@ -1148,7 +1148,7 @@ void saveLogDataFromCpul(const void* buf, U16 len)
       S32 remlen = len-tempLen;
       if ((tempLen < 0) || (remlen < 0))
       {
-         RETVOID;
+         return;
       }
 		if(remlen == 0)
 		{
@@ -1176,7 +1176,7 @@ void saveLogDataFromCpul(const void* buf, U16 len)
       /* Copy data till end of the buffer */
       memcpy(p->logBuff+p->logBufLen, buf, tempLen);
       /* Copy remaining data from the start of buffer */
-      memcpy(p->logBuff, ((const U8 *)buf)+tempLen, remlen);
+      memcpy(p->logBuff, ((const uint8_t *)buf)+tempLen, remlen);
       /* Store buffer length position */
       p->logBufLen = len-tempLen;
    }
@@ -1205,7 +1205,7 @@ void saveLogDataFromCpul(const void* buf, U16 len)
 
 }
 
-void saveLogData(const void* buf, U16 len, U32 g_rlogWritePosIndex)
+void saveLogData(const void* buf, uint16_t len, uint32_t g_rlogWritePosIndex)
 {
 
    ++g_rlogWriteCount ;
@@ -1235,7 +1235,7 @@ void saveLogData(const void* buf, U16 len, U32 g_rlogWritePosIndex)
       return;
    }
 #ifdef RLOG_USE_CIRCULAR_BUFFER
-   U32 logWritePointerPosition;
+   uint32_t logWritePointerPosition;
    THREAD_DATA* p = (THREAD_DATA*) g_pSingCirBuff;
 
    /* if buffer is about to full, write till end and continue writing from begining */
@@ -1311,7 +1311,7 @@ void saveLogData(const void* buf, U16 len, U32 g_rlogWritePosIndex)
 
 }
 
-void sendToPostProcessor(const void* buf, U16 len)
+void sendToPostProcessor(const void* buf, uint16_t len)
 {
    if( send(g_nCliSocket, buf, len, 0 ) == -1 ) {
       perror("ERROR Sending");
@@ -1321,7 +1321,7 @@ void sendToPostProcessor(const void* buf, U16 len)
 }
 void logLevS( LOGID logId, R_LOG_LEVEL logLevel, const char* str, ...)
 {
-   ARGDATA arg; U16 bufsize;
+   ARGDATA arg; uint16_t bufsize;
 
 
    RLOG_SAVE_TIME(arg.logData.logTime);
@@ -1356,8 +1356,8 @@ void logLevH( LOGID logId, R_LOG_LEVEL logLevel, PSTR hex, int hexlen, ...)
 
    saveLogData((const void*)&arg, bufsize,g_rlogPositionIndex++);	
 }
-void logLevE(LOGID logId, R_LOG_LEVEL logLevel, R_SPL_ARG splType, U32 splVal, U32 arg1, U32 arg2,
-      U32 arg3, U32 arg4, ...)
+void logLevE(LOGID logId, R_LOG_LEVEL logLevel, R_SPL_ARG splType, uint32_t splVal, uint32_t arg1, uint32_t arg2,
+      uint32_t arg3, uint32_t arg4, ...)
 {
    SPL_ARGDATA arg;
    int bufsize;
@@ -1373,7 +1373,7 @@ void logLevE(LOGID logId, R_LOG_LEVEL logLevel, R_SPL_ARG splType, U32 splVal, U
       arg.logData.numOfArgs = 0;
    }
 
-   arg.logData.len  = sizeof(u_int8_t) + sizeof(U32) + (sizeof(U32)*arg.logData.numOfArgs);
+   arg.logData.len  = sizeof(u_int8_t) + sizeof(uint32_t) + (sizeof(uint32_t)*arg.logData.numOfArgs);
 
    arg.splEnum = splType;
    arg.splArg = splVal;
@@ -1403,7 +1403,7 @@ void logLev0( LOGID logId, R_LOG_LEVEL logLevel, ...)
    saveLogData((const void*)&arg, sizeof(LOGDATA),g_rlogPositionIndex++);	
 }
 
-void logLev1( LOGID logId, R_LOG_LEVEL logLevel, U32 arg1, ...)
+void logLev1( LOGID logId, R_LOG_LEVEL logLevel, uint32_t arg1, ...)
 {
    ARG4DATA arg;
    int bufsize;
@@ -1414,14 +1414,14 @@ void logLev1( LOGID logId, R_LOG_LEVEL logLevel, U32 arg1, ...)
    arg.logData.argType = LOG_ARG_INT;
    arg.logData.logLevel = logLevel;
    arg.logData.numOfArgs = 1;
-   arg.logData.len = sizeof(U32);
+   arg.logData.len = sizeof(uint32_t);
 
    arg.arg1 = arg1;
    bufsize = sizeof(LOGDATA)+arg.logData.len;
 
    saveLogData((const void*)&arg, bufsize,g_rlogPositionIndex++);	
 }
-void logLev2( LOGID logId, R_LOG_LEVEL logLevel, U32 arg1, U32 arg2, ...)
+void logLev2( LOGID logId, R_LOG_LEVEL logLevel, uint32_t arg1, uint32_t arg2, ...)
 {
    ARG4DATA arg;
    int bufsize;
@@ -1432,7 +1432,7 @@ void logLev2( LOGID logId, R_LOG_LEVEL logLevel, U32 arg1, U32 arg2, ...)
    arg.logData.argType = LOG_ARG_INT;
    arg.logData.logLevel = logLevel;
    arg.logData.numOfArgs = 2;
-   arg.logData.len =  2 * sizeof(U32);
+   arg.logData.len =  2 * sizeof(uint32_t);
 
    arg.arg1 = arg1;
    arg.arg2 = arg2;
@@ -1441,7 +1441,7 @@ void logLev2( LOGID logId, R_LOG_LEVEL logLevel, U32 arg1, U32 arg2, ...)
 
    saveLogData((const void*)&arg, bufsize,g_rlogPositionIndex++);	
 }
-void logLev3( LOGID logId, R_LOG_LEVEL logLevel, U32 arg1, U32 arg2, U32 arg3, ...)
+void logLev3( LOGID logId, R_LOG_LEVEL logLevel, uint32_t arg1, uint32_t arg2, uint32_t arg3, ...)
 {
    ARG4DATA arg;
    int bufsize;
@@ -1452,7 +1452,7 @@ void logLev3( LOGID logId, R_LOG_LEVEL logLevel, U32 arg1, U32 arg2, U32 arg3, .
    arg.logData.argType = LOG_ARG_INT;
    arg.logData.logLevel = logLevel;
    arg.logData.numOfArgs = 3;
-   arg.logData.len = 3 * sizeof(U32);
+   arg.logData.len = 3 * sizeof(uint32_t);
 
    arg.arg1 = arg1;
    arg.arg2 = arg2;
@@ -1462,7 +1462,7 @@ void logLev3( LOGID logId, R_LOG_LEVEL logLevel, U32 arg1, U32 arg2, U32 arg3, .
 
    saveLogData((const void*)&arg, bufsize,g_rlogPositionIndex++);	
 }
-void logLev4( LOGID logId, R_LOG_LEVEL logLevel, U32 arg1, U32 arg2, U32 arg3, U32 arg4, ...)
+void logLev4( LOGID logId, R_LOG_LEVEL logLevel, uint32_t arg1, uint32_t arg2, uint32_t arg3, uint32_t arg4, ...)
 {
    ARG4DATA arg;
 
@@ -1472,7 +1472,7 @@ void logLev4( LOGID logId, R_LOG_LEVEL logLevel, U32 arg1, U32 arg2, U32 arg3, U
    arg.logData.argType = LOG_ARG_INT;
    arg.logData.logLevel = logLevel;
    arg.logData.numOfArgs = 4;
-   arg.logData.len = 4 * sizeof(U32);
+   arg.logData.len = 4 * sizeof(uint32_t);
 
    arg.arg1 = arg1;
    arg.arg2 = arg2;
@@ -1630,7 +1630,7 @@ void createNewLogFile()
 
 #ifndef RLOG_ENABLE_TEXT_LOGGING
 #ifdef RLOG_USE_TTI_LOGGING
-   logLev1(L_TIME_REFERENCE, L_ALWAYS, (U32)time(NULL));
+   logLev1(L_TIME_REFERENCE, L_ALWAYS, (uint32_t)time(NULL));
 #endif
 #endif
 }
@@ -1686,7 +1686,7 @@ void rlUpdateRlogTti(Void)
 {
 #ifndef RLOG_ENABLE_TEXT_LOGGING
 #ifdef RLOG_USE_TTI_LOGGING
-   logLev1(L_TIME_TTI_UPDT, L_ALWAYS, (U32)time(NULL));
+   logLev1(L_TIME_TTI_UPDT, L_ALWAYS, (uint32_t)time(NULL));
 #endif
 #endif
 }
@@ -1710,13 +1710,13 @@ Void rlProcessLogBufFromL2(mBuf)
 #endif
 {
 #ifndef RLOG_ENABLE_TEXT_LOGGING 
-   U32 logLength;
+   uint32_t logLength;
    Data* logPtr;
    startL2Logging = 1;
    if(mBuf == NULL)
    {
       printf("NULL MBUF received \n");
-      RETVOID;
+      return;
    }
    /* Get Buffer pointer and length. This is SOC specific function which
       will extract Log-Buffer pointer and length from mBuf */
@@ -1724,14 +1724,14 @@ Void rlProcessLogBufFromL2(mBuf)
    rlSetL2LogBuf(logPtr,logLength);
    readL2LogBuff();
 #endif
-   RETVOID;
+   return;
 }
 
 /* This function will get tick from RLC/CL and will process logs
    according to tick threshold. Tick threshold is SOC specific */
 Void rlProcessTicks(void)
 {
-   static U32 rlogTickCount;
+   static uint32_t rlogTickCount;
    numTtiTicks++;
    if(++rlogTickCount >= RLOGTICKSCNTTOPRCL2LOGS)
    {
@@ -1757,7 +1757,7 @@ Void rlProcessTicks(void)
          /* L3 specific functions */
       }
    }
-   RETVOID;
+   return;
 }
 
 #ifndef RLOG_ENABLE_TEXT_LOGGING 
@@ -1774,7 +1774,7 @@ Void rlProcessTicks(void)
 Void readL2LogBuff(void)
 {
    /* Validate global buffer pointer and length */
-   U8 ret;
+   uint8_t ret;
    ret = rlValidateL2LogBuf();
    if(ret != ROK)
    {
@@ -1787,7 +1787,7 @@ Void readL2LogBuff(void)
    rlInvalidateL2LogsInCache(g_logBufRcvdFromL2 - sizeof(g_logBufLenRcvdFromL2) , (g_logBufLenRcvdFromL2 + sizeof(g_logBufLenRcvdFromL2)));
    rlResetL2LogBuf();
    g_writeCirBuf = 0;
-   RETVOID; 
+   return; 
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -1835,13 +1835,13 @@ S16 rlValidateL2LogBuf(void)
 #ifdef ANSI
 void rlSetL2LogBuf
 (
-U8 *l2LogBuf,
-U32 l2logLen
+uint8_t *l2LogBuf,
+uint32_t l2logLen
 )
 #else
 void rlSetL2LogBuf(l2LogBuf,l2logLen)
-U8 *l2LogBuf;
-U32 l2logLen;
+uint8_t *l2LogBuf;
+uint32_t l2logLen;
 #endif
 {
    g_logBufRcvdFromL2      = l2LogBuf;

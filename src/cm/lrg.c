@@ -713,7 +713,7 @@ Buffer *mBuf;
    
    TRC3(cmUnpkLrgStaReq)
    
-   cmMemset((U8 *)&sta, 0, sizeof(RgMngmt));
+   cmMemset((uint8_t *)&sta, 0, sizeof(RgMngmt));
    if (cmUnpkRgMngmt(pst, &sta, EVTLRGSSTAREQ, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -810,7 +810,7 @@ Buffer *mBuf;
    
    TRC3(cmUnpkLrgStaCfm)
   
-   cmMemset((U8 *)&cfm, 0, sizeof(RgMngmt));
+   cmMemset((uint8_t *)&cfm, 0, sizeof(RgMngmt));
    if (cmUnpkRgMngmt(pst, &cfm, EVTLRGSSTACFM, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -2724,7 +2724,7 @@ Pst *pst,
 RgSsta *param,
 S16 elmnt,
 #ifdef LRG_V1
-U8 eventType,
+uint8_t eventType,
 #endif
 Buffer *mBuf
 )
@@ -2735,7 +2735,7 @@ RgSsta *param;
 S16 elmnt;
 /* lrg_c_001.main_3 - ADD -  Added the extra parameter eventType  to the function  */
 #ifdef LRG_V1
-U8 eventType;
+uint8_t eventType;
 #endif
 Buffer *mBuf;
 #endif
@@ -2842,7 +2842,7 @@ Buffer *mBuf;
                /* KWORK_FIX: Moved the memset under the NULL check */
                if (param->s.sysId.ptNmb != NULLP)
                {
-                  cmMemset((U8 *)param->s.sysId.ptNmb, 0, LRG_MAX_PT_NUM_SIZE);
+                  cmMemset((uint8_t *)param->s.sysId.ptNmb, 0, LRG_MAX_PT_NUM_SIZE);
                   CMCHKUNPK(cmUnpkSystemId, &param->s.sysId, mBuf);
                }
             }
@@ -3503,14 +3503,14 @@ S16 cmPkRgMngmt
 (
 Pst *pst,
 RgMngmt *param,
-U8 eventType,
+uint8_t eventType,
 Buffer *mBuf
 )
 #else
 S16 cmPkRgMngmt(pst, param, eventType, mBuf)
 Pst *pst;
 RgMngmt *param;
-U8 eventType;
+uint8_t eventType;
 Buffer *mBuf;
 #endif
 {
@@ -3589,14 +3589,14 @@ S16 cmUnpkRgMngmt
 (
 Pst *pst,
 RgMngmt *param,
-U8 eventType,
+uint8_t eventType,
 Buffer *mBuf
 )
 #else
 S16 cmUnpkRgMngmt(pst, param, eventType, mBuf)
 Pst *pst;
 RgMngmt *param;
-U8 eventType;
+uint8_t eventType;
 Buffer *mBuf;
 #endif
 {
@@ -3671,7 +3671,7 @@ LrgNmbActvUeQCI   *nmbActvUeQci;
 Buffer        *mBuf;
 #endif
 {
-   U8      idx;
+   uint8_t      idx;
 
    TRC3(cmPkNmbActvUeQciReq)
    
@@ -3709,7 +3709,7 @@ LrgAvgPrbQCI  *avgPrbQciReq;
 Buffer        *mBuf;
 #endif
 {
-   U8      idx;
+   uint8_t      idx;
 
    TRC3(cmPkAvgPrbQciReq)
    
@@ -3893,7 +3893,7 @@ LrgNmbActvUeQCI  *param;
 Buffer           *mBuf;
 #endif
 {
-   U8     idx;
+   uint8_t     idx;
 
    TRC3(cmUnpkNmbActvUeQciReq)
 
@@ -3931,7 +3931,7 @@ LrgAvgPrbQCI     *param;
 Buffer           *mBuf;
 #endif
 {
-   U8     idx;
+   uint8_t     idx;
 
    TRC3(cmUnpkAvgPrbQciReq)
 
@@ -4184,7 +4184,7 @@ LrgNumActvUeQCICfm *param;
 Buffer             *mBuf;
 #endif
 {
-   U8         idx;
+   uint8_t         idx;
 
    TRC3(cmPkNumUeQciCfm)
    
@@ -4223,7 +4223,7 @@ LrgAvgPrbQCICfm    *param;
 Buffer             *mBuf;
 #endif
 {
-   U8         idx;
+   uint8_t         idx;
 
    TRC3(cmPkAvgPrbQciCfm)
    for(idx = 0; idx < param->numQci; idx++)
@@ -4412,7 +4412,7 @@ LrgNumActvUeQCICfm *param;
 Buffer          *mBuf;
 #endif
 {
-   U8          idx;
+   uint8_t          idx;
 
    TRC3(cmUnpkNumUeQciCfm)
    CMCHKUNPK(oduPackUInt8, &param->numQci, mBuf);
@@ -4450,7 +4450,7 @@ LrgAvgPrbQCICfm *param;
 Buffer          *mBuf;
 #endif
 {
-   U8          idx;
+   uint8_t          idx;
 
    TRC3(cmUnpkAvgPrbQciCfm)
 

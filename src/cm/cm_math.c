@@ -62,17 +62,17 @@
 *
 */
 #ifdef ANSI
-U32 cmAbs
+uint32_t cmAbs
 (
 F64          val
 )
 #else
-U32 cmAbs(val)
+uint32_t cmAbs(val)
 F64          val;
 #endif
 {
 #if (defined(SUNOS)|| defined(WIN32)|| defined(WIN2K)|| defined (SS_LINUX))
-   return ((U32) abs((int) val));/* G++ */
+   return ((uint32_t) abs((int) val));/* G++ */
 #endif
 } /* end of cmAbs */
 #endif /* SS_FLOAT */

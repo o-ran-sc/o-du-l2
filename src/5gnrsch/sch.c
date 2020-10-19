@@ -113,7 +113,7 @@ uint8_t schActvInit(Ent entity, Inst instId, Region region, Reason reason)
  *     reason for success/failure of this function.
  *     
  *  @param[in]  RgCfg *cfg, the Configuaration information 
- *  @return  U16
+ *  @return  uint16_t
  *      -# LCM_REASON_NOT_APPL 
  *      -# LCM_REASON_INVALID_MSGTYPE
  *      -# LCM_REASON_MEM_NOAVAIL

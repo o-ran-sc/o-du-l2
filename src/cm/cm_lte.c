@@ -70,7 +70,7 @@
 
 
 /* public variable declarations */
-U32 cmLteTime;
+uint32_t cmLteTime;
 
 
 /***********************************************************
@@ -313,10 +313,10 @@ S16 cmUpdateSsiMemInfo(mInfo)
 CmLteMemInfo *mInfo;
 #endif
 {
-   U8   numReg = 0;
-   U8   numPool = 0;
-   U8   idxReg;
-   U8   idxPool;
+   uint8_t   numReg = 0;
+   uint8_t   numPool = 0;
+   uint8_t   idxReg;
+   uint8_t   idxPool;
    SsMemDbgInfo dbgInfo;
 
    SGetRegPoolInfo(&numReg,&numPool); 
@@ -367,9 +367,9 @@ CmLteMemInfo *memoryInfo;
 CmLteMemInfo *memInfo;
 #endif
 {
-   U8 idxReg = 0;
-   U8 idxPool = 0;
-   U8 numPool = 0;
+   uint8_t idxReg = 0;
+   uint8_t idxPool = 0;
+   uint8_t numPool = 0;
 
    memoryInfo->numRegions = memInfo->numRegions;
    for(idxReg=0; idxReg < memInfo->numRegions; idxReg++)
@@ -400,9 +400,9 @@ S16 cmClearMemUtilizationCounter(memInfo)
 CmLteMemInfo *memInfo;
 #endif
 {
-   U8 idxReg = 0;
-   U8 idxPool = 0;
-   U8 numPool = 0;
+   uint8_t idxReg = 0;
+   uint8_t idxPool = 0;
+   uint8_t numPool = 0;
    for(idxReg=0; idxReg < memInfo->numRegions; idxReg++)
    {
       memInfo->regInfo[idxReg].regionId = 0;
@@ -432,7 +432,7 @@ S16 cmClearCpuUtilizationCounter(cpuInfo)
 CmCpuStatsInfo *cpuInfo
 #endif
 {
-   U8 idx= 0;
+   uint8_t idx= 0;
    for(idx=0; idx < cpuInfo->numCores; idx++)
    {
       cpuInfo->cpuUtil[idx].maxCpuUtil = 0;
@@ -455,7 +455,7 @@ CmLteCpuInfo *cpuMeasInfo;
 CmCpuStatsInfo *cpuInfo;
 #endif
 {
-   U8 idx= 0;
+   uint8_t idx= 0;
    cpuMeasInfo->numCores = cpuInfo->numCores;
    for(idx=0; idx < cpuInfo->numCores; idx++)
    {
@@ -471,7 +471,7 @@ CmCpuStatsInfo *cpuInfo;
 CmTtiProc ttiProc;
 #define TTI_1MS 950
 
-Void cmUpdateTtiCounters(U32 ttiProcessingTime)
+Void cmUpdateTtiCounters(uint32_t ttiProcessingTime)
 {
    ttiProc.numOfTti++;
    ttiProc.totTtiProcessingTime += ttiProcessingTime;
@@ -487,7 +487,7 @@ Void cmUpdateTtiCounters(U32 ttiProcessingTime)
    {
       ttiProc.ttiStretchCount++;
    }
-   RETVOID;    
+   return;    
 }
 
 Void cmResetTtiCounters(Void)
@@ -498,7 +498,7 @@ Void cmResetTtiCounters(Void)
 	ttiProc.ttiStretchCount = 0;
 	ttiProc.ttiThresholdExceedCount = 0;
 	ttiProc.phyReptTtiStretchCount = 0;
-	RETVOID;
+	return;
 }
 #endif
 

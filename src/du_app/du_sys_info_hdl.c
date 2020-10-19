@@ -1756,7 +1756,7 @@ uint8_t  BuildRachCfgCommon(struct BWP_UplinkCommon__rach_ConfigCommon *rachCfg)
             case RACH_ConfigCommon__prach_RootSequenceIndex_PR_l839:
             {
                //TODO
-               break;;
+               break;
             }
             case RACH_ConfigCommon__prach_RootSequenceIndex_PR_l139:
             {

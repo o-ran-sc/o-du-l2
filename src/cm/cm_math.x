@@ -41,7 +41,7 @@ EXTERN "C" {
 #include <math.h>
 
 /* Math library function prototypes */
-EXTERN U32 cmAbs ARGS((F64 val));
+EXTERN uint32_t cmAbs ARGS((F64 val));
 EXTERN F64 cmPow ARGS((F64 x, F64 y));
 EXTERN F64 cmFloor ARGS((F64 x));
 EXTERN F64 cmLog ARGS((F64 x));

@@ -43,7 +43,7 @@ void rlSetLogPath(const char* logDir);
 // This API needs to be called after configuring all the required parameters 
 // by using below APIs. This API initializes logging framework.  
 // Log MACRO's should be used  only after calling this API.
-void rlInitLog(U8 type); 
+void rlInitLog(uint8_t type); 
 
 ///////////////////////////////////////////////////////////////////////////////
 // This initializes log file name.  Log file name should be exclusive of 
@@ -57,7 +57,7 @@ void rlSetLogFile(const char* fileName);
 // This API is used to set remote logging port, where post-processor application 
 // (rlogapp) is used to connect on this port in order to receive live binary logs. 
 // This API can be used only during initialization time.
-void rlSetLogPort(U32 port);
+void rlSetLogPort(uint32_t port);
 
 ///////////////////////////////////////////////////////////////////////////////
 // Use this API to set log level. This API supports run time modification of
@@ -68,22 +68,22 @@ void rlSetLogLevel(R_LOG_LEVEL logLevel);
 // This API toggles the module mask. If logging for this module is already 
 // enabled, it will be disabled. If it's not enabled, it will enable. Zero 
 // input will disable logging mask for all modules.
-void rlSetModuleMask(U32 modMask);
+void rlSetModuleMask(uint32_t modMask);
 
 ///////////////////////////////////////////////////////////////////////////////
 // This API is used to set log file size limit for single file.
-void rlSetLogFileSizeLimit(U32 maxFileSize);
+void rlSetLogFileSizeLimit(uint32_t maxFileSize);
 
 ///////////////////////////////////////////////////////////////////////////////
 // This API sets the limit of number of log files  that can be created by 
 // logging framework.
-void rlSetNumOfLogFiles(U8 nMaxFiles);
+void rlSetNumOfLogFiles(uint8_t nMaxFiles);
 
 ///////////////////////////////////////////////////////////////////////////////
 // This API is used to set circular buffer size for each thread. Based on the 
 // number of threads in the system this size needs to be chosen. Recommended 
 // minimum 100Kb buffer size.
-void rlSetCircularBufferSize(U32 bufSize);
+void rlSetCircularBufferSize(uint32_t bufSize);
 
 ///////////////////////////////////////////////////////////////////////////////
 // This API enables or disables remote logging application connection to see 

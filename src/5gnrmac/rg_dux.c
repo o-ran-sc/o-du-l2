@@ -111,8 +111,8 @@ static int RLOG_MODULE_ID=4096;
    _ret = SRemPreMsgMult(_unpkArray, (MsgLen) 2, _mBuf);\
    if (_ret == ROK)\
    {\
-      *_rnti = (U16) PutHiByte(*_rnti, (U8) _unpkArray[0]);\
-      *_rnti = (U16) PutLoByte(*_rnti, (U8) _unpkArray[1]);\
+      *_rnti = (uint16_t) PutHiByte(*_rnti, (uint8_t) _unpkArray[0]);\
+      *_rnti = (uint16_t) PutLoByte(*_rnti, (uint8_t) _unpkArray[1]);\
    }\
 }
 
@@ -154,8 +154,8 @@ PRIVATE S16 rgDUXInsSdu
 Inst        inst,
 RgMacPdu    *pdu,
 RgMacSdu    **sdu,
-U8          lcId,
-U16         sduLen,
+uint8_t          lcId,
+uint16_t         sduLen,
 RgErrInfo   *err
 )
 #else
@@ -163,8 +163,8 @@ PRIVATE S16 rgDUXInsSdu(inst,pdu, sdu, lcId, sduLen, err)
 Inst        inst;
 RgMacPdu    *pdu;
 RgMacSdu    **sdu,
-U8          lcId;
-U16         sduLen;
+uint8_t          lcId;
+uint16_t         sduLen;
 RgErrInfo   *err;
 #endif
 {
@@ -214,8 +214,8 @@ PRIVATE S16 rgDUXExtSubHdr
 Inst        inst,
 RgMacPdu    *pdu,
 Buffer      *mBuf,
-U8          *lcId,
-U16         *len,
+uint8_t          *lcId,
+uint16_t         *len,
 RgErrInfo   *err
 )
 #else
@@ -224,13 +224,13 @@ len, err)
 Inst        inst;
 RgMacPdu    *pdu;
 Buffer      *mBuf;
-U8          *lcId;
-U16         *len;
+uint8_t          *lcId;
+uint16_t         *len;
 RgErrInfo   *err;
 #endif
 {
-   U8             byte;
-   U8             fmt=0;
+   uint8_t             byte;
+   uint8_t             fmt=0;
  
    TRC2(rgDUXExtSubHdr)
 
@@ -299,8 +299,8 @@ Inst        inst,
 RgMacPdu    *pdu,
 RgInfCeInfo  *ceInfo,
 Buffer       *mBuf,
-U8          lcId,
-U16         subPduLen,
+uint8_t          lcId,
+uint16_t         subPduLen,
 RgErrInfo    *err
 )
 #else
@@ -309,8 +309,8 @@ Inst        inst;
 RgMacPdu    *pdu;
 RgInfCeInfo  *ceInfo;
 Buffer       *mBuf;
-U8          lcId;
-U16         subPduLen;
+uint8_t          lcId;
+uint16_t         subPduLen;
 RgErrInfo    *err;
 #endif
 {
@@ -322,10 +322,10 @@ RgErrInfo    *err;
    {
       case RG_EXT_PHR_LCID:
          {
-            U8 Ci;
-            U8 sCellIdx;
-            U8 extPhrOctet;
-            U8 extPhrPCmax;
+            uint8_t Ci;
+            uint8_t sCellIdx;
+            uint8_t extPhrOctet;
+            uint8_t extPhrPCmax;
             RgInfExtPhrCEInfo *extPhr;
 
             RG_UNPACK_EXT_PHR_CI(&Ci,mBuf,ret);
@@ -429,7 +429,7 @@ RgErrInfo    *err;
          break;
       case RG_LONG_BSR_LCID:
          {
-            U8 longBsr[3] = {0}; /* KW_FIXX */
+            uint8_t longBsr[3] = {0}; /* KW_FIXX */
             RG_UNPACK_LONG_BSR(longBsr,mBuf,ret);
             if(ret != ROK)
             {
@@ -496,8 +496,8 @@ Inst        inst,
 RgMacPdu    *pdu,
 RgInfCeInfo  *ceInfo,
 Buffer      **mBuf,
-U8          lcId,
-U16         subPduLen,
+uint8_t          lcId,
+uint16_t         subPduLen,
 RgErrInfo   *err
 )
 #else
@@ -506,8 +506,8 @@ Inst        inst;
 RgMacPdu    *pdu;
 RgInfCeInfo  *ceInfo;
 Buffer      **mBuf;
-U8          lcId;
-U16         subPduLen;
+uint8_t          lcId;
+uint16_t         subPduLen;
 RgErrInfo   *err;
 #endif
 {
@@ -585,8 +585,8 @@ Buffer        **mBuf;
 RgErrInfo     *err;
 #endif
 {
-   U8          lcId;
-   U16          subPduLen;
+   uint8_t          lcId;
+   uint16_t          subPduLen;
    MsgLen      len;  
    TRC2(rgDUXDemuxData)
 

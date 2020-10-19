@@ -76,34 +76,34 @@ EXTERN "C" {
 /* definitions for Common LTE */
 
 /** @brief Radio Bearer ID */
-typedef U8    CmLteRbId;
+typedef uint8_t    CmLteRbId;
 
 /** @brief Cell ID */
-typedef U16   CmLteCellId;
+typedef uint16_t   CmLteCellId;
 
 /** @brief RNTI */
-typedef U16   CmLteRnti;
+typedef uint16_t   CmLteRnti;
 
 /** @brief Mode Type TM/UM/AM */
-typedef U8    CmLteRlcMode;
+typedef uint8_t    CmLteRlcMode;
 
 /** @brief Logical Channel ID */
-typedef U8    CmLteLcId;         
+typedef uint8_t    CmLteLcId;         
 
 /** @brief Logical Channel Type */
-typedef U8    CmLteLcType;         
+typedef uint8_t    CmLteLcType;         
 
 /** @brief Transport Channel Type */
-typedef U8    CmLteTrchType;         
+typedef uint8_t    CmLteTrchType;         
 
 /** @brief Contention Resolution ID */
-typedef U8 CmLteContResId[6];
+typedef uint8_t CmLteContResId[6];
 
 /** @brief RLC ID */
 typedef struct cmLteRlcId
 {
   CmLteRbId     rbId;   /*!< Radio Bearer ID */
-  U8            rbType; /*!< RB Type */
+  uint8_t            rbType; /*!< RB Type */
   CmLteRnti     ueId;   /*!< UE ID */
   CmLteCellId   cellId; /*!< Cell ID */
 }CmLteRlcId;
@@ -112,10 +112,10 @@ typedef struct cmLteRlcId
 typedef struct cmLteTimingInfo
 {
 #if 0
-   U16 hSfn;                 /*!< Hyper System Frame Number */
+   uint16_t hSfn;                 /*!< Hyper System Frame Number */
 #endif
-   U16 sfn;                  /*!< System Frame Number */
-   U16 slot;             /*!< Subframe number */
+   uint16_t sfn;                  /*!< System Frame Number */
+   uint16_t slot;             /*!< Subframe number */
 } CmLteTimingInfo;
 
 /** @brief PDCP ID */
@@ -124,59 +124,59 @@ typedef struct cmLtePdcpId
    CmLteCellId   cellId;      /*!< Cell ID */
    CmLteRnti     ueId;        /*!< UE ID */
    CmLteRbId     rbId;        /*!< PDCP Instance ID */
-   U8            rbType;      /*!< RB type */
+   uint8_t            rbType;      /*!< RB type */
 } CmLtePdcpId;
 
 /* Defining structures for Memory Information for L2-MEAS */
 typedef struct cmLtePoolInfo
 {
-   U32   poolSize;
-   U32   totAvailable;
-   U32   crntUsed;
-   U32   maxUsed;
+   uint32_t   poolSize;
+   uint32_t   totAvailable;
+   uint32_t   crntUsed;
+   uint32_t   maxUsed;
 } CmLtePoolInfo;
 
 typedef struct cmLteRegionInfo
 {
-   U8   regionType; /* 0-SSI 1-Shared */
-   U8   regionId;
-   U8   numPools;
-   U8   isGenMemInfoUpdated;
+   uint8_t   regionType; /* 0-SSI 1-Shared */
+   uint8_t   regionId;
+   uint8_t   numPools;
+   uint8_t   isGenMemInfoUpdated;
    CmLtePoolInfo poolInfo[MAX_POOL_SIZE];
 }CmLteRegionInfo;
 
 typedef struct cmLteMemInfo
 {
-   U8           numRegions;
-   U8           idx;
+   uint8_t           numRegions;
+   uint8_t           idx;
    CmLteRegionInfo   regInfo[MAX_REGION_SIZE];
 }CmLteMemInfo;
 
 /** @brief CPU Utilization INFO */
 typedef struct cmLteCpuUtilInfo
 {
-   U32      avgCpuUtil; /*!< average cpu utilization */
-   U32      maxCpuUtil; /*!< Max cpu utilization */
+   uint32_t      avgCpuUtil; /*!< average cpu utilization */
+   uint32_t      maxCpuUtil; /*!< Max cpu utilization */
 }CmLteCpuUtilInfo;
 
 /** @brief CPU INFO */
 typedef struct cmLteCpuInfo
 {
-   U8       numCores;        /*!< number of cores*/
+   uint8_t       numCores;        /*!< number of cores*/
    CmLteCpuUtilInfo cpuUtil[CM_MAX_CPU_CORES]; /*!< cpu measurement info*/
 }CmLteCpuInfo;
 /** @brief CPU Utilization INFO */
 typedef struct cmCpuUtilStatsInfo
 {
-   U32      numSamples;
-   U32      maxCpuUtil; /*!< Max cpu utilization */
-   U32      totCpuUtil; /*!< Total cpu utilization */
+   uint32_t      numSamples;
+   uint32_t      maxCpuUtil; /*!< Max cpu utilization */
+   uint32_t      totCpuUtil; /*!< Total cpu utilization */
 }CmCpuUtilStatsInfo;
 
 /** @brief CPU INFO */
 typedef struct cmCpuStatsInfo
 {
-   U8       numCores;        /*!< number of cores*/
+   uint8_t       numCores;        /*!< number of cores*/
    CmCpuUtilStatsInfo cpuUtil[CM_MAX_CPU_CORES]; /*!< cpu measurement info*/
 }CmCpuStatsInfo;
 
@@ -184,7 +184,7 @@ typedef struct cmCpuStatsInfo
 
 
 /** @brief Counter Statistics */
-typedef U32  CntrSts;
+typedef uint32_t  CntrSts;
 
 /** @brief Aggregation Level */
 typedef enum cmLteAggrLvl
@@ -217,14 +217,14 @@ EXTERN S16 cmUpdateSsiMemInfo(CmLteMemInfo *mInfo);
 EXTERN S16 cmFillMemUtilizationMeas(CmLteMemInfo *memoryInfo,CmLteMemInfo *memInfo);
 
 EXTERN S16 cmClearMemUtilizationCounter(CmLteMemInfo *memInfo);
-EXTERN S16 UpdateSocMemInfo(U8 area , CmLteMemInfo *mInfo);
+EXTERN S16 UpdateSocMemInfo(uint8_t area , CmLteMemInfo *mInfo);
 
 EXTERN S16 cmFillCpuUtilizationMeas(CmLteCpuInfo *cpuMeasInfo,CmCpuStatsInfo *cpuInfo);
 
 EXTERN S16 cmClearCpuUtilizationCounter(CmCpuStatsInfo *cpuInfo);
-EXTERN Void UpdateSocCpuInfo(CmCpuStatsInfo *cpuInfo,U8 Idx);
+EXTERN Void UpdateSocCpuInfo(CmCpuStatsInfo *cpuInfo,uint8_t Idx);
 
-EXTERN S16 SGetRegPoolInfo(U8* numRegion, U8* numPool);
+EXTERN S16 SGetRegPoolInfo(uint8_t* numRegion, uint8_t* numPool);
 
 /* Packing Functions */
 EXTERN S16 cmPkLteRlcId ARGS ((
@@ -262,18 +262,18 @@ Buffer *mBuf
 
 typedef struct cmTtiProc 
 {
-	U32 totTtiProcessingTime;
-	U32 numOfTti;
-	U32 maxTtiProcessingTime;
-	U32 ttiStretchCount;
-	U32 ttiThresholdExceedCount;
+	uint32_t totTtiProcessingTime;
+	uint32_t numOfTti;
+	uint32_t maxTtiProcessingTime;
+	uint32_t ttiStretchCount;
+	uint32_t ttiThresholdExceedCount;
 	/* this count is added to compare phy reported tti stretch and calculated tti stretch */
-	U32 phyReptTtiStretchCount;
+	uint32_t phyReptTtiStretchCount;
 }CmTtiProc;
 
 EXTERN CmTtiProc ttiProc;
 
-EXTERN Void cmUpdateTtiCounters(U32 ttiProcessingTime);
+EXTERN Void cmUpdateTtiCounters(uint32_t ttiProcessingTime);
 EXTERN Void cmResetTtiCounters(Void); 
 #endif
 

@@ -129,7 +129,7 @@ PRIVATE Void TSInfTrigL2Stats(region, pool)
    pst.event = TENBSTATSINIT; 
    SPstTsk(&pst, pBuf);
 
-   RETVOID;
+   return;
 }
 
 /*
@@ -160,7 +160,7 @@ Void TSInfTrigStats(region, pool)
 //TODO
    TSInfTrigL2Stats(region, pool);
 
-   RETVOID;
+   return;
 }
 
          
@@ -197,7 +197,7 @@ PRIVATE Void TSInfUtlPackUeInfo(mBuf, stats)
 #endif
 {
    S32 i;
-   U32 k;
+   uint32_t k;
 
    TRC2(TSInfUtlPackUeInfo)
 
@@ -263,7 +263,7 @@ PRIVATE Void TSInfUtlPackUeInfo(mBuf, stats)
       CMCHKPK(oduUnpackUInt32, stats->nonPersistent.sch[k].dlTxOccns, mBuf);
    }
    CMCHKPK(oduUnpackUInt32, stats->rnti, mBuf);
-   RETVOID;
+   return;
 }
 
 #ifdef ANSI
@@ -380,7 +380,7 @@ PRIVATE Void TSInfUtlPackCellInfo(mBuf, stats)
 
    CMCHKPK(oduUnpackUInt32, stats->cellId, mBuf);
 
-   RETVOID;
+   return;
 }
 
 #ifdef ANSI
@@ -396,7 +396,7 @@ PRIVATE Void TSInfUtlUnpkUeInfo(mBuf, stats)
 #endif
 {
    S32 i;
-   U32 k;
+   uint32_t k;
 
    TRC2(TSInfUtlUnpkUeInfo)
 
@@ -463,7 +463,7 @@ PRIVATE Void TSInfUtlUnpkUeInfo(mBuf, stats)
    CMCHKUNPK(oduPackUInt32, &stats->persistent.numActivation, mBuf);
    CMCHKUNPK(oduPackUInt32, &stats->persistent.numDeactivation, mBuf);
 
-   RETVOID;
+   return;
 }
 
 #ifdef ANSI
@@ -580,7 +580,7 @@ PRIVATE Void TSInfUtlUnpkCellInfo(mBuf, stats)
    CMCHKUNPK(oduPackUInt32, &stats->rlc.maxRlcDrbRetxFail, mBuf);
    CMCHKUNPK(oduPackUInt32, &stats->rlc.reOdrTmrExp, mBuf);
 
-   RETVOID;
+   return;
 }
 
 #ifdef ANSI
@@ -606,7 +606,7 @@ Void TSInfPkSndL2UeStats(pst, suId, stats)
    SPkS16(suId, mBuf);
    pst->event = (Event) EVTTENBL2UESTATS;
    SPstTsk(pst, mBuf);
-   RETVOID;
+   return;
 }
 
 #ifdef ANSI
@@ -632,7 +632,7 @@ Void TSInfUnpkL2UeStats(func, pst, mBuf)
    TSInfUtlUnpkUeInfo(mBuf, &stats);
    SPutMsg(mBuf);
    (*func)(pst, suId, &stats);
-   RETVOID;
+   return;
 }
 
 #ifdef ANSI
@@ -658,7 +658,7 @@ Void TSInfPkSndL2CellStats(pst, suId, stats)
    SPkS16(suId, mBuf);
    pst->event = (Event) EVTTENBL2CELLSTATS;
    SPstTsk(pst, mBuf);
-   RETVOID;
+   return;
 }
 
 #ifdef ANSI
@@ -684,7 +684,7 @@ Void TSInfUnpkL2CellStats(func, pst, mBuf)
    TSInfUtlUnpkCellInfo(mBuf, &stats);
    SPutMsg(mBuf);
    (*func)(pst, suId, &stats);
-   RETVOID;
+   return;
 }
 #endif /* TENB_STATS */
 

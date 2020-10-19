@@ -48,12 +48,12 @@ EXTERN "C" {
 typedef struct kwuDatReqInfo
 {
    CmLteRlcId        rlcId;               /*!< RLC ID */
-   U32               sduId;               /*!< SDU ID */
+   uint32_t               sduId;               /*!< SDU ID */
 #ifdef CCPU_OPT
    CmLteLcType       lcType;              /*!<Logical Channel Type */ 
 #ifdef EMTC_ENABLE
-   U8                emtcDiReason;    /* !< DI reason */
-   U8                pnb;                  /*!<paging narrowBand on which Ue perform Paging Reception*/
+   uint8_t                emtcDiReason;    /* !< DI reason */
+   uint8_t                pnb;                  /*!<paging narrowBand on which Ue perform Paging Reception*/
 #endif
    union
    {
@@ -78,8 +78,8 @@ typedef struct kwuDatIndInfo
 typedef struct kwuDatCfmInfo
 {
   CmLteRlcId         rlcId;          /*!< RLC ID */
-  U32                numSduIds;      /*!< Number of Id's in the sudIds array */
-  U32                sduIds[KWU_MAX_DAT_CFM];    /*!< SDU Ids */
+  uint32_t                numSduIds;      /*!< Number of Id's in the sudIds array */
+  uint32_t                sduIds[KWU_MAX_DAT_CFM];    /*!< SDU Ids */
 }KwuDatCfmInfo;
 
 /** @brief Discard SDU Request Information from PDCP to RLC */
@@ -89,14 +89,14 @@ typedef KwuDatCfmInfo KwuDiscSduInfo;
 typedef struct kwuStaIndInfo
 {
    CmLteRlcId        rlcId;               /*!< RLC ID */
-   U32               numSdu;              /*!< Number of SDUs */
-   U32               sduId[KWU_MAX_STA_IND_SDU]; /*!< SDU Id Array */
+   uint32_t               numSdu;              /*!< Number of SDUs */
+   uint32_t               sduId[KWU_MAX_STA_IND_SDU]; /*!< SDU Id Array */
 }KwuStaIndInfo;
 
 typedef struct kwuFlowCntrlIndInfo
 {
    CmLteRlcId   rlcId; 
-   U32          pktAdmitCnt;
+   uint32_t          pktAdmitCnt;
 }KwuFlowCntrlIndInfo;
 /* kwu_x_001.main_3 Added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
@@ -104,7 +104,7 @@ typedef struct kwuFlowCntrlIndInfo
 typedef struct kwuDatAckInfo
 {
    CmLteRlcId        rlcId;               /*!< RLC ID */
-   U32               sduId;               /*!< SDU Id Array */
+   uint32_t               sduId;               /*!< SDU Id Array */
 }KwuDatAckInfo;
 #endif /* LTE_L2_MEAS */
 
@@ -115,14 +115,14 @@ typedef struct kwuDatReqDetl
   Buffer       *mBuf;
   CmLteLcType  lcType;
   Ticks        arrTime; 
-  U32          sduId;
+  uint32_t          sduId;
   CmLteRlcId   rlcId;
 }KwuDatReqDetl;
 #endif 
 
 /* Control primitives towards LTE RRC */
 typedef S16 (*KwuBndReq)      ARGS((Pst *pst, SuId suId,  SpId spId));
-typedef S16 (*KwuBndCfm)      ARGS((Pst *pst, SuId suId, U8 status));
+typedef S16 (*KwuBndCfm)      ARGS((Pst *pst, SuId suId, uint8_t status));
 typedef S16 (*KwuUbndReq)     ARGS((Pst *pst, SuId suId, Reason reason));
 
 typedef S16 (*KwuDatReq)      ARGS((Pst *pst, KwuDatReqInfo* datReq, Buffer *mBuf));
@@ -180,7 +180,7 @@ CM_BND_NOK: Error encountered during the processing of the bind request.
  */
 EXTERN S16 RlcUiKwuBndCfm ARGS((Pst *pst,
          SuId suId,
-         U8 status));
+         uint8_t status));
 
 /** 
  * @details The RLC service user initiates this primitive for performing
@@ -326,7 +326,7 @@ EXTERN S16 NhLiKwuBndReq ARGS((Pst *pst,
 
 EXTERN S16 NhLiKwuBndCfm ARGS((Pst *pst,
          SuId suId,
-         U8 status));
+         uint8_t status));
 
 EXTERN S16 NhLiKwuUbndReq ARGS((Pst *pst,
          SpId spId,
@@ -350,7 +350,7 @@ EXTERN S16 DmUiKwuBndReq ARGS((Pst *pst,
 
 EXTERN S16 DmUiKwuBndCfm ARGS((Pst *pst,
          SuId suId,
-         U8 status));
+         uint8_t status));
 
 EXTERN S16 DmUiKwuUbndReq ARGS((Pst *pst,
          SpId spId,
@@ -379,7 +379,7 @@ EXTERN S16 PjLiKwuBndReq ARGS((Pst *pst,
 
 EXTERN S16 PjLiKwuBndCfm ARGS((Pst *pst,
          SuId suId,
-         U8 status));
+         uint8_t status));
 
 EXTERN S16 PjLiKwuUbndReq ARGS((Pst *pst,
          SpId spId,
@@ -467,7 +467,7 @@ Reason reason
 EXTERN S16 cmPkKwuBndCfm ARGS ((
 Pst * pst,
 SuId suId,
-U8 status
+uint8_t status
 ));
 
 EXTERN uint8_t cmPkKwuDatReq ARGS ((

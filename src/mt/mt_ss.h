@@ -133,8 +133,8 @@
 #ifndef TENB_RTLIN_CHANGES
 #define SInitLock(l, t)                 pthread_mutex_init(l, NULL)
 #endif
-/*extern U32 gt[128]; */
-/*#define SLock(l)                        (((gt[0x000000FF &((U32)pthread_self())]=MacGetTick())&&pthread_mutex_lock(l)&&MLogTask(30340, RESOURCE_LINL2, gt[0x000000FF &((U32)pthread_self())], MacGetTick()))?0:0)*/
+/*extern uint32_t gt[128]; */
+/*#define SLock(l)                        (((gt[0x000000FF &((uint32_t)pthread_self())]=MacGetTick())&&pthread_mutex_lock(l)&&MLogTask(30340, RESOURCE_LINL2, gt[0x000000FF &((uint32_t)pthread_self())], MacGetTick()))?0:0)*/
 #define SLock(l)                        pthread_mutex_lock(l)
 #define SUnlock(l)                      pthread_mutex_unlock(l)
 #define SDestroyLock(l)                 pthread_mutex_destroy(l)
@@ -176,7 +176,7 @@ exit(0); \
 /*mt041.201 Value of MT_TICK_CNT changed*/
 /*mt004.301- defining the MT_TICK_CNT in Micro seconds (usecs) */
 /* mt010.301  Removed #ifdef SS_FAP portion and enabled oroginal code */
-#define MT_TICK_CNT             (((U32)0x0F4240)/SS_TICKS_SEC)
+#define MT_TICK_CNT             (((uint32_t)0x0F4240)/SS_TICKS_SEC)
 
 #define MT_MAX_TICK_CNT_VAL     35
 #define MT_MIN_TICK_CNT_VAL     1

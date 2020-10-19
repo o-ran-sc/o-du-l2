@@ -148,7 +148,7 @@ uint8_t fapiMacCrcInd(Pst *pst, CrcInd *crcInd)
 
    GET_CELL_IDX(crcInd->cellId, cellIdx);
    /* Considering one pdu and one preamble */ 
-   crcIndInfo.cellId = macCb.macCell[cellIdx]->cellId;;
+   crcIndInfo.cellId = macCb.macCell[cellIdx]->cellId;
    crcIndInfo.crnti = crcInd->crcInfo[0].rnti;
    crcIndInfo.timingInfo.sfn = crcInd->timingInfo.sfn;
    crcIndInfo.timingInfo.slot = crcInd->timingInfo.slot;
@@ -643,7 +643,7 @@ uint8_t buildAndSendSrInd(UciInd *macUciInd, uint8_t crnti)
    memset(&srUciInd, 0, sizeof(SrUciIndInfo));
 
    GET_CELL_IDX(macUciInd->cellId, cellIdx);
-   srUciInd.cellId       = macCb.macCell[cellIdx]->cellId;;
+   srUciInd.cellId       = macCb.macCell[cellIdx]->cellId;
    srUciInd.crnti        = crnti;
    srUciInd.slotInd.sfn  = macUciInd->slotInd.sfn;
    srUciInd.slotInd.slot = macUciInd->slotInd.slot;

@@ -100,13 +100,13 @@ S16 cmPkKwuBndCfm
 (
 Pst * pst,
 SuId suId,
-U8 status
+uint8_t status
 )
 #else
 S16 cmPkKwuBndCfm(pst, suId, status)
 Pst * pst;
 SuId suId;
-U8 status;
+uint8_t status;
 #endif
 {
    S16    ret1;
@@ -266,7 +266,7 @@ Buffer * mBuf;
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
                return (ret1);
             }
-            cmMemcpy((U8*)datReqInfo,(U8*)datReq,sizeof(KwuDatReqInfo));
+            cmMemcpy((uint8_t*)datReqInfo,(uint8_t*)datReq,sizeof(KwuDatReqInfo));
             CMCHKPK(oduPackPointer,(PTR)datReqInfo, mBuf);
            }
            else
@@ -474,7 +474,7 @@ Buffer * mBuf;
                return (ret1);
             }
 
-            cmMemcpy((U8*)datIndInfo,(U8*)datInd,sizeof(KwuDatIndInfo));
+            cmMemcpy((uint8_t*)datIndInfo,(uint8_t*)datInd,sizeof(KwuDatIndInfo));
             CMCHKPK(oduPackPointer,(PTR)datIndInfo, mBuf);
           }
           break;
@@ -523,7 +523,7 @@ KwuDatCfmInfo *param;
 Buffer *mBuf;
 #endif
 {
-   register U32 iter;
+   register uint32_t iter;
 
    TRC3(cmPkKwuDatCfmInfo);
    for(iter = 0; iter < param->numSduIds; iter++)
@@ -659,7 +659,7 @@ KwuDiscSduInfo* discSdu;
               return (ret1);
            }
             
-           cmMemcpy((U8*)discSduInfo,(U8*)discSdu,sizeof(KwuDiscSduInfo));
+           cmMemcpy((uint8_t*)discSduInfo,(uint8_t*)discSdu,sizeof(KwuDiscSduInfo));
            CMCHKPK(oduPackPointer,(PTR)discSduInfo, mBuf);
          }
          break;
@@ -707,7 +707,7 @@ Buffer *mBuf;
 
    for (i = (param->numSdu - 1); i >= 0; i--)
    {
-      CMCHKPK(oduUnpackUInt32, param->sduId[(U16)i], mBuf);
+      CMCHKPK(oduUnpackUInt32, param->sduId[(uint16_t)i], mBuf);
    }
    CMCHKPK(oduUnpackUInt32, param->numSdu, mBuf);
    CMCHKPK(cmPkLteRlcId, &param->rlcId, mBuf);
@@ -1137,7 +1137,7 @@ Buffer *mBuf;
 #endif
 {
    SuId suId = 0;
-   U8 status = 0;
+   uint8_t status = 0;
 
    TRC3(cmUnpkKwuBndCfm)
 
@@ -1255,7 +1255,7 @@ Buffer *mBuf;
             /* Allocate the memory statically  as there is no free 
              * in RLC */
             datReq = &datReqTmp;
-            cmMemset((U8 *)datReq, 0, sizeof(KwuDatReqInfo));
+            cmMemset((uint8_t *)datReq, 0, sizeof(KwuDatReqInfo));
 #if(ERRCLASS & ERRCLS_DEBUG)
             ret1 = cmUnpkKwuDatReqInfo( (datReq), mBuf);
             if(ret1 != ROK)
@@ -1475,7 +1475,7 @@ Buffer *mBuf;
                return (ret1);
             }
 
-            cmMemset((U8 *)datCfm, 0, sizeof(KwuDatCfmInfo));
+            cmMemset((uint8_t *)datCfm, 0, sizeof(KwuDatCfmInfo));
             ret1 = cmUnpkKwuDatCfmInfo( (datCfm), mBuf);
 #if(ERRCLASS & ERRCLS_DEBUG)
           if(ret1 != ROK)
@@ -1547,7 +1547,7 @@ Buffer *mBuf;
                return (ret1);
             }
 
-            cmMemset((U8 *)discSdu, 0, sizeof(KwuDiscSduInfo));
+            cmMemset((uint8_t *)discSdu, 0, sizeof(KwuDiscSduInfo));
             ret1 = cmUnpkKwuDiscSduInfo( (discSdu), mBuf);
 #if(ERRCLASS & ERRCLS_DEBUG)
             if(ret1 != ROK)
@@ -1588,7 +1588,7 @@ KwuStaIndInfo *param;
 Buffer *mBuf;
 #endif
 {
-   U32 i;
+   uint32_t i;
 
    TRC3(cmUnpkKwuStaIndInfo);
 
@@ -1648,7 +1648,7 @@ Buffer *mBuf;
                return (ret1);
             }
 
-            cmMemset((U8 *)staInd, 0, sizeof(KwuStaIndInfo));
+            cmMemset((uint8_t *)staInd, 0, sizeof(KwuStaIndInfo));
 
             ret1 = cmUnpkKwuStaIndInfo( (staInd), mBuf);
 #if(ERRCLASS & ERRCLS_DEBUG)
@@ -1700,7 +1700,7 @@ Buffer *mBuf;
 
    TRC3(cmUnpkKwuReEstCmpInd)
 
-   cmMemset((U8 *)&rlcId, 0, sizeof(CmLteRlcId));
+   cmMemset((uint8_t *)&rlcId, 0, sizeof(CmLteRlcId));
 
    CMCHKUNPK(SUnpkS16, &(suId), mBuf);
    switch(pst->selector)
@@ -1775,7 +1775,7 @@ Buffer         *mBuf;
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
                return (ret1);
             }
-            cmMemset((U8 *)discSdu, 0, sizeof(KwuDiscSduInfo));
+            cmMemset((uint8_t *)discSdu, 0, sizeof(KwuDiscSduInfo));
 
    ret1 = cmUnpkKwuDiscSduInfo( (discSdu), mBuf);
 #if(ERRCLASS & ERRCLS_DEBUG)
@@ -1909,7 +1909,7 @@ Buffer *mBuf;
        return (ret1);
     }
 
-    cmMemset((U8 *)datInd, 0, sizeof(KwuDatAckInfo));
+    cmMemset((uint8_t *)datInd, 0, sizeof(KwuDatAckInfo));
 
     CMCHKUNPK(SUnpkS16, &(suId), mBuf);
     ret1 = cmUnpkKwuDatAckInfo( (datInd), mBuf);

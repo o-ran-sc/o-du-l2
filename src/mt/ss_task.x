@@ -41,11 +41,11 @@ extern "C" {
 /* ss029.103: modification: 
    data type changed to allow more number of TAPA tasks */ 
 #ifndef SS_MULTIPLE_PROCS
-typedef U8                      SsCntr;
-typedef U8                      SsIdx;
+typedef uint8_t                      SsCntr;
+typedef uint8_t                      SsIdx;
 #else /* SS_MULTIPLE_PROCS */
-typedef U16                      SsCntr;
-typedef U16                      SsIdx;
+typedef uint16_t                      SsCntr;
+typedef uint16_t                      SsIdx;
 #endif /* SS_MULTIPLE_PROCS */
 
 
@@ -90,8 +90,8 @@ typedef struct ssTTskEntry
 #ifdef SS_THREAD_PROFILE
    Bool        updated;
    Event       curEvent;
-   U32         curEvtTime;
-   U64         totTime;
+   uint32_t         curEvtTime;
+   uint64_t         totTime;
 #endif /* SS_THREAD_PROFILE */
 	/* ss02.301 */
 	ActvTsk     cbTsk; /* call back function pointer */

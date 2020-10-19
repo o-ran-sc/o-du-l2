@@ -160,7 +160,7 @@ Size    size;               /* size */
 #endif
 
    /* zero out the allocated memory */
-   cmMemset((U8 *)*pData, 0x00, size);
+   cmMemset((uint8_t *)*pData, 0x00, size);
 
    return ROK;
 
@@ -227,7 +227,7 @@ Size    size;               /* size */
    }
 
    /* zero out the allocated memory */
-   cmMemset((U8 *)*pData, 0x00, size);
+   cmMemset((uint8_t *)*pData, 0x00, size);
 
    return ROK;
 
@@ -241,7 +241,7 @@ Size    size;               /* size */
 *              previously allocated by rgAllocSBuf() and size. It 
 *              deallocates the memory. 
 *
-*       Ret:   RETVOID
+*       Ret:   void
 *
 *       Notes: ccpu00117052 - MOD- changed the Data parameter from 
 *                             pointer to address of pointer so that
@@ -270,7 +270,7 @@ Size size;          /* size */
 
    if ((data == NULLP) || (*data == NULLP) || (size == 0))
    {
-      RETVOID;
+      return;
    }
 
    /* Deallocate buffer */
@@ -278,12 +278,12 @@ Size size;          /* size */
 
    if (ret != ROK)
    {
-      RETVOID;
+      return;
    }
 
    *data = NULLP;
 
-   RETVOID;
+   return;
 
 } /* end of rgFreeSharableBuf */
 
@@ -297,7 +297,7 @@ Size size;          /* size */
 *              previously allocated by rgAllocSBuf() and size. It 
 *              deallocates the memory. 
 *
-*       Ret:   RETVOID
+*       Ret:   void
 *
 *       Notes: ccpu00117052 - MOD- changed the Data parameter from 
 *                             pointer to address of pointer so that
@@ -326,7 +326,7 @@ Size size;          /* size */
 
    if ((data == NULLP) || (*data == NULLP) || (size == 0))
    {
-      RETVOID;
+      return;
    }
 
 
@@ -339,12 +339,12 @@ Size size;          /* size */
    if (ret != ROK)
    {
       RGLOGERROR(inst,ERRCLS_DEBUG, ERG029, (ErrVal) 0, "rgFreeSBuf failed.\n");
-      RETVOID;
+      return;
    }
 
    *data = NULLP;
 
-   RETVOID;
+   return;
 
 } /* end of rgFreeSBuf */
 
@@ -423,13 +423,13 @@ Void rgFillDgnParams
 (
 Inst        inst,
 RgUstaDgn   *dgn,
-U8          dgnType
+uint8_t          dgnType
 )
 #else
 Void rgFillDgnParams(inst,dgn, dgnType)
 Inst        inst;
 RgUstaDgn   *dgn;
-U8          dgnType;
+uint8_t          dgnType;
 #endif
 {
 
@@ -438,7 +438,7 @@ U8          dgnType;
    switch(dgnType)
    {
       case LRG_USTA_DGNVAL_MEM:
-         dgn->type = (U8) LRG_USTA_DGNVAL_MEM;
+         dgn->type = (uint8_t) LRG_USTA_DGNVAL_MEM;
          dgn->u.mem.region  = rgCb[inst].rgInit.region;
          dgn->u.mem.pool    = rgCb[inst].rgInit.pool;
       break;
@@ -447,7 +447,7 @@ U8          dgnType;
       break;
    }
 
-   RETVOID;
+   return;
 } /* end of rgFillDgnParams */
 
 
@@ -472,19 +472,19 @@ Void rgUpdtRguDedSts
 (
 Inst           inst,
 RgUpSapCb     *rguDlSap,
-U8             stsType,   /* Statistics type to update */
+uint8_t             stsType,   /* Statistics type to update */
 RgRguDedDatReq *datReq    /* DatReq pointer */
 )
 #else
 Void rgUpdtRguDedSts(inst,rguDlSap,stsType, datReq)
 Inst           inst;
 RgUpSapCb     *rguDlSap;
-U8             stsType;   /* Statistics type to update */
+uint8_t             stsType;   /* Statistics type to update */
 RgRguDedDatReq *datReq;   /* DatReq pointer */
 #endif
 {
-   U8 idx1,idx2;
-   U32 idx;
+   uint8_t idx1,idx2;
+   uint32_t idx;
 
 
    TRC2(rgUpdtRguDedSts)
@@ -526,7 +526,7 @@ RgRguDedDatReq *datReq;   /* DatReq pointer */
          break;
    }
    
-   RETVOID;
+   return;
 } /* rgUpdtRguDedSts */
 
 
@@ -551,13 +551,13 @@ Void rgUpdtRguCmnSts
 (
 Inst           inst,
 RgUpSapCb     *rguDlSap,
-U8             stsType   /* Statistics type to update */
+uint8_t             stsType   /* Statistics type to update */
 )
 #else
 Void rgUpdtRguCmnSts(inst,rguDlSap,stsType)
 Inst           inst;
 RgUpSapCb     *rguDlSap;
-U8             stsType;   /* Statistics type to update */
+uint8_t             stsType;   /* Statistics type to update */
 #endif
 {
    TRC2(rgUpdtRguCmnSts)
@@ -575,7 +575,7 @@ U8             stsType;   /* Statistics type to update */
          break;
    }
    
-   RETVOID;
+   return;
 } /* rgUpdtRguCmnSts */
 
 
@@ -600,12 +600,12 @@ U8             stsType;   /* Statistics type to update */
 Void rgUpdtCellCnt
 (
 Inst inst,
-U8 updtType
+uint8_t updtType
 )
 #else
 Void rgUpdtCellCnt(inst,updtType)
 Inst inst;
-U8 updtType;
+uint8_t updtType;
 #endif
 {
    TRC2(rgUpdtCellCnt);
@@ -622,7 +622,7 @@ U8 updtType;
          break;
    }
 
-   RETVOID;
+   return;
 } /* rgUpdtCellCnt */
 
 
@@ -647,12 +647,12 @@ U8 updtType;
 Void rgUpdtUeCnt
 (
 Inst inst,
-U8 updtType
+uint8_t updtType
 )
 #else
 Void rgUpdtUeCnt (inst,updtType)
 Inst inst;
-U8 updtType;
+uint8_t updtType;
 #endif
 {
    TRC2(rgUpdtUeCnt);
@@ -668,7 +668,7 @@ U8 updtType;
       default:
          break;
    }
-   RETVOID;
+   return;
 } /* rgUpdtUeCnt */
 
 /*
@@ -700,7 +700,7 @@ Size      memSize;
 #endif
 {
    Mem              sMem;
-   VOLATILE U32     startTime=0;
+   VOLATILE uint32_t     startTime=0;
 
    TRC2(rgAllocEventMem)
 
@@ -827,7 +827,7 @@ Inst          dstInst;
    pst->intfVer   = 0;
    pst->route   = RTESPEC;
 
-   RETVOID; 
+   return; 
 } /* end of rgGetPstToInst */
 
 /***********************************************************
@@ -995,7 +995,7 @@ RgInfSpsLcInfo *lcInfo;
    Inst       inst;
    RgCellCb   *cell= NULLP;
    RgUeCb     *ue;
-   U8         idx;
+   uint8_t         idx;
 
    TRC2(RgSchMacSpsLcRegReq);
 
@@ -1168,7 +1168,7 @@ CmLteRnti       newRnti;
 
    ue->ueId = newRnti;
 
-   cmMemcpy((U8*)&(ue->contResId), (U8*)&(newUe->contResId), 
+   cmMemcpy((uint8_t*)&(ue->contResId), (uint8_t*)&(newUe->contResId), 
 		   sizeof(newUe->contResId));
    /* Fix : syed MSG4 might be RETXing need to store the
     * HARQ context. */
@@ -1212,7 +1212,7 @@ RgUeCb        *ue;
 #endif
 {
    Inst        inst     = cell->macInst - RG_INST_START;
-   U8          idx      = 0;
+   uint8_t          idx      = 0;
    Inst        sCellInstIdx;
    Pst         dstInstPst;
    RgPrgUeSCellDelInfo ueSCellDelInfo;
@@ -1334,7 +1334,7 @@ CmLteRnti       newRnti;
    Pst                 dstInstPst;
    RgPrgUeSCellDelInfo ueIdChngReq;
    RgUeCb              *ue;
-   U8                  idx;
+   uint8_t                  idx;
 #ifdef L2_OPTMZ
 TfuDelDatReqInfo delDatReq;
 #endif
@@ -1467,7 +1467,7 @@ CmLteRnti       *rlsRnti;
       }
    }
 
-   RETVOID;
+   return;
 } /* end of rgUtlHndlCrntiRls */
 
 /**

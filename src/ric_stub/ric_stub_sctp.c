@@ -82,7 +82,7 @@ S16 fillAddrLst(CmInetNetAddrLst *addrLstPtr, SctpIpAddr *ipAddr)
 { 
    addrLstPtr->count++;
    addrLstPtr->addrs[(addrLstPtr->count - 1)].type = CM_INET_IPV4ADDR_TYPE;
-   addrLstPtr->addrs[(addrLstPtr->count - 1)].u.ipv4NetAddr = CM_INET_NTOH_U32(ipAddr->ipV4Addr);
+   addrLstPtr->addrs[(addrLstPtr->count - 1)].u.ipv4NetAddr = CM_INET_NTOH_UINT32(ipAddr->ipV4Addr);
 
    return ROK;
 }
@@ -108,7 +108,7 @@ S16 fillDestNetAddr(CmInetNetAddr *destAddrPtr, SctpIpAddr *dstIpPtr)
 {
    /* Filling destination address */
    destAddrPtr->type = CM_INET_IPV4ADDR_TYPE;
-   destAddrPtr->u.ipv4NetAddr = CM_INET_NTOH_U32(dstIpPtr->ipV4Addr);
+   destAddrPtr->u.ipv4NetAddr = CM_INET_NTOH_UINT32(dstIpPtr->ipV4Addr);
    return ROK;
 }
 
@@ -210,7 +210,7 @@ S16 sctpSetSockOpts(CmInetFd *sock_Fd)
  * ****************************************************************/
 S16 sctpAccept(CmInetFd *lstnSock_Fd, CmInetAddr *peerAddr, CmInetFd *sock_Fd)
 {
-   U8  ret;
+   uint8_t  ret;
 
    ret = cmInetListen(lstnSock_Fd, 1);
    if (ret != ROK)
@@ -344,9 +344,9 @@ S16 sctpNtfyHdlr(CmInetSctpNotification *ntfy)
  * ****************************************************************/
 S16 sctpSockPoll()
 {
-   U16 ret = ROK;
-   U32           timeout;
-   U32           *timeoutPtr;
+   uint16_t ret = ROK;
+   uint32_t           timeout;
+   uint32_t           *timeoutPtr;
    CmInetMemInfo memInfo;
    sctpSockPollParams e2PollParams;
 
@@ -404,9 +404,9 @@ S16 sctpSockPoll()
  * ****************************************************************/
 
  
-S16 processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, U32 *timeoutPtr, CmInetMemInfo *memInfo)
+S16 processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, uint32_t *timeoutPtr, CmInetMemInfo *memInfo)
 {
-   U16 ret = ROK;
+   uint16_t ret = ROK;
    CM_INET_FD_SET(sockFd, &pollParams->readFd);
    ret = cmInetSelect(&pollParams->readFd, NULLP, timeoutPtr, &pollParams->numFd);
    if(CM_INET_FD_ISSET(sockFd, &pollParams->readFd))
@@ -459,7 +459,7 @@ S16 processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, U32 *timeou
  * ****************************************************************/
 S16 sctpSend(Buffer *mBuf)
 {
-   U8               ret;
+   uint8_t               ret;
    MsgLen           len;          /* number of actually sent octets */
    CmInetMemInfo    memInfo;                        
    

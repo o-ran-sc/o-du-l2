@@ -86,7 +86,7 @@ PRIVATE RgL2MeasCb * rgL2mAllocMeasCb ARGS((
  *
  * @param  [in] RgCellCb       *cell
  * @param  [in] RgInfL2MeasReq *measInfo
- * @param  [in] U8             measType
+ * @param  [in] uint8_t             measType
  * @param  [out] RgErrInfo      *err
  * @return  S16
  *      -# ROK 
@@ -98,21 +98,21 @@ S16 rgL2mCreateMeasCb
 (
 RgCellCb       *cell,
 RgInfL2MeasReq *measInfo, 
-U8              measType,
+uint8_t              measType,
 RgErrInfo      *err
 )
 #else
 S16 rgL2mCreateMeasCb(cell, measInfo, measType, err)
 RgCellCb       *cell;
 RgInfL2MeasReq *measInfo; 
-U8              measType;
+uint8_t              measType;
 RgErrInfo      *err;
 #endif    
 {
   // Inst    inst = cell->macInst - RG_INST_START;
-   U32     idx;
+   uint32_t     idx;
    RgL2MeasCb       *measCb = NULLP;
-   U8            qciVal = 0;
+   uint8_t            qciVal = 0;
 
    UNUSED(measType);
    UNUSED(err);
@@ -125,7 +125,7 @@ RgErrInfo      *err;
          return RFAILED;
       }
    //Memcpy is already done in rgL2mAllocMeasCb
-   /*cmMemcpy((U8 *)&measCb->measReq, (CONSTANT U8 *)measInfo,\
+   /*cmMemcpy((uint8_t *)&measCb->measReq, (CONSTANT uint8_t *)measInfo,\
      sizeof(RgInfL2MeasReq));*/
    rgL2mInsertMeasCb(cell, measCb, measInfo);
    measCb->measReq.timePrd = measInfo->timePrd;
@@ -218,11 +218,11 @@ RgInfL2MeasCfm    *measCfm;
    Inst            macInst = cell->macInst - RG_INST_START;
    TRC3(rgSndL2MeasCfm)
 
-      cmMemset((U8 *)&pst, 0, sizeof(Pst));
+      cmMemset((uint8_t *)&pst, 0, sizeof(Pst));
    rgGetPstToInst(&pst,macInst, cell->schInstMap.schInst);
    RgMacSchL2Meas(&pst, measCfm);
 
-   RETVOID;
+   return;
 }/* rgSndL2MeasCfm */
 
 /** @brief This function sends the measurement stop confirm
@@ -251,11 +251,11 @@ RgInfL2MeasCfm    *measCfm;
    Inst            macInst = cell->macInst - RG_INST_START;
 
    TRC3(rgSndL2MeasStopCfm)
-      cmMemset((U8 *)&pst, 0, sizeof(Pst));
+      cmMemset((uint8_t *)&pst, 0, sizeof(Pst));
    rgGetPstToInst(&pst,macInst, cell->schInstMap.schInst);
    RgMacSchL2MeasStop(&pst, measCfm);
 
-   RETVOID;
+   return;
 }/* rgSndL2MeasStopCfm */
 
 /**
@@ -307,7 +307,7 @@ RgInfL2MeasReq    *measInfo;      /* Meas Req Info */
    ret = rgL2mMeasReq(cellCb, measInfo, &err);
    if (ret != ROK)
    {
-      cmMemset((U8 *)&measCfm, 0, sizeof(RgInfL2MeasCfm));
+      cmMemset((uint8_t *)&measCfm, 0, sizeof(RgInfL2MeasCfm));
       measCfm.transId     = measInfo->transId;
       measCfm.cellId      = measInfo->cellId;
       measCfm.measType    = measInfo->measType;
@@ -351,8 +351,8 @@ RgInfL2MeasStopReq *measInfo;      /* Meas Req Info */
    S16             ret = ROK;   
    CmLList         *node   = NULLP;
    RgL2MeasCb      *measCb = NULLP;
-   U8               idx;
-   U8               qciVal;
+   uint8_t               idx;
+   uint8_t               qciVal;
    Inst             inst;
    RgCellCb        *cellCb = NULLP;
 
@@ -387,7 +387,7 @@ RgInfL2MeasStopReq *measInfo;      /* Meas Req Info */
       cmLListDelFrm(&cellCb->l2mList, &measCb->measLnk);
       rgFreeSBuf(inst,(Data**)&measCb, sizeof(RgL2MeasCb));
    }
-   cmMemset((U8 *)&measCfm, 0, sizeof(RgInfL2MeasCfm));
+   cmMemset((uint8_t *)&measCfm, 0, sizeof(RgInfL2MeasCfm));
    measCfm.transId     = measInfo->transId;
    measCfm.cellId      = measInfo->cellId;
    measCfm.measType    = measInfo->measType;
@@ -476,7 +476,7 @@ RgInfL2MeasReq *measInfo;
 {
    CmLList   *lnk, *node;
    RgL2MeasCb  *oldMeasCb;
-   U16         diffTime;
+   uint16_t         diffTime;
 
    TRC3(rgL2mInsertMeasCb)
 
@@ -555,7 +555,7 @@ RgErrInfo      *err;
          err->errCause = RGERR_RAM_MEM_EXHAUST;
          return (NULLP);
       }
-   cmMemcpy((U8 *)&measCb->measReq, (U8 *)measInfo, sizeof(RgInfL2MeasReq));
+   cmMemcpy((uint8_t *)&measCb->measReq, (uint8_t *)measInfo, sizeof(RgInfL2MeasReq));
    RGCPYTIMEINFO(cell->crntTime, measCb->startTime);
 
    return (measCb);
@@ -589,9 +589,9 @@ RgCellCb  *cell;
    CmLList         *node   = NULLP;
    RgL2MeasCb      *measCb = NULLP;
    RgInfL2MeasCfm  measCfm;
-   U8              idx = 0;
-   U8              qciVal = 0;
-   U32             measPrd; /*LTE_L2_MEAS_PHASE2*/
+   uint8_t              idx = 0;
+   uint8_t              qciVal = 0;
+   uint32_t             measPrd; /*LTE_L2_MEAS_PHASE2*/
    CmLteTimingInfo  crntTime;
    Inst           inst = cell->macInst - RG_INST_START;
    
@@ -616,7 +616,7 @@ RgCellCb  *cell;
       /*LTE_L2_MEAS_PHASE2*/
       if (cell->sndL2Meas || measPrd == measCb->measReq.timePrd)
       {
-         cmMemset((U8 *)&measCfm, 0, sizeof(RgInfL2MeasCfm));
+         cmMemset((uint8_t *)&measCfm, 0, sizeof(RgInfL2MeasCfm));
          for(idx = 0; idx < measCb->measReq.t.prbReq.numQci; idx++)
          {
             qciVal = measCb->measReq.t.prbReq.qci[idx];

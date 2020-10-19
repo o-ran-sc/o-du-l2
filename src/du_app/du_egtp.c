@@ -171,16 +171,16 @@ uint8_t egtpCfgReq(Pst *pst, EgtpConfig egtpCfg)
 
    memcpy((uint8_t *)&egtpCb.egtpCfg, (uint8_t *)&egtpCfg, (PTR)sizeof(EgtpConfig));
 
-   egtpCb.recvTptSrvr.addr.address = CM_INET_NTOH_U32(egtpCb.egtpCfg.localIp.ipV4Addr);
+   egtpCb.recvTptSrvr.addr.address = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.localIp.ipV4Addr);
    egtpCb.recvTptSrvr.addr.port = EGTP_DFLT_PORT;
 
-   egtpCb.dstCb.dstIp = CM_INET_NTOH_U32(egtpCb.egtpCfg.destIp.ipV4Addr);
+   egtpCb.dstCb.dstIp = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.destIp.ipV4Addr);
    egtpCb.dstCb.dstPort = egtpCb.egtpCfg.destPort;
-   egtpCb.dstCb.sendTptSrvr.addr.address = CM_INET_NTOH_U32(egtpCb.egtpCfg.localIp.ipV4Addr);
+   egtpCb.dstCb.sendTptSrvr.addr.address = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.localIp.ipV4Addr);
    egtpCb.dstCb.sendTptSrvr.addr.port = egtpCb.egtpCfg.localPort;
    egtpCb.dstCb.numTunn = 0;
 
-   ret = cmHashListInit(&(egtpCb.dstCb.teIdLst), 1024, sizeof(EgtpTeIdCb), FALSE, CM_HASH_KEYTYPE_U32MOD, DU_APP_MEM_REGION, DU_POOL);
+   ret = cmHashListInit(&(egtpCb.dstCb.teIdLst), 1024, sizeof(EgtpTeIdCb), FALSE, CM_HASH_KEYTYPE_UINT32_MOD, DU_APP_MEM_REGION, DU_POOL);
 
    if(ret != ROK)
    {

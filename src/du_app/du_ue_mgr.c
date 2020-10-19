@@ -37,7 +37,7 @@
 #include "du_ue_mgr.h"
 
 #ifdef EGTP_TEST
-U32 sduId = 0;
+uint32_t sduId = 0;
 #endif
 
 DuMacDlCcchInd packMacDlCcchIndOpts[] =

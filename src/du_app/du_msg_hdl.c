@@ -55,6 +55,7 @@ extern uint8_t egtpHdlDatInd(EgtpMsg egtpMsg);
 extern uint8_t BuildAndSendDUConfigUpdate();
 extern uint16_t getTransId();
 extern uint8_t cmPkLrgSchCfgReq(Pst * pst,RgMngmt * cfg);
+uint8_t BuildAndSendRrcDeliveryReport(uint32_t gnbCuUeF1apId, uint32_t gnbDuUeF1apId, RrcDeliveryReport *rrcDelivery);
 
 packMacCellCfgReq packMacCellCfgOpts[] =
 {
@@ -1282,8 +1283,8 @@ uint8_t duSendEgtpTestData()
    ipv4Hdr.length = CM_IPV4_HDRLEN + mLen;
    ipv4Hdr.hdrVer = 0x45;
    ipv4Hdr.proto = 1;
-   ipv4Hdr.srcAddr = CM_INET_NTOH_U32(duCfgParam.egtpParams.localIp.ipV4Addr);
-   ipv4Hdr.destAddr = CM_INET_NTOH_U32(duCfgParam.egtpParams.destIp.ipV4Addr);
+   ipv4Hdr.srcAddr = CM_INET_NTOH_UINT32(duCfgParam.egtpParams.localIp.ipV4Addr);
+   ipv4Hdr.destAddr = CM_INET_NTOH_UINT32(duCfgParam.egtpParams.destIp.ipV4Addr);
 
    /* Packing IPv4 header into buffer */
    uint8_t          ret, cnt, idx;
