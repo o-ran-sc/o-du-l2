@@ -16,6 +16,24 @@
       "revId": "2193e4cf01012809495be026097e8d7eacb9f0ac",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a948292b_29ce079b",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 2456,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-19T08:00:16Z",
+      "side": 1,
+      "message": "Noted. Will make it generic.",
+      "parentUuid": "bea21834_e3959eef",
+      "revId": "2193e4cf01012809495be026097e8d7eacb9f0ac",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
