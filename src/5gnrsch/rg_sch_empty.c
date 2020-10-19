@@ -69,7 +69,7 @@ Void rgSCHCmnSpsInit ()
 {
    TRC2(rgSCHCmnSpsInit);
 
-   RETVOID;
+   return;
 }
 
 /**
@@ -160,7 +160,7 @@ RgSchUeCb          *ue;
 {
 
    TRC2(rgSCHCmnSpsUeDel);
-   RETVOID;
+   return;
 }
 
 /**
@@ -214,7 +214,7 @@ RgSchCellCb        *cell;
 {
 
    TRC2(rgSCHCmnSpsCellDel);
-   RETVOID;
+   return;
 }
 
 /**
@@ -257,7 +257,7 @@ RgSchCellCb  *cell
 ))
 {
    TRC2(rgSchCmnDlSfHqDel);
-   RETVOID;
+   return;
 }
 
 S16 rgSCHCmnSpsDlLcRecfg ARGS((
@@ -280,7 +280,7 @@ RgSchLcgCb       *lcg
 ))
 {
    TRC2(rgSCHCmnSpsUlLcgDel);
-   RETVOID;
+   return;
 }
 
 Void rgSCHCmnSpsDlLcDel ARGS((
@@ -290,7 +290,7 @@ RgSchDlLcCb        *dlLc
 ))
 {
    TRC2(rgSCHCmnSpsUlLcgDel);
-   RETVOID;
+   return;
 }
 
 S16 rgSCHCmnSpsUlTti ARGS((
@@ -311,7 +311,7 @@ RgSchDlLcCb            *dlLc
 {
 
    TRC2(rgSCHCmnSpsDlDedBoUpd);
-   RETVOID;
+   return;
 }
 
 Void rgSCHCmnSpsDlProcAddToRetx ARGS((
@@ -321,7 +321,7 @@ RgSchDlHqProcCb       *hqP
 {
 
    TRC2(rgSCHCmnSpsDlProcAddToRetx);
-   RETVOID;
+   return;
 }
 
 Void rgSCHCmnSpsDlCqiIndHndlr ARGS((
@@ -332,7 +332,7 @@ CmLteTimingInfo      timingInfo
 {
 
    TRC2(rgSCHCmnSpsDlCqiIndHndlr);
-   RETVOID;
+   return;
 }
 
 S16 rgSCHCmnSpsUlCqiInd ARGS((
@@ -363,7 +363,7 @@ RgSchUeCb           *ue
 {
 
    TRC2(rgSCHCmnSpsPhrInd);
-   RETVOID;
+   return;
 }
 
 Void rgSCHCmnSpsDlRelPdcchFbk ARGS((
@@ -374,7 +374,7 @@ Bool                  isAck
 {
 
    TRC2(rgSCHCmnSpsDlRelPdcchFbk);
-   RETVOID;
+   return;
 }
 
 Void rgSCHCmnSpsDlProcAck ARGS((
@@ -384,7 +384,7 @@ RgSchDlHqProcCb       *hqP
 {
 
    TRC2(rgSCHCmnSpsDlProcAck);
-   RETVOID;
+   return;
 }
 
 Void rgSCHCmnSpsDlUeReset ARGS((
@@ -394,7 +394,7 @@ RgSchUeCb           *ue
 {
 
    TRC2(rgSCHCmnSpsDlUeReset);
-   RETVOID;
+   return;
 }
 
 Void rgSCHCmnSpsUlUeReset ARGS((
@@ -404,7 +404,7 @@ RgSchUeCb           *ue
 {
 
    TRC2(rgSCHCmnSpsUlUeReset);
-   RETVOID;
+   return;
 }
 
 Void rgSCHCmnSpsUlProcRelInd ARGS((
@@ -415,18 +415,18 @@ Bool                isExplRel
 {
 
    TRC2(rgSCHCmnSpsUlProcRelInd);
-   RETVOID;
+   return;
 }
 
 Void rgSCHCmnSpsUlProcActInd ARGS((
 RgSchCellCb         *cell,
 RgSchUeCb           *ue,
-U16                 spsSduSize
+uint16_t                 spsSduSize
 ))
 {
 
    TRC2(rgSCHCmnSpsUlProcActInd);
-   RETVOID;
+   return;
 }
 
 S16 rgSCHCmnSpsUlProcCrcInd ARGS((
@@ -459,7 +459,7 @@ RgSchDlSf             *dlSf
 {
 
    TRC2(rgSCHCmnSpsUlProcDtxInd);
-   RETVOID;
+   return;
 }
 
 

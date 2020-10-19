@@ -40,14 +40,14 @@
 extern "C" {
 #endif
 
-U8 *cmMemcpy      ARGS((U8 *tgt, CONSTANT U8 *src, PTR len));
-S16 cmMemcmp      ARGS((CONSTANT U8 *s1, CONSTANT U8 *s2, PTR len));
-U8 *cmMemset      ARGS((U8 *src, U8 val, PTR len));
+uint8_t *cmMemcpy      ARGS((uint8_t *tgt, CONSTANT uint8_t *src, PTR len));
+S16 cmMemcmp      ARGS((CONSTANT uint8_t *s1, CONSTANT uint8_t *s2, PTR len));
+uint8_t *cmMemset      ARGS((uint8_t *src, uint8_t val, PTR len));
 
-S16 cmStrcmp      ARGS((CONSTANT U8 *s1, CONSTANT U8 *s2));
+S16 cmStrcmp      ARGS((CONSTANT uint8_t *s1, CONSTANT uint8_t *s2));
 /* cm_lib_x_001.main_8:Changing from S16 to MsgLen.*/
-S16 cmStrncmp     ARGS((CONSTANT U8 *s1, CONSTANT U8 *s2, MsgLen len));
-MsgLen cmStrlen   ARGS((CONSTANT U8 *s));
+S16 cmStrncmp     ARGS((CONSTANT uint8_t *s1, CONSTANT uint8_t *s2, MsgLen len));
+MsgLen cmStrlen   ARGS((CONSTANT uint8_t *s));
 
 #ifdef __cplusplus
 }

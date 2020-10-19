@@ -100,16 +100,16 @@ S16 SendE2APMsg(Region region, Pool pool)
 
 S16 BuildGlobalRicId(GlobalRIC_ID_t *ricId)
 {
-   U8 unused = 4;
-   U8 byteSize = 3;
-   U8 val = 1;
+   uint8_t unused = 4;
+   uint8_t byteSize = 3;
+   uint8_t val = 1;
    if(ricId != NULLP)
    {
-      ricId->pLMN_Identity.size = byteSize * sizeof(U8);
+      ricId->pLMN_Identity.size = byteSize * sizeof(uint8_t);
       RIC_ALLOC(ricId->pLMN_Identity.buf,  ricId->pLMN_Identity.size);
       buildPlmnId(ricCfgParams.plmn , &ricId->pLMN_Identity);
       /* fill ric Id */
-      ricId->ric_ID.size = byteSize * sizeof(U8);
+      ricId->ric_ID.size = byteSize * sizeof(uint8_t);
       RIC_ALLOC(ricId->ric_ID.buf, ricId->ric_ID.size);
       fillBitString(&ricId->ric_ID, unused, byteSize, val);
    }
@@ -139,8 +139,8 @@ S16 BuildAndSendE2SetupRsp()
    E2AP_PDU_t         *e2apMsg = NULL;
    E2setupResponse_t  *e2SetupRsp;
    asn_enc_rval_t     encRetVal; 
-   U8 idx;
-   U8 elementCnt;
+   uint8_t            idx;
+   uint8_t            elementCnt;
 
  
    DU_LOG("\nE2AP : Building E2 Setup Response\n");
@@ -204,7 +204,7 @@ S16 BuildAndSendE2SetupRsp()
    BuildGlobalRicId(&(e2SetupRsp->protocolIEs.list.array[idx]->value.choice.GlobalRIC_ID));
 
    xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apMsg);
-   cmMemset((U8 *)encBuf, 0, ENC_BUF_MAX_LEN);
+   cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
    encBufSize = 0;
    encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf, encBuf);
 
@@ -334,14 +334,14 @@ S16 fillSubsDetails(RICaction_ToBeSetup_ItemIEs_t *items)
 S16 BuildRicSubsDetails(RICsubscriptionDetails_t *subsDetails)
 {
 
-   U8 elementCnt;
+   uint8_t elementCnt;
 
    if(subsDetails != NULLP)
    {
       /* Octet string to be build here */
       /* Sending PLMN as Octect string */
-      U8 byteSize = 3;
-      subsDetails->ricEventTriggerDefinition.size = byteSize * sizeof(U8);
+      uint8_t byteSize = 3;
+      subsDetails->ricEventTriggerDefinition.size = byteSize * sizeof(uint8_t);
       RIC_ALLOC(subsDetails->ricEventTriggerDefinition.buf,  subsDetails->ricEventTriggerDefinition.size);
       buildPlmnId(ricCfgParams.plmn, &subsDetails->ricEventTriggerDefinition);
       elementCnt = 1;
@@ -380,13 +380,13 @@ S16 BuildRicSubsDetails(RICsubscriptionDetails_t *subsDetails)
 S16 BuildAndSendRicSubscriptionReq()
 {
 
-   E2AP_PDU_t   *e2apRicMsg = NULL;
+   E2AP_PDU_t                 *e2apRicMsg = NULL;
    RICsubscriptionRequest_t   *ricSubscriptionReq;
-   U8   elementCnt;
-   U8   idx;
-   U8   ieId;
-   S16  ret; 
-   asn_enc_rval_t             encRetVal;        /* Encoder return value */
+   uint8_t         elementCnt;
+   uint8_t         idx;
+   uint8_t         ieId;
+   S16             ret; 
+   asn_enc_rval_t  encRetVal;        /* Encoder return value */
    ricSubsStatus = TRUE;
 
    DU_LOG("\nE2AP : Building RIC Subscription Request\n");
@@ -480,7 +480,7 @@ S16 BuildAndSendRicSubscriptionReq()
    /* Prints the Msg formed */
    xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apRicMsg);
 
-   cmMemset((U8 *)encBuf, 0, ENC_BUF_MAX_LEN);
+   cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
    encBufSize = 0;
    encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apRicMsg, PrepFinalEncBuf,\
                encBuf);
@@ -530,13 +530,13 @@ S16 BuildAndSendRicSubscriptionReq()
 * ****************************************************************/
 void E2APMsgHdlr(Buffer *mBuf)
 {
-   int i;
-   char *recvBuf;
-   MsgLen copyCnt;
-   MsgLen recvBufLen;
-   E2AP_PDU_t *e2apMsg;
-   asn_dec_rval_t rval; /* Decoder return value */
-   E2AP_PDU_t e2apasnmsg ;
+   int             i;
+   char            *recvBuf;
+   MsgLen          copyCnt;
+   MsgLen          recvBufLen;
+   E2AP_PDU_t      *e2apMsg;
+   asn_dec_rval_t  rval; /* Decoder return value */
+   E2AP_PDU_t      e2apasnmsg ;
  
    DU_LOG("\nE2AP : Received E2AP message buffer");
    ODU_PRINT_MSG(mBuf, 0,0);

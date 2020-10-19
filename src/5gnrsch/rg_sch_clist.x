@@ -52,7 +52,7 @@ struct rgSchRrCListCp
 {
    RgSchRrCList *first;       /* first entry in list */
    RgSchRrCList *crnt;        /* entry last accessed */
-   U32     count;        /* number of entries */
+   uint32_t     count;        /* number of entries */
 };
 
 EXTERN Void         rgSCHRrCListInit     ARGS ((RgSchRrCListCp *lList));

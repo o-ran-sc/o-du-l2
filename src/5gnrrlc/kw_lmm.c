@@ -81,7 +81,7 @@ RLCStats gRlcStats;
 RlcCb *rlcCb[MAX_RLC_INSTANCES];
 EXTERN S16 rlcActvTmr ARGS ((Ent ent, Inst inst));
 
-PRIVATE Void rlcLmmSendCfm ARGS ((RlcCb *gCb,Pst *pst,RlcMngmt *cfm,U8 type,
+PRIVATE Void rlcLmmSendCfm ARGS ((RlcCb *gCb,Pst *pst,RlcMngmt *cfm,uint8_t type,
                                  Header *hdr));
 PRIVATE S16 rlcLmmGenCfg ARGS ((RlcCb *gCb, RlcGenCfg *cfg));
 PRIVATE S16 rlcLmmCfgKwuSap ARGS ((RlcCb *gCb,RlcSapCfg *cfg));
@@ -262,7 +262,7 @@ RlcGenCfg   *cfg;
 #if 0
       /* Register the timer */
 /*Pradeep: changing the SRegTmrMt() to SRegTmr()*/
-      if(SRegTmrMt(gCb->init.ent, gCb->init.inst, (U16)cfg->timeRes,
+      if(SRegTmrMt(gCb->init.ent, gCb->init.inst, (uint16_t)cfg->timeRes,
               rlcActvTmr) != ROK)
       {
          RLC_FREE(gCb,gCb->u.dlCb->udxDlSap, rlcUdxSapSize);
@@ -364,7 +364,7 @@ RlcGenCfg   *cfg;
 
       /* Register the timer */
 #if 0
-      if(SRegTmrMt(gCb->init.ent, gCb->init.inst, (U16)cfg->timeRes,
+      if(SRegTmrMt(gCb->init.ent, gCb->init.inst, (uint16_t)cfg->timeRes,
               rlcActvTmr) != ROK)
       {
          RLC_FREE(gCb,gCb->u.ulCb->udxUlSap, rlcUdxSapSize);
@@ -390,7 +390,7 @@ RlcGenCfg   *cfg;
    /* Timer Initialization  */
    gCb->rlcTqCp.tmrLen = RLC_TMR_LEN;
 
-   cmMemset((U8*)gCb->rlcTq, NULLP, sizeof(CmTqType) * RLC_TMR_LEN);
+   cmMemset((uint8_t*)gCb->rlcTq, NULLP, sizeof(CmTqType) * RLC_TMR_LEN);
 
    RLC_MEM_CPY(&(gCb->init.lmPst), &cfg->lmPst, sizeof(Pst));
 
@@ -428,18 +428,18 @@ RlcGenCfg   *cfg;
 PRIVATE Void rlcLmmSendCfm
 (
 RlcCb      *gCb,
-Pst       *pst,                
+Pst        *pst,                
 RlcMngmt   *cfm,               
-U8        type,              
-Header    *hdr              
+uint8_t    type,              
+Header     *hdr              
 )
 #else
 PRIVATE Void rlcLmmSendCfm(gCb,pst, cfm, type, hdr)
 RlcCb      gCb;
-Pst       *pst;            
+Pst        *pst;            
 RlcMngmt   *cfm;           
-U8        type;          
-Header    *hdr;         
+uint8_t    type;          
+Header     *hdr;         
 #endif
 {
    Pst   rPst;   /* Reply post structure */
@@ -505,7 +505,7 @@ Header    *hdr;
          break;
    }
 
-   RETVOID; 
+   return; 
 } 
 
 
@@ -1094,8 +1094,8 @@ RlcL2MeasReqEvt *measReqEvt;
 #endif
 {
    S16            ret = ROK;
-   U16            cntr;
-   U8             measType;
+   uint16_t       cntr;
+   uint8_t        measType;
    RlcL2MeasCfmEvt measCfmEvt;
 
    RlcCb     *tRlcCb;
@@ -1214,19 +1214,19 @@ After receving this request, RLC stops L2 Measurement
 S16 RlcMiLkwL2MeasStopReq
 (
 Pst            *pst,
-U8             measType
+uint8_t             measType
 )
 #else
 S16 RlcMiLkwL2MeasStopReq (pst, measType)
 Pst            *pst;
-U8             measType;
+uint8_t             measType;
 #endif
 {
    S16 ret = ROK;
    RlcL2MeasEvtCb *measEvtCb = NULLP;
 
-   U16            cntr;
-   U8             status = ROK;
+   uint16_t            cntr;
+   uint8_t             status = ROK;
    RlcCb     *tRlcCb;
 
    TRC3(RlcMiLkwL2MeasStopReq);
@@ -1260,7 +1260,7 @@ U8             measType;
       rlcUlUdxL2MeasStopReq(&(RLC_GET_UDX_SAP(tRlcCb)->pst),measType);
       /*return ROK;*/
    }
-   /*cmMemset((U8*)&measCfmEvt, 0, sizeof(RlcL2MeasCfmEvt)); */
+   /*cmMemset((uint8_t*)&measCfmEvt, 0, sizeof(RlcL2MeasCfmEvt)); */
 
    status = LCM_PRIM_OK; 
    RlcMiLkwL2MeasStopCfm(&tRlcCb->genCfg.lmPst, measType,status); 
@@ -1282,17 +1282,17 @@ After receving this request, RLC sends L2 Measurement
 S16 RlcMiLkwL2MeasSendReq
 (
 Pst            *pst,
-U8             measType
+uint8_t             measType
 )
 #else
 S16 RlcMiLkwL2MeasSendReq (pst, measType)
 Pst            *pst;
-U8             measType;
+uint8_t             measType;
 #endif
 {
    /*S16 ret = ROK;*/
    RlcL2MeasEvtCb *measEvtCb = NULLP;
-   U16            cntr;
+   uint16_t            cntr;
    RlcCb     *tRlcCb;
    TRC3(RlcMiLkwL2MeasSendReq);
 
@@ -1603,8 +1603,8 @@ PRIVATE S16 rlcLmmValidateGenCntrl(cntrl)
 RlcMngmt   *cntrl;                
 #endif
 {
-   S16   reason;    /* reason for failure */
-   U8    sAction;   /* subaction field */
+   S16     reason;    /* reason for failure */
+   uint8_t sAction;   /* subaction field */
 
    TRC2(rlcLmmValidateGenCntrl);
 
@@ -1731,7 +1731,7 @@ RlcCb   *gCb;
       gCb->init.usta = FALSE;
    }
 
-   RETVOID;
+   return;
 }
 
 /**
@@ -1760,7 +1760,7 @@ RlcCb   *gCb;
 #endif
 {
    RlcRguSapCb   *rguSap;
-   U32          idx;
+   uint32_t          idx;
 
    TRC2(rlcLmmShutdown)
 
@@ -2351,43 +2351,43 @@ Action    action;
 #ifdef ANSI
 Void rlcLmmSendAlarm
 (
-RlcCb   *gCb,
-U16    category,  
-U16    event,    
-U16    cause,   
-SuId   suId,   
-U32    ueId,  
-U8     qci   
+RlcCb      *gCb,
+uint16_t    category,  
+uint16_t    event,    
+uint16_t    cause,   
+SuId        suId,   
+uint32_t    ueId,  
+uint8_t     qci   
 )
 #else
 Void rlcLmmSendAlarm(category, event, cause, suId, ueId, qci)
 RlcCb   *gCb;
-U16    category; 
-U16    event;   
-U16    cause;  
-SuId   suId;  
-U32    ueId; 
-U8     qci;    
+uint16_t    category; 
+uint16_t    event;   
+uint16_t    cause;  
+SuId        suId;  
+uint32_t    ueId; 
+uint8_t     qci;    
 #endif
 #else /* LTE_L2_MEAS */
 #ifdef ANSI
 Void rlcLmmSendAlarm
 (
-RlcCb   *gCb,
-U16    category, 
-U16    event,   
-U16    cause,  
-SuId   suId,  
-U32    ueId  
+RlcCb       *gCb,
+uint16_t    category, 
+uint16_t    event,   
+uint16_t    cause,  
+SuId        suId,  
+uint32_t    ueId  
 )
 #else
 Void rlcLmmSendAlarm(category, event, cause, suId, ueId)
-RlcCb   *gCb;
-U16    category; 
-U16    event;   
-U16    cause;  
-SuId   suId;  
-U32    ueId; 
+RlcCb       *gCb;
+uint16_t    category; 
+uint16_t    event;   
+uint16_t    cause;  
+SuId        suId;  
+uint32_t    ueId; 
 #endif
 #endif /* LTE_L2_MEAS */
 {
@@ -2397,7 +2397,7 @@ U32    ueId;
 
    if(gCb->init.usta == FALSE)
    {
-      RETVOID;
+      return;
    }
 
    usta.hdr.elmId.elmnt = STGEN;
@@ -2424,7 +2424,7 @@ U32    ueId;
 
    RlcMiLkwStaInd(&(gCb->init.lmPst), &usta);
 
-   RETVOID;
+   return;
 
 } 
 
@@ -2467,7 +2467,7 @@ Buffer   *mBuf;
                      event,
                      gCb->trcLen);
 
-   cmMemset((U8 *)&trc, 0, sizeof(RlcMngmt));
+   cmMemset((uint8_t *)&trc, 0, sizeof(RlcMngmt));
 
    pst = gCb->init.lmPst;
 

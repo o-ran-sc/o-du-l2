@@ -51,29 +51,29 @@ extern "C" {
 
 typedef struct rgmPrbRprtCfg
 {
-   U16   usPrbAvgPeriodicty; /* It is in milli sec */
-   U8    bConfigType;
-   U8    bCellId;
+   uint16_t   usPrbAvgPeriodicty; /* It is in milli sec */
+   uint8_t    bConfigType;
+   uint8_t    bCellId;
 }RgmPrbRprtCfg;
 
 /* RRM_SP1_START */
 typedef struct rgmPrbRptPerQci
 {
-   U8       bQci;
-   U8       bAvgPrbUlUsage;
-   U8       bAvgPrbDlUsage;
+   uint8_t       bQci;
+   uint8_t       bAvgPrbUlUsage;
+   uint8_t       bAvgPrbDlUsage;
 }RgmPrbRptPerQci;
 
 typedef struct rgmPrbRprtInd
 {
    RgmPrbRptPerQci   stQciPrbRpts[RGM_MAX_QCI_REPORTS];
 /* RRM_SP1_END */
-   U8                bCellId;
+   uint8_t                bCellId;
    /* TDD: DL PRB Usage pres = 2 and 
     *      UL PRB Usage pres = 1 
     * FDD: DL and UL Usage Pres = 3     
     */
-   U8                bPrbUsageMask; 
+   uint8_t                bPrbUsageMask; 
 }RgmPrbRprtInd;
 
 typedef enum
@@ -91,8 +91,8 @@ typedef enum
 typedef struct rgmTransModeInd
 {
    RgmTxnMode       eMode;         /* Indicate TM Mode */ 
-   U16              usCrnti;       /* UE Crnti value     */
-   U8               bCellId;       /* Cell Id */
+   uint16_t              usCrnti;       /* UE Crnti value     */
+   uint8_t               bCellId;       /* Cell Id */
 }RgmTransModeInd;
 /***********************************************************************
           type definitions for upper layer interface - RLC primitives
@@ -112,7 +112,7 @@ typedef S16 (*RgmUbndReq) ARGS((
 typedef S16 (*RgmBndCfm) ARGS((
    Pst*                 pst,
    SuId                 suId,
-   U8                   status));
+   uint8_t                   status));
 /** @brief Data Request from RLC to MAC for forwarding SDUs on common
  * channel for transmission */
 typedef S16 (*RgmCfgPrbRprtFptr) ARGS((
@@ -152,7 +152,7 @@ EXTERN S16 RgUiRgmUbndReq ARGS((Pst* pst,SpId spId,Reason reason));
  * @param status Status of the bind request. 
  * @return ROK/RFAILED
 */
-EXTERN S16 RgUiRgmBndCfm ARGS((Pst* pst,SuId suId,U8 status));
+EXTERN S16 RgUiRgmBndCfm ARGS((Pst* pst,SuId suId,uint8_t status));
 /** @brief Data Request from RLC to MAC for forwarding SDUs on common
  * channel for transmission 
  * @param pst Pointer to the post structure.
@@ -190,7 +190,7 @@ EXTERN S16 RmLiRgmUbndReq ARGS((
 EXTERN S16 RmLiRgmBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
-   U8                   status
+   uint8_t                   status
 ));
 /** @brief Request from RLC to MAC for forwarding SDUs on common
  * channel for transmission */
@@ -245,7 +245,7 @@ EXTERN S16 cmUnpkLwLcRgmUbndReq ARGS((
 EXTERN S16 cmPkLwLcRgmBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
-   U8                   status
+   uint8_t                   status
 ));
 /** @brief Confirmation from MAC to RLC for the bind/Unbind 
  * request for the interface saps */
@@ -314,7 +314,7 @@ EXTERN S16 cmUnpkRgmUbndReq ARGS((
 EXTERN S16 cmPkRgmBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
-   U8                   status
+   uint8_t                   status
 ));
 /** @brief Confirmation from MAC to RLC for the bind/Unbind 
  * request for the interface saps */

@@ -46,15 +46,15 @@ typedef struct ssmsgb    SsMblk;
 /* data block */
 struct ssdatab
 {
-   U8                   db_ref;                 /* reference count */
-   U8                   db_type;                /* type of data block */
+   uint8_t                   db_ref;                 /* reference count */
+   uint8_t                   db_type;                /* type of data block */
 	/* ss006.301 */
    Bool                 shared;                 /* is this data block shared ? */
 #ifndef  SS_DBUF_REFLOCK_DISABLE
    SLockId              dBufLock;              /* Lock per Dbuf */
 #endif
-   U8                   *db_base;               /* base of data buffer */
-   U8                   *db_lim;                /* limit of data buffer */
+   uint8_t                   *db_base;               /* base of data buffer */
+   uint8_t                   *db_lim;                /* limit of data buffer */
 	/* ss008.301 - deprecating for normal OS, useful for Cavium/RMI OS*/
 #ifdef SS_DBLK_FREE_RTN
    struct ssfree_rtn    *db_frtnp;             /* free routine */
@@ -79,19 +79,19 @@ typedef struct ssfree_rtn SsFrtn;
 /* STREAMS functions prototypes */
 S16      ssStrmCfg ARGS((Region, Region));
 S32      ssAdjMsg ARGS((SsMblk *, S32));
-SsMblk   *ssAllocB ARGS((S32, U32));
+SsMblk   *ssAllocB ARGS((S32, uint32_t));
 SsMblk   *ssCopyB ARGS((SsMblk *));
 SsMblk   *ssCopyMsg ARGS((SsMblk *));
 SsMblk   *ssDupB ARGS((SsMblk *));
 SsMblk   *ssDupMsg ARGS((SsMblk *));
-SsMblk   *ssESBAlloc ARGS((U8 *, S32, S32, SsFrtn *));
+SsMblk   *ssESBAlloc ARGS((uint8_t *, S32, S32, SsFrtn *));
 void     ssFreeB ARGS((SsMblk *));
 void     ssFreeMsg ARGS((SsMblk *));
 void     ssLinkB ARGS((SsMblk *, SsMblk *));
 S32      ssMsgDSize ARGS((SsMblk *));
 S32      ssPullupMsg ARGS((SsMblk *, S32));
 SsMblk   *ssRmvB ARGS((SsMblk *, SsMblk *));
-S32      ssTestB ARGS((S32, U32));
+S32      ssTestB ARGS((S32, uint32_t));
 SsMblk   *ssUnlinkB ARGS((SsMblk *));
 
 

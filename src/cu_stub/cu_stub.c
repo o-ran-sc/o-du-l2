@@ -125,13 +125,12 @@ uint8_t tst()
 
 void readCuCfg()
 {
-   U32 ipv4_du, ipv4_cu;
+   uint32_t ipv4_du, ipv4_cu;
 
    DU_LOG("\nReading CU configurations");
 
    cmInetAddr((S8*)DU_IP_V4_ADDR, &ipv4_du);
    cmInetAddr((S8*)CU_IP_V4_ADDR, &ipv4_cu);
-   //U32 ipv6_int = inet_addr(DU_IP_V6_ADDR);
  
    cuCfgParams.cuId = CU_ID;
    strcpy(cuCfgParams.cuName, CU_NAME);

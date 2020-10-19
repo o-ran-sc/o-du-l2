@@ -29,8 +29,8 @@
 framework.
 ****************************************************************************/
 
+#include"stdint.h"
 #include "rl_interface.h"
-
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/socket.h>

@@ -139,7 +139,7 @@
    if(((_rlcRbCb)->rlcId.rbType == CM_LTE_DRB) &&                    \
       ((_rlcCb)->u.dlCb->rlcL2Cb.measOn[_rlcRbCb->qci] & LKW_L2MEAS_DL_DISC))   \
    {                                                              \
-      U32 idx1;                                                    \
+      uint32_t idx1;                                                    \
       for (idx1 = 0; idx1 < LKW_MAX_L2MEAS; idx1++)                  \
       {                                                           \
          if(_rlcCb->u.dlCb->rlcL2Cb.rlcL2EvtCb[idx1].measCb.measType & LKW_L2MEAS_DL_DISC)                 \
@@ -150,7 +150,7 @@
                if (_rlcCb->u.dlCb->rlcL2Cb.rlcL2EvtCb[idx1].measCb.val.nonIpThMeas.measData[(_rlcRbCb)->qci].totDrbsPerQci == 0) \
                {                                                                                                 \
                   _rlcCb->u.dlCb->rlcL2Cb.rlcL2EvtCb[idx1].measCb.val.nonIpThMeas.qci[(_rlcRbCb)->qci] = 0;                      \
-                  cmMemset((U8 *)&_rlcCb->u.dlCb->rlcL2Cb.rlcL2EvtCb[idx1].measCb.val.nonIpThMeas.measData[(_rlcRbCb)->qci], 0,  \
+                  cmMemset((uint8_t *)&_rlcCb->u.dlCb->rlcL2Cb.rlcL2EvtCb[idx1].measCb.val.nonIpThMeas.measData[(_rlcRbCb)->qci], 0,  \
                      sizeof(_rlcCb->u.dlCb->rlcL2Cb.rlcL2EvtCb[idx1].measCb.val.nonIpThMeas.measData[(_rlcRbCb)->qci]));            \
                }                                                                                                 \
             }                                                                                                    \

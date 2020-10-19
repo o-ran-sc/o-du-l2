@@ -47,12 +47,12 @@
 /* allocate and zero out a static buffer */
 #define SCH_ALLOC(_datPtr, _size)                               \
 {                                                               \
-   int _ret;                                                    \
+   uint8_t _ret;                                                    \
    _ret = SGetSBuf(SCH_MEM_REGION, SCH_POOL,                    \
           (Data **)&_datPtr, _size);                             \
    if(_ret == ROK)                                              \
    {                                                            \
-      memset((U8*)_datPtr, 0, _size);                         \
+      memset((uint8_t*)_datPtr, 0, _size);                         \
    }                                                            \
    else                                                         \
    {                                                            \

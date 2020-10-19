@@ -183,13 +183,13 @@ S16 cmPkRgrBndCfm
 (
 Pst* pst,
 SuId suId,
-U8 status
+uint8_t status
 )
 #else
 S16 cmPkRgrBndCfm(pst, suId, status)
 Pst* pst;
 SuId suId;
-U8 status;
+uint8_t status;
 #endif
 {
    Buffer *mBuf = NULLP;
@@ -257,7 +257,7 @@ Buffer *mBuf;
 #endif
 {
    SuId suId;
-   U8 status;
+   uint8_t status;
    
    TRC3(cmUnpkRgrBndCfm)
 
@@ -468,7 +468,7 @@ Buffer *mBuf;
       SPutMsg(mBuf);
       return RFAILED;
    }
-   cmMemset((U8 *)cfgReqInfo, 0, sizeof(RgrCfgReqInfo));
+   cmMemset((uint8_t *)cfgReqInfo, 0, sizeof(RgrCfgReqInfo));
    if (pst->selector == ODU_SELECTOR_LC) 
       if (cmUnpkRgrCfgReqInfo(cfgReqInfo, mBuf) != ROK) {
          SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(RgrCfgReqInfo));
@@ -711,13 +711,13 @@ S16 cmPkRgrCfgCfm
 (
 Pst* pst,
 RgrCfgTransId transId,
-U8 status
+uint8_t status
 )
 #else
 S16 cmPkRgrCfgCfm(pst, transId, status)
 Pst* pst;
 RgrCfgTransId transId;
-U8 status;
+uint8_t status;
 #endif
 {
    Buffer *mBuf = NULLP;
@@ -784,7 +784,7 @@ Buffer *mBuf;
 #endif
 {
    RgrCfgTransId transId;
-   U8 status;
+   uint8_t status;
    
    TRC3(cmUnpkRgrCfgCfm)
 
@@ -833,14 +833,14 @@ S16 cmPkRgrSiCfgCfm
 Pst* pst,
 SuId suId,
 RgrCfgTransId transId,
-U8 status
+uint8_t status
 )
 #else
 S16 cmPkRgrSiCfgCfm(pst, suId, transId, status)
 Pst* pst;
 SuId suId;
 RgrCfgTransId transId;
-U8 status;
+uint8_t status;
 #endif
 {
    Buffer *mBuf = NULLP;
@@ -919,7 +919,7 @@ Buffer *mBuf;
 {
    SuId suId;
    RgrCfgTransId transId;
-   U8 status;
+   uint8_t status;
    
    TRC3(cmUnpkRgrSiCfgCfm)
 
@@ -1939,12 +1939,12 @@ Buffer *mBuf;
 {
 
      S32 i;
-     U32 tmpEnum; 
+     uint32_t tmpEnum; 
      TRC3(cmUnpkRgrEmtcSiCfg)
      		 CMCHKUNPK(oduPackUInt8, &param->numSi, mBuf); 
 
 	  for (i=0; i < param->numSi ; i++) {
-   	  	 CMCHKUNPK(oduPackUInt32,(U32*)&tmpEnum,mBuf);
+   	  	 CMCHKUNPK(oduPackUInt32,(uint32_t*)&tmpEnum,mBuf);
 	  		 param->siPeriodicity[i] = (RgrSiPeriodicity) tmpEnum;
      }   
 
@@ -1970,7 +1970,7 @@ Buffer *mBuf;
      CMCHKUNPK(oduPackUInt8, &param->siRepetition, mBuf);
      CMCHKUNPK(oduPackUInt8, &param->sib1Repetition, mBuf);
      CMCHKUNPK(oduPackUInt8, &param->siWinSizeBr, mBuf);
-     CMCHKUNPK(oduPackUInt32, (U32*)&tmpEnum, mBuf);
+     CMCHKUNPK(oduPackUInt32, (uint32_t*)&tmpEnum, mBuf);
      param->modPrd = (RgrModPeriodicity) tmpEnum;
      CMCHKUNPK(oduPackUInt8, &param->siHoppingEnable, mBuf);
 
@@ -2272,11 +2272,11 @@ RgrPhichCfg *param;
 Buffer *mBuf;
 #endif
 {
-   U32 tmpEnum;
+   uint32_t tmpEnum;
 
    TRC3(cmUnpkRgrPhichCfg)
 
-   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&tmpEnum, mBuf);
    param->ngEnum = (RgrPhichNg) tmpEnum;
    CMCHKUNPK(oduPackUInt8, &param->isDurExtend, mBuf);
    return ROK;
@@ -2432,14 +2432,14 @@ RgrSrsCfg *param;
 Buffer *mBuf;
 #endif
 {
-   U32 tmpEnum;
+   uint32_t tmpEnum;
 
    TRC3(cmUnpkRgrSrsCfg)
 
    CMCHKUNPK(oduPackUInt8, &param->isSrsCfgSetup, mBuf);
-   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&tmpEnum, mBuf);
    param->srsCfgPrdEnum = (RgrSrsCfgPrd) tmpEnum;
-   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&tmpEnum, mBuf);
    param->srsBwEnum = (RgrSrsBwCfg) tmpEnum;
    CMCHKUNPK(oduPackUInt8, &param->srsSubFrameCfg, mBuf);
    return ROK;
@@ -2527,7 +2527,7 @@ RgrRachCfg *param;
 Buffer *mBuf;
 #endif
 {
-   U32 tmpEnum;
+   uint32_t tmpEnum;
 
    S32 i;
    TRC3(cmUnpkRgrRachCfg)
@@ -2539,7 +2539,7 @@ Buffer *mBuf;
    CMCHKUNPK(oduPackUInt8, &param->preambleFormat, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->raWinSize, mBuf);
       CMCHKUNPK(oduPackUInt8, &param->raOccasion.size, mBuf);
-   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&tmpEnum, mBuf);
    param->raOccasion.sfnEnum = (RgrRaSfn) tmpEnum;
       for (i=0; i<param->raOccasion.size; i++) {
          CMCHKUNPK(oduPackUInt8, &param->raOccasion.subFrameNum[i], mBuf);
@@ -2595,12 +2595,12 @@ Buffer *mBuf;
                        sizeof(param->siPeriodicity[0]);
 
    for (idx=param->numSi-1; idx >= 0; idx--) {
-   /* Enum to be packed/unpacked as U32 instead of S32 */
+   /* Enum to be packed/unpacked as uint32_t instead of S32 */
       CMCHKPK(oduUnpackUInt32, param->siPeriodicity[idx], mBuf);
    }
    CMCHKPK(oduUnpackUInt8, param->numSi, mBuf);
    /*rgr_c_001.main_9 ccpu00115364 MOD changed modPrd to enum*/
-   CMCHKPK(oduUnpackUInt32, (U32)param->modPrd, mBuf);
+   CMCHKPK(oduUnpackUInt32, (uint32_t)param->modPrd, mBuf);
 #endif/*RGR_SI_SCH*/
    CMCHKPK(oduUnpackUInt8, param->retxCnt, mBuf);
    CMCHKPK(oduUnpackUInt8, param->siWinSize, mBuf);
@@ -2636,7 +2636,7 @@ RgrSiCfg *param;
 Buffer *mBuf;
 #endif
 {
-   U32 tmpEnum;
+   uint32_t tmpEnum;
    /* rgr_c_001.main_4:MOD-Modified for SI Enhancement. */
 #ifdef RGR_SI_SCH
    S16 idx;
@@ -2648,7 +2648,7 @@ Buffer *mBuf;
    CMCHKUNPK(oduPackUInt8, &param->retxCnt, mBuf);
 #ifdef RGR_SI_SCH
    /*rgr_c_001.main_9 ccpu00115364 MOD changed modPrd to enum*/
-   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&tmpEnum, mBuf);
    param->modPrd = (RgrModPeriodicity) tmpEnum;
    CMCHKUNPK(oduPackUInt8, &param->numSi, mBuf);
 
@@ -2657,9 +2657,9 @@ Buffer *mBuf;
       param->numSi = sizeof(param->siPeriodicity)/
                        sizeof(param->siPeriodicity[0]);
 
-   /* Enum to be packed/unpacked as U32 instead of S32 */
+   /* Enum to be packed/unpacked as uint32_t instead of S32 */
    for (idx=0; idx < param->numSi; idx++) {
-      CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
+      CMCHKUNPK(oduPackUInt32, (uint32_t *)&tmpEnum, mBuf);
       param->siPeriodicity[idx] = (RgrSiPeriodicity) tmpEnum;
    }
 #endif/*RGR_SI_SCH*/
@@ -2813,12 +2813,12 @@ RgrUlPwrCfg *param;
 Buffer *mBuf;
 #endif
 {
-   U32 tmpEnum;
+   uint32_t tmpEnum;
 
    TRC3(cmUnpkRgrUlPwrCfg)
 
    CMCHKUNPK(SUnpkS8, &param->p0NominalPusch, mBuf);
-   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&tmpEnum, mBuf);
    param->alpha = (RgrPwrAlpha) tmpEnum;
    CMCHKUNPK(SUnpkS8, &param->p0NominalPucch, mBuf);
    CMCHKUNPK(SUnpkS8, &param->deltaPreambleMsg3, mBuf);
@@ -3287,12 +3287,12 @@ RgrTddPrachInfo *param;
 Buffer *mBuf;
 #endif
 {
-   U32 tmpEnum;
+   uint32_t tmpEnum;
 
    TRC3(cmUnpkRgrTddPrachInfo)
 
    CMCHKUNPK(oduPackUInt8, &param->freqIdx, mBuf);
-   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&tmpEnum, mBuf);
    param->sfn = tmpEnum;
    CMCHKUNPK(oduPackUInt8, &param->halfFrm, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->ulStartSfIdx, mBuf);
@@ -3555,7 +3555,7 @@ Buffer           *mBuf
    for (idx = MAX_5GTF_SUBFRAME_INFO - 1; idx >= 0 ;--idx)
    {
 
-      CMCHKPK(oduUnpackUInt32, param->dynConfig[(U8)idx], mBuf);
+      CMCHKPK(oduUnpackUInt32, param->dynConfig[(uint8_t)idx], mBuf);
    }
    CMCHKPK(oduUnpackUInt8, param->uePerGrp, mBuf);
    CMCHKPK(oduUnpackUInt8, param->ueGrpPerTti, mBuf);
@@ -3583,7 +3583,7 @@ Buffer           *mBuf
    for (idx = 0; idx < MAX_5GTF_SUBFRAME_INFO ; ++idx)
    {
 
-      CMCHKUNPK(oduPackUInt32, &param->dynConfig[(U8)idx], mBuf);
+      CMCHKUNPK(oduPackUInt32, &param->dynConfig[(uint8_t)idx], mBuf);
    }
    return ROK;
 }
@@ -3761,10 +3761,10 @@ S16 cmPkRgrAbsConfig(param, mBuf)
    S8   indx = 0;
 
    TRC3(cmPkRgrAbsConfig)
-   CMCHKPK(oduUnpackUInt32, (U32)param->status, mBuf);
+   CMCHKPK(oduUnpackUInt32, (uint32_t)param->status, mBuf);
    for (indx = RGR_ABS_PATTERN_LEN-1; indx >= 0; indx--) 
    {
-      CMCHKPK(oduUnpackUInt8, param->absPattern[(U8)indx], mBuf);
+      CMCHKPK(oduUnpackUInt8, param->absPattern[(uint8_t)indx], mBuf);
    }
 
    CMCHKPK(oduUnpackUInt32, param->absPatternType, mBuf);
@@ -3802,7 +3802,7 @@ S16 cmPkRgrSfrConfig(param, mBuf)
 {
    TRC3(cmPkRgrSfrConfig)
 
-   CMCHKPK(oduUnpackUInt32, (U32)param->status, mBuf);
+   CMCHKPK(oduUnpackUInt32, (uint32_t)param->status, mBuf);
 #ifdef TFU_UPGRADE   
    CMCHKPK(oduUnpackUInt32, param->pwrThreshold.pHigh, mBuf);
    CMCHKPK(oduUnpackUInt32, param->pwrThreshold.pLow, mBuf);
@@ -3844,7 +3844,7 @@ S16 cmPkRgrDsfrConfig(param, mBuf)
 {
    TRC3(cmPkRgrDsfrConfig)
 
-   CMCHKPK(oduUnpackUInt32, (U32)param->status, mBuf);
+   CMCHKPK(oduUnpackUInt32, (uint32_t)param->status, mBuf);
 
    return ROK;
 
@@ -3880,7 +3880,7 @@ S16 cmUnpkRgrDsfrConfig(param, mBuf)
 {
    TRC3(cmUnpkRgrDsfrConfig)
 
-   CMCHKUNPK(oduPackUInt32, (U32 *)&param->status, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->status, mBuf);
    return ROK;
 
 }
@@ -3960,9 +3960,9 @@ S16 cmUnpkRgrAbsConfig(param, mBuf)
    CMCHKUNPK(oduPackUInt32, &param->absPatternType, mBuf);
    for (indx = 0; indx <RGR_ABS_PATTERN_LEN; indx++) 
    {
-      CMCHKUNPK(oduPackUInt8, &param->absPattern[(U8)indx], mBuf);
+      CMCHKUNPK(oduPackUInt8, &param->absPattern[(uint8_t)indx], mBuf);
    }
-   CMCHKUNPK(oduPackUInt32, (U32*)&param->status, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t*)&param->status, mBuf);
 
    return ROK;
 
@@ -4001,10 +4001,10 @@ S16 cmUnpkRgrSfrConfig(param, mBuf)
    CMCHKUNPK(oduPackUInt8, &param->cellEdgeRbRange.startRb, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->cellEdgeRbRange.endRb, mBuf);
 #ifdef TFU_UPGRADE   
-   CMCHKUNPK(oduPackUInt32, (U32*)&param->pwrThreshold.pLow, mBuf);
-   CMCHKUNPK(oduPackUInt32, (U32*)&param->pwrThreshold.pHigh, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t*)&param->pwrThreshold.pLow, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t*)&param->pwrThreshold.pHigh, mBuf);
 #endif   
-   CMCHKUNPK(oduPackUInt32, (U32*)&param->status, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t*)&param->status, mBuf);
 
    return ROK;
 }
@@ -4351,7 +4351,7 @@ Buffer *mBuf;
    CMCHKPK(oduPackUInt16, &param->phichTxPwrOffset, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->isDynCfiEnb, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->isAutoCfgModeEnb, mBuf);
-   CMCHKPK(oduPackUInt32, (U32*)&param->msg4pAVal, mBuf);
+   CMCHKPK(oduPackUInt32, (uint32_t*)&param->msg4pAVal, mBuf);
    /*LAA: Unpack LAA Cell params*/
    CMCHKUNPK(cmUnpkRgrLteUCellCfg, &param->lteUCfg, mBuf);
    #ifdef LTE_ADV
@@ -4434,12 +4434,12 @@ RgrUeAprdDlCqiCfg *param;
 Buffer *mBuf;
 #endif
 {
-   U32 tmpEnum;
+   uint32_t tmpEnum;
 
    TRC3(cmUnpkRgrUeAprdDlCqiCfg)
 
    CMCHKUNPK(oduPackUInt8, &param->pres, mBuf);
-   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&tmpEnum, mBuf);
    param->aprdModeEnum = (RgrAprdCqiMode) tmpEnum;
 
 #ifdef LTE_ADV
@@ -4524,14 +4524,14 @@ RgrUePrdDlCqiCfg *param;
 Buffer *mBuf;
 #endif
 {
-   U32 tmpEnum;
+   uint32_t tmpEnum;
 
    TRC3(cmUnpkRgrUePrdDlCqiCfg)
 
    CMCHKUNPK(oduPackUInt8, &param->pres, mBuf);
-   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&tmpEnum, mBuf);
    param->prdModeEnum = tmpEnum;
-   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&tmpEnum, mBuf);
    param->prdicityEnum = tmpEnum;
    CMCHKUNPK(oduPackUInt8, &param->subframeOffst, mBuf);
    CMCHKUNPK(SUnpkS8, &param->cqiOffst, mBuf);
@@ -4616,7 +4616,7 @@ RgrUeDlPCqiSetup *param;
 Buffer *mBuf;
 #endif
 {
-   U32 tmpEnum;
+   uint32_t tmpEnum;
 
    TRC3(cmUnpkRgrUeDlPCqiSetup)
 
@@ -4628,7 +4628,7 @@ Buffer *mBuf;
    /*rgr_c_001.main_9 DEL removed unwanted comments*/
    CMCHKUNPK(oduPackUInt16, &param->riCfgIdx, mBuf); 
    CMCHKUNPK(oduPackUInt8, &param->sANCQI, mBuf);
-   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&tmpEnum, mBuf);
    param->prdModeEnum = (RgrPrdCqiMode) tmpEnum;
    return ROK;
 }
@@ -4782,17 +4782,17 @@ RgrUeUlSrsSetupCfg *param;
 Buffer *mBuf;
 #endif
 {
-   U32 tmpEnum;
+   uint32_t tmpEnum;
 
    TRC3(cmUnpkRgrUeUlSrsSetupCfg)
 
    /*rgr_c_001.main_9 DEL removed unwanted comments*/
    CMCHKUNPK(oduPackUInt16, &param->srsCfgIdx, mBuf); 
-   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&tmpEnum, mBuf);
    param->srsBw = (RgrUlSrsBwInfo) tmpEnum;
-   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&tmpEnum, mBuf);
    param->srsHopBw = (RgrUlSrsHoBwInfo) tmpEnum;
-   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&tmpEnum, mBuf);
    param->cycShift = (RgrUlSrsCycShiftInfo) tmpEnum;
    CMCHKUNPK(oduPackUInt8, &param->duration, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->sANSrs, mBuf);
@@ -5586,13 +5586,13 @@ RgrUeAckNackRepCfg *param;
 Buffer *mBuf;
 #endif
 {
-   U32 tmpEnum;
+   uint32_t tmpEnum;
 
    TRC3(cmUnpkRgrUeAckNackRepCfg)
 
    CMCHKUNPK(oduPackUInt8, &param->isAckNackEnabled, mBuf);
    CMCHKUNPK(oduPackUInt16, &param->pucchAckNackRep, mBuf);
-   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&tmpEnum, mBuf);
    param->ackNackRepFactor = (RgrAckNackRepFactor) tmpEnum;
    return ROK;
 }
@@ -5665,15 +5665,15 @@ RgrUeTxModeCfg *param;
 Buffer *mBuf;
 #endif
 {
-   U32 tmpEnum;
+   uint32_t tmpEnum;
 
    TRC3(cmUnpkRgrUeTxModeCfg)
 
    CMCHKUNPK(oduPackUInt8, &param->pres, mBuf);
-   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&tmpEnum, mBuf);
    param->tmTrnstnState = (RgrTxModeTrnstn) tmpEnum;
 
-   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&tmpEnum, mBuf);
    param->txModeEnum = (RgrTxMode) tmpEnum;
    return ROK;
 }
@@ -5901,7 +5901,7 @@ RgrUeSpsDlCfg *param;
 Buffer *mBuf;
 #endif
 {
-   U32 tmpEnum;
+   uint32_t tmpEnum;
 
    S32 i;
    TRC3(cmUnpkRgrUeSpsDlCfg)
@@ -5912,7 +5912,7 @@ Buffer *mBuf;
    for (i=0; i<param->numPucchVal; i++) {
       CMCHKUNPK(oduPackUInt32, &param->n1PucchVal[i], mBuf);
    }
-   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&tmpEnum, mBuf);
    param->dlSpsPrdctyEnum = tmpEnum;
    CMCHKUNPK(oduPackUInt16, &param->explicitRelCnt, mBuf);
    return ROK;
@@ -6002,13 +6002,13 @@ RgrUeSpsUlCfg *param;
 Buffer *mBuf;
 #endif
 {
-   U32 tmpEnum;
+   uint32_t tmpEnum;
 
    S32 i;
    TRC3(cmUnpkRgrUeSpsUlCfg)
 
    CMCHKUNPK(oduPackUInt8, &param->isUlSpsEnabled, mBuf);
-   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&tmpEnum, mBuf);
    param->implicitRelCnt = tmpEnum;
 
 #ifdef LTE_TDD
@@ -6018,7 +6018,7 @@ Buffer *mBuf;
    CMCHKUNPK(oduPackUInt8, &param->pwrCfgPres, mBuf);
       CMCHKUNPK(SUnpkS8, &param->pwrCfg.p0NominalPuschVal, mBuf);
       CMCHKUNPK(SUnpkS8, &param->pwrCfg.p0UePuschVal, mBuf);
-   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&tmpEnum, mBuf);
    param->ulSpsPrdctyEnum = tmpEnum;
    CMCHKUNPK(oduPackUInt8, &param->lcCnt, mBuf); 
    for (i=0; i<param->lcCnt; i++) {
@@ -6406,12 +6406,12 @@ RgrUeTxAntSelCfg *param;
 Buffer *mBuf;
 #endif
 {
-   U32 tmpEnum;
+   uint32_t tmpEnum;
 
    TRC3(cmUnpkRgrUeTxAntSelCfg)
 
    CMCHKUNPK(oduPackUInt8, &param->pres, mBuf);
-   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&tmpEnum, mBuf);
    param->selType = (RgrUeTxAntSelType) tmpEnum;
    return ROK;
 }
@@ -6526,8 +6526,8 @@ Buffer *mBuf;
       CMCHKUNPK(oduPackUInt8,&(epdcchAddModLst->extaddgrp2.mpddchPdschHop),mBuf);
       CMCHKUNPK(oduPackUInt8,&(epdcchAddModLst->extaddgrp2.csiNumRep),mBuf);
       CMCHKUNPK(oduPackUInt8,&(epdcchAddModLst->extaddgrp2.pres),mBuf);
-      CMCHKUNPK(cmUnpkTknU8,&(epdcchAddModLst->mpdcchNumPRBpair),mBuf);
-      CMCHKUNPK(cmUnpkTknU32,&(epdcchAddModLst->pdschRemapQLcfgId),mBuf);
+      CMCHKUNPK(cmUnpkTknUInt8,&(epdcchAddModLst->mpdcchNumPRBpair),mBuf);
+      CMCHKUNPK(cmUnpkTknUInt32,&(epdcchAddModLst->pdschRemapQLcfgId),mBuf);
       CMCHKUNPK(oduPackUInt32,&(epdcchAddModLst->pucchResStartoffset),mBuf);
       CMCHKUNPK(oduPackUInt32,&(epdcchAddModLst->dmrsScrambSeq),mBuf);
       for(idx = 0; idx < 5; idx++)
@@ -6540,7 +6540,7 @@ Buffer *mBuf;
       CMCHKUNPK(oduPackUInt8,&(epdcchAddModLst->setConfigId),mBuf);
 
    }
-   CMCHKUNPK(cmUnpkTknU32,&(emtcEpdcchCfg->startSymbolr11),mBuf);
+   CMCHKUNPK(cmUnpkTknUInt32,&(emtcEpdcchCfg->startSymbolr11),mBuf);
    for(indx = 0; indx < 5; indx++)
    {
       CMCHKUNPK(oduPackUInt8,&(emtcEpdcchCfg->sfPtn.measSfPatFDD[indx]),mBuf);
@@ -6612,7 +6612,7 @@ S16 cmPkRgrEmtcUeCfg
    {
       CMCHKPK(oduUnpackUInt8,emtcEpdcchCfg->sfPtn.measSfPatFDD[indx],mBuf);
    }
-   CMCHKPK(cmPkTknU32,&emtcEpdcchCfg->startSymbolr11,mBuf);
+   CMCHKPK(cmPkTknUInt32,&emtcEpdcchCfg->startSymbolr11,mBuf);
    for(indx = RGR_MAX_EPDCCH_SET-1 ; indx >= 0; indx--)
    {
       epdcchAddModLst =  &(emtcEpdcchCfg->epdcchAddModLst[indx]);
@@ -6626,8 +6626,8 @@ S16 cmPkRgrEmtcUeCfg
       }
       CMCHKPK(oduUnpackUInt32,epdcchAddModLst->dmrsScrambSeq,mBuf);
       CMCHKPK(oduUnpackUInt32,epdcchAddModLst->pucchResStartoffset,mBuf);
-      CMCHKPK(cmPkTknU32,&(epdcchAddModLst->pdschRemapQLcfgId),mBuf);
-      CMCHKPK(cmPkTknU8,&(epdcchAddModLst->mpdcchNumPRBpair),mBuf);
+      CMCHKPK(cmPkTknUInt32,&(epdcchAddModLst->pdschRemapQLcfgId),mBuf);
+      CMCHKPK(cmPkTknUInt8,&(epdcchAddModLst->mpdcchNumPRBpair),mBuf);
       CMCHKPK(oduUnpackUInt8,epdcchAddModLst->extaddgrp2.pres,mBuf);
       CMCHKPK(oduUnpackUInt8,epdcchAddModLst->extaddgrp2.csiNumRep,mBuf);
       CMCHKPK(oduUnpackUInt8,epdcchAddModLst->extaddgrp2.mpddchPdschHop,mBuf);
@@ -6791,7 +6791,7 @@ Buffer *mBuf;
    CMCHKPK(oduUnpackUInt32, param->ackNackModeEnum, mBuf);
 
 #endif
-   CMCHKPK(cmPkTknU8, &param->dedPreambleId, mBuf);
+   CMCHKPK(cmPkTknUInt8, &param->dedPreambleId, mBuf);
    CMCHKPK(cmPkRgrCodeBookRstCfg, &param->ueCodeBookRstCfg, mBuf);
    CMCHKPK(cmPkRgrUeCapCfg, &param->ueCapCfg, mBuf);
    CMCHKPK(cmPkRgrUeMeasGapCfg, &param->ueMesGapCfg, mBuf);
@@ -6852,7 +6852,7 @@ RgrUeCfg *param;
 Buffer *mBuf;
 #endif
 {
-   U32 tmpEnum;
+   uint32_t tmpEnum;
 
    TRC3(cmUnpkRgrUeCfg)
 
@@ -6869,7 +6869,7 @@ Buffer *mBuf;
     * retxBSR-timer */
    CMCHKUNPK(cmUnpkRgrUeBsrTmrCfg, &param->ueBsrTmrCfg, mBuf);
 #endif
-   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&tmpEnum, mBuf);
    param->ueCatEnum = (CmLteUeCategory) tmpEnum;
 /*rgr_c_001.main_9 ADD added changes for DRX*/
    
@@ -6884,10 +6884,10 @@ Buffer *mBuf;
    CMCHKUNPK(cmUnpkRgrUeMeasGapCfg, &param->ueMesGapCfg, mBuf);
    CMCHKUNPK(cmUnpkRgrUeCapCfg, &param->ueCapCfg, mBuf);
    CMCHKUNPK(cmUnpkRgrCodeBookRstCfg, &param->ueCodeBookRstCfg, mBuf);
-   CMCHKUNPK(cmUnpkTknU8, &param->dedPreambleId, mBuf);
+   CMCHKUNPK(cmUnpkTknUInt8, &param->dedPreambleId, mBuf);
 
 #ifdef LTE_TDD
-   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&tmpEnum, mBuf);
    param->ackNackModeEnum = tmpEnum;
 
 #endif
@@ -6916,7 +6916,7 @@ Buffer *mBuf;
    /* LTE_ADV_FLAG_REMOVED_START */
    CMCHKUNPK(cmUnpkRgrLteAdvancedUeConfig, &param->ueLteAdvCfg, mBuf);
    /* LTE_ADV_FLAG_REMOVED_END */
-   CMCHKUNPK(oduPackUInt32, (U32 *)&param->accessStratumRls, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->accessStratumRls, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->csgMmbrSta, mBuf);
 
 #ifdef EMTC_ENABLE
@@ -7915,7 +7915,7 @@ Buffer *mBuf;
 
    CMCHKPK(cmPkRgrUeAprdDlCqiCfg, &param->aprdDlCqiRecfg, mBuf);
    CMCHKPK(cmPkRgrUeTxModeCfg, &param->txMode, mBuf);
-   /*rgr_c_001.main_9: changing ueRecfgTypes to U32 */
+   /*rgr_c_001.main_9: changing ueRecfgTypes to uint32_t */
    /* LTE_ADV_FLAG_REMOVED_START */
    /* KW fix for LTE_ADV */
    CMCHKPK(oduUnpackUInt32, param->ueRecfgTypes, mBuf);
@@ -7955,7 +7955,7 @@ RgrUeRecfg *param;
 Buffer *mBuf;
 #endif
 {
-   U32 tmpEnum;
+   uint32_t tmpEnum;
 
    TRC3(cmUnpkRgrUeRecfg)
 
@@ -7963,7 +7963,7 @@ Buffer *mBuf;
    CMCHKUNPK(cmUnpkLteRnti, &param->oldCrnti, mBuf);
    CMCHKUNPK(cmUnpkLteRnti, &param->newCrnti, mBuf);
    /* LTE_ADV_FLAG_REMOVED_START */
-   /*rgr_c_001.main_9: changing ueRecfgTypes to U32 */
+   /*rgr_c_001.main_9: changing ueRecfgTypes to uint32_t */
    /* KW fix for LTE_ADV */
    CMCHKUNPK(oduPackUInt32, &param->ueRecfgTypes, mBuf);
    /* LTE_ADV_FLAG_REMOVED_END */
@@ -7998,7 +7998,7 @@ Buffer *mBuf;
    CMCHKUNPK(cmUnpkRgrUeMeasGapCfg, &param->ueMeasGapRecfg, mBuf);
    CMCHKUNPK(cmUnpkRgrCodeBookRstCfg, &param->ueCodeBookRstRecfg, mBuf);
 /* rgr_c_001.main_7 - Changes for UE category Reconfiguration */
-   CMCHKUNPK(oduPackUInt32, (U32 *)&tmpEnum, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&tmpEnum, mBuf);
    param->ueCatEnum = (CmLteUeCategory) tmpEnum;
    CMCHKUNPK(cmUnpkRgrUeTxAntSelCfg, &param->ulTxAntSel, mBuf);
    /*rgr_c_001.main_7 - Added support for SPS*/
@@ -8037,7 +8037,7 @@ Buffer *mBuf;
    CMCHKUNPK(cmUnpkRgrUeSCellAckPucchCfg, &param->sCellAckN1ResCfg,mBuf);
    CMCHKUNPK(oduPackUInt8, &param->simulAckNackCQIFormat3, mBuf);
 #endif
-   CMCHKUNPK(oduPackUInt32, (U32 *)&param->accessStratumRls, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->accessStratumRls, mBuf);
 
    CMCHKUNPK(oduPackUInt8, &param->csgMmbrSta, mBuf);
 #ifdef EMTC_ENABLE
@@ -8370,7 +8370,7 @@ Buffer *mBuf;
    S8 idx;
    for(idx = param->numSCells - 1; idx >= 0; idx--)
    {
-      CMCHKPK(cmPkRgrUeDlSecCellRelInfo, &param->ueSCellRelDedCfg[(U8)idx],mBuf);
+      CMCHKPK(cmPkRgrUeDlSecCellRelInfo, &param->ueSCellRelDedCfg[(uint8_t)idx],mBuf);
    }
    CMCHKPK(oduUnpackUInt8, param->numSCells, mBuf);
 
@@ -8506,7 +8506,7 @@ RgrUeSecCellRelInfo *param;
 Buffer *mBuf;
 #endif
 {
-   U8 idx;
+   uint8_t idx;
 
    CMCHKUNPK(oduPackUInt8, &param->numSCells, mBuf);
 
@@ -8670,7 +8670,7 @@ Buffer      *mBuf;
    }
    for(count = 0; count < RGR_SCH_MAX_PA_PER_PRB; count ++)
    {
-      CMCHKUNPK(oduPackUInt32,(U32 *) &param->paLevelPerPrb[count], mBuf);
+      CMCHKUNPK(oduPackUInt32,(uint32_t *) &param->paLevelPerPrb[count], mBuf);
    }
    return ROK;
 }
@@ -8744,7 +8744,7 @@ Buffer      *mBuf;
 {
 
    TRC3(cmUnpkRgrSonCfg)
-   CMCHKUNPK(oduPackUInt32, (U32 *)&param->cfgType, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->cfgType, mBuf);
    switch(param->cfgType)
    {
       case RGR_SON_PRB_CFG :
@@ -8893,7 +8893,7 @@ Buffer *mBuf;
 {
    TRC3(cmUnPkRgrSCellActDeactEvnt)
 
-   U8 idx;
+   uint8_t idx;
 
    CMCHKUNPK(cmUnpkLteRnti, &param->crnti, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->numOfSCells, mBuf);
@@ -8974,7 +8974,7 @@ Buffer *mBuf;
    S8 idx;
    for(idx = param->numOfSCells - 1; idx >= 0; idx--)
    {
-      CMCHKPK(cmPkRgrSCellActDeactInfo, &param->sCellActDeactInfo[(U8)idx], mBuf);
+      CMCHKPK(cmPkRgrSCellActDeactInfo, &param->sCellActDeactInfo[(uint8_t)idx], mBuf);
    }
 
    CMCHKPK(oduUnpackUInt8, param->numOfSCells, mBuf);
@@ -9343,7 +9343,7 @@ Buffer *mBuf;
       SPutMsg(mBuf);
       return RFAILED;
    }
-   cmMemset((U8 *)cfgReqInfo, 0, sizeof(RgrSiCfgReqInfo));
+   cmMemset((uint8_t *)cfgReqInfo, 0, sizeof(RgrSiCfgReqInfo));
    if (pst->selector == ODU_SELECTOR_LC) 
       if (cmUnpkRgrSiCfgReqInfo(cfgReqInfo, mBuf) != ROK) {
          SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, 
@@ -9707,7 +9707,7 @@ Buffer *mBuf;
 #endif
 {
    MsgLen   msgLen;
-   U32      count;
+   uint32_t      count;
    CmLList  *node, *prevNode;
    RgrSegmentInfo   *pdu;
  
@@ -9774,7 +9774,7 @@ Buffer *mBuf;
 #endif
 {
    MsgLen   msgLen, totalMsgLen;
-   U32      count, loopCnt;
+   uint32_t      count, loopCnt;
    Buffer   *pdu;
    CmLList  *node;
 
@@ -9838,14 +9838,14 @@ S16 cmPkRgrWarningSiStopReq
 Pst           *pst,
 SpId          spId,
 RgrCfgTransId transId,
-U8            siId
+uint8_t            siId
 )
 #else
 S16 cmPkRgrWarningSiStopReq(pst,spId, transId, siId)
 Pst           *pst;
 SpId          spId;
 RgrCfgTransId transId;
-U8            siId;
+uint8_t            siId;
 #endif
 {
    Buffer *mBuf = NULLP;
@@ -9920,7 +9920,7 @@ Buffer *mBuf;
 #endif
 {
    SpId          spId;
-   U8            siId;
+   uint8_t            siId;
    RgrCfgTransId transId;
 
    TRC3(cmUnpkRgrWarningSiStopReq)
@@ -9976,16 +9976,16 @@ S16 cmPkRgrWarningSiCfgCfm
 Pst*          pst,
 SuId          suId,
 RgrCfgTransId transId,
-U8            siId,
-U8            status
+uint8_t            siId,
+uint8_t            status
 )
 #else
 S16 cmPkRgrWarningSiCfgCfm(pst, suId, transId, siId, status)
 Pst*          pst;
 SuId          suId;
 RgrCfgTransId transId;
-U8            siId;
-U8            status;
+uint8_t            siId;
+uint8_t            status;
 #endif
 {
    Buffer *mBuf = NULLP;
@@ -10081,9 +10081,9 @@ Buffer *mBuf;
 #endif
 {
    SuId          suId;
-   U8            siId;
+   uint8_t            siId;
    RgrCfgTransId transId;
-   U8            status;
+   uint8_t            status;
 
    TRC3(cmUnpkRgrWarningSiCfgCfm)
 
@@ -10298,7 +10298,7 @@ Buffer *mBuf;
       return RFAILED;
    }
 
-   cmMemset((U8 *)loadInfReq, 0, sizeof(RgrLoadInfReqInfo));
+   cmMemset((uint8_t *)loadInfReq, 0, sizeof(RgrLoadInfReqInfo));
 
    if (pst->selector == ODU_SELECTOR_LC) 
       if (cmUnpkRgrLoadInfReqInfo(loadInfReq, mBuf) != ROK) {
@@ -10765,7 +10765,7 @@ Buffer *mBuf;
 #endif
 {
 
-   U8  idx;
+   uint8_t  idx;
    TRC3(cmUnpkRgrUeCqiInfo)
 
    CMCHKUNPK(oduPackUInt8, &param->numCqiRept, mBuf);
@@ -10841,7 +10841,7 @@ Buffer *mBuf;
 #endif
 {
    S8 idx;
-   U8 count;
+   uint8_t count;
 
    TRC3(cmPkRgrUeCqiRept)
 
@@ -10920,7 +10920,7 @@ RgrUeCqiRept *param;
 Buffer *mBuf;
 #endif
 {
-   U8 idx;
+   uint8_t idx;
 
    TRC3(cmUnpkRgrUeCqiRept)
    CMCHKUNPK(oduPackUInt8, &param->numSubBand, mBuf);
@@ -11125,7 +11125,7 @@ RgrLoadInfIndInfo *param;
 Buffer *mBuf;
 #endif
 {
-   U8                     idx;
+   uint8_t                     idx;
    TRC3(cmPkRgrLoadInfIndInfo)
 
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
@@ -11179,7 +11179,7 @@ Buffer *mBuf;
 
    /* dsfr_pal_fixes ** 21-March-2013 ** SKS */
    TknStrOSXL  *tknStr;
-   U16         ndx;
+   uint16_t         ndx;
 
    TRC3(cmUnpkRgrLoadInfIndInfo)
 
@@ -11188,7 +11188,7 @@ Buffer *mBuf;
    {
       for(idx = RGR_ABS_PATTERN_LEN -1 ; idx >= 0; idx--)
       {
-         CMCHKUNPK(oduPackUInt32, &param->u.absLoadInfo[(U8)idx], mBuf);
+         CMCHKUNPK(oduPackUInt32, &param->u.absLoadInfo[(uint8_t)idx], mBuf);
       }
    }
    else
@@ -11301,13 +11301,13 @@ RgrUepACfg *param;
 Buffer *mBuf;
 #endif
 {
-   U32 tmpEnum;
+   uint32_t tmpEnum;
    TRC3(cmUnpkRgrUepACfg)
 
-   CMCHKUNPK(oduPackUInt8, (U8 *)&param->pAPrsnt, mBuf);
+   CMCHKUNPK(oduPackUInt8, (uint8_t *)&param->pAPrsnt, mBuf);
    if (param->pAPrsnt)
    {
-      CMCHKUNPK(oduPackUInt32, (U32*)&tmpEnum, mBuf);
+      CMCHKUNPK(oduPackUInt32, (uint32_t*)&tmpEnum, mBuf);
       param->pA = (RgrUeDlPwrCntrlPaCfg) tmpEnum;
    }
 
@@ -11500,7 +11500,7 @@ Buffer *mBuf;
    CMCHKPK(cmPkRgrUePdschDedCfg, &param->uePdschDedCfg, mBuf);
 #endif
    CMCHKPK(cmPkRgrUeDlCqiCfg,&param->ueSCellDlCqiCfg, mBuf);
-   CMCHKPK(cmPkTknU32, &param->sCellDeActTmr, mBuf);
+   CMCHKPK(cmPkTknUInt32, &param->sCellDeActTmr, mBuf);
    CMCHKPK(oduUnpackUInt16, param->sCellId, mBuf);
    CMCHKPK(oduUnpackUInt8, param->sCellIdx, mBuf);
 
@@ -11539,7 +11539,7 @@ Buffer *mBuf;
    S8 idx;
    for(idx = param->numSCells - 1; idx >= 0; idx--)
    {
-      CMCHKPK(cmPkRgrUeSecCellCfg, &param->ueSCellDedCfg[(U8)idx],mBuf);
+      CMCHKPK(cmPkRgrUeSecCellCfg, &param->ueSCellDedCfg[(uint8_t)idx],mBuf);
    }
 
    CMCHKPK(oduUnpackUInt8, param->numSCells, mBuf);
@@ -11579,7 +11579,7 @@ Buffer *mBuf;
 {
    CMCHKUNPK(oduPackUInt8, &param->sCellIdx, mBuf);
    CMCHKUNPK(oduPackUInt16, &param->sCellId, mBuf);
-   CMCHKUNPK(cmUnpkTknU32, &param->sCellDeActTmr, mBuf);
+   CMCHKUNPK(cmUnpkTknUInt32, &param->sCellDeActTmr, mBuf);
    CMCHKUNPK(cmUnpkRgrUeDlCqiCfg, &param->ueSCellDlCqiCfg, mBuf);
 #ifdef TFU_UPGRADE
    CMCHKUNPK(cmUnpkRgrUePdschDedCfg, &param->uePdschDedCfg, mBuf);
@@ -11621,7 +11621,7 @@ RgrUeSecCellInfo *param;
 Buffer *mBuf;
 #endif
 {
-   U8 idx;
+   uint8_t idx;
 
    CMCHKUNPK(oduPackUInt8, &param->useExtBSRSizes, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->numSCells, mBuf);
@@ -11668,14 +11668,14 @@ Buffer *mBuf;
    { 
       for(idx = param->u.format1Bcs.sCellAckN1ResTb2Count - 1; idx >=0 ;idx--)
       {
-         CMCHKPK(oduUnpackUInt16, param->u.format1Bcs.sCellAckN1ResTb2[(U8)idx], mBuf);
+         CMCHKPK(oduUnpackUInt16, param->u.format1Bcs.sCellAckN1ResTb2[(uint8_t)idx], mBuf);
       }
 
       CMCHKPK(oduUnpackUInt8, param->u.format1Bcs.sCellAckN1ResTb2Count, mBuf);
 
       for(idx = param->u.format1Bcs.sCellAckN1ResTb1Count - 1; idx >=0 ;idx--)
       {
-         CMCHKPK(oduUnpackUInt16, param->u.format1Bcs.sCellAckN1ResTb1[(U8)idx], mBuf);
+         CMCHKPK(oduUnpackUInt16, param->u.format1Bcs.sCellAckN1ResTb1[(uint8_t)idx], mBuf);
       }
 
       CMCHKPK(oduUnpackUInt8, param->u.format1Bcs.sCellAckN1ResTb1Count, mBuf);
@@ -11684,14 +11684,14 @@ Buffer *mBuf;
    {
       for(idx = param->u.format3.sCellAckN3ResAntP1Count - 1; idx >=0 ;idx--)
       {
-         CMCHKPK(oduUnpackUInt16, param->u.format3.sCellAckN3ResAntP1[(U8)idx], mBuf);
+         CMCHKPK(oduUnpackUInt16, param->u.format3.sCellAckN3ResAntP1[(uint8_t)idx], mBuf);
       }
 
       CMCHKPK(oduUnpackUInt8, param->u.format3.sCellAckN3ResAntP1Count, mBuf);
 
       for(idx = param->u.format3.sCellAckN3ResAntP0Count- 1; idx >=0 ;idx--)
       {
-         CMCHKPK(oduUnpackUInt16, param->u.format3.sCellAckN3ResAntP0[(U8)idx], mBuf);
+         CMCHKPK(oduUnpackUInt16, param->u.format3.sCellAckN3ResAntP0[(uint8_t)idx], mBuf);
       }
 
       CMCHKPK(oduUnpackUInt8, param->u.format3.sCellAckN3ResAntP0Count, mBuf);
@@ -11728,11 +11728,11 @@ RgrUeSCellAckPucchCfg *param;
 Buffer *mBuf;
 #endif
 {
-   U8 idx;
+   uint8_t idx;
 
    TRC3(cmUnpkRgrUeSCellAckPucchCfg);
 
-   CMCHKUNPK(oduPackUInt32, (U32*)&param->pucchFormatType, mBuf);
+   CMCHKUNPK(oduPackUInt32, (uint32_t*)&param->pucchFormatType, mBuf);
    //if (param->pucchFormatType == RG_SCH_UCI_FORMAT1B_CS)
    if (param->pucchFormatType == RG_SCH_UCI_FORMAT1B_CS || param->pucchFormatType == RG_SCH_UCI_FORMAT1A_1B)
    {
@@ -12148,7 +12148,7 @@ RgrCellCntrlCmdCfg *param;
 Buffer *mBuf;
 #endif
 {
-   U32 tmpEnum;
+   uint32_t tmpEnum;
 
    TRC3(cmUnpkRgrCellCntrlCmdCfg)
 

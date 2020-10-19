@@ -330,7 +330,7 @@ rgSchCb[_inst].rgSchUlDelta    = TFU_ENV_HQFBKIND_ULDELTA + delta;\
 /*CA_DEV_DS_FIX*/
 #define RGSCH_INVALID_CELL_IDX 255
 #define RGSCH_PCELL_INDEX 0
-#define RG_SCH_CELLINDEX(_cell) (U8)((_cell->cellId >= rgSchCb[_cell->instIdx].genCfg.startCellId) ?\
+#define RG_SCH_CELLINDEX(_cell) (uint8_t)((_cell->cellId >= rgSchCb[_cell->instIdx].genCfg.startCellId) ?\
       (_cell->cellId - rgSchCb[_cell->instIdx].genCfg.startCellId)&(CM_LTE_MAX_CELLS-1): 0)
 #define RG_SCH_GET_SCELL_INDEX(_ueCb, _cell) _ueCb->cellIdToCellIdxMap[RG_SCH_CELLINDEX(_cell)]
 /* RACHO */
@@ -661,7 +661,7 @@ do \
 
 #define RGSCH_DROP_RGUDDATREQ_MBUF(_datReq)\
 {\
-   U32 idx1,idx2,idx;\
+   uint32_t idx1,idx2,idx;\
    if (_datReq != NULLP)\
    {\
       for (idx=0; idx < _datReq->numLch; idx++)\
@@ -692,7 +692,7 @@ do \
  **********************************************************/
 #define RGSCH_DROP_RGUCDATREQ_MBUF(_datReq)\
 {\
-   U32 idx1;\
+   uint32_t idx1;\
    if (_datReq != NULLP)\
    {\
       for (idx1 = 0; idx1 < RGU_MAX_PDUSET; idx1++)\
@@ -816,7 +816,7 @@ do \
 #define RGSCH_MAX(x, y) ((x) >= (y) ? (x) : (y))
 #define RGSCH_CEIL(x, y) (((x) + (y)-1) / (y))
 #define RGSCH_FLOOR(x, y) ((x) / (y)) 
-#define RGSCH_CEILING(x) (((x) - (U8)(x)) ? (U8)(x+1) : (U8)x)  
+#define RGSCH_CEILING(x) (((x) - (uint8_t)(x)) ? (uint8_t)(x+1) : (uint8_t)x)  
 #define RGSCH_DIV_ROUND(x, y) (((x) + (y)/2) / (y))
 
 #define RGSCH_RARSP_WAIT_PERIOD 3 
@@ -1312,15 +1312,15 @@ do\
 #define  RG_SCH_PARSE_MULTI_PMI(_bitLen, _totPmiBitLen, _psMode12,\
                                    _acqiCb, _revArray,_sbOffst )\
 {\
-   U8 _loop =0;\
+   uint8_t _loop =0;\
    for(_loop =0; _loop<(_totPmiBitLen/_bitLen); _loop++)\
    {\
-       (_psMode12)->subbandArr[_loop].pmi = (U8)rgSCHUtlParse(_revArray,\
-               _sbOffst,(U8)(_sbOffst+_bitLen), (U8)TFU_MAX_CQI_BYTES);\
+       (_psMode12)->subbandArr[_loop].pmi = (uint8_t)rgSCHUtlParse(_revArray,\
+               _sbOffst,(uint8_t)(_sbOffst+_bitLen), (uint8_t)TFU_MAX_CQI_BYTES);\
        _sbOffst+=_bitLen;\
        (_psMode12)->subbandArr[_loop].subBand.numRb = (_acqiCb).k;\
        (_psMode12)->subbandArr[_loop].subBand.rbStart = \
-                                   (U8) ((_acqiCb).k * (_loop));\
+                                   (uint8_t) ((_acqiCb).k * (_loop));\
    }\
 }
 
@@ -1469,37 +1469,37 @@ do{\
 #define RG_SCH_HQP_TIME_ON_PCELL 32 /*!< Time in milliseconds to be allowed
                                       for transmission of TB on PCell*/
 /* SR_RACH_STATS */
-EXTERN U32 rgNumPrachRecvd;       /* Num of Rach Req received including dedicated preambles */
-EXTERN U32 rgNumRarSched;         /* Num of RARs sent */
-EXTERN U32 rgNumBI;               /* Num of BackOff Ind sent */
-EXTERN U32 rgNumMsg3CrcPassed;    /* Num of CRC success for Msg3 */
-EXTERN U32 rgNumMsg3CrcFailed ;    /* Num of CRC fail for Msg 3 */
-EXTERN U32 rgNumMsg3FailMaxRetx ;  /* Num of Msg3 fail after Max Retx attempts */
-EXTERN U32 rgNumMsg4Ack ;          /* Num of Acks for Msg4 Tx */
-EXTERN U32 rgNumMsg4Nack ; 
+EXTERN uint32_t rgNumPrachRecvd;       /* Num of Rach Req received including dedicated preambles */
+EXTERN uint32_t rgNumRarSched;         /* Num of RARs sent */
+EXTERN uint32_t rgNumBI;               /* Num of BackOff Ind sent */
+EXTERN uint32_t rgNumMsg3CrcPassed;    /* Num of CRC success for Msg3 */
+EXTERN uint32_t rgNumMsg3CrcFailed ;    /* Num of CRC fail for Msg 3 */
+EXTERN uint32_t rgNumMsg3FailMaxRetx ;  /* Num of Msg3 fail after Max Retx attempts */
+EXTERN uint32_t rgNumMsg4Ack ;          /* Num of Acks for Msg4 Tx */
+EXTERN uint32_t rgNumMsg4Nack ; 
        /* Num of Nacks for Msg4 Tx */
-EXTERN U32 rgNumMsg4FailMaxRetx ;  /* Num of Msg4 Tx failed after Max Retx attempts */
-EXTERN U32 rgNumSrRecvd;          /* Num of Sched Req received */
-EXTERN U32 rgNumSrGrant;          /* Num of Sched Req Grants sent */
-EXTERN U32 rgNumMsg3CrntiCE;      /* Num of Msg 3 CRNTI CE received */
-EXTERN U32 rgNumDedPream ;         /* Num of Dedicated Preambles recvd */
-EXTERN U32 rgNumMsg3CCCHSdu;      /* Num of Msg 3 CCCH Sdus recvd */
-EXTERN U32 rgNumCCCHSduCrntiNotFound ;  /*UE Ctx not found for CCCH SDU Msg 3 */
-EXTERN U32 rgNumCrntiCeCrntiNotFound ;  /*UE Ctx not found for CRNTI CE Msg 3 */
-EXTERN U32 rgNumMsg4WithCCCHSdu ;       /* Num of Msg4 with CCCH Sdu */
-EXTERN U32 rgNumMsg4WoCCCHSdu ;         /* Num of Msg4 without CCCH Sdu */
-EXTERN U32 rgNumMsg4Dtx ;               /* Num of DTX received for Msg 4 */
-EXTERN U32 rgNumMsg3AckSent ;           /* Num of PHICH Ack sent for Msg 3 */
-EXTERN U32 rgNumMsg3NackSent ;          /* Num of PHICH Nack sent for Msg 3 */
-EXTERN U32 rgNumMsg4PdcchWithCrnti ;    /* Num of PDCCH for CRNTI based contention resolution */
-EXTERN U32 rgNumRarFailDuetoRntiExhaustion ; /* Num of RACH Failures due to RNTI pool exhaution */
-EXTERN U32 rgNumTAModified ;            /* Num of times TA received is different from prev value */
-EXTERN U32 rgNumTASent ;               /* Num of TA Command sent */
-EXTERN U32 rgNumMsg4ToBeTx ;           /* Num of times MSG4 that should be sent */
-EXTERN U32 rgNumMsg4Txed ;             /* Num of MSG4 actually sent *//* ysNumMsg4ToBeTx -ysNumMsg4Txed == Failed MSG4 TX */
-EXTERN U32 rgNumMsg3DtxRcvd;         /* CRC Fail with SINR < 0 */
+EXTERN uint32_t rgNumMsg4FailMaxRetx ;  /* Num of Msg4 Tx failed after Max Retx attempts */
+EXTERN uint32_t rgNumSrRecvd;          /* Num of Sched Req received */
+EXTERN uint32_t rgNumSrGrant;          /* Num of Sched Req Grants sent */
+EXTERN uint32_t rgNumMsg3CrntiCE;      /* Num of Msg 3 CRNTI CE received */
+EXTERN uint32_t rgNumDedPream ;         /* Num of Dedicated Preambles recvd */
+EXTERN uint32_t rgNumMsg3CCCHSdu;      /* Num of Msg 3 CCCH Sdus recvd */
+EXTERN uint32_t rgNumCCCHSduCrntiNotFound ;  /*UE Ctx not found for CCCH SDU Msg 3 */
+EXTERN uint32_t rgNumCrntiCeCrntiNotFound ;  /*UE Ctx not found for CRNTI CE Msg 3 */
+EXTERN uint32_t rgNumMsg4WithCCCHSdu ;       /* Num of Msg4 with CCCH Sdu */
+EXTERN uint32_t rgNumMsg4WoCCCHSdu ;         /* Num of Msg4 without CCCH Sdu */
+EXTERN uint32_t rgNumMsg4Dtx ;               /* Num of DTX received for Msg 4 */
+EXTERN uint32_t rgNumMsg3AckSent ;           /* Num of PHICH Ack sent for Msg 3 */
+EXTERN uint32_t rgNumMsg3NackSent ;          /* Num of PHICH Nack sent for Msg 3 */
+EXTERN uint32_t rgNumMsg4PdcchWithCrnti ;    /* Num of PDCCH for CRNTI based contention resolution */
+EXTERN uint32_t rgNumRarFailDuetoRntiExhaustion ; /* Num of RACH Failures due to RNTI pool exhaution */
+EXTERN uint32_t rgNumTAModified ;            /* Num of times TA received is different from prev value */
+EXTERN uint32_t rgNumTASent ;               /* Num of TA Command sent */
+EXTERN uint32_t rgNumMsg4ToBeTx ;           /* Num of times MSG4 that should be sent */
+EXTERN uint32_t rgNumMsg4Txed ;             /* Num of MSG4 actually sent *//* ysNumMsg4ToBeTx -ysNumMsg4Txed == Failed MSG4 TX */
+EXTERN uint32_t rgNumMsg3DtxRcvd;         /* CRC Fail with SINR < 0 */
 
-EXTERN U32 rgNumDedPreamUECtxtFound;
+EXTERN uint32_t rgNumDedPreamUECtxtFound;
 #endif /* __RGSCH__ */
 
 /**********************************************************************

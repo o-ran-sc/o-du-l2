@@ -194,7 +194,7 @@ Buffer *mBuf;                /* message buffer */
 
    TRC3(unpackRlcConfigReq)
 
-   cmMemset((U8 *) &cfg, (U8) 0, (S16) sizeof(RlcMngmt));
+   cmMemset((uint8_t *) &cfg, (uint8_t) 0, (S16) sizeof(RlcMngmt));
    ret1 = cmUnpkRlcMngmt(&cfg, LKW_EVT_CFG_REQ, mBuf);
 
     if(ret1 != ROK)
@@ -1648,7 +1648,7 @@ Elmnt elmnt;
 Buffer *mBuf;
 #endif
 {
-    U8 subAction;            /* sub action */     
+    uint8_t subAction;            /* sub action */     
 
     TRC3(cmPkRlcCntrl)
 
@@ -2035,7 +2035,7 @@ Buffer *mBuf;
     S16 ret1;
     TRC3(cmUnpkRlcMngmt)
 
-   cmMemset((U8 *) param, (U8) 0, (S16) sizeof(RlcMngmt));
+   cmMemset((uint8_t *) param, (uint8_t) 0, (S16) sizeof(RlcMngmt));
 
    CMCHKUNPK(cmUnpkHeader, &param->hdr, mBuf);
    CMCHKUNPK(cmUnpkCmStatus, &param->cfm, mBuf);
@@ -2191,7 +2191,7 @@ Elmnt elmnt;
 Buffer *mBuf;
 #endif
 {
-   U8 subAction;
+   uint8_t subAction;
    RlcDbgCntrl *dbgCntrl;
    RlcTrcCntrl *trcCntrl;
 
@@ -2331,7 +2331,7 @@ Buffer *mBuf;
          ret1 = ROK;
          if(eventType == LKW_EVT_STA_CFM)
          {
-            cmMemset((U8 *) ptNmb, (U8) 0, LKW_PART_NUM_STR_LEN);
+            cmMemset((uint8_t *) ptNmb, (uint8_t) 0, LKW_PART_NUM_STR_LEN);
             ssta->t.ssta.s.sysId.ptNmb = ptNmb;
             CMCHKUNPK(cmUnpkSystemId, &ssta->t.ssta.s.sysId,mBuf);
          }
@@ -2625,8 +2625,8 @@ RlcL2MeasReqInfo *param;
 Buffer *mBuf;
 #endif
 {
-   U8 idx;
-   U16 idx1;
+   uint8_t idx;
+   uint16_t idx1;
 
    TRC3(cmPkRlcL2MeasReqInfo)
 
@@ -2665,12 +2665,12 @@ Buffer *mBuf;
 S16 cmPkLkwL2MeasStopReq
 (
 Pst *pst,
-U8  measType
+uint8_t  measType
 )
 #else
 S16 cmPkLkwL2MeasStopReq(pst, measType)
 Pst *pst;
-U8 measType;
+uint8_t measType;
 #endif
 {
    Buffer *mBuf = NULLP;
@@ -2693,12 +2693,12 @@ U8 measType;
 S16 cmPkLkwL2MeasSendReq
 (
 Pst *pst,
-U8  measType
+uint8_t  measType
 )
 #else
 S16 cmPkLkwL2MeasSendReq(pst, measType)
 Pst *pst;
-U8 measType;
+uint8_t measType;
 #endif
 {
    Buffer *mBuf = NULLP;
@@ -2845,8 +2845,8 @@ RlcL2MeasReqInfo *param;
 Buffer *mBuf;
 #endif
 {
-   U8 idx;
-   U16 idx1; 
+   uint8_t idx;
+   uint16_t idx1; 
 
    TRC3(cmUnpkRlcL2MeasReqInfo)
 
@@ -2897,7 +2897,7 @@ Pst *pst;
 Buffer *mBuf;
 #endif
 {
-   U8 measType;
+   uint8_t measType;
    TRC3(cmUnpkLkwL2MeasReq)
 
    CMCHKUNPK(oduPackUInt8, &measType, mBuf);
@@ -2919,7 +2919,7 @@ Pst *pst;
 Buffer *mBuf;
 #endif
 {
-   U8    measType;
+   uint8_t    measType;
 
    TRC3(cmUnpkLkwL2MeasSendReq)
 
@@ -2941,8 +2941,8 @@ RlcL2MeasCfmEvt *measCfmEvt;
 #endif
 {
    Buffer *mBuf = NULLP;
-   U8 idx;
-   U8 idx1;
+   uint8_t idx;
+   uint8_t idx1;
 
    TRC3(cmPkLkwL2MeasCfm)
 
@@ -3040,13 +3040,13 @@ S16 cmPkRlcL2MeasCfmInfo
 (
 RlcL2MeasCfmInfo *param,
 Buffer *mBuf,
-U8 measType
+uint8_t measType
 )
 #else
 S16 cmPkRlcL2MeasCfmInfo(param, mBuf, measType)
 RlcL2MeasCfmInfo *param;
 Buffer *mBuf;
-U8 measType;
+uint8_t measType;
 #endif
 {
    TRC3(cmPkRlcL2MeasCfmInfo)
@@ -3084,13 +3084,13 @@ Pst *pst;
 Buffer *mBuf;
 #endif
 {
-   U8 idx;
-   U16 idx1;
+   uint8_t idx;
+   uint16_t idx1;
    RlcL2MeasCfmEvt measCfmEvt;
 
    TRC3(cmUnpkLkwL2MeasCfm)
 
-   cmMemset((U8 *)&measCfmEvt, 0 , sizeof(RlcL2MeasCfmEvt));
+   cmMemset((uint8_t *)&measCfmEvt, 0 , sizeof(RlcL2MeasCfmEvt));
 
    if (oduPackUInt32(&measCfmEvt.transId, mBuf) != ROK) {
       SPutMsg(mBuf);
@@ -3172,13 +3172,13 @@ S16 cmUnpkRlcL2MeasCfmInfo
 (
 RlcL2MeasCfmInfo *param,
 Buffer *mBuf,
-U8 measType
+uint8_t measType
 )
 #else
 S16 cmUnpkRlcL2MeasCfmInfo(param, mBuf, measType)
 RlcL2MeasCfmInfo *param;
 Buffer *mBuf;
-U8 measType;
+uint8_t measType;
 #endif
 {
    TRC3(cmUnpkRlcL2MeasCfmInfo)
@@ -3207,14 +3207,14 @@ U8 measType;
 S16 cmPkLkwL2MeasStopCfm
 (
 Pst * pst,
-U8 measType,
-U8 status
+uint8_t measType,
+uint8_t status
 )
 #else
 S16 cmPkLkwL2MeasStopCfm(pst, measType,status)
 Pst * pst;
-U8  measType;
-U8  status
+uint8_t  measType;
+uint8_t  status
 #endif
 {
    Buffer *mBuf = NULLP;
@@ -3248,8 +3248,8 @@ Pst *pst;
 Buffer *mBuf;
 #endif
 {
-   U8 measType;
-   U8 status;
+   uint8_t measType;
+   uint8_t status;
    TRC3(cmUnpkLkwL2MeasCfm)
    CMCHKUNPK(oduPackUInt8,  &measType, mBuf);
    CMCHKUNPK(oduPackUInt8,  &status, mBuf);

@@ -115,7 +115,7 @@ uint8_t tst()
 
 void readRicCfg()
 {
-   U32 ipv4_du, ipv4_ric;
+   uint32_t ipv4_du, ipv4_ric;
 
    DU_LOG("\nReading RIC configurations");
 
