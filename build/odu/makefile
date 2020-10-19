@@ -124,6 +124,9 @@ help:
 		@echo -e "$(OPTS)    NODE=TEST_STUB         - Mandatory option for cu_stub/ric_stub$(NORM)"
 		@echo -e "$(OPTS)    MODE=TDD             - If not specified, MODE=FDD$(NORM)"
 		@echo -e "******************************************************************"
+		   @echo $(ROOT_DIR)
+		   @echo $(LIB_ROOT)
+		   @echo $(OBJ_ROOT)
 
 prepare_dirs:
 	$(Q)echo -e "Preparing directories for build..."
@@ -162,6 +165,7 @@ du:
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/mt.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/rl.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/phy_stub.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
+		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/o1_client.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 
 link_du: du
 		   $(Q)$(CC1) -g -o $(OBJ_ROOT)/odu/odu -Wl,-R../lib/:. $(OBJ_ROOT)/odu/*.o\
@@ -180,6 +184,8 @@ clean_odu:
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/mt.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/rl.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/phy_stub.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
+		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/o1_client.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
+
 		$(Q)rm -rf $(OBJ_ROOT)/odu/*
 		$(Q)rm -rf $(LIB_ROOT)/odu/*
 		$(Q)rm -rf $(BIN_DIR)/odu/*
@@ -264,3 +270,6 @@ odu: prepare_dirs copy_build
 cu_stub: prepare_cu_dirs cu link_cu
 ric_stub: prepare_ric_dirs ric link_ric
 
+#######################################################################
+#         End of file                                                 #
+#######################################################################
