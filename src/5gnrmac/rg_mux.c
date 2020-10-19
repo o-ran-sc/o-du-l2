@@ -69,22 +69,22 @@ static int RLOG_MODULE_ID=4096;
 EXTERN  S16 ssGetDBufOfSize(Region region,Size size,Buffer **dBuf);
 #else
 char* file = __FILE__;
-U32 line = __LINE__;
+uint32_t line = __LINE__;
 #endif
 
 /* local typedefs */
 
 /* global variables */
-U32 rgDlrate_rgu;
+uint32_t rgDlrate_rgu;
 
 /* local externs */
 
-PRIVATE Void rgMUXGet20bitRarGrnt ARGS((U8 ulBw,
+PRIVATE Void rgMUXGet20bitRarGrnt ARGS((uint8_t ulBw,
                                         RgInfRarUlGrnt *msg3Grnt,
-                                        U8 *grnt));
-EXTERN U16 rgMUXCalcRiv ARGS((U8 bw,
-                                U8 rbStart,
-                                U8 numRb));
+                                        uint8_t *grnt));
+EXTERN uint16_t rgMUXCalcRiv ARGS((uint8_t bw,
+                                uint8_t rbStart,
+                                uint8_t numRb));
  
 #ifndef MS_MBUF_CORRUPTION
 #define MS_BUF_ADD_ALLOC_CALLER()
@@ -100,11 +100,11 @@ EXTERN U16 rgMUXCalcRiv ARGS((U8 bw,
 
 #define RG_PACK_CE(_ce, _len, _ceBuf, _ret) {\
    MS_BUF_ADD_ALLOC_CALLER(); \
-   _ret = SAddPstMsgMult((U8 *)(&(_ce)), _len, _ceBuf);\
+   _ret = SAddPstMsgMult((uint8_t *)(&(_ce)), _len, _ceBuf);\
 }
 
 #define RG_MUX_CALC_LEN(_len,_lenBytes,_elmTotLen) {\
-   U8 _hdrLen;\
+   uint8_t _hdrLen;\
    _lenBytes    = (_len <= 255) ? 1 : 2;\
    _hdrLen      = _lenBytes + RG_SDU_SHDR_LEN;\
    _elmTotLen   = _hdrLen + _len;\
@@ -202,7 +202,7 @@ RgErrInfo      *err;
    {
       if(pdu->schdTbSz >= RG_TA_ELM_LEN)
       {
-         U8 taVal; /* Moving from outer scope to available scope */
+         uint8_t taVal; /* Moving from outer scope to available scope */
          RG_PACK_SHDR_FIXD_SZ(subHdr, RG_TA_LCID_IDX, ceBuf, ret);
 
          if(ret != ROK)
@@ -270,7 +270,7 @@ RgErrInfo      *err;
  *     
  *  @param[in]       Inst        inst
  *  @param[in]       MsgLen      *schdTbSz
- *  @param[in]       U8          lcId
+ *  @param[in]       uint8_t          lcId
  *  @param[in]       Buffer      *sdu
  *  @param[out]      Buffer      *sduBuf 
  *  @param[out]      RgErrInfo   *err 
@@ -283,7 +283,7 @@ PRIVATE S16 rgMUXInsSdu
 (
 Inst           inst,
 MsgLen         *schdTbSz,
-U8             lcId,
+uint8_t        lcId,
 Buffer         *sdu,
 Buffer         *sduBuf,
 RgErrInfo      *err
@@ -292,7 +292,7 @@ RgErrInfo      *err
 PRIVATE S16 rgMUXInsSdu(inst,schdTbSz, lcId, sdu, sduBuf, err)
 Inst           inst;
 MsgLen         *schdTbSz;
-U8             lcId;
+uint8_t        lcId;
 Buffer         *sdu;
 Buffer         *sduBuf;
 RgErrInfo      *err;
@@ -300,7 +300,7 @@ RgErrInfo      *err;
 {
    S16            ret;
    MsgLen         msgLen = 0;
-   U8             lenBytes;
+   uint8_t        lenBytes;
    MsgLen         elmTotLen;
 
    SFndLenMsg(sdu, &msgLen);
@@ -367,7 +367,7 @@ RgErrInfo      *err;
  *      -# RFAILED
  **/
 #ifdef L2_OPTMZ
-U32 padSize = 0;
+uint32_t padSize = 0;
 #endif
 #ifdef ANSI
 S16 rgMUXAddPadd
@@ -551,7 +551,7 @@ RgErrInfo      *err;
          {
             if(pdu->tbIndex == 1)
             {
-               U16 idx1, idx2;
+               uint16_t idx1, idx2;
                /* Adding this temporary variable for optimization */
                RguDatReqTb *datReqTb = &dDatReq->datReqTb[0];
 
@@ -578,7 +578,7 @@ RgErrInfo      *err;
             }
             else if(pdu->tbIndex == 2)
             {
-               U16 idx1, idx2;
+               uint16_t idx1, idx2;
                RguDatReqTb *datReqTb = &dDatReq->datReqTb[1];
                for (idx1=0; (idx1 < datReqTb->nmbLch); idx1++)
                {
@@ -728,7 +728,7 @@ RgErrInfo           *err;
 {
    RgRguDDatReqPerUe  *dDatReq;
    RgRguCmnDatReq     *cDatReq;
-   U32 lchIdx, pduIdx;
+   uint32_t lchIdx, pduIdx;
 
    switch(pdu->reqType)
    {
@@ -751,7 +751,7 @@ RgErrInfo           *err;
                = cDatReq->pdu;
             tb->lchInfo[tb->numLch].numPdu++;
             tb->numLch++;
-           RLOG3(L_INFO,"MSG4 is muxed  numLch=%ld numPdu=%ld tbaddr =%p", tb->numLch,tb->lchInfo[tb->numLch-1].numPdu, (U32)tb);
+           RLOG3(L_INFO,"MSG4 is muxed  numLch=%ld numPdu=%ld tbaddr =%p", tb->numLch,tb->lchInfo[tb->numLch-1].numPdu, (uint32_t)tb);
          }
          break;
 
@@ -762,7 +762,7 @@ RgErrInfo           *err;
          {
             if(pdu->tbIndex == 1)
             {
-               U16 idx1, idx2;
+               uint16_t idx1, idx2;
                /* Adding this temporary variable for optimization */
                RguDatReqTb *datReqTb = &dDatReq->datReqTb[0];
              
@@ -831,7 +831,7 @@ RgErrInfo           *err;
             }
             else if(pdu->tbIndex == 2)
             {
-               U16 idx1, idx2;
+               uint16_t idx1, idx2;
                RguDatReqTb *datReqTb = &dDatReq->datReqTb[1];
                tb->numLch = lchIdx = 0;
          //      prc_trace_format_string(0x40,3,": AddSdus: numOfLch=%d numOfPdu=%d, schdSz=%d", datReqTb->nmbLch, datReqTb->lchData[0].pdu.numPdu, pdu->schdTbSz);
@@ -963,7 +963,7 @@ RgErrInfo          *err;
 {
    Buffer         *mBuf1; /* MAC hearder */
    Buffer         *mBuf2; /* MAC CEs */
-   //U32            lchIdx, pduIdx;
+   //uint32_t            lchIdx, pduIdx;
 
   /* Reseting macHdr and macCes pointers */
   if(tb->macHdr)
@@ -1041,10 +1041,10 @@ RgErrInfo       *err;
 {
    Buffer      *datBuf = NULLP;
    S16         ret; 
-   U8          data[RG_RAR_ELEM_LEN];
-   U8          hdrByte;
+   uint8_t     data[RG_RAR_ELEM_LEN];
+   uint8_t     hdrByte;
    MsgLen      schdTbSz;
-   U8          idx;
+   uint8_t     idx;
    Inst        inst = cell->macInst - RG_INST_START;
 
    schdTbSz = alloc->schdTbSz;
@@ -1118,9 +1118,9 @@ RgErrInfo       *err;
       {    
          rgMUXGet20bitRarGrnt(cell->bwCfg.ulTotalBw, &(alloc->crntiInfo[idx].grnt), &data[1]);
       }
-      data[1] |=  ((U8)((alloc->crntiInfo[idx].ta.val) << 4));
+      data[1] |=  ((uint8_t)((alloc->crntiInfo[idx].ta.val) << 4));
       data[4]  =  (alloc->crntiInfo[idx].tmpCrnti) >> 8;
-      data[5]  =  (U8) (alloc->crntiInfo[idx].tmpCrnti);
+      data[5]  =  (uint8_t) (alloc->crntiInfo[idx].tmpCrnti);
 
       RLOG_ARG2(L_DEBUG,DBG_CELLID,cell->cellId,
          		"Rar,Rapid=%d, Temp CRNTI:%d", 
@@ -1166,18 +1166,18 @@ RgErrInfo       *err;
 #ifdef ANSI
 PRIVATE Void rgMUXGet20bitRarGrnt
 (
-U8             ulBw,
+uint8_t             ulBw,
 RgInfRarUlGrnt *msg3Grnt,
-U8             *grnt
+uint8_t             *grnt
 )
 #else
 PRIVATE Void rgMUXGet20bitRarGrnt(ulBw, msg3Grnt, grnt)
-U8             ulBw;
+uint8_t             ulBw;
 RgInfRarUlGrnt *msg3Grnt;
-U8             *grnt;
+uint8_t             *grnt;
 #endif
 {
-   U16       riv = rgMUXCalcRiv(ulBw, msg3Grnt->rbStart, msg3Grnt->numRb);
+   uint16_t       riv = rgMUXCalcRiv(ulBw, msg3Grnt->rbStart, msg3Grnt->numRb);
 
    grnt[2]  = msg3Grnt->cqiBit;   /* cqi bit is 0, output from sched */
    grnt[2] |= (msg3Grnt->delayBit << 1);
@@ -1187,12 +1187,12 @@ U8             *grnt;
    grnt[1]  = (msg3Grnt->iMcsCrnt >> 3);
    /* Forcing right shift to insert 0 as the LSB: 
     * since this is assumed in the computation */
-   grnt[1] |= (U8)((riv << 1) & 0xFE);
+   grnt[1] |= (uint8_t)((riv << 1) & 0xFE);
 
-   grnt[0]  = (U8)((riv >> 7) & 0x07);
+   grnt[0]  = (uint8_t)((riv >> 7) & 0x07);
    grnt[0] |= ((msg3Grnt->hop & 0x01) << 3);
 
-   RETVOID;
+   return;
 } /* rgMUXGet20bitRarGrnt */
 
 /***********************************************************
@@ -1209,21 +1209,21 @@ U8             *grnt;
  *
  **********************************************************/
 #ifdef ANSI
-U16 rgMUXCalcRiv
+uint16_t rgMUXCalcRiv
 (
-U8           bw,
-U8           rbStart,
-U8           numRb
+uint8_t           bw,
+uint8_t           rbStart,
+uint8_t           numRb
 )
 #else
-U16 rgMUXCalcRiv(bw, rbStart, numRb)
-U8           bw;
-U8           rbStart;
-U8           numRb;
+uint16_t rgMUXCalcRiv(bw, rbStart, numRb)
+uint8_t           bw;
+uint8_t           rbStart;
+uint8_t           numRb;
 #endif
 {
-   U8           numRbMinus1 = numRb - 1;
-   U16          riv;
+   uint8_t           numRbMinus1 = numRb - 1;
+   uint16_t          riv;
 
    if (numRbMinus1 <= bw/2)
    {

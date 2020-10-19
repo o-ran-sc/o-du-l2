@@ -258,13 +258,13 @@ S16 RlcUiKwuBndCfm
 (
 Pst *pst,                       /* post structure */
 SuId suId,                      /* Service User Id */
-U8   status                     /* Status */
+uint8_t   status                     /* Status */
 )
 #else
 S16 RlcUiKwuBndCfm(pst, suId, status)
 Pst *pst;                       /* post structure */
 SuId suId;                      /* Service User Id */
-U8   status;                    /* Status */
+uint8_t   status;                    /* Status */
 #endif
 {
 
@@ -644,13 +644,13 @@ S16 RlcUiCkwBndCfm
 (
 Pst *pst,                       /* post structure */
 SuId suId,                      /* Service User Id */
-U8   status                     /* Status */
+uint8_t   status                     /* Status */
 )
 #else
 S16 RlcUiCkwBndCfm(pst, suId, status)
 Pst *pst;                       /* post structure */
 SuId suId;                      /* Service User Id */
-U8   status;                    /* Status */
+uint8_t   status;                    /* Status */
 #endif
 {
 
@@ -730,7 +730,7 @@ S16 RlcUiCkwUeIdChgCfm
 (
 Pst            *pst,                      /* post structure */
 SuId           suId,                      /* Service User Id */
-U32            transId,
+uint32_t       transId,
 CkwUeInfo      *ueInfo,
 CmStatus       status
 )
@@ -738,7 +738,7 @@ CmStatus       status
 S16 RlcUiCkwUeIdChgCfm(pst, suId, transId,ueInfo,status)
 Pst            *pst;                      /* post structure */
 SuId           suId;                      /* Service User Id */
-U32            transId;
+uint32_t       transId;
 CkwUeInfo      *ueInfo;
 CmStatus       status;
 #endif
@@ -777,11 +777,11 @@ Void;
    Void *elmIndx = NULLP;
    RxmBufReq *datReq = NULLP;
 #ifdef LTE_ADV
-   U32 dlPktCount = 0;
+   uint32_t dlPktCount = 0;
 #endif
-   U8 rngBufDeqIndx = 0;
-   U32 rngBufDeqMaxCnt;
-   U32 rngBufCurrCnt;
+   uint8_t rngBufDeqIndx = 0;
+   uint32_t rngBufDeqMaxCnt;
+   uint32_t rngBufCurrCnt;
 
    rngBufDeqMaxCnt = SS_RNG_MAX_DLPDCP_TO_DLRLC_DQ_CNT;
 #ifdef TENB_T2K3K_SPECIFIC_CHANGES
@@ -854,10 +854,10 @@ Void;
 {
 /* Read from Ring Buffer and process PDCP packets */
 
-   U8 rngBufDeqIndx = 0;
-   U32 rngBufDeqMaxCnt;
+   uint8_t rngBufDeqIndx = 0;
+   uint32_t rngBufDeqMaxCnt;
 #ifdef TENB_T2K3K_SPECIFIC_CHANGES
-   U32 rngBufCurrCnt;
+   uint32_t rngBufCurrCnt;
 #endif
    /* Memory regions different for BRCM and Intel */
    /*dstProcId,srcProcId,dstEnt,dstInst,srcEnt,srcInst,prior,route,event,region,pool,selector*/
@@ -893,7 +893,7 @@ Void;
       datReq.rlcId = kwuDatReqDetl->rlcId;
       datReq.sduId = kwuDatReqDetl->sduId;
       datReq.lcType = kwuDatReqDetl->lcType;
-      SsRngInfoTbl[SS_RNG_BUF_DLPDCP_TO_DLRLC].nPktProc++;;//Number of pkt processed in tti
+      SsRngInfoTbl[SS_RNG_BUF_DLPDCP_TO_DLRLC].nPktProc++;//Number of pkt processed in tti
       if(kwuDatReqDetl->mBuf != NULLP)
       {
          rlcProcDlData(&rlcDlRbfuPst, kwuDatReqDetl->spId, &datReq, kwuDatReqDetl->mBuf);

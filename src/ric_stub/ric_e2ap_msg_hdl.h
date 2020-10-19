@@ -34,7 +34,7 @@
 /* allocate and zero out a static buffer */
 #define RIC_ALLOC(_datPtr, _size)                                \
 {                                                               \
-   S16 _ret;                                                    \
+   uint8_t _ret;                                                    \
    _ret = SGetSBuf(RIC_APP_MEM_REG, RIC_POOL,                  \
                     (Data **)&_datPtr, _size);                  \
    if(_ret == ROK)                                              \

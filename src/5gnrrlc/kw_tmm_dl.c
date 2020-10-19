@@ -68,7 +68,7 @@
 
 PRIVATE Void rlcTmmSendBoSta ARGS((RlcCb *gCb, RlcDlRbCb *rbCb, 
                                  MsgLen bo, KwuDatReqInfo *datReqInfo));
-extern U32 rgMacGT ;  
+extern uint32_t rgMacGT ;  
 /** @addtogroup tmmode */
 /*@{*/
 
@@ -116,7 +116,7 @@ Buffer          *mBuf;
             "Memory Allocation failed UEID:%d CELLID:%d",   
             rbCb->rlcId.ueId,
             rbCb->rlcId.cellId);   
-      RETVOID;
+      return;
    }
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
 #ifdef CCPU_OPT   
@@ -145,7 +145,7 @@ Buffer          *mBuf;
    sdu->lstEnt.node = (PTR)sdu; 
 
    rlcTmmSendBoSta(gCb, rbCb, sdu->sduSz, datReqInfo); 
-   RETVOID;
+   return;
 }
 
 /**
@@ -396,7 +396,7 @@ RlcDlRbCb   *rbCb;
    rlcUtlEmptySduQ(gCb,&rbCb->m.tm.sduQ);
 #endif
    
-   RETVOID;
+   return;
 }
 /**
  *

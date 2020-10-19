@@ -114,7 +114,7 @@ SystemId *s;                /* system id */
    memcpy(s->ptNmb, sId.ptNmb, LRG_MAX_PT_NUM_SIZE); 
 
    /* Stack Crash Problem for TRACE5 Changes. Added the return below */
-  RETVOID; 
+  return; 
   
 } /* end of rgGetSid */
 

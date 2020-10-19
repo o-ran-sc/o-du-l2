@@ -85,10 +85,10 @@ RlcCb *gCb;
 {
    /* Initialize ueCb Hash List */
    if(ROK != cmHashListInit(&(gCb->u.ulCb->ueLstCp), 
-                            (U16) RLC_UE_LIST_BUCKET_SIZE,
-                            (U16) 0, 
+                            (uint16_t) RLC_UE_LIST_BUCKET_SIZE,
+                            (uint16_t) 0, 
                             (Bool) FALSE, 
-                            (U16) CM_HASH_KEYTYPE_CONID,
+                            (uint16_t) CM_HASH_KEYTYPE_CONID,
                             RLC_GET_MEM_REGION(gCb), 
                             RLC_GET_MEM_POOL(gCb)))
    {
@@ -98,10 +98,10 @@ RlcCb *gCb;
 
    /* Initialize cellCb Hash List */
    if(ROK != cmHashListInit(&(gCb->u.ulCb->cellLstCp), 
-                            (U16) RLC_CELL_LIST_BUCKET_SIZE,
-                            (U16) 0, 
+                            (uint16_t) RLC_CELL_LIST_BUCKET_SIZE,
+                            (uint16_t) 0, 
                             (Bool) FALSE, 
-                            (U16) CM_HASH_KEYTYPE_CONID,
+                            (uint16_t) CM_HASH_KEYTYPE_CONID,
                             RLC_GET_MEM_REGION(gCb), 
                             RLC_GET_MEM_POOL(gCb)))
    {
@@ -111,10 +111,10 @@ RlcCb *gCb;
    }
 
    if(ROK != cmHashListInit(&(gCb->u.ulCb->transIdLstCp), 
-                            (U16) RLC_TRANS_ID_LST_BKT_SIZE,
-                            (U16) 0, 
+                            (uint16_t) RLC_TRANS_ID_LST_BKT_SIZE,
+                            (uint16_t) 0, 
                             (Bool) FALSE, 
-                            (U16) CM_HASH_KEYTYPE_CONID,
+                            (uint16_t) CM_HASH_KEYTYPE_CONID,
                             RLC_GET_MEM_REGION(gCb), 
                             RLC_GET_MEM_POOL(gCb)))
    {
@@ -165,7 +165,7 @@ RlcCb *gCb;
    cmHashListDeinit(&(rlcCb.rlcL2Cb.qciHlCp));
 #endif /* LTE_L2_MEAS */
 
-   RETVOID;
+   return;
 } /* kwDbmDeInit */
 
 
@@ -210,7 +210,7 @@ RlcUlRbCb     **rbCb;
                rlcId->cellId, 
                rlcId->ueId,
                RLC_MAX_RB_PER_CELL);
-         RETVOID;
+         return;
       }
 
       rlcDbmFetchUlCellCb(gCb,rlcId->cellId, &cellCb);
@@ -220,7 +220,7 @@ RlcUlRbCb     **rbCb;
                "CellCb not found RBID:%d UEID:%d",
                rlcId->rbId,
                rlcId->ueId);
-         RETVOID;
+         return;
       }
 
       *rbCb = cellCb->rbCb[rlcId->rbId];
@@ -236,7 +236,7 @@ RlcUlRbCb     **rbCb;
                rlcId->rbType,
                rlcId->cellId,
                rlcId->ueId);
-         RETVOID;
+         return;
       }
 
       if (rlcDbmFetchUlUeCb(gCb,rlcId->ueId, rlcId->cellId, &ueCb) != ROK)
@@ -245,12 +245,12 @@ RlcUlRbCb     **rbCb;
                "UeId [%d]: UeCb not found RBID:%d",
                rlcId->ueId,
                rlcId->rbId);
-         RETVOID;
+         return;
       }
 
       RLC_DBM_GET_RBCB_FROM_UECB(rlcId->rbId, rlcId->rbType, ueCb, *rbCb);
    }
-   RETVOID;
+   return;
 } /* rlcDbmFetchUlRbCbByRbId */
 
 
@@ -324,16 +324,16 @@ Void rlcDbmDelAllUlRb
 (
 RlcCb       *gCb,
 RlcUlRbCb   **rbCbLst,          
-U8         numRbCb            
+uint8_t         numRbCb            
 )
 #else
 Void rlcDbmDelAllUlRb(gCb, rbCbLst, numRbCb)
 RlcCb       *gCb;
 RlcUlRbCb   **rbCbLst;        
-U8         numRbCb;         
+uint8_t         numRbCb;         
 #endif
 {
-   U32 idx; /* Index */
+   uint32_t idx; /* Index */
 
    for (idx = 0; idx < numRbCb; idx++)
    {
@@ -353,7 +353,7 @@ U8         numRbCb;
       }
    }
 
-   RETVOID;
+   return;
 } /* kwDbmDelAllRb */
 
 
@@ -396,8 +396,8 @@ RlcUlUeCb      *ueCb;
 
    if(ROK != cmHashListInsert(&(gCb->u.ulCb->ueLstCp), 
                               (PTR)ueCb, 
-                              (U8 *)&(ueCb->ueId),
-                              (U16) sizeof(CmLteRnti)))
+                              (uint8_t *)&(ueCb->ueId),
+                              (uint16_t) sizeof(CmLteRnti)))
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cellId,
             "UeId[%u] HashList Insertion Failed",
@@ -446,8 +446,8 @@ RlcUlCfgTmpData   *cfg;
 
    return (cmHashListInsert(&(gCb->u.ulCb->transIdLstCp), 
                              (PTR)cfg, 
-                             (U8 *)&(cfg->transId), 
-                             (U16) sizeof(cfg->transId)));
+                             (uint8_t *)&(cfg->transId), 
+                             (uint16_t) sizeof(cfg->transId)));
 } 
 
 
@@ -471,19 +471,19 @@ RlcUlCfgTmpData   *cfg;
 S16 rlcDbmFindUlTransaction
 (
 RlcCb             *gCb,
-U32              transId,
+uint32_t              transId,
 RlcUlCfgTmpData   **cfg
 )
 #else
 S16 rlcDbmFindUlTransaction(gCb, cfg)
 RlcCb             *gCb;
-U32              transId;
+uint32_t              transId;
 RlcUlCfgTmpData   **cfg;
 #endif
 {
 
    if(ROK != cmHashListFind(&(gCb->u.ulCb->transIdLstCp),
-                            (U8 *) &transId, 
+                            (uint8_t *) &transId, 
                             sizeof (transId), 
                             RLC_DEF_SEQ_NUM,(PTR *) cfg))
    {
@@ -655,7 +655,7 @@ Bool       abortFlag;
    /* Deallocate ueCb */
    RLC_FREE(gCb,ueCb, sizeof(RlcUlUeCb));
 
-   RETVOID;
+   return;
 }
 
 /**
@@ -691,7 +691,7 @@ RlcCb *gCb;
       ueCb = NULLP;
    }
 
-   RETVOID;
+   return;
 }
 
 
@@ -731,8 +731,8 @@ RlcUlCellCb    *cellCb;
 
    if(ROK != cmHashListInsert(&(gCb->u.ulCb->cellLstCp), 
                               (PTR) tCellCb,
-                              (U8 *)&(tCellCb->cellId), 
-                              (U16) sizeof(CmLteCellId)))
+                              (uint8_t *)&(tCellCb->cellId), 
+                              (uint16_t) sizeof(CmLteCellId)))
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,tCellCb->cellId,
             "HashList Insertion Failed");
@@ -810,7 +810,7 @@ RlcUlCellCb   *cellCb;
    /* Deallocate cellCb */
    RLC_FREE(gCb, cellCb, sizeof(RlcUlCellCb));
 
-   RETVOID;
+   return;
 } /* kwDbmDelCellCb */
 
 
@@ -846,7 +846,7 @@ RlcCb *gCb;
       cellCb = NULLP;
    }
 
-   RETVOID;
+   return;
 } 
 
 
@@ -877,7 +877,7 @@ RlcCb *gCb;
 
    rlcDbmUlDeInit(gCb);
 
-   RETVOID;
+   return;
 }
 
 

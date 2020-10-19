@@ -132,11 +132,11 @@ PRIVATE S16 SULockOsCp ARGS((Void));
 #ifdef SSI_STATIC_MEM_LEAK_DETECTION
 PRIVATE void InitializeForStaticMemLeak ARGS((void));
 PRIVATE void InitializeStaticMemAllocInfo ARGS((StaticMemAllocInfo* memAllocInfo));
-U32 GetNextFreeIdx ARGS((StaticMemAllocInfo * memAllocInfo));
-void FreeIdx ARGS((U8* ptr, U32 idx, StaticMemAllocInfo* memAllocInfo,U32 size, char*
-      file, U32 line));
+uint32_t GetNextFreeIdx ARGS((StaticMemAllocInfo * memAllocInfo));
+void FreeIdx ARGS((uint8_t* ptr, uint32_t idx, StaticMemAllocInfo* memAllocInfo,uint32_t size, char*
+      file, uint32_t line));
 void LogForStaticMemLeak ARGS((StaticMemAllocInfo* memAllocInfo, char* file,
-      U32 line, U32 size, void* ptr, U32 idx));
+      uint32_t line, uint32_t size, void* ptr, uint32_t idx));
 PRIVATE void PrintStaticMemAllocInfo ARGS((StaticMemAllocInfo* memAllocInfo, FILE
       *opFile));
 #endif
@@ -144,7 +144,7 @@ PRIVATE void PrintStaticMemAllocInfo ARGS((StaticMemAllocInfo* memAllocInfo, FIL
 
 void DumpSSIDemandQDebugInformation()
 {
-   U32 i,j;
+   uint32_t i,j;
    RTLIN_DUMP_DEBUG("Demand Q Information\n");
    RTLIN_DUMP_DEBUG("====================\n");
    for(i = 0; i < osCp.numSTsks; i++)
@@ -645,7 +645,7 @@ S16 SInit()
 #ifdef SS_FBSED_TSK_REG
    /* Configure task registration based on the configuration */
    /*ss013.301 : Fixed warnings for 32/64 bit compilation*/
-   cmCfgrTskReg((U8 *)"task_info.t");
+   cmCfgrTskReg((uint8_t *)"task_info.t");
 #endif /* SS_FBSED_TSK_REG  */
 
 /*ss011.301 : RMIOS release related changes*/
@@ -753,7 +753,7 @@ S16 SDeInit()
 #endif
 {
   /* ss007.301 */
-  U16    regCnt;
+  uint16_t    regCnt;
 
 
    ssdDeinitTmr();
@@ -817,7 +817,7 @@ Txt *buf;                       /* buffer */
 {
    S16 bufSz;
    /* buffer synchronisation*/
-   bufSz = cmStrlen((U8 *)buf);
+   bufSz = cmStrlen((uint8_t *)buf);
    SLock(&osCp.logger.bufLock);
    if(osCp.logger.started == FALSE)
    {
@@ -995,7 +995,7 @@ Txt *errDesc;               /* description of error */
                      errCls, errCode, errVal, errDesc);
 
 
-   RETVOID;
+   return;
 }
 
 /* ss029.103: modification: 
@@ -1055,7 +1055,7 @@ ProcId procId;
 
    osCp.procId = procId;
 
-   RETVOID;
+   return;
 }
 
 #endif /* SS_MULTIPLE_PROCS */
@@ -1077,17 +1077,17 @@ ProcId procId;
 *
 */
 #ifdef ANSI
-U16 SGetProcIdIdx
+uint16_t SGetProcIdIdx
 (
 ProcId proc
 )
 #else
-U16 SGetProcIdIdx(proc)
+uint16_t SGetProcIdIdx(proc)
 ProcId proc; 
 #endif
 {
-   U16 i;
-   U16 idx;
+   uint16_t i;
+   uint16_t idx;
 
    idx = SS_HASH_IDX(proc);
 
@@ -1127,8 +1127,8 @@ PRIVATE S16 SInsProcId(proc)
 ProcId proc; 
 #endif
 {
-   U16 i;
-   U16 idx;
+   uint16_t i;
+   uint16_t idx;
 
 
    idx = SS_HASH_IDX(proc);
@@ -1177,8 +1177,8 @@ PRIVATE S16 SRemProcId(proc)
 ProcId proc; 
 #endif
 {
-   U16 i;
-   U16 idx;
+   uint16_t i;
+   uint16_t idx;
 
 
    idx = SS_HASH_IDX(proc);
@@ -1320,16 +1320,16 @@ PRIVATE S16 SULockOsCp(Void)
 #ifdef ANSI
 S16 SAddProcIdLst
 (
-U16 numPIds,
+uint16_t numPIds,
 ProcId *pIdLst
 )
 #else
 S16 SAddProcIdLst(numPIds, pIdLst)
-U16 numPIds;
+uint16_t numPIds;
 ProcId *pIdLst;
 #endif
 {
-   U16 i;
+   uint16_t i;
    S16 ret;
 
 
@@ -1415,16 +1415,16 @@ exceeds");
 #ifdef ANSI
 S16 SRemProcIdLst
 (
-U16 numPIds,
+uint16_t numPIds,
 ProcId *pIdLst
 )
 #else
 S16 SRemProcIdLst(numPIds, pIdLst)
-U16 numPIds;
+uint16_t numPIds;
 ProcId *pIdLst;
 #endif
 {
-   U16 i;
+   uint16_t i;
 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -1479,17 +1479,17 @@ ProcId *pIdLst;
 #ifdef ANSI
 S16 SGetProcIdLst
 (
-U16 *numPIds,
+uint16_t *numPIds,
 ProcId *pIdLst
 )
 #else
 S16 SGetProcIdLst(numPIds, pIdLst)
-U16 *numPIds;
+uint16_t *numPIds;
 ProcId *pIdLst;
 #endif
 {
-   U16 i;
-   U16 count = 0;
+   uint16_t i;
+   uint16_t count = 0;
 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -1551,7 +1551,7 @@ Inst inst;
 Void **xxCb;
 #endif
 {
-   U16 procIdIdx;
+   uint16_t procIdIdx;
    SsIdx idx;
 
 
@@ -1622,7 +1622,7 @@ S16 SFillEntIds(Void)
 #endif
 {
 
-   U8 entInfo[26][26] = {
+   uint8_t entInfo[26][26] = {
                            /* A      B      C      D      E      F      G      H      I      J      K  *
                               L      M      N      O      P      Q      R      S      T      U      V  *
                               W      X      Y      Z */
@@ -1783,7 +1783,7 @@ S16 SFillEntIds(Void)
                         };
 
    /*ss013.301 :Adding  TRC MACRO*/
-            memcpy((U8*)osCp.entId, (U8*)entInfo, sizeof(entInfo));
+            memcpy(osCp.entId, entInfo, sizeof(entInfo));
 
    return ROK;
 } /* SFillEntIds */
@@ -1808,29 +1808,29 @@ S16 SFillEntIds(Void)
 S16 SGetEntInd 
 (
 Ent      *entId,
-U8       *fileName
+uint8_t       *fileName
 )
 #else
 S16 SGetEntInd(entId, fileName)
 Ent      *entId;
-U8       *fileName;
+uint8_t       *fileName;
 #endif
 {
 
 
-	U8   *letter = NULLP;
+	uint8_t   *letter = NULLP;
    /* ss002.301 Additions */
 	S8   *strippedName = NULLP;
-	U8   count = 0;
-	U8   tempIdx = 0;
-	U8   firstIdx = 0;
-	U8   secondIdx = 0;
+	uint8_t   count = 0;
+	uint8_t   tempIdx = 0;
+	uint8_t   firstIdx = 0;
+	uint8_t   secondIdx = 0;
 
 
    /* ss002.301 Additions */
 	if ((strippedName = strrchr((const char *)fileName, '/')))
 	{
-	   fileName = (U8 *)strippedName + 1;
+	   fileName = (uint8_t *)strippedName + 1;
 	}
 
 	if(fileName[0] =='l' && fileName[3] == '.')
@@ -1913,13 +1913,13 @@ U8       *fileName;
 S16 SLockNew 
 (
 SLockInfo *lockId,
-U8         lockType
+uint8_t         lockType
 
 )
 #else
 S16 SLockNew(lockId, lockType)
 SLockInfo *lockId;
-U8         lockType;
+uint8_t         lockType;
 #endif
 {
    S16    retVal = ROK;
@@ -1950,12 +1950,12 @@ U8         lockType;
 S16 SInitLockNew 
 (
 SLockInfo *lockId,
-U8         lockType
+uint8_t         lockType
 )
 #else
 S16 SInitLockNew(lockId, lockType)
 SLockInfo *lockId;
-U8         lockType;
+uint8_t         lockType;
 #endif
 {
    S16    retVal = ROK;
@@ -1986,12 +1986,12 @@ U8         lockType;
 S16 SUnlockNew 
 (
 SLockInfo *lockId,
-U8         lockType
+uint8_t         lockType
 )
 #else
 S16 SUnlockNew(lockId, lockType)
 SLockInfo *lockId;
-U8         lockType;
+uint8_t         lockType;
 #endif
 {
    S16    retVal = ROK;
@@ -2022,12 +2022,12 @@ U8         lockType;
 S16 SDestroyLockNew 
 (
 SLockInfo *lockId,
-U8         lockType
+uint8_t         lockType
 )
 #else
 S16 SDestroyLockNew(lockId, lockType)
 SLockInfo *lockId;
-U8         lockType;
+uint8_t         lockType;
 #endif
 {
    S16    retVal = ROK;
@@ -2044,8 +2044,8 @@ U8         lockType;
 
 #ifdef SSI_STATIC_MEM_LEAK_DETECTION
 /* Static memory leak detection changes */
-static U32 StaticMemLeakAge;
-static U32 StaticMemLeakIntCount = 1;
+static uint32_t StaticMemLeakAge;
+static uint32_t StaticMemLeakIntCount = 1;
 
 void PrintStaticMemAllocInfo(StaticMemAllocInfo* memAllocInfo, FILE *opFile)
 {
@@ -2071,7 +2071,7 @@ void PrintStaticMemAllocInfo(StaticMemAllocInfo* memAllocInfo, FILE *opFile)
 
 void InitializeStaticMemAllocInfo(StaticMemAllocInfo* memAllocInfo)
 {
-   U32 i;
+   uint32_t i;
    /* index 0 is not used; nextIdx as 0 means end of list */
    memAllocInfo->nextFreeIdx = 1;
 
@@ -2085,11 +2085,11 @@ void InitializeStaticMemAllocInfo(StaticMemAllocInfo* memAllocInfo)
    memAllocInfo->allocations[MAX_MEM_ALLOCATIONS - 1].listInfo.nextIdx = 0;
 }
 
-U32 GetNextFreeIdx(StaticMemAllocInfo * memAllocInfo)
+uint32_t GetNextFreeIdx(StaticMemAllocInfo * memAllocInfo)
 {
-   U32 toBeReturned = memAllocInfo->nextFreeIdx;
+   uint32_t toBeReturned = memAllocInfo->nextFreeIdx;
 
-   U32 newNextFreeIdx = memAllocInfo->allocations[memAllocInfo->nextFreeIdx].listInfo.nextIdx;
+   uint32_t newNextFreeIdx = memAllocInfo->allocations[memAllocInfo->nextFreeIdx].listInfo.nextIdx;
 
    if(newNextFreeIdx == 0 || newNextFreeIdx >= MAX_MEM_ALLOCATIONS)
    {
@@ -2102,7 +2102,7 @@ U32 GetNextFreeIdx(StaticMemAllocInfo * memAllocInfo)
 }
 
 #define CRASH_ENB {int *p = 0; *p = 100;}
-void FreeIdx(U8* ptr, U32 idx, StaticMemAllocInfo* memAllocInfo,U32 size, char* file, U32 line)
+void FreeIdx(uint8_t* ptr, uint32_t idx, StaticMemAllocInfo* memAllocInfo,uint32_t size, char* file, uint32_t line)
 {
    if(idx == 0 || idx >= MAX_MEM_ALLOCATIONS)
    {
@@ -2137,7 +2137,7 @@ CRASH_ENB
 }
 
 
-void LogForStaticMemLeak(StaticMemAllocInfo* memAllocInfo, char* file, U32 line, U32 size, void* ptr, U32 idx)
+void LogForStaticMemLeak(StaticMemAllocInfo* memAllocInfo, char* file, uint32_t line, uint32_t size, void* ptr, uint32_t idx)
 {
 
    memAllocInfo->allocations[idx].file = file;
@@ -2212,7 +2212,7 @@ void
 S16 SReInitTmr()
 #endif
 {
-   U8 ret = ROK;
+   uint8_t ret = ROK;
    Txt prntBuf[PRNTSZE];
 
    sprintf(prntBuf, "\n SReInitTmr(): ReStarting the Tmr\n");

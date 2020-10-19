@@ -47,9 +47,9 @@ typedef struct rgGenCfg
 {
    Pst      lmPst;      /*!< Layer manager post structure */
    MemoryId mem;        /*!< Region and pool ID */
-   U8       tmrRes;     /*!< Timer resolution for Low SAP Bind Timer */
-   U8       numRguSaps; /*!< Number of RGU SAP's */
-   U8       startCellId;              /*!< Start cell id value */
+   uint8_t       tmrRes;     /*!< Timer resolution for Low SAP Bind Timer */
+   uint8_t       numRguSaps; /*!< Number of RGU SAP's */
+   uint8_t       startCellId;              /*!< Start cell id value */
 #ifdef LTE_ADV
    Bool     forceCntrlSrbBoOnPCel;   /*!< value 1 means scheduler will schedule
                                           RLC control BO and SRBs only on PCEll
@@ -96,9 +96,9 @@ typedef struct rgLowSapCfg
 /* Data structures */
 typedef struct rgAckNack
 {
-   U8           mcs;
-   U16          numOfNacks;
-   U16          numOfAcks;
+   uint8_t           mcs;
+   uint16_t          numOfNacks;
+   uint16_t          numOfAcks;
 } RgAckNack;
 
 typedef struct rgSchNackAckStats
@@ -109,12 +109,12 @@ typedef struct rgSchNackAckStats
 
 typedef struct rgSchHqNumRetx
 {
-   U8           mcs;
-   U16          numOfHQ_1;
-   U16          numOfHQ_2;
-   U16          numOfHQ_3;
-   U16          numOfHQ_4;
-   U32          totalTx;
+   uint8_t           mcs;
+   uint16_t          numOfHQ_1;
+   uint16_t          numOfHQ_2;
+   uint16_t          numOfHQ_3;
+   uint16_t          numOfHQ_4;
+   uint32_t          totalTx;
 } RgSchHqNumRetx;
 
 typedef struct rgSchHqRetxStats
@@ -132,9 +132,9 @@ EXTERN RgSchHqRetxStats  hqRetxStats;
    This structure holds General statistical information of MAC. */
 typedef struct rgGenSts
 {
-   U32 numHarqFail;      /*!< Number of HARQ failures */
-   U32 numUeCfg;         /*!< Number of UEs configured */
-   U16 numCellCfg;       /*!< Number of Cells configured */
+   uint32_t numHarqFail;      /*!< Number of HARQ failures */
+   uint32_t numUeCfg;         /*!< Number of UEs configured */
+   uint16_t numCellCfg;       /*!< Number of Cells configured */
 #ifdef MAC_SCH_STATS
    RgSchNackAckStats nackAckStats;
    RgSchHqRetxStats  hqRetxStats;
@@ -146,19 +146,19 @@ typedef struct rgGenSts
    This structure holds statistical information of a SAP in MAC. */
 typedef struct rgSapSts
 {
-   U32 numPduRcvd;       /*!< Number of PDUs received. At TFU, PDU refers to TB,
+   uint32_t numPduRcvd;       /*!< Number of PDUs received. At TFU, PDU refers to TB,
                               and at RGU it is SDU. */
-   U32 numPduTxmit;      /*!< Number of PDUs transmitted. This field is 
+   uint32_t numPduTxmit;      /*!< Number of PDUs transmitted. This field is 
                               applicable to TFU. */
-   U32 numPduDrop;       /*!< Number of PDUs dropped. At TFU, PDU refers to TB,
+   uint32_t numPduDrop;       /*!< Number of PDUs dropped. At TFU, PDU refers to TB,
                               and at RGU it is SDU. */
 }RgSapSts;
 
 typedef struct rgSchInstCfg
 {
-   U8          instId;    /*!< Sheduler instance ID */
+   uint8_t          instId;    /*!< Sheduler instance ID */
    RgGenCfg    genCfg;    /*!< General Configuration for the scheduler instance */
-   U8          numSaps;   /*!< Number of RGR and TFU SAPs must be same */
+   uint8_t          numSaps;   /*!< Number of RGR and TFU SAPs must be same */
    RgUpSapCfg  rgrSap[LRG_MAX_SAPS_PER_INST];  /*!< RGR interface SAPS */
    RgUpSapCfg  rgmSap[LRG_MAX_SAPS_PER_INST];  /*!< RGR interface SAPS */
    RgLowSapCfg tfuSap[LRG_MAX_SAPS_PER_INST];  /*!< TFU interface SAPS */
@@ -185,7 +185,7 @@ typedef struct rgCfg
    This structure holds a SAP's status information. */
 typedef struct rgSapSta
 {
-   U8 sapState;         /*!< SAP state */
+   uint8_t sapState;         /*!< SAP state */
 }RgSapSta;
 
 /** 
@@ -194,7 +194,7 @@ typedef struct rgSapSta
 typedef struct rgSts
 {
    DateTime dt;          /*!< Date and Time. */
-   U8       sapInst;     /*!< SAP instance. */
+   uint8_t       sapInst;     /*!< SAP instance. */
    Action   action;      /*!< Action on Trafffic load related statistic values.
                               ARST: To reset the statistic values. */
    union
@@ -213,7 +213,7 @@ typedef struct rgSts
 typedef struct rgSsta
 {
    DateTime dt;             /*!< Date and time */
-   U8       sapInst;        /*!< SAP instance */
+   uint8_t       sapInst;        /*!< SAP instance */
    union
    {
       SystemId sysId;       /*!< System information */
@@ -230,7 +230,7 @@ typedef struct rgSsta
    Alarm diagnostics structure. */
 typedef struct rgUstaDgn
 {
-   U8          type;         /*!< Diagnostics Type */
+   uint8_t          type;         /*!< Diagnostics Type */
    union
    {
    /*lrg_x_001.main_3 - Changed for documentation*/
@@ -257,7 +257,7 @@ typedef struct rgTrc
 {
    DateTime dt;          /*!< Date and time */
    /*lrg_x_001.main_3 - changed for documentation*/
-   U8       evnt;        /*!< Event <BR> 
+   uint8_t       evnt;        /*!< Event <BR> 
                            EVTRGUDATREQ Trace for Dedicated channel Data Request. <BR> 
                            EVTRGUCDATREQ Trace for common channel data request.<BR> 
                           */
@@ -268,7 +268,7 @@ typedef struct rgTrc
    This structure holds MAC's Debug Control information. */
 typedef struct rgDbgCntrl
 {
-   U32 dbgMask;          /*!< iThe Layer Manager electively enables or disables various levels of Debug printing <BR>
+   uint32_t dbgMask;          /*!< iThe Layer Manager electively enables or disables various levels of Debug printing <BR>
                           Following are the values: <BR> 
                           DBGMASK_PRM Enable/Disable function parameter debug prints <BR>
                           DBGMASK_ERR Enable/Disable error prints <BR>
@@ -288,12 +288,12 @@ typedef struct rgSapCntrl
 #ifdef PHY_ERROR_LOGING
 typedef struct rgSchUlAllocCntrl
 {
-   U8  mcs;
-   U16 numOfRb;
-   U16 rbStart;
+   uint8_t  mcs;
+   uint16_t numOfRb;
+   uint16_t rbStart;
    Bool testStart;
    Bool enaLog;
-   U16  logTime;
+   uint16_t  logTime;
 }RgSchUlAllocCntrl; 
 #endif
 
@@ -303,9 +303,9 @@ typedef struct rgSchUlAllocCntrl
 typedef struct rgCntrl
 {
    DateTime      dt;          /*!< Date and Time */
-   U8            action;      /*!< Action */
-   U8            subAction;   /*!< Sub-action */
-   U8            instId;      /*!< Scheduler instance ID */
+   uint8_t            action;      /*!< Action */
+   uint8_t            subAction;   /*!< Sub-action */
+   uint8_t            instId;      /*!< Scheduler instance ID */
    union
    {
       RgDbgCntrl rgDbgCntrl;  /*!< Debug Control */
@@ -316,7 +316,7 @@ typedef struct rgCntrl
                                iii)Or any valid S16 value in case where only the specified number
                                of bytes, as indicated by trcLen, are to be sent.*/
       RgSapCntrl rgSapCntrl;  /*!< SAP Control */
-      U32        logMask;     /*!<  Logging control Mask */
+      uint32_t        logMask;     /*!<  Logging control Mask */
 #ifdef PHY_ERROR_LOGING
       RgSchUlAllocCntrl rgSchUlAllocCntrl; /* For setting MCS,Number of RB and RB start */
 #endif
@@ -350,8 +350,8 @@ typedef struct rgMngmt
 */
 typedef struct lrgAvgPrbQCI   
 {
-   U8        numQci;                 /*!< Numner of QCI's in requests */
-   U8        qci[LRG_MAX_QCI_PER_REQ];  /*!< QCI for which PRB has to be measured */
+   uint8_t        numQci;                 /*!< Numner of QCI's in requests */
+   uint8_t        qci[LRG_MAX_QCI_PER_REQ];  /*!< QCI for which PRB has to be measured */
 } LrgAvgPrbQCI;
 
 /**
@@ -361,11 +361,11 @@ typedef struct lrgAvgPrbQCI
 **/
 typedef struct lrgNmbActvUeQCI
 {
-   U8       sampPrd;                   /*!< sampling prd for which active UE's measured
+   uint8_t       sampPrd;                   /*!< sampling prd for which active UE's measured
                                           Where sampling period is in milli seconds
                                           value can be at most 100ms */
-   U8        numQci;                   /*!< Numner of QCI's in requests */
-   U8        qci[LRG_MAX_QCI_PER_REQ]; /*!< QCI for which UE has to be considered */
+   uint8_t        numQci;                   /*!< Numner of QCI's in requests */
+   uint8_t        qci[LRG_MAX_QCI_PER_REQ]; /*!< QCI for which UE has to be considered */
 } LrgNmbActvUeQCI;
 
 /**
@@ -376,7 +376,7 @@ typedef struct lrgNmbActvUeQCI
 typedef struct lrgSchMeasReqInfo
 {
    Header           hdr;             /*!< Header */
-   U16              measType;        /*!< For type of measurement Following are the */
+   uint16_t              measType;        /*!< For type of measurement Following are the */
                                      /*!< allowed values */
                                      /*!< LRG_L2MEAS_AVG_PRB_DL , LRG_L2MEAS_AVG_PRB_UL*/
                                      /*!< LRG_L2MEAS_AVG_PRB_PER_QCI_DL  */
@@ -388,7 +388,7 @@ typedef struct lrgSchMeasReqInfo
                                      /*!< LRG_L2MEAS_TB_TRANS_DL_FAULTY_COUNT */
                                      /*!< LRG_L2MEAS_TB_TRANS_UL_COUNT */
                                      /*!< LRG_L2MEAS_TB_TRANS_UL_FAULTY_COUNT */
-   U32              timePrd;         /*!< Time period UNITS and value will differ depending
+   uint32_t              timePrd;         /*!< Time period UNITS and value will differ depending
                                        on the action. Might be milli seconds/seconds. */
    CmLteCellId      cellId;          /*!< CELL Id for which measurement is Done */
    LrgAvgPrbQCI     avgPrbQciUl;     /*!< Average PRB usage per QCI in UL */
@@ -400,7 +400,7 @@ typedef struct lrgSchMeasReqInfo
 typedef struct lrgSchMeasSndReqInfo
 {
    Header           hdr;             /*!< Header */
-   U16              measType;        /*!< For type of measurement Following are the */
+   uint16_t              measType;        /*!< For type of measurement Following are the */
                                      /*!< allowed values */
                                      /*!< LRG_L2MEAS_AVG_PRB_DL , LRG_L2MEAS_AVG_PRB_UL*/
                                      /*!< LRG_L2MEAS_AVG_PRB_PER_QCI_DL  */
@@ -408,7 +408,7 @@ typedef struct lrgSchMeasSndReqInfo
                                      /*!< LRG_L2MEAS_RA_PREAMBLE  */
                                      /*!< LRG_L2MEAS_NMB_ACTV_UE_PER_QCI_UL */
                                      /*!< LRG_L2MEAS_NMB_ACTV_UE_PER_QCI_DL */
-   U32              timePrd;         /*!< Time period UNITS and value will differ depending
+   uint32_t              timePrd;         /*!< Time period UNITS and value will differ depending
                                        on the action. Might be milli seconds/seconds. */
    CmLteCellId      cellId;          /*!< CELL Id for which measurement is Done */
  //  LrgAvgPrbQCI     avgPrbQciUl;     /*!< Average PRB usage per QCI in UL */
@@ -420,7 +420,7 @@ typedef struct lrgSchMeasSndReqInfo
 typedef struct lrgSchMeasStopReqInfo
 {
    Header           hdr;             /*!< Header */
-   U16              measType;        /*!< For type of measurement Following are the */
+   uint16_t              measType;        /*!< For type of measurement Following are the */
                                      /*!< allowed values */
                                      /*!< LRG_L2MEAS_AVG_PRB_DL , LRG_L2MEAS_AVG_PRB_UL*/
                                      /*!< LRG_L2MEAS_AVG_PRB_PER_QCI_DL  */
@@ -428,7 +428,7 @@ typedef struct lrgSchMeasStopReqInfo
                                      /*!< LRG_L2MEAS_RA_PREAMBLE  */
                                      /*!< LRG_L2MEAS_NMB_ACTV_UE_PER_QCI_UL */
                                      /*!< LRG_L2MEAS_NMB_ACTV_UE_PER_QCI_DL */
- /*  U16              timePrd;  */       /*!< Time period UNITS and value will differ depending
+ /*  uint16_t              timePrd;  */       /*!< Time period UNITS and value will differ depending
                                        on the action. Might be milli seconds/seconds. */
    CmLteCellId      cellId;          /*!< CELL Id for which measurement is Done */
  /*  LrgAvgPrbQCI     avgPrbQciUl; */     /*!< Average PRB usage per QCI in UL */
@@ -443,9 +443,9 @@ typedef struct lrgSchMeasStopReqInfo
 **/
 typedef struct lrgRaPreambles
 {
-   U16    dedPreambles;        /*!< Dedicated RA Preamble received */
-   U16    randSelPreLowRange;  /*!< Randomly selected preambles in low range */
-   U16    randSelPreHighRange; /*!< Randomly selected preambles in high range */
+   uint16_t    dedPreambles;        /*!< Dedicated RA Preamble received */
+   uint16_t    randSelPreLowRange;  /*!< Randomly selected preambles in low range */
+   uint16_t    randSelPreHighRange; /*!< Randomly selected preambles in high range */
 } LrgRaPreamblesCfm;
 
 /**
@@ -454,20 +454,20 @@ typedef struct lrgRaPreambles
  * */
 typedef struct lrgAvgPrbcfm
 {
-   U8    prbPerc;      /*!< PRB usage in percentage for UL */
+   uint8_t    prbPerc;      /*!< PRB usage in percentage for UL */
 } LrgAvgPrbCfm;
 
 /*LRG : Review Tag*/
 typedef struct prbPercQci
 {
-	U8 qciValue;
-	U8 prbPercQci;
+	uint8_t qciValue;
+	uint8_t prbPercQci;
 }PrbPercQci;
 
 typedef struct numActvUeQci
 {
-	U8 qciValue;
-	U8 numActvUeQci;
+	uint8_t qciValue;
+	uint8_t numActvUeQci;
 }NumActvUeQci;
 /*LRG : Review Tag*/
 /**
@@ -476,7 +476,7 @@ typedef struct numActvUeQci
  * */
 typedef struct lrgAvgPrbQCICfm
 {
-   U8    numQci;                             /*!< number of QCI */
+   uint8_t    numQci;                             /*!< number of QCI */
 /*LRG : Review Tag*/
    PrbPercQci    prbPercQci[LRG_MAX_QCI_PER_REQ];    /*!< PRB usage in percentage per QCI for UL/DL */
 /*LRG : Review Tag*/
@@ -488,7 +488,7 @@ typedef struct lrgAvgPrbQCICfm
  */
 typedef struct lrgNumActvUeQCICfm
 {
-   U8     numQci;                            /*!< Numner of QCI's in requests */
+   uint8_t     numQci;                            /*!< Numner of QCI's in requests */
 /*LRG : Review Tag*/
    NumActvUeQci     numActvUeQci[LRG_MAX_QCI_PER_REQ]; /*!< Number of Active UE's in UL/DL per QCI */
 /*LRG : Review Tag*/
@@ -500,7 +500,7 @@ typedef struct lrgNumActvUeQCICfm
 typedef struct lrgSchMeasCfmInfo
 {
    Header             hdr;               /*!< Header information */
-   U16                measType;          /*!< Type of measurement */
+   uint16_t                measType;          /*!< Type of measurement */
    CmStatus           cfm;               /*!< Confirmation possible Values when measType
                                               is invalid status -> NOK and reason -> INVALID
                                                 */
@@ -512,10 +512,10 @@ typedef struct lrgSchMeasCfmInfo
    LrgRaPreamblesCfm  raPrmbsCfm;         /*!< Different received RA preambles */
    LrgNumActvUeQCICfm numUeQciUlCfm;      /*!< Number of Active UE's in UL per QCI */
    LrgNumActvUeQCICfm numUeQciDlCfm;      /*!< Number of Active UE's in DL per QCI */
-   U32                tbTransDlTotalCnt;  /*!< Count of DL TB transmitteed */
-   U32                tbTransDlFaulty;    /*!< Count of DL TB for wich NACK not recieved from UE */ 
-   U32                tbTransUlTotalCnt;  /*!< Count of UL TB received successfully */ 
-   U32                tbTransUlFaulty;    /*!< Count of UL TB not recieved successfully */ 
+   uint32_t                tbTransDlTotalCnt;  /*!< Count of DL TB transmitteed */
+   uint32_t                tbTransDlFaulty;    /*!< Count of DL TB for wich NACK not recieved from UE */ 
+   uint32_t                tbTransUlTotalCnt;  /*!< Count of UL TB received successfully */ 
+   uint32_t                tbTransUlFaulty;    /*!< Count of UL TB not recieved successfully */ 
 } LrgSchMeasCfmInfo;
 
 #endif /* LTE_L2_MEAS */
@@ -1287,7 +1287,7 @@ S16 cmPkRgSsta ARGS((
    RgSsta               *param,
    S16                  elmnt,
    /*ccpu00118255 - ADD - eventType param */
-   U8                   eventType,
+   uint8_t                   eventType,
    Buffer               *mBuf
 ));
 #else /*LRG_V1 not defined */
@@ -1357,13 +1357,13 @@ S16 cmUnpkRgCntrl ARGS((
 S16 cmPkRgMngmt ARGS((
    Pst *pst,
    RgMngmt *param,
-   U8 eventType,
+   uint8_t eventType,
    Buffer *mBuf
 ));
 S16 cmUnpkRgMngmt ARGS((
    Pst *pst,
    RgMngmt *param,
-   U8 eventType,
+   uint8_t eventType,
    Buffer *mBuf
 ));
 

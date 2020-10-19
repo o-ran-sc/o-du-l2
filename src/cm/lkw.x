@@ -43,17 +43,17 @@ typedef struct rlcGenCfg
 {
    Pst               lmPst;         /*!< Post structure for communicating
                                       with LM. */
-   U32               maxUe;         /*!< Maximum number of UEs supported
+   uint32_t               maxUe;         /*!< Maximum number of UEs supported
                                       by RLC. */
-   U16               maxKwuSaps;    /*!< Maximum KWU SAPs. */
+   uint16_t               maxKwuSaps;    /*!< Maximum KWU SAPs. */
 /* Supported by SPLIT Architecture */
-   U16               maxUdxSaps;    /*!< Maximum Udx SAPs. */
+   uint16_t               maxUdxSaps;    /*!< Maximum Udx SAPs. */
 /* Supported by SPLIT Architecture ends */
    Ticks             timeRes;       /*!< Time resolution. */
 /* Supported by SPLIT Architecture */
-   U8                rlcMode;       /*!< RLC_DL or RLC_UL */
+   uint8_t                rlcMode;       /*!< RLC_DL or RLC_UL */
 /* Supported by SPLIT Architecture ends */
-   U16               maxRguSaps;    /*!< Maximum RGU SAPs. */
+   uint16_t               maxRguSaps;    /*!< Maximum RGU SAPs. */
 }RlcGenCfg;
 
 /** @brief
@@ -66,7 +66,7 @@ typedef struct rlcSapCfg
    Ent               ent;           /*!< Entity ID. */
    Inst              inst;          /*!< Instance ID. */
    SpId              sapId;         /*!< SAP ID. */
-   U16               bndTmrIntvl;   /*!< Bind timer interval. */
+   uint16_t               bndTmrIntvl;   /*!< Bind timer interval. */
    Priority          priority;      /*!< Priority. */
    Route             route;         /*!< Route. */
 }RlcSapCfg;
@@ -173,7 +173,7 @@ typedef struct rlcSSta
     Trace Control Structure */
 typedef struct rlcTrcCntrl
 {
-   U8                trcMask;       /*!< Trace mask. */
+   uint8_t                trcMask;       /*!< Trace mask. */
    S16               trcLen;        /*!< Trace length. */
 }RlcTrcCntrl;
 
@@ -181,7 +181,7 @@ typedef struct rlcTrcCntrl
     Debug Control Structure */
 typedef struct rlcDbgCntrl
 {
-   U32               dbgMask;       /*!< Debug mask. Assign non zero value to enable 
+   uint32_t               dbgMask;       /*!< Debug mask. Assign non zero value to enable 
                                          and zero to disable debug */
 }RlcDbgCntrl;
 
@@ -198,15 +198,15 @@ typedef struct rlcSapCntrl
 typedef struct rlcCntrl
 {
    DateTime          dt;            /*!< Date and Time structure. */
-   U8                action;        /*!< Action. */
-   U8                subAction;     /*!< Sub action. */
+   uint8_t                action;        /*!< Action. */
+   uint8_t                subAction;     /*!< Sub action. */
    union
    {
       RlcTrcCntrl     trcCntrl;      /*!< Trace Control Structure. */
       RlcDbgCntrl     dbgCntrl;      /*!< Debug Control Structure. */
       RlcSapCntrl     sapCntrl;      /*!< SAP Control Structure. */
 #ifdef SS_DIAG
-      U32            logMask;       /*!< Logging Control Structure. */
+      uint32_t            logMask;       /*!< Logging Control Structure. */
 #endif
    }s;
 }RlcCntrl;
@@ -218,10 +218,10 @@ typedef struct rlcUSta
    DateTime          dt;            /*!< Date and Time structure. */
    CmAlarm           alarm;         /*!< Alarm. */
    SuId              suId;          /*!< Service user ID. */
-   U32               ueId;          /*!< Urnti UE ID. */
+   uint32_t               ueId;          /*!< Urnti UE ID. */
   /* lkw_x_001.main_2, added support for L2 measurement */
 #ifdef LTE_L2_MEAS
-   U8                qci;           /*!< Qci value */
+   uint8_t                qci;           /*!< Qci value */
 #endif
 }RlcUSta;
 
@@ -230,7 +230,7 @@ typedef struct rlcUSta
 typedef struct rlcTrc
 {
    DateTime          dt;            /*!< Date and Time structure. */
-   U16               event;         /*!< Event. Events defined in the differenct RLC
+   uint16_t               event;         /*!< Event. Events defined in the differenct RLC
                                          interfaces are pssible values here.*/
 }RlcTrc;
 
@@ -257,7 +257,7 @@ typedef struct rlcMngmt
 /** @brief Measurement Request Params Structure. */
 typedef struct rlcL2MeasReqInfo
 {
-   U8        measType;          /*!< Measurement type, bit 1 to 4 (LSB nibble) 
+   uint8_t        measType;          /*!< Measurement type, bit 1 to 4 (LSB nibble) 
                                   will be used for non IP Throughput and 
                                   bit 5 and 6 will be used for DL and UL 
                                   Ipthroughput respectively */
@@ -265,18 +265,18 @@ typedef struct rlcL2MeasReqInfo
    {
       struct 
       {
-         U16          numSamples;       /*!<Sampling period: */
-         U8           numQci;           /*!<number of qCI to take measurement for */
-         U8           qci[LKW_MAX_QCI]; /*!<QCI for the measurement */
+         uint16_t          numSamples;       /*!<Sampling period: */
+         uint8_t           numQci;           /*!<number of qCI to take measurement for */
+         uint8_t           qci[LKW_MAX_QCI]; /*!<QCI for the measurement */
       }nonIpThMeas;
 
       struct 
       {
-         U16 numUes;
+         uint16_t numUes;
          struct 
          {
-            U8           numQci;           /*!<number of qCI to take measurement for */
-            U8           qci[LKW_MAX_QCI]; /*!<QCI for the measurement */
+            uint8_t           numQci;           /*!<number of qCI to take measurement for */
+            uint8_t           qci[LKW_MAX_QCI]; /*!<QCI for the measurement */
             CmLteRnti    ueId;             /*!< UE ID (Used only for IP Throughput in UL/DL */
             CmLteCellId  cellId;           /*!< Cell ID (Used only for IP Throughput in UL/DL */
          }ueInfoLst[LKW_MAX_UE];
@@ -288,25 +288,25 @@ typedef struct rlcL2MeasReqInfo
 /** @brief Measurement Request Exvent  Structure. */
 typedef struct rlcL2MeasReqEvt
 {
-   U32              transId;     /*!< Transaction Identifier */
-   U16              measPeriod;  /*!< Measurement Period */
+   uint32_t              transId;     /*!< Transaction Identifier */
+   uint16_t              measPeriod;  /*!< Measurement Period */
    RlcL2MeasReqInfo  measReq;     /*!< Measurement request structure */
 }RlcL2MeasReqEvt;
 
 /** @brief Measurement Confirm Params Structure. */
 typedef struct rlcL2MeasCfmInfo
 {
-   U8              qci;     /*!< QCI value */
+   uint8_t              qci;     /*!< QCI value */
    union
    {
       struct
       {
-         U32   numActUe;   /*!< num of Active UEs*/
-         U32   uuLoss;     /*!< Uu Loss Rate */
+         uint32_t   numActUe;   /*!< num of Active UEs*/
+         uint32_t   uuLoss;     /*!< Uu Loss Rate */
          /* Discard new changes starts */
-         U32   dlDiscRate; /*!< DL Discard rate to be reported */
+         uint32_t   dlDiscRate; /*!< DL Discard rate to be reported */
          /* Discard new changes ends */
-         U32  dlSduDelay;
+         uint32_t  dlSduDelay;
       }nonIpThrput;
 
       struct              /*!< Structure for IP throughput*/
@@ -323,18 +323,18 @@ typedef struct rlcL2MeasCfmUeInfoLst
    CmLteRnti       ueId;    /*!< UE Id used for DL/UL Ipthroughput*/
    CmLteCellId     cellId;  /*!< Cell Id used for DL/UL Ipthroughput*/
    RlcL2MeasCfmInfo measCfm[LKW_MAX_QCI]; /*!< Measurement confirm structure*/
-   U16             numCfm; /*!< Number of Measurement confirm*/
+   uint16_t             numCfm; /*!< Number of Measurement confirm*/
 }RlcL2MeasCfmUeInfoLst;
 
 typedef struct rlcL2MeasCfmIpThMeas
 {
-   U16                  numUes; /*!< Number of Ue Info*/
+   uint16_t                  numUes; /*!< Number of Ue Info*/
    RlcL2MeasCfmUeInfoLst ueInfoLst[LKW_MAX_UE]; /*!< UE info list*/
 }RlcL2MeasCfmIpThMeas;
 
 typedef struct rlcL2MeasCfmNonIpThMeas
 {
-   U16             numCfm; /*!< Number of confirm */
+   uint16_t             numCfm; /*!< Number of confirm */
    RlcL2MeasCfmInfo measCfm[LKW_MAX_QCI]; /*!< Confirmation info */
 }RlcL2MeasCfmNonIpThMeas;
 
@@ -347,9 +347,9 @@ typedef union kwL2MeasCfmIpNonIp
 /** @brief Measurement Confirm Event  Structure. */
 typedef struct rlcL2MeasCfmEvt
 {
-   U32             transId; /*!< Transaction id */
+   uint32_t             transId; /*!< Transaction id */
    CmStatus        status;  /*!< Status is for all QCIs */
-   U8              measType; /*!< Measurement type, bit 1 to 4 (LSB nibble) 
+   uint8_t              measType; /*!< Measurement type, bit 1 to 4 (LSB nibble) 
                                will be used for non IP Throughput and 
                                bit 5 and 6 will be used for DL and UL 
                                Ipthroughput respectively. It is same for
@@ -380,9 +380,9 @@ typedef S16 (*LkwTrcInd)   ARGS((Pst *pst, RlcMngmt *trc, Buffer *mBuf));
 #ifdef LTE_L2_MEAS
 typedef S16 (*LkwL2MeasReq)   ARGS((Pst *pst, RlcL2MeasReqEvt *measEvt));
 typedef S16 (*LkwL2MeasCfm)   ARGS((Pst *pst, RlcL2MeasCfmEvt *measEvt));
-typedef S16 (*LkwL2MeasSendReq)   ARGS((Pst *pst, U8 measType));
-typedef S16 (*LkwL2MeasStopReq)   ARGS((Pst *pst, U8 measType));
-typedef S16 (*LkwL2MeasStopCfm)   ARGS((Pst *pst, U8 measType,U8 status));
+typedef S16 (*LkwL2MeasSendReq)   ARGS((Pst *pst, uint8_t measType));
+typedef S16 (*LkwL2MeasStopReq)   ARGS((Pst *pst, uint8_t measType));
+typedef S16 (*LkwL2MeasStopCfm)   ARGS((Pst *pst, uint8_t measType,uint8_t status));
 #endif /*  LTE_L2_MEAS */
 
 /* Layer primitives */
@@ -500,8 +500,8 @@ for Measurement  responding to statisti cs requests.
 @return ROK if success , RFAILED if failure
 */
 S16 RlcMiLkwL2MeasReq ARGS((Pst *pst, RlcL2MeasReqEvt *measEvt));
-S16 RlcMiLkwL2MeasStopReq ARGS((Pst *pst,U8 measType));
-S16 RlcMiLkwL2MeasSendReq ARGS((Pst *pst,U8 measType));
+S16 RlcMiLkwL2MeasStopReq ARGS((Pst *pst,uint8_t measType));
+S16 RlcMiLkwL2MeasSendReq ARGS((Pst *pst,uint8_t measType));
 /**
 @details This function can be used by PDCP to send the measurement values
 after doing L2 measurement that was requested by the layer manager.
@@ -511,17 +511,17 @@ after doing L2 measurement that was requested by the layer manager.
 @return ROK if success , RFAILED if failure
 */
 S16 RlcMiLkwL2MeasCfm ARGS((Pst *pst, RlcL2MeasCfmEvt *measCfm));
-S16 RlcMiLkwL2MeasStopCfm ARGS((Pst *pst, U8 measType, U8 status));
+S16 RlcMiLkwL2MeasStopCfm ARGS((Pst *pst, uint8_t measType, uint8_t status));
 #endif /*  LTE_L2_MEAS */
 
 S16 RlcMiLkwStaInd ARGS((Pst *pst, RlcMngmt *staReq));
 
 Void rlcSendLmAlarm ARGS ((
-      U16 category,
-      U16  event,
-      U16 cause,
+      uint16_t category,
+      uint16_t  event,
+      uint16_t cause,
       SuId suId,
-      U32 ueId));
+      uint32_t ueId));
 
 #ifdef SM
 S16 SmMiRlcConfigCfm   ARGS((
@@ -585,12 +585,12 @@ S16 SmMiLkwL2MeasReq   ARGS((
          ));
 S16 SmMiLkwL2MeasStopReq ARGS((
        Pst            *pst,
-       U8             measType
+       uint8_t             measType
       ));
 
 S16 SmMiLkwL2MeasSendReq ARGS((
          Pst            *pst,
-         U8             measType
+         uint8_t             measType
          ));
 S16 SmMiLkwL2MeasCfm   ARGS((
          Pst *,
@@ -598,8 +598,8 @@ S16 SmMiLkwL2MeasCfm   ARGS((
          ));
 S16 SmMiLkwL2MeasStopCfm ARGS((
          Pst     *pst,          
-         U8      measType,
-         U8      status
+         uint8_t      measType,
+         uint8_t      status
          ));
 #endif /*  LTE_L2_MEAS */
 #endif
@@ -753,16 +753,16 @@ S16 cmUnpkRlcL2MeasReqInfo ARGS((
 S16 cmPkRlcL2MeasCfmInfo ARGS((
          RlcL2MeasCfmInfo * measCfmInfo,
          Buffer *mBuf,
-         U8 measType
+         uint8_t measType
          ));
 S16 cmUnpkRlcL2MeasCfmInfo ARGS((
          RlcL2MeasCfmInfo * measCfmInfo,
          Buffer *mBuf,
-         U8 measType
+         uint8_t measType
          ));
 S16 cmPkLkwL2MeasStopReq ARGS((
          Pst * pst,
-         U8 measType
+         uint8_t measType
          ));
 S16 cmUnpkLkwL2MeasStopReq ARGS((
          LkwL2MeasStopReq func,
@@ -771,7 +771,7 @@ S16 cmUnpkLkwL2MeasStopReq ARGS((
          ));
 S16 cmPkLkwL2MeasSendReq ARGS((
          Pst * pst,
-         U8 measType
+         uint8_t measType
          ));
 S16 cmUnpkLkwL2MeasSendReq ARGS((
          LkwL2MeasSendReq func,
@@ -780,8 +780,8 @@ S16 cmUnpkLkwL2MeasSendReq ARGS((
          ));
 S16 cmPkLkwL2MeasStopCfm ARGS((
          Pst * pst,
-         U8 measType,
-         U8 status
+         uint8_t measType,
+         uint8_t status
          ));
 S16 cmUnpkLkwL2MeasStopCfm ARGS((
          LkwL2MeasStopCfm func,

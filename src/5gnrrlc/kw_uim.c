@@ -275,7 +275,7 @@ RlcCfgInfo   *cfg;
    RlcCb        *tRlcCb;
    RlcUlCfgTmpData   *cfgTmpData;
 
-   static U32  transCount;
+   static uint32_t  transCount;
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (pst->dstInst >= MAX_RLC_INSTANCES)
@@ -339,7 +339,7 @@ S16 RlcUiCkwUeIdChgReq
 (
 Pst         *pst, 
 SpId        spId, 
-U32         transId, 
+uint32_t    transId, 
 CkwUeInfo   *ueInfo,
 CkwUeInfo   *newUeInfo
 )
@@ -347,7 +347,7 @@ CkwUeInfo   *newUeInfo
 S16 RlcUiCkwUeIdChgReq(pst, spId, transId, ueInfo, newUeInfo)
 Pst         *pst;
 SpId        spId;
-U32         transId;
+uint32_t    transId;
 CkwUeInfo   *ueInfo;
 CkwUeInfo   *newUeInfo;
 #endif
@@ -456,7 +456,7 @@ RlcUlCfgTmpData   *cfgTmpData;
 RlcCfgInfo       *cfg;
 #endif
 {
-   U8   idx;  
+   uint8_t   idx;  
 
    cfgTmpData->ueId = cfg->ueId;
    cfgTmpData->cellId = cfg->cellId;
@@ -569,7 +569,7 @@ RlcCfgInfo       *cfg;
          }
       }/* switch end */
    }/* for end */
-   RETVOID;
+   return;
 }
 
 

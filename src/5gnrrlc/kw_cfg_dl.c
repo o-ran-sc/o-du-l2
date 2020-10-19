@@ -82,12 +82,12 @@ static int RLOG_FILE_ID=191;
  *      -# RFAILED 
  *
 */
-PRIVATE S16 rlcHdlMeasDlUeIdChg(RlcCb *gCb, U8 cellId,U8 oldUeId, U8 newUeId)
+PRIVATE S16 rlcHdlMeasDlUeIdChg(RlcCb *gCb, uint8_t cellId,uint8_t oldUeId, uint8_t newUeId)
 {
    RlcL2MeasEvtCb *measEvtCb = NULLP;
    RlcL2MeasCb    *measCb    = NULLP;
-   U16           cntr;
-   U16          ueIdx = 0;     
+   uint16_t       cntr;
+   uint16_t       ueIdx = 0;     
 
    for(cntr = 0; cntr < LKW_MAX_L2MEAS; cntr++)
    {
@@ -123,12 +123,12 @@ PRIVATE S16 rlcHdlMeasDlUeIdChg(RlcCb *gCb, U8 cellId,U8 oldUeId, U8 newUeId)
  *      -# RFAILED 
  *
 */
-PRIVATE S16 rlcDelFrmDlL2Meas(RlcCb *gCb, U8 cellId,U8 ueId)
+PRIVATE S16 rlcDelFrmDlL2Meas(RlcCb *gCb, uint8_t cellId,uint8_t ueId)
 {
    RlcL2MeasEvtCb *measEvtCb = NULLP;
    RlcL2MeasCb    *measCb    = NULLP;
-   U16           cntr;
-   U16          ueIdx = 0;     
+   uint16_t       cntr;
+   uint16_t       ueIdx = 0;     
 
 
    for(cntr = 0; cntr < LKW_MAX_L2MEAS; cntr++)
@@ -160,19 +160,19 @@ PRIVATE S16 rlcDelFrmDlL2Meas(RlcCb *gCb, U8 cellId,U8 ueId)
 }
 
 
-PRIVATE S16 rlcAddToDlL2Meas(RlcCb *gCb, RlcDlRbCb *rlcRbCb,U8 cellId,U8 ueId)
+PRIVATE S16 rlcAddToDlL2Meas(RlcCb *gCb, RlcDlRbCb *rlcRbCb,uint8_t cellId,uint8_t ueId)
 {
    RlcL2MeasEvtCb *measEvtCb = NULLP;
    RlcL2MeasCb    *measCb    = NULLP;
-   U16           cntr;
-   U16           cntr1;
-   U16            ueIdx = 0;
-   U16            qciIdx = 0;
-   U16           *numQci;
+   uint16_t       cntr;
+   uint16_t       cntr1;
+   uint16_t       ueIdx = 0;
+   uint16_t       qciIdx = 0;
+   uint16_t       *numQci;
    #ifndef XEON_SPECIFIC_CHANGES 
-   U8             freeIdx = gCb->genCfg.maxUe;
+   uint8_t        freeIdx = gCb->genCfg.maxUe;
    #else
-   U16            freeIdx = LKW_MAX_UE;
+   uint16_t       freeIdx = LKW_MAX_UE;
    #endif
 
 
@@ -392,7 +392,7 @@ RlcEntCfgInfo   *entCfg;
          ueCb->lCh[rbCb->lch.lChId - 1].dlRbCb = rbCb;
        
 #ifndef LTE_TDD 
-             U32 hashIndex;
+             uint32_t hashIndex;
               RLC_ALLOC(gCb,
                     rbCb->m.amDl.txBufLst,
                     (RLC_TX_BUF_BIN_SIZE * sizeof(CmLListCp)));
@@ -567,7 +567,7 @@ RlcEntCfgCfmInfo   *entCfm;
    RlcDlUeCb     *ueCb = NULLP;   /* UE Control Block */
    RlcDlCellCb   *cellCb;         /* Cell Control Block */
    RlcDlRbCb     *rlcRbCb;         /* KW RB Control Block */
-   U8           reason;          /* Rb Identifier */
+   uint8_t       reason;          /* Rb Identifier */
 
    RLOG_ARG3(L_DEBUG,DBG_RBID,entCfg->rbId, 
          "rlcCfgAddRb(cellId(%d),UEID:%d cfgType(%d))",
@@ -893,7 +893,7 @@ RlcEntCfgCfmInfo   *entCfm;
    RlcDlRbCb     tRbCb;     /* KW RB Control Block */
    RlcDlCellCb   *cellCb;   /* Cell Control Block */
    RlcDlUeCb     *ueCb;     /* Ue Control Block */
-   U8           ret;
+   uint8_t       ret;
 
    RLOG_ARG3(L_DEBUG,DBG_UEID,ueId,
              "rlcCfgReCfgRb(cellId(%d), cfgType(%d)) RBID:%d",
@@ -1475,7 +1475,7 @@ RlcEntCfgCfmInfo   *entCfm;
 #endif
 {
    RlcDlCellCb   *cellCb;   /* UE Control Block */
-   U8           rbId;      /* RB Identifier */
+   uint8_t       rbId;      /* RB Identifier */
 
    RLOG_ARG2(L_DEBUG,DBG_RBID,entCfg->rbId,
          "rlcCfgDelCell( cellId(%d), cfgType(%d)",
@@ -1612,8 +1612,8 @@ CmStatus    *status;
    ueCb->cellId = newUeInfo->cellId;
 
    if(ROK != cmHashListInsert(&(gCb->u.dlCb->ueLstCp), 
-                              (PTR)ueCb, (U8 *)&(ueCb->ueId),
-                              (U16) sizeof(CmLteRnti)))
+                              (PTR)ueCb, (uint8_t *)&(ueCb->ueId),
+                              (uint16_t) sizeof(CmLteRnti)))
 
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,newUeInfo->cellId,

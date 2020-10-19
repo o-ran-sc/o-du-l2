@@ -91,7 +91,7 @@
 #endif /* SS_SEUM_CAVIUM */
 #include <pthread.h>
 #ifdef XEON_SPECIFIC_CHANGES
-U32 startMemLeak=0; 
+uint32_t startMemLeak=0; 
 extern pthread_mutex_t  memLock;
 #endif
 
@@ -107,16 +107,16 @@ extern pthread_mutex_t  memLock;
 S16 ssGetDBufOfSize ARGS((Region region, Size size, Buffer **dBuf));
 S16 SIncMsgRef(Buffer *srcBuf,Region dstRegion, Pool dstPool,Buffer **dstBuf);
 #ifdef SSI_STATIC_MEM_LEAK_DETECTION
-EXTERN U32 GetNextFreeIdx ARGS((StaticMemAllocInfo * memAllocInfo));
+EXTERN uint32_t GetNextFreeIdx ARGS((StaticMemAllocInfo * memAllocInfo));
 EXTERN void LogForStaticMemLeak ARGS((StaticMemAllocInfo* memAllocInfo, char* 
-         file, U32 line, U32 size, void* ptr, U32 idx));
-EXTERN void FreeIdx ARGS((U8* ptr, U32 idx, StaticMemAllocInfo*
-         memAllocInfo,U32 size, char* file, U32 line));
+         file, uint32_t line, uint32_t size, void* ptr, uint32_t idx));
+EXTERN void FreeIdx ARGS((uint8_t* ptr, uint32_t idx, StaticMemAllocInfo*
+         memAllocInfo,uint32_t size, char* file, uint32_t line));
 #endif
 
 #ifdef SS_USE_ZBC_MEMORY
 #ifdef T2K_MEM_LEAK_DBG
-PRIVATE S16 SPutZbcDBufNew ARGS((Region region, Buffer *buf,char*,U32));
+PRIVATE S16 SPutZbcDBufNew ARGS((Region region, Buffer *buf,char*,uint32_t));
 
 #else
 PRIVATE S16 SPutZbcDBuf ARGS((Region region, Buffer *buf));
@@ -129,12 +129,12 @@ S16 SAttachPtrToBuf ARGS(( Region   region, Pool     pool, Data    *ptr,
 #ifdef SS_M_PROTO_REGION 
 #ifdef T2K_MEM_LEAK_DBG
 #define DupMsg(region,buffer) DupMsgNew(region,buffer,file,line)
-PRIVATE Buffer *DupMsgNew ARGS((Region region, Buffer *buffer,char*,U32));
+PRIVATE Buffer *DupMsgNew ARGS((Region region, Buffer *buffer,char*,uint32_t));
 #else
 #ifdef INTEL_WLS
 #ifdef T2K_MEM_LEAK_DBG
 S16 SAttachPtrToMBuf1 ARGS(( Region   region, Pool     pool, Data    *ptr, MsgLen   totalLen,
-                                   MsgLen   ptrLen, Buffer** mBuf, char* file, U32 line));
+                                   MsgLen   ptrLen, Buffer** mBuf, char* file, uint32_t line));
 #else
 S16 SAttachPtrToMBuf ARGS(( Region   region, Pool     pool, Data    *ptr, MsgLen   totalLen,
                                    MsgLen   ptrLen, Buffer** mBuf));
@@ -142,7 +142,7 @@ S16 SAttachPtrToMBuf ARGS(( Region   region, Pool     pool, Data    *ptr, MsgLen
 #ifdef T2K_MEM_LEAK_DBG
 S16 SAttachWlsPtrToMBuf1 ARGS(( Region   region, Pool     pool, Data    *ptr, 
                                       Data    *readPtr,    MsgLen   totalLen,
-                                      MsgLen   ptrLen, Buffer** mBuf, char* file, U32 line));
+                                      MsgLen   ptrLen, Buffer** mBuf, char* file, uint32_t line));
 
 S16 SAttachWlsPtrToMBuf ARGS(( Region   region, Pool     pool, Data    *ptr, 
                                       Data    *readPtr,    MsgLen   totalLen,
@@ -216,7 +216,7 @@ PRIVATE Buffer *DupMsg ARGS((Region region, Buffer *buffer));
 EXTERN pthread_t tmpRegTidMap[20];
 #define CM_MEM_GET_REGION(_region)                        \
 {                                                         \
-   U8  _regCnt;                                           \
+   uint8_t  _regCnt;                                           \
    _region = 0xFF;                                        \
                                                           \
    for(_regCnt = 0; _regCnt < 12; _regCnt++)              \
@@ -257,7 +257,7 @@ Region region,
 Size size,
 Buffer **dBuf,
 char* file,
-U32 line
+uint32_t line
 )
 #else
 #ifdef ANSI
@@ -305,7 +305,7 @@ Buffer **dBuf;
    /* ss006.301 : optmized this function */
    mdsize = MDBSIZE + size;
 #ifdef SS_HISTOGRAM_SUPPORT 
-   if (SAlloc(region, &mdsize, 0, (Data **) dBuf, __LINE__, (U8*) __FILE__, ENTNC) != ROK)
+   if (SAlloc(region, &mdsize, 0, (Data **) dBuf, __LINE__, (uint8_t*) __FILE__, ENTNC) != ROK)
 #else
    if (SAlloc(region, &mdsize, 0, (Data **) dBuf) != ROK)
 #endif /* SS_HISTOGRAM_SUPPORT */
@@ -354,16 +354,16 @@ S16 SGetMsgNew
 Region region,              /* region id */
 Pool pool,                  /* pool id */
 Buffer **mBuf,              /* pointer to message buffer */
-U32    line,
-U8     *fileName
+uint32_t    line,
+uint8_t     *fileName
 )
 #else
 S16 SGetMsgNew(region, pool, mBuf, line, fileName)
 Region region;              /* region id */
 Pool pool;                  /* pool id */
 Buffer **mBuf;              /* pointer to message buffer */
-U32    line;
-U8     *fileName;
+uint32_t    line;
+uint8_t     *fileName;
 #endif
 #else /* SS_HISTOGRAM_SUPPORT */
 #ifdef T2K_MEM_LEAK_DBG
@@ -373,7 +373,7 @@ Region region,              /* region id */
 Pool pool,                  /* pool id */
 Buffer **mBuf,              /* pointer to message buffer */
 char* file,
-U32 line
+uint32_t line
 )
 #else
 #ifdef ANSI
@@ -581,14 +581,14 @@ S16 SSetMBufPool(Buffer *mBuf, Pool pool)
 S16 SPutMsgNew
 (
 Buffer *mBuf,
-U32    line,
-U8     *fileName
+uint32_t    line,
+uint8_t     *fileName
 )
 #else
 S16 SPutMsgNew(mBuf, line, fileName)
 Buffer *mBuf;
-U32    line;
-U8     *fileName;
+uint32_t    line;
+uint8_t     *fileName;
 #endif
 #else /* SS_HISTOGRAM_SUPPORT */
 #ifdef T2K_MEM_LEAK_DBG
@@ -596,7 +596,7 @@ S16 SPutMsgNew
 (
 Buffer *mBuf,
 char* file,
-U32 line
+uint32_t line
 )
 #else
 #ifdef ANSI
@@ -614,7 +614,7 @@ Buffer *mBuf;
    Buffer *tmp;
    SsMsgInfo *minfo;
 #ifdef SS_MEM_WL_DEBUG
-   U8     tmpThrReg;
+   uint8_t     tmpThrReg;
 #endif
 
 /* ss001.301: additions */
@@ -758,9 +758,9 @@ Region region,                  /* region ID */
 Pool pool,                      /* pool ID */
 Data *ptr,                      /* pointer to buffer */
 Size size,                      /* size */
-U8   memType,                    /* memory type used if shareable or not */
+uint8_t   memType,                    /* memory type used if shareable or not */
 char* file,
-U32 line
+uint32_t line
 )
 #else
 #ifdef ANSI
@@ -770,7 +770,7 @@ Region region,                  /* region ID */
 Pool pool,                      /* pool ID */
 Data *ptr,                      /* pointer to buffer */
 Size size,                      /* size */
-U8   memType                    /* memory type used if shareable or not */
+uint8_t   memType                    /* memory type used if shareable or not */
 )
 #else
 S16 SPutStaticBuffer(region, pool, ptr, size)
@@ -778,7 +778,7 @@ Region region;                  /* region ID */
 Pool pool;                      /* pool ID */
 Data *ptr;                      /* pointer to buffer */
 Size size;                      /* size */
-U8   memType;                   /* memory type used if shareable or not */
+uint8_t   memType;                   /* memory type used if shareable or not */
 #endif
 #endif
 {
@@ -911,9 +911,9 @@ Region region,                  /* region ID */
 Pool pool,                      /* pool ID */
 Data **ptr,                     /* pointer to buffer */
 Size size,                      /* size requested */
-U8   memType,                    /* memory type used if shareable or not */
+uint8_t   memType,                    /* memory type used if shareable or not */
 char* file,
-U32 line
+uint32_t line
 )
 #else
 #ifdef ANSI
@@ -923,7 +923,7 @@ Region region,                  /* region ID */
 Pool pool,                      /* pool ID */
 Data **ptr,                     /* pointer to buffer */
 Size size,                      /* size requested */
-U8   memType                    /* memory type used if shareable or not */
+uint8_t   memType                    /* memory type used if shareable or not */
 )
 #else
 S16 SGetStaticBuffer(region, pool, ptr, size)
@@ -931,12 +931,12 @@ Region region;                  /* region ID */
 Pool pool;                      /* pool ID */
 Data **ptr;                     /* pointer to buffer */
 Size size;                      /* size requested */
-U8   memType;                   /* memory type used if shareable or not */
+uint8_t   memType;                   /* memory type used if shareable or not */
 #endif
 #endif
 {
    S16 ret = RFAILED;
-   U32 flags;
+   uint32_t flags;
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* validate region ID */
@@ -1026,7 +1026,7 @@ Region region,                  /* region ID */
 Pool pool,                      /* pool ID */
 Data **ptr,                     /* pointer to buffer */
 Size size,                      /* size requested */
-U8   memType                    /* memory type used if shareable or not */
+uint8_t   memType                    /* memory type used if shareable or not */
 )
 #else
 S16 SGetStaticBuffer(region, pool, ptr, size)
@@ -1034,7 +1034,7 @@ Region region;                  /* region ID */
 Pool pool;                      /* pool ID */
 Data **ptr;                     /* pointer to buffer */
 Size size;                      /* size requested */
-U8   memType;                   /* memory type used if shareable or not */
+uint8_t   memType;                   /* memory type used if shareable or not */
 #endif
 {
     S16  ret;
@@ -1052,7 +1052,7 @@ Region region,                  /* region ID */
 Pool pool,                      /* pool ID */
 Data *ptr,                      /* pointer to buffer */
 Size size,                      /* size */
-U8   memType                    /* memory type used if shareable or not */
+uint8_t   memType                    /* memory type used if shareable or not */
 )
 #else
 S16 SPutStaticBuffer(region, pool, ptr, size)
@@ -1060,7 +1060,7 @@ Region region;                  /* region ID */
 Pool pool;                      /* pool ID */
 Data *ptr;                      /* pointer to buffer */
 Size size;                      /* size */
-U8   memType;                   /* memory type used if shareable or not */
+uint8_t   memType;                   /* memory type used if shareable or not */
 #endif
 {
 
@@ -1080,7 +1080,7 @@ Pool pool,                      /* pool ID */
 Data **ptr,                     /* pointer to buffer */
 Size size,                       /* size requested */
 char* file,
-U32 line
+uint32_t line
 )
 #else
 S16 SGetSBufWls
@@ -1094,7 +1094,7 @@ Size size                       /* size requested */
 {
     S16   ret;
 #ifndef SS_LOCKLESS_MEMORY
-    U32   flags = 0;
+    uint32_t   flags = 0;
 #endif
 
 #ifdef SS_LOCKLESS_MEMORY
@@ -1122,7 +1122,7 @@ Pool pool,                      /* pool ID */
 Data *ptr,                      /* pointer to buffer */
 Size size,                      /* size */
 char* file,
-U32 line
+uint32_t line
 )
 #else
 S16 SPutSBufWls
@@ -1180,8 +1180,8 @@ Region region,                  /* region ID */
 Pool pool,                      /* pool ID */
 Data **ptr,                     /* pointer to buffer */
 Size size,                       /* size requested */
-U32    line,
-U8     *fileName
+uint32_t    line,
+uint8_t     *fileName
 )
 #else
 S16 SGetSBufNew(region, pool, ptr, size, line, fileName)
@@ -1189,8 +1189,8 @@ Region region;                  /* region ID */
 Pool pool;                      /* pool ID */
 Data **ptr;                     /* pointer to buffer */
 Size size;                      /* size requested */
-U32    line;
-U8     *fileName;
+uint32_t    line;
+uint8_t     *fileName;
 #endif
 #else /* SS_HISTOGRAM_SUPPORT */
 #if (defined(SSI_STATIC_MEM_LEAK_DETECTION) || defined(T2K_MEM_LEAK_DBG))
@@ -1202,7 +1202,7 @@ Pool pool,                      /* pool ID */
 Data **ptr,                     /* pointer to buffer */
 Size size,                       /* size requested */
 char* file,
-U32 line
+uint32_t line
 )
 #else
 S16 SGetSBuf1(region, pool, ptr, size, file, line)
@@ -1211,7 +1211,7 @@ Pool pool;                      /* pool ID */
 Data **ptr;                     /* pointer to buffer */
 Size size;                      /* size requested */
 char* file;
-U32 line;
+uint32_t line;
 #endif
 #else
 #ifdef ANSI
@@ -1233,7 +1233,7 @@ Size size;                      /* size requested */
 #endif /* SS_HISTOGRAM_SUPPORT */
 {
    S16 ret;
-   U32 flags;
+   uint32_t flags;
 #ifdef SSI_STATIC_MEM_LEAK_DETECTION
    Size tmpSize;
 #endif
@@ -1372,14 +1372,14 @@ Size size;                      /* size requested */
 #ifdef XEON_SPECIFIC_CHANGES
       pthread_mutex_lock(&(memLock));
 #endif      
-      U32 idx = GetNextFreeIdx(&SMemLeakInfo[region]);
-      U8* allocatedPtr = *ptr;
+      uint32_t idx = GetNextFreeIdx(&SMemLeakInfo[region]);
+      uint8_t* allocatedPtr = *ptr;
       void* actualPtr = allocatedPtr + 4;
       *ptr = actualPtr;
       /* store the index in the memory allocated itself */
-      /**((U32*)*((U32*)allocatedPtr)) = idx;*/
-      *((U32*)allocatedPtr) = idx;
-      /*printf("region = %d idx = %d ptr = %p *ptr = %p actual = %p allocated = %p content = %d\n",region, idx, ptr, *ptr, actualPtr, allocatedPtr, *((U32*)allocatedPtr));*/
+      /**((uint32_t*)*((uint32_t*)allocatedPtr)) = idx;*/
+      *((uint32_t*)allocatedPtr) = idx;
+      /*printf("region = %d idx = %d ptr = %p *ptr = %p actual = %p allocated = %p content = %d\n",region, idx, ptr, *ptr, actualPtr, allocatedPtr, *((uint32_t*)allocatedPtr));*/
 
       LogForStaticMemLeak(&SMemLeakInfo[region],
                           file,
@@ -1456,8 +1456,8 @@ Region region,                  /* region ID */
 Pool pool,                      /* pool ID */
 Data *ptr,                      /* pointer to buffer */
 Size size,                      /* size */
-U32    line,
-U8     *fileName
+uint32_t    line,
+uint8_t     *fileName
 )
 #else
 S16 SPutSBufNew(region, pool, ptr, size, line, fileName)
@@ -1465,8 +1465,8 @@ Region region;                  /* region ID */
 Pool pool;                      /* pool ID */
 Data *ptr;                      /* pointer to buffer */
 Size size;                      /* size */
-U32    line;
-U8     *fileName;
+uint32_t    line;
+uint8_t     *fileName;
 #endif
 #else  /* SS_HISTOGRAM_SUPPORT  */
 #if (defined(SSI_STATIC_MEM_LEAK_DETECTION) || defined(T2K_MEM_LEAK_DBG))
@@ -1478,7 +1478,7 @@ Pool pool,                      /* pool ID */
 Data *ptr,                      /* pointer to buffer */
 Size size,                      /* size */
 char* file,
-U32 line
+uint32_t line
 )
 #else
 S16 SPutSBuf1(region, pool, ptr, size, file, line)
@@ -1487,7 +1487,7 @@ Pool pool;                      /* pool ID */
 Data *ptr;                      /* pointer to buffer */
 Size size;                      /* size */
 char* file;
-U32 line;
+uint32_t line;
 #endif
 #else
 #ifdef ANSI
@@ -1595,7 +1595,7 @@ Size size;                      /* size */
 #ifdef XEON_SPECIFIC_CHANGES
       pthread_mutex_lock(&(memLock));
 #endif      
-      U32 idx = *((U32*)((U8 *)ptr - 4));
+      uint32_t idx = *((uint32_t*)((uint8_t *)ptr - 4));
       FreeIdx(ptr,idx,&SMemLeakInfo[region],size,file,line);
 #ifdef XEON_SPECIFIC_CHANGES
       pthread_mutex_unlock(&(memLock));
@@ -1690,7 +1690,7 @@ Buffer *mBuf;
 {
    SsMsgInfo *minfo;
    Buffer *tmp;
-   U8     tmpRegId;
+   uint8_t     tmpRegId;
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check message buffer */
@@ -1726,7 +1726,7 @@ Buffer *mBuf;
 #if 1
 #ifdef T2K_MEM_LEAK_DBG
    char * file = __FILE__;
-   U32  line   = __LINE__;
+   uint32_t  line   = __LINE__;
 #endif
 
       (Void) SPutDBuf(tmpRegId, minfo->pool, tmp);
@@ -1872,7 +1872,7 @@ S16 SAddPreMsgMultInOrder(src, cnt, mBuf)
             prevblk = prevblk->b_cont;
 #ifdef T2K_MEM_LEAK_DBG
    char * file = __FILE__;
-   U32  line   = __LINE__;
+   uint32_t  line   = __LINE__;
 #endif
 
             (Void) SPutDBuf(minfo->region, minfo->pool, curblk);
@@ -2154,7 +2154,7 @@ Data *src,
 MsgLen cnt,
 Buffer *mBuf,
 char   *file,
-U32    line
+uint32_t    line
 )
 
 #else
@@ -2331,7 +2331,7 @@ Data *src,
 MsgLen cnt,
 Buffer *mBuf,
 char   *file,
-U32    line
+uint32_t    line
 )
 #else
 #ifdef ANSI
@@ -2525,7 +2525,7 @@ Buffer *mBuf;
    Buffer *tmp;
 #ifdef T2K_MEM_LEAK_DBG
    char* file = __FILE__;
-   U32 line = __LINE__;
+   uint32_t line = __LINE__;
 #endif
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -2611,7 +2611,7 @@ Buffer *mBuf;               /* message buffer */
    Buffer *last;
 #ifdef T2K_MEM_LEAK_DBG
    char* file = __FILE__;
-   U32 line = __LINE__;
+   uint32_t line = __LINE__;
 #endif
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -2713,7 +2713,7 @@ Buffer *mBuf;               /* message buffer */
    MsgLen numBytes;
 #ifdef T2K_MEM_LEAK_DBG
    char* file = __FILE__;
-   U32 line = __LINE__;
+   uint32_t line = __LINE__;
 #endif
 
 
@@ -2838,7 +2838,7 @@ Buffer *mBuf;               /* message buffer */
    Data *cptr;
 #ifdef T2K_MEM_LEAK_DBG
    char* file = __FILE__;
-   U32 line = __LINE__;
+   uint32_t line = __LINE__;
 #endif
 
 
@@ -3239,7 +3239,7 @@ Buffer *mBuf1,              /* message 1 */
 MsgLen idx,                 /* index */
 Buffer **mBuf2,
 char* file,
-U32 line
+uint32_t line
 )
 #else
 #ifdef ANSI
@@ -3727,7 +3727,7 @@ Region dstRegion,
 Pool dstPool,
 Buffer **dstBuf,
 char* file,
-U32 line
+uint32_t line
 )
 #else
 #ifdef ANSI
@@ -3928,7 +3928,7 @@ Region dstRegion,
 Pool dstPool,
 Buffer **dstBuf,
 char* file,
-U32 line
+uint32_t line
 )
 #else
 #ifdef ANSI
@@ -4090,7 +4090,7 @@ PRIVATE Buffer *DupMsgNew
 Region region,              /* region id */
 Buffer *mp,                  /* message block */
 char* file,
-U32 line
+uint32_t line
 )
 #else
 #ifdef ANSI
@@ -4136,7 +4136,7 @@ Buffer *mp;                 /* message block */
 #endif /* SS_MULTICORE_SUPPORT */
 /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
-   r = SAlloc(region, &m, 0, (Data **)&bp, __LINE__, (U8*) __FILE__, ENTNC);
+   r = SAlloc(region, &m, 0, (Data **)&bp, __LINE__, (uint8_t*) __FILE__, ENTNC);
 #else
    r = SAlloc(region, &m, 0, (Data **)&bp);
 #endif /* SS_HISTOGRAM_SUPPORT */
@@ -4151,11 +4151,11 @@ Buffer *mp;                 /* message block */
 /* generic set-up-message function */
 #if 1
 #ifndef SS_DBUF_REFLOCK_DISABLE
-   SS_STRM_INITB(bp, (SsDblk *)(((U8 *)bp) + sizeof(SsMblk)), NULLP, 0, NULLP);
+   SS_STRM_INITB(bp, (SsDblk *)(((uint8_t *)bp) + sizeof(SsMblk)), NULLP, 0, NULLP);
 #endif
 #else
    data = (Data *) (bp) + MDBSIZE;
-   SS_STRM_INITB(bp,(SsDblk *)(((U8 *)bp) + sizeof(SsMblk)), data, numBytes, NULLP);
+   SS_STRM_INITB(bp,(SsDblk *)(((uint8_t *)bp) + sizeof(SsMblk)), data, numBytes, NULLP);
 #endif /* SS_MULTICORE_SUPPORT */
 
 
@@ -4221,7 +4221,7 @@ Region region,              /* region id */
 Pool pool,                  /* pool id */
 Buffer **bufPtr,
 char* file,
-U32 line
+uint32_t line
 )
 #else
 #ifdef ANSI
@@ -4353,7 +4353,7 @@ Buffer **bufPtr;            /* pointer to buffer */
    /* ss006.301 : optimized this function */
 /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
-    if (SAlloc(region, &mdsize, 0, (Data **) bufPtr, __LINE__, (U8*) __FILE__, ENTNC) != ROK)
+    if (SAlloc(region, &mdsize, 0, (Data **) bufPtr, __LINE__, (uint8_t*) __FILE__, ENTNC) != ROK)
 #else
     if (SAlloc(region, &mdsize, 0, (Data **) bufPtr) != ROK)
 #endif /* SS_HISTOGRAM_SUPPORT */
@@ -4404,7 +4404,7 @@ Region region,
 Pool pool,
 Buffer *buf,
 char* file,
-U32 line
+uint32_t line
 )
 #else
 #ifdef ANSI
@@ -4492,7 +4492,7 @@ Buffer *buf;
       /* if the data block is not shared, free the buffer, checks not reqd */
 #ifdef SS_HISTOGRAM_SUPPORT 
       ret = SFree(region, (Data *) buf, MDBSIZE + dptr->db_lim - dptr->db_base
-         , __LINE__, (U8*) __FILE__, ENTNC);
+         , __LINE__, (uint8_t*) __FILE__, ENTNC);
 #else
       ret =  SFree(region, (Data *) buf, MDBSIZE + dptr->db_lim - dptr->db_base);
 #endif /* SS_HISTOGRAM_SUPPORT */
@@ -4512,13 +4512,13 @@ Buffer *buf;
       if (buf != (SsMblk *) (((Data*) dptr) - MBSIZE))
       {
         
-         SsDblk* dupdptr = (SsDblk *)((U8 *)buf + MBSIZE);
+         SsDblk* dupdptr = (SsDblk *)((uint8_t *)buf + MBSIZE);
          dupdptr->db_ref--;
          if(dupdptr->db_ref == 0)
          {
 
 #ifdef SS_HISTOGRAM_SUPPORT 
-         ret = SFree(region, (Data *) buf, MDBSIZE, __LINE__, (U8*) __FILE__, ENTNC);
+         ret = SFree(region, (Data *) buf, MDBSIZE, __LINE__, (uint8_t*) __FILE__, ENTNC);
 #else
          ret = SFree(region, (Data *) buf, MDBSIZE);
 
@@ -4539,7 +4539,7 @@ Buffer *buf;
       /* free buffer to region */
 #ifdef SS_HISTOGRAM_SUPPORT 
          ret = SFree(region, (Data *) buf, MDBSIZE + dptr->db_lim - dptr->db_base
-         , __LINE__, (U8*) __FILE__, ENTNC);
+         , __LINE__, (uint8_t*) __FILE__, ENTNC);
 #else
          ret =  SFree(region, (Data *) buf, MDBSIZE + dptr->db_lim - dptr->db_base);
 #endif /* SS_HISTOGRAM_SUPPORT */
@@ -4553,7 +4553,7 @@ Buffer *buf;
    /* If MultiCore Support enabled, Dblk never be shared */
 #ifdef SS_HISTOGRAM_SUPPORT 
    ret = SFree(region, (Data *) buf, MDBSIZE + dptr->db_lim - dptr->db_base
-         , __LINE__, (U8*) __FILE__, ENTNC);
+         , __LINE__, (uint8_t*) __FILE__, ENTNC);
 #else
    ret =  SFree(region, (Data *) buf, MDBSIZE + dptr->db_lim - dptr->db_base);
 #endif /* SS_HISTOGRAM_SUPPORT */
@@ -4774,7 +4774,7 @@ MsgLen idx;                 /* index */
 
 #ifdef T2K_MEM_LEAK_DBG
    char* file = __FILE__;
-   U32 line = __LINE__;
+   uint32_t line = __LINE__;
 #endif
 #if ( ERRCLASS & ERRCLS_INT_PAR)
    /* check message buffer */
@@ -5648,7 +5648,7 @@ Buffer *mBuf;                    /* message buffer */
 
 #ifdef T2K_MEM_LEAK_DBG
    char* file = __FILE__;
-   U32 line = __LINE__;
+   uint32_t line = __LINE__;
 #endif
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -5749,8 +5749,8 @@ S16 dst;                    /* destination id */
 	MsgLen i;                /* counter */
 	S16 j;                   /* counter */
    S16 k;                   /* counter */
-   U8 data;                 /* data */
-   U8 tdata[16] = {0};            /* temporary data */
+   uint8_t data;                 /* data */
+   uint8_t tdata[16] = {0};            /* temporary data */
    S8 prntBuf[256];         /* print buffer */
    Buffer *tmp;             /* buffer ptr */
    Data *cptr;
@@ -5773,7 +5773,7 @@ S16 dst;                    /* destination id */
    reg = ((SsMsgInfo*)(mBuf->b_rptr))->region;
    /*ss013.301: Fixed Warnings for 32/64 bit compilation*/
    sprintf(prntBuf,"\nmsg: qlen: %04d mlen: %04d   %02d-->%02d region: %02d\n",
-           (U16)qlen,(U16)mlen,src,dst,reg);
+           (uint16_t)qlen,(uint16_t)mlen,src,dst,reg);
    SPrint( prntBuf);
 #ifdef XEON_SPECIFIC_CHANGES
    printf("%s\n", prntBuf);
@@ -5803,7 +5803,7 @@ S16 dst;                    /* destination id */
          { 
             /* print hex */
             tdata[j]=data;
-            sprintf( prntBuf,"%02x ",(U16) data);
+            sprintf( prntBuf,"%02x ",(uint16_t) data);
             SPrint( prntBuf);
 #ifdef XEON_SPECIFIC_CHANGES
    printf("%s\n", prntBuf);
@@ -6118,18 +6118,18 @@ Buffer *dBuf;                   /* data buffer  */
 S16 SAlignDBuf
 (
 Buffer *dBuf,                      /* data buffer */
-U32    align                       /* alignemnt required */
+uint32_t    align                       /* alignemnt required */
 )
 #else
 S16 SAlignDBuf(dBuf, align)
 Buffer *dBuf;                      /* data buffer  */
-U32    align;                      /* alignemnt required */
+uint32_t    align;                      /* alignemnt required */
 #endif
 {
    MsgLen len;
    Data   *src;
-   U32    upShift;                 /* no. of bytes to be shifted up */
-   U32    downShift;               /* no. of bytes to be shifted down */
+   uint32_t    upShift;                 /* no. of bytes to be shifted up */
+   uint32_t    downShift;               /* no. of bytes to be shifted down */
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (!dBuf)
@@ -6503,7 +6503,7 @@ Buffer *mBuf2;              /* message 2 */
    SsMsgInfo *minfo2;
 #endif
    Buffer *tmp;
-   U8 tmp2;
+   uint8_t tmp2;
    
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -6651,9 +6651,9 @@ S16 SConvPtrPhy (mBuf)
 	 minfoPtr->next = (Buffer*)cvmx_ptr_to_phys (minfoPtr->next);
   }
 
-  curPtr->b_rptr = (U8*)cvmx_ptr_to_phys (curPtr->b_rptr);
+  curPtr->b_rptr = (uint8_t*)cvmx_ptr_to_phys (curPtr->b_rptr);
 
-  curPtr->b_wptr = (U8*)cvmx_ptr_to_phys (curPtr->b_wptr);
+  curPtr->b_wptr = (uint8_t*)cvmx_ptr_to_phys (curPtr->b_wptr);
 
   /* Convert the pointers of Dblock to Physical addr */
   dblkPtr = (SsDblk*)curPtr->b_datap;
@@ -6676,8 +6676,8 @@ S16 SConvPtrPhy (mBuf)
   }
 #endif
 
-  dblkPtr->db_base = (U8*)cvmx_ptr_to_phys (dblkPtr->db_base);
-  dblkPtr->db_lim = (U8*)cvmx_ptr_to_phys (dblkPtr->db_lim);
+  dblkPtr->db_base = (uint8_t*)cvmx_ptr_to_phys (dblkPtr->db_base);
+  dblkPtr->db_lim = (uint8_t*)cvmx_ptr_to_phys (dblkPtr->db_lim);
 
   curPtr->b_datap = (SsDblk*)cvmx_ptr_to_phys (curPtr->b_datap);
 
@@ -6694,8 +6694,8 @@ S16 SConvPtrPhy (mBuf)
 		curPtr->b_cont = (Buffer*)cvmx_ptr_to_phys (curPtr->b_cont);
 	 }
 
-	 curPtr->b_rptr = (U8*)cvmx_ptr_to_phys (curPtr->b_rptr);
-	 curPtr->b_wptr = (U8*)cvmx_ptr_to_phys (curPtr->b_wptr);
+	 curPtr->b_rptr = (uint8_t*)cvmx_ptr_to_phys (curPtr->b_rptr);
+	 curPtr->b_wptr = (uint8_t*)cvmx_ptr_to_phys (curPtr->b_wptr);
 
 	 /* Convert the pointers of Dblock to Physical addr */
 	 dblkPtr = (SsDblk*)curPtr->b_datap;
@@ -6718,8 +6718,8 @@ S16 SConvPtrPhy (mBuf)
 	 }
 #endif    
 
-	 dblkPtr->db_base = (U8*)cvmx_ptr_to_phys (dblkPtr->db_base);
-	 dblkPtr->db_lim = (U8*)cvmx_ptr_to_phys (dblkPtr->db_lim);
+	 dblkPtr->db_base = (uint8_t*)cvmx_ptr_to_phys (dblkPtr->db_base);
+	 dblkPtr->db_lim = (uint8_t*)cvmx_ptr_to_phys (dblkPtr->db_lim);
 
 	 curPtr->b_datap = (SsDblk*)cvmx_ptr_to_phys (curPtr->b_datap);
 
@@ -6776,43 +6776,43 @@ S16 SConvPhyPtr (workPtr)
   }
 
   /* Convert the buffer address to pointer */
-  mBuf = (Buffer*)cvmx_phys_to_ptr ((U64)(*workPtr));
+  mBuf = (Buffer*)cvmx_phys_to_ptr ((uint64_t)(*workPtr));
 
   curPtr = mBuf;
 
   /* first block is mblk */
   if (curPtr->b_next)
   {
-	 curPtr->b_next = (Buffer*)cvmx_phys_to_ptr ((U64)curPtr->b_next);
+	 curPtr->b_next = (Buffer*)cvmx_phys_to_ptr ((uint64_t)curPtr->b_next);
   }
 
   if (curPtr->b_prev)
   {
-	 curPtr->b_prev = (Buffer*)cvmx_phys_to_ptr ((U64)curPtr->b_prev);
+	 curPtr->b_prev = (Buffer*)cvmx_phys_to_ptr ((uint64_t)curPtr->b_prev);
   }
 
   if(curPtr->b_cont)
   {
-	 curPtr->b_cont = (Buffer*)cvmx_phys_to_ptr ((U64)curPtr->b_cont);
+	 curPtr->b_cont = (Buffer*)cvmx_phys_to_ptr ((uint64_t)curPtr->b_cont);
   }
 
-  curPtr->b_rptr = (U8*)cvmx_phys_to_ptr ((U64)curPtr->b_rptr);
+  curPtr->b_rptr = (uint8_t*)cvmx_phys_to_ptr ((uint64_t)curPtr->b_rptr);
 
   /* Get the pointer for minfo */
   minfoPtr = (SsMsgInfo*)curPtr->b_rptr;
 
   if (minfoPtr->endptr)
   {
-	 minfoPtr->endptr = (Buffer*)cvmx_phys_to_ptr ((U64)minfoPtr->endptr);
+	 minfoPtr->endptr = (Buffer*)cvmx_phys_to_ptr ((uint64_t)minfoPtr->endptr);
   }
   if (minfoPtr->next)
   {
-	 minfoPtr->next = (Buffer*)cvmx_phys_to_ptr ((U64)minfoPtr->next);
+	 minfoPtr->next = (Buffer*)cvmx_phys_to_ptr ((uint64_t)minfoPtr->next);
   }
 
-  curPtr->b_wptr = (U8*)cvmx_phys_to_ptr ((U64)curPtr->b_wptr);
+  curPtr->b_wptr = (uint8_t*)cvmx_phys_to_ptr ((uint64_t)curPtr->b_wptr);
 
-  curPtr->b_datap = (SsDblk*)cvmx_phys_to_ptr ((U64)curPtr->b_datap);
+  curPtr->b_datap = (SsDblk*)cvmx_phys_to_ptr ((uint64_t)curPtr->b_datap);
 
   /* Get the Dblock pointers */
   dblkPtr = (SsDblk*)curPtr->b_datap;
@@ -6821,22 +6821,22 @@ S16 SConvPhyPtr (workPtr)
 #ifdef SS_DBLK_FREE_RTN 
   if (dblkPtr->db_frtnp)
   {
-	 dblkPtr->db_frtnp = (SsFrtn*)cvmx_phys_to_ptr ((U64)dblkPtr->db_frtnp);
+	 dblkPtr->db_frtnp = (SsFrtn*)cvmx_phys_to_ptr ((uint64_t)dblkPtr->db_frtnp);
     frtnPtr = dblkPtr->db_frtnp;
 
 	 if (frtnPtr->free_func)
 	 {
-		frtnPtr->free_func = cvmx_phys_to_ptr ((U64)frtnPtr->free_func);
+		frtnPtr->free_func = cvmx_phys_to_ptr ((uint64_t)frtnPtr->free_func);
 	 }
 	 if (frtnPtr->free_arg)
 	 {
-		frtnPtr->free_arg = (S8*)cvmx_phys_to_ptr ((U64)frtnPtr->free_arg);
+		frtnPtr->free_arg = (S8*)cvmx_phys_to_ptr ((uint64_t)frtnPtr->free_arg);
 	 }
   }
 #endif  
 
-  dblkPtr->db_base = (U8*)cvmx_phys_to_ptr ((U64)dblkPtr->db_base);
-  dblkPtr->db_lim = (U8*)cvmx_phys_to_ptr ((U64)dblkPtr->db_lim);
+  dblkPtr->db_base = (uint8_t*)cvmx_phys_to_ptr ((uint64_t)dblkPtr->db_base);
+  dblkPtr->db_lim = (uint8_t*)cvmx_phys_to_ptr ((uint64_t)dblkPtr->db_lim);
 
   curPtr = curPtr->b_cont;
 
@@ -6845,14 +6845,14 @@ S16 SConvPhyPtr (workPtr)
   {
 	 if(curPtr->b_cont)
 	 {
-		curPtr->b_cont = (Buffer*)cvmx_phys_to_ptr ((U64)curPtr->b_cont);
+		curPtr->b_cont = (Buffer*)cvmx_phys_to_ptr ((uint64_t)curPtr->b_cont);
 	 }
 
-	 curPtr->b_rptr = (U8*)cvmx_phys_to_ptr ((U64)curPtr->b_rptr);
+	 curPtr->b_rptr = (uint8_t*)cvmx_phys_to_ptr ((uint64_t)curPtr->b_rptr);
 
-	 curPtr->b_wptr = (U8*)cvmx_phys_to_ptr ((U64)curPtr->b_wptr);
+	 curPtr->b_wptr = (uint8_t*)cvmx_phys_to_ptr ((uint64_t)curPtr->b_wptr);
 
-	 curPtr->b_datap = (SsDblk*)cvmx_phys_to_ptr ((U64)curPtr->b_datap);
+	 curPtr->b_datap = (SsDblk*)cvmx_phys_to_ptr ((uint64_t)curPtr->b_datap);
 
 	 /* Get the Dblock pointers */
 	 dblkPtr = (SsDblk*)curPtr->b_datap;
@@ -6861,23 +6861,23 @@ S16 SConvPhyPtr (workPtr)
 #ifdef SS_DBLK_FREE_RTN 
 	 if (dblkPtr->db_frtnp)
 	 {
-		dblkPtr->db_frtnp = (SsFrtn*)cvmx_phys_to_ptr ((U64)dblkPtr->db_frtnp);
+		dblkPtr->db_frtnp = (SsFrtn*)cvmx_phys_to_ptr ((uint64_t)dblkPtr->db_frtnp);
 
       frtnPtr = dblkPtr->db_frtnp;
 
 		if (frtnPtr->free_func)
 		{
-		  frtnPtr->free_func = cvmx_phys_to_ptr ((U64)frtnPtr->free_func);
+		  frtnPtr->free_func = cvmx_phys_to_ptr ((uint64_t)frtnPtr->free_func);
 		}
 		if (frtnPtr->free_arg)
 		{
-		  frtnPtr->free_arg = (S8*)cvmx_phys_to_ptr ((U64)frtnPtr->free_arg);
+		  frtnPtr->free_arg = (S8*)cvmx_phys_to_ptr ((uint64_t)frtnPtr->free_arg);
 		}
 	 }
 #endif    
 
-	 dblkPtr->db_base = (U8*)cvmx_phys_to_ptr ((U64)dblkPtr->db_base);
-	 dblkPtr->db_lim = (U8*)cvmx_phys_to_ptr ((U64)dblkPtr->db_lim);
+	 dblkPtr->db_base = (uint8_t*)cvmx_phys_to_ptr ((uint64_t)dblkPtr->db_base);
+	 dblkPtr->db_lim = (uint8_t*)cvmx_phys_to_ptr ((uint64_t)dblkPtr->db_lim);
 
 	 curPtr = curPtr->b_cont;
   }
@@ -7082,7 +7082,7 @@ S16 SCpyMsgFpa (srcBuf, dstBuf)
   SsMsgInfo  *minfoDst = NULLP;
   SsDblk     *dblkPtr = NULLP;
   SsDblk     *dptr = NULLP;
-  U32         numBytes;
+  uint32_t         numBytes;
   Pool        pool;
 
 
@@ -7251,7 +7251,7 @@ S16 SPutFpaMsg(fpaBuf)
 Buffer *fpaBuf;
 #endif
 {
-  U16      size;
+  uint16_t      size;
   Buffer   *curBlk;
   Buffer   *nextBlk;
   SsDblk   *dblkPtr;
@@ -7658,7 +7658,7 @@ Buffer *dstBuf;             /* message 2 */
    SsMsgInfo  *dMinfo;
 #ifdef T2K_MEM_LEAK_DBG
    char* file = __FILE__;
-   U32 line = __LINE__;
+   uint32_t line = __LINE__;
 #endif
 
 
@@ -7879,7 +7879,7 @@ Buffer *mBuf;
       /* update the read ptr */
       tmp->b_rptr -= numBytes;
       /* copy data */
-      memcpy((U8*)tmp->b_rptr, (src + cnt), numBytes);
+      memcpy(tmp->b_rptr, (src + cnt), numBytes);
       minfo->len += numBytes;
       if (!cnt)
       {
@@ -7896,7 +7896,7 @@ Buffer *mBuf;
    newblk->b_datap->db_type = SS_M_DATA;
    newblk->b_rptr = newblk->b_datap->db_lim - cnt;
    newblk->b_wptr = newblk->b_datap->db_lim;
-   memcpy((U8*)newblk->b_rptr, src, cnt);
+   memcpy(newblk->b_rptr, src, cnt);
    /* attach the newblk chain into mBuf */
    newblk->b_cont = tmp;
    mBuf->b_cont = newblk;
@@ -7924,13 +7924,13 @@ Buffer *mBuf;
 S16 SGetReadPtr
 (
  Buffer *mBuf, 
- U8** data, 
+ uint8_t** data, 
  MsgLen *len
 )
 #else
 S16 SGetReadPtr (mBuf, data, len)
 Buffer *mBuf; 
-U8** data; 
+uint8_t** data; 
 MsgLen *len;
 #endif 
 {
@@ -7978,7 +7978,7 @@ Data    *ptr,
 MsgLen   totalLen,
 Buffer** mBuf,
 char* file,
-U32 line
+uint32_t line
 )
 #else
 #ifdef ANSI
@@ -8027,7 +8027,7 @@ Buffer** mBuf;
    mdsize = MDBSIZE;
 
 #ifdef SS_HISTOGRAM_SUPPORT 
-   if (SAlloc(region, &mdsize, 0, (Data **) &newblk, __LINE__, (U8*) __FILE__, ENTNC) != ROK)
+   if (SAlloc(region, &mdsize, 0, (Data **) &newblk, __LINE__, (uint8_t*) __FILE__, ENTNC) != ROK)
 #else
    if (SAlloc(region, &mdsize, 0, (Data **) &newblk) != ROK)
 #endif /* SS_HISTOGRAM_SUPPORT */
@@ -8088,7 +8088,7 @@ PRIVATE S16 SPutZbcDBufNew
 Region region,
 Buffer *buf,
 char* file,
-U32 line
+uint32_t line
 )
 #else
 #ifdef ANSI
@@ -8125,14 +8125,14 @@ Buffer *buf;
 
 #ifdef SS_HISTOGRAM_SUPPORT 
       ret = SFree(region, (Data *) buf->b_datap->db_base, bufLen, __LINE__, 
-                  (U8*) __FILE__, ENTNC);
+                  (uint8_t*) __FILE__, ENTNC);
 #else
       ret = SFree(region, (Data *) buf->b_datap->db_base, bufLen);
 #endif /* SS_HISTOGRAM_SUPPORT */
 
       /* if the data block is not shared, free the buffer, checks not reqd */
 #ifdef SS_HISTOGRAM_SUPPORT 
-      ret = SFree(region, (Data *) buf, MDBSIZE, __LINE__, (U8*) __FILE__, 
+      ret = SFree(region, (Data *) buf, MDBSIZE, __LINE__, (uint8_t*) __FILE__, 
                   ENTNC);
 #else
       ret =  SFree(region, (Data *) buf, MDBSIZE);
@@ -8155,7 +8155,7 @@ Buffer *buf;
       if (buf != (SsMblk *) (((Data*) dptr) - MBSIZE))
       {
 #ifdef SS_HISTOGRAM_SUPPORT 
-         ret = SFree(region, (Data *) buf, MDBSIZE, __LINE__, (U8*) __FILE__, ENTNC);
+         ret = SFree(region, (Data *) buf, MDBSIZE, __LINE__, (uint8_t*) __FILE__, ENTNC);
 #else
          ret = SFree(region, (Data *) buf, MDBSIZE);
 #endif /* SS_HISTOGRAM_SUPPORT */
@@ -8173,13 +8173,13 @@ Buffer *buf;
 #endif
 #ifdef SS_HISTOGRAM_SUPPORT 
          ret = SFree(region, (Data *) buf->b_datap->db_base, bufLen, __LINE__, 
-                   (U8*) __FILE__, ENTNC);
+                   (uint8_t*) __FILE__, ENTNC);
 #else
          ret = SFree(region, (Data *) buf->b_datap->db_base, bufLen);
 #endif /* SS_HISTOGRAM_SUPPORT */
 
 #ifdef SS_HISTOGRAM_SUPPORT 
-         ret = SFree(region, (Data *) buf, MDBSIZE, __LINE__, (U8*) __FILE__, 
+         ret = SFree(region, (Data *) buf, MDBSIZE, __LINE__, (uint8_t*) __FILE__, 
                   ENTNC);
 #else
          ret =  SFree(region, (Data *) buf, MDBSIZE);
@@ -8225,7 +8225,7 @@ MsgLen   totalLen,
 MsgLen   ptrLen,
 Buffer** mBuf,
 char* file,
-U32 line
+uint32_t line
 )
 #else
 #ifdef ANSI
@@ -8274,7 +8274,7 @@ Buffer** mBuf;
    mdsize = MDBSIZE;
 
 #ifdef SS_HISTOGRAM_SUPPORT 
-   if (SAlloc(region, &mdsize, 0, (Data **) &newblk, __LINE__, (U8*) __FILE__, ENTNC) != ROK)
+   if (SAlloc(region, &mdsize, 0, (Data **) &newblk, __LINE__, (uint8_t*) __FILE__, ENTNC) != ROK)
 #else
    if (SAlloc(region, &mdsize, 0, (Data **) &newblk) != ROK)
 #endif /* SS_HISTOGRAM_SUPPORT */
@@ -8347,7 +8347,7 @@ Void SResetMBuf(Buffer *mbuf)
 #endif
 
 
-   RETVOID;
+   return;
 }
 #endif
 
@@ -8381,7 +8381,7 @@ MsgLen   totalLen,
 MsgLen   ptrLen,
 Buffer** mBuf,
 char* file,
-U32 line
+uint32_t line
 )
 #else
 #ifdef ANSI
@@ -8432,7 +8432,7 @@ Buffer** mBuf;
    mdsize = MDBSIZE;
 
 #ifdef SS_HISTOGRAM_SUPPORT 
-   if (SAlloc(region, &mdsize, 0, (Data **) &newblk, __LINE__, (U8*) __FILE__, ENTNC) != ROK)
+   if (SAlloc(region, &mdsize, 0, (Data **) &newblk, __LINE__, (uint8_t*) __FILE__, ENTNC) != ROK)
 #else
    if (SAlloc(region, &mdsize, 0, (Data **) &newblk) != ROK)
 #endif /* SS_HISTOGRAM_SUPPORT */
@@ -8474,7 +8474,7 @@ Buffer** mBuf;
 
 #ifdef TENB_DPDK_BUF
 
-extern U32 numeTti;
+extern uint32_t numeTti;
 
 S16 SGetSBufDpdk
 (
@@ -8495,7 +8495,7 @@ Data *ptr                     /* pointer to buffer */
 )
 {
     S16   ret;
-    U32   flags = 0;
+    uint32_t   flags = 0;
 
     ntl_free(mtGetNtlHdl(), ptr);
 
@@ -8513,8 +8513,8 @@ Data       **ptr
     SsMsgInfo    *minfo;
 
     //msgBlk = mBuf->b_cont;
-    //*ptr   = msgBlk->b_rptr;;
-    *ptr   = mBuf->b_datap->db_base;;
+    //*ptr   = msgBlk->b_rptr;
+    *ptr   = mBuf->b_datap->db_base;
 
     mBuf->b_cont = NULL;
 
@@ -8553,7 +8553,7 @@ S16 SDetachDpdkPtrFrmMBuf
       return RFAILED;
    }   
 
-   *ptr   = msgBlk->b_rptr;;
+   *ptr   = msgBlk->b_rptr;
 
    mBuf->b_cont = NULL;
 

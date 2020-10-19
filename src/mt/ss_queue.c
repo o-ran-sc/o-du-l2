@@ -157,7 +157,7 @@ Queue *q;                   /* queue */
 
 #ifdef T2K_MEM_LEAK_DBG
    char* file = __FILE__;
-   U32 line = __LINE__;
+   uint32_t line = __LINE__;
 #endif
 
 
@@ -898,7 +898,7 @@ S16 ssInitDmndQ(dQueue)
 SsDmndQ *dQueue;                /* Demand Queue */
 #endif
 {
-   U8  i;
+   uint8_t  i;
    S16 ret;
 
 
@@ -995,7 +995,7 @@ S16 ssDestroyDmndQ(dQueue)
 SsDmndQ *dQueue;                       /* demand Queue */
 #endif
 {
-   U8     i;
+   uint8_t     i;
    Buffer *tBuf;
    S16    ret;
 
@@ -1085,19 +1085,19 @@ Order   order;                         /* position */
 #endif
 {
 #ifndef TENB_RTLIN_CHANGES
-   U8     maskIndex;                   /* mask Index */
-   U8     bitPosition;                 /* bit position in index */
+   uint8_t     maskIndex;                   /* mask Index */
+   uint8_t     bitPosition;                 /* bit position in index */
 #else
-   U8    qIndex;
+   uint8_t    qIndex;
 #endif
    Queue *queue;                       /* queue in demand queue */
    S16    ret;                         /* return value */
 #ifdef SS_PERF
    int    value;
-   U32    size;
+   uint32_t    size;
 #endif
 #ifdef MSPD_MLOG_NEW 
-   U32    t = MacGetTick();
+   uint32_t    t = MacGetTick();
 #endif 
 
 
@@ -1345,8 +1345,8 @@ Order   order;                            /* position */
    S16   ret;
    S16   i;
 #ifndef TENB_RTLIN_CHANGES
-   U8    bitPosition;
-   U8    qIndex;
+   uint8_t    bitPosition;
+   uint8_t    qIndex;
 #endif
 
 
@@ -1526,7 +1526,7 @@ QLen    *len;                                  /* queue length */
 {
    
    S16  ret;                                   /* return value */
-   U8   i;
+   uint8_t   i;
 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)

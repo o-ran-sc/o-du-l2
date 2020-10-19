@@ -352,7 +352,7 @@ S16   tmrEvnt;
       }
    }
 
-   RETVOID;
+   return;
 }
 
 /**
@@ -468,7 +468,7 @@ PTR cb;
       }
    }
 
-   RETVOID;
+   return;
 }
 
 

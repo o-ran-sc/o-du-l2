@@ -97,24 +97,24 @@ typedef struct rlcSdu
    {
       struct   _t 
       {
-         U16         sfn;        /*!< Sub frame number for BCCH/PCCH */
-         U16         slot;   /*!< Subframe number */
+         uint16_t    sfn;        /*!< Sub frame number for BCCH/PCCH */
+         uint16_t    slot;   /*!< Subframe number */
          CmLteRnti   rnti;       /*!< RNTI for CCCH */
 #ifdef EMTC_ENABLE
-         U8          emtcDiReason; /*!< DI reason */
-         U8          pnb;       /*!<narrow band on which Ue performs Paging*/
+         uint8_t          emtcDiReason; /*!< DI reason */
+         uint8_t          pnb;       /*!<narrow band on which Ue performs Paging*/
 #endif
       }tm;   /*!< SDU for TM mode */
 
       struct   _u
       {
-         U32    sduId;         /*!< SDU Identifier */
-         Bool   isSegmented;   /*!< Flag to indicate if the SDU is segmented */
+         uint32_t  sduId;         /*!< SDU Identifier */
+         Bool      isSegmented;   /*!< Flag to indicate if the SDU is segmented */
       }um;   /*!< SDU for UM mode */
 
       struct   _a
       {
-         U32        sduId;                    /*!< SDU Identifier */
+         uint32_t   sduId;                    /*!< SDU Identifier */
          MsgLen     rcvdSz;                   /*!< Recvd SDU Size from peer */
          Bool       isSegmented;              /*!< Is SDU segmented */
          RlcSn        sn;                       /*!< SN assigned to this SDU*/
@@ -151,11 +151,11 @@ typedef struct rlcTm
 */
 typedef struct rlcBoRep
 {
-   S32    bo;            /*!< Buffer occupancy */
-   U16    estHdrSz;      /*!< Estimated header size for the bo */
-   Bool   staPduPrsnt;   /*!< Indicate control bo present or not */
-   U32    staPduBo;     /*!< Indicate bo for control PDU */
-   U32    oldestSduArrTime;
+   S32      bo;            /*!< Buffer occupancy */
+   uint16_t estHdrSz;      /*!< Estimated header size for the bo */
+   Bool     staPduPrsnt;   /*!< Indicate control bo present or not */
+   uint32_t staPduBo;     /*!< Indicate bo for control PDU */
+   uint32_t oldestSduArrTime;
 } RlcBoRep;
 
 /** 
@@ -174,7 +174,7 @@ typedef struct rlcDatReq
 /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
    KwLchMapInfo lchMapInfo;   /*!< Logical channel mapping info */
-   U32          totMacGrant;
+   uint32_t          totMacGrant;
 #endif /* LTE_L2_MEAS */
 }RlcDatReq;
 
@@ -204,13 +204,13 @@ typedef struct rlcDatReq
 typedef struct rlcUmDl
 {
    CmLListCp   sduQ;            /*!< SDU queue for UM */
-   U8          snLen;           /*!< Sequence number length */
+   uint8_t     snLen;           /*!< Sequence number length */
    S32         bo;              /*!< Buffer occupancy */
    S32         estHdrSz;        /*!< Estimated header size for BO */
-   RlcSn        vtUs;            /*!< VT(US) */
-   U16         modBitMask;      /*!< Bitmask for modulus to wrap around vars*/   
-   U16         numLi;           /*!< Number of LIs */
-   U16         li[RLC_MAX_LI];   /*!< Length Indicator array */
+   RlcSn       vtUs;            /*!< VT(US) */
+   uint16_t    modBitMask;      /*!< Bitmask for modulus to wrap around vars*/   
+   uint16_t    numLi;           /*!< Number of LIs */
+   uint16_t    li[RLC_MAX_LI];   /*!< Length Indicator array */
 }RlcUmDl;
 
 /** 
@@ -253,12 +253,12 @@ typedef struct rlcRetx
    Buffer     *seg;                /*!< Buffer of PDU or Segment */
    MsgLen     segSz;               /*!< Segment Size */
    MsgLen     hdrSz;               /*!< Header size for the segment */
-   RlcAmHdr    amHdr;               /*!< AM header Info */
-   U16        soEnd;               /*!< Segment Offset End */
-   RlcSn       retxCnt;             /*!< Retransmission count */
+   RlcAmHdr   amHdr;               /*!< AM header Info */
+   uint16_t   soEnd;               /*!< Segment Offset End */
+   RlcSn      retxCnt;             /*!< Retransmission count */
    Bool       yetToConst;          /*!< Yet to construct seg flag */
    Bool       pendingReTrans;      /*!< Is node waiting for re-transmission */
-   RlcSduMap   sduMap;              /*!< SDU mapped with PDU */
+   RlcSduMap  sduMap;              /*!< SDU mapped with PDU */
 }RlcRetx;
 
 /** 
@@ -339,15 +339,15 @@ typedef struct rlcTx
 typedef struct rlcAmDl
 {
    CmLListCp        sduQ;             /*!< SDU queue */
-   RlcSdu            *nxtTx;           /*!< Next SDU to be transmitted */
+   RlcSdu           *nxtTx;           /*!< Next SDU to be transmitted */
    CmTimer          pollRetxTmr;      /*!< T_poll_retransmit Timer */
-   U16              pollRetxTmrInt;   /*!< Timer Interval */
+   uint16_t         pollRetxTmrInt;   /*!< Timer Interval */
    S16              pollPdu;          /*!< Poll_PDU */
    S32              pollByte;         /*!< Poll_Byte */
-   U8               maxRetx;          /*!< Max_Retx_Threshold */
+   uint8_t          maxRetx;          /*!< Max_Retx_Threshold */
    S32              cntrlBo;          /*!< BO of control pdu */ 
    S32              retxBo;           /*!< BO of Retransmission PDUs */ 
-   U32              estHdrSz;         /*!< Estimated header size for the BO */
+   uint32_t         estHdrSz;         /*!< Estimated header size for the BO */
    S32              bo;               /*!< BO of new PDUs */
 #ifndef LTE_TDD 
    CmLListCp        *txBufLst;       /*!< Transmission buffer list of type RlcTx */
@@ -355,18 +355,18 @@ typedef struct rlcAmDl
 //   RlcTx             *txBuf[1024];          /*!< Transmission buffer */
 #endif
    CmLListCp        retxLst;          /*!< Retransmission PDU list */
-   RlcRetx           *nxtRetx;         /*!< Next node to be retransmitted */
-   RlcSn             txNext;           /*!< 5GNR: TX_Next, in LTE  VT(S) */
-   RlcSn             txNextAck;        /*!< 5GNR: TX_Next_Ack, in LTE VT(A)*/ 
+   RlcRetx          *nxtRetx;         /*!< Next node to be retransmitted */
+   RlcSn            txNext;           /*!< 5GNR: TX_Next, in LTE  VT(S) */
+   RlcSn            txNextAck;        /*!< 5GNR: TX_Next_Ack, in LTE VT(A)*/ 
    S16              pduWoPoll;        /*!< PDU without poll bit counter */
    S32              byteWoPoll;       /*!< Byte without poll bit counter */
-   RlcSn             pollSn;           /*!< Poll SN */
+   RlcSn            pollSn;           /*!< Poll SN */
    Buffer           *mBuf;            /*!< this can be removed later 
                                            Stores the Control Pdu */
    Bool             maxReTxReached;   /*!< Set when the DL MAX Retx exceeded */
-   RlcUdxDlStaPdu*   pStaPdu;          /*!< The Control Pdu passed from UL*/
-   U8               snLen;           /*!< Sequence number length:12 bit or 18 bit : 5GNR RLC */
-   U32              snModMask;       /*!< (2 Pwr SnLen - 1): 5GNR RLC */
+   RlcUdxDlStaPdu*  pStaPdu;          /*!< The Control Pdu passed from UL*/
+   uint8_t          snLen;           /*!< Sequence number length:12 bit or 18 bit : 5GNR RLC */
+   uint32_t         snModMask;       /*!< (2 Pwr SnLen - 1): 5GNR RLC */
 }RlcAmDl;
 
 /*@}*/
@@ -400,7 +400,7 @@ typedef struct rlcAmDl
 */
 typedef struct _rlcDlRbCb
 {
-   U8              qci;                /*!< qci of the RB */
+   uint8_t              qci;                /*!< qci of the RB */
 #ifdef LTE_L2_MEAS
    RlcDlUeCb        *ueCb;              /*!< Pointer to UeCb  */
    RlcL2MeasRbCb    rbL2Cb;             /*!< RB measurement L2 Cb */
@@ -415,14 +415,14 @@ typedef struct _rlcDlRbCb
                                            seconds for an PDCP SDU for this RB */
    /* Discard new changes ends */
    CmLteRlcId     rlcId;           /*!< RLC Identifier */
-   RlcLchInfo      lch;             /*!< Logical Channel Info  */
+   RlcLchInfo     lch;             /*!< Logical Channel Info  */
    CmLteRlcMode   mode;            /*!< Entity Mode */
-   U8             dir;             /*!< Direction for UL/DL */
+   uint8_t        dir;             /*!< Direction for UL/DL */
    Inst           inst;            /*!< Tapa Instance where rb created */
    SpId           k1wuSapId;        /*!< KWU sap Id, to get the KwuSapCb */
    SpId           udxSapId;        /*!< UDX sap Id, to get the UdxSapCb */
-   U32            transId;         /*!< Transaction Id for RLC */
-   Bool  reestInProgress; /*!< Is reestablishment in progress */
+   uint32_t       transId;         /*!< Transaction Id for RLC */
+   Bool           reestInProgress; /*!< Is reestablishment in progress */
    SpId           rguSapId;        /*!< RGU Instance SAP corresponding to this RB */
    union          
    {
@@ -432,8 +432,8 @@ typedef struct _rlcDlRbCb
    }m;   /*!< RLC mode specific Info */
    CmLList   rlsLnk;   /*!< Link to add to release list */
    Bool      cleanupStarted; /*!< Whether cleanup of RB is in progress or not */
-   U32       lastRprtdBoToMac; /*!< Last Reported BO to MAC Layer */
-   U32       boUnRprtdCnt; /*!< Count to keep track of periodic BO Update */
+   uint32_t  lastRprtdBoToMac; /*!< Last Reported BO to MAC Layer */
+   uint32_t  boUnRprtdCnt; /*!< Count to keep track of periodic BO Update */
 }RlcDlRbCb;
 
 /** 
@@ -472,8 +472,8 @@ typedef struct rlcDlCellCb
 typedef struct rlcContSduLst
 {
    CmLteLcId   lcId;    /*!< Holds the lcId of rbCb */
-   U8          numSdus; /*!< Number sdus in sduIdx array */
-   U8          sduIdx[RLC_L2MEAS_MAX_OUTSTNGSDU];  /*!< Hold the index to KwOutStngSduLst */
+   uint8_t     numSdus; /*!< Number sdus in sduIdx array */
+   uint8_t     sduIdx[RLC_L2MEAS_MAX_OUTSTNGSDU];  /*!< Hold the index to KwOutStngSduLst */
 }RlcContSduLst;
 typedef struct rlcSduInfo
 {
@@ -484,8 +484,8 @@ typedef struct rlcSduInfo
 typedef struct rlclchInfo
 {
    CmLteLcId   lcId;    /*!< Holds the lcId of rbCb */
-   U8         numSdus; /*!< Number sdus belonged to the this LC */
-   RlcSduInfo sduInfo[RLC_L2MEAS_SDUIDX];
+   uint8_t     numSdus; /*!< Number sdus belonged to the this LC */
+   RlcSduInfo  sduInfo[RLC_L2MEAS_SDUIDX];
 }RlclchInfo;
 
 /** @struct RlcL2MeasTb
@@ -493,13 +493,13 @@ typedef struct rlclchInfo
  */
 typedef struct rlcL2MeasTb
 {
-   U8              numLcId;       /* number of logical channels in this TbCb */
+   uint8_t          numLcId;       /* number of logical channels in this TbCb */
    RlcContSduLst    sduInfo[RLC_MAX_ACTV_DRB]; /*!< Contained sduLst for 
                                                outstanding sdu */
-   U8              numLchInfo;
+   uint8_t          numLchInfo;
    RlclchInfo       lchInfo[RLC_MAX_ACTV_DRB]; /* Holds the LC info details 
                                                   used for DL delay L2 Meas*/
-   U32             txSegSduCnt; /*!< This holds the no.of partially 
+   uint32_t         txSegSduCnt; /*!< This holds the no.of partially 
                                      transmitted SDU per TB which can be used for UU loss Meas*/
 }RlcL2MeasTb;
 #endif
@@ -517,17 +517,17 @@ typedef struct rlcL2MeasTb
 */
 struct rlcDlUeCb
 {
-   CmHashListEnt   ueHlEnt;                   /*!< Hash list entry for UeCb */
-   CmLteRnti     ueId;     /*!< UE Id */
-   CmLteCellId   cellId;   /*!< Cell Id */
-   RlcDlRbCb        *srbCb[RLC_MAX_SRB_PER_UE]; /*!< SRB RbCbs within a UE */ 
-   RlcDlRbCb        *drbCb[RLC_MAX_DRB_PER_UE]; /*!< DRB RbCbs within a UE */ 
-   RlcDlLch         lCh[RLC_MAX_LCH_PER_UE];    /*!< Array of Logical channels */
+   CmHashListEnt     ueHlEnt;                   /*!< Hash list entry for UeCb */
+   CmLteRnti         ueId;     /*!< UE Id */
+   CmLteCellId       cellId;   /*!< Cell Id */
+   RlcDlRbCb         *srbCb[RLC_MAX_SRB_PER_UE]; /*!< SRB RbCbs within a UE */ 
+   RlcDlRbCb         *drbCb[RLC_MAX_DRB_PER_UE]; /*!< DRB RbCbs within a UE */ 
+   RlcDlLch          lCh[RLC_MAX_LCH_PER_UE];    /*!< Array of Logical channels */
 /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
-   U16           numActRb[LKW_MAX_QCI];     /*!< number of RBs Active */
-   U8            tbIdx;                /*!< TBIDx for  measTbCb */
-   RlcL2MeasTb    *l2MeasTbCb[RLC_MAX_TB_PER_UE]; /*!< Array of Measurement tbCb */
+   uint16_t           numActRb[LKW_MAX_QCI];     /*!< number of RBs Active */
+   uint8_t            tbIdx;                /*!< TBIDx for  measTbCb */
+   RlcL2MeasTb        *l2MeasTbCb[RLC_MAX_TB_PER_UE]; /*!< Array of Measurement tbCb */
 #endif /* LTE_L2_MEAS */
 #ifdef TENB_STATS
    TSL2UeStatsCb   *tenbStats; /*!< UE Stats Holder */
@@ -626,12 +626,12 @@ Void rlcDbmFetchDlRbCbFromLchId ARGS ((RlcCb *gCb,
                                              CmLteLcId lcId,      
                                              RlcDlRbCb **rbCb));
 
-Void rlcDbmDelAllDlRb ARGS ((RlcCb *gCb, RlcDlRbCb **rbCbLst, U8 numRbCb));
+Void rlcDbmDelAllDlRb ARGS ((RlcCb *gCb, RlcDlRbCb **rbCbLst, uint8_t numRbCb));
 
 S16 rlcDbmDlShutdown ARGS ((RlcCb *gCb));
 
-Void rlcUtlGetCurrTime ARGS((U32 *time));
-Void rlcUtlTrigPdbFlowCntrl ARGS((RlcCb *gCb, RlcDlRbCb *rbCb, U32 pktAdmitCnt ));
+Void rlcUtlGetCurrTime ARGS((uint32_t *time));
+Void rlcUtlTrigPdbFlowCntrl ARGS((RlcCb *gCb, RlcDlRbCb *rbCb, uint32_t pktAdmitCnt ));
 #ifdef LTE_L2_MEAS
 Void rlcDbmDelAllDlL2MeasTbFrmUe ARGS ((RlcCb *gCb, RlcDlUeCb *ueCb));
 
@@ -659,7 +659,7 @@ Void rlcUmmQSdu ARGS ((RlcCb *gCb,
                              KwuDatReqInfo *datReq, 
                              Buffer *mBuf));
 
-Void rlcUmmDiscSdu ARGS ((RlcCb *gCb, RlcDlRbCb *rbCb, U32 sduId));
+Void rlcUmmDiscSdu ARGS ((RlcCb *gCb, RlcDlRbCb *rbCb, uint32_t sduId));
 
 Void rlcDlUmmReEstablish ARGS ((RlcCb *gCb, 
                                       CmLteRlcId rlcId, 
@@ -696,7 +696,7 @@ Void rlcAmmDlHndlStatusPdu ARGS ((RlcCb  *gCb,
                                         RlcDlRbCb  *rbCb,
                                         RlcUdxStaPdu *pStaPdu));
 
-S16 rlcAmmDiscSdu ARGS((RlcCb *gCb, RlcDlRbCb *rbCb, U32 sduId));
+S16 rlcAmmDiscSdu ARGS((RlcCb *gCb, RlcDlRbCb *rbCb, uint32_t sduId));
 
 Void rlcAmmPollRetxTmrExp ARGS((RlcCb *gCB, RlcDlRbCb *rbCb));
 
@@ -736,7 +736,7 @@ Void rlcUtlEmptySduQ ARGS ((RlcCb *gCb,CmLListCp *sduQ));
 #endif /* LTE_L2_MEAS */
 
 Void rlcUtlCalcLiForSdu ARGS ((RlcCb *gCb,
-                                     U16 numLi, 
+                                     uint16_t numLi, 
                                      MsgLen msgLen,
                                      S16 *pduSz));
 
@@ -793,22 +793,22 @@ Void rlcDlUtlSetReestInProgressForRB ARGS (( RlcCb *gCb, RlcDlRbCb *rbCb));
 
 #ifdef LTE_L2_MEAS
 Void rlcUtlUpdateContainedSduLst ARGS ((
-U8  sduIdx, 
+uint8_t  sduIdx, 
 RlcContSduLst  *contSduLst
 ));
 Void rlcUtlUpdateOutStandingSduLst ARGS ((
 RlcL2MeasDlIpTh   *dlIpThPut, 
-U8               sduIdx, 
-MsgLen           sduLen, 
-U32              sduId,
-Bool             newIdx
+uint8_t           sduIdx, 
+MsgLen            sduLen, 
+uint32_t          sduId,
+Bool              newIdx
 ));
 Void rlcUtlUpdateBurstSdus ARGS((
 RlcCb            *gCb,         
 RlcDlRbCb        *rbCb,
 RlcContSduLst    *contSduLst,
-S32             dataVol,
-U32             schPduSz
+S32              dataVol,
+uint32_t         schPduSz
 ));
 
 RlcL2MeasTb * rlcUtlGetCurMeasTb ARGS((
@@ -823,24 +823,24 @@ S16 rlcUtlSndDlL2MeasNCfm ARGS((RlcCb *gCb,
 S16 rlcUtlSndDlL2MeasCfm  ARGS ((RlcCb *gCb, RlcL2MeasEvtCb *measEvtCb));
 
 S16 rlcUtlProcHarqInd  ARGS (( RlcCb *gCb, RguHarqStatusInd *staInd, RlcDlUeCb *ueCb, 
-                                     U8 tbIdx));
+                                     uint8_t tbIdx));
 Void rlcUtlResetDlL2MeasInRlcRb ARGS ((RlcCb *gCb,
                                             RlcL2MeasCb *measCb,
-                                            U8 measType));
+                                            uint8_t measType));
 
-S16 RlcMiLkwL2MeasStopCfm ARGS((Pst *pst, U8  measType,U8  status));
+S16 RlcMiLkwL2MeasStopCfm ARGS((Pst *pst, uint8_t  measType,uint8_t  status));
 
 S16 rlcUtlValidateIpThL2Meas ARGS((RlcL2MeasReqEvt *measReqEvt, 
                                      RlcL2MeasCfmEvt *measCfmEvt)); 
                                     
 S16 rlcFetchLchInfo ARGS ((RlcL2MeasReqEvt *measReqEvt,
                                  RlcL2MeasCfmEvt *measCfmEvt,
-                                 U16             ueId,
+                                 uint16_t             ueId,
                                  CmLteLcId *lChId,
-                                 U8 *numLch));
+                                 uint8_t *numLch));
 
-S16 rlcUtlNotifyMacUlIp ARGS ((RlcL2MeasCb *measCb,U16 ueIdx, Bool enable,
-                                    CmLteLcId  *lChId, U8 *numLCh));
+S16 rlcUtlNotifyMacUlIp ARGS ((RlcL2MeasCb *measCb,uint16_t ueIdx, Bool enable,
+                                    CmLteLcId  *lChId, uint8_t *numLCh));
 #endif
 
 uint8_t rlcProcDlData(Pst *pst, KwuDatReqInfo* datReq, Buffer *buf);

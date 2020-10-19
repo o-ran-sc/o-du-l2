@@ -115,17 +115,17 @@ typedef struct _rgSchUlAllocCntr RgSchUlAllocCntr;
 
 struct _rgSchUlAllocCntr
 {
-   U8  mcs;
-   U16 numOfRb;
-   U16 rbStart;
+   uint8_t  mcs;
+   uint16_t numOfRb;
+   uint16_t rbStart;
    Bool testStart;
    Bool enaLog;
-   U16  logTime;
-   U32  crcOk;
-   U32  crcErr;
-   U32  numUlPackets;
-   U32  numPrach;
-   U32  taZero;
+   uint16_t  logTime;
+   uint32_t  crcOk;
+   uint32_t  crcErr;
+   uint32_t  numUlPackets;
+   uint32_t  numPrach;
+   uint32_t  taZero;
 };
 
 EXTERN RgSchUlAllocCntr rgSchUlAllocCntr;
@@ -135,41 +135,41 @@ EXTERN RgSchUlAllocCntr rgSchUlAllocCntr;
 #ifdef DLHQ_STATS
 typedef struct rgSchDlHqStats
 {
-   U16   sfn;
-   U8    sf;
-   U8    ack;
-   U8    cellId;
-   U8    ulDai;
-   U8    dlDai;
-   U8    fdbkIdx;
-   U8    ue;
-   U8    ack0;
-   U8    ack1;
-   U8    ack2;
-   U8    ack3;
-   U8    ack4;
-   U8    ack5;
-   U8    ack6;
-   U8    ack7;
+   uint16_t   sfn;
+   uint8_t    sf;
+   uint8_t    ack;
+   uint8_t    cellId;
+   uint8_t    ulDai;
+   uint8_t    dlDai;
+   uint8_t    fdbkIdx;
+   uint8_t    ue;
+   uint8_t    ack0;
+   uint8_t    ack1;
+   uint8_t    ack2;
+   uint8_t    ack3;
+   uint8_t    ack4;
+   uint8_t    ack5;
+   uint8_t    ack6;
+   uint8_t    ack7;
 }RgSchDlHqStats;
 typedef struct ysMsDlHqStats
 {
-   U16   sfn;
-   U8    sf;
-   U8    mode; /*1 = PUCCH 2= PUSCH*/
-   U8    M;
-   U8    o0; /*For PUCCH n1PUCCH*/
-   U8    o1; /*For PUCCH Invalid*/
-   U8    o2;
-   U8    o3;
-   U8    ack0;
-   U8    ack1;
-   U8    ack2;
-   U8    ack3;
-   U8    ack4;
-   U8    ack5;
-   U8    ack6;
-   U8    ack7;
+   uint16_t   sfn;
+   uint8_t    sf;
+   uint8_t    mode; /*1 = PUCCH 2= PUSCH*/
+   uint8_t    M;
+   uint8_t    o0; /*For PUCCH n1PUCCH*/
+   uint8_t    o1; /*For PUCCH Invalid*/
+   uint8_t    o2;
+   uint8_t    o3;
+   uint8_t    ack0;
+   uint8_t    ack1;
+   uint8_t    ack2;
+   uint8_t    ack3;
+   uint8_t    ack4;
+   uint8_t    ack5;
+   uint8_t    ack6;
+   uint8_t    ack7;
 }YsMsDlHqStats;
 #define MAX_STATS_CNT
 #endif
@@ -178,28 +178,28 @@ typedef struct ysMsDlHqStats
 /* Considers case where RIV is <= 324 for DCI format A1 */
 typedef struct tfuRbAssignA1Val324
 {
-   U8         hqProcId;   /*!< HARQ process ID */
-   U8		     mcs;		  /*!< 4 bits for MCS */
+   uint8_t         hqProcId;   /*!< HARQ process ID */
+   uint8_t		     mcs;		  /*!< 4 bits for MCS */
    Bool		  ndi;		  /*!< 1 bit for new data indicator */
 } TfuRbAssignA1Val324;
 
 /* Considers case where RIV is <= 324 for DCI format B1 */
 typedef struct tfuRbAssignB1Val324
 {
-   U8         hqProcId;   /*!< HARQ process ID */
-   U8		     mcs;		  /*!< 4 bits for MCS */
+   uint8_t         hqProcId;   /*!< HARQ process ID */
+   uint8_t		     mcs;		  /*!< 4 bits for MCS */
    Bool		  ndi;		  /*!< 1 bit for new data indicator */
-   U8         RV;         /*!< 2 bits Redundancy version */
-   U8         bmiHqAckNack; /* BMI: Bit Mapping Index for Harq-Ack
+   uint8_t         RV;         /*!< 2 bits Redundancy version */
+   uint8_t         bmiHqAckNack; /* BMI: Bit Mapping Index for Harq-Ack
                                 Refer sec 8.5 of 213 spec */ 
 } TfuRbAssignB1Val324;
 
 /* Considers case where RIV is == 326 */
 typedef struct tfuRbAssignVal326
 {
-   U8          FreqBandIdx;  /* nRACH: Frequency band index Value:0 -> 7 */
+   uint8_t          FreqBandIdx;  /* nRACH: Frequency band index Value:0 -> 7 */
    Bool        OCCInd;       /* nOCC: OCC indicator Value:0 -> 1 */
-   U8          CyclicShiftInd; /* nNcs: Cyclic shift indicator Value:0 -> 3 */
+   uint8_t          CyclicShiftInd; /* nNcs: Cyclic shift indicator Value:0 -> 3 */
 } TfuRbAssignVal326;
 
 
@@ -207,19 +207,19 @@ typedef struct tfuRbAssignVal326
 typedef struct tfuDciFormatA1Info
 {
    Bool        formatType;    /* Format Descriminator 00: A1, 01:A2 */
-   U8          xPUSCHRange;  /* 0 : the stopping of xPUSCH is the 12th symbol, 
+   uint8_t          xPUSCHRange;  /* 0 : the stopping of xPUSCH is the 12th symbol, 
                                                     1 : the stopping of xPUSCH is the 13th symbol,
                                                     2 : the stopping of xPUSCH is the final (14th) symbol */
-   U8          xPUSCH_TxTiming; /* Transmission timing of xPUSCH Value: 0->7 
+   uint8_t          xPUSCH_TxTiming; /* Transmission timing of xPUSCH Value: 0->7 
                                    l E {0,1,...,7}*/
-   U16         RBAssign;        /*!< same as phy i/f RBAssign: RIV as defined in V5G.213
+   uint16_t         RBAssign;        /*!< same as phy i/f RBAssign: RIV as defined in V5G.213
                                      Value <= 324: this field assigns morethan zero RB.
                                      Value ==325: this format assigns zero RB.
                                      Value ==326: this format assigns zero RB and used 
                                      for Randon Access procedure initiated by xPDCCH order. */
-   U8          beamIndex;       /*!< transmit beam index: Value: 0->7 */
-   U8          symbIdx;         /*!< OFDM symbol index for the xPDCCH: Value: 0->1 */
-   U8          rv;              /*!< HARQ redundancy version,  Value: 0 -> 3 */
+   uint8_t          beamIndex;       /*!< transmit beam index: Value: 0->7 */
+   uint8_t          symbIdx;         /*!< OFDM symbol index for the xPDCCH: Value: 0->1 */
+   uint8_t          rv;              /*!< HARQ redundancy version,  Value: 0 -> 3 */
 
    /* Based on RBAssign/RIV value*/
    union
@@ -228,32 +228,32 @@ typedef struct tfuDciFormatA1Info
       TfuRbAssignVal326   rbAssignVal326;
    }u;
 
-   U8          CSI_BSI_BRI_Req; /* CSI / BSI / BRI request Value:0 -> 7 */
-   U8          CSIRS_BRRS_TxTiming; /* Transmission timing of CSI-RS / BRRS, Value:0 -> 3
+   uint8_t          CSI_BSI_BRI_Req; /* CSI / BSI / BRI request Value:0 -> 7 */
+   uint8_t          CSIRS_BRRS_TxTiming; /* Transmission timing of CSI-RS / BRRS, Value:0 -> 3
                                         m E {0,1,2,3} */
 #ifdef FIVEGTF_PHY_API
-   U16         rbgStart;
-   U16         rbgSize;
+   uint16_t         rbgStart;
+   uint16_t         rbgSize;
 #endif
 
    /* ToDo: following 4 fields can be made as union with an indicator type*/
-   U8          CSIRS_BRRS_SymbIdx; /* Indication of OFDM symbol index for CSI-RS / BRRS allocations
+   uint8_t          CSIRS_BRRS_SymbIdx; /* Indication of OFDM symbol index for CSI-RS / BRRS allocations
                                                          Value:0 -> 3 */
-   U8          CSI_BRRS_Indicator; /* If this DCI format allocates either of 
+   uint8_t          CSI_BRRS_Indicator; /* If this DCI format allocates either of 
                                       CSI-RS or BRRS transmission Value:0 -> 3 */
-   U8          CSIRS_BRRS_ProcInd; /* Process indicator : Value:0 -> 3 */
-   U8          numBSI_Reports;  /* Number of BSI reports Value:0 -> 3 */
+   uint8_t          CSIRS_BRRS_ProcInd; /* Process indicator : Value:0 -> 3 */
+   uint8_t          numBSI_Reports;  /* Number of BSI reports Value:0 -> 3 */
 
    Bool        uciOnxPUSCH;   /* "UCI on xPUSCH w/o xUL-SCH data" indicator. Value:0 -> 1 */
    Bool        beamSwitch;    /* beam switch indication. Value:0 -> 1 */
 
-   U8          SRS_Config; /* Indication of SRS configurations Value:0 -> 3
+   uint8_t          SRS_Config; /* Indication of SRS configurations Value:0 -> 3
                               00 : {No SRS request}, 01 : {Config. #0},
                               10 : {Config. #1}, 11 : {Config. #2} */
    Bool        SRS_Symbol;  /* If SRS is requested, 0: SRS transmission on the 13th OFDM symbol
                               and 1: SRS transmission on the 14th OFDM symbol */   
 
-   U8          REMapIdx_DMRS_PCRS_numLayers; /* RE Mapping index, Ki for DMRS/PCRS and number of layers
+   uint8_t          REMapIdx_DMRS_PCRS_numLayers; /* RE Mapping index, Ki for DMRS/PCRS and number of layers
                                                 Value: 0 -> 7 
                                                 0: 1 Layer, k0 = 0, 1: 1 Layer, k0 = 1
                                                 2: 1 Layer, k0 = 2, 3: 1 Layer, k0 = 3
@@ -262,13 +262,13 @@ typedef struct tfuDciFormatA1Info
                                                 6,7: Reserved */
    Bool        SCID;         /* nSCID is applied for both DMRS in subframe n and
    	                          CSI-RS in subframe n+m Value: 0 -> 1 */
-   U8          PMI;          /* Precoding matrix indicator Value:0 -> 7 */
+   uint8_t          PMI;          /* Precoding matrix indicator Value:0 -> 7 */
 #ifdef FIVEGTF_PHY_API
-   U8          AntPorts_numLayers;
-   U8          TransmissionScheme;
+   uint8_t          AntPorts_numLayers;
+   uint8_t          TransmissionScheme;
 #endif
    Bool	      UL_PCRS;      /* UL dual PCRS 	Value: 0 -> 1 */
-   U8          tpcCmd;       /*!< 2 bits for TPC command for xPUSCH, Values: 0->3  */													  
+   uint8_t          tpcCmd;       /*!< 2 bits for TPC command for xPUSCH, Values: 0->3  */													  
 } TfuDciFormatA1Info;
 
 /* DCI format A2: UL xPDCCH */
@@ -278,17 +278,17 @@ typedef TfuDciFormatA1Info TfuDciFormatA2Info;
 typedef struct tfuDciFormatB1Info
 {
    Bool        formatType;    /* Format Descriminator 2: B1, 3:B2 */
-   U8          xPDSCHRange;  /* MSB (starting of xPDSCH including DMRS symbol) :
+   uint8_t          xPDSCHRange;  /* MSB (starting of xPDSCH including DMRS symbol) :
                                 0 is the second symbol, 1 is the third symbol.
                                 LSB (stopping of xPDSCH): 0 is the 12th symbol,
                                 1 is the 14th symbol */
-   U16         RBAssign;        /*!< same as phy i/f RBAssign: RIV as defined in V5G.213
+   uint16_t         RBAssign;        /*!< same as phy i/f RBAssign: RIV as defined in V5G.213
                                      Value <= 324: this field assigns morethan zero RB.
                                      Value ==325: this format assigns zero RB.
                                      Value ==326: this format assigns zero RB and used 
                                      for Randon Access procedure initiated by xPDCCH order. */
-   U8          beamIndex;       /*!< transmit beam index: Value: 0->7 */
-   U8          symbIdx;         /*!< OFDM symbol index for the xPDCCH: Value: 0->1 */
+   uint8_t          beamIndex;       /*!< transmit beam index: Value: 0->7 */
+   uint8_t          symbIdx;         /*!< OFDM symbol index for the xPDCCH: Value: 0->1 */
    /* Based on RBAssign/RIV value*/
    union
    {
@@ -296,32 +296,32 @@ typedef struct tfuDciFormatB1Info
       TfuRbAssignVal326   rbAssignVal326;
    }u;
 
-   U8          CSI_BSI_BRI_Req; /* CSI / BSI / BRI request Value:0 -> 7 */
-   U8          CSIRS_BRRS_TxTiming; /* Transmission timing of CSI-RS / BRRS, Value:0 -> 3
+   uint8_t          CSI_BSI_BRI_Req; /* CSI / BSI / BRI request Value:0 -> 7 */
+   uint8_t          CSIRS_BRRS_TxTiming; /* Transmission timing of CSI-RS / BRRS, Value:0 -> 3
                                         m E {0,1,2,3} */
    /* ToDo: following 4 fields can be made as union with an indicator type*/
-   U8          CSIRS_BRRS_SymbIdx; /* Indication of OFDM symbol index for CSI-RS / BRRS allocations
+   uint8_t          CSIRS_BRRS_SymbIdx; /* Indication of OFDM symbol index for CSI-RS / BRRS allocations
                                                          Value:0 -> 3 */
-   U8          CSI_BRRS_Indicator; /* If this DCI format allocates either of 
+   uint8_t          CSI_BRRS_Indicator; /* If this DCI format allocates either of 
                                       CSI-RS or BRRS transmission Value:0 -> 3 */
-   U8          CSIRS_BRRS_ProcInd; /* Process indicator : Value:0 -> 3 */
-   U8          numBSI_Reports;  /* Number of BSI reports Value:0 -> 3 */
+   uint8_t          CSIRS_BRRS_ProcInd; /* Process indicator : Value:0 -> 3 */
+   uint8_t          numBSI_Reports;  /* Number of BSI reports Value:0 -> 3 */
 
    Bool        xPUCCH_TxTiming;   /*  field indicates transmission time offset value k.{0, 1, ., 7} */
-   U8          freqResIdx_xPUCCH; /* Frequency resource index of xPUCCH for UCI report */
+   uint8_t          freqResIdx_xPUCCH; /* Frequency resource index of xPUCCH for UCI report */
    Bool        beamSwitch;    /* beam switch indication. Value:0 -> 1 */
 
-   U8          SRS_Config; /* Indication of SRS configurations Value:0 -> 3
+   uint8_t          SRS_Config; /* Indication of SRS configurations Value:0 -> 3
                               00 : {No SRS request}, 01 : {Config. #0},
                               10 : {Config. #1}, 11 : {Config. #2} */
    Bool        SRS_Symbol;  /* If SRS is requested, 0: SRS transmission on the 13th OFDM symbol
                               and 1: SRS transmission on the 14th OFDM symbol */   
 
-   U8          AntPorts_numLayers; 
+   uint8_t          AntPorts_numLayers; 
 
    Bool        SCID;         /* nSCID is applied for both DMRS in subframe n and
    	                          CSI-RS in subframe n+m Value: 0 -> 1 */
-   U8          tpcCmd;       /*!< 2 bits for TPC command for xPUCCH, Values: 0->3  */													  
+   uint8_t          tpcCmd;       /*!< 2 bits for TPC command for xPUCCH, Values: 0->3  */													  
    Bool	      DL_PCRS;      /* DL PCRS 	Value: 0 -> 3 
                                 00 : {No PCRS }, 01 : {PCRS on AP 60},
                                 10 : {PCRS on AP 61}, 11 : {PCRS on AP 60 and 61}*/
@@ -340,31 +340,31 @@ typedef struct tfuDciFormat0Info
    Bool        isMsg4PdcchWithCrnti; /* This is to aid rgNumMsg4PdcchWithCrnti counter which counts
                                        num of PDCCH scrambled with CRNTI for CRNTI Based contention resolution */
    Bool        hoppingEnbld;  /*!< TRUE, if hopping is enabled */
-   U8          rbStart;       /*!< Starting RB */
-   U8          numRb;         /*!< Number of RBs */
+   uint8_t          rbStart;       /*!< Starting RB */
+   uint8_t          numRb;         /*!< Number of RBs */
 #ifdef TFU_UPGRADE
-   U32         riv;           /*!< RIV as defined in 213 
+   uint32_t         riv;           /*!< RIV as defined in 213 
                                section 7.1.6.3 - used only for
                                SPS release */
 #endif 
-   U8          hoppingBits;   /*!< Hopping bits as mentioned in 213 section 8.4 */
-   U8          mcs;           /*!< 5 bits for MCS and RV */
+   uint8_t          hoppingBits;   /*!< Hopping bits as mentioned in 213 section 8.4 */
+   uint8_t          mcs;           /*!< 5 bits for MCS and RV */
    Bool        ndi;           /*!< 1 bit for new data indicator */
-   U8          tpcCmd;        /*!< 2 bits for TPC command */
+   uint8_t          tpcCmd;        /*!< 2 bits for TPC command */
 /** @name TFU_TDD  */
 /** @{ */
 #ifdef TFU_TDD
-   U8          ulIdx;         /*!< UL index applicable only for TDD */
-   U8          dai;           /*!< The downlink assignement index */
+   uint8_t          ulIdx;         /*!< UL index applicable only for TDD */
+   uint8_t          dai;           /*!< The downlink assignement index */
 #endif
 /** @} */
-   U8          nDmrs;         /*!< 3 bits for DMRS cyclic shift */
-   U8          cqiReq;        /*!< 1 bit for CQI non-CA while value 00, 01, 10 and 11 for CA */
-   U8          numCqiBit;     /*!< Number of CsiReq Bit(s) Values : 1 or 2(CA)*/
-   U8          txAntenna;     /*!< Antenna selection - 213 section 8.7 */
+   uint8_t          nDmrs;         /*!< 3 bits for DMRS cyclic shift */
+   uint8_t          cqiReq;        /*!< 1 bit for CQI non-CA while value 00, 01, 10 and 11 for CA */
+   uint8_t          numCqiBit;     /*!< Number of CsiReq Bit(s) Values : 1 or 2(CA)*/
+   uint8_t          txAntenna;     /*!< Antenna selection - 213 section 8.7 */
 
    /* tfu_x_001.main_4: Adding hqProcId */
-   U8          hqProcId;    /*!< HARQ process ID */
+   uint8_t          hqProcId;    /*!< HARQ process ID */
 } TfuDciFormat0Info;
 
 /** @enum TfuAllocType
@@ -385,10 +385,10 @@ typedef struct tfuAllocMapOrRiv
    union
    {
 
-      U32                 riv;   /*!< RIV as defined in 213 section 7.1.6.3. */
+      uint32_t                 riv;   /*!< RIV as defined in 213 section 7.1.6.3. */
       /*tfu_x_001.main_8 - ADD - TFU_RESMAP_CHANGE support */
 #ifndef TFU_RESMAP_CHANGE
-      U8                  resAllocMap[TFU_MAX_ALLOC_BYTES]; /*!< Resource 
+      uint8_t                  resAllocMap[TFU_MAX_ALLOC_BYTES]; /*!< Resource 
                                       allocation bitmap. LSB aligns with the
                                       LSB of the allocation bits.*/
 #else /* TFU_RESMAP_CHANGE */
@@ -420,15 +420,15 @@ typedef struct tfuAllocMap
   {
      struct 
      {
-        U32               allocMask;  /*!< Allocation Mask for RBGs */
+        uint32_t               allocMask;  /*!< Allocation Mask for RBGs */
      } allocType0;
      struct
      {
-        U8                rbgSubset;  /*!< RBG Subset number: Value in set
+        uint8_t                rbgSubset;  /*!< RBG Subset number: Value in set
                                            {0,1,2,3} */
-        U8                shift;      /*!< Shift value for RBG mask: Value in 
+        uint8_t                shift;      /*!< Shift value for RBG mask: Value in 
                                            set {0,1} */
-        U32               allocMask;  /*!< Allocation bitmask */
+        uint32_t               allocMask;  /*!< Allocation bitmask */
      } allocType1;
   } u; 
 } TfuAllocMap;
@@ -444,13 +444,13 @@ typedef struct tfuAllocMap
 typedef struct tfuDciFormat1AllocInfo
 {
    Bool        isAllocType0;  /*!< TRUE, if allocation type is 0 */
-   U8          resAllocMap[TFU_MAX_ALLOC_BYTES];   /*!< Resource allocation bitmap.
+   uint8_t          resAllocMap[TFU_MAX_ALLOC_BYTES];   /*!< Resource allocation bitmap.
                                                 LSB aligns with the LSB of the
                                                 allocation bits.*/
-   U8          harqProcId;    /*!< HARQ process ID */
+   uint8_t          harqProcId;    /*!< HARQ process ID */
    Bool        ndi;           /*!< 1 bit for new data indicator */
-   U8          mcs;           /*!< 5 bits for MCS */
-   U8          rv;            /*!< Redundancy version */
+   uint8_t          mcs;           /*!< 5 bits for MCS */
+   uint8_t          rv;            /*!< Redundancy version */
 } TfuDciFormat1AllocInfo;
 
 /** @brief This structure contains the information needed to convey DCI format 1.
@@ -465,10 +465,10 @@ typedef struct tfuDciFormat1Info
 /** @name TFU_TDD  */
 /** @{ */
 #ifdef TFU_TDD
-   U8                      dai;           /*!< The downlink assignement index */
+   uint8_t                      dai;           /*!< The downlink assignement index */
 #endif
 /** @} */
-   U8                      tpcCmd;        /*!< 2 bits for TPC command */
+   uint8_t                      tpcCmd;        /*!< 2 bits for TPC command */
 } TfuDciFormat1Info;
 
 /** @brief This structure contains the TB level DCI signalling
@@ -476,8 +476,8 @@ typedef struct tfuDciFormat1Info
 typedef struct tfuDciFormatTbInfo
 {
    Bool                   ndi; /*!< New data indicator */
-   U8                     rv;  /*!< Redundancy version Indicator */
-   U8                     mcs; /*!< 5 bits for MCS */
+   uint8_t                     rv;  /*!< Redundancy version Indicator */
+   uint8_t                     mcs; /*!< 5 bits for MCS */
 }TfuDciFormatTbInfo;
 /** @} */
 /** @brief This structure contains only the allocation information, that is part
@@ -492,15 +492,15 @@ typedef struct tfuDciFormat2AAllocInfo
    Bool        isAllocType0;  /*!< TRUE, if allocation type is 0 */
       /*tfu_x_001.main_8 - ADD - TFU_RESMAP_CHANGE support */
 #ifndef TFU_RESMAP_CHANGE
-   U8          resAllocMap[TFU_MAX_ALLOC_BYTES];   /*!< Resource allocation bitmap.
+   uint8_t          resAllocMap[TFU_MAX_ALLOC_BYTES];   /*!< Resource allocation bitmap.
                                                 LSB aligns with the LSB of the
                                                 allocation bits.*/
 #else
    TfuAllocMap allocMap;   /*!< Allocation Map */
 #endif /* TFU_RESMAP_CHANGE */
-   U8          harqProcId;    /*!< HARQ process ID */
+   uint8_t          harqProcId;    /*!< HARQ process ID */
    TfuDciFormatTbInfo tbInfo[2]; /*!< DCI Format 2/2A info per TB */
-   U8          precoding;     /*!< Precoding information bit */
+   uint8_t          precoding;     /*!< Precoding information bit */
    Bool        transSwap;     /*!< Transport block to codeword swap flag */
 } TfuDciFormat2AAllocInfo;
 
@@ -514,10 +514,10 @@ typedef struct tfuDciFormat2AInfo
 /** @name TFU_TDD  */
 /** @{ */
 #ifdef TFU_TDD
-   U8                       dai;           /*!< The downlink assignement index */
+   uint8_t                       dai;           /*!< The downlink assignement index */
 #endif
 /** @} */
-   U8                       tpcCmd;        /*!< 2 bits for TPC command */
+   uint8_t                       tpcCmd;        /*!< 2 bits for TPC command */
 } TfuDciFormat2AInfo;
 
 /** @brief This structure contains only the allocation information, that is part
@@ -531,7 +531,7 @@ typedef struct tfuDciFormat2AllocInfo
 {
    Bool                   isAllocType0;  /*!< TRUE, if allocation type is 0 */
 #ifndef TFU_RESMAP_CHANGE
-   U8                     resAllocMap[TFU_MAX_ALLOC_BYTES]; /*!< Resource 
+   uint8_t                     resAllocMap[TFU_MAX_ALLOC_BYTES]; /*!< Resource 
                                               allocation bitmap. LSB aligns
                                               with the LSB of the allocation
                                               bits.*/
@@ -542,13 +542,13 @@ typedef struct tfuDciFormat2AllocInfo
 /** @name TFU_TDD  */
 /** @{ */
 #ifdef TFU_TDD
-   U8                     dai;           /*!< The downlink assignement index */
+   uint8_t                     dai;           /*!< The downlink assignement index */
 #endif
 /** @} */
    Bool                   transSwap;     /*!< Transport block to codeword swap
                                               flag */
-   U8                     precoding;     /*!< Precoding information bit */
-   U8                     harqProcId;    /*!< HARQ process ID */
+   uint8_t                     precoding;     /*!< Precoding information bit */
+   uint8_t                     harqProcId;    /*!< HARQ process ID */
    TfuDciFormatTbInfo     tbInfo[2];     /*!< DCI Format 2/2A info per TB */
 } TfuDciFormat2AllocInfo;
 
@@ -563,12 +563,12 @@ typedef struct tfuDciFormat2Info
 {
    TfuDciFormat2AllocInfo  allocInfo;     /*!< Allocation Information to map 
                                                data on PDSCH */
-   U8                      tpcCmd;        /*!< 2 bits for TPC command */
+   uint8_t                      tpcCmd;        /*!< 2 bits for TPC command */
 /** @{ */
 /** @name TFU_TDD  */
 /** @{ */
 #ifdef TFU_TDD
-   U8                      dai;            /*!< The downlink assignment index */
+   uint8_t                      dai;            /*!< The downlink assignment index */
 #endif
 /** @} */
 /** @} */
@@ -578,10 +578,10 @@ typedef struct tfuDciFormat2Info
   */
 typedef struct tfuDciFormat3Info
 {
-   U8          tpcCmd[TFU_MAX_2BIT_TPC]; /*!< 2 bits for TPC command. 
+   uint8_t          tpcCmd[TFU_MAX_2BIT_TPC]; /*!< 2 bits for TPC command. 
                                            LSB corresponds to the 1st bit of the 1st
                                           byte.*/
-   U8          isPucch;                  /*!< 1 if the TPC meant for PUCCH, 0 if the TPC meant for PUSCH */                                          
+   uint8_t          isPucch;                  /*!< 1 if the TPC meant for PUCCH, 0 if the TPC meant for PUSCH */                                          
 
 } TfuDciFormat3Info;
 
@@ -589,10 +589,10 @@ typedef struct tfuDciFormat3Info
   */
 typedef struct tfuDciFormat3AInfo
 {
-   U8          tpcCmd[TFU_MAX_1BIT_TPC]; /*!< 1 bit for TPC command. 
+   uint8_t          tpcCmd[TFU_MAX_1BIT_TPC]; /*!< 1 bit for TPC command. 
                                            LSB corresponds to the 1st bit of the
                                           1st byte.*/
-   U8          isPucch;                  /*!< 1 if the TPC meant for PUCCH, 0 if the TPC meant for PUSCH */                                          
+   uint8_t          isPucch;                  /*!< 1 if the TPC meant for PUCCH, 0 if the TPC meant for PUSCH */                                          
 } TfuDciFormat3AInfo;
 
 
@@ -607,11 +607,11 @@ typedef struct tfuDciFormat3AInfo
 typedef struct tfuDciFormat1dAllocInfo
 {
    Bool              isLocal;       /*!< TRUE, if localised VRB */
-   TknU8             nGap2;         /*!< 1 indicates Ngap=Ngap,1 and 2 indicates Ngap,2 */
+   TknUInt8             nGap2;         /*!< 1 indicates Ngap=Ngap,1 and 2 indicates Ngap,2 */
    TfuAllocMapOrRiv  alloc;         /*!< Allocation represented as a bit-map or RIV */   
-   U8                mcs;           /*!< 5 bits for MCS */
-   U8                rv;            /*!< Redundancy version */
-   U8                tPmi;          /*!< PMI */
+   uint8_t                mcs;           /*!< 5 bits for MCS */
+   uint8_t                rv;            /*!< Redundancy version */
+   uint8_t                tPmi;          /*!< PMI */
 } TfuDciFormat1dAllocInfo;
 
  /** @brief This structure contains the information carried by DCI format 1D.
@@ -623,16 +623,16 @@ typedef struct tfuDciFormat1dAllocInfo
 typedef struct tfuDciFormat1dInfo
 {
    TfuDciFormat1dAllocInfo allocInfo;     /*!< Allocation information */
-   U8                      harqProcId;    /*!< HARQ process ID */
+   uint8_t                      harqProcId;    /*!< HARQ process ID */
    Bool                    ndi;           /*!< 1 bit for new data indicator */
-   U8                      tpcCmd;        /*!< 2 bits for TPC command */
+   uint8_t                      tpcCmd;        /*!< 2 bits for TPC command */
 /** @name TFU_TDD  */
 /** @{ */
 #ifdef TFU_TDD
-   U8                      dai;           /*!< The downlink assignement index */
+   uint8_t                      dai;           /*!< The downlink assignement index */
 #endif
 /** @} */
-   U8                      dlPwrOffset;   /*!< Downlink power offset */
+   uint8_t                      dlPwrOffset;   /*!< Downlink power offset */
 } TfuDciFormat1dInfo;
 
 
@@ -645,9 +645,9 @@ typedef struct tfuDciFormat1dInfo
   */
 typedef struct tfuDciFormat1cInfo
 {
-   TknU8             nGap2;         /*!< 1 indicates Ngap=Ngap,1 and 2 indicates Ngap,2 */
+   TknUInt8             nGap2;         /*!< 1 indicates Ngap=Ngap,1 and 2 indicates Ngap,2 */
    TfuAllocMapOrRiv  alloc;         /*!< Allocation represented as a bit-map or RIV */   
-   U8                iTbs;          /*!< 5 bits for I-tbs */
+   uint8_t                iTbs;          /*!< 5 bits for I-tbs */
 } TfuDciFormat1cInfo;
 
 
@@ -661,13 +661,13 @@ typedef struct tfuDciFormat1cInfo
 typedef struct tfuDciFormat1bAllocInfo
 {
    Bool              isLocal;       /*!< TRUE, if localised VRB */
-   TknU8             nGap2;         /*!< 1 indicates Ngap=Ngap,1 and 2 indicates Ngap,2 */
+   TknUInt8             nGap2;         /*!< 1 indicates Ngap=Ngap,1 and 2 indicates Ngap,2 */
    TfuAllocMapOrRiv  alloc;         /*!< Allocation represented as a bit-map or RIV */
-   U8                mcs;           /*!< 5 bits for MCS */
-   U8                rv;            /*!< Redundancy version */
-   U8                harqProcId;    /*!< HARQ process ID */
+   uint8_t                mcs;           /*!< 5 bits for MCS */
+   uint8_t                rv;            /*!< Redundancy version */
+   uint8_t                harqProcId;    /*!< HARQ process ID */
    Bool              ndi;           /*!< 1 bit for new data indicator */
-   U8                tPmi;          /*!< PMI */
+   uint8_t                tPmi;          /*!< PMI */
    Bool              pmiCfm;        /*!< PMI confirmation bit */
 } TfuDciFormat1bAllocInfo;
 
@@ -677,8 +677,8 @@ typedef struct tfuDciFormat1bAllocInfo
   */
 typedef struct tfuPdcchOrderInfo
 {
-   U8          preambleIdx;    /*!< Dedicated preamble index */
-   U8          prachMaskIdx;   /*!< PRACH Mask index used to determine the
+   uint8_t          preambleIdx;    /*!< Dedicated preamble index */
+   uint8_t          prachMaskIdx;   /*!< PRACH Mask index used to determine the
                                     subframe to be used for RACH */
 } TfuPdcchOrderInfo;
 
@@ -692,11 +692,11 @@ typedef struct tfuPdcchOrderInfo
 typedef struct tfuDciFormat1aAllocInfo
 {
    Bool              isLocal;       /*!< TRUE, if localised VRB */
-   TknU8             nGap2;         /*!< 1 indicates Ngap=Ngap,1 and 2 indicates Ngap,2 */
+   TknUInt8             nGap2;         /*!< 1 indicates Ngap=Ngap,1 and 2 indicates Ngap,2 */
    TfuAllocMapOrRiv  alloc;         /*!< Allocation carries RIV or a bitmap */
-   U8                mcs;           /*!< 5 bits for MCS */
-   U8                rv;            /*!< Redundancy version */
-   TknU8             harqProcId;    /*!< HARQ process ID. Reserved
+   uint8_t                mcs;           /*!< 5 bits for MCS */
+   uint8_t                rv;            /*!< Redundancy version */
+   TknUInt8             harqProcId;    /*!< HARQ process ID. Reserved
                                          if RA-RNTI, P-RNTI, SI-RNTI is used */
    Bool              ndi;           /*!< 1 bit for new data indicator */
 } TfuDciFormat1aAllocInfo;
@@ -710,11 +710,11 @@ typedef struct tfudciformat1aPdsch
 /** @name TFU_TDD  */
 /** @{ */
 #ifdef TFU_TDD
-   TknU8                   dai;   /*!< The downlink assignement index. Reserved
+   TknUInt8                   dai;   /*!< The downlink assignement index. Reserved
                                    if RA-RNTI, P-RNTI, SI-RNTI is used. */
 #endif
 /** @} */
-   U8                      tpcCmd;        /*!< 2 bits for TPC command. */
+   uint8_t                      tpcCmd;        /*!< 2 bits for TPC command. */
    Bool                 isTBMsg4; /*!< This field is added to help counting num of Msg4 Tx failures */
 } Tfudciformat1aPdsch;
 /*tfu_x_001.main_6 - Added for SPS support*/
@@ -747,10 +747,10 @@ typedef struct tfuDciFormat1bInfo
 /** @name TFU_TDD  */
 /** @{ */
 #ifdef TFU_TDD
-   U8          dai;                       /*!< The downlink assignement index */
+   uint8_t          dai;                       /*!< The downlink assignement index */
 #endif
 /** @} */
-   U8                      tpcCmd;        /*!< 2 bits for TPC command */
+   uint8_t                      tpcCmd;        /*!< 2 bits for TPC command */
 } TfuDciFormat1bInfo;
 #ifdef EMTC_ENABLE
 /** @brief This structure contains the information needed to convey DCI format 6-0A.
@@ -758,21 +758,21 @@ typedef struct tfuDciFormat1bInfo
 typedef struct tfuDciFormat60aInfo
 {
    Bool              hoppingEnbld;  /*!< TRUE, if hopping is enabled */
-   U32               riv;           /*!<9 bits, type2 allocation, RIV as defined in 213 section 7.1.6.3. */
-   U8                mcs;           /*!< 4 bits for MCS and RV */
-   U8                rep;           /*!< 2 bits, repetion number */
-   U8                hqProcId;    /*!< HARQ process ID */
+   uint32_t               riv;           /*!<9 bits, type2 allocation, RIV as defined in 213 section 7.1.6.3. */
+   uint8_t                mcs;           /*!< 4 bits for MCS and RV */
+   uint8_t                rep;           /*!< 2 bits, repetion number */
+   uint8_t                hqProcId;    /*!< HARQ process ID */
    Bool              ndi;           /*!< 1 bit for new data indicator */
-   U8                rv;            /*!< 2 bits - Redundancy version */
-   U8                tpcCmd;        /*!< 2 bits for TPC command */
+   uint8_t                rv;            /*!< 2 bits - Redundancy version */
+   uint8_t                tpcCmd;        /*!< 2 bits for TPC command */
 #ifdef TFU_TDD
 /* TODO_Mavericks: Check if DAI is required for FDD also */
-   U8               ulIdx;         /*!< UL index applicable only for TDD */
-   U8               dai;           /*!< The downlink assignement index */
+   uint8_t               ulIdx;         /*!< UL index applicable only for TDD */
+   uint8_t               dai;           /*!< The downlink assignement index */
 #endif
    Bool            cqiReq;        /*!< 1 bit for CQI */
    Bool            isSrs;         /*!< 1 bit for SRS */
-   U8              dciRep;        /*!< 2 bits for DCI Subframe repetition */      
+   uint8_t              dciRep;        /*!< 2 bits for DCI Subframe repetition */      
 } TfuDciFormat60aInfo;
 /** @brief This structure contains only the allocation information, that is part
  * of DCI format 6-1A. 
@@ -783,13 +783,13 @@ typedef struct tfuDciFormat60aInfo
  */
 typedef struct tfuDciFormat61AllocInfo
 {
-   U32         riv;           /*!<9 bits, type2 allocation, RIV as defined in 213 section 7.1.6.3. */
+   uint32_t         riv;           /*!<9 bits, type2 allocation, RIV as defined in 213 section 7.1.6.3. */
 /* TODO_EMTC: Add start RB, number of RB, Narrow band if required */
-   U8          harqProcId;    /*!< HARQ process ID */
+   uint8_t          harqProcId;    /*!< HARQ process ID */
    Bool        ndi;           /*!< 1 bit for new data indicator */
-   U8          mcs;           /*!< 4 bits for MCS and RV */
-   U8          rv;            /*!< 2 bits - Redundancy version */
-	U32 		   scramblerInitValue; /*!< Scrambler init(Cinit) value as per 36.211 */
+   uint8_t          mcs;           /*!< 4 bits for MCS and RV */
+   uint8_t          rv;            /*!< 2 bits - Redundancy version */
+	uint32_t 		   scramblerInitValue; /*!< Scrambler init(Cinit) value as per 36.211 */
 } TfuDciFormat61AllocInfo;
 
  /** @brief This structure contains the information carried in DCI format 6-1A
@@ -799,27 +799,27 @@ typedef struct tfudciformat61aPdsch
 {
    TfuDciFormat61AllocInfo allocInfo;   /* Allocation info for 6-1A */
    Bool                hoppingEnbld;  /*!< TRUE, if hopping is enabled */
-   U8                  rep;           /*!< 2 bits, repetion number */
-   U8                  tpcCmd;        /*!< 2 bits for TPC command */
+   uint8_t                  rep;           /*!< 2 bits, repetion number */
+   uint8_t                  tpcCmd;        /*!< 2 bits for TPC command */
 #ifdef TFU_TDD
 /* TODO_Maveri: Check if DAI is required for FDD also */
-   U8                  dai;           /*!< The downlink assignement index */
+   uint8_t                  dai;           /*!< The downlink assignement index */
 #endif
-   U8                  antPortAndScrId; /*!< 2 bits - Antenna port(s) and scrambling identity  */
+   uint8_t                  antPortAndScrId; /*!< 2 bits - Antenna port(s) and scrambling identity  */
    Bool                isSrs;           /*!< 1 bit for SRS */
-   U8                  tPmi;            /*!< 2 0r 4 bits:  TPMI information for precoding  */
-   U8                  pmiCfm;          /*!<  1 bit, PMI confirmation for precoding  */
-   U8                  harqAckOffst;    /*!< 2 bits, HARQ-ACK resource offset */ 
-   U8                  dciRep;          /*!< 2 bits for DCI Subframe repetition */   
+   uint8_t                  tPmi;            /*!< 2 0r 4 bits:  TPMI information for precoding  */
+   uint8_t                  pmiCfm;          /*!<  1 bit, PMI confirmation for precoding  */
+   uint8_t                  harqAckOffst;    /*!< 2 bits, HARQ-ACK resource offset */ 
+   uint8_t                  dciRep;          /*!< 2 bits for DCI Subframe repetition */   
    Bool                isTBMsg4;        /*!< This field is added to help counting num of Msg4 Tx failures */
 } Tfudciformat61aPdsch;
 typedef struct tfuPdcchOrderInfoEmtc
 {
-   U32         riv;             /*!<9 bits, type2 allocation, RIV as defined in 213 section 7.1.6.3. */
-   U8          preambleIdx;    /*!< Dedicated preamble index */
-   U8          prachMaskIdx;   /*!< PRACH Mask index used to determine the
+   uint32_t         riv;             /*!<9 bits, type2 allocation, RIV as defined in 213 section 7.1.6.3. */
+   uint8_t          preambleIdx;    /*!< Dedicated preamble index */
+   uint8_t          prachMaskIdx;   /*!< PRACH Mask index used to determine the
                                     subframe to be used for RACH */
-   U8          ceLevel;        /*!< 2 bits, Starting CE level */
+   uint8_t          ceLevel;        /*!< 2 bits, Starting CE level */
 } TfuPdcchOrderInfoEmtc;
 
 /** @brief This structure contains the information needed to convey DCI format 6-1A.
@@ -841,29 +841,29 @@ typedef struct tfuDciFormat61aInfo
 
 typedef struct tfuDciFormatForEmtcBcch
 {
-   U8  mcs;
-   U16 numOfRb;
-   U16 rbStart;
+   uint8_t  mcs;
+   uint16_t numOfRb;
+   uint16_t rbStart;
 }TfuDciFormatForEmtcBcch;
 
 typedef struct tfuDirectIndication
 {
-   U8  directInd; /*!< 8 bit direct Indication Information*/
+   uint8_t  directInd; /*!< 8 bit direct Indication Information*/
 }TfuDirectIndication;
 
 typedef struct tfuDciFormat62AllocInfo
 {
-  U8 riv;                         /*!< Narrow Band Index*/ 
-  U8 mcs;                         /*!<MCS */
-  U32         scramblerInitValue; /*!< Scrambler init(Cinit) value as per 36.211 */
-  U8          rv;                  /*!<Redundancy version */ 
+  uint8_t riv;                         /*!< Narrow Band Index*/ 
+  uint8_t mcs;                         /*!<MCS */
+  uint32_t         scramblerInitValue; /*!< Scrambler init(Cinit) value as per 36.211 */
+  uint8_t          rv;                  /*!<Redundancy version */ 
 }TfuDciFormat62AllocInfo;
 
 typedef struct tfudciformat62Pdsch
 {
     TfuDciFormat62AllocInfo format62AllocInfo;
-    U8 repNum;                       /*!< 3 bits, repetion number */
-    U8 dciSubRepNum;                 /*!< 2 bits for DCI Subframe repetition */
+    uint8_t repNum;                       /*!< 3 bits, repetion number */
+    uint8_t dciSubRepNum;                 /*!< 2 bits for DCI Subframe repetition */
      
 
 }Tfudciformat62Pdsch;
@@ -933,8 +933,8 @@ typedef struct tfuDciInfo
  */
 typedef struct tfuSubbandInfo
 {
-   U8          rbStart;       /*!< Starting RB */
-   U8          numRb;         /*!< Number of RBs */
+   uint8_t          rbStart;       /*!< Starting RB */
+   uint8_t          numRb;         /*!< Number of RBs */
 } TfuSubbandInfo;
 
 /** @brief This structure is used to convey the sub-band CQI reported. 
@@ -942,7 +942,7 @@ typedef struct tfuSubbandInfo
 typedef struct tfuSubbandDlCqiInfo
 {
    TfuSubbandInfo         subband;             /*!< Sub-band information */
-   U8                     cqiIdx[TFU_MAX_TB];  /*!< Sub-band CQI index per CW */
+   uint8_t                     cqiIdx[TFU_MAX_TB];  /*!< Sub-band CQI index per CW */
 } TfuSubbandDlCqiInfo;
 /** @} */
 
@@ -952,13 +952,13 @@ typedef struct tfuSubbandDlCqiInfo
 typedef struct tfuSubbandCqiInfo
 {
    TfuSubbandInfo subband;    /*!< Sub-band information */
-   U8             cqiIdx;     /*!< CQI index */
+   uint8_t             cqiIdx;     /*!< CQI index */
 } TfuSubbandCqiInfo;
 /** @brief This structure conveys the CCE information.
  */
 typedef struct tfuPdcchCceInfo
 {
-   U8             cceIdx;   /*!< CCE index */
+   uint8_t             cceIdx;   /*!< CCE index */
    CmLteAggrLvl   aggrLvl;  /*!< Aggregation level */
 } TfuPdcchCceInfo;
 
@@ -970,8 +970,8 @@ typedef struct tfuCqiPucchMode10
    TfuRptType       type;   /*!< Either RI or CQI reported */
    union
    {
-      U8        ri;    /*!< One RI assuming transmission on S sub-bands */
-      U8        cqi;   /*!< Wide-band CQI assuming transmission on S sub-bands */
+      uint8_t        ri;    /*!< One RI assuming transmission on S sub-bands */
+      uint8_t        cqi;   /*!< Wide-band CQI assuming transmission on S sub-bands */
    }u;
 } TfuCqiPucchMode10;
 
@@ -981,9 +981,9 @@ typedef struct tfuCqiPucchMode10
   */
 typedef struct tfuCqiMode11Cqi
 {
-   U8       cqi;           /*!< Wide-band CQI */
-   U8       pmi;           /*!< PMI */
-   TknU8    wideDiffCqi;   /*!< Wide-band differential CQI */
+   uint8_t       cqi;           /*!< Wide-band CQI */
+   uint8_t       pmi;           /*!< PMI */
+   TknUInt8    wideDiffCqi;   /*!< Wide-band differential CQI */
 } TfuCqiMode11Cqi;
 
  /** @brief This structure maps to the CQI mode 11. The report can either
@@ -994,7 +994,7 @@ typedef struct tfuCqiPucchMode11
    TfuRptType       type;   /*!< Either RI or CQI reported */
    union
    {
-      U8                ri;    /*!< One RI assuming transmission on S sub-bands */
+      uint8_t                ri;    /*!< One RI assuming transmission on S sub-bands */
       TfuCqiMode11Cqi   cqi;   /*!< CQI assuming transmission on S sub-bands */
    }u;
 } TfuCqiPucchMode11;
@@ -1003,8 +1003,8 @@ typedef struct tfuCqiPucchMode11
   */
 typedef struct tfuCqiMode20SubCqi
 {
-   U8      cqi;      /*!< CQI value */
-   U8       l;       /*!< L bit sub-band label */
+   uint8_t      cqi;      /*!< CQI value */
+   uint8_t       l;       /*!< L bit sub-band label */
 } TfuCqiMode20SubCqi;
 
  /** @brief This structure contains Mode 20 CQI report. It can either be a
@@ -1015,7 +1015,7 @@ typedef struct tfuCqiMode20Cqi
    Bool     isWideband;             /*!< TRUE, if wide-band CQI is reported */
    union
    {
-      U8                 wideCqi;   /*!< Single Wide-band CQI */
+      uint8_t                 wideCqi;   /*!< Single Wide-band CQI */
       TfuCqiMode20SubCqi subCqi;    /*!< Sub-band CQI */
    }u;
 } TfuCqiMode20Cqi;
@@ -1029,7 +1029,7 @@ typedef struct tfuCqiPucchMode20
    TfuRptType       type;   /*!< Either RI or CQI reported */
    union
    {
-      U8                ri;   /*!< One RI assuming transmission on S sub-bands */
+      uint8_t                ri;   /*!< One RI assuming transmission on S sub-bands */
       TfuCqiMode20Cqi   cqi;  /*!< CQI assuming transmission on S sub-bands */
    }u;
 } TfuCqiPucchMode20;
@@ -1039,9 +1039,9 @@ typedef struct tfuCqiPucchMode20
   */
 typedef struct tfuCqiMode21SubCqi
 {
-   U8       cqi;     /*!< CQI */
-   U8       l;       /*!< L bit sub-band label */
-   TknU8    diffCqi; /*!< Optional Differential CQI */
+   uint8_t       cqi;     /*!< CQI */
+   uint8_t       l;       /*!< L bit sub-band label */
+   TknUInt8    diffCqi; /*!< Optional Differential CQI */
 } TfuCqiMode21SubCqi;
 
 
@@ -1050,9 +1050,9 @@ typedef struct tfuCqiMode21SubCqi
   */
 typedef struct tfuCqiMode21WideCqi
 {
-   U8       cqi;        /*!< CQI */
-   U8       pmi;        /*!< PMI */
-   TknU8    diffCqi;    /*!< Optional Differential CQI */
+   uint8_t       cqi;        /*!< CQI */
+   uint8_t       pmi;        /*!< PMI */
+   TknUInt8    diffCqi;    /*!< Optional Differential CQI */
 } TfuCqiMode21WideCqi;
 
 
@@ -1078,7 +1078,7 @@ typedef struct tfuCqiPucchMode21
    TfuRptType       type;   /*!< Either RI or CQI reported */
    union
    {
-      U8                ri;   /*!< One RI assuming transmission on S sub-bands */
+      uint8_t                ri;   /*!< One RI assuming transmission on S sub-bands */
       TfuCqiMode21Cqi   cqi;  /*!< CQI assuming transmission on S sub-bands */
    }u;
 } TfuCqiPucchMode21;
@@ -1088,7 +1088,7 @@ typedef struct tfuCqiPucchMode21
  */
 typedef struct tfuDlCqiPucch
 {
-   U8                cellIdx;
+   uint8_t                cellIdx;
    TfuDlCqiPucchMode mode;          /*!< PUSCH CQI mode */
    union
    {
@@ -1105,7 +1105,7 @@ typedef struct tfuDlCqiPucch
   */
 typedef struct tfuSubbandMode12
 {
-   U8             pmi;             /*!< PMI for this sub-band */
+   uint8_t             pmi;             /*!< PMI for this sub-band */
    TfuSubbandInfo subBand;   /*!< Sub-band information start and length */
 } TfuSubbandMode12;
 
@@ -1114,8 +1114,8 @@ typedef struct tfuSubbandMode12
  */
 typedef struct tfuCqiPuschMode12
 {
-   U8               numSubband;                     /*!< Number of sub-bands */
-   U8               cqiIdx[TFU_MAX_TB];             /*!< Single Wide-band CQI per
+   uint8_t               numSubband;                     /*!< Number of sub-bands */
+   uint8_t               cqiIdx[TFU_MAX_TB];             /*!< Single Wide-band CQI per
                                                      codeword */
    TfuSubbandMode12 subbandArr[TFU_MAX_DL_SUBBAND]; /*!< Sub-band information array */
 } TfuCqiPuschMode12;
@@ -1126,11 +1126,11 @@ typedef struct tfuCqiPuschMode12
  */
 typedef struct tfuCqiPuschMode20
 {
-   U8             cqiIdx;                         /*!< CQI index transmission
+   uint8_t             cqiIdx;                         /*!< CQI index transmission
                                                     over M sub-bands */
-   U8             wideBandCqi;                    /*!< Wide-band CQI index, that is,
+   uint8_t             wideBandCqi;                    /*!< Wide-band CQI index, that is,
                                                     transmission over S sub-bands */
-   U8             numSubband;                     /*!< Number of sub-bands */
+   uint8_t             numSubband;                     /*!< Number of sub-bands */
    TfuSubbandInfo subbandArr[TFU_MAX_DL_SUBBAND]; /*!< Sub-band information array */
 } TfuCqiPuschMode20;
 
@@ -1139,13 +1139,13 @@ typedef struct tfuCqiPuschMode20
  */
 typedef struct tfuCqiPuschMode22
 {
-   U8                cqi[TFU_MAX_TB];                 /*!< CQI index over M preferred
+   uint8_t                cqi[TFU_MAX_TB];                 /*!< CQI index over M preferred
                                                          Sub-bands */
-   U8                pmi;                             /*!< PMI preferred PMI over M
+   uint8_t                pmi;                             /*!< PMI preferred PMI over M
                                                          sub-bands */
-   U8                wideBandCqi[TFU_MAX_TB];         /*!< Wide-band CQI */
-   U8                wideBandPmi;                     /*!< PMI */
-   U8                numSubband;                      /*!< Number of sub-bands, that is, M mentioned in 213, each of size k */
+   uint8_t                wideBandCqi[TFU_MAX_TB];         /*!< Wide-band CQI */
+   uint8_t                wideBandPmi;                     /*!< PMI */
+   uint8_t                numSubband;                      /*!< Number of sub-bands, that is, M mentioned in 213, each of size k */
    TfuSubbandInfo    subbandArr[TFU_MAX_DL_SUBBAND];  /*!< Sub-band information array */
 } TfuCqiPuschMode22;
 
@@ -1154,7 +1154,7 @@ typedef struct tfuCqiPuschMode22
  */
 typedef struct tfuSubbandMode30
 {
-   U8             cqi;       /*!< CQI for this sub-band */
+   uint8_t             cqi;       /*!< CQI for this sub-band */
    TfuSubbandInfo subBand;   /*!< Sub-band information start and length. */
 } TfuSubbandMode30;
 
@@ -1164,8 +1164,8 @@ typedef struct tfuSubbandMode30
  */
 typedef struct tfuCqiPuschMode30
 {
-   U8                wideBandCqi;                     /*!< Wide-band CQI */
-   U8                numSubband;                      /*!< Number of sub-bands */
+   uint8_t                wideBandCqi;                     /*!< Wide-band CQI */
+   uint8_t                numSubband;                      /*!< Number of sub-bands */
    TfuSubbandMode30  subbandArr[TFU_MAX_DL_SUBBAND];  /*!< Sub-band information array */
 } TfuCqiPuschMode30;
 
@@ -1173,7 +1173,7 @@ typedef struct tfuCqiPuschMode30
  */
 typedef struct tfuSubbandMode31
 {
-   U8             cqi[TFU_MAX_TB];  /*!< CQI for this sub-band */
+   uint8_t             cqi[TFU_MAX_TB];  /*!< CQI for this sub-band */
    TfuSubbandInfo subBand;          /*!< Sub-band information start and length */
 } TfuSubbandMode31;
 
@@ -1183,9 +1183,9 @@ typedef struct tfuSubbandMode31
  */
 typedef struct tfuCqiPuschMode31
 {
-   U8                     pmi;                      /*!< PMI */
-   U8                     wideBandCqi[TFU_MAX_TB];  /*!< Wide-band CQI per CW */
-   U8                     numSubband;               /*!< Number of sub-bands */
+   uint8_t                     pmi;                      /*!< PMI */
+   uint8_t                     wideBandCqi[TFU_MAX_TB];  /*!< Wide-band CQI per CW */
+   uint8_t                     numSubband;               /*!< Number of sub-bands */
    TfuSubbandDlCqiInfo    subbandCqiArr[TFU_MAX_DL_SUBBAND];  /*!< Array of 
                                                          sub-bands and CQI for
                                                          each of them */
@@ -1209,9 +1209,9 @@ typedef enum
  */
 typedef struct tfuDlCqiPusch
 {
-   U8                cellIdx;
+   uint8_t                cellIdx;
    TfuDlCqiPuschMode mode;         /*!< PUSCH CQI mode */
-   TknU8                  ri;            /*!< Rank Indicator for TM 3,4 */
+   TknUInt8                  ri;            /*!< Rank Indicator for TM 3,4 */
    union
    {
       TfuCqiPuschMode12 mode12Info; /*!< Mode 1-2 information */
@@ -1271,13 +1271,13 @@ typedef struct tfuSrsRpt
 {
    CmLList                lnk;           /*!< Link to the list of rerports */
    CmLteRnti              ueId;          /*!< CRNTI */
-   U16                    dopEst;        /*!< Doppler estimation [0-255] */
-   U16                    ta;            /*!< Timing advance for the UE */
-   U8                     numRbs;        /*!< Number of RBs to be reported for this UE */
-   U8                     rbStart;       /*!< Starting RB to be reported */
-   U8                     snr[TFU_MAX_UL_RB]; /*!< snr for each RB */
+   uint16_t                    dopEst;        /*!< Doppler estimation [0-255] */
+   uint16_t                    ta;            /*!< Timing advance for the UE */
+   uint8_t                     numRbs;        /*!< Number of RBs to be reported for this UE */
+   uint8_t                     rbStart;       /*!< Starting RB to be reported */
+   uint8_t                     snr[TFU_MAX_UL_RB]; /*!< snr for each RB */
    Bool                   wideCqiPres;   /*!< Flag to indicate Wide-band CQI */
-   U8                     wideCqi;       /*!< Wide-band CQI for an UL channel */
+   uint8_t                     wideCqi;       /*!< Wide-band CQI for an UL channel */
 } TfuSrsRpt;
 
 
@@ -1307,14 +1307,14 @@ typedef struct tfuRawCqiRpt
 {
    CmLList                lnk;           /*!< Link to the list of reports */
    CmLteRnti              crnti;         /*!< CRNTI of the UE */
-   U8                     numBits;       /*!< Number of valid CQI bits */
+   uint8_t                     numBits;       /*!< Number of valid CQI bits */
 #ifdef TFU_5GTF
-   U32                    uciPayload;    /*!< Raw UCI bit payload */
+   uint32_t                    uciPayload;    /*!< Raw UCI bit payload */
 #else
-   U8                     cqiConfBitMask;
-   U8                     cqiBits[TFU_MAX_CQI_BYTES]; /*!< An array of bits
+   uint8_t                     cqiConfBitMask;
+   uint8_t                     cqiBits[TFU_MAX_CQI_BYTES]; /*!< An array of bits
                                               corresponding to the Raw CQI report */
-   U8                     ri[CM_LTE_MAX_CELLS]; /*!< Array of bits comprising of a Rank */                                              
+   uint8_t                     ri[CM_LTE_MAX_CELLS]; /*!< Array of bits comprising of a Rank */                                              
 #endif
 } TfuRawCqiRpt;
 
@@ -1364,12 +1364,12 @@ typedef enum
 typedef struct tfuUePucchHqRecpInfo
 {
    TfuAckNackMode         hqFdbkMode;    /*!< Feedback mode in TDD */
-   U8                     hqSz;          /*!< Size of feedback in bits */
-   U8                     pucchResCnt;   /*!< Number of ACK/NACK responses
+   uint8_t                     hqSz;          /*!< Size of feedback in bits */
+   uint8_t                     pucchResCnt;   /*!< Number of ACK/NACK responses
                                               received in this subframe [0-4] */
-   U16                    hqRes[TFU_MAX_HQ_RES]; /*!< (n^1PUCCH(0-3))
+   uint16_t                    hqRes[TFU_MAX_HQ_RES]; /*!< (n^1PUCCH(0-3))
                                               values [0-2047] */
-   U8                     a;             /*!< A value to interpret Hq feedback */ 
+   uint8_t                     a;             /*!< A value to interpret Hq feedback */ 
 } TfuUePucchHqRecpInfo;
 
 /** @brief This structure is sent from scheduler to PHY in order to request the
@@ -1377,7 +1377,7 @@ typedef struct tfuUePucchHqRecpInfo
  */
 typedef struct tfuUePucchSrRecpInfo
 {
-   U16                    n1PucchIdx;    /*!< (n^1PUCCH) value [0-2047] */
+   uint16_t                    n1PucchIdx;    /*!< (n^1PUCCH) value [0-2047] */
 } TfuUePucchSrRecpInfo;
  
 /** @brief This structure is sent from scheduler to PHY in order to request the
@@ -1385,8 +1385,8 @@ typedef struct tfuUePucchSrRecpInfo
  */
 typedef struct tfuUePucchCqiRecpInfo
 {
-   U16                    n2PucchIdx;    /*!< (n^2PUCCH) value[0-1185] */
-   U8                     cqiPmiSz;      /*!< DL CQI/PMI size in bits [0-255] */
+   uint16_t                    n2PucchIdx;    /*!< (n^2PUCCH) value[0-1185] */
+   uint8_t                     cqiPmiSz;      /*!< DL CQI/PMI size in bits [0-255] */
 } TfuUePucchCqiRecpInfo;
 
 /** Different values for UL SRS BW information */
@@ -1429,17 +1429,17 @@ typedef struct tfuUePucchSrsRecpInfo
 {
    TfuUlSrsBwInfo  srsBw;         /*!< UE specific SRS Bandwidth (B,srs)
                                               parameter. Given by RRC[0-3] */
-   U8                     nRrc;          /*!< Frequency Domain position given by
+   uint8_t                     nRrc;          /*!< Frequency Domain position given by
                                               RRC per UE.[0-23]*/
    TfuUlSrsHoBwInfo  srsHopBw;      /*!< SRS Hopping BW given by RRC per
                                               UE (b,Hop)[0-3] */
-   U8                     transComb;     /*!< Frequency location given by RRC
+   uint8_t                     transComb;     /*!< Frequency location given by RRC
                                               per UE (k,TC) [0-1] */
-   U16                    srsCfgIdx;     /*!< (Isrs) - defines SRS periodicity
+   uint16_t                    srsCfgIdx;     /*!< (Isrs) - defines SRS periodicity
                                               and subframe offset,given by RRC
                                               [0-1023] */
    TfuUlSrsCycShiftInfo   srsCyclicShft; /*!< (n^cs,srs) given by RRC [0-7] */
-   /*Need to add U8 AntPort for Rel10 when SRS is supported */
+   /*Need to add uint8_t AntPort for Rel10 when SRS is supported */
 } TfuUePucchSrsRecpInfo;
 
 #ifdef TFU_5GTF
@@ -1448,14 +1448,14 @@ typedef struct tfuUePucchSrsRecpInfo
  */
 typedef struct tfuUePucchBsiBriRecpInfo
 {
-   U8                     puschFlag;  /*!< UCI is carried in xPUSCH or not
+   uint8_t                     puschFlag;  /*!< UCI is carried in xPUSCH or not
                                            0 -> UCI is in xPUCCH, 
                                            1 -> UCI is in xPUSCH */
-   U8                     pucchIndex; /*!< Frequency resource index of xPUCCH 
+   uint8_t                     pucchIndex; /*!< Frequency resource index of xPUCCH 
                                            for UCI report. [0-15] */
-   U8                     SCID;       /*!< SCID : 0 or 1 */
-   U8                     bsiRpt;     /*!< total num of BSI report[0,1,2,4] */
-   U8                     briRpt;     /*!< total num of BRI report[0,1,2,4] */
+   uint8_t                     SCID;       /*!< SCID : 0 or 1 */
+   uint8_t                     bsiRpt;     /*!< total num of BSI report[0,1,2,4] */
+   uint8_t                     briRpt;     /*!< total num of BRI report[0,1,2,4] */
 } TfuUePucchBsiBriRecpInfo;
 
 /** @brief This structure is sent from scheduler to PHY in order to request the
@@ -1463,9 +1463,9 @@ typedef struct tfuUePucchBsiBriRecpInfo
  */
 typedef struct tfuUePucchUciRecpInfo
 {
-   U8                     numBits;       /*!< 1-22, 1-Only HQ, 5-Only CQI/RI, 6- both HQ CQI/RI */
-   U8                     pucchIndex;    /*!< 0-15, PUCCH Freq Res Idx */
-   U8                     SCID;          /*!< SCID : 0 or 1 */
+   uint8_t                     numBits;       /*!< 1-22, 1-Only HQ, 5-Only CQI/RI, 6- both HQ CQI/RI */
+   uint8_t                     pucchIndex;    /*!< 0-15, PUCCH Freq Res Idx */
+   uint8_t                     SCID;          /*!< SCID : 0 or 1 */
 } TfuUePucchUciRecpInfo;
 #endif
 
@@ -1501,9 +1501,9 @@ typedef struct tfuUePucchRecpReq
    TfuUePucchUciRecpInfo     uciPduInfo; /*!< Info needed to receive HQ/CQI/RI.*/
 #endif                                              
 #ifdef EMTC_ENABLE
-	U16							format1aRepNumber;
-	U16							format2aRepNumber;
-	U32							catMScramblerInitVal;
+	uint16_t							format1aRepNumber;
+	uint16_t							format2aRepNumber;
+	uint32_t							catMScramblerInitVal;
 #endif
 } TfuUePucchRecpReq;
 
@@ -1528,49 +1528,49 @@ typedef enum
   */
 typedef struct tfuUeUlSchRecpInfo
 {
-   U16                    size;         /*!< Length of the Data in bytes*/
+   uint16_t                    size;         /*!< Length of the Data in bytes*/
    /* ToDo : rbStart and numRb is kept for legacy, need to remove later */
-   U8                     rbStart;      /*!< Start of Resource Block of 
+   uint8_t                     rbStart;      /*!< Start of Resource Block of 
                                              allocation */
-   U8                     numRb;        /*!< Number of RBs allocated */
+   uint8_t                     numRb;        /*!< Number of RBs allocated */
    TfuModScheme           modType;      /*!< Modulation order */
-   U8                     nDmrs;        /*!< 3 bits for DMRS cyclic shift */
+   uint8_t                     nDmrs;        /*!< 3 bits for DMRS cyclic shift */
    Bool                   hoppingEnbld; /*!< TRUE, if hopping is enabled */
-   U8                     hoppingBits;  /*!< Hopping bits as mentioned in 
+   uint8_t                     hoppingBits;  /*!< Hopping bits as mentioned in 
                                              213 8.4 */
    Bool                   isRtx;        /*!< TRUE, if this is a retx */
    Bool                   ndi;          /*!< New Data Indication */   
-   U8                     rv;           /*!< Redundancy version */
-   U8                     harqProcId;   /*!< HARQ process ID */
-   U8                     txMode;       /*!< UE's UL transmission mode: 
+   uint8_t                     rv;           /*!< Redundancy version */
+   uint8_t                     harqProcId;   /*!< HARQ process ID */
+   uint8_t                     txMode;       /*!< UE's UL transmission mode: 
                                              0 = SISO/SIMO, 1 = MIMO */
-   U8                     crntTxNb;     /*!< Current Harq Tx Cntr of this TB.
+   uint8_t                     crntTxNb;     /*!< Current Harq Tx Cntr of this TB.
                                              Valid if frequency hopping is 
                                              enabled */
    Bool                   nSrs;         /*!< Indicates if RBs for this TB
                                              overlap with SRS configuration. 
                                              FALSE = No overlap,TRUE=overlap */
-   U8                     mcs;          /*!< MCS */
+   uint8_t                     mcs;          /*!< MCS */
 #ifdef EMTC_ENABLE
-   U32 			  repetitionNumber;
-   U32    		  scramblerInitValue;
+   uint32_t 			  repetitionNumber;
+   uint32_t    		  scramblerInitValue;
 #endif
 #ifdef TFU_5GTF
-   U8                     rbgStart; /* The starting resource block group for
+   uint8_t                     rbgStart; /* The starting resource block group for
                                        this xPUSCH allocation.*/
-   U8                     numRbg; /* The number of resource block groups
+   uint8_t                     numRbg; /* The number of resource block groups
                                        allocated to this ULSCH grant.*/
-   U8                     xPUSCHRange; /* 0 : the stopping of xPUSCH is the 12th symbol,
+   uint8_t                     xPUSCHRange; /* 0 : the stopping of xPUSCH is the 12th symbol,
                                                                     1 : the stopping of xPUSCH is the 13th symbol
                                                                     2 : the stopping of xPUSCH is the final (14th) symbol */
-   U8                     nAntPortLayer;/* 0:1 Layer, port 40 1:1 Layer, port 41 2:1 Layer, port 42
+   uint8_t                     nAntPortLayer;/* 0:1 Layer, port 40 1:1 Layer, port 41 2:1 Layer, port 42
                                            3:1 Layer, port 43 4:2 Layers, ports {40, 41} 
                                            5:2 Layers, ports {42, 43} */
-   U8                     SCID;        /*SCID : 0 or 1 */
-   U8                     PMI;         /* Precoding matrix indicator, see V5G.211 section Table 5.3.3A.2-1 */
+   uint8_t                     SCID;        /*SCID : 0 or 1 */
+   uint8_t                     PMI;         /* Precoding matrix indicator, see V5G.211 section Table 5.3.3A.2-1 */
    Bool                   uciWoTBFlag;      /* 0: UCI without transmit block
                                                1: with transmit block */
-   U8                     beamIndex;   /* Receiving beam index Value: 0->7 */
+   uint8_t                     beamIndex;   /* Receiving beam index Value: 0->7 */
 #endif
 } TfuUeUlSchRecpInfo;
 
@@ -1579,21 +1579,21 @@ typedef struct tfuUeUlSchRecpInfo
   */
 typedef struct tfuUePuschCqiRecpInfo
 {
-   U8                     reportType;      /*! Type of CSI report.
+   uint8_t                     reportType;      /*! Type of CSI report.
                                             0 = periodic report.
                                             1 = aperiodic report */
-   U8                     cCNum;           /*! The number of CC in the aperiodic report.
+   uint8_t                     cCNum;           /*! The number of CC in the aperiodic report.
                                               Value: 1->5 */
-   U8                     cqiPmiSzR1[CM_LTE_MAX_CELLS];   /*!< Size of DL CQI/PMI in bits for
+   uint8_t                     cqiPmiSzR1[CM_LTE_MAX_CELLS];   /*!< Size of DL CQI/PMI in bits for
                                              rank 1 report[0-255] */
-   U8                     cqiPmiSzRn1[CM_LTE_MAX_CELLS];  /*!< Size of DL CQI/PMI in bits for 
+   uint8_t                     cqiPmiSzRn1[CM_LTE_MAX_CELLS];  /*!< Size of DL CQI/PMI in bits for 
                                              rank > 1 report[0-255] */
-   TknU8                  riSz[CM_LTE_MAX_CELLS];         /*!< Size of RI in bits[1-2]. Value will
+   TknUInt8                  riSz[CM_LTE_MAX_CELLS];         /*!< Size of RI in bits[1-2]. Value will
                                          be 0 (present flag-false) in frames
                                          with no RI Occasion*/
-   U8                     cqiBetaOff;    /*!< Beta offset for CQI[0-15]. Given  
+   uint8_t                     cqiBetaOff;    /*!< Beta offset for CQI[0-15]. Given  
                                              by RRC */
-   U8                     riBetaOff;     /*!< Beta offset for RI[0-15]. Given 
+   uint8_t                     riBetaOff;     /*!< Beta offset for RI[0-15]. Given 
                                              by RRC */
 } TfuUePuschCqiRecpInfo;
 
@@ -1602,14 +1602,14 @@ typedef struct tfuUePuschCqiRecpInfo
   */
 typedef struct tfuUePuschHqRecpInfo
 {
-   U8                     hqSz;         /*!< Number of feedback bits: 
+   uint8_t                     hqSz;         /*!< Number of feedback bits: 
                                          FDD- 1 or 2 TDD- 1 to 4*/
-   U8                     hqBetaOff;     /*!< Beta offset for Harq[0-15]. Given
+   uint8_t                     hqBetaOff;     /*!< Beta offset for Harq[0-15]. Given
                                              by RRC */
 #ifdef TFU_TDD
    TfuAckNackMode         hqFdbkMode;   /*!< Feedback mode in TDD */
-   U8                     nBundled;     /*!< nBundled value intended for PHY */
-   U8                     ulDai;        /*!< Ul Dai */
+   uint8_t                     nBundled;     /*!< nBundled value intended for PHY */
+   uint8_t                     ulDai;        /*!< Ul Dai */
 #endif
 } TfuUePuschHqRecpInfo;
 
@@ -1640,11 +1640,11 @@ typedef struct tfuUePuschRecpReq
                                              in rcpInfo */
    TfuUePuschSrsRecpInfo  srsInfo;      /*!< Info needed to receive SRS. Valid
                                              if SRS is included in rcpInfo */
-   TknU8                  initialNSrs;  /*!< Not present in case of only data
+   TknUInt8                  initialNSrs;  /*!< Not present in case of only data
                                              [0/1]. 0 = last OFDM symbol is 
                                              not punctured. 1 = last OFDM
                                              symbol is punctured */
-   TknU8                  initialNumRbs; /*!< Number of RBs for initial
+   TknUInt8                  initialNumRbs; /*!< Number of RBs for initial
                                               transmission of this TB. Not  
                                               present in case of only data */
 } TfuUePuschRecpReq;
@@ -1668,7 +1668,7 @@ typedef struct tfuUeRecpReqInfo
    CmLList                lnk;           /*!< Link of Linked List */
    CmLteRnti              rnti;          /*!< RNTI of the scheduled UE */
 #ifdef TFU_5GTF   
-   U8                     groupId;       /*!< UE Group ID */
+   uint8_t                     groupId;       /*!< UE Group ID */
 #endif
    TfuRecpReqType         type;          /*!< Type indicating PUCCH or PUSCH */
    union 
@@ -1720,17 +1720,17 @@ typedef struct tfuUePucchRecpReq
 /** @name TFU_TDD */
 /** @{ */
 #ifndef TFU_TDD
-      U16    nCce;            /*!< Number of first CCE used for transmission of
+      uint16_t    nCce;            /*!< Number of first CCE used for transmission of
                                 the corresponding DCI assignment. Used to decode
                                 HARQ-ACK. */
 #else
-      U16             nCce[TFU_MAX_M];   /*!< nCCE is an array in the case of TDD
+      uint16_t             nCce[TFU_MAX_M];   /*!< nCCE is an array in the case of TDD
                                            HARQ ACK multiplexing. This value is
                                            needed for the calculation of 
                                            (n^1 PUCCH,i) for i = {0,1,2,3} */
 #endif
 /** @} */
-      U16                 n1Pucch;  /*!< n1 PUCCH for ACK NACK repetition. 
+      uint16_t                 n1Pucch;  /*!< n1 PUCCH for ACK NACK repetition. 
                                               This is the resource that UE must
                                               transmit the HARQ Feedback except
                                               the first one. */
@@ -1746,12 +1746,12 @@ typedef struct tfuUePucchRecpReq
 /** @name TFU_TDD  */
 /** @{ */
 #ifdef TFU_TDD
-   U8             multCnt;       /*!< Number of ACK/NACK resources present */
-   U8             M;             /*!< Number of elements in the set K - tb.
+   uint8_t             multCnt;       /*!< Number of ACK/NACK resources present */
+   uint8_t             M;             /*!< Number of elements in the set K - tb.
                                    10.1-1 213 */
-   U8             m[TFU_MAX_M];  /*!< Values utilized for TDD HARQ-ACK bundling
+   uint8_t             m[TFU_MAX_M];  /*!< Values utilized for TDD HARQ-ACK bundling
                                    mode */
-   U8             p[TFU_MAX_M];  /*!< "p" from 10.1 in 213 */
+   uint8_t             p[TFU_MAX_M];  /*!< "p" from 10.1 in 213 */
 #endif
 /** @} */
 } TfuUePucchRecpReq;
@@ -1774,9 +1774,9 @@ typedef enum
 typedef struct tfuUeMsg3RecpReq
 {  
    Bool                 hoppingEnbld; /*!< TRUE, if hopping is enabled */
-   U8                   rbStart;      /*!< Start of Resource Block of allocation */
-   U8                   numRb;        /*!< Number of RBs allocated */
-   U8                   mcs;          /*!< 3 bits for MCS */
+   uint8_t                   rbStart;      /*!< Start of Resource Block of allocation */
+   uint8_t                   numRb;        /*!< Number of RBs allocated */
+   uint8_t                   mcs;          /*!< 3 bits for MCS */
    Bool                 expCqi;       /*!< TRUE, if CQI report along
                                         with PUSCH data is expected */
    Bool                 ulDelay;      /*!< UL Delay bit 6.2 of 213 */
@@ -1784,12 +1784,12 @@ typedef struct tfuUeMsg3RecpReq
     * Non-adaptive retransmission is implemented */
    Bool                 isRtx;        /*!< TRUE, if this is a Msg3 retransmission */
    /*ccpu00128993 - ADD - fix for msg3 softcombining bug*/
-   U8                   harqProcId;   /*!< HARQ process ID */
+   uint8_t                   harqProcId;   /*!< HARQ process ID */
    Bool                 ndi;          /*!< 1 bit for new data indicator */
-   U8                   rv;           /*!< Redundancy version */
-   U8                   nDmrs;        /*!< 3 bits for DMRS cyclic shift */   
+   uint8_t                   rv;           /*!< Redundancy version */
+   uint8_t                   nDmrs;        /*!< 3 bits for DMRS cyclic shift */   
    /* tfu_x_001.main_2:107387:To include the size and ModOrder in DataRecp Request */
-   U16                  size;         /*!< Length of the Data in bytes */
+   uint16_t                  size;         /*!< Length of the Data in bytes */
    TfuModScheme         modType;      /*!< Modulation order */
 } TfuUeMsg3RecpReq;
 
@@ -1802,15 +1802,15 @@ typedef struct tfuUeMsg3RecpReq
 typedef struct tfuUePuschRecpReq
 {  
    Bool                 hoppingEnbld; /*!< TRUE, if hopping is enabled */
-   U8                   hoppingBits;  /*!< Hopping bits as mentioned in 213 8.4 */
-   U8                   rbStart;      /*!< Start of Resource Block of allocation */
-   U8                   numRb;        /*!< Number of RBs allocated */
-   U8                   mcs;          /*!< 5 bits for MCS and RV */
-   U8                   harqProcId;   /*!< HARQ process ID */
+   uint8_t                   hoppingBits;  /*!< Hopping bits as mentioned in 213 8.4 */
+   uint8_t                   rbStart;      /*!< Start of Resource Block of allocation */
+   uint8_t                   numRb;        /*!< Number of RBs allocated */
+   uint8_t                   mcs;          /*!< 5 bits for MCS and RV */
+   uint8_t                   harqProcId;   /*!< HARQ process ID */
    Bool                 ndi;          /*!< 1 bit for new data indicator */
    Bool                 isRtx;        /*!< TRUE, if this is a retransmission */
-   U8                   rv;           /*!< Redundancy version */
-   U8                   nDmrs;        /*!< 3 bits for DMRS cyclic shift */
+   uint8_t                   rv;           /*!< Redundancy version */
+   uint8_t                   nDmrs;        /*!< 3 bits for DMRS cyclic shift */
    Bool                 expCqi;       /*!< TRUE, if CQI report along
                                         with PUSCH data is expected */
    Bool                 expHarq;      /*!< TRUE, if HARQ feedback along
@@ -1819,7 +1819,7 @@ typedef struct tfuUePuschRecpReq
                                         this value is valid, only if expCqi is
                                         TRUE. */
    /* tfu_x_001.main_2:107387:To include the size and ModOrder in DataRecp Req.*/
-   U16                  size;         /*!< Length of the Data in bytes*/
+   uint16_t                  size;         /*!< Length of the Data in bytes*/
    TfuModScheme         modType;      /*!< Modulation order */
 } TfuUePuschRecpReq;
 
@@ -1848,7 +1848,7 @@ typedef union tfuDlCqiInfo
 {
    TfuDlCqiPucch          pucchCqi;      /*!< PUCCH CQI information */
    struct {
-      U8                  numOfCells;
+      uint8_t                  numOfCells;
       TfuDlCqiPusch       puschCqi[CM_LTE_MAX_CELLS]; /*!< PUSCH CQI information */
    }pusch;
 } TfuDlCqiInfo;
@@ -1894,24 +1894,24 @@ typedef struct tfuRecpReqInfo
    Bool              isSpsRnti;       /*!< TRUE if rnti is SPS RNTI */
    CmLteRnti         crnti;           /*!< crnti in case rnti is SPS RNTI */
 #endif
-   U16               nCce;            /*!< CCE index */
+   uint16_t               nCce;            /*!< CCE index */
    CmLteAggrLvl      aggrLvl;         /*!< Aggregation level possible values are
                                         {1, 2, ...,8}. */
-   U8                dciNumOfBits;    /*!< The size of DCI in bits */
+   uint8_t                dciNumOfBits;    /*!< The size of DCI in bits */
    TfuDciInfo        dci;             /*!< PDCCH DCI format */
 #ifdef EMTC_ENABLE
-	U8 					distributedAlloc;
-	U8						localizedAntPortIndex;
-	U16					dmrs_txpowerControl; 
-	U8						nRBxm;
-	U8 					startRB;
-	U32					scramblerInit;
-	U32					demodRSInitValue;
+	uint8_t 					distributedAlloc;
+	uint8_t						localizedAntPortIndex;
+	uint16_t					dmrs_txpowerControl; 
+	uint8_t						nRBxm;
+	uint8_t 					startRB;
+	uint32_t					scramblerInit;
+	uint32_t					demodRSInitValue;
 #endif
 #ifdef TFU_5GTF
-   U8               sectorId;        /* Sector index of the 5GNB. Value: 0->2 */
-   U8               sccIdx;          /* Serving Cell index in the given sector. Value: 0->7 */
-   U8               grpId;           /* Ue group Id */
+   uint8_t               sectorId;        /* Sector index of the 5GNB. Value: 0->2 */
+   uint8_t               sccIdx;          /* Serving Cell index in the given sector. Value: 0->7 */
+   uint8_t               grpId;           /* Ue group Id */
 #endif
 } TfuPdcchInfo;
 
@@ -1926,17 +1926,17 @@ typedef struct tfuRecpReqInfo
 typedef struct tfuPhichInfo
 {
    CmLList           lnk;          /*!< Link of Linked List */
-   U8                rbStart;      /*!< Starting RB */
-   U8                nDmrs;        /*!< DMRS offset index */
+   uint8_t                rbStart;      /*!< Starting RB */
+   uint8_t                nDmrs;        /*!< DMRS offset index */
    Bool              isAck;        /*!< TRUE, if ACK, else NACK */
    Bool              isForMsg3;
 #ifdef TFU_TDD
-   U8                     iPhich;        /*!< Needed to Calculate PHICH
+   uint8_t                     iPhich;        /*!< Needed to Calculate PHICH
                                            location. For TDD only */
 #endif
 /* tfu_x_001.main_8. Added changes of TFU_UPGRADE */
 #ifdef TFU_UPGRADE
-   U16                    txPower;        /*!< Offset to the ref. signal power */
+   uint16_t                    txPower;        /*!< Offset to the ref. signal power */
 #endif
 } TfuPhichInfo;
 
@@ -1952,8 +1952,8 @@ typedef struct tfuCntrlReqInfo
    CmLteCellId       cellId;        /*!< Cell ID */
    CmLteTimingInfo   ulTiming;      /*!< Timing information for UL PDCCHs and PHICH */
    CmLteTimingInfo   dlTiming;      /*!< Timing information for DL PDCCHs and CFI */
-   U8                cfi;           /*!< CFI value that goes on the PCFICH control channel */
-   U32               numDlActvUes;  /*!< Active Ues reqrd for rgu dyna delta*/
+   uint8_t                cfi;           /*!< CFI value that goes on the PCFICH control channel */
+   uint32_t               numDlActvUes;  /*!< Active Ues reqrd for rgu dyna delta*/
    CmLListCp         ulPdcchLst;    /*!< List of Uplink PDCCHs (DCI format 0) for the TfuPdcchInfo subframe */
    CmLListCp         dlPdcchLst;    /*!< List of Downlink PDCCHs for the TfuPdcchInfo subframe */
    CmLListCp         phichLst;      /*!< List of PHICHs for the TfuPhichInfo subframe */
@@ -2015,9 +2015,9 @@ typedef enum tfuTxMode
    */
  typedef struct tfuBfVectorInfo
  {
-   U8             sbIndex;    /** Subband Index */
-   U8             numPhyAnt;  /** Number of Physical Antennas */
-   U16            bfValue[TFU_MAX_PHY_ANTENNA];  /** Beam forming vector element for 
+   uint8_t             sbIndex;    /** Subband Index */
+   uint8_t             numPhyAnt;  /** Number of Physical Antennas */
+   uint16_t            bfValue[TFU_MAX_PHY_ANTENNA];  /** Beam forming vector element for 
                                       physical antenna #i real 8 bits followed by imaginary 8 bits */ 
  }TfuBfVectorInfo;
  #endif
@@ -2029,7 +2029,7 @@ typedef enum tfuTxMode
 typedef struct tfuDatReqLchInfo
 {
    Bool              freeBuff; /* !< If TRUE, the buffer is to be freed by MAC */
-   U32               numPdu;  /*!< No of PDUs */
+   uint32_t               numPdu;  /*!< No of PDUs */
    Buffer           *mBuf[TFU_MAX_PDU]; /*!<SIncMsgRef in MAC. 
                                            Freed by CL as well*/
 }TfuDatReqLchInfo;
@@ -2044,8 +2044,8 @@ typedef struct tfuDatReqTbInfo
    MsgLen           tbSize;
    Buffer           *macHdr;  /*!< Pre allocated. CL shall not free this*/
    Buffer           *macCes;  /*!< Pre-allocated. CL shall not free this */
-   U32               padSize;
-   U32               numLch;  /*!< No of logical channels associated to TB*/ 
+   uint32_t               padSize;
+   uint32_t               numLch;  /*!< No of logical channels associated to TB*/ 
    TfuDatReqLchInfo  lchInfo[TFU_MAX_LC]; /*!< Array of logical channels */
 }TfuDatReqTbInfo;
 #endif
@@ -2060,10 +2060,10 @@ typedef struct tfuDatReqPduInfo
    CmLteRnti            rnti;                /*!< RNTI of the UE */
    TfuPdschDciInfo      dciInfo;             /*!< Carries the control data
                                                   needed for processing PDSCH data */
-   U8                   nmbOfTBs;            /*!< Number of TBs, in cases where
+   uint8_t                   nmbOfTBs;            /*!< Number of TBs, in cases where
                                                   one TB is disabled */
 #ifdef FIVEGTF_PHY_API
-   U16                  crcResult;
+   uint16_t                  crcResult;
 #endif
 #ifndef L2_OPTMZ
    Buffer               *mBuf[TFU_MAX_TB];   /*!< MAC PDUs buffer */
@@ -2075,21 +2075,21 @@ typedef struct tfuDatReqPduInfo
                                                   PMI details for the entire 
                                                   DL BW */
    TfuTxMode            transMode;           /*!< Transmission Mode of this UE */                        
-   TknU32               doa;                 /*!< DOA indicator for this UE */
+   TknUInt32               doa;                 /*!< DOA indicator for this UE */
    Bool                 isTApres;
 #ifdef TFU_UPGRADE
    /*tfu_x_001.main_8 - ADD - Detailed comments for fields */
-   U8                   numLayers;           /*!< Number of Layers. Note: Field
+   uint8_t                   numLayers;           /*!< Number of Layers. Note: Field
                                                specified at Interface. Value
                                                not set from LTE MAC */
-   U8                   deltaPowOffIdx;      /*!< Delta power offset. Note:
+   uint8_t                   deltaPowOffIdx;      /*!< Delta power offset. Note:
                                                Field specified at Interface. Value
                                               not set from LTE MAC */
-   U8                   numBfPrbPerSb;       /*!< Number of PRBs that are
+   uint8_t                   numBfPrbPerSb;       /*!< Number of PRBs that are
                                                treated as one Subband. Note:
                                                Field specified at interface.
                                                Value not set from LTE MAC */
-   U8                   numBfVectors;        /*!< Number of Beam Forming
+   uint8_t                   numBfVectors;        /*!< Number of Beam Forming
                                                vectors. Note: Field specified at
                                               Interface. Value not set from LTE
                                               MAC */
@@ -2098,15 +2098,15 @@ typedef struct tfuDatReqPduInfo
                                                        specified at Interface.
                                                        Value not set from LTE
                                                        MAC */
-   U16                  txPwrOffset;          /*!< Offset to the reference 
+   uint16_t                  txPwrOffset;          /*!< Offset to the reference 
                                                   signal power. Value 0->10000,
                                                   representing -6 dB to 4 dB in
                                                   0.001 dB steps */      
 /* LTE_ADV_FLAG_REMOVED_START */
-	U8                   pa;                  /*!< ratio of PDSCH EPRE to cell-specific RS 
+	uint8_t                   pa;                  /*!< ratio of PDSCH EPRE to cell-specific RS 
 	                                              EPRE among PDSCH REs */
 #endif
-   U8 isEnbSFR;             /*to tell if SFR is enabled*/
+   uint8_t isEnbSFR;             /*to tell if SFR is enabled*/
 } TfuDatReqPduInfo;
 
 
@@ -2152,8 +2152,8 @@ typedef struct tfuDatIndInfo
    CmLteTimingInfo      timingInfo;    /*!< Timing information */
    CmLListCp            datIndLst;     /*!< List of data PDUs - TfuDatInfo */
 #ifdef TFU_5GTF
-   U8               sectorId;        /* Sector index of the 5GNB. Value: 0->2 */
-   U8               sccIdx;          /* Serving Cell index in the given sector. Value: 0->7 */
+   uint8_t               sectorId;        /* Sector index of the 5GNB. Value: 0->2 */
+   uint8_t               sccIdx;          /* Serving Cell index in the given sector. Value: 0->7 */
 #endif
 } TfuDatIndInfo;
 
@@ -2208,9 +2208,9 @@ typedef struct tfuHqInfo
    CmLList                lnk;           /*!< Link of Linked List */
    CmLteRnti              rnti;          /*!< RNTI of the UE */
    TfuAckNackMode         hqFdbkMode;    /*!< Feedback mode */  
-   U8                     noOfTbs;       /*!< Number of TBs */
+   uint8_t                     noOfTbs;       /*!< Number of TBs */
 #ifdef TFU_TDD
-   U8                     M;             /*!< Number of feedbacks multiplexed */
+   uint8_t                     M;             /*!< Number of feedbacks multiplexed */
 #endif /* TFU_TDD */
    TfuHqFdbk              isAck[TFU_MAX_HARQ_FDBKS];  /*!< Harq feedbacks */ 
    Bool                   isPusch;       /*!< Indicates if this HARQ feedback is
@@ -2248,8 +2248,8 @@ typedef struct tfuUlCqiRpt
    CmLteRnti         rnti;                             /*!< RNTI */
    Bool              isTxPort0;                        /*!< TRUE, if TX port is
                                                          0, else TX port is 1  */
-   U8                wideCqi;                          /*!< Wide-band CQI*/
-   U8                numSubband;                       /*!< Number of sub-bands */
+   uint8_t                wideCqi;                          /*!< Wide-band CQI*/
+   uint8_t                numSubband;                       /*!< Number of sub-bands */
    TfuUlCqiInfo      ulCqiInfoArr[TFU_MAX_UL_SUBBAND]; /*!< UL CQI information array */
 } TfuUlCqiRpt;
 
@@ -2274,7 +2274,7 @@ typedef struct tfuDoaRpt
 {
    CmLList                lnk;           /*!< Link of Linked List */
    CmLteRnti              rnti;          /*!< RNTI */
-   U32                    doa;           /*!< DOA for rnti */
+   uint32_t                    doa;           /*!< DOA for rnti */
 } TfuDoaRpt;
 
 /** @brief This structure conveys the DOA (Direction Of Arrival) indicator.
@@ -2322,7 +2322,7 @@ typedef struct tfuCrcInfo
    CmLList           lnk;         /*!< Link of Linked List */
    CmLteRnti         rnti;        /*!< RNTI of the UE */
    Bool              isFailure;   /*!< TRUE, if CRC check fails */
-   TknU8             rv;          /*!< Redundancy version provided by PHY */
+   TknUInt8             rv;          /*!< Redundancy version provided by PHY */
    Bool              isDtx;       /*! If SNR < 0 , set to TRUE */
 } TfuCrcInfo;
 
@@ -2338,8 +2338,8 @@ typedef struct tfuCrcIndInfo
    CmLteTimingInfo   timingInfo;    /*!< Timing information */
    CmLListCp         crcLst;        /*!< List of CRC indications - TfuCrcInfo */
 #ifdef TFU_5GTF
-   U8               sectorId;        /* Sector index of the 5GNB. Value: 0->2 */
-   U8               sccIdx;          /* Serving Cell index in the given sector. Value: 0->7 */
+   uint8_t               sectorId;        /* Sector index of the 5GNB. Value: 0->2 */
+   uint8_t               sccIdx;          /* Serving Cell index in the given sector. Value: 0->7 */
 #endif
 } TfuCrcIndInfo;
 
@@ -2350,7 +2350,7 @@ typedef struct tfuCrcIndInfo
 {
    CmLList           lnk;         /*!< Link of Linked List */
    CmLteRnti         rnti;        /*!< RNTI */
-   U8                timingAdv;   /*!< Value of the Timing advance */
+   uint8_t                timingAdv;   /*!< Value of the Timing advance */
 } TfuTimingAdvInfo;
 
 
@@ -2376,10 +2376,10 @@ typedef struct tfuTtiCellInfo
    CmLteTimingInfo  timingInfo;   /*!< SFN, SF for each cell */
    Bool             isDummyTti;   /*!< Flag to indicate dummy TTI */                       
    /* 4UE_TTI_DELTA */             
-   U8               schTickDelta; /*!< Dynamic Delta for SCH. Value will vary
+   uint8_t               schTickDelta; /*!< Dynamic Delta for SCH. Value will vary
                                        according to num of active UEs */                
-   U8               dlBlankSf;    /*!< TODO */  
-   U8               ulBlankSf;    /*!< TODO */        
+   uint8_t               dlBlankSf;    /*!< TODO */  
+   uint8_t               ulBlankSf;    /*!< TODO */        
 
 } TfuTtiCellInfo;
 
@@ -2388,7 +2388,7 @@ typedef struct tfuTtiCellInfo
  */
 typedef struct tfuTtiIndInfo
 {
-   U8             numCells;                /*!< Num of Cells */
+   uint8_t             numCells;                /*!< Num of Cells */
    TfuTtiCellInfo cells[CM_LTE_MAX_CELLS]; /*!< Array of Cell timing info */ 
 
 } TfuTtiIndInfo;
@@ -2403,13 +2403,13 @@ typedef struct tfuTtiIndInfo
  */
 typedef struct tfuRaReqInfo
 {
-   U8           rapId;     /*!< ID of the preamble choosen by the UE for Random Acess.*/
-   U16          ta;        /*!< Amount of Timing advance needed by the UE for it
+   uint8_t           rapId;     /*!< ID of the preamble choosen by the UE for Random Acess.*/
+   uint16_t          ta;        /*!< Amount of Timing advance needed by the UE for it
                              to be uplink synchronized, this is calculated by Physical layer. */
-   U8           tpc;       /*!< Transmit power control command that the physical
+   uint8_t           tpc;       /*!< Transmit power control command that the physical
                             layer calculates from the RA request received.*/ 
    Bool         cqiPres;   /*!< TRUE, if CQI present. */
-   U8           cqiIdx;    /*!< This is the Channel Quality Index of the UL channel estimated by the
+   uint8_t           cqiIdx;    /*!< This is the Channel Quality Index of the UL channel estimated by the
                               physical layer. This aids MAC in the scheduling of this UE. */
 
 } TfuRaReqInfo;
@@ -2419,15 +2419,15 @@ typedef struct tfuRaReqInfo
 typedef struct tfuRachInfo
 {
    CmLteRnti       raRnti;       /*!< RA-RNTI */
-   U8              numRaReqInfo; /*!< Number of RA requests */
+   uint8_t              numRaReqInfo; /*!< Number of RA requests */
 #ifdef PRACH_5GTF
-   U8              nPreambleFormat;
-   U8              nPRACHConfiguration;
-   U8              nRootSeq;
-   U8              nCyclicShift;
-   U8              nf1Value;
-   U8              nPRACHSymbIndex;
-   U16             nPwrFactor;
+   uint8_t              nPreambleFormat;
+   uint8_t              nPRACHConfiguration;
+   uint8_t              nRootSeq;
+   uint8_t              nCyclicShift;
+   uint8_t              nf1Value;
+   uint8_t              nPRACHSymbIndex;
+   uint16_t             nPwrFactor;
 #endif
    TfuRaReqInfo    *raReqInfoArr; /*!< RA requests */
 } TfuRachInfo;
@@ -2452,7 +2452,7 @@ typedef struct tfuRaReqIndInfo
    CmMemListCp     memCp;         /*!< Memory control point */
    CmLteCellId     cellId;        /*!< Cell ID */
    CmLteTimingInfo timingInfo;    /*!< Timing information */
-   U8              nmbOfRaRnti;   /*!< Number of RA-RNTIs present for FDD this
+   uint8_t              nmbOfRaRnti;   /*!< Number of RA-RNTIs present for FDD this
                                     must be 1 for TDD, it can be a max of 6.  */
    TfuRachInfo     *rachInfoArr;   /*!< Array of
                                          RACH information per
@@ -2510,7 +2510,7 @@ typedef S16 (*TfuBndReq) ARGS((
 typedef S16 (*TfuBndCfm) ARGS((
    Pst*                 pst,
    SuId                 suId,
-   U8                   status));
+   uint8_t                   status));
 typedef S16 (*TfuUbndReq) ARGS((
    Pst*                 pst,
    SpId                 spId,
@@ -2523,7 +2523,7 @@ typedef S16 (*TfuSchBndReq) ARGS((
 typedef S16 (*TfuSchBndCfm) ARGS((
    Pst*                 pst,
    SuId                 suId,
-   U8                   status));
+   uint8_t                   status));
 typedef S16 (*TfuSchUbndReq) ARGS((
    Pst*                 pst,
    SpId                 spId,
@@ -2661,7 +2661,7 @@ EXTERN S16 TfUiTfuSchBndReq ARGS((Pst *pst, SuId suId, SpId spId));
  * @param status Status of the bind request.
  * @return ROK/RFAILED
  */
-EXTERN S16 TfUiTfuBndCfm ARGS((Pst *pst, SuId suId, U8 status));
+EXTERN S16 TfUiTfuBndCfm ARGS((Pst *pst, SuId suId, uint8_t status));
 
 /** @brief This API is used to receive a Bind Confirm from PHY to Scheduler.
  * @param pst Pointer to the post structure.
@@ -2669,7 +2669,7 @@ EXTERN S16 TfUiTfuBndCfm ARGS((Pst *pst, SuId suId, U8 status));
  * @param status Status of the bind request.
  * @return ROK/RFAILED
  */
-EXTERN S16 TfUiTfuSchBndCfm ARGS((Pst *pst, SuId suId, U8 status));
+EXTERN S16 TfUiTfuSchBndCfm ARGS((Pst *pst, SuId suId, uint8_t status));
 
 
 /** @brief This API is used to send an Unbind Request from MAC to PHY.
@@ -2973,7 +2973,7 @@ EXTERN S16 RgLiTfuBndReq ARGS((
 EXTERN S16 RgLiTfuBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
-   U8                   status
+   uint8_t                   status
 ));
 EXTERN S16 RgLiTfuUbndReq ARGS((
    Pst*                 pst,
@@ -2989,7 +2989,7 @@ EXTERN S16 RgLiTfuSchBndReq ARGS((
 EXTERN S16 RgLiTfuSchBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
-   U8                   status
+   uint8_t                   status
 ));
 EXTERN S16 RgLiTfuSchUbndReq ARGS((
    Pst*                 pst,
@@ -3191,7 +3191,7 @@ EXTERN S16 cmUnpkTfuBndReq ARGS((
 EXTERN S16 cmPkTfuBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
-   U8                   status
+   uint8_t                   status
 ));
 /** @brief This API is used to receive a Bind Confirm from PHY to MAC.
  */
@@ -3233,7 +3233,7 @@ EXTERN S16 cmUnpkTfuSchBndReq ARGS((
 EXTERN S16 cmPkTfuSchBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
-   U8                   status
+   uint8_t                   status
 ));
 /** @brief This API is used to receive a Bind Confirm from PHY to SCH.
  */
@@ -3910,12 +3910,12 @@ EXTERN S16 cmUnpkTfuDoaIndInfo ARGS((
 ));
 
 EXTERN S16 cmPkTfuDlCqiInfo ARGS((
-   U8                   selector,
+   uint8_t                   selector,
    TfuDlCqiInfo         *param,
    Buffer               *mBuf
 ));
 EXTERN S16 cmUnpkTfuDlCqiInfo ARGS((
-   U8                   selector,
+   uint8_t                   selector,
    TfuDlCqiInfo         *param,
    Buffer               *mBuf
 ));

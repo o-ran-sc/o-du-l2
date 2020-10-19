@@ -47,7 +47,7 @@ typedef TSInfL2CellStats TSL2CellStatsCb;
 typedef struct tSL2UeStatsCb
 {
    CmLList         lnk;
-   U32             inUse;
+   uint32_t             inUse;
 
    TSInfL2UeStats  stats;
 }TSL2UeStatsCb;
@@ -57,17 +57,17 @@ EXTERN Void TSL2AllocStatsMem ARGS((
  Pool   pool
 ));
 EXTERN TSL2UeStatsCb* TSL2AllocUeStatsBlk ARGS((
- U16   rnti
+ uint16_t   rnti
 ));
 EXTERN Void TSL2DeallocUeStatsBlk ARGS((
- U16         rnti,
+ uint16_t         rnti,
  TSL2UeStatsCb   *statsCb
 ));
 EXTERN TSL2CellStatsCb* TSL2AllocCellStatsBlk ARGS((
- U32 cellId
+ uint32_t cellId
 ));
 EXTERN Void TSL2DeallocCellStatsBlk ARGS((
- U32 cellId
+ uint32_t cellId
 ));
 EXTERN Void TSL2SendStatsToApp ARGS((
  Pst    *pst,

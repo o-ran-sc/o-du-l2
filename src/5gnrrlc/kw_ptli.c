@@ -300,14 +300,14 @@ Void;
 
 #ifndef SS_RBUF
    RguDedDatInd1 *rguDatInd = NULLP;
-   U8 rngBufDeqIndx = 0;
+   uint8_t rngBufDeqIndx = 0;
 
    elmIndx = SRngGetRIndx(SS_RNG_BUF_ULMAC_TO_ULRLC);
    while(NULLP != elmIndx)
    {
       rguDatInd = (RguDedDatInd1 *)elmIndx;
       datInd = (RguDDatIndInfo*) rguDatInd->msg; 
-      SsRngInfoTbl[SS_RNG_BUF_ULMAC_TO_ULRLC].nPktProc++;;//Number of pkt processed in tti
+      SsRngInfoTbl[SS_RNG_BUF_ULMAC_TO_ULRLC].nPktProc++;//Number of pkt processed in tti
       if(datInd != NULLP)
       {
          RlcProcDedLcUlData(&rlcUlRbfuPst, 0, datInd);
@@ -369,8 +369,8 @@ Void rlcUtlFreeUlRBuf()
 {
    RguDDatIndInfo *datInd;
    PTR            elem;
-   U8             numLch;
-   U8             numPdu;
+   uint8_t        numLch;
+   uint8_t        numPdu;
 
    /* Free SS_RNG_BUF_ULMAC_TO_ULRLC  */
    while((SDeqSRngBuf (SS_RNG_BUF_ULMAC_TO_ULRLC, &elem) == ROK))

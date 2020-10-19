@@ -55,7 +55,7 @@
 #include "rg_sch.x"        /* typedefs for Scheduler */
 #include "rg_sch_cmn.x"    /* typedefs for Scheduler */
 /* local defines */
-U32 dlPrbCnt;
+uint32_t dlPrbCnt;
 #ifdef LTE_L2_MEAS
 
 static const char* RLOG_MODULE_NAME="MAC";
@@ -92,20 +92,20 @@ S16 rgSchFillL2MeasCfm
 RgSchCellCb       *cell,
 RgSchL2MeasCb     *measCb,
 LrgSchMeasCfmInfo *cfm,
-U32               measTime   
+uint32_t               measTime   
 )
 #else
 S16 rgSchFillL2MeasCfm(cell, measCb, cfm, measTime)
 RgSchCellCb       *cell;
 RgSchL2MeasCb     *measCb;
 LrgSchMeasCfmInfo *cfm;
-U32               measTime;
+uint32_t               measTime;
 #endif
 {
-   U8                 idx;
+   uint8_t                 idx;
    LrgSchMeasReqInfo  *measInfo;
-   U8                 qciVal = 0;
-   U32                 sampOc = 0;
+   uint8_t                 qciVal = 0;
+   uint32_t                 sampOc = 0;
 
    measInfo = &measCb->measReq;   
 
@@ -389,7 +389,7 @@ LrgSchMeasReqInfo *measInfo;
    cfmPst->region    = measInfo->hdr.response.mem.region;
    cfmPst->pool      = measInfo->hdr.response.mem.pool;
 
-   RETVOID;
+   return;
 } /* rgSchL2mFillCfmPst */
 
 /** @brief This function inserts the MeasCb in to data base
@@ -421,7 +421,7 @@ LrgSchMeasReqInfo *measInfo;
 {
    CmLList   *lnk, *node;
    RgSchL2MeasCb   *oldMeasCb;
-   U32              diffTime;
+   uint32_t              diffTime;
    
    /* 
     * 1. Check if l2mList has any entries.
@@ -479,7 +479,7 @@ RgSchCellCb       *cell;
    CmLteTimingInfo    frm;
    RgSchDlSf          *sf = NULLP;
 #ifdef LTE_TDD
-   U8                 idx;
+   uint8_t                 idx;
 #endif
 
    frm   = cell->crntTime;
@@ -496,7 +496,7 @@ RgSchCellCb       *cell;
 #else
    cell->avgPrbDl.prbCount += sf->bwAssigned;
 #endif
-   RETVOID;
+   return;
 }
 
 /** @brief This function calculates the up link prb count 
@@ -521,7 +521,7 @@ RgSchCellCb       *cell;
    RgSchUlSf        *sf = NULLP;
    RgSchCmnUlCell   *cellUl = RG_SCH_CMN_GET_UL_CELL(cell);
 #ifdef LTE_TDD
-   U8                 idx;
+   uint8_t                 idx;
 #endif
 
 #ifdef LTE_TDD
@@ -535,7 +535,7 @@ RgSchCellCb       *cell;
    sf = &cellUl->ulSfArr[cellUl->schdIdx];
    cell->avgPrbUl.prbCount += sf->totPrb;
 #endif
-   RETVOID;
+   return;
 }
 /** @brief This function allocates memory from the heap
  *
@@ -616,8 +616,8 @@ RgSchErrInfo      err;
 #endif    
 {
    RgSchL2MeasCb *measCb;
-   U8            idx;
-   U8            qciVal;
+   uint8_t            idx;
+   uint8_t            qciVal;
 
 
    qciVal = 0;
@@ -700,27 +700,27 @@ RgSchErrInfo      err;
 S16 rgSCHL2Meas
 (
 RgSchCellCb  *cell,
-U8 isCalrCrcInd
+uint8_t isCalrCrcInd
 )
 #else
 S16 rgschL2Meas(cell,isCalrCrcInd)
 RgSchCellCb  *cell;
-U8 isCalrCrcInd
+uint8_t isCalrCrcInd
 #endif
 {
    CmLList           *node = NULLP;
    RgSchL2MeasCb     *measCb = NULLP;
-   U8                idx;
+   uint8_t                idx;
    LrgSchMeasCfmInfo measCfm;
-   U8                qciVal = 0;
-   U32               sfDiff;
-   U32               meas;
+   uint8_t                qciVal = 0;
+   uint32_t               sfDiff;
+   uint32_t               meas;
 #ifdef LTE_TDD
-   U8                sfIdx;
+   uint8_t                sfIdx;
    Bool              isDlDataAllowed;  
-   U8                rem;
-   U32               numDlSf;
-   U32               numUlSf;
+   uint8_t                rem;
+   uint32_t               numDlSf;
+   uint32_t               numUlSf;
 #endif
 
    node = cell->l2mList.first;

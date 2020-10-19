@@ -183,7 +183,7 @@ CrgDel          *lcDel;
 Bool            *isCfmRqrd;
 #endif
 {
-   U8                         idx = 0;
+   uint8_t                    idx = 0;
    Inst                       dstMacInst;
    Pst                        dstInstPst;
    RgPrgUeSCellLchDelInfo     delLcCb;
@@ -277,7 +277,7 @@ CrgLchRecfg    *lchRecfg;
 Bool           *isCfmRqrd;
 #endif
 {
-   U8                        idx = 0;
+   uint8_t                   idx = 0;
    Inst                      dstMacInst;
    RgPrgUeSCellLchModInfo    lchCfgCb; 
    Pst                       dstInstPst;
@@ -344,7 +344,7 @@ CrgLchCfg      *lchCfg;
 Bool           *isCfmRqrd;
 #endif
 {
-   U8                        idx = 0;
+   uint8_t                   idx = 0;
    Inst                      dstMacInst;
    RgPrgUeSCellLchAddInfo    lchCfgCb; 
    Pst                       dstInstPst;

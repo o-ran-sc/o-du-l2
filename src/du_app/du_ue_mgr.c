@@ -37,7 +37,7 @@
 #include "du_ue_mgr.h"
 
 #ifdef EGTP_TEST
-U32 sduId = 0;
+uint32_t sduId = 0;
 #endif
 
 DuMacDlCcchInd packMacDlCcchIndOpts[] =
@@ -150,7 +150,7 @@ uint8_t duHdlEgtpDlData(EgtpMsg  *egtpMsg)
 uint8_t duBuildAndSendDlCcchInd(uint16_t *cellId, uint16_t *crnti, \
       DlCcchMsgType msgType, uint16_t dlCcchMsgSize, uint8_t *dlCcchMsg)
 {
-   uint8_t ret                  = ROK;
+   uint8_t  ret                  = ROK;
    uint16_t idx2;
    DlCcchIndInfo *dlCcchIndInfo = NULLP;
    Pst pst;
@@ -223,7 +223,7 @@ uint8_t duBuildAndSendDlCcchInd(uint16_t *cellId, uint16_t *crnti, \
 uint8_t duBuildAndSendDlRrcMsgToRlc(uint16_t cellId, RlcUeCfg ueCfg, \
    uint8_t lcId, bool execDup, bool deliveryStaReq, uint16_t rrcMsgLen, uint8_t *rrcMsg)
 {
-   Pst  pst;
+   Pst     pst;
    uint8_t ret;
    uint8_t lcIdx;
    RlcDlRrcMsgInfo  *dlRrcMsgInfo;
@@ -1540,9 +1540,11 @@ uint8_t duCreateUeCb(UeCcchCtxt *ueCcchCtxt, uint32_t gnbCuUeF1apId)
 uint8_t duBuildAndSendUeCreateReqToMac(uint16_t cellId, uint8_t ueIdx,\
    uint16_t crnti, MacUeCfg *duMacUeCfg)
 {
-   uint8_t ret = ROK;
-   Pst pst;
+   uint8_t  ret = ROK;
    MacUeCfg *macUeCfg = NULLP;
+   Pst       pst;
+   memset(&pst, 0, sizeof(Pst));
+
 
    ret = fillMacUeCfg(cellId, ueIdx, crnti, NULL, duMacUeCfg);
    if(ret == RFAILED)
@@ -1934,9 +1936,9 @@ uint8_t DuProcMacUeCfgRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
 uint8_t duBuildAndSendUeCreateReqToRlc(uint16_t cellId, uint8_t ueIdx,\
    RlcUeCfg *duRlcUeCfg)
 {
-   uint8_t ret = ROK;
+   uint8_t  ret = ROK;
    RlcUeCfg *rlcUeCfg = NULLP;
-   Pst pst;
+   Pst       pst;
   
    ret = fillRlcUeCfg(cellId, ueIdx, NULL, duRlcUeCfg);
    if(ret == RFAILED)

@@ -2667,7 +2667,7 @@ Pst *pst,
 RgSsta *param,
 S16 elmnt,
 #ifdef LRG_V1
-U8 eventType,
+uint8_t eventType,
 #endif
 Buffer *mBuf
 )
@@ -2678,7 +2678,7 @@ RgSsta *param;
 S16 elmnt;
 /* lrg_c_001.main_3 - ADD -  Added the extra parameter eventType  to the function  */
 #ifdef LRG_V1
-U8 eventType;
+uint8_t eventType;
 #endif
 Buffer *mBuf;
 #endif
@@ -3430,14 +3430,14 @@ S16 cmPkRgMngmt
 (
 Pst *pst,
 RgMngmt *param,
-U8 eventType,
+uint8_t eventType,
 Buffer *mBuf
 )
 #else
 S16 cmPkRgMngmt(pst, param, eventType, mBuf)
 Pst *pst;
 RgMngmt *param;
-U8 eventType;
+uint8_t eventType;
 Buffer *mBuf;
 #endif
 {
@@ -3515,14 +3515,14 @@ S16 cmUnpkRgMngmt
 (
 Pst *pst,
 RgMngmt *param,
-U8 eventType,
+uint8_t eventType,
 Buffer *mBuf
 )
 #else
 S16 cmUnpkRgMngmt(pst, param, eventType, mBuf)
 Pst *pst;
 RgMngmt *param;
-U8 eventType;
+uint8_t eventType;
 Buffer *mBuf;
 #endif
 {
@@ -3596,7 +3596,7 @@ LrgNmbActvUeQCI   *nmbActvUeQci;
 Buffer        *mBuf;
 #endif
 {
-   U8      idx;
+   uint8_t      idx;
 
    
    for(idx = 0; idx < nmbActvUeQci->numQci; idx++)
@@ -3633,7 +3633,7 @@ LrgAvgPrbQCI  *avgPrbQciReq;
 Buffer        *mBuf;
 #endif
 {
-   U8      idx;
+   uint8_t      idx;
 
    for(idx = 0; idx < avgPrbQciReq->numQci; idx++)
    {
@@ -3812,7 +3812,7 @@ LrgNmbActvUeQCI  *param;
 Buffer           *mBuf;
 #endif
 {
-   U8     idx;
+   uint8_t     idx;
 
    CMCHKUNPK(oduPackUInt8, &param->sampPrd, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->numQci, mBuf);
@@ -3848,7 +3848,7 @@ LrgAvgPrbQCI     *param;
 Buffer           *mBuf;
 #endif
 {
-   U8     idx;
+   uint8_t     idx;
 
 
    CMCHKUNPK(oduPackUInt8, &param->numQci, mBuf);
@@ -4095,7 +4095,7 @@ LrgNumActvUeQCICfm *param;
 Buffer             *mBuf;
 #endif
 {
-   U8         idx;
+   uint8_t         idx;
 
    
    for(idx = 0; idx < param->numQci; idx++)
@@ -4133,7 +4133,7 @@ LrgAvgPrbQCICfm    *param;
 Buffer             *mBuf;
 #endif
 {
-   U8         idx;
+   uint8_t         idx;
 
    for(idx = 0; idx < param->numQci; idx++)
    {
@@ -4318,7 +4318,7 @@ LrgNumActvUeQCICfm *param;
 Buffer          *mBuf;
 #endif
 {
-   U8          idx;
+   uint8_t          idx;
 
    CMCHKUNPK(oduPackUInt8, &param->numQci, mBuf);
    for(idx = param->numQci; idx > 0; idx--)
@@ -4355,7 +4355,7 @@ LrgAvgPrbQCICfm *param;
 Buffer          *mBuf;
 #endif
 {
-   U8          idx;
+   uint8_t          idx;
 
 
    CMCHKUNPK(oduPackUInt8, &param->numQci, mBuf);
