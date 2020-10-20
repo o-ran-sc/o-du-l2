@@ -65,18 +65,18 @@
 
 #define RLC_MODULE (RLC_DBGMASK_UM | RLC_DBGMASK_UL)
 
-uint8_t rlcUmmExtractHdr ARGS ((RlcCb *gCb, 
+static uint8_t rlcUmmExtractHdr ARGS ((RlcCb *gCb, 
                                    RlcUlRbCb *rbCb,
                                    Buffer *pdu,
                                    RlcUmHdr *umHdr));
 
-void rlcUmmReAssembleSdus ARGS ((RlcCb *gCb,
+static void rlcUmmReAssembleSdus ARGS ((RlcCb *gCb,
                                         RlcUlRbCb *rbCb,
                                         RlcUmRecBuf *umRecBuf));
 
 #ifndef TENB_ACC
 #ifndef LTE_PAL_ENB
-extern uint32_t isMemThreshReached(Region region);
+uint32_t isMemThreshReached(Region region);
 #endif
 #endif
 /**
@@ -92,7 +92,7 @@ extern uint32_t isMemThreshReached(Region region);
  *
  * @return  Void
 */ 
-void rlcUmmFindNextVRUR (RlcUmUl* umUl, RlcSn nextSn)
+static void rlcUmmFindNextVRUR (RlcUmUl* umUl, RlcSn nextSn)
 {
    RlcSn ur = RLC_UM_GET_VALUE(umUl->vrUr, *umUl);
    
@@ -123,7 +123,7 @@ void rlcUmmFindNextVRUR (RlcUmUl* umUl, RlcSn nextSn)
  *
  * @return  Void
 */
-int16_t rlcUmmCheckSnInReordWindow (RlcSn sn, CONSTANT RlcUmUl* CONSTANT umUl)  
+static int16_t rlcUmmCheckSnInReordWindow (RlcSn sn, const RlcUmUl* const umUl)  
 {
    return (RLC_UM_GET_VALUE(sn, *umUl) < RLC_UM_GET_VALUE(umUl->vrUh, *umUl)); 
 }
@@ -181,7 +181,7 @@ void rlcUmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
 #ifndef RGL_SPECIFIC_CHANGES
 #ifndef TENB_ACC
 #ifndef LTE_PAL_ENB
-      extern uint32_t ulrate_rgu;
+      uint32_t ulrate_rgu;
       MsgLen len;
       ODU_GET_MSG_LEN(pdu, &len);
       ulrate_rgu += len;
@@ -207,7 +207,7 @@ void rlcUmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
 #ifndef XEON_SPECIFIC_CHANGES    
      if(isMemThreshReached(rlcCb[0]->init.region) == TRUE)
      {
-        extern uint32_t rlculdrop;
+        uint32_t rlculdrop;
         rlculdrop++;
         RLC_FREE_BUF(pdu);
         RLC_FREE_WC(gCb, tmpRecBuf, sizeof(RlcUmRecBuf));
@@ -373,7 +373,7 @@ void rlcUmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
  *
  * @return  Void
 */
-void rlcUmmReAssembleSdus(RlcCb *gCb, RlcUlRbCb *rbCb, RlcUmRecBuf *umRecBuf)
+static void rlcUmmReAssembleSdus(RlcCb *gCb, RlcUlRbCb *rbCb, RlcUmRecBuf *umRecBuf)
 {
    uint32_t  liCount;        /* LI count */
    uint32_t  count;          /* Loop counter */
@@ -588,7 +588,7 @@ RlcUlRbCb     *rbCb;
  *      -# TRUE 
  *      -# FALSE
 */
-uint8_t rlcUmmExtractHdr(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *pdu, RlcUmHdr *umHdr)
+static uint8_t rlcUmmExtractHdr(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *pdu, RlcUmHdr *umHdr)
 {
    uint8_t   e;         /* Extension Bit */
    Data      dst[2];    /* Destination Buffer */

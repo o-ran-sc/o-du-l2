@@ -33,7 +33,7 @@
 #define __CMMBLKX__
 
 #ifdef __cplusplus
-EXTERN "C" {
+extern "C" {
 #endif
 
 /************************************************
@@ -91,44 +91,44 @@ typedef struct cmMemStatus
 ***********************************************/
 
 #ifdef TFU_ALLOC_EVENT_NO_INIT
-EXTERN  S16 cmAllocEvntNoInit ARGS((
+ S16 cmAllocEvntNoInit ARGS((
                                    Size evntSize,
                                    Size maxBlkSize,
                                    Mem  *sMem, 
                                    Ptr  *ptr));
 #endif
 #ifdef TFU_ALLOC_EVENT_NO_INIT
-EXTERN  S16 cmGetMemNoInit ARGS((
+ S16 cmGetMemNoInit ARGS((
                                Ptr  memPtr,
                                Size size, 
                                Ptr  *allocPtr));
 #endif
-EXTERN  S16 cmAllocEvnt ARGS((
+ S16 cmAllocEvnt ARGS((
                                    Size evntSize,
                                    Size maxBlkSize,
                                    Mem  *sMem, 
                                    Ptr  *ptr));
 
-EXTERN  Void cmInitMemCp ARGS((
+ Void cmInitMemCp ARGS((
                                    CmMemListCp *memCp,
                                    Size  maxBlkSize,
                                    Mem   *sMem )); 
 
 #ifdef TFU_ALLOC_EVENT_NO_INIT
-EXTERN  S16 cmGetMemNoInit ARGS((
+ S16 cmGetMemNoInit ARGS((
                                Ptr  memPtr,
                                Size size, 
                                Ptr  *allocPtr));
 #endif
-EXTERN  S16 cmGetMem ARGS((
+ S16 cmGetMem ARGS((
                                Ptr  memPtr,
                                Size size, 
                                Ptr  *allocPtr));
 
-EXTERN  Void cmFreeMem ARGS((
+ Void cmFreeMem ARGS((
                                 Ptr memPtr));
 
-EXTERN  Void cmGetMemStatus ARGS((
+ Void cmGetMemStatus ARGS((
                                   Ptr         memPtr,
                                   CmMemStatus *status));
 

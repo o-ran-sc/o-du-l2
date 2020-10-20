@@ -78,14 +78,14 @@ static int RLOG_FILE_ID=209;
 #include "ss_rbuf.h"
 #include "ss_rbuf.x" 
 
-EXTERN SsRngBufCnt rngCb;
+SsRngBufCnt rngCb;
 
 #if (defined(MAC_RLC_HARQ_STA_RBUF) && defined(LTE_L2_MEAS))
-extern uint32_t isDatReqProcessed;
+uint32_t isDatReqProcessed;
 #endif
 #define RLC_MODULE (RLC_DBGMASK_DUT | RLC_DBGMASK_DL) /* for debugging purpose */
 #if (defined(MAC_RLC_HARQ_STA_RBUF) && defined(LTE_L2_MEAS)) || defined (SS_RBUF)
-EXTERN void rlcUtlDlBatchProcHqStaInd ARGS ((Void));
+void rlcUtlDlBatchProcHqStaInd ARGS ((Void));
 #endif
 Void ResetRLCStats(Void)
 {
@@ -1075,14 +1075,14 @@ RlcTx   *pdu;
  *     - FALSE if all the data has been freed
  */
 #ifdef ANSI
-PRIVATE Bool rlcUtlFreeDlAmRbMemory
+static Bool rlcUtlFreeDlAmRbMemory
 (
 RlcCb       *gCb,
 RlcDlRbCb   *rbCb,
 uint32_t    *toBeFreed
 )
 #else
-PRIVATE Bool rlcUtlFreeDlAmRbMemory(gCb, rbCb, toBeFreed)
+static Bool rlcUtlFreeDlAmRbMemory(gCb, rbCb, toBeFreed)
 RlcCb       *gCb;
 RlcDlRbCb   *rbCb;
 uint32_t    *toBeFreed
@@ -1369,7 +1369,7 @@ uint32_t         schPduSz;
    RlcL2MeasTb       *l2MeasTb = NULLP;
    uint8_t           idx;
    uint8_t           currTbIdx;
-   VOLATILE uint32_t startTime = 0;
+   volatile uint32_t startTime = 0;
    RlcContSduLst   *dstContSduLst;
 
 
@@ -1603,7 +1603,7 @@ uint8_t            tbIdx;
 #endif
    uint8_t           timeAddedFlag;
    S16               ret;
-   VOLATILE uint32_t startTime = 0;
+   volatile uint32_t     startTime = 0;
    /*kw005.201 Code added for DL IP thruput measurement*/
 
    /*starting Task*/
@@ -2047,7 +2047,7 @@ uint8_t      measType;
 } /* rlcUtlResetDlL2MeasInRlcRb */
 #endif
 
-PRIVATE Void dumpRLCDlRbInformation(RlcDlRbCb* dlRbCb)
+static Void dumpRLCDlRbInformation(RlcDlRbCb* dlRbCb)
 {
    if(dlRbCb->mode == CM_LTE_MODE_UM)
    {

@@ -129,228 +129,228 @@ typedef  struct rgSc1DlSvc {
 } RgSchSc1DlSvc;
 
 
-EXTERN Void rgSCHSc1DlLcRmv ARGS((
+Void rgSCHSc1DlLcRmv ARGS((
 RgSchCellCb                *cell,
 RgSchUeCb                  *ue,
 RgSchDlLcCb                *svc
 ));
-EXTERN Void rgSCHSc1DlLcBoUpd ARGS((
+Void rgSCHSc1DlLcBoUpd ARGS((
 RgSchCellCb                *cell,
 RgSchUeCb                  *ue,
 RgSchDlLcCb                *svc
 ));
-EXTERN Void rgSCHSc1DlProcAddToCellRetx ARGS((
+Void rgSCHSc1DlProcAddToCellRetx ARGS((
 RgSchCellCb                *cell,
 RgSchDlHqProcCb            *hqP
 ));
-EXTERN Void rgSCHSc1DlAllocFnlz ARGS((
+Void rgSCHSc1DlAllocFnlz ARGS((
 RgSchCellCb           *cell,
 RgSchCmnDlRbAllocInfo *allocInfo
 ));
-EXTERN Void rgSCHSc1UlAllocFnlz ARGS((
+Void rgSCHSc1UlAllocFnlz ARGS((
 RgSchCellCb           *cell,
 RgSchCmnUlRbAllocInfo *allocInfo
 ));
-EXTERN Void rgSCHSc1UlCqiInd ARGS((
+Void rgSCHSc1UlCqiInd ARGS((
 RgSchCellCb          *cell,
 RgSchUeCb            *ue,
 TfuUlCqiRpt          *ulCqiInfo
 ));
-EXTERN S16 rgSCHSc1UlLcgUpd ARGS((
+S16 rgSCHSc1UlLcgUpd ARGS((
 RgSchCellCb         *cell,
 RgSchUeCb           *ue,
 RgInfUeDatInd       *datInd
 ));
 
-EXTERN Void rgSCHSc1DlCqiInd ARGS((
+Void rgSCHSc1DlCqiInd ARGS((
 RgSchCellCb        *cell,
 RgSchUeCb          *ue,
 Bool               isPucchInfo,
 Void               *dlCqi
 ));
-EXTERN Void rgSCHSc1UlUeRefresh ARGS((
+Void rgSCHSc1UlUeRefresh ARGS((
 RgSchCellCb    *cell,
 RgSchUeCb      *ue
 ));
-EXTERN Void rgSCHSc1UlUeReset ARGS((
+Void rgSCHSc1UlUeReset ARGS((
 RgSchCellCb    *cell,
 RgSchUeCb      *ue
 ));
-EXTERN Void rgSCHSc1DlUeRefresh ARGS((
+Void rgSCHSc1DlUeRefresh ARGS((
 RgSchCellCb    *cell,
 RgSchUeCb      *ue
 ));
-EXTERN Void rgSCHSc1DlHndlInActUes ARGS((
+Void rgSCHSc1DlHndlInActUes ARGS((
 RgSchCellCb           *cell,
 CmLListCp             *inactvLst
 ));
-EXTERN Void rgSCHSc1UlHndlInActUes ARGS((
+Void rgSCHSc1UlHndlInActUes ARGS((
 RgSchCellCb           *cell,
 CmLListCp             *inactvLst
 ));
-EXTERN Void rgSCHSc1UlActvtUe ARGS((
+Void rgSCHSc1UlActvtUe ARGS((
 RgSchCellCb    *cell,
 RgSchUeCb      *ue
 ));
-EXTERN Void rgSCHSc1DlActvtUe ARGS((
+Void rgSCHSc1DlActvtUe ARGS((
 RgSchCellCb    *cell,
 RgSchUeCb      *ue
 ));
-EXTERN Void rgSCHSc1DlInit ARGS((
+Void rgSCHSc1DlInit ARGS((
 RgDlSchdApis *apis
 ));
-EXTERN Void rgSCHSc1UlInit ARGS((
+Void rgSCHSc1UlInit ARGS((
 RgUlSchdApis *apis
 ));
-EXTERN S16 rgSCHSc1RgrUlCellCfg ARGS((
+S16 rgSCHSc1RgrUlCellCfg ARGS((
 RgSchCellCb   *cell,
 RgrCellCfg    *cellCfg,
 RgSchErrInfo  *err
 ));
-EXTERN S16 rgSCHSc1RgrDlCellCfg ARGS((
+S16 rgSCHSc1RgrDlCellCfg ARGS((
 RgSchCellCb   *cell,
 RgrCellCfg    *cellCfg,
 RgSchErrInfo  *err
 ));
-EXTERN Void rgSCHSc1UlCellDel ARGS((
+Void rgSCHSc1UlCellDel ARGS((
 RgSchCellCb     *cell
 ));
-EXTERN Void rgSCHSc1DlCellDel ARGS((
+Void rgSCHSc1DlCellDel ARGS((
 RgSchCellCb     *cell
 ));
-EXTERN S16 rgSCHSc1RgrUlUeCfg ARGS((
+S16 rgSCHSc1RgrUlUeCfg ARGS((
 RgSchCellCb  *cell,
 RgSchUeCb    *ue,
 RgrUeCfg     *ueCfg,
 RgSchErrInfo *err
 ));
-EXTERN S16 rgSCHSc1RgrDlUeCfg ARGS((
+S16 rgSCHSc1RgrDlUeCfg ARGS((
 RgSchCellCb  *cell,
 RgSchUeCb    *ue,
 RgrUeCfg     *ueCfg,
 RgSchErrInfo *err
 ));
-EXTERN S16 rgSCHSc1RgrUlUeRecfg ARGS((
+S16 rgSCHSc1RgrUlUeRecfg ARGS((
 RgSchCellCb  *cell,
 RgSchUeCb    *ue,
 RgrUeRecfg   *ueRecfg,
 RgSchErrInfo *err
 ));
-EXTERN S16 rgSCHSc1RgrDlUeRecfg ARGS((
+S16 rgSCHSc1RgrDlUeRecfg ARGS((
 RgSchCellCb  *cell,
 RgSchUeCb    *ue,
 RgrUeRecfg   *ueRecfg,
 RgSchErrInfo *err
 ));
-EXTERN Void rgSCHSc1UlUeDel ARGS((
+Void rgSCHSc1UlUeDel ARGS((
 RgSchCellCb  *cell,
 RgSchUeCb    *ue
 ));
-EXTERN Void rgSCHSc1DlUeDel ARGS((
+Void rgSCHSc1DlUeDel ARGS((
 RgSchCellCb  *cell,
 RgSchUeCb    *ue
 ));
-EXTERN S16 rgSCHSc1RgrLcCfg ARGS((
+S16 rgSCHSc1RgrLcCfg ARGS((
 RgSchCellCb  *cell,
 RgSchUeCb    *ue,
 RgSchDlLcCb  *dlLc,
 RgrLchCfg *lcCfg,
 RgSchErrInfo *err
 ));
-EXTERN S16 rgSCHSc1RgrLcgCfg ARGS((
+S16 rgSCHSc1RgrLcgCfg ARGS((
 RgSchCellCb  *cell,
 RgSchUeCb    *ue,
 RgSchLcgCb   *lcg,
 RgrLcgCfg    *lcgCfg,
 RgSchErrInfo *err
 ));
-EXTERN S16 rgSCHSc1RgrLcRecfg ARGS((
+S16 rgSCHSc1RgrLcRecfg ARGS((
 RgSchCellCb  *cell,
 RgSchUeCb    *ue,
 RgSchDlLcCb  *dlLc,
 RgrLchRecfg  *lcRecfg,
 RgSchErrInfo *err
 ));
-EXTERN S16 rgSCHSc1RgrLcgRecfg ARGS((
+S16 rgSCHSc1RgrLcgRecfg ARGS((
 RgSchCellCb  *cell,
 RgSchUeCb    *ue,
 RgSchLcgCb   *lcg,
 RgrLcgRecfg  *reCfg,
 RgSchErrInfo *err
 ));
-EXTERN Void rgSCHSc1LcgDel ARGS((
+Void rgSCHSc1LcgDel ARGS((
 RgSchCellCb   *cell,
 RgSchUeCb     *ue,
 RgSchLcgCb    *lcg
 ));
-EXTERN Void rgSCHSc1UpdBsrShort ARGS((
+Void rgSCHSc1UpdBsrShort ARGS((
 RgSchCellCb  *cell,
 RgSchUeCb    *ue,
 RgSchLcgCb   *lcg,
 uint8_t           bsr
 ));
-EXTERN Void rgSCHSc1UpdBsrTrunc ARGS((
+Void rgSCHSc1UpdBsrTrunc ARGS((
 RgSchCellCb  *cell,
 RgSchUeCb    *ue,
 RgSchLcgCb   *lcg,
 uint8_t           bsr
 ));
-EXTERN Void rgSCHSc1UpdBsrLong ARGS((
+Void rgSCHSc1UpdBsrLong ARGS((
 RgSchCellCb  *cell,
 RgSchUeCb    *ue,
 uint8_t bsArr[]
 ));
-EXTERN Void rgSCHSc1ContResUlGrant ARGS((
+Void rgSCHSc1ContResUlGrant ARGS((
 RgSchCellCb  *cell,
 RgSchUeCb    *ue
 ));
-EXTERN Void rgSCHSc1SrRcvd ARGS((
+Void rgSCHSc1SrRcvd ARGS((
 RgSchCellCb  *cell,
 RgSchUeCb    *ue
 ));
-EXTERN Void rgSCHSc1UlSched ARGS((
+Void rgSCHSc1UlSched ARGS((
 RgSchCellCb           *cell,
 RgSchCmnUlRbAllocInfo *allocInfo
 ));
-EXTERN Void rgSCHSc1DlSched ARGS((
+Void rgSCHSc1DlSched ARGS((
 RgSchCellCb           *cell,
 RgSchCmnDlRbAllocInfo *allocInfo
 ));
-EXTERN S16 rgSCHSc1RgrUlCellRecfg ARGS((
+S16 rgSCHSc1RgrUlCellRecfg ARGS((
 RgSchCellCb             *cell,
 RgrCellRecfg            *recfg,
 RgSchErrInfo            *err
 ));
-EXTERN Void rgSCHSc1DlUeReset ARGS((
+Void rgSCHSc1DlUeReset ARGS((
 RgSchCellCb    *cell,
 RgSchUeCb      *ue
 ));
 
-EXTERN S16 rgSCHSc1DlUeHqEntInit ARGS((
+S16 rgSCHSc1DlUeHqEntInit ARGS((
 RgSchCellCb      *cell,
 RgSchDlHqEnt     *hqEnt
 ));
 
-EXTERN S16 rgSCHSc1DlUeHqEntDeInit ARGS((
+S16 rgSCHSc1DlUeHqEntDeInit ARGS((
 RgSchCellCb      *cell,
 RgSchDlHqEnt     *hqE
 ));
 
-EXTERN S16 rgSCHSc1UlLchCfg ARGS((
+S16 rgSCHSc1UlLchCfg ARGS((
 RgSchCellCb      *cell,
 RgSchUeCb        *ue,
 RgrLchCfg        *cfg,
 RgSchErrInfo     *err
 ));
 
-EXTERN S16 rgSCHSc1UlLchRecfg ARGS((
+S16 rgSCHSc1UlLchRecfg ARGS((
 RgSchCellCb      *cell,
 RgSchUeCb        *ue,
 RgrLchRecfg      *recfg,
 RgSchErrInfo     *err
 ));
 
-EXTERN S16 rgSCHSc1UlLchDel ARGS((
+S16 rgSCHSc1UlLchDel ARGS((
 RgSchCellCb      *cell,
 RgSchUeCb        *ue,
 CmLteLcId        lcId,

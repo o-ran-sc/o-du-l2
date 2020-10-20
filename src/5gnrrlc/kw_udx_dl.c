@@ -58,7 +58,7 @@ static int RLOG_FILE_ID=203;
 #define RLC_MODULE RLC_DBGMASK_UDX
 /* local defines */
 
-EXTERN S16 rlcDlmHndlStaRsp ARGS (( RlcCb  *gCb,RlcDlRbCb  *rbCb,
+S16 rlcDlmHndlStaRsp ARGS (( RlcCb  *gCb,RlcDlRbCb  *rbCb,
                 RlcUdxStaPdu *pStaPdu, RlcUdxBufLst  *rlsPduLst));
 
 
@@ -612,7 +612,7 @@ RlcL2MeasReqEvt *measReqEvt;
 {
    uint32_t  cntr;
    uint8_t   measType;
-   VOLATILE  uint32_t     startTime = 0;
+   volatile uint32_t     startTime = 0;
    RlcCb     *tRlcCb;
 
    /*starting Task*/
@@ -688,7 +688,7 @@ uint8_t         measType;
    uint16_t        cntr;
    uint8_t         status = ROK;
 /*   RlcL2MeasCfmEvt          measCfmEvt;  */
-   VOLATILE uint32_t     startTime = 0;
+   volatile uint32_t     startTime = 0;
    RlcCb     *tRlcCb=NULLP;
    
    /*starting Task*/
@@ -746,8 +746,7 @@ uint8_t         measType;
 {
    RlcL2MeasEvtCb *measEvtCb;
    uint16_t            cntr;
-   
-   VOLATILE uint32_t     startTime = 0;
+   volatile uint32_t     startTime = 0;
    RlcCb     *tRlcCb;
 
    tRlcCb =  RLC_GET_RLCCB(pst->dstInst);

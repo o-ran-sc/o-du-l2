@@ -59,7 +59,7 @@ typedef struct wlsBlockToFree
 }WlsBlockToFree;
 
 CmLListCp wlsBlockToFreeList[WLS_MEM_FREE_PRD];
-extern uint8_t slotIndIdx;
+uint8_t slotIndIdx;
 
 void freeWlsBlockList(uint8_t idx);
 void LwrMacEnqueueWlsBlock();

@@ -40,11 +40,11 @@
 #include "du_ue_mgr.h"
 #include "du_utils.h"
 
-extern uint8_t unpackRlcConfigCfm(RlcConfigCfm func,Pst *pst, Buffer *mBuf);
-extern uint8_t cmUnpkLkwCntrlCfm(LkwCntrlCfm func,Pst *pst, Buffer *mBuf);
-extern uint8_t cmUnpkLrgCfgCfm(LrgCfgCfm func,Pst *pst, Buffer *mBuf);
-extern uint8_t cmUnpkKwuDatInd(KwuDatInd func,Pst *pst, Buffer *mBuf);
-extern uint8_t cmUnpkLrgSchCfgCfm(LrgSchCfgCfm func,Pst *pst,Buffer *mBuf);
+uint8_t unpackRlcConfigCfm(RlcConfigCfm func,Pst *pst, Buffer *mBuf);
+uint8_t cmUnpkLkwCntrlCfm(LkwCntrlCfm func,Pst *pst, Buffer *mBuf);
+uint8_t cmUnpkLrgCfgCfm(LrgCfgCfm func,Pst *pst, Buffer *mBuf);
+uint8_t cmUnpkKwuDatInd(KwuDatInd func,Pst *pst, Buffer *mBuf);
+uint8_t cmUnpkLrgSchCfgCfm(LrgSchCfgCfm func,Pst *pst,Buffer *mBuf);
 /**************************************************************************
  * @brief Task Initiation callback function. 
  *

@@ -68,16 +68,16 @@ static int RLOG_MODULE_ID=4096;
 #include "ss_task.x"
 #include "ss_msg.x"            /* MAC includes */
 /* local defines */
-//EXTERN  S16 ssGetDBufOfSize(Region region,Size size,Buffer **dBuf);
+// S16 ssGetDBufOfSize(Region region,Size size,Buffer **dBuf);
 //void prc_trace_format_string(UINT32 group_mask, UINT16 level, const char *format, ...);
 #endif
 
 /* local typedefs */
  
 /* local externs */
-EXTERN S16 SIncMsgRef(Buffer *srcBuf,Region dstRegion, Pool dstPool,Buffer **dstBuf);
+S16 SIncMsgRef(Buffer *srcBuf,Region dstRegion, Pool dstPool,Buffer **dstBuf);
 
-PRIVATE Void rgDHMBldTfuDatReq ARGS((RgCellCb *cellCb, RgDlSf *dlSf, RgDlHqProcCb *hqP,
+static Void rgDHMBldTfuDatReq ARGS((RgCellCb *cellCb, RgDlSf *dlSf, RgDlHqProcCb *hqP,
                            RgTfuDatReqPduInfo *datReq));
 
 #ifdef L2_OPTMZ
@@ -467,7 +467,7 @@ RgDlHqProcCb         **hqP;
    return ROK;
 } /* rgDHMGetHqProcFrmId */
 
-/*PRIVATE uint32_t dataAvl; */
+/*static uint32_t dataAvl; */
 /**
  * @brief Handler for sending data to PHY
  *
@@ -1263,7 +1263,7 @@ RgErrInfo       *err;
  **/
 //uint8_t crashFlag = 0;
 #ifdef ANSI
-PRIVATE Void rgDHMBldTfuDatReq
+static Void rgDHMBldTfuDatReq
 (
 RgCellCb           *cellCb,
 RgDlSf             *dlSf,
@@ -1271,7 +1271,7 @@ RgDlHqProcCb       *hqP,
 RgTfuDatReqPduInfo *datReq
 )
 #else
-PRIVATE Void rgDHMBldTfuDatReq(cellCb, dlSf, hqP, datReq)
+static Void rgDHMBldTfuDatReq(cellCb, dlSf, hqP, datReq)
 RgCellCb           *cellCb;
 RgDlSf             *dlSf;
 RgDlHqProcCb       *hqP;

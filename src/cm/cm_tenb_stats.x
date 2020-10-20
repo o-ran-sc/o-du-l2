@@ -185,12 +185,12 @@ typedef Void (*TSInfL2UeStatsInd) ARGS((
  SuId , 
  TSInfL2UeStats *
 ));
-EXTERN Void TSInfHdlL2UeStatsInd ARGS((
+Void TSInfHdlL2UeStatsInd ARGS((
  Pst               *pst,
  SuId              suId,
  TSInfL2UeStats     *stats 
 ));
-EXTERN Void TSInfUnpkL2UeStats ARGS((
+Void TSInfUnpkL2UeStats ARGS((
  TSInfL2UeStatsInd   func,
  Pst                *pst,
  Buffer             *mBuf
@@ -200,27 +200,27 @@ typedef Void (*TSInfL2CellStatsInd) ARGS((
  SuId , 
  TSInfL2CellStats *
 ));
-EXTERN Void TSInfHdlL2CellStatsInd ARGS((
+Void TSInfHdlL2CellStatsInd ARGS((
  Pst                 *pst,
  SuId                suId,
  TSInfL2CellStats    *stats 
 ));
-EXTERN Void TSInfUnpkL2CellStats ARGS((
+Void TSInfUnpkL2CellStats ARGS((
  TSInfL2CellStatsInd   func,
  Pst                  *pst,
  Buffer               *mBuf
 ));
-EXTERN Void TSInfPkSndL2UeStats ARGS((
+Void TSInfPkSndL2UeStats ARGS((
  Pst               *pst,
  SuId              suId,
  TSInfL2UeStats     *stats 
 ));
-EXTERN Void TSInfPkSndL2CellStats ARGS((
+Void TSInfPkSndL2CellStats ARGS((
  Pst                 *pst,
  SuId                suId,
  TSInfL2CellStats     *stats 
 ));
-EXTERN Void TSInfTrigStats ARGS((
+Void TSInfTrigStats ARGS((
  Region    region,
  Pool      pool
 ));

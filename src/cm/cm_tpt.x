@@ -461,66 +461,66 @@ typedef struct cmIcmpv6Hdr
 
 /* packing/unpacking function prototypes */
 /* Added packing and unpacking function prototypes */
-EXTERN S16 cmPkCmIpv4TptAddr    ARGS((CmIpv4TptAddr *pkParam, Buffer *mBuf));
-EXTERN S16 cmPkCmNetAddrTbl     ARGS((CmNetAddrTbl *pkParam, Buffer *mBuf));
-EXTERN S16 cmPkCmNetAddr        ARGS((CmNetAddr *pkParam, Buffer *mBuf));
-EXTERN S16 cmPkCmTptAddr        ARGS((CmTptAddr *pkParam, Buffer *mBuf));
+S16 cmPkCmIpv4TptAddr    ARGS((CmIpv4TptAddr *pkParam, Buffer *mBuf));
+S16 cmPkCmNetAddrTbl     ARGS((CmNetAddrTbl *pkParam, Buffer *mBuf));
+S16 cmPkCmNetAddr        ARGS((CmNetAddr *pkParam, Buffer *mBuf));
+S16 cmPkCmTptAddr        ARGS((CmTptAddr *pkParam, Buffer *mBuf));
 #ifdef IPV6_SUPPORTED
-EXTERN S16 cmPkCmNetMCastInf6   ARGS((CmNetMCastInf6 *pkParam, Buffer *mBuf));
+S16 cmPkCmNetMCastInf6   ARGS((CmNetMCastInf6 *pkParam, Buffer *mBuf));
 #endif /* IPV6_SUPPORTED */
-EXTERN S16 cmPkCmTptParam       ARGS((CmTptParam *pkParam, Buffer *mBuf));
-EXTERN S16 cmUnpkCmNetAddrTbl   ARGS((CmNetAddrTbl *unpkParam, Buffer *mBuf));
-EXTERN S16 cmUnpkCmIpv4TptAddr  ARGS((CmIpv4TptAddr *unpkParam, Buffer *mBuf));
-EXTERN S16 cmUnpkCmNetAddr      ARGS((CmNetAddr *unpkParam, Buffer *mBuf));
-EXTERN S16 cmUnpkCmTptAddr      ARGS((CmTptAddr *unpkParam, Buffer *mBuf));
+S16 cmPkCmTptParam       ARGS((CmTptParam *pkParam, Buffer *mBuf));
+S16 cmUnpkCmNetAddrTbl   ARGS((CmNetAddrTbl *unpkParam, Buffer *mBuf));
+S16 cmUnpkCmIpv4TptAddr  ARGS((CmIpv4TptAddr *unpkParam, Buffer *mBuf));
+S16 cmUnpkCmNetAddr      ARGS((CmNetAddr *unpkParam, Buffer *mBuf));
+S16 cmUnpkCmTptAddr      ARGS((CmTptAddr *unpkParam, Buffer *mBuf));
 #ifdef IPV6_SUPPORTED
-EXTERN S16 cmUnpkCmNetMCastInf6 ARGS((CmNetMCastInf6 *unpkParam, Buffer *mBuf));
+S16 cmUnpkCmNetMCastInf6 ARGS((CmNetMCastInf6 *unpkParam, Buffer *mBuf));
 #endif /* IPV6_SUPPORTED */
 
-EXTERN S16 cmUnpkCmTptParam     ARGS((CmTptParam *unpkParam, Buffer *mBuf));
+S16 cmUnpkCmTptParam     ARGS((CmTptParam *unpkParam, Buffer *mBuf));
 
 #ifdef CM_INET2  
-EXTERN S16 cmPkCmIpHdrParm     ARGS((CmIpHdrParm *pkParam, Buffer *mBuf));
+S16 cmPkCmIpHdrParm     ARGS((CmIpHdrParm *pkParam, Buffer *mBuf));
 
 /* changed to include meminfo required to hold IPv6 
                          extension headers */
 #ifdef IPV6_OPTS_SUPPORTED
-EXTERN S16 cmUnpkCmIpHdrParm    ARGS((CmIpHdrParm *unpkParam, Buffer *mBuf, 
+S16 cmUnpkCmIpHdrParm    ARGS((CmIpHdrParm *unpkParam, Buffer *mBuf, 
                                      Mem *memInfo));
 #else
-EXTERN S16 cmUnpkCmIpHdrParm    ARGS((CmIpHdrParm *unpkParam, Buffer *mBuf));
+S16 cmUnpkCmIpHdrParm    ARGS((CmIpHdrParm *unpkParam, Buffer *mBuf));
 #endif
 
 /* added new packing/unpacking function */
 #ifdef LOCAL_INTF
-EXTERN S16 cmPkCmTptLocalInf    ARGS((CmTptLocalInf *pkParam, Buffer *mBuf));
-EXTERN S16 cmUnpkCmTptLocalInf  ARGS((CmTptLocalInf *unpkParam, Buffer *mBuf));
+S16 cmPkCmTptLocalInf    ARGS((CmTptLocalInf *pkParam, Buffer *mBuf));
+S16 cmUnpkCmTptLocalInf  ARGS((CmTptLocalInf *unpkParam, Buffer *mBuf));
 #endif /* LOCAL_INTF */
 
-EXTERN S16 cmPkCmIcmpFilter     ARGS((CmIcmpFilter *pkParam, Buffer *mBuf));
-EXTERN S16 cmUnpkCmIcmpFilter   ARGS((CmIcmpFilter *unpkParam, Buffer *mBuf));
+S16 cmPkCmIcmpFilter     ARGS((CmIcmpFilter *pkParam, Buffer *mBuf));
+S16 cmUnpkCmIcmpFilter   ARGS((CmIcmpFilter *unpkParam, Buffer *mBuf));
 
 /* added new packing/unpacking functions */
 #ifdef IPV6_OPTS_SUPPORTED
-EXTERN S16 cmPkCmIpv6ExtHdr     ARGS((CmIpv6ExtHdr *pkParam, Buffer *mBuf));
-EXTERN S16 cmPkCmIpv6RtHdr      ARGS((CmIpv6RtHdr *pkParam, Buffer *mBuf));
-EXTERN S16 cmUnpkCmIpv6RtHdr    ARGS((CmIpv6RtHdr *unpkParam, Buffer *mBuf, 
+S16 cmPkCmIpv6ExtHdr     ARGS((CmIpv6ExtHdr *pkParam, Buffer *mBuf));
+S16 cmPkCmIpv6RtHdr      ARGS((CmIpv6RtHdr *pkParam, Buffer *mBuf));
+S16 cmUnpkCmIpv6RtHdr    ARGS((CmIpv6RtHdr *unpkParam, Buffer *mBuf, 
                                      Mem *memInfo));
-EXTERN S16 cmUnpkCmIpv6ExtHdr   ARGS((CmIpv6ExtHdr *unpkParam, Buffer *mBuf, 
+S16 cmUnpkCmIpv6ExtHdr   ARGS((CmIpv6ExtHdr *unpkParam, Buffer *mBuf, 
                                      Mem *memInfo));
-EXTERN S16 cmPkCmIpv6DestOptsArr ARGS((CmIpv6DestOptsArr *pkParam, 
+S16 cmPkCmIpv6DestOptsArr ARGS((CmIpv6DestOptsArr *pkParam, 
                                       Buffer *mBuf));
-EXTERN S16 cmPkCmIpv6DestOptsHdr ARGS((CmIpv6DestOptsHdr *pkParam, 
+S16 cmPkCmIpv6DestOptsHdr ARGS((CmIpv6DestOptsHdr *pkParam, 
                                       Buffer *mBuf));
-EXTERN S16 cmUnpkCmIpv6DestOptsHdr ARGS((CmIpv6DestOptsHdr *unpkParam, 
+S16 cmUnpkCmIpv6DestOptsHdr ARGS((CmIpv6DestOptsHdr *unpkParam, 
                                       Buffer *mBuf, Mem *memInfo));
-EXTERN S16 cmUnpkCmIpv6DestOptsArr ARGS((CmIpv6DestOptsArr *unpkParam, 
+S16 cmUnpkCmIpv6DestOptsArr ARGS((CmIpv6DestOptsArr *unpkParam, 
                                       Buffer *mBuf, Mem *memInfo));
-EXTERN S16 cmPkCmIpv6HBHHdrArr  ARGS((CmIpv6HBHHdrArr *pkParam, Buffer *mBuf));
-EXTERN S16 cmPkCmIpv6HBHHdr     ARGS((CmIpv6HBHHdr *pkParam, Buffer *mBuf));
-EXTERN S16 cmUnpkCmIpv6HBHHdr   ARGS((CmIpv6HBHHdr *unpkParam, Buffer *mBuf, 
+S16 cmPkCmIpv6HBHHdrArr  ARGS((CmIpv6HBHHdrArr *pkParam, Buffer *mBuf));
+S16 cmPkCmIpv6HBHHdr     ARGS((CmIpv6HBHHdr *pkParam, Buffer *mBuf));
+S16 cmUnpkCmIpv6HBHHdr   ARGS((CmIpv6HBHHdr *unpkParam, Buffer *mBuf, 
                                      Mem *memInfo));
-EXTERN S16 cmUnpkCmIpv6HBHHdrArr ARGS((CmIpv6HBHHdrArr *unpkParam, 
+S16 cmUnpkCmIpv6HBHHdrArr ARGS((CmIpv6HBHHdrArr *unpkParam, 
                                       Buffer *mBuf, Mem *memInfo));
 #endif /* IPV6_OPTS_SUPPORTED */
 #endif  /* CM_INET2 */ 

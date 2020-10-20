@@ -123,8 +123,8 @@ typedef struct rgSchHqRetxStats
    RgSchHqNumRetx    ulCqiStat[15];   /*!< UL stats */
 } RgSchHqRetxStats;
 
-EXTERN RgSchNackAckStats hqFailStats;
-EXTERN RgSchHqRetxStats  hqRetxStats;
+RgSchNackAckStats hqFailStats;
+RgSchHqRetxStats  hqRetxStats;
 #endif /* MAC_SCH_STATS */
 
 /** 

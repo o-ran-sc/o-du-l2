@@ -96,7 +96,7 @@ uint32_t rgNumMsg3DtxRcvd  =0;         /* CRC Fail with SINR < 0 */
 
 uint32_t rgNumDedPreamUECtxtFound =0;         /* Num of Dedicated Preambles recvd */
 
-PRIVATE uint8_t rgSchDciAmbigSizeTbl[61] = {0,0,0,0,0,0,0,0,0,0,0,
+static uint8_t rgSchDciAmbigSizeTbl[61] = {0,0,0,0,0,0,0,0,0,0,0,
                          0,1,0,1,0,1,0,0,0,1,
                          0,0,0,1,0,1,0,0,0,0,
                          0,1,0,0,0,0,0,0,0,1,
@@ -105,51 +105,51 @@ PRIVATE uint8_t rgSchDciAmbigSizeTbl[61] = {0,0,0,0,0,0,0,0,0,0,0,
 
 /* local defines */
 
-EXTERN uint32_t rgSchCmnBetaCqiOffstTbl[16];
-EXTERN uint32_t rgSchCmnBetaRiOffstTbl[16]; 
-EXTERN RgSchdApis rgSchCmnApis;
-EXTERN S16 RgUiRgmSendPrbRprtInd ARGS((
+uint32_t rgSchCmnBetaCqiOffstTbl[16];
+uint32_t rgSchCmnBetaRiOffstTbl[16]; 
+RgSchdApis rgSchCmnApis;
+S16 RgUiRgmSendPrbRprtInd ARGS((
 Pst* pst, 
 SuId suId, 
 RgmPrbRprtInd *prbRprtInd
 ));
 
-EXTERN S16 RgUiRgmSendTmModeChangeInd ARGS((
+S16 RgUiRgmSendTmModeChangeInd ARGS((
 Pst* pst, 
 SuId suId, 
 RgmTransModeInd *txModeChngInd
 ));
 #ifdef EMTC_ENABLE
-EXTERN S16 rgSCHEmtcUtlGetSfAlloc ARGS((
+S16 rgSCHEmtcUtlGetSfAlloc ARGS((
 RgSchCellCb *cell
 ));
-EXTERN S16 rgSCHEmtcUtlPutSfAlloc ARGS((
+S16 rgSCHEmtcUtlPutSfAlloc ARGS((
 RgSchCellCb *cell
 ));
-EXTERN Void rgSCHEmtcUtlUpdUeDciSize ARGS((
+Void rgSCHEmtcUtlUpdUeDciSize ARGS((
 RgSchCellCb *cell,
 RgSchUeCb *ueCb
 ));
-EXTERN Void rgSCHEmtcGetDciFrmt61ASize ARGS((
+Void rgSCHEmtcGetDciFrmt61ASize ARGS((
 RgSchCellCb *cell
 ));
-EXTERN Void rgSCHEmtcGetDciFrmt60ASize ARGS((
+Void rgSCHEmtcGetDciFrmt60ASize ARGS((
 RgSchCellCb *cell
 ));
-EXTERN S16 rgSCHEmtcUtlFillPdschDciInfo ARGS((
+S16 rgSCHEmtcUtlFillPdschDciInfo ARGS((
 TfuPdschDciInfo *pdsch,
 TfuDciInfo      *pdcchDci
 ));
-EXTERN Void rgSCHEmtcUtlRlsRnti ARGS((
+Void rgSCHEmtcUtlRlsRnti ARGS((
 RgSchCellCb *cell,
 RgSchRntiLnk   *rntiLnk,
 uint8_t             *isLegacy
 ));
-EXTERN S16 rgSCHEmtcPdcchAlloc ARGS((
+S16 rgSCHEmtcPdcchAlloc ARGS((
 RgSchCellCb *cell,
 RgSchPdcch  *pdcch
 ));
-EXTERN Void rgSCHEmtcPdcchFree ARGS((
+Void rgSCHEmtcPdcchFree ARGS((
 RgSchCellCb *cell,
 RgSchPdcch  *pdcch
 ));
@@ -191,37 +191,37 @@ NULLP, rgSchUtlDlCalc1CwPrb, rgSchUtlDlCalc1CwPrb, NULLP, NULLP};
 #ifdef LTE_TDD
 /* The below table will be used to map the UL SF number in a TDD Cfg 0 
    frame to the ul Sf array maintained in cellCb */
-PRIVATE uint8_t  rgSchTddCfg0UlSfTbl[] = {2, 3, 4, 7, 8, 9};
+static uint8_t  rgSchTddCfg0UlSfTbl[] = {2, 3, 4, 7, 8, 9};
 #endif
 
-PRIVATE S16 rgSCHUtlUlAllocDbInit ARGS((
+static S16 rgSCHUtlUlAllocDbInit ARGS((
          RgSchCellCb    *cell,
          RgSchUlAllocDb *db,
          uint8_t maxAllocs
          ));
-PRIVATE Void rgSCHUtlUlAllocDbDeinit ARGS((
+static Void rgSCHUtlUlAllocDbDeinit ARGS((
          RgSchCellCb    *cell,
          RgSchUlAllocDb *db
          ));
-PRIVATE S16 rgSCHUtlUlHoleDbInit ARGS((
+static S16 rgSCHUtlUlHoleDbInit ARGS((
          RgSchCellCb    *cell,
          RgSchUlHoleDb *db,
          uint8_t maxHoles,
          uint8_t start,
          uint8_t num
          ));
-PRIVATE Void rgSCHUtlUlHoleDbDeinit ARGS((
+static Void rgSCHUtlUlHoleDbDeinit ARGS((
          RgSchCellCb   *cell,
          RgSchUlHoleDb *db
          ));
 
-PRIVATE S16 rgSCHChkBoUpdate ARGS((
+static S16 rgSCHChkBoUpdate ARGS((
          RgSchCellCb    *cell,
          RgInfCmnBoRpt  *boUpdt
          ));
 #ifdef UNUSE_FUN
 #ifdef TFU_UPGRADE
-PRIVATE uint8_t rgSCHUtlFetchPcqiBitSz ARGS((
+static uint8_t rgSCHUtlFetchPcqiBitSz ARGS((
  RgSchCellCb    *cell,
  RgSchUeCb      *ueCb, 
  uint8_t        numTxAnt
@@ -229,7 +229,7 @@ PRIVATE uint8_t rgSCHUtlFetchPcqiBitSz ARGS((
 #endif
 #endif
 /* sorted in ascending order of tbSz */
-CONSTANT struct rgSchUtlBcchPcchTbSz
+const struct rgSchUtlBcchPcchTbSz
 {
    uint8_t   rbIndex;    /* RB index {2,3} */
    uint16_t  tbSz;       /* one of the Transport block size in bits of
@@ -256,7 +256,7 @@ CONSTANT struct rgSchUtlBcchPcchTbSz
 
 /* forward references */
 #ifdef LTE_TDD
-PRIVATE Void rgSCHUtlUpdPrachOcc ARGS((
+static Void rgSCHUtlUpdPrachOcc ARGS((
 RgSchCellCb *cell,
 RgrTddPrachInfo *cellCfg));
 #endif
@@ -800,7 +800,7 @@ S16 rgSchSFRTotalPoolInit
  RgSchDlSf               *sf
  )
 #else
-PRIVATE Void rgSchSFRTotalPoolInit(cell, sf)
+static Void rgSchSFRTotalPoolInit(cell, sf)
    RgSchCellCb             *cell;
    RgSchDlSf               *sf;
 #endif
@@ -994,7 +994,7 @@ S16   rgSchDSFRRntpInfoInit
  uint16_t                bw
  )
 #else
-PRIVATE Void rgSchDSFRRntpInfoInit(rntpPtr, cell, bw)
+static Void rgSchDSFRRntpInfoInit(rntpPtr, cell, bw)
    TknStrOSXL              *rntpPtr;
    RgSchCellCb             *cell;
    uint16_t                bw;
@@ -1041,7 +1041,7 @@ S16   rgSchDSFRRntpInfoFree
  uint16_t                bw
  )
 #else
-PRIVATE Void rgSchDSFRRntpInfoFree(rntpPtr, cell, bw)
+static Void rgSchDSFRRntpInfoFree(rntpPtr, cell, bw)
    TknStrOSXL              *rntpPtr;
    RgSchCellCb             *cell;
    uint16_t                bw;
@@ -1077,13 +1077,13 @@ PRIVATE Void rgSchDSFRRntpInfoFree(rntpPtr, cell, bw)
  *
  **/
 #ifdef ANSI
-PRIVATE Void rgSchSFRResetPoolVariables
+static Void rgSchSFRResetPoolVariables
 (
  RgSchCellCb             *cell,
  RgSchSFRPoolInfo        *pool
  )
 #else
-PRIVATE Void rgSchSFRResetPoolVariables(cell, pool)
+static Void rgSchSFRResetPoolVariables(cell, pool)
    RgSchCellCb             *cell;
    RgSchSFRPoolInfo *pool;
 #endif
@@ -1117,13 +1117,13 @@ PRIVATE Void rgSchSFRResetPoolVariables(cell, pool)
  *
  **/
 #ifdef ANSI
-PRIVATE Void rgSCHSFRUtlTotalPoolReset
+static Void rgSCHSFRUtlTotalPoolReset
 (
  RgSchCellCb             *cell,
  RgSchDlSf               *subFrm
  )
 #else
-PRIVATE Void rgSCHSFRUtlTotalPoolReset(cell, subFrm)
+static Void rgSCHSFRUtlTotalPoolReset(cell, subFrm)
    RgSchCellCb             *cell;
    RgSchDlSf               *subFrm;
 #endif
@@ -1270,13 +1270,13 @@ Bool                    isForMsg3;
  *
  **/
 #ifdef ANSI
-PRIVATE Void rgSCHUtlPhichReset
+static Void rgSCHUtlPhichReset
 (
 RgSchCellCb                *cell,
 RgSchDlSf                  *subFrm
 )
 #else
-PRIVATE Void rgSCHUtlPhichReset(cell, subFrm)
+static Void rgSCHUtlPhichReset(cell, subFrm)
 RgSchCellCb                *cell;
 RgSchDlSf                  *subFrm;
 #endif
@@ -1632,7 +1632,7 @@ RgSchUeCb    *ue;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE uint16_t rgSCHUtlCalcTotalRegs
+static uint16_t rgSCHUtlCalcTotalRegs
 (
 uint8_t    bw,
 uint8_t    cfi,
@@ -1640,7 +1640,7 @@ uint8_t    numAntna,
 Bool  isEcp
 )
 #else
-PRIVATE uint16_t rgSCHUtlCalcTotalRegs(bw, cfi, numAntna, isEcp)
+static uint16_t rgSCHUtlCalcTotalRegs(bw, cfi, numAntna, isEcp)
 uint8_t    bw;
 uint8_t    cfi;
 uint8_t    numAntna;
@@ -1698,13 +1698,13 @@ Bool  isEcp;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE uint16_t rgSCHUtlCalcPhichRegs
+static uint16_t rgSCHUtlCalcPhichRegs
 (
 uint8_t bw,
 uint8_t ng6
 )
 #else
-PRIVATE uint16_t rgSCHUtlCalcPhichRegs(bw, ng6)
+static uint16_t rgSCHUtlCalcPhichRegs(bw, ng6)
 uint8_t bw;
 uint8_t ng6;
 #endif
@@ -2158,13 +2158,13 @@ TfuUeUlSchRecpInfo      *recpReq;
  *
  **/
 #ifdef ANSI
-PRIVATE Void rgSCHUtlUpdPrachOcc
+static Void rgSCHUtlUpdPrachOcc
 (
 RgSchCellCb       *cell,
 RgrTddPrachInfo   *cellCfg
 )
 #else
-PRIVATE Void rgSCHUtlUpdPrachOcc(cell, cellCfg)
+static Void rgSCHUtlUpdPrachOcc(cell, cellCfg)
 RgSchCellCb       *cell;
 RgrTddPrachInfo   *cellCfg;
 #endif
@@ -3610,7 +3610,7 @@ uint8_t                    tbIdx;
          cmLListAdd2Tail(&ue->dl.dlSfHqInfo[cell->cellId][subFrm->dlIdx].hqPLst,&hqP->hqPSfLnk); 
 #ifdef CA_DBG
          {
-            extern uint32_t gSCellSchedCount,gPrimarySchedCount;
+            uint32_t gSCellSchedCount,gPrimarySchedCount;
             if(RG_SCH_IS_CELL_SEC(hqP->hqE->ue,hqP->hqE->cell))
             {
                gSCellSchedCount++;
@@ -5855,7 +5855,7 @@ Void rgSchDSFRPwrCheck
  Bool                    *isAllUePwrHigh
  )
 #else
-PRIVATE Void rgSchDSFRPwrCheck(sf, isAllUePwrHigh)
+static Void rgSchDSFRPwrCheck(sf, isAllUePwrHigh)
    RgSchDlSf               *sf;
    Bool                    *isAllUePwrHigh;
 
@@ -5904,14 +5904,14 @@ PRIVATE Void rgSchDSFRPwrCheck(sf, isAllUePwrHigh)
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE Void rgSCHUtlFillRgInfTbInfo
+static Void rgSCHUtlFillRgInfTbInfo
 (
 RgSchDlHqProcCb *hqP,
 RgInfUeAlloc    *allocInfo,
 RgSchCellCb     *cell
 )
 #else
-PRIVATE Void rgSCHUtlFillRgInfTbInfo (hqP, allocInfo, cell)
+static Void rgSCHUtlFillRgInfTbInfo (hqP, allocInfo, cell)
 RgSchDlHqProcCb *hqP;
 RgInfUeAlloc    *allocInfo;
 RgSchCellCb     *cell;
@@ -5923,7 +5923,7 @@ RgSchCellCb     *cell;
    uint8_t              tbCnt;
    /* LTE_ADV_FLAG_REMOVED_START */
 #ifdef TFU_UPGRADE
-   PRIVATE         uint32_t  tmpCnt = 0;
+   static         uint32_t  tmpCnt = 0;
    Bool            isAllUePwrHigh = FALSE;
 #endif 
    /* LTE_ADV_FLAG_REMOVED_END */
@@ -7026,8 +7026,8 @@ RgrTtiIndInfo        *rgrTti;
    S16           ret = ROK;
    RgSchUpSapCb  *rgrSap;                    /*!< RGR SAP Control Block */
 #ifdef L2_L3_SPLIT
-   extern Bool g_usettitmr;
-   extern Void mtTmrHdlrPublic(void);
+   Bool g_usettitmr;
+   Void mtTmrHdlrPublic(void);
 #endif
 
    rgrSap = cell->rgrSap;
@@ -7510,7 +7510,8 @@ Size      memSize;
 #endif
 {
    Mem              sMem;
-   VOLATILE uint32_t     startTime=0;
+   volatile uint32_t     startTime=0;
+
 
    sMem.region = rgSchCb[inst].rgSchInit.region;
    sMem.pool = rgSchCb[inst].rgSchInit.pool;
@@ -8044,14 +8045,14 @@ RgSchUlSf    *sf;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE S16 rgSCHUtlUlAllocDbInit
+static S16 rgSCHUtlUlAllocDbInit
 (
 RgSchCellCb    *cell,
 RgSchUlAllocDb *allocDb,
 uint8_t             maxAllocs
 )
 #else
-PRIVATE S16 rgSCHUtlUlAllocDbInit(cell, allocDb, maxAllocs)
+static S16 rgSCHUtlUlAllocDbInit(cell, allocDb, maxAllocs)
 RgSchCellCb    *cell;
 RgSchUlAllocDb *allocDb;
 uint8_t             maxAllocs;
@@ -8082,13 +8083,13 @@ uint8_t             maxAllocs;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE Void rgSCHUtlUlAllocDbDeinit
+static Void rgSCHUtlUlAllocDbDeinit
 (
 RgSchCellCb     *cell,
 RgSchUlAllocDb *allocDb
 )
 #else
-PRIVATE Void rgSCHUtlUlAllocDbDeinit(cell, allocDb)
+static Void rgSCHUtlUlAllocDbDeinit(cell, allocDb)
 RgSchCellCb     *cell;
 RgSchUlAllocDb *allocDb;
 #endif
@@ -8113,7 +8114,7 @@ RgSchUlAllocDb *allocDb;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE S16 rgSCHUtlUlHoleDbInit
+static S16 rgSCHUtlUlHoleDbInit
 (
 RgSchCellCb   *cell,
 RgSchUlHoleDb *holeDb,
@@ -8122,7 +8123,7 @@ uint8_t            start,
 uint8_t            num
 )
 #else
-PRIVATE S16 rgSCHUtlUlHoleDbInit(cell, holeDb, maxHoles, start, num)
+static S16 rgSCHUtlUlHoleDbInit(cell, holeDb, maxHoles, start, num)
 RgSchCellCb   *cell;
 RgSchUlHoleDb *holeDb;
 uint8_t            maxHoles;
@@ -8160,13 +8161,13 @@ uint8_t            num;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE Void rgSCHUtlUlHoleDbDeinit
+static Void rgSCHUtlUlHoleDbDeinit
 (
 RgSchCellCb   *cell,
 RgSchUlHoleDb *holeDb
 )
 #else
-PRIVATE Void rgSCHUtlUlHoleDbDeinit(cell, holeDb)
+static Void rgSCHUtlUlHoleDbDeinit(cell, holeDb)
 RgSchCellCb   *cell;
 RgSchUlHoleDb *holeDb;
 #endif
@@ -9711,14 +9712,14 @@ uint8_t              numSb;
  *           RFAILED
  **/
 #ifdef ANSI
-PRIVATE S16 rgSCHUtlValidateQci
+static S16 rgSCHUtlValidateQci
 (
 RgSchCellCb  *cellCb,
 uint8_t           numQci,
 uint8_t           *qci
 )
 #else
-PRIVATE S16 rgSCHUtlValidateQci(cellCb, numQci, qci)
+static S16 rgSCHUtlValidateQci(cellCb, numQci, qci)
 RgSchCellCb  *cellCb;
 uint8_t           numQci;
 uint8_t           *qci;
@@ -10720,13 +10721,13 @@ RgSchUeCb         *ueCb;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PRIVATE S16 rgSCHChkBoUpdate
+static S16 rgSCHChkBoUpdate
 (
 RgSchCellCb    *cell,
 RgInfCmnBoRpt  *boUpdt
 )
 #else
-PRIVATE S16 rgSCHChkBoUpdate (cell, boUpdt)
+static S16 rgSCHChkBoUpdate (cell, boUpdt)
 RgSchCellCb    *cell;
 RgInfCmnBoRpt  *boUpdt;
 #endif
@@ -11012,14 +11013,14 @@ uint32_t           *prbReqrd;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE uint8_t rgSCHUtlFetchPcqiBitSz
+static uint8_t rgSCHUtlFetchPcqiBitSz
 (
  RgSchCellCb    *cell,
  RgSchUeCb    *ueCb, 
  uint8_t           numTxAnt
  )
 #else
-PRIVATE uint8_t rgSCHUtlFetchPcqiBitSz (cell, ueCb, numTxAnt)
+static uint8_t rgSCHUtlFetchPcqiBitSz (cell, ueCb, numTxAnt)
 RgSchCellCb   *cell;
 RgSchUeCb     *ueCb;
 uint8_t            numTxAnt;
@@ -11513,7 +11514,7 @@ Void rgSCHTomUtlGetTrigSet
    uint8_t           *triggerSet
  )
 #else
-PRIVATE S16 rgSCHTomUtlGetTrigSet(cell, ueCb, cqiReq, triggerSet)
+static S16 rgSCHTomUtlGetTrigSet(cell, ueCb, cqiReq, triggerSet)
    RgSchCellCb       *cell;
    RgSchUeCb	     *ueCb;
    uint8_t           cqiReq;
@@ -12041,13 +12042,13 @@ Void rgSCHUtlCpuOvrLdAdjItbsCap(cell)
  *  @return     Void
  **/
 #ifdef ANSI
-PRIVATE Void rgSCHUtlChkAndUpdNumUePerTtiCpuOvInstr
+static Void rgSCHUtlChkAndUpdNumUePerTtiCpuOvInstr
 (
  RgSchCellCb *cell, 
  uint8_t      crntCpuOvrLdIns
 )
 #else
-PRIVATE S16 rgSCHUtlChkAndUpdNumUePerTtiCpuOvInstr(cell, crntCpuOvrLdIns)
+static S16 rgSCHUtlChkAndUpdNumUePerTtiCpuOvInstr(cell, crntCpuOvrLdIns)
  RgSchCellCb *cell; 
  uint8_t     crntCpuOvrLdIns;
 #endif

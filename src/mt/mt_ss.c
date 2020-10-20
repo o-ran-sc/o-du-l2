@@ -159,18 +159,18 @@
 #endif
 
 #ifdef INTEL_WLS
-EXTERN void LwrMacRecvPhyMsg();
+void LwrMacRecvPhyMsg();
 #endif
 
 #if defined(SPLIT_RLC_DL_TASK) && defined(RLC_MAC_STA_RSP_RBUF)
-EXTERN S16 rgBatchProc (Void);
+S16 rgBatchProc (Void);
 #endif
 #ifdef RLC_MAC_DAT_REQ_RBUF
-EXTERN S16 rgDlDatReqBatchProc ARGS(( 
+S16 rgDlDatReqBatchProc ARGS(( 
          Void));
 #endif
 #if defined(SPLIT_RLC_DL_TASK) && defined(RLC_MAC_STA_RSP_RBUF)
-EXTERN S16 rgBatchProc ARGS((
+S16 rgBatchProc ARGS((
     Void));
 #endif  
 
@@ -203,12 +203,12 @@ Void cmPrcTmr ARGS((CmTqCp* tqCp, CmTqType* tq, PFV func));
 void            dump_external(void);
 
 #ifdef ANSI
-PRIVATE Void mtDelSigals
+static Void mtDelSigals
 (
 Void
 )
 #else
-PRIVATE Void mtDelSignals()
+static Void mtDelSignals()
 #endif
 {
    struct sigaction sa;
@@ -324,18 +324,18 @@ void *pthreadCreateHdlr(void*  arg);
 Buffer *mtTskBuffer1;
 Buffer *mtTskBuffer2;
 
-EXTERN pthread_t tmpRegTidMap[20];
-EXTERN uint8_t stopBtInfo;
-EXTERN  S16 SGlobMemInfoShow(void);
+pthread_t tmpRegTidMap[20];
+uint8_t stopBtInfo;
+ S16 SGlobMemInfoShow(void);
 #endif /* SS_LOCKLESS_MEMORY */
 
 #ifdef L2_L3_SPLIT
-EXTERN APP_CONTEXT AppContext;
-EXTERN S32 clusterMode;
+APP_CONTEXT AppContext;
+S32 clusterMode;
 #endif
 
 #ifdef TENB_T2K3K_SPECIFIC_CHANGES
-EXTERN unsigned int tlPost(void *handle);
+unsigned int tlPost(void *handle);
 #endif
 
 /* forward references */
@@ -346,56 +346,56 @@ Void *mtTskHdlrT2kL2 ARGS((Void*));
  void mtSigUsr2Hndlr ARGS((void));
 #endif
 
-PRIVATE S16 ssdSetPthreadAttr ARGS ((S32 tskPrior, pthread_attr_t *attr));
-PRIVATE Void *mtTskHdlr ARGS((void *));
-PRIVATE S16 mtTskHdlMsg ARGS((SsSTskEntry *sTsk));
+static S16 ssdSetPthreadAttr ARGS ((S32 tskPrior, pthread_attr_t *attr));
+static Void *mtTskHdlr ARGS((void *));
+static S16 mtTskHdlMsg ARGS((SsSTskEntry *sTsk));
 
-PRIVATE Void *mtTmrHdlr ARGS((void *));
-PRIVATE Void mtTimeout ARGS((PTR tCb, S16 evnt));
+static Void *mtTmrHdlr ARGS((void *));
+static Void mtTimeout ARGS((PTR tCb, S16 evnt));
 
 /*mt010.301 Fix for core when run with -o option and when killed with SIGINT*/
-PRIVATE Void mtIntSigHndlr ARGS((int));
-PRIVATE Void mtExitClnup ARGS((void));
+static Void mtIntSigHndlr ARGS((int));
+static Void mtExitClnup ARGS((void));
 
 #ifdef CONAVL
-PRIVATE Void *mtConHdlr ARGS((void *));
+static Void *mtConHdlr ARGS((void *));
 #endif
 
 #ifndef L2_L3_SPLIT
 #ifdef SS_DRVR_SUPPORT
-PRIVATE Void *mtIsTskHdlr ARGS((void *));
+static Void *mtIsTskHdlr ARGS((void *));
 #endif
 #endif
 
 /* mt020.201 - Addition for no command line available */
 #ifndef NOCMDLINE
-PRIVATE Void mtGetOpts ARGS((void));
+static Void mtGetOpts ARGS((void));
 /* mt003.301 Additions - File Based task registration made
  * common for both MULTICORE and NON-MULTICORE
  */
-PRIVATE Bool fileBasedMemCfg = FALSE;
+static Bool fileBasedMemCfg = FALSE;
 #endif
 
 /* mt033.201 - addition of local function to print the statistics such as
 * (size vs. numAttempts) and (allocations vs. deallocations)
 */
 #ifdef SSI_DEBUG_LEVEL1
-PRIVATE S16 SPrintRegMemStats ARGS((Region region));
+static S16 SPrintRegMemStats ARGS((Region region));
 #endif /* SSI_DEBUG_LEVEL1 */
 
 #ifdef SS_MULTICORE_SUPPORT
-PRIVATE SsSTskEntry* ssdAddTmrSTsk(Void);
-PRIVATE SsSTskEntry* ssdReAddTmrSTsk ARGS((uint8_t idx));
+static SsSTskEntry* ssdAddTmrSTsk(Void);
+static SsSTskEntry* ssdReAddTmrSTsk ARGS((uint8_t idx));
 #ifndef SS_LOCKLESS_MEMORY
 #ifndef RGL_SPECIFIC_CHANGES
-PRIVATE S16 ssdInitMemInfo ARGS((void));
+static S16 ssdInitMemInfo ARGS((void));
 #endif
 #endif
 #endif
 
 /* mt005.301: Cavium changes */
 #ifdef SS_SEUM_CAVIUM
-PRIVATE Void *workRcvTsk ARGS((void *));
+static Void *workRcvTsk ARGS((void *));
 #endif /* SS_SEUM_CAVIUM */
 
 #ifdef SS_THR_REG_MAP
@@ -719,14 +719,14 @@ typedef struct _MtRegMemSz
    uint8_t    *startAddr;
 }MtRegMemSz;
 
-PRIVATE MtRegMemSz mtRegMemSz[MT_MAX_BKTS+1];
+static MtRegMemSz mtRegMemSz[MT_MAX_BKTS+1];
 #endif
 
 
 /* private variable declarations */
 /* mt018.201 - change mtCMMRegCfg as array of pointers */
-PRIVATE CmMmRegCfg *mtCMMRegCfg[SS_MAX_REGS];
-PRIVATE CmMmRegCb *mtCMMRegCb[SS_MAX_REGS];
+static CmMmRegCfg *mtCMMRegCfg[SS_MAX_REGS];
+static CmMmRegCb *mtCMMRegCb[SS_MAX_REGS];
 /* mt003.301 - Fixed compilation warnings */
 /*mt004.301-addede new veriable for FAP*/
 /*mt010.301 - removed veriable defined for FA*/
@@ -753,11 +753,11 @@ void * mtGetWlsHdl()
 }
 
 #ifdef XEON_MULTIPLE_CELL_CHANGES
-EXTERN S8 gWrWlsDeviceName[MAX_WLS_DEVICE_NAME_LEN];
-EXTERN S16 smWrReadWlsConfigParams (Void);
+S8 gWrWlsDeviceName[MAX_WLS_DEVICE_NAME_LEN];
+S16 smWrReadWlsConfigParams (Void);
 #endif
 
-PRIVATE int SOpenWlsIntf()
+static int SOpenWlsIntf()
 {
    void *hdl;
    #define WLS_DEVICE_NAME "/dev/wls"
@@ -1375,7 +1375,7 @@ uint32_t                    doNotBlockForLock;   /* Boolean whether to block for
 
 #define NUM_CALLS_TO_CHECK_MEM_DYN_AGAIN 100
 uint32_t gDynMemAlrm[4];
-PRIVATE uint32_t memoryCheckCounter;
+static uint32_t memoryCheckCounter;
 
 #ifdef ANSI
 uint32_t isMemThreshReached(
@@ -1473,7 +1473,7 @@ Region region;
 #endif /* SS_USE_ICC_MEMORY */
 
 #ifdef T2K_MEM_LEAK_DBG
-extern RegionMemLeakInfo regMemLeakInfo;
+RegionMemLeakInfo regMemLeakInfo;
 #endif /* T2K_MEM_LEAK_DBG */
 
 #ifdef INTEL_WLS
@@ -2918,12 +2918,12 @@ uint32_t              type;
 *
 */
 #ifdef ANSI
-PRIVATE Void mtGetOpts
+static Void mtGetOpts
 (
 void
 )
 #else
-PRIVATE Void mtGetOpts()
+static Void mtGetOpts()
 #endif
 {
    S32 argc;
@@ -3781,13 +3781,13 @@ void* arg;
 */
 
 #ifdef ANSI
-PRIVATE S16 ssdSetPthreadAttr
+static S16 ssdSetPthreadAttr
 (
 S32              tskPrior,
 pthread_attr_t  *attr
 )
 #else
-PRIVATE S16 ssdSetPthreadAttr(sTsk, attr)
+static S16 ssdSetPthreadAttr(sTsk, attr)
 S32               tskPrior,
 pthread_attr_t   *attr
 #endif
@@ -4691,9 +4691,9 @@ SsIdx idx;
 //#ifndef SPLIT_RLC_DL_TASK
 #ifdef TENB_T2K3K_SPECIFIC_CHANGES
 #if defined (L2_L3_SPLIT) && defined(SPLIT_RLC_DL_TASK) 
-EXTERN Void ysMtTskHdlr(Void);
-EXTERN Void ysMtPollPhyMsg(uint8_t region);
-EXTERN Void ysMtRcvPhyMsg(Void);
+Void ysMtTskHdlr(Void);
+Void ysMtPollPhyMsg(uint8_t region);
+Void ysMtRcvPhyMsg(Void);
 #ifdef ANSI
 Void *mtTskHdlrT2kL2
 (
@@ -4728,8 +4728,8 @@ Ptr tskPtr;                     /* pointer to task entry */
   return (NULLP);
 }
 #else
-EXTERN Void ysMtTskHdlr(Void);
-EXTERN Void YsPhyRecvMsg();
+Void ysMtTskHdlr(Void);
+Void YsPhyRecvMsg();
 #ifdef ANSI
 Void *mtTskHdlrT2kL2
 (
@@ -5344,13 +5344,13 @@ Void mtTmrHdlrPublic()
 */
 /*mt041.201 Modified SSI tick handling in mtTmrHdlr() */
 #ifdef ANSI
-PRIVATE Void *mtTmrHdlr
+static Void *mtTmrHdlr
 (
 void *parm                        /* unused */
 )
 #else
    /* mt009.21: addition */
-PRIVATE Void *mtTmrHdlr(parm)
+static Void *mtTmrHdlr(parm)
 void *parm;                       /* unused */
 #endif
 {
@@ -5366,7 +5366,7 @@ void *parm;                       /* unused */
    S16 ret;
    /* mt039.201 changes for nanosleep */
    struct timespec tsN;
-   PRIVATE uint32_t err_in_usec;
+   static uint32_t err_in_usec;
 
    /*mt013.301 : doesn't need TRC macro ,as this will never return*/
 
@@ -5743,13 +5743,13 @@ S16 evnt;                       /* event */
 *
 */
 #ifdef ANSI
-PRIVATE Void *mtConHdlr
+static Void *mtConHdlr
 (
 Ptr parm                        /* unused */
 )
 #else
   /* mt009.21: addition */
-PRIVATE Void *mtConHdlr(parm)
+static Void *mtConHdlr(parm)
 Ptr parm;                       /* unused */
 #endif
 {
@@ -5812,13 +5812,13 @@ Ptr parm;                       /* unused */
 */
 #ifdef ANSI
   /* mt009.21: addition */
-PRIVATE Void *mtIsTskHdlr
+static Void *mtIsTskHdlr
 (
 Ptr tskPtr                      /* pointer to task entry */
 )
 #else
   /* mt009.21: addition */
-PRIVATE Void *mtIsTskHdlr(tskPtr)
+static Void *mtIsTskHdlr(tskPtr)
 Ptr tskPtr;                     /* pointer to task entry */
 #endif
 {
@@ -6251,7 +6251,7 @@ EpcTime *et;          /* date and time */
 #endif
 {
 /* mt003.301 Modifications */
-PRIVATE uint64_t now;
+static uint64_t now;
 		  uint64_t  to_sec  = 1000000;
 		  uint64_t  to_nsec = 1000;
 #ifndef SS_LINUX
@@ -6582,12 +6582,12 @@ S16 SRelInt()
 *
 */
 #ifdef ANSI
-INLINE S16 SEnbInt
+inline S16 SEnbInt
 (
 void
 )
 #else
-INLINE S16 SEnbInt()
+inline S16 SEnbInt()
 #endif
 {
 
@@ -6611,12 +6611,12 @@ INLINE S16 SEnbInt()
 *
 */
 #ifdef ANSI
-INLINE S16 SDisInt
+inline S16 SDisInt
 (
 void
 )
 #else
-INLINE S16 SDisInt()
+inline S16 SDisInt()
 #endif
 {
 
@@ -6867,13 +6867,13 @@ Inst inst;                  /* instance */
 *
 */
 #ifdef ANSI
-INLINE S16 SSetIntPend
+inline S16 SSetIntPend
 (
 uint16_t id,                         /* driver task identifier */
 Bool flag                       /* flag */
 )
 #else
-INLINE S16 SSetIntPend(id, flag)
+inline S16 SSetIntPend(id, flag)
 uint16_t id;                         /* driver task identifier */
 Bool flag;                      /* flag */
 #endif
@@ -7132,13 +7132,13 @@ uint32_t SMemMidThreshold[SSI_MAX_REG_THRESHOLD][SSI_MAX_BKT_THRESHOLD] = {{0}};
 uint32_t SMemLowThreshold[SSI_MAX_REG_THRESHOLD][SSI_MAX_BKT_THRESHOLD] = {{0}};
 
 #ifdef ANSI
-PRIVATE Void SInitMemThreshold
+static Void SInitMemThreshold
 (
 Region region,
 uint8_t     maxBkt
 )
 #else
-PRIVATE Void SInitMemThreshold(region, maxBkt)
+static Void SInitMemThreshold(region, maxBkt)
 Region region;
 uint8_t     maxBkt;
 #endif
@@ -7167,7 +7167,7 @@ uint8_t     maxBkt;
 {
    uint8_t           idx       = 0;
    uint8_t           memStatus = 3;
-   PRIVATE uint8_t   initFlag  = 1;
+   static uint8_t   initFlag  = 1;
    if(initFlag)
    {
       initFlag = 0;
@@ -7425,12 +7425,12 @@ uint8_t typeFlag;
 *
 */
 #ifdef ANSI
-PRIVATE S16 SPrintRegMemStats
+static S16 SPrintRegMemStats
 (
 Region region
 )
 #else
-PRIVATE S16 SPrintRegMemStats(region)
+static S16 SPrintRegMemStats(region)
 Region region;
 #endif
 {
@@ -7911,9 +7911,9 @@ uint32_t SGetSystemTsk()
 *
 --*/
 #ifdef ANSI
-PRIVATE SsSTskEntry* ssdAddTmrSTsk(Void)
+static SsSTskEntry* ssdAddTmrSTsk(Void)
 #else
-PRIVATE SsSTskEntry* ssdAddTmrSTsk()
+static SsSTskEntry* ssdAddTmrSTsk()
 #endif
 {
    SsSTskEntry *sTsk;
@@ -8420,12 +8420,12 @@ S16 ssInitRcvWork()
  **/
 
 #ifdef ANSI
-PRIVATE void *workRcvTsk
+static void *workRcvTsk
 (
  Ptr ptr
  )
 #else
-PRIVATE void *workRcvTsk (ptr)
+static void *workRcvTsk (ptr)
   Ptr ptr;
 #endif
 {
@@ -8593,9 +8593,9 @@ pthread_t    threadId,    /* Thread Id of system task */
 Region       region       /* Region associated with thread */
 )
 {
-   PRIVATE uint32_t  createdThreads;
-   PRIVATE pthread_t createdThreadIds[SS_MAX_THREAD_CREATE_RETRY];
-   uint32_t          indx;
+   static uint32_t       createdThreads;
+   static pthread_t createdThreadIds[SS_MAX_THREAD_CREATE_RETRY];
+   uint32_t               indx;
 
 
    /* Here  0xFF is considered as invalid region and if the mapping table
@@ -8710,13 +8710,13 @@ pthread_t    threadId    /* Thread Id of system task */
 #ifdef ANSI
 S16 SStartTask
 (
-VOLATILE uint32_t *startTime,
-uint32_t          taskId
+volatile uint32_t      *startTime,
+uint32_t       taskId
 )
 #else
 S16 SStartTask(startTime, taskId)
-VOLATILE uint32_t *startTime;
-uint32_t          taskId;
+volatile uint32_t      *startTime;
+uint32_t       taskId;
 #endif
 {
 #ifdef MSPD_MLOG_NEW
@@ -8743,13 +8743,13 @@ uint32_t          taskId;
 #ifdef ANSI
 S16 SStopTask
 (
-VOLATILE uint32_t  startTime,
-uint32_t           taskId
+volatile uint32_t       startTime,
+uint32_t       taskId
 )
 #else
 S16 SStopTask(startTime, taskId)
-VOLATILE uint32_t  startTime;
-uint32_t           taskId;
+volatile uint32_t       startTime;
+uint32_t       taskId;
 #endif
 {
    /*uint32_t      stopTime;*/
@@ -8792,13 +8792,13 @@ uint32_t           taskId;
 #ifdef ANSI
 S16 SStartTask
 (
-VOLATILE uint32_t *startTime,
-uint32_t          taskId
+volatile uint32_t      * startTime,
+uint32_t       taskId
 )
 #else
 S16 SStartTask(startTime, taskId)
-VOLATILE uint32_t *startTime;
-uint32_t          taskId;
+volatile uint32_t      * startTime;
+uint32_t       taskId;
 #endif
 {
    *startTime = 0;
@@ -8808,13 +8808,13 @@ uint32_t          taskId;
 #ifdef ANSI
 S16 SStopTask
 (
-VOLATILE uint32_t startTime,
-uint32_t          taskId
+volatile uint32_t       startTime,
+uint32_t       taskId
 )
 #else
 S16 SStopTask(startTime, taskId)
-VOLATILE uint32_t startTime;
-uint32_t          taskId;
+volatile uint32_t       startTime;
+uint32_t       taskId;
 #endif
 {
    return ROK;
@@ -8922,11 +8922,11 @@ uint8_t       idx;
 *
 --*/
 #ifdef ANSI
-PRIVATE SsSTskEntry* ssdReAddTmrSTsk(
+static SsSTskEntry* ssdReAddTmrSTsk(
 uint8_t idx
 )
 #else
-PRIVATE SsSTskEntry* ssdReAddTmrSTsk(idx)
+static SsSTskEntry* ssdReAddTmrSTsk(idx)
 uint8_t idx;
 #endif
 {

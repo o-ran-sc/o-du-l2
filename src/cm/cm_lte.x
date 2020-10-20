@@ -66,7 +66,7 @@
 
 
 #ifdef __cplusplus
-EXTERN "C" {
+extern "C" {
 #endif  /*__cplusplus*/
 
 /** @file cm_lte.x
@@ -212,48 +212,48 @@ typedef enum cmLteUeCategory
  *                         PACK/UNPACK Functions
  ***************************************************************************/
 
-EXTERN S16 cmUpdateSsiMemInfo(CmLteMemInfo *mInfo);
+S16 cmUpdateSsiMemInfo(CmLteMemInfo *mInfo);
 
-EXTERN S16 cmFillMemUtilizationMeas(CmLteMemInfo *memoryInfo,CmLteMemInfo *memInfo);
+S16 cmFillMemUtilizationMeas(CmLteMemInfo *memoryInfo,CmLteMemInfo *memInfo);
 
-EXTERN S16 cmClearMemUtilizationCounter(CmLteMemInfo *memInfo);
-EXTERN S16 UpdateSocMemInfo(uint8_t area , CmLteMemInfo *mInfo);
+S16 cmClearMemUtilizationCounter(CmLteMemInfo *memInfo);
+S16 UpdateSocMemInfo(uint8_t area , CmLteMemInfo *mInfo);
 
-EXTERN S16 cmFillCpuUtilizationMeas(CmLteCpuInfo *cpuMeasInfo,CmCpuStatsInfo *cpuInfo);
+S16 cmFillCpuUtilizationMeas(CmLteCpuInfo *cpuMeasInfo,CmCpuStatsInfo *cpuInfo);
 
-EXTERN S16 cmClearCpuUtilizationCounter(CmCpuStatsInfo *cpuInfo);
-EXTERN Void UpdateSocCpuInfo(CmCpuStatsInfo *cpuInfo,uint8_t Idx);
+S16 cmClearCpuUtilizationCounter(CmCpuStatsInfo *cpuInfo);
+Void UpdateSocCpuInfo(CmCpuStatsInfo *cpuInfo,uint8_t Idx);
 
-EXTERN S16 SGetRegPoolInfo(uint8_t* numRegion, uint8_t* numPool);
+S16 SGetRegPoolInfo(uint8_t* numRegion, uint8_t* numPool);
 
 /* Packing Functions */
-EXTERN S16 cmPkLteRlcId ARGS ((
+S16 cmPkLteRlcId ARGS ((
 CmLteRlcId *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkLteTimingInfo ARGS ((
+S16 cmPkLteTimingInfo ARGS ((
 CmLteTimingInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkLtePdcpId ARGS ((
+S16 cmPkLtePdcpId ARGS ((
 CmLtePdcpId *param,
 Buffer *mBuf
 ));
 
 /* Unpack Function */
-EXTERN S16 cmUnpkLteRlcId ARGS ((
+S16 cmUnpkLteRlcId ARGS ((
 CmLteRlcId *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkLteTimingInfo ARGS ((
+S16 cmUnpkLteTimingInfo ARGS ((
 CmLteTimingInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkLtePdcpId ARGS ((
+S16 cmUnpkLtePdcpId ARGS ((
 CmLtePdcpId *param,
 Buffer *mBuf
 ));
@@ -271,10 +271,10 @@ typedef struct cmTtiProc
 	uint32_t phyReptTtiStretchCount;
 }CmTtiProc;
 
-EXTERN CmTtiProc ttiProc;
+CmTtiProc ttiProc;
 
-EXTERN Void cmUpdateTtiCounters(uint32_t ttiProcessingTime);
-EXTERN Void cmResetTtiCounters(Void); 
+Void cmUpdateTtiCounters(uint32_t ttiProcessingTime);
+Void cmResetTtiCounters(Void); 
 #endif
 
 #ifdef __cplusplus

@@ -43,8 +43,8 @@
 #define PDU_PRESENT 1
 #define SET_MSG_LEN(x, size) x += size
 
-extern void fapiMacConfigRsp(uint16_t cellId);
-extern uint8_t UnrestrictedSetNcsTable[MAX_ZERO_CORR_CFG_IDX];
+void fapiMacConfigRsp(uint16_t cellId);
+uint8_t UnrestrictedSetNcsTable[MAX_ZERO_CORR_CFG_IDX];
 
 /* Global variables */
 uint8_t slotIndIdx;

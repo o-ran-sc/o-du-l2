@@ -778,7 +778,7 @@ typedef struct rgInfL2MeasCfm
  * This API carries a transId to uniquely identify the confirm received for 
  * this request from LTEMAC.
  * */
-EXTERN S16 RgSchMacL2MeasReq ARGS((
+S16 RgSchMacL2MeasReq ARGS((
    Pst*                 pst,
    RgInfL2MeasReq*      l2MeasReq
 ));
@@ -788,7 +788,7 @@ EXTERN S16 RgSchMacL2MeasReq ARGS((
  * it sends L2 measurement to layer manager.
  * */
 
-EXTERN S16 RgSchMacL2MeasSendReq ARGS((
+S16 RgSchMacL2MeasSendReq ARGS((
    Pst*                 pst,
    RgInfL2MeasSndReq*      l2MeasReq
 ));
@@ -797,7 +797,7 @@ EXTERN S16 RgSchMacL2MeasSendReq ARGS((
  * When Scheduler receives a measurement stop request from stack manager,
  * it stops L2 Measurement 
  */
-EXTERN S16 RgSchMacL2MeasStopReq ARGS((
+S16 RgSchMacL2MeasStopReq ARGS((
    Pst*                 pst,
    RgInfL2MeasStopReq*      l2MeasReq
 ));
@@ -808,7 +808,7 @@ EXTERN S16 RgSchMacL2MeasStopReq ARGS((
  * period, It invokes this API to indicate result back to scheduler. LTE  
  * MAC sends the same transId received in measurement request from Scheduler.
  * */
-EXTERN S16 RgMacSchL2MeasCfm ARGS((
+S16 RgMacSchL2MeasCfm ARGS((
    Pst*                 pst,
    RgInfL2MeasCfm*      l2MeasCfm
 ));
@@ -817,12 +817,12 @@ EXTERN S16 RgMacSchL2MeasCfm ARGS((
  * stops L2 measurement, it sends L2 measurement cfm.
  * */
 
-EXTERN S16 RgMacSchL2MeasStopCfm ARGS((
+S16 RgMacSchL2MeasStopCfm ARGS((
    Pst*                 pst,
    RgInfL2MeasCfm*      l2MeasCfm
 ));
 
-EXTERN S16 RgMacSchL2MeasStop ARGS
+S16 RgMacSchL2MeasStop ARGS
 ((
 Pst*                pst,   
 RgInfL2MeasCfm      *measInfo
@@ -897,7 +897,7 @@ typedef struct rgInfSpsRelInfo
  * @brief Request from Scheduler to MAC to register a cell. 
  * @details This primitive is used for light-weight loose coupling.
  */
-EXTERN S16 cmPkSchMacCellRegReq ARGS((
+S16 cmPkSchMacCellRegReq ARGS((
    Pst*                 pst,    
    RgInfCellReg*        regReq  
 ));
@@ -914,7 +914,7 @@ typedef S16 (*CellRegReq) ARGS((
  *  creates a mapping of the cell which is uniquely idetified by cell ID and 
  *  scheduler instance that is serving the cell.
  */
-EXTERN S16 RgSchMacCellRegReq ARGS((
+S16 RgSchMacCellRegReq ARGS((
    Pst*                 pst,
    RgInfCellReg*        regReq
 ));
@@ -922,7 +922,7 @@ EXTERN S16 RgSchMacCellRegReq ARGS((
  * @brief Request from Scheduler to MAC to register a cell. 
  * @details This primitive is used for light-weight loose coupling.
  */
-EXTERN S16 cmUnpkSchMacCellRegReq ARGS((
+S16 cmUnpkSchMacCellRegReq ARGS((
    CellRegReq           func,
    Pst*                 pst,
    Buffer               *mBuf
@@ -931,7 +931,7 @@ EXTERN S16 cmUnpkSchMacCellRegReq ARGS((
  * @brief Request from MAC to scheduler to update dedicated BO.
  * @details This primitive is used for light-weight loose coupling.
  */
-EXTERN S16 cmPkMacSchDedBoUpdtReq ARGS((
+S16 cmPkMacSchDedBoUpdtReq ARGS((
    Pst*                 pst,    
    RgInfDedBoRpt*       boRpt  
 ));
@@ -948,7 +948,7 @@ typedef S16 (*DedBoUpdtReq) ARGS((
  *  takes the buffer occupancy information into consideration while taking
  *  scheduling decisons. 
  */
-EXTERN S16 RgMacSchDedBoUpdtReq ARGS((
+S16 RgMacSchDedBoUpdtReq ARGS((
    Pst*                 pst,
    RgInfDedBoRpt*       boRpt
 ));
@@ -956,7 +956,7 @@ EXTERN S16 RgMacSchDedBoUpdtReq ARGS((
  * @brief Request from MAC to scheduler to update dedicated BO.
  * @details This primitive is used for light-weight loose coupling.
  */
-EXTERN S16 cmUnpkMacSchDedBoUpdtReq ARGS((
+S16 cmUnpkMacSchDedBoUpdtReq ARGS((
    DedBoUpdtReq         func,
    Pst*                 pst,
    Buffer               *mBuf
@@ -965,7 +965,7 @@ EXTERN S16 cmUnpkMacSchDedBoUpdtReq ARGS((
  * @brief Request from MAC to scheduler to update common channel BO.
  * @details This primitive is used for light-weight loose coupling. 
  */
-EXTERN S16 cmPkMacSchCmnBoUpdtReq ARGS((
+S16 cmPkMacSchCmnBoUpdtReq ARGS((
    Pst*                 pst,    
    RgInfCmnBoRpt*       boRpt  
 ));
@@ -982,7 +982,7 @@ typedef S16 (*CmnBoUpdtReq) ARGS((
  *  takes the buffer occupancy information into consideration while taking
  *  scheduling decisons. 
  */
-EXTERN S16 RgMacSchCmnBoUpdtReq ARGS((
+S16 RgMacSchCmnBoUpdtReq ARGS((
    Pst*                 pst,
    RgInfCmnBoRpt*       boRpt
 ));
@@ -990,7 +990,7 @@ EXTERN S16 RgMacSchCmnBoUpdtReq ARGS((
  * @brief Request from MAC to scheduler to update common channel BO.
  * @details This primitive is used for light-weight loose coupling. 
  */
-EXTERN S16 cmUnpkMacSchCmnBoUpdtReq ARGS((
+S16 cmUnpkMacSchCmnBoUpdtReq ARGS((
    CmnBoUpdtReq         func,
    Pst*                 pst,
    Buffer               *mBuf
@@ -1001,7 +1001,7 @@ EXTERN S16 cmUnpkMacSchCmnBoUpdtReq ARGS((
  * @brief UE delete indication from MAC to scheduler.
  * @details This primitive is used for light-weight loose coupling. 
  */
-EXTERN S16 cmPkMacSchUeDelInd ARGS((
+S16 cmPkMacSchUeDelInd ARGS((
    Pst*                 pst,    
    RgInfUeDelInd*       ueDelInd
 ));
@@ -1017,7 +1017,7 @@ typedef S16 (*UeDelInd) ARGS((
  *  receives UE delete Request. As the UE is now deleted at MAC, it should 
  *  not be scheduled.
  */
-EXTERN S16 RgMacSchUeDelInd ARGS((
+S16 RgMacSchUeDelInd ARGS((
    Pst*                 pst,
    RgInfUeDelInd*       ueDelInd
 ));
@@ -1025,7 +1025,7 @@ EXTERN S16 RgMacSchUeDelInd ARGS((
  * @brief UE delete Indication Request from MAC to scheduler.
  * @details This primitive is used for light-weight loose coupling. 
  */
-EXTERN S16 cmUnpkMacSchUeDelInd ARGS((
+S16 cmUnpkMacSchUeDelInd ARGS((
    UeDelInd            func,
    Pst*                 pst,
    Buffer               *mBuf
@@ -1035,7 +1035,7 @@ EXTERN S16 cmUnpkMacSchUeDelInd ARGS((
  * @brief Data Indication Request from MAC to scheduler.
  * @details This primitive is used for light-weight loose coupling. 
  */
-EXTERN S16 cmPkMacSchSfRecpInd ARGS((
+S16 cmPkMacSchSfRecpInd ARGS((
    Pst*                 pst,    
    RgInfSfDatInd*       datInd
 ));
@@ -1052,7 +1052,7 @@ typedef S16 (*SfRecpInd) ARGS((
  *  takes these control elements into consideration while taking scheduling 
  *  decisons for the uplink.
  */
-EXTERN S16 RgMacSchSfRecpInd ARGS((
+S16 RgMacSchSfRecpInd ARGS((
    Pst*                 pst,
    RgInfSfDatInd*       datInd
 ));
@@ -1060,7 +1060,7 @@ EXTERN S16 RgMacSchSfRecpInd ARGS((
  * @brief Data Indication Request from MAC to scheduler.
  * @details This primitive is used for light-weight loose coupling. 
  */
-EXTERN S16 cmUnpkMacSchSfRecpInd ARGS((
+S16 cmUnpkMacSchSfRecpInd ARGS((
    SfRecpInd            func,
    Pst*                 pst,
    Buffer               *mBuf
@@ -1069,7 +1069,7 @@ EXTERN S16 cmUnpkMacSchSfRecpInd ARGS((
  * @brief Resource Allocation Request from Scheduler to MAC.
  * @details This primitive is used for light-weight loose coupling.
  */ 
-EXTERN S16 cmPkSchMacSfAllocReq ARGS((
+S16 cmPkSchMacSfAllocReq ARGS((
    Pst*                 pst,    
    RgInfSfAlloc*        resAllocReq
 ));
@@ -1085,7 +1085,7 @@ typedef S16 (*SfAllocReq) ARGS((
  *  inform the scheduling decisions taken for uplink grants, common channels
  *  and list of UEs to be scheduling during this TTI.
  */
-EXTERN S16 RgSchMacSfAllocReq ARGS((
+S16 RgSchMacSfAllocReq ARGS((
    Pst*                 pst,
    RgInfSfAlloc*        resAllocReq
 ));
@@ -1093,7 +1093,7 @@ EXTERN S16 RgSchMacSfAllocReq ARGS((
  * @brief Resource Allocation Request from Scheduler to MAC.
  * @details This primitive is used for light-weight loose coupling.
  */ 
-EXTERN S16 cmUnpkSchMacSfAllocReq ARGS((
+S16 cmUnpkSchMacSfAllocReq ARGS((
    SfAllocReq           func,
    Pst*                 pst,
    Buffer               *mBuf
@@ -1102,7 +1102,7 @@ EXTERN S16 cmUnpkSchMacSfAllocReq ARGS((
  * @brief Request from Scheduler to release HARQ processes at MAC.
  * @details This primitive is used for light-weight loose coupling.
  */
-EXTERN S16 cmPkSchMacRlsHqReq ARGS((
+S16 cmPkSchMacRlsHqReq ARGS((
    Pst*                 pst,    
    RgInfRlsHqInfo*      sfHqInfo
 ));
@@ -1119,7 +1119,7 @@ typedef S16 (*RlsHqReq) ARGS((
  *  primitive when a positive acknowledgement is received for the TB transmitted
  *  or a TB is retransmitted for the allowed maximum number of retransmissions. 
  */
-EXTERN S16 RgSchMacRlsHqReq ARGS((
+S16 RgSchMacRlsHqReq ARGS((
    Pst*                 pst,
    RgInfRlsHqInfo*      sfHqInfo
 ));
@@ -1128,7 +1128,7 @@ EXTERN S16 RgSchMacRlsHqReq ARGS((
  * @details This primitive is used for light-weight loose coupling.
  */
 
-EXTERN S16 cmUnpkSchMacRlsHqReq ARGS((
+S16 cmUnpkSchMacRlsHqReq ARGS((
    RlsHqReq             func,
    Pst*                 pst,
    Buffer               *mBuf
@@ -1138,7 +1138,7 @@ EXTERN S16 cmUnpkSchMacRlsHqReq ARGS((
  * @brief Request from Scheduler to reset HARQ Entity at MAC.
  * @details This primitive is used for light-weight loose coupling.
  */
-EXTERN S16 cmPkSchMacRstHqEntReq ARGS((
+S16 cmPkSchMacRstHqEntReq ARGS((
    Pst*                 pst,    
    RgInfResetHqEnt*     hqEntInfo
 ));
@@ -1152,7 +1152,7 @@ typedef S16 (*RstHqEntReq) ARGS((
  * @brief Request from Scheduler to reset HARQ entity at MAC for a scell of an ue.
  * This is triggered upon deactivation of a scell
  */
-EXTERN S16 RgSchMacRstHqEntReq ARGS((
+S16 RgSchMacRstHqEntReq ARGS((
    Pst*                 pst,
    RgInfResetHqEnt*     hqEntInfo
 ));
@@ -1161,7 +1161,7 @@ EXTERN S16 RgSchMacRstHqEntReq ARGS((
  * @details This primitive is used for light-weight loose coupling.
  */
 
-EXTERN S16 cmUnpkSchMacRstHqEntReq ARGS((
+S16 cmUnpkSchMacRstHqEntReq ARGS((
    RstHqEntReq          func,
    Pst*                 pst,
    Buffer               *mBuf
@@ -1170,7 +1170,7 @@ EXTERN S16 cmUnpkSchMacRstHqEntReq ARGS((
  * @brief Request from Scheduler to release RNTI at MAC.
  * @details  This primitive is used for light-weight loose coupling.
  */
-EXTERN S16 cmPkSchMacRlsRntiReq ARGS((
+S16 cmPkSchMacRlsRntiReq ARGS((
    Pst*                 pst,    
    RgInfRlsRnti*        rlsRnti
 ));
@@ -1185,7 +1185,7 @@ typedef S16 (*RlsRntiReq) ARGS((
  * @details The Scheduler calls this primitive to send the list of RNTIs for 
  *  which the RRC Connection is being rejected.
  */
-EXTERN S16 RgSchMacRlsRntiReq ARGS((
+S16 RgSchMacRlsRntiReq ARGS((
    Pst*                 pst,
    RgInfRlsRnti*        rlsRnt
 ));
@@ -1193,7 +1193,7 @@ EXTERN S16 RgSchMacRlsRntiReq ARGS((
  * @brief Request from Scheduler to release RNTI at MAC.
  * @details  This primitive is used for light-weight loose coupling.
  */
-EXTERN S16 cmUnpkSchMacRlsRntiReq ARGS((
+S16 cmUnpkSchMacRlsRntiReq ARGS((
    RlsRntiReq           func,
    Pst*                 pst,
    Buffer               *mBuf
@@ -1205,20 +1205,20 @@ typedef S16 (*LcgReg) ARGS((
    RgInfLcgRegReq       *lcgRegReq    
 ));
 
-EXTERN S16 cmPkSchMacLcgRegReq ARGS((
+S16 cmPkSchMacLcgRegReq ARGS((
    Pst*                 pst,
    RgInfLcgRegReq       *lcgRegReq  
 ));
 
-EXTERN S16  RgSchMacLcgRegReq ARGS((Pst *pst, RgInfLcgRegReq *lcgRegReq));
+S16  RgSchMacLcgRegReq ARGS((Pst *pst, RgInfLcgRegReq *lcgRegReq));
 
-EXTERN S16 cmUnpkSchMacLcgRegReq ARGS((
+S16 cmUnpkSchMacLcgRegReq ARGS((
    LcgReg          func,
    Pst             *pst,
    Buffer          *mBuf
 ));
 
-EXTERN S16  RgSchMacLcgReg ARGS((Pst* pst, RgInfLcgRegReq *lcgRegReq));
+S16  RgSchMacLcgReg ARGS((Pst* pst, RgInfLcgRegReq *lcgRegReq));
 
 #ifdef LTEMAC_SPS
 /** 
@@ -1226,7 +1226,7 @@ EXTERN S16  RgSchMacLcgReg ARGS((Pst* pst, RgInfLcgRegReq *lcgRegReq));
  * a SPS UE
  * @details  This primitive is used for light-weight loose coupling.
  */
-EXTERN S16 cmPkSchMacSpsLcRegReq ARGS((
+S16 cmPkSchMacSpsLcRegReq ARGS((
    Pst*                 pst,
    RgInfSpsLcInfo       *lcInfo    
 ));
@@ -1241,9 +1241,9 @@ typedef S16 (*SpsLcReg) ARGS((
  * @details  Scheduler calls this primitive to send the list of logical channels
  *  that belong to the SPS logical channel group.   
  */
-EXTERN S16  RgSchMacSpsLcRegReq ARGS((Pst *pst, RgInfSpsLcInfo *lcInfo));
+S16  RgSchMacSpsLcRegReq ARGS((Pst *pst, RgInfSpsLcInfo *lcInfo));
 
-EXTERN S16 cmUnpkSchMacSpsLcRegReq ARGS((
+S16 cmUnpkSchMacSpsLcRegReq ARGS((
    SpsLcReg        func,
    Pst             *pst,
    Buffer          *mBuf
@@ -1254,7 +1254,7 @@ EXTERN S16 cmUnpkSchMacSpsLcRegReq ARGS((
  * @brief Primitive from Scheduler to MAC to Reset UL SPS related Params
  * @details  This primitive is used for light-weight loose coupling.
  */
-EXTERN S16 cmPkSchMacUlSpsResetReq ARGS((
+S16 cmPkSchMacUlSpsResetReq ARGS((
    Pst*                 pst,
    RgInfUlSpsReset       *ulSpsResetInfo    
 ));
@@ -1269,9 +1269,9 @@ typedef S16 (*UlSpsReset) ARGS((
  * @details  Scheduler calls this primitive to reset implicit and explicit
  * release counters for the UE
  */
-EXTERN S16  RgSchMacUlSpsResetReq ARGS((Pst *pst, RgInfUlSpsReset *ulSpsResetInfo));
+S16  RgSchMacUlSpsResetReq ARGS((Pst *pst, RgInfUlSpsReset *ulSpsResetInfo));
 
-EXTERN S16 cmUnpkSchMacUlSpsResetReq ARGS((
+S16 cmUnpkSchMacUlSpsResetReq ARGS((
    UlSpsReset        func,
    Pst             *pst,
    Buffer          *mBuf
@@ -1284,7 +1284,7 @@ EXTERN S16 cmUnpkSchMacUlSpsResetReq ARGS((
  * a SPS UE
  * @details  This primitive is used for light-weight loose coupling.
  */
-EXTERN S16 cmPkSchMacSpsLcDeregReq ARGS((
+S16 cmPkSchMacSpsLcDeregReq ARGS((
    Pst*                 pst,    
    CmLteCellId          cellId,
    CmLteRnti            crnti
@@ -1301,10 +1301,10 @@ typedef S16 (*SpsLcDereg) ARGS((
  * @details  Scheduler calls this primitive to send the deregistration request
  * for a UE once SPS is released for it
  */
-EXTERN S16  RgSchMacSpsLcDeregReq ARGS((Pst *pst, CmLteCellId cellId, CmLteRnti
+S16  RgSchMacSpsLcDeregReq ARGS((Pst *pst, CmLteCellId cellId, CmLteRnti
     crnti));
 
-EXTERN S16 cmUnpkSchMacSpsLcDeregReq ARGS((
+S16 cmUnpkSchMacSpsLcDeregReq ARGS((
    SpsLcDereg           func,
    Pst*                 pst,
    Buffer               *mBuf
@@ -1314,7 +1314,7 @@ EXTERN S16 cmUnpkSchMacSpsLcDeregReq ARGS((
  * @brief Primitive from MAC to Scheduler to indicate release of UL SPS for a UE
  * @details  This primitive is used for light-weight loose coupling.
  */
-EXTERN S16 cmPkMacSchSpsRelInd ARGS((
+S16 cmPkMacSchSpsRelInd ARGS((
    Pst*                 pst,    
    RgInfSpsRelInfo*     relInfo
 ));
@@ -1329,9 +1329,9 @@ typedef S16 (*SpsRelInd) ARGS((
  * @details  MAC calls this primitive to inform the scheduler that UL SPS needs
  * to be released for a UE
  */
-EXTERN S16  RgMacSchSpsRelInd ARGS((Pst *pst, RgInfSpsRelInfo *relInfo));
+S16  RgMacSchSpsRelInd ARGS((Pst *pst, RgInfSpsRelInfo *relInfo));
 
-EXTERN S16 cmUnpkMacSchSpsRelInd ARGS((
+S16 cmUnpkMacSchSpsRelInd ARGS((
    SpsRelInd            func,
    Pst*                 pst,
    Buffer               *mBuf
@@ -1339,28 +1339,28 @@ EXTERN S16 cmUnpkMacSchSpsRelInd ARGS((
 
 #endif
 #ifdef LTE_L2_MEAS
-EXTERN S16 cmPkMacSchL2MeasCfm ARGS((
+S16 cmPkMacSchL2MeasCfm ARGS((
 Pst*                 pst,
 RgInfL2MeasCfm       *measCfm
 ));
 
-EXTERN S16 cmPkMacSchL2MeasStopCfm ARGS((
+S16 cmPkMacSchL2MeasStopCfm ARGS((
 Pst*                 pst,
 RgInfL2MeasCfm       *measCfm
 ));
 
 
-EXTERN S16 cmPkSchMacL2MeasReq ARGS((
+S16 cmPkSchMacL2MeasReq ARGS((
    Pst*                 pst,
    RgInfL2MeasReq      *measInfo
 ));
 
-EXTERN S16 cmPkSchMacL2MeasStopReq ARGS((
+S16 cmPkSchMacL2MeasStopReq ARGS((
    Pst*                 pst,
    RgInfL2MeasStopReq *measInfo
 ));
 
-EXTERN S16 cmPkSchMacL2MeasSendReq ARGS((
+S16 cmPkSchMacL2MeasSendReq ARGS((
    Pst*                 pst,
    RgInfL2MeasSndReq *measInfo
 ));
@@ -1387,57 +1387,57 @@ typedef S16 (*L2MeasCfm) ARGS((
    Pst                *pst, 
    RgInfL2MeasCfm     *measCfm
 ));
-EXTERN S16 cmUnpkMacSchL2MeasCfm ARGS
+S16 cmUnpkMacSchL2MeasCfm ARGS
 ((
 L2MeasCfm      func,
 Pst            *pst,
 Buffer         *mBuf
 ));
-EXTERN S16 cmUnpkSchMacL2MeasReq ARGS((
+S16 cmUnpkSchMacL2MeasReq ARGS((
    L2MeasReq      func,
    Pst            *pst,
    Buffer         *mBuf
 ));
-EXTERN S16 cmUnpkSchMacL2MeasSendReq ARGS((
+S16 cmUnpkSchMacL2MeasSendReq ARGS((
    L2MeasSendReq      func,
    Pst            *pst,
    Buffer         *mBuf
 ));
-EXTERN S16 cmUnpkSchMacL2MeasStopReq ARGS((
+S16 cmUnpkSchMacL2MeasStopReq ARGS((
    L2MeasStopReq      func,
    Pst            *pst,
    Buffer         *mBuf
 ));
 
-EXTERN S16 cmUnpkMacSchL2MeasStopCfm ARGS((
+S16 cmUnpkMacSchL2MeasStopCfm ARGS((
    L2MeasCfm      func,
    Pst            *pst,
    Buffer         *mBuf
 ));
 #endif
-EXTERN S16  RgSchMacRlsRnti ARGS((Pst* pst, RgInfRlsRnti* rlsRnti));
-EXTERN S16  RgSchMacRlsHq ARGS((Pst* pst, RgInfRlsHqInfo* sfHqInfo));
-EXTERN S16  RgSchMacSfAlloc ARGS((Pst* pst, RgInfSfAlloc* resAllocReq));
-EXTERN S16  RgSchMacRstHqEnt ARGS((Pst* pst, RgInfResetHqEnt* hqEntInfo));
-EXTERN S16  RgMacSchSfRecp ARGS((Pst* pst, RgInfSfDatInd* datInd));
-EXTERN S16  RgMacSchCmnBoUpdt ARGS(( Pst* pst, RgInfCmnBoRpt* boRpt));
-EXTERN S16 RgMacSchDedBoUpdt ARGS(( Pst* pst, RgInfDedBoRpt* boRpt));
-EXTERN S16  RgSchMacCellReg ARGS((Pst* pst,RgInfCellReg* regReq));
+S16  RgSchMacRlsRnti ARGS((Pst* pst, RgInfRlsRnti* rlsRnti));
+S16  RgSchMacRlsHq ARGS((Pst* pst, RgInfRlsHqInfo* sfHqInfo));
+S16  RgSchMacSfAlloc ARGS((Pst* pst, RgInfSfAlloc* resAllocReq));
+S16  RgSchMacRstHqEnt ARGS((Pst* pst, RgInfResetHqEnt* hqEntInfo));
+S16  RgMacSchSfRecp ARGS((Pst* pst, RgInfSfDatInd* datInd));
+S16  RgMacSchCmnBoUpdt ARGS(( Pst* pst, RgInfCmnBoRpt* boRpt));
+S16 RgMacSchDedBoUpdt ARGS(( Pst* pst, RgInfDedBoRpt* boRpt));
+S16  RgSchMacCellReg ARGS((Pst* pst,RgInfCellReg* regReq));
 #ifdef LTE_L2_MEAS
-EXTERN S16 RgSchMacL2Meas ARGS((Pst* pst, RgInfL2MeasReq* l2MeasReq));
-EXTERN S16 RgMacSchL2Meas ARGS((Pst* pst, RgInfL2MeasCfm* l2MeasCfm));
-EXTERN S16 RgSchMacL2MeasStop ARGS((Pst* pst, RgInfL2MeasStopReq *measInfo));
-EXTERN S16 RgSchMacL2MeasSend ARGS((Pst* pst, RgInfL2MeasSndReq *measInfo));
+S16 RgSchMacL2Meas ARGS((Pst* pst, RgInfL2MeasReq* l2MeasReq));
+S16 RgMacSchL2Meas ARGS((Pst* pst, RgInfL2MeasCfm* l2MeasCfm));
+S16 RgSchMacL2MeasStop ARGS((Pst* pst, RgInfL2MeasStopReq *measInfo));
+S16 RgSchMacL2MeasSend ARGS((Pst* pst, RgInfL2MeasSndReq *measInfo));
 #endif  /* LTE_L2_MEAS */
 /* Added support for SPS*/
 #ifdef LTEMAC_SPS
-EXTERN S16 RgSchMacSpsLcReg ARGS((Pst *pst, RgInfSpsLcInfo *lcInfo));
-EXTERN S16 RgSchMacUlSpsReset ARGS((Pst *pst, RgInfUlSpsReset *lcInfo));
-EXTERN S16 RgSchMacSpsLcDereg ARGS((Pst *pst, CmLteCellId cellId, CmLteRnti
+S16 RgSchMacSpsLcReg ARGS((Pst *pst, RgInfSpsLcInfo *lcInfo));
+S16 RgSchMacUlSpsReset ARGS((Pst *pst, RgInfUlSpsReset *lcInfo));
+S16 RgSchMacSpsLcDereg ARGS((Pst *pst, CmLteCellId cellId, CmLteRnti
     crnti));
-EXTERN S16 RgMacSchSpsRel ARGS((Pst *pst, RgInfSpsRelInfo* relInfo));
+S16 RgMacSchSpsRel ARGS((Pst *pst, RgInfSpsRelInfo* relInfo));
 #endif
-EXTERN S16 RgMacSchUeDel ARGS((Pst* pst, RgInfUeDelInd*  ueDelInd));
+S16 RgMacSchUeDel ARGS((Pst* pst, RgInfUeDelInd*  ueDelInd));
 #ifdef __cplusplus
 }
 #endif

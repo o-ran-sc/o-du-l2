@@ -109,7 +109,7 @@ static int RLOG_FILE_ID=163;
  *             in TDD config 2 where no DwPTS exits.
  */
 
-PRIVATE uint8_t rgSchDrxDlSfTddCfg[RGSCH_MAX_SFCFG][RGSCH_MAX_TDD_CFG] = 
+static uint8_t rgSchDrxDlSfTddCfg[RGSCH_MAX_SFCFG][RGSCH_MAX_TDD_CFG] = 
 {
    {2,4,6,6,7,8,3},
    {4,6,8,7,8,9,5}
@@ -124,7 +124,7 @@ PRIVATE uint8_t rgSchDrxDlSfTddCfg[RGSCH_MAX_SFCFG][RGSCH_MAX_TDD_CFG] =
  *   
  */
 
-PRIVATE uint8_t rgSchDrxDLSfTillNxtSFN[RGSCH_MAX_SFCFG][RGSCH_MAX_TDD_CFG]
+static uint8_t rgSchDrxDLSfTillNxtSFN[RGSCH_MAX_SFCFG][RGSCH_MAX_TDD_CFG]
                             [RGSCH_NUM_SUB_FRAMES]= 
 {
    {
@@ -157,7 +157,7 @@ PRIVATE uint8_t rgSchDrxDLSfTillNxtSFN[RGSCH_MAX_SFCFG][RGSCH_MAX_TDD_CFG]
  *   
  */
 
-PRIVATE uint8_t rgSchDrxDLSftoDLSfIdx[RGSCH_MAX_SFCFG][RGSCH_MAX_TDD_CFG]
+static uint8_t rgSchDrxDLSftoDLSfIdx[RGSCH_MAX_SFCFG][RGSCH_MAX_TDD_CFG]
                          [RGSCH_NUM_SUB_FRAMES]= 
 {
    {
@@ -197,66 +197,66 @@ uint8_t rgSchDrxHarqRetxFirstPsf[RGSCH_MAX_TDD_CFG][RGSCH_NUM_SUB_FRAMES] = {
 /******************************************************************************
  *                         Start of Function declarations                     *
  ******************************************************************************/
-PRIVATE Void rgSCHDrxTtiHdlOnDurUl ARGS((
+static Void rgSCHDrxTtiHdlOnDurUl ARGS((
 RgSchCellCb        *cell,
 uint16_t                ulIndex
 ));
-PRIVATE Void rgSCHDrxTtiHdlOnDurDl ARGS((
+static Void rgSCHDrxTtiHdlOnDurDl ARGS((
 RgSchCellCb    *cell,
 uint16_t                dlIndex
 ));
-PRIVATE Void rgSCHDrxTtiHdlDlHarqRTT ARGS((
+static Void rgSCHDrxTtiHdlDlHarqRTT ARGS((
 RgSchCellCb          *cell,
 uint16_t                   dlIndex
 ));
-PRIVATE Void rgSCHDrxTtiHdlUlHarqRTT ARGS((
+static Void rgSCHDrxTtiHdlUlHarqRTT ARGS((
 RgSchCellCb          *cell,
 uint16_t                   ulIndex
 ));
- PRIVATE S16 rgSCHDrxTtiHdlOnDur ARGS((RgSchCellCb *cellCb, uint16_t dlIndex, 
+static S16 rgSCHDrxTtiHdlOnDur ARGS((RgSchCellCb *cellCb, uint16_t dlIndex, 
                                         uint16_t ulIndex));
- PRIVATE S16 rgSCHDrxTtiHdlInActv ARGS((RgSchCellCb *cellCb, uint16_t dlIndex,
+static S16 rgSCHDrxTtiHdlInActv ARGS((RgSchCellCb *cellCb, uint16_t dlIndex,
                                         uint16_t ulIndex));
- PRIVATE S16 rgSCHDrxTtiHdlShortCycle ARGS((RgSchCellCb *cell, uint16_t dlIndex, 
+static S16 rgSCHDrxTtiHdlShortCycle ARGS((RgSchCellCb *cell, uint16_t dlIndex, 
                                        uint16_t ulIndex));
- PRIVATE S16 rgSCHDrxTtiHdlDlHarq ARGS((RgSchCellCb *cellCb, uint16_t dlIndex,
+static S16 rgSCHDrxTtiHdlDlHarq ARGS((RgSchCellCb *cellCb, uint16_t dlIndex,
                                        uint16_t ulIndex));
- PRIVATE S16 rgSCHDrxCpyUeCfg ARGS((RgSchDrxUeCb *drxCb,
+static S16 rgSCHDrxCpyUeCfg ARGS((RgSchDrxUeCb *drxCb,
                                      RgrUeDrxCfg* ueDrxCfg));
  
- PRIVATE S16 rgSCHDrxGetNxtOnDur ARGS((RgSchCellCb* cell,RgSchDrxUeCb* drxCb,
+static S16 rgSCHDrxGetNxtOnDur ARGS((RgSchCellCb* cell,RgSchDrxUeCb* drxCb,
                                        CmLteTimingInfo* nxtOnDur,
                                        uint8_t delta));
  
-PRIVATE Void rgSCHDrxMvToNxtOnDurOcc ARGS((RgSchCellCb* cell,
+static Void rgSCHDrxMvToNxtOnDurOcc ARGS((RgSchCellCb* cell,
                                            RgSchUeCb* ue,
                                            uint16_t      idx,
                                            Bool    calcFrmOffst));
 #ifdef LTE_TDD
-PRIVATE Void rgSCHDrxCalcNxtTmrExpry ARGS((RgSchCellCb     *cell,
+static Void rgSCHDrxCalcNxtTmrExpry ARGS((RgSchCellCb     *cell,
                                            RgSchUeCb       *ue,
                                            uint16_t              delta,
                                            uint32_t              tmrLen,
                                            S16             *distance,
                                            uint16_t             *idx
                                           ));
-PRIVATE S16 rgSCHDrxGetNxtTmrExpry ARGS((RgSchCellCb *cell,uint16_t curTime,
+static S16 rgSCHDrxGetNxtTmrExpry ARGS((RgSchCellCb *cell,uint16_t curTime,
                                           uint32_t duration, 
                                          CmLteTimingInfo* tmrExpryIdx));
 #endif /* LTE_TDD */
 #ifdef EMTC_ENABLE
-EXTERN S16 rgSCHEmtcDrxCpyUeCfg
+S16 rgSCHEmtcDrxCpyUeCfg
 (
  RgSchUeCb     *ueCb,
  RgrUeDrxCfg   *drxCfg
 );
-EXTERN S16 rgSCHDrxTtiHdlUlHarq 
+S16 rgSCHDrxTtiHdlUlHarq 
 (
 RgSchCellCb          *cell,
 uint16_t                   dlIndex,
 uint16_t                   ulIndex
 );
-EXTERN Void rgSCHDrxUeUlHqReset
+Void rgSCHDrxUeUlHqReset
 (
 RgSchCellCb   *cell,
 RgSchUeCb     *ue,
@@ -383,14 +383,14 @@ RgSchCellCb  *cell;
  */
 
 #ifdef ANSI
-PRIVATE S16 rgSCHDrxTtiHdlOnDur
+static S16 rgSCHDrxTtiHdlOnDur
 (
 RgSchCellCb*  cell,
 uint16_t           dlIndex,
 uint16_t           ulIndex
 )
 #else
-PRIVATE S16 rgSCHDrxTtiHdlOnDur(cell, dlIndex, ulIndex)
+static S16 rgSCHDrxTtiHdlOnDur(cell, dlIndex, ulIndex)
 RgSchCellCb*  cell;
 uint16_t           dlIndex;
 uint16_t           ulIndex;
@@ -769,14 +769,14 @@ uint16_t           ulIndex;
   */
 
 #ifdef ANSI
-PRIVATE S16 rgSCHDrxTtiHdlDlHarq 
+static S16 rgSCHDrxTtiHdlDlHarq 
 (
 RgSchCellCb          *cell,
 uint16_t                   dlIndex,
 uint16_t                   ulIndex
 )
 #else /* ANSI */
-PRIVATE S16 rgSCHDrxTtiHdlDlHarq (cell, dlIndex, ulIndex)
+static S16 rgSCHDrxTtiHdlDlHarq (cell, dlIndex, ulIndex)
 RgSchCellCb          *cell;
 uint16_t                   dlIndex;
 uint16_t                   ulIndex;
@@ -1300,7 +1300,7 @@ S16 rgSCHDrxUeCfg (cell, ue, ueCfg)
  * @return ROK/RFAILED 
  */
 #ifdef ANSI
-PRIVATE S16 rgSCHDrxGetNxtOnDur
+static S16 rgSCHDrxGetNxtOnDur
 (
  RgSchCellCb         *cell,
  RgSchDrxUeCb        *drxCb,
@@ -1308,7 +1308,7 @@ PRIVATE S16 rgSCHDrxGetNxtOnDur
  uint8_t                   delta
  )
 #else
-PRIVATE S16 rgSCHDrxGetNxtOnDur (cell, drxCb, nxtOnDur, delta)
+static S16 rgSCHDrxGetNxtOnDur (cell, drxCb, nxtOnDur, delta)
  RgSchCellCb         *cell;
  RgSchDrxUeCb        *drxCb;
  CmLteTimingInfo     *nxtOnDur;
@@ -1413,13 +1413,13 @@ PRIVATE S16 rgSCHDrxGetNxtOnDur (cell, drxCb, nxtOnDur, delta)
  * @return ROK/RFAILED 
  */
 #ifdef ANSI
-PRIVATE S16 rgSCHDrxCpyUeCfg
+static S16 rgSCHDrxCpyUeCfg
 (
  RgSchDrxUeCb  *ueCb,
  RgrUeDrxCfg   *drxCfg
 )
 #else
-PRIVATE S16 rgSCHDrxCpyUeCfg (ueCb, drxCfg)
+static S16 rgSCHDrxCpyUeCfg (ueCb, drxCfg)
  RgSchDrxUeCb  *ueCb;
  RgrUeDrxCfg   *drxCfg;
 #endif
@@ -2129,7 +2129,7 @@ RgSchUeCb     *ueCb;
  * @return Void 
  */
 #ifdef ANSI
-PRIVATE Void rgSCHDrxMvToNxtOnDurOcc 
+static Void rgSCHDrxMvToNxtOnDurOcc 
 (
 RgSchCellCb      *cell,
 RgSchUeCb        *ueCb,
@@ -2137,7 +2137,7 @@ uint16_t               idx,
 Bool              calcFrmOffst
 )
 #else
-PRIVATE Void rgSCHDrxMvToNxtOnDurOcc (cell, ueCb, idx, calcFrmOffst)
+static Void rgSCHDrxMvToNxtOnDurOcc (cell, ueCb, idx, calcFrmOffst)
 RgSchCellCb      *cell;
 RgSchUeCb        *ueCb; 
 uint16_t               idx;
@@ -2244,7 +2244,7 @@ Bool              calcFrmOffst;
  * @return ROK/RFAILED
  */
 #ifdef ANSI
-PRIVATE S16 rgSCHDrxGetNxtTmrExpry 
+static S16 rgSCHDrxGetNxtTmrExpry 
 (
  RgSchCellCb        *cell,
  uint16_t                curTime,
@@ -2252,7 +2252,7 @@ PRIVATE S16 rgSCHDrxGetNxtTmrExpry
  CmLteTimingInfo    *tmrExpryIdx
 )
 #else
-PRIVATE S16 rgSCHDrxGetNxtTmrExpry (cell,curTime,duration,tmrExpryIdx)
+static S16 rgSCHDrxGetNxtTmrExpry (cell,curTime,duration,tmrExpryIdx)
  RgSchCellCb         *cell;
  uint16_t                 curTime;
  uint32_t                 duration;
@@ -2391,7 +2391,7 @@ PRIVATE S16 rgSCHDrxGetNxtTmrExpry (cell,curTime,duration,tmrExpryIdx)
  * @return ROK/RFAILED
  */
 #ifdef ANSI
-PRIVATE Void rgSCHDrxCalcNxtTmrExpry
+static Void rgSCHDrxCalcNxtTmrExpry
 (
  RgSchCellCb     *cell,
  RgSchUeCb       *ue,
@@ -2401,7 +2401,7 @@ PRIVATE Void rgSCHDrxCalcNxtTmrExpry
  uint16_t             *idx
 )
 #else
-PRIVATE Void rgSCHDrxCalcNxtTmrExpry (cell,ue,delta,tmrLen,distance,idx)
+static Void rgSCHDrxCalcNxtTmrExpry (cell,ue,delta,tmrLen,distance,idx)
  RgSchCellCb     *cell;
  RgSchUeCb       *ue;
  uint16_t              delta;
@@ -2544,13 +2544,13 @@ uint16_t           offSet;
  */
 
 #ifdef ANSI
-PRIVATE Void rgSCHDrxTtiHdlOnDurUl
+static Void rgSCHDrxTtiHdlOnDurUl
 (
 RgSchCellCb        *cell,
 uint16_t                ulIndex
 )
 #else
-PRIVATE Void rgSCHDrxTtiHdlOnDurUl(cell, ulIndex)
+static Void rgSCHDrxTtiHdlOnDurUl(cell, ulIndex)
 RgSchCellCb   *cell;
 uint16_t           ulIndex;
 #endif
@@ -2684,13 +2684,13 @@ uint16_t           ulIndex;
  */
 
 #ifdef ANSI
-PRIVATE Void rgSCHDrxTtiHdlOnDurDl
+static Void rgSCHDrxTtiHdlOnDurDl
 (
 RgSchCellCb    *cell,
 uint16_t                dlIndex
 )
 #else
-PRIVATE Void rgSCHDrxTtiHdlOnDurDl(cell, dlIndex)
+static Void rgSCHDrxTtiHdlOnDurDl(cell, dlIndex)
 RgSchCellCb   *cell;
 uint16_t           dlIndex;
 #endif
@@ -2870,13 +2870,13 @@ uint16_t           dlIndex;
  */
 
 #ifdef ANSI
-PRIVATE Void rgSCHDrxTtiHdlDlHarqRTT
+static Void rgSCHDrxTtiHdlDlHarqRTT
 (
 RgSchCellCb          *cell,
 uint16_t                   dlIndex
 )
 #else /* ANSI */
-PRIVATE Void rgSCHDrxTtiHdlDlHarqRTT(cell, dlIndex)
+static Void rgSCHDrxTtiHdlDlHarqRTT(cell, dlIndex)
 RgSchCellCb          *cell;
 uint16_t                   dlIndex;
 #endif /* ANSI */
@@ -3057,13 +3057,13 @@ uint16_t                   dlIndex;
   */
 
 #ifdef ANSI
-PRIVATE Void rgSCHDrxTtiHdlUlHarqRTT
+static Void rgSCHDrxTtiHdlUlHarqRTT
 (
 RgSchCellCb          *cell,
 uint16_t                   ulIndex
 )
 #else /* ANSI */
-PRIVATE Void rgSCHDrxTtiHdlUlHarqRTT(cell, ulIndex)
+static Void rgSCHDrxTtiHdlUlHarqRTT(cell, ulIndex)
 RgSchCellCb          *cell;
 uint16_t                   ulIndex;
 #endif /* ANSI */

@@ -76,7 +76,7 @@
 #include "du_mgr.h"
 #include "du_f1ap_msg_hdl.h"
 
-extern DuCfgParams duCfgParam;
+DuCfgParams duCfgParam;
 
 uint8_t procGNBDUCfgUpdAck(F1AP_PDU_t *f1apMsg);
 uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg);

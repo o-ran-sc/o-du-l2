@@ -606,156 +606,156 @@ typedef struct addrinfo  CmInetAddrInfo;
 
 #ifdef CM_INET2  
 #ifdef IPV6_SUPPORTED
-EXTERN S16 cmInetSocket ARGS((uint8_t type, CmInetFd *sockFd, uint8_t protocol,
+S16 cmInetSocket ARGS((uint8_t type, CmInetFd *sockFd, uint8_t protocol,
                               uint8_t family));
 #else
-EXTERN S16 cmInetSocket ARGS((uint8_t type, CmInetFd *sockFd, uint8_t protocol));
+S16 cmInetSocket ARGS((uint8_t type, CmInetFd *sockFd, uint8_t protocol));
 #endif /* IPV6_SUPPORTED */
 #else   /* CM_INET2 */ 
-EXTERN S16 cmInetSocket ARGS((uint8_t type, CmInetFd *sockFd));
+S16 cmInetSocket ARGS((uint8_t type, CmInetFd *sockFd));
 #endif  /* CM_INET2 */ 
 
 /* cm_inet_x_001.main_22 1. Added new interface - cmInetFlushRecvBuf()
                                to flush the data from socket receive buffer. */
 #ifdef CM_INET_FLUSH_RECV_BUF
-EXTERN S16 cmInetFlushRecvBuf ARGS((CmInetFd *sockFd,
+S16 cmInetFlushRecvBuf ARGS((CmInetFd *sockFd,
                                MsgLen *len,
                                S32 flags));
 #endif /* CM_INET_FLUSH_RECV_BUF*/
 
-EXTERN S16 cmInetBind ARGS((CmInetFd *sockFd, CmInetAddr *myAddr));
-EXTERN S16 cmInetConnect ARGS((CmInetFd *sockFd, CmInetAddr *servAddr));
-EXTERN S16 cmInetListen ARGS((CmInetFd *sockFd, S16 backLog));
-EXTERN S16 cmInetAccept ARGS((CmInetFd *sockFd, CmInetAddr *fromAddr, 
+S16 cmInetBind ARGS((CmInetFd *sockFd, CmInetAddr *myAddr));
+S16 cmInetConnect ARGS((CmInetFd *sockFd, CmInetAddr *servAddr));
+S16 cmInetListen ARGS((CmInetFd *sockFd, S16 backLog));
+S16 cmInetAccept ARGS((CmInetFd *sockFd, CmInetAddr *fromAddr, 
                               CmInetFd *newSockFd));
 #ifdef IPV6_OPTS_SUPPORTED
 #ifdef LOCAL_INTF
-EXTERN S16 cmInetRecvMsg ARGS((CmInetFd *sockFd, CmInetAddr *dstAddr, 
+S16 cmInetRecvMsg ARGS((CmInetFd *sockFd, CmInetAddr *dstAddr, 
                                CmInetMemInfo *info, Buffer **mPtr, 
                                MsgLen *len, CmInetIpHdrParm *ipHdrParams,
                                CmInetLocalInf  *localIf, S32 flags));
 #else
-EXTERN S16 cmInetRecvMsg ARGS((CmInetFd *sockFd, CmInetAddr *dstAddr, 
+S16 cmInetRecvMsg ARGS((CmInetFd *sockFd, CmInetAddr *dstAddr, 
                                CmInetMemInfo *info, Buffer **mPtr, 
                                MsgLen *len, CmInetIpHdrParm *ipHdrParams,
                                S32 flags));
 #endif /* LOCAL_INTF */
 #else
 #ifdef LOCAL_INTF
-EXTERN S16 cmInetRecvMsg ARGS((CmInetFd *sockFd, CmInetAddr *dstAddr, 
+S16 cmInetRecvMsg ARGS((CmInetFd *sockFd, CmInetAddr *dstAddr, 
                                CmInetMemInfo *info, Buffer **mPtr, 
                                MsgLen *len, CmInetLocalInf  *localIf,
                                S32 flags));
 #else
-EXTERN S16 cmInetRecvMsg ARGS((CmInetFd *sockFd, CmInetAddr *dstAddr, 
+S16 cmInetRecvMsg ARGS((CmInetFd *sockFd, CmInetAddr *dstAddr, 
                                CmInetMemInfo *info, Buffer **mPtr, 
                                MsgLen *len, S32 flags));
 #endif /* LOCAL_INTF */
 #endif /* IPV6_OPTS_SUPPORTED */
-EXTERN S16 cmInetSendDscpMsg ARGS((CmInetFd *sockFd, CmInetAddr *dstAddr, 
+S16 cmInetSendDscpMsg ARGS((CmInetFd *sockFd, CmInetAddr *dstAddr, 
                                CmInetMemInfo *info, Buffer *mBuf, MsgLen *len,
                                CmInetIpHdrParm *ipHdrParams, S16 flags));
 
 #ifdef IPV6_OPTS_SUPPORTED
-EXTERN S16 cmInetSendMsg ARGS((CmInetFd *sockFd, CmInetAddr *dstAddr, 
+S16 cmInetSendMsg ARGS((CmInetFd *sockFd, CmInetAddr *dstAddr, 
                                CmInetMemInfo *info, Buffer *mBuf, MsgLen *len,
                                CmInetIpHdrParm *ipHdrParams, S16 flags));
 #else
-EXTERN S16 cmInetSendMsg ARGS((CmInetFd *sockFd, CmInetAddr *dstAddr, 
+S16 cmInetSendMsg ARGS((CmInetFd *sockFd, CmInetAddr *dstAddr, 
                                CmInetMemInfo *info, Buffer *mBuf, MsgLen *len,
                                S16 flags));
 #endif /* IPV6_OPTS_SUPPORTED */
-EXTERN S16 cmInetPeek ARGS((CmInetFd *sockFd, CmInetAddr *fromAddr, 
+S16 cmInetPeek ARGS((CmInetFd *sockFd, CmInetAddr *fromAddr, 
                             CmInetMemInfo *info, MsgLen dataPos, 
                             MsgLen dataLen, uint8_t *data));
 /* cm_inet_x_001.main_26: Added new function declaration cmInetPeekNew() */ 
-EXTERN S16 cmInetPeekNew ARGS((CmInetFd *sockFd, CmInetAddr *fromAddr, 
+S16 cmInetPeekNew ARGS((CmInetFd *sockFd, CmInetAddr *fromAddr, 
                             CmInetMemInfo *info, MsgLen dataPos, 
                             MsgLen dataLen, uint8_t *data)); 
-EXTERN S16 cmInetClose ARGS((CmInetFd *sockFd));
-EXTERN S16 cmInetShutdown ARGS((CmInetFd *sockFd, S32 howTo));
-EXTERN S16 cmInetSelect ARGS((CmInetFdSet *readFdS, CmInetFdSet *writeFdS, 
+S16 cmInetClose ARGS((CmInetFd *sockFd));
+S16 cmInetShutdown ARGS((CmInetFd *sockFd, S32 howTo));
+S16 cmInetSelect ARGS((CmInetFdSet *readFdS, CmInetFdSet *writeFdS, 
                               uint32_t *mSecTimeout, S16 *numFdS));
-EXTERN S16 cmInetSetOpt ARGS((CmInetFd *sockFd, uint32_t level, uint32_t type, 
+S16 cmInetSetOpt ARGS((CmInetFd *sockFd, uint32_t level, uint32_t type, 
                              Ptr value));
-EXTERN S16 cmInetGetNumRead ARGS((CmInetFd *sockFd, uint32_t *dataLen));
+S16 cmInetGetNumRead ARGS((CmInetFd *sockFd, uint32_t *dataLen));
 #ifndef SS_PS
-EXTERN S16 cmInetGetHostByName ARGS((S8 *hostName, CmInetIpAddrTbl *addrTbl));
-EXTERN S16 cmInetGetIpNodeByName ARGS((S8 *hostName, CmInetIpAddrArr *addrArr));
-EXTERN S16 cmInetAddr ARGS((S8 *asciiAddr, CmInetIpAddr *address));
-EXTERN S16 cmInetNtoa ARGS((CmInetIpAddr address, S8 **asciiAddr));
-EXTERN S16 cmInetPton ARGS((CmInetIpAddr *address, S8 *asciiAddr));
+S16 cmInetGetHostByName ARGS((S8 *hostName, CmInetIpAddrTbl *addrTbl));
+S16 cmInetGetIpNodeByName ARGS((S8 *hostName, CmInetIpAddrArr *addrArr));
+S16 cmInetAddr ARGS((S8 *asciiAddr, CmInetIpAddr *address));
+S16 cmInetNtoa ARGS((CmInetIpAddr address, S8 **asciiAddr));
+S16 cmInetPton ARGS((CmInetIpAddr *address, S8 *asciiAddr));
 #ifdef IPV6_SUPPORTED 
-EXTERN S16 cmInetPton6 ARGS((CmInetIpAddr6 *address6, S8 *asciiAddr));
+S16 cmInetPton6 ARGS((CmInetIpAddr6 *address6, S8 *asciiAddr));
 #endif /* IPV6_SUPPORTED */
 #endif /*  SS_PS */
 /* Function prototypes to peek into file descriptor set. */
 #if (defined(WIN32) || defined(SUNOS) || defined(SS_LINUX) || defined(SS_VW) \
      || defined(HPOS))
-EXTERN S16 cmInetFdSetInfoInit ARGS((CmInetFdSetInfo *fdSetInfo));
-EXTERN S16 cmInetGetFd ARGS((CmInetFdSetInfo *fdSetInfo, CmInetFdSet *fdSet,
+S16 cmInetFdSetInfoInit ARGS((CmInetFdSetInfo *fdSetInfo));
+S16 cmInetGetFd ARGS((CmInetFdSetInfo *fdSetInfo, CmInetFdSet *fdSet,
                              CmInetFdType *sockFd));
 #endif /* WIN32 | SUNOS | SS_LINUX | SS_VW | HPOS */
 
-EXTERN S16 cmInetGetMemSize      ARGS((S32 *size));
-EXTERN S16 cmInetInit            ARGS((Void));
-EXTERN S16 cmInetDeInit          ARGS((Void));
-EXTERN S16 cmInetGetSockName     ARGS((CmInetFd *sockFd, CmInetAddr *locAddr));
+S16 cmInetGetMemSize      ARGS((S32 *size));
+S16 cmInetInit            ARGS((Void));
+S16 cmInetDeInit          ARGS((Void));
+S16 cmInetGetSockName     ARGS((CmInetFd *sockFd, CmInetAddr *locAddr));
 
-EXTERN S16 cmInetConvertStrToIpAddr ARGS((uint16_t len, uint8_t *val,
+S16 cmInetConvertStrToIpAddr ARGS((uint16_t len, uint8_t *val,
                                           CmInetNetAddr *address));
-EXTERN S16 cmInetAsciiToIpv4 ARGS((uint8_t numBytes, uint8_t *ipv4Addr,
+S16 cmInetAsciiToIpv4 ARGS((uint8_t numBytes, uint8_t *ipv4Addr,
                                    uint16_t len, uint8_t *val));
 
 
 /* cm_inet_x_001.main_29 Poll Implementation Changes */
-EXTERN S16 cmInetPoll ARGS((CmInetPollFd  *pollFdArr,uint32_t idx,S16  *numFdS,uint32_t  timeout));
-EXTERN S16 cmInetPollSetFd ARGS((CmInetFd  *sockFd,CmInetPollFd  *pollFdArr,S16  idx, uint16_t  eventMask));
-EXTERN S16 cmInetPollFdIsSet ARGS((CmInetPollFd  *pollFdArr, S16 idx, uint16_t  eventMask));
-EXTERN S16 cmInetPollClearFdREvent ARGS((CmInetPollFd  *pollFdArr, S16 idx, uint16_t eventMask));
-EXTERN S16 cmInetPollClearFdEvent ARGS((CmInetPollFd  *pollFdArr,S16 idx, uint16_t eventMask));
-EXTERN S16 cmInetPollDelFd ARGS((CmInetPollFd  *pollFdArr, S16 delIdx, S16  crntIdx));
-EXTERN S16 cmInetPollInitFdArr ARGS((CmInetPollFd  *pollFdArr));
-EXTERN S16 cmInetNtop ARGS((uint8_t type,Void *address,S8 *asciiAddr,uint32_t len));
+S16 cmInetPoll ARGS((CmInetPollFd  *pollFdArr,uint32_t idx,S16  *numFdS,uint32_t  timeout));
+S16 cmInetPollSetFd ARGS((CmInetFd  *sockFd,CmInetPollFd  *pollFdArr,S16  idx, uint16_t  eventMask));
+S16 cmInetPollFdIsSet ARGS((CmInetPollFd  *pollFdArr, S16 idx, uint16_t  eventMask));
+S16 cmInetPollClearFdREvent ARGS((CmInetPollFd  *pollFdArr, S16 idx, uint16_t eventMask));
+S16 cmInetPollClearFdEvent ARGS((CmInetPollFd  *pollFdArr,S16 idx, uint16_t eventMask));
+S16 cmInetPollDelFd ARGS((CmInetPollFd  *pollFdArr, S16 delIdx, S16  crntIdx));
+S16 cmInetPollInitFdArr ARGS((CmInetPollFd  *pollFdArr));
+S16 cmInetNtop ARGS((uint8_t type,Void *address,S8 *asciiAddr,uint32_t len));
 
 
 
 /* cm_inet_x_001.main_21:Added wrapper function for getaddrinfo and freeaddrinfo */
 #if (!defined(SS_VW) && !defined(SS_PS) && !defined(WIN32))
-EXTERN S32 cmInetGetAddrInfo ARGS((CONSTANT S8* node, CONSTANT S8* service, 
-                                   CONSTANT CmInetAddrInfo *hints, CmInetAddrInfo **res));
-EXTERN Void cmInetFreeAddrInfo ARGS((CmInetAddrInfo *res));
+S32 cmInetGetAddrInfo ARGS((const S8* node, const S8* service, 
+                                   const CmInetAddrInfo *hints, CmInetAddrInfo **res));
+Void cmInetFreeAddrInfo ARGS((CmInetAddrInfo *res));
 #endif /* SS_VW | SS_PS | WIN32 */
 
 /*cm_inet_x_001.main_23 Updated for TUCL 2.1 Release (Kernel SCTP Support) */
 #ifdef CM_LKSCTP
-EXTERN S16 cmInetSctpBindx     ARGS((CmInetFd *sockFd, 
+S16 cmInetSctpBindx     ARGS((CmInetFd *sockFd, 
                                      CmInetNetAddrLst *addrLst, 
                                      uint16_t port));
-EXTERN S16 cmInetSctpConnectx  ARGS((CmInetFd *sockFd, CmInetNetAddr *primAddr, 
+S16 cmInetSctpConnectx  ARGS((CmInetFd *sockFd, CmInetNetAddr *primAddr, 
                                      CmInetNetAddrLst *addrLst, 
                                      uint16_t port));
-EXTERN S16 cmInetSctpPeelOff   ARGS((CmInetFd *sockFd, uint32_t assocId, 
+S16 cmInetSctpPeelOff   ARGS((CmInetFd *sockFd, uint32_t assocId, 
                                      CmInetFdType *assocFd));
-EXTERN S16 cmInetSctpSendMsg   ARGS((CmInetFd *sockFd, CmInetNetAddr *dstAddr, 
+S16 cmInetSctpSendMsg   ARGS((CmInetFd *sockFd, CmInetNetAddr *dstAddr, 
                                      uint16_t port, CmInetMemInfo *info, 
                                      Buffer *mBuf, MsgLen *len, uint16_t strmId,
                                      Bool unorderFlg, uint16_t ttl, uint32_t ppId, 
                                      uint32_t context));
-EXTERN S16 cmInetSctpRecvMsg  ARGS((CmInetFd *sockFd, CmInetNetAddr *srcAddr, 
+S16 cmInetSctpRecvMsg  ARGS((CmInetFd *sockFd, CmInetNetAddr *srcAddr, 
                                     uint16_t *port, CmInetMemInfo *info, 
                                     Buffer **mBuf, MsgLen *len, 
                                     CmInetSctpSndRcvInfo *sinfo, uint32_t *flag,
                                     CmInetSctpNotification *ntfy));
-EXTERN S16 cmInetSctpGetPAddrs ARGS((CmInetFd *sockFd, uint32_t assocId, 
+S16 cmInetSctpGetPAddrs ARGS((CmInetFd *sockFd, uint32_t assocId, 
                                      CmInetNetAddrLst *addrlst));
-EXTERN S16 cmInetGetOpt        ARGS((CmInetFd *sockFd, uint32_t level, uint32_t type,
+S16 cmInetGetOpt        ARGS((CmInetFd *sockFd, uint32_t level, uint32_t type,
                                      Ptr value)); 
 
 /*cm_inet_x_001.main_25: Added new funcion */
-EXTERN S16 cmInetShutDownSctp ARGS((CmInetFd *sockFd));
+S16 cmInetShutDownSctp ARGS((CmInetFd *sockFd));
 /*cm_inet_x_001.main_30: Added new function */
-EXTERN S16 cmInetAbortSctpAssoc ARGS((CmInetFd *sockFd, UConnId assocId));
+S16 cmInetAbortSctpAssoc ARGS((CmInetFd *sockFd, UConnId assocId));
 #endif
 
 #ifdef __cplusplus

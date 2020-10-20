@@ -163,7 +163,7 @@ static int g_kIdx, g_action, g_storeKeys;
 static char g_keyBuf[32];
 
 /* Standard C library, timezone */
-extern char *tzname[2];
+char *tzname[2];
 ///////////////////////////////////////////////////////////////////////////////
 //                  FUNCTION DECLARATIONS	                                   //
 ///////////////////////////////////////////////////////////////////////////////
@@ -186,7 +186,7 @@ void userAction(void);
 void handleSigIO(int sig);
 void rlPrintConfiguration(void);
 THREAD_DATA* rlRegisterThread(const char* taskName);
-extern void (*rlSigHandler)(int);
+void (*rlSigHandler)(int);
 /* L2 Logging */
 void rlInitL2Log(void);
 uint32_t g_rlogWriteCount = 0;

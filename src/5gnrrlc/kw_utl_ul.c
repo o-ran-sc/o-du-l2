@@ -270,7 +270,7 @@ uint8_t rlcUtlSendUlDataToDu(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *sdu)
 } /* rlcUtlSendUlDataToDu */
 
 
-PRIVATE Void dumpRLCUlRbInformation(RlcUlRbCb* ulRbCb)
+static Void dumpRLCUlRbInformation(RlcUlRbCb* ulRbCb)
 {
    if(ulRbCb->mode == CM_LTE_MODE_UM)
    {
@@ -414,7 +414,7 @@ RlcUlRbCb              *rbCb;
 uint32_t               ttiCnt;
 #endif
 {
-   VOLATILE uint32_t     startTime = 0;
+   volatile uint32_t     startTime = 0;
 
       /*starting Task*/
       SStartTask(&startTime, PID_RLC_IP_TPT_INCTTI);
@@ -495,7 +495,7 @@ uint32_t     ttiCnt;
 #endif
 {
    MsgLen        rlcSduSz = 0;  /*Holds length of Rlc Sdu*/
-   VOLATILE uint32_t     startTime = 0;
+   volatile uint32_t     startTime = 0;
 
    /*starting Task*/
    SStartTask(&startTime, PID_RLC_IP_TPT_INCVOL);

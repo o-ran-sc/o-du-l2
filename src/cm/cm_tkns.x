@@ -153,35 +153,35 @@ typedef struct tknStrUNIXL       /* Universal String */
 } TknStrUNIXL;
 
 /* common packing functions */
-EXTERN S16 cmPkTknPres      ARGS((TknPres      *tknPres,       Buffer *mBuf));
-EXTERN S16 cmPkTknS16       ARGS((TknS16       *tknS16,        Buffer *mBuf));
-EXTERN S16 cmPkTknBStr32    ARGS((TknBStr32    *tknbStr32,     Buffer *mBuf));
-EXTERN S16 cmPkTknStr8      ARGS((TknStr8      *tknStr8,       Buffer *mBuf));
-EXTERN S16 cmPkTknStr16     ARGS((TknStr16     *tknStr16,      Buffer *mBuf));
-EXTERN S16 cmPkTknStrOSXL   ARGS((TknStrOSXL   *tknStrOSXL,    Buffer *mBuf));
-EXTERN S16 cmPkTknStrBSXL   ARGS((TknStrBSXL   *tknStrBSXL,    Buffer *mBuf));
-EXTERN S16 cmPkTknStrBMP4   ARGS((TknStrBMP4   *tknStrBMP4,    Buffer *mBuf));
-EXTERN S16 cmPkTknStrBMPXL  ARGS((TknStrBMPXL  *tknStrBMPXL,   Buffer *mBuf));
-EXTERN S16 cmPkTknStrUNI4   ARGS((TknStrUNI4   *tknStrUNI4,    Buffer *mBuf));
-EXTERN S16 cmPkTknStrUNIXL  ARGS((TknStrUNIXL  *tknStrUNIXL,   Buffer *mBuf));
+S16 cmPkTknPres      ARGS((TknPres      *tknPres,       Buffer *mBuf));
+S16 cmPkTknS16       ARGS((TknS16       *tknS16,        Buffer *mBuf));
+S16 cmPkTknBStr32    ARGS((TknBStr32    *tknbStr32,     Buffer *mBuf));
+S16 cmPkTknStr8      ARGS((TknStr8      *tknStr8,       Buffer *mBuf));
+S16 cmPkTknStr16     ARGS((TknStr16     *tknStr16,      Buffer *mBuf));
+S16 cmPkTknStrOSXL   ARGS((TknStrOSXL   *tknStrOSXL,    Buffer *mBuf));
+S16 cmPkTknStrBSXL   ARGS((TknStrBSXL   *tknStrBSXL,    Buffer *mBuf));
+S16 cmPkTknStrBMP4   ARGS((TknStrBMP4   *tknStrBMP4,    Buffer *mBuf));
+S16 cmPkTknStrBMPXL  ARGS((TknStrBMPXL  *tknStrBMPXL,   Buffer *mBuf));
+S16 cmPkTknStrUNI4   ARGS((TknStrUNI4   *tknStrUNI4,    Buffer *mBuf));
+S16 cmPkTknStrUNIXL  ARGS((TknStrUNIXL  *tknStrUNIXL,   Buffer *mBuf));
 
 
 
 /* common unpacking functions */
-EXTERN S16 cmUnpkTknPres      ARGS((TknPres      *tknPres,       Buffer *mBuf));
-EXTERN S16 cmUnpkTknS16       ARGS((TknS16       *tknS16,        Buffer *mBuf));
-EXTERN S16 cmUnpkTknBStr32    ARGS((TknBStr32    *tknBStr32,     Buffer *mBuf));
-EXTERN S16 cmUnpkTknStr8      ARGS((TknStr8      *tknStr8,       Buffer *mBuf));
-EXTERN S16 cmUnpkTknStr16     ARGS((TknStr16     *tknStr16,      Buffer *mBuf));
-EXTERN S16 cmUnpkTknStrOSXL   ARGS((TknStrOSXL   *tknStrOSXL,    Buffer *mBuf,
+S16 cmUnpkTknPres      ARGS((TknPres      *tknPres,       Buffer *mBuf));
+S16 cmUnpkTknS16       ARGS((TknS16       *tknS16,        Buffer *mBuf));
+S16 cmUnpkTknBStr32    ARGS((TknBStr32    *tknBStr32,     Buffer *mBuf));
+S16 cmUnpkTknStr8      ARGS((TknStr8      *tknStr8,       Buffer *mBuf));
+S16 cmUnpkTknStr16     ARGS((TknStr16     *tknStr16,      Buffer *mBuf));
+S16 cmUnpkTknStrOSXL   ARGS((TknStrOSXL   *tknStrOSXL,    Buffer *mBuf,
                                        Ptr ptr));
-EXTERN S16 cmUnpkTknStrBSXL   ARGS((TknStrBSXL   *tknStrBSXL,    Ptr ptr, 
+S16 cmUnpkTknStrBSXL   ARGS((TknStrBSXL   *tknStrBSXL,    Ptr ptr, 
                                        Buffer *mBuf));
-EXTERN S16 cmUnpkTknStrBMP4   ARGS((TknStrBMP4   *tknStrBMP4,    Buffer *mBuf));
-EXTERN S16 cmUnpkTknStrBMPXL  ARGS((TknStrBMPXL  *tknStrBMPXL,   Buffer *mBuf,
+S16 cmUnpkTknStrBMP4   ARGS((TknStrBMP4   *tknStrBMP4,    Buffer *mBuf));
+S16 cmUnpkTknStrBMPXL  ARGS((TknStrBMPXL  *tknStrBMPXL,   Buffer *mBuf,
                                        Ptr ptr));
-EXTERN S16 cmUnpkTknStrUNI4   ARGS((TknStrUNI4   *tknStrUNI4,    Buffer *mBuf));
-EXTERN S16 cmUnpkTknStrUNIXL  ARGS((TknStrUNIXL  *tknStrUNIXL,   Buffer *mBuf,
+S16 cmUnpkTknStrUNI4   ARGS((TknStrUNI4   *tknStrUNI4,    Buffer *mBuf));
+S16 cmUnpkTknStrUNIXL  ARGS((TknStrUNIXL  *tknStrUNIXL,   Buffer *mBuf,
                                        Ptr ptr));
 
 

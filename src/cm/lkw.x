@@ -33,7 +33,7 @@
 #define __LKW_X__
 
 #ifdef __cplusplus
-EXTERN "C" {
+extern "C" {
 #endif  /* __cplusplus */
 
 

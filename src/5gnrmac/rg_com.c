@@ -61,11 +61,11 @@ static int RLOG_MODULE_ID=4096;
 #include "rg_pom_scell.x"
 #endif
 /* local defines */
-PRIVATE S16 rgCOMHndlCfgReq ARGS((Inst inst,CrgCfg  *cfg, RgErrInfo *errInfo,Bool *isCfmRqrd,CrgCfgTransId transId));
-PRIVATE S16 rgCOMHndlRecfgReq ARGS((Inst inst,CrgRecfg *recfg, RgErrInfo *errInfo, \
+static S16 rgCOMHndlCfgReq ARGS((Inst inst,CrgCfg  *cfg, RgErrInfo *errInfo,Bool *isCfmRqrd,CrgCfgTransId transId));
+static S16 rgCOMHndlRecfgReq ARGS((Inst inst,CrgRecfg *recfg, RgErrInfo *errInfo, \
          CrgCfgTransId transId,Bool *isCfmRqrd));
-PRIVATE S16 rgCOMHndlDelReq ARGS((Inst inst,CrgDel *del, RgErrInfo *errInfo, Bool *isCfmRqrd, CrgCfgTransId transId));
-PRIVATE S16 rgCOMHndlResetReq ARGS((Inst inst,CrgRst *reset,RgErrInfo *errInfo));
+static S16 rgCOMHndlDelReq ARGS((Inst inst,CrgDel *del, RgErrInfo *errInfo, Bool *isCfmRqrd, CrgCfgTransId transId));
+static S16 rgCOMHndlResetReq ARGS((Inst inst,CrgRst *reset,RgErrInfo *errInfo));
 /* local typedefs */
  
 /* local externs */
@@ -196,7 +196,7 @@ if(TRUE == isCfmRqrd)
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgCOMHndlCfgReq
+static S16 rgCOMHndlCfgReq
 (
 Inst             inst,
 CrgCfg           *cfg,
@@ -205,7 +205,7 @@ Bool             *isCfmRqrd,
 CrgCfgTransId    transId
 )
 #else
-PRIVATE S16 rgCOMHndlCfgReq(inst,cfg, errInfo,isCfmRqrd,transId)
+static S16 rgCOMHndlCfgReq(inst,cfg, errInfo,isCfmRqrd,transId)
 Inst            inst;
 CrgCfg          *cfg;
 RgErrInfo       *errInfo;
@@ -297,7 +297,7 @@ CrgCfgTransId   transId;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgCOMHndlRecfgReq
+static S16 rgCOMHndlRecfgReq
 (
 Inst             inst,
 CrgRecfg         *recfg,
@@ -306,7 +306,7 @@ CrgCfgTransId    transId,
 Bool             *isCfmRqrd
 )
 #else
-PRIVATE S16 rgCOMHndlRecfgReq(inst,recfg, errInfo, transId, isCfmRqrd)
+static S16 rgCOMHndlRecfgReq(inst,recfg, errInfo, transId, isCfmRqrd)
 Inst            inst;
 CrgRecfg        *recfg;
 RgErrInfo       *errInfo;
@@ -434,14 +434,14 @@ Bool            *isCfmRqrd;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgCOMHndlResetReq
+static S16 rgCOMHndlResetReq
 (
 Inst       inst,
 CrgRst     *reset,
 RgErrInfo  *errInfo
 )
 #else
-PRIVATE S16 rgCOMHndlResetReq(inst,reset, errInfo)
+static S16 rgCOMHndlResetReq(inst,reset, errInfo)
 Inst       inst;
 CrgRst     *reset;
 RgErrInfo  *errInfo;
@@ -478,7 +478,7 @@ RgErrInfo  *errInfo;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgCOMHndlDelReq
+static S16 rgCOMHndlDelReq
 (
 Inst        inst,
 CrgDel      *del,
@@ -487,7 +487,7 @@ Bool        *isCfmRqrd,
 CrgCfgTransId transId
 )
 #else
-PRIVATE S16 rgCOMHndlDelReq(inst,del, errInfo,isCfmRqrd,transId)
+static S16 rgCOMHndlDelReq(inst,del, errInfo,isCfmRqrd,transId)
 Inst        inst;
 CrgDel      *del;
 RgErrInfo   *errInfo;
@@ -496,8 +496,8 @@ CrgCfgTransId transId;
 #endif
 {
 
-   S16            ret;
-   VOLATILE uint32_t   startTime=0;
+   S16      ret;
+   volatile uint32_t   startTime=0;
 
    errInfo->errType = RGERR_COM_DEL_REQ;
    

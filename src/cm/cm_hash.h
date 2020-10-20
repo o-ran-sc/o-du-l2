@@ -64,7 +64,7 @@
 /* Constants */
 #define CM_STR_HASHFUNC_CONSTANT    31 /* Constant for CM_HASH_KEYTYPE_STR */
 
-/* CONSTANTS for CmHashFuncConId */
+/* constS for CmHashFuncConId */
 /* cm_hash_h_001.main_13 : Fixed for 64 Bit */
 #define CM_HASHKEYLEN_UINT32              sizeof(uint32_t)  /* size of uint32_t */
 #define CM_HASHKEYLEN_UINT16              sizeof(uint16_t)  /* size of uint16_t */

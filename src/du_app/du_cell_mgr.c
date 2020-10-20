@@ -36,8 +36,8 @@
 #include "du_cell_mgr.h"
 #include "du_f1ap_msg_hdl.h"
 
-extern DuCfgParams duCfgParam;
-uint8_t duBuildAndSendMacCellCfg(uint16_t cellId);
+DuCfgParams duCfgParam;
+uint8_t duBuildAndSendMacCellCfg();
 
 /*******************************************************************
  *
