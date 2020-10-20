@@ -40,23 +40,23 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-extern Void SsRngBufEnable ARGS((Void));
-extern Void SsRngBufDisable ARGS((Void));
-extern S16 SCreateSRngBuf ARGS((U32 id, Region region, Pool pool, U32 elmSize, U32 rngSize));
-extern S16 SDestroySRngBuf ARGS((U32 id, Region region, Pool pool));
-extern S16 SAttachSRngBuf ARGS((U32 id, U32 ent, U32 txRx));
-extern S16 SEnqSRngBuf ARGS((U32 id, Void* elem));
-extern S16 SDeqSRngBuf ARGS((U32 id, Void* elem));
-extern Void* SRngGetWIndx ARGS((U32 rngId));
-extern Void* SRngGetRIndx ARGS((U32 rngId));
-extern Void SRngIncrRIndx ARGS((U32 rngId));
-extern Void SRngIncrWIndx ARGS((U32 rngId));
-extern S16  isRngEmpty ARGS((U32 rngId));
-extern S16 SConnectSRngBuf ARGS((U32 id,  U32 rxEnt));
-EXTERN S16 SGetNumElemInRng ARGS(( U32 id));
-extern S16 SPrintSRngStats ARGS((Void));
-extern S16 pjBatchProc ARGS((Void));
-extern U32 ssRngBufStatus;
+Void SsRngBufEnable ARGS((Void));
+Void SsRngBufDisable ARGS((Void));
+S16 SCreateSRngBuf ARGS((U32 id, Region region, Pool pool, U32 elmSize, U32 rngSize));
+S16 SDestroySRngBuf ARGS((U32 id, Region region, Pool pool));
+S16 SAttachSRngBuf ARGS((U32 id, U32 ent, U32 txRx));
+S16 SEnqSRngBuf ARGS((U32 id, Void* elem));
+S16 SDeqSRngBuf ARGS((U32 id, Void* elem));
+Void* SRngGetWIndx ARGS((U32 rngId));
+Void* SRngGetRIndx ARGS((U32 rngId));
+Void SRngIncrRIndx ARGS((U32 rngId));
+Void SRngIncrWIndx ARGS((U32 rngId));
+S16  isRngEmpty ARGS((U32 rngId));
+S16 SConnectSRngBuf ARGS((U32 id,  U32 rxEnt));
+S16 SGetNumElemInRng ARGS(( U32 id));
+S16 SPrintSRngStats ARGS((Void));
+S16 pjBatchProc ARGS((Void));
+U32 ssRngBufStatus;
 
 #define SS_RNG_BUF_STATUS() ssRngBufStatus
 /* Ring Buffer Structure */
@@ -205,10 +205,10 @@ typedef struct
   Buffer* mBuf;
 } SsRngBufElem;
 
-EXTERN  SsRngBufTbl SsRngInfoTbl[SS_RNG_BUF_MAX];
+ SsRngBufTbl SsRngInfoTbl[SS_RNG_BUF_MAX];
 
 #if (defined (MAC_FREE_RING_BUF) || defined (RLC_FREE_RING_BUF))
-extern S16 mtAddBufToRing(SsRngBufId ringId,void *bufPtr,U8 freeType);
+S16 mtAddBufToRing(SsRngBufId ringId,void *bufPtr,U8 freeType);
 #ifdef XEON_SPECIFIC_CHANGES
 typedef struct rgKwBufFreeInfo
 {

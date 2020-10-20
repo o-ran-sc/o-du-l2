@@ -133,7 +133,7 @@
 #ifndef TENB_RTLIN_CHANGES
 #define SInitLock(l, t)                 pthread_mutex_init(l, NULL)
 #endif
-/*extern U32 gt[128]; */
+/*U32 gt[128]; */
 /*#define SLock(l)                        (((gt[0x000000FF &((U32)pthread_self())]=MacGetTick())&&pthread_mutex_lock(l)&&MLogTask(30340, RESOURCE_LINL2, gt[0x000000FF &((U32)pthread_self())], MacGetTick()))?0:0)*/
 #define SLock(l)                        pthread_mutex_lock(l)
 #define SUnlock(l)                      pthread_mutex_unlock(l)

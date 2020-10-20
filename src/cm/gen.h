@@ -2659,7 +2659,7 @@ typedef struct _debugInfo
    U32   count;
 } DebugInfo;
 
-EXTERN DebugInfo debugInfo;
+DebugInfo debugInfo;
 #endif
 
 #endif /* __GENH__ */

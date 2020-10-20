@@ -82,8 +82,8 @@
    _pst.selector  = ODU_SELECTOR_TC;                         \
 }
 
-extern int8_t coresetIdxTable[MAX_CORESET_INDEX][4];
-extern int8_t searchSpaceIdxTable[MAX_SEARCH_SPACE_INDEX][4];
+int8_t coresetIdxTable[MAX_CORESET_INDEX][4];
+int8_t searchSpaceIdxTable[MAX_SEARCH_SPACE_INDEX][4];
 
 /* functions declarations */
 void schAllocFreqDomRscType0(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain);

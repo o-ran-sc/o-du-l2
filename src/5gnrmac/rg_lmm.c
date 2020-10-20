@@ -74,7 +74,7 @@ static int RLOG_MODULE_ID=4096;
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
-EXTERN Void rgGetSId ARGS((SystemId *s));
+Void rgGetSId ARGS((SystemId *s));
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
@@ -84,34 +84,34 @@ LwrMacCb   lwrMacCb;
 extern MacCb  macCb;
 
 /* forward references */
-PRIVATE U16 rgLMMGenCfg ARGS((
+static U16 rgLMMGenCfg ARGS((
    Inst           inst,
    RgCfg          *cfg           
 ));
 
-PRIVATE U16 rgLMMSapCfg ARGS((
+static U16 rgLMMSapCfg ARGS((
    Inst           inst,
    RgCfg          *cfg,
    Elmnt          sapType
 ));
 
-PRIVATE Void rgLMMShutdown ARGS((
+static Void rgLMMShutdown ARGS((
    Inst           inst
 ));
 
-PRIVATE Void rgLMMFillCfmPst ARGS((
+static Void rgLMMFillCfmPst ARGS((
    Pst           *reqPst,
    Pst           *cfmPst,
    RgMngmt       *cfm
 ));
 
-PRIVATE Void rgLMMGenCntrl ARGS((
+static Void rgLMMGenCntrl ARGS((
 RgMngmt       *cntrl,
 RgMngmt       *cfm,
 Pst           *cfmPst
 ));
 
-PRIVATE Void rgLMMSapCntrl ARGS((
+static Void rgLMMSapCntrl ARGS((
 RgMngmt       *cntrl,
 RgMngmt       *cfm,
 Pst           *cfmPst
@@ -717,14 +717,14 @@ RgMngmt  *cntrl;  /* control structure  */
  *      -# LCM_REASON_NOT_APPL
  **/
 #ifdef ANSI
-PRIVATE U16 rgLMMSapCfg
+static U16 rgLMMSapCfg
 (
 Inst  inst,
 RgCfg *cfg,            /* Configuaration information */
 Elmnt sapType             /* Sap Type */
 )
 #else
-PRIVATE U16 rgLMMSapCfg(inst,cfg,sapType)
+static U16 rgLMMSapCfg(inst,cfg,sapType)
 Inst  inst;
 RgCfg *cfg;            /* Configuaration information */
 Elmnt sapType;            /* Sap Type */
@@ -865,13 +865,13 @@ Elmnt sapType;            /* Sap Type */
  *      -# LCM_REASON_MEM_NOAVAIL
  **/
 #ifdef ANSI
-PRIVATE U16 rgLMMGenCfg
+static U16 rgLMMGenCfg
 (
 Inst inst,
 RgCfg *cfg            /* Configuaration information */
 )
 #else
-PRIVATE U16 rgLMMGenCfg(inst,cfg)
+static U16 rgLMMGenCfg(inst,cfg)
 Inst inst;
 RgCfg *cfg;            /* Configuaration information */
 #endif
@@ -980,12 +980,12 @@ RgCfg *cfg;            /* Configuaration information */
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE Void rgLMMShutdown
+static Void rgLMMShutdown
 (
 Inst inst
 )
 #else
-PRIVATE Void rgLMMShutdown(inst)
+static Void rgLMMShutdown(inst)
 Inst inst;
 #endif
 {
@@ -1060,14 +1060,14 @@ Inst inst;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE Void rgLMMGenCntrl 
+static Void rgLMMGenCntrl 
 (
 RgMngmt       *cntrl,
 RgMngmt       *cfm,
 Pst           *cfmPst
 )
 #else
-PRIVATE Void rgLMMGenCntrl(cntrl, cfm, cfmPst)
+static Void rgLMMGenCntrl(cntrl, cfm, cfmPst)
 RgMngmt       *cntrl;
 RgMngmt       *cfm;
 Pst           *cfmPst;
@@ -1185,14 +1185,14 @@ Pst           *cfmPst;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE Void rgLMMSapCntrl 
+static Void rgLMMSapCntrl 
 (
 RgMngmt       *cntrl,
 RgMngmt       *cfm,
 Pst           *cfmPst
 )
 #else
-PRIVATE Void rgLMMSapCntrl(cntrl, cfm, cfmPst)
+static Void rgLMMSapCntrl(cntrl, cfm, cfmPst)
 RgMngmt       *cntrl;
 RgMngmt       *cfm;
 Pst           *cfmPst;
@@ -1348,14 +1348,14 @@ Pst           *cfmPst;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE Void rgLMMFillCfmPst
+static Void rgLMMFillCfmPst
 (
 Pst           *reqPst,
 Pst           *cfmPst,
 RgMngmt       *cfm
 )
 #else
-PRIVATE Void rgLMMFillCfmPst(reqPst, cfmPst, cfm)
+static Void rgLMMFillCfmPst(reqPst, cfmPst, cfm)
 Pst           *reqPst;
 Pst           *cfmPst;
 RgMngmt       *cfm;

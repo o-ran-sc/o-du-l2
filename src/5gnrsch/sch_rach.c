@@ -42,8 +42,8 @@
 #include "sch.h"
 #include "sch_utils.h"
 
-extern SchCb schCb[SCH_MAX_INST];
-extern uint8_t puschDeltaTable[MAX_MU_PUSCH];
+SchCb schCb[SCH_MAX_INST];
+uint8_t puschDeltaTable[MAX_MU_PUSCH];
 
 /**
  * @brief calculate ra-rnti function. 

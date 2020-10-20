@@ -43,10 +43,10 @@ File:     sch_common.c
 #include "sch.h"
 #include "sch_utils.h"
 
-extern SchCb schCb[SCH_MAX_INST];
-extern uint16_t prachCfgIdxTable[MAX_PRACH_CONFIG_IDX][8];
-extern uint16_t numRbForPrachTable[MAX_RACH_NUM_RB_IDX][5];
-extern uint8_t pucchResourceSet[MAX_PUCCH_RES_SET_IDX][4];
+SchCb schCb[SCH_MAX_INST];
+uint16_t prachCfgIdxTable[MAX_PRACH_CONFIG_IDX][8];
+uint16_t numRbForPrachTable[MAX_RACH_NUM_RB_IDX][5];
+uint8_t pucchResourceSet[MAX_PUCCH_RES_SET_IDX][4];
 
 SchMacUlSchInfoFunc schMacUlSchInfoOpts[] =
 {

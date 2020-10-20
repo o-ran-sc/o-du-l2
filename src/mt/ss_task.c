@@ -131,15 +131,15 @@
 #include "signal.h"
 #include "mt_plat_t33.h"
 #include "mt_4gmx.x"
-EXTERN S32 clusterMode;
+S32 clusterMode;
 #endif 
 
 pthread_t tmpRegTidMap[20];
 
 #ifdef TENB_T2K3K_SPECIFIC_CHANGES
-EXTERN unsigned int tlPost(void *handle);
+unsigned int tlPost(void *handle);
 #ifdef XEON_SPECIFIC_CHANGES
-EXTERN int          WLS_WakeUp(void* h);
+int          WLS_WakeUp(void* h);
 #endif
 #endif
 
@@ -1985,7 +1985,7 @@ S8 *logBuf
 #endif
 {
    S8 *buffer;
-   PRIVATE U16 logFileCnt = 0;
+   static U16 logFileCnt = 0;
    S8 newFileName[SS_MAX_PATH];
 #ifdef WIN32
    size_t writeNum;

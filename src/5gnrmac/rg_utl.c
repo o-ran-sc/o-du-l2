@@ -70,13 +70,13 @@ static int RLOG_FILE_ID=179;
 /* local externs */
  
 /* forward references */
-PRIVATE S16 rgUtlHndlCrntiChng ARGS((
+static S16 rgUtlHndlCrntiChng ARGS((
          Inst            inst,
          RgCellCb        *cell,
          CmLteRnti       rnti,
          CmLteRnti       newRnti
          ));
-PRIVATE Void rgUtlHndlCrntiRls ARGS((
+static Void rgUtlHndlCrntiRls ARGS((
          RgCellCb        *cell,
          RgInfRlsRnti    *rlsRnti
          ));
@@ -87,7 +87,7 @@ S16 rgDelUeFrmAllSCell ARGS((
          ));
 
 #ifdef LTE_ADV
-PRIVATE S16 rgUtlSndCrntiChngReq2AllSMacs ARGS((
+static S16 rgUtlSndCrntiChngReq2AllSMacs ARGS((
          RgCellCb        *cell,
          CmLteRnti       rnti,
          CmLteRnti       newRnti
@@ -700,7 +700,7 @@ Size      memSize;
 #endif
 {
    Mem              sMem;
-   VOLATILE U32     startTime=0;
+   volatile U32     startTime=0;
 
    TRC2(rgAllocEventMem)
 
@@ -1132,7 +1132,7 @@ CmLteRnti      crnti;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PRIVATE S16 rgUtlHndlCrntiChng 
+static S16 rgUtlHndlCrntiChng 
 (
 Inst            inst,
 RgCellCb        *cell,
@@ -1140,7 +1140,7 @@ CmLteRnti       rnti,
 CmLteRnti       newRnti
 )
 #else
-PRIVATE S16 rgUtlHndlCrntiChng(inst,cell, rnti, newRnti)
+static S16 rgUtlHndlCrntiChng(inst,cell, rnti, newRnti)
 Inst            inst;
 RgCellCb        *cell;
 CmLteRnti       rnti;
@@ -1316,14 +1316,14 @@ S16 rgUtlVltdAddSCellCfg(ueSCellCb, cell, inst)
  *      -# ROK 
  **/
 #ifdef ANSI
-PRIVATE S16 rgUtlSndCrntiChngReq2AllSMacs
+static S16 rgUtlSndCrntiChngReq2AllSMacs
 (
 RgCellCb        *cell,
 CmLteRnti       rnti,
 CmLteRnti       newRnti
 )
 #else
-PRIVATE S16 rgUtlSndCrntiChngReq2AllSMacs(cell, rnti, newRnti)
+static S16 rgUtlSndCrntiChngReq2AllSMacs(cell, rnti, newRnti)
 RgCellCb        *cell;
 CmLteRnti       rnti;
 CmLteRnti       newRnti;
@@ -1400,13 +1400,13 @@ TfuDelDatReqInfo delDatReq;
  *  @return  Void 
  **/
 #ifdef ANSI
-PRIVATE Void rgUtlHndlCrntiRls
+static Void rgUtlHndlCrntiRls
 (
 RgCellCb        *cell,
 RgInfRlsRnti    *rlsRnti
 )
 #else
-PRIVATE Void rgUtlHndlCrntiRls(cell, rlsRnti)
+static Void rgUtlHndlCrntiRls(cell, rlsRnti)
 RgCellCb        *cell;
 CmLteRnti       *rlsRnti;
 #endif

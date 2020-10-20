@@ -56,33 +56,33 @@ static int RLOG_FILE_ID=169;
 #include "rg_sch.x"        /* typedefs for Scheduler */
 
 /* local defines */
-PRIVATE S16 rgSCHMeasGapANRepUtlAddUe ARGS((
+static S16 rgSCHMeasGapANRepUtlAddUe ARGS((
 RgSchCellCb       *cell,
 RgSchUeCb          *ue,
 RgrUeMeasGapCfg    *cfg));
 
-PRIVATE S16 rgSCHMeasGapANRepUtlRmvUe ARGS((
+static S16 rgSCHMeasGapANRepUtlRmvUe ARGS((
 RgSchCellCb       *cell,
 RgSchUeCb          *ue));
 
-PRIVATE S16 rgSchAckNackRepUtlRmvUe ARGS((
+static S16 rgSchAckNackRepUtlRmvUe ARGS((
  RgSchCellCb      *cell,
  RgSchUeCb        *ue));
 
-PRIVATE Void rgSchAckNackRepUtlHdlTti ARGS((
+static Void rgSchAckNackRepUtlHdlTti ARGS((
 RgSchCellCb *cell,
 CmLListCp   *ackNackRepQ));
 
-PRIVATE Void rgSCHMeasGapANRepUtlHdlTti ARGS((
+static Void rgSCHMeasGapANRepUtlHdlTti ARGS((
 RgSchCellCb *cell,
 CmLListCp   *measGapQ));
 #ifdef LTE_TDD
-PRIVATE U8 rgSCHAckNakRepFindUlDuration ARGS((
+static U8 rgSCHAckNakRepFindUlDuration ARGS((
 RgSchCellCb       *cell,
 RgSchDlSf         *dlSf,
 CmLteTimingInfo   repTime,
 U8                repCnt));
-PRIVATE Void rgSCHAckNakRepGetUlOffsetFrmDl ARGS((
+static Void rgSCHAckNakRepGetUlOffsetFrmDl ARGS((
 RgSchDlSf         *dlSf,
 CmLteTimingInfo   crntDlTime,
 U8                *noSubfrms));
@@ -308,14 +308,14 @@ RgrUeRecfg     *ueRecfg;
   * @return 
   */
 #ifdef ANSI
-PRIVATE S16 rgSCHMeasGapANRepUtlAddUe 
+static S16 rgSCHMeasGapANRepUtlAddUe 
 (
 RgSchCellCb       *cell,
 RgSchUeCb          *ue,
 RgrUeMeasGapCfg    *cfg
 )
 #else
-PRIVATE S16 rgSCHMeasGapANRepUtlAddUe (cell, ue, cfg)
+static S16 rgSCHMeasGapANRepUtlAddUe (cell, ue, cfg)
 RgSchCellCb         *cell;
 RgSchUeCb            *ue;
 RgrUeMeasGapCfg      *cfg;
@@ -362,13 +362,13 @@ RgrUeMeasGapCfg      *cfg;
   * @return 
   */
 #ifdef ANSI
-PRIVATE S16 rgSCHMeasGapANRepUtlRmvUe 
+static S16 rgSCHMeasGapANRepUtlRmvUe 
 (
 RgSchCellCb       *cell,
 RgSchUeCb          *ue
 )
 #else
-PRIVATE S16 rgSCHMeasGapANRepUtlRmvUe (cell, ue)
+static S16 rgSCHMeasGapANRepUtlRmvUe (cell, ue)
 RgSchCellCb       *cell;
 RgSchUeCb          *ue;
 #endif
@@ -505,13 +505,13 @@ Bool        isUeDel;
   * @return 
   */
 #ifdef ANSI
-PRIVATE S16 rgSchAckNackRepUtlRmvUe
+static S16 rgSchAckNackRepUtlRmvUe
 (
  RgSchCellCb      *cell,
  RgSchUeCb        *ue
  )
 #else
-PRIVATE S16 rgSchAckNackRepUtlRmvUe (cell, ue)
+static S16 rgSchAckNackRepUtlRmvUe (cell, ue)
  RgSchCellCb      *cell;
  RgSchUeCb        *ue;
 #endif
@@ -700,13 +700,13 @@ RgSchCellCb *cell;
   * @return Void
   */
 #ifdef ANSI
-PRIVATE Void rgSchAckNackRepUtlHdlTti
+static Void rgSchAckNackRepUtlHdlTti
 (
 RgSchCellCb *cell,
 CmLListCp   *ackNackRepQ
 )
 #else
-PRIVATE Void rgSchAckNackRepUtlHdlTti (cell, ackNackRepQ)
+static Void rgSchAckNackRepUtlHdlTti (cell, ackNackRepQ)
 RgSchCellCb *cell;
 CmLListCp   *ackNackRepQ;
 #endif
@@ -747,13 +747,13 @@ CmLListCp   *ackNackRepQ;
   * @return 
   */
 #ifdef ANSI
-PRIVATE Void rgSCHMeasGapANRepUtlHdlTti
+static Void rgSCHMeasGapANRepUtlHdlTti
 (
 RgSchCellCb *cell,
 CmLListCp   *measGapQ
 )
 #else
-PRIVATE Void rgSCHMeasGapANRepUtlHdlTti (cell, measGapQ)
+static Void rgSCHMeasGapANRepUtlHdlTti (cell, measGapQ)
 RgSchCellCb *cell;
 CmLListCp   *measGapQ;
 #endif
@@ -1483,7 +1483,7 @@ RgSchDlSf            *crntDlSf;
  **/
 
 #ifdef ANSI
-PRIVATE U8 rgSCHAckNakRepFindUlDuration
+static U8 rgSCHAckNakRepFindUlDuration
 (
 RgSchCellCb       *cell,
 RgSchDlSf         *dlSf,
@@ -1491,7 +1491,7 @@ CmLteTimingInfo   repTime,
 U8                repCnt
 )
 #else
-PRIVATE U8 rgSCHAckNakRepFindUlDuration(cell, dlSf, repTime, repCnt)
+static U8 rgSCHAckNakRepFindUlDuration(cell, dlSf, repTime, repCnt)
 RgSchCellCb       *cell;
 RgSchDlSf         *dlSf;
 CmLteTimingInfo   repTime;
@@ -1545,14 +1545,14 @@ U8                repCnt;
  **/
 
 #ifdef ANSI
-PRIVATE Void rgSCHAckNakRepGetUlOffsetFrmDl 
+static Void rgSCHAckNakRepGetUlOffsetFrmDl 
 (
 RgSchDlSf         *dlSf,
 CmLteTimingInfo   crntDlTime,
 U8                *noSubfrms 
 )
 #else
-PRIVATE Void rgSCHAckNakRepGetUlOffsetFrmDl(dlSf, crntDlTime, noSubfrms)
+static Void rgSCHAckNakRepGetUlOffsetFrmDl(dlSf, crntDlTime, noSubfrms)
 RgSchDlSf         *dlSf;
 CmLteTimingInfo   crntDlTime;
 U8                *noSubfrms;

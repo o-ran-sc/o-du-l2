@@ -547,7 +547,7 @@ RguDStaRspInfo  *staRsp;
    Inst  inst;
 
    S16              ret       = ROK;
-   VOLATILE U32     startTime = 0;
+   volatile U32     startTime = 0;
 
    TRC3(RgUiRguDStaRsp)
 

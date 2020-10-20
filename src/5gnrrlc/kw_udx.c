@@ -54,7 +54,7 @@
 *
 */
 #ifdef ANSI
-PRIVATE S16 cmUnpkUdxStruct
+static S16 cmUnpkUdxStruct
 (
 Buffer *srcMBuf,
 U32  offset,
@@ -62,7 +62,7 @@ U8     *dstBuf,
 U32    size
 )
 #else
-PRIVATE S16 cmUnpkUdxStruct(dstMBuf,srcBuf,size)
+static S16 cmUnpkUdxStruct(dstMBuf,srcBuf,size)
 Buffer *srcMBuf;
 U32  offset;
 U8     *dstBuf;
@@ -90,14 +90,14 @@ MsgLen    size;
 *
 */
 #ifdef ANSI
-PRIVATE S16 cmPkUdxStruct
+static S16 cmPkUdxStruct
 (
 U8     *srcBuf,
 MsgLen    size,
 Buffer *dstMBuf
 )
 #else
-PRIVATE S16 cmPkUdxStruct(dstMBuf,srcBuf,size)
+static S16 cmPkUdxStruct(dstMBuf,srcBuf,size)
 U8     *srcBuf;
 MsgLen    size;
 Buffer *dstMBuf;

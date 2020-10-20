@@ -124,7 +124,7 @@ typedef struct egtpGlobalCb
    EgtpTptSrvr  recvTptSrvr;     /* Transport server for receiving UDP msg */
    EgtpDstCb    dstCb;           /* Destination endpoint */
 }EgtpGlobalCb;
-extern EgtpGlobalCb egtpCb;   /* EGTP global control block */
+EgtpGlobalCb egtpCb;   /* EGTP global control block */
 
 S16 egtpActvInit();
 S16 cuEgtpCfgReq();

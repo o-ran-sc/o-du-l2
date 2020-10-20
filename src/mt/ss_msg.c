@@ -92,7 +92,7 @@
 #include <pthread.h>
 #ifdef XEON_SPECIFIC_CHANGES
 U32 startMemLeak=0; 
-extern pthread_mutex_t  memLock;
+pthread_mutex_t  memLock;
 #endif
 
 #if (defined (MAC_FREE_RING_BUF) || defined (RLC_FREE_RING_BUF))
@@ -107,19 +107,19 @@ extern pthread_mutex_t  memLock;
 S16 ssGetDBufOfSize ARGS((Region region, Size size, Buffer **dBuf));
 S16 SIncMsgRef(Buffer *srcBuf,Region dstRegion, Pool dstPool,Buffer **dstBuf);
 #ifdef SSI_STATIC_MEM_LEAK_DETECTION
-EXTERN U32 GetNextFreeIdx ARGS((StaticMemAllocInfo * memAllocInfo));
-EXTERN void LogForStaticMemLeak ARGS((StaticMemAllocInfo* memAllocInfo, char* 
+U32 GetNextFreeIdx ARGS((StaticMemAllocInfo * memAllocInfo));
+void LogForStaticMemLeak ARGS((StaticMemAllocInfo* memAllocInfo, char* 
          file, U32 line, U32 size, void* ptr, U32 idx));
-EXTERN void FreeIdx ARGS((U8* ptr, U32 idx, StaticMemAllocInfo*
+void FreeIdx ARGS((U8* ptr, U32 idx, StaticMemAllocInfo*
          memAllocInfo,U32 size, char* file, U32 line));
 #endif
 
 #ifdef SS_USE_ZBC_MEMORY
 #ifdef T2K_MEM_LEAK_DBG
-PRIVATE S16 SPutZbcDBufNew ARGS((Region region, Buffer *buf,char*,U32));
+static S16 SPutZbcDBufNew ARGS((Region region, Buffer *buf,char*,U32));
 
 #else
-PRIVATE S16 SPutZbcDBuf ARGS((Region region, Buffer *buf));
+static S16 SPutZbcDBuf ARGS((Region region, Buffer *buf));
 S16 SAttachPtrToBuf ARGS(( Region   region, Pool     pool, Data    *ptr,
          MsgLen   totalLen, Buffer** mBuf));
 #endif
@@ -129,7 +129,7 @@ S16 SAttachPtrToBuf ARGS(( Region   region, Pool     pool, Data    *ptr,
 #ifdef SS_M_PROTO_REGION 
 #ifdef T2K_MEM_LEAK_DBG
 #define DupMsg(region,buffer) DupMsgNew(region,buffer,file,line)
-PRIVATE Buffer *DupMsgNew ARGS((Region region, Buffer *buffer,char*,U32));
+static Buffer *DupMsgNew ARGS((Region region, Buffer *buffer,char*,U32));
 #else
 #ifdef INTEL_WLS
 #ifdef T2K_MEM_LEAK_DBG
@@ -157,7 +157,7 @@ S16 SPutSBufDpdk          ARGS(( Data    *ptr));
 
 #endif /* INTEL_WLS */
 
-PRIVATE Buffer *DupMsg ARGS((Region region, Buffer *buffer));
+static Buffer *DupMsg ARGS((Region region, Buffer *buffer));
 #endif
 #endif /* SS_M_PROTO_REGION */
 
@@ -213,7 +213,7 @@ PRIVATE Buffer *DupMsg ARGS((Region region, Buffer *buffer));
 }
 
 
-EXTERN pthread_t tmpRegTidMap[20];
+pthread_t tmpRegTidMap[20];
 #define CM_MEM_GET_REGION(_region)                        \
 {                                                         \
    U8  _regCnt;                                           \
@@ -230,7 +230,7 @@ EXTERN pthread_t tmpRegTidMap[20];
 }
 
 #if (defined (MAC_FREE_RING_BUF) || defined (RLC_FREE_RING_BUF) || defined(L2_OPTMZ))
-extern S32 clusterMode;
+S32 clusterMode;
 #endif
 /*
 *
@@ -644,8 +644,8 @@ Buffer *mBuf;
 #endif
 #if (defined (MAC_FREE_RING_BUF) || defined (RLC_FREE_RING_BUF))
    {
-      extern pthread_t gMacTId,gRlcTId;
-      extern S32 clusterMode;
+      pthread_t gMacTId,gRlcTId;
+      S32 clusterMode;
       if(clusterMode == RADIO_CLUSTER_MODE)
       {
 
@@ -822,7 +822,7 @@ U8   memType;                   /* memory type used if shareable or not */
 #endif
 #if (defined (MAC_FREE_RING_BUF) || defined (RLC_FREE_RING_BUF))
    {
-      extern pthread_t gMacTId,gRlcTId;
+      pthread_t gMacTId,gRlcTId;
 
       if(clusterMode == RADIO_CLUSTER_MODE)
       {
@@ -4130,7 +4130,7 @@ Buffer **dstBuf;
 *
 */
 #ifdef T2K_MEM_LEAK_DBG
-PRIVATE Buffer *DupMsgNew
+static Buffer *DupMsgNew
 (
 Region region,              /* region id */
 Buffer *mp,                  /* message block */
@@ -4139,13 +4139,13 @@ U32 line
 )
 #else
 #ifdef ANSI
-PRIVATE Buffer *DupMsg
+static Buffer *DupMsg
 (
 Region region,              /* region id */
 Buffer *mp                  /* message block */
 )
 #else
-PRIVATE Buffer *DupMsg(region, mp)
+static Buffer *DupMsg(region, mp)
 Region region;              /* region id */
 Buffer *mp;                 /* message block */
 #endif
@@ -8184,7 +8184,7 @@ Buffer** mBuf;
 */
 
 #ifdef T2K_MEM_LEAK_DBG
-PRIVATE S16 SPutZbcDBufNew
+static S16 SPutZbcDBufNew
 (
 Region region,
 Buffer *buf,
@@ -8193,13 +8193,13 @@ U32 line
 )
 #else
 #ifdef ANSI
-PRIVATE S16 SPutZbcDBuf
+static S16 SPutZbcDBuf
 (
 Region region,
 Buffer *buf
 )
 #else
-PRIVATE S16 SPutZbcDBuf(region, buf)
+static S16 SPutZbcDBuf(region, buf)
 Region region;
 Buffer *buf;
 #endif
@@ -8578,7 +8578,7 @@ Buffer** mBuf;
 
 #ifdef TENB_DPDK_BUF
 
-extern U32 numeTti;
+U32 numeTti;
 
 S16 SGetSBufDpdk
 (

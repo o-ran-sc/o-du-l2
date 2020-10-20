@@ -53,12 +53,12 @@
 #include "rg.x"
 
 /* local defines */
-PRIVATE S16 rgDBMInitUeCbLst ARGS(( RgCellCb *cellCb, U16 numBins));
-PRIVATE Void rgDBMInitDedLcLst ARGS((RgUeCb *ueCb));
-PRIVATE Void rgDBMInitCmnLcLst ARGS((RgCellCb *cellCb));
-PRIVATE Void rgDBMInitRachLst ARGS((RgCellCb *cellCb));
+static S16 rgDBMInitUeCbLst ARGS(( RgCellCb *cellCb, U16 numBins));
+static Void rgDBMInitDedLcLst ARGS((RgUeCb *ueCb));
+static Void rgDBMInitCmnLcLst ARGS((RgCellCb *cellCb));
+static Void rgDBMInitRachLst ARGS((RgCellCb *cellCb));
 #ifdef LTEMAC_SPS
-PRIVATE S16 rgDBMInitSpsUeCbLst ARGS((
+static S16 rgDBMInitSpsUeCbLst ARGS((
 RgCellCb       *cellCb,
 U16            numBins
 ));
@@ -135,13 +135,13 @@ RgCellCb       *cellCb;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgDBMInitUeCbLst
+static S16 rgDBMInitUeCbLst
 (
 RgCellCb       *cellCb,
 U16            numBins
 )
 #else
-PRIVATE S16 rgDBMInitUeCbLst(cellCb, numBins)
+static S16 rgDBMInitUeCbLst(cellCb, numBins)
 RgCellCb       *cellCb;
 U16            numBins;
 #endif
@@ -200,13 +200,13 @@ RgCellCb       *cellCb;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgDBMInitSpsUeCbLst
+static S16 rgDBMInitSpsUeCbLst
 (
 RgCellCb       *cellCb,
 U16            numBins
 )
 #else
-PRIVATE S16 rgDBMInitSpsUeCbLst(cellCb, numBins)
+static S16 rgDBMInitSpsUeCbLst(cellCb, numBins)
 RgCellCb       *cellCb;
 U16            numBins;
 #endif
@@ -587,12 +587,12 @@ RgUeCb       *ueCb;
  *  @return     Void 
  **/
 #ifdef ANSI
-PRIVATE Void rgDBMInitDedLcLst
+static Void rgDBMInitDedLcLst
 (
 RgUeCb       *ueCb
 )
 #else
-PRIVATE Void rgDBMInitDedLcLst(ueCb)
+static Void rgDBMInitDedLcLst(ueCb)
 RgUeCb       *ueCb;
 #endif
 {
@@ -635,12 +635,12 @@ RgUeCb       *ueCb;
  *  @return  Void
  **/
 #ifdef ANSI
-PRIVATE Void rgDBMInitCmnLcLst
+static Void rgDBMInitCmnLcLst
 (
 RgCellCb       *cellCb
 )
 #else
-PRIVATE Void rgDBMInitCmnLcLst(cellCb)
+static Void rgDBMInitCmnLcLst(cellCb)
 RgCellCb       *cellCb;
 #endif
 {
@@ -1258,12 +1258,12 @@ CmLteLcId      idx;
  *  @return  Void
  **/
 #ifdef ANSI
-PRIVATE Void rgDBMInitRachLst
+static Void rgDBMInitRachLst
 (
 RgCellCb       *cellCb
 )
 #else
-PRIVATE Void rgDBMInitRachLst(cellCb)
+static Void rgDBMInitRachLst(cellCb)
 RgCellCb       *cellCb;
 #endif
 {

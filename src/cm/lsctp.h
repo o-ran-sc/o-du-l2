@@ -21,7 +21,7 @@
 #define __LSCTP_H___
 
 typedef uint8_t (*SctpNtfy) ARGS((Buffer *mBuf, CmInetSctpNotification *ntfy));
-extern uint8_t cmPkSctpNtfy(Pst *pst, CmInetSctpNotification *ntfy);
-extern uint8_t cmUnpkSctpNtfy(SctpNtfy func, Pst *pst, Buffer *mBuf);
+uint8_t cmPkSctpNtfy(Pst *pst, CmInetSctpNotification *ntfy);
+uint8_t cmUnpkSctpNtfy(SctpNtfy func, Pst *pst, Buffer *mBuf);
 
 #endif

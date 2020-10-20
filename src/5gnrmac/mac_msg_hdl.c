@@ -35,7 +35,7 @@
 
 /* This file contains message handling functionality for MAC */
 
-extern MacCb  macCb;
+MacCb  macCb;
 
 uint16_t buildMacPdu(RlcData *dlData);
 #ifdef EGTP_TEST

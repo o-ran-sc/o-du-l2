@@ -2365,7 +2365,7 @@
 #define GetTIMETICK() 0
 #endif
 #ifdef PHY_SHUTDOWN_ENABLE
-#define stop_printf(...) do {EXTERN U8 sndPhyShutDwn;printf(__VA_ARGS__); mtStopHndlr(); sndPhyShutDwn = 1;} while (0)
+#define stop_printf(...) do {U8 sndPhyShutDwn;printf(__VA_ARGS__); mtStopHndlr(); sndPhyShutDwn = 1;} while (0)
 #else
 #define stop_printf(...) do {printf(__VA_ARGS__); mtStopHndlr(); exit(-1);} while (0)
 #endif
@@ -2389,7 +2389,7 @@
 #ifdef MS_MUBUF_CORRUPTION /* Should be enabled when debugging mbuf corruption */
 #define MS_BUF_ADD_CALLER()\
 {\
-   extern U32 cmFreeCaller[4];\
+   U32 cmFreeCaller[4];\
    if(cmFreeCaller[MxGetCpuID()] == NULLP)\
       cmFreeCaller[MxGetCpuID()] = __return_address()-4;\
 }
@@ -2398,8 +2398,8 @@
 #endif/* MSPD */
 
 #ifdef BRDCM
-extern char logBuf[100];
-extern int  glbTime;
+char logBuf[100];
+int  glbTime;
 #define BRDCM_PROF(s) do {\
 } while(0) 
 

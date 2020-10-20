@@ -311,14 +311,14 @@ typedef struct rgPrgUeSCellLchAddInfo
    Function Prototypes 
  */
 /** @brief Request from PMAC to SMAC to add Ue Scell config. */
-EXTERN S16 RgPrgPMacSMacUeSCellCfg ARGS
+S16 RgPrgPMacSMacUeSCellCfg ARGS
    ((
      Pst         *pst,    
      RgPrgUeSCellCfgInfo *ueSCellCb
     ));
 
 /** @brief Request from PMAC to SMAC to add Ue Scell config. */
-EXTERN S16 RgPrgPMacSMacUeSCellCfgReq ARGS
+S16 RgPrgPMacSMacUeSCellCfgReq ARGS
 ((
  Pst         *pst,
  RgPrgUeSCellCfgInfo *ueSCellCb
@@ -331,13 +331,13 @@ typedef S16 (*RgPrgUeSCellCfgReq) ARGS ((
          ));
 
 /** @brief Config confirm of Ue SCell config Req from SMAC to PMAC */
-EXTERN S16 RgPrgSMacPMacCfg ARGS ((
+S16 RgPrgSMacPMacCfg ARGS ((
          Pst              *pst,
          RgPrgCfgCfmInfo  *cfgCfm
          ));
 
 /** @brief Config confirm from SMAC to PMAC */
-EXTERN S16 RgPrgSMacPMacCfgCfm ARGS ((
+S16 RgPrgSMacPMacCfgCfm ARGS ((
          Pst             *pst,    
          RgPrgCfgCfmInfo *cfgCfm
          ));
@@ -350,14 +350,14 @@ typedef S16 (*RgSMacPMacCfgCfm) ARGS((
 
 /** 
  * @brief Ue SCell cfg delete Req from PMac to SMac*/
-EXTERN S16 RgPrgPMacSMacUeSCellDel ARGS ((
+S16 RgPrgPMacSMacUeSCellDel ARGS ((
          Pst                  *pst,
          RgPrgUeSCellDelInfo  *sCellUedelReq
          ));
 
 /** 
  * @brief Ue SCell cfg delete Req from PMac to SMac*/
-EXTERN S16 RgPrgPMacSMacUeSCellDelReq ARGS ((
+S16 RgPrgPMacSMacUeSCellDelReq ARGS ((
          Pst                 *pst,    
          RgPrgUeSCellDelInfo *sCellUedelReq
          ));
@@ -374,12 +374,12 @@ typedef S16 (*RgUeSCellDelReq) ARGS((
  * @brief Ue SCell Cfg Req from PMac to SMac.
  * @details This primitive is used for light-weight loose coupling. 
  */
-EXTERN S16 cmPkPrgPMacSMacUeSCellCfgReq ARGS ((
+S16 cmPkPrgPMacSMacUeSCellCfgReq ARGS ((
          Pst                          *pst,    
          RgPrgUeSCellCfgInfo          *ueSCellCb
          ));
 
-EXTERN S16 cmUnpkPrgPMacSMacUeSCellCfgReq ARGS ((
+S16 cmUnpkPrgPMacSMacUeSCellCfgReq ARGS ((
          RgPrgUeSCellCfgReq   func,
          Pst                  *pst,
          Buffer               *mBuf
@@ -389,13 +389,13 @@ EXTERN S16 cmUnpkPrgPMacSMacUeSCellCfgReq ARGS ((
  * @brief Ue SCell Add Cfg cfm from SMac to PMac.
  * @details This primitive is used for light-weight loose coupling. 
  */
-EXTERN S16 cmPkPrgSMacPMacCfgCfm ARGS((
+S16 cmPkPrgSMacPMacCfgCfm ARGS((
          Pst                  *pst,    
          RgPrgCfgCfmInfo      *cfgCfm
          ));
 
 
-EXTERN S16 cmUnpkPrgSMacPMacCfgCfm ARGS((
+S16 cmUnpkPrgSMacPMacCfgCfm ARGS((
          RgSMacPMacCfgCfm    func,
          Pst                 *pst,
          Buffer              *mBuf
@@ -404,13 +404,13 @@ EXTERN S16 cmUnpkPrgSMacPMacCfgCfm ARGS((
  * @brief SCell Ue Delete Req from PMac to SMac.
  * @details This primitive is used for light-weight loose coupling. 
  */
-EXTERN S16 cmPkPrgPMacSMacUeSCellDelReq ARGS((
+S16 cmPkPrgPMacSMacUeSCellDelReq ARGS((
          Pst                  *pst,    
          RgPrgUeSCellDelInfo  *sCellUeDelInfo
          ));
 
 
-EXTERN S16 cmUnpkPrgPMacSMacUeSCellDelReq ARGS((
+S16 cmUnpkPrgPMacSMacUeSCellDelReq ARGS((
          RgUeSCellDelReq    func,
          Pst                *pst,
          Buffer             *mBuf
@@ -421,12 +421,12 @@ EXTERN S16 cmUnpkPrgPMacSMacUeSCellDelReq ARGS((
  * @brief Ue Lch recfg Req from PMac to SMac.
  * @details This primitive is used for light-weight loose coupling. 
  */
-EXTERN S16 cmPkPrgPMacSMacUeSCellLchModReq ARGS((
+S16 cmPkPrgPMacSMacUeSCellLchModReq ARGS((
          Pst                       *pst,    
          RgPrgUeSCellLchModInfo    *lchCfgCb
          ));
 
-EXTERN S16 cmUnpkPrgPMacSMacUeSCellLchModReq ARGS((
+S16 cmUnpkPrgPMacSMacUeSCellLchModReq ARGS((
          RgPrgUeScellModLchReq       func,
          Pst                         *pst,
          Buffer                      *mBuf
@@ -436,13 +436,13 @@ EXTERN S16 cmUnpkPrgPMacSMacUeSCellLchModReq ARGS((
  * @brief SCell Ue Delete Req from PMac to SMac.
  * @details This primitive is used for light-weight loose coupling. 
  */
-EXTERN S16 cmPkPrgPMacSMacUeSCellLchDelReq ARGS((
+S16 cmPkPrgPMacSMacUeSCellLchDelReq ARGS((
          Pst                          *pst,    
          RgPrgUeSCellLchDelInfo       *delLcCb
          ));
 
 
-EXTERN S16 cmUnpkPrgPMacSMacUeSCellLchDelReq ARGS((
+S16 cmUnpkPrgPMacSMacUeSCellLchDelReq ARGS((
          RgPrgUeScellDelLchReq     func,
          Pst                       *pst,
          Buffer                    *mBuf
@@ -452,12 +452,12 @@ EXTERN S16 cmUnpkPrgPMacSMacUeSCellLchDelReq ARGS((
  * @brief Ue Lch cfg Req from PMac to SMac.
  * @details This primitive is used for light-weight loose coupling. 
  */
-EXTERN S16 cmPkPrgPMacSMacUeSCellLchAddReq ARGS ((
+S16 cmPkPrgPMacSMacUeSCellLchAddReq ARGS ((
          Pst                       *pst,    
          RgPrgUeSCellLchAddInfo    *lchCfgCb
          ));
 
-EXTERN S16 cmUnpkPrgPMacSMacUeSCellLchAddReq ARGS ((
+S16 cmUnpkPrgPMacSMacUeSCellLchAddReq ARGS ((
          RgPrgUeScellAddLchReq       func,
          Pst                         *pst,
          Buffer                      *mBuf
@@ -467,7 +467,7 @@ EXTERN S16 cmUnpkPrgPMacSMacUeSCellLchAddReq ARGS ((
 #endif /* LCPRG */
 
 /** @brief Request from PMAC to SMAC to add Lch Reconfig. */
-EXTERN S16 RgPrgPMacSMacUeScellLchMod ARGS
+S16 RgPrgPMacSMacUeScellLchMod ARGS
    ((
      Pst                      *pst,    
      RgPrgUeSCellLchModInfo   *lchCfgCb
@@ -482,7 +482,7 @@ typedef S16 (*RgPrgUeScellModLchReq) ARGS((
          ));
 
 /** @brief Request from PMAC to SMAC to delete Lch . */
-EXTERN S16 RgPrgPMacSMacUeScellLchDel ARGS
+S16 RgPrgPMacSMacUeScellLchDel ARGS
    ((
      Pst                       *pst,    
      RgPrgUeSCellLchDelInfo    *delLcCb
@@ -498,7 +498,7 @@ typedef S16 (*RgPrgUeScellDelLchReq) ARGS((
 
 
 /** @brief Request from PMAC to SMAC to add Lch config. */
-EXTERN S16 RgPrgPMacSMacUeScellLchAdd ARGS
+S16 RgPrgPMacSMacUeScellLchAdd ARGS
    ((
      Pst                      *pst,    
      RgPrgUeSCellLchAddInfo   *lchCfgCb

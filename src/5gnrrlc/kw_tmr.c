@@ -86,7 +86,7 @@
 }
 
 /* private function declarations */
-PRIVATE Void rlcBndTmrExpiry(PTR cb);
+static Void rlcBndTmrExpiry(PTR cb);
 
 /**
  * @brief Handler to start timer
@@ -418,12 +418,12 @@ bool rlcChkTmr(RlcCb *gCb, PTR cb, int16_t tmrEvnt)
  * @return  Void
 */
 #ifdef ANSI
-PRIVATE Void rlcBndTmrExpiry
+static Void rlcBndTmrExpiry
 (
 PTR cb
 )
 #else
-PRIVATE Void rlcBndTmrExpiry(cb)
+static Void rlcBndTmrExpiry(cb)
 PTR cb;
 #endif
 {

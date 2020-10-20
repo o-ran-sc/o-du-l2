@@ -186,7 +186,7 @@ PFV      func;           /* function */
    CmTqType *tqEnt, *tqEnt1; 
    PTR cb;
    CmTimer *tmp1;
-   VOLATILE U32     startTime = 0;
+   volatile U32     startTime = 0;
    
    TRC2(cmPrcTmr)
  

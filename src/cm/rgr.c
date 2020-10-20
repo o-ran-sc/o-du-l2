@@ -3607,13 +3607,13 @@ Buffer           *mBuf
 *
 **********************************************************/
 #ifdef ANSI
-PRIVATE S16 cmPkRgrLteUCellCfg
+static S16 cmPkRgrLteUCellCfg
 (
 RgrLteUCfg *param,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmPkRgrLteUCellCfg(param, mBuf)
+static S16 cmPkRgrLteUCellCfg(param, mBuf)
 RgrLteUCfg *param;
 Buffer *mBuf;
 #endif
@@ -3641,13 +3641,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PRIVATE S16 cmUnpkRgrLteUCellCfg
+static S16 cmUnpkRgrLteUCellCfg
 (
 RgrLteUCfg *param,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmUnpkRgrLteUCellCfg(param, mBuf)
+static S16 cmUnpkRgrLteUCellCfg(param, mBuf)
 RgrLteUCfg *param;
 Buffer *mBuf;
 #endif
@@ -8330,7 +8330,7 @@ RgrUeDlSecCellRelInfo *param,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmPkRgrUeDlSecCellRelInfo(param, mBuf)
+static S16 cmPkRgrUeDlSecCellRelInfo(param, mBuf)
 RgrUeDlSecCellRelInfo *param;
 Buffer *mBuf;
 #endif
@@ -8468,7 +8468,7 @@ RgrUeDlSecCellRelInfo *param,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmUnpkRgrUeDlSecCellRelInfo(param, mBuf)
+static S16 cmUnpkRgrUeDlSecCellRelInfo(param, mBuf)
 RgrUeDlSecCellRelInfo *param;
 Buffer *mBuf;
 #endif
@@ -8847,13 +8847,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PRIVATE S16 cmUnPkRgrSCellActDeactInfo
+static S16 cmUnPkRgrSCellActDeactInfo
 (
 RgrSCellActDeactInfo *param,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmUnPkRgrSCellActInfo(param, mBuf)
+static S16 cmUnPkRgrSCellActInfo(param, mBuf)
 RgrSCellActDeactInfo *param;
 Buffer *mBuf;
 #endif
@@ -8923,13 +8923,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PRIVATE S16 cmPkRgrSCellActDeactInfo
+static S16 cmPkRgrSCellActDeactInfo
 (
 RgrSCellActDeactInfo *param,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmPkRgrSCellActDeactInfo(param, mBuf)
+static S16 cmPkRgrSCellActDeactInfo(param, mBuf)
 RgrSCellActDeactInfo *param;
 Buffer *mBuf;
 #endif
@@ -11405,13 +11405,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PRIVATE S16 cmPkRgrUeUlPwrDedSCellCfg
+static S16 cmPkRgrUeUlPwrDedSCellCfg
 (
 RgrUeUlPwrDedSCellCfg *param,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmPkRgrUeUlPwrDedSCellCfg(param, mBuf)
+static S16 cmPkRgrUeUlPwrDedSCellCfg(param, mBuf)
 RgrUeUlPwrDedSCellCfg *param;
 Buffer *mBuf;
 #endif
@@ -11441,13 +11441,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PRIVATE S16 cmUnpkRgrUeUlPwrDedSCellCfg
+static S16 cmUnpkRgrUeUlPwrDedSCellCfg
 (
 RgrUeUlPwrDedSCellCfg *param,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmUnpkRgrUeUlPwrDedSCellCfg(param, mBuf)
+static S16 cmUnpkRgrUeUlPwrDedSCellCfg(param, mBuf)
 RgrUeUlPwrDedSCellCfg *param;
 Buffer *mBuf;
 #endif
@@ -11481,13 +11481,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PRIVATE S16 cmPkRgrUeSecCellCfg
+static S16 cmPkRgrUeSecCellCfg
 (
 RgrUeSecCellCfg *param,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmPkRgrUeSecCellCfg(param, mBuf)
+static S16 cmPkRgrUeSecCellCfg(param, mBuf)
 RgrUeSecCellCfg *param;
 Buffer *mBuf;
 #endif
@@ -11566,13 +11566,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PRIVATE S16 cmUnpkRgrUeSecCellCfg
+static S16 cmUnpkRgrUeSecCellCfg
 (
 RgrUeSecCellCfg *param,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmUnpkRgrUeSecCellCfg(param, mBuf)
+static S16 cmUnpkRgrUeSecCellCfg(param, mBuf)
 RgrUeSecCellCfg *param;
 Buffer *mBuf;
 #endif

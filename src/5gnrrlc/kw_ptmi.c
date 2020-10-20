@@ -63,7 +63,7 @@
  ********************************************************************/
 /* Configuration confirmation primitive */
 
-PRIVATE RlcConfigCfm rlcMiRlcConfigCfmMt[MAXKWMI] =
+static RlcConfigCfm rlcMiRlcConfigCfmMt[MAXKWMI] =
 {
 #ifdef LCKWMILKW
    packRlcConfigCfm,            /* 0 - loosely coupled - fc */
@@ -75,7 +75,7 @@ PRIVATE RlcConfigCfm rlcMiRlcConfigCfmMt[MAXKWMI] =
 
 /* control confirmation primitives */
 
-PRIVATE LkwCntrlCfm kwMiLkwCntrlCfmMt[MAXKWMI] =
+static LkwCntrlCfm kwMiLkwCntrlCfmMt[MAXKWMI] =
 {
 #ifdef LCKWMILKW 
    cmPkLkwCntrlCfm,          /* 0 - loosely coupled - fc */
@@ -87,7 +87,7 @@ PRIVATE LkwCntrlCfm kwMiLkwCntrlCfmMt[MAXKWMI] =
 
 /* Status Indication primitive */
 
-PRIVATE LkwStaInd kwMiLkwStaIndMt[MAXKWMI] =
+static LkwStaInd kwMiLkwStaIndMt[MAXKWMI] =
 {
 #ifdef LCKWMILKW 
    cmPkLkwStaInd,            /* 0 - loosely coupled  */
@@ -99,7 +99,7 @@ PRIVATE LkwStaInd kwMiLkwStaIndMt[MAXKWMI] =
 
 /* Status confirm primitive */
 
-PRIVATE LkwStaCfm kwMiLkwStaCfmMt[MAXKWMI] =
+static LkwStaCfm kwMiLkwStaCfmMt[MAXKWMI] =
 {
 #ifdef LCKWMILKW 
    cmPkLkwStaCfm,            /* 0 - loosely coupled  */
@@ -111,7 +111,7 @@ PRIVATE LkwStaCfm kwMiLkwStaCfmMt[MAXKWMI] =
 
 /* Statistics confirm primitive */
 
-PRIVATE LkwStsCfm kwMiLkwStsCfmMt[MAXKWMI] =
+static LkwStsCfm kwMiLkwStsCfmMt[MAXKWMI] =
 {
 #ifdef LCKWMILKW
    cmPkLkwStsCfm,            /* 0 - loosely coupled  */
@@ -123,7 +123,7 @@ PRIVATE LkwStsCfm kwMiLkwStsCfmMt[MAXKWMI] =
 
 /* Trace indication primitive */
 
-PRIVATE LkwTrcInd kwMiLkwTrcIndMt[MAXKWMI] =
+static LkwTrcInd kwMiLkwTrcIndMt[MAXKWMI] =
 {
 #ifdef LCKWMILKW
    cmPkLkwTrcInd,            /* 0 - loosely coupled  */
@@ -135,7 +135,7 @@ PRIVATE LkwTrcInd kwMiLkwTrcIndMt[MAXKWMI] =
 
 /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
-PRIVATE CONSTANT LkwL2MeasCfm rlcMiLkwL2MeasCfmMt[] =
+static const LkwL2MeasCfm rlcMiLkwL2MeasCfmMt[] =
 {
 #ifdef LCKWMILKW
    cmPkLkwL2MeasCfm,
@@ -144,7 +144,7 @@ PRIVATE CONSTANT LkwL2MeasCfm rlcMiLkwL2MeasCfmMt[] =
    SmMiLkwL2MeasCfm,
 #endif
 };
-PRIVATE CONSTANT LkwL2MeasStopCfm RlcMiLkwL2MeasStopCfmMt[] =
+static const LkwL2MeasStopCfm RlcMiLkwL2MeasStopCfmMt[] =
 {
 #ifdef LCKWMILKW
    cmPkLkwL2MeasStopCfm,

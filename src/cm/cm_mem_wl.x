@@ -435,61 +435,61 @@ typedef struct backtrace
 
 /* functions prototypes */
  
-EXTERN S16 cmMmRegInit   ARGS((
+S16 cmMmRegInit   ARGS((
                          Region region, 
                          CmMmRegCb *regCb, 
                          CmMmRegCfg *cfg));
-EXTERN S16 cmMmRegDeInit ARGS(( CmMmRegCb *regCb));
+S16 cmMmRegDeInit ARGS(( CmMmRegCb *regCb));
  /* cm_mem_x_001.main_11: Additions */
 #ifdef SS_MEM_LEAK_STS
-EXTERN Void cmInitMemLeakMdl    ARGS((Void));
+Void cmInitMemLeakMdl    ARGS((Void));
 /* cm_mem_x_001.main_12 : Additions */
-EXTERN Void cmDeinitMemLeakMdl    ARGS((Void));
-EXTERN Void cmStorAllocBlk      ARGS((U32 addr, Size reqSz, Size allocSz,
+Void cmDeinitMemLeakMdl    ARGS((Void));
+Void cmStorAllocBlk      ARGS((U32 addr, Size reqSz, Size allocSz,
                                       U16 bktIdx));
-EXTERN Void cmRlsAllocBlk       ARGS((U32 addr));
-EXTERN U8   cmMemGetModuleId    ARGS((S8 **funNm, S32 traceSize));
-EXTERN S16  cmMemGetStrMtchIdx  ARGS((U8 strtIdx, U8 endIdx,
+Void cmRlsAllocBlk       ARGS((U32 addr));
+U8   cmMemGetModuleId    ARGS((S8 **funNm, S32 traceSize));
+S16  cmMemGetStrMtchIdx  ARGS((U8 strtIdx, U8 endIdx,
                                       S8 *str, S8 **strLst));
-EXTERN Void cmMemOpenMemLkFile  ARGS((S8 *arg));
-EXTERN Void SLogLkInfo          ARGS((Void));
-EXTERN Void SFlushLkInfo        ARGS((Void));
+Void cmMemOpenMemLkFile  ARGS((S8 *arg));
+Void SLogLkInfo          ARGS((Void));
+Void SFlushLkInfo        ARGS((Void));
 
 #ifdef SS_MEM_LEAK_SOL
-EXTERN S32 cmAddrToSymStr       ARGS((Void *pc, S8 *buffer, S32 size));
-EXTERN S32 cmLeakCallBack       ARGS((uintptr_t pc, S32 signo, Void *arg));
-EXTERN S32 backtrace            ARGS((Void **buffer, S32 count));
+S32 cmAddrToSymStr       ARGS((Void *pc, S8 *buffer, S32 size));
+S32 cmLeakCallBack       ARGS((uintptr_t pc, S32 signo, Void *arg));
+S32 backtrace            ARGS((Void **buffer, S32 count));
 #endif /* SS_MEM_LEAK_SOL */
 
 #endif /* SS_MEM_LEAK_STS */
 /* cm_mem_x_001.main_9 - addition of an API prototype for sanity check */
 #ifdef SSI_DEBUG_LEVEL1
-EXTERN S16 cmMmRegIsBlkSane ARGS((CmMmBlkHdr *blkPtr));
+S16 cmMmRegIsBlkSane ARGS((CmMmBlkHdr *blkPtr));
 #endif /* SSI_DEBUG_LEVEL1 */
 
 
-EXTERN Void DumpLayersDebugInformation        ARGS((Void));
-EXTERN Void DumpSSIDemandQDebugInformation    ARGS((Void));
-EXTERN Void DumpPDCPDlDebugInformation        ARGS((Void));
-EXTERN Void DumpPDCPUlDebugInformation        ARGS((Void));
-EXTERN Void DumpRLCDlDebugInformation         ARGS((Void));
-EXTERN Void DumpRLCUlDebugInformation         ARGS((Void));
-EXTERN Void DumpRLCUlDebugInformation         ARGS((Void));
-EXTERN Void printMacCellInfo                  ARGS((Void));
-EXTERN Void printSchCellInfo                  ARGS((Void));
+Void DumpLayersDebugInformation        ARGS((Void));
+Void DumpSSIDemandQDebugInformation    ARGS((Void));
+Void DumpPDCPDlDebugInformation        ARGS((Void));
+Void DumpPDCPUlDebugInformation        ARGS((Void));
+Void DumpRLCDlDebugInformation         ARGS((Void));
+Void DumpRLCUlDebugInformation         ARGS((Void));
+Void DumpRLCUlDebugInformation         ARGS((Void));
+Void printMacCellInfo                  ARGS((Void));
+Void printSchCellInfo                  ARGS((Void));
 
-EXTERN U32 isMemThreshReached    ARGS((Region region));
+U32 isMemThreshReached    ARGS((Region region));
 
-EXTERN S16 cmMmStatRegInit       ARGS((Region region, CmMmRegCb *regCb, CmMmRegCfg *cfg));
-EXTERN S16 cmMmGlobRegInit       ARGS((CmMmGlobRegCb *regCb));
-EXTERN S16 cmMmDynRegInit        ARGS((CmMmDynRegCb  *regCb));
+S16 cmMmStatRegInit       ARGS((Region region, CmMmRegCb *regCb, CmMmRegCfg *cfg));
+S16 cmMmGlobRegInit       ARGS((CmMmGlobRegCb *regCb));
+S16 cmMmDynRegInit        ARGS((CmMmDynRegCb  *regCb));
 #ifdef USE_MALLOC
-EXTERN S16 ssGetDynMemBlkSet  ARGS((U8 bktIdx, CmMmBlkSetElement *dynMemSetElem));
-EXTERN S16 ssPutDynMemBlkSet  ARGS((U8 bktIdx, CmMmBlkSetElement *dynMemSetElem));
+S16 ssGetDynMemBlkSet  ARGS((U8 bktIdx, CmMmBlkSetElement *dynMemSetElem));
+S16 ssPutDynMemBlkSet  ARGS((U8 bktIdx, CmMmBlkSetElement *dynMemSetElem));
 #else
-EXTERN S16 ssPutDynMemBlkSet ARGS((U8 bktIdx,CmMmBlkSetElement *dynMemSetElem,
+S16 ssPutDynMemBlkSet ARGS((U8 bktIdx,CmMmBlkSetElement *dynMemSetElem,
                                    U32 doNotBlockForLock));
-EXTERN S16 ssGetDynMemBlkSet  ARGS((U8 bktIdx, CmMmBlkSetElement *dynMemSetElem,
+S16 ssGetDynMemBlkSet  ARGS((U8 bktIdx, CmMmBlkSetElement *dynMemSetElem,
                                    U32 doNotBlockForLock));
 #endif /* USE_MALLOC */
 #endif /* SS_LOCKLESS_MEMORY */

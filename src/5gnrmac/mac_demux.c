@@ -26,7 +26,6 @@
 #include "mac.h"
 #include "mac_utils.h"
 
-extern uint32_t shortBsrBytesTable[MAX_SHORT_BSR_TABLE_ENTRIES];
 
 /*******************************************************************
  *

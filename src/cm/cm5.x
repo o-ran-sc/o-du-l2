@@ -81,11 +81,11 @@ typedef struct cmTmrArg
 
 typedef Void (*PFV) ARGS((PTR, S16));
 
-extern Void cmInitTimers ARGS((CmTimer* timers, U8 max));
-extern Void cmPlcCbTq ARGS((CmTmrArg* arg));
-extern Void cmRmvCbTq ARGS((CmTmrArg* arg));
-extern Void cmPrcTmr ARGS((CmTqCp* tqCp, CmTqType* tq, PFV func));
-extern Void cmRstCbTq ARGS((CmTmrArg* arg));
+Void cmInitTimers ARGS((CmTimer* timers, U8 max));
+Void cmPlcCbTq ARGS((CmTmrArg* arg));
+Void cmRmvCbTq ARGS((CmTmrArg* arg));
+Void cmPrcTmr ARGS((CmTqCp* tqCp, CmTqType* tq, PFV func));
+Void cmRstCbTq ARGS((CmTmrArg* arg));
 
 #ifdef __cplusplus
 }

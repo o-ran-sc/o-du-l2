@@ -162,7 +162,7 @@ typedef struct sLockInfo
 }SLockInfo;
 #endif /* SS_LOCK_SUPPORT */
 
-extern U32 gt[128];
+U32 gt[128];
 #endif  /*  __MTSSX__  */
 
 

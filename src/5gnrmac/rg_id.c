@@ -45,7 +45,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
-EXTERN Void rgGetSId ARGS((SystemId *s));
+Void rgGetSId ARGS((SystemId *s));
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
@@ -59,7 +59,7 @@ EXTERN Void rgGetSId ARGS((SystemId *s));
 #define RGSWPN "1000372"     /* LTE MAC - part number */
 
 /* system id */
-PRIVATE CONSTANT SystemId sId ={
+static const SystemId sId ={
    RGSWMV,              /* LTE MAC - main version */
    RGSWMR,              /* LTE MAC - main revision */
    RGSWBV,              /* LTE MAC - branch version */
