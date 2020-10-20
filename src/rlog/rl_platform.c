@@ -53,8 +53,8 @@ framework.
 /* Thread-specific data key visible to all threads */
 static pthread_key_t	g_threadkey;
 
-extern pthread_mutex_t g_logmutex;
-extern THREAD_DATA* g_pCirList[RLOG_MAX_THREADS];
+pthread_mutex_t g_logmutex;
+THREAD_DATA* g_pCirList[RLOG_MAX_THREADS];
 void* rlAlloc(size_t mem_size)
 {
 	return malloc(mem_size);

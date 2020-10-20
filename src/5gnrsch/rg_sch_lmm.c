@@ -70,14 +70,14 @@ Void rgSCHCmnInit ARGS((Void));
 /* forward references */
 extern int schActvInit(Ent entity, Inst instId, Region region, Reason reason);
 #ifdef UNUSE_FUN
-PRIVATE uint16_t rgSCHLmmSapCfg ARGS((
+static uint16_t rgSCHLmmSapCfg ARGS((
    Inst           inst,
    RgCfg          *cfg,
    uint8_t             sapIdx,
    Elmnt          sapType
 ));
 #endif
-PRIVATE Void rgSCHLmmShutdown ARGS((
+static Void rgSCHLmmShutdown ARGS((
    Inst inst
 ));
 
@@ -119,7 +119,7 @@ void printSchCellInfo(void)
  **/
 #ifdef UNUSE_FUN
 #ifdef ANSI
-PRIVATE uint16_t rgSCHLmmSapCfg
+static uint16_t rgSCHLmmSapCfg
 (
 Inst  dInst,
 RgCfg *cfg,            /* Configuaration information */
@@ -127,7 +127,7 @@ uint8_t    sapIdx,          /* SAP index */
 Elmnt sapType             /* SAP Type */
 )
 #else
-PRIVATE uint16_t rgSCHLmmSapCfg(dInst, cfg, sapIdx, sapType)
+static uint16_t rgSCHLmmSapCfg(dInst, cfg, sapIdx, sapType)
 Inst  dInst;
 RgCfg *cfg;            /* Configuaration information */
 uint8_t    sapIdx;          /* SAP index */
@@ -276,12 +276,12 @@ Elmnt sapType;            /* SAP Type */
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE Void rgSCHLmmShutdown
+static Void rgSCHLmmShutdown
 (
 Inst inst
 )
 #else
-PRIVATE Void rgSCHLmmShutdown(inst)
+static Void rgSCHLmmShutdown(inst)
 Inst inst;
 #endif
 {

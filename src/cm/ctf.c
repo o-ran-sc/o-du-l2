@@ -424,13 +424,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PRIVATE S16 cmRelCtfCfgReq
+static S16 cmRelCtfCfgReq
 (
 Pst  *pst,
 CtfCfgReqInfo *cfgReqInfo
 )
 #else
-PRIVATE S16 cmRelCtfCfgReq(pst,cfgReqInfo)
+static S16 cmRelCtfCfgReq(pst,cfgReqInfo)
 Pst  *pst;
 CtfCfgReqInfo *param;
 #endif
@@ -5141,13 +5141,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PRIVATE S16 cmPkCtfUnLicnsdCellParam
+static S16 cmPkCtfUnLicnsdCellParam
 (
 CtfUnLicnsdCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmPkCtfUnLicnsdCellParam(param, mBuf)
+static S16 cmPkCtfUnLicnsdCellParam(param, mBuf)
 CtfUnLicnsdCfgInfo  *param;
 Buffer *mBuf;
 #endif
@@ -5318,13 +5318,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PRIVATE S16 cmUnpkCtfUnLicnsdCellParam
+static S16 cmUnpkCtfUnLicnsdCellParam
 (
 CtfUnLicnsdCfgInfo *param,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmUnpkCtfUnLicnsdCellParam(param, mBuf)
+static S16 cmUnpkCtfUnLicnsdCellParam(param, mBuf)
 CtfUnLicnsdCfgInfo  *param;
 Buffer *mBuf;
 #endif

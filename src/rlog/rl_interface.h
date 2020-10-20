@@ -106,24 +106,24 @@ void rlEnaBleBufferedIO(void);
 
 ///////////////////////////////////////////////////////////////////////////////
 // This API updates the RLOG Tti count baed on this time stamp will be updated 
-extern void rlUpdateRlogTti(void);
+void rlUpdateRlogTti(void);
 
 ///////////////////////////////////////////////////////////////////////////////
 // This API reset the RLOG rate control count and enable logging every 10 ms 
-extern void rlResetLogRateLmt(void);
+void rlResetLogRateLmt(void);
 
 ///////////////////////////////////////////////////////////////////////////////
 // This API reset the RLOG rate control count and enable logging every 10 ms
-extern void rlResetLogRateLmt(void);
+void rlResetLogRateLmt(void);
 
 ///////////////////////////////////////////////////////////////////////////////
 // This API Start the limit the number of logs loggd into circular buffer every
 // 10ms
-extern void rlStartLogCountLimit(void);
+void rlStartLogCountLimit(void);
 
 ///////////////////////////////////////////////////////////////////////////////
 // This API stops restriciton of limiting number of logs every 10 ms
-extern void rlStopLogCountLimit(void);
+void rlStopLogCountLimit(void);
 
 
 #ifdef WR_DBG_CIRLOG

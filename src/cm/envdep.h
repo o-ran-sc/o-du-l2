@@ -1148,119 +1148,11 @@ typedef INTERRPT Void (*PIF) ARGS((void )); /* pointer to interrupt function */
 #define PUBLIC
 #endif /* PUBLIC */
 
-#ifdef PRIVATE
-#undef PRIVATE
-#define PRIVATE       static      /* private is c static scope */
-#else /* not PRIVATE */
-#define PRIVATE       static      /* private is c static scope */
-#endif /* PRIVATE */
 
-#ifdef EXTERN
-#undef EXTERN
-#define EXTERN  extern
-#else /* not EXTERN */
-#define EXTERN  extern
-#endif /* EXTERN */
-
-
-#ifdef ANSI
-#define CONSTANT const            /* constant */
-#else
-#define CONSTANT
-#endif /* ANSI */
-
-#ifdef _MCC68K                    /* microtec 68K cross compiler */
-
-#ifdef VOLATILE
-#undef VOLATILE
-#define VOLATILE     volatile     /* volatile */
-#else
-#define VOLATILE    volatile
-#endif
-
-#if _STR_CMP(_VERSION,"4.4") >= 0  /* MCC68K only, check version */
-#ifdef INLINE
-#undef INLINE
-#define INLINE       inline       /* inline */
-#else /* not INLINE */
-#define INLINE       inline       /* inline */
-#endif /* INLINE */
-#else
-#define INLINE                    /* no inline */
-#endif /* __STR_CMP */
-#else /* not _MCC68K */
-#ifdef __GNUC__
-#ifndef __STRICT_ANSI__
-#ifdef INLINE
-#undef INLINE
-#define INLINE __inline__
-#else /* not inline */
-#define INLINE __inline__
-#endif /* INLINE */
-#else /* not strict ansi */
-#ifdef INLINE
-#undef INLINE
-#define INLINE
-#else /* not inline */
-#define INLINE
-#endif /* INLINE */
-#endif /* __STRICT_ANSI */
-#ifdef VOLATILE
-#undef VOLATILE
-#define VOLATILE     volatile     /* volatile */
-#else /* volatile */
-#define VOLATILE    volatile
-#endif
-#else /* not gnuc */
-#ifdef WIN32
-#ifdef VOLATILE
-#undef VOLATILE
-#define VOLATILE  volatile
-#else /* VOLATILE */
-#define VOLATILE  volatile
-#endif /* VOLATILE */
-
-#ifdef INLINE
-#undef INLINE
-#define INLINE
-#else
-#define INLINE
-#endif /* INLINE */
-#else /* not WIN32 */
-
-#ifdef VOLATILE
-#undef VOLATILE
-#define VOLATILE                  /* volatile */
-#else
-#define VOLATILE                  /* volatile */
-#endif /* VOLATILE */
-
-#ifdef INLINE
-#undef INLINE
-#define INLINE
-#else
-#define INLINE
-#endif /* INLINE */
-
-#endif /* WIN32 */
-#endif /* __GNUC__ */
-#endif /* _MCC68K */
 
 /*envdep_h_001.main_77 SSI-4GMX specfic changes*/
 /*envdep_h_001.main_78 : removed SSI-4GMX specfic changes*/
-#ifdef VOLATILE
-#undef VOLATILE
-#define VOLATILE volatile
-#else
-#define VOLATILE volatile
-#endif
 
-#ifdef __cplusplus
-#ifdef INLINE
-#undef INLINE
-#endif
-#define INLINE
-#endif
 
 
 /**********************************************************************
@@ -1272,25 +1164,25 @@ typedef INTERRPT Void (*PIF) ARGS((void )); /* pointer to interrupt function */
 #ifndef STDIO_INCLD
 
 #ifdef SUNOS41
-EXTERN  S8 *sprintf ARGS((S8 *buffer, CONSTANT S8 *format, /* args */ ...));
+S8 *sprintf ARGS((S8 *buffer, const S8 *format, /* args */ ...));
 #else
 #ifdef SUNOS51
 #else /* not SUNOS51 */
 #ifdef HPOS 
-EXTERN int sprintf ARGS((S8 *s, CONSTANT S8 *format, /* args */ ... ));
+int sprintf ARGS((S8 *s, const S8 *format, /* args */ ... ));
 #else
 #ifdef _MCC68K
-EXTERN Void sprintf ARGS((S8 *outbuf, S8 *fmt, /* args */ ...)); /* td68k.x */
+Void sprintf ARGS((S8 *outbuf, S8 *fmt, /* args */ ...)); /* td68k.x */
 #else
 /* other os */
 #ifdef WIN32
-EXTERN  int sprintf ARGS((S8 *buffer,CONSTANT S8 *format, /* args */ ...)); 
+int sprintf ARGS((S8 *buffer,const S8 *format, /* args */ ...)); 
 #else
 #ifdef VW
-EXTERN  int sprintf ARGS((S8 *buffer,CONSTANT S8 *format, /* args */ ...)); 
+int sprintf ARGS((S8 *buffer,const S8 *format, /* args */ ...)); 
 #else
 #ifdef SS_PS
-EXTERN  int sprintf ARGS((S8 *buffer,CONSTANT S8 *format, /* args */ ...)); 
+int sprintf ARGS((S8 *buffer,const S8 *format, /* args */ ...)); 
 #endif /* SS_PS */
 #endif /* VW */
 #endif /* WIN32 */
@@ -1796,10 +1688,10 @@ typedef S8               *ARGTYPE;
 #ifdef TRACE5           /* trace 5 - call stack */
 
 #define T5M 64          /* trace 5 - maximum call stack height */
-extern S8 *t5s[];       /* trace 5 - call stack */
-extern S16 t5t;         /* trace 5 - top of call stack */
+S8 *t5s[];       /* trace 5 - call stack */
+S16 t5t;         /* trace 5 - top of call stack */
 #ifdef ERRCHK
-extern Void FAR exit(int);
+Void FAR exit(int);
 #endif
 #endif
 

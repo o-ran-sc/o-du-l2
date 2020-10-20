@@ -32,8 +32,8 @@
 uint8_t BuildMibPdu();
 uint8_t BuildMibMsg();
 uint8_t BuildSib1Msg();
-extern char encBuf[ENC_BUF_MAX_LEN];
-extern DuCfgParams duCfgParam;
+char encBuf[ENC_BUF_MAX_LEN];
+DuCfgParams duCfgParam;
 
 /**********************************************************************
          End of file

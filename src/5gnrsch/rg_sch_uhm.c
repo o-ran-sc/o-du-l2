@@ -64,9 +64,9 @@
 
 #ifdef EMTC_ENABLE
    uint32_t gUlRetxPassCntr = 0;
-   /*EXTERN uint32_t gUlRetxFailCntr;
-   EXTERN uint32_t gUlCrcPassCounter;
-   EXTERN uint32_t gUlCrcFailCounter;*/
+   /*uint32_t gUlRetxFailCntr;
+   uint32_t gUlCrcPassCounter;
+   uint32_t gUlCrcFailCounter;*/
 #endif
 uint8_t rgRvIdxTable[] = {0, 3, 1, 2}; /* This gives rvIdx for a given rv */
 uint8_t rgRvTable[] = {0, 2, 3 ,1};    /* This gives rv for a given rvIdx */

@@ -185,7 +185,7 @@ PFV      func;           /* function */
    CmTqType *tqEnt, *tqEnt1; 
    PTR cb;
    CmTimer *tmp1;
-   VOLATILE uint32_t     startTime = 0;
+   volatile uint32_t     startTime = 0;
    
  
    /*starting Task*/

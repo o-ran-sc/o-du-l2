@@ -33,7 +33,7 @@
 #define __CKW_X__
 
 #ifdef __cplusplus
-EXTERN "C" {
+extern "C" {
 #endif  /*for extern "C"*/
 
 /** @file ckw.x
@@ -216,7 +216,7 @@ typedef S16 (*CkwUbndReq)    ARGS((Pst *pst, SpId spId, Reason reason));
  *                         Allowable values: 0 to 32767.
  * @return ROK
  */
-EXTERN S16 RlcUiCkwBndReq ARGS((Pst *pst, SuId suId, SpId spId));
+S16 RlcUiCkwBndReq ARGS((Pst *pst, SuId suId, SpId spId));
 
 /** 
  * @details RLC invokes the bind confirm primitive to acknowledge the receipt
@@ -235,7 +235,7 @@ CM_BND_OK: Bind request succeeded\n
 CM_BND_NOK: Error encountered during the processing of the bind request.
  * @return ROK
  */
-EXTERN S16 RlcUiCkwBndCfm ARGS((Pst *pst, SuId suId, uint8_t status));
+S16 RlcUiCkwBndCfm ARGS((Pst *pst, SuId suId, uint8_t status));
 
 /** 
  * @details The RLC service user initiates this primitive for performing
@@ -252,7 +252,7 @@ EXTERN S16 RlcUiCkwBndCfm ARGS((Pst *pst, SuId suId, uint8_t status));
  *                            Allowable value: CKW_UBND_REQ.
  * @return ROK
  */
-EXTERN S16 RlcUiCkwUbndReq ARGS((Pst *pst, SpId spId, Reason reason));
+S16 RlcUiCkwUbndReq ARGS((Pst *pst, SpId spId, Reason reason));
 
 /* Layer interface Control Primitives */
 /**
@@ -273,7 +273,7 @@ EXTERN S16 RlcUiCkwUbndReq ARGS((Pst *pst, SpId spId, Reason reason));
  * @param[in] cfgInfo   -  This structure contains the configuration information
  * @return ROK
  */
-EXTERN S16 RlcProcCfgReq ARGS((Pst *pst, RlcCfgInfo *cfgInfo));
+S16 RlcProcCfgReq ARGS((Pst *pst, RlcCfgInfo *cfgInfo));
 
 /**
  *@details This primitive is used by RLC to confirm the configuration requested
@@ -294,7 +294,7 @@ EXTERN S16 RlcProcCfgReq ARGS((Pst *pst, RlcCfgInfo *cfgInfo));
  * information.
  * @return ROK
  */
-EXTERN S16 RlcUiRlcCfgCfm ARGS((Pst *pst, SuId suId, RlcCfgCfmInfo *cfmInfo));
+S16 RlcUiRlcCfgCfm ARGS((Pst *pst, SuId suId, RlcCfgCfmInfo *cfmInfo));
 
 /**
  *@details This primitive is used by RRC to change the UeId for the existing UE
@@ -308,7 +308,7 @@ EXTERN S16 RlcUiRlcCfgCfm ARGS((Pst *pst, SuId suId, RlcCfgCfmInfo *cfmInfo));
  * @param[in] newUeInfo -  New UE Id Info for existing UE context. 
  * @return ROK
  */
-EXTERN S16 RlcUiCkwUeIdChgReq ARGS((Pst *pst, SpId spId, uint32_t transId,
+S16 RlcUiCkwUeIdChgReq ARGS((Pst *pst, SpId spId, uint32_t transId,
                                    CkwUeInfo *ueInfo, CkwUeInfo *newUeInfo));
 
 /**
@@ -333,39 +333,39 @@ EXTERN S16 RlcUiCkwUeIdChgReq ARGS((Pst *pst, SpId spId, uint32_t transId,
  * information.
  * @return ROK
  */
-EXTERN S16 RlcUiCkwUeIdChgCfm  ARGS((Pst *pst, SuId suId, uint32_t transId, 
+S16 RlcUiCkwUeIdChgCfm  ARGS((Pst *pst, SuId suId, uint32_t transId, 
                                    CkwUeInfo *ueInfo, CmStatus status));
 
 /* RRC Extern declarations */
 #ifdef NH
-EXTERN S16 NhLiCkwBndReq ARGS((
+S16 NhLiCkwBndReq ARGS((
          Pst *pst,
          SuId suId,
          SpId spId));
 
-EXTERN S16 NhLiCkwUbndReq ARGS((
+S16 NhLiCkwUbndReq ARGS((
          Pst *pst,
          SpId spId,
          Reason reason));
 
-EXTERN S16 NhLiCkwBndCfm ARGS((Pst *pst,
+S16 NhLiCkwBndCfm ARGS((Pst *pst,
          SuId suId,
          uint8_t status));
 
-EXTERN S16 NhLiRlcCfgReq ARGS((
+S16 NhLiRlcCfgReq ARGS((
          Pst *pst,
          SpId spId,
          RlcCfgInfo *cfgInfo));
 
-EXTERN S16 NhLiRlcCfgCfm ARGS((Pst *pst,
+S16 NhLiRlcCfgCfm ARGS((Pst *pst,
          SuId suId,
          RlcCfgCfmInfo* cfmInfo));
 
-EXTERN S16 NhLiCkwUeIdChgReq ARGS((Pst *pst, 
+S16 NhLiCkwUeIdChgReq ARGS((Pst *pst, 
          SpId spId, uint32_t transId,
          CkwUeInfo *ueInfo, CkwUeInfo *newUeInfo));
 
-EXTERN S16 NhLiCkwUeIdChgCfm  ARGS((Pst *pst, 
+S16 NhLiCkwUeIdChgCfm  ARGS((Pst *pst, 
          SuId suId, uint32_t transId, 
          CkwUeInfo *ueInfo, CmStatus status));
 
@@ -373,34 +373,34 @@ EXTERN S16 NhLiCkwUeIdChgCfm  ARGS((Pst *pst,
 
 /* Dummy RRC Interface primitives */
 #ifdef DM
-EXTERN S16 DmUiCkwBndReq ARGS((
+S16 DmUiCkwBndReq ARGS((
          Pst *pst,
          SuId suId,
          SpId spId));
 
-EXTERN S16 DmUiCkwUbndReq ARGS((
+S16 DmUiCkwUbndReq ARGS((
          Pst *pst,
          SpId spId,
          Reason reason));
 
-EXTERN S16 DmUiCkwBndCfm ARGS((Pst *pst,
+S16 DmUiCkwBndCfm ARGS((Pst *pst,
          SuId suId,
          uint8_t status));
 
-EXTERN S16 DmUiRlcCfgReq ARGS((
+S16 DmUiRlcCfgReq ARGS((
          Pst *pst,
          SpId spId,
          RlcCfgInfo *cfgInfo));
 
-EXTERN S16 DmUiRlcCfgCfm ARGS((Pst *pst,
+S16 DmUiRlcCfgCfm ARGS((Pst *pst,
          SuId suId,
          RlcCfgCfmInfo* cfmInfo));
 
-EXTERN S16 DmUiCkwUeIdChgReq ARGS((Pst *pst, 
+S16 DmUiCkwUeIdChgReq ARGS((Pst *pst, 
          SpId spId, uint32_t transId,
          CkwUeInfo *ueInfo, CkwUeInfo *newUeInfo));
 
-EXTERN S16 DmUiCkwUeIdChgCfm  ARGS((Pst *pst, 
+S16 DmUiCkwUeIdChgCfm  ARGS((Pst *pst, 
          SuId suId, uint32_t transId, 
          CkwUeInfo *ueInfo, CmStatus status));
 
@@ -411,83 +411,83 @@ EXTERN S16 DmUiCkwUeIdChgCfm  ARGS((Pst *pst,
  ****************************************************************************/
 #ifdef LCCKW
 /* Packing functions */
-EXTERN S16 cmPkRlcTmInfo ARGS ((
+S16 cmPkRlcTmInfo ARGS ((
 RlcTmInfo      *param,
 Buffer         *mBuf
 ));
 
-EXTERN S16 cmPkRlcUmInfo ARGS ((
+S16 cmPkRlcUmInfo ARGS ((
 RlcEntCfgInfo  *param,
 Buffer         *mBuf
 ));
 
-EXTERN S16 cmPkRlcAmInfo ARGS ((
+S16 cmPkRlcAmInfo ARGS ((
 RlcAmInfo      *param,
 Buffer         *mBuf
 ));
 
-EXTERN S16 cmPkCkwLChInfo ARGS ((
+S16 cmPkCkwLChInfo ARGS ((
 CkwLChInfo     *param,
 Buffer         *mBuf
 ));
 
-EXTERN S16 cmPkRlcEntCfgInfo ARGS ((
+S16 cmPkRlcEntCfgInfo ARGS ((
 RlcEntCfgInfo  *param,
 Buffer         *mBuf
 ));
 
-EXTERN S16 cmPkRlcCfgInfo ARGS ((
+S16 cmPkRlcCfgInfo ARGS ((
 RlcCfgInfo     *param,
 Pst            *pst,
 Buffer         *mBuf
 ));
 
-EXTERN S16 cmPkRlcEntCfgCfmInfo ARGS ((
+S16 cmPkRlcEntCfgCfmInfo ARGS ((
 RlcEntCfgCfmInfo  *param,
 Buffer            *mBuf
 ));
 
-EXTERN S16 cmPkRlcCfgCfmInfo ARGS ((
+S16 cmPkRlcCfgCfmInfo ARGS ((
 RlcCfgCfmInfo  *param,
 Pst            *pst,
 Buffer         *mBuf
 ));
 
-EXTERN S16 cmPkCkwUeInfo ARGS ((
+S16 cmPkCkwUeInfo ARGS ((
 CkwUeInfo *param,
 Buffer    *mBuf
 ));
 
-EXTERN S16 cmPkCkwBndReq ARGS ((
+S16 cmPkCkwBndReq ARGS ((
 Pst *pst,
 SuId suId,
 SpId spId
 ));
 
-EXTERN S16 cmPkCkwUbndReq ARGS ((
+S16 cmPkCkwUbndReq ARGS ((
 Pst *pst,
 SpId spId,
 Reason reason
 ));
 
-EXTERN S16 cmPkCkwBndCfm ARGS ((
+S16 cmPkCkwBndCfm ARGS ((
 Pst *pst,
 SuId suId,
 uint8_t status
 ));
 
-EXTERN S16 packUeCreateReq ARGS ((
+S16 packUeCreateReq ARGS ((
 Pst               *pst,
 RlcCfgInfo        *cfgInfo
 ));
 
-EXTERN S16 cmPkRlcCfgCfm ARGS ((
+S16 cmPkRlcCfgCfm ARGS ((
 Pst               *pst,
 SuId              suId,
 RlcCfgCfmInfo     *cfgCfmInfo
 ));
 
-EXTERN S16 cmPkCkwUeIdChgReq ARGS ((
+S16 cmPkCkwUeIdChgReq ARGS ((
 Pst                *pst, 
 SpId               spId, 
 uint32_t                transId,
@@ -495,7 +495,7 @@ CkwUeInfo          *ueInfo,
 CkwUeInfo          *newUeInfo
 ));
 
-EXTERN S16 cmPkCkwUeIdChgCfm  ARGS ((
+S16 cmPkCkwUeIdChgCfm  ARGS ((
 Pst                *pst, 
 SuId               suId, 
 uint32_t                transId, 
@@ -504,95 +504,95 @@ CmStatus           status
 ));
 
 /* Unpacking functions */
-EXTERN S16 cmUnpkRlcTmInfo ARGS ((
+S16 cmUnpkRlcTmInfo ARGS ((
 RlcTmInfo      *param,
 Buffer         *mBuf
 ));
 
-EXTERN S16 cmUnpkRlcUmInfo ARGS ((
+S16 cmUnpkRlcUmInfo ARGS ((
 RlcEntCfgInfo  *param,
 Buffer         *mBuf
 ));
 
-EXTERN S16 cmUnpkRlcAmInfo ARGS ((
+S16 cmUnpkRlcAmInfo ARGS ((
 RlcAmInfo      *param,
 Buffer         *mBuf
 ));
 
-EXTERN S16 cmUnpkCkwLInfo ARGS ((
+S16 cmUnpkCkwLInfo ARGS ((
 CkwLChInfo     *param,
 Buffer         *mBuf
 ));
 
-EXTERN S16 cmUnpkRlcCfgCfmInfo ARGS ((
+S16 cmUnpkRlcCfgCfmInfo ARGS ((
 RlcCfgCfmInfo  *param,
 Pst            *pst,
 Buffer         *mBuf
 ));
 
-EXTERN S16 cmUnpkCkwBndReq ARGS ((
+S16 cmUnpkCkwBndReq ARGS ((
 CkwBndReq      func,
 Pst            *pst,
 Buffer         *mBuf
 ));
 
-EXTERN S16 cmUnpkCkwLChInfo ARGS ((
+S16 cmUnpkCkwLChInfo ARGS ((
 CkwLChInfo     *param,
 Buffer         *mBuf
 ));
 
-EXTERN S16 cmUnpkRlcEntCfgInfo ARGS ((
+S16 cmUnpkRlcEntCfgInfo ARGS ((
 RlcEntCfgInfo  *param,
 Buffer         *mBuf
 ));
 
-EXTERN S16 cmUnpkRlcCfgInfo ARGS ((
+S16 cmUnpkRlcCfgInfo ARGS ((
 RlcCfgInfo     *param,
 Pst            *pst,
 Buffer         *mBuf
 ));
 
-EXTERN S16 cmUnpkCkwUeInfo ARGS ((
+S16 cmUnpkCkwUeInfo ARGS ((
 CkwUeInfo      *param,
 Buffer         *mBuf
 ));
 
-EXTERN S16 cmUnpkRlcCfgCfm ARGS ((
+S16 cmUnpkRlcCfgCfm ARGS ((
 RlcCfgCfm         func,
 Pst               *pst,
 Buffer            *mBuf
 ));
 
-EXTERN S16 cmUnpkCkwUbndReq ARGS ((
+S16 cmUnpkCkwUbndReq ARGS ((
 CkwUbndReq     func,
 Pst            *pst,
 Buffer         *mBuf
 ));
 
-EXTERN S16 cmUnpkCkwBndCfm ARGS ((
+S16 cmUnpkCkwBndCfm ARGS ((
 CkwBndCfm      func,
 Pst            *pst,
 Buffer         *mBuf
 ));
 
-EXTERN S16 unpackUeCreateReq ARGS ((
+S16 unpackUeCreateReq ARGS ((
 RlcCfgReq         func,
 Pst               *pst,
 Buffer            *mBuf
 ));
 
-EXTERN S16 cmUnpkRlcEntCfgCfmInfo ARGS ((
+S16 cmUnpkRlcEntCfgCfmInfo ARGS ((
 RlcEntCfgCfmInfo  *param,
 Buffer            *mBuf
 ));
 
-EXTERN S16 cmUnpkCkwUeIdChgReq ARGS ((
+S16 cmUnpkCkwUeIdChgReq ARGS ((
 CkwUeIdChgReq      func,
 Pst                *pst, 
 Buffer             *mBuf
 ));
 
-EXTERN S16 cmUnpkCkwUeIdChgCfm  ARGS ((
+S16 cmUnpkCkwUeIdChgCfm  ARGS ((
 CkwUeIdChgCfm      func,
 Pst                *pst, 
 Buffer             *mBuf

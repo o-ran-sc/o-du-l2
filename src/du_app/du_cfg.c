@@ -52,8 +52,8 @@
 #include "BWP-DownlinkCommon.h"
 #include "BWP-UplinkCommon.h"
 
-extern DuCfgParams duCfgParam;
-extern char encBuf[ENC_BUF_MAX_LEN];
+DuCfgParams duCfgParam;
+char encBuf[ENC_BUF_MAX_LEN];
 
 
 /* Filling Slot configuration as :

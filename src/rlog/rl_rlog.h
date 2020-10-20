@@ -163,27 +163,27 @@ typedef struct {
 
 } THREAD_DATA;
 
-extern void readL2LogBuff(void);
-extern void processL2LogBuff(void);
-extern S16  sendL2LogBuftoL3(void);
-extern void rlInitL2Log(void);
+void readL2LogBuff(void);
+void processL2LogBuff(void);
+S16  sendL2LogBuftoL3(void);
+void rlInitL2Log(void);
 /* Extern for soc specific file */
-extern void rlProcessLogBufFromL2(void *mBuf);
-extern void rlInitL2SocSpecific(void);
-//extern void processL2LogBuff(void);
-extern void rlProcessTicks(void);
-extern void rlGetL2LogBufPtr (void *mBuf, uint32_t *logLen,uint8_t **logPtr);
-extern void rlInvalidateL2LogsInCache(uint8_t *ptr,uint32_t len);
+void rlProcessLogBufFromL2(void *mBuf);
+void rlInitL2SocSpecific(void);
+//void processL2LogBuff(void);
+void rlProcessTicks(void);
+void rlGetL2LogBufPtr (void *mBuf, uint32_t *logLen,uint8_t **logPtr);
+void rlInvalidateL2LogsInCache(uint8_t *ptr,uint32_t len);
 
-extern uint8_t     *g_l2rlogBuf;        /* buffer pointer for shared memory allocation */
-extern uint8_t     *g_l2LogBufStartPtr; /* buffer pointer where logs has to be written */
-extern uint8_t     *g_l2LogBufBasePtr;  /* Base pointer for log buffer */
-extern uint8_t     *g_logBufRcvdFromL2; /* Buffer pointer received from L2 at L3*/
-extern uint8_t     *g_l2LogBaseBuff;    /* Base log buffer received at L3 */
-extern uint32_t     g_l2LogBufLen;      /* Log Buffer length written at L2 */
-extern uint32_t     startL2Logging;     /* flag to start processing of L2 logs */
-extern uint32_t     g_l2logBuffPos;     /* Log Buffer block which is in use for L2 logging */
-extern uint8_t      g_writeCirBuf;      /* Flag to indicate whether to write logs or not */
-//extern Pst    g_rlog_pst;
+uint8_t     *g_l2rlogBuf;        /* buffer pointer for shared memory allocation */
+uint8_t     *g_l2LogBufStartPtr; /* buffer pointer where logs has to be written */
+uint8_t     *g_l2LogBufBasePtr;  /* Base pointer for log buffer */
+uint8_t     *g_logBufRcvdFromL2; /* Buffer pointer received from L2 at L3*/
+uint8_t     *g_l2LogBaseBuff;    /* Base log buffer received at L3 */
+uint32_t     g_l2LogBufLen;      /* Log Buffer length written at L2 */
+uint32_t     startL2Logging;     /* flag to start processing of L2 logs */
+uint32_t     g_l2logBuffPos;     /* Log Buffer block which is in use for L2 logging */
+uint8_t      g_writeCirBuf;      /* Flag to indicate whether to write logs or not */
+//Pst    g_rlog_pst;
 
 #endif /* __RL_H__*/

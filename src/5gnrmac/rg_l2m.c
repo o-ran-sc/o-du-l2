@@ -63,12 +63,12 @@ static int RLOG_MODULE_ID=4096;
 
 /* local defines */
 #ifdef LTE_L2_MEAS
-PRIVATE S16 rgL2mInsertMeasCb ARGS((
+static S16 rgL2mInsertMeasCb ARGS((
          RgCellCb       *cell,
          RgL2MeasCb     *measCb,
          RgInfL2MeasReq *measInfo ));
 
-PRIVATE RgL2MeasCb * rgL2mAllocMeasCb ARGS((
+static RgL2MeasCb * rgL2mAllocMeasCb ARGS((
          RgCellCb       *cell,
          RgInfL2MeasReq *measInfo,
          RgErrInfo      *err));
@@ -123,7 +123,7 @@ RgErrInfo      *err;
       return RFAILED;
    }
    //Memcpy is already done in rgL2mAllocMeasCb
-   /*memcpy(&measCb->measReq, (CONSTANT uint8_t *)measInfo,\
+   /*memcpy(&measCb->measReq, (const uint8_t *)measInfo,\
      sizeof(RgInfL2MeasReq));*/
    rgL2mInsertMeasCb(cell, measCb, measInfo);
    measCb->measReq.timePrd = measInfo->timePrd;
@@ -200,13 +200,13 @@ RgErrInfo      *err;
  * @param  [in] RgInfL2MeasCfm    *measCfm
  */
 #ifdef ANSI
-PRIVATE Void rgSndL2MeasCfm
+static Void rgSndL2MeasCfm
 (
 RgCellCb          *cell, 
 RgInfL2MeasCfm    *measCfm
 )
 #else
-PRIVATE Void rgSndL2MeasCfm (cell, measCfm)
+static Void rgSndL2MeasCfm (cell, measCfm)
 RgCellCb          *cell; 
 RgInfL2MeasCfm    *measCfm;   
 #endif
@@ -232,13 +232,13 @@ RgInfL2MeasCfm    *measCfm;
  * @param  [in] RgInfL2MeasCfm    *measCfm
  */
 #ifdef ANSI
-PRIVATE Void rgSndL2MeasStopCfm
+static Void rgSndL2MeasStopCfm
 (
 RgCellCb          *cell,
 RgInfL2MeasCfm    *measCfm
 )
 #else
-PRIVATE Void rgSndL2MeasStopCfm (cell, measCfm)
+static Void rgSndL2MeasStopCfm (cell, measCfm)
 RgCellCb          *cell;
 RgInfL2MeasCfm    *measCfm;
 #endif
@@ -446,14 +446,14 @@ RgInfL2MeasSndReq *measInfo;      /* Meas Req Info */
  *      -# RFAILED 
  */
 #ifdef ANSI
-PRIVATE S16 rgL2mInsertMeasCb
+static S16 rgL2mInsertMeasCb
 (
 RgCellCb       *cell,
 RgL2MeasCb     *measCb,
 RgInfL2MeasReq *measInfo
 )
 #else
-PRIVATE S16 rgL2mInsertMeasCb(cell, measCb, measInfo)
+static S16 rgL2mInsertMeasCb(cell, measCb, measInfo)
 RgCellCb       *cell;
 RgL2MeasCb     *measCb;
 RgInfL2MeasReq *measInfo;
@@ -511,14 +511,14 @@ RgInfL2MeasReq *measInfo;
  * @return  RgSchL2MeasCb *
  */
 #ifdef ANSI
-PRIVATE RgL2MeasCb * rgL2mAllocMeasCb
+static RgL2MeasCb * rgL2mAllocMeasCb
 (
 RgCellCb       *cell,
 RgInfL2MeasReq *measInfo,
 RgErrInfo      *err
 )
 #else
-PRIVATE RgL2MeasCb * rgL2mAllocMeasCb(cell, measInfo, err)
+static RgL2MeasCb * rgL2mAllocMeasCb(cell, measInfo, err)
 RgCellCb       *cell;
 RgInfL2MeasReq *measInfo;
 RgErrInfo      *err;

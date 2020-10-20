@@ -71,7 +71,7 @@
 #endif
 
 #ifdef __cplusplus
-EXTERN "C" {
+extern "C" {
 #endif /* __cplusplus */
 
 
@@ -84,7 +84,7 @@ S16 rlcLiRguDatReqRbuf(Pst *Post,SpId spId,Void *datReq);
 S16 rlcLiRguStaRspRbuf(Pst *Post,SpId spId,Void  *staRsp);
 #endif
 #if defined(MAC_RLC_HARQ_STA_RBUF) && defined(LTE_L2_MEAS)
-EXTERN S16 RlcDlHarqStaBatchProc (Void);
+S16 RlcDlHarqStaBatchProc (Void);
 #endif
 
 
@@ -280,7 +280,7 @@ RguL2MUlThrpMeasReqInfo *l2mUlThrpMeasReq;
 
 #ifdef MAC_RLC_UL_RBUF
 S16 rlcUlBatchProc ARGS ((Void));
-EXTERN Void rlcUtlFreeUlRBuf ARGS((void));
+Void rlcUtlFreeUlRBuf ARGS((void));
 
 #ifdef ANSI
 S16 rlcUlBatchProc
@@ -295,7 +295,7 @@ Void;
 /* Read from Ring Buffer and process PDCP packets */
    RguDDatIndInfo   *datInd;
    Void *elmIndx = NULLP;
-   PRIVATE Pst rlcUlRbfuPst={1,1,ENTRLC,0,ENTMAC,0,PRIOR0,RTESPEC,EVTRLCULDAT,0,0,0,0};
+   static Pst rlcUlRbfuPst={1,1,ENTRLC,0,ENTMAC,0,PRIOR0,RTESPEC,EVTRLCULDAT,0,0,0,0};
 /* Read from Ring Buffer and process PDCP packets */
 
 #ifndef SS_RBUF

@@ -56,7 +56,7 @@ static int RLOG_FILE_ID=175;
 #include "rg_sch.x"            /* typedefs for MAC */
 
 #ifdef LTE_ADV
-EXTERN Void rgSCHSCellActivation ARGS((
+Void rgSCHSCellActivation ARGS((
 RgSchUeCellInfo  *sCell
 ));
 #endif

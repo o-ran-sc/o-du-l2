@@ -246,16 +246,16 @@ extern "C" {
 /* added !(defined(CMINETFLATBUF) */
 #if (!(defined(WIN32)) && !(defined(CMINETFLATBUF)))
 /* Added another function parameter */
-PRIVATE S16 buildRecvBuf ARGS((CmInetMemInfo *info, MsgLen len, 
+static S16 buildRecvBuf ARGS((CmInetMemInfo *info, MsgLen len, 
                                CmInetIovec rxArr[], Buffer *dBuf[], uint16_t maxSize,
                                struct msghdr *msg, Bool isStrmMsg));
-PRIVATE S16 buildRecvMsg ARGS((CmInetMemInfo *info, CmInetIovec rxArr[], 
+static S16 buildRecvMsg ARGS((CmInetMemInfo *info, CmInetIovec rxArr[], 
                                S16 numBduf, MsgLen msgLen, Buffer *dBufs[], 
                                Buffer **mPtr));
 /* cm_inet_c_001.main_50 - Added parameter to get length of dbufs packed for partial
  *               send handling 
  */
-PRIVATE S16 buildSendIovec ARGS((Buffer *mBuf, MsgLen msgLen, 
+static S16 buildSendIovec ARGS((Buffer *mBuf, MsgLen msgLen, 
                                  CmInetIovec txArr[], S16 numDBuf, 
                                  S16 *numIovElems, uint32_t *strtEndDBufNum,
                                  MsgLen *ioLen)); 
@@ -266,28 +266,28 @@ PRIVATE S16 buildSendIovec ARGS((Buffer *mBuf, MsgLen msgLen,
 
 #ifdef IPV6_SUPPORTED
 #ifdef IPV6_OPTS_SUPPORTED
-PRIVATE S16 cmInet6BuildSendHBHOpts    ARGS((CmInetIpv6HBHHdrArr *hbhOptsArr, 
+static S16 cmInet6BuildSendHBHOpts    ARGS((CmInetIpv6HBHHdrArr *hbhOptsArr, 
                                             uint8_t *cmsgBuf, uint32_t *curMsgIdx, 
                                             uint8_t hdrId));
-PRIVATE S16 cmInet6BuildSendRouteOpts  ARGS((CmInetIpv6RtHdr *rtOptsArr, 
+static S16 cmInet6BuildSendRouteOpts  ARGS((CmInetIpv6RtHdr *rtOptsArr, 
                                             uint8_t *cmsgBuf, uint32_t *curMsgIdx));
 
-PRIVATE S16 cmInet6BuildRecvRtHdr      ARGS((uint8_t *cmsgData, uint32_t rtDataLen, 
+static S16 cmInet6BuildRecvRtHdr      ARGS((uint8_t *cmsgData, uint32_t rtDataLen, 
                                             CmInetIpv6RtHdr0 *rtHdr0, 
                                             CmInetIpv6RtHdr *rtOptsArr,
                                             CmInetMemInfo *info));
-PRIVATE S16 cmInet6BuildRecvHopOptsArr ARGS((uint8_t *cmsgData, uint32_t hbhDataLen, 
+static S16 cmInet6BuildRecvHopOptsArr ARGS((uint8_t *cmsgData, uint32_t hbhDataLen, 
                                             CmInetIpv6HBHHdrArr *hbhOptsArr, 
                                             uint8_t hdrId, CmInetMemInfo *info));
-PRIVATE S16 cmInet6GetHopLimitValue    ARGS((uint8_t *cmsgData, uint32_t hopLimitDataLen,
+static S16 cmInet6GetHopLimitValue    ARGS((uint8_t *cmsgData, uint32_t hopLimitDataLen,
                                             CmInetIpv6HdrParm *ipv6HdrParam));
 
 #ifdef SS_LINUX
-PRIVATE S16 cmInetBuildSendHoplimit        ARGS((uint32_t hoplimit, uint8_t *cmsgBuf, 
+static S16 cmInetBuildSendHoplimit        ARGS((uint32_t hoplimit, uint8_t *cmsgBuf, 
                                             uint32_t *curMsgIdx));
 #endif /* SS_LINUX */
 #ifdef LOCAL_INTF
-PRIVATE S16 cmInet6BuildSendPktinfo         ARGS((CmInetIpAddr6 *srcAddr,
+static S16 cmInet6BuildSendPktinfo         ARGS((CmInetIpAddr6 *srcAddr,
                                             uint8_t *cmsgBuf, uint32_t *curMsgIdx,
                                             uint8_t protType));
 #endif /* LOCAL_INTF */
@@ -896,7 +896,7 @@ CmInetPollFd  *pollFdArr;            /* poll FD Array */
 */
 
 #ifdef ANSI
-PRIVATE S16 buildRecvBuf
+static S16 buildRecvBuf
 (
 CmInetMemInfo  *info,           /* buffer allocation info */
 MsgLen          len,            /* message length */
@@ -907,7 +907,7 @@ struct msghdr  *msg,            /* message header for recvmsg() */
 Bool           isStrmMsg        /* Is a TCP message */
 )
 #else
-PRIVATE S16 buildRecvBuf(info, len, rxArr, dBuf, maxSize, msg, isStrmMsg)
+static S16 buildRecvBuf(info, len, rxArr, dBuf, maxSize, msg, isStrmMsg)
    CmInetMemInfo   *info;          /* buffer allocation info */
    MsgLen           len;           /* message length */        
    CmInetIovec      rxArr[];       /* gather array */         
@@ -1059,7 +1059,7 @@ cleanup:
 */
 
 #ifdef ANSI
-PRIVATE S16 buildRecvMsg
+static S16 buildRecvMsg
 (
 CmInetMemInfo  *info,           /* buffer allocation info */
 CmInetIovec     rxArr[],        /* scatter array */  
@@ -1069,7 +1069,7 @@ Buffer         *dBufs[],        /* dBufs */
 Buffer        **mPtr            /* message built from dBufs */     
 )
 #else
-PRIVATE S16 buildRecvMsg(info, rxArr, numBuf, msgLen, dBufs, mPtr)
+static S16 buildRecvMsg(info, rxArr, numBuf, msgLen, dBufs, mPtr)
 CmInetMemInfo  *info;           /* buffer allocation info */   
 CmInetIovec     rxArr[];        /* scatter array */            
 S16             numBuf;         /* number of allocated dBufs */
@@ -1158,7 +1158,7 @@ cleanup:
 *
 */
 #ifdef ANSI
-PRIVATE S16 buildSendIovec
+static S16 buildSendIovec
 (
 Buffer         *mBuf,           /* Message buffer */
 MsgLen         msgLen,          /* Length of mBuf */
@@ -1169,7 +1169,7 @@ uint32_t            *strtEndDBufNum, /* dBuf number to start and end */
 MsgLen         *ioLen           /* cm_inet_c_001.main_50 - Len of dbuf packed into IO-vector */ 
 )
 #else
-PRIVATE S16 buildSendIovec(mBuf, msgLen, txArr, numDBufs, numIovElems, 
+static S16 buildSendIovec(mBuf, msgLen, txArr, numDBufs, numIovElems, 
                            strtEndDBufNum,ioLen) 
 Buffer         *mBuf;           /* Message buffer */
 MsgLen         msgLen;          /* Length of mBuf */
@@ -4140,14 +4140,14 @@ CmInetFd   *newSockFd;  /* socket file descriptor for new connection*/
 */
 
 #ifdef ANSI
-PRIVATE S16 cmInet4FillTos
+static S16 cmInet4FillTos
 (
 uint8_t  tos,        /* tos value to be filled in ipheader */
 uint8_t  *cmsgBuf,   /* flat buffer where to build ext hdrs */
 uint32_t *curMsgIdx  /* idx in cmsgBuf where HBH/Dest ext hdr ends */
 )
 #else
-PRIVATE S16 cmInet4FillTos(tos, cmsgBuf, curMsgIdx, protType)
+static S16 cmInet4FillTos(tos, cmsgBuf, curMsgIdx, protType)
 uint8_t   tos;       /* tos value to be filled in ipheader */
 uint8_t  *cmsgBuf;   /* flat buffer where to build ext hdrs */
 uint32_t *curMsgIdx; /* idx in cmsgBuf where HBH/Dest ext hdr ends */
@@ -4608,7 +4608,7 @@ S16             flags;          /* additional control flags, unused */
 
 #ifdef NTL_LIB
      {
-         extern int ntl_hLib;
+         int ntl_hLib;
          if ( sockFd->fd >= 0xD001)
              ret = ntl_sendmsg(ntl_hLib, sockFd->fd, &msg, 0);
    	     else
@@ -5113,7 +5113,7 @@ S16             flags;          /* additional control flags, unused */
 
 #ifdef NTL_LIB
      {
-         extern int ntl_hLib;
+         int ntl_hLib;
          if ( sockFd->fd >= 0xD001)
              ret = ntl_sendmsg(ntl_hLib, sockFd->fd, &msg, 0);
    	     else
@@ -5204,7 +5204,7 @@ S16             flags;          /* additional control flags, unused */
 */
 
 #ifdef ANSI
-PRIVATE S16 cmInet6BuildSendPktinfo
+static S16 cmInet6BuildSendPktinfo
 (
 CmInetIpAddr6 *srcAddr, /* src ip addr to set on outgoing packet */
 uint8_t  *cmsgBuf,   /* flat buffer where to build ext hdrs */
@@ -5212,7 +5212,7 @@ uint32_t *curMsgIdx, /* idx in cmsgBuf where HBH/Dest ext hdr ends */
 uint8_t   protType   /* whether IPv4/IPv6 socket */
 )
 #else
-PRIVATE S16 cmInet6BuildSendPktinfo(srcAddr, cmsgBuf, curMsgIdx, protType)
+static S16 cmInet6BuildSendPktinfo(srcAddr, cmsgBuf, curMsgIdx, protType)
 CmInetIpAddr6 *srcAddr; /* src ip addr to set on outgoing packet */
 uint8_t  *cmsgBuf;   /* flat buffer where to build ext hdrs */
 uint32_t *curMsgIdx; /* idx in cmsgBuf where HBH/Dest ext hdr ends */
@@ -5321,14 +5321,14 @@ uint8_t   protType;  /* whether IPv4/IPv6 socket */
 */
 
 #ifdef ANSI
-PRIVATE S16 cmInetBuildSendHoplimit
+static S16 cmInetBuildSendHoplimit
 (
 uint32_t   hoplimit,  /* the hoplimit value to be set on outgoing packet */
 uint8_t  *cmsgBuf,   /* flat buffer where to build ext hdrs */
 uint32_t *curMsgIdx  /* idx in cmsgBuf where HBH/Dest ext hdr ends */
 )
 #else
-PRIVATE S16 cmInetBuildSendHoplimit(hoplimit, cmsgBuf, curMsgIdx)
+static S16 cmInetBuildSendHoplimit(hoplimit, cmsgBuf, curMsgIdx)
 uint32_t  hoplimit;  /* the hoplimit value to be sent on outgoing packet */
 uint8_t  *cmsgBuf;   /* flat buffer where to build ext hdrs */
 uint32_t *curMsgIdx; /* idx in cmsgBuf where HBH/Dest ext hdr ends */
@@ -5391,7 +5391,7 @@ uint32_t *curMsgIdx; /* idx in cmsgBuf where HBH/Dest ext hdr ends */
 */
 
 #ifdef ANSI
-PRIVATE S16 cmInet6BuildSendHBHOpts
+static S16 cmInet6BuildSendHBHOpts
 (
 CmInetIpv6HBHHdrArr *hbhOptsArr,/* IPv6 extensions headers HBH/Dest opts */
 uint8_t *cmsgBuf,                    /* flat buffer where to build ext hdrs */
@@ -5399,7 +5399,7 @@ uint32_t *curMsgIdx,                 /* idx in cmsgBuf where HBH/Dest ext hdr en
 uint8_t hdrId                        /* 0: HBH hdr, 1:Dest Hdr */
 )
 #else
-PRIVATE S16 cmInet6BuildSendHBHOpts(hbhOptsArr, cmsgBuf, curMsgIdx, hdrId)
+static S16 cmInet6BuildSendHBHOpts(hbhOptsArr, cmsgBuf, curMsgIdx, hdrId)
 CmInetIpv6HBHHdrArr *hbhOptsArr;/* IPv6 extensions headers HBH/Dest opts */
 uint8_t *cmsgBuf;                    /* flat buffer where to build ext hdrs */
 uint32_t *curMsgIdx;                 /* idx in cmsgBuf where HBH/Dest ext hdr ends */
@@ -5513,14 +5513,14 @@ uint8_t hdrId;                       /* 0: HBH hdr, 1:Dest Hdr */
 */
 
 #ifdef ANSI
-PRIVATE S16 cmInet6BuildSendRouteOpts
+static S16 cmInet6BuildSendRouteOpts
 (
 CmInetIpv6RtHdr *rtOptsArr,  /* IPv6 destination options array */
 uint8_t *cmsgBuf,                 /* flat buffer where to build ext hdrs */
 uint32_t *curMsgIdx               /* idx in cmsgBuf where to start building RT hdr */
 )
 #else
-PRIVATE S16 cmInet6BuildSendRouteOpts(rtOptsArr, cmsgBuf, curMsgIdx)
+static S16 cmInet6BuildSendRouteOpts(rtOptsArr, cmsgBuf, curMsgIdx)
 CmInetIpv6RtHdr *rtOptsArr;  /* IPv6 destination options array */
 uint8_t *cmsgBuf;                 /* flat buffer where to build ext hdrs */
 uint32_t *curMsgIdx;              /* idx in cmsgBuf where to start building RT hd */
@@ -5608,7 +5608,7 @@ uint32_t *curMsgIdx;              /* idx in cmsgBuf where to start building RT h
 */
 
 #ifdef ANSI
-PRIVATE S16 cmInet6BuildRecvHopOptsArr
+static S16 cmInet6BuildRecvHopOptsArr
 (
 uint8_t *cmsgData,                    /* flat buffer where to build ext hdrs */
 uint32_t hbhDataLen,                  /* byte len of cmsghdr + hbh ancil data */
@@ -5617,7 +5617,7 @@ uint8_t hdrId,                        /* 0: HBH, 1: DEST */
 CmInetMemInfo   *info            /* Memory information */
 )
 #else
-PRIVATE S16 cmInet6BuildRecvHopOptsArr(cmsgData, hbhDataLen, hbhOptsArr, hdrId, 
+static S16 cmInet6BuildRecvHopOptsArr(cmsgData, hbhDataLen, hbhOptsArr, hdrId, 
                                       info)
 uint8_t *cmsgData;                    /* flat buffer where to build ext hdrs  */
 uint32_t hbhDataLen;                  /* byte len of cmsghdr + hbh ancil data */
@@ -5822,7 +5822,7 @@ CmInetMemInfo   *info;           /* Memory information */
 */
 
 #ifdef ANSI
-PRIVATE S16 cmInet6BuildRecvRtHdr
+static S16 cmInet6BuildRecvRtHdr
 (
 uint8_t *cmsgData,              /* flat buffer where to build Route hdr */ 
 uint32_t rtDataLen,             /* byte len of cmsghdr struc+rtHdr ancil data */
@@ -5831,7 +5831,7 @@ CmInetIpv6RtHdr *rtOptsArr,/* IPv6 extensions headers */
 CmInetMemInfo   *info      /* Memory information */
 )
 #else
-PRIVATE S16 cmInet6BuildRecvRtHdr(cmsgData, rtDataLen, rtHdr0, rtOptsArr, info)
+static S16 cmInet6BuildRecvRtHdr(cmsgData, rtDataLen, rtHdr0, rtOptsArr, info)
 uint8_t *cmsgData;              /* flat buffer where to build Route hdr */
 uint32_t rtDataLen;             /* byte len of cmsghdr struc+rtHdr ancil data */
 CmInetIpv6RtHdr0 *rtHdr0;  /* rtHeader0 struct that precedes IPV6 addrss */
@@ -5920,14 +5920,14 @@ CmInetMemInfo   *info;     /* Memory information */
 */
 
 #ifdef ANSI
-PRIVATE S16 cmInet6GetHopLimitValue
+static S16 cmInet6GetHopLimitValue
 (
 uint8_t *cmsgData,        /* flat buffer where to build ext hdrs */
 uint32_t hopLimitDataLen, /* byte len of cmsghdr + hbh ancil data */
 CmInetIpv6HdrParm *ipv6HdrParam /* ipv6 header parameters */ 
 )
 #else
-PRIVATE S16 cmInet6GetHopLimitValue(cmsgData, hopLimitDataLen, ipv6HdrParam)
+static S16 cmInet6GetHopLimitValue(cmsgData, hopLimitDataLen, ipv6HdrParam)
 uint8_t *cmsgData;         /* flat buffer where to build ext hdrs */
 uint32_t hopLimitDataLen;  /* byte len of cmsghdr + hbh ancil data */
 CmInetIpv6HdrParm *ipv6HdrParam; /* ipv6 header parameters */
@@ -8338,7 +8338,7 @@ Ptr       value;                /* option value */
                /* disable the IP_OPTIONS for Router Alert.  */
 #ifdef WIN32                          
                ret = setsockopt(sockFd->fd, level, IP_OPTIONS, 
-                     (CONSTANT char *)&disableOpt, sizeof(int));
+                     (const char *)&disableOpt, sizeof(int));
 #else
                ret = setsockopt(sockFd->fd, level, IP_OPTIONS, NULL, 0);
 #endif /* WIN32 */                  
@@ -8429,7 +8429,7 @@ Ptr       value;                /* option value */
                   (char *)&lpEnable, sizeof(lpEnable));
 #else
             ret = setsockopt(sockFd->fd, level, IP_MULTICAST_LOOP,
-                  (CONSTANT char *)&lpEnable, sizeof(lpEnable));
+                  (const char *)&lpEnable, sizeof(lpEnable));
 #endif /* SS_VW */           
          }
          else
@@ -8439,7 +8439,7 @@ Ptr       value;                /* option value */
                   (char *)&lpDisable, sizeof(lpDisable));
 #else
             ret = setsockopt(sockFd->fd, level, IP_MULTICAST_LOOP,
-                  (CONSTANT char *)&lpDisable, sizeof(lpDisable));
+                  (const char *)&lpDisable, sizeof(lpDisable));
 #endif /* SS_VW */            
          }
          break;
@@ -8453,13 +8453,13 @@ Ptr       value;                /* option value */
 
       case CM_INET_OPT_MCAST_TTL:
          optVal = (uint32_t*)value;
-         /* remove CONSTANT in setsockopt for VW */
+         /* remove const in setsockopt for VW */
 #ifdef SS_VW      
          ret = setsockopt(sockFd->fd, level, IP_MULTICAST_TTL,
                (char *)optVal, sizeof(uint8_t));
 #else
          ret = setsockopt(sockFd->fd, level, IP_MULTICAST_TTL,
-               (CONSTANT char *)optVal, sizeof(uint8_t));
+               (const char *)optVal, sizeof(uint8_t));
 #endif /* SS_VW */         
          break;
 #endif /* SUNOS || WIN32 || SS_PS || SS_VW_MCAST || HPOS */
@@ -10388,16 +10388,16 @@ uint8_t                 *val;               /* Domain Name String */
 #ifdef ANSI
 S32 cmInetGetAddrInfo
 (
-CONSTANT S8              *node,          /* Network addr which has to be resolved */
-CONSTANT S8              *service,       /* Sets the port number in network addr */
-CONSTANT CmInetAddrInfo  *hints,         /* Specifies preferred socket type or protocol */
+const S8              *node,          /* Network addr which has to be resolved */
+const S8              *service,       /* Sets the port number in network addr */
+const CmInetAddrInfo  *hints,         /* Specifies preferred socket type or protocol */
 CmInetAddrInfo           **res           /* Link list of addrInfo structure */
 )
 #else
 S32 cmInetGetAddrInfo(node,service,hints,res)
-CONSTANT S8              *node;          /* Network addr which has to be resolved */
-CONSTANT S8              *service;       /* Sets the port number in network addr */
-CONSTANT CmInetAddrInfo  *hints;         /* Specifies preferred socket type or protocol */
+const S8              *node;          /* Network addr which has to be resolved */
+const S8              *service;       /* Sets the port number in network addr */
+const CmInetAddrInfo  *hints;         /* Specifies preferred socket type or protocol */
 CmInetAddrInfo           **res;          /* Link list of addrInfo structure */
 #endif
 {

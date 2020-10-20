@@ -83,30 +83,30 @@ extern "C" {
 #ifdef PTRGUIRGU
 /** @brief Confirmation from MAC to RLC for the bind/Unbind 
  * request for the interface saps */
-EXTERN S16 PtUiRguBndCfm ARGS((Pst* pst, SuId suId, uint8_t status));
+S16 PtUiRguBndCfm ARGS((Pst* pst, SuId suId, uint8_t status));
 /** @brief Data Indication from MAC to RLC to 
  * forward the data received for common channels*/
-EXTERN S16 PtUiRguCDatInd ARGS((Pst* pst, SuId suId, RguCDatIndInfo  * datInd));
+S16 PtUiRguCDatInd ARGS((Pst* pst, SuId suId, RguCDatIndInfo  * datInd));
 /** @brief Data Indication from MAC to RLC to 
  * forward the data received for dedicated channels*/
-EXTERN S16 PtUiRguDDatInd ARGS((Pst* pst, SuId suId, RguDDatIndInfo  * datInd));
+S16 PtUiRguDDatInd ARGS((Pst* pst, SuId suId, RguDDatIndInfo  * datInd));
 /** @brief Status Indication from MAC to RLC  
  * as a response to the staRsp primitive from RLC.
  * Informs RLC of the totalBufferSize and Timing Info 
  * for the transmission on common channels. */
-EXTERN S16 PtUiRguCStaInd ARGS((Pst* pst, SuId suId, RguCStaIndInfo  * staInd));
+S16 PtUiRguCStaInd ARGS((Pst* pst, SuId suId, RguCStaIndInfo  * staInd));
 /** @brief Status Indication from MAC to RLC  
  * as a response to the staRsp primitive from RLC.
  * Informs RLC of the totalBufferSize and Timing Info 
  * for the transmission on dedicated channels. */
-EXTERN S16 PtUiRguDStaInd ARGS((Pst* pst, SuId suId, RguDStaIndInfo  * staInd));
+S16 PtUiRguDStaInd ARGS((Pst* pst, SuId suId, RguDStaIndInfo  * staInd));
 #ifdef LTE_L2_MEAS
 /**@brief HARQ Status Indication from MAC to RLC */
-EXTERN S16 PtUiRguHqStaInd ARGS((Pst* pst,SuId suId,
+S16 PtUiRguHqStaInd ARGS((Pst* pst,SuId suId,
          RguHarqStatusInd *harqStatusInd));
 #endif
 /**@brief PDB FLow Control Indication from MAC to RLC */
-EXTERN S16 PtUiRguFlowCntrlInd ARGS((Pst* pst,SuId suId,
+S16 PtUiRguFlowCntrlInd ARGS((Pst* pst,SuId suId,
          RguFlowCntrlInd *flowCntrlInd));
 #endif /*--#ifdef PTRGUIRGU--*/
 S16 RgUiRguFlowCntrlInd(Pst* pst, SuId suId, RguFlowCntrlInd *flowCntrlInd);
@@ -117,17 +117,17 @@ S16 RgUiRguHqStaIndRbuf ARGS((Pst* pst,SuId suId,RguHarqStatusInd *harqStatusInd
 #endif
 
 #if defined(MAC_RLC_UL_RBUF) && !defined(SS_RBUF)
-PRIVATE S16  RgUiRguDDatIndRbuf ARGS((RguDDatIndInfo  *datInd));
+static S16  RgUiRguDDatIndRbuf ARGS((RguDDatIndInfo  *datInd));
 #endif
-EXTERN Void rgFreeSharableSBuf ARGS((Data **data, Size size));
+Void rgFreeSharableSBuf ARGS((Data **data, Size size));
 
 #ifdef RGR_CQI_REPT 
-EXTERN S16 PtUiRgrStaInd ARGS(( Pst* pst, SuId suId, RgrStaIndInfo *staInd));
+S16 PtUiRgrStaInd ARGS(( Pst* pst, SuId suId, RgrStaIndInfo *staInd));
 #endif
 /* LTE_ADV_FLAG_REMOVED_START */
-EXTERN S16 PtUiRgrLoadInfInd ARGS(( Pst* pst, SuId suId, RgrLoadInfIndInfo *loadInfInd));
+S16 PtUiRgrLoadInfInd ARGS(( Pst* pst, SuId suId, RgrLoadInfIndInfo *loadInfInd));
 /* LTE_ADV_FLAG_REMOVED_END */
-EXTERN S16 PtUiRgrUeStaInd ARGS
+S16 PtUiRgrUeStaInd ARGS
 ((
 Pst* pst, 
 SuId suId, 
@@ -136,22 +136,22 @@ RgrUeStaIndInfo *staInd
 #ifdef PTRGUICRG
 /** @brief Confirmation from MAC to RRC for the bind/Unbind 
  * request for the interface saps */
-EXTERN S16 PtUiCrgBndCfm ARGS((Pst* pst, SuId suId, uint8_t status));
+S16 PtUiCrgBndCfm ARGS((Pst* pst, SuId suId, uint8_t status));
 /** @brief Configuration Confirm from MAC to RRC */
-EXTERN S16 PtUiCrgCfgCfm ARGS((Pst* pst, SuId suId, CrgCfgTransId transId, uint8_t status));
+S16 PtUiCrgCfgCfm ARGS((Pst* pst, SuId suId, CrgCfgTransId transId, uint8_t status));
 #endif /*--#ifdef PTRGUICRG--*/
 
 #ifdef PTRGUIRGR
 /** @brief Confirmation from MAC to RRM for the bind/Unbind 
  * request for the interface saps */
-EXTERN S16 PtUiRgrBndCfm ARGS((Pst* pst, SuId suId, uint8_t status));
+S16 PtUiRgrBndCfm ARGS((Pst* pst, SuId suId, uint8_t status));
 /** @brief Configuration Confirm from MAC to RRM */
-EXTERN S16 PtUiRgrCfgCfm ARGS((Pst* pst, SuId suId, RgrCfgTransId transId, uint8_t status));
-EXTERN S16 PtUiRgrTtiInd ARGS((Pst* pst, SuId suId, RgrTtiIndInfo *ttiInd));
+S16 PtUiRgrCfgCfm ARGS((Pst* pst, SuId suId, RgrCfgTransId transId, uint8_t status));
+S16 PtUiRgrTtiInd ARGS((Pst* pst, SuId suId, RgrTtiIndInfo *ttiInd));
 /* Added for SI Enhancement*/
 #ifdef RGR_SI_SCH
-EXTERN S16 PtUiRgrSiCfgCfm ARGS((Pst* pst, SuId suId, RgrCfgTransId transId, uint8_t status));
-EXTERN S16 PtUiRgrWarningSiCfgCfm ARGS((Pst* pst, SuId suId, 
+S16 PtUiRgrSiCfgCfm ARGS((Pst* pst, SuId suId, RgrCfgTransId transId, uint8_t status));
+S16 PtUiRgrWarningSiCfgCfm ARGS((Pst* pst, SuId suId, 
                                 RgrCfgTransId transId, uint8_t siId, uint8_t status));
 #endif/*RGR_SI_SCH*/
 #endif /*--#ifdef PTRGUIRGR--*/
@@ -167,7 +167,7 @@ S16 RgUiRgmChangeTransModeInd ARGS((Pst* pst, SuId suId, RgmTransModeInd *transM
 S16 RgUiRguFlowCntrlInd ARGS((Pst* pst, SuId suId, RguFlowCntrlInd *flowCntrlInd));
 /* Added for sending TTI tick to RRM */
 /** @brief TTI indication from MAC to RRM */
-PRIVATE CONSTANT RgrTtiInd RgUiRgrTtiIndMt[RG_MAX_RGR_USR] =
+static const RgrTtiInd RgUiRgrTtiIndMt[RG_MAX_RGR_USR] =
 {
 #ifdef LCRGUIRGR
    cmPkRgrTtiInd,
@@ -184,7 +184,7 @@ PRIVATE CONSTANT RgrTtiInd RgUiRgrTtiIndMt[RG_MAX_RGR_USR] =
 
 /** @brief Confirmation from MAC to RRM for the bind/Unbind 
  * request for the interface saps */
-PRIVATE CONSTANT RgrBndCfm RgUiRgrBndCfmMt[RG_MAX_RGR_USR] =
+static const RgrBndCfm RgUiRgrBndCfmMt[RG_MAX_RGR_USR] =
 {
 #ifdef LCRGUIRGR
    cmPkRgrBndCfm,
@@ -200,7 +200,7 @@ PRIVATE CONSTANT RgrBndCfm RgUiRgrBndCfmMt[RG_MAX_RGR_USR] =
 
 /** @brief Confirmation from MAC to RRM for the bind/Unbind 
  * request for the interface saps  via RGM interface*/
-PRIVATE CONSTANT RgmBndCfm RgUiRgmBndCfmMt[RG_MAX_RGM_USR] =
+static const RgmBndCfm RgUiRgmBndCfmMt[RG_MAX_RGM_USR] =
 {
 #ifdef RGM_LC
    cmPkRgmBndCfm,
@@ -216,7 +216,7 @@ PRIVATE CONSTANT RgmBndCfm RgUiRgmBndCfmMt[RG_MAX_RGM_USR] =
 
 
 /** @brief Configuration Confirm from MAC to RRM */
-PRIVATE CONSTANT RgrCfgCfm RgUiRgrCfgCfmMt[RG_MAX_RGR_USR] =
+static const RgrCfgCfm RgUiRgrCfgCfmMt[RG_MAX_RGR_USR] =
 {
 #ifdef LCRGUIRGR
    cmPkRgrCfgCfm,
@@ -231,7 +231,7 @@ PRIVATE CONSTANT RgrCfgCfm RgUiRgrCfgCfmMt[RG_MAX_RGR_USR] =
 /* Added for SI Enhancement*/
 #ifdef RGR_SI_SCH
 /** @brief SI Configuration Confirm from MAC to RRM */
-PRIVATE CONSTANT RgrSiCfgCfm RgUiRgrSiCfgCfmMt[RG_MAX_RGR_USR] =
+static const RgrSiCfgCfm RgUiRgrSiCfgCfmMt[RG_MAX_RGR_USR] =
 {
 #ifdef LCRGUIRGR
    cmPkRgrSiCfgCfm,
@@ -247,7 +247,7 @@ PRIVATE CONSTANT RgrSiCfgCfm RgUiRgrSiCfgCfmMt[RG_MAX_RGR_USR] =
 
 
 /** @brief Warning SI Configuration Confirm from MAC to RRM */
-PRIVATE CONSTANT RgrWarningSiCfgCfm RgUiRgrWarningSiCfgCfmMt[RG_MAX_RGR_USR] =
+static const RgrWarningSiCfgCfm RgUiRgrWarningSiCfgCfmMt[RG_MAX_RGR_USR] =
 {
 #ifdef LCRGUIRGR
    cmPkRgrWarningSiCfgCfm,
@@ -264,7 +264,7 @@ PRIVATE CONSTANT RgrWarningSiCfgCfm RgUiRgrWarningSiCfgCfmMt[RG_MAX_RGR_USR] =
 #endif/*RGR_SI_SCH */
 /** @brief Confirmation from MAC to RRC for the bind/Unbind 
  * request for the interface saps */
-PRIVATE CONSTANT CrgBndCfm RgUiCrgBndCfmMt[RG_MAX_CRG_USR] =
+static const CrgBndCfm RgUiCrgBndCfmMt[RG_MAX_CRG_USR] =
 {
 #ifdef LCRGUICRG
    cmPkCrgBndCfm,
@@ -279,7 +279,7 @@ PRIVATE CONSTANT CrgBndCfm RgUiCrgBndCfmMt[RG_MAX_CRG_USR] =
 };
 
 /** @brief Configuration Confirm from MAC to RRC */
-PRIVATE CONSTANT CrgCfgCfm RgUiCrgCfgCfmMt[RG_MAX_CRG_USR] =
+static const CrgCfgCfm RgUiCrgCfgCfmMt[RG_MAX_CRG_USR] =
 {
 #ifdef LCRGUICRG
    cmPkCrgCfgCfm,
@@ -296,7 +296,7 @@ PRIVATE CONSTANT CrgCfgCfm RgUiCrgCfgCfmMt[RG_MAX_CRG_USR] =
 
 /** @brief Confirmation from MAC to RLC for the bind/Unbind 
  * request for the interface saps */
-PRIVATE CONSTANT RguBndCfm RgUiRguBndCfmMt[RG_MAX_RGU_USR] =
+static const RguBndCfm RgUiRguBndCfmMt[RG_MAX_RGU_USR] =
 {
 #ifdef LCRGUIRGU
    cmPkRguBndCfm,
@@ -317,7 +317,7 @@ PRIVATE CONSTANT RguBndCfm RgUiRguBndCfmMt[RG_MAX_RGU_USR] =
 
 /** @brief Data Indication from MAC to RLC to 
  * forward the data received for common channels*/
-PRIVATE CONSTANT RguCDatInd RgUiRguCDatIndMt[RG_MAX_RGU_USR] =
+static const RguCDatInd RgUiRguCDatIndMt[RG_MAX_RGU_USR] =
 {
 #ifdef LCRGUIRGU
 //   cmPkRguCDatInd, /* TODO : Call packRcvdUlData instead */
@@ -338,7 +338,7 @@ PRIVATE CONSTANT RguCDatInd RgUiRguCDatIndMt[RG_MAX_RGU_USR] =
 
 /** @brief Data Indication from MAC to RLC to 
  * forward the data received for dedicated channels*/
-PRIVATE CONSTANT RguDDatInd RgUiRguDDatIndMt[RG_MAX_RGU_USR] =
+static const RguDDatInd RgUiRguDDatIndMt[RG_MAX_RGU_USR] =
 {
 #ifdef LCRGUIRGU
 //   cmPkRguDDatInd,  /* TODO: Call packRcvdUlData instead */
@@ -361,7 +361,7 @@ PRIVATE CONSTANT RguDDatInd RgUiRguDDatIndMt[RG_MAX_RGU_USR] =
  * as a response to the staRsp primitive from RLC.
  * Informs RLC of the totalBufferSize and Timing Info 
  * for the transmission on common channels. */
-PRIVATE CONSTANT RguCStaInd RgUiRguCStaIndMt[RG_MAX_RGU_USR] =
+static const RguCStaInd RgUiRguCStaIndMt[RG_MAX_RGU_USR] =
 {
 #ifdef LCRGUIRGU
    //cmPkRguCStaInd, /* TODO: Call packSchedRep instead of cmPkRguCStaInd */
@@ -384,7 +384,7 @@ PRIVATE CONSTANT RguCStaInd RgUiRguCStaIndMt[RG_MAX_RGU_USR] =
  * as a response to the staRsp primitive from RLC.
  * Informs RLC of the totalBufferSize and Timing Info 
  * for the transmission on dedicated channels. */
-PRIVATE CONSTANT RguDStaInd RgUiRguDStaIndMt[RG_MAX_RGU_USR] =
+static const RguDStaInd RgUiRguDStaIndMt[RG_MAX_RGU_USR] =
 {
 #ifdef LCRGUIRGU
    //cmPkRguDStaInd, /* TODO: Call packSchedRep instead of cmPkRguDStaInd */
@@ -408,7 +408,7 @@ PRIVATE CONSTANT RguDStaInd RgUiRguDStaIndMt[RG_MAX_RGU_USR] =
  * as a response to the DdatReq primitive from RLC.
  * Informs RLC of the successful transmission of TB's 
  * (ACK/NACK) along with Mapping Info. */
-PRIVATE CONSTANT RguHqStaInd RgUiRguHqStaIndMt[RG_MAX_RGU_USR] =
+static const RguHqStaInd RgUiRguHqStaIndMt[RG_MAX_RGU_USR] =
 {
 #ifdef LCRGUIRGU
    cmPkRguHqStaInd,
@@ -432,7 +432,7 @@ PRIVATE CONSTANT RguHqStaInd RgUiRguHqStaIndMt[RG_MAX_RGU_USR] =
    RGR_RRM_DLPWR_CNTRL to RGR_CQI_REPT */
 #ifdef RGR_CQI_REPT
 /** @brief TTI indication from MAC to RRM */
-PRIVATE CONSTANT RgrStaInd RgUiRgrStaIndMt[RG_MAX_RGR_USR] =
+static const RgrStaInd RgUiRgrStaIndMt[RG_MAX_RGR_USR] =
 {
 #ifdef LCRGUIRGR
    cmPkRgrStaInd,
@@ -449,7 +449,7 @@ PRIVATE CONSTANT RgrStaInd RgUiRgrStaIndMt[RG_MAX_RGR_USR] =
 
 /* LTE_ADV_FLAG_REMOVED_START */
 /** @brief LOAD INF indication from MAC to RRM */
-PRIVATE CONSTANT RgrLoadInfInd RgUiRgrLoadInfIndMt[RG_MAX_RGR_USR] =
+static const RgrLoadInfInd RgUiRgrLoadInfIndMt[RG_MAX_RGR_USR] =
 {
 #ifdef LCRGUIRGR
    cmPkRgrLoadInfInd,
@@ -465,7 +465,7 @@ PRIVATE CONSTANT RgrLoadInfInd RgUiRgrLoadInfIndMt[RG_MAX_RGR_USR] =
 /* LTE_ADV_FLAG_REMOVED_END */
 
 /** @brief TTI indication from MAC to RRM */
-PRIVATE CONSTANT RgrUeStaInd RgUiRgrUeStaIndMt[RG_MAX_RGR_USR] =
+static const RgrUeStaInd RgUiRgrUeStaIndMt[RG_MAX_RGR_USR] =
 {
 #ifdef LCRGUIRGR
    cmPkRgrUeStaInd,
@@ -480,7 +480,7 @@ PRIVATE CONSTANT RgrUeStaInd RgUiRgrUeStaIndMt[RG_MAX_RGR_USR] =
 };
 
 /** @brief Average PRB usage indication from MAC to RRM */
-PRIVATE CONSTANT RgmPrbRprtIndFptr RgUiRgmSendPrbRprtIndMt[RG_MAX_RGM_USR] =
+static const RgmPrbRprtIndFptr RgUiRgmSendPrbRprtIndMt[RG_MAX_RGM_USR] =
 {
 #ifdef RGM_LC
    cmPkRgmPrbRprtInd,
@@ -496,7 +496,7 @@ PRIVATE CONSTANT RgmPrbRprtIndFptr RgUiRgmSendPrbRprtIndMt[RG_MAX_RGM_USR] =
 
 
 /** @brief Transmission Mode Change indication from MAC to RRM */
-PRIVATE CONSTANT RgmTransModeIndFptr RgUiRgmChangeTransModeIndMt[RG_MAX_RGM_USR] =
+static const RgmTransModeIndFptr RgUiRgmChangeTransModeIndMt[RG_MAX_RGM_USR] =
 {
 #ifdef RGM_LC
    cmPkRgmTransModeInd,
@@ -510,7 +510,7 @@ PRIVATE CONSTANT RgmTransModeIndFptr RgUiRgmChangeTransModeIndMt[RG_MAX_RGM_USR]
 #endif
 };
 
-PRIVATE CONSTANT RguFlowCntrlIndInfo RgUiRguFlowCntrlIndMt[RG_MAX_RGU_USR] =
+static const RguFlowCntrlIndInfo RgUiRguFlowCntrlIndMt[RG_MAX_RGU_USR] =
 {
 #ifdef LCRGUIRGU
    cmPkRguFlowCntrlInd,
@@ -1973,7 +1973,7 @@ RgmTransModeInd *transModeInd;
 }
 
 #if defined(MAC_RLC_UL_RBUF) && !defined(SS_RBUF)
-PRIVATE S16 RgUiRguDDatIndRbuf(RguDDatIndInfo  *datInd)
+static S16 RgUiRguDDatIndRbuf(RguDDatIndInfo  *datInd)
 {
       S16  ret = ROK;
       Void *elem = NULLP;
@@ -2020,8 +2020,8 @@ Void;
 /* Read from Ring Buffer and process PDCP packets */
 
    uint8_t rngBufDeqIndx = 0;
-   PRIVATE Pst rgDDatRbfuPst ={1,1,ENTMAC,0,ENTRLC,1,PRIOR0,RTESPEC,EVTRGUDDATREQ,0,0,2,0};
-   PRIVATE Pst rgCDatRbfuPst ={1,1,ENTMAC,0,ENTRLC,1,PRIOR0,RTESPEC,EVTRGUCDATREQ,0,0,2,0};
+   static Pst rgDDatRbfuPst ={1,1,ENTMAC,0,ENTRLC,1,PRIOR0,RTESPEC,EVTRGUDDATREQ,0,0,2,0};
+   static Pst rgCDatRbfuPst ={1,1,ENTMAC,0,ENTRLC,1,PRIOR0,RTESPEC,EVTRGUCDATREQ,0,0,2,0};
    Void *elmIndx = NULLP;
    RguInfoRingElem *datReqRing=NULLP;
    elmIndx = SRngGetRIndx(SS_RNG_BUF_DLRLC_TO_DLMAC_DAT_REQ);
@@ -2090,8 +2090,8 @@ Void;
 /* Read from Ring Buffer and process PDCP packets */
 
    uint8_t rngBufDeqIndx = 0;
-   PRIVATE Pst rgDStaRbfuPst ={1,1,ENTMAC,0,ENTRLC,1,PRIOR0,RTESPEC,EVTRGUDSTARSP,0,0,2,0};
-   PRIVATE Pst rgCStaRbfuPst ={1,1,ENTMAC,0,ENTRLC,1,PRIOR0,RTESPEC,EVTRGUCSTARSP,0,0,2,0};
+   static Pst rgDStaRbfuPst ={1,1,ENTMAC,0,ENTRLC,1,PRIOR0,RTESPEC,EVTRGUDSTARSP,0,0,2,0};
+   static Pst rgCStaRbfuPst ={1,1,ENTMAC,0,ENTRLC,1,PRIOR0,RTESPEC,EVTRGUCSTARSP,0,0,2,0};
    Void *elmIndx = NULLP;
    RguInfoRingElem *staRspRing=NULLP;
 

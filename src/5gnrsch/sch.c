@@ -48,7 +48,7 @@
 #include "sch.h"
 #include "sch_utils.h"
 
-extern SchCb schCb[SCH_MAX_INST];
+SchCb schCb[SCH_MAX_INST];
 void SchFillCfmPst(Pst *reqPst,Pst *cfmPst,RgMngmt *cfm);
 
 /* local defines */

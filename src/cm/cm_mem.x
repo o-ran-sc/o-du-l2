@@ -343,12 +343,12 @@ typedef struct memLeakCb
   uint32_t        tail;
 }MemLeakCb;
 
-EXTERN Void cmInitMemLeak     ARGS((Void));
-EXTERN Void cmDeinitMemLeak   ARGS((Void));
-EXTERN Void cmStartStopLeakLog   ARGS((Void));
-EXTERN uint32_t  cmStorAllocBlk       ARGS((Void *addr));
-EXTERN Void cmRlsAllocBlk        ARGS((uint32_t indx));
-EXTERN Void cmPrintLeakLog       ARGS((Void));
+Void cmInitMemLeak     ARGS((Void));
+Void cmDeinitMemLeak   ARGS((Void));
+Void cmStartStopLeakLog   ARGS((Void));
+uint32_t  cmStorAllocBlk       ARGS((Void *addr));
+Void cmRlsAllocBlk        ARGS((uint32_t indx));
+Void cmPrintLeakLog       ARGS((Void));
 #endif /* SS_LIGHT_MEM_LEAK_STS */
 
  /* cm_mem_x_001.main_11: Additions */
@@ -433,74 +433,74 @@ typedef struct _regMemLeakInfo
 
 /* functions prototypes */
  
-EXTERN S16 cmMmRegInit   ARGS((
+S16 cmMmRegInit   ARGS((
                          Region region, 
                          CmMmRegCb *regCb, 
                          CmMmRegCfg *cfg));
-EXTERN S16 cmMmRegDeInit ARGS(( CmMmRegCb *regCb));
+S16 cmMmRegDeInit ARGS(( CmMmRegCb *regCb));
  /* cm_mem_x_001.main_11: Additions */
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL2
-EXTERN Void cmRlsAllocBlk       ARGS((CmMmBlkHdr *ptrHdr, CmMmRegCb *regCb));
-EXTERN Void cmStorAllocBlk      ARGS((CmMmBlkHdr  *ptrHdr, Size reqSz, Size allocSz,
+Void cmRlsAllocBlk       ARGS((CmMmBlkHdr *ptrHdr, CmMmRegCb *regCb));
+Void cmStorAllocBlk      ARGS((CmMmBlkHdr  *ptrHdr, Size reqSz, Size allocSz,
                                       uint16_t bktIdx, CmMmRegCb *regCb));
 #endif
 #ifdef SS_MEM_LEAK_STS
-EXTERN Void cmInitMemLeakMdl    ARGS((Void));
+Void cmInitMemLeakMdl    ARGS((Void));
 /* cm_mem_x_001.main_12 : Additions */
-EXTERN Void cmDeinitMemLeakMdl    ARGS((Void));
+Void cmDeinitMemLeakMdl    ARGS((Void));
 #ifdef BIT_64
-EXTERN Void cmStorAllocBlk      ARGS((uint64_t addr, Size reqSz, Size allocSz,
+Void cmStorAllocBlk      ARGS((uint64_t addr, Size reqSz, Size allocSz,
                                       uint16_t bktIdx));
-EXTERN Void cmRlsAllocBlk       ARGS((uint64_t addr));
+Void cmRlsAllocBlk       ARGS((uint64_t addr));
 #else
-EXTERN Void cmStorAllocBlk      ARGS((uint32_t addr, Size reqSz, Size allocSz,
+Void cmStorAllocBlk      ARGS((uint32_t addr, Size reqSz, Size allocSz,
                                       uint16_t bktIdx));
-EXTERN Void cmRlsAllocBlk       ARGS((uint32_t addr));
+Void cmRlsAllocBlk       ARGS((uint32_t addr));
 #endif
-EXTERN uint8_t   cmMemGetModuleId    ARGS((S8 **funNm, S32 traceSize));
-EXTERN S16  cmMemGetStrMtchIdx  ARGS((uint8_t strtIdx, uint8_t endIdx,
+uint8_t   cmMemGetModuleId    ARGS((S8 **funNm, S32 traceSize));
+S16  cmMemGetStrMtchIdx  ARGS((uint8_t strtIdx, uint8_t endIdx,
                                       S8 *str, S8 **strLst));
-EXTERN Void cmMemOpenMemLkFile  ARGS((S8 *arg));
-EXTERN Void SLogLkInfo          ARGS((Void));
-EXTERN Void SFlushLkInfo        ARGS((Void));
+Void cmMemOpenMemLkFile  ARGS((S8 *arg));
+Void SLogLkInfo          ARGS((Void));
+Void SFlushLkInfo        ARGS((Void));
 
 #ifdef SS_MEM_LEAK_SOL
-EXTERN S32 cmAddrToSymStr       ARGS((Void *pc, S8 *buffer, S32 size));
-EXTERN S32 cmLeakCallBack       ARGS((uintptr_t pc, S32 signo, Void *arg));
-EXTERN S32 backtrace            ARGS((Void **buffer, S32 count));
+S32 cmAddrToSymStr       ARGS((Void *pc, S8 *buffer, S32 size));
+S32 cmLeakCallBack       ARGS((uintptr_t pc, S32 signo, Void *arg));
+S32 backtrace            ARGS((Void **buffer, S32 count));
 #endif /* SS_MEM_LEAK_SOL */
 
 #endif /* SS_MEM_LEAK_STS */
 /* cm_mem_x_001.main_9 - addition of an API prototype for sanity check */
 #ifdef SSI_DEBUG_LEVEL1
-EXTERN S16 cmMmRegIsBlkSane ARGS((CmMmBlkHdr *blkPtr));
+S16 cmMmRegIsBlkSane ARGS((CmMmBlkHdr *blkPtr));
 #endif /* SSI_DEBUG_LEVEL1 */
 
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
-EXTERN S16 cmMmRegIsBlkSane ARGS((CmMmBlkHdr *blkPtr, Size size));
+S16 cmMmRegIsBlkSane ARGS((CmMmBlkHdr *blkPtr, Size size));
 #endif
 #ifdef SS_HISTOGRAM_SUPPORT
 #ifdef SSI_DEBUG_LEVEL1
-EXTERN S16  cmAllocNL ARGS((Void *regionCb, Size *size, uint32_t flags, Data **ptr, uint32_t  memType, uint32_t line, uint8_t *fileName, uint8_t entId, Bool hstReg));
+S16  cmAllocNL ARGS((Void *regionCb, Size *size, uint32_t flags, Data **ptr, uint32_t  memType, uint32_t line, uint8_t *fileName, uint8_t entId, Bool hstReg));
 #else
-EXTERN S16  cmAllocNL ARGS((Void *regionCb, Size *size, uint32_t flags, Data **ptr, uint32_t line, uint8_t *fileName, uint8_t entId, Bool hstReg));
+S16  cmAllocNL ARGS((Void *regionCb, Size *size, uint32_t flags, Data **ptr, uint32_t line, uint8_t *fileName, uint8_t entId, Bool hstReg));
 #endif
 #elif defined(SS_LIGHT_MEM_LEAK_STS)
-EXTERN S16  cmAllocNL ARGS((Void   *regionCb,Size   *size,uint32_t     flags,Data  **ptr,uint32_t     memType,uint32_t     lineNo,uint8_t     *funcName));
+S16  cmAllocNL ARGS((Void   *regionCb,Size   *size,uint32_t     flags,Data  **ptr,uint32_t     memType,uint32_t     lineNo,uint8_t     *funcName));
 #else
 #if (defined(SSI_DEBUG_LEVEL1) || defined(BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1))
-EXTERN S16  cmAllocNL ARGS((Void *regionCb, Size *size, uint32_t flags, Data **ptr, uint32_t  memType));
+S16  cmAllocNL ARGS((Void *regionCb, Size *size, uint32_t flags, Data **ptr, uint32_t  memType));
 #else
-EXTERN S16  cmAllocNL ARGS((Void *regionCb, Size *size, uint32_t flags, Data **ptr));
+S16  cmAllocNL ARGS((Void *regionCb, Size *size, uint32_t flags, Data **ptr));
 #endif
 #endif
 
 #ifdef SS_HISTOGRAM_SUPPORT
-EXTERN S16  cmFreeNL ARGS((Void *regionCb, Data *ptr, Size size, uint32_t line, uint8_t *fileName, uint8_t entId, Bool hstReg));
+S16  cmFreeNL ARGS((Void *regionCb, Data *ptr, Size size, uint32_t line, uint8_t *fileName, uint8_t entId, Bool hstReg));
 #elif defined(SS_LIGHT_MEM_LEAK_STS)
-EXTERN S16  cmFreeNL ARGS((Void   *regionCb,Data   *ptr, Size    size,uint32_t     lineNo,uint8_t      *funcName));
+S16  cmFreeNL ARGS((Void   *regionCb,Data   *ptr, Size    size,uint32_t     lineNo,uint8_t      *funcName));
 #else
-EXTERN S16  cmFreeNL ARGS((Void *regionCb, Data *ptr, Size size));
+S16  cmFreeNL ARGS((Void *regionCb, Data *ptr, Size size));
 #endif
 
 #ifdef __cplusplus
