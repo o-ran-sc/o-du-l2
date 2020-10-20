@@ -67,10 +67,10 @@ static int RLOG_FILE_ID=201;
 
 #if defined(PRE_DEF_UE_CTX) || defined(PRE_DEF_UE_CTX_HO)
 #ifdef EG_GEN_LOAD_5GTF
-extern uint32_t loadStart;
+uint32_t loadStart;
 #endif
 
-EXTERN S16 PjUiPjuDatInd(Pst* pst,SuId suId,CmLtePdcpId * pdcpId,Buffer *mBuf);
+S16 PjUiPjuDatInd(Pst* pst,SuId suId,CmLtePdcpId * pdcpId,Buffer *mBuf);
 #ifdef ANSI
 Void AddUeContext
 (

@@ -66,18 +66,18 @@ static int RLOG_MODULE_ID=4096;
 /* local typedefs */
  
 S16 RgMacSchBrdcmDedBoUpdtReq ARGS((Inst inst, CmLteCellId cellId, CmLteRnti rnti, CmLteLcId lcId, S32 bo ));
-PRIVATE S16 rgROMHndlCcchDatReq     ARGS((RgCellCb *cell,
+static S16 rgROMHndlCcchDatReq     ARGS((RgCellCb *cell,
                                     RgRguCmnDatReq *datReq, RgErrInfo *err));
-PRIVATE S16 rgROMHndlBcchPcchDatReq ARGS((RgCellCb *cell,
+static S16 rgROMHndlBcchPcchDatReq ARGS((RgCellCb *cell,
                                     RgRguCmnDatReq *datReq, RgErrInfo *err));
-PRIVATE S16 rgROMHndlCcchStaRsp     ARGS((RgCellCb *cell, 
+static S16 rgROMHndlCcchStaRsp     ARGS((RgCellCb *cell, 
                                     RgRguCmnStaRsp *staRsp, RgErrInfo *err));
-PRIVATE S16 rgROMHndlBcchPcchStaRsp ARGS((RgCellCb *cell, 
+static S16 rgROMHndlBcchPcchStaRsp ARGS((RgCellCb *cell, 
                                     RgRguCmnStaRsp *staRsp, RgErrInfo *err));
 
 /* ADD Changes for Downlink UE Timing Optimization */
 #ifdef LTEMAC_DLUE_TMGOPTMZ
-PRIVATE S16 rgROMUpdDlSfRemDataCnt ARGS((RgCellCb  *cellCb,
+static S16 rgROMUpdDlSfRemDataCnt ARGS((RgCellCb  *cellCb,
                                     RgDlSf    *dlSf));
 S16 rgTOMUtlProcDlSf ARGS(( RgDlSf     *dlSf,
                                    RgCellCb   *cellCb,
@@ -180,7 +180,7 @@ RgRguDedDatReq *datReq;
          rgUpdtRguDedSts(inst,cell->rguDlSap,RG_RGU_SDU_DROP, datReq);
 #ifdef CA_DBG
          {
-            EXTERN uint32_t dbgDelayedDatReqInMac;
+            uint32_t dbgDelayedDatReqInMac;
             dbgDelayedDatReqInMac++;
          }
 #endif /* CA_DBG */         
@@ -433,14 +433,14 @@ RgRguCmnDatReq *datReq;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgROMHndlCcchDatReq
+static S16 rgROMHndlCcchDatReq
 (
 RgCellCb       *cell,
 RgRguCmnDatReq *datReq,
 RgErrInfo      *err
 )
 #else
-PRIVATE S16 rgROMHndlCcchDatReq(cell, datReq, err)
+static S16 rgROMHndlCcchDatReq(cell, datReq, err)
 RgCellCb       *cell;
 RgRguCmnDatReq *datReq;
 RgErrInfo      *err;
@@ -531,14 +531,14 @@ RgErrInfo      *err;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgROMHndlBcchPcchDatReq
+static S16 rgROMHndlBcchPcchDatReq
 (
 RgCellCb       *cell,
 RgRguCmnDatReq *datReq,
 RgErrInfo      *err
 )
 #else
-PRIVATE S16 rgROMHndlBcchPcchDatReq(cell, datReq, err)
+static S16 rgROMHndlBcchPcchDatReq(cell, datReq, err)
 RgCellCb       *cell;
 RgRguCmnDatReq *datReq;
 RgErrInfo      *err;
@@ -847,14 +847,14 @@ RgRguL2MUlThrpMeasReq *measReq;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgROMHndlCcchStaRsp
+static S16 rgROMHndlCcchStaRsp
 (
 RgCellCb       *cell,
 RgRguCmnStaRsp *staRsp,
 RgErrInfo      *err
 )
 #else
-PRIVATE S16 rgROMHndlCcchStaRsp(cell, staRsp, err)
+static S16 rgROMHndlCcchStaRsp(cell, staRsp, err)
 RgCellCb       *cell;
 RgRguCmnStaRsp *staRsp;
 RgErrInfo      *err;
@@ -898,14 +898,14 @@ RgErrInfo      *err;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgROMHndlBcchPcchStaRsp
+static S16 rgROMHndlBcchPcchStaRsp
 (
 RgCellCb       *cell,
 RgRguCmnStaRsp *staRsp,
 RgErrInfo      *err
 )
 #else
-PRIVATE S16 rgROMHndlBcchPcchStaRsp(cell, staRsp, err)
+static S16 rgROMHndlBcchPcchStaRsp(cell, staRsp, err)
 RgCellCb       *cell;
 RgRguCmnStaRsp *staRsp;
 RgErrInfo      *err;
@@ -978,13 +978,13 @@ RgErrInfo      *err;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgROMUpdDlSfRemDataCnt
+static S16 rgROMUpdDlSfRemDataCnt
 (
 RgCellCb       *cellCb,
 RgDlSf         *dlSf
 )
 #else
-PRIVATE S16 rgROMUpdDlSfRemDataCnt(cellCb, dlSf)
+static S16 rgROMUpdDlSfRemDataCnt(cellCb, dlSf)
 RgCellCb       *cellCb;
 RgDlSf         *dlSf;
 #endif

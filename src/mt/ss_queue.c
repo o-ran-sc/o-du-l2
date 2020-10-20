@@ -708,13 +708,13 @@ QLen   idx;                 /* index */
 *
 */
 #ifdef ANSI
-INLINE S16 SQueueFirst
+inline S16 SQueueFirst
 (
 Buffer *buf,                /* buffer */
 Queue *q                    /* queue */
 )
 #else
-INLINE S16 SQueueFirst(buf, q)
+inline S16 SQueueFirst(buf, q)
 Buffer *buf;                /* buffer */
 Queue *q;                   /* queue */
 #endif
@@ -746,13 +746,13 @@ Queue *q;                   /* queue */
 *
 */
 #ifdef ANSI
-INLINE S16 SDequeueFirst
+inline S16 SDequeueFirst
 (
 Buffer **bufPtr,            /* pointer to buffer */
 Queue *q                    /* queue */
 )
 #else
-INLINE S16 SDequeueFirst(bufPtr, q)
+inline S16 SDequeueFirst(bufPtr, q)
 Buffer **bufPtr;            /* pointer to buffer */
 Queue *q;                   /* queue */
 #endif

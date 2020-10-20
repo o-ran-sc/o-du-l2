@@ -32,7 +32,7 @@
 #define __CMMATHX__
 
 #ifdef __cplusplus
-EXTERN "C" {
+extern "C" {
 #endif
 
 #ifdef SS_FLOAT
@@ -41,11 +41,11 @@ EXTERN "C" {
 #include <math.h>
 
 /* Math library function prototypes */
-EXTERN uint32_t cmAbs ARGS((F64 val));
-EXTERN F64 cmPow ARGS((F64 x, F64 y));
-EXTERN F64 cmFloor ARGS((F64 x));
-EXTERN F64 cmLog ARGS((F64 x));
-EXTERN F64 cmLog10 ARGS((F64 x));
+uint32_t cmAbs ARGS((F64 val));
+F64 cmPow ARGS((F64 x, F64 y));
+F64 cmFloor ARGS((F64 x));
+F64 cmLog ARGS((F64 x));
+F64 cmLog10 ARGS((F64 x));
 
 #endif
 

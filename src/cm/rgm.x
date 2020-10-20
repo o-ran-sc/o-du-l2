@@ -137,14 +137,14 @@ typedef S16 (*RgmTransModeIndFptr) ARGS((
  * @param spId SAP ID of the service provider.
  * @return ROK/RFAILED
 */
-EXTERN S16 RgUiRgmBndReq ARGS((Pst* pst,SuId suId,SpId spId));
+S16 RgUiRgmBndReq ARGS((Pst* pst,SuId suId,SpId spId));
 /** @brief Unbind Request from RLC to MAC to unbind the interface SAPs 
  * @param pst Pointer to the post structure.
  * @param spId SAP ID of the service provider.
  * @param reason Reason for unbind request.
  * @return ROK/RFAILED
 */
-EXTERN S16 RgUiRgmUbndReq ARGS((Pst* pst,SpId spId,Reason reason));
+S16 RgUiRgmUbndReq ARGS((Pst* pst,SpId spId,Reason reason));
 /** @brief Bind Confirmation from MAC to RLC for the bind and unbind 
  * request for the interface SAPs 
  * @param pst Pointer to the post structure.
@@ -152,7 +152,7 @@ EXTERN S16 RgUiRgmUbndReq ARGS((Pst* pst,SpId spId,Reason reason));
  * @param status Status of the bind request. 
  * @return ROK/RFAILED
 */
-EXTERN S16 RgUiRgmBndCfm ARGS((Pst* pst,SuId suId,uint8_t status));
+S16 RgUiRgmBndCfm ARGS((Pst* pst,SuId suId,uint8_t status));
 /** @brief Data Request from RLC to MAC for forwarding SDUs on common
  * channel for transmission 
  * @param pst Pointer to the post structure.
@@ -160,7 +160,7 @@ EXTERN S16 RgUiRgmBndCfm ARGS((Pst* pst,SuId suId,uint8_t status));
  * @param prbRprtCfg Data request for common channels (BCCH, PCCH and CCCH).
  * @return ROK/RFAILED
 */
-EXTERN S16 RgUiRgmCfgPrbRprt ARGS((Pst* pst,SuId suId,RgmPrbRprtCfg *prbRprtCfg));
+S16 RgUiRgmCfgPrbRprt ARGS((Pst* pst,SuId suId,RgmPrbRprtCfg *prbRprtCfg));
 /** @brief Data Indication from MAC to RLC to 
  * forward the data received for common channels
  * @param pst Pointer to the post structure.
@@ -168,47 +168,47 @@ EXTERN S16 RgUiRgmCfgPrbRprt ARGS((Pst* pst,SuId suId,RgmPrbRprtCfg *prbRprtCfg)
  * @param prbRprtInd Data indication on CCCH.
  * @return ROK/RFAILED
 */
-EXTERN S16 RgUiRgmPrbRprtInd ARGS((Pst* pst,SuId suId,RgmPrbRprtInd  *prbRprtInd));
+S16 RgUiRgmPrbRprtInd ARGS((Pst* pst,SuId suId,RgmPrbRprtInd  *prbRprtInd));
 
 #endif
 
 #ifdef RM_INTF
 /** @brief Request from RLC to MAC to bind the interface saps */
-EXTERN S16 RmLiRgmBndReq ARGS((
+S16 RmLiRgmBndReq ARGS((
    Pst*                 pst,
    SuId                 suId,
    SpId                 spId
 ));
 /** @brief Request from RLC to MAC to Unbind the interface saps */
-EXTERN S16 RmLiRgmUbndReq ARGS((
+S16 RmLiRgmUbndReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    Reason               reason
 ));
 /** @brief Confirmation from MAC to RLC for the bind/Unbind 
  * request for the interface saps */
-EXTERN S16 RmLiRgmBndCfm ARGS((
+S16 RmLiRgmBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    uint8_t                   status
 ));
 /** @brief Request from RLC to MAC for forwarding SDUs on common
  * channel for transmission */
-EXTERN S16 RmLiRgmCfgPrbRprt ARGS((
+S16 RmLiRgmCfgPrbRprt ARGS((
    Pst*                 pst,
    SpId                 spId,
    RgmPrbRprtCfg*       prbRprtCfg
 ));
 /** @brief Data Indication from MAC to RLC to 
  * forward the data received for common channels*/
-EXTERN S16 RmLiRgmPrbRprtInd ARGS((
+S16 RmLiRgmPrbRprtInd ARGS((
    Pst*                 pst,
    SuId                 suId,
    RgmPrbRprtInd*       prbRprtInd
 ));
 /** @brief Data Indication from MAC to RRM to 
  * change the transmission mode*/
-EXTERN S16 RmLiRgmTransModeInd ARGS((
+S16 RmLiRgmTransModeInd ARGS((
    Pst*                 pst,
    SuId                 suId,
    RgmTransModeInd*     transModeInd
@@ -217,67 +217,67 @@ EXTERN S16 RmLiRgmTransModeInd ARGS((
 
 #ifdef RGM_LWLC
 /** @brief Request from RLC to MAC to bind the interface saps */
-EXTERN S16 cmPkLwLcRgmBndReq ARGS((
+S16 cmPkLwLcRgmBndReq ARGS((
    Pst*                 pst,
    SuId                 suId,
    SpId                 spId
 ));
 /** @brief Request from RLC to MAC to bind the interface saps */
-EXTERN S16 cmUnpkLwLcRgmBndReq ARGS((
+S16 cmUnpkLwLcRgmBndReq ARGS((
    RgmBndReq            func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 /** @brief Request from RLC to MAC to Unbind the interface saps */
-EXTERN S16 cmPkLwLcRgmUbndReq ARGS((
+S16 cmPkLwLcRgmUbndReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    Reason               reason
 ));
 /** @brief Request from RLC to MAC to Unbind the interface saps */
-EXTERN S16 cmUnpkLwLcRgmUbndReq ARGS((
+S16 cmUnpkLwLcRgmUbndReq ARGS((
    RgmUbndReq           func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 /** @brief Confirmation from MAC to RLC for the bind/Unbind 
  * request for the interface saps */
-EXTERN S16 cmPkLwLcRgmBndCfm ARGS((
+S16 cmPkLwLcRgmBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    uint8_t                   status
 ));
 /** @brief Confirmation from MAC to RLC for the bind/Unbind 
  * request for the interface saps */
-EXTERN S16 cmUnpkLwLcRgmBndCfm ARGS((
+S16 cmUnpkLwLcRgmBndCfm ARGS((
    RgmBndCfm            func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 /** @brief Request from RLC to MAC for forwarding SDUs on common
  * channel for transmission */
-EXTERN S16 cmPkLwLcRgmCfgPrbRprt ARGS((
+S16 cmPkLwLcRgmCfgPrbRprt ARGS((
    Pst*                 pst,
    SpId                 spId,
    RgmPrbRprtCfg  *    prbRprtCfg
 ));
 /** @brief Request from RLC to MAC for forwarding SDUs on common
  * channel for transmission */
-EXTERN S16 cmUnpkLwLcRgmCfgPrbRprt ARGS((
+S16 cmUnpkLwLcRgmCfgPrbRprt ARGS((
    RgmCfgPrbRprtFptr           func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 /** @brief Data Indication from MAC to RLC to 
  * forward the data received for common channels*/
-EXTERN S16 cmPkLwLcRgmPrbRprtInd ARGS((
+S16 cmPkLwLcRgmPrbRprtInd ARGS((
    Pst*                 pst,
    SuId                 suId,
    RgmPrbRprtInd  *    prbRprtInd
 ));
 /** @brief Data Indication from MAC to RLC to 
  * forward the data received for common channels*/
-EXTERN S16 cmUnpkLwLcRgmPrbRprtInd ARGS((
+S16 cmUnpkLwLcRgmPrbRprtInd ARGS((
    RgmPrbRprtIndFptr           func,
    Pst*                 pst,
    Buffer               *mBuf
@@ -286,106 +286,106 @@ EXTERN S16 cmUnpkLwLcRgmPrbRprtInd ARGS((
 
 
 /** @brief Request from RLC to MAC to bind the interface saps */
-EXTERN S16 cmPkRgmBndReq ARGS((
+S16 cmPkRgmBndReq ARGS((
    Pst*                 pst,
    SuId                 suId,
    SpId                 spId
 ));
 /** @brief Request from RLC to MAC to bind the interface saps */
-EXTERN S16 cmUnpkRgmBndReq ARGS((
+S16 cmUnpkRgmBndReq ARGS((
    RgmBndReq            func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 /** @brief Request from RLC to MAC to Unbind the interface saps */
-EXTERN S16 cmPkRgmUbndReq ARGS((
+S16 cmPkRgmUbndReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    Reason               reason
 ));
 /** @brief Request from RLC to MAC to Unbind the interface saps */
-EXTERN S16 cmUnpkRgmUbndReq ARGS((
+S16 cmUnpkRgmUbndReq ARGS((
    RgmUbndReq           func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 /** @brief Confirmation from MAC to RLC for the bind/Unbind 
  * request for the interface saps */
-EXTERN S16 cmPkRgmBndCfm ARGS((
+S16 cmPkRgmBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    uint8_t                   status
 ));
 /** @brief Confirmation from MAC to RLC for the bind/Unbind 
  * request for the interface saps */
-EXTERN S16 cmUnpkRgmBndCfm ARGS((
+S16 cmUnpkRgmBndCfm ARGS((
    RgmBndCfm            func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 /** @brief Request from RLC to MAC for forwarding SDUs on common
  * channel for transmission */
-EXTERN S16 cmPkRgmCfgPrbRprt ARGS((
+S16 cmPkRgmCfgPrbRprt ARGS((
    Pst*                 pst,
    SpId                 spId,
    RgmPrbRprtCfg   *    prbRprtCfg
 ));
 
 
-EXTERN S16 cmPkCfgPrbRprt ARGS((
+S16 cmPkCfgPrbRprt ARGS((
 RgmPrbRprtCfg  * prbRprtCfg,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkPrbRprtInd ARGS((
+S16 cmPkPrbRprtInd ARGS((
 RgmPrbRprtInd  * prbRprtInd,
 Buffer *mBuf
 ));
 
 /** @brief Request from RLC to MAC for forwarding SDUs on common
  * channel for transmission */
-EXTERN S16 cmUnpkRgmCfgPrbRprt ARGS((
+S16 cmUnpkRgmCfgPrbRprt ARGS((
    RgmCfgPrbRprtFptr    func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 
-EXTERN S16 cmUnPkCfgPrbRprt ARGS((
+S16 cmUnPkCfgPrbRprt ARGS((
 RgmPrbRprtCfg  * prbRprtCfg,
 Buffer *mBuf
 ));
 
 /** @brief Data Indication from MAC to RLC to 
  * forward the data received for common channels*/
-EXTERN S16 cmPkRgmPrbRprtInd ARGS((
+S16 cmPkRgmPrbRprtInd ARGS((
    Pst*                 pst,
    SuId                 suId,
    RgmPrbRprtInd  *    prbRprtInd
 ));
 
 
-EXTERN S16 cmUnpkPrbRprtInd ARGS((
+S16 cmUnpkPrbRprtInd ARGS((
 RgmPrbRprtInd  * prbRprtInd,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkTransModeInd ARGS((
+S16 cmPkTransModeInd ARGS((
 RgmTransModeInd *transModeInd,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkTransModeInd ARGS((
+S16 cmUnpkTransModeInd ARGS((
 RgmTransModeInd *transModeInd,
 Buffer *mBuf
 ));
-EXTERN S16 cmPkRgmTransModeInd ARGS((
+S16 cmPkRgmTransModeInd ARGS((
    Pst*                 pst,
    SuId                 suId,
    RgmTransModeInd *transModeInd
 ));
 
 
-EXTERN S16 cmUnpkRgmTransModeInd ARGS((
+S16 cmUnpkRgmTransModeInd ARGS((
          RgmTransModeIndFptr    func,
          Pst*                 pst,
          Buffer               *mBuf
@@ -393,18 +393,18 @@ EXTERN S16 cmUnpkRgmTransModeInd ARGS((
 
 /** @brief Data Indication from MAC to RLC to 
  * forward the data received for common channels*/
-EXTERN S16 cmUnpkRgmPrbRprtInd ARGS((
+S16 cmUnpkRgmPrbRprtInd ARGS((
    RgmPrbRprtIndFptr    func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 
-EXTERN S16 cmPkRgmPrbQciRpt ARGS((
+S16 cmPkRgmPrbQciRpt ARGS((
 RgmPrbRptPerQci *qciPrbRprt,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkRgmPrbQciRpt ARGS((
+S16 cmUnpkRgmPrbQciRpt ARGS((
 RgmPrbRptPerQci *qciPrbRprt,
 Buffer *mBuf
 ));

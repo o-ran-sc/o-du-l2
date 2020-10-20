@@ -130,7 +130,7 @@
 
 /* Function declaration */
 uint16_t getNewCrnti(uint8_t *crntiMap);
-
+extern uint32_t shortBsrBytesTable[MAX_SHORT_BSR_TABLE_ENTRIES];
 /**********************************************************************
          End of file
 **********************************************************************/

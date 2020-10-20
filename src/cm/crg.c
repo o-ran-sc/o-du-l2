@@ -1044,13 +1044,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PRIVATE S16 cmPkCrgUeSCellCfg
+static S16 cmPkCrgUeSCellCfg
 (
 CrgUeSCellInfo *param,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmPkCrgUeSCellCfg(param, mBuf)
+static S16 cmPkCrgUeSCellCfg(param, mBuf)
 CrgUeSCellInfo *param;
 Buffer *mBuf;
 #endif
@@ -1078,13 +1078,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PRIVATE S16 cmUnpkCrgUeSCellCfg
+static S16 cmUnpkCrgUeSCellCfg
 (
 CrgUeSCellInfo *param,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmUnpkCrgUeSCellCfg(param, mBuf)
+static S16 cmUnpkCrgUeSCellCfg(param, mBuf)
 CrgUeSCellInfo *param;
 Buffer *mBuf;
 #endif

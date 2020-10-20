@@ -40,23 +40,23 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-extern Void SsRngBufEnable ARGS((Void));
-extern Void SsRngBufDisable ARGS((Void));
-extern S16 SCreateSRngBuf ARGS((uint32_t id, Region region, Pool pool, uint32_t elmSize, uint32_t rngSize));
-extern S16 SDestroySRngBuf ARGS((uint32_t id, Region region, Pool pool));
-extern S16 SAttachSRngBuf ARGS((uint32_t id, uint32_t ent, uint32_t txRx));
-extern S16 SEnqSRngBuf ARGS((uint32_t id, Void* elem));
-extern S16 SDeqSRngBuf ARGS((uint32_t id, Void* elem));
-extern Void* SRngGetWIndx ARGS((uint32_t rngId));
-extern Void* SRngGetRIndx ARGS((uint32_t rngId));
-extern Void SRngIncrRIndx ARGS((uint32_t rngId));
-extern Void SRngIncrWIndx ARGS((uint32_t rngId));
-extern S16  isRngEmpty ARGS((uint32_t rngId));
-extern S16 SConnectSRngBuf ARGS((uint32_t id,  uint32_t rxEnt));
-EXTERN S16 SGetNumElemInRng ARGS(( uint32_t id));
-extern S16 SPrintSRngStats ARGS((Void));
-extern S16 pjBatchProc ARGS((Void));
-extern uint32_t ssRngBufStatus;
+Void SsRngBufEnable ARGS((Void));
+Void SsRngBufDisable ARGS((Void));
+S16 SCreateSRngBuf ARGS((uint32_t id, Region region, Pool pool, uint32_t elmSize, uint32_t rngSize));
+S16 SDestroySRngBuf ARGS((uint32_t id, Region region, Pool pool));
+S16 SAttachSRngBuf ARGS((uint32_t id, uint32_t ent, uint32_t txRx));
+S16 SEnqSRngBuf ARGS((uint32_t id, Void* elem));
+S16 SDeqSRngBuf ARGS((uint32_t id, Void* elem));
+Void* SRngGetWIndx ARGS((uint32_t rngId));
+Void* SRngGetRIndx ARGS((uint32_t rngId));
+Void SRngIncrRIndx ARGS((uint32_t rngId));
+Void SRngIncrWIndx ARGS((uint32_t rngId));
+S16  isRngEmpty ARGS((uint32_t rngId));
+S16 SConnectSRngBuf ARGS((uint32_t id,  uint32_t rxEnt));
+S16 SGetNumElemInRng ARGS(( uint32_t id));
+S16 SPrintSRngStats ARGS((Void));
+S16 pjBatchProc ARGS((Void));
+uint32_t ssRngBufStatus;
 
 #define SS_RNG_BUF_STATUS() ssRngBufStatus
 /* Ring Buffer Structure */
@@ -205,10 +205,10 @@ typedef struct
   Buffer* mBuf;
 } SsRngBufElem;
 
-EXTERN  SsRngBufTbl SsRngInfoTbl[SS_RNG_BUF_MAX];
+ SsRngBufTbl SsRngInfoTbl[SS_RNG_BUF_MAX];
 
 #if (defined (MAC_FREE_RING_BUF) || defined (RLC_FREE_RING_BUF))
-extern S16 mtAddBufToRing(SsRngBufId ringId,void *bufPtr,uint8_t freeType);
+S16 mtAddBufToRing(SsRngBufId ringId,void *bufPtr,uint8_t freeType);
 #ifdef XEON_SPECIFIC_CHANGES
 typedef struct rgKwBufFreeInfo
 {

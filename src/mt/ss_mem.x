@@ -88,21 +88,21 @@ typedef struct ssMemDbgInfo
 }SsMemDbgInfo;
 
 /* ss036.103 - Addition of  prototypes for memory statistics */
-EXTERN S16 SRegInfoShow  ARGS((Region region, uint32_t *availmem));
-EXTERN S16 SGetRegInfo ARGS((Region region, SsMemDbgInfo *dbgInfo));
+S16 SRegInfoShow  ARGS((Region region, uint32_t *availmem));
+S16 SGetRegInfo ARGS((Region region, SsMemDbgInfo *dbgInfo));
 #ifdef XEON_SPECIFIC_CHANGES
-EXTERN S16 SRegReachedMemThreshold ARGS((Region region, uint8_t maxBkt));
+S16 SRegReachedMemThreshold ARGS((Region region, uint8_t maxBkt));
 #endif
 #ifdef SSI_DEBUG_LEVEL1
-EXTERN S16 SPrintRegMemStatusInfo ARGS((Region region, uint8_t typeFlag));
-EXTERN Void SRegMemErrHdlr ARGS((Region region, Data *ptr, S16 errCode));
-EXTERN S16 SPrintRegMemProfile ARGS((Region region));
+S16 SPrintRegMemStatusInfo ARGS((Region region, uint8_t typeFlag));
+Void SRegMemErrHdlr ARGS((Region region, Data *ptr, S16 errCode));
+S16 SPrintRegMemProfile ARGS((Region region));
 #endif /* SSI_DEBUG_LEVEL1 */
 
 /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
-EXTERN S16 SGetTapaTskEntIds ARGS((Ent *ent));
-EXTERN S16 SGetHstGrmInfo ARGS((Ent *entId, Bool *hstReg));
+S16 SGetTapaTskEntIds ARGS((Ent *ent));
+S16 SGetHstGrmInfo ARGS((Ent *entId, Bool *hstReg));
 #endif /* SS_HISTOGRAM_SUPPORT */
 
 #ifdef __cplusplus

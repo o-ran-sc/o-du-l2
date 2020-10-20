@@ -58,22 +58,22 @@ static int RLOG_MODULE_ID=4096;
 
 
 /* local defines */
-PRIVATE S16 rgSCHDbmInitUeCbLst ARGS(( RgSchCellCb *cellCb, uint16_t numBins));
+static S16 rgSCHDbmInitUeCbLst ARGS(( RgSchCellCb *cellCb, uint16_t numBins));
 #ifdef LTE_TDD
-PRIVATE S16 rgSCHDbmInitUeTfuPendLst ARGS(( RgSchCellCb *cellCb, uint16_t numBins));
+static S16 rgSCHDbmInitUeTfuPendLst ARGS(( RgSchCellCb *cellCb, uint16_t numBins));
 #endif
-PRIVATE Void rgSCHDbmInitDedLcLst ARGS((RgSchUeCb *ueCb));
-PRIVATE Void rgSCHDbmInitCmnLcLst ARGS((RgSchCellCb *cellCb));
+static Void rgSCHDbmInitDedLcLst ARGS((RgSchUeCb *ueCb));
+static Void rgSCHDbmInitCmnLcLst ARGS((RgSchCellCb *cellCb));
 #ifdef LTEMAC_SPS
-PRIVATE S16 rgSCHDbmInitSpsUeCbLst ARGS((RgSchCellCb *cellCb,
+static S16 rgSCHDbmInitSpsUeCbLst ARGS((RgSchCellCb *cellCb,
                       uint16_t numBins));
 #endif
-PRIVATE Void rgSCHDbmInitRaCbLst ARGS(( RgSchCellCb *cellCb));
+static Void rgSCHDbmInitRaCbLst ARGS(( RgSchCellCb *cellCb));
 #ifndef LTE_TDD
-PRIVATE Void rgSCHDbmInitRaReqLst ARGS(( RgSchCellCb *cellCb));
+static Void rgSCHDbmInitRaReqLst ARGS(( RgSchCellCb *cellCb));
 #endif
-PRIVATE Void rgSCHDbmInitCrntRgrCfgLst ARGS(( RgSchCellCb *cellCb));
-PRIVATE Void rgSCHDbmInitPndngRgrCfgLst ARGS(( RgSchCellCb *cellCb));
+static Void rgSCHDbmInitCrntRgrCfgLst ARGS(( RgSchCellCb *cellCb));
+static Void rgSCHDbmInitPndngRgrCfgLst ARGS(( RgSchCellCb *cellCb));
 
 #ifdef EMTC_ENABLE
  S16 rgSCHDbmPutEmtcRnti ARGS((RgSchCellCb *cellCb,RgSchRntiLnk *rntiLnk));
@@ -166,13 +166,13 @@ RgSchCellCb       *cellCb;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgSCHDbmInitUeCbLst
+static S16 rgSCHDbmInitUeCbLst
 (
 RgSchCellCb    *cellCb,
 uint16_t            numBins
 )
 #else
-PRIVATE S16 rgSCHDbmInitUeCbLst(cellCb, numBins)
+static S16 rgSCHDbmInitUeCbLst(cellCb, numBins)
 RgSchCellCb    *cellCb;
 uint16_t            numBins;
 #endif
@@ -232,13 +232,13 @@ RgSchCellCb       *cellCb;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgSCHDbmInitSpsUeCbLst
+static S16 rgSCHDbmInitSpsUeCbLst
 (
 RgSchCellCb       *cellCb,
 uint16_t               numBins
 )
 #else
-PRIVATE S16 rgSCHDbmInitSpsUeCbLst(cellCb, numBins)
+static S16 rgSCHDbmInitSpsUeCbLst(cellCb, numBins)
 RgSchCellCb       *cellCb;
 uint16_t               numBins;
 #endif
@@ -666,12 +666,12 @@ RgSchUeCb       *ueCb;
  *  @return     Void 
  **/
 #ifdef ANSI
-PRIVATE Void rgSCHDbmInitDedLcLst
+static Void rgSCHDbmInitDedLcLst
 (
 RgSchUeCb       *ueCb
 )
 #else
-PRIVATE Void rgSCHDbmInitDedLcLst(ueCb)
+static Void rgSCHDbmInitDedLcLst(ueCb)
 RgSchUeCb       *ueCb;
 #endif
 {
@@ -706,12 +706,12 @@ RgSchUeCb       *ueCb;
  *  @return  Void
  **/
 #ifdef ANSI
-PRIVATE Void rgSCHDbmInitCmnLcLst
+static Void rgSCHDbmInitCmnLcLst
 (
 RgSchCellCb       *cellCb
 )
 #else
-PRIVATE Void rgSCHDbmInitCmnLcLst(cellCb)
+static Void rgSCHDbmInitCmnLcLst(cellCb)
 RgSchCellCb       *cellCb;
 #endif
 {
@@ -1244,12 +1244,12 @@ RgSchClcBoRpt     *cmnBoRpt;
  *  @return  Void
  **/
 #ifdef ANSI
-PRIVATE Void rgSCHDbmInitRaCbLst
+static Void rgSCHDbmInitRaCbLst
 (
 RgSchCellCb       *cellCb
 )
 #else
-PRIVATE Void rgSCHDbmInitRaCbLst(cellCb)
+static Void rgSCHDbmInitRaCbLst(cellCb)
 RgSchCellCb       *cellCb;
 #endif
 {
@@ -1310,12 +1310,12 @@ CmLteRnti      key;
  *  @return  Void
  **/
 #ifdef ANSI
-PRIVATE Void rgSCHDbmInitRaReqLst
+static Void rgSCHDbmInitRaReqLst
 (
 RgSchCellCb       *cellCb
 )
 #else
-PRIVATE Void rgSCHDbmInitRaReqLst(cellCb)
+static Void rgSCHDbmInitRaReqLst(cellCb)
 RgSchCellCb       *cellCb;
 #endif
 {
@@ -1343,12 +1343,12 @@ RgSchCellCb       *cellCb;
  *  @return  Void
  **/
 #ifdef ANSI
-PRIVATE Void rgSCHDbmInitCrntRgrCfgLst
+static Void rgSCHDbmInitCrntRgrCfgLst
 (
 RgSchCellCb       *cellCb
 )
 #else
-PRIVATE Void rgSCHDbmInitCrntRgrCfgLst(cellCb)
+static Void rgSCHDbmInitCrntRgrCfgLst(cellCb)
 RgSchCellCb       *cellCb;
 #endif
 {
@@ -1369,12 +1369,12 @@ RgSchCellCb       *cellCb;
  *  @return  Void
  **/
 #ifdef ANSI
-PRIVATE Void rgSCHDbmInitPndngRgrCfgLst
+static Void rgSCHDbmInitPndngRgrCfgLst
 (
 RgSchCellCb       *cellCb
 )
 #else
-PRIVATE Void rgSCHDbmInitPndngRgrCfgLst(cellCb)
+static Void rgSCHDbmInitPndngRgrCfgLst(cellCb)
 RgSchCellCb       *cellCb;
 #endif
 {
@@ -1841,13 +1841,13 @@ return;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgSCHDbmInitUeTfuPendLst
+static S16 rgSCHDbmInitUeTfuPendLst
 (
 RgSchCellCb    *cellCb,
 uint16_t            numBins
 )
 #else
-PRIVATE S16 rgSCHDbmInitUeTfuPendLst(cellCb, numBins)
+static S16 rgSCHDbmInitUeTfuPendLst(cellCb, numBins)
 RgSchCellCb    *cellCb;
 uint16_t            numBins;
 #endif

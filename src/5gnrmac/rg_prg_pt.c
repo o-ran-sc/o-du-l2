@@ -54,7 +54,7 @@
 #include "rg_pom_scell.x"
 
 /* Matrix for Ue SCell Config Req*/
-PRIVATE CONSTANT RgPrgUeSCellCfgReq RgPrgPMacSMacUeSCellCfgReqMt[RG_PRG_MAX] =
+static const RgPrgUeSCellCfgReq RgPrgPMacSMacUeSCellCfgReqMt[RG_PRG_MAX] =
 {
 #ifdef LCPRG
   cmPkPrgPMacSMacUeSCellCfgReq,
@@ -92,7 +92,7 @@ S16 RgPrgPMacSMacUeSCellCfg(pst, ueSCellCfgInfo)
 }
 
 /* Matrix for config confirm from SMac to Pmac*/
-PRIVATE CONSTANT RgSMacPMacCfgCfm RgPrgSMacPMacCfgCfmMt[RG_PRG_MAX] =
+static const RgSMacPMacCfgCfm RgPrgSMacPMacCfgCfmMt[RG_PRG_MAX] =
 {
 #ifdef LCPRG
    cmPkPrgSMacPMacCfgCfm,
@@ -130,7 +130,7 @@ S16 RgPrgSMacPMacCfg(pst, cfgCfm)
 }
 
 /* Matrix for Ue SCell delete req/Ue Id change req from PMac to SMac */
-PRIVATE CONSTANT RgUeSCellDelReq RgPrgPMacSMacUeSCellDelReqMt[RG_PRG_MAX] =
+static const RgUeSCellDelReq RgPrgPMacSMacUeSCellDelReqMt[RG_PRG_MAX] =
 {
 #ifdef LCPRG
    cmPkPrgPMacSMacUeSCellDelReq,
@@ -170,7 +170,7 @@ S16 RgPrgPMacSMacUeSCellDel(pst, ueSCellDelInfo)
 
 
 /* Matrix for Lch ReConfig Req*/
-PRIVATE CONSTANT RgPrgUeScellModLchReq RgPrgPMacSMacUeScellModLchReqMt[RG_PRG_MAX] =
+static const RgPrgUeScellModLchReq RgPrgPMacSMacUeScellModLchReqMt[RG_PRG_MAX] =
 {
 #ifdef LCPRG
   cmPkPrgPMacSMacUeSCellLchModReq,
@@ -210,7 +210,7 @@ S16 RgPrgPMacSMacUeScellLchMod(pst, lchCfgInfo)
 
 
 /* Matrix for delete Lch Req*/
-PRIVATE CONSTANT RgPrgUeScellDelLchReq RgPrgPMacSMacUeScellDelLchReqMt[RG_PRG_MAX] =
+static const RgPrgUeScellDelLchReq RgPrgPMacSMacUeScellDelLchReqMt[RG_PRG_MAX] =
 {
 #ifdef LCPRG
   cmPkPrgPMacSMacUeSCellLchDelReq,
@@ -250,7 +250,7 @@ S16 RgPrgPMacSMacUeScellLchDel(pst, delLcCb)
 
 
 /* Matrix for Lch Config Req*/
-PRIVATE CONSTANT RgPrgUeScellAddLchReq RgPrgPMacSMacUeScellAddLchReqMt[RG_PRG_MAX] =
+static const RgPrgUeScellAddLchReq RgPrgPMacSMacUeScellAddLchReqMt[RG_PRG_MAX] =
 {
 #ifdef LCPRG
   cmPkPrgPMacSMacUeSCellLchAddReq,

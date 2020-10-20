@@ -58,47 +58,47 @@ Txt ptNmb[LKW_PART_NUM_STR_LEN];         /* Part number */
   
 /* forward references */
 
-PRIVATE S16 cmPkRlcMngmt ARGS ((RlcMngmt *param ,Event eventType, 
+static S16 cmPkRlcMngmt ARGS ((RlcMngmt *param ,Event eventType, 
                                Buffer *mBuf));
-PRIVATE S16 cmPkRlcCfg ARGS ((RlcMngmt *param ,Elmnt elmnt, Buffer *mBuf));
-PRIVATE S16 cmPkRlcCntrl ARGS ((RlcMngmt *cntrl, Elmnt elmnt, Buffer *mBuf));
-PRIVATE S16 cmPkRlcUsta ARGS ((RlcMngmt *usta, Elmnt elmnt, Buffer *mBuf));
-PRIVATE S16 cmPkRlcSsta ARGS ((RlcMngmt *ssta, Elmnt etmnt, Event eventType,
+static S16 cmPkRlcCfg ARGS ((RlcMngmt *param ,Elmnt elmnt, Buffer *mBuf));
+static S16 cmPkRlcCntrl ARGS ((RlcMngmt *cntrl, Elmnt elmnt, Buffer *mBuf));
+static S16 cmPkRlcUsta ARGS ((RlcMngmt *usta, Elmnt elmnt, Buffer *mBuf));
+static S16 cmPkRlcSsta ARGS ((RlcMngmt *ssta, Elmnt etmnt, Event eventType,
                               Buffer *mBuf));
-PRIVATE S16 cmPkRlcSts ARGS ((RlcMngmt *sts, Elmnt elmnt, Buffer *mBuf));
-PRIVATE S16 cmPkGenSts ARGS ((RlcGenSts *gen, Buffer *mBuf));
-PRIVATE S16 cmPkCkwSapSts ARGS ((RlcCkwCntSts *rcSap, Buffer *mBuf));
-PRIVATE S16 cmPkKwuSapSts ARGS ((RlcKwuSapSts *ruSap, Buffer *mBuf));
+static S16 cmPkRlcSts ARGS ((RlcMngmt *sts, Elmnt elmnt, Buffer *mBuf));
+static S16 cmPkGenSts ARGS ((RlcGenSts *gen, Buffer *mBuf));
+static S16 cmPkCkwSapSts ARGS ((RlcCkwCntSts *rcSap, Buffer *mBuf));
+static S16 cmPkKwuSapSts ARGS ((RlcKwuSapSts *ruSap, Buffer *mBuf));
 /* lkw_c_001.main_2 removed support of RGU sap statistics as it is reflecting
  * in general statstics.
  * */
-PRIVATE S16 cmPkRlcTrc ARGS ((RlcMngmt *trc, Buffer *mBuf));
+static S16 cmPkRlcTrc ARGS ((RlcMngmt *trc, Buffer *mBuf));
 
-PRIVATE S16 cmUnpkRlcMngmt ARGS ((RlcMngmt *param, Event eventType,
+static S16 cmUnpkRlcMngmt ARGS ((RlcMngmt *param, Event eventType,
                                  Buffer * mBuf));
-PRIVATE S16 cmUnpkRlcCfg ARGS ((RlcMngmt *cfg, Elmnt elmnt, Buffer *mBuf));
-PRIVATE S16 cmUnpkRlcCntrl ARGS ((RlcMngmt *param, Elmnt elmnt, Buffer *mBuf));
-PRIVATE S16 cmUnpkRlcUsta ARGS ((RlcMngmt *usta, Elmnt elmnt, Buffer *mBuf));
-PRIVATE S16 cmUnpkRlcSsta ARGS ((RlcMngmt *ssta, Elmnt elmnt, Event eventType,
+static S16 cmUnpkRlcCfg ARGS ((RlcMngmt *cfg, Elmnt elmnt, Buffer *mBuf));
+static S16 cmUnpkRlcCntrl ARGS ((RlcMngmt *param, Elmnt elmnt, Buffer *mBuf));
+static S16 cmUnpkRlcUsta ARGS ((RlcMngmt *usta, Elmnt elmnt, Buffer *mBuf));
+static S16 cmUnpkRlcSsta ARGS ((RlcMngmt *ssta, Elmnt elmnt, Event eventType,
                                 Buffer *mBuf));
-PRIVATE S16 cmUnpkRlcSts ARGS ((RlcMngmt *sts, Elmnt elmnt, Buffer *mBuf));
-PRIVATE S16 cmUnpkGenSts ARGS ((RlcGenSts *gen, Buffer *mBuf));
-PRIVATE S16 cmUnpkCkwSapSts ARGS ((RlcCkwCntSts *rcSap, Buffer *mBuf));
-PRIVATE S16 cmUnpkKwuSapSts ARGS ((RlcKwuSapSts *ruSap, Buffer *mBuf));
+static S16 cmUnpkRlcSts ARGS ((RlcMngmt *sts, Elmnt elmnt, Buffer *mBuf));
+static S16 cmUnpkGenSts ARGS ((RlcGenSts *gen, Buffer *mBuf));
+static S16 cmUnpkCkwSapSts ARGS ((RlcCkwCntSts *rcSap, Buffer *mBuf));
+static S16 cmUnpkKwuSapSts ARGS ((RlcKwuSapSts *ruSap, Buffer *mBuf));
 /* lkw_c_001.main_2 removed support of RGU sap statistics as it is reflecting
  * in general statstics.
  * */
-PRIVATE S16 cmUnpkRlcTrc ARGS ((RlcMngmt *trc, Buffer *mBuf));
+static S16 cmUnpkRlcTrc ARGS ((RlcMngmt *trc, Buffer *mBuf));
 
 
-PRIVATE S16 cmPkCkwSapSta ARGS ((RlcCkwCntSapSta *rcSap, Buffer *mBuf));
-PRIVATE S16 cmUnpkCkwSapSta ARGS ((RlcCkwCntSapSta *rcSap, Buffer *mBuf));
+static S16 cmPkCkwSapSta ARGS ((RlcCkwCntSapSta *rcSap, Buffer *mBuf));
+static S16 cmUnpkCkwSapSta ARGS ((RlcCkwCntSapSta *rcSap, Buffer *mBuf));
 
-PRIVATE S16 cmPkKwuSapSta ARGS ((RlcKwuSapSta *rlSap, Buffer *mBuf));
-PRIVATE S16 cmUnpkKwuSapSta ARGS ((RlcKwuSapSta *rlSap, Buffer *mBuf));
+static S16 cmPkKwuSapSta ARGS ((RlcKwuSapSta *rlSap, Buffer *mBuf));
+static S16 cmUnpkKwuSapSta ARGS ((RlcKwuSapSta *rlSap, Buffer *mBuf));
 
-PRIVATE S16 cmPkRguSapSta ARGS ((RlcRguSapSta *mkSap, Buffer *mBuf));
-PRIVATE S16 cmUnpkRguSapSta ARGS ((RlcRguSapSta *mkSap, Buffer *mBuf));
+static S16 cmPkRguSapSta ARGS ((RlcRguSapSta *mkSap, Buffer *mBuf));
+static S16 cmUnpkRguSapSta ARGS ((RlcRguSapSta *mkSap, Buffer *mBuf));
 
 /**
  * @brief
@@ -998,13 +998,13 @@ Buffer *mBuf;                /* message buffer */
  */
 
 #ifdef ANSI
-PRIVATE S16 cmPkCkwSapSta 
+static S16 cmPkCkwSapSta 
 ( 
 RlcCkwCntSapSta *rcSap,         /* SAP statistics */      
 Buffer *mBuf                 /* Message buffer */
 )
 #else
-PRIVATE S16 cmPkCkwSapSta(rcSap, mBuf)
+static S16 cmPkCkwSapSta(rcSap, mBuf)
 RlcCkwCntSapSta *rcSap;         /* SAP statistics */
 Buffer *mBuf;                /* Message buffer */
 #endif
@@ -1028,13 +1028,13 @@ Buffer *mBuf;                /* Message buffer */
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-PRIVATE S16 cmUnpkCkwSapSta 
+static S16 cmUnpkCkwSapSta 
 (
 RlcCkwCntSapSta *rcSap,         /* SAP statistics */ 
 Buffer *mBuf                 /* Message buffer */
 )
 #else
-PRIVATE S16 cmUnpkCkwSapSta(rcSap, mBuf)
+static S16 cmUnpkCkwSapSta(rcSap, mBuf)
 RlcCkwCntSapSta *rcSap;         /* SAP statistics */ 
 Buffer *mBuf;                /* Message buffer */
 #endif
@@ -1057,13 +1057,13 @@ Buffer *mBuf;                /* Message buffer */
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-PRIVATE S16 cmPkKwuSapSta
+static S16 cmPkKwuSapSta
 (
 RlcKwuSapSta *rlSap,           /* SAP statistics */       
 Buffer *mBuf                 /* Message buffer */
 )
 #else
-PRIVATE S16 cmPkKwuSapSta(rlSap, mBuf)
+static S16 cmPkKwuSapSta(rlSap, mBuf)
 RlcKwuSapSta *rlSap;           /* SAP statistics */
 Buffer *mBuf;                /* Message buffer */
 #endif
@@ -1087,13 +1087,13 @@ Buffer *mBuf;                /* Message buffer */
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-PRIVATE S16 cmUnpkKwuSapSta
+static S16 cmUnpkKwuSapSta
 (
 RlcKwuSapSta *rlSap,           /* SAP statistics */                   
 Buffer *mBuf                 /* Message buffer */
 )
 #else
-PRIVATE S16 cmUnpkKwuSapSta(rlSap, mBuf)
+static S16 cmUnpkKwuSapSta(rlSap, mBuf)
 RlcKwuSapSta *rlSap;           /* SAP statistics */
 Buffer *mBuf;                /* Message buffer */
 #endif
@@ -1117,13 +1117,13 @@ Buffer *mBuf;                /* Message buffer */
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-PRIVATE S16 cmPkRguSapSta
+static S16 cmPkRguSapSta
 (
 RlcRguSapSta *mkSap,           /* SAP statistics */             
 Buffer *mBuf                 /* Message buffer */
 )
 #else
-PRIVATE S16 cmPkRguSapSta(mkSap, mBuf)
+static S16 cmPkRguSapSta(mkSap, mBuf)
 RlcRguSapSta *mkSap;           /* SAP statistics */
 Buffer *mBuf;                /* Message buffer */
 #endif
@@ -1147,13 +1147,13 @@ Buffer *mBuf;                /* Message buffer */
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-PRIVATE S16 cmUnpkRguSapSta
+static S16 cmUnpkRguSapSta
 (
 RlcRguSapSta *mkSap,           /* SAP statistics */              
 Buffer *mBuf                 /* Message buffer */
 )
 #else
-PRIVATE S16 cmUnpkRguSapSta(mkSap, mBuf)
+static S16 cmUnpkRguSapSta(mkSap, mBuf)
 RlcRguSapSta *mkSap;           /* SAP statistics */
 Buffer *mBuf;                /* Message buffer */
 #endif
@@ -1454,14 +1454,14 @@ RlcMngmt *cfm;                /* statistics confirmation */
  */
 
 #ifdef ANSI
-PRIVATE S16 cmPkRlcMngmt
+static S16 cmPkRlcMngmt
 (
 RlcMngmt *param,              /* Managment */             
 Event eventType,             /* Event type */
 Buffer *mBuf                 /* Message Buffer */
 )
 #else
-PRIVATE S16 cmPkRlcMngmt(param ,eventType, mBuf)
+static S16 cmPkRlcMngmt(param ,eventType, mBuf)
 RlcMngmt *param;              /* Managment */
 Event eventType;             /* Event type */
 Buffer *mBuf;                /* Message Buffer */
@@ -1543,14 +1543,14 @@ Buffer *mBuf;                /* Message Buffer */
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-PRIVATE S16 cmPkRlcCfg
+static S16 cmPkRlcCfg
 (
 RlcMngmt *cfg,
 Elmnt elmnt,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmPkRlcCfg(cfg, elmnt, mBuf)
+static S16 cmPkRlcCfg(cfg, elmnt, mBuf)
 RlcMngmt *cfg;
 Elmnt elmnt;
 Buffer *mBuf;
@@ -1607,14 +1607,14 @@ Buffer *mBuf;
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-PRIVATE S16 cmPkRlcCntrl
+static S16 cmPkRlcCntrl
 (
 RlcMngmt *cntrl,
 Elmnt elmnt,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmPkRlcCntrl(cntrl, elmnt, mBuf)
+static S16 cmPkRlcCntrl(cntrl, elmnt, mBuf)
 RlcMngmt *cntrl;
 Elmnt elmnt;
 Buffer *mBuf;
@@ -1686,14 +1686,14 @@ Buffer *mBuf;
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-PRIVATE S16 cmPkRlcUsta
+static S16 cmPkRlcUsta
 (
 RlcMngmt *usta,
 Elmnt elmnt,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmPkRlcUsta(usta, elmnt, mBuf)
+static S16 cmPkRlcUsta(usta, elmnt, mBuf)
 RlcMngmt *usta;
 Elmnt elmnt;
 Buffer *mBuf;
@@ -1727,7 +1727,7 @@ Buffer *mBuf;
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-PRIVATE S16 cmPkRlcSsta
+static S16 cmPkRlcSsta
 (
 RlcMngmt *ssta,
 Elmnt elmnt,
@@ -1735,7 +1735,7 @@ Event eventType,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmPkRlcSsta(ssta, elmnt, eventType, mBuf)
+static S16 cmPkRlcSsta(ssta, elmnt, eventType, mBuf)
 RlcMngmt *ssta;
 Elmnt elmnt;
 Event eventType;
@@ -1791,13 +1791,13 @@ Buffer *mBuf;
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-PRIVATE S16 cmPkRlcTrc
+static S16 cmPkRlcTrc
 (
 RlcMngmt *trc,                /* trace */                 
 Buffer *mBuf                 /* data buffer */
 )
 #else
-PRIVATE S16 cmPkRlcTrc(trc, mBuf)
+static S16 cmPkRlcTrc(trc, mBuf)
 RlcMngmt *trc;                /* trace */
 Buffer *mBuf;                /* data buffer */
 #endif
@@ -1822,14 +1822,14 @@ Buffer *mBuf;                /* data buffer */
  */
 
 #ifdef ANSI
-PRIVATE S16 cmPkRlcSts
+static S16 cmPkRlcSts
 (
 RlcMngmt *sts,
 Elmnt elmnt,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmPkRlcSts(sts, elmnt, mBuf)
+static S16 cmPkRlcSts(sts, elmnt, mBuf)
 RlcMngmt *sts;
 Elmnt elmnt;
 Buffer *mBuf;
@@ -1880,13 +1880,13 @@ Buffer *mBuf;
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-PRIVATE S16 cmPkGenSts
+static S16 cmPkGenSts
 (
 RlcGenSts *gen,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmPkGenSts(gen, mBuf)
+static S16 cmPkGenSts(gen, mBuf)
 RlcGenSts *gen;
 Buffer *mBuf;
 #endif
@@ -1919,13 +1919,13 @@ Buffer *mBuf;
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-PRIVATE S16 cmPkCkwSapSts
+static S16 cmPkCkwSapSts
 (
 RlcCkwCntSts *rcSap,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmPkCkwSapSts(rcSap, mBuf)
+static S16 cmPkCkwSapSts(rcSap, mBuf)
 RlcCkwCntSts *rcSap;
 Buffer *mBuf;
 #endif
@@ -1947,13 +1947,13 @@ Buffer *mBuf;
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-PRIVATE S16 cmPkKwuSapSts
+static S16 cmPkKwuSapSts
 (
 RlcKwuSapSts *ruSap,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmPkKwuSapSts(ruSap, mBuf)
+static S16 cmPkKwuSapSts(ruSap, mBuf)
 RlcKwuSapSts *ruSap;
 Buffer *mBuf;
 #endif
@@ -1983,14 +1983,14 @@ Buffer *mBuf;
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-PRIVATE S16 cmUnpkRlcMngmt
+static S16 cmUnpkRlcMngmt
 (
 RlcMngmt *param,
 Event eventType,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmUnpkRlcMngmt(param ,eventType, mBuf)
+static S16 cmUnpkRlcMngmt(param ,eventType, mBuf)
 RlcMngmt *param;
 Event eventType;
 Buffer *mBuf;
@@ -2076,14 +2076,14 @@ Buffer *mBuf;
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-PRIVATE S16 cmUnpkRlcCfg
+static S16 cmUnpkRlcCfg
 (
 RlcMngmt *cfg,
 Elmnt elmnt,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmUnpkRlcCfg(cfg ,elmnt, mBuf)
+static S16 cmUnpkRlcCfg(cfg ,elmnt, mBuf)
 RlcMngmt *cfg;
 Elmnt elmnt;
 Buffer *mBuf;
@@ -2140,14 +2140,14 @@ Buffer *mBuf;
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-PRIVATE S16 cmUnpkRlcCntrl
+static S16 cmUnpkRlcCntrl
 (
 RlcMngmt *cfm,
 Elmnt elmnt,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmUnpkRlcCntrl(cfm, elmnt, mBuf)
+static S16 cmUnpkRlcCntrl(cfm, elmnt, mBuf)
 RlcMngmt *cfm;
 Elmnt elmnt;
 Buffer *mBuf;
@@ -2226,14 +2226,14 @@ Buffer *mBuf;
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-PRIVATE S16 cmUnpkRlcUsta
+static S16 cmUnpkRlcUsta
 (
 RlcMngmt *usta,
 Elmnt elmnt,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmUnpkRlcUsta(usta ,elmnt, mBuf)
+static S16 cmUnpkRlcUsta(usta ,elmnt, mBuf)
 RlcMngmt *usta;
 Elmnt elmnt;
 Buffer *mBuf;
@@ -2266,7 +2266,7 @@ Buffer *mBuf;
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-PRIVATE S16 cmUnpkRlcSsta
+static S16 cmUnpkRlcSsta
 (
 RlcMngmt *ssta,
 Elmnt elmnt,
@@ -2274,7 +2274,7 @@ Event eventType,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmUnpkRlcSsta(ssta ,elmnt, eventType, mBuf)
+static S16 cmUnpkRlcSsta(ssta ,elmnt, eventType, mBuf)
 RlcMngmt *ssta;
 Elmnt elmnt;
 Event eventType;
@@ -2330,13 +2330,13 @@ Buffer *mBuf;
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-PRIVATE S16 cmUnpkRlcTrc
+static S16 cmUnpkRlcTrc
 (
 RlcMngmt *trc,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmUnpkRlcTrc(trc, mBuf)
+static S16 cmUnpkRlcTrc(trc, mBuf)
 RlcMngmt *trc;
 Buffer *mBuf;
 #endif
@@ -2361,14 +2361,14 @@ Buffer *mBuf;
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-PRIVATE S16 cmUnpkRlcSts
+static S16 cmUnpkRlcSts
 (
 RlcMngmt *sts,
 Elmnt elmnt,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmUnpkRlcSts(sts ,elmnt, mBuf)
+static S16 cmUnpkRlcSts(sts ,elmnt, mBuf)
 RlcMngmt *sts;
 Elmnt elmnt;
 Buffer *mBuf;
@@ -2417,13 +2417,13 @@ Buffer *mBuf;
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-PRIVATE S16 cmUnpkGenSts
+static S16 cmUnpkGenSts
 (
 RlcGenSts *gen,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmUnpkGenSts(gen, mBuf)
+static S16 cmUnpkGenSts(gen, mBuf)
 RlcGenSts *gen;
 Buffer *mBuf;
 #endif
@@ -2455,13 +2455,13 @@ Buffer *mBuf;
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-PRIVATE S16 cmUnpkCkwSapSts
+static S16 cmUnpkCkwSapSts
 (
 RlcCkwCntSts *rcSap,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmUnpkCkwSapSts(rcSap ,mBuf)
+static S16 cmUnpkCkwSapSts(rcSap ,mBuf)
 RlcCkwCntSts *rcSap;
 Buffer *mBuf;
 #endif
@@ -2485,13 +2485,13 @@ Buffer *mBuf;
  *      -# Failure : RFAILED
  */
 #ifdef ANSI
-PRIVATE S16 cmUnpkKwuSapSts
+static S16 cmUnpkKwuSapSts
 (
 RlcKwuSapSts *ruSap,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmUnpkKwuSapSts(ruSap, mBuf)
+static S16 cmUnpkKwuSapSts(ruSap, mBuf)
 RlcKwuSapSts *ruSap;
 Buffer *mBuf;
 #endif

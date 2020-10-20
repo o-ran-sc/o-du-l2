@@ -52,24 +52,24 @@ typedef struct tSL2UeStatsCb
    TSInfL2UeStats  stats;
 }TSL2UeStatsCb;
 
-EXTERN Void TSL2AllocStatsMem ARGS((
+Void TSL2AllocStatsMem ARGS((
  Region region,
  Pool   pool
 ));
-EXTERN TSL2UeStatsCb* TSL2AllocUeStatsBlk ARGS((
+TSL2UeStatsCb* TSL2AllocUeStatsBlk ARGS((
  uint16_t   rnti
 ));
-EXTERN Void TSL2DeallocUeStatsBlk ARGS((
+Void TSL2DeallocUeStatsBlk ARGS((
  uint16_t         rnti,
  TSL2UeStatsCb   *statsCb
 ));
-EXTERN TSL2CellStatsCb* TSL2AllocCellStatsBlk ARGS((
+TSL2CellStatsCb* TSL2AllocCellStatsBlk ARGS((
  uint32_t cellId
 ));
-EXTERN Void TSL2DeallocCellStatsBlk ARGS((
+Void TSL2DeallocCellStatsBlk ARGS((
  uint32_t cellId
 ));
-EXTERN Void TSL2SendStatsToApp ARGS((
+Void TSL2SendStatsToApp ARGS((
  Pst    *pst,
  SuId   suId
 ));

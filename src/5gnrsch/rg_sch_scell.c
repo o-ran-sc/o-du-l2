@@ -110,7 +110,7 @@ CmLteUeCategory   ueCat,
 uint8_t            sCellIdx
 ));
 #endif
-PRIVATE S16 rgSCHSCellTrgMacHqEReset ARGS((
+static S16 rgSCHSCellTrgMacHqEReset ARGS((
 Inst          inst,
 uint16_t           secCellId,
 uint16_t           rnti
@@ -511,12 +511,12 @@ RgSchUeCellInfo  *sCellInfo
  *
  **/
 #ifdef ANSI
-PRIVATE Void rgSCHCellClearScellLstOfCQI
+static Void rgSCHCellClearScellLstOfCQI
 (
 RgSchUeCellInfo *sCellInfo
 )
 #else
-PRIVATE Void rgSCHCellClearScellLstOfCQI(sCellInfo)
+static Void rgSCHCellClearScellLstOfCQI(sCellInfo)
 RgSchUeCellInfo *sCellInfo;
 #endif
 {
@@ -578,12 +578,12 @@ RgSchUeCellInfo *sCellInfo;
  *
  **/
 #ifdef ANSI
-PRIVATE S16 rgSCHSCellDeActivation
+static S16 rgSCHSCellDeActivation
 (
 RgSchUeCellInfo *sCellInfo
 )
 #else
-PRIVATE S16 rgSCHSCellDeActivation(sCellInfo)
+static S16 rgSCHSCellDeActivation(sCellInfo)
 RgSchUeCellInfo *sCellInfo
 #endif
 {
@@ -661,14 +661,14 @@ RgSchUeCellInfo *sCellInfo
  *
  **/
 #ifdef ANSI
-PRIVATE S16 rgSCHSCellTrgMacHqEReset
+static S16 rgSCHSCellTrgMacHqEReset
 (
 Inst          inst,
 uint16_t           secCellId,
 uint16_t           rnti
 )
 #else
-PRIVATE S16 rgSCHSCellTrgMacHqEReset(inst,secCellId,rnti)
+static S16 rgSCHSCellTrgMacHqEReset(inst,secCellId,rnti)
 Inst          inst;
 uint16_t           secCellId;
 uint16_t           rnti;
@@ -1005,14 +1005,14 @@ uint8_t            action;
  *
  **/
 #ifdef ANSI
-PRIVATE S16 rgSCHSCellSelectForAct
+static S16 rgSCHSCellSelectForAct
 (
 RgSchCellCb  *cell,
 RgSchUeCb    *ueCb,
 uint8_t           *sCellIdx
 )
 #else
-PRIVATE S16 rgSCHSCellSelectForAct(cell, ueCb)
+static S16 rgSCHSCellSelectForAct(cell, ueCb)
 RgSchCellCb  *cell;
 RgSchUeCb    *ueCb;
 uint8_t           *sCellIdx;
@@ -1586,13 +1586,13 @@ RgSchDlLcCb                *svc;
  *
  **/
 #ifdef ANSI
-PRIVATE uint8_t  rgSCHUtlSCellCmpCqiCfg
+static uint8_t  rgSCHUtlSCellCmpCqiCfg
 (
 RgSchUePCqiCb *cqiCb1,
 RgSchUePCqiCb *cqiCb2
 )
 #else
-PRIVATE uint8_t  rgSCHUtlSCellCmpCqiCfg(cqiCb1, cqiCb2)
+static uint8_t  rgSCHUtlSCellCmpCqiCfg(cqiCb1, cqiCb2)
 RgSchUePCqiCb     *cqiCb1;
 RgSchUePCqiCb     *cqiCb2;
 #endif

@@ -42,6 +42,7 @@ uint8_t BuildAndSendUeCtxtRsp(uint8_t ueIdx, uint8_t cellId);
 uint8_t getDrbLcId(uint32_t *drbBitMap);
 void  freeMacLcCfg(LcCfg *lcCfg);
 void  freeRlcLcCfg(RlcBearerCfg *lcCfg);
+uint8_t BuildAndSendRrcDeliveryReport(uint32_t gnbCuUeF1apId, uint32_t gnbDuUeF1apId, RrcDeliveryReport *rrcDelivery);
 /**********************************************************************
          End of file
 **********************************************************************/

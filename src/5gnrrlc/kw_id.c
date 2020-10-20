@@ -62,25 +62,25 @@
 /* public variable declarations */
 
 #ifdef __cplusplus
-EXTERN "C" {
+extern "C" {
 #endif /* CPLUSPLUS */
 
-EXTERN S16 rlcGetSId ARGS((SystemId *s));
+S16 rlcGetSId ARGS((SystemId *s));
 #ifdef __cplusplus
 }
 #endif /* CPLUSPLUS */
 
 /* copyright banner */
 
-CONSTANT Txt rlcBan1[] =
+const Txt rlcBan1[] =
    {"(c) COPYRIGHT 1989-2002, Trillium Digital Systems, Inc."};
 
-CONSTANT Txt rlcBan2[] =
+const Txt rlcBan2[] =
    {"                 All rights reserved."};
 
 /* system id */
 
-PRIVATE CONSTANT SystemId sId ={
+static const SystemId sId ={
    RLCSWMV,              /* rlc - main version */
    RLCSWMR,              /* rlc - main revision */
    RLCSWBV,              /* rlc - branch version */

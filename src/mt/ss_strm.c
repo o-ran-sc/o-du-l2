@@ -76,7 +76,7 @@
 
 /* private variable declarations */
 
-PRIVATE struct
+static struct
 {
    Region mdRegion;     /* region for message and data blocks */
    Region datRegion;    /* region for data buffers */

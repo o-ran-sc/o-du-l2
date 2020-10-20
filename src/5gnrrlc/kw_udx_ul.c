@@ -72,7 +72,7 @@ static int RLOG_FILE_ID=204;
 /* forward references */
 
 /* public variable declarations */
-EXTERN S16 rlcHdlCrlcUlCfgReq ARGS((RlcCb  *gCb,RlcUlCfgTmpData *cfgTmpData,
+S16 rlcHdlCrlcUlCfgReq ARGS((RlcCb  *gCb,RlcUlCfgTmpData *cfgTmpData,
                                   RlcCfgCfmInfo *cfmInfo, RlcCfgCfmInfo *cfgCfm));
 
 /**

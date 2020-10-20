@@ -46,16 +46,15 @@ uint8_t numRlcMacSaps = 0;
 uint8_t macCfg = 0;
 uint8_t macCfgInst = 0;
 
-extern DuCfgParams duCfgParam;
-extern uint8_t packRlcConfigReq(Pst *pst, RlcMngmt *cfg);
-extern uint8_t cmPkLkwCntrlReq(Pst *pst, RlcMngmt *cfg);
-extern uint8_t cmPkLrgCfgReq(Pst *pst, RgMngmt *cfg);
-extern uint8_t BuildAndSendE2SetupReq();
-extern uint8_t egtpHdlDatInd(EgtpMsg egtpMsg);
-extern uint8_t BuildAndSendDUConfigUpdate();
-extern uint16_t getTransId();
-extern uint8_t cmPkLrgSchCfgReq(Pst * pst,RgMngmt * cfg);
-uint8_t BuildAndSendRrcDeliveryReport(uint32_t gnbCuUeF1apId, uint32_t gnbDuUeF1apId, RrcDeliveryReport *rrcDelivery);
+DuCfgParams duCfgParam;
+uint8_t packRlcConfigReq(Pst *pst, RlcMngmt *cfg);
+uint8_t cmPkLkwCntrlReq(Pst *pst, RlcMngmt *cfg);
+uint8_t cmPkLrgCfgReq(Pst *pst, RgMngmt *cfg);
+uint8_t BuildAndSendE2SetupReq();
+uint8_t egtpHdlDatInd(EgtpMsg egtpMsg);
+uint8_t BuildAndSendDUConfigUpdate();
+uint16_t getTransId();
+uint8_t cmPkLrgSchCfgReq(Pst * pst,RgMngmt * cfg);
 
 packMacCellCfgReq packMacCellCfgOpts[] =
 {

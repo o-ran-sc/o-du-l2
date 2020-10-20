@@ -30,12 +30,12 @@
 #include "du_sctp.h"
 #include "du_egtp.h"
 
-extern uint8_t rlcUlActvTsk (Pst *, Buffer *);
-extern uint8_t rlcUlActvInit (Ent, Inst, Region, Reason);
-extern uint8_t rlcDlActvTsk (Pst *, Buffer *);
-extern uint8_t rlcDlActvInit (Ent, Inst, Region, Reason);
-extern uint8_t rgActvTsk (Pst *, Buffer *);
-extern uint8_t rgActvInit (Ent, Inst, Region, Reason);
+uint8_t rlcUlActvTsk (Pst *, Buffer *);
+uint8_t rlcUlActvInit (Ent, Inst, Region, Reason);
+uint8_t rlcDlActvTsk (Pst *, Buffer *);
+uint8_t rlcDlActvInit (Ent, Inst, Region, Reason);
+uint8_t rgActvTsk (Pst *, Buffer *);
+uint8_t rgActvInit (Ent, Inst, Region, Reason);
 
 /* Global variable */
 DuCfgParams duCfgParam;

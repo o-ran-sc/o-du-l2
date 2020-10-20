@@ -147,13 +147,13 @@ Buffer                   *mBuf;     /* message buffer */
 *
 */
 #ifdef ANSI
-PRIVATE S16 cmPkCmIpv6NetAddr
+static S16 cmPkCmIpv6NetAddr
 (
 CmIpv6NetAddr            *pkParam,     
 Buffer                   *mBuf         /* message buffer */
 )
 #else
-PRIVATE S16 cmPkCmIpv6NetAddr (pkParam, mBuf)
+static S16 cmPkCmIpv6NetAddr (pkParam, mBuf)
 CmIpv6NetAddr            *pkParam;     
 Buffer                   *mBuf;        /* message buffer */
 #endif
@@ -185,13 +185,13 @@ Buffer                   *mBuf;        /* message buffer */
 *
 */
 #ifdef ANSI
-PRIVATE S16 cmPkCmIpv6TptAddr
+static S16 cmPkCmIpv6TptAddr
 (
 CmIpv6TptAddr            *pkParam,     /* IPv6 transport address */
 Buffer                   *mBuf         /* message buffer */
 )
 #else
-PRIVATE S16 cmPkCmIpv6TptAddr (pkParam, mBuf)
+static S16 cmPkCmIpv6TptAddr (pkParam, mBuf)
 CmIpv6TptAddr            *pkParam;     /* IPv6 transport address */
 Buffer                   *mBuf;        /* message buffer */
 #endif
@@ -439,13 +439,13 @@ Buffer                    *mBuf;        /* message buffer */
 *
 */
 #ifdef ANSI
-PRIVATE S16 cmPkCmSockOpts
+static S16 cmPkCmSockOpts
 (
 CmSockOpts               *pkParam,     
 Buffer                   *mBuf         /* message buffer */
 )
 #else
-PRIVATE S16 cmPkCmSockOpts (pkParam, mBuf)
+static S16 cmPkCmSockOpts (pkParam, mBuf)
 CmSockOpts               *pkParam;     
 Buffer                   *mBuf;        /* message buffer */
 #endif
@@ -504,13 +504,13 @@ Buffer                   *mBuf;        /* message buffer */
 *
 */
 #ifdef ANSI
-PRIVATE S16 cmPkCmSockParam
+static S16 cmPkCmSockParam
 (
 CmSockParam              *pkParam,     
 Buffer                   *mBuf         /* message buffer */
 )
 #else
-PRIVATE S16 cmPkCmSockParam (pkParam, mBuf)
+static S16 cmPkCmSockParam (pkParam, mBuf)
 CmSockParam              *pkParam;     
 Buffer                   *mBuf;        /* message buffer */
 #endif
@@ -548,13 +548,13 @@ Buffer                   *mBuf;        /* message buffer */
 *
 */
 #ifdef ANSI
-PRIVATE S16 cmPkTlsTptParam
+static S16 cmPkTlsTptParam
 (
 TlsTptParam              *pkParam,     /**/
 Buffer                   *mBuf         /* message buffer */
 )
 #else
-PRIVATE S16 cmPkTlsTptParam(pkParam, mBuf)
+static S16 cmPkTlsTptParam(pkParam, mBuf)
 TlsTptParam              *pkParam;     /**/
 Buffer                   *mBuf;        /* message buffer */
 #endif
@@ -690,13 +690,13 @@ Buffer                   *mBuf;          /* message buffer */
 *
 */
 #ifdef ANSI
-PRIVATE S16 cmUnpkCmIpv6NetAddr
+static S16 cmUnpkCmIpv6NetAddr
 (
 CmIpv6NetAddr            *unpkParam,   /* IPv6 address */
 Buffer                   *mBuf         /* message buffer */
 )
 #else
-PRIVATE S16 cmUnpkCmIpv6NetAddr (unpkParam, mBuf)
+static S16 cmUnpkCmIpv6NetAddr (unpkParam, mBuf)
 CmIpv6NetAddr            *unpkParam;   /* IPv6 address */
 Buffer                   *mBuf;        /* message buffer */
 #endif
@@ -730,13 +730,13 @@ Buffer                   *mBuf;        /* message buffer */
 *
 */
 #ifdef ANSI
-PRIVATE S16 cmUnpkCmIpv6TptAddr
+static S16 cmUnpkCmIpv6TptAddr
 (
 CmIpv6TptAddr            *unpkParam,   /* IPv6 transport address */
 Buffer                   *mBuf         /* message buffer */
 )
 #else
-PRIVATE S16 cmUnpkCmIpv6TptAddr (unpkParam, mBuf)
+static S16 cmUnpkCmIpv6TptAddr (unpkParam, mBuf)
 CmIpv6TptAddr            *unpkParam;   /* IPv6 transport address */
 Buffer                   *mBuf;        /* message buffer */
 #endif
@@ -943,13 +943,13 @@ Buffer                    *mBuf;        /* message buffer */
 *
 */
 #ifdef ANSI
-PRIVATE S16 cmUnpkCmSockOpts
+static S16 cmUnpkCmSockOpts
 (
 CmSockOpts               *unpkParam,   /* socket options */
 Buffer                   *mBuf         /* message buffer */
 )
 #else
-PRIVATE S16 cmUnpkCmSockOpts (unpkParam, mBuf)
+static S16 cmUnpkCmSockOpts (unpkParam, mBuf)
 CmSockOpts               *unpkParam;   /* socket options */
 Buffer                   *mBuf;        /* message buffer */
 #endif
@@ -1010,13 +1010,13 @@ Buffer                   *mBuf;        /* message buffer */
 *
 */
 #ifdef ANSI
-PRIVATE S16 cmUnpkCmSockParam
+static S16 cmUnpkCmSockParam
 (
 CmSockParam              *unpkParam,   /* socket parameters */
 Buffer                   *mBuf         /* message buffer */
 )
 #else
-PRIVATE S16 cmUnpkCmSockParam (unpkParam, mBuf)
+static S16 cmUnpkCmSockParam (unpkParam, mBuf)
 CmSockParam              *unpkParam;   /* socket parameters */
 Buffer                   *mBuf;        /* message buffer */
 #endif
@@ -1056,13 +1056,13 @@ Buffer                   *mBuf;        /* message buffer */
 *
 */
 #ifdef ANSI
-PRIVATE S16 cmUnpkTlsTptParam
+static S16 cmUnpkTlsTptParam
 (
 TlsTptParam              *unpkParam,   /* TLS parameters */
 Buffer                   *mBuf         /* message buffer */
 )
 #else
-PRIVATE S16 cmUnpkTlsTptParam (unpkParam, mBuf)
+static S16 cmUnpkTlsTptParam (unpkParam, mBuf)
 TlsTptParam              *unpkParam;   /* TLS parameters */
 Buffer                   *mBuf;        /* message buffer */
 #endif

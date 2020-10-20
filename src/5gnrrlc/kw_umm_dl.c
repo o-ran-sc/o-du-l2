@@ -69,15 +69,15 @@
 
 /* variables for logging :declared in BRDCM cl */
 #ifndef TENB_ACC
-extern uint32_t dldrops_kwu_um;
-extern uint32_t dlpkt_um;
-extern uint32_t buffer_occ;
-extern uint32_t dlrate_kwu;
+uint32_t dldrops_kwu_um;
+uint32_t dlpkt_um;
+uint32_t buffer_occ;
+uint32_t dlrate_kwu;
 #endif
 
-PRIVATE void rlcUmmEstHdrSz ARGS ((RlcUmDl *umUl));
+static void rlcUmmEstHdrSz ARGS ((RlcUmDl *umUl));
 
-PRIVATE Void rlcUmmCreatePdu ARGS ((RlcCb *gCb,
+static Void rlcUmmCreatePdu ARGS ((RlcCb *gCb,
                                   RlcDlRbCb *rbCb, 
                                   Buffer *pdu,
                                   uint8_t fi,
@@ -616,7 +616,7 @@ RlcDlRbCb       *rbCb;
  *
  * @return  Void
 */ 
-void rlcUmmCreatePdu(RlcCb *gCb, RlcDlRbCb *rbCb, Buffer *pdu, uint8_t fi, KwPduInfo *datReqPduInfo)
+static void rlcUmmCreatePdu(RlcCb *gCb, RlcDlRbCb *rbCb, Buffer *pdu, uint8_t fi, KwPduInfo *datReqPduInfo)
 {
    RlcSn     sn;        /*  Sequence Number */
    uint32_t  liCount;   /*  LI count */
@@ -733,7 +733,7 @@ void rlcUmmCreatePdu(RlcCb *gCb, RlcDlRbCb *rbCb, Buffer *pdu, uint8_t fi, KwPdu
  *
  * @return  Void
 */ 
-void rlcUmmEstHdrSz(RlcUmDl *umDl)
+static void rlcUmmEstHdrSz(RlcUmDl *umDl)
 {
    /* The header size is estimated as :
           If sdu count = 0 then 0

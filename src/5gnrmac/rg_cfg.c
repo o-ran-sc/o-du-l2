@@ -64,20 +64,20 @@ static int RLOG_MODULE_ID=4096;
 RgCb rgCb[RG_MAX_INST];
 
 /* local defines */
-PRIVATE S16 rgCFGVldtCrgDedLcCfg ARGS((Inst inst,CrgLchCfg *lcCfg, RgCellCb **cell,
+static S16 rgCFGVldtCrgDedLcCfg ARGS((Inst inst,CrgLchCfg *lcCfg, RgCellCb **cell,
          RgUeCb **ue, RgErrInfo *errInfo));
-PRIVATE S16 rgCFGVldtCrgCmnLcCfg ARGS((Inst inst,CrgLchCfg *lcCfg, RgCellCb **cell,
+static S16 rgCFGVldtCrgCmnLcCfg ARGS((Inst inst,CrgLchCfg *lcCfg, RgCellCb **cell,
          RgErrInfo *errInfo));
-PRIVATE S16 rgCFGCrgDedLcCfg ARGS((RgCellCb *cell, RgUeCb *ue,
+static S16 rgCFGCrgDedLcCfg ARGS((RgCellCb *cell, RgUeCb *ue,
          CrgLchCfg *lcCfg, RgErrInfo *errInfo));
-PRIVATE S16 rgCFGCrgCmnLcCfg ARGS((Inst inst,RgCellCb *cell, CrgLchCfg *lcCfg,
+static S16 rgCFGCrgCmnLcCfg ARGS((Inst inst,RgCellCb *cell, CrgLchCfg *lcCfg,
          RgErrInfo *errInfo));
 
-PRIVATE Void rgCFGFreeCmnLcLst ARGS((RgCellCb *cell));
-PRIVATE Void rgCFGFreeUeLst ARGS((RgCellCb *cell));
+static Void rgCFGFreeCmnLcLst ARGS((RgCellCb *cell));
+static Void rgCFGFreeUeLst ARGS((RgCellCb *cell));
 /* Added support for SPS*/
 #ifdef LTEMAC_SPS
-PRIVATE Void rgCFGFreeSpsUeLst ARGS((RgCellCb *cell));
+static Void rgCFGFreeSpsUeLst ARGS((RgCellCb *cell));
 #endif /* LTEMAC_SPS */
 
 
@@ -1635,7 +1635,7 @@ CrgCfgTransId transId;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE S16 rgCFGVldtCrgDedLcCfg
+static S16 rgCFGVldtCrgDedLcCfg
 (
 Inst          inst, 
 CrgLchCfg     *lcCfg,
@@ -1644,7 +1644,7 @@ RgUeCb        **ue,
 RgErrInfo     *errInfo
 )
 #else
-PRIVATE S16 rgCFGVldtCrgDedLcCfg(inst,lcCfg, cell, ue, errInfo)
+static S16 rgCFGVldtCrgDedLcCfg(inst,lcCfg, cell, ue, errInfo)
 Inst          inst;
 CrgLchCfg     *lcCfg;
 RgCellCb      **cell;
@@ -1740,7 +1740,7 @@ RgErrInfo     *errInfo;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE S16 rgCFGVldtCrgCmnLcCfg
+static S16 rgCFGVldtCrgCmnLcCfg
 (
 Inst          inst,
 CrgLchCfg     *lcCfg,
@@ -1748,7 +1748,7 @@ RgCellCb      **cell,
 RgErrInfo     *errInfo
 )
 #else
-PRIVATE S16 rgCFGVldtCrgCmnLcCfg(inst,lcCfg, cell, errInfo)
+static S16 rgCFGVldtCrgCmnLcCfg(inst,lcCfg, cell, errInfo)
 Inst          inst;
 CrgLchCfg     *lcCfg;
 RgCellCb      **cell;
@@ -1865,7 +1865,7 @@ RgErrInfo     *errInfo;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE S16 rgCFGCrgDedLcCfg
+static S16 rgCFGCrgDedLcCfg
 (
 RgCellCb      *cell,
 RgUeCb        *ue,
@@ -1873,7 +1873,7 @@ CrgLchCfg     *lcCfg,
 RgErrInfo     *errInfo
 )
 #else
-PRIVATE S16 rgCFGCrgDedLcCfg(cell, ue, lcCfg, errInfo)
+static S16 rgCFGCrgDedLcCfg(cell, ue, lcCfg, errInfo)
 RgCellCb      *cell;
 RgUeCb        *ue;
 CrgLchCfg     *lcCfg;
@@ -1925,7 +1925,7 @@ RgErrInfo     *errInfo;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE S16 rgCFGCrgCmnLcCfg
+static S16 rgCFGCrgCmnLcCfg
 (
 Inst          inst,
 RgCellCb      *cell,
@@ -1933,7 +1933,7 @@ CrgLchCfg     *lcCfg,
 RgErrInfo     *errInfo
 )
 #else
-PRIVATE S16 rgCFGCrgCmnLcCfg(inst,cell, lcCfg, errInfo)
+static S16 rgCFGCrgCmnLcCfg(inst,cell, lcCfg, errInfo)
 Inst          inst;
 RgCellCb      *cell;
 CrgLchCfg     *lcCfg;
@@ -2018,12 +2018,12 @@ RgErrInfo     *errInfo;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE Void rgCFGFreeUeUlAlloc
+static Void rgCFGFreeUeUlAlloc
 (
 RgCellCb      *cell
 )
 #else
-PRIVATE Void rgCFGFreeUeUlAlloc(cell)
+static Void rgCFGFreeUeUlAlloc(cell)
 RgCellCb      *cell;
 #endif
 {
@@ -2214,12 +2214,12 @@ RgUeCb      *ue;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE Void rgCFGFreeCmnLcLst
+static Void rgCFGFreeCmnLcLst
 (
 RgCellCb      *cell
 )
 #else
-PRIVATE Void rgCFGFreeCmnLcLst(cell)
+static Void rgCFGFreeCmnLcLst(cell)
 RgCellCb      *cell;
 #endif
 {
@@ -2248,12 +2248,12 @@ RgCellCb      *cell;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE Void rgCFGFreeUeLst
+static Void rgCFGFreeUeLst
 (
 RgCellCb      *cell
 )
 #else
-PRIVATE Void rgCFGFreeUeLst(cell)
+static Void rgCFGFreeUeLst(cell)
 RgCellCb      *cell;
 #endif
 {
@@ -2295,12 +2295,12 @@ RgCellCb      *cell;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE Void rgCFGFreeSpsUeLst
+static Void rgCFGFreeSpsUeLst
 (
 RgCellCb      *cell
 )
 #else
-PRIVATE Void rgCFGFreeSpsUeLst(cell)
+static Void rgCFGFreeSpsUeLst(cell)
 RgCellCb      *cell;
 #endif
 {

@@ -2777,7 +2777,7 @@ typedef S16 (*RgrCfgReq) ARGS((
    RgrCfgTransId        transId,
    RgrCfgReqInfo *      cfgReqInfo));
 
-EXTERN S16 cmPkRgrCfgCfm ARGS((
+S16 cmPkRgrCfgCfm ARGS((
    Pst*                 pst,
    RgrCfgTransId        transId,
    uint8_t                   status
@@ -2942,7 +2942,7 @@ typedef S16 (*RgrUeStaInd) ARGS((
  *@param[in] spId  SAP Id of the Service Provider.
  *@return  ROK/RFAILED
 */
-EXTERN S16 RgUiRgrBndReq ARGS((
+S16 RgUiRgrBndReq ARGS((
    Pst*                 pst,
    SuId                 suId,
    SpId                 spId
@@ -2959,7 +2959,7 @@ EXTERN S16 RgUiRgrBndReq ARGS((
 * @param[in] ttiInd Parameters containing the information on TTI Indication.
 * @return ROK/RFAILED
 */
-EXTERN S16 RgUiRgrTtiInd ARGS((
+S16 RgUiRgrTtiInd ARGS((
    Pst*                 pst,
    SuId                 suId,
    RgrTtiIndInfo        *ttiInd
@@ -2967,61 +2967,61 @@ EXTERN S16 RgUiRgrTtiInd ARGS((
 #endif
 /** @} */
 /*rgr_x_001.main_9 - Added support for SPS*/
-EXTERN S16 cmPkRgrSpsCellCfg ARGS((
+S16 cmPkRgrSpsCellCfg ARGS((
    RgrSpsCellCfg *param,
    Buffer *mBuf
 ));
-EXTERN S16 cmUnpkRgrSpsDlCellCfg ARGS((
+S16 cmUnpkRgrSpsDlCellCfg ARGS((
    RgrSpsCellCfg *param,
    Buffer *mBuf
 ));
-EXTERN S16 cmPkRgrUeSpsDlCfg ARGS((
+S16 cmPkRgrUeSpsDlCfg ARGS((
    RgrUeSpsDlCfg *param,
    Buffer *mBuf
 ));
-EXTERN S16 cmUnpkRgrUeSpsDlCfg ARGS((
+S16 cmUnpkRgrUeSpsDlCfg ARGS((
    RgrUeSpsDlCfg *param,
    Buffer *mBuf
 ));
-EXTERN S16 cmPkRgrUeSpsUlCfg ARGS((
+S16 cmPkRgrUeSpsUlCfg ARGS((
    RgrUeSpsUlCfg *param,
    Buffer *mBuf
 ));
-EXTERN S16 cmUnpkRgrUeSpsUlCfg ARGS((
+S16 cmUnpkRgrUeSpsUlCfg ARGS((
    RgrUeSpsUlCfg *param,
    Buffer *mBuf
 ));
-EXTERN S16 cmPkRgrUeSpsCfg ARGS((
+S16 cmPkRgrUeSpsCfg ARGS((
    RgrUeSpsCfg *param,
    Buffer *mBuf
 ));
-EXTERN S16 cmUnpkRgrUeSpsCfg ARGS((
+S16 cmUnpkRgrUeSpsCfg ARGS((
    RgrUeSpsCfg *param,
    Buffer *mBuf
 ));
-EXTERN S16 cmPkRgrLchSpsCfg ARGS((
+S16 cmPkRgrLchSpsCfg ARGS((
    RgrLchSpsCfg *param,
    Buffer *mBuf
 ));
-EXTERN S16 cmUnpkRgrLchSpsCfg ARGS((
+S16 cmUnpkRgrLchSpsCfg ARGS((
    RgrLchSpsCfg *param,
    Buffer *mBuf
 ));
 
 /*rgr_x_001.main_11 ADD added changes for L2 measurements*/
-EXTERN S16 cmPkRgrUlLchCfg ARGS((
+S16 cmPkRgrUlLchCfg ARGS((
    RgrUlLchCfg *param,
    Buffer *mBuf
 ));
-EXTERN S16 cmUnpkRgrUlLchCfg ARGS((
+S16 cmUnpkRgrUlLchCfg ARGS((
   RgrUlLchCfg *param,
   Buffer *mBuf
 ));
-EXTERN S16 cmPkRgrUlLchQciCfg ARGS((
+S16 cmPkRgrUlLchQciCfg ARGS((
    RgrUlLchQciCfg *param,
    Buffer *mBuf
 ));
-EXTERN S16 cmUnpkRgrUlLchQciCfg ARGS((
+S16 cmUnpkRgrUlLchQciCfg ARGS((
   RgrUlLchQciCfg *param,
   Buffer *mBuf
 ));
@@ -3030,88 +3030,88 @@ EXTERN S16 cmUnpkRgrUlLchQciCfg ARGS((
 /*rgr_x_001.main_11 ccpu00117452 - MOD - Changed macro name from
    RGR_RRM_DLPWR_CNTRL to RGR_CQI_REPT */
 #ifdef RGR_CQI_REPT
-EXTERN S16 cmPkRgrUeCqiReptCfg ARGS((
+S16 cmPkRgrUeCqiReptCfg ARGS((
 RgrUeCqiReptCfg *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkRgrUeCqiReptCfg ARGS((
+S16 cmUnpkRgrUeCqiReptCfg ARGS((
 RgrUeCqiReptCfg *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkRgrSubBandCqiInfo ARGS((
+S16 cmUnpkRgrSubBandCqiInfo ARGS((
 RgrSubBandCqiInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkRgrStaInd ARGS((
+S16 cmPkRgrStaInd ARGS((
 Pst* pst,
 SuId suId,
 RgrStaIndInfo* staInd
 ));
 
-EXTERN S16 cmUnpkRgrStaInd ARGS((
+S16 cmUnpkRgrStaInd ARGS((
 RgrStaInd func,
 Pst *pst,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkRgrStaIndInfo ARGS((
+S16 cmPkRgrStaIndInfo ARGS((
 RgrStaIndInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkRgrStaIndInfo ARGS((
+S16 cmUnpkRgrStaIndInfo ARGS((
 RgrStaIndInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkRgrUeCqiInfo ARGS((
+S16 cmPkRgrUeCqiInfo ARGS((
 RgrUeCqiInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkRgrUeCqiInfo ARGS((
+S16 cmUnpkRgrUeCqiInfo ARGS((
 RgrUeCqiInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkRgrUeCqiRept ARGS((
+S16 cmPkRgrUeCqiRept ARGS((
 RgrUeCqiRept *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkRgrSubBandCqiInfo ARGS((
+S16 cmPkRgrSubBandCqiInfo ARGS((
 RgrSubBandCqiInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkRgrUeCqiRept ARGS((
+S16 cmUnpkRgrUeCqiRept ARGS((
 RgrUeCqiRept *param,
 Buffer *mBuf
 ));
 #endif
 
 /* LTE_ADV_FLAG_REMOVED_START */
-EXTERN S16 cmPkRgrLoadInfInd ARGS((
+S16 cmPkRgrLoadInfInd ARGS((
 Pst* pst,
 SuId suId,
 RgrLoadInfIndInfo* loadInfInd
 ));
 
-EXTERN S16 cmUnpkRgrLoadInfInd ARGS((
+S16 cmUnpkRgrLoadInfInd ARGS((
 RgrLoadInfInd func,
 Pst *pst,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkRgrLoadInfIndInfo ARGS((
+S16 cmPkRgrLoadInfIndInfo ARGS((
 RgrLoadInfIndInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkRgrLoadInfIndInfo ARGS((
+S16 cmUnpkRgrLoadInfIndInfo ARGS((
 RgrLoadInfIndInfo *param,
 Pst *pst, /* dsfr_pal_fixes ** 21-March-2013 ** SKS */
 Buffer *mBuf
@@ -3119,65 +3119,65 @@ Buffer *mBuf
 /* LTE_ADV_FLAG_REMOVED_END */
 
 #ifdef TFU_UPGRADE 
-EXTERN S16 cmPkRgrUePdschDedCfg ARGS((
+S16 cmPkRgrUePdschDedCfg ARGS((
 RgrUePdschDedCfg  *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkRgrUePdschDedCfg ARGS((
+S16 cmUnpkRgrUePdschDedCfg ARGS((
 RgrUePdschDedCfg *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkRgrUepACfg ARGS((
+S16 cmPkRgrUepACfg ARGS((
 RgrUepACfg *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkRgrUepACfg ARGS((
+S16 cmUnpkRgrUepACfg ARGS((
 RgrUepACfg *param,
 Buffer *mBuf
 ));
 #endif
 
 #ifdef LTE_ADV
-EXTERN S16 cmPkRgrUeSecCellInfo ARGS((
+S16 cmPkRgrUeSecCellInfo ARGS((
 RgrUeSecCellInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkRgrUeSecCellInfo ARGS((
+S16 cmUnpkRgrUeSecCellInfo ARGS((
 RgrUeSecCellInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkRgrUeDlSecCellRelInfo ARGS((
+S16 cmPkRgrUeDlSecCellRelInfo ARGS((
 RgrUeDlSecCellRelInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkRgrUeDlSecCellRelInfo ARGS((
+S16 cmUnpkRgrUeDlSecCellRelInfo ARGS((
 RgrUeDlSecCellRelInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkRgrUeSecCellRelInfo ARGS((
+S16 cmPkRgrUeSecCellRelInfo ARGS((
 RgrUeSecCellRelInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkRgrUeSecCellRelInfo ARGS((
+S16 cmUnpkRgrUeSecCellRelInfo ARGS((
 RgrUeSecCellRelInfo *param,
 Buffer *mBuf
 ));
 
 /* Sprint 3 */
-EXTERN S16 cmPkRgrUeSCellAckPucchCfg ARGS((
+S16 cmPkRgrUeSCellAckPucchCfg ARGS((
 RgrUeSCellAckPucchCfg *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkRgrUeSCellAckPucchCfg ARGS((
+S16 cmUnpkRgrUeSCellAckPucchCfg ARGS((
 RgrUeSCellAckPucchCfg *param,
 Buffer *mBuf
 ));
@@ -3193,7 +3193,7 @@ Buffer *mBuf
 *  @param[in] status  Confirmation status for the RGR User.
 *  @return ROK/RFAILED  
 */
-EXTERN S16 RgUiRgrBndCfm ARGS((
+S16 RgUiRgrBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    uint8_t                   status
@@ -3209,7 +3209,7 @@ EXTERN S16 RgUiRgrBndCfm ARGS((
  * @param[in] reason Cause for the Unbinding.
  * @return ROK/RFAILED.
  */
-EXTERN S16 RgUiRgrUbndReq ARGS((
+S16 RgUiRgrUbndReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    Reason               reason
@@ -3225,7 +3225,7 @@ EXTERN S16 RgUiRgrUbndReq ARGS((
  *  @param[in] status  Status indication from the MAC.  
  *  @return ROK/RFAILED
  */
-EXTERN S16 RgUiRgrCfgCfm ARGS((
+S16 RgUiRgrCfgCfm ARGS((
    Pst*                 pst,
    RgrCfgTransId        transId,
    uint8_t                   status
@@ -3247,7 +3247,7 @@ EXTERN S16 RgUiRgrCfgCfm ARGS((
  * @param[in] siCfgReq Parameters used for specifying SI.
  * @return ROK/RFAILED 
  */
-EXTERN S16 RgUiRgrSiCfgReq ARGS((
+S16 RgUiRgrSiCfgReq ARGS((
    Pst           *pst,
    SpId          spId,
    RgrCfgTransId transId,
@@ -3264,7 +3264,7 @@ EXTERN S16 RgUiRgrSiCfgReq ARGS((
  * @param[in] status  Confirmation status .
  * @return ROK/RFAILED
  */
-EXTERN S16 RgUiRgrSiCfgCfm ARGS((
+S16 RgUiRgrSiCfgCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    RgrCfgTransId        transId,
@@ -3282,7 +3282,7 @@ EXTERN S16 RgUiRgrSiCfgCfm ARGS((
  * @param[in] status  Confirmation status .
  * @return ROK/RFAILED
  */
-EXTERN S16 RgUiRgrWarningSiCfgReq ARGS((
+S16 RgUiRgrWarningSiCfgReq ARGS((
    Pst                    *pst,
    SpId                   spId,
    RgrCfgTransId          transId,
@@ -3302,7 +3302,7 @@ EXTERN S16 RgUiRgrWarningSiCfgReq ARGS((
  * @param[in] status  Confirmation status .
  * @return ROK/RFAILED
  */
-EXTERN S16 RgUiRgrWarningSiCfgCfm ARGS((
+S16 RgUiRgrWarningSiCfgCfm ARGS((
    Pst*              pst,
    SuId              suId,
    RgrCfgTransId     transId,
@@ -3320,7 +3320,7 @@ EXTERN S16 RgUiRgrWarningSiCfgCfm ARGS((
  * @param[in] siId    SI Index
  * @return ROK/RFAILED
  */
-EXTERN S16 RgUiRgrWarningSiStopReq ARGS((
+S16 RgUiRgrWarningSiStopReq ARGS((
    Pst           *pst,
    SpId          spId,
    RgrCfgTransId transId,
@@ -3345,7 +3345,7 @@ EXTERN S16 RgUiRgrWarningSiStopReq ARGS((
  * @param[in] loadInfReq Parameters used for specifying LOAD INF.
  * @return ROK/RFAILED
  */
-EXTERN S16 RgUiRgrLoadInfReq ARGS((
+S16 RgUiRgrLoadInfReq ARGS((
    Pst                 *pst,
    SpId                spId,
    RgrCfgTransId       transId,
@@ -3369,13 +3369,13 @@ EXTERN S16 RgUiRgrLoadInfReq ARGS((
  * @param[in] staInd  Status Indication .
  * @return ROK/RFAILED
  */
-EXTERN S16 RgUiRgrStaInd ARGS((
+S16 RgUiRgrStaInd ARGS((
    Pst*                 pst,
    SuId                 suId,
    RgrStaIndInfo        *staInd
 ));
 #endif
-EXTERN S16 RgUiRgrUeStaInd ARGS((
+S16 RgUiRgrUeStaInd ARGS((
 Pst             *pst,
 SuId            suId,
 RgrUeStaIndInfo *ueStaInd
@@ -3395,7 +3395,7 @@ RgrUeStaIndInfo *ueStaInd
  * @param[in] loadInfInd  LOAD INF Indication .
  * @return ROK/RFAILED
  */
-EXTERN S16 RgUiRgrLoadInfInd ARGS((
+S16 RgUiRgrLoadInfInd ARGS((
    Pst*                 pst,
    SuId                 suId,
    RgrLoadInfIndInfo    *loadInfInd
@@ -3415,7 +3415,7 @@ EXTERN S16 RgUiRgrLoadInfInd ARGS((
  *  @param[in] spId   Service Provider SAP Id
  *  @return ROK/RFAILED  
  */
-EXTERN S16 NxLiRgrBndReq ARGS((
+S16 NxLiRgrBndReq ARGS((
    Pst*                 pst,
    SuId                 suId,
    SpId                 spId
@@ -3434,7 +3434,7 @@ EXTERN S16 NxLiRgrBndReq ARGS((
 * @param[in] RgrTtiIndInfo* ttiInd Information passed as a part of TTI indication from PHY to MAC. 
 * @return ROK/RFAILED 
 */
-EXTERN S16 NxLiRgrTtiInd ARGS((
+S16 NxLiRgrTtiInd ARGS((
    Pst*                 pst,
    SuId                 suId,
    RgrTtiIndInfo        *ttiInd
@@ -3450,7 +3450,7 @@ EXTERN S16 NxLiRgrTtiInd ARGS((
  * @param[in] uint8_t    status An information on status confirmation.
  * @return S16
  */
-EXTERN S16 NxLiRgrBndCfm ARGS((
+S16 NxLiRgrBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    uint8_t                   status
@@ -3465,7 +3465,7 @@ EXTERN S16 NxLiRgrBndCfm ARGS((
  * @param[in] Reason    reason A cause for unbinding the SAPs.
  * @return S16
  */
-EXTERN S16 NxLiRgrUbndReq ARGS((
+S16 NxLiRgrUbndReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    Reason               reason
@@ -3481,7 +3481,7 @@ EXTERN S16 NxLiRgrUbndReq ARGS((
  * @param[in]   RgrCfgReqInfo* cfgReqInfo A structure containing the configuration information.
  * @return   S16 
  */
-EXTERN S16 NxLiRgrCfgReq ARGS((
+S16 NxLiRgrCfgReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    RgrCfgTransId        transId,
@@ -3497,7 +3497,7 @@ EXTERN S16 NxLiRgrCfgReq ARGS((
  * @param[in] RgrCfgTransId transId RRM to MAC transaction Id. 
  * @return S16
  */
-EXTERN S16 NxLiRgrCfgCfm ARGS((
+S16 NxLiRgrCfgCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    RgrCfgTransId        transId,
@@ -3518,7 +3518,7 @@ EXTERN S16 NxLiRgrCfgCfm ARGS((
 * @param[in]  uint8_t        status      An information on confirmation status.
 * @return S16
 */
-EXTERN S16 NxLiRgrSiCfgCfm ARGS((
+S16 NxLiRgrSiCfgCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    RgrCfgTransId        transId,
@@ -3527,7 +3527,7 @@ EXTERN S16 NxLiRgrSiCfgCfm ARGS((
 
 
 /* PH04_CMAS */
-EXTERN S16 NxLiRgrWrngSiCfgCfm ARGS((
+S16 NxLiRgrWrngSiCfgCfm ARGS((
 Pst*                 pst,
 SuId                 suId,
 RgrCfgTransId        transId,
@@ -3537,7 +3537,7 @@ uint8_t                   status
 
 
 
-EXTERN S16 NxLiRgrStopWrngSiCfgCfm ARGS((
+S16 NxLiRgrStopWrngSiCfgCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    RgrCfgTransId        transId,
@@ -3558,7 +3558,7 @@ EXTERN S16 NxLiRgrStopWrngSiCfgCfm ARGS((
 * @param[in]  uint8_t        status      An information on confirmation status.
 * @return S16
 */
-EXTERN S16 NxLiRgrWarningSiCfgCfm ARGS((
+S16 NxLiRgrWarningSiCfgCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    RgrCfgTransId        transId,
@@ -3577,7 +3577,7 @@ EXTERN S16 NxLiRgrWarningSiCfgCfm ARGS((
  * @param[in] RgrSiCfgReqInfo* cfgReqInfo Parameters corresponding to the SI Configuration .
  * @return S16
  */
-EXTERN S16 NxLiRgrSiCfgReq ARGS((
+S16 NxLiRgrSiCfgReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    RgrCfgTransId        transId,
@@ -3597,7 +3597,7 @@ EXTERN S16 NxLiRgrSiCfgReq ARGS((
  * @param[in] RgrWarningSiCfgReqInfo  *warningSiCfgReq SI Configuration
  * @return S16
  */
-EXTERN S16 NxLiRgrWarningSiCfgReq ARGS((
+S16 NxLiRgrWarningSiCfgReq ARGS((
    Pst*                       pst,
    SpId                      spId,
    RgrCfgTransId             transId,
@@ -3615,7 +3615,7 @@ EXTERN S16 NxLiRgrWarningSiCfgReq ARGS((
  * @param[in] SpId             spId     Service Provider SAP Id.
  * @param[in] uint8_t               siId     SI Index
  */
-EXTERN S16 NxLiRgrWarningSiStopReq ARGS((
+S16 NxLiRgrWarningSiStopReq ARGS((
    Pst*                       pst,
    SpId                       spId,
    RgrCfgTransId              transId,
@@ -3639,7 +3639,7 @@ EXTERN S16 NxLiRgrWarningSiStopReq ARGS((
  * @param[in] RgrLoadInfReqInfo* loadInfReq Parameters corresponding to the LOAD INF Config.
  * @return S16
  */
-EXTERN S16 NxLiRgrLoadInfReq ARGS((
+S16 NxLiRgrLoadInfReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    RgrCfgTransId        transId,
@@ -3662,7 +3662,7 @@ EXTERN S16 NxLiRgrLoadInfReq ARGS((
  * @param[in] suId    Service User SAP Id
  * @param[in] staInd  Status Indication .
 */
-EXTERN S16 NxLiRgrStaInd ARGS((
+S16 NxLiRgrStaInd ARGS((
    Pst*                 pst,
    SuId                 suId,
    RgrStaIndInfo        *staInd
@@ -3680,7 +3680,7 @@ EXTERN S16 NxLiRgrStaInd ARGS((
  * @param[in] suId        Service User SAP Id
  * @param[in] loadInfInd  LOAD INF Indication .
 */
-EXTERN S16 NxLiRgrLoadInfInd ARGS((
+S16 NxLiRgrLoadInfInd ARGS((
    Pst*                  pst,
    SuId                  suId,
    RgrLoadInfIndInfo     *loadInfInd
@@ -3691,13 +3691,13 @@ EXTERN S16 NxLiRgrLoadInfInd ARGS((
 #endif
 #if defined(LCRGR)
 /** @brief Request from RRM to MAC to bind the interface SAPs */
-EXTERN S16 cmPkRgrBndReq ARGS((
+S16 cmPkRgrBndReq ARGS((
    Pst*                 pst,
    SuId                 suId,
    SpId                 spId
 ));
 /** @brief Request from RRM to MAC to bind the interface SAPs */
-EXTERN S16 cmUnpkRgrBndReq ARGS((
+S16 cmUnpkRgrBndReq ARGS((
    RgrBndReq            func,
    Pst*                 pst,
    Buffer               *mBuf
@@ -3706,232 +3706,232 @@ EXTERN S16 cmUnpkRgrBndReq ARGS((
 /** @name RGR_RRM_TICK */
 /** @{ */
 /** @brief Pack function for TTI indication from scheduler to RRM */
-EXTERN S16 cmPkRgrTtiInd ARGS((
+S16 cmPkRgrTtiInd ARGS((
          Pst*                 pst,
          SuId                 suId,
          RgrTtiIndInfo        *ttiInd
          ));
-EXTERN S16 cmPkRgrTtiIndInfo ARGS((
+S16 cmPkRgrTtiIndInfo ARGS((
          RgrTtiIndInfo  *ttiInd,
          Buffer         *mBuf));
 /** @brief Unpack function for TTI indication from scheduler to RRM */
-EXTERN S16 cmUnpkRgrTtiInd   ARGS((
+S16 cmUnpkRgrTtiInd   ARGS((
          RgrTtiInd            func,
          Pst*                 pst,
          Buffer               *mBuf
          ));
-EXTERN S16 cmUnpkRgrTtiIndInfo ARGS((
+S16 cmUnpkRgrTtiIndInfo ARGS((
          RgrTtiIndInfo *param,
          Buffer        *mBuf
          ));
 /** @} */
-EXTERN S16 cmPkRgrBndCfm ARGS((
+S16 cmPkRgrBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    uint8_t                   status
 ));
 
-EXTERN S16 cmUnpkRgrBndCfm ARGS((
+S16 cmUnpkRgrBndCfm ARGS((
    RgrBndCfm            func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 
-EXTERN S16 cmPkRgrUbndReq ARGS((
+S16 cmPkRgrUbndReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    Reason               reason
 ));
 
-EXTERN S16 cmUnpkRgrUbndReq ARGS((
+S16 cmUnpkRgrUbndReq ARGS((
    RgrUbndReq           func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 
-EXTERN S16 cmPkRgrCfgReq ARGS((
+S16 cmPkRgrCfgReq ARGS((
    Pst*                 pst,
    RgrCfgTransId        transId,
    RgrCfgReqInfo *      cfgReqInfo
 ));
 
-EXTERN S16 cmUnpkRgrCfgReq ARGS((
+S16 cmUnpkRgrCfgReq ARGS((
    RgrCfgReq            func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 
-EXTERN S16 cmUnpkRgrCfgCfm ARGS((
+S16 cmUnpkRgrCfgCfm ARGS((
    RgrCfgCfm            func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 
-EXTERN S16 cmPkRgrCfgTransId ARGS((
+S16 cmPkRgrCfgTransId ARGS((
    RgrCfgTransId        *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrCfgTransId ARGS((
+S16 cmUnpkRgrCfgTransId ARGS((
    RgrCfgTransId        *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrDlHqCfg ARGS((
+S16 cmPkRgrDlHqCfg ARGS((
    RgrDlHqCfg           *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrDlHqCfg ARGS((
+S16 cmUnpkRgrDlHqCfg ARGS((
    RgrDlHqCfg           *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrRntiCfg ARGS((
+S16 cmPkRgrRntiCfg ARGS((
    RgrRntiCfg           *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrRntiCfg ARGS((
+S16 cmUnpkRgrRntiCfg ARGS((
    RgrRntiCfg           *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrDlCmnCodeRateCfg ARGS((
+S16 cmPkRgrDlCmnCodeRateCfg ARGS((
    RgrDlCmnCodeRateCfg  *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrDlCmnCodeRateCfg ARGS((
+S16 cmUnpkRgrDlCmnCodeRateCfg ARGS((
    RgrDlCmnCodeRateCfg  *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrCfiCfg ARGS((
+S16 cmPkRgrCfiCfg ARGS((
    RgrCfiCfg            *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrCfiCfg ARGS((
+S16 cmUnpkRgrCfiCfg ARGS((
    RgrCfiCfg            *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrPuschSubBandCfg ARGS((
+S16 cmPkRgrPuschSubBandCfg ARGS((
    RgrPuschSubBandCfg   *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrPuschSubBandCfg ARGS((
+S16 cmUnpkRgrPuschSubBandCfg ARGS((
    RgrPuschSubBandCfg   *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrUlCmnCodeRateCfg ARGS((
+S16 cmPkRgrUlCmnCodeRateCfg ARGS((
    RgrUlCmnCodeRateCfg  *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrUlCmnCodeRateCfg ARGS((
+S16 cmUnpkRgrUlCmnCodeRateCfg ARGS((
    RgrUlCmnCodeRateCfg  *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrUlTrgCqiCfg ARGS((
+S16 cmPkRgrUlTrgCqiCfg ARGS((
    RgrUlTrgCqiCfg       *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrUlTrgCqiCfg ARGS((
+S16 cmUnpkRgrUlTrgCqiCfg ARGS((
    RgrUlTrgCqiCfg       *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrBwCfg ARGS((
+S16 cmPkRgrBwCfg ARGS((
    RgrBwCfg             *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrBwCfg ARGS((
+S16 cmUnpkRgrBwCfg ARGS((
    RgrBwCfg             *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrPhichCfg ARGS((
+S16 cmPkRgrPhichCfg ARGS((
    RgrPhichCfg          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrPhichCfg ARGS((
+S16 cmUnpkRgrPhichCfg ARGS((
    RgrPhichCfg          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrPucchCfg ARGS((
+S16 cmPkRgrPucchCfg ARGS((
    RgrPucchCfg          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrPucchCfg ARGS((
+S16 cmUnpkRgrPucchCfg ARGS((
    RgrPucchCfg          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrSrsCfg ARGS((
+S16 cmPkRgrSrsCfg ARGS((
    RgrSrsCfg            *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrSrsCfg ARGS((
+S16 cmUnpkRgrSrsCfg ARGS((
    RgrSrsCfg            *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrRachCfg ARGS((
+S16 cmPkRgrRachCfg ARGS((
    RgrRachCfg           *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrRachCfg ARGS((
+S16 cmUnpkRgrRachCfg ARGS((
    RgrRachCfg           *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrSiCfg ARGS((
+S16 cmPkRgrSiCfg ARGS((
    RgrSiCfg             *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrSiCfg ARGS((
+S16 cmUnpkRgrSiCfg ARGS((
    RgrSiCfg             *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrTpcRntiCfg ARGS((
+S16 cmPkRgrTpcRntiCfg ARGS((
    RgrTpcRntiCfg        *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrTpcRntiCfg ARGS((
+S16 cmUnpkRgrTpcRntiCfg ARGS((
    RgrTpcRntiCfg        *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrUlPwrCfg ARGS((
+S16 cmPkRgrUlPwrCfg ARGS((
    RgrUlPwrCfg          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrUlPwrCfg ARGS((
+S16 cmUnpkRgrUlPwrCfg ARGS((
    RgrUlPwrCfg          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrPuschCfg ARGS((
+S16 cmPkRgrPuschCfg ARGS((
    RgrPuschCfg          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrPuschCfg ARGS((
+S16 cmUnpkRgrPuschCfg ARGS((
    RgrPuschCfg          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrCodeBookRstCfg ARGS((
+S16 cmPkRgrCodeBookRstCfg ARGS((
    RgrCodeBookRstCfg    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrCodeBookRstCfg ARGS((
+S16 cmUnpkRgrCodeBookRstCfg ARGS((
    RgrCodeBookRstCfg    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrPreambleSetCfg ARGS((
+S16 cmPkRgrPreambleSetCfg ARGS((
    RgrPreambleSetCfg    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrPreambleSetCfg ARGS((
+S16 cmUnpkRgrPreambleSetCfg ARGS((
    RgrPreambleSetCfg    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrCmnLchCfg ARGS((
+S16 cmPkRgrCmnLchCfg ARGS((
    RgrCmnLchCfg         *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrCmnLchCfg ARGS((
+S16 cmUnpkRgrCmnLchCfg ARGS((
    RgrCmnLchCfg         *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrDlfsCfg ARGS((
+S16 cmPkRgrDlfsCfg ARGS((
    RgrDlfsCfg           *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrDlfsCfg ARGS((
+S16 cmUnpkRgrDlfsCfg ARGS((
    RgrDlfsCfg           *param,
    Buffer               *mBuf
 ));
@@ -3940,46 +3940,46 @@ EXTERN S16 cmUnpkRgrDlfsCfg ARGS((
 /** @name RGR_SI_SCH */
 /** @{ */
 #ifdef RGR_SI_SCH
-EXTERN S16 cmPkRgrWarningSiCfgReq ARGS((
+S16 cmPkRgrWarningSiCfgReq ARGS((
    Pst*                     pst,
    SpId                     spId,
    RgrCfgTransId            transId,
    RgrWarningSiCfgReqInfo   *warningSiCfgReqInfo
 ));
 
-EXTERN S16 cmUnpkRgrWarningSiCfgReq ARGS((
+S16 cmUnpkRgrWarningSiCfgReq ARGS((
    RgrWarningSiCfgReq  func,
    Pst                 *pst,
    Buffer              *mBuf
 ));
 
-EXTERN S16 cmPkRgrWarningSiCfgReqInfo ARGS((
+S16 cmPkRgrWarningSiCfgReqInfo ARGS((
    Pst                    *pst,
    RgrWarningSiCfgReqInfo *param,
    Buffer                 *mBuf
 ));
 
-EXTERN S16 cmUnpkRgrWarningSiCfgReqInfo ARGS((
+S16 cmUnpkRgrWarningSiCfgReqInfo ARGS((
    Pst                    *pst,
    RgrWarningSiCfgReqInfo *param,
    Buffer                 *mBuf
 ));
 
-EXTERN S16 cmPkRgrWarningSiStopReq ARGS((
+S16 cmPkRgrWarningSiStopReq ARGS((
    Pst                 *pst,
    SpId                spId,
    RgrCfgTransId       transId,
    uint8_t                  siId
 ));
 
-EXTERN S16 cmUnpkRgrWarningSiStopReq ARGS((
+S16 cmUnpkRgrWarningSiStopReq ARGS((
    RgrWarningSiStopReq func,
    Pst                 *pst,
    Buffer              *mBuf
 ));
 
 
-EXTERN S16 cmPkRgrWarningSiCfgCfm ARGS((
+S16 cmPkRgrWarningSiCfgCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    RgrCfgTransId        transId,
@@ -3987,44 +3987,44 @@ EXTERN S16 cmPkRgrWarningSiCfgCfm ARGS((
    uint8_t                   status
 ));
 
-EXTERN S16 cmUnpkRgrWarningSiCfgCfm ARGS((
+S16 cmUnpkRgrWarningSiCfgCfm ARGS((
    RgrWarningSiCfgCfm          func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 
 
-EXTERN S16 cmPkRgrSiCfgReq ARGS((
+S16 cmPkRgrSiCfgReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    RgrCfgTransId        transId,
    RgrSiCfgReqInfo *    cfgReqInfo
 ));
 
-EXTERN S16 cmUnpkRgrSiCfgReq ARGS((
+S16 cmUnpkRgrSiCfgReq ARGS((
    RgrSiCfgReq            func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 
-EXTERN S16 cmPkRgrSiCfgReqInfo ARGS((
+S16 cmPkRgrSiCfgReqInfo ARGS((
    RgrSiCfgReqInfo        *param,
    Buffer               *mBuf
 ));
 
-EXTERN S16 cmUnpkRgrSiCfgReqInfo ARGS((
+S16 cmUnpkRgrSiCfgReqInfo ARGS((
    RgrSiCfgReqInfo        *param,
    Buffer               *mBuf
 ));
 
-EXTERN S16 cmPkRgrSiCfgCfm ARGS((
+S16 cmPkRgrSiCfgCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    RgrCfgTransId        transId,
    uint8_t                   status
 ));
 
-EXTERN S16 cmUnpkRgrSiCfgCfm ARGS((
+S16 cmUnpkRgrSiCfgCfm ARGS((
    RgrSiCfgCfm            func,
    Pst*                 pst,
    Buffer               *mBuf
@@ -4034,25 +4034,25 @@ EXTERN S16 cmUnpkRgrSiCfgCfm ARGS((
 
 /** @{ */
 /* LTE_ADV_FLAG_REMOVED_START */
-EXTERN S16 cmPkRgrLoadInfReq ARGS((
+S16 cmPkRgrLoadInfReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    RgrCfgTransId        transId,
    RgrLoadInfReqInfo *  loadInfReq
 ));
 
-EXTERN S16 cmUnpkRgrLoadInfReq ARGS((
+S16 cmUnpkRgrLoadInfReq ARGS((
    RgrLoadInfReq        func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 
-EXTERN S16 cmPkRgrLoadInfReqInfo ARGS((
+S16 cmPkRgrLoadInfReqInfo ARGS((
    RgrLoadInfReqInfo    *param,
    Buffer               *mBuf
 ));
 
-EXTERN S16 cmUnpkRgrLoadInfReqInfo ARGS((
+S16 cmUnpkRgrLoadInfReqInfo ARGS((
    RgrLoadInfReqInfo    *param,
    Buffer               *mBuf
 ));
@@ -4062,166 +4062,166 @@ EXTERN S16 cmUnpkRgrLoadInfReqInfo ARGS((
 /** @name LTE_TDD */
 /** @{ */
 #ifdef LTE_TDD
-EXTERN S16 cmPkRgrTddPrachInfo ARGS((
+S16 cmPkRgrTddPrachInfo ARGS((
    RgrTddPrachInfo      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrTddPrachInfo ARGS((
+S16 cmUnpkRgrTddPrachInfo ARGS((
    RgrTddPrachInfo      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrTddPrachRscInfo ARGS((
+S16 cmPkRgrTddPrachRscInfo ARGS((
    RgrTddPrachRscInfo   *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrTddPrachRscInfo ARGS((
+S16 cmUnpkRgrTddPrachRscInfo ARGS((
    RgrTddPrachRscInfo   *param,
    Buffer               *mBuf
 ));
 #endif /* LTE_TDD*/
 /** @} */
-EXTERN S16 cmPkRgrEnbPfs ARGS((
+S16 cmPkRgrEnbPfs ARGS((
    RgrEnbPfs         *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrEnbPfs ARGS((
+S16 cmUnpkRgrEnbPfs ARGS((
    RgrEnbPfs         *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrCellCfg ARGS((
+S16 cmPkRgrCellCfg ARGS((
    RgrCellCfg           *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrCellCfg ARGS((
+S16 cmUnpkRgrCellCfg ARGS((
    RgrCellCfg           *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrUeAprdDlCqiCfg ARGS((
+S16 cmPkRgrUeAprdDlCqiCfg ARGS((
    RgrUeAprdDlCqiCfg    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrUeAprdDlCqiCfg ARGS((
+S16 cmUnpkRgrUeAprdDlCqiCfg ARGS((
    RgrUeAprdDlCqiCfg    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrSchedGnbCfg ARGS((
+S16 cmPkRgrSchedGnbCfg ARGS((
    RgrSchedEnbCfg       *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrSchedGnbCfg ARGS((
+S16 cmUnpkRgrSchedGnbCfg ARGS((
    RgrSchedEnbCfg       *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrUePrdDlCqiCfg ARGS((
+S16 cmPkRgrUePrdDlCqiCfg ARGS((
    RgrUePrdDlCqiCfg     *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrUePrdDlCqiCfg ARGS((
+S16 cmUnpkRgrUePrdDlCqiCfg ARGS((
    RgrUePrdDlCqiCfg     *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrUeDlCqiCfg ARGS((
+S16 cmPkRgrUeDlCqiCfg ARGS((
    RgrUeDlCqiCfg        *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrUeDlCqiCfg ARGS((
+S16 cmUnpkRgrUeDlCqiCfg ARGS((
    RgrUeDlCqiCfg        *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrUeMeasGapCfg ARGS((
+S16 cmPkRgrUeMeasGapCfg ARGS((
    RgrUeMeasGapCfg      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrUeMeasGapCfg ARGS((
+S16 cmUnpkRgrUeMeasGapCfg ARGS((
    RgrUeMeasGapCfg      *param,
    Buffer               *mBuf
 ));
 /*rgr_x_001.main_11 ADD added changes for DRX*/
-EXTERN S16 cmPkRgrDrxLongCycleOffst ARGS((
+S16 cmPkRgrDrxLongCycleOffst ARGS((
    RgrDrxLongCycleOffst *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrDrxLongCycleOffst ARGS((
+S16 cmUnpkRgrDrxLongCycleOffst ARGS((
    RgrDrxLongCycleOffst *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrDrxShortDrx ARGS((
+S16 cmPkRgrDrxShortDrx ARGS((
    RgrDrxShortDrx       *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrDrxShortDrx ARGS((
+S16 cmUnpkRgrDrxShortDrx ARGS((
    RgrDrxShortDrx       *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrUeDrxCfg ARGS((
+S16 cmPkRgrUeDrxCfg ARGS((
    RgrUeDrxCfg          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrUeDrxCfg ARGS((
+S16 cmUnpkRgrUeDrxCfg ARGS((
    RgrUeDrxCfg          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrUeCapCfg ARGS((
+S16 cmPkRgrUeCapCfg ARGS((
    RgrUeCapCfg          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrUeCapCfg ARGS((
+S16 cmUnpkRgrUeCapCfg ARGS((
    RgrUeCapCfg          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrUeAckNackRepCfg ARGS((
+S16 cmPkRgrUeAckNackRepCfg ARGS((
    RgrUeAckNackRepCfg   *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrUeAckNackRepCfg ARGS((
+S16 cmUnpkRgrUeAckNackRepCfg ARGS((
    RgrUeAckNackRepCfg   *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrUeTxModeCfg ARGS((
+S16 cmPkRgrUeTxModeCfg ARGS((
    RgrUeTxModeCfg       *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrUeTxModeCfg ARGS((
+S16 cmUnpkRgrUeTxModeCfg ARGS((
    RgrUeTxModeCfg       *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrUeUlHqCfg ARGS((
+S16 cmPkRgrUeUlHqCfg ARGS((
    RgrUeUlHqCfg         *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrUeUlHqCfg ARGS((
+S16 cmUnpkRgrUeUlHqCfg ARGS((
    RgrUeUlHqCfg         *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrUeGrpPwrCfg ARGS((
+S16 cmPkRgrUeGrpPwrCfg ARGS((
    RgrUeGrpPwrCfg       *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrUeGrpPwrCfg ARGS((
+S16 cmUnpkRgrUeGrpPwrCfg ARGS((
    RgrUeGrpPwrCfg       *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrUeUlPwrCfg ARGS((
+S16 cmPkRgrUeUlPwrCfg ARGS((
    RgrUeUlPwrCfg        *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrUeUlPwrCfg ARGS((
+S16 cmUnpkRgrUeUlPwrCfg ARGS((
    RgrUeUlPwrCfg        *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrUeQosCfg ARGS((
+S16 cmPkRgrUeQosCfg ARGS((
    RgrUeQosCfg          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrUeQosCfg ARGS((
+S16 cmUnpkRgrUeQosCfg ARGS((
    RgrUeQosCfg          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrUeTaTmrCfg ARGS((
+S16 cmPkRgrUeTaTmrCfg ARGS((
    RgrUeTaTmrCfg        *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrUeTaTmrCfg ARGS((
+S16 cmUnpkRgrUeTaTmrCfg ARGS((
    RgrUeTaTmrCfg        *param,
    Buffer               *mBuf
 ));
@@ -4230,247 +4230,247 @@ EXTERN S16 cmUnpkRgrUeTaTmrCfg ARGS((
 #ifdef RGR_V1
 /* rgr_x_001.main_7: [ccpu00112398] Added periodicBSR-Timer and 
    retxBSR-Timer */
-EXTERN S16 cmPkRgrUeBsrTmrCfg ARGS((
+S16 cmPkRgrUeBsrTmrCfg ARGS((
    RgrUeBsrTmrCfg       *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrUeBsrTmrCfg ARGS((
+S16 cmUnpkRgrUeBsrTmrCfg ARGS((
    RgrUeBsrTmrCfg       *param,
    Buffer               *mBuf
 ));
 #endif
 /** @} */
-EXTERN S16 cmPkRgrUeCfg ARGS((
+S16 cmPkRgrUeCfg ARGS((
    RgrUeCfg             *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrUeCfg ARGS((
+S16 cmUnpkRgrUeCfg ARGS((
    RgrUeCfg             *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrLchQosCfg ARGS((
+S16 cmPkRgrLchQosCfg ARGS((
    RgrLchQosCfg         *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrLchQosCfg ARGS((
+S16 cmUnpkRgrLchQosCfg ARGS((
    RgrLchQosCfg         *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrDlLchCfg ARGS((
+S16 cmPkRgrDlLchCfg ARGS((
    RgrDlLchCfg          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrDlLchCfg ARGS((
+S16 cmUnpkRgrDlLchCfg ARGS((
    RgrDlLchCfg          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrUlLcgCfg ARGS((
+S16 cmPkRgrUlLcgCfg ARGS((
    RgrUlLcgCfg          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrUlLcgCfg ARGS((
+S16 cmUnpkRgrUlLcgCfg ARGS((
    RgrUlLcgCfg          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrLchCfg ARGS((
+S16 cmPkRgrLchCfg ARGS((
    RgrLchCfg            *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrLchCfg ARGS((
+S16 cmUnpkRgrLchCfg ARGS((
    RgrLchCfg            *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrLcgCfg ARGS((
+S16 cmPkRgrLcgCfg ARGS((
    RgrLcgCfg            *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrLcgCfg ARGS((
+S16 cmUnpkRgrLcgCfg ARGS((
    RgrLcgCfg            *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrCfg ARGS((
+S16 cmPkRgrCfg ARGS((
    RgrCfg               *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrCfg ARGS((
+S16 cmUnpkRgrCfg ARGS((
    RgrCfg               *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrActvTime ARGS((
+S16 cmPkRgrActvTime ARGS((
    RgrActvTime          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrActvTime ARGS((
+S16 cmUnpkRgrActvTime ARGS((
    RgrActvTime          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrCellRecfg ARGS((
+S16 cmPkRgrCellRecfg ARGS((
    RgrCellRecfg         *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrCellRecfg ARGS((
+S16 cmUnpkRgrCellRecfg ARGS((
    RgrCellRecfg         *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrUeRecfg ARGS((
+S16 cmPkRgrUeRecfg ARGS((
    RgrUeRecfg           *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrUeRecfg ARGS((
+S16 cmUnpkRgrUeRecfg ARGS((
    RgrUeRecfg           *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrLchRecfg ARGS((
+S16 cmPkRgrLchRecfg ARGS((
    RgrLchRecfg          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrLchRecfg ARGS((
+S16 cmUnpkRgrLchRecfg ARGS((
    RgrLchRecfg          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrLcgRecfg ARGS((
+S16 cmPkRgrLcgRecfg ARGS((
    RgrLcgRecfg          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrLcgRecfg ARGS((
+S16 cmUnpkRgrLcgRecfg ARGS((
    RgrLcgRecfg          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrRecfg ARGS((
+S16 cmPkRgrRecfg ARGS((
    RgrRecfg             *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrRecfg ARGS((
+S16 cmUnpkRgrRecfg ARGS((
    RgrRecfg             *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrDel ARGS((
+S16 cmPkRgrDel ARGS((
    RgrDel               *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrDel ARGS((
+S16 cmUnpkRgrDel ARGS((
    RgrDel               *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrRst ARGS((
+S16 cmPkRgrRst ARGS((
    RgrRst               *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrRst ARGS((
+S16 cmUnpkRgrRst ARGS((
    RgrRst               *param,
    Buffer               *mBuf
 ));
 
-EXTERN S16 cmPkRgrSonCfg   ARGS((
+S16 cmPkRgrSonCfg   ARGS((
 RgrSonCfg *param,
 Buffer *mBuf
 ));
-EXTERN S16 cmUnpkRgrSonCfg   ARGS((
+S16 cmUnpkRgrSonCfg   ARGS((
 RgrSonCfg   *param,
 Buffer      *mBuf
 ));
-EXTERN S16 cmPkRgrSonPrbCfg   ARGS((
+S16 cmPkRgrSonPrbCfg   ARGS((
 RgrPrbCfg *param,
 Buffer *mBuf
 ));
-EXTERN S16 cmUnpkRgrSonPrbCfg   ARGS((
+S16 cmUnpkRgrSonPrbCfg   ARGS((
 RgrPrbCfg   *param,
 Buffer      *mBuf
 ));
-EXTERN S16 cmPkRgrCfgReqInfo ARGS((
+S16 cmPkRgrCfgReqInfo ARGS((
    RgrCfgReqInfo        *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrCfgReqInfo ARGS((
+S16 cmUnpkRgrCfgReqInfo ARGS((
    RgrCfgReqInfo        *param,
    Buffer               *mBuf
 ));
 
 #ifdef LTE_ADV 
-EXTERN S16 cmUnPkRgrSCellActDeactEvnt ARGS((
+S16 cmUnPkRgrSCellActDeactEvnt ARGS((
    RgrSCellActDeactEvnt *param,
    Buffer *mBuf
 ));
 
-EXTERN S16 cmPkRgrSCellActDeactEvnt ARGS((
+S16 cmPkRgrSCellActDeactEvnt ARGS((
    RgrSCellActDeactEvnt *param,
    Buffer *mBuf
 ));
 #endif /* LTE_ADV */
 
-EXTERN S16 cmPkRgrUeTxAntSelCfg ARGS((
+S16 cmPkRgrUeTxAntSelCfg ARGS((
    RgrUeTxAntSelCfg     *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrUeTxAntSelCfg ARGS((
+S16 cmUnpkRgrUeTxAntSelCfg ARGS((
    RgrUeTxAntSelCfg     *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkRgrUePuschDedCfg ARGS((
+S16 cmPkRgrUePuschDedCfg ARGS((
    RgrUePuschDedCfg     *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkRgrUePuschDedCfg ARGS((
+S16 cmUnpkRgrUePuschDedCfg ARGS((
    RgrUePuschDedCfg     *param,
    Buffer               *mBuf
 ));
 
 #ifdef TFU_UPGRADE
-EXTERN S16 cmPkRgrUeDlPCqiSetup ARGS
+S16 cmPkRgrUeDlPCqiSetup ARGS
 ((
 RgrUeDlPCqiSetup *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkRgrUeDlPCqiSetup ARGS
+S16 cmUnpkRgrUeDlPCqiSetup ARGS
 ((
 RgrUeDlPCqiSetup *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkRgrUeUlSrsSetupCfg ARGS
+S16 cmPkRgrUeUlSrsSetupCfg ARGS
 ((
 RgrUeUlSrsSetupCfg *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkRgrUeUlSrsSetupCfg ARGS
+S16 cmUnpkRgrUeUlSrsSetupCfg ARGS
 ((
 RgrUeUlSrsSetupCfg *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkRgrUeSrSetupCfg ARGS
+S16 cmPkRgrUeSrSetupCfg ARGS
 ((
 RgrUeSrSetupCfg *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkRgrUeSrSetupCfg ARGS
+S16 cmUnpkRgrUeSrSetupCfg ARGS
 ((
 RgrUeSrSetupCfg *param,
 Buffer *mBuf
 ));
 
-EXTERN  S16 cmPkRgrUeSrCfg ARGS
+ S16 cmPkRgrUeSrCfg ARGS
 ((
 RgrUeSrCfg *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkRgrUeSrCfg ARGS
+S16 cmUnpkRgrUeSrCfg ARGS
 ((
 RgrUeSrCfg *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkRgrUeUlSrsCfg ARGS
+S16 cmPkRgrUeUlSrsCfg ARGS
 ((
 RgrUeUlSrsCfg *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkRgrUeUlSrsCfg ARGS
+S16 cmUnpkRgrUeUlSrsCfg ARGS
 ((
 RgrUeUlSrsCfg *param,
 Buffer *mBuf
@@ -4481,34 +4481,34 @@ Buffer *mBuf
 
 #ifdef DM
 /** @brief Request from RRM to MAC to bind the interface SAPs */
-EXTERN S16 DmUiRgrBndReq ARGS((
+S16 DmUiRgrBndReq ARGS((
    Pst*                 pst,
    SuId                 suId,
    SpId                 spId
 ));
 /** @brief Confirmation from MAC to RRM for the bind/unbind 
  * request for the interface SAPs */
-EXTERN S16 DmUiRgrBndCfm ARGS((
+S16 DmUiRgrBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    uint8_t                   status
 ));
 /** @brief Request from RRM to MAC to unbind the interface SAPs */
-EXTERN S16 DmUiRgrUbndReq ARGS((
+S16 DmUiRgrUbndReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    Reason               reason
 ));
 /** @brief Configuration request from RRM to MAC for 
  * configuring Cell/UE/LC */
-EXTERN S16 DmUiRgrCfgReq ARGS((
+S16 DmUiRgrCfgReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    RgrCfgTransId        transId,
    RgrCfgReqInfo *      cfgReqInfo
 ));
 /** @brief Configuration confirm from MAC to RRM */
-EXTERN S16 DmUiRgrCfgCfm ARGS((
+S16 DmUiRgrCfgCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    RgrCfgTransId        transId,
@@ -4524,34 +4524,34 @@ EXTERN S16 DmUiRgrCfgCfm ARGS((
  * @param[in] suId    Service User SAP Id
  * @param[in] staInd  Status Indication .
 */
-EXTERN S16 NxLiRgrUeStaInd ARGS((
+S16 NxLiRgrUeStaInd ARGS((
    Pst*                 pst,
    SuId                 suId,
    RgrUeStaIndInfo      *ueStaInd
 ));
 
-EXTERN S16 cmPkRgrUeStaInd ARGS
+S16 cmPkRgrUeStaInd ARGS
 ((
 Pst* pst,
 SuId suId,
 RgrUeStaIndInfo* ueStaInd
 ));
 
-EXTERN S16 cmUnpkRgrUeStaInd ARGS
+S16 cmUnpkRgrUeStaInd ARGS
 ((
 RgrUeStaInd  func,
 Pst *pst,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkRgrUeStaIndInfo ARGS
+S16 cmPkRgrUeStaIndInfo ARGS
 ((
 RgrUeStaIndInfo *param,
 Buffer *mBuf
 ));
 
 
-EXTERN S16 cmUnpkRgrUeStaIndInfo ARGS
+S16 cmUnpkRgrUeStaIndInfo ARGS
 ((
 RgrUeStaIndInfo *param,
 Buffer *mBuf
@@ -4559,80 +4559,80 @@ Buffer *mBuf
 
 
 /* LTE_ADV_FLAG_REMOVED_START */
-EXTERN S16 cmPkRgrLteAdvancedUeConfig ARGS((
+S16 cmPkRgrLteAdvancedUeConfig ARGS((
             RgrLteAdvancedUeConfig *param,
             Buffer *mBuf
             ));
 
-EXTERN S16 cmUnpkRgrLteAdvancedUeConfig ARGS((
+S16 cmUnpkRgrLteAdvancedUeConfig ARGS((
             RgrLteAdvancedUeConfig *param,
             Buffer *mBuf
             ));
 
-EXTERN S16 cmPkRgrAbsConfig ARGS((
+S16 cmPkRgrAbsConfig ARGS((
             RgrAbsConfig *param,
             Buffer *mBuf
             ));
 
-EXTERN S16 cmUnpkRgrAbsConfig ARGS((
+S16 cmUnpkRgrAbsConfig ARGS((
             RgrAbsConfig *param,
             Buffer *mBuf
             ));
 
-EXTERN S16 cmPkRgrSfrConfig ARGS((
+S16 cmPkRgrSfrConfig ARGS((
             RgrSfrConfig *param,
             Buffer *mBuf
             ));
 
-EXTERN S16 cmUnpkRgrSfrConfig ARGS((
+S16 cmUnpkRgrSfrConfig ARGS((
             RgrSfrConfig *param,
             Buffer *mBuf
             ));
 
-EXTERN S16 cmPkRgrCellLteAdvancedFeatureCfg ARGS((
+S16 cmPkRgrCellLteAdvancedFeatureCfg ARGS((
             RgrLteAdvancedCellConfig *param,
             Buffer *mBuf
             ));
 
-EXTERN S16 cmUnpkRgrCellLteAdvancedFeatureCfg ARGS((
+S16 cmUnpkRgrCellLteAdvancedFeatureCfg ARGS((
             RgrLteAdvancedCellConfig *param,
             Buffer *mBuf
             ));
 
-EXTERN S16 cmPkRgrDsfrConfig ARGS((
+S16 cmPkRgrDsfrConfig ARGS((
          RgrDsfrConfig *param,
          Buffer *mBuf
          ));
 
-EXTERN S16 cmUnpkRgrDsfrConfig ARGS((
+S16 cmUnpkRgrDsfrConfig ARGS((
          RgrDsfrConfig *param,
          Buffer *mBuf
          ));
 /* LTE_ADV_FLAG_REMOVED_END */
 
-EXTERN S16 cmPkRgrCellCsgParamCfg ARGS((
+S16 cmPkRgrCellCsgParamCfg ARGS((
 RgrCellCsgParamCfg *param,
 Buffer *mBuf
 ));
-EXTERN S16 cmUnpkRgrCellCsgParamCfg ARGS((
+S16 cmUnpkRgrCellCsgParamCfg ARGS((
 RgrCellCsgParamCfg *param,
 Buffer *mBuf
 ));
-EXTERN S16 cmPkRgrCellCntrlCmdCfg ARGS((
+S16 cmPkRgrCellCntrlCmdCfg ARGS((
 RgrCellCntrlCmdCfg *param,
 Buffer *mBuf
 ));
-EXTERN S16 cmUnpkRgrCellCntrlCmdCfg ARGS((
+S16 cmUnpkRgrCellCntrlCmdCfg ARGS((
 RgrCellCntrlCmdCfg *param,
 Buffer *mBuf
 ));
 
 #ifdef RLC_MAC_DAT_REQ_RBUF
-EXTERN S16 rgDlDatReqBatchProc ARGS((
+S16 rgDlDatReqBatchProc ARGS((
 Void));
 #endif
 #ifdef RLC_MAC_STA_RSP_RBUF
-EXTERN S16 rgDlStaRspBatchProc ARGS((
+S16 rgDlStaRspBatchProc ARGS((
 Void));
 #endif
 #ifdef __cplusplus

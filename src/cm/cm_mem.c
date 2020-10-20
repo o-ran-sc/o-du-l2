@@ -154,86 +154,86 @@ Size regMemSize=0;
 #endif
 #ifdef SS_HISTOGRAM_SUPPORT
 #ifdef SSI_DEBUG_LEVEL1
-PRIVATE S16 cmAlloc ARGS((Void *regionCb, Size *size, uint32_t flags, Data **ptr, 
+static S16 cmAlloc ARGS((Void *regionCb, Size *size, uint32_t flags, Data **ptr, 
             uint32_t memType, uint32_t line, uint8_t *fileName, uint8_t entId, Bool hstReg));
-PRIVATE S16 cmHeapAlloc ARGS((CmMmHeapCb *heapCb, Data **ptr, Size *size, uint32_t memType, uint32_t line, uint8_t *fileName, uint8_t entId, Bool hstReg));
+static S16 cmHeapAlloc ARGS((CmMmHeapCb *heapCb, Data **ptr, Size *size, uint32_t memType, uint32_t line, uint8_t *fileName, uint8_t entId, Bool hstReg));
 /*cm_mem_c_001.main_20-added new functionto allocate memory from new region*/
 #else
-PRIVATE S16 cmHeapAlloc ARGS((CmMmHeapCb *heapCb, Data **ptr, Size *size,
+static S16 cmHeapAlloc ARGS((CmMmHeapCb *heapCb, Data **ptr, Size *size,
        uint32_t line, uint8_t *fileName, uint8_t entId, Bool hstReg));
-PRIVATE S16 cmAlloc ARGS((Void *regionCb, Size *size, uint32_t flags, Data **ptr, 
+static S16 cmAlloc ARGS((Void *regionCb, Size *size, uint32_t flags, Data **ptr, 
             uint32_t line, uint8_t *fileName, uint8_t entId, Bool hstReg));
 #endif /* SSI_DEBUG_LEVEL1 */
 
-PRIVATE S16 cmFree  ARGS((Void *regionCb, Data *ptr, Size size, uint32_t line, 
+static S16 cmFree  ARGS((Void *regionCb, Data *ptr, Size size, uint32_t line, 
             uint8_t *fileName, uint8_t entId, Bool hstReg));
 
-PRIVATE S16 cmHeapFree  ARGS((CmMmHeapCb *heapCb, Data *ptr, Size size,
+static S16 cmHeapFree  ARGS((CmMmHeapCb *heapCb, Data *ptr, Size size,
             uint32_t line, uint8_t *fileName, uint8_t entId, Bool hstReg));
 #else /* no histogram support */
 /* cm_mem_c_001.main_12 - prototype is changed to accept memType(static/dynamic) */
 #ifdef SSI_DEBUG_LEVEL1
-PRIVATE S16 cmHeapAlloc ARGS((CmMmHeapCb *heapCb, Data **ptr, Size *size, uint32_t memType));
+static S16 cmHeapAlloc ARGS((CmMmHeapCb *heapCb, Data **ptr, Size *size, uint32_t memType));
 #else
 #ifndef USE_PURE
-PRIVATE S16 cmHeapAlloc ARGS((CmMmHeapCb *heapCb, Data **ptr, Size *size));
+static S16 cmHeapAlloc ARGS((CmMmHeapCb *heapCb, Data **ptr, Size *size));
 #endif/*USE_PURE*/
 #endif /* SSI_DEBUG_LEVEL1 */
 #ifndef USE_PURE
-PRIVATE S16 cmHeapFree  ARGS((CmMmHeapCb *heapCb, Data *ptr, Size size));
+static S16 cmHeapFree  ARGS((CmMmHeapCb *heapCb, Data *ptr, Size size));
 #endif/*USE_PURE*/
 /*  cm_mem_c_001.main_15 :Additions */
 #ifdef SS_LIGHT_MEM_LEAK_STS
-PRIVATE S16 cmAlloc ARGS((Void *regionCb, Size *size, uint32_t flags, Data **ptr, uint32_t memType, uint32_t lineNo,uint8_t *funcName ));
-PRIVATE S16 cmFree  ARGS((Void *regionCb, Data *ptr, Size size, uint32_t lineNo, uint8_t* funcName));
+static S16 cmAlloc ARGS((Void *regionCb, Size *size, uint32_t flags, Data **ptr, uint32_t memType, uint32_t lineNo,uint8_t *funcName ));
+static S16 cmFree  ARGS((Void *regionCb, Data *ptr, Size size, uint32_t lineNo, uint8_t* funcName));
 #else /*SS_LIGHT_MEM_LEAK_STS */
 #if (defined(SSI_DEBUG_LEVEL1) || defined(BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1))
-PRIVATE S16 cmAlloc ARGS((Void *regionCb, Size *size, uint32_t flags, Data **ptr, uint32_t memType));
+static S16 cmAlloc ARGS((Void *regionCb, Size *size, uint32_t flags, Data **ptr, uint32_t memType));
 #else
 #ifdef T2K_MEM_LEAK_DBG
-PRIVATE S16 cmAlloc ARGS((Void *regionCb, Size *size, uint32_t flags, Data **ptr, char*  file, uint32_t    line));
+static S16 cmAlloc ARGS((Void *regionCb, Size *size, uint32_t flags, Data **ptr, char*  file, uint32_t    line));
 #else
-PRIVATE S16 cmAlloc ARGS((Void *regionCb, Size *size, uint32_t flags, Data **ptr));
+static S16 cmAlloc ARGS((Void *regionCb, Size *size, uint32_t flags, Data **ptr));
 #endif
 #endif /* SSI_DEBUG_LEVEL1 */
 #ifdef T2K_MEM_LEAK_DBG
-PRIVATE S16 cmFree  ARGS((Void *regionCb, Data *ptr, Size size, char* file, uint32_t line));
+static S16 cmFree  ARGS((Void *regionCb, Data *ptr, Size size, char* file, uint32_t line));
 #else
-PRIVATE S16 cmFree  ARGS((Void *regionCb, Data *ptr, Size size));
+static S16 cmFree  ARGS((Void *regionCb, Data *ptr, Size size));
 #endif
 #endif /* SS_HISTOGRAM_SUPPORT */
 #endif /*SS_LIGHT_MEM_LEAK_STS*/
 /*cm_mem_c_001.main_23 Removed support of SSI_DEBUG_LEVEL1 and SS_HISTOGRAM_SUPPORT for SS_FAP*/
 #ifdef SS_FAP
-PRIVATE S16 cmAllocWL ARGS((Void *regionCb, Size *size, uint32_t flags, Data **ptr));
-PRIVATE S16 cmFreeWL  ARGS((Void *regionCb, Data *ptr, Size size));
+static S16 cmAllocWL ARGS((Void *regionCb, Size *size, uint32_t flags, Data **ptr));
+static S16 cmFreeWL  ARGS((Void *regionCb, Data *ptr, Size size));
 #endif
 
-PRIVATE S16 cmCtl   ARGS((Void *regionCb, Event event, SMemCtl *memCtl));
+static S16 cmCtl   ARGS((Void *regionCb, Event event, SMemCtl *memCtl));
 
-PRIVATE Void cmMmHeapInit ARGS((Data *memAddr, CmMmHeapCb *heapCb, Size size));
-PRIVATE Void cmMmBktInit ARGS((Data **memAddr, CmMmRegCb *regCb, 
+static Void cmMmHeapInit ARGS((Data *memAddr, CmMmHeapCb *heapCb, Size size));
+static Void cmMmBktInit ARGS((Data **memAddr, CmMmRegCb *regCb, 
                               CmMmRegCfg *cfg, uint16_t bktIdx, uint16_t *lstMapIdx));
 
 /* cm_mem_c_001.main_12 - addition of protoypes for sanity check and hash list functions */
 #ifdef SSI_DEBUG_LEVEL1
-PRIVATE S16 cmMmBktSanityChk ARGS((CmMmBkt *bkt));
-PRIVATE S16 cmMmHeapSanityChk ARGS((CmMmHeapCb *heapCb));
-PRIVATE S16 cmMmHashFunc ARGS((CmMmHashListCp *hashListCp, uint32_t key, uint16_t *idx ));
-PRIVATE S16 cmMmHashListInit ARGS((CmMmHashListCp *hashListCp, uint16_t nmbBins,
+static S16 cmMmBktSanityChk ARGS((CmMmBkt *bkt));
+static S16 cmMmHeapSanityChk ARGS((CmMmHeapCb *heapCb));
+static S16 cmMmHashFunc ARGS((CmMmHashListCp *hashListCp, uint32_t key, uint16_t *idx ));
+static S16 cmMmHashListInit ARGS((CmMmHashListCp *hashListCp, uint16_t nmbBins,
                                   Region region, Pool pool));
-PRIVATE S16 cmMmHashListDeinit ARGS((CmMmHashListCp *hashListCp, Region region, Pool pool));
-PRIVATE S16 cmMmHashListInsert ARGS((CmMmHashListCp *hashListCp, uint32_t key));
+static S16 cmMmHashListDeinit ARGS((CmMmHashListCp *hashListCp, Region region, Pool pool));
+static S16 cmMmHashListInsert ARGS((CmMmHashListCp *hashListCp, uint32_t key));
 #endif /* SSI_DEBUG_LEVEL1 */
 /*   cm_mem_c_001.main_15 : Addtions */
 #ifdef SS_HISTOGRAM_SUPPORT
-PRIVATE S16 cmHstGrmAllocInsert ARGS((CmHstGrmHashListCp *hashListCp, uint32_t blkSz, uint32_t *reqSz, uint32_t line, uint8_t *fileName, uint8_t entId));
-PRIVATE S16 cmHstGrmFreeInsert ARGS((CmHstGrmHashListCp* hashListCp, uint32_t blkSz, uint32_t line, uint8_t *fileName, uint8_t entId));
-PRIVATE S16 cmHstGrmHashListInit ARGS((CmHstGrmHashListCp *hashListCp));
-PRIVATE S16 cmHstGrmHashListDeInit ARGS((CmHstGrmHashListCp *hashListCp));
-PRIVATE S16 cmHstGrmGetHashIdxAndKey ARGS((uint8_t *fileName, uint32_t line, uint32_t *binIdx, uint32_t *key));
-PRIVATE S16 cmHstGrmFindEntry ARGS((CmHstGrmHashListCp *hashListCp, uint32_t key, uint32_t *binIdx, CmMemEntries **entry));
-PRIVATE S16 cmHstGrmFillEntry ARGS((CmMemEntries *entry, uint32_t key, uint32_t line, uint8_t *fileName, uint8_t entId));
+static S16 cmHstGrmAllocInsert ARGS((CmHstGrmHashListCp *hashListCp, uint32_t blkSz, uint32_t *reqSz, uint32_t line, uint8_t *fileName, uint8_t entId));
+static S16 cmHstGrmFreeInsert ARGS((CmHstGrmHashListCp* hashListCp, uint32_t blkSz, uint32_t line, uint8_t *fileName, uint8_t entId));
+static S16 cmHstGrmHashListInit ARGS((CmHstGrmHashListCp *hashListCp));
+static S16 cmHstGrmHashListDeInit ARGS((CmHstGrmHashListCp *hashListCp));
+static S16 cmHstGrmGetHashIdxAndKey ARGS((uint8_t *fileName, uint32_t line, uint32_t *binIdx, uint32_t *key));
+static S16 cmHstGrmFindEntry ARGS((CmHstGrmHashListCp *hashListCp, uint32_t key, uint32_t *binIdx, CmMemEntries **entry));
+static S16 cmHstGrmFillEntry ARGS((CmMemEntries *entry, uint32_t key, uint32_t line, uint8_t *fileName, uint8_t entId));
 #endif /* SS_HISTOGRAM_SUPPORT */
 
 /* cm_mem_c_001.main_22: Fixing warnings on GCC compiler */
@@ -416,8 +416,8 @@ void DumpT2kMemLeakInfoToFile()
 
 /* cm_mem_c_008.104 - Addition for memory calculator tool */
 #ifdef MEMCAL_DEBUG
-PRIVATE Txt prntBuf[200];        /* print buffer */
-PRIVATE uint8_t tryHeap=0;
+static Txt prntBuf[200];        /* print buffer */
+static uint8_t tryHeap=0;
 #endif 
 
 /* cm_mem_c_001.main_12 - addition for ssi enhancements prints */
@@ -425,7 +425,7 @@ PRIVATE uint8_t tryHeap=0;
 #if (defined(SSI_DEBUG_LEVEL1) || defined(SS_HISTOGRAM_SUPPORT) || \
     defined(BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1))
 #ifdef DEBUGP
-PRIVATE Txt dbgPrntBuf[200];        /* print buffer */
+static Txt dbgPrntBuf[200];        /* print buffer */
 #endif /* DEBUGP */
 #endif /*SSI_DEBUG_LEVEL1 || SS_HISTOGRAM_SUPPORT */
 
@@ -928,7 +928,7 @@ int regFreeBktSts[10][2][6]={{0}};
 #ifdef SS_HISTOGRAM_SUPPORT
 #ifdef SSI_DEBUG_LEVEL1
 #ifdef ANSI
-PRIVATE S16  cmAlloc
+static S16  cmAlloc
 (
 Void   *regionCb,
 Size   *size,
@@ -941,7 +941,7 @@ uint8_t      entId,
 Bool    hstReg
 )
 #else
-PRIVATE S16  cmAlloc(regionCb, size, flags, ptr, memType, line, fileName, entId, hstReg)
+static S16  cmAlloc(regionCb, size, flags, ptr, memType, line, fileName, entId, hstReg)
 Void   *regionCb;
 Size   *size;
 uint32_t     flags;
@@ -954,7 +954,7 @@ Bool    hstReg;
 #endif
 #else
 #ifdef ANSI
-PRIVATE S16  cmAlloc
+static S16  cmAlloc
 (
 Void   *regionCb,
 Size   *size,
@@ -966,7 +966,7 @@ uint8_t      entId,
 Bool    hstReg
 )
 #else
-PRIVATE S16  cmAlloc(regionCb, size, flags, ptr, line, fileName, entId, hstReg)
+static S16  cmAlloc(regionCb, size, flags, ptr, line, fileName, entId, hstReg)
 Void   *regionCb;
 Size   *size;
 uint32_t     flags;
@@ -980,7 +980,7 @@ Bool    hstReg;
 #else
 #ifdef SS_LIGHT_MEM_LEAK_STS
 #ifdef ANSI
-PRIVATE S16  cmAlloc
+static S16  cmAlloc
 (
 Void   *regionCb,
 Size   *size,
@@ -991,7 +991,7 @@ uint32_t     lineNo,
 uint8_t     *funcName
 )
 #else
-PRIVATE S16  cmAlloc(regionCb, size, flags, ptr ,memType, lineNo, funcName)
+static S16  cmAlloc(regionCb, size, flags, ptr ,memType, lineNo, funcName)
 Void   *regionCb;
 Size   *size;
 uint32_t     flags;
@@ -1003,7 +1003,7 @@ uint8_t     *funcName;
 #else /*SS_LIGHT_MEM_LEAK_STS */
 #ifdef SSI_DEBUG_LEVEL1
 #ifdef ANSI
-PRIVATE S16  cmAlloc
+static S16  cmAlloc
 (
 Void   *regionCb,
 Size   *size,
@@ -1012,7 +1012,7 @@ Data  **ptr,
 uint32_t     memType
 )
 #else
-PRIVATE S16  cmAlloc(regionCb, size, flags, ptr, memType)
+static S16  cmAlloc(regionCb, size, flags, ptr, memType)
 Void   *regionCb;
 Size   *size;
 uint32_t     flags;
@@ -1022,7 +1022,7 @@ uint32_t     memType;
 #else
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
 #ifdef ANSI
-PRIVATE S16  cmAlloc
+static S16  cmAlloc
 (
 Void   *regionCb,
 Size   *size,
@@ -1031,7 +1031,7 @@ Data  **ptr,
 uint32_t     memType
 )
 #else
-PRIVATE S16  cmAlloc(regionCb, size, flags, ptr, memType)
+static S16  cmAlloc(regionCb, size, flags, ptr, memType)
 Void   *regionCb;
 Size   *size;
 uint32_t     flags;
@@ -1040,7 +1040,7 @@ uint32_t     memType;
 #endif
 #else
 #ifdef T2K_MEM_LEAK_DBG
-PRIVATE S16  cmAlloc
+static S16  cmAlloc
 (
  Void   *regionCb,
  Size   *size,
@@ -1051,7 +1051,7 @@ PRIVATE S16  cmAlloc
  )
 #else
 #ifdef ANSI
-PRIVATE S16  cmAlloc
+static S16  cmAlloc
 (
 Void   *regionCb,
 Size   *size,
@@ -1059,7 +1059,7 @@ uint32_t     flags,
 Data  **ptr 
 )
 #else
-PRIVATE S16  cmAlloc(regionCb, size, flags, ptr)
+static S16  cmAlloc(regionCb, size, flags, ptr)
 Void   *regionCb;
 Size   *size;
 uint32_t     flags;
@@ -1610,7 +1610,7 @@ Data  **prevptr;
 /*  cm_mem_c_001.main_15 : Additions */
 #ifdef SS_LIGHT_MEM_LEAK_STS
 #ifdef ANSI
-PRIVATE S16  cmFree
+static S16  cmFree
 (
 Void   *regionCb,
 Data   *ptr, 
@@ -1619,7 +1619,7 @@ uint32_t     lineNo,
 uint8_t      *funcName
 )
 #else
-PRIVATE S16  cmFree(regionCb, ptr, size, lineNo, funcName)
+static S16  cmFree(regionCb, ptr, size, lineNo, funcName)
 Void   *regionCb;
 Data   *ptr;
 Size    size;
@@ -1629,7 +1629,7 @@ uint8_t      *funcName;
 #else /*SS_LIGHT_MEM_LEAK_STS */
 #ifdef SS_HISTOGRAM_SUPPORT
 #ifdef ANSI
-PRIVATE S16  cmFree
+static S16  cmFree
 (
 Void   *regionCb,
 Data   *ptr,
@@ -1640,7 +1640,7 @@ uint8_t      entId,
 Bool    hstReg
 )
 #else
-PRIVATE S16  cmFree(regionCb, ptr, size, line, fileName, entId, hstReg)
+static S16  cmFree(regionCb, ptr, size, line, fileName, entId, hstReg)
 Void   *regionCb;
 Data   *ptr;
 Size    size;
@@ -1652,7 +1652,7 @@ Bool    hstReg;
 
 #else
 #ifdef T2K_MEM_LEAK_DBG
-PRIVATE S16  cmFree
+static S16  cmFree
 (
  Void   *regionCb,
  Data   *ptr,
@@ -1662,14 +1662,14 @@ PRIVATE S16  cmFree
  )
 #else /* T2K_MEM_LEAK_DBG */
 #ifdef ANSI
-PRIVATE S16  cmFree
+static S16  cmFree
 (
 Void   *regionCb,
 Data   *ptr, 
 Size    size
 )
 #else
-PRIVATE S16  cmFree(regionCb, ptr, size)
+static S16  cmFree(regionCb, ptr, size)
 Void   *regionCb;
 Data   *ptr;
 Size    size;
@@ -3220,7 +3220,7 @@ Size    size;
 /*cm_mem_c_001.main_23 Removed support of SSI_DEBUG_LEVEL1 and SS_HISTOGRAM_SUPPORT for SS_FAP*/
 #ifdef SS_FAP
 #ifdef ANSI
-PRIVATE S16  cmAllocWL
+static S16  cmAllocWL
 (
 Void   *regionCb,
 Size   *size,
@@ -3228,7 +3228,7 @@ uint32_t     flags,
 Data  **ptr 
 )
 #else
-PRIVATE S16  cmAllocWL(regionCb, size, flags, ptr)
+static S16  cmAllocWL(regionCb, size, flags, ptr)
 Void   *regionCb;
 Size   *size;
 uint32_t     flags;
@@ -3343,14 +3343,14 @@ Data  **ptr;
 */
 
 #ifdef ANSI
-PRIVATE S16  cmFreeWL
+static S16  cmFreeWL
 (
 Void   *regionCb,
 Data   *ptr, 
 Size    size
 )
 #else
-PRIVATE S16  cmFreeWL(regionCb, ptr, size)
+static S16  cmFreeWL(regionCb, ptr, size)
 Void   *regionCb;
 Data   *ptr;
 Size    size;
@@ -3471,14 +3471,14 @@ Size    size;
 */
 
 #ifdef ANSI
-PRIVATE S16  cmCtl
+static S16  cmCtl
 (
 Void    *regionCb,
 Event    event, 
 SMemCtl *memCtl
 )
 #else
-PRIVATE S16  cmCtl(regionCb, event, memCtl)
+static S16  cmCtl(regionCb, event, memCtl)
 Void    *regionCb;
 Event    event;
 SMemCtl *memCtl;
@@ -3603,7 +3603,7 @@ SMemCtl *memCtl;
 *
 */
 #ifdef ANSI
-PRIVATE Void cmMmBktInit
+static Void cmMmBktInit
 (
 Data      **memAddr,
 CmMmRegCb  *regCb,
@@ -3612,7 +3612,7 @@ uint16_t         bktIdx,
 uint16_t        *lstMapIdx
 )
 #else
-PRIVATE Void cmMmBktInit (memAddr, regCb, cfg, bktIdx, lstMapIdx)
+static Void cmMmBktInit (memAddr, regCb, cfg, bktIdx, lstMapIdx)
 Data      **memAddr;
 CmMmRegCb  *regCb;
 CmMmRegCfg *cfg;
@@ -3858,14 +3858,14 @@ uint16_t        *lstMapIdx;
 *
 */
 #ifdef ANSI
-PRIVATE Void  cmMmHeapInit 
+static Void  cmMmHeapInit 
 (
 Data        *memAddr,
 CmMmHeapCb  *heapCb,
 Size         size 
 )
 #else
-PRIVATE Void  cmMmHeapInit (memAddr, heapCb, size)
+static Void  cmMmHeapInit (memAddr, heapCb, size)
 Data        *memAddr;
 CmMmHeapCb  *heapCb;
 Size         size;
@@ -3944,12 +3944,12 @@ Size         size;
 /* cm_mem_c_001.main_12 - addition for taking another parameter memType(static/dynamic) */
 /*  cm_mem_c_001.main_15 : Additions */
 #ifdef SS_4GMX_LCORE
-EXTERN uint8_t ysCellConfigDone;
+uint8_t ysCellConfigDone;
 #endif
 #ifdef SS_HISTOGRAM_SUPPORT 
 #ifdef SSI_DEBUG_LEVEL1
 #ifdef ANSI
-PRIVATE S16  cmHeapAlloc
+static S16  cmHeapAlloc
 (
 CmMmHeapCb  *heapCb,
 Data       **ptr,
@@ -3961,7 +3961,7 @@ uint8_t      entId,
 Bool    hstReg
 )
 #else
-PRIVATE S16  cmHeapAlloc (heapCb, ptr, size, memType, line, fileName, entId, hstReg)
+static S16  cmHeapAlloc (heapCb, ptr, size, memType, line, fileName, entId, hstReg)
 CmMmHeapCb  *heapCb;
 Data       **ptr;
 Size        *size;
@@ -3973,7 +3973,7 @@ Bool    hstReg;
 #endif
 #else
 #ifdef ANSI
-PRIVATE S16  cmHeapAlloc 
+static S16  cmHeapAlloc 
 (
 CmMmHeapCb  *heapCb,
 Data       **ptr,
@@ -3984,7 +3984,7 @@ uint8_t      entId,
 Bool    hstReg
 )
 #else
-PRIVATE S16  cmHeapAlloc (heapCb, ptr, size, line, fileName, entId, hstReg)
+static S16  cmHeapAlloc (heapCb, ptr, size, line, fileName, entId, hstReg)
 CmMmHeapCb  *heapCb;
 Data       **ptr;
 Size        *size;
@@ -3997,7 +3997,7 @@ Bool    hstReg;
 #else
 #ifdef SSI_DEBUG_LEVEL1
 #ifdef ANSI
-PRIVATE S16  cmHeapAlloc
+static S16  cmHeapAlloc
 (
 CmMmHeapCb  *heapCb,
 Data       **ptr,
@@ -4005,7 +4005,7 @@ Size        *size,
 uint32_t        memType
 )
 #else
-PRIVATE S16  cmHeapAlloc (heapCb, ptr, size, memType)
+static S16  cmHeapAlloc (heapCb, ptr, size, memType)
 CmMmHeapCb  *heapCb;
 Data       **ptr;
 Size        *size;
@@ -4013,14 +4013,14 @@ uint32_t        memType;
 #endif
 #else
 #ifdef ANSI
-PRIVATE S16  cmHeapAlloc 
+static S16  cmHeapAlloc 
 (
 CmMmHeapCb  *heapCb,
 Data       **ptr,
 Size        *size 
 )
 #else
-PRIVATE S16  cmHeapAlloc (heapCb, ptr, size)
+static S16  cmHeapAlloc (heapCb, ptr, size)
 CmMmHeapCb  *heapCb;
 Data       **ptr;
 Size        *size;
@@ -4316,7 +4316,7 @@ Size        *size;
 /*  cm_mem_c_001.main_15 : Additions */
 #ifdef SS_HISTOGRAM_SUPPORT  
 #ifdef ANSI
-PRIVATE S16  cmHeapFree 
+static S16  cmHeapFree 
 (
 CmMmHeapCb  *heapCb,
 Data        *ptr,
@@ -4327,7 +4327,7 @@ uint8_t      entId,
 Bool    hstReg
 )
 #else
-PRIVATE S16  cmHeapFree (heapCb, ptr, size, line, fileName, entId, hstReg)
+static S16  cmHeapFree (heapCb, ptr, size, line, fileName, entId, hstReg)
 CmMmHeapCb  *heapCb;
 Data        *ptr;
 Size         size;
@@ -4338,14 +4338,14 @@ Bool    hstReg;
 #endif
 #else
 #ifdef ANSI
-PRIVATE S16  cmHeapFree 
+static S16  cmHeapFree 
 (
 CmMmHeapCb  *heapCb,
 Data        *ptr,
 Size         size 
 )
 #else
-PRIVATE S16  cmHeapFree (heapCb, ptr, size)
+static S16  cmHeapFree (heapCb, ptr, size)
 CmMmHeapCb  *heapCb;
 Data        *ptr;
 Size         size;
@@ -6042,12 +6042,12 @@ CmMmBlkHdr *blkPtr;
 *
 */
 #ifdef ANSI
-PRIVATE S16  cmMmBktSanityChk
+static S16  cmMmBktSanityChk
 (
 CmMmBkt  *bkt
 )
 #else
-PRIVATE S16  cmMmBktSanityChk(bkt)
+static S16  cmMmBktSanityChk(bkt)
 CmMmBkt  *bkt;
 #endif
 {
@@ -6102,12 +6102,12 @@ CmMmBkt  *bkt;
 *
 */
 #ifdef ANSI
-PRIVATE S16  cmMmHeapSanityChk
+static S16  cmMmHeapSanityChk
 (
 CmMmHeapCb  *heapCb
 )
 #else
-PRIVATE S16  cmMmHeapSanityChk(heapCb)
+static S16  cmMmHeapSanityChk(heapCb)
 CmMmHeapCb  *heapCb;
 #endif
 {
@@ -6140,14 +6140,14 @@ CmMmHeapCb  *heapCb;
 *
 */
 #ifdef ANSI
-PRIVATE S16 cmMmHashFunc
+static S16 cmMmHashFunc
 (
 CmMmHashListCp *hashListCp,
 uint32_t key,
 uint16_t *idx
 )
 #else
-PRIVATE S16 cmMmHashFunc (hashListCp, key, idx)
+static S16 cmMmHashFunc (hashListCp, key, idx)
 CmMmHashListCp *hashListCp; /* hash list control point */
 uint32_t key; /* key string */
 uint16_t *idx; /* idx to return */
@@ -6182,7 +6182,7 @@ uint16_t *idx; /* idx to return */
 *
 */
 #ifdef ANSI
-PRIVATE S16 cmMmHashListInit
+static S16 cmMmHashListInit
 (
 CmMmHashListCp *hashListCp,  /* hash list to initialize */
 uint16_t          nmbBins,      /* number of hash list bins */
@@ -6190,7 +6190,7 @@ Region       region,       /* memory region to allocate bins */
 Pool         pool          /* memory pool to allocate bins */
 )
 #else
-PRIVATE S16 cmMmHashListInit(hashListCp, nmbBins, region, pool)
+static S16 cmMmHashListInit(hashListCp, nmbBins, region, pool)
 CmMmHashListCp *hashListCp;  /* hash list to initialize */
 uint16_t          nmbBins;      /* number of hash list bins */
 Region       region;       /* memory region to allocate bins */
@@ -6247,14 +6247,14 @@ Pool         pool;         /* memory pool to allocate bins */
 *
 */
 #ifdef ANSI
-PRIVATE S16 cmMmHashListDeinit
+static S16 cmMmHashListDeinit
 (
 CmMmHashListCp *hashListCp,   /* hash list to deinitialize */
 Region       region,       /* memory region to allocate bins */
 Pool         pool          /* memory pool to allocate bins */
 )
 #else
-PRIVATE S16 cmMmHashListDeinit(hashListCp, region, pool)
+static S16 cmMmHashListDeinit(hashListCp, region, pool)
 CmMmHashListCp *hashListCp;  /* hash list to deinitialize */
 Region       region;       /* memory region to allocate bins */
 Pool         pool;         /* memory pool to allocate bins */
@@ -6293,13 +6293,13 @@ Pool         pool;         /* memory pool to allocate bins */
 *
 */
 #ifdef ANSI
-PRIVATE S16 cmMmHashListInsert
+static S16 cmMmHashListInsert
 (
 CmMmHashListCp *hashListCp,  /* hash list to add to */
 uint32_t           key         /* pointer to key */
 )
 #else
-PRIVATE S16 cmMmHashListInsert(hashListCp, key)
+static S16 cmMmHashListInsert(hashListCp, key)
 CmMmHashListCp *hashListCp;  /* hash list to add to */
 uint32_t           key;         /* pointer to key */
 #endif
@@ -6377,12 +6377,12 @@ uint32_t           key;         /* pointer to key */
 *
 */
 #ifdef ANSI
-PRIVATE S16 cmHstGrmHashListInit
+static S16 cmHstGrmHashListInit
 (
 CmHstGrmHashListCp *hashListCp  /* hash list to initialize */
 )
 #else
-PRIVATE S16 cmHstGrmHashListInit(hashListCp)
+static S16 cmHstGrmHashListInit(hashListCp)
 CmHstGrmHashListCp *hashListCp;  /* hash list to initialize */
 #endif
 {
@@ -6417,12 +6417,12 @@ CmHstGrmHashListCp *hashListCp;  /* hash list to initialize */
 *
 */
 #ifdef ANSI
-PRIVATE S16 cmHstGrmHashListDeInit
+static S16 cmHstGrmHashListDeInit
 (
 CmHstGrmHashListCp *hashListCp  /* hash list to initialize */
 )
 #else
-PRIVATE S16 cmHstGrmHashListDeInit(hashListCp)
+static S16 cmHstGrmHashListDeInit(hashListCp)
 CmHstGrmHashListCp *hashListCp;  /* hash list to initialize */
 #endif
 {
@@ -6461,7 +6461,7 @@ CmHstGrmHashListCp *hashListCp;  /* hash list to initialize */
 *
 */
 #ifdef ANSI
-PRIVATE S16 cmHstGrmFreeInsert
+static S16 cmHstGrmFreeInsert
 (
 CmHstGrmHashListCp* hashListCp, /* hash list cp */
 uint32_t        blkSz, /* size of the block freed */
@@ -6470,7 +6470,7 @@ uint8_t        *fileName, /* file name */
 uint8_t        entId    /* Tapa task which free the memory */
 )
 #else
-PRIVATE S16 cmHstGrmFreeInsert(hashListCp, blkSz, line, fileName, entId)
+static S16 cmHstGrmFreeInsert(hashListCp, blkSz, line, fileName, entId)
 CmHstGrmHashListCp* hashListCp; /* hash list cp */
 uint32_t        blkSz; /* size of the block freed */
 uint32_t       line; /* line number */
@@ -6543,7 +6543,7 @@ uint8_t        entId; /* Tapa task which frees the memory */
 *
 */
 #ifdef ANSI
-PRIVATE S16 cmHstGrmAllocInsert
+static S16 cmHstGrmAllocInsert
 (
 CmHstGrmHashListCp     *hashListCp,
 uint32_t       blkSz,
@@ -6553,7 +6553,7 @@ uint8_t        *fileName,
 uint8_t        entId
 )
 #else
-PRIVATE  S16 cmHstGrmAllocInsert(hashListCp, blkSz, reqSz, line, fileName, entId)
+static  S16 cmHstGrmAllocInsert(hashListCp, blkSz, reqSz, line, fileName, entId)
 CmHstGrmHashListCp     *hashListCp;
 uint32_t       blkSz;
 uint32_t       *reqSz;
@@ -6630,7 +6630,7 @@ uint8_t        entId;
 *
 */
 #ifdef ANSI
-PRIVATE S16 cmHstGrmGetHashIdxAndKey
+static S16 cmHstGrmGetHashIdxAndKey
 (
 uint8_t                 *fileName,
 uint32_t                line,
@@ -6638,7 +6638,7 @@ uint32_t                *binIdx,
 uint32_t                *key
 )
 #else
-PRIVATE  S16 cmHstGrmGetHashIdxAndKey(fileName, line, binIdx, key)
+static  S16 cmHstGrmGetHashIdxAndKey(fileName, line, binIdx, key)
 uint8_t                 *fileName;
 uint32_t                line;
 uint32_t                *binIdx;
@@ -6679,7 +6679,7 @@ uint32_t                *key;
 *
 */
 #ifdef ANSI
-PRIVATE S16 cmHstGrmFillEntry
+static S16 cmHstGrmFillEntry
 (
 CmMemEntries       *entry,
 uint32_t                key,
@@ -6688,7 +6688,7 @@ uint8_t                 *fileName,
 uint8_t                 entId
 )
 #else
-PRIVATE  S16 cmHstGrmFillEntry(entry, key, line, fileName, entId)
+static  S16 cmHstGrmFillEntry(entry, key, line, fileName, entId)
 CmMemEntries       *entry;
 uint32_t                key;
 uint32_t                line;
@@ -6727,7 +6727,7 @@ uint8_t                 entId;
 *
 */
 #ifdef ANSI
-PRIVATE S16 cmHstGrmFindEntry
+static S16 cmHstGrmFindEntry
 (
 CmHstGrmHashListCp  *hashListCp,
 uint32_t                 key,
@@ -6735,7 +6735,7 @@ uint32_t                 *binIdx,
 CmMemEntries        **entry
 )
 #else
-PRIVATE  S16 cmHstGrmFindEntry(hashListCp, key, binIdx, entry)
+static  S16 cmHstGrmFindEntry(hashListCp, key, binIdx, entry)
 CmHstGrmHashListCp  *hashListCp;
 uint32_t                 key;
 uint32_t                 *binIdx;

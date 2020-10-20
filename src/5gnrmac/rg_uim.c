@@ -532,7 +532,8 @@ RguDStaRspInfo  *staRsp;
 {
    Inst  inst;
    S16   ret       = ROK;
-   VOLATILE uint32_t     startTime = 0;
+   volatile uint32_t     startTime = 0;
+
 
    RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;

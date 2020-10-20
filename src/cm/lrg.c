@@ -3585,13 +3585,13 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PRIVATE S16  cmPkNmbActvUeQciReq
+static S16  cmPkNmbActvUeQciReq
 (
 LrgNmbActvUeQCI   *nmbActvUeQci, 
 Buffer        *mBuf
 )
 #else
-PRIVATE S16 cmPkNmbActvUeQciReq(nmbActvUeQci, mBuf)
+static S16 cmPkNmbActvUeQciReq(nmbActvUeQci, mBuf)
 LrgNmbActvUeQCI   *nmbActvUeQci;
 Buffer        *mBuf;
 #endif
@@ -3622,13 +3622,13 @@ Buffer        *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PRIVATE S16  cmPkAvgPrbQciReq
+static S16  cmPkAvgPrbQciReq
 (
 LrgAvgPrbQCI  *avgPrbQciReq,
 Buffer        *mBuf
 )
 #else
-PRIVATE S16 cmPkAvgPrbQciReq(avgPrbQciReq, mBuf)
+static S16 cmPkAvgPrbQciReq(avgPrbQciReq, mBuf)
 LrgAvgPrbQCI  *avgPrbQciReq;
 Buffer        *mBuf;
 #endif
@@ -3801,13 +3801,13 @@ LrgSchMeasSndReqInfo *measInfo;
 *      -# ROK
 **/
 #ifdef ANSI
-PRIVATE S16 cmUnpkNmbActvUeQciReq
+static S16 cmUnpkNmbActvUeQciReq
 (
 LrgNmbActvUeQCI  *param,
 Buffer           *mBuf
 )
 #else
-PRIVATE S16 cmUnpkNmbActvUeQciReq(param, mBuf)
+static S16 cmUnpkNmbActvUeQciReq(param, mBuf)
 LrgNmbActvUeQCI  *param;
 Buffer           *mBuf;
 #endif
@@ -3837,13 +3837,13 @@ Buffer           *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PRIVATE S16 cmUnpkAvgPrbQciReq
+static S16 cmUnpkAvgPrbQciReq
 (
 LrgAvgPrbQCI     *param,
 Buffer           *mBuf
 )
 #else
-PRIVATE S16 cmUnpkAvgPrbQciReq (param, mBuf)
+static S16 cmUnpkAvgPrbQciReq (param, mBuf)
 LrgAvgPrbQCI     *param;
 Buffer           *mBuf;
 #endif
@@ -4084,13 +4084,13 @@ Buffer *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PRIVATE S16 cmPkNumUeQciCfm
+static S16 cmPkNumUeQciCfm
 (
 LrgNumActvUeQCICfm  *param,
 Buffer              *mBuf
 )
 #else
-PRIVATE S16 cmPkNumUeQciCfm(param, mBuf)
+static S16 cmPkNumUeQciCfm(param, mBuf)
 LrgNumActvUeQCICfm *param;
 Buffer             *mBuf;
 #endif
@@ -4122,13 +4122,13 @@ Buffer             *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PRIVATE S16 cmPkAvgPrbQciCfm
+static S16 cmPkAvgPrbQciCfm
 (
 LrgAvgPrbQCICfm    *param,
 Buffer             *mBuf
 )
 #else
-PRIVATE S16  cmPkAvgPrbQciCfm(param, mBuf)
+static S16  cmPkAvgPrbQciCfm(param, mBuf)
 LrgAvgPrbQCICfm    *param;
 Buffer             *mBuf;
 #endif
@@ -4159,13 +4159,13 @@ Buffer             *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PRIVATE S16 cmPkRaPrmbsCfm
+static S16 cmPkRaPrmbsCfm
 (
 LrgRaPreamblesCfm  *param,
 Buffer             *mBuf
 )
 #else
-PRIVATE S16 cmPkRaPrmbsCfm(param, mBuf)
+static S16 cmPkRaPrmbsCfm(param, mBuf)
 LrgRaPreamblesCfm  *param;
 Buffer             *mBuf;
 #endif
@@ -4190,13 +4190,13 @@ Buffer             *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PRIVATE S16 cmPkAvgPrbCfm 
+static S16 cmPkAvgPrbCfm 
 (
 LrgAvgPrbCfm  *param,
 Buffer        *mBuf
 )
 #else
-PRIVATE S16 cmPkAvgPrbCfm(param, mBuf)
+static S16 cmPkAvgPrbCfm(param, mBuf)
 LrgAvgPrbCfm  *param;
 Buffer        *mBuf;
 #endif
@@ -4307,13 +4307,13 @@ LrgSchMeasCfmInfo  *measInfo;
 *      -# ROK
 **/
 #ifdef ANSI
-PRIVATE S16 cmUnpkNumUeQciCfm
+static S16 cmUnpkNumUeQciCfm
 (
 LrgNumActvUeQCICfm *param,
 Buffer          *mBuf
 )
 #else
-PRIVATE S16 cmUnpkNumUeQciCfm(param, mBuf)
+static S16 cmUnpkNumUeQciCfm(param, mBuf)
 LrgNumActvUeQCICfm *param; 
 Buffer          *mBuf;
 #endif
@@ -4344,13 +4344,13 @@ Buffer          *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PRIVATE S16 cmUnpkAvgPrbQciCfm
+static S16 cmUnpkAvgPrbQciCfm
 (
 LrgAvgPrbQCICfm *param,
 Buffer          *mBuf
 )
 #else
-PRIVATE S16 cmUnpkAvgPrbQciCfm(param, mBuf)
+static S16 cmUnpkAvgPrbQciCfm(param, mBuf)
 LrgAvgPrbQCICfm *param; 
 Buffer          *mBuf;
 #endif
@@ -4382,13 +4382,13 @@ Buffer          *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PRIVATE S16 cmUnpkRaPrmbsCfm
+static S16 cmUnpkRaPrmbsCfm
 (
 LrgRaPreamblesCfm *param,
 Buffer         *mBuf
 )
 #else
-PRIVATE S16 cmUnpkRaPrmbsCfm(param, mBuf)
+static S16 cmUnpkRaPrmbsCfm(param, mBuf)
 LrgRaPreamblesCfm *param; 
 Buffer         *mBuf;
 #endif
@@ -4414,13 +4414,13 @@ Buffer         *mBuf;
 *      -# ROK
 **/
 #ifdef ANSI
-PRIVATE S16 cmUnpkAvgPrbCfm
+static S16 cmUnpkAvgPrbCfm
 (
 LrgAvgPrbCfm   *param, 
 Buffer         *mBuf
 )
 #else
-PRIVATE S16  cmUnpkAvgPrbCfm(param, mBuf)
+static S16  cmUnpkAvgPrbCfm(param, mBuf)
 LrgAvgPrbCfm   *param; 
 Buffer         *mBuf;
 #endif
