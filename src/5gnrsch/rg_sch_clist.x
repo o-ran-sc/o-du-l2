@@ -55,16 +55,16 @@ struct rgSchRrCListCp
    U32     count;        /* number of entries */
 };
 
-EXTERN Void         rgSCHRrCListInit     ARGS ((RgSchRrCListCp *lList));
-EXTERN Void         rgSCHRrCListAdd2Tail ARGS ((RgSchRrCListCp *lList, \
+Void         rgSCHRrCListInit     ARGS ((RgSchRrCListCp *lList));
+Void         rgSCHRrCListAdd2Tail ARGS ((RgSchRrCListCp *lList, \
                                                     RgSchRrCList *node));
 /* Renamed functions to start with rgSCH */
-EXTERN RgSchRrCList *rgSCHRrCListDelFrm   ARGS ((RgSchRrCListCp *lList, \
+RgSchRrCList *rgSCHRrCListDelFrm   ARGS ((RgSchRrCListCp *lList, \
                                                     RgSchRrCList *node));
-EXTERN Void         rgSCHRrCListInsrtAtCrnt ARGS ((RgSchRrCListCp *lList, \
+Void         rgSCHRrCListInsrtAtCrnt ARGS ((RgSchRrCListCp *lList, \
                                                     RgSchRrCList *node));
 /* LTE_ADV_FLAG_REMOVED_START */
-EXTERN Void rgSCHRrCListAdd2Crnt ARGS ((RgSchRrCListCp *lList, \
+Void rgSCHRrCListAdd2Crnt ARGS ((RgSchRrCListCp *lList, \
                                         RgSchRrCList   *node));
 /* LTE_ADV_FLAG_REMOVED_END */
 

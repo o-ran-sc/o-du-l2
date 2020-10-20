@@ -52,15 +52,15 @@ typedef struct ssDmndQ
 
 
 /* functions */
-EXTERN S16  ssInitDmndQ       ARGS((SsDmndQ *queue));
-EXTERN S16  ssDestroyDmndQ    ARGS((SsDmndQ *queue));
-EXTERN S16  ssDmndQPut        ARGS((SsDmndQ *queue, Buffer *mBuf, \
+S16  ssInitDmndQ       ARGS((SsDmndQ *queue));
+S16  ssDestroyDmndQ    ARGS((SsDmndQ *queue));
+S16  ssDmndQPut        ARGS((SsDmndQ *queue, Buffer *mBuf, \
                                               Prior prior, Order order));
-EXTERN S16  ssDmndQGet        ARGS((SsDmndQ *queue, Buffer **mBuf, \
+S16  ssDmndQGet        ARGS((SsDmndQ *queue, Buffer **mBuf, \
                                                            Order order));
-EXTERN S16  ssDmndQWait     ARGS((SsDmndQ *queue));
+S16  ssDmndQWait     ARGS((SsDmndQ *queue));
 
-EXTERN S16  ssFndLenDmndQ     ARGS((SsDmndQ *queue, Prior prior, QLen *len));
+S16  ssFndLenDmndQ     ARGS((SsDmndQ *queue, Prior prior, QLen *len));
 
 
 #ifdef __cplusplus

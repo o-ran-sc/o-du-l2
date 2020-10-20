@@ -110,7 +110,7 @@ CmLteUeCategory   ueCat,
 U8            sCellIdx
 ));
 #endif
-PRIVATE S16 rgSCHSCellTrgMacHqEReset ARGS((
+static S16 rgSCHSCellTrgMacHqEReset ARGS((
 Inst          inst,
 U16           secCellId,
 U16           rnti
@@ -515,12 +515,12 @@ RgSchUeCellInfo  *sCellInfo
  *
  **/
 #ifdef ANSI
-PRIVATE Void rgSCHCellClearScellLstOfCQI
+static Void rgSCHCellClearScellLstOfCQI
 (
 RgSchUeCellInfo *sCellInfo
 )
 #else
-PRIVATE Void rgSCHCellClearScellLstOfCQI(sCellInfo)
+static Void rgSCHCellClearScellLstOfCQI(sCellInfo)
 RgSchUeCellInfo *sCellInfo;
 #endif
 {
@@ -583,12 +583,12 @@ RgSchUeCellInfo *sCellInfo;
  *
  **/
 #ifdef ANSI
-PRIVATE S16 rgSCHSCellDeActivation
+static S16 rgSCHSCellDeActivation
 (
 RgSchUeCellInfo *sCellInfo
 )
 #else
-PRIVATE S16 rgSCHSCellDeActivation(sCellInfo)
+static S16 rgSCHSCellDeActivation(sCellInfo)
 RgSchUeCellInfo *sCellInfo
 #endif
 {
@@ -667,14 +667,14 @@ RgSchUeCellInfo *sCellInfo
  *
  **/
 #ifdef ANSI
-PRIVATE S16 rgSCHSCellTrgMacHqEReset
+static S16 rgSCHSCellTrgMacHqEReset
 (
 Inst          inst,
 U16           secCellId,
 U16           rnti
 )
 #else
-PRIVATE S16 rgSCHSCellTrgMacHqEReset(inst,secCellId,rnti)
+static S16 rgSCHSCellTrgMacHqEReset(inst,secCellId,rnti)
 Inst          inst;
 U16           secCellId;
 U16           rnti;
@@ -1015,14 +1015,14 @@ U8            action;
  *
  **/
 #ifdef ANSI
-PRIVATE S16 rgSCHSCellSelectForAct
+static S16 rgSCHSCellSelectForAct
 (
 RgSchCellCb  *cell,
 RgSchUeCb    *ueCb,
 U8           *sCellIdx
 )
 #else
-PRIVATE S16 rgSCHSCellSelectForAct(cell, ueCb)
+static S16 rgSCHSCellSelectForAct(cell, ueCb)
 RgSchCellCb  *cell;
 RgSchUeCb    *ueCb;
 U8           *sCellIdx;
@@ -1605,13 +1605,13 @@ RgSchDlLcCb                *svc;
  *
  **/
 #ifdef ANSI
-PRIVATE U8  rgSCHUtlSCellCmpCqiCfg
+static U8  rgSCHUtlSCellCmpCqiCfg
 (
 RgSchUePCqiCb *cqiCb1,
 RgSchUePCqiCb *cqiCb2
 )
 #else
-PRIVATE U8  rgSCHUtlSCellCmpCqiCfg(cqiCb1, cqiCb2)
+static U8  rgSCHUtlSCellCmpCqiCfg(cqiCb1, cqiCb2)
 RgSchUePCqiCb     *cqiCb1;
 RgSchUePCqiCb     *cqiCb2;
 #endif

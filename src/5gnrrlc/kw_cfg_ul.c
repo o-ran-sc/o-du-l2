@@ -79,7 +79,7 @@ S16 rlcValidateRbCfgParams (RlcCb *gCb, CmLteRnti ueId, CmLteCellId cellId,
  *      -# RFAILED 
  *
 */
-PRIVATE S16 rlcHdlMeasUlUeIdChg(RlcCb *gCb, U8 cellId,U8 oldUeId, U8 newUeId)
+static S16 rlcHdlMeasUlUeIdChg(RlcCb *gCb, U8 cellId,U8 oldUeId, U8 newUeId)
 {
    RlcL2MeasCb    *measCb    = NULLP;
    U16           cntr;
@@ -117,7 +117,7 @@ PRIVATE S16 rlcHdlMeasUlUeIdChg(RlcCb *gCb, U8 cellId,U8 oldUeId, U8 newUeId)
  *      -# RFAILED 
  *
 */
-PRIVATE S16 rlcDelFrmUlL2Meas(RlcCb *gCb, U8 cellId,U8 ueId)
+static S16 rlcDelFrmUlL2Meas(RlcCb *gCb, U8 cellId,U8 ueId)
 {
    RlcL2MeasCb    *measCb    = NULLP;
    U16           cntr;
@@ -165,7 +165,7 @@ PRIVATE S16 rlcDelFrmUlL2Meas(RlcCb *gCb, U8 cellId,U8 ueId)
 }
 
 
-PRIVATE S16 rlcAddToUlL2Meas(RlcCb *gCb, RlcUlRbCb *rlcRbCb,U8 cellId,U8 ueId)
+static S16 rlcAddToUlL2Meas(RlcCb *gCb, RlcUlRbCb *rlcRbCb,U8 cellId,U8 ueId)
 {
    RlcL2MeasCb    *measCb    = NULLP;
    U16           cntr;
@@ -307,7 +307,7 @@ PRIVATE S16 rlcAddToUlL2Meas(RlcCb *gCb, RlcUlRbCb *rlcRbCb,U8 cellId,U8 ueId)
  *    -#RFAILED
  */
 #ifdef ANSI
-PRIVATE S16 rlcCfgFillUlRbCb
+static S16 rlcCfgFillUlRbCb
 (
 RlcCb            *gCb,
 RlcUlRbCb        *rbCb,
@@ -315,7 +315,7 @@ RlcUlUeCb        *ueCb,
 RlcEntCfgInfo   *entCfg
 )
 #else
-PRIVATE S16 rlcCfgFillUlRbCb(gCb,rbCb, ueCb, entCfg)
+static S16 rlcCfgFillUlRbCb(gCb,rbCb, ueCb, entCfg)
 RlcCb            *gCb;
 RlcUlRbCb        *rbCb;
 RlcUlUeCb        *ueCb;
@@ -417,7 +417,7 @@ RlcEntCfgInfo   *entCfg;
  *    -#RFAILED
  */
 #ifdef ANSI
-PRIVATE S16 rlcCfgUpdateUlRb
+static S16 rlcCfgUpdateUlRb
 (
 RlcCb            *gCb,
 RlcUlRbCb        *rbCb,
@@ -425,7 +425,7 @@ void            *ptr,
 RlcEntCfgInfo   *entCfg
 )
 #else
-PRIVATE S16 rlcCfgUpdateUlRb(gCb,rbCb, ptr, entCfg)
+static S16 rlcCfgUpdateUlRb(gCb,rbCb, ptr, entCfg)
 RlcCb            *gCb;
 RlcUlRbCb        *rbCb;
 void            *ptr;

@@ -126,7 +126,7 @@ extern S32 clusterMode;
 #ifdef TENB_T2K3K_SPECIFIC_CHANGES
 /* selva */
 U32 gMemoryAlarm;
-PRIVATE U32 memoryCheckCounter;
+static U32 memoryCheckCounter;
 
 #define NUM_CALLS_TO_CHECK_MEM_AGAIN      80 /* Number of calls after which need to check mem */
 #ifndef L2_L3_SPLIT
@@ -222,68 +222,68 @@ typedef struct cmMemDoubleFree
 PTR prvAllocPtr[8];
 U8 stopBtInfo = FALSE;
 Buffer *palBuffer;
-EXTERN Buffer *mtTskBuffer1;
-EXTERN Buffer *mtTskBuffer2;
+Buffer *mtTskBuffer1;
+Buffer *mtTskBuffer2;
 
 #ifdef SS_USE_ICC_MEMORY
-PRIVATE pthread_mutex_t iccAllocFreeLock;
+static pthread_mutex_t iccAllocFreeLock;
 #else
-PRIVATE pthread_mutex_t dynAllocFreeLock;
+static pthread_mutex_t dynAllocFreeLock;
 #endif /* SS_USE_ICC_MEMORY */
 
 #ifdef SS_MEM_WL_DEBUG 
-PRIVATE S16  cmInitBtInfo ARGS((void));
+static S16  cmInitBtInfo ARGS((void));
 #endif
 
 #ifdef SS_USE_ICC_MEMORY
 #ifdef T2K_MEM_LEAK_DBG
-PRIVATE S16  cmIccAlloc ARGS((Void *regionCb, Size *size, U32 flags, Data **ptr, char*, U32));
-PRIVATE S16  cmIccFree ARGS((Void *regionCb, Data *ptr, Size size,char*, U32));
-PRIVATE S16  cmIccAllocWithLock ARGS((Void *regionCb, Size *size, U32 flags, Data **ptr, char*, U32));
-PRIVATE S16  cmIccFreeWithLock ARGS((Void *regionCb, Data *ptr, Size size,char*, U32));
+static S16  cmIccAlloc ARGS((Void *regionCb, Size *size, U32 flags, Data **ptr, char*, U32));
+static S16  cmIccFree ARGS((Void *regionCb, Data *ptr, Size size,char*, U32));
+static S16  cmIccAllocWithLock ARGS((Void *regionCb, Size *size, U32 flags, Data **ptr, char*, U32));
+static S16  cmIccFreeWithLock ARGS((Void *regionCb, Data *ptr, Size size,char*, U32));
 void InsertToT2kMemLeakInfo ARGS((U32 address, U32 size, U32 lineNo, char* fileName));
 void RemoveFromT2kMemLeakInfo ARGS((U32 address, char *file, U32 line));
-PRIVATE U32 getT2kMemLeakIndex ARGS((U32 address));
+static U32 getT2kMemLeakIndex ARGS((U32 address));
 #else
-PRIVATE S16  cmIccAlloc ARGS((Void *regionCb, Size *size, U32 flags, Data **ptr));
-PRIVATE S16  cmIccFree ARGS((Void *regionCb, Data *ptr, Size size));
-PRIVATE S16  cmIccAllocWithLock ARGS((Void *regionCb, Size *size, U32 flags, Data **ptr));
-PRIVATE S16  cmIccFreeWithLock ARGS((Void *regionCb, Data *ptr, Size size));
+static S16  cmIccAlloc ARGS((Void *regionCb, Size *size, U32 flags, Data **ptr));
+static S16  cmIccFree ARGS((Void *regionCb, Data *ptr, Size size));
+static S16  cmIccAllocWithLock ARGS((Void *regionCb, Size *size, U32 flags, Data **ptr));
+static S16  cmIccFreeWithLock ARGS((Void *regionCb, Data *ptr, Size size));
 #endif
 #else  /* SS_USE_ICC_MEMORY */
-PRIVATE S16  cmDynAllocWithLock ARGS((Void   *regionCb,Size   *size,U32     flags,Data  **ptr));
-PRIVATE S16  cmDynFreeWithLock ARGS((Void   *regionCb,Data   *ptr, Size    size));
-PRIVATE S16  cmDynAlloc ARGS((Void   *regionCb,Size   *size,U32     flags,Data  **ptr));
-PRIVATE S16  cmDynFree ARGS((Void   *regionCb,Data   *ptr, Size    size));
+static S16  cmDynAllocWithLock ARGS((Void   *regionCb,Size   *size,U32     flags,Data  **ptr));
+static S16  cmDynFreeWithLock ARGS((Void   *regionCb,Data   *ptr, Size    size));
+static S16  cmDynAlloc ARGS((Void   *regionCb,Size   *size,U32     flags,Data  **ptr));
+static S16  cmDynFree ARGS((Void   *regionCb,Data   *ptr, Size    size));
 #endif /* SS_USE_ICC_MEMORY */
 
 
 #ifdef T2K_MEM_LEAK_DBG
-PRIVATE S16 cmAllocWL ARGS((Void *regionCb, Size *size, U32 flags, Data **ptr,char*,U32));
-PRIVATE S16 cmFreeWL  ARGS((Void *regionCb, Data *ptr, Size size,char*, U32));
+static S16 cmAllocWL ARGS((Void *regionCb, Size *size, U32 flags, Data **ptr,char*,U32));
+static S16 cmFreeWL  ARGS((Void *regionCb, Data *ptr, Size size,char*, U32));
 
-PRIVATE S16 cmAlloc ARGS((Void *regionCb, Size *size, U32 flags, Data **ptr,char*,U32));
-PRIVATE S16 cmFree  ARGS((Void *regionCb, Data *ptr, Size size,char*, U32));
+static S16 cmAlloc ARGS((Void *regionCb, Size *size, U32 flags, Data **ptr,char*,U32));
+static S16 cmFree  ARGS((Void *regionCb, Data *ptr, Size size,char*, U32));
 #else
-PRIVATE S16 cmAllocWL ARGS((Void *regionCb, Size *size, U32 flags, Data **ptr));
-PRIVATE S16 cmFreeWL  ARGS((Void *regionCb, Data *ptr, Size size));
+static S16 cmAllocWL ARGS((Void *regionCb, Size *size, U32 flags, Data **ptr));
+static S16 cmFreeWL  ARGS((Void *regionCb, Data *ptr, Size size));
 
-PRIVATE S16 cmAlloc ARGS((Void *regionCb, Size *size, U32 flags, Data **ptr));
-PRIVATE S16 cmFree  ARGS((Void *regionCb, Data *ptr, Size size));
+static S16 cmAlloc ARGS((Void *regionCb, Size *size, U32 flags, Data **ptr));
+static S16 cmFree  ARGS((Void *regionCb, Data *ptr, Size size));
 #endif
 #ifdef T2K_MEM_LEAK_DBG
-PRIVATE S16 cmAllocWL ARGS((Void *regionCb, Size *size, U32 flags, Data **ptr,char*,U32));
-PRIVATE S16 cmFreeWL  ARGS((Void *regionCb, Data *ptr, Size size,char*, U32));
+static S16 cmAllocWL ARGS((Void *regionCb, Size *size, U32 flags, Data **ptr,char*,U32));
+static S16 cmFreeWL  ARGS((Void *regionCb, Data *ptr, Size size,char*, U32));
 #else
-PRIVATE S16 cmAllocWL ARGS((Void *regionCb, Size *size, U32 flags, Data **ptr));
-PRIVATE S16 cmFreeWL  ARGS((Void *regionCb, Data *ptr, Size size));
+static S16 cmAllocWL ARGS((Void *regionCb, Size *size, U32 flags, Data **ptr));
+static S16 cmFreeWL  ARGS((Void *regionCb, Data *ptr, Size size));
 #endif
 #ifndef USE_PURE
-PRIVATE S16 cmHeapAlloc ARGS((CmMmHeapCb *heapCb, Data **ptr, Size *size));
-PRIVATE S16 cmHeapFree  ARGS((CmMmHeapCb *heapCb, Data *ptr, Size size));
+static S16 cmHeapAlloc ARGS((CmMmHeapCb *heapCb, Data **ptr, Size *size));
+static S16 cmHeapFree  ARGS((CmMmHeapCb *heapCb, Data *ptr, Size size));
 #endif
-PRIVATE S16 cmCtl   ARGS((Void *regionCb, Event event, SMemCtl *memCtl));
-PRIVATE Void cmMmHeapInit ARGS((Data *memAddr, CmMmHeapCb *heapCb, Size size));
+static S16 cmCtl   ARGS((Void *regionCb, Event event, SMemCtl *memCtl));
+static Void cmMmHeapInit ARGS((Data *memAddr, CmMmHeapCb *heapCb, Size size));
 
 /* cm_mem_c_001.main_22: Fixing warnings on GCC compiler */
 #ifdef __cplusplus
@@ -311,15 +311,15 @@ MemLkCb memLkCb;
 
 /* cm_mem_c_008.104 - Addition for memory calculator tool */
 #ifdef MEMCAL_DEBUG
-PRIVATE Txt prntBuf[200];        /* print buffer */
-PRIVATE U8 tryHeap=0;
+static Txt prntBuf[200];        /* print buffer */
+static U8 tryHeap=0;
 #endif 
 
 /* cm_mem_c_001.main_12 - addition for ssi enhancements prints */
 /* cm_mem_c_001.main_20 Additions */
 #if (defined(SSI_DEBUG_LEVEL1) || defined(SS_HISTOGRAM_SUPPORT))
 #ifdef DEBUGP
-PRIVATE Txt dbgPrntBuf[200];        /* print buffer */
+static Txt dbgPrntBuf[200];        /* print buffer */
 #endif /* DEBUGP */
 #endif /*SSI_DEBUG_LEVEL1 || SS_HISTOGRAM_SUPPORT */
 
@@ -334,7 +334,7 @@ PRIVATE Txt dbgPrntBuf[200];        /* print buffer */
 #endif
 
 U32 num_times = 0;
-EXTERN pthread_t tmpRegTidMap[20];
+pthread_t tmpRegTidMap[20];
 extern Bool g_usettitmr;
 void DumpLayersDebugInformation()
 {
@@ -389,7 +389,7 @@ void DumpLayersDebugInformation()
 *
 */
 #ifdef ANSI
-PRIVATE Void cmMmStatBktInit
+static Void cmMmStatBktInit
 (
 Data      **memAddr,
 CmMmRegCb  *regCb,
@@ -398,7 +398,7 @@ U16         bktIdx,
 U16        *lstMapIdx
 )
 #else
-PRIVATE Void cmMmStatBktInit (memAddr, regCb, cfg, bktIdx, lstMapIdx)
+static Void cmMmStatBktInit (memAddr, regCb, cfg, bktIdx, lstMapIdx)
 Data      **memAddr;
 CmMmRegCb  *regCb;
 CmMmRegCfg *cfg;
@@ -903,7 +903,7 @@ CmMmGlobRegCb   *regCb;
 */
 #ifdef T2K_MEM_LEAK_DBG
 #ifdef ANSI
-PRIVATE S16  cmIccAllocWithLock
+static S16  cmIccAllocWithLock
 (
 Void   *regionCb,    /* Pointer to a region */
 Size   *size,        /* size needs to be allocated */
@@ -915,7 +915,7 @@ U32 line
 #endif
 #else
 #ifdef ANSI
-PRIVATE S16  cmIccAllocWithLock
+static S16  cmIccAllocWithLock
 (
 Void   *regionCb,    /* Pointer to a region */
 Size   *size,        /* size needs to be allocated */
@@ -923,7 +923,7 @@ U32     flags,       /* Flags used */
 Data  **ptr          /* Reference to pointer for which need to be allocate */
 )
 #else
-PRIVATE S16  cmIccAllocWithLock(regionCb, size, flags, ptr)
+static S16  cmIccAllocWithLock(regionCb, size, flags, ptr)
 Void   *regionCb;    /* Pointer to a region */
 Size   *size;        /* size needs to be allocated */
 U32     flags;       /* Flags used */
@@ -996,7 +996,7 @@ Data  **ptr;         /* Reference to pointer for which need to be allocate */
 */
 #ifdef T2K_MEM_LEAK_DBG
 #ifdef ANSI
-PRIVATE S16  cmIccFreeWithLock
+static S16  cmIccFreeWithLock
 (
 Void   *regionCb,   /* Pointer to region cb */
 Data   *ptr,        /* Memory block needs to be freed */
@@ -1007,14 +1007,14 @@ U32 line
 #endif
 #else
 #ifdef ANSI
-PRIVATE S16  cmIccFreeWithLock
+static S16  cmIccFreeWithLock
 (
 Void   *regionCb,   /* Pointer to region cb */
 Data   *ptr,        /* Memory block needs to be freed */
 Size    size        /* Size of the block */
 )
 #else
-PRIVATE S16  cmIccFreeWithLock(regionCb, ptr, size)
+static S16  cmIccFreeWithLock(regionCb, ptr, size)
 Void   *regionCb;   /* Pointer to region cb */
 Data   *ptr;        /* Memory block needs to be freed */
 Size    size;       /* Size of the block */
@@ -1065,7 +1065,7 @@ Size    size;       /* Size of the block */
 */
 #ifdef T2K_MEM_LEAK_DBG
 #ifdef ANSI
-PRIVATE S16  cmIccAlloc
+static S16  cmIccAlloc
 (
 Void   *regionCb,    /* Pointer to a region */
 Size   *size,        /* size needs to be allocated */
@@ -1078,7 +1078,7 @@ U32 line
 #endif
 #else
 #ifdef ANSI
-PRIVATE S16  cmIccAlloc
+static S16  cmIccAlloc
 (
 Void   *regionCb,    /* Pointer to a region */
 Size   *size,        /* size needs to be allocated */
@@ -1086,7 +1086,7 @@ U32     flags,       /* Flags used */
 Data  **ptr          /* Reference to pointer for which need to be allocate */
 )
 #else
-PRIVATE S16  cmIccAlloc(regionCb, size, flags, ptr)
+static S16  cmIccAlloc(regionCb, size, flags, ptr)
 Void   *regionCb;    /* Pointer to a region */
 Size   *size;        /* size needs to be allocated */
 U32     flags;       /* Flags used */
@@ -1147,7 +1147,7 @@ Data  **ptr;         /* Reference to pointer for which need to be allocate */
 *
 */
 #ifdef T2K_MEM_LEAK_DBG
-PRIVATE S16  cmIccFree
+static S16  cmIccFree
 (
 Void   *regionCb,   /* Pointer to region cb */
 Data   *ptr,        /* Memory block needs to be freed */
@@ -1157,14 +1157,14 @@ U32 line
 )
 #else
 #ifdef ANSI
-PRIVATE S16  cmIccFree
+static S16  cmIccFree
 (
 Void   *regionCb,   /* Pointer to region cb */
 Data   *ptr,        /* Memory block needs to be freed */
 Size    size        /* Size of the block */
 )
 #else
-PRIVATE S16  cmIccFree(regionCb, ptr, size)
+static S16  cmIccFree(regionCb, ptr, size)
 Void   *regionCb;   /* Pointer to region cb */
 Data   *ptr;        /* Memory block needs to be freed */
 Size    size;       /* Size of the block */
@@ -1564,13 +1564,13 @@ CmMmRegCb   *regCb;
 */
 
 #ifdef ANSI
-PRIVATE CmMmBlkSetElement* cmGetMemBlkSetForAlloc
+static CmMmBlkSetElement* cmGetMemBlkSetForAlloc
 (
 U8             bucketIndex, /* Index to the bucket list */
 CmMmDynBktCb  *bkt        /* Bucket list control block */
 )
 #else
-PRIVATE CmMmBlkSetElement*  cmGetMemBlkSetForAlloc(bucketIndex, bkt)
+static CmMmBlkSetElement*  cmGetMemBlkSetForAlloc(bucketIndex, bkt)
 U8             bucketIndex; /* Index to the bucket list */
 CmMmDynBktCb  *bkt;        /* Bucket list control block */
 #endif
@@ -1688,13 +1688,13 @@ CmMmDynBktCb  *bkt;        /* Bucket list control block */
 */
 
 #ifdef ANSI
-PRIVATE CmMmBlkSetElement* cmGetMemBlkSetForFree
+static CmMmBlkSetElement* cmGetMemBlkSetForFree
 (
 U8             bucketIndex, /* Index to the bucket list */
 CmMmDynBktCb  *bkt        /* Bucket list control block */
 )
 #else
-PRIVATE CmMmBlkSetElement*  cmGetMemBlkSetForFree(bucketIndex, bkt)
+static CmMmBlkSetElement*  cmGetMemBlkSetForFree(bucketIndex, bkt)
 U8             bucketIndex; /* Index to the bucket list */
 CmMmDynBktCb  *bkt;        /* Bucket list control block */
 #endif
@@ -1804,13 +1804,13 @@ CmMmDynBktCb  *bkt;        /* Bucket list control block */
 */
 
 #ifdef ANSI
-PRIVATE S16  cmRemoveAllocPtrFromList
+static S16  cmRemoveAllocPtrFromList
 (
 CmMmDynRegCb    *regionCb,    /* Pointer to a region */
 PTR              ptr
 )
 #else
-PRIVATE S16  cmRemoveAllocPtrFromList(regionCb, ptr)
+static S16  cmRemoveAllocPtrFromList(regionCb, ptr)
 CmMmDynRegCb    *regionCb;    /* Pointer to a region */
 PTR              ptr;
 #endif
@@ -1870,13 +1870,13 @@ PTR              ptr;
 */
 
 #ifdef ANSI
-PRIVATE S16  cmInsertAllocPtrToList
+static S16  cmInsertAllocPtrToList
 (
 CmMmDynRegCb    *regionCb,    /* Pointer to a region */
 PTR              ptr
 )
 #else
-PRIVATE S16  cmInsertAllocPtrToList(regionCb, ptr)
+static S16  cmInsertAllocPtrToList(regionCb, ptr)
 CmMmDynRegCb    *regionCb;    /* Pointer to a region */
 PTR              ptr;
 #endif
@@ -1924,7 +1924,7 @@ PTR              ptr;
 /* cm_mem_c_001.main_15 : Additions */
 
 #ifdef ANSI
-PRIVATE S16  cmDynAllocWithLock
+static S16  cmDynAllocWithLock
 (
 Void   *regionCb,    /* Pointer to a region */
 Size   *size,        /* size needs to be allocated */
@@ -1932,7 +1932,7 @@ U32     flags,       /* Flags used */
 Data  **ptr          /* Reference to pointer for which need to be allocate */
 )
 #else
-PRIVATE S16  cmDynAllocWithLock(regionCb, size, flags, ptr)
+static S16  cmDynAllocWithLock(regionCb, size, flags, ptr)
 Void   *regionCb;    /* Pointer to a region */
 Size   *size;        /* size needs to be allocated */
 U32     flags;       /* Flags used */
@@ -1978,7 +1978,7 @@ Data  **ptr;         /* Reference to pointer for which need to be allocate */
 /* cm_mem_c_001.main_15 : Additions */
 
 #ifdef ANSI
-PRIVATE S16  cmDynAlloc
+static S16  cmDynAlloc
 (
 Void   *regionCb,    /* Pointer to a region */
 Size   *size,        /* size needs to be allocated */
@@ -1986,7 +1986,7 @@ U32     flags,       /* Flags used */
 Data  **ptr          /* Reference to pointer for which need to be allocate */
 )
 #else
-PRIVATE S16  cmDynAlloc(regionCb, size, flags, ptr)
+static S16  cmDynAlloc(regionCb, size, flags, ptr)
 Void   *regionCb;    /* Pointer to a region */
 Size   *size;        /* size needs to be allocated */
 U32     flags;       /* Flags used */
@@ -2195,7 +2195,7 @@ int g_overused[5] = {0};
 
 /* cm_mem_c_001.main_15 : Additions */
 #ifdef T2K_MEM_LEAK_DBG
-PRIVATE S16  cmAlloc
+static S16  cmAlloc
 (
  Void   *regionCb,
  Size   *size,
@@ -2208,7 +2208,7 @@ PRIVATE S16  cmAlloc
 #ifdef SS_HISTOGRAM_SUPPORT
 #ifdef SSI_DEBUG_LEVEL1
 #ifdef ANSI
-PRIVATE S16  cmAlloc
+static S16  cmAlloc
 (
 Void   *regionCb,
 Size   *size,
@@ -2221,7 +2221,7 @@ U8      entId,
 Bool    hstReg
 )
 #else
-PRIVATE S16  cmAlloc(regionCb, size, flags, ptr, memType, line, fileName, entId, hstReg)
+static S16  cmAlloc(regionCb, size, flags, ptr, memType, line, fileName, entId, hstReg)
 Void   *regionCb;
 Size   *size;
 U32     flags;
@@ -2234,7 +2234,7 @@ Bool    hstReg;
 #endif
 #else
 #ifdef ANSI
-PRIVATE S16  cmAlloc
+static S16  cmAlloc
 (
 Void   *regionCb,
 Size   *size,
@@ -2246,7 +2246,7 @@ U8      entId,
 Bool    hstReg
 )
 #else
-PRIVATE S16  cmAlloc(regionCb, size, flags, ptr, line, fileName, entId, hstReg)
+static S16  cmAlloc(regionCb, size, flags, ptr, line, fileName, entId, hstReg)
 Void   *regionCb;
 Size   *size;
 U32     flags;
@@ -2262,7 +2262,7 @@ Bool    hstReg;
 
 #ifdef SSI_DEBUG_LEVEL1
 #ifdef ANSI
-PRIVATE S16  cmAlloc
+static S16  cmAlloc
 (
 Void   *regionCb,
 Size   *size,
@@ -2271,7 +2271,7 @@ Data  **ptr,
 U32     memType
 )
 #else
-PRIVATE S16  cmAlloc(regionCb, size, flags, ptr, memType)
+static S16  cmAlloc(regionCb, size, flags, ptr, memType)
 Void   *regionCb;
 Size   *size;
 U32     flags;
@@ -2280,7 +2280,7 @@ U32     memType;
 #endif
 #else
 #ifdef ANSI
-PRIVATE S16  cmAlloc
+static S16  cmAlloc
 (
 Void   *regionCb,
 Size   *size,
@@ -2288,7 +2288,7 @@ U32     flags,
 Data  **ptr 
 )
 #else
-PRIVATE S16  cmAlloc(regionCb, size, flags, ptr)
+static S16  cmAlloc(regionCb, size, flags, ptr)
 Void   *regionCb;
 Size   *size;
 U32     flags;
@@ -2757,11 +2757,11 @@ S16  cmInitDoubleFreeList()
 *
 */
 #ifdef ANSI
-PRIVATE S16  cmInitBtInfo
+static S16  cmInitBtInfo
 (
 )
 #else
-PRIVATE S16  cmInitBtInfo (Void)
+static S16  cmInitBtInfo (Void)
 #endif
 {
    regBtInfo = (CmBtInfo *)calloc(1, 8 * sizeof (CmBtInfo));
@@ -2866,14 +2866,14 @@ U32   idx;
 *
 */
 #ifdef ANSI
-PRIVATE S16  cmDynFreeWithLock
+static S16  cmDynFreeWithLock
 (
 Void   *regionCb,   /* Pointer to region cb */
 Data   *ptr,        /* Memory block needs to be freed */
 Size    size        /* Size of the block */
 )
 #else
-PRIVATE S16  cmDynFreeWithLock(regionCb, ptr, size)
+static S16  cmDynFreeWithLock(regionCb, ptr, size)
 Void   *regionCb;   /* Pointer to region cb */
 Data   *ptr;        /* Memory block needs to be freed */
 Size    size;       /* Size of the block */
@@ -2916,14 +2916,14 @@ Size    size;       /* Size of the block */
 *
 */
 #ifdef ANSI
-PRIVATE S16  cmDynFree
+static S16  cmDynFree
 (
 Void   *regionCb,   /* Pointer to region cb */
 Data   *ptr,        /* Memory block needs to be freed */
 Size    size        /* Size of the block */
 )
 #else
-PRIVATE S16  cmDynFree(regionCb, ptr, size)
+static S16  cmDynFree(regionCb, ptr, size)
 Void   *regionCb;   /* Pointer to region cb */
 Data   *ptr;        /* Memory block needs to be freed */
 Size    size;       /* Size of the block */
@@ -3116,7 +3116,7 @@ Size    size;       /* Size of the block */
 
 /*  cm_mem_c_001.main_15 : Additions */
 #ifdef T2K_MEM_LEAK_DBG
-PRIVATE S16  cmFree
+static S16  cmFree
 (
  Void   *regionCb,
  Data   *ptr,
@@ -3127,7 +3127,7 @@ PRIVATE S16  cmFree
 #else
 #ifdef SS_HISTOGRAM_SUPPORT
 #ifdef ANSI
-PRIVATE S16  cmFree
+static S16  cmFree
 (
 Void   *regionCb,
 Data   *ptr,
@@ -3138,7 +3138,7 @@ U8      entId,
 Bool    hstReg
 )
 #else
-PRIVATE S16  cmFree(regionCb, ptr, size, line, fileName, entId, hstReg)
+static S16  cmFree(regionCb, ptr, size, line, fileName, entId, hstReg)
 Void   *regionCb;
 Data   *ptr;
 Size    size;
@@ -3151,14 +3151,14 @@ Bool    hstReg;
 #else
 
 #ifdef ANSI
-PRIVATE S16  cmFree
+static S16  cmFree
 (
 Void   *regionCb,
 Data   *ptr, 
 Size    size
 )
 #else
-PRIVATE S16  cmFree(regionCb, ptr, size)
+static S16  cmFree(regionCb, ptr, size)
 Void   *regionCb;
 Data   *ptr;
 Size    size;
@@ -3500,7 +3500,7 @@ Size    size;
 /*cm_mem_c_001.main_21-added new function*/
 /*cm_mem_c_001.main_23 Removed support of SSI_DEBUG_LEVEL1 and SS_HISTOGRAM_SUPPORT for SS_FAP*/
 #ifdef T2K_MEM_LEAK_DBG
-PRIVATE S16  cmAllocWL
+static S16  cmAllocWL
 (
 Void   *regionCb,
 Size   *size,
@@ -3511,7 +3511,7 @@ U32 line
 )
 #else
 #ifdef ANSI
-PRIVATE S16  cmAllocWL
+static S16  cmAllocWL
 (
 Void   *regionCb,
 Size   *size,
@@ -3519,7 +3519,7 @@ U32     flags,
 Data  **ptr 
 )
 #else
-PRIVATE S16  cmAllocWL(regionCb, size, flags, ptr)
+static S16  cmAllocWL(regionCb, size, flags, ptr)
 Void   *regionCb;
 Size   *size;
 U32     flags;
@@ -3663,7 +3663,7 @@ Data  **ptr;
 */
 
 #ifdef T2K_MEM_LEAK_DBG
-PRIVATE S16  cmFreeWL
+static S16  cmFreeWL
 (
 Void   *regionCb,
 Data   *ptr, 
@@ -3673,14 +3673,14 @@ U32 line
 )
 #else
 #ifdef ANSI
-PRIVATE S16  cmFreeWL
+static S16  cmFreeWL
 (
 Void   *regionCb,
 Data   *ptr, 
 Size    size
 )
 #else
-PRIVATE S16  cmFreeWL(regionCb, ptr, size)
+static S16  cmFreeWL(regionCb, ptr, size)
 Void   *regionCb;
 Data   *ptr;
 Size    size;
@@ -3825,14 +3825,14 @@ Size    size;
 */
 
 #ifdef ANSI
-PRIVATE S16  cmCtl
+static S16  cmCtl
 (
 Void    *regionCb,
 Event    event, 
 SMemCtl *memCtl
 )
 #else
-PRIVATE S16  cmCtl(regionCb, event, memCtl)
+static S16  cmCtl(regionCb, event, memCtl)
 Void    *regionCb;
 Event    event;
 SMemCtl *memCtl;
@@ -3958,14 +3958,14 @@ SMemCtl *memCtl;
 *
 */
 #ifdef ANSI
-PRIVATE Void  cmMmHeapInit 
+static Void  cmMmHeapInit 
 (
 Data        *memAddr,
 CmMmHeapCb  *heapCb,
 Size         size 
 )
 #else
-PRIVATE Void  cmMmHeapInit (memAddr, heapCb, size)
+static Void  cmMmHeapInit (memAddr, heapCb, size)
 Data        *memAddr;
 CmMmHeapCb  *heapCb;
 Size         size;
@@ -4048,7 +4048,7 @@ Size         size;
 #ifdef SS_HISTOGRAM_SUPPORT 
 #ifdef SSI_DEBUG_LEVEL1
 #ifdef ANSI
-PRIVATE S16  cmHeapAlloc
+static S16  cmHeapAlloc
 (
 CmMmHeapCb  *heapCb,
 Data       **ptr,
@@ -4060,7 +4060,7 @@ U8      entId,
 Bool    hstReg
 )
 #else
-PRIVATE S16  cmHeapAlloc (heapCb, ptr, size, memType, line, fileName, entId, hstReg)
+static S16  cmHeapAlloc (heapCb, ptr, size, memType, line, fileName, entId, hstReg)
 CmMmHeapCb  *heapCb;
 Data       **ptr;
 Size        *size;
@@ -4072,7 +4072,7 @@ Bool    hstReg;
 #endif
 #else
 #ifdef ANSI
-PRIVATE S16  cmHeapAlloc 
+static S16  cmHeapAlloc 
 (
 CmMmHeapCb  *heapCb,
 Data       **ptr,
@@ -4083,7 +4083,7 @@ U8      entId,
 Bool    hstReg
 )
 #else
-PRIVATE S16  cmHeapAlloc (heapCb, ptr, size, line, fileName, entId, hstReg)
+static S16  cmHeapAlloc (heapCb, ptr, size, line, fileName, entId, hstReg)
 CmMmHeapCb  *heapCb;
 Data       **ptr;
 Size        *size;
@@ -4096,7 +4096,7 @@ Bool    hstReg;
 #else
 #ifdef SSI_DEBUG_LEVEL1
 #ifdef ANSI
-PRIVATE S16  cmHeapAlloc
+static S16  cmHeapAlloc
 (
 CmMmHeapCb  *heapCb,
 Data       **ptr,
@@ -4104,7 +4104,7 @@ Size        *size,
 U32        memType
 )
 #else
-PRIVATE S16  cmHeapAlloc (heapCb, ptr, size, memType)
+static S16  cmHeapAlloc (heapCb, ptr, size, memType)
 CmMmHeapCb  *heapCb;
 Data       **ptr;
 Size        *size;
@@ -4112,14 +4112,14 @@ U32        memType;
 #endif
 #else
 #ifdef ANSI
-PRIVATE S16  cmHeapAlloc 
+static S16  cmHeapAlloc 
 (
 CmMmHeapCb  *heapCb,
 Data       **ptr,
 Size        *size 
 )
 #else
-PRIVATE S16  cmHeapAlloc (heapCb, ptr, size)
+static S16  cmHeapAlloc (heapCb, ptr, size)
 CmMmHeapCb  *heapCb;
 Data       **ptr;
 Size        *size;
@@ -4404,7 +4404,7 @@ Size        *size;
 /*  cm_mem_c_001.main_15 : Additions */
 #ifdef SS_HISTOGRAM_SUPPORT  
 #ifdef ANSI
-PRIVATE S16  cmHeapFree 
+static S16  cmHeapFree 
 (
 CmMmHeapCb  *heapCb,
 Data        *ptr,
@@ -4415,7 +4415,7 @@ U8      entId,
 Bool    hstReg
 )
 #else
-PRIVATE S16  cmHeapFree (heapCb, ptr, size, line, fileName, entId, hstReg)
+static S16  cmHeapFree (heapCb, ptr, size, line, fileName, entId, hstReg)
 CmMmHeapCb  *heapCb;
 Data        *ptr;
 Size         size;
@@ -4426,14 +4426,14 @@ Bool    hstReg;
 #endif
 #else
 #ifdef ANSI
-PRIVATE S16  cmHeapFree 
+static S16  cmHeapFree 
 (
 CmMmHeapCb  *heapCb,
 Data        *ptr,
 Size         size 
 )
 #else
-PRIVATE S16  cmHeapFree (heapCb, ptr, size)
+static S16  cmHeapFree (heapCb, ptr, size)
 CmMmHeapCb  *heapCb;
 Data        *ptr;
 Size         size;
@@ -5668,12 +5668,12 @@ S32       count;
 *
 */
 #ifdef ANSI
-PRIVATE S16  cmMmBktSanityChk
+static S16  cmMmBktSanityChk
 (
 CmMmBkt  *bkt
 )
 #else
-PRIVATE S16  cmMmBktSanityChk(bkt)
+static S16  cmMmBktSanityChk(bkt)
 CmMmBkt  *bkt;
 #endif
 {
@@ -5730,12 +5730,12 @@ CmMmBkt  *bkt;
 *
 */
 #ifdef ANSI
-PRIVATE S16  cmMmHeapSanityChk
+static S16  cmMmHeapSanityChk
 (
 CmMmHeapCb  *heapCb
 )
 #else
-PRIVATE S16  cmMmHeapSanityChk(heapCb)
+static S16  cmMmHeapSanityChk(heapCb)
 CmMmHeapCb  *heapCb;
 #endif
 {
@@ -5809,14 +5809,14 @@ CmMmBlkHdr *blkPtr;
 *
 */
 #ifdef ANSI
-PRIVATE S16 cmMmHashFunc
+static S16 cmMmHashFunc
 (
 CmMmHashListCp *hashListCp,
 U32 key,
 U16 *idx
 )
 #else
-PRIVATE S16 cmMmHashFunc (hashListCp, key, idx)
+static S16 cmMmHashFunc (hashListCp, key, idx)
 CmMmHashListCp *hashListCp; /* hash list control point */
 U32 key; /* key string */
 U16 *idx; /* idx to return */
@@ -5852,7 +5852,7 @@ U16 *idx; /* idx to return */
 *
 */
 #ifdef ANSI
-PRIVATE S16 cmMmHashListInit
+static S16 cmMmHashListInit
 (
 CmMmHashListCp *hashListCp,  /* hash list to initialize */
 U16          nmbBins,      /* number of hash list bins */
@@ -5860,7 +5860,7 @@ Region       region,       /* memory region to allocate bins */
 Pool         pool          /* memory pool to allocate bins */
 )
 #else
-PRIVATE S16 cmMmHashListInit(hashListCp, nmbBins, region, pool)
+static S16 cmMmHashListInit(hashListCp, nmbBins, region, pool)
 CmMmHashListCp *hashListCp;  /* hash list to initialize */
 U16          nmbBins;      /* number of hash list bins */
 Region       region;       /* memory region to allocate bins */
@@ -5918,14 +5918,14 @@ Pool         pool;         /* memory pool to allocate bins */
 *
 */
 #ifdef ANSI
-PRIVATE S16 cmMmHashListDeinit
+static S16 cmMmHashListDeinit
 (
 CmMmHashListCp *hashListCp,   /* hash list to deinitialize */
 Region       region,       /* memory region to allocate bins */
 Pool         pool          /* memory pool to allocate bins */
 )
 #else
-PRIVATE S16 cmMmHashListDeinit(hashListCp, region, pool)
+static S16 cmMmHashListDeinit(hashListCp, region, pool)
 CmMmHashListCp *hashListCp;  /* hash list to deinitialize */
 Region       region;       /* memory region to allocate bins */
 Pool         pool;         /* memory pool to allocate bins */
@@ -5965,13 +5965,13 @@ Pool         pool;         /* memory pool to allocate bins */
 *
 */
 #ifdef ANSI
-PRIVATE S16 cmMmHashListInsert
+static S16 cmMmHashListInsert
 (
 CmMmHashListCp *hashListCp,  /* hash list to add to */
 U32           key         /* pointer to key */
 )
 #else
-PRIVATE S16 cmMmHashListInsert(hashListCp, key)
+static S16 cmMmHashListInsert(hashListCp, key)
 CmMmHashListCp *hashListCp;  /* hash list to add to */
 U32           key;         /* pointer to key */
 #endif
@@ -6050,12 +6050,12 @@ U32           key;         /* pointer to key */
 *
 */
 #ifdef ANSI
-PRIVATE S16 cmHstGrmHashListInit
+static S16 cmHstGrmHashListInit
 (
 CmHstGrmHashListCp *hashListCp  /* hash list to initialize */
 )
 #else
-PRIVATE S16 cmHstGrmHashListInit(hashListCp)
+static S16 cmHstGrmHashListInit(hashListCp)
 CmHstGrmHashListCp *hashListCp;  /* hash list to initialize */
 #endif
 {
@@ -6091,12 +6091,12 @@ CmHstGrmHashListCp *hashListCp;  /* hash list to initialize */
 *
 */
 #ifdef ANSI
-PRIVATE S16 cmHstGrmHashListDeInit
+static S16 cmHstGrmHashListDeInit
 (
 CmHstGrmHashListCp *hashListCp  /* hash list to initialize */
 )
 #else
-PRIVATE S16 cmHstGrmHashListDeInit(hashListCp)
+static S16 cmHstGrmHashListDeInit(hashListCp)
 CmHstGrmHashListCp *hashListCp;  /* hash list to initialize */
 #endif
 {
@@ -6136,7 +6136,7 @@ CmHstGrmHashListCp *hashListCp;  /* hash list to initialize */
 *
 */
 #ifdef ANSI
-PRIVATE S16 cmHstGrmFreeInsert
+static S16 cmHstGrmFreeInsert
 (
 CmHstGrmHashListCp* hashListCp, /* hash list cp */
 U32        blkSz, /* size of the block freed */
@@ -6145,7 +6145,7 @@ U8        *fileName, /* file name */
 U8        entId    /* Tapa task which free the memory */
 )
 #else
-PRIVATE S16 cmHstGrmFreeInsert(hashListCp, blkSz, line, fileName, entId)
+static S16 cmHstGrmFreeInsert(hashListCp, blkSz, line, fileName, entId)
 CmHstGrmHashListCp* hashListCp; /* hash list cp */
 U32        blkSz; /* size of the block freed */
 U32       line; /* line number */
@@ -6219,7 +6219,7 @@ U8        entId; /* Tapa task which frees the memory */
 *
 */
 #ifdef ANSI
-PRIVATE S16 cmHstGrmAllocInsert
+static S16 cmHstGrmAllocInsert
 (
 CmHstGrmHashListCp     *hashListCp,
 U32       blkSz,
@@ -6229,7 +6229,7 @@ U8        *fileName,
 U8        entId
 )
 #else
-PRIVATE  S16 cmHstGrmAllocInsert(hashListCp, blkSz, reqSz, line, fileName, entId)
+static  S16 cmHstGrmAllocInsert(hashListCp, blkSz, reqSz, line, fileName, entId)
 CmHstGrmHashListCp     *hashListCp;
 U32       blkSz;
 U32       *reqSz;
@@ -6307,7 +6307,7 @@ U8        entId;
 *
 */
 #ifdef ANSI
-PRIVATE S16 cmHstGrmGetHashIdxAndKey
+static S16 cmHstGrmGetHashIdxAndKey
 (
 U8                 *fileName,
 U32                line,
@@ -6315,7 +6315,7 @@ U32                *binIdx,
 U32                *key
 )
 #else
-PRIVATE  S16 cmHstGrmGetHashIdxAndKey(fileName, line, binIdx, key)
+static  S16 cmHstGrmGetHashIdxAndKey(fileName, line, binIdx, key)
 U8                 *fileName;
 U32                line;
 U32                *binIdx;
@@ -6357,7 +6357,7 @@ U32                *key;
 *
 */
 #ifdef ANSI
-PRIVATE S16 cmHstGrmFillEntry
+static S16 cmHstGrmFillEntry
 (
 CmMemEntries       *entry,
 U32                key,
@@ -6366,7 +6366,7 @@ U8                 *fileName,
 U8                 entId
 )
 #else
-PRIVATE  S16 cmHstGrmFillEntry(entry, key, line, fileName, entId)
+static  S16 cmHstGrmFillEntry(entry, key, line, fileName, entId)
 CmMemEntries       *entry;
 U32                key;
 U32                line;
@@ -6406,7 +6406,7 @@ U8                 entId;
 *
 */
 #ifdef ANSI
-PRIVATE S16 cmHstGrmFindEntry
+static S16 cmHstGrmFindEntry
 (
 CmHstGrmHashListCp  *hashListCp,
 U32                 key,
@@ -6414,7 +6414,7 @@ U32                 *binIdx,
 CmMemEntries        **entry
 )
 #else
-PRIVATE  S16 cmHstGrmFindEntry(hashListCp, key, binIdx, entry)
+static  S16 cmHstGrmFindEntry(hashListCp, key, binIdx, entry)
 CmHstGrmHashListCp  *hashListCp;
 U32                 key;
 U32                 *binIdx;
@@ -6781,11 +6781,11 @@ Region region;
 *
 */
 #ifdef ANSI
-PRIVATE U32 isMemUsageAboveUpperThreshold(
+static U32 isMemUsageAboveUpperThreshold(
 Region region
 )
 #else
-PRIVATE U32 isMemUsageAboveUpperThreshold(region)
+static U32 isMemUsageAboveUpperThreshold(region)
 Region region;
 #endif
 {

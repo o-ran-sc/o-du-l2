@@ -63,20 +63,20 @@ static int RLOG_FILE_ID=171;
 #include "rg_sch.x"        /* Scheduler includes */
 #include "rg_sch_cmn.x"
 #ifdef EMTC_ENABLE
-EXTERN Bool rgSCHRamVldtRgrEmtcUeCfg  ARGS((
+Bool rgSCHRamVldtRgrEmtcUeCfg  ARGS((
 RgSchCellCb  *cell,
 RgrUeCfg     *ueCfg
 ));
 
-EXTERN S16 rgSCHRamRmvAllFrmEmtcRaInfoSchdLst
+S16 rgSCHRamRmvAllFrmEmtcRaInfoSchdLst
 (
 RgSchCellCb       *cell
 );
-EXTERN Void rgSCHEmtcUtlUpdCmnNb 
+Void rgSCHEmtcUtlUpdCmnNb 
 (
 RgSchRaCb      *raCb
 );
-EXTERN Void rgSCHEmtcHqPAlloc 
+Void rgSCHEmtcHqPAlloc 
 (
 RgSchCellCb       *cell,
 RgSchDlHqEnt      *hqEnt
@@ -84,30 +84,30 @@ RgSchDlHqEnt      *hqEnt
 #endif
 /* local defines */
 /* local typedefs */
-PRIVATE Void rgSCHRamUlFreeAllocation ARGS((RgSchUlSf *sf,RgSchUlAlloc *alloc, 
+static Void rgSCHRamUlFreeAllocation ARGS((RgSchUlSf *sf,RgSchUlAlloc *alloc, 
          RgSchCellCb     *cell,Bool isEmtc));
 
-PRIVATE S16 rgSCHRamContResCrnti   ARGS((RgSchCellCb *cell, RgSchUeCb *ue, 
+static S16 rgSCHRamContResCrnti   ARGS((RgSchCellCb *cell, RgSchUeCb *ue, 
                                       RgSchRaCb *raCb, RgSchErrInfo *err));
-PRIVATE S16 rgSCHRamContResCcchsdu ARGS((RgSchCellCb *cell, RgSchRaCb *raCb));
+static S16 rgSCHRamContResCcchsdu ARGS((RgSchCellCb *cell, RgSchRaCb *raCb));
 #ifdef EMTC_ENABLE
 
-EXTERN S16 rgSCHEmtcRamContResCcchsdu ARGS((RgSchCellCb *cell, RgSchRaCb *raCb));
-EXTERN S16 rgSCHRamEmtcContResCcchsdu ARGS((RgSchCellCb *cell, RgSchRaCb *raCb));
-EXTERN Void rgSCHChkEmtcContResGrdTmrExp ARGS((RgSchCellCb        *cell));
-EXTERN Void rgSCHChkEmtcContResTmrExp ARGS((RgSchCellCb        *cell));
-EXTERN Void rgSCHEmtcRaInfoFree ARGS((RgSchCellCb *cell, RgSchRaCb *raCb));
+S16 rgSCHEmtcRamContResCcchsdu ARGS((RgSchCellCb *cell, RgSchRaCb *raCb));
+S16 rgSCHRamEmtcContResCcchsdu ARGS((RgSchCellCb *cell, RgSchRaCb *raCb));
+Void rgSCHChkEmtcContResGrdTmrExp ARGS((RgSchCellCb        *cell));
+Void rgSCHChkEmtcContResTmrExp ARGS((RgSchCellCb        *cell));
+Void rgSCHEmtcRaInfoFree ARGS((RgSchCellCb *cell, RgSchRaCb *raCb));
 #endif
 #ifdef RGR_V1
-PRIVATE Void rgSCHChkContResGrdTmrExp ARGS((RgSchCellCb        *cell));
-PRIVATE Void rgSCHChkContResTmrExp ARGS((RgSchCellCb        *cell));
-PRIVATE Void rgSCHRamProcContResExp ARGS((RgSchCellCb *cell, 
+static Void rgSCHChkContResGrdTmrExp ARGS((RgSchCellCb        *cell));
+static Void rgSCHChkContResTmrExp ARGS((RgSchCellCb        *cell));
+static Void rgSCHRamProcContResExp ARGS((RgSchCellCb *cell, 
                                  RgSchRaCb  *raCb));
-PRIVATE Void rgSCHRamProcContResGrdExp ARGS((RgSchCellCb *cell,
+static Void rgSCHRamProcContResGrdExp ARGS((RgSchCellCb *cell,
                                       RgSchRaCb  *raCb));
 #ifdef EMTC_ENABLE
-EXTERN Void rgSCHChkEmtcContResGrdTmrExp ARGS((RgSchCellCb        *cell));
-EXTERN Void rgSCHChkEmtcContResTmrExp ARGS((RgSchCellCb        *cell));
+Void rgSCHChkEmtcContResGrdTmrExp ARGS((RgSchCellCb        *cell));
+Void rgSCHChkEmtcContResTmrExp ARGS((RgSchCellCb        *cell));
 #endif
 #endif
 /* forward references */
@@ -500,7 +500,7 @@ RgSchErrInfo   *err;
  *      -# ROK 
  **/
 #ifdef ANSI
-PRIVATE S16 rgSCHRamContResCrnti
+static S16 rgSCHRamContResCrnti
 (
 RgSchCellCb  *cell,
 RgSchUeCb    *ue,
@@ -508,7 +508,7 @@ RgSchRaCb    *raCb,
 RgSchErrInfo *err
 )
 #else
-PRIVATE S16 rgSCHRamContResCrnti(cell, ue, raCb, err)
+static S16 rgSCHRamContResCrnti(cell, ue, raCb, err)
 RgSchCellCb  *cell;
 RgSchUeCb    *ue;
 RgSchRaCb    *raCb;
@@ -567,13 +567,13 @@ RgSchErrInfo *err;
  *      -# ROK 
  **/
 #ifdef ANSI
-PRIVATE S16 rgSCHRamContResCcchsdu
+static S16 rgSCHRamContResCcchsdu
 (
 RgSchCellCb *cell,
 RgSchRaCb *raCb
 )
 #else
-PRIVATE S16 rgSCHRamContResCcchsdu(cell, raCb)
+static S16 rgSCHRamContResCcchsdu(cell, raCb)
 RgSchCellCb *cell;
 RgSchRaCb *raCb;
 #endif
@@ -1286,13 +1286,13 @@ RgSchCellCb    *cell;
 } /* rgSCHRamFreeCell */
 #ifdef RGR_V1
 #ifdef ANSI
-PRIVATE Void rgSCHRamProcContResExp
+static Void rgSCHRamProcContResExp
 (
 RgSchCellCb *cell,
 RgSchRaCb  *raCb
 )
 #else
-PRIVATE Void rgSCHRamProcContResExp (cell, raCb)
+static Void rgSCHRamProcContResExp (cell, raCb)
 RgSchCellCb *cell;
 RgSchRaCb  *raCb;
 #endif
@@ -1316,13 +1316,13 @@ RgSchRaCb  *raCb;
 }
 
 #ifdef ANSI
-PRIVATE Void rgSCHRamProcContResGrdExp
+static Void rgSCHRamProcContResGrdExp
 (
 RgSchCellCb *cell,
 RgSchRaCb  *raCb
 )
 #else
-PRIVATE Void rgSCHRamProcContResGrdExp (cell, raCb)
+static Void rgSCHRamProcContResGrdExp (cell, raCb)
 RgSchCellCb  *cell;
 RgSchRaCb  *raCb;
 #endif
@@ -1366,12 +1366,12 @@ RgSchRaCb  *raCb;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE Void rgSCHChkContResTmrExp
+static Void rgSCHChkContResTmrExp
 (
 RgSchCellCb        *cell
 )
 #else
-PRIVATE Void rgSCHChkContResTmrExp(cell)
+static Void rgSCHChkContResTmrExp(cell)
 RgSchCellCb        *cell;
 #endif
 {
@@ -1413,12 +1413,12 @@ RgSchCellCb        *cell;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE Void rgSCHChkContResGrdTmrExp
+static Void rgSCHChkContResGrdTmrExp
 (
 RgSchCellCb        *cell
 )
 #else
-PRIVATE Void rgSCHChkContResGrdTmrExp(cell)
+static Void rgSCHChkContResGrdTmrExp(cell)
 RgSchCellCb        *cell;
 #endif
 {
@@ -1607,7 +1607,7 @@ RgSchRaCb         *raCb;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE Void rgSCHRamUlFreeAllocation
+static Void rgSCHRamUlFreeAllocation
 (
 RgSchUlSf       *sf,
 RgSchUlAlloc    *alloc,
@@ -1616,7 +1616,7 @@ Bool            isEmtc
 
 )
 #else
-PRIVATE Void rgSCHRamUlFreeAllocation(sf, alloc, cell,isEmtc)
+static Void rgSCHRamUlFreeAllocation(sf, alloc, cell,isEmtc)
 RgSchUlSf       *sf;
 RgSchUlAlloc    *alloc;
 RgSchCellCb     *cell;

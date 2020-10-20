@@ -61,7 +61,7 @@
 
 #define RG_MAX_SCH 1
 
-PRIVATE CONSTANT CellRegReq RgSchMacCellRegReqMt[RG_MAX_SCH] =
+static CONSTANT CellRegReq RgSchMacCellRegReqMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkSchMacCellRegReq,
@@ -70,7 +70,7 @@ PRIVATE CONSTANT CellRegReq RgSchMacCellRegReqMt[RG_MAX_SCH] =
 #endif
 };
 
-PRIVATE CONSTANT DedBoUpdtReq RgMacSchDedBoUpdtReqMt[RG_MAX_SCH] =
+static CONSTANT DedBoUpdtReq RgMacSchDedBoUpdtReqMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkMacSchDedBoUpdtReq,
@@ -79,7 +79,7 @@ PRIVATE CONSTANT DedBoUpdtReq RgMacSchDedBoUpdtReqMt[RG_MAX_SCH] =
 #endif
 };
 
-PRIVATE CONSTANT CmnBoUpdtReq RgMacSchCmnBoUpdtReqMt[RG_MAX_SCH] =
+static CONSTANT CmnBoUpdtReq RgMacSchCmnBoUpdtReqMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkMacSchCmnBoUpdtReq,
@@ -88,7 +88,7 @@ PRIVATE CONSTANT CmnBoUpdtReq RgMacSchCmnBoUpdtReqMt[RG_MAX_SCH] =
 #endif
 };
 
-PRIVATE CONSTANT SfRecpInd RgMacSchSfRecpIndMt[RG_MAX_SCH] =
+static CONSTANT SfRecpInd RgMacSchSfRecpIndMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkMacSchSfRecpInd
@@ -97,7 +97,7 @@ PRIVATE CONSTANT SfRecpInd RgMacSchSfRecpIndMt[RG_MAX_SCH] =
 #endif
 };
 /*Fix: start: Inform UE delete to scheduler*/
-PRIVATE CONSTANT UeDelInd RgMacSchUeDelIndMt[RG_MAX_SCH] =
+static CONSTANT UeDelInd RgMacSchUeDelIndMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkMacSchUeDelInd
@@ -106,7 +106,7 @@ PRIVATE CONSTANT UeDelInd RgMacSchUeDelIndMt[RG_MAX_SCH] =
 #endif
 };
 /*Fix: end: Inform UE delete to scheduler*/
-PRIVATE CONSTANT SfAllocReq RgSchMacSfAllocReqMt[RG_MAX_SCH] =
+static CONSTANT SfAllocReq RgSchMacSfAllocReqMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkSchMacSfAllocReq,
@@ -115,7 +115,7 @@ PRIVATE CONSTANT SfAllocReq RgSchMacSfAllocReqMt[RG_MAX_SCH] =
 #endif
 };
 
-PRIVATE CONSTANT RstHqEntReq RgSchMacRstHqEntReqMt[RG_MAX_SCH] =
+static CONSTANT RstHqEntReq RgSchMacRstHqEntReqMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkSchMacRstHqEntReq,
@@ -123,7 +123,7 @@ PRIVATE CONSTANT RstHqEntReq RgSchMacRstHqEntReqMt[RG_MAX_SCH] =
    RgSchMacRstHqEntReq
 #endif
 };
-PRIVATE CONSTANT RlsHqReq RgSchMacRlsHqReqMt[RG_MAX_SCH] =
+static CONSTANT RlsHqReq RgSchMacRlsHqReqMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkSchMacRlsHqReq,
@@ -132,7 +132,7 @@ PRIVATE CONSTANT RlsHqReq RgSchMacRlsHqReqMt[RG_MAX_SCH] =
 #endif
 };
 
-PRIVATE CONSTANT RlsRntiReq RgSchMacRlsRntiReqMt[RG_MAX_SCH] =
+static CONSTANT RlsRntiReq RgSchMacRlsRntiReqMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkSchMacRlsRntiReq,
@@ -141,7 +141,7 @@ PRIVATE CONSTANT RlsRntiReq RgSchMacRlsRntiReqMt[RG_MAX_SCH] =
 #endif
 };
 
-PRIVATE CONSTANT LcgReg RgSchMacLcgRegReqMt[RG_MAX_SCH] =
+static CONSTANT LcgReg RgSchMacLcgRegReqMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkSchMacLcgRegReq,
@@ -151,7 +151,7 @@ PRIVATE CONSTANT LcgReg RgSchMacLcgRegReqMt[RG_MAX_SCH] =
 };
 
 #ifdef LTEMAC_SPS
-PRIVATE CONSTANT SpsLcReg RgSchMacSpsLcRegReqMt[RG_MAX_SCH] =
+static CONSTANT SpsLcReg RgSchMacSpsLcRegReqMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkSchMacSpsLcRegReq,
@@ -160,7 +160,7 @@ PRIVATE CONSTANT SpsLcReg RgSchMacSpsLcRegReqMt[RG_MAX_SCH] =
 #endif
 };
 
-PRIVATE CONSTANT UlSpsReset RgSchMacUlSpsResetMt[RG_MAX_SCH] =
+static CONSTANT UlSpsReset RgSchMacUlSpsResetMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkSchMacUlSpsReset,
@@ -171,7 +171,7 @@ PRIVATE CONSTANT UlSpsReset RgSchMacUlSpsResetMt[RG_MAX_SCH] =
 
 
 
-PRIVATE CONSTANT SpsLcDereg RgSchMacSpsLcDeregReqMt[RG_MAX_SCH] =
+static CONSTANT SpsLcDereg RgSchMacSpsLcDeregReqMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkSchMacSpsLcDeregReq,
@@ -180,7 +180,7 @@ PRIVATE CONSTANT SpsLcDereg RgSchMacSpsLcDeregReqMt[RG_MAX_SCH] =
 #endif
 };
 
-PRIVATE CONSTANT SpsRelInd RgMacSchSpsRelIndMt[RG_MAX_SCH] =
+static CONSTANT SpsRelInd RgMacSchSpsRelIndMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkMacSchSpsRelInd,
@@ -192,7 +192,7 @@ PRIVATE CONSTANT SpsRelInd RgMacSchSpsRelIndMt[RG_MAX_SCH] =
 #endif /* LTEMAC_SPS */
 
 #ifdef LTE_L2_MEAS
-PRIVATE CONSTANT L2MeasReq RgSchMacL2MeasReqMt[RG_MAX_SCH] =
+static CONSTANT L2MeasReq RgSchMacL2MeasReqMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkSchMacL2MeasReq
@@ -201,7 +201,7 @@ PRIVATE CONSTANT L2MeasReq RgSchMacL2MeasReqMt[RG_MAX_SCH] =
 #endif
 };
 /*Added for Rsys oam*/
-PRIVATE CONSTANT L2MeasStopReq RgSchMacL2MeasStopReqMt[RG_MAX_SCH] =
+static CONSTANT L2MeasStopReq RgSchMacL2MeasStopReqMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkSchMacL2MeasStopReq
@@ -210,7 +210,7 @@ PRIVATE CONSTANT L2MeasStopReq RgSchMacL2MeasStopReqMt[RG_MAX_SCH] =
 #endif
 };
 
-PRIVATE CONSTANT L2MeasSendReq RgSchMacL2MeasSendReqMt[RG_MAX_SCH] =
+static CONSTANT L2MeasSendReq RgSchMacL2MeasSendReqMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkSchMacL2MeasSendReq
@@ -219,7 +219,7 @@ PRIVATE CONSTANT L2MeasSendReq RgSchMacL2MeasSendReqMt[RG_MAX_SCH] =
 #endif
 };
 
-PRIVATE CONSTANT L2MeasCfm RgMacSchL2MeasCfmMt[RG_MAX_SCH] =
+static CONSTANT L2MeasCfm RgMacSchL2MeasCfmMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkMacSchL2MeasCfm
@@ -227,7 +227,7 @@ PRIVATE CONSTANT L2MeasCfm RgMacSchL2MeasCfmMt[RG_MAX_SCH] =
    RgMacSchL2MeasCfm
 #endif
 };
-PRIVATE CONSTANT L2MeasStopCfm RgMacSchL2MeasStopCfmMt[RG_MAX_SCH] =
+static CONSTANT L2MeasStopCfm RgMacSchL2MeasStopCfmMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkMacSchL2MeasStopCfm

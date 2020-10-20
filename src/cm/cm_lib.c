@@ -174,8 +174,8 @@
 #endif
 
 #ifdef MS_MBUF_CORRUPTION /* Should be enabled when debugging mbuf corruption */
-EXTERN Data *startPtr128;
-EXTERN Size regMemSize;
+Data *startPtr128;
+Size regMemSize;
 #endif
 
 /*

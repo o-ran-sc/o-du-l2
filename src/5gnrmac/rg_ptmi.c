@@ -54,18 +54,18 @@ extern "C" {
 
 /* portable functions at LRG interface */
 #ifdef PTRGMILRG
-EXTERN S16 PtMiLrgCfgCfm ARGS((Pst *pst, RgMngmt *cfm));
-EXTERN S16 PtMiLrgSchCfgCfm ARGS((Pst *pst, RgMngmt *cfm));
-EXTERN S16 PtMiLrgStsCfm ARGS((Pst *pst, RgMngmt *cfm));
-EXTERN S16 PtMiLrgStaCfm ARGS((Pst *pst, RgMngmt *cfm));
-EXTERN S16 PtMiLrgStaInd ARGS((Pst *pst, RgMngmt *usta));
-EXTERN S16 PtMiLrgSchStaInd ARGS((Pst *pst, RgMngmt *usta));
-EXTERN S16 PtMiLrgCntrlCfm ARGS((Pst *pst, RgMngmt *cfm));
-EXTERN S16 PtMiLrgSchCntrlCfm ARGS((Pst *pst, RgMngmt *cfm));
-EXTERN S16 PtMiLrgTrcInd ARGS((Pst *pst, RgMngmt *trc,Buffer *mBuf));
+S16 PtMiLrgCfgCfm ARGS((Pst *pst, RgMngmt *cfm));
+S16 PtMiLrgSchCfgCfm ARGS((Pst *pst, RgMngmt *cfm));
+S16 PtMiLrgStsCfm ARGS((Pst *pst, RgMngmt *cfm));
+S16 PtMiLrgStaCfm ARGS((Pst *pst, RgMngmt *cfm));
+S16 PtMiLrgStaInd ARGS((Pst *pst, RgMngmt *usta));
+S16 PtMiLrgSchStaInd ARGS((Pst *pst, RgMngmt *usta));
+S16 PtMiLrgCntrlCfm ARGS((Pst *pst, RgMngmt *cfm));
+S16 PtMiLrgSchCntrlCfm ARGS((Pst *pst, RgMngmt *cfm));
+S16 PtMiLrgTrcInd ARGS((Pst *pst, RgMngmt *trc,Buffer *mBuf));
 #ifdef LTE_L2_MEAS
-EXTERN S16 PtMiLrgSchL2MeasCfm ARGS((Pst *pst, LrgSchMeasCfmInfo *cfm));
-EXTERN S16 PtMiLrgSchL2MeasStopCfm ARGS((Pst *pst,LrgSchMeasCfmInfo *cfm ));
+S16 PtMiLrgSchL2MeasCfm ARGS((Pst *pst, LrgSchMeasCfmInfo *cfm));
+S16 PtMiLrgSchL2MeasStopCfm ARGS((Pst *pst,LrgSchMeasCfmInfo *cfm ));
 #endif
 #endif
 
@@ -89,7 +89,7 @@ EXTERN S16 PtMiLrgSchL2MeasStopCfm ARGS((Pst *pst,LrgSchMeasCfmInfo *cfm ));
  *  In a similar fashion, the matrices for Status, Statistics and
  *  Control confirms and, Status and trace indications are defined.
  **/
-PRIVATE CONSTANT LrgCfgCfm RgMiLrgCfgCfmMt[RG_MAX_LRG_USR] =
+static CONSTANT LrgCfgCfm RgMiLrgCfgCfmMt[RG_MAX_LRG_USR] =
 {
 #ifdef LCRGMILRG
    cmPkLrgCfgCfm,                  /* 0 - loosely coupled */
@@ -104,7 +104,7 @@ PRIVATE CONSTANT LrgCfgCfm RgMiLrgCfgCfmMt[RG_MAX_LRG_USR] =
 };
 
 /** @brief Scheduler Config Confirm primitive Matrix */
-PRIVATE CONSTANT LrgSchCfgCfm RgMiLrgSchCfgCfmMt[RG_MAX_LRG_USR] =
+static CONSTANT LrgSchCfgCfm RgMiLrgSchCfgCfmMt[RG_MAX_LRG_USR] =
 {
 #ifdef LCRGMILRG
    cmPkLrgSchCfgCfm,                  /* 0 - loosely coupled */
@@ -119,7 +119,7 @@ PRIVATE CONSTANT LrgSchCfgCfm RgMiLrgSchCfgCfmMt[RG_MAX_LRG_USR] =
 };
 
 /** @brief Statistics Confirm primitive Matrix */
-PRIVATE CONSTANT LrgStsCfm RgMiLrgStsCfmMt[RG_MAX_LRG_USR] =
+static CONSTANT LrgStsCfm RgMiLrgStsCfmMt[RG_MAX_LRG_USR] =
 {
 #ifdef LCRGMILRG
    cmPkLrgStsCfm,                  /* 0 - loosely coupled */
@@ -134,7 +134,7 @@ PRIVATE CONSTANT LrgStsCfm RgMiLrgStsCfmMt[RG_MAX_LRG_USR] =
 };
 
 /** @brief Status Confirm primitive Matrix */
-PRIVATE CONSTANT LrgStaCfm RgMiLrgStaCfmMt[RG_MAX_LRG_USR] =
+static CONSTANT LrgStaCfm RgMiLrgStaCfmMt[RG_MAX_LRG_USR] =
 {
 #ifdef LCRGMILRG
    cmPkLrgStaCfm,                  /* 0 - loosely coupled */
@@ -150,7 +150,7 @@ PRIVATE CONSTANT LrgStaCfm RgMiLrgStaCfmMt[RG_MAX_LRG_USR] =
 
 
 /** @brief Status Indication primitive Matrix */
-PRIVATE CONSTANT LrgStaInd RgMiLrgStaIndMt[RG_MAX_LRG_USR] =
+static CONSTANT LrgStaInd RgMiLrgStaIndMt[RG_MAX_LRG_USR] =
 {
 #ifdef LCRGMILRG
    cmPkLrgStaInd,                  /* 0 - loosely coupled */
@@ -165,7 +165,7 @@ PRIVATE CONSTANT LrgStaInd RgMiLrgStaIndMt[RG_MAX_LRG_USR] =
 };
 
 /** @brief Scheduler  Status Indication primitive Matrix */
-PRIVATE CONSTANT LrgSchStaInd RgMiLrgSchStaIndMt[RG_MAX_LRG_USR] =
+static CONSTANT LrgSchStaInd RgMiLrgSchStaIndMt[RG_MAX_LRG_USR] =
 {
 #ifdef LCRGMILRG
    cmPkLrgSchStaInd,                  /* 0 - loosely coupled */
@@ -181,7 +181,7 @@ PRIVATE CONSTANT LrgSchStaInd RgMiLrgSchStaIndMt[RG_MAX_LRG_USR] =
 
 
 /** @brief Control Confirm primitive Matrix */
-PRIVATE CONSTANT LrgCntrlCfm RgMiLrgCntrlCfmMt[RG_MAX_LRG_USR] =
+static CONSTANT LrgCntrlCfm RgMiLrgCntrlCfmMt[RG_MAX_LRG_USR] =
 {
 #ifdef LCRGMILRG
    cmPkLrgCntrlCfm,                  /* 0 - loosely coupled */
@@ -196,7 +196,7 @@ PRIVATE CONSTANT LrgCntrlCfm RgMiLrgCntrlCfmMt[RG_MAX_LRG_USR] =
 };
 
 /** @brief Scheduler Control Confirm primitive Matrix */
-PRIVATE CONSTANT LrgSchCntrlCfm RgMiLrgSchCntrlCfmMt[RG_MAX_LRG_USR] =
+static CONSTANT LrgSchCntrlCfm RgMiLrgSchCntrlCfmMt[RG_MAX_LRG_USR] =
 {
 #ifdef LCRGMILRG
    cmPkLrgSchCntrlCfm,                  /* 0 - loosely coupled */
@@ -211,7 +211,7 @@ PRIVATE CONSTANT LrgSchCntrlCfm RgMiLrgSchCntrlCfmMt[RG_MAX_LRG_USR] =
 };
 
 /** @brief Trace Indication primitive Matrix */
-PRIVATE CONSTANT LrgTrcInd RgMiLrgTrcIndMt[RG_MAX_LRG_USR] =
+static CONSTANT LrgTrcInd RgMiLrgTrcIndMt[RG_MAX_LRG_USR] =
 {
 #ifdef LCRGMILRG
    cmPkLrgTrcInd,                  /* 0 - loosely coupled */
@@ -226,7 +226,7 @@ PRIVATE CONSTANT LrgTrcInd RgMiLrgTrcIndMt[RG_MAX_LRG_USR] =
 };
 #ifdef LTE_L2_MEAS
 /** @brief L2 Meas Cfm primitive Matrix */
-PRIVATE CONSTANT LrgSchL2MeasCfm RgMiLrgSchL2mMeasCfmMt[RG_MAX_LRG_USR] =
+static CONSTANT LrgSchL2MeasCfm RgMiLrgSchL2mMeasCfmMt[RG_MAX_LRG_USR] =
 {
 #ifdef LCRGMILRG
    cmPkLrgSchL2MeasCfm,                /* 0 - loosely coupled */
@@ -240,7 +240,7 @@ PRIVATE CONSTANT LrgSchL2MeasCfm RgMiLrgSchL2mMeasCfmMt[RG_MAX_LRG_USR] =
 #endif
 };
 /** @brief L2 Meas Stop Cfm primitive Matrix */
-PRIVATE CONSTANT LrgSchL2MeasStopCfm RgMiLrgSchL2mMeasStopCfmMt[RG_MAX_LRG_USR] =
+static CONSTANT LrgSchL2MeasStopCfm RgMiLrgSchL2mMeasStopCfmMt[RG_MAX_LRG_USR] =
 {
 #ifdef LCRGMILRG
    cmPkLrgSchL2MeasStopCfm,                /* 0 - loosely coupled */

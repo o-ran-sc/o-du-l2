@@ -5329,13 +5329,13 @@ Buffer *mBuf;
 ************************************************************/
 
 #ifdef ANSI
-PRIVATE S16 cmPkTfuDciFormat60aInfo
+static S16 cmPkTfuDciFormat60aInfo
 (
 TfuDciFormat60aInfo *param,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmPkTfuDciFormat60aInfo(param, mBuf)
+static S16 cmPkTfuDciFormat60aInfo(param, mBuf)
 TfuDciFormat60aInfo *param;
 Buffer *mBuf;
 #endif
@@ -5377,13 +5377,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PRIVATE S16 cmPkTfuPdcchOrderInfoEmtc
+static S16 cmPkTfuPdcchOrderInfoEmtc
 (
 TfuPdcchOrderInfoEmtc *param,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmPkTfuPdcchOrderInfoEmtc(param, mBuf)
+static S16 cmPkTfuPdcchOrderInfoEmtc(param, mBuf)
 TfuPdcchOrderInfoEmtc *param;
 Buffer *mBuf;
 #endif
@@ -5415,13 +5415,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PRIVATE S16 cmPkTfudciformat61aPdsch
+static S16 cmPkTfudciformat61aPdsch
 (
 Tfudciformat61aPdsch *param,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmPkTfudciformat61aPdsch(param, mBuf)
+static S16 cmPkTfudciformat61aPdsch(param, mBuf)
 Tfudciformat61aPdsch *param;
 Buffer *mBuf;
 #endif
@@ -5514,13 +5514,13 @@ Buffer *mBuf;
 * **********************************************************/
 
 #ifdef ANSI
-PRIVATE S16 cmUnpkTfuDciFormat60aInfo 
+static S16 cmUnpkTfuDciFormat60aInfo 
 (
 TfuDciFormat60aInfo *param,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmUnpkTfuDciFormat60aInfo(param, mBuf)
+static S16 cmUnpkTfuDciFormat60aInfo(param, mBuf)
 TfuDciFormat60aInfo *param;
 Buffer *mBuf;
 #endif
@@ -5564,13 +5564,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PRIVATE S16 cmUnpkTfuPdcchOrderInfoEmtc
+static S16 cmUnpkTfuPdcchOrderInfoEmtc
 (
 TfuPdcchOrderInfoEmtc *param,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmUnpkTfuPdcchOrderInfoEmtc(param, mBuf)
+static S16 cmUnpkTfuPdcchOrderInfoEmtc(param, mBuf)
 TfuPdcchOrderInfoEmtc *param;
 Buffer *mBuf;
 #endif
@@ -6341,13 +6341,13 @@ Buffer *mBuf;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE S16 cmUnpkTfuDirectIndication
+static S16 cmUnpkTfuDirectIndication
 (
  TfuDirectIndication *param,
  Buffer *mBuf
  )
 #else
-PRIVATE S16 cmUnpkTfuDirectIndication(param, mBuf)
+static S16 cmUnpkTfuDirectIndication(param, mBuf)
    TfuDirectIndication *param;
    Buffer *mBuf;
 #endif
@@ -6417,13 +6417,13 @@ S16 cmUnpkTfuDciFormat62AllocInfo(param, mBuf)
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE S16 cmUnpkTfudciformat62Pdsch
+static S16 cmUnpkTfudciformat62Pdsch
 (
  Tfudciformat62Pdsch *param,
  Buffer *mBuf
  )
 #else
-PRIVATE S16 cmUnpkTfudciformat62Pdsch(param, mBuf)
+static S16 cmUnpkTfudciformat62Pdsch(param, mBuf)
    Tfudciformat62Pdsch *param;
    Buffer *mBuf;
 #endif
@@ -6515,13 +6515,13 @@ S16 cmUnpkTfuDciFormat62Info(param, mBuf)
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE S16 cmPkTfuDirectIndication
+static S16 cmPkTfuDirectIndication
 (
  TfuDirectIndication *param,
  Buffer *mBuf
  )
 #else
-PRIVATE S16 cmPkTfuDirectIndication(param, mBuf)
+static S16 cmPkTfuDirectIndication(param, mBuf)
    TfuDirectIndication *param;
    Buffer *mBuf;
 #endif
@@ -6597,13 +6597,13 @@ S16 cmPkTfuDciFormat62AllocInfo(param, mBuf)
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE S16 cmPkTfudciformat62Pdsch
+static S16 cmPkTfudciformat62Pdsch
 (
  Tfudciformat62Pdsch *param,
  Buffer *mBuf
  )
 #else
-PRIVATE S16 cmPkTfudciformat62Pdsch(param, mBuf)
+static S16 cmPkTfudciformat62Pdsch(param, mBuf)
    Tfudciformat62Pdsch *param;
    Buffer *mBuf;
 #endif
@@ -15011,13 +15011,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PRIVATE S16 cmPkTfuErrIndInfo
+static S16 cmPkTfuErrIndInfo
 (
 TfuErrIndInfo *param,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmPkTfuErrIndInfo(param, mBuf)
+static S16 cmPkTfuErrIndInfo(param, mBuf)
 TfuErrIndInfo *param;
 Buffer *mBuf;
 #endif
@@ -15046,13 +15046,13 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef ANSI
-PRIVATE S16 cmUnpkTfuErrIndInfo
+static S16 cmUnpkTfuErrIndInfo
 (
 TfuErrIndInfo *param,
 Buffer *mBuf
 )
 #else
-PRIVATE S16 cmUnpkTfuErrIndInfo(param, mBuf)
+static S16 cmUnpkTfuErrIndInfo(param, mBuf)
 TfuErrIndInfo *param;
 Buffer *mBuf;
 #endif

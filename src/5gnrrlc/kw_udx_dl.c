@@ -58,7 +58,7 @@ static int RLOG_FILE_ID=203;
 #define RLC_MODULE RLC_DBGMASK_UDX
 /* local defines */
 
-EXTERN S16 rlcDlmHndlStaRsp ARGS (( RlcCb  *gCb,RlcDlRbCb  *rbCb,
+S16 rlcDlmHndlStaRsp ARGS (( RlcCb  *gCb,RlcDlRbCb  *rbCb,
                 RlcUdxStaPdu *pStaPdu, RlcUdxBufLst  *rlsPduLst));
 
 

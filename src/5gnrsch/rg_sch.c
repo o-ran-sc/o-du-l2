@@ -60,8 +60,8 @@ static int RLOG_MODULE_ID=4096;
 #include "rg_sch_cmn.x"
 
 #ifdef EMTC_ENABLE
-EXTERN S16 rgEmtcMacSchUeDelInd ARGS((RgSchCellCb *cell,RgInfUeDelInd *ueDelInd));
-EXTERN S16 rgSCHGomEmtcHndlSiCfg ARGS((
+S16 rgEmtcMacSchUeDelInd ARGS((RgSchCellCb *cell,RgInfUeDelInd *ueDelInd));
+S16 rgSCHGomEmtcHndlSiCfg ARGS((
 Region        reg,
 Pool          pool,
 RgSchCb       *instCb,
@@ -69,7 +69,7 @@ SpId          spId,
 RgrCfgTransId transId,
 RgrSiCfgReqInfo *cfgReqInfo
 ));
-EXTERN S16 rgSCHGomEmtcHndlWarningSiCfg ARGS((
+S16 rgSCHGomEmtcHndlWarningSiCfg ARGS((
 Region        reg,
 Pool          pool,
 RgSchCb       *instCb,

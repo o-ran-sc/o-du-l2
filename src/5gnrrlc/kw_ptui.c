@@ -63,7 +63,7 @@ static int RLOG_FILE_ID=199;
 #endif
 
 #ifdef __cplusplus
-EXTERN "C" {
+extern "C" {
 #endif /* __cplusplus */
 
   
@@ -73,10 +73,10 @@ EXTERN "C" {
 #if defined(PDCP_RLC_DL_RBUF) || defined(SS_RBUF)
 S16 rlcDlBatchProc ARGS ((Void));
 S16 rlcUtlDlFreeRlcRBuf ARGS((Void));
-EXTERN void rlcUtlDlBatchProcHqStaInd ARGS ((Void));
-EXTERN Void rlcUtlFreeDlMem ARGS((Void));
-EXTERN SsRngBufCnt rngCb;
-EXTERN S16 rlcUtlDlBatchProcPkts ARGS((Void));
+void rlcUtlDlBatchProcHqStaInd ARGS ((Void));
+Void rlcUtlFreeDlMem ARGS((Void));
+SsRngBufCnt rngCb;
+S16 rlcUtlDlBatchProcPkts ARGS((Void));
 #endif
 
 #if (defined(L2_L3_SPLIT) && defined(ICC_RECV_TSK_RBUF))
@@ -873,9 +873,9 @@ Void;
    /* Memory regions different for BRCM and Intel */
    /*dstProcId,srcProcId,dstEnt,dstInst,srcEnt,srcInst,prior,route,event,region,pool,selector*/
 #ifdef SS_RBUF
-   PRIVATE Pst rlcDlRbfuPst ={1,1,ENTRLC,1,ENTPJ,1,PRIOR0,RTESPEC,KWU_EVT_DAT_REQ,1,1,0,0};
+   static Pst rlcDlRbfuPst ={1,1,ENTRLC,1,ENTPJ,1,PRIOR0,RTESPEC,KWU_EVT_DAT_REQ,1,1,0,0};
 #else
-   PRIVATE Pst rlcDlRbfuPst ={1,1,ENTRLC,1,ENTPJ,1,PRIOR0,RTESPEC,KWU_EVT_DAT_REQ,2,1,0,0};
+   static Pst rlcDlRbfuPst ={1,1,ENTRLC,1,ENTPJ,1,PRIOR0,RTESPEC,KWU_EVT_DAT_REQ,2,1,0,0};
 #endif
    Void *elmIndx = NULLP;
    KwuDatReqDetl *kwuDatReqDetl = NULLP;

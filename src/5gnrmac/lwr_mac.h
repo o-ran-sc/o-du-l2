@@ -259,12 +259,12 @@ typedef struct clCellParam
    RssiMeasurement       rssiMeasurementSupport;
 }ClCellParam;
 
-EXTERN LwrMacCb lwrMacCb; 
-EXTERN LwrMacCellCb * lwrMacGetCellCb ARGS((uint16_t cellId));
-EXTERN uint32_t reverseBits(uint32_t num, uint8_t numBits);
-EXTERN void fillDlDciPayload(uint8_t *buf, uint8_t *bytePos, uint8_t *bitPos,\
+LwrMacCb lwrMacCb; 
+LwrMacCellCb * lwrMacGetCellCb ARGS((uint16_t cellId));
+uint32_t reverseBits(uint32_t num, uint8_t numBits);
+void fillDlDciPayload(uint8_t *buf, uint8_t *bytePos, uint8_t *bitPos,\
       uint32_t val, uint8_t valSize);
-EXTERN void lwrMacInit();
+void lwrMacInit();
 
 #endif
 

@@ -342,7 +342,7 @@ typedef struct rlcUlCfgTmpData
    RlcUlEntTmpData   cfgEntData[CKW_MAX_ENT_CFG]; /**< Entity Data */
 } RlcUlCfgTmpData;
 /****************************************************************************
- *                      EXTERN Declarations
+ *                      Declarations
  ***************************************************************************/
 /****************************************************************************
  *                    Configuration Functions 

@@ -62,10 +62,10 @@
 /* public variable declarations */
 
 #ifdef __cplusplus
-EXTERN "C" {
+extern "C" {
 #endif /* CPLUSPLUS */
 
-EXTERN S16 rlcGetSId ARGS((SystemId *s));
+S16 rlcGetSId ARGS((SystemId *s));
 #ifdef __cplusplus
 }
 #endif /* CPLUSPLUS */
@@ -80,7 +80,7 @@ CONSTANT Txt rlcBan2[] =
 
 /* system id */
 
-PRIVATE CONSTANT SystemId sId ={
+static CONSTANT SystemId sId ={
    RLCSWMV,              /* rlc - main version */
    RLCSWMR,              /* rlc - main revision */
    RLCSWBV,              /* rlc - branch version */

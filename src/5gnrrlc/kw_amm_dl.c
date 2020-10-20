@@ -81,7 +81,7 @@ U32 rlcStatusPduCnt, rlcStatusAckCnt, rlcStatusNcnt, rlcSduSndCnt;
 /* local externs */
 
 /* forward references */
-EXTERN Void rlcAmmDlHndlStatusPdu ARGS ((RlcCb  *gCb,
+Void rlcAmmDlHndlStatusPdu ARGS ((RlcCb  *gCb,
                                         RlcDlRbCb  *rbCb,
                                         RlcUdxStaPdu *pStaPdu));
 
@@ -104,77 +104,77 @@ EXTERN Void rlcAmmDlHndlStatusPdu ARGS ((RlcCb  *gCb,
 
 /* private function declarations */
 
-PRIVATE Void  rlcResegRetxPdus ARGS ((RlcCb *gCb,
+static Void  rlcResegRetxPdus ARGS ((RlcCb *gCb,
                                      RlcDlRbCb *rbCb, 
                                      RlcDatReq *rlcDatReq));
 
-PRIVATE Void rlcRemRetxPdu ARGS ((RlcCb *gCb, 
+static Void rlcRemRetxPdu ARGS ((RlcCb *gCb, 
                                  RlcDlRbCb *rbCb, 
                                  RlcRetx *retx));
 
-PRIVATE Void rlcAmmCreateStatusPdu ARGS ((RlcCb *gCb, 
+static Void rlcAmmCreateStatusPdu ARGS ((RlcCb *gCb, 
                                          RlcDlRbCb *rbCb,
                                          RlcDatReq *rlcDatReq));
 
-PRIVATE Void rlcAmmDlMarkPduForReTx ARGS ((RlcCb *gCb,
+static Void rlcAmmDlMarkPduForReTx ARGS ((RlcCb *gCb,
                                           RlcDlRbCb *rbCb,
                                           RlcRetx *retx));
 
-PRIVATE Void rlcAmmDlProcessSuccessfulTxPdu ARGS((RlcCb *gCb, 
+static Void rlcAmmDlProcessSuccessfulTxPdu ARGS((RlcCb *gCb, 
                                                  RlcDlRbCb *rbCb,
                                                  RlcSn  sn,
                                                  KwuDatCfmInfo **datCfm));
 
-PRIVATE Void rlcAmmDlSetTxNextAck ARGS((RlcAmDl *amDl, RlcSn sn));
+static Void rlcAmmDlSetTxNextAck ARGS((RlcAmDl *amDl, RlcSn sn));
 
-PRIVATE Void rlcAmmDlCheckAndStopPollTmr ARGS((RlcCb *gCb,
+static Void rlcAmmDlCheckAndStopPollTmr ARGS((RlcCb *gCb,
                                               RlcDlRbCb *rbCb,
                                               RlcSn mAckSn));
 
-PRIVATE Void  rlcAssembleSdus ARGS ((RlcCb *gCb,
+static Void  rlcAssembleSdus ARGS ((RlcCb *gCb,
                                     RlcDlRbCb *rbCb, 
                                     RlcDatReq *rlcDatReq));
 
-bool rlcAmmDlCheckAndSetPoll ARGS ((RlcCb *gCb,
+static bool rlcAmmDlCheckAndSetPoll ARGS ((RlcCb *gCb,
                                            RlcDlRbCb *rbCb, 
                                            bool newPdu, 
                                            MsgLen bufSz));
 
-PRIVATE Void rlcAmmCreatePdu ARGS ((RlcCb *gCb,
+static Void rlcAmmCreatePdu ARGS ((RlcCb *gCb,
                                    RlcDlRbCb *rbCb, 
                                    RlcAmHdr *amHdr, 
                                    RlcDlPduInfo *pduInfo,
                                    Buffer *pdu));
 
-PRIVATE Void rlcAmmSndStaInd ARGS ((RlcCb *gCb,RlcDlRbCb *rbCb, RlcRetx *retx));
+static Void rlcAmmSndStaInd ARGS ((RlcCb *gCb,RlcDlRbCb *rbCb, RlcRetx *retx));
 
-PRIVATE Void rlcGetNxtRetx ARGS ((RlcCb *gCb, RlcRetx **retx));
+static Void rlcGetNxtRetx ARGS ((RlcCb *gCb, RlcRetx **retx));
 
-PRIVATE Void rlcConstructAmHdr ARGS ((RlcAmHdr *amHdr, 
+static Void rlcConstructAmHdr ARGS ((RlcAmHdr *amHdr, 
                                      U8 *hdr,
                                      U8  snLen,
                                      U16 *idx));
 
-PRIVATE Void rlcAmmDlUpdateTxAndReTxBufForAckSn ARGS ((RlcCb *gCb,
+static Void rlcAmmDlUpdateTxAndReTxBufForAckSn ARGS ((RlcCb *gCb,
                                                       RlcDlRbCb *rbCb, 
                                                       RlcSn mAckSn,
                                                       CmLList *retx,
                                                       KwuDatCfmInfo **datCfm));
 
-PRIVATE Void rlcAmmDlMoveFrmTxtoRetxBuffer ARGS ((RlcCb *gCb,
+static Void rlcAmmDlMoveFrmTxtoRetxBuffer ARGS ((RlcCb *gCb,
                                                  RlcAmDl *amDl, 
                                                  RlcRetx **retx, 
                                                  RlcSn sn));
  
-PRIVATE Void rlcAmmDlCheckIsSDUDelivered ARGS((RlcCb *gCb,
+static Void rlcAmmDlCheckIsSDUDelivered ARGS((RlcCb *gCb,
                                               RlcDlRbCb *rbCb, 
                                               RlcSduMap *sduMap, 
                                               KwuDatCfmInfo **datCfm));
 
-PRIVATE Void rlcAmmAddPduToRetxLst ARGS((RlcAmDl   *amDl,
+static Void rlcAmmAddPduToRetxLst ARGS((RlcAmDl   *amDl,
                                         RlcRetx   *retx));
 
-PRIVATE Void rlcAmmDlMoveSduByteSegFrmTxtoRetxBuffer ARGS(
+static Void rlcAmmDlMoveSduByteSegFrmTxtoRetxBuffer ARGS(
 (
 RlcCb          *gCb,
 RlcAmDl        *amDl,
@@ -182,7 +182,7 @@ RlcRetx        **retx,
 RlcDlPduInfo   *pduInfo
 ));
 
-PRIVATE Void rlcAmmDlHndlStatus4SduByteSegInTxBuf ARGS(
+static Void rlcAmmDlHndlStatus4SduByteSegInTxBuf ARGS(
 (
 RlcCb          *gCb,
 RlcDlRbCb      *rbCb,
@@ -191,7 +191,7 @@ RlcRetx        **retx,
 KwuDatCfmInfo **datCfm
 ));
 
-PRIVATE Void rlcAmmDlUpdateTxAndReTxBufForNackSn ARGS(
+static Void rlcAmmDlUpdateTxAndReTxBufForNackSn ARGS(
 (
  RlcCb          *gCb,
  RlcDlRbCb      *rbCb,
@@ -200,7 +200,7 @@ PRIVATE Void rlcAmmDlUpdateTxAndReTxBufForNackSn ARGS(
  KwuDatCfmInfo **datCfm
  ));
 
-PRIVATE Void RlcDlAmmGetNackSnInfoFrmNackRangeIdx ARGS(
+static Void RlcDlAmmGetNackSnInfoFrmNackRangeIdx ARGS(
 (
 RlcAmDl        *amDl,
 RlcNackInfo    *nackInfo,
@@ -209,7 +209,7 @@ RlcNackInfo    *nackSnInfo,
 U8            idx
 ));
 
-PRIVATE Void rlcAmmDlUpdTxAndReTxBufForLessThanNackSn ARGS(
+static Void rlcAmmDlUpdTxAndReTxBufForLessThanNackSn ARGS(
 (
 RlcCb            *gCb,
 RlcDlRbCb        *rbCb,
@@ -275,14 +275,14 @@ void rlcAmmSendDedLcBoStatus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcAmDl *amDl)
  * @return  Void
 */
 #ifdef ANSI
-PRIVATE Void rlcAmmDlCheckAndStopPollTmr
+static Void rlcAmmDlCheckAndStopPollTmr
 (
 RlcCb       *gCb,
 RlcDlRbCb   *rbCb,
 RlcSn       mAckSn
 )
 #else
-PRIVATE Void rlcAmmDlCheckAndStopPollTmr(gCb, rbCb, mAckSn)
+static Void rlcAmmDlCheckAndStopPollTmr(gCb, rbCb, mAckSn)
 RlcCb       *gCb;
 RlcDlRbCb   *rbCb;
 RlcSn       mAckSn;
@@ -312,13 +312,13 @@ RlcSn       mAckSn;
  * @return  Void
 */
 #ifdef ANSI
-PRIVATE Void rlcAmmDlSetTxNextAck
+static Void rlcAmmDlSetTxNextAck
 (
 RlcAmDl   *amDl,
 RlcSn      sn
 )
 #else
-PRIVATE Void rlcAmmDlSetTxNextAck(amDl, sn)
+static Void rlcAmmDlSetTxNextAck(amDl, sn)
 RlcAmDl   *amDl;
 RlcSn     sn
 #endif
@@ -342,7 +342,7 @@ RlcSn     sn
  * @return  Void
 */
 #ifdef ANSI
-PRIVATE Void rlcAmmDlProcessSuccessfulReTx
+static Void rlcAmmDlProcessSuccessfulReTx
 (
 RlcCb            *gCb,
 RlcDlRbCb        *rbCb,
@@ -350,7 +350,7 @@ RlcRetx          *retx,
 KwuDatCfmInfo   **datCfm
 )
 #else
-PRIVATE Void rlcAmmDlProcessSuccessfulReTx(gCb, rbCb, retx, datCfm)
+static Void rlcAmmDlProcessSuccessfulReTx(gCb, rbCb, retx, datCfm)
 RlcCb            *gCb;
 RlcDlRbCb        *rbCb;
 RlcRetx          *retx;
@@ -381,7 +381,7 @@ KwuDatCfmInfo   **datCfm;
  */
 
 #ifdef ANSI
-PRIVATE Void rlcAmmDlMoveSduByteSegFrmTxtoRetxBuffer
+static Void rlcAmmDlMoveSduByteSegFrmTxtoRetxBuffer
 (
 RlcCb          *gCb,
 RlcAmDl        *amDl,
@@ -389,7 +389,7 @@ RlcRetx        **retx,
 RlcDlPduInfo   *pduInfo
 )
 #else
-PRIVATE Void rlcAmmDlMoveSduByteSegFrmTxtoRetxBuffer(gCb, amDl, retx, pduInfo)
+static Void rlcAmmDlMoveSduByteSegFrmTxtoRetxBuffer(gCb, amDl, retx, pduInfo)
 RlcCb          *gCb;
 RlcAmDl        *amDl;
 RlcRetx        **retx;
@@ -457,7 +457,7 @@ RlcDlPduInfo   *pduInfo;
  */
 
 #ifdef ANSI
-PRIVATE Void rlcAmmDlHndlStatus4SduByteSegInTxBuf
+static Void rlcAmmDlHndlStatus4SduByteSegInTxBuf
 (
 RlcCb          *gCb,
 RlcDlRbCb      *rbCb,
@@ -466,7 +466,7 @@ RlcRetx        **retx,
 KwuDatCfmInfo ** datCfm
 )
 #else
-PRIVATE Void rlcAmmDlHndlStatus4SduByteSegInTxBuf(gCb, rbCb, nackSnInfo, retx, datCfm)
+static Void rlcAmmDlHndlStatus4SduByteSegInTxBuf(gCb, rbCb, nackSnInfo, retx, datCfm)
 (
 RlcCb          *gCb;
 RlcDlRbCb      *rbCb;
@@ -548,7 +548,7 @@ KwuDatCfmInfo **datCfm;
  *            
  */
 #ifdef ANSI
-PRIVATE Void rlcAmmDlUpdateTxAndReTxBufForNackSn
+static Void rlcAmmDlUpdateTxAndReTxBufForNackSn
 (
  RlcCb          *gCb,
  RlcDlRbCb      *rbCb,
@@ -557,7 +557,7 @@ PRIVATE Void rlcAmmDlUpdateTxAndReTxBufForNackSn
  KwuDatCfmInfo **datCfm
  )
 #else
-PRIVATE Void rlcAmmDlUpdateTxAndReTxBufForNackSn(gCb, rbCb, nackSnInfo, retxNode, datCfm)
+static Void rlcAmmDlUpdateTxAndReTxBufForNackSn(gCb, rbCb, nackSnInfo, retxNode, datCfm)
 (
  RlcCb          *gCb;
  RlcDlRbCb      *rbCb;
@@ -670,7 +670,7 @@ PRIVATE Void rlcAmmDlUpdateTxAndReTxBufForNackSn(gCb, rbCb, nackSnInfo, retxNode
  *            
  */
 #ifdef ANSI
-PRIVATE Void RlcDlAmmGetNackSnInfoFrmNackRangeIdx
+static Void RlcDlAmmGetNackSnInfoFrmNackRangeIdx
 (
 RlcAmDl        *amDl,
 RlcNackInfo    *nackInfo,
@@ -679,7 +679,7 @@ RlcNackInfo    *nackSnInfo,
 U8            idx
 )
 #else
-PRIVATE Void RlcDlAmmGetNackSnInfoFrmNackRangeIdx(amDl, nackInfo, retxNode, nackSnInfo, idx)
+static Void RlcDlAmmGetNackSnInfoFrmNackRangeIdx(amDl, nackInfo, retxNode, nackSnInfo, idx)
 (
 RlcAmDl        *amDl;
 RlcNackInfo    *nackInfo;
@@ -1190,7 +1190,7 @@ dlrate_kwu += sdu->sduSz;
  *  @return Void 
  *
  */
-void rlcAmmDlAssembleCntrlInfo(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
+static void rlcAmmDlAssembleCntrlInfo(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
 {
    RlcUdxDlSapCb   *sapCb;
    MsgLen         macHdrEstmt;
@@ -1338,7 +1338,7 @@ void rlcAmmProcessSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq, bool f
  * @return  Void
  *
  */
-void rlcSplitPdu(RlcCb *gCb, RlcDlRbCb *rbCb, RlcRetx *crnt, RlcRetx *next, uint16_t size)
+static void rlcSplitPdu(RlcCb *gCb, RlcDlRbCb *rbCb, RlcRetx *crnt, RlcRetx *next, uint16_t size)
 {
    uint8_t        si;
    RlcAmDl        *amDl = &AMDL;
@@ -1443,7 +1443,7 @@ void rlcSplitPdu(RlcCb *gCb, RlcDlRbCb *rbCb, RlcRetx *crnt, RlcRetx *next, uint
  * @return  Void
  *
  */
-void rlcResegRetxPdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
+static void rlcResegRetxPdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
 {
    RlcAmDl   *amDl;
    RlcRetx   *retx;
@@ -1674,7 +1674,7 @@ void rlcResegRetxPdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
  * @return  Void 
  *
  */
-void rlcAssembleSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
+static void rlcAssembleSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
 {
    Buffer          *pdu         = NULLP;
    MsgLen          macGrntSz    = rlcDatReq->pduSz;
@@ -2162,7 +2162,7 @@ void rlcAssembleSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
  *      -# 0 - Poll bit is not set
  *
  */
-bool rlcAmmDlCheckAndSetPoll(RlcCb *gCb, RlcDlRbCb *rbCb, bool newPdu, MsgLen bufSz)
+static bool rlcAmmDlCheckAndSetPoll(RlcCb *gCb, RlcDlRbCb *rbCb, bool newPdu, MsgLen bufSz)
 { 
    bool     pollBit = FALSE;
    RlcAmDl   *amDl = &(rbCb->m.amDl);
@@ -2231,7 +2231,7 @@ bool rlcAmmDlCheckAndSetPoll(RlcCb *gCb, RlcDlRbCb *rbCb, bool newPdu, MsgLen bu
  *  @return  Void
  *
  */
-void rlcAmmCreatePdu(RlcCb *gCb, RlcDlRbCb *rbCb, RlcAmHdr *amHdr,
+static void rlcAmmCreatePdu(RlcCb *gCb, RlcDlRbCb *rbCb, RlcAmHdr *amHdr,
 RlcDlPduInfo *pduInfo, Buffer *pdu)
 {
    uint8_t   hdr[RLC_MAX_HDRSZ];
@@ -2300,14 +2300,14 @@ RlcDlPduInfo *pduInfo, Buffer *pdu)
  *
  */
 #ifdef ANSI
-PRIVATE Void rlcRemRetxPdu
+static Void rlcRemRetxPdu
 (  
 RlcCb          *gCb,
 RlcDlRbCb      *rbCb,
 RlcRetx        *retx
 )
 #else
-PRIVATE Void rlcRemRetxPdu(gCb, rbCb, retx)
+static Void rlcRemRetxPdu(gCb, rbCb, retx)
 RlcCb          *gCb;
 RlcDlRbCb      *rbCb;
 RlcRetx        *retx;
@@ -2351,14 +2351,14 @@ RlcRetx        *retx;
  *
  */
 #ifdef ANSI
-PRIVATE Void rlcAmmDlMarkPduForReTx
+static Void rlcAmmDlMarkPduForReTx
 (
 RlcCb          *gCb,
 RlcDlRbCb      *rbCb,
 RlcRetx        *retx
 )
 #else
-PRIVATE Void rlcAmmDlMarkPduForReTx(*gCb, rbCb, retx)
+static Void rlcAmmDlMarkPduForReTx(*gCb, rbCb, retx)
 RlcCb          *gCb;
 RlcDlRbCb      *rbCb;
 RlcRetx        *retx;
@@ -2431,7 +2431,7 @@ RlcRetx        *retx;
  *
  */
 #ifdef ANSI
-PRIVATE Void rlcAmmDlCheckIsSDUDelivered
+static Void rlcAmmDlCheckIsSDUDelivered
 (
 RlcCb            *gCb,
 RlcDlRbCb        *rbCb,
@@ -2439,7 +2439,7 @@ RlcSduMap        *sduMap,
 KwuDatCfmInfo   **datCfm
 )
 #else
-PRIVATE Void rlcAmmDlCheckIsSDUDelivered(gCb, rbCb, sduMap, datCfm)
+static Void rlcAmmDlCheckIsSDUDelivered(gCb, rbCb, sduMap, datCfm)
 RlcCb            *gCb;
 RlcDlRbCb        *rbCb;
 RlcSduMap        *sduMap;
@@ -2518,7 +2518,7 @@ KwuDatCfmInfo   **datCfm;
  *
  */
 #ifdef ANSI
-PRIVATE Void rlcAmmDlProcessSuccessfulTxPdu
+static Void rlcAmmDlProcessSuccessfulTxPdu
 (
 RlcCb            *gCb,
 RlcDlRbCb        *rbCb,
@@ -2526,7 +2526,7 @@ RlcSn            sn,
 KwuDatCfmInfo   **datCfm
 )
 #else
-PRIVATE Void rlcAmmDlProcessSuccessfulTxPdu(gCb, rbCb, sn, datCfm)
+static Void rlcAmmDlProcessSuccessfulTxPdu(gCb, rbCb, sn, datCfm)
 RlcCb            *gCb;
 RlcDlRbCb        *rbCb;
 RlcSn            sn;
@@ -2576,14 +2576,14 @@ KwuDatCfmInfo   **datCfm;
  *
  */
 #ifdef ANSI
-PRIVATE Void rlcAmmSndStaInd
+static Void rlcAmmSndStaInd
 (
 RlcCb       *gCb,
 RlcDlRbCb   *rbCb,
 RlcRetx     *retx
 )
 #else
-PRIVATE Void rlcAmmSndStaInd(gCb, rbCb, retx)
+static Void rlcAmmSndStaInd(gCb, rbCb, retx)
 RlcCb       *gCb;
 RlcDlRbCb   *rbCb;
 RlcRetx     *retx;
@@ -2640,7 +2640,7 @@ RlcRetx     *retx;
  *  @return  Void 
  *
  */
-void rlcGetNxtRetx(RlcCb *gCb, RlcRetx **retx)
+static void rlcGetNxtRetx(RlcCb *gCb, RlcRetx **retx)
 {
    CmLList *tNode;
 
@@ -2914,7 +2914,7 @@ RlcDlRbCb   *rbCb;
  */
 
 #ifdef ANSI
-PRIVATE Void rlcAmmDlUpdateTxAndReTxBufForAckSn
+static Void rlcAmmDlUpdateTxAndReTxBufForAckSn
 (
 RlcCb            *gCb,
 RlcDlRbCb        *rbCb,
@@ -2923,7 +2923,7 @@ CmLList         *retxNode,
 KwuDatCfmInfo   **datCfm
 )
 #else
-PRIVATE Void rlcAmmDlUpdateTxAndReTxBufForAckSn(gCb, rbCb, mAckSn, retxNode, datCfm)
+static Void rlcAmmDlUpdateTxAndReTxBufForAckSn(gCb, rbCb, mAckSn, retxNode, datCfm)
 RlcCb            *gCb;
 RlcDlRbCb        *rbCb;
 RlcSn            mAckSn;
@@ -2996,7 +2996,7 @@ KwuDatCfmInfo   **datCfm;
  *
  */
 #ifdef ANSI
-PRIVATE Void rlcAmmDlUpdTxAndReTxBufForLessThanNackSn
+static Void rlcAmmDlUpdTxAndReTxBufForLessThanNackSn
 (
 RlcCb            *gCb,
 RlcDlRbCb        *rbCb,
@@ -3006,7 +3006,7 @@ CmLList         **retxNode,
 KwuDatCfmInfo   **datCfm
 )
 #else
-PRIVATE Void rlcAmmDlUpdTxAndReTxBufForLessThanNackSn(gCb, rbCb, sn, mNackSn, retxNode, datCfm)
+static Void rlcAmmDlUpdTxAndReTxBufForLessThanNackSn(gCb, rbCb, sn, mNackSn, retxNode, datCfm)
 RlcCb            *gCb;
 RlcDlRbCb        *rbCb;
 RlcSn            sn;
@@ -3079,7 +3079,7 @@ KwuDatCfmInfo   **datCfm;
  * @return Void            
  *
  */
-void rlcConstructAmHdr(RlcAmHdr *amHdr, uint8_t *hdr, uint8_t snLen, uint16_t *idx)
+static void rlcConstructAmHdr(RlcAmHdr *amHdr, uint8_t *hdr, uint8_t snLen, uint16_t *idx)
 {
    *idx = 0;
     hdr[0] = RLC_DATA_BITMASK;
@@ -3127,13 +3127,13 @@ void rlcConstructAmHdr(RlcAmHdr *amHdr, uint8_t *hdr, uint8_t snLen, uint16_t *i
  *            
  */
 #ifdef ANSI
-PRIVATE Void rlcAmmAddPduToRetxLst
+static Void rlcAmmAddPduToRetxLst
 (
 RlcAmDl   *amDl,
 RlcRetx   *retx
 )
 #else
-PRIVATE Void rlcAmmAddPduToRetxLst(amDl, retx)
+static Void rlcAmmAddPduToRetxLst(amDl, retx)
 RlcAmDl   *amDl;
 RlcRetx   *retx;
 #endif
@@ -3198,7 +3198,7 @@ RlcRetx   *retx;
  */
 
 #ifdef ANSI
-PRIVATE Void rlcAmmDlMoveFrmTxtoRetxBuffer
+static Void rlcAmmDlMoveFrmTxtoRetxBuffer
 (
 RlcCb          *gCb,
 RlcAmDl        *amDl,
@@ -3206,7 +3206,7 @@ RlcRetx        **retx,
 RlcSn          sn
 )
 #else
-PRIVATE Void rlcAmmDlMoveFrmTxtoRetxBuffer(gCb, amDl, retx, sn)
+static Void rlcAmmDlMoveFrmTxtoRetxBuffer(gCb, amDl, retx, sn)
 RlcCb          *gCb;
 RlcAmDl        *amDl;
 RlcRetx        **retx;
@@ -3307,7 +3307,7 @@ RlcDlRbCb   *rbCb;
  * @return Void
  *
  */
-void rlcAmmCreateStatusPdu(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
+static void rlcAmmCreateStatusPdu(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
 {
     RlcSn          sn;                      /* sequence number */
     RlcSn          ack_sn;                  /* Ack sequence number */
@@ -3602,14 +3602,14 @@ S16 rlcProcDlStatusPdu(Pst *udxPst,SuId suId,
       CmLteCellId cellId,CmLteRnti rnti,CmLteLcId lcId,Buffer *rlcSdu);
 
 #ifdef ANSI
-PRIVATE Void rgAmmExtractElmnt
+static Void rgAmmExtractElmnt
 (
 RlcCb       *gCb,
 Buffer     *pdu,
 RlcExtHdr   *hdrInfo
 )
 #else
-PRIVATE Void rgAmmExtractElmnt(gCb, pdu, hdrInfo)
+static Void rgAmmExtractElmnt(gCb, pdu, hdrInfo)
 RlcCb       *gCb;
 Buffer     *pdu;
 RlcExtHdr   *hdrInfo;
@@ -3684,7 +3684,7 @@ RlcExtHdr   *hdrInfo;
 
 
 #ifdef ANSI
-PRIVATE Void rgAmmUlHndlStatusPdu
+static Void rgAmmUlHndlStatusPdu
 (
 Pst        *udxPst,
 SuId       suId,
@@ -3694,7 +3694,7 @@ Buffer     *cntrlPdu,
 U8         *fByte
 )
 #else
-PRIVATE Void rgAmmUlHndlStatusPdu(udxPst,suId,gCb, rbCb, cntrlPdu, fByte)
+static Void rgAmmUlHndlStatusPdu(udxPst,suId,gCb, rbCb, cntrlPdu, fByte)
 Pst        *udxPst;
 SuId       suId;
 RlcCb       *gCb;

@@ -68,23 +68,23 @@
 #include "cm_tenb_stats.x"    /* Total EnodeB Stats declarations */
 
 #ifdef TENB_STATS
-PRIVATE Void TSInfUtlPackUeInfo ARGS((
+static Void TSInfUtlPackUeInfo ARGS((
  Buffer            *mBuf,
  TSInfL2UeStats     *stats 
 ));
-PRIVATE Void TSInfUtlPackCellInfo ARGS((
+static Void TSInfUtlPackCellInfo ARGS((
  Buffer              *mBuf,
  TSInfL2CellStats     *stats 
 ));
-PRIVATE Void TSInfUtlUnpkUeInfo ARGS((
+static Void TSInfUtlUnpkUeInfo ARGS((
  Buffer            *mBuf,
  TSInfL2UeStats     *stats 
 ));
-PRIVATE Void TSInfUtlUnpkCellInfo ARGS((
+static Void TSInfUtlUnpkCellInfo ARGS((
  Buffer              *mBuf,
  TSInfL2CellStats     *stats
 ));
-PRIVATE Buffer* TSInfUtlAllocMsg ARGS((
+static Buffer* TSInfUtlAllocMsg ARGS((
  Pst   *pst
 ));
  
@@ -101,13 +101,13 @@ PRIVATE Buffer* TSInfUtlAllocMsg ARGS((
 *
 */
 #ifdef ANSI
-PRIVATE Void TSInfTrigL2Stats
+static Void TSInfTrigL2Stats
 (
  Region    region,
  Pool      pool
 )
 #else
-PRIVATE Void TSInfTrigL2Stats(region, pool)
+static Void TSInfTrigL2Stats(region, pool)
  Region    region;
  Pool      pool;
 #endif
@@ -165,12 +165,12 @@ Void TSInfTrigStats(region, pool)
 
          
 #ifdef ANSI
-PRIVATE Buffer* TSInfUtlAllocMsg
+static Buffer* TSInfUtlAllocMsg
 (
  Pst   *pst
 )
 #else
-PRIVATE Buffer* TSInfUtlAllocMsg(pst)
+static Buffer* TSInfUtlAllocMsg(pst)
  Pst   *pst;
 #endif
 {
@@ -185,13 +185,13 @@ PRIVATE Buffer* TSInfUtlAllocMsg(pst)
 }
 
 #ifdef ANSI
-PRIVATE Void TSInfUtlPackUeInfo
+static Void TSInfUtlPackUeInfo
 (
  Buffer            *mBuf,
  TSInfL2UeStats     *stats
 )
 #else
-PRIVATE Void TSInfUtlPackUeInfo(mBuf, stats)
+static Void TSInfUtlPackUeInfo(mBuf, stats)
  Buffer            *mBuf;
  TSInfL2UeStats     *stats; 
 #endif
@@ -267,13 +267,13 @@ PRIVATE Void TSInfUtlPackUeInfo(mBuf, stats)
 }
 
 #ifdef ANSI
-PRIVATE Void TSInfUtlPackCellInfo
+static Void TSInfUtlPackCellInfo
 (
  Buffer              *mBuf,
  TSInfL2CellStats     *stats  
 )
 #else
-PRIVATE Void TSInfUtlPackCellInfo(mBuf, stats)
+static Void TSInfUtlPackCellInfo(mBuf, stats)
  Buffer              *mBuf;
  TSInfL2CellStats     *stats; 
 #endif
@@ -384,13 +384,13 @@ PRIVATE Void TSInfUtlPackCellInfo(mBuf, stats)
 }
 
 #ifdef ANSI
-PRIVATE Void TSInfUtlUnpkUeInfo
+static Void TSInfUtlUnpkUeInfo
 (
  Buffer            *mBuf,
  TSInfL2UeStats     *stats 
 )
 #else
-PRIVATE Void TSInfUtlUnpkUeInfo(mBuf, stats)
+static Void TSInfUtlUnpkUeInfo(mBuf, stats)
  Buffer            *mBuf;
  TSInfL2UeStats     *stats; 
 #endif
@@ -467,13 +467,13 @@ PRIVATE Void TSInfUtlUnpkUeInfo(mBuf, stats)
 }
 
 #ifdef ANSI
-PRIVATE Void TSInfUtlUnpkCellInfo
+static Void TSInfUtlUnpkCellInfo
 (
  Buffer              *mBuf,
  TSInfL2CellStats     *stats 
 )
 #else
-PRIVATE Void TSInfUtlUnpkCellInfo(mBuf, stats)
+static Void TSInfUtlUnpkCellInfo(mBuf, stats)
  Buffer              *mBuf;
  TSInfL2CellStats     *stats; 
 #endif

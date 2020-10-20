@@ -56,12 +56,12 @@ static int RLOG_MODULE_ID=4096;
 
 /* local externs */
 #ifdef UNUSED_FUNC
-PRIVATE S16  rgLIMValidateSap ARGS((Inst inst,SuId suId));
+static S16  rgLIMValidateSap ARGS((Inst inst,SuId suId));
 #endif
-PRIVATE Void rgLIMUtlFreeDatIndEvnt ARGS((TfuDatIndInfo *datInd,
+static Void rgLIMUtlFreeDatIndEvnt ARGS((TfuDatIndInfo *datInd,
                                           Bool error));
 #ifdef RG_UNUSED
-PRIVATE Void rgLIMUtlFreeDatReqEvnt ARGS((TfuDatReqInfo *datReq,
+static Void rgLIMUtlFreeDatReqEvnt ARGS((TfuDatReqInfo *datReq,
                                           Bool error));
 #endif
 /* forward references */
@@ -231,13 +231,13 @@ U8      status;
   */
 #ifdef UNUSED_FUNC
 #ifdef ANSI
-PRIVATE S16 rgLIMValidateSap
+static S16 rgLIMValidateSap
 (
  Inst    inst,
  SuId    suId
 )
 #else
-PRIVATE S16 rgLIMValidateSap(inst,suId)
+static S16 rgLIMValidateSap(inst,suId)
  Inst    inst;
  SuId    suId;
 #endif
@@ -278,13 +278,13 @@ PRIVATE S16 rgLIMValidateSap(inst,suId)
  * @return 
  */
 #ifdef ANSI
-PRIVATE Void rgLIMUtlFreeDatIndEvnt 
+static Void rgLIMUtlFreeDatIndEvnt 
 (
  TfuDatIndInfo *datInd,
  Bool          error
  )
 #else
-PRIVATE Void rgLIMUtlFreeDatIndEvnt(datInd, error)
+static Void rgLIMUtlFreeDatIndEvnt(datInd, error)
  TfuDatIndInfo *datInd;
  Bool          error;
 #endif
@@ -400,13 +400,13 @@ TfuDatIndInfo    *datInd;
  * @return 
  */
 #ifdef ANSI
-PRIVATE Void rgLIMUtlFreeDatReqEvnt
+static Void rgLIMUtlFreeDatReqEvnt
 (
  TfuDatReqInfo *datReq,
  Bool          error
  )
 #else
-PRIVATE Void rgLIMUtlFreeDatReqEvnt(datReq, error)
+static Void rgLIMUtlFreeDatReqEvnt(datReq, error)
  TfuDatReqInfo *datReq;
  Bool          error;
 #endif

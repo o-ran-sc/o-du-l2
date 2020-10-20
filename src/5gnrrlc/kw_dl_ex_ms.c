@@ -70,12 +70,12 @@ void rlcUtlDlBatchProcHqStaInd ARGS ((Void));
 #endif
 
 #if (defined(L2_L3_SPLIT) && defined(ICC_RECV_TSK_RBUF))
-EXTERN S16 rlcDlBatchProcSplit  ARGS((Void));
+S16 rlcDlBatchProcSplit  ARGS((Void));
 #endif
 //UDAY
 #ifdef L2_OPTMZ
 U32 rlcAmmStaPduList[512] = {0};
-EXTERN S16 ssGetDBufOfSize ARGS((Region region, Size size, Buffer **dBuf));
+S16 ssGetDBufOfSize ARGS((Region region, Size size, Buffer **dBuf));
 #endif
 S16 rlcDlInitExt ARGS (( Void ));
 

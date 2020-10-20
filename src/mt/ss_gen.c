@@ -116,28 +116,28 @@ SsOs     osCp;           /* common OS control point */
 #endif
 
  
-EXTERN Cntr     cfgNumRegs;
-EXTERN SsRegCfg cfgRegInfo[SS_MAX_REGS];
+Cntr     cfgNumRegs;
+SsRegCfg cfgRegInfo[SS_MAX_REGS];
 
 
 /* ss029.103: modification: multiple procId related changes */ 
 #ifdef SS_MULTIPLE_PROCS
-/* PRIVATE functions */
-PRIVATE S16 SInsProcId ARGS((ProcId proc));
-PRIVATE S16 SRemProcId ARGS((ProcId proc));
-PRIVATE S16 SLockOsCp  ARGS((Void));
-PRIVATE S16 SULockOsCp ARGS((Void));
+/* static functions */
+static S16 SInsProcId ARGS((ProcId proc));
+static S16 SRemProcId ARGS((ProcId proc));
+static S16 SLockOsCp  ARGS((Void));
+static S16 SULockOsCp ARGS((Void));
 #endif /* SS_MULTIPLE_PROCS */
 
 #ifdef SSI_STATIC_MEM_LEAK_DETECTION
-PRIVATE void InitializeForStaticMemLeak ARGS((void));
-PRIVATE void InitializeStaticMemAllocInfo ARGS((StaticMemAllocInfo* memAllocInfo));
+static void InitializeForStaticMemLeak ARGS((void));
+static void InitializeStaticMemAllocInfo ARGS((StaticMemAllocInfo* memAllocInfo));
 U32 GetNextFreeIdx ARGS((StaticMemAllocInfo * memAllocInfo));
 void FreeIdx ARGS((U8* ptr, U32 idx, StaticMemAllocInfo* memAllocInfo,U32 size, char*
       file, U32 line));
 void LogForStaticMemLeak ARGS((StaticMemAllocInfo* memAllocInfo, char* file,
       U32 line, U32 size, void* ptr, U32 idx));
-PRIVATE void PrintStaticMemAllocInfo ARGS((StaticMemAllocInfo* memAllocInfo, FILE
+static void PrintStaticMemAllocInfo ARGS((StaticMemAllocInfo* memAllocInfo, FILE
       *opFile));
 #endif
 /* ss001.301: additions */
@@ -1133,12 +1133,12 @@ ProcId proc;
 *
 */
 #ifdef ANSI
-PRIVATE S16 SInsProcId
+static S16 SInsProcId
 (
 ProcId proc
 )
 #else
-PRIVATE S16 SInsProcId(proc)
+static S16 SInsProcId(proc)
 ProcId proc; 
 #endif
 {
@@ -1184,12 +1184,12 @@ ProcId proc;
 *
 */
 #ifdef ANSI
-PRIVATE S16 SRemProcId
+static S16 SRemProcId
 (
 ProcId proc
 )
 #else
-PRIVATE S16 SRemProcId(proc)
+static S16 SRemProcId(proc)
 ProcId proc; 
 #endif
 {
@@ -1235,12 +1235,12 @@ ProcId proc;
 *
 */
 #ifdef ANSI
-PRIVATE S16 SLockOsCp
+static S16 SLockOsCp
 (
 Void
 )
 #else
-PRIVATE S16 SLockOsCp(Void)
+static S16 SLockOsCp(Void)
 #endif
 {
    S16 ret;
@@ -1295,12 +1295,12 @@ PRIVATE S16 SLockOsCp(Void)
 *
 */
 #ifdef ANSI
-PRIVATE S16 SULockOsCp
+static S16 SULockOsCp
 (
 Void
 )
 #else
-PRIVATE S16 SULockOsCp(Void)
+static S16 SULockOsCp(Void)
 #endif
 {
    TRC1(SULockOsCp);

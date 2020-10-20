@@ -1604,38 +1604,38 @@ typedef U8  CmIpAddr6[16];   /* 16 byte IPV6 address */
 /* common packing functions */
 
 /* system services structures */
-EXTERN S16 cmPkDateTime ARGS((DateTime *dateTime, Buffer *mBuf));
-EXTERN S16 cmPkDuration ARGS((Duration *duration, Buffer *mBuf));
-EXTERN S16 oduPackPointer ARGS((PTR ptr, Buffer *mBuf));
-EXTERN S16 cmPkEntityId ARGS((EntityId *entityId, Buffer *mBuf));
-EXTERN S16 cmPkElmntId  ARGS((ElmntId  *elmntId,  Buffer *mBuf));
-EXTERN S16 cmPkMemoryId ARGS((MemoryId *memoryId, Buffer *mBuf));
+S16 cmPkDateTime ARGS((DateTime *dateTime, Buffer *mBuf));
+S16 cmPkDuration ARGS((Duration *duration, Buffer *mBuf));
+S16 oduPackPointer ARGS((PTR ptr, Buffer *mBuf));
+S16 cmPkEntityId ARGS((EntityId *entityId, Buffer *mBuf));
+S16 cmPkElmntId  ARGS((ElmntId  *elmntId,  Buffer *mBuf));
+S16 cmPkMemoryId ARGS((MemoryId *memoryId, Buffer *mBuf));
 
 /* general structures */
-EXTERN S16 cmPkSystemId ARGS((SystemId *systemId, Buffer *mBuf));
-EXTERN S16 cmPkAddrs    ARGS((Addrs    *addrs,    Buffer *mBuf));
-EXTERN S16 cmPkProtAddr ARGS((ProtAddr *protAddr, Buffer *mBuf));
-EXTERN S16 cmPkProtAddrTbl ARGS((ProtAddrTbl *protAddr, Buffer *mBuf));
-EXTERN S16 cmPkShrtAddrs ARGS((ShrtAddrs    *addrs,    Buffer *mBuf));
-EXTERN S16 cmPkAddrMask ARGS((U8    *mask,    Buffer *mBuf));
-EXTERN S16 cmPkBndCfg   ARGS((BndCfg   *bndCfg,   Buffer *mBuf));
-EXTERN S16 cmPkPst      ARGS((Pst      *pst,      Buffer *mBuf));
-EXTERN S16 cmPkElmtHdr  ARGS((ElmtHdr  *m,        Buffer *mBuf));
-EXTERN S16 cmPkTknU8    ARGS((TknU8    *tknU8,    Buffer *mBuf));
-EXTERN S16 cmPkTknS8    ARGS((TknS8    *tknS8,    Buffer *mBuf));
-EXTERN S16 cmPkTknU16   ARGS((TknU16   *tknU16,   Buffer *mBuf));
-EXTERN S16 cmPkTknU32   ARGS((TknU32   *tknU32,   Buffer *mBuf));
-EXTERN S16 cmPkTknStr   ARGS((TknStr   *tknStr,   Buffer *mBuf));                              
-EXTERN S16 cmPkTknStrM  ARGS((TknStrM  *tknStr,   Buffer *mBuf));
-EXTERN S16 cmPkTknStrS  ARGS((TknStrS  *tknStr,   Buffer *mBuf));
-EXTERN S16 cmPkTknStrE  ARGS((TknStrE  *tknStr,   Buffer *mBuf));
+S16 cmPkSystemId ARGS((SystemId *systemId, Buffer *mBuf));
+S16 cmPkAddrs    ARGS((Addrs    *addrs,    Buffer *mBuf));
+S16 cmPkProtAddr ARGS((ProtAddr *protAddr, Buffer *mBuf));
+S16 cmPkProtAddrTbl ARGS((ProtAddrTbl *protAddr, Buffer *mBuf));
+S16 cmPkShrtAddrs ARGS((ShrtAddrs    *addrs,    Buffer *mBuf));
+S16 cmPkAddrMask ARGS((U8    *mask,    Buffer *mBuf));
+S16 cmPkBndCfg   ARGS((BndCfg   *bndCfg,   Buffer *mBuf));
+S16 cmPkPst      ARGS((Pst      *pst,      Buffer *mBuf));
+S16 cmPkElmtHdr  ARGS((ElmtHdr  *m,        Buffer *mBuf));
+S16 cmPkTknU8    ARGS((TknU8    *tknU8,    Buffer *mBuf));
+S16 cmPkTknS8    ARGS((TknS8    *tknS8,    Buffer *mBuf));
+S16 cmPkTknU16   ARGS((TknU16   *tknU16,   Buffer *mBuf));
+S16 cmPkTknU32   ARGS((TknU32   *tknU32,   Buffer *mBuf));
+S16 cmPkTknStr   ARGS((TknStr   *tknStr,   Buffer *mBuf));                              
+S16 cmPkTknStrM  ARGS((TknStrM  *tknStr,   Buffer *mBuf));
+S16 cmPkTknStrS  ARGS((TknStrS  *tknStr,   Buffer *mBuf));
+S16 cmPkTknStrE  ARGS((TknStrE  *tknStr,   Buffer *mBuf));
 
-EXTERN S16 cmPkTknStr4   ARGS((TknStr4   *tknStr,   Buffer *mBuf));
-EXTERN S16 cmPkTknStr12  ARGS((TknStr12  *tknStr,   Buffer *mBuf));
-EXTERN S16 cmPkTknStr32  ARGS((TknStr32  *tknStr,   Buffer *mBuf));
-EXTERN S16 cmPkTknStr64  ARGS((TknStr64  *tknStr,   Buffer *mBuf));
-EXTERN S16 cmPkTknStr132 ARGS((TknStr132 *tknStr,   Buffer *mBuf));
-EXTERN S16 cmPkTknStr256 ARGS((TknStr256 *tknStr,   Buffer *mBuf));
+S16 cmPkTknStr4   ARGS((TknStr4   *tknStr,   Buffer *mBuf));
+S16 cmPkTknStr12  ARGS((TknStr12  *tknStr,   Buffer *mBuf));
+S16 cmPkTknStr32  ARGS((TknStr32  *tknStr,   Buffer *mBuf));
+S16 cmPkTknStr64  ARGS((TknStr64  *tknStr,   Buffer *mBuf));
+S16 cmPkTknStr132 ARGS((TknStr132 *tknStr,   Buffer *mBuf));
+S16 cmPkTknStr256 ARGS((TknStr256 *tknStr,   Buffer *mBuf));
 
  S16  cmPkTknS32    ARGS((TknS32 *tknS32, Buffer *mBuf));
  S16  cmPkTknOid    ARGS((TknOid *tknOid, Buffer *mBuf));
@@ -1646,48 +1646,48 @@ EXTERN S16 cmPkTknStr256 ARGS((TknStr256 *tknStr,   Buffer *mBuf));
 #endif
 
 /* layer management structures */
-EXTERN S16 cmPkHeader   ARGS((Header   *header,   Buffer *mBuf));
-EXTERN S16 cmPkSmCfg    ARGS((SmCfg    *smCfg,    Buffer *mBuf));
-EXTERN S16 cmPkTmrCfg   ARGS((TmrCfg   *tmrCfg,   Buffer *mBuf));
-EXTERN S16 cmPkCmStatus ARGS((CmStatus *status,   Buffer *mBuf));
-EXTERN S16 cmPkCmAlarm  ARGS((CmAlarm  *alrm,     Buffer *mBuf));
+S16 cmPkHeader   ARGS((Header   *header,   Buffer *mBuf));
+S16 cmPkSmCfg    ARGS((SmCfg    *smCfg,    Buffer *mBuf));
+S16 cmPkTmrCfg   ARGS((TmrCfg   *tmrCfg,   Buffer *mBuf));
+S16 cmPkCmStatus ARGS((CmStatus *status,   Buffer *mBuf));
+S16 cmPkCmAlarm  ARGS((CmAlarm  *alrm,     Buffer *mBuf));
 
 
 /* common unpacking functions */
 
 /* system services structures */
-EXTERN S16 cmUnpkDateTime ARGS((DateTime *dateTime, Buffer *mBuf));
-EXTERN S16 cmUnpkDuration ARGS((Duration *duration, Buffer *mBuf));
-EXTERN S16 oduUnpackPointer ARGS((PTR *ptr, Buffer *mBuf));
-EXTERN S16 cmUnpkEntityId ARGS((EntityId *entityId, Buffer *mBuf));
-EXTERN S16 cmUnpkElmntId  ARGS((ElmntId  *elmntId,  Buffer *mBuf));
-EXTERN S16 cmUnpkMemoryId ARGS((MemoryId *memoryId, Buffer *mBuf));
+S16 cmUnpkDateTime ARGS((DateTime *dateTime, Buffer *mBuf));
+S16 cmUnpkDuration ARGS((Duration *duration, Buffer *mBuf));
+S16 oduUnpackPointer ARGS((PTR *ptr, Buffer *mBuf));
+S16 cmUnpkEntityId ARGS((EntityId *entityId, Buffer *mBuf));
+S16 cmUnpkElmntId  ARGS((ElmntId  *elmntId,  Buffer *mBuf));
+S16 cmUnpkMemoryId ARGS((MemoryId *memoryId, Buffer *mBuf));
 
 /* general structures */
-EXTERN S16 cmUnpkSystemId ARGS((SystemId *systemId, Buffer *mBuf));
-EXTERN S16 cmUnpkAddrs    ARGS((Addrs    *addrs,    Buffer *mBuf));
-EXTERN S16 cmUnpkProtAddr ARGS((ProtAddr *protAddr, Buffer *mBuf));
-EXTERN S16 cmUnpkProtAddrTbl ARGS((ProtAddrTbl *protAddr, Buffer *mBuf));
-EXTERN S16 cmUnpkShrtAddrs ARGS((ShrtAddrs    *addrs,    Buffer *mBuf));
-EXTERN S16 cmUnpkAddrMask ARGS((U8    *mask,    Buffer *mBuf));
-EXTERN S16 cmUnpkBndCfg   ARGS((BndCfg   *bndCfg,   Buffer *mBuf));
-EXTERN S16 cmUnpkPst      ARGS((Pst      *pst,      Buffer *mBuf));
-EXTERN S16 cmUnpkElmtHdr  ARGS((ElmtHdr  *m,        Buffer *mBuf));
-EXTERN S16 cmUnpkTknU8    ARGS((TknU8    *tknU8,    Buffer *mBuf));
-EXTERN S16 cmUnpkTknS8    ARGS((TknS8    *tknS8,    Buffer *mBuf));
-EXTERN S16 cmUnpkTknU16   ARGS((TknU16   *tknU16,   Buffer *mBuf));
-EXTERN S16 cmUnpkTknU32   ARGS((TknU32   *tknU32,   Buffer *mBuf));
-EXTERN S16 cmUnpkTknStr   ARGS((TknStr   *tknStr,   Buffer *mBuf));                              
-EXTERN S16 cmUnpkTknStrM  ARGS((TknStrM  *tknStr,   Buffer *mBuf));
-EXTERN S16 cmUnpkTknStrS  ARGS((TknStrS  *tknStr,   Buffer *mBuf));
-EXTERN S16 cmUnpkTknStrE  ARGS((TknStrE  *tknStr,   Buffer *mBuf));
+S16 cmUnpkSystemId ARGS((SystemId *systemId, Buffer *mBuf));
+S16 cmUnpkAddrs    ARGS((Addrs    *addrs,    Buffer *mBuf));
+S16 cmUnpkProtAddr ARGS((ProtAddr *protAddr, Buffer *mBuf));
+S16 cmUnpkProtAddrTbl ARGS((ProtAddrTbl *protAddr, Buffer *mBuf));
+S16 cmUnpkShrtAddrs ARGS((ShrtAddrs    *addrs,    Buffer *mBuf));
+S16 cmUnpkAddrMask ARGS((U8    *mask,    Buffer *mBuf));
+S16 cmUnpkBndCfg   ARGS((BndCfg   *bndCfg,   Buffer *mBuf));
+S16 cmUnpkPst      ARGS((Pst      *pst,      Buffer *mBuf));
+S16 cmUnpkElmtHdr  ARGS((ElmtHdr  *m,        Buffer *mBuf));
+S16 cmUnpkTknU8    ARGS((TknU8    *tknU8,    Buffer *mBuf));
+S16 cmUnpkTknS8    ARGS((TknS8    *tknS8,    Buffer *mBuf));
+S16 cmUnpkTknU16   ARGS((TknU16   *tknU16,   Buffer *mBuf));
+S16 cmUnpkTknU32   ARGS((TknU32   *tknU32,   Buffer *mBuf));
+S16 cmUnpkTknStr   ARGS((TknStr   *tknStr,   Buffer *mBuf));                              
+S16 cmUnpkTknStrM  ARGS((TknStrM  *tknStr,   Buffer *mBuf));
+S16 cmUnpkTknStrS  ARGS((TknStrS  *tknStr,   Buffer *mBuf));
+S16 cmUnpkTknStrE  ARGS((TknStrE  *tknStr,   Buffer *mBuf));
 
-EXTERN S16 cmUnpkTknStr4   ARGS((TknStr4   *tknStr,   Buffer *mBuf));
-EXTERN S16 cmUnpkTknStr12  ARGS((TknStr12  *tknStr,   Buffer *mBuf));
-EXTERN S16 cmUnpkTknStr32  ARGS((TknStr32  *tknStr,   Buffer *mBuf));
-EXTERN S16 cmUnpkTknStr64  ARGS((TknStr64  *tknStr,   Buffer *mBuf));
-EXTERN S16 cmUnpkTknStr132 ARGS((TknStr132 *tknStr,   Buffer *mBuf));
-EXTERN S16 cmUnpkTknStr256 ARGS((TknStr256 *tknStr,   Buffer *mBuf));
+S16 cmUnpkTknStr4   ARGS((TknStr4   *tknStr,   Buffer *mBuf));
+S16 cmUnpkTknStr12  ARGS((TknStr12  *tknStr,   Buffer *mBuf));
+S16 cmUnpkTknStr32  ARGS((TknStr32  *tknStr,   Buffer *mBuf));
+S16 cmUnpkTknStr64  ARGS((TknStr64  *tknStr,   Buffer *mBuf));
+S16 cmUnpkTknStr132 ARGS((TknStr132 *tknStr,   Buffer *mBuf));
+S16 cmUnpkTknStr256 ARGS((TknStr256 *tknStr,   Buffer *mBuf));
 
  S16  cmUnpkTknS32  ARGS((TknS32 *tknS32, Buffer *mBuf));
  S16  cmUnpkTknOid  ARGS((TknOid *tknOid, Buffer *mBuf));
@@ -1698,11 +1698,11 @@ EXTERN S16 cmUnpkTknStr256 ARGS((TknStr256 *tknStr,   Buffer *mBuf));
 #endif
 
 /* layer management structures */
-EXTERN S16 cmUnpkHeader   ARGS((Header   *header,   Buffer *mBuf));
-EXTERN S16 cmUnpkSmCfg    ARGS((SmCfg    *smCfg,    Buffer *mBuf));
-EXTERN S16 cmUnpkTmrCfg   ARGS((TmrCfg   *tmrCfg,   Buffer *mBuf));
-EXTERN S16 cmUnpkCmStatus ARGS((CmStatus *status,   Buffer *mBuf));
-EXTERN S16 cmUnpkCmAlarm  ARGS((CmAlarm  *alrm,     Buffer *mBuf));
+S16 cmUnpkHeader   ARGS((Header   *header,   Buffer *mBuf));
+S16 cmUnpkSmCfg    ARGS((SmCfg    *smCfg,    Buffer *mBuf));
+S16 cmUnpkTmrCfg   ARGS((TmrCfg   *tmrCfg,   Buffer *mBuf));
+S16 cmUnpkCmStatus ARGS((CmStatus *status,   Buffer *mBuf));
+S16 cmUnpkCmAlarm  ARGS((CmAlarm  *alrm,     Buffer *mBuf));
 
 #endif /* CMFILE_REORG_1 */
 #if defined(XEON_SPECIFIC_CHANGES) || defined(INTEL_WLS)

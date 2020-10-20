@@ -270,7 +270,7 @@ uint8_t rlcUtlSendUlDataToDu(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *sdu)
 } /* rlcUtlSendUlDataToDu */
 
 
-PRIVATE Void dumpRLCUlRbInformation(RlcUlRbCb* ulRbCb)
+static Void dumpRLCUlRbInformation(RlcUlRbCb* ulRbCb)
 {
    if(ulRbCb->mode == CM_LTE_MODE_UM)
    {

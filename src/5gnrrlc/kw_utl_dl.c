@@ -78,14 +78,14 @@ static int RLOG_FILE_ID=209;
 #include "ss_rbuf.h"
 #include "ss_rbuf.x" 
 
-EXTERN SsRngBufCnt rngCb;
+SsRngBufCnt rngCb;
 
 #if (defined(MAC_RLC_HARQ_STA_RBUF) && defined(LTE_L2_MEAS))
 extern U32 isDatReqProcessed;
 #endif
 #define RLC_MODULE (RLC_DBGMASK_DUT | RLC_DBGMASK_DL) /* for debugging purpose */
 #if (defined(MAC_RLC_HARQ_STA_RBUF) && defined(LTE_L2_MEAS)) || defined (SS_RBUF)
-EXTERN void rlcUtlDlBatchProcHqStaInd ARGS ((Void));
+void rlcUtlDlBatchProcHqStaInd ARGS ((Void));
 #endif
 Void ResetRLCStats(Void)
 {
@@ -1080,14 +1080,14 @@ RlcTx   *pdu;
  *     - FALSE if all the data has been freed
  */
 #ifdef ANSI
-PRIVATE Bool rlcUtlFreeDlAmRbMemory
+static Bool rlcUtlFreeDlAmRbMemory
 (
 RlcCb       *gCb,
 RlcDlRbCb   *rbCb,
 U32        *toBeFreed
 )
 #else
-PRIVATE Bool rlcUtlFreeDlAmRbMemory(gCb, rbCb, toBeFreed)
+static Bool rlcUtlFreeDlAmRbMemory(gCb, rbCb, toBeFreed)
 RlcCb       *gCb;
 RlcDlRbCb   *rbCb;
 U32        *toBeFreed
@@ -2064,7 +2064,7 @@ U8             measType;
 } /* rlcUtlResetDlL2MeasInRlcRb */
 #endif
 
-PRIVATE Void dumpRLCDlRbInformation(RlcDlRbCb* dlRbCb)
+static Void dumpRLCDlRbInformation(RlcDlRbCb* dlRbCb)
 {
    if(dlRbCb->mode == CM_LTE_MODE_UM)
    {

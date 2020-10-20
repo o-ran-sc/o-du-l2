@@ -59,28 +59,28 @@ extern "C" {
  * @param spId SAP ID of the service provider.
  * @return ROK/RFAILED
  */
-EXTERN S16 PtLiTfuBndReq ARGS((Pst * pst, SuId suId, SpId spId));
+S16 PtLiTfuBndReq ARGS((Pst * pst, SuId suId, SpId spId));
 /** @brief This API is used to send a Bind Request from Scheduler to PHY.
  * @param pst Pointer to the post structure.
  * @param suId SAP ID of the service user.
  * @param spId SAP ID of the service provider.
  * @return ROK/RFAILED
  */
-EXTERN S16 PtLiTfuSchBndReq ARGS((Pst * pst, SuId suId, SpId spId));
+S16 PtLiTfuSchBndReq ARGS((Pst * pst, SuId suId, SpId spId));
 /** @brief This API is used to send an Unbind Request from MAC to PHY.
  * @param pst Pointer to the post structure.
  * @param suId SAP ID of the service provider.
  * @param reason Reason for Unbind request.
  * @return ROK/RFAILED
  */
-EXTERN S16 PtLiTfuUbndReq ARGS((Pst * pst, SpId spId, Reason reason));
+S16 PtLiTfuUbndReq ARGS((Pst * pst, SpId spId, Reason reason));
 /** @brief This API is used to send an Unbind Request from Scheduler to PHY.
  * @param pst Pointer to the post structure.
  * @param suId SAP ID of the service provider.
  * @param reason Reason for Unbind request.
  * @return ROK/RFAILED
  */
-EXTERN S16 PtLiTfuSchUbndReq ARGS((Pst * pst, SpId spId, Reason reason));
+S16 PtLiTfuSchUbndReq ARGS((Pst * pst, SpId spId, Reason reason));
 /** @brief This primitive is sent from Scheduler to PHY.
  * @details This primitive provides PHY with all the information required by 
  * PHY to decode transmissions from the UE on either PUCCH or PUSCH.
@@ -101,7 +101,7 @@ EXTERN S16 PtLiTfuSchUbndReq ARGS((Pst * pst, SpId spId, Reason reason));
  * @param recpReq Pointer to the TfuRecpReqInfo structure.
  * @return ROK/RFAILED
  */
-EXTERN S16 PtLiTfuRecpReq ARGS((Pst * pst, SpId spId, TfuRecpReqInfo * recpReq));
+S16 PtLiTfuRecpReq ARGS((Pst * pst, SpId spId, TfuRecpReqInfo * recpReq));
 /** @brief This Primitive is sent from Scheduler to PHY. It provides PHY with
   * all the control information
   * @details This primitive carries the information sent on the following
@@ -115,7 +115,7 @@ EXTERN S16 PtLiTfuRecpReq ARGS((Pst * pst, SpId spId, TfuRecpReqInfo * recpReq))
   * @param cntrlReq pointer to TfuCntrlReqInfo
   * @return ROK/RFAILED
   */
-EXTERN S16 PtLiTfuCntrlReq ARGS((Pst * pst, SpId spId, TfuCntrlReqInfo * cntrlReq));
+S16 PtLiTfuCntrlReq ARGS((Pst * pst, SpId spId, TfuCntrlReqInfo * cntrlReq));
 /** @brief This Primitive carries the Data PDUs from MAC to PHY for
   * transmission. 
   * @details The data being sent in this primitive is meant to be transmitted on
@@ -128,7 +128,7 @@ EXTERN S16 PtLiTfuCntrlReq ARGS((Pst * pst, SpId spId, TfuCntrlReqInfo * cntrlRe
   * @param tfuDatReq pointer to TfuDatReqInfo
   * @return 
   */
-EXTERN S16 PtLiTfuDatReq ARGS((Pst * pst, SpId spId, TfuDatReqInfo * datReq));
+S16 PtLiTfuDatReq ARGS((Pst * pst, SpId spId, TfuDatReqInfo * datReq));
 #ifdef L2_OPTMZ
 /** @brief This Primitive carries cellId and UeId for which datReq need to be deleted.
   * @details This primitive is used to send delDatReq to CL to delete the PDUs of
@@ -140,7 +140,7 @@ EXTERN S16 PtLiTfuDatReq ARGS((Pst * pst, SpId spId, TfuDatReqInfo * datReq));
   * @param tfuDelDatReq pointer to TfuDelDatReqInfo
   * @return
  */
-EXTERN S16 PtLiTfuDelDatReq ARGS((Pst * pst, SpId spId, TfuDelDatReqInfo * datReq));
+S16 PtLiTfuDelDatReq ARGS((Pst * pst, SpId spId, TfuDelDatReqInfo * datReq));
 #endif /*L2_OPTMZ*/
 #endif /*--#ifdef PTRGLITFU--*/
 
@@ -150,7 +150,7 @@ EXTERN S16 PtLiTfuDelDatReq ARGS((Pst * pst, SpId spId, TfuDelDatReqInfo * datRe
  * @param spId SAP ID of the service provider.
  * @return ROK/RFAILED
  */
-PRIVATE CONSTANT TfuBndReq RgLiTfuBndReqMt[RG_MAX_TFU_PROV] =
+static CONSTANT TfuBndReq RgLiTfuBndReqMt[RG_MAX_TFU_PROV] =
 {
 #ifdef LCRGLITFU
    cmPkTfuBndReq,
@@ -175,7 +175,7 @@ PRIVATE CONSTANT TfuBndReq RgLiTfuBndReqMt[RG_MAX_TFU_PROV] =
  * @param spId SAP ID of the service provider.
  * @return ROK/RFAILED
  */
-PRIVATE CONSTANT TfuSchBndReq RgLiTfuSchBndReqMt[RG_MAX_TFU_PROV] =
+static CONSTANT TfuSchBndReq RgLiTfuSchBndReqMt[RG_MAX_TFU_PROV] =
 {
 #ifdef LCRGLITFU
    cmPkTfuSchBndReq,
@@ -200,7 +200,7 @@ PRIVATE CONSTANT TfuSchBndReq RgLiTfuSchBndReqMt[RG_MAX_TFU_PROV] =
  * @param reason Reason for Unbind request.
  * @return ROK/RFAILED
  */
-PRIVATE CONSTANT TfuUbndReq RgLiTfuUbndReqMt[RG_MAX_TFU_PROV] =
+static CONSTANT TfuUbndReq RgLiTfuUbndReqMt[RG_MAX_TFU_PROV] =
 {
 #ifdef LCRGLITFU
    cmPkTfuUbndReq,
@@ -225,7 +225,7 @@ PRIVATE CONSTANT TfuUbndReq RgLiTfuUbndReqMt[RG_MAX_TFU_PROV] =
  * @param reason Reason for Unbind request.
  * @return ROK/RFAILED
  */
-PRIVATE CONSTANT TfuSchUbndReq RgLiTfuSchUbndReqMt[RG_MAX_TFU_PROV] =
+static CONSTANT TfuSchUbndReq RgLiTfuSchUbndReqMt[RG_MAX_TFU_PROV] =
 {
 #ifdef LCRGLITFU
    cmPkTfuSchUbndReq,
@@ -264,7 +264,7 @@ PRIVATE CONSTANT TfuSchUbndReq RgLiTfuSchUbndReqMt[RG_MAX_TFU_PROV] =
  * @param recpReq Pointer to the TfuRecpReqInfo structure.
  * @return ROK/RFAILED
  */
-PRIVATE CONSTANT TfuRecpReq RgLiTfuRecpReqMt[RG_MAX_TFU_PROV] =
+static CONSTANT TfuRecpReq RgLiTfuRecpReqMt[RG_MAX_TFU_PROV] =
 {
 #ifdef LCRGLITFU
    cmPkTfuRecpReq,
@@ -296,7 +296,7 @@ PRIVATE CONSTANT TfuRecpReq RgLiTfuRecpReqMt[RG_MAX_TFU_PROV] =
   * @param cntrlReq pointer to TfuCntrlReqInfo
   * @return ROK/RFAILED
   */
-PRIVATE CONSTANT TfuCntrlReq RgLiTfuCntrlReqMt[RG_MAX_TFU_PROV] =
+static CONSTANT TfuCntrlReq RgLiTfuCntrlReqMt[RG_MAX_TFU_PROV] =
 {
 #ifdef LCRGLITFU
    cmPkTfuCntrlReq,
@@ -327,7 +327,7 @@ PRIVATE CONSTANT TfuCntrlReq RgLiTfuCntrlReqMt[RG_MAX_TFU_PROV] =
   * @param tfuDatReq pointer to TfuDatReqInfo
   * @return 
   */
-PRIVATE CONSTANT TfuDatReq RgLiTfuDatReqMt[RG_MAX_TFU_PROV] =
+static CONSTANT TfuDatReq RgLiTfuDatReqMt[RG_MAX_TFU_PROV] =
 {
 #ifdef LCRGLITFU
    cmPkTfuDatReq,
@@ -358,7 +358,7 @@ PRIVATE CONSTANT TfuDatReq RgLiTfuDatReqMt[RG_MAX_TFU_PROV] =
   * @param tfuDelDatReq pointer to TfuDelDatReqInfo
   * @return 
   */
-PRIVATE CONSTANT TfuDelDatReq RgLiTfuDelDatReqMt[RG_MAX_TFU_PROV] =
+static CONSTANT TfuDelDatReq RgLiTfuDelDatReqMt[RG_MAX_TFU_PROV] =
 {
 #ifdef LCRGLITFU
    PtLiTfuDelDatReq, /*calling dummy api as LC not required for this privitive*/

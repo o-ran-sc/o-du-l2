@@ -70,7 +70,7 @@ static int RLOG_FILE_ID=201;
 extern U32 loadStart;
 #endif
 
-EXTERN S16 PjUiPjuDatInd(Pst* pst,SuId suId,CmLtePdcpId * pdcpId,Buffer *mBuf);
+S16 PjUiPjuDatInd(Pst* pst,SuId suId,CmLtePdcpId * pdcpId,Buffer *mBuf);
 #ifdef ANSI
 Void AddUeContext
 (

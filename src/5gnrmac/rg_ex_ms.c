@@ -73,13 +73,13 @@ registered with SSI during the LTE MAC Task initialization.
  *  @return  void
  **/
 #ifdef ANSI
-PRIVATE INLINE void rgHdlSMEvents
+static INLINE void rgHdlSMEvents
 (
 Pst     *pst,                       /* post structure       */
 Buffer  *mBuf                       /* message buffer       */
 )
 #else
-PRIVATE INLINE void rgHdlSMEvents(pst, mBuf)
+static INLINE void rgHdlSMEvents(pst, mBuf)
 Pst     *pst;                       /* post structure       */
 Buffer  *mBuf;                      /* message buffer       */
 #endif
@@ -152,13 +152,13 @@ Buffer  *mBuf;                      /* message buffer       */
  *  @return  void
  **/
 #ifdef ANSI
-PRIVATE INLINE void rgHdlNHEvents
+static INLINE void rgHdlNHEvents
 (
 Pst     *pst,                       /* post structure       */
 Buffer  *mBuf                       /* message buffer       */
 )
 #else
-PRIVATE INLINE void rgHdlNHEvents(pst, mBuf)
+static INLINE void rgHdlNHEvents(pst, mBuf)
 Pst     *pst;                       /* post structure       */
 Buffer  *mBuf;                      /* message buffer       */
 #endif
@@ -199,13 +199,13 @@ Buffer  *mBuf;                      /* message buffer       */
  *  @return  void
  **/
 #ifdef ANSI
-PRIVATE INLINE void rgHdlKWEvents
+static INLINE void rgHdlKWEvents
 (
 Pst     *pst,                       /* post structure       */
 Buffer  *mBuf                       /* message buffer       */
 )
 #else
-PRIVATE INLINE void rgHdlKWEvents(pst, mBuf)
+static INLINE void rgHdlKWEvents(pst, mBuf)
 Pst     *pst;                       /* post structure       */
 Buffer  *mBuf;                      /* message buffer       */
 #endif
@@ -256,13 +256,13 @@ Buffer  *mBuf;                      /* message buffer       */
  *  @return  void
  **/
 #ifdef ANSI
-PRIVATE INLINE void rgHdlTFEvents
+static INLINE void rgHdlTFEvents
 (
 Pst     *pst,                       /* post structure       */
 Buffer  *mBuf                       /* message buffer       */
 )
 #else
-PRIVATE INLINE void rgHdlTFEvents(pst, mBuf)
+static INLINE void rgHdlTFEvents(pst, mBuf)
 Pst     *pst;                       /* post structure       */
 Buffer  *mBuf;                      /* message buffer       */
 #endif
@@ -306,13 +306,13 @@ Buffer  *mBuf;                      /* message buffer       */
  *  @return  void
  **/
 #ifdef ANSI
-PRIVATE INLINE void rgHdlRGEvents
+static INLINE void rgHdlRGEvents
 (
 Pst     *pst,                       /* post structure       */
 Buffer  *mBuf                       /* message buffer       */
 )
 #else
-PRIVATE INLINE void rgHdlRGEvents(pst, mBuf)
+static INLINE void rgHdlRGEvents(pst, mBuf)
 Pst     *pst;                       /* post structure       */
 Buffer  *mBuf;                      /* message buffer       */
 #endif

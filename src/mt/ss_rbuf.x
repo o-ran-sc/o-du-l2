@@ -53,7 +53,7 @@ extern Void SRngIncrRIndx ARGS((U32 rngId));
 extern Void SRngIncrWIndx ARGS((U32 rngId));
 extern S16  isRngEmpty ARGS((U32 rngId));
 extern S16 SConnectSRngBuf ARGS((U32 id,  U32 rxEnt));
-EXTERN S16 SGetNumElemInRng ARGS(( U32 id));
+S16 SGetNumElemInRng ARGS(( U32 id));
 extern S16 SPrintSRngStats ARGS((Void));
 extern S16 pjBatchProc ARGS((Void));
 extern U32 ssRngBufStatus;
@@ -205,7 +205,7 @@ typedef struct
   Buffer* mBuf;
 } SsRngBufElem;
 
-EXTERN  SsRngBufTbl SsRngInfoTbl[SS_RNG_BUF_MAX];
+ SsRngBufTbl SsRngInfoTbl[SS_RNG_BUF_MAX];
 
 #if (defined (MAC_FREE_RING_BUF) || defined (RLC_FREE_RING_BUF))
 extern S16 mtAddBufToRing(SsRngBufId ringId,void *bufPtr,U8 freeType);

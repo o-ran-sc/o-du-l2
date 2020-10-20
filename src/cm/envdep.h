@@ -1205,20 +1205,6 @@ typedef INTERRPT Void (*PIF) ARGS((void )); /* pointer to interrupt function */
 #define PUBLIC
 #endif /* PUBLIC */
 
-#ifdef PRIVATE
-#undef PRIVATE
-#define PRIVATE       static      /* private is c static scope */
-#else /* not PRIVATE */
-#define PRIVATE       static      /* private is c static scope */
-#endif /* PRIVATE */
-
-#ifdef EXTERN
-#undef EXTERN
-#define EXTERN  extern
-#else /* not EXTERN */
-#define EXTERN  extern
-#endif /* EXTERN */
-
 
 #ifdef ANSI
 #define CONSTANT const            /* constant */
@@ -1329,25 +1315,25 @@ typedef INTERRPT Void (*PIF) ARGS((void )); /* pointer to interrupt function */
 #ifndef STDIO_INCLD
 
 #ifdef SUNOS41
-EXTERN  S8 *sprintf ARGS((S8 *buffer, CONSTANT S8 *format, /* args */ ...));
+ S8 *sprintf ARGS((S8 *buffer, CONSTANT S8 *format, /* args */ ...));
 #else
 #ifdef SUNOS51
 #else /* not SUNOS51 */
 #ifdef HPOS 
-EXTERN int sprintf ARGS((S8 *s, CONSTANT S8 *format, /* args */ ... ));
+int sprintf ARGS((S8 *s, CONSTANT S8 *format, /* args */ ... ));
 #else
 #ifdef _MCC68K
-EXTERN Void sprintf ARGS((S8 *outbuf, S8 *fmt, /* args */ ...)); /* td68k.x */
+Void sprintf ARGS((S8 *outbuf, S8 *fmt, /* args */ ...)); /* td68k.x */
 #else
 /* other os */
 #ifdef WIN32
-EXTERN  int sprintf ARGS((S8 *buffer,CONSTANT S8 *format, /* args */ ...)); 
+ int sprintf ARGS((S8 *buffer,CONSTANT S8 *format, /* args */ ...)); 
 #else
 #ifdef VW
-EXTERN  int sprintf ARGS((S8 *buffer,CONSTANT S8 *format, /* args */ ...)); 
+ int sprintf ARGS((S8 *buffer,CONSTANT S8 *format, /* args */ ...)); 
 #else
 #ifdef SS_PS
-EXTERN  int sprintf ARGS((S8 *buffer,CONSTANT S8 *format, /* args */ ...)); 
+ int sprintf ARGS((S8 *buffer,CONSTANT S8 *format, /* args */ ...)); 
 #endif /* SS_PS */
 #endif /* VW */
 #endif /* WIN32 */

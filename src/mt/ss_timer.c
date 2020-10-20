@@ -78,7 +78,7 @@
  * functions are enclosed in a union. 
  */
 #ifndef SS_MULTIPLE_PROCS
-PRIVATE S16 STmrRegHndlr ARGS((
+static S16 STmrRegHndlr ARGS((
          Ent ent,
          Inst inst,
          S16 period,
@@ -89,7 +89,7 @@ PRIVATE S16 STmrRegHndlr ARGS((
  * handled mtFlag in existing timer handlers. 
  */
 #else /* SS_MULTIPLE_PROCS */
-PRIVATE S16 STmrRegHndlr ARGS((
+static S16 STmrRegHndlr ARGS((
          ProcId proc,
          Ent ent,
          Inst inst,
@@ -101,7 +101,7 @@ PRIVATE S16 STmrRegHndlr ARGS((
 
 /* ss041.103 Declaration for STmrDeregHndlr */
 #ifndef SS_MULTIPLE_PROCS
-PRIVATE S16 STmrDeregHndlr ARGS((
+static S16 STmrDeregHndlr ARGS((
          Ent ent,
          Inst inst,
          S16 period,
@@ -112,7 +112,7 @@ PRIVATE S16 STmrDeregHndlr ARGS((
  * handled mtFlag in existing timer handlers.
  */
 #else /* SS_MULTIPLE_PROCS */
-PRIVATE S16 STmrDeregHndlr ARGS((
+static S16 STmrDeregHndlr ARGS((
          ProcId proc,
          Ent ent,
          Inst inst,
@@ -298,7 +298,7 @@ PAIFTMRS16 tmrFnctMt;       /* timer function, typically SActvTmr */
 #ifndef SS_MULTIPLE_PROCS
 
 #ifdef ANSI
-PRIVATE S16 STmrRegHndlr
+static S16 STmrRegHndlr
 (
 Ent ent,                    /* entity */
 Inst inst,                  /* instance */
@@ -307,7 +307,7 @@ S16 units,                  /* period units */
 SsTmrActvFn ssTmrActvFn               /* timer function, typically SActvTmr */
 )
 #else
-PRIVATE S16 STmrRegHndlr(ent, inst, period, units, ssTmrActvFn)
+static S16 STmrRegHndlr(ent, inst, period, units, ssTmrActvFn)
 Ent ent;                    /* entity */
 Inst inst;                  /* instance */
 S16 period;                 /* period */
@@ -321,7 +321,7 @@ SsTmrActvFn ssTmrActvFn;              /* timer function, typically SActvTmr */
 #else /* SS_MULTIPLE_PROCS */
 
 #ifdef ANSI
-PRIVATE S16 STmrRegHndlr
+static S16 STmrRegHndlr
 (
 ProcId proc,                /* processor */
 Ent ent,                    /* entity */
@@ -331,7 +331,7 @@ S16 units,                  /* period units */
 SsTmrActvFn ssTmrActvFn     /* timer function */
 )
 #else
-PRIVATE S16 STmrRegHndlr(proc, ent, inst, period, units, ssTmrActvFn)
+static S16 STmrRegHndlr(proc, ent, inst, period, units, ssTmrActvFn)
 ProcId proc;                /* processor */
 Ent ent;                    /* entity */
 Inst inst;                  /* instance */
@@ -770,7 +770,7 @@ PAIFTMRS16 tmrFnctMt;              /* timer function */
  */
 #ifndef SS_MULTIPLE_PROCS
 #ifdef ANSI
-PRIVATE S16 STmrDeregHndlr
+static S16 STmrDeregHndlr
 (
 Ent ent,                    /* entity */
 Inst inst,                  /* instance */
@@ -782,7 +782,7 @@ SsTmrActvFn ssTmrActvFn           /* timer function */
 /* ss017.301: Modified the prototype of STmrDeregHndlr for Non-ANSI
  * compilation.
  */
-PRIVATE S16 STmrDeregHndlr(ent, inst, period, units, ssTmrActvFn)
+static S16 STmrDeregHndlr(ent, inst, period, units, ssTmrActvFn)
 Ent ent;                    /* entity */
 Inst inst;                  /* instance */
 S16 period;                 /* period */
@@ -796,7 +796,7 @@ SsTmrActvFn ssTmrActvFn;          /* timer function */
 #else /* SS_MULTIPLE_PROCS */
 
 #ifdef ANSI
-PRIVATE S16 STmrDeregHndlr
+static S16 STmrDeregHndlr
 (
 ProcId proc,                /* processor */
 Ent ent,                    /* entity */
@@ -806,7 +806,7 @@ S16 units,                  /* period units */
 SsTmrActvFn ssTmrActvFn          /* timer function */
 )
 #else
-PRIVATE S16 STmrDeregHndlr(proc, ent, inst, period, units, ssTmrActvFn)
+static S16 STmrDeregHndlr(proc, ent, inst, period, units, ssTmrActvFn)
 ProcId proc;                /* processor */
 Ent ent;                    /* entity */
 Inst inst;                  /* instance */

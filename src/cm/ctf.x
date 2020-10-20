@@ -1393,7 +1393,7 @@ typedef S16 (*CtfUeIdChgCfm) ARGS((
  *  -# RFAILED on failure
  *
 */
-EXTERN S16 TfUiCtfBndReq ARGS((
+S16 TfUiCtfBndReq ARGS((
    Pst*                 pst,
    SuId                 suId,
    SpId                 spId
@@ -1425,7 +1425,7 @@ EXTERN S16 TfUiCtfBndReq ARGS((
  * -# RFAILED 
  *
 */
-EXTERN S16 TfUiCtfBndCfm ARGS((
+S16 TfUiCtfBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    U8                   status
@@ -1449,7 +1449,7 @@ EXTERN S16 TfUiCtfBndCfm ARGS((
  * -# RFAILED
  *
 */
-EXTERN S16 TfUiCtfUbndReq ARGS((
+S16 TfUiCtfUbndReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    Reason               reason
@@ -1481,7 +1481,7 @@ EXTERN S16 TfUiCtfUbndReq ARGS((
  *  -# RFAILED
  *
 */
-EXTERN S16 TfUiCtfCfgReq ARGS((
+S16 TfUiCtfCfgReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    CtfCfgTransId        transId,
@@ -1512,7 +1512,7 @@ EXTERN S16 TfUiCtfCfgReq ARGS((
  *    -# RFAILED
  *
 */
-EXTERN S16 TfUiCtfCfgCfm ARGS((
+S16 TfUiCtfCfgCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    CtfCfgTransId        transId,
@@ -1539,7 +1539,7 @@ EXTERN S16 TfUiCtfCfgCfm ARGS((
  *  -# RFAILED
  *
 */
-EXTERN S16 TfUiCtfCnmCellSyncReq ARGS((
+S16 TfUiCtfCnmCellSyncReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    CtfCfgTransId *      transId,
@@ -1570,7 +1570,7 @@ EXTERN S16 TfUiCtfCnmCellSyncReq ARGS((
  *    -# RFAILED
  *
 */
-EXTERN S16 TfUiCtfCnmCellSyncRsp ARGS((
+S16 TfUiCtfCnmCellSyncRsp ARGS((
    Pst*                 pst,
    SuId                 suId,
    CtfCfgTransId  *     transId,
@@ -1597,7 +1597,7 @@ EXTERN S16 TfUiCtfCnmCellSyncRsp ARGS((
  *  -# RFAILED
  *
 */
-EXTERN S16 TfUiCtfCnmInitSyncReq ARGS((
+S16 TfUiCtfCnmInitSyncReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    CtfCfgTransId *      transId,
@@ -1628,7 +1628,7 @@ EXTERN S16 TfUiCtfCnmInitSyncReq ARGS((
  *    -# RFAILED
  *
 */
-EXTERN S16 TfUiCtfCnmInitSyncRsp ARGS((
+S16 TfUiCtfCnmInitSyncRsp ARGS((
    Pst*                 pst,
    SuId                 suId,
    CtfCfgTransId  *     transId,
@@ -1659,7 +1659,7 @@ EXTERN S16 TfUiCtfCnmInitSyncRsp ARGS((
  *    -# RFAILED
  *
 */
-EXTERN S16 TfUiCtfCnmCellSyncInd ARGS((
+S16 TfUiCtfCnmCellSyncInd ARGS((
    Pst*                 pst,
    SuId                 suId,
    CtfCfgTransId  *     transId,
@@ -1683,7 +1683,7 @@ EXTERN S16 TfUiCtfCnmCellSyncInd ARGS((
  *  -# RFAILED
  *
 */
-EXTERN S16 TfUiCtfUeIdChgReq ARGS((
+S16 TfUiCtfUeIdChgReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    CtfCfgTransId        transId,
@@ -1716,7 +1716,7 @@ EXTERN S16 TfUiCtfUeIdChgReq ARGS((
  *
 */
 /** UE ID Change Confirm from PHY to User. */
-EXTERN S16 TfUiCtfUeIdChgCfm ARGS((
+S16 TfUiCtfUeIdChgCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    CtfCfgTransId        transId,
@@ -1727,41 +1727,41 @@ EXTERN S16 TfUiCtfUeIdChgCfm ARGS((
 
 #ifdef NH
 /* Request from User to PHY to Bind the CTF interface SAPs. */
-EXTERN S16 NhLiCtfBndReq ARGS((
+S16 NhLiCtfBndReq ARGS((
    Pst*                 pst,
    SuId                 suId,
    SpId                 spId
 ));
 /* Confirmation from PHY to User for the Bind/Unbind 
  * Request for the CTF interface SAP. */
-EXTERN S16 NhLiCtfBndCfm ARGS((
+S16 NhLiCtfBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    U8                   status
 ));
 /* Request from User to PHY to Unbind the CTF interface SAP. */
-EXTERN S16 NhLiCtfUbndReq ARGS((
+S16 NhLiCtfUbndReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    Reason               reason
 ));
 /* Configuration Request from User to PHY for 
  * cell or dedicated configuration. */
-EXTERN S16 NhLiCtfCfgReq ARGS((
+S16 NhLiCtfCfgReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    CtfCfgTransId        transId,
    CtfCfgReqInfo*       cfgReqInfo
 ));
 /* Configuration Confirm from PHY to User. */
-EXTERN S16 NhLiCtfCfgCfm ARGS((
+S16 NhLiCtfCfgCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    CtfCfgTransId        transId,
    U8                   status 
 ));
 /** UE ID Change Request from User to PHY. */
-EXTERN S16 NhLiCtfUeIdChgReq ARGS((
+S16 NhLiCtfUeIdChgReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    CtfCfgTransId        transId,
@@ -1769,7 +1769,7 @@ EXTERN S16 NhLiCtfUeIdChgReq ARGS((
    CtfUeInfo *          newUeInfo
 ));
 /** UE ID Change Confirm from PHY to user. */
-EXTERN S16 NhLiCtfUeIdChgCfm ARGS((
+S16 NhLiCtfUeIdChgCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    CtfCfgTransId        transId,
@@ -1780,13 +1780,13 @@ EXTERN S16 NhLiCtfUeIdChgCfm ARGS((
 
 #ifdef LCCTF
 /* Request from User to PHY to Bind the CTF interface SAP. */
-EXTERN S16 cmPkCtfBndReq ARGS((
+S16 cmPkCtfBndReq ARGS((
    Pst*                 pst,
    SuId                 suId,
    SpId                 spId
 ));
 /* Request from User to PHY to Bind the CTF interface SAP. */
-EXTERN S16 cmUnpkCtfBndReq ARGS((
+S16 cmUnpkCtfBndReq ARGS((
    CtfBndReq            func,
    Pst*                 pst,
    Buffer               *mBuf
@@ -1794,7 +1794,7 @@ EXTERN S16 cmUnpkCtfBndReq ARGS((
 /* Confirmation from PHY to user for the Bind/Unbind 
  * Request for the CTF interface SAP.
 */
-EXTERN S16 cmPkCtfBndCfm ARGS((
+S16 cmPkCtfBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    U8                   status
@@ -1802,19 +1802,19 @@ EXTERN S16 cmPkCtfBndCfm ARGS((
 /* Confirmation from PHY to User for the Bind/Unbind 
  * Request for the CTF interface SAP.
 */
-EXTERN S16 cmUnpkCtfBndCfm ARGS((
+S16 cmUnpkCtfBndCfm ARGS((
    CtfBndCfm            func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 /* Request from User to PHY to Unbind the CTF interface SAP. */
-EXTERN S16 cmPkCtfUbndReq ARGS((
+S16 cmPkCtfUbndReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    Reason               reason
 ));
 /* Request from User to PHY to Unbind the interface SAPs. */
-EXTERN S16 cmUnpkCtfUbndReq ARGS((
+S16 cmUnpkCtfUbndReq ARGS((
    CtfUbndReq           func,
    Pst*                 pst,
    Buffer               *mBuf
@@ -1823,66 +1823,66 @@ EXTERN S16 cmUnpkCtfUbndReq ARGS((
  * cell or dedicated configuration. 
 */
 /* Cnm Start */
-EXTERN S16 cmPkCtfCnmCellSyncReq ARGS((
+S16 cmPkCtfCnmCellSyncReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    CtfCfgTransId  *     transId,
    CtfCnmCellSyncReq *  ctfCnmCellSyncreq 
 ));
 
-EXTERN S16 cmUnpkCnmCellSyncReq ARGS((
+S16 cmUnpkCnmCellSyncReq ARGS((
    CtfCnmCellSyncReqMsg func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 
-EXTERN S16 cmPkCtfCnmCellSyncRsp ARGS((
+S16 cmPkCtfCnmCellSyncRsp ARGS((
    Pst*                 pst,
    SpId                 spId,
    CtfCfgTransId  *     transId,
    CtfCnmCellSyncRsp *  ctfCnmCellSyncrsp 
 ));
 
-EXTERN S16 cmUnpkCnmCellSyncRsp ARGS((
+S16 cmUnpkCnmCellSyncRsp ARGS((
    CtfCnmCellSyncRspMsg func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 
 
-EXTERN S16 cmPkCtfCnmCellSyncInd ARGS((
+S16 cmPkCtfCnmCellSyncInd ARGS((
    Pst*                 pst,
    SpId                 spId,
    CtfCfgTransId  *     transId,
    CtfCnmCellSyncInd *  ctfCnmCellSyncind
 ));
 
-EXTERN S16 cmUnpkCnmCellSyncInd ARGS((
+S16 cmUnpkCnmCellSyncInd ARGS((
    CtfCnmCellSyncIndMsg func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 
-EXTERN S16 cmPkCtfCnmInitSyncReq ARGS((
+S16 cmPkCtfCnmInitSyncReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    CtfCfgTransId  *     transId,
    CtfCnmInitSyncReq *  ctfCnmInitSyncreq
 ));
-EXTERN S16 cmUnpkCnmInitSyncReq ARGS((
+S16 cmUnpkCnmInitSyncReq ARGS((
    CtfCnmInitSyncReqMsg func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 
-EXTERN S16 cmPkCtfCnmInitSyncRsp ARGS((
+S16 cmPkCtfCnmInitSyncRsp ARGS((
    Pst*                 pst,
    SpId                 spId,
    CtfCfgTransId  *     transId,
    CtfCnmInitSyncRsp *  ctfCnmInitSyncrsp
 ));
 
-EXTERN S16 cmUnpkCnmInitSyncRsp ARGS((
+S16 cmUnpkCnmInitSyncRsp ARGS((
    CtfCnmInitSyncRspMsg func,
    Pst*                 pst,
    Buffer               *mBuf
@@ -1891,7 +1891,7 @@ EXTERN S16 cmUnpkCnmInitSyncRsp ARGS((
 
 /* Cnm End */
 #ifdef TENB_AS_SECURITY
-EXTERN S16 cmPkCtfKdfReq ARGS((
+S16 cmPkCtfKdfReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    CtfCfgTransId        transId,
@@ -1900,13 +1900,13 @@ EXTERN S16 cmPkCtfKdfReq ARGS((
 /* Configuration Request from User to PHY for 
  * cell or dedicated configuration.
 */
-EXTERN S16 cmUnpkCtfKdfReq ARGS((
+S16 cmUnpkCtfKdfReq ARGS((
    CtfKdfReq            func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 /* Configuration Confirm from PHY to User. */
-EXTERN S16 cmPkCtfkdfCfm ARGS((
+S16 cmPkCtfkdfCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    CtfCfgTransId        transId,
@@ -1914,14 +1914,14 @@ EXTERN S16 cmPkCtfkdfCfm ARGS((
    U8                   status
 ));
 /* Configuration Confirm from PHY to User. */
-EXTERN S16 cmUnpkCtfKdfCfm ARGS((
+S16 cmUnpkCtfKdfCfm ARGS((
    CtfKdfCfm            func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 
 #endif
-EXTERN S16 cmPkCtfCfgReq ARGS((
+S16 cmPkCtfCfgReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    CtfCfgTransId        transId,
@@ -1930,38 +1930,38 @@ EXTERN S16 cmPkCtfCfgReq ARGS((
 /* Configuration Request from User to PHY for 
  * cell or dedicated configuration.
 */
-EXTERN S16 cmUnpkCtfCfgReq ARGS((
+S16 cmUnpkCtfCfgReq ARGS((
    CtfCfgReq            func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 /* Configuration Confirm from PHY to User. */
-EXTERN S16 cmPkCtfCfgCfm ARGS((
+S16 cmPkCtfCfgCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    CtfCfgTransId        transId,
    U8                   status
 ));
 /* ENB-STOP Indication from PHY to User. */
-EXTERN S16 cmPkCtfEnbStopInd ARGS((
+S16 cmPkCtfEnbStopInd ARGS((
    Pst*                 pst,
    SuId                 suId,
    CtfCfgTransId        transId
 ));
 /* Configuration Confirm from PHY to User. */
-EXTERN S16 cmUnpkCtfCfgCfm ARGS((
+S16 cmUnpkCtfCfgCfm ARGS((
    CtfCfgCfm            func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 /* unpack ENB-STOP Indication from PHY to User. */
-EXTERN S16 cmUnpkCtfEnbStopInd ARGS((
+S16 cmUnpkCtfEnbStopInd ARGS((
    CtfEnbStopInd        func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 /** UE ID Change Request from User to PHY. */
-EXTERN S16 cmPkCtfUeIdChgReq ARGS((
+S16 cmPkCtfUeIdChgReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    CtfCfgTransId        transId,
@@ -1969,13 +1969,13 @@ EXTERN S16 cmPkCtfUeIdChgReq ARGS((
    CtfUeInfo *          newUeInfo
 ));
 /** UE ID Change Request from User to PHY. */
-EXTERN S16 cmUnpkCtfUeIdChgReq ARGS((
+S16 cmUnpkCtfUeIdChgReq ARGS((
    CtfUeIdChgReq        func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 /** UE ID Change Confirm from PHY to User. */
-EXTERN S16 cmPkCtfUeIdChgCfm ARGS((
+S16 cmPkCtfUeIdChgCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    CtfCfgTransId        transId,
@@ -1983,7 +1983,7 @@ EXTERN S16 cmPkCtfUeIdChgCfm ARGS((
    CmStatus             status
 ));
 /** UE ID Change Confirm from PHY to User. */
-EXTERN S16 cmUnpkCtfUeIdChgCfm ARGS((
+S16 cmUnpkCtfUeIdChgCfm ARGS((
    CtfUeIdChgCfm        func,
    Pst*                 pst,
    Buffer               *mBuf
@@ -1997,35 +1997,35 @@ typedef S16 (*CtfPerRemCellSrchRsp) ARGS((
    CtfCfgTransId*                transId,
    CtfPeriodicRemCellSearchRsp*  sniffCellRsp));
 
-EXTERN S16 cmUnpkPerRemCellSrchRsp ARGS ((
+S16 cmUnpkPerRemCellSrchRsp ARGS ((
    CtfPerRemCellSrchRsp  func,
    Pst*                  pst,
    Buffer                *mBuf
 ));
 
-EXTERN S16 cmUnpkCtfPerRemCellSrch ARGS ((
+S16 cmUnpkCtfPerRemCellSrch ARGS ((
 CtfPeriodicRemCellSearchRsp *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkCtfPerRemScanCellInfo ARGS ((
+S16 cmUnpkCtfPerRemScanCellInfo ARGS ((
 CtfPeriodicRemCellInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkCtfPeriodicCellSearchRsp ARGS ((
+S16 cmPkCtfPeriodicCellSearchRsp ARGS ((
 CtfPeriodicRemCellSearchRsp *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkCtfPeriodicRemCellSearchRsp ARGS ((
+S16 cmPkCtfPeriodicRemCellSearchRsp ARGS ((
 Pst* pst,
 SpId spId,
 CtfCfgTransId *transId,
 CtfPeriodicRemCellSearchRsp *CellCfgRsp
 ));
 
-EXTERN S16 cmPkPerRemScanCellInfo ARGS ((
+S16 cmPkPerRemScanCellInfo ARGS ((
 CtfPeriodicRemCellInfo *param,
 Buffer *mBuf
 ));
@@ -2035,7 +2035,7 @@ Buffer *mBuf
 
 #ifdef DM
 /* Request from User to PHY to Bind the CTF interface SAP. */
-EXTERN S16 DmUiCtfBndReq ARGS((
+S16 DmUiCtfBndReq ARGS((
    Pst*                 pst,
    SuId                 suId,
    SpId                 spId
@@ -2043,13 +2043,13 @@ EXTERN S16 DmUiCtfBndReq ARGS((
 /* Confirmation from PHY to User for the Bind/Unbind 
  * Request for the CTF interface SAP.
 */
-EXTERN S16 DmUiCtfBndCfm ARGS((
+S16 DmUiCtfBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    U8                   status
 ));
 /* Request from User to PHY to Unbind the CTF interface SAP. */
-EXTERN S16 DmUiCtfUbndReq ARGS((
+S16 DmUiCtfUbndReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    Reason               reason
@@ -2057,21 +2057,21 @@ EXTERN S16 DmUiCtfUbndReq ARGS((
 /* Configuration Request from User to PHY for 
  * cell or dedicated configuration.
 */
-EXTERN S16 DmUiCtfCfgReq ARGS((
+S16 DmUiCtfCfgReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    CtfCfgTransId        transId,
    CtfCfgReqInfo*       cfgReqInfo
 ));
 /* Configuration Confirm from PHY to User. */
-EXTERN S16 DmUiCtfCfgCfm ARGS((
+S16 DmUiCtfCfgCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    CtfCfgTransId        transId,
    U8                   status
 ));
 /** UE ID Change Request from User to PHY. */
-EXTERN S16 DmUiCtfUeIdChgReq ARGS((
+S16 DmUiCtfUeIdChgReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    CtfCfgTransId        transId,
@@ -2079,7 +2079,7 @@ EXTERN S16 DmUiCtfUeIdChgReq ARGS((
    CtfUeInfo *          newUeInfo
 ));
 /** UE ID Change Confirm from PHY to user. */
-EXTERN S16 DmUiCtfUeIdChgCfm ARGS((
+S16 DmUiCtfUeIdChgCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    CtfCfgTransId        transId,
@@ -2092,303 +2092,303 @@ EXTERN S16 DmUiCtfUeIdChgCfm ARGS((
  *                      PACK/UNPACK FUNCTIONS
  ****************************************************************************/
 #ifdef LCCTF
-EXTERN S16 cmPkCtfCfgTransId ARGS((
+S16 cmPkCtfCfgTransId ARGS((
    CtfCfgTransId        *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCtfCfgTransId ARGS((
+S16 cmUnpkCtfCfgTransId ARGS((
    CtfCfgTransId        *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCtfUeInfo ARGS((
+S16 cmPkCtfUeInfo ARGS((
    CtfUeInfo            *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCtfUeInfo ARGS((
+S16 cmUnpkCtfUeInfo ARGS((
    CtfUeInfo            *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCtfBwCfgInfo ARGS((
+S16 cmPkCtfBwCfgInfo ARGS((
    CtfBwCfgInfo         *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCtfBwCfgInfo ARGS((
+S16 cmUnpkCtfBwCfgInfo ARGS((
    CtfBwCfgInfo         *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCtfTxSchemeCfg ARGS((
+S16 cmPkCtfTxSchemeCfg ARGS((
    CtfTxSchemeCfg       *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCtfTxSchemeCfg ARGS((
+S16 cmUnpkCtfTxSchemeCfg ARGS((
    CtfTxSchemeCfg       *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCtfAntennaCfgInfo ARGS((
+S16 cmPkCtfAntennaCfgInfo ARGS((
    CtfAntennaCfgInfo    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCtfAntennaCfgInfo ARGS((
+S16 cmUnpkCtfAntennaCfgInfo ARGS((
    CtfAntennaCfgInfo    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCtfPrachCfgInfo ARGS((
+S16 cmPkCtfPrachCfgInfo ARGS((
    CtfPrachCfgInfo      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCtfPrachCfgInfo ARGS((
+S16 cmUnpkCtfPrachCfgInfo ARGS((
    CtfPrachCfgInfo      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCtfPdschCfgInfo ARGS((
+S16 cmPkCtfPdschCfgInfo ARGS((
    CtfPdschCfgInfo      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCtfPdschCfgInfo ARGS((
+S16 cmUnpkCtfPdschCfgInfo ARGS((
    CtfPdschCfgInfo      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCtfPuschCfgBasic ARGS((
+S16 cmPkCtfPuschCfgBasic ARGS((
    CtfPuschCfgBasic     *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCtfPuschCfgBasic ARGS((
+S16 cmUnpkCtfPuschCfgBasic ARGS((
    CtfPuschCfgBasic     *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCtfPuschUlRS ARGS((
+S16 cmPkCtfPuschUlRS ARGS((
    CtfPuschUlRS         *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCtfPuschUlRS ARGS((
+S16 cmUnpkCtfPuschUlRS ARGS((
    CtfPuschUlRS         *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCtfPuschCfgInfo ARGS((
+S16 cmPkCtfPuschCfgInfo ARGS((
    CtfPuschCfgInfo      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCtfPuschCfgInfo ARGS((
+S16 cmUnpkCtfPuschCfgInfo ARGS((
    CtfPuschCfgInfo      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCtfPhichCfgInfo ARGS((
+S16 cmPkCtfPhichCfgInfo ARGS((
    CtfPhichCfgInfo      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCtfPhichCfgInfo ARGS((
+S16 cmUnpkCtfPhichCfgInfo ARGS((
    CtfPhichCfgInfo      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCtfPucchCfgInfo ARGS((
+S16 cmPkCtfPucchCfgInfo ARGS((
    CtfPucchCfgInfo      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCtfPucchCfgInfo ARGS((
+S16 cmUnpkCtfPucchCfgInfo ARGS((
    CtfPucchCfgInfo      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCtfSrsUlCfgInfo ARGS((
+S16 cmPkCtfSrsUlCfgInfo ARGS((
    CtfSrsUlCfgInfo      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCtfSrsUlCfgInfo ARGS((
+S16 cmUnpkCtfSrsUlCfgInfo ARGS((
    CtfSrsUlCfgInfo      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCtfTddSfCfgInfo ARGS((
+S16 cmPkCtfTddSfCfgInfo ARGS((
    CtfTddSfCfgInfo      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCtfTddSfCfgInfo ARGS((
+S16 cmUnpkCtfTddSfCfgInfo ARGS((
    CtfTddSfCfgInfo      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCtfCellCfgInfo ARGS((
+S16 cmPkCtfCellCfgInfo ARGS((
    CtfCellCfgInfo       *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCtfCellCfgInfo ARGS((
+S16 cmUnpkCtfCellCfgInfo ARGS((
    CtfCellCfgInfo       *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCtfCellRecfgInfo ARGS((
+S16 cmPkCtfCellRecfgInfo ARGS((
    CtfCellRecfgInfo     *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCtfCellRecfgInfo ARGS((
+S16 cmUnpkCtfCellRecfgInfo ARGS((
    CtfCellRecfgInfo     *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCtfDedPdschCfgInfo ARGS((
+S16 cmPkCtfDedPdschCfgInfo ARGS((
    CtfDedPdschCfgInfo   *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCtfDedPdschCfgInfo ARGS((
+S16 cmUnpkCtfDedPdschCfgInfo ARGS((
    CtfDedPdschCfgInfo   *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCtfDedPucchCfgInfo ARGS((
+S16 cmPkCtfDedPucchCfgInfo ARGS((
    CtfDedPucchCfgInfo   *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCtfDedPucchCfgInfo ARGS((
+S16 cmUnpkCtfDedPucchCfgInfo ARGS((
    CtfDedPucchCfgInfo   *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCtfDedPuschCfgInfo ARGS((
+S16 cmPkCtfDedPuschCfgInfo ARGS((
    CtfDedPuschCfgInfo   *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCtfDedPuschCfgInfo ARGS((
+S16 cmUnpkCtfDedPuschCfgInfo ARGS((
    CtfDedPuschCfgInfo   *param,
    Buffer               *mBuf
 ));
 #ifndef TFU_UPGRADE
-EXTERN S16 cmPkCtfCqiRptModePeriodic ARGS((
+S16 cmPkCtfCqiRptModePeriodic ARGS((
    CtfCqiRptModePeriodic *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCtfCqiRptModePeriodic ARGS((
+S16 cmUnpkCtfCqiRptModePeriodic ARGS((
    CtfCqiRptModePeriodic *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCtfCqiReportCfgInfo ARGS((
+S16 cmPkCtfCqiReportCfgInfo ARGS((
    CtfCqiReportCfgInfo  *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCtfCqiReportCfgInfo ARGS((
+S16 cmUnpkCtfCqiReportCfgInfo ARGS((
    CtfCqiReportCfgInfo  *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCtfDedSrsUlCfgInfo ARGS((
+S16 cmPkCtfDedSrsUlCfgInfo ARGS((
    CtfDedSrsUlCfgInfo   *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCtfDedSrsUlCfgInfo ARGS((
+S16 cmUnpkCtfDedSrsUlCfgInfo ARGS((
    CtfDedSrsUlCfgInfo   *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCtfDedSRCfgInfo ARGS((
+S16 cmPkCtfDedSRCfgInfo ARGS((
    CtfDedSRCfgInfo      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCtfDedSRCfgInfo ARGS((
+S16 cmUnpkCtfDedSRCfgInfo ARGS((
    CtfDedSRCfgInfo      *param,
    Buffer               *mBuf
 ));
 #endif /* TFU_UPGRADE */
-EXTERN S16 cmPkCtfDedAntCfgInfo ARGS((
+S16 cmPkCtfDedAntCfgInfo ARGS((
    CtfDedAntCfgInfo     *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCtfDedAntCfgInfo ARGS((
+S16 cmUnpkCtfDedAntCfgInfo ARGS((
    CtfDedAntCfgInfo     *param,
    Buffer               *mBuf
 ));
 
-EXTERN S16 cmPkCtfUeSecCellCfgInfo ARGS((
+S16 cmPkCtfUeSecCellCfgInfo ARGS((
 CtfUeSecCellCfgInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkCtfSecCellCfgInfo ARGS((
+S16 cmPkCtfSecCellCfgInfo ARGS((
 CtfSecCellCfgInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkCtfUeSecCellCfgInfo ARGS((
+S16 cmUnpkCtfUeSecCellCfgInfo ARGS((
 CtfUeSecCellCfgInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkCtfSecCellCfgInfo ARGS((
+S16 cmUnpkCtfSecCellCfgInfo ARGS((
 CtfSecCellCfgInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkCtfUeCatCfgInfo ARGS((
+S16 cmPkCtfUeCatCfgInfo ARGS((
    CtfUeCatCfgInfo      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCtfUeCatCfgInfo ARGS((
+S16 cmUnpkCtfUeCatCfgInfo ARGS((
    CtfUeCatCfgInfo      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCtfDedCfgInfo ARGS((
+S16 cmPkCtfDedCfgInfo ARGS((
    CtfDedCfgInfo        *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCtfDedCfgInfo ARGS((
+S16 cmUnpkCtfDedCfgInfo ARGS((
    CtfDedCfgInfo        *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCtfDedRecfgInfo ARGS((
+S16 cmPkCtfDedRecfgInfo ARGS((
    CtfDedRecfgInfo      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCtfDedRecfgInfo ARGS((
+S16 cmUnpkCtfDedRecfgInfo ARGS((
    CtfDedRecfgInfo      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCtfCellReleaseInfo ARGS((
+S16 cmPkCtfCellReleaseInfo ARGS((
    CtfCellReleaseInfo   *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCtfCellReleaseInfo ARGS((
+S16 cmUnpkCtfCellReleaseInfo ARGS((
    CtfCellReleaseInfo   *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCtfDedReleaseInfo ARGS((
+S16 cmPkCtfDedReleaseInfo ARGS((
    CtfDedReleaseInfo    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCtfDedReleaseInfo ARGS((
+S16 cmUnpkCtfDedReleaseInfo ARGS((
    CtfDedReleaseInfo    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCtfCfgInfo ARGS((
+S16 cmPkCtfCfgInfo ARGS((
    CtfCfgInfo           *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCtfCfgInfo ARGS((
+S16 cmUnpkCtfCfgInfo ARGS((
    CtfCfgInfo           *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCtfReCfgInfo ARGS((
+S16 cmPkCtfReCfgInfo ARGS((
    CtfReCfgInfo         *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCtfReCfgInfo ARGS((
+S16 cmUnpkCtfReCfgInfo ARGS((
    CtfReCfgInfo         *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCtfReleaseInfo ARGS((
+S16 cmPkCtfReleaseInfo ARGS((
    CtfReleaseInfo       *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCtfReleaseInfo ARGS((
+S16 cmUnpkCtfReleaseInfo ARGS((
    CtfReleaseInfo       *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCtfCfgReqInfo ARGS((
+S16 cmPkCtfCfgReqInfo ARGS((
    CtfCfgReqInfo        *param,
    Buffer               *mBuf
 ));
 /* ctf_x_001.main_4: Added support for vendor specific parameters */
-EXTERN S16 cmUnpkCtfCfgReqInfo ARGS((
+S16 cmUnpkCtfCfgReqInfo ARGS((
    Pst                  *pst,
    CtfCfgReqInfo        *param,
    Buffer               *mBuf
 ));
 
 #ifdef CTF_VER3
-EXTERN S16 cmPkCtfVendorSpecParams ARGS((
+S16 cmPkCtfVendorSpecParams ARGS((
    CtfVendorSpecific *param,
    Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkCtfVendorSpecParams ARGS((
+S16 cmUnpkCtfVendorSpecParams ARGS((
     Pst*                 pst,
     CtfVendorSpecific *param,
     Buffer *mBuf
@@ -2396,101 +2396,101 @@ EXTERN S16 cmUnpkCtfVendorSpecParams ARGS((
 #endif /* CTF_VER3*/
 
 /* Starts - Fix for CR ccpu00123185 */
-EXTERN S16 cmPkCtfCellPwrcfgInfo ARGS((
+S16 cmPkCtfCellPwrcfgInfo ARGS((
 
     CtfCellRecfgInfo *param,
     Buffer *mBuf
 ));
 
-EXTERN S16 cmPkCtfCellStop ARGS((
+S16 cmPkCtfCellStop ARGS((
     CtfCellRecfgInfo *param,
     Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkCtfCellPwrcfgInfo ARGS((
+S16 cmUnpkCtfCellPwrcfgInfo ARGS((
     CtfCellRecfgInfo *param,
     Buffer *mBuf
 ));
-EXTERN S16 cmUnpkCtfCellStop ARGS((
+S16 cmUnpkCtfCellStop ARGS((
     CtfCellRecfgInfo *param,
     Buffer *mBuf
 ));
 /* Ends - Fix for CR ccpu00123185 */
 #ifdef TENB_AS_SECURITY
-EXTERN S16 cmPkCtfNhKeyInfo ARGS(
+S16 cmPkCtfNhKeyInfo ARGS(
 (
 CtfNhKeyInfo *param,
 Buffer *mBuf
 ));
-EXTERN S16 cmPkCtfKenbStarInfo ARGS(
+S16 cmPkCtfKenbStarInfo ARGS(
 (
 CtfKenbStarInfo *param,
 Buffer *mBuf
 ));
-EXTERN S16 cmPkCtfAskeyInfo ARGS(
+S16 cmPkCtfAskeyInfo ARGS(
 (
 CtfAsKeyInfo *param,
 Buffer *mBuf
 ));
-EXTERN S16 cmPkCtfKdfReqInfo ARGS(
+S16 cmPkCtfKdfReqInfo ARGS(
 (
 CtfKdfReqInfo *param,
 Buffer *mBuf
  ));
-EXTERN S16 cmPkCtfKdfReq ARGS(
+S16 cmPkCtfKdfReq ARGS(
 (
 Pst* pst,
 SpId spId,
 CtfCfgTransId transId,
 CtfKdfReqInfo* kdfReqInfo
 ));
-EXTERN S16 cmUnpkCtfNhKeyInfo ARGS(
+S16 cmUnpkCtfNhKeyInfo ARGS(
 (
 CtfNhKeyInfo *param,
 Buffer *mBuf
 ));
-EXTERN S16 cmUnpkCtfKenbStarInfo ARGS(
+S16 cmUnpkCtfKenbStarInfo ARGS(
 (
 CtfKenbStarInfo *param,
 Buffer *mBuf
 ));
-EXTERN S16 cmUnpkCtfAskeyInfo ARGS(
+S16 cmUnpkCtfAskeyInfo ARGS(
 (
 CtfAsKeyInfo *param,
 Buffer *mBuf
 ));
-EXTERN S16 cmUnpkCtfKdfReqInfo ARGS(
+S16 cmUnpkCtfKdfReqInfo ARGS(
 (
 CtfKdfReqInfo *param,
 Buffer *mBuf
  ));
-EXTERN S16 cmUnpkCtfKdfReq ARGS(
+S16 cmUnpkCtfKdfReq ARGS(
 (
 CtfKdfReq func,
 Pst *pst,
 Buffer *mBuf
 ));
-EXTERN S16 cmPkCtfNhKeyCfmInfo ARGS(
+S16 cmPkCtfNhKeyCfmInfo ARGS(
 (
 CtfNhKeyCfmInfo *param,
 Buffer *mBuf
 ));
-EXTERN S16 cmPkCtfKenbStarCfmInfo ARGS(
+S16 cmPkCtfKenbStarCfmInfo ARGS(
 (
 CtfKenbStarCfmInfo *param,
 Buffer *mBuf
 ));
-EXTERN S16 cmPkCtfAskeyCfmInfo ARGS(
+S16 cmPkCtfAskeyCfmInfo ARGS(
 (
 CtfAskeyCfmInfo *param,
 Buffer *mBuf
 ));
-EXTERN S16 cmPkCtfKdfCfmInfo ARGS(
+S16 cmPkCtfKdfCfmInfo ARGS(
 (
 CtfKdfCfmInfo *param,
 Buffer *mBuf
  ));
-EXTERN S16 cmPkCtfKdfCfm ARGS(
+S16 cmPkCtfKdfCfm ARGS(
 (
 Pst* pst,
 SuId suId,
@@ -2498,27 +2498,27 @@ CtfCfgTransId transId,
 CtfKdfCfmInfo *kdfCfmInfo,
 U8 status
 ));
-EXTERN S16 cmUnpkCtfNhKeyCfmInfo ARGS(
+S16 cmUnpkCtfNhKeyCfmInfo ARGS(
 (
 CtfNhKeyCfmInfo *param,
 Buffer *mBuf
 ));
-EXTERN S16 cmUnpkCtfKenbStarCfmInfo ARGS(
+S16 cmUnpkCtfKenbStarCfmInfo ARGS(
 (
 CtfKenbStarCfmInfo *param,
 Buffer *mBuf
 ));
-EXTERN S16 cmUnpkCtfAskeyCfmInfo ARGS(
+S16 cmUnpkCtfAskeyCfmInfo ARGS(
 (
 CtfAskeyCfmInfo *param,
 Buffer *mBuf
 ));
-EXTERN S16 cmUnpkCtfKdfCfmInfo ARGS(
+S16 cmUnpkCtfKdfCfmInfo ARGS(
 (
 CtfKdfCfmInfo *param,
 Buffer *mBuf
 ));
-EXTERN S16 cmUnpkCtfKdfCfm ARGS(
+S16 cmUnpkCtfKdfCfm ARGS(
 (
 CtfKdfCfm func,
 Pst *pst,
@@ -2527,152 +2527,152 @@ Buffer *mBuf
 #endif
 #endif /* LCCTF */
 
-EXTERN S16 UrUiCtfHandleSnfMsgs ARGS((
+S16 UrUiCtfHandleSnfMsgs ARGS((
 Pst*                 pst,
 Buffer*              mBuf
 ));
 
-EXTERN S16 cmPkCtfCnmVendorSpecificInfo ARGS((
+S16 cmPkCtfCnmVendorSpecificInfo ARGS((
 CtfCnmVendorSpecificInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkCtfCtfCnmCellSyncReq ARGS((
+S16 cmPkCtfCtfCnmCellSyncReq ARGS((
 CtfCnmCellSyncReq *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkCtfCnmVendorSpecificInfo ARGS((
+S16 cmUnpkCtfCnmVendorSpecificInfo ARGS((
 CtfCnmVendorSpecificInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkCtfCtfCnmCellSyncReq ARGS((
+S16 cmUnpkCtfCtfCnmCellSyncReq ARGS((
 CtfCnmCellSyncReq *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkCtfCnmCellSyncReq ARGS((
+S16 cmPkCtfCnmCellSyncReq ARGS((
 Pst* pst,
 SpId spId,
 CtfCfgTransId *transId,
 CtfCnmCellSyncReq * cfgReqInfo
 ));
 
-EXTERN S16 cmUnpkCtfCnmCellSyncReq ARGS((
+S16 cmUnpkCtfCnmCellSyncReq ARGS((
 CtfCnmCellSyncReqMsg func,
 Pst *pst,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkCtfCnmInitSyncReq ARGS((
+S16 cmPkCtfCnmInitSyncReq ARGS((
 Pst* pst,
 SpId spId,
 CtfCfgTransId *transId,
 CtfCnmInitSyncReq * cfgReqInfo
 ));
 
-EXTERN S16 cmUnpkCtfCnmInitSyncReq ARGS((
+S16 cmUnpkCtfCnmInitSyncReq ARGS((
 CtfCnmInitSyncReqMsg func,
 Pst *pst,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkCtfctfCnmMibInfo ARGS((
+S16 cmPkCtfctfCnmMibInfo ARGS((
 CtfCnmMibInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkCtfctfCnmInitSyncInfo ARGS((
+S16 cmPkCtfctfCnmInitSyncInfo ARGS((
 CtfCnmInitSyncInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkCtfCnmInitSyncRsp ARGS((
+S16 cmPkCtfCnmInitSyncRsp ARGS((
 Pst* pst,
 SpId spId,
 CtfCfgTransId *transId,
 CtfCnmInitSyncRsp * cfgRspInfo
 ));
 
-EXTERN S16 cmUnpkCtfctfCnmMibInfo ARGS((
+S16 cmUnpkCtfctfCnmMibInfo ARGS((
 CtfCnmMibInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkctfCnmInitSyncInfo ARGS(( 
+S16 cmUnpkctfCnmInitSyncInfo ARGS(( 
 CtfCnmInitSyncInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkCtfCnmInitSyncRspMsg ARGS((
+S16 cmUnpkCtfCnmInitSyncRspMsg ARGS((
 CtfCnmInitSyncRsp *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkCtfCnmInitSyncRsp ARGS((
+S16 cmUnpkCtfCnmInitSyncRsp ARGS((
 CtfCnmInitSyncRspMsg func,
 Pst *pst,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkCtfCnmCellSyncRsp ARGS((
+S16 cmPkCtfCnmCellSyncRsp ARGS((
 Pst* pst,
 SpId spId,
 CtfCfgTransId *transId,
 CtfCnmCellSyncRsp * cfgRspInfo
 ));
 
-EXTERN S16 cmUnpkCtfCnmSyncRspMsg ARGS((
+S16 cmUnpkCtfCnmSyncRspMsg ARGS((
 CtfCnmCellSyncRsp *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkCtfCnmCellSyncRsp ARGS((
+S16 cmUnpkCtfCnmCellSyncRsp ARGS((
 CtfCnmCellSyncRspMsg func,
 Pst *pst,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkCtfCnmCellSyncInd ARGS(( 
+S16 cmPkCtfCnmCellSyncInd ARGS(( 
 Pst* pst,
 SpId spId,
 CtfCfgTransId *transId,
 CtfCnmCellSyncInd * cfgIndInfo
 ));
 
-EXTERN S16 cmUnpkCtfCnmSyncIndMsg ARGS(( 
+S16 cmUnpkCtfCnmSyncIndMsg ARGS(( 
 CtfCnmCellSyncInd *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkCtfCnmCellSyncInd ARGS((
+S16 cmUnpkCtfCnmCellSyncInd ARGS((
 CtfCnmCellSyncIndMsg func,
 Pst *pst,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkCtfcfgReqInfo ARGS((
+S16 cmPkCtfcfgReqInfo ARGS((
 CtfCnmInitSyncReq *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkCtfsyncReqInfo ARGS((
+S16 cmUnpkCtfsyncReqInfo ARGS((
 CtfCnmInitSyncReq *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkCtfcfgRspInfo ARGS((
+S16 cmPkCtfcfgRspInfo ARGS((
 CtfCnmInitSyncRsp *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkCtfCellSyncRsp ARGS((
+S16 cmPkCtfCellSyncRsp ARGS((
 CtfCnmCellSyncRsp *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkCtfcfgIndInfo ARGS((
+S16 cmPkCtfcfgIndInfo ARGS((
 CtfCnmCellSyncInd *param,
 Buffer *mBuf
 ));
