@@ -2365,7 +2365,7 @@
 #define GetTIMETICK() 0
 #endif
 #ifdef PHY_SHUTDOWN_ENABLE
-#define stop_printf(...) do {EXTERN U8 sndPhyShutDwn;printf(__VA_ARGS__); mtStopHndlr(); sndPhyShutDwn = 1;} while (0)
+#define stop_printf(...) do {U8 sndPhyShutDwn;printf(__VA_ARGS__); mtStopHndlr(); sndPhyShutDwn = 1;} while (0)
 #else
 #define stop_printf(...) do {printf(__VA_ARGS__); mtStopHndlr(); exit(-1);} while (0)
 #endif

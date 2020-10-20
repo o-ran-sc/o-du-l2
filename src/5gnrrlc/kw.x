@@ -88,7 +88,7 @@ typedef struct _rlcStats
    UMRLCStats   umRlcStats;
 }RLCStats;
 
-EXTERN RLCStats gRlcStats;
+RLCStats gRlcStats;
 
 /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
@@ -613,10 +613,10 @@ typedef struct rlcCb
    uint8_t    dlSduId;   /*!< Downlink SDU ID */
 }RlcCb;
 
-EXTERN RlcCb *rlcCb[MAX_RLC_INSTANCES];   /*!< RLC global control block */
+RlcCb *rlcCb[MAX_RLC_INSTANCES];   /*!< RLC global control block */
 
 /****************************************************************************
- *                      EXTERN Declarations
+ *                      Declarations
  ***************************************************************************/
 S16 rlcGetSId ARGS((SystemId *s));
 

@@ -75,7 +75,7 @@ static int RLOG_FILE_ID=196;
 #include "rlc_mac_inf.h"
 
 #ifdef __cplusplus
-EXTERN "C" {
+extern "C" {
 #endif /* __cplusplus */
 
 

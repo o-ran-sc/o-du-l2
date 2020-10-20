@@ -55,13 +55,13 @@
 #include "rg.x"
 #ifdef LTE_ADV
 #include "rg_pom_scell.x"
-PRIVATE S16 rgPomVldtSCellDedLchCfg ARGS((
+static S16 rgPomVldtSCellDedLchCfg ARGS((
             Inst                       inst,
             RgPrgUeSCellLchAddInfo     *lcCfg,
             RgCellCb                   **cell,
             RgUeCb                     **ue
           ));
-PRIVATE S16 rgPomUeSCellDedLcCfg ARGS((RgCellCb                   *cell,
+static S16 rgPomUeSCellDedLcCfg ARGS((RgCellCb                   *cell,
                                        RgUeCb                     *ue,
                                        RgPrgUeSCellLchAddInfo     *lcCfg
                                      ));
@@ -695,7 +695,7 @@ RgPrgUeSCellLchAddInfo   *lcCfg;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE S16 rgPomVldtSCellDedLchCfg
+static S16 rgPomVldtSCellDedLchCfg
 (
 Inst                       inst, 
 RgPrgUeSCellLchAddInfo     *lcCfg,
@@ -703,7 +703,7 @@ RgCellCb                   **cell,
 RgUeCb                     **ue
 )
 #else
-PRIVATE S16 rgPomVldtSCellDedLchCfg(inst,lcCfg, cell, ue)
+static S16 rgPomVldtSCellDedLchCfg(inst,lcCfg, cell, ue)
 Inst                       inst;
 RgPrgUeSCellLchAddInfo     *lcCfg;
 RgCellCb                   **cell;
@@ -801,14 +801,14 @@ RgUeCb                     **ue;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE S16 rgPomUeSCellDedLcCfg
+static S16 rgPomUeSCellDedLcCfg
 (
 RgCellCb                   *cell,
 RgUeCb                     *ue,
 RgPrgUeSCellLchAddInfo     *lcCfg
 )
 #else
-PRIVATE S16 rgPomUeSCellDedLcCfg(cell, ue, lcCfg)
+static S16 rgPomUeSCellDedLcCfg(cell, ue, lcCfg)
 RgCellCb                   *cell;
 RgUeCb                     *ue;
 RgPrgUeSCellLchAddInfo     *lcCfg;

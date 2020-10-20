@@ -32,7 +32,7 @@
 #define __CM_LTE_H__
 
 #ifdef __cplusplus
-EXTERN "C" {
+extern "C" {
 #endif  /*__cplusplus*/
 
 /** @file cm_lte.h

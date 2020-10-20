@@ -62,12 +62,12 @@ static const char* RLOG_MODULE_NAME="MAC";
 static int RLOG_MODULE_ID=4096;
 static int RLOG_FILE_ID=166;
 
-PRIVATE S16 rgSchL2mInsertMeasCb ARGS((
+static S16 rgSchL2mInsertMeasCb ARGS((
          RgSchCellCb       *cell,
          RgSchL2MeasCb     *measCb,
          LrgSchMeasReqInfo *measInfo ));
 
-PRIVATE RgSchL2MeasCb * rgSchL2mAllocMeasCb ARGS((
+static RgSchL2MeasCb * rgSchL2mAllocMeasCb ARGS((
          RgSchCellCb       *cell,
          LrgSchMeasReqInfo *measInfo,
          RgSchErrInfo      err));
@@ -414,14 +414,14 @@ LrgSchMeasReqInfo *measInfo;
  *      -# RFAILED 
  */
 #ifdef ANSI
-PRIVATE S16 rgSchL2mInsertMeasCb
+static S16 rgSchL2mInsertMeasCb
 (
 RgSchCellCb       *cell,
 RgSchL2MeasCb     *measCb,
 LrgSchMeasReqInfo *measInfo
 )
 #else
-PRIVATE S16 rgSchL2mInsertMeasCb(cell, measCb, measInfo)
+static S16 rgSchL2mInsertMeasCb(cell, measCb, measInfo)
 RgSchCellCb       *cell;
 RgSchL2MeasCb     *measCb;
 LrgSchMeasReqInfo *measInfo;
@@ -476,12 +476,12 @@ LrgSchMeasReqInfo *measInfo;
  * @param  [in] RgSchCellCb       *cell
  */
 #ifdef ANSI
-PRIVATE Void rgSchL2CalDlPrbCount
+static Void rgSchL2CalDlPrbCount
 (
 RgSchCellCb       *cell
 )
 #else
-PRIVATE Void rgSchL2CalDlPrbCount(cell)
+static Void rgSchL2CalDlPrbCount(cell)
 RgSchCellCb       *cell;
 #endif
 {
@@ -520,12 +520,12 @@ RgSchCellCb       *cell;
  * @param  [in] RgSchCellCb       *cell
  */
 #ifdef ANSI
-PRIVATE Void rgSchL2CalUlPrbCount
+static Void rgSchL2CalUlPrbCount
 (
 RgSchCellCb       *cell
 )
 #else
-PRIVATE Void rgSchL2CalUlPrbCount(cell)
+static Void rgSchL2CalUlPrbCount(cell)
 RgSchCellCb       *cell;
 #endif
 {
@@ -562,14 +562,14 @@ RgSchCellCb       *cell;
  * @return  RgSchL2MeasCb *
  */
 #ifdef ANSI
-PRIVATE RgSchL2MeasCb * rgSchL2mAllocMeasCb
+static RgSchL2MeasCb * rgSchL2mAllocMeasCb
 (
 RgSchCellCb       *cell,
 LrgSchMeasReqInfo *measInfo,
 RgSchErrInfo      err
 )
 #else
-PRIVATE RgSchL2MeasCb * rgSchL2mAllocMeasCb(cell, measInfo, err)
+static RgSchL2MeasCb * rgSchL2mAllocMeasCb(cell, measInfo, err)
 RgSchCellCb       *cell;
 LrgSchMeasReqInfo *measInfo;
 RgSchErrInfo      err;
@@ -644,7 +644,7 @@ RgSchErrInfo      err;
                 "Allocation of RgSchL2MeasCb failed");
        return RFAILED;
    }
-   /*cmMemcpy((U8 *)&measCb->measReq, (CONSTANT U8 *)measInfo,\
+   /*cmMemcpy((U8 *)&measCb->measReq, (const U8 *)measInfo,\
              sizeof(LrgSchMeasReqInfo));*/
    rgSchL2mInsertMeasCb(cell, measCb, measInfo);
   

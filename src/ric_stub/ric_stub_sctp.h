@@ -54,8 +54,8 @@ typedef struct
    CmInetNetAddr         destIpNetAddr;    /* DU Ip address */ 
 }CuSctpDestCb;
 
-EXTERN S16 sctpActvInit();
-EXTERN S16 sctpSend(Buffer *mBuf);
+S16 sctpActvInit();
+S16 sctpSend(Buffer *mBuf);
 S16 sctpCfgReq();
 S16 sctpStartReq();
 S16 sctpSetSockOpts(CmInetFd *sock_Fd);

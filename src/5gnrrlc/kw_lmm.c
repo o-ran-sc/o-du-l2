@@ -79,23 +79,23 @@ RLCStats gRlcStats;
  *             Forward Declaration of LKW Porting Functions
  ********************************************************************/
 RlcCb *rlcCb[MAX_RLC_INSTANCES];
-EXTERN S16 rlcActvTmr ARGS ((Ent ent, Inst inst));
+S16 rlcActvTmr ARGS ((Ent ent, Inst inst));
 
-PRIVATE Void rlcLmmSendCfm ARGS ((RlcCb *gCb,Pst *pst,RlcMngmt *cfm,U8 type,
+static Void rlcLmmSendCfm ARGS ((RlcCb *gCb,Pst *pst,RlcMngmt *cfm,U8 type,
                                  Header *hdr));
-PRIVATE S16 rlcLmmGenCfg ARGS ((RlcCb *gCb, RlcGenCfg *cfg));
-PRIVATE S16 rlcLmmCfgKwuSap ARGS ((RlcCb *gCb,RlcSapCfg *cfg));
-PRIVATE S16 rlcLmmCfgUdxSap ARGS ((RlcCb *gCb,RlcSapCfg *cfg));
-PRIVATE S16 rlcLmmCfgCkwSap ARGS ((RlcCb *gCb,RlcSapCfg   *cfg));
-PRIVATE S16 rlcLmmCfgRguSap ARGS ((RlcCb *gCb,RlcSapCfg   *cfg));
-PRIVATE S16 rlcLmmGenCntrl ARGS ((RlcCb *gCb,RlcMngmt *cntrl));
-PRIVATE S16 rlcLmmUdxSapCntrl ARGS ((RlcCb *gCb,RlcMngmt *cntrl));
-PRIVATE S16 rlcLmmLSapCntrl ARGS ((RlcCb *gCb,RlcMngmt *cntrl));
-PRIVATE S16 rlcLmmGetKwuSapSta ARGS ((RlcCb *gCb,RlcKwuSapSta *sta));
-PRIVATE S16 rlcLmmGetRguSapSta ARGS ((RlcCb *gCb,RlcRguSapSta *sta));
-PRIVATE S16 rlcLmmGetCkwCntSapSta ARGS ((RlcCb *gCb,RlcCkwCntSapSta *sta));
-PRIVATE S16 rlcLmmGetGenSts ARGS ((RlcCb *gCb,RlcGenSts *sts,Action action));
-PRIVATE S16 rlcLmmGetSapSts ARGS ((RlcCb *gCb,RlcMngmt *sts,Elmnt elmnt,Action 
+static S16 rlcLmmGenCfg ARGS ((RlcCb *gCb, RlcGenCfg *cfg));
+static S16 rlcLmmCfgKwuSap ARGS ((RlcCb *gCb,RlcSapCfg *cfg));
+static S16 rlcLmmCfgUdxSap ARGS ((RlcCb *gCb,RlcSapCfg *cfg));
+static S16 rlcLmmCfgCkwSap ARGS ((RlcCb *gCb,RlcSapCfg   *cfg));
+static S16 rlcLmmCfgRguSap ARGS ((RlcCb *gCb,RlcSapCfg   *cfg));
+static S16 rlcLmmGenCntrl ARGS ((RlcCb *gCb,RlcMngmt *cntrl));
+static S16 rlcLmmUdxSapCntrl ARGS ((RlcCb *gCb,RlcMngmt *cntrl));
+static S16 rlcLmmLSapCntrl ARGS ((RlcCb *gCb,RlcMngmt *cntrl));
+static S16 rlcLmmGetKwuSapSta ARGS ((RlcCb *gCb,RlcKwuSapSta *sta));
+static S16 rlcLmmGetRguSapSta ARGS ((RlcCb *gCb,RlcRguSapSta *sta));
+static S16 rlcLmmGetCkwCntSapSta ARGS ((RlcCb *gCb,RlcCkwCntSapSta *sta));
+static S16 rlcLmmGetGenSts ARGS ((RlcCb *gCb,RlcGenSts *sts,Action action));
+static S16 rlcLmmGetSapSts ARGS ((RlcCb *gCb,RlcMngmt *sts,Elmnt elmnt,Action 
                                   action));
 
 
@@ -123,13 +123,13 @@ PRIVATE S16 rlcLmmGetSapSts ARGS ((RlcCb *gCb,RlcMngmt *sts,Elmnt elmnt,Action
  *    LCM_REASON_HASHING_FAILED
  */
 #ifdef ANSI
-PRIVATE S16 rlcLmmGenCfg
+static S16 rlcLmmGenCfg
 (
 RlcCb       *gCb,
 RlcGenCfg   *cfg
 )
 #else
-PRIVATE S16 rlcLmmGenCfg(gCB,cfg)
+static S16 rlcLmmGenCfg(gCB,cfg)
 RlcCb       *gCb;
 RlcGenCfg   *cfg;
 #endif
@@ -425,7 +425,7 @@ RlcGenCfg   *cfg;
  *     -# ROK
  */
 #ifdef ANSI
-PRIVATE Void rlcLmmSendCfm
+static Void rlcLmmSendCfm
 (
 RlcCb      *gCb,
 Pst       *pst,                
@@ -434,7 +434,7 @@ U8        type,
 Header    *hdr              
 )
 #else
-PRIVATE Void rlcLmmSendCfm(gCb,pst, cfm, type, hdr)
+static Void rlcLmmSendCfm(gCb,pst, cfm, type, hdr)
 RlcCb      gCb;
 Pst       *pst;            
 RlcMngmt   *cfm;           
@@ -1338,13 +1338,13 @@ U8             measType;
  *    -# LCM_REASON_RECONFIG_FAIL 
  */
 #ifdef ANSI
-PRIVATE S16 rlcLmmCfgKwuSap
+static S16 rlcLmmCfgKwuSap
 (
 RlcCb       *gCb,
 RlcSapCfg   *cfg                
 )
 #else
-PRIVATE S16 rlcLmmCfgKwuSap(gCb,cfg)
+static S16 rlcLmmCfgKwuSap(gCb,cfg)
 RlcCb       *gCb;
 RlcSapCfg   *cfg;               
 #endif
@@ -1395,13 +1395,13 @@ RlcSapCfg   *cfg;
  *    -# LCM_REASON_RECONFIG_FAIL 
  */
 #ifdef ANSI
-PRIVATE S16 rlcLmmCfgCkwSap 
+static S16 rlcLmmCfgCkwSap 
 (
 RlcCb       *gCb,
 RlcSapCfg   *cfg             
 )
 #else
-PRIVATE S16 rlcLmmCfgCkwSap(gCb,cfg)
+static S16 rlcLmmCfgCkwSap(gCb,cfg)
 RlcCb       *gCb;
 RlcSapCfg   *cfg;             
 #endif
@@ -1455,13 +1455,13 @@ RlcSapCfg   *cfg;
  *    -# LCM_REASON_RECONFIG_FAIL
  */
 #ifdef ANSI
-PRIVATE S16 rlcLmmCfgUdxSap 
+static S16 rlcLmmCfgUdxSap 
 (
 RlcCb       *gCb,
 RlcSapCfg   *cfg         
 )
 #else
-PRIVATE S16 rlcLmmCfgUdxSap(gCb,cfg)
+static S16 rlcLmmCfgUdxSap(gCb,cfg)
 RlcCb       *gCb;
 RlcSapCfg   *cfg;       
 #endif
@@ -1531,13 +1531,13 @@ RlcSapCfg   *cfg;
  *    -# LCM_REASON_RECONFIG_FAIL
  */
 #ifdef ANSI
-PRIVATE S16 rlcLmmCfgRguSap 
+static S16 rlcLmmCfgRguSap 
 (
 RlcCb       *gCb,
 RlcSapCfg   *cfg               
 )
 #else
-PRIVATE S16 rlcLmmCfgRguSap(gCb,cfg)
+static S16 rlcLmmCfgRguSap(gCb,cfg)
 RlcCb       *gCb;
 RlcSapCfg   *cfg;             
 #endif
@@ -1594,12 +1594,12 @@ RlcSapCfg   *cfg;
  *    -# LCM_REASON_INVALID_ACTION
  */
 #ifdef ANSI
-PRIVATE S16 rlcLmmValidateGenCntrl
+static S16 rlcLmmValidateGenCntrl
 (
 RlcMngmt   *cntrl                 
 )
 #else
-PRIVATE S16 rlcLmmValidateGenCntrl(cntrl)
+static S16 rlcLmmValidateGenCntrl(cntrl)
 RlcMngmt   *cntrl;                
 #endif
 {
@@ -1641,12 +1641,12 @@ RlcMngmt   *cntrl;
  * @return  Void
  */
 #ifdef ANSI
-PRIVATE Void rlcLmmCleanGblRsrcs
+static Void rlcLmmCleanGblRsrcs
 (
 RlcCb   *gCb
 )
 #else
-PRIVATE Void rlcLmmCleanGblRsrcs(gCb)
+static Void rlcLmmCleanGblRsrcs(gCb)
 RlcCb   *gCb;
 #endif
 {
@@ -1750,12 +1750,12 @@ RlcCb   *gCb;
  *    -# LCM_REASON_HASHING_FAILED 
  */
 #ifdef ANSI
-PRIVATE S16 rlcLmmShutdown
+static S16 rlcLmmShutdown
 (
 RlcCb   *gCb
 )
 #else
-PRIVATE S16 rlcLmmShutdown(gCb)
+static S16 rlcLmmShutdown(gCb)
 RlcCb   *gCb;
 #endif
 {
@@ -1816,13 +1816,13 @@ RlcCb   *gCb;
  *    -# LCM_REASON_INVALID_ACTION
  */
 #ifdef ANSI
-PRIVATE S16 rlcLmmGenCntrl
+static S16 rlcLmmGenCntrl
 (
 RlcCb *gCb,
 RlcMngmt *cntrl       
 )
 #else
-PRIVATE S16 rlcLmmGenCntrl(gCb,cntrl)
+static S16 rlcLmmGenCntrl(gCb,cntrl)
 RlcCb    *gCb;
 RlcMngmt *cntrl;     
 #endif
@@ -1923,13 +1923,13 @@ RlcMngmt *cntrl;
  *    -# LCM_REASON_INVALID_ACTION 
  */
 #ifdef ANSI
-PRIVATE S16 rlcLmmUdxSapCntrl
+static S16 rlcLmmUdxSapCntrl
 (
 RlcCb      *gCb,
 RlcMngmt   *cntrl               
 )
 #else
-PRIVATE S16 rlcLmmUdxSapCntrl(gCb,cntrl)
+static S16 rlcLmmUdxSapCntrl(gCb,cntrl)
 RlcCb      *gCb;
 RlcMngmt   *cntrl;               
 #endif
@@ -2005,13 +2005,13 @@ RlcMngmt   *cntrl;
  *    -# LCM_REASON_INVALID_ACTION 
  */
 #ifdef ANSI
-PRIVATE S16 rlcLmmLSapCntrl
+static S16 rlcLmmLSapCntrl
 (
 RlcCb      *gCb,
 RlcMngmt   *cntrl 
 )
 #else
-PRIVATE S16 rlcLmmLSapCntrl(gCb,cntrl)
+static S16 rlcLmmLSapCntrl(gCb,cntrl)
 RlcCb      *gCb;
 RlcMngmt   *cntrl; 
 #endif
@@ -2090,13 +2090,13 @@ RlcMngmt   *cntrl;
  *    -# LCM_REASON_INVALID_PAR_VAL(FAILURE)
  */
 #ifdef ANSI
-PRIVATE S16 rlcLmmGetKwuSapSta 
+static S16 rlcLmmGetKwuSapSta 
 (
 RlcCb          *gCb,
 RlcKwuSapSta   *sta         
 )
 #else
-PRIVATE S16 rlcLmmGetKwuSapSta(gCb,sta)
+static S16 rlcLmmGetKwuSapSta(gCb,sta)
 RlcCb          *gCb;
 RlcKwuSapSta   *sta;         
 #endif
@@ -2135,13 +2135,13 @@ RlcKwuSapSta   *sta;
  *    -# LCM_REASON_INVALID_PAR_VAL(FAILURE) 
  */
 #ifdef ANSI
-PRIVATE S16 rlcLmmGetRguSapSta 
+static S16 rlcLmmGetRguSapSta 
 (
 RlcCb          *gCb,
 RlcRguSapSta   *sta         
 )
 #else
-PRIVATE S16 rlcLmmGetRguSapSta(gCb,sta)
+static S16 rlcLmmGetRguSapSta(gCb,sta)
 RlcCb          *gCb;
 RlcRguSapSta   *sta;       
 #endif
@@ -2174,13 +2174,13 @@ RlcRguSapSta   *sta;
  *    -# LCM_REASON_INVALID_PAR_VAL(FAILURE)
  */
 #ifdef ANSI
-PRIVATE S16 rlcLmmGetCkwCntSapSta
+static S16 rlcLmmGetCkwCntSapSta
 (
 RlcCb             *gCb,
 RlcCkwCntSapSta   *sta     
 )
 #else
-PRIVATE S16 rlcLmmGetCkwCntSapSta(gCb,sta)
+static S16 rlcLmmGetCkwCntSapSta(gCb,sta)
 rlcCb             *gCb,
 RlcCkwCntSapSta   *sta;   
 #endif
@@ -2214,14 +2214,14 @@ RlcCkwCntSapSta   *sta;
  *    -# LCM_REASON_INVALID_PAR_VAL(FAILURE)
  */
 #ifdef ANSI
-PRIVATE S16 rlcLmmGetGenSts
+static S16 rlcLmmGetGenSts
 (
 RlcCb       *gCb,
 RlcGenSts   *sts,       
 Action     action         
 )
 #else
-PRIVATE S16 rlcLmmGetGenSts(gCb,sts, action)
+static S16 rlcLmmGetGenSts(gCb,sts, action)
 RlcCb       *gCb;
 RlcGenSts   *sts;          
 Action     action;         
@@ -2261,7 +2261,7 @@ Action     action;
  *    -# LCM_REASON_INVALID_PAR_VAL (FAIL)
  */
 #ifdef ANSI
-PRIVATE S16 rlcLmmGetSapSts
+static S16 rlcLmmGetSapSts
 (
 RlcCb      *gCb,
 RlcMngmt   *sts,               
@@ -2269,7 +2269,7 @@ Elmnt     elmnt,
 Action    action             
 )
 #else
-PRIVATE S16 rlcLmmGetSapSts(sts, elmnt, action)
+static S16 rlcLmmGetSapSts(sts, elmnt, action)
 RlcCb      *gCb;
 RlcMngmt   *sts;            
 Elmnt     elmnt;            

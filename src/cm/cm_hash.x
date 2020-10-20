@@ -106,7 +106,7 @@ struct cmHashListCp        /*  hash list control point */
 
 /* functions prototypes */
 
-EXTERN S16 cmHashListInit ARGS((
+S16 cmHashListInit ARGS((
               CmHashListCp *hashListCp,  /* hash list to initialize */
               U16          nmbBins,      /* number of hash list bins */
               U16          offset,       /* offset of CmHashListEnt in entries */
@@ -115,33 +115,33 @@ EXTERN S16 cmHashListInit ARGS((
               Region       region,       /* memory region to allocate bins */
               Pool         pool));       /* memory pool to allocate bins */
 
-EXTERN S16 cmHashListDeinit ARGS((
+S16 cmHashListDeinit ARGS((
               CmHashListCp *hashListCp));/* hash list to initialize */
 
-EXTERN S16 cmHashListInsert ARGS((
+S16 cmHashListInsert ARGS((
               CmHashListCp *hashListCp,  /* hash list to add to */
               PTR          entry,        /* entry to add */
               U8           *key,         /* pointer to key */
               U16          keyLen));     /* length of key */
 
-EXTERN S16 cmHashListDelete ARGS((
+S16 cmHashListDelete ARGS((
               CmHashListCp *hashListCp,  /* hash list to delete from */
               PTR          entry));      /* entry to delete */
 
-EXTERN S16 cmHashListFind ARGS((
+S16 cmHashListFind ARGS((
               CmHashListCp *hashListCp,  /* hash list to search */
               U8           *key,         /* pointer to key */
               U16          keyLen,       /* length of key */
               U16          seqNmb,       /* used in case of duplicate keys */
               PTR          *entry));     /* entry to be returned */
 
-EXTERN S16 cmHashListGetNext ARGS((
+S16 cmHashListGetNext ARGS((
               CmHashListCp *hashListCp,    /* hash list to get from */
               PTR          prevEnt,        /* previous entry */
               PTR          *entry));       /* entry to be returned */
 
 #ifdef CM_MT_HASH_BIN
-EXTERN S16 cmHashListBinGetNextEntry ARGS((
+S16 cmHashListBinGetNextEntry ARGS((
               CmHashListCp *hashListCp,    /* hash list to get from */
               U16          binIdx,         /* Index of the bin */
               PTR          prevEnt,        /* previous entry */
@@ -150,14 +150,14 @@ EXTERN S16 cmHashListBinGetNextEntry ARGS((
 
 /* This function is obsoleted! Use macros defined in cm_hash.h instead
  */
-EXTERN S16 cmHashListQuery ARGS((
+S16 cmHashListQuery ARGS((
               CmHashListCp *hashListCp,    /* hash list to query */
               U8           queryType,      /* type of query */
               U16          *result));      /* result of query */
 
 /* Hash list with open addressing
  */
-EXTERN S16 cmHashListOAInsert ARGS((
+S16 cmHashListOAInsert ARGS((
               CmHashListCp *hashListCp,  /* hash list to add to */
               PTR          entry,        /* entry to add */
               U8           *key,         /* pointer to key */

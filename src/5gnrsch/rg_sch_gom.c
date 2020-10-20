@@ -57,26 +57,26 @@ static int RLOG_FILE_ID=164;
 #include "rg_sch.x"
 
 /* local defines */
-PRIVATE S16 rgSCHGomHndlCfgReq ARGS((RgSchCb *instCb, SpId spId,
+static S16 rgSCHGomHndlCfgReq ARGS((RgSchCb *instCb, SpId spId,
          RgrCfg  *cfg, RgSchErrInfo *errInfo));
-PRIVATE S16 rgSCHGomHndlRecfgReq ARGS((RgSchCb *instCb, SpId spId,
+static S16 rgSCHGomHndlRecfgReq ARGS((RgSchCb *instCb, SpId spId,
          RgrRecfg  *recfg, RgSchErrInfo *errInfo));
-PRIVATE S16 rgSCHGomHndlResetReq ARGS((RgSchCb *instCb,SpId spId,RgrRst *reset,
+static S16 rgSCHGomHndlResetReq ARGS((RgSchCb *instCb,SpId spId,RgrRst *reset,
          RgSchErrInfo  *errInfo));
-PRIVATE S16 rgSCHGomGetCellIdFrmCfgReq ARGS((RgrCfgReqInfo *rgrCfgReq,
+static S16 rgSCHGomGetCellIdFrmCfgReq ARGS((RgrCfgReqInfo *rgrCfgReq,
          CmLteCellId *cellId));
-PRIVATE S16 rgSCHGomCfgReq ARGS((Region reg, Pool pool, RgSchCb *instCb,
+static S16 rgSCHGomCfgReq ARGS((Region reg, Pool pool, RgSchCb *instCb,
          RgrCfgTransId transId, RgrCfgReqInfo *cfgReqInfo));
-PRIVATE S16 rgSCHGomEnqCfgReq ARGS((Region reg, Pool pool, RgSchCellCb *cell,
+static S16 rgSCHGomEnqCfgReq ARGS((Region reg, Pool pool, RgSchCellCb *cell,
          RgrCfgTransId transId, RgrCfgReqInfo *rgrCfgReq));
-PRIVATE S16 rgSCHGomHndlDelReq ARGS((RgSchCb  *instCb,SpId spId, 
+static S16 rgSCHGomHndlDelReq ARGS((RgSchCb  *instCb,SpId spId, 
          RgrDel  *del,RgSchErrInfo  *errInfo));
 #ifdef LTE_ADV
-PRIVATE S16 rgSCHGomHndlSCellActDeactReq ARGS((RgSchCb *instCb, SpId spId,
+static S16 rgSCHGomHndlSCellActDeactReq ARGS((RgSchCb *instCb, SpId spId,
          RgrSCellActDeactEvnt  *sCellActDeactEvnt, RgSchErrInfo *errInfo, U8 action));
 #endif /* LTE_ADV */
 #ifdef EMTC_ENABLE
-EXTERN S16 rgSchEmtcGetSiWinPerd ARGS((
+S16 rgSchEmtcGetSiWinPerd ARGS((
 RgSchCellCb   *cell,
 U16  *siWinSize,
 U16  *minPeriod 
@@ -89,12 +89,12 @@ extern S16 rgSCHEmtcUtlCalMcsAndNPrb
  U8                  siId
  );
 
-EXTERN S32 rgSCHEmtcUtlGetAllwdCchTbSzForSI ARGS(
+S32 rgSCHEmtcUtlGetAllwdCchTbSzForSI ARGS(
 (
 U32 bo
 ));
 
-EXTERN Void rgSCHEmtcWarningSiCfg ARGS(
+Void rgSCHEmtcWarningSiCfg ARGS(
 (
 RgSchCellCb             *cell,
 RgrWarningSiCfgReqInfo  *warningSiCfgReqInfo,
@@ -246,7 +246,7 @@ RgrCfgReqInfo *cfgReqInfo;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgSCHGomCfgReq
+static S16 rgSCHGomCfgReq
 (
 Region        reg,
 Pool          pool,
@@ -255,7 +255,7 @@ RgrCfgTransId transId,
 RgrCfgReqInfo *cfgReqInfo
 )
 #else
-PRIVATE S16 rgSCHGomCfgReq(reg, pool, instCb, transId, cfgReqInfo)
+static S16 rgSCHGomCfgReq(reg, pool, instCb, transId, cfgReqInfo)
 Region        reg;
 Pool          pool;
 RgSchCb       *instCb;
@@ -371,7 +371,7 @@ printf("\n AT MAC RGR cfg cfm sent\n");
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgSCHGomEnqCfgReq
+static S16 rgSCHGomEnqCfgReq
 (
 Region        reg,
 Pool          pool,
@@ -380,7 +380,7 @@ RgrCfgTransId transId,
 RgrCfgReqInfo *rgrCfgReq
 )
 #else
-PRIVATE S16 rgSCHGomEnqCfgReq(reg, pool, cell, transId, rgrCfgReq)
+static S16 rgSCHGomEnqCfgReq(reg, pool, cell, transId, rgrCfgReq)
 Region        reg;
 Pool          pool;
 RgSchCellCb   *cell;
@@ -557,7 +557,7 @@ SpId             spId;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgSCHGomHndlCfgReq
+static S16 rgSCHGomHndlCfgReq
 (
 RgSchCb        *instCb,
 SpId           spId,
@@ -565,7 +565,7 @@ RgrCfg         *cfg,
 RgSchErrInfo   *errInfo
 )
 #else
-PRIVATE S16 rgSCHGomHndlCfgReq(instCb, spId, cfg, errInfo)
+static S16 rgSCHGomHndlCfgReq(instCb, spId, cfg, errInfo)
 RgSchCb        *instCb;
 SpId           spId;
 RgrCfg         *cfg;
@@ -683,7 +683,7 @@ RgSchErrInfo   *errInfo;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgSCHGomHndlSCellActDeactReq
+static S16 rgSCHGomHndlSCellActDeactReq
 (
 RgSchCb               *instCb,
 SpId                   spId,
@@ -692,7 +692,7 @@ RgSchErrInfo          *errInfo,
 U8                    action
 )
 #else
-PRIVATE S16 rgSCHGomHndlSCellActDeactReq(instCb, spId, sCellActDeactEvnt, errInfo, action)
+static S16 rgSCHGomHndlSCellActDeactReq(instCb, spId, sCellActDeactEvnt, errInfo, action)
 RgSchCb               *instCb;
 SpId                  spId;
 RgrSCellActDeactEvnt  *sCellActDeactEvnt; 
@@ -763,7 +763,7 @@ U8                    action;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgSCHGomHndlRecfgReq
+static S16 rgSCHGomHndlRecfgReq
 (
 RgSchCb       *instCb,
 SpId          spId,
@@ -771,7 +771,7 @@ RgrRecfg      *recfg,
 RgSchErrInfo  *errInfo
 )
 #else
-PRIVATE S16 rgSCHGomHndlRecfgReq(instCb, spId, recfg, errInfo)
+static S16 rgSCHGomHndlRecfgReq(instCb, spId, recfg, errInfo)
 RgSchCb       *instCb;
 SpId          spId;
 RgrRecfg      *recfg;
@@ -877,7 +877,7 @@ RgSchErrInfo  *errInfo;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgSCHGomHndlResetReq
+static S16 rgSCHGomHndlResetReq
 (
 RgSchCb       *instCb,
 SpId          spId,
@@ -885,7 +885,7 @@ RgrRst        *reset,
 RgSchErrInfo  *errInfo
 )
 #else
-PRIVATE S16 rgSCHGomHndlResetReq(instCb, spId, reset, errInfo)
+static S16 rgSCHGomHndlResetReq(instCb, spId, reset, errInfo)
 RgSchCb       *instCb;
 SpId          spId;
 RgrRst        *reset;
@@ -946,7 +946,7 @@ RgSchErrInfo  *errInfo;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgSCHGomHndlDelReq
+static S16 rgSCHGomHndlDelReq
 (
 RgSchCb       *instCb,
 SpId          spId,
@@ -954,7 +954,7 @@ RgrDel        *del,
 RgSchErrInfo  *errInfo
 )
 #else
-PRIVATE S16 rgSCHGomHndlDelReq(instCb, spId, del, errInfo)
+static S16 rgSCHGomHndlDelReq(instCb, spId, del, errInfo)
 RgSchCb       *instCb;
 SpId          spId;
 RgrDel        *del;
@@ -966,7 +966,7 @@ RgSchErrInfo  *errInfo;
 #ifdef DEBUGP
    Inst      inst = (instCb->rgSchInit.inst);
 #endif
-   VOLATILE U32     startTime=0;
+   volatile U32     startTime=0;
 
    TRC2(rgSCHGomHndlDelReq);
    
@@ -1054,13 +1054,13 @@ RgSchErrInfo  *errInfo;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE S16 rgSCHGomGetCellIdFrmCfgReq
+static S16 rgSCHGomGetCellIdFrmCfgReq
 (
 RgrCfgReqInfo *rgrCfgReq,
 CmLteCellId   *cellId
 )
 #else
-PRIVATE S16 rgSCHGomGetCellIdFrmCfgReq(rgrCfgReq, cellId)
+static S16 rgSCHGomGetCellIdFrmCfgReq(rgrCfgReq, cellId)
 RgrCfgReqInfo *rgrCfgReq;
 CmLteCellId   *cellId;
 #endif
@@ -1717,7 +1717,7 @@ S16 rgSchUpdtRNTPInfo
  RgrLoadInfReqInfo       *loadInfReq
  )
 #else
-PRIVATE Void rgSchUpdtRNTPInfo(cell, sf)
+static Void rgSchUpdtRNTPInfo(cell, sf)
    RgSchCellCb             *cell;
    RgSchDlSf               *sf;
    RgrLoadInfReqInfo       *loadInfReq;

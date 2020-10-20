@@ -33,8 +33,8 @@
 #include "wls_lib.h"
 #endif
 
-EXTERN uint8_t rgClHndlCfgReq ARGS((void *msg));
-EXTERN void l1ProcessFapiRequest ARGS((uint8_t msgType, uint32_t msgLen, void *msg));
+uint8_t rgClHndlCfgReq ARGS((void *msg));
+void l1ProcessFapiRequest ARGS((uint8_t msgType, uint32_t msgLen, void *msg));
 
 #ifdef INTEL_WLS
 

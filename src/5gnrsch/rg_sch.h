@@ -1469,37 +1469,37 @@ do{\
 #define RG_SCH_HQP_TIME_ON_PCELL 32 /*!< Time in milliseconds to be allowed
                                       for transmission of TB on PCell*/
 /* SR_RACH_STATS */
-EXTERN U32 rgNumPrachRecvd;       /* Num of Rach Req received including dedicated preambles */
-EXTERN U32 rgNumRarSched;         /* Num of RARs sent */
-EXTERN U32 rgNumBI;               /* Num of BackOff Ind sent */
-EXTERN U32 rgNumMsg3CrcPassed;    /* Num of CRC success for Msg3 */
-EXTERN U32 rgNumMsg3CrcFailed ;    /* Num of CRC fail for Msg 3 */
-EXTERN U32 rgNumMsg3FailMaxRetx ;  /* Num of Msg3 fail after Max Retx attempts */
-EXTERN U32 rgNumMsg4Ack ;          /* Num of Acks for Msg4 Tx */
-EXTERN U32 rgNumMsg4Nack ; 
+U32 rgNumPrachRecvd;       /* Num of Rach Req received including dedicated preambles */
+U32 rgNumRarSched;         /* Num of RARs sent */
+U32 rgNumBI;               /* Num of BackOff Ind sent */
+U32 rgNumMsg3CrcPassed;    /* Num of CRC success for Msg3 */
+U32 rgNumMsg3CrcFailed ;    /* Num of CRC fail for Msg 3 */
+U32 rgNumMsg3FailMaxRetx ;  /* Num of Msg3 fail after Max Retx attempts */
+U32 rgNumMsg4Ack ;          /* Num of Acks for Msg4 Tx */
+U32 rgNumMsg4Nack ; 
        /* Num of Nacks for Msg4 Tx */
-EXTERN U32 rgNumMsg4FailMaxRetx ;  /* Num of Msg4 Tx failed after Max Retx attempts */
-EXTERN U32 rgNumSrRecvd;          /* Num of Sched Req received */
-EXTERN U32 rgNumSrGrant;          /* Num of Sched Req Grants sent */
-EXTERN U32 rgNumMsg3CrntiCE;      /* Num of Msg 3 CRNTI CE received */
-EXTERN U32 rgNumDedPream ;         /* Num of Dedicated Preambles recvd */
-EXTERN U32 rgNumMsg3CCCHSdu;      /* Num of Msg 3 CCCH Sdus recvd */
-EXTERN U32 rgNumCCCHSduCrntiNotFound ;  /*UE Ctx not found for CCCH SDU Msg 3 */
-EXTERN U32 rgNumCrntiCeCrntiNotFound ;  /*UE Ctx not found for CRNTI CE Msg 3 */
-EXTERN U32 rgNumMsg4WithCCCHSdu ;       /* Num of Msg4 with CCCH Sdu */
-EXTERN U32 rgNumMsg4WoCCCHSdu ;         /* Num of Msg4 without CCCH Sdu */
-EXTERN U32 rgNumMsg4Dtx ;               /* Num of DTX received for Msg 4 */
-EXTERN U32 rgNumMsg3AckSent ;           /* Num of PHICH Ack sent for Msg 3 */
-EXTERN U32 rgNumMsg3NackSent ;          /* Num of PHICH Nack sent for Msg 3 */
-EXTERN U32 rgNumMsg4PdcchWithCrnti ;    /* Num of PDCCH for CRNTI based contention resolution */
-EXTERN U32 rgNumRarFailDuetoRntiExhaustion ; /* Num of RACH Failures due to RNTI pool exhaution */
-EXTERN U32 rgNumTAModified ;            /* Num of times TA received is different from prev value */
-EXTERN U32 rgNumTASent ;               /* Num of TA Command sent */
-EXTERN U32 rgNumMsg4ToBeTx ;           /* Num of times MSG4 that should be sent */
-EXTERN U32 rgNumMsg4Txed ;             /* Num of MSG4 actually sent *//* ysNumMsg4ToBeTx -ysNumMsg4Txed == Failed MSG4 TX */
-EXTERN U32 rgNumMsg3DtxRcvd;         /* CRC Fail with SINR < 0 */
+U32 rgNumMsg4FailMaxRetx ;  /* Num of Msg4 Tx failed after Max Retx attempts */
+U32 rgNumSrRecvd;          /* Num of Sched Req received */
+U32 rgNumSrGrant;          /* Num of Sched Req Grants sent */
+U32 rgNumMsg3CrntiCE;      /* Num of Msg 3 CRNTI CE received */
+U32 rgNumDedPream ;         /* Num of Dedicated Preambles recvd */
+U32 rgNumMsg3CCCHSdu;      /* Num of Msg 3 CCCH Sdus recvd */
+U32 rgNumCCCHSduCrntiNotFound ;  /*UE Ctx not found for CCCH SDU Msg 3 */
+U32 rgNumCrntiCeCrntiNotFound ;  /*UE Ctx not found for CRNTI CE Msg 3 */
+U32 rgNumMsg4WithCCCHSdu ;       /* Num of Msg4 with CCCH Sdu */
+U32 rgNumMsg4WoCCCHSdu ;         /* Num of Msg4 without CCCH Sdu */
+U32 rgNumMsg4Dtx ;               /* Num of DTX received for Msg 4 */
+U32 rgNumMsg3AckSent ;           /* Num of PHICH Ack sent for Msg 3 */
+U32 rgNumMsg3NackSent ;          /* Num of PHICH Nack sent for Msg 3 */
+U32 rgNumMsg4PdcchWithCrnti ;    /* Num of PDCCH for CRNTI based contention resolution */
+U32 rgNumRarFailDuetoRntiExhaustion ; /* Num of RACH Failures due to RNTI pool exhaution */
+U32 rgNumTAModified ;            /* Num of times TA received is different from prev value */
+U32 rgNumTASent ;               /* Num of TA Command sent */
+U32 rgNumMsg4ToBeTx ;           /* Num of times MSG4 that should be sent */
+U32 rgNumMsg4Txed ;             /* Num of MSG4 actually sent *//* ysNumMsg4ToBeTx -ysNumMsg4Txed == Failed MSG4 TX */
+U32 rgNumMsg3DtxRcvd;         /* CRC Fail with SINR < 0 */
 
-EXTERN U32 rgNumDedPreamUECtxtFound;
+U32 rgNumDedPreamUECtxtFound;
 #endif /* __RGSCH__ */
 
 /**********************************************************************

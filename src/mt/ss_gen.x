@@ -70,9 +70,9 @@ typedef struct {
 /* ss002.301: Modifications */
 #ifdef SS_THREAD_PROFILE
 #ifdef SS_MULTIPLE_PROCS
-EXTERN S16 SGetThrdProf(SSTskId *sTskId,ProcId procId,Ent ent,Inst inst,Event *curEvent,U32 *curEvtTime,U64 *totTime);
+S16 SGetThrdProf(SSTskId *sTskId,ProcId procId,Ent ent,Inst inst,Event *curEvent,U32 *curEvtTime,U64 *totTime);
 #else
-EXTERN S16 SGetThrdProf(SSTskId *sTskId,Ent ent,Inst inst,Event *curEvent,U32 *curEvtTime,U64 *totTime);
+S16 SGetThrdProf(SSTskId *sTskId,Ent ent,Inst inst,Event *curEvent,U32 *curEvtTime,U64 *totTime);
 #endif /* SS_MULTIPLE_PROCS */
 #endif /* SS_THERAD_PROFILE */
 
@@ -116,11 +116,11 @@ typedef struct ssWdCp{
    SsWd                  globWd;
    SLockId               wdLock;
 } SsWdCp;
-EXTERN S16 SInitWatchdog(U16 port);
-EXTERN S16 SRegCfgWd(U32 numNodes, U8 *addr[], U16 port[], U32 timeout, WdUserCallback callback, void *data);
-EXTERN S16 SDeregCfgWd(void);
-EXTERN S16 SStartHrtBt(U8 timeInterval);
-EXTERN S16 SStopHrtBt(void);
+S16 SInitWatchdog(U16 port);
+S16 SRegCfgWd(U32 numNodes, U8 *addr[], U16 port[], U32 timeout, WdUserCallback callback, void *data);
+S16 SDeregCfgWd(void);
+S16 SStartHrtBt(U8 timeInterval);
+S16 SStopHrtBt(void);
 #endif /* SS_WATCHDOG */
 
 #ifdef SS_LOGGER_SUPPORT
@@ -309,118 +309,118 @@ typedef struct ssRegCfg
 
 
 /* external variable declaration */
-/*ss014.301  EXTERN osCp as VOLATILE for SSI-4GMX*/
+/*ss014.301  osCp as volatile for SSI-4GMX*/
 #ifdef  SS_4GMX_LCORE
-EXTERN VOLATILE SsOs osCp;
+volatile SsOs osCp;
 #else
-EXTERN SsOs osCp;
+SsOs osCp;
 #endif
 
 
 /* functions */
-EXTERN S16 SInit ARGS((void));
+S16 SInit ARGS((void));
 /*ss009.301*/
-EXTERN S16 SFini ARGS((void));
+S16 SFini ARGS((void));
 /* ss034.103 */
-EXTERN S16 SDeInit ARGS((void));
+S16 SDeInit ARGS((void));
 
 /* implementation-specific functions */
-EXTERN S16 ssdInitGen ARGS((void));
-EXTERN S16 ssdInitMem ARGS((void));
-EXTERN S16 ssdInitTsk ARGS((void));
-EXTERN S16 ssdInitDrvr ARGS((void));
-EXTERN S16 ssdInitTmr ARGS((void));
-EXTERN S16 ssdReInitTmr ARGS((void));
+S16 ssdInitGen ARGS((void));
+S16 ssdInitMem ARGS((void));
+S16 ssdInitTsk ARGS((void));
+S16 ssdInitDrvr ARGS((void));
+S16 ssdInitTmr ARGS((void));
+S16 ssdReInitTmr ARGS((void));
 /* ss005.301: ssdInitFinal changed to ssdInitLog */
-EXTERN S16 ssdInitLog ARGS((void));
+S16 ssdInitLog ARGS((void));
 
-EXTERN Void ssdDeinitGen ARGS((void));
-EXTERN Void ssdDeinitMem ARGS((void));
-EXTERN Void ssdDeinitTsk ARGS((void));
-EXTERN Void ssdDeinitDrvr ARGS((void));
-EXTERN Void ssdDeinitTmr ARGS((void));
+Void ssdDeinitGen ARGS((void));
+Void ssdDeinitMem ARGS((void));
+Void ssdDeinitTsk ARGS((void));
+Void ssdDeinitDrvr ARGS((void));
+Void ssdDeinitTmr ARGS((void));
 /* ss005.301: ssdDeinitFinal changed to ssdDeinitLog */
-EXTERN Void ssdDeinitLog ARGS((void));
+Void ssdDeinitLog ARGS((void));
 
-EXTERN Void ssdStart ARGS((void));
+Void ssdStart ARGS((void));
 
-EXTERN S16 ssdAttachTTsk ARGS((SsTTskEntry *));
-EXTERN S16 ssdDetachTTsk ARGS((SsTTskEntry *));
-EXTERN S16 ssdCreateSTsk ARGS((SsSTskEntry *));
-EXTERN S16 ssdDestroySTsk ARGS((SsSTskEntry *));
-EXTERN S16 ssdPstTsk ARGS((Pst *, Buffer *, SsTTskEntry *));
-EXTERN S16 ssdRegTmr ARGS((SsTmrEntry *));
-EXTERN S16 ssdDeregTmr ARGS((SsTmrEntry *));
-EXTERN S16 ssdError ARGS((Seq, Reason));
-EXTERN Void ssdLogError ARGS((Ent, Inst, ProcId, Txt *, S32, \
+S16 ssdAttachTTsk ARGS((SsTTskEntry *));
+S16 ssdDetachTTsk ARGS((SsTTskEntry *));
+S16 ssdCreateSTsk ARGS((SsSTskEntry *));
+S16 ssdDestroySTsk ARGS((SsSTskEntry *));
+S16 ssdPstTsk ARGS((Pst *, Buffer *, SsTTskEntry *));
+S16 ssdRegTmr ARGS((SsTmrEntry *));
+S16 ssdDeregTmr ARGS((SsTmrEntry *));
+S16 ssdError ARGS((Seq, Reason));
+Void ssdLogError ARGS((Ent, Inst, ProcId, Txt *, S32, \
                               ErrCls, ErrCode, ErrVal, Txt *));
 
-EXTERN Void mtTmrHdlrPublic ARGS ((void)); 
+Void mtTmrHdlrPublic ARGS ((void)); 
 
 /*
  * SDeRegTTsk patch
  */
 /* for TTask Dereg */
 #ifdef SS_MULTIPLE_PROCS
-EXTERN S16 ssdProcTTskTerm ARGS((ProcId proc, SsTTskEntry *tTsk, SsIdx idx));
+S16 ssdProcTTskTerm ARGS((ProcId proc, SsTTskEntry *tTsk, SsIdx idx));
 #else
-EXTERN S16 ssdProcTTskTerm ARGS((SsTTskEntry *tTsk, SsIdx idx));
+S16 ssdProcTTskTerm ARGS((SsTTskEntry *tTsk, SsIdx idx));
 #endif /* SS_MULTIPLE_PROCS */
 
 #ifdef SS_DRVR_SUPPORT
-EXTERN S16 ssdRegDrvrTsk ARGS((SsDrvrTskEntry *));
+S16 ssdRegDrvrTsk ARGS((SsDrvrTskEntry *));
 /*ss001.301: Additions */
-EXTERN S16 ssdDeregDrvrTsk ARGS((SsDrvrTskEntry *));
+S16 ssdDeregDrvrTsk ARGS((SsDrvrTskEntry *));
 #endif
 
 /* ss029.103: addition: support function to implement multiple procIds */ 
 #ifdef SS_MULTIPLE_PROCS
-EXTERN U16 SGetProcIdIdx ARGS((ProcId proc));
+U16 SGetProcIdIdx ARGS((ProcId proc));
 #endif /* SS_MULTIPLE_PROCS */
 
 /* multi-core support */
 /*ss013.301 : changes for SS_AFFINITY_SUPPORT*/
 #if defined(SS_MULTICORE_SUPPORT) || defined(SS_AFFINITY_SUPPORT)
  
-EXTERN S16 ssdSetAffinity ARGS((SSTskId *tskId, U32 coreId));
-EXTERN S16 ssdGetAffinity ARGS((SSTskId *tskId, U32 *coreId));
+S16 ssdSetAffinity ARGS((SSTskId *tskId, U32 coreId));
+S16 ssdGetAffinity ARGS((SSTskId *tskId, U32 *coreId));
 #endif /* SS_MULTICORE_SUPPORT || SS_AFFINITY_SUPPORT */
 
 /* ss001.301: additions */
 #ifdef SS_LOGGER_SUPPORT 
-EXTERN S16 ssdInitLogger ARGS((void));
-EXTERN S16 SFlushBufToLog ARGS (( S8 *logBuf));
+S16 ssdInitLogger ARGS((void));
+S16 SFlushBufToLog ARGS (( S8 *logBuf));
 /* ss02.301: additions */
-EXTERN S16 SCleanUp ARGS ((Void ));
-EXTERN Void SStartLogger ARGS ((Void ));
-EXTERN Void SStopLogger ARGS ((Void ));
+S16 SCleanUp ARGS ((Void ));
+Void SStartLogger ARGS ((Void ));
+Void SStopLogger ARGS ((Void ));
 #endif /* SS_LOGGER_SUPPORT  */
 /* ss02.301: additions */
 #ifdef SS_WATCHDOG 
 #ifdef SS_MULTIPLE_PROCS
-EXTERN S16 ssdWatchDgActvTmr ARGS(( ProcId proc, Ent ent, Inst instVoid));
+S16 ssdWatchDgActvTmr ARGS(( ProcId proc, Ent ent, Inst instVoid));
 #else
-EXTERN S16 ssdWatchDgActvTmr ARGS(( Void ));
+S16 ssdWatchDgActvTmr ARGS(( Void ));
 #endif /* SS_MULTIPLE_PROCS */
-EXTERN Void ssdWatchDgTmrEvt ARGS(( PTR cb, S16 event ));
-EXTERN S16 watchDgActvTsk ARGS(( Pst *pst, Buffer *mBuf));
-EXTERN S16 watchDgRcvrActvTsk ARGS(( Pst *pst, Buffer *mBuf ));
-EXTERN S16 ssdSndHrtBtMsg ARGS(( Bool  restart, U32 type));
-EXTERN Void ssdStartWatchDgTmr ARGS(( void *cb, S16 event, U16 wait));
-EXTERN Void ssdStopWatchDgTmr ARGS(( void *cb, S16 event));
-EXTERN S16 ssdInitWatchDgPst ARGS((Pst *pst)); 	
-EXTERN S16 ssdInitWatchDog ARGS((U16 port));
+Void ssdWatchDgTmrEvt ARGS(( PTR cb, S16 event ));
+S16 watchDgActvTsk ARGS(( Pst *pst, Buffer *mBuf));
+S16 watchDgRcvrActvTsk ARGS(( Pst *pst, Buffer *mBuf ));
+S16 ssdSndHrtBtMsg ARGS(( Bool  restart, U32 type));
+Void ssdStartWatchDgTmr ARGS(( void *cb, S16 event, U16 wait));
+Void ssdStopWatchDgTmr ARGS(( void *cb, S16 event));
+S16 ssdInitWatchDgPst ARGS((Pst *pst)); 	
+S16 ssdInitWatchDog ARGS((U16 port));
 #endif
 
 #ifdef SS_FBSED_TSK_REG
-EXTERN S16 SRegTskInfo ARGS((U8 *cfgFile));  
+S16 SRegTskInfo ARGS((U8 *cfgFile));  
 #endif
 /* ss002.301 Readwrite lock additions */
 #ifdef SS_LOCK_SUPPORT
-EXTERN S16 ssdLockNew ARGS((SLockInfo *LockId, U8 locktype));
-EXTERN S16 ssdInitLockNew ARGS((SLockInfo *LockId, U8 lockType));
-EXTERN S16 ssdUnlockNew ARGS((SLockInfo *LockId, U8 lockType));
-EXTERN S16 ssdDestroyLockNew ARGS((SLockInfo *LockId, U8 lockType));
+S16 ssdLockNew ARGS((SLockInfo *LockId, U8 locktype));
+S16 ssdInitLockNew ARGS((SLockInfo *LockId, U8 lockType));
+S16 ssdUnlockNew ARGS((SLockInfo *LockId, U8 lockType));
+S16 ssdDestroyLockNew ARGS((SLockInfo *LockId, U8 lockType));
 #endif /* SS_LOCK_SUPPORT */
 
 #ifdef SSI_STATIC_MEM_LEAK_DETECTION
@@ -459,9 +459,9 @@ FILE* StaticMemLeakFileArr[4];
 }
 #endif
 
-EXTERN void DumpSSIDemandQDebugInformation ARGS((void));
-EXTERN void mtSigSegvHndlr ARGS((void));
-EXTERN void mtSigUsr2Hndlr ARGS((void));
+void DumpSSIDemandQDebugInformation ARGS((void));
+void mtSigSegvHndlr ARGS((void));
+void mtSigUsr2Hndlr ARGS((void));
 #endif  /*  __SSGENX__  */
 
 

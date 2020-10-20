@@ -37,7 +37,7 @@
 
 
 #ifdef __cplusplus
-EXTERN "C" {
+extern "C" {
 #endif  /*for extern "C"*/
 
 #ifdef LCCKW

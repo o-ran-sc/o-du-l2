@@ -75,9 +75,9 @@ extern U32 buffer_occ;
 extern U32 dlrate_kwu;
 #endif
 
-PRIVATE void rlcUmmEstHdrSz ARGS ((RlcUmDl *umUl));
+static void rlcUmmEstHdrSz ARGS ((RlcUmDl *umUl));
 
-PRIVATE Void rlcUmmCreatePdu ARGS ((RlcCb *gCb,
+static Void rlcUmmCreatePdu ARGS ((RlcCb *gCb,
                                   RlcDlRbCb *rbCb, 
                                   Buffer *pdu,
                                   U8 fi,
@@ -618,7 +618,7 @@ RlcDlRbCb       *rbCb;
  *
  * @return  Void
 */ 
-void rlcUmmCreatePdu(RlcCb *gCb, RlcDlRbCb *rbCb, Buffer *pdu, uint8_t fi, KwPduInfo *datReqPduInfo)
+static void rlcUmmCreatePdu(RlcCb *gCb, RlcDlRbCb *rbCb, Buffer *pdu, uint8_t fi, KwPduInfo *datReqPduInfo)
 {
    RlcSn     sn;        /*  Sequence Number */
    uint32_t  liCount;   /*  LI count */
@@ -735,7 +735,7 @@ void rlcUmmCreatePdu(RlcCb *gCb, RlcDlRbCb *rbCb, Buffer *pdu, uint8_t fi, KwPdu
  *
  * @return  Void
 */ 
-void rlcUmmEstHdrSz(RlcUmDl *umDl)
+static void rlcUmmEstHdrSz(RlcUmDl *umDl)
 {
    /* The header size is estimated as :
           If sdu count = 0 then 0

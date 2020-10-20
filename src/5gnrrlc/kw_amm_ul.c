@@ -90,38 +90,38 @@ extern U32  isMemThreshReached(Region region);
 
 /* private function declarations */
 
-void rlcAmmUlAssembleCntrlInfo ARGS ((RlcCb *gCb, RlcUlRbCb *rbCb));
+static void rlcAmmUlAssembleCntrlInfo ARGS ((RlcCb *gCb, RlcUlRbCb *rbCb));
 
-uint8_t rlcAmmExtractHdr ARGS ((RlcCb *gCb,
+static uint8_t rlcAmmExtractHdr ARGS ((RlcCb *gCb,
                                 RlcUlRbCb   *rbCb,
                                 Buffer *pdu,
                                 RlcAmHdr *amHdr,
                                 uint8_t *fByte));
 
-bool rlcAmmUlPlacePduInRecBuf ARGS ((RlcCb *gCb,
+static bool rlcAmmUlPlacePduInRecBuf ARGS ((RlcCb *gCb,
                                      Buffer *pdu,
                                      RlcUlRbCb *rbCb,
                                      RlcAmHdr *amHdr));
 
-void rlcAmmTriggerStatus ARGS ((RlcCb *gCb,
+static void rlcAmmTriggerStatus ARGS ((RlcCb *gCb,
                                 RlcUlRbCb *rbCb,
                                 RlcSn sn,
                                 bool discFlg));
 
-uint8_t  rlcAmmUlReassembleSdus ARGS ((RlcCb *gCb,
+static uint8_t  rlcAmmUlReassembleSdus ARGS ((RlcCb *gCb,
                                      RlcUlRbCb *rbCb,
                                      RlcAmRecBuf *recBuf));
 
-PRIVATE Void rlcAmmProcPduOrSeg ARGS ((RlcCb *gCb,
+static Void rlcAmmProcPduOrSeg ARGS ((RlcCb *gCb,
                                       RlcUlRbCb *rbCb,
                                       RlcAmHdr *amHdr,
                                       Buffer *pdu));
 
-PRIVATE Void rlcAmmUpdExpByteSeg ARGS ((RlcCb *gCb,RlcAmUl *amUl, RlcSeg* newSeg));
+static Void rlcAmmUpdExpByteSeg ARGS ((RlcCb *gCb,RlcAmUl *amUl, RlcSeg* newSeg));
 
-PRIVATE Void rlcAmmExtractElmnt ARGS ((RlcCb *gCb, Buffer *pdu, RlcExtHdr *hdrInfo));
+static Void rlcAmmExtractElmnt ARGS ((RlcCb *gCb, Buffer *pdu, RlcExtHdr *hdrInfo));
 
-PRIVATE Void rlcAmmUlHndlStatusPdu ARGS ((RlcCb *gCb,
+static Void rlcAmmUlHndlStatusPdu ARGS ((RlcCb *gCb,
                                          RlcUlRbCb *rbCb,
                                          Buffer *cntrlPdu,
                                          U8 *fByte));
@@ -159,7 +159,7 @@ PRIVATE Void rlcAmmUlHndlStatusPdu ARGS ((RlcCb *gCb,
  *    The number of bytes required to encode this NACK information
  *
  */
-uint8_t rlcAmmUlSetNackInfo(RlcUlRbCb *rbCb, RlcSn sn, bool isSegment, \
+static uint8_t rlcAmmUlSetNackInfo(RlcUlRbCb *rbCb, RlcSn sn, bool isSegment, \
    uint16_t soStart, uint16_t soEnd, RlcUdxDlStaPdu *statusPdu, RlcSn *prevNackSn)
 {
    RlcNackInfo   *nackInfo = (statusPdu->nackInfo + statusPdu->nackCount);
@@ -278,7 +278,7 @@ uint8_t rlcAmmUlSetNackInfo(RlcUlRbCb *rbCb, RlcSn sn, bool isSegment, \
  * @return  Void
  *
  */
-void rlcAmmUlAssembleCntrlInfo(RlcCb *gCb, RlcUlRbCb *rbCb)
+static void rlcAmmUlAssembleCntrlInfo(RlcCb *gCb, RlcUlRbCb *rbCb)
 {
    RlcUdxDlStaPdu   *pStatusPdu;
    RlcNackInfo      *nackInfo;
@@ -768,7 +768,7 @@ void rlcAmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
  *     -# RFAILED
  *
  */
-uint8_t rlcAmmExtractHdr(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *pdu, RlcAmHdr *amHdr, uint8_t *fByte)
+static uint8_t rlcAmmExtractHdr(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *pdu, RlcAmHdr *amHdr, uint8_t *fByte)
 {
    uint8_t    snByte;
    RlcSn      sn = 0;
@@ -842,7 +842,7 @@ uint8_t rlcAmmExtractHdr(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *pdu, RlcAmHdr *amH
  *
  */
 #ifdef ANSI
-PRIVATE S16 rlcAmmExtractHdrOld
+static S16 rlcAmmExtractHdrOld
 (
 RlcCb       *gCb,
 Buffer     *pdu,
@@ -850,7 +850,7 @@ RlcAmHdr    *amHdr,
 U8         *fByte
 )
 #else
-PRIVATE S16 rlcAmmExtractHdrOld(gCb, pdu, amHdr, fByte)
+static S16 rlcAmmExtractHdrOld(gCb, pdu, amHdr, fByte)
 RlcCb       *gCb;
 Buffer     *pdu;
 RlcAmHdr    *amHdr;
@@ -966,7 +966,7 @@ U8         *fByte;
  *  @return  Void
  *
  */
-void rlcAmmUlHndlStatusPdu(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *cntrlPdu, uint8_t *fByte)
+static void rlcAmmUlHndlStatusPdu(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *cntrlPdu, uint8_t *fByte)
 {
    uint8_t          e1;
    RlcExtHdr        hdrInfo;
@@ -1144,7 +1144,7 @@ void rlcAmmUlHndlStatusPdu(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *cntrlPdu, uint8_
  * @return  Void
  *
  */
-void rlcAmmUlRlsAllSegs(RlcCb *gCb, RlcAmRecBuf *recBuf)
+static void rlcAmmUlRlsAllSegs(RlcCb *gCb, RlcAmRecBuf *recBuf)
 {
    RlcSeg *seg;
 
@@ -1180,7 +1180,7 @@ void rlcAmmUlRlsAllSegs(RlcCb *gCb, RlcAmRecBuf *recBuf)
  *   -#TRUE  Successful insertion into the receiver buffer
  *   -#FALSE Possibly a duplicate segment
  */
-bool rlcAmmAddRcvdSeg(RlcCb *gCb, RlcUlRbCb *rbCb, RlcAmHdr *amHdr, Buffer *pdu, uint16_t pduSz)
+static bool rlcAmmAddRcvdSeg(RlcCb *gCb, RlcUlRbCb *rbCb, RlcAmHdr *amHdr, Buffer *pdu, uint16_t pduSz)
 {
    RlcAmRecBuf   *recBuf = NULLP;
    RlcSeg        *seg;
@@ -1295,7 +1295,7 @@ bool rlcAmmAddRcvdSeg(RlcCb *gCb, RlcUlRbCb *rbCb, RlcAmHdr *amHdr, Buffer *pdu,
  *     -# FALSE
  *
  */
-bool rlcAmmUlPlacePduInRecBuf(RlcCb *gCb, Buffer *pdu, RlcUlRbCb *rbCb, RlcAmHdr *amHdr)
+static bool rlcAmmUlPlacePduInRecBuf(RlcCb *gCb, Buffer *pdu, RlcUlRbCb *rbCb, RlcAmHdr *amHdr)
 {
    RlcSn     sn;
    MsgLen   pduSz;
@@ -1388,7 +1388,7 @@ bool rlcAmmUlPlacePduInRecBuf(RlcCb *gCb, Buffer *pdu, RlcUlRbCb *rbCb, RlcAmHdr
  * @return  Void
  *
  */
-void rlcAmmTriggerStatus(RlcCb *gCb, RlcUlRbCb *rbCb, RlcSn sn, bool discFlg)
+static void rlcAmmTriggerStatus(RlcCb *gCb, RlcUlRbCb *rbCb, RlcSn sn, bool discFlg)
 {
    bool     tmrRunning;
    RlcSn     tSn;
@@ -1440,7 +1440,7 @@ void rlcAmmTriggerStatus(RlcCb *gCb, RlcUlRbCb *rbCb, RlcSn sn, bool discFlg)
  * @return  Void
  *
  */
-void rlcAmmProcPduOrSeg(RlcCb *gCb, RlcUlRbCb *rbCb, RlcAmHdr *amHdr, Buffer *pdu)
+static void rlcAmmProcPduOrSeg(RlcCb *gCb, RlcUlRbCb *rbCb, RlcAmHdr *amHdr, Buffer *pdu)
 {
 
    if ((AMUL.expSn != amHdr->sn) || (AMUL.expSo != amHdr->so))
@@ -1502,7 +1502,7 @@ void rlcAmmProcPduOrSeg(RlcCb *gCb, RlcUlRbCb *rbCb, RlcAmHdr *amHdr, Buffer *pd
  *      -# RFAILED
  *
  */
-uint8_t rlcAmmUlReassembleSdus(RlcCb *gCb, RlcUlRbCb *rbCb, RlcAmRecBuf *recBuf)
+static uint8_t rlcAmmUlReassembleSdus(RlcCb *gCb, RlcUlRbCb *rbCb, RlcAmRecBuf *recBuf)
 {
    RlcSeg        *seg;
 
@@ -1781,7 +1781,7 @@ RlcUlRbCb    *rbCb;
  *
  */
 
-void rlcAmmExtractElmnt(RlcCb *gCb, Buffer *pdu, RlcExtHdr *hdrInfo)
+static void rlcAmmExtractElmnt(RlcCb *gCb, Buffer *pdu, RlcExtHdr *hdrInfo)
 {
    uint8_t   hdr;
    uint8_t   pLen = hdrInfo->pLen;
@@ -1864,7 +1864,7 @@ void rlcAmmExtractElmnt(RlcCb *gCb, Buffer *pdu, RlcExtHdr *hdrInfo)
  *
  */
 
-void rlcAmmUpdExpByteSeg(RlcCb *gCb, RlcAmUl *amUl, RlcSeg *seg)
+static void rlcAmmUpdExpByteSeg(RlcCb *gCb, RlcAmUl *amUl, RlcSeg *seg)
 {
    uint16_t  newExpSo; /* The new expected SO */
    RlcSn     sn = seg->amHdr.sn;

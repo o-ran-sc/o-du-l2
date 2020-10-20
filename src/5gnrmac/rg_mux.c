@@ -66,7 +66,7 @@ static int RLOG_MODULE_ID=4096;
 #include "ss_msg.x"            /* MAC includes */
 /* local defines */
 #ifndef T2K_MEM_LEAK_DBG
-EXTERN  S16 ssGetDBufOfSize(Region region,Size size,Buffer **dBuf);
+ S16 ssGetDBufOfSize(Region region,Size size,Buffer **dBuf);
 #else
 char* file = __FILE__;
 U32 line = __LINE__;
@@ -79,10 +79,10 @@ U32 rgDlrate_rgu;
 
 /* local externs */
 
-PRIVATE Void rgMUXGet20bitRarGrnt ARGS((U8 ulBw,
+static Void rgMUXGet20bitRarGrnt ARGS((U8 ulBw,
                                         RgInfRarUlGrnt *msg3Grnt,
                                         U8 *grnt));
-EXTERN U16 rgMUXCalcRiv ARGS((U8 bw,
+U16 rgMUXCalcRiv ARGS((U8 bw,
                                 U8 rbStart,
                                 U8 numRb));
  
@@ -156,7 +156,7 @@ EXTERN U16 rgMUXCalcRiv ARGS((U8 bw,
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgMUXAddCes
+static S16 rgMUXAddCes
 (
 Inst           inst,
 RgBldPduInfo   *pdu,
@@ -164,7 +164,7 @@ Buffer         *ceBuf,
 RgErrInfo      *err
 )
 #else
-PRIVATE S16 rgMUXAddCes(inst,pdu, ceShdrBuf, ceBuf, err)
+static S16 rgMUXAddCes(inst,pdu, ceShdrBuf, ceBuf, err)
 Inst           inst;
 RgBldPduInfo   *pdu;
 Buffer         *ceBuf;
@@ -281,7 +281,7 @@ RgErrInfo      *err;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PRIVATE S16 rgMUXInsSdu
+static S16 rgMUXInsSdu
 (
 Inst           inst,
 MsgLen         *schdTbSz,
@@ -291,7 +291,7 @@ Buffer         *sduBuf,
 RgErrInfo      *err
 )
 #else
-PRIVATE S16 rgMUXInsSdu(inst,schdTbSz, lcId, sdu, sduBuf, err)
+static S16 rgMUXInsSdu(inst,schdTbSz, lcId, sdu, sduBuf, err)
 Inst           inst;
 MsgLen         *schdTbSz;
 U8             lcId;
@@ -514,7 +514,7 @@ RgErrInfo      *err;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PRIVATE S16 rgMUXAddSdus
+static S16 rgMUXAddSdus
 (
 Inst           inst,
 RgBldPduInfo   *pdu,
@@ -522,7 +522,7 @@ Buffer         *sduBuf,
 RgErrInfo      *err
 )
 #else
-PRIVATE S16 rgMUXAddSdus(inst,pdu, sduBuf, err)
+static S16 rgMUXAddSdus(inst,pdu, sduBuf, err)
 Inst           inst;
 RgBldPduInfo   *pdu;
 Buffer         *sduBuf;
@@ -718,7 +718,7 @@ RgErrInfo      *err;
  *      -# RFAILED
  **/
 #ifdef ANSI
-PRIVATE S16 rgMUXAddSdus
+static S16 rgMUXAddSdus
 (
 Inst                inst,
 RgBldPduInfo        *pdu,
@@ -727,7 +727,7 @@ RgTfuDatReqTbInfo   *tb,
 RgErrInfo           *err
 )
 #else
-PRIVATE S16 rgMUXAddSdus(pdu, sHdrBuf, tb, err)
+static S16 rgMUXAddSdus(pdu, sHdrBuf, tb, err)
 Inst                inst;
 RgBldPduInfo        *pdu;
 Buffer              *sHdrBuf;
@@ -1179,14 +1179,14 @@ RgErrInfo       *err;
  *
  **********************************************************/
 #ifdef ANSI
-PRIVATE Void rgMUXGet20bitRarGrnt
+static Void rgMUXGet20bitRarGrnt
 (
 U8             ulBw,
 RgInfRarUlGrnt *msg3Grnt,
 U8             *grnt
 )
 #else
-PRIVATE Void rgMUXGet20bitRarGrnt(ulBw, msg3Grnt, grnt)
+static Void rgMUXGet20bitRarGrnt(ulBw, msg3Grnt, grnt)
 U8             ulBw;
 RgInfRarUlGrnt *msg3Grnt;
 U8             *grnt;

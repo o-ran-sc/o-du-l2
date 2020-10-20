@@ -343,7 +343,7 @@ uint8_t macProcSlotInd(SlotIndInfo slotInd)
 uint8_t fapiMacSlotInd(Pst *pst, SlotIndInfo *slotInd)
 {
    uint8_t               ret;
-   VOLATILE uint32_t     startTime=0;
+   volatile uint32_t     startTime=0;
 
    DU_LOG("\nMAC : Slot Indication received");
 

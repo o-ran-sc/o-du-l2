@@ -110,34 +110,34 @@
  extern "C" {
 #endif
 
-PRIVATE S16 cmHashFuncBCD8   ARGS((CmHashListCp *hashListCp, U8 *key, 
+static S16 cmHashFuncBCD8   ARGS((CmHashListCp *hashListCp, U8 *key, 
                                          U16 keyLen, U16 *idx));
 
-PRIVATE S16 cmHashFuncConId  ARGS((CmHashListCp *hashListCp, U8 *key, 
+static S16 cmHashFuncConId  ARGS((CmHashListCp *hashListCp, U8 *key, 
                                          U16 keyLen, U16 *idx));
 
-PRIVATE S16 cmHashFuncU32Mod  ARGS((CmHashListCp *hashListCp, U8 *key, 
+static S16 cmHashFuncU32Mod  ARGS((CmHashListCp *hashListCp, U8 *key, 
                                          U16 keyLen, U16 *idx));
 
-PRIVATE S16 cmHashFuncString  ARGS((CmHashListCp *hashListCp, U8 *key, 
+static S16 cmHashFuncString  ARGS((CmHashListCp *hashListCp, U8 *key, 
                                          U16 keyLen, U16 *idx));
 
-PRIVATE S16 cmHashFuncDefault ARGS((CmHashListCp *hashListCp, U8 *key, 
+static S16 cmHashFuncDefault ARGS((CmHashListCp *hashListCp, U8 *key, 
                                          U16 keyLen, U16 *idx));
 
-PRIVATE S16 cmHashFuncAnyKey  ARGS((CmHashListCp *hashListCp, U8 *key, 
+static S16 cmHashFuncAnyKey  ARGS((CmHashListCp *hashListCp, U8 *key, 
                                          U16 keyLen, U16 *idx));
 
-PRIVATE S16 cmHashMatchKey ARGS((U8 *key1, U16 keyLen1, U8 *key2, U16 keyLen2));
+static S16 cmHashMatchKey ARGS((U8 *key1, U16 keyLen1, U8 *key2, U16 keyLen2));
 
-PRIVATE S16 cmListInsert   ARGS((CmListEnt *oldEntry, CmListEnt *newEntry));
+static S16 cmListInsert   ARGS((CmListEnt *oldEntry, CmListEnt *newEntry));
 
-PRIVATE S16 cmListDelete   ARGS((CmListEnt *entry));
+static S16 cmListDelete   ARGS((CmListEnt *entry));
 
 /* cm_hash_c_001.main_22: Fixing warnings on GCC compiler */
-PRIVATE S16 cmHashFuncMult24 ARGS((CmHashListCp *hashListCp, U8 *key, U16 keyLen, U16 *idx));
+static S16 cmHashFuncMult24 ARGS((CmHashListCp *hashListCp, U8 *key, U16 keyLen, U16 *idx));
 
-PRIVATE S16 cmHashFuncDirIdx ARGS((CmHashListCp *hashListCp, U8 *key, U16 keyLen, U16 *idx));
+static S16 cmHashFuncDirIdx ARGS((CmHashListCp *hashListCp, U8 *key, U16 keyLen, U16 *idx));
 
 #ifdef __cplusplus
  }
@@ -172,7 +172,7 @@ PRIVATE S16 cmHashFuncDirIdx ARGS((CmHashListCp *hashListCp, U8 *key, U16 keyLen
 */
 
 #ifdef ANSI
-PRIVATE S16 cmHashFuncAnyKey
+static S16 cmHashFuncAnyKey
 (
 CmHashListCp       *hashListCp,        /* hash list control point */
 U8                 *key,               /* key string */
@@ -180,7 +180,7 @@ U16                keyLen,             /* length of key string */
 U16                *idx                /* idx to return */
 ) 
 #else
-PRIVATE S16 cmHashFuncAnyKey (hashListCp, key, keyLen, idx)
+static S16 cmHashFuncAnyKey (hashListCp, key, keyLen, idx)
 CmHashListCp       *hashListCp;        /* hash list control point */
 U8                 *key;               /* key string */
 U16                keyLen;             /* length of key string */
@@ -259,7 +259,7 @@ U16                *idx;               /* idx to return */
 */
 
 #ifdef ANSI
-PRIVATE S16 cmHashFuncU32Mod
+static S16 cmHashFuncU32Mod
 (
 CmHashListCp       *hashListCp,        /* hash list control point */
 U8                 *key,               /* key string */
@@ -267,7 +267,7 @@ U16                keyLen,             /* length of key string */
 U16                *idx                /* idx to return */
 ) 
 #else
-PRIVATE S16 cmHashFuncU32Mod (hashListCp, key, keyLen, idx)
+static S16 cmHashFuncU32Mod (hashListCp, key, keyLen, idx)
 CmHashListCp       *hashListCp;        /* hash list control point */
 U8                 *key;               /* key string */
 U16                keyLen;             /* length of key string */
@@ -320,7 +320,7 @@ U16                *idx;               /* idx to return */
 */
 
 #ifdef ANSI
-PRIVATE S16 cmHashFuncBCD8
+static S16 cmHashFuncBCD8
 (
 CmHashListCp  *hashListCp,        /* hash list control point */
 U8            *key,               /* key string */
@@ -328,7 +328,7 @@ U16           keyLen,             /* length of key string */
 U16           *idx                /* idx to return */
 ) 
 #else
-PRIVATE S16 cmHashFuncBCD8 (hashListCp, key, keyLen, idx)
+static S16 cmHashFuncBCD8 (hashListCp, key, keyLen, idx)
 CmHashListCp  *hashListCp;        /* hash list control point */
 U8            *key;               /* key string */
 U16           keyLen;             /* length of key string */
@@ -395,7 +395,7 @@ U16           *idx;               /* idx to return */
 */
 
 #ifdef ANSI
-PRIVATE S16 cmHashFuncString
+static S16 cmHashFuncString
 (
 CmHashListCp       *hashListCp,        /* hash list control point */
 U8                 *key,               /* key string */
@@ -403,7 +403,7 @@ U16                keyLen,             /* length of key string */
 U16                *idx                /* idx to return */
 ) 
 #else
-PRIVATE S16 cmHashFuncString (hashListCp, key, keyLen, idx)
+static S16 cmHashFuncString (hashListCp, key, keyLen, idx)
 CmHashListCp       *hashListCp;        /* hash list control point */
 U8                 *key;               /* key string */
 U16                keyLen;             /* length of key string */
@@ -419,7 +419,7 @@ U16                *idx;               /* idx to return */
 
    for (cntr = 0; cntr < keyLen; cntr++)
    {
-      sum = (CM_STR_HASHFUNC_CONSTANT * sum) + key[cntr];
+      sum = (CM_STR_HASHFUNC_const * sum) + key[cntr];
    }
 
    /* if nmbBins is a power of 2, use shift, else use division */
@@ -453,7 +453,7 @@ U16                *idx;               /* idx to return */
 */
 
 #ifdef ANSI
-PRIVATE S16 cmHashFuncDefault
+static S16 cmHashFuncDefault
 (
 CmHashListCp       *hashListCp,        /* hash list control point */
 U8                 *key,               /* key string */
@@ -461,7 +461,7 @@ U16                keyLen,             /* length of key string */
 U16                *idx                /* index to return */
 ) 
 #else
-PRIVATE S16 cmHashFuncDefault(hashListCp, key, keyLen, idx)
+static S16 cmHashFuncDefault(hashListCp, key, keyLen, idx)
 CmHashListCp       *hashListCp;        /* hash list control point */
 U8                 *key;               /* key string */
 U16                keyLen;             /* length of key string */
@@ -522,7 +522,7 @@ U16                *idx;               /* index to return */
 */
 
 #ifdef ANSI
-PRIVATE S16 cmHashFuncMult24
+static S16 cmHashFuncMult24
 (
 CmHashListCp       *hashListCp,        /* hash list control point */
 U8                 *key,               /* key string */
@@ -530,7 +530,7 @@ U16                keyLen,             /* length of key string */
 U16                *idx                /* index to return */
 ) 
 #else
-PRIVATE S16 cmHashFuncMult24(hashListCp, key, keyLen, idx)
+static S16 cmHashFuncMult24(hashListCp, key, keyLen, idx)
 CmHashListCp       *hashListCp;        /* hash list control point */
 U8                 *key;               /* key string */
 U16                keyLen;             /* length of key string */
@@ -585,7 +585,7 @@ U16                *idx;               /* index to return */
 */
 
 #ifdef ANSI
-PRIVATE S16 cmHashFuncConId
+static S16 cmHashFuncConId
 (
 CmHashListCp       *hashListCp,        /* hash list control point */
 U8                 *key,               /* key string */
@@ -593,7 +593,7 @@ U16                keyLen,             /* length of key string */
 U16                *idx                /* index to return */
 ) 
 #else
-PRIVATE S16 cmHashFuncConId(hashListCp, key, keyLen, idx)
+static S16 cmHashFuncConId(hashListCp, key, keyLen, idx)
 CmHashListCp       *hashListCp;        /* hash list control point */
 U8                 *key;               /* key string */
 U16                keyLen;             /* length of key string */
@@ -654,7 +654,7 @@ U16                *idx;               /* index to return */
 */
 
 #ifdef ANSI
-PRIVATE S16 cmHashFuncDirIdx
+static S16 cmHashFuncDirIdx
 (
 CmHashListCp       *hashListCp,        /* hash list control point */
 U8                 *key,               /* key string */
@@ -662,7 +662,7 @@ U16                keyLen,             /* length of key string */
 U16                *idx                /* index to return */
 ) 
 #else
-PRIVATE S16 cmHashFuncDirIdx(hashListCp, key, keyLen, idx)
+static S16 cmHashFuncDirIdx(hashListCp, key, keyLen, idx)
 CmHashListCp       *hashListCp;        /* hash list control point */
 U8                 *key;               /* key string */
 U16                keyLen;             /* length of key string */
@@ -696,7 +696,7 @@ U16                *idx;               /* index to return */
 */
 
 #ifdef ANSI
-PRIVATE S16 cmHashMatchKey
+static S16 cmHashMatchKey
 (
 U8 *key1,                         /* first key string */
 U16 keyLen1,                      /* length of first key string */
@@ -704,7 +704,7 @@ U8 *key2,                         /* second key string */
 U16 keyLen2                       /* length of second key string */
 ) 
 #else
-PRIVATE S16 cmHashMatchKey(key1, keyLen1, key2, keyLen2)
+static S16 cmHashMatchKey(key1, keyLen1, key2, keyLen2)
 U8 *key1;                         /* first key string */
 U16 keyLen1;                      /* length of first key string */
 U8 *key2;                         /* second key string */
@@ -737,13 +737,13 @@ U16 keyLen2;                      /* length of second key string */
 */
 
 #ifdef ANSI
-PRIVATE S16 cmListInsert
+static S16 cmListInsert
 (
 CmListEnt *oldEntry,                    /* add new entry after this entry */
 CmListEnt *newEntry                     /* new entry to add */
 ) 
 #else
-PRIVATE S16 cmListInsert(oldEntry, newEntry) 
+static S16 cmListInsert(oldEntry, newEntry) 
 CmListEnt *oldEntry;                    /* add new entry after this entry */
 CmListEnt *newEntry;                    /* new entry to add */
 #endif
@@ -774,12 +774,12 @@ CmListEnt *newEntry;                    /* new entry to add */
 */
 
 #ifdef ANSI
-PRIVATE S16 cmListDelete
+static S16 cmListDelete
 (
 CmListEnt *entry                        /* entry to delete */
 ) 
 #else
-PRIVATE S16 cmListDelete(entry) 
+static S16 cmListDelete(entry) 
 CmListEnt *entry;                       /* entry to delete */
 #endif
 {

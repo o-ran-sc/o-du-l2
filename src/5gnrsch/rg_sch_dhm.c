@@ -101,11 +101,11 @@ U8 rgSchNumOfAcksToAckNack[RG_SCH_MAX_NUM_EXPECTED_ACKS][RG_SCH_NUM_FDBK_VALUE] 
  
 /* local externs */
 
-PRIVATE Void rgSCHDhmFdbkIndHndlTa ARGS((RgSchDlHqProcCb *hqP, U8 tbIdx, U8 fdbk,
+static Void rgSCHDhmFdbkIndHndlTa ARGS((RgSchDlHqProcCb *hqP, U8 tbIdx, U8 fdbk,
             Bool maxHqRetxReached));
 void rgEmtcsetNullSubFrm ARGS((RgSchDlHqProcCb *hqP));
 #ifndef LTE_TDD
-PRIVATE S16 rgSCHDhmProcHqFdbkAckNackRep ARGS((
+static S16 rgSCHDhmProcHqFdbkAckNackRep ARGS((
 RgSchDlHqProcCb      *hqP,
 RgSchDlSf            *sf,
 U8                   tbCnt,
@@ -113,7 +113,7 @@ U8                   *isAck
 ));
 #endif
 #ifdef DL_LA
-PRIVATE S16 rgSCHDhmUpdateAckNackHistory ARGS((
+static S16 rgSCHDhmUpdateAckNackHistory ARGS((
         RgSchCellCb             *cell,
         RgSchUeCb               *ueCb,
         U8                      hqfdbk,
@@ -121,13 +121,13 @@ PRIVATE S16 rgSCHDhmUpdateAckNackHistory ARGS((
         ));
 #endif
 #ifdef LTE_TDD
-PRIVATE Void rgSCHDhmPrcSplBundlFdbk ARGS((
+static Void rgSCHDhmPrcSplBundlFdbk ARGS((
         RgSchCellCb  *cell,
         TfuHqInfo    *fdbk,
         U8            hqCnt
         ));
 #ifdef LTE_ADV
-PRIVATE Void rgSchGetHqFdbkPosForM1 ARGS((
+static Void rgSchGetHqFdbkPosForM1 ARGS((
         RgSchUeCb            *ue,
         RgSchDlHqProcCb      *hqP,
         U8                  *isAck, 
@@ -135,7 +135,7 @@ PRIVATE Void rgSchGetHqFdbkPosForM1 ARGS((
         U8                   tbIdx,
         RgSchTddANInfo       *anInfo
         ));
-PRIVATE Void rgSchGetHqFdbkPosForM234 ARGS((
+static Void rgSchGetHqFdbkPosForM234 ARGS((
         RgSchUeCb            *ue,
         RgSchDlHqProcCb      *hqP,
         U8                   *isAck, 
@@ -156,7 +156,7 @@ RgSchDlHqProcCb  *proc
 ));
 
 #ifdef EMTC_ENABLE
-EXTERN S16 rgSCHDhmEmtcRgrCellCfg ARGS((
+S16 rgSCHDhmEmtcRgrCellCfg ARGS((
 RgSchCellCb   *cell
 ));
 #endif
@@ -170,19 +170,19 @@ extern U32 gHqFdbkCount;
 
 #endif
 #ifdef EMTC_ENABLE
-EXTERN Void rgSCHEmtcUtlDlHqPTbRmvFrmTx
+Void rgSCHEmtcUtlDlHqPTbRmvFrmTx
 (
 RgSchEmtcDlSf               *subFrm,
 RgSchDlHqProcCb            *hqP,
 U8                         tbIdx,
 Bool                       isRepeting
 );
-EXTERN RgSchEmtcDlSf* rgSCHEmtcUtlSubFrmGet
+RgSchEmtcDlSf* rgSCHEmtcUtlSubFrmGet
 (
 RgSchCellCb            *cell,
 CmLteTimingInfo        frm
 );
-EXTERN Void rgSCHEmtcHqInfoAlloc ARGS((RgSchCellCb *cell, RgSchDlHqProcCb *hqP));
+Void rgSCHEmtcHqInfoAlloc ARGS((RgSchCellCb *cell, RgSchDlHqProcCb *hqP));
 #endif
 /* forward references */
 
@@ -1243,7 +1243,7 @@ CmLteTimingInfo         timingInfo;
  *      -# None.
  **/
 #ifdef ANSI
-PRIVATE Void rgSCHDhmFdbkIndHndlTa
+static Void rgSCHDhmFdbkIndHndlTa
 (
 RgSchDlHqProcCb   *hqP,
 U8                tbIdx,
@@ -1251,7 +1251,7 @@ U8                fdbk,
 Bool              maxHqRetxReached
 )
 #else
-PRIVATE Void rgSCHDhmFdbkIndHndlTa(hqP, tbIdx, fdbk,maxHqRetxReached)
+static Void rgSCHDhmFdbkIndHndlTa(hqP, tbIdx, fdbk,maxHqRetxReached)
 RgSchDlHqProcCb   *hqP;
 U8                tbIdx;
 U8                fdbk;
@@ -1378,7 +1378,7 @@ RgSchDlHqTbCb     *tbInfo;
  *  @return     S16
  **/
 #ifdef ANSI
-PRIVATE S16 rgSCHDhmHqProcByFdbkTime
+static S16 rgSCHDhmHqProcByFdbkTime
 (
 RgSchDlHqEnt            *hqE,
 CmLteTimingInfo         timeInfo,
@@ -1390,7 +1390,7 @@ U8                      *cntHqPrcs,
 RgSchCellCb             *cell
 )
 #else
-PRIVATE S16 rgSCHDhmHqProcByFdbkTime(hqE, timeInfo, isMsg4, hqPrcs,
+static S16 rgSCHDhmHqProcByFdbkTime(hqE, timeInfo, isMsg4, hqPrcs,
                                      numTbs, tbStrtIdx, cntHqPrcs)
 RgSchDlHqEnt            *hqE;
 CmLteTimingInfo         timeInfo;
@@ -1766,7 +1766,7 @@ U32 rgHqRvStats[2][4][2] = {{{0, 0}, {0, 0}, {0, 0}, {0, 0}},
  *  @return     RETVOID
  **/
 #ifdef ANSI
-PRIVATE Void rgSchGetHqFdbkPosForM1
+static Void rgSchGetHqFdbkPosForM1
 (
  RgSchUeCb            *ue,
  RgSchDlHqProcCb      *hqP,
@@ -1776,7 +1776,7 @@ PRIVATE Void rgSchGetHqFdbkPosForM1
  RgSchTddANInfo       *anInfo
  )
 #else
-PRIVATE Void rgSchGetHqFdbkPosForM1(ue,hqP,isAck,fdbk,tbIdx,anInfo)
+static Void rgSchGetHqFdbkPosForM1(ue,hqP,isAck,fdbk,tbIdx,anInfo)
  RgSchUeCb            *ue;
  RgSchDlHqProcCb      *hqP;
  U8                   *isAck;
@@ -1884,7 +1884,7 @@ PRIVATE Void rgSchGetHqFdbkPosForM1(ue,hqP,isAck,fdbk,tbIdx,anInfo)
  *  @return     RETVOID
  **/
 #ifdef ANSI
-PRIVATE Void rgSchGetHqFdbkPosForM234
+static Void rgSchGetHqFdbkPosForM234
 (
  RgSchUeCb            *ue,
  RgSchDlHqProcCb      *hqP,
@@ -1896,7 +1896,7 @@ PRIVATE Void rgSchGetHqFdbkPosForM234
  CmLteTimingInfo      timeInfo
  )
 #else
-PRIVATE Void rgSchGetHqFdbkPosForM234(ue,hqP,isAck,fdbk,tbIdx,anInfo,M,timeInfo)
+static Void rgSchGetHqFdbkPosForM234(ue,hqP,isAck,fdbk,tbIdx,anInfo,M,timeInfo)
  RgSchUeCb            *ue;
  RgSchDlHqProcCb      *hqP;
  U8                  *isAck;
@@ -4622,7 +4622,7 @@ U8                      idx;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgSCHDhmProcHqFdbkAckNackRep
+static S16 rgSCHDhmProcHqFdbkAckNackRep
 (
 RgSchDlHqProcCb      *hqP,
 RgSchDlSf            *sf,
@@ -4630,7 +4630,7 @@ U8                   tbCnt,
 U8                   *isAck
 )
 #else
-PRIVATE S16 rgSCHDhmProcHqFdbkAckNackRep(hqP,sf,tbCnt,isAck)
+static S16 rgSCHDhmProcHqFdbkAckNackRep(hqP,sf,tbCnt,isAck)
 RgSchDlHqProcCb      *hqP;
 RgSchDlSf            *sf;
 U8                   tbCnt;
@@ -4812,7 +4812,7 @@ RgSchDlHqProcCb         *hqP;
 
 #ifdef DL_LA
 #ifdef ANSI
-PRIVATE S16 rgSCHDhmUpdateAckNackHistory
+static S16 rgSCHDhmUpdateAckNackHistory
 (
 RgSchCellCb             *cell,
 RgSchUeCb               *ueCb,
@@ -4820,7 +4820,7 @@ U8                      hqfdbk,
 U8                      tbCnt
 )
 #else
-PRIVATE S16 rgSCHDhmUpdateAckNackHistory(cell, ueCb, hqfdbk, tbCnt)
+static S16 rgSCHDhmUpdateAckNackHistory(cell, ueCb, hqfdbk, tbCnt)
 (
 RgSchCellCb             *cell;
 RgSchUeCb               *ueCb;
@@ -4940,14 +4940,14 @@ U8                      tbCnt;
  *
  **/
 #ifdef ANSI
-PRIVATE Void rgSCHDhmPrcSplBundlFdbk
+static Void rgSCHDhmPrcSplBundlFdbk
 (
 RgSchCellCb  *cell,
 TfuHqInfo    *fdbk,
 U8            hqCnt
 )
 #else
-PRIVATE Void rgSCHDhmPrcSplBundlFdbk(cell, fdbk, hqCnt)
+static Void rgSCHDhmPrcSplBundlFdbk(cell, fdbk, hqCnt)
 (
 RgSchCellCb  *cell;
 TfuHqInfo    *fdbk;

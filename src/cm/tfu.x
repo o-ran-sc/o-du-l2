@@ -128,7 +128,7 @@ struct _rgSchUlAllocCntr
    U32  taZero;
 };
 
-EXTERN RgSchUlAllocCntr rgSchUlAllocCntr;
+RgSchUlAllocCntr rgSchUlAllocCntr;
 
 #endif
 //Chandan
@@ -2644,7 +2644,7 @@ typedef S16 (*TfuErrInd) ARGS((
  * @param spId SAP ID of the service provider.
  * @return ROK/RFAILED
  */
-EXTERN S16 TfUiTfuBndReq ARGS((Pst *pst, SuId suId, SpId spId));
+S16 TfUiTfuBndReq ARGS((Pst *pst, SuId suId, SpId spId));
 
 /** @brief This API is used to send a Bind Request from Scheduler to PHY.
  * @param pst Pointer to the post structure.
@@ -2652,7 +2652,7 @@ EXTERN S16 TfUiTfuBndReq ARGS((Pst *pst, SuId suId, SpId spId));
  * @param spId SAP ID of the service provider.
  * @return ROK/RFAILED
  */
-EXTERN S16 TfUiTfuSchBndReq ARGS((Pst *pst, SuId suId, SpId spId));
+S16 TfUiTfuSchBndReq ARGS((Pst *pst, SuId suId, SpId spId));
 
 
 /** @brief This API is used to receive a Bind Confirm from PHY to MAC.
@@ -2661,7 +2661,7 @@ EXTERN S16 TfUiTfuSchBndReq ARGS((Pst *pst, SuId suId, SpId spId));
  * @param status Status of the bind request.
  * @return ROK/RFAILED
  */
-EXTERN S16 TfUiTfuBndCfm ARGS((Pst *pst, SuId suId, U8 status));
+S16 TfUiTfuBndCfm ARGS((Pst *pst, SuId suId, U8 status));
 
 /** @brief This API is used to receive a Bind Confirm from PHY to Scheduler.
  * @param pst Pointer to the post structure.
@@ -2669,7 +2669,7 @@ EXTERN S16 TfUiTfuBndCfm ARGS((Pst *pst, SuId suId, U8 status));
  * @param status Status of the bind request.
  * @return ROK/RFAILED
  */
-EXTERN S16 TfUiTfuSchBndCfm ARGS((Pst *pst, SuId suId, U8 status));
+S16 TfUiTfuSchBndCfm ARGS((Pst *pst, SuId suId, U8 status));
 
 
 /** @brief This API is used to send an Unbind Request from MAC to PHY.
@@ -2678,7 +2678,7 @@ EXTERN S16 TfUiTfuSchBndCfm ARGS((Pst *pst, SuId suId, U8 status));
  * @param reason Reason for Unbind request.
  * @return ROK/RFAILED
  */
-EXTERN S16 TfUiTfuUbndReq ARGS((Pst *pst, SpId spId, Reason reason));
+S16 TfUiTfuUbndReq ARGS((Pst *pst, SpId spId, Reason reason));
 
 /** @brief This API is used to send an Unbind Request from Scheduler to PHY.
  * @param pst Pointer to the post structure.
@@ -2686,7 +2686,7 @@ EXTERN S16 TfUiTfuUbndReq ARGS((Pst *pst, SpId spId, Reason reason));
  * @param reason Reason for Unbind request.
  * @return ROK/RFAILED
  */
-EXTERN S16 TfUiTfuSchUbndReq ARGS((Pst *pst, SpId spId, Reason reason));
+S16 TfUiTfuSchUbndReq ARGS((Pst *pst, SpId spId, Reason reason));
 
 
 /** @brief This API is used to indication Random Access Request reception from
@@ -2699,7 +2699,7 @@ EXTERN S16 TfUiTfuSchUbndReq ARGS((Pst *pst, SpId spId, Reason reason));
  * @param raReqInd Pointer to the TfuRaReqIndInfo structure.
  * @return ROK/RFAILED
  */
-EXTERN S16 TfUiTfuRaReqInd ARGS((Pst *pst, SuId suId, TfuRaReqIndInfo 
+S16 TfUiTfuRaReqInd ARGS((Pst *pst, SuId suId, TfuRaReqIndInfo 
          *raReqInd));
 
 
@@ -2723,7 +2723,7 @@ EXTERN S16 TfUiTfuRaReqInd ARGS((Pst *pst, SuId suId, TfuRaReqIndInfo
  * @param recpReq Pointer to the TfuRecpReqInfo structure.
  * @return ROK/RFAILED
  */
-EXTERN S16 TfUiTfuRecpReq ARGS((Pst *pst, SpId spId, TfuRecpReqInfo *recpReq));
+S16 TfUiTfuRecpReq ARGS((Pst *pst, SpId spId, TfuRecpReqInfo *recpReq));
 
  /** @brief This primitive is sent from Scheduler to PHY. It provides PHY with
   * all the control information.
@@ -2738,7 +2738,7 @@ EXTERN S16 TfUiTfuRecpReq ARGS((Pst *pst, SpId spId, TfuRecpReqInfo *recpReq));
   * @param cntrlReq pointer to TfuCntrlReqInfo
   * @return ROK/RFAILED
   */
-EXTERN S16 TfUiTfuCntrlReq ARGS((Pst *pst, SpId spId, TfuCntrlReqInfo *cntrlReq));
+S16 TfUiTfuCntrlReq ARGS((Pst *pst, SpId spId, TfuCntrlReqInfo *cntrlReq));
 
  /** @brief This primitive carries the Data PDUs from MAC to PHY for transmission. 
   * @details The data being sent in this primitive is meant to be transmitted on
@@ -2751,7 +2751,7 @@ EXTERN S16 TfUiTfuCntrlReq ARGS((Pst *pst, SpId spId, TfuCntrlReqInfo *cntrlReq)
   * @param datReq pointer to TfuDatReqInfo
   * @return 
   */
-EXTERN S16 TfUiTfuDatReq ARGS((Pst *pst, SpId spId, TfuDatReqInfo *datReq));
+S16 TfUiTfuDatReq ARGS((Pst *pst, SpId spId, TfuDatReqInfo *datReq));
 
 #ifdef L2_OPTMZ
 /** @brief This primitive carries the cellId and UeId for which datReq need to
@@ -2766,7 +2766,7 @@ EXTERN S16 TfUiTfuDatReq ARGS((Pst *pst, SpId spId, TfuDatReqInfo *datReq));
   * @return 
   */
 
-EXTERN S16 TfUiTfuDelDatReq ARGS((Pst *pst, SpId spId, TfuDelDatReqInfo *datReq));
+S16 TfUiTfuDelDatReq ARGS((Pst *pst, SpId spId, TfuDelDatReqInfo *datReq));
 #endif
 
 /** @brief This Primitive carries the Data PDUs from PHY to MAC.
@@ -2778,7 +2778,7 @@ EXTERN S16 TfUiTfuDelDatReq ARGS((Pst *pst, SpId spId, TfuDelDatReqInfo *datReq)
  * @param datInd pointer to TfuDatIndInfo
  * @return 
  */
-EXTERN S16 TfUiTfuDatInd ARGS((Pst *pst, SuId suId, TfuDatIndInfo *datInd));
+S16 TfUiTfuDatInd ARGS((Pst *pst, SuId suId, TfuDatIndInfo *datInd));
 
 /** @brief This primitive carries the HARQ Feedback from PHY to Scheduler.
  * @details HARQ feedback is sent by the UE to the eNodeB, an ACK is sent if UE
@@ -2790,7 +2790,7 @@ EXTERN S16 TfUiTfuDatInd ARGS((Pst *pst, SuId suId, TfuDatIndInfo *datInd));
  * @param hqInd pointer to TfuHqIndInfo
  * @return 
  */
-EXTERN S16 TfUiTfuHqInd ARGS((Pst *pst, SuId suId, TfuHqIndInfo *hqInd));
+S16 TfUiTfuHqInd ARGS((Pst *pst, SuId suId, TfuHqIndInfo *hqInd));
 
 /** @brief This primitive carries the SR Indication from PHY to Scheduler. 
  * @details Scheduling Request (SR) is sent by the UE to the eNodeB to request
@@ -2801,7 +2801,7 @@ EXTERN S16 TfUiTfuHqInd ARGS((Pst *pst, SuId suId, TfuHqIndInfo *hqInd));
  * @param srInd pointer to TfuSrIndInfo
  * @return 
  */
-EXTERN S16 TfUiTfuSrInd ARGS((Pst *pst, SuId suId, TfuSrIndInfo *srInd));
+S16 TfUiTfuSrInd ARGS((Pst *pst, SuId suId, TfuSrIndInfo *srInd));
 
 /** @brief This API is used to indicate CQI reporting from PHY to Scheduler.
  * @details This primitive carries an estimate of the Uplink Channel Quality
@@ -2814,7 +2814,7 @@ EXTERN S16 TfUiTfuSrInd ARGS((Pst *pst, SuId suId, TfuSrIndInfo *srInd));
  * @param ulCqiInd Pointer to the TfuUlCqiIndInfo structure.
  * @return ROK/RFAILED
  */
-EXTERN S16 TfUiTfuUlCqiInd ARGS((Pst *pst, SuId suId, 
+S16 TfUiTfuUlCqiInd ARGS((Pst *pst, SuId suId, 
          TfuUlCqiIndInfo *ulCqiInd));
 
 /** @brief This API is used by the Physical layer to indicate if the CRC Check
@@ -2830,7 +2830,7 @@ EXTERN S16 TfUiTfuUlCqiInd ARGS((Pst *pst, SuId suId,
  * @param crcIndInfo Pointer to the TfuCrcIndInfo.
  * @return ROK/RFAILED
  */
-EXTERN S16 TfUiTfuCrcInd ARGS((Pst *pst, SuId suId, 
+S16 TfUiTfuCrcInd ARGS((Pst *pst, SuId suId, 
          TfuCrcIndInfo *crcIndInfo));
 
 /** @brief This API is used to indicate a Timing Advance from PHY to Scheduler.
@@ -2843,7 +2843,7 @@ EXTERN S16 TfUiTfuCrcInd ARGS((Pst *pst, SuId suId,
  * @param timingAdvInd Pointer to the TfuTimingAdvIndInfo structure.
  * @return ROK/RFAILED
  */
-EXTERN S16 TfUiTfuTimingAdvInd ARGS((Pst *pst, SuId suId, 
+S16 TfUiTfuTimingAdvInd ARGS((Pst *pst, SuId suId, 
          TfuTimingAdvIndInfo *timingAdvInd));
 
 /* CA dev Start */
@@ -2855,7 +2855,7 @@ EXTERN S16 TfUiTfuTimingAdvInd ARGS((Pst *pst, SuId suId,
  * @param ttiInd Pointer to the TfuTtiCellInfo structure.
  * @return ROK/RFAILED
  */
-EXTERN S16 TfUiTfuTtiCell ARGS((Pst *pst, SuId suId, 
+S16 TfUiTfuTtiCell ARGS((Pst *pst, SuId suId, 
          TfuTtiCellInfo *ttiInd));
 /* CA dev End */
 
@@ -2867,7 +2867,7 @@ EXTERN S16 TfUiTfuTtiCell ARGS((Pst *pst, SuId suId,
  * @param ttiInd Pointer to the TfuTtiIndInfo structure.
  * @return ROK/RFAILED
  */
-EXTERN S16 TfUiTfuTtiInd ARGS((Pst *pst, SuId suId, 
+S16 TfUiTfuTtiInd ARGS((Pst *pst, SuId suId, 
          TfuTtiIndInfo *ttiInd));
 
 /** @brief This API is the TTI indication from PHY to Scheduler. 
@@ -2878,7 +2878,7 @@ EXTERN S16 TfUiTfuTtiInd ARGS((Pst *pst, SuId suId,
  * @param ttiInd Pointer to the TfuTtiIndInfo structure.
  * @return ROK/RFAILED
  */
-EXTERN S16 TfUiTfuSchTtiInd ARGS((Pst *pst, SuId suId, 
+S16 TfUiTfuSchTtiInd ARGS((Pst *pst, SuId suId, 
          TfuTtiIndInfo *ttiInd));
 
 
@@ -2892,7 +2892,7 @@ EXTERN S16 TfUiTfuSchTtiInd ARGS((Pst *pst, SuId suId,
  * @param dlCqiInd Pointer to the TfuDlCqiIndInfo structure.
  * @return ROK/RFAILED
  */
-EXTERN S16 TfUiTfuDlCqiInd ARGS((Pst *pst, SuId suId, 
+S16 TfUiTfuDlCqiInd ARGS((Pst *pst, SuId suId, 
          TfuDlCqiIndInfo *dlCqiInd));
 /** @brief This API is used to indicate the calculated DOA value report from PHY to
  * Scheduler.
@@ -2903,7 +2903,7 @@ EXTERN S16 TfUiTfuDlCqiInd ARGS((Pst *pst, SuId suId,
  * @param doaInd Pointer to the TfuDoaIndInfo structure.
  * @return ROK/RFAILED
  */
-EXTERN S16 TfUiTfuDoaInd ARGS((Pst *pst, SuId suId, 
+S16 TfUiTfuDoaInd ARGS((Pst *pst, SuId suId, 
          TfuDoaIndInfo *doaInd));
 
 
@@ -2917,7 +2917,7 @@ EXTERN S16 TfUiTfuDoaInd ARGS((Pst *pst, SuId suId,
  * @param pucchDeltaPwr Pointer to the TfuPucchDeltaPwrIndInfo structure.
  * @return ROK/RFAILED
  */
-EXTERN S16 TfUiTfuPucchDeltaPwrInd ARGS((Pst *pst, SuId suId, 
+S16 TfUiTfuPucchDeltaPwrInd ARGS((Pst *pst, SuId suId, 
          TfuPucchDeltaPwrIndInfo *pucchDeltaPwr));
 
 /** @brief LAA:This primitive carries the Error Indication from PHY to Scheduler.
@@ -2929,7 +2929,7 @@ EXTERN S16 TfUiTfuPucchDeltaPwrInd ARGS((Pst *pst, SuId suId,
  * @return 
  */
 
-EXTERN S16 TfUiTfuErrInd ARGS((Pst *pst, SuId suId, 
+S16 TfUiTfuErrInd ARGS((Pst *pst, SuId suId, 
          TfuErrIndInfo *errInd));
 /* tfu_x_001.main_8. Added changes of TFU_UPGRADE */
 #ifdef TFU_UPGRADE
@@ -2944,7 +2944,7 @@ EXTERN S16 TfUiTfuErrInd ARGS((Pst *pst, SuId suId,
  * @param  srsInd Pointer to the TfuSrIndInfo structure.
  * @return ROK/RFAILED
  */
-EXTERN S16 TfUiTfuSrsInd ARGS((Pst *pst, SuId suId, 
+S16 TfUiTfuSrsInd ARGS((Pst *pst, SuId suId, 
          TfuSrsIndInfo *srsInd));
 
 
@@ -2959,82 +2959,82 @@ EXTERN S16 TfUiTfuSrsInd ARGS((Pst *pst, SuId suId,
  * @param  cqiInd Pointer to the TfuRawCqiIndInfo structure.
  * @return ROK/RFAILED
  */
-EXTERN S16 TfUiTfuRawCqiInd ARGS((Pst *pst, SuId suId, 
+S16 TfUiTfuRawCqiInd ARGS((Pst *pst, SuId suId, 
          TfuRawCqiIndInfo *cqiInd));
 
 #endif /* TFU_UPGRADE */
 
 #ifdef RG
-EXTERN S16 RgLiTfuBndReq ARGS((
+S16 RgLiTfuBndReq ARGS((
    Pst*                 pst,
    SuId                 suId,
    SpId                 spId
 ));
-EXTERN S16 RgLiTfuBndCfm ARGS((
+S16 RgLiTfuBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    U8                   status
 ));
-EXTERN S16 RgLiTfuUbndReq ARGS((
+S16 RgLiTfuUbndReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    Reason               reason
 ));
 
-EXTERN S16 RgLiTfuSchBndReq ARGS((
+S16 RgLiTfuSchBndReq ARGS((
    Pst*                 pst,
    SuId                 suId,
    SpId                 spId
 ));
-EXTERN S16 RgLiTfuSchBndCfm ARGS((
+S16 RgLiTfuSchBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    U8                   status
 ));
-EXTERN S16 RgLiTfuSchUbndReq ARGS((
+S16 RgLiTfuSchUbndReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    Reason               reason
 ));
 
-EXTERN S16 RgLiTfuRaReqInd ARGS((
+S16 RgLiTfuRaReqInd ARGS((
    Pst *                pst,
    SpId                 spId,
    TfuRaReqIndInfo *  raReq
 ));
 
 
-EXTERN S16 RgLiTfuRecpReq ARGS((
+S16 RgLiTfuRecpReq ARGS((
    Pst *                pst,
    SpId                 spId,
    TfuRecpReqInfo *  recpReq
 ));
 
-EXTERN S16 RgLiTfuUlCqiInd ARGS((
+S16 RgLiTfuUlCqiInd ARGS((
    Pst *                pst,
    SuId                 suId,
    TfuUlCqiIndInfo *    ulCqiInd
 ));
 
-EXTERN S16 RgLiTfuDoaInd ARGS((
+S16 RgLiTfuDoaInd ARGS((
    Pst *                pst,
    SuId                 suId,
    TfuDoaIndInfo *      doaInd
 ));
 
-EXTERN S16 RgLiTfuHqInd ARGS((
+S16 RgLiTfuHqInd ARGS((
    Pst *                pst,
    SuId                 suId,
    TfuHqIndInfo *  hqInd
 ));
 
-EXTERN S16 RgLiTfuSrInd ARGS((
+S16 RgLiTfuSrInd ARGS((
    Pst *                pst,
    SuId                 suId,
    TfuSrIndInfo *       srInd
 ));
 
-EXTERN S16 RgLiTfuDlCqiInd ARGS((
+S16 RgLiTfuDlCqiInd ARGS((
    Pst *                pst,
    SuId                 suId,
    TfuDlCqiIndInfo *    dlCqiInd
@@ -3042,61 +3042,61 @@ EXTERN S16 RgLiTfuDlCqiInd ARGS((
 
 /* tfu_x_001.main_8. Added changes of TFU_UPGRADE */
 #ifdef TFU_UPGRADE
-EXTERN S16 RgLiTfuRawCqiInd ARGS((
+S16 RgLiTfuRawCqiInd ARGS((
          Pst            *pst,
          SuId           suId,
          TfuRawCqiIndInfo  *rawCqiInd
          ));  
-EXTERN S16 RgLiTfuSrsInd ARGS((
+S16 RgLiTfuSrsInd ARGS((
          Pst            *pst,
          SuId           suId,
          TfuSrsIndInfo  *srsIndInfo
          ));  
 #endif
-EXTERN S16 RgLiTfuDatInd ARGS((
+S16 RgLiTfuDatInd ARGS((
    Pst *                pst,
    SuId                 suId,
    TfuDatIndInfo *      datInd
 ));
 
-EXTERN S16 RgLiTfuCrcInd ARGS((
+S16 RgLiTfuCrcInd ARGS((
    Pst *                pst,
    SuId                 suId,
    TfuCrcIndInfo *  crcInd
 ));
 
-EXTERN S16 RgLiTfuTimingAdvInd ARGS((
+S16 RgLiTfuTimingAdvInd ARGS((
    Pst *                pst,
    SuId                 suId,
    TfuTimingAdvIndInfo * timingAdvInd
 ));
 
-EXTERN S16 RgLiTfuDatReq ARGS((
+S16 RgLiTfuDatReq ARGS((
    Pst *                pst,
    SpId                 spId,
    TfuDatReqInfo *      datReq
 ));
 
-EXTERN S16 RgLiTfuCntrlReq ARGS((
+S16 RgLiTfuCntrlReq ARGS((
    Pst *                pst,
    SpId                 spId,
    TfuCntrlReqInfo *    cntrlReq
 ));
 
-EXTERN S16 RgLiTfuTtiInd ARGS((
+S16 RgLiTfuTtiInd ARGS((
    Pst *                pst,
    SuId                 suId,
    TfuTtiIndInfo *      ttiInd
 ));
 
 #if defined(TENB_T2K3K_SPECIFIC_CHANGES) && defined(LTE_TDD)
-EXTERN S16 RgLiTfuNonRtInd ARGS((
+S16 RgLiTfuNonRtInd ARGS((
    Pst *                pst,
    SuId                 suId
 ));
 #endif
 
-EXTERN S16 RgLiTfuPucchDeltaPwrInd ARGS((
+S16 RgLiTfuPucchDeltaPwrInd ARGS((
    Pst *                   pst,
    SuId                    suId,
    TfuPucchDeltaPwrIndInfo   *pucchDeltaPwr
@@ -3111,7 +3111,7 @@ EXTERN S16 RgLiTfuPucchDeltaPwrInd ARGS((
  * @param errInd pointer to TfuErrIndInfo
  * @return 
  */
-EXTERN S16 RgLiTfuErrInd ARGS((Pst *pst, SuId suId, TfuErrIndInfo *errInd));
+S16 RgLiTfuErrInd ARGS((Pst *pst, SuId suId, TfuErrIndInfo *errInd));
 
 #ifdef L2_OPTMZ
 /** @brief This primitive carries the cellId and UeId for which datReq need to
@@ -3125,133 +3125,133 @@ EXTERN S16 RgLiTfuErrInd ARGS((Pst *pst, SuId suId, TfuErrIndInfo *errInd));
   * @param datReq pointer to TfuDelDatReqInfo
   * @return 
   */
-EXTERN S16 RgLiTfuDelDatReq ARGS((Pst *pst, SuId suId, TfuDelDatReqInfo *delDatReq));
+S16 RgLiTfuDelDatReq ARGS((Pst *pst, SuId suId, TfuDelDatReqInfo *delDatReq));
 #endif
 
 #if (defined(LCTFU))
 /** @brief This API is used to send a Bind Request from MAC to PHY.
  */
 #ifdef TFU_5GTF
-EXTERN S16 cmPkTfuRbAssignA1Val324 ARGS((
+S16 cmPkTfuRbAssignA1Val324 ARGS((
 TfuRbAssignA1Val324 *param,
 Buffer *mBuf
 ));
-EXTERN S16 cmPkTfuRbAssignB1Val324 ARGS((
+S16 cmPkTfuRbAssignB1Val324 ARGS((
 TfuRbAssignB1Val324 *param,
 Buffer *mBuf
 ));
-EXTERN S16 cmPkTfuRbAssignVal326 ARGS((
+S16 cmPkTfuRbAssignVal326 ARGS((
 TfuRbAssignVal326 *param,
 Buffer *mBuf
 ));
-EXTERN S16 cmUnpkTfuRbAssignA1Val324 ARGS((
+S16 cmUnpkTfuRbAssignA1Val324 ARGS((
 TfuRbAssignA1Val324 *param,
 Buffer *mBuf
 ));
-EXTERN S16 cmUnpkTfuRbAssignB1Val324 ARGS((
+S16 cmUnpkTfuRbAssignB1Val324 ARGS((
 TfuRbAssignB1Val324 *param,
 Buffer *mBuf
 ));
-EXTERN S16 cmUnpkTfuRbAssignVal326 ARGS((
+S16 cmUnpkTfuRbAssignVal326 ARGS((
 TfuRbAssignVal326 *param,
 Buffer *mBuf
 ));
-EXTERN S16 cmPkTfuDciFormatA1A2Info ARGS((
+S16 cmPkTfuDciFormatA1A2Info ARGS((
 TfuDciFormatA1Info *param,
 Buffer *mBuf
 ));
-EXTERN S16 cmPkTfuDciFormatB1B2Info ARGS((
+S16 cmPkTfuDciFormatB1B2Info ARGS((
 TfuDciFormatB1Info *param,
 Buffer *mBuf
 ));
-EXTERN S16 cmUnpkTfuDciFormatA1A2Info ARGS((
+S16 cmUnpkTfuDciFormatA1A2Info ARGS((
 TfuDciFormatA1Info *param,
 Buffer *mBuf
 ));
-EXTERN S16 cmUnpkTfuDciFormatB1B2Info ARGS((
+S16 cmUnpkTfuDciFormatB1B2Info ARGS((
 TfuDciFormatB1Info *param,
 Buffer *mBuf
 ));
 #endif /* TFU_5GTF */
 
-EXTERN S16 cmPkTfuBndReq ARGS((
+S16 cmPkTfuBndReq ARGS((
    Pst*                 pst,
    SuId                 suId,
    SpId                 spId
 ));
 /** @brief This API is used to send a Bind Request from MAC to PHY.
  */
-EXTERN S16 cmUnpkTfuBndReq ARGS((
+S16 cmUnpkTfuBndReq ARGS((
    TfuBndReq            func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 /** @brief This API is used to receive a Bind Confirm from PHY to MAC.
  */
-EXTERN S16 cmPkTfuBndCfm ARGS((
+S16 cmPkTfuBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    U8                   status
 ));
 /** @brief This API is used to receive a Bind Confirm from PHY to MAC.
  */
-EXTERN S16 cmUnpkTfuBndCfm ARGS((
+S16 cmUnpkTfuBndCfm ARGS((
    TfuBndCfm            func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 /** @brief This API is used to send an Unbind Request from MAC to PHY.
  */
-EXTERN S16 cmPkTfuUbndReq ARGS((
+S16 cmPkTfuUbndReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    Reason               reason
 ));
 /** @brief This API is used to send an Unbind Request from MAC to PHY.
  */
-EXTERN S16 cmUnpkTfuUbndReq ARGS((
+S16 cmUnpkTfuUbndReq ARGS((
    TfuUbndReq           func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 /** @brief This API is used to send a Bind Request from SCH to PHY.
  */
-EXTERN S16 cmPkTfuSchBndReq ARGS((
+S16 cmPkTfuSchBndReq ARGS((
    Pst*                 pst,
    SuId                 suId,
    SpId                 spId
 ));
 /** @brief This API is used to send a Bind Request from SCH to PHY.
  */
-EXTERN S16 cmUnpkTfuSchBndReq ARGS((
+S16 cmUnpkTfuSchBndReq ARGS((
    TfuSchBndReq         func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 /** @brief This API is used to receive a Bind Confirm from PHY to SCH.
  */
-EXTERN S16 cmPkTfuSchBndCfm ARGS((
+S16 cmPkTfuSchBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    U8                   status
 ));
 /** @brief This API is used to receive a Bind Confirm from PHY to SCH.
  */
-EXTERN S16 cmUnpkTfuSchBndCfm ARGS((
+S16 cmUnpkTfuSchBndCfm ARGS((
    TfuSchBndCfm         func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 /** @brief This API is used to send an Unbind Request from SCH to PHY.
  */
-EXTERN S16 cmPkTfuSchUbndReq ARGS((
+S16 cmPkTfuSchUbndReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    Reason               reason
 ));
 /** @brief This API is used to send an Unbind Request from SCH to PHY.
  */
-EXTERN S16 cmUnpkTfuSchUbndReq ARGS((
+S16 cmUnpkTfuSchUbndReq ARGS((
    TfuSchUbndReq        func,
    Pst*                 pst,
    Buffer               *mBuf
@@ -3259,7 +3259,7 @@ EXTERN S16 cmUnpkTfuSchUbndReq ARGS((
 /** @brief This API is used to indication Random Access Request reception from
  * PHY to MAC.
  */
-EXTERN S16 cmPkTfuRaReqInd ARGS((
+S16 cmPkTfuRaReqInd ARGS((
    Pst *                pst,
    SuId                 suId,
    TfuRaReqIndInfo *    raReqInd
@@ -3267,7 +3267,7 @@ EXTERN S16 cmPkTfuRaReqInd ARGS((
 /** @brief This API is used to indication Random Access Request reception from
  * PHY to MAC.
  */
-EXTERN S16 cmUnpkTfuRaReqInd ARGS((
+S16 cmUnpkTfuRaReqInd ARGS((
    TfuRaReqInd          func,
    Pst *                pst,
    Buffer               *mBuf
@@ -3275,7 +3275,7 @@ EXTERN S16 cmUnpkTfuRaReqInd ARGS((
 /** @brief This API is used to indication Random Access Request reception from
  * PHY to MAC.
  */
-EXTERN S16 cmPkTfuRecpReq ARGS((
+S16 cmPkTfuRecpReq ARGS((
    Pst *                pst,
    SpId                 spId,
    TfuRecpReqInfo *     recpReq
@@ -3283,47 +3283,47 @@ EXTERN S16 cmPkTfuRecpReq ARGS((
 /** @brief This API is used to indication Random Access Request reception from
  * PHY to MAC.
  */
-EXTERN S16 cmUnpkTfuRecpReq ARGS((
+S16 cmUnpkTfuRecpReq ARGS((
    TfuRecpReq           func,
    Pst *                pst,
    Buffer               *mBuf
 ));
 /** @brief This API is used to indicate CQI reporting from PHY to MAC.
  */
-EXTERN S16 cmPkTfuUlCqiInd ARGS((
+S16 cmPkTfuUlCqiInd ARGS((
    Pst *                pst,
    SuId                 suId,
    TfuUlCqiIndInfo *    ulCqiInd
 ));
 /** @brief This API is used to indicate CQI reporting from PHY to MAC.
  */
-EXTERN S16 cmUnpkTfuUlCqiInd ARGS((
+S16 cmUnpkTfuUlCqiInd ARGS((
    TfuUlCqiInd          func,
    Pst *                pst,
    Buffer               *mBuf
 ));
 
-EXTERN S16 cmPkTfuHqInd ARGS((
+S16 cmPkTfuHqInd ARGS((
    Pst *                pst,
    SuId                 suId,
    TfuHqIndInfo *       hqInd
 ));
 
-EXTERN S16 cmUnpkTfuHqInd ARGS((
+S16 cmUnpkTfuHqInd ARGS((
    TfuHqInd             func,
    Pst *                pst,
    Buffer               *mBuf
 ));
 /** @brief This API is used to indicate a SR reception from PHY to MAC.
  */
-EXTERN S16 cmPkTfuSrInd ARGS((
+S16 cmPkTfuSrInd ARGS((
    Pst *                pst,
    SuId                 suId,
    TfuSrIndInfo *       srInd
 ));
 /** @brief This API is used to indicate a SR reception from PHY to MAC.
  */
-EXTERN S16 cmUnpkTfuSrInd ARGS((
+S16 cmUnpkTfuSrInd ARGS((
    TfuSrInd             func,
    Pst *                pst,
    Buffer               *mBuf
@@ -3331,7 +3331,7 @@ EXTERN S16 cmUnpkTfuSrInd ARGS((
 /** @brief This API is used to indicate the reception of CQI report from PHY to
  * MAC.
  */
-EXTERN S16 cmPkTfuDlCqiInd ARGS((
+S16 cmPkTfuDlCqiInd ARGS((
    Pst *                pst,
    SuId                 suId,
    TfuDlCqiIndInfo *    dlCqiInd
@@ -3339,7 +3339,7 @@ EXTERN S16 cmPkTfuDlCqiInd ARGS((
 /** @brief This API is used to indicate the reception of CQI report from PHY to
  * MAC.
  */
-EXTERN S16 cmUnpkTfuDlCqiInd ARGS((
+S16 cmUnpkTfuDlCqiInd ARGS((
    TfuDlCqiInd          func,
    Pst *                pst,
    Buffer               *mBuf
@@ -3347,7 +3347,7 @@ EXTERN S16 cmUnpkTfuDlCqiInd ARGS((
 
 /** @brief This API is used to indicate the Calculated DOA value report from PHY to
  * MAC.*/
-EXTERN S16 cmUnpkTfuDoaInd ARGS((
+S16 cmUnpkTfuDoaInd ARGS((
    TfuDoaInd            func,
    Pst *                pst,
    Buffer               *mBuf
@@ -3355,7 +3355,7 @@ EXTERN S16 cmUnpkTfuDoaInd ARGS((
 /** @brief This API is used to indicate the calculated DOA Value report from PHY to
  * MAC.
  */
-EXTERN S16 cmPkTfuDoaInd ARGS((
+S16 cmPkTfuDoaInd ARGS((
    Pst *                pst,
    SuId                 suId,
    TfuDoaIndInfo *      doaInd
@@ -3363,68 +3363,68 @@ EXTERN S16 cmPkTfuDoaInd ARGS((
 
 /** @brief This API is used to indicate Data Reception from PHY to MAC.
  */
-EXTERN S16 cmPkTfuDatInd ARGS((
+S16 cmPkTfuDatInd ARGS((
    Pst *                pst,
    SuId                 suId,
    TfuDatIndInfo *      datInd
 ));
 /** @brief This API is used to indicate Data Reception from PHY to MAC.
  */
-EXTERN S16 cmUnpkTfuDatInd ARGS((
+S16 cmUnpkTfuDatInd ARGS((
    TfuDatInd            func,
    Pst *                pst,
    Buffer               *mBuf
 ));
 /** @brief This API is used to indicate Decode failure from PHY to MAC.
  */
-EXTERN S16 cmPkTfuCrcInd ARGS((
+S16 cmPkTfuCrcInd ARGS((
    Pst *                pst,
    SuId                 suId,
    TfuCrcIndInfo *  crcInd
 ));
 /** @brief This API is used to indicate Decode failure from PHY to MAC.
  */
-EXTERN S16 cmUnpkTfuCrcInd ARGS((
+S16 cmUnpkTfuCrcInd ARGS((
    TfuCrcInd        func,
    Pst *                pst,
    Buffer               *mBuf
 ));
 
-EXTERN S16 cmPkTfuCntrlReq ARGS((
+S16 cmPkTfuCntrlReq ARGS((
    Pst *                pst,
    SpId                 spId,
    TfuCntrlReqInfo *    cntrlReq
 ));
 
-EXTERN S16 cmUnpkTfuCntrlReq ARGS((
+S16 cmUnpkTfuCntrlReq ARGS((
    TfuCntrlReq          func,
    Pst *                pst,
    Buffer               *mBuf
 ));
 /** @brief This API is used to indicate a Timing Advance from PHY to MAC.
  */
-EXTERN S16 cmPkTfuTimingAdvInd ARGS((
+S16 cmPkTfuTimingAdvInd ARGS((
    Pst *                pst,
    SuId                 suId,
    TfuTimingAdvIndInfo * timingAdvInd
 ));
 /** @brief This API is used to indicate a Timing Advance from PHY to MAC.
  */
-EXTERN S16 cmUnpkTfuTimingAdvInd ARGS((
+S16 cmUnpkTfuTimingAdvInd ARGS((
    TfuTimingAdvInd      func,
    Pst *                pst,
    Buffer               *mBuf
 ));
 /** @brief This API is used to send Data Request from MAC to PHY.
  */
-EXTERN S16 cmPkTfuDatReq ARGS((
+S16 cmPkTfuDatReq ARGS((
    Pst *                pst,
    SpId                 spId,
    TfuDatReqInfo *      datReq
 ));
 /** @brief This API is used to send Data Request from MAC to PHY.
  */
-EXTERN S16 cmUnpkTfuDatReq ARGS((
+S16 cmUnpkTfuDatReq ARGS((
    TfuDatReq            func,
    Pst *                pst,
    Buffer               *mBuf
@@ -3432,14 +3432,14 @@ EXTERN S16 cmUnpkTfuDatReq ARGS((
 /* CA dev Start */
 /** @brief This API is the TTI indication from CL to MAC and SCH.
  */
-EXTERN S16 cmPkTfuTtiCell ARGS((
+S16 cmPkTfuTtiCell ARGS((
    Pst *                pst,
    SuId                 suId,
    TfuTtiCellInfo *      ttiInd
 ));
 /** @brief This API is the TTI indication from CL to MAC and SCH.
  */
-EXTERN S16 cmUnpkTfuTtiCell ARGS((
+S16 cmUnpkTfuTtiCell ARGS((
    TfuTtiCell            func,
    Pst *                pst,
    Buffer               *mBuf
@@ -3448,14 +3448,14 @@ EXTERN S16 cmUnpkTfuTtiCell ARGS((
 
 /** @brief This API is the TTI indication from PHY to MAC.
  */
-EXTERN S16 cmPkTfuTtiInd ARGS((
+S16 cmPkTfuTtiInd ARGS((
    Pst *                pst,
    SuId                 suId,
    TfuTtiIndInfo *      ttiInd
 ));
 /** @brief This API is the TTI indication from PHY to MAC.
  */
-EXTERN S16 cmUnpackSlotInd ARGS((
+S16 cmUnpackSlotInd ARGS((
    TfuTtiInd            func,
    Pst *                pst,
    Buffer               *mBuf
@@ -3464,14 +3464,14 @@ EXTERN S16 cmUnpackSlotInd ARGS((
 #if defined(TENB_T2K3K_SPECIFIC_CHANGES) && defined(LTE_TDD)
 /** @brief This API is the non-rt indication from PHY to MAC.
   */
-EXTERN S16 cmPkTfuNonRtInd ARGS((
+S16 cmPkTfuNonRtInd ARGS((
    Pst *                pst,
    SuId                 suId
 ));
 
 /** @brief This API is the non-rt indication from PHY to MAC.
   */
-EXTERN S16 cmUnpkTfuNonRtInd ARGS((
+S16 cmUnpkTfuNonRtInd ARGS((
    TfuNonRtInd          func,
    Pst *                pst,
    Buffer               *mBuf
@@ -3480,21 +3480,21 @@ EXTERN S16 cmUnpkTfuNonRtInd ARGS((
 
 /** @brief This API is the TTI indication from PHY to SCH.
  */
-EXTERN S16 cmPkTfuSchTtiInd ARGS((
+S16 cmPkTfuSchTtiInd ARGS((
    Pst *                pst,
    SuId                 suId,
    TfuTtiIndInfo *      ttiInd
 ));
 /** @brief This API is used to convey the PUCCH delta power from PHY to SCH.
  */
-EXTERN S16 cmPkTfuPucchDeltaPwrInd ARGS((
+S16 cmPkTfuPucchDeltaPwrInd ARGS((
    Pst *                pst,
    SuId                 suId,
    TfuPucchDeltaPwrIndInfo *  pucchDeltaPwr
 ));
 /** @brief This API is used to indicate Decode failure from PHY to MAC.
  */
-EXTERN S16 cmUnpkTfuPucchDeltaPwrInd ARGS((
+S16 cmUnpkTfuPucchDeltaPwrInd ARGS((
    TfuPucchDeltaPwrInd       func,
    Pst *                   pst,
    Buffer                  *mBuf
@@ -3504,417 +3504,417 @@ EXTERN S16 cmUnpkTfuPucchDeltaPwrInd ARGS((
 #ifdef TFU_PHASE_2
 /** @brief This API is used to send Group Power Control Request from MAC to PHY.
  */
-EXTERN S16 cmPkTfuGrpPwrCntrlReq ARGS((
+S16 cmPkTfuGrpPwrCntrlReq ARGS((
    Pst *                pst,
    SpId                 spId,
    TfuGrpPwrCntrlReqInfo * grpPwrCntrlReq
 ));
 /** @brief This API is used to send Group Power Control Request from MAC to PHY.
  */
-EXTERN S16 cmUnpkTfuGrpPwrCntrlReq ARGS((
+S16 cmUnpkTfuGrpPwrCntrlReq ARGS((
    TfuGrpPwrCntrlReq    func,
    Pst *                pst,
    Buffer               *mBuf
 ));
 #endif
-EXTERN S16 cmPkTfuDciFormat0Info ARGS((
+S16 cmPkTfuDciFormat0Info ARGS((
    TfuDciFormat0Info    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuDciFormat0Info ARGS((
+S16 cmUnpkTfuDciFormat0Info ARGS((
    TfuDciFormat0Info    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuAllocMapOrRiv ARGS((
+S16 cmPkTfuAllocMapOrRiv ARGS((
    TfuAllocMapOrRiv     *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuAllocMapOrRiv ARGS((
+S16 cmUnpkTfuAllocMapOrRiv ARGS((
    TfuAllocMapOrRiv     *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuDciFormat1AllocInfo ARGS((
+S16 cmPkTfuDciFormat1AllocInfo ARGS((
    TfuDciFormat1AllocInfo *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuDciFormat1AllocInfo ARGS((
+S16 cmUnpkTfuDciFormat1AllocInfo ARGS((
    TfuDciFormat1AllocInfo *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuDciFormat1Info ARGS((
+S16 cmPkTfuDciFormat1Info ARGS((
    TfuDciFormat1Info    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuDciFormat1Info ARGS((
+S16 cmUnpkTfuDciFormat1Info ARGS((
    TfuDciFormat1Info    *param,
    Buffer               *mBuf
 ));
 
-EXTERN S16 cmPkTfuDciFormatTbInfo ARGS((
+S16 cmPkTfuDciFormatTbInfo ARGS((
    TfuDciFormatTbInfo   *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuDciFormatTbInfo ARGS((
+S16 cmUnpkTfuDciFormatTbInfo ARGS((
    TfuDciFormatTbInfo   *param,
    Buffer               *mBuf
 ));
 /** @} */
-EXTERN S16 cmPkTfuDciFormat2AAllocInfo ARGS((
+S16 cmPkTfuDciFormat2AAllocInfo ARGS((
    TfuDciFormat2AAllocInfo *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuDciFormat2AAllocInfo ARGS((
+S16 cmUnpkTfuDciFormat2AAllocInfo ARGS((
    TfuDciFormat2AAllocInfo *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuDciFormat2AInfo ARGS((
+S16 cmPkTfuDciFormat2AInfo ARGS((
    TfuDciFormat2AInfo   *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuDciFormat2AInfo ARGS((
+S16 cmUnpkTfuDciFormat2AInfo ARGS((
    TfuDciFormat2AInfo   *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuDciFormat2AllocInfo ARGS((
+S16 cmPkTfuDciFormat2AllocInfo ARGS((
    TfuDciFormat2AllocInfo *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuDciFormat2AllocInfo ARGS((
+S16 cmUnpkTfuDciFormat2AllocInfo ARGS((
    TfuDciFormat2AllocInfo *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuDciFormat2Info ARGS((
+S16 cmPkTfuDciFormat2Info ARGS((
    TfuDciFormat2Info    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuDciFormat2Info ARGS((
+S16 cmUnpkTfuDciFormat2Info ARGS((
    TfuDciFormat2Info    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuDciFormat3Info ARGS((
+S16 cmPkTfuDciFormat3Info ARGS((
    TfuDciFormat3Info    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuDciFormat3Info ARGS((
+S16 cmUnpkTfuDciFormat3Info ARGS((
    TfuDciFormat3Info    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuDciFormat3AInfo ARGS((
+S16 cmPkTfuDciFormat3AInfo ARGS((
    TfuDciFormat3AInfo   *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuDciFormat3AInfo ARGS((
+S16 cmUnpkTfuDciFormat3AInfo ARGS((
    TfuDciFormat3AInfo   *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuDciFormat1dAllocInfo ARGS((
+S16 cmPkTfuDciFormat1dAllocInfo ARGS((
    TfuDciFormat1dAllocInfo *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuDciFormat1dAllocInfo ARGS((
+S16 cmUnpkTfuDciFormat1dAllocInfo ARGS((
    TfuDciFormat1dAllocInfo *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuDciFormat1dInfo ARGS((
+S16 cmPkTfuDciFormat1dInfo ARGS((
    TfuDciFormat1dInfo   *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuDciFormat1dInfo ARGS((
+S16 cmUnpkTfuDciFormat1dInfo ARGS((
    TfuDciFormat1dInfo   *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuDciFormat1cInfo ARGS((
+S16 cmPkTfuDciFormat1cInfo ARGS((
    TfuDciFormat1cInfo   *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuDciFormat1cInfo ARGS((
+S16 cmUnpkTfuDciFormat1cInfo ARGS((
    TfuDciFormat1cInfo   *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuDciFormat1bAllocInfo ARGS((
+S16 cmPkTfuDciFormat1bAllocInfo ARGS((
    TfuDciFormat1bAllocInfo *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuDciFormat1bAllocInfo ARGS((
+S16 cmUnpkTfuDciFormat1bAllocInfo ARGS((
    TfuDciFormat1bAllocInfo *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuPdcchOrderInfo ARGS((
+S16 cmPkTfuPdcchOrderInfo ARGS((
    TfuPdcchOrderInfo    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuPdcchOrderInfo ARGS((
+S16 cmUnpkTfuPdcchOrderInfo ARGS((
    TfuPdcchOrderInfo    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuDciFormat1aAllocInfo ARGS((
+S16 cmPkTfuDciFormat1aAllocInfo ARGS((
    TfuDciFormat1aAllocInfo *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuDciFormat1aAllocInfo ARGS((
+S16 cmUnpkTfuDciFormat1aAllocInfo ARGS((
    TfuDciFormat1aAllocInfo *param,
    Buffer               *mBuf
 ));
 /*tfu_x_001.main_6 - Added for SPS support*/
-EXTERN S16 cmPkTfudciformat1aPdsch ARGS((
+S16 cmPkTfudciformat1aPdsch ARGS((
    Tfudciformat1aPdsch  *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfudciformat1aPdsch ARGS((
+S16 cmUnpkTfudciformat1aPdsch ARGS((
    Tfudciformat1aPdsch  *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuDciFormat1aInfo ARGS((
+S16 cmPkTfuDciFormat1aInfo ARGS((
    TfuDciFormat1aInfo   *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuDciFormat1aInfo ARGS((
+S16 cmUnpkTfuDciFormat1aInfo ARGS((
    TfuDciFormat1aInfo   *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuDciFormat1bInfo ARGS((
+S16 cmPkTfuDciFormat1bInfo ARGS((
    TfuDciFormat1bInfo   *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuDciFormat1bInfo ARGS((
+S16 cmUnpkTfuDciFormat1bInfo ARGS((
    TfuDciFormat1bInfo   *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuDciInfo ARGS((
+S16 cmPkTfuDciInfo ARGS((
    TfuDciInfo           *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuDciInfo ARGS((
+S16 cmUnpkTfuDciInfo ARGS((
    TfuDciInfo           *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuSubbandInfo ARGS((
+S16 cmPkTfuSubbandInfo ARGS((
    TfuSubbandInfo       *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuSubbandInfo ARGS((
+S16 cmUnpkTfuSubbandInfo ARGS((
    TfuSubbandInfo       *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuSubbandDlCqiInfo ARGS((
+S16 cmPkTfuSubbandDlCqiInfo ARGS((
    TfuSubbandDlCqiInfo    *param,
    Buffer                 *mBuf
 ));
-EXTERN S16 cmUnpkTfuSubbandDlCqiInfo ARGS((
+S16 cmUnpkTfuSubbandDlCqiInfo ARGS((
    TfuSubbandDlCqiInfo    *param,
    Buffer                 *mBuf
 ));
 /** @} */
-EXTERN S16 cmPkTfuSubbandCqiInfo ARGS((
+S16 cmPkTfuSubbandCqiInfo ARGS((
    TfuSubbandCqiInfo    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuSubbandCqiInfo ARGS((
+S16 cmUnpkTfuSubbandCqiInfo ARGS((
    TfuSubbandCqiInfo    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuPdcchCceInfo ARGS((
+S16 cmPkTfuPdcchCceInfo ARGS((
    TfuPdcchCceInfo      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuPdcchCceInfo ARGS((
+S16 cmUnpkTfuPdcchCceInfo ARGS((
    TfuPdcchCceInfo      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuCqiPucchMode10 ARGS((
+S16 cmPkTfuCqiPucchMode10 ARGS((
    TfuCqiPucchMode10    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuCqiPucchMode10 ARGS((
+S16 cmUnpkTfuCqiPucchMode10 ARGS((
    TfuCqiPucchMode10    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuCqiMode11Cqi ARGS((
+S16 cmPkTfuCqiMode11Cqi ARGS((
    TfuCqiMode11Cqi      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuCqiMode11Cqi ARGS((
+S16 cmUnpkTfuCqiMode11Cqi ARGS((
    TfuCqiMode11Cqi      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuCqiPucchMode11 ARGS((
+S16 cmPkTfuCqiPucchMode11 ARGS((
    TfuCqiPucchMode11    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuCqiPucchMode11 ARGS((
+S16 cmUnpkTfuCqiPucchMode11 ARGS((
    TfuCqiPucchMode11    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuCqiMode20SubCqi ARGS((
+S16 cmPkTfuCqiMode20SubCqi ARGS((
    TfuCqiMode20SubCqi   *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuCqiMode20SubCqi ARGS((
+S16 cmUnpkTfuCqiMode20SubCqi ARGS((
    TfuCqiMode20SubCqi   *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuCqiMode20Cqi ARGS((
+S16 cmPkTfuCqiMode20Cqi ARGS((
    TfuCqiMode20Cqi      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuCqiMode20Cqi ARGS((
+S16 cmUnpkTfuCqiMode20Cqi ARGS((
    TfuCqiMode20Cqi      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuCqiPucchMode20 ARGS((
+S16 cmPkTfuCqiPucchMode20 ARGS((
    TfuCqiPucchMode20    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuCqiPucchMode20 ARGS((
+S16 cmUnpkTfuCqiPucchMode20 ARGS((
    TfuCqiPucchMode20    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuCqiMode21SubCqi ARGS((
+S16 cmPkTfuCqiMode21SubCqi ARGS((
    TfuCqiMode21SubCqi   *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuCqiMode21SubCqi ARGS((
+S16 cmUnpkTfuCqiMode21SubCqi ARGS((
    TfuCqiMode21SubCqi   *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuCqiMode21WideCqi ARGS((
+S16 cmPkTfuCqiMode21WideCqi ARGS((
    TfuCqiMode21WideCqi  *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuCqiMode21WideCqi ARGS((
+S16 cmUnpkTfuCqiMode21WideCqi ARGS((
    TfuCqiMode21WideCqi  *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuCqiMode21Cqi ARGS((
+S16 cmPkTfuCqiMode21Cqi ARGS((
    TfuCqiMode21Cqi      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuCqiMode21Cqi ARGS((
+S16 cmUnpkTfuCqiMode21Cqi ARGS((
    TfuCqiMode21Cqi      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuCqiPucchMode21 ARGS((
+S16 cmPkTfuCqiPucchMode21 ARGS((
    TfuCqiPucchMode21    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuCqiPucchMode21 ARGS((
+S16 cmUnpkTfuCqiPucchMode21 ARGS((
    TfuCqiPucchMode21    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuDlCqiPucch ARGS((
+S16 cmPkTfuDlCqiPucch ARGS((
    TfuDlCqiPucch        *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuDlCqiPucch ARGS((
+S16 cmUnpkTfuDlCqiPucch ARGS((
    TfuDlCqiPucch        *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuSubbandMode12 ARGS((
+S16 cmPkTfuSubbandMode12 ARGS((
    TfuSubbandMode12     *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuSubbandMode12 ARGS((
+S16 cmUnpkTfuSubbandMode12 ARGS((
    TfuSubbandMode12     *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuCqiPuschMode12 ARGS((
+S16 cmPkTfuCqiPuschMode12 ARGS((
    TfuCqiPuschMode12    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuCqiPuschMode12 ARGS((
+S16 cmUnpkTfuCqiPuschMode12 ARGS((
    TfuCqiPuschMode12    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuCqiPuschMode20 ARGS((
+S16 cmPkTfuCqiPuschMode20 ARGS((
    TfuCqiPuschMode20    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuCqiPuschMode20 ARGS((
+S16 cmUnpkTfuCqiPuschMode20 ARGS((
    TfuCqiPuschMode20    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuCqiPuschMode22 ARGS((
+S16 cmPkTfuCqiPuschMode22 ARGS((
    TfuCqiPuschMode22    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuCqiPuschMode22 ARGS((
+S16 cmUnpkTfuCqiPuschMode22 ARGS((
    TfuCqiPuschMode22    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuSubbandMode30 ARGS((
+S16 cmPkTfuSubbandMode30 ARGS((
    TfuSubbandMode30     *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuSubbandMode30 ARGS((
+S16 cmUnpkTfuSubbandMode30 ARGS((
    TfuSubbandMode30     *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuCqiPuschMode30 ARGS((
+S16 cmPkTfuCqiPuschMode30 ARGS((
    TfuCqiPuschMode30    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuCqiPuschMode30 ARGS((
+S16 cmUnpkTfuCqiPuschMode30 ARGS((
    TfuCqiPuschMode30    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuSubbandMode31 ARGS((
+S16 cmPkTfuSubbandMode31 ARGS((
    TfuSubbandMode31     *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuSubbandMode31 ARGS((
+S16 cmUnpkTfuSubbandMode31 ARGS((
    TfuSubbandMode31     *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuCqiPuschMode31 ARGS((
+S16 cmPkTfuCqiPuschMode31 ARGS((
    TfuCqiPuschMode31    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuCqiPuschMode31 ARGS((
+S16 cmUnpkTfuCqiPuschMode31 ARGS((
    TfuCqiPuschMode31    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuDlCqiPusch ARGS((
+S16 cmPkTfuDlCqiPusch ARGS((
    TfuDlCqiPusch        *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuDlCqiPusch ARGS((
+S16 cmUnpkTfuDlCqiPusch ARGS((
    TfuDlCqiPusch        *param,
    Buffer               *mBuf
 ));
 
-EXTERN S16 cmPkTfuDlCqiPuschInfo ARGS((
+S16 cmPkTfuDlCqiPuschInfo ARGS((
    TfuDlCqiPuschInfo    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuDlCqiPuschInfo ARGS((
+S16 cmUnpkTfuDlCqiPuschInfo ARGS((
    TfuDlCqiPuschInfo    *param,
    Buffer               *mBuf
 ));
 
-EXTERN S16 cmPkTfuDoaRpt ARGS((
+S16 cmPkTfuDoaRpt ARGS((
    TfuDoaRpt            *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuDoaRpt ARGS((
+S16 cmUnpkTfuDoaRpt ARGS((
    TfuDoaRpt            *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuDoaIndInfo ARGS((
+S16 cmPkTfuDoaIndInfo ARGS((
    TfuDoaIndInfo        *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuDoaIndInfo ARGS((
+S16 cmUnpkTfuDoaIndInfo ARGS((
    TfuDoaIndInfo        *param,
    Ptr                  memCp,
    Buffer               *mBuf
 ));
 
-EXTERN S16 cmPkTfuDlCqiInfo ARGS((
+S16 cmPkTfuDlCqiInfo ARGS((
    U8                   selector,
    TfuDlCqiInfo         *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuDlCqiInfo ARGS((
+S16 cmUnpkTfuDlCqiInfo ARGS((
    U8                   selector,
    TfuDlCqiInfo         *param,
    Buffer               *mBuf
@@ -3923,11 +3923,11 @@ EXTERN S16 cmUnpkTfuDlCqiInfo ARGS((
 
 /* tfu_x_001.main_8. Added changes of TFU_UPGRADE */
 #ifndef TFU_UPGRADE
-EXTERN S16 cmPkTfuUeMsg3RecpReq ARGS((
+S16 cmPkTfuUeMsg3RecpReq ARGS((
    TfuUeMsg3RecpReq     *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuUeMsg3RecpReq ARGS((
+S16 cmUnpkTfuUeMsg3RecpReq ARGS((
    TfuUeMsg3RecpReq     *param,
    Buffer               *mBuf
 ));
@@ -3935,324 +3935,324 @@ EXTERN S16 cmUnpkTfuUeMsg3RecpReq ARGS((
 
 
 /*tfu_x_001.main_8 - ADD - Prototype for TfuUePuschRecpReq Pk/Unpk functions */
-EXTERN S16 cmPkTfuUePuschRecpReq ARGS((
+S16 cmPkTfuUePuschRecpReq ARGS((
    TfuUePuschRecpReq *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuUePuschRecpReq ARGS((
+S16 cmUnpkTfuUePuschRecpReq ARGS((
    TfuUePuschRecpReq *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuUePucchRecpReq ARGS((
+S16 cmPkTfuUePucchRecpReq ARGS((
    TfuUePucchRecpReq *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuUePucchRecpReq ARGS((
+S16 cmUnpkTfuUePucchRecpReq ARGS((
    TfuUePucchRecpReq *param,
    Buffer               *mBuf
 ));
 
-EXTERN S16 cmPkTfuRecpReqInfo ARGS((
+S16 cmPkTfuRecpReqInfo ARGS((
    TfuRecpReqInfo       *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuRecpReqInfo ARGS((
+S16 cmUnpkTfuRecpReqInfo ARGS((
    TfuRecpReqInfo       *param,
    Ptr                   memCp,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuPdcchInfo ARGS((
+S16 cmPkTfuPdcchInfo ARGS((
    TfuPdcchInfo         *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuPdcchInfo ARGS((
+S16 cmUnpkTfuPdcchInfo ARGS((
    TfuPdcchInfo         *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuPhichInfo ARGS((
+S16 cmPkTfuPhichInfo ARGS((
    TfuPhichInfo         *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuPhichInfo ARGS((
+S16 cmUnpkTfuPhichInfo ARGS((
    TfuPhichInfo         *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuCntrlReqInfo ARGS((
+S16 cmPkTfuCntrlReqInfo ARGS((
    TfuCntrlReqInfo      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuCntrlReqInfo ARGS((
+S16 cmUnpkTfuCntrlReqInfo ARGS((
    TfuCntrlReqInfo      *param,
    Ptr                   memCp,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuPdschDciInfo ARGS((
+S16 cmPkTfuPdschDciInfo ARGS((
    TfuPdschDciInfo      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuPdschDciInfo ARGS((
+S16 cmUnpkTfuPdschDciInfo ARGS((
    TfuPdschDciInfo      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuDatReqPduInfo ARGS((
+S16 cmPkTfuDatReqPduInfo ARGS((
    TfuDatReqPduInfo     *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuDatReqPduInfo ARGS((
+S16 cmUnpkTfuDatReqPduInfo ARGS((
    TfuDatReqPduInfo     *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuDatReqInfo ARGS((
+S16 cmPkTfuDatReqInfo ARGS((
    TfuDatReqInfo        *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuDatReqInfo ARGS((
+S16 cmUnpkTfuDatReqInfo ARGS((
    TfuDatReqInfo        *param,
    Ptr                   memCp,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuDatInfo ARGS((
+S16 cmPkTfuDatInfo ARGS((
    TfuDatInfo           *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuDatInfo ARGS((
+S16 cmUnpkTfuDatInfo ARGS((
    TfuDatInfo           *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuDatIndInfo ARGS((
+S16 cmPkTfuDatIndInfo ARGS((
    TfuDatIndInfo        *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuDatIndInfo ARGS((
+S16 cmUnpkTfuDatIndInfo ARGS((
    TfuDatIndInfo        *param,
    Ptr                  memCp,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuSrInfo ARGS((
+S16 cmPkTfuSrInfo ARGS((
    TfuSrInfo            *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuSrInfo ARGS((
+S16 cmUnpkTfuSrInfo ARGS((
    TfuSrInfo            *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuSrIndInfo ARGS((
+S16 cmPkTfuSrIndInfo ARGS((
    TfuSrIndInfo         *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuSrIndInfo ARGS((
+S16 cmUnpkTfuSrIndInfo ARGS((
    TfuSrIndInfo         *param,
    Ptr                  memCp,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuHqInfo ARGS((
+S16 cmPkTfuHqInfo ARGS((
    TfuHqInfo            *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuHqInfo ARGS((
+S16 cmUnpkTfuHqInfo ARGS((
    TfuHqInfo            *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuHqIndInfo ARGS((
+S16 cmPkTfuHqIndInfo ARGS((
    TfuHqIndInfo         *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuHqIndInfo ARGS((
+S16 cmUnpkTfuHqIndInfo ARGS((
    TfuHqIndInfo         *param,
    Ptr                  memCpm,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuUlCqiInfo ARGS((
+S16 cmPkTfuUlCqiInfo ARGS((
    TfuUlCqiInfo         *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuUlCqiInfo ARGS((
+S16 cmUnpkTfuUlCqiInfo ARGS((
    TfuUlCqiInfo         *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuUlCqiRpt ARGS((
+S16 cmPkTfuUlCqiRpt ARGS((
    TfuUlCqiRpt          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuUlCqiRpt ARGS((
+S16 cmUnpkTfuUlCqiRpt ARGS((
    TfuUlCqiRpt          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuUlCqiIndInfo ARGS((
+S16 cmPkTfuUlCqiIndInfo ARGS((
    TfuUlCqiIndInfo      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuUlCqiIndInfo ARGS((
+S16 cmUnpkTfuUlCqiIndInfo ARGS((
    TfuUlCqiIndInfo      *param,
    Ptr                  memCp,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuDlCqiRpt ARGS((
+S16 cmPkTfuDlCqiRpt ARGS((
    TfuDlCqiRpt          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuDlCqiRpt ARGS((
+S16 cmUnpkTfuDlCqiRpt ARGS((
    TfuDlCqiRpt          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuDlCqiIndInfo ARGS((
+S16 cmPkTfuDlCqiIndInfo ARGS((
    TfuDlCqiIndInfo      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuDlCqiIndInfo ARGS((
+S16 cmUnpkTfuDlCqiIndInfo ARGS((
    TfuDlCqiIndInfo      *param,
    Ptr                  memCp,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuPucchDeltaPwr ARGS((
+S16 cmPkTfuPucchDeltaPwr ARGS((
    Pst *                pst,
    SuId                 suId,
    TfuPucchDeltaPwrIndInfo * pucchDeltaPwr));
 
-EXTERN S16 cmPkTfuPucchDeltaPwrInfo ARGS((
+S16 cmPkTfuPucchDeltaPwrInfo ARGS((
    TfuPucchDeltaPwr       *param,
    Buffer               *mBuf
 ));
 
-EXTERN S16 cmUnpkTfuPucchDeltaPwr ARGS((
+S16 cmUnpkTfuPucchDeltaPwr ARGS((
    TfuPucchDeltaPwrInd     func,
    Pst *                pst,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuPucchDeltaPwrInfo ARGS((
+S16 cmUnpkTfuPucchDeltaPwrInfo ARGS((
    TfuPucchDeltaPwr     *param,
    Buffer               *mBuf
 ));
 
-EXTERN S16 cmPkTfuCrcInfo ARGS((
+S16 cmPkTfuCrcInfo ARGS((
    TfuCrcInfo       *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuCrcInfo ARGS((
+S16 cmUnpkTfuCrcInfo ARGS((
    TfuCrcInfo       *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuCrcIndInfo ARGS((
+S16 cmPkTfuCrcIndInfo ARGS((
    TfuCrcIndInfo    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuCrcIndInfo ARGS((
+S16 cmUnpkTfuCrcIndInfo ARGS((
    TfuCrcIndInfo    *param,
    Ptr                  memCp,
    Buffer               *mBuf
 ));
 
-EXTERN S16 cmPkTfuPucchDeltaPwrIndInfo ARGS((
+S16 cmPkTfuPucchDeltaPwrIndInfo ARGS((
    TfuPucchDeltaPwrIndInfo    *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuPucchDeltaPwrIndInfo ARGS((
+S16 cmUnpkTfuPucchDeltaPwrIndInfo ARGS((
    TfuPucchDeltaPwrIndInfo    *param,
    Ptr                  memCp,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuTimingAdvInfo ARGS((
+S16 cmPkTfuTimingAdvInfo ARGS((
    TfuTimingAdvInfo     *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuTimingAdvInfo ARGS((
+S16 cmUnpkTfuTimingAdvInfo ARGS((
    TfuTimingAdvInfo     *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuTimingAdvIndInfo ARGS((
+S16 cmPkTfuTimingAdvIndInfo ARGS((
    TfuTimingAdvIndInfo  *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuTimingAdvIndInfo ARGS((
+S16 cmUnpkTfuTimingAdvIndInfo ARGS((
    TfuTimingAdvIndInfo  *param,
    Ptr                   memCp,
    Buffer               *mBuf
 ));
 /* CA dev Start */
-EXTERN S16 cmPkTfuTtiCellInfo ARGS((
+S16 cmPkTfuTtiCellInfo ARGS((
    TfuTtiCellInfo       *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuTtiCellInfo ARGS((
+S16 cmUnpkTfuTtiCellInfo ARGS((
    TfuTtiCellInfo       *param,
    Buffer               *mBuf
 ));
 /* CA dev End */
-EXTERN S16 cmPkTfuTtiIndInfo ARGS((
+S16 cmPkTfuTtiIndInfo ARGS((
    TfuTtiIndInfo        *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpackSlotIndInfo ARGS((
+S16 cmUnpackSlotIndInfo ARGS((
    SlotIndInfo          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuRaReqInfo ARGS((
+S16 cmPkTfuRaReqInfo ARGS((
    TfuRaReqInfo         *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuRaReqInfo ARGS((
+S16 cmUnpkTfuRaReqInfo ARGS((
    TfuRaReqInfo         *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuRachInfo ARGS((
+S16 cmPkTfuRachInfo ARGS((
    CmMemListCp          memCp,
    TfuRachInfo          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuRachInfo ARGS((
+S16 cmUnpkTfuRachInfo ARGS((
    CmMemListCp          memCp,
    TfuRachInfo          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuRaReqIndInfo ARGS((
+S16 cmPkTfuRaReqIndInfo ARGS((
    TfuRaReqIndInfo      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuRaReqIndInfo ARGS((
+S16 cmUnpkTfuRaReqIndInfo ARGS((
    TfuRaReqIndInfo      *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkBuffer ARGS((
+S16 cmPkBuffer ARGS((
    Buffer **param,
    Buffer *mBuf
 ));
-EXTERN S16 cmUnpkBuffer ARGS((
+S16 cmUnpkBuffer ARGS((
    Buffer **param,
    Buffer *mBuf
 ));
 
 /* tfu_x_001.main_8. Added changes of TFU_UPGRADE */
 #ifdef TFU_UPGRADE
-EXTERN S16 cmPkTfuSrsRpt ARGS((
+S16 cmPkTfuSrsRpt ARGS((
    TfuSrsRpt            *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuSrsRpt ARGS((
+S16 cmUnpkTfuSrsRpt ARGS((
    TfuSrsRpt            *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuSrsIndInfo ARGS((
+S16 cmPkTfuSrsIndInfo ARGS((
    TfuSrsIndInfo        *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuSrsIndInfo ARGS((
+S16 cmUnpkTfuSrsIndInfo ARGS((
    TfuSrsIndInfo        *param,
    Ptr                  memCp,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuRawCqiRpt ARGS((
+S16 cmPkTfuRawCqiRpt ARGS((
    TfuRawCqiRpt         *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuRawCqiRpt ARGS((
+S16 cmUnpkTfuRawCqiRpt ARGS((
    TfuRawCqiRpt         *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuRawCqiIndInfo ARGS((
+S16 cmPkTfuRawCqiIndInfo ARGS((
    TfuRawCqiIndInfo     *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuRawCqiIndInfo ARGS((
+S16 cmUnpkTfuRawCqiIndInfo ARGS((
    TfuRawCqiIndInfo     *param,
    Ptr                  memCp,
    Buffer               *mBuf
@@ -4260,11 +4260,11 @@ EXTERN S16 cmUnpkTfuRawCqiIndInfo ARGS((
 
 #ifdef TFU_TDD
 
-EXTERN S16 cmPkTfuUePucchHqRecpInfo ARGS((
+S16 cmPkTfuUePucchHqRecpInfo ARGS((
    TfuUePucchHqRecpInfo *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuUePucchHqRecpInfo ARGS((
+S16 cmUnpkTfuUePucchHqRecpInfo ARGS((
    TfuUePucchHqRecpInfo *param,
    Buffer               *mBuf
 ));
@@ -4273,82 +4273,82 @@ EXTERN S16 cmUnpkTfuUePucchHqRecpInfo ARGS((
 
 #ifndef TFU_TDD  /* else of TFU_TDD */
 
-EXTERN S16 cmPkTfuUePucchHqRecpInfo ARGS((
+S16 cmPkTfuUePucchHqRecpInfo ARGS((
    TfuUePucchHqRecpInfo *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuUePucchHqRecpInfo ARGS((
+S16 cmUnpkTfuUePucchHqRecpInfo ARGS((
    TfuUePucchHqRecpInfo *param,
    Buffer               *mBuf
 ));
 
 
 #endif
-EXTERN S16 cmPkTfuUePucchSrRecpInfo ARGS((
+S16 cmPkTfuUePucchSrRecpInfo ARGS((
    TfuUePucchSrRecpInfo *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuUePucchSrRecpInfo ARGS((
+S16 cmUnpkTfuUePucchSrRecpInfo ARGS((
    TfuUePucchSrRecpInfo *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuUePucchCqiRecpInfo ARGS((
+S16 cmPkTfuUePucchCqiRecpInfo ARGS((
    TfuUePucchCqiRecpInfo *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuUePucchCqiRecpInfo ARGS((
+S16 cmUnpkTfuUePucchCqiRecpInfo ARGS((
    TfuUePucchCqiRecpInfo *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuUePucchSrsRecpInfo ARGS((
+S16 cmPkTfuUePucchSrsRecpInfo ARGS((
    TfuUePucchSrsRecpInfo *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuUePucchSrsRecpInfo ARGS((
+S16 cmUnpkTfuUePucchSrsRecpInfo ARGS((
    TfuUePucchSrsRecpInfo *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuUeUlSchRecpInfo ARGS((
+S16 cmPkTfuUeUlSchRecpInfo ARGS((
    TfuUeUlSchRecpInfo   *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuUeUlSchRecpInfo ARGS((
+S16 cmUnpkTfuUeUlSchRecpInfo ARGS((
    TfuUeUlSchRecpInfo   *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuUePuschCqiRecpInfo ARGS((
+S16 cmPkTfuUePuschCqiRecpInfo ARGS((
    TfuUePuschCqiRecpInfo *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuUePuschCqiRecpInfo ARGS((
+S16 cmUnpkTfuUePuschCqiRecpInfo ARGS((
    TfuUePuschCqiRecpInfo *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkTfuUePuschHqRecpInfo ARGS((
+S16 cmPkTfuUePuschHqRecpInfo ARGS((
    TfuUePuschHqRecpInfo *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuUePuschHqRecpInfo ARGS((
+S16 cmUnpkTfuUePuschHqRecpInfo ARGS((
    TfuUePuschHqRecpInfo *param,
    Buffer               *mBuf
 ));
 
-EXTERN S16 cmPkTfuBfVectorInfo ARGS ((
+S16 cmPkTfuBfVectorInfo ARGS ((
 TfuBfVectorInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkTfuBfVectorInfo ARGS ((
+S16 cmUnpkTfuBfVectorInfo ARGS ((
    TfuBfVectorInfo *param,
    Buffer *mBuf
 ));
 #endif /* TFU_UPGRADE */
 /* tfu_x_001.main_8. Added changes of TFU_UPGRADE */
-EXTERN S16 cmPkTfuUeRecpReqInfo ARGS((
+S16 cmPkTfuUeRecpReqInfo ARGS((
    TfuUeRecpReqInfo *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuUeRecpReqInfo ARGS((
+S16 cmUnpkTfuUeRecpReqInfo ARGS((
    TfuUeRecpReqInfo *param,
    Buffer               *mBuf
 ));
@@ -4366,7 +4366,7 @@ EXTERN S16 cmUnpkTfuUeRecpReqInfo ARGS((
  * @param cqiInd Pointer to the TfuRawCqiIndInfo structure.
  * @return ROK/RFAILED
  */
-EXTERN S16 cmPkTfuRawCqiInd ARGS((
+S16 cmPkTfuRawCqiInd ARGS((
    Pst *                pst,
    SuId                 suId,
    TfuRawCqiIndInfo *   rawCqiInd
@@ -4382,7 +4382,7 @@ EXTERN S16 cmPkTfuRawCqiInd ARGS((
  * @param cqiInd Pointer to the TfuRawCqiIndInfo structure.
  * @return ROK/RFAILED
  */
-EXTERN S16 cmUnpkTfuRawCqiInd ARGS((
+S16 cmUnpkTfuRawCqiInd ARGS((
    TfuRawCqiInd         func,
    Pst *                pst,
    Buffer               *mBuf
@@ -4397,7 +4397,7 @@ EXTERN S16 cmUnpkTfuRawCqiInd ARGS((
  * @param srsInd Pointer to the TfuSrIndInfo structure.
  * @return ROK/RFAILED
  */
-EXTERN S16 cmPkTfuSrsInd ARGS((
+S16 cmPkTfuSrsInd ARGS((
    Pst *                pst,
    SuId                 suId,
    TfuSrsIndInfo *      srsInd
@@ -4412,7 +4412,7 @@ EXTERN S16 cmPkTfuSrsInd ARGS((
  * @param srsInd Pointer to the TfuSrIndInfo structure.
  * @return ROK/RFAILED
  */
-EXTERN S16 cmUnpkTfuSrsInd ARGS((
+S16 cmUnpkTfuSrsInd ARGS((
    TfuSrsInd            func,
    Pst *                pst,
    Buffer               *mBuf
@@ -4421,37 +4421,37 @@ EXTERN S16 cmUnpkTfuSrsInd ARGS((
 
 /*tfu_x_001.main_6 - Added for SPS support*/
 #ifdef LTEMAC_SPS
-EXTERN S16 cmPkTfuAllocMap ARGS((
+S16 cmPkTfuAllocMap ARGS((
    TfuAllocMap          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkTfuAllocMap ARGS((
+S16 cmUnpkTfuAllocMap ARGS((
          TfuAllocMap          *param,
          Buffer               *mBuf
          ));
 #ifdef EMTC_ENABLE
-EXTERN S16 cmPkTfuDciFormat6AAllocInfo ARGS((
+S16 cmPkTfuDciFormat6AAllocInfo ARGS((
          TfuDciFormat61AllocInfo *param,
          Buffer *mBuf
          ));
-EXTERN S16 cmUnpkTfuDciFormat6AAllocInfo ARGS((
+S16 cmUnpkTfuDciFormat6AAllocInfo ARGS((
          TfuDciFormat61AllocInfo *param,
          Buffer *mBuf
          ));
-EXTERN S16 cmUnpkTfuDciFormat61aInfo ARGS((
+S16 cmUnpkTfuDciFormat61aInfo ARGS((
          TfuDciFormat61aInfo *param,
          Buffer *mBuf
          ));
-EXTERN S16 cmUnpkTfuDciFormat62Info ARGS((
+S16 cmUnpkTfuDciFormat62Info ARGS((
          TfuDciFormat62Info *param,
          Buffer *mBuf
          ));
 
-EXTERN S16 cmUnpkTfudciformat61aPdsch ARGS((
+S16 cmUnpkTfudciformat61aPdsch ARGS((
          Tfudciformat61aPdsch *param,
          Buffer *mBuf
          ));
-EXTERN S16 cmPkTfuDciFormat61aInfo ARGS((
+S16 cmPkTfuDciFormat61aInfo ARGS((
          TfuDciFormat61aInfo *param,
          Buffer *mBuf
          ));
@@ -4461,13 +4461,13 @@ EXTERN S16 cmPkTfuDciFormat61aInfo ARGS((
 #endif
 
 /* LTE_UNLICENSED */
-EXTERN S16 cmPkTfuErrInd ARGS((
+S16 cmPkTfuErrInd ARGS((
    Pst *                pst,
    SuId                 suId,
    TfuErrIndInfo *       errInd
 ));
 
-EXTERN S16 cmUnpkTfuErrInd ARGS((
+S16 cmUnpkTfuErrInd ARGS((
    TfuErrInd             func,
    Pst *                pst,
    Buffer               *mBuf

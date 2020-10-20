@@ -44,7 +44,7 @@
 #include "cm_mblk.x"       /* Typedef file */
 
 #ifdef SS_LOCKLESS_MEMORY
-EXTERN pthread_t tmpRegTidMap[20];
+pthread_t tmpRegTidMap[20];
 #define CM_MEM_GET_REGION(_region)                        \
 {                                                         \
    U8  _regCnt;                                           \
@@ -63,7 +63,7 @@ EXTERN pthread_t tmpRegTidMap[20];
 
 
 
-PRIVATE Void cmAddMemNode ARGS((CmMemListCp *lCp,CmMemList *node)); 
+static Void cmAddMemNode ARGS((CmMemListCp *lCp,CmMemList *node)); 
 
 
 /*
@@ -657,13 +657,13 @@ Ptr    memPtr;     /* Link List CP */
 *
 */
 #ifdef ANSI
-PRIVATE Void cmAddMemNode
+static Void cmAddMemNode
 (
 CmMemListCp *lCp,               /* list control point */
 CmMemList   *node               /* node to be added */
 )
 #else 
-PRIVATE Void cmAddMemNode (lCp, node)
+static Void cmAddMemNode (lCp, node)
 CmMemListCp *lCp;               /* list control point */
 CmMemList   *node;              /* node to be added */
 #endif

@@ -174,8 +174,8 @@
 #endif
 
 #ifdef MS_MBUF_CORRUPTION /* Should be enabled when debugging mbuf corruption */
-EXTERN Data *startPtr128;
-EXTERN Size regMemSize;
+Data *startPtr128;
+Size regMemSize;
 #endif
 
 /*
@@ -200,13 +200,13 @@ EXTERN Size regMemSize;
 U8 *cmMemcpy
 (
 U8           *tgt,
-CONSTANT U8  *src,
+const U8  *src,
 PTR          len
 )
 #else
 U8 *cmMemcpy(tgt, src, len)
 U8           *tgt;
-CONSTANT U8  *src;
+const U8  *src;
 PTR          len;
 #endif
 {
@@ -234,7 +234,7 @@ if ((src > startPtr128) && (src < (startPtr128+regMemSize)))
 }
 #endif 
 #if (MEMCPY_AVAIL) /* memcpy is available */
-   return ((U8 *) memcpy((Void *)tgt, (CONSTANT Void *)src, (size_t)len));
+   return ((U8 *) memcpy((Void *)tgt, (const Void *)src, (size_t)len));
 #else
    while (len--)
       *tgt++ = *src++;
@@ -265,21 +265,21 @@ if ((src > startPtr128) && (src < (startPtr128+regMemSize)))
 #ifdef ANSI
 S16 cmMemcmp
 (
-CONSTANT U8     *s1,
-CONSTANT U8     *s2,
+const U8     *s1,
+const U8     *s2,
 PTR             len
 )
 #else
 S16 cmMemcmp (s1, s2, len)
-CONSTANT U8     *s1;
-CONSTANT U8     *s2;
+const U8     *s1;
+const U8     *s2;
 PTR             len;
 #endif
 {
    /*cm_lib_c_001.main_14 : Fix for TRACE5 feature crash due to missing TRC MACRO*/
    TRC2(cmMemcmp)
 #if MEMCMP_AVAIL /* memcmp is available */
-   return ((S16) memcmp((CONSTANT Void *)s1, (CONSTANT Void *)s2, (size_t)len));
+   return ((S16) memcmp((const Void *)s1, (const Void *)s2, (size_t)len));
 #else  /* MEMCMP_AVAIL: memcmp is not available */
    while (len--)
    {
@@ -393,19 +393,19 @@ if ((str > startPtr128) && (str < (startPtr128+regMemSize)))
 #ifdef ANSI
 S16 cmStrcmp
 (
-CONSTANT U8 *s1,
-CONSTANT U8 *s2
+const U8 *s1,
+const U8 *s2
 )
 #else
 S16 cmStrcmp (s1, s2)
-CONSTANT U8 *s1;
-CONSTANT U8 *s2;
+const U8 *s1;
+const U8 *s2;
 #endif
 {
    /*cm_lib_c_001.main_14 : Fix for TRACE5 feature crash due to missing TRC MACRO*/
    TRC2(cmStrcmp)
 #if (STRCMP_AVAIL)
-   return (strcmp((CONSTANT S8 *)s1, (CONSTANT S8 *)s2));
+   return (strcmp((const S8 *)s1, (const S8 *)s2));
 #else   /* STRCMP_AVAIL */
   
    while (*s1 && *s2)
@@ -458,21 +458,21 @@ CONSTANT U8 *s2;
 #ifdef ANSI
 S16 cmStrncmp
 (
-CONSTANT U8  *s1,
-CONSTANT U8  *s2,
+const U8  *s1,
+const U8  *s2,
 MsgLen       len /* cm_lib_c_001.main_12: Changing from S16 to MsgLen.*/
 )
 #else
 S16 cmStrncmp (s1, s2, len)
-CONSTANT U8  *s1;
-CONSTANT U8  *s2;
+const U8  *s1;
+const U8  *s2;
 MsgLen       len;
 #endif
 {
    /*cm_lib_c_001.main_14 : Fix for TRACE5 feature crash due to missing TRC MACRO*/
    TRC2(cmStrncmp)
 #if (STRNCMP_AVAIL)
-   return (strncmp((CONSTANT S8 *)s1, (CONSTANT S8 *)s2, (size_t) len));
+   return (strncmp((const S8 *)s1, (const S8 *)s2, (size_t) len));
 #else   /* STRNCMP_AVAIL */
   
    while (*s1 && *s2 && len--)
@@ -513,18 +513,18 @@ MsgLen       len;
 #ifdef ANSI
 MsgLen cmStrlen
 (
-CONSTANT U8 *s
+const U8 *s
 )
 #else
 /* cm_lib_c_001.main_12: Changing from S16 to MsgLen.*/
 MsgLen cmStrlen (s)
-CONSTANT U8 *s;
+const U8 *s;
 #endif
 {
 #if (STRLEN_AVAIL)
    /*cm_lib_c_001.main_15 : Fix for warning due to mixed declation*/
    TRC2(cmStrlen)
-   return ((MsgLen)strlen((CONSTANT S8 *)s));
+   return ((MsgLen)strlen((const S8 *)s));
 #else   /* STRLEN_AVAIL */
    MsgLen i;
   

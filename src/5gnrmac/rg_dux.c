@@ -149,7 +149,7 @@ static int RLOG_MODULE_ID=4096;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgDUXInsSdu
+static S16 rgDUXInsSdu
 (
 Inst        inst,
 RgMacPdu    *pdu,
@@ -159,7 +159,7 @@ U16         sduLen,
 RgErrInfo   *err
 )
 #else
-PRIVATE S16 rgDUXInsSdu(inst,pdu, sdu, lcId, sduLen, err)
+static S16 rgDUXInsSdu(inst,pdu, sdu, lcId, sduLen, err)
 Inst        inst;
 RgMacPdu    *pdu;
 RgMacSdu    **sdu,
@@ -209,7 +209,7 @@ RgErrInfo   *err;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgDUXExtSubHdr
+static S16 rgDUXExtSubHdr
 (
 Inst        inst,
 RgMacPdu    *pdu,
@@ -219,7 +219,7 @@ U16         *len,
 RgErrInfo   *err
 )
 #else
-PRIVATE S16 rgDUXExtSubHdr(inst,pdu, mBuf, lcId,
+static S16 rgDUXExtSubHdr(inst,pdu, mBuf, lcId,
 len, err)
 Inst        inst;
 RgMacPdu    *pdu;
@@ -293,7 +293,7 @@ RgErrInfo   *err;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgDUXExtCe
+static S16 rgDUXExtCe
 (
 Inst        inst,
 RgMacPdu    *pdu,
@@ -304,7 +304,7 @@ U16         subPduLen,
 RgErrInfo    *err
 )
 #else
-PRIVATE S16 rgDUXExtCe(inst,pdu, ceInfo, mBuf,lcId,subPduLen, err)
+static S16 rgDUXExtCe(inst,pdu, ceInfo, mBuf,lcId,subPduLen, err)
 Inst        inst;
 RgMacPdu    *pdu;
 RgInfCeInfo  *ceInfo;
@@ -490,7 +490,7 @@ RgErrInfo    *err;
  *      -# RFAILED 
  **/
 #ifdef ANSI
-PRIVATE S16 rgDUXExtSdu
+static S16 rgDUXExtSdu
 (
 Inst        inst,
 RgMacPdu    *pdu,
@@ -501,7 +501,7 @@ U16         subPduLen,
 RgErrInfo   *err
 )
 #else
-PRIVATE S16 rgDUXExtSdu(inst,pdu, ceInfo,mBuf,lcId,subPduLen,err)
+static S16 rgDUXExtSdu(inst,pdu, ceInfo,mBuf,lcId,subPduLen,err)
 Inst        inst;
 RgMacPdu    *pdu;
 RgInfCeInfo  *ceInfo;

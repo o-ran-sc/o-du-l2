@@ -75,7 +75,7 @@ static int RLOG_FILE_ID=193;
 
 
 #ifdef TENB_STATS
-EXTERN TSL2UeStatsCb* TSL2MapUeStatsBlk (U16 rnti);
+TSL2UeStatsCb* TSL2MapUeStatsBlk (U16 rnti);
 #endif
 /** 
  * @file gp_dbm_dl.c
