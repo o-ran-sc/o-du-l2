@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c256ec6b_8578f3cc",
+        "filename": "build/common/asn_common.mak",
+        "patchSetId": 2
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-20T05:24:47Z",
+      "side": 1,
+      "message": "what is C_WO_PED_OBJS? If not relevant, that can be removed too",
+      "revId": "577e1d2cc4fad616704a54d30ae3da64969ff4d2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
