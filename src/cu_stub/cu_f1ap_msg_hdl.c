@@ -305,8 +305,8 @@ S16 BuildAndSendF1SetupRsp()
       CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
       return RFAILED;
    }
-   buildPlmnId(cuCfgParams.plmn , &cellToActivate->list.array[0]->value.choice.\
-	 Cells_to_be_Activated_List_Item.nRCGI.pLMN_Identity);
+   buildPlmnId(cuCfgParams.plmn , cellToActivate->list.array[0]->value.choice.\
+	 Cells_to_be_Activated_List_Item.nRCGI.pLMN_Identity.buf);
    cellToActivate->list.array[0]->value.choice.Cells_to_be_Activated_List_Item.\
       nRCGI.nRCellIdentity.size = 5;
    CU_ALLOC(cellToActivate->list.array[0]->value.choice.\
@@ -1432,7 +1432,7 @@ uint8_t BuildNrcgi(NRCGI_t *nrcgi)
    {
       return RFAILED;
    }
-   ret = buildPlmnId(cuCfgParams.plmn , &nrcgi->pLMN_Identity);
+   ret = buildPlmnId(cuCfgParams.plmn , nrcgi->pLMN_Identity.buf);
 
    if(ret != ROK)
    {

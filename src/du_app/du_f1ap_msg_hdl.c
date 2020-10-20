@@ -195,7 +195,7 @@ uint8_t BuildNrcgi(NRCGI_t *nrcgi)
       return RFAILED;
    }
    ret = buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn,\
-	 &nrcgi->pLMN_Identity); // Building PLMN function
+	 nrcgi->pLMN_Identity.buf); // Building PLMN function
    if(ret != ROK)
    {
       return RFAILED;
@@ -451,7 +451,7 @@ uint8_t  BuildServedPlmn(ServedPLMNs_List_t *srvplmn)
    srvplmn->list.array[0]->pLMN_Identity.size = PLMN_SIZE * sizeof(uint8_t);
    DU_ALLOC(srvplmn->list.array[0]->pLMN_Identity.buf, srvplmn->list.array[0]->pLMN_Identity.size);
    buildPlmnIdret = buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn,\
-	 &srvplmn->list.array[0]->pLMN_Identity);
+	 srvplmn->list.array[0]->pLMN_Identity.buf);
    if(buildPlmnIdret!= ROK)
    {
       return RFAILED;
@@ -1314,7 +1314,7 @@ uint8_t BuildAndSendDUConfigUpdate()
 	 break;
       }
       buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn,\
-	    &modifyItem->oldNRCGI.pLMN_Identity);
+	    modifyItem->oldNRCGI.pLMN_Identity.buf);
 
       /*nRCellIdentity*/
       modifyItem->oldNRCGI.nRCellIdentity.size = 5*sizeof(uint8_t);
@@ -1340,7 +1340,7 @@ uint8_t BuildAndSendDUConfigUpdate()
 	 break;
       }
       buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn,\
-	    &modifyItem->served_Cell_Information.nRCGI.pLMN_Identity);
+	    modifyItem->served_Cell_Information.nRCGI.pLMN_Identity.buf);
       modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.size =5*sizeof(uint8_t);
       DU_ALLOC(modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.buf,\
 	    modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.size);
@@ -1389,7 +1389,7 @@ uint8_t BuildAndSendDUConfigUpdate()
 	 break;
       }
       buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.plmn[0],\
-	    &modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->pLMN_Identity);
+	    modifyItem->served_Cell_Information.servedPLMNs.list.array[0]->pLMN_Identity.buf);
       DU_ALLOC(modifyItem->served_Cell_Information.servedPLMNs.list.\
 	    array[0]->iE_Extensions,sizeof(ProtocolExtensionContainer_4624P3_t));
       if(modifyItem->served_Cell_Information.servedPLMNs.list.\

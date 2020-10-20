@@ -107,7 +107,7 @@ S16 BuildGlobalRicId(GlobalRIC_ID_t *ricId)
    {
       ricId->pLMN_Identity.size = byteSize * sizeof(U8);
       RIC_ALLOC(ricId->pLMN_Identity.buf,  ricId->pLMN_Identity.size);
-      buildPlmnId(ricCfgParams.plmn , &ricId->pLMN_Identity);
+      buildPlmnId(ricCfgParams.plmn , ricId->pLMN_Identity.buf);
       /* fill ric Id */
       ricId->ric_ID.size = byteSize * sizeof(U8);
       RIC_ALLOC(ricId->ric_ID.buf, ricId->ric_ID.size);
@@ -343,7 +343,7 @@ S16 BuildRicSubsDetails(RICsubscriptionDetails_t *subsDetails)
       U8 byteSize = 3;
       subsDetails->ricEventTriggerDefinition.size = byteSize * sizeof(U8);
       RIC_ALLOC(subsDetails->ricEventTriggerDefinition.buf,  subsDetails->ricEventTriggerDefinition.size);
-      buildPlmnId(ricCfgParams.plmn, &subsDetails->ricEventTriggerDefinition);
+      buildPlmnId(ricCfgParams.plmn, subsDetails->ricEventTriggerDefinition.buf);
       elementCnt = 1;
       subsDetails->ricAction_ToBeSetup_List.list.count = elementCnt;
       subsDetails->ricAction_ToBeSetup_List.list.size = \

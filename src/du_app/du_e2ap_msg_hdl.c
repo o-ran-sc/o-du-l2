@@ -69,7 +69,7 @@ uint8_t BuildGlobalgNBId(GlobalE2node_gNB_ID_t *gNbId)
    else
    {
       buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn, \
-         &gNbId->global_gNB_ID.plmn_id);
+         gNbId->global_gNB_ID.plmn_id.buf);
       /* fill gND Id */
       gNbId->global_gNB_ID.gnb_id.present = GNB_ID_Choice_PR_gnb_ID;
       /* Allocate Buffer size */
@@ -1029,7 +1029,7 @@ uint8_t FillRicIndication(RICindication_t *ricIndicationMsg)
 		   else
 		   {
 	         buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn, \
-	         &ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader);
+	         ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader.buf);
 	         idx++;
             /* TO BE CHANGED: RIC INDICATION DATA */
             /* For now filling a dummy octect data, need to tested with PRBs*/
@@ -1049,7 +1049,7 @@ uint8_t FillRicIndication(RICindication_t *ricIndicationMsg)
 				else
 				{
 					buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn, \
-					&ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationMessage);
+					ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationMessage.buf);
 				}
 			}
 		}
