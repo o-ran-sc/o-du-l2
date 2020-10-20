@@ -16,6 +16,24 @@
       "revId": "577e1d2cc4fad616704a54d30ae3da64969ff4d2",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4286fd4a_f76d0641",
+        "filename": "build/common/asn_common.mak",
+        "patchSetId": 2
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-20T17:05:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c256ec6b_8578f3cc",
+      "revId": "577e1d2cc4fad616704a54d30ae3da64969ff4d2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
