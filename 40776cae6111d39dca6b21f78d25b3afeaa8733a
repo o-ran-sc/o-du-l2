@@ -16,6 +16,24 @@
       "revId": "40776cae6111d39dca6b21f78d25b3afeaa8733a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c0a6ba5a_066ca590",
+        "filename": "build/o1/install_netconf.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2020-10-20T11:35:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "430be512_37d11c21",
+      "revId": "40776cae6111d39dca6b21f78d25b3afeaa8733a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
