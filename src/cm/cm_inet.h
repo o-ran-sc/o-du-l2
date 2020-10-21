@@ -448,7 +448,7 @@
 #ifdef IPV6_SUPPORTED
 #define CM_INET_COPY_IPV6ADDR(_addrToFill, _fromAddr)   \
 {                                                       \
-   (Void)cmMemcpy((U8 *)_addrToFill, (U8 *)_fromAddr, sizeof(CmInetIpAddr6)); \
+   (Void)memcpy((U8 *)_addrToFill, (U8 *)_fromAddr, sizeof(CmInetIpAddr6)); \
 }
 
 #if (defined(SUNOS) || defined(HPOS) || defined(SS_VW))
@@ -491,7 +491,7 @@
 #ifdef SS_VW
 #define CM_COPY_VWIPADDR(vwIpAddr, addr) \
    { \
-      (Void)cmMemcpy((U8 *)addr, (U8 *)&vwIpAddr, sizeof(S32)); \
+      (Void)memcpy((U8 *)addr, (U8 *)&vwIpAddr, sizeof(S32)); \
    }
 #endif
 

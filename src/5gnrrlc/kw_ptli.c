@@ -177,7 +177,6 @@ SuId suId;                      /* Service User Id */
 SpId spId;                      /* Service Provider Id */
 #endif
 {
-   TRC3(RlcLiRguBndReq)
 
    /* jump to specific primitive depending on configured selector */
    (*kwLiRguBndReqMt[post->selector])(post, suId, spId);
@@ -220,7 +219,6 @@ SpId        spId;
 Reason      reason;
 #endif
 {
-   TRC3(RlcLiRguUbndReq)
 
    /* jump to specific primitive depending on configured selector */
    (*kwLiRguUbndReqMt[post->selector])(post, spId, reason);
@@ -268,7 +266,6 @@ SpId                    spId;
 RguL2MUlThrpMeasReqInfo *l2mUlThrpMeasReq;
 #endif
 {
-   TRC3(RlcLiRguL2MUlThrpMeasReq)
 
    /* jump to specific primitive depending on configured selector */
    (*kwLiRguL2MUlThrpMeasReqMt[post->selector])(post, spId, l2mUlThrpMeasReq);
@@ -375,7 +372,6 @@ Void rlcUtlFreeUlRBuf()
    U8             numLch;
    U8             numPdu;
 
-   TRC2(rlcUtlFreeUlRBuf)
    /* Free SS_RNG_BUF_ULMAC_TO_ULRLC  */
    while((SDeqSRngBuf (SS_RNG_BUF_ULMAC_TO_ULRLC, &elem) == ROK))
    {
@@ -418,7 +414,7 @@ Void              *staRsp;
    if (NULLP != elem)
    {
       staRspInfo = (RguDStaRspInfo *)elem;
-      cmMemcpy((U8 *)staRspInfo, (U8 *)staRsp, sizeof(RguDStaRspInfo)); 
+      memcpy((U8 *)staRspInfo, (U8 *)staRsp, sizeof(RguDStaRspInfo)); 
       staRspInfo->post = *post;
       SRngIncrWIndx(SS_RNG_BUF_DLRLC_TO_DLMAC);
       SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC].pktRate++;

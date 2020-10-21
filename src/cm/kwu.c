@@ -72,7 +72,6 @@ SpId spId;
    S16    ret1;
    Buffer *mBuf;
 
-   TRC3(cmPkKwuBndReq)
 
    mBuf = NULLP;
 
@@ -112,7 +111,6 @@ U8 status;
    S16    ret1;
    Buffer *mBuf;
 
-   TRC3(cmPkKwuBndCfm)
 
    mBuf = NULLP;
 
@@ -153,7 +151,6 @@ Reason reason;
    S16 ret1;
    Buffer *mBuf;
 
-   TRC3(cmPkKwuUbndReq)
 
    mBuf = NULLP;
 
@@ -189,7 +186,6 @@ Buffer *mBuf;
 #endif
 {
 
-   TRC3(cmPkKwuDatReqInfo);
 
 #ifdef CCPU_OPT
    switch(param->lcType) {
@@ -241,7 +237,6 @@ Buffer * mBuf;
 #ifndef SS_RBUF
    KwuDatReqInfo* datReqInfo;
 #endif
-    TRC3(cmPkKwuDatReq)
 #ifndef SS_RBUF
    switch(pst->selector)
    {
@@ -266,7 +261,7 @@ Buffer * mBuf;
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
                return (ret1);
             }
-            cmMemcpy((U8*)datReqInfo,(U8*)datReq,sizeof(KwuDatReqInfo));
+            memcpy((U8*)datReqInfo,(U8*)datReq,sizeof(KwuDatReqInfo));
             CMCHKPK(oduPackPointer,(PTR)datReqInfo, mBuf);
            }
            else
@@ -407,7 +402,6 @@ KwuDatIndInfo *param;
 Buffer *mBuf;
 #endif
 {
-   TRC3(cmPkKwuDatIndInfo);
 
    CMCHKPK(oduUnpackUInt8, param->isOutOfSeq, mBuf);
 #ifdef CCPU_OPT
@@ -442,7 +436,6 @@ Buffer * mBuf;
 #endif
     KwuDatIndInfo *datIndInfo = NULLP;
 
-    TRC3(cmPkKwuDatInd)
 
 #ifdef TENB_SPLIT_ARCH
     /* SSI_CHANGES: */
@@ -474,7 +467,7 @@ Buffer * mBuf;
                return (ret1);
             }
 
-            cmMemcpy((U8*)datIndInfo,(U8*)datInd,sizeof(KwuDatIndInfo));
+            memcpy((U8*)datIndInfo,(U8*)datInd,sizeof(KwuDatIndInfo));
             CMCHKPK(oduPackPointer,(PTR)datIndInfo, mBuf);
           }
           break;
@@ -525,7 +518,6 @@ Buffer *mBuf;
 {
    register U32 iter;
 
-   TRC3(cmPkKwuDatCfmInfo);
    for(iter = 0; iter < param->numSduIds; iter++)
    {
       CMCHKPK(oduUnpackUInt32, param->sduIds[iter], mBuf);
@@ -555,7 +547,6 @@ KwuDatCfmInfo* datCfm;
 #endif 
    Buffer *mBuf;
 
-   TRC3(cmPkKwuDatCfm)
 
    mBuf = NULLP;
 
@@ -630,7 +621,6 @@ KwuDiscSduInfo* discSdu;
    Buffer *mBuf;
    KwuDiscSduInfo* discSduInfo = NULLP;
 
-   TRC3(cmPkKwuDiscSduReq)
    mBuf = NULLP;
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
@@ -659,7 +649,7 @@ KwuDiscSduInfo* discSdu;
               return (ret1);
            }
             
-           cmMemcpy((U8*)discSduInfo,(U8*)discSdu,sizeof(KwuDiscSduInfo));
+           memcpy((U8*)discSduInfo,(U8*)discSdu,sizeof(KwuDiscSduInfo));
            CMCHKPK(oduPackPointer,(PTR)discSduInfo, mBuf);
          }
          break;
@@ -703,7 +693,6 @@ Buffer *mBuf;
 {
    S16 i;
 
-   TRC3(cmPkKwuStaIndInfo);
 
    for (i = (param->numSdu - 1); i >= 0; i--)
    {
@@ -726,7 +715,6 @@ KwuFlowCntrlIndInfo  *param;
 Buffer               *mBuf;
 #endif
 {
-   TRC3(cmPkKwuFlowCntrlIndInfo);
 
    CMCHKPK(oduUnpackUInt32, param->pktAdmitCnt, mBuf);   
    CMCHKPK(cmPkLteRlcId, &param->rlcId, mBuf);
@@ -746,7 +734,6 @@ KwuFlowCntrlIndInfo  *param;
 Buffer               *mBuf;
 #endif
 {
-   TRC3(cmUnpkKwuFlowCntrlIndInfo);
    
    CMCHKUNPK(cmUnpkLteRlcId, &param->rlcId, mBuf);
    CMCHKUNPK(oduPackUInt32, &param->pktAdmitCnt, mBuf);
@@ -776,7 +763,6 @@ KwuStaIndInfo* staInd;
 #endif /* LCKWU */
    Buffer *mBuf;
 
-   TRC3(cmPkKwuStaInd)
 
    mBuf = NULLP;
 
@@ -852,7 +838,6 @@ CmLteRlcId rlcId;
 #endif /* LCKWU */
    Buffer *mBuf;
 
-   TRC3(cmPkKwuReEstCmpInd)
 
    mBuf = NULLP;
 
@@ -909,7 +894,6 @@ KwuDiscSduInfo *discCfmSdu;
 #endif
    Buffer *mBuf;
 
-   TRC3(cmPkKwuDiscSduCfm)
 
    mBuf = NULLP;
 
@@ -979,7 +963,6 @@ KwuFlowCntrlIndInfo *flowCntrlIndInfo;
 {
    Buffer *mBuf;
 
-   TRC3(cmPkKwuFlowCntrlInd)
 
    mBuf = NULLP;
 
@@ -1036,7 +1019,6 @@ KwuDatAckInfo *param;
 Buffer *mBuf;
 #endif
 {
-   TRC3(cmPkKwuDatAckIndInfo);
 
    CMCHKPK(cmPkLteRlcId, &param->rlcId, mBuf);
    CMCHKPK(oduUnpackUInt32, param->sduId, mBuf);
@@ -1061,7 +1043,6 @@ KwuDatAckInfo* datInd;
 
    Buffer *mBuf;
 
-   TRC3(cmPkKwuDatAckInd);
 
    mBuf = NULLP;
 
@@ -1112,8 +1093,6 @@ Buffer *mBuf;
    SuId suId = 0;
    SpId spId = 0;
 
-   TRC3(cmUnpkKwuBndReq)
-
    CMCHKUNPKLOG(SUnpkS16, &suId, mBuf, EKWU020, pst);
    CMCHKUNPKLOG(SUnpkS16, &spId, mBuf, EKWU021, pst);
    SPutMsg(mBuf);
@@ -1139,7 +1118,6 @@ Buffer *mBuf;
    SuId suId = 0;
    U8 status = 0;
 
-   TRC3(cmUnpkKwuBndCfm)
 
    CMCHKUNPKLOG(SUnpkS16, &suId, mBuf, EKWU022, pst);
    CMCHKUNPKLOG(oduPackUInt8, &status, mBuf, EKWU023, pst);
@@ -1166,7 +1144,6 @@ Buffer *mBuf;
    SpId spId = 0;
    Reason reason = 0;
    
-   TRC3(cmUnpkKwuUbndReq)
 
    CMCHKUNPKLOG(SUnpkS16, &spId, mBuf, EKWU024, pst);
    CMCHKUNPKLOG(SUnpkS16, &reason, mBuf, EKWU025, pst);
@@ -1189,7 +1166,6 @@ Buffer *mBuf;
 #endif
 {
 
-   TRC3(cmUnpkKwuDatReqInfo);
 
    CMCHKUNPK(cmUnpkLteRlcId, &param->rlcId, mBuf);
    CMCHKUNPK(oduPackUInt32, &param->sduId, mBuf);
@@ -1241,7 +1217,6 @@ Buffer *mBuf;
    KwuDatReqInfo *datReq = NULLP;
    KwuDatReqInfo datReqTmp;
 
-   TRC3(cmUnpkKwuDatReq)
 
    switch(pst->selector)
    {
@@ -1255,7 +1230,7 @@ Buffer *mBuf;
             /* Allocate the memory statically  as there is no free 
              * in RLC */
             datReq = &datReqTmp;
-            cmMemset((U8 *)datReq, 0, sizeof(KwuDatReqInfo));
+            memset((U8 *)datReq, 0, sizeof(KwuDatReqInfo));
 #if(ERRCLASS & ERRCLS_DEBUG)
             ret1 = cmUnpkKwuDatReqInfo( (datReq), mBuf);
             if(ret1 != ROK)
@@ -1305,7 +1280,6 @@ KwuDatIndInfo *param;
 Buffer *mBuf;
 #endif
 {
-   TRC3(cmUnpkKwuDatIndInfo);
 
    CMCHKUNPK(cmUnpkLteRlcId, &param->rlcId, mBuf);
 
@@ -1335,7 +1309,6 @@ Buffer *mBuf;
     KwuDatIndInfo *datInd = NULLP;
     KwuDatIndInfo datIndTmp;
     
-    TRC3(cmUnpkKwuDatInd)
 
     switch(pst->selector)
     {
@@ -1414,7 +1387,6 @@ Buffer *mBuf;
 #endif
 {
    register S32 iter;
-   TRC3(cmUnpkKwuDatCfmInfo);
 
    CMCHKUNPK(cmUnpkLteRlcId, &param->rlcId, mBuf);
    CMCHKUNPK(oduPackUInt32, &param->numSduIds, mBuf);
@@ -1448,7 +1420,6 @@ Buffer *mBuf;
    SuId          suId = 0;
    KwuDatCfmInfo *datCfm = NULLP;
 
-   TRC3(cmUnpkKwuDatCfm)
 
    CMCHKUNPK(SUnpkS16, &(suId), mBuf);
 
@@ -1475,7 +1446,7 @@ Buffer *mBuf;
                return (ret1);
             }
 
-            cmMemset((U8 *)datCfm, 0, sizeof(KwuDatCfmInfo));
+            memset((U8 *)datCfm, 0, sizeof(KwuDatCfmInfo));
             ret1 = cmUnpkKwuDatCfmInfo( (datCfm), mBuf);
 #if(ERRCLASS & ERRCLS_DEBUG)
           if(ret1 != ROK)
@@ -1547,7 +1518,7 @@ Buffer *mBuf;
                return (ret1);
             }
 
-            cmMemset((U8 *)discSdu, 0, sizeof(KwuDiscSduInfo));
+            memset((U8 *)discSdu, 0, sizeof(KwuDiscSduInfo));
             ret1 = cmUnpkKwuDiscSduInfo( (discSdu), mBuf);
 #if(ERRCLASS & ERRCLS_DEBUG)
             if(ret1 != ROK)
@@ -1590,7 +1561,6 @@ Buffer *mBuf;
 {
    U32 i;
 
-   TRC3(cmUnpkKwuStaIndInfo);
 
    CMCHKUNPK(cmUnpkLteRlcId, &param->rlcId, mBuf);
    CMCHKUNPK(oduPackUInt32, &param->numSdu, mBuf);
@@ -1621,7 +1591,6 @@ Buffer *mBuf;
    SuId          suId = 0;
    KwuStaIndInfo *staInd = NULLP;
 
-   TRC3(cmUnpkKwuStaInd)
 
    CMCHKUNPK(SUnpkS16, &(suId), mBuf);
    
@@ -1648,7 +1617,7 @@ Buffer *mBuf;
                return (ret1);
             }
 
-            cmMemset((U8 *)staInd, 0, sizeof(KwuStaIndInfo));
+            memset((U8 *)staInd, 0, sizeof(KwuStaIndInfo));
 
             ret1 = cmUnpkKwuStaIndInfo( (staInd), mBuf);
 #if(ERRCLASS & ERRCLS_DEBUG)
@@ -1698,9 +1667,8 @@ Buffer *mBuf;
    SuId          suId = 0;
    CmLteRlcId    rlcId;
 
-   TRC3(cmUnpkKwuReEstCmpInd)
 
-   cmMemset((U8 *)&rlcId, 0, sizeof(CmLteRlcId));
+   memset((U8 *)&rlcId, 0, sizeof(CmLteRlcId));
 
    CMCHKUNPK(SUnpkS16, &(suId), mBuf);
    switch(pst->selector)
@@ -1749,7 +1717,6 @@ Buffer         *mBuf;
    SpId          spId = 0;
    KwuDiscSduInfo *discSdu = NULLP;
 
-   TRC3(cmUnpkKwuDiscSduCfm);
 
    CMCHKUNPK(SUnpkS16, &(spId), mBuf);
 
@@ -1775,7 +1742,7 @@ Buffer         *mBuf;
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
                return (ret1);
             }
-            cmMemset((U8 *)discSdu, 0, sizeof(KwuDiscSduInfo));
+            memset((U8 *)discSdu, 0, sizeof(KwuDiscSduInfo));
 
    ret1 = cmUnpkKwuDiscSduInfo( (discSdu), mBuf);
 #if(ERRCLASS & ERRCLS_DEBUG)
@@ -1819,7 +1786,6 @@ Buffer         *mBuf;
    SuId   suId;
    KwuFlowCntrlIndInfo *flowCntrlInfo = NULLP;
 
-   TRC3(cmUnpkKwuFlowCntrlInd);
    
    CMCHKUNPK(SUnpkS16, &(suId), mBuf);
    switch(pst->selector)
@@ -1866,7 +1832,6 @@ KwuDatAckInfo *param;
 Buffer *mBuf;
 #endif
 {
-   TRC3(cmUnpkKwuDatAckInfo);
 
    CMCHKUNPK(oduPackUInt32, &param->sduId, mBuf);
    CMCHKUNPK(cmUnpkLteRlcId, &param->rlcId, mBuf);
@@ -1893,7 +1858,6 @@ Buffer *mBuf;
     SuId          suId = 0;
     KwuDatAckInfo *datInd = NULLP;
     
-    TRC3(cmUnpkKwuDatAckInd);
 
     if((ret1 = SGetStaticBuffer(pst->region, pst->pool, (Data **)&datInd,\
                 sizeof(KwuDatAckInfo),SS_SHARABLE_MEMORY)) != ROK)
@@ -1909,7 +1873,7 @@ Buffer *mBuf;
        return (ret1);
     }
 
-    cmMemset((U8 *)datInd, 0, sizeof(KwuDatAckInfo));
+    memset((U8 *)datInd, 0, sizeof(KwuDatAckInfo));
 
     CMCHKUNPK(SUnpkS16, &(suId), mBuf);
     ret1 = cmUnpkKwuDatAckInfo( (datInd), mBuf);

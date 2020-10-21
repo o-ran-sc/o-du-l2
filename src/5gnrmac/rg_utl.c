@@ -128,8 +128,6 @@ Size    size;               /* size */
 {
    RgUstaDgn dgn;      /* Alarm diagnostics structure */
 
-   TRC2(rgAllocShrablSBuf)
-
    /* Initialize the param to NULLP */
    *pData = NULLP;
 
@@ -160,7 +158,7 @@ Size    size;               /* size */
 #endif
 
    /* zero out the allocated memory */
-   cmMemset((U8 *)*pData, 0x00, size);
+   memset((U8 *)*pData, 0x00, size);
 
    return ROK;
 
@@ -200,8 +198,6 @@ Size    size;               /* size */
 {
    RgUstaDgn dgn;      /* Alarm diagnostics structure */
 
-   TRC2(rgAllocSBuf)
-
    /* Initialize the param to NULLP */
    *pData = NULLP;
 
@@ -227,7 +223,7 @@ Size    size;               /* size */
    }
 
    /* zero out the allocated memory */
-   cmMemset((U8 *)*pData, 0x00, size);
+   memset((U8 *)*pData, 0x00, size);
 
    return ROK;
 
@@ -265,8 +261,6 @@ Size size;          /* size */
 {
 
    S16 ret;
-
-   TRC2(rgFreeSharableBuf)
 
    if ((data == NULLP) || (*data == NULLP) || (size == 0))
    {
@@ -321,8 +315,6 @@ Size size;          /* size */
 {
 
    S16 ret;
-
-   TRC2(rgFreeSBuf)
 
    if ((data == NULLP) || (*data == NULLP) || (size == 0))
    {
@@ -379,8 +371,6 @@ Buffer  **mBuf;           /* Message Buffer pointer be returned */
 {
    S16         ret;
 
-   TRC2(rgGetMsg)
-
 #ifdef MS_MBUF_CORRUPTION /* Should be enabled when debugging mbuf corruption */
    MS_BUF_ADD_ALLOC_CALLER();
 #endif /* */
@@ -433,8 +423,6 @@ U8          dgnType;
 #endif
 {
 
-   TRC2(rgFillDgnParams)
-
    switch(dgnType)
    {
       case LRG_USTA_DGNVAL_MEM:
@@ -485,10 +473,6 @@ RgRguDedDatReq *datReq;   /* DatReq pointer */
 {
    U8 idx1,idx2;
    U32 idx;
-
-
-   TRC2(rgUpdtRguDedSts)
-
 
    switch(stsType)
    {
@@ -560,9 +544,6 @@ RgUpSapCb     *rguDlSap;
 U8             stsType;   /* Statistics type to update */
 #endif
 {
-   TRC2(rgUpdtRguCmnSts)
-
-
 
    switch(stsType)
    {
@@ -608,7 +589,6 @@ Inst inst;
 U8 updtType;
 #endif
 {
-   TRC2(rgUpdtCellCnt);
 
    switch (updtType)
    {
@@ -655,8 +635,6 @@ Inst inst;
 U8 updtType;
 #endif
 {
-   TRC2(rgUpdtUeCnt);
-
    switch (updtType)
    {
       case RG_CFG_ADD:
@@ -701,8 +679,6 @@ Size      memSize;
 {
    Mem              sMem;
    VOLATILE U32     startTime=0;
-
-   TRC2(rgAllocEventMem)
 
    sMem.region = rgCb[inst].rgInit.region;
    sMem.pool = rgCb[inst].rgInit.pool;
@@ -771,7 +747,6 @@ Ptr       memCp;
 {
    S16   ret;
 
-   TRC2(rgGetEventMem)
 #ifdef TFU_ALLOC_EVENT_NO_INIT
    ret = cmGetMemNoInit(memCp, len, (Ptr *)ptr);
 #else
@@ -811,7 +786,6 @@ Inst          srcInst;
 Inst          dstInst;
 #endif
 {
-   TRC2(rgGetPstToInst);
 
    pst->srcEnt = rgCb[srcInst].rgInit.ent; 
    pst->srcInst = rgCb[srcInst].rgInit.inst;
@@ -866,8 +840,6 @@ RgInfLcgRegReq *lcgRegReq;
    Inst       inst;
    RgCellCb   *cell = NULLP;
    RgUeCb     *ue;
-
-   TRC2(RgSchMacLcgRegReq);
 
    RG_IS_INST_VALID(pst->dstInst);
    inst   = pst->dstInst - RG_INST_START;
@@ -925,8 +897,6 @@ RgInfUlSpsReset *ulSpsResetInfo;
    Inst       inst;
    RgCellCb   *cell = NULLP;
    RgUeCb     *ue;
-
-   TRC2(RgSchMacUlSpsResetReq);
 
    RG_IS_INST_VALID(pst->dstInst);
    inst   = pst->dstInst - RG_INST_START;
@@ -996,8 +966,6 @@ RgInfSpsLcInfo *lcInfo;
    RgCellCb   *cell= NULLP;
    RgUeCb     *ue;
    U8         idx;
-
-   TRC2(RgSchMacSpsLcRegReq);
 
    RG_IS_INST_VALID(pst->dstInst);
    inst   = pst->dstInst - RG_INST_START;
@@ -1081,8 +1049,6 @@ CmLteRnti      crnti;
    RgCellCb   *cell = NULLP;
    RgUeCb      *ue;
 
-   TRC2(RgSchMacSpsLcDeregReq);
-
    RG_IS_INST_VALID(pst->dstInst);
    inst   = pst->dstInst - RG_INST_START;
    cell   = rgCb[inst].cell;
@@ -1150,8 +1116,6 @@ CmLteRnti       newRnti;
    RgUeCb         *ue = NULLP;
    RgUeCb         *newUe = NULLP;
 
-   TRC3(rgUtlHndlCrntiChng)
-
    ue = rgDBMGetUeCb(cell, rnti);
    newUe = rgDBMGetUeCbFromRachLst(cell, newRnti);
    if ((ue == NULLP) || (newUe == NULLP))
@@ -1168,7 +1132,7 @@ CmLteRnti       newRnti;
 
    ue->ueId = newRnti;
 
-   cmMemcpy((U8*)&(ue->contResId), (U8*)&(newUe->contResId), 
+   memcpy((U8*)&(ue->contResId), (U8*)&(newUe->contResId), 
 		   sizeof(newUe->contResId));
    /* Fix : syed MSG4 might be RETXing need to store the
     * HARQ context. */
@@ -1216,8 +1180,6 @@ RgUeCb        *ue;
    Inst        sCellInstIdx;
    Pst         dstInstPst;
    RgPrgUeSCellDelInfo ueSCellDelInfo;
-
-   TRC2(rgDelUeFrmAllSCell)
 
    /* To Delete the SCells if exisits for that UE */
    for(idx = 0; idx < RG_MAX_SCELL_PER_UE ; idx++)
@@ -1272,9 +1234,7 @@ S16 rgUtlVltdAddSCellCfg(ueSCellCb, cell, inst)
 {
   S16 ret = ROK; 
   
-  TRC3(rgUtlVltdAddSCellCfg)
-  
-     /* To Validate the CellID presence */
+  /* To Validate the CellID presence */
   if((cell == NULLP) ||
         (cell->cellId != ueSCellCb->cellId))
   {
@@ -1338,8 +1298,6 @@ CmLteRnti       newRnti;
 #ifdef L2_OPTMZ
 TfuDelDatReqInfo delDatReq;
 #endif
-
-   TRC2(rgUtlSndCrntiChngReq2AllSMacs)
 
    /* use newRnti to get UeCb in PMac because rnti is already changed in PMac*/
    ue = rgDBMGetUeCb(cell, newRnti);
@@ -1416,8 +1374,6 @@ CmLteRnti       *rlsRnti;
 #ifdef LTEMAC_SPS
    RgUeCb         *spsUeCb = NULLP;
 #endif
-
-   TRC3(rgUtlHndlCrntiRls)
 
    if ((ue = rgDBMGetUeCb(cell, rlsRnti->rnti)) == NULLP)
    {
@@ -1508,8 +1464,6 @@ RgInfRlsRnti        *rlsRnti;
 #ifdef L2_OPTMZ
 TfuDelDatReqInfo delDatReq;
 #endif
-
-   TRC3(RgSchMacRlsRntiReq)
 
    RG_IS_INST_VALID(pst->dstInst);
    macInst   = pst->dstInst - RG_INST_START;

@@ -85,8 +85,6 @@ Pst     *pst;                       /* post structure       */
 Buffer  *mBuf;                      /* message buffer       */
 #endif
 {
-   TRC2(schActvTsk)
-
    switch(pst->srcEnt)
    {
       /* The originator of this message is the stack manager,

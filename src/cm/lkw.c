@@ -126,7 +126,6 @@ RlcMngmt *cfg;                /* RLC LM structure */
    Buffer *mBuf;             /* message buffer */
    S16 ret1;                 /* return value */
 
-   TRC3(packRlcConfigReq)
 
    ret1 = SGetMsg(pst->region, pst->pool, &mBuf);
    if (ret1 != ROK)
@@ -192,9 +191,8 @@ Buffer *mBuf;                /* message buffer */
    S16 ret1;                 /* Return value */
    RlcMngmt cfg;              /* RLC LM structure */
 
-   TRC3(unpackRlcConfigReq)
 
-   cmMemset((U8 *) &cfg, (U8) 0, (S16) sizeof(RlcMngmt));
+   memset((U8 *) &cfg, (U8) 0, (S16) sizeof(RlcMngmt));
    ret1 = cmUnpkRlcMngmt(&cfg, LKW_EVT_CFG_REQ, mBuf);
 
     if(ret1 != ROK)
@@ -244,7 +242,6 @@ RlcMngmt *cntrl;              /* RLC LM structure */
    Buffer *mBuf;             /* message buffer */
    S16 ret1;                 /* return value */
 
-   TRC3(cmPkLkwCntrlReq)
 
    ret1 = SGetMsg(pst->region, pst->pool, &mBuf);
    if (ret1 != ROK)
@@ -310,7 +307,6 @@ Buffer *mBuf;                /* message buffer */
    S16 ret1;                 /* return value */
    RlcMngmt cfm;              /* Confirmation */
 
-   TRC3(cmUnpkLkwCntrlReq)
 
    ret1 = cmUnpkRlcMngmt(&cfm, LKW_EVT_CNTRL_REQ, mBuf);
 
@@ -357,7 +353,6 @@ RlcMngmt *cfm;                /* RLC LM structure */
    Buffer *mBuf;             /* message buffer */
    S16 ret1;                 /* return value */
 
-   TRC3(cmPkLkwCntrlCfm)
 
    ret1 = SGetMsg(pst->region, pst->pool, &mBuf);
    if (ret1 != ROK)
@@ -424,7 +419,6 @@ Buffer *mBuf;                /* message buffer */
    RlcMngmt cfm;              /* RLC LM structure */
    S16 ret1;                 /* return value */
 
-   TRC3(cmUnpkLkwCntrlCfm)
 
    ret1 = cmUnpkRlcMngmt(&cfm, LKW_EVT_CNTRL_CFM, mBuf);
 
@@ -475,7 +469,6 @@ Buffer *mBuf;                /* message buffer */
    RlcMngmt cfm;              /* RLC LM structure */
    S16 ret1;                 /* return value */
 
-   TRC3(cmUnpkLkwStsCfm)
 
    ret1 = cmUnpkRlcMngmt(&cfm, LKW_EVT_STS_CFM, mBuf);
 
@@ -525,7 +518,6 @@ RlcMngmt *cfm;                /* RLC LM structure */
    Buffer *mBuf;             /* message buffer */
    S16 ret1;                 /* return value */
 
-   TRC3(packRlcConfigCfm)
 
    ret1 = SGetMsg(pst->region, pst->pool, &mBuf);
    if (ret1 != ROK)
@@ -591,7 +583,6 @@ Buffer *mBuf;                /* message buffer */
    S16 ret1;                 /* return value */
    RlcMngmt cfm;              /* RLC LM structure */
 
-   TRC3(unpackRlcConfigCfm)
 
    ret1 = cmUnpkRlcMngmt(&cfm, LKW_EVT_CFG_CFM, mBuf);
 
@@ -641,7 +632,6 @@ RlcMngmt *usta;               /* RLC LM structure */
    Buffer *mBuf;             /* message buffer */
    S16 ret1;                 /* return value */
 
-   TRC3(cmPkLkwStaInd)
 
    ret1 = SGetMsg(pst->region, pst->pool, &mBuf);
    if (ret1 != ROK)
@@ -708,7 +698,6 @@ Buffer *mBuf;               /* message buffer */
    RlcMngmt usta;            /* RLC LM structure */
    S16 ret1;                /* return value */
 
-   TRC3(cmUnpkLkwStaInd)
    
    ret1 = cmUnpkRlcMngmt(&usta, LKW_EVT_STA_IND, mBuf);
 
@@ -756,7 +745,6 @@ RlcMngmt *sta;                /* status */
    Buffer *mBuf;             /* message buffer */
    S16 ret1;                 /* return value */
 
-   TRC3(cmPkLkwStaReq)
 
    ret1 = SGetMsg(pst->region, pst->pool, &mBuf);
    if (ret1 != ROK)
@@ -821,7 +809,6 @@ Buffer *mBuf;                /* message buffer */
    RlcMngmt cfm;              /* RLC LM structure */
    S16 ret1;                 /* return value */
 
-   TRC3(cmUnpkLkwStaReq)
 
    ret1 = cmUnpkRlcMngmt(&cfm, LKW_EVT_STA_CFM, mBuf);
 
@@ -873,7 +860,6 @@ Buffer *mBuf;                /* message buffer */
    S16 ret1;                 /* return value */
    Action action;            /* Action */
 
-   TRC3(cmUnpkLkwStsReq)
 
    CMCHKUNPK(SUnpkS16, &action, mBuf);
 
@@ -926,7 +912,6 @@ Buffer *mBuf;                /* message buffer */
    RlcMngmt sta;              /* RLC LM structure */
    S16 ret1;                 /* return value */
 
-   TRC3(cmUnpkLkwStaReq)
 
    ret1 = cmUnpkRlcMngmt(&sta, LKW_EVT_STA_REQ, mBuf);
 
@@ -978,7 +963,6 @@ Buffer *mBuf;                /* message buffer */
    S16 ret1;                 /* return value */
    RlcMngmt trc;              /* RLC LM structure */
 
-   TRC3(cmUnpkLkwTrcInd)
 
    ret1 = cmUnpkRlcMngmt(&trc, LKW_EVT_TRC_IND, mBuf);
 
@@ -1025,7 +1009,6 @@ RlcCkwCntSapSta *rcSap;         /* SAP statistics */
 Buffer *mBuf;                /* Message buffer */
 #endif
 {
-   TRC3(cmPkCkwSapSta)
 
    CMCHKPK(cmPkState, rcSap->state, mBuf);
    CMCHKPK(SPkS16, rcSap->spId, mBuf);   
@@ -1056,7 +1039,6 @@ RlcCkwCntSapSta *rcSap;         /* SAP statistics */
 Buffer *mBuf;                /* Message buffer */
 #endif
 {
-   TRC3(cmUnpkCkwSapSta)
 
    CMCHKUNPK(SUnpkS16, &rcSap->spId, mBuf);
    CMCHKUNPK(cmUnpkState, &rcSap->state, mBuf);
@@ -1086,7 +1068,6 @@ RlcKwuSapSta *rlSap;           /* SAP statistics */
 Buffer *mBuf;                /* Message buffer */
 #endif
 {
-   TRC3(cmPkKwuSapSta)
 
    CMCHKPK(cmPkState, rlSap->state, mBuf);
    CMCHKPK(SPkS16, rlSap->spId, mBuf);
@@ -1117,7 +1098,6 @@ RlcKwuSapSta *rlSap;           /* SAP statistics */
 Buffer *mBuf;                /* Message buffer */
 #endif
 {
-   TRC3(cmUnpkKwuSapSta)
 
    CMCHKUNPK(SUnpkS16, &rlSap->spId, mBuf);
    CMCHKUNPK(cmUnpkState, &rlSap->state, mBuf);
@@ -1148,7 +1128,6 @@ RlcRguSapSta *mkSap;           /* SAP statistics */
 Buffer *mBuf;                /* Message buffer */
 #endif
 {
-   TRC3(cmPkRguSapSta)
 
    CMCHKPK(cmPkState, mkSap->state, mBuf);
    CMCHKPK(cmPkSuId, mkSap->suId, mBuf);
@@ -1179,7 +1158,6 @@ RlcRguSapSta *mkSap;           /* SAP statistics */
 Buffer *mBuf;                /* Message buffer */
 #endif
 {
-   TRC3(cmUnpkRguSapSta)
 
    CMCHKUNPK(cmUnpkSuId, &mkSap->suId, mBuf);
    CMCHKUNPK(cmUnpkState, &mkSap->state, mBuf);
@@ -1213,7 +1191,6 @@ RlcMngmt *cfm;                /* solicited status confirm */
    Buffer *mBuf;             /* message buffer */
    S16 ret1;                 /* return value */
 
-   TRC3(cmPkLkwStaCfm);
 
    ret1 = SGetMsg(pst->region, pst->pool, &mBuf);
    if (ret1 != ROK)
@@ -1277,7 +1254,6 @@ Buffer *trcBuf;               /* trace buffer */
    S16      ret1 = ROK;       /* return value */
    Buffer   *mBuf = NULLP;    /* Buffer to trace */
 
-   TRC3(cmPkLkwTrcInd);
 
    ret1 = SGetMsg(pst->region, pst->pool, &mBuf);
    if (ret1 != ROK)
@@ -1364,7 +1340,6 @@ RlcMngmt *sts;                /* statistics request */
    Buffer *mBuf;             /* message buffer */
    S16 ret1;                 /* return value */
 
-   TRC3(cmPkLkwStsReq)
 
    ret1 = SGetMsg(pst->region, pst->pool, &mBuf);
    if (ret1 != ROK)
@@ -1430,7 +1405,6 @@ RlcMngmt *cfm;                /* statistics confirmation */
    Buffer *mBuf;             /* message buffer */
    S16 ret1;                 /* return value */
 
-   TRC3(cmPkLkwStsCfm);
    /* lkw_c_001.main_2 removed warning */
    UNUSED(action);
    ret1 = SGetMsg(pst->region, pst->pool, &mBuf);
@@ -1495,7 +1469,6 @@ Buffer *mBuf;                /* Message Buffer */
 {
     S16 ret1;                /* return value */
 
-    TRC3(cmPkRlcMngmt)
 
     switch( eventType )
     {
@@ -1583,7 +1556,6 @@ Elmnt elmnt;
 Buffer *mBuf;
 #endif
 {
-    TRC3(cmPkRlcCfg)
 
     switch( elmnt )
     {
@@ -1650,7 +1622,6 @@ Buffer *mBuf;
 {
     U8 subAction;            /* sub action */     
 
-    TRC3(cmPkRlcCntrl)
 
     switch( elmnt )
     {
@@ -1728,7 +1699,6 @@ Elmnt elmnt;
 Buffer *mBuf;
 #endif
 {
-   TRC3(cmPkRlcUsta)
 
    /* lkw_c_001.main_2 removed warning */
    UNUSED(elmnt);
@@ -1773,7 +1743,6 @@ Buffer *mBuf;
 #endif
 {
    S16 ret1;
-   TRC3(cmPkRlcSsta)
 
    ret1 = RFAILED;
    switch(elmnt)
@@ -1833,7 +1802,6 @@ RlcMngmt *trc;                /* trace */
 Buffer *mBuf;                /* data buffer */
 #endif
 {
-   TRC3(cmPkRlcTrc)
 
    CMCHKPK(oduUnpackUInt16, trc->t.trc.event, mBuf); 
    CMCHKPK(cmPkDateTime, &trc->t.trc.dt, mBuf);
@@ -1868,7 +1836,6 @@ Buffer *mBuf;
 #endif
 {
    S16 ret1;
-   TRC3(cmPkRlcSts)
 
    ret1 = RFAILED;
    switch(elmnt)
@@ -1924,7 +1891,6 @@ RlcGenSts *gen;
 Buffer *mBuf;
 #endif
 {
-   TRC3(cmPkGenSts)
 
    CMCHKPK(oduUnpackUInt32, gen->numSduDisc, mBuf);
    CMCHKPK(oduUnpackUInt32, gen->numOfRb, mBuf);
@@ -1964,7 +1930,6 @@ RlcCkwCntSts *rcSap;
 Buffer *mBuf;
 #endif
 {
-   TRC3(cmPkCkwSapSts)
 
    CMCHKPK(oduUnpackUInt32, rcSap->statMsgs, mBuf);
 
@@ -1993,7 +1958,6 @@ RlcKwuSapSts *ruSap;
 Buffer *mBuf;
 #endif
 {
-   TRC3(cmPkCkwSapSts)
 
    CMCHKPK(oduUnpackUInt32, ruSap->sduTx, mBuf);
    CMCHKPK(oduUnpackUInt32, ruSap->sduRx, mBuf);
@@ -2033,9 +1997,8 @@ Buffer *mBuf;
 #endif
 {
     S16 ret1;
-    TRC3(cmUnpkRlcMngmt)
 
-   cmMemset((U8 *) param, (U8) 0, (S16) sizeof(RlcMngmt));
+   memset((U8 *) param, (U8) 0, (S16) sizeof(RlcMngmt));
 
    CMCHKUNPK(cmUnpkHeader, &param->hdr, mBuf);
    CMCHKUNPK(cmUnpkCmStatus, &param->cfm, mBuf);
@@ -2126,7 +2089,6 @@ Elmnt elmnt;
 Buffer *mBuf;
 #endif
 {
-   TRC3(cmUnpkRlcCfg)
 
    switch(elmnt)
    {
@@ -2195,7 +2157,6 @@ Buffer *mBuf;
    RlcDbgCntrl *dbgCntrl;
    RlcTrcCntrl *trcCntrl;
 
-   TRC3(cmUnpkRlcCntrl);
    
    /* lkw_c_001.main_2 removed warning */
    UNUSED(elmnt);
@@ -2278,7 +2239,6 @@ Elmnt elmnt;
 Buffer *mBuf;
 #endif
 {
-   TRC3(cmUnpkRlcUsta);
 
    /* lkw_c_001.main_2 removed warning */
    UNUSED(elmnt);
@@ -2322,7 +2282,6 @@ Buffer *mBuf;
 #endif
 {
    S16 ret1;           /* return value */
-   TRC3(cmUnpkRlcSsta);
 
    CMCHKUNPK(cmUnpkDateTime, &ssta->t.ssta.dt, mBuf);
    switch(elmnt)
@@ -2331,7 +2290,7 @@ Buffer *mBuf;
          ret1 = ROK;
          if(eventType == LKW_EVT_STA_CFM)
          {
-            cmMemset((U8 *) ptNmb, (U8) 0, LKW_PART_NUM_STR_LEN);
+            memset((U8 *) ptNmb, (U8) 0, LKW_PART_NUM_STR_LEN);
             ssta->t.ssta.s.sysId.ptNmb = ptNmb;
             CMCHKUNPK(cmUnpkSystemId, &ssta->t.ssta.s.sysId,mBuf);
          }
@@ -2382,7 +2341,6 @@ RlcMngmt *trc;
 Buffer *mBuf;
 #endif
 {
-   TRC3(cmUnpkRlcTrc);
 
    CMCHKUNPK(cmUnpkDateTime, &trc->t.trc.dt, mBuf);
    CMCHKUNPK(oduPackUInt16, &trc->t.trc.event, mBuf);
@@ -2417,7 +2375,6 @@ Buffer *mBuf;
 #endif
 {
    S16 ret1;           /* return value */
-   TRC3(cmUnpkRlcSts);
 
    CMCHKUNPK(cmUnpkDateTime, &sts->t.sts.dt, mBuf);
 
@@ -2471,7 +2428,6 @@ RlcGenSts *gen;
 Buffer *mBuf;
 #endif
 {
-   TRC3(cmUnpkGenSts);
 
    CMCHKUNPK(oduPackUInt32, &gen->numUe, mBuf);
    CMCHKUNPK(oduPackUInt32, &gen->pdusRecv, mBuf);
@@ -2511,7 +2467,6 @@ Buffer *mBuf;
 #endif
 {
 
-   TRC3(cmUnpkCkwSapSts);
 
    CMCHKUNPK(oduPackUInt32, &rcSap->statMsgs, mBuf); 
 
@@ -2541,7 +2496,6 @@ RlcKwuSapSts *ruSap;
 Buffer *mBuf;
 #endif
 {
-   TRC3(cmUnpkKwuSapSts)
 
    /* lkw_c_001.main_2 changed from suId to spId */
    CMCHKUNPK(cmUnpkSuId, &ruSap->spId, mBuf);
@@ -2567,7 +2521,6 @@ RlcL2MeasReqEvt *measReqEvt;
 #endif
 {
    Buffer *mBuf = NULLP;
-   TRC3(cmPkLkwL2MeasReq)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -2628,7 +2581,6 @@ Buffer *mBuf;
    U8 idx;
    U16 idx1;
 
-   TRC3(cmPkRlcL2MeasReqInfo)
 
    if((param->measType & LKW_L2MEAS_DL_IP) ||
          (param->measType & LKW_L2MEAS_UL_IP))
@@ -2675,7 +2627,6 @@ U8 measType;
 {
    Buffer *mBuf = NULLP;
 
-   TRC3(cmPkLkwL2MeasStopReq)
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -2703,7 +2654,6 @@ U8 measType;
 {
    Buffer *mBuf = NULLP;
 
-   TRC3(cmPkLkwL2MeasSendReq)
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -2733,7 +2683,6 @@ Buffer *mBuf;
 {
    RlcL2MeasReqEvt measReqEvt;
    
-   TRC3(cmUnpkLkwL2MeasReq)
 
    if (oduPackUInt32(&measReqEvt.transId, mBuf) != ROK) {
       SPutMsg(mBuf);
@@ -2785,7 +2734,6 @@ Buffer *mBuf;
    S16   ret;
    RlcL2MeasReqEvt *measReqEvt;
 
-   TRC3(cmUnpkLkwL2MeasReq)
 
 
    if((ret = SGetSBuf(pst->region, pst->pool, (Data **)&measReqEvt,\
@@ -2848,7 +2796,6 @@ Buffer *mBuf;
    U8 idx;
    U16 idx1; 
 
-   TRC3(cmUnpkRlcL2MeasReqInfo)
 
    CMCHKUNPK(oduPackUInt8, &param->measType, mBuf);
 
@@ -2898,7 +2845,6 @@ Buffer *mBuf;
 #endif
 {
    U8 measType;
-   TRC3(cmUnpkLkwL2MeasReq)
 
    CMCHKUNPK(oduPackUInt8, &measType, mBuf);
    SPutMsg(mBuf);
@@ -2921,7 +2867,6 @@ Buffer *mBuf;
 {
    U8    measType;
 
-   TRC3(cmUnpkLkwL2MeasSendReq)
 
    CMCHKUNPK(oduPackUInt8, &measType, mBuf); 
    SPutMsg(mBuf);
@@ -2944,7 +2889,6 @@ RlcL2MeasCfmEvt *measCfmEvt;
    U8 idx;
    U8 idx1;
 
-   TRC3(cmPkLkwL2MeasCfm)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -3049,7 +2993,6 @@ Buffer *mBuf;
 U8 measType;
 #endif
 {
-   TRC3(cmPkRlcL2MeasCfmInfo)
 
    if((measType & LKW_L2MEAS_DL_IP) ||
          (measType & LKW_L2MEAS_UL_IP))
@@ -3088,9 +3031,8 @@ Buffer *mBuf;
    U16 idx1;
    RlcL2MeasCfmEvt measCfmEvt;
 
-   TRC3(cmUnpkLkwL2MeasCfm)
 
-   cmMemset((U8 *)&measCfmEvt, 0 , sizeof(RlcL2MeasCfmEvt));
+   memset((U8 *)&measCfmEvt, 0 , sizeof(RlcL2MeasCfmEvt));
 
    if (oduPackUInt32(&measCfmEvt.transId, mBuf) != ROK) {
       SPutMsg(mBuf);
@@ -3181,7 +3123,6 @@ Buffer *mBuf;
 U8 measType;
 #endif
 {
-   TRC3(cmUnpkRlcL2MeasCfmInfo)
 
    if((measType & LKW_L2MEAS_DL_IP) ||
          (measType & LKW_L2MEAS_UL_IP))
@@ -3218,7 +3159,6 @@ U8  status
 #endif
 {
    Buffer *mBuf = NULLP;
-   TRC3(cmPkLkwL2MeasStopCfm)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -3250,7 +3190,6 @@ Buffer *mBuf;
 {
    U8 measType;
    U8 status;
-   TRC3(cmUnpkLkwL2MeasCfm)
    CMCHKUNPK(oduPackUInt8,  &measType, mBuf);
    CMCHKUNPK(oduPackUInt8,  &status, mBuf);
    SPutMsg(mBuf);

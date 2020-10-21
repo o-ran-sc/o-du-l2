@@ -171,7 +171,6 @@ RgErrInfo   *err;
    S16         ret;
    RgMacSdu    *sduAloc = NULLP;
 
-   TRC2(rgDUXInsSdu)
 
    RG_DUX_ALLOC(pdu, sizeof(RgMacSdu), sduAloc, ret);
    if(ret != ROK)
@@ -232,7 +231,6 @@ RgErrInfo   *err;
    U8             byte;
    U8             fmt=0;
  
-   TRC2(rgDUXExtSubHdr)
 
    *len = 0;   
    if(oduPackUInt8(&byte,mBuf) != ROK)
@@ -316,7 +314,6 @@ RgErrInfo    *err;
 {
    S16            ret;
 
-   TRC2(rgDUXExtCe);
 
    switch(lcId)
    {
@@ -516,7 +513,6 @@ RgErrInfo   *err;
    Buffer      *tmpBuf2 = NULLP;
    RgMacSdu    *sdu;
 
-   TRC2(rgDUXExtSdu)
 
    if(lcId == RG_CCCH_LCID)
    {
@@ -588,7 +584,6 @@ RgErrInfo     *err;
    U8          lcId;
    U16          subPduLen;
    MsgLen      len;  
-   TRC2(rgDUXDemuxData)
 
    ceInfo->bitMask = 0x0000;
 

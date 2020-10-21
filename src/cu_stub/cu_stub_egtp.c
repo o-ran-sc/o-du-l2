@@ -48,7 +48,7 @@ EgtpGlobalCb egtpCb;
 S16 egtpActvInit()
 {
   DU_LOG("\n\nEGTP : Initializing");
-  cmMemset ((U8 *)&egtpCb, 0, sizeof(EgtpGlobalCb));
+  memset ((U8 *)&egtpCb, 0, sizeof(EgtpGlobalCb));
   protType = CM_INET_PROTO_UDP;
   return ROK;
 }
@@ -123,7 +123,7 @@ S16 cuEgtpCfgReq()
 {
    U8 ret;
 
-   cmMemcpy((U8 *)&egtpCb.egtpCfg, (U8 *)&cuCfgParams.egtpParams, (PTR)sizeof(EgtpParams));
+   memcpy((U8 *)&egtpCb.egtpCfg, (U8 *)&cuCfgParams.egtpParams, (PTR)sizeof(EgtpParams));
 
    egtpCb.recvTptSrvr.addr.address = CM_INET_NTOH_U32(egtpCb.egtpCfg.localIp.ipV4Addr);
    egtpCb.recvTptSrvr.addr.port = EGTP_DFLT_PORT;
@@ -289,7 +289,7 @@ S16 cuEgtpTnlAdd(EgtpTnlEvt tnlEvt)
    }
 
 
-   cmMemset((U8 *)teidCb, 0, sizeof(EgtpTeIdCb));
+   memset((U8 *)teidCb, 0, sizeof(EgtpTeIdCb));
    teidCb->teId = tnlEvt.lclTeid;
    teidCb->remTeId = tnlEvt.remTeid;
 
@@ -303,7 +303,7 @@ S16 cuEgtpTnlAdd(EgtpTnlEvt tnlEvt)
    egtpCb.dstCb.numTunn++;
 
    /* Encoding pre-defined header */
-   cmMemset((U8*)&preDefHdr, 0, sizeof(EgtpMsgHdr));
+   memset((U8*)&preDefHdr, 0, sizeof(EgtpMsgHdr));
    preDefHdr.msgType = EGTPU_MSG_GPDU;
    preDefHdr.teId = teidCb->remTeId;
    preDefHdr.extHdr.pdcpNmb.pres = FALSE;
@@ -678,7 +678,7 @@ S16 BuildAppMsg(EgtpMsg  *egtpMsg)
    mLen = 0;
    ODU_GET_MSG_LEN(mBuf, &mLen);
 
-   cmMemset((U8 *)&ipv4Hdr, 0, sizeof(CmIpv4Hdr));
+   memset((U8 *)&ipv4Hdr, 0, sizeof(CmIpv4Hdr));
    ipv4Hdr.length = CM_IPV4_HDRLEN + mLen;
    ipv4Hdr.hdrVer = 0x45;
    ipv4Hdr.proto = 1;
@@ -692,8 +692,8 @@ S16 BuildAppMsg(EgtpMsg  *egtpMsg)
  
    /* initialize locals */
    cnt = 0;
-   cmMemset(revPkArray, 0, CM_IPV4_HDRLEN);
-   cmMemset(pkArray, 0, CM_IPV4_HDRLEN);
+   memset(revPkArray, 0, CM_IPV4_HDRLEN);
+   memset(pkArray, 0, CM_IPV4_HDRLEN);
 
    /* Pack Header Version */
    pkArray[cnt++] = ipv4Hdr.hdrVer;

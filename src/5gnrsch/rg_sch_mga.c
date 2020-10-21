@@ -139,9 +139,6 @@ RgrUeCfg    *ueCfg;
 #endif
 {
 
-   TRC2(rgSCHMeasGapANRepUeCfg);
-
-
    ue->measGapCb.isMesGapEnabled = ueCfg->ueMesGapCfg.isMesGapEnabled;
 
    if (ueCfg->ueMesGapCfg.isMesGapEnabled)
@@ -218,9 +215,6 @@ RgrUeRecfg     *ueRecfg;
    RgSchUeMeasGapCb        *ueMeasCb;
    RgrUeAckNackRepCfg      *ackNackReCfg = &(ueRecfg->ueAckNackRecfg);
    RgSchUeAckNakRepCb      *ackNakRepCb = &(ue->ackNakRepCb);
-
-   TRC2(rgSCHMeasGapANRepUeRecfg);
-
 
    reCfg    = &(ueRecfg->ueMeasGapRecfg);
    ueMeasCb = &(ue->measGapCb);
@@ -322,8 +316,6 @@ RgrUeMeasGapCfg      *cfg;
 #endif
 {
 
-   TRC2(rgSCHMeasGapANRepUtlAddUe);
-
    switch (cfg->gapPrd)
    {
       case RG_MEAS_GAPPRD_40:
@@ -373,8 +365,6 @@ RgSchCellCb       *cell;
 RgSchUeCb          *ue;
 #endif
 {
-
-   TRC2(rgSCHMeasGapANRepUtlRmvUe);
 
    switch (ue->measGapCb.gapPrd)
    {
@@ -437,9 +427,6 @@ RgSchUeCb   *ue;
 Bool        isUeDel;
 #endif
 {
-
-
-   TRC2(rgSCHMeasGapANRepUeDel);
 
    if (ue->measGapCb.isMesGapEnabled)
    {
@@ -524,8 +511,6 @@ PRIVATE S16 rgSchAckNackRepUtlRmvUe (cell, ue)
    U8                tbCnt;
 
    RgSchDlHqEnt          *hqEnt = RG_SCH_CMN_GET_UE_HQE(ue, cell);
-
-   TRC3(rgSchAckNackRepUtlRmvUe);
 
    for (hqIdx = 0; hqIdx < hqEnt->numHqPrcs; hqIdx++)
    {
@@ -632,8 +617,6 @@ RgSchCellCb *cell;
    RgSchDlSf        *dlSf;
    CmLteTimingInfo   repTime;
 
-   TRC2(rgSCHMeasGapANRepTtiHndl);
-
    /* Measurement GAP Starts at offSet - however at MAC we are concerned at
     * subframe + TFU_DELTA.
     */
@@ -714,8 +697,6 @@ CmLListCp   *ackNackRepQ;
    CmLList           *node;
    RgSchUeCb         *ue;
 
-   TRC2(rgSchAckNackRepUtlHdlTti);
-
    node = ackNackRepQ->first;
    while (node)
    {
@@ -760,8 +741,6 @@ CmLListCp   *measGapQ;
 {
    CmLList           *node;
    RgSchUeCb         *ue;
-
-   TRC2(rgSCHMeasGapANRepUtlHdlTti);
 
    node = measGapQ->first;
    while (node)
@@ -848,8 +827,6 @@ CmLListCp   *dlInactvUeLst;
    RgSchDlHqProcCb   *hqP;
    RgSchDlHqTbCb     *tbCb;
    U32               i;
-
-   TRC2(rgSCHMeasGapANRepGetDlInactvUe);
 
    schedTime = cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G + cell->crntTime.slot + RG_DL_DELTA; 
 
@@ -1058,8 +1035,6 @@ CmLListCp   *ulInactvUeLst;
    RgSchDlHqTbCb     *tbCb;
    U32               i;
 
-   TRC2(rgSCHMeasGapANRepGetUlInactvUe);
-
    /*ccpu00139481- Meas Gap should be monitored in UL with TFU_ULCNTRL_DLDELTA*/
    schedTime = cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G + cell->crntTime.slot + \
                TFU_ULCNTRL_DLDELTA;
@@ -1221,7 +1196,6 @@ U8         tmrEvnt;
 {
 
    RgSchCellCb    *cell = ue->cell;
-   TRC2(rgSCHMeasGapANRepDlInactvTmrExpry);
 
    switch (tmrEvnt)
    {
@@ -1280,7 +1254,6 @@ U8         tmrEvnt;
 #endif
 {
    RgSchCellCb       *cell = ue->cell;
-   TRC2(rgSCHMeasGapANRepUlInactvTmrExpry);
 
    switch (tmrEvnt)
    {
@@ -1332,8 +1305,6 @@ RgSchUeCb *ue;
 #endif
 {
 
-   TRC2(rgSCHMeasGapANRepTmrExpry);
-
    ue->measGapCb.isMeasuring = FALSE;
    cmInitTimers (&ue->measGapCb.measGapTmr, 1);
 
@@ -1372,8 +1343,6 @@ Void rgSCHAckNakRepTmrExpry(ue)
 RgSchUeCb *ue;
 #endif
 {
-
-   TRC2(rgSCHAckNakRepTmrExpry);
 
    ue->ackNakRepCb.isAckNakRep = FALSE;
    cmInitTimers (&ue->ackNakRepCb.ackNakRepTmr, 1);
@@ -1431,8 +1400,6 @@ RgSchDlSf            *crntDlSf;
    RgSchDlHqProcCb   *hqP;
    RgSchDlHqTbCb     *tbCb;
    U32               i;
-
-   TRC2(rgSCHAckNakRepAddToQ);
 
    node = crntDlSf->ueLst.first;
    while (node)
@@ -1505,7 +1472,6 @@ U8                repCnt;
    S16   idx;
    S8                diff;
 
-   TRC2(rgSCHAckNakRepFindUlDuration)
    rgSCHAckNakRepGetUlOffsetFrmDl(dlSf, repTime, &noSubfrms);
    RG_SCH_ADD_TO_CRNT_TIME(repTime, ulfrm, noSubfrms);
    diff = repCnt-1;
@@ -1558,7 +1524,6 @@ CmLteTimingInfo   crntDlTime;
 U8                *noSubfrms;
 #endif
          {
-   TRC2(rgSCHAckNakRepGetUlOffsetFrmDl)
 
    if(dlSf->dlFdbkInfo.sfnOffset != 0)
             {

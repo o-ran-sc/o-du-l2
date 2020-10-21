@@ -143,7 +143,6 @@ RgSchCellCb  *cell;
 RgrUeCfg     *ueCfg;
 #endif
 {
-   TRC2(rgSCHRamVldtUeCfg);
    if (ueCfg->dedPreambleId.pres == PRSNT_NODEF)
    {
       if ((ueCfg->dedPreambleId.val < cell->rachCfg.numRaPreamble) ||
@@ -213,7 +212,6 @@ RgSchErrInfo      *err;
    U8             tid;
 #endif
 
-   TRC2(rgSCHRamProcRaReq)
 
 
       /* SR_RACH_STATS : RACH REQ */
@@ -338,7 +336,6 @@ RgSchErrInfo      *err;
    RgSchRntiLnk *rntiLnk;
    Inst         inst = cell->instIdx;
 
-   TRC2(rgSCHRamCreateRaCb)
 
    if((rgSCHUtlAllocSBuf(inst, (Data **)(raCb),
                       sizeof(RgSchRaCb))) == RFAILED)
@@ -445,7 +442,6 @@ RgSchErrInfo   *err;
   /* U32 cnt; */
    RgSchDlHqEnt          **hqEnt = &(RG_SCH_CMN_GET_UE_HQE(ue, cell));
    RgSchCmnUlUe *ueUl = RG_SCH_CMN_GET_UL_UE(ue, cell);
-   TRC2(rgSCHRamRgrUeCfg)
 
 
    /* Fix : set UE inactive in DL until UE is reinitialization completed */
@@ -517,7 +513,6 @@ RgSchErrInfo *err;
 {
    TfuUlCqiRpt   ulCqiRpt;
    RgSchCmnCell  *cellSch= (RgSchCmnCell *)(cell->sc.sch);
-   TRC2(rgSCHRamContResCrnti)
 
 
    /* Fix: syed It is incorrect to copy over msg3HqProc to ueCb's 
@@ -582,7 +577,6 @@ RgSchRaCb *raCb;
    CmLteTimingInfo expTime = {0}; 
    RgSchCmnCell  *cellSch  = RG_SCH_CMN_GET_CELL(cell);
 #endif
-   TRC2(rgSCHRamContResCcchsdu)
    if(raCb->raState != RGSCH_RA_MSG3_PENDING)
    {
       RLOG_ARG2(L_DEBUG,DBG_CELLID,cell->cellId,
@@ -650,7 +644,6 @@ RgInfUeDatInd   *pdu;
 RgSchErrInfo    *err;
 #endif
 {
-   TRC2(rgSCHRamProcMsg3)
 
 
    /* Update raCb with PHR if received along with Msg3 */ 
@@ -712,7 +705,6 @@ RgSchRaCb         *raCb;
 RgInfCmnBoRpt     *staRsp;
 #endif
 {
-   TRC2(rgSCHRamUpdtBo)
 
    /* Update Bo in RaCb */
    raCb->dlCcchInfo.bo = (U32)(staRsp->bo);
@@ -752,7 +744,6 @@ S16 rgSCHRamMsg3DatInd(raCb)
 RgSchRaCb      *raCb;
 #endif
 {
-   TRC2(rgSCHRamMsg3DatInd)
 
    /* SR_RACH_STATS : MSG3 ACK*/
    rgNumMsg3CrcPassed++;
@@ -787,7 +778,6 @@ S16 rgSCHRamMsg3FailureInd(raCb)
 RgSchRaCb      *raCb;
 #endif
 {
-   TRC2(rgSCHRamMsg3FailureInd)
 
    /*ccpu00128820 - MOD - Msg3 alloc double delete issue*/
    rgSCHUhmProcMsg3Failure(&(raCb->msg3HqProc));
@@ -820,7 +810,6 @@ S16 rgSCHRamMsg4FdbkInd(raCb)
 RgSchRaCb      *raCb;
 #endif
 {
-   TRC2(rgSCHRamMsg4FdbkInd)
 
    return ROK;
 }  /* rgSCHRamMsg4FdbkInd */
@@ -855,7 +844,6 @@ RgSchCellCb    *cell;
 RgSchRaCb      *raCb;
 #endif
 {
-   TRC2(rgSCHRamMsg4Done)
 
    RLOG_ARG1(L_DEBUG,DBG_CELLID,cell->cellId,
             "rgSCHRamMsg4Done(): tmpCRNTI = %u",
@@ -953,7 +941,6 @@ Bool        rlsRnti;
 {
    Inst         inst = cell->instIdx;
    Bool         isEmtc = FALSE;
-   TRC2(rgSCHRamDelRaCb)
  
     /* Delete from all the lists it is enqueued */
     cmLListDelFrm(&(cell->raInfo.raCbLst),&(raCb->raCbLnk));
@@ -1091,7 +1078,6 @@ RgSchCellCb  *cell;
    U8                   raIdx;
 #endif
 
-   TRC2(rgSCHRamTtiHndlr)
 
    crntSfn = cell->crntTime.sfn;
   
@@ -1217,7 +1203,6 @@ RgSchCellCb    *cell;
 #endif
 
 
-   TRC2(rgSCHRamFreeCell)
 
 
 #ifdef LTE_TDD
@@ -1297,7 +1282,6 @@ RgSchCellCb *cell;
 RgSchRaCb  *raCb;
 #endif
 {
-   TRC2(rgSCHRamProcContResExp);
    raCb->expiryTime.sfn = RGSCH_CONTRES_EXP;
    /*MSG4 Fix*/
    if (raCb->ue)
@@ -1327,7 +1311,6 @@ RgSchCellCb  *cell;
 RgSchRaCb  *raCb;
 #endif
 {
-   TRC2(rgSCHRamProcContResGrdExp)
 
 
 /*Guard timer has expired, schedule only the contention REsolution CE with 
@@ -1378,7 +1361,6 @@ RgSchCellCb        *cell;
    CmLList         *chkLnk    = NULLP;
    RgSchRaCb       *raCb = NULLP;
    
-   TRC2(rgSCHChkContResTmrExp)
       
    chkLnk = cmLListFirst(&(cell->contResTmrLst));
    
@@ -1425,7 +1407,6 @@ RgSchCellCb        *cell;
    CmLList         *chkLnk    = NULLP;
    RgSchRaCb       *raCb = NULLP;
    
-   TRC2(rgSCHChkContResGrdTmrExp)
       
    chkLnk = cmLListFirst(&(cell->contResGrdTmrLst));
    
@@ -1489,7 +1470,6 @@ U8                   raIdx;
    U8                   raRntiIdx;
    CmLteRnti            raRnti;
 
-   TRC2(rgSCHRamDelRaReq)
 
 
    rachRsp = &cell->rachRspLst[raIdx];
@@ -1554,7 +1534,6 @@ RgSchRaCb         *raCb;
    CmLteTimingInfo expTime ={0};
    RgSchCmnCell    *cellSch =  RG_SCH_CMN_GET_CELL(cell);
 
-   TRC2(rgSCHRamAddToRaInfoSchdLst)
 
    /*Fix: This can be called even when guard timer is not expired. 
        * In this case CR timer expiry should be guard timer expiry time + Guard timer time*/
@@ -1581,7 +1560,6 @@ RgSchCellCb       *cell;
 RgSchRaCb         *raCb;
 #endif
 {
-   TRC2(rgSCHRamRmvFrmRaInfoSchdLst)
 
    cmLListDelFrm(&(cell->raInfo.toBeSchdLst), &(raCb->schdLnk));
    raCb->schdLnk.node = NULLP;   
@@ -1623,7 +1601,6 @@ RgSchCellCb     *cell;
 Bool            isEmtc;
 #endif
 {
-   TRC2(rgSCHRamUlFreeAllocation);
 
    rgSCHUhmFreeProc(alloc->hqProc, cell);
    if(!isEmtc)

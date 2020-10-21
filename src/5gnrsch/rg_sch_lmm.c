@@ -139,8 +139,6 @@ Elmnt sapType;            /* SAP Type */
    RgSchUpSapCfgInfo    *upSapCfg = NULLP;
    Inst  inst = (dInst - SCH_INST_START);
 
-   TRC2(rgSCHLmmSapCfg)
-
    /* Check if Gen Config has been done */
 
    switch(sapType)
@@ -214,7 +212,7 @@ Elmnt sapType;            /* SAP Type */
          lowSapCfg->sapPst.prior = cfg->s.schInstCfg.tfuSap[sapIdx].prior;
          lowSapCfg->suId = cfg->s.schInstCfg.tfuSap[sapIdx].suId;
          lowSapCfg->spId = cfg->s.schInstCfg.tfuSap[sapIdx].spId;
-         cmMemcpy((U8 *)&lowSapCfg->bndTmr, 
+         memcpy((U8 *)&lowSapCfg->bndTmr, 
                   (U8 *)&cfg->s.schInstCfg.tfuSap[sapIdx].bndTmr,
                   sizeof(TmrCfg));
          break;
@@ -298,8 +296,6 @@ Inst inst;
    RgSchCmnUlCell *cellUl;
    RgSchClcBoRpt  *bo = NULL;
 #endif
-
-   TRC2(rgSCHLmmShutdown)
 
 #ifdef LTE_L2_MEAS
    for (idx = 0; idx < instCb->numSaps; idx++)
@@ -453,7 +449,6 @@ Pst           *cfmPst;
 #endif
 {
    Inst      inst = (cfmPst->srcInst - SCH_INST_START); /* Scheduler instance ID */
-   TRC2(rgSCHLmmGenCntrl)
 
    cfm->cfm.status = LCM_PRIM_OK;
    cfm->cfm.reason = LCM_REASON_NOT_APPL;
@@ -469,7 +464,7 @@ Pst           *cfmPst;
             /* Enable Unsolicited Status (alarms) */
                rgSchCb[inst].rgSchInit.usta = TRUE;
                /*Store the response and TransId for sending the Alarms */
-               cmMemcpy((U8 *)&rgSchCb[inst].genCfg.ustaResp.response, 
+               memcpy((U8 *)&rgSchCb[inst].genCfg.ustaResp.response, 
                (U8 *)&cntrl->hdr.response, sizeof(Resp));
                rgSchCb[inst].genCfg.ustaResp.transId = cntrl->hdr.transId;
                break;
@@ -498,8 +493,8 @@ Pst           *cfmPst;
                    * L2
                    * statistics
                    * */
-                  cmMemset((U8 *)&hqRetxStats, 0, sizeof(RgSchHqRetxStats));
-                  cmMemset((U8 *)&hqFailStats, 0, sizeof(RgSchNackAckStats));
+                  memset((U8 *)&hqRetxStats, 0, sizeof(RgSchHqRetxStats));
+                  memset((U8 *)&hqFailStats, 0, sizeof(RgSchNackAckStats));
 #endif
                   break;
                }
@@ -585,7 +580,6 @@ Pst           *cfmPst;
 
    /* TODO Pass InstId instead of using InstId from cfmPst */
    Inst      inst = (cfmPst->srcInst - SCH_INST_START); /* Scheduler instance Id */
-   TRC2(rgSCHLmmSapCntrl)
 
    /* Only TFU SAP can be controlled by LM */
    switch(cntrl->hdr.elmId.elmnt)
@@ -620,7 +614,7 @@ Pst           *cfmPst;
                   rgSchCb[inst].tfuSap[idx].numBndRetries++;
                   /* Store the response and TransId for sending 
                    * the Control confirm */
-                  cmMemcpy((U8 *)&rgSchCb[inst].genCfg.bndCfmResp[idx].response,
+                  memcpy((U8 *)&rgSchCb[inst].genCfg.bndCfmResp[idx].response,
                            (U8 *)&cntrl->hdr.response, sizeof(Resp));
                   rgSchCb[inst].genCfg.bndCfmResp[idx].transId = 
                                                 cntrl->hdr.transId;
@@ -675,7 +669,7 @@ Pst           *cfmPst;
                                      (PTR)&rgSchCb[inst].tfuSap[idx]);
                   }
                }
-               cmMemset((U8 *)&rgSchCb[inst].tfuSap[idx], 0, sizeof(RgSchLowSapCb));
+               memset((U8 *)&rgSchCb[inst].tfuSap[idx], 0, sizeof(RgSchLowSapCb));
                rgSchCb[inst].tfuSap[idx].sapSta.sapState = LRG_NOT_CFG;
                cfm->cfm.status = LCM_PRIM_OK;
                cfm->cfm.reason = LCM_REASON_NOT_APPL;
@@ -698,7 +692,7 @@ Pst           *cfmPst;
          switch(cntrl->t.cntrl.action)
          {
             case ADEL:
-               cmMemset((U8 *)&rgSchCb[inst].rgrSap[idx], 0, sizeof(RgSchUpSapCb));
+               memset((U8 *)&rgSchCb[inst].rgrSap[idx], 0, sizeof(RgSchUpSapCb));
                rgSchCb[inst].rgrSap[idx].sapSta.sapState = LRG_NOT_CFG;
                cfm->cfm.status = LCM_PRIM_OK;
                cfm->cfm.reason = LCM_REASON_NOT_APPL;
@@ -721,7 +715,7 @@ Pst           *cfmPst;
          switch(cntrl->t.cntrl.action)
          {
             case ADEL:
-               cmMemset((U8 *)&rgSchCb[inst].rgmSap[idx], 0, sizeof(RgSchUpSapCb));
+               memset((U8 *)&rgSchCb[inst].rgmSap[idx], 0, sizeof(RgSchUpSapCb));
                rgSchCb[inst].rgmSap[idx].sapSta.sapState = LRG_NOT_CFG;
                cfm->cfm.status = LCM_PRIM_OK;
                cfm->cfm.reason = LCM_REASON_NOT_APPL;
@@ -775,8 +769,6 @@ RgMngmt       *cfm;
 #endif
 {
    Inst inst;
-
-   TRC2(SchFillCfmPst)
 
    inst = (reqPst->dstInst - SCH_INST_START);
 
@@ -832,12 +824,10 @@ PTR                cb;                 /* Entry for which Timer Expired */
    CmTmrArg    arg;
 /*   Inst        dInst = inst + SCH_INST_START; */
 
-   TRC2(rgSCHLmmStartTmr)
-
    UNUSED(tmrEvnt);
 
    /* Initialize the arg structure */
-   cmMemset((U8 *)&arg, 0, sizeof(CmTmrArg));
+   memset((U8 *)&arg, 0, sizeof(CmTmrArg));
 
    arg.tqCp = &rgSchCb[inst].tmrTqCp;
    arg.tq = rgSchCb[inst].tmrTq;
@@ -890,8 +880,6 @@ PTR                cb;                 /* Entry for which Timer Expired */
    U8         i;
    S16        ret; 
 
-   TRC2(rgSCHLmmStopTmr)
-
    ret = RFAILED;
 
    for(i=0;i<RGSCH_MAX_TIMER;i++)
@@ -900,7 +888,7 @@ PTR                cb;                 /* Entry for which Timer Expired */
       if(((RgSchLowSapCb *)cb)->tmrBlk.tmrEvnt == tmrEvnt)
       {
          /* Initialize the arg structure */
-         cmMemset((U8 *)&arg, 0, sizeof(CmTmrArg));
+         memset((U8 *)&arg, 0, sizeof(CmTmrArg));
 
          arg.tqCp = &rgSchCb[inst].tmrTqCp;
          arg.tq = rgSchCb[inst].tmrTq;
@@ -955,7 +943,6 @@ S16 tmrEvnt;          /* Timer Event */
 #ifdef DEBUGP
    Inst          inst = tfuSap->cell->instIdx;
 #endif
-   TRC2(rgSCHLmmTmrExpiry)
 
    
    switch(tmrEvnt)
@@ -1032,8 +1019,6 @@ U8 status;              /* Status */
    Pst       cfmPst;
    Inst      inst = (pst->dstInst - SCH_INST_START); /* scheduler instance */
 
-   TRC2(rgSCHLmmBndCfm)
-
 
    /* check the SAP State */
    switch(rgSchCb[inst].tfuSap[suId].sapSta.sapState)
@@ -1054,7 +1039,7 @@ U8 status;              /* Status */
    cfmPst.region = rgSchCb[inst].genCfg.bndCfmResp[suId].response.mem.region;
    cfmPst.pool = rgSchCb[inst].genCfg.bndCfmResp[suId].response.mem.pool;
    
-   cmMemset((U8 *)&cntrlCfm, 0, sizeof(RgMngmt));
+   memset((U8 *)&cntrlCfm, 0, sizeof(RgMngmt));
 
    switch(status)
    {
@@ -1132,14 +1117,12 @@ RgUstaDgn *dgn;
 {
    RgMngmt    usta;
 
-   TRC2(rgSCHLmmStaInd)
-
    if(rgSchCb[inst].rgSchInit.usta == FALSE)
    {
       return ROK;
    }
 
-   cmMemset((U8 *)&usta, 0, sizeof(RgMngmt));
+   memset((U8 *)&usta, 0, sizeof(RgMngmt));
 
    SGetDateTime(&usta.t.usta.cmAlarm.dt);
    usta.t.usta.cmAlarm.category = category;
@@ -1147,7 +1130,7 @@ RgUstaDgn *dgn;
    usta.t.usta.cmAlarm.cause = cause;
    if (dgn != NULLP)
    {
-      cmMemcpy((U8 *)&usta.t.usta.dgn, (U8 *)dgn, sizeof(RgUstaDgn));
+      memcpy((U8 *)&usta.t.usta.dgn, (U8 *)dgn, sizeof(RgUstaDgn));
    }
 
    rgSchCb[inst].rgSchInit.lmPst.selector = 
@@ -1195,7 +1178,6 @@ Inst inst;
 #endif
 {
    Inst schInst = (inst  - SCH_INST_START);
-   TRC2(schActvTmr)
 
    /* Check if any timer in the scheduler instance has expired */ 
    cmPrcTmr(&rgSchCb[schInst].tmrTqCp,

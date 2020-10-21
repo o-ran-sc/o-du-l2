@@ -102,11 +102,10 @@ SpId    spId;
    RgLowSapCb  *tfuSap;
    Pst         pst;
 
-   TRC2(rgLIMTfuBndReq);
 
    /* Get the lower SAP control block from the layer control block. */
    tfuSap = &(rgCb[inst].tfuSap);
-   (Void)cmMemcpy ((U8*)&pst, (U8*)&(tfuSap->sapCfg.sapPst), sizeof(Pst));
+   (Void)memcpy ((U8*)&pst, (U8*)&(tfuSap->sapCfg.sapPst), sizeof(Pst));
    if((ret = RgLiTfuBndReq (&pst, suId, spId)) != ROK)
    {
       RLOG0(L_ERROR,"Call to RgLiTfuBndReq() failed");
@@ -151,11 +150,10 @@ Reason  reason;
    RgLowSapCb  *tfuSap;
    Pst         pst;
 
-   TRC2(rgLIMTfuUbndReq);
 
    /* Get the lower SAP control block from the layer control block. */
    tfuSap = &(rgCb[inst].tfuSap);
-   cmMemcpy ((U8*)&pst, (U8*)&(tfuSap->sapCfg.sapPst), sizeof(Pst));
+   memcpy ((U8*)&pst, (U8*)&(tfuSap->sapCfg.sapPst), sizeof(Pst));
    if((ret = RgLiTfuUbndReq (&pst, tfuSap->sapCfg.spId, reason)) != ROK)
    {
       RLOG0(L_ERROR,"Call to RgLiTfuUbndReq() failed");
@@ -200,7 +198,6 @@ U8      status;
    S16 ret;
    RgLowSapCb  *tfuSap;
 
-   TRC3(RgLiTfuBndCfm);
 
 
    RG_IS_INST_VALID(pst->dstInst);
@@ -244,7 +241,6 @@ PRIVATE S16 rgLIMValidateSap(inst,suId)
 {
    RgLowSapCb  *tfuSap;
 
-   TRC2(rgLIMValidateSap)
 
    tfuSap = &(rgCb[inst].tfuSap);
 
@@ -293,7 +289,6 @@ PRIVATE Void rgLIMUtlFreeDatIndEvnt(datInd, error)
    TfuDatInfo     *datInfo;
    CmLList        *node;
 
-   TRC2(rgLIMUtlFreeDatIndEvnt);
    /* Steps of freeing up the TfuDatInd.
     * 1. loop through the datIndLst and free up all the buffers.
     * 2. free up the whole event
@@ -347,7 +342,6 @@ TfuDatIndInfo    *datInd;
    S16              ret;
    VOLATILE U32     startTime=0;
 
-   TRC3(RgLiTfuDatInd);
 
   // printf("5GTF:: DatindRcvd\n");
 
@@ -416,7 +410,6 @@ PRIVATE Void rgLIMUtlFreeDatReqEvnt(datReq, error)
    CmLList          *node;
    U8               i;
 
-   TRC2(rgLIMUtlFreeDatReqEvnt);
    /* Steps of freeing up the TfuDatReq.
     * 1. Free the bch buffer.
     * 2. loop through the pdus list and free up all the buffers.
@@ -481,7 +474,6 @@ TfuDatReqInfo *datReq;
    S16         ret;
    RgLowSapCb  *tfuSap;
 
-   TRC2(rgLIMTfuDatReq)
 
    /* Get the lower SAP control block from the layer control block. */
    tfuSap = &(rgCb[inst].tfuSap);
@@ -543,7 +535,6 @@ TfuDelDatReqInfo *delDatReq;
    S16         ret;
    RgLowSapCb  *tfuSap;
 
-   TRC2(rgLIMTfuDelDatReq)
 
    /* Get the lower SAP control block from the layer control block. */
    tfuSap = &(rgCb[inst].tfuSap);
@@ -594,7 +585,6 @@ Pst                 *pst;
 SuId                suId;
 #endif
 {
-   TRC3(RgLiTfuNonRtInd);
 
 #ifdef NO_ERRCLS
    if (rgLIMValidateSap (pst->dstInst - RG_INST_START, suId) != ROK)

@@ -78,7 +78,6 @@ TknS16 *tknS16;             /* token S16 */
 Buffer *mBuf;               /* message buffer */
 #endif
 {
-   TRC2(cmPkTknS16)
 
    if (tknS16->pres)
    {
@@ -119,7 +118,6 @@ TknBStr32 *tknStr;             /* token string */
 Buffer    *mBuf;               /* message buffer */
 #endif
 {
-   TRC2(cmPkTknBStr32)
 
    CMPKTKNBSTR(tknStr, mBuf);
 
@@ -153,7 +151,6 @@ TknStr8 *tknStr;             /* token string */
 Buffer  *mBuf;               /* message buffer */
 #endif
 {
-   TRC2(cmPkTknStr8)
 
    CMPKTKNSTR(tknStr, mBuf);
 
@@ -188,7 +185,6 @@ TknStr16 *tknStr;             /* token string */
 Buffer   *mBuf;               /* message buffer */
 #endif
 {
-   TRC2(cmPkTknStr16)
 
    CMPKTKNSTR(tknStr, mBuf);
 
@@ -225,7 +221,6 @@ Buffer     *mBuf;               /* message buffer */
 {
    U16 ndx;
 
-   TRC2(cmPkTknStrOSXL)
 
    if(tknStr->pres)
    {
@@ -275,7 +270,6 @@ Buffer     *mBuf;               /* message buffer */
    U16 ndx;
    U16 len;
 
-   TRC2(cmPkTknStrBSXL)
 
    if(tknStr->pres)
    {
@@ -328,7 +322,6 @@ Buffer     *mBuf;               /* message buffer */
 {
    U8 ndx;
 
-   TRC2(cmPkTknStrBMP4)
 
    if(tknStr->pres)
    {
@@ -377,7 +370,6 @@ Buffer      *mBuf;               /* message buffer */
 {
    U16 ndx;
 
-   TRC2(cmPkTknStrBMPXL)
 
    if(tknStr->pres)
    {
@@ -424,7 +416,6 @@ Buffer     *mBuf;               /* message buffer */
 {
    U8 ndx;
 
-   TRC2(cmPkTknStrUNI4)
 
    if(tknStr->pres)
    {
@@ -473,7 +464,6 @@ Buffer      *mBuf;               /* message buffer */
 {
    U16 ndx;
 
-   TRC2(cmPkTknStrUNIXL)
 
    if(tknStr->pres)
    {
@@ -521,7 +511,6 @@ TknS16 *tknS16;             /* token S16 */
 Buffer *mBuf;               /* message buffer */
 #endif
 {
-   TRC2(cmUnpkTknS16)
 
    /* Token Header */
    CMCHKUNPK(oduPackUInt8, &tknS16->pres, mBuf);
@@ -562,7 +551,6 @@ TknBStr32 *tknStr;             /* token string */
 Buffer    *mBuf;               /* message buffer */
 #endif
 {
-   TRC2(cmUnpkTknBStr32)
 
    CMUNPKTKNBSTR(tknStr, mBuf);
 
@@ -597,7 +585,6 @@ TknStr8 *tknStr;             /* token string */
 Buffer  *mBuf;               /* message buffer */
 #endif
 {
-   TRC2(cmUnpkTknStr8)
 
    CMUNPKTKNSTR(tknStr, mBuf);
 
@@ -632,7 +619,6 @@ TknStr16 *tknStr;             /* token string */
 Buffer   *mBuf;               /* message buffer */
 #endif
 {
-   TRC2(cmUnpkTknStr16)
 
    CMUNPKTKNSTR(tknStr, mBuf);
 
@@ -670,8 +656,6 @@ Ptr         ptr;                /* pointer to control memory block */
 #endif
 {
    U16 ndx;
-
-   TRC2(cmUnpkTknStrOSXL)
 
    CMCHKUNPK(oduPackUInt8, &tknStr->pres, mBuf);
 
@@ -728,7 +712,6 @@ Buffer     *mBuf;               /* message buffer */
    U16 ndx;
    U16 len;
 
-   TRC2(cmUnpkTknStrBSXL)
 
    CMCHKUNPK(oduPackUInt8, &tknStr->pres, mBuf);
 
@@ -786,7 +769,6 @@ Buffer     *mBuf;               /* message buffer */
 {
    U8 ndx;
 
-   TRC2(cmUnpkTknStrBMP4)
 
    /* Token Header */
    CMCHKUNPK(oduPackUInt8, &tknStr->pres, mBuf);
@@ -837,7 +819,6 @@ Ptr          ptr;                /* pointer to control memory block */
 {
    U16 ndx;
 
-   TRC2(cmUnpkTknStrBMPXL)
 
    CMCHKUNPK(oduPackUInt8, &tknStr->pres, mBuf);
 
@@ -891,7 +872,6 @@ Buffer     *mBuf;               /* message buffer */
 {
    U8 ndx;
 
-   TRC2(cmUnpkTknStrUNI4)
 
    /* Token Header */
    CMCHKUNPK(oduPackUInt8, &tknStr->pres, mBuf);
@@ -942,7 +922,6 @@ Ptr          ptr;                /* pointer to control memory block */
 {
    U16 ndx;
 
-   TRC2(cmUnpkTknStrUNIXL)
 
    CMCHKUNPK(oduPackUInt8, &tknStr->pres, mBuf);
 

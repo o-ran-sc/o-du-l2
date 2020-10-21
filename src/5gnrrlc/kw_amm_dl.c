@@ -396,8 +396,6 @@ RlcRetx        **retx;
 RlcDlPduInfo   *pduInfo;
 #endif
 {
-   TRC2(rlcAmmDlMoveSduByteSegFrmTxtoRetxBuffer);
-
 
    RLC_ALLOC_WC(gCb,*retx, sizeof(RlcRetx));
 
@@ -479,8 +477,6 @@ KwuDatCfmInfo **datCfm;
    RlcTx    *txBuf=NULLP;
    CmLList *lnk;
    CmLList *nextLnk;
-
-   TRC2(rlcAmmDlHndlStatus4SduByteSegInTxBuf)
 
    txBuf = rlcUtlGetTxBuf(AMDL.txBufLst, nackSnInfo->sn);
    if (txBuf == NULLP)
@@ -569,8 +565,6 @@ PRIVATE Void rlcAmmDlUpdateTxAndReTxBufForNackSn(gCb, rbCb, nackSnInfo, retxNode
 {
    RlcTx    *txBuf;
    RlcRetx  *retx;
-
-   TRC2(rlcAmmDlUpdateTxAndReTxBufForNackSn)
 
    /* Now process the NACK_SN received. Now the NACK_SN is    */
    /* either the first element of RETX or is in TX array      */
@@ -693,8 +687,6 @@ U8            idx;
    RlcRetx   *retx;
    CmLList  *node;
 
-   TRC2(RlcDlAmmGetNackSnInfoFrmNackRangeIdx)
-
    nackSnInfo->isSegment = FALSE;
 
    if((!nackInfo->isSegment) || (!idx && nackSnInfo->nackRange && (!nackInfo->soStart)))
@@ -803,7 +795,6 @@ RlcUdxStaPdu   *pStaPdu;
    RlcKwuSapCb    *rlckwuSap;
    RlcSn       mTxNext;
 
-   TRC2(rlcAmmDlHndlStatusPdu)
    rlcStatusPduCnt++;
 
    rlckwuSap = gCb->u.dlCb->rlcKwuDlSap + RLC_UI_PDCP;
@@ -2313,8 +2304,6 @@ RlcDlRbCb      *rbCb;
 RlcRetx        *retx;
 #endif
 {
-   TRC2(rlcRemRetxPdu)
-
    cmLListDelFrm(&AMDL.retxLst, &retx->lstEnt); 
 
    if( AMDL.retxLst.count == 0)
@@ -2364,7 +2353,6 @@ RlcDlRbCb      *rbCb;
 RlcRetx        *retx;
 #endif
 {
-   TRC2(rlcAmmDlMarkPduForReTx)
    if (AMDL.maxReTxReached == TRUE)
    {
       RETVOID;
@@ -2447,8 +2435,6 @@ KwuDatCfmInfo   **datCfm;
 #endif
 {
    RlcSdu *sdu;
-   
-   TRC2(rlcAmmDlCheckIsSDUDelivered)
    
    sdu = sduMap->sdu;
 
@@ -2533,7 +2519,6 @@ RlcSn            sn;
 KwuDatCfmInfo   **datCfm;
 #endif
 {
-   TRC2(rlcAmmDlProcessSuccessfulTxPdu)
    CmLList *pduNode;
   
    RlcTx *txBuf = rlcUtlGetTxBuf(AMDL.txBufLst, sn);
@@ -2591,9 +2576,6 @@ RlcRetx     *retx;
 {
    KwuStaIndInfo   *staInd;
    RlcKwuSapCb      *rlckwuSap;
-
-   TRC2(rlcAmmSndStaInd);
-
 
    /* Sap control block */
    rlckwuSap = gCb->u.dlCb->rlcKwuDlSap + RLC_UI_PDCP;
@@ -2812,7 +2794,6 @@ RlcDlRbCb   *rbCb;
 U32        sduId; 
 #endif
 {
-   TRC2(rlcAmmDiscSdu);
    return (RFAILED);
 } 
 
@@ -2844,9 +2825,7 @@ RlcDlRbCb   *rbCb;
    RlcAmDl        *amDl = &(rbCb->m.amDl);
    RlcSn          sn;
    RlcTx          *txBuf;
-   TRC2(rlcAmmPollRetxTmrExp);
 
-   
    /* kw003.201 - Correcting the logic for determmining whether to do   */
    /*             any transmission of PDU. As per the spec section      */
    /*             5.2.2.3, if there is any to transmit or retransmit,   */
@@ -2936,8 +2915,6 @@ KwuDatCfmInfo   **datCfm;
    RlcRetx  *retx;
    RlcTx    *txBuf;
 
-   TRC2(rlcAmmDlUpdateTxAndReTxBufForAckSn);
-
    /* Remove pdus/segs from retxLst */ 
    while (retxNode)
    {
@@ -3018,8 +2995,6 @@ KwuDatCfmInfo   **datCfm;
    RlcSn    mSn;
    RlcRetx  *retx;
    RlcTx    *txBuf=NULLP;
-
-   TRC2(rlcAmmDlUpdTxAndReTxBufForLessThanNackSn);
 
    while (*retxNode)
    {
@@ -3143,8 +3118,6 @@ RlcRetx   *retx;
    RlcSn      tMSn;
    RlcSn      retxMSn;
    
-   TRC2(rlcAmmAddPduToRetxLst);
- 
    node = amDl->retxLst.last;
    MODAMT(retx->amHdr.sn, retxMSn, amDl->txNextAck,amDl->snModMask);
    while(node != NULLP)
@@ -3214,7 +3187,6 @@ RlcSn          sn;
 #endif
 {
    RlcTx* txBuf = rlcUtlGetTxBuf(amDl->txBufLst, sn);
-   TRC2(rlcAmmDlMoveFrmTxtoRetxBuffer);
 
    if (txBuf == NULLP)
    {
@@ -3625,8 +3597,6 @@ RlcExtHdr   *hdrInfo;
    /* U8   rLen1 = 0; */
    U16  tVal;
 
-   TRC2(rlcAmmExtractElmnt);
-
    hdr = hdrInfo->hdr;
 
    if (pLen == 0)
@@ -3711,9 +3681,6 @@ U8         *fByte;
    U32            snRange;
    U32            resrvdBitsAckSn;
    U32            resrvdBitsNackSn;
-
-
-   TRC2(rgAmmUlHndlStatusPdu)
 
    RLCDBGP_BRIEF(gCb, "rgAmmUlHndlStatusPdu(rbCb, cntrlPdu, fByte) \n");
 

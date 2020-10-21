@@ -116,8 +116,6 @@ CrgCfgReqInfo *crgCfgReq;
    RgErrInfo       errInfo;
    Bool            isCfmRqrd = TRUE;
 
-   TRC2(rgCOMCfgReq);
-
    /* Process Config/Reconfig/Delete request from RRC */
    switch (crgCfgReq->action)
    {
@@ -218,8 +216,6 @@ CrgCfgTransId   transId;
    S16       ret;
    RgCellCb  *cell = NULLP;
    RgUeCb    *ue   = NULLP;
-
-   TRC2(rgCOMHndlCfgReq);
 
    errInfo->errType = RGERR_COM_CFG_REQ;
 
@@ -323,8 +319,6 @@ Bool            *isCfmRqrd;
    RgUeCb    *ue   = NULLP;
    RgUlLcCb  *ulLc = NULLP;
 
-   TRC2(rgCOMHndlRecfgReq);
-
    errInfo->errType = RGERR_COM_RECFG_REQ;
    
    /* Validate and process the re-configuration request */ 
@@ -398,7 +392,7 @@ Bool            *isCfmRqrd;
 
 #ifdef LTE_ADV
          /*ERAB- multicell fix*/
-         cmMemcpy( (U8*)&(ue->cfgCfmInfo.transId), (U8*)&transId,
+         memcpy( (U8*)&(ue->cfgCfmInfo.transId), (U8*)&transId,
                sizeof(CrgCfgTransId));
 #endif
          ret = rgCFGCrgLcRecfg(inst,cell, ue, ulLc,
@@ -453,8 +447,6 @@ CrgRst     *reset;
 RgErrInfo  *errInfo;
 #endif
 {
-   TRC2(rgCOMHndlResetReq);
-
    /* Fix : ccpu00126865: ignore CRG reset. Let SCH trigger it. */
    
    errInfo->errCause = RGERR_NONE;
@@ -507,8 +499,6 @@ CrgCfgTransId transId;
    S16            ret;
    VOLATILE U32   startTime=0;
 
-   TRC2(rgCOMHndlDelReq);
-   
    errInfo->errType = RGERR_COM_DEL_REQ;
    
    /* Process the delete request */ 
@@ -588,7 +578,6 @@ RgPrgUeSCellCfgInfo *ueSCellCb;
    S16              ret;
    Pst              cfmPst;    
 
-   TRC2(RgPrgPMacSMacUeSCellCfgReq);
    
    RGDBGPRM(inst,(rgPBuf(inst),
             "APPLYING CRG UE SCELL CONFIG: cellId %d ueId %d\n",
@@ -667,8 +656,6 @@ RgPrgCfgCfmInfo *cfgCfm;
    Inst      inst = pst->dstInst;
    RgCellCb *cell;
    RgUeCb   *ue;
-   TRC2(RgPrgSMacPMacCfgCfm);
-
 
    RG_IS_INST_VALID(inst);
 
@@ -767,8 +754,6 @@ RgPrgUeSCellDelInfo *ueSCellDelInfo;
    Inst        inst     = pst->dstInst - RG_INST_START;
    RgCellCb    *sCell   = rgCb[inst].cell;
    RgUeCb      *sCellUe = NULLP;
-
-   TRC2(RgPrgPMacSMacUeSCellDelReq)
 
    /* Checking for cell Cb because in case of shutdownReq it is possible that
     * cell is already deleted for this cell*/

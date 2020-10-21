@@ -83,8 +83,6 @@ S16 rlcDbmUlInit(gCb)
 RlcCb *gCb;
 #endif
 {
-   TRC3(rlcUlDbmInit)
-
    /* Initialize ueCb Hash List */
    if(ROK != cmHashListInit(&(gCb->u.ulCb->ueLstCp), 
                             (U16) RLC_UE_LIST_BUCKET_SIZE,
@@ -152,8 +150,6 @@ Void rlcDbmUlDeInit(gCb)
 RlcCb *gCb;
 #endif
 {
-   TRC3(rlcDbmUlDeInit);
-
 
    /* De Initialize ueCb Hash List */
    cmHashListDeinit(&(gCb->u.ulCb->ueLstCp));
@@ -200,8 +196,6 @@ CmLteRlcId   *rlcId;
 RlcUlRbCb     **rbCb;   
 #endif
 {
-   TRC3(rlcDbmFetchUlRbCbByRbId)
-
    *rbCb= NULLP;
 
    /* Check for UE CB or CELL CB */
@@ -341,9 +335,6 @@ U8         numRbCb;
 {
    U32 idx; /* Index */
 
-   TRC3(rlcDbmDelAllUlRb)
-
-
    for (idx = 0; idx < numRbCb; idx++)
    {
       if (rbCbLst[idx] != NULLP)
@@ -399,8 +390,6 @@ CmLteCellId   cellId;
 RlcUlUeCb      *ueCb;
 #endif
 {
-   TRC3(rlcDbmAddUlUeCb)
-
 
    ueCb->ueId = ueId;
    ueCb->cellId = cellId;
@@ -449,8 +438,6 @@ RlcCb        *gCb;
 RlcUlCfgTmpData   *cfg;
 #endif
 {
-   TRC3(rlcDbmAddUlTransaction)
-
 #ifndef ALIGN_64BIT
    RLOG1(L_DEBUG, "(transId(%ld)", cfg->transId);
 #else
@@ -494,7 +481,6 @@ U32              transId;
 RlcUlCfgTmpData   **cfg;
 #endif
 {
-   TRC3(rlcDbmFindUlTransaction)
 
    if(ROK != cmHashListFind(&(gCb->u.ulCb->transIdLstCp),
                             (U8 *) &transId, 
@@ -536,8 +522,6 @@ RlcCb             *gCb;
 RlcUlCfgTmpData   *cfg;     
 #endif
 {
-   TRC3(rlcDbmDelUlTransaction)
-
 
    if(cmHashListDelete(&(gCb->u.ulCb->transIdLstCp),(PTR) (cfg)) != ROK) 
    {
@@ -573,8 +557,6 @@ RlcCb *gCb;
 #endif
 {
    RlcUlCfgTmpData *cfg = NULL;
-
-   TRC3(kwDbmDelAllUlTransctions)
 
    /* Until no more ueCb is ueLstCp hash list get and delete ueCb */
    while (ROK == cmHashListGetNext(&(gCb->u.ulCb->transIdLstCp), 
@@ -647,8 +629,6 @@ RlcUlUeCb   *ueCb;
 Bool       abortFlag; 
 #endif
 {
-   TRC3(rlcDbmDelUlUeCb)
-
 
 #if  (!defined(KW_PDCP) || !(defined(PJ_SEC_ASYNC) || defined(PJ_CMP_ASYNC)))
    UNUSED(abortFlag);
@@ -701,9 +681,6 @@ RlcCb *gCb;
 {
    RlcUlUeCb *ueCb = NULLP;  /* UE Control Block */
 
-   TRC3(rlcDbmDelAllUlUe)
-
-
    /* Until no more ueCb is ueLstCp hash list get and delete ueCb */
    while (ROK == cmHashListGetNext(&(gCb->u.ulCb->ueLstCp), 
                                    (PTR) ueCb, 
@@ -748,10 +725,6 @@ RlcUlCellCb    *cellCb;
 #endif
 {
    RlcUlCellCb *tCellCb; 
-
-   TRC3(rlcDbmAddUlCellCb)
-
-
 
    tCellCb = cellCb;
    tCellCb->cellId = cellId;
@@ -824,8 +797,6 @@ RlcCb         *gCb;
 RlcUlCellCb   *cellCb;     
 #endif
 {
-   TRC3(rlcDbmDelUlCellCb)
-
 
    /* Delete all rbCbs in cellCb */
    rlcDbmDelAllUlRb(gCb,cellCb->rbCb, RLC_MAX_RB_PER_CELL);
@@ -865,9 +836,6 @@ RlcCb *gCb;
 {
    RlcUlCellCb *cellCb = NULLP; /* Cell Control Block */
 
-   TRC3(rlcDbmDelAllUlCell)
-
-
    /* Until no more cellCb is ueLstCp hash list get and delete cellCb */
    while (ROK == cmHashListGetNext(&(gCb->u.ulCb->cellLstCp), 
                                    (PTR) cellCb, 
@@ -902,7 +870,6 @@ Void rlcDbmUlShutdown(gCb)
 RlcCb *gCb;
 #endif
 {
-   TRC3(rlcDbmUlShutdown)
 
    rlcDbmDelAllUlCell(gCb);
 

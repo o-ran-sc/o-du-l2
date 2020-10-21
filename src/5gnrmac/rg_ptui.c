@@ -563,8 +563,6 @@ U8 status;
 #endif
 {
 
-   TRC3(RgUiRgrBndCfm);
-
    return ((*RgUiRgrBndCfmMt[pst->selector])(pst, suId, status));
 
 }
@@ -596,8 +594,6 @@ SuId suId;
 U8 status;
 #endif
 {
-
-   TRC3(RgUiRgmBndCfm);
 
    return ((*RgUiRgmBndCfmMt[pst->selector])(pst, suId, status));
 
@@ -635,8 +631,6 @@ RgrTtiIndInfo *ttiInd;
 #endif
 {
 
-   TRC3(RgUiRgrTtiInd);
-
    return ((*RgUiRgrTtiIndMt[pst->selector])(pst, suId, ttiInd));
 
 }
@@ -672,8 +666,6 @@ U8 status;
 #endif
 {
 
-   TRC3(RgUiRgrCfgCfm);
-
    return ((*RgUiRgrCfgCfmMt[pst->selector])(pst, transId, status));
 
 }
@@ -707,8 +699,6 @@ SuId suId;
 U8 status;
 #endif
 {
-
-   TRC3(RgUiCrgBndCfm);
 
    return ((*RgUiCrgBndCfmMt[pst->selector])(pst, suId, status));
 
@@ -747,8 +737,6 @@ U8 status;
 #endif
 {
 
-   TRC3(RgUiCrgCfgCfm);
-
    return ((*RgUiCrgCfgCfmMt[pst->selector])(pst, suId, transId, status));
 
 }
@@ -782,8 +770,6 @@ SuId suId;
 U8 status;
 #endif
 {
-
-   TRC3(RgUiRguBndCfm);
 
    return ((*RgUiRguBndCfmMt[pst->selector])(pst, suId, status));
 
@@ -823,8 +809,6 @@ RguCDatIndInfo  * datInd;
 {
    macCDatIndSnt++;
 
-   TRC3(RgUiRguCDatInd);
-
    return ((*RgUiRguCDatIndMt[pst->selector])(pst, suId, datInd));
 
 }
@@ -859,8 +843,6 @@ RguDDatIndInfo  * datInd;
 #endif
 {
    macDDatIndSnt++;
-
-   TRC3(RgUiRguDDatInd);
 
 #if defined(MAC_RLC_UL_RBUF) && !defined(SS_RBUF)
    return (RgUiRguDDatIndRbuf(datInd));
@@ -902,8 +884,6 @@ RguCStaIndInfo  * staInd;
 #endif
 {
 
-   TRC3(RgUiRguCStaInd);
-
    return ((*RgUiRguCStaIndMt[pst->selector])(pst, suId, staInd));
 
 }
@@ -941,8 +921,6 @@ RguDStaIndInfo  * staInd;
 #endif
 {
 
-   TRC3(RgUiRguDStaInd);
-
    return ((*RgUiRguDStaIndMt[pst->selector])(pst, suId, staInd));
 
 }
@@ -963,7 +941,6 @@ RguHarqStatusInd *harqStatusInd;
 #endif
 {
 
-   TRC3(RgUiRguHqStaInd);
 #if defined(SPLIT_RLC_DL_TASK) && defined(MAC_RLC_HARQ_STA_RBUF)
    S16 ret=ROK;
    ret = RgUiRguHqStaIndRbuf(pst,suId,harqStatusInd);
@@ -1024,8 +1001,6 @@ U8 status;
 #endif
 {
 
-   TRC3(RgUiRgrSiCfgCfm);
-
    return ((*RgUiRgrSiCfgCfmMt[pst->selector])(pst, suId, transId, status));
 
 }
@@ -1063,8 +1038,6 @@ U8  siId;
 U8 status;
 #endif
 {
-   TRC3(RgUiRgrWarningSiCfgCfm);
-
    return ((*RgUiRgrWarningSiCfgCfmMt[pst->selector])
          (pst, suId, transId, siId, status));
 }
@@ -1103,8 +1076,6 @@ RgrStaIndInfo *staInd;
 #endif
 {
 
-   TRC3(RgUiRgrStaInd);
-
    return ((*RgUiRgrStaIndMt[pst->selector])(pst, suId, staInd));
 
 }
@@ -1139,8 +1110,6 @@ S16 RgUiRgrLoadInfInd(pst, suId, loadInfInd)
 #endif
 {
 
-   TRC3(RgUiRgrLoadInfInd);
-
    return ((*RgUiRgrLoadInfIndMt[pst->selector])(pst, suId, loadInfInd));
 
 }
@@ -1173,8 +1142,6 @@ SuId            suId;
 RgrUeStaIndInfo *ueStaInd;
 #endif
 {
-
-   TRC3(RgUiRgrUeStaInd);
 
    return ((*RgUiRgrUeStaIndMt[pst->selector])(pst, suId, ueStaInd));
 
@@ -1211,8 +1178,6 @@ SuId suId;
 U8 status;
 #endif
 {
-
-   TRC3(PtUiCrgBndCfm);
 
    UNUSED(pst);
    UNUSED(suId);
@@ -1255,8 +1220,6 @@ U8 status;
 #endif
 {
 
-   TRC3(PtUiCrgCfgCfm);
-
    UNUSED(pst);
    UNUSED(suId);
    UNUSED(transId);
@@ -1298,8 +1261,6 @@ U8 status;
 #endif
 {
 
-   TRC3(PtUiRguBndCfm);
-
    UNUSED(pst);
    UNUSED(suId);
    UNUSED(status);
@@ -1339,8 +1300,6 @@ RguCDatIndInfo  * datInd;
 #endif
 {
 
-   TRC3(PtUiRguCDatInd);
-
    UNUSED(pst);
    UNUSED(suId);
    UNUSED(datInd);
@@ -1379,8 +1338,6 @@ SuId suId;
 RguDDatIndInfo  * datInd;
 #endif
 {
-
-   TRC3(PtUiRguDDatInd);
 
    UNUSED(pst);
    UNUSED(suId);
@@ -1423,8 +1380,6 @@ RguCStaIndInfo  * staInd;
 #endif
 {
 
-   TRC3(PtUiRguCStaInd);
-
    UNUSED(pst);
    UNUSED(suId);
    UNUSED(staInd);
@@ -1466,8 +1421,6 @@ RguDStaIndInfo  * staInd;
 #endif
 {
 
-   TRC3(PtUiRguDStaInd);
-
    UNUSED(pst);
    UNUSED(suId);
    UNUSED(staInd);
@@ -1492,8 +1445,6 @@ RguHarqStatusInd *harqStatusInd;
 #endif
 {
 
-   TRC3(PtUiRguHqStaInd);
-
    UNUSED(pst);
    UNUSED(suId);
    UNUSED(harqStatusInd);
@@ -1517,8 +1468,6 @@ SuId suId;
 RguHarqStatusInd *flowCntrlInd;
 #endif
 {
-
-   TRC3(PtUiRguFlowCntrlInd);
 
    UNUSED(pst);
    UNUSED(suId);
@@ -1561,8 +1510,6 @@ U8 status;
 #endif
 {
 
-   TRC3(PtUiRgrBndCfm);
-
    UNUSED(pst);
    UNUSED(suId);
    UNUSED(status);
@@ -1600,8 +1547,6 @@ SuId suId;
 RgrTtiIndInfo *ttiInd;
 #endif
 {
-
-   TRC3(PtUiRgrTtiInd);
 
    UNUSED(pst);
    UNUSED(suId);
@@ -1643,8 +1588,6 @@ RgrCfgTransId transId;
 U8 status;
 #endif
 {
-
-   TRC3(PtUiRgrCfgCfm);
 
    UNUSED(pst);
    UNUSED(suId);
@@ -1688,8 +1631,6 @@ U8 status;
 #endif
 {
 
-   TRC3(PtUiRgrSiCfgCfm);
-
    UNUSED(pst);
    UNUSED(suId);
    UNUSED(transId);
@@ -1732,8 +1673,6 @@ U8  siId;
 U8 status;
 #endif
 {
-   TRC3(PtUiRgrWarningSiCfgCfm);
-
    UNUSED(pst);
    UNUSED(suId);
    UNUSED(transId);
@@ -1776,8 +1715,6 @@ RgrStaIndInfo *staInd;
 #endif
 {
 
-   TRC3(PtUiRgrStaInd);
-
    UNUSED(pst);
    UNUSED(suId);
    UNUSED(staInd);
@@ -1815,8 +1752,6 @@ S16 PtUiRgrLoadInfInd(pst, suId, loadInfInd)
 #endif
 {
 
-   TRC3(PtUiRgrLoadInfInd);
-
    UNUSED(pst);
    UNUSED(suId);
    UNUSED(loadInfInd);
@@ -1853,8 +1788,6 @@ SuId suId;
 RgrUeStaIndInfo *ueStaInd;
 #endif
 {
-
-   TRC3(PtUiRgrUeStaInd);
 
    UNUSED(pst);
    UNUSED(suId);
@@ -1896,8 +1829,6 @@ U8 status;
 #endif
 {
 
-   TRC3(PtUiRgmBndCfm);
-
    UNUSED(pst);
    UNUSED(suId);
    UNUSED(status);
@@ -1934,8 +1865,6 @@ RgmPrbRprtInd *prbRprtInd;
 #endif
 {
 
-   TRC3(PtUiRgmPrbRprtInd);
-
    UNUSED(pst);
    UNUSED(suId);
    UNUSED(prbRprtInd);
@@ -1971,8 +1900,6 @@ SuId suId;
 RgmTransModeInd *transModeInd;
 #endif
 {
-
-   TRC3(PtUiRgmTransModeInd);
 
    UNUSED(pst);
    UNUSED(suId);
@@ -2011,7 +1938,6 @@ RgmPrbRprtInd *prbRprtInd;
 #endif
 
 {
-   TRC2(RgUiRgmSendPrbRprtInd);
    return ((*RgUiRgmSendPrbRprtIndMt[pst->selector])(pst, suId, prbRprtInd));
 }
 
@@ -2043,7 +1969,6 @@ RgmTransModeInd *transModeInd;
 #endif
 
 {
-   TRC2(RgUiRgmChangeTransModeInd);
    return ((*RgUiRgmChangeTransModeIndMt[pst->selector])(pst, suId, transModeInd));
 }
 
@@ -2250,8 +2175,8 @@ RguHarqStatusInd *harqStatusInd;
    }
    else
    {
-      cmMemcpy((U8 *)&(harqStaInd->hqStatusInd), (U8 *)harqStatusInd, sizeof(RguHarqStatusInd));
-      cmMemcpy((U8 *)&(harqStaInd->pst), (U8 *)pst, sizeof(Pst));
+      memcpy((U8 *)&(harqStaInd->hqStatusInd), (U8 *)harqStatusInd, sizeof(RguHarqStatusInd));
+      memcpy((U8 *)&(harqStaInd->pst), (U8 *)pst, sizeof(Pst));
       SRngIncrWIndx(SS_RNG_BUF_MAC_HARQ);
       SsRngInfoTbl[SS_RNG_BUF_MAC_HARQ].pktRate++;
    }

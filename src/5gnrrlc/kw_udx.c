@@ -71,7 +71,6 @@ MsgLen    size;
 {
     MsgLen tmpLen;
 
-    TRC3(cmUnpkUdxStruct)
     return (SCpyMsgFix(srcMBuf,offset,size,dstBuf,&tmpLen));
 
 } /*end of function cmPkUdxBndReq*/
@@ -104,7 +103,6 @@ Buffer *dstMBuf;
 #endif
 {
 
-    TRC3(cmPkUdxStruct)
     return (SAddPstMsgMult(srcBuf,size,dstMBuf));
 
 } /*end of function cmPkUdxBndReq*/
@@ -138,7 +136,6 @@ SpId spId;
     S16 ret1;
     Buffer *mBuf;
     mBuf = NULLP;
-    TRC3(cmPkUdxBndReq)
 
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
@@ -189,7 +186,6 @@ Reason reason;
     S16 ret1;
     Buffer *mBuf;
     mBuf = NULLP;
-    TRC3(cmPkUdxUbndReq)
 
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
@@ -240,7 +236,6 @@ U8 status;
     S16 ret1;
     Buffer *mBuf;
     mBuf = NULLP;
-    TRC3(cmPkUdxBndCfm)
 
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
@@ -293,7 +288,6 @@ RlcCfgInfo        *cfgInfo;
     S16 ret1;
     Buffer *mBuf;
     mBuf = NULLP;
-    TRC3(cmPkUdxCfgReq)
 
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
@@ -363,7 +357,6 @@ RlcCfgCfmInfo     *cfgCfmInfo;
     S16 ret1;
     Buffer *mBuf;
     mBuf = NULLP;
-    TRC3(cmPkUdxCfgCfm)
 
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
@@ -439,7 +432,6 @@ CkwUeInfo         *newUeInfo;
     S16    ret1;
     Buffer *mBuf = NULLP;
 
-    TRC3(cmPkUdxUeIdChgReq)
 
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
@@ -517,7 +509,6 @@ CmStatus          status;
 {
     S16    ret1;
     Buffer *mBuf = NULLP;
-    TRC3(cmPkUdxUeIdChgCfm)
 
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
@@ -573,8 +564,6 @@ RlcUdxBufLst       *pStaPdu;
 {
     S16    ret1;
     Buffer *mBuf = NULLP;
-
-    TRC3(cmPkUdxStaUpdCfm)
 
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
@@ -642,8 +631,6 @@ CmLteRlcId        *rlcId;
     S16    ret1;
     Buffer *mBuf = NULLP;
 
-    TRC3(cmPkUdxStaProhTmrStart)
-
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -709,8 +696,6 @@ RlcUdxStaPdu       *pStaPdu;
 {
     S16    ret1;
     Buffer *mBuf = NULLP;
-
-    TRC3(cmPkUdxStaUpdReq)
 
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
@@ -783,8 +768,6 @@ RlcUdxDlStaPdu     *pStaPdu;
     S16    ret1;
     Buffer *mBuf = NULLP;
 
-    TRC3(cmPkUdxStaUpdReq)
-
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -850,8 +833,6 @@ RlcL2MeasReqEvt    *measReqEvt;
     S16    ret1;
     Buffer *mBuf = NULLP;
 
-    TRC3(cmPkUdxL2MeasReq)
-
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -910,8 +891,6 @@ U8                measType
     S16    ret1;
     Buffer *mBuf = NULLP;
 
-    TRC3(cmPkUdxL2MeasSendReq)
-
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -965,8 +944,6 @@ U8                measType
 {
     S16    ret1;
     Buffer *mBuf = NULLP;
-
-    TRC3(cmPkUdxL2MeasStopReq)
 
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
@@ -1031,8 +1008,6 @@ Buffer         *mBuf;
     SuId       suId = 0;
     SpId       spId = 0;
     
-    TRC3(cmUnpkUdxBndReq)
-
     CMCHKUNPKLOG(SUnpkS16, &suId, mBuf, EUDXXXX, pst);
     CMCHKUNPKLOG(SUnpkS16, &spId, mBuf, EUDXXXX, pst);
     SPutMsg(mBuf);
@@ -1070,8 +1045,6 @@ Buffer         *mBuf;
     SpId       spId = 0;
     Reason     reason = 0;
     
-    TRC3(cmUnpkUdxUbndReq)
-
     CMCHKUNPKLOG(SUnpkS16, &spId, mBuf, EUDXXXX, pst);
     CMCHKUNPKLOG(SUnpkS16, &reason, mBuf, EUDXXXX, pst);
     SPutMsg(mBuf);
@@ -1108,8 +1081,6 @@ Buffer         *mBuf;
     SuId       suId = 0;
     U8         status = 0;
     
-    TRC3(cmUnpkUdxBndCfm)
-
     CMCHKUNPKLOG(SUnpkS16, &suId, mBuf, EUDXXXX, pst);
     CMCHKUNPKLOG(oduPackUInt8, &status, mBuf, EUDXXXX, pst);
     SPutMsg(mBuf);
@@ -1152,8 +1123,6 @@ Buffer            *mBuf;
     RlcCfgInfo     tmpCfgInfo;
     RlcCfgInfo    *cfgInfo; /*stack Variable because it is not freed */
     
-    TRC3(cmUnpkUdxCfgReq)
-
     CMCHKUNPK(SUnpkS16, &(spId), mBuf);
     switch(pst->selector)
     {
@@ -1220,8 +1189,6 @@ Buffer            *mBuf;
     SuId             suId = 0;
     RlcCfgCfmInfo    *cfgCfmInfo = NULLP;
     
-    TRC3(cmUnpkUdxCfgCfm)
-
     CMCHKUNPK(SUnpkS16, &suId, mBuf);
 
     switch(pst->selector)
@@ -1302,9 +1269,6 @@ Buffer            *mBuf;
     CkwUeInfo *ueInfo;
     CkwUeInfo *newUeInfo;
     
-    TRC3(cmUnpkUdxUeIdChgReq)
-
-
     CMCHKUNPK(SUnpkS16, &(spId), mBuf);
     CMCHKUNPKLOG(oduPackUInt32, &transId, mBuf, EUDXXXX, pst);
 
@@ -1371,9 +1335,7 @@ Buffer            *mBuf;
     U32       transId = 0;
     CmStatus  status;
     
-    TRC3(cmUnpkUdxUeIdChgCfm)
-
-    cmMemset((U8 *)&status, (U8)0, (PTR)sizeof(CmStatus));
+    memset((U8 *)&status, (U8)0, (PTR)sizeof(CmStatus));
 
     CMCHKUNPK(SUnpkS16, &suId, mBuf);
     CMCHKUNPKLOG(oduPackUInt32, &transId, mBuf, EUDXXXX, pst);
@@ -1417,8 +1379,6 @@ Buffer            *mBuf;
     CmLteRlcId *rlcId = NULLP;  /* KW_FIX */
     RlcUdxBufLst *pBufLst = NULLP; /* KW_FIX*/
     
-    TRC3(cmUnpkUdxStaUpdCfm)
-
     CMCHKUNPK(SUnpkS16, &suId, mBuf);
     switch (pst->selector)
     {
@@ -1473,8 +1433,6 @@ Buffer            *mBuf;
     S16 ret1;
     CmLteRlcId tmpRlcId;
     
-    TRC3(cmUnpkUdxStaUpdCfm)
-
     CMCHKUNPK(SUnpkS16, &spId, mBuf);
     switch (pst->selector)
     {
@@ -1545,8 +1503,6 @@ Buffer            *mBuf;
     CmLteRlcId *rlcId = NULLP;  /* KW_FIX */
     RlcUdxDlStaPdu *pStaPdu = NULLP; /* KW_FIX */
     
-    TRC3(cmUnpkUdxStaUpdCfm)
-
     CMCHKUNPK(SUnpkS16, &spId, mBuf);
     switch (pst->selector)
     {
@@ -1614,8 +1570,6 @@ Buffer            *mBuf;
     CmLteRlcId tmpRlcId;
     CmLteRlcId *rlcId = NULLP; /* KW_FIX */
     
-    TRC3(cmUnpkUdxStaProhTmrStart)
-
     CMCHKUNPK(SUnpkS16, &spId, mBuf);
     switch (pst->selector)
     {
@@ -1667,8 +1621,6 @@ Buffer           *mBuf;
     RlcL2MeasReqEvt    tmpMeasReqEvt;
     RlcL2MeasReqEvt    *measReqEvt = NULLP;  /* KW_FIX */
 
-    TRC3(cmUnpkUdxL2MeasReq)
-
     switch (pst->selector)
     {
        case UDX_SEL_LC:
@@ -1715,8 +1667,6 @@ Buffer             *mBuf;
 {
     U8     measType = 0;  /* KW_FIX */
 
-    TRC3(cmUnpkUdxL2MeasSendReq)
-
     switch (pst->selector)
     {
        case UDX_SEL_LC:
@@ -1757,8 +1707,6 @@ Buffer               *mBuf;
 #endif
 {
     U8     measType = 0; /* KW_FIX */
-
-    TRC3(cmUnpkUdxL2MeasStopReq)
 
     switch (pst->selector)
     {

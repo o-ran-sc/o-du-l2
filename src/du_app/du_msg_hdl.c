@@ -889,11 +889,10 @@ uint8_t duBindUnbindRlcToMacSap(uint8_t inst, uint8_t action)
 {
    RlcCntrl  *cntrl = NULLP;
    RlcMngmt  rlcMngmt;
-   Pst      pst;
+   Pst       pst;
 
-   TRC2(smBindKwToRguSap)
 
-      DU_SET_ZERO(&rlcMngmt, sizeof(RlcMngmt));
+   DU_SET_ZERO(&rlcMngmt, sizeof(RlcMngmt));
    DU_SET_ZERO(&pst, sizeof(Pst));
 
    if (action == ABND)

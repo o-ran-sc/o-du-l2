@@ -378,7 +378,6 @@ Void rgSCHPwrInit()
 #endif
 {
    U8             idx;
-   TRC2(rgSCHPwrInit);
 
    rgSchPwrCqiToPwrTbl[0] = 0;  /* This should never be used anyway */
    for (idx = 1; idx < RG_SCH_CMN_UL_NUM_CQI; ++idx)
@@ -412,7 +411,6 @@ PRIVATE S8 rgSCHPwrGetCqiPwr(cqi)
 U8                  cqi;
 #endif
 {
-   TRC2(rgSCHPwrGetCqiPwr);
 
    return (rgSchPwrCqiToPwrTbl[cqi]);
 }  /* rgSCHPwrGetCqiPwr */
@@ -446,7 +444,6 @@ U8                  cqi;
 #endif
 {
    RgSchCmnUeUlPwrCb     *uePwr = RG_SCH_PWR_GETUEPWR(ue, cell);
-   TRC2(rgSCHPwrGetCqiPwrForUe);
 
    if (!uePwr->deltaMcsEnbld)
    {
@@ -481,7 +478,6 @@ U32                 eff;
 {
    F64          ks = 1.25; /* or F64 */
    F64          tmp = cmPow(2, ks*eff/1024) - 1;
-   TRC2(rgSCHPwrCalcEfficncyPwr);
 
    if (tmp <= 0)
       return (0);
@@ -526,7 +522,6 @@ RgSchUeCb   *ue;
    RgSchCmnUeUlPwrCb     *uePwr = RG_SCH_PWR_GETUEPWR(ue,cell);
 
    UNUSED(cell);
-   TRC2(rgSCHPwrPuschTpcForUe);
 
    rgSCHPwrOnSchedPuschTpc(cell, ue);
    return (uePwr->puschTpc);
@@ -567,7 +562,6 @@ RgSchUeCb   *ue;
 #endif
 {
    RgSchCmnUeUlPwrCb     *uePwr = RG_SCH_PWR_GETUEPWR(ue, cell);
-   TRC2(rgSCHPwrGetMaxUlRb);
 
    rgSCHPwrPuschCntrl(cell, ue); /* This stores tpc, delta and maxRb
                                   * in uePwr */
@@ -633,8 +627,6 @@ RgSchUeCb   *ue;
    U8                  maxRb;
 
    UNUSED(cell);
-
-   TRC2(rgSCHPwrPuschCntrl);
 
    if (!uePwr->isPhrAvail)
    {
@@ -718,7 +710,6 @@ RgSchUeCb   *ue;
 #endif
 {
    RgSchCmnUeUlPwrCb     *uePwr = RG_SCH_PWR_GETUEPWR(ue, cell);
-   TRC2(rgSCHPwrPucchTpcForUe);
 
    rgSCHPwrPucchCntrl(cell, ue);
    return (uePwr->pucchTpc);
@@ -757,7 +748,6 @@ RgSchCellCb         *cell;
 #endif
 {
    RgSchCmnUeUlPwrCb     *uePwr = RG_SCH_PWR_GETUEPWR(ue, cell);
-   TRC2(rgSCHPwrGetDelta2FrmCqi);
  
    if (uePwr->isPhrAvail)
    {
@@ -811,7 +801,6 @@ U8                 *tpc;
 S8                 *tpcDelta;
 #endif
 {
-   TRC2(rgSCHPwrGetPuschTpc);
 
    delta = RGSCH_MIN(delta, availPwr);
 
@@ -857,8 +846,6 @@ S8                  pwr;
 {
    RgSchCmnUlCell  *cellUl;
 
-   TRC2(rgSCHPwrGetMaxRb);
-   
    cellUl    = RG_SCH_CMN_GET_UL_CELL(cell);
    if (pwr <= 0)
    {
@@ -902,7 +889,6 @@ U8                  numRb;
 #ifndef NO_ERRCLS
    RgSchCmnUlCell  *cellUl;
 #endif
-   TRC2(rgSCHPwrRbToPwr);
 #if (ERRCLASS & ERRCLS_DEBUG)
    cellUl    = RG_SCH_CMN_GET_UL_CELL(cell);
    if (numRb > cellUl->maxUlBwPerUe)
@@ -943,7 +929,6 @@ RgSchUeCb   *ue;
 {
    S8                     delta;
    RgSchCmnUeUlPwrCb     *uePwr = RG_SCH_PWR_GETUEPWR(ue, cell);
-   TRC2(rgSCHPwrPucchCntrl);
 
    rgSCHPwrGetAcc2bitTpc(uePwr->remPucchPwr, &uePwr->pucchTpc, &delta);
    rgSCHPwrOnSchedPucchTpc(cell, ue, delta);
@@ -1014,7 +999,6 @@ RgSchDlSf   *dlSf;
    CmLListCp             *lst;
    CmLList               *lnk;
    RgSchPdcch            *pdcch;
-   TRC2(rgSCHPwrGrpCntrlPucch);
 
    lst = &cellPwr->pucchGrpPwr;
    lnk = lst->first;
@@ -1099,7 +1083,6 @@ RgSchUlSf   *ulSf;
    CmLListCp             *lst;
    CmLList               *lnk;
    RgSchPdcch            *pdcch;
-   TRC2(rgSCHPwrGrpCntrlPusch);
 
    lst = &cellPwr->puschGrpPwr;
    lnk = lst->first;
@@ -1157,7 +1140,6 @@ Bool                 *sched;
    U8                 tpc;
    S8                 delta;
    Bool               atleastOne;
-   TRC2(rgSCHPwrSchedPucchRnti);
 
    pdcch->rnti = cb->tpcRnti;
 
@@ -1209,7 +1191,7 @@ Bool                 *sched;
       pdcch->dci.u.format3Info.isPucch = TRUE;
 
       /* Fill TPC 1 (corresponding to no power change) initially */
-      cmMemset((U8 *)tpcCmds, 1, sizeof(pdcch->dci.u.format3Info.tpcCmd));
+      memset((U8 *)tpcCmds, 1, sizeof(pdcch->dci.u.format3Info.tpcCmd));
 
       for (atleastOne = FALSE, lnk = lst->first; lnk; lnk = lnk->next)
       {
@@ -1288,7 +1270,6 @@ Bool                 *sched;
    U8                 tpc;
    S8                 delta;
    Bool               atleastOne;
-   TRC2(rgSCHPwrSchedPuschRnti);
 
    pdcch->rnti = cb->tpcRnti;
 
@@ -1339,7 +1320,7 @@ Bool                 *sched;
       tpcCmds = pdcch->dci.u.format3Info.tpcCmd;
 
       /* Fill TPC 1 (corresponding to no power change) initially */
-      cmMemset((U8 *)tpcCmds, 1, sizeof(pdcch->dci.u.format3Info.tpcCmd));
+      memset((U8 *)tpcCmds, 1, sizeof(pdcch->dci.u.format3Info.tpcCmd));
 
       for (atleastOne = FALSE, lnk = lst->first; lnk; lnk = lnk->next)
       {
@@ -1409,7 +1390,6 @@ S8                   *delta;
 #endif
 {
    RgSchCmnUeUlPwrCb     *uePwr = RG_SCH_PWR_GETUEPWR(ue, ue->cell);
-   TRC2(rgSCHPwrGetPucchFmt3TpcForUe);
 
    rgSCHPwrGetAcc2bitTpc(uePwr->remPucchPwr, tpc, delta);
    RETVOID;
@@ -1443,7 +1423,6 @@ S8                   *delta;
 #endif
 {
    RgSchCmnUeUlPwrCb     *uePwr = RG_SCH_PWR_GETUEPWR(ue, ue->cell);
-   TRC2(rgSCHPwrGetPucchFmt3aTpcForUe);
 
    rgSCHPwrGetAcc1bitTpc(uePwr->remPucchPwr, tpc, delta);
    RETVOID;
@@ -1478,7 +1457,6 @@ S8                   *delta;
 {
    RgSchCmnUeUlPwrCb     *uePwr = RG_SCH_PWR_GETUEPWR(ue, ue->cell);
    S8                     adj = RGSCH_MIN(uePwr->remPuschPwr, uePwr->phVal);
-   TRC2(rgSCHPwrGetPuschFmt3TpcForUe);
 
    rgSCHPwrGetAcc2bitTpc(adj, tpc, delta);
    RETVOID;
@@ -1512,7 +1490,6 @@ S8                   *delta;
 #endif
 {
    RgSchCmnUeUlPwrCb     *uePwr = RG_SCH_PWR_GETUEPWR(ue, ue->cell);
-   TRC2(rgSCHPwrGetPuschFmt3aTpcForUe);
 
    /* Don't attempt to look at headroom now, power
     * adjustment is small anyway */
@@ -1547,7 +1524,6 @@ U8                   *tpc;
 S8                   *delta;
 #endif
 {
-   TRC2(rgSCHPwrGetAcc1bitTpc);
    /*
     * TPC   delta
     *  0     -1
@@ -1602,7 +1578,6 @@ S8                  *delta;
     */
    U8            tpcs[3]   = {1, 2, 2};
    U8            deltas[3] = {0, 1, 1};
-   TRC2(rgSCHPwrGetAcc2bitTpc);
    if (remPwr <= -1)
    {
       *tpc   = 0;
@@ -1648,7 +1623,6 @@ U8                  *tpc;
 S8                  *delta;
 #endif
 {
-   TRC2(rgSCHPwrGetAbsTpc);
    /*
     * TPC   delta
     *  0     -4
@@ -1719,8 +1693,6 @@ S8                    delta;
 
    UNUSED(cell);
 
-   TRC2(rgSCHPwrOnPucchGrpPwrForUe);
-
    uePwr->remPucchPwr -= delta;
 
    /* UE was already scheduled for PUCCH group power
@@ -1782,7 +1754,6 @@ S8                    delta;
    Bool                   rmvUe = FALSE;
 
    UNUSED(cell);
-   TRC2(rgSCHPwrOnPuschGrpPwrForUe);
 
    uePwr->delta = delta;
    uePwr->remPuschPwr -= delta;
@@ -1843,8 +1814,6 @@ RgSchDlSf            *sf;
 {
    RgSchDlHqEnt          *hqEnt = RG_SCH_CMN_GET_UE_HQE(ue, cell);
    RgSchDlHqProcCb      *proc    = rgSCHDhmLastSchedHqProc(hqEnt);
-
-   TRC2(rgSCHPwrIsDlUeSched);
 
    if (proc == NULLP)
    {
@@ -1910,8 +1879,6 @@ RgSchUlSf            *sf;
 {
    RgSchCmnUlCell      *cmnCell = RG_SCH_CMN_GET_UL_CELL(cell);
    RgSchUlHqProcCb     *proc = rgSCHUhmGetUlHqProc(cell, ue, cmnCell->schdHqProcIdx);
-
-   TRC2(rgSCHPwrIsUlUeSched);
 
    UNUSED(sf);
 
@@ -1984,7 +1951,6 @@ S8          pwrDelta;
    RgSchCmnUeUlPwrCb     *uePwr = RG_SCH_PWR_GETUEPWR(ue, cell);
    RgSchCmnTpcRntiCb     *cb;
    Bool                   toAdd;
-   TRC2(rgSCHPwrPucchDeltaInd);
 
    uePwr->remPucchPwr = pwrDelta;
    
@@ -2053,7 +2019,6 @@ S8                     delta;
     * improved its remPwr as part of power control. */
    RgSchCmnUeUlPwrCb     *uePwr = RG_SCH_PWR_GETUEPWR(ue, cell);
    Bool                   rmvUe = FALSE;
-   TRC2(rgSCHPwrOnSchedPucchTpc);
 
    uePwr->remPucchPwr -= delta;
 
@@ -2112,7 +2077,6 @@ RgSchUeCb             *ue;
 {
    RgSchCmnUeUlPwrCb     *uePwr = RG_SCH_PWR_GETUEPWR(ue, cell);
    Bool                   rmvUe = FALSE;
-   TRC2(rgSCHPwrOnSchedPuschTpc);
 
    /* Don't do anything for the case of absolute TPC commands */
    if (!uePwr->isAccumulated)
@@ -2179,8 +2143,6 @@ RgSchCmnAllocRecord   *allocInfo;
    U8 idx;
    RgInfExtPhrSCellInfo  *servCellPhr;
    S8                     pCMax;
-
-   TRC2(rgSCHPwrUpdExtPhr);
 
    for (idx = 0; idx < extPhr->numServCells; idx++)
    {
@@ -2260,8 +2222,6 @@ S8                     maxUePwr;
    U8                     effPwr;
    RgSchCmnUlCell *cellUl = RG_SCH_CMN_GET_UL_CELL(cell);
 
-   TRC2(rgSCHPwrUpdPhr);
-
    uePwr->phVal = rgSCHPwrGetPhValFromPhr(phr);
   
    if (maxUePwr == RG_SCH_CMN_PWR_USE_CFG_MAX_PWR)
@@ -2332,7 +2292,6 @@ RgSchUeCb             *ue;
 #ifdef TFU_UPGRADE 
    S32  tmp;
 #endif
-   TRC2(rgSCHPwrUlCqiInd);
 
    /*
     * For absolute power cmd case, we could look at the time
@@ -2412,7 +2371,6 @@ U8                     numRb;
 {
    RgSchCmnUeUlPwrCb     *uePwr   = RG_SCH_PWR_GETUEPWR(ue, cell);
    UNUSED(cell);
-   TRC2(rgSCHPwrRecordRbAlloc);
    RETVOID; 
 
    if (uePwr->isPhrAvail)
@@ -2467,7 +2425,6 @@ RgrCellCfg           *cfg;
    CmLteRnti              startRnti;
    U16                    size;
    Bool                   isFmt3a;
-   TRC2(rgSCHPwrCellCfg);
 
    /* Right now, all UEs have fixed maximum power capability. So
     * we store cell wide pMax as minimum of configured pMax and
@@ -2556,7 +2513,6 @@ RgrCellRecfg         *recfg;
 {
    UNUSED(cell);
    UNUSED(recfg);
-   TRC2(rgSCHPwrCellRecfg);
 
    /* Not doing anything for power reconfig, so such structure
     * in RGR */
@@ -2587,7 +2543,6 @@ RgSchCellCb *cell;
 #endif
 {
    UNUSED(cell);
-   TRC2(rgSCHPwrCellDel);
 
    /* There is no allocated memory, so do nothing */
    RETVOID;
@@ -2630,7 +2585,6 @@ RgrUeSecCellCfg  *sCellInfoCfg;
 
    RgSchCmnUlCell *cellUl      = RG_SCH_CMN_GET_UL_CELL(cell);
 
-   TRC2(rgSCHPwrUeSCellCfg);
 
    uePwr->maxUePwr = cellPwr->pMax;
    uePwr->trgCqi   = cellPwr->trgUlCqi; /* Overriding with UE's happens later */
@@ -2718,8 +2672,6 @@ RgrUeCfg    *cfg;
 
    RgSchCmnUlCell *cellUl      = RG_SCH_CMN_GET_UL_CELL(cell);
 
-   TRC2(rgSCHPwrUeCfg);
-
    uePwr->maxUePwr = cellPwr->pMax;
    uePwr->trgCqi   = cellPwr->trgUlCqi; /* Overriding with UE's happens later */
    uePwr->numRb    = 1;
@@ -2778,7 +2730,6 @@ RgrUeRecfg  *recfg;
    S16                    ret;
    RgSchCmnUeUlPwrCb     *uePwr       = RG_SCH_PWR_GETUEPWR(ue, cell);
    RgrUeUlPwrCfg         *pwrCfg = &recfg->ueUlPwrRecfg;
-   TRC2(rgSCHPwrUeRecfg);
 
    if (pwrCfg->p0UePucch != uePwr->p0UePucch)
    {
@@ -2829,7 +2780,6 @@ RgrUeUlPwrCfg        *pwrCfg;
    RgSchCmnTpcRntiCb     *puschRntiCb = NULLP;
    U8                     pucchIdx    = 0;
    U8                     puschIdx    = 0;
-   TRC2(rgSCHPwrApplyUePwrCfg);
 
    /* Validate Pucch group power control config */
    if (pwrCfg->uePucchPwr.pres)
@@ -2984,7 +2934,6 @@ RgSchUeCb             *ue;
 #endif
 {
    RgSchCmnUeUlPwrCb     *uePwr = RG_SCH_PWR_GETUEPWR(ue, cell);
-   TRC2(rgSCHPwrUeDel);
 
    if (uePwr->tpcPucchRntiCb)
    {
@@ -3029,7 +2978,6 @@ RgSchCellCb           *cell;
 RgSchUeCb             *ue;
 #endif
 {
-   TRC2(rgSCHPwrUeReset);
 
    rgSCHPwrUeResetPucch(cell, ue);
    rgSCHPwrUeResetPusch(cell, ue);
@@ -3063,7 +3011,6 @@ RgSchUeCb            *ue;
 #endif
 {
    RgSchCmnUeUlPwrCb     *uePwr       = RG_SCH_PWR_GETUEPWR(ue, cell);
-   TRC2(rgSCHPwrUeResetPucch);
 
    uePwr->pucchTpc    = 1;
    uePwr->remPucchPwr = 0;
@@ -3104,7 +3051,6 @@ RgSchUeCb            *ue;
 #endif
 {
    RgSchCmnUeUlPwrCb     *uePwr       = RG_SCH_PWR_GETUEPWR(ue, cell);
-   TRC2(rgSCHPwrUeResetPusch);
 
    uePwr->isPhrAvail  = FALSE;
    uePwr->phVal       = 40;
@@ -3148,7 +3094,6 @@ RgSchUeCb            *ue;
    RgSchCmnUeUlPwrCb     *uePwr = RG_SCH_PWR_GETUEPWR(ue, cell);
    RgSchCmnTpcRntiCb     *cb;
    Bool                   toAdd;
-   TRC2(rgSCHPwrOnPuschPwrUpd);
 
    if ((cb = uePwr->tpcPuschRntiCb) == NULLP)
    {
@@ -3210,7 +3155,6 @@ Bool                  isFmt3a;
 #endif
 {
    RgSchCmnUlPwrCb       *cellPwr = RG_SCH_PWR_GETCELLPWR(cell);
-   TRC2(rgSCHPwrAddRntiToPucchRntiLst);
 
    rgSCHPwrInitTpcRntiCb(&cellPwr->tpcPucchRntiLst[cellPwr->tpcPucchRntiCnt++],
        rnti, isFmt3a);
@@ -3248,7 +3192,6 @@ Bool                  isFmt3a;
 #endif
 {
    RgSchCmnUlPwrCb       *cellPwr = RG_SCH_PWR_GETCELLPWR(cell);
-   TRC2(rgSCHPwrAddRntiToPuschRntiLst);
 
    rgSCHPwrInitTpcRntiCb(&cellPwr->tpcPuschRntiLst[cellPwr->tpcPuschRntiCnt++], 
        rnti, isFmt3a);
@@ -3283,9 +3226,8 @@ CmLteRnti             rnti;
 Bool                  isFmt3a;
 #endif
 {
-   TRC2(rgSCHPwrInitTpcRntiCb);
 
-   cmMemset((U8 *)cb, 0, sizeof(*cb));
+   memset((U8 *)cb, 0, sizeof(*cb));
    cb->tpcRnti = rnti;
    cb->isFmt3a = isFmt3a;
    /* Not initialising lists as memset 0 takes care of it */
@@ -3322,7 +3264,6 @@ CmLteRnti   tpcRnti;
 {
    RgSchCmnUlPwrCb       *cellPwr = RG_SCH_PWR_GETCELLPWR(cell);
    U16                    idx;
-   TRC2(rgSCHPwrGetPucchRntiCb);
 
    if (!cellPwr->tpcPucchRntiCnt)
    {
@@ -3367,7 +3308,6 @@ CmLteRnti   tpcRnti;
 {
    RgSchCmnUlPwrCb       *cellPwr = RG_SCH_PWR_GETCELLPWR(cell);
    U16                    idx;
-   TRC2(rgSCHPwrGetPuschRntiCb);
 
    if (!cellPwr->tpcPuschRntiCnt)
    {
@@ -3414,7 +3354,6 @@ RgSchUeCb             *ue;
 {
    RgSchCmnUeUlPwrCb     *uePwr = RG_SCH_PWR_GETUEPWR(ue, ue->cell);
    UNUSED(cell);
-   TRC2(rgSCHPwrAddUeToPucchTpcRntiCb);
 
    cmLListAdd2Tail(&cb->cfgdUes, &uePwr->pucchGrpLnk);
    uePwr->pucchGrpLnk.node = (PTR)ue;
@@ -3450,7 +3389,6 @@ RgSchUeCb             *ue;
 #endif
 {
    RgSchCmnUeUlPwrCb     *uePwr = RG_SCH_PWR_GETUEPWR(ue, ue->cell);
-   TRC2(rgSCHPwrDelUeFrmPucchTpcRntiCb);
 
    rgSCHPwrRmvSchdUeFrmPucchTpcRntiCb(cell, cb, ue);
    cmLListDelFrm(&cb->cfgdUes, &uePwr->pucchGrpLnk);
@@ -3488,7 +3426,6 @@ RgSchUeCb             *ue;
 #endif
 {
    RgSchCmnUeUlPwrCb     *uePwr = RG_SCH_PWR_GETUEPWR(ue, ue->cell);
-   TRC2(rgSCHPwrRmvSchdUeFrmPucchTpcRntiCb);
 
    if (uePwr->schdPucchGrpLnk.node == NULLP)
    {
@@ -3533,7 +3470,6 @@ RgSchUeCb             *ue;
 #endif
 {
    RgSchCmnUeUlPwrCb     *uePwr = RG_SCH_PWR_GETUEPWR(ue, ue->cell);
-   TRC2(rgSCHPwrRmvSchdUeOnlyFrmPucchTpcRntiCb);
 
    if (uePwr->schdPucchGrpLnk.node != NULLP)
    {
@@ -3570,7 +3506,6 @@ RgSchCmnTpcRntiCb     *cb;
 #endif
 {
    RgSchCmnUlPwrCb       *cellPwr = RG_SCH_PWR_GETCELLPWR(cell);
-   TRC2(rgSCHPwrRmvSchdPucchTpcRntiCb);
 
    if (cb->schdLnk.node == NULLP)
    {
@@ -3610,7 +3545,6 @@ RgSchUeCb             *ue;
 #endif
 {
    RgSchCmnUeUlPwrCb     *uePwr = RG_SCH_PWR_GETUEPWR(ue, ue->cell);
-   TRC2(rgSCHPwrAddSchdUeToPucchTpcRntiCb);
 
    if (uePwr->schdPucchGrpLnk.node != NULLP)
    {
@@ -3655,7 +3589,6 @@ RgSchCmnTpcRntiCb     *cb;
 #endif
 {
    RgSchCmnUlPwrCb       *cellPwr = RG_SCH_PWR_GETCELLPWR(cell);
-   TRC2(rgSCHPwrAddSchdPucchTpcRntiCb);
 
    cmLListAdd2Tail(&cellPwr->pucchGrpPwr, &cb->schdLnk);
    cb->schdLnk.node = (PTR)cb;
@@ -3690,7 +3623,6 @@ RgSchUeCb             *ue;
 #endif
 {
    RgSchCmnUeUlPwrCb     *uePwr = RG_SCH_PWR_GETUEPWR(ue, ue->cell);
-   TRC2(rgSCHPwrAddUeToPuschTpcRntiCb);
 
    cmLListAdd2Tail(&cb->cfgdUes, &uePwr->puschGrpLnk);
    uePwr->puschGrpLnk.node = (PTR)ue;
@@ -3726,7 +3658,6 @@ RgSchUeCb             *ue;
 #endif
 {
    RgSchCmnUeUlPwrCb     *uePwr = RG_SCH_PWR_GETUEPWR(ue, ue->cell);
-   TRC2(rgSCHPwrAddSchdUeToPuschTpcRntiCb);
 
    if (uePwr->schdPuschGrpLnk.node != NULLP)
    {
@@ -3773,7 +3704,6 @@ RgSchUeCb             *ue;
 #endif
 {
    RgSchCmnUeUlPwrCb     *uePwr = RG_SCH_PWR_GETUEPWR(ue, ue->cell);
-   TRC2(rgSCHPwrDelUeFrmPuschTpcRntiCb);
 
    rgSCHPwrRmvSchdUeFrmPuschTpcRntiCb(cell, cb, ue);
    cmLListDelFrm(&cb->cfgdUes, &uePwr->puschGrpLnk);
@@ -3810,7 +3740,6 @@ RgSchUeCb             *ue;
 #endif
 {
    RgSchCmnUeUlPwrCb     *uePwr       = RG_SCH_PWR_GETUEPWR(ue, ue->cell);
-   TRC2(rgSCHPwrRmvSchdUeFrmPuschTpcRntiCb);
 
    if (uePwr->schdPuschGrpLnk.node == NULLP)
    {
@@ -3855,7 +3784,6 @@ RgSchUeCb             *ue;
 #endif
 {
    RgSchCmnUeUlPwrCb     *uePwr = RG_SCH_PWR_GETUEPWR(ue, ue->cell);
-   TRC2(rgSCHPwrRmvSchdUeOnlyFrmPuschTpcRntiCb);
 
    if (uePwr->schdPuschGrpLnk.node != NULLP)
    {
@@ -3892,7 +3820,6 @@ RgSchCmnTpcRntiCb     *cb;
 #endif
 {
    RgSchCmnUlPwrCb       *cellPwr = RG_SCH_PWR_GETCELLPWR(cell);
-   TRC2(rgSCHPwrAddSchdPuschTpcRntiCb);
 
    cmLListAdd2Tail(&cellPwr->puschGrpPwr, &cb->schdLnk);
    cb->schdLnk.node = (PTR)cb;
@@ -3926,7 +3853,6 @@ RgSchCmnTpcRntiCb     *cb;
 #endif
 {
    RgSchCmnUlPwrCb       *cellPwr = RG_SCH_PWR_GETCELLPWR(cell);
-   TRC2(rgSCHPwrRmvSchdPuschTpcRntiCb);
 
    if (cb->schdLnk.node == NULLP)
    {
@@ -3964,7 +3890,6 @@ RgSchCmnTpcRntiCb     *cb;
 U8                     idx;
 #endif
 {
-   TRC2(rgSCHPwrChkPucchTpcRntiIdx);
 
    if (rgSCHPwrChkTpcRntiIdx(cb, idx) != ROK)
    {
@@ -4004,7 +3929,6 @@ RgSchCmnTpcRntiCb     *cb;
 U8                     idx;
 #endif
 {
-   TRC2(rgSCHPwrChkPuschTpcRntiIdx);
 
    if (rgSCHPwrChkTpcRntiIdx(cb, idx) != ROK)
    {
@@ -4043,7 +3967,6 @@ U8                     idx;
 #endif
 {
    CmLList           *lnk;
-   TRC2(rgSCHPwrChkUniqPucchTpcRntiIdx);
 
    for (lnk = cb->cfgdUes.first; lnk; lnk = lnk->next)
    {
@@ -4083,7 +4006,6 @@ U8                     idx;
 #endif
 {
    CmLList           *lnk;
-   TRC2(rgSCHPwrChkUniqPuschTpcRntiIdx);
 
    for (lnk = cb->cfgdUes.first; lnk; lnk = lnk->next)
    {
@@ -4122,8 +4044,6 @@ RgSchCmnTpcRntiCb     *cb;
 U8                     idx;
 #endif
 {
-   TRC2(rgSCHPwrChkTpcRntiIdx);
-
    if (cb->isFmt3a)
    {
       if (idx >= TFU_MAX_1BIT_TPC)
@@ -4167,7 +4087,6 @@ PRIVATE S8 rgSCHPwrGetPCMaxValFromPCMax(pCMax)
 U8                    pCMax;
 #endif
 {
-   TRC2(rgSCHPwrGetPCMaxValFromPCMax);
    return ((pCMax & 63) - 30);
 }
 
@@ -4198,7 +4117,6 @@ PRIVATE S8 rgSCHPwrGetPhValFromPhr(phr)
 U8                    phr;
 #endif
 {
-   TRC2(rgSCHPwrGetPhValFromPhr);
    return ((phr & 63) - 23);
 }
 

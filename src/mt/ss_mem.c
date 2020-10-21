@@ -125,10 +125,6 @@ SRegInfo *regInfo;              /* information about the region */
 {
    S16 ret;
 
-
-   TRC1(SRegDynRegion);
-
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* validate region ID */
    if (region >= SS_MAX_REGS)
@@ -223,10 +219,6 @@ SRegInfo *regInfo;              /* information about the region */
 {
    S16 ret;
 
-
-   TRC1(SRegRegion);
-
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* validate region ID */
    if (region >= SS_MAX_REGS)
@@ -316,10 +308,6 @@ Region region;                  /* region ID */
 #endif
 {
    S16 ret;
-
-
-   TRC1(SDeregRegion);
-
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* validate region ID */
@@ -454,7 +442,6 @@ Data **ptr;                     /* filled with pointer to block */
 #endif /* SS_HISTOGRAM_SUPPORT */
 
 
-   TRC1(SAlloc);
 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -651,7 +638,6 @@ Size size;                      /* size of block */
 #endif /* SS_HISTOGRAM_SUPPORT */
 
 
-   TRC1(SFree);
 
    /* Get the region which is assgined with this thread. The region was 
     * stored in the osCp and is taken with respect to thread ID. This macro
@@ -831,7 +817,6 @@ Ent      *entId;
 	CmMemEntries        *entry = NULLP;
 	U32                  blkSize = 0;
    
-   TRC1(SRegInfoShow);
 
    memset(tapaTsk, ENTNC, sizeof(tapaTsk));
 

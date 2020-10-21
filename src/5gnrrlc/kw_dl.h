@@ -150,7 +150,7 @@
                if (_rlcCb->u.dlCb->rlcL2Cb.rlcL2EvtCb[idx1].measCb.val.nonIpThMeas.measData[(_rlcRbCb)->qci].totDrbsPerQci == 0) \
                {                                                                                                 \
                   _rlcCb->u.dlCb->rlcL2Cb.rlcL2EvtCb[idx1].measCb.val.nonIpThMeas.qci[(_rlcRbCb)->qci] = 0;                      \
-                  cmMemset((U8 *)&_rlcCb->u.dlCb->rlcL2Cb.rlcL2EvtCb[idx1].measCb.val.nonIpThMeas.measData[(_rlcRbCb)->qci], 0,  \
+                  memset((U8 *)&_rlcCb->u.dlCb->rlcL2Cb.rlcL2EvtCb[idx1].measCb.val.nonIpThMeas.measData[(_rlcRbCb)->qci], 0,  \
                      sizeof(_rlcCb->u.dlCb->rlcL2Cb.rlcL2EvtCb[idx1].measCb.val.nonIpThMeas.measData[(_rlcRbCb)->qci]));            \
                }                                                                                                 \
             }                                                                                                    \

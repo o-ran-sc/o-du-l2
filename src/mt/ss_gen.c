@@ -239,7 +239,6 @@ S16 SInit()
    SsDrvrTskEntry *drvrTsk;
 #endif
 /* ss002.301 : Modications */
-   TRC1(SInit);
 
    osCp.configFilePath = "/mnt/tmp/configFile";
 
@@ -263,7 +262,7 @@ S16 SInit()
 #endif /* SS_MULTIPLE_PROCS */
 
 #ifdef SS_THR_REG_MAP
-   cmMemset(osCp.threadMemoryRegionMap, SS_INVALID_THREAD_REG_MAP, 
+   memset(osCp.threadMemoryRegionMap, SS_INVALID_THREAD_REG_MAP, 
             (sizeof(Region) * SS_MAX_THREAD_REGION_MAP));
    ssRegMainThread();
 #endif
@@ -756,8 +755,6 @@ S16 SDeInit()
   /* ss007.301 */
   U16    regCnt;
 
-   TRC1(SDeInit);
-
 
    ssdDeinitTmr();
    SDestroyLock(&osCp.tmrTblLock);
@@ -819,7 +816,6 @@ Txt *buf;                       /* buffer */
 #endif
 {
    S16 bufSz;
-   TRC1(SWrtLogBuf);
    /* buffer synchronisation*/
    bufSz = cmStrlen((U8 *)buf);
    SLock(&osCp.logger.bufLock);
@@ -836,7 +832,7 @@ Txt *buf;                       /* buffer */
    {
       SFlushBufToLog(osCp.logger.buffer);
       osCp.logger.curBufSiz = 0;
-      cmMemset((U8 *)osCp.logger.buffer, '\0', osCp.logger.maxBufSiz);
+      memset((U8 *)osCp.logger.buffer, '\0', osCp.logger.maxBufSiz);
       sprintf(osCp.logger.buffer, "%s", buf);
       osCp.logger.curBufSiz += bufSz;
    }
@@ -880,7 +876,6 @@ S16 SPrint(buf)
 Txt *buf;                       /* buffer */
 #endif
 {
-   TRC1(SPrint);
 
 /* ss001.301: additions */
    SDisplay(0, buf);
@@ -923,10 +918,6 @@ Reason reason;              /* reason */
    S16 ret;
    DateTime dt;
    Txt errBuf[256];
-
-
-   TRC1(SError);
-
 
    SGetDateTime(&dt);
    sprintf(errBuf, "\n\ndate: %02d/%02d/%04d time: %02d:%02d:%02d\n",
@@ -986,8 +977,6 @@ Txt *errDesc;               /* description of error */
    Txt errBuf[512];
 
 
-   TRC1(SLogError);
-
 /*ss014.301: SSI-4GMX related changes*/
 #ifndef SS_4GMX_LCORE
    SGetDateTime(&dt);
@@ -1035,7 +1024,6 @@ void
 ProcId SFndProcId()
 #endif
 {
-   TRC1(SFndProcId);
 
    return (osCp.procId);
 } /* end of SFndProcId */
@@ -1064,7 +1052,6 @@ Void SSetProcId(procId)
 ProcId procId;
 #endif
 {
-   TRC1(SSetProcId);
 
    osCp.procId = procId;
 
@@ -1101,8 +1088,6 @@ ProcId proc;
 {
    U16 i;
    U16 idx;
-
-   TRC1(SGetProcIdIdx);
 
    idx = SS_HASH_IDX(proc);
 
@@ -1145,7 +1130,6 @@ ProcId proc;
    U16 i;
    U16 idx;
 
-   TRC1(SInsProcId);
 
    idx = SS_HASH_IDX(proc);
 
@@ -1196,7 +1180,6 @@ ProcId proc;
    U16 i;
    U16 idx;
 
-   TRC1(SRemProcId);
 
    idx = SS_HASH_IDX(proc);
 
@@ -1245,7 +1228,6 @@ PRIVATE S16 SLockOsCp(Void)
 {
    S16 ret;
 
-   TRC1(SLockOsCp);
 
    ret = SLock(&osCp.sTskTblLock);
    if (ret != ROK)
@@ -1303,7 +1285,6 @@ Void
 PRIVATE S16 SULockOsCp(Void)
 #endif
 {
-   TRC1(SULockOsCp);
 
    /* unlock the table */
    SS_RELEASE_ALL_SEMA(&osCp.tTskTblSem);
@@ -1351,7 +1332,6 @@ ProcId *pIdLst;
    U16 i;
    S16 ret;
 
-   TRC1(SAddProcIdLst);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* range check */
@@ -1446,7 +1426,6 @@ ProcId *pIdLst;
 {
    U16 i;
 
-   TRC1(SRemProcIdLst);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* range check */
@@ -1512,7 +1491,6 @@ ProcId *pIdLst;
    U16 i;
    U16 count = 0;
 
-   TRC1(SGetProcIdLst);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if ((numPIds == NULLP) || (pIdLst == NULLP))
@@ -1576,7 +1554,6 @@ Void **xxCb;
    U16 procIdIdx;
    SsIdx idx;
 
-   TRC1(SGetXxCb);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if ((proc == SS_INV_PROCID) || (ent >= SS_MAX_ENT) ||  (inst >= SS_MAX_INST))
@@ -1806,7 +1783,6 @@ S16 SFillEntIds(Void)
                         };
 
    /*ss013.301 :Adding  TRC MACRO*/
-   TRC2(SFillEntIds)
             memcpy((U8*)osCp.entId, (U8*)entInfo, sizeof(entInfo));
 
    return ROK;
@@ -1850,7 +1826,6 @@ U8       *fileName;
 	U8   firstIdx = 0;
 	U8   secondIdx = 0;
 
-   TRC1(SGetEntInd);
 
    /* ss002.301 Additions */
 	if ((strippedName = strrchr((const char *)fileName, '/')))
@@ -1949,7 +1924,6 @@ U8         lockType;
 {
    S16    retVal = ROK;
 
-  TRC1(SLockNew);
 
   if((retVal = ssdLockNew(lockId, lockType)) != ROK) 
   {
@@ -1986,7 +1960,6 @@ U8         lockType;
 {
    S16    retVal = ROK;
 
-  TRC1(SInitLockNew);
 
   if((retVal = ssdInitLockNew(lockId, lockType)) != ROK) 
   {
@@ -2023,7 +1996,6 @@ U8         lockType;
 {
    S16    retVal = ROK;
 
-  TRC1(SUnlockNew);
 
   if((retVal = ssdUnlockNew(lockId, lockType)) != ROK) 
   {
@@ -2060,7 +2032,6 @@ U8         lockType;
 {
    S16    retVal = ROK;
 
-  TRC1(SDestroyLockNew);
 
   if((retVal = ssdDestroyLockNew(lockId, lockType)) != ROK) 
   {

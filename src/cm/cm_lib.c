@@ -211,7 +211,6 @@ PTR          len;
 #endif
 {
    /*cm_lib_c_001.main_14 : Fix for TRACE5 feature crash due to missing TRC MACRO*/
-   TRC2(cmMemcpy)
 
 #ifdef MS_MBUF_CORRUPTION /* checking for valid memory address */
 if ((tgt > startPtr128) && (tgt < (startPtr128+regMemSize)))
@@ -277,7 +276,6 @@ PTR             len;
 #endif
 {
    /*cm_lib_c_001.main_14 : Fix for TRACE5 feature crash due to missing TRC MACRO*/
-   TRC2(cmMemcmp)
 #if MEMCMP_AVAIL /* memcmp is available */
    return ((S16) memcmp((CONSTANT Void *)s1, (CONSTANT Void *)s2, (size_t)len));
 #else  /* MEMCMP_AVAIL: memcmp is not available */
@@ -326,7 +324,6 @@ PTR          len;
 #endif
 {
    /*cm_lib_c_001.main_14 : Fix for TRACE5 feature crash due to missing TRC MACRO*/
-   TRC2(cmMemset)
 #if MS_MBUF_CORRUPTION /* checking for valid memory address */
 if ((str > startPtr128) && (str < (startPtr128+regMemSize)))
 {
@@ -403,7 +400,6 @@ CONSTANT U8 *s2;
 #endif
 {
    /*cm_lib_c_001.main_14 : Fix for TRACE5 feature crash due to missing TRC MACRO*/
-   TRC2(cmStrcmp)
 #if (STRCMP_AVAIL)
    return (strcmp((CONSTANT S8 *)s1, (CONSTANT S8 *)s2));
 #else   /* STRCMP_AVAIL */
@@ -470,7 +466,6 @@ MsgLen       len;
 #endif
 {
    /*cm_lib_c_001.main_14 : Fix for TRACE5 feature crash due to missing TRC MACRO*/
-   TRC2(cmStrncmp)
 #if (STRNCMP_AVAIL)
    return (strncmp((CONSTANT S8 *)s1, (CONSTANT S8 *)s2, (size_t) len));
 #else   /* STRNCMP_AVAIL */
@@ -523,13 +518,11 @@ CONSTANT U8 *s;
 {
 #if (STRLEN_AVAIL)
    /*cm_lib_c_001.main_15 : Fix for warning due to mixed declation*/
-   TRC2(cmStrlen)
    return ((MsgLen)strlen((CONSTANT S8 *)s));
 #else   /* STRLEN_AVAIL */
    MsgLen i;
   
    /*cm_lib_c_001.main_15 : Fix for warning due to mixed declation*/
-   TRC2(cmStrlen)
 
    for (i = 0; *s; i++, s++);
    return (i);

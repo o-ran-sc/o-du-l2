@@ -183,7 +183,6 @@ PAIFS16 initFnct;           /* initialization function */
    S16         ret;     /* return value */
    SsTTskEntry *tTsk;
 
-   TRC1(SRegInit);
 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -368,7 +367,6 @@ ActvTsk actvTsk;               /* activate task function */
    /* ss021.103 - Addition for pointer */
    SsTTskEntry *tTsk;
 
-   TRC1(SRegActvTsk);
 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -594,7 +592,6 @@ Inst inst;                     /* instance */
    Bool        destroySTsk;
 
 
-   TRC1(SDeregInitTskTmr);
 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -866,7 +863,6 @@ ActvTsk actvTsk;                /* activation function */
    U16 procIdIdx;
 #endif
 
-   TRC1(SRegTTsk);
 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -1173,7 +1169,6 @@ ActvTsk cbTsk;
    U16 procIdIdx;
 #endif /* SS_MULTIPLE_PROCS */
 
-   TRC1(SRegCbTsk);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (ent >= SS_MAX_ENT ||  inst >= SS_MAX_INST)
@@ -1300,7 +1295,6 @@ Inst inst;                      /* instance */
    Buffer *mBuf;
    SsMsgInfo *mInfo;
 
-   TRC1(SDeregTTsk);
 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -1570,7 +1564,6 @@ SSTskId *tskId;                 /* filled in with system task ID */
    SsSTskEntry *sTsk;
 
 
-   TRC1(SCreateSTsk);
 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -1838,7 +1831,6 @@ U16 port
    struct sockaddr_in localAddr={0};
    struct sockaddr_in remoteAddr ={0};
 
-   TRC1(SRegLogCfg);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
 #endif
@@ -1944,7 +1936,7 @@ U16 port
 
 	}
 
-   cmMemset((U8*)osCp.logger.buffer, '\0', sizeof(osCp.logger.buffer));
+   memset((U8*)osCp.logger.buffer, '\0', sizeof(osCp.logger.buffer));
    
    osCp.logger.maxBufSiz = SS_MAX_LOGBUF_SIZE;
    osCp.logger.curBufSiz = 0;
@@ -1994,7 +1986,6 @@ S8 *logBuf
 #endif
    FILE* oldFileP;
    /*ss013.301 :Fix for TRACE5 feature crash due to missing TRC MACRO*/
-   TRC1(SFlushBufToLog)
 
    buffer = logBuf;
 
@@ -2012,7 +2003,7 @@ S8 *logBuf
    osCp.logger.curNumFlush++;
    if(osCp.logger.curNumFlush == osCp.logger.maxNumFlush)
    {
-      cmMemset((U8 *)newFileName,'\0',sizeof(newFileName));
+      memset((U8 *)newFileName,'\0',sizeof(newFileName));
       /*Store the current File*/
       oldFileP = osCp.logger.filep;
       /*Open a new file and use it as a new log file*/
@@ -2056,7 +2047,6 @@ S16 SCleanUp()
 #endif
 {
 
-   TRC1(SCleanUp);
    /*Flush the remaining data in the log file*/
    SLock(&osCp.logger.bufLock);
    if(osCp.logger.started == FALSE)
@@ -2118,7 +2108,6 @@ S16 SDeregLogCfg()
 {
 
 
-   TRC1(SDeregLogCfg);
  
    SCleanUp();   
 
@@ -2214,7 +2203,6 @@ SCpuInfo *cpuInfo;  /* Information about the cores/threads per core */
    U32 coreCount = 0;
 
    /*ss013.301 :Fix for TRACE5 feature crash due to missing TRC MACRO*/
-   TRC1(SRegCpuInfo)
    /* check the number of cores */
    if ( cpuInfo->numCores > SS_MAX_CORES || 
         cpuInfo->threadsPerCore > SS_MAX_THREADS_PER_CORE || 
@@ -2280,7 +2268,6 @@ U32 *coreId;                    /* the core/processor id to which the affinity i
    S16 ret;
 
     /*ss013.301 :Fix for TRACE5 feature crash due to missing TRC MACRO*/
-    TRC1(SGetAffinity)
     /* implementation specific */
     ret = ssdGetAffinity(tskId, coreId);
 
@@ -2329,7 +2316,6 @@ SSTskId *tskAssociatedTskId;    /* filled in with system task ID of the associat
    S16 ret;
   
    /*ss013.301 :Fix for TRACE5 feature crash due to missing TRC MACRO*/
-   TRC1(SSetAffinity)
    /* validate the mode */
    if (mode < SS_AFFINITY_MODE_DEFAULT || 
        mode > SS_AFFINITY_MODE_EXCL)
@@ -2670,7 +2656,6 @@ SSTskId tskId;                  /* system task to be destroyed */
 #endif /* SS_MULTICORE_SUPPORT || SS_AFFINITY_SUPPORT*/
 
 
-   TRC1(SDestroySTsk);
 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -3013,7 +2998,6 @@ SSTskId sTskId;                 /* system task to use */
 #endif
 
 
-   TRC1(SAttachTTsk);
 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -3467,7 +3451,6 @@ Inst inst;                      /* instance ID of the task */
    U16 procIdIdx;
 #endif /* SS_MULTIPLE_PROCS */
 
-   TRC1(SDetachTTsk);
 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -3811,7 +3794,6 @@ Buffer *mBuf;                   /* message to post */
    U32 t = MacGetTick();
 #endif
  
-   TRC1(SPstTsk);
 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -4169,7 +4151,7 @@ Buffer *mBuf;                   /* message to post */
     */
    tTsk = &osCp.tTskTbl[dstIdx];
 
-	cmMemcpy((U8*)&tempPst, (U8*)pst, sizeof(Pst));
+	memcpy((U8*)&tempPst, (U8*)pst, sizeof(Pst));
    if(tTsk->cbTsk != NULLP)
    {
       retValue = tTsk->cbTsk(&tempPst,mBuf);
@@ -4423,7 +4405,6 @@ Ent *ent;                        /* entity */
 
    U32 tskCnt = 0;
 
-   TRC1(SGetTapaTskEntIds);
    /* Get the tapa task entity Ids from the osCp structure */
    for(tskCnt = 0; tskCnt < osCp.numTTsks; tskCnt++)
    {
@@ -4465,7 +4446,6 @@ Ent ent;                        /* entity */
    U32 tskCnt = 0;
    S16 r = 0;
 
-   TRC1(SRegForHstGrm);
 
    SS_ACQUIRE_SEMA(&osCp.tTskTblSem, r);
    if (r != ROK)
@@ -4531,7 +4511,6 @@ Bool  *hstReg;                        /* entity */
    Bool found = FALSE;
    *hstReg = 0;
 
-   TRC1(SGetHstGrmInfo);
    for(tskCnt = 0; tskCnt < osCp.numTTsks; tskCnt++)
    {
       if( *entId == osCp.tTskTbl[tskCnt].ent)
@@ -4591,7 +4570,6 @@ void *data;
    int i = 0;
 
    /*ss013.301 :Fix for TRACE5 feature crash due to missing TRC MACRO*/
-   TRC1(SRegCfgWd)
 
    osCp.wdCp.globWd.timeout = timeout;
    osCp.wdCp.globWd.callback = callback;
@@ -4638,7 +4616,6 @@ void;
    int i = 0;
 
    /*ss013.301 :Fix for TRACE5 feature crash due to missing TRC MACRO*/
-   TRC1(SDeregCfgWd)
 
    osCp.wdCp.globWd.timeout = 0;
    osCp.wdCp.globWd.callback = 0;
@@ -4673,7 +4650,6 @@ S16 SStartHrtBt(timeInterval)
 U8 timeInterval;
 #endif
 {
-   TRC1(SStartHrtBt);
 
    ssdStartWatchDgTmr(NULLP, SS_TMR_HRTBT, timeInterval);
    ssdSndHrtBtMsg(TRUE, SS_WD_HB_REQ);
@@ -4691,7 +4667,6 @@ S16 SStopHrtBt()
 void
 #endif
 {
-   TRC1(SStopHrtBt);
 
    osCp.wdCp.globWd.watchdogStop = 1;
 
@@ -4716,7 +4691,6 @@ Buffer *mBuf;               /* message buffer */
    Txt prntBuf[PRNTSZE];
 #endif /* DEBUGP */
 
-   TRC3(watchDgActvTsk)
 #ifdef DEBUGP
    SGetDateTime(&dt);
    sprintf(prntBuf,"watchDgActvTsk: Time: %02d:%02d:%02d\n",dt.hour,dt.min, dt.sec
@@ -4753,7 +4727,6 @@ Buffer *mBuf;               /* message buffer */
    int           socklen = sizeof(struct sockaddr);
 #endif
 
-   TRC3(watchDgActvTsk)
 
 #ifdef DEBUGP
    SGetDateTime(&dt);
@@ -4885,7 +4858,6 @@ U64 *totTime;
 #endif
 
 
-   TRC1(SGetThrdProf);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check entity and instance range */

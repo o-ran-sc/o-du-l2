@@ -140,8 +140,6 @@ RlcGenCfg   *cfg;
    CmTqCp   *rlcTqCp;
    Size     rguSapSize;
 
-   TRC2(rlcLmmGenCfg)
-
    if(cfg->maxUe > RLC_MAX_UE) 
    {
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -390,7 +388,7 @@ RlcGenCfg   *cfg;
    /* Timer Initialization  */
    gCb->rlcTqCp.tmrLen = RLC_TMR_LEN;
 
-   cmMemset((U8*)gCb->rlcTq, NULLP, sizeof(CmTqType) * RLC_TMR_LEN);
+   memset((U8*)gCb->rlcTq, NULLP, sizeof(CmTqType) * RLC_TMR_LEN);
 
    RLC_MEM_CPY(&(gCb->init.lmPst), &cfg->lmPst, sizeof(Pst));
 
@@ -443,8 +441,6 @@ Header    *hdr;
 #endif
 {
    Pst   rPst;   /* Reply post structure */
-
-   TRC2(rlcLmmSendCfm);
 
    RLC_MEM_SET(&rPst, 0, sizeof(Pst));   
  
@@ -579,8 +575,6 @@ RlcMngmt   *cfg;
 {
    Reason   reason;   /* failure reason */
    RlcCb     *tRlcCb=NULLP;
-
-   TRC3(RlcMiRlcConfigReq);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* Check if the instance is configured */
@@ -736,8 +730,6 @@ RlcMngmt   *cntrl;
    Reason   reason;   /* failure reason */
    RlcCb     *tRlcCb=NULLP;
 
-   TRC3(RlcMiLkwCntrlReq)
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* Check if the instance is configured */
    if (pst->dstInst >= MAX_RLC_INSTANCES)
@@ -844,8 +836,6 @@ RlcMngmt   *sta;
    RlcMngmt   rSta;     /* Status */
    Reason    reason;   /* Failure reason */
    RlcCb      *tRlcCb=NULLP;
-
-   TRC3(RlcMiLkwStaReq);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* Check if the instance is configured */
@@ -981,8 +971,6 @@ RlcMngmt   *sts;
    Reason    reason;   /* Reason for failure */
    RlcCb     *tRlcCb=NULLP;
 
-   TRC3(RlcMiLkwStsReq);
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* Check if the instance is configured */
    if (pst->dstInst >= MAX_RLC_INSTANCES)
@@ -1100,8 +1088,6 @@ RlcL2MeasReqEvt *measReqEvt;
 
    RlcCb     *tRlcCb;
 
-   TRC3(RlcMiLkwL2MeasReq);
-
    tRlcCb =  RLC_GET_RLCCB(pst->dstInst);
 
    /* Initialize measCfmEvt */
@@ -1175,7 +1161,7 @@ RlcL2MeasReqEvt *measReqEvt;
          return RFAILED;
       }   
 #endif      
-      cmMemcpy((Void*)measEvt, (Void*)measReqEvt, sizeof(RlcL2MeasReqEvt));
+      memcpy((Void*)measEvt, (Void*)measReqEvt, sizeof(RlcL2MeasReqEvt));
       /*Redirect the request to DL task */
       /* NOTE:As of today, there are no cases where the Req will fail at DL
          as long as it reached the DL, so we don't wait for a confirmation from
@@ -1229,8 +1215,6 @@ U8             measType;
    U8             status = ROK;
    RlcCb     *tRlcCb;
 
-   TRC3(RlcMiLkwL2MeasStopReq);
-
    tRlcCb =  RLC_GET_RLCCB(pst->dstInst);
 
    /* reset the counter values for the measurement that is stopped */
@@ -1260,7 +1244,7 @@ U8             measType;
       rlcUlUdxL2MeasStopReq(&(RLC_GET_UDX_SAP(tRlcCb)->pst),measType);
       /*return ROK;*/
    }
-   /*cmMemset((U8*)&measCfmEvt, 0, sizeof(RlcL2MeasCfmEvt)); */
+   /*memset((U8*)&measCfmEvt, 0, sizeof(RlcL2MeasCfmEvt)); */
 
    status = LCM_PRIM_OK; 
    RlcMiLkwL2MeasStopCfm(&tRlcCb->genCfg.lmPst, measType,status); 
@@ -1294,7 +1278,6 @@ U8             measType;
    RlcL2MeasEvtCb *measEvtCb = NULLP;
    U16            cntr;
    RlcCb     *tRlcCb;
-   TRC3(RlcMiLkwL2MeasSendReq);
 
    tRlcCb =  RLC_GET_RLCCB(pst->dstInst);
    
@@ -1350,7 +1333,6 @@ RlcSapCfg   *cfg;
 #endif
 {
    RlcKwuSapCb   *rlcKwuSapCb;
-   TRC2(rlcLmmCfgKwuSap)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* Validate the protocol parameters */
@@ -1408,8 +1390,6 @@ RlcSapCfg   *cfg;
 {
    RlcCkwSapCb  *ckwSap;
    
-   TRC2(rlcLmmCfgCkwSap)
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* Validate config parameters */
    if ((cfg->sapId >= RLC_MAX_CKWSAPS) || (cfg->sapId < 0) )
@@ -1469,8 +1449,6 @@ RlcSapCfg   *cfg;
    RlcUdxDlSapCb   *udxDlSap;
    RlcUdxUlSapCb   *udxUlSap;
 
-   TRC2(rlcLmmCfgUdxSap);
-   
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* Validate the protocol parameters */
    if((cfg->sapId >= RLC_MAX_UDXSAPS) || (cfg->sapId < 0))
@@ -1544,8 +1522,6 @@ RlcSapCfg   *cfg;
 {
    RlcRguSapCb   *rguSap;
 
-   TRC2(rlcLmmCfgRguSap);
-   
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* Validate the protocol parameters */
    if((cfg->sapId >= gCb->genCfg.maxRguSaps) || \
@@ -1606,8 +1582,6 @@ RlcMngmt   *cntrl;
    S16   reason;    /* reason for failure */
    U8    sAction;   /* subaction field */
 
-   TRC2(rlcLmmValidateGenCntrl);
-
    reason = LCM_REASON_NOT_APPL;
    sAction = cntrl->t.cntrl.subAction;
 
@@ -1652,8 +1626,6 @@ RlcCb   *gCb;
 {
    Size   rlcSapSize;
    Size   rlcUdxSapSize;
- 
-   TRC2(rlcLmmCleanGblRsrcs)   
  
    if (gCb->init.cfgDone)
    {
@@ -1762,8 +1734,6 @@ RlcCb   *gCb;
    RlcRguSapCb   *rguSap;
    U32          idx;
 
-   TRC2(rlcLmmShutdown)
-
    if (gCb->genCfg.rlcMode == LKW_RLC_MODE_DL)
    {
       for (idx = 0; idx < gCb->genCfg.maxRguSaps; idx++)
@@ -1833,8 +1803,6 @@ RlcMngmt *cntrl;
 #endif /* DEBUGP */
    S16   reason;         /* reason for failure */
    
-   TRC2(rlcLmmGenCntrl);
-
    /* Validate control parameters */
    reason = rlcLmmValidateGenCntrl (cntrl);
 
@@ -1934,7 +1902,6 @@ RlcCb      *gCb;
 RlcMngmt   *cntrl;               
 #endif
 {
-   TRC2(rlcLmmUdxSapCntrl)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (gCb->genCfg.rlcMode == LKW_RLC_MODE_DL)
@@ -2017,8 +1984,6 @@ RlcMngmt   *cntrl;
 #endif
 {
    RlcRguSapCb   *rguSap;   /* rgu sap pointer */
-
-   TRC2(rlcLmmLSapCntrl)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* validate SuId */
@@ -2103,8 +2068,6 @@ RlcKwuSapSta   *sta;
 {
    RlcKwuSapCb   *rlcKwSapCb;
    
-   TRC2(rlcLmmGetKwuSapSta);
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* Validate the protocol parameters */
    if ((sta->spId >= (S16)gCb->genCfg.maxKwuSaps)||
@@ -2146,7 +2109,6 @@ RlcCb          *gCb;
 RlcRguSapSta   *sta;       
 #endif
 {
-   TRC2(rlcLmmGetRguSapSta);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* Validate the protocol parameters */
@@ -2185,7 +2147,6 @@ rlcCb             *gCb,
 RlcCkwCntSapSta   *sta;   
 #endif
 {
-   TRC2(rlcLmmGetCkwCntSapSta);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* Validate config parameters */
@@ -2227,7 +2188,6 @@ RlcGenSts   *sts;
 Action     action;         
 #endif
 {
-   TRC2(rlcLmmGetGenSts);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* Validate protocol parameters */
@@ -2276,7 +2236,6 @@ Elmnt     elmnt;
 Action    action;         
 #endif
 {
-   TRC2(rlcLmmGetSapSts);
 
    /* Validate protocol parameters */
    if (action != LKW_ZEROSTS && action != LKW_NOZEROSTS)
@@ -2393,8 +2352,6 @@ U32    ueId;
 {
    RlcMngmt   usta;   /* Rlc Management Structure */
 
-   TRC2(rlcLmmSendAlarm);
-
    if(gCb->init.usta == FALSE)
    {
       RETVOID;
@@ -2461,13 +2418,11 @@ Buffer   *mBuf;
    MsgLen    tempCnt;
    Pst       pst;
 
-   TRC2(rlcLmmSendTrc)
-
    RLOG2(L_DEBUG, "rlcLmmSendTrc(): Trace for event=%d, gCb->trcLen=%d",
                      event,
                      gCb->trcLen);
 
-   cmMemset((U8 *)&trc, 0, sizeof(RlcMngmt));
+   memset((U8 *)&trc, 0, sizeof(RlcMngmt));
 
    pst = gCb->init.lmPst;
 
@@ -2595,7 +2550,6 @@ Inst   inst;
 #endif
 {
    RlcCb   *gCb; 
-   TRC2(rlcActvTmr)
 
    if (inst >= MAX_RLC_INSTANCES)
    {

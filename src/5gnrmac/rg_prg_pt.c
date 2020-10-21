@@ -88,8 +88,6 @@ S16 RgPrgPMacSMacUeSCellCfg(pst, ueSCellCfgInfo)
 #endif
 {
 
-   TRC3(RgPrgPMacSMacUeSCellCfg);
-
    return ((*RgPrgPMacSMacUeSCellCfgReqMt[0])(pst, ueSCellCfgInfo));
 }
 
@@ -128,8 +126,6 @@ S16 RgPrgSMacPMacCfg(pst, cfgCfm)
 #endif
 {
 
-   TRC3(RgPrgSMacPMacCfg);
-
    return ((*RgPrgSMacPMacCfgCfmMt[0])(pst, cfgCfm));
 }
 
@@ -167,8 +163,6 @@ S16 RgPrgPMacSMacUeSCellDel(pst, ueSCellDelInfo)
  RgPrgUeSCellDelInfo *ueSCellDelInfo;
 #endif
 {
-
-   TRC3(RgPrgPMacSMacUeSCellDel);
 
    return ((*RgPrgPMacSMacUeSCellDelReqMt[0])(pst, ueSCellDelInfo));
 }
@@ -211,8 +205,6 @@ S16 RgPrgPMacSMacUeScellLchMod(pst, lchCfgInfo)
 #endif
 {
 
-   TRC3(RgPrgPMacSMacUeScellLchMod);
-
    return ((*RgPrgPMacSMacUeScellModLchReqMt[0])(pst, lchCfgInfo));
 }
 
@@ -253,8 +245,6 @@ S16 RgPrgPMacSMacUeScellLchDel(pst, delLcCb)
 #endif
 {
 
-   TRC3(RgPrgPMacSMacUeScellLchDel);
-
    return ((*RgPrgPMacSMacUeScellDelLchReqMt[0])(pst, delLcCb));
 }
 
@@ -294,8 +284,6 @@ S16 RgPrgPMacSMacUeScellLchAdd(pst, lchCfgInfo)
  RgPrgUeSCellLchAddInfo   *lchCfgInfo;
 #endif
 {
-
-   TRC3(RgPrgPMacSMacUeScellLchAdd);
 
    return ((*RgPrgPMacSMacUeScellAddLchReqMt[0])(pst, lchCfgInfo));
 }

@@ -117,8 +117,6 @@ RgMngmt  *cntrl;  /* control structure  */
    RgMngmt   cfm;
    
    Inst      inst = (pst->dstInst - SCH_INST_START); /* Scheduler instance Id */
-   TRC3(RgMiLrgSchCntrlReq)
-   
 
    /* Fill the post structure for sending the confirmation */
    SchFillCfmPst(pst, &cfmPst, cntrl);
@@ -131,7 +129,7 @@ RgMngmt  *cntrl;  /* control structure  */
       SPutSBuf(pst->region, pst->pool, (Data *)cntrl, sizeof(RgMngmt));
       return ROK;
    } */
-   cmMemset((U8 *)&cfm, 0, sizeof(RgMngmt));
+   memset((U8 *)&cfm, 0, sizeof(RgMngmt));
 
 #ifdef LMINT3
    cfm.hdr.transId =
@@ -220,8 +218,6 @@ S16 RgMiLrgSchL2MeasReq(pst, measInfo)
 
    err.errType  = 0;
    err.errCause = 0;
-
-   TRC3(RgMiLrgSchL2MeasReq)
 
 
    /* Find the cellCb using cellId in measInfo. Iterate through all cells
@@ -328,10 +324,6 @@ S16 RgMiLrgSchL2MeasStopReq(pst, measInfo)
    LrgSchMeasCfmInfo measCfm;
    U8                  idx;
 
-
-   TRC3(RgMiLrgSchL2MeasStopReq)
-
-
    for (idx = 0; idx < instCb->numSaps; idx++)
    {
       if ( instCb->rgrSap[idx].cell->cellId == measInfo->cellId)
@@ -347,7 +339,7 @@ S16 RgMiLrgSchL2MeasStopReq(pst, measInfo)
                "Stop req Failed.Invalid Cell Id ");
       return RFAILED;
    }
-   cmMemset((U8 *)&measCfm, 0, sizeof(LrgSchMeasCfmInfo));
+   memset((U8 *)&measCfm, 0, sizeof(LrgSchMeasCfmInfo));
    node = cell->l2mList.first;
    while(node != NULLP)
    {
@@ -363,7 +355,7 @@ S16 RgMiLrgSchL2MeasStopReq(pst, measInfo)
    {
       RgInfL2MeasStopReq measStopReq;
       Pst               pstMac;
-      cmMemset((U8 *)&measStopReq, 0, sizeof(RgInfL2MeasStopReq));
+      memset((U8 *)&measStopReq, 0, sizeof(RgInfL2MeasStopReq));
       measStopReq.transId  = measInfo->hdr.transId;
       measStopReq.measType = measInfo->measType;
       /* measReq.timePrd  = measInfo->timePrd; */
@@ -410,10 +402,6 @@ S16 RgMiLrgSchL2MeasSendReq(pst, measInfo)
    RgSchCb             *instCb =  &rgSchCb[(pst->dstInst - SCH_INST_START)];
    U8                  idx;
 
-   TRC3(RgMiLrgSchL2MeasSendReq)
-
-
-
    cell = NULLP;
    for (idx = 0; idx < instCb->numSaps; idx++)
    {
@@ -435,7 +423,7 @@ S16 RgMiLrgSchL2MeasSendReq(pst, measInfo)
    {
       RgInfL2MeasSndReq measSndReq;
       Pst               pstMac;
-      cmMemset((U8 *)&measSndReq, 0, sizeof(RgInfL2MeasSndReq));
+      memset((U8 *)&measSndReq, 0, sizeof(RgInfL2MeasSndReq));
       measSndReq.transId  = measInfo->hdr.transId;
       measSndReq.measType = measInfo->measType;
       measSndReq.timePrd  = measInfo->timePrd;
@@ -493,9 +481,6 @@ S16 RgUiRgrBndReq(pst, suId, spId)
    Pst       tmpPst;   /* Temporary Post Structure */
    Inst      instId = pst->dstInst-SCH_INST_START;
    RgUstaDgn dgn;      /* Alarm diagnostics structure */
-
-   TRC3(RgUiRgrBndReq)
-
 
    tmpPst.prior       = pst->prior;
    tmpPst.route       = pst->route;
@@ -589,8 +574,6 @@ S16 RgUiRgrUbndReq(pst, spId, reason)
 #endif
 {
    Inst instId = pst->dstInst-SCH_INST_START;
-   TRC3(RgUiRgrUbndReq)
-
 
    /* SAP Id validation */
    if (spId < rgSchCb[instId].numSaps)
@@ -666,9 +649,7 @@ RgrSiCfgReqInfo *cfgReqInfo;
    U8        prntTrans[RGR_CFG_TRANSID_SIZE+1];
    Inst      instId = pst->dstInst-SCH_INST_START;
 
-   TRC2(RgUiRgrSiCfgReq);
-
-   cmMemcpy((U8 *)prntTrans, (U8 *)transId.trans, RGR_CFG_TRANSID_SIZE);
+   memcpy((U8 *)prntTrans, (U8 *)transId.trans, RGR_CFG_TRANSID_SIZE);
    prntTrans[RGR_CFG_TRANSID_SIZE] = '\0';
 
 
@@ -780,9 +761,7 @@ RgrWarningSiCfgReqInfo *warningSiCfgReqInfo;
    U8       cfmStatus = RGR_CFG_CFM_NOK;
    U8       prntTrans[RGR_CFG_TRANSID_SIZE+1];
 
-   TRC2(RgUiRgrWarningSiCfgReq);
-
-   cmMemcpy((U8 *)prntTrans, (U8 *)transId.trans, RGR_CFG_TRANSID_SIZE);
+   memcpy((U8 *)prntTrans, (U8 *)transId.trans, RGR_CFG_TRANSID_SIZE);
    prntTrans[RGR_CFG_TRANSID_SIZE] = '\0';
 
 
@@ -894,10 +873,6 @@ U8            siId;
 {         
    Inst         instId = pst->dstInst-SCH_INST_START;
 
-   TRC3(RgUiRgrWarningSiStopReq)
-
-
-
    if (spId < rgSchCb[instId].numSaps)
    {
       if(LRG_BND != rgSchCb[instId].rgrSap[spId].sapSta.sapState)
@@ -970,9 +945,7 @@ S16 RgUiRgrLoadInfReq(pst, spId, transId, loadInfReq)
    U8        prntTrans[RGR_CFG_TRANSID_SIZE+1];
    Inst      instId = pst->dstInst-SCH_INST_START;
 
-   TRC2(RgUiRgrLoadInfReq);
-
-   cmMemcpy((U8 *)prntTrans, (U8 *)transId.trans, RGR_CFG_TRANSID_SIZE);
+   memcpy((U8 *)prntTrans, (U8 *)transId.trans, RGR_CFG_TRANSID_SIZE);
    prntTrans[RGR_CFG_TRANSID_SIZE] = '\0';
 
 
@@ -1063,7 +1036,6 @@ RgInfDedBoRpt  *boRpt;
    Inst          inst = (pst->dstInst - SCH_INST_START);
    S16           cellSapId = boRpt->cellSapId;
 
-   TRC3(RgMacSchDedBoUpdtReq)
 /*
    RLOG_ARG2(L_DEBUG,DBG_CELLID,boRpt->cellId,"rgMacSchDedBoUpdtReq():"
             " boRpt->rnti = %u  boRpt->lcId = %u",boRpt->rnti, boRpt->lcId);
@@ -1196,7 +1168,6 @@ RgInfCmnBoRpt  *boRpt;
    Inst          inst = (pst->dstInst - SCH_INST_START);
    S16           cellSapId = boRpt->cellSapId;
 
-   TRC3(RgMacSchCmnBoUpdtReq)
 
    /* No need to chk for cell being NULL as MAC would not have found instance if
     * it doesnt exist */
@@ -1256,8 +1227,6 @@ RgInfUeDelInd    *ueDelInd;
    CmLList           *tmp;
    RgSchRntiLnk      *rntiLnk=NULL;
    
-   TRC3(RgMacSchUeDelInd)
-
    if (rgSchCb[inst].rgrSap == NULLP || rgSchCb[inst].rgrSap[cellSapId].cell == NULLP)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,ueDelInd->cellId,"rgrSap or cell is not configured");
@@ -1365,7 +1334,6 @@ RgInfSfDatInd    *subfrmInfo;
    U16              diffBits = 0;
    U8               lcCount;
 #endif
-   TRC3(RgMacSchSfRecpInd)
 
    /* No need to chk for cell being NULL as MAC wouldn't have found instance if
     * it doesnt exist */
@@ -1618,7 +1586,6 @@ RgInfSpsRelInfo    *relInfo;
    RgSchCellCb     *cell;
    Inst            inst = (pst->dstInst - SCH_INST_START);
 
-   TRC2(RgMacSchSpsRelInd);
 
    /* No need to chk for cell being NULL as MAC wouldn't have found instance if
     * it doesnt exist */
@@ -1685,7 +1652,6 @@ RgInfL2MeasCfm     *measCfm;
    U8                qciVal;
    U8                idx1; /*LTE_L2_MEAS_PHASE2*/ 
    U8                qciVal1;
-   TRC2(RgMacSchL2MeasCfm);
 
    /* Find the cellCb using cellId in measInfo. Iterate through all cells
     * in rgrsapCb in RgschCb */
@@ -1738,7 +1704,7 @@ RgInfL2MeasCfm     *measCfm;
       /* ccpu00117052 - MOD - Passing double pointer
          for proper NULLP assignment*/
       rgSCHUtlFreeSBuf(cell->instIdx, (Data **)&measCb, sizeof(RgSchL2MeasCb));
-      cmMemset((U8 *)&schMeasCfm, 0, sizeof(LrgSchMeasCfmInfo));
+      memset((U8 *)&schMeasCfm, 0, sizeof(LrgSchMeasCfmInfo));
       schMeasCfm.measType     = measCfm->measType;
       schMeasCfm.cfm          = measCfm->cfm;
       schMeasCfm.hdr.transId  = measCfm->transId;
@@ -1806,9 +1772,7 @@ RgInfL2MeasCfm     *measCfm;
    Inst              inst = (pst->dstInst - SCH_INST_START);
    RgSchCb           *instCb =  &rgSchCb[inst];
 
-   TRC2(RgMacSchL2MeasStopCfm);
-
-   cmMemset((U8 *)&schMeasCfm, 0, sizeof(LrgSchMeasCfmInfo));
+   memset((U8 *)&schMeasCfm, 0, sizeof(LrgSchMeasCfmInfo));
    schMeasCfm.measType     = measCfm->measType;
    schMeasCfm.cfm          = measCfm->cfm;
    schMeasCfm.hdr.transId  = measCfm->transId;
@@ -1854,9 +1818,6 @@ U8      status;
    S16 ret;
    RgSchLowSapCb  *tfuSap;
    Inst  instId = pst->dstInst - SCH_INST_START;
-
-   TRC3(RgLiTfuSchBndCfm);
-
 
    if(suId >= rgSchCb[instId].numSaps)
    {
@@ -1910,8 +1871,6 @@ TfuRaReqIndInfo  *raReqInd;
 {
    S16   ret;
    Inst  inst = pst->dstInst-SCH_INST_START;
-
-   TRC3(RgLiTfuRaReqInd);
 
    if ((ret = rgSCHUtlValidateTfuSap (inst, suId)) != ROK)
    {
@@ -1975,8 +1934,6 @@ TfuUlCqiIndInfo  *ulCqiInd;
    S16   ret;
    Inst  inst = pst->dstInst-SCH_INST_START;
 
-   TRC3(RgLiTfuUlCqiInd);
-
    if ((ret = rgSCHUtlValidateTfuSap (inst, suId)) != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_INSTID,inst,"SAP Validation failed");
@@ -2031,8 +1988,6 @@ TfuPucchDeltaPwrIndInfo *pucchDeltaPwr;
 {
    S16   ret;
    Inst  inst = pst->dstInst-SCH_INST_START;
-
-   TRC3(RgLiTfuPucchDeltaPwrInd);
 
    if ((ret = rgSCHUtlValidateTfuSap (inst, suId)) != ROK)
    {
@@ -2090,7 +2045,6 @@ TfuHqIndInfo       *harqAckInd;
    S16   ret;
    Inst  inst = (pst->dstInst - SCH_INST_START);
 
-   TRC3(RgLiTfuHqInd);
 
 #ifndef NO_ERRCLS
    if ((ret = rgSCHUtlValidateTfuSap (inst, suId)) != ROK)
@@ -2150,8 +2104,6 @@ TfuSrIndInfo       *srInd;
    S16   ret;
    Inst  inst = pst->dstInst-SCH_INST_START;
 
-   TRC3(RgLiTfuSrInd);
-
 #ifndef NO_ERRCLS
    if ((ret = rgSCHUtlValidateTfuSap (inst, suId)) != ROK)
    {
@@ -2209,8 +2161,6 @@ TfuDlCqiIndInfo    *dlCqiInd;
    S16   ret;
    Inst  inst = pst->dstInst-SCH_INST_START;
 
-   TRC3(RgLiTfuDlCqiInd);
-
    if ((ret = rgSCHUtlValidateTfuSap (inst, suId)) != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_INSTID,inst," SAP Validation failed");
@@ -2265,8 +2215,6 @@ TfuRawCqiIndInfo    *rawCqiInd;
 {
    S16   ret;
    Inst  inst = pst->dstInst-SCH_INST_START;
-
-   TRC3(RgLiTfuRawCqiInd);
 
 #ifdef NO_ERRCLS
    if ((ret = rgSCHUtlValidateTfuSap (inst, suId)) != ROK)
@@ -2324,8 +2272,6 @@ TfuSrsIndInfo    *srsInd;
    S16   ret;
    Inst  inst = pst->dstInst-SCH_INST_START;
 
-   TRC3(RgLiTfuSrsInd);
-
    if ((ret = rgSCHUtlValidateTfuSap (inst, suId)) != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_INSTID,inst," SAP Validation failed");
@@ -2382,8 +2328,6 @@ TfuDoaIndInfo      *doaInd;
    S16   ret;
    Inst  inst = pst->dstInst-SCH_INST_START;
 
-   TRC2(RgLiTfuDoaInd);
-
    if ((ret = rgSCHUtlValidateTfuSap (inst, suId)) != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_INSTID,inst,"SAP Validation failed");
@@ -2436,7 +2380,6 @@ TfuCrcIndInfo  *crcInd;
    S16              ret;
    Inst             inst      = pst->dstInst-SCH_INST_START;
 
-   TRC3(RgLiTfuCrcInd);
 #ifdef XEON_SPECIFIC_CHANGES
 struct timeval start6, end6;
 gettimeofday(&start6, NULL);
@@ -2500,8 +2443,6 @@ TfuTimingAdvIndInfo  *timingAdvInd;
    S16   ret;
    Inst  inst = pst->dstInst-SCH_INST_START;
 
-   TRC3(RgLiTfuTimingAdvInd);
-
    if ((ret = rgSCHUtlValidateTfuSap (inst, suId)) != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_INSTID,inst,"SAP Validation failed");
@@ -2560,9 +2501,6 @@ SpId  spId;
    Pst       tmpPst;   /* Temporary Post Structure */
    Inst      instId = pst->dstInst-SCH_INST_START;
 
-   TRC3(RgUiRgmBndReq)
-   
-   
    tmpPst.prior       = pst->prior;
    tmpPst.route       = pst->route;
    tmpPst.selector    = pst->selector;
@@ -2658,8 +2596,6 @@ Reason reason;
 #endif
 {
    Inst instId = pst->dstInst-SCH_INST_START;
-   TRC3(RgUiRgmUbndReq)
-   
 
    /* SAP Id validation */
    if (spId < rgSchCb[instId].numSaps)
@@ -2731,7 +2667,6 @@ RgmPrbRprtCfg   *prbRprtCfg;
    RgSchPrbUsage *prbUsage;
    Inst          inst = (pst->dstInst  - SCH_INST_START);
 
-   TRC2(RgUiRgmCfgPrbRprt);
    cell = rgSchCb[inst].rgmSap[spId].cell;
    prbUsage = &cell->prbUsage;
    prbUsage->prbRprtEnabld = prbRprtCfg->bConfigType;
@@ -2739,7 +2674,7 @@ RgmPrbRprtCfg   *prbRprtCfg;
    RG_SCH_ADD_TO_CRNT_TIME(cell->crntTime, prbUsage->startTime, 1);
 
    /* clear the qciPrbRpts for all GBR QCIs */
-   cmMemset((U8*)&prbUsage->qciPrbRpts[0], 0, 
+   memset((U8*)&prbUsage->qciPrbRpts[0], 0, 
              (RGM_MAX_QCI_REPORTS * sizeof(RgSchQciPrbUsage)));
 
    RLOG_ARG2(L_DEBUG,DBG_CELLID,cell->cellId,
@@ -2789,8 +2724,6 @@ TfuErrIndInfo       *errInd;
 #ifdef LTE_ADV
    Inst  inst = (pst->dstInst - SCH_INST_START);
 #endif
-
-   TRC3(RgLiTfuErrInd);
 
 #ifndef NO_ERRCLS
    if ((ret = rgSCHUtlValidateTfuSap (inst, suId)) != ROK)

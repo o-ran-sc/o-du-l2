@@ -380,7 +380,7 @@ S16 rlcUtlL2MeasUlInit(RlcCb *gCb)
    gCb->u.ulCb->rlcL2Cb.rlcNumMeas=0;
    for(cntr = 0; cntr < LKW_MAX_L2MEAS; cntr++)
    {
-      cmMemset((U8 *)&(gCb->u.ulCb->rlcL2Cb.rlcL2EvtCb[cntr]), 0, sizeof(RlcL2MeasEvtCb));
+      memset((U8 *)&(gCb->u.ulCb->rlcL2Cb.rlcL2EvtCb[cntr]), 0, sizeof(RlcL2MeasEvtCb));
    }
    gCb->u.ulCb->rlcL2Cb.rlcL2EvtCb[RLC_L2MEAS_UL_IP].measCb.measType = LKW_L2MEAS_UL_IP;
    return ROK;
@@ -415,7 +415,6 @@ U32                   ttiCnt;
 #endif
 {
    VOLATILE U32     startTime = 0;
-   TRC2(rlcUtlCalUlIpThrPutIncTTI)
 
       /*starting Task*/
       SStartTask(&startTime, PID_RLC_IP_TPT_INCTTI);
@@ -497,8 +496,6 @@ Void rlcUtlCalUlIpThrPut(gCb, rbCb, pdu, ttiCnt)
 {
    MsgLen        rlcSduSz = 0;  /*Holds length of Rlc Sdu*/
    VOLATILE U32     startTime = 0;
-   TRC2(rlcUtlCalUlIpThrPut)
-
 
    /*starting Task*/
    SStartTask(&startTime, PID_RLC_IP_TPT_INCVOL);
@@ -548,7 +545,6 @@ RlcCb          *gCb;
 RlcL2MeasEvtCb *measEvtCb;
 #endif
 {
-   TRC3(rlcUtlHdlL2TmrExp)
 
 #ifdef LTE_L2_MEAS_RLC
    U16             qciIdx;
@@ -616,8 +612,6 @@ RlcL2MeasEvtCb         *measEvtCb;
    U32                     cfmIdx =0;
    /* Discard new changes ends */
 
-   TRC3(rlcUtlSndUlL2MeasCfm)
-
    /* kw006.201 ccpu00120058 emoved 64 bit compilation warning */
 #ifndef ALIGN_64BIT
    RLOG1(L_DEBUG,"rlcUtlSndUlL2MeasCfm(transId(%ld))", measEvtCb->transId);
@@ -628,7 +622,7 @@ RlcL2MeasEvtCb         *measEvtCb;
    /* Clean up the RB data structures */
    measCb = &measEvtCb->measCb;
    
-   cmMemset((U8*)&measCfmEvt, 0, sizeof(RlcL2MeasCfmEvt));
+   memset((U8*)&measCfmEvt, 0, sizeof(RlcL2MeasCfmEvt));
    measCfmEvt.transId = measEvtCb->transId;
 
    measCfmEvt.measType = measCb->measType;
@@ -714,7 +708,6 @@ RlcL2MeasReqEvt *measReqEvt;
 RlcL2MeasCfmEvt *measCfmEvt;
 #endif
 {
-   TRC3(rlcUtlSndUlL2MeasNCfm)
 
    RlcMiLkwL2MeasCfm(&gCb->genCfg.lmPst, measCfmEvt);
    return ROK;
@@ -767,9 +760,6 @@ U8             *numLCh;
    U8         msbNibble = 0;
    U8         numFaild = 0;
 
-
-   TRC3(rlcUtlValidateL2Meas)
-   
    idx = 0;
    rbCb = NULLP;
    ret = ROK;
@@ -896,8 +886,6 @@ RlcL2MeasCfmEvt *measCfmEvt;
    U8         lsbNibble = 0;
    U8         msbNibble = 0;
 
-   TRC3(rlcUtlValidateIpThL2Meas)
-   
    measType = measReqEvt->measReq.measType;
    /* Check for the range of measType */
    /* LKW_L2MEAS_DL_IP+ LKW_L2MEAS_UL_IP = 0x0030*/
@@ -1025,8 +1013,6 @@ RlcL2MeasRbCb   *rbL2Cb;
 U8             measType;
 #endif
 {
-   TRC3(rlcUtlPlcMeasDatInL2Sts)
-   
    /* We should check the number of measType in the request. This can be done 
     * by looking at each bit in the measType. Also store the measData in the 
     * correct index of l2Sts in RbCb.

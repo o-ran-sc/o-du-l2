@@ -262,7 +262,7 @@ PRIVATE S16 rlcAddToDlL2Meas(RlcCb *gCb, RlcDlRbCb *rlcRbCb,U8 cellId,U8 ueId)
                ueIdx = freeIdx;
             }
             measCb->val.ipThMeas.ueInfoLst[ueIdx].isValid = TRUE;
-            cmMemset((U8 *)&measCb->val.ipThMeas.ueInfoLst[ueIdx].measData[0],0x00,(sizeof(RlcL2Cntr) *LKW_MAX_QCI));
+            memset((U8 *)&measCb->val.ipThMeas.ueInfoLst[ueIdx].measData[0],0x00,(sizeof(RlcL2Cntr) *LKW_MAX_QCI));
             measCb->val.ipThMeas.ueInfoLst[ueIdx].numQci = 0;
          }
          measCb->val.ipThMeas.ueInfoLst[ueIdx].ueId = ueId;
@@ -331,7 +331,6 @@ RlcDlUeCb        *ueCb;
 RlcEntCfgInfo   *entCfg;
 #endif
 {
-   TRC3(rlcCfgFillDlRbCb)
 
    RLOG_ARG3(L_DEBUG,DBG_RBID,entCfg->rbId,
          "rlcCfgFillRbCb(ueId(%d),cellId(%d) rbType(%d))",
@@ -448,7 +447,6 @@ void            *ptr;
 RlcEntCfgInfo   *entCfg;
 #endif
 {
-   TRC3(rlcCfgUpdateDlRb)
    
    if (rbCb->mode != entCfg->entMode)
    {
@@ -570,8 +568,6 @@ RlcEntCfgCfmInfo   *entCfm;
    RlcDlCellCb   *cellCb;         /* Cell Control Block */
    RlcDlRbCb     *rlcRbCb;         /* KW RB Control Block */
    U8           reason;          /* Rb Identifier */
-
-   TRC3(rlcCfgAddDlRb)
 
    RLOG_ARG3(L_DEBUG,DBG_RBID,entCfg->rbId, 
          "rlcCfgAddRb(cellId(%d),UEID:%d cfgType(%d))",
@@ -899,8 +895,6 @@ RlcEntCfgCfmInfo   *entCfm;
    RlcDlUeCb     *ueCb;     /* Ue Control Block */
    U8           ret;
 
-   TRC3(rlcCfgReCfgDlRb)
-
    RLOG_ARG3(L_DEBUG,DBG_UEID,ueId,
              "rlcCfgReCfgRb(cellId(%d), cfgType(%d)) RBID:%d",
             cellId, entCfg->cfgType,entCfg->rbId);
@@ -954,7 +948,7 @@ RlcEntCfgCfmInfo   *entCfm;
       /* Take backup of rbCb before updating.
        * Because in failure case restore original rbCb
        */
-      cmMemcpy((U8 *)&tRbCb, (U8 *)rbCb, sizeof(RlcDlRbCb));
+      memcpy((U8 *)&tRbCb, (U8 *)rbCb, sizeof(RlcDlRbCb));
 
       /* Update rbCb */
       ret = rlcCfgUpdateDlRb(gCb,rbCb, cellCb,entCfg);
@@ -971,7 +965,7 @@ RlcEntCfgCfmInfo   *entCfm;
                   "CELLID:%u RBID:%d updation failed",
                   cellId,
                   entCfg->rbId);
-         cmMemcpy((U8*)rbCb, (U8 *)&tRbCb, sizeof(RlcDlRbCb));
+         memcpy((U8*)rbCb, (U8 *)&tRbCb, sizeof(RlcDlRbCb));
 
          return (ret);
       }
@@ -1022,7 +1016,7 @@ RlcEntCfgCfmInfo   *entCfm;
       /* Take backup of rbCb before updating.
        * Because in failure case restore original rbCb
        */
-      cmMemcpy((U8 *)&tRbCb, (U8 *)rbCb, sizeof(RlcDlRbCb));
+      memcpy((U8 *)&tRbCb, (U8 *)rbCb, sizeof(RlcDlRbCb));
 
       /* Update rbCb */
       ret = rlcCfgUpdateDlRb(gCb,rbCb,ueCb, entCfg);
@@ -1035,7 +1029,7 @@ RlcEntCfgCfmInfo   *entCfm;
                   "CELLID:%d RBID:%d updation failed",
                   cellId,
                   entCfg->rbId);
-         cmMemcpy((U8*)rbCb, (U8 *)&tRbCb, sizeof(RlcDlRbCb));
+         memcpy((U8*)rbCb, (U8 *)&tRbCb, sizeof(RlcDlRbCb));
 
          return (ret);
       }
@@ -1100,8 +1094,6 @@ RlcEntCfgCfmInfo   *entCfm;
    RlcDlUeCb     *ueCb;     /* UE Control Block */
    RlcDlCellCb   *cellCb;   /* UE Control Block */
    RlcDlRbCb     *rlcRbCb;   /* KW RB Control Block */
-
-   TRC3(rlcCfgDelDlRb)
 
    RLOG_ARG3(L_DEBUG,DBG_UEID,ueId, 
             "rlcCfgDelRb(RBID(%d), cellId(%d), cfgType(%d))",
@@ -1297,8 +1289,6 @@ RlcEntCfgCfmInfo   *entCfm;
    RlcDlRbCb     *rbCb;   /* RB Control Block */
    CmLteRlcId   rlcId;   /* RLC Identifier */
 
-   TRC3(rlcCfgReEstDlRb)
-
    RLOG_ARG3(L_DEBUG,DBG_RBID,entCfg->rbId,
             "rlcCfgReEstDlRb(ueId(%d), cellId(%d), cfgType(%d))",
             ueId, 
@@ -1398,8 +1388,6 @@ RlcEntCfgCfmInfo   *entCfm;
    S16        ret;     /* Return Value */
    RlcDlUeCb   *ueCb;   /* UE Control Block */
 
-   TRC3(rlcCfgDelUe)
-
    RLOG_ARG3(L_DEBUG,DBG_RBID,entCfg->rbId,
              "rlcCfgDelUe(ueId(%d), cellId(%d), cfgType(%d))",
             ueId, 
@@ -1489,8 +1477,6 @@ RlcEntCfgCfmInfo   *entCfm;
    RlcDlCellCb   *cellCb;   /* UE Control Block */
    U8           rbId;      /* RB Identifier */
 
-   TRC3(rlcCfgDelCell)
-
    RLOG_ARG2(L_DEBUG,DBG_RBID,entCfg->rbId,
          "rlcCfgDelCell( cellId(%d), cfgType(%d)",
          cellId, 
@@ -1574,7 +1560,6 @@ CmStatus    *status;
 {
    RlcDlUeCb *ueCb;
 /*kw004.201 Adding of Missing Trace in LTE RLC PDCP*/
-   TRC3(rlcCfgUeIdChng)
 
    if ( (ueInfo->ueId == newUeInfo->ueId) && 
         (ueInfo->cellId == newUeInfo->cellId))

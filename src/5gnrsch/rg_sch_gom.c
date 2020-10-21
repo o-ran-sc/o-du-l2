@@ -160,7 +160,6 @@ RgrCfgReqInfo *cfgReqInfo;
    Inst          inst = (instCb->rgSchInit.inst );
 #endif
 
-   TRC2(rgSCHGomHndlCfg);
    /* Apply the configuration for Cell Configuration or Delete */
    if (cfgReqInfo->action != RGR_RECONFIG)
    {
@@ -270,7 +269,6 @@ RgrCfgReqInfo *cfgReqInfo;
 #ifdef DEBUGP
    Inst            inst = (instCb->rgSchInit.inst );
 #endif
-   TRC2(rgSCHGomCfgReq);
 #ifdef EMTC_ENABLE
 printf("\n AT MAC rgSCHGomCfgReq \n");
 #endif
@@ -394,8 +392,6 @@ RgrCfgReqInfo *rgrCfgReq;
    CmLteTimingInfo    actvTime; 
    Inst               inst = cell->instIdx;
 
-   TRC2(rgSCHGomEnqCfgReq);
-
    /* Allocate memory for config Element */
    ret = rgSCHUtlAllocSBuf(inst, (Data **)&rgrCfgElem, sizeof(RgSchCfgElem));
    if ((ret != ROK) || ((U8 *)rgrCfgElem == NULLP))
@@ -404,7 +400,7 @@ RgrCfgReqInfo *rgrCfgReq;
    }
 
    /* Initialize the configuration element */
-   cmMemcpy((U8*)rgrCfgElem->rgrCfg.transId.trans,(U8*)transId.trans,
+   memcpy((U8*)rgrCfgElem->rgrCfg.transId.trans,(U8*)transId.trans,
          sizeof(transId.trans));
    rgrCfgElem->rgrCfg.reg = reg;
    rgrCfgElem->rgrCfg.pool = pool;
@@ -503,7 +499,6 @@ SpId             spId;
 {
    RgSchCfgElem       *cfgElem;
    Inst               inst= cell->instIdx;
-   TRC2(rgSCHGomTtiHndlr);
 
    /* Dequeue from current config list */
    while ((cfgElem = rgSCHDbmGetNextCrntRgrCfgElem(cell, NULLP)) != NULLP)
@@ -576,8 +571,6 @@ RgSchErrInfo   *errInfo;
    RgSchCellCb  *cell = instCb->rgrSap[spId].cell;
    Inst         inst = (instCb->rgSchInit.inst );
    RgSchUeCb    *ue;
-
-   TRC2(rgSCHGomHndlCfgReq);
 
    errInfo->errType = RGSCHERR_GOM_CFG_REQ;
    
@@ -706,7 +699,6 @@ U8                    action;
    RgSchCellCb  *cell = instCb->rgrSap[spId].cell;
    Inst         inst = (instCb->rgSchInit.inst);
 
-   TRC2(rgSCHGomHndlSCellActDeactReq);
    RGSCHDBGPRM(inst,(rgSchPBuf(inst), "Processing RGR SCell Actication request:"
                   "%d\n", sCellActDeactEvnt->crnti));
 
@@ -783,8 +775,6 @@ RgSchErrInfo  *errInfo;
    S16          ret; 
    RgSchCellCb  *cell = instCb->rgrSap[spId].cell;
    Inst         inst = (instCb->rgSchInit.inst );
-
-   TRC2(rgSCHGomHndlRecfgReq);
 
    errInfo->errType = RGSCHERR_GOM_RECFG_REQ;
    
@@ -897,9 +887,6 @@ RgSchErrInfo  *errInfo;
    Inst         inst = (instCb->rgSchInit.inst );
    RgSchUeCb    *ue = NULLP;
 
-   TRC2(rgSCHGomHndlResetReq);
-
-
    errInfo->errType = RGSCHERR_GOM_RESET_REQ;
    
    /* Validate and process the UE reset request */
@@ -968,8 +955,6 @@ RgSchErrInfo  *errInfo;
 #endif
    VOLATILE U32     startTime=0;
 
-   TRC2(rgSCHGomHndlDelReq);
-   
    errInfo->errType = RGSCHERR_GOM_DEL_REQ;
 
    if(instCb->rgrSap[spId].cell == NULLP)
@@ -1066,9 +1051,6 @@ CmLteCellId   *cellId;
 #endif
 {
 
-   TRC2(rgSCHGomGetCellIdFrmCfgReq);
-
-
    /* Extract CellId depending on the action and Config Type in the Request 
     * As of now this function is called for only re configuration so removed
     * othe CASES below if needed we can add them*/
@@ -1164,8 +1146,6 @@ RgrSiCfgReqInfo *cfgReqInfo;
    U8           nPrb   = 0; 
    U8           mcs    = 0;
 
-   TRC2(rgSCHGomHndlSiCfg);
-
 
    /* check if cell does not exists */
    if (((U8 *)cell == NULLP) || (cell->cellId != cfgReqInfo->cellId))
@@ -1252,7 +1232,7 @@ RgrSiCfgReqInfo *cfgReqInfo;
             return RFAILED;
          }
 
-         cmMemset((U8*)padding,(U8)0,nmPadBytes);
+         memset((U8*)padding,(U8)0,nmPadBytes);
 
 #ifdef MS_MBUF_CORRUPTION 
    MS_BUF_ADD_ALLOC_CALLER();
@@ -1475,8 +1455,6 @@ RgrWarningSiCfgReqInfo *warningSiCfgReqInfo;
    U8                 isEmtc = warningSiCfgReqInfo->emtcEnable;
 #endif
 
-   TRC2(rgSCHGomHndlWarningSiCfg);
-
 #ifdef EMTC_ENABLE
    if(TRUE == isEmtc)
    {
@@ -1661,8 +1639,6 @@ SpId          spId;
    RgSchWarningSiPdu  *warningSiPdu;
    Buffer             *pdu;
 
-   TRC3(rgSCHGomHndlWarningSiStopReq)
-
    for(idx = 0; idx < RGR_MAX_NUM_WARNING_SI; idx++)
    {
       if(cell->siCb.warningSi[idx].siId == siId)
@@ -1729,8 +1705,6 @@ PRIVATE Void rgSchUpdtRNTPInfo(cell, sf)
    CmLListCp   *l;
    CmLList     *n;
    S16 ret = RFAILED;
-
-   TRC2(rgSchUpdtRNTPInfo);
 
    l = &sf->sfrTotalPoolInfo.ccPool;
 
@@ -1801,9 +1775,6 @@ S16 rgSCHGomHndlLoadInf(reg, pool, instCb, spId, transId, loadInfReq)
    Inst         inst  = (instCb->rgSchInit.inst );
    RgSchErrInfo errInfo;
    U16 i;
-
-   TRC2(rgSCHGomHndlLoadInf);
-
 
    /* check if cell does not exists */
    if (((U8 *)cell == NULLP) || (cell->cellId != loadInfReq->cellId))

@@ -307,7 +307,6 @@ S16   tmrEvnt;
 #endif
 {
 /* kw005.201 added support for L2 Measurement */
-   TRC2(rlcTmrExpiry)
 
    switch (tmrEvnt)
    {
@@ -428,8 +427,6 @@ PTR cb;
 #endif
 {
    RlcRguSapCb *rguSapCb; 
-
-   TRC2(rlcBndTmrExpiry)
 
    rguSapCb = (RlcRguSapCb *) cb;
 

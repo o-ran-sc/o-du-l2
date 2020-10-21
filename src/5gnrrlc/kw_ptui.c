@@ -267,7 +267,6 @@ SuId suId;                      /* Service User Id */
 U8   status;                    /* Status */
 #endif
 {
-   TRC3(RlcUiKwuBndCfm)
 
    /* jump to specific primitive depending on configured selector */
    (*kwUiKwuBndCfmMt[pst->selector])(pst, suId, status);
@@ -311,7 +310,6 @@ KwuDatIndInfo     *datInd;
 Buffer            *mBuf;
 #endif
 {
-   TRC3(rlcSendUlDataToDu)
 
    /* jump to specific primitive depending on configured selector */
    (*kwUiKwuDatIndMt[pst->selector])(pst, datInd, mBuf);
@@ -357,7 +355,6 @@ KwuDatCfmInfo     *datCfm;
 #endif
 {
    rlcDatCfmsSent++;
-   TRC3(RlcUiKwuDatCfm)
 
    /* jump to specific primitive depending on configured selector */
    (*kwUiKwuDatCfmMt[pst->selector])(pst, suId, datCfm);
@@ -401,7 +398,6 @@ SuId              suId;
 KwuStaIndInfo     *staInd;
 #endif
 {
-   TRC3(RlcUiKwuStaInd)
 
    /* jump to specific primitive depending on configured selector */
    (*kwUiKwuStaIndMt[pst->selector])(pst, suId, staInd);
@@ -445,7 +441,6 @@ SuId              suId;
 CmLteRlcId        rlcId;
 #endif
 {
-   TRC3(RlcUiKwuReEstCmpInd)
    RLOG0(L_DEBUG, "In RlcUiKwuReEstCmpInd");
 
    /* jump to specific primitive depending on configured selector */
@@ -488,7 +483,6 @@ SuId              suId;
 KwuDiscSduInfo    *discCfm;
 #endif
 {
-   TRC3(RlcUiKwuDiscSduCfm)
 
    /* jump to specific primitive depending on configured selector */
    (*kwUiKwuDiscSduCfmMt[pst->selector])(pst, suId, discCfm);
@@ -530,7 +524,6 @@ SuId                  suId;
 KwuFlowCntrlIndInfo   *flowCntrlIndInfo;
 #endif
 {
-   TRC3(RlcUiKwuFlowCntrlInd)
 
    /* jump to specific primitive depending on configured selector */
    (*kwUiKwuFlowCntrlIndMt[pst->selector])(pst, suId, flowCntrlIndInfo);
@@ -572,7 +565,6 @@ SuId              suId;
 KwuDatAckInfo     *datAckInd;
 #endif
 {
-   TRC3(RlcUiKwuDatAckInd)
 
    /* jump to specific primitive depending on configured selector */
    (*kwUiKwuDatAckIndMt[pst->selector])(pst, suId, datAckInd);
@@ -661,7 +653,6 @@ SuId suId;                      /* Service User Id */
 U8   status;                    /* Status */
 #endif
 {
-   TRC3(RlcUiCkwBndCfm)
 
    /* jump to specific primitive depending on configured selector */
    (*kwUiCkwBndCfmMt[pst->selector])(pst, suId, status);
@@ -705,7 +696,6 @@ SuId           suId;                      /* Service User Id */
 RlcCfgCfmInfo  *cfmInfo;                   /* Configuration Confirm */
 #endif
 {
-   TRC3(RlcUiRlcCfgCfm)
 
    /* jump to specific primitive depending on configured selector */
    (*kwUiRlcCfgCfmMt[pst->selector])(pst, suId, cfmInfo);
@@ -753,7 +743,6 @@ CkwUeInfo      *ueInfo;
 CmStatus       status;
 #endif
 {
-   TRC3(RlcUiCkwUeIdChgCfm)
 
    /* jump to specific primitive depending on configured selector */
    (*kwUiCkwUeIdChgCfmMt[pst->selector])(pst, suId, transId, ueInfo, status);

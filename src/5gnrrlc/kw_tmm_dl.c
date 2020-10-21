@@ -108,9 +108,6 @@ Buffer          *mBuf;
 {
    RlcSdu   *sdu;              
  
-   TRC2(rlcTmmQSdu) 
-
-
    RLC_ALLOC(gCb,sdu,sizeof(RlcSdu));
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if ( sdu == NULLP )
@@ -392,8 +389,6 @@ RlcCb       *gCb;
 RlcDlRbCb   *rbCb;     
 #endif
 {
-   TRC2(rlcDlTmmReEstablish)
-
 
 #ifdef LTE_L2_MEAS_RLC
    rlcUtlEmptySduQ(gCb, rbCb, &rbCb->m.tm.sduQ);
