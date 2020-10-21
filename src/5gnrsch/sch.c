@@ -463,7 +463,7 @@ void fillSchSib1Cfg(Inst schInst, SchSib1Cfg *sib1SchCfg, uint16_t pci, \
    sib1SchCfg->n0 = slotIndex;
 
    /* calculate the PRBs */
-   schAllocFreqDomRscType0(((offsetPointA-offset)/6), (numRbs/6), FreqDomainResource);
+   freqDomRscAllocType0(((offsetPointA-offset)/6), (numRbs/6), FreqDomainResource);
 
    /* fill BWP */
    bwp->freqAlloc.numPrb   = MAX_NUM_RB; /* whole of BW */
