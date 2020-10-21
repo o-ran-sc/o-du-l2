@@ -100,14 +100,14 @@ uint8_t unpackRlcUlUeCreateReq(DuRlcUlUeCreateReq func, Pst *pst, Buffer *mBuf)
 
 /*******************************************************************
  *
- * @brief Packs and Sends UE create Response from RLC to DUAPP
+ * @brief Packs and Sends UE Cfg Response from RLC to DUAPP
  *
  * @details
  *
- *    Function : packRlcUlDuUeCreateRsp
+ *    Function : packRlcUlDuUeCfgRsp
  *
  *    Functionality:
- *       Packs and Sends UE Create Rrsponse from RLC to DUAPP
+ *       Packs and Sends UE Cfg Rrsponse from RLC to DUAPP
  *
  *
  * @params[in] Post structure pointer
@@ -116,7 +116,7 @@ uint8_t unpackRlcUlUeCreateReq(DuRlcUlUeCreateReq func, Pst *pst, Buffer *mBuf)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packRlcUlDuUeCreateRsp(Pst *pst, RlcUeCfgRsp *ueCfg)
+uint8_t packRlcUlDuUeCfgRsp(Pst *pst, RlcUeCfgRsp *ueCfg)
 {
    Buffer *mBuf = NULLP;
  
@@ -124,7 +124,7 @@ uint8_t packRlcUlDuUeCreateRsp(Pst *pst, RlcUeCfgRsp *ueCfg)
    {
       if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
-         DU_LOG("\nRLC : Memory allocation failed at packRlcUlDuUeCreateRsp");
+         DU_LOG("\nRLC : Memory allocation failed at packRlcUlDuUeCfgRsp");
          return RFAILED;
       }
       /* pack the address of the structure */
@@ -132,7 +132,7 @@ uint8_t packRlcUlDuUeCreateRsp(Pst *pst, RlcUeCfgRsp *ueCfg)
    }
    else
    {
-      DU_LOG("\nRLC: Only LWLC supported for packRlcUlDuUeCreateRsp");
+      DU_LOG("\nRLC: Only LWLC supported for packRlcUlDuUeCfgRsp");
       return RFAILED;
    }
 
@@ -141,14 +141,14 @@ uint8_t packRlcUlDuUeCreateRsp(Pst *pst, RlcUeCfgRsp *ueCfg)
 
 /*******************************************************************
  *
- * @brief Unpacks UE Create Response received from DU APP
+ * @brief Unpacks UE Cfg Response received from DU APP
  *
  * @details
  *
- *    Function : unpackRlcUlUeCreateRsp
+ *    Function : unpackRlcUlUeCfgRsp
  *
  *    Functionality:
- *         Unpacks UE Create Response received from DU APP
+ *         Unpacks UE Cfg Response received from DU APP
  *
  * @params[in] Pointer to Handler
  *             Post structure pointer
@@ -157,7 +157,7 @@ uint8_t packRlcUlDuUeCreateRsp(Pst *pst, RlcUeCfgRsp *ueCfg)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t unpackRlcUlUeCreateRsp(RlcUlDuUeCreateRsp func, Pst *pst, Buffer *mBuf)
+uint8_t unpackRlcUlUeCfgRsp(RlcUlDuUeCfgRsp func, Pst *pst, Buffer *mBuf)
 {
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
@@ -170,7 +170,7 @@ uint8_t unpackRlcUlUeCreateRsp(RlcUlDuUeCreateRsp func, Pst *pst, Buffer *mBuf)
    else
    {
       /* Nothing to do for other selectors */
-      DU_LOG("\nRLC: Only LWLC supported for UE Create Response ");
+      DU_LOG("\nRLC: Only LWLC supported for UE Cfg Response ");
       ODU_PUT_MSG_BUF(mBuf);
    }
 
@@ -403,6 +403,83 @@ uint8_t unpackRrcDeliveryReportToDu(RlcRrcDeliveryReportToDuFunc func, Pst *pst,
     }
 
     return RFAILED;
+}
+
+/*******************************************************************
+ *
+ * @brief Packs and Sends UE Reconfig Request from DUAPP to RLC
+ *
+ * @details
+ *
+ *    Function : packDuRlcUlUeReconfigReq
+ *
+ *    Functionality:
+ *       Packs and Sends UE Reconfig Request from DUAPP to RLC
+ *
+ *
+ * @params[in] Post structure pointer
+ *             RlcUeCfg pointer              
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packDuRlcUlUeReconfigReq(Pst *pst, RlcUeCfg *ueCfg)
+{
+   Buffer *mBuf = NULLP;
+ 
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+      {
+         DU_LOG("\nRLC : Memory allocation failed at packDuRlcUeReconfigReq");
+         return RFAILED;
+      }
+      /* pack the address of the structure */
+      CMCHKPK(oduPackPointer,(PTR)ueCfg, mBuf);
+   }
+   else
+   {
+      DU_LOG("\nRLC: Only LWLC supported for packDuRlcUeReconfigReq");
+      return RFAILED;
+   }
+
+    return ODU_POST_TASK(pst,mBuf);
+}
+
+/*******************************************************************
+ * @brief Unpacks UE Reconfig Request received from DU APP
+ *
+ * @details
+ *
+ *    Function : unpackRlcUlUeReconfigReq
+ *
+ *    Functionality:
+ *         Unpacks UE Create Request received from DU APP
+ *
+ * @params[in] Pointer to Handler
+ *             Post structure pointer
+ *             Message Buffer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t unpackRlcUlUeReconfigReq(DuRlcUlUeReconfigReq func, Pst *pst, Buffer *mBuf)
+{
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      RlcUeCfg *ueCfg;
+      /* unpack the address of the structure */
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&ueCfg, mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
+      return (*func)(pst, ueCfg);
+   }
+   else
+   {
+      /* Nothing to do for other selectors */
+      DU_LOG("\nRLC: Only LWLC supported for UE Create Request ");
+      ODU_PUT_MSG_BUF(mBuf);
+   }
+   return RFAILED;
 }
 
 /**********************************************************************
