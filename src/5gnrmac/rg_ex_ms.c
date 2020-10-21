@@ -130,6 +130,10 @@ Buffer  *mBuf;                      /* message buffer       */
 		   /* Process Ue Create Request */
 			unpackMacUeCreateReq(MacProcUeCreateReq, pst, mBuf);
 			break;
+                case EVENT_MAC_UE_RECONFIG_REQ:
+		   /* Process Ue Reconfig Request */
+			unpackMacUeReconfigReq(MacProcUeReconfigReq, pst, mBuf);
+			break;
       default:
          RG_FREE_MSG(mBuf);
          break;
