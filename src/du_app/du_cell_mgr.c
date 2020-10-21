@@ -37,7 +37,7 @@
 #include "du_f1ap_msg_hdl.h"
 
 extern DuCfgParams duCfgParam;
-extern uint8_t duBuildAndSendMacCellCfg();
+uint8_t duBuildAndSendMacCellCfg(uint16_t cellId);
 
 /*******************************************************************
  *
@@ -96,10 +96,14 @@ uint8_t procCellsToBeActivated(Cells_to_be_Activated_List_t cellsToActivate)
       duCb.actvCellLst[nci-1] = cellCb;
       duCb.numActvCells++;
       /* Build and send Mac Cell Cfg for the number of active cells */
-      ret = duBuildAndSendMacCellCfg();
+      ret = duBuildAndSendMacCellCfg(cellCb->cellId);
       if(ret != ROK)
       {
          DU_LOG("\nDU APP : macCellCfg build and send failed");
+	 /* Move cellCb back to cfgCellList */
+	 duCb.cfgCellLst[nci-1] = duCb.actvCellLst[nci-1];
+	 duCb.actvCellLst[nci-1] = NULLP;
+	 duCb.numActvCells--;
          return RFAILED;
       }
    }
