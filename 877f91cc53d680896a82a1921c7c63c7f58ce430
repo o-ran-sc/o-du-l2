@@ -1,0 +1,225 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7333d777_53148aec",
+        "filename": "src/5gnrmac/lwr_mac_phy.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-21T11:41:49Z",
+      "side": 1,
+      "message": "SGetSBufWls returns S16 but do check manually whether it really needs 16 bits. Even if datatypes is S16 but it is returning only ROK/RFAILED then make ret to uint8_t",
+      "revId": "877f91cc53d680896a82a1921c7c63c7f58ce430",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6e5b53c4_1e8d7f72",
+        "filename": "src/5gnrmac/rg.x",
+        "patchSetId": 2
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-21T11:41:49Z",
+      "side": 1,
+      "message": "you can rename TknU8/U16/U32 to TknUInt8",
+      "revId": "877f91cc53d680896a82a1921c7c63c7f58ce430",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b4b2a400_1a67702b",
+        "filename": "src/5gnrmac/rg_com.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-21T11:41:49Z",
+      "side": 1,
+      "message": "indentation",
+      "revId": "877f91cc53d680896a82a1921c7c63c7f58ce430",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0f97022d_8b13b5ec",
+        "filename": "src/5gnrmac/rg_l2m.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-21T11:41:49Z",
+      "side": 1,
+      "message": "alignment",
+      "revId": "877f91cc53d680896a82a1921c7c63c7f58ce430",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b221898d_37cf2eaa",
+        "filename": "src/5gnrmac/rg_l2m.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-21T11:41:49Z",
+      "side": 1,
+      "message": "fix alignment. applicable to all places",
+      "revId": "877f91cc53d680896a82a1921c7c63c7f58ce430",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8c20aa31_b4945931",
+        "filename": "src/5gnrmac/rg_lmm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-21T11:41:49Z",
+      "side": 1,
+      "message": "why these extra spaces at the beginning of each line?",
+      "revId": "877f91cc53d680896a82a1921c7c63c7f58ce430",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fe5defe0_6533bc0a",
+        "filename": "src/5gnrmac/rg_lmm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-21T11:41:49Z",
+      "side": 1,
+      "message": "align",
+      "revId": "877f91cc53d680896a82a1921c7c63c7f58ce430",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d4be109c_c4602bf8",
+        "filename": "src/5gnrmac/rg_lmm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-21T11:41:49Z",
+      "side": 1,
+      "message": "remove spaces. Check for other functions too in this file",
+      "revId": "877f91cc53d680896a82a1921c7c63c7f58ce430",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b7301691_da3a5775",
+        "filename": "src/5gnrmac/rg_lmm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-21T11:41:49Z",
+      "side": 1,
+      "message": "align",
+      "revId": "877f91cc53d680896a82a1921c7c63c7f58ce430",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6dfd215e_03b35b88",
+        "filename": "src/5gnrmac/rg_lmm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 521,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-21T11:41:49Z",
+      "side": 1,
+      "message": "align",
+      "revId": "877f91cc53d680896a82a1921c7c63c7f58ce430",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d55a0c92_1a123aaa",
+        "filename": "src/5gnrmac/rg_lmm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 742,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-21T11:41:49Z",
+      "side": 1,
+      "message": "Please recheck the alignment everywhere",
+      "revId": "877f91cc53d680896a82a1921c7c63c7f58ce430",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a4cca949_711fa579",
+        "filename": "src/cu_stub/cu_stub.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-21T11:41:49Z",
+      "side": 1,
+      "message": "remove",
+      "revId": "877f91cc53d680896a82a1921c7c63c7f58ce430",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ad637655_ee59cceb",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-21T11:41:49Z",
+      "side": 1,
+      "message": "uint8",
+      "revId": "877f91cc53d680896a82a1921c7c63c7f58ce430",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
