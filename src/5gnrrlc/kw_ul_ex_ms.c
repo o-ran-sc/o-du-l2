@@ -245,6 +245,11 @@ Buffer *mBuf;           /* message buffer */
                      ret = unpackRlcUlUeCreateReq(RlcUlProcUeCreateReq, pst, mBuf);
                      break;
                   }
+              case EVENT_RLC_UL_UE_RECONFIG_REQ:        /* UE Reconfig Request */
+                  {
+                     ret = unpackRlcUlUeReconfigReq(RlcUlProcUeReconfigReq, pst, mBuf);
+                     break;
+                  }
 
                case LKW_EVT_STS_REQ:
                   {

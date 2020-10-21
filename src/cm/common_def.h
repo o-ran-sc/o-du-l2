@@ -163,7 +163,23 @@ typedef struct PlmnIdentity
    uint8_t mnc[3];
 }Plmn;
 
-void schAllocFreqDomRscType0(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain);
+typedef enum
+{
+   UE_CFG_INACTIVE,
+   UE_CREATE_COMPLETED,
+   UE_RECFG_COMPLETED
+}UeCfgState;
+
+typedef enum
+{
+   CONFIG_UNKNOWN,
+   CONFIG_ADD_TYPE,
+   CONFIG_MOD_TYPE,
+   CONFIG_DEL_TYPE
+}ConfigType;
+
+void freqDomRscAllocType0(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain);
+uint8_t getDrbLcId();
 void oduCpyFixBufToMsg(uint8_t *fixBuf, Buffer *mBuf, uint16_t len);
 
 #endif
