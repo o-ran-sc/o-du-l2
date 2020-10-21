@@ -307,6 +307,7 @@ RlcCfgInfo   *cfg;
    cfgTmpData->cfgInfo  = cfg;
 
  
+   tRlcCb->u.ulCb->rlcUlUdxEventType = pst->event;
    if (rlcDbmAddUlTransaction(tRlcCb, cfgTmpData) != ROK)
    {
       RLOG0(L_ERROR, "Addition to UL transId Lst Failed");
