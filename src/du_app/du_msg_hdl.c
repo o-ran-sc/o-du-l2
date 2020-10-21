@@ -1540,12 +1540,12 @@ uint8_t duSendEgtpSlotInd()
  *      Functionality:
  *           Initiates MAC Configs towards MAC
  *     
- * @param[in] void
+ * @param[in]cell id
  * @return ROK     - success
  *         RFAILED - failure
  *
  ***************************************************************************/
-uint8_t duBuildAndSendMacCellCfg()
+uint8_t duBuildAndSendMacCellCfg(uint16_t cellId)
 {
    Pst pst;
    DU_SET_ZERO(&pst, sizeof(Pst));
@@ -1557,8 +1557,8 @@ uint8_t duBuildAndSendMacCellCfg()
       return RFAILED;
    }
 
-   /* store the address in the duCb so that we can free on confirm msg */
-   duCb.duMacCellCfg = duMacCellCfg;
+   /* store the address in the duCellCb so that we can free on confirm msg */
+   duCb.actvCellLst[cellId-1]->duMacCellCfg = duMacCellCfg;
 
    /* copy the mac config structure from duCfgParams */
    memcpy(duMacCellCfg,&duCfgParam.macCellCfg,sizeof(MacCellCfg));
@@ -1596,7 +1596,7 @@ uint8_t  duHandleMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm)
 	{
 	    if(macCellCfgCfm->cellId == duCb.actvCellLst[actvCellIdx]->cellId)
 	    {
-	        duCb.duMacCellCfg = NULLP;
+	        duCb.actvCellLst[actvCellIdx]->duMacCellCfg = NULLP;
 	        /* Build and send GNB-DU config update */
 	        ret = BuildAndSendDUConfigUpdate();
 
