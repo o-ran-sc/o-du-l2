@@ -491,7 +491,6 @@ RgrSchedEnbCfg   *schedEnbCfg;
 RgSchErrInfo     *errInfo;
 #endif
 {
-   TRC2(rgSCHCfgVldtRgrSchedEnbCfg);
    RGSCHDBGPRM(inst, (rgSchPBuf(inst), "VALIDATE RGR SCH ENB CONFIG: \n"));
 
    errInfo->errCause = RGSCHERR_CFG_INVALID_RGR_ENB_CFG;
@@ -569,8 +568,6 @@ RgSchCellCb  *cell;
 RgSchErrInfo *errInfo;
 #endif
 {
-   TRC2(rgSCHCfgVldtRgrCellCfg);
-
    errInfo->errCause = RGSCHERR_CFG_INVALID_RGR_CELL_CFG;
 
    /* check if cell exists already */
@@ -851,8 +848,6 @@ Inst         inst;
 RgrSchedCfg   *rgSchedCfg;
 #endif
 {
-   TRC2(rgSCHCfgVldtRgrSchCfg);
-
    RGSCHDBGPRM(inst, (rgSchPBuf(inst), "rgSCHCfgVldtRgrSchCfg:Validating \
                scheduler related Configuration"));
    if (rgSchedCfg->ulSchdType > (RGSCH_NUM_SCHEDULERS - 1))
@@ -902,7 +897,6 @@ Inst         inst;
 RgrCellCfg   *cellCfg;
 #endif
 {
-   TRC2(rgSCHCfgVldtRgrCellSchCfg);
 
 #if RGSCH_NUM_DLFS_SCHEDULERS
    if (cellCfg->dlfsSchdType > RGSCH_NUM_DLFS_SCHEDULERS - 1)
@@ -947,8 +941,6 @@ Inst         inst;
 RgrCellCfg   *cellCfg;
 #endif
 {
-   TRC2(rgSCHCfgVldtRgrCellRACfg);
-
 
 #ifdef LTE_TDD
    if ((cellCfg->rachCfg.preambleFormat > RGSCH_MAX_TDD_RA_PREAMBLE_FMT) ||
@@ -1073,8 +1065,6 @@ RgSchCellCb  **cell;
 RgSchErrInfo *errInfo;
 #endif
 {
-   TRC2(rgSCHCfgVldtRgrUeCfg);
-
    errInfo->errCause = RGSCHERR_CFG_INVALID_RGR_UE_CFG;
 
    if (((*cell) == NULLP) || 
@@ -1279,8 +1269,6 @@ RgSchCellCb   **cell;
 RgSchErrInfo  *errInfo;
 #endif
 {
-   TRC2(rgSCHCfgVldtRgrCellRecfg);
-
 
    errInfo->errCause = RGSCHERR_CFG_INVALID_RGR_CELL_RECFG;
    
@@ -1485,8 +1473,6 @@ RgSchErrInfo *err;
    RgrUePrdDlCqiCfg    *pCqiCfg;  
 #endif
 
-   TRC2(rgSCHSCellCfgUeCfg);
- 
    RLOG0(L_INFO, "SCELL recfg received from APP \n");  
 
    RGSCHDBGINFONEW(inst, (rgSchPBuf(inst), 
@@ -1741,7 +1727,6 @@ RgSchErrInfo *err;
    RgrUeSCellAckPucchCfg *sCellPucchRecfg = NULLP;
    U8 idx;
 
-   TRC2(rgSCHSCellCfgUePucchReCfg);
    RGSCHDBGINFONEW(inst, (rgSchPBuf(inst), 
      "--------------------------------------------------------------------\n"
      "UE SCell PUCCH ReConfiguration at SCH: rnti (%u) cell(%u)\n"
@@ -1845,7 +1830,6 @@ RgSchErrInfo   *errInfo;
    RgSchCellCb          *sCell = NULLP;
    Inst    inst = cell->instIdx;
 
-   TRC2(rgSCHCfgVldtRgrUeSCellRecfg);
 
    RGSCHDBGPRM(inst, (rgSchPBuf(inst), "VALIDATE RGR UE SCELL RECONFIG: cellId %d "
             "oldUeId %d cell %p \n", ueRecfg->cellId, ueRecfg->oldCrnti));
@@ -1979,8 +1963,6 @@ RgrUeRecfg   *ueRecfg;
    RgSchUeCellInfo     *sCellInfo = NULLP;
    RgSchCmnCell        *cellSch   = NULLP;
 
-   TRC2(rgSCHSCellCfgUeCfgRollBack);
-   
    RGSCHDBGINFONEW(inst, (rgSchPBuf(inst), 
      "--------------------------------------------------------------------\n"
      "UE SCell config roll back at SCH: rnti (%u) cell(%u)\n"
@@ -2069,8 +2051,6 @@ RgSchUeCb      **ue;
 RgSchErrInfo   *errInfo;
 #endif
 {
-
-   TRC2(rgSCHCfgVldtRgrUeRecfg);
 
    errInfo->errCause = RGSCHERR_CFG_INVALID_RGR_UE_RECFG;
    
@@ -2300,8 +2280,6 @@ RgSchDlLcCb     **dlLc;
 RgSchErrInfo    *errInfo;
 #endif
 {
-   TRC2(rgSCHCfgVldtRgrLchRecfg);
-
    errInfo->errCause = RGSCHERR_CFG_INVALID_RGR_LC_RECFG;
 
    if (((*cell) == NULLP) ||
@@ -2372,8 +2350,6 @@ RgSchUeCb    **ue;
 RgSchErrInfo *errInfo;
 #endif
 {
-   TRC2(rgSCHCfgVldtRgrUeReset);
-   
 
    errInfo->errCause = RGSCHERR_CFG_INVALID_RGR_UE_RESET;
    
@@ -2442,8 +2418,6 @@ RgSchUeCb       **ue;
 RgSchErrInfo    *errInfo;
 #endif
 {
-   TRC2(rgSCHCfgVldtRgrLcgRecfg);
-
    errInfo->errCause = RGSCHERR_CFG_INVALID_RGR_LCG_RECFG;
 
    if (((cell) == NULLP) ||
@@ -2511,8 +2485,6 @@ RgrCellCfg    *cellCfg;
    U8        maxMPhich;
    U16       numDlSf;
 #endif    
-
-   TRC2(rgSCHDynCfiCfg);
 
    cell->dynCfiCb.isDynCfiEnb = cellCfg->isDynCfiEnb;
 
@@ -2639,7 +2611,6 @@ RgrSchedEnbCfg  *schedEnbCfg;
 RgSchErrInfo    *errInfo;
 #endif
 {
-   TRC2(rgSCHCfgRgrSchedEnbCfg);
 
    RGSCHDBGPRM(inst, (rgSchPBuf(inst), "APPLYING RGR SCH ENB CONFIG: \n"));
    errInfo->errCause = RGSCHERR_CFG_INVALID_RGR_ENB_CFG;
@@ -2692,8 +2663,6 @@ RgrCellCfg    *cellCfg;
 #endif
 {
    U8           idx;
-
-   TRC2(rgSCHCfgRgrCellCfg);
 
    for(idx = 0; idx < MAX_5GTF_GROUP; idx++)
    {
@@ -2767,11 +2736,9 @@ RgSchErrInfo  *errInfo;
    Inst         inst = instCb->rgSchInit.inst;
    U32          Idx1 = (U8)((cellCfg->cellId - instCb->genCfg.startCellId)&(CM_LTE_MAX_CELLS-1));
 
-   TRC2(rgSCHCfgRgrCellCfg);
-
    errInfo->errCause = RGSCHERR_CFG_RGR_CELL_CFG;
    
-   cmMemset((U8*)&pst, (U8)0, sizeof(Pst));
+   memset(&pst, (U8)0, sizeof(Pst));
     
    /* Allocate the scheduler's cell control block */
    if((ret = rgSCHUtlAllocSBuf(inst, (Data**)&cell, sizeof(RgSchCellCb))) 
@@ -2809,7 +2776,7 @@ RgSchErrInfo  *errInfo;
    {
       cell->lteAdvCb.absCfg =
          cellCfg->rgrLteAdvCfg.absCfg;
-      cmMemset((U8*)cell->lteAdvCb.absLoadInfo, 0, sizeof(U32)*RGR_ABS_PATTERN_LEN);
+      memset(cell->lteAdvCb.absLoadInfo, 0, sizeof(U32)*RGR_ABS_PATTERN_LEN);
       cell->lteAdvCb.absLoadTtiCnt = 0;
    }
 
@@ -2857,7 +2824,7 @@ RgSchErrInfo  *errInfo;
    cell->t300TmrVal = cellCfg->t300TmrVal;
 #ifdef RGR_SI_SCH
    /*Initialize the SI CB in Cell CB */
-   cmMemset((U8 *)&cell->siCb, 0, sizeof(RgSchSiCb));
+   memset(&cell->siCb, 0, sizeof(RgSchSiCb));
 #endif
    /*Fix: Added Guard Pool for RNTI which will contain RNTIs 
        *for UEs deleted from Scheduler but not yet from MAC*/
@@ -3156,7 +3123,6 @@ RgSchErrInfo *errInfo;
 #ifdef TFU_UPGRADE
    RgSchUePCqiCb *cqiCb = NULLP;
 #endif
-   TRC2(rgSCHCfgRgrUeCfg);
 
   do {
      errInfo->errCause = RGSCHERR_CFG_RGR_UE_CFG;
@@ -3541,8 +3507,6 @@ RgSchErrInfo *errInfo;
 #endif
 {
 
-   TRC2(rgSCHCfgRgrUePhrMsg3);
-
    /* Record msg3 allocation in the UE */
    rgSCHUtlRecMsg3Alloc(cell, ue, raCb);
 
@@ -3582,8 +3546,6 @@ Bool          isDynCfiEnb;
 {            
    U8                idx;
    RgSchCmnDlCell    *cellSchDl = RG_SCH_CMN_GET_DL_CELL(cell);
-
-   TRC2(rgSCHDynCfiReCfg);
 
    if(isDynCfiEnb)
    {
@@ -3649,9 +3611,6 @@ RgSchErrInfo  *errInfo;
    U16     len; /* dsfr_pal_fixes ** 21-March-2013 ** SKS */
 /* LTE_ADV_FLAG_REMOVED_END */
    
-   TRC2(rgSCHCfgRgrCellRecfg);
-
-
    errInfo->errCause = RGSCHERR_CFG_RGR_CELL_RECFG;
    
    /* Invoke scheduler to update scheduler specific information */
@@ -3748,7 +3707,7 @@ RgSchErrInfo  *errInfo;
       }
       if(cellRecfg->rgrLteAdvCfg.pres & RGR_SFR)
       {
-         cmMemcpy((U8 *)&cell->lteAdvCb.sfrCfg, (U8 *)&cellRecfg->rgrLteAdvCfg.sfrCfg,
+         memcpy(&cell->lteAdvCb.sfrCfg, &cellRecfg->rgrLteAdvCfg.sfrCfg,
                sizeof(RgrSfrConfig));
          /* dsfr_pal_fixes ** 21-March-2013 ** SKS */
          if (cellRecfg->rgrLteAdvCfg.sfrCfg.status == RGR_ENABLE)
@@ -3926,8 +3885,6 @@ RgSchErrInfo   *errInfo;
    RgSchDlHqEnt **hqEnt = &(RG_SCH_CMN_GET_UE_HQE(ue, cell));
    U8           idx;
     
-   TRC2(rgSCHCfgRgrUeRecfgRntiChg);
-
    /* Handle CRNTI change in reconfiguration */
    if (ueRecfg->oldCrnti != ueRecfg->newCrnti)
    {
@@ -4138,8 +4095,6 @@ RgSchErrInfo   *errInfo;
    Bool dciChange = TRUE;
 #endif
    
-   TRC2(rgSCHCfgRgrUeRecfg);
-
    errInfo->errCause = RGSCHERR_CFG_RGR_UE_RECFG;
 
 #ifdef LTE_ADV
@@ -4404,8 +4359,6 @@ RgSchErrInfo   *errInfo;
 {
    S16     ret = ROK;
 
-   TRC2(rgSCHCfgRgrLchRecfg);
-
    errInfo->errCause = RGSCHERR_CFG_RGR_LC_RECFG;
    /* Invoke Scheduler to update the new configuration */
    ret = rgSCHUtlRgrLcRecfg(cell, ue, dlLc, lcRecfg, errInfo);
@@ -4458,8 +4411,6 @@ RgSchErrInfo   *errInfo;
 #endif
 {
    S16     ret = ROK;
-
-   TRC2(rgSCHCfgRgrLcgRecfg);
 
    errInfo->errCause = RGSCHERR_CFG_RGR_LCG_RECFG;
   
@@ -4517,9 +4468,6 @@ RgSchErrInfo   *errInfo;
 {
    U32     idx;
    RgSchRaCb *raCb;
-
-   TRC2(rgSCHCfgRgrUeReset);
-
 
    errInfo->errCause = RGSCHERR_CFG_RGR_UE_RESET;
   
@@ -4625,8 +4573,6 @@ RgrDel         *cellDelInfo;
 RgSchErrInfo   *errInfo;
 #endif
 { 
-   TRC2(rgSCHCfgRgrCellDel);
-
 
    errInfo->errCause = RGSCHERR_CFG_RGR_CELL_DEL;
 
@@ -4686,7 +4632,6 @@ RgSchErrInfo        *errInfo;
    RgSchCellCb      *secCellCb = NULLP;
 #endif
 
-   TRC2(rgSCHCfgRgrUeDel);
    errInfo->errCause = RGSCHERR_CFG_RGR_UE_DEL;
 
    if (cell->cellId != ueDelInfo->u.ueDel.cellId)
@@ -4830,8 +4775,6 @@ RgSchErrInfo   *errInfo;
    RgSchUlLcCb  *ulLc; 
 #endif
 
-   TRC2(rgSCHCfgRgrLcDel);
-
    errInfo->errCause = RGSCHERR_CFG_RGR_LC_DEL;
 
    /* Fetch the Active cell */
@@ -4956,9 +4899,6 @@ RgSchErrInfo   *errInfo;
 #endif
    U8           lcgId = 0;
 
-   TRC2(rgSCHCfgRgrLcgDel);
-
-
    lcgId = lcDelInfo->u.lcgDel.lcgId;
 
    errInfo->errCause = RGSCHERR_CFG_RGR_LCG_DEL;
@@ -5050,8 +4990,6 @@ RgSchUeCb        **ue;
 RgSchErrInfo     *errInfo;
 #endif
 {
-   TRC2(rgSCHCfgVldtRgrLcCfg);
-
 
    errInfo->errCause = RGSCHERR_CFG_INVALID_RGR_DED_LC_CFG;
 
@@ -5124,8 +5062,6 @@ RgSchUeCb        **ue;
 RgSchErrInfo     *errInfo;
 #endif
 {
-   TRC2(rgSCHCfgVldtRgrLcgCfg);
-
 
    errInfo->errCause = RGSCHERR_CFG_INVALID_RGR_DED_LCG_CFG;
 
@@ -5187,8 +5123,6 @@ RgSchErrInfo     *errInfo;
    UNUSED(cellCfg);
    UNUSED(errInfo);
 
-   TRC2(rgSCHCfgVldtRgrCellPwrCfg);
-
    /* This function does nothing now, placeholder for
     * subsequent power config validations that may be needed */
 
@@ -5235,8 +5169,6 @@ RgSchErrInfo     *errInfo;
    U8            dirVld  = FALSE;
    U8            bitMask = 0x00;
    U8            cnt=0;
-
-   TRC2(rgSCHCfgVldtRgrCmnLcCfg);
 
    errInfo->errCause = RGSCHERR_CFG_INVALID_RGR_CMN_LC_CFG;
    
@@ -5366,8 +5298,6 @@ RgrUeDlCqiCfg     *ueDlCqiCfg;
 #endif
 {
    
-    TRC2(rgSCHCfgVldtUeCqiModeCfg)
-
 #ifndef TFU_UPGRADE
    if((ueDlCqiCfg->prdCqiCfg.cqiPmiCfgIdx < 1) || 
          (ueDlCqiCfg->prdCqiCfg.cqiPmiCfgIdx > 1024))
@@ -5450,8 +5380,6 @@ RgrUeCfg          *ueCfg;
 #endif
 {
 
-   TRC2(rgSCHCfgVldtUeMeasGapAckNakRepCfg)
-      
 #ifdef LTE_TDD
    if ((ueCfg->ackNackModeEnum == RGR_TDD_ACKNACK_MODE_MULT) &&
          (ueCfg->ueAckNackCfg.isAckNackEnabled == TRUE))
@@ -5541,7 +5469,6 @@ RgrUeRecfg        *ueRecfg;
 #endif
 {
 
-   TRC2(rgSCHCfgVldtUeMeasGapAckNakRepRecfg)
    if((ueRecfg->ueAckNackRecfg.isAckNackEnabled == FALSE) &&
           (!ueRecfg->ueMeasGapRecfg.isMesGapEnabled))
    {
@@ -5623,8 +5550,6 @@ RgrUeSpsDlCfg     *dlSpsCfg;
 
    U8                 idx = 0;
 
-   TRC2(rgSCHCfgVldtUeDlSpsCfg);
-
    /* peridicity validation done in SPS module */
    if ((dlSpsCfg->numPucchVal > RG_SCH_MAX_NUM_N1PUCCH_PER_UE) ||
          (dlSpsCfg->numPucchVal == 0))
@@ -5690,8 +5615,6 @@ RgrUeUlPwrCfg     *pwrCfg;
 #endif
 {
 
-   TRC2(rgSCHCfgVldtUePwrCfg);
-
    /* Group power control works only in accumulated mode */
    if (!pwrCfg->isAccumulated)
    {
@@ -5749,8 +5672,6 @@ RgrUeGrpPwrCfg *grpPwrCfg;
 #endif
 {
 
-   TRC2(rgSCHCfgVldtUeGrpPwrCfg);
-
    if ((grpPwrCfg->pres) &&
        (((grpPwrCfg->tpcRnti > cell->rntiDb.rntiStart) &&
         ((grpPwrCfg->tpcRnti <
@@ -5797,7 +5718,6 @@ RgrUeRecfg     *ueRecfg;
 #endif
 {
 
-   TRC2(rgSCHCfgVldtSpsReCfg);
    if ((ueRecfg->ueRecfgTypes & RGR_UE_DLSPS_RECFG) &&
          (ueRecfg->ueSpsRecfg.dlSpsCfg.isDlSpsEnabled)) 
    {
@@ -5895,7 +5815,6 @@ RgrUeRecfg     *ueRecfg;
 #endif
 {
 
-   TRC2(rgSCHCfgVldtCqiReptReCfg);
    /* Validate DL Power Control Config parameters */
    if (ueRecfg->ueCqiReptCfg.numColltdCqiRept > RGR_CQIRPTS_MAXN)
    {
@@ -5948,8 +5867,6 @@ RgSchErrInfo     *errInfo;
 #ifdef LTE_L2_MEAS
    RgSchUlLcCb  *ulLc; 
 #endif
-
-   TRC2(rgSCHCfgRgrLchCfg);
 
    errInfo->errCause = RGSCHERR_CFG_RGR_DED_LC_CFG;
 
@@ -6074,7 +5991,6 @@ RgSchErrInfo     *errInfo;
    U32          idx;
    RgSchUlLcCb  *ulLc; 
 #endif
-   TRC2(rgSCHCfgRgrLcgCfg);
 
    errInfo->errCause = RGSCHERR_CFG_RGR_DED_LCG_CFG;
 
@@ -6160,11 +6076,10 @@ RgSchErrInfo        *errInfo;
 #endif
 {
    RgSchClcDlLcCb cmnLcCb;
-   TRC2(rgSCHCfgRgrCmnLcCfg);
 
    errInfo->errCause = RGSCHERR_CFG_RGR_CMN_LC_CFG;
 
-   cmMemset((U8 *)&cmnLcCb, 0, sizeof(cmnLcCb));
+   memset(&cmnLcCb, 0, sizeof(cmnLcCb));
 
    /* Handle configuration for CCCH/BCCH/PCCH */
    if (lcCfg->lcType == CM_LTE_LCH_CCCH)
@@ -6238,7 +6153,6 @@ RgSchDlLcCb      *dlLc;
 #endif
 {
    Inst    inst = cell->instIdx;
-   TRC2(rgSCHCfgFreeDlDedLcCb);
 
    rgSCHUtlFreeDlLc(cell, ue, dlLc);
 
@@ -6280,9 +6194,8 @@ PRIVATE Void rgSCHCfgFreeDlCmnLcCb(cmnDlLc)
 RgSchClcDlLcCb      *cmnDlLc;
 #endif
 {
-   TRC2(rgSCHCfgFreeDlCmnLcCb);
  
-   cmMemset((U8*)cmnDlLc, 0, sizeof(*cmnDlLc));
+   memset(cmnDlLc, 0, sizeof(*cmnDlLc));
    cmnDlLc->lcId = RGSCH_INVALID_LC_ID;
    RETVOID;
 }  /* rgSCHCfgFreeDlCmnLcCb */
@@ -6321,7 +6234,6 @@ RgSchCellCb      *cell;
    RgSchWarningSiPdu  *warningSiPdu;
    U8                  idx;
  
-   TRC2(rgSCHCfgFreeCellCb);
    /* ccpu00132385- SI Warning PDUs which are not processed need to be deleted */
    /* Search for used index in WarningSi */
    for(idx = 0; idx < RGR_MAX_NUM_WARNING_SI; idx++)
@@ -6443,7 +6355,6 @@ RgSchUeCb      *ue;
    Inst    inst = cell->instIdx;
    U8 lcCnt; 
    U8 lcgId; 
-   TRC2(rgSCHCfgFreeUeCb);
 
    /* Free all logical channel info per UE */
    while((dlLc = rgSCHDbmGetNextDlDedLcCb(ue, NULLP)) != NULLP)
@@ -6566,8 +6477,6 @@ RgSchCellCb      *cell;
    RgSchCfgElem  *rgCfgElem;
    Inst    inst = cell->instIdx;
 
-   TRC2(rgSCHCfgFreeRgrCfgLst);
-
    /* Free CURRENT RGR cfg list */
    while ((rgCfgElem = rgSCHDbmGetNextCrntRgrCfgElem(cell, NULLP)) != NULLP)
    {
@@ -6621,7 +6530,6 @@ RgSchCellCb      *cell;
 {
    RgSchClcDlLcCb *dlCmnLc;
 
-   TRC2(rgSCHCfgFreeCmnLcLst);
 
    if ((dlCmnLc = rgSCHDbmGetBcchOnBch(cell)) != NULLP)
    {
@@ -6678,7 +6586,6 @@ RgSchCellCb      *cell;
    RgSchUeCellInfo *sCellInfo;       
    CmLList         *node;
 #endif
-   TRC2(rgSCHCfgFreeUeLst);
 
    /* Free Ues in the list */
    while ((ue = rgSCHDbmGetNextUeCb(cell, NULLP)) != NULLP)
@@ -6746,8 +6653,6 @@ RgSchCellCb      *cell;
 {
    RgSchUeCb     *ue;
 
-   TRC2(rgSCHCfgFreeSpsUeLst);
-
    /* Free Ues in the list */
    while ((ue = rgSCHDbmGetNextSpsUeCb(cell, NULLP)))
    {
@@ -6792,9 +6697,6 @@ RgrSiCfg       *siCfg;
    U8   idx; /* idx for iteration */
 
    UNUSED(inst);
-
-   TRC2(rgSCHCfgVldtRgrCellSiCfg);
-
 
 #ifndef LTE_TDD
    /* Check that retxCnt value should be <= value of siWinSize.
@@ -6877,9 +6779,6 @@ PRIVATE S16 rgSCHCfgVldtRgrCellLteAdvCfg(inst, lteAdvCfg, dlTotalBw)
    U32 idx;
    UNUSED(inst);
 
-   TRC2(rgSCHCfgVldtRgrCellLteAdvCfg);
-
-
    if((lteAdvCfg->pres & RGR_SFR) && (RGR_ENABLE == lteAdvCfg->sfrCfg.status))
    {
       if(lteAdvCfg->sfrCfg.cellEdgeRbRange.startRb > lteAdvCfg->sfrCfg.cellEdgeRbRange.endRb)
@@ -6912,7 +6811,7 @@ PRIVATE S16 rgSCHCfgVldtRgrCellLteAdvCfg(inst, lteAdvCfg, dlTotalBw)
          return RFAILED;
       }
 
-       cmMemcpy(temp,  (U8 *) lteAdvCfg->absCfg.absPattern,RGR_ABS_PATTERN_LEN);
+       memcpy(temp, lteAdvCfg->absCfg.absPattern,RGR_ABS_PATTERN_LEN);
       
        /* Added validation for ABS pattern len */
       for(idx = 0; idx < RGR_ABS_PATTERN_LEN; idx++)
@@ -6957,8 +6856,6 @@ Inst                     inst;
 RgrCellCsgParamCfg       *csgParam;
 #endif
 {
-
-   TRC2(rgSCHCfgVldtRgrCellCsgParamCfg);
 
    RGSCHDBGPRM(inst, (rgSchPBuf(inst), "Validating CSG Parameters \n"));
 
@@ -7018,9 +6915,6 @@ RgSchErrInfo *errInfo;
 {
    MsgLen  msgLen = 0;
    U8      numSi;
-
-   TRC2(rgSCHCfgVldtRgrSiCfg);
-
 
    errInfo->errCause = RGSCHERR_CFG_INVALID_RGR_SI_CFG;
 
@@ -7152,9 +7046,6 @@ S16 rgSCHCfgVldtRgrLoadInf(inst, loadInfReq, cell, errInfo)
 #endif
 {
 
-   TRC2(rgSCHCfgVldtRgrLoadInf);
-
-
    errInfo->errCause = RGSCHERR_CFG_INVALID_RGR_LOAD_INF;
 
    /* Validate if the CC startRb which we have received from DSFR lies in CE sub-band of the receiving eNB */
@@ -7226,8 +7117,6 @@ S16 rgSCHCfgVldtRgrTxmodePuschMode(cellCb, txMde, puschMode,errInfo)
    RgSchErrInfo    *errInfo;
 #endif
 {
-   TRC2(rgSCHCfgVldtRgrTxmodePuschMode);
-
 
    if (txMde == RGR_UE_TM_1 ||  txMde == RGR_UE_TM_2 ||
          txMde == RGR_UE_TM_3 || txMde == RGR_UE_TM_7)
@@ -7316,8 +7205,6 @@ S16 rgSCHCfgVldtRgrUeACqiCfg(cellCb, crnti, acqiCfg,txMode, errInfo)
 {
    RgrTxMode      txMde;
    RgrAprdCqiMode puschMode; 
-   TRC2(rgSCHCfgVldtRgrUeACqiCfg);
-
 
    if(acqiCfg->pres)
    {
@@ -7376,8 +7263,6 @@ S16 rgSCHCfgVldtRgrTxmodePucchMode(cellCb, txMde, pucchMode,errInfo)
    RgSchErrInfo    *errInfo;
 #endif
 {
-   TRC2(rgSCHCfgVldtRgrTxmodePucchMode);
-   
 
   if (pucchMode == RGR_PRD_CQI_MOD10 || pucchMode == RGR_PRD_CQI_MOD20 )
   {
@@ -7466,8 +7351,6 @@ S16 rgSCHCfgVldtRgrUePCqiCfg(cellCb, crnti, cqiCfg,  txMode, errInfo)
    RgrTxMode     txMde; 
    RgrPrdCqiMode pucchMode; 
 
-   TRC2(rgSCHCfgVldtRgrUePCqiCfg);
-   
    txMde = RGR_UE_TM_1;
    pucchMode = RGR_PRD_CQI_MOD20;
    if ( RGR_SCH_PCQI_SETUP == cqiCfg->type )
@@ -7687,9 +7570,6 @@ S16 rgSCHCfgVldtRgrUeUlSrsCfg(cellCb, crnti, srsCfg,  errInfo)
    U16    srsOffset=0;
    U8     srsSubframe=0;
    
-   TRC2(rgSCHCfgVldtRgrUeUlSrsCfg);
-
-
    if ( RGR_SCH_SRS_SETUP == srsCfg->type )
    {
 
@@ -7849,10 +7729,6 @@ S16 rgSCHCfgVldtRgrUeSrCfg(cellCb, crnti, srCfg, errInfo)
 #endif
 {
 
-   TRC2(rgSCHCfgVldtRgrUeSrCfg);
-
-
-
    if ( RGR_SCH_SR_SETUP == srCfg->type )
    {
       /* 1. Validate SR Configuration related parameter values  */
@@ -7938,9 +7814,6 @@ PRIVATE S16  rgSCHCfgVldtCqiSrSrsUeCfg(cellCb, ueCfg,  errInfo)
    RgSchErrInfo    *errInfo;
 #endif
 {
-
-   TRC2(rgSCHCfgVldtCqiSrSrsUeCfg);
-
 
    /*  1. Validate UE Aperiodic CQI related parameters */
    if ( ROK != rgSCHCfgVldtRgrUeACqiCfg (cellCb, ueCfg->crnti,
@@ -8045,7 +7918,6 @@ PRIVATE S16 rgSCHCfgVldtCqiSrSrsUeReCfg(cellCb, ueCb, ueReCfg, errInfo)
 #endif
 {
    RgrUeTxModeCfg     txMode;
-   TRC3(rgSCHCfgVldtCqiSrSrsUeReCfg);
 
    txMode.pres = TRUE;
    txMode.tmTrnstnState = RGR_TXMODE_RECFG_CMPLT;
@@ -8182,8 +8054,6 @@ CmLteUeCategory   ueCat;
    U8     cqiPmiSzR1;   /*CQIPMI Size for Rank =1*/
    U8     cqiPmiSzRn1; /*CQIPMI Size for Rank > 1*/
 
-   TRC3(rgSCHCfgACqiUeCfg);
-
    cqiPmiSzR1 = 0;
    cqiPmiSzRn1 = 0;
    
@@ -8318,7 +8188,6 @@ S16 rgSCHCfgPCqiUeCfg(cellCb, ueCb, cqiCfg, ueCat)
    U8     temp; 
    U8     loop;
    RgSchUePCqiCb *cqiCb = NULLP;
-   TRC3(rgSCHCfgPCqiUeCfg);
 
    crntTime = (cellCb->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G)+
                   (cellCb->crntTime.slot);
@@ -8332,7 +8201,7 @@ S16 rgSCHCfgPCqiUeCfg(cellCb, ueCb, cqiCfg, ueCat)
          ueCb->rawCqiBitW[loop].type = TFU_RECP_REQ_INVLD; /* setting invalid  type*/
       }
       /*  1. Copy the Received CQI Cfg parameters to ueCb  */
-      cmMemcpy((U8 *)&cqiCb->cqiCfg, (U8 *)cqiCfg, 
+      memcpy(&cqiCb->cqiCfg, cqiCfg, 
             sizeof(RgrUePrdDlCqiCfg));
 
       /*  2. Compute Periodic CQI Periodicity and subframe offset   */
@@ -8491,10 +8360,6 @@ S16 rgSCHCfgRiUeCfg(cellCb, ueCb, cqiCfg, ueCat)
    U16     periodicity; 
    U16    tempIdx; 
    RgSchUePCqiCb *cqiCb = NULLP;
-
-   TRC3(rgSCHCfgRiUeCfg);
-
-
 
    crntTime = (cellCb->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G)
       +(cellCb->crntTime.slot);
@@ -8673,16 +8538,13 @@ S16 rgSCHCfgSrsUeCfg(cellCb, ueCb, srsCfg)
    U16      crntTime;  
    U16      tempIdx;
 
-   TRC3(rgSCHCfgSrsUeCfg);
-
-
    crntTime = (cellCb->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G)
       +(cellCb->crntTime.slot);
 
    if(RGR_SCH_SRS_SETUP == srsCfg->type) 
    {
       /*  1. Copy the Received Cfg parameters to local cb  */
-      cmMemcpy((U8 *)&ueCb->srsCb.srsCfg, (U8 *)srsCfg, sizeof(RgrUeUlSrsCfg));
+      memcpy(&ueCb->srsCb.srsCfg, srsCfg, sizeof(RgrUeUlSrsCfg));
 
 #ifndef LTE_TDD
       /* 2.  Compute SRS Offset and Periodicity */
@@ -8822,15 +8684,13 @@ S16 rgSCHCfgSrUeCfg(cellCb, ueCb, srCfg)
    U16     srTrInsTime;
    U16     crntTime;
 
-   TRC3(rgSCHCfgSrUeCfg);
-
 
    crntTime = (cellCb->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G)
       +(cellCb->crntTime.slot);
    if(srCfg->type == RGR_SCH_SR_SETUP) 
    {
       /*  1. Copy the Received Cfg parameters to local cb  */
-      cmMemcpy((U8 *)&ueCb->srCb.srCfg, (U8 *)srCfg, sizeof(RgrUeSrCfg));
+      memcpy(&ueCb->srCb.srCfg, srCfg, sizeof(RgrUeSrCfg));
 
 
       /*  2. Compute SR periodicity and offset */
@@ -8965,7 +8825,6 @@ S16  rgSCHCfgPCqiUeReCfg(cellCb, ueCb, cqiCfg, ueCat)
 {
 
    RgSchUePCqiCb *cqiCb = NULLP;
-   TRC3(rgSCHCfgPCqiUeReCfg);
 
    cqiCb = RG_SCH_GET_UE_CELL_CQI_CB(ueCb,cellCb);
    /* Fix: ccpu00124008 Fix for incorrect check causing missed CQI reception instance */
@@ -9077,9 +8936,6 @@ S16 rgSCHCfgSrsUeReCfg(cellCb, ueCb, srsCfg)
 #endif
 {
 
-   TRC3(rgSCHCfgSrsUeReCfg);
-
-
 
    if(( RGR_SCH_SRS_SETUP == srsCfg->type) ||
          ( RGR_SCH_SRS_SETUP != ueCb->srsCb.srsCfg.type ))
@@ -9175,8 +9031,6 @@ S16 rgSCHCfgSrUeReCfg(cellCb, ueCb, srCfg)
    RgrUeSrCfg    *srCfg;
 #endif
 {
-   TRC3(rgSCHCfgSrUeReCfg);
-
 
    /* Fix : syed Incorrect check for SR RECFG */
    if((srCfg->type == RGR_SCH_SR_SETUP) &&
@@ -9260,7 +9114,6 @@ S16 rgSCHCfgAcqiUeReCfg(cellCb, ueCb, acqiCfg, ueCat)
    CmLteUeCategory   ueCat;
 #endif
 {
-   TRC3(rgSCHCfgAcqiUeReCfg);
 
    return (rgSCHCfgACqiUeCfg(cellCb,ueCb,(RG_SCH_CMN_GET_ACQICB(ueCb,cellCb))
                                     ,ueCb->mimoInfo.txMode, acqiCfg, ueCat));
@@ -9322,7 +9175,6 @@ S16 rgSCHCfgPCqiSrsSrUeDel(cellCb, ueCb)
    U32 sCellCnt = 0;
 #endif
    RgSchUePCqiCb *cqiRiCb = NULLP;
-   TRC3(rgSCHCfgPCqiSrsSrUeDel);
 
    cqiRiCb = RG_SCH_GET_UE_CELL_CQI_CB(ueCb,cellCb);
 
@@ -9446,7 +9298,6 @@ S16 rgSCHUtlGetCfgPerOff ( tbl, cfgIdx, peri, offset)
    U8     min = 0;
    U8     max = 0;
    CONSTANT RgSchUePCqiSrsSrCfgIdxTbl* table;
-   TRC3(rgSCHUtlGetCfgPerOff);
   
    /* Added the function instead of the MACRO to get the 
     * periodicity table */
@@ -9510,9 +9361,6 @@ PRIVATE  Void rgSCHCfgUtlFetchAcqiBitSz(acqiCb, numTxAnt, cqiPmiSzR1, cqiPmiSzRn
 {
 
    U32               confRepMode;
-
-                     
-   TRC3(rgSCHCfgUtlFetchAcqiBitSz);
 
    confRepMode = acqiCb->aCqiCfg.aprdModeEnum;
    switch(confRepMode)
@@ -9613,7 +9461,6 @@ PRIVATE CONSTANT RgSchUePCqiSrsSrCfgIdxTbl *  rgSCHCfgUtlGetPcqiSrsSrRiTbl(tblTy
 #endif
 {
     CONSTANT RgSchUePCqiSrsSrCfgIdxTbl * table;
-    TRC3(rgSCHCfgUtlGetPcqiCrsSrRiTbl);
     
     switch (tblType)
     {
@@ -9702,8 +9549,6 @@ RgSchCellCb       *cell;
 RgrUeDrxCfg       *ueDrxCfg;
 #endif
 {
-   TRC2(rgSCHCfgVldtDrxUeCfg)
-
 
    if (ueDrxCfg->isDrxEnabled == FALSE)
    {
@@ -9901,7 +9746,6 @@ PRIVATE S16 rgSCHCfgVldtDrxOnDurCfg(onDurTmr)
 U8      onDurTmr;
 #endif
 {
-   TRC2(rgSCHCfgVldtDrxOnDurCfg)
 
    switch ( onDurTmr )
    {
@@ -9959,8 +9803,6 @@ PRIVATE S16 rgSCHCfgVldtDrxInActvCfg(inActvTmr)
 U16      inActvTmr;
 #endif
 {
-   TRC2(rgSCHCfgVldtDrxInActvCfg)
-
    switch ( inActvTmr )
    {
       case RGR_DRX_PRD_1PSF:
@@ -10023,8 +9865,6 @@ PRIVATE S16 rgSCHCfgVldtDrxReTxCfg(reTxTmr)
 U8       reTxTmr;
 #endif
 {
-   TRC2(rgSCHCfgVldtDrxReTxCfg)
-
    switch ( reTxTmr )
    {
       case RGR_DRX_PRD_1PSF:
@@ -10074,8 +9914,6 @@ PRIVATE S16 rgSCHCfgVldtDrxLngCycCfg(lngCycleOffst)
 RgrDrxLongCycleOffst       lngCycleOffst;
 #endif
 {
-   TRC2(rgSCHCfgVldtDrxLngCycCfg)
-
    if ( rgSCHCfgVldtDrxLngCyclTmrs(lngCycleOffst.longDrxCycle) != ROK )
    {
       return RFAILED;
@@ -10117,7 +9955,6 @@ PRIVATE S16 rgSCHCfgVldtDrxLngCyclTmrs(val)
 U16      val;
 #endif
 {
-   TRC2(rgSCHCfgVldtDrxLngCyclTmrs)
 
    switch ( val )
    {
@@ -10176,8 +10013,6 @@ PRIVATE S16 rgSCHCfgVldtDrxShrtCycCfg(shrtCycCfg)
 RgrDrxShortDrx      shrtCycCfg;
 #endif
 {
-   TRC2(rgSCHCfgVldtDrxShrtCycCfg)
-
    switch(shrtCycCfg.shortDrxCycle)
    {
       case RGR_DRX_PRD_2SF:
@@ -10249,8 +10084,6 @@ RgrUeRecfg        *ueCfg;
 RgSchErrInfo      *err;
 #endif
 {
-   TRC2(rgSCHCfgUeTaRecfg)
-
    UNUSED(err);
 
    /* Update the TA related information */
@@ -10312,7 +10145,6 @@ RgrUeRecfg     *ueRecfg;
 #endif
 {
    S16 retVal;
-   TRC3(rgSCHCfgUeCqiReptReCfg)
 
    /* Check has it been disabled */
    if(ueRecfg->ueCqiReptCfg.numColltdCqiRept)
@@ -10418,7 +10250,6 @@ U8           idx;
    RgSchUeCellInfo *sCellInfo = NULLP;
    RgrUeSecCellCfg *sCellInfoRecfg = NULLP;
    
-   TRC2(rgSCHSCellFreeBuf);
 
    for(U8 i = 0; i <= idx; i++)
    {

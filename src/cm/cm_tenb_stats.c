@@ -115,7 +115,6 @@ PRIVATE Void TSInfTrigL2Stats(region, pool)
    Buffer* pBuf;
    Pst pst = {0};
 
-   TRC2(TSInfTrigL2Stats)
 
    SGetMsg(region, pool, &pBuf);
 //#if defined(SCH_STATS) || defined(TENB_STATS)
@@ -156,7 +155,6 @@ Void TSInfTrigStats(region, pool)
  Pool      pool;
 #endif
 {
-   TRC2(TSInfTrigStats)
 //TODO
    TSInfTrigL2Stats(region, pool);
 
@@ -176,7 +174,6 @@ PRIVATE Buffer* TSInfUtlAllocMsg(pst)
 {
    Buffer *mBuf; 
 
-   TRC2(TSInfUtlAllocMsg)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
       printf("\n MBuf Allocation failed\n");
@@ -199,7 +196,6 @@ PRIVATE Void TSInfUtlPackUeInfo(mBuf, stats)
    S32 i;
    U32 k;
 
-   TRC2(TSInfUtlPackUeInfo)
 
    CMCHKPK(oduUnpackUInt32, stats->persistent.numDeactivation, mBuf);
    CMCHKPK(oduUnpackUInt32, stats->persistent.numActivation, mBuf);
@@ -280,7 +276,6 @@ PRIVATE Void TSInfUtlPackCellInfo(mBuf, stats)
 {
    S32 i,j;
 
-   TRC2(TSInfUtlPackCellInfo)
 
    CMCHKPK(oduUnpackUInt32, stats->rlc.reOdrTmrExp, mBuf);
    CMCHKPK(oduUnpackUInt32, stats->rlc.maxRlcDrbRetxFail, mBuf);
@@ -398,7 +393,6 @@ PRIVATE Void TSInfUtlUnpkUeInfo(mBuf, stats)
    S32 i;
    U32 k;
 
-   TRC2(TSInfUtlUnpkUeInfo)
 
    CMCHKUNPK(oduPackUInt32, &stats->rnti, mBuf);
 
@@ -480,7 +474,6 @@ PRIVATE Void TSInfUtlUnpkCellInfo(mBuf, stats)
 {
    S32 i,j;
 
-   TRC2(TSInfUtlUnpkCellInfo)
 
       CMCHKUNPK(oduPackUInt32, &stats->cellId, mBuf);
 
@@ -599,7 +592,6 @@ Void TSInfPkSndL2UeStats(pst, suId, stats)
 {
    Buffer *mBuf;
 
-   TRC2(TSInfPkSndL2UeStats)
 
    mBuf = TSInfUtlAllocMsg(pst);
    TSInfUtlPackUeInfo(mBuf, stats);
@@ -626,7 +618,6 @@ Void TSInfUnpkL2UeStats(func, pst, mBuf)
    SuId              suId;
    TSInfL2UeStats     stats; 
 
-   TRC2(TSInfUnpkL2UeStats)
 
    SUnpkS16(&suId, mBuf);
    TSInfUtlUnpkUeInfo(mBuf, &stats);
@@ -651,7 +642,6 @@ Void TSInfPkSndL2CellStats(pst, suId, stats)
 {
    Buffer *mBuf;
 
-   TRC2(TSInfPkSndL2CellStats)
 
    mBuf = TSInfUtlAllocMsg(pst);
    TSInfUtlPackCellInfo(mBuf, stats);
@@ -678,7 +668,6 @@ Void TSInfUnpkL2CellStats(func, pst, mBuf)
    SuId                suId;
    TSInfL2CellStats    stats; 
 
-   TRC2(TSInfUnpkL2CellStats)
 
    SUnpkS16(&suId, mBuf);
    TSInfUtlUnpkCellInfo(mBuf, &stats);

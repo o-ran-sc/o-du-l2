@@ -91,9 +91,9 @@ Void ResetRLCStats(Void)
 {
    RlcCb* dlInst = rlcCb[1]; 
    RlcCb* ulInst = rlcCb[0]; 
-   cmMemset((U8*)&gRlcStats, 0, sizeof(RLCStats));
-   cmMemset((U8*)&dlInst->genSts,0,sizeof(RlcGenSts));
-   cmMemset((U8*)&ulInst->genSts,0,sizeof(RlcGenSts));
+   memset(&gRlcStats, 0, sizeof(RLCStats));
+   memset(&dlInst->genSts,0,sizeof(RlcGenSts));
+   memset(&ulInst->genSts,0,sizeof(RlcGenSts));
 }
 
 #ifndef ALIGN_64BIT
@@ -251,7 +251,7 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
    {
       datPerUe = datReqInfo->datReq[ueIdx];
 
-      memset((uint8_t *)dlData, 0, sizeof(RlcData));
+      memset(dlData, 0, sizeof(RlcData));
 
       dlData->cellId = datReqInfo->cellId;
       dlData->rnti = datPerUe.rnti;
@@ -397,7 +397,7 @@ uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
       }
       /* kw002.201 Removed the allocation of RlcDatReq */
       /* kw004.201 Used SSI function to initialize the variable */
-      cmMemset( (U8 *)&datReq, 0, sizeof(RlcDatReq) ); 
+      memset( (U8 *)&datReq, 0, sizeof(RlcDatReq) ); 
       totNumPdu = 0;
       for (numTb = 0; numTb < staInd->nmbOfTbs; numTb++)
       {
@@ -669,7 +669,6 @@ CmLListCp   *sduQ;
    CmLList     *firstSduSnMap;         /* First Node in SDU SnMap Queue */
    RlcSduSnMap  *sduSnMap;              /* SDU Sn Map */
 
-   TRC2(rlcUtlEmptySduQ)
    sduSnMapQ = NULLP;
    firstSduSnMap = NULLP;
    sduSnMap = NULLP;
@@ -760,7 +759,6 @@ RlcCb     *gCb;
 RlcDlRbCb *rbCb;
 #endif 
 {
-   TRC2(rlcDlUtlSetReestInProgressForRB)
       
    rbCb->reestInProgress = TRUE;
    
@@ -818,7 +816,6 @@ Void rlcDlUtlResetReestInProgress(rbCb)
 RlcDlRbCb *rbCb;
 #endif 
 {
-   TRC2(rlcDlUtlSetReestInProgressForRB)
 
    rbCb->reestInProgress = FALSE;
 }
@@ -850,8 +847,6 @@ RlcDlUeCb *ueCb;
 {
    U32        rbIdx;
    
-   TRC2(rlcDlUtlSetReestInProgressForAllRBs)
-
    for(rbIdx = 0;rbIdx < RLC_MAX_SRB_PER_UE;rbIdx++)
    {
       if(ueCb->srbCb[rbIdx] != NULLP)
@@ -1097,9 +1092,6 @@ U32        *toBeFreed
    RlcSn     mTxNext;    /* send state variable */
    RlcTx      *txBuf;
 
-   TRC2(rlcUtlFreeDlAmRbMemory)
-
-
    MODAMT(AMDL.txNext, mTxNext, AMDL.txNextAck,AMDL.snModMask);
 
    /* TODO : to be checked changed from <= to < */
@@ -1330,7 +1322,7 @@ S16 rlcUtlL2MeasDlInit(RlcCb *gCb)
    gCb->u.dlCb->rlcL2Cb.rlcNumMeas=0;
    for(cntr = 0; cntr < LKW_MAX_L2MEAS; cntr++)
    {
-      cmMemset((U8 *)&(gCb->u.dlCb->rlcL2Cb.rlcL2EvtCb[cntr]), 0, sizeof(RlcL2MeasEvtCb));
+      memset(&(gCb->u.dlCb->rlcL2Cb.rlcL2EvtCb[cntr]), 0, sizeof(RlcL2MeasEvtCb));
    }
    gCb->u.dlCb->rlcL2Cb.rlcL2EvtCb[RLC_L2MEAS_DL_DISC].measCb.measType = LKW_L2MEAS_DL_DISC;
    gCb->u.dlCb->rlcL2Cb.rlcL2EvtCb[RLC_L2MEAS_DL_IP].measCb.measType = LKW_L2MEAS_DL_IP;
@@ -1379,7 +1371,6 @@ U32             schPduSz;
    U8              currTbIdx;
    VOLATILE U32     startTime = 0;
    RlcContSduLst   *dstContSduLst;
-   TRC2(rlcUtlUpdateBurstSdus)
 
 
    /*starting Task*/
@@ -1536,8 +1527,6 @@ RlcDlRbCb *rbCb;
    RlcL2MeasTb  *curL2MeasTb;
    U16         idx;
 
-   TRC3(rlcUtlGetCurMeasTb)
-      
    if((curL2MeasTb = rbCb->ueCb->l2MeasTbCb[rbCb->ueCb->tbIdx]) == NULLP)
       {
          /* Intentionally avoiding the RLC_ALLOC macro to avoid  memset */
@@ -1616,8 +1605,6 @@ U8               tbIdx;
    S16          ret;
    VOLATILE U32     startTime = 0;
    /*kw005.201 Code added for DL IP thruput measurement*/
-
-   TRC3(rlcUtlProcHarqInd)
 
    /*starting Task*/
    SStartTask(&startTime, PID_RLC_DLIP_TPT_PRCHARQIND);
@@ -1821,8 +1808,6 @@ RlcL2MeasEvtCb         *measEvtCb;
    U32                     cfmIdx =0;
    /* Discard new changes ends */
 
-   TRC3(rlcUtlSndL2MeasCfm)
-
    /* kw006.201 ccpu00120058 emoved 64 bit compilation warning */
 #ifndef ALIGN_64BIT
    RLOG1(L_DEBUG,"rlcUtlSndL2MeasCfm(transId(%ld))", measEvtCb->transId);
@@ -1833,7 +1818,7 @@ RlcL2MeasEvtCb         *measEvtCb;
    /* Clean up the RB data structures */
    measCb = &measEvtCb->measCb;
    
-   cmMemset((U8*)&measCfmEvt, 0, sizeof(RlcL2MeasCfmEvt));
+   memset(&measCfmEvt, 0, sizeof(RlcL2MeasCfmEvt));
    measCfmEvt.transId = measEvtCb->transId;
 
    measCfmEvt.measType = measCb->measType;
@@ -1969,7 +1954,6 @@ RlcL2MeasReqEvt *measReqEvt;
 RlcL2MeasCfmEvt *measCfmEvt;
 #endif
 {
-   TRC3(rlcUtlSndDlL2MeasNCfm)
 
    RlcMiLkwL2MeasCfm(&gCb->genCfg.lmPst, measCfmEvt);
    return ROK;
@@ -2357,8 +2341,6 @@ RlcCb             *gCb;
    U32                 hashKey; 
    CmLListCp           *txBufLstCp;
 
-   TRC3(rlcUtlDelTxBuf)
-
    hashKey = (txBuf->sn % RLC_TX_BUF_BIN_SIZE ); 
  
    txBufLstCp = &txBufLst[hashKey];
@@ -2398,8 +2380,6 @@ RlcCb             *gCb;
 {
    U32                 hashKey; 
    CmLListCp           *txBufLstCp;
-
-   TRC3(rlcUtlRemovTxBuf)
 
    hashKey = (txBuf->sn % RLC_TX_BUF_BIN_SIZE ); 
  

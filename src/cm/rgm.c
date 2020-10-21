@@ -72,7 +72,6 @@ SpId spId;
 #endif
 {
    Buffer *mBuf = NULLP;
-   TRC3(cmPkLwLcRgmBndReq)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
    {
@@ -127,7 +126,6 @@ Buffer *mBuf;
    SpId spId;
    S16  ret;
    
-   TRC3(cmUnpkLwLcRgmBndReq)
 
    if (SUnpkS16(&suId, mBuf) != ROK) 
    {
@@ -176,7 +174,6 @@ Reason reason;
 #endif
 {
    Buffer *mBuf = NULLP;
-   TRC3(cmPkLwLcRgmUbndReq)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
    {
@@ -226,7 +223,6 @@ U8 status;
 #endif
 {
    Buffer *mBuf = NULLP;
-   TRC3(cmPkLwLcRgmBndCfm)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
    {
@@ -281,7 +277,6 @@ Buffer *mBuf;
    SuId suId;
    U8 status;
    
-   TRC3(cmUnpkLwLcRgmBndCfm)
 
    if (oduPackUInt8(&status, mBuf) != ROK) 
    {
@@ -328,7 +323,6 @@ RgmPrbRprtCfg  * prbRprtCfg;
 {
    Buffer *mBuf = NULLP;
    U32 len = sizeof(RgmPrbRprtCfg);
-   TRC3(cmPkLwLcRgmCfgPrbRprt)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
    {
@@ -386,7 +380,6 @@ Buffer *mBuf;
    SpId spId;
    RgmPrbRprtCfg *prbRprtCfg;
    
-   TRC3(cmUnpkLwLcRgmCfgPrbRprt)
 
    if (SUnpkS16(&spId, mBuf) != ROK) 
    {
@@ -437,7 +430,6 @@ RgmPrbRprtInd  * prbRprtInd;
 {
    Buffer *mBuf = NULLP;
 
-   TRC3(cmPkLwLcRgmPrbRprtInd)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
       SPutSBuf(pst->region, pst->pool, (Data *)prbRprtInd, sizeof(RgmPrbRprtInd));
@@ -494,7 +486,6 @@ Buffer *mBuf;
    RgmPrbRprtInd *prbRprtInd;
    S16 ret;
    
-   TRC3(cmUnpkLwLcRgmPrbRprtInd)
 
    if (SUnpkS16(&suId, mBuf) != ROK) 
    {
@@ -547,7 +538,6 @@ SpId spId;
 #endif
 {
    Buffer *mBuf = NULLP;
-   TRC3(cmPkRgmBndReq)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
    {
@@ -602,7 +592,6 @@ Buffer *mBuf;
    SpId spId;
    S16  ret;
    
-   TRC3(cmUnpkRgmBndReq)
 
    if (SUnpkS16(&suId, mBuf) != ROK) 
    {
@@ -651,7 +640,6 @@ Reason reason;
 #endif
 {
    Buffer *mBuf = NULLP;
-   TRC3(cmPkRgmUbndReq)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
    {
@@ -704,7 +692,6 @@ Buffer *mBuf;
    SpId spId;
    Reason reason;
    
-   TRC3(cmUnpkRgmUbndReq)
 
    if (SUnpkS16(&spId, mBuf) != ROK) 
    {
@@ -750,7 +737,6 @@ U8 status;
 #endif
 {
    Buffer *mBuf = NULLP;
-   TRC3(cmPkRgmBndCfm)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
    {
@@ -805,7 +791,6 @@ Buffer *mBuf;
    SuId suId;
    U8 status;
    
-   TRC3(cmUnpkRgmBndCfm)
 
    if (oduPackUInt8(&status, mBuf) != ROK) 
    {
@@ -849,7 +834,6 @@ RgmPrbRprtCfg  * prbRprtCfg;
 Buffer *mBuf;
 #endif
 {
-   TRC3(cmPkCfgPrbRprt);
    CMCHKPK(oduUnpackUInt16, prbRprtCfg->usPrbAvgPeriodicty, mBuf);
    CMCHKPK(oduUnpackUInt8, prbRprtCfg->bConfigType, mBuf);
    CMCHKPK(oduUnpackUInt8, prbRprtCfg->bCellId, mBuf);
@@ -879,7 +863,6 @@ RgmPrbRprtCfg  * prbRprtCfg;
 Buffer *mBuf;
 #endif
 {
-   TRC3(cmUnPkCfgPrbRprt);
    CMCHKUNPK(oduPackUInt8, &prbRprtCfg->bCellId, mBuf);
    CMCHKUNPK(oduPackUInt8, &prbRprtCfg->bConfigType, mBuf);
    CMCHKUNPK(oduPackUInt16, &prbRprtCfg->usPrbAvgPeriodicty, mBuf);
@@ -918,7 +901,6 @@ RgmPrbRprtCfg  * prbRprtCfg;
 {
    Buffer *mBuf = NULLP;
    U32 len = sizeof(RgmPrbRprtCfg);
-   TRC3(cmPkRgmCfgPrbRprt)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
    {
@@ -978,7 +960,6 @@ Buffer *mBuf;
    SpId spId;
    RgmPrbRprtCfg *prbRprtCfg;
 
-   TRC3(cmUnpkRgmCfgPrbRprt)
    if ((SGetSBuf(pst->region, pst->pool, (Data **)&prbRprtCfg, sizeof(RgmPrbRprtCfg))) != ROK)
       {
          SPutMsg(mBuf);
@@ -1092,7 +1073,6 @@ S16 cmPkPrbRprtInd(prbRprtInd, mBuf)
 {
    S32 idx = 0;
 
-   TRC3(cmPkPrbRprtInd); 
    
    /* RRM_SP1_START */
    for(idx = RGM_MAX_QCI_REPORTS-1; idx >= 0; idx--)
@@ -1131,7 +1111,6 @@ S16 cmUnpkPrbRprtInd(prbRprtInd, mBuf)
 {
    U32 idx = 0;
 
-   TRC3(cmUnpkPrbRprtInd);
 
    /* RRM_SP1_START */
    CMCHKUNPK(oduPackUInt8, &prbRprtInd->bCellId, mBuf);
@@ -1176,7 +1155,6 @@ RgmPrbRprtInd  * prbRprtInd;
 {
    Buffer *mBuf = NULLP;
 
-   TRC3(cmPkRgmPrbRprtInd)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
       SPutSBuf(pst->region, pst->pool, (Data *)prbRprtInd, sizeof(RgmPrbRprtInd));
@@ -1232,7 +1210,6 @@ Buffer *mBuf;
    SuId suId;
    RgmPrbRprtInd prbRprtInd;
    
-   TRC3(cmUnpkRgmPrbRprtInd)
 
    if (SUnpkS16(&suId, mBuf) != ROK) 
    {
@@ -1274,7 +1251,6 @@ S16 cmPkTransModeInd(transModeInd, mBuf)
    Buffer *mBuf;
 #endif
 {
-   TRC3(cmPkTransModeInd); 
    CMCHKPK(oduUnpackUInt32, transModeInd->eMode, mBuf);
    CMCHKPK(oduUnpackUInt16, transModeInd->usCrnti, mBuf);
    CMCHKPK(oduUnpackUInt8, transModeInd->bCellId, mBuf);
@@ -1306,7 +1282,6 @@ S16 cmUnpkTransModeInd(transModeInd, mBuf)
 #endif
 {
    U32 tmpModeEnum;
-   TRC3(cmUnpkTransModeInd);
    CMCHKUNPK(oduPackUInt8, &transModeInd->bCellId, mBuf);
    CMCHKUNPK(oduPackUInt16, &transModeInd->usCrnti, mBuf);
    CMCHKUNPK(oduPackUInt32, (U32 *)&tmpModeEnum, mBuf);
@@ -1342,7 +1317,6 @@ RgmTransModeInd *transModeInd;
 {
    Buffer *mBuf = NULLP;
 
-   TRC3(cmPkRgmTransModeInd)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
       SPutSBuf(pst->region, pst->pool, (Data *)transModeInd, sizeof(RgmTransModeInd));
@@ -1398,7 +1372,6 @@ Buffer *mBuf;
    SuId suId;
    RgmTransModeInd transModeInd;
    
-   TRC3(cmUnpkRgmTransModeInd)
 
    if (SUnpkS16(&suId, mBuf) != ROK) 
    {

@@ -137,8 +137,6 @@ RgRguDedDatReq *datReq;
    U32 idx;
    //U8  datReqFailCnt = 0;
 
-   TRC2(rgROMDedDatReq)
-
 
    if (((cell = rgCb[inst].cell) == NULLP) 
        || (cell->cellId != datReq->cellId))
@@ -351,8 +349,6 @@ RgRguCmnDatReq *datReq;
    RgDlSf   *sf;
 #endif
 
-   TRC2(rgROMCmnDatReq)
-
    ret = ROK;
    err.errType = RGERR_ROM_CMNDATREQ;
    if(((cell = rgCb[inst].cell) == NULLP)
@@ -460,9 +456,6 @@ RgErrInfo      *err;
    RgUstaDgn   dgn;      /* Alarm diagnostics structure */
 #endif
 
-   TRC2(rgROMHndlCcchDatReq);
-
-
    err->errType = RGERR_ROM_CMNDATREQ;
 
    if ((ue = rgDBMGetUeCb(cell, datReq->u.rnti)) == NULLP)
@@ -564,9 +557,6 @@ RgErrInfo      *err;
    RgUstaDgn   dgn;      /* Alarm diagnostics structure */
 #endif
 
-   TRC2(rgROMHndlBcchPcchDatReq);
-
-
    timingInfo.slot = (U8)(datReq->transId & 0XFF);
    timingInfo.sfn = (U16)((datReq->transId >> 8) & 0xFFFF);
    sf = &cell->subFrms[(timingInfo.slot % RG_NUM_SUB_FRAMES)];
@@ -655,8 +645,6 @@ RgRguDedStaRsp *staRsp;
    RgCellCb   *cell;
 
    /* Moving the error variables and assignments to available scope */
-
-   TRC2(rgROMDedStaRsp)
 
    /* Avoiding memset, as the variables of this are getting 
       initialized */
@@ -750,9 +738,6 @@ RgRguCmnStaRsp *staRsp;
    RgCellCb   *cell;
    RgErrInfo  err;
 
-   TRC2(rgROMCmnStaRsp)
-
-
    if(((cell = rgCb[inst].cell) == NULLP)
       || (cell->cellId != staRsp->cellId))
    {
@@ -813,9 +798,6 @@ RgRguL2MUlThrpMeasReq *measReq;
    RgUeCb     *ue;
    U8         lcgId;
    U8         loop;
-   TRC2(rgROML2MUlThrpMeasReq)
-
-
 
    if(((cell = rgCb[inst].cell) != NULLP)
       &&(cell->cellId == measReq->cellId))
@@ -881,7 +863,6 @@ RgErrInfo      *err;
    Inst     macInst = cell->macInst - RG_INST_START;
    //RgInfCmnBoRpt boRpt;
 
-   TRC2(rgROMHndlCcchStaRsp);
 #ifdef UNUSED_VAR
    RgInfCmnBoRpt boRpt;
    boRpt.cellSapId  = cell->schInstMap.cellSapId;
@@ -933,8 +914,7 @@ RgErrInfo      *err;
    //RgInfCmnBoRpt boRpt;
    Inst     macInst = cell->macInst - RG_INST_START;
 
-   TRC2(rgROMHndlBcchPcchStaRsp);
-   cmMemset((U8*)&schPst, (U8)0, sizeof(Pst));
+   memset(&schPst, (U8)0, sizeof(Pst));
 
    if (rgDBMChkCmnLcCb(cell, staRsp->lcId) != ROK)
    {
@@ -1010,9 +990,6 @@ RgDlSf         *dlSf;
 {
    RgErrInfo            err;
    //Inst                 inst = cellCb->macInst - RG_INST_START;
-
-   TRC2(rgROMUpdDlSfRemDataCnt);
-
 
    if(!dlSf->remDatReqCnt)
    {

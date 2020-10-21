@@ -243,8 +243,8 @@ int connectToLogServer()
 
   /* ccpu00147898 fixes */
   memset(&hints, 0, sizeof(hints));
-  memset((void*)&serv_addr, 0, sizeof(serv_addr));
-  memset((void*)&serv_addr6, 0, sizeof(serv_addr6));
+  memset(&serv_addr, 0, sizeof(serv_addr));
+  memset(&serv_addr6, 0, sizeof(serv_addr6));
   hints.ai_family = PF_UNSPEC;
   hints.ai_socktype = SOCK_STREAM;
   hints.ai_flags |= AI_CANONNAME;

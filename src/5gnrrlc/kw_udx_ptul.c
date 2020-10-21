@@ -79,7 +79,6 @@ SuId suId;                      /* Service User Id */
 SpId spId;                    /* Status */
 #endif
 {
-   TRC3(PtUlUdxBndReq)
 
    return ROK;
 
@@ -119,7 +118,6 @@ SpId spId;                      /* Service User Id */
 Reason Reason;                    /* Status */
 #endif
 {
-   TRC3(PtUlUdxUbndReq)
 
    return ROK;
 
@@ -139,7 +137,6 @@ SpId spId;                      /* Service User Id */
 RlcCfgInfo *cfmInfo;              /* Config Info */
 #endif
 {
-   TRC3(PtUlUdxCfgReq)
 
    return ROK;
 
@@ -163,8 +160,6 @@ CkwUeInfo *ueInfo;             /* Config Info */
 CkwUeInfo *newUeInfo;          /* Config Info */
 #endif
 {
-   TRC3(PtUlUdxUeIdChgReq)
-
 
    return ROK;
 
@@ -179,7 +174,6 @@ CmLteRlcId          *rlcId,
 RlcUdxDlStaPdu       *pStaPdu
 )
 {
-   TRC3(PtUlUdxStaPduReq);
 
    return ROK;
 }
@@ -213,8 +207,6 @@ RlcUdxDlStaPdu       *pStaPdu;
 #endif
 {
 
-   TRC3(PtUlUdxStaUpdReq);
-
    return ROK;
 } /* end of RlcUlmDlmStaUpd*/
 
@@ -244,8 +236,6 @@ RlcL2MeasReqEvt      *measReqEvt;
 #endif
 {
 
-   TRC3(PtUlUdxL2MeasReq);
-
    return ROK;
 } 
 
@@ -274,8 +264,6 @@ U8                  status
 #endif
 {
 
-   TRC3(PtUlUdxL2MeasSendReq);
-
    return ROK;
 }
 
@@ -303,8 +291,6 @@ Pst*                pst;
 U8                  status
 #endif
 {
-
-   TRC3(PtUlUdxL2MeasStopReq);
 
    return ROK;
 }
@@ -518,8 +504,6 @@ SuId suId;                      /* Service User Id */
 SpId spId;                    /* Status */
 #endif
 {
-   TRC3(rlcUlUdxBndReq)
-
    /* jump to specific primitive depending on configured selector */
    (*rlcUlUdxBndReqMt[pst->selector])(pst, suId, spId);
 
@@ -561,8 +545,6 @@ SpId spId;                      /* Service User Id */
 Reason Reason;                    /* Status */
 #endif
 {
-   TRC3(rlcUlUdxUbndReq)
-
    /* jump to specific primitive depending on configured selector */
    (*rlcUlUdxUbndReqMt[pst->selector])(pst, spId,reason );
 
@@ -584,7 +566,6 @@ SuId spId;                      /* Service User Id */
 RlcCfgInfo *cfmInfo;              /* Config Info */
 #endif
 {
-   TRC3(rlcUlUdxCfgReq)
 
    /* jump to specific primitive depending on configured selector */
    (*rlcUlUdxCfgReqMt[pst->selector])(pst, spId, cfmInfo);
@@ -611,7 +592,6 @@ CkwUeInfo *ueInfo;             /* Config Info */
 CkwUeInfo *newUeInfo;          /* Config Info */
 #endif
 {
-   TRC3(rlcUlUdxUeIdChgReq)
 
    /* jump to specific primitive depending on configured selector */
    (*rlcUlUdxUeIdChgReqMt[pst->selector])(pst, spId,transId,ueInfo,newUeInfo);
@@ -670,8 +650,6 @@ RlcL2MeasReqEvt      *measReqEvt;
 #endif
 {
 
-   TRC3(rlcUlUdxStaUpdReq);
-
    return ((*rlcUlUdxL2MeasReqMt[pst->selector])(pst,measReqEvt));
 } /* end of rlcUlUdxL2MeasReq*/
 
@@ -700,8 +678,6 @@ U8                  measType;
 #endif
 {
 
-   TRC3(rlcUlUdxStaUpdReq);
-
    return ((*rlcUlUdxL2MeasSendReqMt[pst->selector])(pst,measType));
 } /* end of rlcUlUdxMesReq*/
 
@@ -729,8 +705,6 @@ Pst*                pst;
 U8                  measType;
 #endif
 {
-
-   TRC3(rlcUlUdxStaUpdReq);
 
    return ((*rlcUlUdxL2MeasStopReqMt[pst->selector])(pst,measType));
 } /* end of rlcUlUdxMesReq*/

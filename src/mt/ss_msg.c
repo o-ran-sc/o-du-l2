@@ -279,8 +279,6 @@ Buffer **dBuf;
    Data *data;
    SsDblk *dptr;
 
-   TRC1(ssGetDBufOfSize)
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check buffer pointer */
    if (!dBuf)
@@ -410,8 +408,6 @@ Buffer **mBuf;              /* pointer to message buffer */
 #endif
 #endif
 
-
-   TRC1(SGetMsgNew)
 
 #ifdef XEON_SPECIFIC_CHANGES
    region = 0;
@@ -626,8 +622,6 @@ Buffer *mBuf;
 	Ent entId = 0;
 #endif /* SS_HISTOGRAM_SUPPORT */
 
-   TRC1(SPutMsgNew)
-
 #ifdef L2_OPTMZ
 //#ifdef RADIO_CLUSTER
       if(clusterMode == RADIO_CLUSTER_MODE)
@@ -790,8 +784,6 @@ U8   memType;                   /* memory type used if shareable or not */
 {
    S16 ret = RFAILED;
 
-   TRC1(SPutStaticBuffer);
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* validate region ID */
    if (region >= SS_MAX_REGS)
@@ -945,8 +937,6 @@ U8   memType;                   /* memory type used if shareable or not */
 {
    S16 ret = RFAILED;
    U32 flags;
-
-   TRC1(SGetStaticBuffer);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* validate region ID */
@@ -1253,7 +1243,6 @@ Size size;                      /* size requested */
 	Bool hstReg = FALSE;
 #endif /* SS_HISTOGRAM_SUPPORT */
 
-   TRC1(SGetSBufNew);
 
    region = SS_GET_THREAD_MEM_REGION();
 #ifdef INTEL_WLS
@@ -1526,9 +1515,6 @@ Size size;                      /* size */
 	Bool hstReg = FALSE;
 #endif /* SS_HISTOGRAM_SUPPORT */
 
-   TRC1(SPutSBufNew);
-
-
    region = SS_GET_THREAD_MEM_REGION();
 #if (!defined(SS_LOCKLESS_MEMORY) && defined(INTEL_WLS))
    region = 1;
@@ -1706,8 +1692,6 @@ Buffer *mBuf;
    Buffer *tmp;
    U8     tmpRegId;
 
-   TRC1(SInitMsg)
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check message buffer */
    if (mBuf == NULLP)
@@ -1807,7 +1791,6 @@ S16 SAddPreMsgMultInOrder(src, cnt, mBuf)
    MsgLen offset;
    Data *rptr;
    Data *revSrc;
-   TRC1(SAddPreMsgMultInOrder)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
       /* check message buffer */
@@ -1988,8 +1971,6 @@ Buffer *mBuf;
    Buffer *tmp;
    Buffer *newb;
 
-   TRC1(SAddPreMsg)
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check message buffer */
    if (!mBuf)
@@ -2091,8 +2072,6 @@ Buffer *mBuf;
    SsMsgInfo *minfo;
    Buffer *tmp;
    Buffer *newb;
- 
-   TRC1(SAddPstMsg)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check message buffer */
@@ -2203,8 +2182,6 @@ Buffer *mBuf;
    MsgLen len;
    MsgLen offset;
    Data *rptr;
-
-   TRC1(SAddPreMsgMult)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check message buffer */
@@ -2382,8 +2359,6 @@ Buffer *mBuf;
    MsgLen numBytes;
    Data *wptr;
 
-   TRC1(SAddPstMsgMult)
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check message buffer */
    if (mBuf == NULLP)
@@ -2553,8 +2528,6 @@ Buffer *mBuf;
    U32 line = __LINE__;
 #endif
 
-   TRC1(SRemPreMsg)
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check data pointer */
    if (!dataPtr)
@@ -2640,8 +2613,6 @@ Buffer *mBuf;               /* message buffer */
    char* file = __FILE__;
    U32 line = __LINE__;
 #endif
-
-   TRC1(SRemPstMsg)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check data pointer */
@@ -2745,7 +2716,6 @@ Buffer *mBuf;               /* message buffer */
    U32 line = __LINE__;
 #endif
 
-   TRC1(SRemPreMsgMult)
 
    /* ss023.103 - Modification of SRemPreMsgMult for bug fix */
 
@@ -2871,7 +2841,6 @@ Buffer *mBuf;               /* message buffer */
    U32 line = __LINE__;
 #endif
 
-   TRC1(SRemPstMsgMult)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check count */
@@ -2998,8 +2967,6 @@ MsgLen idx;                 /* index */
    SsMsgInfo *minfo;
    Buffer *tmp;
 
-   TRC1(SExamMsg)
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check data pointer */
    if (!dataPtr)
@@ -3096,8 +3063,6 @@ MsgLen dataLen;
    Buffer *tmp;
 	MsgLen offSetLen;
 	Data   *tmpDataPtr = dataPtr;
-
-   TRC1(SGetDataFrmMsg)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check data pointer */
@@ -3197,8 +3162,6 @@ MsgLen *lngPtr;             /* pointer to length */
 #endif
 {
    SsMsgInfo *minfo;
-
-   TRC1(SFndLenMsg)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check message buffer */
@@ -3300,7 +3263,6 @@ Buffer **mBuf2;             /* message 2 */
    Buffer *prev;
    Buffer *next;
 
-   TRC1(SSegMsg)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check message buffer 1 */
@@ -3499,8 +3461,6 @@ MsgLen *cCnt;               /* copied count */
    SsMsgInfo *minfo;
    Buffer *right;
 
-   TRC1(SCpyFixMsg)
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check source message buffer */
    if (srcBuf == NULLP)
@@ -3655,8 +3615,6 @@ MsgLen *cCnt;               /* copied count */
    SsMsgInfo *minfo;
    MsgLen numBytes;
 
-   TRC1(SCpyMsgFix)
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check source message buffer */
    if (srcMbuf == NULLP)
@@ -3803,8 +3761,6 @@ Buffer **dstBuf;
 #endif
 #endif
  
-   TRC1(SCpyMsgMsg)
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (!srcBuf)
    {
@@ -4002,7 +3958,6 @@ Buffer **dstBuf;
    Data *cptr;
    MsgLen numBytes;
 
-   TRC1(SAddMsgRef)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (!srcBuf)
@@ -4155,8 +4110,6 @@ Buffer *mp;                 /* message block */
    S16 r;                       /* return value */
    Size m;                      /* temporary */
 
-   TRC1(DupMsg);
-
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (mp == NULLP)
@@ -4306,8 +4259,6 @@ Buffer **bufPtr;            /* pointer to buffer */
 #endif
 #endif
    
-   TRC1(SGetDBuf)
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check buffer pointer */
    if (!bufPtr)
@@ -4478,7 +4429,6 @@ Buffer *buf;
    Data  *dpdkBuf;
 #endif   
  
-   TRC2(SPutDBuf);
  
    /* ss021.103 - Addition of ret initialization */
    ret = ROK;
@@ -4661,8 +4611,6 @@ Order order;                /* order */
    Buffer *tmp;
    Buffer *newb;
 
-   TRC1(SCatMsg)
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check message buffer 1 */
    if (mBuf1 == NULLP)
@@ -4823,7 +4771,6 @@ MsgLen idx;                 /* index */
    Buffer *prev;
    MsgLen numBytes;
 
-   TRC1(SRepMsg)
 
 #ifdef T2K_MEM_LEAK_DBG
    char* file = __FILE__;
@@ -4921,8 +4868,6 @@ MsgLen dLen;                    /* data length */
 {
    SsMsgInfo *minfo;
 
-   TRC1(SUpdMsg)
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (!mBuf)
    {
@@ -5012,8 +4957,6 @@ Buffer *dBuf;                   /* data buffer */
 {
    SsMsgInfo *minfo;
 
-   TRC1(SAddDBufPst)
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check buffer queue */
    if (!mBuf || !dBuf)
@@ -5085,8 +5028,6 @@ Buffer *dBuf;                    /* data buffer */
 {
    SsMsgInfo *minfo;
    Buffer *tmp;
-
-   TRC1(SAddDBufPre)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check buffer queue */
@@ -5160,8 +5101,6 @@ Buffer **dBufPtr;               /* pointer to data buffer */
 #endif
 {
    SsMsgInfo *minfo;
-
-   TRC1(SRemDBufPre)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check buffer pointer */
@@ -5239,8 +5178,6 @@ Buffer **dBufPtr;               /* pointer to data buffer */
    SsMsgInfo *minfo;
    Buffer *tmp;
 
-   TRC1(SRemDBufPst)
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check buffer pointer */
    if (!dBufPtr)
@@ -5310,8 +5247,6 @@ Buffer *mBuf;                   /* message buffer */
 {
    SsMsgInfo *minfo;
 
-   TRC1(SInitNxtDBuf)
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (!mBuf)
    {
@@ -5362,8 +5297,6 @@ Buffer **dBuf;                  /* data buffer return */
 #endif
 {
    SsMsgInfo *minfo;
-
-   TRC1(SGetNxtDBuf)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (!mBuf)
@@ -5422,8 +5355,6 @@ Buffer *mBuf;                   /* message buffer */
 {
    SsMsgInfo *minfo;
 
-   TRC1(SChkNxtDBuf)
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (!mBuf)
    {
@@ -5481,7 +5412,6 @@ Data **retDatPtr;               /* return data pointer */
 MsgLen *retDatLen;              /* return data length */
 #endif
 {
-   TRC1(SGetDataRx)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (!dBuf)
@@ -5563,7 +5493,6 @@ Data **retDatPtr;               /* return data pointer */
 MsgLen *retDatLen;              /* return data length */
 #endif
 {
-   TRC1(SGetDataTx)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* ss021.103 - Modification to check parameters */
@@ -5639,7 +5568,6 @@ Pool   *pool;                   /* pool */
 {
    SsMsgInfo *mInfo;            /* message info pointer */
 
-   TRC1(SGetBufRegionPool)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
 
@@ -5722,7 +5650,6 @@ Buffer *mBuf;                    /* message buffer */
    char* file = __FILE__;
    U32 line = __LINE__;
 #endif
-   TRC1(SCompressMsg)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (!mBuf)
@@ -5831,7 +5758,6 @@ S16 dst;                    /* destination id */
    Data reg;
 
 
-   TRC1(SPrntMsg)
 
    if (mBuf == NULLP)
    {
@@ -5975,7 +5901,6 @@ Buffer *mBuf;               /* message buffer */
    MsgLen numBytes;
    MsgLen avail;
 
-   TRC1(SGetPstMsgMult)
 
 #if ( ERRCLASS & ERRCLS_INT_PAR )
    /* check message buffer */
@@ -6075,7 +6000,6 @@ Buffer *mBuf;
    SsMsgInfo *minfo;
    Buffer *tmp;
 
-   TRC1(SChkMsg)
  
 #if ( ERRCLASS & ERRCLS_INT_PAR )
    /* check message buffer */
@@ -6129,8 +6053,6 @@ Buffer *dBuf;                   /* data buffer  */
 {
    MsgLen len;
    Data *src;
-
-   TRC1(SAlignDBufEven)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (!dBuf)
@@ -6208,8 +6130,6 @@ U32    align;                      /* alignemnt required */
    Data   *src;
    U32    upShift;                 /* no. of bytes to be shifted up */
    U32    downShift;               /* no. of bytes to be shifted down */
-
-   TRC1(SAlignDBuf)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (!dBuf)
@@ -6299,8 +6219,6 @@ Size size;                      /* size */
 Pool *pool;                     /* pointer to pool ID */
 #endif
 {
-   TRC1(SGetSMem);
-
 
    UNUSED(size);
 
@@ -6362,8 +6280,6 @@ Pool pool;                      /* pool ID */
 #if (ERRCLASS & ERRCLS_INT_PAR)
    S16   ret;
 #endif
-
-   TRC1(SPutSMem);
 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -6459,8 +6375,6 @@ Status *status;                 /* pointer to status */
    S16 ret;
    SMemCtl mctl;
 
-
-   TRC1(SChkRes);
 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -6591,7 +6505,6 @@ Buffer *mBuf2;              /* message 2 */
    Buffer *tmp;
    U8 tmp2;
    
-   TRC1(SSwapMsg)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check message buffer 1 */
@@ -6698,8 +6611,6 @@ S16 SConvPtrPhy (mBuf)
   SsMsgInfo   *minfoPtr;
   SsDblk      *dblkPtr;
   SsFrtn      *frtnPtr;
-
-  TRC1(SConvPtrPhy);
 
 
   /* check mBuf for NULLP */
@@ -6856,8 +6767,6 @@ S16 SConvPhyPtr (workPtr)
   SsMsgInfo   *minfoPtr;
   SsDblk      *dblkPtr;
   SsFrtn      *frtnPtr;
-
-  TRC1(SConvPhyPtr);
 
 
   /* check workPtr for NULLP */
@@ -7028,8 +6937,6 @@ S16 SCpyFpaMsg (srcBuf, dstRegion, dstPool, dstBuf)
   SsDblk     *dblkPtr = NULLP;
   SsDblk     *dptr = NULLP;
 
-  TRC1(SCpyFpaMsg);
-
 
   if ( srcBuf == (Buffer*)NULLP )
   {
@@ -7177,8 +7084,6 @@ S16 SCpyMsgFpa (srcBuf, dstBuf)
   SsDblk     *dptr = NULLP;
   U32         numBytes;
   Pool        pool;
-
-  TRC1(SCpyMsgFpa);
 
 
   if (srcBuf == (Buffer*)NULLP)
@@ -7351,7 +7256,6 @@ Buffer *fpaBuf;
   Buffer   *nextBlk;
   SsDblk   *dblkPtr;
 
-  TRC1(SPutFpaMsg);
 
   if( fpaBuf == NULLP )
   {
@@ -7448,7 +7352,6 @@ Buffer *dstBuf;
    MsgLen    dCnt;
    MsgLen    numCpd;
  
-   TRC1(SCpyPartMsg)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (!srcBuf)
@@ -7615,7 +7518,6 @@ Buffer *dstBuf;
    MsgLen     sIdx;
    MsgLen     cpBytes;
 
-   TRC1(SRepPartMsg)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (!dstBuf)
@@ -7759,7 +7661,6 @@ Buffer *dstBuf;             /* message 2 */
    U32 line = __LINE__;
 #endif
 
-   TRC1(SMovPartMsg)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check message buffer 1 */
@@ -7928,7 +7829,6 @@ Buffer *mBuf;
    MsgLen numBytes;  /* no. of bytes to be copied */
    MsgLen offset;
 
-   TRC1(SPkMsgMult)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check message buffer */
@@ -8106,7 +8006,6 @@ Buffer** mBuf;
    Buffer    *newblk;
    /*   Void      *iccHdlr; */
 
-   TRC1(SAttachPtrToBuf)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (ptr == NULLP)
@@ -8209,7 +8108,6 @@ Buffer *buf;
    MsgLen          bufLen;
    S16             ret = ROK;
  
-   TRC2(SPutZbcDBuf);
  
    dptr = buf->b_datap; 
    /* Get the length of the buffer */
@@ -8357,7 +8255,6 @@ Buffer** mBuf;
    Buffer    *newblk;
    /*   Void      *iccHdlr; */
 
-   TRC1(SAttachPtrToMBuf)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (ptr == NULLP)
@@ -8516,7 +8413,6 @@ Buffer** mBuf;
    Buffer    *newblk;
    /*   Void      *iccHdlr; */
 
-   TRC1(SAttachWlsPtrToMBuf)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (ptr == NULLP)

@@ -98,9 +98,6 @@ U32         tmrVal;
    RgSchUeCellInfo *sCellCb = NULLP;
 #endif
 
-   TRC2(rgSCHTmrStartTmr);
-
-
 #ifndef LTE_ADV
    ue = (RgSchUeCb*)cb;
 #else
@@ -226,9 +223,6 @@ Ptr           cb;
    RgSchUeCellInfo *sCellCb = NULLP;
 #endif
 
-   TRC2(rgSCHTmrStopTmr);
-
-
 #ifndef LTE_ADV
    ue = (RgSchUeCb*)cb;
 #else
@@ -349,8 +343,6 @@ S16         tmrEvnt;
 #ifdef LTE_ADV
    RgSchUeCellInfo *sCellCb = NULLP;
 #endif
-
-   TRC2(rgSCHTmrProcTmr);
 
 #ifndef LTE_ADV
    ue = (RgSchUeCb*)cb;

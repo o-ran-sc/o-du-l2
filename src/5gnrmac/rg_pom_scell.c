@@ -104,8 +104,6 @@ RgPrgUeSCellLchModInfo   *lchCfgCb;
    RgUeCb           *ue;
    RgUlLcCb         *ulLc;
 
-   TRC2(RgPrgPMacSMacUeSCellLchModReq);
-   
    RGDBGPRM(inst,(rgPBuf(inst),
             "APPLYING CRG UE SCELL CONFIG: cellId %d ueId %d lcId %d lcgId %d\n",
          lchCfgCb->cellId, lchCfgCb->crnti,lchCfgCb->lcId,lchCfgCb->ulLchRecfg.lcgId));
@@ -192,8 +190,6 @@ Bool            *isCfmRqrd;
    RgCellCb                   *cell;
    RgUeCb                     *ue;
 
-   TRC2(rgPomSndUeSCellLchDelToSmac);
-  
   /* Fetch the Active cell */
    if(((cell = rgCb[inst].cell) == NULLP) ||
        (cell->cellId != lcDel->u.lchDel.cellId))
@@ -286,8 +282,6 @@ Bool           *isCfmRqrd;
    RgPrgUeSCellLchModInfo    lchCfgCb; 
    Pst                       dstInstPst;
 
-   TRC2(rgPomSndUeSCellLchModToSmac);
-  
    for(idx = 0; idx < RG_MAX_SCELL_PER_UE ; idx++)
    {
       if(TRUE == ue->sCelInfo[idx].isSCellAdded)
@@ -355,8 +349,6 @@ Bool           *isCfmRqrd;
    RgPrgUeSCellLchAddInfo    lchCfgCb; 
    Pst                       dstInstPst;
 
-   TRC2(rgPomSndUeSCellLchAddToSmac);
-  
    for(idx = 0; idx < RG_MAX_SCELL_PER_UE ; idx++)
    {
       if(TRUE == ue->sCelInfo[idx].isSCellAdded)
@@ -423,8 +415,6 @@ RgPrgUeSCellLchDelInfo    *delLcCb;
    RgUlLcCb         *ulLc;
    RgDlLcCb         *dlLc;
 
-   TRC2(RgPrgPMacSMacUeSCellLchDelReq);
-   
    RGDBGPRM(inst,(rgPBuf(inst),
             "APPLYING CRG UE SCELL CONFIG: cellId %d ueId %d\n",
          lchCfgCb->cellId, lchCfgCb->crnti));
@@ -502,8 +492,6 @@ RgPrgUeSCellLchAddInfo   *lchCfgCb;
    Pst               cfmPst;    
    RgUeCb            *ue;
 
-   TRC2(RgPrgPMacSMacUeSCellLchAddReq);
-   
    RGDBGPRM(inst,(rgPBuf(inst),
             "APPLYING UE SCELL CONFIG AT SMAC : cellId %d ueId %d\n",
          lchCfgCb->cellId, lchCfgCb->crnti));
@@ -581,7 +569,6 @@ RgUeCb                  **ue;
 #endif
 {
 
-   TRC2(rgPomVldtAddLch);
    RGDBGPRM(inst,(rgPBuf(inst), "VALIDATE SMAC LC CONFIG: cellId %d ueId %d lcId %d\
             cell %p ue %p\n", lcCfg->cellId, lcCfg->crnti, lcCfg->lcId,
             (void*)*cell, (void*)*ue));
@@ -656,7 +643,6 @@ RgPrgUeSCellLchAddInfo   *lcCfg;
 #endif
 {
 
-   TRC2(rgPomUeSCellLcAdd);
    RGDBGPRM(inst,(rgPBuf(inst), "APPLYING CRG LC CONFIG: cellId %d ueId %d\
             lcId %d dir %d cell %p ue %p\n", lcCfg->cellId, lcCfg->crnti,
             lcCfg->lcId, lcCfg->dir, (void*)cell, (void*)ue));
@@ -710,7 +696,6 @@ RgCellCb                   **cell;
 RgUeCb                     **ue;
 #endif
 {
-   TRC2(rgPomVldtSCellDedLchCfg);
    RGDBGPRM(inst,(rgPBuf(inst), "VALIDATING CRG DEDICATED LC CONFIG \n"));
 
 
@@ -815,7 +800,6 @@ RgPrgUeSCellLchAddInfo     *lcCfg;
 #endif
 {
    //Inst     inst = cell->macInst - RG_INST_START;
-   TRC2(rgPomUeSCellDedLcCfg);
    //RGDBGPRM(inst,(rgPBuf(inst), "APPLYING DEDICATED LC CONFIG\n"));
 
    /* Uplink/Bi-directional logical channel */
@@ -877,7 +861,6 @@ S16 rgPomVltdModLch(inst, lchCfgCb, cell, ue, ulLc)
  RgUlLcCb                 **ulLc;
 #endif
 {
-   TRC2(rgPomVltdModLch);
    RGDBGPRM(inst,(rgPBuf(inst), "VALIDATE SMAC LC RECONFIG: cellId %d ueId %d \
             lcId %d cell %p ue %p ulLc %p\n",lchCfgCb->cellId,
             lchCfgCb->crnti,lchCfgCb->lcId, (void*)*cell, (void*)*ue,
@@ -947,7 +930,6 @@ RgUlLcCb                *ulLc;
 RgPrgUeSCellLchModInfo  *lchCfgCb;
 #endif
 {
-   TRC2(rgPomUeSCellLcMod);
    RGDBGPRM(inst,(rgPBuf(inst), "APPLYING SMAC LC RECONFIG: cellId %d ueId %d\
             lcId %d  \n",
             lchCfgCb->cellId, lchCfgCb->crnti, lchCfgCb->lcId));
@@ -998,7 +980,6 @@ S16 rgPomVltdDelLch(inst, delLcCb, cell, ue, ulLc, dlLc)
  RgDlLcCb                  **dlLc;
 #endif
 {
-   TRC2(rgPomVltdDelLch);
    RGDBGPRM(inst,(rgPBuf(inst), "VALIDATE SMAC LC RECONFIG: cellId %d ueId %d \
             lcId %d cell %p ue %p ulLc %p\n",delLcCb->cellId,
             delLcCb->crnti,delLcCb->lcId, (void*)*cell, (void*)*ue,
@@ -1071,7 +1052,6 @@ RgDlLcCb                  *dlLc;
 #endif
 {
 
-   TRC2(rgPomUeSCellLcDel);
    RGDBGPRM(inst,(rgPBuf(inst), "APPLYING CRG LC DELETE: cellId %d ueId %d\
             lcId %d dir %d\n", delLcCb->cellId,
             delLcCb->crnti, delLcCb->lcId,

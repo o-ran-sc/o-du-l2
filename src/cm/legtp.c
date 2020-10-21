@@ -141,7 +141,7 @@ uint8_t unpackEgtpCfgReq(EgtpCfgReq func, Pst *pst, Buffer *mBuf)
 {
    EgtpConfig egtpCfg;
 
-   memset((uint8_t *)&egtpCfg, 0, sizeof(EgtpConfig));
+   memset(&egtpCfg, 0, sizeof(EgtpConfig));
 
    oduPackUInt32(&(egtpCfg.maxTunnelId), mBuf);
    oduPackUInt32(&(egtpCfg.minTunnelId), mBuf);
@@ -221,7 +221,7 @@ uint8_t unpackEgtpCfgCfm(EgtpCfgCfm func, Buffer *mBuf)
 {
    CmStatus cfm;
    
-   memset((uint8_t *)&cfm, 0, sizeof(CmStatus));
+   memset(&cfm, 0, sizeof(CmStatus));
    unpackEgtpCfmStatus(&cfm, mBuf);
 
    return ((*func)(cfm));
@@ -333,7 +333,7 @@ uint8_t unpackEgtpSrvOpenCfm(EgtpSrvOpenCfm func, Buffer *mBuf)
 {
    CmStatus cfm;
     
-   memset((uint8_t *)&cfm, 0, sizeof(CmStatus));
+   memset(&cfm, 0, sizeof(CmStatus));
    unpackEgtpCfmStatus(&cfm, mBuf);
 
    return ((*func)(cfm));
@@ -399,7 +399,7 @@ uint8_t unpackEgtpTnlMgmtReq(EgtpTnlMgmtReq func, Pst *pst, Buffer *mBuf)
 {
    EgtpTnlEvt tnlEvt;
 
-   memset((uint8_t *)&tnlEvt, 0, sizeof(EgtpTnlEvt));
+   memset(&tnlEvt, 0, sizeof(EgtpTnlEvt));
 
    oduPackUInt32(&(tnlEvt.remTeid), mBuf);
    oduPackUInt32(&(tnlEvt.lclTeid), mBuf);
@@ -471,7 +471,7 @@ uint8_t unpackEgtpTnlMgmtCfm(EgtpTnlMgmtCfm func, Buffer *mBuf)
 {
    EgtpTnlEvt tnlEvt;
  
-   memset((uint8_t *)&tnlEvt, 0, sizeof(EgtpTnlEvt));
+   memset(&tnlEvt, 0, sizeof(EgtpTnlEvt));
 
    unpackEgtpCfmStatus(&(tnlEvt.cfmStatus), mBuf); 
    oduPackUInt32(&(tnlEvt.remTeid), mBuf);

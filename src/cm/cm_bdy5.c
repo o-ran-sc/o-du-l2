@@ -117,7 +117,6 @@ PFV      func;           /* function */
    CmTimer *tmp1;
    CmTimer **tmp2;
  
-   TRC2(cmPrcTmr)
 
 #ifdef CMDBG
 {
@@ -188,7 +187,6 @@ PFV      func;           /* function */
    CmTimer *tmp1;
    VOLATILE U32     startTime = 0;
    
-   TRC2(cmPrcTmr)
  
    /*starting Task*/
    SStartTask(&startTime, PID_CM_PRC_TMR);
@@ -283,7 +281,6 @@ U8 max;              /* maximum tmrs */
    CmTimer *tPtr;
    REG1 U8 i;
 
-   TRC2(cmInitTimers)
 
    for (i = 0, tPtr = timers; i < max; i++, tPtr++)
    {
@@ -329,7 +326,6 @@ CmTmrArg *arg;
    U32 expire;
    CmTimer **tmp;
 
-   TRC2(cmPlcCbTq)
 
    expire = (arg->tqCp->nxtEnt + arg->wait);
    /* cm_bdy5_c_002.113 - Modification for SRegCfgTmr support */
@@ -359,7 +355,6 @@ CmTmrArg *arg;
    CmTqType *tq;
    CmTimer  *target;
    U32 expire;
-   TRC2(cmPlcCbTq)
  
    expire = (arg->tqCp->nxtEnt + arg->wait);
    ent = (U32)(expire % (U32)(arg->tqCp->tmrLen));
@@ -411,7 +406,6 @@ Void cmRstCbTq(arg)
 CmTmrArg *arg;
 #endif
 {
-   TRC2(cmRstCbTq)
  
    arg->timers[arg->tNum].tqExpire = arg->tqCp->nxtEnt + arg->wait;
    arg->timers[arg->tNum].ent2bUpd = TRUE; 
@@ -451,7 +445,6 @@ CmTmrArg *arg;
    CmTimer *tmp1;
    CmTimer **tmp2;
 
-   TRC2(cmRmvCbTq)
 
    target = &arg->timers[arg->tNum];
    if (target->tmrEvnt != TMR_NONE)
@@ -483,9 +476,6 @@ CmTmrArg *arg;
    CmTimer  *target;
    CmTqType *tq;
    
- 
-   TRC2(cmRmvCbTq)
- 
    target = &arg->timers[arg->tNum];
    if (target->tmrEvnt != TMR_NONE)
    {

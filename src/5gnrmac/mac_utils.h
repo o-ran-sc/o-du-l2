@@ -30,7 +30,7 @@
 	 (Data **)&_datPtr, _size);                          \
    if(_ret == ROK)                                           \
    {                                                         \
-      cmMemset((uint8_t *)_datPtr, 0, _size);                \
+      memset(_datPtr, 0, _size);                \
    }                                                         \
    else                                                      \
    {                                                         \
@@ -55,7 +55,7 @@
    if(SGetStaticBuffer(MAC_MEM_REGION, MAC_POOL,             \
 	    (Data **)&_buf, (Size) _size, 0) == ROK)         \
    {                                                         \
-      cmMemset((uint8_t *)(_buf), 0, _size);                 \
+      memset((_buf), 0, _size);                 \
    }                                                         \
    else                                                      \
    {                                                         \

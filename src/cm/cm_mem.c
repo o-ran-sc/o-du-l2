@@ -489,7 +489,6 @@ CmMmRegCfg  *cfg;
    CmMmBlkHdr     ptrHdr;
 #endif
 
-   TRC2(cmMmRegInit);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
 
@@ -810,7 +809,6 @@ CmMmRegCb   *regCb;
 {
    U16  bktIdx; 
 
-   TRC2(cmMmRegDeInit);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
   
@@ -1110,7 +1108,6 @@ Data  **prevptr;
       prevptr=&prevptr1;
 #endif
 
-   TRC2(cmAlloc);
    
 #ifndef USE_MEMCAL
    UNUSED(flags);
@@ -1288,7 +1285,7 @@ Data  **prevptr;
 #endif
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
       /* Initialize the elements with 0xAB */
-      cmMemset((U8 *)*ptr, 0xAB, *size);
+      memset(*ptr, 0xAB, *size);
 #endif
 //      printf("Pointer allocated %8p size %d\n", *ptr, *size);
       /* Store this pointer in hash list */
@@ -1575,7 +1572,7 @@ Data  **prevptr;
 /*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
 #ifdef SS_4GMX_LCORE
    *ptr = (Data*) MxHeapAlloc(SsiHeap, *size);
-   cmMemset((U8*)ptr, 0, *size);
+   memset(ptr, 0, *size);
 #else
    *ptr = (Data*) malloc(*size);
 #endif
@@ -1704,7 +1701,6 @@ Size    size;
 	 U16 memIndex=0;
 #endif
 
-   TRC2(cmFree);
 
    regCb = (CmMmRegCb *)regionCb;
 
@@ -1892,7 +1888,7 @@ Size    size;
       ptrHdr->requestedSize = 0;
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
       /* Initialize the elements with 0xAB */
-      cmMemset((U8 *)ptr, 0xAB, size);
+      memset(ptr, 0xAB, size);
 #endif
       /* check if the block to be freed is already having the state as FREE */
       if (CMM_IS_FREE(ptrHdr->memFlags))
@@ -2201,7 +2197,6 @@ Size    size;
    return (cmHeapFree (&(regCb->heapCb), ptr, size));
 #endif /* SS_HISTOGRAM_SUPPORT */
 #else /* use pure is on */
-   TRC2(cmFree);
 /*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
 #ifdef SS_4GMX_LCORE
    (Void)MxHeapFree(SsiHeap, ptr);
@@ -2413,7 +2408,6 @@ Data  **ptr;
    S8 hstGrmBuf[256];
 #endif /* SS_HISTOGRAM_SUPPORT */
 
-   TRC2(cmAllocNL);
 
 #ifndef USE_MEMCAL
    UNUSED(flags);
@@ -2570,7 +2564,7 @@ Data  **ptr;
 #endif
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
          /* Initialize the elements with 0xAB */
-         cmMemset((U8 *)*ptr, 0xAB, *size);
+         memset(*ptr, 0xAB, *size);
 #endif
          if ((bkt->nextBlk) && *ptr)
 #elif SS_LIGHT_MEM_LEAK_STS
@@ -2781,7 +2775,7 @@ Data  **ptr;
    /*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
 #ifdef SS_4GMX_LCORE
    *ptr = (Data*) MxHeapAlloc(SsiHeap, *size);
-   cmMemset((U8*)ptr, 0, *size);
+   memset(ptr, 0, *size);
 #else
    *ptr = (Data*) malloc(*size);
 #endif
@@ -2897,7 +2891,6 @@ Size    size;
    S8 hstGrmBuf[256];
 #endif /* SS_HISTOGRAM_SUPPORT */
 
-   TRC2(cmFreeNL);
 
    regCb = (CmMmRegCb *)regionCb;
 
@@ -3042,7 +3035,7 @@ Size    size;
       ptrHdr->requestedSize = 0;
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
       /* Initialize the elements with 0XAB */
-      cmMemset((U8 *)ptr, 0xAB, size);
+      memset(ptr, 0xAB, size);
 #endif
       /* check if the block to be freed is already having the state as FREE */
       if (CMM_IS_FREE(ptrHdr->memFlags))
@@ -3197,7 +3190,6 @@ Size    size;
    return (cmHeapFree (&(regCb->heapCb), ptr, size));
 #endif /* SS_HISTOGRAM_SUPPORT */
 #else /* use pure is on */
-   TRC2(cmFreeNL);
    /*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
 #ifdef SS_4GMX_LCORE
    (Void)MxHeapFree(SsiHeap, ptr);
@@ -3248,7 +3240,6 @@ Data  **ptr;
    CmMmRegCb *regCb;
    /*cm_mem_c_001.main_23 Removed support of SSI_DEBUG_LEVEL1 and SS_HISTOGRAM_SUPPORT for SS_FAP*/
 
-   TRC2(cmAllocWL);
 
    /*cm_mem_c_001.main_23 Removed support of  USE_MEMCAL and MEMCAL_DEBUG support for  SS_FAP*/
 
@@ -3323,7 +3314,7 @@ Data  **ptr;
 /*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
 #ifdef SS_4GMX_LCORE
    *ptr = (Data*) MxHeapAlloc(SsiHeap, *size);
-   cmMemset((U8*)ptr, 0, *size);
+   memset(ptr, 0, *size);
 #else
    *ptr = (Data*) malloc(*size);
 #endif
@@ -3370,7 +3361,6 @@ Size    size;
    CmMmRegCb *regCb;
    /*cm_mem_c_001.main_23 Removed support of SSI_DEBUG_LEVEL1 and SS_HISTOGRAM_SUPPORT for SS_FAP*/
 
-   TRC2(cmFreeWL);
 
    regCb = (CmMmRegCb *)regionCb;
 
@@ -3442,7 +3432,6 @@ Size    size;
    /* The memory block was allocated from the heap pool */ 
    return (cmHeapFree (&(regCb->heapCb), ptr, size));
 #else /* use pure is on */
-   TRC2(cmFree);
 /*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
 #ifdef SS_4GMX_LCORE
    (Void)MxHeapFree(SsiHeap, ptr);
@@ -3497,7 +3486,6 @@ SMemCtl *memCtl;
 {
    CmMmRegCb *regCb;
 
-   TRC2(cmCtl);
 
    regCb = (CmMmRegCb *)regionCb;
 
@@ -3654,7 +3642,6 @@ U16        *lstMapIdx;
 #endif
 #endif /* SSI_DEBUG_LEVEL1 */
 
-   TRC2(cmMmBktInit);
 
 
    size = cfg->bktCfg[bktIdx].size; 
@@ -3888,7 +3875,6 @@ Size         size;
 #ifdef SSI_DEBUG_LEVEL1
    U16 idx;
 #endif /* SSI_DEBUG_LEVEL1 */
-   TRC2(cmMmHeapInit);
 
    /* Initialize the heap control block */
    heapCb->vStart      = memAddr;
@@ -4062,7 +4048,6 @@ Size        *size;
 	S8 hstGrmBuf[256];
 #endif /* SS_HISTOGRAM_SUPPORT */
 
-   TRC2(cmHeapAlloc);
 /*  cm_mem_c_001.main_15 : Additions */
    /* Acquire the heap lock */ 
    /* cm_mem_c_001.main_13 : Replaced SLock with WTLock for NT */
@@ -4380,7 +4365,6 @@ Size         size;
 	S8 hstGrmBuf[256];
 #endif /* SS_HISTOGRAM_SUPPORT */
 
-   TRC2(cmHeapFree);
 
    /* Roundup the requested size */
    size = CMM_DATALIGN(size, (heapCb->minSize));
@@ -4813,7 +4797,6 @@ Void cmInitMemLeak (Void)
 {
    U32   indx;  
 
-   TRC3(cmInitMemLeak);
 
    gmemLkCb.isStarted = FALSE;
    gmemLkCb.head      = 0;
@@ -4853,7 +4836,6 @@ Void cmDeinitMemLeak (Void)
 {
    U32   indx;  
 
-   TRC3(cmDeinitMemLeak);
  
    for(indx = 0; indx < CM_MAX_ALLOC_ENTERIES; indx++)
    {
@@ -4932,7 +4914,6 @@ Void cmRlsAllocBlk(allocQIndx)
 U32    allocQIndx;
 #endif
 {
-   TRC3(cmRlsAllocBlk);
    
    if(allocQIndx < CM_MAX_ALLOC_ENTERIES)
    {
@@ -5009,7 +4990,6 @@ Void cmPrintLeakLog(Void)
    CmMmBlkHdr *aBkt;
    static U32 leakCount =0; 
 
-   TRC3(cmPrintLeakLog);
 
    printf("---- START OF LEAK LOG ----");
    SLock(&gmemLkCb.memLock);
@@ -5097,7 +5077,6 @@ U32    addr;
     MemAllocInfo  *memAllocInfo;
 #endif
 
-    TRC3(cmRlsAllocBlk);
 
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL2
 #ifdef BIT_64
@@ -5292,7 +5271,6 @@ U16    bktIdx;
    S32           traceSize;
 #endif
 
-   TRC3(cmStorAllocBlk); 
 #ifndef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL2
    if( memLkCb.memLkMdlInit == FALSE)
    {
@@ -5306,7 +5284,7 @@ U16    bktIdx;
 /*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
 #ifdef SS_4GMX_LCORE
    funcNm = (S8 **)MxHeapAlloc(SsiHeap, (sizeof(U32) * CM_MAX_STACK_TRACE));
-   cmMemset((U8*)funcNm, 0, (sizeof(U32) * CM_MAX_STACK_TRACE));
+   memset(funcNm, 0, (sizeof(U32) * CM_MAX_STACK_TRACE));
 #else
    funcNm = (S8 **)calloc(1, (sizeof(U32) * CM_MAX_STACK_TRACE));
 #endif
@@ -5328,7 +5306,7 @@ U16    bktIdx;
 #ifndef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL2
 #ifdef SS_4GMX_LCORE
    allocInfo = (MemAllocInfo *)MxHeapAlloc(SsiHeap, sizeof(MemAllocInfo)); 
-   cmMemset((U8*)allocInfo, 0, sizeof(MemAllocInfo));
+   memset(allocInfo, 0, sizeof(MemAllocInfo));
 #else
    allocInfo = (MemAllocInfo *)calloc(1, sizeof(MemAllocInfo));  
 #endif
@@ -5402,7 +5380,6 @@ Void SLogLkInfo (Void)
    CmMmRegCb          *tmpRegCb;
    FILE               *fp;
 
-   TRC3(SLogLkInfo);
    fp = fopen("meLeakLog.txt", "w");
    if(fp == NULL)
    {
@@ -5460,7 +5437,6 @@ Void SLogLkInfo (Void)
    U8                 idx;
    Txt                prntBuf[255];
    S8                 **funcNm;
-   TRC3(SLogLkInfo);
    if( memLkCb.memLkMdlInit == FALSE)
    {
      RETVOID;
@@ -5554,7 +5530,6 @@ Void cmInitMemLeakMdl (Void)
    U8   memMdl;
 	U8   hashIdx;
 
-   TRC3(cmInitMemLeakMdl);
 
    memLkCb.memLkMdlInit = FALSE;
    for(memMdl = 0; memMdl < CM_MEM_USR_MDL; memMdl++)
@@ -5603,7 +5578,6 @@ Void cmDeinitMemLeakMdl (Void)
   U8   memMdl;
   U8   hashIdx;
 
-  TRC3(cmDeinitMemLeakMdl);
 
   memLkCb.memLkMdlInit = FALSE;
   for(memMdl = 0; memMdl < CM_MEM_USR_MDL; memMdl++)
@@ -5642,7 +5616,6 @@ Void cmMemOpenMemLkFile (arg)
 S8 *msOptArg;
 #endif
 {
-   TRC3(cmMemOpenMemLkFile);
    memLkCb.fileLkLog = NULLP;
    memLkCb.fileLkLog = fopen(arg, "w");
    RETVOID;
@@ -5679,7 +5652,6 @@ Void SFlushLkInfo (Void)
    U8                 i;
 #endif /* SS_MEM_LEAK_SOL */
 
-   TRC3(SFlushLkInfo);
    if( memLkCb.memLkMdlInit == FALSE)
    {
      RETVOID;
@@ -5762,7 +5734,6 @@ S32    traceSize;
    Txt   *memFn[]={"SGetMsg", "SGetSBuf", "SGetDBuf", NULLP};
                  
    /*cm_mem_c_001.main_25 : Fix for TRACE5 feature crash due to missing TRC MACRO*/
-   TRC3(cmMemGetModuleId)
    for(idx = 0; idx < traceSize; idx++)
    {
       memReqIdx = -1;
@@ -5840,7 +5811,6 @@ S8 **strLst;
    U32  tempLen;
    U8   idx;
    S32  retVal;
-   TRC3(cmMemGetStrMtchIdx);
 
    len = strlen((const S8 *)str);
    cmpStr[0] = '(';
@@ -5909,7 +5879,6 @@ S32    size;
    Dl_info info;
    Sym *sym;
 
-   TRC3(cmAddrToSymStr);
 
    if (dladdr1(pc, &info, (Void **)&sym, RTLD_DL_SYMENT) == 0)
    {
@@ -5963,7 +5932,6 @@ Void      *arg;
 #endif
 {
     S8   *buffer;
-    TRC3(cmLeakCallBack);
 
     Backtrace_t *bt = (Backtrace_t *)arg;
     if (bt->bt_actcount >= bt->bt_maxcount)
@@ -5971,7 +5939,7 @@ Void      *arg;
 /*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
 #ifdef SS_4GMX_LCORE
     buffer = (S8 *)MxHeapAlloc(SsiHeap, 510); 
-    cmMemset((U8*)buffer, 0, 510);
+    memset(buffer, 0, 510);
 #else
     buffer = (S8 *)calloc(1, 510); 
 #endif
@@ -6031,7 +5999,6 @@ CmMmBlkHdr *blkPtr;
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
    CmMmBlkTail  *tailPtr;
 #endif
-   TRC2(cmMmRegIsBlkSane);
 
    for ( sigCnt=0; sigCnt < CMM_TRAMPLING_SIGNATURE_LEN; sigCnt++)
    {
@@ -6086,8 +6053,6 @@ CmMmBkt  *bkt;
 {
    CmMmBlkHdr *ptrBlk;
    U32 blkCnt;
-
-   TRC2(cmMmBktSanityChk);
 
    bkt->trampleCount = 0;
 
@@ -6147,7 +6112,6 @@ CmMmHeapCb  *heapCb;
 #endif
 {
 
-   TRC2(cmMmHeapSanityChk);
 
    /* increment the trample count */
    heapCb->trampleCount++;
@@ -6189,7 +6153,6 @@ U32 key; /* key string */
 U16 *idx; /* idx to return */
 #endif
 {
-   TRC2(cmMmHashFunc);
 
    *idx = (U16)(key % hashListCp->numOfbins);
 
@@ -6237,7 +6200,6 @@ Pool         pool;         /* memory pool to allocate bins */
    U16 i;
    CmMmHashListEnt *hl;
 
-   TRC2(cmMmHashListInit);
 
    /* initialize control point fields */
    hashListCp->hashList = NULLP;
@@ -6298,7 +6260,6 @@ Region       region;       /* memory region to allocate bins */
 Pool         pool;         /* memory pool to allocate bins */
 #endif
 {
-   TRC2(cmMmHashListDeinit);
 
    /* deallocate memory for bins */
    if (hashListCp->numOfbins)
@@ -6347,7 +6308,6 @@ U32           key;         /* pointer to key */
    U16 idx;                       /* index for insertion into hash list */
    U16 i;
 
-   TRC2(cmMmHashListInsert);
 
    /* check if hashListCp is initialised yet */
    if ( hashListCp->numOfbins == 0)
@@ -6427,7 +6387,6 @@ CmHstGrmHashListCp *hashListCp;  /* hash list to initialize */
 #endif
 {
    /*cm_mem_c_001.main_25 : Fix for TRACE5 feature crash due to missing TRC MACRO*/
-   TRC2(cmHstGrmHashListInit)
 #ifdef  DEBUGP
    /* display an error message here */
    /*cm_mem_c_001.main_25: Fixed Warnings for 32/64 bit compilation*/ 
@@ -6468,7 +6427,6 @@ CmHstGrmHashListCp *hashListCp;  /* hash list to initialize */
 #endif
 {
    /*cm_mem_c_001.main_25 : Fix for TRACE5 feature crash due to missing TRC MACRO*/
-   TRC2(cmHstGrmHashListDeInit)
 #ifdef  DEBUGP
    /* display an error message here */
    /*cm_mem_c_001.main_25: Fixed Warnings for 32/64 bit compilation*/ 
@@ -6526,7 +6484,6 @@ U8        entId; /* Tapa task which frees the memory */
    CmMemEntries           *entry = NULLP; /* Entry which contains the information */
 
 
-   TRC2(cmHstGrmFreeInsert);
 
    /* check for the total number of entries in the hash list. *
     * If there is no place for new entry return failure */
@@ -6610,7 +6567,6 @@ U8        entId;
    U32                    ret = 0;
    CmMemEntries           *entry = NULLP;
 
-   TRC2(cmHstGrmAllocInsert);
 
    /* check for the total number of entries in the hash list. *
     * If there is no place for new entry return failure */
@@ -6691,7 +6647,6 @@ U32                *key;
 {
 
    U32  i = 0;
-   TRC2(cmHstGrmGetHashIdxAndKey);
 
    /* Calculate the key using file name and line number */
    for(i = 0 ; fileName[i] != '\0'; i++)
@@ -6743,7 +6698,6 @@ U8                 entId;
 {
 
    U32       idx = 0;
-   TRC2(cmHstGrmFillEntry);
    entry->key = key;
    entry->line = line;
    entry->entId = entId;
@@ -6792,9 +6746,6 @@ CmMemEntries        **entry;
    U32                  numEnt = 0;
    U32                  numBin = 0;
    CmHstGrmHashListEnt  *tmpBin = NULLP;
-
-   TRC2(cmHstGrmFindEntry);
-
 
    for(numBin = 0; numBin < CMM_HIST_MAX_MEM_BIN; numBin++)
    {

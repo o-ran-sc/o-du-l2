@@ -96,8 +96,6 @@ RgUeCb         *ueCb;
 CrgUeCfg       *ueCfg;
 #endif
 {
-   TRC2(rgUHMCrgUeCfg);
-
    ueCb->ul.hqEnt.maxHqRetx = (ueCfg->ueUlHqCfg.maxUlHqTx - 1); 
    RETVOID;
 }  /* rgUHMCrgUeCfg */
@@ -134,7 +132,6 @@ RgUeCb         *ueCb;
 CrgUeRecfg     *ueRecfg;
 #endif
 {
-   TRC2(rgUHMCrgUeRecfg);
 
    ueCb->ul.hqEnt.maxHqRetx = (ueRecfg->ueUlHqRecfg.maxUlHqTx - 1); 
    RETVOID;
