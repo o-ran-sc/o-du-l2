@@ -327,7 +327,34 @@ uint8_t packMacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
    return ROK;
 }
 
-
+/*******************************************************************
+ *
+ * @brief Pack and Send UE Reconfig Request from MAC to SCH
+ *
+ * @details
+ *
+ *    Function : packMacSchUeReconfigReq
+ *
+ *    Functionality:
+ *       Pack and Send UE Reconfig Request from MAC to SCH
+ *
+ * @params[in]
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packMacSchUeReconfigReq(Pst *pst, SchUeCfg  *ueCfg)
+{
+   if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LC))
+   {
+      /* TODO */
+   }
+   else
+   {
+      return RFAILED; 
+   }
+   return ROK;
+}
 
 /**********************************************************************
   End of file
