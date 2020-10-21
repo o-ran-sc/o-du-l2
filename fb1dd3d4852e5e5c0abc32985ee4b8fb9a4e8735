@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7b499a91_38df088c",
+        "filename": "src/5gnrmac/rg_ex_ms.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-21T16:09:39Z",
+      "side": 1,
+      "message": "Lets check if INLINE can also be removed/replaced",
+      "revId": "fb1dd3d4852e5e5c0abc32985ee4b8fb9a4e8735",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1d689684_de37553f",
+        "filename": "src/5gnrmac/rg_prg_pt.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-21T16:09:39Z",
+      "side": 1,
+      "message": "check if CONSTANT can be removed/replaced?",
+      "revId": "fb1dd3d4852e5e5c0abc32985ee4b8fb9a4e8735",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ea69733d_e373e17d",
+        "filename": "src/5gnrrlc/kw_umm_dl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-21T16:09:39Z",
+      "side": 1,
+      "message": "do we need these \"extern\"? Check this keyword in other files too",
+      "revId": "fb1dd3d4852e5e5c0abc32985ee4b8fb9a4e8735",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "649ff2bf_9e43d733",
+        "filename": "src/5gnrsch/rg_sch_drx.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-21T16:09:39Z",
+      "side": 1,
+      "message": "remove extra space",
+      "revId": "fb1dd3d4852e5e5c0abc32985ee4b8fb9a4e8735",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "97777b6b_56cd5e35",
+        "filename": "src/5gnrsch/rg_sch_tom.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-21T16:09:39Z",
+      "side": 1,
+      "message": "remove extra space",
+      "revId": "fb1dd3d4852e5e5c0abc32985ee4b8fb9a4e8735",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b0a16f6c_9276f6f1",
+        "filename": "src/cm/envdep.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1336,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-21T16:09:39Z",
+      "side": 1,
+      "message": "multiple lines have extra spaces. remove",
+      "revId": "fb1dd3d4852e5e5c0abc32985ee4b8fb9a4e8735",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "86309477_4c9f6fed",
+        "filename": "src/cm/ssi.x",
+        "patchSetId": 1
+      },
+      "lineNbr": 1561,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-21T16:09:39Z",
+      "side": 1,
+      "message": "extra space in all of the above lines",
+      "revId": "fb1dd3d4852e5e5c0abc32985ee4b8fb9a4e8735",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "89efff45_3788ed97",
+        "filename": "src/mt/ss_gen.x",
+        "patchSetId": 1
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-21T16:09:39Z",
+      "side": 1,
+      "message": "Can we remove/replace VOLATILE as well?",
+      "revId": "fb1dd3d4852e5e5c0abc32985ee4b8fb9a4e8735",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
