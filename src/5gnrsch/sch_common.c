@@ -375,7 +375,7 @@ uint8_t schDlRsrcAllocMsg4(DlMsgAlloc *msg4Alloc, SchCellCb *cell, uint16_t slot
    }
 
    /* calculate the PRBs */
-   schAllocFreqDomRscType0(((offsetPointA-offset)/6), (numRbs/6), FreqDomainResource);
+   freqDomRscAllocType0(((offsetPointA-offset)/6), (numRbs/6), FreqDomainResource);
 
    /* fill BWP */
    bwp->freqAlloc.numPrb   = initialBwp->bwp.freqAlloc.numPrb;

@@ -36,11 +36,18 @@ MacSchUeCreateReqFunc macSchUeCreateReqOpts[] =
    packMacSchUeCreateReq     /* packing for light weight loosely coupled */
 };
 
-DuMacUeCreateRspFunc DuMacUeCreateRspOpts[] =
+MacDuUeCfgRspFunc MacDuUeCfgRspOpts[] =
 {
-   packDuMacUeCreateRsp,     /* packing for loosely coupled */
-   DuHandleMacUeCreateRsp,   /* packing for tightly coupled */
-   packDuMacUeCreateRsp,     /* packing for light weight loosly coupled */
+   packDuMacUeCfgRsp,   /* packing for loosely coupled */
+   DuProcMacUeCfgRsp,   /* packing for tightly coupled */
+   packDuMacUeCfgRsp   /* packing for light weight loosly coupled */
+};
+
+MacSchUeReconfigReqFunc macSchUeReconfigReqOpts[] =
+{
+   packMacSchUeReconfigReq,    /* packing for loosely coupled */
+   MacSchUeReconfigReq,        /* packing for tightly coupled */
+   packMacSchUeReconfigReq     /* packing for light weight loosely coupled */
 };
 
 /*******************************************************************
@@ -160,31 +167,79 @@ uint8_t fillPhyCellGroupCfg(PhyCellGrpCfg macUeCfg, SchPhyCellGrpCfg *schPhyCell
  * ****************************************************************/
 uint8_t fillPdschServCellCfg(PdschServCellCfg macPdschCfg, SchPdschServCellCfg *schPdschCfg) 
 {
-   schPdschCfg->maxMimoLayers = NULL;
    if(macPdschCfg.maxMimoLayers)
    {
-      /* TODO : Optional parameter */
+      if(!schPdschCfg->maxMimoLayers)
+      {
+         MAC_ALLOC_SHRABL_BUF(schPdschCfg->maxMimoLayers, sizeof(uint8_t));
+	 if(!schPdschCfg->maxMimoLayers)
+	 {
+            DU_LOG("\nMAC :Memory Alloc MimoLayers Failed at fillPdschServCellCfg()");
+	    return RFAILED;
+	 }
+      }
+      *schPdschCfg->maxMimoLayers = *macPdschCfg.maxMimoLayers;
+   }
+   else
+   {
+      schPdschCfg->maxMimoLayers = NULLP;
    }
 
    schPdschCfg->numHarqProcForPdsch = \
       macPdschCfg.numHarqProcForPdsch;
 
-   schPdschCfg->maxCodeBlkGrpPerTb = NULL;
    if(macPdschCfg.maxCodeBlkGrpPerTb)
    {
-      /* TODO : Optional parameter */
+      if(!schPdschCfg->maxCodeBlkGrpPerTb)
+      {
+         MAC_ALLOC_SHRABL_BUF(schPdschCfg->maxCodeBlkGrpPerTb, sizeof(SchMaxCodeBlkGrpPerTB));
+	 if(!schPdschCfg->maxCodeBlkGrpPerTb)
+	 {
+            DU_LOG("\nMAC :Memory Alloc for code Block Failed at fillPdschServCellCfg()");
+	    return RFAILED;
+	 }
+      }
+      *schPdschCfg->maxCodeBlkGrpPerTb = *macPdschCfg.maxCodeBlkGrpPerTb;
+   }
+   else
+   {
+      schPdschCfg->maxCodeBlkGrpPerTb = NULLP;
    }
 
-   schPdschCfg->codeBlkGrpFlushInd = NULL;
    if(macPdschCfg.codeBlkGrpFlushInd)
    {
-      /* TODO : Optional parameter */
+      if(!schPdschCfg->codeBlkGrpFlushInd)
+      {
+         MAC_ALLOC_SHRABL_BUF(schPdschCfg->codeBlkGrpFlushInd, sizeof(bool));
+	 if(!schPdschCfg->codeBlkGrpFlushInd)
+	 {
+            DU_LOG("\nMAC :Memory Alloc for Flush Ind Failed at fillPdschServCellCfg()");
+	    return RFAILED;
+	 }
+      }
+      *schPdschCfg->codeBlkGrpFlushInd = *macPdschCfg.codeBlkGrpFlushInd;
+   }
+   else
+   {
+      schPdschCfg->codeBlkGrpFlushInd = NULLP;
    }
 
-   schPdschCfg->xOverhead = NULL;
    if(macPdschCfg.xOverhead)
    {
-      /* TODO : Optional parameter */
+      if(!schPdschCfg->xOverhead)
+      {
+         MAC_ALLOC_SHRABL_BUF(schPdschCfg->xOverhead, sizeof(SchPdschXOverhead));
+	 if(!schPdschCfg->xOverhead)
+	 {
+            DU_LOG("\nMAC :Memory Alloc for xOverHead Failed at fillPdschServCellCfg()");
+	    return RFAILED;
+	 }
+      }
+      *schPdschCfg->xOverhead = *macPdschCfg.xOverhead;
+   }
+   else
+   {
+      schPdschCfg->xOverhead = NULLP;
    }
 
    return ROK;
@@ -211,6 +266,7 @@ uint8_t fillInitalUlBwpPuschCfg(PuschCfg macPuschCfg, SchPuschCfg *schPuschCfg)
 {
    uint8_t   idx;
 
+   schPuschCfg->dataScramblingId = macPuschCfg.dataScramblingId;
    schPuschCfg->dmrsUlCfgForPuschMapTypeA.addPos = \
       macPuschCfg.dmrsUlCfgForPuschMapTypeA.addPos;
    schPuschCfg->dmrsUlCfgForPuschMapTypeA.transPrecodDisabled.scramblingId0 = \
@@ -430,7 +486,15 @@ uint8_t fillInitDlBwpPdschCfg(PdschConfig macPdschCfg, SchPdschConfig *schPdschC
    schPdschCfg->rbgSize = macPdschCfg.rbgSize;
    schPdschCfg->numCodeWordsSchByDci = macPdschCfg.numCodeWordsSchByDci;
    schPdschCfg->bundlingType = macPdschCfg.bundlingType;
-
+   if(schPdschCfg->bundlingType == STATIC_BUNDLING_TYPE)
+   {
+      schPdschCfg->bundlingInfo.SchStaticBundling.size  = macPdschCfg.bundlingInfo.StaticBundling.size;
+   }
+   else if(schPdschCfg->bundlingType == DYNAMIC_BUNDLING_TYPE)
+   {
+      schPdschCfg->bundlingInfo.SchDynamicBundling.sizeSet1 = macPdschCfg.bundlingInfo.DynamicBundling.sizeSet1;
+      schPdschCfg->bundlingInfo.SchDynamicBundling.sizeSet2 = macPdschCfg.bundlingInfo.DynamicBundling.sizeSet2;
+   }
    return ROK;
 }
 
@@ -588,12 +652,6 @@ uint8_t fillLogicalChannelCfg(LcCfg macLcCfg, SchLcCfg *schLcCfg)
 
    schLcCfg->snssai = NULL;
    if(macLcCfg.snssai)
-   {
-      /* TODO : Optional Parameter */
-   }
-
-   schLcCfg->ulLcCfg = NULL;
-   if(macLcCfg.ulLcCfg)
    {
       /* TODO : Optional Parameter */
    }
@@ -976,8 +1034,7 @@ uint8_t MacSendUeCreateRsp(MacRsp result, SchUeCfgRsp *schCfgRsp)
    /* Fill Post structure and send UE Create response*/
    memset(&rspPst, 0, sizeof(Pst));
    FILL_PST_MAC_TO_DUAPP(rspPst, EVENT_MAC_UE_CREATE_RSP);
-   return DuMacUeCreateRspOpts[rspPst.selector](&rspPst, cfgRsp); 
-
+   return MacDuUeCfgRspOpts[rspPst.selector](&rspPst, cfgRsp); 
 }
 
 
@@ -1023,6 +1080,71 @@ uint8_t MacProcSchUeCfgRsp(Pst *pst, SchUeCfgRsp *schCfgRsp)
    return ret; 
 }
 
+/*******************************************************************
+ *
+ * @brief Handles UE Reconfig requst from DU APP
+ *
+ * @details
+ *
+ *    Function : MacProcUeReconfigReq
+ *
+ *    Functionality: Handles UE Reconfig requst from DU APP
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t MacProcUeReconfigReq(Pst *pst, MacUeCfg *ueCfg)
+{
+   //TODO:
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fill and Send UE Reconfig response from MAC to DU APP
+ *
+ * @details
+ *
+ *    Function : MacSendUeReconfigRsp
+ *
+ *    Functionality: Fill and Send UE Reconfig response from MAC to DUAPP
+ *
+ * @params[in] MAC UE create result
+ *             SCH UE create response
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t MacSendUeReconfigRsp(MacRsp result, SchUeCfgRsp *schCfgRsp)
+{
+   //TODO:
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief  Processes UE Reconfig response from scheduler
+ *
+ * @details
+ *
+ *    Function : MacProcSchUeReconfigRsp
+ *
+ *    Functionality:
+ *      Processes UE reconfig response from scheduler
+ *      Sends UE reconfig response to DU APP
+ *
+ * @params[in] Pst : Post structure
+ *             schCfgRsp : Scheduler UE cfg response
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t MacProcSchUeReconfigRsp(Pst *pst, SchUeCfgRsp *schCfgRsp)
+{
+   return ROK;
+}
 
 /**********************************************************************
   End of file

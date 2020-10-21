@@ -769,7 +769,7 @@ uint8_t unpackMacUeCreateReq(DuMacUeCreateReq func, Pst *pst, Buffer *mBuf)
  *
  * @details
  *
- *    Function : packDuMacUeCreateRsp
+ *    Function : packDuMacUeCfgRsp
  *
  *    Functionality:
  *       Pack and send UE config response from MAC to DU APP
@@ -779,7 +779,7 @@ uint8_t unpackMacUeCreateReq(DuMacUeCreateReq func, Pst *pst, Buffer *mBuf)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packDuMacUeCreateRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
+uint8_t packDuMacUeCfgRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
 {
    Buffer *mBuf = NULLP;
 
@@ -808,7 +808,7 @@ uint8_t packDuMacUeCreateRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
  *
  * @details
  *
- *    Function : unpackDuMacUeCreateRsp
+ *    Function : unpackDuMacUeCfgRsp
  *
  *    Functionality: Unpack UE Config Response from MAC to DU APP
  *
@@ -817,7 +817,7 @@ uint8_t packDuMacUeCreateRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t unpackDuMacUeCreateRsp(DuMacUeCreateRspFunc func, Pst *pst, Buffer *mBuf)
+uint8_t unpackDuMacUeCfgRsp(MacDuUeCfgRspFunc func, Pst *pst, Buffer *mBuf)
 {
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
@@ -830,6 +830,85 @@ uint8_t unpackDuMacUeCreateRsp(DuMacUeCreateRspFunc func, Pst *pst, Buffer *mBuf
    }
 
    ODU_PUT_MSG_BUF(mBuf);
+   return RFAILED;
+}
+
+/*******************************************************************
+ *
+ * @brief Packs and Sends UE Reconig Request from DUAPP to MAC
+ *
+ * @details
+ *
+ *    Function : packDuMacUeReconfigReq
+ *
+ *    Functionality:
+ *       Packs and Sends UE Reconfig Request from DUAPP to MAC
+ *
+ *
+ * @params[in] Post structure pointer
+ *             MacUeCfg pointer              
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packDuMacUeReconfigReq(Pst *pst, MacUeCfg *ueCfg)
+{
+   Buffer *mBuf = NULLP;
+
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+      {
+	 DU_LOG("\nMAC : Memory allocation failed at packDuMacUeReconfigReq");
+	 return RFAILED;
+      }
+      /* pack the address of the structure */
+      CMCHKPK(oduPackPointer,(PTR)ueCfg, mBuf);
+   }
+   else
+   {
+      DU_LOG("\nMAC: Only LWLC supported for packDuMacUeReconfigReq");
+      return RFAILED;
+   }
+
+   return ODU_POST_TASK(pst,mBuf);
+}
+/*******************************************************************
+ *
+ * @brief Unpacks UE Reconfig Request received from DU APP
+ *
+ * @details
+ *
+ *    Function : unpackMacUeReconfigReq
+ *
+ *    Functionality:
+ *         Unpacks UE Reconfig Request received from DU APP
+ *
+ * @params[in] Pointer to Handler
+ *             Post structure pointer
+ *             Message Buffer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t unpackMacUeReconfigReq(DuMacUeReconfigReq func, Pst *pst, Buffer *mBuf)
+{
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      MacUeCfg *ueCfg;
+
+      /* unpack the address of the structure */
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&ueCfg, mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
+      return (*func)(pst, ueCfg);
+   }
+   else
+   {
+      /* Nothing to do for other selectors */
+      DU_LOG("\n Only LWLC supported for UE Create Request ");
+      ODU_PUT_MSG_BUF(mBuf);
+   }
+
    return RFAILED;
 }
 
