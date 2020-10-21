@@ -23,7 +23,7 @@
  *
  * @details
  *
- *     Function: schAllocFreqDomRscType0
+ *     Function: freqDomRscAllocType0
  *     
  *     This function does allocation in frequency domain resource.
  *     This is a bitmap defining  non-overlapping groups of 6 PRBs in ascending order.
@@ -33,7 +33,7 @@
  *  @param[in]  freqDomain - 6 bytes of info, each bit represents a group of 6 PRB.
  *  @return   void
  **/
-void schAllocFreqDomRscType0(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain)
+void freqDomRscAllocType0(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain)
 {
    uint8_t remBits = prbSize; /* each bit represents 6 PRBs */
    uint8_t firstByte = 1;
@@ -106,7 +106,6 @@ void oduCpyFixBufToMsg(uint8_t *fixBuf, Buffer *mBuf, uint16_t len)
    }                                                            
    ODU_COPY_FIX_BUF_TO_MSG(fixBuf, mBuf, 0, len, (MsgLen *)&copyLen);
 }
-
 
 
 /**********************************************************************
