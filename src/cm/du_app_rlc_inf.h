@@ -21,11 +21,13 @@
 #define __RLC_INF_H__
 
 /* Events */
-#define EVENT_RLC_UL_UE_CREATE_REQ  210
-#define EVENT_RLC_UL_UE_CREATE_RSP 211    /*!< Config Confirm */
+#define EVENT_RLC_UE_CONFIG_REQ  210
+#define EVENT_RLC_UE_CONFIG_RSP 211    /*!< Config Confirm */
 #define EVENT_UL_RRC_MSG_TRANS_TO_DU  212
 #define EVENT_DL_RRC_MSG_TRANS_TO_RLC 213
 #define EVENT_RRC_DELIVERY_MSG_TRANS_TO_DU 214
+#define EVENT_RLC_UE_RECONFIG_REQ  215
+#define EVENT_RLC_UE_RECONFIG_RSP  216
 
 #define RB_ID_SRB 0
 #define RB_ID_DRB 1
@@ -461,6 +463,7 @@ typedef struct umUniDirDlBearerCfg
 /* Spec Ref: 38.331, 6.3.2 RLC-BearerConfig */
 typedef struct rlcBearerCfg
 {
+   ConfigType   configType;
    uint8_t      rbId;
    uint8_t      rbType;
    uint8_t      lcId;
@@ -468,10 +471,10 @@ typedef struct rlcBearerCfg
    RlcMode      rlcMode;
    union
    {
-      AmBearerCfg         amCfg;
-      UmBiDirBearerCfg    umBiDirCfg;
-      UmUniDirUlBearerCfg umUniDirUlCfg;
-      UmUniDirDlBearerCfg umUniDirDlCfg;
+      AmBearerCfg         *amCfg;
+      UmBiDirBearerCfg    *umBiDirCfg;
+      UmUniDirUlBearerCfg *umUniDirUlCfg;
+      UmUniDirDlBearerCfg *umUniDirDlCfg;
    }u;
 }RlcBearerCfg;
 
@@ -480,7 +483,8 @@ typedef struct rlcUeCfg
    uint16_t     cellId;
    uint8_t      ueIdx;
    uint8_t      numLcs;
-   RlcBearerCfg rlcBearerCfg[MAX_NUM_LC];
+   RlcBearerCfg rlcLcCfg[MAX_NUM_LC];
+   UeCfgState rlcUeCfgState; /* InActive / Completed */
 }RlcUeCfg;
 
 typedef struct rlcUeCfgRsp
@@ -533,12 +537,12 @@ typedef struct rrcDeliveryReportInfo
 
 /* Function Pointers */
 /* UE create Request from DU APP to RLC*/
-typedef uint8_t (*DuRlcUlUeCreateReq) ARGS((
+typedef uint8_t (*DuRlcUeCreateReq) ARGS((
    Pst           *pst,
    RlcUeCfg      *ueCfg ));
 
-/* UE create Response from RLC to DU APP*/
-typedef uint8_t (*RlcUlDuUeCreateRsp) ARGS((
+/* UE Cfg Response from RLC to DU APP*/
+typedef uint8_t (*RlcDuUeCfgRsp) ARGS((
    Pst          *pst,
    RlcUeCfgRsp  *ueCfgRsp));
 
@@ -557,24 +561,32 @@ typedef uint8_t (*RlcRrcDeliveryReportToDuFunc) ARGS((
    Pst           *pst,
    RrcDeliveryReport *rrcDeliveryReport));
 
+typedef uint8_t (*DuRlcUeReconfigReq) ARGS((
+   Pst           *pst,
+   RlcUeCfg      *ueCfg ));
+
 /* Pack/Unpack function declarations */
-uint8_t packDuRlcUlUeCreateReq(Pst *pst, RlcUeCfg *ueCfg);
-uint8_t unpackRlcUlUeCreateReq(DuRlcUlUeCreateReq func, Pst *pst, Buffer *mBuf);
-uint8_t packRlcUlDuUeCreateRsp(Pst *pst, RlcUeCfgRsp *ueCfgRsp);
-uint8_t unpackRlcUlUeCreateRsp(RlcUlDuUeCreateRsp func, Pst *pst, Buffer *mBuf);
+uint8_t packDuRlcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg);
+uint8_t unpackRlcUeCreateReq(DuRlcUeCreateReq func, Pst *pst, Buffer *mBuf);
+uint8_t packRlcDuUeCfgRsp(Pst *pst, RlcUeCfgRsp *ueCfgRsp);
+uint8_t unpackRlcUeCfgRsp(RlcDuUeCfgRsp func, Pst *pst, Buffer *mBuf);
 uint8_t packRlcUlRrcMsgToDu(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo);
 uint8_t unpackRlcUlRrcMsgToDu(RlcUlRrcMsgToDuFunc func, Pst *pst, Buffer *mBuf);
 uint8_t packDlRrcMsgToRlc(Pst *pst, RlcDlRrcMsgInfo *dlRrcMsgInfo);
 uint8_t unpackDlRrcMsgToRlc(DuDlRrcMsgToRlcFunc func, Pst *pst, Buffer *mBuf);
 uint8_t packRrcDeliveryReportToDu(Pst *pst, RrcDeliveryReport *rrcDeliveryReport);
 uint8_t unpackRrcDeliveryReportToDu(RlcRrcDeliveryReportToDuFunc func,Pst *pst, Buffer *mBuf);
+uint8_t packDuRlcUeReconfigReq(Pst *pst, RlcUeCfg *ueCfg);
+uint8_t unpackRlcUeReconfigReq(DuRlcUeReconfigReq func, Pst *pst, Buffer *mBuf);
 
 /* Event Handler function declarations */
-uint8_t RlcUlProcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg);
-uint8_t DuProcRlcUlUeCreateRsp(Pst *pst, RlcUeCfgRsp *cfgRsp);
+uint8_t RlcProcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg);
+uint8_t DuProcRlcUeCfgRsp(Pst *pst, RlcUeCfgRsp *cfgRsp);
 uint8_t DuProcRlcUlRrcMsgTrans(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo);
 uint8_t RlcProcDlRrcMsgTransfer(Pst *pst, RlcDlRrcMsgInfo *dlRrcMsgInfo);
 uint8_t DuProcRlcRrcDeliveryReport(Pst *pst, RrcDeliveryReport *rrcDeliveryReport);
+uint8_t RlcProcUeReconfigReq(Pst *pst, RlcUeCfg *ueCfg);
+
 #endif /* RLC_INF_H */
 
 /**********************************************************************

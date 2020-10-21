@@ -36,11 +36,11 @@
 #include "du_app_rlc_inf.h"
 #include "rlc_mgr.h"
 
-RlcUlDuUeCreateRsp rlcUlUeCreateRspOpts[] =
+RlcDuUeCfgRsp rlcUeCfgRspOpts[] =
 {
-   packRlcUlDuUeCreateRsp,     /* 0 - loosely coupled */
-   DuProcRlcUlUeCreateRsp,     /* 1 - tightly coupled */
-   packRlcUlDuUeCreateRsp,     /* 2 - LWLC loosely coupled */
+   packRlcDuUeCfgRsp,     /* 0 - loosely coupled */
+   DuProcRlcUeCfgRsp,     /* 1 - tightly coupled */
+   packRlcDuUeCfgRsp     /* 2 - LWLC loosely coupled */
 };
 
 
@@ -62,32 +62,39 @@ RlcUlDuUeCreateRsp rlcUlUeCreateRspOpts[] =
  *      -# RFAILED
  *
  *************************************************************/
-uint8_t SendRlcUlUeCreateRspToDu(Pst *pst, RlcCfgCfmInfo *cfgRsp)
+uint8_t SendRlcUeRspToDu(Pst *pst, RlcCfgCfmInfo *cfgRsp)
 {
    /* jump to specific primitive depending on configured selector */
-   uint8_t ret = ROK;  
-   RlcUeCfgRsp *ueCreateRsp = NULLP;
+   uint8_t ret = ROK;
+   RlcUeCfgRsp *ueRsp = NULLP;
 
-   RLC_ALLOC_SHRABL_BUF(pst->region, pst->pool, ueCreateRsp, sizeof(RlcUeCfgRsp));
-   if(!ueCreateRsp)
+   RLC_ALLOC_SHRABL_BUF(pst->region, pst->pool, ueRsp, sizeof(RlcUeCfgRsp));
+   if(!ueRsp)
    {  
-      DU_LOG("RLC: Memory allocation failed for ueCreateRsp at SendRlcUlUeCreateRspToDu()");
+      DU_LOG("RLC: Memory allocation failed for ueRsp at SendRlcUeCreateRspToDu()");
       ret = RFAILED;
    }
    else
    {
       /* Mapping Old api to New Api */
-      fillRlcUlUeCfgRsp(ueCreateRsp, cfgRsp);
-      ret = (*rlcUlUeCreateRspOpts[pst->selector])(pst, ueCreateRsp);
-      if(ret)
+      ret = fillRlcUeCfgRsp(ueRsp, cfgRsp);
+      if(!ret)
       {
-         DU_LOG("RLC: Failed at SendRlcUlUeCreateRspToDu()");
-         RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueCreateRsp, sizeof(RlcUeCfgRsp));
-	 ret = RFAILED;
+         ret = (*rlcUeCfgRspOpts[pst->selector])(pst, ueRsp);
+         if(ret)
+         {
+            DU_LOG("RLC: Failed at SendRlcUeRspToDu()");
+            RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueRsp, sizeof(RlcUeCfgRsp));
+         }
+      }
+      else
+      {
+         DU_LOG("RLC: Failed at fillRlcUeCfgRsp() for event %d", pst->event);
+         RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueRsp, sizeof(RlcUeCfgRsp));
       }
    }
    return ret;
-} /* end of SendRlcUlUeCreateRspToDu */
+} /* end of SendRlcUeRspToDu */
 
 /**********************************************************************
          End of file
