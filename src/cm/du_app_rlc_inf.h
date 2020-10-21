@@ -26,6 +26,8 @@
 #define EVENT_UL_RRC_MSG_TRANS_TO_DU  212
 #define EVENT_DL_RRC_MSG_TRANS_TO_RLC 213
 #define EVENT_RRC_DELIVERY_MSG_TRANS_TO_DU 214
+#define EVENT_RLC_UL_UE_RECONFIG_REQ  216
+#define EVENT_RLC_UL_UE_RECONFIG_RSP  217
 
 #define RB_ID_SRB 0
 #define RB_ID_DRB 1
@@ -461,11 +463,13 @@ typedef struct umUniDirDlBearerCfg
 /* Spec Ref: 38.331, 6.3.2 RLC-BearerConfig */
 typedef struct rlcBearerCfg
 {
+   ConfigType   configType;
    uint8_t      rbId;
    uint8_t      rbType;
    uint8_t      lcId;
    uint8_t      lcType;
    RlcMode      rlcMode;
+   bool         rlcModeCfgPres;
    union
    {
       AmBearerCfg         amCfg;
@@ -480,7 +484,8 @@ typedef struct rlcUeCfg
    uint16_t     cellId;
    uint8_t      ueIdx;
    uint8_t      numLcs;
-   RlcBearerCfg rlcBearerCfg[MAX_NUM_LC];
+   RlcBearerCfg rlcLcCfg[MAX_NUM_LC];
+   UeCfgState rlcUeCfgState; /* InActive / Completed */
 }RlcUeCfg;
 
 typedef struct rlcUeCfgRsp
@@ -537,8 +542,8 @@ typedef uint8_t (*DuRlcUlUeCreateReq) ARGS((
    Pst           *pst,
    RlcUeCfg      *ueCfg ));
 
-/* UE create Response from RLC to DU APP*/
-typedef uint8_t (*RlcUlDuUeCreateRsp) ARGS((
+/* UE Cfg Response from RLC to DU APP*/
+typedef uint8_t (*RlcUlDuUeCfgRsp) ARGS((
    Pst          *pst,
    RlcUeCfgRsp  *ueCfgRsp));
 
@@ -557,24 +562,37 @@ typedef uint8_t (*RlcRrcDeliveryReportToDuFunc) ARGS((
    Pst           *pst,
    RrcDeliveryReport *rrcDeliveryReport));
 
+typedef uint8_t (*DuRlcUlUeReconfigReq) ARGS((
+   Pst           *pst,
+   RlcUeCfg      *ueCfg ));
+
 /* Pack/Unpack function declarations */
 uint8_t packDuRlcUlUeCreateReq(Pst *pst, RlcUeCfg *ueCfg);
 uint8_t unpackRlcUlUeCreateReq(DuRlcUlUeCreateReq func, Pst *pst, Buffer *mBuf);
-uint8_t packRlcUlDuUeCreateRsp(Pst *pst, RlcUeCfgRsp *ueCfgRsp);
-uint8_t unpackRlcUlUeCreateRsp(RlcUlDuUeCreateRsp func, Pst *pst, Buffer *mBuf);
+uint8_t packRlcUlDuUeCfgRsp(Pst *pst, RlcUeCfgRsp *ueCfgRsp);
+uint8_t unpackRlcUlUeCfgRsp(RlcUlDuUeCfgRsp func, Pst *pst, Buffer *mBuf);
 uint8_t packRlcUlRrcMsgToDu(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo);
 uint8_t unpackRlcUlRrcMsgToDu(RlcUlRrcMsgToDuFunc func, Pst *pst, Buffer *mBuf);
 uint8_t packDlRrcMsgToRlc(Pst *pst, RlcDlRrcMsgInfo *dlRrcMsgInfo);
 uint8_t unpackDlRrcMsgToRlc(DuDlRrcMsgToRlcFunc func, Pst *pst, Buffer *mBuf);
 uint8_t packRrcDeliveryReportToDu(Pst *pst, RrcDeliveryReport *rrcDeliveryReport);
 uint8_t unpackRrcDeliveryReportToDu(RlcRrcDeliveryReportToDuFunc func,Pst *pst, Buffer *mBuf);
+uint8_t packDuRlcUlUeReconfigReq(Pst *pst, RlcUeCfg *ueCfg);
+uint8_t unpackRlcUlUeReconfigReq(DuRlcUlUeReconfigReq func, Pst *pst, Buffer *mBuf);
 
 /* Event Handler function declarations */
 uint8_t RlcUlProcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg);
-uint8_t DuProcRlcUlUeCreateRsp(Pst *pst, RlcUeCfgRsp *cfgRsp);
+uint8_t DuProcRlcUlUeCfgRsp(Pst *pst, RlcUeCfgRsp *cfgRsp);
 uint8_t DuProcRlcUlRrcMsgTrans(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo);
 uint8_t RlcProcDlRrcMsgTransfer(Pst *pst, RlcDlRrcMsgInfo *dlRrcMsgInfo);
 uint8_t DuProcRlcRrcDeliveryReport(Pst *pst, RrcDeliveryReport *rrcDeliveryReport);
+uint8_t RlcUlProcUeReconfigReq(Pst *pst, RlcUeCfg *ueCfg);
+
+void fillDefaultAmInfo(AmBearerCfg *amCfg);
+void fillDefaultUmBiInfo(UmBiDirBearerCfg *umBiDirCfg);
+void fillDefaultUmUlInfo(UmUniDirUlBearerCfg *UmUlCfg);
+void fillDefaultUmDlInfo(UmUniDirDlBearerCfg *UmDlCfg);
+uint8_t buildRlcModeDefaultCfg(uint8_t rlcMode, RlcBearerCfg *lcCfg);
 #endif /* RLC_INF_H */
 
 /**********************************************************************

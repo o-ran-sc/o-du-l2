@@ -35,7 +35,11 @@ uint8_t BuildAndSendDUConfigUpdate();
 uint8_t BuildAndSendInitialRrcMsgTransfer(uint32_t gnbDuUeF1apId, uint16_t crnti, uint16_t rrcContSize, 
           uint8_t *rrcContainer);
 uint8_t BuildAndSendULRRCMessageTransfer(DuUeCb  ueCb, uint8_t lcId,  uint16_t msgLen, uint8_t *rrcMsg);
-
+uint8_t duProcUeSetupRequest(UeContextSetupDb *ueSetupReqDb);
+uint8_t BuildAndSendUeContextSetupRsp(uint8_t ueIdx, uint8_t cellIdx);
+uint8_t procUeReCfgCellInfo(MacUeCfg *macUeCfg, void *cellGrp);
+void freeDrbList(uint8_t drbs, DuUeCfg *ueCfgDb);
+void freeUeReCfgCellGrpInfo(MacUeCfg *macUeCfg);
 /**********************************************************************
          End of file
 **********************************************************************/
