@@ -83,8 +83,6 @@ Void TSL2AllocStatsMem(region, pool)
 {
    U32 cnt=0;
 
-   TRC2(TSL2AllocStatsMem)
-
    cmLListInit(&inUseL2UeStatsLst);     
    cmLListInit(&freeL2UeStatsLst);      
    for (cnt=0; cnt < L2_STATS_MAX_CELLS; cnt++)
@@ -97,7 +95,7 @@ Void TSL2AllocStatsMem(region, pool)
          			printf("\n STATS Unexpected MEM Alloc Failure\n");
       		 }
    	  }
-        cmMemset((U8 *)l2CellStats[cnt], 0x00, (Size)sizeof(TSL2CellStatsCb));
+        memset(l2CellStats[cnt], 0x00, sizeof(TSL2CellStatsCb));
    }
 
    for (cnt=0; cnt < L2_STATS_MAX_UES; cnt++)
@@ -111,7 +109,7 @@ Void TSL2AllocStatsMem(region, pool)
          		 	printf("\n STATS Unexpected MEM Alloc Failure at %d\n", (int)cnt);
       		 }
 		  }
-        cmMemset((U8 *)statsCb, 0x00, (Size)sizeof(TSL2UeStatsCb));
+        memset(statsCb, 0x00, sizeof(TSL2UeStatsCb));
         statsCb->lnk.node = (PTR)statsCb;
         cmLListAdd2Tail(&freeL2UeStatsLst, &statsCb->lnk);
         l2UeStats[cnt] = statsCb;
@@ -144,8 +142,6 @@ TSL2UeStatsCb* TSL2AllocUeStatsBlk(rnti)
 {
    CmLList          *tmp = NULLP;
    TSL2UeStatsCb  *statsCb = NULLP;
-
-   TRC2(TSL2AllocUeStatsBlk)
 
    tmp = freeL2UeStatsLst.first;
    if (tmp == NULLP)
@@ -186,8 +182,6 @@ Void TSL2DeallocUeStatsBlk(rnti, statsCb)
  TSL2UeStatsCb  *statsCb;
 #endif
 {
-   TRC2(TSL2DeallocUeStatsBlk)
-
    statsCb->inUse = FALSE;
    cmLListDelFrm(&inUseL2UeStatsLst, &statsCb->lnk);
    freeL2UeStatsLst.crnt = freeL2UeStatsLst.first;
@@ -218,8 +212,6 @@ TSL2CellStatsCb* TSL2AllocCellStatsBlk(cellId)
  U32 cellId;
 #endif
 {
-   TRC2(TSL2AllocCellStatsBlk)
-
    if (cellId != 1)
    {
       printf("\n STATS Unexpected CellID = %d\n", (int)cellId);
@@ -250,7 +242,6 @@ Void TSL2DeallocCellStatsBlk(cellId)
  U32 cellId;
 #endif
 {
-   TRC2(TSL2DeallocCellStatsBlk)
 
    RETVOID;
 }
@@ -284,8 +275,6 @@ Void TSL2SendStatsToApp(pst, suId)
 {
    U32 idx;
 
-   TRC2(TSL2SendStatsToApp)
-
    for (idx = 0; idx < L2_STATS_MAX_UES; idx++)
    {
       TSL2UeStatsCb *statsCb = l2UeStats[idx];
@@ -307,8 +296,8 @@ Void TSL2SendStatsToApp(pst, suId)
 #endif
       }
       rnti = statsCb->stats.rnti;
-      cmMemset((U8 *)&statsCb->stats.nonPersistent, 0x00, (Size)sizeof(statsCb->stats.nonPersistent));
-      /* cmMemset((U8 *)&statsCb->stats, 0x00, (Size)sizeof(TSInfL2UeStats)); */
+      memset(&statsCb->stats.nonPersistent, 0x00, sizeof(statsCb->stats.nonPersistent));
+      /* memset(&statsCb->stats, 0x00, sizeof(TSInfL2UeStats)); */
       statsCb->stats.rnti = rnti;
    }
 
@@ -330,7 +319,7 @@ Void TSL2SendStatsToApp(pst, suId)
 #endif
       }
       cellId = statsCellCb->cellId;
-      cmMemset((U8 *)l2CellStats[idx], 0x00, (Size)sizeof(TSInfL2CellStats));
+      memset(l2CellStats[idx], 0x00, sizeof(TSInfL2CellStats));
       statsCellCb->cellId = cellId;
    }
    RETVOID;

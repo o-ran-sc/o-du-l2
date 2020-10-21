@@ -416,8 +416,6 @@ SpId spId;
 #endif
 {
 
-   TRC3(RgLiTfuBndReq)
-
    return ((*RgLiTfuBndReqMt[pst->selector])(pst, suId, spId));
 
 }
@@ -457,8 +455,6 @@ SuId suId;
 SpId spId;
 #endif
 {
-
-   TRC3(RgLiTfuSchBndReq)
 
    return ((*RgLiTfuSchBndReqMt[pst->selector])(pst, suId, spId));
 
@@ -500,8 +496,6 @@ Reason reason;
 #endif
 {
 
-   TRC3(RgLiTfuUbndReq)
-
    return ((*RgLiTfuUbndReqMt[pst->selector])(pst, spId, reason));
 
 }
@@ -541,8 +535,6 @@ SpId spId;
 Reason reason;
 #endif
 {
-
-   TRC3(RgLiTfuSchUbndReq)
 
    return ((*RgLiTfuSchUbndReqMt[pst->selector])(pst, spId, reason));
 
@@ -598,8 +590,6 @@ TfuRecpReqInfo * recpReq;
 #endif
 {
 
-   TRC3(RgLiTfuRecpReq)
-
    return ((*RgLiTfuRecpReqMt[pst->selector])(pst, spId, recpReq));
 
 }
@@ -647,8 +637,6 @@ TfuCntrlReqInfo * cntrlReq;
 #endif
 {
 
-   TRC3(RgLiTfuCntrlReq)
-
    return ((*RgLiTfuCntrlReqMt[pst->selector])(pst, spId, cntrlReq));
 
 }
@@ -695,8 +683,6 @@ TfuDatReqInfo * datReq;
 #endif
 {
 
-   TRC3(RgLiTfuDatReq)
-
    return ((*RgLiTfuDatReqMt[pst->selector])(pst, spId, datReq));
 
 }
@@ -740,8 +726,6 @@ SpId spId;
 TfuDelDatReqInfo * delDatReq;
 #endif
 {
-
-   TRC3(RgLiTfuDelDatReq)
 
    return ((*RgLiTfuDelDatReqMt[pst->selector])(pst, spId, delDatReq));
 
@@ -788,7 +772,6 @@ SpId spId;
 #endif
 {
 
-   TRC3(PtLiTfuBndReq)
 
    UNUSED(pst);
    UNUSED(suId);
@@ -834,8 +817,6 @@ SpId spId;
 #endif
 {
 
-   TRC3(PtLiTfuSchBndReq)
-
    UNUSED(pst);
    UNUSED(suId);
    UNUSED(spId);
@@ -880,8 +861,6 @@ Reason reason;
 #endif
 {
 
-   TRC3(PtLiTfuUbndReq)
-
    UNUSED(pst);
    UNUSED(spId);
    UNUSED(reason);
@@ -925,8 +904,6 @@ SpId spId;
 Reason reason;
 #endif
 {
-
-   TRC3(PtLiTfuSchUbndReq)
 
    UNUSED(pst);
    UNUSED(spId);
@@ -986,8 +963,6 @@ TfuRecpReqInfo * recpReq;
 #endif
 {
 
-   TRC3(PtLiTfuRecpReq)
-
    UNUSED(pst);
    UNUSED(spId);
    UNUSED(recpReq);
@@ -1039,8 +1014,6 @@ TfuCntrlReqInfo * cntrlReq;
 #endif
 {
 
-   TRC3(PtLiTfuCntrlReq)
-
    UNUSED(pst);
    UNUSED(spId);
    UNUSED(cntrlReq);
@@ -1091,8 +1064,6 @@ TfuDatReqInfo * datReq;
 #endif
 {
 
-   TRC3(PtLiTfuDatReq)
-
    UNUSED(pst);
    UNUSED(spId);
    UNUSED(datReq);
@@ -1141,8 +1112,6 @@ SpId spId;
 TfuDelDatReqInfo * DelDatReq;
 #endif
 {
-
-   TRC3(PtLiTfuDelDatReq)
 
    UNUSED(pst);
    UNUSED(spId);

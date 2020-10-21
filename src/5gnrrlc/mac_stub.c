@@ -42,7 +42,7 @@ void macStubBuildUlData(Buffer *mBuf)
    mLen = 0;
    SFndLenMsg(mBuf, &mLen);
  
-   cmMemset((U8 *)&ipv4Hdr, 0, sizeof(CmIpv4Hdr));
+   memset(&ipv4Hdr, 0, sizeof(CmIpv4Hdr));
    ipv4Hdr.length = CM_IPV4_HDRLEN + mLen;
    ipv4Hdr.hdrVer = 0x45;
    ipv4Hdr.proto = 1;
@@ -56,8 +56,8 @@ void macStubBuildUlData(Buffer *mBuf)
   
    /* initialize locals */
    cnt = 0;
-   cmMemset(revPkArray, 0, CM_IPV4_HDRLEN);
-   cmMemset(pkArray, 0, CM_IPV4_HDRLEN);
+   memset(revPkArray, 0, CM_IPV4_HDRLEN);
+   memset(pkArray, 0, CM_IPV4_HDRLEN);
  
    /* Pack Header Version */
    pkArray[cnt++] = ipv4Hdr.hdrVer;

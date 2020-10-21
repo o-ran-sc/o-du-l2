@@ -101,8 +101,6 @@ S16 rlcDlInitExt
 S16 rlcDlInitExt()
 #endif
 {
-   TRC2(rlcDlInitExt);
-
    return ROK;
 } /* kwInitExt */
 
@@ -152,7 +150,6 @@ Reason reason;              /* reason */
 #endif
 {
    RlcCb    *tRlcCb;
-   TRC3(rlcDlActvInit)
 
    if (inst >= MAX_RLC_INSTANCES)
    {
@@ -244,7 +241,6 @@ Buffer *mBuf;           /* message buffer */
 {
    S16 ret = ROK;
 
-   TRC3(rlcDlActvTsk);
 #ifdef RLC_FREE_RING_BUF
    gRlcTId = pthread_self();
 #endif

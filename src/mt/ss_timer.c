@@ -168,8 +168,6 @@ PFS16 tmrFnct;              /* timer function, typically SActvTmr */
 	SsTmrActvFn ssTmrActvFn;
 	/* ss041.103 - Moved handling to STmrRegHndlr */
 
-   TRC1(SRegCfgTmr);
-
    ssTmrActvFn.mtFlag = FALSE;
    ssTmrActvFn.actvFnc.tmrActvFn = tmrFnct;
    ret = STmrRegHndlr(ent, inst, period, units, ssTmrActvFn);
@@ -204,8 +202,6 @@ PAIFTMRS16 tmrFnct;              /* timer function, typically SActvTmr */
    /* ss015.301 - Enclosed all timer activation functions in a union. */
    SsTmrActvFn ssTmrActvFn;
    /* ss041.103 - Moved handling to STmrRegHndlr */
-
-   TRC1(SRegCfgTmr);
 
    ssTmrActvFn.mtFlag = FALSE;
    ssTmrActvFn.actvFnc.tmrActvFn = tmrFnct;
@@ -260,8 +256,6 @@ PAIFTMRS16 tmrFnctMt;       /* timer function, typically SActvTmr */
    S16 ret;
    /* ss015.301 - Enclosed all timer activation functions in a union. */
    SsTmrActvFn ssTmrActvFn;
-
-   TRC1(SRegCfgTmrMt);
 
    ssTmrActvFn.actvFnc.tmrActvFnMt = tmrFnctMt;
    ssTmrActvFn.mtFlag = TRUE;
@@ -352,8 +346,6 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
    U16 procIdIdx;
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 #endif /* SS_MULTPLE_PROCS */
-
-   TRC1(STmrRegHndlr);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
 
@@ -647,8 +639,6 @@ PFS16 tmrFnct;              /* timer function */
    SsTmrActvFn ssTmrActvFn;
    /* ss041.103 - Moved handling to STmrDeregHndlr */
 
-   TRC1(SDeregCfgTmr);
-
    ssTmrActvFn.mtFlag = FALSE;
    ssTmrActvFn.actvFnc.tmrActvFn = tmrFnct;  
    ret = STmrDeregHndlr(ent, inst, period, units, ssTmrActvFn);
@@ -683,8 +673,6 @@ PAIFTMRS16 tmrFnct;              /* timer function */
    SsTmrActvFn ssTmrActvFn;
 
    /* ss041.103 - Moved handling to STmrDeregHndlr */
-
-   TRC1(SDeregCfgTmr);
 
    ssTmrActvFn.mtFlag = FALSE;
    ssTmrActvFn.actvFnc.tmrActvFn = tmrFnct;  
@@ -734,8 +722,6 @@ PAIFTMRS16 tmrFnctMt;              /* timer function */
    S16 ret;
    /* ss015.301 Enclosed all timer activation functions in a union. */
    SsTmrActvFn ssTmrActvFn;
-
-   TRC1(SDeregCfgTmrMt);
 
    ssTmrActvFn.actvFnc.tmrActvFnMt = tmrFnctMt;
    ssTmrActvFn.mtFlag = TRUE;
@@ -825,9 +811,6 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
    U16 procIdIdx;
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 #endif /* SS_MULTIPLE_PROCS */
-
-
-   TRC1(STmrDeregHndlr);
 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)

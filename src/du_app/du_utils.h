@@ -48,7 +48,7 @@
    _ret = SGetSBuf(DU_APP_MEM_REGION, DU_POOL,                  \
                     (Data **)&_datPtr, _size);                  \
    if(_ret == ROK)                                              \
-      memset((uint8_t*)_datPtr, 0, _size);                         \
+      memset(_datPtr, 0, _size);                         \
    else                                                         \
       _datPtr = NULLP;                                          \
 }
@@ -66,7 +66,7 @@
    if(SGetStaticBuffer(DU_APP_MEM_REGION, DU_POOL,           \
       (Data **)&_buf, (Size) _size, 0) == ROK)               \
    {                                                         \
-      memset((uint8_t *)(_buf), 0, _size);                      \
+      memset((_buf), 0, _size);                      \
    }                                                         \
    else                                                      \
    {                                                         \

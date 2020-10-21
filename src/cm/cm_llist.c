@@ -70,7 +70,6 @@ Void cmLListInit(lCp)
 CmLListCp *lCp;               /* list control point */
 #endif
 {
-   TRC3(cmLListInit);
    
    lCp->first = (CmLList *)NULLP;
    lCp->last  = (CmLList *)NULLP;
@@ -108,7 +107,6 @@ CmLListCp *lCp;               /* list control point */
 CmLList   *node;              /* node to be added */
 #endif
 {
-   TRC3(cmLListAdd2Head);
 
 #ifdef ERRCHK
    if (lCp == (CmLListCp *)NULLP)
@@ -157,7 +155,6 @@ CmLListCp *lCp;               /* list control point */
 CmLList   *node;              /* node to be added */
 #endif
 {
-   TRC3(cmLListAdd2Tail);
 
 #ifdef ERRCHK
    if (lCp == (CmLListCp *)NULLP)
@@ -206,7 +203,6 @@ CmLListCp *lCp;               /* list control point */
 CmLList   *node;              /* node to be added */
 #endif
 {
-   TRC3(cmLListInsCrnt);
 
 #ifdef ERRCHK
    if (!lCp)
@@ -261,7 +257,6 @@ CmLListCp *lCp;               /* list control point */
 CmLList   *node;              /* node to be added */
 #endif
 {
-   TRC3(cmLListInsAfterCrnt);
 
 #ifdef ERRCHK
    if (!lCp)
@@ -318,7 +313,6 @@ CmLListCp *lCp;               /* list control pointer */
 CmLList *node;                /* node to be removed */
 #endif
 {
-   TRC3(cmLListDelFrm);
   
 #ifdef ERRCHK
    /* cm_llist_c_001.main_8 : added null check for node */
@@ -388,7 +382,6 @@ Void cmLListCatLList(list1, list2)
    CmLListCp *list2;              /*-- node to be added --*/
 #endif
 {
-   TRC3(cmLListCatLList);
 
    /*-- if the second list is empty nothing to do --*/
    if(list2->count == 0)

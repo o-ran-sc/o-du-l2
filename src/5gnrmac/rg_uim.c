@@ -114,9 +114,6 @@ SpId spId;
    Pst       tmpPst;   /* Temporary Post Structure */
    RgUstaDgn dgn;      /* Alarm diagnostics structure */
 
-   TRC3(RgUiRguBndReq)
-
-
    RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
 
@@ -218,8 +215,6 @@ Reason reason;
 #endif
 {
    Inst      inst;
-   TRC3(RgUiRguUbndReq)
-   
 
    RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
@@ -286,9 +281,6 @@ U8            status;
 {
    S16  ret = ROK;
    
-   TRC2(rgUIMRguBndCfm)
-   
-
    ret = RgUiRguBndCfm(&rgCb[inst].rguSap[spId].sapCfg.sapPst, 
                       rgCb[inst].rguSap[spId].sapCfg.suId, status);
    if (ret != ROK)
@@ -340,9 +332,6 @@ RguDDatReqInfo  *datReq;
    U32   id3;
 #endif
    
-   TRC3(RgUiRguDDatReq)
-
-
    RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
 #ifndef NO_ERRCLS
@@ -456,9 +445,6 @@ RguCDatReqInfo  *datReq;
    Inst  inst;
    S16   ret = ROK;
    
-   TRC3(RgUiRguCDatReq)
-
-
    RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
 #ifndef NO_ERRCLS
@@ -549,8 +535,6 @@ RguDStaRspInfo  *staRsp;
    S16              ret       = ROK;
    VOLATILE U32     startTime = 0;
 
-   TRC3(RgUiRguDStaRsp)
-
    RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
    /*starting Task*/
@@ -604,9 +588,6 @@ RguCStaRspInfo  *staRsp;
 {
    Inst  inst;
    S16   ret = ROK;
-
-   TRC3(RgUiRguCStaRsp)
-   
 
    RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
@@ -689,9 +670,6 @@ RguL2MUlThrpMeasReqInfo  *measReq;
 
    S16   ret = ROK;
 
-   TRC3(RgUiRguL2MUlThrpMeasReq)
-   
-
    RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
 #ifndef NO_ERRCLS
@@ -771,8 +749,6 @@ RgRguDedStaInd  *staInd;
 {
    S16  ret = ROK;
    
-   TRC2(rgUIMSndDedStaInd)
-   
    RGDBGPRM(inst,(rgPBuf(inst),"rgUIMSndDedStaInd(): staInd = %p;\n", (void *)staInd));
    
    ret = RgUiRguDStaInd(&(rguSap->sapCfg.sapPst), rguSap->sapCfg.suId, 
@@ -820,10 +796,6 @@ RgRguCmnStaInd  *staInd;
 {
    S16  ret = ROK;
 
-
-   TRC2(rgUIMSndCmnStaInd)
-   
-
    ret = RgUiRguCStaInd(&(rguDlSap->sapCfg.sapPst), rguDlSap->sapCfg.suId, 
          staInd);
    if (ret != ROK)
@@ -868,10 +840,6 @@ RgRguDedDatInd  *datInd;
 #endif
 {
    S16  ret = ROK;
-
-
-   TRC2(rgUIMSndDedDatInd)
-   
 
    rguUlSap->sapSts.numPduTxmit += datInd->numLch;
 #ifndef SS_RBUF
@@ -923,9 +891,6 @@ RgRguCmnDatInd  *datInd;
 #endif
 {
    S16  ret = ROK;
-
-   TRC2(rgUIMSndCmnDatInd)
-
 
    RGDBGPRM(inst,(rgPBuf(inst),"rgUIMSndCmnDatInd(): staInd = %p;\n", (void *)datInd));
 
@@ -980,9 +945,6 @@ SpId  spId;
    Pst       tmpPst;   /* Temporary Post Structure */
    RgUstaDgn dgn;      /* Alarm diagnostics structure */
    Inst      inst;
-
-   TRC3(RgUiCrgBndReq)
-
 
    RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
@@ -1085,8 +1047,6 @@ Reason reason;
 #endif
 {
    Inst      inst;
-   TRC3(RgUiCrgUbndReq)
-
 
    RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
@@ -1152,8 +1112,6 @@ SuId          suId;
 U8            status;
 #endif
 {
-   TRC2(rgUIMCrgBndCfm)
-   
 
    if(RgUiCrgBndCfm(&(rgCb[inst].crgSap.sapCfg.sapPst), rgCb[inst].crgSap.sapCfg.suId, status) != ROK)
    {
@@ -1205,12 +1163,10 @@ CrgCfgReqInfo *cfgReqInfo;
    U8        cfmStatus = 0x00ff;
    U8        prntTrans[CRG_CFG_TRANSID_SIZE+1];
 
-   TRC3(RgUiCrgCfgReq);
-
    RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
    /* Ensuring transId is always Null terminated. */
-   cmMemcpy((U8 *)prntTrans, (U8 *)transId.trans, CRG_CFG_TRANSID_SIZE);
+   memcpy(prntTrans, transId.trans, CRG_CFG_TRANSID_SIZE);
    prntTrans[CRG_CFG_TRANSID_SIZE] = '\0';
 
 
@@ -1303,9 +1259,7 @@ U8            status;
    S16  ret = ROK;
    U8   prntTrans[CRG_CFG_TRANSID_SIZE+1];
 
-   TRC2(rgUIMCrgCfgCfm)
-   
-   cmMemcpy((U8 *)prntTrans, (U8 *)transId.trans, CRG_CFG_TRANSID_SIZE);
+   memcpy(prntTrans, transId.trans, CRG_CFG_TRANSID_SIZE);
    prntTrans[CRG_CFG_TRANSID_SIZE] = '\0';
 
 

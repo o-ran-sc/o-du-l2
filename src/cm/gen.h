@@ -2336,7 +2336,7 @@
          &(_class).cBuf.cBufPtr,size);                                \
    (_class).cBuf.cBufSize = size;                                     \
    (_class).cBuf.cBufIdx = 0;                                          \
-   cmMemset((U8 *)(_class).cBuf.cBufPtr,'|',size);                      \
+   memset((_class).cBuf.cBufPtr,'|',size);                      \
 }
 
 #define CBUF_WRITE(_class,_argList)                                   \
@@ -2362,7 +2362,7 @@
     U32 tmpIdx=0;                                                           \
     SGetSBuf((_class).region,(_class).pool,                  \
          (U8 **)&tmpBuf,(_class).cBuf.cBufSize);                                \
-    cmMemset((U8 *)tmpBuf,0,(_class).cBuf.cBufSize);                      \
+    memset(tmpBuf,0,(_class).cBuf.cBufSize);                      \
     for(cBufIdx = (_class).cBuf.cBufIdx; cBufIdx < (_class).cBuf.cBufSize; cBufIdx++)            \
     {                                                                 \
        tmpBuf[tmpIdx++] = (_class).cBuf.cBufPtr[cBufIdx];                             \

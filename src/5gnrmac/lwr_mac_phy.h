@@ -42,7 +42,7 @@ typedef enum
    int16_t _ret;                                             \
    _ret = SGetSBufWls(0, 0, (Data **)&_datPtr, _size);       \
    if(_ret == ROK)                                           \
-      memset((U8*)_datPtr, 0, _size);                      \
+      memset(_datPtr, 0, _size);                      \
    else                                                      \
       _datPtr = NULLP;                                       \
 }                                                              

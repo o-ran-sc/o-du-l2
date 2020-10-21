@@ -131,8 +131,6 @@ U8                 maxHqProcs;
    Buffer  *ceDBuf = NULLP;
 #endif
 
-   TRC2(rgDHMHqEntInit)
-
    hqE->numHqProcs = maxHqProcs;
    /* for each harq process */
    for (idx1 = 0; idx1 < hqE->numHqProcs; idx1++)
@@ -211,8 +209,6 @@ RgDlHqEnt          *hqE;
 {
    U8       i = 0;
 
-   TRC2(rgDHMUeReset)
-
    if(hqE->procs[0])
    {
       /* Free all the TB memory associated with HARQ */
@@ -257,7 +253,6 @@ Inst inst;
 #endif
 {
    RgCb *rgCbP = &rgCb[inst];
-   TRC2(rgDHMHdlBufFree)
 
    if (rgCbP->bufCnt < RG_MAX_DFRD_FREE_BUFS)
    {
@@ -306,8 +301,6 @@ Inst inst;
    U8 start = rgCbP->bufCnt;
    U8 end = 0;
 
-   TRC2(rgDHMFreeTbBufs)
-
    if (rgCbP->bufCnt < RG_MAX_FREE_BUFS_PERTTI)
    {
       end = 0;
@@ -338,8 +331,6 @@ Inst inst;
    RgCb *rgCbP = &rgCb[inst];
    U8 start = rgCbP->bufCnt;
    U8 end = 0;
-
-   TRC2(rgDHMFreeAllTbBufs)
 
    while (start != end)
    {
@@ -386,8 +377,6 @@ U8                   tbIndex;
     RgTfuDatReqTbInfo     *tb;   /* TB to be sent to CL/PHY*/
    // U32 lchIdx, pduIdx;
 #endif
-
-   TRC2(rgDHMRlsHqProcTB)
 
    if((tbIndex > RG_MAX_TB_PER_UE) ||
       (tbIndex == 0))
@@ -472,8 +461,6 @@ U8                   idx;
 RgDlHqProcCb         **hqP;
 #endif
 {
-   TRC2(rgDHMGetHqProcFrmId)
-
    /* Pick the proc based on the index provided */
    *hqP = (ue->dl.hqEnt.procs[idx]);
 
@@ -526,8 +513,6 @@ RgErrInfo       *err;
      has to be inclueded in the TFU Data request.*/
    Bool  dataAvlblUe;
 
-   TRC2(rgDHMSndDatReq)
-  
    dataAvlblUe = TRUE;
    for(i=0;i< RG_MAX_TB_PER_UE;i++)
    {
@@ -712,8 +697,6 @@ RgErrInfo      *err;
    RgTfuDatReqTbInfo     *tb;
 #endif
 
-   TRC2(rgDHMHndlDedDatReq);
-
    tbIndex = (U8)(datReq->transId & 0x03);
    /* Accept all the data requests even if delayed in case nothing
     * has been sent earlier on the harq proc.
@@ -850,8 +833,6 @@ RgErrInfo      *err;
    RgUstaDgn      dgn;
    RgBldPduInfo   bldPdu;
 
-   TRC2(rgDHMHndlCmnDatReq)
-
 #ifndef L2_OPTMZ
       if (hqProc->tbInfo[0].tb != NULLP)
 #else
@@ -954,9 +935,8 @@ RgErrInfo       *err;
    RgTfuDatReqTbInfo     *tb;   /* TB to be sent to CL/PHY*/
 #endif
 
-   TRC2(rgDHMSndConsolidatedStaInd)
-   cmMemset ((U8 *)dStaInd, 0, (sizeof(RgRguDedStaInd *) * rgCb[inst].numRguSaps));
-   cmMemset ((U8 *)rguDlSap, 0, (sizeof(RgUpSapCb  *) * rgCb[inst].numRguSaps));
+   memset (dStaInd, 0, (sizeof(RgRguDedStaInd *) * rgCb[inst].numRguSaps));
+   memset (rguDlSap, 0, (sizeof(RgUpSapCb  *) * rgCb[inst].numRguSaps));
 
    /* Send StaInd for the scheduled UEs */
    for(ueIdx = 0; ueIdx < ueInfo->numUes; ueIdx++)
@@ -1311,7 +1291,6 @@ RgTfuDatReqPduInfo *datReq;
 #ifdef L2_OPTMZ
    U32 lchIdx, pduIdx;
 #endif
-   TRC2(rgDHMBldTfuDatReq)
  
    datReq->nmbOfTBs = 0;
 #ifndef L2_OPTMZ
@@ -1466,8 +1445,6 @@ U8                   tbIndex;
    RgTfuDatReqTbInfo     *tb;   /* TB to be sent to CL/PHY*/
    U8                    idx;
 
-   TRC2(rgDHMFreeHqProcTB)
-
    if((tbIndex > RG_MAX_TB_PER_UE) ||
       (tbIndex == 0))
    {
@@ -1523,7 +1500,6 @@ RgDlHqEnt          *hqE;
 #endif
 {
    U8             i;
-   TRC2(rgDHMFreeUe)
 
    if(hqE->procs)
    {
@@ -1650,8 +1626,6 @@ RgInfRlsHqInfo      *rlshqUeInfo;
 #endif
    U32        startTime=0;
    
-   TRC2(RgSchMacRlsHqReq)
-
    RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
    cell  = rgCb[inst].cell;

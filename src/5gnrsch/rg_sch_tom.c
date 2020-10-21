@@ -834,8 +834,6 @@ TfuRaReqIndInfo *raReqInd;
    U16             rapId;
    RgSchUeCb       *ue = NULLP;
 
-   TRC2(rgSCHTomRaReqInd);
-
    if(cell->cellId != raReqInd->cellId)
    {
       err.errType    = RGSCHERR_TOM_RAREQIND;
@@ -929,7 +927,6 @@ TfuUlCqiIndInfo *ulCqiInd;
    RgSchUeCb    *ue;
    CmLList      *node;
    TfuUlCqiRpt  *ulCqiInfo;
-   TRC2(rgSCHTomUlCqiInd);
 
    node =  ulCqiInd->ulCqiRpt.first;
    if(cell->cellId != ulCqiInd->cellId)
@@ -1006,8 +1003,6 @@ TfuPucchDeltaPwrIndInfo *pucchDeltaPwr;
    CmLList         *node;
    TfuPucchDeltaPwr  *ueElem;
 
-   TRC2(rgSCHTomPucchDeltaPwrInd);
-
    if(cell->cellId != pucchDeltaPwr->cellId)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
@@ -1083,8 +1078,6 @@ TfuHqIndInfo    *harqAckInd;
    U32            cellIdx;
    RgSchCellCb     *iterCellP; 
    
-   TRC2(rgSCHTomHarqAckInd);
-
    if(cell->cellId != harqAckInd->cellId)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHTomHarqAckInd() Unable to get"
@@ -1270,8 +1263,6 @@ TfuSrIndInfo    *srInd;
    CmLList      *node;
    TfuSrInfo    *srInfo;
 
-   TRC2(rgSCHTomSrInd);
-
    if(cell->cellId != srInd->cellId)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to get the cell for srcInd cellId"
@@ -1350,7 +1341,6 @@ TfuDoaIndInfo   *doaInd;
    RgSchUeCb    *ue;
    CmLList      *node;
    TfuDoaRpt    *doaInfo;
-   TRC2(rgSCHTomDoaInd);
 
    if(cell->cellId != doaInd->cellId)
    {
@@ -1412,7 +1402,6 @@ TfuDlCqiIndInfo *dlCqiInd;
    RgSchUeCb    *ue;
    CmLList      *node;
    TfuDlCqiRpt  *dlCqiInfo;
-   TRC2(rgSCHTomDlCqiInd);
 
    if(cell->cellId != dlCqiInd->cellId)
    {
@@ -1479,7 +1468,6 @@ PRIVATE S16 rgSCHTomUtlMovePcqiNxtOccasion(cell, ue, cqiCb)
    U16   cqiIdx = 0;
 
    CmLteTimingInfo timingInfo;
-   TRC2(rgSCHTomUtlMovePcqiNxtOccasion);
 
    if(cqiCb->cqiCfg.cqiSetup.cqiRepType == RGR_UE_PCQI_SB_REP)
    {
@@ -1556,7 +1544,6 @@ PRIVATE S16 rgSCHTomUtlMovePriNxtOccasion(cell, ue, riCb)
    U16   crntTime;
    U16   tempIdx; 
 
-   TRC2(rgSCHTomUtlMovePriNxtOccasion);
    crntTime = (cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G)
       +(cell->crntTime.slot);
 #ifdef XEON_SPECIFIC_CHANGES
@@ -1672,8 +1659,6 @@ PRIVATE S16 rgSCHTomUtlMoveSrNxtOccasion(cell, ue)
 {
    U16   srIdx = 0;
 
-   TRC2(rgSCHTomUtlMoveSrNxtOccasion);
-
    /* Compute Next Transmission Instance */ 
    srIdx = ue->srCb.peri + ue->srCb.nSrTrIdx;
    srIdx = srIdx%RG_SCH_PCQI_SRS_SR_TRINS_SIZE;  
@@ -1732,7 +1717,6 @@ PRIVATE S16 rgSCHTomUtlMoveSrsNxtOccasion(cell, ue)
    U16   crntTime; 
 
 
-   TRC2(rgSCHTomUtlMoveSrsNxtOccasion);
    crntTime = (cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G)
       +(cell->crntTime.slot);
 
@@ -1829,8 +1813,6 @@ S16 rgSCHTomRawCqiInd(cell, rawCqiInd)
    Pst             pst;
    RgSchRaCb       *raCb;
    TfuHqInfo       hqInfo;
-
-   TRC2(rgSCHTomRawCqiInd);
 
    if(cell->cellId != rawCqiInd->cellId)
    {
@@ -2091,8 +2073,6 @@ S16 rgSCHTomSrsInd(cell, srsInd)
    CmLList      *node;
    TfuSrsRpt* srsInfo;
 
-   TRC2(rgSCHTomSrsInd);
-
    if(cell->cellId != srsInd->cellId)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to get the cell for cellId"
@@ -2236,8 +2216,6 @@ TfuCrcIndInfo *crcInd;
 #ifdef LTE_L2_MEAS
    RgSchUlHqProcCb   *ulHqProc;
 #endif   
-
-   TRC2(rgSCHTomCrcInd);
 
    if(cell->cellId != crcInd->cellId)
    {
@@ -2478,9 +2456,6 @@ TfuTimingAdvIndInfo *timingAdvInd;
    CmLList          *node;
    TfuTimingAdvInfo *timingAdvInfo;
 
-
-   TRC2(rgSCHTomTimingAdvInd);
-
    if(cell->cellId != timingAdvInd->cellId)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to get the cell for cellId"
@@ -2545,8 +2520,6 @@ Inst               schInst;
    U8                nCell = 0;
    RgSchCellCb       *cell[CM_LTE_MAX_CELLS];
    RgSchCellCb       *cellLst[CM_LTE_MAX_CELLS];
-   
-   TRC2(rgSCHTomTtiInd);
    
 #ifdef LTE_L2_MEAS
    glblTtiCnt++;
@@ -2857,8 +2830,6 @@ RgSchErrInfo       *err;
 #endif 
    Inst            inst = cell->instIdx;
 
-   TRC2(rgSCHTomUtlProcUlSf)
-
    if ((ret = rgSCHUtlAllocEventMem(inst, (Ptr *)&recpReqInfo, 
                             sizeof(TfuRecpReqInfo))) != ROK)
    {
@@ -2937,8 +2908,6 @@ RgSchErrInfo       *err;
    TfuRecpReqInfo  *recpReqInfo;
    U16             validIdx; /* Index computed from recreq's timing info*/
    Inst            inst = cell->instIdx;
-
-   TRC2(rgSCHTomUtlPrcUlTddSpclSf)
 
    if ((ret = rgSCHUtlAllocEventMem(inst, (Ptr *)&recpReqInfo, 
                             sizeof(TfuRecpReqInfo))) != ROK)
@@ -3023,8 +2992,6 @@ RgSchErrInfo         *err;
    Inst              inst = cell->instIdx;
    S16               ret;
    U8                sfTyp = 1; /* Dl Subframe */
-
-   TRC2(rgSCHTomUtlProcDlSf);
 
       cmLListInit(&cntrlInfo->phichLst);
       cmLListInit(&cntrlInfo->dlPdcchLst);
@@ -3166,7 +3133,6 @@ RgSchErrInfo       *err;
    RgSchCmnDlCell   *cellDl = RG_SCH_CMN_GET_DL_CELL(cell);
 #endif
 
-   TRC2(rgSCHTomUtlFillPhich)
    ret = ROK;
    /* Traversing the list of Phichs */
    node =  dlSf->phichInfo.phichs.first;
@@ -3298,7 +3264,6 @@ RgSchErrInfo    *err;
    U8 isDcivld = FALSE;
    U8            numUePerTti = 0;
 
-   TRC2(rgSCHTomUtlFillDlPdcch)
    ret = ROK;
    /* Traversing the scheduled Harq processes */
    node =  dlSf->pdcchInfo.pdcchs.first;
@@ -3440,7 +3405,6 @@ RgSchErrInfo    *err;
    TfuPdcchInfo *tfuPdcch;
    U8 isDcivld = FALSE;
 
-   TRC2(rgSCHTomUtlFillUlPdcch)
    ret = ROK;
    /* Traversing the scheduled Harq processes */
    node =  dlSf->pdcchInfo.pdcchs.first;
@@ -3549,8 +3513,6 @@ RgSchCellCb    *cell;
 {
    CmLList     *node;
    RgSchUeCb   *ue;
-
-   TRC2(rgSCHTomUtlProcTA);
 
    node =  cell->taUeLst.first;
    while (node)
@@ -4007,7 +3969,7 @@ RgSchErrInfo            *err;
    pucchReqInfo->hqInfo.hqSz = ue->f1bCsAVal;
    pucchReqInfo->hqInfo.pucchResCnt = ue->f1bCsAVal;
 
-  cmMemset((U8 *)pucchReqInfo->hqInfo.hqRes,0xff,sizeof(U16)*TFU_MAX_HQ_RES);
+  memset(pucchReqInfo->hqInfo.hqRes,0xff,sizeof(U16)*TFU_MAX_HQ_RES);
 #ifdef LTEMAC_SPS
    /* Two Resources needs to be configured if the 
     * serving cell is in mimo mode else single
@@ -4334,7 +4296,7 @@ RgSchErrInfo            *err;
    pucchReqInfo->hqInfo.hqSz = ue->f1bCsAVal;
    pucchReqInfo->hqInfo.pucchResCnt = 1;
 
-  cmMemset((U8 *)pucchReqInfo->hqInfo.hqRes,0xff,sizeof(U16)*TFU_MAX_HQ_RES);
+  memset(pucchReqInfo->hqInfo.hqRes,0xff,sizeof(U16)*TFU_MAX_HQ_RES);
 #endif/*TFU_UPGRADE*/
    pucchReqInfo->hqInfo.hqRes[0] = dlSfHqInfo->n3ScellPucch.n3PucchIdx; 
 #ifdef TFU_UPGRADE
@@ -4404,8 +4366,6 @@ RgSchErrInfo            *err;
    TfuUeRecpReqInfo     *pucchRecpInfo = NULLP;
    RgSchUeCb            *ue;
    RgSchDlHqProcCb      *prvHqCb=NULLP;
-
-   TRC2(rgSCHTomUtlFillHqFdbkRecpReq);
 
 #ifdef CA_DBG
    {
@@ -4505,8 +4465,6 @@ PRIVATE S16 rgSCHTomUtlFillSrRecpReq (recpReqInfo, cell, validIdx, err)
 #endif
 
 
-   TRC2(rgSCHTomUtlFillSrRecpReq);
-
    isAddToLst = FALSE;
 
    node = cell->pCqiSrsSrLst[validIdx].srLst.first;
@@ -4528,7 +4486,7 @@ PRIVATE S16 rgSCHTomUtlFillSrRecpReq (recpReqInfo, cell, validIdx, err)
          return ret;
       }
 #ifdef TFU_ALLOC_EVENT_NO_INIT
-     cmMemset((U8 *)&pucchRecpInfo->t.pucchRecpReq, 0, sizeof(TfuUePucchRecpReq));
+     memset(&pucchRecpInfo->t.pucchRecpReq, 0, sizeof(TfuUePucchRecpReq));
       pucchRecpInfo->type = TFU_RECP_REQ_PUCCH;
 #endif      
       /*Fill SR params*/
@@ -4596,8 +4554,6 @@ PRIVATE S16 rgSCHTomUtlWillUeRprtCqiRi ( ue, willueRprtCqiRi)
  Bool             *willueRprtCqiRi;
 #endif
 {
-   TRC2(rgSCHTomUtlWillUeRprtCqiRi);
-  
    /* Intialising Reporting probability as TRUE */ 
    *willueRprtCqiRi = TRUE; 
 
@@ -4668,7 +4624,6 @@ PRIVATE S16 rgSCHTomUtlFillRiRecpReq (recpReqInfo, cell, validIdx, err)
    Bool                  willUeRprtCqi; /* Flag set due to CQI Mask
                                        and UE inactive state (DRX) */
    RgSchUePCqiCb *riCb = NULLP;
-   TRC2(rgSCHTomUtlFillRiRecpReq);
 
    node = cell->pCqiSrsSrLst[validIdx].riLst.first;
    while(node)
@@ -4714,7 +4669,7 @@ PRIVATE S16 rgSCHTomUtlFillRiRecpReq (recpReqInfo, cell, validIdx, err)
             return ret;
          }
 #ifdef TFU_ALLOC_EVENT_NO_INIT
-         cmMemset((U8 *)&pucchRecpInfo->t.pucchRecpReq, 0, sizeof(TfuUePucchRecpReq));
+         memset(&pucchRecpInfo->t.pucchRecpReq, 0, sizeof(TfuUePucchRecpReq));
          pucchRecpInfo->type = TFU_RECP_REQ_PUCCH;
 #endif
          /*Fill RI params*/
@@ -4789,8 +4744,6 @@ PRIVATE S16 rgSCHTomUtlFillCqiRiRecpReq (recpReqInfo, cell, validIdx, err)
    RgSchUeCb            *ue = NULLP;
    U16                  ret;
 
-   TRC2(rgSCHTomUtlFillCqiRiRecpReq);
-
    while ((ue = rgSCHDbmGetNextUeCb(cell, ue)) != NULLP)
    {
       if (RGSCH_TIMEINFO_SAME (recpReqInfo->timingInfo, ue->ue5gtfCb.nxtCqiRiOccn)) 
@@ -4804,7 +4757,7 @@ PRIVATE S16 rgSCHTomUtlFillCqiRiRecpReq (recpReqInfo, cell, validIdx, err)
             return ret;
          }
 #ifdef TFU_ALLOC_EVENT_NO_INIT
-         cmMemset((U8 *)&pucchRecpInfo->t.pucchRecpReq, 0, sizeof(TfuUePucchRecpReq));
+         memset(&pucchRecpInfo->t.pucchRecpReq, 0, sizeof(TfuUePucchRecpReq));
          pucchRecpInfo->type = TFU_RECP_REQ_PUCCH;     
 #endif
          pucchRecpInfo->rnti =  ue->ueId; 
@@ -4868,8 +4821,6 @@ PRIVATE S16 rgSCHTomUtlFillPcqiRecpReq (recpReqInfo, cell, validIdx, err)
    RgSchUePCqiCb        *cqiCb = NULLP;
    Bool                 isAddToLst = FALSE;
 
-   TRC2(rgSCHTomUtlFillPcqiRecpReq);
-
    node = cell->pCqiSrsSrLst[validIdx].cqiLst.first;
    while(node)
    {
@@ -4911,7 +4862,7 @@ PRIVATE S16 rgSCHTomUtlFillPcqiRecpReq (recpReqInfo, cell, validIdx, err)
          return ret;
       }
 #ifdef TFU_ALLOC_EVENT_NO_INIT
-      cmMemset((U8 *)&pucchRecpInfo->t.pucchRecpReq, 0, sizeof(TfuUePucchRecpReq));
+      memset(&pucchRecpInfo->t.pucchRecpReq, 0, sizeof(TfuUePucchRecpReq));
       pucchRecpInfo->type = TFU_RECP_REQ_PUCCH;     
 #endif
       
@@ -4974,8 +4925,6 @@ PRIVATE S16 rgSCHTomUtlFillSrsRecpReq (recpReqInfo, cell, validIdx, err)
    TfuUeRecpReqInfo     *pucchRecpInfo;
    S16                  ret;
    RgSchUeCb            *ue;
-
-   TRC2(rgSCHTomUtlFillSrsRecpReq);
 
    node = cell->pCqiSrsSrLst[validIdx].srsLst.first;
    while(node)
@@ -5071,7 +5020,6 @@ RgSchErrInfo         *err;
    RgSchUlAlloc      *alloc;
    TfuUeRecpReqInfo  *datRecpInfo;
 
-   TRC2(rgSCHTomUtlFillDatRecpReq)
 
    /* processing steps are 
     * - Run through the UL allocations going out in this subframe.
@@ -5190,8 +5138,6 @@ PRIVATE S16 rgSCHTomUtlFillDatRecpReq (recpReqInfo, cell, validIdx, err)
    Bool              isAperiodic = FALSE; /*Set when Aperiodic CQI is expected */
    U8                numUePerTti = 0;
 
-   TRC2(rgSCHTomUtlFillDatRecpReq);
-
    if((0 == (recpReqInfo->timingInfo.sfn % 30)) && (0 == recpReqInfo->timingInfo.slot))
    {
       //printf("5GTF_CHECK rgSCHTomUtlFillDatRecpReq (%d : %d)\n", recpReqInfo->timingInfo.sfn, recpReqInfo->timingInfo.slot);
@@ -5309,7 +5255,6 @@ S16 rgSCHTomUtlFillRiBitWidthInfo(ueCb)
 #endif
 {
    RgSchUePCqiCb *riCb = ueCb->nPRiCb;
-   TRC2(rgSCHTomUtlFillRiBitWidthInfo);
    
    if (ueCb->mimoInfo.txMode != RGR_UE_TM_3 &&
              ueCb->mimoInfo.txMode != RGR_UE_TM_4)
@@ -5387,7 +5332,6 @@ U8 rgSCHTomUtlFetchPcqiBitSz(ueCb, numTxAnt, ri)
    TfuCqiPucchMode21   *mode21Info;    
    RgSchUePCqiCb *cqiCb = ueCb->nPCqiCb;
 
-   TRC3(rgSCHTomUtlFetchPcqiBitSz);
 
    confRepMode = cqiCb->cqiCfg.cqiSetup.prdModeEnum;
    if((ueCb->mimoInfo.txMode != RGR_UE_TM_3) && 
@@ -5533,7 +5477,6 @@ S16 rgSCHTomUtlPcqiSbCalcBpIdx(crntTimInfo, ueCb, cqiCb)
    U16 tti = (crntTimInfo.sfn * RGSCH_NUM_SUB_FRAMES_5G + crntTimInfo.slot);
    U16  prdNum = tti/cqiCb->cqiPeri;
 
-   TRC2(rgSCHTomUtlPcqiSbCalcBpIdx);
    if((prdNum % cqiCb->h) == 0)
    {
       cqiCb->isWb = TRUE;
@@ -5595,7 +5538,6 @@ S16 rgSCHTomUtlMoveNxtOccasion(cell, ue, validIdx)
 {
    RgSchUePCqiCb *cqiCb = ue->nPCqiCb;
    RgSchUePCqiCb *riCb = ue->nPRiCb;
-   TRC2(rgSCHTomUtlMoveNxtOccasion);
  
    /* ccpu00140578::Skip the UE if already RI recpetion 
     * is processed in the same subframe */
@@ -5695,8 +5637,6 @@ Void rgSCHTomPrepareAcqiRecp
    U8            sCellIdx   = ueCb->cellIdToCellIdxMap[RG_SCH_CELLINDEX(cell)];
    U8            numOfCells = 0;
    RgSchUeACqiCb *acqiCb  = &ueCb->cellInfo[sCellIdx]->acqiCb;
-
-   TRC2(rgSCHTomPrepareAcqiRecp);
 
    /* Fill TFU Recp */
    cqiRecpReqInfo->reportType = TFU_APERIODIC_CQI_TYPE; /* Aperiodic */
@@ -5890,7 +5830,6 @@ S16 rgSCHTomUtlFillDatAperRecpReq(cell, cqiReq, alloc, datRecpInfo, timeInfo, hq
    U8                     triggerSet = 0;
    U8                     sIdx = 0;
 #endif
-   TRC2(rgSCHTomUtlFillDatAperRecpReq);
 
    /*Fill RI Reception Params*/
    cqiRecpReqInfo = &datRecpInfo->t.puschRecpReq.cqiRiInfo;   
@@ -5996,7 +5935,6 @@ hqPres, validIdx)
 #endif
 {
    TfuUePuschCqiRecpInfo  *cqiRecpReqInfo;
-   TRC2(rgSCHTomUtlFillDatPriRecpReq);
 
    /*Fill RI Reception Params*/
    cqiRecpReqInfo = &datRecpInfo->t.puschRecpReq.cqiRiInfo;   
@@ -6094,9 +6032,6 @@ S16 rgSCHTomUtlFillDatPCqiRecpReq(cell, alloc, datRecpInfo,
    TfuUePuschCqiRecpInfo  *cqiRecpReqInfo;
    U8                 cqiPmiSz; /*Raw CQI/PMI Size*/
    U8                 ri;
-
-   TRC2(rgSCHTomUtlFillDatPCqiRecpReq);
-
 
    /*Fill CQI Reception Params*/
    cqiRecpReqInfo = &datRecpInfo->t.puschRecpReq.cqiRiInfo;
@@ -6204,7 +6139,6 @@ S16 rgSCHTomUtlFillDatSrsRecpReq(cell, alloc, datRecpInfo, timeInfo,
    Bool              hqPres; 
 #endif
 {
-   TRC2(rgSCHTomUtlFillDatSrsRecpReq);
    datRecpInfo->rnti = alloc->rnti;
    rgSCHTomFillOnlySrsRecpReq(cell,alloc, datRecpInfo); 
    if(hqPres)
@@ -6260,7 +6194,6 @@ S16 rgSCHTomFillOnlySrsRecpReq(cell, alloc, datRecpInfo)
 #endif
 {
    TfuUePuschSrsRecpInfo  *srsRecpReqInfo;
-   TRC2(rgSCHTomFillOnlySrsRecpReq);
 
    srsRecpReqInfo = &datRecpInfo->t.puschRecpReq.srsInfo;
    srsRecpReqInfo->srsBw = (TfuUlSrsBwInfo)alloc->ue->srsCb.srsCfg.srsSetup.srsBw;
@@ -6345,8 +6278,6 @@ Bool              isDatPresOnSecCell;
    RgSchEmtcUeInfo *emtcUe = NULLP;
 #endif
 
-   TRC2(rgSCHTomUtlFillCqiSrSrsWithHq);
-    
    if(ue)
    {
       /*Changes for PUCCH Format3 */
@@ -6654,8 +6585,6 @@ U16               validIdx;
    U8                 ri; /*To fetch RI value*/
    Bool               willUeRprtCqi;   /* Flag set due to CQI Mask and 
                                       UE Inactive state (DRX)*/
-   TRC2(rgSCHTomUtlFillCqiSrsWithSr);
-   
    riCb = ue->nPRiCb;
    cqiCb = ue->nPCqiCb;
    rgSCHTomUtlWillUeRprtCqiRi(ue, &willUeRprtCqi);
@@ -6879,8 +6808,6 @@ noFdbks, memCp, elemIdx, nxtDlsf)
    RgSchDlHqTbCb           *tbCb;
    RgSchDlHqProcCb         *prvHqCb = NULLP;
 
-   TRC2(rgSCHTomUtlFillSfRepHqFdbk)
-
    node =  dlSf->ackNakRepQ.first;
    while (node)
    {
@@ -7079,8 +7006,6 @@ RgSchDlHqProcCb         *prvHqCb;
    CmLteRnti               rnti;
    U8                      hqSz = 0;
    U32                     idx = 0;
-
-   TRC2(rgSCHTomUtlFillSfHqFdbkInfo)
 
 #ifndef TFU_UPGRADE
    RG_SCH_ADD_TO_CRNT_TIME(cellCb->crntTime, futTime, TFU_RECPREQ_DLDELTA);
@@ -7871,9 +7796,9 @@ U8                      hqSz;
          err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
          return ret;
       }
-      cmMemset((U8 *)pucchInfo->pucchRecpInfo->t.pucchRecpReq.hqInfo.hqRes,0xff,sizeof(U16)*TFU_MAX_HQ_RES);
+      memset(pucchInfo->pucchRecpInfo->t.pucchRecpReq.hqInfo.hqRes,0xff,sizeof(U16)*TFU_MAX_HQ_RES);
 #ifdef TFU_ALLOC_EVENT_NO_INIT
-      cmMemset((U8 *)&pucchInfo->pucchRecpInfo->t.pucchRecpReq, 0, sizeof(TfuUePucchRecpReq));
+      memset(&pucchInfo->pucchRecpInfo->t.pucchRecpReq, 0, sizeof(TfuUePucchRecpReq));
 #endif
       pucchInfo->pucchRecpInfo->type = TFU_RECP_REQ_PUCCH;
       pucchInfo->pucchRecpInfo->rnti = rnti;
@@ -8138,9 +8063,6 @@ RgSchErrInfo         *err;
    Inst              inst = cell->instIdx;
    S16               ret;
 
-   TRC2(rgSCHTomUtlProcDlSfAtCrc);
-
-
    cntrlInfo->numDlActvUes = 0;
    cmLListInit(&cntrlInfo->phichLst);
    cmLListInit(&cntrlInfo->dlPdcchLst);
@@ -8222,8 +8144,6 @@ RgSchCellCb          *cell;
 {
    RgrTtiIndInfo     *rgrTtiInd;
    
-   TRC2(rgSCHTomUtlSendSfnTick);
-
    /* TTI to be sent to RRM only once per system frame */
    /* Added support for period = 0 to disable tick to RRM */
    if ((cell->rrmTtiIndPrd != 0) && 
@@ -8281,7 +8201,6 @@ Inst   schInst;
 {
    RgSchDynTddCb  *rgSchDynTddInfo = &(rgSchCb[schInst].rgSchDynTdd);
 
-   TRC2(rgSCHDynTDDMrkCrntSfIdx)
 
 	RG_SCH_DYN_TDD_MARKTYPE(rgSchDynTddInfo, rgSchDynTddInfo->crntDTddSfIdx, 
 	                      RG_SCH_DYNTDD_NOTDEF);
@@ -8333,8 +8252,6 @@ RgSchCellCb        *cells[];
  
    CmLteTimingInfo frm;
      
-   TRC2 (rgSchTomFillCellTtiInfo);
-
    if (CM_LTE_MAX_CELLS < ttiInd->numCells)
    {
       RETVOID;
@@ -8503,8 +8420,6 @@ RgSchCellCb        *cell;
 #endif
 {
 
-   TRC2(rgSchTomTtiUlAndDlCmnChSch);
-
    cell->rlsHqArr[cell->crntHqIdx].numUes = 0;
    cell->crntHqIdx++;
    cell->crntHqIdx  = cell->crntHqIdx % RGSCH_NUM_SUB_FRAMES;
@@ -8583,8 +8498,6 @@ RgSchCellCb        *cell;
 {
    U8   suId = cell->tfuSap->sapCfg.suId;
     
-   TRC2(rgSchTomTtiMiscFunctions);
-
    /* Invoke RAM Tti Handler  */
    rgSCHRamTtiHndlr(cell);
 
@@ -8675,7 +8588,6 @@ PRIVATE Void rgSchTomTtiDlSch (cell)
 RgSchCellCb        *cell;
 #endif
 {
-   TRC2(rgSchTomTtiDlSch);
 
    if (cell->isDlDataAllwd && (cell->stopDlSch == FALSE))
    {
@@ -8712,8 +8624,6 @@ RgSchCellCb        *cell;
    
    dlSf = rgSCHUtlSubFrmGet(cell, cellSch->dl.time);
    
-   TRC2(rgSchTomTtiCnsldtSfAlloc);
-
    /* Prepare Subframe allocation info and send to MAC */
    rgSCHCmnCnsldtSfAlloc(cell); 
    
@@ -8752,8 +8662,6 @@ RgTfuCntrlReqInfo  *cntrlInfo;
    RgSchDlSf *dlSf = rgSCHUtlSubFrmGet (cell, cell->dlDciTime);
    RgSchDlSf *ulSf = rgSCHUtlSubFrmGet (cell, cell->hiDci0Time);
    RgSchErrInfo    err;
-
-   TRC2(rgSchTomTtiL1DlAndUlCfg);
 
    rgSCHTomUtlProcDlSf (dlSf, ulSf, cell, cntrlInfo, &err);
    /* Mark this frame as sent */
@@ -8794,7 +8702,6 @@ PRIVATE Void rgSchTomUtlTddRlsSfAndHarq (cell)
 RgSchCellCb        *cell;
 #endif
 {
-   TRC2(rgSchTomUtlTddRlsSfAndHarq); 
 
    /* ccpu00132341-MOD- rgSchTddRlsDlSubfrmTbl is dependent on DELTA(=2).
     * Instead rgSchTddDlAscSetIdxKTbl can be used as the K set gives proper
@@ -8837,8 +8744,6 @@ RgSchCellCb        *cell;
 {
    RgSchErrInfo    err;
    
-   TRC2(rgSCHTomUtlProcTddUlSf); 
-
    if(rgSchTddUlDlSubfrmTbl[cell->ulDlCfgIdx]
          [cell->rcpReqTime.subframe] == RG_SCH_TDD_UL_SUBFRAME)
    {

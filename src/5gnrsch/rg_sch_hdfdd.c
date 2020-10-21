@@ -107,7 +107,6 @@ Bool hdFddEnbl;
 #endif /* ANSI */
 {
    U8 sfi;
-   TRC3(rgSCHHdFddUeCfg)
 
    RLOG_ARG2(L_DEBUG,DBG_CELLID,cellCb->cellId,
                "rgSCHHdFddUeCfg(): UeId =%d hdFddEnbl=%d",
@@ -207,7 +206,6 @@ RgSchCellCb *cellCb;
 RgSchUeCb   *ueCb;
 #endif /* ANSI */
 {
- TRC3(rgSCHHdFddUeDel)
 
    RLOG_ARG2(L_DEBUG,DBG_CELLID,cellCb->cellId,
              " rgSCHHdFddUeDel(): UeId =%d hdFdd=%x",
@@ -267,7 +265,6 @@ RgSchCellCb *cellCb;
    RgSchUePCqiCb          *cqiCb = NULLP;
    RgSchUePCqiCb          *riCb = NULLP;
 
-   TRC3(rgSCHCmnHdFddPtUlMrk)
 
    timeInfo = cellCb->crntTime;
 
@@ -395,8 +392,6 @@ U8          *allow;
    RgSchDlSf        *sf = NULLP; /* Dl subframe info */
    U8               ulOffset
 
-   TRC3(rgSCHCmnHdFddChkUlAllow)
-   
    RLOG_ARG1(L_DEBUG,DBG_CELLID,cellCb->cellId, 
             " rgSCHCmnHdFddChkUlAllow: ueId=%d ", ueCb->ueId);
 
@@ -565,8 +560,6 @@ Bool *allow; /* Valdity of this pointer is not done in this function */
    CmLteTimingInfo timeInfo;
    CmLteTimingInfo tempTimeInfo;
 
-   TRC3(rgSCHCmnHdFddChkDlAllow)
-
    *allow = FALSE;
 
    timeInfo = cellCb->crntTime;
@@ -724,8 +717,6 @@ Bool *sndNACK;
    RgSchDlSf *sf;
    CmLteTimingInfo  tempTimeInfo;
 
-   TRC3(rgSCHCmnHdFddChkNackAllow)
-
    /* Information in timeInfo contains (n+DL_DELTA) th subframe info*/
 
    *sndNACK = FALSE;
@@ -799,9 +790,6 @@ RgSchUeCb   *ueCb;
    U16 sfi;
    CmLteTimingInfo  timeInfo;
    U8   ulOffset;
-
-   TRC3(rgSCHCmnHdFddUpdULMark)
-
 
    ulOffset = RGSCH_PDCCH_PUSCH_DELTA - 
               TFU_CRCIND_ULDELTA + RGSCH_PDCCH_PUSCH_DELTA;
@@ -882,8 +870,6 @@ RgSchUeCb   *ueCb;
    U16 sfi;
    CmLteTimingInfo  timeInfo;
 
-   TRC3(rgSCHCmnHdFddUpdDLMark)
-
    timeInfo = cellCb->crntTime;
    RGSCH_INCR_SUB_FRAME(timeInfo, RG_SCH_CMN_DL_DELTA);
 
@@ -953,7 +939,6 @@ Void rgSCHHdFddGetSfn (sfn, timeInfo, offset)
    U16 tempSfn;
    S16 tempSfCount;
 
-   TRC3(rgSCHHdFddGetSfn)
    if(((S16)(timeInfo.subframe) + offset) >= RGSCH_NUM_SUB_FRAMES)
    {
       /* Increament to number of times of SFNs that can be possible

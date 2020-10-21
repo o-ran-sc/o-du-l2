@@ -769,7 +769,7 @@ uint8_t duReadCfg()
    Pst pst;
    Buffer *mBuf;
 
-   memset((uint8_t *)&duCfgParam, 0, sizeof(DuCfgParams));
+   memset(&duCfgParam, 0, sizeof(DuCfgParams));
    //Read configs into duCfgParams
    if(readCfg() != ROK)
    {
@@ -778,7 +778,7 @@ uint8_t duReadCfg()
    }
 
    //Fill pst structure
-   memset((uint8_t *)&(pst), 0, sizeof(Pst));
+   memset(&(pst), 0, sizeof(Pst));
    pst.srcEnt = (Ent)ENTDUAPP;
    pst.srcInst = (Inst)DU_INST;
    pst.srcProcId = DU_PROC;

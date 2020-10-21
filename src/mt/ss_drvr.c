@@ -128,7 +128,6 @@ ISTsk isTsk;                    /* interrupt service function */
 
 #endif
 
-   TRC1(SRegDrvrTsk);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
 
@@ -253,7 +252,6 @@ Inst channel;
 #endif
 {
 	/* ss002.301 Modifications */
-   TRC1(SRegDrvrTsk);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (channel >= SS_MAX_DRVRTSKS)

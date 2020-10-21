@@ -105,7 +105,6 @@ Ptr             *ptr;       /* Location to place allocated event ptr */
   CmMemListCp   *memCp;     /* memory Link list control point */
   CmMemCb       *cb;        /* Allocated Memory Control Block */
 
-  TRC2(cmAllocEvnt)
 
   /* Validation check */
 #ifndef LTE_ENB_PAL
@@ -137,8 +136,8 @@ Ptr             *ptr;       /* Location to place allocated event ptr */
      return RFAILED;
 
   /* Reset the contents */
-  cmMemset((U8 *)allocPtr, (U8 )0, 
-           (PTR)(maxBlkSize + sizeof(CmMemList)) );
+  memset(allocPtr, 0, 
+           (maxBlkSize + sizeof(CmMemList)) );
 
   /* The above allocated memory chunk is structured as follows 
 
@@ -215,7 +214,6 @@ Mem             *sMem;      /* Static Memory region and pool */
 #endif
 {
 
-  TRC2(cmInitMemCp)
 
   /* Intialise Memory Control Point */
   CM_INIT_MEMCP(memCp,maxBlkSize,sMem);
@@ -261,7 +259,6 @@ Ptr          *allocPtr; /* location to place pointer */
   /* cm_mblk_c_001.101: added local variable */
   Size       blkSize;  /* required block size */
 
-  TRC2(cmGetMem)
 
   memCp = (CmMemListCp *)memPtr;
   cb = &memCp->memCb; 
@@ -310,8 +307,8 @@ Ptr          *allocPtr; /* location to place pointer */
   /* Reset the contents */
   /* Initialise above allocated structure */
   /* cm_mblk_c_001.101: use blkSize instead of cb->maxSize */
-  cmMemset((U8 *)cb->initPtr, (U8 )0, 
-           (PTR)(blkSize + sizeof(CmMemList) ));
+  memset(&(cb->initPtr), 0, 
+           (blkSize + sizeof(CmMemList) ));
 
   /* The above allocated memory chunk is structured as follows 
 
@@ -381,7 +378,6 @@ Ptr             *ptr;       /* Location to place allocated event ptr */
   CmMemListCp   *memCp;     /* memory Link list control point */
   CmMemCb       *cb;        /* Allocated Memory Control Block */
 
-  TRC2(cmAllocEvntNoInit)
 
   /* Validation check */
   if( evntSize > maxBlkSize)
@@ -401,8 +397,8 @@ Ptr             *ptr;       /* Location to place allocated event ptr */
      return RFAILED;
 
   /* Reset the contents */
-  cmMemset((U8 *)allocPtr, (U8 )0, 
-           (PTR)(sizeof(CmMemList)) );
+  memset(allocPtr, 0, 
+           (sizeof(CmMemList)) );
 
   /* The above allocated memory chunk is structured as follows 
 
@@ -484,7 +480,6 @@ Ptr          *allocPtr; /* location to place pointer */
   /* cm_mblk_c_001.101: added local variable */
   Size       blkSize;  /* required block size */
 
-  TRC2(cmGetMemNoInit)
 
   memCp = (CmMemListCp *)memPtr;
   cb = &memCp->memCb; 
@@ -510,7 +505,7 @@ Ptr          *allocPtr; /* location to place pointer */
     {
       /* Requested memory is available in present chunk */
       *allocPtr = (Ptr) cb->runPtr;
-      //cmMemset((U8 *)*allocPtr, (U8 )0, 
+      //memset(*allocPtr, (U8 )0, 
         //   (PTR)(size) );
       cb->memAllocated += size;
       cb->runPtr += size;
@@ -535,8 +530,8 @@ Ptr          *allocPtr; /* location to place pointer */
   /* Reset the contents */
   /* Initialise above allocated structure */
   /* cm_mblk_c_001.101: use blkSize instead of cb->maxSize */
-  cmMemset((U8 *)cb->initPtr, (U8 )0, 
-           (PTR)(sizeof(CmMemList)));
+  memset(&(cb->initPtr), 0, 
+           (sizeof(CmMemList)));
   /* The above allocated memory chunk is structured as follows 
 
   +-------------------+
@@ -600,7 +595,6 @@ Ptr    memPtr;     /* Link List CP */
   CmMemList   *prevNode; /* Pointer to previous node */
   CmMemListCp *lcp;      /* Memory Link List */
 
-  TRC2(cmFreeMem)
 
   lcp = (CmMemListCp *)memPtr;
 
@@ -668,7 +662,6 @@ CmMemListCp *lCp;               /* list control point */
 CmMemList   *node;              /* node to be added */
 #endif
 {
-   TRC3(cmAddMemNode);
 
    lCp->count++;
 
@@ -719,7 +712,6 @@ CmMemStatus     *status;  /* memory region,pool and status */
 
   CmMemListCp *memCp;    /* Memory Link List */
 
-  TRC3(cmGetMemStatus)
 
   memCp = (CmMemListCp *)memPtr;
 

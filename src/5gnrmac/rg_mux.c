@@ -174,8 +174,6 @@ RgErrInfo      *err;
    S16            ret;
    RgMUXSubHdr    subHdr;
 
-   TRC2(rgMUXAddCes)
-
    if (NULLP != pdu->contResId)
    {
       if(pdu->schdTbSz >= RG_CRES_ELM_LEN)
@@ -305,7 +303,6 @@ RgErrInfo      *err;
    U8             lenBytes;
    MsgLen         elmTotLen;
 
-   TRC2(rgMUXInsSdu)
    SFndLenMsg(sdu, &msgLen);
 
    RG_MUX_CALC_LEN(msgLen,lenBytes,elmTotLen);
@@ -393,7 +390,6 @@ RgErrInfo      *err;
    S16     ret = ROK;
    Buffer         *padBuf = NULLP;
    RgMUXSubHdr    subHdr;
-   TRC2(rgMUXAddPadd)
 
 #ifdef L2_OPTMZ
    padSize = 0;
@@ -532,8 +528,6 @@ RgErrInfo      *err;
    RgRguDDatReqPerUe *dDatReq;
    RgRguCmnDatReq    *cDatReq;
 
-   TRC2(rgMUXAddSdus)
-
    switch(pdu->reqType)
    {
       case EVTRGUCDATREQ:
@@ -667,9 +661,6 @@ RgErrInfo      *err;
 {
    Buffer         *mBuf = NULLP;
 
-   TRC2(rgMUXBldPdu)
-
- 
    if (rgGetMsg(inst, &mBuf) != ROK)
    {
       /* Buffer couldnt get allocated. Return a failure */
@@ -738,8 +729,6 @@ RgErrInfo           *err;
    RgRguDDatReqPerUe  *dDatReq;
    RgRguCmnDatReq     *cDatReq;
    U32 lchIdx, pduIdx;
-
-   TRC2(rgMUXAddSdus)
 
    switch(pdu->reqType)
    {
@@ -976,8 +965,6 @@ RgErrInfo          *err;
    Buffer         *mBuf2; /* MAC CEs */
    //U32            lchIdx, pduIdx;
 
-   TRC2(rgMUXBldPdu)
-   
   /* Reseting macHdr and macCes pointers */
   if(tb->macHdr)
    SResetMBuf(tb->macHdr);
@@ -1059,8 +1046,6 @@ RgErrInfo       *err;
    MsgLen      schdTbSz;
    U8          idx;
    Inst        inst = cell->macInst - RG_INST_START;
-
-   TRC2(rgMUXBldRarPdu)
 
    schdTbSz = alloc->schdTbSz;
    /* RAR PDU Requirements */
@@ -1194,8 +1179,6 @@ U8             *grnt;
 {
    U16       riv = rgMUXCalcRiv(ulBw, msg3Grnt->rbStart, msg3Grnt->numRb);
 
-   TRC2(rgMUXGet20bitRarGrnt);
-
    grnt[2]  = msg3Grnt->cqiBit;   /* cqi bit is 0, output from sched */
    grnt[2] |= (msg3Grnt->delayBit << 1);
    grnt[2] |= (msg3Grnt->tpc << 2);
@@ -1241,8 +1224,6 @@ U8           numRb;
 {
    U8           numRbMinus1 = numRb - 1;
    U16          riv;
-
-   TRC2(rgMUXCalcRiv);
 
    if (numRbMinus1 <= bw/2)
    {

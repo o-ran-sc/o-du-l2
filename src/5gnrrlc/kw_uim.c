@@ -114,8 +114,6 @@ SpId   spId;
    RlcCkwSapCb   *ckwSap;  
    RlcCb         *tRlcCb;
 
-   TRC3(RlcUiCkwBndReq);
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (pst->dstInst >= MAX_RLC_INSTANCES)
    {
@@ -220,8 +218,6 @@ Reason   reason;
 {
    RlcCb *tRlcCb;
 
-   TRC3(RlcUiCkwUbndReq)
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (pst->dstInst >= MAX_RLC_INSTANCES)
    {
@@ -281,9 +277,6 @@ RlcCfgInfo   *cfg;
 
    static U32  transCount;
 
-
-   TRC3(RlcProcCfgReq)
-      
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (pst->dstInst >= MAX_RLC_INSTANCES)
    {
@@ -361,8 +354,6 @@ CkwUeInfo   *newUeInfo;
    S16              ret = ROK;
    RlcCb             *tRlcCb;
    RlcUlCfgTmpData   *cfgTmpData = NULLP;
-
-   TRC3(RlcUiCkwUeIdChgReq)
 
    do
    {
@@ -465,8 +456,6 @@ RlcCfgInfo       *cfg;
 #endif
 {
    U8   idx;  
-
-   TRC3(rlcUlHdlCfgReq)
 
    cfgTmpData->ueId = cfg->ueId;
    cfgTmpData->cellId = cfg->cellId;
@@ -623,8 +612,6 @@ SpId   spId;
    RlcKwuSapCb   *rlckwuSap;     /* SAP Config Block */
    RlcCb         *tRlcCb;
    
-   TRC3(RlcUiKwuBndReq)
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (pst->dstInst >= MAX_RLC_INSTANCES)
    {
@@ -741,8 +728,6 @@ Reason   reason;
 {
    RlcKwuSapCb   *rlckwuSap;   /* KWU SAP control block */
    RlcCb         *tRlcCb;
-
-   TRC3(RlcUiKwuUbndReq)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if ((pst->dstInst >= MAX_RLC_INSTANCES) ||

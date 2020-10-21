@@ -56,7 +56,7 @@ uint8_t egtpActvInit(Ent entity, Inst inst, Region region, Reason reason)
 {
   DU_LOG("\n\nEGTP : Initializing");
 
-  memset ((uint8_t *)&egtpCb, 0, sizeof(EgtpGlobalCb));
+  memset (&egtpCb, 0, sizeof(EgtpGlobalCb));
   protType = CM_INET_PROTO_UDP;
 
   return ROK;
@@ -169,7 +169,7 @@ uint8_t egtpCfgReq(Pst *pst, EgtpConfig egtpCfg)
    Pst rspPst;      /* Response Pst structure */
    CmStatus cfgCfm; /* Configuration Confirm */
 
-   memcpy((uint8_t *)&egtpCb.egtpCfg, (uint8_t *)&egtpCfg, (PTR)sizeof(EgtpConfig));
+   memcpy(&egtpCb.egtpCfg, &egtpCfg, (PTR)sizeof(EgtpConfig));
 
    egtpCb.recvTptSrvr.addr.address = CM_INET_NTOH_U32(egtpCb.egtpCfg.localIp.ipV4Addr);
    egtpCb.recvTptSrvr.addr.port = EGTP_DFLT_PORT;
@@ -222,7 +222,7 @@ uint8_t egtpCfgReq(Pst *pst, EgtpConfig egtpCfg)
 uint8_t egtpFillRspPst(Pst *pst, Pst *rspPst)
 {
 
-   memset((uint8_t *)rspPst, 0, sizeof(Pst));
+   memset(rspPst, 0, sizeof(Pst));
    rspPst->srcEnt = pst->dstEnt;
    rspPst->srcInst = pst->dstInst;
    rspPst->srcProcId = pst->dstProcId;
@@ -423,7 +423,7 @@ uint8_t egtpTnlAdd(EgtpTnlEvt tnlEvt)
       return LCM_REASON_MEM_NOAVAIL;
    }
 
-   memset((uint8_t *)teidCb, 0, sizeof(EgtpTeIdCb));
+   memset(teidCb, 0, sizeof(EgtpTeIdCb));
    teidCb->teId = tnlEvt.lclTeid;
    teidCb->remTeId = tnlEvt.remTeid;
 
@@ -437,7 +437,7 @@ uint8_t egtpTnlAdd(EgtpTnlEvt tnlEvt)
    egtpCb.dstCb.numTunn++;
 
    /* Encoding pre-defined header */
-   memset((uint8_t*)&preDefHdr, 0, sizeof(EgtpMsgHdr));
+   memset(&preDefHdr, 0, sizeof(EgtpMsgHdr));
    preDefHdr.msgType = EGTPU_MSG_GPDU;
    preDefHdr.teId = teidCb->remTeId;
    preDefHdr.extHdr.pdcpNmb.pres = FALSE;

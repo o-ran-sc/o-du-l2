@@ -107,8 +107,6 @@ U32               measTime;
    U8                 qciVal = 0;
    U32                 sampOc = 0;
 
-   TRC3(rgSchFillL2MeasCfm)
-   
    measInfo = &measCb->measReq;   
 
    cfm->hdr.transId  = measInfo->hdr.transId;
@@ -337,9 +335,7 @@ Bool              isErr;
 {
    LrgSchMeasCfmInfo   cfm;
 
-   TRC3(rgSchL2mSndCfm)
-
-   cmMemset((U8 *)&cfm, (U8)0, sizeof(LrgSchMeasCfmInfo));
+   memset(&cfm, 0, sizeof(LrgSchMeasCfmInfo));
    cfm.hdr.transId  = measInfo->hdr.transId;
    cfm.measType     = measInfo->measType;
    cfm.cellId       = measInfo->cellId;
@@ -380,10 +376,6 @@ LrgSchMeasReqInfo *measInfo;
 #endif
 {
  
-
-   TRC3(rgSchL2mFillCfmPst)
-
-
    cfmPst->srcEnt    = pst->dstEnt;
    cfmPst->srcInst   = pst->dstInst;
    cfmPst->srcProcId = pst->dstProcId;
@@ -431,7 +423,6 @@ LrgSchMeasReqInfo *measInfo;
    RgSchL2MeasCb   *oldMeasCb;
    U32              diffTime;
    
-   TRC3(rgSchL2mInsertMeasCb)
    /* 
     * 1. Check if l2mList has any entries.
     * 2. If yes 
@@ -491,8 +482,6 @@ RgSchCellCb       *cell;
    U8                 idx;
 #endif
 
-   TRC3(rgSchL2CalDlPrbCount)
-
    frm   = cell->crntTime;
    RGSCH_INCR_SUB_FRAME(frm, RG_SCH_CMN_DL_DELTA);
    sf = rgSCHUtlSubFrmGet(cell, frm);
@@ -535,8 +524,6 @@ RgSchCellCb       *cell;
    U8                 idx;
 #endif
 
-   TRC3(rgSchL2CalUlPrbCount)
-
 #ifdef LTE_TDD
    idx = cellUl->schdIdx;
    if(idx < cellUl->numUlSubfrms)
@@ -578,7 +565,6 @@ RgSchErrInfo      err;
    RgSchL2MeasCb       *measCb = NULLP;
    Inst                inst = cell->instIdx;
    UNUSED(err);
-   TRC3(rgSchL2mAllocMeasCb)
 
    if((rgSCHUtlAllocSBuf(inst, (Data **)&measCb,
                    sizeof(RgSchL2MeasCb))) == RFAILED)
@@ -587,7 +573,7 @@ RgSchErrInfo      err;
                   "Allocation of RgSchL2MeasCb failed");
       return (NULLP);
    }
-   cmMemcpy((U8 *)&measCb->measReq, (U8 *)measInfo, sizeof(LrgSchMeasReqInfo));
+   memcpy(&measCb->measReq, measInfo, sizeof(LrgSchMeasReqInfo));
    RGSCHCPYTIMEINFO(cell->crntTime, measCb->startTime);
 
    measCb->dlTotalBw = 0;
@@ -633,7 +619,6 @@ RgSchErrInfo      err;
    U8            idx;
    U8            qciVal;
 
-   TRC3(rgSchL2mMeasReq)
 
    qciVal = 0;
    if ((measCb = rgSchL2mAllocMeasCb(cell, measInfo, err)) == NULLP)
@@ -644,7 +629,7 @@ RgSchErrInfo      err;
                 "Allocation of RgSchL2MeasCb failed");
        return RFAILED;
    }
-   /*cmMemcpy((U8 *)&measCb->measReq, (CONSTANT U8 *)measInfo,\
+   /*memcpy(&measCb->measReq, measInfo,\
              sizeof(LrgSchMeasReqInfo));*/
    rgSchL2mInsertMeasCb(cell, measCb, measInfo);
   
@@ -681,7 +666,7 @@ RgSchErrInfo      err;
    {
       RgInfL2MeasReq    measReq;
       Pst               pst;
-      cmMemset((U8 *)&measReq, 0, sizeof(RgInfL2MeasReq));
+      memset(&measReq, 0, sizeof(RgInfL2MeasReq));
       measReq.transId  = measInfo->hdr.transId;
       measReq.measType = measInfo->measType;
       measReq.timePrd  = measInfo->timePrd;
@@ -737,10 +722,9 @@ U8 isCalrCrcInd
    U32               numDlSf;
    U32               numUlSf;
 #endif
-   TRC3(rgSCHL2Meas)
 
-      node = cell->l2mList.first;
-   cmMemset((U8 *)&measCfm, 0, sizeof(LrgSchMeasCfmInfo));
+   node = cell->l2mList.first;
+   memset(&measCfm, 0, sizeof(LrgSchMeasCfmInfo));
    while(node != NULLP)
    {
       measCb = (RgSchL2MeasCb *)node->node;
@@ -809,7 +793,7 @@ U8 isCalrCrcInd
          }
          RgMiLrgSchL2MeasCfm(&(rgSchCb[cell->instIdx].rgSchInit.lmPst),
                &measCfm);
-         cmMemset((U8 *)&measCfm, 0, sizeof(LrgSchMeasCfmInfo));
+         memset(&measCfm, 0, sizeof(LrgSchMeasCfmInfo));
          
          /* Delete this measCb from the list */
          if(measCb->measReq.timePrd > 0)
@@ -823,7 +807,7 @@ U8 isCalrCrcInd
             measCb->startTime = cell->crntTime;
             measCb->sfnCycle = 0;
             measCb->cfmRcvd = FALSE;
-            cmMemset((U8 *)&measCb->avgPrbQciUl, 0, sizeof(LrgAvgPrbQCICfm));
+            memset(&measCb->avgPrbQciUl, 0, sizeof(LrgAvgPrbQCICfm));
             cell->sndL2Meas = FALSE;
          } 
          /* ccpu00117052 - MOD - Passing double pointer

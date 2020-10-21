@@ -126,8 +126,6 @@ CrgCellCfg  *cellCfg;
 RgErrInfo   *errInfo;
 #endif
 {
-   TRC2(rgCFGVldtCrgCellCfg);
-
    errInfo->errCause = RGERR_CFG_INVALID_CRG_CELL_CFG;
    if ((rgCb[inst].cell != NULLP)
          || rgCb[inst].inactiveCell != NULLP)
@@ -206,8 +204,6 @@ RgCellCb  **cell;
 RgErrInfo *errInfo;
 #endif
 {
-   TRC2(rgCFGVldtCrgUeCfg);
-
    errInfo->errCause = RGERR_CFG_INVALID_CRG_UE_CFG;
    if ((ueCfg->txMode.pres == PRSNT_NODEF) && 
        (ueCfg->txMode.tm == CRG_UE_TM_5))
@@ -299,8 +295,6 @@ RgErrInfo  *errInfo;
 #endif
 {
 
-   TRC2(rgCFGVldtCrgLcCfg);
-
    if (lcCfg->lcType == CM_LTE_LCH_DTCH || lcCfg->lcType == CM_LTE_LCH_DCCH)
    {
       /* Dedicated logical channels */
@@ -384,8 +378,6 @@ RgCellCb      **cell;
 RgErrInfo     *errInfo;
 #endif
 {
-   TRC2(rgCFGVldtCrgCellRecfg);
-
    errInfo->errCause = RGERR_CFG_INVALID_CRG_CELL_RECFG;
    
    if (((*cell = rgCb[inst].cell) == NULLP)
@@ -456,8 +448,6 @@ RgUeCb      **ue;
 RgErrInfo   *errInfo;
 #endif
 {
-   TRC2(rgCFGVldtCrgUeRecfg);
-
    errInfo->errCause = RGERR_CFG_INVALID_CRG_UE_RECFG;
    
    if ((ueRecfg->txMode.pres == PRSNT_NODEF) && 
@@ -544,8 +534,6 @@ RgUlLcCb     **ulLc;
 RgErrInfo    *errInfo;
 #endif
 {
-   TRC2(rgCFGVldtCrgLcRecfg);
-
    errInfo->errCause = RGERR_CFG_INVALID_CRG_LC_RECFG;
 
    /* Fetch the cell */
@@ -622,8 +610,6 @@ RgUeCb      **ue;
 RgErrInfo   *errInfo;
 #endif
 {
-   TRC2(rgCFGVldtCrgUeReset);
-
    errInfo->errCause = RGERR_CFG_INVALID_CRG_UE_RESET;
    
    /* Fetch the Active cell */
@@ -692,8 +678,6 @@ RgErrInfo   *errInfo;
    SuId       rguDlSapId = 0;
    /* RLC SAP to allocate flowCntrlInd buffer*/
    Pst        *pst ;
-
-   TRC2(rgCFGCrgCellCfg);
 
    errInfo->errCause = RGERR_CFG_CRG_CELL_CFG;
    
@@ -767,7 +751,7 @@ RgErrInfo   *errInfo;
    cmLListInit(&cell->l2mList);
    for(idx = 0; idx < RG_NUM_UL_SUB_FRAMES; idx++)
    {
-      cmMemset((U8 *)&cell->ulSf[idx], 0, sizeof(RgUlSf));
+      memset(&cell->ulSf[idx], 0, sizeof(RgUlSf));
    }
 
    cell->ttiCycle = (U32)RG_TTI_CYCLE_INVLD;   
@@ -826,8 +810,6 @@ RgCellCb    *cell;
    U8 	     idx;
    RgErrInfo  errInfo;
 
-   TRC2(rgCfgAddUeSCellCfg);
-   
 #ifdef LTE_ADV
    rguDlSapId              = ueSCellCb->rguDlSapId;
    rguUlSapId              = ueSCellCb->rguUlSapId;
@@ -944,8 +926,6 @@ Bool            *isCfmRqrd;
    RgPrgUeSCellCfgInfo ueSCellCb;
    Pst          dstInstPst;
 
-   TRC2(rgFillAndAddSCellCfg);
-  
   /* Fetch the Active cell */
    if(((cell = rgCb[inst].cell) == NULLP) ||
        (cell->cellId != ueRecfg->cellId))
@@ -973,13 +953,13 @@ Bool            *isCfmRqrd;
    ue->cfgCfmInfo.cfgCfgCount = 0;
    ue->cfgCfmInfo.mask = 0x0;
 
-   cmMemcpy( (U8*)&(ue->cfgCfmInfo.transId), (U8*)&transId,
+   memcpy(&(ue->cfgCfmInfo.transId), &transId,
          sizeof(CrgCfgTransId));
    ueSCellCb.ueId = ueRecfg->oldCrnti;
    ueSCellCb.txMode = ue->txMode;
    ueSCellCb.maxUlHqRetx = ue->ul.hqEnt.maxHqRetx;
-   cmMemcpy((U8 *)ueSCellCb.ulLcInfo, (U8 *)ue->ul.lcCb, sizeof(ue->ul.lcCb));
-   cmMemcpy((U8 *)ueSCellCb.dlLcInfo, (U8 *)ue->dl.lcCb, sizeof(ue->dl.lcCb));
+   memcpy(ueSCellCb.ulLcInfo, ue->ul.lcCb, sizeof(ue->ul.lcCb));
+   memcpy(ueSCellCb.dlLcInfo, ue->dl.lcCb, sizeof(ue->dl.lcCb));
    for (idx =0; idx < RG_MAX_LCG_PER_UE; idx++)
    {
       ueSCellCb.lcgInfo[idx].lcgId = ue->ul.lcgArr[idx].lcgId;
@@ -1053,8 +1033,6 @@ RgErrInfo *errInfo;
    Bool      handover = FALSE;
    SuId       rguUlSapId = 0;
    SuId       rguDlSapId = 0;
-
-   TRC2(rgCFGCrgUeCfg);
 
    errInfo->errCause = RGERR_CFG_CRG_UE_CFG;
 
@@ -1161,8 +1139,6 @@ CrgCfgTransId   transId;
 #endif
 {
 
-   TRC2(rgCFGCrgLcCfg);
-   
    /* Handle Config for dedicated/common logical channels */
    if (lcCfg->lcType == CM_LTE_LCH_DTCH || lcCfg->lcType == CM_LTE_LCH_DCCH)
    {
@@ -1175,7 +1151,7 @@ CrgCfgTransId   transId;
       }
 #ifdef LTE_ADV
       /*ERAB Multl Cell fix*/
-       cmMemcpy( (U8*)&(ue->cfgCfmInfo.transId), (U8*)&transId,
+       memcpy(&(ue->cfgCfmInfo.transId), &transId,
             sizeof(CrgCfgTransId));
        rgPomSndUeSCellLchAddToSmac(inst, cell, ue, lcCfg,isCfmRqrd);
 #endif
@@ -1233,8 +1209,6 @@ CrgCellRecfg  *cellRecfg;
 RgErrInfo     *errInfo;
 #endif
 {
-   TRC2(rgCFGCrgCellRecfg);
-
    /* Store the given rachCfg */
    cell->rachCfg = cellRecfg->rachRecfg;
 
@@ -1288,8 +1262,6 @@ CrgUeRecfg  *ueRecfg;
 RgErrInfo   *errInfo;
 #endif
 {
-   TRC2(rgCFGCrgUeRecfg);
-
    errInfo->errCause = RGERR_CFG_CRG_UE_RECFG;
 
    /* Fix : syed UE ID change at MAC will now be controlled
@@ -1350,7 +1322,6 @@ RgErrInfo   *errInfo;
 Bool        *isCfmRqrd;
 #endif
 {
-   TRC2(rgCFGCrgLcRecfg);
 
    if (ulLc->lcgId != lcRecfg->ulRecfg.lcgId)
    {
@@ -1399,7 +1370,6 @@ CrgRst     *reset;
 RgErrInfo   *errInfo;
 #endif
 {
-   TRC2(rgCFGCrgUeReset);
 
    RLOG_ARG1(L_DEBUG, DBG_CRNTI, ue->ueId, "UE: of cell %d Reset\n", cell->cellId);
    rgDHMUeReset(cell, &ue->dl.hqEnt);
@@ -1447,7 +1417,6 @@ RgErrInfo   *errInfo;
    RgCellCb      *cell;
    U8 idx;
 
-   TRC2(rgCFGCrgCellDel);
 
    errInfo->errCause = RGERR_CFG_CRG_CELL_DEL;
    if (((cell = rgCb[inst].cell) == NULLP)
@@ -1524,7 +1493,6 @@ CrgDel      *ueDelInfo;
 RgErrInfo   *errInfo;
 #endif
 {
-   TRC2(rgCFGCrgUeDel);
 
    errInfo->errCause = RGERR_CFG_CRG_UE_DEL;
 
@@ -1587,8 +1555,6 @@ CrgCfgTransId transId;
    RgUlLcCb  *ulLc;
    RgDlLcCb  *dlLc;
 
-   TRC2(rgCFGCrgLcDel);
-
    errInfo->errCause = RGERR_CFG_CRG_LC_DEL;
 
    /* Fetch the Active cell */
@@ -1644,7 +1610,7 @@ CrgCfgTransId transId;
    }
 #ifdef LTE_ADV
    /*ERAB - multicell fix*/
-   cmMemcpy( (U8*)&(ue->cfgCfmInfo.transId), (U8*)&transId,
+   memcpy( &(ue->cfgCfmInfo.transId), &transId,
          sizeof(CrgCfgTransId));
    rgPomSndUeSCellLchDelToSmac(inst, lcDelInfo, isCfmRqrd);
 #endif
@@ -1687,7 +1653,6 @@ RgErrInfo     *errInfo;
 #endif
 {
    U8         dirVld   = FALSE;
-   TRC2(rgCFGVldtCrgDedLcCfg);
 
    errInfo->errCause = RGERR_CFG_INVALID_CRG_DED_LC_CFG;
 
@@ -1791,8 +1756,6 @@ RgErrInfo     *errInfo;
 #endif
 {
    U8         dirVld  = FALSE;
-
-   TRC2(rgCFGVldtCrgCmnLcCfg);
 
    errInfo->errCause = RGERR_CFG_INVALID_CRG_CMN_LC_CFG;
 
@@ -1918,8 +1881,6 @@ RgErrInfo     *errInfo;
 #endif
 {
    //Inst     inst = cell->macInst - RG_INST_START;
-   TRC2(rgCFGCrgDedLcCfg);
-
    errInfo->errCause = RGERR_CFG_CRG_DED_LC_CFG;
 
    /* Uplink/Bi-directional logical channel */
@@ -1979,8 +1940,6 @@ CrgLchCfg     *lcCfg;
 RgErrInfo     *errInfo;
 #endif
 {
-   TRC2(rgCFGCrgCmnLcCfg);
-
    errInfo->errCause = RGERR_CFG_CRG_CMN_LC_CFG;
 
    /* Handle configuration for CCCH/BCCH/PCCH */
@@ -2071,8 +2030,6 @@ RgCellCb      *cell;
    U8    sfIdx;
    Inst inst = cell->macInst - RG_INST_START;
    
-   TRC2(rgCFGFreeUeUlAlloc);
-
    for(sfIdx = 0; sfIdx < RG_NUM_UL_SUB_FRAMES; sfIdx++)
    {
       if(cell->ulSf[sfIdx].ueUlAllocInfo != NULLP)
@@ -2112,7 +2069,6 @@ RgCellCb      *cell;
 #endif
 {
    Inst inst = cell->macInst - RG_INST_START;
-   TRC2(rgCFGFreeCellCb);
 
 #ifdef LTE_ADV
    RgLaaCellCbDeInit(cell);
@@ -2173,8 +2129,6 @@ RgCellCb      *cell;
 #endif
 {
    Inst      inst = cell->macInst - RG_INST_START;
-   TRC2(rgCFGFreeInactvCellCb);
-   
    /* De-initialize the Ue list */
    rgDBMDeInitUeCbLst(cell);
 #ifdef LTEMAC_SPS
@@ -2228,8 +2182,6 @@ RgUeCb      *ue;
 {
    Inst inst = cell->macInst - RG_INST_START;
 
-   TRC2(rgCFGFreeUeCb);
-
    rgDHMFreeUe(inst,&ue->dl.hqEnt);
 
    /* ccpu00117052 - MOD - Passing double pointer for proper NULLP
@@ -2271,8 +2223,6 @@ PRIVATE Void rgCFGFreeCmnLcLst(cell)
 RgCellCb      *cell;
 #endif
 {
-   TRC2(rgCFGFreeCmnLcLst);
-
    rgDBMFreeCmnLcLst(cell);
 
 
@@ -2308,8 +2258,6 @@ RgCellCb      *cell;
 #endif
 {
    RgUeCb     *ue;
-
-   TRC2(rgCFGFreeUeLst);
 
    /* Free Ues in the list */
    while ((ue = rgDBMGetNextUeCb(cell, NULLP)) != NULLP)
@@ -2357,8 +2305,6 @@ RgCellCb      *cell;
 #endif
 {
    RgUeCb     *ue;
-
-   TRC2(rgCFGFreeSpsUeLst);
 
    /* Free Ues in the list */
    while ((ue = rgDBMGetNextSpsUeCb(cell, NULLP)))
@@ -2408,8 +2354,6 @@ RgInfCellReg*       regReq;
 {
    Inst      inst;
    RgCellCb *cell = NULLP;
-
-   TRC3(RgSchMacCellRegReq)
 
    RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;

@@ -864,9 +864,6 @@ U8         *fByte;
    MsgLen     totalSz = 0;
    RlcExtHdr   hdrInfo;
 
-   TRC2(rlcAmmExtractHdrOld)
-
-
    RLC_MEM_ZERO(&hdrInfo, sizeof(RlcExtHdr));
 
    /* Extract fixed part of the header */
@@ -1575,9 +1572,6 @@ RlcUlRbCb     *rbCb;
 #endif
    RlcAmRecBuf   *recBuf = NULLP;
 
-   TRC2(rlcAmmUlReEstablish);
-
-
    sn = AMUL.rxNext;
 
    MODAMR(AMUL.vrMr, mVrMr, AMUL.rxNext, AMUL.snModMask);
@@ -1678,9 +1672,6 @@ RlcUlRbCb    *rbCb;
    Bool tmrRunning = FALSE;
    RlcAmRecBuf   *recBuf = NULLP;
 
-   TRC2(rlcAmmReOrdTmrExp);
-
-
    /* Update rxHighestStatus */
    sn = amUl->rxNextStatusTrig;
 
@@ -1752,9 +1743,6 @@ RlcUlRbCb    *rbCb;
 #endif
 {
    RlcAmUl *amUl = &(rbCb->m.amUl);
-
-   TRC2(rlcAmmStaProTmrExp);
-
 
    amUl->gatherStaPduInfo = FALSE;
 
@@ -1944,9 +1932,6 @@ RlcUlRbCb   *rbCb;
    RlcSn         curSn = 0;           /* Sequence number of PDU */
    RlcSn         windSz;              /* PDU window size */
    RlcAmRecBuf *recBuf = NULLP;
-
-   TRC2(rlcAmmFreeUlRbCb)
-
 
    windSz  =  (RLC_AM_GET_WIN_SZ(rbCb->m.amUl.snLen)) << 1;
 

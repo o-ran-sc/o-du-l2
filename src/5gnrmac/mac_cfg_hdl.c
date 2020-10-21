@@ -121,7 +121,7 @@ uint8_t MacProcCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
    uint8_t ret = ROK;
    MacCellCb     *macCellCb;
 
-   memset((uint8_t *)&cfmPst, 0, sizeof(Pst));
+   memset(&cfmPst, 0, sizeof(Pst));
 
    MAC_ALLOC(macCellCb, sizeof(MacCellCb));
    if(macCellCb == NULLP)
@@ -195,7 +195,7 @@ uint8_t MacSchCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
    Pst        cfgPst;
    uint8_t    ret;
 
-   memset((uint8_t *)&cfgPst, 0, sizeof(Pst));
+   memset(&cfgPst, 0, sizeof(Pst));
    schCellCfg.cellId = macCellCfg->cellId;
    schCellCfg.phyCellId = macCellCfg->phyCellId;
    schCellCfg.bandwidth = macCellCfg->dlCarrCfg.bw;
@@ -311,7 +311,7 @@ void MacSendCellCfgCfm(uint16_t cellId, uint8_t response)
    uint16_t   cellIdx;
    MacCellCfgCfm macCellCfgCfm;
 
-   memset((uint8_t *)&pst, 0, sizeof(Pst));
+   memset(&pst, 0, sizeof(Pst));
 
    GET_CELL_IDX(cellId, cellIdx);
    macCellCfgCfm.cellId = macCb.macCell[cellIdx]->macCellCfg.cellId;

@@ -102,7 +102,6 @@ S16 SInitQueue(q)
 Queue *q;              /* queue */
 #endif
 {
-   TRC1(SInitQueue)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check queue pointer */
@@ -161,7 +160,6 @@ Queue *q;                   /* queue */
    U32 line = __LINE__;
 #endif
 
-   TRC1(SFlushQueue)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check queue */
@@ -231,7 +229,6 @@ Queue *q2;                  /* queue 2 */
 Order order;                /* order */
 #endif
 {
-   TRC1(SCatQueue)
  
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (q1 == NULLP)
@@ -341,7 +338,6 @@ Queue *q;                   /* queue */
 QLen  *lngPtr;              /* pointer to length */
 #endif
 {
-   TRC1(SFndLenQueue)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check queue */
@@ -403,7 +399,6 @@ QLen   idx;                 /* index */
    Buffer *tmpBuf;
    QLen   i;
 
-   TRC1(SExamQueue)
  
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check buffer pointer */
@@ -498,7 +493,6 @@ QLen   idx;                  /* index */
    Buffer *tBuf;
    QLen   i;
 
-   TRC1(SAddQueue)
  
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check queue */
@@ -623,7 +617,6 @@ QLen   idx;                 /* index */
    Buffer *tBuf;
    QLen   i;
 
-   TRC1(SRemQueue)
  
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check buffer pointer */
@@ -726,7 +719,6 @@ Buffer *buf;                /* buffer */
 Queue *q;                   /* queue */
 #endif
 {
-   TRC1(SQueueFirst)
 
    return (SAddQueue(buf, q, 0));
 } /* end of SQueueFirst */
@@ -765,7 +757,6 @@ Buffer **bufPtr;            /* pointer to buffer */
 Queue *q;                   /* queue */
 #endif
 {
-   TRC2(SDequeueFirst)
 
    return (SRemQueue(bufPtr, q, 0));
 } /* end of SDequeueFirst */
@@ -802,7 +793,6 @@ Buffer *buf;                /* buffer */
 Queue *q;                   /* queue */
 #endif
 {
-   TRC1(SQueueLast)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check queue */
@@ -858,7 +848,6 @@ Queue *q;                   /* queue */
 {
    S16   ret;
 
-   TRC1(SDequeueLast)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check buffer pointer */
@@ -912,7 +901,6 @@ SsDmndQ *dQueue;                /* Demand Queue */
    U8  i;
    S16 ret;
 
-   TRC0(ssInitDmnddQ)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (dQueue == NULLP)
@@ -1011,7 +999,6 @@ SsDmndQ *dQueue;                       /* demand Queue */
    Buffer *tBuf;
    S16    ret;
 
-   TRC0(ssDestroyDmndQ)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (dQueue == NULLP)
@@ -1113,7 +1100,6 @@ Order   order;                         /* position */
    U32    t = MacGetTick();
 #endif 
 
-   TRC0(ssDmndQPut)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (dQueue == NULLP)
@@ -1299,7 +1285,6 @@ SsDmndQ *dQueue;                          /* demand queue */
 {
    S16   ret;
 
-   TRC0(ssDmndQWait)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (dQueue == NULLP)
@@ -1364,7 +1349,6 @@ Order   order;                            /* position */
    U8    qIndex;
 #endif
 
-   TRC0(ssDmndQGet)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (mBuf == NULLP)
@@ -1544,7 +1528,6 @@ QLen    *len;                                  /* queue length */
    S16  ret;                                   /* return value */
    U8   i;
 
-   TRC0(ssFndLenDmndQ)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if ((dQueue == NULLP) || (len == NULLP))

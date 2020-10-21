@@ -109,7 +109,6 @@ U8 rrcUeCapabilityInfo[] =
 #ifdef PJ
    Pst ulPst2 ={100,100,217,0,216,0,PRIOR0,0,68,0,1,0,0};
 #endif
-  TRC2(rlcTmmRcvFrmMac) 
 
   if(1 == rrcMsgType)
   {
@@ -317,7 +316,6 @@ RlcCb        *gCb;
 RlcUlRbCb    *rbCb;          
 #endif
 {
-   TRC2(rlcUlTmmReEstablish)
 
    RLOG_ARG0(L_DEBUG,DBG_RBID,rbCb->rlcId.rbId,"do nothing for TMM for ReEstablish");
    RETVOID;
