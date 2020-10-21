@@ -28,7 +28,7 @@ int  encBufSize;
 int PrepFinalEncBuf(const void *buffer, size_t size, void *encodedBuf);
 uint8_t buildPlmnId(Plmn plmn, uint8_t *buf);
 uint8_t fillBitString(BIT_STRING_t *id, uint8_t unusedBits, uint8_t byteSize, uint8_t val);
-uint8_t bitStringToInt(BIT_STRING_t *bitString, uint16_t *val);
+uint8_t bitStringToInt(BIT_STRING_t *bitString, void *val);
 
 #endif
 

@@ -240,9 +240,14 @@ Buffer *mBuf;           /* message buffer */
                      break;
                   }
                
-               case EVENT_RLC_UL_UE_CREATE_REQ:        /* UE Create Request */
+               case EVENT_RLC_UL_UE_CONFIG_REQ:        /* UE Create Request */
                   {
                      ret = unpackRlcUlUeCreateReq(RlcUlProcUeCreateReq, pst, mBuf);
+                     break;
+                  }
+              case EVENT_RLC_UL_UE_RECONFIG_REQ:        /* UE Reconfig Request */
+                  {
+                     ret = unpackRlcUlUeReconfigReq(RlcUlProcUeReconfigReq, pst, mBuf);
                      break;
                   }
 

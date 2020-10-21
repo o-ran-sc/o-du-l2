@@ -76,7 +76,7 @@
 #define SRB2_LCID  2
 #define SRB3_LCID  3
 #define MIN_DRB_LCID 4
-#define MAX_DRB_LCID 10
+#define MAX_DRB_LCID 32
 
 #define FREQ_DOM_RSRC_SIZE  6      /* i.e. 6 bytes because Size of frequency domain resource is 45 bits */
 
@@ -163,7 +163,22 @@ typedef struct PlmnIdentity
    uint8_t mnc[3];
 }Plmn;
 
-void schAllocFreqDomRscType0(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain);
+typedef enum
+{
+   UE_CFG_INACTIVE,
+   UE_CONFIG_COMPLETE,
+   UE_RECFG_COMPLETE
+}UeCfgState;
+
+typedef enum
+{
+   CONFIG_UNKNOWN,
+   CONFIG_ADD,
+   CONFIG_MOD,
+   CONFIG_DEL
+}ConfigType;
+
+void freqDomRscAllocType0(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain);
 void oduCpyFixBufToMsg(uint8_t *fixBuf, Buffer *mBuf, uint16_t len);
 
 #endif

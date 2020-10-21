@@ -126,9 +126,13 @@ Buffer  *mBuf;                      /* message buffer       */
 			/* Process DL CCCH Ind */
 			unpackMacDlCcchInd(MacProcDlCcchInd, pst, mBuf);
 			break;
-		case EVENT_MAC_UE_CREATE_REQ:
+		case EVENT_MAC_UE_CONFIG_REQ:
 		   /* Process Ue Create Request */
 			unpackMacUeCreateReq(MacProcUeCreateReq, pst, mBuf);
+			break;
+                case EVENT_MAC_UE_RECONFIG_REQ:
+		   /* Process Ue Reconfig Request */
+			unpackMacUeReconfigReq(MacProcUeReconfigReq, pst, mBuf);
 			break;
       default:
          RG_FREE_MSG(mBuf);

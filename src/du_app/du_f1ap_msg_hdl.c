@@ -25,7 +25,6 @@
 #include "du_app_mac_inf.h"
 #include "du_cfg.h"
 #include "du_app_rlc_inf.h"
-#include "E2AP-PDU.h"
 #include "du_mgr_main.h"
 #include "du_utils.h"
 #include "GNB-DU-System-Information.h"
@@ -50,6 +49,8 @@
 #include "PDCCH-Config.h"
 #include "PDSCH-TimeDomainResourceAllocation.h"
 #include "PDSCH-TimeDomainResourceAllocationList.h"
+#include "PDSCH-CodeBlockGroupTransmission.h"
+#include "PDSCH-ServingCellConfig.h"
 #include "DMRS-DownlinkConfig.h"
 #include "PDSCH-Config.h"
 #include "BWP-DownlinkDedicated.h"
@@ -64,8 +65,9 @@
 #include "BWP-UplinkDedicated.h"
 #include "PUSCH-ServingCellConfig.h"
 #include "UplinkConfig.h"
-#include "PDSCH-ServingCellConfig.h"
 #include "DUtoCURRCContainer.h"
+#include "GBR-QoSFlowInformation.h"
+#include "QoSFlowLevelQoSParameters.h"
 #include<ProtocolIE-Field.h>
 #include "ProtocolExtensionField.h"
 #include "F1AP-PDU.h"
@@ -80,7 +82,6 @@ uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg);
 void FreeDUConfigUpdate(F1AP_PDU_t *f1apDuCfg);
 uint8_t sctpSend(Buffer *mBuf, uint8_t itfType);
 uint8_t BuildInitialUlBWP(BWP_UplinkDedicated_t *ulBwp);
-uint8_t procUeContextSetupReq(F1AP_PDU_t *f1apMsg);
 
 /*******************************************************************
  *
@@ -2582,7 +2583,7 @@ uint8_t BuildRlcBearerToAddModList(struct CellGroupConfigRrc__rlc_BearerToAddMod
    coreset1StartPrb = coreset0EndPrb + 6;
    coreset1NumPrb = CORESET1_NUM_PRB;
    /* calculate the PRBs */
-   schAllocFreqDomRscType0(((coreset1StartPrb)/6), (coreset1NumPrb/6), freqDomainResource);
+   freqDomRscAllocType0(((coreset1StartPrb)/6), (coreset1NumPrb/6), freqDomainResource);
    memcpy(controlRSet->frequencyDomainResources.buf, freqDomainResource, FREQ_DOM_RSRC_SIZE);
    controlRSet->frequencyDomainResources.bits_unused = bitsUnused;
 
@@ -5229,13 +5230,1980 @@ uint8_t BuildAndSendInitialRrcMsgTransfer(uint32_t gnbDuUeF1apId, uint16_t crnti
       return RFAILED;
 }/* End of BuildAndSendInitialRrcMsgTransfer*/
 
+/*****  UE SETUP REQUEST *****/
+
 /*******************************************************************
  *
+ * @brief Free Qos And Snssai Drb Info
+ *
+ * @details
+ *
+ *    Function : freeDrbQosAndSnssaiInfo
+ *
+ *    Functionality: Free Qos And Snssai Drb Info
+ *
+ * @params[in] LcCfg *lcCfg,
+ * @return void
+ *
+ * ****************************************************************/
+void freeDrbQosAndSnssaiInfo(LcCfg *lcCfg)
+{
+   if(lcCfg->snssai)
+   {
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, lcCfg->snssai, sizeof(Snssai));
+   }
+   if(lcCfg->drbQos)
+   {
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, lcCfg->drbQos, sizeof(DrbQosInfo));
+   }
+}
+
+/******************************************************************
+*
+* @brief Function to delete the RLC Lc cfg from UE APP DB
+*
+* @details
+*
+*  Function : freeRlcLcCfg
+*
+*  Functionality: Function to delete the RLC Lc cfg from UE APP DB
+*
+*
+ *****************************************************************/
+
+void freeRlcLcCfg(RlcBearerCfg *lcCfg)
+{
+   switch(lcCfg->rlcMode)
+   {
+      case RLC_AM :
+      {
+         if(lcCfg->u.amCfg)
+	 {
+            DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, lcCfg->u.amCfg, sizeof(AmBearerCfg));
+            lcCfg->u.amCfg = NULLP;
+	 }
+         break;
+      }
+      case RLC_UM_BI_DIRECTIONAL :
+      {
+         if(lcCfg->u.umBiDirCfg)
+	 {
+            DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, lcCfg->u.umBiDirCfg, sizeof(UmBiDirBearerCfg));
+	    lcCfg->u.umBiDirCfg = NULLP;
+         }
+         break;
+      }
+      case RLC_UM_UNI_DIRECTIONAL_UL :
+      {
+         if(lcCfg->u.umUniDirUlCfg)
+	 {
+            DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, lcCfg->u.umUniDirUlCfg, sizeof(UmUniDirUlBearerCfg));
+	    lcCfg->u.umUniDirUlCfg = NULLP;
+	 }
+         break;
+
+      }
+      case RLC_UM_UNI_DIRECTIONAL_DL :
+      {
+         if(lcCfg->u.umUniDirDlCfg)
+	 {
+            DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, lcCfg->u.umUniDirDlCfg, sizeof(UmUniDirDlBearerCfg));
+	    lcCfg->u.umUniDirDlCfg = NULLP;
+         }
+         break;
+      }
+      default:
+         DU_LOG("\nDU_APP: Invalid Rlc Mode %d at freeRlcLcCfg()", lcCfg->rlcMode);
+	 break;
+   }
+   memset(lcCfg, 0, sizeof(LcCfg));
+}
+/*******************************************************************
+ *
+ * @brief Function to free MacLcCfg
+ *
+ * @details
+ *
+ *    Function : freeMacLcCfg
+ *
+ *    Functionality: Function to free MacLcCfg
+ *
+ * @params[in] LcCfg *lcCfg,
+ * @return void
+ *
+ * ****************************************************************/
+
+void  freeMacLcCfg(LcCfg *lcCfg)
+{
+    /* Deleting DRBQOS */
+   if(lcCfg->drbQos)
+   {
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, lcCfg->drbQos, sizeof(DrbQosInfo));
+      lcCfg->drbQos = NULLP;
+   }
+   /* Deleting SNSSAI */
+   if(lcCfg->snssai)
+   {
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, lcCfg->snssai, sizeof(Snssai));
+      lcCfg->snssai = NULLP;
+   }
+   memset(lcCfg, 0, sizeof(LcCfg));
+}
+
+/*******************************************************************
+ *
+ * @brief Function to free DuUeCfg
+ *
+ * @details
+ *
+ *    Function : freeDuUeCfg
+ *
+ *    Functionality: Function to free DuUeCfg
+ *
+ * @params[in] DuUeCfg *ueCfg
+ * @return void
+ *
+ * ****************************************************************/
+void freeDuUeCfg(DuUeCfg *ueCfg)
+{
+   uint8_t lcIdx;
+
+   for(lcIdx = 0; lcIdx < ueCfg->numRlcLcs; lcIdx++)
+   {
+      freeRlcLcCfg(&ueCfg->rlcLcCfg[lcIdx]);
+   }
+   for(lcIdx = 0; lcIdx < ueCfg->numMacLcs; lcIdx++)
+   {
+      freeMacLcCfg(&ueCfg->macLcCfg[lcIdx]);
+   }
+   if(ueCfg->maxAggrBitRate)
+   {
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, ueCfg->maxAggrBitRate, sizeof(MaxAggrBitRate));
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Function to free UecontextSetupDb
+ *
+ * @details
+ *
+ *    Function : freeF1UeDb
+ *
+ *    Functionality: Function to free UecontextSetupDb
+ *
+ * @params[in] UecontextSetupDb *
+ * @return void
+ *
+ * ****************************************************************/
+
+void freeF1UeDb(UeContextSetupDb *f1UeDb)
+{
+   if(f1UeDb->cellGrpCfg)
+   {
+      DU_FREE(f1UeDb->cellGrpCfg, sizeof(CellGroupConfigRrc_t));
+      f1UeDb->cellGrpCfg = NULLP;
+   }
+   if(f1UeDb->rrcMsg)
+   {
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, f1UeDb->rrcMsg, f1UeDb->rrcMsgLen);
+   }
+   
+   freeDuUeCfg(&f1UeDb->duUeCfg);
+   memset(f1UeDb, 0, sizeof(UeContextSetupDb));
+
+}
+
+/*******************************************************************
+ *
+ * @brief Function to build Am cfg Info
+ *
+ * @details
+ *
+ *    Function : extractRlcAmCfg
+ *
+ *    Functionality: Function to build Am cfg Info
+ *
+ * @params[in] AmBearerCfg *
+ *             void *
+ *
+ * @return ROK/RFAILED
+ *
+ * ****************************************************************/
+
+void extractRlcAmCfg(AmBearerCfg *amCfgToSet, struct RLC_Config__am *rlcAmCfg)
+{
+   if(rlcAmCfg)
+   {
+      /* UL AM */
+      if(rlcAmCfg->dl_AM_RLC.sn_FieldLength)
+      {
+	 amCfgToSet->ulAmCfg.snLenUl = *(rlcAmCfg->dl_AM_RLC.sn_FieldLength);
+	 amCfgToSet->ulAmCfg.reAssemTmr = rlcAmCfg->dl_AM_RLC.t_Reassembly;
+	 amCfgToSet->ulAmCfg.statProhTmr = rlcAmCfg->dl_AM_RLC.t_StatusProhibit;
+      }
+
+      /* DL AM */
+      if(rlcAmCfg->ul_AM_RLC.sn_FieldLength)
+      {
+	 amCfgToSet->dlAmCfg.snLenDl = *(rlcAmCfg->ul_AM_RLC.sn_FieldLength);
+	 amCfgToSet->dlAmCfg.pollRetxTmr = rlcAmCfg->ul_AM_RLC.t_PollRetransmit;
+	 amCfgToSet->dlAmCfg.pollPdu   = rlcAmCfg->ul_AM_RLC.pollPDU;
+	 amCfgToSet->dlAmCfg.pollByte  = rlcAmCfg->ul_AM_RLC.pollByte;
+	 amCfgToSet->dlAmCfg.maxRetxTh = rlcAmCfg->ul_AM_RLC.maxRetxThreshold;
+      }
+
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Function to build Um Bi Info
+ *
+ * @details
+ *
+ *    Function : extractRlcUmBiCfg
+ *
+ *    Functionality: Function to build Um Bi Info
+ *
+ * @params[in] UmBiDirBearerCfg *
+ *             void *
+ *
+ * @return ROK/RFAILED
+ *
+ * ****************************************************************/
+
+void extractRlcUmBiCfg(UmBiDirBearerCfg *umBiCfgToSet, struct RLC_Config__um_Bi_Directional *rlcBiCfg)
+{
+   if(rlcBiCfg)
+   {
+      /* UL UM BI DIR Cfg */
+      if(rlcBiCfg->dl_UM_RLC.sn_FieldLength)
+      {
+	 umBiCfgToSet->ulUmCfg.snLenUlUm  = *(rlcBiCfg->dl_UM_RLC.sn_FieldLength);
+	 umBiCfgToSet->ulUmCfg.reAssemTmr = rlcBiCfg->dl_UM_RLC.t_Reassembly;
+      }
+
+      /* DL UM BI DIR Cfg */
+      if(rlcBiCfg->ul_UM_RLC.sn_FieldLength)
+	 umBiCfgToSet->dlUmCfg.snLenDlUm  = *(rlcBiCfg->ul_UM_RLC.sn_FieldLength);
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Function to build Um Ul Info
+ *
+ * @details
+ *
+ *    Function : extractRlcUmUlCfg
+ *
+ *    Functionality: Function to build Um Ul Info
+ *
+ * @params[in] UmUniDirUlBearerCfg *
+ *             void *
+ *
+ * @return ROK/RFAILED
+ *
+ * ****************************************************************/
+
+void extractRlcUmUlCfg(UmUniDirUlBearerCfg *umUlCfgToSet, struct RLC_Config__um_Uni_Directional_DL *umUlCfg)
+{
+   if(umUlCfg)
+   {
+      if(umUlCfg->dl_UM_RLC.sn_FieldLength)
+      {
+         umUlCfgToSet->ulUmCfg.snLenUlUm  = *(umUlCfg->dl_UM_RLC.sn_FieldLength);
+         umUlCfgToSet->ulUmCfg.reAssemTmr = umUlCfg->dl_UM_RLC.t_Reassembly;
+      }
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Function to build Um Uni Dl Info
+ *
+ * @details
+ *
+ *    Function : extractRlcUmDlCfg
+ *
+ *    Functionality: Function to build Um Uni Dl Info
+ *
+ * @params[in] UmUniDirDlBearerCfg *
+ *             void *
+ *
+ * @return ROK/RFAILED
+ *
+ * ****************************************************************/
+void extractRlcUmDlCfg(UmUniDirDlBearerCfg *umDlCfgToSet, struct RLC_Config__um_Uni_Directional_UL *umDlCfg)
+{
+   if(umDlCfg)
+   {
+      if(umDlCfg->ul_UM_RLC.sn_FieldLength)
+         umDlCfgToSet->dlUmCfg.snLenDlUm  = *(umDlCfg->ul_UM_RLC.sn_FieldLength);
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Function to extractRlcModeCfg
+ *
+ * @details
+ *
+ *    Function : extractRlcModeCfg
+ *
+ *    Functionality: Function to extractRlcModeCfg
+ *
+ * @params[in] RLC_Config_t *
+ *             RlcBearerCfg *
+ *             void  *    
+ * @return ROK/RFAILED
+ *
+ * ****************************************************************/
+void extractRlcModeCfg(uint8_t rlcMode, RlcBearerCfg *rlcDbCfg, RLC_Config_t *lcCfg)
+{
+   if(lcCfg)
+   {
+      switch(rlcMode)
+      {
+         case RLC_AM :
+            {
+               if(lcCfg->choice.am)
+	       {
+                  DU_ALLOC_SHRABL_BUF(rlcDbCfg->u.amCfg, sizeof(AmBearerCfg));
+		  if(rlcDbCfg->u.amCfg)
+		     extractRlcAmCfg(rlcDbCfg->u.amCfg, lcCfg->choice.am);
+	       }
+               break;
+            }
+         case RLC_UM_BI_DIRECTIONAL :
+            {
+               if(lcCfg->choice.um_Bi_Directional)
+	       {
+                  DU_ALLOC_SHRABL_BUF(rlcDbCfg->u.umBiDirCfg, sizeof(UmBiDirBearerCfg));
+	          if(rlcDbCfg->u.umBiDirCfg)
+                     extractRlcUmBiCfg(rlcDbCfg->u.umBiDirCfg, lcCfg->choice.um_Bi_Directional);
+	       }
+               break;
+            }
+         case RLC_UM_UNI_DIRECTIONAL_UL :
+            {
+               if(lcCfg->choice.um_Uni_Directional_DL)
+               {
+                  DU_ALLOC_SHRABL_BUF(rlcDbCfg->u.umUniDirUlCfg, sizeof(UmUniDirUlBearerCfg));
+	          if(rlcDbCfg->u.umUniDirUlCfg)
+                     extractRlcUmUlCfg(rlcDbCfg->u.umUniDirUlCfg, lcCfg->choice.um_Uni_Directional_DL);
+	       }
+               break;
+            }
+         case RLC_UM_UNI_DIRECTIONAL_DL :
+            {
+               if(lcCfg->choice.um_Uni_Directional_UL)
+               {
+                  DU_ALLOC_SHRABL_BUF(rlcDbCfg->u.umUniDirDlCfg, sizeof(UmUniDirDlBearerCfg));
+	          if(rlcDbCfg->u.umUniDirDlCfg)
+                     extractRlcUmDlCfg(rlcDbCfg->u.umUniDirDlCfg, lcCfg->choice.um_Uni_Directional_UL);
+	       }
+               break;
+            }
+         default:
+            DU_LOG("\nDUAPP: Invalid rlcMode %d at extractRlcCfgToAddMod()", rlcMode);
+            break;
+      }
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Function to extract extractUlLcCfg
+ *
+ * @details
+ *
+ *    Function : extractUlLcCfg
+ *
+ *    Functionality: Function to extract extractUlLcCfg
+ *
+ * @params[in] UlLcCfg *f1UlLcCfg, LogicalChannelConfig_t *ulLcCfg
+ * @return void
+ *
+ * ****************************************************************/
+
+void extractUlLcCfg(UlLcCfg *f1UlLcCfg, LogicalChannelConfig_t *ulLcCfg)
+{
+   if(ulLcCfg)
+   {
+      if(ulLcCfg->ul_SpecificParameters)
+      {
+         f1UlLcCfg->priority = \
+            ulLcCfg->ul_SpecificParameters->priority;
+      if(ulLcCfg->ul_SpecificParameters->logicalChannelGroup)
+      {
+         f1UlLcCfg->lcGroup = \
+           *(ulLcCfg->ul_SpecificParameters->logicalChannelGroup);
+      }
+      if(ulLcCfg->ul_SpecificParameters->schedulingRequestID)
+      {
+         f1UlLcCfg->schReqId = \
+           *(ulLcCfg->ul_SpecificParameters->schedulingRequestID);
+      }
+      f1UlLcCfg->pbr = \
+         ulLcCfg->ul_SpecificParameters->prioritisedBitRate;
+      f1UlLcCfg->bsd = \
+         ulLcCfg->ul_SpecificParameters->bucketSizeDuration;
+      }
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Function to procRlcLcCfg
+ *
+ * @details
+ *
+ *    Function : procRlcLcCfg
+ *
+ *    Functionality: Function to procRlcLcCfg
+ *
+ * @params[in] rbId, lcId, rbType, rlcMod
+ *             RLC_Config_t *, RlcBearerCfg * , 
+ * @return void
+ *
+ * ****************************************************************/
+
+void procRlcLcCfg(uint8_t rbId, uint8_t lcId, uint8_t rbType, uint8_t rlcMode,\
+   uint8_t configType, RLC_Config_t *f1RlcCfg, RlcBearerCfg *lcCfg)
+{
+
+   lcCfg->rbId   = rbId;
+   lcCfg->configType = configType;
+
+   if(rbType == RB_TYPE_SRB)
+   {
+      lcCfg->rbType = RB_TYPE_SRB;
+      lcCfg->lcId   = rbId;
+      lcCfg->lcType = LCH_DCCH;
+      lcCfg->rlcMode = RLC_AM;
+   }
+   else if(rbType == RB_TYPE_DRB)
+   {
+      lcCfg->rbType = RB_TYPE_DRB;
+      lcCfg->lcId   = lcId;
+      lcCfg->lcType = LCH_DTCH;
+      lcCfg->rlcMode = rlcMode;
+   }
+   if(f1RlcCfg) /* rlc mode config recived */
+   {
+      extractRlcModeCfg(lcCfg->rlcMode, lcCfg, f1RlcCfg);
+   }
+}
+
+
+
+/*******************************************************************
+ *
+ * @brief Fills DrbQos Info received by CU
+ *
+ * @details
+ *
+ *    Function : extractQosInfo
+ *
+ *    Functionality: Fills DrbQos Info received  by CU
+ *
+ * @params[in] DrbQosInfo *qosToAdd, 
+ *             QoSFlowLevelQoSParameters_t *qosFlowCfg
+ * @return void
+ *
+ * ****************************************************************/
+
+void extractQosInfo(DrbQosInfo *qosToAdd, QoSFlowLevelQoSParameters_t *qosFlowCfg)
+{
+   qosToAdd->fiveQiType = qosFlowCfg->qoS_Characteristics.present;
+   qosToAdd->u.nonDyn5Qi.fiveQi     =\
+         qosFlowCfg->qoS_Characteristics.choice.non_Dynamic_5QI->fiveQI;
+   if(qosFlowCfg->qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow)
+   {
+      qosToAdd->u.nonDyn5Qi.avgWindow = \
+        *(qosFlowCfg->qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow);
+   }
+   qosToAdd->u.nonDyn5Qi.maxDataBurstVol = \
+      *(qosFlowCfg->qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume);
+   if(qosFlowCfg->qoS_Characteristics.choice.non_Dynamic_5QI->qoSPriorityLevel)
+   {
+      qosToAdd->u.nonDyn5Qi.priorLevel = \
+         *(qosFlowCfg->qoS_Characteristics.choice.non_Dynamic_5QI->qoSPriorityLevel);
+   }
+   qosToAdd->ngRanRetPri.priorityLevel = \
+      qosFlowCfg->nGRANallocationRetentionPriority.priorityLevel; 
+   qosToAdd->ngRanRetPri.preEmptionCap = \
+      qosFlowCfg->nGRANallocationRetentionPriority.pre_emptionCapability;
+   qosToAdd->ngRanRetPri.preEmptionVul = \
+      qosFlowCfg->nGRANallocationRetentionPriority.pre_emptionVulnerability;
+   if(qosFlowCfg->gBR_QoS_Flow_Information)
+   {
+      memcpy(&qosToAdd->grbQosInfo.maxFlowBitRateDl, \
+         qosFlowCfg->gBR_QoS_Flow_Information->maxFlowBitRateDownlink.buf, \
+         qosFlowCfg->gBR_QoS_Flow_Information->maxFlowBitRateDownlink.size);
+      memcpy(&qosToAdd->grbQosInfo.maxFlowBitRateUl, \
+         qosFlowCfg->gBR_QoS_Flow_Information->maxFlowBitRateUplink.buf, \
+         qosFlowCfg->gBR_QoS_Flow_Information->maxFlowBitRateUplink.size);
+      memcpy(&qosToAdd->grbQosInfo.guarFlowBitRateDl,\
+         qosFlowCfg->gBR_QoS_Flow_Information->guaranteedFlowBitRateDownlink.buf, \
+         qosFlowCfg->gBR_QoS_Flow_Information->guaranteedFlowBitRateDownlink.size);
+      memcpy(&qosToAdd->grbQosInfo.guarFlowBitRateUl,\
+         qosFlowCfg->gBR_QoS_Flow_Information->guaranteedFlowBitRateUplink.buf, \
+         qosFlowCfg->gBR_QoS_Flow_Information->guaranteedFlowBitRateUplink.size);
+   }
+   qosToAdd->pduSessionId = 0;
+   qosToAdd->ulPduSessAggMaxBitRate = 0;
+}
+
+uint8_t extractDrbCfg(DRBs_ToBeSetup_Item_t *drbItem, LcCfg *macLcToAdd)
+{
+   DRB_Information_t *drbInfo = NULLP;
+
+   if(drbItem->qoSInformation.present == QoSInformation_PR_choice_extension)
+   {
+      if(drbItem->qoSInformation.choice.choice_extension->value.present ==
+	    QoSInformation_ExtIEs__value_PR_DRB_Information)
+      {
+	 drbInfo = &drbItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information;
+
+	 if(!macLcToAdd->drbQos)
+	 {
+	    DU_ALLOC_SHRABL_BUF(macLcToAdd->drbQos, sizeof(DrbQosInfo));
+	    if(macLcToAdd->drbQos == NULLP)
+	    {
+	       DU_LOG("\n DUAPP:Memory failed at allocating DrbQos at extractDrbCfg()");
+	       return RFAILED;
+	    }
+
+	 }
+	 if(drbInfo->dRB_QoS.qoS_Characteristics.present == QoS_Characteristics_PR_non_Dynamic_5QI)
+	 {
+	    extractQosInfo(macLcToAdd->drbQos, &drbInfo->dRB_QoS);
+            macLcToAdd->dlLcCfg.lcp = macLcToAdd->drbQos->ngRanRetPri.priorityLevel;
+	 }
+	 if(!macLcToAdd->snssai)
+	 {
+	    DU_ALLOC_SHRABL_BUF(macLcToAdd->snssai, sizeof(Snssai));
+	    if(macLcToAdd->snssai == NULLP)
+	    {
+	       DU_LOG("\n DUAPP:Memory failed at allocating SNSSAI at extractDrbCfg()");
+	       return RFAILED;
+	    }
+	 }
+	 memcpy(&macLcToAdd->snssai->sst, drbInfo->sNSSAI.sST.buf, \
+	       drbInfo->sNSSAI.sST.size);
+	 if(drbInfo->sNSSAI.sD)
+	 {
+	    memcpy(macLcToAdd->snssai->sd, drbInfo->sNSSAI.sD->buf, \
+		  drbInfo->sNSSAI.sD->size);
+	 }
+      }/*End of DRB Info*/
+   }
+   return ROK;
+}
+
+uint8_t extractMacRbCfg(uint8_t lcId, DRBs_ToBeSetup_Item_t *drbCfg, LogicalChannelConfig_t *ulLcCfg, LcCfg *lcCfg)
+{
+   uint8_t ret = ROK;
+
+   if(drbCfg)
+   {
+      ret = extractDrbCfg(drbCfg, lcCfg);
+      if(ret == RFAILED)
+      {
+         DU_LOG("F1AP: Failed to build Drb Qos at extractMacRbCfg()");
+	 return ret;
+      }
+   }
+   else
+   {
+      lcCfg->drbQos = NULLP;
+      lcCfg->snssai = NULLP;
+      if(lcCfg->lcId == SRB2_LCID)
+         lcCfg->dlLcCfg.lcp = LC_PRIORITY_3;
+      else
+         lcCfg->dlLcCfg.lcp = LC_PRIORITY_1;
+   }
+   if(ulLcCfg)
+   {
+      lcCfg->ulLcCfgPres = true;
+      extractUlLcCfg(&lcCfg->ulLcCfg, ulLcCfg);
+   }
+   else
+      lcCfg->ulLcCfgPres = false;
+   return ret;
+}
+
+uint8_t procMacLcCfg(uint8_t lcId, uint8_t rbType, uint8_t configType,\
+   DRBs_ToBeSetup_Item_t *drbItem, LogicalChannelConfig_t *ulLcCfg, LcCfg *lcCfg)
+{
+   uint8_t ret = ROK;
+
+   lcCfg->lcId = lcId;
+   lcCfg->configType = configType;
+   if(rbType == RB_TYPE_SRB)
+   {
+      ret = extractMacRbCfg(lcId, NULL, ulLcCfg, lcCfg);
+   }
+   else if(rbType == RB_TYPE_DRB)
+   {
+      ret = extractMacRbCfg(lcId, drbItem, ulLcCfg, lcCfg);
+   }
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Function to extract Rlc cfg To Add/Mod in CellGrp Info
+ *
+ * @details
+ *
+ *    Function : extractRlcCfgToAddMod
+ *
+ *    Functionality: Function to extract Rlc cfg To Add/Mod in CellGrp Info
+ *
+ * @params[in] CellGroupConfigRrc__rlc_BearerTo pointer
+ *             DuUeCfg Pointer
+ * @return ROK/RFAILED
+ *
+ * ****************************************************************/
+
+uint8_t extractRlcCfgToAddMod(struct CellGroupConfigRrc__rlc_BearerToAddModList *lcCfg, \
+   DuUeCfg *ueCfgDb)
+{
+  uint8_t ret, idx, rbId, lcId, rlcMode, rbType;
+  RLC_Config_t *f1RlcCfg = NULLP;
+  LogicalChannelConfig_t *macUlLcCfg = NULLP;
+
+  for(idx = 0; idx < lcCfg->list.count; idx++)
+  {
+     lcId = lcCfg->list.array[idx]->logicalChannelIdentity;
+     if(lcCfg->list.array[idx]->servedRadioBearer)
+     {
+        /* RadioBearer for SRB/DRB */
+        if(lcCfg->list.array[idx]->servedRadioBearer->present ==\
+        RLC_BearerConfig__servedRadioBearer_PR_srb_Identity)
+        {
+           rbId = lcCfg->list.array[idx]->servedRadioBearer->choice.srb_Identity;
+           rbType = RB_TYPE_SRB;
+        }
+        else if(lcCfg->list.array[idx]->servedRadioBearer->present ==\
+        RLC_BearerConfig__servedRadioBearer_PR_drb_Identity)
+        {
+           rbId = lcCfg->list.array[idx]->servedRadioBearer->choice.drb_Identity;
+           rbType = RB_TYPE_DRB;
+        }
+        else
+        {
+           DU_LOG("\n No components present in Bearer config to ADD/MOD");
+           return RFAILED;
+        }
+        /* MAC UL LC Config */
+        if(lcCfg->list.array[idx]->mac_LogicalChannelConfig)
+        {
+           macUlLcCfg = lcCfg->list.array[idx]->mac_LogicalChannelConfig;
+        }
+     }
+     else
+     {
+        DU_LOG("\nDUAPP: Received RadioBearer config is NULL");
+        return RFAILED;
+     }
+     /* RLC Mode Config */
+     if(lcCfg->list.array[idx]->rlc_Config)
+     {
+        rlcMode  = lcCfg->list.array[idx]->rlc_Config->present;
+        f1RlcCfg = lcCfg->list.array[idx]->rlc_Config;
+     }
+     
+     /* Filling RLC/MAC Config*/
+     memset(&ueCfgDb->macLcCfg[idx], 0, sizeof(LcCfg));
+     memset(&ueCfgDb->rlcLcCfg[idx], 0, sizeof(RlcBearerCfg));
+     procRlcLcCfg(rbId, lcId, rbType, rlcMode, CONFIG_UNKNOWN, f1RlcCfg, &(ueCfgDb->rlcLcCfg[idx]));
+     ret = procMacLcCfg(lcId, rbType, CONFIG_UNKNOWN, NULL, macUlLcCfg, &ueCfgDb->macLcCfg[idx]);
+     if(ret == RFAILED)
+     {
+        DU_LOG("\nDUAPP: Failed while filling MAC LC config at extractRlcCfgToAddMod()");
+        return ret;
+     }
+     (ueCfgDb->numRlcLcs)++;
+     (ueCfgDb->numMacLcs)++;
+  }
+  //TODO: To send the failure cause in UeContextSetupRsp 
+  return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief DeAlloc pdsch serv cell config info
+ *
+ * @details
+ *
+ *    Function : freeMacPdschServCellInfo
+ *
+ *    Functionality: DeAlloc pdsch serv cell config info
+ *
+ * @params[in] PdschServCellCfg pointer
+ * @return void
+ *
+ * ****************************************************************/
+
+void freeMacPdschServCellInfo(PdschServCellCfg *pdsch)
+{
+   if(pdsch->xOverhead)
+   {
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, pdsch->xOverhead, sizeof(uint8_t));
+   }
+   if(pdsch->codeBlkGrpFlushInd)
+   {
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, pdsch->codeBlkGrpFlushInd, sizeof(bool));
+   }
+   if(pdsch->maxCodeBlkGrpPerTb)
+   {
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, pdsch->maxCodeBlkGrpPerTb, sizeof(uint8_t));
+   }
+   if(pdsch->maxMimoLayers)
+   {
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, pdsch->maxMimoLayers, sizeof(uint8_t));
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Free Serving cell Info
+ *
+ * @details
+ *
+ *    Function : freeMacServingCellInfo
+ *
+ *    Functionality: Free Serving cell Info
+ *
+ * @params[in] ServCellCfgInfo *srvCellCfg
+ * @return void
+ *
+ * ****************************************************************/
+void freeMacServingCellInfo(ServCellCfgInfo *srvCellCfg)
+{
+   freeMacPdschServCellInfo(&srvCellCfg->pdschServCellCfg);
+   if(srvCellCfg->bwpInactivityTmr)
+   {
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, srvCellCfg->bwpInactivityTmr, sizeof(uint8_t));
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Free cell Grp Cfg Info
+ *
+ * @details
+ *
+ *    Function : freeUeReCfgCellGrpInfo
+ *
+ *    Functionality: Free cell Grp Cfg Info
+ *
+ * @params[in] MacUeCfg*  duUeCfg
+ * @return void
+ *
+ * ****************************************************************/
+
+void freeUeReCfgCellGrpInfo(MacUeCfg *macUeCfg)
+{
+   freeMacServingCellInfo(&macUeCfg->spCellCfg.servCellCfg);
+}
+
+/*******************************************************************
+ *
+ * @brief Fills Reconfig SchReqReConfig
+ *
+ * @details
+ *
+ *    Function : extractSchReqReConfig
+ *
+ *    Functionality: Fills Reconfig SchReqReConfig
+ *
+ * @params[in] SchedulingRequestConfig_t *cuSchedReq
+ *             SchedReqCfg*  macSchedReq
+ * @return void
+ *
+ * ****************************************************************/
+void extractSchReqReConfig(SchedulingRequestConfig_t *cuSchedReq, SchedReqCfg *macSchedReq)
+{
+   uint8_t schReqIdx = 0;
+   struct SchedulingRequestConfig__schedulingRequestToAddModList *schReqListToAdd = NULLP;
+   struct SchedulingRequestConfig__schedulingRequestToReleaseList *schReqListToRel = NULLP;
+
+   if(cuSchedReq->schedulingRequestToAddModList)
+   {
+      schReqListToAdd = cuSchedReq->schedulingRequestToAddModList;
+      if(schReqListToAdd->list.count)
+      {
+	 macSchedReq->addModListCount = schReqListToAdd->list.count;
+	 for(schReqIdx = 0; schReqIdx < schReqListToAdd->list.count; schReqIdx++)
+	 {
+	    macSchedReq->addModList[schReqIdx].schedReqId = \
+	       schReqListToAdd->list.array[schReqIdx]->schedulingRequestId;
+	    macSchedReq->addModList[schReqIdx].srProhibitTmr = \
+	       *(schReqListToAdd->list.array[schReqIdx]->sr_ProhibitTimer);
+	    macSchedReq->addModList[schReqIdx].srTransMax    =\
+	       schReqListToAdd->list.array[schReqIdx]->sr_TransMax;
+	 }
+      }
+   }
+   /* Scheduling Req To release */
+   if(cuSchedReq->schedulingRequestToReleaseList)
+   {
+      schReqListToRel = cuSchedReq->schedulingRequestToReleaseList;
+      if(schReqListToRel->list.count)
+      {
+	 macSchedReq->relListCount = schReqListToRel->list.count;
+	 for(schReqIdx = 0; schReqIdx < schReqListToRel->list.count; schReqIdx++)
+	 {
+	    macSchedReq->relList[schReqIdx] = \
+	       *schReqListToRel->list.array[schReqIdx];
+	 }
+      }
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Fills TagReconfig
+ *
+ * @details
+ *
+ *    Function : extractTagReconfig
+ *
+ *    Functionality: Fills extractTagReconfig
+ *
+ * @params[in] TAG_Config_t *cuTagCfg
+ *             TagCfg *macTagCfg
+ * @return void
+ *
+ * ****************************************************************/
+
+void extractTagReconfig(TAG_Config_t *cuTagCfg, TagCfg *macTagCfg)
+{
+  uint8_t tagIdx = 0;
+  struct TAG_Config__tag_ToAddModList  *tagListToAddMod = NULLP;
+  struct TAG_Config__tag_ToReleaseList *tagListToRel = NULLP;
+
+  /* Tag config to AddMod */
+  if(cuTagCfg->tag_ToAddModList)
+  {
+     tagListToAddMod = cuTagCfg->tag_ToAddModList; 
+     if(tagListToAddMod->list.count)
+     {
+        macTagCfg->addModListCount = tagListToAddMod->list.count;
+        for(tagIdx = 0; tagIdx < tagListToAddMod->list.count; tagIdx++)
+	{
+           macTagCfg->addModList[tagIdx].tagId =\
+              tagListToAddMod->list.array[tagIdx]->tag_Id;     
+           macTagCfg->addModList[tagIdx].timeAlignTimer = \
+
+              tagListToAddMod->list.array[tagIdx]->timeAlignmentTimer;
+	}
+     }
+  }
+  /* Tag config to release */
+  if(cuTagCfg->tag_ToReleaseList)
+  {
+     tagListToRel = cuTagCfg->tag_ToReleaseList;
+     if(tagListToRel->list.count)
+     {
+        macTagCfg->relListCount = tagListToRel->list.count;
+        for(tagIdx = 0; tagIdx < tagListToRel->list.count; tagIdx++)
+	{
+           macTagCfg->relList[tagIdx] = *tagListToRel->list.array[tagIdx];     
+	}
+     }
+  }
+}
+
+/*******************************************************************
+ *
+ * @brief Fills PdcchCfg received by CU
+ *
+ * @details
+ *
+ *    Function : extractPdcchCfg
+ *
+ *    Functionality: Fills PdcchCfg received  by CU
+ *
+ * @params[in] PDCCH_Config_t *cuPdcchCfg,
+ *             PdcchConfig *duPdcchCfg
+ * @return void
+ *
+ * ****************************************************************/
+
+void extractPdcchCfg(PDCCH_Config_t *cuPdcchCfg, PdcchConfig *macPdcchCfg)
+{
+   uint8_t cRsetIdx = 0;
+   uint8_t srchSpcIdx = 0;
+
+   struct PDCCH_Config__controlResourceSetToAddModList *cRsetToAddModList = NULLP;
+   struct PDCCH_Config__controlResourceSetToReleaseList *cRsetToRelList = NULLP;
+   struct PDCCH_Config__searchSpacesToAddModList *srchSpcToAddModList = NULLP;
+   struct PDCCH_Config__searchSpacesToReleaseList *srchSpcToRelList = NULLP;
+
+
+   /* Control Resource Set To Add/Mod List */
+   if(cuPdcchCfg->controlResourceSetToAddModList)
+   {
+      cRsetToAddModList = cuPdcchCfg->controlResourceSetToAddModList;
+      if(cRsetToAddModList->list.count)
+      {
+         macPdcchCfg->numCRsetToAddMod = cRsetToAddModList->list.count;
+	 for(cRsetIdx = 0; cRsetIdx < cRsetToAddModList->list.count; cRsetIdx++)
+	 {
+	    macPdcchCfg->cRSetToAddModList[cRsetIdx].cRSetId = \
+	      cRsetToAddModList->list.array[cRsetIdx]->controlResourceSetId;
+	    bitStringToInt(&cRsetToAddModList->list.array[cRsetIdx]->frequencyDomainResources,\
+	       macPdcchCfg->cRSetToAddModList[cRsetIdx].freqDomainRsrc);
+            macPdcchCfg->cRSetToAddModList[cRsetIdx].duration = \
+	      cRsetToAddModList->list.array[cRsetIdx]->duration;
+
+	    macPdcchCfg->cRSetToAddModList[cRsetIdx].cceRegMappingType = \
+	      cRsetToAddModList->list.array[cRsetIdx]->cce_REG_MappingType.present;   
+            if(macPdcchCfg->cRSetToAddModList[cRsetIdx].cceRegMappingType == CCE_REG_MAPPINGTYPE_PR_INTERLEAVED)
+	    {
+	       //TODO: handle the case for Interleaved
+            }
+            macPdcchCfg->cRSetToAddModList[cRsetIdx].precoderGranularity = \
+	      cRsetToAddModList->list.array[cRsetIdx]->precoderGranularity;
+	    if(cRsetToAddModList->list.array[cRsetIdx]->pdcch_DMRS_ScramblingID)
+	    {
+	       macPdcchCfg->cRSetToAddModList[cRsetIdx].dmrsScramblingId= \
+	          *(cRsetToAddModList->list.array[cRsetIdx]->pdcch_DMRS_ScramblingID);
+	    }
+         }
+      }
+
+   }
+   /* Control Resource Set To Release List */
+   if(cuPdcchCfg->controlResourceSetToReleaseList)
+   {
+      cRsetToRelList = cuPdcchCfg->controlResourceSetToReleaseList;
+      if(cRsetToRelList->list.count)
+      {
+         macPdcchCfg->numCRsetToRel = cRsetToRelList->list.count;
+	 for(cRsetIdx = 0; cRsetIdx < cRsetToRelList->list.count; cRsetIdx++)
+	 {
+            macPdcchCfg->cRSetToRelList[cRsetIdx] = *(cRsetToRelList->list.array[cRsetIdx]);
+	 }
+      }
+   }
+
+   /* Search space To Add/Mod List */
+   if(cuPdcchCfg->searchSpacesToAddModList)
+   {
+      srchSpcToAddModList = cuPdcchCfg->searchSpacesToAddModList;
+      if(srchSpcToAddModList->list.count)
+      {
+         macPdcchCfg->numSearchSpcToAddMod = srchSpcToAddModList->list.count;
+	 for(srchSpcIdx = 0; srchSpcIdx < srchSpcToAddModList->list.count; srchSpcIdx++)
+	 {
+            macPdcchCfg->searchSpcToAddModList[srchSpcIdx].searchSpaceId =\
+	       srchSpcToAddModList->list.array[srchSpcIdx]->searchSpaceId;
+            macPdcchCfg->searchSpcToAddModList[srchSpcIdx].cRSetId =\
+	       *(srchSpcToAddModList->list.array[srchSpcIdx]->controlResourceSetId);
+	    if(srchSpcToAddModList->list.array[srchSpcIdx]->monitoringSlotPeriodicityAndOffset)
+	    {
+               macPdcchCfg->searchSpcToAddModList[srchSpcIdx].mSlotPeriodicityAndOffset =\
+	          srchSpcToAddModList->list.array[srchSpcIdx]->monitoringSlotPeriodicityAndOffset->present;
+            }
+            if(srchSpcToAddModList->list.array[srchSpcIdx]->monitoringSymbolsWithinSlot)
+            {
+	       bitStringToInt(srchSpcToAddModList->list.array[srchSpcIdx]->monitoringSymbolsWithinSlot,\
+	          macPdcchCfg->searchSpcToAddModList[srchSpcIdx].mSymbolsWithinSlot);
+            }
+	    if(srchSpcToAddModList->list.array[srchSpcIdx]->nrofCandidates)
+            {
+	      macPdcchCfg->searchSpcToAddModList[srchSpcIdx].numCandidatesAggLevel1 = \
+	          srchSpcToAddModList->list.array[srchSpcIdx]->nrofCandidates->aggregationLevel1;
+              macPdcchCfg->searchSpcToAddModList[srchSpcIdx].numCandidatesAggLevel2 = \
+	          srchSpcToAddModList->list.array[srchSpcIdx]->nrofCandidates->aggregationLevel2;
+              macPdcchCfg->searchSpcToAddModList[srchSpcIdx].numCandidatesAggLevel4 = \
+              	  srchSpcToAddModList->list.array[srchSpcIdx]->nrofCandidates->aggregationLevel4;
+              
+              macPdcchCfg->searchSpcToAddModList[srchSpcIdx].numCandidatesAggLevel8 = \
+              	  srchSpcToAddModList->list.array[srchSpcIdx]->nrofCandidates->aggregationLevel8;
+              
+              macPdcchCfg->searchSpcToAddModList[srchSpcIdx].numCandidatesAggLevel16 = \
+	          srchSpcToAddModList->list.array[srchSpcIdx]->nrofCandidates->aggregationLevel16;
+	    }
+            if(srchSpcToAddModList->list.array[srchSpcIdx]->searchSpaceType)
+	    {
+	       macPdcchCfg->searchSpcToAddModList[srchSpcIdx].searchSpaceType =\
+	          srchSpcToAddModList->list.array[srchSpcIdx]->searchSpaceType->present;
+	       if(macPdcchCfg->searchSpcToAddModList[srchSpcIdx].searchSpaceType == SEARCHSPACETYPE_PR_UE_SPECIFIC)
+	       {
+		  macPdcchCfg->searchSpcToAddModList[srchSpcIdx].ueSpecificDciFormat =\
+		     srchSpcToAddModList->list.array[srchSpcIdx]->searchSpaceType->choice.ue_Specific->dci_Formats;
+	       }
+         
+	    }
+	 }
+      }
+   }
+   /* Search space To Rel List */
+   if(cuPdcchCfg->searchSpacesToReleaseList)
+   {
+      srchSpcToRelList = cuPdcchCfg->searchSpacesToReleaseList;
+      if(srchSpcToRelList->list.count)
+      {
+         macPdcchCfg->numSearchSpcToRel = srchSpcToRelList->list.count;
+	 for(srchSpcIdx = 0; srchSpcIdx < srchSpcToRelList->list.count; srchSpcIdx++)
+	 {
+            macPdcchCfg->searchSpcToRelList[srchSpcIdx] =\
+	       *(srchSpcToRelList->list.array[srchSpcIdx]);
+	 }
+      }
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Fills PdschCfg received by CU
+ *
+ * @details
+ *
+ *    Function : extractPdschCfg
+ *
+ *    Functionality: Fills PdschCfg received  by CU
+ *
+ * @params[in] PDSCH_Config_t *cuPdschCfg,
+ *             PdschConfig *macPdschCfg
+ * @return void
+ *
+ * ****************************************************************/
+
+void extractPdschCfg(PDSCH_Config_t *cuPdschCfg, PdschConfig *macPdschCfg)
+{
+   uint8_t timeDomIdx;
+   struct PDSCH_Config__pdsch_TimeDomainAllocationList *timeDomAlloc = NULLP;
+
+   if(cuPdschCfg->dmrs_DownlinkForPDSCH_MappingTypeA)
+   {
+      if(cuPdschCfg->dmrs_DownlinkForPDSCH_MappingTypeA->present == \
+         PDSCH_Config__dmrs_DownlinkForPDSCH_MappingTypeA_PR_setup)
+      {
+         if(cuPdschCfg->dmrs_DownlinkForPDSCH_MappingTypeA->choice.setup)
+	 {
+            macPdschCfg->dmrsDlCfgForPdschMapTypeA.addPos = \
+	       *(cuPdschCfg->dmrs_DownlinkForPDSCH_MappingTypeA->choice.setup->dmrs_AdditionalPosition);
+	 }
+      }
+   }
+   macPdschCfg->resourceAllocType = cuPdschCfg->resourceAllocation;
+   if(cuPdschCfg->pdsch_TimeDomainAllocationList)
+   {
+      timeDomAlloc = cuPdschCfg->pdsch_TimeDomainAllocationList;
+      if(timeDomAlloc->present ==\
+         PDSCH_Config__pdsch_TimeDomainAllocationList_PR_setup)
+      {
+         if(timeDomAlloc->choice.setup)
+	 {
+	    macPdschCfg->numTimeDomRsrcAlloc  = timeDomAlloc->choice.setup->list.count;
+            for(timeDomIdx = 0; timeDomIdx < timeDomAlloc->choice.setup->list.count; timeDomIdx++)
+            {
+	       macPdschCfg->timeDomRsrcAllociList[timeDomIdx].mappingType = \
+	          timeDomAlloc->choice.setup->list.array[timeDomIdx]->mappingType;
+	       //macPdschCfg->timeDomRsrcAllociList[timeDomIdx].startSymbol = \
+	          
+	       //macPdschCfg->timeDomRsrcAllociList[timeDomIdx].symbolLength;
+	       macPdschCfg->timeDomRsrcAllociList[timeDomIdx].startSymbolAndLength = \
+	          timeDomAlloc->choice.setup->list.array[timeDomIdx]->startSymbolAndLength;
+	    }
+	 }
+      }
+   }
+   macPdschCfg->rbgSize = cuPdschCfg->rbg_Size; 
+   if(cuPdschCfg->maxNrofCodeWordsScheduledByDCI)
+      macPdschCfg->numCodeWordsSchByDci = *(cuPdschCfg->maxNrofCodeWordsScheduledByDCI);
+   if(cuPdschCfg->prb_BundlingType.present == PDSCH_Config__prb_BundlingType_PR_staticBundling)
+   {
+      macPdschCfg->bundlingType = cuPdschCfg->prb_BundlingType.present;
+      if(cuPdschCfg->prb_BundlingType.choice.staticBundling)
+      {
+         if(cuPdschCfg->prb_BundlingType.choice.staticBundling->bundleSize)
+	 {
+            macPdschCfg->bundlingInfo.StaticBundling.size = \
+	       *(cuPdschCfg->prb_BundlingType.choice.staticBundling->bundleSize);
+	 }
+      }
+   }
+   else if(cuPdschCfg->prb_BundlingType.present == PDSCH_Config__prb_BundlingType_PR_dynamicBundling)
+   {
+      macPdschCfg->bundlingType = cuPdschCfg->prb_BundlingType.present;
+   }
+
+}
+
+/*******************************************************************
+ *
+ * @brief Fills PdschServingCellCfg received by CU
+ *
+ * @details
+ *
+ *    Function : extractPdschServingCellCfg
+ *
+ *    Functionality: Fills PdschCfg received  by CU
+ *
+ * @params[in] PDSCH_ServingCellConfig_t *cuPdschSrvCellCfg,
+ *             PdschServCellCfg *macUePdschSrvCellCfg
+ * @return ROK/RFAILED
+ *
+ * ****************************************************************/
+
+uint8_t extractPdschServingCellCfg(PDSCH_ServingCellConfig_t *cuPdschSrvCellCfg, PdschServCellCfg *macUePdschSrvCellCfg)
+{
+   if(cuPdschSrvCellCfg->codeBlockGroupTransmission)
+   {
+      if(cuPdschSrvCellCfg->codeBlockGroupTransmission->choice.setup)
+      {
+         if(macUePdschSrvCellCfg->maxCodeBlkGrpPerTb)
+         {
+            *(macUePdschSrvCellCfg->maxCodeBlkGrpPerTb)  = \
+	       cuPdschSrvCellCfg->codeBlockGroupTransmission->choice.setup->maxCodeBlockGroupsPerTransportBlock;
+	 }
+	 else
+	 {
+            DU_ALLOC_SHRABL_BUF(macUePdschSrvCellCfg->maxCodeBlkGrpPerTb, sizeof(uint8_t));
+            if(macUePdschSrvCellCfg->maxCodeBlkGrpPerTb)
+	    {
+               *(macUePdschSrvCellCfg->maxCodeBlkGrpPerTb)  = \
+	          cuPdschSrvCellCfg->codeBlockGroupTransmission->choice.setup->maxCodeBlockGroupsPerTransportBlock;
+	    }
+	    else
+	    {
+	       DU_LOG("\nDUAPP: Memory allocation failed for maxCodeBlkGrpPerTb at extractPdschServingCellCfg()");
+	       return RFAILED;
+	    }
+	 }
+         if(macUePdschSrvCellCfg->codeBlkGrpFlushInd)
+         {
+            *(macUePdschSrvCellCfg->codeBlkGrpFlushInd)  = \
+	       cuPdschSrvCellCfg->codeBlockGroupTransmission->choice.setup->codeBlockGroupFlushIndicator;
+	 }
+	 else
+	 {
+            DU_ALLOC_SHRABL_BUF(macUePdschSrvCellCfg->maxCodeBlkGrpPerTb, sizeof(bool));
+            if(macUePdschSrvCellCfg->codeBlkGrpFlushInd)
+	    {
+               *(macUePdschSrvCellCfg->codeBlkGrpFlushInd)  = \
+	          cuPdschSrvCellCfg->codeBlockGroupTransmission->choice.setup->codeBlockGroupFlushIndicator;
+	    }
+	    else
+	    {
+	       DU_LOG("\nDUAPP: Memory allocation failed for codeBlkGrpFlushInd at extractPdschServingCellCfg()");
+	       return RFAILED;
+	    }
+	 }
+      }
+   }
+   if(cuPdschSrvCellCfg->nrofHARQ_ProcessesForPDSCH)
+   {
+      macUePdschSrvCellCfg->numHarqProcForPdsch = *(cuPdschSrvCellCfg->nrofHARQ_ProcessesForPDSCH); 
+   }
+   if(cuPdschSrvCellCfg->ext1)
+   {
+      if(cuPdschSrvCellCfg->ext1->maxMIMO_Layers)
+      {
+        if(macUePdschSrvCellCfg->maxMimoLayers)
+	{
+           *(macUePdschSrvCellCfg->maxMimoLayers)  = *(cuPdschSrvCellCfg->ext1->maxMIMO_Layers);
+	}
+	else
+	{
+           DU_ALLOC_SHRABL_BUF(macUePdschSrvCellCfg->maxMimoLayers, sizeof(uint8_t));
+           if(macUePdschSrvCellCfg->maxMimoLayers)
+	   {
+              *(macUePdschSrvCellCfg->maxMimoLayers)  = *(cuPdschSrvCellCfg->ext1->maxMIMO_Layers);
+	   }
+	   else
+	   {
+	      DU_LOG("\nDUAPP: Memory allocation failed for maxMimoLayers at extractPdschServingCellCfg()");
+	      return RFAILED;
+	   }
+	}
+      }
+   }
+   if(cuPdschSrvCellCfg->xOverhead)
+   {
+      if(macUePdschSrvCellCfg->xOverhead)
+      {
+         *(macUePdschSrvCellCfg->xOverhead)  = *(cuPdschSrvCellCfg->xOverhead);
+      }
+      else
+      {
+         DU_ALLOC_SHRABL_BUF(macUePdschSrvCellCfg->xOverhead, sizeof(uint8_t));
+         if(macUePdschSrvCellCfg->xOverhead)
+         {
+            *(macUePdschSrvCellCfg->xOverhead)  = *(cuPdschSrvCellCfg->xOverhead);
+         }
+         else
+         {
+            DU_LOG("\nDUAPP: Memory allocation failed for xOverhead at extractPdschServingCellCfg()");
+	    return RFAILED;
+         }
+      }
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fills PuschCfg received by CU
+ *
+ * @details
+ *
+ *    Function : extractPuschCfg
+ *
+ *    Functionality: Fills PuschCfg received  by CU
+ *
+ * @params[in] BWP_UplinkDedicated__pusch_Config *cuPuschCfg,
+ *             PuschCfg *macPuschCfg
+ * @return void
+ *
+ * ****************************************************************/
+
+void extractPuschCfg(struct BWP_UplinkDedicated__pusch_Config *cuPuschCfg, PuschCfg *macPuschCfg)
+{
+   uint8_t timeDomIdx = 0;
+   DMRS_UplinkConfig_t *dmrsUlCfg = NULLP;
+   struct PUSCH_Config__pusch_TimeDomainAllocationList *timeDomAllocList = NULLP;
+
+   if(cuPuschCfg->present == BWP_UplinkDedicated__pusch_Config_PR_setup)
+   {
+      if(cuPuschCfg->choice.setup)
+      {
+         if(cuPuschCfg->choice.setup->dataScramblingIdentityPUSCH)
+	 {
+             macPuschCfg->dataScramblingId = \
+	        *(cuPuschCfg->choice.setup->dataScramblingIdentityPUSCH);
+	 }
+	 if(cuPuschCfg->choice.setup->dmrs_UplinkForPUSCH_MappingTypeA)
+	 {
+	    if(cuPuschCfg->choice.setup->dmrs_UplinkForPUSCH_MappingTypeA->present == PUSCH_Config__dmrs_UplinkForPUSCH_MappingTypeA_PR_setup)
+	    {
+	       if(cuPuschCfg->choice.setup->dmrs_UplinkForPUSCH_MappingTypeA->choice.setup)
+	       {
+	          dmrsUlCfg = (cuPuschCfg->choice.setup->dmrs_UplinkForPUSCH_MappingTypeA->choice.setup);
+	          if(dmrsUlCfg->dmrs_AdditionalPosition)
+	          {
+                     macPuschCfg->dmrsUlCfgForPuschMapTypeA.addPos =\
+	                *(dmrsUlCfg->dmrs_AdditionalPosition);
+	          }
+                  if(dmrsUlCfg->transformPrecodingDisabled)
+	          {
+	             if(dmrsUlCfg->transformPrecodingDisabled->scramblingID0)
+	             {
+	                macPuschCfg->dmrsUlCfgForPuschMapTypeA.transPrecodDisabled.scramblingId0 = \
+	                   *(dmrsUlCfg->transformPrecodingDisabled->scramblingID0);
+                     }
+	          }
+	       }
+	    }
+	 }
+	 /*Res Alloc Type for UL */
+	 if(cuPuschCfg->choice.setup->resourceAllocation)
+	 {
+            macPuschCfg->resourceAllocType = \
+	       cuPuschCfg->choice.setup->resourceAllocation;
+	 }
+	 if(cuPuschCfg->choice.setup->pusch_TimeDomainAllocationList)
+	 {
+	    timeDomAllocList = cuPuschCfg->choice.setup->pusch_TimeDomainAllocationList;
+	    if(timeDomAllocList->present == PUSCH_Config__pusch_TimeDomainAllocationList_PR_setup)
+	    {
+               if(timeDomAllocList->choice.setup)
+	       {
+	          macPuschCfg->numTimeDomRsrcAlloc = timeDomAllocList->choice.setup->list.count;
+	          for(timeDomIdx = 0; timeDomIdx <timeDomAllocList->choice.setup->list.count; timeDomIdx++)
+		  {
+		     macPuschCfg->timeDomRsrcAllocList[timeDomIdx].k2 = \
+		        *(timeDomAllocList->choice.setup->list.array[timeDomIdx]->k2);
+                     macPuschCfg->timeDomRsrcAllocList[timeDomIdx].mappingType = \
+                     		        timeDomAllocList->choice.setup->list.array[timeDomIdx]->mappingType;
+                     macPuschCfg->timeDomRsrcAllocList[timeDomIdx].startSymbolAndLength = \
+		        timeDomAllocList->choice.setup->list.array[timeDomIdx]->startSymbolAndLength;
+                    //macPuschCfg->timeDomRsrcAllocList[timeDomIdx].startSymbol = \
+		        timeDomAllocList->choice.setup->list.array[timeDomIdx]->startSymbol;
+                    //macPuschCfg->timeDomRsrcAllocList[timeDomIdx].symbolLen = \
+		        timeDomAllocList->choice.setup->list.array[timeDomIdx]->symbolLen;
+                  }
+	       }
+	    }
+	 }
+	 if(cuPuschCfg->choice.setup->transformPrecoder)
+            macPuschCfg->transformPrecoder = *(cuPuschCfg->choice.setup->transformPrecoder);
+      }
+   }
+}
+/*******************************************************************
+ *
+ * @brief Fills ServingCellReconfig received by CU
+ *
+ * @details
+ *
+ *    Function : extractServingCellReconfig
+ *
+ *    Functionality: Fills ServingCellReconfig received  by CU
+ *
+ * @params[in] ServingCellConfig_t *cuSrvCellCfg
+ *             ServCellCfgInfo *macSrvCellCfg
+ * @return ROK/RFAILD
+ *
+ * ****************************************************************/
+uint8_t extractServingCellReconfig(ServingCellConfig_t *cuSrvCellCfg, ServCellCfgInfo *macSrvCellCfg)
+{
+   uint8_t ret = ROK;
+   BWP_DownlinkDedicated_t *dlBwp = NULLP;
+   BWP_UplinkDedicated_t   *ulBwp = NULLP;
+
+   if(cuSrvCellCfg->initialDownlinkBWP)
+   {
+      dlBwp = ((BWP_DownlinkDedicated_t *)(cuSrvCellCfg->initialDownlinkBWP));
+      if(dlBwp->pdcch_Config)
+      {
+         if(dlBwp->pdcch_Config->choice.setup)
+	 {
+	    extractPdcchCfg(dlBwp->pdcch_Config->choice.setup, &macSrvCellCfg->initDlBwp.pdcchCfg);
+	 }
+      }
+      if(dlBwp->pdsch_Config)
+      {
+         if(dlBwp->pdsch_Config->choice.setup)
+	 {
+	    extractPdschCfg(dlBwp->pdsch_Config->choice.setup, &macSrvCellCfg->initDlBwp.pdschCfg);
+	 }
+      }
+   }
+   if(cuSrvCellCfg->firstActiveDownlinkBWP_Id)
+      macSrvCellCfg->firstActvDlBwpId = *(cuSrvCellCfg->firstActiveDownlinkBWP_Id);
+   if(cuSrvCellCfg->defaultDownlinkBWP_Id)
+      macSrvCellCfg->defaultDlBwpId = *(cuSrvCellCfg->defaultDownlinkBWP_Id);
+   if(cuSrvCellCfg->bwp_InactivityTimer)
+   {
+      if(macSrvCellCfg->bwpInactivityTmr)
+      {
+         memcpy(macSrvCellCfg->bwpInactivityTmr, cuSrvCellCfg->bwp_InactivityTimer, sizeof(uint8_t));
+      }
+      else
+      {
+         macSrvCellCfg->bwpInactivityTmr = NULLP;
+         DU_ALLOC_SHRABL_BUF(macSrvCellCfg->bwpInactivityTmr, sizeof(uint8_t));
+	 if(macSrvCellCfg->bwpInactivityTmr)
+	 {
+            memcpy(macSrvCellCfg->bwpInactivityTmr, cuSrvCellCfg->bwp_InactivityTimer, sizeof(uint8_t));
+	 }
+	 else
+	 {
+	    DU_LOG("\nMemory Alloc failed for bwpInactivityTmr at extractServingCellReconfig()");
+	    return RFAILED;
+	 }
+      }
+   }
+   if(cuSrvCellCfg->pdsch_ServingCellConfig)
+   {
+      if(cuSrvCellCfg->pdsch_ServingCellConfig->choice.setup)
+      {
+         ret = extractPdschServingCellCfg(cuSrvCellCfg->pdsch_ServingCellConfig->choice.setup, &macSrvCellCfg->pdschServCellCfg);
+         if(ret == RFAILED)
+	 {
+	    DU_LOG("\nFailed at extractPdschServingCellCfg()");
+	    return RFAILED;
+	 }
+      }
+   }
+   if(cuSrvCellCfg->uplinkConfig)
+   {
+     if(cuSrvCellCfg->uplinkConfig->initialUplinkBWP)
+     {
+        ulBwp = ((BWP_UplinkDedicated_t *)(cuSrvCellCfg->uplinkConfig->initialUplinkBWP));
+	if(ulBwp->pusch_Config)
+	{
+	   macSrvCellCfg->initUlBwp.puschPresent = true;
+           extractPuschCfg(ulBwp->pusch_Config, &macSrvCellCfg->initUlBwp.puschCfg);
+	}
+	if(ulBwp->pucch_Config)
+	{
+	   macSrvCellCfg->initUlBwp.pucchPresent = true;
+           //extractPucchCfg(ulBwp->pucch_Config, &macSrvCellCfg->initUlBwp.pucchCfg); 
+	}
+     }
+     if(cuSrvCellCfg->uplinkConfig->firstActiveUplinkBWP_Id)
+        macSrvCellCfg->firstActvUlBwpId = *(cuSrvCellCfg->uplinkConfig->firstActiveUplinkBWP_Id);
+
+   }
+   return ret;
+}
+/*******************************************************************
+ *
+ * @brief Fills Reconfig Cell group Info received by CU
+ *
+ * @details
+ *
+ *    Function : extractUeReCfgCellInfo
+ *
+ *    Functionality: Fills Reconfig Cell group Info received by CU
+ *
+ * @params[in] CellGroupConfigRrc_t *macCellGrpCfg
+ *             MacUeCfg*  macUeCfg
+ * @return ROK/RFAILED
+ *
+ * ****************************************************************/
+uint8_t extractUeReCfgCellInfo(CellGroupConfigRrc_t *cellGrp, MacUeCfg *macUeCfg)
+{
+   uint8_t ret = ROK;
+   MAC_CellGroupConfig_t     *macCellGroup = NULLP;
+   PhysicalCellGroupConfig_t *phyCellGrpCfg = NULLP;
+   SpCellConfig_t            *spcellCfg = NULLP;
+   ServingCellConfig_t       *servCellCfg = NULLP;
+
+   if(cellGrp)
+   {
+      /* Fill MacCell Group Reconfig  */
+      if(cellGrp->mac_CellGroupConfig)
+      {
+         macCellGroup = ((MAC_CellGroupConfig_t *)(cellGrp->mac_CellGroupConfig));
+         if(macCellGroup->schedulingRequestConfig)
+	 {
+            extractSchReqReConfig(macCellGroup->schedulingRequestConfig, &macUeCfg->macCellGrpCfg.schReqCfg);
+	 }
+         if(macCellGroup->tag_Config)
+	 {
+            extractTagReconfig(macCellGroup->tag_Config, &macUeCfg->macCellGrpCfg.tagCfg);
+	 }
+      }
+      /* Fill Physical Cell Group Reconfig */
+      if(cellGrp->physicalCellGroupConfig)
+      {
+         phyCellGrpCfg = ((PhysicalCellGroupConfig_t *)(cellGrp->physicalCellGroupConfig));
+         if(phyCellGrpCfg->p_NR_FR1)
+	 {
+	    if(*(phyCellGrpCfg->p_NR_FR1) != macUeCfg->phyCellGrpCfg.pNrFr1)
+               macUeCfg->phyCellGrpCfg.pNrFr1 = *(phyCellGrpCfg->p_NR_FR1);
+	 }
+         macUeCfg->phyCellGrpCfg.pdschHarqAckCodebook = phyCellGrpCfg->pdsch_HARQ_ACK_Codebook;
+      }
+      /* Fill SpCell Reconfig */
+      if(cellGrp->spCellConfig)
+      {
+         spcellCfg = ((SpCellConfig_t *)(cellGrp->spCellConfig));  
+         if(spcellCfg->servCellIndex)
+	 {
+            macUeCfg->spCellCfg.servCellIdx = *(spcellCfg->servCellIndex);
+	 }
+         /* Fill Serving cell Reconfig info */
+	 if(cellGrp->spCellConfig->spCellConfigDedicated)
+	 {
+	    servCellCfg = ((ServingCellConfig_t *)(cellGrp->spCellConfig->spCellConfigDedicated));
+            ret = extractServingCellReconfig(servCellCfg, &macUeCfg->spCellCfg.servCellCfg);
+	    if(ret == RFAILED)
+	    {
+	       DU_LOG("\n Failed at extractServingCellReconfig()");
+	    }
+	 }
+      }
+   }
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief builds Mac Cell Cfg
+ *
+ * @details
+ *
+ *    Function : procUeReCfgCellInfo
+ *
+ *    Functionality: builds Mac Cell Cfg
+ *
+ * @params[in] MacUeCfg pointer
+ *             void pointer
+ *
+ * @return void 
+ *
+ * ****************************************************************/
+uint8_t procUeReCfgCellInfo(MacUeCfg *macUeCfg, void *cellInfo)
+{
+   uint8_t ret = ROK;
+   CellGroupConfigRrc_t *cellGrp = NULLP;
+
+   if(cellInfo)
+   {
+      cellGrp = (CellGroupConfigRrc_t *)cellInfo;
+      ret = extractUeReCfgCellInfo(cellGrp, macUeCfg);
+      if(ret == RFAILED)
+         DU_LOG("\nF1AP: Failed at procUeReCfgCellInfo()");
+   }
+   if(ret == RFAILED)
+   {
+      freeUeReCfgCellGrpInfo(macUeCfg);
+   }
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Function to extract cellGrp Info present in cutoDu cont
+ *
+ * @details
+ *
+ *    Function : extractCellGrpInfo
+ *
+ *    Functionality: Function to extract cellGrp Info present
+ *                   in cutoDu cont
+ *
+ * @params[in] ProtocolExtensionContainer_4624P16_t pointer
+ *
+ * @return CellGroupConfigRrc_t *
+ *
+ * ****************************************************************/
+
+CellGroupConfigRrc_t *extractCellGrpInfo(ProtocolExtensionContainer_4624P16_t *protocolIeExtn,\
+   DuUeCfg *ueCfgDb)
+{
+   uint8_t idx2;
+   uint16_t id;
+   uint16_t recvBufLen;
+   CellGroupConfigRrc_t *cellGrpCfg = NULLP;
+   CUtoDURRCInformation_ExtIEs_t *extIeInfo = NULLP;
+   asn_dec_rval_t rval; /* Decoder return value */
+   memset(&rval, 0, sizeof(asn_dec_rval_t));
+
+   if(protocolIeExtn)
+   {
+      for(idx2 = 0; idx2 < protocolIeExtn->list.count; idx2++)
+      {
+         extIeInfo = ((CUtoDURRCInformation_ExtIEs_t *)(protocolIeExtn->list.array[idx2]));
+	 id = extIeInfo->id;
+         switch(id)
+         {
+            case ProtocolIE_ID_id_CellGroupConfig:
+            {
+	       recvBufLen = extIeInfo->extensionValue.choice.CellGroupConfig.size;
+	       /* decoding the CellGroup Buf received */
+	       DU_ALLOC(cellGrpCfg, sizeof(CellGroupConfigRrc_t));
+	       if(cellGrpCfg)
+	       {
+                  memset(cellGrpCfg, 0, sizeof(CellGroupConfigRrc_t));
+                  rval = aper_decode(0, &asn_DEF_CellGroupConfigRrc, (void **)&cellGrpCfg,
+	             extIeInfo->extensionValue.choice.CellGroupConfig.buf, recvBufLen, 0, 0);
+                  if(rval.code == RC_FAIL || rval.code == RC_WMORE)
+                  {
+                     DU_LOG("\nF1AP : ASN decode failed at decodeCellGrpCfg()");
+                     return NULLP;
+                  }
+                  xer_fprint(stdout, &asn_DEF_CellGroupConfigRrc, cellGrpCfg);
+		  if(extractRlcCfgToAddMod(cellGrpCfg->rlc_BearerToAddModList, ueCfgDb))
+		     return NULLP;
+	       }
+	       break;
+            }
+            default:
+               DU_LOG("\nF1AP : Invalid IE received CUtoDURRCInformation:%d at decodeCellGrpCfg()", id);
+      	       break;
+         }
+      }
+   }
+   return cellGrpCfg;
+}
+
+/*******************************************************************
+ *
+ * @brief Fills Srb List received by CU
+ *
+ * @details
+ *
+ *    Function : procSrbListToSetup
+ *
+ *    Functionality: Fills Srb List received  by CU
+ *
+ * @params[in] SRBs_ToBeSetup_Item_t *cuSrbItem
+ *             LcCfg pointer
+ *             RlcBearerCfg pointer
+ * @return void
+ *
+ * ****************************************************************/
+uint8_t procSrbListToSetup(SRBs_ToBeSetup_Item_t * srbItem, LcCfg *macLcToAdd, RlcBearerCfg *rlcLcToAdd)
+{
+   uint8_t ret = ROK;
+
+   /* Filling RLC INFO */
+   procRlcLcCfg(srbItem->sRBID, srbItem->sRBID, RB_TYPE_SRB, RLC_AM, CONFIG_ADD, NULL, rlcLcToAdd);
+
+   /* Filling MAC INFO */
+   ret = procMacLcCfg(srbItem->sRBID, RB_TYPE_SRB, CONFIG_ADD, NULL, NULL, macLcToAdd);
+   if(ret == RFAILED)
+   { 
+      DU_LOG("\nF1AP:Failed at MAC LC Cfg in procSrbListToSetup()");
+      return ret;
+   }
+   return ret;
+}
+
+
+
+/*******************************************************************
+ *
+ * @brief extract Srb List received by CU
+ *
+ * @details
+ *
+ *    Function : extractSrbListToSetup
+ *
+ *    Functionality: extract Srb List received by CU
+ *                   for both MAC and RLC
+ *
+ * @params[in] SRBs_ToBeSetup_Item_t pointer
+ *             DuUeCfg pointer
+ * @return ROK/RFAIED
+ *
+ * ****************************************************************/
+
+uint8_t extractSrbListToSetup(SRBs_ToBeSetup_List_t *srbCfg, DuUeCfg *ueCfgDb)
+{
+   uint8_t ret, srbIdx;
+   SRBs_ToBeSetup_Item_t *srbItem = NULLP;
+
+   if(srbCfg)
+   {
+      for(srbIdx = 0; srbIdx < srbCfg->list.count; srbIdx++)
+      {
+         srbItem = &srbCfg->list.array[srbIdx]->value.choice.SRBs_ToBeSetup_Item;
+         if(ueCfgDb->numMacLcs > MAX_NUM_LC)
+	 { 
+            DU_LOG("\nF1AP:  MAX LC Reached in MAC");
+	    ret = RFAILED;
+	    break;
+	 }
+         if(ueCfgDb->numRlcLcs > MAX_NUM_LC)
+	 {
+            DU_LOG("\nF1AP:  MAX LC Reached in RLC");
+	    ret = RFAILED;
+	    break;
+	 }
+	 memset(&ueCfgDb->macLcCfg[ueCfgDb->numMacLcs], 0, sizeof(LcCfg));
+	 memset(&ueCfgDb->rlcLcCfg[ueCfgDb->numRlcLcs], 0, sizeof(RlcBearerCfg));
+         ret = procSrbListToSetup(srbItem, &ueCfgDb->macLcCfg[ueCfgDb->numMacLcs],\
+	    &ueCfgDb->rlcLcCfg[ueCfgDb->numRlcLcs]);
+	 ueCfgDb->numRlcLcs++;
+	 ueCfgDb->numMacLcs++;
+	 if(ret == RFAILED)
+	 {
+            DU_LOG("\nF1AP:  Failed at extractSrbListToSetup()");
+	    break;
+	 }
+      }
+   }
+   else
+      ret = RFAILED;
+
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Fills Drb List received by CU
+ *
+ * @details
+ *
+ *    Function : procDrbListToSetup
+ *
+ *    Functionality: Fills Drb List received by CU
+ *                   for both MAC and RLC
+ *
+ * @params[in] SRBs_ToBeSetup_Item_t pointer
+ *             LcCfg pointer,
+ *             RlcBearerCfg pointer
+ * @return void
+ *
+ * ****************************************************************/
+
+uint8_t procDrbListToSetup(uint8_t lcId, DRBs_ToBeSetup_Item_t *drbItem, LcCfg *macLcToAdd, RlcBearerCfg *rlcLcToAdd)
+{
+   uint8_t ret = ROK;
+
+   /* Filling RLC INFO */
+   procRlcLcCfg(drbItem->dRBID, lcId, RB_TYPE_DRB, drbItem->rLCMode, CONFIG_ADD, NULL, rlcLcToAdd);
+
+   /* Filling MAC INFO */
+   ret = procMacLcCfg(lcId, RB_TYPE_DRB, CONFIG_ADD, drbItem, NULL, macLcToAdd);
+   if(ret == RFAILED)
+   { 
+      DU_LOG("\nF1AP:Failed at RLC LC Cfg in extractDrbListToSetup()");
+      return ret;
+   }
+
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief extract Drb List received by CU
+ *
+ * @details
+ *
+ *    Function : extractDrbListToSetup
+ *
+ *    Functionality: extract Drb List received by CU
+ *                   for both MAC and RLC
+ *
+ * @params[in] DRBs_ToBeSetup_Item_t pointer
+ *             DuUeCfg pointer
+ * @return ROK/RFAIED
+ *
+ * ****************************************************************/
+
+uint8_t extractDrbListToSetup(uint8_t lcId, DRBs_ToBeSetup_List_t *drbCfg, DuUeCfg *ueCfgDb)
+{
+   uint8_t ret, drbIdx;
+   DRBs_ToBeSetup_Item_t *drbItem = NULLP;
+
+   ret = ROK;
+   if(drbCfg)
+   {
+      for(drbIdx = 0; drbIdx < drbCfg->list.count; drbIdx++)
+      {
+         drbItem = &drbCfg->list.array[drbIdx]->value.choice.DRBs_ToBeSetup_Item;
+	 if(ueCfgDb->numMacLcs > MAX_NUM_LC)
+	 { 
+            DU_LOG("\nF1AP:  MAX LC Reached in MAC ");
+	    ret = RFAILED;
+	    break;
+	 }
+	 if(ueCfgDb->numRlcLcs > MAX_NUM_LC)
+	 {
+            DU_LOG("\nF1AP:  MAX LC Reached in RLC");
+	    ret = RFAILED;
+	    break;
+	 }
+	 memset(&ueCfgDb->macLcCfg[ueCfgDb->numMacLcs], 0, sizeof(LcCfg));
+	 memset(&ueCfgDb->rlcLcCfg[ueCfgDb->numRlcLcs], 0, sizeof(RlcBearerCfg));
+         ret = procDrbListToSetup(lcId, drbItem, &ueCfgDb->macLcCfg[ueCfgDb->numMacLcs],\
+	    &ueCfgDb->rlcLcCfg[ueCfgDb->numRlcLcs]);
+	 ueCfgDb->numRlcLcs++;
+	 ueCfgDb->numMacLcs++;
+	 if(ret == RFAILED)
+	 {
+            DU_LOG("\nF1AP:  Failed at extractDrbListToSetup()");
+	    break;
+	 }
+      }
+   }
+   else
+      ret = RFAILED;
+
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Process UE context setup request from CU
+ *
+ * @details
+ *
+ *    Function : procF1UeContextSetupReq
+ *
+ *    Functionality: Process UE context setup request from CU
+ *
+ * @params[in] F1AP message
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
+{
+   uint8_t    ret, ieIdx, ueIdx, lcId, cellIdx;
+   bool ueCbFound = false;
+   uint32_t gnbCuUeF1apId, gnbDuUeF1apId, bitRateSize;
+   DuUeCb   *duUeCb = NULLP;
+   UEContextSetupRequest_t   *ueSetReq = NULLP;
+    
+   ret = ROK;
+   
+   ueSetReq = &f1apMsg->choice.initiatingMessage->value.choice.UEContextSetupRequest;
+   for(ieIdx=0; (ieIdx < ueSetReq->protocolIEs.list.count && ret == ROK); ieIdx++)
+   {
+      switch(ueSetReq->protocolIEs.list.array[ieIdx]->id)
+      {
+	 case ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID:
+	    {
+	       gnbCuUeF1apId = ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_CU_UE_F1AP_ID;
+	       break;
+	    }
+	 case ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID:
+	    {
+	       gnbDuUeF1apId = ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_UE_F1AP_ID;
+	       break;
+	    }
+	 case ProtocolIE_ID_id_ServCellIndex:
+	    {
+	       cellIdx = ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.ServCellIndex;
+               for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
+	       {
+	          if((duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbDuUeF1apId == gnbDuUeF1apId)&&\
+	             (duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbCuUeF1apId == gnbCuUeF1apId))
+		  {
+		     ueCbFound = true;
+                     duUeCb = &duCb.actvCellLst[cellIdx]->ueCb[ueIdx];
+                     DU_ALLOC(duUeCb->f1UeDb, sizeof(UeContextSetupDb));
+                     if(duUeCb->f1UeDb)
+                     {
+                        memset(duUeCb->f1UeDb, 0, sizeof(UeContextSetupDb));
+		        duUeCb->f1UeDb->actionType = UE_CTXT_SETUP;
+		        duUeCb->f1UeDb->cellIdx = cellIdx;
+		     }
+		     else
+		     {
+                        DU_LOG("\nF1AP: Memory Alloc Failed at procF1UeContextSetupReq()");
+                        ret = RFAILED;
+		     }
+		  }
+		  else
+		     ueCbFound = false;
+		  
+	       }
+	       if(!ueCbFound)
+	       {
+                  DU_LOG("\nF1AP: DuUeCb is not found at procF1UeContextSetupReq()");
+                  ret = RFAILED;
+	       }
+	       break;
+	    }
+         case ProtocolIE_ID_id_SpCellULConfigured:
+	    /* Indicates whether the gNB-CU requests the gNB-DU to configure the uplink as no UL, 
+	    UL, SUL or UL+SUL for the indicated cell for the UE */
+	    break;
+         case ProtocolIE_ID_id_CUtoDURRCInformation:
+	    {
+	       if(ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.CUtoDURRCInformation.iE_Extensions)
+	       {
+                  duUeCb->f1UeDb->cellGrpCfg = extractCellGrpInfo(ueSetReq->protocolIEs.list.array[ieIdx]->\
+		     value.choice.CUtoDURRCInformation.iE_Extensions, &duUeCb->f1UeDb->duUeCfg);
+		  if(!duUeCb->f1UeDb->cellGrpCfg)
+		  {
+		     DU_LOG("\n F1AP: Failed to extract cell Grp Info");
+		     //TODO: Update the failure cause in ue context Setup Response
+		     ret = RFAILED;
+		  }
+	       }
+               break;
+            } 
+         case ProtocolIE_ID_id_SCell_ToBeSetup_List:
+	    {
+	       DU_LOG("\nDU_APP: Received SCell to be added");
+	       DU_LOG("\nDU_APP: Not processing the SCell_ToBeSetup_List");
+	    break;
+	    }
+         case ProtocolIE_ID_id_SRBs_ToBeSetup_List:
+	    {
+	       if(extractSrbListToSetup(&ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.SRBs_ToBeSetup_List,\
+	          &duUeCb->f1UeDb->duUeCfg))
+	       {
+	          DU_LOG("\nDU_APP: Failed at extractSrbListToSetup()");
+		  //TODO: Update the failure cause in ue context Setup Response
+	          ret = RFAILED;
+	       }
+	       break;
+	    }
+         case ProtocolIE_ID_id_DRBs_ToBeSetup_List:
+	    {
+	       lcId = getDrbLcId(&duUeCb->drbBitMap);
+	       if(lcId != RFAILED)
+	       {
+                  if(extractDrbListToSetup(lcId, &ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.DRBs_ToBeSetup_List,\
+	             &duUeCb->f1UeDb->duUeCfg))
+	          {
+	             DU_LOG("\nDU_APP: Failed at extractDrbListToSetup()");
+	             //TODO: Update the failure cause in ue context Setup Response
+	             ret = RFAILED;
+	          }
+	       }
+	       else 
+	          ret = RFAILED;
+               break;
+	    }
+	 case ProtocolIE_ID_id_RRCContainer:
+	    {
+	       duUeCb->f1UeDb->rrcMsgLen = ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.size;
+	       if(duUeCb->f1UeDb->rrcMsgLen > 0)
+	       {
+	          DU_ALLOC_SHRABL_BUF(duUeCb->f1UeDb->rrcMsg, duUeCb->f1UeDb->rrcMsgLen);
+	          if(!duUeCb->f1UeDb->rrcMsg)
+	          {
+	             DU_LOG("\nDU APP : Memory allocation failed for RRC Msg in procUeCtxtSetupReq");
+	             ret = RFAILED;
+	          }
+		  else
+		  {
+	             memcpy(duUeCb->f1UeDb->rrcMsg, ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.buf,\
+	                duUeCb->f1UeDb->rrcMsgLen);
+		  }
+	       }
+	       else
+	          ret = RFAILED;
+	       break;
+	    }
+	 case ProtocolIE_ID_id_RRCDeliveryStatusRequest:
+	    {
+	       duUeCb->f1UeDb->deliveryStaReq = true;
+	       break;
+	    }
+	 //TODO: To handle maxAggrBitRate case,
+	 // Dependency: The protocolIE is not specified in ASN
+#if 0
+	 case ProtocolIE_ID_id_ULPDUSessionAggregateMaximumBitRate:            {
+               /* MaximumBitRate Uplink */
+	       bitRateSize = ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.BitRate.size;
+	       if(bitRateSize > 0)
+	       {
+                  DU_ALLOC_SHRABL_BUF(duUeCb->f1UeDb->duUeCfg.maxAggrBitRate, bitRateSize);
+		  if(!duUeCb->f1UeDb->duUeCfg.maxAggrBitRate)
+		  {
+	             DU_LOG("\nDU APP : Memory allocation failed for bitRate in procUeCtxtSetupReq");
+	             ret = RFAILED;
+		  }
+		  else
+		  {
+                     duUeCb->f1UeDb->duUeCfg.maxAggrBitRate->ulBits =\
+		     *ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.BitRate.buf;
+                     duUeCb->f1UeDb->duUeCfg.maxAggrBitRate->dlBits = 0;
+		  }
+	       }
+	       else
+	          ret = RFAILED;
+	       break;
+	    }
+#endif
+	 default:
+	    {
+	       break;
+	    }
+      }
+   }
+   if(ret == RFAILED)
+   {
+      /*TODO : Negative case*/
+      // BuildAndSendUeContextSetupRsp(ueIdx, cellId);
+   }
+   else
+      ret = duProcUeContextSetupRequest(duUeCb);
+
+   return ret;
+
+}
+
+/*******************************************************************
  * @brief Free the memory allocated for UE Setup response
  *
  * @details
  *
- *    Function : FreeUeSetupRsp
+ *    Function : FreeUeContextSetupRsp
  *
  *    Functionality:
  *       Free the memory allocated for UE Setup response
@@ -5245,10 +7213,10 @@ uint8_t BuildAndSendInitialRrcMsgTransfer(uint32_t gnbDuUeF1apId, uint16_t crnti
  *         RFAILED - failure
  *
  * ****************************************************************/
-void FreeUeSetupRsp(F1AP_PDU_t *f1apMsg)
+void FreeUeContextSetupRsp(F1AP_PDU_t *f1apMsg)
 {
    uint8_t idx;
-   UEContextSetupResponse_t     *ueSetRsp;
+   UEContextSetupResponse_t *ueSetRsp = NULLP;
 
    if(f1apMsg)
    {
@@ -5258,10 +7226,35 @@ void FreeUeSetupRsp(F1AP_PDU_t *f1apMsg)
 		    UEContextSetupResponse;
 	 if(ueSetRsp->protocolIEs.list.array)
 	 {
-	    for(idx = 0; idx < ueSetRsp->protocolIEs.list.size; idx++)
+	    for(idx = 0; idx < ueSetRsp->protocolIEs.list.count; idx++)
 	    {
-	       DU_FREE(ueSetRsp->protocolIEs.list.array[idx],\
-		     sizeof(UEContextSetupResponseIEs_t));
+	       if(ueSetRsp->protocolIEs.list.array[idx])
+	       {
+		  switch(ueSetRsp->protocolIEs.list.array[idx]->id)
+		  {
+		     case ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID:
+			break;
+		     case ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID:
+			break;
+		     case ProtocolIE_ID_id_DUtoCURRCInformation:
+			{
+			   CellGroupConfig_t *cellGrpCfg = NULLP;
+			   cellGrpCfg  = &ueSetRsp->protocolIEs.list.array[idx]->value.choice.\
+					 DUtoCURRCInformation.cellGroupConfig;
+			   if(cellGrpCfg->buf != NULLP)
+			   {
+			      DU_FREE(cellGrpCfg->buf, cellGrpCfg->size);
+			      cellGrpCfg = NULLP;
+			   }
+			   break;
+			}
+		     default:
+		        DU_LOG("\nDUAPP: Invalid Id %ld at FreeUeContextSetupRsp()", ueSetRsp->protocolIEs.list.array[idx]->id);
+		        break;
+		  }
+		  DU_FREE(ueSetRsp->protocolIEs.list.array[idx],\
+			sizeof(UEContextSetupResponseIEs_t));
+	       }
 	    }
 	    DU_FREE(ueSetRsp->protocolIEs.list.array, \
 		  ueSetRsp->protocolIEs.list.size);
@@ -5274,11 +7267,61 @@ void FreeUeSetupRsp(F1AP_PDU_t *f1apMsg)
 
 /*******************************************************************
  *
+ * @brief Builds Ue context Setup Rsp DU To CU Info
+ *
+ * @details
+ *
+ *    Function : EncodeUeCntxtDuToCuInfo
+ *
+ *    Functionality: Builds Ue context Setup Rsp DU To CU Info
+ *
+ * @params[in] CellGroupConfig_t *, CellGroupConfigRrc_t * 
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+
+uint8_t EncodeUeCntxtDuToCuInfo(CellGroupConfig_t *duToCuCellGrp, CellGroupConfigRrc_t *duCellGrpCfg)
+{
+   asn_enc_rval_t        encRetVal;
+
+   xer_fprint(stdout, &asn_DEF_CellGroupConfigRrc, duCellGrpCfg);
+   memset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+   encBufSize = 0;
+   encRetVal = aper_encode(&asn_DEF_CellGroupConfigRrc, 0, duCellGrpCfg, PrepFinalEncBuf, encBuf);
+   /* Encode results */
+   if(encRetVal.encoded == ENCODE_FAIL)
+   {
+      DU_LOG( "\n F1AP : Could not encode UeCntxtDuToCuInfo (at %s)\n",\
+	    encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+      return RFAILED;
+   }
+   else
+   {
+      DU_LOG("\n F1AP : Created APER encoded buffer for UeCntxtDuToCuInfo\n");
+      for(int i=0; i< encBufSize; i++)
+      {
+	 printf("%x",encBuf[i]);
+      }
+   }
+   duToCuCellGrp->size = encBufSize;
+   DU_ALLOC(duToCuCellGrp->buf, duToCuCellGrp->size);
+   if(!duToCuCellGrp->buf)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in UeCntxtDuToCuInfo");
+   }
+   memcpy(duToCuCellGrp->buf, encBuf, duToCuCellGrp->size);
+   return ROK;
+}
+
+/*******************************************************************
+ *
  * @brief Builds and sends the UE Setup Response
  *
  * @details
  *
- *    Function : BuildAndSendUESetRsp
+ *    Function : BuildAndSendUeContextSetupRsp
  *
  *    Functionality: Constructs the UE Setup Response and sends
  *                   it to the DU through SCTP.
@@ -5289,16 +7332,18 @@ void FreeUeSetupRsp(F1AP_PDU_t *f1apMsg)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildAndSendUESetRsp()
+uint8_t BuildAndSendUeContextSetupRsp(uint8_t ueIdx, uint8_t cellId)
 {
-   uint8_t   ret = RFAILED;
-   uint8_t   elementCnt;
-   uint8_t   idx;
-   F1AP_PDU_t   *f1apMsg = NULL;
-   UEContextSetupResponse_t	*ueSetRsp;
+   uint8_t   idx, ret, cellIdx, elementCnt;
+   uint32_t  gnbCuUeF1apId;   /* gNB-CU UE F1AP Id */
+   uint32_t  gnbDuUeF1apId;   /* gNB-DU UE F1AP Id */
    asn_enc_rval_t  encRetVal;        /* Encoder return value */
+   F1AP_PDU_t               *f1apMsg = NULLP;
+   UEContextSetupResponse_t *ueSetRsp = NULLP;
+   CellGroupConfigRrc_t     *cellGrpCfg = NULLP;
+   DuUeCb                   *ueCb = NULLP;
 
-   DU_LOG("\n F1AP : Building UE Context Setup Response\n");
+   DU_LOG("\n F1AP : Building UE Context Setup Response for cellId %d, ueIdx %d\n", cellId, ueIdx);
 
    while(true)
    {
@@ -5306,6 +7351,7 @@ uint8_t BuildAndSendUESetRsp()
       if(f1apMsg == NULLP)
       {
 	 DU_LOG(" F1AP : Memory allocation for F1AP-PDU failed");
+	 ret = RFAILED;
 	 break;
       }
 
@@ -5315,6 +7361,7 @@ uint8_t BuildAndSendUESetRsp()
       if(f1apMsg->choice.successfulOutcome == NULLP)
       {
 	 DU_LOG(" F1AP : Memory allocation for	F1AP-PDU failed");
+	 ret = RFAILED;
 	 break;
       }
 
@@ -5326,7 +7373,7 @@ uint8_t BuildAndSendUESetRsp()
 
       ueSetRsp =
 	 &f1apMsg->choice.successfulOutcome->value.choice.UEContextSetupResponse;
-      elementCnt = 2;
+      elementCnt = 3;
       ueSetRsp->protocolIEs.list.count = elementCnt;
       ueSetRsp->protocolIEs.list.size = \
 					elementCnt * sizeof(UEContextSetupResponse_t *);
@@ -5337,6 +7384,7 @@ uint8_t BuildAndSendUESetRsp()
       if(ueSetRsp->protocolIEs.list.array == NULLP)
       {
 	 DU_LOG(" F1AP : Memory allocation for UE Setup Response failed");
+	 ret = RFAILED;
 	 break;
       }
 
@@ -5347,19 +7395,24 @@ uint8_t BuildAndSendUESetRsp()
 	 if(ueSetRsp->protocolIEs.list.array[idx] == NULLP)
 	 {
 	    DU_LOG(" F1AP : Memory allocation for UE Setup Response failed");
+	    ret = RFAILED;
 	    break;
 	 }
       }
+      /* Fetching Ue Cb Info*/
+      GET_CELL_IDX(cellId, cellIdx);
+      gnbDuUeF1apId = duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].gnbDuUeF1apId;
+      gnbCuUeF1apId = duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].gnbCuUeF1apId;
+      ueCb = &duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1];
 
       idx = 0;
-
       /*GNB CU UE F1AP ID*/
       ueSetRsp->protocolIEs.list.array[idx]->id	= \
 						  ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID;
       ueSetRsp->protocolIEs.list.array[idx]->criticality = Criticality_reject;
       ueSetRsp->protocolIEs.list.array[idx]->value.present = \
 							     UEContextSetupResponseIEs__value_PR_GNB_CU_UE_F1AP_ID;
-      ueSetRsp->protocolIEs.list.array[idx]->value.choice.GNB_CU_UE_F1AP_ID = CU_ID;
+      ueSetRsp->protocolIEs.list.array[idx]->value.choice.GNB_CU_UE_F1AP_ID = gnbCuUeF1apId;
 
       /*GNB DU UE F1AP ID*/
       idx++;
@@ -5368,8 +7421,37 @@ uint8_t BuildAndSendUESetRsp()
       ueSetRsp->protocolIEs.list.array[idx]->criticality = Criticality_reject;
       ueSetRsp->protocolIEs.list.array[idx]->value.present = \
 							     UEContextSetupResponseIEs__value_PR_GNB_DU_UE_F1AP_ID;
-      ueSetRsp->protocolIEs.list.array[idx]->value.choice.GNB_DU_UE_F1AP_ID = DU_ID;
+      ueSetRsp->protocolIEs.list.array[idx]->value.choice.GNB_DU_UE_F1AP_ID = gnbDuUeF1apId;
 
+
+      /*DUtoCURRC Information */
+      idx++;
+      ueSetRsp->protocolIEs.list.array[idx]->id  = \
+						   ProtocolIE_ID_id_DUtoCURRCInformation;
+      ueSetRsp->protocolIEs.list.array[idx]->criticality = Criticality_reject;
+      ueSetRsp->protocolIEs.list.array[idx]->value.present =\
+							    UEContextSetupResponseIEs__value_PR_DUtoCURRCInformation;
+      if(ueCb->f1UeDb)
+      {
+         if(ueCb->f1UeDb->cellGrpCfg)
+	 {
+	    cellGrpCfg = (CellGroupConfigRrc_t*)ueCb->f1UeDb->cellGrpCfg;
+	    if(cellGrpCfg)
+	    {
+	       ret = EncodeUeCntxtDuToCuInfo(&ueSetRsp->protocolIEs.list.array[idx]->value.\
+	             choice.DUtoCURRCInformation.cellGroupConfig, cellGrpCfg);
+	    }
+	    /* Free UeContext Db created during Ue context Req */
+	    freeF1UeDb(ueCb->f1UeDb);
+         }
+      }
+      else
+      {
+         DU_LOG("\nF1AP: Failed to form DUtoCU RRCInfo at BuildAndSendUeContextSetupRsp()");
+         ret = RFAILED;
+      }
+      if(ret == RFAILED)
+         break;
 
       xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
 
@@ -5383,6 +7465,7 @@ uint8_t BuildAndSendUESetRsp()
       {
 	 DU_LOG( "\n F1AP : Could not encode UE Context Setup Request structure (at %s)\n",\
 	       encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+	 ret = RFAILED;
 	 break;
       }
       else
@@ -5395,18 +7478,41 @@ uint8_t BuildAndSendUESetRsp()
       }
 
       /* Sending  msg  */
-      if(SendF1APMsg(DU_APP_MEM_REGION,DU_POOL)	!=	ROK)
+      if(SendF1APMsg(DU_APP_MEM_REGION,DU_POOL)	!= ROK)
       {
 	 DU_LOG("\n F1AP : Sending UE Context Setup Request Failed");
+	 ret = RFAILED;
 	 break;
       }
-      ret = ROK;
       break;
    }
+   FreeUeContextSetupRsp(f1apMsg);
+   return ret;
+}/* End of BuildAndSendUeContextSetupRsp */
 
-   FreeUeSetupRsp(f1apMsg);
-   return ret;;
-}/* End of BuildAndSendUESetRsp */
+
+uint8_t BuildAndSendUeCtxtRsp(uint8_t ueIdx, uint8_t cellId)
+{
+   uint8_t cellIdx = 0, actionType = 0; 
+
+   GET_CELL_IDX(cellId, cellIdx);
+   actionType = duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].f1UeDb->actionType;
+
+   switch(actionType)
+   {
+      case UE_CTXT_SETUP:
+         BuildAndSendUeContextSetupRsp(ueIdx, cellId);
+         break;
+      case UE_CTXT_MOD:
+         //TODO: Build Ue context Modification Rsp
+         break;
+      default:
+         DU_LOG("F1AP: Invalid Action Type %d at BuildAndSendUeCtxtRsp()", actionType);
+         break;
+
+   }
+   return ROK;
+}
 
 /*******************************************************************
  *
@@ -6112,7 +8218,7 @@ void F1APMsgHdlr(Buffer *mBuf)
 		  }
 	       case InitiatingMessage__value_PR_UEContextSetupRequest:
 		  {
-		     procUeContextSetupReq(f1apMsg);
+		     procF1UeContextSetupReq(f1apMsg);
 		     break;
 		  }
 

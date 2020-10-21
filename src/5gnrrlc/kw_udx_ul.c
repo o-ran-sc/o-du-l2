@@ -286,8 +286,15 @@ RlcCfgCfmInfo   *cfmInfo;
    }
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
    rlcHdlCrlcUlCfgReq(tRlcCb,cfgTmpData, cfmInfo, cfgCfm);
-   FILL_PST_RLC_TO_DUAPP(rspPst, RLC_UL_INST, EVENT_RLC_UL_UE_CREATE_RSP);
-   SendRlcUlUeCreateRspToDu(&rspPst, cfgCfm);
+   if(tRlcCb->u.ulCb->rlcUlUdxEventType == EVENT_RLC_UL_UE_CONFIG_REQ)
+   {
+      FILL_PST_RLC_TO_DUAPP(rspPst, RLC_UL_INST, EVENT_RLC_UL_UE_CONFIG_RSP);
+   }
+   else if(tRlcCb->u.ulCb->rlcUlUdxEventType == EVENT_RLC_UL_UE_RECONFIG_REQ)
+   {
+      FILL_PST_RLC_TO_DUAPP(rspPst, RLC_UL_INST, EVENT_RLC_UL_UE_RECONFIG_RSP);
+   }
+   SendRlcUlUeRspToDu(&rspPst, cfgCfm);
 
    /* free the memory from DL */
    RLC_FREE_SHRABL_BUF(pst->region,

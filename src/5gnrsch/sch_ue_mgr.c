@@ -68,7 +68,7 @@ void SchSendUeCfgRspToMac(SchUeCfg *ueCfg, Inst inst,\
    /* Filling response post */
    memset(&rspPst, 0, sizeof(Pst));
    FILL_PST_SCH_TO_MAC(rspPst, inst);
-   rspPst.event = EVENT_UE_CREATE_RSP_TO_MAC;
+   rspPst.event = EVENT_UE_CONFIG_RSP_TO_MAC;
 
    SchUeCfgRspOpts[rspPst.selector](&rspPst, cfgRsp);
 }
@@ -159,11 +159,6 @@ uint8_t MacSchUeCreateReq(Pst *pst, SchUeCfg *ueCfg)
        ueCb->dlLcCtxt[lcId].lcState = SCH_LC_STATE_ACTIVE;
        ueCb->dlLcCtxt[lcId].bo = 0;
        ueCb->numDlLc++;
-       
-       if(ueCfg->lcCfgList[lcIdx].ulLcCfg)
-       {
-          /* TODO : Fill UL LC Cfg. As of now for SRB1, it is null */
-       }
    }
 
    cellCb->numActvUe++;
@@ -335,6 +330,26 @@ uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo puschInfo, DciInfo *dciInfo)
 }
 
 
+/*******************************************************************
+ *
+ * @brief Hanles Ue Reconfig request from MAC
+ *
+ * @details
+ *
+ *    Function : MacSchUeReconfigReq
+ *
+ *    Functionality: Hanles Ue Reconfig request from MAC
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t MacSchUeReconfigReq(Pst *pst, SchUeCfg *ueCfg)
+{
+   //TODO:
+   return ROK;
+}
 /**********************************************************************
   End of file
  **********************************************************************/
