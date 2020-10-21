@@ -93,6 +93,8 @@ typedef struct duCellCb
 {
    uint16_t       cellId;           /* Internal cell Id */
    CellCfgParams  cellInfo;         /* Cell info */
+   /* pointer to store the address of macCellCfg params used to send du-app to MAC */
+   MacCellCfg    *duMacCellCfg;
    bool           firstSlotIndRcvd;
    CellStatus     cellStatus;       /* Cell status */
    uint32_t       numActvUes;       /* Total Active UEs */
@@ -132,8 +134,6 @@ typedef struct duCb
    DuCellCb*     cfgCellLst[MAX_NUM_CELL];     /* List of cells at DU APP of type DuCellCb */
    uint8_t       numActvCells;
    DuCellCb*     actvCellLst[MAX_NUM_CELL];    /* List of cells activated/to be activated of type DuCellCb */
-   /* pointer to store the address of macCellCfg params used to send du-app to MAC */
-   MacCellCfg    *duMacCellCfg;         /* pointer to store params while sending DU-APP to MAC */
    uint32_t       numUe;            /* current number of UEs */
    UeCcchCtxt     ueCcchCtxt[MAX_NUM_UE]; /* mapping of gnbDuUeF1apId to CRNTI required for CCCH processing*/
 }DuCb;

@@ -56,8 +56,8 @@ How to Clean and Build:
    c. Cleaning RIC Stub binary
          make clean_ric NODE=TEST_STUB MACHINE=BIT64 MODE=FDD
 
-4. Cleaning ODU and CU Stub
-      make clean_all MACHINE=BIT64 MODE=FDD
+4. Cleaning ODU, CU Stub and RIC Stub
+      make clean_all
 
 How to execute:
 ---------------
