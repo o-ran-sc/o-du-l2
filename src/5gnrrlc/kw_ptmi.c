@@ -186,7 +186,6 @@ Pst        *pst;                /* post structure */
 RlcMngmt    *cfm;                /* Layer Management structure */
 #endif
 {
-   TRC3(RlcMiRlcConfigCfm);
 
    /* jump to specific primitive depending on configured selector */
    (*rlcMiRlcConfigCfmMt[pst->selector])(pst, cfm);
@@ -220,7 +219,6 @@ Pst *pst;                    /* post structure */
 RlcMngmt *cfm;                /* confirm */
 #endif
 {
-   TRC3(RlcMiLkwCntrlCfm)
 
    /* jump to specific primitive depending on configured selector */
    (*kwMiLkwCntrlCfmMt[pst->selector])(pst, cfm);
@@ -259,8 +257,6 @@ Pst     *pst;                /* post structure */
 RlcMngmt *usta;               /* unsolicited status */
 #endif
 {
-   TRC3(RlcMiLkwStaInd);
-
    /* jump to specific primitive depending on configured selector */
    (*kwMiLkwStaIndMt[pst->selector])(pst, usta);
 
@@ -297,7 +293,6 @@ Pst *pst;                    /* post structure */
 RlcMngmt *cfm;                /* solicited status confirmation */
 #endif
 {
-   TRC3(RlcMiLkwStaCfm);
 
    /* jump to specific primitive depending on configured selector */
    (*kwMiLkwStaCfmMt[pst->selector])(pst, cfm);
@@ -338,8 +333,6 @@ Action action;               /* action */
 RlcMngmt *cfm;                /* statistics confirmation */
 #endif
 {
-   TRC3(RlcMiLkwStsCfm);
-
    /* jump to specific primitive depending on configured selector */
    (*kwMiLkwStsCfmMt[pst->selector])(pst, action, cfm);
 
@@ -378,8 +371,6 @@ RlcMngmt *trc;                /* trace indication */
 Buffer *mBuf;                /* message buffer */
 #endif
 {
-   TRC3(RlcMiLkwTrcInd);
-
    /* jump to specific primitive depending on configured selector */
    (*kwMiLkwTrcIndMt[pst->selector])(pst, trc, mBuf);
 
@@ -403,8 +394,6 @@ RlcL2MeasCfmEvt *measEvt;
 #endif
 {
 
-   TRC3(RlcMiLkwL2MeasCfm)
-
    (*rlcMiLkwL2MeasCfmMt[pst->selector])(pst, measEvt);
 
    return ROK;
@@ -424,8 +413,6 @@ U8  measType;
 U8  status;
 #endif
 {
-
-   TRC3(RlcMiLkwL2MeasStopCfm)
 
    (*RlcMiLkwL2MeasStopCfmMt[pst->selector])(pst, measType,status);
 

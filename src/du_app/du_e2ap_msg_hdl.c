@@ -236,7 +236,7 @@ uint8_t BuildAndSendE2SetupReq()
       /* Prints the Msg formed */
       xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apMsg);
 
-      memset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
       encBufSize = 0;
       encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf,\
                       encBuf);
@@ -678,7 +678,7 @@ uint8_t BuildAndSendRicSubscriptionRsp()
        /* Prints the Msg formed */
         xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apRicMsg);
 
-        memset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+        memset(encBuf, 0, ENC_BUF_MAX_LEN);
         encBufSize = 0;
         encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apRicMsg, PrepFinalEncBuf,\
                encBuf);
@@ -1111,7 +1111,7 @@ uint8_t BuildAndSendRicIndication()
 		  }
 		  /* Prints the Msg formed */
         xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apMsg);
-        memset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+        memset(encBuf, 0, ENC_BUF_MAX_LEN);
 		  encBufSize = 0;
         encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf,\
                encBuf);

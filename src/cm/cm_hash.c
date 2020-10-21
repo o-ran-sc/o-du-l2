@@ -193,7 +193,6 @@ U16                *idx;               /* idx to return */
    U32             len;               /* length */
 
    /*cm_hash_c_001.main_23 : Fix for TRACE5 feature crash due to missing TRC MACRO*/
-   TRC2(cmHashFuncAnyKey);
    /* Set up the internal state */
    len = keyLen;    /* key length */
    a = 0x9e3779b9;  /* a = b = the golden ratio; an arbitrary value */
@@ -276,7 +275,6 @@ U16                *idx;               /* idx to return */
 {
    U32             sum;                /* Sum of octets for hash function */
 
-   TRC2(cmHashFuncU32Mod);
 
    /* keyLen is marked Unused to remove compilation 
     * warnings. */
@@ -340,7 +338,6 @@ U16           *idx;               /* idx to return */
    U32      secondU32 = 0;   /* Second U32 prepared for higher 4 octets */
    U32      sum;             /* Sum of the above 2 octets to get the index */
 
-   TRC2(cmHashFuncBCD8);
 
    /* keyLen is marked Unused to remove compilation 
     * warnings. */
@@ -413,7 +410,6 @@ U16                *idx;               /* idx to return */
    U16             cntr;               /* Index */
    U32             sum;                /* Sum of octets for hash function */
 
-   TRC2(cmHashFuncString)
 
    sum = 0;
 
@@ -470,7 +466,6 @@ U16                *idx;               /* index to return */
 {
    U32             sum;                /* sum of key string octets */
 
-   TRC2(cmHashFuncDefault);
 
    /* add all bytes of the key */
    sum = 0;
@@ -540,7 +535,6 @@ U16                *idx;               /* index to return */
    U32             prod;               /* (constant multiplier * key) */
    U8              shift;              /* Bits to be shifted to get index */
 
-   TRC2(cmHashFuncMult24);
 
    UNUSED(keyLen);
 
@@ -601,7 +595,6 @@ U16                *idx;               /* index to return */
 #endif
 {
 
-   TRC2(cmHashFuncConId);
 
    /* switch based on the length of the key */
    switch (keyLen)
@@ -669,7 +662,6 @@ U16                keyLen;             /* length of key string */
 U16                *idx;               /* index to return */
 #endif
 {
-   TRC2(cmHashFuncDirIdx);
 
    UNUSED(hashListCp);
    UNUSED(keyLen);
@@ -711,7 +703,6 @@ U8 *key2;                         /* second key string */
 U16 keyLen2;                      /* length of second key string */
 #endif
 {
-   TRC2(cmHashMatchKey);
 
    /* compare key lengths */
    if (keyLen1 != keyLen2)
@@ -748,7 +739,6 @@ CmListEnt *oldEntry;                    /* add new entry after this entry */
 CmListEnt *newEntry;                    /* new entry to add */
 #endif
 {
-   TRC2(cmListInsert);
 
    newEntry->next         = oldEntry->next;
    newEntry->prev         = oldEntry;
@@ -783,7 +773,6 @@ PRIVATE S16 cmListDelete(entry)
 CmListEnt *entry;                       /* entry to delete */
 #endif
 {
-   TRC2(cmListDelete);
 
    if (entry == NULLP) 
       return RFAILED;
@@ -864,7 +853,6 @@ Pool         pool;         /* memory pool to allocate bins */
    CmListBinEnt *hl;
 #endif
 
-   TRC2(cmHashListInit);
 
 #if (ERRCLASS & ERRCLS_DEBUG)
    /* error check on parameters */
@@ -1004,7 +992,6 @@ S16 cmHashListDeinit(hashListCp)
 CmHashListCp *hashListCp;  /* hash list to deinitialize */
 #endif
 {
-   TRC2(cmHashListDeinit);
 
 #if (ERRCLASS & ERRCLS_DEBUG)
    /* error check on parameters */
@@ -1083,7 +1070,6 @@ U16          keyLen;       /* length of key */
    PTR dupEntry;                  /* pointer to entry with duplicate key */
    U16 idx;                       /* index for insertion into hash list */
 
-   TRC2(cmHashListInsert);
 
 #if (ERRCLASS & ERRCLS_DEBUG)
    /* error check on parameters */
@@ -1164,7 +1150,6 @@ PTR          entry;        /* entry to delete */
    U16 idx;           /* index for selecting the right hash list bin */
 #endif
 
-   TRC2(cmHashListDelete);
 
 #if (ERRCLASS & ERRCLS_DEBUG)
    /* error check on parameters */
@@ -1259,7 +1244,6 @@ PTR          *entry;       /* entry to be returned */
    U16 i;                         /* counter for sequence number */
    U16 idx;                       /* index for insertion into hash list */
 
-   TRC2(cmHashListFind);
 
 #if (ERRCLASS & ERRCLS_DEBUG)
    /* error check on parameters */
@@ -1360,7 +1344,6 @@ PTR          *entry;         /* entry to be returned */
    CmHashListEnt *prevListEnt;   /* previous hash list entry pointer */
    U16           i;              /* hash list counter */
 
-   TRC2(cmHashListGetNext);
 
 #if (ERRCLASS & ERRCLS_DEBUG)
    /* error check on parameters */
@@ -1475,7 +1458,6 @@ PTR          *entry;         /* entry to be returned */
    CmHashListEnt *hashListEnt;   /* temporary hash list entry pointer */
    CmHashListEnt *prevListEnt;   /* previous hash list entry pointer */
 
-   TRC2(cmHashListBinGetNextEntry);
 
 #if (ERRCLASS & ERRCLS_DEBUG)
    /* error check on parameters */
@@ -1564,7 +1546,6 @@ U16          *result;        /* result of query */
    U8       i;
 #endif
 
-   TRC2(cmHashListQuery);
 
    /* deal with queries that do not need hashListCp */
 
@@ -1686,7 +1667,6 @@ U16          keyLen;       /* length of key */
    /* cm_hash_c_001.main_21. Modify. Compilation Issue resolved. */
    U16 nmbEnt;
 
-   TRC2(cmHashListOAInsert);
 
 #if (ERRCLASS & ERRCLS_DEBUG)
    /* error check on parameters */

@@ -130,8 +130,8 @@ uint8_t SchInstCfg(RgCfg *cfg, Inst  dInst)
       return LCM_REASON_INVALID_MSGTYPE;
    }
    /* Update the Pst structure for LM interface */
-   memcpy((uint8_t *)&schCb[inst].schInit.lmPst,
-	 (uint8_t *)&cfg->s.schInstCfg.genCfg.lmPst,
+   memcpy(&schCb[inst].schInit.lmPst,
+	 &cfg->s.schInstCfg.genCfg.lmPst,
 	 sizeof(Pst));
 
    schCb[inst].schInit.inst = inst;
@@ -151,9 +151,9 @@ uint8_t SchInstCfg(RgCfg *cfg, Inst  dInst)
    schCb[inst].genCfg.startCellId    = cfg->s.schInstCfg.genCfg.startCellId;
 #if 0
    /* Initialzie the timer queue */   
-   memset((uint8_t *)&schCb[inst].tmrTq, 0, sizeof(CmTqType)*RGSCH_TQ_SIZE);
+   memset(&schCb[inst].tmrTq, 0, sizeof(CmTqType)*RGSCH_TQ_SIZE);
    /* Initialize the timer control point */
-   memset((uint8_t *)&schCb[inst].tmrTqCp, 0, sizeof(CmTqCp));
+   memset(&schCb[inst].tmrTqCp, 0, sizeof(CmTqCp));
    schCb[inst].tmrTqCp.tmrLen = RGSCH_TQ_SIZE;
 
    /* SS_MT_TMR needs to be enabled as schActvTmr needs instance information */
@@ -210,7 +210,7 @@ uint8_t SchProcGenCfgReq(Pst *pst, RgMngmt *cfg)
    memset(&cfmPst, 0 , sizeof(Pst));
    SchFillCfmPst(pst, &cfmPst, cfg);
 
-   memset((uint8_t *)&cfm, 0, sizeof(RgMngmt));
+   memset(&cfm, 0, sizeof(RgMngmt));
 
 #ifdef LMINT3
    cfm.hdr.transId =

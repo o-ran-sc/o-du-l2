@@ -112,8 +112,6 @@ RgSchCellCb       *cellCb;
 {
    S16 ret;
    
-   TRC2(rgSCHDbmInitCell);
-
    /* Initialize ue list */
    if ((ret = rgSCHDbmInitUeCbLst(cellCb, RGSCH_MAX_UE_BIN_PER_CELL)) != ROK)
       return (ret);
@@ -180,7 +178,6 @@ U16            numBins;
 #endif
 {
    RgSchUeCellInfo ueCellInfo;
-   TRC2(rgSCHDbmInitUeCbLst)
 
    /* Fix: syed It is better to compute offset dynamically
     * rather than hardcoding it as 0 */      
@@ -214,7 +211,6 @@ S16 rgSCHDbmDeInitUeCbLst(cellCb)
 RgSchCellCb       *cellCb;
 #endif
 {
-   TRC2(rgSCHDbmDeInitUeCbLst)
 
    return (cmHashListDeinit(&cellCb->ueLst));
 
@@ -248,7 +244,6 @@ U16               numBins;
 #endif
 {
    RgSchUeCb ue;
-   TRC2(rgSCHDbmInitSpsUeCbLst)
 
    return (cmHashListInit(&cellCb->spsUeLst, numBins, (U16) ((PTR) &(ue.spsUeLstEnt) - (PTR) &ue), FALSE, 
                CM_HASH_KEYTYPE_CONID,
@@ -280,7 +275,6 @@ S16 rgSCHDbmDeInitSpsUeCbLst(cellCb)
 RgSchCellCb       *cellCb;
 #endif
 {
-   TRC2(rgSCHDbmDeInitSpsUeCbLst)
 
    return (cmHashListDeinit(&cellCb->spsUeLst));
 
@@ -315,7 +309,6 @@ RgSchUeCb         *ueCb;
 #endif
 {
    RgSchUeCellInfo *ueCellInfo = NULLP;
-   TRC2(rgSCHDbmInsUeCb)
 
    ueCellInfo = ueCb->cellInfo[ueCb->cellIdToCellIdxMap[RG_SCH_CELLINDEX(cellCb)]];
 
@@ -351,8 +344,6 @@ RgSchCellCb       *cellCb;
 RgSchUeCb         *ueCb;
 #endif
 {
-   TRC2(rgSCHDbmInsSpsUeCb)
-
    return (cmHashListInsert(&cellCb->spsUeLst, (PTR)ueCb, 
       (U8 *)&ueCb->spsRnti, (U16)sizeof(ueCb->spsRnti)));
 
@@ -386,8 +377,6 @@ CmLteRnti      ueId;
 #endif
 {
    RgSchUeCellInfo *ueCellInfo = NULLP;
-
-   TRC2(rgSCHDbmGetUeCb)
 
    cmHashListFind(&cellCb->ueLst, (U8 *)&ueId,
       sizeof(ueId), 0, (PTR *)&ueCellInfo);
@@ -423,8 +412,6 @@ CmLteRnti         spsRnti;
 {
    RgSchUeCb *ueCb = NULLP; 
 
-   TRC2(rgSCHDbmGetSpsUeCb)
-
    cmHashListFind(&cellCb->spsUeLst, (U8 *)&spsRnti,
       sizeof(spsRnti), 0, (PTR *)&ueCb);
    return (ueCb);
@@ -458,8 +445,6 @@ RgSchUeCb         *ueCb;
 {
    RgSchUeCellInfo *ueCellInfo = NULLP;
    RgSchUeCellInfo *nextUeCellInfo = NULLP;
-
-   TRC2(rgSCHDbmGetNextUeCb)
 
    if (ueCb)
    {
@@ -499,8 +484,6 @@ RgSchUeCb         *ueCb;
 {
    RgSchUeCb *nextUeCb = NULLP; 
 
-   TRC2(rgSCHDbmGetNextSpsUeCb)
-
    cmHashListGetNext(&cellCb->spsUeLst, (PTR) ueCb, (PTR *)&nextUeCb);
    return (nextUeCb);
 }  /* end of rgSCHDbmGetNextSpsUeCb */
@@ -537,8 +520,6 @@ RgSchUeCb         *ueCb;
 {
    U8 lcCnt = 0;
    RgSchCmnUlUe *ueUl = RG_SCH_CMN_GET_UL_UE(ueCb, cellCb);
-
-   TRC2(rgSCHDbmDelL2MUe)
 
    ueUl->hqEnt.numBusyHqProcs = 0;
    /* Clean cell level UE Active Count */
@@ -599,7 +580,6 @@ RgSchUeCb         *ueCb;
 #endif
 {
    RgSchUeCellInfo *ueCellInfo = NULLP;
-   TRC2(rgSCHDbmDelUeCb)
 
    ueCellInfo = ueCb->cellInfo[ueCb->cellIdToCellIdxMap[RG_SCH_CELLINDEX(cellCb)]];
 
@@ -634,7 +614,6 @@ RgSchCellCb       *cellCb;
 RgSchUeCb         *ueCb;
 #endif
 {
-   TRC2(rgSCHDbmDelSpsUeCb)
 
    return (cmHashListDelete(&cellCb->spsUeLst, (PTR)ueCb));
 }  /* end of rgSCHDbmDelSpsUeCb */
@@ -668,8 +647,6 @@ RgSchUeCb       *ueCb;
 {
    S16 ret = ROK;
    
-   TRC2(rgSCHDbmInitUe);
-
    /* Initialize Dedicated logical channels */
    rgSCHDbmInitDedLcLst(ueCb);
 
@@ -700,8 +677,6 @@ RgSchUeCb       *ueCb;
 {
    U8 idx;
    
-   TRC2(rgSCHDbmInitDedLcLst);
-
    for (idx = 0; idx < RGSCH_MAX_LC_PER_UE; ++idx)
    {
       /* Set Dedicated LCs as not configured */
@@ -742,8 +717,6 @@ RgSchCellCb       *cellCb;
 {
    U8 idx;
    
-   TRC2(rgSCHDbmInitCmnLcLst);
-
    for (idx = 0; idx < RGSCH_MAX_CMN_LC_CB; idx++)
    {
       cellCb->cmnLcCb[idx].lcId = RGSCH_INVALID_LC_ID;
@@ -777,7 +750,6 @@ RgSchUeCb         *ueCb;
 RgSchDlLcCb       *dlLcCb; 
 #endif
 {
-   TRC2(rgSCHDbmInsDlDedLcCb);
 
    ueCb->dl.lcCb[dlLcCb->lcId - 1] = dlLcCb;
 
@@ -806,7 +778,6 @@ RgSchUeCb         *ueCb;
 RgSchDlLcCb       *dlLcCb; 
 #endif
 {
-   TRC2(rgSCHDbmDelDlDedLcCb);
 
 #ifdef LTE_L2_MEAS
    /* Clean cell level UE Active Count */
@@ -856,8 +827,6 @@ RgSchUeCb         *ueCb;
 CmLteLcId        idx;
 #endif
 {
-   TRC2(rgSCHDbmGetDlDedLcCb);
-
    if (idx < RGSCH_DEDLC_MIN_LCID || idx > RGSCH_DEDLC_MAX_LCID)
    {
       return (NULLP);
@@ -889,7 +858,6 @@ RgSchUeCb         *ueCb;
 #endif
 {
    U8 idx;
-   TRC2(rgSCHDbmGetFirstDlDedLcCb)
    
    for(idx = 0; idx < RGSCH_DEDLC_MAX_LCID; idx++)
    {
@@ -926,7 +894,6 @@ RgSchDlLcCb       *lcCb;
 #endif
 {
    U8 idx;
-   TRC2(rgSCHDbmGetNextDlDedLcCb);
 
    if (!lcCb)
    {
@@ -970,8 +937,6 @@ CmLteLcId         lcId;
 {
    U8 idx;
 
-   TRC2(rgSCHDbmGetCmnLcCb)
-
    for(idx = 0; idx < RGSCH_MAX_CMN_LC_CB; idx++)
    {
       if(cellCb->cmnLcCb[idx].lcId == lcId)
@@ -1004,7 +969,6 @@ RgSchClcDlLcCb* rgSCHDbmGetBcchOnBch(cellCb)
 RgSchCellCb       *cellCb;
 #endif
 {
-   TRC2(rgSCHDbmGetBcchOnBch)
  
    if(cellCb->cmnLcCb[RGSCH_BCCH_BCH_IDX].lcId != RGSCH_INVALID_LC_ID)
    {
@@ -1035,7 +999,6 @@ RgSchClcDlLcCb* rgSCHDbmGetFirstBcchOnDlsch(cellCb)
 RgSchCellCb       *cellCb;
 #endif
 {
-   TRC2(rgSCHDbmGetFirstBcchOnDlsch)
 
    if(cellCb->cmnLcCb[RGSCH_BCCH_DLSCH_IDX1].lcId != RGSCH_INVALID_LC_ID)
    {
@@ -1066,7 +1029,6 @@ RgSchClcDlLcCb* rgSCHDbmGetSecondBcchOnDlsch(cellCb)
 RgSchCellCb       *cellCb;
 #endif
 {
-   TRC2(rgSCHDbmGetSecondBcchOnDlsch)
 
    if(cellCb->cmnLcCb[RGSCH_BCCH_DLSCH_IDX2].lcId != RGSCH_INVALID_LC_ID)
    {
@@ -1096,7 +1058,6 @@ RgSchClcDlLcCb* rgSCHDbmGetPcch(cellCb)
 RgSchCellCb       *cellCb;
 #endif
 {
-   TRC2(rgSCHDbmGetPcch)
  
    if(cellCb->cmnLcCb[RGSCH_PCCH_IDX].lcId != RGSCH_INVALID_LC_ID)
    {
@@ -1129,7 +1090,6 @@ RgSchCellCb       *cellCb;
 RgSchClcDlLcCb   *cmnDlLcCb;
 #endif
 {
-   TRC2(rgSCHDbmInsBcchOnBch)
 
    cellCb->cmnLcCb[RGSCH_BCCH_BCH_IDX].lcId = cmnDlLcCb->lcId;
    cellCb->cmnLcCb[RGSCH_BCCH_BCH_IDX].boLst = cmnDlLcCb->boLst;
@@ -1163,8 +1123,6 @@ RgSchCellCb       *cellCb;
 RgSchClcDlLcCb   *cmnDlLcCb;
 #endif
 {
-   TRC2(rgSCHDbmInsBcchOnDlsch)
-
    if(cellCb->cmnLcCb[RGSCH_BCCH_DLSCH_IDX1].lcId == RGSCH_INVALID_LC_ID)   
    { 
       cellCb->cmnLcCb[RGSCH_BCCH_DLSCH_IDX1].lcId = cmnDlLcCb->lcId;
@@ -1207,7 +1165,6 @@ RgSchCellCb       *cellCb;
 RgSchClcDlLcCb   *cmnDlLcCb;
 #endif
 {
-   TRC2(rgSCHDbmInsPcch)
 
    cellCb->cmnLcCb[RGSCH_PCCH_IDX].lcId = cmnDlLcCb->lcId;
    cellCb->cmnLcCb[RGSCH_PCCH_IDX].boLst = cmnDlLcCb->boLst;
@@ -1238,7 +1195,6 @@ Void rgSCHDbmInitCmnLcBoLst(cmnDlLcCb)
 RgSchClcDlLcCb       *cmnDlLcCb;
 #endif
 {
-   TRC2(rgSCHDbmInitCmnLcBoLst)
 
    cmLListInit(&cmnDlLcCb->boLst);
    RETVOID;
@@ -1268,8 +1224,6 @@ RgSchClcDlLcCb    *cmnDlLcCb;
 RgSchClcBoRpt     *cmnBoRpt;
 #endif
 {
-   TRC2(rgSCHDbmInsCmnLcBoRpt)
-
    cmnBoRpt->boLstEnt.next = NULLP;
    cmnBoRpt->boLstEnt.prev = NULLP;
    cmnBoRpt->boLstEnt.node = (PTR)cmnBoRpt;
@@ -1299,7 +1253,6 @@ PRIVATE Void rgSCHDbmInitRaCbLst(cellCb)
 RgSchCellCb       *cellCb;
 #endif
 {
-   TRC2(rgSCHDbmInitRaCbLst)
 
    cmLListInit(&cellCb->raInfo.raCbLst);
    RETVOID;
@@ -1331,8 +1284,6 @@ CmLteRnti      key;
 #endif
 {
    CmLList *tmpNode;
-
-   TRC2(rgSCHDbmGetRaCb)
 
    CM_LLIST_FIRST_NODE(&cellCb->raInfo.raCbLst,tmpNode);
    while(tmpNode)
@@ -1370,8 +1321,6 @@ RgSchCellCb       *cellCb;
 {
    U8 idx;
 
-   TRC2(rgSCHDbmInitRaReqLst)
-
    /* ccpu00133557- Memory Leak Fix- initializing for the all nodes 
     * in RAREQ list*/
    for(idx = 0; idx < RGSCH_RAREQ_ARRAY_SIZE; idx++)
@@ -1403,7 +1352,6 @@ PRIVATE Void rgSCHDbmInitCrntRgrCfgLst(cellCb)
 RgSchCellCb       *cellCb;
 #endif
 {
-   TRC2(rgSCHDbmInitCrntRgrCfgLst)
 
    cmLListInit(&cellCb->rgCfgInfo.crntRgrCfgLst);
    RETVOID;
@@ -1430,7 +1378,6 @@ PRIVATE Void rgSCHDbmInitPndngRgrCfgLst(cellCb)
 RgSchCellCb       *cellCb;
 #endif
 {
-   TRC2(rgSCHDbmInitPndngRgrCfgLst)
 
    cmLListInit(&cellCb->rgCfgInfo.pndngRgrCfgLst);
    RETVOID;
@@ -1460,8 +1407,6 @@ RgSchCellCb       *cellCb;
 RgSchCfgElem      *cfgElem;
 #endif
 {
-   TRC2(rgSCHDbmInsCrntRgrCfgElem)
-
    cfgElem->cfgReqLstEnt.next = NULLP;
    cfgElem->cfgReqLstEnt.prev = NULLP;
    cmLListAdd2Tail(&cellCb->rgCfgInfo.crntRgrCfgLst, &cfgElem->cfgReqLstEnt);
@@ -1492,7 +1437,6 @@ RgSchCellCb       *cellCb;
 RgSchCfgElem      *cfgElem;
 #endif
 {
-   TRC2(rgSCHDbmInsPndngRgrCfgElem)
 
    cfgElem->cfgReqLstEnt.next = NULLP;
    cfgElem->cfgReqLstEnt.prev = NULLP;
@@ -1525,7 +1469,6 @@ RgSchCellCb       *cellCb;
 RgSchCfgElem      *cfgElem;
 #endif
 {
-   TRC2(rgSCHDbmGetNextCrntRgrCfgElem)
 
    if(!cfgElem)
    {
@@ -1560,7 +1503,6 @@ RgSchCellCb       *cellCb;
 RgSchCfgElem      *cfgElem;
 #endif
 {
-   TRC2(rgSCHDbmGetNextPndngRgrCfgElem)
 
    if(!cfgElem)
    {
@@ -1596,8 +1538,6 @@ CmLteTimingInfo   key;
 #endif
 {
    CmLList  *tmpNode;
-
-   TRC2(rgSCHDbmGetPndngRgrCfgElemByKey)
 
    CM_LLIST_FIRST_NODE(&cellCb->rgCfgInfo.pndngRgrCfgLst,tmpNode);
    while(tmpNode)
@@ -1636,7 +1576,6 @@ RgSchCellCb       *cellCb;
 RgSchCfgElem      *cfgElem;
 #endif
 {
-   TRC2(rgSCHDbmDelCrntRgrCfgElem)
 
    if(cmLListDelFrm(&cellCb->rgCfgInfo.crntRgrCfgLst,&cfgElem->cfgReqLstEnt))
    {
@@ -1669,8 +1608,6 @@ RgSchCellCb       *cellCb;
 RgSchCfgElem      *cfgElem;
 #endif
 {
-   TRC2(rgSCHDbmDelPndngRgrCfgElem)
-
    if(cmLListDelFrm(&cellCb->rgCfgInfo.pndngRgrCfgLst,&cfgElem->cfgReqLstEnt))
    {
       return ((RgSchCfgElem *)(cfgElem->cfgReqLstEnt.node));
@@ -1710,9 +1647,7 @@ U16            maxRntis;
    U16 rnti;
    RgSchRntiLnk   *rntiPool;
 
-   TRC2(rgSCHDbmRntiDbInit)
-
-      /* Fix for Change Request ccpu00099150 */
+   /* Fix for Change Request ccpu00099150 */
    if(rgSCHUtlAllocSBuf(cellCb->instIdx, 
        (Data **)&cellCb->rntiDb.rntiPool,maxRntis*sizeof(RgSchRntiLnk)) != ROK)
    {
@@ -1774,8 +1709,6 @@ Void rgSCHDbmRntiDbDeInit(cellCb)
 RgSchCellCb       *cellCb;
 #endif
 {
-   TRC2(rgSCHDbmRntiDbDeInit)
-
    /* ccpu00117052 - MOD - Passing double pointer
    for proper NULLP assignment*/
    rgSCHUtlFreeSBuf(cellCb->instIdx, (Data **)(&(cellCb->rntiDb.rntiPool)),
@@ -1812,8 +1745,6 @@ RgSchCellCb       *cellCb;
 #endif
 {
    RgSchRntiLnk *rntiLnk;
-
-   TRC2(rgSCHDbmGetRnti)
 
    if (!(cellCb->rntiDb.freeRnti))
    {
@@ -1868,7 +1799,6 @@ RgSchCellCb       *cellCb;
 RgSchRntiLnk      *rntiLnk;
 #endif
 {
-   TRC2(rgSCHDbmRlsRnti)
 #ifdef EMTC_ENABLE
       if(ROK==rgSCHDbmPutEmtcRnti(cellCb,rntiLnk))
 {      
@@ -1923,7 +1853,6 @@ U16            numBins;
 #endif
 {
    RgSchUePucchRecpInfo pucchInfo;
-   TRC2(rgSCHDbmInitUeTfuPendLst)
 
    /* Fix: syed It is better to compute offset dynamically
     * rather than hardcoding it as 0 */      
@@ -1962,7 +1891,6 @@ S16 rgSCHDbmDeInitUeTfuPendLst(cellCb)
 RgSchCellCb       *cellCb;
 #endif
 {
-   TRC2(rgSCHDbmDeInitUeTfuPendLst)
 
    cmHashListDeinit(&cellCb->ueTfuPendLst);
    

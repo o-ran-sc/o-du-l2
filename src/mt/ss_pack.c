@@ -101,7 +101,6 @@ Buffer *mBuf;               /* message buffer */
 #endif
 {
    S16 ret;                 /* return code */
-   TRC1(SPkS8)
    ret = SAddPreMsg((Data) val, mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if (ret != ROK)
@@ -141,7 +140,6 @@ Buffer *mBuf;               /* message buffer */
 #endif
 {
    S16 ret;                 /* return code */
-   TRC1(oduUnpackUInt8)
    ret = SAddPreMsg((Data) val, mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if (ret != ROK)
@@ -181,7 +179,6 @@ Buffer *mBuf;               /* message buffer */
    Data pkArray[2];         /* array for packing */
    S16 ret;                 /* return code */
 
-   TRC1(SPkS16)
 #ifndef FCSPKINT            /* backward compatibility, packing order */
    pkArray[0] = (Data) GetHiByte(val);
    pkArray[1] = (Data) GetLoByte(val);
@@ -229,7 +226,6 @@ Buffer *mBuf;               /* message buffer */
    Data pkArray[2];         /* array for packing */
    S16 ret;                 /* return code */
 
-   TRC1(oduUnpackUInt16)
 #ifndef FCSPKINT            /* backward compatibility, packing order */
    pkArray[0] = (Data) GetHiByte(val);
    pkArray[1] = (Data) GetLoByte(val);
@@ -278,7 +274,6 @@ Buffer *mBuf;               /* message buffer */
    Data pkArray[4];         /* packing array */
    S16 ret;                 /* return code */
   
-   TRC1(SPkS32)
 #ifndef FCSPKINT        /* backward compatibility, packing order */
    tmp = (U16) GetHiWord(val);
    pkArray[0] = (Data) GetHiByte(tmp);
@@ -335,7 +330,6 @@ Buffer *mBuf;               /* message buffer */
    Data pkArray[4];         /* packing array */
    S16 ret;                 /* return code */
   
-   TRC1(oduUnpackUInt32)
 #ifndef FCSPKINT        /* backward compatibility, packing order */
    tmp = (U16) GetHiWord(val);
    pkArray[0] = (Data) GetHiByte(tmp);
@@ -397,8 +391,6 @@ Buffer *mBuf;               /* message buffer */
    S8   pkArray[15];        /* packing array */
 #endif /*FCSPKINT*/
   
-   TRC1(SPkF32)
-
    sprintf(tmpArray, "%.7e", val);
 
 #ifndef FCSPKINT            /* backward compatibility, packing order */
@@ -457,8 +449,6 @@ Buffer *mBuf;               /* message buffer */
    S8   pkArray[25];        /* packing array */
 #endif /*FCSPKINT*/
   
-   TRC1(SPkF64)
-
    sprintf(tmpArray, "%.16le", val);
 
 #ifndef FCSPKINT            /* backward compatibility, packing order */
@@ -510,7 +500,6 @@ Buffer *mBuf;               /* message buffer */
 {
    Data tmp;                /* temporary value */
    S16 ret;                 /* return code */
-   TRC1(SUnpkS8)
 
 /* ss021.103 - Addition of data pointer check */
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -560,7 +549,6 @@ Buffer *mBuf;               /* message buffer */
 {
    Data tmp;                /* temporary value */
    S16 ret;                 /* return code */
-   TRC1(oduPackUInt8)
 
 /* ss021.103 - Addition of data pointer check */
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -610,7 +598,6 @@ Buffer *mBuf;               /* message buffer */
    U16 tmp16;               /* temporary value */
    Data unpkArray[2];       /* unpacking array */
    S16 ret;                 /* return code */
-   TRC1(SUnpkS16)
 
 /* ss021.103 - Addition of data pointer check */
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -669,7 +656,6 @@ Buffer *mBuf;               /* message buffer */
    U16 tmp16;               /* temporary value */
    Data unpkArray[2];       /* unpacking array */
    S16 ret;                 /* return code */
-   TRC1(oduPackUInt16)
 
 /* ss021.103 - Addition of data pointer check */
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -729,7 +715,6 @@ Buffer *mBuf;               /* message buffer */
    U32 tmp32;               /* temporary value */
    Data unpkArray[4];       /* unpacking array */
    S16 ret;                 /* return code */
-   TRC1(SUnpkS32)
 
 /* ss021.103 - Addition of data pointer check */
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -800,7 +785,6 @@ Buffer *mBuf;               /* message buffer */
 #ifdef ERRCLASS
    S16 ret;                 /* return code */
 #endif /* ERRCLASS */
-   TRC1(oduPackUInt32)
 
 /* ss021.103 - Addition of data pointer check */
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -875,8 +859,6 @@ Buffer *mBuf;               /* message buffer */
    S8 unpkArray[15];        /* unpacking array */
 #endif /* FCSPKINT */
 
-   TRC1(SUnpkF32)
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check data pointer */
    if (!val)
@@ -941,8 +923,6 @@ Buffer *mBuf;               /* message buffer */
    S32 kIdx = 0;            /* unpacking array index */
    S8 unpkArray[25];        /* unpacking array */
 #endif /* FCSPKINT */
-
-   TRC1(SUnpkF64)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check data pointer */

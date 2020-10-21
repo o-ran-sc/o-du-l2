@@ -83,7 +83,7 @@ uint8_t cmPkSctpNtfy(Pst *pst, CmInetSctpNotification *ntfy)
 uint8_t cmUnpkSctpNtfy(SctpNtfy func, Pst *pst, Buffer *mBuf)
 {
    CmInetSctpNotification ntfy;
-   memset((uint8_t*)&ntfy, 0, sizeof(CmInetSctpNotification));
+   memset(&ntfy, 0, sizeof(CmInetSctpNotification));
 
    oduPackUInt16(&(ntfy.header.nType), mBuf);
    if(ntfy.header.nType == CM_INET_SCTP_ASSOC_CHANGE)

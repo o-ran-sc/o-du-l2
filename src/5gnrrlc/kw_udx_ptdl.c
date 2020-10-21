@@ -101,7 +101,6 @@ SuId suId;                      /* Service User Id */
 U8   status;                    /* Status */
 #endif
 {
-   TRC3(PtDlUdxBndCfm)
 
    return ROK;
 
@@ -143,7 +142,6 @@ SuId          suId;            /* Service User Id */
 RlcCfgCfmInfo *cfmInfo;        /* Status */
 #endif
 {
-   TRC3(PtDlUdxCfgCfm)
 
    return ROK;
 
@@ -185,7 +183,6 @@ U32           transId;
 CmStatus      status;
 #endif
 {
-   TRC3(PtDlUdxUeIdChgCfm)
 
    return ROK;
 
@@ -201,7 +198,6 @@ CmLteRlcId          *rlcId,
 RlcUdxBufLst         *pBufLst
 )
 {
-   TRC3(PtDlUdxStaUpdCfm);
    return ROK;
 }
 
@@ -212,7 +208,6 @@ SuId                suId,
 CmLteRlcId          *rlcId
 )
 {
-   TRC3(PtDlUdxStaProhTmrStart);
    return ROK;
 }
 #endif
@@ -328,7 +323,6 @@ SuId suId;                      /* Service User Id */
 U8   status;                    /* Status */
 #endif
 {
-   TRC3(rlcDlUdxBndCfm)
 
    /* jump to specific primitive depending on configured selector */
    (*rlcDlUdxBndCfmMt[pst->selector])(pst, suId, status);
@@ -373,7 +367,6 @@ SuId          suId;            /* Service User Id */
 RlcCfgCfmInfo *cfmInfo;        /* Status */
 #endif
 {
-   TRC3(rlcDlUdxCfgCfm)
 
    /* jump to specific primitive depending on configured selector */
    (*rlcDlUdxCfgCfmMt[pst->selector])(pst, suId, cfmInfo);
@@ -418,7 +411,6 @@ U32           transId;
 CmStatus      status;
 #endif
 {
-   TRC3(rlcDlUdxUeIdChgCfm)
 
    /* jump to specific primitive depending on configured selector */
    (*rlcDlUdxUeIdChgCfmMt[pst->selector])(pst, suId,transId,status);

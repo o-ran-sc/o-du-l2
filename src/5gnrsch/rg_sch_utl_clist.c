@@ -61,7 +61,6 @@ Void rgSCHRrCListInit(lCp)
 RgSchRrCListCp *lCp;               /* list control point */
 #endif
 {
-   TRC2(rgSCHRrCListInit);
    
    lCp->first = (RgSchRrCList *)NULLP;
    lCp->crnt  = (RgSchRrCList *)NULLP;
@@ -94,7 +93,6 @@ Void rgSCHRrCListAdd2Crnt(lCp, node)
    RgSchRrCList   *node;              /* node to be added */
 #endif
 {
-   TRC2(rgSCHRrCListAdd2Crnt);
 #ifdef ERRCHK
    if (lCp == (RgSchRrCListCp *)NULLP)
       RETVOID;
@@ -147,7 +145,6 @@ RgSchRrCListCp *lCp;               /* list control point */
 RgSchRrCList   *node;              /* node to be added */
 #endif
 {
-   TRC2(rgSCHRrCListAdd2Tail);
 
 #ifdef ERRCHK
    if (lCp == (RgSchRrCListCp *)NULLP)
@@ -202,7 +199,6 @@ RgSchRrCListCp *lCp;               /* list control pointer */
 RgSchRrCList *node;                /* node to be removed */
 #endif
 {
-   TRC2(rgSCHRrCListDelFrm);
   
 #ifdef ERRCHK
    if (lCp == (RgSchRrCListCp *)NULLP)
@@ -282,7 +278,6 @@ RgSchRrCList *node;                /* node to be inserted */
 #endif
 {
    RgSchRrCList *crnt;
-   TRC2(rgSCHRrCListInsrtAtCrnt);
 
 #ifdef ERRCHK
    if (lCp == (RgSchRrCListCp *)NULLP)

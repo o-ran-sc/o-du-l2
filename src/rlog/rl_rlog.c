@@ -741,7 +741,7 @@ void*	rLogServer(void* arg)
   int newsockfd;
   int clilen = 0;
   int domain = AF_INET;
-  memset((void*)&serv_addr, 0, sizeof(serv_addr));
+  memset(&serv_addr, 0, sizeof(serv_addr));
 
 
   if(gIpType == CM_IPV4ADDR_TYPE)

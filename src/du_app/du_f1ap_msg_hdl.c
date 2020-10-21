@@ -1141,7 +1141,7 @@ uint8_t BuildAndSendF1SetupReq()
       xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
 
       /* Encode the F1SetupRequest type as APER */
-      memset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
       encBufSize = 0;
       encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apMsg, PrepFinalEncBuf,\
 	    encBuf);
@@ -1617,7 +1617,7 @@ uint8_t BuildAndSendDUConfigUpdate()
       xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apDuCfg);
 
       /* Encode the DU Config Update type as APER */
-      memset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
       encBufSize = 0;
       encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apDuCfg, PrepFinalEncBuf, encBuf);
 
@@ -2061,7 +2061,7 @@ uint8_t BuildAndSendULRRCMessageTransfer(DuUeCb  ueCb, uint8_t lcId, \
       xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
 
       /* Encode the F1SetupRequest type as APER */
-      memset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
       encBufSize = 0;
       encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apMsg, PrepFinalEncBuf,\
 	    encBuf);
@@ -4962,7 +4962,7 @@ uint8_t BuildDuToCuRrcContainer(DUtoCURRCContainer_t *duToCuRrcContainer)
 
       /* encode cellGrpCfg into duToCuRrcContainer */
       xer_fprint(stdout, &asn_DEF_CellGroupConfigRrc, &cellGrpCfg);
-      memset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
       encBufSize = 0;
       encRetVal = aper_encode(&asn_DEF_CellGroupConfigRrc, 0, &cellGrpCfg, PrepFinalEncBuf, encBuf);
       /* Encode results */
@@ -5141,7 +5141,7 @@ uint8_t BuildAndSendInitialRrcMsgTransfer(uint32_t gnbDuUeF1apId, uint16_t crnti
       xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
 
       /* Encode the F1SetupRequest type as APER */
-      memset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
       encBufSize = 0;
       encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apMsg, PrepFinalEncBuf, encBuf);
       /* Encode results */
@@ -5374,7 +5374,7 @@ uint8_t BuildAndSendUESetRsp()
       xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
 
       /* Encode the UE context setup response type as APER */
-      memset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
       encBufSize = 0;
       encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apMsg, PrepFinalEncBuf,\
 	    encBuf);
@@ -5540,7 +5540,7 @@ uint8_t BuildAndSendF1ResetReq()
       xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
 
       /* Encode the F1SetupRequest type as APER */
-      memset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
       encBufSize = 0;
       encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apMsg, PrepFinalEncBuf,\
 	    encBuf);
@@ -5694,7 +5694,7 @@ uint8_t BuildAndSendF1ResetAck()
       xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
 
       /* Encode the F1SetupRequest type as UPER */
-      cmMemset((U8 *)encBuf, 0, ENC_BUF_MAX_LEN);
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
       encBufSize = 0;
       encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apMsg, PrepFinalEncBuf, encBuf);
 
@@ -5960,7 +5960,7 @@ uint8_t BuildAndSendRrcDeliveryReport(uint32_t gnbCuUeF1apId, uint32_t gnbDuUeF1
       xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
 
       /* Encode the RRC DELIVERY REPORT type as APER */
-      memset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
       encBufSize = 0;
       encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apMsg, PrepFinalEncBuf,\
 	    encBuf);

@@ -117,7 +117,6 @@ S16 rlcGetSId(s)
 SystemId *s;                /* system id */
 #endif
 {
-   TRC2(rlcGetSId);
 
    s->mVer = sId.mVer;
    s->mRev = sId.mRev;

@@ -107,13 +107,11 @@ Void rgGetSId(s)
 SystemId *s;                /* system id */
 #endif
 {
-   TRC2(rgGetSId);
-
    s->mVer = sId.mVer;
    s->mRev = sId.mRev;
    s->bVer = sId.bVer;
    s->bRev = sId.bRev;
-   cmMemcpy((U8 *)s->ptNmb, (U8 *)sId.ptNmb, LRG_MAX_PT_NUM_SIZE); 
+   memcpy(s->ptNmb, sId.ptNmb, LRG_MAX_PT_NUM_SIZE); 
 
    /* Stack Crash Problem for TRACE5 Changes. Added the return below */
   RETVOID; 

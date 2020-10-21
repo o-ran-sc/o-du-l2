@@ -104,7 +104,6 @@ S16 rlcDbmDlInit(gCb)
 RlcCb *gCb;
 #endif
 {
-   TRC3(rlcDbmDlInit)
 
    /* Initialize ueCb Hash List */
    if(ROK != cmHashListInit(&(gCb->u.dlCb->ueLstCp), 
@@ -188,7 +187,6 @@ Void rlcDbmDlDeInit(gCb)
 RlcCb *gCb;
 #endif
 {
-   TRC3(rlcDbmDlDeInit);
 
 
    /* De Initialize ueCb Hash List */
@@ -353,8 +351,6 @@ U8         numRbCb;
 {
    U32 idx;
 
-   TRC3(rlcDbmDelAllDlRb)
-
 
    for (idx = 0; idx < numRbCb; idx++)
    {
@@ -422,9 +418,6 @@ RlcDlUeCb      **ueCb;
 #endif
 {
    RlcDlUeCb *tUeCb;        
-
-   TRC3(rlcDbmCreateDlUeCb)
-
 
    RLC_ALLOC(gCb,*ueCb, sizeof(RlcDlUeCb));
 
@@ -515,8 +508,6 @@ RlcDlUeCb   *ueCb;
 Bool       abortFlag;
 #endif
 {
-   TRC3(rlcDbmDelDlUeCb)
-
 
 #if  (!defined(KW_PDCP) || !(defined(PJ_SEC_ASYNC) || defined(PJ_CMP_ASYNC)))
    UNUSED(abortFlag);
@@ -571,9 +562,6 @@ RlcCb  *gCb;
 #endif
 {
    RlcDlUeCb *ueCb = NULLP; 
-
-   TRC3(rlcDbmDelAllDlUe)
-
 
    /* Until no more ueCb is ueLstCp hash list get and delete ueCb */
    while (ROK == cmHashListGetNext(&(gCb->u.dlCb->ueLstCp), 
@@ -649,7 +637,6 @@ RlcDlCellCb    **cellCb;
 {
    RlcDlCellCb *tCellCb; 
    
-   TRC3(rlcDbmCreateDlCellCb)
 
    RLC_ALLOC(gCb,*cellCb, sizeof(RlcDlCellCb));
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -734,8 +721,6 @@ RlcCb         *gCb;
 RlcDlCellCb   *cellCb;
 #endif
 {
-   TRC3(rlcDbmDelDlCellCb)
-
 
    /* Delete all rbCbs in cellCb */
    rlcDbmDelAllDlRb(gCb,cellCb->rbCb, RLC_MAX_RB_PER_CELL);
@@ -775,9 +760,6 @@ RlcCb *gCb;
 {
    RlcDlCellCb *cellCb = NULLP;
 
-   TRC3(rlcDbmDelAllDlCell)
-
-
    /* Until no more cellCb is ueLstCp hash list get and delete cellCb */
    while (ROK == cmHashListGetNext(&(gCb->u.dlCb->cellLstCp), 
                                    (PTR) cellCb, 
@@ -813,7 +795,6 @@ S16 rlcDbmDlShutdown(gCb)
 RlcCb *gCb;
 #endif
 {
-   TRC3(rlcDbmDlShutdown)
 
    rlcDbmDelAllDlCell(gCb);
 

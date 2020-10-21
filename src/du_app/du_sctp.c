@@ -159,7 +159,7 @@ uint8_t duSctpCfgReq(SctpParams sctpCfg)
    f1Params.itfState             = DU_SCTP_DOWN;
    f1Params.srcPort              = sctpCfg.duPort[F1_INTERFACE];
    f1Params.recvMsgSet           = ROK;
-   memset ((uint8_t *)&f1Params.sockFd, -1, sizeof(CmInetFd));
+   memset (&f1Params.sockFd, -1, sizeof(CmInetFd));
    fillDestNetAddr(&f1Params.destIpNetAddr, &f1Params.destIpAddr);
    fillAddrLst(&f1Params.destAddrLst, &f1Params.destIpAddr);
 
@@ -170,7 +170,7 @@ uint8_t duSctpCfgReq(SctpParams sctpCfg)
    ricParams.itfState            = DU_SCTP_DOWN;
    ricParams.srcPort             = sctpCfg.duPort[E2_INTERFACE];
    ricParams.recvMsgSet          = ROK;
-   memset ((uint8_t *)&ricParams.sockFd, -1, sizeof(CmInetFd));
+   memset (&ricParams.sockFd, -1, sizeof(CmInetFd));
    fillDestNetAddr(&ricParams.destIpNetAddr, &ricParams.destIpAddr);
    fillAddrLst(&ricParams.destAddrLst, &ricParams.destIpAddr);
 
@@ -401,7 +401,7 @@ uint8_t duFillSctpPst(Pst *pst, Event event)
       printf("\nDU_APP : Failed to allocate memory");
       return RFAILED;
    }
-   memset((uint8_t *)pst, 0, sizeof(Pst));
+   memset(pst, 0, sizeof(Pst));
    pst->srcEnt = (Ent)ENTDUAPP;
    pst->srcInst = (Inst)DU_INST;
    pst->srcProcId = DU_PROC;
@@ -479,7 +479,7 @@ void sendToDuApp(Buffer *mBuf, Event event)
    ODU_PRINT_MSG(mBuf, 0, 0);
 
 
-   memset((uint8_t *)&(pst), 0, sizeof(Pst));
+   memset(&(pst), 0, sizeof(Pst));
    pst.srcEnt = (Ent)ENTSCTP;
    pst.srcInst = (Inst)SCTP_INST;
    pst.srcProcId = DU_PROC;
@@ -577,7 +577,7 @@ uint8_t sctpNtfyHdlr(CmInetSctpNotification *ntfy, uint8_t *itfState)
    /* Pack notification and send to APP */
    DU_LOG("\nSCTP : Forwarding received message to duApp");
     
-   memset((uint8_t *)&(pst), 0, sizeof(Pst));
+   memset(&(pst), 0, sizeof(Pst));
    pst.srcEnt = (Ent)ENTSCTP;
    pst.srcInst = (Inst)SCTP_INST;
    pst.srcProcId = DU_PROC;

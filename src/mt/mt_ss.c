@@ -815,7 +815,6 @@ int argc;                       /* argument count */
 char **argv;                    /* argument vector */
 #endif
 {
-   TRC0(main);
 
 #ifdef XEON_MULTIPLE_CELL_CHANGES
    /* Read the WLS parameters from the file and copy into global control block */
@@ -876,7 +875,6 @@ int argc;                       /* argument count */
 char **argv;                    /* argument vector */
 #endif
 {
-   TRC0(ssMain);
 
 
    msArgc = argc;
@@ -922,7 +920,6 @@ S16 ssdInitGen()
    struct sigaction sa;
 #endif
 
-   TRC0(ssdInitGen);
 
   /*mt014.301 : 4GMX release related changes*/
 #ifdef SS_4GMX_UCORE
@@ -1076,7 +1073,6 @@ void
 Void ssdDeinitGen()
 #endif
 {
-   TRC0(ssdDeinitGen);
 
 
    sem_destroy(&osCp.dep.ssStarted);
@@ -1243,7 +1239,6 @@ U32                    doNotBlockForLock;   /* Boolean whether to block for lock
    CmMmBlkSetElement   *globMemNode;
    S16                  lockRet = 0;
 
-   TRC1(ssPutDynMemBlkSet);
 
    globReg = osCp.globRegCb;
 
@@ -1331,7 +1326,6 @@ U32                    doNotBlockForLock;   /* Boolean whether to block for lock
    CmMmBlkSetElement    *globMemNode;
    S16                   lockRet = 0;
 
-   TRC1(ssGetDynMemBlkSet);
 
    globReg = osCp.globRegCb;
 
@@ -1395,7 +1389,6 @@ Region reg;
    CmMmGlobRegCb        *globReg;
    CmMmGlobalBktCb      *bktCb;
    U8 bktIdx= reg;
- TRC3(isMemThreshReached)
 
    globReg = osCp.globRegCb;
 
@@ -1681,7 +1674,6 @@ S16 ssdInitMem()
 #endif
 #endif /* SS_LOCKLESS_MEMORY */
    
-   TRC0(ssdInitMem);
 
    /* Use the default SSI memory manager if the ICC memory manager is not 
     * avilable. If ICC memory manager is avilable, it will be used for
@@ -1977,7 +1969,6 @@ Void ssdDeinitMem()
    /* mt018.201 - added local variables */
    U8     i;
 
-   TRC0(ssdDeinitMem);
 	/* mt008.301 Additions */
 #ifdef SS_MEM_LEAK_STS
 	cmDeinitMemLeakMdl();
@@ -2024,7 +2015,6 @@ S16 ssdInitTsk()
    U32 tskInd = 0;
 #endif /* SS_MULTICORE_SUPPORT || SS_AFFINITY_SUPPORT */
 
-   TRC0(ssdInitTsk);
 
 
 /*mt013.301 :Added SS_AFFINITY_SUPPORT  */
@@ -2062,7 +2052,6 @@ void
 Void ssdDeinitTsk()
 #endif
 {
-   TRC0(ssdDeinitTsk);
 
    RETVOID;
 }
@@ -2097,7 +2086,6 @@ S16 ssdInitDrvr()
    pthread_attr_t attr;
 #endif
 
-   TRC0(ssdInitDrvr);
 
 
    /* initialize the dependent portion of the driver task entries */
@@ -2171,7 +2159,6 @@ void
 Void ssdDeinitDrvr()
 #endif
 {
-   TRC0(ssdDeinitDrvr);
   /* mt008.301: Terminate the Driver Task on exit */
   while(pthread_cancel(osCp.dep.isTskHdlrTID));
 
@@ -2222,7 +2209,6 @@ S16 ssdInitTmr()
    U32 threadCreated = FALSE;
 #endif /* SS_THR_REG_MAP */
 
-   TRC0(ssdInitTmr);
 
 
    osCp.dep.tmrTqCp.tmrLen = SS_MAX_TMRS;
@@ -2314,7 +2300,6 @@ Void ssdDeinitTmr()
    S16         ret;
 #endif /* SS_MULTICORE_SUPPORT */
 
-   TRC0(ssdDeinitTmr);
 
 #ifdef SS_MULTICORE_SUPPORT
    ret = SLock(&osCp.sTskTblLock);
@@ -2388,7 +2373,6 @@ S16 ssdInitLog()
 #endif /* CONAVL */
 
 /* mt008.301: ssdInitFinal changed to ssdInitLog */
-   TRC0(ssdInitLog);
 
 
 #ifdef CONAVL
@@ -2483,7 +2467,6 @@ Void ssdDeinitLog()
 #endif
 {
 /* mt008.301: ssdDeinitFinal changed to ssdDeinitLog */
-   TRC0(ssdDeinitLog);
 #ifdef CONAVL
 #ifndef CONRD
   /* mt008.301: Terminate the console reader on exit */
@@ -2524,7 +2507,6 @@ U16 port;
    }
 #endif /* SS_MULTIPLE_PROCS */
 
-   TRC0(ssdInitWatchDog);
 
    SInitLock(&osCp.wdCp.wdLock, SS_LOCK_MUTEX);
 
@@ -2631,7 +2613,6 @@ S16 ssdInitWatchDgPst(pst)
 Pst *pst;
 #endif
 {
-   TRC1(ssInitWatchDgPst);
 
    pst->selector  = SS_LOOSE_COUPLING;
 
@@ -2671,7 +2652,6 @@ S16 ssdWatchDgActvTmr()
 #endif
 #endif /* SS_MULTIPLE_PROCS */
 {
-   TRC3(ssWatchDgActvTmr);
 
    cmPrcTmr(&osCp.wdCp.watchDgTqCp, osCp.wdCp.watchDgTs, (PFV)ssdWatchDgTmrEvt);
 
@@ -2698,7 +2678,6 @@ S16       event;     /* timer number */
    Bool restartTmr;
    int i;
 
-   TRC2(ssWatchDgTmrEvt);
 
    switch(event)
    {
@@ -2761,7 +2740,6 @@ U16              wait;
 #endif
 
 
-   TRC2(ssStartWatchDgTmr)
 	/* mt003.301 Modifications */
 #ifdef DEBUGP
    SGetDateTime(&dt);
@@ -2814,7 +2792,6 @@ S16              event;
    int i;
 #endif
 
-   TRC2(ssStopWatchDgTmr)
 	/* mt003.301 Modifications */
 #ifdef DEBUGP
    SGetDateTime(&dt);
@@ -2868,7 +2845,6 @@ U32              type;
    int             n;
    int             err;
 
-   TRC2(ssdSndHrtBtReq)
 
 #ifdef DEBUGP
    SGetDateTime(&dt);
@@ -2982,7 +2958,6 @@ PRIVATE Void mtGetOpts()
    Cntr   idx=0;
 #endif
 
-   TRC0(mtGetOpts);
 
 
    msOptInd = 1;
@@ -3347,7 +3322,6 @@ char *opts;                 /* options */
    S8 *cp;
 #endif
 
-   TRC1(SGetOpt);
 
    /* mt020.201 - Addition for no command line */
 #ifdef NOCMDLINE
@@ -3453,7 +3427,6 @@ Void ssdStart()
    S16 i;
 
 
-   TRC0(ssdStart);
 
 
    /* mt025.201 - Modification for adding lock to timer handler */
@@ -3499,10 +3472,6 @@ SsTTskEntry *tTsk;          /* pointer to TAPA task entry */
    Buffer *mBuf;
    SsMsgInfo *mInfo;
    S16 ret;
-
-
-   TRC0(ssdAttachTTsk);
-
 
    if (tTsk->tskType == SS_TSK_PERMANENT)
    {
@@ -3584,8 +3553,6 @@ S16 ssdDetachTTsk(tTsk)
 SsTTskEntry *tTsk;          /* pointer to TAPA task entry */
 #endif
 {
-   TRC0(ssdDetachTTsk);
-
 
    return ROK;
 }
@@ -3623,7 +3590,6 @@ SsSTskEntry *sTsk;          /* pointer to system task entry */
    U32 threadCreated = FALSE;
 #endif
 
-   TRC0(ssdCreateSTsk);
 
 
 #ifdef SS_SINGLE_THREADED
@@ -3770,7 +3736,6 @@ void* arg;
    threadArg->argument = arg;
    threadArg->start_routine = start_routine;
    
-   TRC0(SCreatePThread);
 
    printf("Creating thread here %s %d\n", __FILE__, __LINE__);
    {
@@ -3829,7 +3794,6 @@ pthread_attr_t   *attr
 {
    struct sched_param    param;
 
-   TRC0 (ssdSetPthreadAttr)
 
    SMemSet(&param, 0, sizeof(param));
 
@@ -3920,7 +3884,6 @@ U32 *coreId;                    /* the core/processor id to which the affinity i
    U32 lwpId = *tskId;
 #endif /*SUNOS*/
 #endif /*SS_LINUX*/
-   TRC0(ssdGetAffinity);
 #ifdef SS_LINUX
    for (tskInd = 0;  tskInd < SS_MAX_STSKS;  tskInd++)
    {
@@ -4036,7 +3999,6 @@ U32 coreId;                     /* the core/processor id to which the affinity h
 #endif /*SUNOS*/
 #endif /*SS_LINUX*/
 
-   TRC0(ssdSetAffinity)
 
 #ifdef SS_LINUX
    for (tskInd = 0;  tskInd < SS_MAX_STSKS;  tskInd++)
@@ -4138,7 +4100,6 @@ SsSTskEntry *sTsk;          /* pointer to system task entry */
    SsMsgInfo *mInfo;
 
 
-   TRC0(ssdDestroySTsk);
 
 
    /* we send a message to this system task to tell it to die */
@@ -4196,7 +4157,6 @@ S16 SThreadYield()
 #endif
 {
 
-   TRC0(SThreadYield);
 
 /* mt024.201 - seperated Linux and other UNIX implementations
  */
@@ -4251,7 +4211,6 @@ SsTmrEntry *tmr;            /* pointer to timer entry */
    CmTmrArg arg;
 
 
-   TRC0(ssdRegTmr);
 
 
    /* initialize common timers */
@@ -4301,7 +4260,6 @@ SsTmrEntry *tmr;            /* pointer to timer entry */
    CmTmrArg arg;
 
 
-   TRC0(ssdDeregTmr);
 
 
    /* stop the timer */
@@ -4351,7 +4309,6 @@ Reason reason;              /* reset reason */
    Txt errBuf[256];
 
 
-   TRC0(ssdError);
 
 
    /* get calling task ID */
@@ -4432,7 +4389,6 @@ Txt *errDesc;               /* description of error */
    Txt errBuf[512];
 
 
-   TRC0(ssdLogError);
 
 
    /* get calling task ID */
@@ -4541,7 +4497,6 @@ S16 ssdRegDrvrTsk(drvrTsk)
 SsDrvrTskEntry *drvrTsk;        /* driver task entry */
 #endif
 {
-   TRC0(ssdRegDrvrTsk);
 
 
    return ROK;
@@ -4571,7 +4526,6 @@ S16 ssdDeregDrvrTsk(drvrTsk)
 SsDrvrTskEntry *drvrTsk;        /* driver task entry */
 #endif
 {
-   TRC0(ssdDeregDrvrTsk);
 
 
    return ROK;
@@ -4621,7 +4575,6 @@ SsIdx idx;
    S16 n;
 	S16  ret;
 
-   TRC0(ssdProcTTskTerm);
 
 
    ent = tTsk->ent;
@@ -5584,7 +5537,6 @@ S16 evnt;                       /* event */
 #endif
 #endif
 
-   TRC0(mtTimeout);
 
 
    /* get the timer entry */
@@ -5875,10 +5827,6 @@ Ptr tskPtr;                     /* pointer to task entry */
 #endif
    MtIsFlag isFlag;
 
-
-   TRC0(mtIsTskHdlr);
-
-
    for (; ;)
    {
       if (read(osCp.dep.isFildes[0], &isFlag, sizeof(isFlag)) != sizeof(isFlag))
@@ -5978,8 +5926,6 @@ int arg;
 #endif
 {
 
-   TRC0(mtIntSigHndlr);
-
    osCp.dep.sigEvnt=TRUE;
 
 #ifdef MSPD
@@ -6017,8 +5963,6 @@ Void mtExitClnup()
    Ticks ticks;
    S8 buf[128];
 
-
-   TRC0(mtExitClnup);
 
    SGetSysTime(&ticks);
 #ifdef ALIGN_64BIT
@@ -6081,7 +6025,6 @@ S16 chan;                   /* channel */
 Txt *buf;                   /* buffer */
 #endif
 {
-   TRC1(SDisplay);
 
 /* mt020.201 - Fixed typo */
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -6149,7 +6092,6 @@ void
 S16 SFini()
 #endif
 {
-   TRC1(SFini);
 
    /* mt030.201 added under compilet time flag SS_LINUX and SLES9_PLUS
       a loop to overcome the child processes being killed upon exiting the
@@ -6195,8 +6137,6 @@ S16 SSetDateTime(dt)
 REG1 DateTime *dt;          /* date and time */
 #endif
 {
-   TRC1(SSetDateTime);
-
 
    UNUSED(dt);
 
@@ -6241,8 +6181,6 @@ REG1 DateTime *dt;          /* date and time */
 
    struct tm tme;
 
-
-   TRC1(SGetDateTime);
 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -6322,7 +6260,6 @@ PRIVATE U64 now;
    struct timeval ptime;
 #endif
 
-   TRC1(SEpcTime);
 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -6379,7 +6316,6 @@ S16 SGetSysTime(sysTime)
 Ticks *sysTime;             /* system time */
 #endif
 {
-   TRC1(SGetSysTime);
 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -6438,7 +6374,6 @@ U32 *usec;
    struct timeval ptime;
 #endif
 
-   TRC1(SGetSysTime);
 
 #ifndef SS_LINUX
   clock_gettime(CLOCK_REALTIME, &ptime);
@@ -6497,7 +6432,6 @@ S16 SRandom(value)
 Random *value;              /* random number */
 #endif
 {
-   TRC1(SRandom);
 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -6539,7 +6473,6 @@ void
 S16 SExitTsk()
 #endif
 {
-   TRC1(SExitTsk);
 
 
    return ROK;
@@ -6568,7 +6501,6 @@ void
 S16 SExitInt()
 #endif
 {
-   TRC1(SExitInt);
 
 
    return ROK;
@@ -6601,7 +6533,6 @@ void
 S16 SHoldInt()
 #endif
 {
-   TRC1(SHoldInt);
 
 
    return ROK;
@@ -6630,7 +6561,6 @@ void
 S16 SRelInt()
 #endif
 {
-   TRC1(SRelInt);
 
 
    return ROK;
@@ -6660,7 +6590,6 @@ void
 INLINE S16 SEnbInt()
 #endif
 {
-   TRC1(SEnbInt);
 
 
    return ROK;
@@ -6690,7 +6619,6 @@ void
 INLINE S16 SDisInt()
 #endif
 {
-   TRC1(SDisInt);
 
 
    return ROK;
@@ -6723,7 +6651,6 @@ VectNmb vectNmb;                /* vector number */
 PIF *vectFnct;                  /* vector function */
 #endif
 {
-   TRC1(SGetVect);
 
 
    UNUSED(vectNmb);
@@ -6760,7 +6687,6 @@ VectNmb vectNmb;                /* vector number */
 PIF vectFnct;                   /* vector function */
 #endif
 {
-   TRC1(SPutVect);
 
 
    UNUSED(vectNmb);
@@ -6806,7 +6732,6 @@ Inst *inst;                     /* instance */
    SsSTskEntry *sTsk;
 
 
-   TRC1(SGetEntInst);
 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -6881,7 +6806,6 @@ Inst inst;                  /* instance */
    SsSTskEntry *sTsk;
 
 
-   TRC1(SSetEntInst);
 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -6957,7 +6881,6 @@ Bool flag;                      /* flag */
    MtIsFlag isFlag;
 
 
-   TRC1(SSetIntPend);
 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -7011,7 +6934,6 @@ S16 SGlobMemInfoShow()
    Txt   prntBuf[100];
    CmMmGlobRegCb   *globReg;
    
-   TRC1(SGlobMemInfoShow);
 
    globReg = osCp.globRegCb;
 
@@ -7115,7 +7037,6 @@ U32 *availmem;
    U16   idx;
    Txt   prntBuf[100];
 
-   TRC1(SRegInfoShow);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (region > (SS_MAX_REGS-1) )
@@ -7303,7 +7224,6 @@ SsMemDbgInfo *dbgInfo;
 {
    U32 idx;
 
-   TRC1(SGetRegInfo);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (region >= mtMemoCfg.numRegions )
@@ -7407,7 +7327,6 @@ U8 typeFlag;
    U32 statMemSize;
    U32 dynMemSize;
 
-   TRC1(SPrintRegMemStatusInfo);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (region >= mtMemoCfg.numRegions )
@@ -7520,7 +7439,6 @@ Region region;
    U32 idx;
    U32 cntEnt;
 
-   TRC1(SPrintRegMemStats);
 
    hashListCp = &mtCMMRegCb[region]->hashListCp;
 
@@ -7628,7 +7546,6 @@ S16 errCode;
 {
    Txt prntBuf[150];
 
-   TRC1(SRegMemErrHdlr);
 
    if (errCode == RDBLFREE)
    {
@@ -7681,7 +7598,6 @@ Region region;
    U32 blkCnt;
 
 
-   TRC1(SPrintRegMemProfile);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (region >= mtMemoCfg.numRegions )
@@ -7916,7 +7832,6 @@ S8    *ts;
    S8 time_string[40];
    S32 microseconds;
 
-   TRC1(SGetTimeStamp);
 
 #ifndef SS_LINUX
   clock_gettime(CLOCK_REALTIME, &ptime);
@@ -7975,7 +7890,6 @@ Void
 U32 SGetSystemTsk()
 #endif
 {
-   TRC1(SGetSystemTskS);
 
    return (pthread_self());
 
@@ -8005,7 +7919,6 @@ PRIVATE SsSTskEntry* ssdAddTmrSTsk()
    SsSTskEntry *sTsk;
    S16 ret;
 
-   TRC1(ssdAddTmrSTsk);
    sTsk = NULLP;
    /* lock the system task table */
    ret = SLock(&osCp.sTskTblLock);
@@ -8146,7 +8059,6 @@ U8        lockType;
    Txt prntBuf[PRNTSZE];
    S16    retVal = ROK;
 
-   TRC1(ssdInitLockNew);
 
    switch(lockType)
    {
@@ -8234,7 +8146,6 @@ U8         lockType;
    Txt prntBuf[PRNTSZE];
    S16    retVal = ROK;
 
-   TRC1(ssdLockNew);
 
    switch(lockType)
    {
@@ -8333,7 +8244,6 @@ U8        lockType;
    Txt prntBuf[PRNTSZE];
    S16    retVal = ROK;
 
-   TRC1(ssdUnlockNew);
 
    switch(lockType)
    {
@@ -8399,7 +8309,6 @@ U8        lockType;
    Txt prntBuf[PRNTSZE];
    S16    retVal = ROK;
 
-   TRC1(ssdDestroyLockNew);
 
    switch(lockType)
    {
@@ -8470,7 +8379,6 @@ S16 ssInitRcvWork()
   pthread_attr_t attr;
   pthread_t      thread;
 
-  TRC1(ssInitRcvWork);
 
   /* set the required attributes */
   pthread_attr_init(&attr);
@@ -8529,7 +8437,6 @@ PRIVATE void *workRcvTsk (ptr)
   struct timespec ts;
   Pst         pst;
 
-  TRC1(workRcvTsk);
 
 
   for (;;)
@@ -8690,7 +8597,6 @@ Region       region       /* Region associated with thread */
    PRIVATE pthread_t createdThreadIds[SS_MAX_THREAD_CREATE_RETRY];
    U32               indx;
 
-   TRC1(ssCheckAndAddMemoryRegionMap);
 
    /* Here  0xFF is considered as invalid region and if the mapping table
     * contains 0xFF, that mapping entry is free
@@ -8760,7 +8666,6 @@ pthread_t    threadId    /* Thread Id of system task */
 )
 {
 
-   TRC1(ssCheckAndDelMemoryRegionMap);
 
    /* Raghu To-Do Check with team, is it necessary to acquire lock
     * as del and add may go parallel */
@@ -9028,7 +8933,6 @@ U8 idx;
    SsSTskEntry *sTsk;
    S16 ret;
 
-   TRC1(ssdReAddTmrSTsk);
    sTsk = NULLP;
    /* lock the system task table */
    ret = SLock(&osCp.sTskTblLock);
@@ -9156,7 +9060,6 @@ S16 ssdReInitTmr()
    U32 threadCreated = FALSE;
 #endif /* SS_THR_REG_MAP */
 
-   TRC0(ssdReInitTmr);
 
 #ifndef XEON_SPECIFIC_CHANGES
    ret = ssCheckAndDelMemoryRegionMap(osCp.dep.tmrHdlrTID);

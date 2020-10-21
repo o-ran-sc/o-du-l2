@@ -263,7 +263,7 @@ PRIVATE S16 rlcAddToUlL2Meas(RlcCb *gCb, RlcUlRbCb *rlcRbCb,U8 cellId,U8 ueId)
                ueIdx = freeIdx;
             }
             measCb->val.ipThMeas.ueInfoLst[ueIdx].isValid = TRUE;
-            cmMemset((U8 *)&measCb->val.ipThMeas.ueInfoLst[ueIdx].measData[0],0x00,(sizeof(RlcL2Cntr) *LKW_MAX_QCI));
+            memset(&measCb->val.ipThMeas.ueInfoLst[ueIdx].measData[0],0x00,(sizeof(RlcL2Cntr) *LKW_MAX_QCI));
             measCb->val.ipThMeas.ueInfoLst[ueIdx].numQci = 0;
          }
          measCb->val.ipThMeas.ueInfoLst[ueIdx].ueId = ueId;
@@ -322,7 +322,6 @@ RlcUlUeCb        *ueCb;
 RlcEntCfgInfo   *entCfg;
 #endif
 {
-   TRC3(rlcCfgFillUlRbCb)
 
    RLOG_ARG3(L_DEBUG,DBG_UEID,rbCb->rlcId.ueId, 
                 "rlcCfgFillRbCb(cellId(%d), rbId(%d), rbType(%d))",
@@ -432,7 +431,6 @@ void            *ptr;
 RlcEntCfgInfo   *entCfg;
 #endif
 {
-   TRC3(rlcCfgUpdateUlRb)
    
    switch (rbCb->mode)
    {
@@ -632,7 +630,6 @@ RlcUlEntTmpData   *cfgEntData;
 RlcUlCfgTmpData   *cfgTmpData; 
 #endif
 {
-   TRC3(rlcCfgValidateUlRb)
 
    RLOG_ARG2(L_DEBUG,DBG_UEID,cfgTmpData->ueId,
                "cellId(%d), cfgType(%d)",
@@ -856,7 +853,6 @@ RlcUlEntTmpData   *cfgEntData;
 )
 #endif
 {
-   TRC3(rlcCfgRollBackUlRb)
 
    if(CKW_CFG_ADD == cfg->cfgType)
    {
@@ -910,7 +906,6 @@ RlcUlCfgTmpData   *cfgTmpData;
 )
 #endif
 {
-   TRC3(rlcCfgApplyUlRb)
   
    switch(cfgToAply->cfgType)
    {
@@ -1052,7 +1047,6 @@ RlcUlEntTmpData   *cfgEntData;
 RlcUlCfgTmpData   *cfgTmpData;
 #endif
 {
-   TRC3(rlcCfgValidateDelUlUe)
 
    RLOG_ARG2(L_DEBUG,DBG_UEID,cfgTmpData->ueId, 
              "cellId(%d), cfgType(%d)",
@@ -1105,7 +1099,6 @@ RlcUlCfgTmpData   *cfgTmpData;
 )
 #endif
 {
-   TRC3(rlcCfgApplyDelUlUe)
    
 #ifdef LTE_L2_MEAS
    rlcDelFrmUlL2Meas(gCb,cfgTmpData->cellId,cfgTmpData->ueId);
@@ -1148,7 +1141,6 @@ RlcUlEntTmpData   *cfgEntData;
 RlcUlCfgTmpData   *cfgTmpData;
 #endif
 {
-   TRC3(rlcCfgValidateDelUlCell)
 
    RLOG_ARG1(L_DEBUG,DBG_CELLID,cellId ,"cfgType(%d)",
               cfgToValidate->cfgType);
@@ -1199,7 +1191,6 @@ RlcUlCfgTmpData   *cfgInfo;
 )
 #endif
 {
-   TRC3(rlcCfgApplyDelUlCell)
    
    rlcDbmDelUlCellCb(gCb,cfgInfo->cellCb);
    RETVOID;
@@ -1238,7 +1229,6 @@ RlcUlEntTmpData   *cfgEntData;
 #endif
 {
    CmLteRlcId   rlcId;   /* RLC Identifier */
-   TRC3(rlcCfgValidateReEstRb)
 
    RLOG_ARG2(L_DEBUG, DBG_UEID,ueId,
          "cellId(%d) RBID:%d",
@@ -1301,7 +1291,6 @@ RlcUlEntTmpData   *cfgEntData;
 #endif
 {
    CmLteRlcId   rlcId;   /* RLC Identifier */
-   TRC3(rlcCfgApplyReEstUlRb)
    
    rlcId.ueId = ueId;
    rlcId.cellId = cellId;
@@ -1361,7 +1350,6 @@ RlcUlCfgTmpData   *cfgTmpData;
 #endif
 {
    RlcUlUeCb   *ueCb;
-   TRC3(rlcCfgValidateUeIdChng)
 
 #define CFM_STATUS  cfgTmpData->cfgEntData[0].entUlCfgCfm.status
    if ( (ueInfo->ueId == newUeInfo->ueId) && 
@@ -1428,7 +1416,6 @@ RlcUlCfgTmpData   *cfgTmpData;
 )
 #endif
 {
-   TRC3(rlcCfgApplyUlUeIdChng)
    
 #ifdef LTE_L2_MEAS
    rlcHdlMeasUlUeIdChg(gCb, ueInfo->cellId, ueInfo->ueId, newUeInfo->ueId);

@@ -115,8 +115,6 @@ Region mdRegId;                 /* region for message and data blocks */
 Region datRegId;                /* region for data buffers */
 #endif
 {
-   TRC1(ssStrmCfg);
-
 
    strmCfg.mdRegion = mdRegId;
    strmCfg.datRegion = datRegId;
@@ -169,10 +167,6 @@ S32 len;                        /* bytes to remove */
    U8 type;                     /* message type */
    SsMblk *bp;                  /* mblk for iteration */
    SsMblk *first;               /* first mblk to be adjusted */
-
-
-   TRC1(ssAdjMsg);
-
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (mp == NULLP)
@@ -338,8 +332,6 @@ U32 pri;                        /* message priority */
    char* file = __FILE__;
    U32 line = __LINE__;
 #endif
-   TRC1(ssAllocB);
-
 
    UNUSED(pri);
 
@@ -432,9 +424,6 @@ SsMblk *mp;                     /* message block */
    U32 size;                    /* size of data content */
 
 
-   TRC1(ssCopyB);
-
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (mp == NULLP)
    {
@@ -500,10 +489,6 @@ SsMblk *mp;                     /* message block */
 {
    SsMblk *first;               /* first mblk in message */
    SsMblk *bp;                  /* mblk for iteration */
-
-
-   TRC1(ssCopyMsg);
-
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (mp == NULLP)
@@ -581,9 +566,6 @@ SsMblk *mp;                     /* message block */
 {
    SsMblk *bp;                  /* mblk for iteration */
    /* ss028.103 - Addition of lock for mBuf reference count */
-
-   TRC1(ssDupB);
-
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (mp == NULLP)
@@ -680,10 +662,6 @@ SsMblk *mp;                     /* message block */
    SsMblk *first;               /* first mblk in message */
    SsMblk *bp;                  /* mblk for iteration */
 
-
-   TRC1(ssDupMsg);
-
-
    /* dup the first mblock */
    first = bp = ssDupB(mp);
    if (bp == NULLP)
@@ -756,10 +734,6 @@ SsFrtn *fr_rtn;                 /* free routine */
    SsMblk *bp;                  /* mblk for iteration */
    Size m;                      /* mblk + dblk */
    S16 r;                       /* return value */
-
-
-   TRC1(ssESBAlloc);
-
 
    UNUSED(pri);
 
@@ -838,9 +812,6 @@ SsMblk *mp;                     /* message block */
    char* file = __FILE__;
    U32 line = __LINE__;
 #endif
-
-   TRC1(ssFreeB);
-
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (mp == NULLP)
@@ -1023,10 +994,6 @@ SsMblk *mp;                     /* message block */
 {
    SsMblk *bp;                  /* mblk for iteration */
 
-
-   TRC1(ssFreeMsg);
-
-
    /* free all the message blocks in the message */
    while (mp)
    {
@@ -1065,8 +1032,6 @@ SsMblk *mp;                     /* first message block */
 SsMblk *bp;                     /* second message block */
 #endif
 {
-   TRC1(ssLinkB);
-
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (mp == NULLP  ||  bp == NULLP)
@@ -1117,10 +1082,6 @@ SsMblk *mp;                     /* message block */
 {
    S32 n;                       /* temporary */
    S32 size;                    /* size of data */
-
-
-   TRC1(ssMsgDSize);
-
 
    /* for all blocks that are of type data, count the bytes */
    size = 0;
@@ -1186,10 +1147,6 @@ S32 len;                        /* number of bytes to align */
    S32 m;                       /* temporary */
    S32 n;                       /* temporary */
    U8 type;                     /* message type */
-
-
-   TRC1(ssPullupMsg);
-
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (mp == NULLP)
@@ -1376,10 +1333,6 @@ SsMblk *bp;                     /* message block */
 {
    SsMblk *rp;                  /* mblk that will be returned */
 
-
-   TRC1(ssRmvB);
-
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (mp == NULLP  ||  bp == NULLP)
    {
@@ -1459,10 +1412,6 @@ U32 pri;                        /* priority of the message buffer */
 {
    SsMblk *bp;                  /* mblk for iteration */
 
-
-   TRC1(ssTestB);
-
-
    bp = ssAllocB(size, pri);
    if (bp)
    {
@@ -1502,10 +1451,6 @@ SsMblk *mp;                     /* message */
 #endif
 {
    SsMblk *bp;                  /* mblk for iteration */
-
-
-   TRC1(ssUnlinkB);
-
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (mp == NULLP)

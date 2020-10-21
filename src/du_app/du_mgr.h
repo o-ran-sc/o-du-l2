@@ -55,7 +55,7 @@
 #define MAC_CONFIGURED (MAC_GEN_CFG | MAC_SAP_CFG)
 
 #define DU_SET_ZERO(_buf, _size)   \
-   memset((uint8_t *)(_buf), 0, _size);
+   memset((_buf), 0, _size);
 
 typedef enum
 {
