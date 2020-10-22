@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "a2119b30_1df6fa62",
+        "filename": "src/5gnrmac/mac_utils.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2020-10-22T13:31:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "586f7e5b_72496b11",
+      "revId": "45a469e6a399f2430b4a0bf1263647835bc66d3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b31bed6e_2f9e1dda",
         "filename": "src/5gnrmac/mac_utils.h",
         "patchSetId": 1
@@ -33,6 +51,24 @@
       "revId": "45a469e6a399f2430b4a0bf1263647835bc66d3b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9abe7a5a_026944e0",
+        "filename": "src/5gnrmac/mac_utils.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2020-10-22T13:31:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b31bed6e_2f9e1dda",
+      "revId": "45a469e6a399f2430b4a0bf1263647835bc66d3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "d537a3db_e2aedd93",
+        "filename": "src/5gnrmac/rg_cfg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2020-10-22T13:31:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8b8b72f1_df5d31f4",
+      "revId": "45a469e6a399f2430b4a0bf1263647835bc66d3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "11c35ec6_b1348e50",
         "filename": "src/5gnrmac/rg_l2m.c",
         "patchSetId": 1
@@ -64,6 +118,24 @@
       "writtenOn": "2020-10-22T08:14:40Z",
       "side": 1,
       "message": "check the use of UNUSED. Can this be also removed/replaced?. Can be done in separate commit",
+      "revId": "45a469e6a399f2430b4a0bf1263647835bc66d3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "46bf40bb_185c2f2b",
+        "filename": "src/5gnrmac/rg_l2m.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2020-10-22T13:31:20Z",
+      "side": 1,
+      "message": "okay",
+      "parentUuid": "11c35ec6_b1348e50",
       "revId": "45a469e6a399f2430b4a0bf1263647835bc66d3b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "5707a22f_be6b814d",
+        "filename": "src/5gnrmac/rg_l2m.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 541,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2020-10-22T13:31:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "938b85d5_870c6cad",
+      "revId": "45a469e6a399f2430b4a0bf1263647835bc66d3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "98c247d6_9ef5f446",
         "filename": "src/5gnrsch/rg_sch_utl.c",
         "patchSetId": 1
@@ -101,6 +191,24 @@
       "revId": "45a469e6a399f2430b4a0bf1263647835bc66d3b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6c696862_9ec2e059",
+        "filename": "src/5gnrsch/rg_sch_utl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4698,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2020-10-22T13:31:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "98c247d6_9ef5f446",
+      "revId": "45a469e6a399f2430b4a0bf1263647835bc66d3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "41411c74_4850b65a",
+        "filename": "src/cm/cm_gen.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2917,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2020-10-22T13:31:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a0097a38_3481830d",
+      "revId": "45a469e6a399f2430b4a0bf1263647835bc66d3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "56275cba_dbfadcda",
         "filename": "src/cm/cm_inet.h",
         "patchSetId": 1
@@ -135,6 +261,24 @@
       "revId": "45a469e6a399f2430b4a0bf1263647835bc66d3b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "19d2d96b_004f49d9",
+        "filename": "src/cm/cm_inet.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2020-10-22T13:31:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "56275cba_dbfadcda",
+      "revId": "45a469e6a399f2430b4a0bf1263647835bc66d3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
