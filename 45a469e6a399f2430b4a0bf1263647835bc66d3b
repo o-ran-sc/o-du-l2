@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "586f7e5b_72496b11",
+        "filename": "src/5gnrmac/mac_utils.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-22T08:14:40Z",
+      "side": 1,
+      "message": "typedef to uint8_t was needed for cmMemset. Not needed for memset. Check and remove from all memset calls",
+      "revId": "45a469e6a399f2430b4a0bf1263647835bc66d3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b31bed6e_2f9e1dda",
+        "filename": "src/5gnrmac/mac_utils.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-22T08:14:40Z",
+      "side": 1,
+      "message": "The definitions/declarations of cmMemset and cmMemcpy can also be removed since they are not used anymore. Lets Discuss.",
+      "revId": "45a469e6a399f2430b4a0bf1263647835bc66d3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8b8b72f1_df5d31f4",
+        "filename": "src/5gnrmac/rg_cfg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-22T08:14:40Z",
+      "side": 1,
+      "message": "Since TRC is not used anymore, lets remove its definitions as well from envdep.h",
+      "revId": "45a469e6a399f2430b4a0bf1263647835bc66d3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "11c35ec6_b1348e50",
+        "filename": "src/5gnrmac/rg_l2m.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-22T08:14:40Z",
+      "side": 1,
+      "message": "check the use of UNUSED. Can this be also removed/replaced?. Can be done in separate commit",
+      "revId": "45a469e6a399f2430b4a0bf1263647835bc66d3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "938b85d5_870c6cad",
+        "filename": "src/5gnrmac/rg_l2m.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 541,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-22T08:14:40Z",
+      "side": 1,
+      "message": "memcpy doesn\u0027t require typedef to uint8. Check and remove from all places",
+      "revId": "45a469e6a399f2430b4a0bf1263647835bc66d3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "98c247d6_9ef5f446",
+        "filename": "src/5gnrsch/rg_sch_utl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4698,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-22T08:14:40Z",
+      "side": 1,
+      "message": "is typecast to void needed?",
+      "revId": "45a469e6a399f2430b4a0bf1263647835bc66d3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a0097a38_3481830d",
+        "filename": "src/cm/cm_gen.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2917,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-22T08:14:40Z",
+      "side": 1,
+      "message": "why is the above code deleted?",
+      "revId": "45a469e6a399f2430b4a0bf1263647835bc66d3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "56275cba_dbfadcda",
+        "filename": "src/cm/cm_inet.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-22T08:14:40Z",
+      "side": 1,
+      "message": "check this typedef to void. If not needed, remove from all places",
+      "revId": "45a469e6a399f2430b4a0bf1263647835bc66d3b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
