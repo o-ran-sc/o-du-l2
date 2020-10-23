@@ -168,7 +168,7 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
 		  {
 		     break;
 		  }
-	       case EVENT_RLC_UL_UE_CREATE_RSP:
+	       case EVENT_RLC_UL_UE_CONFIG_RSP:
 		  {
 		     ret = unpackRlcUlUeCreateRsp(DuProcRlcUlUeCreateRsp, pst, mBuf);
 		     break;
@@ -237,9 +237,14 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
 		     ret = unpackMacUlCcchInd(duHandleUlCcchInd, pst, mBuf);
 		     break;
 		  }
-	       case EVENT_MAC_UE_CREATE_RSP:
+	       case EVENT_MAC_UE_CONFIG_RSP:
 		  {
-		     ret = unpackDuMacUeCreateRsp(DuHandleMacUeCreateRsp, pst, mBuf); 
+		     ret = unpackDuMacUeCfgRsp(DuProcMacUeCfgRsp, pst, mBuf); 
+		     break;
+		  }
+               case EVENT_MAC_UE_RECONFIG_RSP:
+		  {
+		     ret = unpackDuMacUeCfgRsp(DuProcMacUeCfgRsp, pst, mBuf); 
 		     break;
 		  }
 
