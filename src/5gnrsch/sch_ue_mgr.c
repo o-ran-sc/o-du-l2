@@ -53,7 +53,7 @@ SchUeCfgRspFunc SchUeCfgRspOpts[] =
  *         RFAILED - failure
  *
  * ****************************************************************/
-void SchSendUeCfgRspToMac(SchUeCfg *ueCfg, Inst inst,\
+void SchSendUeCfgRspToMac(uint16_t event, SchUeCfg *ueCfg, Inst inst,\
       SchMacRsp result, SchUeCfgRsp *cfgRsp)
 {
    Pst rspPst;
@@ -68,10 +68,228 @@ void SchSendUeCfgRspToMac(SchUeCfg *ueCfg, Inst inst,\
    /* Filling response post */
    memset(&rspPst, 0, sizeof(Pst));
    FILL_PST_SCH_TO_MAC(rspPst, inst);
-   rspPst.event = EVENT_UE_CREATE_RSP_TO_MAC;
-
+   if(event == EVENT_UE_CONFIG_REQ_TO_SCH)
+   {
+      rspPst.event = EVENT_UE_CONFIG_RSP_TO_MAC;
+   }
+   else if(event == EVENT_UE_RECONFIG_REQ_TO_SCH)
+   {
+      rspPst.event = EVENT_UE_RECONFIG_RSP_TO_MAC;
+   }
    SchUeCfgRspOpts[rspPst.selector](&rspPst, cfgRsp);
 }
+
+/*******************************************************************
+ *
+ * @brief Function to fill Dl Lc Context in SCH Ue Cb
+ *
+ * @details
+ *
+ *    Function : fillSchDlLcCtxt
+ *
+ *    Functionality: Function to fill Dl Lc Context in SCH Ue Cb
+ *
+ * @params[in] SchDlLcCtxt pointer,
+ *             SchLcCfg pointer
+ * @return void
+ *
+ * ****************************************************************/
+
+void fillSchDlLcCtxt(SchDlLcCtxt *ueCbLcCfg, SchLcCfg *lcCfg)
+{
+   ueCbLcCfg->lcId = lcCfg->lcId;
+   ueCbLcCfg->lcp = lcCfg->dlLcCfg.lcp;
+   ueCbLcCfg->lcState = SCH_LC_STATE_ACTIVE;
+   ueCbLcCfg->bo = 0;
+}
+
+/*******************************************************************
+ *
+ * @brief Function to fill Ul Lc Context in SCH Ue Cb
+ *
+ * @details
+ *
+ *    Function : fillSchUlLcCtxt
+ *
+ *    Functionality: Function to fill Ul Lc Context in SCH Ue Cb
+ *
+ * @params[in] SchUlLcCtxt pointer,
+ *             SchLcCfg pointer
+ * @return void
+ *
+ * ****************************************************************/
+
+void fillSchUlLcCtxt(SchUlLcCtxt *ueCbLcCfg, SchLcCfg *lcCfg)
+{
+   ueCbLcCfg->lcId = lcCfg->lcId;
+   ueCbLcCfg->lcState = SCH_LC_STATE_ACTIVE;
+   ueCbLcCfg->priority = lcCfg->ulLcCfg.priority;
+   ueCbLcCfg->lcGroup = lcCfg->ulLcCfg.lcGroup;
+   ueCbLcCfg->schReqId = lcCfg->ulLcCfg.schReqId;
+   ueCbLcCfg->pbr     = lcCfg->ulLcCfg.pbr;
+   ueCbLcCfg->bsd     = lcCfg->ulLcCfg.bsd;
+
+}
+
+/*******************************************************************
+ *
+ * @brief Function to update Sch Ul Lc Cb
+ *
+ * @details
+ *
+ *    Function : updateSchUlCb
+ *
+ *    Functionality: Function to update SCH Ul Lc Cb
+ *
+ * @returns void
+ *
+ * ****************************************************************/
+
+void updateSchUlCb(uint8_t delIdx, SchUlCb *ulInfo)
+{
+   uint8_t lcIdx = 0;
+
+   for(lcIdx = delIdx; lcIdx < ulInfo->numUlLc; lcIdx++)
+   {
+      memcpy(&ulInfo->ulLcCtxt[lcIdx], &ulInfo->ulLcCtxt[lcIdx+1], sizeof(SchUlLcCtxt));
+      memset(&ulInfo->ulLcCtxt[lcIdx+1], 0, sizeof(SchUlLcCtxt));
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Function to update SCH Dl Lc Cb
+ *
+ * @details
+ *
+ *    Function : updateSchDlCb
+ *
+ *    Functionality: Function to update SCH DL Lc Cb
+ *
+ * @returns void
+ *
+ * ****************************************************************/
+
+void updateSchDlCb(uint8_t delIdx, SchDlCb *dlInfo)
+{
+   uint8_t lcIdx = 0;
+
+   for(lcIdx = delIdx; lcIdx < dlInfo->numDlLc; lcIdx++)
+   {
+      memcpy(&dlInfo->dlLcCtxt[lcIdx], &dlInfo->dlLcCtxt[lcIdx+1], sizeof(SchDlLcCtxt));
+      memset(&dlInfo->dlLcCtxt[lcIdx+1], 0, sizeof(SchDlLcCtxt));
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Function to fill SchUeCb
+ *
+ * @details
+ *
+ *    Function : fillSchUeCb
+ *
+ *    Functionality: Function to fill SchUeCb
+ *
+ * @params[in] SchUeCb pointer,
+ *             SchUeCfg pointer
+ * @return ROK/RFAILED
+ *
+ * ****************************************************************/
+
+uint8_t fillSchUeCb(SchUeCb *ueCb, SchUeCfg *ueCfg)
+{
+   uint8_t   lcIdx, ueLcIdx;
+
+   memset(&ueCb->ueCfg, 0, sizeof(SchUeCfg));
+   memcpy(&ueCb->ueCfg, ueCfg, sizeof(SchUeCfg));
+   ueCb->state = SCH_UE_STATE_ACTIVE;
+
+   for(lcIdx = 0; lcIdx < ueCfg->numLcs; lcIdx++)
+   {
+      if(ueCfg->schLcCfg[lcIdx].configType == CONFIG_ADD)
+      {
+	 fillSchUlLcCtxt(&ueCb->ulInfo.ulLcCtxt[ueCb->ulInfo.numUlLc], &ueCfg->schLcCfg[lcIdx]);
+	 ueCb->ulInfo.numUlLc++;
+	 fillSchDlLcCtxt(&ueCb->dlInfo.dlLcCtxt[ueCb->dlInfo.numDlLc], &ueCfg->schLcCfg[lcIdx]);
+	 ueCb->dlInfo.numDlLc++;
+      }
+      else
+      {
+	 for(ueLcIdx = 0; ueLcIdx < ueCb->ulInfo.numUlLc; ueLcIdx++) //searching for Lc to be Mod
+         {
+	    if(ueCb->ulInfo.ulLcCtxt[ueLcIdx].lcId == ueCfg->schLcCfg[lcIdx].lcId)
+	    {
+	       if(ueCfg->schLcCfg[lcIdx].configType == CONFIG_MOD)
+	       {
+	          fillSchUlLcCtxt(&ueCb->ulInfo.ulLcCtxt[ueLcIdx], &ueCfg->schLcCfg[lcIdx]);
+	          fillSchDlLcCtxt(&ueCb->dlInfo.dlLcCtxt[ueLcIdx], &ueCfg->schLcCfg[lcIdx]);
+		  break;
+	       }
+               if(ueCfg->schLcCfg[ueLcIdx].configType == CONFIG_DEL)
+               {
+	          memset(&ueCb->ulInfo.ulLcCtxt[ueLcIdx], 0, sizeof(SchUlLcCtxt));
+	          ueCb->ulInfo.numUlLc--;
+	          updateSchUlCb(ueLcIdx, &ueCb->ulInfo); //moving arr elements one idx ahead 
+		  memset(&ueCb->dlInfo.dlLcCtxt[ueLcIdx], 0, sizeof(SchDlLcCtxt));
+	          ueCb->dlInfo.numDlLc--;
+	          updateSchDlCb(ueLcIdx, &ueCb->dlInfo); //moving arr elements one idx ahead
+		  break;
+               }
+            }
+         }/*End of inner for loop */
+      }
+   }/* End of outer for loop */
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Function to get SCH Cell Cb
+ *
+ * @details
+ *
+ *    Function : getSchCellCb
+ *
+ *    Functionality: Function to get SCH Cell Cb
+ *
+ * @params[in] event, SchUeCfg pointer 
+ * @return schUeCb pointer  - success
+ *         NULLP - failure
+ *
+ * ****************************************************************/
+
+SchCellCb *getSchCellCb(uint16_t srcEvent, Inst inst, SchUeCfg *ueCfg)
+{
+   uint8_t      idx;
+   SchCellCb    *cellCb = NULLP;
+   SchUeCfgRsp  cfgRsp;
+   memset(&cfgRsp, 0, sizeof(SchUeCfgRsp));
+
+   /* Search of cell cb */
+   for(idx = 0; idx < MAX_NUM_CELL; idx++)
+   {
+      cellCb = schCb[inst].cells[idx];
+      if(cellCb->cellId == ueCfg->cellId)
+	 break;
+   }
+   if(idx == MAX_NUM_CELL)
+   {
+      DU_LOG("\nSCH : Ue create request failed. Invalid cell id %d", ueCfg->cellId);
+      SchSendUeCfgRspToMac(srcEvent, ueCfg, inst, RSP_NOK, &cfgRsp);
+      return NULLP;
+   }
+
+   /* Check if max number of UE configured */
+   if(cellCb->numActvUe > MAX_NUM_UE)
+   {
+      DU_LOG("SCH : Max number of UE [%d] already configured", MAX_NUM_UE);
+      SchSendUeCfgRspToMac(srcEvent, ueCfg, inst, RSP_NOK, &cfgRsp);
+      return NULLP;
+   }
+   return cellCb;
+}
+
 
 /*******************************************************************
  *
@@ -90,46 +308,20 @@ void SchSendUeCfgRspToMac(SchUeCfg *ueCfg, Inst inst,\
  * ****************************************************************/
 uint8_t MacSchUeCreateReq(Pst *pst, SchUeCfg *ueCfg)
 {
-   uint8_t      idx;
-   uint8_t      lcId;
-   uint8_t      lcIdx;
-   uint16_t     ueIdx;
-   SchCellCb    *cellCb;
-   SchUeCb      *ueCb;
+   uint8_t ueIdx, lcIdx, ret = ROK;
+   SchCellCb    *cellCb = NULLP;
+   SchUeCb      *ueCb = NULLP;
    SchUeCfgRsp  cfgRsp;
    Inst         inst = pst->dstInst - 1;
-
-   DU_LOG("\nSCH : UE Create Request for CRNTI[%d]", ueCfg->crnti);
-
    memset(&cfgRsp, 0, sizeof(SchUeCfgRsp));
 
    if(!ueCfg)
    {
-      DU_LOG("\nSCH : UE create request failed");
+      DU_LOG("\nSCH : UE create request failed at MacSchUeCreateReq()");
       return RFAILED;
    }
-
-   /* Search of cell cb */
-   for(idx = 0; idx < MAX_NUM_CELL; idx++)
-   {
-      cellCb = schCb[inst].cells[idx];
-      if(cellCb->cellId == ueCfg->cellId)
-	 break;
-   }
-   if(idx == MAX_NUM_CELL)
-   {
-      DU_LOG("\nSCH : Ue create request failed. Invalid cell id %d", ueCfg->cellId);
-      SchSendUeCfgRspToMac(ueCfg, inst, RSP_NOK, &cfgRsp);
-      return ROK;
-   }
-
-   /* Check if max number of UE configured */
-   if(cellCb->numActvUe > MAX_NUM_UE)
-   {
-      DU_LOG("SCH : Max number of UE [%d] already configured", MAX_NUM_UE);
-      SchSendUeCfgRspToMac(ueCfg, inst, RSP_NOK, &cfgRsp);
-      return ROK;
-   }
+   DU_LOG("\nSCH : UE Create Request for CRNTI[%d]", ueCfg->crnti);
+   cellCb = getSchCellCb(pst->event, inst, ueCfg);
 
    /* Search if UE already configured */
    GET_UE_IDX(ueCfg->crnti, ueIdx);
@@ -139,43 +331,37 @@ uint8_t MacSchUeCreateReq(Pst *pst, SchUeCfg *ueCfg)
       if((ueCb->crnti == ueCfg->crnti) && (ueCb->state == SCH_UE_STATE_ACTIVE))
       {
 	 DU_LOG("\n SCH : CRNTI %d already configured ", ueCfg->crnti);
-	 SchSendUeCfgRspToMac(ueCfg, inst, RSP_OK, &cfgRsp);
+	 SchSendUeCfgRspToMac(pst->event, ueCfg, inst, RSP_OK, &cfgRsp);
 	 return ROK;
       }
+   }
+   else
+   {
+      DU_LOG("\n SCH : SchUeCb not found at MacSchUeCreateReq() ");
+      SchSendUeCfgRspToMac(pst->event, ueCfg, inst, RSP_NOK, &cfgRsp);
+      return RFAILED;
    }
 
    /* Fill received Ue Configuration in UeCb */
    memset(ueCb, 0, sizeof(SchUeCb));
+   GET_UE_IDX(ueCfg->crnti, ueIdx);
    ueCb->ueIdx = ueIdx;
    ueCb->crnti = ueCfg->crnti;
-   memcpy(&ueCb->ueCfg, ueCfg, sizeof(SchUeCfg));
    ueCb->state = SCH_UE_STATE_ACTIVE;
-
-   /* Fill SRB1 info */
-   for(lcIdx = 0; lcIdx < ueCfg->numLc; lcIdx++)
+   ret = fillSchUeCb(ueCb, ueCfg);
+   if(ret == ROK)
    {
-       lcId = ueCfg->lcCfgList[lcIdx].lcId;
-       ueCb->dlLcCtxt[lcId].lcp = ueCfg->lcCfgList[lcIdx].dlLcCfg.lcp;
-       ueCb->dlLcCtxt[lcId].lcState = SCH_LC_STATE_ACTIVE;
-       ueCb->dlLcCtxt[lcId].bo = 0;
-       ueCb->numDlLc++;
-       
-       if(ueCfg->lcCfgList[lcIdx].ulLcCfg)
-       {
-          /* TODO : Fill UL LC Cfg. As of now for SRB1, it is null */
-       }
+      cellCb->numActvUe++;
+      SET_ONE_BIT(ueCb->ueIdx, cellCb->actvUeBitMap);
+
+      ueCb->cellCb = cellCb;
+      ueCb->srRcvd = false;
+      for(lcIdx=0; lcIdx<MAX_NUM_LOGICAL_CHANNEL_GROUPS; lcIdx++)
+         ueCb->bsrInfo[lcIdx].dataVol = 0;
+
+      SchSendUeCfgRspToMac(pst->event, ueCfg, inst, RSP_OK, &cfgRsp);
    }
-
-   cellCb->numActvUe++;
-   SET_ONE_BIT(ueCb->ueIdx, cellCb->actvUeBitMap);
-
-   ueCb->cellCb = cellCb;
-   ueCb->srRcvd = false;
-   for(idx=0; idx<MAX_NUM_LOGICAL_CHANNEL_GROUPS; idx++)
-      ueCb->bsrInfo[idx].dataVol = 0;
-
-   SchSendUeCfgRspToMac(ueCfg, inst, RSP_OK, &cfgRsp);
-   return ROK;
+   return ret;
 }
 
 /*******************************************************************
@@ -334,6 +520,64 @@ uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo puschInfo, DciInfo *dciInfo)
    return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Hanles Ue Reconfig request from MAC
+ *
+ * @details
+ *
+ *    Function : MacSchUeReconfigReq
+ *
+ *    Functionality: Hanles Ue Reconfig request from MAC
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t MacSchUeReconfigReq(Pst *pst, SchUeCfg *ueCfg)
+{
+   uint8_t ueIdx, lcIdx, ret = ROK;
+   SchCellCb    *cellCb = NULLP;
+   SchUeCb      *ueCb = NULLP;
+   SchUeCfgRsp  cfgRsp;
+   Inst         inst = pst->dstInst - 1;
+   memset(&cfgRsp, 0, sizeof(SchUeCfgRsp));
+
+   if(!ueCfg)
+   {
+      DU_LOG("\nSCH : Reconfig request failed at MacSchUeReconfigReq()");
+      return RFAILED;
+   }
+   DU_LOG("\nSCH : Reconfig Request for CRNTI[%d]", ueCfg->crnti);
+   cellCb = getSchCellCb(pst->event, inst, ueCfg);
+
+   /* Search if UE already configured */
+   GET_UE_IDX(ueCfg->crnti, ueIdx);
+   ueCb = &cellCb->ueCb[ueIdx -1];
+   
+   if(!ueCb)
+   {
+      DU_LOG("\n SCH : SchUeCb not found at MacSchUeReconfigReq() ");
+      SchSendUeCfgRspToMac(pst->event, ueCfg, inst, RSP_NOK, &cfgRsp);
+      return RFAILED;
+   }
+   if((ueCb->crnti == ueCfg->crnti) && (ueCb->state == SCH_UE_STATE_ACTIVE))
+   {
+      /* Found the UeCb to Reconfig */
+      ret = fillSchUeCb(ueCb, ueCfg);
+      if(ret == ROK)
+      {
+         ueCb->cellCb = cellCb;
+         ueCb->srRcvd = false;
+         for(lcIdx=0; lcIdx<MAX_NUM_LOGICAL_CHANNEL_GROUPS; lcIdx++)
+            ueCb->bsrInfo[lcIdx].dataVol = 0;
+
+         SchSendUeCfgRspToMac(pst->event, ueCfg, inst, RSP_OK, &cfgRsp);
+      }
+   }
+   return ret;
+}
 
 /**********************************************************************
   End of file

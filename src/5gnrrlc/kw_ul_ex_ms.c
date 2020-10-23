@@ -237,7 +237,7 @@ Buffer *mBuf;           /* message buffer */
                      break;
                   }
                
-               case EVENT_RLC_UL_UE_CREATE_REQ:        /* UE Create Request */
+               case EVENT_RLC_UL_UE_CONFIG_REQ:        /* UE Create Request */
                   {
                      ret = unpackRlcUlUeCreateReq(RlcUlProcUeCreateReq, pst, mBuf);
                      break;

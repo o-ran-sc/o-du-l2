@@ -163,6 +163,15 @@ typedef struct PlmnIdentity
    uint8_t mnc[3];
 }Plmn;
 
+typedef enum
+{
+   CONFIG_UNKNOWN,
+   CONFIG_ADD,
+   CONFIG_MOD,
+   CONFIG_DEL
+}ConfigType;
+
+
 void schAllocFreqDomRscType0(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain);
 void oduCpyFixBufToMsg(uint8_t *fixBuf, Buffer *mBuf, uint16_t len);
 
