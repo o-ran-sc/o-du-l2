@@ -16,6 +16,24 @@
       "revId": "2a82bc6d025466602cbf335e5a7e65ceac186989",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1e7c77a6_97472ccf",
+        "filename": "build/odu/makefile",
+        "patchSetId": 3
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-23T08:54:40Z",
+      "side": 1,
+      "message": "compilation of odu cannot be clubbed with cu stub and ric stub since the stubs require NODE\u003dTEST_STUB option.",
+      "parentUuid": "be54997f_17bf5e84",
+      "revId": "2a82bc6d025466602cbf335e5a7e65ceac186989",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
