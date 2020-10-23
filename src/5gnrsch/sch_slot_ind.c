@@ -170,17 +170,17 @@ uint8_t schFillBoGrantDlSchedInfo(SchCellCb *cell, DlSchedInfo *dlSchedInfo, DlM
       dlMsgAlloc->numLc = 0;
       for(lcIdx = 0; lcIdx < MAX_NUM_LC; lcIdx++)
       {
-	 if(ueCb->dlLcCtxt[lcIdx].bo)
+	 if(ueCb->dlInfo.dlLcCtxt[lcIdx].bo)
 	 {
 	    dlMsgAlloc->lcSchInfo[dlMsgAlloc->numLc].lcId = lcIdx;
 
 	    /* calculation for BO includse RLC and MAC header size */
 	    dlMsgAlloc->lcSchInfo[dlMsgAlloc->numLc].schBytes = \
-	       ueCb->dlLcCtxt[lcIdx].bo + RLC_HDR_SIZE + MAC_HDR_SIZE;
+	       ueCb->dlInfo.dlLcCtxt[lcIdx].bo + RLC_HDR_SIZE + MAC_HDR_SIZE;
 	    accumalatedSize += dlMsgAlloc->lcSchInfo[dlMsgAlloc->numLc].schBytes;
 	    dlMsgAlloc->numLc++;
 	 }
-	 ueCb->dlLcCtxt[lcIdx].bo = 0;
+	 ueCb->dlInfo.dlLcCtxt[lcIdx].bo = 0;
       }
 
       /* pdcch and pdsch data is filled */

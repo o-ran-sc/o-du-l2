@@ -161,7 +161,7 @@ uint8_t unpackRlcUeCfgRsp(RlcDuUeCfgRsp func, Pst *pst, Buffer *mBuf)
 {
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      RlcUeCfgRsp *cfgRsp;
+      RlcUeCfgRsp *cfgRsp = NULLP;
       /* unpack the address of the structure */
       CMCHKUNPK(oduUnpackPointer, (PTR *)&cfgRsp, mBuf);
       ODU_PUT_MSG_BUF(mBuf);

@@ -1214,6 +1214,7 @@ typedef struct schDlLcCfg
 /* Logical Channel configuration */
 typedef struct schLcCfg
 {
+   ConfigType     configType;
    uint8_t        lcId;
    SchDrbQosInfo  *drbQos;
    SchSnssai      *snssai;
@@ -1237,8 +1238,8 @@ typedef struct schUeCfg
    SchPhyCellGrpCfg   phyCellGrpCfg;
    SchSpCellCfg       spCellCfg;
    SchAggrMaxBitRate  *aggrMaxBitRate;
-   uint8_t            numLc;
-   SchLcCfg           lcCfgList[MAX_NUM_LC];
+   uint8_t            numLcs;
+   SchLcCfg           schLcCfg[MAX_NUM_LC];
 }SchUeCfg;
 
 typedef struct schUeCfgRsp
@@ -1369,6 +1370,8 @@ uint8_t packMacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd);
 uint8_t MacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd);
 uint8_t packMacSchUeReconfigReq(Pst *pst, SchUeCfg *ueCfgToSch);
 uint8_t MacSchUeReconfigReq(Pst *pst, SchUeCfg *ueCfgToSch);
+uint8_t packSchUeReconfigRsp(Pst *pst, SchUeCfgRsp *cfgRsp);
+uint8_t MacProcSchUeReconfigRsp(Pst *pst, SchUeCfgRsp *cfgRsp);
 
 /**********************************************************************
   End of file

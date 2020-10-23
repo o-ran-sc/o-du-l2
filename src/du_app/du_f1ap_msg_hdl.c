@@ -6687,6 +6687,42 @@ uint8_t extractUeReCfgCellInfo(CellGroupConfigRrc_t *cellGrp, MacUeCfg *macUeCfg
 	 {
             extractTagReconfig(macCellGroup->tag_Config, &macUeCfg->macCellGrpCfg.tagCfg);
 	 }
+	 if(macCellGroup->bsr_Config)
+	 {
+            macUeCfg->macCellGrpCfg.bsrTmrCfg.periodicTimer = macCellGroup->bsr_Config->periodicBSR_Timer;
+            macUeCfg->macCellGrpCfg.bsrTmrCfg.retxTimer     = macCellGroup->bsr_Config->retxBSR_Timer;
+	    if(macCellGroup->bsr_Config->logicalChannelSR_DelayTimer)
+	    {
+               macUeCfg->macCellGrpCfg.bsrTmrCfg.srDelayTimer  =\
+	          *(macCellGroup->bsr_Config->logicalChannelSR_DelayTimer);
+	    }
+	 }
+	 if(macCellGroup->phr_Config)
+	 {
+	    if(macCellGroup->phr_Config->present == MAC_CellGroupConfig__phr_Config_PR_setup)
+	    {
+               macUeCfg->macCellGrpCfg.phrCfgSetupPres = true;
+               if(macCellGroup->phr_Config->choice.setup)
+	       {
+                macUeCfg->macCellGrpCfg.phrCfg.periodicTimer     = \
+		   macCellGroup->phr_Config->choice.setup->phr_PeriodicTimer;
+                macUeCfg->macCellGrpCfg.phrCfg.prohibitTimer     = \
+		   macCellGroup->phr_Config->choice.setup->phr_ProhibitTimer;
+                macUeCfg->macCellGrpCfg.phrCfg.txPowerFactor     = \
+		   macCellGroup->phr_Config->choice.setup->phr_Tx_PowerFactorChange;
+                macUeCfg->macCellGrpCfg.phrCfg.multiplePHR       = \
+		   macCellGroup->phr_Config->choice.setup->multiplePHR;
+                macUeCfg->macCellGrpCfg.phrCfg.dummy             = \
+		   macCellGroup->phr_Config->choice.setup->dummy;
+                macUeCfg->macCellGrpCfg.phrCfg.phrType2OtherCell = \
+		   macCellGroup->phr_Config->choice.setup->phr_Type2OtherCell;
+                macUeCfg->macCellGrpCfg.phrCfg.phrOtherCG        = \
+		   macCellGroup->phr_Config->choice.setup->phr_ModeOtherCG;
+	       }
+	    }
+
+
+	 }
       }
       /* Fill Physical Cell Group Reconfig */
       if(cellGrp->physicalCellGroupConfig)
@@ -7987,8 +8023,8 @@ void freeRrcDeliveryReport(F1AP_PDU_t  *f1apMsg )
 *         RFAILED - failure
 *
 * ****************************************************************/
-uint8_t BuildAndSendRrcDeliveryReport(uint32_t gnbCuUeF1apId, uint32_t gnbDuUeF1apId, RrcDeliveryReport
-*rrcDelivery)
+uint8_t BuildAndSendRrcDeliveryReport(uint32_t gnbCuUeF1apId, \
+   uint32_t gnbDuUeF1apId, RrcDeliveryReport *rrcDelivery)
 {
    uint8_t             ret = RFAILED;
    uint8_t             idx    = 0;
@@ -8059,9 +8095,9 @@ uint8_t BuildAndSendRrcDeliveryReport(uint32_t gnbCuUeF1apId, uint32_t gnbDuUeF1
       rrcDeliveryReport->protocolIEs.list.array[idx1]->id = ProtocolIE_ID_id_RRCDeliveryStatus;
       rrcDeliveryReport->protocolIEs.list.array[idx1]->criticality = Criticality_ignore;
       rrcDeliveryReport->protocolIEs.list.array[idx1]->value.present = RRCDeliveryReportIEs__value_PR_RRCDeliveryStatus;
-      rrcDeliveryReport->protocolIEs.list.array[idx1]->value.choice.RRCDeliveryStatus.delivery_status =
+      rrcDeliveryReport->protocolIEs.list.array[idx1]->value.choice.RRCDeliveryStatus.delivery_status =\
       rrcDelivery->rrcDeliveryStatus.deliveryStatus;
-      rrcDeliveryReport->protocolIEs.list.array[idx1]->value.choice.RRCDeliveryStatus.triggering_message =
+      rrcDeliveryReport->protocolIEs.list.array[idx1]->value.choice.RRCDeliveryStatus.triggering_message =\
       rrcDelivery->rrcDeliveryStatus.triggeringMessage;
 
       /* SRB ID */ 

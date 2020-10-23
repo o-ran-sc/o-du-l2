@@ -252,7 +252,6 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
 		     ret = unpackDuMacUeCfgRsp(DuProcMacUeCfgRsp, pst, mBuf); 
 		     break;
 		  }
-
 	       default:
 		  {
 		     DU_LOG("\nDU_APP : Invalid event received at duActvTsk from ENTMAC");

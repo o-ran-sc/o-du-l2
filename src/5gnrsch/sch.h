@@ -127,20 +127,34 @@ typedef struct bsrInfo
 
 typedef struct schLcCtxt
 {
+   uint8_t lcId;     // logical Channel ID
    uint8_t lcp;      // logical Channel Prioritization
    SchLcState lcState;
    uint16_t bo;
 }SchDlLcCtxt;
 
+typedef struct schDlCb
+{
+   uint8_t       numDlLc;
+   SchDlLcCtxt   dlLcCtxt[MAX_NUM_LC];
+}SchDlCb;
+
 typedef struct schUlLcCtxt
 {
-   SchLcState lcState;
+   SchLcState  lcState;
+   uint8_t lcId;       
    uint8_t priority;
    uint8_t lcGroup;
    uint8_t schReqId;
    uint8_t pbr;        // prioritisedBitRate
    uint8_t bsd;        // bucketSizeDuration
 }SchUlLcCtxt;
+
+typedef struct schUlCb
+{
+   uint8_t     numUlLc;
+   SchUlLcCtxt ulLcCtxt[MAX_NUM_LC];
+}SchUlCb;
 
 /**
  * @brief
@@ -155,10 +169,8 @@ typedef struct schUeCb
    SchCellCb  *cellCb;
    bool       srRcvd;
    BsrInfo    bsrInfo[MAX_NUM_LOGICAL_CHANNEL_GROUPS];
-   uint8_t       numUlLc;
-   SchUlLcCtxt   ulLcCtxt[MAX_NUM_LC];
-   uint8_t       numDlLc;
-   SchDlLcCtxt   dlLcCtxt[MAX_NUM_LC];
+   SchUlCb    ulInfo;
+   SchDlCb    dlInfo;
 }SchUeCb;
 
 /**

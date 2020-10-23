@@ -30,42 +30,6 @@
 #define SI_RNTI 0xFFFF
 #define P_RNTI 0xFFFE
 
-#define PERIODIC_BSR_TMR_1MS    1
-#define PERIODIC_BSR_TMR_5MS    5
-#define PERIODIC_BSR_TMR_10MS   10
-#define PERIODIC_BSR_TMR_16MS   16
-#define PERIODIC_BSR_TMR_20MS   20
-#define PERIODIC_BSR_TMR_32MS   32
-#define PERIODIC_BSR_TMR_40MS   40
-#define PERIODIC_BSR_TMR_60MS   60
-#define PERIODIC_BSR_TMR_80MS   80
-#define PERIODIC_BSR_TMR_128MS   128
-#define PERIODIC_BSR_TMR_160MS   160
-#define PERIODIC_BSR_TMR_320MS   320
-#define PERIODIC_BSR_TMR_640MS   640
-#define PERIODIC_BSR_TMR_1280MS  1280
-#define PERIODIC_BSR_TMR_2560MS  2560
-
-#define RETX_BSR_TMR_10MS    10
-#define RETX_BSR_TMR_20MS    20
-#define RETX_BSR_TMR_40MS    40
-#define RETX_BSR_TMR_80MS    80
-#define RETX_BSR_TMR_160MS   160
-#define RETX_BSR_TMR_320MS   320
-#define RETX_BSR_TMR_640MS   640
-#define RETX_BSR_TMR_1280MS   1280
-#define RETX_BSR_TMR_2560MS   2560
-#define RETX_BSR_TMR_5120MS   5120
-#define RETX_BSR_TMR_10240MS  10240
-
-#define SR_DELAY_TMR_20MS     20
-#define SR_DELAY_TMR_40MS     40
-#define SR_DELAY_TMR_64MS     64
-#define SR_DELAY_TMR_128MS    128
-#define SR_DELAY_TMR_512MS    512
-#define SR_DELAY_TMR_1024MS   1024
-#define SR_DELAY_TMR_2560MS   2560
-
 #define MAC_LCID_CCCH              0
 #define MAC_LCID_MIN               1
 #define MAC_LCID_MAX               32
@@ -219,6 +183,7 @@ struct macCellCb
    MacDlSlot   dlSlot[MAX_SLOT_SUPPORTED];
    MacUlSlot   ulSlot[MAX_SLOT_SUPPORTED];
    uint16_t    numActvUe;
+   MacUeCfg    *ueCfgTmpData[MAX_NUM_UE];
    MacUeCb     ueCb[MAX_NUM_UE];
    MacCellCfg  macCellCfg;
    SlotIndInfo currTime;
