@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e9a2e6b4_497e66f7",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-23T04:43:32Z",
+      "side": 1,
+      "message": "use of extern is required ?",
+      "revId": "50457dc643e3e4b09a00ff38cd2f797ebd0f85b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a2a4e64e_bb180111",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-23T04:43:32Z",
+      "side": 1,
+      "message": "Memory of cellCb to be deallocated in case of failure",
+      "revId": "50457dc643e3e4b09a00ff38cd2f797ebd0f85b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3b8684ef_69da78fb",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1551,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-23T04:43:32Z",
+      "side": 1,
+      "message": "this can be removed",
+      "revId": "50457dc643e3e4b09a00ff38cd2f797ebd0f85b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d26438be_ebcac6bb",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1612,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-23T04:43:32Z",
+      "side": 1,
+      "message": "even in failure case stored duMacCellCfg pointer to be null",
+      "revId": "50457dc643e3e4b09a00ff38cd2f797ebd0f85b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
