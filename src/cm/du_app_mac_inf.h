@@ -66,8 +66,10 @@
 #define EVENT_MAC_STOP_IND           205
 #define EVENT_MAC_UL_CCCH_IND        206
 #define EVENT_MAC_DL_CCCH_IND        207
-#define EVENT_MAC_UE_CREATE_REQ      208
-#define EVENT_MAC_UE_CREATE_RSP      209
+#define EVENT_MAC_UE_CONFIG_REQ      208
+#define EVENT_MAC_UE_CONFIG_RSP      209
+#define EVENT_MAC_UE_RECONFIG_REQ    210
+#define EVENT_MAC_UE_RECONFIG_RSP    211
 
 typedef enum
 {
@@ -190,6 +192,57 @@ typedef enum
 
 typedef enum
 {
+   BSR_PERIODIC_TIMER_SF_1,
+   BSR_PERIODIC_TIMER_SF_5,
+   BSR_PERIODIC_TIMER_SF_10,
+   BSR_PERIODIC_TIMER_SF_16,
+   BSR_PERIODIC_TIMER_SF_20,
+   BSR_PERIODIC_TIMER_SF_32,
+   BSR_PERIODIC_TIMER_SF_40,
+   BSR_PERIODIC_TIMER_SF_64,
+   BSR_PERIODIC_TIMER_SF_80,
+   BSR_PERIODIC_TIMER_SF_128,
+   BSR_PERIODIC_TIMER_SF_160,
+   BSR_PERIODIC_TIMER_SF_320,
+   BSR_PERIODIC_TIMER_SF_640,
+   BSR_PERIODIC_TIMER_SF_1280,
+   BSR_PERIODIC_TIMER_SF_2560,
+   BSR_PERIODIC_TIMER_INFINITY
+}BsrPeriodicTimer;
+
+typedef enum
+{
+   BSR_RETX_TIMER_SF_10,
+   BSR_RETX_TIMER_SF_20,
+   BSR_RETX_TIMER_SF_40,
+   BSR_RETX_TIMER_SF_80,
+   BSR_RETX_TIMER_SF_160,
+   BSR_RETX_TIMER_SF_320,
+   BSR_RETX_TIMER_SF_640,
+   BSR_RETX_TIMER_SF_1280,
+   BSR_RETX_TIMER_SF_2560,
+   BSR_RETX_TIMER_SF_5120,
+   BSR_RETX_TIMER_SF_10240,
+   BSR_RETX_TIMER_SPARE_5,
+   BSR_RETX_TIMER_SPARE_4,
+   BSR_RETX_TIMER_SPARE_3,
+   BSR_RETX_TIMER_SPARE_2,
+   BSR_RETX_TIMER_SPARE_1
+}BsrReTxTimer;
+
+typedef enum
+{
+   BSR_SR_DELAY_TMR_20,
+   BSR_SR_DELAY_TMR_40,
+   BSR_SR_DELAY_TMR_64,
+   BSR_SR_DELAY_TMR_128,
+   BSR_SR_DELAY_TMR_512,
+   BSR_SR_DELAY_TMR_1024,
+   BSR_SR_DELAY_TMR_2560,
+   BSR_SR_DELAY_TMR_SPARE_1
+}BsrSrDelayTimer;
+typedef enum
+{
    PHR_PERIODIC_TIMER_SF_10,
    PHR_PERIODIC_TIMER_SF_20,
    PHR_PERIODIC_TIMER_SF_50,
@@ -264,13 +317,13 @@ typedef enum
 
 typedef enum 
 {
-   CCE_REG_MAPPINGTYPE_PR_INTERLEAVED,
+   CCE_REG_MAPPINGTYPE_PR_INTERLEAVED = 1,
    CCE_REG_MAPPINGTYPE_PR_NONINTERLEAVED
 }REGMappingType;
 
 typedef enum
 {
-   SLOTPERIODICITYANDOFFSET_PR_SL1,
+   SLOTPERIODICITYANDOFFSET_PR_SL1 = 1,
    SLOTPERIODICITYANDOFFSET_PR_SL2,
    SLOTPERIODICITYANDOFFSET_PR_SL4,
    SLOTPERIODICITYANDOFFSET_PR_SL5,
@@ -295,9 +348,15 @@ typedef enum
 
 typedef enum
 {
-   SEARCHSPACETYPE_PR_COMMON,
+   SEARCHSPACETYPE_PR_COMMON = 1,
    SEARCHSPACETYPE_PR_UE_SPECIFIC
 }SearchSpaceType;
+
+typedef enum
+{
+   QOS_NON_DYNAMIC = 1,
+   QOS_DYNAMIC
+}QosType;
 
 typedef enum
 {
@@ -345,9 +404,23 @@ typedef enum
 
 typedef enum
 {
-   TYPE_STATIC_BUNDLING,
+   TYPE_STATIC_BUNDLING = 1,
    TYPE_DYNAMIC_BUNDLING
 }BundlingType;
+
+typedef enum
+{
+   SET2_SIZE_N4,
+   SET2_SIZE_WIDEBAND
+}BundlingSizeSet2;
+
+typedef enum
+{
+   SET1_SIZE_N4,
+   SET1_SIZE_WIDEBAND,
+   SET1_SIZE_N2_WIDEBAND,
+   SET1_SIZE_N4_WIDEBAND
+}BundlingSizeSet1;
 
 typedef enum
 {
@@ -355,6 +428,47 @@ typedef enum
    LC_PRIORITY_2,
    LC_PRIORITY_3
 }LcPriority;
+
+typedef enum
+{
+  PBR_KBPS_0,
+  PBR_KBPS_8,
+  PBR_KBPS_16,
+  PBR_KBPS_32,
+  PBR_KBPS_64,
+  PBR_KBPS_128,
+  PBR_KBPS_256,
+  PBR_KBPS_512,
+  PBR_KBPS_1024,
+  PBR_KBPS_2048,
+  PBR_KBPS_4096,
+  PBR_KBPS_8192,
+  PBR_KBPS_16384,
+  PBR_KBPS_32768,
+  PBR_KBPS_65536,
+  PBR_KBPS_INFINITY
+}PBitRate;
+
+typedef enum
+{
+   BSD_MS_5,
+   BSD_MS_10,
+   BSD_MS_20,
+   BSD_MS_50,
+   BSD_MS_100,
+   BSD_MS_150,
+   BSD_MS_300,
+   BSD_MS_500,
+   BSD_MS_1000,
+   BSD_SPARE_7,
+   BSD_SPARE_6,
+   BSD_SPARE_5,
+   BSD_SPARE_4,
+   BSD_SPARE_3,
+   BSD_SPARE_2,
+   BSD_SPARE_1
+
+}BucketSizeDur;
 
 typedef enum
 {
@@ -625,9 +739,9 @@ typedef struct dlCcchInd
 
 typedef struct bsrTmrCfg
 {
-   uint8_t periodicTimer;
-   uint8_t retxTimer;
-   uint8_t srDelayTimer;
+   BsrPeriodicTimer periodicTimer;
+   BsrReTxTimer retxTimer;
+   BsrSrDelayTimer srDelayTimer;
 }BsrTmrCfg;
 
 
@@ -737,6 +851,20 @@ typedef struct pdschTimeDomRsrcAlloc
    uint8_t           startSymbolAndLength;
 }PdschTimeDomRsrcAlloc;
 
+
+typedef struct pdschBundling
+{
+   struct staticBundling
+   {
+     BundlingSizeSet2 size;
+   }StaticBundling;
+   struct dynamicBundling
+   {
+     BundlingSizeSet1 sizeSet1;
+     BundlingSizeSet2 sizeSet2;
+   }DynamicBundling;
+}PdschBundling;
+
 /* DMRS downlink configuration */
 typedef struct dmrsDlCfg
 {
@@ -753,6 +881,7 @@ typedef struct pdschConfig
    RBGSize                 rbgSize;
    CodeWordsSchedDci       numCodeWordsSchByDci;                    /* Number of code words scheduled by DCI */
    BundlingType            bundlingType;
+   PdschBundling           bundlingInfo;
 }PdschConfig;
 
 /* Initial Downlink BWP */
@@ -817,6 +946,7 @@ typedef struct puschTimeDomRsrcAlloc
 /* PUSCH Configuration */
 typedef struct puschCfg
 {
+   uint8_t                 dataScramblingId;
    DmrsUlCfg               dmrsUlCfgForPuschMapTypeA;
    ResAllocType            resourceAllocType;
    uint8_t                 numTimeDomRsrcAlloc;
@@ -912,7 +1042,7 @@ typedef struct grbQosInfo
 
 typedef struct drbQos
 {
-   uint8_t  fiveQiType;   /* Dynamic or non-dynamic */ 
+   QosType  fiveQiType;   /* Dynamic or non-dynamic */ 
    union
    {
       NonDynFiveQi   nonDyn5Qi;
@@ -929,8 +1059,8 @@ typedef struct ulLcCfg
    uint8_t priority;
    uint8_t lcGroup;
    uint8_t schReqId;
-   uint8_t pbr;        // prioritisedBitRate
-   uint8_t bsd;        // bucketSizeDuration
+   PBitRate pbr;        // prioritisedBitRate
+   BucketSizeDur bsd;        // bucketSizeDuration
 }UlLcCfg;
 
 typedef struct duLcCfg
@@ -940,10 +1070,12 @@ typedef struct duLcCfg
 
 typedef struct lcCfg
 {
+   ConfigType configType;
    uint8_t lcId;
    DrbQosInfo *drbQos; 
    Snssai  *snssai;
-   UlLcCfg *ulLcCfg;
+   bool ulLcCfgPres;
+   UlLcCfg ulLcCfg;
    DlLcCfg dlLcCfg;
 
 }LcCfg;
@@ -1051,9 +1183,14 @@ typedef uint8_t (*DuMacUeCreateReq) ARGS((
 	 MacUeCfg      *ueCfg ));
 
 /* UE create Response from MAC to DU APP */
-typedef uint8_t (*DuMacUeCreateRspFunc) ARGS((
+typedef uint8_t (*MacDuUeCfgRspFunc) ARGS((
 	 Pst           *pst, 
 	 MacUeCfgRsp   *cfgRsp));
+
+/* UE Reconfig Request from DU APP to MAC*/
+typedef uint8_t (*DuMacUeReconfigReq) ARGS((
+	 Pst           *pst,
+	 MacUeCfg      *ueCfg ));
 
 uint8_t packMacSlotInd(Pst *pst, SlotIndInfo *slotInfo );
 uint8_t unpackMacSlotInd(DuMacSlotInd func, Pst *pst, Buffer *mBuf);
@@ -1082,10 +1219,13 @@ uint8_t MacProcDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo);
 uint8_t packDuMacUeCreateReq(Pst *pst, MacUeCfg *ueCfg);
 uint8_t unpackMacUeCreateReq(DuMacUeCreateReq func, Pst *pst, Buffer *mBuf);
 uint8_t MacProcUeCreateReq(Pst *pst, MacUeCfg *ueCfg);
-uint8_t packDuMacUeCreateRsp(Pst *pst, MacUeCfgRsp *cfgRsp);
-uint8_t unpackDuMacUeCreateRsp(DuMacUeCreateRspFunc func, Pst *pst, Buffer *mBuf);
-uint8_t DuHandleMacUeCreateRsp(Pst *pst, MacUeCfgRsp *cfgRsp);
 uint8_t sendStopIndMacToDuApp(uint16_t cellId);
+uint8_t packDuMacUeCfgRsp(Pst *pst, MacUeCfgRsp *cfgRsp);
+uint8_t unpackDuMacUeCfgRsp(MacDuUeCfgRspFunc func, Pst *pst, Buffer *mBuf);
+uint8_t DuProcMacUeCfgRsp(Pst *pst, MacUeCfgRsp *cfgRsp);
+uint8_t packDuMacUeReconfigReq(Pst *pst, MacUeCfg *ueCfg);
+uint8_t unpackMacUeReconfigReq(DuMacUeReconfigReq func, Pst *pst, Buffer *mBuf);
+uint8_t MacProcUeReconfigReq(Pst *pst, MacUeCfg *ueCfg);
 #endif
 
 /**********************************************************************

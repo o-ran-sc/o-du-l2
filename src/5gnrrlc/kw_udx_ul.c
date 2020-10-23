@@ -282,7 +282,7 @@ RlcCfgCfmInfo   *cfmInfo;
    }
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
    rlcHdlCrlcUlCfgReq(tRlcCb,cfgTmpData, cfmInfo, cfgCfm);
-   FILL_PST_RLC_TO_DUAPP(rspPst, RLC_UL_INST, EVENT_RLC_UL_UE_CREATE_RSP);
+   FILL_PST_RLC_TO_DUAPP(rspPst, RLC_UL_INST, EVENT_RLC_UL_UE_CONFIG_RSP);
    SendRlcUlUeCreateRspToDu(&rspPst, cfgCfm);
 
    /* free the memory from DL */
