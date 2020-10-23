@@ -166,7 +166,7 @@ typedef struct PlmnIdentity
 typedef enum
 {
    UE_CFG_INACTIVE,
-   UE_CONFIG_COMPLETE,
+   UE_CREATE_COMPLETE,
    UE_RECFG_COMPLETE
 }UeCfgState;
 

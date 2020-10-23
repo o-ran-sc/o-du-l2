@@ -21,8 +21,8 @@
 #define __RLC_INF_H__
 
 /* Events */
-#define EVENT_RLC_UE_CONFIG_REQ  210
-#define EVENT_RLC_UE_CONFIG_RSP 211    /*!< Config Confirm */
+#define EVENT_RLC_UE_CREATE_REQ  210
+#define EVENT_RLC_UE_CREATE_RSP 211    /*!< Config Confirm */
 #define EVENT_UL_RRC_MSG_TRANS_TO_DU  212
 #define EVENT_DL_RRC_MSG_TRANS_TO_RLC 213
 #define EVENT_RRC_DELIVERY_MSG_TRANS_TO_DU 214

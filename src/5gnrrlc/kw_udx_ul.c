@@ -282,9 +282,9 @@ RlcCfgCfmInfo   *cfmInfo;
    }
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
    rlcHdlCrlcUlCfgReq(tRlcCb,cfgTmpData, cfmInfo, cfgCfm);
-   if(tRlcCb->u.ulCb->rlcUlUdxEventType == EVENT_RLC_UE_CONFIG_REQ)
+   if(tRlcCb->u.ulCb->rlcUlUdxEventType == EVENT_RLC_UE_CREATE_REQ)
    {
-      FILL_PST_RLC_TO_DUAPP(rspPst, RLC_UL_INST, EVENT_RLC_UE_CONFIG_RSP);
+      FILL_PST_RLC_TO_DUAPP(rspPst, RLC_UL_INST, EVENT_RLC_UE_CREATE_RSP);
    }
    else if(tRlcCb->u.ulCb->rlcUlUdxEventType == EVENT_RLC_UE_RECONFIG_REQ)
    {

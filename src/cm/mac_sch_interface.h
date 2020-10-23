@@ -24,8 +24,8 @@
 #define EVENT_RACH_IND_TO_SCH        5
 #define EVENT_CRC_IND_TO_SCH         6
 #define EVENT_DL_RLC_BO_INFO_TO_SCH  7
-#define EVENT_UE_CONFIG_REQ_TO_SCH   8
-#define EVENT_UE_CONFIG_RSP_TO_MAC   9
+#define EVENT_UE_CREATE_REQ_TO_SCH   8
+#define EVENT_UE_CREATE_RSP_TO_MAC   9
 #define EVENT_SLOT_IND_TO_SCH        10
 #define EVENT_SHORT_BSR              11
 #define EVENT_UCI_IND_TO_SCH         12
@@ -1214,6 +1214,7 @@ typedef struct schDlLcCfg
 /* Logical Channel configuration */
 typedef struct schLcCfg
 {
+   ConfigType     configType;
    uint8_t        lcId;
    SchDrbQosInfo  *drbQos;
    SchSnssai      *snssai;
@@ -1237,8 +1238,8 @@ typedef struct schUeCfg
    SchPhyCellGrpCfg   phyCellGrpCfg;
    SchSpCellCfg       spCellCfg;
    SchAggrMaxBitRate  *aggrMaxBitRate;
-   uint8_t            numLc;
-   SchLcCfg           lcCfgList[MAX_NUM_LC];
+   uint8_t            numLcs;
+   SchLcCfg           schLcCfg[MAX_NUM_LC];
 }SchUeCfg;
 
 typedef struct schUeCfgRsp
@@ -1369,6 +1370,8 @@ uint8_t packMacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd);
 uint8_t MacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd);
 uint8_t packMacSchUeReconfigReq(Pst *pst, SchUeCfg *ueCfgToSch);
 uint8_t MacSchUeReconfigReq(Pst *pst, SchUeCfg *ueCfgToSch);
+uint8_t packSchUeReconfigRsp(Pst *pst, SchUeCfgRsp *cfgRsp);
+uint8_t MacProcSchUeReconfigRsp(Pst *pst, SchUeCfgRsp *cfgRsp);
 
 /**********************************************************************
   End of file
