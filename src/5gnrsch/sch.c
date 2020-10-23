@@ -683,7 +683,7 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
       (lcId >= MIN_DRB_LCID && lcId <= MAX_DRB_LCID))
    {
       SET_ONE_BIT(ueIdx, cell->boIndBitMap);
-      ueCb->dlLcCtxt[lcId].bo = dlBoInfo->dataVolume;
+      ueCb->dlInfo.dlLcCtxt[lcId].bo = dlBoInfo->dataVolume;
    }
    else if(lcId != SRB0_LCID)
    {

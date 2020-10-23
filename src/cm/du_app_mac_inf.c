@@ -769,7 +769,7 @@ uint8_t unpackMacUeCreateReq(DuMacUeCreateReq func, Pst *pst, Buffer *mBuf)
  *
  * @details
  *
- *    Function : packDuMacUeCreateRsp
+ *    Function : packDuMacUeCfgRsp
  *
  *    Functionality:
  *       Pack and send UE config response from MAC to DU APP
@@ -779,7 +779,7 @@ uint8_t unpackMacUeCreateReq(DuMacUeCreateReq func, Pst *pst, Buffer *mBuf)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packDuMacUeCreateRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
+uint8_t packDuMacUeCfgRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
 {
    Buffer *mBuf = NULLP;
 
@@ -808,7 +808,7 @@ uint8_t packDuMacUeCreateRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
  *
  * @details
  *
- *    Function : unpackDuMacUeCreateRsp
+ *    Function : unpackDuMacUeCfgRsp
  *
  *    Functionality: Unpack UE Config Response from MAC to DU APP
  *
@@ -817,7 +817,7 @@ uint8_t packDuMacUeCreateRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t unpackDuMacUeCreateRsp(DuMacUeCreateRspFunc func, Pst *pst, Buffer *mBuf)
+uint8_t unpackDuMacUeCfgRsp(MacDuUeCfgRspFunc func, Pst *pst, Buffer *mBuf)
 {
    if(pst->selector == ODU_SELECTOR_LWLC)
    {

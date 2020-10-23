@@ -239,7 +239,12 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
 		  }
 	       case EVENT_MAC_UE_CREATE_RSP:
 		  {
-		     ret = unpackDuMacUeCreateRsp(DuHandleMacUeCreateRsp, pst, mBuf); 
+		     ret = unpackDuMacUeCfgRsp(DuProcMacUeCfgRsp, pst, mBuf); 
+		     break;
+		  }
+               case EVENT_MAC_UE_RECONFIG_RSP:
+		  {
+		     ret = unpackDuMacUeCfgRsp(DuProcMacUeCfgRsp, pst, mBuf); 
 		     break;
 		  }
 

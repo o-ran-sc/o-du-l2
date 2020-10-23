@@ -219,6 +219,7 @@ struct macCellCb
    MacDlSlot   dlSlot[MAX_SLOT_SUPPORTED];
    MacUlSlot   ulSlot[MAX_SLOT_SUPPORTED];
    uint16_t    numActvUe;
+   MacUeCfg    *ueCfgTmpData[MAX_NUM_UE];
    MacUeCb     ueCb[MAX_NUM_UE];
    MacCellCfg  macCellCfg;
    SlotIndInfo currTime;

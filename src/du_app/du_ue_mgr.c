@@ -895,7 +895,7 @@ void fillLcCfgList(LcCfg *lcCfgInfo)
       lcCfgInfo->lcId = SRB1_LCID;
       lcCfgInfo->drbQos = NULLP;
       lcCfgInfo->snssai = NULLP;
-      lcCfgInfo->ulLcCfg = NULLP;
+      //lcCfgInfo->ulLcCfg = NULLP;
       lcCfgInfo->dlLcCfg.lcp = LC_PRIORITY_1;
 
 #if 0
@@ -1226,31 +1226,54 @@ uint8_t duBuildAndSendUeCreateReqToMac(uint16_t cellId, uint8_t ueIdx,\
 
 /*******************************************************************
  *
- * @brief Handle UE create response from MAC
+ * @brief Handle UE config response from MAC
  *
  * @details
  *
- *    Function : DuHandleMacUeCreateRsp
+ *    Function : DuProcMacUeCfgRsp
  *
- *    Functionality: Handle UE create response from MAC
+ *    Functionality: Handle UE Config response from MAC
  *
  * @params[in] Pointer to MacUeCfgRsp and Pst 
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t DuHandleMacUeCreateRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
+uint8_t DuProcMacUeCfgRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
 {
-   if(cfgRsp->result == MAC_DU_APP_RSP_OK)
+   uint8_t ret = ROK;
+   uint8_t ueIdx, cellIdx;
+
+   if(cfgRsp)
    {
-      DU_LOG("\nDU APP : MAC UE Create Response : SUCCESS [UE IDX : %d]", cfgRsp->ueIdx);
+      if(cfgRsp->result == MAC_DU_APP_RSP_OK)
+      {
+         cellIdx = (cfgRsp->cellId -1);
+         ueIdx = (cfgRsp->ueIdx -1);
+
+         if(pst->event == EVENT_MAC_UE_CREATE_RSP)
+	 {
+            DU_LOG("\nDU APP : MAC UE Create Response : SUCCESS [UE IDX : %d]", cfgRsp->ueIdx);
+	 }
+      }
+      else
+      {
+         DU_LOG("\nDU APP : MAC UE CFG Response for EVENT[%d]: FAILURE [UE IDX : %d]", pst->event, cfgRsp->ueIdx);
+	 if(pst->event == EVENT_MAC_UE_RECONFIG_RSP)
+	 {
+	    //TODO: Send the failure case in Ue Context Setup Response
+	 }
+         ret = RFAILED;
+      }
    }
    else
    {
-      DU_LOG("\nDU APP : MAC UE Create Response : FAILURE [UE IDX : %d]", cfgRsp->ueIdx);
+      DU_LOG("\nDU APP : Received MAC Ue Config Response is NULL at DuProcMacUeCfgRsp()");
+      ret = RFAILED;
    }
-   return ROK;
+   return ret;
 }
+
 
 /*******************************************************************
  *

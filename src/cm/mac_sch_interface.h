@@ -29,6 +29,9 @@
 #define EVENT_SLOT_IND_TO_SCH        10
 #define EVENT_SHORT_BSR              11
 #define EVENT_UCI_IND_TO_SCH         12
+#define EVENT_UE_RECONFIG_REQ_TO_SCH 13
+#define EVENT_UE_RECONFIG_RSP_TO_MAC 14
+
 
 /*macros*/
 #define NO_SSB 0
@@ -230,13 +233,13 @@ typedef enum
 
 typedef enum
 {
-   INTERLEAVED_CCE_REG_MAPPING,
+   INTERLEAVED_CCE_REG_MAPPING = 1,
    NONINTERLEAVED_CCE_REG_MAPPING
 }SchREGMappingType;
 
 typedef enum
 {
-   SLOT_PERIODICITY_AND_OFFSET_SL_1,
+   SLOT_PERIODICITY_AND_OFFSET_SL_1 = 1,
    SLOT_PERIODICITY_AND_OFFSET_SL_2,
    SLOT_PERIODICITY_AND_OFFSET_SL_4,
    SLOT_PERIODICITY_AND_OFFSET_SL_5,
@@ -261,9 +264,15 @@ typedef enum
 
 typedef enum
 {
-   SEARCH_SPACE_TYPE_COMMON,
+   SEARCH_SPACE_TYPE_COMMON = 1,
    SEARCH_SPACE_TYPE_UE_SPECIFIC
 }SchSearchSpaceType;
+
+typedef enum
+{
+   SCH_QOS_NON_DYNAMIC = 1,
+   SCH_QOS_DYNAMIC
+}SchQosType;
 
 typedef enum
 {
@@ -291,9 +300,23 @@ typedef enum
 
 typedef enum
 {
-   STATIC_BUNDLING_TYPE,
+   STATIC_BUNDLING_TYPE = 1,
    DYNAMIC_BUNDLING_TYPE
 }SchBundlingType;
+
+typedef enum
+{
+   SCH_SET1_SIZE_N4,
+   SCH_SET1_SIZE_WIDEBAND,
+   SCH_SET1_SIZE_N2_WIDEBAND,
+   SCH_SET1_SIZE_N4_WIDEBAND
+}SchBundlingSizeSet1;
+
+typedef enum
+{
+   SCH_SET2_SIZE_N4,
+   SCH_SET2_SIZE_WIDEBAND
+}SchBundlingSizeSet2;
 
 typedef enum
 {
@@ -976,6 +999,20 @@ typedef struct schPdschTimeDomRsrcAlloc
    uint8_t    symbolLength;
 }SchPdschTimeDomRsrcAlloc;
 
+
+typedef struct schPdschBundling
+{
+   struct schStaticBundling
+   {
+     SchBundlingSizeSet2 size;
+   }SchStaticBundling;
+   struct schDynamicBundling
+   {
+     SchBundlingSizeSet1 sizeSet1;
+     SchBundlingSizeSet2 sizeSet2;
+   }SchDynamicBundling;
+}SchPdschBundling;
+
 /* DMRS downlink configuration */
 typedef struct schDmrsDlCfg
 {
@@ -992,6 +1029,7 @@ typedef struct schPdschConfig
    SchRBGSize                 rbgSize;
    SchCodeWordsSchedByDci     numCodeWordsSchByDci;                    /* Number of code words scheduled by DCI */
    SchBundlingType            bundlingType;
+   SchPdschBundling           bundlingInfo;
 }SchPdschConfig;
 
 /* Initial Downlink BWP */
@@ -1055,6 +1093,7 @@ typedef struct schPuschTimeDomRsrcAlloc
 /* PUSCH Configuration */
 typedef struct schPuschCfg
 {
+   uint8_t                    dataScramblingId;
    SchDmrsUlCfg               dmrsUlCfgForPuschMapTypeA;
    SchResourceAllocType       resourceAllocType;
    uint8_t                    numTimeDomRsrcAlloc;
@@ -1131,7 +1170,7 @@ typedef struct schGrbQosFlowInfo
 /* DRB QoS */
 typedef struct schDrbQos
 {
-   uint8_t  fiveQiType;   /* Dynamic or non-dynamic */ 
+   SchQosType  fiveQiType;   /* Dynamic or non-dynamic */ 
    union
    {
       SchNonDynFiveQi   nonDyn5Qi;
@@ -1176,10 +1215,11 @@ typedef struct schDlLcCfg
 typedef struct schLcCfg
 {
    uint8_t        lcId;
+   ConfigType     configType;
    SchDrbQosInfo  *drbQos;
    SchSnssai      *snssai;
    SchDlLcCfg     dlLcCfg;
-   SchUlLcCfg     *ulLcCfg;
+   SchUlLcCfg     ulLcCfg;
 }SchLcCfg;
 
 /* Aggregate max bit rate */
@@ -1198,8 +1238,8 @@ typedef struct schUeCfg
    SchPhyCellGrpCfg   phyCellGrpCfg;
    SchSpCellCfg       spCellCfg;
    SchAggrMaxBitRate  *aggrMaxBitRate;
-   uint8_t            numLc;
-   SchLcCfg           lcCfgList[MAX_NUM_LC];
+   uint8_t            numLcs;
+   SchLcCfg           schLcCfg[MAX_NUM_LC];
 }SchUeCfg;
 
 typedef struct schUeCfgRsp
@@ -1290,6 +1330,13 @@ typedef uint8_t (*MacSchSrUciIndFunc) ARGS((
 	 Pst         *pst,         /* Post structure */
 	 SrUciIndInfo  *uciInd));    /* UCI IND Info */
 
+typedef uint8_t (*MacSchUeReconfigReqFunc) ARGS((
+	 Pst         *pst,           /* Post structure */
+	 SchUeCfg    *ueCfgToSch));   /* Scheduler UE Cfg */
+
+typedef uint8_t (*SchUeReCfgRspFunc) ARGS((
+	 Pst         *pst,           /* Post structure */
+	 SchUeCfgRsp *cfgRsp));       /* Scheduler UE Cfg response */
 
 /* function declarations */
 uint8_t packMacSchSlotInd(Pst *pst, SlotIndInfo *slotInd);
@@ -1321,6 +1368,10 @@ uint8_t packMacSchBsr(Pst *pst, UlBufferStatusRptInd *bsrInd);
 uint8_t MacSchBsr(Pst *pst, UlBufferStatusRptInd *bsrInd);
 uint8_t packMacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd);
 uint8_t MacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd);
+uint8_t packMacSchUeReconfigReq(Pst *pst, SchUeCfg *ueCfgToSch);
+uint8_t MacSchUeReconfigReq(Pst *pst, SchUeCfg *ueCfgToSch);
+uint8_t packSchUeReconfigRsp(Pst *pst, SchUeCfgRsp *cfgRsp);
+uint8_t MacProcSchUeReconfigRsp(Pst *pst, SchUeCfgRsp *cfgRsp);
 
 /**********************************************************************
   End of file
