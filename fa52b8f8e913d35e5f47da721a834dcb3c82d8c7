@@ -16,6 +16,24 @@
       "revId": "fa52b8f8e913d35e5f47da721a834dcb3c82d8c7",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3e505b72_065354d9",
+        "filename": "build/o1/makefile",
+        "patchSetId": 6
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2020-10-27T03:21:32Z",
+      "side": 1,
+      "message": "We can use this while integrating with OAM",
+      "parentUuid": "fea9b1c8_35492254",
+      "revId": "fa52b8f8e913d35e5f47da721a834dcb3c82d8c7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
     }
   ]
 }
