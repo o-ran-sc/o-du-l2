@@ -43,6 +43,7 @@ I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/common
 I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/F1AP
 I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/RRC
 I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/E2AP
+I_OPTS+=-I$(ROOT_DIR)/src/o1/o1_client
 
 #-------------------------------------------------------------#
 #Linker macros
