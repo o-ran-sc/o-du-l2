@@ -183,6 +183,7 @@ S16 l1BldAndSndConfigRsp(void *msg)
    fillMsgHeader(&fapiConfigRsp->header, FAPI_CONFIG_RESPONSE, msgLen);
 
    DU_LOG("\nPHY_STUB: Sending Config Response to Lower Mac");
+
    procPhyMessages(fapiConfigRsp->header.msg_id, \
 	 sizeof(fapi_config_resp_t), (void *)fapiConfigRsp);
    MAC_FREE(fapiConfigRsp, sizeof(fapi_config_resp_t));
@@ -356,7 +357,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
    {
       msg5Sent = true;
       type = MSG_TYPE_MSG5;
-      msg5ShortBsrSent = false;
+      //msg5ShortBsrSent = false;
    }
 
 
@@ -404,6 +405,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
 	       LCId is CCCH(0)
 	       From 38.321 section 6.1.1
 	     */
+	    DU_LOG("\nForming MSG3 PDU");
 	    pdu[byteIdx++] = 0;
 	    /* Hardcoding MAC PDU */
 	    pdu[byteIdx++] = 181;
@@ -420,7 +422,8 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
 	 {
 	    uint8_t lcgId = 0;
 	    uint8_t bufferSizeIdx = 6;
-
+            
+	    DU_LOG("\nForming SHORT BSR PDU");
 	    /* For Short BSR
 	       MAC subheader format is R/R/LcId (1Byte)
 	       LCId is 61
@@ -434,6 +437,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
 
       case MSG_TYPE_MSG5:
 	 {
+	    DU_LOG("\nForming MSG5 PDU");
 	    uint8_t  msg5PduLen = 33;
 	    /* For RRC setup complete
 	       MAC subheader format is R/F/LCId/L (2/3 bytes)
@@ -575,8 +579,10 @@ uint16_t l1BuildAndSendSlotIndication()
       memset(slotIndMsg, 0, sizeof(fapi_slot_ind_t));
       slotIndMsg->sfn = sfnValue;
       slotIndMsg->slot = slotValue;
-      DU_LOG("\n\nPHY_STUB: SLOT indication [%d:%d]",sfnValue,slotValue);
 
+#ifdef ODU_SLOT_IND_DEBUG_LOG
+      DU_LOG("\n\nPHY_STUB: SLOT indication [%d:%d]",sfnValue,slotValue);
+#endif
       /* increment for the next TTI */
       slotValue++;
       if(sfnValue >= MAX_SFN_VALUE && slotValue > MAX_SLOT_VALUE)
@@ -658,35 +664,34 @@ S16 l1HdlDlTtiReq(uint16_t msgLen, void *msg)
 #ifdef INTEL_FAPI
    fapi_dl_tti_req_t *dlTtiReq;
    dlTtiReq = (fapi_dl_tti_req_t *)msg;
-
-   printf("\nPHY STUB: DL TTI Request at sfn=%d slot=%d",dlTtiReq->sfn,dlTtiReq->slot);
-#if 0
-   printf("\nPHY_STUB:  SFN     %d", dlTtiReq->sfn);
-   printf("\nPHY_STUB:  SLOT    %d", dlTtiReq->slot);
-   printf("\nPHY_STUB:  nPdus   %d", dlTtiReq->nPdus);
-   printf("\nPHY_STUB:  nGroup  %d", dlTtiReq->nGroup);
-   /* Printing SSB CONFIGURED VALUES */
-   printf("\nPHY_STUB: physCellId   %d", dlTtiReq->pdus->u.ssb_pdu.physCellId);
-   printf("\nPHY_STUB: betaPss      %d", dlTtiReq->pdus->u.ssb_pdu.betaPss);
-   printf("\nPHY_STUB: ssbBlockIndex %d",	dlTtiReq->pdus->u.ssb_pdu.ssbBlockIndex);
-   printf("\nPHY_STUB: ssbSubCarrierOffset %d",	dlTtiReq->pdus->u.ssb_pdu.ssbSubCarrierOffset);
-   printf("\nPHY_STUB: ssbOffsetPointA     %d",	dlTtiReq->pdus->u.ssb_pdu.ssbOffsetPointA);
-   printf("\nPHY_STUB: bchPayloadFlag      %d",	dlTtiReq->pdus->u.ssb_pdu.bchPayloadFlag);
-   printf("\nPHY_STUB: bchPayload          %x",	dlTtiReq->pdus->u.ssb_pdu.bchPayload);
-#endif
+   
    uint8_t pduCount = 0;
    if(dlTtiReq->nPdus == 0)
    {
+#ifdef ODU_SLOT_IND_DEBUG_LOG   
       DU_LOG("\nPHY_STUB: No PDU in DL TTI Request");
+#endif   
+   }
+   else
+   {  
+#ifdef ODU_SLOT_IND_DEBUG_LOG   
+     DU_LOG("\nPHY STUB: DL TTI Request at sfn=%d slot=%d",dlTtiReq->sfn,dlTtiReq->slot);
+#endif 
    }
    for(pduCount=0; pduCount<dlTtiReq->nPdus; pduCount++)
    {
       if(dlTtiReq->pdus[pduCount].pduType == 3) //SSB_PDU_TYPE
-	 DU_LOG("\nPHY_STUB: SSB PDU");
+      {
+         DU_LOG("\nPHY_STUB: SSB PDU");
+      }
       else if(dlTtiReq->pdus[pduCount].pduType == 0)
-	 DU_LOG("\nPHY_STUB: PDCCH PDU");
+      {
+         DU_LOG("\nPHY_STUB: PDCCH PDU");
+      }
       else if(dlTtiReq->pdus[pduCount].pduType == 1)
-	 DU_LOG("\nPHY_STUB: PDSCH PDU");
+      {
+         DU_LOG("\nPHY_STUB: PDSCH PDU");
+      }
    }
 
    /* Free FAPI message */
@@ -719,9 +724,7 @@ S16 l1HdlTxDataReq(uint16_t msgLen, void *msg)
 #ifdef INTEL_FAPI
    fapi_tx_data_req_t *txDataReq;
    txDataReq = (fapi_tx_data_req_t *)msg;
-
    DU_LOG("\nPHY STUB: TX DATA Request at sfn=%d slot=%d",txDataReq->sfn,txDataReq->slot);
-
    MAC_FREE(txDataReq, msgLen);
 #endif
    return ROK;
@@ -898,15 +901,20 @@ S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
 {
 #ifdef INTEL_FAPI
    fapi_ul_tti_req_t *ulTtiReq = NULLP;
-   
-   DU_LOG("\nPHY STUB: Received UL TTI Request");
-
    ulTtiReq = (fapi_ul_tti_req_t *)msg;
    uint8_t numPdus = ulTtiReq->nPdus;
 
    if(numPdus == 0)
    {
-      DU_LOG("\nPHY STUB: No PDU in UL TTI");
+#ifdef ODU_SLOT_IND_DEBUG_LOG
+      DU_LOG("\nPHY STUB: No PDU received in UL TTI Req");
+#endif      
+   }
+   else
+   {
+#ifdef ODU_SLOT_IND_DEBUG_LOG   
+      DU_LOG("\nPHY STUB: Received UL TTI Request");
+#endif   
    }
    while(numPdus)
    {
@@ -917,7 +925,7 @@ S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
       if(ulTtiReq->pdus[numPdus-1].pduType == 1)
       {
 	 DU_LOG("\nPHY STUB: PUSCH PDU");			
-	 l1BuildAndSendRxDataInd(ulTtiReq->slot, ulTtiReq->sfn, \
+         l1BuildAndSendRxDataInd(ulTtiReq->slot, ulTtiReq->sfn, \
 	       ulTtiReq->pdus[numPdus-1].pdu.pusch_pdu); 
       }
       if(ulTtiReq->pdus[numPdus-1].pduType == 2)

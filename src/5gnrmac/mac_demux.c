@@ -105,7 +105,6 @@ uint8_t unpackRxData(uint16_t cellId, SlotIndInfo slotInfo, RxDataIndPdu *rxData
 	 case MAC_LCID_MIN ... MAC_LCID_MAX :
 	    {
 	       DU_LOG("\nMAC : PDU received for LC ID %d", lcId);
-
 	       pduLen--;
 	       idx++;
 
