@@ -2132,10 +2132,8 @@ void rlcAssembleSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
       RLC_SHRABL_STATIC_BUF_FREE(rlckwuSap->pst.region, rlckwuSap->pst.pool, discSduInfo, sizeof(KwuDiscSduInfo));
    }
 
-
    DU_LOG("\nRLC: rlcAssembleSdus: BO after assembly = %d UEID:%d CELLID:%d",
       amDl->bo, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
-
    return;
 }
 
