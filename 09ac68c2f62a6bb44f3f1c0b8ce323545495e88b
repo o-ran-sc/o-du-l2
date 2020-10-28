@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "01f1ba16_24a0945c",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2320,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-28T08:47:20Z",
+      "side": 1,
+      "message": "no, these values are not from reference logs. It is our design.",
+      "revId": "09ac68c2f62a6bb44f3f1c0b8ce323545495e88b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bca39bde_24d0ad16",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 6973,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-28T08:47:20Z",
+      "side": 1,
+      "message": "one generic comment. Some functions start with \"extract\" and some with \"fill\". Better to maintain uniformity.",
+      "revId": "09ac68c2f62a6bb44f3f1c0b8ce323545495e88b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ce37b2a8_0076d020",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 7106,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-28T08:47:20Z",
+      "side": 1,
+      "message": "Change to Encode instead of build",
+      "revId": "09ac68c2f62a6bb44f3f1c0b8ce323545495e88b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f9ce6f48_391325bd",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-28T08:47:20Z",
+      "side": 1,
+      "message": "club macUeCfg and state together Similarly for RLC",
+      "revId": "09ac68c2f62a6bb44f3f1c0b8ce323545495e88b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3e018592_676a2467",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-28T08:47:20Z",
+      "side": 1,
+      "message": "make this a pointer. We need not allocate so much space here all the time",
+      "revId": "09ac68c2f62a6bb44f3f1c0b8ce323545495e88b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bdbcae6f_a1de146d",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 751,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-28T08:47:20Z",
+      "side": 1,
+      "message": "what is def?",
+      "revId": "09ac68c2f62a6bb44f3f1c0b8ce323545495e88b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
