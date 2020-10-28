@@ -233,8 +233,10 @@ uint8_t BuildAndSendRrcDeliveryReportToDu( RlcDlRrcMsgInfo *dlRrcMsgInfo )
 {
     Pst             pst;
     RrcDeliveryReport *rrcDelivery;
-    
+
+#ifdef ODU_DEBUG_LOG
     DU_LOG("\nRLC : Filling the RRC Delivery Report");
+#endif   
     RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL, rrcDelivery, sizeof(RrcDeliveryReport));
 
     if(rrcDelivery)
@@ -487,8 +489,9 @@ uint8_t RlcProcSchedResultRpt(Pst *pst, RlcSchedResultRpt *schRep)
    RguCStaIndInfo   *cLchSchInfo;    /* Common logical channel scheduling result */
    RguDStaIndInfo   *dLchSchInfo;  /* Dedicated logical channel scheduling result */
 
+#ifdef ODU_DEBUG_LOG
    DU_LOG("\nRLC : Received scheduling report from MAC");
-
+#endif
    for(idx=0; idx < schRep->numLc; idx++)
    {
       /* If it is common channel, fill status indication information

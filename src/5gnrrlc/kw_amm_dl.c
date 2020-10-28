@@ -1120,8 +1120,10 @@ dlrate_kwu += sdu->sduSz;
     * queue */
    if (AMDL.nxtTx == NULLP)
    {
+#ifdef ODU_DEBUG_LOG   
       DU_LOG("\nRLC : rlcAmmQSdu: Received SDU will be transmitted next \
          UEID:%d CELLID:%d", rbCb->rlcId.ueId, rbCb->rlcId.cellId);
+#endif	 
       AMDL.nxtTx = sdu;
    }
 
@@ -2132,10 +2134,10 @@ void rlcAssembleSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
       RLC_SHRABL_STATIC_BUF_FREE(rlckwuSap->pst.region, rlckwuSap->pst.pool, discSduInfo, sizeof(KwuDiscSduInfo));
    }
 
-
+#ifdef ODU_DEBUG_LOG
    DU_LOG("\nRLC: rlcAssembleSdus: BO after assembly = %d UEID:%d CELLID:%d",
       amDl->bo, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
-
+#endif
    return;
 }
 
