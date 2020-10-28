@@ -178,9 +178,9 @@ uint8_t fapiMacCrcInd(Pst *pst, CrcInd *crcInd)
 uint8_t fapiMacRxDataInd(Pst *pst, RxDataInd *rxDataInd)
 {
    uint16_t pduIdx;
-
+#ifdef ODU_LWR_MAC_DEBUG
    DU_LOG("\nMAC : Received Rx Data indication");
-
+#endif
    /* TODO : compare the handle received in RxDataInd with handle send in PUSCH
     * PDU, which is stored in raCb */
 

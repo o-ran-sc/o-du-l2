@@ -2182,7 +2182,9 @@ void setMibPdu(uint8_t *mibPdu, uint32_t *val, uint16_t sfn)
 {
    *mibPdu |= (((uint8_t)(sfn >> 2)) & MIB_SFN_BITMASK);
    *val = (mibPdu[0] << 24 | mibPdu[1] << 16 | mibPdu[2] << 8);
+#ifdef ODU_LWR_MAC_DEBUG   
    DU_LOG("\nLWR_MAC: MIB PDU %x", *val);
+#endif
 }
 
 #ifdef INTEL_FAPI
@@ -3143,7 +3145,9 @@ uint16_t fillDlTtiReq(SlotIndInfo currTimingInfo)
 		     }
 		  }
 		  printf("\033[1;31m");
+#ifdef ODU_LWR_MAC_DEBUG		  
 		  DU_LOG("\nLWR_MAC: MIB sent..");
+#endif
 		  printf("\033[0m");
 	       }
 	       if(currDlSlot->dlInfo.brdcstAlloc.sib1Trans)
@@ -3163,7 +3167,9 @@ uint16_t fillDlTtiReq(SlotIndInfo currTimingInfo)
 		     numPduEncoded++;
 		  }
 		  printf("\033[1;34m");
-		  DU_LOG("\nLWR_MAC: SIB1 sent...");
+#ifdef ODU_LWR_MAC_DEBUG
+                  DU_LOG("\nLWR_MAC: SIB1 sent...");
+#endif		  
 		  printf("\033[0m");
 	       }
 	    }
@@ -3656,8 +3662,6 @@ uint16_t fillUlTtiReq(SlotIndInfo currTimingInfo)
 	 } 
 	 msgLen = sizeof(fapi_ul_tti_req_t) - sizeof(fapi_msg_t);
 	 fillMsgHeader(&ulTtiReq->header, FAPI_UL_TTI_REQUEST, msgLen);
-
-	 DU_LOG("\nLWR_MAC: Sending UL TTI Request");
 	 LwrMacSendToPhy(ulTtiReq->header.msg_id, msgSize, (void *)ulTtiReq);
 
 	 memset(currUlSlot, 0, sizeof(MacUlSlot));
