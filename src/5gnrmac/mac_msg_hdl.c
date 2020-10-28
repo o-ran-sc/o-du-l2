@@ -143,9 +143,7 @@ uint8_t fapiMacCrcInd(Pst *pst, CrcInd *crcInd)
 {
    uint16_t     cellIdx;
    CrcIndInfo   crcIndInfo;
-
    DU_LOG("\nMAC : Received CRC indication");
-
    GET_CELL_IDX(crcInd->cellId, cellIdx);
    /* Considering one pdu and one preamble */ 
    crcIndInfo.cellId = macCb.macCell[cellIdx]->cellId;;
@@ -178,9 +176,7 @@ uint8_t fapiMacCrcInd(Pst *pst, CrcInd *crcInd)
 uint8_t fapiMacRxDataInd(Pst *pst, RxDataInd *rxDataInd)
 {
    uint16_t pduIdx;
-
    DU_LOG("\nMAC : Received Rx Data indication");
-
    /* TODO : compare the handle received in RxDataInd with handle send in PUSCH
     * PDU, which is stored in raCb */
 
@@ -218,7 +214,6 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcData *dlData)
 
    DU_LOG("\nMAC: Received DL data for sfn=%d slot=%d", \
       dlData->slotInfo.sfn, dlData->slotInfo.slot);
-
    /* Copy the pdus to be muxed into mac Dl data */
    macDlData.numPdu = dlData->numPdu;
    for(pduIdx = 0;  pduIdx < dlData->numPdu; pduIdx++)
@@ -383,8 +378,8 @@ uint8_t sendSchedRptToRlc(DlSchedInfo dlInfo, SlotIndInfo slotInfo)
       DU_LOG("\nMAC: Memory allocation failure in sendSchResultRepToRlc");
       return RFAILED;
    }
-   DU_LOG("\nMAC: Send scheduled result report for sfn %d slot %d", slotInfo.sfn, slotInfo.slot);
 
+   DU_LOG("\nMAC: Send scheduled result report for sfn %d slot %d", slotInfo.sfn, slotInfo.slot);
    schedRpt->cellId = dlInfo.cellId;
    schedRpt->rnti = dlInfo.dlMsgAlloc->crnti;
    schedRpt->numLc = dlInfo.dlMsgAlloc->numLc;

@@ -233,7 +233,7 @@ uint8_t BuildAndSendRrcDeliveryReportToDu( RlcDlRrcMsgInfo *dlRrcMsgInfo )
 {
     Pst             pst;
     RrcDeliveryReport *rrcDelivery;
-    
+
     DU_LOG("\nRLC : Filling the RRC Delivery Report");
     RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL, rrcDelivery, sizeof(RrcDeliveryReport));
 
@@ -350,6 +350,7 @@ uint8_t RlcProcUlData(Pst *pst, RlcData *ulData)
    RguCDatIndInfo  *cLchUlDat;               /* UL data on common logical channel */
 
    /* Initializing dedicated logical channel Database */
+   DU_LOG("\nRLC: Received UL Data request from MAC");
    for(idx = 0; idx < MAX_NUM_LC; idx++)
    {
       dLchData[idx].lcId = idx;
@@ -488,7 +489,6 @@ uint8_t RlcProcSchedResultRpt(Pst *pst, RlcSchedResultRpt *schRep)
    RguDStaIndInfo   *dLchSchInfo;  /* Dedicated logical channel scheduling result */
 
    DU_LOG("\nRLC : Received scheduling report from MAC");
-
    for(idx=0; idx < schRep->numLc; idx++)
    {
       /* If it is common channel, fill status indication information
