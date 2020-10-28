@@ -182,7 +182,10 @@ S16 l1BldAndSndConfigRsp(void *msg)
    msgLen = sizeof(fapi_config_resp_t) - sizeof(fapi_msg_t);
    fillMsgHeader(&fapiConfigRsp->header, FAPI_CONFIG_RESPONSE, msgLen);
 
+#ifdef ODU_LWR_MAC_DEBUG
    DU_LOG("\nPHY_STUB: Sending Config Response to Lower Mac");
+#endif
+
    procPhyMessages(fapiConfigRsp->header.msg_id, \
 	 sizeof(fapi_config_resp_t), (void *)fapiConfigRsp);
    MAC_FREE(fapiConfigRsp, sizeof(fapi_config_resp_t));
@@ -244,7 +247,9 @@ void l1HdlConfigReq(uint32_t msgLen, void *msg)
 #ifdef INTEL_FAPI
    fapi_config_req_t *configReq = (fapi_config_req_t *)msg;
 
+#ifdef ODU_LWR_MAC_DEBUG
    DU_LOG("\nPHY_STUB: Received Config Request in PHY");
+#endif
 
    /* Handling CONFIG RESPONSE */
    if(l1BldAndSndConfigRsp(msg)!= ROK)
@@ -307,7 +312,9 @@ uint16_t l1BuildAndSendCrcInd(uint16_t slot, uint16_t sfn)
 	 sizeof(fapi_crc_ind_t) - sizeof(fapi_msg_t));
 
    /* Sending RACH indication to MAC */
+#ifdef ODU_LWR_MAC_DEBUG   
    DU_LOG("\nPHY STUB: Sending CRC Indication to MAC");
+#endif   
    procPhyMessages(crcInd->header.msg_id, sizeof(fapi_crc_ind_t), (void *)crcInd);
    MAC_FREE(crcInd, sizeof(fapi_crc_ind_t));
 #endif
@@ -356,7 +363,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
    {
       msg5Sent = true;
       type = MSG_TYPE_MSG5;
-      msg5ShortBsrSent = false;
+      //msg5ShortBsrSent = false;
    }
 
 
@@ -471,7 +478,9 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
    fillMsgHeader(&rxDataInd->header, FAPI_RX_DATA_INDICATION, msgLen);
 
    /* Sending Rx data indication to MAC */
+#ifdef ODU_LWR_MAC_DEBUG
    DU_LOG("\nPHY STUB: Sending Rx data Indication to MAC");
+#endif   
    procPhyMessages(rxDataInd->header.msg_id, sizeof(fapi_rx_data_indication_t), (void *)rxDataInd);
 
    if(pduInfo->pdu_length)
@@ -535,7 +544,9 @@ uint16_t l1BuildAndSendRachInd(uint16_t slot, uint16_t sfn)
 	 sizeof(fapi_rach_indication_t) - sizeof(fapi_msg_t));
 
    /* Sending RACH indication to MAC */
+#ifdef ODU_LWR_MAC_DEBUG
    DU_LOG("\nPHY STUB: Sending RACH Indication to MAC");
+#endif
    procPhyMessages(rachInd->header.msg_id, sizeof(fapi_rach_indication_t), (void *)rachInd);
    MAC_FREE(rachInd, sizeof(fapi_rach_indication_t));
 #endif
@@ -575,8 +586,10 @@ uint16_t l1BuildAndSendSlotIndication()
       memset(slotIndMsg, 0, sizeof(fapi_slot_ind_t));
       slotIndMsg->sfn = sfnValue;
       slotIndMsg->slot = slotValue;
-      DU_LOG("\n\nPHY_STUB: SLOT indication [%d:%d]",sfnValue,slotValue);
 
+#ifdef ODU_LWR_MAC_DEBUG
+      DU_LOG("\n\nPHY_STUB: SLOT indication [%d:%d]",sfnValue,slotValue);
+#endif
       /* increment for the next TTI */
       slotValue++;
       if(sfnValue >= MAX_SFN_VALUE && slotValue > MAX_SLOT_VALUE)
@@ -659,34 +672,36 @@ S16 l1HdlDlTtiReq(uint16_t msgLen, void *msg)
    fapi_dl_tti_req_t *dlTtiReq;
    dlTtiReq = (fapi_dl_tti_req_t *)msg;
 
-   printf("\nPHY STUB: DL TTI Request at sfn=%d slot=%d",dlTtiReq->sfn,dlTtiReq->slot);
-#if 0
-   printf("\nPHY_STUB:  SFN     %d", dlTtiReq->sfn);
-   printf("\nPHY_STUB:  SLOT    %d", dlTtiReq->slot);
-   printf("\nPHY_STUB:  nPdus   %d", dlTtiReq->nPdus);
-   printf("\nPHY_STUB:  nGroup  %d", dlTtiReq->nGroup);
-   /* Printing SSB CONFIGURED VALUES */
-   printf("\nPHY_STUB: physCellId   %d", dlTtiReq->pdus->u.ssb_pdu.physCellId);
-   printf("\nPHY_STUB: betaPss      %d", dlTtiReq->pdus->u.ssb_pdu.betaPss);
-   printf("\nPHY_STUB: ssbBlockIndex %d",	dlTtiReq->pdus->u.ssb_pdu.ssbBlockIndex);
-   printf("\nPHY_STUB: ssbSubCarrierOffset %d",	dlTtiReq->pdus->u.ssb_pdu.ssbSubCarrierOffset);
-   printf("\nPHY_STUB: ssbOffsetPointA     %d",	dlTtiReq->pdus->u.ssb_pdu.ssbOffsetPointA);
-   printf("\nPHY_STUB: bchPayloadFlag      %d",	dlTtiReq->pdus->u.ssb_pdu.bchPayloadFlag);
-   printf("\nPHY_STUB: bchPayload          %x",	dlTtiReq->pdus->u.ssb_pdu.bchPayload);
+#ifdef ODU_LWR_MAC_DEBUG
+      DU_LOG("\nPHY STUB: DL TTI Request at sfn=%d slot=%d",dlTtiReq->sfn,dlTtiReq->slot);
 #endif
    uint8_t pduCount = 0;
    if(dlTtiReq->nPdus == 0)
    {
+#ifdef ODU_LWR_MAC_DEBUG      
       DU_LOG("\nPHY_STUB: No PDU in DL TTI Request");
+#endif	 
    }
    for(pduCount=0; pduCount<dlTtiReq->nPdus; pduCount++)
    {
       if(dlTtiReq->pdus[pduCount].pduType == 3) //SSB_PDU_TYPE
-	 DU_LOG("\nPHY_STUB: SSB PDU");
+      {
+#ifdef ODU_LWR_MAC_DEBUG
+         DU_LOG("\nPHY_STUB: SSB PDU");
+#endif
+      }
       else if(dlTtiReq->pdus[pduCount].pduType == 0)
-	 DU_LOG("\nPHY_STUB: PDCCH PDU");
+      {
+#ifdef ODU_LWR_MAC_DEBUG
+         DU_LOG("\nPHY_STUB: PDCCH PDU");
+#endif	 
+      }
       else if(dlTtiReq->pdus[pduCount].pduType == 1)
-	 DU_LOG("\nPHY_STUB: PDSCH PDU");
+      {
+#ifdef ODU_LWR_MAC_DEBUG      
+         DU_LOG("\nPHY_STUB: PDSCH PDU");
+#endif
+      }
    }
 
    /* Free FAPI message */
@@ -719,9 +734,9 @@ S16 l1HdlTxDataReq(uint16_t msgLen, void *msg)
 #ifdef INTEL_FAPI
    fapi_tx_data_req_t *txDataReq;
    txDataReq = (fapi_tx_data_req_t *)msg;
-
+#ifdef ODU_LWR_MAC_DEBUG
    DU_LOG("\nPHY STUB: TX DATA Request at sfn=%d slot=%d",txDataReq->sfn,txDataReq->slot);
-
+#endif
    MAC_FREE(txDataReq, msgLen);
 #endif
    return ROK;
@@ -868,7 +883,9 @@ uint8_t l1BuildAndSendUciInd(uint16_t slot, uint16_t sfn, fapi_ul_pucch_pdu_t pu
       fillMsgHeader(&uciInd->header, FAPI_UCI_INDICATION, msgLen);
 
       /* Sending UCI indication to MAC */
+#ifdef ODU_LWR_MAC_DEBUG      
       DU_LOG("\nPHY STUB: Sending UCI Indication to MAC");
+#endif      
       procPhyMessages(uciInd->header.msg_id, sizeof(fapi_uci_indication_t), (void *)uciInd);
    }
    MAC_FREE(uciInd, sizeof(fapi_uci_indication_t));
@@ -898,31 +915,39 @@ S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
 {
 #ifdef INTEL_FAPI
    fapi_ul_tti_req_t *ulTtiReq = NULLP;
-   
-   DU_LOG("\nPHY STUB: Received UL TTI Request");
-
    ulTtiReq = (fapi_ul_tti_req_t *)msg;
    uint8_t numPdus = ulTtiReq->nPdus;
 
    if(numPdus == 0)
    {
-      DU_LOG("\nPHY STUB: No PDU in UL TTI");
+#ifdef ODU_LWR_MAC_DEBUG
+      DU_LOG("\nPHY STUB: No PDU received in UL TTI Req");
+#endif
    }
    while(numPdus)
    {
+#ifdef ODU_LWR_MAC_DEBUG
+   DU_LOG("\nPHY STUB: Received UL TTI Request");
+#endif
       if(ulTtiReq->pdus[numPdus-1].pduType == 0)
       {
+#ifdef ODU_LWR_MAC_DEBUG
 	 DU_LOG("\nPHY STUB: PRACH PDU");
+#endif
       }
       if(ulTtiReq->pdus[numPdus-1].pduType == 1)
       {
+#ifdef ODU_LWR_MAC_DEBUG
 	 DU_LOG("\nPHY STUB: PUSCH PDU");			
-	 l1BuildAndSendRxDataInd(ulTtiReq->slot, ulTtiReq->sfn, \
+#endif
+         l1BuildAndSendRxDataInd(ulTtiReq->slot, ulTtiReq->sfn, \
 	       ulTtiReq->pdus[numPdus-1].pdu.pusch_pdu); 
       }
       if(ulTtiReq->pdus[numPdus-1].pduType == 2)
       {
+#ifdef ODU_LWR_MAC_DEBUG      
 	 DU_LOG("\nPHY STUB: PUCCH PDU");
+#endif
          fapi_ul_tti_req_t ulTtiSlotInd;
 	 memset(&ulTtiSlotInd, 0, sizeof(fapi_ul_tti_req_t));
 	 ulTtiSlotInd.slot = ulTtiReq->slot;
@@ -1117,7 +1142,9 @@ uint8_t l1BuildAndSendMsg5(uint16_t sfn, uint16_t slot)
    fillMsgHeader(&rxDataInd->header, FAPI_RX_DATA_INDICATION, msgLen);
 
    /* Sending Rx data indication to MAC */
+#ifdef ODU_LWR_MAC_DEBUG
    DU_LOG("\nPHY STUB: Sending Rx data Indication to MAC");
+#endif   
    procPhyMessages(rxDataInd->header.msg_id, sizeof(fapi_rx_data_indication_t), (void *)rxDataInd);
 
    if(pduInfo->pdu_length)
@@ -1157,7 +1184,9 @@ S16 l1HdlUlDciReq(uint16_t msgLen, void *msg)
    {
       if(ulDciReq->pdus[numPdus-1].pduType == 0)
       {
+#ifdef ODU_LWR_MAC_DEBUG
 	 DU_LOG("\nPHY STUB: Received UL DCI Request for PDCCH PDU");
+#endif
 	 //l1BuildAndSendMsg5(ulDciReq->sfn, ulDciReq->slot);
 	 //msg5Sent = true;
       }

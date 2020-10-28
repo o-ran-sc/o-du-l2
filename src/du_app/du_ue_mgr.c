@@ -397,7 +397,10 @@ uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg)
    bool                   ueFound = false;
    bool                   ueCcchCtxtFound = false; 
 
+#ifdef ODU_LWR_MAC_DEBUG
    DU_LOG("\nDU_APP : DL RRC message transfer Recevied");
+#endif
+
    dlRrcMsg = &f1apMsg->choice.initiatingMessage->value.choice.DLRRCMessageTransfer;
 
    ret = ROK;

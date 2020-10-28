@@ -143,9 +143,9 @@ uint8_t fapiMacCrcInd(Pst *pst, CrcInd *crcInd)
 {
    uint16_t     cellIdx;
    CrcIndInfo   crcIndInfo;
-
+#ifdef ODU_LWR_MAC_DEBUG
    DU_LOG("\nMAC : Received CRC indication");
-
+#endif
    GET_CELL_IDX(crcInd->cellId, cellIdx);
    /* Considering one pdu and one preamble */ 
    crcIndInfo.cellId = macCb.macCell[cellIdx]->cellId;;
@@ -178,9 +178,9 @@ uint8_t fapiMacCrcInd(Pst *pst, CrcInd *crcInd)
 uint8_t fapiMacRxDataInd(Pst *pst, RxDataInd *rxDataInd)
 {
    uint16_t pduIdx;
-
+#ifdef ODU_LWR_MAC_DEBUG
    DU_LOG("\nMAC : Received Rx Data indication");
-
+#endif
    /* TODO : compare the handle received in RxDataInd with handle send in PUSCH
     * PDU, which is stored in raCb */
 
@@ -216,9 +216,10 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcData *dlData)
    MacDlData macDlData;
    MacDlSlot *currDlSlot = NULLP;
 
+#ifdef ODU_LWR_MAC_DEBUG
    DU_LOG("\nMAC: Received DL data for sfn=%d slot=%d", \
       dlData->slotInfo.sfn, dlData->slotInfo.slot);
-
+#endif
    /* Copy the pdus to be muxed into mac Dl data */
    macDlData.numPdu = dlData->numPdu;
    for(pduIdx = 0;  pduIdx < dlData->numPdu; pduIdx++)
@@ -383,8 +384,10 @@ uint8_t sendSchedRptToRlc(DlSchedInfo dlInfo, SlotIndInfo slotInfo)
       DU_LOG("\nMAC: Memory allocation failure in sendSchResultRepToRlc");
       return RFAILED;
    }
-   DU_LOG("\nMAC: Send scheduled result report for sfn %d slot %d", slotInfo.sfn, slotInfo.slot);
 
+#ifdef ODU_LWR_MAC_DEBUG
+   DU_LOG("\nMAC: Send scheduled result report for sfn %d slot %d", slotInfo.sfn, slotInfo.slot);
+#endif
    schedRpt->cellId = dlInfo.cellId;
    schedRpt->rnti = dlInfo.dlMsgAlloc->crnti;
    schedRpt->numLc = dlInfo.dlMsgAlloc->numLc;
@@ -692,7 +695,9 @@ uint8_t FapiMacUciInd(Pst *pst, UciInd *macUciInd)
             case UCI_IND_PUCCH_F0F1:
                if(macUciInd->pdus[pduIdx].uci.uciPucchF0F1.srInfo.srIndPres)
                {
+#ifdef ODU_LWR_MAC_DEBUG	       
                   DU_LOG("\nMAC : Received SR UCI indication");
+#endif		  
 		  crnti = macUciInd->pdus[pduIdx].uci.uciPucchF0F1.crnti; 
 		  ret = buildAndSendSrInd(macUciInd, crnti);
                }

@@ -1634,15 +1634,15 @@ uint8_t  duHandleMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm)
  * ****************************************************************/
 uint8_t duHandleSlotInd(Pst *pst, SlotIndInfo *slotInfo)
 {
-
-   DU_LOG("\nDU APP : Slot Indication received");
-
    if(slotInfo->cellId <=0 || slotInfo->cellId > MAX_NUM_CELL)
    {
       DU_LOG("\nDU APP : Invalid Cell Id %d", slotInfo->cellId);
    }
    if(!duCb.actvCellLst[slotInfo->cellId-1]->firstSlotIndRcvd)
    {
+#ifdef ODU_LWR_MAC_DEBUG
+   DU_LOG("\nDU APP : Slot Indication received");
+#endif
       duCb.actvCellLst[slotInfo->cellId-1]->firstSlotIndRcvd = true;
       if((duCb.actvCellLst[slotInfo->cellId-1] != NULL) && \
 	    (duCb.actvCellLst[slotInfo->cellId-1]->cellStatus == \

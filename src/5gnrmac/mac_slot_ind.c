@@ -345,8 +345,9 @@ uint8_t fapiMacSlotInd(Pst *pst, SlotIndInfo *slotInd)
    uint8_t               ret;
    VOLATILE uint32_t     startTime=0;
 
+#ifdef ODU_LWR_MAC_DEBUG
    DU_LOG("\nMAC : Slot Indication received");
-
+#endif
    /*starting Task*/
    ODU_START_TASK(&startTime, PID_MAC_TTI_IND);
 

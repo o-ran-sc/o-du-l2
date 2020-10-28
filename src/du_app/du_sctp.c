@@ -770,7 +770,9 @@ uint8_t sctpSend(Buffer *mBuf, uint8_t itfType)
 
    if(itfType == F1_INTERFACE)
    {
+#ifdef ODU_LWR_MAC_DEBUG   
       DU_LOG("\nSCTP : sending the message to DuApp");
+#endif      
       ret = cmInetSctpSendMsg(&f1Params.sockFd, &f1Params.destIpNetAddr, f1Params.destPort, &memInfo, mBuf, &len, 0, FALSE, 0, 0/*SCT_PROTID_NONE*/, RWOULDBLOCK);
    }
 

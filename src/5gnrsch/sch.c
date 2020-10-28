@@ -671,8 +671,9 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
    SchDlSlotInfo *schDlSlotInfo = NULLP;
 
    Inst  inst = pst->dstInst-SCH_INST_START;
+#ifdef ODU_LWR_MAC_DEBUG   
    DU_LOG("\nSCH : Received RLC BO Status indication");
-
+#endif
    cell = schCb[inst].cells[inst];
 
    GET_UE_IDX(dlBoInfo->crnti, ueIdx);
@@ -739,8 +740,9 @@ uint8_t MacSchBsr(Pst *pst, UlBufferStatusRptInd *bsrInd)
    SchUeCb        *ueCb         = NULLP;
    uint8_t        lcgIdx;
 
+#ifdef ODU_LWR_MAC_DEBUG
    DU_LOG("\nSCH : Received BSR");
-
+#endif
    cellCb = schCb[schInst].cells[schInst];
    ueCb = schGetUeCb(cellCb, bsrInd->crnti);
 
@@ -777,7 +779,10 @@ uint8_t MacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
    SchUeCb   *ueCb; 
    SchCellCb *cellCb = schCb[inst].cells[inst];
 
+#ifdef ODU_LWR_MAC_DEBUG
    DU_LOG("\nSCH : Received SR");
+#endif
+
    ueCb = schGetUeCb(cellCb, uciInd->crnti);
 
    if(uciInd->numSrBits)
