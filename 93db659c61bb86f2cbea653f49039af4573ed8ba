@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "12d4a7f4_02f13ffd",
+        "filename": "src/o1/AlarmOranYangModel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000060
+      },
+      "writtenOn": "2020-10-29T12:58:11Z",
+      "side": 1,
+      "message": "Please see: https://wiki.o-ran-sc.org/display/OAM/Bronze+use+case%3A+Health-Check chapter AlarmList\n\nThe alarm-list has 3 key elements, which are mandatory:\n\n| +--ro alarm* [resource alarm-type-id alarm-type-qualifier]\n| | +--ro resource resource\n| | +--ro alarm-type-id alarm-type-id\n| | +--ro alarm-type-qualifier alarm-type-qualifier\n\nI miss in the implementation the \"resource\" which is basically the xpath to the entity which raises the alarm and the alarm-type-qualifier, which can be in our case a static string for all the alarms, e.g. \"O-RAN-SC:O-DU\".",
+      "revId": "93db659c61bb86f2cbea653f49039af4573ed8ba",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
