@@ -1,0 +1,350 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7b24f491_50d69228",
+        "filename": "src/5gnrmac/lwr_mac.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-29T12:21:05Z",
+      "side": 1,
+      "message": "remove extern from du_app folder as well",
+      "revId": "ff9bb2d0969537c9165ee7989ab846a27c525e0d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c312de6d_7dffdbb3",
+        "filename": "src/5gnrmac/lwr_mac.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-29T12:21:05Z",
+      "side": 1,
+      "message": "remove  line : \"extern uint32_t shortBsrBytesTable[MAX_SHORT_BSR_TABLE_ENTRIES];\" from mac_demux.c and add in mac_utils.h. Do not remove extern from this line",
+      "revId": "ff9bb2d0969537c9165ee7989ab846a27c525e0d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d8cfe768_ff21d9f3",
+        "filename": "src/5gnrmac/lwr_mac.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-29T12:21:05Z",
+      "side": 1,
+      "message": "remove extern from lwr_mac_fsm.c",
+      "revId": "ff9bb2d0969537c9165ee7989ab846a27c525e0d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f2990874_acd339ca",
+        "filename": "src/5gnrrlc/kw.x",
+        "patchSetId": 2
+      },
+      "lineNbr": 616,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-29T12:21:05Z",
+      "side": 1,
+      "message": "I think rlcCb should be used with extern",
+      "revId": "ff9bb2d0969537c9165ee7989ab846a27c525e0d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4c06745b_ff6fc5cd",
+        "filename": "src/5gnrrlc/kw_amm_dl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-29T12:21:05Z",
+      "side": 1,
+      "message": "check and remove extern from this file and rlc_mgr.h",
+      "revId": "ff9bb2d0969537c9165ee7989ab846a27c525e0d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dd3b9d13_256331e6",
+        "filename": "src/5gnrrlc/kw_amm_ul.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-29T12:21:05Z",
+      "side": 1,
+      "message": "check and remove extern from this file",
+      "revId": "ff9bb2d0969537c9165ee7989ab846a27c525e0d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "109d6e82_f2a4488e",
+        "filename": "src/5gnrrlc/kw_tmm_dl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-29T12:21:05Z",
+      "side": 1,
+      "message": "check and remove extern from this file",
+      "revId": "ff9bb2d0969537c9165ee7989ab846a27c525e0d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5679da34_70799666",
+        "filename": "src/5gnrrlc/kw_tmm_ul.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-29T12:21:05Z",
+      "side": 1,
+      "message": "check and remove extern from this file",
+      "revId": "ff9bb2d0969537c9165ee7989ab846a27c525e0d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2a898138_89ba5145",
+        "filename": "src/5gnrrlc/kw_umm_dl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-29T12:21:05Z",
+      "side": 1,
+      "message": "check and remove extern from this file",
+      "revId": "ff9bb2d0969537c9165ee7989ab846a27c525e0d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "acdec8f6_fd82c374",
+        "filename": "src/5gnrrlc/kw_umm_ul.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-29T12:21:05Z",
+      "side": 1,
+      "message": "check and remove extern from this file",
+      "revId": "ff9bb2d0969537c9165ee7989ab846a27c525e0d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "77bf82e0_ca49d741",
+        "filename": "src/5gnrrlc/kw_utl_dl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-29T12:21:05Z",
+      "side": 1,
+      "message": "check and remove extern from this file",
+      "revId": "ff9bb2d0969537c9165ee7989ab846a27c525e0d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "067c68ad_0a3a8a30",
+        "filename": "src/5gnrsch/rg_sch.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1508,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-29T12:21:05Z",
+      "side": 1,
+      "message": "remove extern from schFillRar() declaration in sch_slot_ind.c",
+      "revId": "ff9bb2d0969537c9165ee7989ab846a27c525e0d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9b4d4d56_bfc57f08",
+        "filename": "src/5gnrsch/rg_sch_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 443,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-29T12:21:05Z",
+      "side": 1,
+      "message": "remove extern",
+      "revId": "ff9bb2d0969537c9165ee7989ab846a27c525e0d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "23505000_2b40abfa",
+        "filename": "src/5gnrsch/rg_sch_cmn.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6018,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-29T12:21:05Z",
+      "side": 1,
+      "message": "remove \"extern\" from this file",
+      "revId": "ff9bb2d0969537c9165ee7989ab846a27c525e0d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7871d6ec_a9e0df53",
+        "filename": "src/5gnrsch/rg_sch_dhm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-29T12:21:05Z",
+      "side": 1,
+      "message": "remove extern from this file",
+      "revId": "ff9bb2d0969537c9165ee7989ab846a27c525e0d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "183ee18f_bbba9650",
+        "filename": "src/5gnrsch/rg_sch_gom.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-29T12:21:05Z",
+      "side": 1,
+      "message": "check and remove extern from this file",
+      "revId": "ff9bb2d0969537c9165ee7989ab846a27c525e0d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "22bed52b_4c929d5b",
+        "filename": "src/5gnrsch/rg_sch_tom.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-29T12:21:05Z",
+      "side": 1,
+      "message": "check and remove extern from this file",
+      "revId": "ff9bb2d0969537c9165ee7989ab846a27c525e0d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e29b4e1c_fc7f1400",
+        "filename": "src/cm/cm_hash.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-29T12:21:05Z",
+      "side": 1,
+      "message": "revert",
+      "revId": "ff9bb2d0969537c9165ee7989ab846a27c525e0d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5413277b_b77bdcf6",
+        "filename": "src/cm/cm_hash.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-29T12:21:05Z",
+      "side": 1,
+      "message": "revert",
+      "revId": "ff9bb2d0969537c9165ee7989ab846a27c525e0d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e4c391a2_4b549136",
+        "filename": "src/ric_stub/ric_stub_sctp.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-10-29T12:21:05Z",
+      "side": 1,
+      "message": "check for all \"extern\" keyword in cu stub and ric stub",
+      "range": {
+        "startLine": 58,
+        "startChar": 4,
+        "endLine": 58,
+        "endChar": 5
+      },
+      "revId": "ff9bb2d0969537c9165ee7989ab846a27c525e0d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
