@@ -451,7 +451,7 @@ uint8_t RlcProcUlData(Pst *pst, RlcData *ulData)
       }
    }
 
-   for(pduIdx = 0; pduIdx < ulData->numPdu; idx++)
+   for(pduIdx = 0; pduIdx < ulData->numPdu; pduIdx++)
    {
       RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ulData->pduInfo[pduIdx].pduBuf, \
          ulData->pduInfo[pduIdx].pduLen);
