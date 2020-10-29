@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "ac43489f_300eae94",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2320,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-29T14:18:43Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "01f1ba16_24a0945c",
+      "revId": "09ac68c2f62a6bb44f3f1c0b8ce323545495e88b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bca39bde_24d0ad16",
         "filename": "src/du_app/du_f1ap_msg_hdl.c",
         "patchSetId": 3
@@ -33,6 +51,24 @@
       "revId": "09ac68c2f62a6bb44f3f1c0b8ce323545495e88b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f34ba1af_f3d15c48",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 6973,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-29T14:18:43Z",
+      "side": 1,
+      "message": "ok. Keeping extract to maintain the uniformity",
+      "parentUuid": "bca39bde_24d0ad16",
+      "revId": "09ac68c2f62a6bb44f3f1c0b8ce323545495e88b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "bb39cd2f_49b57daf",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 7106,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-29T14:18:43Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "ce37b2a8_0076d020",
+      "revId": "09ac68c2f62a6bb44f3f1c0b8ce323545495e88b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f9ce6f48_391325bd",
         "filename": "src/du_app/du_mgr.h",
         "patchSetId": 3
@@ -67,6 +121,24 @@
       "revId": "09ac68c2f62a6bb44f3f1c0b8ce323545495e88b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8556fccb_b0878e6e",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-29T14:18:43Z",
+      "side": 1,
+      "message": "agreed",
+      "parentUuid": "f9ce6f48_391325bd",
+      "revId": "09ac68c2f62a6bb44f3f1c0b8ce323545495e88b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "3d07869c_1476f999",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-29T14:18:43Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "3e018592_676a2467",
+      "revId": "09ac68c2f62a6bb44f3f1c0b8ce323545495e88b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bdbcae6f_a1de146d",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 3
@@ -101,6 +191,24 @@
       "revId": "09ac68c2f62a6bb44f3f1c0b8ce323545495e88b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5fbfb12d_54015cc3",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 751,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-29T14:18:43Z",
+      "side": 1,
+      "message": "Default",
+      "parentUuid": "bdbcae6f_a1de146d",
+      "revId": "09ac68c2f62a6bb44f3f1c0b8ce323545495e88b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
