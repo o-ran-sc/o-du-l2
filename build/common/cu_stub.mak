@@ -23,9 +23,6 @@ COLOR=$(COLOR_RED)
 SRC_DIR=$(ROOT_DIR)/src/cu_stub/
 C_SRCS=$(wildcard $(SRC_DIR)/*.c)
 C_OBJS=$(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(C_SRCS))
-LOG_FILES=$(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.i,$(C_SRCS))
-BAK_FILES=$(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.i.bak,$(C_SRCS))
-DB_FILES =$(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.i.db,$(C_SRCS))
 
 # prepare the list of common header files
 HDR_FILES+=$(wildcard $(CM_DIR)/env*.[hx])
@@ -45,9 +42,9 @@ I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/RRC
 #-------------------------------------------------------------#
 #Linker macros
 #-------------------------------------------------------------#
-$(LIB_DIR)/libcu.a:$(C_OBJS) $(C_WO_PED_OBJS)
+$(LIB_DIR)/libcu.a:$(C_OBJS) 
 		  @echo -e "Creating Archive $(COLOR) $@ $(REVERT_COLOR)"
-		  $(Q)ar -cr $(LIB_DIR)/libcu.a $(C_OBJS) $(C_WO_PED_OBJS)
+		  $(Q)ar -cr $(LIB_DIR)/libcu.a $(C_OBJS)
 
 #-------------------------------------------------------------#
 #Clean macros
@@ -55,5 +52,8 @@ $(LIB_DIR)/libcu.a:$(C_OBJS) $(C_WO_PED_OBJS)
 clean:
 		  @echo -e "$(COLOR_RED)Cleaning CU STUB$(REVERT_COLOR)"
 		  @echo $(SRC_DIR) $(CM_DIR)
-		  $(Q)\rm -f $(LIB_DIR)/libcu.a $(C_OBJS) $(C_WO_PED_OBJS) $(LOG_FILES) $(BAK_FILES)
+		  $(Q)\rm -f $(LIB_DIR)/libcu.a $(C_OBJS) 
 
+#**********************************************************************
+#         End of file
+#**********************************************************************

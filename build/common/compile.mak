@@ -14,29 +14,6 @@
 #   limitations under the License.                                             #
 ################################################################################
 
-#/********************************************************************16**
-#
-#       Name:   gNodeB Sample Application
-#
-#       Type:   make file
-#
-#       Desc:   Compile, assemble and link product software for
-#               various configurations. Further comments are
-#               embedded in the file. 
-#
-#               This file supports a variety of environments and
-#               build targets. The default build target will be the
-#               portable target for the Linu 2.4.x with GNU C(gcc)
-#
-#       Env:    Linux 2.4.x with GNU C (gcc)
-#
-#       File:  compile.mak
-#
-#********************************************************************21*/
-#=======================================================================
-
-STOPTS=-DENB 
-
 Q=
 S=
 # Check for verbose build
@@ -91,9 +68,6 @@ ALL_FLAGS=$(SS_FLAGS) $(CMN_FLAGS) $(ENV_FLAGS) $(RVW_FLAGS) $(TENB_FLAGS) $(LNX
 C_OPTS+=-g -pipe -Wall -Wno-comment -Wshadow \
     -Wcast-qual -fno-strict-aliasing -fsigned-char --std=c99
 
-COPTS_WO_PEDANTIC=-g -O3 -pipe -Wall -Werror -Wno-comment -Wshadow \
-    -Wcast-qual -fno-strict-aliasing -fsigned-char --std=c99
-
 COPTS_WO_WERROR=-g -O3 -pipe -pedantic -Wall -Wno-comment -Wshadow \
     -Wcast-qual -fno-strict-aliasing -fsigned-char --std=c99
 
@@ -115,11 +89,6 @@ $(C_WO_WERR_OBJS):$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HDR_FILES)
 	$(Q)$(CC) -c -o $@ $(COPTS_WO_WERROR) $(I_OPTS) $(ALL_FLAGS) $(TEXT_LOGGING) $(MOD_FLAGS) \
     $(PLTFRM_FLAGS) $<
 
-$(C_WO_PED_OBJS):$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HDR_FILES)
-	@echo -e "Compiling $(COLOR_RED) $< $(REVERT_COLOR)"
-	$(Q)$(CC) -c -o $@ $(COPTS_WO_PEDANTIC) $(I_OPTS) $(ALL_FLAGS) $(TEXT_LOGGING) $(MOD_FLAGS) \
-    $(PLTFRM_FLAGS) $<
-
 $(CPP_OBJS):$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(HDR_FILES)
 	@echo -e "Compiling $(COLOR_RED) $< $(REVERT_COLOR)"
 	$(Q)$(CC) -c -o $@ $(CPP_OPTS) $(I_OPTS) $(ALL_FLAGS) $(TEXT_LOGGING) $(MOD_FLAGS) \
@@ -130,13 +99,11 @@ $(C_OBJS_WO_LOG):$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HDR_FILES)
 	$(Q)$(CC) -c -o $@ $(C_OPTS) $(I_OPTS) $(ALL_FLAGS) $(TEXT_LOGGING) $(MOD_FLAGS) \
     $(PLTFRM_FLAGS) $<
 
-$(C_WO_PED_OBJS_WO_LOG):$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HDR_FILES)
-	@echo -e "Compiling $(COLOR_RED) $< $(REVERT_COLOR)"
-	$(Q)$(CC) -c -o $@ $(COPTS_WO_PEDANTIC) $(I_OPTS) $(ALL_FLAGS) $(TEXT_LOGGING) $(MOD_FLAGS) \
-    $(PLTFRM_FLAGS) $<
-
 $(CPP_OBJS_WO_LOG):$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(HDR_FILES)
 	@echo -e "Compiling $(COLOR_RED) $< $(REVERT_COLOR)"
 	$(Q)$(CC) -c -o $@ $(CPP_OPTS) $(I_OPTS) $(ALL_FLAGS) $(TEXT_LOGGING) $(MOD_FLAGS) \
     $(PLTFRM_FLAGS) $<
 
+#**********************************************************************
+#         End of file
+#**********************************************************************
