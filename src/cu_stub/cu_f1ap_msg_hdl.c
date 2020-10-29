@@ -810,7 +810,7 @@ uint8_t BuildAndSendF1ResetReq()
  *
  * @details
  *
- *    Function : fillRadioBearerConfig
+ *    Function : fillSrbCfg
  *
  *    Functionality: Fills Radio Bearer Config
  *
@@ -820,40 +820,39 @@ uint8_t BuildAndSendF1ResetReq()
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t fillRadioBearerConfig(SRB_ToAddModList_t *bearerCfg)
+uint8_t fillSrbCfg(uint8_t srbId, SRB_ToAddModList_t *bearerCfg)
 {
    uint8_t elementCnt;
-   uint8_t idx;
-   uint8_t ied;
+   uint8_t idx, ieId;
    if(bearerCfg != NULLP)
    {
       elementCnt = 1;
       bearerCfg->list.count = elementCnt;
       bearerCfg->list.size =\
-			    elementCnt * sizeof(SRB_ToAddMod_t *);
+           elementCnt * sizeof(SRB_ToAddMod_t *);
       CU_ALLOC(bearerCfg->list.array, bearerCfg->list.size);
       if(bearerCfg->list.array != NULLP)
       {
-	 for(idx = 0; idx < elementCnt; idx++)
-	 {
-	    CU_ALLOC(bearerCfg->list.array[idx], sizeof(SRB_ToAddMod_t));
-	    if(bearerCfg->list.array[idx] == NULLP)
-	    {
-	       for(ied = 0; ied < idx; ied++)
-	       {
-		  CU_FREE(bearerCfg->list.array[idx], sizeof(SRB_ToAddMod_t));
-	       }
-	       CU_FREE(bearerCfg->list.array, bearerCfg->list.size);
-	       return RFAILED;
-	    }
-	 }
+         for(idx = 0; idx < elementCnt; idx++)
+         {
+            CU_ALLOC(bearerCfg->list.array[idx], sizeof(SRB_ToAddMod_t));
+            if(bearerCfg->list.array[idx] == NULLP)
+            {
+               for(ieId = 0; ieId < idx; ieId++)
+               {
+                  CU_FREE(bearerCfg->list.array[ieId], sizeof(SRB_ToAddMod_t));
+               }
+               CU_FREE(bearerCfg->list.array, bearerCfg->list.size);
+               return RFAILED;
+            }
+         }
       }
       else
       {
-	 return RFAILED;
+         return RFAILED;
       }
       idx = 0;
-      bearerCfg->list.array[idx]->srb_Identity = SRB1;
+      bearerCfg->list.array[idx]->srb_Identity = srbId;
    }
    return ROK;
 }
@@ -925,7 +924,7 @@ uint8_t fillRRCSetupIE(RRCSetup_IEs_t *rrcSetupIE)
       CU_ALLOC(rrcSetupIE->radioBearerConfig.srb_ToAddModList, sizeof(SRB_ToAddModList_t));
       if(rrcSetupIE->radioBearerConfig.srb_ToAddModList != NULLP)
       {
-	 ret = fillRadioBearerConfig(rrcSetupIE->radioBearerConfig.srb_ToAddModList);
+	 ret = fillSrbCfg(SRB1, rrcSetupIE->radioBearerConfig.srb_ToAddModList);
       }		
       if(!ret)
       {
@@ -941,23 +940,23 @@ uint8_t fillRRCSetupIE(RRCSetup_IEs_t *rrcSetupIE)
 }
 /*******************************************************************
  *
- * @brief Builds RRC Container IE required for DLRRCMessageTransfer
+ * @brief Fills DL DCCCH Message required for DLRRCMessageTransfer
  *
  * @details
  *
- *    Function : BuildDLRRCContainer
+ *    Function : fillDlCcchRrcMsg
  *
- *    Functionality: Builds RRC Container IE required for 
+ *    Functionality: Fills DL DCCCH Message required for 
  *                   DLRRCMessageTransfer
  *
- * @params[in] 
+ * @params[in] RRCContainer_t *rrcContainer
  *
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
 
-uint8_t	BuildDLRRCContainer(RRCContainer_t *rrcContainer)
+uint8_t fillDlCcchRrcMsg(RRCContainer_t *rrcContainer)
 {
    uint8_t ret = ROK;
    uint16_t idx2;
@@ -997,13 +996,13 @@ uint8_t	BuildDLRRCContainer(RRCContainer_t *rrcContainer)
 		  /* Encode results */
 		  if(encRetVal.encoded == ENCODE_FAIL)
 		  {
-		     DU_LOG( "\n F1AP : Could not encode RRCContainer (at %s)\n",\
+		     DU_LOG( "\n F1AP : Could not encode RRCContainer for DL-CCCH Msg(at %s)\n",\
 			   encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
 		     return RFAILED;
 		  }
 		  else
 		  {
-		     DU_LOG("\n F1AP : Created APER encoded buffer for RRCContainer\n");
+		     DU_LOG("\n F1AP : Created APER encoded buffer for RRCContainer for DL-CCCH Msg\n");
 		     for(int i = 0; i< encBufSize; i++)
 		     {
 			printf("%x",encBuf[i]);
@@ -1027,26 +1026,377 @@ uint8_t	BuildDLRRCContainer(RRCContainer_t *rrcContainer)
 	    }
 	    else
 	    {
-	       DU_LOG("\nF1AP: Memory Alloc failed for RRC Setup Msg");
+	       DU_LOG("\nF1AP: Memory Alloc failed for RRC Setup Msg at fillDlCcchRrcMsg()");
 	       ret = RFAILED;
 	    }
 	 }
 	 else
 	 {
-	    DU_LOG("\nF1AP: Memory Alloc failed for RRC Msg");
+	    DU_LOG("\nF1AP: Memory Alloc failed for RRC Msg at fillDlCcchRrcMsg()");
 	    ret = RFAILED;
 	 }
       }
       else
       {
-	 DU_LOG("\nF1AP: Memory Alloc failed for DL Ccch Msg choice");
+	 DU_LOG("\nF1AP: Memory Alloc failed for DL Ccch Msg choice at fillDlCcchRrcMsg()");
 	 ret = RFAILED;
       }
    }
    else
    {
-      DU_LOG("\nF1AP: Memory Alloc failed for DlCcch Msg");
+      DU_LOG("\nF1AP: RRC Container is NULLP at fillDlCcchRrcMsg()");
       ret = RFAILED;
+   }
+}
+
+uint8_t fillQosFlowsToAdd(struct SDAP_Config__mappedQoS_FlowsToAdd *qosFlow)
+{
+   uint8_t idx, ied, elementCnt;
+
+   elementCnt = 1;
+   qosFlow->list.count = elementCnt;
+   qosFlow->list.size  = elementCnt * sizeof(QFI_t *);
+   CU_ALLOC(qosFlow->list.array, qosFlow->list.size);
+   if(qosFlow->list.array != NULLP)
+   {
+      for(idx = 0; idx < elementCnt; idx++)
+      {
+         CU_ALLOC(qosFlow->list.array[idx], sizeof(QFI_t));
+         if(qosFlow->list.array[idx] == NULLP)
+         {
+            for(ied = 0; ied < idx; ied++)
+            {
+               CU_FREE(qosFlow->list.array[idx], sizeof(QFI_t));
+            }
+            CU_FREE(qosFlow->list.array, qosFlow->list.size);
+            return RFAILED;
+         }
+      }
+   }
+   idx = 0;
+   *qosFlow->list.array[idx] = 9;
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fills CN Assoc for Drb to Add/Mod List
+ *
+ * @details
+ *
+ *    Function : fillCnAssoc
+ *
+ *    Functionality: Fills CN Assoc for Drb to Add/Mod List
+ *
+ * @params[in] struct DRB_ToAddMod__cnAssociation *
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t fillCnAssoc(struct DRB_ToAddMod__cnAssociation *cnAssoc)
+{
+   uint8_t ret = ROK;
+
+   cnAssoc->present = DRB_ToAddMod__cnAssociation_PR_sdap_Config;
+   if(cnAssoc->present == DRB_ToAddMod__cnAssociation_PR_eps_BearerIdentity)
+   {
+      cnAssoc->choice.eps_BearerIdentity = 5;
+   }
+   if(cnAssoc->present == DRB_ToAddMod__cnAssociation_PR_sdap_Config)
+   {
+      CU_ALLOC(cnAssoc->choice.sdap_Config, sizeof(SDAP_Config_t));
+      if(cnAssoc->choice.sdap_Config)
+      {
+         cnAssoc->choice.sdap_Config->pdu_Session = 5;
+         cnAssoc->choice.sdap_Config->sdap_HeaderDL = 0;
+         cnAssoc->choice.sdap_Config->sdap_HeaderUL = 0;
+         cnAssoc->choice.sdap_Config->defaultDRB = true;
+         cnAssoc->choice.sdap_Config->mappedQoS_FlowsToAdd = NULLP;
+         cnAssoc->choice.sdap_Config->mappedQoS_FlowsToRelease = NULLP;
+         CU_ALLOC(cnAssoc->choice.sdap_Config->mappedQoS_FlowsToAdd, \
+            sizeof(struct SDAP_Config__mappedQoS_FlowsToAdd));
+         if(cnAssoc->choice.sdap_Config->mappedQoS_FlowsToAdd)
+         {
+            ret = fillQosFlowsToAdd(cnAssoc->choice.sdap_Config->mappedQoS_FlowsToAdd);
+         }
+         else
+         {
+            DU_LOG("\nF1AP: Memory alloc failed at mappedQoS_FlowsToAdd in fillCnAssoc()");
+            CU_FREE(cnAssoc->choice.sdap_Config, sizeof(SDAP_Config_t));
+            ret = RFAILED;
+         }
+      }
+      else
+      {
+         DU_LOG("\nF1AP: Mem alloc failed at fillCnAssoc()");
+         ret = RFAILED;
+      }
+   }
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Fills Radio Bearer Config for Drb 
+ *
+ * @details
+ *
+ *    Function : fillDrbCfg
+ *
+ *    Functionality: Fills Radio Bearer Config for Drb
+ *
+ * @params[in] drbId, DRB_ToAddModList *
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fillDrbCfg(uint8_t drbId, DRB_ToAddModList_t *drbCfg)
+{
+   uint8_t idx, ied, ret, elementCnt;
+   
+   ret = ROK;
+   if(drbCfg != NULLP)
+   {
+      elementCnt = 1;
+      drbCfg->list.count = elementCnt;
+      drbCfg->list.size =\
+           elementCnt * sizeof(DRB_ToAddMod_t *);
+      CU_ALLOC(drbCfg->list.array, drbCfg->list.size);
+      if(drbCfg->list.array != NULLP)
+      {
+         for(idx = 0; idx < elementCnt; idx++)
+         {
+            CU_ALLOC(drbCfg->list.array[idx], sizeof(DRB_ToAddMod_t));
+            if(drbCfg->list.array[idx] == NULLP)
+            {
+               for(ied = 0; ied < idx; ied++)
+               {
+                  CU_FREE(drbCfg->list.array[idx], sizeof(DRB_ToAddMod_t));
+               }
+               CU_FREE(drbCfg->list.array, drbCfg->list.size);
+               return RFAILED;
+            }
+         }
+      }
+      else
+      {
+         return RFAILED;
+      }
+      idx = 0;
+      /* CN ASSOCIATION */
+      CU_ALLOC(drbCfg->list.array[idx]->cnAssociation, sizeof(struct DRB_ToAddMod__cnAssociation));
+      if(drbCfg->list.array[idx]->cnAssociation)
+      {
+         ret = fillCnAssoc(drbCfg->list.array[idx]->cnAssociation);
+      }
+      /* DRB */
+      drbCfg->list.array[idx]->drb_Identity = drbId;
+   }
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Fills RRC Reconfig Message required for DLRRCMessageTransfer
+ *
+ * @details
+ *
+ *    Function : fillRrcReconfigIE
+ *
+ *    Functionality: Fills RRC Reconfig Message required for 
+ *                   DLRRCMessageTransfer
+ *
+ * @params[in] RRCReconfiguration_IEs_t* rrcReconfig
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t fillRrcReconfigIE(RRCReconfiguration_IEs_t *rrcReconfigMsg)
+{
+   uint8_t ret = ROK;
+   CU_ALLOC(rrcReconfigMsg->radioBearerConfig, sizeof(RadioBearerConfig_t));
+   if(rrcReconfigMsg->radioBearerConfig)
+   {
+      CU_ALLOC(rrcReconfigMsg->radioBearerConfig->srb_ToAddModList, sizeof(SRB_ToAddModList_t));
+      if(rrcReconfigMsg->radioBearerConfig->srb_ToAddModList != NULLP)
+      {
+         ret = fillSrbCfg(SRB2, rrcReconfigMsg->radioBearerConfig->srb_ToAddModList);
+	 
+      }
+      if(!ret)
+      {
+         CU_ALLOC(rrcReconfigMsg->radioBearerConfig->drb_ToAddModList, sizeof(DRB_ToAddModList_t));
+         if(rrcReconfigMsg->radioBearerConfig->drb_ToAddModList != NULLP)
+	 {
+            ret = fillDrbCfg(DRB1, rrcReconfigMsg->radioBearerConfig->drb_ToAddModList);
+	    if(ret)
+	    {
+               DU_LOG("\n F1AP: Failed to fill DrbCfg at fillRrcReconfigIE()");
+	       CU_FREE(rrcReconfigMsg->radioBearerConfig->srb_ToAddModList, sizeof(SRB_ToAddModList_t));
+               CU_FREE(rrcReconfigMsg->radioBearerConfig->drb_ToAddModList, sizeof(DRB_ToAddModList_t));
+	    }
+	 }
+      }
+      else
+      {
+         DU_LOG("\n F1AP: memory Alloc failed at fillRrcReconfigIE()");
+	 CU_FREE(rrcReconfigMsg->radioBearerConfig->srb_ToAddModList, sizeof(SRB_ToAddModList_t));
+      }
+   }
+
+   return ret;
+}
+/*******************************************************************
+ *
+ * @brief Fills DL DCCH Message required for DLRRCMessageTransfer
+ *
+ * @details
+ *
+ *    Function : fillDlDcchRrcMsg
+ *
+ *    Functionality: Fills DL DCCH Message required for 
+ *                   DLRRCMessageTransfer
+ *
+ * @params[in] RRCContainer_t *rrcContainer
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t fillDlDcchRrcMsg(RRCContainer_t *rrcContainer)
+{
+   uint8_t ret = ROK;
+   uint16_t idx2;
+   DL_DCCH_Message_t dl_DCCH_Msg;
+   memset(&dl_DCCH_Msg, 0, sizeof(DL_DCCH_Message_t));
+   asn_enc_rval_t        encRetVal;
+
+   if(rrcContainer != NULLP)
+   {
+      dl_DCCH_Msg.message.present = DL_DCCH_MessageType_PR_c1;
+
+      CU_ALLOC(dl_DCCH_Msg.message.choice.c1 , sizeof(DL_DCCH_MessageType_t));
+      if(dl_DCCH_Msg.message.choice.c1 != NULLP)
+      {
+	 dl_DCCH_Msg.message.choice.c1->present = DL_DCCH_MessageType__c1_PR_rrcReconfiguration;
+	 CU_ALLOC(dl_DCCH_Msg.message.choice.c1->choice.rrcReconfiguration, sizeof(RRCReconfiguration_t));
+	 if(dl_DCCH_Msg.message.choice.c1->choice.rrcReconfiguration != NULLP)
+	 {
+	    dl_DCCH_Msg.message.choice.c1->choice.rrcReconfiguration->rrc_TransactionIdentifier = 0;
+	    dl_DCCH_Msg.message.choice.c1->choice.rrcReconfiguration->criticalExtensions.\
+	       present = RRCReconfiguration__criticalExtensions_PR_rrcReconfiguration;
+	    /* Fill RRC Reconfig IE */
+	    CU_ALLOC(dl_DCCH_Msg.message.choice.c1->choice.rrcReconfiguration->\
+		  criticalExtensions.choice.rrcReconfiguration, sizeof(RRCReconfiguration_IEs_t));
+	    if(dl_DCCH_Msg.message.choice.c1->choice.rrcReconfiguration->\
+		  criticalExtensions.choice.rrcReconfiguration != NULLP)
+	    {
+	       ret = fillRrcReconfigIE(dl_DCCH_Msg.message.choice.c1->choice.rrcReconfiguration->\
+		     criticalExtensions.choice.rrcReconfiguration);
+
+	       if(!ret)
+	       {
+		  /* encode DL-DCCH message into RRC Container */
+		  xer_fprint(stdout, &asn_DEF_DL_DCCH_MessageType, &dl_DCCH_Msg);
+		  cmMemset((U8 *)encBuf, 0, ENC_BUF_MAX_LEN);
+		  encBufSize = 0;
+		  encRetVal = aper_encode(&asn_DEF_DL_DCCH_MessageType, 0, &dl_DCCH_Msg, PrepFinalEncBuf, encBuf);
+		  /* Encode results */
+		  if(encRetVal.encoded == ENCODE_FAIL)
+		  {
+		     DU_LOG( "\n F1AP : Could not encode RRCContainer for DL-DCCH Msg (at %s)\n",\
+			   encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+		     return RFAILED;
+		  }
+		  else
+		  {
+		     DU_LOG("\n F1AP : Created APER encoded buffer for RRCContainer for DL-DCCH Msg\n");
+		     for(int i = 0; i< encBufSize; i++)
+		     {
+			printf("%x",encBuf[i]);
+		     }
+		     rrcContainer->size = encBufSize;
+		     CU_ALLOC(rrcContainer->buf, rrcContainer->size);
+		     if(rrcContainer->buf != NULLP)
+		     {
+			memset(rrcContainer->buf, 0, encBufSize);
+			for(idx2 = 0; idx2 < encBufSize; idx2++)
+			{
+			   rrcContainer->buf[idx2] =	encBuf[idx2];
+			}
+		     }
+		  }
+	       }
+	       else
+	       {
+	          DU_LOG("\nF1AP: Failed to fill RrcReconfig IE at fillDlDcchRrcMsg()");
+	       }
+	    }
+	    else
+	    {
+	       DU_LOG("\nF1AP: Memory Alloc failed for RRC Reconfig at fillDlDcchRrcMsg()");
+	       ret = RFAILED;
+	    }
+	 }
+	 else
+	 {
+	    DU_LOG("\nF1AP: Memory Alloc failed for RRC Msg at fillDlDcchRrcMsg()");
+	    ret = RFAILED;
+	 }
+      }
+      else
+      {
+	 DU_LOG("\nF1AP: Memory Alloc failed for DL Dcch Msg choice at fillDlDcchRrcMsg()");
+	 ret = RFAILED;
+      }
+   }
+   else
+   {
+      DU_LOG("\nF1AP: RRC Container is NULLP at fillDlDcchRrcMsg()");
+      ret = RFAILED;
+   }
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Builds RRC Container IE required for DLRRCMessageTransfer
+ *
+ * @details
+ *
+ *    Function : BuildDLRRCContainer
+ *
+ *    Functionality: Builds RRC Container IE required for 
+ *                   DLRRCMessageTransfer
+ *
+ * @params[in] 
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t	BuildDLRRCContainer(uint8_t rrcMsgType, RRCContainer_t *rrcContainer)
+{
+   uint8_t ret = ROK;
+
+   if(rrcMsgType == RRC_SETUP)
+   { 
+      ret = fillDlCcchRrcMsg(rrcContainer);
+      if(ret)
+         DU_LOG("\n F1AP: Failed to fill DL-CCCH Msg at BuildDLRRCContainer()");
+   }
+   else if(rrcMsgType == RRC_RECONFIG)
+   {
+      ret = fillDlDcchRrcMsg(rrcContainer);
+      if(ret)
+         DU_LOG("\n F1AP: Failed at fill DL-DCCH Msg at BuildDLRRCContainer()");
    }
    return ret;
 }
@@ -1068,12 +1418,11 @@ uint8_t	BuildDLRRCContainer(RRCContainer_t *rrcContainer)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 BuildAndSendDLRRCMessageTransfer()
+uint8_t BuildAndSendDLRRCMessageTransfer(uint8_t rrcMsgType)
 {
    uint8_t   elementCnt = 0;
    uint8_t  ieId;
    uint8_t  idx;
-   uint16_t idx2;
    F1AP_PDU_t  *f1apMsg = NULLP;
    DLRRCMessageTransfer_t  *dlRRCMsg = NULLP;
    asn_enc_rval_t   encRetVal;        /* Encoder return value */
@@ -1166,7 +1515,7 @@ S16 BuildAndSendDLRRCMessageTransfer()
    dlRRCMsg->protocolIEs.list.array[idx]->criticality   = Criticality_reject;
    dlRRCMsg->protocolIEs.list.array[idx]->value.present = \
 							  DLRRCMessageTransferIEs__value_PR_RRCContainer;
-   BuildDLRRCContainer(&dlRRCMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer);
+   BuildDLRRCContainer(rrcMsgType, &dlRRCMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer);
 
    xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
 
@@ -1347,9 +1696,64 @@ S16 BuildAndSendUESetRsp()
    return ROK;
 }/* End of BuildAndSendUESetRsp */
 
+/*******************************************************************
+ *
+ * @brief Function to set the Dl RRC Msg Type
+ *
+ * @details
+ *
+ *    Function : setDlRRCMsgType
+ *
+ *    Functionality: Constructs the UE Setup Response and sends
+ *                   it to the DU through SCTP.
+ *
+ * @params[in] 
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t setDlRRCMsgType()
+{
+   uint8_t rrcMsgType = 0;
+   switch(f1apMsgDb.dlRrcMsgCount)
+   {
+      case RRC_SETUP:
+        rrcMsgType = RRC_SETUP;
+        break;
+      case RRC_SECURITY_MODE_COMMAND:
+        rrcMsgType = RRC_SECURITY_MODE_COMMAND;
+        break;
+      case RRC_RECONFIG:
+        rrcMsgType = RRC_RECONFIG;
+        break;
+      default:
+        break;
+   }
+   return rrcMsgType;   
+}
+
+/*******************************************************************
+ *
+ * @brief Function to build Initial UL RRC Message
+ *
+ * @details
+ *
+ *    Function : procInitULRRCMsg
+ *
+ *    Functionality: Function to build Initial UL RRC Message
+ *
+ * @params[in] 
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
 uint8_t procInitULRRCMsg(F1AP_PDU_t *f1apMsg)
 {
-   uint8_t idx;
+   uint8_t idx, rrcMsgType;
    uint8_t ret =ROK;
    InitialULRRCMessageTransfer_t *initULRRCMsg = NULLP;
    DU_LOG("\n filling the required values in DB in procInitULRRCMsg");
@@ -1398,9 +1802,12 @@ uint8_t procInitULRRCMsg(F1AP_PDU_t *f1apMsg)
 	    break;
       }
    }
-   if(!ret)
-      ret = BuildAndSendDLRRCMessageTransfer();
-
+	if(!ret)
+	{
+	  f1apMsgDb.dlRrcMsgCount++;
+	  rrcMsgType = setDlRRCMsgType();
+	  ret = BuildAndSendDLRRCMessageTransfer(rrcMsgType);
+	}
    return ret;
 }
 
@@ -2497,13 +2904,13 @@ uint8_t BuildAndSendUESetReq(uint8_t cuUeF1apId, uint8_t duUeF1apId, \
 
 uint8_t procUlRrcMsg(F1AP_PDU_t *f1apMsg)
 {
-   uint8_t idx;
-   uint8_t ret =ROK;
+   uint8_t idx, ret, srbId, rrcMsgType;
    uint8_t cuUeF1apId, duUeF1apId;
-   uint8_t *rrcContainer;
+   uint8_t *rrcContainer = NULLP;
    uint16_t rrcContLen;
    ULRRCMessageTransfer_t *ulRrcMsg = NULLP;
 
+   ret = ROK;
    ulRrcMsg = &f1apMsg->choice.initiatingMessage->value.choice.ULRRCMessageTransfer;
 
    for(idx=0; idx < ulRrcMsg->protocolIEs.list.count; idx++)
@@ -2521,6 +2928,7 @@ uint8_t procUlRrcMsg(F1AP_PDU_t *f1apMsg)
 	       break;
 	    }
 	 case ProtocolIE_ID_id_SRBID:
+	    srbId = ulRrcMsg->protocolIEs.list.array[idx]->value.choice.SRBID;
 	    break;
 	 case ProtocolIE_ID_id_RRCContainer:
 	    {
@@ -2541,10 +2949,22 @@ uint8_t procUlRrcMsg(F1AP_PDU_t *f1apMsg)
 	    break;
       }
    }
-   if(!ret)
-      ret = BuildAndSendUESetReq(cuUeF1apId, duUeF1apId, rrcContLen, rrcContainer);
+   if(srbId == 1)
+   {
+      f1apMsgDb.dlRrcMsgCount++;
+      rrcMsgType = setDlRRCMsgType();
+      if(rrcMsgType == RRC_SECURITY_MODE_COMMAND)
+      {
+         ret = BuildAndSendUESetReq(cuUeF1apId, duUeF1apId, rrcContLen, rrcContainer);
+      }
+      if(rrcMsgType == RRC_RECONFIG)
+      {
+         ret = BuildAndSendDLRRCMessageTransfer(rrcMsgType);
+      }
+   }
    return ret;
 }
+
 /****************************************************************
  * @brief Build And Send F1ResetAck 
  *
@@ -2587,6 +3007,7 @@ void FreeF1ResetAck(F1AP_PDU_t *f1apMsg)
        CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
     }
 }
+
 /****************************************************************
 * @brief Build And Send F1ResetAck
 *
@@ -2699,6 +3120,7 @@ uint8_t BuildAndSendF1ResetAck()
    FreeF1ResetAck(f1apMsg);
    return ret;
 }
+
 /*******************************************************************
  *
  * @brief Handles received F1AP message and sends back response  
