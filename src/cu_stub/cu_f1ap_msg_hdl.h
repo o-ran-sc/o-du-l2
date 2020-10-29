@@ -17,6 +17,8 @@
 *******************************************************************************/
 
 /* This file contains all F1AP message handler related functionality */
+#include <stdbool.h>
+#include <string.h>
 #include<ProtocolIE-Field.h>
 #include "ProtocolExtensionField.h"
 #include "F1AP-PDU.h"
@@ -26,6 +28,12 @@
 #include "SRB-ToAddMod.h"
 #include "RRCSetup-IEs.h"
 #include "RRCSetup.h"
+#include "DL-DCCH-Message.h"
+#include "RRCReconfiguration-IEs.h"
+#include "RRCReconfiguration.h"
+#include "DRB-ToAddModList.h"
+#include "DRB-ToAddMod.h"
+#include "SDAP-Config.h"
 #include "du_log.h"
 
 #define ENCODE_FAIL -1
@@ -39,6 +47,8 @@
 #define CRNTI           17017
 #define CELL_INDEX      0
 #define SRB1 1
+#define SRB2 2
+#define DRB1 1
 
 #define CU_UE_F1AP_ID 0
 #define DU_UE_F1AP_ID 1
@@ -46,8 +56,12 @@
 #define SERV_CELL_IDX 3
 #define CU_TO_DU_RRC_INF 4
 
+#define RRC_SETUP 1
+#define RRC_SECURITY_MODE_COMMAND 2
+#define RRC_RECONFIG 3
 typedef struct f1apDb
 {
+   uint8_t dlRrcMsgCount;
    OCTET_STRING_t duToCuContainer;
 }F1apMsgDb;
   

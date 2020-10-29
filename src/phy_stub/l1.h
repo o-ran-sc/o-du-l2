@@ -27,12 +27,15 @@ bool     rachIndSent = false;
 bool     msg3Sent = false;
 bool     msg5ShortBsrSent = false;
 bool     msg5Sent = false;
+bool     dlDedMsg = false;
+bool     msgSecurityModeComp =  false;
 
 typedef enum
 {
    MSG_TYPE_MSG3,
    MSG_TYPE_SHORT_BSR,
-   MSG_TYPE_MSG5
+   MSG_TYPE_MSG5,
+   MSG_TYPE_SECURITY_MODE_COMPLETE
 }MsgType;
 
 void phyToMac ARGS((uint16_t msgType, uint32_t msgLen,void *msg));
