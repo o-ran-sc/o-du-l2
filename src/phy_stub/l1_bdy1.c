@@ -337,7 +337,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
    uint8_t idx = 0;
    fapi_rx_data_indication_t *rxDataInd;
    fapi_pdu_ind_info_t       *pduInfo;
-   uint8_t  *pdu;
+   uint8_t  *pdu = NULLP;
    uint16_t byteIdx = 0;
    uint32_t msgLen = 0;
    MsgType type;
@@ -356,9 +356,14 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
    {
       msg5Sent = true;
       type = MSG_TYPE_MSG5;
-      msg5ShortBsrSent = false;
    }
-
+   else if(!msgSecurityModeComp)
+   {
+      msgSecurityModeComp = true;
+      type = MSG_TYPE_SECURITY_MODE_COMPLETE;
+   }
+   else
+      return RFAILED;
 
    MAC_ALLOC(rxDataInd, sizeof(fapi_rx_data_indication_t));
    if(!rxDataInd)
@@ -368,7 +373,6 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
    }
    memset(rxDataInd, 0, sizeof(fapi_rx_data_indication_t));
 
-   /* TODO: Fill the required values */
    msgLen = sizeof(fapi_rx_data_indication_t) - sizeof(fapi_msg_t);
    rxDataInd->sfn = sfn;
    rxDataInd->slot = slot;
@@ -399,6 +403,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
    {
       case MSG_TYPE_MSG3: 
 	 {
+	    DU_LOG("\nPHY_STUB: Forming MSG3 PDU ");
 	    /* For Initial RRC setup Request,
 	       MAC subheader format is R/R/LCId (1byte)
 	       LCId is CCCH(0)
@@ -418,6 +423,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
 
       case MSG_TYPE_SHORT_BSR:
 	 {
+	    DU_LOG("\nPHY_STUB: Forming SHORT BSR PDU ");
 	    uint8_t lcgId = 0;
 	    uint8_t bufferSizeIdx = 6;
 
@@ -434,6 +440,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
 
       case MSG_TYPE_MSG5:
 	 {
+	    DU_LOG("\nPHY_STUB: Forming MSG5 PDU");
 	    uint8_t  msg5PduLen = 33;
 	    /* For RRC setup complete
 	       MAC subheader format is R/F/LCId/L (2/3 bytes)
@@ -448,8 +455,28 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
 	    msg5PduLen += 2;  /* 2bytes of header */
 	    memcpy(pdu, &msg5, msg5PduLen);
 	    byteIdx += msg5PduLen; /* 2 bytes of header */
+	    break;
 	 }
 
+      case MSG_TYPE_SECURITY_MODE_COMPLETE:
+	 {
+	    DU_LOG("\nPHY_STUB: Forming SECURITY MODE COMPLETE PDU");
+	    uint8_t  pduLen = 33;
+	    /* For security mode complete
+	       MAC subheader format is R/F/LCId/L (2/3 bytes)
+	       LCId is 1 for SRB1
+	       L is length of PDU i.e 6bytes here 
+	       From 38.321 section 6.1.1
+	     */
+	    uint8_t msg[] = {1, pduLen, 0, 0, 16, 0, 5, 223, 128, 16, 94, \
+	       64, 3, 64, 89, 61, 138, 64, 0, 0, 0, 4, 0, 0, 4, 68, 11, 128, \
+	       184, 56, 0, 0, 0, 0, 0};
+
+	    pduLen += 2;  /* 2bytes of header */
+	    memcpy(pdu, &msg, pduLen);
+	    byteIdx += pduLen; /* 2 bytes of header */
+	    break;
+	 }
       default:
 	 break;
    } /* End of switch(type) */
@@ -684,7 +711,14 @@ S16 l1HdlDlTtiReq(uint16_t msgLen, void *msg)
       if(dlTtiReq->pdus[pduCount].pduType == 3) //SSB_PDU_TYPE
 	 DU_LOG("\nPHY_STUB: SSB PDU");
       else if(dlTtiReq->pdus[pduCount].pduType == 0)
+      {
 	 DU_LOG("\nPHY_STUB: PDCCH PDU");
+	 if(dlTtiReq->pdus[pduCount].pdu.pdcch_pdu.\
+	    coreSetType == 1)
+	 {
+	    dlDedMsg = true;
+	 }
+      }
       else if(dlTtiReq->pdus[pduCount].pduType == 1)
 	 DU_LOG("\nPHY_STUB: PDSCH PDU");
    }
@@ -721,6 +755,12 @@ S16 l1HdlTxDataReq(uint16_t msgLen, void *msg)
    txDataReq = (fapi_tx_data_req_t *)msg;
 
    DU_LOG("\nPHY STUB: TX DATA Request at sfn=%d slot=%d",txDataReq->sfn,txDataReq->slot);
+
+   if(dlDedMsg)
+   {
+      DU_LOG("\nPHY_STUB: TxDataPdu for DED MSG sent");
+      dlDedMsg = false;
+   }
 
    MAC_FREE(txDataReq, msgLen);
 #endif
