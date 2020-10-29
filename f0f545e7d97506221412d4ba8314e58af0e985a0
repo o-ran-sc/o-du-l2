@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bea5cd0a_614e4d29",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3217,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-29T15:20:31Z",
+      "side": 1,
+      "message": "use of this printf? remove if not required",
+      "revId": "f0f545e7d97506221412d4ba8314e58af0e985a0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "56ad7051_62daeb40",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-29T15:20:31Z",
+      "side": 1,
+      "message": "Add a print \"RLC: Received Ul Data from MAC\"\nand keep it inside debug log",
+      "revId": "f0f545e7d97506221412d4ba8314e58af0e985a0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "406c4314_fa1653d6",
+        "filename": "src/du_app/du_sctp.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 781,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-29T15:20:31Z",
+      "side": 1,
+      "message": "this can also be kept under debug log",
+      "revId": "f0f545e7d97506221412d4ba8314e58af0e985a0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "11af52a5_b59d29cf",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-10-29T15:20:31Z",
+      "side": 1,
+      "message": "can remove this.",
+      "revId": "f0f545e7d97506221412d4ba8314e58af0e985a0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
