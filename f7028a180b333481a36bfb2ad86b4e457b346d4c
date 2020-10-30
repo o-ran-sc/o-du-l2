@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "caf314ef_71f2a420",
+        "filename": "src/cm/common_def.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-30T10:49:42Z",
+      "side": 1,
+      "message": "as discussed earlier, this logic will not always work",
+      "revId": "f7028a180b333481a36bfb2ad86b4e457b346d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "06270d8f_4e95e635",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1540,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-30T10:49:42Z",
+      "side": 1,
+      "message": "why id du processing ue ctxt setup response?",
+      "revId": "f7028a180b333481a36bfb2ad86b4e457b346d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5ff000f6_b44b27a4",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1708,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-30T10:49:42Z",
+      "side": 1,
+      "message": "what if ue reconfig was a result of F1AP UE Ctxt Mod Req?",
+      "revId": "f7028a180b333481a36bfb2ad86b4e457b346d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "38ac7c75_58809144",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1870,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-30T10:49:42Z",
+      "side": 1,
+      "message": "better to use if ret \u003d\u003d ROK/RFAILED.",
+      "revId": "f7028a180b333481a36bfb2ad86b4e457b346d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}

@@ -1,0 +1,174 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e2517783_cf54e4e9",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 690,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-30T10:49:42Z",
+      "side": 1,
+      "message": "Shouldn\u0027t fillRlcLcCfgList be called from RlcProcCfgReq?",
+      "revId": "f402d3e525854c14449399ac443e52e2c75d6d38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "53e90758_26246bba",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1222,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-30T10:49:42Z",
+      "side": 1,
+      "message": "are we not  processing UE Create Rsp from MAC?",
+      "revId": "f402d3e525854c14449399ac443e52e2c75d6d38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "48b90c61_7f37e73b",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1229,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-30T10:49:42Z",
+      "side": 1,
+      "message": "Drop def. It is very misleading. Add default instead",
+      "revId": "f402d3e525854c14449399ac443e52e2c75d6d38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "77a3df2d_f8d83b6f",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-30T10:49:42Z",
+      "side": 1,
+      "message": "215 is skipped?",
+      "revId": "f402d3e525854c14449399ac443e52e2c75d6d38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dd2ffefc_366314f9",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-30T10:49:42Z",
+      "side": 1,
+      "message": "how is this different from RLCMode above?",
+      "revId": "f402d3e525854c14449399ac443e52e2c75d6d38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b586c995_d04be026",
+        "filename": "src/du_app/du_f1ap_msg_hdl.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-30T10:49:42Z",
+      "side": 1,
+      "message": "UeContextSetupReq",
+      "revId": "f402d3e525854c14449399ac443e52e2c75d6d38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6ed3ea07_9ab97f5f",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-30T10:49:42Z",
+      "side": 1,
+      "message": "gnbDuF1apId and gnbCuUeF1apId is present here as well as in above structure.",
+      "revId": "f402d3e525854c14449399ac443e52e2c75d6d38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "283ab462_4d3f71d3",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 508,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-30T10:49:42Z",
+      "side": 1,
+      "message": "change to Default from Def",
+      "revId": "f402d3e525854c14449399ac443e52e2c75d6d38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0ffd94dd_429a4135",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1539,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-30T10:49:42Z",
+      "side": 1,
+      "message": "Proc will mean processing ue ctxt setup rsp. Which is not the case here. So change this name",
+      "revId": "f402d3e525854c14449399ac443e52e2c75d6d38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "efcfc500_e91d6965",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1863,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-30T10:49:42Z",
+      "side": 1,
+      "message": "add check for rrcMsgLen too in a single if",
+      "revId": "f402d3e525854c14449399ac443e52e2c75d6d38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
