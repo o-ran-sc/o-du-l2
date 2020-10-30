@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2fe1e502_39ee8155",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 823,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-30T15:15:42Z",
+      "side": 1,
+      "message": "can we not name this fill SrbCfg?",
+      "revId": "3ba05342899bc39d17022d8aa4edb5b0adf3912c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "19c7b0dc_c6e7ad91",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 827,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-30T15:15:42Z",
+      "side": 1,
+      "message": "ieId",
+      "revId": "3ba05342899bc39d17022d8aa4edb5b0adf3912c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d8bed8f2_f3f6866f",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 950,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-30T15:15:42Z",
+      "side": 1,
+      "message": "DCCH not DCCCH. Change evrywhere",
+      "revId": "3ba05342899bc39d17022d8aa4edb5b0adf3912c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2e35abdb_ee124575",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 960,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-30T15:15:42Z",
+      "side": 1,
+      "message": "What about DL CCCH msg(msg4)? Is this function not used there?",
+      "revId": "3ba05342899bc39d17022d8aa4edb5b0adf3912c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f9b0b104_def91358",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1158,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-30T15:15:42Z",
+      "side": 1,
+      "message": "fillDrbCfg",
+      "revId": "3ba05342899bc39d17022d8aa4edb5b0adf3912c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b836e162_3f96d354",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1393,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-30T15:15:42Z",
+      "side": 1,
+      "message": "this must be fillDlCcchRrcMsg",
+      "revId": "3ba05342899bc39d17022d8aa4edb5b0adf3912c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bb679d5d_bf6800c1",
+        "filename": "src/phy_stub/l1.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-30T15:15:42Z",
+      "side": 1,
+      "message": "Many other RRC msgs are possible. Eg: NAS authentication msgs, UE capability enquiry/information, registration accept/complete, RRC reconfig complete, etc",
+      "revId": "3ba05342899bc39d17022d8aa4edb5b0adf3912c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
