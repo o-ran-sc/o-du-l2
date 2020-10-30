@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4835dbdc_8ccac7f3",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-30T15:41:29Z",
+      "side": 0,
+      "message": "since this line is removed, where are we resetting this variable back to false",
+      "revId": "9076bc05cb36d3ed99890b2e3f57f6d06f4a7e93",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}

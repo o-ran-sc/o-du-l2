@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "70e52e9c_5f69f0fb",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 670,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-30T15:41:29Z",
+      "side": 1,
+      "message": "line 668 to 679 can be under this flag, instead of using it twice",
+      "revId": "527151e6e721af5c21025f22c646be842173a2ba",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c49f1f32_cd8041be",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 908,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-30T15:41:29Z",
+      "side": 1,
+      "message": "same comment here as well. Whole if the if/else block can be under the flag once for all instead of using it twice",
+      "revId": "527151e6e721af5c21025f22c646be842173a2ba",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
