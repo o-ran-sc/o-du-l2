@@ -138,6 +138,40 @@
     },
     {
       "key": {
+        "uuid": "08d7ebaf_c2624da3",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1407,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-30T10:56:55Z",
+      "side": 1,
+      "message": "make the log more readable. Eg: Failed to delete LC Cfg. THis is a generic comment",
+      "revId": "f402d3e525854c14449399ac443e52e2c75d6d38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d5dd22e2_367cdf79",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1516,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-10-30T10:56:55Z",
+      "side": 1,
+      "message": "After MAc and RLC are updated at DU, f1UeDb must be emptied. It\u0027s best to make it a pointer initially and then free memory once we have finished updating",
+      "revId": "f402d3e525854c14449399ac443e52e2c75d6d38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "0ffd94dd_429a4135",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 5
