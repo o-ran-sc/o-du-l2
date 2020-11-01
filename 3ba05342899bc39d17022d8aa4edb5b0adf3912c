@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "0c4faea8_c4f4ae24",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 823,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-01T10:34:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2fe1e502_39ee8155",
+      "revId": "3ba05342899bc39d17022d8aa4edb5b0adf3912c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "19c7b0dc_c6e7ad91",
         "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
         "patchSetId": 2
@@ -33,6 +51,24 @@
       "revId": "3ba05342899bc39d17022d8aa4edb5b0adf3912c",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2d212ee1_55e30d9a",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 827,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-01T10:34:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "19c7b0dc_c6e7ad91",
+      "revId": "3ba05342899bc39d17022d8aa4edb5b0adf3912c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "1abf8f9e_b004a688",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 950,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-01T10:34:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d8bed8f2_f3f6866f",
+      "revId": "3ba05342899bc39d17022d8aa4edb5b0adf3912c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2e35abdb_ee124575",
         "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
         "patchSetId": 2
@@ -67,6 +121,24 @@
       "revId": "3ba05342899bc39d17022d8aa4edb5b0adf3912c",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4d9e703d_cee00f73",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 960,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-01T10:34:12Z",
+      "side": 1,
+      "message": "Yes its used for msg4",
+      "parentUuid": "2e35abdb_ee124575",
+      "revId": "3ba05342899bc39d17022d8aa4edb5b0adf3912c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "29ab91b9_03849691",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1158,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-01T10:34:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f9b0b104_def91358",
+      "revId": "3ba05342899bc39d17022d8aa4edb5b0adf3912c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b836e162_3f96d354",
         "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
         "patchSetId": 2
@@ -104,6 +194,24 @@
     },
     {
       "key": {
+        "uuid": "38d512a2_8228372f",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1393,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-01T10:34:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b836e162_3f96d354",
+      "revId": "3ba05342899bc39d17022d8aa4edb5b0adf3912c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bb679d5d_bf6800c1",
         "filename": "src/phy_stub/l1.h",
         "patchSetId": 2
@@ -118,6 +226,24 @@
       "revId": "3ba05342899bc39d17022d8aa4edb5b0adf3912c",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "11e2916f_b561e112",
+        "filename": "src/phy_stub/l1.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-01T10:34:12Z",
+      "side": 1,
+      "message": "ok for now i have added RRC reconfig complete and registration complete\nenum\nwe can add support during implementation",
+      "parentUuid": "bb679d5d_bf6800c1",
+      "revId": "3ba05342899bc39d17022d8aa4edb5b0adf3912c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
