@@ -36,6 +36,24 @@
     },
     {
       "key": {
+        "uuid": "65d999bd_956f6a5b",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1540,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-01T09:07:01Z",
+      "side": 1,
+      "message": "ok so this function is modified to update the duUeCb when MAC and RLC response is successful",
+      "parentUuid": "06270d8f_4e95e635",
+      "revId": "f7028a180b333481a36bfb2ad86b4e457b346d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5ff000f6_b44b27a4",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 4
@@ -53,6 +71,24 @@
     },
     {
       "key": {
+        "uuid": "5826cb94_9d3fff16",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1708,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-01T09:07:01Z",
+      "side": 1,
+      "message": "Ok, when f1UeDb is created, added a variable to keep track of type of Cxt Req received.\nSo based on that we can send Ue Ctxt Rsp or Ue Ctxt Mod Rsp.",
+      "parentUuid": "5ff000f6_b44b27a4",
+      "revId": "f7028a180b333481a36bfb2ad86b4e457b346d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "38ac7c75_58809144",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 4
@@ -67,6 +103,24 @@
       "revId": "f7028a180b333481a36bfb2ad86b4e457b346d4c",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "32cec6ba_b339ef22",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1870,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-01T09:07:01Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "38ac7c75_58809144",
+      "revId": "f7028a180b333481a36bfb2ad86b4e457b346d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }

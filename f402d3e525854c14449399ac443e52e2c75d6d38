@@ -2,6 +2,40 @@
   "comments": [
     {
       "key": {
+        "uuid": "3390001c_1146bbd5",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-01T09:07:01Z",
+      "side": 1,
+      "message": "renamed to fillRlcCfg",
+      "revId": "f402d3e525854c14449399ac443e52e2c75d6d38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da2dd736_f1f982c4",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-01T09:07:01Z",
+      "side": 1,
+      "message": "renamed to fillLcCfg",
+      "revId": "f402d3e525854c14449399ac443e52e2c75d6d38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e2517783_cf54e4e9",
         "filename": "src/5gnrrlc/rlc_msg_hdl.c",
         "patchSetId": 5
@@ -16,6 +50,24 @@
       "revId": "f402d3e525854c14449399ac443e52e2c75d6d38",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7254bba7_3d155706",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 690,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-01T09:07:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e2517783_cf54e4e9",
+      "revId": "f402d3e525854c14449399ac443e52e2c75d6d38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -36,6 +88,24 @@
     },
     {
       "key": {
+        "uuid": "e9b927f4_e199c56c",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1222,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-01T09:07:01Z",
+      "side": 1,
+      "message": "We are processing UE create Rsp and Ue ReConfig Rsp in \nunpackDuMacUeCfgRsp()",
+      "parentUuid": "53e90758_26246bba",
+      "revId": "f402d3e525854c14449399ac443e52e2c75d6d38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "48b90c61_7f37e73b",
         "filename": "src/cm/du_app_mac_inf.h",
         "patchSetId": 5
@@ -50,6 +120,24 @@
       "revId": "f402d3e525854c14449399ac443e52e2c75d6d38",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f719ed48_41f97117",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1229,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-01T09:07:01Z",
+      "side": 1,
+      "message": "Ok. Made Def to Default",
+      "parentUuid": "48b90c61_7f37e73b",
+      "revId": "f402d3e525854c14449399ac443e52e2c75d6d38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -70,6 +158,24 @@
     },
     {
       "key": {
+        "uuid": "6f4909bc_6388eade",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-01T09:07:01Z",
+      "side": 1,
+      "message": "yes, changed it to 215",
+      "parentUuid": "77a3df2d_f8d83b6f",
+      "revId": "f402d3e525854c14449399ac443e52e2c75d6d38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dd2ffefc_366314f9",
         "filename": "src/cm/du_app_rlc_inf.h",
         "patchSetId": 5
@@ -84,6 +190,24 @@
       "revId": "f402d3e525854c14449399ac443e52e2c75d6d38",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d8670f1d_76db3067",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-01T09:07:01Z",
+      "side": 1,
+      "message": "As per discussion, removed rlcModeCfgPres and made Cfg as pointers",
+      "parentUuid": "dd2ffefc_366314f9",
+      "revId": "f402d3e525854c14449399ac443e52e2c75d6d38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -104,6 +228,24 @@
     },
     {
       "key": {
+        "uuid": "edea7fef_740ed148",
+        "filename": "src/du_app/du_f1ap_msg_hdl.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-01T09:07:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b586c995_d04be026",
+      "revId": "f402d3e525854c14449399ac443e52e2c75d6d38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6ed3ea07_9ab97f5f",
         "filename": "src/du_app/du_mgr.h",
         "patchSetId": 5
@@ -118,6 +260,24 @@
       "revId": "f402d3e525854c14449399ac443e52e2c75d6d38",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0bbef31a_6042e3c0",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-01T09:07:01Z",
+      "side": 1,
+      "message": "removed the params from above struct.",
+      "parentUuid": "6ed3ea07_9ab97f5f",
+      "revId": "f402d3e525854c14449399ac443e52e2c75d6d38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -138,6 +298,24 @@
     },
     {
       "key": {
+        "uuid": "2a4e64cc_1320698e",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 508,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-01T09:07:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "283ab462_4d3f71d3",
+      "revId": "f402d3e525854c14449399ac443e52e2c75d6d38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "08d7ebaf_c2624da3",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 5
@@ -152,6 +330,24 @@
       "revId": "f402d3e525854c14449399ac443e52e2c75d6d38",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8925a6c3_5fe73af2",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1407,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-01T09:07:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "08d7ebaf_c2624da3",
+      "revId": "f402d3e525854c14449399ac443e52e2c75d6d38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -172,6 +368,24 @@
     },
     {
       "key": {
+        "uuid": "91858207_ab017ef1",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1516,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-01T09:07:01Z",
+      "side": 1,
+      "message": "Agreed. I am freeing F1UeCb in Ue Context Setup Response,\nbecause in any failure/success case, it has to be sent and it requires du Id, Cu Id,\ncellGrp Info IEs to be filled.\nfreeF1UeDb()",
+      "parentUuid": "d5dd22e2_367cdf79",
+      "revId": "f402d3e525854c14449399ac443e52e2c75d6d38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0ffd94dd_429a4135",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 5
@@ -189,6 +403,24 @@
     },
     {
       "key": {
+        "uuid": "b9ed1e5f_de25fee1",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1539,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-01T09:07:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0ffd94dd_429a4135",
+      "revId": "f402d3e525854c14449399ac443e52e2c75d6d38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "efcfc500_e91d6965",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 5
@@ -203,6 +435,24 @@
       "revId": "f402d3e525854c14449399ac443e52e2c75d6d38",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dafe8f8b_7872c276",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1863,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-01T09:07:01Z",
+      "side": 1,
+      "message": "The rrcMsg will be allocated only if the msgLen \u003e 0\nso i have covered this check in procF1UeContextSetupReq()",
+      "parentUuid": "efcfc500_e91d6965",
+      "revId": "f402d3e525854c14449399ac443e52e2c75d6d38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
