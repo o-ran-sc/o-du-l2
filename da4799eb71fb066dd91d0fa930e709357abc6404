@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "96be8720_cda5d024",
+        "filename": "src/5gnrmac/lwr_mac_phy.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-02T14:48:25Z",
+      "side": 1,
+      "message": "lets discuss",
+      "revId": "da4799eb71fb066dd91d0fa930e709357abc6404",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6913316b_56c533a4",
+        "filename": "src/cm/envdep.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-02T14:48:25Z",
+      "side": 1,
+      "message": "Header file should not include another header file",
+      "revId": "da4799eb71fb066dd91d0fa930e709357abc6404",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "74e05d3e_5261412d",
+        "filename": "src/cm/envdep.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1086,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-02T14:48:25Z",
+      "side": 1,
+      "message": "can we not remove this?",
+      "revId": "da4799eb71fb066dd91d0fa930e709357abc6404",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "91aa1a01_29394e8d",
+        "filename": "src/cm/gen.x",
+        "patchSetId": 3
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-02T14:48:25Z",
+      "side": 1,
+      "message": "rename SeqU24 as well",
+      "revId": "da4799eb71fb066dd91d0fa930e709357abc6404",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9e23a767_73796c36",
+        "filename": "src/cm/ssi.x",
+        "patchSetId": 3
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-02T14:48:25Z",
+      "side": 1,
+      "message": "wsUInt32",
+      "revId": "da4799eb71fb066dd91d0fa930e709357abc6404",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d019116b_06e57eff",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 528,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-02T14:48:25Z",
+      "side": 1,
+      "message": "using shift+v makes these lines go out of indentation. Check and fix this file",
+      "revId": "da4799eb71fb066dd91d0fa930e709357abc6404",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3f1a6e8f_b55178b7",
+        "filename": "src/rlog/rl_common.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-02T14:48:25Z",
+      "side": 1,
+      "message": "we must not include a header file inside another header file",
+      "revId": "da4799eb71fb066dd91d0fa930e709357abc6404",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
