@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "23a195ec_34a31393",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1273,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-02T05:31:23Z",
+      "side": 1,
+      "message": "it must be fillDlDcchRrcMsg. Change in description too",
+      "revId": "ed307f074cd49fc80488142b14f5e534cb21871b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8f3f971c_7adc3c93",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1314,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-02T05:31:23Z",
+      "side": 1,
+      "message": "specify which RRC container. This is a generic comment for all functions and all logs",
+      "revId": "ed307f074cd49fc80488142b14f5e534cb21871b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5c32bd79_2115590f",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1339,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-02T05:31:23Z",
+      "side": 1,
+      "message": "correct function name",
+      "revId": "ed307f074cd49fc80488142b14f5e534cb21871b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "74993538_9c0518cd",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1344,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-02T05:31:23Z",
+      "side": 1,
+      "message": "this is not RRC setup msg",
+      "revId": "ed307f074cd49fc80488142b14f5e534cb21871b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e351a127_4a2b97fc",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1356,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-02T05:31:23Z",
+      "side": 1,
+      "message": "this is DL DCCH msg. Please re-check all logs",
+      "revId": "ed307f074cd49fc80488142b14f5e534cb21871b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "222875d5_8327ca69",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1394,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-02T05:31:23Z",
+      "side": 1,
+      "message": "wrong function name. Re-check all logs",
+      "revId": "ed307f074cd49fc80488142b14f5e534cb21871b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
