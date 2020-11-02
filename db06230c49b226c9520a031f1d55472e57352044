@@ -1,0 +1,242 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da5b9aa8_26edf9d0",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-02T12:21:41Z",
+      "side": 1,
+      "message": "can be updated to void function",
+      "revId": "db06230c49b226c9520a031f1d55472e57352044",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "acb40600_ac9fb959",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-02T12:21:41Z",
+      "side": 1,
+      "message": "these if/else/else if is not required.\n1. fillLcCfg never returns RFAILED.\n2. just calling fillLcCfg once with ueCfg-\u003erlcLcCfg[lcIdx].configType as last parameter is sufficient.",
+      "revId": "db06230c49b226c9520a031f1d55472e57352044",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "50e8b4fe_ff8db639",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-02T12:21:41Z",
+      "side": 1,
+      "message": "fillRlcCfg will not return RFAILED after implementing above comment. It can be a void function",
+      "revId": "db06230c49b226c9520a031f1d55472e57352044",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "845b2d14_59f59451",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 680,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-02T12:21:41Z",
+      "side": 1,
+      "message": "add not null check first instead of adding it in else",
+      "revId": "db06230c49b226c9520a031f1d55472e57352044",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f9b781a5_6cd7cc9d",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 683,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-02T12:21:41Z",
+      "side": 1,
+      "message": "fillRlcCfg to be a void function",
+      "revId": "db06230c49b226c9520a031f1d55472e57352044",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "280e03f9_336fc903",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-02T12:21:41Z",
+      "side": 1,
+      "message": "change t COMPLETE instead of COMPLETED",
+      "revId": "db06230c49b226c9520a031f1d55472e57352044",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f500dfd1_c0a9f5c6",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-02T12:21:41Z",
+      "side": 1,
+      "message": "drop TYPE",
+      "revId": "db06230c49b226c9520a031f1d55472e57352044",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2491f017_6fae3180",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 5433,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-02T12:21:41Z",
+      "side": 1,
+      "message": "extractRlcAmCfg. Similar change for other function names too",
+      "revId": "db06230c49b226c9520a031f1d55472e57352044",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "66ce784a_ee04f93c",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 5445,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-02T12:21:41Z",
+      "side": 1,
+      "message": "indentation for if",
+      "revId": "db06230c49b226c9520a031f1d55472e57352044",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b7ef5583_e349d64b",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 5653,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-02T12:21:41Z",
+      "side": 1,
+      "message": "these variable is not required",
+      "revId": "db06230c49b226c9520a031f1d55472e57352044",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "edd24dc3_7ebbe59e",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 5793,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-02T12:21:41Z",
+      "side": 1,
+      "message": "use ret\u003d\u003d ROK/RFAILED. This is sagneric comment. Update this everywhere",
+      "revId": "db06230c49b226c9520a031f1d55472e57352044",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e585349d_50a3670f",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 7061,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-02T12:21:41Z",
+      "side": 1,
+      "message": "what if UE is not found in our db? Add log for that as well",
+      "revId": "db06230c49b226c9520a031f1d55472e57352044",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "514312a9_6a1d578f",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 7462,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-02T12:21:41Z",
+      "side": 1,
+      "message": "this switch is needed to support ue ctxt mod/del?",
+      "revId": "db06230c49b226c9520a031f1d55472e57352044",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ee20d1d1_3989ad49",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-02T12:21:41Z",
+      "side": 1,
+      "message": "can max aggr bit rate not be moved into ueCfg?",
+      "revId": "db06230c49b226c9520a031f1d55472e57352044",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
