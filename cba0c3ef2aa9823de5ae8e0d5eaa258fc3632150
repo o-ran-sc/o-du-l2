@@ -16,6 +16,24 @@
       "revId": "cba0c3ef2aa9823de5ae8e0d5eaa258fc3632150",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "45f0aaee_ec50ba50",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1231,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-03T01:18:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e843c717_c0d0448f",
+      "revId": "cba0c3ef2aa9823de5ae8e0d5eaa258fc3632150",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
