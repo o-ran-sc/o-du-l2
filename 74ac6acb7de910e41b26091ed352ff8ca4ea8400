@@ -1,0 +1,112 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3474e0a2_c8eb7efb",
+        "filename": "src/5gnrmac/lwr_mac_phy.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-03T06:30:09Z",
+      "side": 1,
+      "message": "typecast not needed. Please check.",
+      "revId": "74ac6acb7de910e41b26091ed352ff8ca4ea8400",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c54573f0_baf99db7",
+        "filename": "src/cm/cm_gen.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-03T06:30:09Z",
+      "side": 1,
+      "message": "indentation",
+      "revId": "74ac6acb7de910e41b26091ed352ff8ca4ea8400",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b99844ef_02da56c7",
+        "filename": "src/cm/cm_gen.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-03T06:30:09Z",
+      "side": 1,
+      "message": "indentation",
+      "revId": "74ac6acb7de910e41b26091ed352ff8ca4ea8400",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7fffc102_abffcbda",
+        "filename": "src/cm/envdep.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 1762,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-03T06:30:09Z",
+      "side": 1,
+      "message": "why commented?",
+      "revId": "74ac6acb7de910e41b26091ed352ff8ca4ea8400",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "89ba3202_b0955e71",
+        "filename": "src/cm/gen.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 2567,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-03T06:30:09Z",
+      "side": 1,
+      "message": "fix indentations",
+      "revId": "74ac6acb7de910e41b26091ed352ff8ca4ea8400",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "889cf57e_60257d00",
+        "filename": "src/rlog/rl_postproc.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-03T06:30:09Z",
+      "side": 1,
+      "message": "remove if not needed",
+      "range": {
+        "startLine": 55,
+        "startChar": 18,
+        "endLine": 55,
+        "endChar": 19
+      },
+      "revId": "74ac6acb7de910e41b26091ed352ff8ca4ea8400",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
