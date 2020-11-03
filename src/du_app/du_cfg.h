@@ -799,7 +799,7 @@ typedef struct f1UacAssistInfo
 }F1UacAssistInfo;
 
 /* F1 setup related structures */
-
+#if 0
 typedef struct f1SetupReq
 {
    uint32_t                transId;                       /* Uniquely identify transaction */
@@ -964,6 +964,7 @@ typedef struct f1NwkAccessRateRed
    uint32_t          transId;        /* Uniquely identifies transaction */
    F1UacAssistInfo   uacAssistInfo;  /* UAC Assistance Information */
 }F1NwkAccessRateRed;
+#endif
 
 typedef struct f1Ipaddr
 {

@@ -247,6 +247,7 @@ uint8_t duBuildAndSendDlRrcMsgToRlc(uint16_t cellId, RlcUeCfg ueCfg, \
    /* Filling post structure and sending msg */ 
    memset(&pst, 0, sizeof(Pst));
    FILL_PST_DUAPP_TO_RLC(pst, RLC_DL_INST, EVENT_DL_RRC_MSG_TRANS_TO_RLC);
+   DU_LOG("\nDU_APP: Sending Dl RRC Msg to RLC \n");
    ret = (*duSendDlRrcMsgToRlcOpts[pst.selector])(&pst, dlRrcMsgInfo);
    if(ret != ROK)
    {
@@ -371,115 +372,46 @@ uint8_t procUeContextSetupReq(F1AP_PDU_t *f1apMsg)
 
 /******************************************************************
  *
- * @brief Processes DL RRC Message Transfer  sent by CU
+ * @brief Process DL RRC Msg recevied from F1AP
  *
  * @details
  *
- *    Function : procDlRrcMsgTrans 
+ *    Function : duProcDlRrcMsg
  *
- *    Functionality: Processes DL RRC Message Transfer sent by CU
+ *    Functionality: Process DL RRC Msg recevied from F1AP
  *
- * @params[in] F1AP_PDU_t ASN decoded F1AP message
+ * @params[in] dlCcchMsg - uint8_t*
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg)
+
+uint8_t duProcDlRrcMsg(F1DlRrcMsg *dlRrcMsg)
 {
-   DLRRCMessageTransfer_t *dlRrcMsg = NULLP;
-   uint8_t                *rrcMsgPdu = NULLP;
-   uint8_t                ieIdx, ueIdx, cellIdx;
-   uint8_t                ret, srbId;
-   uint16_t               byteIdx, crnti, cellId, rrcMsgSize;
-   uint32_t               gnbCuUeF1apId, gnbDuUeF1apId;
-   bool                   execDup = false;
-   bool                   deliveryStaRpt = false;
-   bool                   ueFound = false;
-   bool                   ueCcchCtxtFound = false; 
-
-   DU_LOG("\nDU_APP : DL RRC message transfer Recevied");
-
-   dlRrcMsg = &f1apMsg->choice.initiatingMessage->value.choice.DLRRCMessageTransfer;
+   uint8_t ueIdx, ret;
+   uint16_t crnti, cellId, cellIdx;
+   bool ueCcchCtxtFound = false;
+   bool ueFound = false;
 
    ret = ROK;
 
-   for(ieIdx=0; ieIdx<dlRrcMsg->protocolIEs.list.count; ieIdx++)
+   if(dlRrcMsg->srbId == SRB1_LCID) //RRC connection setup
    {
-      switch(dlRrcMsg->protocolIEs.list.array[ieIdx]->id)
+      for(ueIdx=0; ueIdx<duCb.numUe; ueIdx++)
       {
-	 case ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID:
-	    {
-	       gnbCuUeF1apId = dlRrcMsg->protocolIEs.list.array[ieIdx]->value.choice.GNB_CU_UE_F1AP_ID;
-	       break;
-	    }
-	 case ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID:
-	    {
-	       gnbDuUeF1apId = dlRrcMsg->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_UE_F1AP_ID;
-	       break;
-	    }
-	 case ProtocolIE_ID_id_SRBID:
-	    {
-	       srbId = dlRrcMsg->protocolIEs.list.array[ieIdx]->value.choice.SRBID;
-	       break;
-	    }
-	 case ProtocolIE_ID_id_ExecuteDuplication:
-	    {
-	       execDup = true;
-	       break;
-	    }
-	 case ProtocolIE_ID_id_RRCContainer:
-	    {
-	       if(dlRrcMsg->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.size > 0)
-	       {
-		  rrcMsgSize = dlRrcMsg->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.size;
-		  DU_ALLOC(rrcMsgPdu, rrcMsgSize);
-		  if(!rrcMsgPdu)
-		  {
-		      DU_LOG("\nDU_APP : Memory allocation failed in procDlRrcMsgTrans"); 
-		      return RFAILED;
-		  }
-		  for(byteIdx = 0; byteIdx < rrcMsgSize; byteIdx++)
-		  {
-		     rrcMsgPdu[byteIdx] = \
-		        dlRrcMsg->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.buf[byteIdx];
-		  }
-	       }
-	       else
-	       {
-		  DU_LOG("\nDU_APP : RRC Container Size is invalid:%ld",\
-			dlRrcMsg->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.size);
-                  return RFAILED;
-	       }
-	       break;
-	    }
-         case ProtocolIE_ID_id_RRCDeliveryStatusRequest:
-	    {
-	       deliveryStaRpt = true;
-	       break;
-	    }
-	 default:
-	    DU_LOG("\nDU_APP : Invalid IE received in DL RRC Msg Transfer:%ld",
-		  dlRrcMsg->protocolIEs.list.array[ieIdx]->id);
-      }
-   }
-
-   if(srbId == SRB1_LCID) //RRC connection setup
-   {
-      for(ueIdx=0; ueIdx < duCb.numUe; ueIdx++)
-      {
-         if(gnbDuUeF1apId == duCb.ueCcchCtxt[ueIdx].gnbDuUeF1apId)
+         if(dlRrcMsg->gnbDuUeF1apId == duCb.ueCcchCtxt[ueIdx].gnbDuUeF1apId)
          {
 	    ueCcchCtxtFound = true;
-	    crnti  = duCb.ueCcchCtxt[ueIdx].crnti;
-	    cellId = duCb.ueCcchCtxt[ueIdx].cellId;
-	    break;
+            crnti  = duCb.ueCcchCtxt[ueIdx].crnti;
+            cellId = duCb.ueCcchCtxt[ueIdx].cellId;
+            break;
          }
       }
    }
    if(ueCcchCtxtFound)
    {
-      ret = duBuildAndSendDlCcchInd(&cellId, &crnti, RRC_SETUP, rrcMsgSize, rrcMsgPdu);
-      if(ret)
+      ret = duBuildAndSendDlCcchInd(&cellId, &crnti, RRC_SETUP, dlRrcMsg->rrcMsgSize, dlRrcMsg->rrcMsgPdu);
+      if(ret == RFAILED)
       {
 	 DU_LOG("\nDU_APP: Falied at duBuildAndSendDlCcchInd()");
       }
@@ -487,12 +419,10 @@ uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg)
       {
 	 if(duCb.actvCellLst[cellId-1]->numActvUes < MAX_NUM_UE)
 	 {
-	    ret = duCreateUeCb(&duCb.ueCcchCtxt[ueIdx], gnbCuUeF1apId);
-	    if(ret)
+	    ret = duCreateUeCb(&duCb.ueCcchCtxt[ueIdx], dlRrcMsg->gnbCuUeF1apId);
+	    if(ret == RFAILED)
 	    {
-	       DU_LOG("\nDU_APP: Failed at duCreateUeCb for cellId [%d]", \
-		     duCb.ueCcchCtxt[ueIdx].cellId);
-	       ret = RFAILED;
+	       DU_LOG("\nDU_APP: Failed at duCreateUeCb for cellId [%d]", duCb.ueCcchCtxt[ueIdx].cellId);
 	    }
 	 }
 	 else
@@ -508,13 +438,13 @@ uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg)
       {
 	 for(ueIdx = 0 ; ueIdx < MAX_NUM_UE; ueIdx++)
 	 {
-	    if((gnbCuUeF1apId == duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbCuUeF1apId)
-		  && (gnbDuUeF1apId == duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbDuUeF1apId))
+	    if((dlRrcMsg->gnbCuUeF1apId == duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbCuUeF1apId)
+		  && (dlRrcMsg->gnbDuUeF1apId == duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbDuUeF1apId))
 	    {
 	       ueFound = true;
 	       ret = duBuildAndSendDlRrcMsgToRlc(duCb.actvCellLst[cellIdx]->cellId, \
-		     duCb.actvCellLst[cellIdx]->ueCb[ueIdx].rlcUeCfg, srbId, \
-		     execDup, deliveryStaRpt,  rrcMsgSize, rrcMsgPdu);
+		     duCb.actvCellLst[cellIdx]->ueCb[ueIdx].rlcUeCfg, dlRrcMsg->srbId, \
+		     dlRrcMsg->execDup, dlRrcMsg->deliveryStatRpt,  dlRrcMsg->rrcMsgSize, dlRrcMsg->rrcMsgPdu);
 	       break; 
 	    }
 	 }
