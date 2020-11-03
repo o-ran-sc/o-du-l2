@@ -44,6 +44,7 @@
 #include "RLC-BearerConfig.h"
 #include "PhysicalCellGroupConfig.h"
 #include "SpCellConfig.h"
+#include "TDD-UL-DL-ConfigDedicated.h"
 #include "ServingCellConfig.h"
 #include "ControlResourceSet.h"
 #include "SearchSpace.h"
@@ -3959,6 +3960,12 @@ uint8_t BuildCsiMeasCfg(struct ServingCellConfig__csi_MeasConfig *csiMeasCfg)
 uint8_t BuildSpCellCfgDed(ServingCellConfig_t *srvCellCfg)
 {
    srvCellCfg->tdd_UL_DL_ConfigurationDedicated = NULLP;
+   DU_ALLOC(srvCellCfg->tdd_UL_DL_ConfigurationDedicated, sizeof(TDD_UL_DL_ConfigDedicated_t));
+   if(!srvCellCfg->tdd_UL_DL_ConfigurationDedicated)
+   {
+      DU_LOG("\nF1AP : Memory allocation failure in BuildSpCellCfgDed");
+      return RFAILED;
+   }
 
    srvCellCfg->initialDownlinkBWP = NULLP;
    DU_ALLOC(srvCellCfg->initialDownlinkBWP, sizeof(BWP_DownlinkDedicated_t));
@@ -4826,44 +4833,48 @@ uint8_t FreeMemDuToCuRrcCont(CellGroupConfigRrc_t *cellGrpCfg)
 	    if(spCellCfg->spCellConfigDedicated)
 	    {
 	       srvCellCfg = spCellCfg->spCellConfigDedicated;
-	       if(srvCellCfg->initialDownlinkBWP)
+	       if(srvCellCfg->tdd_UL_DL_ConfigurationDedicated)
 	       {
-		  dlBwp = srvCellCfg->initialDownlinkBWP;
-		  if(srvCellCfg->firstActiveDownlinkBWP_Id)
-		  {
-		     if(srvCellCfg->defaultDownlinkBWP_Id)
+	          if(srvCellCfg->initialDownlinkBWP)
+	          {
+		     dlBwp = srvCellCfg->initialDownlinkBWP;
+		     if(srvCellCfg->firstActiveDownlinkBWP_Id)
 		     {
-			if(srvCellCfg->uplinkConfig)
-			{
-			   if(srvCellCfg->pdsch_ServingCellConfig)
+		        if(srvCellCfg->defaultDownlinkBWP_Id)
+		        {
+			   if(srvCellCfg->uplinkConfig)
 			   {
-			      pdschCfg= srvCellCfg->pdsch_ServingCellConfig;
-			      if(pdschCfg->choice.setup)
+			      if(srvCellCfg->pdsch_ServingCellConfig)
 			      {
-				 DU_FREE(pdschCfg->choice.setup->nrofHARQ_ProcessesForPDSCH,sizeof(long));
-				 DU_FREE(pdschCfg->choice.setup, sizeof( struct PDSCH_ServingCellConfig));
-			      }
-			      DU_FREE(srvCellCfg->pdsch_ServingCellConfig, sizeof(struct
+			         pdschCfg= srvCellCfg->pdsch_ServingCellConfig;
+			         if(pdschCfg->choice.setup)
+			         {
+				    DU_FREE(pdschCfg->choice.setup->nrofHARQ_ProcessesForPDSCH,sizeof(long));
+				    DU_FREE(pdschCfg->choice.setup, sizeof( struct PDSCH_ServingCellConfig));
+			         }
+			         DU_FREE(srvCellCfg->pdsch_ServingCellConfig, sizeof(struct
 				       ServingCellConfig__pdsch_ServingCellConfig));
+			      }  
+			      FreeinitialUplinkBWP(srvCellCfg->uplinkConfig);
+			      DU_FREE(srvCellCfg->uplinkConfig, sizeof(UplinkConfig_t));	
 			   }
-			   FreeinitialUplinkBWP(srvCellCfg->uplinkConfig);
-			   DU_FREE(srvCellCfg->uplinkConfig, sizeof(UplinkConfig_t));	
-			}
-			DU_FREE(srvCellCfg->defaultDownlinkBWP_Id, sizeof(long));
+			   DU_FREE(srvCellCfg->defaultDownlinkBWP_Id, sizeof(long));
+		        }
+		        DU_FREE(srvCellCfg->firstActiveDownlinkBWP_Id, sizeof(long));
 		     }
-		     DU_FREE(srvCellCfg->firstActiveDownlinkBWP_Id, sizeof(long));
-		  }
-		  if(dlBwp->pdcch_Config)
-		  {
-		     if(dlBwp->pdsch_Config)
+		     if(dlBwp->pdcch_Config)
 		     {
-			FreeBWPDlDedPdschCfg(dlBwp);
-			DU_FREE(dlBwp->pdsch_Config, sizeof(struct BWP_DownlinkDedicated__pdsch_Config));
-		     }
-		     FreeBWPDlDedPdcchCfg(dlBwp);
-		     DU_FREE(dlBwp->pdcch_Config, sizeof(struct BWP_DownlinkDedicated__pdcch_Config));
-		  }
-		  DU_FREE(srvCellCfg->initialDownlinkBWP, sizeof(BWP_DownlinkDedicated_t));
+		        if(dlBwp->pdsch_Config)
+		        {
+			   FreeBWPDlDedPdschCfg(dlBwp);
+			   DU_FREE(dlBwp->pdsch_Config, sizeof(struct BWP_DownlinkDedicated__pdsch_Config));
+		        }
+		        FreeBWPDlDedPdcchCfg(dlBwp);
+		        DU_FREE(dlBwp->pdcch_Config, sizeof(struct BWP_DownlinkDedicated__pdcch_Config));
+		    }
+		    DU_FREE(srvCellCfg->initialDownlinkBWP, sizeof(BWP_DownlinkDedicated_t));
+	          }
+		  DU_FREE(srvCellCfg->tdd_UL_DL_ConfigurationDedicated, sizeof(TDD_UL_DL_ConfigDedicated_t));
 	       }
 	       DU_FREE(spCellCfg->spCellConfigDedicated, sizeof(ServingCellConfig_t));
 	    }
