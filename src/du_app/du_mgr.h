@@ -71,6 +71,31 @@ typedef enum
    UE_ACTIVE
 }UeState;
 
+/** F1AP Msg IE **/
+
+typedef struct f1setupRsp
+{
+   uint32_t transId; /* Uniquely identify transaction */
+   char     cuName[CU_DU_NAME_LEN_MAX];   /* CU Name */
+   F1RrcVersion    rrcVersion;  /* RRC version */
+}F1SetupRsp;
+
+typedef struct f1GnbDuCfgUpdAck
+{
+   uint32_t           transId;   /* Uniquely identify transaction */
+}F1GnbDuCfgUpdAck;
+
+typedef struct f1DlRrcMsg 
+{
+   uint32_t gnbDuUeF1apId;
+   uint32_t gnbCuUeF1apId;
+   uint8_t  srbId;
+   bool     execDup;
+   bool     deliveryStatRpt;
+   uint16_t rrcMsgSize;
+   uint8_t  *rrcMsgPdu;
+}F1DlRrcMsg;
+
 typedef struct cellCfgParams
 {
    NrEcgi      nrEcgi;         /* ECGI */
