@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "956d2f98_ff74adab",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 1001,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-03T15:52:05Z",
+      "side": 1,
+      "message": "Decoupling of ue setup req changes is addressed in 4876 patch",
+      "parentUuid": "63432be4_49dee2e4",
+      "revId": "8bc45bd4dea2eee4dce52f64f6417b42c18a037c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e42e33eb_bc2881c0",
         "filename": "src/du_app/du_cfg.h",
         "patchSetId": 4
@@ -33,6 +51,24 @@
       "revId": "8bc45bd4dea2eee4dce52f64f6417b42c18a037c",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c994abb6_6c2703aa",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 1002,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-03T15:52:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e42e33eb_bc2881c0",
+      "revId": "8bc45bd4dea2eee4dce52f64f6417b42c18a037c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "59e8b2ee_236f6516",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-03T15:52:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e2c1a46c_b3fd8505",
+      "revId": "8bc45bd4dea2eee4dce52f64f6417b42c18a037c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "efcbda9c_2180a42a",
         "filename": "src/du_app/du_f1ap_msg_hdl.c",
         "patchSetId": 4
@@ -67,6 +121,24 @@
       "revId": "8bc45bd4dea2eee4dce52f64f6417b42c18a037c",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "be60fc6d_67f75bb9",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1253,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-03T15:52:05Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "efcbda9c_2180a42a",
+      "revId": "8bc45bd4dea2eee4dce52f64f6417b42c18a037c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "e2798b92_94829fbe",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 5264,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-03T15:52:05Z",
+      "side": 1,
+      "message": "In cleanup of f1ap changes this logic was followed.\nhowever i ave now eliminated this logic and variable",
+      "parentUuid": "97a34eb3_682b06e3",
+      "revId": "8bc45bd4dea2eee4dce52f64f6417b42c18a037c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "daa51e65_a1918f52",
         "filename": "src/du_app/du_f1ap_msg_hdl.c",
         "patchSetId": 4
@@ -104,6 +194,24 @@
     },
     {
       "key": {
+        "uuid": "6a6ea7a5_7f30bfa1",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 5408,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-03T15:52:05Z",
+      "side": 1,
+      "message": "This logic is removed now",
+      "parentUuid": "daa51e65_a1918f52",
+      "revId": "8bc45bd4dea2eee4dce52f64f6417b42c18a037c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7ca571f4_d7d2c1cf",
         "filename": "src/du_app/du_f1ap_msg_hdl.c",
         "patchSetId": 4
@@ -118,6 +226,24 @@
       "revId": "8bc45bd4dea2eee4dce52f64f6417b42c18a037c",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a0752479_88f70bfa",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 5528,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-03T15:52:05Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "7ca571f4_d7d2c1cf",
+      "revId": "8bc45bd4dea2eee4dce52f64f6417b42c18a037c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
