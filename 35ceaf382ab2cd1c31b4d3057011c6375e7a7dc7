@@ -1,0 +1,174 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "45829f01_4f84c3b8",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-03T09:21:54Z",
+      "side": 1,
+      "message": "I think this should stay extern. lets discuss",
+      "revId": "35ceaf382ab2cd1c31b4d3057011c6375e7a7dc7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "81ba1bb4_d7dc6049",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-03T09:21:54Z",
+      "side": 1,
+      "message": "I think this should stay extern. lets discuss",
+      "revId": "35ceaf382ab2cd1c31b4d3057011c6375e7a7dc7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "84c73769_9e134fbc",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-03T09:21:54Z",
+      "side": 1,
+      "message": "should be extern",
+      "revId": "35ceaf382ab2cd1c31b4d3057011c6375e7a7dc7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ca290328_ca9279d4",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-03T09:21:54Z",
+      "side": 1,
+      "message": "should be extern",
+      "revId": "35ceaf382ab2cd1c31b4d3057011c6375e7a7dc7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f0769f68_db0e15c2",
+        "filename": "src/5gnrsch/sch_utils.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-03T09:21:54Z",
+      "side": 1,
+      "message": "should be extern",
+      "revId": "35ceaf382ab2cd1c31b4d3057011c6375e7a7dc7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5ccf3195_fd35cd55",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-03T09:21:54Z",
+      "side": 1,
+      "message": "should have extern. Check",
+      "revId": "35ceaf382ab2cd1c31b4d3057011c6375e7a7dc7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "67cf39b2_bda2ed52",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-03T09:21:54Z",
+      "side": 1,
+      "message": "should have extern. Check",
+      "revId": "35ceaf382ab2cd1c31b4d3057011c6375e7a7dc7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "330b17e1_bae9f6ae",
+        "filename": "src/du_app/du_egtp.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-03T09:21:54Z",
+      "side": 1,
+      "message": "should have extern. please check",
+      "revId": "35ceaf382ab2cd1c31b4d3057011c6375e7a7dc7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "272b6b2a_62a6a2b8",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-03T09:21:54Z",
+      "side": 1,
+      "message": "should have extern. Check.",
+      "revId": "35ceaf382ab2cd1c31b4d3057011c6375e7a7dc7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b1cac994_d606f715",
+        "filename": "src/du_app/du_sys_info_hdl.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-03T09:21:54Z",
+      "side": 1,
+      "message": "should have extern. Check.",
+      "revId": "35ceaf382ab2cd1c31b4d3057011c6375e7a7dc7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
