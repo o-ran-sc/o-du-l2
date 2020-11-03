@@ -84,8 +84,6 @@ Pst     *pst;                       /* post structure       */
 Buffer  *mBuf;                      /* message buffer       */
 #endif
 {
-   TRC2(rgHdlSMEvents)
-
    switch(pst->event)
    {
 #ifdef LCRGMILRG
@@ -163,8 +161,6 @@ Pst     *pst;                       /* post structure       */
 Buffer  *mBuf;                      /* message buffer       */
 #endif
 {
-   TRC2(rgHdlNHEvents)
-
    switch(pst->event)
    {
 #ifdef LCRGUICRG
@@ -210,8 +206,6 @@ Pst     *pst;                       /* post structure       */
 Buffer  *mBuf;                      /* message buffer       */
 #endif
 {
-   TRC2(rgHdlKWEvents)
-
    switch(pst->event)
    {
 #ifdef LCRGUIRGU
@@ -267,8 +261,6 @@ Pst     *pst;                       /* post structure       */
 Buffer  *mBuf;                      /* message buffer       */
 #endif
 {
-   TRC2(rgHdlTFEvents)
-
    switch(pst->event)
    {
 #if  (defined(LCRGLITFU) || defined(LWLCRGLITFU))
@@ -317,8 +309,6 @@ Pst     *pst;                       /* post structure       */
 Buffer  *mBuf;                      /* message buffer       */
 #endif
 {
-   TRC2(rgHdlRGEvents)
-
    switch(pst->event)
    {
 #ifdef LCRG
@@ -443,8 +433,6 @@ Pst     *pst;                       /* post structure       */
 Buffer  *mBuf;                      /* message buffer       */
 #endif
 {
-   TRC2(rgActvTsk)
-
    switch(pst->srcEnt)
    {
       /* The originator of this message is the stack manager,

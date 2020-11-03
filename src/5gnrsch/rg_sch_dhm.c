@@ -215,7 +215,6 @@ Void rgSCHDhmHqEntReset(hqE)
 {
    RgSchDlHqProcCb   *hqP;
    U8                i;
-   TRC2(rgSCHDhmHqEntReset)
    cmLListInit(&hqE->inUse);     
    cmLListInit(&hqE->free);      
    for (i=0; i < hqE->numHqPrcs; i++)
@@ -287,7 +286,6 @@ RgSchUeCb       *ue;
 RgSchRaCb       *raCb;
 #endif
 {
-   TRC2(rgSCHDhmAssgnUeHqEntFrmRaCb)
 
    ue->cellInfo[0]->hqEnt = raCb->dlHqE;
    ue->cellInfo[0]->hqEnt->ue = ue;
@@ -329,7 +327,6 @@ RgSchCellCb       *cell;
 RgSchDlHqEnt      **hqE;
 #endif
 {
-   TRC2(rgSCHDhmDelHqEnt)
 
    if (!(*hqE))
    {
@@ -356,8 +353,6 @@ RgSchCellCb           *cell;
 {
    RgSchDlHqEnt      *hqE;
    Inst              inst = cell->instIdx;
-
-   TRC2(rgSCHDhmHqEntInit)
 
    /* Init the HARQ data structure */
    if (rgSCHUtlAllocSBuf(inst, (Data **)&hqE, sizeof(RgSchDlHqEnt)) != ROK)
@@ -441,7 +436,6 @@ RgSchDlHqProcCb         **hqP;
    RgSchDlHqEnt         *hqE = NULLP;
    RgSchDlHqProcCb   *tmpHqProc;
    CmLList           *tmp;
-   TRC2(rgSCHDhmGetAvlHqProc);
 
    hqE      = RG_SCH_CMN_GET_UE_HQE(ue, cell);
  
@@ -564,7 +558,6 @@ U8                      tbIdx;
 #endif
 {
    U8 othrTbIdx = tbIdx ^ 1;
-   TRC2(rgSCHDhmHqTbRetx)
 
    hqP->tbInfo[tbIdx].timingInfo = timingInfo;
 
@@ -625,7 +618,6 @@ RgSchDlHqProcCb * rgSCHDhmLastSchedHqProc(hqE)
 RgSchDlHqEnt            *hqE;
 #endif
 {
-   TRC2(rgSCHDhmLastSchedHqProc);
    /* GRPPWR_CNTRL Fix: UE context will not hold a valid hqE,
     * until RACH procedure is completed */
    if ((hqE == NULLP) || (hqE->inUse.last == NULLP))
@@ -678,8 +670,6 @@ RgSchDlHqProcCb         **hqP;
    RgSchDlHqProcCb      *tmpHqProc;
    CmLList              *tmp;
    RgSchDlHqEnt         *hqE;
-
-   TRC2(rgSCHDhmGetCcchSduHqProc)
 
    hqE = ueCb->cellInfo[0]->hqEnt;
    CM_LLIST_FIRST_NODE(&(hqE->free), tmp);
@@ -751,8 +741,6 @@ CmLteTimingInfo         timingInfo;
    CmLList              *tmp;
    RgSchDlHqEnt         *hqE;
 
-   TRC2(rgSCHDhmGetMsg4HqProc)
-
    hqE = raCb->dlHqE;
    CM_LLIST_FIRST_NODE(&(hqE->free), tmp);
    if (NULLP == tmp)
@@ -815,8 +803,6 @@ Bool                    togNdi;
    RgSchDlLcCb*         lcCb = NULLP;
    U8                   numLch = 0;
 #endif
-
-   TRC2(rgSCHDhmRlsHqpTb)
 
    /* Reset all tbInfo values */
 
@@ -1043,8 +1029,6 @@ RgSchDlHqProcCb         *hqP;
 #endif
 {
 
-   TRC2(rgSCHDhmRlsHqProc)
-
 
 #ifdef MAC_SCH_STATS
     /* THIS FUNCTION IS NOT CALLED */
@@ -1131,7 +1115,6 @@ RgSchDlHqProcCb         **hqP;
 #endif
 {
    RgSchDlHqEnt         *hqE;
-   TRC2(rgSCHDhmGetHqProcFrmId)
 
    hqE      = RG_SCH_CMN_GET_UE_HQE(ue, cell);
    /* Pick the proc based on the index provided */
@@ -1171,8 +1154,6 @@ CmLteTimingInfo         timingInfo;
    U8                    idx;
    RgSchDlHqProcCb       *hqProc = NULLP;
    CmLList               *tmp = NULLP;
-
-   TRC2(rgSCHDhmSpsDlGetHqProc);
 
    hqE      = RG_SCH_CMN_GET_UE_HQE(ue, cell);
 
@@ -1261,8 +1242,6 @@ Bool              maxHqRetxReached;
    RgSchUeCb      *ueCb;
    RgSchCellCb    *cell;
 
-   TRC2(rgSCHDhmFdbkIndHndlTa)
-
    ueCb  = hqP->hqE->ue;
    cell  = ueCb->cell;
    switch(fdbk)
@@ -1347,8 +1326,6 @@ RgSchUeCb         *ueCb;
 RgSchDlHqTbCb     *tbInfo;
 #endif
 {
-
-   TRC2(rgSCHDhmSchdTa)
 
    ueCb->dl.taCb.state = RGSCH_TA_SCHEDULED;
     ueCb->dl.taCb.numRemSf  =  2; 
@@ -1586,8 +1563,6 @@ Bool                    *isMaxRetx;
 {
    RgSchDlHqEnt         *hqE;
    U8                   maxHqTx;
-
-   TRC2(rgSCHDhmHqTbTrnsFail)
 
    hqE = hqP->hqE;
 
@@ -2129,7 +2104,6 @@ RgSchErrInfo            *err;
 #endif
 /* LTEMAC_SPS_AN_MUX*/
    RgrSchFrmt1b3TypEnum uciFrmtTyp  = RG_SCH_UCI_FORMAT1A_1B; 
-   TRC2(rgSCHDhmHqFdbkInd)
 
    if (cbType == RGSCH_HQ_FDB_IND_CB_TYPE_RA_CB)
    {
@@ -2804,7 +2778,6 @@ RgSchErrInfo            *err;
    CmLteTimingInfo      frm = timingInfo;
 #endif
 
-   TRC2(rgSCHDhmPrcFdbkForTb)
    if (ue)
    {
       ueDl     = RG_SCH_CMN_GET_DL_UE(ue,cell);
@@ -3288,8 +3261,6 @@ RgSchErrInfo         *err;
    U8                   hqPCount = 0;
    RgInfRlsHqInfo       *rlsHqBufs = NULLP;
 
-   TRC2(rgSCHDhm5gtfHqFdbkInd)
-
    RGSCHDECRFRMCRNTTIME(timingInfo, timingInfo, 4); 
 
    sf = rgSCHUtlSubFrmGet(cell, timingInfo);
@@ -3399,8 +3370,6 @@ RgSchErrInfo            *err;
    TfuHqFdbk            format3Ack[CM_LTE_MAX_CELLS *2] = {0};
 #endif
    RgrSchFrmt1b3TypEnum uciFrmtTyp = RG_SCH_UCI_FORMAT1A_1B;
-
-   TRC2(rgSCHDhmHqFdbkInd)
 
    /* Get the subframe associated with the feedback */
    /* ccpu00133109: Removed RGSCHSUBFRMCRNTTIME as it is not giving proper output 
@@ -3651,7 +3620,6 @@ RgrUeCfg          *ueCfg;
 RgSchErrInfo      *err;
 #endif
 {
-   TRC2(rgSCHDhmRgrUeCfg)
 
    UNUSED(err);
 
@@ -3722,8 +3690,6 @@ RgSchErrInfo   *err;
    PTR         nUeCb;/* next UE control block */
    S16         ret;
    U8          idx;
-
-   TRC2(rgSCHDhmRgrCellCfg)
 
    UNUSED(err);
 
@@ -3809,8 +3775,6 @@ RgSchErrInfo   *err;
    PTR         nUeCb;/* next UE control block */
    S16         ret;
 
-   TRC2(rgSCHDhmRgrCellRecfg)
-
    UNUSED(err);
 
    pUeCb = NULLP;
@@ -3863,8 +3827,6 @@ Void rgSCHDhmFreeUe(ueCb)
 RgSchUeCb          *ueCb;
 #endif
 {
-
-   TRC2(rgSCHDhmFreeUe)
 
    /* If TA Timer is running. Stop it */
    if (ueCb->taTmr.tmrEvnt != TMR_NONE)
@@ -3937,7 +3899,6 @@ RgSchUeCb      *ueCb;
 U8             ta;
 #endif
 {
-   TRC2(rgSCHDhmUpdTa)
 
    if (ueCb->dl.taCb.state == RGSCH_TA_IDLE)
    {
@@ -3996,8 +3957,6 @@ Void rgSCHDhmProcTAExp (ueCb)
  RgSchUeCb  *ueCb;
 #endif
 {
-   TRC2(rgSCHDhmProcTAExp);
-
    /* Ask scheduler to schedule this UE */
    ueCb->dl.taCb.state     =  RGSCH_TA_TOBE_SCHEDULED;
    rgSCHUtlDlTARpt(ueCb->cell, ueCb);  
@@ -4036,8 +3995,6 @@ RgSchLchAllocInfo  *lchData;
 RgSchDlHqTbCb      *tbInfo;
 #endif
 {
-
-   TRC2(rgSCHDhmAddLcData)
 
    if(tbInfo->numLch >= RGSCH_MAX_NUM_DED_LC)
    {
@@ -4085,8 +4042,6 @@ CmLteTimingInfo      uciTimingInfo;
    RgSchTddDlAscSetIdxK    ascIdx;
    U8                      noFdbks;
    U8                      i;
-
-   TRC2(rgSCHDhmTddRlsSubFrm)
 
    ascIdx = 
       rgSchTddDlAscSetIdxKTbl[cellCb->ulDlCfgIdx][uciTimingInfo.slot];
@@ -4154,7 +4109,6 @@ CmLteTimingInfo      uciTimingInfo;
    RgSchTddANInfo          *anInfo = NULLP;
    RgSchDlHqTbCb           *tbCb;
    RgSchUeCb               *ue = NULLP;
-   TRC2(rgSCHDhmRlsDlsfHqProc)
 
    ascIdx = 
       rgSchTddDlAscSetIdxKTbl[cellCb->ulDlCfgIdx][uciTimingInfo.slot];
@@ -4435,8 +4389,6 @@ CmLteTimingInfo      timingInfo;
    RgSchDlHqTbCb     *tbCb;
    RgSchUeCb         *ue;
 
-   TRC2(rgSCHDhmRlsDlsfHqProc)
-
    /* Fetch the current timing info. Modify it to Last sf to be rlsd.*/
    /* ccpu00133109: Removed RGSCHSUBFRMCRNTTIME as it is not giving proper 
     * output if diff is more than 10. Instead using RGSCHDECRFRMCRNTTIME() 
@@ -4592,7 +4544,6 @@ U8                      idx;
 #endif
 {
    RgSchDlHqProcCb      *hqP;
-   TRC2(rgSCHDhmMarkSpsHqProc)
 
    /* Pick the proc based on the index provided */
    rgSCHDhmGetHqProcFrmId(ue->cell, ue, idx, &hqP);
@@ -4637,7 +4588,6 @@ U8                   tbCnt;
 U8                   *isAck;
 #endif
 {
-    TRC2(rgSCHDhmProcHqFdbkAckNackRep)
       /* Check if this is repeating UE */
     rgSCHUtlDlHqPTbRmvFrmTx(sf, hqP, tbCnt, TRUE);
     /* Check if last repetition */
@@ -4708,8 +4658,6 @@ RgSchDlHqProcCb         *hqP;
    Pst              pst;   
    Bool             maxRetx = FALSE;
    RgSchCmnCell           *cellSch;
-
-   TRC2(rgSCHDhmDlRetxAllocFail);
 
    cell = hqP->hqE->cell;
    cellSch = RG_SCH_CMN_GET_CELL(cell);
@@ -4957,8 +4905,6 @@ U8            hqCnt;
 {
    U8       numOfAcks;
    
-   TRC2(rgSCHDhmPrcSplBundlFdbk);
-
    /* Num of ACKs reported by UE */
    numOfAcks = fdbk->isAck[0];
 
@@ -5015,7 +4961,6 @@ Void rgSCHDhmHqPAdd2FreeLst(hqP)
 RgSchDlHqProcCb         *hqP;
 #endif
 {
-   TRC2(rgSCHDhmHqPAdd2FreeLst)
 
 #ifdef LAA_DBG
    if (hqP->hqPLst)
@@ -5072,7 +5017,6 @@ Void rgSCHDhmHqPAdd2InUseLst(hqP)
 RgSchDlHqProcCb         *hqP;
 #endif
 {
-   TRC2(rgSCHDhmHqPAdd2InUseLst)
 
 #ifdef LAA_DBG
    if (hqP->hqPLst)
@@ -5124,7 +5068,6 @@ Void rgSCHDhmHqPDelFrmFreeLst(hqP)
 RgSchDlHqProcCb         *hqP;
 #endif
 {
-   TRC2(rgSCHDhmHqPDelFrmFreeLst)
 
 #ifdef LAA_DBG
    if (!hqP->hqPLst)
@@ -5187,7 +5130,6 @@ Void rgSCHDhmHqPDelFrmInUseLst(hqP)
 RgSchDlHqProcCb         *hqP;
 #endif
 {
-   TRC2(rgSCHDhmHqPDelFrmInUseLst)
 
 #ifdef LAA_DBG
    if (!hqP->hqPLst)

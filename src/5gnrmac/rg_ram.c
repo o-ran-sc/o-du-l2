@@ -94,8 +94,6 @@ Inst        inst;
 RgUeCb      *ue;
 #endif
 {
-   TRC2(rgRAMFreeUeCb);
-
    rgDHMFreeUe(inst,&ue->dl.hqEnt);
 
    /*ccpu00117052 - MOD - Passing double pointer for proper NULLP 
@@ -140,8 +138,6 @@ RgErrInfo      *err;
 {
    Inst       inst = cell->macInst - RG_INST_START;
    RgUeCb    *ueCb = NULLP;
-
-   TRC2(rgRAMCreateUeCb)
 
    RLOG_ARG1(L_INFO,DBG_CELLID,cell->cellId,"CREATE UECB FOR CRNTI:%d",
              tmpCrnti);
@@ -209,8 +205,6 @@ RgCellCb    *cell;
    Inst    inst = cell->macInst - RG_INST_START;
    RgUeCb  *ueCb;
 
-   TRC2(rgRAMFreeCell);
-
    /* Free CURRENT CRG cfg list */
    while ((ueCb = rgDBMGetNextUeCbFromRachLst(cell, NULLP)) != NULLP)
    {
@@ -263,8 +257,6 @@ RgErrInfo           *err;
    Buffer   *rarPdu;
    RgDlSf   *dlSf;
    U8       idx;
-
-   TRC2(rgHndlRaResp)
 
    if(NULLP == rarInfo->raRntiInfo)
    {

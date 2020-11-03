@@ -204,7 +204,7 @@ S16 BuildAndSendE2SetupRsp()
    BuildGlobalRicId(&(e2SetupRsp->protocolIEs.list.array[idx]->value.choice.GlobalRIC_ID));
 
    xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apMsg);
-   cmMemset((U8 *)encBuf, 0, ENC_BUF_MAX_LEN);
+   memset(encBuf, 0, ENC_BUF_MAX_LEN);
    encBufSize = 0;
    encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf, encBuf);
 
@@ -480,7 +480,7 @@ S16 BuildAndSendRicSubscriptionReq()
    /* Prints the Msg formed */
    xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apRicMsg);
 
-   cmMemset((U8 *)encBuf, 0, ENC_BUF_MAX_LEN);
+   memset(encBuf, 0, ENC_BUF_MAX_LEN);
    encBufSize = 0;
    encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apRicMsg, PrepFinalEncBuf,\
                encBuf);

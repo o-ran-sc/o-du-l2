@@ -147,7 +147,6 @@ RgSchDlHqTbCb     *tbInfo;
 
    U8   bitVal = 0;
    U8   sCellActDeactBitMask = 0;
-   TRC3(rgSCHSCellSchdActDeactCe);
 
    /* Change the state of all Scells waiting for
     * activation */
@@ -233,7 +232,6 @@ RgSchUeCb                  *ue;
 #endif
 {
    RgSchCmnDlCell *cellCmnDl = RG_SCH_CMN_GET_DL_CELL(cell);
-   TRC3(rgSCHSCellAddToActDeactLst);
 
    if(NULLP == ue->sCellActLnk.node)
    {/* Ue is not present in the list */
@@ -278,7 +276,6 @@ RgSchUeCb                  *ue;
 #endif
 {
    RgSchCmnDlCell *cellCmnDl = RG_SCH_CMN_GET_DL_CELL(cell);
-   TRC3(rgSCHSCellRmvFrmActLst);
    if (NULLP != ue->sCellActLnk.node)
    {
       cmLListDelFrm(&cellCmnDl->secCellActCeLst, &ue->sCellActLnk);
@@ -333,7 +330,6 @@ RgSchUeCellInfo  *sCellInfo
    U16    crntTime;           
 #endif
 
-   TRC3(rgSCHSCellActivation);
 
    sCellInfo->sCellState = RG_SCH_SCELL_ACTIVE;
 #ifdef TENB_STATS
@@ -525,7 +521,6 @@ RgSchUeCellInfo *sCellInfo;
 #endif
 {
 
-   TRC3(rgSCHCellClearScellLstOfCQI);
    RgSchUePCqiCb *cqiRiCb = NULLP;
    RgSchUeCb    *ueCb;
    ueCb = sCellInfo->ue;
@@ -596,7 +591,6 @@ RgSchUeCellInfo *sCellInfo
    RgSchCmnCell *cellSch;
    Inst inst = sCellInfo->cell->instIdx;
 
-   TRC3(rgSCHSCellDeActivation);
    /* Stop the timer if running */
 
    if(sCellInfo->deactTmr.tmrEvnt != TMR_NONE)
@@ -744,7 +738,6 @@ Bool              maxHqRetxReached;
    RgSchCellCb    *cell;
    RgSchUeCellInfo *sCellInfo;
 
-   TRC3(rgSCHSCellHndlFdbkInd);
 
    ueCb  = hqP->hqE->ue;
    cell  = ueCb->cell;
@@ -843,7 +836,6 @@ RgSchUeCellInfo *sCellInfo;
 #endif
 {
 
-   TRC3(rgSCHSCellDeactTmrExpry);
    if (sCellInfo->ue->isScellExplicitDeAct == TRUE)
    {
       /* Deactivation Timer is not configured (infinity), thus send deactivation CE explicitly */ 
@@ -907,8 +899,6 @@ U8            action;
 {
    Inst inst = cell->instIdx;
    S16 ret   = ROK;
-
-   TRC3(rgSCHSCellTrigActDeact);
 
    if((sCellIdx < 1) ||
       (sCellIdx > RGR_MAX_SCELL_PER_UE))
@@ -1028,7 +1018,6 @@ RgSchUeCb    *ueCb;
 U8           *sCellIdx;
 #endif
 {
-   TRC3(rgSCHSCellSelectAndAct);
 
    for((*sCellIdx) = 1; (*sCellIdx) <= RG_SCH_MAX_SCELL; (*sCellIdx)++)
    {
@@ -1136,7 +1125,6 @@ U8            sCellIdx;
    RgSchUeCellInfo *sCellInfo;
    RgSchCmnUlUe *ueUl;
 
-   TRC3(rgSCHSCellDelUeSCell);
    sCellInfo = ueCb->cellInfo[sCellIdx];
 
 
@@ -1217,8 +1205,6 @@ RgSchUeCb    *ueCb;
 #endif
 {
 
-   TRC3(rgSCHSCellDelUe);
-
    for(U8 idx = 1; idx <= RG_SCH_MAX_SCELL ; idx++)
    {
       rgSCHSCellDelUeSCell(cellCb,ueCb,idx);
@@ -1287,8 +1273,6 @@ U8                sCellIdx;
    RgSchUeCellInfo *sCellInfo;
    RgSchUePCqiCb *cqiCb = NULLP;
 
-   TRC3(rgSCHSCellPCqiCfg);
-
    RGSCHDBGINFO(priCellCb->instIdx, (rgSchPBuf(priCellCb->instIdx), 
             "rgSCHSCellPCqiCfg cellId =%d, ueId = %d, CfgType =%d\n",
             secCellCb->cellId,  ueCb->ueId, cqiCfg->type));
@@ -1310,7 +1294,7 @@ U8                sCellIdx;
    if (cqiCfg->type == RGR_SCH_PCQI_SETUP)
    {   
       /*  1. Copy the Received CQI Cfg parameters to ueCb  */
-      cmMemcpy((U8 *)&cqiCb->cqiCfg, (U8 *)cqiCfg, 
+      memcpy(&cqiCb->cqiCfg, cqiCfg, 
             sizeof(RgrUePrdDlCqiCfg));
 
       /*  2. Compute Periodic CQI Periodicity and subframe offset   */
@@ -1436,7 +1420,6 @@ RgSchUeCb                  *ue;
 #endif
 {
    RgSchCmnCell *cellSch;
-   TRC3(rgSCHSCellDlUeReset);
 
    for(U8 idx = 1; idx <= RG_SCH_MAX_SCELL ; idx++)
    {
@@ -1483,7 +1466,6 @@ RgSchDlLcCb                *svc;
 #endif
 {
    RgSchCmnCell *cellSch = RG_SCH_CMN_GET_CELL(cell);
-   TRC3(rgSCHSCellDlLcCfg);
    for(U8 idx = 1; idx <= RG_SCH_MAX_SCELL ; idx++)
    {
       if(ue->cellInfo[idx] != NULLP) 
@@ -1525,7 +1507,6 @@ RgSchDlLcCb                *svc;
 #endif
 {
    RgSchCmnCell *cellSch = RG_SCH_CMN_GET_CELL(cell);
-   TRC3(rgSCHSCellDlLcDel);
    for(U8 idx = 1; idx <= RG_SCH_MAX_SCELL ; idx++)
    {
       if(ue->cellInfo[idx] != NULLP) 
@@ -1567,7 +1548,6 @@ RgSchDlLcCb                *svc;
 #endif
 {
    RgSchCmnCell *cellSch = RG_SCH_CMN_GET_CELL(cell);
-   TRC3(rgSCHSCellDlDedBoUpd);
 
    /* If this is not invoked by PCell, then
       invoke the call to PCell handler 
@@ -1617,7 +1597,6 @@ RgSchUePCqiCb     *cqiCb2;
 #endif
 {
    RgSchUePCqiCb     *retCqiCb;
-   TRC3(rgSCHUtlSCellCmpCqiCfg);
    /* Collision rules are defined in TS 36.213,7.2.2 */
    /* RI, WB first PMI > WB CQI >  SB CQI */
    /* As of now only taking care of RI > WB CQI > SB CQI */
@@ -1689,7 +1668,6 @@ RgSchUePCqiCb     *cqiCb;
    U32 sCellCnt = 0;
    CmLteTimingInfo timingInfo;
    U8 idx = 0;
-   TRC3(rgSCHUtlSCellHndlCqiCollsn);
 
 #ifdef xLTE_TDD
    RG_SCH_ADD_TO_CRNT_TIME(priCellCb->crntTime, timingInfo, TFU_DELTA);
@@ -1799,7 +1777,6 @@ RgSchUePCqiCb     *cqiCb;
    U32 cellIdx;
    U32 sCellCnt = 0;
    CmLteTimingInfo timingInfo;
-   TRC3(rgSCHUtlSCellHndlRiCollsn);
 
 #ifdef xLTE_TDD
    RG_SCH_ADD_TO_CRNT_TIME(priCellCb->crntTime, timingInfo, TFU_DELTA);
@@ -1911,7 +1888,6 @@ RgSchUeCb                  *ue;
 #endif
 {
    S16 retVal = RFAILED;
-   TRC3(rgSCHSCellIsActive);
 
    for(U8 idx = 1; idx <= RG_SCH_MAX_SCELL ; idx++)
    {
@@ -1952,7 +1928,6 @@ RgSchCellCb    *cell;
 RgSchUeCb      *ue
 #endif
 {
-   TRC2(rgSCHIsActvReqd)
    /* Check if remBoCnt in this UE is greater than ZERO for sufficient number of
     * Scheduling TTIs. If yes then We should activate a secondary cell to handle
     * outstanding BO */

@@ -515,7 +515,7 @@ void rlcUmmProcessSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *datReq)
       if ((lchInfo.numSdus != 0) && (l2MeasTb != NULLP) &&
           (l2MeasTb->numLchInfo < RLC_MAX_ACTV_DRB))
       {   
-         cmMemcpy((U8 *) &l2MeasTb->lchInfo[l2MeasTb->numLchInfo], (U8 *) &lchInfo, sizeof(RlclchInfo));
+         memcpy( &l2MeasTb->lchInfo[l2MeasTb->numLchInfo],  &lchInfo, sizeof(RlclchInfo));
          l2MeasTb->numLchInfo++;
       }
       l2MeasTb->txSegSduCnt += segSduCnt;
@@ -588,8 +588,6 @@ RlcDlRbCb       *rbCb;
 #endif
 {
    /* The re-establishment indication is sent from the UL only */
-   TRC2(rlcDlUmmReEstablish)
-
 
    rlcUmmFreeDlRbCb(gCb, rbCb);
 
@@ -778,10 +776,6 @@ U32        sduId;
 #endif
 {
    CmLList *tmpNode;  /* Temporary Node in SDU queue */
-   
-   TRC2(rlcUmmDiscSdu)
-
-  
    CM_LLIST_FIRST_NODE(&rbCb->m.umDl.sduQ,tmpNode);
 
    if (tmpNode)
@@ -824,8 +818,6 @@ RlcCb       *gCb;
 RlcDlRbCb   *rbCb;
 #endif
 {
-   TRC2(rlcUmmFreeDlRbCb)
-
 
    /* cat the SDU queue to the to be freed list */
    cmLListCatLList(&(gCb->u.dlCb->toBeFreed.sduLst),&(rbCb->m.umDl.sduQ));

@@ -204,7 +204,6 @@ PRIVATE S16 rgTOMUtlFillDatReqPdus(datInfo, dlSf, cellCb, err)
    U8               idx;
    Inst             inst = cellCb->macInst - RG_INST_START;
 
-   TRC2(rgTOMUtlFillDatReqPdus)
 
       /* first lets send the BCCH data down to PHY */
    if (dlSf->bcch.tb != NULLP)
@@ -405,7 +404,6 @@ S16 rgTOMUtlProcDlSf (dlSf, cellCb, err)
    TfuDatReqInfo     *datInfo;
    Inst              inst = cellCb->macInst - RG_INST_START;
 
-   TRC2(rgTOMUtlProcDlSf);
 
    /* Fill Data Request Info from scheduler to PHY */   
    if ((ret = rgAllocEventMem(inst,(Ptr *)&datInfo, 
@@ -504,7 +502,6 @@ Inst             inst;
    RgUstaDgn         dgn;      /* Alarm diagnostics structure */
    VOLATILE U32      startTime=0;
 
-   TRC2(rgTOMUtlAllocPduEvnt);
 
    evntMem.region = rgCb[inst].rgInit.region;
    evntMem.pool   = rgCb[inst].rgInit.pool;
@@ -562,7 +559,6 @@ PRIVATE Void rgTOMUtlFreePduEvnt (pdu, error)
    RgMacSdu       *sdu;
    CmLList        *node;
 
-   TRC2(rgTOMUtlFreePduEvnt);
    /* Steps of freeing up the PDU.
     * 1. loop through the subHdrLst and free up all the buffers.
     * 2. free up the whole event
@@ -613,7 +609,6 @@ RgInfSfDatInd **sfInfo;
    RgUstaDgn         dgn;      /* Alarm diagnostics structure */
    VOLATILE U32      startTime=0;
 
-   TRC2(rgTOMInfAllocPduEvnt);
 
    evntMem.region = rgCb[inst].rgInit.region;
    evntMem.pool   = rgCb[inst].rgInit.pool;
@@ -663,7 +658,6 @@ PRIVATE Void rgTOMInfFreePduEvnt (sfInfo)
 RgInfSfDatInd *sfInfo;
 #endif
 {
-   TRC2(rgTOMInfFreePduEvnt);
 
    RG_FREE_MEM(sfInfo);
    RETVOID;
@@ -704,7 +698,6 @@ PRIVATE S16 rgTomUtlPrepareL2MUlThrpInfo(cellCb,ueCb,dDatInd)
    U8 lcId;
    U8 lcgId;
    U8 loop;
-   TRC2(rgTomUtlPrepareL2MUlThrpInfo);
 
    dDatInd->burstInd = RGU_L2M_UL_BURST_END;
    for(loop=0;loop<dDatInd->numLch;loop++)
@@ -845,7 +838,6 @@ PRIVATE S16 rgTOMUtlProcMsg(cellCb, ueCb, pdu, slot, lcgBytes)
   
    ulLcCb = NULLP;
    
-   TRC2(rgTOMUtlProcMsg)
 
 #ifndef LTE_L2_MEAS      
       UNUSED(slot);
@@ -897,7 +889,7 @@ PRIVATE S16 rgTOMUtlProcMsg(cellCb, ueCb, pdu, slot, lcgBytes)
          return RFAILED;
       }
       dDatInd = (RgRguDedDatInd *)elem;
-      cmMemset((U8 *)dDatInd, 0x00, sizeof(RgRguDedDatInd));
+      memset(dDatInd, 0x00, sizeof(RgRguDedDatInd));
 #endif
       dDatInd->cellId   = cellCb->cellId;
       dDatInd->rnti     = ueCb->ueId;
@@ -974,7 +966,7 @@ PRIVATE S16 rgTOMUtlProcMsg(cellCb, ueCb, pdu, slot, lcgBytes)
          return RFAILED;
       }
       dDatInd = (RgRguDedDatInd *)elem;
-      cmMemset((U8 *)dDatInd, 0x00, sizeof(RgRguDedDatInd));
+      memset(dDatInd, 0x00, sizeof(RgRguDedDatInd));
 #endif
          dDatInd->cellId   = cellCb->cellId;
          dDatInd->rnti     = ueCb->ueId;
@@ -1067,7 +1059,7 @@ PRIVATE S16 rgTOMUtlProcMsg(cellCb, ueCb, pdu, slot, lcgBytes)
          {
             ueCb->ul.explRelCntr = 0;
             /* Indicate scheduler for explicit release */
-            cmMemset((U8*)&schPst1, (U8)0, sizeof(Pst));
+            memset(&schPst1, 0, sizeof(Pst));
             rgGetPstToInst(&schPst1,inst, cellCb->schInstMap.schInst);
            //TODO: commented for compilation without SCH 
 #if 0
@@ -1181,7 +1173,6 @@ U32         *lcgBytes;
    U32           lcgId = 0;
    U32           idx = 0;
 
-   TRC2(rgTOMUtlInsSchInfo);
 
    RG_TOM_INF_ALLOC(sfInfo, sizeof(RgInfUeDatInd), ueInfo, ret);
 
@@ -1282,7 +1273,6 @@ Inst             inst;
    U32               lcgBytes[RGINF_MAX_LCG_PER_UE];
 
 
-   TRC2(rgTOMDatInd);
 #ifdef STUB_TTI_HANDLING_5GTF 
    node =  datInd->datIndLst.first;
    for (;node; node=node->next)
@@ -1302,7 +1292,7 @@ Inst             inst;
       return(RFAILED);
 #endif      
 
-   cmMemset((U8 *)&lcgBytes, 0, sizeof(lcgBytes));
+   memset(&lcgBytes, 0, sizeof(lcgBytes));
 
    tfuSap = &(rgCb[inst].tfuSap);
    ueCb = NULLP;
@@ -1423,7 +1413,7 @@ Inst             inst;
                   if (ueCb->ul.implRelCntr == ueCb->ul.implRelCnt)
                   {
                      /* Indicate scheduler for implicit release */
-                     cmMemset((U8*)&schPst1, (U8)0, sizeof(Pst));
+                     memset(&schPst1, 0, sizeof(Pst));
                      rgGetPstToInst(&schPst1,inst, cellCb->schInstMap.schInst);
 
                      ueCb->ul.implRelCntr = 0;
@@ -1500,11 +1490,11 @@ Inst             inst;
 #endif
    /* RRM_RBC_X */
    /* Update PRB used for all GBR QCIs to scheduler */
-    cmMemcpy((U8*) &sfInfo->qcisUlPrbCnt[0],
-             (U8*) &cellCb->qcisUlPrbCnt[0],
+    memcpy( &sfInfo->qcisUlPrbCnt[0],
+              &cellCb->qcisUlPrbCnt[0],
              (RGM_MAX_QCI_REPORTS * sizeof(U32)));
     /* clear the cellCb ul prb value */
-    cmMemset((U8*)&cellCb->qcisUlPrbCnt[0], 0, 
+    memset(&cellCb->qcisUlPrbCnt[0], 0, 
              (RGM_MAX_QCI_REPORTS * sizeof(U32)));
 
    /* RRM_RBC_Y */
@@ -1571,7 +1561,6 @@ RgErrInfo           *err;
    RgDlSf               *dlSf;
    Inst                 inst = cell->macInst - RG_INST_START;
 
-   TRC2(rgHndlCmnChnl)
 
    dlSf = &cell->subFrms[(timingInfo.slot % RG_NUM_SUB_FRAMES)];
 
@@ -1751,7 +1740,6 @@ RgErrInfo           *err;
 #endif
 {
 
-   TRC2(rgHndlSchdUe);
 
    if(NULLP == ueInfo->allocInfo)
    {
@@ -1798,7 +1786,6 @@ RgInfUlUeInfo       *ueInfo;
    RgUlSf         *ulSf;
    S16            ret;
 
-   TRC2(rgHndlUlUeInfo)
    
    ulSf = &cell->ulSf[(timingInfo.slot % RGSCH_NUM_SUB_FRAMES)];
 
@@ -1875,7 +1862,6 @@ RgDlSf              *dlSf;
 {
    U8               idx;
 
-   TRC2(rgTOMRlsSf)
 
    if(dlSf->txDone == FALSE)
    {
@@ -1975,7 +1961,6 @@ RgInfSfAlloc        *sfInfo;
    Pst              *pst;
    U32              ueIdx;
    U32              lcIdx;
-   TRC3(rgHndlFlowCntrl);
 
    pst = &cell->rguDlSap->sapCfg.sapPst;
    /* flowCntrlInd is alloced in cell init time and will be re-used throughout */
@@ -2046,7 +2031,6 @@ RgInfSfAlloc        *sfInfo;
    VOLATILE U32   startTime=0;
    Inst           inst;
 
-   TRC2(RgSchMacSfAllocReq)
 
    RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
@@ -2204,7 +2188,6 @@ U16               slot;
    U16  sduSize;
 #endif
 
-   TRC2(rgTOMProcCrntiCEInDatInd)
 
 #ifndef LTE_L2_MEAS      
       UNUSED(slot);
@@ -2306,7 +2289,6 @@ U16               slot;
 #endif
 
 
-   TRC2(rgTOMProcCCCHSduInDatInd)
 
 #ifndef LTE_L2_MEAS      
       UNUSED(slot);
@@ -2390,7 +2372,6 @@ PRIVATE S16 rgTOMUtlL2MStoreBufSz (ueCb, ceInfo)
 {
    U8 lcgId;
    U8 bsr;
-   TRC2(rgTOMUtlL2MStoreBufSz);
 
    if(ceInfo->bitMask & RG_TRUNC_BSR_CE_PRSNT)
    {
@@ -2448,7 +2429,6 @@ PRIVATE Void rgTOML2MCompileActiveLCs(cellCb, ueCb, pdu, ceInfo)
    RgMacSdu          *sdu;
    RgUlLcCb          *ulLcCb;
 
-   TRC2(rgTOML2MCompileActiveLCs)
 
    node =  pdu->sduLst.first;
    while (node)

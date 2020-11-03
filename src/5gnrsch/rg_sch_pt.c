@@ -263,8 +263,6 @@ RgInfCellReg*   regReq;
 #endif
 {
 
-   TRC3(RgSchMacCellReg);
-
    return ((*RgSchMacCellRegReqMt[0])(pst, regReq));
 }
 
@@ -294,8 +292,6 @@ Pst* pst;
 RgInfDedBoRpt*  boRpt;
 #endif
 {
-
-   TRC3(RgMacSchDedBoUpdt);
 
    return ((*RgMacSchDedBoUpdtReqMt[0])(pst, boRpt));
 }
@@ -327,8 +323,6 @@ RgInfCmnBoRpt*  boRpt;
 #endif
 {
 
-   TRC3(RgMacSchCmnBoUpdt);
-
    return ((*RgMacSchCmnBoUpdtReqMt[0])(pst, boRpt));
 }
 
@@ -358,8 +352,6 @@ Pst* pst;
 RgInfUeDelInd*  ueDelInd;
 #endif
 {
-
-   TRC3(RgMacSchUeDel);
 
    return ((*RgMacSchUeDelIndMt[0])(pst, ueDelInd));
 }
@@ -391,8 +383,6 @@ RgInfSfDatInd*  datInd;
 #endif
 {
 
-   TRC3(RgMacSchSfRecp);
-
    return ((*RgMacSchSfRecpIndMt[0])(pst, datInd));
 }
 
@@ -423,8 +413,6 @@ RgInfSfAlloc*   resAllocReq;
 #endif
 {
 
-   TRC3(RgSchMacSfAlloc);
-
    return ((*RgSchMacSfAllocReqMt[0])(pst, resAllocReq));
 }
 
@@ -452,8 +440,6 @@ Pst*                 pst;
 RgInfResetHqEnt*     hqEntInfo;
 #endif
 {
-
-   TRC3(RgSchMacRstHqEnt)
 
    return ((*RgSchMacRstHqEntReqMt[0])(pst, hqEntInfo));
 }
@@ -485,8 +471,6 @@ RgInfRlsHqInfo* sfHqInfo;
 #endif
 {
 
-   TRC3(RgSchMacRlsHq);
-
    return ((*RgSchMacRlsHqReqMt[0])(pst, sfHqInfo));
 }
 
@@ -517,8 +501,6 @@ RgInfRlsRnti*   rlsRnti;
 #endif
 {
 
-   TRC3(RgSchMacRlsRnti);
-
    return ((*RgSchMacRlsRntiReqMt[0])(pst, rlsRnti));
 }
 
@@ -546,8 +528,6 @@ Pst*                pst;
 RgInfLcgRegReq       *lcgRegReq;
 #endif
 {
-
-   TRC3(RgSchMacLcgReg);
 
    return ((*RgSchMacLcgRegReqMt[0])(pst, lcgRegReq));
 } /* end of RgSchMacLcgReg */
@@ -579,8 +559,6 @@ RgInfSpsRelInfo*    relInfo;
 #endif
 {
 
-   TRC3(RgMacSchS);
-
    return ((*RgMacSchSpsRelIndMt[0])(pst, relInfo));
 } /* end of RgMacSchSpsRel */
 
@@ -608,8 +586,6 @@ Pst*                pst;
 RgInfSpsLcInfo      *lcInfo;
 #endif
 {
-
-   TRC3(RgSchMacSpsLcReg);
 
    return ((*RgSchMacSpsLcRegReqMt[0])(pst, lcInfo));
 } /* end of RgSchMacSpsLcReg */
@@ -640,8 +616,6 @@ Pst*                pst;
 RgInfUlSpsReset      *ulSpsResetInfo;
 #endif
 {
-
-   TRC3(RgSchMacUlSpsReset);
 
    return ((*RgSchMacUlSpsResetMt[0])(pst, ulSpsResetInfo));
 } /* end of RgSchMacUlSpsReset */
@@ -675,8 +649,6 @@ CmLteRnti           crnti;
 #endif
 {
 
-   TRC3(RgSchMacSpsLcDereg);
-
    return ((*RgSchMacSpsLcDeregReqMt[0])(pst, cellId, crnti));
 } /* end of RgSchMacSpsLcDereg */
 
@@ -707,8 +679,6 @@ RgInfL2MeasReq      *measInfo;
 #endif
 {
 
-   TRC3(RgSchMacL2Meas);
-
    return ((*RgSchMacL2MeasReqMt[0])(pst, measInfo));
 } /* end of RgSchMacL2Meas */
 
@@ -737,8 +707,6 @@ RgInfL2MeasStopReq *measInfo;
 #endif
 {  
      
-   TRC3(RgSchMacL2MeasStop);
-        
    return ((*RgSchMacL2MeasStopReqMt[0])(pst, measInfo));
 } /* end of RgSchMacL2Meas */
 
@@ -766,8 +734,6 @@ Pst*                pst;
 RgInfL2MeasSndReq *measInfo;
 #endif
 {
-
-   TRC3(RgSchMacL2MeasSend);
 
    return ((*RgSchMacL2MeasSendReqMt[0])(pst, measInfo));
 } /* end of RgSchMacL2MeasSend */
@@ -797,8 +763,6 @@ RgInfL2MeasCfm      *measInfo;
 #endif
 {
 
-   TRC3(RgMacSchL2Meas);
-
    return ((*RgMacSchL2MeasCfmMt[0])(pst, measInfo));
 } /* end of RgSchMacL2Meas */
 /**
@@ -826,8 +790,6 @@ RgInfL2MeasCfm      *measInfo;
 #endif
 {
     
-   TRC3(RgMacSchL2MeasStop);
-
    return ((*RgMacSchL2MeasStopCfmMt[0])(pst, measInfo));
 } /* end of RgSchMacL2MeasStop*/
 #endif/*LTE_L2_MEAS*/

@@ -1842,15 +1842,6 @@ typedef S8               *ARGTYPE;
 **********************************************************************/
 
 /*
-   trace macros are at the beginning of each function. they may
-   be used for debugging purposes. the trace macros are turned on
-   by the following command line option:
-
-   TRACE0  - trace mos support functions
-   TRACE1  - trace mos interface functions
-   TRACE2  - trace layer support functions
-   TRACE3  - trace layer interface functions
-   TRACE4  - trace interrupt service functions
 
    there is one additional trace macro which turns on trace macros 0 - 4
    and pushes the text within trace macros 0 - 4 onto a stack. the text
@@ -1861,109 +1852,12 @@ typedef S8               *ARGTYPE;
 */
   
 #ifdef TRACE5           /* trace 5 - call stack */
-#define TRACE0          /* trace 0 - mos support functions */
-#define TRACE1          /* trace 1 - mos interface functions */
-#define TRACE2          /* trace 2 - layer support functions */
-#define TRACE3          /* trace 3 - layer interface functions */
-#define TRACE4          /* trace 4 - interrupt service functions */
 
 #define T5M 64          /* trace 5 - maximum call stack height */
 extern S8 *t5s[];       /* trace 5 - call stack */
 extern S16 t5t;         /* trace 5 - top of call stack */
 #ifdef ERRCHK
 extern Void FAR exit(int);
-#endif
-#endif
-
-#ifdef TRACE5           /* trace 5 - call stack */
-#ifdef ERRCHK
-#define TRC0(a)         if(t5t>=0&&t5t<T5M-1) t5s[t5t++] = #a; else exit(0); 
-#else
-#define TRC0(a)         t5s[t5t++] = #a;
-#endif
-#else
-#ifdef TRACE0           /* trace 0 - mos support functions */
-#ifdef ANSI             /* ansi */
-#define TRC0(a)         printf(#a "\n");
-#else                   /* not ansi */
-#define TRC0(a);
-#endif
-#else
-#define TRC0(a);
-#endif
-#endif
-  
-#ifdef TRACE5           /* trace 5 - call stack */
-#ifdef ERRCHK
-#define TRC1(a)         if(t5t>=0&&t5t<T5M-1) t5s[t5t++] = #a; else exit(0); 
-#else
-#define TRC1(a)         t5s[t5t++] = #a;
-#endif
-#else
-#ifdef TRACE1           /* trace 1 - mos interface functions */
-#ifdef ANSI             /* ansi */
-#define TRC1(a)         printf(#a "\n");
-#else                   /* not ansi */
-#define TRC1(a)         ; 
-#endif
-#else
-#define TRC1(a);
-#endif
-#endif
-  
-#ifdef TRACE5           /* trace 5 - call stack */
-#ifdef ERRCHK
-#define TRC2(a)         if(t5t>=0&&t5t<T5M-1) t5s[t5t++] = #a; else exit(0); 
-#else
-#define TRC2(a)         t5s[t5t++] = #a;
-#endif
-#else
-#ifdef TRACE2           /* trace 2 - layer support functions */
-#ifdef ANSI             /* ansi */
-/* envdep_h_001.main_68  Corrected the macro */
-#define TRC2(a)         printf(#a "\n"); 
-#else                   /* not ansi */
-#define TRC2(a)         ; 
-#endif
-#else
-#define TRC2(a);
-#endif
-#endif
-  
-#ifdef TRACE5           /* trace 5 - call stack */
-#ifdef ERRCHK
-#define TRC3(a)         if(t5t>=0&&t5t<T5M-1) t5s[t5t++] = #a; else exit(0); 
-#else
-#define TRC3(a)         t5s[t5t++] = #a;
-#endif
-#else
-#ifdef TRACE3           /* trace 3 - layer interface functions */
-#ifdef ANSI             /* ansi */
-/* envdep_h_001.main_68  Corrected the macro */
-#define TRC3(a)         printf(#a "\n");
-#else                   /* not ansi */
-#define TRC3(a)         ; 
-#endif
-#else
-#define TRC3(a);
-#endif
-#endif
-
-#ifdef TRACE5           /* trace 5 - call stack */
-#ifdef ERRCHK
-#define TRC4(a)         if(t5t>=0&&t5t<T5M-1) t5s[t5t++] = #a; else exit(0); 
-#else
-#define TRC4(a)         t5s[t5t++] = #a;
-#endif
-#else
-#ifdef TRACE4           /* trace 4 - interrupt service functions */
-#ifdef ANSI             /* ansi */
-#define TRC4(a)         printf(#a "\n");
-#else                   /* not ansi */
-#define TRC4(a);
-#endif
-#else
-#define TRC4(a);
 #endif
 #endif
 

@@ -89,7 +89,6 @@ S16 rlcUlInitExt
 S16 rlcUlInitExt()
 #endif
 {
-   TRC2(rlcUlInitExt);
 
    return ROK;
 } /* kwInitExt */
@@ -140,7 +139,6 @@ Reason reason;              /* reason */
 #endif
 {
    RlcCb    *tRlcCb;
-   TRC3(rlcUlActvInit)
 
    if (inst >= MAX_RLC_INSTANCES)
    {
@@ -219,7 +217,6 @@ Buffer *mBuf;           /* message buffer */
 {
    S16 ret = ROK;
 
-   TRC3(kwActvTsk);
 
    switch(pst->srcEnt)
    {

@@ -889,11 +889,10 @@ uint8_t duBindUnbindRlcToMacSap(uint8_t inst, uint8_t action)
 {
    RlcCntrl  *cntrl = NULLP;
    RlcMngmt  rlcMngmt;
-   Pst      pst;
+   Pst       pst;
 
-   TRC2(smBindKwToRguSap)
 
-      DU_SET_ZERO(&rlcMngmt, sizeof(RlcMngmt));
+   DU_SET_ZERO(&rlcMngmt, sizeof(RlcMngmt));
    DU_SET_ZERO(&pst, sizeof(Pst));
 
    if (action == ABND)
@@ -994,7 +993,7 @@ uint8_t duSctpNtfyHdl(Buffer *mBuf, CmInetSctpNotification *ntfy)
  * ****************************************************************/
 uint8_t duFillEgtpPst(Pst *pst, Event event)
 {
-   memset((uint8_t *)pst, 0, sizeof(Pst));
+   memset(pst, 0, sizeof(Pst));
    pst->srcEnt = (Ent)ENTDUAPP;
    pst->srcInst = (Inst)DU_INST;
    pst->srcProcId = DU_PROC;
@@ -1033,8 +1032,8 @@ uint8_t duBuildEgtpCfgReq()
 
    DU_LOG("\nDU_APP : Sending EGTP config request");
 
-   memset((uint8_t *)&egtpCfg, 0, sizeof(EgtpConfig));
-   memcpy((uint8_t *)&egtpCfg, (uint8_t *)&duCfgParam.egtpParams, (PTR)sizeof(EgtpConfig));
+   memset(&egtpCfg, 0, sizeof(EgtpConfig));
+   memcpy(&egtpCfg, &duCfgParam.egtpParams, sizeof(EgtpConfig));
 
    duFillEgtpPst(&pst, EVTCFGREQ);
    packEgtpCfgReq(&pst, egtpCfg);
@@ -1278,7 +1277,7 @@ uint8_t duSendEgtpTestData()
    mLen = 0;
    ODU_GET_MSG_LEN(mBuf, &mLen);
 
-   memset((uint8_t *)&ipv4Hdr, 0, sizeof(CmIpv4Hdr));
+   memset(&ipv4Hdr, 0, sizeof(CmIpv4Hdr));
    ipv4Hdr.length = CM_IPV4_HDRLEN + mLen;
    ipv4Hdr.hdrVer = 0x45;
    ipv4Hdr.proto = 1;

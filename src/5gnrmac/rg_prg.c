@@ -79,8 +79,6 @@ RgPrgUeSCellCfgInfo    *ueSCellCfgInfo;
 {
    Buffer *mBuf = NULLP;
 
-   TRC2(cmPkPrgPMacSMacUeSCellCfgReq)
-
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
    {
       return RFAILED;
@@ -126,8 +124,6 @@ Buffer               *mBuf;
 {
    RgPrgUeSCellCfgInfo    ueSCellCfgInfo;
    
-   TRC2(cmUnpkPrgPMacSMacUeSCellCfgReq)
-
    if(SRemPreMsgMult((Data *)&ueSCellCfgInfo, sizeof(RgPrgUeSCellCfgInfo), mBuf) != ROK)
    {
       RGPRG_FREE_MSG(mBuf);
@@ -164,8 +160,6 @@ RgPrgCfgCfmInfo    *cfgCfm;
 #endif
 {
    Buffer *mBuf = NULLP;
-
-   TRC2(cmPkPrgSMacPMacCfgCfm)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
    {
@@ -233,8 +227,6 @@ Buffer              *mBuf;
 {
    RgPrgCfgCfmInfo   cfgCfm;
    
-   TRC2(cmUnpkPrgSMacPMacCfgCfm)
-
    if(SRemPreMsgMult((Data *)&cfgCfm, sizeof(RgPrgCfgCfmInfo), mBuf) != ROK)
    {
       RGPRG_FREE_MSG(mBuf);
@@ -271,8 +263,6 @@ RgPrgUeSCellDelInfo    *ueSCellDelInfo;
 #endif
 {
    Buffer *mBuf = NULLP;
-
-   TRC2(cmPkPrgPMacSMacUeSCellDelReq)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
    {
@@ -320,8 +310,6 @@ Buffer           *mBuf;
 {
   RgPrgUeSCellDelInfo ueSCellDelInfo;
    
-   TRC2(cmUnpkPrgPMacSMacUeSCellDelReq)
-
    if(SRemPreMsgMult((Data *)&ueSCellDelInfo, sizeof(RgPrgUeSCellDelInfo),\
             mBuf) != ROK)
    {
@@ -359,8 +347,6 @@ RgPrgUeSCellLchAddInfo    *lchCfgInfo;
 #endif
 {
    Buffer *mBuf = NULLP;
-
-   TRC2(cmPkPrgPMacSMacUeSCellLchAddReq)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
    {
@@ -408,8 +394,6 @@ Buffer                       *mBuf;
 {
    RgPrgLchRecfgInfo    lchCfgInfo;
    
-   TRC2(cmUnpkPrgPMacSMacUeSCellLchAddReq)
-
    if(SRemPreMsgMult((Data *)&lchCfgInfo, sizeof(RgPrgUeSCellLchAddInfo), mBuf) != ROK)
    {
       RGPRG_FREE_MSG(mBuf);
@@ -446,8 +430,6 @@ RgPrgUeSCellLchDelInfo    *delLcCb;
 #endif
 {
    Buffer *mBuf = NULLP;
-
-   TRC2(cmPkPrgPMacSMacUeSCellLchDelReq)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
    {
@@ -492,8 +474,6 @@ RgPrgUeSCellLchModInfo    *lchCfgInfo;
 #endif
 {
    Buffer *mBuf = NULLP;
-
-   TRC2(cmPkPrgPMacSMacUeSCellLchModReq)
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
    {
@@ -542,8 +522,6 @@ Buffer                  *mBuf;
 {
    RgPrgUeSCellLchModInfo   lchCfgInfo;
    
-   TRC2(cmUnpkPrgPMacSMacAddLchCfgReq)
-
    if(SRemPreMsgMult((Data *)&lchCfgInfo, sizeof(RgPrgUeSCellLchModInfo), mBuf) != ROK)
    {
       RGPRG_FREE_MSG(mBuf);
@@ -585,8 +563,6 @@ Buffer                  *mBuf;
 {
    RgPrgUeSCellLchDelInfo   lchCfgInfo;
    
-   TRC2(cmUnpkPrgPMacSMacUeSCellLchDelReq)
-
    if(SRemPreMsgMult((Data *)&lchCfgInfo, sizeof(RgPrgUeSCellLchDelInfo), mBuf) != ROK)
    {
       RGPRG_FREE_MSG(mBuf);

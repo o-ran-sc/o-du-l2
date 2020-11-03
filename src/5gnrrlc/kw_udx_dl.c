@@ -99,8 +99,6 @@ SpId   spId;
    RlcUdxDlSapCb   *udxSap;            /* pointer to session SAP */
    RlcCb           *tRlcCb;
 
-   TRC3(rlcDlUdxBndReq);
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (pst->dstInst >= MAX_RLC_INSTANCES)
    {
@@ -198,8 +196,6 @@ Reason   reason;
    RlcUdxDlSapCb   *udxSap; 
    RlcCb           *tRlcCb;
 
-   TRC3(rlcDlUdxUbndReq)
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (pst->dstInst >= MAX_RLC_INSTANCES)
    {
@@ -262,8 +258,6 @@ RlcCfgInfo   *cfg;
    U8              idx;    
    RlcCb            *tRlcCb;
    Pst             *pstUdxCfm;
-
-   TRC3(rlcDlUdxCfgReq)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (pst->dstInst >= MAX_RLC_INSTANCES)
@@ -454,8 +448,6 @@ CkwUeInfo   *newUeInfo;
    CmStatus       status;
    RlcCb           *tRlcCb;
 
-   TRC3(rlcDlUdxUeIdChgReq)
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (pst->dstInst >= MAX_RLC_INSTANCES)
    {
@@ -623,8 +615,6 @@ RlcL2MeasReqEvt *measReqEvt;
    VOLATILE U32     startTime = 0;
    RlcCb     *tRlcCb;
 
-   TRC3(rlcDlUdxL2MeasReq);
-
    /*starting Task*/
    SStartTask(&startTime, PID_RLC_MEAS_START);
 
@@ -700,13 +690,12 @@ U8             measType;
 /*   RlcL2MeasCfmEvt          measCfmEvt;  */
    VOLATILE U32     startTime = 0;
    RlcCb     *tRlcCb=NULLP;
-   TRC3(rlcDlUdxMeasStopReq);
    
    /*starting Task*/
    SStartTask(&startTime, PID_RLC_MEAS_STOP);
 
    tRlcCb =  RLC_GET_RLCCB(pst->dstInst);
-/*   cmMemset((U8*)&measCfmEvt, 0, sizeof(RlcL2MeasCfmEvt)); */
+/*   memset(&measCfmEvt, 0, sizeof(RlcL2MeasCfmEvt)); */
    /* reset the counters for the measurement type passed */
    for(cntr = 0; cntr < LKW_MAX_L2MEAS; cntr++)
    {
@@ -760,7 +749,6 @@ U8             measType;
    
    VOLATILE U32     startTime = 0;
    RlcCb     *tRlcCb;
-   TRC3(rlcDlUdxMeasSendReq);
 
    tRlcCb =  RLC_GET_RLCCB(pst->dstInst);
    for(cntr = 0; cntr < LKW_MAX_L2MEAS; cntr++)

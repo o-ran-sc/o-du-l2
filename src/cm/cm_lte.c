@@ -101,7 +101,6 @@ Buffer *mBuf;
 #endif
 {
 
-   TRC3(cmPkLteRlcId);
 
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
    CMCHKPK(cmPkLteRnti, param->ueId, mBuf);
@@ -140,7 +139,6 @@ Buffer *mBuf;
 #endif
 {
 
-   TRC3(cmUnpkLteRlcId);
 
    CMCHKUNPK(cmUnpkLteRbId, &param->rbId, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->rbType, mBuf);
@@ -179,7 +177,6 @@ Buffer *mBuf;
 #endif
 {
 
-   TRC3(cmPkLteTimingInfo);
 
    CMCHKPK(oduUnpackUInt16, param->slot, mBuf);
    CMCHKPK(oduUnpackUInt16, param->sfn, mBuf);
@@ -217,7 +214,6 @@ Buffer *mBuf;
 #endif
 {
 
-   TRC3(cmUnpkLteTimingInfo);
 
    //CMCHKUNPK(oduPackUInt16, &param->hSfn, mBuf);
    CMCHKUNPK(oduPackUInt16, &param->sfn, mBuf);
@@ -255,7 +251,6 @@ Buffer *mBuf;
 #endif
 {
 
-   TRC3(cmPkLtePdcpId);
 
    CMCHKPK(oduUnpackUInt8, param->rbType, mBuf);
    CMCHKPK(cmPkLteRbId, param->rbId, mBuf);
@@ -294,7 +289,6 @@ Buffer *mBuf;
 #endif
 {
 
-   TRC3(cmUnpkLtePdcpId);
 
    CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
    CMCHKUNPK(cmUnpkLteRnti, &param->ueId, mBuf);

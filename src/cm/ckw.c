@@ -71,7 +71,6 @@ SpId spId;
     S16 ret1;
     Buffer *mBuf;
     mBuf = NULLP;
-    TRC3(cmPkCkwBndReq)
 
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
@@ -122,7 +121,6 @@ Reason reason;
     S16 ret1;
     Buffer *mBuf;
     mBuf = NULLP;
-    TRC3(cmPkCkwUbndReq)
 
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
@@ -173,7 +171,6 @@ U8 status;
     S16 ret1;
     Buffer *mBuf;
     mBuf = NULLP;
-    TRC3(cmPkCkwBndCfm)
 
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
@@ -221,7 +218,6 @@ RlcTmInfo      *param;
 Buffer         *mBuf;
 #endif
 {
-    TRC3(cmPkRlcTmInfo)
 
     CMCHKPK(oduUnpackUInt32, param->dl.buffSize, mBuf);
 
@@ -254,7 +250,6 @@ RlcEntCfgInfo  *param;
 Buffer         *mBuf;
 #endif
 {
-    TRC3(cmPkRlcUmInfo)
 
     switch(param->dir)
     {
@@ -308,7 +303,6 @@ RlcAmInfo      *param;
 Buffer         *mBuf;
 #endif
 {
-    TRC3(cmPkRlcAmInfo)
 
     /* UP LINK */
     CMCHKPK(oduUnpackUInt8, param->ul.reOrdTmr, mBuf);
@@ -351,7 +345,6 @@ CkwLChInfo     *param;
 Buffer         *mBuf;
 #endif
 {
-    TRC3(cmPkCkwLChInfo)
 
     CMCHKPK(oduUnpackUInt8, param->type, mBuf);
     CMCHKPK(oduUnpackUInt8, param->lChId, mBuf);
@@ -385,7 +378,6 @@ RlcEntCfgInfo  *param;
 Buffer         *mBuf;
 #endif
 {
-    TRC3(cmPkRlcEntCfgInfo)
 
     switch(param->entMode)
     {
@@ -468,7 +460,6 @@ Buffer         *mBuf;
 {
    S16 idx;
 
-   TRC3(cmPkRlcCfgInfo)
 
     for (idx = param->numEnt-1; idx >= 0; idx--)
     {
@@ -509,7 +500,6 @@ RlcEntCfgCfmInfo  *param;
 Buffer            *mBuf;
 #endif
 {
-    TRC3(cmPkRlcEntCfgCfmInfo)
 
     CMCHKPK(cmPkCmStatus, &(param->status), mBuf);
     CMCHKPK(oduUnpackUInt8, param->rbType, mBuf);
@@ -548,7 +538,6 @@ Buffer         *mBuf;
 {
     S16         idx;
 
-    TRC3(cmPkRlcCfgCfmInfo)
 
     for (idx = param->numEnt-1; idx >= 0; idx--)
     {
@@ -594,7 +583,6 @@ RlcCfgCfmInfo     *cfgCfmInfo;
     S16 ret1;
     Buffer *mBuf;
     mBuf = NULLP;
-    TRC3(cmPkRlcCfgCfm)
 
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
@@ -668,7 +656,6 @@ CkwUeInfo *param;
 Buffer    *mBuf;
 #endif
 {
-   TRC2(cmPkCkwUeInfo)
 
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
    CMCHKPK(cmPkLteRnti, param->ueId, mBuf);
@@ -710,7 +697,6 @@ CkwUeInfo         *newUeInfo;
     S16    ret1;
     Buffer *mBuf = NULLP;
 
-    TRC3(cmPkCkwUeIdChgReq)
 
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
@@ -782,7 +768,6 @@ CmStatus          status;
     S16    ret1;
     Buffer *mBuf = NULLP;
 
-    TRC3(cmPkCkwUeIdChgCfm)
 
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
@@ -849,7 +834,6 @@ Buffer         *mBuf;
     SuId       suId = 0;
     SpId       spId = 0;
     
-    TRC3(cmUnpkCkwBndReq)
 
     CMCHKUNPKLOG(SUnpkS16, &suId, mBuf, ECKW024, pst);
     CMCHKUNPKLOG(SUnpkS16, &spId, mBuf, ECKW025, pst);
@@ -888,7 +872,6 @@ Buffer         *mBuf;
     SpId       spId = 0;
     Reason     reason = 0;
     
-    TRC3(cmUnpkCkwUbndReq)
 
     CMCHKUNPKLOG(SUnpkS16, &spId, mBuf, ECKW026, pst);
     CMCHKUNPKLOG(SUnpkS16, &reason, mBuf, ECKW027, pst);
@@ -926,7 +909,6 @@ Buffer         *mBuf;
     SuId       suId = 0;
     U8         status = 0;
     
-    TRC3(cmUnpkCkwBndCfm)
 
     CMCHKUNPKLOG(SUnpkS16, &suId, mBuf, ECKW028, pst);
     CMCHKUNPKLOG(oduPackUInt8, &status, mBuf, ECKW029, pst);
@@ -961,7 +943,6 @@ RlcTmInfo      *param;
 Buffer         *mBuf;
 #endif
 {
-    TRC3(cmUnpkRlcTmInfo)
 
     CMCHKUNPK(oduPackUInt32, &(param->dl.buffSize), mBuf);
 
@@ -994,7 +975,6 @@ RlcEntCfgInfo  *param;
 Buffer         *mBuf;
 #endif
 {
-    TRC3(cmUnpkRlcUmInfo)
 
     switch(param->dir)
     {
@@ -1048,7 +1028,6 @@ RlcAmInfo      *param;
 Buffer         *mBuf;
 #endif
 {
-    TRC3(cmUnpkRlcAmInfo)
 
     /* DOWN LINK */
     CMCHKUNPK(oduPackUInt8, &(param->dl.snLen), mBuf);
@@ -1091,7 +1070,6 @@ CkwLChInfo     *param;
 Buffer         *mBuf;
 #endif
 {
-    TRC3(cmUnpkCkwLChInfo)
 
     CMCHKUNPK(oduPackUInt8, &(param->lChId), mBuf);
     CMCHKUNPK(oduPackUInt8, &(param->type), mBuf);
@@ -1125,7 +1103,6 @@ RlcEntCfgCfmInfo  *param;
 Buffer            *mBuf;
 #endif
 {
-    TRC3(cmUnpkRlcEntCfgCfmInfo)
 
     CMCHKUNPK(oduPackUInt8, &(param->rbId), mBuf);
     CMCHKUNPK(oduPackUInt8, &(param->rbType), mBuf);
@@ -1164,7 +1141,6 @@ Buffer         *mBuf;
 {
     U8         idx;
 
-    TRC3(cmUnpkRlcCfgCfmInfo)
 
     CMCHKUNPKLOG(oduPackUInt32, &(param->transId), mBuf, ECKW030, pst);
     CMCHKUNPK(cmUnpkLteRnti, &(param->ueId), mBuf);
@@ -1205,7 +1181,6 @@ RlcEntCfgInfo  *param;
 Buffer         *mBuf;
 #endif
 {
-    TRC3(cmUnpkRlcEntCfgInfo)
 
     CMCHKUNPK(oduPackUInt8, &(param->cfgType), mBuf);
     CMCHKUNPK(oduPackUInt8, &(param->rbId), mBuf);
@@ -1289,7 +1264,6 @@ Buffer         *mBuf;
 {
     U8         idx;
 
-    TRC3(cmUnpkRlcCfgInfo)
 
     CMCHKUNPKLOG(oduPackUInt32, &(param->transId), mBuf, ECKW031, pst);
     CMCHKUNPK(cmUnpkLteRnti, &(param->ueId), mBuf);
@@ -1336,7 +1310,6 @@ Buffer            *mBuf;
     SuId             suId = 0;
     RlcCfgCfmInfo    *cfgCfmInfo = NULLP;
     
-    TRC3(cmUnpkRlcCfgCfm)
 
     if((ret1 = SGetSBuf(pst->region, pst->pool, (Data **)&cfgCfmInfo,\
                 sizeof(RlcCfgCfmInfo))) != ROK)
@@ -1352,7 +1325,7 @@ Buffer            *mBuf;
        return (ret1);
     }
 
-    cmMemset((U8 *)cfgCfmInfo, 0, sizeof(RlcCfgCfmInfo));
+    memset(cfgCfmInfo, 0, sizeof(RlcCfgCfmInfo));
 
     CMCHKUNPK(SUnpkS16, &suId, mBuf);
 
@@ -1406,7 +1379,6 @@ CkwUeInfo *param;
 Buffer    *mBuf;
 #endif
 {
-   TRC2(cmUnpkCkwUeInfo)
 
    CMCHKUNPK(cmUnpkLteRnti, &(param->ueId), mBuf);
    CMCHKUNPK(cmUnpkLteCellId, &(param->cellId), mBuf);
@@ -1447,7 +1419,6 @@ Buffer            *mBuf;
     CkwUeInfo *ueInfo = NULLP;
     CkwUeInfo *newUeInfo = NULLP;
     
-    TRC3(cmUnpkCkwUeIdChgReq)
 
 
     CMCHKUNPK(SUnpkS16, &(spId), mBuf);
@@ -1466,7 +1437,7 @@ Buffer            *mBuf;
        return (ret1);
     }
 
-    cmMemset((U8 *)ueInfo, 0, sizeof(CkwUeInfo));
+    memset(ueInfo, 0, sizeof(CkwUeInfo));
 
     ret1 = cmUnpkCkwUeInfo((ueInfo), mBuf);
 #if(ERRCLASS & ERRCLS_DEBUG)
@@ -1493,7 +1464,7 @@ Buffer            *mBuf;
        return (ret1);
     }
 
-    cmMemset((U8 *)newUeInfo, 0, sizeof(CkwUeInfo));
+    memset(newUeInfo, 0, sizeof(CkwUeInfo));
 
     ret1 = cmUnpkCkwUeInfo((newUeInfo), mBuf);
 #if(ERRCLASS & ERRCLS_DEBUG)
@@ -1546,9 +1517,8 @@ Buffer            *mBuf;
     CkwUeInfo *ueInfo = NULLP;
     CmStatus  status;
     
-    TRC3(cmUnpkCkwUeIdChgCfm)
 
-    cmMemset((U8 *)&status, (U8)0, (PTR)sizeof(CmStatus));
+    memset(&status, 0, sizeof(CmStatus));
 
     CMCHKUNPK(SUnpkS16, &suId, mBuf);
     CMCHKUNPKLOG(oduPackUInt32, &transId, mBuf, ECKW042, pst);
@@ -1567,7 +1537,7 @@ Buffer            *mBuf;
        return (ret1);
     }
 
-    cmMemset((U8 *)ueInfo, 0, sizeof(CkwUeInfo));
+    memset(ueInfo, 0, sizeof(CkwUeInfo));
 
     ret1 = cmUnpkCkwUeInfo((ueInfo), mBuf);
 #if(ERRCLASS & ERRCLS_DEBUG)

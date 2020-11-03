@@ -118,8 +118,6 @@ U8     status;
    RlcRguSapCb   *rguSap;   /* RGU SAP Control Block */
    RlcCb         *tRlcCb;
 
-   TRC3(RlcLiRguBndCfm)
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (pst->dstInst >= MAX_RLC_INSTANCES)
    {
@@ -573,8 +571,6 @@ RguHarqStatusInd   *staInd;
    RlcDlUeCb    *ueCb;
    U8        tbIdx;
    RlcCb       *tRlcCb; 
-
-   TRC3(RlcLiRguHqStaInd)
 
    tRlcCb = RLC_GET_RLCCB(pst->dstInst);
    ueKey.cellId = staInd->cellId;

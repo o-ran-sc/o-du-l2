@@ -292,8 +292,6 @@ RgMngmt  *cfm;    /* config confirm structure  */
 #endif    
 {
    
-   TRC3(RgMiLrgCfgCfm);
-
    (*RgMiLrgCfgCfmMt[pst->selector])(pst, cfm);
 
    return ROK;
@@ -330,8 +328,6 @@ RgMngmt  *cfm;    /* config confirm structure  */
 #endif    
 {
    
-   TRC3(RgMiLrgSchCfgCfm);
-
    (*RgMiLrgSchCfgCfmMt[pst->selector])(pst, cfm);
 
    return ROK;
@@ -370,8 +366,6 @@ RgMngmt  *cfm;    /* statistics confirm structure  */
 #endif    
 {
    
-   TRC3(RgMiLrgStsCfm);
-
    (*RgMiLrgStsCfmMt[pst->selector])(pst, cfm);
 
    return ROK;
@@ -409,8 +403,6 @@ RgMngmt  *cfm;    /* status confirm structure  */
 #endif    
 {
    
-   TRC3(RgMiLrgStaCfm);
-    
    (*RgMiLrgStaCfmMt[pst->selector])(pst,cfm);
 
    return ROK;
@@ -448,8 +440,6 @@ RgMngmt  *cfm;    /* control confirm structure  */
 #endif    
 {
    
-   TRC3(RgMiLrgCntrlCfm);
-
    (*RgMiLrgCntrlCfmMt[pst->selector])(pst,cfm);
 
    return ROK;
@@ -486,8 +476,6 @@ RgMngmt  *cfm;    /* control confirm structure  */
 #endif    
 {
    
-   TRC3(RgMiLrgSchCntrlCfm);
-
    (*RgMiLrgSchCntrlCfmMt[pst->selector])(pst,cfm);
 
    return ROK;
@@ -525,8 +513,6 @@ RgMngmt  *usta;    /* status indication structure  */
 #endif    
 {
    
-   TRC3(RgMiLrgStaInd);
-
    (*RgMiLrgStaIndMt[pst->selector])(pst,usta);
 
    return ROK;
@@ -563,8 +549,6 @@ RgMngmt  *usta;    /* status indication structure  */
 #endif    
 {
    
-   TRC3(RgMiLrgSchStaInd);
-
    (*RgMiLrgSchStaIndMt[pst->selector])(pst,usta);
 
    return ROK;
@@ -605,8 +589,6 @@ Buffer   *mBuf;   /* Trace message  */
 #endif    
 {
    
-   TRC3(RgMiLrgTrcInd);
-
    (*RgMiLrgTrcIndMt[pst->selector])(pst,trc,mBuf);
 
    return ROK;
@@ -628,7 +610,6 @@ Pst               *pst;          /* post structure  */
 LrgSchMeasCfmInfo *cfm;       /* Meas Cfm Info */
 #endif    
 {
-   TRC3(RgMiLrgSchL2MeasCfm)
    
    (*RgMiLrgSchL2mMeasCfmMt[pst->selector])(pst,cfm);
    
@@ -665,8 +646,6 @@ Pst               *pst;          /* post structure  */
 LrgSchMeasCfmInfo *cfm;       /* Meas Cfm Info */
 #endif    
 {
-   TRC3(RgMiLrgSchL2MeasStopCfm)
-        
    (*RgMiLrgSchL2mMeasStopCfmMt[pst->selector])(pst,cfm);
           
    return ROK;
@@ -710,8 +689,6 @@ Pst *pst;               /* post structure */
 RgMngmt *cfm;           /* Config Confirm */
 #endif
 {
-   TRC3(PtMiLrgCfgCfm)
-
    return ROK;
 }/* end of PtMiLrgCfgCfm */
 
@@ -746,7 +723,6 @@ Pst *pst;               /* post structure */
 RgMngmt *cfm;           /* Config Confirm */
 #endif
 {
-   TRC3(PtMiLrgSchCfgCfm)
 
    return ROK;
 }/* end of PtMiLrgSchCfgCfm */
@@ -784,7 +760,6 @@ Pst *pst;               /* post structure */
 RgMngmt *cfm;           /* Statistics Confirm */
 #endif
 {
-   TRC3(PtMiLrgStsCfm)
 
    return ROK;
 }/* end of PtMiLrgStsCfm */
@@ -822,7 +797,6 @@ Pst *pst;               /* post structure */
 RgMngmt *cfm;           /* Status Confirm */
 #endif
 {
-   TRC3(PtMiLrgStaCfm)
    return ROK;
 }/* end of PtMiLrgStaCfm */
 
@@ -859,7 +833,6 @@ Pst *pst;               /* post structure */
 RgMngmt *usta;          /* Status indication */
 #endif
 {
-   TRC3(PtMiLrgStaInd)
    return ROK;
 }/* end of PtMiLrgStaInd */
 
@@ -894,7 +867,6 @@ Pst *pst;               /* post structure */
 RgMngmt *usta;          /* Status indication */
 #endif
 {
-   TRC3(PtMiLrgSchStaInd)
    return ROK;
 }/* end of PtMiLrgSchStaInd */
 
@@ -930,7 +902,6 @@ Pst *pst;               /* post structure */
 RgMngmt *cfm;           /* Control Confirm */
 #endif
 {
-   TRC3(PtMiLrgCntrlCfm)
    return ROK;
 }/* end of PtMiLrgCntrlCfm */
 
@@ -965,7 +936,6 @@ Pst *pst;               /* post structure */
 RgMngmt *cfm;           /* Control Confirm */
 #endif
 {
-   TRC3(PtMiLrgSchCntrlCfm)
    return ROK;
 }/* end of PtMiLrgSchCntrlCfm */
 
@@ -1003,7 +973,6 @@ RgMngmt *trc;           /* Trace Event */
 Buffer *mBuf;           /* Trace message */
 #endif
 {
-   TRC3(PtMiLrgTrcInd)
    return ROK;
 }/* end of PtMiLrgTrcInd */
 #ifdef LTE_L2_MEAS
@@ -1033,7 +1002,6 @@ Pst *pst;               /* post structure */
 LrgSchMeasCfmInfo *cfm; /* Measurement Confirm */
 #endif
 {
-   TRC3(PtMiLrgSchL2MeasCfm)
 
    return ROK;
 }/* end of PtMiLrgSchL2MeasCfm */
@@ -1064,7 +1032,6 @@ Pst *pst;               /* post structure */
 LrgSchMeasCfmInfo *cfm; /* Measurement Confirm */
 #endif
 {
-   TRC3(PtMiLrgSchL2MeasStopCfm)
 
    return ROK;
 }/* end of PtMiLrgSchL2MeasStopCfm */

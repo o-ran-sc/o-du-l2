@@ -540,9 +540,6 @@ RlcUlRbCb     *rbCb;
    RlcUmRecBuf   **recBuf;   /* UM Reception Buffer */
    RlcKwuSapCb   *rlcKwSap;   /* KWU SAP Information */
 
-   TRC2(rlcUmmUlReEstablish)
-
-
    curSn = rbCb->m.umUl.vrUr;
    vrUh  = RLC_UM_GET_VALUE(rbCb->m.umUl.vrUh,rbCb->m.umUl);
    recBuf =  rbCb->m.umUl.recBuf;
@@ -756,10 +753,6 @@ RlcUlRbCb   *rbCb;
 #endif
 {
    RlcSn prevVrUr;   /* prevVrUr */
-
-   TRC3(rlcUmmReOrdTmrExp)
-
-
    prevVrUr = RLC_UMUL.vrUr;
 
    /* set VR(UR) to SN >= VR(UX) that has not been received */
@@ -819,9 +812,6 @@ RlcUlRbCb   *rbCb;
    RlcSn         curSn = 0;           /* sequence number of PDU */
    RlcSn         windSz;              /* PDU window size */
    RlcUmRecBuf   **umRecBuf;          /* UM module receive buffer */
-
-   TRC2(rlcUmmFreeUlRbCb)
-
 
    windSz  = rbCb->m.umUl.umWinSz << 1;
 

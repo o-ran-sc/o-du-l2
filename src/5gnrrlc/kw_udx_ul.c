@@ -115,8 +115,6 @@ U8     status;
    RlcUdxUlSapCb   *udxSap;   /* RGU SAP Control Block */
    RlcCb           *tRlcCb;
 
-   TRC3(rlcUlUdxBndCfm)
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (pst->dstInst >= MAX_RLC_INSTANCES)
    {
@@ -224,8 +222,6 @@ RlcCfgCfmInfo   *cfmInfo;
    RlcUlCfgTmpData   *cfgTmpData;
    Pst rspPst;
    memset(&rspPst, 0, sizeof(Pst));
-
-   TRC3(rlcUlUdxCfgCfm)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (pst->dstInst >= MAX_RLC_INSTANCES)
@@ -336,8 +332,6 @@ CmStatus   status;
 {
    RlcCb             *tRlcCb;
    RlcUlCfgTmpData   *cfgTmpData;
-
-   TRC3(rlcUlUdxUeIdChgCfm)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (pst->dstInst >= MAX_RLC_INSTANCES)

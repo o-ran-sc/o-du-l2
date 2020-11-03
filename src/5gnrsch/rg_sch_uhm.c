@@ -145,8 +145,6 @@ U8                   cqi;
                                                  [ueUl->maxUlCqi];
 #endif
 
-   TRC2(rgSCHUhmProcDatInd);
-
    rgSCHUtlUlHqProcForUe(cell, frm, ue, &hqProc);
    if (hqProc == NULLP)
    {
@@ -215,7 +213,6 @@ Void rgSCHUhmProcMsg3DatInd(hqProc)
 RgSchUlHqProcCb *hqProc;
 #endif
 {
-   TRC2(rgSCHUhmProcMsg3DatInd);
    hqProc->rcvdCrcInd = TRUE;
    hqProc->remTx = 0;        /*Reseting the value of rem Tx*/
    printf("\nrgSCHUhmProcMsg3DatInd,id:%u\n",hqProc->procId);
@@ -247,7 +244,6 @@ Void rgSCHUhmProcMsg3Failure(hqProc)
 RgSchUlHqProcCb *hqProc;
 #endif
 {
-   TRC2(rgSCHUhmProcMsg3Failure);
 #ifdef EMTC_ENABLE
    RG_SCH_EMTC_IS_CRCIND_RCVD_CHK_RACB(hqProc);
 #endif  
@@ -320,7 +316,6 @@ U8                   cqi;
    RgSchCmnUlUe   *ueUl = RG_SCH_CMN_GET_UL_UE(ue,cell);
    S32               iTbs;
 #endif
-   TRC2(rgSCHUhmProcHqFailure);
 
    rgSCHUtlUlHqProcForUe(cell, frm, ue, &hqProc);
    if (hqProc == NULLP)
@@ -401,7 +396,6 @@ U8               idx;
 #endif
 {
    RgSchCmnUlUe *ueUl = RG_SCH_CMN_GET_UL_UE(ue, cell);
-   TRC2(rgSCHUhmGetUlHqProc);
 
 #if (ERRCLASS & ERRCLS_DEBUG)
    if(idx >= ueUl->hqEnt.numHqPrcs)
@@ -443,7 +437,6 @@ U8              maxHqRetx;
 RgSchUlAlloc    *alloc;
 #endif
 {
-   TRC2(rgSCHUhmNewTx);
 
    hqProc->ndi ^= 1;
    hqProc->alloc = alloc;
@@ -492,7 +485,6 @@ RgSchCellCb      *cell;
    RgSchUeCb         *ueCb;
    U8 qci = 1;
 #endif
-   TRC2(rgSCHUhmFreeProc);
 
 #ifdef LTE_L2_MEAS
    if (hqProc->alloc && hqProc->alloc->ue)
@@ -580,7 +572,6 @@ RgSchUlHqProcCb *hqProc;
 RgSchUlAlloc    *alloc;
 #endif
 {
-   TRC2(rgSCHUhmRetx);
 
    hqProc->alloc = alloc;
    --hqProc->remTx;
@@ -625,8 +616,6 @@ RgrUeCfg          *ueCfg;
    U8 i;
    RgSchCmnUlUe *ueUl = RG_SCH_CMN_GET_UL_UE(ueCb, cellCb);
    
-   TRC2(rgSCHUhmRgrUeCfg);
-
    ueUl->hqEnt.maxHqRetx = ((ueCfg->ueUlHqCfg.maxUlHqTx) - 1);
 #ifdef TFU_UPGRADE
    /* Storing the delta HARQ offset for HARQ + PUSCH */
@@ -689,7 +678,6 @@ RgrUeRecfg        *ueRecfg;
 #endif
 {
    RgSchCmnUlUe *ueUl = RG_SCH_CMN_GET_UL_UE(ueCb, cellCb);
-   TRC2(rgSCHUhmRgrUeRecfg);
 
    /* [ccpu00123958]-ADD- Check for HARQ Reconfig from the bit mask  */
    if(RGR_UE_ULHARQ_RECFG & ueRecfg->ueRecfgTypes)
@@ -727,7 +715,6 @@ RgSchCellCb       *cellCb;
 RgUeUlHqCb       *hqEnt;
 #endif
 {
-   TRC2(rgSCHUhmFreeUe);
 #ifdef LTE_TDD
    /* ccpu00117052 - MOD - Passing double pointer
    for proper NULLP assignment*/
@@ -781,8 +768,6 @@ U8                     idx;
    Bool            allwNack = TRUE;
 #endif /* LTEMAC_HDFDD */
    RgSchCmnUlCell  *cellUl = RG_SCH_CMN_GET_UL_CELL(cellCb);
-
-   TRC2(rgSCHUhmAppendPhich)
 
 #ifdef RG_5GTF
    return ROK;
@@ -902,7 +887,6 @@ RgSchUeCb           *ueCb;
 #ifdef LTE_TDD   
    Inst              inst = ueCb->cell->instIdx;
 #endif
-   TRC2(rgSCHUhmHqEntInit)
 
 #ifndef LTE_TDD
    /* Init the HARQ processes */
@@ -967,8 +951,6 @@ RgSchUlHqProcCb       **hqP;
    RgSchUlHqProcCb   *tmpHqProc;
    CmLList           *tmp;
    RgUeUlHqCb        *hqE;
-
-   TRC2(rgSCHUhmGetAvlHqProc);
 
    hqE = &ueUl->hqEnt;
  
@@ -1039,8 +1021,6 @@ CmLteTimingInfo  frm;
    CmLListCp    *lst = &ueUl->hqEnt.inUse;
    CmLList      *lnk = lst->first;
    RgSchUlHqProcCb   *proc;
-
-   TRC2(rgSCHUhmGetUlProcByTime);
 
    while (lnk)
    {
