@@ -29,13 +29,11 @@
 #define CELL_INDEX      0
 
 void F1APMsgHdlr(Buffer *mBuf);
-uint8_t procF1SetupRsp(F1AP_PDU_t *f1apMsg);
 uint8_t BuildAndSendF1SetupReq();
 uint8_t BuildAndSendDUConfigUpdate();
 uint8_t BuildAndSendInitialRrcMsgTransfer(uint32_t gnbDuUeF1apId, uint16_t crnti, uint16_t rrcContSize, 
           uint8_t *rrcContainer);
 uint8_t BuildAndSendULRRCMessageTransfer(DuUeCb  ueCb, uint8_t lcId,  uint16_t msgLen, uint8_t *rrcMsg);
-uint8_t duProcUeContextSetupRequest(DuUeCb *ueCb);
 uint8_t procUeReCfgCellInfo(MacUeCfg *macUeCfg, void *cellGrp);
 void freeUeReCfgCellGrpInfo(MacUeCfg *macUeCfg);
 uint8_t BuildAndSendUeCtxtRsp(uint8_t ueIdx, uint8_t cellId);
@@ -43,6 +41,10 @@ uint8_t getDrbLcId(uint32_t *drbBitMap);
 void  freeMacLcCfg(LcCfg *lcCfg);
 void  freeRlcLcCfg(RlcBearerCfg *lcCfg);
 uint8_t BuildAndSendRrcDeliveryReport(uint32_t gnbCuUeF1apId, uint32_t gnbDuUeF1apId, RrcDeliveryReport *rrcDelivery);
+uint8_t sctpSend(Buffer *mBuf, uint8_t itfType);
+uint8_t duProcDlRrcMsg(F1DlRrcMsg *dlRrcMsg);
+uint8_t duProcUeContextSetupRequest(DuUeCb *ueCb);
+
 /**********************************************************************
          End of file
 **********************************************************************/

@@ -78,6 +78,43 @@ typedef enum
    UE_CTXT_MOD
 }UeCtxtActionType;
 
+/** F1AP Msg IE **/
+typedef struct f1setupRsp
+{
+   uint32_t transId; /* Uniquely identify transaction */
+   char     cuName[CU_DU_NAME_LEN_MAX];   /* CU Name */
+   F1RrcVersion    rrcVersion;  /* RRC version */
+}F1SetupRsp;
+
+typedef struct f1DlRrcMsg 
+{
+   uint32_t gnbDuUeF1apId;
+   uint32_t gnbCuUeF1apId;
+   uint8_t  srbId;
+   bool     execDup;
+   bool     deliveryStatRpt;
+   uint16_t rrcMsgSize;
+   uint8_t  *rrcMsgPdu;
+}F1DlRrcMsg;
+
+typedef struct duUeCfg
+{
+   void *cellGrpCfg;
+   uint8_t numRlcLcs;        /* Rlc Ue Cfg */
+   RlcBearerCfg rlcLcCfg[MAX_NUM_LC];
+   uint8_t numMacLcs;        /* Mac Ue Cfg */
+   LcCfg   macLcCfg[MAX_NUM_LC];
+   MaxAggrBitRate *maxAggrBitRate;
+}DuUeCfg;
+
+typedef struct f1UeContextSetup
+{
+   UeCtxtActionType actionType;
+   uint8_t cellIdx;
+   DuUeCfg  duUeCfg;        
+   F1DlRrcMsg  *dlRrcMsg;
+}F1UeContextSetupDb;
+
 typedef struct cellCfgParams
 {
    NrEcgi      nrEcgi;         /* ECGI */
@@ -87,28 +124,9 @@ typedef struct cellCfgParams
    uint32_t    maxUe;          /* max UE per slot */
 }CellCfgParams;
 
-typedef struct duUeCfg
-{
-   uint8_t numRlcLcs;        /* Rlc Ue Cfg */
-   RlcBearerCfg rlcLcCfg[MAX_NUM_LC];
-   uint8_t numMacLcs;        /* Mac Ue Cfg */
-   LcCfg   macLcCfg[MAX_NUM_LC];
-   MaxAggrBitRate *maxAggrBitRate;
-}DuUeCfg;
-
-typedef struct ueContextSetup
-{
-   UeCtxtActionType actionType;
-   uint8_t  cellIdx;
-   void     *cellGrpCfg;
-   uint16_t rrcMsgLen;
-   uint8_t  *rrcMsg;
-   bool     deliveryStaReq; 
-   DuUeCfg  duUeCfg;          /* Du Ue Cfg */
-}UeContextSetupDb;
-
 typedef struct duUeCb
 {
+   F1UeContextSetupDb *f1UeDb;
    uint16_t crnti;
    uint32_t gnbDuUeF1apId;   /* GNB DU UE F1AP ID */
    uint32_t gnbCuUeF1apId;   /* GNB CU UE F1AP ID */
@@ -116,7 +134,6 @@ typedef struct duUeCb
    UeState  ueState;         /* UE Active/ Ue Inactive state */
    MacUeCfg macUeCfg;        /* Mac Ue Cfg */
    RlcUeCfg rlcUeCfg;        /* Rlc Ue Cfg */
-   UeContextSetupDb *f1UeDb;
 }DuUeCb;
 
 typedef struct duCellCb
