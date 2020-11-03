@@ -398,6 +398,7 @@ uint8_t procDlRrcMsgTrans(F1AP_PDU_t *f1apMsg)
    bool                   ueCcchCtxtFound = false; 
 
    DU_LOG("\nDU_APP : DL RRC message transfer Recevied");
+
    dlRrcMsg = &f1apMsg->choice.initiatingMessage->value.choice.DLRRCMessageTransfer;
 
    ret = ROK;

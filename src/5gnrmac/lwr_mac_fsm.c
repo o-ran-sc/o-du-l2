@@ -3163,7 +3163,7 @@ uint16_t fillDlTtiReq(SlotIndInfo currTimingInfo)
 		     numPduEncoded++;
 		  }
 		  printf("\033[1;34m");
-		  DU_LOG("\nLWR_MAC: SIB1 sent...");
+                  DU_LOG("\nLWR_MAC: SIB1 sent...");
 		  printf("\033[0m");
 	       }
 	    }
@@ -3205,7 +3205,7 @@ uint16_t fillDlTtiReq(SlotIndInfo currTimingInfo)
 		     fillPdcchPdu(&dlTtiReq->pdus[numPduEncoded], \
 			   &currDlSlot->dlInfo, rntiType, CORESET_TYPE1);
 		     DU_LOG("\nLWR_MAC: DL MSG sent...");
-		  }
+                  }
 		  printf("\033[0m");
 
 		  numPduEncoded++;
@@ -3225,6 +3225,9 @@ uint16_t fillDlTtiReq(SlotIndInfo currTimingInfo)
 
 	    msgLen = sizeof(fapi_dl_tti_req_t) - sizeof(fapi_msg_t);
 	    fillMsgHeader(&dlTtiReq->header, FAPI_DL_TTI_REQUEST, msgLen);
+#ifdef ODU_SLOT_IND_DEBUG_LOG	    
+	    DU_LOG("\nLWR_MAC: Sending DL TTI Request");
+#endif	    
 	    LwrMacSendToPhy(dlTtiReq->header.msg_id, sizeof(fapi_dl_tti_req_t), \
 		  (void *)dlTtiReq);
 
@@ -3235,6 +3238,9 @@ uint16_t fillDlTtiReq(SlotIndInfo currTimingInfo)
 	 {
 	    msgLen = sizeof(fapi_dl_tti_req_t) - sizeof(fapi_msg_t);
 	    fillMsgHeader(&dlTtiReq->header, FAPI_DL_TTI_REQUEST, msgLen);
+#ifdef ODU_SLOT_IND_DEBUG_LOG	    
+	    DU_LOG("\nLWR_MAC: Sending DL TTI Request");
+#endif	    
 	    LwrMacSendToPhy(dlTtiReq->header.msg_id, sizeof(fapi_dl_tti_req_t), (void *)dlTtiReq);
 	 }
 	 memset(currDlSlot, 0, sizeof(MacDlSlot));
@@ -3344,6 +3350,7 @@ uint16_t sendTxDataReq(SlotIndInfo currTimingInfo, DlSchedInfo *dlInfo)
 
       msgLen = txDataReqMsgSize - sizeof(fapi_msg_t);
       fillMsgHeader(&txDataReq->header, FAPI_TX_DATA_REQUEST, msgLen);
+      DU_LOG("\nLWR_MAC: Sending TX DATA Request");
       LwrMacSendToPhy(txDataReq->header.msg_id, txDataReqMsgSize, \
 	    (void *)txDataReq);
    }
@@ -3656,8 +3663,9 @@ uint16_t fillUlTtiReq(SlotIndInfo currTimingInfo)
 	 } 
 	 msgLen = sizeof(fapi_ul_tti_req_t) - sizeof(fapi_msg_t);
 	 fillMsgHeader(&ulTtiReq->header, FAPI_UL_TTI_REQUEST, msgLen);
-
-	 DU_LOG("\nLWR_MAC: Sending UL TTI Request");
+#ifdef ODU_SLOT_IND_DEBUG_LOG
+         DU_LOG("\nLWR_MAC: Sending UL TTI Request");
+#endif	 
 	 LwrMacSendToPhy(ulTtiReq->header.msg_id, msgSize, (void *)ulTtiReq);
 
 	 memset(currUlSlot, 0, sizeof(MacUlSlot));
