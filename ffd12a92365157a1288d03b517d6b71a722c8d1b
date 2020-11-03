@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2e77c032_8af854c4",
+        "filename": "src/cm/envdep.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1762,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-03T09:46:55Z",
+      "side": 1,
+      "message": "why is it removed?",
+      "revId": "ffd12a92365157a1288d03b517d6b71a722c8d1b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
