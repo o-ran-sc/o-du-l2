@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a721aee5_81aa39db",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1070,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-04T11:29:30Z",
+      "side": 1,
+      "message": "why not directly assign required values to the macro itself? It\u0027s internal code anyway? i.e., PERIODIC_BSR_TMR_1MS can be assigned to 0? then we dont need this function. directly set ueCbBsrTmrCfg-\u003eperiodicTimer",
+      "revId": "803f37942ab73cbb35bc60249a02d81beac579dd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "82b1cb5a_261d2709",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1162,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-04T11:29:30Z",
+      "side": 1,
+      "message": "same comment as above",
+      "revId": "803f37942ab73cbb35bc60249a02d81beac579dd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
