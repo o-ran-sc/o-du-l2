@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6e608f26_9eca671e",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 4293,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-04T09:37:12Z",
+      "side": 1,
+      "message": "what number is this?",
+      "revId": "4d0b5da43edb478d70893a4254ce8b0f2fff3233",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "054e30e5_fe6f3741",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-04T09:37:12Z",
+      "side": 1,
+      "message": "DU APP is only aware of sending the msg o RLC. RLC internally sends to DL as well. So, we can drop \"UL\" from these function names",
+      "revId": "4d0b5da43edb478d70893a4254ce8b0f2fff3233",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5893a1dd_d172758d",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2074,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-04T09:37:12Z",
+      "side": 1,
+      "message": "we can a print for now. We can do so for all cases when we intend to send ue ctxt rsp failure",
+      "revId": "4d0b5da43edb478d70893a4254ce8b0f2fff3233",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
