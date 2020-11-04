@@ -16,6 +16,24 @@
       "revId": "7dec6e0357f621405c875bb34b7d8bbda92d8fb0",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8606fb7d_650541cc",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1605,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-04T12:45:04Z",
+      "side": 1,
+      "message": "Since this is an old comment, no action needed on it. Comment removed.",
+      "parentUuid": "f8763e29_2b8dfd2c",
+      "revId": "7dec6e0357f621405c875bb34b7d8bbda92d8fb0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
