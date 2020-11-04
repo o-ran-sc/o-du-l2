@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "e461a89f_5fa37d58",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1070,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-04T14:34:39Z",
+      "side": 1,
+      "message": "as per discussion i am storing the values, on what CU has sent",
+      "parentUuid": "a721aee5_81aa39db",
+      "revId": "803f37942ab73cbb35bc60249a02d81beac579dd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "82b1cb5a_261d2709",
         "filename": "src/5gnrmac/mac_ue_mgr.c",
         "patchSetId": 3
@@ -33,6 +51,24 @@
       "revId": "803f37942ab73cbb35bc60249a02d81beac579dd",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a2f83013_5f84f5d6",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1162,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-04T14:34:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "82b1cb5a_261d2709",
+      "revId": "803f37942ab73cbb35bc60249a02d81beac579dd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
