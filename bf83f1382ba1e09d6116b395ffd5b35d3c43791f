@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fcf75eed_994f40e0",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 7450,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-04T13:52:19Z",
+      "side": 1,
+      "message": "this check is required? we have already made a check for null at 7447 and assigning the same at 7449",
+      "revId": "bf83f1382ba1e09d6116b395ffd5b35d3c43791f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
