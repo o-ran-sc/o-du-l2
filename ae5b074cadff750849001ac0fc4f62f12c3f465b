@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "3b3f670f_b56ae606",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 994,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-04T09:45:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "45fdc93a_ee5dc866",
+      "revId": "ae5b074cadff750849001ac0fc4f62f12c3f465b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "323330ef_f30043f6",
         "filename": "src/5gnrmac/mac_ue_mgr.c",
         "patchSetId": 2
@@ -33,6 +51,24 @@
       "revId": "ae5b074cadff750849001ac0fc4f62f12c3f465b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fd57196f_57acd08c",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1005,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-04T09:45:05Z",
+      "side": 1,
+      "message": "i have modified the function",
+      "parentUuid": "323330ef_f30043f6",
+      "revId": "ae5b074cadff750849001ac0fc4f62f12c3f465b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "ecf07cac_0fe8e511",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1047,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-04T09:45:05Z",
+      "side": 1,
+      "message": "Here if PERIODIC_BSR_TMR_1MS \u003d 1,\nPERIODIC_BSR_TMR_5MS  \u003d 5,\nPERIODIC_BSR_TMR_10MS \u003d 10, so on\nSo based on the bsr enum received, we are assigning values to them.",
+      "parentUuid": "70d74c09_d3a56f35",
+      "revId": "ae5b074cadff750849001ac0fc4f62f12c3f465b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "adeded15_cc2c1fe3",
         "filename": "src/5gnrsch/sch_ue_mgr.c",
         "patchSetId": 2
@@ -67,6 +121,24 @@
       "revId": "ae5b074cadff750849001ac0fc4f62f12c3f465b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f885d857_274c3d77",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-04T09:45:05Z",
+      "side": 1,
+      "message": "renamed as event",
+      "parentUuid": "adeded15_cc2c1fe3",
+      "revId": "ae5b074cadff750849001ac0fc4f62f12c3f465b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "5f0831be_3451fe1c",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-04T09:45:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b43621a9_ffe4eb39",
+      "revId": "ae5b074cadff750849001ac0fc4f62f12c3f465b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c9e7eb80_f929f4b7",
         "filename": "src/cm/du_app_mac_inf.h",
         "patchSetId": 2
@@ -101,6 +191,24 @@
       "revId": "ae5b074cadff750849001ac0fc4f62f12c3f465b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ae82c9d5_f7038330",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1230,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-04T09:45:05Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c9e7eb80_f929f4b7",
+      "revId": "ae5b074cadff750849001ac0fc4f62f12c3f465b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
