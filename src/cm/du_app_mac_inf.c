@@ -356,7 +356,7 @@ uint8_t packMacSlotInd(Pst *pst, SlotIndInfo *slotInfo )
 
    if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
    {
-      DU_LOG("\nDU APP : Memory allocation failed for cell start req pack");
+      DU_LOG("\nDU APP : Memory allocation failed for packMacSlotInd");
       return RFAILED;
    }
 

@@ -103,6 +103,7 @@
 #define ODU_SEGMENT_MSG SSegMsg
 #define ODU_CAT_MSG SCatMsg
 #define ODU_GET_PROCID SFndProcId
+#define ODU_SET_THREAD_AFFINITY SSetAffinity
 
 #define GET_UE_IDX( _crnti,_ueIdx)         \
 {                                          \

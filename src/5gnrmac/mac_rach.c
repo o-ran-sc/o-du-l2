@@ -92,13 +92,14 @@ uint8_t fapiMacRachInd(Pst *pst, RachInd *rachInd)
    rachIndInfo.symbolIdx = rachInd->rachPdu[pduIdx].symbolIdx;
    rachIndInfo.freqIdx = rachInd->rachPdu[pduIdx].freqIdx;
    rachIndInfo.preambleIdx = \
-			     rachInd->rachPdu[pduIdx].preamInfo[preambleIdx].preamIdx;
+      rachInd->rachPdu[pduIdx].preamInfo[preambleIdx].preamIdx;
    rachIndInfo.timingAdv = \
-			   rachInd->rachPdu[pduIdx].preamInfo[preambleIdx].timingAdv;
+      rachInd->rachPdu[pduIdx].preamInfo[preambleIdx].timingAdv;
 
    /* storing the value in macRaCb */
    createMacRaCb(&rachIndInfo);
 
+   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, rachInd, sizeof(RachInd));
    return(sendRachIndMacToSch(&rachIndInfo));
 }
 

@@ -158,60 +158,6 @@ Buffer  *mBuf;                      /* message buffer       */
                break;
          }
          break;
-      case ENTLWRMAC:
-         switch(pst->event)
-         {
-/*#ifdef LCRGLITFU L2Split */
-#if (defined(LCRGLITFU) || defined(LWLCRGLITFU)) 
-            case EVTTFUSCHBNDCFM:
-               cmUnpkTfuBndCfm(RgLiTfuSchBndCfm, pst, mBuf);
-               break;
-            case EVTTFURAREQIND:
-               cmUnpkTfuRaReqInd(RgLiTfuRaReqInd, pst, mBuf);
-               break;
-            case EVTTFUULCQIIND:
-               cmUnpkTfuUlCqiInd(RgLiTfuUlCqiInd, pst, mBuf);
-               break;
-            case EVTTFUHQIND:
-               cmUnpkTfuHqInd(RgLiTfuHqInd, pst, mBuf);
-               break;
-            case EVTTFUSRIND:
-               cmUnpkTfuSrInd(RgLiTfuSrInd, pst, mBuf);
-               break;
-            case EVTTFUDLCQIIND:
-               cmUnpkTfuDlCqiInd(RgLiTfuDlCqiInd, pst, mBuf);
-               break;
-            case EVTTFUCRCIND:
-               /*cmUnpkTfuCrcIndInfo(RgLiTfuCrcInd, pst, mBuf); */
-               cmUnpkTfuCrcInd(RgLiTfuCrcInd, pst, mBuf);
-               break;
-            case EVTTFUTIMINGADVIND:
-               cmUnpkTfuTimingAdvInd(RgLiTfuTimingAdvInd, pst, mBuf);
-               break;
-            case EVTTFUPUCCHDELPWR:
-               cmUnpkTfuPucchDeltaPwr(RgLiTfuPucchDeltaPwrInd, pst, mBuf);
-               break;
-            case EVTTFUDOAIND:
-               cmUnpkTfuDoaInd(RgLiTfuDoaInd, pst, mBuf);
-               break;
-#ifdef TFU_UPGRADE
-            case EVTTFURAWCQIIND:
-               cmUnpkTfuRawCqiInd(RgLiTfuRawCqiInd, pst, mBuf);
-               break;
-            case EVTTFUSRSIND:
-               cmUnpkTfuSrsInd(RgLiTfuSrsInd, pst, mBuf);
-               break;
-#endif 
-               /*LAA: Error Indication on SCell*/
-            case EVTTFUERRIND:
-               cmUnpkTfuErrInd(RgLiTfuErrInd, pst, mBuf);
-               break;
-#endif            
-            default:
-               RGSCH_FREE_MSG(mBuf);
-               break;
-         }
-         break;
       case ENTMAC: /* When MAC sends a msg to Scheduler instance */
          switch(pst->event)
          {

@@ -29,6 +29,10 @@
 #include "lwr_mac.h"
 #ifdef INTEL_FAPI
 #include "fapi.h"
+#include "fapi_vendor_extension.h"
+#endif
+#ifdef INTEL_WLS_MEM
+#include "wls_lib.h"
 #endif
 #include "lwr_mac_fsm.h"
 #include "mac_utils.h"
@@ -50,9 +54,9 @@ uint8_t UnrestrictedSetNcsTable[MAX_ZERO_CORR_CFG_IDX];
 uint8_t slotIndIdx;
 uint16_t sendTxDataReq(SlotIndInfo currTimingInfo, DlSchedInfo *dlInfo);
 
-void lwrMacInit()
+void lwrMacLayerInit()
 {
-#ifdef INTEL_WLS
+#ifdef INTEL_WLS_MEM
    uint8_t  idx;
 
    /* Initializing WLS free mem list */
@@ -132,7 +136,7 @@ void fillMsgHeader(fapi_msg_t *hdr, uint16_t msgType, uint16_t msgLen)
  *
  * ****************************************************************/
 void fillTlvs(fapi_uint32_tlv_t *tlv, uint16_t tag, uint16_t length,
-      uint16_t value, uint32_t *msgLen)
+      uint32_t value, uint32_t *msgLen)
 {
    tlv->tl.tag    = tag;
    tlv->tl.length = length;
@@ -1266,6 +1270,29 @@ uint32_t getParamValue(fapi_uint16_tlv_t *tlv, uint16_t type)
    }
 }
 #endif /* FAPI */
+
+/*******************************************************************
+ *
+ * @brief Modifes the received mibPdu to uint32 bit
+ *        and stores it in MacCellCfg
+ *
+ * @details
+ *
+ *    Function : setMibPdu
+ *
+ *    Functionality:
+ *         -Sets the MibPdu
+ *
+ * @params[in] Pointer to mibPdu
+ *             pointer to modified value
+ ******************************************************************/
+void setMibPdu(uint8_t *mibPdu, uint32_t *val, uint16_t sfn)
+{
+   *mibPdu |= (((uint8_t)(sfn >> 2)) & MIB_SFN_BITMASK);
+   *val = (mibPdu[0] << 24 | mibPdu[1] << 16 | mibPdu[2] << 8);
+   DU_LOG("\nLWR_MAC: MIB PDU %x", *val);
+}
+
 /*******************************************************************
  *
  * @brief Sends FAPI Param req to PHY
@@ -1865,13 +1892,19 @@ uint8_t lwr_mac_procParamRspEvt(void *msg)
 uint8_t lwr_mac_procConfigReqEvt(void *msg)
 {
 #ifdef INTEL_FAPI
-   uint8_t           idx = 0;
-   uint8_t           index = 0;
-   uint16_t          *cellId;
-   uint16_t          cellIdx;
-   uint32_t          msgLen = 0;
-   MacCellCfg        macCfgParams;
+   //uint8_t idx = 0;
+   uint8_t index = 0;
+   uint16_t *cellId;
+   uint16_t cellIdx;
+   uint32_t msgLen = 0;
+   uint32_t mib = 0;
+   MacCellCfg macCfgParams;
+   fapi_vendor_msg_t *vendorMsg;
    fapi_config_req_t *configReq;
+   fapi_msg_header_t *msgHeader;
+   p_fapi_api_queue_elem_t  headerElem;
+   p_fapi_api_queue_elem_t  vendorMsgQElem;
+   p_fapi_api_queue_elem_t  cfgReqQElem;
 
    DU_LOG("\nLWR_MAC: Received EVENT[%d] at STATE[%d]", lwrMacCb.event, \
 	 lwrMacCb.phyState);
@@ -1886,138 +1919,172 @@ uint8_t lwr_mac_procConfigReqEvt(void *msg)
    lwrMacCb.cellCb[lwrMacCb.numCell].phyCellId = macCfgParams.phyCellId; 
    lwrMacCb.numCell++;
 
-   /* Fill FAPI config req */
-   LWR_MAC_ALLOC(configReq, sizeof(fapi_config_req_t));
-   if(configReq != NULL)
+   /* Allocte And fill Vendor msg */
+   LWR_MAC_ALLOC(vendorMsgQElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_vendor_msg_t)));  
+   if(!vendorMsgQElem)
    {
-      memset(configReq, 0, sizeof(fapi_config_req_t));
-      msgLen = sizeof(macCfgParams.numTlv);
-      configReq->number_of_tlvs = macCfgParams.numTlv;
+      DU_LOG("\nLWR_MAC: Memory allocation failed for vendor msg in config req");
+      return RFAILED;
+   }
+   FILL_FAPI_LIST_ELEM(vendorMsgQElem, NULLP, FAPI_VENDOR_MESSAGE, 1, sizeof(fapi_vendor_msg_t)); 
+   vendorMsg = (fapi_vendor_msg_t *)(vendorMsgQElem + 1);
+   fillMsgHeader(&vendorMsg->header, FAPI_VENDOR_MESSAGE, sizeof(fapi_vendor_msg_t));
+   vendorMsg->config_req_vendor.hopping_id = 0;
+   vendorMsg->config_req_vendor.carrier_aggregation_level = 0;
+   vendorMsg->config_req_vendor.group_hop_flag = 0;
+   vendorMsg->config_req_vendor.sequence_hop_flag = 0;
 
-      if(macCfgParams.dlCarrCfg.pres)
+   /* Fill FAPI config req */
+   LWR_MAC_ALLOC(cfgReqQElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_config_req_t)));
+   if(!cfgReqQElem)
+   {
+      DU_LOG("\nLWR_MAC: Memory allocation failed for config req");
+      return RFAILED;
+   }
+   FILL_FAPI_LIST_ELEM(cfgReqQElem, vendorMsgQElem, FAPI_CONFIG_REQUEST, 1, \
+      sizeof(fapi_config_req_t));
+
+   configReq = (fapi_config_req_t *)(cfgReqQElem + 1);
+   memset(configReq, 0, sizeof(fapi_config_req_t));
+   fillMsgHeader(&configReq->header, FAPI_CONFIG_REQUEST, sizeof(fapi_config_req_t));
+   configReq->number_of_tlvs = 25;
+   msgLen = sizeof(configReq->number_of_tlvs);
+
+   if(macCfgParams.dlCarrCfg.pres)
+   {
+      fillTlvs(&configReq->tlvs[index++], FAPI_DL_BANDWIDTH_TAG,           \
+         sizeof(uint32_t), macCfgParams.dlCarrCfg.bw, &msgLen);
+      fillTlvs(&configReq->tlvs[index++], FAPI_DL_FREQUENCY_TAG,           \
+         sizeof(uint32_t), macCfgParams.dlCarrCfg.freq, &msgLen);
+      /* Due to bug in Intel FT code, commenting TLVs that are are not 
+       * needed to avoid error. Must be uncommented when FT bug is fixed */
+      //fillTlvs(&configReq->tlvs[index++], FAPI_DL_K0_TAG,                  \
+         sizeof(uint16_t), macCfgParams.dlCarrCfg.k0[0], &msgLen);
+      //fillTlvs(&configReq->tlvs[index++], FAPI_DL_GRIDSIZE_TAG,            \
+         sizeof(uint16_t), macCfgParams.dlCarrCfg.gridSize[0], &msgLen);
+      fillTlvs(&configReq->tlvs[index++], FAPI_NUM_TX_ANT_TAG,             \
+         sizeof(uint16_t), macCfgParams.dlCarrCfg.numAnt, &msgLen);
+   }
+   if(macCfgParams.ulCarrCfg.pres)
+   {
+      fillTlvs(&configReq->tlvs[index++], FAPI_UPLINK_BANDWIDTH_TAG,       \
+	    sizeof(uint32_t), macCfgParams.ulCarrCfg.bw, &msgLen);
+      fillTlvs(&configReq->tlvs[index++], FAPI_UPLINK_FREQUENCY_TAG,       \
+	    sizeof(uint32_t), macCfgParams.ulCarrCfg.freq, &msgLen);
+      //fillTlvs(&configReq->tlvs[index++], FAPI_UL_K0_TAG,                  \
+      sizeof(uint16_t), macCfgParams.ulCarrCfg.k0[0], &msgLen);
+      //fillTlvs(&configReq->tlvs[index++], FAPI_UL_GRID_SIZE_TAG,           \
+      sizeof(uint16_t), macCfgParams.ulCarrCfg.gridSize[0], &msgLen);
+      fillTlvs(&configReq->tlvs[index++], FAPI_NUM_RX_ANT_TAG,             \
+	    sizeof(uint16_t), macCfgParams.ulCarrCfg.numAnt, &msgLen);
+   }
+   //fillTlvs(&configReq->tlvs[index++], FAPI_FREQUENCY_SHIFT_7P5_KHZ_TAG,   \
+   sizeof(uint8_t), macCfgParams.freqShft, &msgLen);
+
+   /* fill cell config */
+   fillTlvs(&configReq->tlvs[index++], FAPI_PHY_CELL_ID_TAG,               \
+	 sizeof(uint8_t), macCfgParams.phyCellId, &msgLen);
+   fillTlvs(&configReq->tlvs[index++], FAPI_FRAME_DUPLEX_TYPE_TAG,         \
+	 sizeof(uint8_t), macCfgParams.dupType, &msgLen);
+
+   /* fill SSB configuration */
+   fillTlvs(&configReq->tlvs[index++], FAPI_SS_PBCH_POWER_TAG,             \
+	 sizeof(uint32_t), macCfgParams.ssbCfg.ssbPbchPwr, &msgLen);
+   //fillTlvs(&configReq->tlvs[index++], FAPI_BCH_PAYLOAD_TAG,               \
+   sizeof(uint8_t), macCfgParams.ssbCfg.bchPayloadFlag, &msgLen);
+   fillTlvs(&configReq->tlvs[index++], FAPI_SCS_COMMON_TAG,                \
+	 sizeof(uint8_t), macCfgParams.ssbCfg.scsCmn, &msgLen);
+
+   /* fill PRACH configuration */
+   //fillTlvs(&configReq->tlvs[index++], FAPI_PRACH_SEQUENCE_LENGTH_TAG,     \
+   sizeof(uint8_t), macCfgParams.prachCfg.prachSeqLen, &msgLen);
+   fillTlvs(&configReq->tlvs[index++], FAPI_PRACH_SUBC_SPACING_TAG,        \
+	 sizeof(uint8_t), macCfgParams.prachCfg.prachSubcSpacing, &msgLen);
+   fillTlvs(&configReq->tlvs[index++], FAPI_RESTRICTED_SET_CONFIG_TAG,     \
+	 sizeof(uint8_t), macCfgParams.prachCfg.prachRstSetCfg, &msgLen);
+   fillTlvs(&configReq->tlvs[index++], FAPI_NUM_PRACH_FD_OCCASIONS_TAG,
+	 sizeof(uint8_t), macCfgParams.prachCfg.msg1Fdm, &msgLen);
+   fillTlvs(&configReq->tlvs[index++], FAPI_PRACH_CONFIG_INDEX_TAG,
+	 sizeof(uint8_t), macCfgParams.prachCfg.prachCfgIdx, &msgLen);
+   fillTlvs(&configReq->tlvs[index++], FAPI_PRACH_ROOT_SEQUENCE_INDEX_TAG, \
+	 sizeof(uint16_t), macCfgParams.prachCfg.fdm[0].rootSeqIdx, &msgLen);
+   //fillTlvs(&configReq->tlvs[index++], FAPI_NUM_ROOT_SEQUENCES_TAG,        \
+   sizeof(uint8_t), macCfgParams.prachCfg.fdm[0].numRootSeq, &msgLen);
+   fillTlvs(&configReq->tlvs[index++], FAPI_K1_TAG,                        \
+	 sizeof(uint16_t), macCfgParams.prachCfg.fdm[0].k1, &msgLen);
+   fillTlvs(&configReq->tlvs[index++], FAPI_PRACH_ZERO_CORR_CONF_TAG ,     \
+	 sizeof(uint8_t), macCfgParams.prachCfg.fdm[0].zeroCorrZoneCfg, &msgLen);
+   //fillTlvs(&configReq->tlvs[index++], FAPI_NUM_UNUSED_ROOT_SEQUENCES_TAG, \
+   sizeof(uint8_t), macCfgParams.prachCfg.fdm[0].numUnusedRootSeq, &msgLen);
+   /* if(macCfgParams.prachCfg.fdm[0].numUnusedRootSeq)
       {
-	 fillTlvs(&configReq->tlvs[index++], FAPI_DL_BANDWIDTH_TAG,           \
-	       sizeof(uint16_t), macCfgParams.dlCarrCfg.bw, &msgLen);
-	 fillTlvs(&configReq->tlvs[index++], FAPI_DL_FREQUENCY_TAG,           \
-	       sizeof(uint32_t), macCfgParams.dlCarrCfg.freq, &msgLen);
-	 fillTlvs(&configReq->tlvs[index++], FAPI_DL_K0_TAG,                  \
-	       sizeof(uint16_t), macCfgParams.dlCarrCfg.k0[0], &msgLen);
-	 fillTlvs(&configReq->tlvs[index++], FAPI_DL_GRIDSIZE_TAG,            \
-	       sizeof(uint16_t), macCfgParams.dlCarrCfg.gridSize[0], &msgLen);
-	 fillTlvs(&configReq->tlvs[index++], FAPI_NUM_TX_ANT_TAG,             \
-	       sizeof(uint16_t), macCfgParams.dlCarrCfg.numAnt, &msgLen);
-      }
-      if(macCfgParams.ulCarrCfg.pres)
-      {
-	 fillTlvs(&configReq->tlvs[index++], FAPI_UPLINK_BANDWIDTH_TAG,       \
-	       sizeof(uint16_t), macCfgParams.ulCarrCfg.bw, &msgLen);
-	 fillTlvs(&configReq->tlvs[index++], FAPI_UPLINK_FREQUENCY_TAG,       \
-	       sizeof(uint32_t), macCfgParams.ulCarrCfg.freq, &msgLen);
-	 fillTlvs(&configReq->tlvs[index++], FAPI_UL_K0_TAG,                  \
-	       sizeof(uint16_t), macCfgParams.ulCarrCfg.k0[0], &msgLen);
-	 fillTlvs(&configReq->tlvs[index++], FAPI_UL_GRID_SIZE_TAG,           \
-	       sizeof(uint16_t), macCfgParams.ulCarrCfg.gridSize[0], &msgLen);
-	 fillTlvs(&configReq->tlvs[index++], FAPI_NUM_RX_ANT_TAG,             \
-	       sizeof(uint16_t), macCfgParams.ulCarrCfg.numAnt, &msgLen);
-      }
-      fillTlvs(&configReq->tlvs[index++], FAPI_FREQUENCY_SHIFT_7P5_KHZ_TAG,   \
-	    sizeof(uint8_t), macCfgParams.freqShft, &msgLen);
-
-      /* fill cell config */
-      fillTlvs(&configReq->tlvs[index++], FAPI_PHY_CELL_ID_TAG,               \
-	    sizeof(uint8_t), macCfgParams.phyCellId, &msgLen);
-      fillTlvs(&configReq->tlvs[index++], FAPI_FRAME_DUPLEX_TYPE_TAG,         \
-	    sizeof(uint8_t), macCfgParams.dupType, &msgLen);
-
-      /* fill SSB configuration */
-      fillTlvs(&configReq->tlvs[index++], FAPI_SS_PBCH_POWER_TAG,             \
-	    sizeof(uint32_t), macCfgParams.ssbCfg.ssbPbchPwr, &msgLen);
-      fillTlvs(&configReq->tlvs[index++], FAPI_BCH_PAYLOAD_TAG,               \
-	    sizeof(uint8_t), macCfgParams.ssbCfg.bchPayloadFlag, &msgLen);
-      fillTlvs(&configReq->tlvs[index++], FAPI_SCS_COMMON_TAG,                \
-	    sizeof(uint8_t), macCfgParams.ssbCfg.scsCmn, &msgLen);
-
-      /* fill PRACH configuration */
-      fillTlvs(&configReq->tlvs[index++], FAPI_PRACH_SEQUENCE_LENGTH_TAG,     \
-	    sizeof(uint8_t), macCfgParams.prachCfg.prachSeqLen, &msgLen);
-      fillTlvs(&configReq->tlvs[index++], FAPI_PRACH_SUBC_SPACING_TAG,        \
-	    sizeof(uint8_t), macCfgParams.prachCfg.prachSubcSpacing, &msgLen);
-      fillTlvs(&configReq->tlvs[index++], FAPI_RESTRICTED_SET_CONFIG_TAG,     \
-	    sizeof(uint8_t), macCfgParams.prachCfg.prachRstSetCfg, &msgLen);
-      fillTlvs(&configReq->tlvs[index++], FAPI_NUM_PRACH_FD_OCCASIONS_TAG,
-	    sizeof(uint8_t), macCfgParams.prachCfg.msg1Fdm, &msgLen);
-      fillTlvs(&configReq->tlvs[index++], FAPI_PRACH_ROOT_SEQUENCE_INDEX_TAG, \
-	    sizeof(uint16_t), macCfgParams.prachCfg.fdm[0].rootSeqIdx, &msgLen);
-      fillTlvs(&configReq->tlvs[index++], FAPI_NUM_ROOT_SEQUENCES_TAG,        \
-	    sizeof(uint8_t), macCfgParams.prachCfg.fdm[0].numRootSeq, &msgLen);
-      fillTlvs(&configReq->tlvs[index++], FAPI_K1_TAG,                        \
-	    sizeof(uint16_t), macCfgParams.prachCfg.fdm[0].k1, &msgLen);
-      fillTlvs(&configReq->tlvs[index++], FAPI_PRACH_ZERO_CORR_CONF_TAG ,     \
-	    sizeof(uint8_t), macCfgParams.prachCfg.fdm[0].zeroCorrZoneCfg, &msgLen);
-      fillTlvs(&configReq->tlvs[index++], FAPI_NUM_UNUSED_ROOT_SEQUENCES_TAG, \
-	    sizeof(uint8_t), macCfgParams.prachCfg.fdm[0].numUnusedRootSeq, &msgLen);
-      if(macCfgParams.prachCfg.fdm[0].numUnusedRootSeq)
-      {
-	 for(idx = 0; idx < macCfgParams.prachCfg.fdm[0].numUnusedRootSeq; idx++)
-	    fillTlvs(&configReq->tlvs[index++], FAPI_UNUSED_ROOT_SEQUENCES_TAG,   \
-		  sizeof(uint8_t), macCfgParams.prachCfg.fdm[0].unsuedRootSeq[idx], \
-		  &msgLen);
+      for(idx = 0; idx < macCfgParams.prachCfg.fdm[0].numUnusedRootSeq; idx++)
+      fillTlvs(&configReq->tlvs[index++], FAPI_UNUSED_ROOT_SEQUENCES_TAG,   \
+      sizeof(uint8_t), macCfgParams.prachCfg.fdm[0].unsuedRootSeq[idx], \
+      &msgLen);
       }
       else
       {
-	 macCfgParams.prachCfg.fdm[0].unsuedRootSeq = NULL;
-      }
+      macCfgParams.prachCfg.fdm[0].unsuedRootSeq = NULL;
+      }*/
 
-      fillTlvs(&configReq->tlvs[index++], FAPI_SSB_PER_RACH_TAG,              \
-	    sizeof(uint8_t), macCfgParams.prachCfg.ssbPerRach, &msgLen);
-      fillTlvs(&configReq->tlvs[index++], FAPI_PRACH_MULTIPLE_CARRIERS_IN_A_BAND_TAG,  \
-	    sizeof(uint8_t), macCfgParams.prachCfg.prachMultCarrBand, &msgLen);
+   fillTlvs(&configReq->tlvs[index++], FAPI_SSB_PER_RACH_TAG,              \
+	 sizeof(uint8_t), macCfgParams.prachCfg.ssbPerRach, &msgLen);
+   //fillTlvs(&configReq->tlvs[index++], FAPI_PRACH_MULTIPLE_CARRIERS_IN_A_BAND_TAG,  \
+   sizeof(uint8_t), macCfgParams.prachCfg.prachMultCarrBand, &msgLen);
 
-      /* fill SSB table */
-      fillTlvs(&configReq->tlvs[index++], FAPI_SSB_OFFSET_POINT_A_TAG,        \
-	    sizeof(uint16_t), macCfgParams.ssbCfg.ssbOffsetPointA, &msgLen);
-      fillTlvs(&configReq->tlvs[index++], FAPI_BETA_PSS_TAG,                  \
-	    sizeof(uint8_t),  macCfgParams.ssbCfg.betaPss, &msgLen);
-      fillTlvs(&configReq->tlvs[index++], FAPI_SSB_PERIOD_TAG,                \
-	    sizeof(uint8_t),  macCfgParams.ssbCfg.ssbPeriod, &msgLen);
-      fillTlvs(&configReq->tlvs[index++], FAPI_SSB_SUBCARRIER_OFFSET_TAG,     \
-	    sizeof(uint8_t),  macCfgParams.ssbCfg.ssbScOffset, &msgLen);
-      fillTlvs(&configReq->tlvs[index++], FAPI_MIB_TAG ,                      \
-	    sizeof(uint32_t), macCfgParams.ssbCfg.mibPdu[0], &msgLen);
-      fillTlvs(&configReq->tlvs[index++], FAPI_SSB_MASK_TAG,                  \
-	    sizeof(uint32_t), macCfgParams.ssbCfg.ssbMask[0], &msgLen);
-      fillTlvs(&configReq->tlvs[index++], FAPI_BEAM_ID_TAG,                   \
-	    sizeof(uint8_t),  macCfgParams.ssbCfg.beamId[0], &msgLen);
-      fillTlvs(&configReq->tlvs[index++], FAPI_SS_PBCH_MULTIPLE_CARRIERS_IN_A_BAND_TAG, \
-	    sizeof(uint8_t), macCfgParams.ssbCfg.multCarrBand, &msgLen);
-      fillTlvs(&configReq->tlvs[index++], FAPI_MULTIPLE_CELLS_SS_PBCH_IN_A_CARRIER_TAG, \
-	    sizeof(uint8_t), macCfgParams.ssbCfg.multCellCarr, &msgLen);
+   /* fill SSB table */
+   fillTlvs(&configReq->tlvs[index++], FAPI_SSB_OFFSET_POINT_A_TAG,        \
+	 sizeof(uint16_t), macCfgParams.ssbCfg.ssbOffsetPointA, &msgLen);
+   //fillTlvs(&configReq->tlvs[index++], FAPI_BETA_PSS_TAG,                  \
+   sizeof(uint8_t),  macCfgParams.ssbCfg.betaPss, &msgLen);
+   fillTlvs(&configReq->tlvs[index++], FAPI_SSB_PERIOD_TAG,                \
+	 sizeof(uint8_t),  macCfgParams.ssbCfg.ssbPeriod, &msgLen);
+   fillTlvs(&configReq->tlvs[index++], FAPI_SSB_SUBCARRIER_OFFSET_TAG,     \
+	 sizeof(uint8_t),  macCfgParams.ssbCfg.ssbScOffset, &msgLen);
 
-      /* fill TDD table */
-      fillTlvs(&configReq->tlvs[index++], FAPI_TDD_PERIOD_TAG,                \
-	    sizeof(uint8_t), macCfgParams.tddCfg.tddPeriod, &msgLen);
-      fillTlvs(&configReq->tlvs[index++], FAPI_SLOT_CONFIG_TAG,               \
-	    sizeof(uint8_t), macCfgParams.tddCfg.slotCfg[0][0], &msgLen);
+   setMibPdu(macCfgParams.ssbCfg.mibPdu, &mib, 0);
+   fillTlvs(&configReq->tlvs[index++], FAPI_MIB_TAG ,                      \
+	 sizeof(uint32_t), mib, &msgLen);
 
-      /* fill measurement config */
-      fillTlvs(&configReq->tlvs[index++], FAPI_RSSI_MEASUREMENT_TAG,          \
-	    sizeof(uint8_t), macCfgParams.rssiUnit, &msgLen);
+   fillTlvs(&configReq->tlvs[index++], FAPI_SSB_MASK_TAG,                  \
+	 sizeof(uint32_t), macCfgParams.ssbCfg.ssbMask[0], &msgLen);
+   fillTlvs(&configReq->tlvs[index++], FAPI_BEAM_ID_TAG,                   \
+	 sizeof(uint8_t),  macCfgParams.ssbCfg.beamId[0], &msgLen);
+   //fillTlvs(&configReq->tlvs[index++], FAPI_SS_PBCH_MULTIPLE_CARRIERS_IN_A_BAND_TAG, \
+   sizeof(uint8_t), macCfgParams.ssbCfg.multCarrBand, &msgLen);
+   //fillTlvs(&configReq->tlvs[index++], FAPI_MULTIPLE_CELLS_SS_PBCH_IN_A_CARRIER_TAG, \
+   sizeof(uint8_t), macCfgParams.ssbCfg.multCellCarr, &msgLen);
 
-      /* fill DMRS Type A Pos */
-      fillTlvs(&configReq->tlvs[index++], FAPI_DMRS_TYPE_A_POS_TAG,           \
-	    sizeof(uint8_t), macCfgParams.dmrsTypeAPos, &msgLen);
+   /* fill TDD table */
+   //fillTlvs(&configReq->tlvs[index++], FAPI_TDD_PERIOD_TAG,                \
+   sizeof(uint8_t), macCfgParams.tddCfg.tddPeriod, &msgLen);
+   //fillTlvs(&configReq->tlvs[index++], FAPI_SLOT_CONFIG_TAG,               \
+   sizeof(uint8_t), macCfgParams.tddCfg.slotCfg[0][0], &msgLen);
 
-      fillMsgHeader(&configReq->header, FAPI_CONFIG_REQUEST,                  \
-	    (sizeof(fapi_config_req_t) - sizeof(fapi_msg_t)));
+   /* fill measurement config */
+   //fillTlvs(&configReq->tlvs[index++], FAPI_RSSI_MEASUREMENT_TAG,          \
+   sizeof(uint8_t), macCfgParams.rssiUnit, &msgLen);
 
-      DU_LOG("\nLWR_MAC: Sending Config Request to Phy");
-      LwrMacSendToPhy(configReq->header.msg_id, sizeof(fapi_config_req_t), (void *)configReq);
-   }
-   else
+   /* fill DMRS Type A Pos */
+   fillTlvs(&configReq->tlvs[index++], FAPI_DMRS_TYPE_A_POS_TAG,           \
+	 sizeof(uint8_t), macCfgParams.dmrsTypeAPos, &msgLen);
+
+   /* Fill message header */
+   LWR_MAC_ALLOC(headerElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_msg_header_t)));
+   if(!headerElem)
    {
-      DU_LOG("\nLWR_MAC: Failed to allocate memory for config Request");
+      DU_LOG("\nLWR_MAC: Memory allocation failed for vendor msg in config req");
       return RFAILED;
    }
+   FILL_FAPI_LIST_ELEM(headerElem, cfgReqQElem, FAPI_VENDOR_MSG_HEADER_IND, 1, \
+	 sizeof(fapi_msg_header_t));
+   msgHeader = (fapi_msg_header_t *)(headerElem + 1);
+   msgHeader->num_msg = 2; /* Config req msg and vendor specific msg */
+   msgHeader->handle = 0;
+
+   DU_LOG("\nLWR_MAC: Sending Config Request to Phy");
+   LwrMacSendToFapi(headerElem);
 #endif
 
    return ROK;
@@ -2097,24 +2164,61 @@ uint8_t lwr_mac_procConfigRspEvt(void *msg)
 uint8_t lwr_mac_procStartReqEvt(void *msg)
 {
 #ifdef INTEL_FAPI
-   uint32_t msgLen = 0;
+   fapi_msg_header_t *msgHeader;
    fapi_start_req_t *startReq;
+   fapi_vendor_msg_t *vendorMsg;
+   p_fapi_api_queue_elem_t  headerElem;
+   p_fapi_api_queue_elem_t  startReqElem;
+   p_fapi_api_queue_elem_t  vendorMsgElem;
 
-   LWR_MAC_ALLOC(startReq, sizeof(fapi_start_req_t));
-   if(startReq != NULL)
+   /* Allocte And fill Vendor msg */
+   LWR_MAC_ALLOC(vendorMsgElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_vendor_msg_t)));
+   if(!vendorMsgElem)
    {
-      memset(startReq, 0, sizeof(fapi_start_req_t));
-      fillMsgHeader(&startReq->header, FAPI_START_REQUEST, msgLen);
-
-      DU_LOG("\nLWR_MAC: Sending Start Request to PHY");
-      LwrMacSendToPhy(startReq->header.msg_id, sizeof(fapi_start_req_t),\
-	    (void *)startReq);
-   }
-   else
-   {
-      DU_LOG("\nLWR_MAC: Failed to allocate memory for Start Request");
+      DU_LOG("\nLWR_MAC: Memory allocation failed for vendor msg in start req");
       return RFAILED;
    }
+   FILL_FAPI_LIST_ELEM(vendorMsgElem, NULLP, FAPI_VENDOR_MESSAGE, 1, sizeof(fapi_vendor_msg_t));
+   vendorMsg = (fapi_vendor_msg_t *)(vendorMsgElem + 1);
+   fillMsgHeader(&vendorMsg->header, FAPI_VENDOR_MESSAGE, sizeof(fapi_vendor_msg_t));
+   vendorMsg->start_req_vendor.sfn = 0;
+   vendorMsg->start_req_vendor.slot = 0;
+   vendorMsg->start_req_vendor.mode = 1; /* for FDD */
+#ifdef DEBUG_MODE
+   vendorMsg->start_req_vendor.count = 0;
+   vendorMsg->start_req_vendor.period = 1;
+#endif
+
+   /* Fill FAPI config req */
+   LWR_MAC_ALLOC(startReqElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_start_req_t)));
+   if(!startReqElem)
+   {
+      DU_LOG("\nLWR_MAC: Memory allocation failed for start req");
+      return RFAILED;
+   }
+   FILL_FAPI_LIST_ELEM(startReqElem, vendorMsgElem, FAPI_START_REQUEST, 1, \
+      sizeof(fapi_start_req_t));
+
+   startReq = (fapi_start_req_t *)(startReqElem + 1);
+   memset(startReq, 0, sizeof(fapi_start_req_t));
+   fillMsgHeader(&startReq->header, FAPI_START_REQUEST, sizeof(fapi_start_req_t));
+
+   /* Fill message header */
+   LWR_MAC_ALLOC(headerElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_msg_header_t)));
+   if(!headerElem)
+   {
+      DU_LOG("\nLWR_MAC: Memory allocation failed for vendor msg in config req");
+      return RFAILED;
+   }
+   FILL_FAPI_LIST_ELEM(headerElem, startReqElem, FAPI_VENDOR_MSG_HEADER_IND, 1, \
+      sizeof(fapi_msg_header_t));
+   msgHeader = (fapi_msg_header_t *)(headerElem + 1);
+   msgHeader->num_msg = 2; /* Start req msg and vendor specific msg */
+   msgHeader->handle = 0;
+
+   /* Send to PHY */
+   DU_LOG("\nLWR_MAC: Sending Start Request to Phy");
+   LwrMacSendToFapi(headerElem);
 #endif
    return ROK;
 } /* lwr_mac_procStartReqEvt */
@@ -2156,29 +2260,6 @@ uint8_t lwr_mac_procStopReqEvt(void *msg)
    }
 #endif
    return ROK;
-}
-
-/*******************************************************************
- *
- * @brief Modifes the received mibPdu to uint32 bit
- *        and stores it in MacCellCfg
- *
- * @details
- *
- *    Function : setMibPdu
- *
- *    Functionality:
- *         -Sets the MibPdu
- *
- * @params[in] Pointer to mibPdu
- *             pointer to modified value
- ******************************************************************/
-
-void setMibPdu(uint8_t *mibPdu, uint32_t *val, uint16_t sfn)
-{
-   *mibPdu |= (((uint8_t)(sfn >> 2)) & MIB_SFN_BITMASK);
-   *val = (mibPdu[0] << 24 | mibPdu[1] << 16 | mibPdu[2] << 8);
-   DU_LOG("\nLWR_MAC: MIB PDU %x", *val);
 }
 
 #ifdef INTEL_FAPI
@@ -2288,7 +2369,7 @@ void fillSib1DlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *sib1PdcchInfo)
       dlDciPtr->pc_and_bform.pmi_bfi[0].pmIdx = sib1PdcchInfo->dci.beamPdcchInfo.prg[0].pmIdx;
       dlDciPtr->pc_and_bform.pmi_bfi[0].beamIdx[0].beamidx = sib1PdcchInfo->dci.beamPdcchInfo.prg[0].beamIdx[0];
       dlDciPtr->beta_pdcch_1_0 = sib1PdcchInfo->dci.txPdcchPower.powerValue;           
-      dlDciPtr->powerControlOfssetSS = sib1PdcchInfo->dci.txPdcchPower.powerControlOffsetSS;
+      dlDciPtr->powerControlOffsetSS = sib1PdcchInfo->dci.txPdcchPower.powerControlOffsetSS;
 
       /* Calculating freq domain resource allocation field value and size
        * coreset0Size = Size of coreset 0
@@ -2425,7 +2506,7 @@ void fillRarDlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *rarPdcchInfo)
       dlDciPtr->pc_and_bform.pmi_bfi[0].pmIdx = rarPdcchInfo->dci.beamPdcchInfo.prg[0].pmIdx;
       dlDciPtr->pc_and_bform.pmi_bfi[0].beamIdx[0].beamidx = rarPdcchInfo->dci.beamPdcchInfo.prg[0].beamIdx[0];
       dlDciPtr->beta_pdcch_1_0 = rarPdcchInfo->dci.txPdcchPower.powerValue;           
-      dlDciPtr->powerControlOfssetSS = rarPdcchInfo->dci.txPdcchPower.powerControlOffsetSS;
+      dlDciPtr->powerControlOffsetSS = rarPdcchInfo->dci.txPdcchPower.powerControlOffsetSS;
 
       /* Calculating freq domain resource allocation field value and size
        * coreset0Size = Size of coreset 0
@@ -2568,7 +2649,7 @@ void fillDlMsgDlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *pdcchInfo,\
       dlDciPtr->pc_and_bform.pmi_bfi[0].pmIdx = pdcchInfo->dci.beamPdcchInfo.prg[0].pmIdx;
       dlDciPtr->pc_and_bform.pmi_bfi[0].beamIdx[0].beamidx = pdcchInfo->dci.beamPdcchInfo.prg[0].beamIdx[0];
       dlDciPtr->beta_pdcch_1_0 = pdcchInfo->dci.txPdcchPower.powerValue;
-      dlDciPtr->powerControlOfssetSS = pdcchInfo->dci.txPdcchPower.powerControlOffsetSS;
+      dlDciPtr->powerControlOffsetSS = pdcchInfo->dci.txPdcchPower.powerControlOffsetSS;
 
       /* Calculating freq domain resource allocation field value and size
        * coreset0Size = Size of coreset 0
@@ -2733,7 +2814,6 @@ uint8_t fillPdcchPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, DlSchedInfo *dlInfo, \
       dlTtiReqPdu->pdu.pdcch_pdu.cceRegMappingType = pdcchInfo->coresetCfg.cceRegMappingType;
       dlTtiReqPdu->pdu.pdcch_pdu.regBundleSize = pdcchInfo->coresetCfg.regBundleSize;
       dlTtiReqPdu->pdu.pdcch_pdu.interleaverSize = pdcchInfo->coresetCfg.interleaverSize;
-      dlTtiReqPdu->pdu.pdcch_pdu.coreSetSize = pdcchInfo->coresetCfg.coreSetType;
       dlTtiReqPdu->pdu.pdcch_pdu.shiftIndex =  pdcchInfo->coresetCfg.shiftIndex;
       dlTtiReqPdu->pdu.pdcch_pdu.precoderGranularity = pdcchInfo->coresetCfg.precoderGranularity;
       dlTtiReqPdu->pdu.pdcch_pdu.numDlDci = pdcchInfo->numDlDci;
@@ -2952,7 +3032,7 @@ uint8_t fillSib1TxDataReq(fapi_tx_pdu_desc_t *pduDesc,MacCellCfg *macCellCfg,
    pduLen += sizeof(fapi_uint8_ptr_tlv_t); /* only 1 TLV is present */
    pduDesc[pduIndex].pdu_length = pduLen; 
 
-#ifndef INTEL_WLS   
+#ifndef INTEL_WLS_MEM   
    MAC_FREE(sib1TxdataValue,macCellCfg->sib1Cfg.sib1PduLen);
 #endif
 
@@ -3006,7 +3086,7 @@ uint8_t fillRarTxDataReq(fapi_tx_pdu_desc_t *pduDesc, RarInfo *rarInfo,
    /* TODO: The pointer value which was stored, needs to be free-ed at PHY *
     * But since we did not implement WLS, this has to be done here
     */
-#ifndef INTEL_WLS   
+#ifndef INTEL_WLS_MEM   
    MAC_FREE(rarTxdataValue,rarInfo->rarPduLen);
 #endif
 
@@ -3060,7 +3140,7 @@ uint8_t fillDlMsgTxDataReq(fapi_tx_pdu_desc_t *pduDesc, DlMsgInfo *dlMsgInfo,
    /* TODO: The pointer value which was stored, needs to be free-ed at PHY *
     * But since we did not implement WLS, this has to be done here
     */
-#ifndef INTEL_WLS
+#ifndef INTEL_WLS_MEM   
    MAC_FREE(dedMsgTxDataValue, dlMsgInfo->dlMsgPduLen);
 #endif
 
@@ -3744,7 +3824,7 @@ void fillUlDciPdu(fapi_dl_dci_t *ulDciPtr, DciInfo *schDciInfo)
       ulDciPtr->pc_and_bform.pmi_bfi[0].pmIdx = schDciInfo->dciInfo.beamPdcchInfo.prg[0].pmIdx;
       ulDciPtr->pc_and_bform.pmi_bfi[0].beamIdx[0].beamidx = schDciInfo->dciInfo.beamPdcchInfo.prg[0].beamIdx[0];
       ulDciPtr->beta_pdcch_1_0                = schDciInfo->dciInfo.txPdcchPower.powerValue;           
-      ulDciPtr->powerControlOfssetSS          = schDciInfo->dciInfo.txPdcchPower.powerControlOffsetSS;
+      ulDciPtr->powerControlOffsetSS          = schDciInfo->dciInfo.txPdcchPower.powerControlOffsetSS;
 
       /* Calculating freq domain resource allocation field value and size
        * coreset1Size = Size of coreset 1
@@ -3868,7 +3948,6 @@ uint8_t fillUlDciPdcchPdu(fapi_dci_pdu_t *ulDciReqPdu, DlSchedInfo *dlInfo, uint
       ulDciReqPdu->pdcchPduConfig.cceRegMappingType = dlInfo->ulGrant->coresetCfg.cceRegMappingType;
       ulDciReqPdu->pdcchPduConfig.regBundleSize     = dlInfo->ulGrant->coresetCfg.regBundleSize;
       ulDciReqPdu->pdcchPduConfig.interleaverSize   = dlInfo->ulGrant->coresetCfg.interleaverSize;
-      ulDciReqPdu->pdcchPduConfig.coreSetSize       = dlInfo->ulGrant->coresetCfg.coreSetType;
       ulDciReqPdu->pdcchPduConfig.shiftIndex        = dlInfo->ulGrant->coresetCfg.shiftIndex;
       ulDciReqPdu->pdcchPduConfig.precoderGranularity = dlInfo->ulGrant->coresetCfg.precoderGranularity;
       ulDciReqPdu->pdcchPduConfig.numDlDci          = 1;

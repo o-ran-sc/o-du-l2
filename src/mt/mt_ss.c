@@ -102,6 +102,12 @@
 #include <arpa/inet.h>
 #endif /* SS_WATCHDOG */
 
+#ifdef SS_USE_WLS_MEM
+#include <rte_common.h>
+#include <rte_debug.h>
+#include <rte_eal.h>
+#endif
+
 /* header/extern include files (.x) */
 
 #include "gen.x"           /* general layer */
@@ -153,13 +159,9 @@
 #include "sys/syscall.h"
 #endif
 
-#if defined(RGL_SPECIFIC_CHANGES) || defined(INTEL_WLS)
+#if defined(RGL_SPECIFIC_CHANGES) || defined(INTEL_WLS) || defined(SS_USE_WLS_MEM)
 #include <wls_lib.h>
 #include <hugetlbfs.h>
-#endif
-
-#ifdef INTEL_WLS
-void LwrMacRecvPhyMsg();
 #endif
 
 #if defined(SPLIT_RLC_DL_TASK) && defined(RLC_MAC_STA_RSP_RBUF)
@@ -434,6 +436,7 @@ SsRegCfg cfgRegInfo[SS_MAX_REGS] =
          { SS_POOL_DYNAMIC, MT_POOL_1_DSIZE },
          { SS_POOL_DYNAMIC, MT_POOL_2_DSIZE },
          { SS_POOL_DYNAMIC, MT_POOL_3_DSIZE },
+	 { SS_POOL_DYNAMIC, MT_POOL_4_DSIZE },
          { SS_POOL_STATIC, 0 }
       }
    }
@@ -460,6 +463,7 @@ SsRegCfg cfgRegInfo[SS_MAX_REGS] =
          { SS_POOL_DYNAMIC, MT_POOL_1_DSIZE },
          { SS_POOL_DYNAMIC, MT_POOL_2_DSIZE },
          { SS_POOL_DYNAMIC, MT_POOL_3_DSIZE },
+	 { SS_POOL_DYNAMIC, MT_POOL_4_DSIZE },
          { SS_POOL_STATIC, 0 }
       }
    },
@@ -470,6 +474,7 @@ SsRegCfg cfgRegInfo[SS_MAX_REGS] =
          { SS_POOL_DYNAMIC, MT_POOL_1_DSIZE },
          { SS_POOL_DYNAMIC, MT_POOL_2_DSIZE },
          { SS_POOL_DYNAMIC, MT_POOL_3_DSIZE },
+	 { SS_POOL_DYNAMIC, MT_POOL_4_DSIZE },
          { SS_POOL_STATIC, 0 }
       }
    },
@@ -480,6 +485,7 @@ SsRegCfg cfgRegInfo[SS_MAX_REGS] =
          { SS_POOL_DYNAMIC, MT_POOL_1_DSIZE },
          { SS_POOL_DYNAMIC, MT_POOL_2_DSIZE },
          { SS_POOL_DYNAMIC, MT_POOL_3_DSIZE },
+	 { SS_POOL_DYNAMIC, MT_POOL_4_DSIZE },
          { SS_POOL_STATIC, 0 }
       }
    }, 
@@ -490,9 +496,21 @@ SsRegCfg cfgRegInfo[SS_MAX_REGS] =
          { SS_POOL_DYNAMIC, MT_POOL_1_DSIZE },
          { SS_POOL_DYNAMIC, MT_POOL_2_DSIZE },
          { SS_POOL_DYNAMIC, MT_POOL_3_DSIZE },
+	 { SS_POOL_DYNAMIC, MT_POOL_4_DSIZE },
          { SS_POOL_STATIC, 0 }
       }
-   } 
+   },
+   {
+      SS_DFLT_REGION + 5, SS_MAX_POOLS_PER_REG - 1,
+      {
+         { SS_POOL_DYNAMIC, MT_POOL_0_DSIZE },
+         { SS_POOL_DYNAMIC, MT_POOL_1_DSIZE },
+         { SS_POOL_DYNAMIC, MT_POOL_2_DSIZE },
+         { SS_POOL_DYNAMIC, MT_POOL_3_DSIZE },
+         { SS_POOL_DYNAMIC, MT_POOL_4_DSIZE },
+         { SS_POOL_STATIC, 0 }
+      }
+   }
 #endif /* SS_LOCKLESS_MEMORY */
 };
 /* mt003.301 Modifications - File Based task registration made
@@ -512,7 +530,8 @@ MtDynMemCfg mtDynMemoCfg =
            {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
            {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
            {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD} 
+           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD}, 
+	   {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD}
         }
      },
      {
@@ -523,7 +542,8 @@ MtDynMemCfg mtDynMemoCfg =
            {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
            {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
            {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD} 
+           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+  	   {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD} 
         }
      },
      {
@@ -534,7 +554,8 @@ MtDynMemCfg mtDynMemoCfg =
            {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
            {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
            {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD} 
+           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	   {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD}
         }
      },
       {
@@ -545,7 +566,8 @@ MtDynMemCfg mtDynMemoCfg =
            {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
            {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
            {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD} 
+           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	   {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD} 
         }
      },
       {
@@ -556,7 +578,20 @@ MtDynMemCfg mtDynMemoCfg =
            {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
            {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
            {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD} 
+           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	   {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD}
+        }
+     },
+     {
+        SS_DFLT_REGION + 5,                         /* region id */
+        MT_MAX_BKTS,                            /* number of buckets */
+        {
+           /* block size, no. of blocks, Upper threshold, lower threshold */
+           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD}
         }
      }
 #if ((defined (SPLIT_RLC_DL_TASK)) && (!defined (L2_L3_SPLIT)))
@@ -586,7 +621,8 @@ MtGlobMemCfg mtGlobMemoCfg =
       {MT_BKT_0_DSIZE, (MT_BKT_0_NUMBLKS + MT_BKT_0_NUMBLKS), SS_DFLT_MEM_BLK_SET_SIZE},
       {MT_BKT_1_DSIZE, MT_BKT_1_NUMBLKS, SS_DFLT_MEM_BLK_SET_SIZE},
       {MT_BKT_2_DSIZE, MT_BKT_2_NUMBLKS, SS_DFLT_MEM_BLK_SET_SIZE},
-      {MT_BKT_3_DSIZE, MT_BKT_3_NUMBLKS, SS_DFLT_MEM_BLK_SET_SIZE}
+      {MT_BKT_3_DSIZE, MT_BKT_3_NUMBLKS, SS_DFLT_MEM_BLK_SET_SIZE},
+      {MT_BKT_4_DSIZE, MT_BKT_4_NUMBLKS, SS_DFLT_MEM_BLK_SET_SIZE}
 #else
       {1024, 12800 /* MT_BKT_0_NUMBLKS */, SS_DFLT_MEM_BLK_SET_SIZE},
       {1664, 12800 /* MT_BKT_1_NUMBLKS */, SS_DFLT_MEM_BLK_SET_SIZE},
@@ -620,7 +656,8 @@ MtMemCfg mtMemoCfg =
          {MT_BKT_0_DSIZE, MT_BKT_0_STATIC_NUMBLKS},   /* block size, no. of blocks */
          {MT_BKT_1_DSIZE, MT_BKT_1_STATIC_NUMBLKS},    /* block size, no. of blocks */
          {MT_BKT_2_DSIZE, MT_BKT_2_STATIC_NUMBLKS},   /* block size, no. of blocks */
-         {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS}    /* block size, no. of blocks */
+         {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS},    /* block size, no. of blocks */
+         {MT_BKT_4_DSIZE, MT_BKT_4_STATIC_NUMBLKS}
 #else
          {256, 491520}, /* 60 pages of 2M*/
          {512, 12288},  /* 3 pages of 2M */
@@ -659,7 +696,8 @@ MtMemCfg mtMemoCfg =
         {MT_BKT_0_DSIZE, MT_BKT_0_STATIC_NUMBLKS},   /* block size, no. of blocks */
         {MT_BKT_1_DSIZE, MT_BKT_1_STATIC_NUMBLKS},    /* block size, no. of blocks */
         {MT_BKT_2_DSIZE, MT_BKT_2_STATIC_NUMBLKS},   /* block size, no. of blocks */
-        {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS}    /* block size, no. of blocks */
+        {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS},    /* block size, no. of blocks */
+        {MT_BKT_4_DSIZE, MT_BKT_4_STATIC_NUMBLKS}    /* block size, no. of blocks */
       }
     },
     {
@@ -670,7 +708,8 @@ MtMemCfg mtMemoCfg =
         {MT_BKT_0_DSIZE, MT_BKT_0_STATIC_NUMBLKS},   /* block size, no. of blocks */
         {MT_BKT_1_DSIZE, MT_BKT_1_STATIC_NUMBLKS},    /* block size, no. of blocks */
         {MT_BKT_2_DSIZE, MT_BKT_2_STATIC_NUMBLKS},   /* block size, no. of blocks */
-        {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS}    /* block size, no. of blocks */
+        {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS},    /* block size, no. of blocks */
+	{MT_BKT_4_DSIZE, MT_BKT_4_STATIC_NUMBLKS}    /* block size, no. of blocks */
       }
     },
      {
@@ -681,7 +720,8 @@ MtMemCfg mtMemoCfg =
         {MT_BKT_0_DSIZE, MT_BKT_0_STATIC_NUMBLKS},   /* block size, no. of blocks */
         {MT_BKT_1_DSIZE, MT_BKT_1_STATIC_NUMBLKS},    /* block size, no. of blocks */
         {MT_BKT_2_DSIZE, MT_BKT_2_STATIC_NUMBLKS},   /* block size, no. of blocks */
-        {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS}    /* block size, no. of blocks */
+        {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS},    /* block size, no. of blocks */
+	{MT_BKT_4_DSIZE, MT_BKT_4_STATIC_NUMBLKS}    /* block size, no. of blocks */
       }
     },
     {
@@ -692,10 +732,22 @@ MtMemCfg mtMemoCfg =
           {MT_BKT_0_DSIZE, MT_BKT_0_STATIC_NUMBLKS},   /* block size, no. of blocks */
           {MT_BKT_1_DSIZE, MT_BKT_1_STATIC_NUMBLKS},    /* block size, no. of blocks */
           {MT_BKT_2_DSIZE, MT_BKT_2_STATIC_NUMBLKS},   /* block size, no. of blocks */
-          {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS}    /* block size, no. of blocks */
+          {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS},    /* block size, no. of blocks */
+	  {MT_BKT_4_DSIZE, MT_BKT_4_STATIC_NUMBLKS}    /* block size, no. of blocks */
+       }
+    },
+    {
+       SS_DFLT_REGION + 5,                         /* region id */
+       MT_MAX_BKTS,                            /* number of buckets */
+       MT_HEAP_SIZE,                           /* heap size */
+       {
+          {MT_BKT_0_DSIZE, MT_BKT_0_STATIC_NUMBLKS},   /* block size, no. of blocks */
+          {MT_BKT_1_DSIZE, MT_BKT_1_STATIC_NUMBLKS},    /* block size, no. of blocks */
+          {MT_BKT_2_DSIZE, MT_BKT_2_STATIC_NUMBLKS},   /* block size, no. of blocks */
+          {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS},    /* block size, no. of blocks */
+          {MT_BKT_4_DSIZE, MT_BKT_4_STATIC_NUMBLKS}    /* block size, no. of blocks */
        }
     }
-
 #endif /* SS_LOCKLESS_MEMORY */
     STATIC_MEM_CFG
   }
@@ -712,14 +764,21 @@ S16 msOptInd;            /* SGetOpt vars */
 S8 *msOptArg;            /* SGetOpt vars */
 
 
-#ifdef INTEL_WLS
+#if defined (INTEL_WLS) || defined (SS_USE_WLS_MEM)
 typedef struct _MtRegMemSz
 {
    uint32_t   reqdSz;
    uint8_t    *startAddr;
 }MtRegMemSz;
 
+#ifdef SS_USE_WLS_MEM
+static MtRegMemSz mtDynMemSz[MT_MAX_BKTS];
+static S16 SPartitionWlsDynMem();
+static S16 SAllocateWlsDynMem();
+#endif
+#ifdef INTEL_WLS
 static MtRegMemSz mtRegMemSz[MT_MAX_BKTS+1];
+#endif
 #endif
 
 
@@ -732,7 +791,7 @@ static CmMmRegCb *mtCMMRegCb[SS_MAX_REGS];
 /*mt010.301 - removed veriable defined for FA*/
 
 
-#ifdef INTEL_WLS
+#if defined (INTEL_WLS) || defined (SS_USE_WLS_MEM)
 
 #ifdef NTL_LIB
 void mtSetNtlHdl(unsigned int hdl)
@@ -746,11 +805,10 @@ unsigned int mtGetNtlHdl()
 }
 
 #endif  /* NTL_LIB */
-
-void * mtGetWlsHdl()
+void mtGetWlsHdl(void **hdlr)
 {
-   return (osCp.wls.intf);
-}
+   *hdlr = osCp.wls.intf;
+}	
 
 #ifdef XEON_MULTIPLE_CELL_CHANGES
 S8 gWrWlsDeviceName[MAX_WLS_DEVICE_NAME_LEN];
@@ -759,8 +817,21 @@ S16 smWrReadWlsConfigParams (Void);
 
 static int SOpenWlsIntf()
 {
+   uint8_t i;
    void *hdl;
-   #define WLS_DEVICE_NAME "/dev/wls"
+   #define WLS_DEVICE_NAME "wls0"
+   
+   char *my_argv[] = {"gnodeb", "-c3", "--proc-type=auto", "--file-prefix", WLS_DEVICE_NAME, "--iova-mode=pa"};
+   printf("Calling rte_eal_init: ");
+   for (i = 0; i < RTE_DIM(my_argv); i++)
+   {
+       printf("%s ", my_argv[i]); 
+   }
+   printf("\n");
+
+   if (rte_eal_init(RTE_DIM(my_argv), my_argv) < 0)
+       rte_panic("Cannot init EAL\n");
+
 
 #ifdef XEON_SPECIFIC_CHANGES
 #ifdef XEON_MULTIPLE_CELL_CHANGES
@@ -769,7 +840,7 @@ static int SOpenWlsIntf()
    hdl = WLS_Open(WLS_DEVICE_NAME, 1);
 #endif
 #else
-   hdl = WLS_Open(WLS_DEVICE_NAME, WLS_MASTER_CLIENT, (512 *1024 * 1024));
+   hdl = WLS_Open(WLS_DEVICE_NAME, WLS_MASTER_CLIENT, WLS_MEM_SIZE);
 #endif
 
    osCp.wls.intf = hdl;
@@ -825,7 +896,7 @@ char **argv;                    /* argument vector */
    } /* end of if statement */
 #endif
 
-#ifdef INTEL_WLS
+#if defined (INTEL_WLS) || defined (SS_USE_WLS_MEM)
    if(!SOpenWlsIntf())
     return (0);
 #endif /* INTEL_WLS */
@@ -1476,6 +1547,51 @@ Region region;
 RegionMemLeakInfo regMemLeakInfo;
 #endif /* T2K_MEM_LEAK_DBG */
 
+#ifdef SS_USE_WLS_MEM
+static S16 SPartitionWlsDynMem()
+{
+   uint32_t i;
+   uint8_t *bktMemStrtAddr = (uint8_t *)(((uint8_t*)osCp.wls.allocAddr) + (4 * 1024 * 1024));
+
+   for (i = 0 ; i < mtGlobMemoCfg.numBkts ; i++)
+   {
+      mtDynMemSz[i].startAddr = bktMemStrtAddr;
+      bktMemStrtAddr += mtDynMemSz[i].reqdSz;
+   }
+
+   printf("Global Memory Info: \n");
+   for (i = 0 ; i <  mtGlobMemoCfg.numBkts ; i++)
+   {
+      printf("mtDynMemSz[%d]: [0x%016lx]\n", i, (unsigned long int)mtDynMemSz[i].startAddr);
+   }
+   return ROK;
+}
+
+static S16 SAllocateWlsDynMem()
+{
+   uint32_t     reqdMemSz;
+   uint32_t     i;
+   reqdMemSz = 0;
+   memset(&mtDynMemSz[0], 0, sizeof(mtDynMemSz));
+
+   for (i = 0 ; i < mtGlobMemoCfg.numBkts ; i++)
+   {
+      reqdMemSz += (mtGlobMemoCfg.bkt[i].blkSize * mtGlobMemoCfg.bkt[i].numBlks);
+      mtDynMemSz[i].reqdSz += (mtGlobMemoCfg.bkt[i].blkSize * mtGlobMemoCfg.bkt[i].numBlks);
+   }
+   osCp.wls.allocAddr = WLS_Alloc(osCp.wls.intf,
+#ifdef INTEL_L1_V19_10
+   WLS_MEMORY_SIZE);
+#else
+   (reqdMemSz + (4 * 1024 * 1024)));
+#endif
+   printf("\n *************** \n WLS memory: %lx, %d\n", (PTR)osCp.wls.allocAddr, reqdMemSz);
+   SPartitionWlsDynMem();
+   return ROK;
+}
+
+#endif
+
 #ifdef INTEL_WLS
 
 S16 SPartitionWlsMemory()
@@ -1711,13 +1827,22 @@ S16 ssdInitMem()
 
    globReg = (CmMmGlobRegCb *)osCp.globRegCb;
 
+#ifdef SS_USE_WLS_MEM
+   SAllocateWlsDynMem();
+#endif
+
    for(i = 0; i < mtGlobMemoCfg.numBkts; i++)
    {
       memSize = (mtGlobMemoCfg.bkt[i].blkSize * mtGlobMemoCfg.bkt[i].numBlks);
+#if !defined (INTEL_WLS) && defined (SS_USE_WLS_MEM)
+      globReg->bktTbl[i].startAddr = (Data *)mtDynMemSz[i].startAddr;
+      printf("Starting Address of Bkt Entry [%d]: [0x%016lx], memSize[%d]\n", i, (unsigned long int)globReg->bktTbl[i].startAddr, memSize);
+#else
 #ifndef INTEL_WLS      
       globReg->bktTbl[i].startAddr = (Data *)calloc(memSize, sizeof(Data));
 #else
       globReg->bktTbl[i].startAddr = (Data *)mtRegMemSz[i].startAddr;
+#endif
 #endif
       if(globReg->bktTbl[i].startAddr == NULLP)
       {
@@ -1753,6 +1878,7 @@ S16 ssdInitMem()
 #endif            
             return RFAILED;
          }
+         dynRegCb->bktTbl[k].poolId = k;
          dynRegCb->bktTbl[k].size = mtGlobMemoCfg.bkt[k].blkSize;
          dynRegCb->bktTbl[k].blkSetRelThreshold = mtDynMemoCfg.region[i].bkt[k].blkSetRelThreshold;
          dynRegCb->bktTbl[k].blkSetAcquireThreshold = mtDynMemoCfg.region[i].bkt[k].blkSetAcquireThreshold;
@@ -4856,11 +4982,6 @@ Ptr tskPtr;                     /* pointer to task entry */
 #endif   
    while (1)
    {
-#ifndef ODU_TEST_STUB
-#ifdef INTEL_WLS
-      LwrMacRecvPhyMsg();
-#endif
-#endif
       /* Wait for a message from the demand queue */
 #ifdef SS_CDMNDQ_SUPPORT
       ret = ssCDmndQWait(&sTsk->dQ);

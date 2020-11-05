@@ -108,7 +108,7 @@ SpId spId;
       TFU_FREE_MSG(mBuf);
       return RFAILED;
    }
-   pst->event = (Event) EVTTFUBNDREQ;
+   //pst->event = (Event) EVTTFUBNDREQ;
    return (SPstTsk(pst,mBuf));
 }
 
@@ -234,7 +234,7 @@ uint8_t status;
       TFU_FREE_MSG(mBuf);
       return RFAILED;
    }
-   pst->event = (Event) EVTTFUBNDCFM;
+   //pst->event = (Event) EVTTFUBNDCFM;
    return (SPstTsk(pst,mBuf));
 }
 
@@ -360,7 +360,7 @@ Reason reason;
       TFU_FREE_MSG(mBuf);
       return RFAILED;
    }
-   pst->event = (Event) EVTTFUUBNDREQ;
+   //pst->event = (Event) EVTTFUUBNDREQ;
    return (SPstTsk(pst,mBuf));
 }
 
@@ -486,7 +486,7 @@ SpId spId;
       TFU_FREE_MSG(mBuf);
       return RFAILED;
    }
-   pst->event = (Event) EVTTFUSCHBNDREQ;
+   //pst->event = (Event) EVTTFUSCHBNDREQ;
    return (SPstTsk(pst,mBuf));
 }
 
@@ -612,7 +612,7 @@ uint8_t status;
       TFU_FREE_MSG(mBuf);
       return RFAILED;
    }
-   pst->event = (Event) EVTTFUSCHBNDCFM;
+   //pst->event = (Event) EVTTFUSCHBNDCFM;
    return (SPstTsk(pst,mBuf));
 }
 
@@ -738,7 +738,7 @@ Reason reason;
       TFU_FREE_MSG(mBuf);
       return RFAILED;
    }
-   pst->event = (Event) EVTTFUSCHUBNDREQ;
+   //pst->event = (Event) EVTTFUSCHUBNDREQ;
    return (SPstTsk(pst,mBuf));
 }
 
@@ -892,7 +892,7 @@ TfuRaReqIndInfo * raReqInd;
       TFU_FREE_MEM(raReqInd);
    }
 
-   pst->event = (Event) EVTTFURAREQIND;
+   //pst->event = (Event) EVTTFURAREQIND;
    return (SPstTsk(pst,mBuf));
 }
 
@@ -1095,7 +1095,7 @@ TfuRecpReqInfo * recpReq;
       TFU_FREE_MEM(recpReq);
    }
 
-   pst->event = (Event) EVTTFURECPREQ;
+   //pst->event = (Event) EVTTFURECPREQ;
    return (SPstTsk(pst,mBuf));
 }
 
@@ -1312,7 +1312,7 @@ TfuUlCqiIndInfo * ulCqiInd;
       TFU_FREE_MEM(ulCqiInd);
    }
 
-   pst->event = (Event) EVTTFUULCQIIND;
+   //pst->event = (Event) EVTTFUULCQIIND;
    return (SPstTsk(pst,mBuf));
 }
 
@@ -1505,7 +1505,7 @@ TfuHqIndInfo * hqInd;
       TFU_FREE_MEM(hqInd);
    }
 
-   pst->event = (Event) EVTTFUHQIND;
+   //pst->event = (Event) EVTTFUHQIND;
    return (SPstTsk(pst,mBuf));
 }
 
@@ -1696,7 +1696,7 @@ TfuSrIndInfo * srInd;
       TFU_FREE_MEM(srInd);
    }
 
-   pst->event = (Event) EVTTFUSRIND;
+   //pst->event = (Event) EVTTFUSRIND;
    return (SPstTsk(pst,mBuf));
 }
 
@@ -1883,7 +1883,7 @@ TfuDlCqiIndInfo * dlCqiInd;
    if (pst->selector != ODU_SELECTOR_LWLC) {
       TFU_FREE_MEM(dlCqiInd);
    }
-   pst->event = (Event) EVTTFUDLCQIIND;
+   //pst->event = (Event) EVTTFUDLCQIIND;
    return (SPstTsk(pst,mBuf));
 }
 
@@ -2047,7 +2047,7 @@ TfuRawCqiIndInfo * rawCqiInd;
       return RFAILED;
    }
    TFU_FREE_MEM(rawCqiInd);
-   pst->event = (Event) EVTTFURAWCQIIND;
+   //pst->event = (Event) EVTTFURAWCQIIND;
    return (SPstTsk(pst,mBuf));
 }
 
@@ -2183,7 +2183,7 @@ TfuSrsIndInfo * srsInd;
       return RFAILED;
    }
    TFU_FREE_MEM(srsInd);
-   pst->event = (Event) EVTTFUSRSIND;
+   //pst->event = (Event) EVTTFUSRSIND;
    return (SPstTsk(pst,mBuf));
 }
 
@@ -2348,7 +2348,7 @@ TfuDatIndInfo * datInd;
       TFU_FREE_MEM(datInd);
    }
 
-   pst->event = (Event) EVTTFUDATIND;
+   //pst->event = (Event) EVTTFUDATIND;
    return (SPstTsk(pst,mBuf));
 }
 
@@ -2543,7 +2543,7 @@ TfuCrcIndInfo * crcIndInfo;
       TFU_FREE_MEM(crcIndInfo);
    }
 
-   pst->event = (Event) EVTTFUCRCIND;
+   //pst->event = (Event) EVTTFUCRCIND;
    return (SPstTsk(pst,mBuf));
 }
 
@@ -2738,7 +2738,7 @@ TfuTimingAdvIndInfo * timingAdvInd;
       TFU_FREE_MEM(timingAdvInd);
    }
 
-   pst->event = (Event) EVTTFUTIMINGADVIND;
+   //pst->event = (Event) EVTTFUTIMINGADVIND;
    return (SPstTsk(pst,mBuf));
 }
 
@@ -2932,7 +2932,7 @@ TfuDatReqInfo * datReq;
       TFU_FREE_MEM(datReq);
    }
 
-   pst->event = (Event) EVTTFUDATREQ;
+   //pst->event = (Event) EVTTFUDATREQ;
    return (SPstTsk(pst,mBuf));
 }
 
@@ -3130,7 +3130,7 @@ TfuCntrlReqInfo * cntrlReq;
       TFU_FREE_MEM(cntrlReq);
    }
 
-   pst->event = (Event) EVTTFUCNTRLREQ;
+   //pst->event = (Event) EVTTFUCNTRLREQ;
    return (SPstTsk(pst,mBuf));
 }
 
@@ -3388,7 +3388,7 @@ SuId suId;
       TFU_FREE_MSG(mBuf);
       return RFAILED;
   }
-  pst->event = (Event) EVTTFUNONRTIND;
+  //pst->event = (Event) EVTTFUNONRTIND;
   return (SPstTsk(pst,mBuf));
 }
 
@@ -3528,7 +3528,7 @@ TfuPucchDeltaPwrIndInfo * pucchDeltaPwr;
    if (pst->selector != ODU_SELECTOR_LWLC) {
       TFU_FREE_MEM(pucchDeltaPwr);
    }
-   pst->event = (Event) EVTTFUPUCCHDELPWR;
+   //pst->event = (Event) EVTTFUPUCCHDELPWR;
    return (SPstTsk(pst,mBuf));
 }
 
@@ -12183,7 +12183,7 @@ TfuDoaIndInfo * doaInd;
       return RFAILED;
    }
    TFU_FREE_MEM(doaInd);
-   pst->event = (Event) EVTTFUDOAIND;
+   //pst->event = (Event) EVTTFUDOAIND;
    return (SPstTsk(pst,mBuf));
 }
 
@@ -14888,7 +14888,7 @@ TfuErrIndInfo * errInd;
       }
    }
 
-   pst->event = (Event) EVTTFUERRIND;
+   //pst->event = (Event) EVTTFUERRIND;
    return (SPstTsk(pst,mBuf));
 }
 

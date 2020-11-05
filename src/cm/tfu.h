@@ -89,6 +89,7 @@
 
 
 /* Event corresponding to each primitive at this interface */
+#if 0
 #define EVTTFUBNDREQ            1     /*!< Bind Request */
 #define EVTTFUBNDCFM            2     /*!< Bind Confirm */
 #define EVTTFUUBNDREQ           3     /*!< Unbind Request */
@@ -118,7 +119,7 @@
 #endif
 #define EVTTFUERRIND            25    /*!< TFU Error Indication */
 /** @} */
-
+#endif 
 /* selector(coupling) values */
 #define TFU_MAX_ALLOC_BYTES     4
 /* pack unpack error code */

@@ -51,6 +51,7 @@ C_OBJS_WO_LOG=$(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(C_SRCS))
 I_OPTS+=-isystem $(BSPPATH)/usr/include/brcm
 I_OPTS+=-I$(SRC_DIR)/security
 I-OPTS+=-I$(ROOT_DIR)/src/wls_lib
+I_OPTS+=-I$(ROOT_DIR)/src/dpdk_lib
 
 HDR_FILES+=$(wildcard $(CM_DIR)/env*.[hx])
 HDR_FILES+=$(wildcard $(CM_DIR)/gen*.[hx])

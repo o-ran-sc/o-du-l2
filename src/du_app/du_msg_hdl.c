@@ -1661,8 +1661,7 @@ uint8_t duHandleSlotInd(Pst *pst, SlotIndInfo *slotInfo)
 #endif
 
    if((pst->selector == ODU_SELECTOR_LWLC) || (pst->selector == ODU_SELECTOR_TC)) 
-      DU_FREE_SHRABL_BUF(MAC_MEM_REGION, pst->pool, slotInfo, sizeof(SlotIndInfo));
-
+      DU_FREE_SHRABL_BUF(pst->region, pst->pool, slotInfo, sizeof(SlotIndInfo));
    return ROK;
 }
 
