@@ -176,7 +176,6 @@ typedef struct
    uint16_t crnti;
    uint16_t timingAdvance;
    uint16_t rssi;         
-   uint8_t uciBits[MAX_UCI_BIT_PER_TTI_IN_BYTES];
    SrInfoF0F1   srInfo;
    HarqInfoF0F1 harqInfo;
 }UciPucchF0F1;

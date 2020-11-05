@@ -276,7 +276,7 @@ uint8_t BuildMibMsg()
       if(!mibMsg)
       {
 	 DU_LOG("DU APP: MIB msg memory allocation failure");
-	 break;
+	 return RFAILED;
       }
       BuildMibret =  BuildMib(mibMsg);
       if(BuildMibret != ROK)

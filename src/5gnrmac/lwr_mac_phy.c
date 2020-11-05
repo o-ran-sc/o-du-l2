@@ -28,15 +28,54 @@
 #include "lwr_mac_phy.h"
 #include "lwr_mac_fsm.h"
 #include "mac_utils.h"
-
-#ifdef INTEL_WLS
+#include "lwr_mac_utils.h"
+#ifdef INTEL_FAPI
+#include "fapi.h"
+#include "fapi_vendor_extension.h"
+#endif
+#ifdef INTEL_WLS_MEM
 #include "wls_lib.h"
 #endif
 
 uint8_t rgClHndlCfgReq ARGS((void *msg));
 void l1ProcessFapiRequest ARGS((uint8_t msgType, uint32_t msgLen, void *msg));
 
-#ifdef INTEL_WLS
+#ifdef INTEL_WLS_MEM
+
+/*******************************************************************
+ *
+ * @brief Sends request to start wls receiver thread
+ *
+ * @details
+ *
+ *    Function : LwrMacStartWlsRcvr
+ *
+ *    Functionality:
+ *      Sends request to start wls receiver thread
+ *
+ * @params[in] 
+ * @return void
+ *
+ * ****************************************************************/
+void LwrMacStartWlsRcvr()
+{
+   Pst pst;
+   Buffer *mBuf;
+
+   DU_LOG("\nLWR MAC: Requesting to start WLS receiver thread");
+
+   /* Filling post */
+   memset(&pst, 0, sizeof(Pst));
+   FILL_PST_LWR_MAC_TO_LWR_MAC(pst, EVT_START_WLS_RCVR);
+
+   if (ODU_GET_MSG_BUF(pst.region, pst.pool, &mBuf) != ROK)
+   {
+      DU_LOG("\nLWR MAC : Memory allocation failed for LwrMacStartWlsRcvr");
+      return;
+   }
+
+   ODU_POST_TASK(&pst, mBuf);
+}
 
 /*******************************************************************
  *
@@ -56,14 +95,13 @@ void l1ProcessFapiRequest ARGS((uint8_t msgType, uint32_t msgLen, void *msg));
 void LwrMacEnqueueWlsBlock()
 {
    void *memPtr;
-   void *wlsHdlr;
+   void *wlsHdlr = NULLP;
 
    WLS_MEM_ALLOC(memPtr, LWR_MAC_WLS_BUF_SIZE);
 
    if(memPtr) 
    {
-      wlsHdlr = mtGetWlsHdl();
-
+      mtGetWlsHdl(&wlsHdlr);
       /* allocate blocks for UL transmittion */
       while(WLS_EnqueueBlock(wlsHdlr, WLS_VA2PA(wlsHdlr, memPtr)))
       {
@@ -79,42 +117,6 @@ void LwrMacEnqueueWlsBlock()
       }
    }
 }/* LwrMacEnqueueWlsBlock */
-
-/*******************************************************************
- *
- * @brief Enqueue N number of blocks
- *
- * @details
- *
- *    Function : enqueueNBlocks
- *
- *    Functionality:
- *      Enqueue N number of memory blocks
- *
- * @params[in] Number of blocks
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-uint16_t enqueueNBlocks(uint32_t numBlocks)
-{
-   void    *memPtr;
-   void    *wlsHdlr;       /* WLS handler */
-
-   wlsHdlr = mtGetWlsHdl();   
-   while(numBlocks)
-   {
-      numBlocks--;
-
-      memPtr = (void *)NULL;
-      WLS_MEM_ALLOC(memPtr, LWR_MAC_WLS_BUF_SIZE);
-      if(memPtr)
-      {
-	 WLS_EnqueueBlock(wlsHdlr, WLS_VA2PA(wlsHdlr, memPtr));
-      }
-   }
-   return ROK;
-}/* enqueueNBlocks */
 
 /*******************************************************************
  *
@@ -151,6 +153,22 @@ void addWlsBlockToFree(void *msg, uint32_t msgLen, uint8_t idx)
    }
 }/* addWlsBlockToFree */
 
+
+/*******************************************************************
+ *
+ * @brief Free DL Memory blocks stored in list
+ *
+ * @details
+ *
+ *    Function : freeWlsBlockList
+ *
+ *    Functionality: Free DL Memory blocks stored in list
+ *
+ * @params[in] Array index to be freed
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
 void freeWlsBlockList(uint8_t idx)
 {
    CmLList         *node;
@@ -187,53 +205,63 @@ void freeWlsBlockList(uint8_t idx)
  * ****************************************************************/
 void LwrMacRecvPhyMsg()
 {
-   uint32_t numL1Msg;   /* Number of L1 messaes received */
-   uint32_t numToGet;   /* Number of Memory blocks to get */
+   uint32_t numMsgToGet;   /* Number of Memory blocks to get */
    void     *wlsHdlr;       /* WLS handler */
    uint64_t l1Msg;         /* Message received */
    void     *l1MsgPtr;
    uint32_t msgSize;
    uint16_t msgType;
-   uint16_t flag;
+   uint16_t flag = 0;
+   p_fapi_api_queue_elem_t currElem  = NULLP;
 
-   wlsHdlr = mtGetWlsHdl();
-   if(WLS_Ready(wlsHdlr))
+   mtGetWlsHdl(&wlsHdlr);
+   if(WLS_Ready(wlsHdlr) == 0) 
    {
-      numToGet = WLS_Wait(wlsHdlr);
-
-      numL1Msg = numToGet;
-
-      while(numToGet)
+      while(true)
       {
-	 l1Msg = (uint64_t) NULL;
-	 l1Msg = WLS_Get(wlsHdlr, &msgSize, &msgType, &flag);
-	 if(l1Msg)
+	 numMsgToGet = WLS_Wait(wlsHdlr);
+	 if(numMsgToGet == 0)
 	 {
-	    l1MsgPtr = WLS_PA2VA(wlsHdlr, l1Msg); 
-	    procPhyMessages(msgType, msgSize, l1MsgPtr);
+	    continue;
 	 }
-	 numToGet--;
-      }
 
-      if(numL1Msg)
-      {
-	 enqueueNBlocks(numL1Msg);
+	 printf("\nLWR_MAC: numMsgToGet %d", numMsgToGet);
+	 while(numMsgToGet--)
+	 {
+	    currElem = NULLP;
+	    l1Msg = (uint64_t)NULLP;
+	    l1MsgPtr = NULLP;
+	    l1Msg = WLS_Get(wlsHdlr, &msgSize, &msgType, &flag);
+	    if(l1Msg)
+	    {
+	       l1MsgPtr = WLS_PA2VA(wlsHdlr, l1Msg); 
+	       currElem = (p_fapi_api_queue_elem_t) l1MsgPtr;
+	       if(currElem->msg_type != FAPI_VENDOR_MSG_HEADER_IND)
+	       {
+		  procPhyMessages(currElem->msg_type, 0, (void *)(currElem + 1));
+	       }
+	       WLS_MEM_FREE(currElem, LWR_MAC_WLS_BUF_SIZE);
+	    }
+	 }
+	 LwrMacEnqueueWlsBlock();
       }
-
    }
 } /* LwrMacRecvPhyMsg */
 
-#endif /* INTEL_WLS */
+#endif /* INTEL_WLS_MEM */
 
 /*******************************************************************
  * 
- *  @brief Sends message to PHY
+ *  @brief Sends message to PHY Stub
  * 
  *  @details
  * 
  *    Function : LwrMacSendToPhy
  *    Functionality:
- *         -Sends message to PHY
+ *      -Sends message to PHY Stub
+ *      -Once super header and vendor specific message is
+ *       implemented for all FAPI messages, this function 
+ *       can be deleted. LwrMacSendToFapi() should be used.
  * 
  *  @params[in] Message Type
  *              Message Length
@@ -245,28 +273,108 @@ void LwrMacRecvPhyMsg()
 
 uint8_t LwrMacSendToPhy(uint8_t msgType, uint32_t msgLen, void *msg)
 {
-#ifdef INTEL_WLS
-   uint8_t ret;
-   unsigned long long pMsg;
-
-   pMsg = WLS_VA2PA(mtGetWlsHdl(), msg);
-   ret = WLS_Put(mtGetWlsHdl(), pMsg, msgLen, msgType, 0);
-
-   if(ret != 0)
-   {
-      printf("\nFailure in sending message to PHY");
-      WLS_MEM_FREE(msg, msgLen);	
-      return RFAILED;
-   }
-   else
-   {
-      addWlsBlockToFree(msg, msgLen, (slotIndIdx-1));
-   }
-#else
    l1ProcessFapiRequest(msgType, msgLen, msg);
-#endif
    return ROK;
 } /* LwrMacSendToPhy */
+
+
+/*******************************************************************
+ *
+ * @brief Send FAPI messages to Intel PHY/Phy stub
+ *
+ * @details
+ *
+ *    Function : LwrMacSendToFapi
+ *
+ *    Functionality: Send FAPI messages to Intel PHY/Phy stub
+ *
+ * @params[in] Message pointer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t LwrMacSendToFapi(void *msg)
+{
+   uint8_t ret = ROK;
+   uint16_t msgLen;
+   p_fapi_api_queue_elem_t currMsg = NULLP;
+
+#ifdef INTEL_WLS_MEM
+   void * wlsHdlr = NULLP;
+
+   mtGetWlsHdl(&wlsHdlr);
+   if(msg)
+   {
+      currMsg = (p_fapi_api_queue_elem_t)msg;
+      msgLen = currMsg->msg_len + sizeof(fapi_api_queue_elem_t);
+      addWlsBlockToFree(currMsg, msgLen, (slotIndIdx-1));
+      if(currMsg->p_next == NULLP)
+      {
+	 DU_LOG("\nThere cannot be only one block to send");
+	 return RFAILED;
+      }
+
+      /* Sending first block */
+      ret = WLS_Put(wlsHdlr, WLS_VA2PA(wlsHdlr, currMsg), msgLen, currMsg->msg_type, WLS_SG_FIRST);
+      if(ret != 0)
+      {
+	 DU_LOG("\nFailure in sending message to PHY");
+	 return RFAILED;
+      }
+      currMsg = currMsg->p_next;
+
+      while(currMsg)
+      {
+	 /* Sending the next msg */
+	 msgLen = currMsg->msg_len + sizeof(fapi_api_queue_elem_t);
+	 addWlsBlockToFree(currMsg, msgLen, (slotIndIdx-1));
+	 if(currMsg->p_next != NULLP)
+	 {
+	    ret = WLS_Put(wlsHdlr, WLS_VA2PA(wlsHdlr, currMsg), msgLen, currMsg->msg_type, WLS_SG_NEXT);
+	    if(ret != 0)
+	    {
+	       DU_LOG("\nFailure in sending message to PHY");
+	       return RFAILED;
+	    }
+	    currMsg = currMsg->p_next;
+	 }
+	 else
+	 {
+	    /* Sending last msg */
+	    ret = WLS_Put(wlsHdlr, WLS_VA2PA(wlsHdlr, currMsg), msgLen, currMsg->msg_type, WLS_SG_LAST);
+	    if(ret != 0)
+	    {
+	       DU_LOG("\nFailure in sending message to PHY");
+	       return RFAILED;
+	    }
+	    currMsg = NULLP;
+	 }
+      }
+   }
+#else
+   p_fapi_api_queue_elem_t nextMsg = NULLP;
+
+   /* FAPI header and vendor specific msgs are freed here. Only 
+    * the main FAPI messages are sent to phy stub */
+   currMsg = (p_fapi_api_queue_elem_t)msg;
+   while(currMsg)
+   {
+      nextMsg = currMsg->p_next;
+      msgLen = currMsg->msg_len + sizeof(fapi_api_queue_elem_t);
+      if((currMsg->msg_type != FAPI_VENDOR_MSG_HEADER_IND) && \
+	    (currMsg->msg_type != FAPI_VENDOR_MESSAGE))
+      {
+	 l1ProcessFapiRequest(currMsg->msg_type, msgLen, currMsg);
+      }
+      else
+      {
+	 MAC_FREE(currMsg, msgLen);   
+      }
+      currMsg = nextMsg;
+   }
+#endif
+   return ret;
+}
 
 /**********************************************************************
   End of file

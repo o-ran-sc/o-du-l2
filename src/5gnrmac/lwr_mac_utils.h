@@ -16,7 +16,7 @@
 ################################################################################
 *******************************************************************************/
 
-/* Fill Pst structure for sending msg from MAC to SCH */
+/* Fill Pst structure for sending msg from Lower MAC to MAC */
 #define FILL_PST_LWR_MAC_TO_MAC(_pst, _event)               \
 {                                                           \
    _pst.selector  = ODU_SELECTOR_TC;                        \
@@ -24,8 +24,26 @@
    _pst.dstEnt    = ENTMAC;                                 \
    _pst.dstInst   = 0;                                      \
    _pst.srcInst   = 0;                                      \
-   _pst.dstProcId = ODU_GET_PROCID();                      \
-   _pst.srcProcId = ODU_GET_PROCID();                      \
+   _pst.dstProcId = ODU_GET_PROCID();                       \
+   _pst.srcProcId = ODU_GET_PROCID();                       \
+   _pst.region = MAC_MEM_REGION;                            \
+   _pst.pool = MAC_POOL;                                    \
+   _pst.event = _event;                                     \
+   _pst.route = 0;                                          \
+   _pst.prior = 0;                                          \
+   _pst.intfVer = 0;                                        \
+}
+
+/* Fill Pst structure for sending msg from Lower MAC to itself */
+#define FILL_PST_LWR_MAC_TO_LWR_MAC(_pst, _event)           \
+{                                                           \
+   _pst.selector  = ODU_SELECTOR_LWLC;                      \
+   _pst.srcEnt    = ENTLWRMAC;                              \
+   _pst.dstEnt    = ENTLWRMAC;                              \
+   _pst.dstInst   = 0;                                      \
+   _pst.srcInst   = 0;                                      \
+   _pst.dstProcId = ODU_GET_PROCID();                       \
+   _pst.srcProcId = ODU_GET_PROCID();                       \
    _pst.region = MAC_MEM_REGION;                            \
    _pst.pool = MAC_POOL;                                    \
    _pst.event = _event;                                     \

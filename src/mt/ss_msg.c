@@ -1017,7 +1017,7 @@ uint8_t   memType;                   /* memory type used if shareable or not */
 }
 #endif /* SS_LOCKLESS_MEMORY */
 
-#ifdef INTEL_WLS 
+#ifdef INTEL_WLS_MEM 
 #ifndef SS_LOCKLESS_MEMORY
 #ifdef ANSI
 S16 SGetStaticBuffer

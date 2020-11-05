@@ -29,6 +29,17 @@
 #define CORESET_TYPE2 2
 #define CORESET_TYPE3 3
 
+#define FILL_FAPI_LIST_ELEM(_currElem, _nextElem, _msgType, _numMsgInBlock, _alignOffset)\
+{\
+   _currElem->msg_type             = (uint8_t) _msgType;\
+   _currElem->num_message_in_block = _numMsgInBlock;\
+   _currElem->align_offset         = (uint16_t) _alignOffset;\
+   _currElem->msg_len              = _numMsgInBlock * _alignOffset;\
+   _currElem->p_next               = _nextElem;\
+   _currElem->p_tx_data_elm_list   = NULL;\
+   _currElem->time_stamp           = 0;\
+}
+
 typedef enum{
    SI_RNTI_TYPE,
    RA_RNTI_TYPE,

@@ -32,9 +32,10 @@ typedef enum
    MSG_TX_ERR
 }ErrorCode;
 
-#ifdef INTEL_WLS
+#ifdef INTEL_WLS_MEM
 #define WLS_MEM_FREE_PRD       10        /* Free memory after 10 slot ind */
-#define LWR_MAC_WLS_BUF_SIZE   8192      /* Size of WLS memory block */
+#define LWR_MAC_WLS_BUF_SIZE   32000      /* Size of WLS memory block */
+#define EVT_START_WLS_RCVR     1
 
 /* allocate static buffer from WLS memory */
 #define WLS_MEM_ALLOC(_datPtr, _size)                        \
@@ -63,8 +64,11 @@ uint8_t slotIndIdx;
 
 void freeWlsBlockList(uint8_t idx);
 void LwrMacEnqueueWlsBlock();
-#endif /* INTEL_WLS */
+void LwrMacRecvPhyMsg();
+void LwrMacStartWlsRcvr();
+#endif /* INTEL_WLS_MEM */
 
+uint8_t LwrMacSendToFapi(void *msg);
 uint8_t LwrMacSendToPhy(uint8_t msgType, uint32_t msgLen, void *msg);
 #endif
 

@@ -495,7 +495,7 @@ typedef struct failureCause
 typedef struct carrierCfg
 {
    bool  pres;
-   uint16_t   bw;             /* DL/UL bandwidth */
+   uint32_t   bw;             /* DL/UL bandwidth */
    uint32_t   freq;           /* Absolute frequency of DL/UL point A in KHz */
    uint16_t   k0[NUM_NUMEROLOGY];          /* K0 for DL/UL */
    uint16_t   gridSize[NUM_NUMEROLOGY];    /* DL/UL Grid size for each numerologies */

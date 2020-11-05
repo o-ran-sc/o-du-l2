@@ -36,6 +36,8 @@ uint8_t rlcDlActvTsk (Pst *, Buffer *);
 uint8_t rlcDlActvInit (Ent, Inst, Region, Reason);
 uint8_t rgActvTsk (Pst *, Buffer *);
 uint8_t rgActvInit (Ent, Inst, Region, Reason);
+uint8_t lwrMacActvTsk(Pst *, Buffer *);
+uint8_t lwrMacActvInit(Ent, Inst, Region, Reason);
 
 /* Global variable */
 DuCfgParams duCfgParam;
@@ -230,6 +232,41 @@ uint8_t rlcUlInit(SSTskId sysTskId)
 
 /*******************************************************************
  *
+ * @brief Initializes Lower MAC receiver task
+ *
+ * @details
+ *
+ *    Function : lwrMacInit
+ *
+ *    Functionality:
+ *       - Registers and attaches TAPA tasks for Lower MAC receiver
+ *
+ * @params[in] system task ID
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t lwrMacInit(SSTskId sysTskId)
+{
+   /* Register SCTP TAPA Task */
+   if(ODU_REG_TTSK((Ent)ENTLWRMAC, (Inst)0, (Ttype)TTNORM, (Prior)PRIOR0,
+            lwrMacActvInit, (ActvTsk)lwrMacActvTsk) != ROK)
+   {
+      return RFAILED;
+   }
+   /* Attach SCTP TAPA Task */
+   if (ODU_ATTACH_TTSK((Ent)ENTLWRMAC, (Inst)0, sysTskId)!= ROK)
+   {
+      return RFAILED;
+   }
+
+   DU_LOG("\nDU_APP : LWR MAC TAPA task created and registered to %d sys task",
+         sysTskId);
+   return ROK;
+}
+
+/*******************************************************************
+ *
  * @brief Initializes system and TAPA tasks
  *
  * @details
@@ -247,7 +284,7 @@ uint8_t rlcUlInit(SSTskId sysTskId)
 uint8_t commonInit()
 {
    /* Declare system task Ids */
-   SSTskId du_app_stsk, sctp_stsk, rlc_ul_stsk, rlc_mac_cl_stsk;
+   SSTskId du_app_stsk, sctp_stsk, rlc_ul_stsk, rlc_mac_cl_stsk, lwr_mac_stsk;
 
    pthread_attr_t attr;
 
@@ -259,6 +296,7 @@ uint8_t commonInit()
       DU_LOG("\nDU_APP : System Task creation for DU APP failed");
       return RFAILED;
    }
+   ODU_SET_THREAD_AFFINITY(&du_app_stsk, SS_AFFINITY_MODE_EXCL, 15, 0);
 
    /* system task for RLC_DL and MAC */
    if(SCreateSTsk(PRIOR0, &rlc_mac_cl_stsk) != ROK)
@@ -268,6 +306,7 @@ uint8_t commonInit()
    }
    pthread_attr_init(&attr);
    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+   ODU_SET_THREAD_AFFINITY(&rlc_mac_cl_stsk, SS_AFFINITY_MODE_EXCL, 16, 0);
 
    /* system task for RLC UL */
    if(SCreateSTsk(PRIOR1, &rlc_ul_stsk) != ROK)
@@ -275,6 +314,7 @@ uint8_t commonInit()
       DU_LOG("\nDU_APP : System Task creation for RLC UL failed");
       return RFAILED;
    }
+   ODU_SET_THREAD_AFFINITY(&rlc_ul_stsk, SS_AFFINITY_MODE_EXCL, 17, 0);
 
    /* system task for SCTP receiver thread */
    if(SCreateSTsk(PRIOR0, &sctp_stsk) != ROK)
@@ -282,6 +322,15 @@ uint8_t commonInit()
       DU_LOG("\nDU_APP : System Task creation for SCTP failed");
       return RFAILED;
    }
+   ODU_SET_THREAD_AFFINITY(&sctp_stsk, SS_AFFINITY_MODE_EXCL, 18, 0);
+
+   /* system task for lower-mac receiver thread */
+   if(SCreateSTsk(PRIOR0, &lwr_mac_stsk) != ROK)
+   {
+      DU_LOG("\nDU_APP : System Task creation for Lower MAC failed");
+      return RFAILED;
+   }
+   ODU_SET_THREAD_AFFINITY(&lwr_mac_stsk, SS_AFFINITY_MODE_EXCL, 19, 0);
 
    /* Create TAPA tasks */
    if(duAppInit(du_app_stsk) != ROK)
@@ -313,6 +362,13 @@ uint8_t commonInit()
      DU_LOG("\nDU_APP : RLC UL Tapa Task initialization failed");
      return RFAILED;
    } 
+
+   if(lwrMacInit(lwr_mac_stsk) != ROK)
+   {
+      DU_LOG("\nDU_APP : Lower MAC Tapa Task initialization failed");
+      return RFAILED;
+   }
+
    return ROK;
 }
 
