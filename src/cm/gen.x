@@ -1705,8 +1705,8 @@ S16 cmUnpkCmStatus ARGS((CmStatus *status,   Buffer *mBuf));
 S16 cmUnpkCmAlarm  ARGS((CmAlarm  *alrm,     Buffer *mBuf));
 
 #endif /* CMFILE_REORG_1 */
-#if defined(XEON_SPECIFIC_CHANGES) || defined(INTEL_WLS)
-void * mtGetWlsHdl();
+#if defined(XEON_SPECIFIC_CHANGES) || defined(INTEL_WLS) || defined(SS_USE_WLS_MEM)
+void mtGetWlsHdl(void **hdlr);
 #endif
 
 #ifdef __cplusplus

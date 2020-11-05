@@ -21,6 +21,7 @@
 #include "lrg.h"
 #ifdef INTEL_FAPI
 #include "fapi.h"
+#include "fapi_vendor_extension.h"
 #endif
 
 /* header/extern include files (.x) */
@@ -37,15 +38,15 @@
 
 #ifdef INTEL_FAPI
 /* Function pointer for slot indication from lower mac to mac */
-packSlotIndMsg packSlotIndOpts[] =
+SlotIndFunc sendSlotIndOpts[] =
 {
-   packLcSlotInd,  /* packing for loosely coupled */
+   packSlotInd,  /* packing for loosely coupled */
    fapiMacSlotInd, /* packing for tightly coupled */
-   packLwlcSlotInd /* packing for light weight loosly coupled */
+   packSlotInd /* packing for light weight loosly coupled */
 };
 
 /* Function pointer for rach indication from lower mac to mac */ 
-packRachIndMsg sendRachIndOpts[] =
+RachIndFunc sendRachIndOpts[] =
 {
    packRachInd,
    fapiMacRachInd,
@@ -53,7 +54,7 @@ packRachIndMsg sendRachIndOpts[] =
 };
 
 /* Function pointer for crc indication from lower mac to mac */
-packCrcIndMsg sendCrcIndOpts[] =
+CrcIndFunc sendCrcIndOpts[] =
 {
    packCrcInd,
    fapiMacCrcInd,
@@ -61,7 +62,7 @@ packCrcIndMsg sendCrcIndOpts[] =
 };
 
 /* Function pointer for Rx Data indication from lower mac to mac */
-packRxDataIndMsg sendRxDataIndOpts[] =
+RxDataIndFunc sendRxDataIndOpts[] =
 {
    packRxDataInd,
    fapiMacRxDataInd,
@@ -69,7 +70,7 @@ packRxDataIndMsg sendRxDataIndOpts[] =
 };
 
 /* Function pointer for stop indication from lower mac to mac */ 
-packStopIndMsg sendStopIndOpts[] =
+StopIndFunc sendStopIndOpts[] =
 {
    packStopInd,
    fapiMacStopInd,
@@ -77,11 +78,11 @@ packStopIndMsg sendStopIndOpts[] =
 };
 
 /* Function pointer for Uci indication from lower mac to mac */
-packMacUciIndMsg sendUciIndOpts[] =
+UciIndFunc sendUciIndOpts[] =
 {
-   packMacUciInd,
+   packUciInd,
    FapiMacUciInd,
-   packMacUciInd
+   packUciInd
 };
 
 /*******************************************************************
@@ -105,17 +106,30 @@ uint8_t procSlotInd(fapi_slot_ind_t *fapiSlotInd)
    /* fill Pst structure to send to lwr_mac to MAC */
    Pst pst;
    uint16_t ret;
-   SlotIndInfo slotInd;
+   SlotIndInfo *slotInd;
 
-   FILL_PST_LWR_MAC_TO_MAC(pst, EVENT_SLOT_IND_TO_MAC);
+   MAC_ALLOC_SHRABL_BUF(slotInd, sizeof(SlotIndInfo));
+   if(slotInd)
+   {
+      slotInd->cellId = lwrMacCb.cellCb[0].cellId; 
+      slotInd->sfn = fapiSlotInd->sfn;
+      slotInd->slot = fapiSlotInd->slot;
 
-   slotInd.cellId = lwrMacCb.cellCb[0].cellId; 
-   slotInd.sfn = fapiSlotInd->sfn;
-   slotInd.slot = fapiSlotInd->slot;
+      FILL_PST_LWR_MAC_TO_MAC(pst, EVENT_SLOT_IND_TO_MAC);
+#ifndef INTEL_WLS_MEM      
+      /* TODO : Using LWLC with phy stub is leading to memory issues.
+       * Need to be fixed. Temporarily using TC itself with stub */
+      pst.selector = ODU_SELECTOR_TC;
+#endif
+      ret = (*sendSlotIndOpts[pst.selector])(&pst, slotInd);
+   }
+   else
+   {
+      printf("\nLWR_MAC: Memory allocation failed in procSlotInd");
+      ret = RFAILED;
+   }
 
-   ret = (*packSlotIndOpts[pst.selector])(&pst, &slotInd);
-
-#ifdef INTEL_WLS
+#ifdef INTEL_WLS_MEM
    slotIndIdx++;
    if(slotIndIdx > WLS_MEM_FREE_PRD)
    {
@@ -123,7 +137,6 @@ uint8_t procSlotInd(fapi_slot_ind_t *fapiSlotInd)
    }
    freeWlsBlockList(slotIndIdx - 1);
 #endif
-
    return ret;
 }
 
@@ -144,19 +157,25 @@ uint8_t procSlotInd(fapi_slot_ind_t *fapiSlotInd)
  * ****************************************************************/
 uint8_t procStopInd()
 {
-   uint8_t ret;
    Pst pst;
+   uint16_t *cellId = NULLP;
 
+   MAC_ALLOC_SHRABL_BUF(cellId, sizeof(uint16_t));
+   if(!cellId)
+   {
+      printf("\nLWR_MAC: Memory Allocation failed in procStopInd");
+      return RFAILED;
+   }
+
+   *cellId = lwrMacCb.cellCb[0].cellId;
    lwrMacCb.phyState = PHY_STATE_CONFIGURED;
    lwrMacCb.cellCb[0].state = PHY_STATE_CONFIGURED;
    DU_LOG("\nLWR_MAC: PHY has moved to configured state");
 
    FILL_PST_LWR_MAC_TO_MAC(pst, EVENT_STOP_IND_TO_MAC);
-
-   ret = (*sendStopIndOpts[pst.selector])(&pst, \
-      lwrMacCb.cellCb[0].cellId);
-   return ret;
+   return (*sendStopIndOpts[pst.selector])(&pst, cellId);
 }
+
 /*******************************************************************
  *
  * @brief Processes Rach Indication from PHY and sends to MAC
@@ -178,16 +197,23 @@ uint8_t procRachInd(fapi_rach_indication_t  *fapiRachInd)
    Pst          pst;
    uint8_t      pduIdx;
    uint8_t      prmbleIdx;
-   RachPduInfo  *rachPdu;
-   RachInd      rachInd;
+   RachPduInfo  *rachPdu = NULLP;
+   RachInd      *rachInd = NULLP;
 
-   rachInd.cellId = lwrMacCb.cellCb[0].cellId;
-   rachInd.timingInfo.sfn = fapiRachInd->sfn;
-   rachInd.timingInfo.slot = fapiRachInd->slot;
-   rachInd.numPdu = fapiRachInd->numPdus;
-   for(pduIdx=0; pduIdx < rachInd.numPdu; pduIdx++)
+   MAC_ALLOC_SHRABL_BUF(rachInd, sizeof(RachInd));
+   if(!rachInd)
    {
-      rachPdu = &rachInd.rachPdu[pduIdx];
+      printf("\nLWR_MAC: Memory Allocation failed in procRachInd");
+      return RFAILED;
+   }
+
+   rachInd->cellId = lwrMacCb.cellCb[0].cellId;
+   rachInd->timingInfo.sfn = fapiRachInd->sfn;
+   rachInd->timingInfo.slot = fapiRachInd->slot;
+   rachInd->numPdu = fapiRachInd->numPdus;
+   for(pduIdx=0; pduIdx < rachInd->numPdu; pduIdx++)
+   {
+      rachPdu = &rachInd->rachPdu[pduIdx];
       rachPdu->pci = fapiRachInd->rachPdu[pduIdx].phyCellId;
       rachPdu->symbolIdx = fapiRachInd->rachPdu[pduIdx].symbolIndex;
       rachPdu->slotIdx = fapiRachInd->rachPdu[pduIdx].slotIndex;
@@ -201,10 +227,10 @@ uint8_t procRachInd(fapi_rach_indication_t  *fapiRachInd)
 	    fapiRachInd->rachPdu[pduIdx].preambleInfo[prmbleIdx].timingAdvance;
       }
    }
-   FILL_PST_LWR_MAC_TO_MAC(pst, EVENT_RACH_IND_TO_MAC);
 
-   (*sendRachIndOpts[pst.selector])(&pst, &rachInd);
-   return ROK;
+   /* Fill post and sent to MAC */
+   FILL_PST_LWR_MAC_TO_MAC(pst, EVENT_RACH_IND_TO_MAC);
+   return (*sendRachIndOpts[pst.selector])(&pst, rachInd);
 
 }/* handleRachInd */
 
@@ -230,17 +256,24 @@ uint8_t procCrcInd(fapi_crc_ind_t  *fapiCrcInd)
    Pst          pst;
    uint8_t      crcInfoIdx;
    uint8_t      crcStatusIdx;
-   CrcInfo      *crcIndInfo;
-   CrcInd       crcInd;
+   CrcInfo      *crcIndInfo = NULLP;
+   CrcInd       *crcInd = NULLP;
 
-   crcInd.cellId = lwrMacCb.cellCb[0].cellId;
-   crcInd.timingInfo.sfn = fapiCrcInd->sfn;
-   crcInd.timingInfo.slot = fapiCrcInd->slot;
-   crcInd.numCrc = fapiCrcInd->numCrcs;
-
-   for(crcInfoIdx = 0; crcInfoIdx < crcInd.numCrc; crcInfoIdx++)
+   MAC_ALLOC_SHRABL_BUF(crcInd, sizeof(CrcInd));
+   if(!crcInd)
    {
-      crcIndInfo = &crcInd.crcInfo[crcInfoIdx];
+      printf("\nLWR_MAC: Memory Allocation failed in procCrcInd");
+      return RFAILED;
+   }
+
+   crcInd->cellId = lwrMacCb.cellCb[0].cellId;
+   crcInd->timingInfo.sfn = fapiCrcInd->sfn;
+   crcInd->timingInfo.slot = fapiCrcInd->slot;
+   crcInd->numCrc = fapiCrcInd->numCrcs;
+
+   for(crcInfoIdx = 0; crcInfoIdx < crcInd->numCrc; crcInfoIdx++)
+   {
+      crcIndInfo = &crcInd->crcInfo[crcInfoIdx];
       crcIndInfo->handle      = fapiCrcInd->crc[crcInfoIdx].handle;
       crcIndInfo->rnti        = fapiCrcInd->crc[crcInfoIdx].rnti;
       crcIndInfo->harqId      = fapiCrcInd->crc[crcInfoIdx].harqId;
@@ -256,11 +289,9 @@ uint8_t procCrcInd(fapi_crc_ind_t  *fapiCrcInd)
       crcIndInfo->rssi = fapiCrcInd->crc[crcInfoIdx].rssi;
    }
 
+   /* Fill post and sent to MAC */
    FILL_PST_LWR_MAC_TO_MAC(pst, EVENT_CRC_IND_TO_MAC);
-
-   (*sendCrcIndOpts[pst.selector])(&pst, &crcInd);
-   return ROK;
-
+   return (*sendCrcIndOpts[pst.selector])(&pst, crcInd);
 } /* handleCrcInd */
 
 /*******************************************************************
@@ -284,17 +315,24 @@ uint8_t procRxDataInd(fapi_rx_data_indication_t  *fapiRxDataInd)
 {
    Pst           pst;
    uint8_t       pduIdx;
-   RxDataInd     rxDataInd;
-   RxDataIndPdu  *pdu;   
+   RxDataInd     *rxDataInd = NULLP;
+   RxDataIndPdu  *pdu = NULLP;   
 
-   rxDataInd.cellId = lwrMacCb.cellCb[0].cellId;
-   rxDataInd.timingInfo.sfn = fapiRxDataInd->sfn; 
-   rxDataInd.timingInfo.slot = fapiRxDataInd->slot;
-   rxDataInd.numPdus = fapiRxDataInd->numPdus;
-
-   for(pduIdx = 0; pduIdx < rxDataInd.numPdus; pduIdx++)
+   MAC_ALLOC_SHRABL_BUF(rxDataInd, sizeof(RxDataInd));
+   if(!rxDataInd)
    {
-      pdu = &rxDataInd.pdus[pduIdx];
+      printf("\nLWR_MAC: Memory Allocation failed in procRxDataInd");
+      return RFAILED;
+   }
+
+   rxDataInd->cellId = lwrMacCb.cellCb[0].cellId;
+   rxDataInd->timingInfo.sfn = fapiRxDataInd->sfn; 
+   rxDataInd->timingInfo.slot = fapiRxDataInd->slot;
+   rxDataInd->numPdus = fapiRxDataInd->numPdus;
+
+   for(pduIdx = 0; pduIdx < rxDataInd->numPdus; pduIdx++)
+   {
+      pdu = &rxDataInd->pdus[pduIdx];
       pdu->handle = fapiRxDataInd->pdus[pduIdx].handle;
       pdu->rnti = fapiRxDataInd->pdus[pduIdx].rnti;
       pdu->harqId = fapiRxDataInd->pdus[pduIdx].harqId;
@@ -303,14 +341,13 @@ uint8_t procRxDataInd(fapi_rx_data_indication_t  *fapiRxDataInd)
       pdu->timingAdvance = fapiRxDataInd->pdus[pduIdx].timingAdvance;
       pdu->rssi = fapiRxDataInd->pdus[pduIdx].rssi;
 
-      MAC_ALLOC(pdu->pduData, pdu->pduLength);
+      MAC_ALLOC_SHRABL_BUF(pdu->pduData, pdu->pduLength);
       memcpy(pdu->pduData, fapiRxDataInd->pdus[pduIdx].pduData, pdu->pduLength);
    }
 
+   /* Fill post and sent to MAC */
    FILL_PST_LWR_MAC_TO_MAC(pst, EVENT_RX_DATA_IND_TO_MAC);
-
-   (*sendRxDataIndOpts[pst.selector])(&pst, &rxDataInd);
-   return ROK;
+   return (*sendRxDataIndOpts[pst.selector])(&pst, rxDataInd);
 }
 
 /*******************************************************************
@@ -343,12 +380,10 @@ uint8_t fillUciIndPucchF0F1(UciPucchF0F1 *pduInfo, fapi_uci_o_pucch_f0f1_t *fapi
    pduInfo->crnti         = fapiPduInfo->rnti;
    pduInfo->timingAdvance = fapiPduInfo->timingAdvance;
    pduInfo->rssi          = fapiPduInfo->rssi;   
-   memcpy(pduInfo->uciBits, fapiPduInfo->uciBits, MAX_UCI_BIT_PER_TTI_IN_BYTES);
    if(fapiPduInfo->srInfo.srIndication)
    {
       pduInfo->srInfo.srIndPres = fapiPduInfo->srInfo.srIndication;
       pduInfo->srInfo.srConfdcLevel = fapiPduInfo->srInfo.srConfidenceLevel;
-
    }
    if(fapiPduInfo->harqInfo.numHarq)
    {
@@ -384,34 +419,40 @@ uint8_t procUciInd(fapi_uci_indication_t  *fapiUciInd)
    uint8_t pduIdx;
    uint8_t ret = ROK;
    Pst     pst;
-   memset(&pst, 0, sizeof(Pst));
-   UciInd  macUciInd;
-   memset(&macUciInd, 0, sizeof(UciInd));
+   UciInd  *macUciInd = NULLP;
 
-   macUciInd.cellId = lwrMacCb.cellCb[0].cellId;
-   macUciInd.slotInd.sfn = fapiUciInd->sfn; 
-   macUciInd.slotInd.slot = fapiUciInd->slot;
-   macUciInd.numUcis = fapiUciInd->numUcis;
-
-   for(pduIdx = 0; pduIdx < macUciInd.numUcis; pduIdx++)
+   MAC_ALLOC_SHRABL_BUF(macUciInd, sizeof(UciInd));
+   if(!macUciInd)
    {
-      macUciInd.pdus[pduIdx].pduType = fapiUciInd->uciPdu[pduIdx].pduType;
-      switch(macUciInd.pdus[pduIdx].pduType)
+      printf("\nLWR_MAC: Memory Allocation failed in procUciInd");
+      return RFAILED;
+   }
+
+   memset(macUciInd, 0, sizeof(UciInd));
+   macUciInd->cellId = lwrMacCb.cellCb[0].cellId;
+   macUciInd->slotInd.sfn = fapiUciInd->sfn; 
+   macUciInd->slotInd.slot = fapiUciInd->slot;
+   macUciInd->numUcis = fapiUciInd->numUcis;
+
+   for(pduIdx = 0; pduIdx < macUciInd->numUcis; pduIdx++)
+   {
+      macUciInd->pdus[pduIdx].pduType = fapiUciInd->uciPdu[pduIdx].pduType;
+      switch(macUciInd->pdus[pduIdx].pduType)
       {
          case UCI_IND_PUSCH:
          break;
          case UCI_IND_PUCCH_F0F1:
          {
             UciPucchF0F1 *pduInfo = NULLP;
-            macUciInd.pdus[pduIdx].pduSize = fapiUciInd->uciPdu[pduIdx].pduSize;
-            pduInfo = &macUciInd.pdus[pduIdx].uci.uciPucchF0F1;
+            macUciInd->pdus[pduIdx].pduSize = fapiUciInd->uciPdu[pduIdx].pduSize;
+            pduInfo = &macUciInd->pdus[pduIdx].uci.uciPucchF0F1;
             ret = fillUciIndPucchF0F1(pduInfo, &fapiUciInd->uciPdu[pduIdx].uci.uciPucchF0F1);
          }
          break;
          case UCI_IND_PUCCH_F2F3F4:
             break;
          default:
-            DU_LOG("\nLWR_MAC: Invalid Pdu Type %d at procmacUciInd()", macUciInd.pdus[pduIdx].pduType);
+            DU_LOG("\nLWR_MAC: Invalid Pdu Type %d at procmacUciInd()", macUciInd->pdus[pduIdx].pduType);
 	    ret = RFAILED;
             break;
       }
@@ -419,7 +460,7 @@ uint8_t procUciInd(fapi_uci_indication_t  *fapiUciInd)
    if(!ret)
    {
       FILL_PST_LWR_MAC_TO_MAC(pst, EVENT_UCI_IND_TO_MAC);
-      ret = (*sendUciIndOpts[pst.selector])(&pst, &macUciInd);
+      ret = (*sendUciIndOpts[pst.selector])(&pst, macUciInd);
    }
    else
    {
@@ -429,6 +470,21 @@ uint8_t procUciInd(fapi_uci_indication_t  *fapiUciInd)
 }
 #endif /* FAPI */
 
+/*******************************************************************
+ *
+ * @brief Processes message from PHY
+ *
+ * @details
+ *
+ *    Function : procPhyMessages
+ *
+ *    Functionality: Processes message from PHY
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
 void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
 {
 #ifdef INTEL_FAPI
@@ -439,9 +495,13 @@ void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
    switch(header->msg_id)
    {
       case FAPI_PARAM_RESPONSE:
+	 {
+            sendToLowerMac(PARAM_RESPONSE, msgSize, msg);
+	    break;
+	 }
       case FAPI_CONFIG_RESPONSE:
 	 {
-	    sendToLowerMac(msgType, msgSize, msg);
+	    sendToLowerMac(CONFIG_RESPONSE, msgSize, msg);
 	    break;
 	 }
       case FAPI_SLOT_INDICATION:
@@ -501,9 +561,6 @@ void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
 	    break;
 	 }  
    }
-#ifdef INTEL_WLS
-   WLS_MEM_FREE(msg, LWR_MAC_WLS_BUF_SIZE); 
-#endif
 #endif
 }
 

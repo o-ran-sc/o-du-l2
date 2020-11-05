@@ -209,7 +209,7 @@ Reason reason;         /* reason */
    schActvInit(ENTMAC, (DEFAULT_CELLS + SCH_INST_START), DFLT_REGION, PWR_UP);
 
    /* Initialize lower mac */
-   lwrMacInit();
+   lwrMacLayerInit();
 
    return ROK;
 
@@ -273,6 +273,12 @@ RgMngmt  *cfg;    /* config structure  */
    switch(cfg->hdr.elmId.elmnt)
    {
       case STGEN:
+#ifdef INTEL_WLS_MEM
+         /* Start WLS message receiver thread */
+         LwrMacStartWlsRcvr();
+         /* Allocate memory for UL transmissions */
+         LwrMacEnqueueWlsBlock();
+#endif
 	 reason = rgLMMGenCfg(inst,&cfg->t.cfg); 
 	 break;
       case STRGUSAP:
