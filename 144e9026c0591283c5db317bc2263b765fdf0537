@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "51e3c82a_15efa2af",
+        "filename": "src/du_app/du_cell_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-05T16:42:52Z",
+      "side": 1,
+      "message": "add du prefix",
+      "revId": "144e9026c0591283c5db317bc2263b765fdf0537",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "12404c2d_d5612171",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 8427,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-05T16:42:52Z",
+      "side": 1,
+      "message": "is this a part of gnb DU Cfg Update Ack? Please recheck in spec",
+      "revId": "144e9026c0591283c5db317bc2263b765fdf0537",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "80a0b53b_02c5a8db",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-05T16:42:52Z",
+      "side": 1,
+      "message": "make this the last member of the structure",
+      "revId": "144e9026c0591283c5db317bc2263b765fdf0537",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fc1bd838_0fdeb9c3",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-05T16:42:52Z",
+      "side": 1,
+      "message": "intialize this to NULL at the begining",
+      "revId": "144e9026c0591283c5db317bc2263b765fdf0537",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7f6c9fae_ce7285ca",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-05T16:42:52Z",
+      "side": 1,
+      "message": "delete",
+      "revId": "144e9026c0591283c5db317bc2263b765fdf0537",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
