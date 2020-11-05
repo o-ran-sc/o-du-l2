@@ -150,7 +150,7 @@ typedef struct sloggerInfo
 } SLoggerInfo;
 #endif /*  SS_LOGGER_SUPPORT  */
 
-#ifdef INTEL_WLS
+#if defined (INTEL_WLS) || defined (SS_USE_WLS_MEM)
 typedef struct _MtWls
 {
   Void   *intf;
@@ -274,7 +274,7 @@ typedef struct ssos
  SLoggerInfo logger;
 #endif /*  SS_LOGGER_SUPPORT  */
  S8          *configFilePath;
-#ifdef INTEL_WLS
+#if defined (INTEL_WLS) || defined (SS_USE_WLS_MEM)
    SsMtWls   wls;
 #endif
 

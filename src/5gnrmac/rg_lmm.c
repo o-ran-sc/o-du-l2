@@ -209,7 +209,7 @@ Reason reason;         /* reason */
    schActvInit(ENTMAC, (DEFAULT_CELLS + SCH_INST_START), DFLT_REGION, PWR_UP);
 
    /* Initialize lower mac */
-   lwrMacInit();
+   lwrMacLayerInit();
 
    return ROK;
 

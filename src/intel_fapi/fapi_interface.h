@@ -34,17 +34,17 @@ extern "C" {
 #define FAPI_STOP_INDICATION								0x06
 #define FAPI_ERROR_INDICATION                               0x07
 // Reserved 0x08 - 0x7f
-#define FAPI_VENDOR_EXT_SHUTDOWN_REQUEST                    0x08
-#define FAPI_VENDOR_MESSAGE                                 0x09
+#define FAPI_VENDOR_EXT_SHUTDOWN_REQUEST                    0x11
+#define FAPI_VENDOR_MESSAGE                                 0x10
 #ifdef DEBUG_MODE
-#define FAPI_VENDOR_EXT_DL_IQ_SAMPLES                       0x0A
-#define FAPI_VENDOR_EXT_UL_IQ_SAMPLES                       0x0B
+#define FAPI_VENDOR_EXT_DL_IQ_SAMPLES                       0x13
+#define FAPI_VENDOR_EXT_UL_IQ_SAMPLES                       0x14
 #endif
 // WLS operation 
-#define FAPI_MSG_HEADER_IND                                 0x2A
+#define FAPI_MSG_HEADER_IND                                 0x1A
 
 // WLS operation with PDSCH Payload
-#define FAPI_MSG_PHY_ZBC_BLOCK_REQ                          0x2B
+#define FAPI_MSG_PHY_ZBC_BLOCK_REQ                          0x1B
 
 // WLS operation with PUSCH Payload
 #define FAPI_MSG_PHY_ZBC_BLOCK_IND                          0x2C
@@ -61,9 +61,9 @@ extern "C" {
 #define FAPI_RACH_INDICATION								0x89
 // Reserved 0x8a -0xff
 #ifdef DEBUG_MODE
-#define FAPI_VENDOR_EXT_START_RESPONSE                      0x8A
+#define FAPI_VENDOR_EXT_START_RESPONSE                      0x15
 #endif
-#define FAPI_VENDOR_EXT_SHUTDOWN_RESPONSE                   0x8B
+#define FAPI_VENDOR_EXT_SHUTDOWN_RESPONSE                   0x12
 
 // Tags per 5G FAPI
 // Cell Parameters
@@ -280,10 +280,10 @@ extern "C" {
 
 #ifdef DEBUG_MODE
 #define FAPI_MAX_IQ_SAMPLE_FILE_SIZE                        576
-#define FAPI_MAX_IQ_SAMPLE_DL_PORTS                           8
+#define FAPI_MAX_IQ_SAMPLE_DL_PORTS                          16
 #define FAPI_MAX_IQ_SAMPLE_UL_PORTS                           2
-#define FAPI_MAX_IQ_SAMPLE_UL_VIRTUAL_PORTS                   4
-#define FAPI_MAX_IQ_SAMPLE_UL_ANTENNA                         32
+#define FAPI_MAX_IQ_SAMPLE_UL_VIRTUAL_PORTS                   8
+#define FAPI_MAX_IQ_SAMPLE_UL_ANTENNA                        64 
 #define FAPI_MAX_IQ_SAMPLE_BUFFER_SIZE                     4096
 #endif
 
@@ -1392,16 +1392,17 @@ extern "C" {
         uint32_t phaseCompensationEnable;
         uint32_t startFrameNum;
         uint32_t startSlotNum;
+        uint32_t startSymNum;
         char filename_in_ul_iq[FAPI_MAX_IQ_SAMPLE_UL_VIRTUAL_PORTS]
             [FAPI_MAX_IQ_SAMPLE_FILE_SIZE];
-        char filename_in_ul_urllc[FAPI_MAX_IQ_SAMPLE_UL_VIRTUAL_PORTS]
-            [FAPI_MAX_IQ_SAMPLE_FILE_SIZE];
+        //char filename_in_ul_urllc[FAPI_MAX_IQ_SAMPLE_UL_VIRTUAL_PORTS]
+        //    [FAPI_MAX_IQ_SAMPLE_FILE_SIZE];
         char filename_in_prach_iq[FAPI_MAX_IQ_SAMPLE_UL_VIRTUAL_PORTS]
             [FAPI_MAX_IQ_SAMPLE_FILE_SIZE];
         char filename_in_srs_iq[FAPI_MAX_IQ_SAMPLE_UL_ANTENNA]
             [FAPI_MAX_IQ_SAMPLE_FILE_SIZE];
         char filename_out_dl_iq[FAPI_MAX_IQ_SAMPLE_FILE_SIZE];
-        char filename_out_dl_iq_urllc[FAPI_MAX_IQ_SAMPLE_FILE_SIZE];
+        //char filename_out_dl_iq_urllc[FAPI_MAX_IQ_SAMPLE_FILE_SIZE];
         char filename_out_dl_beam[FAPI_MAX_IQ_SAMPLE_DL_PORTS]
             [FAPI_MAX_IQ_SAMPLE_FILE_SIZE];
         char filename_out_ul_beam[FAPI_MAX_IQ_SAMPLE_UL_VIRTUAL_PORTS]

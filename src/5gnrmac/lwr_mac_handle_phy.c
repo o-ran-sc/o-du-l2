@@ -115,7 +115,7 @@ uint8_t procSlotInd(fapi_slot_ind_t *fapiSlotInd)
 
    ret = (*packSlotIndOpts[pst.selector])(&pst, &slotInd);
 
-#ifdef INTEL_WLS
+#ifdef INTEL_WLS_MEM
    slotIndIdx++;
    if(slotIndIdx > WLS_MEM_FREE_PRD)
    {
@@ -429,6 +429,21 @@ uint8_t procUciInd(fapi_uci_indication_t  *fapiUciInd)
 }
 #endif /* FAPI */
 
+/*******************************************************************
+ *
+ * @brief Processes message from PHY
+ *
+ * @details
+ *
+ *    Function : procPhyMessages
+ *
+ *    Functionality: Processes message from PHY
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
 void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
 {
 #ifdef INTEL_FAPI
@@ -439,9 +454,13 @@ void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
    switch(header->msg_id)
    {
       case FAPI_PARAM_RESPONSE:
+	 {
+            sendToLowerMac(PARAM_RESPONSE, msgSize, msg);
+	    break;
+	 }
       case FAPI_CONFIG_RESPONSE:
 	 {
-	    sendToLowerMac(msgType, msgSize, msg);
+	    sendToLowerMac(CONFIG_RESPONSE, msgSize, msg);
 	    break;
 	 }
       case FAPI_SLOT_INDICATION:
@@ -501,9 +520,6 @@ void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
 	    break;
 	 }  
    }
-#ifdef INTEL_WLS
-   WLS_MEM_FREE(msg, LWR_MAC_WLS_BUF_SIZE); 
-#endif
 #endif
 }
 

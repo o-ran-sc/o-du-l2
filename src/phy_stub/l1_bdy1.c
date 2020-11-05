@@ -243,17 +243,17 @@ void l1HdlParamReq(uint32_t msgLen, void *msg)
 void l1HdlConfigReq(uint32_t msgLen, void *msg)
 {
 #ifdef INTEL_FAPI
-   fapi_config_req_t *configReq = (fapi_config_req_t *)msg;
+   fapi_config_req_t *configReq = (fapi_config_req_t *)(msg +1);
 
    DU_LOG("\nPHY_STUB: Received Config Request in PHY");
 
    /* Handling CONFIG RESPONSE */
-   if(l1BldAndSndConfigRsp(msg)!= ROK)
+   if(l1BldAndSndConfigRsp(configReq)!= ROK)
    {
       printf("\nPHY_STUB: Failed Sending config Response");
    }
 
-   MAC_FREE(configReq, msgLen);
+   MAC_FREE(msg, msgLen);
 #endif
 
 }
@@ -649,16 +649,15 @@ uint16_t l1BuildAndSendSlotIndication()
 S16 l1HdlStartReq(uint32_t msgLen, void *msg)
 {
 #ifdef INTEL_FAPI
-   fapi_start_req_t *startReq = (fapi_start_req_t *)msg;
-
    if(lwrMacCb.phyState == PHY_STATE_CONFIGURED)
    {
       l1HdlSlotIndicaion(FALSE);
-      MAC_FREE(startReq, sizeof(fapi_start_req_t));
+      MAC_FREE(msg, msgLen);
    }
    else
    {
       DU_LOG("\nPHY_STUB: Received Start Req in PHY State %d", lwrMacCb.phyState);
+      MAC_FREE(msg, msgLen);
       return RFAILED;
    }
 #endif

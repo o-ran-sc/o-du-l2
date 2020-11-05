@@ -1054,6 +1054,10 @@ EXTERN  S16 SPutSBuf ARGS((Region region, Pool pool, Data *buf, Size size));
 #endif
 #endif /* SS_HISTOGRAM_SUPPORT */
 #endif /*SS_LIGHT_MEM_LEAK_STS */
+#ifdef INTEL_WLS_MEM
+EXTERN S16 SPutSBufWls(Region region, Pool pool, Data *ptr, Size size);
+EXTERN S16 SGetSBufWls(Region region, Pool pool, Data **ptr, Size size);
+#endif
 #ifdef INTEL_WLS
 #ifdef T2K_MEM_LEAK_DBG
 #define SGetSBufWls(region,pool,bufPtr,size) SGetSBufWls1(region,pool,bufPtr,size,__FILE__,__LINE__) 
