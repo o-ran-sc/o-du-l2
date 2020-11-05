@@ -29,6 +29,9 @@
 #include "lwr_mac.h"
 #include "lwr_mac_fsm.h"
 #include "mac_utils.h"
+#include "lwr_mac_phy.h"
+
+uint8_t ssbPeriodicity[6] = {5, 10, 20, 40, 80, 160};
 
 uint8_t MacSchCellCfgReq(Pst *pst, MacCellCfg  *macCellCfg);
 
@@ -121,7 +124,7 @@ uint8_t MacProcCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
    uint8_t ret = ROK;
    MacCellCb     *macCellCb;
 
-   memset(&cfmPst, 0, sizeof(Pst));
+   memset((uint8_t *)&cfmPst, 0, sizeof(Pst));
 
    MAC_ALLOC(macCellCb, sizeof(MacCellCb));
    if(macCellCb == NULLP)
@@ -169,9 +172,6 @@ uint8_t MacProcCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
       MAC_FREE_SHRABL_BUF(pst->region, pst->pool, macCellCfg->sib1Cfg.sib1Pdu, macCellCfg->sib1Cfg.sib1PduLen);
       MAC_FREE_SHRABL_BUF(pst->region, pst->pool, macCellCfg ,sizeof(MacCellCfg));
    }
-#ifdef INTEL_WLS
-   LwrMacEnqueueWlsBlock();
-#endif
    return ret;
 } /* end of MacProcCellCfgReq */
 
@@ -205,7 +205,7 @@ uint8_t MacSchCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
    schCellCfg.ssbSchCfg.ssbPbchPwr = macCellCfg->ssbCfg.ssbPbchPwr;
    schCellCfg.ssbSchCfg.scsCommon = macCellCfg->ssbCfg.scsCmn;
    schCellCfg.ssbSchCfg.ssbOffsetPointA = macCellCfg->ssbCfg.ssbOffsetPointA;
-   schCellCfg.ssbSchCfg.ssbPeriod = macCellCfg->ssbCfg.ssbPeriod;
+   schCellCfg.ssbSchCfg.ssbPeriod = ssbPeriodicity[macCellCfg->ssbCfg.ssbPeriod];
    schCellCfg.ssbSchCfg.ssbSubcOffset = macCellCfg->ssbCfg.ssbScOffset;
    for(uint8_t idx=0; idx<SSB_MASK_SIZE; idx++)
    {

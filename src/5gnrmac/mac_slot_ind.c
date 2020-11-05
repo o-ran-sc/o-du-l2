@@ -342,7 +342,7 @@ uint8_t macProcSlotInd(SlotIndInfo slotInd)
  **/
 uint8_t fapiMacSlotInd(Pst *pst, SlotIndInfo *slotInd)
 {
-   uint8_t               ret;
+   uint8_t               ret = ROK;
    volatile uint32_t     startTime=0;
 
 #ifdef ODU_SLOT_IND_DEBUG_LOG
@@ -356,6 +356,7 @@ uint8_t fapiMacSlotInd(Pst *pst, SlotIndInfo *slotInd)
    if(ret != ROK)
    {
       DU_LOG("\nMAC : Sending of slot ind msg from MAC to SCH failed");
+      MAC_FREE_SHRABL_BUF(pst->region, pst->pool, slotInd, sizeof(SlotIndInfo));
       return ret;
    }
 
@@ -363,6 +364,7 @@ uint8_t fapiMacSlotInd(Pst *pst, SlotIndInfo *slotInd)
    if(ret != ROK)
    {
       DU_LOG("\nMAC : macProcSlotInd failed");
+      MAC_FREE_SHRABL_BUF(pst->region, pst->pool, slotInd, sizeof(SlotIndInfo));
       return ret;
    }
 
@@ -371,12 +373,13 @@ uint8_t fapiMacSlotInd(Pst *pst, SlotIndInfo *slotInd)
    if(ret != ROK)
    {
       DU_LOG("\nMAC :Sending of slot ind msg from MAC to DU APP failed");
+      MAC_FREE_SHRABL_BUF(pst->region, pst->pool, slotInd, sizeof(SlotIndInfo));
       return ret;
    }
 
    /*stoping Task*/
    ODU_STOP_TASK(startTime, PID_MAC_TTI_IND);
-
+   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, slotInd, sizeof(SlotIndInfo));
    return ret;
 }  /* fapiMacSlotInd */
 

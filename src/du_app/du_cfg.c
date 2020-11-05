@@ -139,7 +139,7 @@ uint8_t readMacCfg()
    duCfgParam.macCellCfg.dlCarrCfg.k0[2] = 1;
    duCfgParam.macCellCfg.dlCarrCfg.k0[3] = 1;
    duCfgParam.macCellCfg.dlCarrCfg.k0[4] = 1;
-   duCfgParam.macCellCfg.dlCarrCfg.gridSize[0] = 1;
+   duCfgParam.macCellCfg.dlCarrCfg.gridSize[0] = 273;
    duCfgParam.macCellCfg.dlCarrCfg.gridSize[1] = 1;
    duCfgParam.macCellCfg.dlCarrCfg.gridSize[2] = 1;
    duCfgParam.macCellCfg.dlCarrCfg.gridSize[3] = 1;
@@ -170,7 +170,7 @@ uint8_t readMacCfg()
    duCfgParam.macCellCfg.ssbCfg.scsCmn = SUBCARRIER_SPACING;
    duCfgParam.macCellCfg.ssbCfg.ssbOffsetPointA = OFFSET_TO_POINT_A;
    duCfgParam.macCellCfg.ssbCfg.betaPss = BETA_PSS;
-   duCfgParam.macCellCfg.ssbCfg.ssbPeriod = SSB_PERIODICITY_20MS;
+   duCfgParam.macCellCfg.ssbCfg.ssbPeriod = SSB_PRDCTY_MS_20;
    duCfgParam.macCellCfg.ssbCfg.ssbScOffset = SSB_SUBCARRIER_OFFSET;
    duCfgParam.macCellCfg.ssbCfg.ssbMask[0] = 1; /* only one SSB is transmitted */
    duCfgParam.macCellCfg.ssbCfg.ssbMask[1] = 0;
@@ -200,7 +200,7 @@ uint8_t readMacCfg()
    duCfgParam.macCellCfg.prachCfg.rootSeqLen    = ROOT_SEQ_LEN;
    duCfgParam.macCellCfg.prachCfg.fdm[0].rootSeqIdx = ROOT_SEQ_IDX;
    duCfgParam.macCellCfg.prachCfg.fdm[0].numRootSeq = NUM_ROOT_SEQ;
-   duCfgParam.macCellCfg.prachCfg.fdm[0].k1 = 1;
+   duCfgParam.macCellCfg.prachCfg.fdm[0].k1 = 0;
    duCfgParam.macCellCfg.prachCfg.fdm[0].zeroCorrZoneCfg = ZERO_CORRELATION_ZONE_CFG;
    duCfgParam.macCellCfg.prachCfg.fdm[0].numUnusedRootSeq = NUM_UNUSED_ROOT_SEQ;
    if(duCfgParam.macCellCfg.prachCfg.fdm[0].numUnusedRootSeq != 0)
@@ -290,10 +290,6 @@ uint8_t readMacCfg()
    /* fill PUCCH config common */
    duCfgParam.macCellCfg.initialUlBwp.pucchCommon.pucchResourceCommon = PUCCH_RSRC_COMMON;
    duCfgParam.macCellCfg.initialUlBwp.pucchCommon.pucchGroupHopping = PUCCH_GROUP_HOPPING;
-
-   /* This should be calculated based on
-      (number of mandatory parameters) + (number of otional parameters being filled) */
-   duCfgParam.macCellCfg.numTlv = 40;
 
    return ROK;
 }

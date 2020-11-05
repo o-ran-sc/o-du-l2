@@ -495,7 +495,7 @@ typedef struct failureCause
 typedef struct carrierCfg
 {
    bool  pres;
-   uint16_t   bw;             /* DL/UL bandwidth */
+   uint32_t   bw;             /* DL/UL bandwidth */
    uint32_t   freq;           /* Absolute frequency of DL/UL point A in KHz */
    uint16_t   k0[NUM_NUMEROLOGY];          /* K0 for DL/UL */
    uint16_t   gridSize[NUM_NUMEROLOGY];    /* DL/UL Grid size for each numerologies */
@@ -640,7 +640,6 @@ typedef struct bwpUlConfig
 typedef struct macCellCfg
 {
    uint16_t            cellId;           /* Cell Id */
-   uint8_t             numTlv;           /* Number of configuration TLVs */
    uint8_t             carrierId;        /* Carrired Index */
    uint16_t            phyCellId;        /* Physical cell id */
    DuplexMode     dupType;          /* Duplex type: TDD/FDD */

@@ -153,6 +153,7 @@ uint8_t fapiMacCrcInd(Pst *pst, CrcInd *crcInd)
    crcIndInfo.numCrcInd = crcInd->crcInfo[0].numCb;
    crcIndInfo.crcInd[0] = crcInd->crcInfo[0].cbCrcStatus[0];
 
+   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, crcInd, sizeof(CrcInd));
    return(sendCrcIndMacToSch(&crcIndInfo));
 }
 
@@ -183,7 +184,10 @@ uint8_t fapiMacRxDataInd(Pst *pst, RxDataInd *rxDataInd)
    for(pduIdx = 0; pduIdx < rxDataInd->numPdus; pduIdx++)
    {
       unpackRxData(rxDataInd->cellId, rxDataInd->timingInfo, &rxDataInd->pdus[pduIdx]);
+      MAC_FREE_SHRABL_BUF(pst->region, pst->pool, rxDataInd->pdus[pduIdx].pduData,\
+         rxDataInd->pdus[pduIdx].pduLength);
    }
+   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, rxDataInd, sizeof(RxDataInd));
    return ROK;
 }
 
@@ -708,6 +712,7 @@ uint8_t FapiMacUciInd(Pst *pst, UciInd *macUciInd)
       DU_LOG("\nMAC: Received Uci Ind is NULL at FapiMacUciInd()");
       ret = RFAILED;
    }
+   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, macUciInd, sizeof(UciInd));
    return ret;
 }
 

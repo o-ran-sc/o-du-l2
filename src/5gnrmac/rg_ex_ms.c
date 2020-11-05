@@ -57,6 +57,7 @@ registered with SSI during the LTE MAC Task initialization.
 #include "du_app_mac_inf.h"
 #include "rg.x"            /* typedefs for MAC */
 #include "rlc_mac_inf.h"
+#include "lwr_mac_upr_inf.h"
 
 /**
  * @brief Task Activation callback function Entity SM. 
@@ -280,6 +281,24 @@ Buffer  *mBuf;                      /* message buffer       */
          break;
 #endif
 #endif            
+      case EVENT_SLOT_IND_TO_MAC:
+	 unpackSlotInd(fapiMacSlotInd, pst, mBuf);
+         break;
+      case EVENT_STOP_IND_TO_MAC:
+	 unpackStopInd(fapiMacStopInd, pst, mBuf);
+	 break;
+      case EVENT_RACH_IND_TO_MAC:
+	 unpackRachInd(fapiMacRachInd, pst, mBuf);
+	 break;
+      case EVENT_CRC_IND_TO_MAC:
+	 unpackCrcInd(fapiMacCrcInd, pst, mBuf);
+	 break;
+      case EVENT_RX_DATA_IND_TO_MAC:
+	 unpackRxDataInd(fapiMacRxDataInd, pst, mBuf);
+	 break;
+      case EVENT_UCI_IND_TO_MAC:
+	 unpackUciInd(FapiMacUciInd, pst, mBuf);
+	 break;
       default:
          RG_FREE_MSG(mBuf);
          break;

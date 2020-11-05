@@ -37,12 +37,51 @@
  * ****************************************************************/
 uint8_t packCrcInd(Pst *pst, CrcInd *crcInd)
 {
-   if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
+   if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      return ROK;
+      Buffer *mBuf = NULLP;
+      if(ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+      {
+	 printf("\nLWR_MAC: Memory allocation failed in packCrcInd");
+	 return RFAILED;
+      }
+      CMCHKPK(oduPackPointer,(PTR)crcInd, mBuf);
+      return ODU_POST_TASK(pst, mBuf);
    }
    return RFAILED;
 }
+
+/**************************************************************************
+ * @brief Function unpack crcInd
+ *
+ * @details
+ *
+ *      Function : unpackCrcInd
+ *
+ *      Functionality:
+ *           unpacks crc indication
+ *
+ * @param[in] function pointer
+ * @param[in] Pst     *pst, Post structure of the primitive.
+ * @param[in] Buffer *mBuf
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ***************************************************************************/
+uint8_t unpackCrcInd(CrcIndFunc func, Pst *pst, Buffer *mBuf)
+{
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      CrcInd *crcInd = NULLP;
+
+      /* unpack the address of the structure */
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&crcInd, mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
+      return (*func)(pst, crcInd);
+   }
+   return RFAILED;
+}
+
 
 /*******************************************************************
  *
@@ -63,9 +102,47 @@ uint8_t packCrcInd(Pst *pst, CrcInd *crcInd)
  * ****************************************************************/
 uint8_t packRxDataInd(Pst *pst, RxDataInd *rxDataInd)
 {
-   if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
+   if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      return ROK;
+      Buffer *mBuf = NULLP;
+      if(ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+      {
+	 printf("\nLWR_MAC: Memory allocation failed in packRxDataInd");
+	 return RFAILED;
+      }
+      CMCHKPK(oduPackPointer,(PTR)rxDataInd, mBuf);
+      return ODU_POST_TASK(pst, mBuf);
+   }
+   return RFAILED;
+}
+
+/**************************************************************************
+ * @brief Function unpack RxDataInd
+ *
+ * @details
+ *
+ *      Function : unpackRxDataInd
+ *
+ *      Functionality:
+ *           unpacks Rx Data indication
+ *
+ * @param[in] function pointer
+ * @param[in] Pst     *pst, Post structure of the primitive.
+ * @param[in] Buffer *mBuf
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ***************************************************************************/
+uint8_t unpackRxDataInd(RxDataIndFunc func, Pst *pst, Buffer *mBuf)
+{
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      RxDataInd *rxDataInd = NULLP;
+
+      /* unpack the address of the structure */
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&rxDataInd, mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
+      return (*func)(pst, rxDataInd);
    }
    return RFAILED;
 }
@@ -90,23 +167,61 @@ uint8_t packRxDataInd(Pst *pst, RxDataInd *rxDataInd)
  * ****************************************************************/
 uint8_t packRachInd(Pst *pst, RachInd *rachInd)
 {
-   if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
+   if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      return ROK;
+      Buffer *mBuf = NULLP;
+      if(ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+      {
+	 printf("\nLWR_MAC: Memory allocation failed in packRachInd");
+	 return RFAILED;
+      }
+      CMCHKPK(oduPackPointer,(PTR)rachInd, mBuf);
+      return ODU_POST_TASK(pst, mBuf);
+   }
+   return RFAILED;
+}
+
+/**************************************************************************
+ * @brief Function unpacks RachInd
+ *
+ * @details
+ *
+ *      Function : unpackRachInd
+ *
+ *      Functionality:
+ *           unpacks Rach indication
+ *
+ * @param[in] function pointer
+ * @param[in] Pst     *pst, Post structure of the primitive.
+ * @param[in] Buffer *mBuf
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ***************************************************************************/
+uint8_t unpackRachInd(RachIndFunc func, Pst *pst, Buffer *mBuf)
+{
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      RachInd *rachInd = NULLP;
+
+      /* unpack the address of the structure */
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&rachInd, mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
+      return (*func)(pst, rachInd);
    }
    return RFAILED;
 }
 
 /*******************************************************************
  *
- * @brief Loose coupled packing of slot indication
+ * @brief Pack and send slot indication to MAC
  *
  * @details
  *
- *    Function : packLcSlotInd
+ *    Function : packSlotInd
  *
  *    Functionality:
- *        Loose coupled packing of slot indication
+ *       Pack and send slot indication to MAC
  *
  * @params[in] Post structure
  *             Slot indication info
@@ -114,42 +229,53 @@ uint8_t packRachInd(Pst *pst, RachInd *rachInd)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packLcSlotInd (Pst *pst, SlotIndInfo *slotInd)
+uint8_t packSlotInd (Pst *pst, SlotIndInfo *slotInd)
 {
-   Buffer *mBuf = NULLP;
-   if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+   if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      return RFAILED;
+      Buffer *mBuf = NULLP;
+      if(ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+      {
+	 printf("\nLWR_MAC: Memory allocation failed in packSlotInd");
+	 return RFAILED;
+      }
+      CMCHKPK(oduPackPointer,(PTR)slotInd, mBuf);
+      return ODU_POST_TASK(pst, mBuf);
    }
-
-   /* pack SFN and slot value */
-   CMCHKPK(oduUnpackUInt16,slotInd->sfn, mBuf);
-   CMCHKPK(oduUnpackUInt16,slotInd->slot, mBuf);
-
-   return ODU_POST_TASK(pst,mBuf);
+   return RFAILED;
 }
 
-/*******************************************************************
- *
- * @brief Light weight loose coupled packing of slot indication
+/**************************************************************************
+ * @brief Function unpacks slot indication
  *
  * @details
  *
- *    Function : packLwlcSlotInd
+ *      Function : unpackSlotInd
  *
- *    Functionality:
- *       Light weight loose coupled packing of slot indication
+ *      Functionality:
+ *           unpacks slot indication
  *
- * @params[in] Post structure
- *             Slot indication info 
+ * @param[in] function pointer,
+ * @param[in] Pst     *pst,
+ * @param[in] Buffer *mBuf
  * @return ROK     - success
  *         RFAILED - failure
  *
- * ****************************************************************/
-uint8_t packLwlcSlotInd (Pst *pst, SlotIndInfo *slotInd)
+ ***************************************************************************/
+uint8_t unpackSlotInd(SlotIndFunc func, Pst *pst, Buffer *mBuf)
 {
-   return ROK;
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      SlotIndInfo *slotInd = NULLP;
+
+      /* unpack the address of the structure */
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&slotInd, mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
+      return (*func)(pst, slotInd);
+   }
+   return RFAILED;
 }
+
 
 /*******************************************************************
  *
@@ -167,16 +293,51 @@ uint8_t packLwlcSlotInd (Pst *pst, SlotIndInfo *slotInd)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packStopInd(Pst *pst, uint16_t cellId)
+uint8_t packStopInd(Pst *pst, uint16_t *cellId)
 {
-   if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
+   if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      return ROK;
+      Buffer *mBuf = NULLP;
+      if(ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+      {
+	 printf("\nLWR_MAC: Memory allocation failed in packStopInd");
+	 return RFAILED;
+      }
+      CMCHKPK(oduPackPointer,(PTR)cellId, mBuf);
+      return ODU_POST_TASK(pst, mBuf);
    }
-   else
+   return RFAILED;
+}
+
+/**************************************************************************
+ * @brief Function unpack stop indication
+ *
+ * @details
+ *
+ *      Function : unpackStopInd
+ *
+ *      Functionality:
+ *           unpacks stop indication
+ *
+ * @param[in] function pointer
+ * @param[in] Pst     *pst,
+ * @param[in] Buffer *mBuf
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ***************************************************************************/
+uint8_t unpackStopInd(StopIndFunc func, Pst *pst, Buffer *mBuf)
+{
+   if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      return RFAILED;
+      uint16_t *cellId = NULLP;
+
+      /* unpack the address of the structure */
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&cellId, mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
+      return (*func)(pst, cellId);
    }
+   return RFAILED;
 }
 
 /*******************************************************************
@@ -185,7 +346,7 @@ uint8_t packStopInd(Pst *pst, uint16_t cellId)
  *
  * @details
  *
- *    Function : packMacUciInd
+ *    Function : packUciInd
  *
  *    Functionality:
  *         Packs and Sends Uci Ind to MAC
@@ -195,17 +356,54 @@ uint8_t packStopInd(Pst *pst, uint16_t cellId)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packMacUciInd(Pst *pst, UciInd *uciInd)
+uint8_t packUciInd(Pst *pst, UciInd *uciInd)
 {
-   if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
+   if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      return ROK;
+      Buffer *mBuf = NULLP;
+      if(ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+      {
+	 printf("\nLWR_MAC: Memory allocation failed in packUciInd");
+	 return RFAILED;
+      }
+      CMCHKPK(oduPackPointer,(PTR)uciInd, mBuf);
+      return ODU_POST_TASK(pst, mBuf);
    }
-   else
-   {
-      return RFAILED;
-   }
+   return RFAILED;
 }
+
+/**************************************************************************
+ * @brief Function unpack UCI indication
+ *
+ * @details
+ *
+ *      Function : unpackUciInd
+ *
+ *      Functionality:
+ *           unpacks UCI indication
+ *
+ * @param[in] function pointer
+ * @param[in] Pst     *pst,
+ * @param[in] Buffer *mBuf
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ***************************************************************************/
+uint8_t unpackUciInd(UciIndFunc func, Pst *pst, Buffer *mBuf)
+{
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      UciInd *uciInd = NULLP;
+
+      /* unpack the address of the structure */
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&uciInd, mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
+      return (*func)(pst, uciInd);
+   }
+   return RFAILED;
+}
+
+
 /**********************************************************************
   End of file
  **********************************************************************/

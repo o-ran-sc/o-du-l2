@@ -1640,7 +1640,7 @@ uint8_t duHandleSlotInd(Pst *pst, SlotIndInfo *slotInfo)
    if(!duCb.actvCellLst[slotInfo->cellId-1]->firstSlotIndRcvd)
    {
 #ifdef ODU_SLOT_IND_DEBUG_LOG
-   DU_LOG("\nDU APP : Slot Indication received");
+      DU_LOG("\nDU APP : Slot Indication received");
 #endif
       duCb.actvCellLst[slotInfo->cellId-1]->firstSlotIndRcvd = true;
       if((duCb.actvCellLst[slotInfo->cellId-1] != NULL) && \
@@ -1660,8 +1660,7 @@ uint8_t duHandleSlotInd(Pst *pst, SlotIndInfo *slotInfo)
 #endif
 
    if((pst->selector == ODU_SELECTOR_LWLC) || (pst->selector == ODU_SELECTOR_TC)) 
-      DU_FREE_SHRABL_BUF(MAC_MEM_REGION, pst->pool, slotInfo, sizeof(SlotIndInfo));
-
+      DU_FREE_SHRABL_BUF(pst->region, pst->pool, slotInfo, sizeof(SlotIndInfo));
    return ROK;
 }
 

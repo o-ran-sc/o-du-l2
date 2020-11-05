@@ -82,10 +82,11 @@ uint8_t sendStopIndToDuApp(uint16_t cellId)
  *      -# ROK 
  *      -# RFAILED 
  ******************************************************************/
-uint8_t fapiMacStopInd(Pst *pst, uint16_t cellId) 
+uint8_t fapiMacStopInd(Pst *pst, uint16_t *cellId) 
 {
    uint8_t ret = ROK;
-   ret = sendStopIndToDuApp(cellId);
+   ret = sendStopIndToDuApp(*cellId);
+   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, cellId, sizeof(uint16_t));
    return ret;
 }
 
