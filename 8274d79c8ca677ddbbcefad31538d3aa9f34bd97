@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c86039ab_9a8e4764",
+        "filename": "src/5gnrmac/rg_lmm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-06T07:09:51Z",
+      "side": 1,
+      "message": "extern needed? Remove and test thoroughly.\nSame for rg_tom.c",
+      "revId": "8274d79c8ca677ddbbcefad31538d3aa9f34bd97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
