@@ -1,0 +1,112 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "baf0ee53_9a0bb021",
+        "filename": "src/5gnrmac/mac_utils.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-06T05:40:19Z",
+      "side": 1,
+      "message": "extern needed? Check",
+      "revId": "fe20c9b69868b22dfed5226f28c9124f81db6a69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7e305ccf_27ccb02c",
+        "filename": "src/5gnrrlc/kw_amm_dl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-06T05:40:19Z",
+      "side": 1,
+      "message": "extern needed?",
+      "revId": "fe20c9b69868b22dfed5226f28c9124f81db6a69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "30a38e9b_f68f4c64",
+        "filename": "src/5gnrsch/rg_sch_cfg.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 443,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-06T05:40:19Z",
+      "side": 1,
+      "message": "extern needed?",
+      "revId": "fe20c9b69868b22dfed5226f28c9124f81db6a69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d4d60612_37867141",
+        "filename": "src/cm/envdep.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-06T05:40:19Z",
+      "side": 1,
+      "message": "extern present in this file. check if it can be removed",
+      "revId": "fe20c9b69868b22dfed5226f28c9124f81db6a69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b678c09b_852ee42e",
+        "filename": "src/cm/envdep.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-06T05:40:19Z",
+      "side": 1,
+      "message": "Cleanup of rlog folder is not done. why so?",
+      "revId": "fe20c9b69868b22dfed5226f28c9124f81db6a69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4cd14294_efc074d3",
+        "filename": "src/mt/mt_ss.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1476,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-06T05:40:19Z",
+      "side": 1,
+      "message": "can be removed?",
+      "range": {
+        "startLine": 1476,
+        "startChar": 2,
+        "endLine": 1476,
+        "endChar": 3
+      },
+      "revId": "fe20c9b69868b22dfed5226f28c9124f81db6a69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
