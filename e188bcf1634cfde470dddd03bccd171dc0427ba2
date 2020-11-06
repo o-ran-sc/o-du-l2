@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "39085b9f_b776e198",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-06T05:15:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ffb20c24_c3e2fcce",
+      "revId": "e188bcf1634cfde470dddd03bccd171dc0427ba2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "07c969fe_c737c618",
         "filename": "src/du_app/du_cell_mgr.c",
         "patchSetId": 1
@@ -33,6 +51,24 @@
       "revId": "e188bcf1634cfde470dddd03bccd171dc0427ba2",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2b8449c4_060fa77e",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-06T05:15:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07c969fe_c737c618",
+      "revId": "e188bcf1634cfde470dddd03bccd171dc0427ba2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "426b7c72_9431f6f9",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-06T05:15:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea8d1ecc_e2be29e5",
+      "revId": "e188bcf1634cfde470dddd03bccd171dc0427ba2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4b41fb9b_351f3e71",
         "filename": "src/du_app/du_cell_mgr.c",
         "patchSetId": 1
@@ -67,6 +121,24 @@
       "revId": "e188bcf1634cfde470dddd03bccd171dc0427ba2",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8fc3d4bd_f7d7903d",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-06T05:15:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4b41fb9b_351f3e71",
+      "revId": "e188bcf1634cfde470dddd03bccd171dc0427ba2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "e33dea22_4002dc33",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 802,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-06T05:15:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ab98c94_561227ca",
+      "revId": "e188bcf1634cfde470dddd03bccd171dc0427ba2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ebb7fc94_842099d3",
         "filename": "src/du_app/du_f1ap_msg_hdl.c",
         "patchSetId": 1
@@ -101,6 +191,24 @@
       "revId": "e188bcf1634cfde470dddd03bccd171dc0427ba2",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "415a7f32_f0efacd3",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6200,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-06T05:15:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ebb7fc94_842099d3",
+      "revId": "e188bcf1634cfde470dddd03bccd171dc0427ba2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "7b00e57f_6d679cd3",
+        "filename": "src/du_app/du_f1ap_msg_hdl.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-06T05:15:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "30e78add_bb440568",
+      "revId": "e188bcf1634cfde470dddd03bccd171dc0427ba2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7ac8778f_9ba175c6",
         "filename": "src/du_app/du_mgr.h",
         "patchSetId": 1
@@ -138,6 +264,24 @@
     },
     {
       "key": {
+        "uuid": "cb29c500_4097a716",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-06T05:15:35Z",
+      "side": 1,
+      "message": "so i was extracting the trans id sent from CU in gnd Up Ack and passing it to cell mgr.\nHowever i removed the argument. And deleted this struct as well",
+      "parentUuid": "7ac8778f_9ba175c6",
+      "revId": "e188bcf1634cfde470dddd03bccd171dc0427ba2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dcbff6d6_4d820a1c",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 1
@@ -152,6 +296,24 @@
       "revId": "e188bcf1634cfde470dddd03bccd171dc0427ba2",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7d60a1d8_c1d3d561",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-06T05:15:35Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "dcbff6d6_4d820a1c",
+      "revId": "e188bcf1634cfde470dddd03bccd171dc0427ba2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
