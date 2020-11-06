@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "ed82fab0_d616eea9",
+        "filename": "src/du_app/du_cell_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-06T05:37:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "51e3c82a_15efa2af",
+      "revId": "144e9026c0591283c5db317bc2263b765fdf0537",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "12404c2d_d5612171",
         "filename": "src/du_app/du_f1ap_msg_hdl.c",
         "patchSetId": 3
@@ -33,6 +51,24 @@
       "revId": "144e9026c0591283c5db317bc2263b765fdf0537",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2641203b_d6b8cfc8",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 8427,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-06T05:37:21Z",
+      "side": 1,
+      "message": "yes i rechecked it and it is a part of GNBDUConfigurationUpdateAcknowledgeIEs",
+      "parentUuid": "12404c2d_d5612171",
+      "revId": "144e9026c0591283c5db317bc2263b765fdf0537",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "4151e17a_f80097d6",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-06T05:37:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "80a0b53b_02c5a8db",
+      "revId": "144e9026c0591283c5db317bc2263b765fdf0537",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fc1bd838_0fdeb9c3",
         "filename": "src/du_app/du_mgr.h",
         "patchSetId": 3
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "514e70b6_23b598db",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-06T05:37:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fc1bd838_0fdeb9c3",
+      "revId": "144e9026c0591283c5db317bc2263b765fdf0537",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7f6c9fae_ce7285ca",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 3
@@ -84,6 +156,24 @@
       "revId": "144e9026c0591283c5db317bc2263b765fdf0537",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "463e74d5_fe023946",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-06T05:37:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7f6c9fae_ce7285ca",
+      "revId": "144e9026c0591283c5db317bc2263b765fdf0537",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
