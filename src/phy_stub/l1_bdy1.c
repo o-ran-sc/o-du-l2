@@ -349,6 +349,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
    {
       msg3Sent = true;
       type = MSG_TYPE_MSG3;
+      sleep(2);
    }
    else if(!msg5ShortBsrSent)
    {
@@ -360,10 +361,20 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
       msg5Sent = true;
       type = MSG_TYPE_MSG5;
    }
+   else if(!msgRegistrationComp)
+   {
+      msgRegistrationComp = true;
+      type = MSG_TYPE_REGISTRATION_COMPLETE; 
+   }
    else if(!msgSecurityModeComp)
    {
       msgSecurityModeComp = true;
       type = MSG_TYPE_SECURITY_MODE_COMPLETE;
+   }
+   else if(!msgRrcReconfiguration)
+   {
+      msgRrcReconfiguration = true;
+      type = MSG_TYPE_RRC_RECONFIG_COMPLETE;
    }
    else
       return RFAILED;
@@ -423,63 +434,99 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
 
 	    break;
 	 }
-
       case MSG_TYPE_SHORT_BSR:
-	 {
-	    DU_LOG("\nPHY_STUB: Forming SHORT BSR PDU ");
-	    uint8_t lcgId = 0;
-	    uint8_t bufferSizeIdx = 6;
-            
-	    /* For Short BSR
-	       MAC subheader format is R/R/LcId (1Byte)
-	       LCId is 61
-	       From 38.321 section 6.1.1
-	     */
-	    pdu[byteIdx++] = 61;    // LCID
-	    pdu[byteIdx++] = (lcgId << 5) | bufferSizeIdx;
+      {
+	 DU_LOG("\nPHY_STUB: Forming SHORT BSR PDU ");
+	 uint8_t lcgId = 0;
+	 uint8_t bufferSizeIdx = 6;
 
-	    break;
-	 }
+	 /* For Short BSR
+	    MAC subheader format is R/R/LcId (1Byte)
+	    LCId is 61
+	    From 38.321 section 6.1.1
+	  */
+	 pdu[byteIdx++] = 61;    // LCID
+	 pdu[byteIdx++] = (lcgId << 5) | bufferSizeIdx;
+
+	 break;
+      }
 
       case MSG_TYPE_MSG5:
-	 {
-	    DU_LOG("\nPHY_STUB: Forming MSG5 PDU");
-	    uint8_t  msg5PduLen = 33;
-	    /* For RRC setup complete
-	       MAC subheader format is R/F/LCId/L (2/3 bytes)
-	       LCId is 1 for SRB1
-	       L is length of PDU i.e 6bytes here 
-	       From 38.321 section 6.1.1
-	     */
-	    uint8_t msg5[] = {1, msg5PduLen, 0, 0, 16, 0, 5, 223, 128, 16, 94, \
-	       64, 3, 64, 89, 61, 138, 64, 0, 0, 0, 4, 0, 0, 4, 68, 11, 128, \
+      {
+	 DU_LOG("\nPHY_STUB: Forming MSG5 PDU");
+	 uint8_t  msg5PduLen = 33;
+	 /* For RRC setup complete
+	    MAC subheader format is R/F/LCId/L (2/3 bytes)
+	    LCId is 1 for SRB1
+	    L is length of PDU i.e 6bytes here 
+	    From 38.321 section 6.1.1
+	  */
+	 uint8_t msg5[] = {1, msg5PduLen, 0, 0, 16, 0, 5, 223, 128, 16, 94, \
+	    64, 3, 64, 89, 61, 138, 64, 0, 0, 0, 4, 0, 0, 4, 68, 11, 128, \
 	       184, 56, 0, 0, 0, 0, 0};
 
-	    msg5PduLen += 2;  /* 2bytes of header */
-	    memcpy(pdu, &msg5, msg5PduLen);
-	    byteIdx += msg5PduLen; /* 2 bytes of header */
-	    break;
-	 }
+	 msg5PduLen += 2;  /* 2bytes of header */
+	 memcpy(pdu, &msg5, msg5PduLen);
+	 byteIdx += msg5PduLen; /* 2 bytes of header */
+	 break;
+      }
 
       case MSG_TYPE_SECURITY_MODE_COMPLETE:
-	 {
-	    DU_LOG("\nPHY_STUB: Forming SECURITY MODE COMPLETE PDU");
-	    uint8_t  pduLen = 33;
-	    /* For security mode complete
-	       MAC subheader format is R/F/LCId/L (2/3 bytes)
-	       LCId is 1 for SRB1
-	       L is length of PDU i.e 6bytes here 
-	       From 38.321 section 6.1.1
-	     */
-	    uint8_t msg[] = {1, pduLen, 0, 0, 16, 0, 5, 223, 128, 16, 94, \
-	       64, 3, 64, 89, 61, 138, 64, 0, 0, 0, 4, 0, 0, 4, 68, 11, 128, \
-	       184, 56, 0, 0, 0, 0, 0};
+      {
+	 DU_LOG("\nPHY_STUB: Forming SECURITY MODE COMPLETE PDU");
+	 uint8_t  pduLen = 12;
+	 /* For security mode complete where RRC Container is dummy
+	    MAC subheader format is R/F/LCId/L (2/3 bytes)
+	    LCId is 1 for SRB1
+	    L is length of PDU i.e 6bytes here 
+	    From 38.321 section 6.1.1
+	  */
+	 uint8_t msg[] = {1, pduLen, 0, 3, 0x2a, 0x40, 0, 0, 0, 0, 0, 0, 0, 0};
 
-	    pduLen += 2;  /* 2bytes of header */
-	    memcpy(pdu, &msg, pduLen);
-	    byteIdx += pduLen; /* 2 bytes of header */
-	    break;
-	 }
+	 pduLen += 2;  /* 2bytes of header */
+	 memcpy(pdu, &msg, pduLen);
+	 byteIdx += pduLen; /* 2 bytes of header */
+	 break;
+      }
+      case MSG_TYPE_REGISTRATION_COMPLETE:
+      {
+          
+	  DU_LOG("\nPHY_STUB: Forming RRC REGISTRATION COMPLETE PDU");
+	  uint8_t  pduLen = 12;
+	  /* For rrc reconfig complete where RRC Container is dummy
+	  MAC subheader format is R/F/LCId/L (2/3 bytes)
+	  LCId is 1 for SRB1
+	  L is length of PDU i.e 6bytes here
+	  From 38.321 section 6.1.1
+	  */
+    	  uint8_t msg[] = {1, pduLen, 0, 0x04, 0x3a, 0x81, 0xbf, 0, 0x21, 0x80, 0, \
+	  0, 0, 0};
+	
+	  pduLen += 2;  /* 2bytes of header */
+	  memcpy(pdu, &msg, pduLen);
+	  byteIdx += pduLen; /* 2 bytes of header */
+          break;
+      }
+      case MSG_TYPE_RRC_RECONFIG_COMPLETE:
+      {
+         DU_LOG("\nPHY_STUB: Forming RRC RECONFIGURATION PDU");
+         uint8_t  pduLen = 14;
+	 /* For rrc reconfig complete where RRC Container is dummy
+	 MAC subheader format is R/F/LCId/L (2/3 bytes)
+	 LCId is 1 for SRB1
+	 L is length of PDU i.e 6bytes here
+	 From 38.321 section 6.1.1
+	 */
+	 uint8_t msg[] = {1, pduLen, 0, 6, 8, 64, 0, 0, 0, 0, \
+	                  0, 0, 0, 0, 0};
+	
+	 pduLen += 2;  /* 2bytes of header */
+	 memcpy(pdu, &msg, pduLen);
+	 byteIdx += pduLen; /* 2 bytes of header */
+	 break;
+
+      }
+      
       default:
 	 break;
    } /* End of switch(type) */
@@ -957,8 +1004,8 @@ S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
       }
       if(ulTtiReq->pdus[numPdus-1].pduType == 1)
       {
-	 DU_LOG("\nPHY STUB: PUSCH PDU");			
-         l1BuildAndSendRxDataInd(ulTtiReq->slot, ulTtiReq->sfn, \
+	 DU_LOG("\nPHY STUB: PUSCH PDU");
+	 l1BuildAndSendRxDataInd(ulTtiReq->slot, ulTtiReq->sfn, \
 	       ulTtiReq->pdus[numPdus-1].pdu.pusch_pdu); 
       }
       if(ulTtiReq->pdus[numPdus-1].pduType == 2)

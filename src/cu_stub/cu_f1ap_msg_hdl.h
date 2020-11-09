@@ -58,8 +58,9 @@
 #define CU_TO_DU_RRC_INF 4
 
 #define RRC_SETUP 1
-#define RRC_SECURITY_MODE_COMMAND 2
-#define RRC_RECONFIG 3
+#define REGISTRATION_ACCEPT 2
+#define UE_CONTEXT_SETUP_REQ 3
+#define RRC_RECONFIG 4
 typedef struct f1apDb
 {
    uint8_t dlRrcMsgCount;

@@ -7377,7 +7377,14 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
 	    }
 	 case ProtocolIE_ID_id_RRCDeliveryStatusRequest:
 	    {
-	       duUeCb->f1UeDb->dlRrcMsg->deliveryStatRpt = true;
+	       if(duUeCb->f1UeDb->dlRrcMsg->rrcMsgPdu)
+	       {
+		  duUeCb->f1UeDb->dlRrcMsg->deliveryStatRpt = true;
+	       }
+	       else
+	       {
+		  DU_LOG("\nIgnoring delivery report, since rrcContainer is not present");
+	       }
 	       break;
 	    }
 	 //TODO: To handle maxAggrBitRate case,
