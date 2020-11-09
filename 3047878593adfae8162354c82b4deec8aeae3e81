@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "96e093aa_a0e23c25",
+        "filename": "build/odu/makefile",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-09T07:51:45Z",
+      "side": 1,
+      "message": "Flag is commented during use of phy stub",
+      "parentUuid": "c86c675e_36f22651",
+      "revId": "3047878593adfae8162354c82b4deec8aeae3e81",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "84204774_c7809db7",
         "filename": "src/5gnrmac/lwr_mac_ex_ms.c",
         "patchSetId": 1
@@ -33,6 +51,24 @@
       "revId": "3047878593adfae8162354c82b4deec8aeae3e81",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b71d39a0_32cf0a44",
+        "filename": "src/5gnrmac/lwr_mac_ex_ms.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-09T07:51:45Z",
+      "side": 1,
+      "message": "This ActvInit() is called when lwr_mac receiver task is created during DU initialization.",
+      "parentUuid": "84204774_c7809db7",
+      "revId": "3047878593adfae8162354c82b4deec8aeae3e81",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "2550a703_22993291",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1871,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-09T07:51:45Z",
+      "side": 1,
+      "message": "Idx is used in one of the commented TLVs.\nSince we may uncomment these later, I haven\u0027t deleted this yet.",
+      "parentUuid": "f54ea9a1_fe2bc556",
+      "revId": "3047878593adfae8162354c82b4deec8aeae3e81",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d6054e8b_57cacf6e",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 1
@@ -67,6 +121,24 @@
       "revId": "3047878593adfae8162354c82b4deec8aeae3e81",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eb4e4189_f87b92c0",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1909,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-09T07:51:45Z",
+      "side": 1,
+      "message": "Vendor Msg has 3 internal structures : config_req_vendor, start_req_vendor and stop_req_vendor.\nSince these are specific to corresponding FAPI msg, cant have a common function for it.",
+      "parentUuid": "d6054e8b_57cacf6e",
+      "revId": "3047878593adfae8162354c82b4deec8aeae3e81",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "5164ad82_2ef9758e",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1936,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-09T07:51:45Z",
+      "side": 1,
+      "message": "Sure",
+      "parentUuid": "bd179223_fe1dce9d",
+      "revId": "3047878593adfae8162354c82b4deec8aeae3e81",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8e56f0fe_513caa37",
         "filename": "src/5gnrmac/lwr_mac_phy.c",
         "patchSetId": 1
@@ -101,6 +191,24 @@
       "revId": "3047878593adfae8162354c82b4deec8aeae3e81",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dff99dc4_815d5693",
+        "filename": "src/5gnrmac/lwr_mac_phy.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-09T07:51:45Z",
+      "side": 1,
+      "message": "Ok. Done",
+      "parentUuid": "8e56f0fe_513caa37",
+      "revId": "3047878593adfae8162354c82b4deec8aeae3e81",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "3225a5a9_a2911d44",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-09T07:51:45Z",
+      "side": 1,
+      "message": "After cell config is applied, mac would trigger FAPI config request. \nHence, starting receiver thread and enqueue of UL block before it. \nMoved this to mac gen cfg",
+      "parentUuid": "427eab72_f27003f3",
+      "revId": "3047878593adfae8162354c82b4deec8aeae3e81",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "de3c274c_d0691c64",
         "filename": "src/cm/ssi.x",
         "patchSetId": 1
@@ -135,6 +261,24 @@
       "revId": "3047878593adfae8162354c82b4deec8aeae3e81",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a065cb60_a620e9cd",
+        "filename": "src/cm/ssi.x",
+        "patchSetId": 1
+      },
+      "lineNbr": 1058,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-09T07:51:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "de3c274c_d0691c64",
+      "revId": "3047878593adfae8162354c82b4deec8aeae3e81",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -172,6 +316,24 @@
     },
     {
       "key": {
+        "uuid": "46033bab_b6568585",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-09T07:51:45Z",
+      "side": 1,
+      "message": "As discussed, retaining the lwr-mac\u0027s tapa task creation at DU initialization.",
+      "parentUuid": "28e9457f_d22f656c",
+      "revId": "3047878593adfae8162354c82b4deec8aeae3e81",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7da18b9a_73e439bc",
         "filename": "src/mt/mt_ss.c",
         "patchSetId": 1
@@ -189,6 +351,24 @@
     },
     {
       "key": {
+        "uuid": "bbe91c81_71e63734",
+        "filename": "src/mt/mt_ss.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-09T07:51:45Z",
+      "side": 1,
+      "message": "These are a part of dpdk library",
+      "parentUuid": "7da18b9a_73e439bc",
+      "revId": "3047878593adfae8162354c82b4deec8aeae3e81",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3d87f7a3_c19c23bc",
         "filename": "src/mt/mt_ss.c",
         "patchSetId": 1
@@ -203,6 +383,24 @@
       "revId": "3047878593adfae8162354c82b4deec8aeae3e81",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "af5964d6_5c80a07b",
+        "filename": "src/mt/mt_ss.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 843,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-09T07:51:45Z",
+      "side": 1,
+      "message": "0x7ec00000 is the total size of WLS memory. Created macro.",
+      "parentUuid": "3d87f7a3_c19c23bc",
+      "revId": "3047878593adfae8162354c82b4deec8aeae3e81",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
