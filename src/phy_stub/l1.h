@@ -29,7 +29,8 @@ bool     msg5ShortBsrSent = false;
 bool     msg5Sent = false;
 bool     dlDedMsg = false;
 bool     msgSecurityModeComp =  false;
-
+bool 	 msgRrcReconfiguration  =  false;
+bool 	 msgRegistrationComp    = false;
 typedef enum
 {
    MSG_TYPE_MSG3,
