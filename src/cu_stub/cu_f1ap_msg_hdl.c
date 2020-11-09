@@ -1512,20 +1512,77 @@ uint8_t fillDlDcchRrcMsg(RRCContainer_t *rrcContainer)
 
 uint8_t	BuildDLRRCContainer(uint8_t rrcMsgType, RRCContainer_t *rrcContainer)
 {
-   uint8_t ret = ROK;
-
+   uint8_t ret, idx2, bufLen;
+   
+   ret =ROK;
    if(rrcMsgType == RRC_SETUP)
    { 
       ret = fillDlCcchRrcMsg(rrcContainer);
       if(ret == RFAILED)
-         DU_LOG("\n F1AP: Failed to fill DL-CCCH Msg at BuildDLRRCContainer()");
+          DU_LOG("\n F1AP: Failed to fill DL-CCCH Msg at RRC SETUP");
+   }
+   else if(rrcMsgType == SECURITY_MODE_COMMAND)
+   {
+      /*Hardcoded RRC Container from reference logs*/
+      char buf[9]={0x00, 0x02, 0x22, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00};
+      bufLen =9;
+      rrcContainer->size = bufLen;
+      CU_ALLOC(rrcContainer->buf, rrcContainer->size);
+      if(rrcContainer->buf != NULLP)
+      {
+         memset(rrcContainer->buf, 0, encBufSize);
+         for(idx2 = 0; idx2 < encBufSize; idx2++)
+         {
+            rrcContainer->buf[idx2] = buf[idx2];
+         }
+      }
+   }
+   else if(rrcMsgType == REGISTRATION_ACCEPT)
+   {
+      /*Hardcoded RRC Container from reference logs*/
+      char buf[14] ={0x00, 0x03, 0x2a, 0x80, 0xaf, 0xc0, 0x08, 0x40, 0x20, 0x20, 0x00, 0x00, 0x00, 0x00};
+      bufLen =14;
+      rrcContainer->size = bufLen;
+      CU_ALLOC(rrcContainer->buf, rrcContainer->size);
+      if(rrcContainer->buf != NULLP)
+      {
+         memset(rrcContainer->buf, 0, encBufSize);
+         for(idx2 = 0; idx2 < encBufSize; idx2++)
+         {
+            rrcContainer->buf[idx2] = buf[idx2];
+         }
+      }
    }
    else if(rrcMsgType == RRC_RECONFIG)
    {
-      ret = fillDlDcchRrcMsg(rrcContainer);
-      if(ret == RFAILED)
-         DU_LOG("\n F1AP: Failed at fill DL-DCCH Msg at BuildDLRRCContainer()");
+      /*Hardcoded RRC Container from reference logs*/
+      char buf[196]= { 
+      0x00, 0x04, 0x00, 0xaa, 0x80, 0x40, 0x9a, 0x05, 0x20, 0x00, 0x05, 0xeb, 0xc0, 0x51, 0x50, 0x00,
+      0x03, 0x00, 0x03, 0xf7, 0x56, 0xec, 0x7f, 0x08, 0x42, 0x10, 0x80, 0x00, 0x10, 0x21, 0x47, 0x84,
+      0xd1, 0x00, 0x00, 0x00, 0x02, 0x81, 0x5d, 0x10, 0x0a, 0xc2, 0x44, 0x40, 0x2b, 0xb2, 0x07, 0x41,
+      0x87, 0xa8, 0x02, 0xc7, 0x00, 0x88, 0x05, 0x76, 0x40, 0xe8, 0x30, 0xf5, 0x40, 0x4c, 0x00, 0x10,
+      0x02, 0x00, 0xa5, 0x83, 0xe0, 0x60, 0x02, 0x10, 0x72, 0x01, 0x0c, 0xa0, 0xa0, 0xd8, 0x00, 0x00,
+      0x00, 0x01, 0x0f, 0x02, 0x3c, 0x01, 0x80, 0x10, 0x82, 0xb0, 0x40, 0x00, 0x00, 0x02, 0x1e, 0x04,
+      0x78, 0x07, 0x00, 0x21, 0x05, 0x61, 0x00, 0x00, 0x00, 0x04, 0x3c, 0x08, 0xf0, 0x16, 0x00, 0x42,
+      0x0a, 0xc3, 0x00, 0x00, 0x00, 0x08, 0x78, 0x11, 0xe0, 0x3c, 0x00, 0x84, 0x14, 0x00, 0x07, 0xe5,
+      0xc0, 0xa0, 0xd8, 0x42, 0x20, 0x02, 0x80, 0xa0, 0x02, 0x24, 0x47, 0xa0, 0x20, 0x27, 0xa1, 0x22,
+      0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x24, 0x41, 0x20, 0xc0, 0x80, 0x00, 0x20, 0x80,
+      0x00, 0x25, 0x20, 0xa0, 0x38, 0x00, 0x00, 0x00, 0x44, 0xa2, 0x82, 0x69, 0xee, 0x0c, 0xad, 0xca,
+      0x4c, 0x2c, 0x8d, 0x2e, 0x6f, 0x2e, 0x69, 0x2d, 0xce, 0x8c, 0xae, 0x4d, 0xcc, 0xae, 0x80, 0x00,
+      0x00, 0x00, 0x00, 0x00};
+      bufLen =196;
+      rrcContainer->size = bufLen;
+      CU_ALLOC(rrcContainer->buf, rrcContainer->size);
+      if(rrcContainer->buf != NULLP)
+      {
+         memset(rrcContainer->buf, 0, encBufSize);
+         for(idx2 = 0; idx2 < encBufSize; idx2++)
+         {
+            rrcContainer->buf[idx2] = buf[idx2];
+         }
+      }
    }
+   
    return ret;
 }
 
@@ -1546,7 +1603,7 @@ uint8_t	BuildDLRRCContainer(uint8_t rrcMsgType, RRCContainer_t *rrcContainer)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildAndSendDLRRCMessageTransfer(uint8_t rrcMsgType)
+uint8_t BuildAndSendDLRRCMessageTransfer(uint8_t srbId, uint8_t rrcMsgType)
 {
    uint8_t   elementCnt = 0;
    uint8_t  ieId;
@@ -1635,7 +1692,7 @@ uint8_t BuildAndSendDLRRCMessageTransfer(uint8_t rrcMsgType)
    dlRRCMsg->protocolIEs.list.array[idx]->criticality  =   Criticality_reject;
    dlRRCMsg->protocolIEs.list.array[idx]->value.present = \
 							  DLRRCMessageTransferIEs__value_PR_SRBID;
-   dlRRCMsg->protocolIEs.list.array[idx]->value.choice.SRBID = SRB0;
+   dlRRCMsg->protocolIEs.list.array[idx]->value.choice.SRBID = srbId;
 
    /* RRCContainer */
    idx++;
@@ -1704,8 +1761,14 @@ uint8_t setDlRRCMsgType()
       case RRC_SETUP:
         rrcMsgType = RRC_SETUP;
         break;
-      case RRC_SECURITY_MODE_COMMAND:
-        rrcMsgType = RRC_SECURITY_MODE_COMMAND;
+      case SECURITY_MODE_COMMAND:
+        rrcMsgType = SECURITY_MODE_COMMAND;
+        break;
+      case REGISTRATION_ACCEPT:
+        rrcMsgType = REGISTRATION_ACCEPT;
+        break;
+      case UE_CONTEXT_SETUP_REQ:
+        rrcMsgType = UE_CONTEXT_SETUP_REQ;
         break;
       case RRC_RECONFIG:
         rrcMsgType = RRC_RECONFIG;
@@ -1788,7 +1851,7 @@ uint8_t procInitULRRCMsg(F1AP_PDU_t *f1apMsg)
    {
       f1apMsgDb.dlRrcMsgCount++;
       rrcMsgType = setDlRRCMsgType();
-      ret = BuildAndSendDLRRCMessageTransfer(rrcMsgType);
+      ret = BuildAndSendDLRRCMessageTransfer(SRB0, rrcMsgType);
    }
    return ret;
 }
@@ -5735,7 +5798,7 @@ uint8_t BuildAndSendUeContextSetupReq(uint8_t cuUeF1apId, uint8_t duUeF1apId, \
       ueSetReq =
 	 &f1apMsg->choice.initiatingMessage->value.choice.UEContextSetupRequest;
 
-      elementCnt = 11;
+      elementCnt = 10;
       ueSetReq->protocolIEs.list.count = elementCnt;
       ueSetReq->protocolIEs.list.size = \
 					elementCnt * sizeof(UEContextSetupRequestIEs_t *);
@@ -5858,7 +5921,7 @@ uint8_t BuildAndSendUeContextSetupReq(uint8_t cuUeF1apId, uint8_t duUeF1apId, \
       {	
 	 break;
       }
-      
+#if 0 
       /* RRC Container */
       idx++;
       ueSetReq->protocolIEs.list.array[idx]->id = ProtocolIE_ID_id_RRCContainer;
@@ -5875,7 +5938,7 @@ uint8_t BuildAndSendUeContextSetupReq(uint8_t cuUeF1apId, uint8_t duUeF1apId, \
       }
       memcpy(ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf, \
          rrcContainer, ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.size); 
-
+#endif
       /* RRC delivery status request */
       idx++;
       ueSetReq->protocolIEs.list.array[idx]->id = \
@@ -5990,13 +6053,21 @@ uint8_t procUlRrcMsg(F1AP_PDU_t *f1apMsg)
    {
       f1apMsgDb.dlRrcMsgCount++;
       rrcMsgType = setDlRRCMsgType();
-      if(rrcMsgType == RRC_SECURITY_MODE_COMMAND)
+      if(rrcMsgType == SECURITY_MODE_COMMAND)
       {
-         ret = BuildAndSendUeContextSetupReq(cuUeF1apId, duUeF1apId, rrcContLen, rrcContainer);
+         DU_LOG("\nSending DL RRC MSG for Security Mode Complete");
+         ret = BuildAndSendDLRRCMessageTransfer(srbId, rrcMsgType);
       }
-      if(rrcMsgType == RRC_RECONFIG)
+      else if(rrcMsgType == REGISTRATION_ACCEPT)
       {
-         ret = BuildAndSendDLRRCMessageTransfer(rrcMsgType);
+         DU_LOG("\nSending DL RRC MSG for RRC Registration Complete"); 
+         ret = BuildAndSendDLRRCMessageTransfer(srbId, rrcMsgType);
+      }
+      else if(rrcMsgType == UE_CONTEXT_SETUP_REQ)
+      {
+         DU_LOG("\nSending Ue Context Setup Req"); 
+         ret = BuildAndSendUeContextSetupReq(cuUeF1apId, duUeF1apId,\
+	    rrcContLen, rrcContainer);
       }
    }
    return ret;
@@ -6290,7 +6361,16 @@ void F1APMsgHdlr(Buffer *mBuf)
 	    }
             case SuccessfulOutcome__value_PR_UEContextSetupResponse:
 	    {
+	       uint8_t rrcMsgType;
+
                DU_LOG("\nF1AP : UE ContextSetupResponse received");
+               f1apMsgDb.dlRrcMsgCount++;
+               rrcMsgType = setDlRRCMsgType();
+               if(rrcMsgType == RRC_RECONFIG)
+               {
+                  DU_LOG("\nImplementing DL RRC MSG for RRC Reconfig Complete");
+                  BuildAndSendDLRRCMessageTransfer(SRB1, rrcMsgType);
+               }
                break;
 	    }
             default:
