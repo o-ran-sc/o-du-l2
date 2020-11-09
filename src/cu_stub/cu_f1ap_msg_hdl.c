@@ -1522,13 +1522,19 @@ uint8_t	BuildDLRRCContainer(uint8_t rrcMsgType, RRCContainer_t *rrcContainer)
    { 
       ret = fillDlCcchRrcMsg(rrcContainer);
       if(ret == RFAILED)
-         DU_LOG("\n F1AP: Failed to fill DL-CCCH Msg at BuildDLRRCContainer()");
+          DU_LOG("\n F1AP: Failed to fill DL-CCCH Msg at RRC SETUP");
    }
    else if(rrcMsgType == RRC_RECONFIG)
    {
       ret = fillDlDcchRrcMsg(rrcContainer);
       if(ret == RFAILED)
-         DU_LOG("\n F1AP: Failed at fill DL-DCCH Msg at BuildDLRRCContainer()");
+         DU_LOG("\n F1AP: Failed at fill DL-DCCH Msg at RRC RECONFIG");
+   }
+   else if(rrcMsgType == RRC_REGISTRATION_COMP)
+   {
+      ret = fillDlDcchRrcMsg(rrcContainer);
+      if(ret == RFAILED)
+         DU_LOG("\n F1AP: Failed at fill DL-DCCH Msg at RRC REGISTRATION COMPLETE"); 
    }
    return ret;
 }
@@ -1714,6 +1720,9 @@ uint8_t setDlRRCMsgType()
       case RRC_RECONFIG:
         rrcMsgType = RRC_RECONFIG;
         break;
+     case RRC_REGISTRATION_COMP: 
+        rrcMsgType = RRC_REGISTRATION_COMP;
+	break;
       default:
         break;
    }
@@ -5993,6 +6002,10 @@ uint8_t procUlRrcMsg(F1AP_PDU_t *f1apMsg)
          ret = BuildAndSendUeContextSetupReq(cuUeF1apId, duUeF1apId, rrcContLen, rrcContainer);
       }
       if(rrcMsgType == RRC_RECONFIG)
+      {
+         ret = BuildAndSendDLRRCMessageTransfer(rrcMsgType);
+      }
+      if(rrcMsgType == RRC_REGISTRATION_COMP)
       {
          ret = BuildAndSendDLRRCMessageTransfer(rrcMsgType);
       }
