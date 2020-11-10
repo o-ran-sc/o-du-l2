@@ -1014,6 +1014,16 @@ uint8_t fillMacUeCfg(uint16_t cellId, uint8_t ueIdx, uint16_t crnti, \
       ret = procUeReCfgCellInfo(macUeCfg, ueCfgDb->cellGrpCfg);
       if(ret == ROK)
       {
+         if(macUeCfg->spCellCfg.servCellCfg.initDlBwp.pdschPresent)
+	 {
+	    fillStartSymbolAndLen(macUeCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfg.numTimeDomRsrcAlloc,\
+	       &macUeCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfg, NULL);
+	 }
+	 if(macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschPresent)
+         {
+            fillStartSymbolAndLen(macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg.numTimeDomRsrcAlloc,\
+	       NULL, &macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg);
+         }
 	 ret = getMaxAggrBitRate(macUeCfg->maxAggrBitRate, ueCfgDb->maxAggrBitRate);
       }
 
@@ -1536,6 +1546,16 @@ uint8_t duUpdateMacCfg(MacUeCfg *macUeCfg, F1UeContextSetupDb *f1UeDb)
    ret =  procUeReCfgCellInfo(macUeCfg, f1UeDb->duUeCfg.cellGrpCfg);
    if(ret == ROK)
    {
+      if(macUeCfg->spCellCfg.servCellCfg.initDlBwp.pdschPresent)
+      {
+         fillStartSymbolAndLen(macUeCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfg.numTimeDomRsrcAlloc,\
+	       &macUeCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfg, NULL);
+      }
+      if(macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschPresent)
+      {
+         fillStartSymbolAndLen(macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg.numTimeDomRsrcAlloc,\
+	       NULL, &macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg);
+      }
       ret = getMaxAggrBitRate(macUeCfg->maxAggrBitRate, f1UeDb->duUeCfg.maxAggrBitRate);
    }
    /* Filling LC Context */
