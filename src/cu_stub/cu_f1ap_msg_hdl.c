@@ -229,6 +229,7 @@ S16 BuildNrCellId(BIT_STRING_t *nrcell)
    {
       nrcell->buf[tmp] = 0;
    }
+   memset(nrcell->buf, 0, nrcell->size);
    nrcell->buf[4]   = 16; 
    nrcell->bits_unused = 4;
    nrcell->size = 5 * sizeof(uint8_t);
@@ -1639,7 +1640,7 @@ uint8_t BuildAndSendDLRRCMessageTransfer(uint8_t rrcMsgType)
    dlRRCMsg->protocolIEs.list.array[idx]->criticality  =   Criticality_reject;
    dlRRCMsg->protocolIEs.list.array[idx]->value.present = \
 							  DLRRCMessageTransferIEs__value_PR_SRBID;
-   dlRRCMsg->protocolIEs.list.array[idx]->value.choice.SRBID = SRB1;
+   dlRRCMsg->protocolIEs.list.array[idx]->value.choice.SRBID = SRB0;
 
    /* RRCContainer */
    idx++;
@@ -1815,9 +1816,9 @@ uint8_t procInitULRRCMsg(F1AP_PDU_t *f1apMsg)
 uint8_t BuildNrcgi(NRCGI_t *nrcgi)
 {
    uint8_t ret;
-   uint8_t unused = 4;
+   uint8_t unused_bits = 4;
    uint8_t byteSize = 5;
-   uint8_t val = 16;
+   uint8_t val = 1;
    /* Allocate Buffer Memory */
    nrcgi->pLMN_Identity.size = 3 * sizeof(uint8_t);
    CU_ALLOC(nrcgi->pLMN_Identity.buf, nrcgi->pLMN_Identity.size);
@@ -1837,11 +1838,17 @@ uint8_t BuildNrcgi(NRCGI_t *nrcgi)
    {
       return RFAILED;
    }
+#if 0
    ret = fillBitString(&nrcgi->nRCellIdentity, unused, byteSize, val);
    if(ret != ROK)
    {
       return RFAILED;
    }
+#endif
+   memset(nrcgi->nRCellIdentity.buf, 0, nrcgi->nRCellIdentity.size);
+   nrcgi->nRCellIdentity.buf[0] |= val;
+   nrcgi->nRCellIdentity.bits_unused = unused_bits;
+
    return ROK;
 }
 /*******************************************************************

@@ -62,7 +62,8 @@ typedef enum
    CELL_OUT_OF_SERVICE,
    ACTIVATION_IN_PROGRESS,
    ACTIVATED,
-   DELETION_IN_PROGRESS
+   DELETION_IN_PROGRESS,
+   DELETED
 }CellStatus;
 
 typedef enum

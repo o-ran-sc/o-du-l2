@@ -194,7 +194,7 @@
 /* Macro definitions for F1 procedures */
 #define CU_DU_NAME_LEN_MAX 30      /* Max length of CU/DU name string */
 #define MAX_F1_CONNECTIONS 65536    /* Max num of F1 connections */
-#define MAX_PLMN           6        /* Max num of broadcast PLMN ids */
+#define MAX_PLMN           1        /* Max num of broadcast PLMN ids */
 #define MAXNRARFCN         3279165  /* Maximum values of NRAFCN */
 #define MAXNRCELLBANDS     2       /* Maximum number of frequency bands */
 #define MAX_NUM_OF_SLICE_ITEMS 1024     /* Maximum number of signalled slice support items */
