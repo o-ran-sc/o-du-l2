@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "00de0423_8e67a748",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1537,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-10T08:21:39Z",
+      "side": 1,
+      "message": "specify rrc container for which message",
+      "revId": "b317ddb6e9aaf7a3dbd5d2168dce99156269b871",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2bb803e6_3416801f",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-10T08:21:39Z",
+      "side": 1,
+      "message": "please run wireshark for all messages and give a demo before submission",
+      "revId": "b317ddb6e9aaf7a3dbd5d2168dce99156269b871",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "727c2a30_e4f1e38a",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 496,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-10T08:21:39Z",
+      "side": 1,
+      "message": "add comments if the RRC container is dummy",
+      "revId": "b317ddb6e9aaf7a3dbd5d2168dce99156269b871",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
