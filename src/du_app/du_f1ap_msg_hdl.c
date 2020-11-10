@@ -6453,9 +6453,6 @@ void extractPdschCfg(PDSCH_Config_t *cuPdschCfg, PdschConfig *macPdschCfg)
             {
 	       macPdschCfg->timeDomRsrcAllociList[timeDomIdx].mappingType = \
 	          timeDomAlloc->choice.setup->list.array[timeDomIdx]->mappingType;
-	       //macPdschCfg->timeDomRsrcAllociList[timeDomIdx].startSymbol = \
-	          
-	       //macPdschCfg->timeDomRsrcAllociList[timeDomIdx].symbolLength;
 	       macPdschCfg->timeDomRsrcAllociList[timeDomIdx].startSymbolAndLength = \
 	          timeDomAlloc->choice.setup->list.array[timeDomIdx]->startSymbolAndLength;
 	    }
@@ -6669,13 +6666,9 @@ void extractPuschCfg(struct BWP_UplinkDedicated__pusch_Config *cuPuschCfg, Pusch
 		     macPuschCfg->timeDomRsrcAllocList[timeDomIdx].k2 = \
 		        *(timeDomAllocList->choice.setup->list.array[timeDomIdx]->k2);
                      macPuschCfg->timeDomRsrcAllocList[timeDomIdx].mappingType = \
-                     		        timeDomAllocList->choice.setup->list.array[timeDomIdx]->mappingType;
+                        timeDomAllocList->choice.setup->list.array[timeDomIdx]->mappingType;
                      macPuschCfg->timeDomRsrcAllocList[timeDomIdx].startSymbolAndLength = \
 		        timeDomAllocList->choice.setup->list.array[timeDomIdx]->startSymbolAndLength;
-                    //macPuschCfg->timeDomRsrcAllocList[timeDomIdx].startSymbol = \
-		        timeDomAllocList->choice.setup->list.array[timeDomIdx]->startSymbol;
-                    //macPuschCfg->timeDomRsrcAllocList[timeDomIdx].symbolLen = \
-		        timeDomAllocList->choice.setup->list.array[timeDomIdx]->symbolLen;
                   }
 	       }
 	    }
