@@ -27,6 +27,7 @@
 #define CU_ID           1
 #define CRNTI           17017
 #define CELL_INDEX      0
+#define MAX_SLIV_CONFIG_IDX 105
 
 void F1APMsgHdlr(Buffer *mBuf);
 uint8_t BuildAndSendF1SetupReq();
