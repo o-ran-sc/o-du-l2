@@ -412,12 +412,12 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
 	     */
 	    pdu[byteIdx++] = 0;
 	    /* Hardcoding MAC PDU */
-	    pdu[byteIdx++] = 181;
-	    pdu[byteIdx++] = 99;
-	    pdu[byteIdx++] = 20;
-	    pdu[byteIdx++] = 170;
-	    pdu[byteIdx++] = 132;
-	    pdu[byteIdx++] = 96;
+	    pdu[byteIdx++] = 16;
+	    pdu[byteIdx++] = 00;
+	    pdu[byteIdx++] = 00;
+	    pdu[byteIdx++] = 00;
+	    pdu[byteIdx++] = 00;
+	    pdu[byteIdx++] = 103;
 
 	    break;
 	 }

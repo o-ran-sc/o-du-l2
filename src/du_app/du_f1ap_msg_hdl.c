@@ -165,6 +165,30 @@ uint8_t BuildDLNRInfo(NRFreqInfo_t *dlnrfreq)
 
 /*******************************************************************
  *
+ * @brief Builds NRCell ID 
+ *
+ * @details
+ *
+ *    Function : BuildNrCellId
+ *
+ *    Functionality: Building the NR Cell ID
+ *
+ * @params[in] BIT_STRING_t *nrcell
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+S16 BuildNrCellId(BIT_STRING_t *nrcell)
+{
+   memset(nrcell->buf, 0, nrcell->size);
+   nrcell->buf[4]   = 16; 
+   nrcell->bits_unused = 4;
+   return ROK;
+}
+
+/*******************************************************************
+ *
  * @brief Builds Nrcgi 
  *
  * @details
@@ -181,9 +205,7 @@ uint8_t BuildDLNRInfo(NRFreqInfo_t *dlnrfreq)
 uint8_t BuildNrcgi(NRCGI_t *nrcgi)
 {
    uint8_t ret;
-   uint8_t unused = 4;
    uint8_t byteSize = 5;
-   uint8_t val = 16;
    /* Allocate Buffer Memory */
    nrcgi->pLMN_Identity.size = PLMN_SIZE * sizeof(uint8_t);
    DU_ALLOC(nrcgi->pLMN_Identity.buf, nrcgi->pLMN_Identity.size);
@@ -198,18 +220,14 @@ uint8_t BuildNrcgi(NRCGI_t *nrcgi)
       return RFAILED;
    }
    /*nrCellIdentity*/
-   //ret = BuildNrCellId(&nrcgi->nRCellIdentity);
    nrcgi->nRCellIdentity.size = byteSize * sizeof(uint8_t);
    DU_ALLOC(nrcgi->nRCellIdentity.buf, nrcgi->nRCellIdentity.size); 
    if(nrcgi->nRCellIdentity.buf == NULLP)
    {
       return RFAILED;
    }
-   ret = fillBitString(&nrcgi->nRCellIdentity, unused, byteSize, val);
-   if(ret != ROK)
-   {
-      return RFAILED;
-   }
+   BuildNrCellId(&nrcgi->nRCellIdentity);
+
    return ROK;
 }
 /*******************************************************************
@@ -8311,16 +8329,11 @@ uint8_t extractCellsToBeActivated(Cells_to_be_Activated_List_t cellsToActivate)
       cell = cellsToActivate.list.array[idx]->value.choice.Cells_to_be_Activated_List_Item;
       bitStringToInt(&cell.nRCGI.nRCellIdentity, &nci);
 
-      if(nci <= 0 || nci > MAX_NUM_CELL)
-      {
-	 DU_LOG("\nDU APP : Invalid NCI %d", nci);
-	 return RFAILED;
-      }
       if(cell.nRPCI)
       {
 	 pci = *cell.nRPCI;
       }
-      ret = duProcCellsToBeActivated(nci, pci);
+      ret = duProcCellsToBeActivated(cell.nRCGI.pLMN_Identity.buf, nci, pci);
    }
    return ret;
 }

@@ -30,40 +30,6 @@ int PrepFinalEncBuf(const void *buffer, size_t size, void *encodedBuf)
 
 /*******************************************************************
  *
- * @brief Builds PLMN ID 
- *
- * @details
- *
- *    Function : plmnBuildId
- *
- *    Functionality: Building the PLMN ID
- *
- * @params[in] PLMNID plmn
- *             OCTET_STRING_t *octe
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-uint8_t buildPlmnId(Plmn plmn, uint8_t *buf)
-{
-   uint8_t mncCnt;
-   mncCnt = 2;
-   buf[0] = ((plmn.mcc[1] << 4) | (plmn.mcc[0]));
-   if(mncCnt == 2)
-   {
-      buf[1]  = ((0xf0) | (plmn.mcc[2]));
-      buf[2] = ((plmn.mnc[1] << 4) | (plmn.mnc[0]));
-   }
-   else
-   {
-      buf[1] = ((plmn.mnc[0] << 4) | (plmn.mcc[2]));
-      buf[2] = ((plmn.mnc[2] << 4) | (plmn.mnc[1]));
-   }
-   return ROK;
-}
-
-/*******************************************************************
- *
  * @brief Fills the RicId
  *
  * @details

@@ -107,6 +107,40 @@ void oduCpyFixBufToMsg(uint8_t *fixBuf, Buffer *mBuf, uint16_t len)
    ODU_COPY_FIX_BUF_TO_MSG(fixBuf, mBuf, 0, len, (MsgLen *)&copyLen);
 }
 
+/*******************************************************************
+ *
+ * @brief Builds PLMN ID 
+ *
+ * @details
+ *
+ *    Function : plmnBuildId
+ *
+ *    Functionality: Building the PLMN ID
+ *
+ * @params[in] PLMNID plmn
+ * @params[out] PLMNID in string format
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t buildPlmnId(Plmn plmn, uint8_t *buf)
+{
+   uint8_t mncCnt;
+   mncCnt = 2;
+   buf[0] = ((plmn.mcc[1] << 4) | (plmn.mcc[0]));
+   if(mncCnt == 2)
+   {
+      buf[1]  = ((0xf0) | (plmn.mcc[2]));
+      buf[2] = ((plmn.mnc[1] << 4) | (plmn.mnc[0]));
+   }
+   else
+   {
+      buf[1] = ((plmn.mnc[0] << 4) | (plmn.mcc[2]));
+      buf[2] = ((plmn.mnc[2] << 4) | (plmn.mnc[1]));
+   }
+   return ROK;
+}
+
 
 /**********************************************************************
          End of file

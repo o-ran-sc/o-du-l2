@@ -38,6 +38,7 @@
 #include "legtp.h"
 #include "lphy_stub.h"
 #include "du_utils.h"
+#include "du_cell_mgr.h" 
 
 uint8_t rlcDlCfg = 0;
 uint8_t numRlcDlSaps = 0;
@@ -328,43 +329,41 @@ uint8_t duProcCfgComplete()
    {
       DuCellCb *cell = NULLP;
       DU_ALLOC(cell, sizeof(DuCellCb))
-	 if(cell == NULLP)
-	 {
-	    DU_LOG("\nDU_APP : Memory Allocation failed in duProcCfgComplete");
-	    ret = RFAILED;
-	 }
-	 else
-	 {
-	    uint32_t nci;
-	    uint8_t idx1; 
-	    memset(cell, 0, sizeof(DuCellCb));
-	    cell->cellId = ++cellId;
-	    cell->cellInfo.nrEcgi.plmn.mcc[0] = PLMN_MCC0;
-	    cell->cellInfo.nrEcgi.plmn.mcc[1] = PLMN_MCC1;
-	    cell->cellInfo.nrEcgi.plmn.mcc[2] = PLMN_MCC2;
-	    cell->cellInfo.nrEcgi.plmn.mnc[0] = PLMN_MNC0;
-	    cell->cellInfo.nrEcgi.plmn.mnc[1] = PLMN_MNC1;
-	    cell->cellInfo.nrEcgi.plmn.mnc[2] = PLMN_MNC2;
-	    cell->cellInfo.nrEcgi.cellId = NR_CELL_ID;
-	    cell->cellInfo.nrPci = NR_PCI; 
-	    cell->cellInfo.fiveGsTac = DU_TAC;
-	    for(idx1=0; idx1<MAX_PLMN; idx1++)
-	    {
-	       cell->cellInfo.plmn[idx1].mcc[0] = PLMN_MCC0;
-	       cell->cellInfo.plmn[idx1].mcc[1] = PLMN_MCC1;
-	       cell->cellInfo.plmn[idx1].mcc[2] = PLMN_MCC2;
-	       cell->cellInfo.plmn[idx1].mnc[0] = PLMN_MNC0;
-	       cell->cellInfo.plmn[idx1].mnc[1] = PLMN_MNC1;
-	       cell->cellInfo.plmn[idx1].mnc[2] = PLMN_MNC2;
-	    }
-	    cell->cellInfo.maxUe = duCfgParam.maxUe;
-	    cell->cellStatus = CELL_OUT_OF_SERVICE;
-	    nci = (uint16_t)cell->cellInfo.nrEcgi.cellId;
-
-	    duCb.cfgCellLst[nci-1] = cell;
-	    duCb.numCfgCells++;
-	 }
+      if(cell == NULLP)
+      {
+	 DU_LOG("\nDU_APP : Memory Allocation failed in duProcCfgComplete");
+	 ret = RFAILED;
       }
+      else
+      {
+	 uint8_t idx1; 
+	 memset(cell, 0, sizeof(DuCellCb));
+	 cell->cellId = ++cellId;
+	 memset(&cell->cellInfo.nrEcgi.plmn, 0, sizeof(Plmn));
+	 cell->cellInfo.nrEcgi.plmn.mcc[0] = PLMN_MCC0;
+	 cell->cellInfo.nrEcgi.plmn.mcc[1] = PLMN_MCC1;
+	 cell->cellInfo.nrEcgi.plmn.mcc[2] = PLMN_MCC2;
+	 cell->cellInfo.nrEcgi.plmn.mnc[0] = PLMN_MNC0;
+	 cell->cellInfo.nrEcgi.plmn.mnc[1] = PLMN_MNC1;
+	 cell->cellInfo.nrEcgi.cellId = NR_CELL_ID;
+	 cell->cellInfo.nrPci = NR_PCI; 
+	 cell->cellInfo.fiveGsTac = DU_TAC;
+	 memset(&cell->cellInfo.plmn[idx1], 0, sizeof(Plmn));
+	 for(idx1=0; idx1<MAX_PLMN; idx1++)
+	 {
+	    cell->cellInfo.plmn[idx1].mcc[0] = PLMN_MCC0;
+	    cell->cellInfo.plmn[idx1].mcc[1] = PLMN_MCC1;
+	    cell->cellInfo.plmn[idx1].mcc[2] = PLMN_MCC2;
+	    cell->cellInfo.plmn[idx1].mnc[0] = PLMN_MNC0;
+	    cell->cellInfo.plmn[idx1].mnc[1] = PLMN_MNC1;
+	 }
+	 cell->cellInfo.maxUe = duCfgParam.maxUe;
+	 cell->cellStatus = CELL_OUT_OF_SERVICE;
+
+	 duCb.cfgCellLst[duCb.numCfgCells] = cell;
+	 duCb.numCfgCells++;
+      }
+   }
    if(ret != RFAILED)
    {
       //Start layer configs
@@ -1585,8 +1584,8 @@ uint8_t duBuildAndSendMacCellCfg(uint16_t cellId)
  ***************************************************************************/
 uint8_t  duHandleMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm)
 {
-   uint8_t actvCellIdx  = 0;
-   uint8_t ret          = ROK;
+   uint8_t  actvCellIdx  = 0;
+   uint8_t  ret          = ROK;
 
    for(actvCellIdx = 0; actvCellIdx < MAX_NUM_CELL; actvCellIdx++)
    {
@@ -1633,24 +1632,26 @@ uint8_t  duHandleMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm)
  * ****************************************************************/
 uint8_t duHandleSlotInd(Pst *pst, SlotIndInfo *slotInfo)
 {
+   DuCellCb *cellCb = NULLP;
+
    if(slotInfo->cellId <=0 || slotInfo->cellId > MAX_NUM_CELL)
    {
       DU_LOG("\nDU APP : Invalid Cell Id %d", slotInfo->cellId);
+      return RFAILED;
    }
-   if(!duCb.actvCellLst[slotInfo->cellId-1]->firstSlotIndRcvd)
+
+   if(duGetCellCb(slotInfo->cellId, &cellCb) != ROK)
+      return RFAILED;
+
+   if(!cellCb->firstSlotIndRcvd)
    {
-#ifdef ODU_SLOT_IND_DEBUG_LOG
-   DU_LOG("\nDU APP : Slot Indication received");
-#endif
-      duCb.actvCellLst[slotInfo->cellId-1]->firstSlotIndRcvd = true;
-      if((duCb.actvCellLst[slotInfo->cellId-1] != NULL) && \
-	    (duCb.actvCellLst[slotInfo->cellId-1]->cellStatus == \
-	     ACTIVATION_IN_PROGRESS))
+      DU_LOG("\nDU APP : Slot Indication received");
+      cellCb->firstSlotIndRcvd = true;
+      if((cellCb != NULL) && (cellCb->cellStatus == ACTIVATION_IN_PROGRESS))
       {
 	 DU_LOG("\nDU APP : 5G-NR Cell %d is UP", slotInfo->cellId);
-	 duCb.actvCellLst[slotInfo->cellId-1]->cellStatus = ACTIVATED;
+         cellCb->cellStatus = ACTIVATED;
       }
-
    }
 
    /* TODO : Slot Indication to be moved out of EGTP_TEST when
@@ -1696,12 +1697,12 @@ uint8_t duBuildAndSendMacCellStartReq()
       return RFAILED;
    }
 
-   for(uint8_t id = 0; id < MAX_NUM_CELL; id++) 
+   for(uint8_t id = 0; id < duCb.numActvCells; id++) 
    {
       if(duCb.actvCellLst[id])
       {
 	 duCb.actvCellLst[id]->firstSlotIndRcvd = FALSE;
-	 cellStartInfo->cellId = duCb.actvCellLst[id]->cellInfo.nrEcgi.cellId;
+	 cellStartInfo->cellId = duCb.actvCellLst[id]->cellId;
 
 	 /* Fill Pst */
 	 FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_CELL_START_REQ);
@@ -1768,25 +1769,31 @@ uint8_t duBuildAndSendMacCellStopReq()
  * ****************************************************************/
 uint8_t duHandleStopInd(Pst *pst, MacCellStopInfo *cellStopId)
 {
+   DuCellCb *cellCb = NULLP;
+ 
    if(cellStopId->cellId <=0 || cellStopId->cellId > MAX_NUM_CELL)
    {
       DU_LOG("\nDU APP : Invalid Cell Id %d", cellStopId->cellId);
    }
-   if(duCb.actvCellLst[cellStopId->cellId-1] != NULL)
+
+   if(duGetCellCb(cellStopId->cellId, &cellCb) != ROK)
+      return RFAILED;
+
+   if(cellCb->firstSlotIndRcvd)
    {
-      if(duCb.actvCellLst[cellStopId->cellId-1]->firstSlotIndRcvd)
+      cellCb->firstSlotIndRcvd = false;
+      if((cellCb->cellStatus == ACTIVATED))
       {
-	 duCb.actvCellLst[cellStopId->cellId-1]->firstSlotIndRcvd = false;
-	 if((duCb.actvCellLst[cellStopId->cellId-1]->cellStatus == \
-		  ACTIVATED))
-	 {
-	    DU_LOG("\nDU APP : 5G-NR Cell %d is DOWN", cellStopId->cellId);
-	    duCb.actvCellLst[cellStopId->cellId-1]->cellStatus = DELETION_IN_PROGRESS;
-	 }
+	 DU_LOG("\nDU APP : 5G-NR Cell %d is DOWN", cellStopId->cellId);
+	 cellCb->cellStatus = DELETION_IN_PROGRESS;
       }
    }
    if((pst->selector == ODU_SELECTOR_LWLC) || (pst->selector == ODU_SELECTOR_TC))
       DU_FREE_SHRABL_BUF(MAC_MEM_REGION, pst->pool, cellStopId, sizeof(MacCellStopInfo));
+
+   cellCb->cellStatus = CELL_OUT_OF_SERVICE; //TODO: cell status must be set to OOS after all UE and cell cleanup which is not
+                                             //supported now
+
 
    return ROK;
 }
@@ -1834,9 +1841,15 @@ uint8_t duHandleUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo)
  * ****************************************************************/
 uint8_t DuProcRlcUlRrcMsgTrans(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo)
 {
+   DuCellCb *cellCb = NULLP;
    DuUeCb   ueCb;
+  
+   if(duGetCellCb(ulRrcMsgInfo->cellId, &cellCb) != ROK)
+      return RFAILED;
    
-   ueCb = duCb.actvCellLst[ulRrcMsgInfo->cellId -1]->ueCb[ulRrcMsgInfo->ueIdx -1];
+   ueCb = cellCb->ueCb[ulRrcMsgInfo->ueIdx -1];
+
+
    BuildAndSendULRRCMessageTransfer(ueCb, ulRrcMsgInfo->lcId, ulRrcMsgInfo->msgLen, \
       ulRrcMsgInfo->rrcMsg);
 
@@ -1863,14 +1876,18 @@ uint8_t DuProcRlcUlRrcMsgTrans(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo)
 * ****************************************************************/
 uint8_t DuProcRlcRrcDeliveryReport(Pst *pst, RrcDeliveryReport *rrcDeliveryReport)
 {
-       DuUeCb   ueCb;
-       uint8_t  ret = RFAILED;
+   DuCellCb *cellCb = NULLP;
+   DuUeCb   ueCb;
+   uint8_t  ret = RFAILED;
 
-       ueCb = duCb.actvCellLst[rrcDeliveryReport->cellId -1]->ueCb[rrcDeliveryReport->ueIdx -1];
-       ret = BuildAndSendRrcDeliveryReport(ueCb.gnbCuUeF1apId, ueCb.gnbDuUeF1apId,rrcDeliveryReport);
+   if(duGetCellCb(rrcDeliveryReport->cellId, &cellCb) != ROK)
+      return RFAILED;
+   
+   ueCb = cellCb->ueCb[rrcDeliveryReport->ueIdx -1];
+   ret = BuildAndSendRrcDeliveryReport(ueCb.gnbCuUeF1apId, ueCb.gnbDuUeF1apId,rrcDeliveryReport);
 
-       DU_FREE_SHRABL_BUF(pst->region, pst->pool, rrcDeliveryReport, sizeof(RrcDeliveryReport));
-       return ret;
+   DU_FREE_SHRABL_BUF(pst->region, pst->pool, rrcDeliveryReport, sizeof(RrcDeliveryReport));
+   return ret;
 }
 
 

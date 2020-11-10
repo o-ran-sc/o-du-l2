@@ -300,7 +300,7 @@ uint8_t duProcDlRrcMsg(F1DlRrcMsg *dlRrcMsg)
 
    ret = ROK;
 
-   if(dlRrcMsg->srbId == SRB1_LCID) //RRC connection setup
+   if(dlRrcMsg->srbId == SRB0_LCID) //RRC connection setup
    {
       for(ueIdx=0; ueIdx<duCb.numUe; ueIdx++)
       {
