@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "e3cec6e5_bcf3429c",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-10T07:34:10Z",
+      "side": 1,
+      "message": "Yes",
+      "parentUuid": "d947cd20_97f9a187",
+      "revId": "1135b319bc3262d433b6dccf608d327d0a0a5d9f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "79dc1fef_811d6b7d",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 2
@@ -33,6 +51,24 @@
       "revId": "1135b319bc3262d433b6dccf608d327d0a0a5d9f",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0f72fee8_6a0adc0c",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2024,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-10T07:34:10Z",
+      "side": 1,
+      "message": "forming pdu using setMibPdu()",
+      "parentUuid": "79dc1fef_811d6b7d",
+      "revId": "1135b319bc3262d433b6dccf608d327d0a0a5d9f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "9c5caa9e_051a8dc7",
+        "filename": "src/5gnrmac/lwr_mac_phy.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-10T07:34:10Z",
+      "side": 1,
+      "message": "Done. Enclosed within flag.",
+      "parentUuid": "635f03aa_b4ece95c",
+      "revId": "1135b319bc3262d433b6dccf608d327d0a0a5d9f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4675d5f7_e3d5658f",
         "filename": "src/du_app/du_cfg.c",
         "patchSetId": 2
@@ -67,6 +121,24 @@
       "revId": "1135b319bc3262d433b6dccf608d327d0a0a5d9f",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b98dabc2_9a8a36aa",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-10T07:34:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4675d5f7_e3d5658f",
+      "revId": "1135b319bc3262d433b6dccf608d327d0a0a5d9f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "847d0833_1cd8ed2f",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-10T07:34:10Z",
+      "side": 1,
+      "message": "As discussed, retaining the sysTsk to avoid any memory exhaustion issue at L1",
+      "parentUuid": "def0e00d_dc776402",
+      "revId": "1135b319bc3262d433b6dccf608d327d0a0a5d9f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3541f199_3356dff5",
         "filename": "src/intel_fapi/fapi_interface.h",
         "patchSetId": 2
@@ -101,6 +191,24 @@
       "revId": "1135b319bc3262d433b6dccf608d327d0a0a5d9f",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f3da15b7_c71000ed",
+        "filename": "src/intel_fapi/fapi_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-10T07:34:10Z",
+      "side": 1,
+      "message": "yes",
+      "parentUuid": "3541f199_3356dff5",
+      "revId": "1135b319bc3262d433b6dccf608d327d0a0a5d9f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
