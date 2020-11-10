@@ -27,6 +27,7 @@
 #define DU_POOL  1
 #define RLC_POOL  1
 #define MAC_POOL 1
+#define MAX_SLIV_CONFIG_IDX 105
 
 /* Events */
 #define EVTCFG 0
@@ -120,6 +121,10 @@
    _pst.prior = 0;                                          \
    _pst.intfVer = 0;                                        \
 }
+
+
+void fillStartSymbolAndLen(uint8_t numRsrcAlloc, PdschConfig *pdschCfg, PuschCfg *puschCfg)
+;
 
 /**********************************************************************
          End of file
