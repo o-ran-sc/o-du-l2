@@ -6453,9 +6453,6 @@ void extractPdschCfg(PDSCH_Config_t *cuPdschCfg, PdschConfig *macPdschCfg)
             {
 	       macPdschCfg->timeDomRsrcAllociList[timeDomIdx].mappingType = \
 	          timeDomAlloc->choice.setup->list.array[timeDomIdx]->mappingType;
-	       //macPdschCfg->timeDomRsrcAllociList[timeDomIdx].startSymbol = \
-	          
-	       //macPdschCfg->timeDomRsrcAllociList[timeDomIdx].symbolLength;
 	       macPdschCfg->timeDomRsrcAllociList[timeDomIdx].startSymbolAndLength = \
 	          timeDomAlloc->choice.setup->list.array[timeDomIdx]->startSymbolAndLength;
 	    }

@@ -21,6 +21,8 @@
 #ifndef __DU_UE_MGR_H__
 #define __DU_UE_MGR_H__
 
+#define MAX_SLIV_CONFIG_IDX 105
+
 uint8_t duHdlRlcUlData(Pst *pst, KwuDatIndInfo* datInd, Buffer *mBuf);
 uint8_t cmPkKwuDatReq(Pst * pst,KwuDatReqInfo* datReq,Buffer * mBuf);
 uint8_t duBuildAndSendUeCreateReqToMac(uint16_t cellId, uint8_t ueIdx,\
