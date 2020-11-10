@@ -46,36 +46,40 @@
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t duProcCellsToBeActivated(uint16_t nci, uint16_t nRPci)
+uint8_t duProcCellsToBeActivated(uint8_t *plmnStr, uint16_t nci, uint16_t nRPci)
 {
    uint8_t ret = ROK;
    DuCellCb *cellCb = NULLP;
+   uint8_t cfgIdx, tmpPlmn[4];
 
-   cellCb = duCb.cfgCellLst[nci-1];
-
-   if(!cellCb)
+   for(cfgIdx=0; cfgIdx<duCb.numCfgCells; cfgIdx++)
    {
-      DU_LOG("\nDU APP : No Cell found for NCI %d", nci);
-      return RFAILED;
+      memset(tmpPlmn, 0, 4);
+      buildPlmnId(duCb.cfgCellLst[cfgIdx]->cellInfo.nrEcgi.plmn, tmpPlmn);
+      if(duCb.cfgCellLst[cfgIdx]->cellInfo.nrEcgi.cellId == nci &&
+	    (strcmp(tmpPlmn, plmnStr) == 0))
+      {
+	 cellCb = duCb.cfgCellLst[cfgIdx];
+	 break;
+      }
+      else
+      {
+	 DU_LOG("\nDU APP : No Cell found for NCI %d", nci);
+	 return RFAILED;
+      }
    }
 
    cellCb->cellStatus = ACTIVATION_IN_PROGRESS; 
    cellCb->cellInfo.nrPci = nRPci;
 
-   /* Now remove this cell from configured list and move to active list */
-   duCb.cfgCellLst[nci-1] = NULL;
-   duCb.actvCellLst[nci-1] = cellCb;
-   duCb.numActvCells++;
-   /* Build and send Mac Cell Cfg for the number of active cells */
-   ret = duBuildAndSendMacCellCfg();
-   if(ret != ROK)
+   duCb.actvCellLst[duCb.numActvCells++] = cellCb;
+
+   if(duBuildAndSendMacCellCfg(cellCb->cellId) != ROK)
    {
-      DU_LOG("\nDU APP : MacCellCfg build and send failed at procCellsToBeActivated()");
-      /* Move cellCb back to cfgCellList */
-      duCb.cfgCellLst[nci-1] = duCb.actvCellLst[nci-1];
-      duCb.actvCellLst[nci-1] = NULLP;
-      duCb.numActvCells--;
-      return RFAILED;
+      DU_LOG("\nDU APP : macCellCfg build and send failed");
+      /* Delete cell from actvCellList */
+      duCb.actvCellLst[--(duCb.numActvCells)] = NULLP;
+      ret = RFAILED;
    }
    return ret;
 }
@@ -119,6 +123,39 @@ void duProcF1SetupRsp()
 void duProcGnbDuCfgUpdAckMsg()
 {
    DU_LOG("\nDU APP: GNB-DU config update Ack received ");
+}
+/*******************************************************************
+*
+* @brief Returns cellCb based on cell ID
+*
+* @details
+*
+*    Function : duGetCellCb
+*
+*    Functionality: Returns DU APP CellCb based on cell ID
+*
+* @params[in] F1AP_PDU_t ASN decoded F1AP message
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t duGetCellCb(uint16_t cellId, DuCellCb **cellCb)
+{
+   uint8_t idx;
+   for(idx=0; idx<duCb.numActvCells; idx++)
+   {
+      if(duCb.actvCellLst[idx]->cellId == cellId)
+         *cellCb = duCb.actvCellLst[idx];
+	 break;
+   }
+
+   if(!*cellCb)
+   {
+      DU_LOG("\nDU APP : Cell Id %d not found in DU APP", cellId);
+      return RFAILED;
+   }
+
+   return ROK;
 }
 
 /**********************************************************************

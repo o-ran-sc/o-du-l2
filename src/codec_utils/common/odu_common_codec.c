@@ -127,7 +127,7 @@ uint8_t bitStringToInt(BIT_STRING_t *bitString, void *value)
    }
 
    if(value)
-      val = (uint32_t *)value;
+      val = (uint64_t *)value;
    else
       return RFAILED;
 

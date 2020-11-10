@@ -46,6 +46,7 @@
 #define CU_ID           1
 #define CRNTI           17017
 #define CELL_INDEX      0
+#define SRB0 0
 #define SRB1 1
 #define SRB2 2
 #define DRB1 1
