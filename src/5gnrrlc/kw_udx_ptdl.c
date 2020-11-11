@@ -87,19 +87,12 @@ static S16  PtDlUdxStaUpdCfm ARGS(( Pst* pst,SuId suId,CmLteRlcId *rlcId,
  *      -# ROK 
  *
  */
-#ifdef ANSI
 static S16 PtDlUdxBndCfm
 (
 Pst *pst,                       /* post structure */
 SuId suId,                      /* Service User Id */
 uint8_t   status                     /* Status */
 )
-#else
-static S16 PtDlUdxBndCfm(pst, suId, status)
-Pst *pst;                       /* post structure */
-SuId suId;                      /* Service User Id */
-uint8_t   status;                    /* Status */
-#endif
 {
 
    return ROK;
@@ -128,19 +121,12 @@ uint8_t   status;                    /* Status */
  *      -# ROK 
  *
  */
-#ifdef ANSI
 static S16 PtDlUdxCfgCfm
 (
 Pst *pst,                       /* post structure */
 SuId suId,                      /* Service User Id */
 RlcCfgCfmInfo *cfmInfo                    /* Status */
 )
-#else
-static S16 PtDlUdxCfgCfm(pst, suId, status)
-Pst           *pst;            /* post structure */
-SuId          suId;            /* Service User Id */
-RlcCfgCfmInfo *cfmInfo;        /* Status */
-#endif
 {
 
    return ROK;
@@ -167,21 +153,13 @@ RlcCfgCfmInfo *cfmInfo;        /* Status */
  *      -# ROK 
  *
  */
-#ifdef ANSI
 static S16 PtDlUdxUeIdChgCfm
 (
 Pst *pst,                       /* post structure */
 SuId suId,                      /* Service User Id */
-uint32_t      transId,
-CmStatus      status
+uint32_t transId,
+CmStatus status
 )
-#else
-static S16 PtDlUdxUeIdChgCfm(pst, suId, status)
-Pst           *pst;            /* post structure */
-SuId          suId;            /* Service User Id */
-uint32_t      transId;
-CmStatus      status;
-#endif
 {
 
    return ROK;
@@ -309,19 +287,12 @@ static const UdxStaProhTmrStart rlcDlUdxStaProhTmrStartMt[UDX_MAX_SEL] =
  *      -# ROK 
  *
  */
-#ifdef ANSI
 S16 rlcDlUdxBndCfm
 (
 Pst *pst,                       /* post structure */
 SuId suId,                      /* Service User Id */
-uint8_t   status                     /* Status */
+uint8_t status                     /* Status */
 )
-#else
-S16 rlcDlUdxBndCfm(pst, suId, status)
-Pst *pst;                       /* post structure */
-SuId suId;                      /* Service User Id */
-uint8_t   status;                    /* Status */
-#endif
 {
 
    /* jump to specific primitive depending on configured selector */
@@ -353,19 +324,12 @@ uint8_t   status;                    /* Status */
  *      -# ROK 
  *
  */
-#ifdef ANSI
 S16 rlcDlUdxCfgCfm
 (
 Pst *pst,                       /* post structure */
 SuId suId,                      /* Service User Id */
 RlcCfgCfmInfo *cfmInfo                    /* Status */
 )
-#else
-S16 rlcDlUdxCfgCfm(pst, suId, status)
-Pst           *pst;            /* post structure */
-SuId          suId;            /* Service User Id */
-RlcCfgCfmInfo *cfmInfo;        /* Status */
-#endif
 {
 
    /* jump to specific primitive depending on configured selector */
@@ -395,7 +359,6 @@ RlcCfgCfmInfo *cfmInfo;        /* Status */
  *      -# ROK 
  *
  */
-#ifdef ANSI
 S16 rlcDlUdxUeIdChgCfm
 (
 Pst *pst,                       /* post structure */
@@ -403,13 +366,6 @@ SuId suId,                      /* Service User Id */
 uint32_t      transId,
 CmStatus      status
 )
-#else
-S16 rlcDlUdxUeIdChgCfm(pst, suId, status)
-Pst           *pst;            /* post structure */
-SuId          suId;            /* Service User Id */
-uint32_t      transId;
-CmStatus      status;
-#endif
 {
 
    /* jump to specific primitive depending on configured selector */

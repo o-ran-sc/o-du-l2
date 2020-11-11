@@ -400,19 +400,7 @@ S16 rlcUtlL2MeasUlInit(RlcCb *gCb)
  *  @return  Void
  *
  */
-#ifdef ANSI
- Void rlcUtlCalUlIpThrPutIncTTI
-(
-RlcCb                  *gCb,
-RlcUlRbCb              *rbCb,
-uint32_t               ttiCnt
-)
-#else
-Void rlcUtlCalUlIpThrPutIncTTI(gCb, rbCb, ttiCnt)
-RlcCb                  *gCb;
-RlcUlRbCb              *rbCb;
-uint32_t               ttiCnt;
-#endif
+Void rlcUtlCalUlIpThrPutIncTTI(RlcCb *gCb,RlcUlRbCb *rbCb,uint32_t ttiCnt)
 {
    volatile uint32_t     startTime = 0;
 
@@ -478,21 +466,13 @@ uint32_t               ttiCnt;
  *  @return  Void
  *
  */
-#ifdef ANSI
- Void rlcUtlCalUlIpThrPut
+Void rlcUtlCalUlIpThrPut
 (
 RlcCb        *gCb,
 RlcUlRbCb    *rbCb,
 Buffer       *pdu,
 uint32_t     ttiCnt
 )
-#else
-Void rlcUtlCalUlIpThrPut(gCb, rbCb, pdu, ttiCnt)
-RlcCb        *gCb;
-RlcUlRbCb    *rbCb;
-Buffer       *pdu;
-uint32_t     ttiCnt;
-#endif
 {
    MsgLen        rlcSduSz = 0;  /*Holds length of Rlc Sdu*/
    volatile uint32_t     startTime = 0;
@@ -533,17 +513,7 @@ uint32_t     ttiCnt;
  *      -# ROK
  */
 
-#ifdef ANSI
-S16 rlcUtlHdlL2TmrExp
-(
-RlcCb          *gCb,
-RlcL2MeasEvtCb *measEvtCb
-)
-#else
-S16 rlcUtlHdlL2TmrExp(measEvtCb)
-RlcCb          *gCb;
-RlcL2MeasEvtCb *measEvtCb;
-#endif
+S16 rlcUtlHdlL2TmrExp(RlcCb *gCb,RlcL2MeasEvtCb *measEvtCb)
 {
 
 #ifdef LTE_L2_MEAS_RLC
@@ -588,17 +558,7 @@ RlcL2MeasEvtCb *measEvtCb;
  *      -# ROK
  */
 
-#ifdef ANSI
-S16 rlcUtlSndUlL2MeasCfm
-(
-RlcCb                  *gCb,
-RlcL2MeasEvtCb         *measEvtCb
-)
-#else
-S16 rlcUtlSndUlL2MeasCfm(gCb, measEvtCb)
-RlcCb                  *gCb;
-RlcL2MeasEvtCb         *measEvtCb;
-#endif
+S16 rlcUtlSndUlL2MeasCfm(RlcCb *gCb,RlcL2MeasEvtCb  *measEvtCb)
 {
    uint32_t            qciIdx;
    RlcL2MeasCb         *measCb;
@@ -693,19 +653,7 @@ RlcL2MeasEvtCb         *measEvtCb;
  *      -# ROK
  */
 
-#ifdef ANSI
-S16 rlcUtlSndUlL2MeasNCfm
-(
-RlcCb           *gCb,
-RlcL2MeasReqEvt *measReqEvt,
-RlcL2MeasCfmEvt *measCfmEvt
-)
-#else
-S16 rlcUtlSndUlL2MeasNCfm(gCb, measReqEvt, measCfmEvt)
-RlcCb           *gCb;
-RlcL2MeasReqEvt *measReqEvt;
-RlcL2MeasCfmEvt *measCfmEvt;
-#endif
+S16 rlcUtlSndUlL2MeasNCfm(RlcCb *gCb,RlcL2MeasReqEvt *measReqEvt,RlcL2MeasCfmEvt *measCfmEvt)
 {
 
    RlcMiLkwL2MeasCfm(&gCb->genCfg.lmPst, measCfmEvt);
@@ -727,21 +675,13 @@ RlcL2MeasCfmEvt *measCfmEvt;
  *  @param[out] numLCh     Number of LCh in array lChId.
  **/
 
-#ifdef ANSI
 S16 rlcUtlValidateL2Meas
 (
 RlcL2MeasReqEvt *measReqEvt,
 RlcL2MeasCfmEvt *measCfmEvt,
-CmLteLcId      *lChId,
-uint8_t             *numLCh
+CmLteLcId       *lChId,
+uint8_t         *numLCh
 )
-#else
-S16 rlcUtlValidateL2Meas(measReqEvt, measCfmEvt, lChId, numLCh)
-RlcL2MeasReqEvt *measReqEvt;
-RlcL2MeasCfmEvt *measCfmEvt;
-CmLteLcId      *lChId;
-uint8_t             *numLCh;
-#endif
 {
    uint8_t    measType;
    S16        ret;
@@ -868,17 +808,7 @@ uint8_t             *numLCh;
 }/* rlcUtlValidateL2Meas */
 #endif
 
-#ifdef ANSI
-S16 rlcUtlValidateIpThL2Meas
-(
-RlcL2MeasReqEvt *measReqEvt,
-RlcL2MeasCfmEvt *measCfmEvt
-)
-#else
-S16 rlcUtlValidateIpThL2Meas(measReqEvt, measCfmEvt)
-RlcL2MeasReqEvt *measReqEvt;
-RlcL2MeasCfmEvt *measCfmEvt;
-#endif
+S16 rlcUtlValidateIpThL2Meas(RlcL2MeasReqEvt *measReqEvt,RlcL2MeasCfmEvt *measCfmEvt)
 {
    uint8_t      measType;
    uint8_t         lsbNibble = 0;
@@ -926,20 +856,8 @@ RlcL2MeasCfmEvt *measCfmEvt;
  *
  *  @return  Void
  */
-#ifdef ANSI
 
-Void rlcUtlResetUlL2MeasInRlcRb
-(
-RlcCb       *gCb,
-RlcL2MeasCb *measCb,
-uint8_t      measType
-)
-#else
-Void rlcUtlResetUlL2MeasInRlcRb(measCb, measType)
-RlcCb       *gCb;
-RlcL2MeasCb *measCb;
-uint8_t     measType;
-#endif
+Void rlcUtlResetUlL2MeasInRlcRb(RlcCb *gCb,RlcL2MeasCb *measCb,uint8_t measType)
 {
    uint32_t           rbIdx;
    uint32_t           ueIdx;
@@ -997,19 +915,7 @@ uint8_t     measType;
  *  @return  S16
  *      -# ROK
  */
-#ifdef ANSI
-Void rlcUtlPlcMeasDatInL2Sts
-(
-RlcL2Cntr       *measData, 
-RlcL2MeasRbCb   *rbL2Cb,
-uint8_t         measType
-)
-#else
-Void rlcUtlPlcMeasDatInL2Sts(measData, rbL2Cb, measType)
-RlcL2Cntr       *measData; 
-RlcL2MeasRbCb   *rbL2Cb;
-uint8_t         measType;
-#endif
+Void rlcUtlPlcMeasDatInL2Sts(RlcL2Cntr *measData,RlcL2MeasRbCb *rbL2Cb,uint8_t measType)
 {
    /* We should check the number of measType in the request. This can be done 
     * by looking at each bit in the measType. Also store the measData in the 

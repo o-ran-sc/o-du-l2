@@ -202,14 +202,7 @@ Void cmPrcTmr ARGS((CmTqCp* tqCp, CmTqType* tq, PFV func));
 
 void            dump_external(void);
 
-#ifdef ANSI
-static Void mtDelSigals
-(
-Void
-)
-#else
-static Void mtDelSignals()
-#endif
+static Void mtDelSigals(Void)
 {
    struct sigaction sa;
 
@@ -803,17 +796,11 @@ static int SOpenWlsIntf()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
 int main
 (
 int argc,                       /* argument count */
 char **argv                     /* argument vector */
 )
-#else
-int main(argc, argv)
-int argc;                       /* argument count */
-char **argv;                    /* argument vector */
-#endif
 {
 
 #ifdef XEON_MULTIPLE_CELL_CHANGES
@@ -863,17 +850,11 @@ char **argv;                    /* argument vector */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
 int ssMain
 (
 int argc,                       /* argument count */
 char **argv                     /* argument vector */
 )
-#else
-int ssMain(argc, argv)
-int argc;                       /* argument count */
-char **argv;                    /* argument vector */
-#endif
 {
 
 
@@ -905,14 +886,7 @@ char **argv;                    /* argument vector */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-S16 ssdInitGen
-(
-void
-)
-#else
-S16 ssdInitGen()
-#endif
+S16 ssdInitGen(void)
 {
    struct sigaction act;
    sigset_t set;
@@ -1064,14 +1038,7 @@ S16 ssdInitGen()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-Void ssdDeinitGen
-(
-void
-)
-#else
-Void ssdDeinitGen()
-#endif
+Void ssdDeinitGen(void)
 {
 
 
@@ -1097,19 +1064,12 @@ Void ssdDeinitGen()
 *       File:  cm_mem.c
 *
 */
-#ifdef ANSI
 S16 ssPutDynMemBlkSet
 (
 uint8_t                    bktIdx,        /* Index to bucket list */
 CmMmBlkSetElement    *dynMemSetElem  /* Memory set element which is needs to be 
                                         added to global region */
 )
-#else
-S16 ssPutDynMemBlkSet(bktIdx, dynMemSetElem)
-uint8_t                    bktIdx;        /* Index to bucket list */
-CmMmBlkSetElement    *dynMemSetElem; /* Memory set element which is needs to be 
-                                        added to global region */
-#endif
 {
    CmMmGlobRegCb        *globReg;
    CmMmGlobalBktCb      *bktCb;
@@ -1155,19 +1115,12 @@ CmMmBlkSetElement    *dynMemSetElem; /* Memory set element which is needs to be
 *       File:  cm_mem.c
 *
 */
-#ifdef ANSI
 S16 ssGetDynMemBlkSet
 (
 uint8_t               bktIdx,        /* Index to bucket list */
 CmMmBlkSetElement     *dynMemSetElem  /* Memory set element which is updated 
                                       with new set values */
 )
-#else
-S16 ssGetDynMemBlkSet(bktIdx, dynMemSetElem)
-uint8_t               bktIdx;        /* Index to bucket list */
-CmMmBlkSetElement     *dynMemSetElem; /* Memory set element which is updated 
-                                      with new set values */
-#endif
 {
 
    CmMmGlobRegCb        *globReg;
@@ -1217,21 +1170,13 @@ CmMmBlkSetElement     *dynMemSetElem; /* Memory set element which is updated
 *       File:  cm_mem.c
 *
 */
-#ifdef ANSI
 S16 ssPutDynMemBlkSet
 (
-uint8_t                    bktIdx,               /* Index to bucket list */
+uint8_t              bktIdx,               /* Index to bucket list */
 CmMmBlkSetElement    *dynMemSetElem,        /* Memory set element which is needs to be 
                                                added to global region */
-uint32_t                    doNotBlockForLock    /* Boolean whether to block for lock or not */
+uint32_t             doNotBlockForLock    /* Boolean whether to block for lock or not */
 )
-#else
-S16 ssPutDynMemBlkSet(bktIdx, dynMemSetElem)
-uint8_t                    bktIdx;               /* Index to bucket list */
-CmMmBlkSetElement    *dynMemSetElem;        /* Memory set element which is needs to be 
-                                               added to global region */
-uint32_t                    doNotBlockForLock;   /* Boolean whether to block for lock or not */
-#endif
 {
    CmMmGlobRegCb       *globReg;
    CmMmGlobalBktCb     *bktCb;
@@ -1304,7 +1249,6 @@ uint32_t                    doNotBlockForLock;   /* Boolean whether to block for
 *       File:  cm_mem.c
 *
 */
-#ifdef ANSI
 S16 ssGetDynMemBlkSet
 (
 uint8_t                     bktIdx,              /* Index to bucket list */
@@ -1312,13 +1256,6 @@ CmMmBlkSetElement     *dynMemSetElem,       /* Memory set element which is updat
                                                with new set values */
 uint32_t                    doNotBlockForLock    /* Boolean whether to block for lock or not */
 )
-#else
-S16 ssGetDynMemBlkSet(bktIdx, dynMemSetElem)
-uint8_t                     bktIdx;              /* Index to bucket list */
-CmMmBlkSetElement     *dynMemSetElem;       /* Memory set element which is updated 
-                                               with new set values */
-uint32_t                    doNotBlockForLock;   /* Boolean whether to block for lock or not */
-#endif
 {
    CmMmGlobRegCb        *globReg;
    CmMmGlobalBktCb      *bktCb;
@@ -1377,14 +1314,7 @@ uint32_t                    doNotBlockForLock;   /* Boolean whether to block for
 uint32_t gDynMemAlrm[4];
 static uint32_t memoryCheckCounter;
 
-#ifdef ANSI
-uint32_t isMemThreshReached(
-Region reg
-)
-#else
-uint32_t isMemThreshReached(reg)
-Region reg;
-#endif
+uint32_t isMemThreshReached(Region reg)
 {
    CmMmGlobRegCb        *globReg;
    CmMmGlobalBktCb      *bktCb;
@@ -1448,15 +1378,7 @@ Region reg;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-Void * ssGetIccHdl  
-(
-Region region
-)
-#else
-Void * ssGetIccHdl()
-Region region;
-#endif
+Void * ssGetIccHdl(Region region)
 {
    CmMmDynRegCb *dynRegCb;
 
@@ -1650,14 +1572,7 @@ S16 SAllocateStaticMem()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-S16 ssdInitMem
-(
-void
-)
-#else
-S16 ssdInitMem()
-#endif
+S16 ssdInitMem(void)
 {
    /* mt018.201 - added local variable */
    uint8_t              i;
@@ -1957,14 +1872,7 @@ S16 ssdInitMem()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-Void ssdDeinitMem
-(
-void
-)
-#else
-Void ssdDeinitMem()
-#endif
+Void ssdDeinitMem(void)
 {
    /* mt018.201 - added local variables */
    uint8_t     i;
@@ -2000,14 +1908,7 @@ Void ssdDeinitMem()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-S16 ssdInitTsk
-(
-void
-)
-#else
-S16 ssdInitTsk()
-#endif
+S16 ssdInitTsk(void)
 {
 /* mt001.301 : Additions */
 /*mt013.301 :Added SS_AFFINITY_SUPPORT  */
@@ -2043,14 +1944,7 @@ S16 ssdInitTsk()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-Void ssdDeinitTsk
-(
-void
-)
-#else
-Void ssdDeinitTsk()
-#endif
+Void ssdDeinitTsk(void)
 {
 
    return;
@@ -2072,14 +1966,7 @@ Void ssdDeinitTsk()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-S16 ssdInitDrvr
-(
-void
-)
-#else
-S16 ssdInitDrvr()
-#endif
+S16 ssdInitDrvr(void)
 {
    S16 i;
 #ifndef L2_L3_SPLIT
@@ -2150,14 +2037,7 @@ S16 ssdInitDrvr()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-Void ssdDeinitDrvr
-(
-void
-)
-#else
-Void ssdDeinitDrvr()
-#endif
+Void ssdDeinitDrvr(void)
 {
   /* mt008.301: Terminate the Driver Task on exit */
   while(pthread_cancel(osCp.dep.isTskHdlrTID));
@@ -2189,14 +2069,7 @@ Void ssdDeinitDrvr()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-S16 ssdInitTmr
-(
-void
-)
-#else
-S16 ssdInitTmr()
-#endif
+S16 ssdInitTmr(void)
 {
    pthread_attr_t attr;
    struct sched_param param_sched;
@@ -2286,14 +2159,7 @@ S16 ssdInitTmr()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-Void ssdDeinitTmr
-(
-void
-)
-#else
-Void ssdDeinitTmr()
-#endif
+Void ssdDeinitTmr(void)
 {
 #ifdef SS_MULTICORE_SUPPORT
    SsSTskEntry *sTsk;
@@ -2351,14 +2217,7 @@ Void ssdDeinitTmr()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-S16 ssdInitLog
-(
-void
-)
-#else
-S16 ssdInitLog()
-#endif
+S16 ssdInitLog(void)
 {
 /* mt027.201 - Modification to fix warnings with no STDIN and STDOUT */
 #ifdef CONAVL
@@ -2457,14 +2316,7 @@ S16 ssdInitLog()
 *
 */
 /* mt008.301: ssdDeinitFinal changed to ssdDeinitLog */
-#ifdef ANSI
-Void ssdDeinitLog
-(
-void
-)
-#else
-Void ssdDeinitLog()
-#endif
+Void ssdDeinitLog(void)
 {
 /* mt008.301: ssdDeinitFinal changed to ssdDeinitLog */
 #ifdef CONAVL
@@ -2480,15 +2332,7 @@ Void ssdDeinitLog()
 #ifdef SS_WATCHDOG
 
 
-#ifdef ANSI
-S16 ssdInitWatchDog
-(
-uint16_t port
-)
-#else
-S16 ssdInitWatchDog(port)
-uint16_t port;
-#endif
+S16 ssdInitWatchDog(uint16_t port)
 {
    uint8_t idx;
    Txt prntBuf[PRNTSZE];
@@ -2603,15 +2447,7 @@ uint16_t port;
    return ROK;
 }
 
-#ifdef ANSI
-S16 ssdInitWatchDgPst
-(
-Pst *pst
-)
-#else
-S16 ssdInitWatchDgPst(pst)
-Pst *pst;
-#endif
+S16 ssdInitWatchDgPst(Pst *pst)
 {
 
    pst->selector  = SS_LOOSE_COUPLING;
@@ -2631,7 +2467,6 @@ Pst *pst;
 }
 
 #ifdef SS_MULTIPLE_PROCS
-#ifdef ANSI
 S16 ssdWatchDgActvTmr
 (
 ProcId proc,
@@ -2639,17 +2474,7 @@ Ent ent,
 Inst inst
 )
 #else
-S16 ssdWatchDgActvTmr(proc, ent, inst)
-#endif
-#else
-#ifdef ANSI
-S16 ssdWatchDgActvTmr
-(
-Void
-)
-#else
-S16 ssdWatchDgActvTmr()
-#endif
+S16 ssdWatchDgActvTmr(Void)
 #endif /* SS_MULTIPLE_PROCS */
 {
 
@@ -2658,17 +2483,11 @@ S16 ssdWatchDgActvTmr()
    return ROK;
 }
 
-#ifdef ANSI
 Void ssdWatchDgTmrEvt
 (
 PTR       cb,        /* control block */
 S16       event      /* timer number */
 )
-#else
-Void ssdWatchDgTmrEvt(cb, event)
-PTR       cb;        /* control block */
-S16       event;     /* timer number */
-#endif
 {
 /* mt003.301 Fixed warings */
 #ifdef DEBUGP
@@ -2718,19 +2537,12 @@ S16       event;     /* timer number */
 
 }
 
-#ifdef ANSI
 Void ssdStartWatchDgTmr
 (
-void             *cb,
-S16              event,
-uint16_t              wait
+void     *cb,
+S16      event,
+uint16_t wait
 )
-#else
-Void ssdStartWatchDgTmr(cb, event, wait)
-void             *cb;
-S16              event;
-uint16_t              wait;
-#endif
 {
    CmTmrArg    arg;
    int i;
@@ -2773,17 +2585,11 @@ uint16_t              wait;
    return;
 }
 
-#ifdef ANSI
 Void ssdStopWatchDgTmr
 (
-void             *cb,
-S16              event
+void *cb,
+S16  event
 )
-#else
-Void ssdStopWatchDgTmr(cb, event)
-void             *cb;
-S16              event;
-#endif
 {
    CmTmrArg    arg;
 #ifdef DEBUGP
@@ -2823,17 +2629,11 @@ S16              event;
    return;
 }
 
-#ifdef ANSI
 S16 ssdSndHrtBtMsg
 (
-Bool             restart,
-uint32_t              type
+Bool      restart,
+uint32_t  type
 )
-#else
-S16 ssdSndHrtBtMsg(restart, type)
-Bool             restart;
-uint32_t              type;
-#endif
 {
    S16     ret = ROK;
 #ifdef DEBUGP
@@ -2917,14 +2717,7 @@ uint32_t              type;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-static Void mtGetOpts
-(
-void
-)
-#else
-static Void mtGetOpts()
-#endif
+static Void mtGetOpts(void)
 {
    S32 argc;
    S8 **argv;
@@ -3301,19 +3094,12 @@ static Void mtGetOpts()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
 S16 SGetOpt
 (
 int argc,                   /* argument count */
 char **argv,                /* argument value */
 char *opts                  /* options */
 )
-#else
-S16 SGetOpt(argc, argv, opts)
-int argc;                   /* argument count */
-char **argv;                /* argument value */
-char *opts;                 /* options */
-#endif
 {
    /* mt020.201 - Removed for no command line */
 #ifndef NOCMDLINE
@@ -3415,14 +3201,7 @@ char *opts;                 /* options */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-Void ssdStart
-(
-void
-)
-#else
-Void ssdStart()
-#endif
+Void ssdStart(void)
 {
    S16 i;
 
@@ -3459,15 +3238,10 @@ Void ssdStart()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
 S16 ssdAttachTTsk
 (
 SsTTskEntry *tTsk           /* pointer to TAPA task entry */
 )
-#else
-S16 ssdAttachTTsk(tTsk)
-SsTTskEntry *tTsk;          /* pointer to TAPA task entry */
-#endif
 {
    Buffer *mBuf;
    SsMsgInfo *mInfo;
@@ -3543,15 +3317,10 @@ SsTTskEntry *tTsk;          /* pointer to TAPA task entry */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
 S16 ssdDetachTTsk
 (
 SsTTskEntry *tTsk           /* pointer to TAPA task entry */
 )
-#else
-S16 ssdDetachTTsk(tTsk)
-SsTTskEntry *tTsk;          /* pointer to TAPA task entry */
-#endif
 {
 
    return ROK;
@@ -3572,15 +3341,10 @@ SsTTskEntry *tTsk;          /* pointer to TAPA task entry */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
 S16 ssdCreateSTsk
 (
 SsSTskEntry *sTsk           /* pointer to system task entry */
 )
-#else
-S16 ssdCreateSTsk(sTsk)
-SsSTskEntry *sTsk;          /* pointer to system task entry */
-#endif
 {
    S16  ret;
    pthread_attr_t attr;
@@ -3706,7 +3470,6 @@ SsSTskEntry *sTsk;          /* pointer to system task entry */
 }
 
 
-#ifdef ANSI
 int SCreatePThread
 (
 pthread_t* tid,
@@ -3714,13 +3477,6 @@ pthread_attr_t* attr,
 void *(*start_routine) (void *),
 void* arg
 )
-#else
-int SCreatePThread(tid, attr, start_routine, arg)
-pthread_t* tid;
-pthread_attr_t* attr;
-void *(*start_routine) (void *);
-void* arg;
-#endif
 {
    int retVal = 0;
 #ifdef SS_THR_REG_MAP
@@ -3780,17 +3536,11 @@ void* arg;
 *
 */
 
-#ifdef ANSI
 static S16 ssdSetPthreadAttr
 (
 S32              tskPrior,
 pthread_attr_t  *attr
 )
-#else
-static S16 ssdSetPthreadAttr(sTsk, attr)
-S32               tskPrior,
-pthread_attr_t   *attr
-#endif
 {
    struct sched_param    param;
 
@@ -3858,17 +3608,11 @@ pthread_attr_t   *attr
 *       File:  ss_task.c
 *
 */
-#ifdef ANSI
 S16 ssdGetAffinity
 (
 SSTskId *tskId,                  /* filled in with system task ID */
 uint32_t *coreId                      /* the core/processor id to which the affinity is set */
 )
-#else
-S16 ssdGetAffinity(tskId, coreId)
-SSTskId *tskId;                 /* filled in with system task ID */
-uint32_t *coreId;                    /* the core/processor id to which the affinity is set */
-#endif
 {
 
    uint32_t tskInd;
@@ -3974,17 +3718,11 @@ uint32_t *coreId;                    /* the core/processor id to which the affin
 *       File:  ss_task.c
 *
 */
-#ifdef ANSI
 S16 ssdSetAffinity
 (
 SSTskId *tskId,                  /* filled in with system task ID */
 uint32_t coreId                       /* the core/processor id to which the affinity has to be set */
 )
-#else
-S16 ssdSetAffinity(tskId, coreId)
-SSTskId *tskId;                 /* filled in with system task ID */
-uint32_t coreId;                     /* the core/processor id to which the affinity has to be set */
-#endif
 {
 
    uint32_t tskInd = 0;
@@ -4086,15 +3824,10 @@ uint32_t coreId;                     /* the core/processor id to which the affin
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
 S16 ssdDestroySTsk
 (
 SsSTskEntry *sTsk           /* pointer to system task entry */
 )
-#else
-S16 ssdDestroySTsk(sTsk)
-SsSTskEntry *sTsk;          /* pointer to system task entry */
-#endif
 {
    Buffer *mBuf;
    SsMsgInfo *mInfo;
@@ -4147,14 +3880,7 @@ SsSTskEntry *sTsk;          /* pointer to system task entry */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-S16 SThreadYield
-(
-void
-)
-#else
-S16 SThreadYield()
-#endif
+S16 SThreadYield(void)
 {
 
 
@@ -4198,15 +3924,10 @@ S16 SThreadYield()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
 S16 ssdRegTmr
 (
 SsTmrEntry *tmr             /* pointer to timer entry */
 )
-#else
-S16 ssdRegTmr(tmr)
-SsTmrEntry *tmr;            /* pointer to timer entry */
-#endif
 {
    CmTmrArg arg;
 
@@ -4247,15 +3968,10 @@ SsTmrEntry *tmr;            /* pointer to timer entry */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
 S16 ssdDeregTmr
 (
 SsTmrEntry *tmr             /* pointer to timer entry */
 )
-#else
-S16 ssdDeregTmr(tmr)
-SsTmrEntry *tmr;            /* pointer to timer entry */
-#endif
 {
    CmTmrArg arg;
 
@@ -4292,17 +4008,11 @@ SsTmrEntry *tmr;            /* pointer to timer entry */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
 S16 ssdError
 (
 Seq seq,                    /* sequence number */
 Reason reason               /* reset reason */
 )
-#else
-S16 ssdError(seq, reason)
-Seq seq;                    /* sequence number */
-Reason reason;              /* reset reason */
-#endif
 {
    S16 i;
    pthread_t tId;
@@ -4354,7 +4064,6 @@ Reason reason;              /* reset reason */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
 Void ssdLogError
 (
 Ent ent,                    /* Calling layer's entity id */
@@ -4367,19 +4076,6 @@ ErrCode errCode,            /* layer unique error code */
 ErrVal errVal,              /* error value */
 Txt *errDesc                /* description of error */
 )
-#else
-Void ssdLogError(ent, inst, procId, file, line,
-                        errCls, errCode, errVal, errDesc)
-Ent ent;                    /* Calling layer's entity id */
-Inst inst;                  /* Calling layer's instance id */
-ProcId procId;              /* Calling layer's processor id */
-Txt *file;                  /* file name where error occured */
-S32 line;                   /* line in file where error occured */
-ErrCls errCls;              /* error class */
-ErrCode errCode;            /* layer unique error code */
-ErrVal errVal;              /* error value */
-Txt *errDesc;               /* description of error */
-#endif
 {
 #ifndef DEBUGNOEXIT
    S16 i;
@@ -4487,15 +4183,10 @@ Txt *errDesc;               /* description of error */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
 S16 ssdRegDrvrTsk
 (
 SsDrvrTskEntry *drvrTsk         /* driver task entry */
 )
-#else
-S16 ssdRegDrvrTsk(drvrTsk)
-SsDrvrTskEntry *drvrTsk;        /* driver task entry */
-#endif
 {
 
 
@@ -4516,15 +4207,10 @@ SsDrvrTskEntry *drvrTsk;        /* driver task entry */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
 S16 ssdDeregDrvrTsk
 (
 SsDrvrTskEntry *drvrTsk         /* driver task entry */
 )
-#else
-S16 ssdDeregDrvrTsk(drvrTsk)
-SsDrvrTskEntry *drvrTsk;        /* driver task entry */
-#endif
 {
 
 
@@ -4539,31 +4225,18 @@ SsDrvrTskEntry *drvrTsk;        /* driver task entry */
  * mt003.301 Additions - SDeRegTTsk fix
  */
 #ifdef SS_MULTIPLE_PROCS
-#ifdef ANSI
 S16 ssdProcTTskTerm
 (
 ProcId procIdx,
 SsTTskEntry *tTsk,
 SsIdx idx
 )
-#else
-S16 ssdProcTTskTerm(procIdx, tTsk, idx)
-ProcId procIdx;
-SsTTskEntry *tTsk;
-SsIdx idx;
-#endif
 #else /*SS_MULTIPLE_PROCS*/
-#ifdef ANSI
 S16 ssdProcTTskTerm
 (
 SsTTskEntry *tTsk,
 SsIdx idx
 )
-#else
-S16 ssdProcTTskTerm(tTsk, idx)
-SsTTskEntry *tTsk;
-SsIdx idx;
-#endif
 #endif /*SS_MULTIPLE_PROCS*/
 {
 #ifdef SS_MULTIPLE_PROCS
@@ -4694,15 +4367,10 @@ SsIdx idx;
 Void ysMtTskHdlr(Void);
 Void ysMtPollPhyMsg(uint8_t region);
 Void ysMtRcvPhyMsg(Void);
-#ifdef ANSI
 Void *mtTskHdlrT2kL2
 (
 Ptr tskPtr                      /* pointer to task entry */
 )
-#else
-Void *mtTskHdlrT2kL2(tskPtr)
-Ptr tskPtr;                     /* pointer to task entry */
-#endif
 {
    S16 ret;
 
@@ -4730,15 +4398,10 @@ Ptr tskPtr;                     /* pointer to task entry */
 #else
 Void ysMtTskHdlr(Void);
 Void YsPhyRecvMsg();
-#ifdef ANSI
 Void *mtTskHdlrT2kL2
 (
 Ptr tskPtr                      /* pointer to task entry */
 )
-#else
-Void *mtTskHdlrT2kL2(tskPtr)
-Ptr tskPtr;                     /* pointer to task entry */
-#endif
 {
    S16 ret;
    SsSTskEntry *sTsk;
@@ -4790,15 +4453,7 @@ Ptr tskPtr;                     /* pointer to task entry */
 #endif /* TENB_T2K3K_SPECIFIC_CHANGES */
 #endif
 
-#ifdef ANSI
-void *pthreadCreateHdlr
-(
-void * arg
-)
-#else
-void *pthreadCreateHdlr(pthreadCreateArg)
-void *arg;
-#endif
+void *pthreadCreateHdlr(void * arg)
 {
    S16 ret;
    SPThreadCreateArg*  pthreadCreateArg = (SPThreadCreateArg*)arg;
@@ -4829,15 +4484,10 @@ void *arg;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
 Void *mtTskHdlr
 (
 Ptr tskPtr                      /* pointer to task entry */
 )
-#else
-Void *mtTskHdlr(tskPtr)
-Ptr tskPtr;                     /* pointer to task entry */
-#endif
 {
    S16 ret;
    SsSTskEntry *sTsk;
@@ -4900,15 +4550,10 @@ Ptr tskPtr;                     /* pointer to task entry */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
 S16 mtTskHdlMsg
 (
 SsSTskEntry *sTsk
 )
-#else
-S16 mtTskHdlMsg(sTsk)
-SsSTskEntry *sTsk
-#endif
 {
    S16 i;
    S16 ret;
@@ -5306,13 +4951,7 @@ Bool g_usettitmr;
 /*
 *       Fun:   mtTmrHdlrPublic
 */
-#ifdef ANSI
-Void mtTmrHdlrPublic
-(
-)
-#else
 Void mtTmrHdlrPublic()
-#endif
 {
    if (SLock(&osCp.tmrTblLock) != ROK)
    {
@@ -5343,16 +4982,10 @@ Void mtTmrHdlrPublic()
 *
 */
 /*mt041.201 Modified SSI tick handling in mtTmrHdlr() */
-#ifdef ANSI
 static Void *mtTmrHdlr
 (
 void *parm                        /* unused */
 )
-#else
-   /* mt009.21: addition */
-static Void *mtTmrHdlr(parm)
-void *parm;                       /* unused */
-#endif
 {
 /*mt004.301-addede new region*/
 /* mt010.301 Removed SS_FAP portion and
@@ -5506,17 +5139,11 @@ void *parm;                       /* unused */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
 Void mtTimeout
 (
 PTR tCb,                        /* control block */
 S16 evnt                        /* event */
 )
-#else
-Void mtTimeout(tCb, evnt)
-PTR tCb;                        /* control block */
-S16 evnt;                       /* event */
-#endif
 {
    Buffer *mBuf;
    SsMsgInfo *mInfo;
@@ -5742,16 +5369,10 @@ S16 evnt;                       /* event */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
 static Void *mtConHdlr
 (
 Ptr parm                        /* unused */
 )
-#else
-  /* mt009.21: addition */
-static Void *mtConHdlr(parm)
-Ptr parm;                       /* unused */
-#endif
 {
    int fd;
    Data data;
@@ -5810,17 +5431,11 @@ Ptr parm;                       /* unused */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
   /* mt009.21: addition */
 static Void *mtIsTskHdlr
 (
 Ptr tskPtr                      /* pointer to task entry */
 )
-#else
-  /* mt009.21: addition */
-static Void *mtIsTskHdlr(tskPtr)
-Ptr tskPtr;                     /* pointer to task entry */
-#endif
 {
 #if (ERRCLASS & ERRCLS_DEBUG)
    int ret;
@@ -5915,15 +5530,7 @@ Ptr tskPtr;                     /* pointer to task entry */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-Void mtIntSigHndlr
-(
-int arg
-)
-#else
-Void mtIntSigHndlr(arg)
-int arg;
-#endif
+Void mtIntSigHndlr(int arg)
 {
 
    osCp.dep.sigEvnt=TRUE;
@@ -5951,14 +5558,7 @@ int arg;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-Void mtExitClnup
-(
-void
-)
-#else
-Void mtExitClnup()
-#endif
+Void mtExitClnup(void)
 {
    Ticks ticks;
    S8 buf[128];
@@ -6013,17 +5613,11 @@ Ticks SGetTtiCount(Void)
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
 S16 SDisplay
 (
 S16 chan,                   /* channel */
 Txt *buf                    /* buffer */
 )
-#else
-S16 SDisplay(chan, buf)
-S16 chan;                   /* channel */
-Txt *buf;                   /* buffer */
-#endif
 {
 
 /* mt020.201 - Fixed typo */
@@ -6083,14 +5677,7 @@ Txt *buf;                   /* buffer */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-S16 SFini
-(
-void
-)
-#else
-S16 SFini()
-#endif
+S16 SFini(void)
 {
 
    /* mt030.201 added under compilet time flag SS_LINUX and SLES9_PLUS
@@ -6127,15 +5714,10 @@ S16 SFini()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
 S16 SSetDateTime
 (
 REG1 DateTime *dt           /* date and time */
 )
-#else
-S16 SSetDateTime(dt)
-REG1 DateTime *dt;          /* date and time */
-#endif
 {
 
    UNUSED(dt);
@@ -6161,15 +5743,10 @@ REG1 DateTime *dt;          /* date and time */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
 S16 SGetDateTime
 (
 REG1 DateTime *dt           /* date and time */
 )
-#else
-S16 SGetDateTime(dt)
-REG1 DateTime *dt;          /* date and time */
-#endif
 {
    /*-- mt035.201 : SSI enhancements for micro second in datetime struct --*/
    /* time_t tt; --*/
@@ -6240,15 +5817,10 @@ REG1 DateTime *dt;          /* date and time */
 *       File:  mt_ss.c
 */
 /* mt003.301 Modifications */
-#ifdef ANSI
 S16 SGetEpcTime
 (
 EpcTime *et           /* date and time */
 )
-#else
-S16 SGetEpcTime(et)
-EpcTime *et;          /* date and time */
-#endif
 {
 /* mt003.301 Modifications */
 static uint64_t now;
@@ -6306,15 +5878,10 @@ static uint64_t now;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
 S16 SGetSysTime
 (
 Ticks *sysTime              /* system time */
 )
-#else
-S16 SGetSysTime(sysTime)
-Ticks *sysTime;             /* system time */
-#endif
 {
 
 
@@ -6353,19 +5920,12 @@ Ticks *sysTime;             /* system time */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
 S16 SGetRefTime
 (
 uint32_t refTime,             /* reference time */
 uint32_t *sec,
 uint32_t *usec
 )
-#else
-S16 SGetRefTime(refTime, sec, usec)
-uint32_t refTime;             /* reference time */
-uint32_t *sec;
-uint32_t *usec;
-#endif
 {
 
 #ifndef SS_LINUX
@@ -6422,15 +5982,10 @@ uint32_t *usec;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
 S16 SRandom
 (
 Random *value               /* random number */
 )
-#else
-S16 SRandom(value)
-Random *value;              /* random number */
-#endif
 {
 
 
@@ -6464,14 +6019,7 @@ Random *value;              /* random number */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-S16 SExitTsk
-(
-void
-)
-#else
-S16 SExitTsk()
-#endif
+S16 SExitTsk(void)
 {
 
 
@@ -6492,14 +6040,7 @@ S16 SExitTsk()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-S16 SExitInt
-(
-void
-)
-#else
-S16 SExitInt()
-#endif
+S16 SExitInt(void)
 {
 
 
@@ -6524,14 +6065,7 @@ S16 SExitInt()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-S16 SHoldInt
-(
-void
-)
-#else
-S16 SHoldInt()
-#endif
+S16 SHoldInt(void)
 {
 
 
@@ -6552,14 +6086,7 @@ S16 SHoldInt()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-S16 SRelInt
-(
-void
-)
-#else
-S16 SRelInt()
-#endif
+S16 SRelInt(void)
 {
 
 
@@ -6581,14 +6108,7 @@ S16 SRelInt()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-inline S16 SEnbInt
-(
-void
-)
-#else
-inline S16 SEnbInt()
-#endif
+inline S16 SEnbInt(void)
 {
 
 
@@ -6610,14 +6130,7 @@ inline S16 SEnbInt()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-inline S16 SDisInt
-(
-void
-)
-#else
-inline S16 SDisInt()
-#endif
+inline S16 SDisInt(void)
 {
 
 
@@ -6639,17 +6152,11 @@ inline S16 SDisInt()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
 S16 SGetVect
 (
 VectNmb vectNmb,                /* vector number */
 PIF *vectFnct                   /* vector function */
 )
-#else
-S16 SGetVect(vectNmb, vectFnct)
-VectNmb vectNmb;                /* vector number */
-PIF *vectFnct;                  /* vector function */
-#endif
 {
 
 
@@ -6675,17 +6182,11 @@ PIF *vectFnct;                  /* vector function */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
 S16 SPutVect
 (
 VectNmb vectNmb,                /* vector number */
 PIF vectFnct                    /* vector function */
 )
-#else
-S16 SPutVect(vectNmb, vectFnct)
-VectNmb vectNmb;                /* vector number */
-PIF vectFnct;                   /* vector function */
-#endif
 {
 
 
@@ -6714,17 +6215,11 @@ PIF vectFnct;                   /* vector function */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
 S16 SGetEntInst
 (
 Ent *ent,                       /* entity */
 Inst *inst                      /* instance */
 )
-#else
-S16 SGetEntInst(ent, inst)
-Ent *ent;                       /* entity */
-Inst *inst;                     /* instance */
-#endif
 {
    S16 i;
    S16 ret;
@@ -6788,17 +6283,11 @@ Inst *inst;                     /* instance */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
 S16 SSetEntInst
 (
 Ent ent,                    /* entity */
 Inst inst                   /* instance */
 )
-#else
-S16 SSetEntInst(ent, inst)
-Ent ent;                    /* entity */
-Inst inst;                  /* instance */
-#endif
 {
    S16 i;
    S16 ret;
@@ -6866,17 +6355,11 @@ Inst inst;                  /* instance */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
 inline S16 SSetIntPend
 (
 uint16_t id,                         /* driver task identifier */
 Bool flag                       /* flag */
 )
-#else
-inline S16 SSetIntPend(id, flag)
-uint16_t id;                         /* driver task identifier */
-Bool flag;                      /* flag */
-#endif
 {
    MtIsFlag isFlag;
 
@@ -6921,14 +6404,7 @@ Bool flag;                      /* flag */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-S16 SGlobMemInfoShow
-(
-Void
-)
-#else
-S16 SGlobMemInfoShow()
-#endif
+S16 SGlobMemInfoShow(Void)
 {
    uint16_t   idx;
    Txt   prntBuf[100];
@@ -7022,17 +6498,11 @@ Bool IsMemoryThresholdHit(Region reg, Pool pool)
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
 S16 SRegInfoShow
 (
 Region region,
 uint32_t *availmem
 )
-#else
-S16 SRegInfoShow(region, availmem)
-Region region;
-uint32_t *availmem;
-#endif
 {
    uint16_t   idx;
    Txt   prntBuf[100];
@@ -7131,17 +6601,11 @@ uint32_t SMemMaxThreshold[SSI_MAX_REG_THRESHOLD][SSI_MAX_BKT_THRESHOLD] = {{0}};
 uint32_t SMemMidThreshold[SSI_MAX_REG_THRESHOLD][SSI_MAX_BKT_THRESHOLD] = {{0}};
 uint32_t SMemLowThreshold[SSI_MAX_REG_THRESHOLD][SSI_MAX_BKT_THRESHOLD] = {{0}};
 
-#ifdef ANSI
 static Void SInitMemThreshold
 (
 Region region,
 uint8_t     maxBkt
 )
-#else
-static Void SInitMemThreshold(region, maxBkt)
-Region region;
-uint8_t     maxBkt;
-#endif
 {
    uint8_t   idx = 0;
    for (idx = 0; (idx < maxBkt && idx < mtCMMRegCb[region]->numBkts); idx++)
@@ -7153,17 +6617,11 @@ uint8_t     maxBkt;
    }
 }
 
-#ifdef ANSI
 S16 SRegReachedMemThreshold
 (
 Region region,
 uint8_t     maxBkt
 )
-#else
-S16 SRegReachedMemThreshold(region, maxBkt)
-Region region;
-uint8_t     maxBkt;
-#endif
 {
    uint8_t           idx       = 0;
    uint8_t           memStatus = 3;
@@ -7210,17 +6668,11 @@ uint8_t     maxBkt;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
 S16 SGetRegInfo
 (
 Region region,
 SsMemDbgInfo *dbgInfo
 )
-#else
-S16 SGetRegInfo(region, dbgInfo)
-Region region;
-SsMemDbgInfo *dbgInfo;
-#endif
 {
    uint32_t idx;
 
@@ -7267,17 +6719,11 @@ SsMemDbgInfo *dbgInfo;
    return ROK;
 }
 
-#ifdef ANSI
 S16 SGetRegPoolInfo
 (
 uint8_t *numRegion,
 uint8_t *numPool
 )
-#else
-S16 SGetRegPoolInfo(numRegion, numPool)
-uint8_t *numRegion;
-uint8_t *numPool;
-#endif
 {
    /* Send number of Region available */
    *numRegion = mtMemoCfg.numRegions;
@@ -7310,17 +6756,11 @@ uint8_t *numPool;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
 S16 SPrintRegMemStatusInfo
 (
 Region region,
 uint8_t typeFlag
 )
-#else
-S16 SPrintRegMemStatusInfo(region, typeFlag)
-Region region;
-uint8_t typeFlag;
-#endif
 {
    Txt prntBuf[150];
    uint32_t idx;
@@ -7424,15 +6864,7 @@ uint8_t typeFlag;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-static S16 SPrintRegMemStats
-(
-Region region
-)
-#else
-static S16 SPrintRegMemStats(region)
-Region region;
-#endif
+static S16 SPrintRegMemStats(Region region)
 {
    CmMmHashListCp *hashListCp;
    Txt prntBuf[150];
@@ -7530,19 +6962,12 @@ Region region;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
 Void SRegMemErrHdlr
 (
 Region region,
 Data *ptr,
 S16 errCode
 )
-#else
-Void SRegMemErrHdlr(region, ptr, errCode)
-Region region;
-Data *ptr;
-S16 errCode;
-#endif
 {
    Txt prntBuf[150];
 
@@ -7577,15 +7002,10 @@ S16 errCode;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
 S16 SPrintRegMemProfile
 (
 Region region
 )
-#else
-S16 SPrintRegMemProfile(region)
-Region region;
-#endif
 {
    CmMmHeapCb *heapCb;
    CmMmRegCb *regCb;
@@ -7811,15 +7231,10 @@ Region region;
 *       File:  mt_ss.c
 *
 --*/
-#ifdef ANSI
 S16 SGetTimeStamp
 (
 S8    *ts
 )
-#else
-S16 SGetTimeStamp(ts)
-S8    *ts;
-#endif
 {
 
 #ifndef SS_LINUX
@@ -7881,14 +7296,7 @@ S8    *ts;
 *       File:  mt_ss.c
 *
 --*/
-#ifdef ANSI
-uint32_t SGetSystemTsk
-(
-Void
-)
-#else
-uint32_t SGetSystemTsk()
-#endif
+uint32_t SGetSystemTsk(Void)
 {
 
    return (pthread_self());
@@ -7910,11 +7318,7 @@ uint32_t SGetSystemTsk()
 *       File:  mt_ss.c
 *
 --*/
-#ifdef ANSI
 static SsSTskEntry* ssdAddTmrSTsk(Void)
-#else
-static SsSTskEntry* ssdAddTmrSTsk()
-#endif
 {
    SsSTskEntry *sTsk;
    S16 ret;
@@ -8040,17 +7444,7 @@ static SsSTskEntry* ssdAddTmrSTsk()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-S16 ssdInitLockNew
-(
-SLockInfo *lockId,
-uint8_t        lockType
-)
-#else
-S16 ssdInitLockNew(lockId, lockType)
-SLockInfo *lockId;
-uint8_t        lockType;
-#endif
+S16 ssdInitLockNew(SLockInfo *lockId,uint8_t lockType)
 {
 
 #ifdef SS_REC_LOCK_SUPPORT
@@ -8130,17 +7524,7 @@ uint8_t        lockType;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-S16 ssdLockNew
-(
-SLockInfo *lockId,
-uint8_t         lockType
-)
-#else
-S16 ssdLockNew(lockId, lockType)
-SLockInfo *lockId;
-uint8_t         lockType;
-#endif
+S16 ssdLockNew(SLockInfo *lockId,uint8_t lockType)
 {
 
    Txt prntBuf[PRNTSZE];
@@ -8228,17 +7612,7 @@ uint8_t         lockType;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-S16 ssdUnlockNew
-(
-SLockInfo *lockId,
-uint8_t        lockType
-)
-#else
-S16 ssdUnlockNew(lockId, lockType)
-SLockInfo *lockId;
-uint8_t        lockType;
-#endif
+S16 ssdUnlockNew(SLockInfo *lockId,uint8_t lockType)
 {
 
    Txt prntBuf[PRNTSZE];
@@ -8294,17 +7668,7 @@ uint8_t        lockType;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-S16 ssdDestroyLockNew
-(
-SLockInfo *lockId,
-uint8_t        lockType
-)
-#else
-S16 ssdDestroyLockNew(lockId, lockType)
-SLockInfo *lockId;
-uint8_t        lockType;
-#endif
+S16 ssdDestroyLockNew(SLockInfo *lockId,uint8_t lockType)
 {
    Txt prntBuf[PRNTSZE];
    S16    retVal = ROK;
@@ -8367,14 +7731,7 @@ uint8_t        lockType;
  *       File:
  *
  **/
-#ifdef ANSI
-S16 ssInitRcvWork
-(
- void
- )
-#else
-S16 ssInitRcvWork()
-#endif
+S16 ssInitRcvWork(void)
 {
   pthread_attr_t attr;
   pthread_t      thread;
@@ -8419,15 +7776,7 @@ S16 ssInitRcvWork()
  *
  **/
 
-#ifdef ANSI
-static void *workRcvTsk
-(
- Ptr ptr
- )
-#else
-static void *workRcvTsk (ptr)
-  Ptr ptr;
-#endif
+static void *workRcvTsk(Ptr ptr)
 {
 
   cvmx_wqe_t *workPtr;
@@ -8707,17 +8056,11 @@ pthread_t    threadId    /* Thread Id of system task */
 *       File:  pt_ss.c
 *
 */
-#ifdef ANSI
 S16 SStartTask
 (
 volatile uint32_t      *startTime,
 uint32_t       taskId
 )
-#else
-S16 SStartTask(startTime, taskId)
-volatile uint32_t      *startTime;
-uint32_t       taskId;
-#endif
 {
 #ifdef MSPD_MLOG_NEW
    *startTime = GetTIMETICK();
@@ -8740,17 +8083,11 @@ uint32_t       taskId;
 *       File:  pt_ss.c
 *
 */
-#ifdef ANSI
 S16 SStopTask
 (
 volatile uint32_t       startTime,
 uint32_t       taskId
 )
-#else
-S16 SStopTask(startTime, taskId)
-volatile uint32_t       startTime;
-uint32_t       taskId;
-#endif
 {
    /*uint32_t      stopTime;*/
    switch(taskId)
@@ -8789,33 +8126,21 @@ uint32_t       taskId;
    return ROK;
 }
 #else
-#ifdef ANSI
 S16 SStartTask
 (
-volatile uint32_t      * startTime,
-uint32_t       taskId
+volatile uint32_t * startTime,
+uint32_t taskId
 )
-#else
-S16 SStartTask(startTime, taskId)
-volatile uint32_t      * startTime;
-uint32_t       taskId;
-#endif
 {
    *startTime = 0;
    return ROK;
 }
 
-#ifdef ANSI
 S16 SStopTask
 (
-volatile uint32_t       startTime,
-uint32_t       taskId
+volatile uint32_t startTime,
+uint32_t taskId
 )
-#else
-S16 SStopTask(startTime, taskId)
-volatile uint32_t       startTime;
-uint32_t       taskId;
-#endif
 {
    return ROK;
 }
@@ -8830,17 +8155,11 @@ uint32_t       taskId;
 *
 * @return  Void - function is always success
 */
-#ifdef ANSI
 Void UpdateSocCpuInfo
 (
 CmCpuStatsInfo *cpuInfo, 
 uint8_t    idx
 )
-#else
-Void UpdateSocCpuInfo(*cpuInfo, idx)
-CmCpuStatsInfo *cpuInfo;
-uint8_t       idx;
-#endif
 {
    FILE       *mipsFd;
    S8         mipsStr[MIPS_STRING_LEN];
@@ -8921,14 +8240,9 @@ uint8_t       idx;
 *       File:  mt_ss.c
 *
 --*/
-#ifdef ANSI
 static SsSTskEntry* ssdReAddTmrSTsk(
 uint8_t idx
 )
-#else
-static SsSTskEntry* ssdReAddTmrSTsk(idx)
-uint8_t idx;
-#endif
 {
    SsSTskEntry *sTsk;
    S16 ret;
@@ -9039,14 +8353,7 @@ uint8_t idx;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-S16 ssdReInitTmr
-(
-void
-)
-#else
-S16 ssdReInitTmr()
-#endif
+S16 ssdReInitTmr(void)
 {
    pthread_attr_t attr;
    struct sched_param param_sched;

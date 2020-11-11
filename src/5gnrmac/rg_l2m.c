@@ -93,7 +93,6 @@ static RgL2MeasCb * rgL2mAllocMeasCb ARGS((
  *      -# RFAILED 
  *
  */
-#ifdef ANSI
 S16 rgL2mCreateMeasCb 
 (
 RgCellCb       *cell,
@@ -101,13 +100,6 @@ RgInfL2MeasReq *measInfo,
 uint8_t        measType,
 RgErrInfo      *err
 )
-#else
-S16 rgL2mCreateMeasCb(cell, measInfo, measType, err)
-RgCellCb       *cell;
-RgInfL2MeasReq *measInfo; 
-uint8_t        measType;
-RgErrInfo      *err;
-#endif    
 {
   // Inst    inst = cell->macInst - RG_INST_START;
    uint32_t     idx;
@@ -164,19 +156,12 @@ RgErrInfo      *err;
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
 S16 rgL2mMeasReq 
 (
 RgCellCb       *cell,
 RgInfL2MeasReq *measInfo,
 RgErrInfo      *err
 )
-#else
-S16 rgL2mMeasReq(cell, measInfo, err)
-RgCellCb       *cell;
-RgInfL2MeasReq *measInfo; 
-RgErrInfo      *err;
-#endif    
 {
    S16  ret=RFAILED;
 
@@ -199,17 +184,7 @@ RgErrInfo      *err;
  * @param  [in] RgCellCb          *cell
  * @param  [in] RgInfL2MeasCfm    *measCfm
  */
-#ifdef ANSI
-static Void rgSndL2MeasCfm
-(
-RgCellCb          *cell, 
-RgInfL2MeasCfm    *measCfm
-)
-#else
-static Void rgSndL2MeasCfm (cell, measCfm)
-RgCellCb          *cell; 
-RgInfL2MeasCfm    *measCfm;   
-#endif
+static Void rgSndL2MeasCfm(RgCellCb *cell, RgInfL2MeasCfm *measCfm)
 {
    Pst             pst;
    Inst            macInst = cell->macInst - RG_INST_START;
@@ -231,17 +206,7 @@ RgInfL2MeasCfm    *measCfm;
  * @param  [in] RgCellCb          *cell
  * @param  [in] RgInfL2MeasCfm    *measCfm
  */
-#ifdef ANSI
-static Void rgSndL2MeasStopCfm
-(
-RgCellCb          *cell,
-RgInfL2MeasCfm    *measCfm
-)
-#else
-static Void rgSndL2MeasStopCfm (cell, measCfm)
-RgCellCb          *cell;
-RgInfL2MeasCfm    *measCfm;
-#endif
+static Void rgSndL2MeasStopCfm(RgCellCb *cell,RgInfL2MeasCfm *measCfm)
 {
    Pst             pst;
    Inst            macInst = cell->macInst - RG_INST_START;
@@ -267,17 +232,11 @@ RgInfL2MeasCfm    *measCfm;
  *      -# ROK
  *      -# RFAILED
  **/
-#ifdef ANSI
 S16 RgSchMacL2MeasReq
 (
 Pst               *pst,          /* post structure  */
 RgInfL2MeasReq    *measInfo      /* Meas Req Info */
 )
-#else
-S16 RgSchMacL2MeasReq(pst, measInfo)
-Pst               *pst;          /* post structure  */
-RgInfL2MeasReq    *measInfo;      /* Meas Req Info */
-#endif    
 {
    Inst            inst;
    RgCellCb        *cellCb = NULLP;
@@ -328,17 +287,11 @@ RgInfL2MeasReq    *measInfo;      /* Meas Req Info */
  *      -# ROK
  *      -# RFAILED
  **/
-#ifdef ANSI
 S16 RgSchMacL2MeasStopReq
 (
 Pst               *pst,          /* post structure  */
 RgInfL2MeasStopReq *measInfo      /* Meas Req Info */
 )
-#else
-S16 RgSchMacL2MeasStopReq(pst, measInfo)
-Pst               *pst;          /* post structure  */
-RgInfL2MeasStopReq *measInfo;      /* Meas Req Info */
-#endif
 {
    S16            ret = ROK;   
    CmLList        *node   = NULLP;
@@ -398,17 +351,11 @@ RgInfL2MeasStopReq *measInfo;      /* Meas Req Info */
  *      -# ROK
  *      -# RFAILED
  **/
-#ifdef ANSI
 S16 RgSchMacL2MeasSendReq
 (
 Pst               *pst,          /* post structure  */
 RgInfL2MeasSndReq *measInfo      /* Meas Req Info */
 )
-#else
-S16 RgSchMacL2MeasSendReq(pst, measInfo)
-Pst               *pst;          /* post structure  */
-RgInfL2MeasSndReq *measInfo;      /* Meas Req Info */
-#endif
 {
    Inst            inst;
    RgCellCb       *cellCb = NULLP;
@@ -445,19 +392,12 @@ RgInfL2MeasSndReq *measInfo;      /* Meas Req Info */
  *      -# ROK 
  *      -# RFAILED 
  */
-#ifdef ANSI
 static S16 rgL2mInsertMeasCb
 (
 RgCellCb       *cell,
 RgL2MeasCb     *measCb,
 RgInfL2MeasReq *measInfo
 )
-#else
-static S16 rgL2mInsertMeasCb(cell, measCb, measInfo)
-RgCellCb       *cell;
-RgL2MeasCb     *measCb;
-RgInfL2MeasReq *measInfo;
-#endif
 {
    CmLList    *lnk, *node;
    RgL2MeasCb *oldMeasCb;
@@ -510,19 +450,12 @@ RgInfL2MeasReq *measInfo;
  * @param  [out] RgErrInfo      *err
  * @return  RgSchL2MeasCb *
  */
-#ifdef ANSI
 static RgL2MeasCb * rgL2mAllocMeasCb
 (
 RgCellCb       *cell,
 RgInfL2MeasReq *measInfo,
 RgErrInfo      *err
 )
-#else
-static RgL2MeasCb * rgL2mAllocMeasCb(cell, measInfo, err)
-RgCellCb       *cell;
-RgInfL2MeasReq *measInfo;
-RgErrInfo      *err;
-#endif
 {
    RgL2MeasCb       *measCb = NULLP;
    Inst             inst = cell->macInst - RG_INST_START;
@@ -558,15 +491,7 @@ RgErrInfo      *err;
  *      -# ROK
  *      -# RFAILED
  **/
-#ifdef ANSI
-S16 rgL2Meas
-(
-RgCellCb  *cell
-)
-#else
-S16 rgL2Meas(cell)
-RgCellCb  *cell;
-#endif
+S16 rgL2Meas(RgCellCb  *cell)
 {
    CmLList         *node   = NULLP;
    RgL2MeasCb      *measCb = NULLP;

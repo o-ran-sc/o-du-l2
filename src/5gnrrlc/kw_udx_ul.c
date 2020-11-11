@@ -96,19 +96,12 @@ S16 rlcHdlCrlcUlCfgReq ARGS((RlcCb  *gCb,RlcUlCfgTmpData *cfgTmpData,
  *    -# RFAILED
  */
 
-#ifdef ANSI
 S16 rlcUlUdxBndCfm
 (
 Pst    *pst,  
 SuId   suId, 
 uint8_t status 
 )
-#else
-S16 rlcUlUdxBndCfm (pst, suId, status)
-Pst    *pst; 
-SuId   suId;   
-uint8_t status; 
-#endif
 {
    uint16_t        event;        
    uint16_t        cause;       
@@ -203,19 +196,12 @@ uint8_t status;
  *    -# ROK 
  *    -# RFAILED
  */
-#ifdef ANSI
 S16 rlcUlUdxCfgCfm
 (
 Pst             *pst,  
 SuId            suId, 
 RlcCfgCfmInfo   *cfmInfo  
 )
-#else
-S16 rlcUlUdxCfgCfm (pst, suId, cfmInfo)
-Pst             *pst;   
-SuId            suId;  
-RlcCfgCfmInfo   *cfmInfo;  
-#endif
 {
    RlcCb             *tRlcCb;
    RlcCfgCfmInfo    *cfgCfm;
@@ -321,7 +307,6 @@ RlcCfgCfmInfo   *cfmInfo;
  *      -# RFAILED
  */
 
-#ifdef ANSI
 S16 rlcUlUdxUeIdChgCfm
 (
 Pst        *pst,          
@@ -329,13 +314,6 @@ SuId       suId,
 uint32_t        transId,
 CmStatus   status
 )
-#else
-S16 rlcUlUdxUeIdChgCfm (pst, suId, cfmInfo)
-Pst        *pst;         
-SuId       suId;        
-uint32_t        transId;
-CmStatus   status;
-#endif
 {
    RlcCb             *tRlcCb;
    RlcUlCfgTmpData   *cfgTmpData;
@@ -442,7 +420,6 @@ CmLteRlcId   *rlcId
  *    -# ROK 
  *    -# RFAILED
  */
-#ifdef ANSI
 S16 rlcHdlCrlcUlCfgReq
 (
 RlcCb             *gCb,
@@ -450,13 +427,6 @@ RlcUlCfgTmpData   *cfgTmpData,
 RlcCfgCfmInfo    *cfmInfo,
 RlcCfgCfmInfo    *cfgCfm
 )
-#else
-S16 rlcHdlCrlcUlCfgReq(gCb,cfgTmpData,cfmInfo,cfmInfo)
-RlcCb             *gCb;
-RlcUlCfgTmpData   *cfgTmpData;
-RlcCfgCfmInfo    *cfmInfo;
-RlcCfgCfmInfo    *cfgCfm;
-#endif
 {
    RlcCfgInfo   *cfg;
    uint32_t     idx;

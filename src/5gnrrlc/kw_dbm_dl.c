@@ -94,15 +94,7 @@ TSL2UeStatsCb* TSL2MapUeStatsBlk (uint16_t rnti);
  *     -# ROK 
  *     -# RFAILED 
 */
-#ifdef ANSI
-S16 rlcDbmDlInit
-(
-RlcCb *gCb
-)
-#else
-S16 rlcDbmDlInit(gCb)
-RlcCb *gCb;
-#endif
+S16 rlcDbmDlInit(RlcCb *gCb)
 {
 
    /* Initialize ueCb Hash List */
@@ -177,15 +169,7 @@ RlcCb *gCb;
  *
  * @return  Void
 */
-#ifdef ANSI
-Void rlcDbmDlDeInit
-(
-RlcCb *gCb
-)
-#else
-Void rlcDbmDlDeInit(gCb)
-RlcCb *gCb;
-#endif
+Void rlcDbmDlDeInit(RlcCb *gCb)
 {
 
 
@@ -335,19 +319,7 @@ CmLteLcId lcId, RlcDlRbCb **rbCb)
  * @return  Void
  *
 */
-#ifdef ANSI
-Void rlcDbmDelAllDlRb
-(
-RlcCb       *gCb,
-RlcDlRbCb   **rbCbLst,
-uint8_t     numRbCb 
-)
-#else
-Void rlcDbmDelAllDlRb(gCb, rbCbLst, numRbCb)
-RlcCb       *gCb;
-RlcDlRbCb   **rbCbLst;
-uint8_t     numRbCb;   
-#endif
+Void rlcDbmDelAllDlRb(RlcCb *gCb,RlcDlRbCb **rbCbLst,uint8_t numRbCb)
 {
    uint32_t idx;
 
@@ -401,21 +373,7 @@ uint8_t     numRbCb;
  *    -# RFAILED 
  *
 */
-#ifdef ANSI
-S16 rlcDbmCreateDlUeCb
-(
-RlcCb          *gCb,
-CmLteRnti     ueId,  
-CmLteCellId   cellId,
-RlcDlUeCb      **ueCb 
-)
-#else
-S16 rlcDbmCreateDlUeCb(gCb,ueId, cellId, ueCb)
-RlcCb          *gCb;
-CmLteRnti     ueId;
-CmLteCellId   cellId;
-RlcDlUeCb      **ueCb;
-#endif
+S16 rlcDbmCreateDlUeCb(RlcCb *gCb,CmLteRnti ueId,CmLteCellId cellId,RlcDlUeCb **ueCb)
 {
    RlcDlUeCb *tUeCb;        
 
@@ -494,19 +452,7 @@ uint8_t rlcDbmFetchDlUeCb(RlcCb *gCb, CmLteRnti ueId, CmLteCellId  cellId, RlcDl
  * @return Void
  *
 */
-#ifdef ANSI
-Void rlcDbmDelDlUeCb
-(
-RlcCb       *gCb,
-RlcDlUeCb   *ueCb,   
-Bool       abortFlag 
-)
-#else
-Void rlcDbmDelDlUeCb(gCb,eCb, abortFlag)
-RlcCb       *gCb;
-RlcDlUeCb   *ueCb; 
-Bool       abortFlag;
-#endif
+Void rlcDbmDelDlUeCb(RlcCb *gCb,RlcDlUeCb *ueCb,Bool abortFlag)
 {
 
 #if  (!defined(KW_PDCP) || !(defined(PJ_SEC_ASYNC) || defined(PJ_CMP_ASYNC)))
@@ -551,15 +497,7 @@ Bool       abortFlag;
  *
  * @return  Void
 */
-#ifdef ANSI
-Void rlcDbmDelAllDlUe
-(
-RlcCb  *gCb
-)
-#else
-Void rlcDbmDelAllDlUe(gCb)
-RlcCb  *gCb;
-#endif
+Void rlcDbmDelAllDlUe(RlcCb  *gCb)
 {
    RlcDlUeCb *ueCb = NULLP; 
 
@@ -579,17 +517,7 @@ RlcCb  *gCb;
 
 /* kw005.201 added support for L2 Measurement */         
 #ifdef LTE_L2_MEAS
-#ifdef ANSI
-Void rlcDbmDelAllDlL2MeasTbFrmUe
-(
-RlcCb      *gCb,
-RlcDlUeCb  *ueCb
-)
-#else
-Void rlcDbmDelAllDlL2MeasTbFrmUe(gCb,ueCb)
-RlcCb      *gCb;
-RlcDlUeCb  *ueCb;
-#endif
+Void rlcDbmDelAllDlL2MeasTbFrmUe(RlcCb *gCb,RlcDlUeCb  *ueCb)
 {
    uint8_t       tbIdx;
    RlcL2MeasTb   *l2MeasTb = NULLP;
@@ -621,19 +549,7 @@ RlcDlUeCb  *ueCb;
  *     -# ROK 
  *     -# RFAILED 
 */
-#ifdef ANSI
-S16 rlcDbmCreateDlCellCb
-(
-RlcCb          *gCb,
-CmLteCellId   cellId, 
-RlcDlCellCb    **cellCb 
-)
-#else
-S16 rlcDbmCreateDlCellCb(gCb,cellId, cellCb)
-RlcCb          *gCb;
-CmLteCellId   cellId;   
-RlcDlCellCb    **cellCb;
-#endif
+S16 rlcDbmCreateDlCellCb(RlcCb *gCb,CmLteCellId cellId,RlcDlCellCb **cellCb)
 {
    RlcDlCellCb *tCellCb; 
    
@@ -709,17 +625,7 @@ uint8_t rlcDbmFetchDlCellCb(RlcCb *gCb, CmLteCellId  cellId, RlcDlCellCb **cellC
  *
  *  @return  Void
 */
-#ifdef ANSI
-Void rlcDbmDelDlCellCb
-(
-RlcCb         *gCb,
-RlcDlCellCb   *cellCb  
-)
-#else
-Void rlcDbmDelDlCellCb(gCb,cellCb)
-RlcCb         *gCb;
-RlcDlCellCb   *cellCb;
-#endif
+Void rlcDbmDelDlCellCb(RlcCb *gCb,RlcDlCellCb *cellCb)
 {
 
    /* Delete all rbCbs in cellCb */
@@ -748,15 +654,7 @@ RlcDlCellCb   *cellCb;
  *
  * @return  Void
 */
-#ifdef ANSI
-Void rlcDbmDelAllDlCell
-(
-RlcCb *gCb
-)
-#else
-Void rlcDbmDelAllDlCell(gCb)
-RlcCb *gCb;
-#endif
+Void rlcDbmDelAllDlCell(RlcCb *gCb)
 {
    RlcDlCellCb *cellCb = NULLP;
 
@@ -785,15 +683,7 @@ RlcCb *gCb;
  *
  * @return  Void
 */
-#ifdef ANSI
-S16 rlcDbmDlShutdown
-(
-RlcCb *gCb
-)
-#else
-S16 rlcDbmDlShutdown(gCb)
-RlcCb *gCb;
-#endif
+S16 rlcDbmDlShutdown(RlcCb *gCb)
 {
 
    rlcDbmDelAllDlCell(gCb);

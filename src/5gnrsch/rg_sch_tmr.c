@@ -76,21 +76,7 @@ RgSchUeCellInfo  *sCell
   *   @param[in]  uint32_t            tmrVal
   *   @return  Void
   */
-#ifdef ANSI
-Void rgSCHTmrStartTmr
-(
-RgSchCellCb *cell,
-Ptr         cb,
-S16         tmrEvnt,
-uint32_t         tmrVal
-)
-#else
-Void rgSCHTmrStartTmr (cell, cb, tmrEvnt, tmrVal)
-RgSchCellCb *cell;
-Ptr         cb;
-S16         tmrEvnt;
-uint32_t         tmrVal;
-#endif
+Void rgSCHTmrStartTmr(RgSchCellCb *cell,Ptr cb,S16 tmrEvnt,uint32_t tmrVal)
 {
    CmTmrArg          arg;
    RgSchUeCb         *ue;
@@ -203,19 +189,7 @@ uint32_t         tmrVal;
   *   @param[in]  Ptr            cb
   *   @return  Void
   */
-#ifdef ANSI
-Void rgSCHTmrStopTmr
-(
-RgSchCellCb   *cell,
-S16           tmrEvnt,
-Ptr           cb
-)
-#else
-Void rgSCHTmrStopTmr (cell, tmrEvnt, cb)
-RgSchCellCb   *cell;
-S16           tmrEvnt;
-Ptr           cb;
-#endif
+Void rgSCHTmrStopTmr(RgSchCellCb *cell,S16 tmrEvnt,Ptr cb)
 {
    CmTmrArg          arg;
    RgSchUeCb         *ue;
@@ -327,17 +301,7 @@ Ptr           cb;
   *   @param[in]  S16            tmrEvnt
   *   @return  Void
   */
-#ifdef ANSI
-Void rgSCHTmrProcTmr 
-(
-Ptr         cb,
-S16         tmrEvnt
-)
-#else
-Void rgSCHTmrProcTmr (cb, tmrEvnt)
-Ptr         cb;
-S16         tmrEvnt;
-#endif
+Void rgSCHTmrProcTmr(Ptr cb,S16 tmrEvnt)
 {
    RgSchUeCb      *ue = NULLP;
 #ifdef LTE_ADV

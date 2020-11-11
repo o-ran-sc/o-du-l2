@@ -97,15 +97,10 @@ static const SystemId sId ={
 *
 */
  
-#ifdef ANSI
 Void rgGetSId
 (
 SystemId *s                 /* system id */
 )
-#else
-Void rgGetSId(s)
-SystemId *s;                /* system id */
-#endif
 {
    s->mVer = sId.mVer;
    s->mRev = sId.mRev;

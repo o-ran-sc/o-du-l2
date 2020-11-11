@@ -86,26 +86,18 @@ static RgSchL2MeasCb * rgSchL2mAllocMeasCb ARGS((
  * @param  [in] measTime
  * @return  Void
  */
-#ifdef ANSI
 S16 rgSchFillL2MeasCfm
 (
 RgSchCellCb       *cell,
 RgSchL2MeasCb     *measCb,
 LrgSchMeasCfmInfo *cfm,
-uint32_t               measTime   
+uint32_t          measTime   
 )
-#else
-S16 rgSchFillL2MeasCfm(cell, measCb, cfm, measTime)
-RgSchCellCb       *cell;
-RgSchL2MeasCb     *measCb;
-LrgSchMeasCfmInfo *cfm;
-uint32_t               measTime;
-#endif
 {
-   uint8_t                 idx;
+   uint8_t            idx;
    LrgSchMeasReqInfo  *measInfo;
-   uint8_t                 qciVal = 0;
-   uint32_t                 sampOc = 0;
+   uint8_t            qciVal = 0;
+   uint32_t           sampOc = 0;
 
    measInfo = &measCb->measReq;   
 
@@ -317,7 +309,6 @@ uint32_t               measTime;
  * @param  [in] Bool     isErr
  * @return  Void
  */
-#ifdef ANSI
 S16 rgSchL2mSndCfm
 (
 Pst               *pst,
@@ -325,13 +316,6 @@ RgSchL2MeasCb     *measCb,
 LrgSchMeasReqInfo *measInfo,
 Bool              isErr
 )
-#else
-S16 rgSchL2mSndCfm(pst, measCb, measInfo, isErr)
-Pst               *pst;
-RgSchL2MeasCb     *measCb;
-LrgSchMeasReqInfo *measInfo;
-Bool              isErr;
-#endif
 {
    LrgSchMeasCfmInfo   cfm;
 
@@ -361,19 +345,12 @@ Bool              isErr;
  * @param  [in] LrgSchMeasReqInfo *measInfo
  * @return  Void
  */
-#ifdef ANSI
 Void rgSchL2mFillCfmPst
 (
 Pst    *pst,
 Pst    *cfmPst,
 LrgSchMeasReqInfo *measInfo 
 )
-#else
-Void rgSchL2mFillCfmPst(pst, cfmPst, measInfo)
-Pst    *pst;
-Pst    *cfmPst;
-LrgSchMeasReqInfo *measInfo;
-#endif
 {
  
    cfmPst->srcEnt    = pst->dstEnt;
@@ -405,23 +382,16 @@ LrgSchMeasReqInfo *measInfo;
  *      -# ROK 
  *      -# RFAILED 
  */
-#ifdef ANSI
 static S16 rgSchL2mInsertMeasCb
 (
 RgSchCellCb       *cell,
 RgSchL2MeasCb     *measCb,
 LrgSchMeasReqInfo *measInfo
 )
-#else
-static S16 rgSchL2mInsertMeasCb(cell, measCb, measInfo)
-RgSchCellCb       *cell;
-RgSchL2MeasCb     *measCb;
-LrgSchMeasReqInfo *measInfo;
-#endif
 {
    CmLList   *lnk, *node;
    RgSchL2MeasCb   *oldMeasCb;
-   uint32_t              diffTime;
+   uint32_t        diffTime;
    
    /* 
     * 1. Check if l2mList has any entries.
@@ -466,20 +436,12 @@ LrgSchMeasReqInfo *measInfo;
  *
  * @param  [in] RgSchCellCb       *cell
  */
-#ifdef ANSI
-static Void rgSchL2CalDlPrbCount
-(
-RgSchCellCb       *cell
-)
-#else
-static Void rgSchL2CalDlPrbCount(cell)
-RgSchCellCb       *cell;
-#endif
+static Void rgSchL2CalDlPrbCount(RgSchCellCb *cell)
 {
    CmLteTimingInfo    frm;
    RgSchDlSf          *sf = NULLP;
 #ifdef LTE_TDD
-   uint8_t                 idx;
+   uint8_t            idx;
 #endif
 
    frm   = cell->crntTime;
@@ -508,20 +470,12 @@ RgSchCellCb       *cell;
  *
  * @param  [in] RgSchCellCb       *cell
  */
-#ifdef ANSI
-static Void rgSchL2CalUlPrbCount
-(
-RgSchCellCb       *cell
-)
-#else
-static Void rgSchL2CalUlPrbCount(cell)
-RgSchCellCb       *cell;
-#endif
+static Void rgSchL2CalUlPrbCount(RgSchCellCb  *cell)
 {
    RgSchUlSf        *sf = NULLP;
    RgSchCmnUlCell   *cellUl = RG_SCH_CMN_GET_UL_CELL(cell);
 #ifdef LTE_TDD
-   uint8_t                 idx;
+   uint8_t  idx;
 #endif
 
 #ifdef LTE_TDD
@@ -548,19 +502,12 @@ RgSchCellCb       *cell;
  * @param  [out] RgSchErrInfo      *err
  * @return  RgSchL2MeasCb *
  */
-#ifdef ANSI
 static RgSchL2MeasCb * rgSchL2mAllocMeasCb
 (
 RgSchCellCb       *cell,
 LrgSchMeasReqInfo *measInfo,
 RgSchErrInfo      err
 )
-#else
-static RgSchL2MeasCb * rgSchL2mAllocMeasCb(cell, measInfo, err)
-RgSchCellCb       *cell;
-LrgSchMeasReqInfo *measInfo;
-RgSchErrInfo      err;
-#endif
 {
    RgSchL2MeasCb       *measCb = NULLP;
    Inst                inst = cell->instIdx;
@@ -601,23 +548,16 @@ RgSchErrInfo      err;
  *      -# ROK
  *      -# RFAILED
  **/
-#ifdef ANSI
 S16 rgSchL2mMeasReq 
 (
 RgSchCellCb       *cell,
 LrgSchMeasReqInfo *measInfo,
 RgSchErrInfo      err
 )
-#else
-S16 rgSchL2mMeasReq(cell, measInfo, err)
-RgSchCellCb       *cell;
-LrgSchMeasReqInfo *measInfo;
-RgSchErrInfo      err;
-#endif    
 {
    RgSchL2MeasCb *measCb;
-   uint8_t            idx;
-   uint8_t            qciVal;
+   uint8_t       idx;
+   uint8_t       qciVal;
 
 
    qciVal = 0;
@@ -696,31 +636,25 @@ RgSchErrInfo      err;
  *      -# ROK
  *      -# RFAILED
  **/
-#ifdef ANSI
 S16 rgSCHL2Meas
 (
 RgSchCellCb  *cell,
 uint8_t isCalrCrcInd
 )
-#else
-S16 rgschL2Meas(cell,isCalrCrcInd)
-RgSchCellCb  *cell;
-uint8_t isCalrCrcInd
-#endif
 {
    CmLList           *node = NULLP;
    RgSchL2MeasCb     *measCb = NULLP;
-   uint8_t                idx;
+   uint8_t           idx;
    LrgSchMeasCfmInfo measCfm;
-   uint8_t                qciVal = 0;
-   uint32_t               sfDiff;
-   uint32_t               meas;
+   uint8_t           qciVal = 0;
+   uint32_t          sfDiff;
+   uint32_t          meas;
 #ifdef LTE_TDD
-   uint8_t                sfIdx;
+   uint8_t           sfIdx;
    Bool              isDlDataAllowed;  
-   uint8_t                rem;
-   uint32_t               numDlSf;
-   uint32_t               numUlSf;
+   uint8_t           rem;
+   uint32_t          numDlSf;
+   uint32_t          numUlSf;
 #endif
 
    node = cell->l2mList.first;

@@ -75,17 +75,7 @@ static const RgPrgUeSCellCfgReq RgPrgPMacSMacUeSCellCfgReqMt[RG_PRG_MAX] =
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-S16 RgPrgPMacSMacUeSCellCfg
-(
- Pst         *pst,
- RgPrgUeSCellCfgInfo *ueSCellCfgInfo
-)
-#else
-S16 RgPrgPMacSMacUeSCellCfg(pst, ueSCellCfgInfo)
- Pst         *pst;
- RgPrgUeSCellCfgInfo *ueSCellCfgInfo;
-#endif
+S16 RgPrgPMacSMacUeSCellCfg(Pst *pst, RgPrgUeSCellCfgInfo *ueSCellCfgInfo)
 {
 
    return ((*RgPrgPMacSMacUeSCellCfgReqMt[0])(pst, ueSCellCfgInfo));
@@ -113,17 +103,7 @@ static const RgSMacPMacCfgCfm RgPrgSMacPMacCfgCfmMt[RG_PRG_MAX] =
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-S16 RgPrgSMacPMacCfg
-(
- Pst             *pst,
- RgPrgCfgCfmInfo *cfgCfm
-)
-#else
-S16 RgPrgSMacPMacCfg(pst, cfgCfm)
- Pst             *pst;
- RgPrgCfgCfmInfo *cfgCfm;
-#endif
+S16 RgPrgSMacPMacCfg(Pst *pst,RgPrgCfgCfmInfo *cfgCfm)
 {
 
    return ((*RgPrgSMacPMacCfgCfmMt[0])(pst, cfgCfm));
@@ -151,17 +131,7 @@ static const RgUeSCellDelReq RgPrgPMacSMacUeSCellDelReqMt[RG_PRG_MAX] =
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-S16 RgPrgPMacSMacUeSCellDel
-(
- Pst                 *pst,
- RgPrgUeSCellDelInfo *ueSCellDelInfo
-)
-#else
-S16 RgPrgPMacSMacUeSCellDel(pst, ueSCellDelInfo)
- Pst                 *pst;
- RgPrgUeSCellDelInfo *ueSCellDelInfo;
-#endif
+S16 RgPrgPMacSMacUeSCellDel(Pst *pst,RgPrgUeSCellDelInfo *ueSCellDelInfo)
 {
 
    return ((*RgPrgPMacSMacUeSCellDelReqMt[0])(pst, ueSCellDelInfo));
@@ -192,17 +162,7 @@ static const RgPrgUeScellModLchReq RgPrgPMacSMacUeScellModLchReqMt[RG_PRG_MAX] =
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-S16 RgPrgPMacSMacUeScellLchMod
-(
- Pst                      *pst,
- RgPrgUeSCellLchModInfo   *lchCfgInfo
-)
-#else
-S16 RgPrgPMacSMacUeScellLchMod(pst, lchCfgInfo)
- Pst                      *pst;
- RgPrgUeSCellLchModInfo   *lchCfgInfo;
-#endif
+S16 RgPrgPMacSMacUeScellLchMod(Pst *pst,RgPrgUeSCellLchModInfo *lchCfgInfo)
 {
 
    return ((*RgPrgPMacSMacUeScellModLchReqMt[0])(pst, lchCfgInfo));
@@ -232,17 +192,7 @@ static const RgPrgUeScellDelLchReq RgPrgPMacSMacUeScellDelLchReqMt[RG_PRG_MAX] =
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-S16 RgPrgPMacSMacUeScellLchDel
-(
- Pst                       *pst,
- RgPrgUeSCellLchDelInfo    *delLcCb
-)
-#else
-S16 RgPrgPMacSMacUeScellLchDel(pst, delLcCb)
- Pst                       *pst;
- RgPrgUeSCellLchDelInfo    *delLcCb;
-#endif
+S16 RgPrgPMacSMacUeScellLchDel(Pst *pst,RgPrgUeSCellLchDelInfo *delLcCb)
 {
 
    return ((*RgPrgPMacSMacUeScellDelLchReqMt[0])(pst, delLcCb));
@@ -272,17 +222,7 @@ static const RgPrgUeScellAddLchReq RgPrgPMacSMacUeScellAddLchReqMt[RG_PRG_MAX] =
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-S16 RgPrgPMacSMacUeScellLchAdd
-(
- Pst                      *pst,
- RgPrgUeSCellLchAddInfo   *lchCfgInfo
-)
-#else
-S16 RgPrgPMacSMacUeScellLchAdd(pst, lchCfgInfo)
- Pst                      *pst;
- RgPrgUeSCellLchAddInfo   *lchCfgInfo;
-#endif
+S16 RgPrgPMacSMacUeScellLchAdd(Pst *pst,RgPrgUeSCellLchAddInfo *lchCfgInfo)
 {
 
    return ((*RgPrgPMacSMacUeScellAddLchReqMt[0])(pst, lchCfgInfo));

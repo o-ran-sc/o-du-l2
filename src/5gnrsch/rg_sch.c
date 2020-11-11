@@ -100,17 +100,11 @@ RgrWarningSiCfgReqInfo *warningSiCfgReqInfo
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
 S16 RgMiLrgSchCntrlReq
 (
 Pst      *pst,    /* post structure  */
 RgMngmt  *cntrl   /* control structure  */
 )
-#else
-S16 RgMiLrgSchCntrlReq(pst, cntrl)
-Pst      *pst;    /* post structure  */
-RgMngmt  *cntrl;  /* control structure  */
-#endif    
 {
    S16       ret = ROK;            /* return value */
    Pst       cfmPst;
@@ -190,17 +184,11 @@ RgMngmt  *cntrl;  /* control structure  */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
 S16 RgMiLrgSchL2MeasReq
 (
 Pst               *pst,     /* post structure  */
 LrgSchMeasReqInfo *measInfo /* Meas Req Info */
 )
-#else
-S16 RgMiLrgSchL2MeasReq(pst, measInfo)
-   Pst               *pst;     /* post structure  */
-   LrgSchMeasReqInfo *measInfo; /* Meas Req Info */
-#endif    
 {
    Pst                 cfmPst;
    RgSchCellCb         *cell;
@@ -210,7 +198,7 @@ S16 RgMiLrgSchL2MeasReq(pst, measInfo)
 #if (ERRCLASS & ERRCLS_ADD_RES) 
    CmLList             *lnk;
 #endif
-   uint32_t                 idx;
+   uint32_t            idx;
    RgSchL2MeasCb       *measCb = NULLP;
 #ifdef DEBUGP
    Inst      inst = (pst->dstInst - SCH_INST_START); /* Scheduler instance Id */
@@ -304,25 +292,19 @@ S16 RgMiLrgSchL2MeasReq(pst, measInfo)
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
 S16 RgMiLrgSchL2MeasStopReq
 (
 Pst               *pst,     /* post structure  */
 LrgSchMeasStopReqInfo *measInfo /* Meas Req Info */
 )
-#else
-S16 RgMiLrgSchL2MeasStopReq(pst, measInfo)
-   Pst               *pst;     /* post structure  */
-   LrgSchMeasStopReqInfo *measInfo; /* Meas Req Info */
-#endif
 {
-   S16                 ret = ROK;
-   RgSchCellCb         *cell = NULLP;
-   RgSchCb             *instCb =  &rgSchCb[(pst->dstInst - SCH_INST_START)];
-   CmLList             *node = NULLP;
-   RgSchL2MeasCb       *measCb = NULLP;
+   S16               ret = ROK;
+   RgSchCellCb       *cell = NULLP;
+   RgSchCb           *instCb =  &rgSchCb[(pst->dstInst - SCH_INST_START)];
+   CmLList           *node = NULLP;
+   RgSchL2MeasCb     *measCb = NULLP;
    LrgSchMeasCfmInfo measCfm;
-   uint8_t                  idx;
+   uint8_t           idx;
 
    for (idx = 0; idx < instCb->numSaps; idx++)
    {
@@ -385,22 +367,16 @@ S16 RgMiLrgSchL2MeasStopReq(pst, measInfo)
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
 S16 RgMiLrgSchL2MeasSendReq
 (
 Pst               *pst,     /* post structure  */
 LrgSchMeasSndReqInfo *measInfo /* Meas Req Info */
 )
-#else
-S16 RgMiLrgSchL2MeasSendReq(pst, measInfo)
-   Pst               *pst;     /* post structure  */
-   LrgSchMeasSndReqInfo *measInfo; /* Meas Req Info */
-#endif
 {
    S16                 ret = ROK;
    RgSchCellCb         *cell;
    RgSchCb             *instCb =  &rgSchCb[(pst->dstInst - SCH_INST_START)];
-   uint8_t                  idx;
+   uint8_t             idx;
 
    cell = NULLP;
    for (idx = 0; idx < instCb->numSaps; idx++)
@@ -463,19 +439,7 @@ S16 RgMiLrgSchL2MeasSendReq(pst, measInfo)
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 RgUiRgrBndReq
-(
- Pst   *pst, 
- SuId  suId,
- SpId  spId
- )
-#else
-S16 RgUiRgrBndReq(pst, suId, spId)
-   Pst   *pst; 
-   SuId  suId;
-   SpId  spId;
-#endif
+S16 RgUiRgrBndReq(Pst   *pst, SuId  suId, SpId  spId)
 {
    S16       ret = ROK;
    Pst       tmpPst;   /* Temporary Post Structure */
@@ -559,19 +523,7 @@ S16 RgUiRgrBndReq(pst, suId, spId)
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 RgUiRgrUbndReq
-(
- Pst    *pst,
- SpId   spId,
- Reason reason
- )
-#else
-S16 RgUiRgrUbndReq(pst, spId, reason)
-   Pst    *pst; 
-   SpId   spId;
-   Reason reason;
-#endif
+S16 RgUiRgrUbndReq(Pst *pst,SpId spId,Reason reason)
 {
    Inst instId = pst->dstInst-SCH_INST_START;
 
@@ -628,25 +580,11 @@ S16 RgUiRgrUbndReq(pst, spId, reason)
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 RgUiRgrSiCfgReq
-(
-Pst           *pst, 
-SpId          spId,
-RgrCfgTransId transId,
-RgrSiCfgReqInfo *cfgReqInfo
-)
-#else
-S16 RgUiRgrSiCfgReq(pst, spId, transId, cfgReqInfo)
-Pst           *pst; 
-SpId          spId;
-RgrCfgTransId transId;
-RgrSiCfgReqInfo *cfgReqInfo;
-#endif
+S16 RgUiRgrSiCfgReq(Pst *pst, SpId  spId,RgrCfgTransId transId,RgrSiCfgReqInfo *cfgReqInfo)
 {
    S16       ret       = ROK;
-   uint8_t        cfmStatus = RGR_CFG_CFM_NOK;
-   uint8_t        prntTrans[RGR_CFG_TRANSID_SIZE+1];
+   uint8_t   cfmStatus = RGR_CFG_CFM_NOK;
+   uint8_t   prntTrans[RGR_CFG_TRANSID_SIZE+1];
    Inst      instId = pst->dstInst-SCH_INST_START;
 
    memcpy(prntTrans, transId.trans, RGR_CFG_TRANSID_SIZE);
@@ -740,31 +678,15 @@ else
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 RgUiRgrWarningSiCfgReq
-(
-Pst           *pst, 
-SpId          spId,
-RgrCfgTransId transId,
-RgrWarningSiCfgReqInfo *warningSiCfgReqInfo
-)
-#else
-S16 RgUiRgrWarningSiCfgReq(pst, spId, transId, warningSiCfgReqInfo)
-Pst           *pst; 
-SpId          spId;
-RgrCfgTransId transId;
-RgrWarningSiCfgReqInfo *warningSiCfgReqInfo;
-#endif
+S16 RgUiRgrWarningSiCfgReq(Pst *pst, SpId spId,RgrCfgTransId transId,RgrWarningSiCfgReqInfo *warningSiCfgReqInfo)
 {
    Inst     instId = pst->dstInst-SCH_INST_START;
    S16      ret    = ROK;
-   uint8_t       cfmStatus = RGR_CFG_CFM_NOK;
-   uint8_t       prntTrans[RGR_CFG_TRANSID_SIZE+1];
+   uint8_t  cfmStatus = RGR_CFG_CFM_NOK;
+   uint8_t  prntTrans[RGR_CFG_TRANSID_SIZE+1];
 
    memcpy(prntTrans, transId.trans, RGR_CFG_TRANSID_SIZE);
    prntTrans[RGR_CFG_TRANSID_SIZE] = '\0';
-
-
 
    if (warningSiCfgReqInfo == NULLP)
    {
@@ -855,21 +777,7 @@ else
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 RgUiRgrWarningSiStopReq
-(
-Pst           *pst,
-SpId          spId,
-RgrCfgTransId transId,
-uint8_t            siId
-)
-#else
-S16 RgUiRgrWarningSiStopReq(pst,spId, transId, siId)
-Pst           *pst;
-SpId          spId;
-RgrCfgTransId transId;
-uint8_t            siId;
-#endif
+S16 RgUiRgrWarningSiStopReq(Pst *pst,SpId  spId,RgrCfgTransId transId,uint8_t siId)
 {         
    Inst         instId = pst->dstInst-SCH_INST_START;
 
@@ -925,24 +833,10 @@ uint8_t            siId;
  *      -# ROK
  *      -# RFAILED
  **/
-#ifdef ANSI
-S16 RgUiRgrLoadInfReq
-(
- Pst               *pst,
- SpId              spId,
- RgrCfgTransId     transId,
- RgrLoadInfReqInfo *loadInfReq
- )
-#else
-S16 RgUiRgrLoadInfReq(pst, spId, transId, loadInfReq)
-   Pst               *pst;
-   SpId              spId;
-   RgrCfgTransId     transId;
-   RgrLoadInfReqInfo *loadInfReq;
-#endif
+S16 RgUiRgrLoadInfReq(Pst *pst, SpId spId, RgrCfgTransId  transId,RgrLoadInfReqInfo *loadInfReq)
 {
    S16       ret       = ROK;
-   uint8_t        prntTrans[RGR_CFG_TRANSID_SIZE+1];
+   uint8_t   prntTrans[RGR_CFG_TRANSID_SIZE+1];
    Inst      instId = pst->dstInst-SCH_INST_START;
 
    memcpy(prntTrans, transId.trans, RGR_CFG_TRANSID_SIZE);
@@ -1014,28 +908,16 @@ S16 RgUiRgrLoadInfReq(pst, spId, transId, loadInfReq)
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
-S16 RgMacSchDedBoUpdtReq
-(
-Pst*           pst,
-RgInfDedBoRpt  *boRpt
-)
-#else
-S16 RgMacSchDedBoUpdtReq(pst, boRpt)
-Pst*           pst;
-RgInfDedBoRpt  *boRpt;
-#endif
+S16 RgMacSchDedBoUpdtReq(Pst*  pst,RgInfDedBoRpt  *boRpt)
 {
    RgSchCellCb   *cell;
    RgSchUeCb     *ue;
 #ifdef SCH_STATS
-      RgSchCmnDlUe  *dlUe;
+   RgSchCmnDlUe  *dlUe;
 #endif
-
 
    Inst          inst = (pst->dstInst - SCH_INST_START);
    S16           cellSapId = boRpt->cellSapId;
-
 /*
    RLOG_ARG2(L_DEBUG,DBG_CELLID,boRpt->cellId,"rgMacSchDedBoUpdtReq():"
             " boRpt->rnti = %u  boRpt->lcId = %u",boRpt->rnti, boRpt->lcId);
@@ -1152,17 +1034,7 @@ RgInfDedBoRpt  *boRpt;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
-S16 RgMacSchCmnBoUpdtReq
-(
-Pst*           pst,
-RgInfCmnBoRpt  *boRpt
-)
-#else
-S16 RgMacSchCmnBoUpdtReq(pst, boRpt)
-Pst*           pst;
-RgInfCmnBoRpt  *boRpt;
-#endif
+S16 RgMacSchCmnBoUpdtReq(Pst* pst,RgInfCmnBoRpt  *boRpt)
 {
    RgSchCellCb   *cell;
    Inst          inst = (pst->dstInst - SCH_INST_START);
@@ -1209,17 +1081,7 @@ RgInfCmnBoRpt  *boRpt;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
-S16 RgMacSchUeDelInd
-(
-Pst*             pst,
-RgInfUeDelInd    *ueDelInd
-)
-#else
-S16 RgMacSchUeDelInd(pst, ueDelInd)
-Pst*             pst;
-RgInfUeDelInd    *ueDelInd;
-#endif
+S16 RgMacSchUeDelInd(Pst* pst,RgInfUeDelInd *ueDelInd)
 {
    RgSchCellCb       *cell;
    Inst              inst = (pst->dstInst - SCH_INST_START);
@@ -1295,17 +1157,7 @@ RgInfUeDelInd    *ueDelInd;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
-S16 RgMacSchSfRecpInd
-(
-Pst*             pst,
-RgInfSfDatInd    *subfrmInfo
-)
-#else
-S16 RgMacSchSfRecpInd(pst, subfrmInfo)
-Pst*             pst;
-RgInfSfDatInd    *subfrmInfo;
-#endif
+S16 RgMacSchSfRecpInd(Pst*  pst,RgInfSfDatInd *subfrmInfo)
 {
    S16               ret = RFAILED;
    RgSchErrInfo      err;
@@ -1570,17 +1422,7 @@ RgInfSfDatInd    *subfrmInfo;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 RgMacSchSpsRelInd
-(
-Pst                *pst, 
-RgInfSpsRelInfo    *relInfo
-)
-#else
-S16 RgMacSchSpsRelInd(pst, relInfo)
-Pst                *pst;
-RgInfSpsRelInfo    *relInfo;
-#endif
+S16 RgMacSchSpsRelInd(Pst *pst,RgInfSpsRelInfo *relInfo)
 {
    RgSchUeCb       *ue;
    RgSchCellCb     *cell;
@@ -1630,28 +1472,18 @@ RgInfSpsRelInfo    *relInfo;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 RgMacSchL2MeasCfm
-(
-Pst                *pst, 
-RgInfL2MeasCfm     *measCfm
-)
-#else
-S16 RgMacSchL2MeasCfm(pst, measCfm)
-Pst                *pst;
-RgInfL2MeasCfm     *measCfm;
-#endif
+S16 RgMacSchL2MeasCfm(Pst *pst, RgInfL2MeasCfm *measCfm)
 {
    RgSchCellCb       *cell = NULLP;
    Inst              inst = (pst->dstInst - SCH_INST_START);
    CmLList           *lnk;
    RgSchL2MeasCb     *measCb = NULLP;
    RgSchCb           *instCb =  &rgSchCb[inst];
-   uint32_t               idx;
+   uint32_t          idx;
    LrgSchMeasCfmInfo schMeasCfm;
-   uint8_t                qciVal;
-   uint8_t                idx1; /*LTE_L2_MEAS_PHASE2*/ 
-   uint8_t                qciVal1;
+   uint8_t           qciVal;
+   uint8_t           idx1; /*LTE_L2_MEAS_PHASE2*/ 
+   uint8_t           qciVal1;
 
    /* Find the cellCb using cellId in measInfo. Iterate through all cells
     * in rgrsapCb in RgschCb */
@@ -1756,17 +1588,7 @@ RgInfL2MeasCfm     *measCfm;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 RgMacSchL2MeasStopCfm
-(
-Pst                *pst,
-RgInfL2MeasCfm     *measCfm
-)
-#else
-S16 RgMacSchL2MeasStopCfm(pst, measCfm)
-Pst                *pst;
-RgInfL2MeasCfm     *measCfm;
-#endif
+S16 RgMacSchL2MeasStopCfm(Pst *pst,RgInfL2MeasCfm  *measCfm)
 {
    LrgSchMeasCfmInfo schMeasCfm;
    Inst              inst = (pst->dstInst - SCH_INST_START);
@@ -1801,19 +1623,7 @@ RgInfL2MeasCfm     *measCfm;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 RgLiTfuSchBndCfm 
-(
-Pst     *pst,
-SuId    suId, 
-uint8_t      status
-)
-#else
-S16 RgLiTfuSchBndCfm(pst, suId, status)
-Pst     *pst; 
-SuId    suId; 
-uint8_t      status;
-#endif
+S16 RgLiTfuSchBndCfm (Pst *pst,SuId suId, uint8_t status)
 {
    S16 ret;
    RgSchLowSapCb  *tfuSap;
@@ -1855,19 +1665,7 @@ uint8_t      status;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 RgLiTfuRaReqInd
-(
-Pst              *pst, 
-SuId             suId, 
-TfuRaReqIndInfo  *raReqInd
-)
-#else
-S16 RgLiTfuRaReqInd(pst, suId, raReqInd)
-Pst              *pst; 
-SuId             suId; 
-TfuRaReqIndInfo  *raReqInd;
-#endif
+S16 RgLiTfuRaReqInd(Pst *pst,SuId suId, TfuRaReqIndInfo *raReqInd)
 {
    S16   ret;
    Inst  inst = pst->dstInst-SCH_INST_START;
@@ -1917,19 +1715,7 @@ TfuRaReqIndInfo  *raReqInd;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 RgLiTfuUlCqiInd
-(
-Pst              *pst, 
-SuId             suId, 
-TfuUlCqiIndInfo  *ulCqiInd
-)
-#else
-S16 RgLiTfuUlCqiInd(pst, suId, ulCqiInd)
-Pst              *pst; 
-SuId             suId; 
-TfuUlCqiIndInfo  *ulCqiInd;
-#endif
+S16 RgLiTfuUlCqiInd(Pst *pst, SuId suId, TfuUlCqiIndInfo *ulCqiInd)
 {
    S16   ret;
    Inst  inst = pst->dstInst-SCH_INST_START;
@@ -1972,19 +1758,7 @@ TfuUlCqiIndInfo  *ulCqiInd;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 RgLiTfuPucchDeltaPwrInd
-(
-Pst                     *pst,
-SuId                    suId,
-TfuPucchDeltaPwrIndInfo *pucchDeltaPwr
-)
-#else
-S16 RgLiTfuPucchDeltaPwrInd(pst, suId, pucchDeltaPwr)
-Pst                     *pst;
-SuId                    suId;
-TfuPucchDeltaPwrIndInfo *pucchDeltaPwr;
-#endif
+S16 RgLiTfuPucchDeltaPwrInd(Pst *pst,SuId suId,TfuPucchDeltaPwrIndInfo *pucchDeltaPwr)
 {
    S16   ret;
    Inst  inst = pst->dstInst-SCH_INST_START;
@@ -2028,19 +1802,7 @@ TfuPucchDeltaPwrIndInfo *pucchDeltaPwr;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 RgLiTfuHqInd
-(
-Pst                *pst, 
-SuId               suId, 
-TfuHqIndInfo       *harqAckInd
-)
-#else
-S16 RgLiTfuHqInd(pst, suId, harqAckInd)
-Pst                *pst; 
-SuId               suId; 
-TfuHqIndInfo       *harqAckInd;
-#endif
+S16 RgLiTfuHqInd(Pst *pst, SuId suId, TfuHqIndInfo *harqAckInd)
 {
    S16   ret;
    Inst  inst = (pst->dstInst - SCH_INST_START);
@@ -2087,19 +1849,7 @@ TfuHqIndInfo       *harqAckInd;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 RgLiTfuSrInd
-(
-Pst                *pst, 
-SuId               suId, 
-TfuSrIndInfo       *srInd
-)
-#else 
-S16 RgLiTfuSrInd(pst, suId, srInd)
-Pst                *pst; 
-SuId               suId; 
-TfuSrIndInfo       *srInd;
-#endif
+S16 RgLiTfuSrInd(Pst *pst, SuId suId, TfuSrIndInfo *srInd)
 {
    S16   ret;
    Inst  inst = pst->dstInst-SCH_INST_START;
@@ -2144,19 +1894,7 @@ TfuSrIndInfo       *srInd;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 RgLiTfuDlCqiInd
-(
-Pst                *pst, 
-SuId               suId, 
-TfuDlCqiIndInfo    *dlCqiInd
-)
-#else
-S16 RgLiTfuDlCqiInd(pst, suId, dlCqiInd)
-Pst                *pst; 
-SuId               suId; 
-TfuDlCqiIndInfo    *dlCqiInd;
-#endif
+S16 RgLiTfuDlCqiInd(Pst *pst, SuId suId, TfuDlCqiIndInfo *dlCqiInd)
 {
    S16   ret;
    Inst  inst = pst->dstInst-SCH_INST_START;
@@ -2199,19 +1937,7 @@ TfuDlCqiIndInfo    *dlCqiInd;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 RgLiTfuRawCqiInd
-(
-Pst                *pst, 
-SuId               suId, 
-TfuRawCqiIndInfo    *rawCqiInd
-)
-#else
-S16 RgLiTfuRawCqiInd(pst, suId, rawCqiInd)
-Pst                *pst; 
-SuId               suId; 
-TfuRawCqiIndInfo    *rawCqiInd;
-#endif
+S16 RgLiTfuRawCqiInd(Pst *pst, SuId suId, TfuRawCqiIndInfo *rawCqiInd)
 {
    S16   ret;
    Inst  inst = pst->dstInst-SCH_INST_START;
@@ -2255,19 +1981,7 @@ TfuRawCqiIndInfo    *rawCqiInd;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 RgLiTfuSrsInd
-(
-Pst                *pst, 
-SuId               suId, 
-TfuSrsIndInfo    *srsInd
-)
-#else
-S16 RgLiTfuSrsInd(pst, suId, srsInd)
-Pst                *pst; 
-SuId               suId; 
-TfuSrsIndInfo    *srsInd;
-#endif
+S16 RgLiTfuSrsInd(Pst *pst, SuId suId, TfuSrsIndInfo *srsInd)
 {
    S16   ret;
    Inst  inst = pst->dstInst-SCH_INST_START;
@@ -2311,19 +2025,7 @@ TfuSrsIndInfo    *srsInd;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 RgLiTfuDoaInd 
-(
-Pst                *pst, 
-SuId               suId, 
-TfuDoaIndInfo      *doaInd
-)
-#else
-S16 RgLiTfuDoaInd(pst, suId, doaInd)
-Pst                *pst; 
-SuId               suId; 
-TfuDoaIndInfo      *doaInd;
-#endif
+S16 RgLiTfuDoaInd(Pst *pst, SuId suId, TfuDoaIndInfo *doaInd)
 {
    S16   ret;
    Inst  inst = pst->dstInst-SCH_INST_START;
@@ -2363,19 +2065,7 @@ TfuDoaIndInfo      *doaInd;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 RgLiTfuCrcInd
-(
-Pst                *pst, 
-SuId               suId, 
-TfuCrcIndInfo  *crcInd
-)
-#else
-S16 RgLiTfuCrcInd (pst, suId, crcInd)
-Pst                *pst; 
-SuId               suId; 
-TfuCrcIndInfo  *crcInd;
-#endif
+S16 RgLiTfuCrcInd(Pst *pst, SuId suId, TfuCrcIndInfo  *crcInd)
 {
    S16              ret;
    Inst             inst      = pst->dstInst-SCH_INST_START;
@@ -2426,19 +2116,7 @@ gettimeofday(&end6, NULL);
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 RgLiTfuTimingAdvInd
-(
-Pst                  *pst, 
-SuId                 suId, 
-TfuTimingAdvIndInfo  *timingAdvInd
-)
-#else
-S16 RgLiTfuTimingAdvInd(pst, suId, timingAdvInd)
-Pst                  *pst; 
-SuId                 suId; 
-TfuTimingAdvIndInfo  *timingAdvInd;
-#endif
+S16 RgLiTfuTimingAdvInd(Pst *pst, SuId suId, TfuTimingAdvIndInfo *timingAdvInd)
 {
    S16   ret;
    Inst  inst = pst->dstInst-SCH_INST_START;
@@ -2483,19 +2161,7 @@ TfuTimingAdvIndInfo  *timingAdvInd;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 RgUiRgmBndReq
-(
-Pst   *pst, 
-SuId  suId,
-SpId  spId
-)
-#else
-S16 RgUiRgmBndReq(pst, suId, spId)
-Pst   *pst; 
-SuId  suId;
-SpId  spId;
-#endif
+S16 RgUiRgmBndReq(Pst *pst,SuId  suId,SpId  spId)
 {
    S16       ret = ROK;
    Pst       tmpPst;   /* Temporary Post Structure */
@@ -2581,19 +2247,7 @@ SpId  spId;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 RgUiRgmUbndReq
-(
-Pst    *pst,
-SpId   spId,
-Reason reason
-)
-#else
-S16 RgUiRgmUbndReq(pst, spId, reason)
-Pst    *pst; 
-SpId   spId;
-Reason reason;
-#endif
+S16 RgUiRgmUbndReq(Pst    *pst,SpId   spId,Reason reason)
 {
    Inst instId = pst->dstInst-SCH_INST_START;
 
@@ -2648,19 +2302,7 @@ Reason reason;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 RgUiRgmCfgPrbRprt
-(
-Pst   *pst, 
-SpId  spId,
-RgmPrbRprtCfg   *prbRprtCfg
-)
-#else
-S16 RgUiRgmCfgPrbRprt(pst, spId, prbRprtCfg)
-Pst   *pst; 
-SpId  spId;
-RgmPrbRprtCfg   *prbRprtCfg;
-#endif
+S16 RgUiRgmCfgPrbRprt(Pst   *pst, SpId  spId,RgmPrbRprtCfg *prbRprtCfg)
 {
 /* Initalize*/
    RgSchCellCb   *cell;
@@ -2706,19 +2348,7 @@ RgmPrbRprtCfg   *prbRprtCfg;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 RgLiTfuErrInd
-(
-Pst                *pst, 
-SuId               suId, 
-TfuErrIndInfo      *errInd
-)
-#else
-S16 RgLiTfuErrInd(pst, suId, errInd)
-Pst                *pst; 
-SuId               suId; 
-TfuErrIndInfo      *errInd;
-#endif
+S16 RgLiTfuErrInd(Pst *pst, SuId suId, TfuErrIndInfo  *errInd)
 {
    S16   ret = ROK;
 #ifdef LTE_ADV

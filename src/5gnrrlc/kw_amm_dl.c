@@ -274,19 +274,7 @@ void rlcAmmSendDedLcBoStatus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcAmDl *amDl)
  * 
  * @return  Void
 */
-#ifdef ANSI
-static Void rlcAmmDlCheckAndStopPollTmr
-(
-RlcCb       *gCb,
-RlcDlRbCb   *rbCb,
-RlcSn       mAckSn
-)
-#else
-static Void rlcAmmDlCheckAndStopPollTmr(gCb, rbCb, mAckSn)
-RlcCb       *gCb;
-RlcDlRbCb   *rbCb;
-RlcSn       mAckSn;
-#endif
+static Void rlcAmmDlCheckAndStopPollTmr(RlcCb *gCb,RlcDlRbCb *rbCb,RlcSn mAckSn)
 {
    RlcSn mPollSn;                                                   
                                                                    
@@ -311,17 +299,7 @@ RlcSn       mAckSn;
  * 
  * @return  Void
 */
-#ifdef ANSI
-static Void rlcAmmDlSetTxNextAck
-(
-RlcAmDl   *amDl,
-RlcSn      sn
-)
-#else
-static Void rlcAmmDlSetTxNextAck(amDl, sn)
-RlcAmDl   *amDl;
-RlcSn     sn
-#endif
+static Void rlcAmmDlSetTxNextAck(RlcAmDl *amDl,RlcSn sn)
 {
    amDl->txNextAck = sn;
    
@@ -341,21 +319,13 @@ RlcSn     sn
  * 
  * @return  Void
 */
-#ifdef ANSI
 static Void rlcAmmDlProcessSuccessfulReTx
 (
 RlcCb            *gCb,
 RlcDlRbCb        *rbCb,
 RlcRetx          *retx,
-KwuDatCfmInfo   **datCfm
+KwuDatCfmInfo    **datCfm
 )
-#else
-static Void rlcAmmDlProcessSuccessfulReTx(gCb, rbCb, retx, datCfm)
-RlcCb            *gCb;
-RlcDlRbCb        *rbCb;
-RlcRetx          *retx;
-KwuDatCfmInfo   **datCfm;
-#endif
 {
    rlcAmmDlCheckIsSDUDelivered(gCb, rbCb, &(retx->sduMap), datCfm);
    
@@ -380,7 +350,6 @@ KwuDatCfmInfo   **datCfm;
  *            
  */
 
-#ifdef ANSI
 static Void rlcAmmDlMoveSduByteSegFrmTxtoRetxBuffer
 (
 RlcCb          *gCb,
@@ -388,13 +357,6 @@ RlcAmDl        *amDl,
 RlcRetx        **retx,
 RlcDlPduInfo   *pduInfo
 )
-#else
-static Void rlcAmmDlMoveSduByteSegFrmTxtoRetxBuffer(gCb, amDl, retx, pduInfo)
-RlcCb          *gCb;
-RlcAmDl        *amDl;
-RlcRetx        **retx;
-RlcDlPduInfo   *pduInfo;
-#endif
 {
 
    RLC_ALLOC_WC(gCb,*retx, sizeof(RlcRetx));
@@ -454,7 +416,6 @@ RlcDlPduInfo   *pduInfo;
  *            
  */
 
-#ifdef ANSI
 static Void rlcAmmDlHndlStatus4SduByteSegInTxBuf
 (
 RlcCb          *gCb,
@@ -463,16 +424,6 @@ RlcNackInfo    *nackSnInfo,
 RlcRetx        **retx,
 KwuDatCfmInfo ** datCfm
 )
-#else
-static Void rlcAmmDlHndlStatus4SduByteSegInTxBuf(gCb, rbCb, nackSnInfo, retx, datCfm)
-(
-RlcCb          *gCb;
-RlcDlRbCb      *rbCb;
-RlcNackInfo    *nackSnInfo;
-RlcRetx        **retx;
-KwuDatCfmInfo **datCfm;
-)
-#endif
 {
    RlcTx    *txBuf=NULLP;
    CmLList *lnk;
@@ -543,25 +494,14 @@ KwuDatCfmInfo **datCfm;
  * @return Void
  *            
  */
-#ifdef ANSI
 static Void rlcAmmDlUpdateTxAndReTxBufForNackSn
 (
- RlcCb          *gCb,
- RlcDlRbCb      *rbCb,
- RlcNackInfo    *nackSnInfo,
- CmLList        **retxNode,
- KwuDatCfmInfo **datCfm
- )
-#else
-static Void rlcAmmDlUpdateTxAndReTxBufForNackSn(gCb, rbCb, nackSnInfo, retxNode, datCfm)
-(
- RlcCb          *gCb;
- RlcDlRbCb      *rbCb;
- RlcNackInfo    *nackSnInfo;
- CmLList       **retxNode;
- KwuDatCfmInfo **datCfm;
- )
-#endif
+RlcCb          *gCb,
+RlcDlRbCb      *rbCb,
+RlcNackInfo    *nackSnInfo,
+CmLList        **retxNode,
+KwuDatCfmInfo **datCfm
+)
 {
    RlcTx    *txBuf;
    RlcRetx  *retx;
@@ -663,7 +603,6 @@ static Void rlcAmmDlUpdateTxAndReTxBufForNackSn(gCb, rbCb, nackSnInfo, retxNode,
  * @return Void
  *            
  */
-#ifdef ANSI
 static Void RlcDlAmmGetNackSnInfoFrmNackRangeIdx
 (
 RlcAmDl        *amDl,
@@ -672,16 +611,6 @@ CmLList        *retxNode,
 RlcNackInfo    *nackSnInfo,
 uint8_t        idx
 )
-#else
-static Void RlcDlAmmGetNackSnInfoFrmNackRangeIdx(amDl, nackInfo, retxNode, nackSnInfo, idx)
-(
-RlcAmDl        *amDl;
-RlcNackInfo    *nackInfo;
-CmLList        *retxNode;
-RlcNackInfo    *nackSnInfo;
-uint8_t        idx;
-)
-#endif
 {
    RlcTx     *txBuf;
    RlcRetx   *retx;
@@ -774,19 +703,7 @@ uint8_t        idx;
  * 
  * @return  Void
 */
-#ifdef ANSI
-Void rlcAmmDlHndlStatusPdu
-(
-RlcCb          *gCb,
-RlcDlRbCb      *rbCb,
-RlcUdxStaPdu   *pStaPdu
-)
-#else
-Void rlcAmmDlHndlStatusPdu(gCb, rbCb, pStaPdu)
-RlcCb          *gCb;
-RlcDlRbCb      *rbCb;
-RlcUdxStaPdu   *pStaPdu;
-#endif
+Void rlcAmmDlHndlStatusPdu(RlcCb *gCb,RlcDlRbCb *rbCb,RlcUdxStaPdu *pStaPdu)
 {
    RlcSn      mAckSn;
    S32       oldRetxBo;
@@ -1001,15 +918,7 @@ RlcUdxStaPdu   *pStaPdu;
  *  @return S16
  *      Calculated bo
 */
-#ifdef ANSI
-S32 rlcAmmCalculateBo
-(
-RlcAmDl *amDl
-)
-#else
-S32 rlcAmmCalculateBo(amDl)
-RlcAmDl *amDl;
-#endif
+S32 rlcAmmCalculateBo(RlcAmDl *amDl)
 {
    S32 bo;
 
@@ -2288,19 +2197,7 @@ RlcDlPduInfo *pduInfo, Buffer *pdu)
  * @return Void 
  *
  */
-#ifdef ANSI
-static Void rlcRemRetxPdu
-(  
-RlcCb          *gCb,
-RlcDlRbCb      *rbCb,
-RlcRetx        *retx
-)
-#else
-static Void rlcRemRetxPdu(gCb, rbCb, retx)
-RlcCb          *gCb;
-RlcDlRbCb      *rbCb;
-RlcRetx        *retx;
-#endif
+static Void rlcRemRetxPdu(RlcCb *gCb,RlcDlRbCb *rbCb,RlcRetx *retx)
 {
    cmLListDelFrm(&AMDL.retxLst, &retx->lstEnt); 
 
@@ -2337,19 +2234,7 @@ RlcRetx        *retx;
  * @return Void 
  *
  */
-#ifdef ANSI
-static Void rlcAmmDlMarkPduForReTx
-(
-RlcCb          *gCb,
-RlcDlRbCb      *rbCb,
-RlcRetx        *retx
-)
-#else
-static Void rlcAmmDlMarkPduForReTx(*gCb, rbCb, retx)
-RlcCb          *gCb;
-RlcDlRbCb      *rbCb;
-RlcRetx        *retx;
-#endif
+static Void rlcAmmDlMarkPduForReTx(RlcCb *gCb,RlcDlRbCb *rbCb,RlcRetx *retx)
 {
    if (AMDL.maxReTxReached == TRUE)
    {
@@ -2416,21 +2301,13 @@ RlcRetx        *retx;
  * @return Void 
  *
  */
-#ifdef ANSI
 static Void rlcAmmDlCheckIsSDUDelivered
 (
 RlcCb            *gCb,
 RlcDlRbCb        *rbCb,
 RlcSduMap        *sduMap,
-KwuDatCfmInfo   **datCfm
+KwuDatCfmInfo    **datCfm
 )
-#else
-static Void rlcAmmDlCheckIsSDUDelivered(gCb, rbCb, sduMap, datCfm)
-RlcCb            *gCb;
-RlcDlRbCb        *rbCb;
-RlcSduMap        *sduMap;
-KwuDatCfmInfo   **datCfm;
-#endif
 {
    RlcSdu *sdu;
    
@@ -2501,21 +2378,13 @@ KwuDatCfmInfo   **datCfm;
  * @return Void 
  *
  */
-#ifdef ANSI
 static Void rlcAmmDlProcessSuccessfulTxPdu
 (
 RlcCb            *gCb,
 RlcDlRbCb        *rbCb,
 RlcSn            sn,
-KwuDatCfmInfo   **datCfm
+KwuDatCfmInfo    **datCfm
 )
-#else
-static Void rlcAmmDlProcessSuccessfulTxPdu(gCb, rbCb, sn, datCfm)
-RlcCb            *gCb;
-RlcDlRbCb        *rbCb;
-RlcSn            sn;
-KwuDatCfmInfo   **datCfm;
-#endif
 {
    CmLList *pduNode;
   
@@ -2558,19 +2427,12 @@ KwuDatCfmInfo   **datCfm;
  * @return  Void
  *
  */
-#ifdef ANSI
 static Void rlcAmmSndStaInd
 (
 RlcCb       *gCb,
 RlcDlRbCb   *rbCb,
 RlcRetx     *retx
 )
-#else
-static Void rlcAmmSndStaInd(gCb, rbCb, retx)
-RlcCb       *gCb;
-RlcDlRbCb   *rbCb;
-RlcRetx     *retx;
-#endif
 {
    KwuStaIndInfo   *staInd;
    RlcKwuSapCb      *rlckwuSap;
@@ -2655,19 +2517,12 @@ static void rlcGetNxtRetx(RlcCb *gCb, RlcRetx **retx)
  * @return  Void 
  *
  */
-#ifdef ANSI
 Void rlcAmmDlReEstablish
 (
 RlcCb         *gCb,
 CmLteRlcId   rlcId,
 RlcDlRbCb     *rbCb
 )
-#else
-Void rlcAmmDlReEstablish(gCb, rlcId, rbCb)
-RlcCb         *gCb;
-CmLteRlcId   rlcId;
-RlcDlRbCb     *rbCb;
-#endif
 {
    /* create a new AM DL RB, reset it and replace in the UeCb*/
    RlcDlUeCb   *ueCb;
@@ -2778,19 +2633,7 @@ RlcDlRbCb     *rbCb;
  *     -# ROK      In case of successful discard
  *     -# RFAILED  In case the SDU is not found or already mapped
  */
-#ifdef ANSI
-S16 rlcAmmDiscSdu
-(
-RlcCb       *gCb,
-RlcDlRbCb   *rbCb,
-uint32_t    sduId 
-)
-#else
-S16 rlcAmmDiscSdu(gCb, rbCb, sduId)
-RlcCb       *gCb;
-RlcDlRbCb   *rbCb;  
-uint32_t    sduId; 
-#endif
+S16 rlcAmmDiscSdu(RlcCb *gCb,RlcDlRbCb *rbCb,uint32_t sduId )
 {
    return (RFAILED);
 } 
@@ -2807,17 +2650,7 @@ uint32_t    sduId;
  *
  * @return  Void 
  */
-#ifdef ANSI
-Void rlcAmmPollRetxTmrExp
-(
-RlcCb       *gCb,
-RlcDlRbCb   *rbCb
-)
-#else
-Void rlcAmmPollRetxTmrExp(gCb, rbCb)
-RlcCb       *gCb;
-RlcDlRbCb   *rbCb;
-#endif
+Void rlcAmmPollRetxTmrExp(RlcCb *gCb,RlcDlRbCb *rbCb)
 {
    RlcRetx        *retx; 
    RlcAmDl        *amDl = &(rbCb->m.amDl);
@@ -2890,7 +2723,6 @@ RlcDlRbCb   *rbCb;
  *
  */
 
-#ifdef ANSI
 static Void rlcAmmDlUpdateTxAndReTxBufForAckSn
 (
 RlcCb            *gCb,
@@ -2899,14 +2731,6 @@ RlcSn            mAckSn,
 CmLList         *retxNode,
 KwuDatCfmInfo   **datCfm
 )
-#else
-static Void rlcAmmDlUpdateTxAndReTxBufForAckSn(gCb, rbCb, mAckSn, retxNode, datCfm)
-RlcCb            *gCb;
-RlcDlRbCb        *rbCb;
-RlcSn            mAckSn;
-CmLList         *retxNode;
-KwuDatCfmInfo   **datCfm;
-#endif
 {
    RlcSn    mSn;
    RlcSn    sn;
@@ -2970,7 +2794,6 @@ KwuDatCfmInfo   **datCfm;
  * @return  Void
  *
  */
-#ifdef ANSI
 static Void rlcAmmDlUpdTxAndReTxBufForLessThanNackSn
 (
 RlcCb            *gCb,
@@ -2980,15 +2803,6 @@ RlcSn            mNackSn,
 CmLList         **retxNode,
 KwuDatCfmInfo   **datCfm
 )
-#else
-static Void rlcAmmDlUpdTxAndReTxBufForLessThanNackSn(gCb, rbCb, sn, mNackSn, retxNode, datCfm)
-RlcCb            *gCb;
-RlcDlRbCb        *rbCb;
-RlcSn            sn;
-RlcSn            mNackSn;
-CmLList         **retxNode;
-KwuDatCfmInfo   **datCfm;
-#endif
 {
    RlcSn    mSn;
    RlcRetx  *retx;
@@ -3099,17 +2913,7 @@ static void rlcConstructAmHdr(RlcAmHdr *amHdr, uint8_t *hdr, uint8_t snLen, uint
  * @return Void
  *            
  */
-#ifdef ANSI
-static Void rlcAmmAddPduToRetxLst
-(
-RlcAmDl   *amDl,
-RlcRetx   *retx
-)
-#else
-static Void rlcAmmAddPduToRetxLst(amDl, retx)
-RlcAmDl   *amDl;
-RlcRetx   *retx;
-#endif
+static Void rlcAmmAddPduToRetxLst(RlcAmDl *amDl,RlcRetx *retx)
 {
    CmLList   *node;
    RlcRetx    *tRetx;
@@ -3168,7 +2972,6 @@ RlcRetx   *retx;
  *            
  */
 
-#ifdef ANSI
 static Void rlcAmmDlMoveFrmTxtoRetxBuffer
 (
 RlcCb          *gCb,
@@ -3176,13 +2979,6 @@ RlcAmDl        *amDl,
 RlcRetx        **retx,
 RlcSn          sn
 )
-#else
-static Void rlcAmmDlMoveFrmTxtoRetxBuffer(gCb, amDl, retx, sn)
-RlcCb          *gCb;
-RlcAmDl        *amDl;
-RlcRetx        **retx;
-RlcSn          sn; 
-#endif
 {
    RlcTx* txBuf = rlcUtlGetTxBuf(amDl->txBufLst, sn);
 
@@ -3234,17 +3030,7 @@ RlcSn          sn;
  *
  * @return Void
  */
-#ifdef ANSI
-Void rlcAmmFreeDlRbCb
-(
-RlcCb       *gCb,
-RlcDlRbCb   *rbCb
-)
-#else
-Void rlcAmmFreeDlRbCb(gCb,rbCb)
-RlcCb       *gCb;
-RlcDlRbCb   *rbCb;
-#endif
+Void rlcAmmFreeDlRbCb(RlcCb  *gCb,RlcDlRbCb  *rbCb)
 {
    /* stop the re-transmission timer */
    if(TRUE == rlcChkTmr(gCb,(PTR)rbCb,RLC_EVT_AMDL_POLL_RETX_TMR))
@@ -3571,19 +3357,7 @@ static void rlcAmmCreateStatusPdu(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDat
 S16 rlcProcDlStatusPdu(Pst *udxPst,SuId suId,
       CmLteCellId cellId,CmLteRnti rnti,CmLteLcId lcId,Buffer *rlcSdu);
 
-#ifdef ANSI
-static Void rgAmmExtractElmnt
-(
-RlcCb       *gCb,
-Buffer     *pdu,
-RlcExtHdr   *hdrInfo
-)
-#else
-static Void rgAmmExtractElmnt(gCb, pdu, hdrInfo)
-RlcCb       *gCb;
-Buffer     *pdu;
-RlcExtHdr   *hdrInfo;
-#endif
+static Void rgAmmExtractElmnt(RlcCb *gCb,Buffer *pdu,RlcExtHdr *hdrInfo)
 {
    uint8_t   hdr;
    uint8_t   pLen = hdrInfo->pLen;
@@ -3651,25 +3425,15 @@ RlcExtHdr   *hdrInfo;
 
 
 
-#ifdef ANSI
 static Void rgAmmUlHndlStatusPdu
 (
 Pst        *udxPst,
 SuId       suId,
-RlcCb       *gCb,
-RlcDlRbCb   *rbCb,
+RlcCb      *gCb,
+RlcDlRbCb  *rbCb,
 Buffer     *cntrlPdu,
-uint8_t         *fByte
+uint8_t    *fByte
 )
-#else
-static Void rgAmmUlHndlStatusPdu(udxPst,suId,gCb, rbCb, cntrlPdu, fByte)
-Pst        *udxPst;
-SuId       suId;
-RlcCb       *gCb;
-RlcDlRbCb   *rbCb;
-Buffer     *cntrlPdu;
-uint8_t         *fByte;
-#endif
 {
    uint8_t             e1;
    RlcExtHdr       hdrInfo;

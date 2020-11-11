@@ -65,19 +65,12 @@ static S16 PtUlUdxUeIdChgReq ARGS((Pst *pst, SpId spId, uint32_t transId,
                                    CkwUeInfo *ueInfo, CkwUeInfo *newUeInfo));
 static S16 PtUlUdxStaPduReq ARGS(( Pst* pst,SpId  spId, CmLteRlcId *rlcId,
                              RlcUdxDlStaPdu  *pStaPdu ));
-#ifdef ANSI
 static S16 PtUlUdxBndReq
 (
 Pst *pst,                       /* post structure */
 SuId suId,                      /* Service User Id */
 SpId spId                    /* Status */
 )
-#else
-static S16 PtUlUdxBndReq(pst, suId,spId)
-Pst *pst;                       /* post structure */
-SuId suId;                      /* Service User Id */
-SpId spId;                    /* Status */
-#endif
 {
 
    return ROK;
@@ -104,45 +97,30 @@ SpId spId;                    /* Status */
  *      -# ROK 
  *
  */
-#ifdef ANSI
 static S16 PtUlUdxUbndReq
 (
 Pst *pst,                       /* post structure */
 SpId spId,                      /* Service User Id */
 Reason   reason                     /* Status */
 )
-#else
-static S16 PtUlUdxUbndReq(pst, suId, status)
-Pst *pst;                       /* post structure */
-SpId spId;                      /* Service User Id */
-Reason Reason;                    /* Status */
-#endif
 {
 
    return ROK;
 
 } /* end of PtDlUdxBndReq */
 
-#ifdef ANSI
 static S16 PtUlUdxCfgReq
 (
 Pst *pst,                       /* post structure */
 SpId spId,                      /* Service User Id */
 RlcCfgInfo *cfmInfo             /* Config Info */
 )
-#else
-static S16 PtUlUdxCfgReq(pst, spId, status)
-Pst *pst;                       /* post structure */
-SpId spId;                      /* Service User Id */
-RlcCfgInfo *cfmInfo;              /* Config Info */
-#endif
 {
 
    return ROK;
 
 } /* end of rlcDlUdxCfgReq */
 
-#ifdef ANSI
 static S16 PtUlUdxUeIdChgReq
 (
 Pst *pst,                      /* post structure */
@@ -151,14 +129,6 @@ uint32_t  transId,              /* transaction Id */
 CkwUeInfo *ueInfo,             /* Config Info */
 CkwUeInfo *newUeInfo           /* Config Info */
 )
-#else
-static S16 PtUlUdxUeIdChgReq(pst, spId,transId, ueInfo, newUeInfo)
-Pst *pst;                      /* post structure */
-SpId spId;                     /* Service User Id */
-uint32_t  transId;              /* transaction Id */
-CkwUeInfo *ueInfo;             /* Config Info */
-CkwUeInfo *newUeInfo;          /* Config Info */
-#endif
 {
 
    return ROK;
@@ -190,7 +160,6 @@ RlcUdxDlStaPdu       *pStaPdu
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 static S16  PtUlUdxStaUpdReq
 (
 Pst*                pst,
@@ -198,13 +167,6 @@ SpId                spId,
 CmLteRlcId          *rlcId,
 RlcUdxStaPdu       *pStaPdu
 )
-#else
-static S16 PtUlUdxStaUpdReq(pst, rlcId, pStaPdu)
-Pst*                pst;
-SpId                spId;
-CmLteRlcId          *rlcId;
-RlcUdxDlStaPdu       *pStaPdu;
-#endif
 {
 
    return ROK;
@@ -223,17 +185,7 @@ RlcUdxDlStaPdu       *pStaPdu;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-static S16  PtUlUdxL2MeasReq
-(
-Pst*                pst,
-RlcL2MeasReqEvt      *measReqEvt
-)
-#else
-static S16 PtUlUdxL2MeasReq(pst, measReqEvt )
-Pst*                pst;
-RlcL2MeasReqEvt      *measReqEvt;
-#endif
+static S16  PtUlUdxL2MeasReq(Pst* pst,RlcL2MeasReqEvt  *measReqEvt)
 {
 
    return ROK;
@@ -251,17 +203,7 @@ RlcL2MeasReqEvt      *measReqEvt;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-static S16  PtUlUdxL2MeasSendReq
-(
-Pst*       pst,
-uint8_t    status
-)
-#else
-static S16 PtUlUdxL2MeasSendReq(pst, status )
-Pst*        pst;
-uint8_t     status
-#endif
+static S16  PtUlUdxL2MeasSendReq(Pst*  pst,uint8_t status)
 {
 
    return ROK;
@@ -279,17 +221,7 @@ uint8_t     status
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-static S16  PtUlUdxL2MeasStopReq
-(
-Pst*      pst,
-uint8_t   status
-)
-#else
-static S16 PtUlUdxL2MeasStopReq(pst, status )
-Pst*       pst;
-uint8_t    status
-#endif
+static S16  PtUlUdxL2MeasStopReq(Pst*      pst,uint8_t   status)
 {
 
    return ROK;
@@ -490,19 +422,12 @@ static const UdxL2MeasStopReq rlcUlUdxL2MeasStopReqMt[RLC_MAX_UDX] =
  *      -# ROK 
  *
  */
-#ifdef ANSI
 S16 rlcUlUdxBndReq
 (
 Pst *pst,                       /* post structure */
 SuId suId,                      /* Service User Id */
 SpId spId                     /* Status */
 )
-#else
-S16 rlcUlUdxBndReq(pst, suId, status)
-Pst *pst;                       /* post structure */
-SuId suId;                      /* Service User Id */
-SpId spId;                    /* Status */
-#endif
 {
    /* jump to specific primitive depending on configured selector */
    (*rlcUlUdxBndReqMt[pst->selector])(pst, suId, spId);
@@ -531,19 +456,12 @@ SpId spId;                    /* Status */
  *      -# ROK 
  *
  */
-#ifdef ANSI
 S16 rlcUlUdxUbndReq
 (
 Pst *pst,                       /* post structure */
 SpId spId,                      /* Service User Id */
 Reason   reason                     /* Status */
 )
-#else
-S16 rlcUlUdxUbndReq(pst, suId, status)
-Pst *pst;                       /* post structure */
-SpId spId;                      /* Service User Id */
-Reason Reason;                    /* Status */
-#endif
 {
    /* jump to specific primitive depending on configured selector */
    (*rlcUlUdxUbndReqMt[pst->selector])(pst, spId,reason );
@@ -552,19 +470,12 @@ Reason Reason;                    /* Status */
 
 } /* end of rlcDlUdxBndReq */
 
-#ifdef ANSI
 S16 rlcUlUdxCfgReq
 (
 Pst *pst,                       /* post structure */
 SpId spId,                      /* Service User Id */
 RlcCfgInfo *cfmInfo             /* Config Info */
 )
-#else
-S16 rlcUlUdxCfgReq(pst, suId, status)
-Pst *pst;                       /* post structure */
-SuId spId;                      /* Service User Id */
-RlcCfgInfo *cfmInfo;              /* Config Info */
-#endif
 {
 
    /* jump to specific primitive depending on configured selector */
@@ -574,7 +485,6 @@ RlcCfgInfo *cfmInfo;              /* Config Info */
 
 } /* end of rlcDlUdxCfgReq */
 
-#ifdef ANSI
 S16 rlcUlUdxUeIdChgReq
 (
 Pst *pst,                      /* post structure */
@@ -583,14 +493,6 @@ uint32_t  transId,              /* transaction Id */
 CkwUeInfo *ueInfo,             /* Config Info */
 CkwUeInfo *newUeInfo           /* Config Info */
 )
-#else
-S16 rlcUlUdxUeIdChgReq(pst, spId,transId, ueInfo, newUeInfo)
-Pst *pst;                      /* post structure */
-SpId spId;                     /* Service User Id */
-uint32_t  transId;              /* transaction Id */
-CkwUeInfo *ueInfo;             /* Config Info */
-CkwUeInfo *newUeInfo;          /* Config Info */
-#endif
 {
 
    /* jump to specific primitive depending on configured selector */
@@ -637,17 +539,7 @@ uint8_t rlcUlUdxStaUpdReq(Pst* pst, SpId spId, CmLteRlcId *rlcId, RlcUdxStaPdu *
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-S16  rlcUlUdxL2MeasReq
-(
-Pst*                pst,
-RlcL2MeasReqEvt      *measReqEvt 
-)
-#else
-S16 rlcUlUdxL2MeasReq(pst,measReqEvt)
-Pst*                pst;
-RlcL2MeasReqEvt      *measReqEvt; 
-#endif
+S16  rlcUlUdxL2MeasReq(Pst* pst,RlcL2MeasReqEvt *measReqEvt )
 {
 
    return ((*rlcUlUdxL2MeasReqMt[pst->selector])(pst,measReqEvt));
@@ -665,17 +557,7 @@ RlcL2MeasReqEvt      *measReqEvt;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-S16  rlcUlUdxL2MeasSendReq
-(
-Pst*        pst,
-uint8_t     measType
-)
-#else
-S16 rlcUlUdxL2MeasSendReq(pst,measReqEvt)
-Pst*        pst;
-uint8_t     measType;
-#endif
+S16  rlcUlUdxL2MeasSendReq(Pst* pst,uint8_t measType)
 {
 
    return ((*rlcUlUdxL2MeasSendReqMt[pst->selector])(pst,measType));
@@ -693,17 +575,7 @@ uint8_t     measType;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-S16  rlcUlUdxL2MeasStopReq
-(
-Pst*        pst,
-uint8_t     measType
-)
-#else
-S16 rlcUlUdxL2MeasStopReq(pst,measReqEvt)
-Pst*        pst;
-uint8_t     measType;
-#endif
+S16  rlcUlUdxL2MeasStopReq(Pst*  pst,uint8_t  measType)
 {
 
    return ((*rlcUlUdxL2MeasStopReqMt[pst->selector])(pst,measType));

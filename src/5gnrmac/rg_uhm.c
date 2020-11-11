@@ -82,19 +82,12 @@
  *  @param[out]     *err
  *  @return  Void
  **/
-#ifdef ANSI
 Void rgUHMCrgUeCfg
 (
 RgCellCb       *cellCb,
 RgUeCb         *ueCb,
 CrgUeCfg       *ueCfg
 )
-#else
-Void rgUHMCrgUeCfg(cellCb, ueCb, ueCfg) 
-RgCellCb       *cellCb;
-RgUeCb         *ueCb;
-CrgUeCfg       *ueCfg;
-#endif
 {
    ueCb->ul.hqEnt.maxHqRetx = (ueCfg->ueUlHqCfg.maxUlHqTx - 1); 
    return;
@@ -118,19 +111,12 @@ CrgUeCfg       *ueCfg;
  *  @param[out]     *err
  *  @return  Void
  **/
-#ifdef ANSI
 Void rgUHMCrgUeRecfg
 (
 RgCellCb       *cellCb,
 RgUeCb         *ueCb,
 CrgUeRecfg     *ueRecfg
 )
-#else
-Void rgUHMCrgUeRecfg(cellCb, ueCb, ueRecfg) 
-RgCellCb       *cellCb;
-RgUeCb         *ueCb;
-CrgUeRecfg     *ueRecfg;
-#endif
 {
 
    ueCb->ul.hqEnt.maxHqRetx = (ueRecfg->ueUlHqRecfg.maxUlHqTx - 1); 

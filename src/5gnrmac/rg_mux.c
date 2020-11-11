@@ -155,7 +155,6 @@ uint16_t rgMUXCalcRiv ARGS((uint8_t bw,
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 static S16 rgMUXAddCes
 (
 Inst           inst,
@@ -163,13 +162,6 @@ RgBldPduInfo   *pdu,
 Buffer         *ceBuf,
 RgErrInfo      *err
 )
-#else
-static S16 rgMUXAddCes(inst,pdu, ceShdrBuf, ceBuf, err)
-Inst           inst;
-RgBldPduInfo   *pdu;
-Buffer         *ceBuf;
-RgErrInfo      *err;
-#endif
 {
    S16            ret;
    RgMUXSubHdr    subHdr;
@@ -278,7 +270,6 @@ RgErrInfo      *err;
  *      -# ROK 
  *      -# RFAILED
  **/
-#ifdef ANSI
 static S16 rgMUXInsSdu
 (
 Inst           inst,
@@ -288,15 +279,6 @@ Buffer         *sdu,
 Buffer         *sduBuf,
 RgErrInfo      *err
 )
-#else
-static S16 rgMUXInsSdu(inst,schdTbSz, lcId, sdu, sduBuf, err)
-Inst           inst;
-MsgLen         *schdTbSz;
-uint8_t        lcId;
-Buffer         *sdu;
-Buffer         *sduBuf;
-RgErrInfo      *err;
-#endif
 {
    S16            ret;
    MsgLen         msgLen = 0;
@@ -369,7 +351,6 @@ RgErrInfo      *err;
 #ifdef L2_OPTMZ
 uint32_t padSize = 0;
 #endif
-#ifdef ANSI
 S16 rgMUXAddPadd
 (
 Inst           inst,
@@ -378,14 +359,6 @@ Buffer         *sduBuf,
 Bool           isRar,
 RgErrInfo      *err
 )
-#else
-S16 rgMUXAddPadd(inst,schdTbSz, sduBuf, isRar, err)
-Inst           inst;
-MsgLen         *schdTbSz;
-Buffer         *sduBuf;
-Bool           isRar;
-RgErrInfo      *err;
-#endif
 {
    S16     ret = ROK;
    Buffer         *padBuf = NULLP;
@@ -509,7 +482,6 @@ RgErrInfo      *err;
  *      -# ROK 
  *      -# RFAILED
  **/
-#ifdef ANSI
 static S16 rgMUXAddSdus
 (
 Inst           inst,
@@ -517,13 +489,6 @@ RgBldPduInfo   *pdu,
 Buffer         *sduBuf,
 RgErrInfo      *err
 )
-#else
-static S16 rgMUXAddSdus(inst,pdu, sduBuf, err)
-Inst           inst;
-RgBldPduInfo   *pdu;
-Buffer         *sduBuf;
-RgErrInfo      *err;
-#endif
 {
    RgRguDDatReqPerUe *dDatReq;
    RgRguCmnDatReq    *cDatReq;
@@ -643,7 +608,6 @@ RgErrInfo      *err;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 rgMUXBldPdu
 (
 Inst           inst,
@@ -651,13 +615,6 @@ RgBldPduInfo   *pdu,
 Buffer         **txPdu,
 RgErrInfo      *err
 )
-#else
-S16 rgMUXBldPdu(inst, pdu, txPdu, err)
-Inst           inst;
-RgBldPduInfo   *pdu;
-Buffer         **txPdu;
-RgErrInfo      *err;
-#endif
 {
    Buffer         *mBuf = NULLP;
 
@@ -708,7 +665,6 @@ RgErrInfo      *err;
  *      -# ROK 
  *      -# RFAILED
  **/
-#ifdef ANSI
 static S16 rgMUXAddSdus
 (
 Inst                inst,
@@ -717,14 +673,6 @@ Buffer              *sHdrBuf,
 RgTfuDatReqTbInfo   *tb,
 RgErrInfo           *err
 )
-#else
-static S16 rgMUXAddSdus(pdu, sHdrBuf, tb, err)
-Inst                inst;
-RgBldPduInfo        *pdu;
-Buffer              *sHdrBuf;
-RgTfuDatReqTbInfo   *tb;
-RgErrInfo           *err;
-#endif
 {
    RgRguDDatReqPerUe  *dDatReq;
    RgRguCmnDatReq     *cDatReq;
@@ -945,7 +893,6 @@ RgErrInfo           *err;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 rgMUXBldPdu
 (
 Inst               inst,
@@ -953,13 +900,6 @@ RgBldPduInfo       *pdu,
 RgTfuDatReqTbInfo  *tb,
 RgErrInfo          *err
 )
-#else
-S16 rgMUXBldPdu(inst, pdu, tb, err)
-Inst               inst;
-RgBldPduInfo       *pdu;
-RgTfuDatReqTbInfo  *tb;
-RgErrInfo          *err;
-#endif
 {
    Buffer         *mBuf1; /* MAC hearder */
    Buffer         *mBuf2; /* MAC CEs */
@@ -1023,7 +963,6 @@ RgErrInfo          *err;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 rgMUXBldRarPdu
 (
 RgCellCb        *cell,
@@ -1031,13 +970,6 @@ RgInfRaRntiInfo *alloc,
 Buffer          **txPdu,
 RgErrInfo       *err
 )
-#else
-S16 rgMUXBldRarPdu(cell, alloc, txPdu, err)
-RgCellCb        *cell;
-RgInfRaRntiInfo *alloc;
-Buffer          **txPdu;
-RgErrInfo       *err;
-#endif
 {
    Buffer      *datBuf = NULLP;
    S16         ret; 
@@ -1163,19 +1095,12 @@ RgErrInfo       *err;
  *     File : rg_mux.c
  *
  **********************************************************/
-#ifdef ANSI
 static Void rgMUXGet20bitRarGrnt
 (
 uint8_t             ulBw,
 RgInfRarUlGrnt *msg3Grnt,
 uint8_t             *grnt
 )
-#else
-static Void rgMUXGet20bitRarGrnt(ulBw, msg3Grnt, grnt)
-uint8_t             ulBw;
-RgInfRarUlGrnt *msg3Grnt;
-uint8_t             *grnt;
-#endif
 {
    uint16_t       riv = rgMUXCalcRiv(ulBw, msg3Grnt->rbStart, msg3Grnt->numRb);
 
@@ -1208,19 +1133,12 @@ uint8_t             *grnt;
  *     File : rg_mux.c
  *
  **********************************************************/
-#ifdef ANSI
 uint16_t rgMUXCalcRiv
 (
 uint8_t           bw,
 uint8_t           rbStart,
 uint8_t           numRb
 )
-#else
-uint16_t rgMUXCalcRiv(bw, rbStart, numRb)
-uint8_t           bw;
-uint8_t           rbStart;
-uint8_t           numRb;
-#endif
 {
    uint8_t           numRbMinus1 = numRb - 1;
    uint16_t          riv;

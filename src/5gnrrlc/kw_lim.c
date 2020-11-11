@@ -99,19 +99,7 @@ extern "C" {
  *    -# RFAILED 
  *
 */
-#ifdef ANSI
-S16 RlcLiRguBndCfm
-(
-Pst     *pst,   
-SuId    suId, 
-uint8_t status 
-)
-#else
-S16 RlcLiRguBndCfm (pst, suId, status)
-Pst     *pst; 
-SuId    suId;
-uint8_t status;
-#endif
+S16 RlcLiRguBndCfm(Pst *pst,SuId suId,uint8_t status)
 {
    uint16_t      event;     /* Event */
    uint16_t      cause;     /* Cause */
@@ -469,19 +457,7 @@ uint8_t rlcProcDedLcSchedRpt(Pst *pst, SuId suId, RguDStaIndInfo *staInd)
  *    -# RFAILED 
  *
 */ 
-#ifdef ANSI
-S16 RlcLiRguFlowCntrlInd
-(
-Pst              *pst,  
-SuId             suId,
-RguFlowCntrlInd *flowCntrlInd
-)
-#else
-S16 RlcLiRguFlowCntrlInd(pst, suId, flowCntrlInd)
-Pst              *pst; 
-SuId             suId; 
-RguFlowCntrlInd  *flowCntrlInd; 
-#endif
+S16 RlcLiRguFlowCntrlInd(Pst *pst,SuId suId,RguFlowCntrlInd *flowCntrlInd)
 {
    RlcCb       *tRlcCb; 
    RlcDlRbCb   *rbCb = NULLP;
@@ -551,19 +527,7 @@ RguFlowCntrlInd  *flowCntrlInd;
  *      -# RFAILED
  *
  */
-#ifdef ANSI
-S16 RlcLiRguHqStaInd
-(
-Pst                *pst, 
-SuId               suId,
-RguHarqStatusInd   *staInd 
-)
-#else
-S16 RlcLiRguHqStaInd(pst,suId,staInd)
-Pst                *pst;  
-SuId               suId; 
-RguHarqStatusInd   *staInd;
-#endif
+S16 RlcLiRguHqStaInd(Pst *pst, SuId suId,RguHarqStatusInd *staInd)
 {
 
    RlcUeKey   ueKey;

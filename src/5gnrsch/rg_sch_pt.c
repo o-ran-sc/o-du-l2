@@ -250,17 +250,7 @@ static const L2MeasStopCfm RgMacSchL2MeasStopCfmMt[RG_MAX_SCH] =
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-S16 RgSchMacCellReg
-(
-Pst* pst,
-RgInfCellReg*   regReq
-)
-#else
-S16 RgSchMacCellReg(pst, regReq)
-Pst* pst;
-RgInfCellReg*   regReq;
-#endif
+S16 RgSchMacCellReg(Pst* pst,RgInfCellReg* regReq)
 {
 
    return ((*RgSchMacCellRegReqMt[0])(pst, regReq));
@@ -280,17 +270,7 @@ RgInfCellReg*   regReq;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-S16 RgMacSchDedBoUpdt
-(
-Pst* pst,
-RgInfDedBoRpt*  boRpt
-)
-#else
-S16 RgMacSchDedBoUpdt(pst, boRpt)
-Pst* pst;
-RgInfDedBoRpt*  boRpt;
-#endif
+S16 RgMacSchDedBoUpdt(Pst* pst,RgInfDedBoRpt*  boRpt)
 {
 
    return ((*RgMacSchDedBoUpdtReqMt[0])(pst, boRpt));
@@ -310,17 +290,7 @@ RgInfDedBoRpt*  boRpt;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-S16 RgMacSchCmnBoUpdt
-(
-Pst* pst,
-RgInfCmnBoRpt*  boRpt
-)
-#else
-S16 RgMacSchCmnBoUpdt(pst, boRpt)
-Pst* pst;
-RgInfCmnBoRpt*  boRpt;
-#endif
+S16 RgMacSchCmnBoUpdt(Pst* pst ,RgInfCmnBoRpt*  boRpt)
 {
 
    return ((*RgMacSchCmnBoUpdtReqMt[0])(pst, boRpt));
@@ -340,17 +310,7 @@ RgInfCmnBoRpt*  boRpt;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-S16 RgMacSchUeDel
-(
-Pst* pst,
-RgInfUeDelInd*  ueDelInd
-)
-#else
-S16 RgMacSchUeDel(pst, datInd)
-Pst* pst;
-RgInfUeDelInd*  ueDelInd;
-#endif
+S16 RgMacSchUeDel(Pst* pst,RgInfUeDelInd*  ueDelInd)
 {
 
    return ((*RgMacSchUeDelIndMt[0])(pst, ueDelInd));
@@ -370,17 +330,7 @@ RgInfUeDelInd*  ueDelInd;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-S16 RgMacSchSfRecp
-(
-Pst* pst,
-RgInfSfDatInd*  datInd
-)
-#else
-S16 RgMacSchSfRecp(pst, datInd)
-Pst* pst;
-RgInfSfDatInd*  datInd;
-#endif
+S16 RgMacSchSfRecp(Pst* pst,RgInfSfDatInd*  datInd)
 {
 
    return ((*RgMacSchSfRecpIndMt[0])(pst, datInd));
@@ -400,17 +350,7 @@ RgInfSfDatInd*  datInd;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-S16 RgSchMacSfAlloc
-(
-Pst* pst,
-RgInfSfAlloc*   resAllocReq
-)
-#else
-S16 RgSchMacSfAlloc(pst, resAllocReq)
-Pst* pst;
-RgInfSfAlloc*   resAllocReq;
-#endif
+S16 RgSchMacSfAlloc(Pst* pst,RgInfSfAlloc* resAllocReq)
 {
 
    return ((*RgSchMacSfAllocReqMt[0])(pst, resAllocReq));
@@ -428,17 +368,7 @@ RgInfSfAlloc*   resAllocReq;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-S16 RgSchMacRstHqEnt
-(
-Pst*                 pst,    
-RgInfResetHqEnt*     hqEntInfo
-)
-#else
-S16 RgSchMacRstHqEnt(pst, hqEntInfo)
-Pst*                 pst;
-RgInfResetHqEnt*     hqEntInfo;
-#endif
+S16 RgSchMacRstHqEnt(Pst* pst,RgInfResetHqEnt*  hqEntInfo)
 {
 
    return ((*RgSchMacRstHqEntReqMt[0])(pst, hqEntInfo));
@@ -458,17 +388,7 @@ RgInfResetHqEnt*     hqEntInfo;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-S16 RgSchMacRlsHq
-(
-Pst* pst,
-RgInfRlsHqInfo* sfHqInfo
-)
-#else
-S16 RgSchMacRlsHq(pst, sfHqInfo)
-Pst* pst;
-RgInfRlsHqInfo* sfHqInfo;
-#endif
+S16 RgSchMacRlsHq(Pst* pst,RgInfRlsHqInfo* sfHqInfo)
 {
 
    return ((*RgSchMacRlsHqReqMt[0])(pst, sfHqInfo));
@@ -488,17 +408,7 @@ RgInfRlsHqInfo* sfHqInfo;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-S16 RgSchMacRlsRnti
-(
-Pst* pst,
-RgInfRlsRnti*   rlsRnti
-)
-#else
-S16 RgSchMacRlsRnti(pst, rlsRnti)
-Pst* pst;
-RgInfRlsRnti*   rlsRnti;
-#endif
+S16 RgSchMacRlsRnti(Pst* pst,RgInfRlsRnti*   rlsRnti)
 {
 
    return ((*RgSchMacRlsRntiReqMt[0])(pst, rlsRnti));
@@ -516,17 +426,7 @@ RgInfRlsRnti*   rlsRnti;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-S16 RgSchMacLcgReg
-(
-Pst*                pst,
-RgInfLcgRegReq      *lcgRegReq
-)
-#else
-S16 RgSchMacLcgReg(pst, lcgRegReq)
-Pst*                pst;
-RgInfLcgRegReq       *lcgRegReq;
-#endif
+S16 RgSchMacLcgReg(Pst*  pst,RgInfLcgRegReq *lcgRegReq)
 {
 
    return ((*RgSchMacLcgRegReqMt[0])(pst, lcgRegReq));
@@ -546,17 +446,7 @@ RgInfLcgRegReq       *lcgRegReq;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-S16 RgMacSchSpsRel
-(
-Pst*                pst,
-RgInfSpsRelInfo*    relInfo
-)
-#else
-S16 RgMacSchSpsRel(pst, relInfo)
-Pst*                pst;
-RgInfSpsRelInfo*    relInfo;
-#endif
+S16 RgMacSchSpsRel(Pst* pst,RgInfSpsRelInfo* relInfo)
 {
 
    return ((*RgMacSchSpsRelIndMt[0])(pst, relInfo));
@@ -574,17 +464,7 @@ RgInfSpsRelInfo*    relInfo;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-S16 RgSchMacSpsLcReg
-(
-Pst*                pst,
-RgInfSpsLcInfo      *lcInfo
-)
-#else
-S16 RgSchMacSpsLcReg(pst, lcInfo)
-Pst*                pst;
-RgInfSpsLcInfo      *lcInfo;
-#endif
+S16 RgSchMacSpsLcReg(Pst* pst,RgInfSpsLcInfo *lcInfo)
 {
 
    return ((*RgSchMacSpsLcRegReqMt[0])(pst, lcInfo));
@@ -604,17 +484,7 @@ RgInfSpsLcInfo      *lcInfo;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-S16 RgSchMacUlSpsReset
-(
-Pst*                pst,
-RgInfUlSpsReset      *ulSpsResetInfo
-)
-#else
-S16 RgSchMacUlSpsReset(pst, ulSpsResetInfo)
-Pst*                pst;
-RgInfUlSpsReset      *ulSpsResetInfo;
-#endif
+S16 RgSchMacUlSpsReset(Pst*  pst,RgInfUlSpsReset *ulSpsResetInfo)
 {
 
    return ((*RgSchMacUlSpsResetMt[0])(pst, ulSpsResetInfo));
@@ -634,19 +504,7 @@ RgInfUlSpsReset      *ulSpsResetInfo;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-S16 RgSchMacSpsLcDereg
-(
-Pst*                pst,
-CmLteCellId         cellId,
-CmLteRnti           crnti
-)
-#else
-S16 RgSchMacSpsLcDereg(pst, cellId, crnti)
-Pst*                pst;
-CmLteCellId         cellId;
-CmLteRnti           crnti;
-#endif
+S16 RgSchMacSpsLcDereg(Pst* pst,CmLteCellId  cellId,CmLteRnti crnti)
 {
 
    return ((*RgSchMacSpsLcDeregReqMt[0])(pst, cellId, crnti));
@@ -666,17 +524,7 @@ CmLteRnti           crnti;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-S16 RgSchMacL2Meas
-(
-Pst*                pst,
-RgInfL2MeasReq      *measInfo
-)
-#else
-S16 RgSchMacL2Meas(pst, measInfo)
-Pst*                pst;
-RgInfL2MeasReq      *measInfo;
-#endif
+S16 RgSchMacL2Meas(Pst* pst,RgInfL2MeasReq  *measInfo)
 {
 
    return ((*RgSchMacL2MeasReqMt[0])(pst, measInfo));
@@ -694,17 +542,7 @@ RgInfL2MeasReq      *measInfo;
 *  @return   S16
 *      -# ROK
 **/   
-#ifdef ANSI
-S16 RgSchMacL2MeasStop
-(       
-Pst*                pst,
-RgInfL2MeasStopReq *measInfo
-)     
-#else 
-S16 RgSchMacL2MeasStop(pst, measInfo)
-Pst*                pst;
-RgInfL2MeasStopReq *measInfo;
-#endif
+S16 RgSchMacL2MeasStop(Pst* pst,RgInfL2MeasStopReq *measInfo)     
 {  
      
    return ((*RgSchMacL2MeasStopReqMt[0])(pst, measInfo));
@@ -722,17 +560,7 @@ RgInfL2MeasStopReq *measInfo;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-S16 RgSchMacL2MeasSend
-(
-Pst*                pst,
-RgInfL2MeasSndReq *measInfo
-)
-#else
-S16 RgSchMacL2MeasSend(pst, measInfo)
-Pst*                pst;
-RgInfL2MeasSndReq *measInfo;
-#endif
+S16 RgSchMacL2MeasSend(Pst* pst,RgInfL2MeasSndReq *measInfo)
 {
 
    return ((*RgSchMacL2MeasSendReqMt[0])(pst, measInfo));
@@ -750,17 +578,7 @@ RgInfL2MeasSndReq *measInfo;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-S16 RgMacSchL2Meas
-(
-Pst*                pst,
-RgInfL2MeasCfm      *measInfo
-)
-#else
-S16 RgMacSchL2Meas(pst, measInfo)
-Pst*                pst;
-RgInfL2MeasCfm      *measInfo;
-#endif
+S16 RgMacSchL2Meas(Pst*  pst,RgInfL2MeasCfm *measInfo)
 {
 
    return ((*RgMacSchL2MeasCfmMt[0])(pst, measInfo));
@@ -777,17 +595,7 @@ RgInfL2MeasCfm      *measInfo;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-S16 RgMacSchL2MeasStop
-(
-Pst*                pst,   
-RgInfL2MeasCfm      *measInfo
-)
-#else
-S16 RgMacSchL2MeasStop(pst, measInfo)
-Pst*                pst;
-RgInfL2MeasCfm      *measInfo;
-#endif
+S16 RgMacSchL2MeasStop(Pst*  pst,RgInfL2MeasCfm  *measInfo)
 {
     
    return ((*RgMacSchL2MeasStopCfmMt[0])(pst, measInfo));

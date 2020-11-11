@@ -93,7 +93,6 @@
 *       File:  ss_drvr.c
 *
 */
-#ifdef ANSI
 S16 SRegDrvrTsk
 (
 Inst channel,                   /* channel instance */
@@ -102,14 +101,6 @@ ProcId high,                    /* processor ID -- high */
 ActvTsk actvTsk,                /* activation function */
 ISTsk isTsk                     /* interrupt service function */
 )
-#else
-S16 SRegDrvrTsk(channel, low, high, actvTsk, isTsk)
-Inst channel;                   /* channel instance */
-ProcId low;                     /* processor ID -- low */
-ProcId high;                    /* processor ID -- high */
-ActvTsk actvTsk;                /* activation function */
-ISTsk isTsk;                    /* interrupt service function */
-#endif
 {
    S16 ret;
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -241,15 +232,10 @@ ISTsk isTsk;                    /* interrupt service function */
 *       File:  ss_drvr.c 
 *
 */
-#ifdef ANSI
 S16 SDeregDrvrTsk
 (
 Inst channel                   /* channel instance */
 )
-#else
-S16 SDeregDrvrTsk(channel)
-Inst channel;
-#endif
 {
 	/* ss002.301 Modifications */
 

@@ -97,19 +97,12 @@ static int RLOG_FILE_ID=205;
  *    -# RFAILED
  *
 */
-#ifdef ANSI
 S16 RlcUiCkwBndReq 
 (
 Pst    *pst,
 SuId   suId,
 SpId   spId 
 )
-#else
-S16 RlcUiCkwBndReq (pst, suId, spId)
-Pst    *pst; 
-SuId   suId;
-SpId   spId;
-#endif
 {
    RlcCkwSapCb   *ckwSap;  
    RlcCb         *tRlcCb;
@@ -202,19 +195,12 @@ SpId   spId;
  *    -# ROK 
  *    -# RFAILED
 */ 
-#ifdef ANSI
 S16 RlcUiCkwUbndReq
 (
 Pst      *pst,   
 SpId     spId,  
 Reason   reason 
 )
-#else
-S16 RlcUiCkwUbndReq(pst, spId, reason)
-Pst      *pst; 
-SpId     spId; 
-Reason   reason;
-#endif
 {
    RlcCb *tRlcCb;
 
@@ -260,17 +246,11 @@ Reason   reason;
  *      -# ROK 
  *      -# RFAILED
  */
-#ifdef ANSI
 S16 RlcProcCfgReq
 (
 Pst          *pst,
 RlcCfgInfo   *cfg
 )
-#else
-S16 RlcProcCfgReq(pst, cfg)
-Pst          *pst;
-RlcCfgInfo   *cfg;
-#endif
 {
    RlcCb        *tRlcCb;
    RlcUlCfgTmpData   *cfgTmpData;
@@ -334,7 +314,6 @@ RlcCfgInfo   *cfg;
  *    -# ROK
  *    -# RFAILED
  */
-#ifdef ANSI
 S16 RlcUiCkwUeIdChgReq
 (
 Pst         *pst, 
@@ -343,14 +322,6 @@ uint32_t    transId,
 CkwUeInfo   *ueInfo,
 CkwUeInfo   *newUeInfo
 )
-#else
-S16 RlcUiCkwUeIdChgReq(pst, spId, transId, ueInfo, newUeInfo)
-Pst         *pst;
-SpId        spId;
-uint32_t    transId;
-CkwUeInfo   *ueInfo;
-CkwUeInfo   *newUeInfo;
-#endif
 {
    S16              ret = ROK;
    RlcCb             *tRlcCb;
@@ -442,19 +413,12 @@ CkwUeInfo   *newUeInfo;
  *    -# ROK 
  *    -# RFAILED
  */
-#ifdef ANSI
 Void rlcUlHdlCfgReq
 (
-RlcCb             *gCb,
-RlcUlCfgTmpData   *cfgTmpData,
-RlcCfgInfo       *cfg
+RlcCb           *gCb,
+RlcUlCfgTmpData *cfgTmpData,
+RlcCfgInfo      *cfg
 )
-#else
-Void rlcUlHdlCfgReq(gCb, cfgTmpData, cfg)
-RlcCb             *gCb;
-RlcUlCfgTmpData   *cfgTmpData;
-RlcCfgInfo       *cfg;
-#endif
 {
    uint8_t   idx;  
 
@@ -596,19 +560,12 @@ RlcCfgInfo       *cfg;
  *    -# RFAILED
  *
  */
-#ifdef ANSI
 S16 RlcUiKwuBndReq 
 (
 Pst    *pst,  
 SuId   suId, 
 SpId   spId 
 )
-#else
-S16 RlcUiKwuBndReq (pst, suId, spId)
-Pst    *pst;  
-SuId   suId; 
-SpId   spId; 
-#endif
 {
    RlcKwuSapCb   *rlckwuSap;     /* SAP Config Block */
    RlcCb         *tRlcCb;
@@ -713,19 +670,12 @@ SpId   spId;
  *     -# ROK 
  *     -# RFAILED
  */
-#ifdef ANSI
 S16 RlcUiKwuUbndReq
 (
 Pst      *pst,  
 SpId     spId, 
 Reason   reason 
 )
-#else
-S16 RlcUiKwuUbndReq(pst, spId, reason)
-Pst      *pst; 
-SpId     spId; 
-Reason   reason; 
-#endif
 {
    RlcKwuSapCb   *rlckwuSap;   /* KWU SAP control block */
    RlcCb         *tRlcCb;
@@ -858,19 +808,12 @@ uint8_t rlcProcDlData(Pst *pst, KwuDatReqInfo *datReq, Buffer *mBuf)
  *    -# ROK 
  *    -# RFAILED
  */
-#ifdef ANSI
 S16 RlcUiKwuDiscSduReq 
 (
 Pst              *pst,   
 SpId             spId,  
 KwuDiscSduInfo   *discSdu 
 )
-#else
-S16 RlcUiKwuDiscSduReq(pst, spId, discSdu)
-Pst              *pst;   
-SpId             spId;  
-KwuDiscSduInfo   *discSdu; 
-#endif
 {
    RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, discSdu, sizeof(KwuDiscSduInfo));
    return ROK;

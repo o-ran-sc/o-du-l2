@@ -51,15 +51,10 @@
 *       File:  rr_clist.c
 *
 */
-#ifdef ANSI
 Void rgSCHRrCListInit
 (
 RgSchRrCListCp *lCp                /* list control point */
 )
-#else 
-Void rgSCHRrCListInit(lCp)
-RgSchRrCListCp *lCp;               /* list control point */
-#endif
 {
    
    lCp->first = (RgSchRrCList *)NULLP;
@@ -81,17 +76,11 @@ RgSchRrCListCp *lCp;               /* list control point */
  * 
  *        File:  rr_clist.c
  */
-#ifdef ANSI
 Void rgSCHRrCListAdd2Crnt
 (
- RgSchRrCListCp *lCp,               /* list control point */
- RgSchRrCList   *node               /* node to be added */
- )
-#else
-Void rgSCHRrCListAdd2Crnt(lCp, node)
-   RgSchRrCListCp *lCp;               /* list control point */
-   RgSchRrCList   *node;              /* node to be added */
-#endif
+RgSchRrCListCp *lCp,               /* list control point */
+RgSchRrCList   *node               /* node to be added */
+)
 {
 #ifdef ERRCHK
    if (lCp == (RgSchRrCListCp *)NULLP)
@@ -133,17 +122,11 @@ Void rgSCHRrCListAdd2Crnt(lCp, node)
 *       File:  rr_clist.c
 *
 */
-#ifdef ANSI
 Void rgSCHRrCListAdd2Tail
 (
 RgSchRrCListCp *lCp,               /* list control point */
 RgSchRrCList   *node               /* node to be added */
 )
-#else 
-Void rgSCHRrCListAdd2Tail(lCp, node)
-RgSchRrCListCp *lCp;               /* list control point */
-RgSchRrCList   *node;              /* node to be added */
-#endif
 {
 
 #ifdef ERRCHK
@@ -187,17 +170,11 @@ RgSchRrCList   *node;              /* node to be added */
 *       File:  rr_clist.c
 *
 */
-#ifdef ANSI
 RgSchRrCList *rgSCHRrCListDelFrm
 (
 RgSchRrCListCp *lCp,                /* list control pointer */
 RgSchRrCList *node                  /* node to be removed */
 )
-#else 
-RgSchRrCList *rgSCHRrCListDelFrm(lCp, node)
-RgSchRrCListCp *lCp;               /* list control pointer */
-RgSchRrCList *node;                /* node to be removed */
-#endif
 {
   
 #ifdef ERRCHK
@@ -265,17 +242,11 @@ RgSchRrCList *node;                /* node to be removed */
 *       File:  rr_clist.c
 *
 */
-#ifdef ANSI
 Void rgSCHRrCListInsrtAtCrnt
 (
 RgSchRrCListCp *lCp,                /* list control pointer */
 RgSchRrCList *node                  /* node to be removed */
 )
-#else 
-Void rgSCHRrCListInsrtAtCrnt(lCp, node)
-RgSchRrCListCp *lCp;               /* list control pointer */
-RgSchRrCList *node;                /* node to be inserted */
-#endif
 {
    RgSchRrCList *crnt;
 
