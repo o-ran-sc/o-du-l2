@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "fae66c0b_b4168a79",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-11T11:37:06Z",
+      "side": 1,
+      "message": "Had missed removing for loop. Did it now.",
+      "parentUuid": "36191410_3c850b8a",
+      "revId": "09eb2de5c2f2592d99291f24e058af599b351f9e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "6deafd16_f9ec5980",
         "filename": "src/du_app/du_cell_mgr.c",
         "patchSetId": 1
@@ -33,6 +51,24 @@
       "revId": "09eb2de5c2f2592d99291f24e058af599b351f9e",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "22152378_0e7ea10e",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-11T11:37:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6deafd16_f9ec5980",
+      "revId": "09eb2de5c2f2592d99291f24e058af599b351f9e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "63075075_0fe92f8e",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-11T11:37:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "87b0a9e8_00fb07b9",
+      "revId": "09eb2de5c2f2592d99291f24e058af599b351f9e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "66e5d0b6_9f0be636",
         "filename": "src/du_app/du_f1ap_msg_hdl.c",
         "patchSetId": 1
@@ -64,6 +118,24 @@
       "writtenOn": "2020-11-11T07:37:54Z",
       "side": 1,
       "message": "last index also can be set to 0 as part of for loop",
+      "revId": "09eb2de5c2f2592d99291f24e058af599b351f9e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "20e9f374_b591f952",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-11T11:37:06Z",
+      "side": 1,
+      "message": "missed removing for loop. Removed it now.",
+      "parentUuid": "66e5d0b6_9f0be636",
       "revId": "09eb2de5c2f2592d99291f24e058af599b351f9e",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "beb4e455_99d87ff4",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-11T11:37:06Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "095b3a28_375c4fe8",
+      "revId": "09eb2de5c2f2592d99291f24e058af599b351f9e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "20684ea9_042a820b",
         "filename": "src/du_app/du_msg_hdl.c",
         "patchSetId": 1
@@ -101,6 +191,24 @@
       "revId": "09eb2de5c2f2592d99291f24e058af599b351f9e",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8e2feb54_8b04cbe3",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1699,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-11T11:37:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "20684ea9_042a820b",
+      "revId": "09eb2de5c2f2592d99291f24e058af599b351f9e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
