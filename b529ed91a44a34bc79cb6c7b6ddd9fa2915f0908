@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2b14c45e_2a75f62a",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-11T12:06:13Z",
+      "side": 1,
+      "message": "please enclose all O1 code in O-DU High code within O1_ENABLE flag.",
+      "revId": "b529ed91a44a34bc79cb6c7b6ddd9fa2915f0908",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
