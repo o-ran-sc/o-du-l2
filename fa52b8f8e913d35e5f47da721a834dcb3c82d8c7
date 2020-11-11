@@ -52,6 +52,24 @@
       "revId": "fa52b8f8e913d35e5f47da721a834dcb3c82d8c7",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7ab33c35_26fdbc13",
+        "filename": "build/o1/makefile",
+        "patchSetId": 6
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2020-11-11T15:19:52Z",
+      "side": 1,
+      "message": "removed",
+      "parentUuid": "e7a4b5d8_1f649337",
+      "revId": "fa52b8f8e913d35e5f47da721a834dcb3c82d8c7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
