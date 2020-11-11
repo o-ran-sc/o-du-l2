@@ -457,8 +457,15 @@ uint8_t MacProcCellStartReq(Pst *pst, MacCellStartInfo  *cellStartInfo)
 uint8_t MacProcCellStopReq(Pst *pst, MacCellStopInfo  *cellStopInfo)
 {
 #ifdef INTEL_FAPI
+   uint16_t      cellIdx; 
+   SlotIndInfo   slotInfo;
+
    DU_LOG("\nMAC : Sending cell stop request to Lower Mac");
-   sendToLowerMac(FAPI_STOP_REQUEST, 0, cellStopInfo);
+   GET_CELL_IDX(cellStopInfo->cellId, cellIdx);
+   slotInfo.cellId = cellStopInfo->cellId;
+   slotInfo.sfn = macCb.macCell[cellIdx]->currTime.sfn;
+   slotInfo.slot = macCb.macCell[cellIdx]->currTime.slot;
+   sendToLowerMac(FAPI_STOP_REQUEST, 0, &slotInfo);
 #endif
 
    MAC_FREE_SHRABL_BUF(pst->region, pst->pool, cellStopInfo, \

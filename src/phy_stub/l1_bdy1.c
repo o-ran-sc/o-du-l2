@@ -27,6 +27,7 @@
 #include "lwr_mac_phy.h"
 #ifdef INTEL_FAPI
 #include "fapi.h"
+#include "fapi_vendor_extension.h"
 #endif
 #include "lphy_stub.h"
 #include "lwr_mac_upr_inf.h"
@@ -243,7 +244,8 @@ void l1HdlParamReq(uint32_t msgLen, void *msg)
 void l1HdlConfigReq(uint32_t msgLen, void *msg)
 {
 #ifdef INTEL_FAPI
-   fapi_config_req_t *configReq = (fapi_config_req_t *)(msg +1);
+   p_fapi_api_queue_elem_t configReqElem = (p_fapi_api_queue_elem_t)msg;
+   fapi_config_req_t *configReq = (fapi_config_req_t *)(configReqElem +1);
 
    DU_LOG("\nPHY_STUB: Received Config Request in PHY");
 
@@ -685,8 +687,8 @@ S16 l1HdlStartReq(uint32_t msgLen, void *msg)
 S16 l1HdlDlTtiReq(uint16_t msgLen, void *msg)
 {
 #ifdef INTEL_FAPI
-   fapi_dl_tti_req_t *dlTtiReq;
-   dlTtiReq = (fapi_dl_tti_req_t *)msg;
+   p_fapi_api_queue_elem_t dlTtiElem = (p_fapi_api_queue_elem_t)msg;
+   fapi_dl_tti_req_t *dlTtiReq = (fapi_dl_tti_req_t *)(dlTtiElem +1);
    
    uint8_t pduCount = 0;
 
@@ -723,8 +725,7 @@ S16 l1HdlDlTtiReq(uint16_t msgLen, void *msg)
    }
 
    /* Free FAPI message */
-   MAC_FREE(dlTtiReq, msgLen);
-
+   MAC_FREE(msg, msgLen);
 #endif
    return ROK;
 }
@@ -750,15 +751,16 @@ S16 l1HdlDlTtiReq(uint16_t msgLen, void *msg)
 S16 l1HdlTxDataReq(uint16_t msgLen, void *msg)
 {
 #ifdef INTEL_FAPI
-   fapi_tx_data_req_t *txDataReq;
-   txDataReq = (fapi_tx_data_req_t *)msg;
+   p_fapi_api_queue_elem_t txDataElem = (p_fapi_api_queue_elem_t)msg;
+   fapi_tx_data_req_t *txDataReq = (fapi_tx_data_req_t *)(txDataElem +1);
+
    DU_LOG("\nPHY STUB: TX DATA Request at sfn=%d slot=%d",txDataReq->sfn,txDataReq->slot);
    if(dlDedMsg)
    {
       DU_LOG("\nPHY_STUB: TxDataPdu for DED MSG sent");
       dlDedMsg = false;
    }
-   MAC_FREE(txDataReq, msgLen);
+   MAC_FREE(msg, msgLen);
 #endif
    return ROK;
 }
@@ -932,8 +934,8 @@ uint8_t l1BuildAndSendUciInd(uint16_t slot, uint16_t sfn, fapi_ul_pucch_pdu_t pu
 S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
 {
 #ifdef INTEL_FAPI
-   fapi_ul_tti_req_t *ulTtiReq = NULLP;
-   ulTtiReq = (fapi_ul_tti_req_t *)msg;
+   p_fapi_api_queue_elem_t ulTtiElem = (p_fapi_api_queue_elem_t)msg;
+   fapi_ul_tti_req_t *ulTtiReq = (fapi_ul_tti_req_t *)(ulTtiElem +1);
    uint8_t numPdus = ulTtiReq->nPdus;
 
 #ifdef ODU_SLOT_IND_DEBUG_LOG
@@ -979,7 +981,7 @@ S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
       l1BuildAndSendRachInd(ulTtiReq->slot, ulTtiReq->sfn);
    }
 
-   MAC_FREE(ulTtiReq, msgLen);
+   MAC_FREE(msg, msgLen);
 #endif
    return ROK;
 }
@@ -1044,18 +1046,17 @@ uint16_t l1BuildAndSendStopInd()
 S16 l1HdlStopReq(uint32_t msgLen, void *msg)
 {
 #ifdef INTEL_FAPI
-   fapi_stop_req_t *stopReq = (fapi_stop_req_t *)msg;
-
    if(lwrMacCb.phyState == PHY_STATE_RUNNING)
    {
       l1HdlSlotIndicaion(TRUE);
       DU_LOG("\nPHY_STUB: Slot Indication is stopped successfully");
       l1BuildAndSendStopInd();
-      MAC_FREE(stopReq, msgLen);
+      MAC_FREE(msg, msgLen);
    }
    else
    {
       DU_LOG("\nPHY_STUB: Received Stop Req in PHY State %d", lwrMacCb.phyState);
+      MAC_FREE(msg, msgLen);
       return RFAILED;
    }
 #endif
@@ -1187,9 +1188,8 @@ uint8_t l1BuildAndSendMsg5(uint16_t sfn, uint16_t slot)
 S16 l1HdlUlDciReq(uint16_t msgLen, void *msg)
 {
 #ifdef INTEL_FAPI
-   fapi_ul_dci_req_t *ulDciReq = NULLP;
-
-   ulDciReq = (fapi_ul_dci_req_t *)msg;
+   p_fapi_api_queue_elem_t ulDciElem = (p_fapi_api_queue_elem_t)msg;
+   fapi_ul_dci_req_t *ulDciReq = (fapi_ul_dci_req_t *)(ulDciElem +1);
    uint8_t numPdus = ulDciReq->numPdus;
 
    while(numPdus)
@@ -1203,7 +1203,7 @@ S16 l1HdlUlDciReq(uint16_t msgLen, void *msg)
       numPdus--;
    }
 
-   MAC_FREE(ulDciReq, msgLen);
+   MAC_FREE(msg, msgLen);
 #endif
    return ROK;
 }

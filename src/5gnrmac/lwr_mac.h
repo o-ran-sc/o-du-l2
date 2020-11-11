@@ -26,6 +26,12 @@
 #define LWR_MAC_ALLOC(_datPtr, _size)   MAC_ALLOC(_datPtr, _size);
 #endif                                    
 
+#ifdef INTEL_WLS_MEM
+#define LWR_MAC_FREE(_datPtr, _size) WLS_MEM_FREE(_datPtr, _size);
+#else
+#define LWR_MAC_FREE(_datPtr, _size) MAC_FREE(_datPtr, _size);
+#endif
+
 typedef enum
 {
    PHY_STATE_IDLE,
