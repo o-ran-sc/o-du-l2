@@ -260,19 +260,12 @@ char* file,
 uint32_t line
 )
 #else
-#ifdef ANSI
 S16 ssGetDBufOfSize
 (
 Region region,
 Size size,
 Buffer **dBuf
 )
-#else
-S16 ssGetDBufOfSize(region, size, dBuf)
-Region region;
-Size size;
-Buffer **dBuf;
-#endif
 #endif
 {
    Size mdsize;
@@ -348,7 +341,6 @@ Buffer **dBuf;
 */
 /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
-#ifdef ANSI
 S16 SGetMsgNew
 (
 Region region,              /* region id */
@@ -357,14 +349,6 @@ Buffer **mBuf,              /* pointer to message buffer */
 uint32_t    line,
 uint8_t     *fileName
 )
-#else
-S16 SGetMsgNew(region, pool, mBuf, line, fileName)
-Region region;              /* region id */
-Pool pool;                  /* pool id */
-Buffer **mBuf;              /* pointer to message buffer */
-uint32_t    line;
-uint8_t     *fileName;
-#endif
 #else /* SS_HISTOGRAM_SUPPORT */
 #ifdef T2K_MEM_LEAK_DBG
 S16 SGetMsgNew
@@ -376,19 +360,12 @@ char* file,
 uint32_t line
 )
 #else
-#ifdef ANSI
 S16 SGetMsg
 (
 Region region,              /* region id */
 Pool pool,                  /* pool id */
 Buffer **mBuf              /* pointer to message buffer */
 )
-#else
-S16 SGetMsg(region, pool, mBuf)
-Region region;              /* region id */
-Pool pool;                  /* pool id */
-Buffer **mBuf;              /* pointer to message buffer */
-#endif
 #endif
 #endif /* SS_HISTOGRAM_SUPPORT */
 {
@@ -577,19 +554,12 @@ S16 SSetMBufPool(Buffer *mBuf, Pool pool)
 */
 /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
-#ifdef ANSI
 S16 SPutMsgNew
 (
 Buffer *mBuf,
 uint32_t    line,
 uint8_t     *fileName
 )
-#else
-S16 SPutMsgNew(mBuf, line, fileName)
-Buffer *mBuf;
-uint32_t    line;
-uint8_t     *fileName;
-#endif
 #else /* SS_HISTOGRAM_SUPPORT */
 #ifdef T2K_MEM_LEAK_DBG
 S16 SPutMsgNew
@@ -599,15 +569,10 @@ char* file,
 uint32_t line
 )
 #else
-#ifdef ANSI
 S16 SPutMsg
 (
 Buffer *mBuf
 )
-#else
-S16 SPutMsg(mBuf)
-Buffer *mBuf;
-#endif
 #endif
 #endif /* SS_HISTOGRAM_SUPPORT */
 {
@@ -763,7 +728,6 @@ char* file,
 uint32_t line
 )
 #else
-#ifdef ANSI
 S16 SPutStaticBuffer
 (
 Region region,                  /* region ID */
@@ -772,14 +736,6 @@ Data *ptr,                      /* pointer to buffer */
 Size size,                      /* size */
 uint8_t   memType                    /* memory type used if shareable or not */
 )
-#else
-S16 SPutStaticBuffer(region, pool, ptr, size)
-Region region;                  /* region ID */
-Pool pool;                      /* pool ID */
-Data *ptr;                      /* pointer to buffer */
-Size size;                      /* size */
-uint8_t   memType;                   /* memory type used if shareable or not */
-#endif
 #endif
 {
    S16 ret = RFAILED;
@@ -916,7 +872,6 @@ char* file,
 uint32_t line
 )
 #else
-#ifdef ANSI
 S16 SGetStaticBuffer
 (
 Region region,                  /* region ID */
@@ -925,14 +880,6 @@ Data **ptr,                     /* pointer to buffer */
 Size size,                      /* size requested */
 uint8_t   memType                    /* memory type used if shareable or not */
 )
-#else
-S16 SGetStaticBuffer(region, pool, ptr, size)
-Region region;                  /* region ID */
-Pool pool;                      /* pool ID */
-Data **ptr;                     /* pointer to buffer */
-Size size;                      /* size requested */
-uint8_t   memType;                   /* memory type used if shareable or not */
-#endif
 #endif
 {
    S16 ret = RFAILED;
@@ -1019,7 +966,6 @@ uint8_t   memType;                   /* memory type used if shareable or not */
 
 #ifdef INTEL_WLS_MEM 
 #ifndef SS_LOCKLESS_MEMORY
-#ifdef ANSI
 S16 SGetStaticBuffer
 (
 Region region,                  /* region ID */
@@ -1028,14 +974,6 @@ Data **ptr,                     /* pointer to buffer */
 Size size,                      /* size requested */
 uint8_t   memType                    /* memory type used if shareable or not */
 )
-#else
-S16 SGetStaticBuffer(region, pool, ptr, size)
-Region region;                  /* region ID */
-Pool pool;                      /* pool ID */
-Data **ptr;                     /* pointer to buffer */
-Size size;                      /* size requested */
-uint8_t   memType;                   /* memory type used if shareable or not */
-#endif
 {
     S16  ret;
 
@@ -1045,7 +983,6 @@ uint8_t   memType;                   /* memory type used if shareable or not */
 }
 
 
-#ifdef ANSI
 S16 SPutStaticBuffer
 (
 Region region,                  /* region ID */
@@ -1054,14 +991,6 @@ Data *ptr,                      /* pointer to buffer */
 Size size,                      /* size */
 uint8_t   memType                    /* memory type used if shareable or not */
 )
-#else
-S16 SPutStaticBuffer(region, pool, ptr, size)
-Region region;                  /* region ID */
-Pool pool;                      /* pool ID */
-Data *ptr;                      /* pointer to buffer */
-Size size;                      /* size */
-uint8_t   memType;                   /* memory type used if shareable or not */
-#endif
 {
 
    S16   ret;
@@ -1173,7 +1102,6 @@ Size size                      /* size */
 */
 /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT
-#ifdef ANSI
 S16 SGetSBufNew
 (
 Region region,                  /* region ID */
@@ -1183,18 +1111,8 @@ Size size,                       /* size requested */
 uint32_t    line,
 uint8_t     *fileName
 )
-#else
-S16 SGetSBufNew(region, pool, ptr, size, line, fileName)
-Region region;                  /* region ID */
-Pool pool;                      /* pool ID */
-Data **ptr;                     /* pointer to buffer */
-Size size;                      /* size requested */
-uint32_t    line;
-uint8_t     *fileName;
-#endif
 #else /* SS_HISTOGRAM_SUPPORT */
 #if (defined(SSI_STATIC_MEM_LEAK_DETECTION) || defined(T2K_MEM_LEAK_DBG))
-#ifdef ANSI
 S16 SGetSBuf1
 (
 Region region,                  /* region ID */
@@ -1205,16 +1123,6 @@ char* file,
 uint32_t line
 )
 #else
-S16 SGetSBuf1(region, pool, ptr, size, file, line)
-Region region;                  /* region ID */
-Pool pool;                      /* pool ID */
-Data **ptr;                     /* pointer to buffer */
-Size size;                      /* size requested */
-char* file;
-uint32_t line;
-#endif
-#else
-#ifdef ANSI
 S16 SGetSBuf
 (
 Region region,                  /* region ID */
@@ -1222,13 +1130,6 @@ Pool pool,                      /* pool ID */
 Data **ptr,                     /* pointer to buffer */
 Size size                       /* size requested */
 )
-#else
-S16 SGetSBuf(region, pool, ptr, size)
-Region region;                  /* region ID */
-Pool pool;                      /* pool ID */
-Data **ptr;                     /* pointer to buffer */
-Size size;                      /* size requested */
-#endif
 #endif
 #endif /* SS_HISTOGRAM_SUPPORT */
 {
@@ -1449,7 +1350,6 @@ Size size;                      /* size requested */
 */
 /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT
-#ifdef ANSI
 S16 SPutSBufNew
 (
 Region region,                  /* region ID */
@@ -1459,18 +1359,8 @@ Size size,                      /* size */
 uint32_t    line,
 uint8_t     *fileName
 )
-#else
-S16 SPutSBufNew(region, pool, ptr, size, line, fileName)
-Region region;                  /* region ID */
-Pool pool;                      /* pool ID */
-Data *ptr;                      /* pointer to buffer */
-Size size;                      /* size */
-uint32_t    line;
-uint8_t     *fileName;
-#endif
 #else  /* SS_HISTOGRAM_SUPPORT  */
 #if (defined(SSI_STATIC_MEM_LEAK_DETECTION) || defined(T2K_MEM_LEAK_DBG))
-#ifdef ANSI
 S16 SPutSBuf1
 (
 Region region,                  /* region ID */
@@ -1481,16 +1371,6 @@ char* file,
 uint32_t line
 )
 #else
-S16 SPutSBuf1(region, pool, ptr, size, file, line)
-Region region;                  /* region ID */
-Pool pool;                      /* pool ID */
-Data *ptr;                      /* pointer to buffer */
-Size size;                      /* size */
-char* file;
-uint32_t line;
-#endif
-#else
-#ifdef ANSI
 S16 SPutSBuf
 (
 Region region,                  /* region ID */
@@ -1498,13 +1378,6 @@ Pool pool,                      /* pool ID */
 Data *ptr,                      /* pointer to buffer */
 Size size                      /* size */
 )
-#else
-S16 SPutSBuf(region, pool, ptr, size)
-Region region;                  /* region ID */
-Pool pool;                      /* pool ID */
-Data *ptr;                      /* pointer to buffer */
-Size size;                      /* size */
-#endif
 #endif
 #endif /* SS_HISTOGRAM_SUPPORT */
 {
@@ -1678,15 +1551,7 @@ Size size;                      /* size */
 *
 */
 
-#ifdef ANSI
-S16 SInitMsg
-(
-Buffer *mBuf
-)
-#else
-S16 SInitMsg(mBuf)
-Buffer *mBuf;
-#endif
+S16 SInitMsg(Buffer *mBuf)
 {
    SsMsgInfo *minfo;
    Buffer *tmp;
@@ -1767,19 +1632,12 @@ Buffer *mBuf;
 *       File:  ss_msg.c
 *
 */
-#ifdef ANSI
 S16 SAddPreMsgMultInOrder
 (
- Data *src,
- MsgLen cnt,
- Buffer *mBuf
- )
-#else
-S16 SAddPreMsgMultInOrder(src, cnt, mBuf)
-    Data *src;
-    MsgLen cnt;
-    Buffer *mBuf;
-#endif
+Data *src,
+MsgLen cnt,
+Buffer *mBuf
+)
 {
    SsMsgInfo *minfo;   /* Message info */
    Buffer *tmp;
@@ -1955,17 +1813,11 @@ S16 SAddPreMsgMultInOrder(src, cnt, mBuf)
 */
 
  
-#ifdef ANSI
 S16 SAddPreMsg
 (
 Data data,
 Buffer *mBuf
 )
-#else
-S16 SAddPreMsg (data, mBuf)
-Data data;
-Buffer *mBuf;
-#endif
 {
    SsMsgInfo *minfo;
    Buffer *tmp;
@@ -2057,17 +1909,11 @@ Buffer *mBuf;
 */
 
  
-#ifdef ANSI
 S16 SAddPstMsg
 (
 Data data,
 Buffer *mBuf
 )
-#else
-S16 SAddPstMsg (data, mBuf)
-Data data;
-Buffer *mBuf;
-#endif
 {
    SsMsgInfo *minfo;
    Buffer *tmp;
@@ -2158,19 +2004,12 @@ uint32_t    line
 )
 
 #else
-#ifdef ANSI
 S16 SAddPreMsgMult
 (
 Data *src,
 MsgLen cnt,
 Buffer *mBuf
 )
-#else
-S16 SAddPreMsgMult(src, cnt, mBuf)
-Data *src;
-MsgLen cnt;
-Buffer *mBuf;
-#endif
 #endif
 {
    SsMsgInfo *minfo;   /* Message info */
@@ -2334,19 +2173,12 @@ char   *file,
 uint32_t    line
 )
 #else
-#ifdef ANSI
 S16 SAddPstMsgMult
 (
 Data *src,
 MsgLen cnt,
 Buffer *mBuf
 )
-#else
-S16 SAddPstMsgMult(src, cnt, mBuf)
-Data *src;
-MsgLen cnt;
-Buffer *mBuf;
-#endif
 #endif
 {
    SsMsgInfo *minfo;
@@ -2509,17 +2341,11 @@ Buffer *mBuf;
 */
 
  
-#ifdef ANSI
 S16 SRemPreMsg
 (
 Data *dataPtr,
 Buffer *mBuf
 )
-#else
-S16 SRemPreMsg(dataPtr, mBuf)
-Data *dataPtr;
-Buffer *mBuf;
-#endif
 {
    SsMsgInfo *minfo;
    Buffer *tmp;
@@ -2594,17 +2420,11 @@ Buffer *mBuf;
 */
 
 
-#ifdef ANSI
 S16 SRemPstMsg
 (
 Data *dataPtr,              /* pointer to data */
 Buffer *mBuf
 )
-#else
-S16 SRemPstMsg(dataPtr, mBuf)
-Data *dataPtr;              /* pointer to data */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
    SsMsgInfo *minfo;
    Buffer *tmp;
@@ -2694,19 +2514,12 @@ Buffer *mBuf;               /* message buffer */
 *
 */
 
-#ifdef ANSI
 S16 SRemPreMsgMult
 (
 Data *dst,                  /* destination */
 MsgLen cnt,                 /* count */
 Buffer *mBuf
 )
-#else
-S16 SRemPreMsgMult(dst, cnt, mBuf)
-Data *dst;                  /* destination */
-MsgLen cnt;                 /* count */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
    SsMsgInfo *minfo;
    Buffer *tmp;
@@ -2816,19 +2629,12 @@ Buffer *mBuf;               /* message buffer */
 *
 */
 
-#ifdef ANSI
 S16 SRemPstMsgMult
 (
 Data *dst,                  /* destination */
 MsgLen cnt,                 /* count */
 Buffer *mBuf
 )
-#else
-S16 SRemPstMsgMult(dst, cnt, mBuf)
-Data *dst;                  /* destination */
-MsgLen cnt;                 /* count */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
    SsMsgInfo *minfo;
    Buffer *tmp;
@@ -2950,19 +2756,12 @@ Buffer *mBuf;               /* message buffer */
 */
 
 
-#ifdef ANSI
 S16 SExamMsg
 (
 Data *dataPtr,              /* pointer to data */
 Buffer *mBuf,               /* message buffer */
 MsgLen idx
 )
-#else
-S16 SExamMsg(dataPtr, mBuf, idx)
-Data *dataPtr;              /* pointer to data */
-Buffer *mBuf;               /* message buffer */
-MsgLen idx;                 /* index */
-#endif
 {
    SsMsgInfo *minfo;
    Buffer *tmp;
@@ -3043,7 +2842,6 @@ MsgLen idx;                 /* index */
 */
 
 
-#ifdef ANSI
 S16 SGetDataFrmMsg 
 (
 Buffer *mBuf,               /* message buffer */
@@ -3051,13 +2849,6 @@ Data *dataPtr,              /* pointer to data */
 MsgLen idx,
 MsgLen dataLen
 )
-#else
-S16 SGetDataFrmMsg(mBuf, dataPtr, idx, dataLen)
-Buffer *mBuf;               /* message buffer */
-Data *dataPtr;              /* pointer to data */
-MsgLen idx;                 /* index */
-MsgLen dataLen;
-#endif
 {
    SsMsgInfo *minfo;
    Buffer *tmp;
@@ -3149,17 +2940,11 @@ MsgLen dataLen;
 */
 
 
-#ifdef ANSI
 S16 SFndLenMsg
 (
 REG1 Buffer *mBuf,          /* message buffer */
 MsgLen *lngPtr
 )
-#else
-S16 SFndLenMsg(mBuf, lngPtr)
-REG1 Buffer *mBuf;          /* message buffer */
-MsgLen *lngPtr;             /* pointer to length */
-#endif
 {
    SsMsgInfo *minfo;
 
@@ -3242,19 +3027,12 @@ char* file,
 uint32_t line
 )
 #else
-#ifdef ANSI
 S16 SSegMsg
 (
 Buffer *mBuf1,              /* message 1 */
 MsgLen idx,                 /* index */
 Buffer **mBuf2
 )
-#else
-S16 SSegMsg(mBuf1, idx, mBuf2)
-Buffer *mBuf1;              /* message 1 */
-MsgLen idx;                 /* index */
-Buffer **mBuf2;             /* message 2 */
-#endif
 #endif
 {
    SsMsgInfo *minfo1;
@@ -3439,7 +3217,6 @@ Buffer **mBuf2;             /* message 2 */
 *
 */
 
-#ifdef ANSI
 S16 SCpyFixMsg
 (
 Data *srcBuf,               /* source buffer */
@@ -3448,14 +3225,6 @@ MsgLen dstIdx,              /* destination index */
 MsgLen cnt,                 /* count */
 MsgLen *cCnt
 )
-#else
-S16 SCpyFixMsg(srcBuf, dstMbuf, dstIdx, cnt, cCnt)
-Data *srcBuf;               /* source buffer */
-Buffer *dstMbuf;            /* destination message buffer */
-MsgLen dstIdx;              /* destination index */
-MsgLen cnt;                 /* count */
-MsgLen *cCnt;               /* copied count */
-#endif
 {
    S16 ret;
    SsMsgInfo *minfo;
@@ -3592,7 +3361,6 @@ MsgLen *cCnt;               /* copied count */
 *
 */
 
-#ifdef ANSI
 S16 SCpyMsgFix
 (
 Buffer *srcMbuf,            /* source message buffer */
@@ -3601,14 +3369,6 @@ MsgLen cnt,                 /* count */
 Data *dstBuf,               /* destination buffer */
 MsgLen *cCnt
 )
-#else
-S16 SCpyMsgFix(srcMbuf, srcIdx, cnt, dstBuf, cCnt)
-Buffer *srcMbuf;            /* source message buffer */
-MsgLen srcIdx;              /* source index */
-MsgLen cnt;                 /* count */
-Data *dstBuf;               /* destination buffer */
-MsgLen *cCnt;               /* copied count */
-#endif
 {
    Data *cptr;
    Buffer *tmp;
@@ -3730,7 +3490,6 @@ char* file,
 uint32_t line
 )
 #else
-#ifdef ANSI
 S16 SCpyMsgMsg
 (
 Buffer *srcBuf,
@@ -3738,13 +3497,6 @@ Region dstRegion,
 Pool dstPool,
 Buffer **dstBuf
 )
-#else
-S16 SCpyMsgMsg(srcBuf, dstRegion, dstPool, dstBuf)
-Buffer *srcBuf;
-Region dstRegion;
-Pool dstPool;
-Buffer **dstBuf;
-#endif
 #endif
 {
    SsMsgInfo *minfo1;
@@ -3931,7 +3683,6 @@ char* file,
 uint32_t line
 )
 #else
-#ifdef ANSI
 S16 SAddMsgRef
 (
 Buffer *srcBuf,
@@ -3939,13 +3690,6 @@ Region dstRegion,
 Pool dstPool,
 Buffer **dstBuf
 )
-#else
-S16 SAddMsgRef(srcBuf, dstRegion, dstPool, dstBuf)
-Buffer *srcBuf;
-Region dstRegion;
-Pool dstPool;
-Buffer **dstBuf;
-#endif
 #endif
 {
    SsMsgInfo *minfo1;
@@ -4093,17 +3837,11 @@ char* file,
 uint32_t line
 )
 #else
-#ifdef ANSI
 static Buffer *DupMsg
 (
 Region region,              /* region id */
 Buffer *mp                  /* message block */
 )
-#else
-static Buffer *DupMsg(region, mp)
-Region region;              /* region id */
-Buffer *mp;                 /* message block */
-#endif
 #endif
 {
    Buffer *bp;                  /* mblk for iteration */
@@ -4224,19 +3962,12 @@ char* file,
 uint32_t line
 )
 #else
-#ifdef ANSI
 S16 SGetDBuf
 (
 Region region,              /* region id */
 Pool pool,                  /* pool id */
 Buffer **bufPtr
 )
-#else
-S16 SGetDBuf(region, pool, bufPtr)
-Region region;              /* region id */
-Pool pool;                  /* pool id */
-Buffer **bufPtr;            /* pointer to buffer */
-#endif
 #endif
 {
    Size size;
@@ -4407,19 +4138,12 @@ char* file,
 uint32_t line
 )
 #else
-#ifdef ANSI
 S16 SPutDBuf
 (
 Region region,
 Pool pool,
 Buffer *buf
 )
-#else
-S16 SPutDBuf(region, pool, buf)
-Region region;
-Pool pool;
-Buffer *buf;
-#endif
 #endif
 {
    register SsDblk *dptr;
@@ -4592,19 +4316,12 @@ Buffer *buf;
 */
 
 
-#ifdef ANSI
 S16 SCatMsg
 (
 Buffer *mBuf1,              /* message 1 */
 Buffer *mBuf2,              /* message 2 */
 Order order
 )
-#else
-S16 SCatMsg(mBuf1, mBuf2, order)
-Buffer *mBuf1;              /* message 1 */
-Buffer *mBuf2;              /* message 2 */
-Order order;                /* order */
-#endif
 {
    SsMsgInfo *minfo1;
    SsMsgInfo *minfo2;
@@ -4751,19 +4468,12 @@ Order order;                /* order */
 */
 
 
-#ifdef ANSI
 S16 SRepMsg
 (
 Data data,                  /* data */
 Buffer *mBuf,               /* message buffer */
 MsgLen idx
 )
-#else
-S16 SRepMsg(data, mBuf, idx)
-Data data;                  /* data */
-Buffer *mBuf;               /* message buffer */
-MsgLen idx;                 /* index */
-#endif
 {
    SsMsgInfo *minfo;
    Buffer *tmp;
@@ -4852,19 +4562,12 @@ MsgLen idx;                 /* index */
 */
 
 
-#ifdef ANSI
 S16 SUpdMsg
 (
 Buffer *mBuf,                   /* message buffer */
 Buffer *dBuf,                   /* data buffer */
 MsgLen dLen
 )
-#else
-S16 SUpdMsg(mBuf, dBuf, dLen)
-Buffer *mBuf;                   /* message buffer */
-Buffer *dBuf;                   /* data buffer */
-MsgLen dLen;                    /* data length */
-#endif
 {
    SsMsgInfo *minfo;
 
@@ -4943,17 +4646,11 @@ MsgLen dLen;                    /* data length */
 */
 
  
-#ifdef ANSI
 S16 SAddDBufPst
 (
 Buffer *mBuf,                   /* message buffer */
 Buffer *dBuf
 )
-#else
-S16 SAddDBufPst(mBuf, dBuf)
-Buffer *mBuf;                   /* message buffer */
-Buffer *dBuf;                   /* data buffer */
-#endif
 {
    SsMsgInfo *minfo;
 
@@ -5014,17 +4711,11 @@ Buffer *dBuf;                   /* data buffer */
 */
 
  
-#ifdef ANSI
 S16 SAddDBufPre
 (
 Buffer *mBuf,                    /* message buffer */
 Buffer *dBuf
 )
-#else
-S16 SAddDBufPre(mBuf, dBuf)
-Buffer *mBuf;                    /* message buffer */
-Buffer *dBuf;                    /* data buffer */
-#endif
 {
    SsMsgInfo *minfo;
    Buffer *tmp;
@@ -5088,17 +4779,11 @@ Buffer *dBuf;                    /* data buffer */
 */
 
  
-#ifdef ANSI
 S16 SRemDBufPre
 (
 Buffer *mBuf,                   /* message buffer */
 Buffer **dBufPtr
 )
-#else
-S16 SRemDBufPre(mBuf, dBufPtr)
-Buffer *mBuf;                   /* message buffer */
-Buffer **dBufPtr;               /* pointer to data buffer */
-#endif
 {
    SsMsgInfo *minfo;
 
@@ -5163,17 +4848,11 @@ Buffer **dBufPtr;               /* pointer to data buffer */
 */
 
  
-#ifdef ANSI
 S16 SRemDBufPst
 (
 Buffer *mBuf,                   /* message buffer */
 Buffer **dBufPtr
 )
-#else
-S16 SRemDBufPst(mBuf, dBufPtr)
-Buffer *mBuf;                   /* message buffer */
-Buffer **dBufPtr;               /* pointer to data buffer */
-#endif
 {
    SsMsgInfo *minfo;
    Buffer *tmp;
@@ -5235,15 +4914,10 @@ Buffer **dBufPtr;               /* pointer to data buffer */
 */
 
  
-#ifdef ANSI
 S16 SInitNxtDBuf
 (
 Buffer *mBuf
 )
-#else
-S16 SInitNxtDBuf(mBuf)
-Buffer *mBuf;                   /* message buffer */
-#endif
 {
    SsMsgInfo *minfo;
 
@@ -5284,17 +4958,11 @@ Buffer *mBuf;                   /* message buffer */
 */
 
  
-#ifdef ANSI
 S16 SGetNxtDBuf
 (
 Buffer *mBuf,                   /* message buffer */
 Buffer **dBuf
 )
-#else
-S16 SGetNxtDBuf(mBuf, dBuf)
-Buffer *mBuf;                   /* message buffer */
-Buffer **dBuf;                  /* data buffer return */
-#endif
 {
    SsMsgInfo *minfo;
 
@@ -5343,15 +5011,10 @@ Buffer **dBuf;                  /* data buffer return */
 *
 */
 
-#ifdef ANSI
 S16 SChkNxtDBuf
 (
 Buffer *mBuf
 )
-#else
-S16 SChkNxtDBuf(mBuf)
-Buffer *mBuf;                   /* message buffer */
-#endif
 {
    SsMsgInfo *minfo;
 
@@ -5396,7 +5059,6 @@ Buffer *mBuf;                   /* message buffer */
 */
 
  
-#ifdef ANSI
 S16 SGetDataRx
 (
 Buffer *dBuf,                   /* data buffer */
@@ -5404,13 +5066,6 @@ MsgLen pad,                     /* pad */
 Data **retDatPtr,               /* return data pointer */
 MsgLen *retDatLen
 )
-#else
-S16 SGetDataRx(dBuf, pad, retDatPtr, retDatLen)
-Buffer *dBuf;                   /* data buffer */
-MsgLen pad;                     /* pad */
-Data **retDatPtr;               /* return data pointer */
-MsgLen *retDatLen;              /* return data length */
-#endif
 {
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -5479,19 +5134,12 @@ MsgLen *retDatLen;              /* return data length */
 */
 
  
-#ifdef ANSI
 S16 SGetDataTx
 (
 Buffer *dBuf,                   /* data buffer */
 Data **retDatPtr,               /* return data pointer */
 MsgLen *retDatLen               /* return data length */
 )
-#else
-S16 SGetDataTx(dBuf, retDatPtr, retDatLen)
-Buffer *dBuf;                   /* data buffer */
-Data **retDatPtr;               /* return data pointer */
-MsgLen *retDatLen;              /* return data length */
-#endif
 {
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -5552,19 +5200,12 @@ MsgLen *retDatLen;              /* return data length */
 *       File:  ss_msg.c
 *
 */
-#ifdef ANSI
 S16 SGetBufRegionPool
 (
 Buffer *mBuf,                   /* message buffer */
 Region *region,                 /* region */
 Pool   *pool                    /* pool */
 )
-#else
-S16 SGetBufRegionPool(mBuf, region, pool)
-Buffer *mBuf;                   /* message buffer */
-Region *region;                 /* region */
-Pool   *pool;                   /* pool */
-#endif
 {
    SsMsgInfo *mInfo;            /* message info pointer */
 
@@ -5629,15 +5270,10 @@ Pool   *pool;                   /* pool */
 */
 
  
-#ifdef ANSI
 S16 SCompressMsg
 (
 Buffer *mBuf
 )
-#else
-S16 SCompressMsg(mBuf)
-Buffer *mBuf;                    /* message buffer */
-#endif
 {
    SsMsgInfo *minfo;
    MsgLen numBytes;
@@ -5726,19 +5362,12 @@ Buffer *mBuf;                    /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 SPrntMsg
 (
 Buffer *mBuf,               /* message buffer */
 S16 src,                    /* source id */
 S16 dst                     /* destination id */
 )
-#else
-S16 SPrntMsg(mBuf, src, dst)
-Buffer *mBuf;               /* message buffer */
-S16 src;                    /* source id */
-S16 dst;                    /* destination id */
-#endif
 {
    QLen qlen;               /* queue length */
 	MsgLen mlen;             /* message length */
@@ -5883,17 +5512,11 @@ S16 dst;                    /* destination id */
 *       File:  ss_msg.c
 *
 */
-#ifdef ANSI
 S16 SGetPstMsgMult
 (
 MsgLen cnt,                 /* count */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 SGetPstMsgMult(cnt, mBuf)
-MsgLen cnt;                 /* count */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
    Buffer *tmp;
    Buffer *newb;
@@ -5987,15 +5610,10 @@ Buffer *mBuf;               /* message buffer */
 *       File:  ss_msg.c
 *
 */
-#ifdef ANSI
 S16 SChkMsg
 (
 Buffer *mBuf
 )
-#else
-S16 SChkMsg(mBuf)
-Buffer *mBuf;
-#endif
 {
    SsMsgInfo *minfo;
    Buffer *tmp;
@@ -6041,15 +5659,10 @@ Buffer *mBuf;
 *       File:  ss_msg.c
 *
 */
-#ifdef ANSI
 S16 SAlignDBufEven
 (
 Buffer *dBuf                      /* data buffer */
 )
-#else
-S16 SAlignDBufEven(dBuf)
-Buffer *dBuf;                   /* data buffer  */
-#endif
 {
    MsgLen len;
    Data *src;
@@ -6114,17 +5727,11 @@ Buffer *dBuf;                   /* data buffer  */
 *       File:  ss_msg.c
 *
 */
-#ifdef ANSI
 S16 SAlignDBuf
 (
 Buffer *dBuf,                      /* data buffer */
 uint32_t    align                       /* alignemnt required */
 )
-#else
-S16 SAlignDBuf(dBuf, align)
-Buffer *dBuf;                      /* data buffer  */
-uint32_t    align;                      /* alignemnt required */
-#endif
 {
    MsgLen len;
    Data   *src;
@@ -6205,19 +5812,12 @@ uint32_t    align;                      /* alignemnt required */
 *       File:  ss_msg.c
 *
 */
-#ifdef ANSI
 S16 SGetSMem
 (
 Region region,                  /* region ID */
 Size size,                      /* size */
 Pool *pool                      /* pointer to pool ID */
 )
-#else
-S16 SGetSMem(region, size, pool)
-Region region;                  /* region ID */
-Size size;                      /* size */
-Pool *pool;                     /* pointer to pool ID */
-#endif
 {
 
    UNUSED(size);
@@ -6264,17 +5864,11 @@ Pool *pool;                     /* pointer to pool ID */
 *       File:  ss_msg.c
 *
 */
-#ifdef ANSI
 S16 SPutSMem
 (
 Region region,                  /* region ID */
 Pool pool                       /* pool ID */
 )
-#else
-S16 SPutSMem(region, pool)
-Region region;                  /* region ID */
-Pool pool;                      /* pool ID */
-#endif
 {
    /* ss021.103 - Addition of return value */
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -6358,19 +5952,12 @@ Pool pool;                      /* pool ID */
 *       File:  ss_msg.c
 *
 */
-#ifdef ANSI
 S16 SChkRes
 (
 Region region,                  /* region ID */
 Pool pool,                      /* pool ID */
 Status *status                  /* pointer to status */
 )
-#else
-S16 SChkRes(region, pool, status)
-Region region;                  /* region ID */
-Pool pool;                      /* pool ID */
-Status *status;                 /* pointer to status */
-#endif
 {
    S16 ret;
    SMemCtl mctl;
@@ -6484,17 +6071,11 @@ Status *status;                 /* pointer to status */
 */
 
 
-#ifdef ANSI
 S16 SSwapMsg
 (
 Buffer *mBuf1,              /* message 1 */
 Buffer *mBuf2               /* message 2 */
 )
-#else
-S16 SSwapMsg(mBuf1, mBuf2)
-Buffer *mBuf1;              /* message 1 */
-Buffer *mBuf2;              /* message 2 */
-#endif
 {
    SsMsgInfo *minfop;
    SsMsgInfo minfo;
@@ -6595,15 +6176,10 @@ Buffer *mBuf2;              /* message 2 */
  *       File:  ss_msg.c
  *
  */
-#ifdef ANSI
 S16 SConvPtrPhy
 (
  Buffer  **mBuf
 )
-#else
-S16 SConvPtrPhy (mBuf)
-  Buffer **mBuf;
-#endif
 {
 
   Buffer      *curPtr;
@@ -6751,15 +6327,10 @@ S16 SConvPtrPhy (mBuf)
  *       File:  ss_msg.c
  *
  */
-#ifdef ANSI
 S16 SConvPhyPtr
 (
- Buffer  **workPtr
- )
-#else
-S16 SConvPhyPtr (workPtr)
-  Buffer  **workPtr;
-#endif
+Buffer  **workPtr
+)
 {
 
   Buffer      *curPtr;
@@ -6907,21 +6478,13 @@ S16 SConvPhyPtr (workPtr)
  *       File:
  *
  */
-#ifdef ANSI
 S16 SCpyFpaMsg
 (
- Buffer *srcBuf,
- Region dstRegion,
- Pool dstPool,
- Buffer **dstBuf
- )
-#else
-S16 SCpyFpaMsg (srcBuf, dstRegion, dstPool, dstBuf)
-  Buffer *srcBuf;
-  Region dstRegion;
-  Pool dstPool;
-  Buffer **dstBuf;
-#endif
+Buffer *srcBuf,
+Region dstRegion,
+Pool dstPool,
+Buffer **dstBuf
+)
 {
 
   Size        numBytes;
@@ -7060,17 +6623,11 @@ S16 SCpyFpaMsg (srcBuf, dstRegion, dstPool, dstBuf)
  *       File:
  *
  */
-#ifdef ANSI
 S16 SCpyMsgFpa
 (
- Buffer *srcBuf,
- Buffer **dstBuf
- )
-#else
-S16 SCpyMsgFpa (srcBuf, dstBuf)
-  Buffer *srcBuf;
-  Buffer **dstBuf;
-#endif
+Buffer *srcBuf,
+Buffer **dstBuf
+)
 {
 
   Buffer     *curPtr = NULLP;
@@ -7241,15 +6798,10 @@ S16 SCpyMsgFpa (srcBuf, dstBuf)
  *       File:
  *
  */
-#ifdef ANSI
 S16 SPutFpaMsg
 (
- Buffer *fpaBuf
+Buffer *fpaBuf
 )
-#else
-S16 SPutFpaMsg(fpaBuf)
-Buffer *fpaBuf;
-#endif
 {
   uint16_t      size;
   Buffer   *curBlk;
@@ -7327,7 +6879,6 @@ Buffer *fpaBuf;
 *
 */
 
-#ifdef ANSI
 S16 SCpyPartMsg
 (
 Buffer *srcBuf,
@@ -7335,13 +6886,6 @@ MsgLen idx,
 MsgLen cnt,
 Buffer *dstBuf
 )
-#else
-S16 SCpyPartMsg(srcBuf, idx, cnt, dstBuf)
-Buffer *srcBuf;
-MsgLen idx;
-MsgLen cnt;
-Buffer *dstBuf;
-#endif
 {
    SsMsgInfo *sMinfo;
    SsMsgInfo *dMinfo;
@@ -7493,7 +7037,6 @@ Buffer *dstBuf;
 *
 */
 
-#ifdef ANSI
 S16 SRepPartMsg
 (
 Buffer *srcBuf,
@@ -7501,13 +7044,6 @@ MsgLen idx,
 MsgLen cnt,
 Buffer *dstBuf
 )
-#else
-S16 SRepPartMsg(srcBuf, idx, cnt, dstBuf)
-Buffer *srcBuf;
-MsgLen idx;
-MsgLen cnt;
-Buffer *dstBuf;
-#endif
 {
    SsMsgInfo *sMinfo;
    SsMsgInfo *dMinfo;
@@ -7635,19 +7171,12 @@ Buffer *dstBuf;
 */
 
 
-#ifdef ANSI
 S16 SMovPartMsg
 (
 Buffer *srcBuf,              /* message 1 */
 MsgLen idx,                 /* index */
 Buffer *dstBuf              /* message 2 */
 )
-#else
-S16 SMovPartMsg(srcBuf, idx, dstBuf)
-Buffer *srcBuf;              /* message 1 */
-MsgLen idx;                 /* index */
-Buffer *dstBuf;             /* message 2 */
-#endif
 {
    MsgLen     dCnt;
    MsgLen     sCnt;
@@ -7809,19 +7338,12 @@ Buffer *dstBuf;             /* message 2 */
 *
 */
  
-#ifdef ANSI
 S16 SPkMsgMult
 (
 Data *src,
 MsgLen cnt,
 Buffer *mBuf
 )
-#else
-S16 SPkMsgMult(src, cnt, mBuf)
-Data *src;
-MsgLen cnt;
-Buffer *mBuf;
-#endif
 {
    SsMsgInfo *minfo;   /* Message info */
    Buffer *tmp;
@@ -7920,19 +7442,12 @@ Buffer *mBuf;
 *       File:  ss_msg.c
 *
 */
-#ifdef ANSI
 S16 SGetReadPtr
 (
- Buffer *mBuf, 
- uint8_t** data, 
- MsgLen *len
+Buffer *mBuf, 
+uint8_t** data, 
+MsgLen *len
 )
-#else
-S16 SGetReadPtr (mBuf, data, len)
-Buffer *mBuf; 
-uint8_t** data; 
-MsgLen *len;
-#endif 
 {
 /*   Buffer       *tmp; */
 
@@ -7981,7 +7496,6 @@ char* file,
 uint32_t line
 )
 #else
-#ifdef ANSI
 S16 SAttachPtrToBuf
 (
 Region   region,
@@ -7990,14 +7504,6 @@ Data    *ptr,
 MsgLen   totalLen,
 Buffer** mBuf
 )
-#else
-S16 SAttachPtrToBuf(region, pool, ptr, totalLen, mBuf)
-Region   region;
-Pool     pool;
-Data    *ptr;
-MsgLen   totalLen;
-Buffer** mBuf;
-#endif
 #endif
 {
    SsMsgInfo *minfo;   /* Message info */
@@ -8091,17 +7597,11 @@ char* file,
 uint32_t line
 )
 #else
-#ifdef ANSI
 static S16 SPutZbcDBuf
 (
 Region region,
 Buffer *buf
 )
-#else
-static S16 SPutZbcDBuf(region, buf)
-Region region;
-Buffer *buf;
-#endif
 #endif
 {
    register SsDblk *dptr;
@@ -8228,7 +7728,6 @@ char* file,
 uint32_t line
 )
 #else
-#ifdef ANSI
 S16 SAttachPtrToMBuf
 (
 Region   region,
@@ -8238,15 +7737,6 @@ MsgLen   totalLen,
 MsgLen   ptrLen,
 Buffer** mBuf
 )
-#else
-S16 SAttachPtrToMBuf(region, pool, ptr, totalLen, ptrLen, mBuf)
-Region   region;
-Pool     pool;
-Data    *ptr;
-MsgLen   totalLen;
-MsgLen   ptrLen;
-Buffer** mBuf;
-#endif
 #endif
 {
    SsMsgInfo *minfo;   /* Message info */
@@ -8384,7 +7874,6 @@ char* file,
 uint32_t line
 )
 #else
-#ifdef ANSI
 S16 SAttachWlsPtrToMBuf
 (
 Region   region,
@@ -8395,16 +7884,6 @@ MsgLen   totalLen,
 MsgLen   ptrLen,
 Buffer** mBuf
 )
-#else
-S16 SAttachWlsPtrToMBuf(region, pool, ptr, readPtr, totalLen, ptrLen, mBuf)
-Region   region;
-Pool     pool;
-Data    *ptr;
-Data    *readPtr;
-MsgLen   totalLen;
-MsgLen   ptrLen;
-Buffer** mBuf;
-#endif
 #endif
 {
    SsMsgInfo *minfo;   /* Message info */
@@ -8564,7 +8043,6 @@ S16 SDetachDpdkPtrFrmMBuf
 }
 
 
-#ifdef ANSI
 S16 SAttachDpdkPtrToMBuf
 (
 Region   region,
@@ -8575,16 +8053,6 @@ MsgLen   msgLen,
 MsgLen   totalLen,
 Buffer** mBuf
 )
-#else
-S16 SAttachDpdkPtrToMBuf(region, pool, ptr, readPtr, msgLen, totalLen, mBuf)
-Region   region;
-Pool     pool;
-Data    *ptr;
-Data    *readPtr;
-MsgLen   msgLen;
-MsgLen   totalLen;
-Buffer** mBuf;
-#endif
 {
 
    SsDblk    *dptr;

@@ -253,19 +253,12 @@ KwuDatAckInd kwUiKwuDatAckIndMt[] =
  *      -# ROK 
  *
  */
-#ifdef ANSI
 S16 RlcUiKwuBndCfm
 (
-Pst *pst,                       /* post structure */
-SuId suId,                      /* Service User Id */
-uint8_t   status                     /* Status */
+Pst     *pst,                       /* post structure */
+SuId    suId,                      /* Service User Id */
+uint8_t status                     /* Status */
 )
-#else
-S16 RlcUiKwuBndCfm(pst, suId, status)
-Pst *pst;                       /* post structure */
-SuId suId;                      /* Service User Id */
-uint8_t   status;                    /* Status */
-#endif
 {
 
    /* jump to specific primitive depending on configured selector */
@@ -296,19 +289,12 @@ uint8_t   status;                    /* Status */
  *      -# ROK 
  *      -# RFAILED
  */
-#ifdef ANSI
 S16 rlcSendUlDataToDu
 (
 Pst               *pst,
 KwuDatIndInfo     *datInd,
 Buffer            *mBuf
 )
-#else
-S16 rlcSendUlDataToDu(pst, datInd, mBuf)
-Pst               *pst;
-KwuDatIndInfo     *datInd;
-Buffer            *mBuf;
-#endif
 {
 
    /* jump to specific primitive depending on configured selector */
@@ -340,19 +326,12 @@ Buffer            *mBuf;
  *      -# ROK 
  *      -# RFAILED
  */
-#ifdef ANSI
 S16 RlcUiKwuDatCfm
 (
-Pst               *pst,
-SuId              suId,
-KwuDatCfmInfo     *datCfm
+Pst            *pst,
+SuId           suId,
+KwuDatCfmInfo  *datCfm
 )
-#else
-S16 RlcUiKwuDatCfm(pst, suId, datCfm)
-Pst               *pst;
-SuId              suId;
-KwuDatCfmInfo     *datCfm;
-#endif
 {
    rlcDatCfmsSent++;
 
@@ -384,19 +363,12 @@ KwuDatCfmInfo     *datCfm;
  *      -# ROK 
  *      -# RFAILED
  */
-#ifdef ANSI
 S16 RlcUiKwuStaInd
 (
 Pst               *pst,
 SuId              suId,
 KwuStaIndInfo     *staInd
 )
-#else
-S16 RlcUiKwuStaInd(pst, suId, staInd)
-Pst               *pst;
-SuId              suId;
-KwuStaIndInfo     *staInd;
-#endif
 {
 
    /* jump to specific primitive depending on configured selector */
@@ -427,19 +399,12 @@ KwuStaIndInfo     *staInd;
  *      -# ROK 
  *      -# RFAILED
  */
-#ifdef ANSI
 S16 RlcUiKwuReEstCmpInd
 (
 Pst               *pst,
 SuId              suId,
 CmLteRlcId        rlcId
 )
-#else
-S16 RlcUiKwuReEstCmpInd(pst, suId, rlcId)
-Pst               *pst;
-SuId              suId;
-CmLteRlcId        rlcId;
-#endif
 {
    RLOG0(L_DEBUG, "In RlcUiKwuReEstCmpInd");
 
@@ -469,19 +434,12 @@ CmLteRlcId        rlcId;
  *      -# ROK 
  *      -# RFAILED
  */
-#ifdef ANSI
 S16 RlcUiKwuDiscSduCfm
 (
 Pst               *pst,
 SuId              suId,
 KwuDiscSduInfo    *discCfm
 )
-#else
-S16 RlcUiKwuDiscSduCfm(pst, suId, discCfm)
-Pst               *pst;
-SuId              suId;
-KwuDiscSduInfo    *discCfm;
-#endif
 {
 
    /* jump to specific primitive depending on configured selector */
@@ -510,19 +468,7 @@ KwuDiscSduInfo    *discCfm;
  *      -# ROK 
  *      -# RFAILED
  */
-#ifdef ANSI
-S16 RlcUiKwuFlowCntrlInd
-(
-Pst                   *pst,
-SuId                  suId,
-KwuFlowCntrlIndInfo   *flowCntrlIndInfo
-)
-#else
-S16 RlcUiKwuFlowCntrlInd(pst, suId, flowCntrlIndInfo)
-Pst                   *pst;
-SuId                  suId;
-KwuFlowCntrlIndInfo   *flowCntrlIndInfo;
-#endif
+S16 RlcUiKwuFlowCntrlInd(Pst *pst,SuId suId,KwuFlowCntrlIndInfo *flowCntrlIndInfo)
 {
 
    /* jump to specific primitive depending on configured selector */
@@ -551,19 +497,7 @@ KwuFlowCntrlIndInfo   *flowCntrlIndInfo;
  *      -# ROK 
  *      -# RFAILED
  */
-#ifdef ANSI
-S16 RlcUiKwuDatAckInd
-(
-Pst               *pst,
-SuId              suId,
-KwuDatAckInfo     *datAckInd
-)
-#else
-S16 RlcUiKwuDatAckInd(pst, suId, datAckInd)
-Pst               *pst;
-SuId              suId;
-KwuDatAckInfo     *datAckInd;
-#endif
+S16 RlcUiKwuDatAckInd(Pst *pst,SuId suId,KwuDatAckInfo *datAckInd)
 {
 
    /* jump to specific primitive depending on configured selector */
@@ -639,19 +573,12 @@ CkwUeIdChgCfm kwUiCkwUeIdChgCfmMt[] =
  *  @return  S16
  *      -# ROK 
  */
-#ifdef ANSI
 S16 RlcUiCkwBndCfm
 (
-Pst *pst,                       /* post structure */
-SuId suId,                      /* Service User Id */
-uint8_t   status                     /* Status */
+Pst     *pst,                       /* post structure */
+SuId    suId,                      /* Service User Id */
+uint8_t status                     /* Status */
 )
-#else
-S16 RlcUiCkwBndCfm(pst, suId, status)
-Pst *pst;                       /* post structure */
-SuId suId;                      /* Service User Id */
-uint8_t   status;                    /* Status */
-#endif
 {
 
    /* jump to specific primitive depending on configured selector */
@@ -682,19 +609,12 @@ uint8_t   status;                    /* Status */
  *      -# ROK 
  *
  */
-#ifdef ANSI
 S16 RlcUiRlcCfgCfm
 (
 Pst            *pst,                      /* post structure */
 SuId           suId,                      /* Service User Id */
 RlcCfgCfmInfo  *cfmInfo                    /* Configuration Confirm */
 )
-#else
-S16 RlcUiRlcCfgCfm(pst, suId, cfmInfo)
-Pst            *pst;                      /* post structure */
-SuId           suId;                      /* Service User Id */
-RlcCfgCfmInfo  *cfmInfo;                   /* Configuration Confirm */
-#endif
 {
 
    /* jump to specific primitive depending on configured selector */
@@ -725,7 +645,6 @@ RlcCfgCfmInfo  *cfmInfo;                   /* Configuration Confirm */
  *      -# ROK 
  *
  */
-#ifdef ANSI
 S16 RlcUiCkwUeIdChgCfm 
 (
 Pst            *pst,                      /* post structure */
@@ -734,14 +653,6 @@ uint32_t       transId,
 CkwUeInfo      *ueInfo,
 CmStatus       status
 )
-#else
-S16 RlcUiCkwUeIdChgCfm(pst, suId, transId,ueInfo,status)
-Pst            *pst;                      /* post structure */
-SuId           suId;                      /* Service User Id */
-uint32_t       transId;
-CkwUeInfo      *ueInfo;
-CmStatus       status;
-#endif
 {
 
    /* jump to specific primitive depending on configured selector */
@@ -762,15 +673,7 @@ CmStatus       status;
  *  @return  S16
  *      -# ROK 
  */
-#ifdef ANSI
-S16 rlcDlBatchProcSplit 
-(
-Void
-)
-#else
-S16 rlcDlBatchProcSplit()
-Void;
-#endif
+S16 rlcDlBatchProcSplit(Void)
 {
 
 /* Read from Ring Buffer and process PDCP packets */
@@ -842,15 +745,7 @@ Void;
 #endif
 
 #if defined(PDCP_RLC_DL_RBUF) || defined(SS_RBUF)
-#ifdef ANSI
-S16 rlcDlBatchProc
-(
-Void
-)
-#else
-S16 rlcDlBatchProc()
-Void;
-#endif
+S16 rlcDlBatchProc(Void)
 {
 /* Read from Ring Buffer and process PDCP packets */
 
@@ -912,15 +807,7 @@ Void;
 }
 
 
-#ifdef ANSI
-S16 rlcUtlDlBatchProcPkts
-(
-Void
-)
-#else
-S16 rlcUtlDlBatchProcPkts
-Void;
-#endif
+S16 rlcUtlDlBatchProcPkts(Void)
 {
     rlcDlBatchProc();
 #ifdef SS_RBUF
@@ -933,15 +820,7 @@ Void;
 }   
 
 
-#ifdef ANSI
-S16 rlcUtlDlFreeRlcRBuf
-(
-Void
-)
-#else
-S16 rlcUtlDlFreeRlcRBuf
-Void;
-#endif
+S16 rlcUtlDlFreeRlcRBuf(Void)
 {
 /* Read from Ring Buffer and process PDCP packets */
    Void *elmIndx = NULLP;

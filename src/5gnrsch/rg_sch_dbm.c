@@ -100,15 +100,7 @@ static Void rgSCHDbmInitPndngRgrCfgLst ARGS(( RgSchCellCb *cellCb));
  *      -# ROK 
  *      -# RFAILED
  **/
-#ifdef ANSI
-S16 rgSCHDbmInitCell
-(
-RgSchCellCb       *cellCb
-)
-#else
-S16 rgSCHDbmInitCell(cellCb)
-RgSchCellCb       *cellCb;
-#endif
+S16 rgSCHDbmInitCell(RgSchCellCb *cellCb)
 {
    S16 ret;
    
@@ -165,17 +157,7 @@ RgSchCellCb       *cellCb;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-static S16 rgSCHDbmInitUeCbLst
-(
-RgSchCellCb    *cellCb,
-uint16_t            numBins
-)
-#else
-static S16 rgSCHDbmInitUeCbLst(cellCb, numBins)
-RgSchCellCb    *cellCb;
-uint16_t            numBins;
-#endif
+static S16 rgSCHDbmInitUeCbLst(RgSchCellCb  *cellCb,uint16_t numBins)
 {
    RgSchUeCellInfo ueCellInfo;
 
@@ -201,15 +183,7 @@ uint16_t            numBins;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 rgSCHDbmDeInitUeCbLst
-(
-RgSchCellCb       *cellCb
-)
-#else
-S16 rgSCHDbmDeInitUeCbLst(cellCb)
-RgSchCellCb       *cellCb;
-#endif
+S16 rgSCHDbmDeInitUeCbLst(RgSchCellCb       *cellCb)
 {
 
    return (cmHashListDeinit(&cellCb->ueLst));
@@ -231,17 +205,7 @@ RgSchCellCb       *cellCb;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-static S16 rgSCHDbmInitSpsUeCbLst
-(
-RgSchCellCb       *cellCb,
-uint16_t               numBins
-)
-#else
-static S16 rgSCHDbmInitSpsUeCbLst(cellCb, numBins)
-RgSchCellCb       *cellCb;
-uint16_t               numBins;
-#endif
+static S16 rgSCHDbmInitSpsUeCbLst(RgSchCellCb *cellCb,uint16_t numBins)
 {
    RgSchUeCb ue;
 
@@ -265,15 +229,7 @@ uint16_t               numBins;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 rgSCHDbmDeInitSpsUeCbLst
-(
-RgSchCellCb       *cellCb
-)
-#else
-S16 rgSCHDbmDeInitSpsUeCbLst(cellCb)
-RgSchCellCb       *cellCb;
-#endif
+S16 rgSCHDbmDeInitSpsUeCbLst(RgSchCellCb  *cellCb)
 {
 
    return (cmHashListDeinit(&cellCb->spsUeLst));
@@ -296,17 +252,7 @@ RgSchCellCb       *cellCb;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 rgSCHDbmInsUeCb
-(
-RgSchCellCb       *cellCb,
-RgSchUeCb         *ueCb
-)
-#else
-S16 rgSCHDbmInsUeCb(cellCb, ueCb)
-RgSchCellCb       *cellCb;
-RgSchUeCb         *ueCb;
-#endif
+S16 rgSCHDbmInsUeCb(RgSchCellCb  *cellCb,RgSchUeCb  *ueCb)
 {
    RgSchUeCellInfo *ueCellInfo = NULLP;
 
@@ -332,17 +278,7 @@ RgSchUeCb         *ueCb;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 rgSCHDbmInsSpsUeCb
-(
-RgSchCellCb       *cellCb,
-RgSchUeCb         *ueCb
-)
-#else
-S16 rgSCHDbmInsSpsUeCb(cellCb, ueCb)
-RgSchCellCb       *cellCb;
-RgSchUeCb         *ueCb;
-#endif
+S16 rgSCHDbmInsSpsUeCb(RgSchCellCb *cellCb,RgSchUeCb *ueCb)
 {
    return (cmHashListInsert(&cellCb->spsUeLst, (PTR)ueCb, 
       (uint8_t *)&ueCb->spsRnti, (uint16_t)sizeof(ueCb->spsRnti)));
@@ -364,17 +300,7 @@ RgSchUeCb         *ueCb;
  *  @param[in]  ueId
  *  @return  RgSchUeCb*
  **/
-#ifdef ANSI
-RgSchUeCb* rgSCHDbmGetUeCb
-(
-RgSchCellCb       *cellCb, 
-CmLteRnti      ueId
-)
-#else
-RgSchUeCb* rgSCHDbmGetUeCb(cellCb, ueId)
-RgSchCellCb       *cellCb;
-CmLteRnti      ueId;
-#endif
+RgSchUeCb* rgSCHDbmGetUeCb(RgSchCellCb *cellCb,CmLteRnti ueId)
 {
    RgSchUeCellInfo *ueCellInfo = NULLP;
 
@@ -398,17 +324,7 @@ CmLteRnti      ueId;
  *  @param[in]  ueId
  *  @return  RgSchUeCb*
  **/
-#ifdef ANSI
-RgSchUeCb* rgSCHDbmGetSpsUeCb
-(
-RgSchCellCb       *cellCb, 
-CmLteRnti         spsRnti
-)
-#else
-RgSchUeCb* rgSCHDbmGetSpsUeCb(cellCb, spsRnti)
-RgSchCellCb       *cellCb;
-CmLteRnti         spsRnti;
-#endif
+RgSchUeCb* rgSCHDbmGetSpsUeCb(RgSchCellCb *cellCb, CmLteRnti  spsRnti)
 {
    RgSchUeCb *ueCb = NULLP; 
 
@@ -431,17 +347,7 @@ CmLteRnti         spsRnti;
  *  @param[in]  *ueCb
  *  @return  RgSchUeCb*
  **/
-#ifdef ANSI
-RgSchUeCb* rgSCHDbmGetNextUeCb
-(
-RgSchCellCb       *cellCb, 
-RgSchUeCb         *ueCb
-)
-#else
-RgSchUeCb* rgSCHDbmGetNextUeCb(cellCb, ueCb)
-RgSchCellCb       *cellCb;
-RgSchUeCb         *ueCb;
-#endif
+RgSchUeCb* rgSCHDbmGetNextUeCb(RgSchCellCb *cellCb, RgSchUeCb *ueCb)
 {
    RgSchUeCellInfo *ueCellInfo = NULLP;
    RgSchUeCellInfo *nextUeCellInfo = NULLP;
@@ -470,17 +376,7 @@ RgSchUeCb         *ueCb;
  *  @param[in]  *ueCb
  *  @return  RgSchUeCb*
  **/
-#ifdef ANSI
-RgSchUeCb* rgSCHDbmGetNextSpsUeCb
-(
-RgSchCellCb       *cellCb, 
-RgSchUeCb         *ueCb
-)
-#else
-RgSchUeCb* rgSCHDbmGetNextSpsUeCb(cellCb, ueCb)
-RgSchCellCb       *cellCb;
-RgSchUeCb         *ueCb;
-#endif
+RgSchUeCb* rgSCHDbmGetNextSpsUeCb(RgSchCellCb *cellCb, RgSchUeCb  *ueCb)
 {
    RgSchUeCb *nextUeCb = NULLP; 
 
@@ -506,17 +402,7 @@ RgSchUeCb         *ueCb;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 rgSCHDbmDelL2MUe
-(
-RgSchCellCb       *cellCb,
-RgSchUeCb         *ueCb
-)
-#else
-S16 rgSCHDbmDelL2MUe(cellCb, ueCb)
-RgSchCellCb       *cellCb;
-RgSchUeCb         *ueCb;
-#endif
+S16 rgSCHDbmDelL2MUe(RgSchCellCb *cellCb,RgSchUeCb *ueCb)
 {
    uint8_t lcCnt = 0;
    RgSchCmnUlUe *ueUl = RG_SCH_CMN_GET_UL_UE(ueCb, cellCb);
@@ -567,17 +453,7 @@ RgSchUeCb         *ueCb;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 rgSCHDbmDelUeCb
-(
-RgSchCellCb       *cellCb,
-RgSchUeCb         *ueCb
-)
-#else
-S16 rgSCHDbmDelUeCb(cellCb, ueCb)
-RgSchCellCb       *cellCb;
-RgSchUeCb         *ueCb;
-#endif
+S16 rgSCHDbmDelUeCb(RgSchCellCb *cellCb,RgSchUeCb  *ueCb)
 {
    RgSchUeCellInfo *ueCellInfo = NULLP;
 
@@ -602,17 +478,7 @@ RgSchUeCb         *ueCb;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 rgSCHDbmDelSpsUeCb
-(
-RgSchCellCb       *cellCb,
-RgSchUeCb         *ueCb
-)
-#else
-S16 rgSCHDbmDelSpsUeCb(cellCb, ueCb)
-RgSchCellCb       *cellCb;
-RgSchUeCb         *ueCb;
-#endif
+S16 rgSCHDbmDelSpsUeCb(RgSchCellCb *cellCb,RgSchUeCb *ueCb)
 {
 
    return (cmHashListDelete(&cellCb->spsUeLst, (PTR)ueCb));
@@ -635,15 +501,7 @@ RgSchUeCb         *ueCb;
  *      -# ROK 
  *      -# RFAILED
  **/
-#ifdef ANSI
-S16 rgSCHDbmInitUe
-(
-RgSchUeCb       *ueCb
-)
-#else
-S16 rgSCHDbmInitUe(ueCb)
-RgSchUeCb       *ueCb;
-#endif
+S16 rgSCHDbmInitUe(RgSchUeCb  *ueCb)
 {
    S16 ret = ROK;
    
@@ -665,15 +523,7 @@ RgSchUeCb       *ueCb;
  *  @param[in]  RgSchUeCb *ueCb
  *  @return     Void 
  **/
-#ifdef ANSI
-static Void rgSCHDbmInitDedLcLst
-(
-RgSchUeCb       *ueCb
-)
-#else
-static Void rgSCHDbmInitDedLcLst(ueCb)
-RgSchUeCb       *ueCb;
-#endif
+static Void rgSCHDbmInitDedLcLst(RgSchUeCb *ueCb)
 {
    uint8_t idx;
    
@@ -705,15 +555,7 @@ RgSchUeCb       *ueCb;
  *  @param[in]  RgSchCellCb *cellCb
  *  @return  Void
  **/
-#ifdef ANSI
-static Void rgSCHDbmInitCmnLcLst
-(
-RgSchCellCb       *cellCb
-)
-#else
-static Void rgSCHDbmInitCmnLcLst(cellCb)
-RgSchCellCb       *cellCb;
-#endif
+static Void rgSCHDbmInitCmnLcLst(RgSchCellCb *cellCb)
 {
    uint8_t idx;
    
@@ -738,17 +580,7 @@ RgSchCellCb       *cellCb;
  *  @param[in]  RgSchDlLcCb* dlLcCb
  *  @return  Void
  **/
-#ifdef ANSI
-Void rgSCHDbmInsDlDedLcCb
-(
-RgSchUeCb         *ueCb, 
-RgSchDlLcCb       *dlLcCb 
-)
-#else
-Void rgSCHDbmInsDlDedLcCb(ueCb, dlLcCb)
-RgSchUeCb         *ueCb; 
-RgSchDlLcCb       *dlLcCb; 
-#endif
+Void rgSCHDbmInsDlDedLcCb(RgSchUeCb *ueCb, RgSchDlLcCb *dlLcCb )
 {
 
    ueCb->dl.lcCb[dlLcCb->lcId - 1] = dlLcCb;
@@ -766,17 +598,7 @@ RgSchDlLcCb       *dlLcCb;
  *  @param[in]  RgSchDlLcCb* dlLcCb
  *  @return  Void
  **/
-#ifdef ANSI
-Void rgSCHDbmDelDlDedLcCb
-(
-RgSchUeCb         *ueCb, 
-RgSchDlLcCb       *dlLcCb 
-)
-#else
-Void rgSCHDbmDelDlDedLcCb(ueCb, dlLcCb)
-RgSchUeCb         *ueCb; 
-RgSchDlLcCb       *dlLcCb; 
-#endif
+Void rgSCHDbmDelDlDedLcCb(RgSchUeCb *ueCb, RgSchDlLcCb  *dlLcCb )
 {
 
 #ifdef LTE_L2_MEAS
@@ -815,17 +637,7 @@ RgSchDlLcCb       *dlLcCb;
  *  @param[in]  idx
  *  @return  RgSchDlLcCb*
  **/
-#ifdef ANSI
-RgSchDlLcCb* rgSCHDbmGetDlDedLcCb
-(
-RgSchUeCb         *ueCb, 
-CmLteLcId        idx
-)
-#else
-RgSchDlLcCb* rgSCHDbmGetDlDedLcCb(ueCb, idx)
-RgSchUeCb         *ueCb; 
-CmLteLcId        idx;
-#endif
+RgSchDlLcCb* rgSCHDbmGetDlDedLcCb(RgSchUeCb *ueCb, CmLteLcId idx)
 {
    if (idx < RGSCH_DEDLC_MIN_LCID || idx > RGSCH_DEDLC_MAX_LCID)
    {
@@ -847,15 +659,7 @@ CmLteLcId        idx;
  *  @param[in]  *ueCb
  *  @return  RgSchDlLcCb*
  **/
-#ifdef ANSI
-RgSchDlLcCb* rgSCHDbmGetFirstDlDedLcCb
-(
-RgSchUeCb         *ueCb
-)
-#else
-RgSchDlLcCb* rgSCHDbmGetFirstDlDedLcCb(ueCb)
-RgSchUeCb         *ueCb; 
-#endif
+RgSchDlLcCb* rgSCHDbmGetFirstDlDedLcCb(RgSchUeCb  *ueCb)
 {
    uint8_t idx;
    
@@ -881,17 +685,7 @@ RgSchUeCb         *ueCb;
  *  @param[in]  *lcCb
  *  @return  RgSchDlLcCb*
  **/
-#ifdef ANSI
-RgSchDlLcCb* rgSCHDbmGetNextDlDedLcCb
-(
-RgSchUeCb         *ueCb,
-RgSchDlLcCb       *lcCb
-)
-#else
-RgSchDlLcCb* rgSCHDbmGetNextDlDedLcCb(ueCb, lcCb)
-RgSchUeCb         *ueCb; 
-RgSchDlLcCb       *lcCb;
-#endif
+RgSchDlLcCb* rgSCHDbmGetNextDlDedLcCb(RgSchUeCb *ueCb,RgSchDlLcCb *lcCb)
 {
    uint8_t idx;
 
@@ -923,17 +717,7 @@ RgSchDlLcCb       *lcCb;
  *  @param[in]  lcId
  *  @return  RgSchClcDlLcCb*
  **/
-#ifdef ANSI
-RgSchClcDlLcCb* rgSCHDbmGetCmnLcCb
-(
-RgSchCellCb       *cellCb, 
-CmLteLcId         lcId
-)
-#else
-RgSchClcDlLcCb* rgSCHDbmGetCmnLcCb(cellCb, lcId)
-RgSchCellCb       *cellCb;
-CmLteLcId         lcId;
-#endif
+RgSchClcDlLcCb* rgSCHDbmGetCmnLcCb(RgSchCellCb *cellCb, CmLteLcId lcId)
 {
    uint8_t idx;
 
@@ -959,15 +743,7 @@ CmLteLcId         lcId;
  *  @param[in]  *cellCb
  *  @return  RgSchClcDlLcCb*
  **/
-#ifdef ANSI
-RgSchClcDlLcCb* rgSCHDbmGetBcchOnBch
-(
-RgSchCellCb       *cellCb 
-)
-#else
-RgSchClcDlLcCb* rgSCHDbmGetBcchOnBch(cellCb)
-RgSchCellCb       *cellCb;
-#endif
+RgSchClcDlLcCb* rgSCHDbmGetBcchOnBch(RgSchCellCb *cellCb )
 {
  
    if(cellCb->cmnLcCb[RGSCH_BCCH_BCH_IDX].lcId != RGSCH_INVALID_LC_ID)
@@ -989,15 +765,7 @@ RgSchCellCb       *cellCb;
  *  @param[in]  *cellCb
  *  @return  RgSchClcDlLcCb*
  **/
-#ifdef ANSI
-RgSchClcDlLcCb* rgSCHDbmGetFirstBcchOnDlsch
-(
-RgSchCellCb       *cellCb
-)
-#else
-RgSchClcDlLcCb* rgSCHDbmGetFirstBcchOnDlsch(cellCb)
-RgSchCellCb       *cellCb;
-#endif
+RgSchClcDlLcCb* rgSCHDbmGetFirstBcchOnDlsch(RgSchCellCb *cellCb)
 {
 
    if(cellCb->cmnLcCb[RGSCH_BCCH_DLSCH_IDX1].lcId != RGSCH_INVALID_LC_ID)
@@ -1019,15 +787,7 @@ RgSchCellCb       *cellCb;
  *  @param[in]  *cellCb
  *  @return  RgSchClcDlLcCb*
  **/
-#ifdef ANSI
-RgSchClcDlLcCb* rgSCHDbmGetSecondBcchOnDlsch
-(
-RgSchCellCb       *cellCb
-)
-#else
-RgSchClcDlLcCb* rgSCHDbmGetSecondBcchOnDlsch(cellCb)
-RgSchCellCb       *cellCb;
-#endif
+RgSchClcDlLcCb* rgSCHDbmGetSecondBcchOnDlsch(RgSchCellCb  *cellCb)
 {
 
    if(cellCb->cmnLcCb[RGSCH_BCCH_DLSCH_IDX2].lcId != RGSCH_INVALID_LC_ID)
@@ -1048,15 +808,7 @@ RgSchCellCb       *cellCb;
  *  @param[in]  *cellCb
  *  @return  RgSchClcDlLcCb*
  **/
-#ifdef ANSI
-RgSchClcDlLcCb* rgSCHDbmGetPcch
-(
-RgSchCellCb       *cellCb
-)
-#else
-RgSchClcDlLcCb* rgSCHDbmGetPcch(cellCb)
-RgSchCellCb       *cellCb;
-#endif
+RgSchClcDlLcCb* rgSCHDbmGetPcch(RgSchCellCb *cellCb)
 {
  
    if(cellCb->cmnLcCb[RGSCH_PCCH_IDX].lcId != RGSCH_INVALID_LC_ID)
@@ -1078,17 +830,7 @@ RgSchCellCb       *cellCb;
  *  @param[in]  *cellCb
  *  @return  Void
  **/
-#ifdef ANSI
-Void rgSCHDbmInsBcchOnBch
-(
-RgSchCellCb       *cellCb, 
-RgSchClcDlLcCb   *cmnDlLcCb
-)
-#else
-Void rgSCHDbmInsBcchOnBch(cellCb, cmnDlLcCb)
-RgSchCellCb       *cellCb;
-RgSchClcDlLcCb   *cmnDlLcCb;
-#endif
+Void rgSCHDbmInsBcchOnBch(RgSchCellCb *cellCb, RgSchClcDlLcCb *cmnDlLcCb)
 {
 
    cellCb->cmnLcCb[RGSCH_BCCH_BCH_IDX].lcId = cmnDlLcCb->lcId;
@@ -1111,17 +853,7 @@ RgSchClcDlLcCb   *cmnDlLcCb;
  *  @param[in]  *cellCb
  *  @return  Void
  **/
-#ifdef ANSI
-Void rgSCHDbmInsBcchOnDlsch
-(
-RgSchCellCb       *cellCb, 
-RgSchClcDlLcCb   *cmnDlLcCb
-)
-#else
-Void rgSCHDbmInsBcchOnDlsch(cellCb, cmnDlLcCb)
-RgSchCellCb       *cellCb;
-RgSchClcDlLcCb   *cmnDlLcCb;
-#endif
+Void rgSCHDbmInsBcchOnDlsch(RgSchCellCb *cellCb, RgSchClcDlLcCb *cmnDlLcCb)
 {
    if(cellCb->cmnLcCb[RGSCH_BCCH_DLSCH_IDX1].lcId == RGSCH_INVALID_LC_ID)   
    { 
@@ -1153,17 +885,7 @@ RgSchClcDlLcCb   *cmnDlLcCb;
  *  @param[in]  *cellCb
  *  @return  Void
  **/
-#ifdef ANSI
-Void rgSCHDbmInsPcch
-(
-RgSchCellCb       *cellCb, 
-RgSchClcDlLcCb   *cmnDlLcCb
-)
-#else
-Void rgSCHDbmInsPcch(cellCb, cmnDlLcCb)
-RgSchCellCb       *cellCb;
-RgSchClcDlLcCb   *cmnDlLcCb;
-#endif
+Void rgSCHDbmInsPcch(RgSchCellCb *cellCb, RgSchClcDlLcCb *cmnDlLcCb)
 {
 
    cellCb->cmnLcCb[RGSCH_PCCH_IDX].lcId = cmnDlLcCb->lcId;
@@ -1185,15 +907,7 @@ RgSchClcDlLcCb   *cmnDlLcCb;
  *  @param[in] *cmnDlLcCb 
  *  @return  Void
  **/
-#ifdef ANSI
-Void rgSCHDbmInitCmnLcBoLst
-(
-RgSchClcDlLcCb       *cmnDlLcCb
-)
-#else
-Void rgSCHDbmInitCmnLcBoLst(cmnDlLcCb)
-RgSchClcDlLcCb       *cmnDlLcCb;
-#endif
+Void rgSCHDbmInitCmnLcBoLst(RgSchClcDlLcCb *cmnDlLcCb)
 {
 
    cmLListInit(&cmnDlLcCb->boLst);
@@ -1212,17 +926,7 @@ RgSchClcDlLcCb       *cmnDlLcCb;
  *  @param[in] *boRpt 
  *  @return  Void
  **/
-#ifdef ANSI
-Void rgSCHDbmInsCmnLcBoRpt
-(
-RgSchClcDlLcCb    *cmnDlLcCb,
-RgSchClcBoRpt     *cmnBoRpt
-)
-#else
-Void rgSCHDbmInsCmnLcBoRpt(cmnDlLcCb, cmnBoRpt)
-RgSchClcDlLcCb    *cmnDlLcCb;
-RgSchClcBoRpt     *cmnBoRpt;
-#endif
+Void rgSCHDbmInsCmnLcBoRpt(RgSchClcDlLcCb *cmnDlLcCb,RgSchClcBoRpt *cmnBoRpt)
 {
    cmnBoRpt->boLstEnt.next = NULLP;
    cmnBoRpt->boLstEnt.prev = NULLP;
@@ -1243,15 +947,7 @@ RgSchClcBoRpt     *cmnBoRpt;
  *  @param[in] *cellCb 
  *  @return  Void
  **/
-#ifdef ANSI
-static Void rgSCHDbmInitRaCbLst
-(
-RgSchCellCb       *cellCb
-)
-#else
-static Void rgSCHDbmInitRaCbLst(cellCb)
-RgSchCellCb       *cellCb;
-#endif
+static Void rgSCHDbmInitRaCbLst(RgSchCellCb  *cellCb)
 {
 
    cmLListInit(&cellCb->raInfo.raCbLst);
@@ -1271,17 +967,7 @@ RgSchCellCb       *cellCb;
  *  @param[in]  key
  *  @return  RgSchRaCb*
  **/
-#ifdef ANSI
-RgSchRaCb* rgSCHDbmGetRaCb
-(
-RgSchCellCb       *cellCb, 
-CmLteRnti      key
-)
-#else
-RgSchRaCb* rgSCHDbmGetRaCb(cellCb, key)
-RgSchCellCb       *cellCb; 
-CmLteRnti      key;
-#endif
+RgSchRaCb* rgSCHDbmGetRaCb(RgSchCellCb *cellCb, CmLteRnti key)
 {
    CmLList *tmpNode;
 
@@ -1309,15 +995,7 @@ CmLteRnti      key;
  *  @param[in]  *cellCb 
  *  @return  Void
  **/
-#ifdef ANSI
-static Void rgSCHDbmInitRaReqLst
-(
-RgSchCellCb       *cellCb
-)
-#else
-static Void rgSCHDbmInitRaReqLst(cellCb)
-RgSchCellCb       *cellCb;
-#endif
+static Void rgSCHDbmInitRaReqLst(RgSchCellCb *cellCb)
 {
    uint8_t idx;
 
@@ -1342,15 +1020,7 @@ RgSchCellCb       *cellCb;
  *  @param[in] *cellCb 
  *  @return  Void
  **/
-#ifdef ANSI
-static Void rgSCHDbmInitCrntRgrCfgLst
-(
-RgSchCellCb       *cellCb
-)
-#else
-static Void rgSCHDbmInitCrntRgrCfgLst(cellCb)
-RgSchCellCb       *cellCb;
-#endif
+static Void rgSCHDbmInitCrntRgrCfgLst(RgSchCellCb *cellCb)
 {
 
    cmLListInit(&cellCb->rgCfgInfo.crntRgrCfgLst);
@@ -1368,15 +1038,7 @@ RgSchCellCb       *cellCb;
  *  @param[in] *cellCb 
  *  @return  Void
  **/
-#ifdef ANSI
-static Void rgSCHDbmInitPndngRgrCfgLst
-(
-RgSchCellCb       *cellCb
-)
-#else
-static Void rgSCHDbmInitPndngRgrCfgLst(cellCb)
-RgSchCellCb       *cellCb;
-#endif
+static Void rgSCHDbmInitPndngRgrCfgLst(RgSchCellCb  *cellCb)
 {
 
    cmLListInit(&cellCb->rgCfgInfo.pndngRgrCfgLst);
@@ -1395,17 +1057,7 @@ RgSchCellCb       *cellCb;
  *  @param[in] *cfgElem 
  *  @return  Void
  **/
-#ifdef ANSI
-Void rgSCHDbmInsCrntRgrCfgElem
-(
-RgSchCellCb       *cellCb,
-RgSchCfgElem      *cfgElem
-)
-#else
-Void rgSCHDbmInsCrntRgrCfgElem(cellCb, cfgElem)
-RgSchCellCb       *cellCb;
-RgSchCfgElem      *cfgElem;
-#endif
+Void rgSCHDbmInsCrntRgrCfgElem(RgSchCellCb *cellCb,RgSchCfgElem *cfgElem)
 {
    cfgElem->cfgReqLstEnt.next = NULLP;
    cfgElem->cfgReqLstEnt.prev = NULLP;
@@ -1425,17 +1077,7 @@ RgSchCfgElem      *cfgElem;
  *  @param[in] *cfgElem 
  *  @return  Void
  **/
-#ifdef ANSI
-Void rgSCHDbmInsPndngRgrCfgElem
-(
-RgSchCellCb       *cellCb,
-RgSchCfgElem      *cfgElem
-)
-#else
-Void rgSCHDbmInsPndngRgrCfgElem(cellCb, cfgElem)
-RgSchCellCb       *cellCb;
-RgSchCfgElem      *cfgElem;
-#endif
+Void rgSCHDbmInsPndngRgrCfgElem(RgSchCellCb *cellCb,RgSchCfgElem  *cfgElem)
 {
 
    cfgElem->cfgReqLstEnt.next = NULLP;
@@ -1457,17 +1099,7 @@ RgSchCfgElem      *cfgElem;
  *  @param[in]  *cfgElem
  *  @return  RgSchCfgElem*
  **/
-#ifdef ANSI
-RgSchCfgElem* rgSCHDbmGetNextCrntRgrCfgElem
-(
-RgSchCellCb       *cellCb,
-RgSchCfgElem      *cfgElem
-)
-#else
-RgSchCfgElem* rgSCHDbmGetNextCrntRgrCfgElem(cellCb, cfgElem)
-RgSchCellCb       *cellCb; 
-RgSchCfgElem      *cfgElem;
-#endif
+RgSchCfgElem* rgSCHDbmGetNextCrntRgrCfgElem(RgSchCellCb *cellCb,RgSchCfgElem *cfgElem)
 {
 
    if(!cfgElem)
@@ -1491,17 +1123,7 @@ RgSchCfgElem      *cfgElem;
  *  @param[in]  *cfgElem
  *  @return  RgSchCfgElem*
  **/
-#ifdef ANSI
-RgSchCfgElem* rgSCHDbmGetNextPndngRgrCfgElem
-(
-RgSchCellCb       *cellCb,
-RgSchCfgElem      *cfgElem
-)
-#else
-RgSchCfgElem* rgSCHDbmGetNextPndngRgrCfgElem(cellCb, cfgElem)
-RgSchCellCb       *cellCb; 
-RgSchCfgElem      *cfgElem;
-#endif
+RgSchCfgElem* rgSCHDbmGetNextPndngRgrCfgElem(RgSchCellCb *cellCb,RgSchCfgElem *cfgElem)
 {
 
    if(!cfgElem)
@@ -1525,17 +1147,7 @@ RgSchCfgElem      *cfgElem;
  *  @param[in]  key 
  *  @return  RgSchCfgElem*
  **/
-#ifdef ANSI
-RgSchCfgElem* rgSCHDbmGetPndngRgrCfgElemByKey
-(
-RgSchCellCb          *cellCb,
-CmLteTimingInfo   key
-)
-#else
-RgSchCfgElem* rgSCHDbmGetPndngRgrCfgElemByKey(cellCb, key)
-RgSchCellCb          *cellCb;
-CmLteTimingInfo   key;
-#endif
+RgSchCfgElem* rgSCHDbmGetPndngRgrCfgElemByKey(RgSchCellCb *cellCb,CmLteTimingInfo  key)
 {
    CmLList  *tmpNode;
 
@@ -1564,17 +1176,7 @@ CmLteTimingInfo   key;
  *  @param[in]  *cfgElem 
  *  @return  RgSchCfgElem*
  **/
-#ifdef ANSI
-RgSchCfgElem* rgSCHDbmDelCrntRgrCfgElem
-(
-RgSchCellCb       *cellCb,
-RgSchCfgElem      *cfgElem
-)
-#else
-RgSchCfgElem* rgSCHDbmDelCrntRgrCfgElem(cellCb, cfgElem)
-RgSchCellCb       *cellCb;
-RgSchCfgElem      *cfgElem;
-#endif
+RgSchCfgElem* rgSCHDbmDelCrntRgrCfgElem(RgSchCellCb *cellCb,RgSchCfgElem *cfgElem)
 {
 
    if(cmLListDelFrm(&cellCb->rgCfgInfo.crntRgrCfgLst,&cfgElem->cfgReqLstEnt))
@@ -1596,17 +1198,7 @@ RgSchCfgElem      *cfgElem;
  *  @param[in]  *cfgElem 
  *  @return  RgSchCfgElem*
  **/
-#ifdef ANSI
-RgSchCfgElem* rgSCHDbmDelPndngRgrCfgElem
-(
-RgSchCellCb       *cellCb,
-RgSchCfgElem      *cfgElem
-)
-#else
-RgSchCfgElem* rgSCHDbmDelPndngRgrCfgElem(cellCb, cfgElem)
-RgSchCellCb       *cellCb;
-RgSchCfgElem      *cfgElem;
-#endif
+RgSchCfgElem* rgSCHDbmDelPndngRgrCfgElem(RgSchCellCb *cellCb,RgSchCfgElem *cfgElem)
 {
    if(cmLListDelFrm(&cellCb->rgCfgInfo.pndngRgrCfgLst,&cfgElem->cfgReqLstEnt))
    {
@@ -1630,19 +1222,7 @@ RgSchCfgElem      *cfgElem;
  *      -# ROK 
  *      -# RFAILED
  **/
-#ifdef ANSI
-S16 rgSCHDbmRntiDbInit
-(
-RgSchCellCb       *cellCb,
-uint16_t            rntiStart,
-uint16_t            maxRntis
-)
-#else
-S16 rgSCHDbmRntiDbInit(cellCb, rntiStart, maxRntis)
-RgSchCellCb       *cellCb;
-uint16_t            rntiStart;
-uint16_t            maxRntis;
-#endif
+S16 rgSCHDbmRntiDbInit(RgSchCellCb *cellCb,uint16_t rntiStart,uint16_t  maxRntis)
 {
    uint16_t rnti;
    RgSchRntiLnk   *rntiPool;
@@ -1699,15 +1279,7 @@ uint16_t            maxRntis;
  *  @param[in]  *cellCb
  *  @return  Void
  **/
-#ifdef ANSI
-Void rgSCHDbmRntiDbDeInit
-(
-RgSchCellCb       *cellCb
-)
-#else
-Void rgSCHDbmRntiDbDeInit(cellCb)
-RgSchCellCb       *cellCb;
-#endif
+Void rgSCHDbmRntiDbDeInit(RgSchCellCb *cellCb)
 {
    /* ccpu00117052 - MOD - Passing double pointer
    for proper NULLP assignment*/
@@ -1734,15 +1306,7 @@ RgSchCellCb       *cellCb;
  *  @param[in]  *cellCb
  *  @return  RgSchRntiLnk*
  **/
-#ifdef ANSI
-RgSchRntiLnk* rgSCHDbmGetRnti
-(
-RgSchCellCb       *cellCb
-)
-#else
-RgSchRntiLnk* rgSCHDbmGetRnti(cellCb)
-RgSchCellCb       *cellCb;
-#endif
+RgSchRntiLnk* rgSCHDbmGetRnti(RgSchCellCb *cellCb)
 {
    RgSchRntiLnk *rntiLnk;
 
@@ -1787,17 +1351,7 @@ RgSchCellCb       *cellCb;
  *  @param[in]  rntiLnk
  *  @return  Void
  **/
-#ifdef ANSI
-Void rgSCHDbmRlsRnti
-(
-RgSchCellCb       *cellCb,
-RgSchRntiLnk      *rntiLnk
-)
-#else
-Void rgSCHDbmRlsRnti(cellCb, rntiLnk)
-RgSchCellCb       *cellCb;
-RgSchRntiLnk      *rntiLnk;
-#endif
+Void rgSCHDbmRlsRnti(RgSchCellCb *cellCb,RgSchRntiLnk *rntiLnk)
 {
 #ifdef EMTC_ENABLE
       if(ROK==rgSCHDbmPutEmtcRnti(cellCb,rntiLnk))
@@ -1840,17 +1394,7 @@ return;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-static S16 rgSCHDbmInitUeTfuPendLst
-(
-RgSchCellCb    *cellCb,
-uint16_t            numBins
-)
-#else
-static S16 rgSCHDbmInitUeTfuPendLst(cellCb, numBins)
-RgSchCellCb    *cellCb;
-uint16_t            numBins;
-#endif
+static S16 rgSCHDbmInitUeTfuPendLst(RgSchCellCb    *cellCb,uint16_t  numBins)
 {
    RgSchUePucchRecpInfo pucchInfo;
 
@@ -1881,15 +1425,7 @@ uint16_t            numBins;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 rgSCHDbmDeInitUeTfuPendLst
-(
-RgSchCellCb       *cellCb
-)
-#else
-S16 rgSCHDbmDeInitUeTfuPendLst(cellCb)
-RgSchCellCb       *cellCb;
-#endif
+S16 rgSCHDbmDeInitUeTfuPendLst(RgSchCellCb *cellCb)
 {
 
    cmHashListDeinit(&cellCb->ueTfuPendLst);

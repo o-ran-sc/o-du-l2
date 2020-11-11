@@ -163,19 +163,12 @@ RguL2MUlThrpMeasReq kwLiRguL2MUlThrpMeasReqMt[] =
  *      -# ROK 
  */
 
-#ifdef ANSI
 S16 RlcLiRguBndReq
 (
 Pst  *post,                       /* post structure */
 SuId suId,                      /* Service User Id */
 SpId spId                       /* Service Provider Id */
 )
-#else
-S16 RlcLiRguBndReq(post, suId, spId)
-Pst  *post;                       /* post structure */
-SuId suId;                      /* Service User Id */
-SpId spId;                      /* Service Provider Id */
-#endif
 {
 
    /* jump to specific primitive depending on configured selector */
@@ -205,19 +198,7 @@ SpId spId;                      /* Service Provider Id */
  *      -# ROK 
  */
 
-#ifdef ANSI
-S16 RlcLiRguUbndReq
-(
-Pst         *post,
-SpId        spId,
-Reason      reason
-)
-#else
-S16 RlcLiRguUbndReq(post, spId, reason)
-Pst         *post;
-SpId        spId;
-Reason      reason;
-#endif
+S16 RlcLiRguUbndReq(Pst *post,SpId spId,Reason reason)
 {
 
    /* jump to specific primitive depending on configured selector */
@@ -252,19 +233,7 @@ Reason      reason;
  *      -# RFAILED
  *
  */
-#ifdef ANSI
-S16 RlcLiRguL2MUlThrpMeasReq
-(
-Pst                     *post,
-SpId                    spId,
-RguL2MUlThrpMeasReqInfo *l2mUlThrpMeasReq
-)
-#else
-S16 RlcLiRguL2MUlThrpMeasReq(post, spId, l2mUlThrpMeasReq)
-Pst                     *post;
-SpId                    spId;
-RguL2MUlThrpMeasReqInfo *l2mUlThrpMeasReq;
-#endif
+S16 RlcLiRguL2MUlThrpMeasReq(Pst *post,SpId spId,RguL2MUlThrpMeasReqInfo *l2mUlThrpMeasReq)
 {
 
    /* jump to specific primitive depending on configured selector */
@@ -282,15 +251,7 @@ RguL2MUlThrpMeasReqInfo *l2mUlThrpMeasReq;
 S16 rlcUlBatchProc ARGS ((Void));
 Void rlcUtlFreeUlRBuf ARGS((void));
 
-#ifdef ANSI
-S16 rlcUlBatchProc
-(
-Void
-)
-#else
-S16 rlcUlBatchProc()
-Void;
-#endif
+S16 rlcUlBatchProc(Void)
 {
 /* Read from Ring Buffer and process PDCP packets */
    RguDDatIndInfo   *datInd;
@@ -361,11 +322,7 @@ Void;
  *      -# RFAILED
  *
  */
-#ifdef ANSI
 Void rlcUtlFreeUlRBuf(void)
-#else
-Void rlcUtlFreeUlRBuf()  
-#endif
 {
    RguDDatIndInfo *datInd;
    PTR            elem;
@@ -391,19 +348,7 @@ Void rlcUtlFreeUlRBuf()
 }
 #endif
 #ifdef RLC_MAC_STA_RSP_RBUF
-#ifdef ANSI
-S16 rlcLiRguStaRspRbuf
-(
-Pst               *post,
-SpId              spId,
-Void             *staRsp
-)
-#else
-S16 rlcLiRguStaRspRbuf(post, spId, staRsp)
-Pst               *post;
-SpId              spId;
-Void              *staRsp;
-#endif /* ANSI */
+S16 rlcLiRguStaRspRbuf(Pst *post,SpId spId,Void *staRsp)
 {
    S16 ret1 = ROK;
    
@@ -430,19 +375,7 @@ Void              *staRsp;
 
 #endif
 #ifdef RLC_MAC_DAT_REQ_RBUF
-#ifdef ANSI
-S16 rlcLiRguDatReqRbuf
-(
-Pst               *post,
-SpId              spId,
-Void             *datReq
-)
-#else
-S16 rlcLiRguDatReqRbuf(post, spId, datReq)
-Pst               *post;
-SpId              spId;
-Void             *datReq;
-#endif /* ANSI */
+S16 rlcLiRguDatReqRbuf(Pst *post,SpId spId,Void *datReq)
 {
    S16 ret1 = ROK;
    

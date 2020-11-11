@@ -145,7 +145,6 @@ static S16 STmrDeregHndlr ARGS((
 */
 /* ss029.103: addition: procId added and timer function type modified */ 
 #ifndef SS_MULTIPLE_PROCS
-#ifdef ANSI
 S16 SRegCfgTmr
 (
 Ent ent,                    /* entity */
@@ -154,14 +153,6 @@ S16 period,                 /* period */
 S16 units,                  /* period units */
 PFS16 tmrFnct               /* timer function, typically SActvTmr */
 )
-#else
-S16 SRegCfgTmr(ent, inst, period, units, tmrFnct)
-Ent ent;                    /* entity */
-Inst inst;                  /* instance */
-S16 period;                 /* period */
-S16 units;                  /* period units*/
-PFS16 tmrFnct;              /* timer function, typically SActvTmr */
-#endif
 {
    S16 ret;
    /* ss015.301 - Enclosed all timer activation functions in a union. */
@@ -177,7 +168,6 @@ PFS16 tmrFnct;              /* timer function, typically SActvTmr */
 
 #else /* SS_MULTIPLE_PROCS */
 
-#ifdef ANSI
 S16 SRegCfgTmr
 (
 ProcId proc,                /* processor */
@@ -187,16 +177,6 @@ S16 period,                 /* period */
 S16 units,                  /* period units */
 PAIFTMRS16 tmrFnct               /* timer function, typically SActvTmr */
 )
-#else
-S16 SRegCfgTmr(proc, ent, inst, period, units, tmrFnct)
-ProcId proc;                /* processor */
-Ent ent;                    /* entity */
-Inst inst;                  /* instance */
-S16 period;                 /* period */
-S16 units;                  /* period units*/
-PAIFTMRS16 tmrFnct;              /* timer function, typically SActvTmr */
-#endif
-
 {
    S16 ret;
    /* ss015.301 - Enclosed all timer activation functions in a union. */
@@ -235,7 +215,6 @@ PAIFTMRS16 tmrFnct;              /* timer function, typically SActvTmr */
 *       File:  ss_timer.c
 *
 */
-#ifdef ANSI
 S16 SRegCfgTmrMt
 (
 Ent ent,                    /* entity */
@@ -244,14 +223,6 @@ S16 period,                 /* period */
 S16 units,                  /* period units */
 PAIFTMRS16 tmrFnctMt        /* timer function, typically SActvTmr */
 )
-#else
-S16 SRegCfgTmrMt(ent, inst, period, units, tmrFnctMt)
-Ent ent;                    /* entity */
-Inst inst;                  /* instance */
-S16 period;                 /* period */
-S16 units;                  /* period units*/
-PAIFTMRS16 tmrFnctMt;       /* timer function, typically SActvTmr */
-#endif
 {
    S16 ret;
    /* ss015.301 - Enclosed all timer activation functions in a union. */
@@ -291,7 +262,6 @@ PAIFTMRS16 tmrFnctMt;       /* timer function, typically SActvTmr */
 
 #ifndef SS_MULTIPLE_PROCS
 
-#ifdef ANSI
 static S16 STmrRegHndlr
 (
 Ent ent,                    /* entity */
@@ -300,21 +270,12 @@ S16 period,                 /* period */
 S16 units,                  /* period units */
 SsTmrActvFn ssTmrActvFn               /* timer function, typically SActvTmr */
 )
-#else
-static S16 STmrRegHndlr(ent, inst, period, units, ssTmrActvFn)
-Ent ent;                    /* entity */
-Inst inst;                  /* instance */
-S16 period;                 /* period */
-S16 units;                  /* period units*/
-SsTmrActvFn ssTmrActvFn;              /* timer function, typically SActvTmr */
-#endif
 /* ss015.301: Removed the timer handler prototypes guarded
  * under SS_MT_TMR and handled mtFlag in existing timer handlers.
  */
 
 #else /* SS_MULTIPLE_PROCS */
 
-#ifdef ANSI
 static S16 STmrRegHndlr
 (
 ProcId proc,                /* processor */
@@ -324,16 +285,6 @@ S16 period,                 /* period */
 S16 units,                  /* period units */
 SsTmrActvFn ssTmrActvFn     /* timer function */
 )
-#else
-static S16 STmrRegHndlr(proc, ent, inst, period, units, ssTmrActvFn)
-ProcId proc;                /* processor */
-Ent ent;                    /* entity */
-Inst inst;                  /* instance */
-S16 period;                 /* period */
-S16 units;                  /* period units*/
-SsTmrActvFn ssTmrActvFn;         /* timer function */
-#endif
-
 #endif /* SS_MULTIPLE_PROCS */
 {
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -616,7 +567,6 @@ SsTmrActvFn ssTmrActvFn;         /* timer function */
 /* ss029.103: addition: procId added and timer function type modified */ 
 #ifndef SS_MULTIPLE_PROCS
 
-#ifdef ANSI
 S16 SDeregCfgTmr
 (
 Ent ent,                    /* entity */
@@ -625,14 +575,6 @@ S16 period,                 /* period */
 S16 units,                  /* period units */
 PFS16 tmrFnct               /* timer function */
 )
-#else
-S16 SDeregCfgTmr(ent, inst, period, units, tmrFnct)
-Ent ent;                    /* entity */
-Inst inst;                  /* instance */
-S16 period;                 /* period */
-S16 units;                  /* period units*/
-PFS16 tmrFnct;              /* timer function */
-#endif
 {
    S16 ret;
    /* ss015.301 Enclosed all timer activation functions in a union. */
@@ -648,7 +590,6 @@ PFS16 tmrFnct;              /* timer function */
 
 #else /* SS_MULTIPLE_PROCS */
 
-#ifdef ANSI
 S16 SDeregCfgTmr
 (
 ProcId proc,                /* processor */
@@ -658,15 +599,6 @@ S16 period,                 /* period */
 S16 units,                  /* period units */
 PAIFTMRS16 tmrFnct               /* timer function */
 )
-#else
-S16 SDeregCfgTmr(proc, ent, inst, period, units, tmrFnct)
-ProcId proc;                /* processor */
-Ent ent;                    /* entity */
-Inst inst;                  /* instance */
-S16 period;                 /* period */
-S16 units;                  /* period units*/
-PAIFTMRS16 tmrFnct;              /* timer function */
-#endif
 {
    S16 ret;
    /* ss015.301 Enclosed all timer activation functions in a union. */ 
@@ -701,7 +633,6 @@ PAIFTMRS16 tmrFnct;              /* timer function */
 *       File:  ss_timer.c
 *
 */
-#ifdef ANSI
 S16 SDeregCfgTmrMt
 (
 Ent ent,                    /* entity */
@@ -710,14 +641,6 @@ S16 period,                 /* period */
 S16 units,                  /* period units */
 PAIFTMRS16 tmrFnctMt               /* timer function */
 )
-#else
-S16 SDeregCfgTmrMt(ent, inst, period, units, tmrFnctMt)
-Ent ent;                    /* entity */
-Inst inst;                  /* instance */
-S16 period;                 /* period */
-S16 units;                  /* period units*/
-PAIFTMRS16 tmrFnctMt;              /* timer function */
-#endif
 {
    S16 ret;
    /* ss015.301 Enclosed all timer activation functions in a union. */
@@ -755,7 +678,6 @@ PAIFTMRS16 tmrFnctMt;              /* timer function */
  * functions are enclosed in a union.
  */
 #ifndef SS_MULTIPLE_PROCS
-#ifdef ANSI
 static S16 STmrDeregHndlr
 (
 Ent ent,                    /* entity */
@@ -764,24 +686,12 @@ S16 period,                 /* period */
 S16 units,                  /* period units */
 SsTmrActvFn ssTmrActvFn           /* timer function */
 )
-#else
-/* ss017.301: Modified the prototype of STmrDeregHndlr for Non-ANSI
- * compilation.
- */
-static S16 STmrDeregHndlr(ent, inst, period, units, ssTmrActvFn)
-Ent ent;                    /* entity */
-Inst inst;                  /* instance */
-S16 period;                 /* period */
-S16 units;                  /* period units*/
-SsTmrActvFn ssTmrActvFn;          /* timer function */
-#endif
 /* ss015.301: Removed the timer handler prototypes guarded under SS_MT_TMR
  * and handled mtFlag in existing timer handlers.
  */
 
 #else /* SS_MULTIPLE_PROCS */
 
-#ifdef ANSI
 static S16 STmrDeregHndlr
 (
 ProcId proc,                /* processor */
@@ -791,15 +701,6 @@ S16 period,                 /* period */
 S16 units,                  /* period units */
 SsTmrActvFn ssTmrActvFn          /* timer function */
 )
-#else
-static S16 STmrDeregHndlr(proc, ent, inst, period, units, ssTmrActvFn)
-ProcId proc;                /* processor */
-Ent ent;                    /* entity */
-Inst inst;                  /* instance */
-S16 period;                 /* period */
-S16 units;                  /* period units*/
-SsTmrActvFn ssTmrActvFn;         /* timer function */
-#endif
 
 #endif /* SS_MULTIPLE_PROCS */
 {

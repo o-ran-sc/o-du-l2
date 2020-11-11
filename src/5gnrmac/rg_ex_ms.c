@@ -73,17 +73,11 @@ registered with SSI during the LTE MAC Task initialization.
  *  @param[in]  Reason reason.
  *  @return  void
  **/
-#ifdef ANSI
 static inline void rgHdlSMEvents
 (
 Pst     *pst,                       /* post structure       */
 Buffer  *mBuf                       /* message buffer       */
 )
-#else
-static inline void rgHdlSMEvents(pst, mBuf)
-Pst     *pst;                       /* post structure       */
-Buffer  *mBuf;                      /* message buffer       */
-#endif
 {
    switch(pst->event)
    {
@@ -154,17 +148,11 @@ Buffer  *mBuf;                      /* message buffer       */
  *  @param[in]  Reason reason.
  *  @return  void
  **/
-#ifdef ANSI
 static inline void rgHdlNHEvents
 (
 Pst     *pst,                       /* post structure       */
 Buffer  *mBuf                       /* message buffer       */
 )
-#else
-static inline void rgHdlNHEvents(pst, mBuf)
-Pst     *pst;                       /* post structure       */
-Buffer  *mBuf;                      /* message buffer       */
-#endif
 {
    switch(pst->event)
    {
@@ -199,17 +187,11 @@ Buffer  *mBuf;                      /* message buffer       */
  *  @param[in]  Reason reason.
  *  @return  void
  **/
-#ifdef ANSI
 static inline void rgHdlKWEvents
 (
 Pst     *pst,                       /* post structure       */
 Buffer  *mBuf                       /* message buffer       */
 )
-#else
-static inline void rgHdlKWEvents(pst, mBuf)
-Pst     *pst;                       /* post structure       */
-Buffer  *mBuf;                      /* message buffer       */
-#endif
 {
    switch(pst->event)
    {
@@ -254,17 +236,11 @@ Buffer  *mBuf;                      /* message buffer       */
  *  @param[in]  Reason reason.
  *  @return  void
  **/
-#ifdef ANSI
 static inline void rgHdlTFEvents
 (
 Pst     *pst,                       /* post structure       */
 Buffer  *mBuf                       /* message buffer       */
 )
-#else
-static inline void rgHdlTFEvents(pst, mBuf)
-Pst     *pst;                       /* post structure       */
-Buffer  *mBuf;                      /* message buffer       */
-#endif
 {
    switch(pst->event)
    {
@@ -307,17 +283,11 @@ Buffer  *mBuf;                      /* message buffer       */
  *  @param[in]  Reason reason.
  *  @return  void
  **/
-#ifdef ANSI
 static inline void rgHdlRGEvents
 (
 Pst     *pst,                       /* post structure       */
 Buffer  *mBuf                       /* message buffer       */
 )
-#else
-static inline void rgHdlRGEvents(pst, mBuf)
-Pst     *pst;                       /* post structure       */
-Buffer  *mBuf;                      /* message buffer       */
-#endif
 {
    switch(pst->event)
    {
@@ -431,17 +401,11 @@ Buffer  *mBuf;                      /* message buffer       */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
 S16 rgActvTsk
 (
 Pst     *pst,                       /* post structure       */
 Buffer  *mBuf                       /* message buffer       */
 )
-#else
-S16 rgActvTsk(pst, mBuf)
-Pst     *pst;                       /* post structure       */
-Buffer  *mBuf;                      /* message buffer       */
-#endif
 {
    switch(pst->srcEnt)
    {

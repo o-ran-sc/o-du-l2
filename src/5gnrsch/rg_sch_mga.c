@@ -124,19 +124,7 @@ uint8_t                *noSubfrms));
  *      -# ROK
  **/
 
-#ifdef ANSI
-S16 rgSCHMeasGapANRepUeCfg
-(
-RgSchCellCb *cell,
-RgSchUeCb   *ue,
-RgrUeCfg    *ueCfg
-)
-#else
-S16 rgSCHMeasGapANRepUeCfg(cell, ue, ueCfg)
-RgSchCellCb *cell;
-RgSchUeCb   *ue;
-RgrUeCfg    *ueCfg;
-#endif
+S16 rgSCHMeasGapANRepUeCfg(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeCfg *ueCfg)
 {
 
    ue->measGapCb.isMesGapEnabled = ueCfg->ueMesGapCfg.isMesGapEnabled;
@@ -197,19 +185,7 @@ RgrUeCfg    *ueCfg;
  *      -# RFAILED
  **/
 
-#ifdef ANSI
-S16 rgSCHMeasGapANRepUeRecfg
-(
-RgSchCellCb    *cell,
-RgSchUeCb      *ue,
-RgrUeRecfg     *ueRecfg
-)
-#else
-S16 rgSCHMeasGapANRepUeRecfg(cell, ue, ueRecfg)
-RgSchCellCb    *cell;
-RgSchUeCb      *ue;
-RgrUeRecfg     *ueRecfg;
-#endif
+S16 rgSCHMeasGapANRepUeRecfg(RgSchCellCb  *cell,RgSchUeCb *ue,RgrUeRecfg *ueRecfg)
 {
    RgrUeMeasGapCfg         *reCfg;
    RgSchUeMeasGapCb        *ueMeasCb;
@@ -301,19 +277,7 @@ RgrUeRecfg     *ueRecfg;
   * @param 
   * @return 
   */
-#ifdef ANSI
-static S16 rgSCHMeasGapANRepUtlAddUe 
-(
-RgSchCellCb       *cell,
-RgSchUeCb          *ue,
-RgrUeMeasGapCfg    *cfg
-)
-#else
-static S16 rgSCHMeasGapANRepUtlAddUe (cell, ue, cfg)
-RgSchCellCb         *cell;
-RgSchUeCb            *ue;
-RgrUeMeasGapCfg      *cfg;
-#endif
+static S16 rgSCHMeasGapANRepUtlAddUe(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeMeasGapCfg *cfg)
 {
 
    switch (cfg->gapPrd)
@@ -353,17 +317,7 @@ RgrUeMeasGapCfg      *cfg;
   * @param 
   * @return 
   */
-#ifdef ANSI
-static S16 rgSCHMeasGapANRepUtlRmvUe 
-(
-RgSchCellCb       *cell,
-RgSchUeCb          *ue
-)
-#else
-static S16 rgSCHMeasGapANRepUtlRmvUe (cell, ue)
-RgSchCellCb       *cell;
-RgSchUeCb          *ue;
-#endif
+static S16 rgSCHMeasGapANRepUtlRmvUe(RgSchCellCb *cell,RgSchUeCb *ue)
 {
 
    switch (ue->measGapCb.gapPrd)
@@ -413,19 +367,7 @@ RgSchUeCb          *ue;
  *      -# ROK
  **/
 
-#ifdef ANSI
-Void rgSCHMeasGapANRepUeDel
-(
-RgSchCellCb *cell,
-RgSchUeCb   *ue,
-Bool        isUeDel
-)
-#else
-Void rgSCHMeasGapANRepUeDel(cell, ue, isUeDel)
-RgSchCellCb *cell;
-RgSchUeCb   *ue;
-Bool        isUeDel;
-#endif
+Void rgSCHMeasGapANRepUeDel(RgSchCellCb *cell,RgSchUeCb *ue,Bool isUeDel)
 {
 
    if (ue->measGapCb.isMesGapEnabled)
@@ -491,26 +433,16 @@ Bool        isUeDel;
   * @param 
   * @return 
   */
-#ifdef ANSI
-static S16 rgSchAckNackRepUtlRmvUe
-(
- RgSchCellCb      *cell,
- RgSchUeCb        *ue
- )
-#else
-static S16 rgSchAckNackRepUtlRmvUe (cell, ue)
- RgSchCellCb      *cell;
- RgSchUeCb        *ue;
-#endif
+static S16 rgSchAckNackRepUtlRmvUe(RgSchCellCb *cell,RgSchUeCb *ue)
 {
 
 
-   uint8_t                hqIdx;
-   uint8_t                repIdx;
+   uint8_t           hqIdx;
+   uint8_t           repIdx;
    RgSchDlHqProcCb   *hqP;
-   uint8_t                tbCnt;
+   uint8_t           tbCnt;
 
-   RgSchDlHqEnt          *hqEnt = RG_SCH_CMN_GET_UE_HQE(ue, cell);
+   RgSchDlHqEnt      *hqEnt = RG_SCH_CMN_GET_UE_HQE(ue, cell);
 
    for (hqIdx = 0; hqIdx < hqEnt->numHqPrcs; hqIdx++)
    {
@@ -602,17 +534,9 @@ static S16 rgSchAckNackRepUtlRmvUe (cell, ue)
  *      -# ROK
  **/
 
-#ifdef ANSI
-S16 rgSCHMeasGapANRepTtiHndl
-(
-RgSchCellCb *cell
-)
-#else
-S16 rgSCHMeasGapANRepTtiHndl(cell)
-RgSchCellCb *cell;
-#endif
+S16 rgSCHMeasGapANRepTtiHndl(RgSchCellCb *cell)
 {
-   uint8_t               offset;
+   uint8_t          offset;
    CmLListCp        *queue;
    RgSchDlSf        *dlSf;
    CmLteTimingInfo   repTime;
@@ -682,17 +606,7 @@ RgSchCellCb *cell;
   * @param  CmLListCp   *ackNakRepQ
   * @return Void
   */
-#ifdef ANSI
-static Void rgSchAckNackRepUtlHdlTti
-(
-RgSchCellCb *cell,
-CmLListCp   *ackNackRepQ
-)
-#else
-static Void rgSchAckNackRepUtlHdlTti (cell, ackNackRepQ)
-RgSchCellCb *cell;
-CmLListCp   *ackNackRepQ;
-#endif
+static Void rgSchAckNackRepUtlHdlTti(RgSchCellCb *cell,CmLListCp   *ackNackRepQ)
 {
    CmLList           *node;
    RgSchUeCb         *ue;
@@ -727,17 +641,7 @@ CmLListCp   *ackNackRepQ;
   * @param 
   * @return 
   */
-#ifdef ANSI
-static Void rgSCHMeasGapANRepUtlHdlTti
-(
-RgSchCellCb *cell,
-CmLListCp   *measGapQ
-)
-#else
-static Void rgSCHMeasGapANRepUtlHdlTti (cell, measGapQ)
-RgSchCellCb *cell;
-CmLListCp   *measGapQ;
-#endif
+static Void rgSCHMeasGapANRepUtlHdlTti(RgSchCellCb *cell,CmLListCp   *measGapQ)
 {
    CmLList           *node;
    RgSchUeCb         *ue;
@@ -800,33 +704,23 @@ CmLListCp   *measGapQ;
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-S16 rgSCHMeasGapANRepGetDlInactvUe
-(
-RgSchCellCb *cell,
-CmLListCp   *dlInactvUeLst
-)
-#else
-S16 rgSCHMeasGapANRepGetDlInactvUe(cell, dlInactvUeLst)
-RgSchCellCb *cell;
-CmLListCp   *dlInactvUeLst;
-#endif
+S16 rgSCHMeasGapANRepGetDlInactvUe(RgSchCellCb *cell,CmLListCp   *dlInactvUeLst)
 {
-   uint8_t                offset;
+   uint8_t           offset;
    CmLList           *node;
    CmLList           *hqNode;
    CmLListCp         *queue;
    RgSchUeCb         *ue;
    RgSchDlSf         *dlSf;
    CmLteTimingInfo   ackNakTime;
-   uint16_t               schedTime;
-   uint8_t                harqFdbkOffset;
+   uint16_t          schedTime;
+   uint8_t           harqFdbkOffset;
 #ifdef LTE_TDD
-   uint8_t                repCntr;
+   uint8_t           repCntr;
 #endif
    RgSchDlHqProcCb   *hqP;
    RgSchDlHqTbCb     *tbCb;
-   uint32_t               i;
+   uint32_t          i;
 
    schedTime = cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G + cell->crntTime.slot + RG_DL_DELTA; 
 
@@ -1005,35 +899,25 @@ CmLListCp   *dlInactvUeLst;
  *      -# ROK
  **/
 
-#ifdef ANSI
-S16 rgSCHMeasGapANRepGetUlInactvUe
-(
-RgSchCellCb *cell,
-CmLListCp   *ulInactvUeLst
-)
-#else
-S16 rgSCHMeasGapANRepGetUlInactvUe(cell, ulInactvUeLst)
-RgSchCellCb *cell;
-CmLListCp   *ulInactvUeLst;
-#endif
+S16 rgSCHMeasGapANRepGetUlInactvUe(RgSchCellCb *cell,CmLListCp   *ulInactvUeLst)
 {
 
-   uint8_t                offset;
-   CmLList           *node;
-   CmLList           *hqNode;
-   CmLListCp         *queue;
-   RgSchUeCb         *ue;
-   CmLteTimingInfo   ackNakTime;
-   RgSchDlSf         *dlSf;
-   uint16_t               schedTime;
-   uint8_t                pdcchToPuschGap;
-   uint8_t                idx=0;
+   uint8_t         offset;
+   CmLList         *node;
+   CmLList         *hqNode;
+   CmLListCp       *queue;
+   RgSchUeCb       *ue;
+   CmLteTimingInfo ackNakTime;
+   RgSchDlSf       *dlSf;
+   uint16_t        schedTime;
+   uint8_t         pdcchToPuschGap;
+   uint8_t         idx=0;
 #ifdef LTE_TDD
-   uint8_t                repCntr;
+   uint8_t         repCntr;
 #endif
    RgSchDlHqProcCb   *hqP;
    RgSchDlHqTbCb     *tbCb;
-   uint32_t               i;
+   uint32_t          i;
 
    /*ccpu00139481- Meas Gap should be monitored in UL with TFU_ULCNTRL_DLDELTA*/
    schedTime = cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G + cell->crntTime.slot + \
@@ -1182,17 +1066,7 @@ CmLListCp   *ulInactvUeLst;
  *      -# ROK
  **/
 
-#ifdef ANSI
-Void rgSCHMeasGapANRepDlInactvTmrExpry
-(
-RgSchUeCb *ue,
-uint8_t         tmrEvnt
-)
-#else
-Void rgSCHMeasGapANRepDlInactvTmrExpry(ue, tmrEvnt)
-RgSchUeCb *ue;
-uint8_t         tmrEvnt;
-#endif
+Void rgSCHMeasGapANRepDlInactvTmrExpry(RgSchUeCb *ue,uint8_t tmrEvnt)
 {
 
    RgSchCellCb    *cell = ue->cell;
@@ -1241,17 +1115,7 @@ uint8_t         tmrEvnt;
  *      -# ROK
  **/
 
-#ifdef ANSI
-Void rgSCHMeasGapANRepUlInactvTmrExpry
-(
-RgSchUeCb *ue,
-uint8_t         tmrEvnt
-)
-#else
-Void rgSCHMeasGapANRepUlInactvTmrExpry(ue, tmrEvnt)
-RgSchUeCb *ue;
-uint8_t         tmrEvnt;
-#endif
+Void rgSCHMeasGapANRepUlInactvTmrExpry(RgSchUeCb *ue,uint8_t tmrEvnt)
 {
    RgSchCellCb       *cell = ue->cell;
 
@@ -1294,15 +1158,7 @@ uint8_t         tmrEvnt;
  *      -# ROK
  **/
 
-#ifdef ANSI
-Void rgSCHMeasGapANRepTmrExpry
-(
-RgSchUeCb *ue
-)
-#else
-Void rgSCHMeasGapANRepTmrExpry(ue)
-RgSchUeCb *ue;
-#endif
+Void rgSCHMeasGapANRepTmrExpry(RgSchUeCb *ue)
 {
 
    ue->measGapCb.isMeasuring = FALSE;
@@ -1333,15 +1189,7 @@ RgSchUeCb *ue;
  *      -# ROK
  **/
 
-#ifdef ANSI
-Void rgSCHAckNakRepTmrExpry
-(
-RgSchUeCb *ue
-)
-#else
-Void rgSCHAckNakRepTmrExpry(ue)
-RgSchUeCb *ue;
-#endif
+Void rgSCHAckNakRepTmrExpry(RgSchUeCb *ue)
 {
 
    ue->ackNakRepCb.isAckNakRep = FALSE;
@@ -1382,17 +1230,7 @@ RgSchUeCb *ue;
  *      -# ROK
  **/
 
-#ifdef ANSI
-Void rgSCHAckNakRepAddToQ
-(
-RgSchCellCb       *cell,
-RgSchDlSf         *crntDlSf
-)
-#else
-Void rgSCHAckNakRepAddToQ(cell, crntDlSf)
-RgSchCellCb          *cell;
-RgSchDlSf            *crntDlSf;
-#endif
+Void rgSCHAckNakRepAddToQ(RgSchCellCb       *cell,RgSchDlSf         *crntDlSf)
 {
    RgSchUeCb         *ue;
    CmLList           *node;
@@ -1449,28 +1287,14 @@ RgSchDlSf            *crntDlSf;
  *      
  **/
 
-#ifdef ANSI
-static uint8_t rgSCHAckNakRepFindUlDuration
-(
-RgSchCellCb       *cell,
-RgSchDlSf         *dlSf,
-CmLteTimingInfo   repTime,
-uint8_t                repCnt
-)
-#else
-static uint8_t rgSCHAckNakRepFindUlDuration(cell, dlSf, repTime, repCnt)
-RgSchCellCb       *cell;
-RgSchDlSf         *dlSf;
-CmLteTimingInfo   repTime;
-uint8_t                repCnt;
-#endif
+static uint8_t rgSCHAckNakRepFindUlDuration(RgSchCellCb *cell,RgSchDlSf *dlSf,CmLteTimingInfo repTime,uint8_t repCnt)
 {
    CmLteTimingInfo   ulfrm;
    uint8_t    noSubfrms = 0;
    uint16_t   ulDlCfgIdx = cell->ulDlCfgIdx;
-   S16               rem = 0;
+   S16   rem = 0;
    S16   idx;
-   S8                diff;
+   S8    diff;
 
    rgSCHAckNakRepGetUlOffsetFrmDl(dlSf, repTime, &noSubfrms);
    RG_SCH_ADD_TO_CRNT_TIME(repTime, ulfrm, noSubfrms);
@@ -1510,20 +1334,8 @@ uint8_t                repCnt;
  *      
  **/
 
-#ifdef ANSI
-static Void rgSCHAckNakRepGetUlOffsetFrmDl 
-(
-RgSchDlSf         *dlSf,
-CmLteTimingInfo   crntDlTime,
-uint8_t                *noSubfrms 
-)
-#else
-static Void rgSCHAckNakRepGetUlOffsetFrmDl(dlSf, crntDlTime, noSubfrms)
-RgSchDlSf         *dlSf;
-CmLteTimingInfo   crntDlTime;
-uint8_t                *noSubfrms;
-#endif
-         {
+static Void rgSCHAckNakRepGetUlOffsetFrmDl(RgSchDlSf *dlSf,CmLteTimingInfo crntDlTime,uint8_t *noSubfrms )
+{
 
    if(dlSf->dlFdbkInfo.sfnOffset != 0)
             {

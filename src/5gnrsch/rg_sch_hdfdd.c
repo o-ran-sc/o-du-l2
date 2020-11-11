@@ -92,19 +92,7 @@ extern "C" {
  *      -# RFAILED
 */ 
 
-#ifdef ANSI
-S16 rgSCHHdFddUeCfg 
-(
-RgSchCellCb  *cellCb,
-RgSchUeCb *ueCb,
-Bool hdFddEnbl
-)
-#else /* ANSI */
-S16 rgSCHHdFddUeCfg (cellCb, ueCb, hdFddEnbl)
-RgSchCellCb  *cellCb;
-RgSchUeCb *ueCb;
-Bool hdFddEnbl;
-#endif /* ANSI */
+S16 rgSCHHdFddUeCfg(RgSchCellCb  *cellCb,RgSchUeCb *ueCb,Bool hdFddEnbl)
 {
    uint8_t sfi;
 
@@ -194,17 +182,7 @@ Bool hdFddEnbl;
  *      -# ROK
 *
 */
-#ifdef ANSI
-S16 rgSCHHdFddUeDel 
-(
-RgSchCellCb *cellCb,
-RgSchUeCb   *ueCb
-)
-#else /* ANSI */
-S16 rgSCHHdFddUeDel(cellCb, ueCb)
-RgSchCellCb *cellCb;
-RgSchUeCb   *ueCb;
-#endif /* ANSI */
+S16 rgSCHHdFddUeDel(RgSchCellCb *cellCb,RgSchUeCb   *ueCb)
 {
 
    RLOG_ARG2(L_DEBUG,DBG_CELLID,cellCb->cellId,
@@ -240,30 +218,22 @@ RgSchUeCb   *ueCb;
  *  @return    None
  */
 
-#ifdef ANSI
-Void rgSCHCmnHdFddPtUlMrk 
-(
-RgSchCellCb *cellCb
-)
-#else /* ANSI */
-Void rgSCHCmnHdFddPtUlMrk (cellCb)
-RgSchCellCb *cellCb;
-#endif /* ANSI */
+Void rgSCHCmnHdFddPtUlMrk(RgSchCellCb *cellCb)
 {
-   uint16_t                    sfn; /* System Frame Number */
-   uint32_t                    pti; /* Index into Periodic table */
-   uint16_t                    sfi; /* Index into HDFDD state table */
-   CmLListCp              *cqiLst;
-   CmLListCp              *srsLst;
-   CmLListCp              *srLst;
-   CmLListCp              *riLst;
-   CmLList                *cqiNode;
-   CmLList                *srsNode;
-   CmLList                *srNode;
-   CmLList                *riNode;
-   CmLteTimingInfo        timeInfo;
-   RgSchUePCqiCb          *cqiCb = NULLP;
-   RgSchUePCqiCb          *riCb = NULLP;
+   uint16_t           sfn; /* System Frame Number */
+   uint32_t           pti; /* Index into Periodic table */
+   uint16_t           sfi; /* Index into HDFDD state table */
+   CmLListCp          *cqiLst;
+   CmLListCp          *srsLst;
+   CmLListCp          *srLst;
+   CmLListCp          *riLst;
+   CmLList            *cqiNode;
+   CmLList            *srsNode;
+   CmLList            *srNode;
+   CmLList            *riNode;
+   CmLteTimingInfo    timeInfo;
+   RgSchUePCqiCb      *cqiCb = NULLP;
+   RgSchUePCqiCb      *riCb = NULLP;
 
 
    timeInfo = cellCb->crntTime;
@@ -372,25 +342,13 @@ RgSchCellCb *cellCb;
  *  @return    None
  *
  */
-#ifdef ANSI
-Void rgSCHCmnHdFddChkUlAllow
-( 
- RgSchCellCb *cellCb,
- RgSchUeCb   *ueCb,
- uint8_t          *allow
-)
-#else /* ANSI */
-Void rgSCHCmnHdFddChkUlAllow ( cellCb, ueCb, allow)
-RgSchCellCb *cellCb;
-RgSchUeCb   *ueCb;
-uint8_t          *allow;
-#endif /* ANSI */
+Void rgSCHCmnHdFddChkUlAllow(RgSchCellCb *cellCb,RgSchUeCb *ueCb,uint8_t *allow)
 {
-   uint16_t              sfn;
-   uint16_t              sfi;
+   uint16_t         sfn;
+   uint16_t         sfi;
    CmLteTimingInfo  timeInfo;
    RgSchDlSf        *sf = NULLP; /* Dl subframe info */
-   uint8_t               ulOffset
+   uint8_t          ulOffset
 
    RLOG_ARG1(L_DEBUG,DBG_CELLID,cellCb->cellId, 
             " rgSCHCmnHdFddChkUlAllow: ueId=%d ", ueCb->ueId);
@@ -540,19 +498,12 @@ uint8_t          *allow;
  *                   Valdity of this pointer is not done in this function
  *
  */
-#ifdef ANSI
 Void rgSCHCmnHdFddChkDlAllow 
 (
 RgSchCellCb *cellCb,
 RgSchUeCb *ueCb,
 Bool *allow /* Valdity of this pointer is not done in this function */
 )
-#else /* ANSI */
-Void rgSCHCmnHdFddChkDlAllow ( cellCb, ueCb, allow)
-RgSchCellCb *cellCb;
-RgSchUeCb *ueCb;
-Bool *allow; /* Valdity of this pointer is not done in this function */
-#endif /* ANSI */
 {
    uint16_t     sfn;
    uint16_t     sfi;
@@ -698,21 +649,7 @@ Bool *allow; /* Valdity of this pointer is not done in this function */
  *
  */
 
-#ifdef ANSI
-Void rgSCHCmnHdFddChkNackAllow
-(
-RgSchCellCb *cellCb,
-RgSchUeCb   *ueCb,
-CmLteTimingInfo  timeInfo,
-Bool *sndNACK
-)
-#else /* ANSI */
-Void rgSCHCmnHdFddChkNackAllow(cellCb, ueCb, timeInfo, sndNACK)
-RgSchCellCb *cellCb;
-RgSchUeCb   *ueCb;
-CmLteTimingInfo  timeInfo;
-Bool *sndNACK;
-#endif /* ANSI */
+Void rgSCHCmnHdFddChkNackAllow(RgSchCellCb *cellCb,RgSchUeCb *ueCb,CmLteTimingInfo  timeInfo,Bool *sndNACK)
 {
    RgSchDlSf *sf;
    CmLteTimingInfo  tempTimeInfo;
@@ -773,17 +710,7 @@ Bool *sndNACK;
  *
  *  @return  None
  */
-#ifdef ANSI
-Void rgSCHCmnHdFddUpdULMark
-(
-RgSchCellCb *cellCb,
-RgSchUeCb   *ueCb
-)
-#else /* ANSI */
-Void rgSCHCmnHdFddUpdULMark ( cellCb, ueCb)
-RgSchCellCb *cellCb;
-RgSchUeCb   *ueCb;
-#endif /* ANSI */
+Void rgSCHCmnHdFddUpdULMark(RgSchCellCb *cellCb,RgSchUeCb   *ueCb)
 {
 
    uint16_t sfn;
@@ -853,17 +780,7 @@ RgSchUeCb   *ueCb;
  *  @return  None
  */
 
-#ifdef ANSI
-Void rgSCHCmnHdFddUpdDLMark
-(
-RgSchCellCb *cellCb,
-RgSchUeCb   *ueCb
-)
-#else /* ANSI */
-Void rgSCHCmnHdFddUpdDLMark (cellCb, ueCb)
-RgSchCellCb *cellCb;
-RgSchUeCb   *ueCb;
-#endif /* ANSI */
+Void rgSCHCmnHdFddUpdDLMark(RgSchCellCb *cellCb,RgSchUeCb *ueCb)
 {
 
    uint16_t sfn;
@@ -922,19 +839,7 @@ RgSchUeCb   *ueCb;
  *  @return  None
  */
 
-#ifdef ANSI
-Void rgSCHHdFddGetSfn
-(
- uint16_t *sfn,
- CmLteTimingInfo  timeInfo,
- S16 offset
-)
-#else /* ANSI */
-Void rgSCHHdFddGetSfn (sfn, timeInfo, offset)
- uint16_t *sfn;
- CmLteTimingInfo  timeInfo;
- S16 offset;
-#endif /* ANSI */
+Void rgSCHHdFddGetSfn(uint16_t *sfn,CmLteTimingInfo  timeInfo,S16 offset)
 {
    uint16_t tempSfn;
    S16 tempSfCount;

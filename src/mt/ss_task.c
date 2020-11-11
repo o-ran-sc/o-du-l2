@@ -165,19 +165,12 @@ int          WLS_WakeUp(void* h);
 *
 */
   
-#ifdef ANSI
 S16 SRegInit
 (
 Ent ent,                    /* entity */
 Inst inst,                  /* instance */
 PAIFS16 initFnct            /* initialization function */
 )
-#else
-S16 SRegInit(ent, inst, initFnct)
-Ent ent;                    /* entity */
-Inst inst;                  /* instance */
-PAIFS16 initFnct;           /* initialization function */
-#endif
 {
    /* ss021.103 - Addition for return value and pointer */
    S16         ret;     /* return value */
@@ -343,7 +336,6 @@ PAIFS16 initFnct;           /* initialization function */
 *       File:  ss_task.c
 *
 */
-#ifdef ANSI
 S16 SRegActvTsk
 (
 Ent ent,                       /* entity */
@@ -352,14 +344,6 @@ Ttype ttype,                   /* task type */
 Prior prior,                   /* task priority */
 ActvTsk actvTsk                /* activate task function */
 )
-#else
-S16 SRegActvTsk(ent, inst, ttype, prior, actvTsk)
-Ent ent;                       /* entity */
-Inst inst;                     /* instance */
-Ttype ttype;                   /* task type */
-Prior prior;                   /* task priority */
-ActvTsk actvTsk;               /* activate task function */
-#endif
 {
    S16 ret;
    SSTskId sTskId;
@@ -572,17 +556,11 @@ ActvTsk actvTsk;               /* activate task function */
 *       File:  ss_task.c
 *
 */
-#ifdef ANSI
 S16 SDeregInitTskTmr
 (
 Ent ent,                       /* entity */
 Inst inst                      /* instance */
 )
-#else
-S16 SDeregInitTskTmr(ent, inst)
-Ent ent;                       /* entity */
-Inst inst;                     /* instance */
-#endif
 {
    SsTTskEntry *tTsk;
    SsSTskEntry *sTsk;
@@ -809,7 +787,6 @@ Inst inst;                     /* instance */
 /* ss029.103: modification: procId added */ 
 #ifndef SS_MULTIPLE_PROCS
 
-#ifdef ANSI
 S16 SRegTTsk
 (
 Ent ent,                        /* entity */
@@ -819,19 +796,8 @@ Prior prior,                    /* task priority */
 PAIFS16 initTsk,                /* initialization function */
 ActvTsk actvTsk                 /* activation function */
 )
-#else
-S16 SRegTTsk(ent, inst, type, prior, initTsk, actvTsk)
-Ent ent;                        /* entity */
-Inst inst;                      /* instance */
-Ttype type;                     /* task type */
-Prior prior;                    /* task priority */
-PAIFS16 initTsk;                /* initialization function */
-ActvTsk actvTsk;                /* activation function */
-#endif
-
 #else /* SS_MULTIPLE_PROCS */
 
-#ifdef ANSI
 S16 SRegTTsk
 (
 ProcId proc,                    /* processor */
@@ -842,17 +808,6 @@ Prior prior,                    /* task priority */
 PAIFS16 initTsk,                /* initialization function */
 ActvTsk actvTsk                 /* activation function */
 )
-#else
-S16 SRegTTsk(proc, ent, inst, type, prior, initTsk, actvTsk)
-ProcId proc;                    /* processor */
-Ent ent;                        /* entity */
-Inst inst;                      /* instance */
-Ttype type;                     /* task type */
-Prior prior;                    /* task priority */
-PAIFS16 initTsk;                /* initialization function */
-ActvTsk actvTsk;                /* activation function */
-#endif
-
 #endif /* SS_MULTIPLE_PROCS */
 
 {
@@ -1129,23 +1084,14 @@ ActvTsk actvTsk;                /* activation function */
 *
 **/
 #ifndef SS_MULTIPLE_PROCS
-#ifdef ANSI
 S16 SRegCbTsk
 (
 Ent ent,                        /* entity */
 Inst inst,                      /* instance */
 ActvTsk cbTsk                   /* Callback Function */
 )
-#else
-S16 SRegCbTsk(ent, inst, cbTsk)
-Ent ent;                        /* entity */
-Inst inst;                      /* instance */
-ActvTsk cbTsk;
-#endif
-
 #else /* SS_MULTIPLE_PROCS */
 
-#ifdef ANSI
 S16 SRegCbTsk 
 (
 ProcId proc,                    /* processor */
@@ -1153,13 +1099,6 @@ Ent ent,                        /* entity */
 Inst inst,                       /* instance */
 ActvTsk cbTsk 
 )
-#else
-S16 SRegCbTsk(proc, ent, inst, cbTsk)
-ProcId proc;                    /* processor */
-Ent ent;                        /* entity */
-Inst inst;                      /* instance */
-ActvTsk cbTsk;
-#endif
 #endif /* SS_MULTIPLE_PROCS */
 {
    SsTTskEntry *tTsk;
@@ -1253,33 +1192,19 @@ ActvTsk cbTsk;
 /* ss029.103: addition: procId added */ 
 #ifndef SS_MULTIPLE_PROCS
 
-#ifdef ANSI
 S16 SDeregTTsk
 (
 Ent ent,                        /* entity */
 Inst inst                       /* instance */
 )
-#else
-S16 SDeregTTsk(ent, inst)
-Ent ent;                        /* entity */
-Inst inst;                      /* instance */
-#endif
-
 #else /* SS_MULTIPLE_PROCS */
 
-#ifdef ANSI
 S16 SDeregTTsk
 (
 ProcId proc,                    /* processor */
 Ent ent,                        /* entity */
 Inst inst                       /* instance */
 )
-#else
-S16 SDeregTTsk(proc, ent, inst)
-ProcId proc;                    /* processor */
-Ent ent;                        /* entity */
-Inst inst;                      /* instance */
-#endif
 #endif /* SS_MULTIPLE_PROCS */
 {
    S16          ret;
@@ -1548,17 +1473,11 @@ Inst inst;                      /* instance */
 *       File:  ss_task.c
 *
 */
-#ifdef ANSI
 S16 SCreateSTsk
 (
 SSTskPrior tskPrior,            /* task priority */
 SSTskId *tskId                  /* filled in with system task ID */
 )
-#else
-S16 SCreateSTsk(tskPrior, tskId)
-SSTskPrior tskPrior;            /* task priority */
-SSTskId *tskId;                 /* filled in with system task ID */
-#endif
 {
    S16 ret;
    SsSTskEntry *sTsk;
@@ -1803,7 +1722,6 @@ SSTskId *tskId;                 /* filled in with system task ID */
 *       File:  ss_task.c
 *
 */
-#ifdef ANSI
 S16 SRegLogCfg
 (
 uint8_t mode,
@@ -1812,14 +1730,6 @@ uint32_t size,
 S8 *IPA,
 uint16_t port
 )
-#else
-S16 SRegLogCfg(mode, path, size, IPA, port)
-uint8_t mode;
-S8 *path;
-uint32_t size;
-S8 *IPA;
-uint16_t port
-#endif
 {
 
 #ifdef WIN32
@@ -1966,15 +1876,7 @@ uint16_t port
 *       File:  ss_task.c
 *
 --*/
-#ifdef ANSI
-S16 SFlushBufToLog 
-(
-S8 *logBuf
-)
-#else
-S16 SFlushBufToLog(logBuf)
-S8 *logBuf
-#endif
+S16 SFlushBufToLog (S8 *logBuf)
 {
    S8 *buffer;
    static uint16_t logFileCnt = 0;
@@ -2037,14 +1939,7 @@ S8 *logBuf
 *       File:  ss_task.c
 *
 --*/
-#ifdef ANSI
-S16 SCleanUp
-(
-Void
-)
-#else
-S16 SCleanUp()
-#endif
+S16 SCleanUp(Void)
 {
 
    /*Flush the remaining data in the log file*/
@@ -2098,13 +1993,7 @@ S16 SCleanUp()
 *       File:  ss_task.c
 *
 */
-#ifdef ANSI
-S16 SDeregLogCfg
-(
-)
-#else
 S16 SDeregLogCfg()
-#endif
 {
 
 
@@ -2128,14 +2017,7 @@ S16 SDeregLogCfg()
 *       File:  ss_task.c
 *
 */
-#ifdef ANSI
-Void SStartLogger
-(
-void
-)
-#else
-Void SStartLogger()
-#endif
+Void SStartLogger(void)
 {
 	if (osCp.logger.configured == TRUE)
 	{
@@ -2157,14 +2039,7 @@ Void SStartLogger()
 *       File:  ss_task.c
 *
 */
-#ifdef ANSI
-Void SStopLogger
-(
-void
-)
-#else
-Void SStopLogger()
-#endif
+Void SStopLogger(void)
 {
    osCp.logger.started = FALSE;
 }
@@ -2190,15 +2065,10 @@ Void SStopLogger()
 *       File:  ss_task.c
 *
 */
-#ifdef ANSI
 S16 SRegCpuInfo 
 (
 SCpuInfo *cpuInfo    /* Information about the cores/threads per core */
 )
-#else
-S16 SRegCpuInfo (cpuInfo)
-SCpuInfo *cpuInfo;  /* Information about the cores/threads per core */
-#endif
 {
    uint32_t coreCount = 0;
 
@@ -2253,17 +2123,11 @@ SCpuInfo *cpuInfo;  /* Information about the cores/threads per core */
 *       File:  ss_task.c
 *
 */
-#ifdef ANSI
 S16 SGetAffinity
 (
 SSTskId *tskId,                  /* filled in with system task ID */
 uint32_t *coreId                      /* the core/processor id to which the affinity is set */
 )
-#else
-S16 SGetAffinity(tskId, coreId)
-SSTskId *tskId;                 /* filled in with system task ID */
-uint32_t *coreId;                    /* the core/processor id to which the affinity is set */
-#endif
 {
    S16 ret;
 
@@ -2297,7 +2161,6 @@ uint32_t *coreId;                    /* the core/processor id to which the affin
 *       File:  ss_task.c
 *
 */
-#ifdef ANSI
 S16 SSetAffinity
 (
 SSTskId *tskId,                  /* filled in with system task ID */
@@ -2305,13 +2168,6 @@ SsAffinityMode mode,             /* the mode according to which the affinty is s
 uint32_t coreId,                      /* the core/processor id to which the affinity has to be set */
 SSTskId *tskAssociatedTskId      /* filled in with system task ID of the associated layer */
 )
-#else
-S16 SSetAffinity(tskId, mode, coreId, tskAssociatedTskId)
-SSTskId *tskId;                 /* filled in with system task ID */
-SsAffinityMode mode;            /* the mode according to which the affinty is set */
-uint32_t coreId;                     /* the core/processor id to which the affinity has to be set */
-SSTskId *tskAssociatedTskId;    /* filled in with system task ID of the associated layer */
-#endif
 {
    S16 ret;
   
@@ -2634,15 +2490,10 @@ SSTskId *tskAssociatedTskId;    /* filled in with system task ID of the associat
 *       File:  ss_task.c
 *
 */
-#ifdef ANSI
 S16 SDestroySTsk
 (
 SSTskId tskId                   /* system task to be destroyed */
 )
-#else
-S16 SDestroySTsk(tskId)
-SSTskId tskId;                  /* system task to be destroyed */
-#endif
 {
    S16 ret;
    /* ss029.103: modification: the subscript should be of same type */
@@ -2947,23 +2798,15 @@ SSTskId tskId;                  /* system task to be destroyed */
 /* ss029.103: addition: procId added */ 
 #ifndef SS_MULTIPLE_PROCS
 
-#ifdef ANSI
 S16 SAttachTTsk
 (
 Ent ent,                        /* entity ID of the task */
 Inst inst,                      /* instance ID of the task */
 SSTskId sTskId                  /* system task to use */
 )
-#else
-S16 SAttachTTsk(ent, inst, sTskId)
-Ent ent;                        /* entity ID of the task */
-Inst inst;                      /* instance ID of the task */
-SSTskId sTskId;                 /* system task to use */
-#endif
 
 #else /* SS_MULTIPLE_PROCS */
 
-#ifdef ANSI
 S16 SAttachTTsk
 (
 ProcId proc,                    /* processor ID of the task */
@@ -2971,16 +2814,7 @@ Ent ent,                        /* entity ID of the task */
 Inst inst,                      /* instance ID of the task */
 SSTskId sTskId                  /* system task to use */
 )
-#else
-S16 SAttachTTsk(proc, ent, inst, sTskId)
-ProcId proc;                    /* processor ID of the task */
-Ent ent;                        /* entity ID of the task */
-Inst inst;                      /* instance ID of the task */
-SSTskId sTskId;                 /* system task to use */
-#endif
-
 #endif /* SS_MULTIPLE_PROCS */
-
 {
    S16 ret;
    S16 i;
@@ -3410,33 +3244,20 @@ SSTskId sTskId;                 /* system task to use */
 /* ss029.103: addition: procId added */ 
 #ifndef SS_MULTIPLE_PROCS
 
-#ifdef ANSI
 S16 SDetachTTsk
 (
 Ent ent,                        /* entity ID of the task */
 Inst inst                       /* instance ID of the task */
 )
-#else
-S16 SDetachTTsk(ent, inst)
-Ent ent;                        /* entity ID of the task */
-Inst inst;                      /* instance ID of the task */
-#endif
 
 #else /* SS_MULTIPLE_PROCS */
 
-#ifdef ANSI
 S16 SDetachTTsk
 (
 ProcId proc,                    /* processor ID of the task */
 Ent ent,                        /* entity ID of the task */
 Inst inst                       /* instance ID of the task */
 )
-#else
-S16 SDetachTTsk(proc, ent, inst)
-ProcId proc;                    /* processor ID of the task */
-Ent ent;                        /* entity ID of the task */
-Inst inst;                      /* instance ID of the task */
-#endif
 
 #endif /* SS_MULTIPLE_PROCS */
 
@@ -3744,17 +3565,11 @@ Inst inst;                      /* instance ID of the task */
 *       File:  ss_task.c
 *
 */
-#ifdef ANSI
 S16 SPstTsk
 (
 Pst *pst,                       /* post information */
 Buffer *mBuf                    /* message to post */
 )
-#else
-S16 SPstTsk(pst, mBuf)
-Pst *pst;                       /* post information */
-Buffer *mBuf;                   /* message to post */
-#endif
 {
    S16 r;
    S16 i;
@@ -4392,15 +4207,10 @@ Buffer *mBuf;                   /* message to post */
 */
 /* ss029.103: modification: procId added */
 
-#ifdef ANSI
 S16 SGetTapaTskEntIds
 (
 Ent *ent                        /* entity */
 )
-#else
-S16 SGetTapaTskEntIds(ent)
-Ent *ent;                        /* entity */
-#endif
 {
 
    uint32_t tskCnt = 0;
@@ -4432,15 +4242,10 @@ Ent *ent;                        /* entity */
 */
 /* ss029.103: modification: procId added */
 
-#ifdef ANSI
 S16 SRegForHstGrm
 (
 Ent ent                        /* entity */
 )
-#else
-S16 SRegForHstGrm(ent)
-Ent ent;                        /* entity */
-#endif
 {
 
    uint32_t tskCnt = 0;
@@ -4494,17 +4299,11 @@ Ent ent;                        /* entity */
 *       File:  ss_task.c
 *
 */
-#ifdef ANSI
 S16 SGetHstGrmInfo
 (
 Ent   *entId,
 Bool  *hstReg                        /* entity */
 )
-#else
-S16 SGetHstGrmInfo(entId, hstReg)
-Ent   *entId;
-Bool  *hstReg;                        /* entity */
-#endif
 {
 
    uint32_t tskCnt = 0;
@@ -4533,20 +4332,11 @@ Bool  *hstReg;                        /* entity */
 #endif /* SS_HISTOGRAM_SUPPORT */
 
 #ifdef SS_WATCHDOG
-#ifdef ANSI
-S16 SInitWatchdog
-(
-uint16_t port
-)
-#else
-S16 SInitWatchdog(port)
-uint16_t port;
-#endif
+S16 SInitWatchdog(uint16_t port)
 {
  return ssdInitWatchDog(port);
 }
 
-#ifdef ANSI
 S16 SRegCfgWd
 (
 uint32_t numNodes,
@@ -4556,15 +4346,6 @@ uint32_t timeout,
 WdUserCallback callback,
 void *data
 )
-#else
-S16 SRegCfgWd(numNodes, addr, port, timeout, callback, data)
-uint32_t numNodes;
-uint8_t  *addr[];
-uint16_t port[];
-uint32_t timeout;
-WdUserCallback callback;
-void *data;
-#endif
 {
    Txt prntBuf[PRNTSZE];
    int i = 0;
@@ -4602,15 +4383,7 @@ void *data;
    return ROK;
 }
 
-#ifdef ANSI
-S16 SDeregCfgWd
-(
-void
-)
-#else
 S16 SDeregCfgWd(void)
-void;
-#endif
 {
    Txt prntBuf[PRNTSZE];
    int i = 0;
@@ -4640,15 +4413,10 @@ void;
    return ROK;
 }
 
-#ifdef ANSI
 S16 SStartHrtBt
 (
 uint8_t timeInterval /* time interval */
 )
-#else
-S16 SStartHrtBt(timeInterval)
-uint8_t timeInterval;
-#endif
 {
 
    ssdStartWatchDgTmr(NULLP, SS_TMR_HRTBT, timeInterval);
@@ -4657,15 +4425,7 @@ uint8_t timeInterval;
    return ROK;
 }
 
-#ifdef ANSI
-S16 SStopHrtBt
-(
-void
-)
-#else
-S16 SStopHrtBt()
-void
-#endif
+S16 SStopHrtBt(void)
 {
 
    osCp.wdCp.globWd.watchdogStop = 1;
@@ -4673,17 +4433,11 @@ void
    return ROK;
 }
 
-#ifdef ANSI
 S16 watchDgActvTsk
 (
 Pst *pst,                   /* post */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 watchDgActvTsk(pst, mBuf)
-Pst *pst;                   /* post */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
 /* ss002.301 Fixed warnings */
 #ifdef DEBUGP
@@ -4700,17 +4454,11 @@ Buffer *mBuf;               /* message buffer */
 	return ROK;
 }
 
-#ifdef ANSI
 S16 watchDgRcvrActvTsk
 (
 Pst *pst,                   /* post */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 watchDgRcvrActvTsk(pst, mBuf)
-Pst *pst;                   /* post */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
 #ifdef DEBUGP
    DateTime dt;
@@ -4807,7 +4555,6 @@ Buffer *mBuf;               /* message buffer */
 *
 */
 #ifdef SS_MULTIPLE_PROCS
-#ifdef ANSI
 S16 SGetThrdProf
 (
 SSTskId *sTskId,
@@ -4819,17 +4566,6 @@ uint32_t *curEvtTime,
 uint64_t *totTime
 )
 #else
-S16 SGetThrdProf(sTskId, procId, ent, inst, evnt, curEvent, curEvtTime, totTime)
-SSTskId *sTskId;
-ProcId procId;
-Ent ent;                      /* entity */
-Inst inst;
-Event *curEvent;
-uint32_t *curEvtTime;
-uint64_t *totTime;
-#endif
-#else
-#ifdef ANSI
 S16 SGetThrdProf
 (
 SSTskId *sTskId,
@@ -4839,15 +4575,6 @@ Event *curEvent,
 uint32_t *curEvtTime,
 uint64_t *totTime
 )
-#else
-S16 SGetThrdProf(sTskId, ent, inst, curEvent,curEvtTime, totTime)
-SSTskId *sTskId;
-Ent ent;                      /* entity */
-Inst inst;
-Event *curEvent;
-uint32_t *curEvtTime;
-uint64_t *totTime;
-#endif
 #endif /* SS_MULTIPLE_PROCS */
 {
   S16 ret;
@@ -4929,15 +4656,7 @@ uint64_t *totTime;
 *       File:  ss_task.c
 *
 */
-#ifdef ANSI
-S16 SRegTskInfo
-(
-uint8_t *cfgFile
-)
-#else
-S16 SRegTskInfo(cfgFile)
-uint8_t *cfgFile;
-#endif
+S16 SRegTskInfo(uint8_t *cfgFile)
 {
    return cmCfgrTskReg(cfgFile); 
 }

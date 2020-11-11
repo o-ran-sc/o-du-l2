@@ -93,13 +93,7 @@ S16 rlcDlInitExt ARGS (( Void ));
  *
 */
   
-#ifdef ANSI
-S16 rlcDlInitExt 
-(
-)
-#else
 S16 rlcDlInitExt()
-#endif
 {
    return ROK;
 } /* kwInitExt */
@@ -133,7 +127,6 @@ S16 rlcDlInitExt()
  *      -# ROK 
  *
  */
-#ifdef ANSI
 S16 rlcDlActvInit
 (
 Ent    ent,                 /* entity */
@@ -141,13 +134,6 @@ Inst   inst,                /* instance */
 Region region,              /* region */
 Reason reason               /* reason */
 )
-#else
-S16 rlcDlActvInit(ent, inst, region, reason)
-Ent    ent;                 /* entity */
-Inst   inst;                /* instance */
-Region region;              /* region */
-Reason reason;              /* reason */
-#endif
 {
    RlcCb    *tRlcCb;
 
@@ -227,17 +213,11 @@ Reason reason;              /* reason */
 #if (defined (MAC_FREE_RING_BUF) || defined (RLC_FREE_RING_BUF))
 pthread_t gRlcTId = 0;
 #endif
-#ifdef ANSI
 S16 rlcDlActvTsk
 (
 Pst *pst,              /* pst structure */
 Buffer *mBuf            /* message buffer */
 )
-#else
-S16 rlcDlActvTsk(pst, mBuf)
-Pst *pst;              /* pst structure */
-Buffer *mBuf;           /* message buffer */
-#endif
 {
    S16 ret = ROK;
 

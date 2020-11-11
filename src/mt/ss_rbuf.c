@@ -62,7 +62,6 @@ Desc: Creates Ring Buffer for the given Id.
       Ring Structure is allocated from given 
       Region and Pool
 */
-#ifdef ANSI
 S16 SCreateSRngBuf
 (
 uint32_t id,  
@@ -71,14 +70,6 @@ Pool pool,
 uint32_t elmSize,
 uint32_t rngSize
 )
-#else
-S16 SCreateSRngBuf (id, region, pool, elmSize, rngSize)
-uint32_t id; 
-Region region;
-Pool pool;
-uint32_t elmSize;
-uint32_t rngSize;
-#endif
 {
    SsRngBuf* ring;
 
@@ -149,19 +140,12 @@ Func: SAttachSRngBuf
 Desc: Attach the calling Entity to a ring buffer 
       as consumer(Rx) or producer (Tx)
 */
-#ifdef ANSI
 S16 SAttachSRngBuf
 (
 uint32_t id,  
 uint32_t ent,
 uint32_t txRx
 )
-#else
-S16 SAttachSRngBuf (id, ent, txRx)
-uint32_t id;
-uint32_t ent;
-uint32_t txRx;
-#endif
 {
     /* Retrive Buffer from Global Info Table */
     if( id >= SS_RNG_BUF_MAX)
@@ -203,17 +187,11 @@ Func: SConnectSRngBuf
 Desc: Establish a pipe between producer and consumer
 
 */
-#ifdef ANSI
 S16 SConnectSRngBuf
 (
 uint32_t id,  
 uint32_t rxEnt
 )
-#else
-S16 SConnectSRngBuf (id, rxEnt)
-uint32_t id;
-uint32_t rxEnt;
-#endif
 {
    /* Send to Reciever ENT*/ 
    return ROK; 
@@ -259,17 +237,11 @@ S16 isRngEmpty(uint32_t id)
 Func: SEnqSRngBuf
 Desc: Perform Queue operation on Ring bufer
 */
-#ifdef ANSI
 S16 SEnqSRngBuf 
 (
 uint32_t id, 
 Void* elem
 )
-#else
-S16 SEnqSRngBuf(id,elem) 
-uint32_t id;
-Void* elem;
-#endif
 {
    uint8_t* w_ptr;
    uint8_t i=0;
@@ -300,15 +272,7 @@ Void* elem;
    return ROK;
 }
 
-#ifdef ANSI
-S16 SGetNumElemInRng
-(
-uint32_t id
-)
-#else
-S16 SGetNumElemInRng (id)
-uint32_t id;
-#endif
+S16 SGetNumElemInRng(uint32_t id)
 {
 
    S16 freeDist = (SsRngInfoTbl[id].n_write- SsRngInfoTbl[id].n_read);
@@ -319,17 +283,7 @@ uint32_t id;
 Func: SDeqSRngBuf
 Desc: Perform DeQueue operation on Ring bufer
 */
-#ifdef ANSI
-S16 SDeqSRngBuf
-(
-uint32_t id,
-Void *elem
-)
-#else
-S16 SDeqSRngBuf (id,elem)
-uint8_t id;
-Void *elem;
-#endif
+S16 SDeqSRngBuf(uint32_t id,Void *elem)
 {
    uint8_t* r_ptr;
    uint8_t i=0;
@@ -356,19 +310,12 @@ Void *elem;
    return ROK;
 }
 
-#ifdef ANSI
 S16 SDestroySRngBuf 
 (
 uint32_t id,
 Region region,
 Pool pool
 )
-#else
-S16 SDestroySRngBuf(id, region, pool)
-uint32_t id;
-Region region;
-Pool pool;
-#endif
 {
    /* Retrive Buffer from Id */
    SsRngBuf* ring = SsRngInfoTbl[id].r_addr;
@@ -387,15 +334,7 @@ Pool pool;
    return ROK;
 }
 
-#ifdef ANSI
-S16 SPrintSRngStats
-(
-Void
-)
-#else
-S16 SPrintSRngStats ()
-Void;
-#endif
+S16 SPrintSRngStats(Void)
 {
 uint32_t i; 
 
@@ -461,15 +400,7 @@ uint32_t i;
    return ROK; 
 }
 
-#ifdef ANSI
-Void* SRngGetWIndx
-(
-uint32_t rngId
-)
-#else
-Void* SRngGetWIndx (rngId)
-uint32_t rngId;
-#endif
+Void* SRngGetWIndx(uint32_t rngId)
 {
    /* Retrive Buffer from Id*/
    SsRngBuf* ring  = SsRngInfoTbl[rngId].r_addr;
@@ -484,15 +415,7 @@ uint32_t rngId;
    }
 }
 
-#ifdef ANSI
-Void* SRngGetRIndx
-(
-uint32_t rngId
-)
-#else
-Void* SRngGetRIndx (rngId)
-uint32_t rngId;
-#endif
+Void* SRngGetRIndx(uint32_t rngId)
 {
    /* Retrive Buffer from Id*/
    SsRngBuf* ring  = SsRngInfoTbl[rngId].r_addr;
@@ -507,15 +430,7 @@ uint32_t rngId;
    }
 }
 
-#ifdef ANSI
-Void SRngIncrWIndx
-(
-uint32_t rngId
-)
-#else
-Void SRngIncrWIndx (rngId)
-uint32_t rngId;
-#endif
+Void SRngIncrWIndx(uint32_t rngId)
 {
    uint32_t wrIndex;
    /* Retrive Buffer from Id*/
@@ -526,15 +441,7 @@ uint32_t rngId;
    SsRngInfoTbl[rngId].n_write++;
 }
 
-#ifdef ANSI
-Void SRngIncrRIndx
-(
-uint32_t rngId
-)
-#else
-Void SRngIncrRIndx (rngId)
-uint32_t rngId;
-#endif
+Void SRngIncrRIndx(uint32_t rngId)
 {
    uint32_t rdIndex;
    /* Retrive Buffer from Id*/

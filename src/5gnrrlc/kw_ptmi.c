@@ -174,17 +174,11 @@ static const LkwL2MeasStopCfm RlcMiLkwL2MeasStopCfmMt[] =
      the layer manager API provided.
 
 */
-#ifdef ANSI
 S16 RlcMiRlcConfigCfm
 (
 Pst        *pst,                /* post structure */
 RlcMngmt    *cfm                 /* Layer Management structure */
 )
-#else
-S16 RlcMiRlcConfigCfm(pst, cfm)
-Pst        *pst;                /* post structure */
-RlcMngmt    *cfm;                /* Layer Management structure */
-#endif
 {
 
    /* jump to specific primitive depending on configured selector */
@@ -207,17 +201,11 @@ RlcMngmt    *cfm;                /* Layer Management structure */
      layer manager API provided.
 
 */
-#ifdef ANSI
 S16 RlcMiLkwCntrlCfm
 (
 Pst *pst,                    /* post structure */
 RlcMngmt *cfm                 /* configure */
 )
-#else
-S16 RlcMiLkwCntrlCfm(pst, cfm)
-Pst *pst;                    /* post structure */
-RlcMngmt *cfm;                /* confirm */
-#endif
 {
 
    /* jump to specific primitive depending on configured selector */
@@ -245,17 +233,11 @@ RlcMngmt *cfm;                /* confirm */
    - For a tightly coupled interface, the actual function called depends on
      the layer manager API provided.
 */
-#ifdef ANSI
 S16 RlcMiLkwStaInd
 (
 Pst     *pst,                /* post structure */
 RlcMngmt *usta                /* unsolicited status */
 )
-#else
-S16 RlcMiLkwStaInd(pst, usta)
-Pst     *pst;                /* post structure */
-RlcMngmt *usta;               /* unsolicited status */
-#endif
 {
    /* jump to specific primitive depending on configured selector */
    (*kwMiLkwStaIndMt[pst->selector])(pst, usta);
@@ -281,17 +263,11 @@ RlcMngmt *usta;               /* unsolicited status */
       on the layer manager API provided.
 
 */
-#ifdef ANSI
 S16 RlcMiLkwStaCfm
 (
 Pst *pst,                    /* post structure */
 RlcMngmt *cfm                 /* solicited status confirmation */
 )
-#else
-S16 RlcMiLkwStaCfm(pst, cfm)
-Pst *pst;                    /* post structure */
-RlcMngmt *cfm;                /* solicited status confirmation */
-#endif
 {
 
    /* jump to specific primitive depending on configured selector */
@@ -319,19 +295,12 @@ RlcMngmt *cfm;                /* solicited status confirmation */
       on the layer manager API provided.
 
 */
-#ifdef ANSI
 S16 RlcMiLkwStsCfm
 (
 Pst *pst,                    /* post structure */
 Action action,               /* action */
 RlcMngmt *cfm                 /* statistics confirmation */
 )
-#else
-S16 RlcMiLkwStsCfm(pst, action, cfm)
-Pst *pst;                    /* post structure */
-Action action;               /* action */
-RlcMngmt *cfm;                /* statistics confirmation */
-#endif
 {
    /* jump to specific primitive depending on configured selector */
    (*kwMiLkwStsCfmMt[pst->selector])(pst, action, cfm);
@@ -357,19 +326,12 @@ RlcMngmt *cfm;                /* statistics confirmation */
       the layer manager API provided.
 
 */
-#ifdef ANSI
 S16 RlcMiLkwTrcInd
 (
 Pst *pst,                    /* post structure */
 RlcMngmt *trc,                /* trace indication */
 Buffer *mBuf                 /* message buffer */
 )
-#else
-S16 RlcMiLkwTrcInd(pst, trc, mBuf)
-Pst *pst;                    /* post structure */
-RlcMngmt *trc;                /* trace indication */
-Buffer *mBuf;                /* message buffer */
-#endif
 {
    /* jump to specific primitive depending on configured selector */
    (*kwMiLkwTrcIndMt[pst->selector])(pst, trc, mBuf);
@@ -381,17 +343,7 @@ Buffer *mBuf;                /* message buffer */
 
 /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
-#ifdef ANSI
-S16 RlcMiLkwL2MeasCfm
-(
-Pst * pst,
-RlcL2MeasCfmEvt *measEvt
-)
-#else
-S16 RlcMiLkwL2MeasCfm(pst, measEvt)
-Pst * pst;
-RlcL2MeasCfmEvt *measEvt;
-#endif
+S16 RlcMiLkwL2MeasCfm(Pst * pst,RlcL2MeasCfmEvt *measEvt)
 {
 
    (*rlcMiLkwL2MeasCfmMt[pst->selector])(pst, measEvt);
@@ -399,19 +351,7 @@ RlcL2MeasCfmEvt *measEvt;
    return ROK;
 
 }
-#ifdef ANSI
-S16 RlcMiLkwL2MeasStopCfm
-(  
-Pst *pst,
-uint8_t  measType,
-uint8_t  status
-)
-#else
-S16 RlcMiLkwL2MeasStopCfm(pst, measType,status)
-Pst *pst;
-uint8_t  measType;
-uint8_t  status;
-#endif
+S16 RlcMiLkwL2MeasStopCfm(Pst *pst,uint8_t measType,uint8_t status)
 {
 
    (*RlcMiLkwL2MeasStopCfmMt[pst->selector])(pst, measType,status);

@@ -65,17 +65,7 @@
  *  @return   S16
  *      -# ROK
  **/
-#ifdef ANSI
-S16 cmPkPrgPMacSMacUeSCellCfgReq
-(
-Pst           *pst,
-RgPrgUeSCellCfgInfo   *ueSCellCfgInfo
-)
-#else
-S16 cmPkPrgPMacSMacUeSCellCfgReq(pst, ueSCellCfgInfo)
-Pst            *pst;
-RgPrgUeSCellCfgInfo    *ueSCellCfgInfo;
-#endif
+S16 cmPkPrgPMacSMacUeSCellCfgReq(Pst  *pst,RgPrgUeSCellCfgInfo   *ueSCellCfgInfo)
 {
    Buffer *mBuf = NULLP;
 
@@ -108,19 +98,7 @@ RgPrgUeSCellCfgInfo    *ueSCellCfgInfo;
  *  @return   S16
  *      -# ROK
  **/
-#ifdef ANSI
-S16 cmUnpkPrgPMacSMacUeSCellCfgReq
-(
-RgPrgUeSCellCfgReq   func,
-Pst                  *pst,
-Buffer               *mBuf
-)
-#else
-S16 cmUnpkPrgPMacSMacUeSCellCfgReq(func, pst, mBuf)
-RgPrgUeSCellCfgReq   func;
-Pst                  *pst;
-Buffer               *mBuf;
-#endif
+S16 cmUnpkPrgPMacSMacUeSCellCfgReq(RgPrgUeSCellCfgReq   func,Pst *pst,Buffer  *mBuf)
 {
    RgPrgUeSCellCfgInfo    ueSCellCfgInfo;
    
@@ -147,17 +125,7 @@ Buffer               *mBuf;
  *  @return   S16
  *      -# ROK
  **/
-#ifdef ANSI
-S16 cmPkPrgSMacPMacCfgCfm
-(
-Pst               *pst,
-RgPrgCfgCfmInfo   *cfgCfm
-)
-#else
-S16 cmPkPrgSMacPMacCfgCfm(pst, cfgCfm)
-Pst                *pst;
-RgPrgCfgCfmInfo    *cfgCfm;
-#endif
+S16 cmPkPrgSMacPMacCfgCfm(Pst *pst,RgPrgCfgCfmInfo   *cfgCfm)
 {
    Buffer *mBuf = NULLP;
 
@@ -211,19 +179,12 @@ RgPrgCfgCfmInfo    *cfgCfm;
  *  @return   S16
  *      -# ROK
  **/
-#ifdef ANSI
 S16 cmUnpkPrgSMacPMacCfgCfm
 (
 RgSMacPMacCfgCfm    func,
 Pst                 *pst,
 Buffer              *mBuf
 )
-#else
-S16 cmUnpkPrgSMacPMacCfgCfm(func, pst, mBuf)
-RgSMacPMacCfgCfm    func;
-Pst                 *pst;
-Buffer              *mBuf;
-#endif
 {
    RgPrgCfgCfmInfo   cfgCfm;
    
@@ -250,17 +211,7 @@ Buffer              *mBuf;
  *  @return   S16
  *      -# ROK
  **/
-#ifdef ANSI
-S16 cmPkPrgPMacSMacUeSCellDelReq
-(
-Pst                   *pst,
-RgPrgUeSCellDelInfo   *ueSCellDelInfo
-)
-#else
-S16 cmPkPrgPMacSMacUeSCellDelReq(pst, ueSCellDelInfo)
-Pst                    *pst;
-RgPrgUeSCellDelInfo    *ueSCellDelInfo;
-#endif
+S16 cmPkPrgPMacSMacUeSCellDelReq(Pst *pst,RgPrgUeSCellDelInfo   *ueSCellDelInfo)
 {
    Buffer *mBuf = NULLP;
 
@@ -294,19 +245,12 @@ RgPrgUeSCellDelInfo    *ueSCellDelInfo;
  *  @return   S16
  *      -# ROK
  **/
-#ifdef ANSI
 S16 cmUnpkPrgPMacSMacUeSCellDelReq
 (
 RgUeSCellDelReq    func,
 Pst                *pst,
 Buffer             *mBuf
 )
-#else
-S16 cmUnpkPrgPMacSMacUeSCellDelReq(func, pst, mBuf)
-RgUeSCellDelReq  func;
-Pst              *pst;
-Buffer           *mBuf;
-#endif
 {
   RgPrgUeSCellDelInfo ueSCellDelInfo;
    
@@ -334,17 +278,7 @@ Buffer           *mBuf;
  *  @return   S16
  *      -# ROK
  **/
-#ifdef ANSI
-S16 cmPkPrgPMacSMacUeSCellLchAddReq
-(
-Pst                      *pst,
-RgPrgUeSCellLchAddInfo   *lchCfgInfo,
-)
-#else
-S16 cmPkPrgPMacSMacUeSCellLchAddReq(pst, lchCfgInfo)
-Pst                       *pst;
-RgPrgUeSCellLchAddInfo    *lchCfgInfo;
-#endif
+S16 cmPkPrgPMacSMacUeSCellLchAddReq(Pst *pst,RgPrgUeSCellLchAddInfo   *lchCfgInfo)
 {
    Buffer *mBuf = NULLP;
 
@@ -378,19 +312,12 @@ RgPrgUeSCellLchAddInfo    *lchCfgInfo;
  *  @return   S16
  *      -# ROK
  **/
-#ifdef ANSI
 S16 cmUnpkPrgPMacSMacUeSCellLchAddReq
 (
 RgPrgUeSCellLchAddInfo       func,
 Pst                          *pst,
 Buffer                       *mBuf
 )
-#else
-S16 cmUnpkPrgPMacSMacUeSCellLchAddReq(func, pst, mBuf)
-RgPrgUeSCellLchAddInfo       func;
-Pst                          *pst;
-Buffer                       *mBuf;
-#endif
 {
    RgPrgLchRecfgInfo    lchCfgInfo;
    
@@ -417,17 +344,7 @@ Buffer                       *mBuf;
  *  @return   S16
  *      -# ROK
  **/
-#ifdef ANSI
-S16 cmPkPrgPMacSMacUeSCellLchDelReq
-(
-Pst                       *pst,
-RgPrgUeSCellLchDelInfo    *delLcCb
-)
-#else
-S16 cmPkPrgPMacSMacUeSCellLchDelReq(pst, delLcCb)
-Pst                       *pst;
-RgPrgUeSCellLchDelInfo    *delLcCb;
-#endif
+S16 cmPkPrgPMacSMacUeSCellLchDelReq(Pst *pst,RgPrgUeSCellLchDelInfo *delLcCb)
 {
    Buffer *mBuf = NULLP;
 
@@ -461,17 +378,7 @@ RgPrgUeSCellLchDelInfo    *delLcCb;
  *  @return   S16
  *      -# ROK
  **/
-#ifdef ANSI
-S16 cmPkPrgPMacSMacUeSCellLchModReq
-(
-Pst                      *pst,
-RgPrgUeSCellLchModInfo   *lchCfgInfo
-)
-#else
-S16 cmPkPrgPMacSMacUeSCellLchModReq(pst, lchCfgInfo)
-Pst                       *pst;
-RgPrgUeSCellLchModInfo    *lchCfgInfo;
-#endif
+S16 cmPkPrgPMacSMacUeSCellLchModReq(Pst  *pst,RgPrgUeSCellLchModInfo  *lchCfgInfo)
 {
    Buffer *mBuf = NULLP;
 
@@ -506,19 +413,12 @@ RgPrgUeSCellLchModInfo    *lchCfgInfo;
  *  @return   S16
  *      -# ROK
  **/
-#ifdef ANSI
 S16 cmUnpkPrgPMacSMacUeSCellLchModReq
 (
 RgPrgUeScellModLchReq   func,
 Pst                     *pst,
 Buffer                  *mBuf
 )
-#else
-S16 cmUnpkPrgPMacSMacAddLchCfgReq(func, pst, mBuf)
-RgPrgUeScellModLchReq   func;
-Pst                     *pst;
-Buffer                  *mBuf;
-#endif
 {
    RgPrgUeSCellLchModInfo   lchCfgInfo;
    
@@ -547,19 +447,12 @@ Buffer                  *mBuf;
  *  @return      S16
  *      -# ROK
  **/
-#ifdef ANSI
 S16 cmUnpkPrgPMacSMacUeSCellLchDelReq
 (
 RgPrgUeScellDelLchReq   func,
 Pst                     *pst,
 Buffer                  *mBuf
 )
-#else
-S16 cmUnpkPrgPMacSMacUeSCellLchDelReq(func, pst, mBuf)
-RgPrgUeScellDelLchReq   func;
-Pst                     *pst;
-Buffer                  *mBuf;
-#endif
 {
    RgPrgUeSCellLchDelInfo   lchCfgInfo;
    

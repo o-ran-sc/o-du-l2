@@ -92,15 +92,10 @@
 *       File:  ss_queue.c
 *
 */
-#ifdef ANSI
 S16 SInitQueue
 (
 Queue *q               /* queue */
 )
-#else
-S16 SInitQueue(q)
-Queue *q;              /* queue */
-#endif
 {
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -141,15 +136,10 @@ Queue *q;              /* queue */
 *       File:  ss_queue.c
 *
 */
-#ifdef ANSI
 S16 SFlushQueue
 (
 Queue *q                    /* queue */
 )
-#else
-S16 SFlushQueue(q)
-Queue *q;                   /* queue */
-#endif
 {
    Buffer *tBuf;
    Buffer *mBuf;
@@ -215,19 +205,12 @@ Queue *q;                   /* queue */
 *       File:  ss_queue.c
 *
 */
-#ifdef ANSI
 S16 SCatQueue
 (
 Queue *q1,                  /* queue 1 */
 Queue *q2,                  /* queue 2 */
 Order order                 /* order */
 )
-#else
-S16 SCatQueue(q1, q2, order)
-Queue *q1;                  /* queue 1 */
-Queue *q2;                  /* queue 2 */
-Order order;                /* order */
-#endif
 {
  
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -326,17 +309,11 @@ Order order;                /* order */
 *       File:  ss_queue.c
 *
 */
-#ifdef ANSI
 S16 SFndLenQueue
 (
 Queue *q,                   /* queue */
 QLen  *lngPtr               /* pointer to length */
 )
-#else
-S16 SFndLenQueue(q, lngPtr)
-Queue *q;                   /* queue */
-QLen  *lngPtr;              /* pointer to length */
-#endif
 {
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -382,19 +359,12 @@ QLen  *lngPtr;              /* pointer to length */
 *       File:  ss_queue.c
 *
 */
-#ifdef ANSI
 S16 SExamQueue
 (
 Buffer **bufPtr,            /* pointer to buffer */
 Queue  *q,                  /* queue */
 QLen   idx                  /* index */
 )
-#else
-S16 SExamQueue(bufPtr, q, idx)
-Buffer **bufPtr;            /* pointer to buffer */
-Queue  *q;                  /* queue */
-QLen   idx;                 /* index */
-#endif
 {
    Buffer *tmpBuf;
    QLen   i;
@@ -476,19 +446,12 @@ QLen   idx;                 /* index */
 *       File:  ss_queue.c
 *
 */
-#ifdef ANSI
 S16 SAddQueue
 (
 Buffer *mBuf,                /* buffer */
 Queue  *q,                   /* queue */
 QLen   idx                   /* index */
 )
-#else
-S16 SAddQueue(mBuf, q, idx)
-Buffer *mBuf;                /* buffer */
-Queue  *q;                   /* queue */
-QLen   idx;                  /* index */
-#endif
 {
    Buffer *tBuf;
    QLen   i;
@@ -600,19 +563,12 @@ QLen   idx;                  /* index */
 *       File:  ss_queue.c
 *
 */
-#ifdef ANSI
 S16 SRemQueue
 (
 Buffer **bufPtr,            /* pointer to buffer */
 Queue  *q,                  /* queue */
 QLen   idx                  /* index */
 )
-#else
-S16 SRemQueue(bufPtr, q, idx)
-Buffer **bufPtr;            /* pointer to buffer */
-Queue  *q;                  /* queue */
-QLen   idx;                 /* index */
-#endif
 {
    Buffer *tBuf;
    QLen   i;
@@ -707,17 +663,11 @@ QLen   idx;                 /* index */
 *       File:  ss_queue.c
 *
 */
-#ifdef ANSI
 inline S16 SQueueFirst
 (
 Buffer *buf,                /* buffer */
 Queue *q                    /* queue */
 )
-#else
-inline S16 SQueueFirst(buf, q)
-Buffer *buf;                /* buffer */
-Queue *q;                   /* queue */
-#endif
 {
 
    return (SAddQueue(buf, q, 0));
@@ -745,17 +695,11 @@ Queue *q;                   /* queue */
 *       File:  ss_queue.c
 *
 */
-#ifdef ANSI
 inline S16 SDequeueFirst
 (
 Buffer **bufPtr,            /* pointer to buffer */
 Queue *q                    /* queue */
 )
-#else
-inline S16 SDequeueFirst(bufPtr, q)
-Buffer **bufPtr;            /* pointer to buffer */
-Queue *q;                   /* queue */
-#endif
 {
 
    return (SRemQueue(bufPtr, q, 0));
@@ -781,17 +725,11 @@ Queue *q;                   /* queue */
 *       File:  ss_queue.c
 *
 */
-#ifdef ANSI
 S16 SQueueLast
 (
 Buffer *buf,                /* buffer */
 Queue *q                    /* queue */
 )
-#else
-S16 SQueueLast(buf, q)
-Buffer *buf;                /* buffer */
-Queue *q;                   /* queue */
-#endif
 {
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -834,17 +772,11 @@ Queue *q;                   /* queue */
 *       File:  ss_queue.c
 *
 */
-#ifdef ANSI
 S16 SDequeueLast
 (
 Buffer **bufPtr,            /* pointer to buffer */
 Queue *q                    /* queue */
 )
-#else
-S16 SDequeueLast(bufPtr, q)
-Buffer **bufPtr;            /* pointer to buffer */
-Queue *q;                   /* queue */
-#endif
 {
    S16   ret;
 
@@ -888,15 +820,10 @@ Queue *q;                   /* queue */
 *       File:  ss_queue.c
 *
 */
-#ifdef ANSI
 S16 ssInitDmndQ
 (
 SsDmndQ *dQueue                 /* Demand Queue */
 )
-#else
-S16 ssInitDmndQ(dQueue)
-SsDmndQ *dQueue;                /* Demand Queue */
-#endif
 {
    uint8_t  i;
    S16 ret;
@@ -985,15 +912,10 @@ SsDmndQ *dQueue;                /* Demand Queue */
 *       File:  ss_queue.c
 *
 */
-#ifdef ANSI
 S16 ssDestroyDmndQ
 (
 SsDmndQ *dQueue                        /* demand Queue */
 )
-#else
-S16 ssDestroyDmndQ(dQueue)
-SsDmndQ *dQueue;                       /* demand Queue */
-#endif
 {
    uint8_t     i;
    Buffer *tBuf;
@@ -1068,7 +990,6 @@ SsDmndQ *dQueue;                       /* demand Queue */
 *       File:  ss_queue.c
 *
 */
-#ifdef ANSI
 S16 ssDmndQPut
 (
 SsDmndQ *dQueue,                       /* demand Queue */
@@ -1076,13 +997,6 @@ Buffer  *mBuf,                         /* message buffer */
 Prior   priority,                      /* priority */
 Order   order                          /* position */
 )
-#else
-S16 ssDmndQPut(dQueue, mBuf, priority, order)
-SsDmndQ *dQueue;                       /* demand Queue */
-Buffer  *mBuf;                         /* message buffer */
-Prior   priority;                      /* priority */
-Order   order;                         /* position */
-#endif
 {
 #ifndef TENB_RTLIN_CHANGES
    uint8_t     maskIndex;                   /* mask Index */
@@ -1273,15 +1187,10 @@ Order   order;                         /* position */
 *       File:  ss_queue.c
 *
 */
-#ifdef ANSI
 S16 ssDmndQWait
 (
 SsDmndQ *dQueue                          /* demand queue */
 )
-#else
-S16 ssDmndQWait(dQueue)
-SsDmndQ *dQueue;                          /* demand queue */
-#endif
 {
    S16   ret;
 
@@ -1327,19 +1236,12 @@ SsDmndQ *dQueue;                          /* demand queue */
 *       File:  ss_queue.c
 *
 */
-#ifdef ANSI
 S16 ssDmndQGet
 (
 SsDmndQ *dQueue,                          /* demand queue */
 Buffer  **mBuf,                           /* message buffer */
 Order   order                             /* position */ 
 )
-#else
-S16 ssDmndQGet(dQueue, mBuf, order)
-SsDmndQ *dQueue;                          /* demand queue */
-Buffer  **mBuf;                           /* message buffer */
-Order   order;                            /* position */
-#endif
 {
    Queue *queue;
    S16   ret;
@@ -1510,19 +1412,12 @@ setting the crntSize to 0 and removing the message */
 *       File:  ss_queue.c
 *
 */
-#ifdef ANSI
 S16 ssFndLenDmndQ
 (
 SsDmndQ *dQueue,                               /* demand queue */
 Prior   priority,                              /* priority */
 QLen    *len                                   /* queue length */
 )
-#else
-S16 ssFndLenDmndQ(dQueue, priority, len)
-SsDmndQ *dQueue;                               /* demand queue */
-Prior   priority;                              /* priority */
-QLen    *len;                                  /* queue length */
-#endif
 {
    
    S16  ret;                                   /* return value */

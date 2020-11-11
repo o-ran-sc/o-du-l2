@@ -131,17 +131,7 @@ Void rgSCHChkEmtcContResTmrExp ARGS((RgSchCellCb        *cell));
  *      -# ROK
  *      -# RFAILED
  **/
-#ifdef ANSI
-S16 rgSCHRamVldtUeCfg 
-(
-RgSchCellCb  *cell,
-RgrUeCfg     *ueCfg
-)
-#else
-S16 rgSCHRamVldtUeCfg(cell, ueCfg)
-RgSchCellCb  *cell;
-RgrUeCfg     *ueCfg;
-#endif
+S16 rgSCHRamVldtUeCfg(RgSchCellCb  *cell,RgrUeCfg     *ueCfg)
 {
    if (ueCfg->dedPreambleId.pres == PRSNT_NODEF)
    {
@@ -183,10 +173,9 @@ RgrUeCfg     *ueCfg;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 rgSCHRamProcRaReq
 (
-uint8_t                raReqCnt,
+uint8_t           raReqCnt,
 RgSchCellCb       *cell,
 CmLteRnti         raRnti,
 TfuRachInfo       *raReqInd,
@@ -194,22 +183,12 @@ CmLteTimingInfo   timingInfo,
 RgSchUeCb         *ue,
 RgSchErrInfo      *err
 )
-#else
-S16 rgSCHRamProcRaReq(raReqCnt, cell, raRnti, raReqInd, timingInfo, ue, err)
-uint8_t                raReqCnt;
-RgSchCellCb       *cell;
-CmLteRnti         raRnti;
-TfuRachInfo       *raReqInd;
-CmLteTimingInfo   timingInfo;
-RgSchUeCb         *ue;
-RgSchErrInfo      *err;
-#endif
 {
    RgSchRaReqInfo *raReqInfo;
-   uint16_t            raIndex;
+   uint16_t       raIndex;
 #ifdef LTE_TDD
-   uint8_t             fid;
-   uint8_t             tid;
+   uint8_t        fid;
+   uint8_t        tid;
 #endif
 
 
@@ -319,19 +298,12 @@ RgSchErrInfo      *err;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 rgSCHRamCreateRaCb
 (
 RgSchCellCb       *cell,
 RgSchRaCb         **raCb,
 RgSchErrInfo      *err
 )
-#else
-S16 rgSCHRamCreateRaCb(cell, raCb, err)
-RgSchCellCb       *cell;
-RgSchRaCb         **raCb;
-RgSchErrInfo      *err;
-#endif
 {
    RgSchRntiLnk *rntiLnk;
    Inst         inst = cell->instIdx;
@@ -421,7 +393,6 @@ RgSchErrInfo      *err;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 rgSCHRamRgrUeCfg
 (
 RgSchCellCb    *cell,
@@ -429,13 +400,6 @@ RgSchUeCb      *ue,
 RgSchRaCb      *raCb,
 RgSchErrInfo   *err
 )
-#else
-S16 rgSCHRamRgrUeCfg(cell, ue, raCb, err)
-RgSchCellCb    *cell;
-RgSchUeCb      *ue;
-RgSchRaCb      *raCb;
-RgSchErrInfo   *err;
-#endif
 {
    /* Releasing HARQ processes of old UE when ue
     *           reconfig with new crnti */
@@ -495,7 +459,6 @@ RgSchErrInfo   *err;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
 static S16 rgSCHRamContResCrnti
 (
 RgSchCellCb  *cell,
@@ -503,13 +466,6 @@ RgSchUeCb    *ue,
 RgSchRaCb    *raCb,
 RgSchErrInfo *err
 )
-#else
-static S16 rgSCHRamContResCrnti(cell, ue, raCb, err)
-RgSchCellCb  *cell;
-RgSchUeCb    *ue;
-RgSchRaCb    *raCb;
-RgSchErrInfo *err;
-#endif
 {
    TfuUlCqiRpt   ulCqiRpt;
    RgSchCmnCell  *cellSch= (RgSchCmnCell *)(cell->sc.sch);
@@ -561,17 +517,11 @@ RgSchErrInfo *err;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
 static S16 rgSCHRamContResCcchsdu
 (
 RgSchCellCb *cell,
 RgSchRaCb *raCb
 )
-#else
-static S16 rgSCHRamContResCcchsdu(cell, raCb)
-RgSchCellCb *cell;
-RgSchRaCb *raCb;
-#endif
 {
 #ifdef RGR_V1 
    CmLteTimingInfo expTime = {0}; 
@@ -626,7 +576,6 @@ RgSchRaCb *raCb;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
 S16 rgSCHRamProcMsg3
 (
 RgSchCellCb     *cell,
@@ -635,14 +584,6 @@ RgSchRaCb       *raCb,
 RgInfUeDatInd   *pdu,
 RgSchErrInfo    *err
 )
-#else
-S16 rgSCHRamProcMsg3(cell, ue, raCb, pdu, err)
-RgSchCellCb     *cell;
-RgSchUeCb       *ue;
-RgSchRaCb       *raCb;
-RgInfUeDatInd   *pdu;
-RgSchErrInfo    *err;
-#endif
 {
 
 
@@ -691,19 +632,12 @@ RgSchErrInfo    *err;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
 S16 rgSCHRamUpdtBo
 (
 RgSchCellCb       *cell,
 RgSchRaCb         *raCb,
 RgInfCmnBoRpt     *staRsp
 )
-#else
-S16 rgSCHRamUpdtBo(cell, raCb, staRsp)
-RgSchCellCb       *cell;
-RgSchRaCb         *raCb;
-RgInfCmnBoRpt     *staRsp;
-#endif
 {
 
    /* Update Bo in RaCb */
@@ -734,15 +668,7 @@ RgInfCmnBoRpt     *staRsp;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
-S16 rgSCHRamMsg3DatInd
-(
-RgSchRaCb      *raCb
-)
-#else
-S16 rgSCHRamMsg3DatInd(raCb)
-RgSchRaCb      *raCb;
-#endif
+S16 rgSCHRamMsg3DatInd(RgSchRaCb *raCb)
 {
 
    /* SR_RACH_STATS : MSG3 ACK*/
@@ -768,15 +694,7 @@ RgSchRaCb      *raCb;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
-S16 rgSCHRamMsg3FailureInd
-(
-RgSchRaCb      *raCb
-)
-#else
-S16 rgSCHRamMsg3FailureInd(raCb)
-RgSchRaCb      *raCb;
-#endif
+S16 rgSCHRamMsg3FailureInd(RgSchRaCb *raCb)
 {
 
    /*ccpu00128820 - MOD - Msg3 alloc double delete issue*/
@@ -800,15 +718,7 @@ RgSchRaCb      *raCb;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
-S16 rgSCHRamMsg4FdbkInd
-(
-RgSchRaCb      *raCb
-)
-#else
-S16 rgSCHRamMsg4FdbkInd(raCb)
-RgSchRaCb      *raCb;
-#endif
+S16 rgSCHRamMsg4FdbkInd(RgSchRaCb  *raCb)
 {
 
    return ROK;
@@ -832,17 +742,7 @@ RgSchRaCb      *raCb;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
-S16 rgSCHRamMsg4Done
-(
-RgSchCellCb    *cell,
-RgSchRaCb      *raCb
-)
-#else
-S16 rgSCHRamMsg4Done(cell, raCb)
-RgSchCellCb    *cell;
-RgSchRaCb      *raCb;
-#endif
+S16 rgSCHRamMsg4Done(RgSchCellCb *cell,RgSchRaCb *raCb)
 {
 
    RLOG_ARG1(L_DEBUG,DBG_CELLID,cell->cellId,
@@ -925,22 +825,10 @@ RgSchRaCb      *raCb;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 rgSCHRamDelRaCb
-(
-RgSchCellCb *cell,
-RgSchRaCb   *raCb,
-Bool        rlsRnti
-)
-#else
-S16 rgSCHRamDelRaCb(cell, raCb, rlsRnti)
-RgSchCellCb *cell;
-RgSchRaCb   *raCb;
-Bool        rlsRnti;
-#endif
+S16 rgSCHRamDelRaCb(RgSchCellCb *cell,RgSchRaCb   *raCb,Bool rlsRnti)
 {
-   Inst         inst = cell->instIdx;
-   Bool         isEmtc = FALSE;
+   Inst  inst = cell->instIdx;
+   Bool  isEmtc = FALSE;
  
     /* Delete from all the lists it is enqueued */
     cmLListDelFrm(&(cell->raInfo.raCbLst),&(raCb->raCbLnk));
@@ -1052,30 +940,21 @@ Bool        rlsRnti;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
-S16 rgSCHRamTtiHndlr
-(
-RgSchCellCb  *cell
-)
-#else
-S16 rgSCHRamTtiHndlr(cell)
-RgSchCellCb  *cell;
-#endif
+S16 rgSCHRamTtiHndlr(RgSchCellCb  *cell)
 {
    RgSchRaCb   *raCb;
-   uint16_t         raSfn;
-   uint16_t         crntSfn;
-   uint16_t         dist;       /* Number of frames between raCb's creation and crnt
-                              frame */
-   uint8_t          idx;
-   uint32_t         maxCnt;
+   uint16_t    raSfn;
+   uint16_t    crntSfn;
+   uint16_t    dist;       /* Number of frames between raCb's creation and crnt frame */
+   uint8_t     idx;
+   uint32_t    maxCnt;
 #ifndef LTE_TDD
-   uint8_t          winGap;        
-   uint8_t          raIdx;
+   uint8_t     winGap;        
+   uint8_t     raIdx;
    RgSchRaReqInfo *raReqInfo;
 #else
    CmLteTimingInfo      frm;
-   uint8_t                   raIdx;
+   uint8_t     raIdx;
 #endif
 
 
@@ -1181,25 +1060,17 @@ RgSchCellCb  *cell;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
-S16 rgSCHRamFreeCell
-(
-RgSchCellCb    *cell
-)
-#else
-S16 rgSCHRamFreeCell(cell)
-RgSchCellCb    *cell;
-#endif
+S16 rgSCHRamFreeCell(RgSchCellCb  *cell)
 {
    RgSchRaReqInfo  *raReqInfo;
    RgSchRaCb       *raCb;
-   uint8_t              idx;
-   uint8_t              raCbCnt;
+   uint8_t         idx;
+   uint8_t         raCbCnt;
    Inst            inst = cell->instIdx;
-   uint8_t              lstSz;
+   uint8_t         lstSz;
 #ifdef LTE_TDD
-   uint8_t              maxUlSubframes;
-   uint8_t              maxDlSubframes;
+   uint8_t         maxUlSubframes;
+   uint8_t         maxDlSubframes;
 #endif
 
 
@@ -1270,17 +1141,7 @@ RgSchCellCb    *cell;
    return ROK; 
 } /* rgSCHRamFreeCell */
 #ifdef RGR_V1
-#ifdef ANSI
-static Void rgSCHRamProcContResExp
-(
-RgSchCellCb *cell,
-RgSchRaCb  *raCb
-)
-#else
-static Void rgSCHRamProcContResExp (cell, raCb)
-RgSchCellCb *cell;
-RgSchRaCb  *raCb;
-#endif
+static Void rgSCHRamProcContResExp(RgSchCellCb *cell,RgSchRaCb  *raCb)
 {
    raCb->expiryTime.sfn = RGSCH_CONTRES_EXP;
    /*MSG4 Fix*/
@@ -1299,17 +1160,7 @@ RgSchRaCb  *raCb;
    return;
 }
 
-#ifdef ANSI
-static Void rgSCHRamProcContResGrdExp
-(
-RgSchCellCb *cell,
-RgSchRaCb  *raCb
-)
-#else
-static Void rgSCHRamProcContResGrdExp (cell, raCb)
-RgSchCellCb  *cell;
-RgSchRaCb  *raCb;
-#endif
+static Void rgSCHRamProcContResGrdExp(RgSchCellCb *cell,RgSchRaCb  *raCb)
 {
 
 
@@ -1348,18 +1199,10 @@ RgSchRaCb  *raCb;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-static Void rgSCHChkContResTmrExp
-(
-RgSchCellCb        *cell
-)
-#else
-static Void rgSCHChkContResTmrExp(cell)
-RgSchCellCb        *cell;
-#endif
+static Void rgSCHChkContResTmrExp(RgSchCellCb *cell)
 {
-   CmLList         *chkLnk    = NULLP;
-   RgSchRaCb       *raCb = NULLP;
+   CmLList    *chkLnk    = NULLP;
+   RgSchRaCb  *raCb = NULLP;
    
       
    chkLnk = cmLListFirst(&(cell->contResTmrLst));
@@ -1394,18 +1237,10 @@ RgSchCellCb        *cell;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-static Void rgSCHChkContResGrdTmrExp
-(
-RgSchCellCb        *cell
-)
-#else
-static Void rgSCHChkContResGrdTmrExp(cell)
-RgSchCellCb        *cell;
-#endif
+static Void rgSCHChkContResGrdTmrExp(RgSchCellCb  *cell)
 {
-   CmLList         *chkLnk    = NULLP;
-   RgSchRaCb       *raCb = NULLP;
+   CmLList    *chkLnk    = NULLP;
+   RgSchRaCb  *raCb = NULLP;
    
       
    chkLnk = cmLListFirst(&(cell->contResGrdTmrLst));
@@ -1445,29 +1280,22 @@ RgSchCellCb        *cell;
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
 S16 rgSCHRamDelRaReq
 (
-RgSchCellCb          *cell,
-CmLteTimingInfo      timingInfo,
-uint8_t                   raIdx
+RgSchCellCb      *cell,
+CmLteTimingInfo  timingInfo,
+uint8_t          raIdx
 )
-#else
-S16 rgSCHRamDelRaReq(cell, timingInfo, raIdx)
-RgSchCellCb          *cell;
-CmLteTimingInfo      timingInfo;
-uint8_t                   raIdx;
-#endif
 {
-   uint8_t                   subfrmIdx;
+   uint8_t              subfrmIdx;
    RgSchTddRachRspLst   *rachRsp;
-   uint16_t                   sfnIdx;
+   uint16_t             sfnIdx;
    S16                  calcSfn;
-   uint8_t                   subfrm;
+   uint8_t              subfrm;
    RgSchRaReqInfo       *raReqInfo;
-   uint8_t                   idx;
-   uint8_t                   i;
-   uint8_t                   raRntiIdx;
+   uint8_t              idx;
+   uint8_t              i;
+   uint8_t              raRntiIdx;
    CmLteRnti            raRnti;
 
 
@@ -1519,17 +1347,7 @@ uint8_t                   raIdx;
 #endif
 
 /*MSG4 Fix Start */
-#ifdef ANSI
-S16 rgSCHRamAddToRaInfoSchdLst
-(
-RgSchCellCb       *cell,
-RgSchRaCb         *raCb
-)
-#else
-S16 rgSCHRamAddToRaInfoSchdLst(cell, raCb)
-RgSchCellCb       *cell;
-RgSchRaCb         *raCb;
-#endif
+S16 rgSCHRamAddToRaInfoSchdLst(RgSchCellCb *cell,RgSchRaCb *raCb)
 {
    CmLteTimingInfo expTime ={0};
    RgSchCmnCell    *cellSch =  RG_SCH_CMN_GET_CELL(cell);
@@ -1548,17 +1366,7 @@ RgSchRaCb         *raCb;
 
 
 
-#ifdef ANSI
-S16 rgSCHRamRmvFrmRaInfoSchdLst
-(
-RgSchCellCb       *cell,
-RgSchRaCb         *raCb
-)
-#else
-S16 rgSCHRamRmvFrmRaInfoSchdLst(cell, raCb)
-RgSchCellCb       *cell;
-RgSchRaCb         *raCb;
-#endif
+S16 rgSCHRamRmvFrmRaInfoSchdLst(RgSchCellCb *cell,RgSchRaCb  *raCb)
 {
 
    cmLListDelFrm(&(cell->raInfo.toBeSchdLst), &(raCb->schdLnk));
@@ -1584,22 +1392,13 @@ RgSchRaCb         *raCb;
  *     File :
  *
  **********************************************************/
-#ifdef ANSI
 static Void rgSCHRamUlFreeAllocation
 (
 RgSchUlSf       *sf,
 RgSchUlAlloc    *alloc,
 RgSchCellCb     *cell,
 Bool            isEmtc
-
 )
-#else
-static Void rgSCHRamUlFreeAllocation(sf, alloc, cell,isEmtc)
-RgSchUlSf       *sf;
-RgSchUlAlloc    *alloc;
-RgSchCellCb     *cell;
-Bool            isEmtc;
-#endif
 {
 
    rgSCHUhmFreeProc(alloc->hqProc, cell);

@@ -521,19 +521,12 @@ static void rlcUmmReAssembleSdus(RlcCb *gCb, RlcUlRbCb *rbCb, RlcUmRecBuf *umRec
  *
  * @return  Void
 */ 
-#ifdef ANSI
 Void rlcUmmUlReEstablish
 (
 RlcCb         *gCb,
 CmLteRlcId   *rlcId,
 RlcUlRbCb     *rbCb
 )
-#else
-Void rlcUmmUlReEstablish(gCb, rlcId, rbCb)
-RlcCb         *gCb;
-CmLteRlcId   *rlcId;
-RlcUlRbCb     *rbCb;
-#endif
 {
    RlcSn         curSn;
    RlcSn         vrUh;
@@ -740,17 +733,11 @@ static uint8_t rlcUmmExtractHdr(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *pdu, RlcUmH
  *
  * @return  Void
 */
-#ifdef ANSI
 Void rlcUmmReOrdTmrExp
 (
 RlcCb       *gCb,
 RlcUlRbCb   *rbCb     
 )
-#else
-Void rlcUmmReOrdTmrExp(gCb, rbCb)
-RlcCb       *gCb;
-RlcUlRbCb   *rbCb;   
-#endif
 {
    RlcSn prevVrUr;   /* prevVrUr */
    prevVrUr = RLC_UMUL.vrUr;
@@ -797,17 +784,11 @@ RlcUlRbCb   *rbCb;
  * @return   void
  */
 
-#ifdef ANSI
 Void rlcUmmFreeUlRbCb
 (
 RlcCb       *gCb,
 RlcUlRbCb   *rbCb
 )
-#else
-Void rlcUmmFreeUlRbCb(gCb,rbCb)
-RlcCb       *gCb;
-RlcUlRbCb   *rbCb;
-#endif
 {
    RlcSn         curSn = 0;           /* sequence number of PDU */
    RlcSn         windSz;              /* PDU window size */

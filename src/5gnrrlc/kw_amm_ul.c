@@ -841,21 +841,7 @@ static uint8_t rlcAmmExtractHdr(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *pdu, RlcAmH
  *     -# RFAILED
  *
  */
-#ifdef ANSI
-static S16 rlcAmmExtractHdrOld
-(
-RlcCb       *gCb,
-Buffer     *pdu,
-RlcAmHdr    *amHdr,
-uint8_t         *fByte
-)
-#else
-static S16 rlcAmmExtractHdrOld(gCb, pdu, amHdr, fByte)
-RlcCb       *gCb;
-Buffer     *pdu;
-RlcAmHdr    *amHdr;
-uint8_t         *fByte;
-#endif
+static S16 rlcAmmExtractHdrOld(RlcCb *gCb,Buffer *pdu,RlcAmHdr *amHdr,uint8_t *fByte)
 {
    uint8_t         e;
    uint8_t         snByte;
@@ -1547,21 +1533,7 @@ static uint8_t rlcAmmUlReassembleSdus(RlcCb *gCb, RlcUlRbCb *rbCb, RlcAmRecBuf *
  * @return  Void
  *
  */
-#ifdef ANSI
-Void rlcAmmUlReEstablish
-(
-RlcCb         *gCb,
-CmLteRlcId   rlcId,
-Bool         sendReEst,
-RlcUlRbCb     *rbCb
-)
-#else
-Void rlcAmmUlReEstablish(gCb, rlcId, sendReEst, rbCb)
-RlcCb         *gCb;
-CmLteRlcId   rlcId;
-Bool         sendReEst;
-RlcUlRbCb     *rbCb;
-#endif
+Void rlcAmmUlReEstablish(RlcCb *gCb,CmLteRlcId rlcId,Bool sendReEst,RlcUlRbCb  *rbCb)
 {
    RlcSn   sn;
    RlcSn   mSn;
@@ -1651,17 +1623,7 @@ RlcUlRbCb     *rbCb;
  *
  */
 
-#ifdef ANSI
-Void rlcAmmReOrdTmrExp
-(
-RlcCb        *gCb,
-RlcUlRbCb    *rbCb
-)
-#else
-Void rlcAmmReOrdTmrExp(rbCb)
-RlcCb        *gCb;
-RlcUlRbCb    *rbCb;
-#endif
+Void rlcAmmReOrdTmrExp(RlcCb *gCb,RlcUlRbCb *rbCb)
 {
    RlcAmUl *amUl = &(rbCb->m.amUl);
    RlcSn sn;
@@ -1730,17 +1692,7 @@ RlcUlRbCb    *rbCb;
  *
  */
 
-#ifdef ANSI
-Void rlcAmmStaProTmrExp
-(
-RlcCb        *gCb,
-RlcUlRbCb    *rbCb
-)
-#else
-Void rlcAmmStaProTmrExp(gCb, rbCb)
-RlcCb        *gCb;
-RlcUlRbCb    *rbCb;
-#endif
+Void rlcAmmStaProTmrExp(RlcCb *gCb,RlcUlRbCb *rbCb)
 {
    RlcAmUl *amUl = &(rbCb->m.amUl);
 
@@ -1917,17 +1869,7 @@ static void rlcAmmUpdExpByteSeg(RlcCb *gCb, RlcAmUl *amUl, RlcSeg *seg)
  *
  * @return   void
  */
-#ifdef ANSI
-Void rlcAmmFreeUlRbCb
-(
-RlcCb       *gCb,
-RlcUlRbCb   *rbCb
-)
-#else
-Void rlcAmmFreeUlRbCb(gCb,rbCb)
-RlcCb       *gCb;
-RlcUlRbCb   *rbCb;
-#endif
+Void rlcAmmFreeUlRbCb(RlcCb       *gCb,RlcUlRbCb   *rbCb)
 {
    RlcSn         curSn = 0;           /* Sequence number of PDU */
    RlcSn         windSz;              /* PDU window size */

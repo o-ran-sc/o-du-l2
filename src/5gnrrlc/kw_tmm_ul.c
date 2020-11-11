@@ -71,17 +71,11 @@ uint32_t loadStart;
 #endif
 
 S16 PjUiPjuDatInd(Pst* pst,SuId suId,CmLtePdcpId * pdcpId,Buffer *mBuf);
-#ifdef ANSI
 Void AddUeContext
 (
 CmLteRnti   crnti,
 uint8_t rrcMsgType
 )
-#else
-Void AddUeContext(crnti,rrcMsgType)
-CmLteRnti   crnti,
-uint8_t rrcMsgType 
-#endif
 {
    KwuDatIndInfo   *datIndInfo;   /* Data Indication Information */
    uint8_t rrcConReq[6] ={ 0x50, 0x30, 0x30, 0x30, 0x30, 0x34 };
@@ -304,19 +298,12 @@ void rlcTmmRcvFrmMac(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *pdu)
  *    -# ROK 
  *       
  **/
-#ifdef ANSI
 Void rlcTmmUlReEstablish
 (
 RlcCb        *gCb,
 RlcUlRbCb    *rbCb        
 )
-#else
-Void rlcTmmUlReEstablish(rbCb)
-RlcCb        *gCb;
-RlcUlRbCb    *rbCb;          
-#endif
 {
-
    RLOG_ARG0(L_DEBUG,DBG_RBID,rbCb->rlcId.rbId,"do nothing for TMM for ReEstablish");
    return;
 }

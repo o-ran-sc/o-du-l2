@@ -148,25 +148,7 @@ static int RLOG_MODULE_ID=4096;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-static S16 rgDUXInsSdu
-(
-Inst        inst,
-RgMacPdu    *pdu,
-RgMacSdu    **sdu,
-uint8_t     lcId,
-uint16_t    sduLen,
-RgErrInfo   *err
-)
-#else
-static S16 rgDUXInsSdu(inst,pdu, sdu, lcId, sduLen, err)
-Inst        inst;
-RgMacPdu    *pdu;
-RgMacSdu    **sdu,
-uint8_t     lcId;
-uint16_t    sduLen;
-RgErrInfo   *err;
-#endif
+static S16 rgDUXInsSdu(Inst inst, RgMacPdu *pdu, RgMacSdu **sdu, uint8_t lcId, uint16_t sduLen, RgErrInfo *err)
 {
    S16         ret;
    RgMacSdu    *sduAloc = NULLP;
@@ -207,26 +189,7 @@ RgErrInfo   *err;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-static S16 rgDUXExtSubHdr
-(
-Inst        inst,
-RgMacPdu    *pdu,
-Buffer      *mBuf,
-uint8_t     *lcId,
-uint16_t    *len,
-RgErrInfo   *err
-)
-#else
-static S16 rgDUXExtSubHdr(inst,pdu, mBuf, lcId,
-len, err)
-Inst        inst;
-RgMacPdu    *pdu;
-Buffer      *mBuf;
-uint8_t     *lcId;
-uint16_t    *len;
-RgErrInfo   *err;
-#endif
+static S16 rgDUXExtSubHdr(Inst inst, RgMacPdu *pdu, Buffer *mBuf, uint8_t *lcId, uint16_t *len, RgErrInfo *err)
 {
    uint8_t             byte;
    uint8_t             fmt=0;
@@ -290,27 +253,8 @@ RgErrInfo   *err;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-static S16 rgDUXExtCe
-(
-Inst        inst,
-RgMacPdu    *pdu,
-RgInfCeInfo *ceInfo,
-Buffer      *mBuf,
-uint8_t     lcId,
-uint16_t    subPduLen,
-RgErrInfo   *err
-)
-#else
-static S16 rgDUXExtCe(inst,pdu, ceInfo, mBuf,lcId,subPduLen, err)
-Inst        inst;
-RgMacPdu    *pdu;
-RgInfCeInfo *ceInfo;
-Buffer      *mBuf;
-uint8_t     lcId;
-uint16_t    subPduLen;
-RgErrInfo   *err;
-#endif
+static S16 rgDUXExtCe(Inst inst, RgMacPdu *pdu, RgInfCeInfo *ceInfo, Buffer *mBuf, uint8_t lcId, uint16_t subPduLen,\
+RgErrInfo *err)
 {
    S16            ret;
 
@@ -486,27 +430,8 @@ RgErrInfo   *err;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-static S16 rgDUXExtSdu
-(
-Inst        inst,
-RgMacPdu    *pdu,
-RgInfCeInfo *ceInfo,
-Buffer      **mBuf,
-uint8_t     lcId,
-uint16_t    subPduLen,
-RgErrInfo   *err
-)
-#else
-static S16 rgDUXExtSdu(inst,pdu, ceInfo,mBuf,lcId,subPduLen,err)
-Inst        inst;
-RgMacPdu    *pdu;
-RgInfCeInfo *ceInfo;
-Buffer      **mBuf;
-uint8_t     lcId;
-uint16_t    subPduLen;
-RgErrInfo   *err;
-#endif
+static S16 rgDUXExtSdu(Inst inst, RgMacPdu *pdu, RgInfCeInfo *ceInfo, Buffer **mBuf, uint8_t lcId, uint16_t subPduLen,\
+RgErrInfo *err)
 {
    S16         ret;
    Buffer      *tmpBuf1;
@@ -563,23 +488,7 @@ RgErrInfo   *err;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 rgDUXDemuxData
-(
-Inst          inst,
-RgMacPdu      *pdu,
-RgInfCeInfo   *ceInfo,
-Buffer        **mBuf,
-RgErrInfo     *err
-)
-#else
-S16 rgDUXDemuxData(inst,pdu, ceInfo, mBuf, err)
-Inst          inst;
-RgMacPdu      *pdu;
-RgInfCeInfo   *ceInfo;
-Buffer        **mBuf;
-RgErrInfo     *err;
-#endif
+S16 rgDUXDemuxData(Inst inst, RgMacPdu  *pdu, RgInfCeInfo *ceInfo, Buffer **mBuf, RgErrInfo *err)
 {
    uint8_t     lcId;
    uint16_t    subPduLen;

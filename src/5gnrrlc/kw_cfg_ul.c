@@ -306,21 +306,7 @@ static S16 rlcAddToUlL2Meas(RlcCb *gCb, RlcUlRbCb *rlcRbCb,uint8_t cellId,uint8_
  *    -#ROK
  *    -#RFAILED
  */
-#ifdef ANSI
-static S16 rlcCfgFillUlRbCb
-(
-RlcCb            *gCb,
-RlcUlRbCb        *rbCb,
-RlcUlUeCb        *ueCb,
-RlcEntCfgInfo   *entCfg
-)
-#else
-static S16 rlcCfgFillUlRbCb(gCb,rbCb, ueCb, entCfg)
-RlcCb            *gCb;
-RlcUlRbCb        *rbCb;
-RlcUlUeCb        *ueCb;
-RlcEntCfgInfo   *entCfg;
-#endif
+static S16 rlcCfgFillUlRbCb(RlcCb *gCb,RlcUlRbCb *rbCb,RlcUlUeCb *ueCb,RlcEntCfgInfo *entCfg)
 {
 
    RLOG_ARG3(L_DEBUG,DBG_UEID,rbCb->rlcId.ueId, 
@@ -415,21 +401,7 @@ RlcEntCfgInfo   *entCfg;
  *    -#ROK
  *    -#RFAILED
  */
-#ifdef ANSI
-static S16 rlcCfgUpdateUlRb
-(
-RlcCb            *gCb,
-RlcUlRbCb        *rbCb,
-void            *ptr,
-RlcEntCfgInfo   *entCfg
-)
-#else
-static S16 rlcCfgUpdateUlRb(gCb,rbCb, ptr, entCfg)
-RlcCb            *gCb;
-RlcUlRbCb        *rbCb;
-void            *ptr;
-RlcEntCfgInfo   *entCfg;
-#endif
+static S16 rlcCfgUpdateUlRb(RlcCb *gCb,RlcUlRbCb *rbCb,void *ptr,RlcEntCfgInfo *entCfg)
 {
    
    switch (rbCb->mode)
@@ -484,23 +456,7 @@ RlcEntCfgInfo   *entCfg;
  *    -# ROK
  *    -# RFAILED
  */
-#ifdef ANSI
-S16 rlcValidateRbCfgParams
-(
-RlcCb            *gCb,
-CmLteRnti       ueId,
-CmLteCellId     cellId,
-RlcEntCfgInfo   *cfgToValidate,
-CmStatus        *status
-)
-#else
-S16 rlcValidateRbCfgParams(gCb,ueId, cellId, cfgToValidate, status)
-RlcCb            *gCb;
-CmLteRnti       ueId;
-CmLteCellId     cellId;
-RlcEntCfgInfo   *cfgToValidate;
-CmStatus        *status;
-#endif
+S16 rlcValidateRbCfgParams(RlcCb *gCb,CmLteRnti ueId,CmLteCellId cellId,RlcEntCfgInfo *cfgToValidate,CmStatus *status)
 {
    if (cellId == 0)
    {
@@ -614,7 +570,6 @@ CmStatus        *status;
  *    -# ROK
  *    -# RFAILED
  */
-#ifdef ANSI
 S16 rlcCfgValidateUlRb
 (
 RlcCb             *gCb,
@@ -622,13 +577,6 @@ RlcEntCfgInfo    *cfgToValidate,
 RlcUlEntTmpData   *cfgEntData,
 RlcUlCfgTmpData   *cfgTmpData 
 )
-#else
-S16 rlcCfgValidateUlRb(gCb,cfgToValidate, cfgEntData, cfgTmpData)
-RlcCb             *gCb;
-RlcEntCfgInfo    *cfgToValidate;
-RlcUlEntTmpData   *cfgEntData;
-RlcUlCfgTmpData   *cfgTmpData; 
-#endif
 {
 
    RLOG_ARG2(L_DEBUG,DBG_UEID,cfgTmpData->ueId,
@@ -835,7 +783,6 @@ RlcUlCfgTmpData   *cfgTmpData;
  *    -# ROK
  *    -# RFAILED
  */
-#ifdef ANSI
 S16 rlcCfgRollBackUlRb
 (
 RlcCb             *gCb,
@@ -843,15 +790,6 @@ CmLteRnti        ueId,
 RlcEntCfgInfo    *cfg,
 RlcUlEntTmpData   *cfgEntData
 )
-#else
-S16 rlcCfgRollBackUlRb(gCb, cfg, cfgEntData)
-(
-RlcCb             *gCb;
-CmLteRnti        ueId;
-RlcEntCfgInfo    *cfg;
-RlcUlEntTmpData   *cfgEntData;
-)
-#endif
 {
 
    if(CKW_CFG_ADD == cfg->cfgType)
@@ -888,7 +826,6 @@ RlcUlEntTmpData   *cfgEntData;
  *    -# ROK
  *    -# RFAILED
  */
-#ifdef ANSI
 Void rlcCfgApplyUlRb
 (
 RlcCb             *gCb,
@@ -896,15 +833,6 @@ RlcEntCfgInfo    *cfgToAply,
 RlcUlEntTmpData   *cfgEntData,
 RlcUlCfgTmpData   *cfgTmpData
 )
-#else
-Void rlcCfgApplyUlRb(gCb, cfgToApply, cfgEntData, cfgTmpData)
-(
-RlcCb             *gCb;
-RlcEntCfgInfo    *cfgToAply;
-RlcUlEntTmpData   *cfgEntData;
-RlcUlCfgTmpData   *cfgTmpData;
-)
-#endif
 {
   
    switch(cfgToAply->cfgType)
@@ -1031,7 +959,6 @@ RlcUlCfgTmpData   *cfgTmpData;
  *    -# ROK
  *    -# RFAILED
  */
-#ifdef ANSI
 S16 rlcCfgValidateDelUlUe
 (
 RlcCb             *gCb,
@@ -1039,13 +966,6 @@ RlcEntCfgInfo    *cfgToValidate,
 RlcUlEntTmpData   *cfgEntData,
 RlcUlCfgTmpData   *cfgTmpData
 )
-#else
-S16 rlcCfgValidateDelUlUe(gCb,cfgToValidate, cfgEntData,cfgTmpData)
-RlcCb             *gCb;
-RlcEntCfgInfo    *cfgToValidate;
-RlcUlEntTmpData   *cfgEntData;
-RlcUlCfgTmpData   *cfgTmpData;
-#endif
 {
 
    RLOG_ARG2(L_DEBUG,DBG_UEID,cfgTmpData->ueId, 
@@ -1085,19 +1005,11 @@ RlcUlCfgTmpData   *cfgTmpData;
  * @return  S16
  *    -# ROK
  */
-#ifdef ANSI
 Void rlcCfgApplyDelUlUe
 (
 RlcCb             *gCb,
 RlcUlCfgTmpData   *cfgTmpData
 )
-#else
-Void rlcCfgApplyDelUlUe(gCb, cfgTmpData)
-(
-RlcCb             *gCb;
-RlcUlCfgTmpData   *cfgTmpData;
-)
-#endif
 {
    
 #ifdef LTE_L2_MEAS
@@ -1123,7 +1035,6 @@ RlcUlCfgTmpData   *cfgTmpData;
  *    -# ROK
  *    -# RFAILED
  */
-#ifdef ANSI
 S16 rlcCfgValidateDelUlCell
 (
 RlcCb             *gCb,
@@ -1132,14 +1043,6 @@ RlcEntCfgInfo    *cfgToValidate,
 RlcUlEntTmpData   *cfgEntData,
 RlcUlCfgTmpData   *cfgTmpData
 )
-#else
-S16 rlcCfgValidateDelUlCell(gCb, cellId, cfgToValidate, cfgTmpData)
-RlcCb             *gCb;
-CmLteCellId      cellId;
-RlcEntCfgInfo    *cfgToValidate;
-RlcUlEntTmpData   *cfgEntData;
-RlcUlCfgTmpData   *cfgTmpData;
-#endif
 {
 
    RLOG_ARG1(L_DEBUG,DBG_CELLID,cellId ,"cfgType(%d)",
@@ -1177,19 +1080,7 @@ RlcUlCfgTmpData   *cfgTmpData;
  * @return  S16
  *    -# ROK
  */
-#ifdef ANSI
-Void rlcCfgApplyDelUlCell
-(
-RlcCb             *gCb,
-RlcUlCfgTmpData   *cfgInfo
-)
-#else
-Void rlcCfgApplyDelUlCell(gCb, cfgEntData)
-(
-RlcCb             *gCb;
-RlcUlCfgTmpData   *cfgInfo;
-)
-#endif
+Void rlcCfgApplyDelUlCell(RlcCb *gCb,RlcUlCfgTmpData *cfgInfo)
 {
    
    rlcDbmDelUlCellCb(gCb,cfgInfo->cellCb);
@@ -1210,7 +1101,6 @@ RlcUlCfgTmpData   *cfgInfo;
  *    -# ROK
  *    -# RFAILED
  */
-#ifdef ANSI
 S16 rlcCfgValidateReEstRb
 (
 RlcCb             *gCb,
@@ -1219,14 +1109,6 @@ CmLteCellId      cellId,
 RlcEntCfgInfo    *cfgToValidate,
 RlcUlEntTmpData   *cfgEntData
 )
-#else
-S16 rlcCfgValidateReEstRb(gCb,ueId, cellId, cfgToValidate, cfgEntData)
-RlcCb             *gCb;
-CmLteRnti        ueId;
-CmLteCellId      cellId;
-RlcEntCfgInfo    *cfgToValidate;
-RlcUlEntTmpData   *cfgEntData;
-#endif
 {
    CmLteRlcId   rlcId;   /* RLC Identifier */
 
@@ -1270,25 +1152,14 @@ RlcUlEntTmpData   *cfgEntData;
  * @return  S16
  *    -# ROK
  */
-#ifdef ANSI
 Void rlcCfgApplyReEstUlRb
 (
-RlcCb             *gCb,
-CmLteRnti        ueId,
-CmLteCellId      cellId,
-Bool             sndReEstInd,
-RlcUlEntTmpData   *cfgEntData
+RlcCb           *gCb,
+CmLteRnti       ueId,
+CmLteCellId     cellId,
+Bool            sndReEstInd,
+RlcUlEntTmpData *cfgEntData
 )
-#else
-Void rlcCfgApplyReEstUlRb(gCb, ueId, cellId, sndReEstInd, cfgEntData)
-(
-RlcCb             *gCb;
-CmLteRnti        ueId;
-CmLteCellId      cellId;
-Bool             sndReEstInd;
-RlcUlEntTmpData   *cfgEntData;
-)
-#endif
 {
    CmLteRlcId   rlcId;   /* RLC Identifier */
    
@@ -1333,21 +1204,13 @@ RlcUlEntTmpData   *cfgEntData;
  *    -# ROK
  *    -# RFAILED
  */
-#ifdef ANSI
 S16 rlcCfgValidateUeIdChng
 (
-RlcCb             *gCb,
+RlcCb            *gCb,
 CkwUeInfo        *ueInfo,
 CkwUeInfo        *newUeInfo,
-RlcUlCfgTmpData   *cfgTmpData
+RlcUlCfgTmpData  *cfgTmpData
 )
-#else
-S16 rlcCfgValidateUeIdChng(gCb,ueInfo,newUeInfo,cfgTmpData)
-RlcCb             *gCb;
-CkwUeInfo        *ueInfo;
-CkwUeInfo        *newUeInfo;
-RlcUlCfgTmpData   *cfgTmpData;
-#endif
 {
    RlcUlUeCb   *ueCb;
 
@@ -1398,23 +1261,13 @@ RlcUlCfgTmpData   *cfgTmpData;
  * @return  S16
  *    -# ROK
  */
-#ifdef ANSI
 Void rlcCfgApplyUlUeIdChng
 (
-RlcCb             *gCb,
+RlcCb            *gCb,
 CkwUeInfo        *ueInfo,
 CkwUeInfo        *newUeInfo,
-RlcUlCfgTmpData   *cfgTmpData
+RlcUlCfgTmpData  *cfgTmpData
 )
-#else
-Void rlcCfgApplyUlUeIdChng(gCb, ueId, cellId, cfgTmpData)
-(
-RlcCb             *gCb;
-CkwUeInfo        *ueInfo,
-CkwUeInfo        *newUeInfo,
-RlcUlCfgTmpData   *cfgTmpData;
-)
-#endif
 {
    
 #ifdef LTE_L2_MEAS

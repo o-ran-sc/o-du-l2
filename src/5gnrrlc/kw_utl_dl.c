@@ -637,7 +637,6 @@ uint8_t rlcUtlSendDedLcBoStatus(RlcCb *gCb, RlcDlRbCb *rbCb, int32_t bo, \
  */
 /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS_RLC
-#ifdef ANSI
 Void rlcUtlEmptySduQ
 (
 RlcCb        *gCb, 
@@ -645,23 +644,11 @@ RlcDlRbCb    *rbCb,
 CmLListCp   *sduQ 
 )
 #else
-Void rlcUtlEmptySduQ(gCb,rbCb, sduQ)
-RlcCb        *gCb;
-RlcDlRbCb    *rbCb;
-CmLListCp   *sduQ;
-#endif
-#else
-#ifdef ANSI
 Void rlcUtlEmptySduQ
 (
 RlcCb        *gCb,
 CmLListCp   *sduQ 
 )
-#else
-Void rlcUtlEmptySduQ(gCb,sduQ)
-RlcCb        *gCb;
-CmLListCp   *sduQ; 
-#endif
 #endif
 {
 #ifdef LTE_L2_MEAS_RLC
@@ -747,17 +734,7 @@ void rlcUtlCalcLiForSdu(RlcCb *gCb, uint16_t numLi, MsgLen msgLen, int16_t *pduS
  *
  * @return  void 
  */
-#ifdef ANSI
-Void rlcDlUtlSetReestInProgressForRB
-(
-RlcCb     *gCb,
-RlcDlRbCb *rbCb
-)
-#else
-Void rlcDlUtlSetReestInProgressForRB(gCb,rbCb)
-RlcCb     *gCb;
-RlcDlRbCb *rbCb;
-#endif 
+Void rlcDlUtlSetReestInProgressForRB(RlcCb *gCb,RlcDlRbCb *rbCb)
 {
       
    rbCb->reestInProgress = TRUE;
@@ -806,15 +783,7 @@ bool rlcDlUtlIsReestInProgress(RlcDlRbCb *rbCb)
  *
  * @return  Void
  */
-#ifdef ANSI
-Void rlcDlUtlResetReestInProgress
-(
-RlcDlRbCb *rbCb
-)
-#else
-Void rlcDlUtlResetReestInProgress(rbCb)
-RlcDlRbCb *rbCb;
-#endif 
+Void rlcDlUtlResetReestInProgress(RlcDlRbCb *rbCb)
 {
 
    rbCb->reestInProgress = FALSE;
@@ -833,17 +802,7 @@ RlcDlRbCb *rbCb;
  *
  * @return  void 
  */
-#ifdef ANSI
-Void rlcDlUtlSetReestInProgressForAllRBs
-(
-RlcCb     *gCb,
-RlcDlUeCb *ueCb
-)
-#else
-Void rlcDlUtlSetReestInProgressForAllRBs(gCb,ueCb)
-RlcCb     *gCb;
-RlcDlUeCb *ueCb;
-#endif 
+Void rlcDlUtlSetReestInProgressForAllRBs(RlcCb *gCb,RlcDlUeCb *ueCb)
 {
    uint32_t        rbIdx;
    
@@ -921,17 +880,7 @@ void rlcUtlIncrementGenStsBytesAndPdusSent(RlcGenSts *genSts, Buffer *pdu)
  *
  * @return  Void
  */
-#ifdef ANSI
-Void rlcUtlInitToBeFreed
-(
-RlcCb                *gCb,
-RlcDlDataToBeFreed   *toBeFreed
-)
-#else
-Void rlcUtlInitToBeFreed(gCb, toBeFreed)
-RlcCb                *gCb;
-RlcDlDataToBeFreed   *toBeFreed;
-#endif
+Void rlcUtlInitToBeFreed(RlcCb *gCb,RlcDlDataToBeFreed *toBeFreed)
 {
    cmLListInit(&(toBeFreed->sduLst));
    cmLListInit(&(toBeFreed->rbLst));
@@ -949,15 +898,7 @@ RlcDlDataToBeFreed   *toBeFreed;
  *
  * @return  Void
  */
-#ifdef ANSI
-Void rlcUtlInitializeSelfPst
-(
-RlcCb *gCb  
-)
-#else
-Void rlcUtlInitializeSelfPst(gCb)
-RlcCb *gCb;
-#endif
+Void rlcUtlInitializeSelfPst(RlcCb *gCb)
 {
    Pst *selfPst = &gCb->u.dlCb->selfPst;
    
@@ -1016,17 +957,7 @@ void rlcUtlAddSduToBeFreedQueue(RlcCb *gCb, RlcSdu *sdu)
  *
  * @return  Void
  */
-#ifdef ANSI
-Void rlcUtlAddReTxPduToBeFreedQueue
-(
-RlcCb     *gCb,
-RlcRetx   *retx
-)
-#else
-Void rlcUtlAddReTxPduToBeFreedQueue(gCb, retx)
-RlcCb     *gCb;
-RlcRetx   *retx;
-#endif
+Void rlcUtlAddReTxPduToBeFreedQueue(RlcCb *gCb,RlcRetx *retx)
 {
    cmLListAdd2Tail(&(gCb->u.dlCb->toBeFreed.reTxLst), &(retx->lstEnt));
    return;
@@ -1041,17 +972,7 @@ RlcRetx   *retx;
  *
  * @return  Void
  */
-#ifdef ANSI
-Void rlcUtlAddTxPduToBeFreedQueue
-(
-RlcCb   *gCb,
-RlcTx   *pdu
-)
-#else
-Void rlcUtlAddTxPduToBeFreedQueue(gCb, pdu)
-RlcCb   *gCb;
-RlcTx   *pdu;
-#endif
+Void rlcUtlAddTxPduToBeFreedQueue(RlcCb   *gCb,RlcTx   *pdu)
 {
    pdu->rlsLnk.node = (PTR)pdu;
    cmLListAdd2Tail(&(gCb->u.dlCb->toBeFreed.txLst), &(pdu->rlsLnk));
@@ -1074,19 +995,7 @@ RlcTx   *pdu;
  *     - TRUE if more data to be freed
  *     - FALSE if all the data has been freed
  */
-#ifdef ANSI
-static Bool rlcUtlFreeDlAmRbMemory
-(
-RlcCb       *gCb,
-RlcDlRbCb   *rbCb,
-uint32_t    *toBeFreed
-)
-#else
-static Bool rlcUtlFreeDlAmRbMemory(gCb, rbCb, toBeFreed)
-RlcCb       *gCb;
-RlcDlRbCb   *rbCb;
-uint32_t    *toBeFreed
-#endif
+static Bool rlcUtlFreeDlAmRbMemory(RlcCb *gCb,RlcDlRbCb *rbCb,uint32_t *toBeFreed)
 {
    RlcRetx   *retx;   /* retransmission buffer */
    RlcSn     mTxNext;    /* send state variable */
@@ -1177,15 +1086,7 @@ uint32_t    *toBeFreed
  *
  * @return  Void
  */
-#ifdef ANSI
-Void rlcUtlFreeDlMemory
-(
-RlcCb *gCb  
-)
-#else
-Void rlcUtlFreeDlMemory(gCb)
-RlcCb *gCb;
-#endif
+Void rlcUtlFreeDlMemory(RlcCb *gCb)
 {
    uint32_t toBeFreed; 
 
@@ -1346,7 +1247,6 @@ S16 rlcUtlL2MeasDlInit(RlcCb *gCb)
  *  @return  Void
  *
  */
-#ifdef ANSI
 Void rlcUtlUpdateBurstSdus
 (
 RlcCb            *gCb,
@@ -1355,14 +1255,6 @@ RlcContSduLst    *contSduLst,
 S32              dataVol,
 uint32_t         schPduSz
 )
-#else
-Void  rlcUtlUpdateBurstSdus (gCb, rbCb, contSduLst, dataVol, schPduSz)
-RlcCb            *gCb;
-RlcDlRbCb        *rbCb;
-RlcContSduLst    *contSduLst;
-S32              dataVol;
-uint32_t         schPduSz;
-#endif
 {
 
    RlcL2MeasDlIpTh   *l2MeasDlIpThruput = NULLP;
@@ -1444,17 +1336,7 @@ uint32_t         schPduSz;
  *
  *  @return  Void
  */
-#ifdef ANSI
-Void rlcUtlUpdateContainedSduLst
-(
-uint8_t            sduIdx,
-RlcContSduLst  *contSduLst
-)
-#else
-Void rlcUtlUpdateContainedSduLst(sduIdx, contSduLst)
-uint8_t            sduIdx;
-RlcContSduLst  *contSduLst;
-#endif
+Void rlcUtlUpdateContainedSduLst(uint8_t sduIdx,RlcContSduLst *contSduLst)
 {
    if (contSduLst->numSdus < RLC_L2MEAS_MAX_OUTSTNGSDU)
    {
@@ -1482,23 +1364,14 @@ RlcContSduLst  *contSduLst;
  *
  *  @return  Void
  */
-#ifdef ANSI
 Void rlcUtlUpdateOutStandingSduLst
 (
 RlcL2MeasDlIpTh   *dlIpThPut, 
-uint8_t               sduIdx, 
-MsgLen           sduLen, 
-uint32_t              sduId,
-Bool             newIdx
+uint8_t           sduIdx, 
+MsgLen            sduLen, 
+uint32_t          sduId,
+Bool              newIdx
 )
-#else
-Void rlcUtlUpdateOutStandingSduLst(dlIpThPut, sduIdx, sduLen, sduId, newIdx)
-RlcL2MeasDlIpTh   *dlIpThPut;
-uint8_t               sduIdx;
-MsgLen           sduLen; 
-uint32_t              sduId;
-Bool             newIdx;
-#endif
 {
    if (sduIdx < RLC_L2MEAS_MAX_OUTSTNGSDU)
    {
@@ -1512,17 +1385,7 @@ Bool             newIdx;
    }
    return;
 }
-#ifdef ANSI
-RlcL2MeasTb * rlcUtlGetCurMeasTb
-(
-RlcCb     *gCb,
-RlcDlRbCb *rbCb
-)
-#else
-RlcL2MeasTb * rlcUtlGetCurMeasTb(gCb, rbCb)
-RlcCb     *gCb;
-RlcDlRbCb *rbCb;
-#endif
+RlcL2MeasTb * rlcUtlGetCurMeasTb(RlcCb *gCb,RlcDlRbCb *rbCb)
 {
    RlcL2MeasTb  *curL2MeasTb;
    uint16_t         idx;
@@ -1574,7 +1437,6 @@ RlcDlRbCb *rbCb;
  *      -# ROK
  */
 
-#ifdef ANSI
 S16 rlcUtlProcHarqInd
 (
 RlcCb            *gCb,
@@ -1582,13 +1444,6 @@ RguHarqStatusInd *hqStaInd,
 RlcDlUeCb        *ueCb,
 uint8_t          tbIdx
 )
-#else
-S16 rlcUtlProcHarqInd(gCb, hqStaInd, ueCb, tbIdx)
-RlcCb             *gCb;
-RguHarqStatusInd  *hqStaInd;
-RlcDlUeCb         *ueCb;
-uint8_t            tbIdx;
-#endif
 {
 #ifdef LTE_L2_MEAS
    RlcDlRbCb        *rlcRbCb;           /* KW Control Block */
@@ -1782,17 +1637,7 @@ uint8_t            tbIdx;
  *      -# ROK
  */
 
-#ifdef ANSI
-S16 rlcUtlSndDlL2MeasCfm
-(
-RlcCb                  *gCb,
-RlcL2MeasEvtCb         *measEvtCb
-)
-#else
-S16 rlcUtlSndDlL2MeasCfm(gCb, measEvtCb)
-RlcCb                  *gCb;
-RlcL2MeasEvtCb         *measEvtCb;
-#endif
+S16 rlcUtlSndDlL2MeasCfm(RlcCb *gCb,RlcL2MeasEvtCb *measEvtCb)
 {
    uint32_t         qciIdx;
    RlcL2MeasCb      *measCb = NULLP;
@@ -1939,19 +1784,7 @@ RlcL2MeasEvtCb         *measEvtCb;
  *      -# ROK
  */
 
-#ifdef ANSI
-S16 rlcUtlSndDlL2MeasNCfm
-(
-RlcCb           *gCb,
-RlcL2MeasReqEvt *measReqEvt,
-RlcL2MeasCfmEvt *measCfmEvt
-)
-#else
-S16 rlcUtlSndDlL2MeasNCfm(gCb,measReqEvt, measCfmEvt)
-RlcCb           *gCb;
-RlcL2MeasReqEvt *measReqEvt;
-RlcL2MeasCfmEvt *measCfmEvt;
-#endif
+S16 rlcUtlSndDlL2MeasNCfm(RlcCb *gCb,RlcL2MeasReqEvt *measReqEvt,RlcL2MeasCfmEvt *measCfmEvt)
 {
 
    RlcMiLkwL2MeasCfm(&gCb->genCfg.lmPst, measCfmEvt);
@@ -1971,20 +1804,8 @@ RlcL2MeasCfmEvt *measCfmEvt;
  *
  *  @return  Void
  */
-#ifdef ANSI
 
-Void rlcUtlResetDlL2MeasInRlcRb
-(
-RlcCb       *gCb,
-RlcL2MeasCb *measCb,
-uint8_t      measType
-)
-#else
-Void rlcUtlResetDlL2MeasInRlcRb(gCb, measCb, measType)
-RlcCb       *gCb;
-RlcL2MeasCb *measCb;
-uint8_t      measType;
-#endif
+Void rlcUtlResetDlL2MeasInRlcRb(RlcCb *gCb,RlcL2MeasCb *measCb,uint8_t measType)
 {
    uint32_t           ueIdx;
    uint32_t           qciIdx;
@@ -2134,15 +1955,7 @@ Void DumpRLCDlDebugInformation(Void)
  *  @return  Void
  */
 
-#ifdef ANSI
-void rlcUtlFreeDlMem
-(
- Void
-)
-#else
-void rlcUtlFreeDlMem()
-Void;
-#endif
+void rlcUtlFreeDlMem( Void)
 {
   rlcUtlFreeDlMemory(RLC_GET_RLCCB(RLC_DL_INST));
 }
@@ -2166,15 +1979,7 @@ void rlcUtlGetCurrTime(uint32_t  *currTime)
 
 #if defined(MAC_RLC_HARQ_STA_RBUF) || defined (SS_RBUF)
 #ifdef LTE_L2_MEAS
-#ifdef ANSI
-void rlcUtlDlBatchProcHqStaInd
-(
- Void
-)
-#else
-void rlcUtlDlBatchProcHqStaInd()
-Void;
-#endif
+void rlcUtlDlBatchProcHqStaInd( Void)
 {
    /* Read from Ring Buffer and process PDCP packets */
    //Pst pst = {0};
@@ -2218,19 +2023,7 @@ Void;
  *  @return  Void
  *
  */
-#ifdef ANSI
-Void rlcUtlTrigPdbFlowCntrl
-(
-RlcCb       *gCb,
-RlcDlRbCb   *rbCb,
-uint32_t    pktAdmitCnt
-)
-#else
-Void rlcUtlTrigPdbFlowCntrl(gCb,rbCb,pktAdmitCnt)
-RlcCb       *gCb;
-RlcDlRbCb   *rbCb;
-uint32_t    pktAdmitCnt;
-#endif
+Void rlcUtlTrigPdbFlowCntrl(RlcCb  *gCb,RlcDlRbCb *rbCb,uint32_t pktAdmitCnt)
 {
    KwuFlowCntrlIndInfo    *flowCntrlInfo;
    RlcKwuSapCb*            rlckwuSap;
@@ -2323,19 +2116,7 @@ RlcTx* rlcUtlGetTxBuf(CmLListCp *txBufLst, RlcSn sn)
  *
  *  @return  Void
  */
-#ifdef ANSI
-Void rlcUtlDelTxBuf 
-(
-CmLListCp        *txBufLst,
-RlcTx            *txBuf,
-RlcCb              *gCb                              
-)
-#else
-Void rlcUtlDelTxBuf(txBufLst, txBuf, gCb)
-CmLListCp        *txBufLst;
-RlcTx             *txBuf;
-RlcCb             *gCb;                              
-#endif
+Void rlcUtlDelTxBuf (CmLListCp *txBufLst,RlcTx  *txBuf,RlcCb *gCb)
 {
    uint32_t            hashKey; 
    CmLListCp           *txBufLstCp;
@@ -2363,19 +2144,7 @@ RlcCb             *gCb;
  *
  *  @return  Void
  */
-#ifdef ANSI
-Void rlcUtlRemovTxBuf 
-(
-CmLListCp        *txBufLst,
-RlcTx            *txBuf,
-RlcCb              *gCb                              
-)
-#else
-Void rlcUtlRemovTxBuf(txBufLst, txBuf, gCb)
-CmLListCp        *txBufLst;
-RlcTx             *txBuf;
-RlcCb             *gCb;                              
-#endif
+Void rlcUtlRemovTxBuf(CmLListCp *txBufLst,RlcTx  *txBuf,RlcCb *gCb)
 {
    uint32_t            hashKey; 
    CmLListCp           *txBufLstCp;

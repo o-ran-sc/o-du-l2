@@ -90,7 +90,6 @@ uint32_t rgMacGT ;
  *      -# ROK 
  *      -# RFAILED 
  */
-#ifdef ANSI
 Void rlcTmmQSdu
 (
 RlcCb            *gCb,
@@ -98,13 +97,6 @@ RlcDlRbCb        *rbCb,
 KwuDatReqInfo   *datReqInfo, 
 Buffer          *mBuf       
 )
-#else
-Void rlcTmmQSdu(gCb,rbCb,datReqInfo,mBuf)
-RlcCb            *gCb;
-RlcDlRbCb        *rbCb;       
-KwuDatReqInfo   *datReqInfo;  
-Buffer          *mBuf;         
-#endif
 {
    RlcSdu   *sdu;              
  
@@ -377,17 +369,11 @@ void rlcTmmSendToMac(RlcCb *gCb, SuId suId, RlcDlRbCb *rbCb, RguCStaIndInfo *sta
  * @return  S16
  *    -# ROK 
  */
-#ifdef ANSI
 Void rlcDlTmmReEstablish
 (
 RlcCb       *gCb,
 RlcDlRbCb   *rbCb    
 )
-#else
-Void rlcDlTmmReEstablish(gCb,rbCb)
-RlcCb       *gCb;
-RlcDlRbCb   *rbCb;     
-#endif
 {
 
 #ifdef LTE_L2_MEAS_RLC

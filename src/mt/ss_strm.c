@@ -103,17 +103,11 @@ static struct
 *       File:  ss_strm.c
 *
 */
-#ifdef ANSI
 S16 ssStrmCfg
 (
 Region mdRegId,                 /* region for message and data blocks */
 Region datRegId                 /* region for data buffers */
 )
-#else
-S16 ssStrmCfg(mdRegId, datRegId)
-Region mdRegId;                 /* region for message and data blocks */
-Region datRegId;                /* region for data buffers */
-#endif
 {
 
    strmCfg.mdRegion = mdRegId;
@@ -150,17 +144,11 @@ Region datRegId;                /* region for data buffers */
 *       File:  ss_strm.c
 *
 */
-#ifdef ANSI
 S32 ssAdjMsg
 (
 SsMblk *mp,                     /* message */
 S32 len                         /* bytes to remove */
 )
-#else
-S32 ssAdjMsg(mp, len)
-SsMblk *mp;                     /* message */
-S32 len;                        /* bytes to remove */
-#endif
 {
    S32 n;                       /* counter */
    S32 size;                    /* size of mblks of same type as head/tail */
@@ -309,17 +297,11 @@ S32 len;                        /* bytes to remove */
 *       File:  ss_strm.c
 *
 */
-#ifdef ANSI
 SsMblk *ssAllocB
 (
 S32 size,                       /* required size */
 uint32_t pri                         /* message priority */
 )
-#else
-SsMblk *ssAllocB(size, pri)
-S32 size;                       /* required size */
-uint32_t pri;                        /* message priority */
-#endif
 {
    SsMblk *bp;                  /* mblk for iteration */
    Data *dat;                   /* pointer to data buffer */
@@ -409,15 +391,10 @@ uint32_t pri;                        /* message priority */
 *       File:  ss_strm.c
 *
 */
-#ifdef ANSI
 SsMblk *ssCopyB
 (
 SsMblk *mp                      /* message block */
 )
-#else
-SsMblk *ssCopyB(mp)
-SsMblk *mp;                     /* message block */
-#endif
 {
    SsMblk *bp;                  /* mblk for iteration */
    uint8_t *ptr;                     /* pointer to data */
@@ -477,15 +454,10 @@ SsMblk *mp;                     /* message block */
 *       File:  ss_strm.c
 *
 */
-#ifdef ANSI
 SsMblk *ssCopyMsg
 (
 SsMblk *mp                      /* message block */
 )
-#else
-SsMblk *ssCopyMsg(mp)
-SsMblk *mp;                     /* message block */
-#endif
 {
    SsMblk *first;               /* first mblk in message */
    SsMblk *bp;                  /* mblk for iteration */
@@ -554,15 +526,10 @@ SsMblk *mp;                     /* message block */
 *       File:  ss_strm.c
 *
 */
-#ifdef ANSI
 SsMblk *ssDupB
 (
 SsMblk *mp                      /* message block */
 )
-#else
-SsMblk *ssDupB(mp)
-SsMblk *mp;                     /* message block */
-#endif
 {
    SsMblk *bp;                  /* mblk for iteration */
    /* ss028.103 - Addition of lock for mBuf reference count */
@@ -649,15 +616,10 @@ SsMblk *mp;                     /* message block */
 *       File:  ss_strm.c
 *
 */
-#ifdef ANSI
 SsMblk *ssDupMsg
 (
 SsMblk *mp                      /* message block */
 )
-#else
-SsMblk *ssDupMsg(mp)
-SsMblk *mp;                     /* message block */
-#endif
 {
    SsMblk *first;               /* first mblk in message */
    SsMblk *bp;                  /* mblk for iteration */
@@ -715,7 +677,6 @@ SsMblk *mp;                     /* message block */
 *       File:  ss_strm.c
 *
 */
-#ifdef ANSI
 SsMblk *ssESBAlloc
 (
 uint8_t *base,                       /* client supplied data buffer */
@@ -723,13 +684,6 @@ S32 size,                       /* size of data buffer */
 S32 pri,                        /* message priority */
 SsFrtn *fr_rtn                  /* free routine */
 )
-#else
-SsMblk *ssESBAlloc(base, size, pri, fr_rtn)
-uint8_t *base;                       /* client supplied data buffer */
-S32 size;                       /* size of data buffer */
-S32 pri;                        /* message priority */
-SsFrtn *fr_rtn;                 /* free routine */
-#endif
 {
    SsMblk *bp;                  /* mblk for iteration */
    Size m;                      /* mblk + dblk */
@@ -794,15 +748,10 @@ SsFrtn *fr_rtn;                 /* free routine */
 *       File:  ss_strm.c
 *
 */
-#ifdef ANSI
 Void ssFreeB
 (
 SsMblk *mp                      /* message block */
 )
-#else
-Void ssFreeB(mp)
-SsMblk *mp;                     /* message block */
-#endif
 {
    SsMblk *bp;                  /* mblk for iteration */
    Size size;                   /* mblk + dblk */
@@ -982,15 +931,10 @@ SsMblk *mp;                     /* message block */
 *       File:  ss_strm.c
 *
 */
-#ifdef ANSI
 Void ssFreeMsg
 (
 SsMblk *mp                      /* message block */
 )
-#else
-Void ssFreeMsg(mp)
-SsMblk *mp;                     /* message block */
-#endif
 {
    SsMblk *bp;                  /* mblk for iteration */
 
@@ -1020,17 +964,11 @@ SsMblk *mp;                     /* message block */
 *       File:  ss_strm.c
 *
 */
-#ifdef ANSI
 Void ssLinkB
 (
 SsMblk *mp,                     /* first message block */
 SsMblk *bp                      /* second message block */
 )
-#else
-Void ssLinkB(mp, bp)
-SsMblk *mp;                     /* first message block */
-SsMblk *bp;                     /* second message block */
-#endif
 {
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -1070,15 +1008,10 @@ SsMblk *bp;                     /* second message block */
 *       File:  ss_strm.c
 *
 */
-#ifdef ANSI
 S32 ssMsgDSize
 (
 SsMblk *mp                      /* message block */
 )
-#else
-S32 ssMsgDSize(mp)
-SsMblk *mp;                     /* message block */
-#endif
 {
    S32 n;                       /* temporary */
    S32 size;                    /* size of data */
@@ -1120,17 +1053,11 @@ SsMblk *mp;                     /* message block */
 *       File:  ss_strm.c
 *
 */
-#ifdef ANSI
 S32 ssPullupMsg
 (
 SsMblk *mp,                     /* message block */
 S32 len                         /* number of bytes to align */
 )
-#else
-S32 ssPullupMsg(mp, len)
-SsMblk *mp;                     /* message block */
-S32 len;                        /* number of bytes to align */
-#endif
 {
    SsMblk *bp;                  /* mblk for iteration */
    SsMblk *newbp;               /* the new mblk */
@@ -1319,17 +1246,11 @@ S32 len;                        /* number of bytes to align */
 *       File:  ss_strm.c
 *
 */
-#ifdef ANSI
 SsMblk *ssRmvB
 (
 SsMblk *mp,                     /* message */
 SsMblk *bp                      /* message block */
 )
-#else
-SsMblk *ssRmvB(mp, bp)
-SsMblk *mp;                     /* message */
-SsMblk *bp;                     /* message block */
-#endif
 {
    SsMblk *rp;                  /* mblk that will be returned */
 
@@ -1398,17 +1319,11 @@ SsMblk *bp;                     /* message block */
 *       File:  ss_strm.c
 *
 */
-#ifdef ANSI
 S32 ssTestB
 (
 S32 size,                       /* size required */
 uint32_t pri                         /* priority of the message buffer */
 )
-#else
-S32 ssTestB(size, pri)
-S32 size;                       /* size required */
-uint32_t pri;                        /* priority of the message buffer */
-#endif
 {
    SsMblk *bp;                  /* mblk for iteration */
 
@@ -1440,15 +1355,10 @@ uint32_t pri;                        /* priority of the message buffer */
 *       File:  ss_strm.c
 *
 */
-#ifdef ANSI
 SsMblk *ssUnlinkB
 (
 SsMblk *mp                      /* message */
 )
-#else
-SsMblk *ssUnlinkB(mp)
-SsMblk *mp;                     /* message */
-#endif
 {
    SsMblk *bp;                  /* mblk for iteration */
 

@@ -97,19 +97,12 @@ static S16 rgCOMHndlResetReq ARGS((Inst inst,CrgRst *reset,RgErrInfo *errInfo));
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 rgCOMCfgReq
 (
 Inst          inst,
 CrgCfgTransId transId,
 CrgCfgReqInfo *crgCfgReq
 )
-#else
-S16 rgCOMCfgReq(inst,transId, crgCfgReq)
-Inst          inst;
-CrgCfgTransId transId;
-CrgCfgReqInfo *crgCfgReq;
-#endif
 {
    S16             ret;
    uint8_t         cfmStatus = CRG_CFG_CFM_OK;
@@ -195,7 +188,6 @@ if(TRUE == isCfmRqrd)
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 static S16 rgCOMHndlCfgReq
 (
 Inst             inst,
@@ -204,14 +196,6 @@ RgErrInfo        *errInfo,
 Bool             *isCfmRqrd,
 CrgCfgTransId    transId
 )
-#else
-static S16 rgCOMHndlCfgReq(inst,cfg, errInfo,isCfmRqrd,transId)
-Inst            inst;
-CrgCfg          *cfg;
-RgErrInfo       *errInfo;
-Bool            *isCfmRqrd;
-CrgCfgTransId   transId;
-#endif
 {
    S16       ret;
    RgCellCb  *cell = NULLP;
@@ -296,7 +280,6 @@ CrgCfgTransId   transId;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 static S16 rgCOMHndlRecfgReq
 (
 Inst             inst,
@@ -305,14 +288,6 @@ RgErrInfo        *errInfo,
 CrgCfgTransId    transId,
 Bool             *isCfmRqrd
 )
-#else
-static S16 rgCOMHndlRecfgReq(inst,recfg, errInfo, transId, isCfmRqrd)
-Inst            inst;
-CrgRecfg        *recfg;
-RgErrInfo       *errInfo;
-CrgCfgTransId   transId;
-Bool            *isCfmRqrd;
-#endif
 {
    S16       ret;
    RgCellCb  *cell = rgCb[inst].cell;
@@ -433,19 +408,12 @@ Bool            *isCfmRqrd;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 static S16 rgCOMHndlResetReq
 (
 Inst       inst,
 CrgRst     *reset,
 RgErrInfo  *errInfo
 )
-#else
-static S16 rgCOMHndlResetReq(inst,reset, errInfo)
-Inst       inst;
-CrgRst     *reset;
-RgErrInfo  *errInfo;
-#endif
 {
    /* Fix : ccpu00126865: ignore CRG reset. Let SCH trigger it. */
    
@@ -477,7 +445,6 @@ RgErrInfo  *errInfo;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 static S16 rgCOMHndlDelReq
 (
 Inst        inst,
@@ -486,14 +453,6 @@ RgErrInfo   *errInfo,
 Bool        *isCfmRqrd,
 CrgCfgTransId transId
 )
-#else
-static S16 rgCOMHndlDelReq(inst,del, errInfo,isCfmRqrd,transId)
-Inst        inst;
-CrgDel      *del;
-RgErrInfo   *errInfo;
-Bool        *isCfmRqrd;
-CrgCfgTransId transId;
-#endif
 {
 
    S16      ret;
@@ -560,17 +519,11 @@ CrgCfgTransId transId;
  *      -# ROK
  *      -# RFAILED
  **/
-#ifdef ANSI
 S16 RgPrgPMacSMacUeSCellCfgReq
 (
 Pst         *pst,    
 RgPrgUeSCellCfgInfo *ueSCellCb
 )
-#else
-S16 RgPrgPMacSMacUeSCellCfgReq(pst, ueSCellCb)
-Pst         *pst;    
-RgPrgUeSCellCfgInfo *ueSCellCb;
-#endif
 {
    RgPrgCfgCfmInfo  cfgCfm;
    Inst             inst = pst->dstInst;
@@ -641,17 +594,11 @@ RgPrgUeSCellCfgInfo *ueSCellCb;
  *      -# ROK
  *      -# RFAILED
  **/
-#ifdef ANSI
 S16 RgPrgSMacPMacCfgCfm
 (
 Pst             *pst,    
 RgPrgCfgCfmInfo *cfgCfm
 )
-#else
-S16 RgPrgSMacPMacCfgCfm(pst, cfgCfm)
-Pst             *pst;    
-RgPrgCfgCfmInfo *cfgCfm;
-#endif
 {
    Inst      inst = pst->dstInst;
    RgCellCb *cell;
@@ -739,17 +686,11 @@ RgPrgCfgCfmInfo *cfgCfm;
  *  @param[in] RgPrgUeSCellDelInfo *ueSCellDelInfo
  *  @return  ROK is SUCCESS 
  **/
-#ifdef ANSI
 S16 RgPrgPMacSMacUeSCellDelReq
 (
 Pst                 *pst,
 RgPrgUeSCellDelInfo *ueSCellDelInfo
 )
-#else
-S16 RgPrgPMacSMacUeSCellDelReq(pst, ueSCellDelInfo)
-Pst                 *pst;
-RgPrgUeSCellDelInfo *ueSCellDelInfo;
-#endif
 {
    Inst        inst     = pst->dstInst - RG_INST_START;
    RgCellCb    *sCell   = rgCb[inst].cell;

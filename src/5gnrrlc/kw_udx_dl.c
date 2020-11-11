@@ -82,19 +82,12 @@ S16 rlcDlmHndlStaRsp ARGS (( RlcCb  *gCb,RlcDlRbCb  *rbCb,
  *    -# ROK 
  *    -# RFAILED
  */
-#ifdef ANSI
 S16 rlcDlUdxBndReq 
 (
 Pst    *pst,  
 SuId   suId, 
 SpId   spId 
 )
-#else
-S16 rlcDlUdxBndReq (pst, suId, spId)
-Pst    *pst;   
-SuId   suId;  
-SpId   spId; 
-#endif
 {
    RlcUdxDlSapCb   *udxSap;            /* pointer to session SAP */
    RlcCb           *tRlcCb;
@@ -179,19 +172,12 @@ SpId   spId;
  *  @return  S16
  *      -# ROK 
  */
-#ifdef ANSI
 S16 rlcDlUdxUbndReq
 (
 Pst      *pst,    
 SpId     spId,   
 Reason   reason 
 )
-#else
-S16 rlcDlUdxUbndReq(pst, spId, reason)
-Pst      *pst;   
-SpId     spId;   
-Reason   reason; 
-#endif
 {
    RlcUdxDlSapCb   *udxSap; 
    RlcCb           *tRlcCb;
@@ -240,19 +226,12 @@ Reason   reason;
  *    -# ROK 
  *    -# RFAILED
  */
-#ifdef ANSI
 S16 rlcDlUdxCfgReq
 (
 Pst          *pst,
 SpId         spId,
 RlcCfgInfo   *cfg
 )
-#else
-S16 rlcDlUdxCfgReq(pst, spId, cfg)
-Pst          *pst;
-SpId         spId;
-RlcCfgInfo   *cfg;
-#endif
 {
    RlcCfgCfmInfo   *cfgCfm; 
    uint8_t         idx;    
@@ -427,7 +406,6 @@ RlcCfgInfo   *cfg;
  *    -# ROK
  *    -# RFAILED
  */
-#ifdef ANSI
 S16 rlcDlUdxUeIdChgReq
 (
 Pst         *pst, 
@@ -436,14 +414,6 @@ uint32_t    transId,
 CkwUeInfo   *ueInfo,
 CkwUeInfo   *newUeInfo
 )
-#else
-S16 rlcDlUdxUeIdChgReq(pst,spId,transId,ueInfo,newUeInfo)
-Pst         *pst;
-SpId        spId;
-uint32_t    transId;
-CkwUeInfo   *ueInfo;
-CkwUeInfo   *newUeInfo;
-#endif
 {
    CmStatus       status;
    RlcCb           *tRlcCb;
@@ -493,7 +463,6 @@ CkwUeInfo   *newUeInfo;
 *    -# ROK
 *    -# RFAILED
 **/
-#ifdef ANSI
 S16  rlcDlUdxStaPduReq
 (
 Pst             *pst,
@@ -501,13 +470,6 @@ SpId            spId,
 CmLteRlcId      *rlcId,
 RlcUdxDlStaPdu   *pStaPdu
 )
-#else
-S16  rlcDlUdxStaPduReq(pst, spId, rlcId, pStaPdu)
-Pst             *pst;
-SpId            spId;
-CmLteRlcId      *rlcId;
-RlcUdxDlStaPdu   *pStaPdu;
-#endif
 {
    RlcDlRbCb   *rbCb;
    RlcCb       *tRlcCb;
@@ -556,7 +518,6 @@ RlcUdxDlStaPdu   *pStaPdu;
 *    -# ROK
 *    -# RFAILED
 **/
-#ifdef ANSI
 S16  rlcDlUdxStaUpdReq
 (
 Pst*          pst,
@@ -564,13 +525,6 @@ SpId          spId,
 CmLteRlcId    *rlcId,
 RlcUdxStaPdu   *pStaPdu
 )
-#else
-S16 rlcDlUdxStaUpdReq(pst, spId, rlcId,pStaPdu)
-Pst*          pst;
-SpId          spId;
-CmLteRlcId    *rlcId;
-RlcUdxStaPdu   *pStaPdu;
-#endif
 {
    RlcCb          *tRlcCb;
    RlcDlRbCb      *rbCb;
@@ -598,17 +552,11 @@ RlcUdxStaPdu   *pStaPdu;
 #ifdef LTE_L2_MEAS
 /**
 */
-#ifdef ANSI
 S16 rlcDlUdxL2MeasReq 
 (
 Pst            *pst, 
 RlcL2MeasReqEvt *measReqEvt 
 )
-#else
-S16 rlcDlUdxL2MeasReq (pst, measReqEvt)
-Pst            *pst; 
-RlcL2MeasReqEvt *measReqEvt;
-#endif
 {
    uint32_t  cntr;
    uint8_t   measType;
@@ -671,17 +619,11 @@ After receving this request, RLC stops L2 Measurement
  *      -# Failure : RFAILED
 */
 
-#ifdef ANSI
 S16 rlcDlUdxL2MeasStopReq
 (
 Pst            *pst,
 uint8_t         measType
 )
-#else
-S16 rlcDlUdxL2MeasStopReq (pst, measType)
-Pst            *pst;
-uint8_t         measType;
-#endif
 {
   /* S16 ret = ROK;*/
    RlcL2MeasEvtCb *measEvtCb = NULLP;
@@ -732,17 +674,11 @@ After receving this request, RLC sends L2 Measurement
  *      -# Failure : RFAILED
 */
 
-#ifdef ANSI
 S16 rlcDlUdxL2MeasSendReq
 (
 Pst            *pst,
 uint8_t         measType
 )
-#else
-S16 rlcDlUdxL2MeasSendReq (pst, measType)
-Pst            *pst;
-uint8_t         measType;
-#endif
 {
    RlcL2MeasEvtCb *measEvtCb;
    uint16_t            cntr;

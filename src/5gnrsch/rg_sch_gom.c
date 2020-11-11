@@ -135,27 +135,13 @@ uint16_t                     idx
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 rgSCHGomHndlCfg
-(
-Pst           *pst,
-RgSchCb       *instCb,
-RgrCfgTransId transId,
-RgrCfgReqInfo *cfgReqInfo
-)
-#else
-S16 rgSCHGomHndlCfg(pst, instCb, transId, cfgReqInfo)
-Pst           *pst;
-RgSchCb       *instCb;
-RgrCfgTransId transId;
-RgrCfgReqInfo *cfgReqInfo;
-#endif
+S16 rgSCHGomHndlCfg(Pst *pst,RgSchCb  *instCb,RgrCfgTransId transId,RgrCfgReqInfo *cfgReqInfo)
 {
    S16           ret;
    SpId          spId = 0;
    CmLteCellId   cellId;
    RgSchCellCb   *cell = NULLP;    
-   uint8_t            cfmStatus = RGR_CFG_CFM_NOK;
+   uint8_t       cfmStatus = RGR_CFG_CFM_NOK;
 #ifdef DEBUGP
    Inst          inst = (instCb->rgSchInit.inst );
 #endif
@@ -244,26 +230,10 @@ RgrCfgReqInfo *cfgReqInfo;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-static S16 rgSCHGomCfgReq
-(
-Region        reg,
-Pool          pool,
-RgSchCb       *instCb,
-RgrCfgTransId transId,
-RgrCfgReqInfo *cfgReqInfo
-)
-#else
-static S16 rgSCHGomCfgReq(reg, pool, instCb, transId, cfgReqInfo)
-Region        reg;
-Pool          pool;
-RgSchCb       *instCb;
-RgrCfgTransId transId;
-RgrCfgReqInfo *cfgReqInfo;
-#endif
+static S16 rgSCHGomCfgReq(Region  reg,Pool  pool,RgSchCb *instCb,RgrCfgTransId transId,RgrCfgReqInfo *cfgReqInfo)
 {
-   SpId          spId = 0;
-   uint8_t              cfmStatus = RGR_CFG_CFM_OK;
+   SpId            spId = 0;
+   uint8_t         cfmStatus = RGR_CFG_CFM_OK;
    S16             ret;
    RgSchErrInfo    errInfo;
 #ifdef DEBUGP
@@ -368,26 +338,10 @@ printf("\n AT MAC RGR cfg cfm sent\n");
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-static S16 rgSCHGomEnqCfgReq
-(
-Region        reg,
-Pool          pool,
-RgSchCellCb   *cell,
-RgrCfgTransId transId,
-RgrCfgReqInfo *rgrCfgReq
-)
-#else
-static S16 rgSCHGomEnqCfgReq(reg, pool, cell, transId, rgrCfgReq)
-Region        reg;
-Pool          pool;
-RgSchCellCb   *cell;
-RgrCfgTransId transId;
-RgrCfgReqInfo *rgrCfgReq;
-#endif
+static S16 rgSCHGomEnqCfgReq(Region reg,Pool pool,RgSchCellCb *cell,RgrCfgTransId transId,RgrCfgReqInfo *rgrCfgReq)
 {
    S16                ret;
-   uint32_t                sfDiff;
+   uint32_t           sfDiff;
    RgSchCfgElem       *rgrCfgElem  = NULLP;
    CmLteTimingInfo    actvTime; 
    Inst               inst = cell->instIdx;
@@ -485,17 +439,7 @@ RgrCfgReqInfo *rgrCfgReq;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 rgSCHGomTtiHndlr
-(
-RgSchCellCb      *cell,
-SpId             spId
-)
-#else
-S16 rgSCHGomTtiHndlr(cell, spId)
-RgSchCellCb      *cell;
-SpId             spId;
-#endif
+S16 rgSCHGomTtiHndlr(RgSchCellCb *cell,SpId  spId)
 {
    RgSchCfgElem       *cfgElem;
    Inst               inst= cell->instIdx;
@@ -551,21 +495,7 @@ SpId             spId;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-static S16 rgSCHGomHndlCfgReq
-(
-RgSchCb        *instCb,
-SpId           spId,
-RgrCfg         *cfg,
-RgSchErrInfo   *errInfo
-)
-#else
-static S16 rgSCHGomHndlCfgReq(instCb, spId, cfg, errInfo)
-RgSchCb        *instCb;
-SpId           spId;
-RgrCfg         *cfg;
-RgSchErrInfo   *errInfo;
-#endif
+static S16 rgSCHGomHndlCfgReq(RgSchCb *instCb,SpId spId,RgrCfg *cfg,RgSchErrInfo *errInfo)
 {
    S16          ret;
    RgSchCellCb  *cell = instCb->rgrSap[spId].cell;
@@ -675,27 +605,11 @@ RgSchErrInfo   *errInfo;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-static S16 rgSCHGomHndlSCellActDeactReq
-(
-RgSchCb               *instCb,
-SpId                   spId,
-RgrSCellActDeactEvnt  *sCellActDeactEvnt,
-RgSchErrInfo          *errInfo,
-uint8_t                    action
-)
-#else
-static S16 rgSCHGomHndlSCellActDeactReq(instCb, spId, sCellActDeactEvnt, errInfo, action)
-RgSchCb               *instCb;
-SpId                  spId;
-RgrSCellActDeactEvnt  *sCellActDeactEvnt; 
-RgSchErrInfo          *errInfo;
-uint8_t                    action;
-#endif
+static S16 rgSCHGomHndlSCellActDeactReq(RgSchCb  *instCb,SpId  spId,RgrSCellActDeactEvnt  *sCellActDeactEvnt,RgSchErrInf *errInfo,uint8_t action)
 {
    RgSchUeCb    *ue = NULLP;
-   uint16_t          idx = 0;
-   uint16_t          sCellIdx = 0;
+   uint16_t     idx = 0;
+   uint16_t     sCellIdx = 0;
    RgSchCellCb  *cell = instCb->rgrSap[spId].cell;
    Inst         inst = (instCb->rgSchInit.inst);
 
@@ -754,21 +668,7 @@ uint8_t                    action;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-static S16 rgSCHGomHndlRecfgReq
-(
-RgSchCb       *instCb,
-SpId          spId,
-RgrRecfg      *recfg,
-RgSchErrInfo  *errInfo
-)
-#else
-static S16 rgSCHGomHndlRecfgReq(instCb, spId, recfg, errInfo)
-RgSchCb       *instCb;
-SpId          spId;
-RgrRecfg      *recfg;
-RgSchErrInfo  *errInfo;
-#endif
+static S16 rgSCHGomHndlRecfgReq(RgSchCb  *instCb,SpId  spId,RgrRecfg *recfg,RgSchErrInfo  *errInfo)
 {
    RgSchUeCb    *ue = NULLP;
    RgSchDlLcCb  *dlLc = NULLP; /* PURIFY_FIX:UMR */
@@ -866,21 +766,7 @@ RgSchErrInfo  *errInfo;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-static S16 rgSCHGomHndlResetReq
-(
-RgSchCb       *instCb,
-SpId          spId,
-RgrRst        *reset,
-RgSchErrInfo  *errInfo
-)
-#else
-static S16 rgSCHGomHndlResetReq(instCb, spId, reset, errInfo)
-RgSchCb       *instCb;
-SpId          spId;
-RgrRst        *reset;
-RgSchErrInfo  *errInfo;
-#endif
+static S16 rgSCHGomHndlResetReq(RgSchCb  *instCb,SpId spId,RgrRst *reset,RgSchErrInfo  *errInfo)
 {
    S16          ret; 
    RgSchCellCb  *cell= instCb->rgrSap[spId].cell;
@@ -932,21 +818,7 @@ RgSchErrInfo  *errInfo;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-static S16 rgSCHGomHndlDelReq
-(
-RgSchCb       *instCb,
-SpId          spId,
-RgrDel        *del,
-RgSchErrInfo  *errInfo
-)
-#else
-static S16 rgSCHGomHndlDelReq(instCb, spId, del, errInfo)
-RgSchCb       *instCb;
-SpId          spId;
-RgrDel        *del;
-RgSchErrInfo  *errInfo;
-#endif
+static S16 rgSCHGomHndlDelReq(RgSchCb *instCb,SpId spId,RgrDel *del,RgSchErrInfo  *errInfo)
 {
 
    S16       ret;
@@ -1038,17 +910,7 @@ RgSchErrInfo  *errInfo;
  *     File : rg_sch_gom.c 
  *
  **********************************************************/
-#ifdef ANSI
-static S16 rgSCHGomGetCellIdFrmCfgReq
-(
-RgrCfgReqInfo *rgrCfgReq,
-CmLteCellId   *cellId
-)
-#else
-static S16 rgSCHGomGetCellIdFrmCfgReq(rgrCfgReq, cellId)
-RgrCfgReqInfo *rgrCfgReq;
-CmLteCellId   *cellId;
-#endif
+static S16 rgSCHGomGetCellIdFrmCfgReq(RgrCfgReqInfo *rgrCfgReq,CmLteCellId   *cellId)
 {
 
    /* Extract CellId depending on the action and Config Type in the Request 
@@ -1116,35 +978,17 @@ CmLteCellId   *cellId;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 rgSCHGomHndlSiCfg
-(
-Region        reg,
-Pool          pool,
-RgSchCb       *instCb,
-SpId          spId,
-RgrCfgTransId transId,
-RgrSiCfgReqInfo *cfgReqInfo
-)
-#else
-S16 rgSCHGomHndlSiCfg(reg, pool, instCb, spId, transId, cfgReqInfo)
-Region        reg;
-Pool          pool;
-RgSchCb       *instCb;
-SpId          spId;
-RgrCfgTransId transId;
-RgrSiCfgReqInfo *cfgReqInfo;
-#endif
+S16 rgSCHGomHndlSiCfg(Region reg,Pool pool,RgSchCb *instCb,SpId spId,RgrCfgTransId transId,RgrSiCfgReqInfo *cfgReqInfo)
 {
    S16          ret;
    RgSchCellCb  *cell = instCb->rgrSap[spId].cell;
    Inst         inst = (instCb->rgSchInit.inst );
-   RgSchErrInfo    errInfo;
-   uint8_t           cfmStatus = RGR_CFG_CFM_NOK;
+   RgSchErrInfo errInfo;
+   uint8_t      cfmStatus = RGR_CFG_CFM_NOK;
    MsgLen       msgLen = 0, pduLen;
    S32          tbSz   = 0;
-   uint8_t           nPrb   = 0; 
-   uint8_t           mcs    = 0;
+   uint8_t      nPrb   = 0; 
+   uint8_t      mcs    = 0;
 
 
    /* check if cell does not exists */
@@ -1418,7 +1262,6 @@ RgrSiCfgReqInfo *cfgReqInfo;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 rgSCHGomHndlWarningSiCfg
 (
 Region        reg,
@@ -1428,31 +1271,21 @@ SpId          spId,
 RgrCfgTransId transId,
 RgrWarningSiCfgReqInfo *warningSiCfgReqInfo
 )
-#else
-S16 rgSCHGomHndlWarningSiCfg(reg, pool, instCb, spId, transId, 
-warningSiCfgReqInfo)
-Region        reg;
-Pool          pool;
-RgSchCb       *instCb;
-SpId          spId;
-RgrCfgTransId transId;
-RgrWarningSiCfgReqInfo *warningSiCfgReqInfo;
-#endif
 {
    RgSchCellCb       *cell = instCb->rgrSap[spId].cell;
-   uint8_t                 cfmStatus = RGR_CFG_CFM_NOK;
-   uint16_t                idx;
-   uint8_t                 siId = warningSiCfgReqInfo->siId; 
-   uint8_t                 j, mcs=0, nPrb=0;
-   RgSchWarningSiSeg  *warningSiMsg;
-   RgSchWarningSiPdu  *pduNode;
-   CmLList            *node;
-   MsgLen             msgLen = 0;
-   Bool               freeNodeFound = FALSE;
-   uint16_t                siWinSize = 0;
-   uint16_t                minPeriod = 0;
+   uint8_t           cfmStatus = RGR_CFG_CFM_NOK;
+   uint16_t          idx;
+   uint8_t           siId = warningSiCfgReqInfo->siId; 
+   uint8_t           j, mcs=0, nPrb=0;
+   RgSchWarningSiSeg *warningSiMsg;
+   RgSchWarningSiPdu *pduNode;
+   CmLList           *node;
+   MsgLen            msgLen = 0;
+   Bool              freeNodeFound = FALSE;
+   uint16_t          siWinSize = 0;
+   uint16_t          minPeriod = 0;
 #ifdef EMTC_ENABLE
-   uint8_t                 isEmtc = warningSiCfgReqInfo->emtcEnable;
+   uint8_t           isEmtc = warningSiCfgReqInfo->emtcEnable;
 #endif
 
 #ifdef EMTC_ENABLE
@@ -1613,28 +1446,10 @@ RgrWarningSiCfgReqInfo *warningSiCfgReqInfo;
  *  @param[in]  SpId          siId
  *  @return  void
  **/
-#ifdef ANSI
-Void rgSCHGomHndlWarningSiStopReq 
-(
-Region        reg,
-Pool          pool,
-RgSchCb       *instCb,
-uint8_t            siId,
-RgrCfgTransId transId,
-SpId          spId
-)
-#else
-Void rgSCHGomHndlWarningSiStopReq(reg, pool, instCb, siId, transId, spId)
-Region        reg;
-Pool          pool;
-RgSchCb       *instCb;
-uint8_t            siId;
-RgrCfgTransId transId;
-SpId          spId;
-#endif
+Void rgSCHGomHndlWarningSiStopReq(Region reg,Pool pool,RgSchCb *instCb,uint8_t siId,RgrCfgTransId transId,SpId spId)
 {
    RgSchCellCb        *cell = instCb->rgrSap[spId].cell;
-   uint16_t                idx;
+   uint16_t           idx;
    CmLList            *node;
    RgSchWarningSiPdu  *warningSiPdu;
    Buffer             *pdu;
@@ -1685,20 +1500,7 @@ SpId          spId;
  *  @return  S16
  *
  **/
-#ifdef ANSI
-S16 rgSchUpdtRNTPInfo
-(
- RgSchCellCb             *cell,
- RgSchDlSf               *sf,
- RgrLoadInfReqInfo       *loadInfReq
- )
-#else
-static Void rgSchUpdtRNTPInfo(cell, sf)
-   RgSchCellCb             *cell;
-   RgSchDlSf               *sf;
-   RgrLoadInfReqInfo       *loadInfReq;
-
-#endif
+S16 rgSchUpdtRNTPInfo(RgSchCellCb *cell,RgSchDlSf *sf,RgrLoadInfReqInfo *loadInfReq)
 {
    /*  Initialise the variables */
    RgSchSFRPoolInfo *sfrCCPool;
@@ -1750,25 +1552,7 @@ static Void rgSchUpdtRNTPInfo(cell, sf)
  *      -# ROK
  *      -# RFAILED
  **/
-#ifdef ANSI
-S16 rgSCHGomHndlLoadInf
-(
- Region            reg,
- Pool              pool,
- RgSchCb           *instCb,
- SpId              spId,
- RgrCfgTransId     transId,
- RgrLoadInfReqInfo *loadInfReq
- )
-#else
-S16 rgSCHGomHndlLoadInf(reg, pool, instCb, spId, transId, loadInfReq)
-   Region            reg;
-   Pool              pool;
-   RgSchCb           *instCb;
-   SpId              spId;
-   RgrCfgTransId     transId;
-   RgrLoadInfReqInfo *loadInfReq;
-#endif
+S16 rgSCHGomHndlLoadInf(Region reg,Pool pool,RgSchCb *instCb,SpId spId,RgrCfgTransId transId,RgrLoadInfReqInfo *loadInfReq)
 {
    S16          ret;
    RgSchCellCb  *cell = instCb->rgrSap[spId].cell;

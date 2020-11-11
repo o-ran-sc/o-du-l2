@@ -81,13 +81,7 @@ S16 rlcUlInitExt ARGS (( Void ));
  *
 */
   
-#ifdef ANSI
-S16 rlcUlInitExt 
-(
-)
-#else
 S16 rlcUlInitExt()
-#endif
 {
 
    return ROK;
@@ -122,7 +116,6 @@ S16 rlcUlInitExt()
  *      -# ROK 
  *
  */
-#ifdef ANSI
 S16 rlcUlActvInit
 (
 Ent    ent,                 /* entity */
@@ -130,13 +123,6 @@ Inst   inst,                /* instance */
 Region region,              /* region */
 Reason reason               /* reason */
 )
-#else
-S16 rlcUlActvInit(ent, inst, region, reason)
-Ent    ent;                 /* entity */
-Inst   inst;                /* instance */
-Region region;              /* region */
-Reason reason;              /* reason */
-#endif
 {
    RlcCb    *tRlcCb;
 
@@ -203,17 +189,11 @@ Reason reason;              /* reason */
  *      -# ROK 
  *
  */
-#ifdef ANSI
 S16 rlcUlActvTsk
 (
 Pst *pst,              /* pst structure */
 Buffer *mBuf            /* message buffer */
 )
-#else
-S16 rlcUlActvTsk(pst, mBuf)
-Pst *pst;              /* pst structure */
-Buffer *mBuf;           /* message buffer */
-#endif
 {
    S16 ret = ROK;
 

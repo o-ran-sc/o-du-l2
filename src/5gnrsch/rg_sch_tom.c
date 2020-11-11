@@ -753,21 +753,13 @@ S8 rgSchCmnAper30n31DiffCqi[4] = {0, 1, 2, -1};
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 rgSCHGetDedPrmUe 
 (
 RgSchCellCb     *cell,
-uint16_t             rapId,
+uint16_t        rapId,
 CmLteTimingInfo timingInfo,
 RgSchUeCb       **ue
 )
-#else
-S16 rgSCHGetDedPrmUe(cell, rapId, timingInfo, ue)
-RgSchCellCb     *cell; 
-uint16_t             rapId;
-CmLteTimingInfo timingInfo;
-RgSchUeCb       **ue;
-#endif
 {
    RgSchCmnCell          *cellSch = (RgSchCmnCell *)(cell->sc.sch);
 
@@ -812,25 +804,19 @@ RgSchUeCb       **ue;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 rgSCHTomRaReqInd
 (
 RgSchCellCb     *cell,
 TfuRaReqIndInfo *raReqInd
 )
-#else
-S16 rgSCHTomRaReqInd(cell, raReqInd)
-RgSchCellCb     *cell; 
-TfuRaReqIndInfo *raReqInd;
-#endif
 {
-   S16             ret;
-   uint8_t              raRntiCnt;
-   uint8_t              raReqCnt;
-   RgSchErrInfo    err;
-   Bool            isEmtcUe = FALSE;
-   uint16_t             rapId;
-   RgSchUeCb       *ue = NULLP;
+   S16           ret;
+   uint8_t       raRntiCnt;
+   uint8_t       raReqCnt;
+   RgSchErrInfo  err;
+   Bool          isEmtcUe = FALSE;
+   uint16_t      rapId;
+   RgSchUeCb     *ue = NULLP;
 
    if(cell->cellId != raReqInd->cellId)
    {
@@ -910,17 +896,11 @@ TfuRaReqIndInfo *raReqInd;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 rgSCHTomUlCqiInd
 ( 
 RgSchCellCb     *cell,
 TfuUlCqiIndInfo *ulCqiInd
 )
-#else
-S16 rgSCHTomUlCqiInd(cell, ulCqiInd)
-RgSchCellCb     *cell; 
-TfuUlCqiIndInfo *ulCqiInd;
-#endif
 {
    RgSchUeCb    *ue;
    CmLList      *node;
@@ -985,17 +965,11 @@ TfuUlCqiIndInfo *ulCqiInd;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 rgSCHTomPucchDeltaPwrInd
 ( 
 RgSchCellCb             *cell,
 TfuPucchDeltaPwrIndInfo *pucchDeltaPwr
 )
-#else
-S16 rgSCHTomPucchDeltaPwrInd(cell, pucchDeltaPwr)
-RgSchCellCb             *cell; 
-TfuPucchDeltaPwrIndInfo *pucchDeltaPwr;
-#endif
 {
    RgSchUeCb       *ue;
    CmLList         *node;
@@ -1052,17 +1026,11 @@ TfuPucchDeltaPwrIndInfo *pucchDeltaPwr;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 rgSCHTomHarqAckInd
 (
 RgSchCellCb     *cell,
 TfuHqIndInfo    *harqAckInd
 )
-#else
-S16 rgSCHTomHarqAckInd(cell, harqAckInd)
-RgSchCellCb     *cell; 
-TfuHqIndInfo    *harqAckInd;
-#endif
 {
    RgSchErrInfo    err;
    RgSchUeCb       *ue;
@@ -1243,17 +1211,11 @@ TfuHqIndInfo    *harqAckInd;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 rgSCHTomSrInd
 (
 RgSchCellCb     *cell,
 TfuSrIndInfo    *srInd
 )
-#else
-S16 rgSCHTomSrInd(cell, srInd)
-RgSchCellCb     *cell; 
-TfuSrIndInfo    *srInd;
-#endif
 {
    S16          ret = RFAILED;
    RgSchErrInfo err;
@@ -1324,17 +1286,11 @@ TfuSrIndInfo    *srInd;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 rgSCHTomDoaInd
 (
 RgSchCellCb     *cell,
 TfuDoaIndInfo   *doaInd
 )
-#else
-S16 rgSCHTomDoaInd(cell, doaInd )
-RgSchCellCb     *cell;
-TfuDoaIndInfo   *doaInd;
-#endif
 {
    RgSchUeCb    *ue;
    CmLList      *node;
@@ -1385,17 +1341,11 @@ TfuDoaIndInfo   *doaInd;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 rgSCHTomDlCqiInd
 (
 RgSchCellCb     *cell,
 TfuDlCqiIndInfo *dlCqiInd
 )
-#else
-S16 rgSCHTomDlCqiInd(cell, dlCqiInd)
-RgSchCellCb     *cell;
-TfuDlCqiIndInfo *dlCqiInd;
-#endif
 {
    RgSchUeCb    *ue;
    CmLList      *node;
@@ -1449,19 +1399,12 @@ TfuDlCqiIndInfo *dlCqiInd;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 static S16 rgSCHTomUtlMovePcqiNxtOccasion
 (
- RgSchCellCb     *cell,
- RgSchUeCb      *ue,
- RgSchUePCqiCb   *cqiCb
- )
-#else
-static S16 rgSCHTomUtlMovePcqiNxtOccasion(cell, ue, cqiCb)
-   RgSchCellCb     *cell;
-   RgSchUeCb      *ue;
-   RgSchUePCqiCb   *cqiCb;
-#endif
+RgSchCellCb     *cell,
+RgSchUeCb      *ue,
+RgSchUePCqiCb   *cqiCb
+)
 {
    uint16_t   cqiIdx = 0;
 
@@ -1521,19 +1464,12 @@ static S16 rgSCHTomUtlMovePcqiNxtOccasion(cell, ue, cqiCb)
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 static S16 rgSCHTomUtlMovePriNxtOccasion
 (
- RgSchCellCb    *cell,
- RgSchUeCb      *ue, 
- RgSchUePCqiCb  *riCb
- )
-#else
-static S16 rgSCHTomUtlMovePriNxtOccasion(cell, ue, riCb)
- RgSchCellCb     *cell;
- RgSchUeCb       *ue;
- RgSchUePCqiCb   *riCb;
-#endif
+RgSchCellCb    *cell,
+RgSchUeCb      *ue, 
+RgSchUePCqiCb  *riCb
+)
 {
    uint16_t   riIdx;
    uint16_t   riDist=0;
@@ -1643,17 +1579,11 @@ static S16 rgSCHTomUtlMovePriNxtOccasion(cell, ue, riCb)
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 static S16 rgSCHTomUtlMoveSrNxtOccasion
 (
- RgSchCellCb     *cell,
- RgSchUeCb      *ue
- )
-#else
-static S16 rgSCHTomUtlMoveSrNxtOccasion(cell, ue)
-   RgSchCellCb     *cell;
-   RgSchUeCb      *ue;
-#endif
+RgSchCellCb     *cell,
+RgSchUeCb      *ue
+)
 {
    uint16_t   srIdx = 0;
 
@@ -1697,17 +1627,11 @@ static S16 rgSCHTomUtlMoveSrNxtOccasion(cell, ue)
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 static S16 rgSCHTomUtlMoveSrsNxtOccasion
 (
- RgSchCellCb     *cell,
- RgSchUeCb      *ue
- )
-#else
-static S16 rgSCHTomUtlMoveSrsNxtOccasion(cell, ue)
-   RgSchCellCb     *cell;
-   RgSchUeCb      *ue;
-#endif
+RgSchCellCb     *cell,
+RgSchUeCb      *ue
+)
 {
    uint16_t   srsIdx;
    uint16_t   srsDist;
@@ -1782,35 +1706,29 @@ static S16 rgSCHTomUtlMoveSrsNxtOccasion(cell, ue)
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 rgSCHTomRawCqiInd
 (
- RgSchCellCb     *cell,
- TfuRawCqiIndInfo *rawCqiInd
+RgSchCellCb     *cell,
+TfuRawCqiIndInfo *rawCqiInd
 )
-#else
-S16 rgSCHTomRawCqiInd(cell, rawCqiInd)
-   RgSchCellCb     *cell;
-   TfuRawCqiIndInfo *rawCqiInd;
-#endif
 {
    RgSchUeCb    *ue;
    CmLList      *node;
    TfuRawCqiRpt* rawCqiInfo;
 
    RgSchErrInfo err;
-   uint32_t          cellIdx;
+   uint32_t     cellIdx;
    RgInfRlsHqInfo  *rlsHqBufs = &(cell->rlsHqArr[cell->crntHqIdx]);
    RgSchCellCb     *iterCellP;
 #if DL_LA
    RgSchCmnDlUe    *ueDl;
 #endif
-   uint8_t              cqi;
-   uint8_t              ri;
-   uint8_t              hqAck;
-   Pst             pst;
-   RgSchRaCb       *raCb;
-   TfuHqInfo       hqInfo;
+   uint8_t      cqi;
+   uint8_t      ri;
+   uint8_t      hqAck;
+   Pst          pst;
+   RgSchRaCb    *raCb;
+   TfuHqInfo    hqInfo;
 
    if(cell->cellId != rawCqiInd->cellId)
    {
@@ -2055,17 +1973,11 @@ S16 rgSCHTomRawCqiInd(cell, rawCqiInd)
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 rgSCHTomSrsInd
 (
- RgSchCellCb     *cell,
- TfuSrsIndInfo *srsInd
- )
-#else
-S16 rgSCHTomSrsInd(cell, srsInd)
-   RgSchCellCb     *cell;
-   TfuSrsIndInfo *srsInd;
-#endif
+RgSchCellCb     *cell,
+TfuSrsIndInfo *srsInd
+)
 {
    RgSchUeCb    *ue;
    CmLList      *node;
@@ -2113,23 +2025,14 @@ S16 rgSCHTomSrsInd(cell, srsInd)
 *
 */
 #ifdef UNUSED_FUNC
-#ifdef ANSI
 static S16 rgSCHTomUtlGenIndices
 (
- uint32_t      label,
- uint8_t        posM,
- uint8_t        valN,
- uint8_t        valK,
- TfuSubbandInfo*    sbInfo
- )
-#else
-static S16 rgSCHTomUtlGenIndices(label, posM, valN, valK, sbInfo)
-   uint32_t      label;
-   uint8_t        posM;
-   uint8_t        valN;
-   uint8_t        valK;
-   TfuSubbandInfo*    sbInfo;
-#endif
+uint32_t      label,
+uint8_t        posM,
+uint8_t        valN,
+uint8_t        valK,
+TfuSubbandInfo* sbInfo
+)
 {
    uint8_t idx, kval, xval, xmin;
    uint32_t binCoe;
@@ -2178,17 +2081,11 @@ static S16 rgSCHTomUtlGenIndices(label, posM, valN, valK, sbInfo)
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 rgSCHTomCrcInd
 (
 RgSchCellCb       *cell,
 TfuCrcIndInfo *crcInd
 )
-#else
-S16 rgSCHTomCrcInd(cell, crcInd)
-RgSchCellCb       *cell;
-TfuCrcIndInfo *crcInd;
-#endif
 {
    RgSchUeCb      *ue = NULLP;
    RgSchRaCb      *raCb = NULLP;
@@ -2438,17 +2335,11 @@ TfuCrcIndInfo *crcInd;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 rgSCHTomTimingAdvInd
 (
 RgSchCellCb         *cell,
 TfuTimingAdvIndInfo *timingAdvInd
- )
-#else
-S16 rgSCHTomTimingAdvInd(cell, timingAdvInd)
-RgSchCellCb         *cell;
-TfuTimingAdvIndInfo *timingAdvInd;
-#endif
+)
 {
    RgSchUeCb        *ue;
    CmLList          *node;
@@ -2499,23 +2390,17 @@ TfuTimingAdvIndInfo *timingAdvInd;
  *  @param[in] Inst           schInst
  *  @return  Void
  **/
-#ifdef ANSI
 Void rgSCHTomTtiInd
 (
 SlotIndInfo        *slotInd,
 Inst               schInst
 )
-#else
-Void rgSCHTomTtiInd(slotInd, schInst)
-SlotIndInfo        *slotInd;
-Inst               schInst;
-#endif
 {
    RgInfSfAlloc      *subfrmAlloc;
    RgTfuCntrlReqInfo *cntrlInfo = NULLP;
    S16               ret = ROK;
-   uint8_t                i;
-   uint8_t                nCell = 0;
+   uint8_t           i;
+   uint8_t           nCell = 0;
    RgSchCellCb       *cell[CM_LTE_MAX_CELLS];
    RgSchCellCb       *cellLst[CM_LTE_MAX_CELLS];
    
@@ -2809,17 +2694,11 @@ Inst               schInst;
  *      -# RFAILED 
  */
 
-#ifdef ANSI
 static S16 rgSCHTomUtlProcUlSf 
 (
 RgSchCellCb        *cell,
 RgSchErrInfo       *err
 )
-#else
-static S16 rgSCHTomUtlProcUlSf (cell, err)
-RgSchCellCb        *cell;
-RgSchErrInfo       *err;
-#endif
 {
    S16             ret;
    TfuRecpReqInfo  *recpReqInfo;
@@ -2890,21 +2769,15 @@ RgSchErrInfo       *err;
  *      -# ROK 
  *      -# RFAILED 
  */
-#ifdef ANSI
 static S16 rgSCHTomUtlPrcUlTddSpclSf 
 (
-RgSchCellCb        *cell,
-RgSchErrInfo       *err
+RgSchCellCb  *cell,
+RgSchErrInfo *err
 )
-#else
-static S16 rgSCHTomUtlPrcUlTddSpclSf (cell, err)
-RgSchCellCb        *cell;
-RgSchErrInfo       *err;
-#endif
 {
    S16             ret;
    TfuRecpReqInfo  *recpReqInfo;
-   uint16_t             validIdx; /* Index computed from recreq's timing info*/
+   uint16_t        validIdx; /* Index computed from recreq's timing info*/
    Inst            inst = cell->instIdx;
 
    if ((ret = rgSCHUtlAllocEventMem(inst, (Ptr *)&recpReqInfo, 
@@ -2969,7 +2842,6 @@ RgSchErrInfo       *err;
  * @param  [out] RgSchErrInfo *err
  * @return S16
  */
-#ifdef ANSI
 static S16 rgSCHTomUtlProcDlSf
 (
 RgSchDlSf            *dlSf,
@@ -2978,18 +2850,10 @@ RgSchCellCb          *cell,
 RgTfuCntrlReqInfo    *cntrlInfo,
 RgSchErrInfo         *err
 )
-#else
-static S16 rgSCHTomUtlProcDlSf (dlSf, ulSf, cell, cntrlInfo, err)
-RgSchDlSf            *dlSf;
-RgSchDlSf            *ulSf;
-RgSchCellCb          *cell;
-RgTfuCntrlReqInfo    *cntrlInfo;
-RgSchErrInfo         *err;
-#endif
 {
-   Inst              inst = cell->instIdx;
-   S16               ret;
-   uint8_t                sfTyp = 1; /* Dl Subframe */
+   Inst    inst = cell->instIdx;
+   S16     ret;
+   uint8_t sfTyp = 1; /* Dl Subframe */
 
       cmLListInit(&cntrlInfo->phichLst);
       cmLListInit(&cntrlInfo->dlPdcchLst);
@@ -3107,21 +2971,13 @@ if(0 == cntrlInfo->dlMpdcchLst.count)
  *      -# ROK 
  *      -# RFAILED 
  */
-#ifdef ANSI
 static S16 rgSCHTomUtlFillPhich
 (
 RgSchCellCb     *cell,
 TfuCntrlReqInfo    *cntrlInfo,
 RgSchDlSf          *dlSf,
 RgSchErrInfo       *err
- )
-#else
-static S16 rgSCHTomUtlFillPhich(cell, cntrlInfo, dlSf, err)
-RgSchCellCb     *cell;
-TfuCntrlReqInfo    *cntrlInfo;
-RgSchDlSf          *dlSf;
-RgSchErrInfo       *err;
-#endif
+)
 {
    S16             ret;
    CmLList         *node;
@@ -3183,18 +3039,11 @@ RgSchErrInfo       *err;
  *   @param[in]  CmLteRnti       rnti
  *   @return  Void
  */
-#ifdef ANSI
 static Void rgSCHTmrRestartScellDeactTmr
 (
- RgSchCellCb     *cell,
- RgSchUeCb       *ueCb
- )
-#else
-static Void rgSCHTmrRestartScellDeactTmr (cell, ueCb)
-   RgSchCellCb     *cell;
-   RgSchUeCb       *ueCb;
-
-#endif
+RgSchCellCb     *cell,
+RgSchUeCb       *ueCb
+)
 {
    RgSchUeCellInfo   *sCellInfo = NULLP;
    
@@ -3239,21 +3088,13 @@ static Void rgSCHTmrRestartScellDeactTmr (cell, ueCb)
  *      -# RFAILED 
  */
 uint32_t numdlSpsRelSentToTf;
-#ifdef ANSI
 static S16 rgSCHTomUtlFillDlPdcch
 (
 RgSchCellCb     *cell,
 TfuCntrlReqInfo *cntrlInfo,
 RgSchDlSf       *dlSf,
 RgSchErrInfo    *err
- )
-#else
-static S16 rgSCHTomUtlFillDlPdcch(cell,cntrlInfo, dlSf, err)
-RgSchCellCb          *cell;
-TfuCntrlReqInfo *cntrlInfo;
-RgSchDlSf       *dlSf;
-RgSchErrInfo    *err;
-#endif
+)
 {
    S16          ret;
    CmLList      *node;
@@ -3381,21 +3222,13 @@ uint32_t rgSchSpsRelPdcchAllocd;
  *      -# ROK 
  *      -# RFAILED 
  */
-#ifdef ANSI
 static S16 rgSCHTomUtlFillUlPdcch
 (
 RgSchCellCb       *cell,
 TfuCntrlReqInfo *cntrlInfo,
 RgSchDlSf       *dlSf,
 RgSchErrInfo    *err
- )
-#else
-static S16 rgSCHTomUtlFillUlPdcch(cntrlInfo, dlSf, err)
-RgSchCellCb       *cell;
-TfuCntrlReqInfo *cntrlInfo;
-RgSchDlSf       *dlSf;
-RgSchErrInfo    *err;
-#endif
+)
 {
    S16          ret;
    CmLList      *node;
@@ -3499,15 +3332,7 @@ RgSchErrInfo    *err;
  *      -# ROK 
  *      -# RFAILED 
  */
-#ifdef ANSI
-static S16 rgSCHTomUtlProcTA
-(
-RgSchCellCb    *cell
-)
-#else
-static S16 rgSCHTomUtlProcTA (cell)
-RgSchCellCb    *cell;
-#endif
+static S16 rgSCHTomUtlProcTA(RgSchCellCb    *cell)
 {
    CmLList     *node;
    RgSchUeCb   *ue;
@@ -3562,31 +3387,18 @@ RgSchCellCb    *cell;
  *      -# RFAILED 
  */
 #ifdef TFU_UPGRADE
-#ifdef ANSI
 S16 rgSCHTomUtlFillHqFdbkInfo
 (
- TfuRecpReqInfo          *recpReqInfo,
- RgSchCellCb             *cell,
- uint16_t                     validIdx,
- RgSchDlHqProcCb         *hqCb,
- RgSchDlSf               *nxtDlsf,
- TfuUeRecpReqInfo        *pucchRecpInfo,
- RgSchDlHqProcCb         *prvHqCb,
- RgSchErrInfo            *err
- )
+TfuRecpReqInfo          *recpReqInfo,
+RgSchCellCb             *cell,
+uint16_t                validIdx,
+RgSchDlHqProcCb         *hqCb,
+RgSchDlSf               *nxtDlsf,
+TfuUeRecpReqInfo        *pucchRecpInfo,
+RgSchDlHqProcCb         *prvHqCb,
+RgSchErrInfo            *err
+)
 #else
-S16 rgSCHTomUtlFillHqFdbkInfo (recpReqInfo, cell, validIdx, hqCb, nxtDlsf, pucchRecpInfo, prvHqCb, err)
-   TfuRecpReqInfo          *recpReqInfo;
-   RgSchCellCb             *cell;
-   uint16_t                     validIdx; 
-   RgSchDlHqProcCb         *hqCb;
-   RgSchDlSf               *nxtDlsf;
-   TfuUeRecpReqInfo        *pucchRecpInfo;
-   RgSchDlHqProcCb         *prvHqCb;
-   RgSchErrInfo            *err;
-#endif
-#else
-#ifdef ANSI
 S16 rgSCHTomUtlFillHqFdbkInfo
 (
 TfuRecpReqInfo          *recpReqInfo,
@@ -3597,21 +3409,11 @@ TfuUeRecpReqInfo        *pucchRecpInfo,
 RgSchDlHqProcCb         *prvHqCb,
 RgSchErrInfo            *err
 )
-#else
-S16 rgSCHTomUtlFillHqFdbkInfo (recpReqInfo, cell, hqCb, nxtDlsf, pucchRecpInfo, prvHqCb, err)
-TfuRecpReqInfo          *recpReqInfo;
-RgSchCellCb             *cell;
-RgSchDlHqProcCb         *hqCb;
-RgSchDlSf               *nxtDlsf;
-TfuUeRecpReqInfo        *pucchRecpInfo;
-RgSchDlHqProcCb         *prvHqCb;
-RgSchErrInfo            *err;
-#endif
 #endif 
 { 
    S16                  ret;
    RgSchDlHqTbCb        *tbCb;
-   uint32_t                  idx;
+   uint32_t             idx;
    Bool                 isAddToLst = FALSE;
 
    for (idx = 0 ;idx < 2; idx++)
@@ -3782,27 +3584,16 @@ RgSchErrInfo            *err;
  *      -# ROK 
  *      -# RFAILED 
  */
-#ifdef ANSI
 static S16 rgSCHTomUtlFillHqFdbkFor5gtf
 (
- TfuRecpReqInfo          *recpReqInfo,
- RgSchCellCb             *cell,
- uint16_t                     validIdx,
- RgSchDlHqInfo           *dlSfHqInfo,
- RgSchDlSf               *dlSf,
- TfuUeRecpReqInfo        *pucchRecpInfo,
- RgSchErrInfo            *err
- )
-#else
-static S16 rgSCHTomUtlFillHqFdbkFor5gtf (recpReqInfo, cell, validIdx, hqCb, dlSf, pucchRecpInfo, err)
-   TfuRecpReqInfo          *recpReqInfo;
-   RgSchCellCb             *cell;
-   uint16_t                     validIdx; 
-   RgSchDlHqInfo           *dlSfHqInfo;
-   RgSchDlSf               *dlSf;
-   TfuUeRecpReqInfo        *pucchRecpInfo;
-   RgSchErrInfo            *err;
-#endif
+TfuRecpReqInfo          *recpReqInfo,
+RgSchCellCb             *cell,
+uint16_t                validIdx,
+RgSchDlHqInfo           *dlSfHqInfo,
+RgSchDlSf               *dlSf,
+TfuUeRecpReqInfo        *pucchRecpInfo,
+RgSchErrInfo            *err
+)
 { 
 #ifdef DEBUGP
    Inst                 inst = cell->instIdx;
@@ -3877,29 +3668,17 @@ static S16 rgSCHTomUtlFillHqFdbkFor5gtf (recpReqInfo, cell, validIdx, hqCb, dlSf
  *      -# RFAILED 
  */
 #ifdef TFU_UPGRADE
-#ifdef ANSI
 static S16 rgSCHTomUtlFillHqFdbkForFrmt1B
 (
- TfuRecpReqInfo          *recpReqInfo,
- RgSchCellCb             *cell,
- uint16_t                     validIdx,
- RgSchDlHqInfo           *dlSfHqInfo,
- RgSchDlSf               *dlSf,
- TfuUeRecpReqInfo        *pucchRecpInfo,
- RgSchErrInfo            *err
- )
+TfuRecpReqInfo          *recpReqInfo,
+RgSchCellCb             *cell,
+uint16_t                     validIdx,
+RgSchDlHqInfo           *dlSfHqInfo,
+RgSchDlSf               *dlSf,
+TfuUeRecpReqInfo        *pucchRecpInfo,
+RgSchErrInfo            *err
+)
 #else
-static S16 rgSCHTomUtlFillHqFdbkForFrmt1B (recpReqInfo, cell, validIdx, hqCb, dlSf, pucchRecpInfo, err)
-   TfuRecpReqInfo          *recpReqInfo;
-   RgSchCellCb             *cell;
-   uint16_t                     validIdx; 
-   RgSchDlHqInfo           *dlSfHqInfo;
-   RgSchDlSf               *dlSf;
-   TfuUeRecpReqInfo        *pucchRecpInfo;
-   RgSchErrInfo            *err;
-#endif
-#else
-#ifdef ANSI
 static S16 rgSCHTomUtlFillHqFdbkForFrmt1B
 (
 TfuRecpReqInfo          *recpReqInfo,
@@ -3909,15 +3688,6 @@ RgSchDlSf               *dlSf,
 TfuUeRecpReqInfo        *pucchRecpInfo,
 RgSchErrInfo            *err
 )
-#else
-static S16 rgSCHTomUtlFillHqFdbkForFrmt1B (recpReqInfo, cell, hqCb, dlSf, pucchRecpInfo, err)
-TfuRecpReqInfo          *recpReqInfo;
-RgSchCellCb             *cell;
-RgSchDlHqInfo           *dlSfHqInfo;
-RgSchDlSf               *dlSf;
-TfuUeRecpReqInfo        *pucchRecpInfo;
-RgSchErrInfo            *err;
-#endif
 #endif 
 { 
 #ifdef DEBUGP
@@ -3929,7 +3699,7 @@ RgSchErrInfo            *err;
    RgSchUeCb            *ue;
    TfuUePucchRecpReq    *pucchReqInfo = NULLP;
    Bool                 isDatPresOnSecCell = FALSE;
-   uint8_t                   primCellTbCount = 0;
+   uint8_t              primCellTbCount = 0;
 
    hqPNode = dlSfHqInfo->hqPLst.first;
    ue = (RgSchUeCb*)dlSfHqInfo->dlSfUeLnk.node;
@@ -4207,29 +3977,17 @@ RgSchErrInfo            *err;
  *      -# RFAILED 
  */
 #ifdef TFU_UPGRADE
-#ifdef ANSI
 static S16 rgSCHTomUtlFillHqFdbkForFrmt3
 (
- TfuRecpReqInfo          *recpReqInfo,
- RgSchCellCb             *cell,
- uint16_t                     validIdx,
- RgSchDlHqInfo           *dlSfHqInfo,
- RgSchDlSf               *dlSf,
- TfuUeRecpReqInfo        *pucchRecpInfo,
- RgSchErrInfo            *err
- )
+TfuRecpReqInfo          *recpReqInfo,
+RgSchCellCb             *cell,
+uint16_t                     validIdx,
+RgSchDlHqInfo           *dlSfHqInfo,
+RgSchDlSf               *dlSf,
+TfuUeRecpReqInfo        *pucchRecpInfo,
+RgSchErrInfo            *err
+)
 #else
-static S16 rgSCHTomUtlFillHqFdbkForFrmt3 (recpReqInfo, cell, validIdx, hqCb, dlSf, pucchRecpInfo, err)
-   TfuRecpReqInfo          *recpReqInfo;
-   RgSchCellCb             *cell;
-   uint16_t                     validIdx; 
-   RgSchDlHqInfo           *dlSfHqInfo;
-   RgSchDlSf               *dlSf;
-   TfuUeRecpReqInfo        *pucchRecpInfo;
-   RgSchErrInfo            *err;
-#endif
-#else
-#ifdef ANSI
 static S16 rgSCHTomUtlFillHqFdbkForFrmt3
 (
 TfuRecpReqInfo          *recpReqInfo,
@@ -4239,15 +3997,6 @@ RgSchDlSf               *dlSf,
 TfuUeRecpReqInfo        *pucchRecpInfo,
 RgSchErrInfo            *err
 )
-#else
-static S16 rgSCHTomUtlFillHqFdbkForFrmt3 (recpReqInfo, cell, hqCb, dlSf, pucchRecpInfo, err)
-TfuRecpReqInfo          *recpReqInfo;
-RgSchCellCb             *cell;
-RgSchDlHqInfo           *dlSfHqInfo;
-RgSchDlSf               *dlSf;
-TfuUeRecpReqInfo        *pucchRecpInfo;
-RgSchErrInfo            *err;
-#endif
 #endif 
 { 
 #ifdef DEBUGP
@@ -4325,35 +4074,20 @@ RgSchErrInfo            *err;
  *      -# RFAILED 
  */
 #ifdef TFU_UPGRADE
-#ifdef ANSI
 static S16 rgSCHTomUtlFillHqFdbkRecpReq
 (
- TfuRecpReqInfo          *recpReqInfo,
- RgSchCellCb             *cell,
- uint16_t                  validIdx,
- RgSchErrInfo            *err
- )
-#else
-static S16 rgSCHTomUtlFillHqFdbkRecpReq (recpReqInfo, cell, validIdx, err)
-   TfuRecpReqInfo          *recpReqInfo;
-   RgSchCellCb             *cell;
-   uint16_t                  validIdx; 
-   RgSchErrInfo            *err;
-#endif
-#else
-#ifdef ANSI
-static S16 rgSCHTomUtlFillHqFdbkRecpReq
-(
-TfuRecpReqInfo          *recpReqInfo,
-RgSchCellCb             *cell,
-RgSchErrInfo            *err
+TfuRecpReqInfo    *recpReqInfo,
+RgSchCellCb       *cell,
+uint16_t          validIdx,
+RgSchErrInfo      *err
 )
 #else
-static S16 rgSCHTomUtlFillHqFdbkRecpReq (recpReqInfo, cell, err)
-TfuRecpReqInfo          *recpReqInfo;
-RgSchCellCb             *cell;
-RgSchErrInfo            *err;
-#endif
+static S16 rgSCHTomUtlFillHqFdbkRecpReq
+(
+TfuRecpReqInfo    *recpReqInfo,
+RgSchCellCb       *cell,
+RgSchErrInfo      *err
+)
 #endif 
 {
    CmLList              *node;
@@ -4436,21 +4170,13 @@ RgSchErrInfo            *err;
  *      -# RFAILED 
  */
 #ifdef UNUSED_FUNC
-#ifdef ANSI
 static S16 rgSCHTomUtlFillSrRecpReq
 (
- TfuRecpReqInfo          *recpReqInfo,
- RgSchCellCb             *cell,
- uint16_t                  validIdx,
- RgSchErrInfo            *err
- )
-#else
-static S16 rgSCHTomUtlFillSrRecpReq (recpReqInfo, cell, validIdx, err)
-   TfuRecpReqInfo          *recpReqInfo;
-   RgSchCellCb             *cell;
-   uint16_t                  validIdx; 
-   RgSchErrInfo            *err;
-#endif
+TfuRecpReqInfo          *recpReqInfo,
+RgSchCellCb             *cell,
+uint16_t                  validIdx,
+RgSchErrInfo            *err
+)
 {
    CmLList              *node;
    TfuUeRecpReqInfo     *pucchRecpInfo;
@@ -4540,17 +4266,11 @@ static S16 rgSCHTomUtlFillSrRecpReq (recpReqInfo, cell, validIdx, err)
  *      -# RFAILED 
  */
 
-#ifdef ANSI
 static S16 rgSCHTomUtlWillUeRprtCqiRi
 (
- RgSchUeCb        *ue,
- Bool             *willueRprtCqiRi
- )
-#else
-static S16 rgSCHTomUtlWillUeRprtCqiRi ( ue, willueRprtCqiRi)
- RgSchUeCb        *ue;
- Bool             *willueRprtCqiRi;
-#endif
+RgSchUeCb        *ue,
+Bool             *willueRprtCqiRi
+)
 {
    /* Intialising Reporting probability as TRUE */ 
    *willueRprtCqiRi = TRUE; 
@@ -4599,21 +4319,13 @@ static S16 rgSCHTomUtlWillUeRprtCqiRi ( ue, willueRprtCqiRi)
  *      -# RFAILED 
  */
 #ifdef UNUSED_FUNC
-#ifdef ANSI
 static S16 rgSCHTomUtlFillRiRecpReq
 (
- TfuRecpReqInfo       *recpReqInfo,
- RgSchCellCb          *cell,
- uint16_t                  validIdx,
- RgSchErrInfo         *err
- )
-#else
-static S16 rgSCHTomUtlFillRiRecpReq (recpReqInfo, cell, validIdx, err)
-   TfuRecpReqInfo       *recpReqInfo;
-   RgSchCellCb          *cell;
-   uint16_t                  validIdx; 
-   RgSchErrInfo         *err;
-#endif
+TfuRecpReqInfo       *recpReqInfo,
+RgSchCellCb          *cell,
+uint16_t             validIdx,
+RgSchErrInfo         *err
+)
 {
    CmLList              *node;
    TfuUeRecpReqInfo     *pucchRecpInfo;
@@ -4722,25 +4434,17 @@ static S16 rgSCHTomUtlFillRiRecpReq (recpReqInfo, cell, validIdx, err)
  */
 
 #ifdef UNUSED_FUNC
-#ifdef ANSI
 static S16 rgSCHTomUtlFillCqiRiRecpReq
 (
- TfuRecpReqInfo       *recpReqInfo,
- RgSchCellCb          *cell,
- uint16_t                  validIdx, 
- RgSchErrInfo         *err
- )
-#else
-static S16 rgSCHTomUtlFillCqiRiRecpReq (recpReqInfo, cell, validIdx, err)
-   TfuRecpReqInfo     *recpReqInfo;
-   RgSchCellCb        *cell;
-   uint16_t                validIdx; 
-   RgSchErrInfo       *err;
-#endif
+TfuRecpReqInfo       *recpReqInfo,
+RgSchCellCb          *cell,
+uint16_t             validIdx, 
+RgSchErrInfo         *err
+)
 {
-   TfuUeRecpReqInfo     *pucchRecpInfo;
-   RgSchUeCb            *ue = NULLP;
-   uint16_t                  ret;
+   TfuUeRecpReqInfo  *pucchRecpInfo;
+   RgSchUeCb         *ue = NULLP;
+   uint16_t          ret;
 
    while ((ue = rgSCHDbmGetNextUeCb(cell, ue)) != NULLP)
    {
@@ -4791,31 +4495,21 @@ static S16 rgSCHTomUtlFillCqiRiRecpReq (recpReqInfo, cell, validIdx, err)
  *      -# RFAILED 
  */
 #ifdef UNUSED_FUNC
-#ifdef ANSI
 static S16 rgSCHTomUtlFillPcqiRecpReq
 (
- TfuRecpReqInfo       *recpReqInfo,
- RgSchCellCb          *cell,
- uint16_t                  validIdx, 
- RgSchErrInfo         *err
- )
-#else
-static S16 rgSCHTomUtlFillPcqiRecpReq (recpReqInfo, cell, validIdx, err)
-   TfuRecpReqInfo     *recpReqInfo;
-   RgSchCellCb        *cell;
-   uint16_t                validIdx; 
-   RgSchErrInfo       *err;
-#endif
+TfuRecpReqInfo       *recpReqInfo,
+RgSchCellCb          *cell,
+uint16_t             validIdx, 
+RgSchErrInfo         *err
+)
 {
    CmLList              *node;
    TfuUeRecpReqInfo     *pucchRecpInfo;
    S16                  ret;
-
    RgSchUeCb            *ue;
-   uint8_t                    ri; /*RI value*/
-   Bool                  willUeRprtCqi;   /* Flag set due to CQI Mask 
-                                        and UE Inactive state (DRX)*/
-   uint8_t                    cqiPmiSz; 
+   uint8_t              ri; /*RI value*/
+   Bool                 willUeRprtCqi;   /* Flag set due to CQI Mask   and UE Inactive state (DRX)*/
+   uint8_t              cqiPmiSz; 
    RgSchUePCqiCb        *cqiCb = NULLP;
    Bool                 isAddToLst = FALSE;
 
@@ -4903,21 +4597,13 @@ static S16 rgSCHTomUtlFillPcqiRecpReq (recpReqInfo, cell, validIdx, err)
  *      -# ROK 
  *      -# RFAILED 
  */
-#ifdef ANSI
 static S16 rgSCHTomUtlFillSrsRecpReq
 (
- TfuRecpReqInfo       *recpReqInfo,
- RgSchCellCb          *cell,
- uint16_t                  validIdx,
- RgSchErrInfo         *err
- )
-#else
-static S16 rgSCHTomUtlFillSrsRecpReq (recpReqInfo, cell, validIdx, err)
-   TfuRecpReqInfo       *recpReqInfo;
-   RgSchCellCb          *cell;
-   uint16_t                  validIdx; 
-   RgSchErrInfo         *err;
-#endif
+TfuRecpReqInfo       *recpReqInfo,
+RgSchCellCb          *cell,
+uint16_t             validIdx,
+RgSchErrInfo         *err
+)
 {
    CmLList              *node;
    TfuUeRecpReqInfo     *pucchRecpInfo;
@@ -5000,19 +4686,12 @@ static S16 rgSCHTomUtlFillSrsRecpReq (recpReqInfo, cell, validIdx, err)
  *      -# ROK 
  *      -# RFAILED 
  */
-#ifdef ANSI
 static S16 rgSCHTomUtlFillDatRecpReq
 (
 TfuRecpReqInfo       *recpReqInfo,
 RgSchCellCb          *cell,
 RgSchErrInfo         *err
 )
-#else
-static S16 rgSCHTomUtlFillDatRecpReq (recpReqInfo, cell, err)
-TfuRecpReqInfo       *recpReqInfo;
-RgSchCellCb          *cell;
-RgSchErrInfo         *err;
-#endif
 {
    S16               ret;
    RgSchUlAlloc      *alloc;
@@ -5111,30 +4790,22 @@ RgSchErrInfo         *err;
  *      -# ROK 
  *      -# RFAILED 
  */
-#ifdef ANSI
 static S16 rgSCHTomUtlFillDatRecpReq
 (
- TfuRecpReqInfo       *recpReqInfo,
- RgSchCellCb          *cell,
- uint16_t                  validIdx,
- RgSchErrInfo         *err
- )
-#else
-static S16 rgSCHTomUtlFillDatRecpReq (recpReqInfo, cell, validIdx, err)
-   TfuRecpReqInfo       *recpReqInfo;
-   RgSchCellCb          *cell;
-   uint16_t                  validIdx;
-   RgSchErrInfo         *err;
-#endif
+TfuRecpReqInfo       *recpReqInfo,
+RgSchCellCb          *cell,
+uint16_t             validIdx,
+RgSchErrInfo         *err
+)
 {
    CmLteTimingInfo   dci0Time;
-   uint8_t                idx;
+   uint8_t           idx;
    S16               ret;
    RgSchUlAlloc      *alloc;
    TfuUeRecpReqInfo  *datRecpInfo;
 
    Bool              isAperiodic = FALSE; /*Set when Aperiodic CQI is expected */
-   uint8_t                numUePerTti = 0;
+   uint8_t           numUePerTti = 0;
 
    if((0 == (recpReqInfo->timingInfo.sfn % 30)) && (0 == recpReqInfo->timingInfo.slot))
    {
@@ -5242,15 +4913,10 @@ static S16 rgSCHTomUtlFillDatRecpReq (recpReqInfo, cell, validIdx, err)
  *     File :
  *
  **********************************************************/
-#ifdef ANSI
 S16 rgSCHTomUtlFillRiBitWidthInfo
 (
- RgSchUeCb     *ueCb
- )
-#else
-S16 rgSCHTomUtlFillRiBitWidthInfo(ueCb)
-   RgSchUeCb   *ueCb;
-#endif
+RgSchUeCb     *ueCb
+)
 {
    RgSchUePCqiCb *riCb = ueCb->nPRiCb;
    
@@ -5308,19 +4974,12 @@ S16 rgSCHTomUtlFillRiBitWidthInfo(ueCb)
  *     File :
  *
  **********************************************************/
-#ifdef ANSI
 uint8_t rgSCHTomUtlFetchPcqiBitSz
 (
- RgSchUeCb    *ueCb, 
- uint8_t           numTxAnt,
- uint8_t           *ri
- )
-#else
-uint8_t rgSCHTomUtlFetchPcqiBitSz(ueCb, numTxAnt, ri)
-   RgSchUeCb     *ueCb;
-   uint8_t            numTxAnt;
-   uint8_t            *ri;
-#endif
+RgSchUeCb  *ueCb, 
+uint8_t    numTxAnt,
+uint8_t    *ri
+)
 {
    uint8_t confRepMode;
    uint8_t pcqiSz;
@@ -5458,19 +5117,12 @@ uint8_t rgSCHTomUtlFetchPcqiBitSz(ueCb, numTxAnt, ri)
  *     File :
  *
  **********************************************************/
-#ifdef ANSI
 S16 rgSCHTomUtlPcqiSbCalcBpIdx
 (
- CmLteTimingInfo    crntTimInfo,
- RgSchUeCb          *ueCb,
- RgSchUePCqiCb   *cqiCb
- )
-#else
-S16 rgSCHTomUtlPcqiSbCalcBpIdx(crntTimInfo, ueCb, cqiCb)
-   CmLteTimingInfo  crntTimInfo;
-   RgSchUeCb        *ueCb;
-   RgSchUePCqiCb   *cqiCb;
-#endif
+CmLteTimingInfo   crntTimInfo,
+RgSchUeCb         *ueCb,
+RgSchUePCqiCb     *cqiCb
+)
 {
    uint16_t tti = (crntTimInfo.sfn * RGSCH_NUM_SUB_FRAMES_5G + crntTimInfo.slot);
    uint16_t  prdNum = tti/cqiCb->cqiPeri;
@@ -5520,19 +5172,12 @@ S16 rgSCHTomUtlPcqiSbCalcBpIdx(crntTimInfo, ueCb, cqiCb)
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 rgSCHTomUtlMoveNxtOccasion
 (
- RgSchCellCb    *cell,
- RgSchUeCb      *ue,
- uint16_t            validIdx
- )
-#else
-S16 rgSCHTomUtlMoveNxtOccasion(cell, ue, validIdx)
-   RgSchCellCb    *cell;
-   RgSchUeCb      *ue;
-   uint16_t            validIdx;
-#endif
+RgSchCellCb  *cell,
+RgSchUeCb    *ue,
+uint16_t     validIdx
+)
 {
    RgSchUePCqiCb *cqiCb = ue->nPCqiCb;
    RgSchUePCqiCb *riCb = ue->nPRiCb;
@@ -5609,21 +5254,13 @@ S16 rgSCHTomUtlMoveNxtOccasion(cell, ue, validIdx)
  *     File :
  *
  **********************************************************/
-#ifdef ANSI
 Void rgSCHTomPrepareAcqiRecp
 (
- RgSchUeCb			   *ueCb, 
- RgSchCellCb			*cell,
- TfuUePuschCqiRecpInfo *cqiRecpReqInfo,
- uint8_t                    ccIdx
- )
-#else
- Void rgSCHTomPrepareAcqiRecp(ueCb, cell, cqiRecpReqInfo, ccIdx)
- RgSchUeCb			   *ueCb;
- RgSchCellCb		   *cell;
- TfuUePuschCqiRecpInfo *cqiRecpReqInfo;
- uint8_t                    ccIdx;
-#endif
+RgSchUeCb	*ueCb, 
+RgSchCellCb	*cell,
+TfuUePuschCqiRecpInfo *cqiRecpReqInfo,
+uint8_t         ccIdx
+)
 {
    uint8_t confRepMode;
    RgSchCqiRawPuschMode12   *mode12Info;   
@@ -5631,9 +5268,9 @@ Void rgSCHTomPrepareAcqiRecp
    RgSchCqiRawPuschMode22   *mode22Info;    
    RgSchCqiRawPuschMode30   *mode30Info;   
    RgSchCqiRawPuschMode31   *mode31Info;    
-   uint8_t	         numTxAnt   = cell->numTxAntPorts;
-   uint8_t            sCellIdx   = ueCb->cellIdToCellIdxMap[RG_SCH_CELLINDEX(cell)];
-   uint8_t            numOfCells = 0;
+   uint8_t numTxAnt   = cell->numTxAntPorts;
+   uint8_t sCellIdx   = ueCb->cellIdToCellIdxMap[RG_SCH_CELLINDEX(cell)];
+   uint8_t numOfCells = 0;
    RgSchUeACqiCb *acqiCb  = &ueCb->cellInfo[sCellIdx]->acqiCb;
 
    /* Fill TFU Recp */
@@ -5800,33 +5437,22 @@ Void rgSCHTomPrepareAcqiRecp
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 rgSCHTomUtlFillDatAperRecpReq
 (
- RgSchCellCb       *cell,
- uint8_t                cqiReq,
- RgSchUlAlloc      *alloc,
- TfuUeRecpReqInfo  *datRecpInfo,
- CmLteTimingInfo   *timeInfo,
- Bool              hqPres,
- uint16_t                validIdx
- )
-#else
-S16 rgSCHTomUtlFillDatAperRecpReq(cell, cqiReq, alloc, datRecpInfo, timeInfo, hqPres, validIdx)
-   RgSchCellCb       *cell;
-   uint8_t                cqiReq;
-   RgSchUlAlloc      *alloc;
-   TfuUeRecpReqInfo  *datRecpInfo;
-   CmLteTimingInfo   *timeInfo;
-   Bool              hqPres;
-   uint16_t                validIdx; 
-#endif
+RgSchCellCb       *cell,
+uint8_t           cqiReq,
+RgSchUlAlloc      *alloc,
+TfuUeRecpReqInfo  *datRecpInfo,
+CmLteTimingInfo   *timeInfo,
+Bool              hqPres,
+uint16_t          validIdx
+)
 {
    TfuUePuschCqiRecpInfo  *cqiRecpReqInfo;
-   RgSchUeCb			  *ueCb = alloc->ue;
+   RgSchUeCb	*ueCb = alloc->ue;
 #ifdef LTE_ADV
-   uint8_t                     triggerSet = 0;
-   uint8_t                     sIdx = 0;
+   uint8_t      triggerSet = 0;
+   uint8_t      sIdx = 0;
 #endif
 
    /*Fill RI Reception Params*/
@@ -5911,26 +5537,15 @@ S16 rgSCHTomUtlFillDatAperRecpReq(cell, cqiReq, alloc, datRecpInfo, timeInfo, hq
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 rgSCHTomUtlFillDatPriRecpReq
 (
- RgSchCellCb       *cell,
- RgSchUlAlloc      *alloc,
- TfuUeRecpReqInfo  *datRecpInfo,
- CmLteTimingInfo   *timeInfo,
- Bool              hqPres,
- uint16_t               validIdx
- )
-#else
-S16 rgSCHTomUtlFillDatPriRecpReq(cell, alloc, datRecpInfo, timeInfo, 
-hqPres, validIdx)
-   RgSchCellCb       *cell;
-   RgSchUlAlloc      *alloc;
-   TfuUeRecpReqInfo  *datRecpInfo;
-   CmLteTimingInfo   *timeInfo;
-   Bool              hqPres; 
-   uint16_t                validIdx;
-#endif
+RgSchCellCb       *cell,
+RgSchUlAlloc      *alloc,
+TfuUeRecpReqInfo  *datRecpInfo,
+CmLteTimingInfo   *timeInfo,
+Bool              hqPres,
+uint16_t          validIdx
+)
 {
    TfuUePuschCqiRecpInfo  *cqiRecpReqInfo;
 
@@ -6006,30 +5621,19 @@ hqPres, validIdx)
  *      -# RFAILED 
  **/
 
-#ifdef ANSI
 S16 rgSCHTomUtlFillDatPCqiRecpReq
 (
- RgSchCellCb       *cell,
- RgSchUlAlloc      *alloc,
- TfuUeRecpReqInfo  *datRecpInfo,
- CmLteTimingInfo   *timeInfo,
- Bool              hqPres, 
- uint16_t                validIdx
- )
-#else
-S16 rgSCHTomUtlFillDatPCqiRecpReq(cell, alloc, datRecpInfo, 
-      timeInfo, hqPres, validIdx)
-   RgSchCellCb       *cell;
-   RgSchUlAlloc      *alloc;
-   TfuUeRecpReqInfo  *datRecpInfo;
-   CmLteTimingInfo   *timeInfo;
-   Bool              hqPres; 
-   uint16_t                validIdx;
-#endif
+RgSchCellCb       *cell,
+RgSchUlAlloc      *alloc,
+TfuUeRecpReqInfo  *datRecpInfo,
+CmLteTimingInfo   *timeInfo,
+Bool              hqPres, 
+uint16_t          validIdx
+)
 {
    TfuUePuschCqiRecpInfo  *cqiRecpReqInfo;
-   uint8_t                 cqiPmiSz; /*Raw CQI/PMI Size*/
-   uint8_t                 ri;
+   uint8_t     cqiPmiSz; /*Raw CQI/PMI Size*/
+   uint8_t     ri;
 
    /*Fill CQI Reception Params*/
    cqiRecpReqInfo = &datRecpInfo->t.puschRecpReq.cqiRiInfo;
@@ -6118,24 +5722,14 @@ S16 rgSCHTomUtlFillDatPCqiRecpReq(cell, alloc, datRecpInfo,
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 rgSCHTomUtlFillDatSrsRecpReq
 (
- RgSchCellCb       *cell,
- RgSchUlAlloc      *alloc,
- TfuUeRecpReqInfo  *datRecpInfo,
- CmLteTimingInfo   *timeInfo,
- Bool              hqPres
- )
-#else
-S16 rgSCHTomUtlFillDatSrsRecpReq(cell, alloc, datRecpInfo, timeInfo, 
-      hqPres)
-   RgSchCellCb       *cell;
-   RgSchUlAlloc      *alloc;
-   TfuUeRecpReqInfo  *datRecpInfo;
-   CmLteTimingInfo   *timeInfo;
-   Bool              hqPres; 
-#endif
+RgSchCellCb       *cell,
+RgSchUlAlloc      *alloc,
+TfuUeRecpReqInfo  *datRecpInfo,
+CmLteTimingInfo   *timeInfo,
+Bool              hqPres
+)
 {
    datRecpInfo->rnti = alloc->rnti;
    rgSCHTomFillOnlySrsRecpReq(cell,alloc, datRecpInfo); 
@@ -6177,19 +5771,12 @@ S16 rgSCHTomUtlFillDatSrsRecpReq(cell, alloc, datRecpInfo, timeInfo,
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 rgSCHTomFillOnlySrsRecpReq
 (
- RgSchCellCb       *cell,
- RgSchUlAlloc      *alloc,
- TfuUeRecpReqInfo  *datRecpInfo
- )
-#else
-S16 rgSCHTomFillOnlySrsRecpReq(cell, alloc, datRecpInfo)  
-   RgSchCellCb       *cell;
-   RgSchUlAlloc      *alloc;
-   TfuUeRecpReqInfo  *datRecpInfo;
-#endif
+RgSchCellCb       *cell,
+RgSchUlAlloc      *alloc,
+TfuUeRecpReqInfo  *datRecpInfo
+)
 {
    TfuUePuschSrsRecpInfo  *srsRecpReqInfo;
 
@@ -6238,37 +5825,25 @@ S16 rgSCHTomFillOnlySrsRecpReq(cell, alloc, datRecpInfo)
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 static S16 rgSCHTomUtlFillCqiSrSrsWithHq
 (
- RgSchCellCb       *cell,
- TfuRecpReqInfo    *recpReqInfo,
- RgSchUeCb         *ue,
- TfuUeRecpReqInfo  *pucchRecpInfo,
- uint16_t                validIdx,
- Bool               isDatPresOnSecCell
- )
-#else
-static S16 rgSCHTomUtlFillCqiSrSrsWithHq(cell, recpReqInfo, ue, 
-      pucchRecpInfo, validIdx,isDatPresOnSecCell)
-RgSchCellCb       *cell;
-TfuRecpReqInfo    *recpReqInfo;
-RgSchUeCb         *ue;
-TfuUeRecpReqInfo  *pucchRecpInfo;
-uint16_t               validIdx;
-Bool              isDatPresOnSecCell;
-#endif
+RgSchCellCb       *cell,
+TfuRecpReqInfo    *recpReqInfo,
+RgSchUeCb         *ue,
+TfuUeRecpReqInfo  *pucchRecpInfo,
+uint16_t          validIdx,
+Bool               isDatPresOnSecCell
+)
 {
    RgSchUePCqiCb   *cqiCb;
    RgSchUePCqiCb   *riCb;
-   uint8_t                 ri; /*To fetch RI value*/
-   Bool               willUeRprtCqi;   /* Flag set due to CQI Mask and 
-                                      UE Inactive state (DRX)*/
-   Bool               willUeRprtSr = TRUE;   
-   TfuAckNackMode     hqFdbkMode;
-   uint8_t                 numCqiBit;
-   uint8_t                 totalPucchBits;
-   Bool               dropCqi = FALSE;
+   uint8_t         ri; /*To fetch RI value*/
+   Bool            willUeRprtCqi;   /* Flag set due to CQI Mask and UE Inactive state (DRX)*/
+   Bool            willUeRprtSr = TRUE;   
+   TfuAckNackMode  hqFdbkMode;
+   uint8_t         numCqiBit;
+   uint8_t         totalPucchBits;
+   Bool            dropCqi = FALSE;
 #ifdef LTEMAC_SPS
    RgSchCmnUlUeSpsInfo   *ulSpsUe = NULL;
 #endif
@@ -6559,29 +6134,19 @@ Bool              isDatPresOnSecCell;
  *      -# RFAILED 
  **/
 #ifdef UNUSED_FUNC
-#ifdef ANSI
 static S16 rgSCHTomUtlFillCqiSrsWithSr
 (
- RgSchCellCb       *cell,
- RgSchUeCb         *ue, 
- TfuRecpReqInfo    *recpReqInfo,
- TfuUeRecpReqInfo  *pucchRecpInfo,
- uint16_t               validIdx
- )
-#else
-static S16 rgSCHTomUtlFillCqiSrsWithSr(cell, ue, recpReqInfo,  
-      pucchRecpInfo, validIdx)
-RgSchCellCb       *cell;
-RgSchUeCb         *ue; 
-TfuRecpReqInfo    *recpReqInfo;
-TfuUeRecpReqInfo  *pucchRecpInfo;
-uint16_t               validIdx;
-#endif
+RgSchCellCb       *cell,
+RgSchUeCb         *ue, 
+TfuRecpReqInfo    *recpReqInfo,
+TfuUeRecpReqInfo  *pucchRecpInfo,
+uint16_t          validIdx
+)
 {
-   RgSchUePCqiCb   *cqiCb;
-   RgSchUePCqiCb   *riCb;
-   uint8_t                 ri; /*To fetch RI value*/
-   Bool               willUeRprtCqi;   /* Flag set due to CQI Mask and 
+   RgSchUePCqiCb  *cqiCb;
+   RgSchUePCqiCb  *riCb;
+   uint8_t        ri; /*To fetch RI value*/
+   Bool           willUeRprtCqi;   /* Flag set due to CQI Mask and 
                                       UE Inactive state (DRX)*/
    riCb = ue->nPRiCb;
    cqiCb = ue->nPCqiCb;
@@ -6742,57 +6307,30 @@ uint16_t               validIdx;
  *      -# RFAILED 
  */
 #ifdef TFU_UPGRADE
-#ifdef ANSI
 static S16 rgSCHTomUtlFillSfRepHqFdbk
 (
- TfuRecpReqInfo          *recpReqInfo,
- RgSchCellCb             *cellCb,
- RgSchErrInfo            *err,
- RgSchDlSf               *dlSf,
- uint8_t                      noFdbks,
- CmMemListCp             *memCp,
- uint8_t                      elemIdx,
- RgSchDlSf               *nxtDlsf,
- uint16_t                     validIdx
- )
-#else
-static S16 rgSCHTomUtlFillSfRepHqFdbk (recpReqInfo, cellCb, err, dlSf, 
-noFdbks, memCp, elemIdx, nxtDlsf, validIdx)
-   TfuRecpReqInfo          *recpReqInfo;
-   RgSchCellCb             *cellCb;
-   RgSchErrInfo            *err;
-   RgSchDlSf               *dlSf;
-   uint8_t                      noFdbks;
-   CmMemListCp             *memCp;
-   uint8_t                      elemIdx;
-   RgSchDlSf               *nxtDlsf;
-   uint16_t                     validIdx; 
-#endif
-#else
-#ifdef ANSI
-static S16 rgSCHTomUtlFillSfRepHqFdbk
-(
-TfuRecpReqInfo          *recpReqInfo,
-RgSchCellCb             *cellCb,
-RgSchErrInfo            *err,
-RgSchDlSf               *dlSf,
-uint8_t                      noFdbks,
-CmMemListCp             *memCp,
-uint8_t                      elemIdx,
-RgSchDlSf               *nxtDlsf
+TfuRecpReqInfo *recpReqInfo,
+RgSchCellCb    *cellCb,
+RgSchErrInfo   *err,
+RgSchDlSf      *dlSf,
+uint8_t        noFdbks,
+CmMemListCp    *memCp,
+uint8_t        elemIdx,
+RgSchDlSf      *nxtDlsf,
+uint16_t       validIdx
 )
 #else
-static S16 rgSCHTomUtlFillSfRepHqFdbk (recpReqInfo, cellCb, err, dlSf, 
-noFdbks, memCp, elemIdx, nxtDlsf)
-   TfuRecpReqInfo          *recpReqInfo;
-   RgSchCellCb             *cellCb;
-   RgSchErrInfo            *err;
-   RgSchDlSf               *dlSf;
-   uint8_t                      noFdbks;
-   CmMemListCp             *memCp;
-   uint8_t                      elemIdx;
-   RgSchDlSf               *nxtDlsf;
-#endif
+static S16 rgSCHTomUtlFillSfRepHqFdbk
+(
+TfuRecpReqInfo  *recpReqInfo,
+RgSchCellCb     *cellCb,
+RgSchErrInfo    *err,
+RgSchDlSf       *dlSf,
+uint8_t         noFdbks,
+CmMemListCp     *memCp,
+uint8_t         elemIdx,
+RgSchDlSf       *nxtDlsf
+)
 #endif 
 {
    RgSchDlHqProcCb         *hqCb;
@@ -6923,73 +6461,38 @@ noFdbks, memCp, elemIdx, nxtDlsf)
  *      -# RFAILED 
  */
 #ifdef TFU_UPGRADE
-#ifdef ANSI
 static S16 rgSCHTomUtlFillSfHqFdbkInfo
 (
- TfuRecpReqInfo          *recpReqInfo,
- RgSchCellCb             *cellCb,
- RgSchErrInfo            *err,
- RgSchDlSf               *dlSf,
- uint8_t                      noFdbks,
- CmMemListCp             *memCp,
- uint8_t                      elemIdx,
- RgSchDlSf               *nxtDlsf,
- uint16_t                     validIdx,
- RgSchDlHqProcCb         *hqCb,
- RgSchUePucchRecpInfo    *pucchInfo,
- Bool                    alloc,
- RgSchDlHqProcCb         *prvHqCb
- )
+TfuRecpReqInfo       *recpReqInfo,
+RgSchCellCb          *cellCb,
+RgSchErrInfo         *err,
+RgSchDlSf            *dlSf,
+uint8_t              noFdbks,
+CmMemListCp          *memCp,
+uint8_t              elemIdx,
+RgSchDlSf            *nxtDlsf,
+uint16_t             validIdx,
+RgSchDlHqProcCb      *hqCb,
+RgSchUePucchRecpInfo *pucchInfo,
+Bool                 alloc,
+RgSchDlHqProcCb      *prvHqCb
+)
 #else
-static S16 rgSCHTomUtlFillSfHqFdbkInfo (recpReqInfo, cellCb, err, dlSf, 
-      noFdbks, memCp, elemIdx, nxtDlsf, validIdx, hqCb, pucchInfo, alloc, prvHqCb)
-TfuRecpReqInfo          *recpReqInfo;
-RgSchCellCb             *cellCb;
-RgSchErrInfo            *err;
-RgSchDlSf               *dlSf;
-uint8_t                      noFdbks;
-CmMemListCp             *memCp;
-uint8_t                      elemIdx;
-RgSchDlSf               *nxtDlsf;
-uint16_t                     validIdx; 
-RgSchDlHqProcCb         *hqCb;
-RgSchUePucchRecpInfo    *pucchInfo;
-Bool                    alloc;
-RgSchDlHqProcCb         *prvHqCb;
-#endif
-#else
-#ifdef ANSI
 static S16 rgSCHTomUtlFillSfHqFdbkInfo
 (
- TfuRecpReqInfo          *recpReqInfo,
- RgSchCellCb             *cellCb,
- RgSchErrInfo            *err,
- RgSchDlSf               *dlSf,
- uint8_t                      noFdbks,
- CmMemListCp             *memCp,
- uint8_t                      elemIdx,
- RgSchDlSf               *nxtDlsf,
- RgSchDlHqProcCb         *hqCb,
- RgSchUePucchRecpInfo    *pucchInfo,
- Bool                    alloc,
- RgSchDlHqProcCb         *prvHqCb
- )
-#else
-static S16 rgSCHTomUtlFillSfHqFdbkInfo (recpReqInfo, cellCb, err, dlSf, 
-      noFdbks, memCp, elemIdx, nxtDlsf, hqCb, pucchInfo, alloc, prvHqCb)
-TfuRecpReqInfo          *recpReqInfo;
-RgSchCellCb             *cellCb;
-RgSchErrInfo            *err;
-RgSchDlSf               *dlSf;
-uint8_t                      noFdbks;
-CmMemListCp             *memCp;
-uint8_t                      elemIdx;
-RgSchDlSf               *nxtDlsf;
-RgSchDlHqProcCb         *hqCb;
-RgSchUePucchRecpInfo    *pucchInfo;
-Bool                    alloc;
-RgSchDlHqProcCb         *prvHqCb;
-#endif
+TfuRecpReqInfo       *recpReqInfo,
+RgSchCellCb          *cellCb,
+RgSchErrInfo         *err,
+RgSchDlSf            *dlSf,
+uint8_t              noFdbks,
+CmMemListCp          *memCp,
+uint8_t              elemIdx,
+RgSchDlSf            *nxtDlsf,
+RgSchDlHqProcCb      *hqCb,
+RgSchUePucchRecpInfo *pucchInfo,
+Bool                 alloc,
+RgSchDlHqProcCb      *prvHqCb
+)
 #endif
 {
    S16                     ret;
@@ -7194,30 +6697,21 @@ RgSchDlHqProcCb         *prvHqCb;
  * @param  [out]uint16_t                     *hqRes
  * @return void
  */
-#ifdef ANSI
 static Void rgSCHTomUtlGethqRes
 (
-uint8_t                      noFdbks,
-RgSchDlSf               *dlSf,
-RgSchPdcch              *pdcch,
-RgSchCellCb             *cellCb,
-uint16_t                     *hqRes
+uint8_t       noFdbks,
+RgSchDlSf     *dlSf,
+RgSchPdcch    *pdcch,
+RgSchCellCb   *cellCb,
+uint16_t      *hqRes
 )
-#else
-static Void rgSCHTomUtlGethqRes(noFdbks,dlSf,pdcch,cellCb,hqRes)
-uint8_t                      noFdbks;
-RgSchDlSf               *dlSf;
-RgSchPdcch              *pdcch;
-RgSchCellCb             *cellCb;
-uint16_t                     *hqRes;
-#endif
 {
-   uint8_t                      M;
-   uint8_t                      P;
-   uint8_t                      m;
-   uint8_t                      nP;
-   uint8_t                      nPlusOne;
-   uint8_t                      nCce;
+   uint8_t    M;
+   uint8_t    P;
+   uint8_t    m;
+   uint8_t    nP;
+   uint8_t    nPlusOne;
+   uint8_t    nCce;
    
    M = noFdbks;
    m = dlSf->dlFdbkInfo.m;
@@ -7250,30 +6744,19 @@ uint16_t                     *hqRes;
  * @param  [in] RgSchCellCb             *cellCb
  * @return void
  */
-#ifdef ANSI
 static Void rgSCHTomUtlFillSfHqFdbkForFrmt1BCSForM1
 (
- RgSchDlHqProcCb     *hqCb,
- TfuUePucchRecpReq   *hqRecpReq,
- uint8_t                  noFdbks,
- RgSchDlSf           *dlSf,
- RgSchPdcch          *pdcch,
- RgSchCellCb         *cellCb
+RgSchDlHqProcCb     *hqCb,
+TfuUePucchRecpReq   *hqRecpReq,
+uint8_t             noFdbks,
+RgSchDlSf           *dlSf,
+RgSchPdcch          *pdcch,
+RgSchCellCb         *cellCb
 )
-#else
-static Void rgSCHTomUtlFillSfHqFdbkForFrmt1BCSForM1(hqCb, hqRecpReq, 
-      noFdbks,dlSf,pdcch,cellCb)
- RgSchDlHqProcCb     *hqCb;
- TfuUePucchRecpReq   *hqRecpReq;
- uint8_t                  noFdbks;
- RgSchDlSf           *dlSf;
- RgSchPdcch          *pdcch;
- RgSchCellCb         *cellCb;
-#endif
 {
-   RgSchUeCb           *ue = NULLP;
-   Bool                 isCellSec = FALSE;
-   uint16_t                  hqRes;
+   RgSchUeCb *ue = NULLP;
+   Bool      isCellSec = FALSE;
+   uint16_t  hqRes;
 
    /*ccpu00147920: UeCb is NULL for SPS activation*/
    if(pdcch && pdcch->ue)
@@ -7481,33 +6964,21 @@ static Void rgSCHTomUtlFillSfHqFdbkForFrmt1BCSForM1(hqCb, hqRecpReq,
  * @param  [in] uint8_t                      elemIdx
  * @return void
  */
-#ifdef ANSI
 static Void rgSCHTomUtlFillSfHqFdbkForFrmt1BCSForM234
 (
- RgSchDlHqProcCb         *hqCb,
- TfuUePucchRecpReq       *hqRecpReq,
- uint8_t                      noFdbks,
- RgSchDlSf               *dlSf,
- RgSchPdcch              *pdcch,
- RgSchCellCb             *cellCb,
- uint8_t                      elemIdx
+RgSchDlHqProcCb    *hqCb,
+TfuUePucchRecpReq  *hqRecpReq,
+uint8_t            noFdbks,
+RgSchDlSf          *dlSf,
+RgSchPdcch         *pdcch,
+RgSchCellCb        *cellCb,
+uint8_t            elemIdx
 )
-#else
-static Void rgSCHTomUtlFillSfHqFdbkForFrmt1BCSForM234(
-      hqCb,hqRecpReq,noFdbks,dlSf,pdcch,cellCb,elemIdx)
- RgSchDlHqProcCb         *hqCb;
- TfuUePucchRecpReq       *hqRecpReq;
- uint8_t                      noFdbks;
- RgSchDlSf               *dlSf;
- RgSchPdcch              *pdcch;
- RgSchCellCb             *cellCb;
- uint8_t                      elemIdx;
-#endif
 {
-   RgSchUeCb            *ue;
-   Bool                 isCellSec = FALSE;
-   uint16_t                  hqRes = 0;
-   uint8_t                   servCellIdx;
+   RgSchUeCb  *ue;
+   Bool       isCellSec = FALSE;
+   uint16_t   hqRes = 0;
+   uint8_t    servCellIdx;
 
    if(pdcch)
    {/* SPS Release pdcch or dynamic data */
@@ -7642,28 +7113,16 @@ static Void rgSCHTomUtlFillSfHqFdbkForFrmt1BCSForM234(
  * @param  [out]TfuUePucchRecpReq *hqRecpReq
  * @return S16
  */
-#ifdef ANSI
 static S16 rgSCHTomUtlFillSfHqFdbkForFrmt1BCS
 (
- RgSchDlHqProcCb         *hqCb,
- TfuUePucchRecpReq       *hqRecpReq,
- uint8_t                      noFdbks,
- RgSchDlSf               *dlSf,
- RgSchPdcch              *pdcch,
- uint8_t                      elemIdx,
- RgSchCellCb             *cellCb
+RgSchDlHqProcCb    *hqCb,
+TfuUePucchRecpReq  *hqRecpReq,
+uint8_t            noFdbks,
+RgSchDlSf          *dlSf,
+RgSchPdcch         *pdcch,
+uint8_t            elemIdx,
+RgSchCellCb        *cellCb
 )
-#else
-static S16 rgSCHTomUtlFillSfHqFdbkForFrmt1BCS(hqCb,hqRecpReq,noFdbks,dlSf,pdcch,
-      n1PucchTkn,elemIdx,cellCb)
- RgSchDlHqProcCb         *hqCb;
- TfuUePucchRecpReq       *hqRecpReq;
- uint8_t                      noFdbks;
- RgSchDlSf               *dlSf;
- RgSchPdcch              *pdcch;
- uint8_t                      elemIdx;
- RgSchCellCb             *cellCb;
-#endif
 {
    /* Update teh fdbk mode if something different is present
     * in L1 API file for F1BS *//* 1 --> F1BCS */
@@ -7707,7 +7166,6 @@ static S16 rgSCHTomUtlFillSfHqFdbkForFrmt1BCS(hqCb,hqRecpReq,noFdbks,dlSf,pdcch,
  *     File :
  *
  **********************************************************/
-#ifdef ANSI
 static S16 rgSCHTomUtlFillSfHqFdbkForOneUe
 ( 
 RgSchDlHqProcCb         *hqCb,
@@ -7715,56 +7173,35 @@ TfuRecpReqInfo          *recpReqInfo,
 RgSchCellCb             *cellCb,
 RgSchErrInfo            *err,
 RgSchDlSf               *dlSf,
-uint8_t                      noFdbks,
+uint8_t                 noFdbks,
 CmMemListCp             *memCp,
-uint8_t                      elemIdx,
+uint8_t                 elemIdx,
 RgSchDlSf               *nxtDlsf,
 CmLteRnti               rnti,
 RgrTddAckNackMode       ackNackMode,
 RgSchUePucchRecpInfo    **pucchInfoRef,
 RgSchPdcch              *pdcch,
-TknUInt16                  n1PucchTkn,
+TknUInt16               n1PucchTkn,
 Bool                    *allocRef,
-uint8_t                      hqSz  
+uint8_t                 hqSz  
 )
-#else
-static S16 rgSCHTomUtlFillSfHqFdbkForOneUe(hqCb,recpReqInfo, cellCb, err, dlSf,
-      noFdbks, memCp, elemIdx, nxtDlsf, rnti, ackNackMode, pucchInfoRef,
-      pdcch, n1PucchTkn, allocRef, hqSz)
-RgSchDlHqProcCb         *hqCb;
-TfuRecpReqInfo          *recpReqInfo;
-RgSchCellCb             *cellCb;
-RgSchErrInfo            *err;
-RgSchDlSf               *dlSf;
-uint8_t                      noFdbks;
-CmMemListCp             *memCp;
-uint8_t                      elemIdx;
-RgSchDlSf               *nxtDlsf;
-CmLteRnti               rnti;
-RgrTddAckNackMode       ackNackMode;
-RgSchUePucchRecpInfo    **pucchInfoRef;
-RgSchPdcch              *pdcch;
-TknUInt16                  n1PucchTkn;
-Bool                    *allocRef;
-uint8_t                      hqSz;
-#endif
 {
    RgSchUePucchRecpInfo    *pucchInfo = *pucchInfoRef;
    Bool                    alloc = FALSE;
    S16                     ret;
    TfuUePucchRecpReq       *hqRecpReq;
 #ifdef TFU_UPGRADE
-   uint8_t                      M;
-   uint8_t                      P;
-   uint8_t                      m;
-   uint8_t                      nP;
-   uint8_t                      nPlusOne;
-   uint16_t                     pucchRes;
-   uint8_t                      resIdx;
-   uint8_t                     nCce;
-   uint8_t                      prevHqSize;
+   uint8_t                 M;
+   uint8_t                 P;
+   uint8_t                 m;
+   uint8_t                 nP;
+   uint8_t                 nPlusOne;
+   uint16_t                pucchRes;
+   uint8_t                 resIdx;
+   uint8_t                 nCce;
+   uint8_t                 prevHqSize;
 #else
-   uint8_t                      multCnt;
+   uint8_t                 multCnt;
 #endif
 #ifdef LTEMAC_SPS
    Bool                    isFirstFdbk = FALSE;
@@ -8040,7 +7477,6 @@ uint8_t                      hqSz;
  * @param  [out] RgSchErrInfo *err
  * @return S16
  */
-#ifdef ANSI
 static S16 rgSCHTomUtlProcDlSfAtCrc
 (
 RgSchDlSf            *ulSf,
@@ -8049,14 +7485,6 @@ RgSchCellCb          *cell,
 TfuCntrlReqInfo      *cntrlInfo,
 RgSchErrInfo         *err
 )
-#else
-static S16 rgSCHTomUtlProcDlSfAtCrc (ulSf, crntUlFrm, cell, cntrlInfo, err)
-RgSchDlSf            *ulSf;
-CmLteTimingInfo      crntUlFrm;
-RgSchCellCb          *cell;
-TfuCntrlReqInfo      *cntrlInfo;
-RgSchErrInfo         *err;
-#endif
 {
    Inst              inst = cell->instIdx;
    S16               ret;
@@ -8130,15 +7558,10 @@ RgSchErrInfo         *err;
  *
  * @param  [in] RgSchCellCb   *cell
  */
-#ifdef ANSI
 static Void rgSCHTomUtlSendSfnTick
 (
 RgSchCellCb          *cell
 )
-#else
-static Void rgSCHTomUtlSendSfnTick (cell)
-RgSchCellCb          *cell;
-#endif
 {
    RgrTtiIndInfo     *rgrTtiInd;
    
@@ -8187,15 +7610,7 @@ RgSchCellCb          *cell;
  *  @return    None
  */
 #ifdef UNUSED_FUNC
-#ifdef ANSI
-static Void rgSCHDynTDDMrkCrntSfIdx
-(
-Inst   schInst
-)
-#else /* ANSI */
-static Void rgSCHDynTDDMrkCrntSfIdx(schInst)
-Inst   schInst;
-#endif /* ANSI */
+static Void rgSCHDynTDDMrkCrntSfIdx(Inst   schInst)
 {
    RgSchDynTddCb  *rgSchDynTddInfo = &(rgSchCb[schInst].rgSchDynTdd);
 
@@ -8226,27 +7641,19 @@ Inst   schInst;
  *  
  */
 #ifdef UNUSED_FUNC
-#ifdef ANSI
 static Void rgSchTomFillCellTtiInfo
 (
 TfuTtiIndInfo      *ttiInd,
 Inst               schInst,
-uint8_t                 *nCell,
+uint8_t            *nCell,
 RgSchCellCb        *cells[]
 )
-#else
-static Void rgSchTomFillCellTtiInfo (ttiInd, schInst, nCell, cells)
-TfuTtiIndInfo      *ttiInd;
-Inst               schInst;
-uint8_t                 *nCell;
-RgSchCellCb        *cells[];
-#endif
 {
-   uint8_t             i = 0;
-   uint8_t             strtCellId;
-   TfuTtiCellInfo *cellInfo;
-   RgSchCellCb    *cell; 
-   uint32_t            Idx1;
+   uint8_t         i = 0;
+   uint8_t         strtCellId;
+   TfuTtiCellInfo  *cellInfo;
+   RgSchCellCb     *cell; 
+   uint32_t        Idx1;
  
    CmLteTimingInfo frm;
      
@@ -8407,15 +7814,10 @@ void schFillCrntTime(
  * Returns: Void  
  *  
  */
-#ifdef ANSI
 static Void rgSchTomTtiUlAndDlCmnChSch
 (
 RgSchCellCb        *cell
 )
-#else
-static Void rgSchTomTtiUlAndDlCmnChSch (cell)
-RgSchCellCb        *cell;
-#endif
 {
 
    cell->rlsHqArr[cell->crntHqIdx].numUes = 0;
@@ -8484,15 +7886,10 @@ RgSchCellCb        *cell;
  * Returns: Void  
  *  
  */
-#ifdef ANSI
 static Void rgSchTomTtiMiscFunctions
 (
-RgSchCellCb        *cell
+RgSchCellCb *cell
 )
-#else
-static Void rgSchTomTtiMiscFunctions (cell)
-RgSchCellCb        *cell;
-#endif
 {
    uint8_t   suId = cell->tfuSap->sapCfg.suId;
     
@@ -8576,15 +7973,10 @@ RgSchCellCb        *cell;
  * Returns: Void
  *
  */
-#ifdef ANSI
 static Void rgSchTomTtiDlSch
 (
-RgSchCellCb        *cell
+RgSchCellCb *cell
 )
-#else
-static Void rgSchTomTtiDlSch (cell)
-RgSchCellCb        *cell;
-#endif
 {
 
    if (cell->isDlDataAllwd && (cell->stopDlSch == FALSE))
@@ -8607,15 +7999,10 @@ RgSchCellCb        *cell;
  * Returns: Void
  *
  */
-#ifdef ANSI
 static Void rgSchTomTtiCnsldtSfAlloc
 (
-RgSchCellCb        *cell
+RgSchCellCb  *cell
 )
-#else
-static Void rgSchTomTtiCnsldtSfAlloc (cell)
-RgSchCellCb        *cell;
-#endif
 {
    RgSchDlSf *dlSf;
    RgSchCmnCell *cellSch = RG_SCH_CMN_GET_CELL(cell);
@@ -8645,17 +8032,11 @@ RgSchCellCb        *cell;
  * Returns: Void
  *
  */
-#ifdef ANSI
 static Void rgSchTomTtiL1DlAndUlCfg
 (
 RgSchCellCb        *cell,
 RgTfuCntrlReqInfo  *cntrlInfo
 )
-#else
-static Void rgSchTomTtiL1DlAndUlCfg (cell, cntrlInfo)
-RgSchCellCb        *cell;
-RgTfuCntrlReqInfo  *cntrlInfo;
-#endif
 {
    RgSchDlSf *dlSf = rgSCHUtlSubFrmGet (cell, cell->dlDciTime);
    RgSchDlSf *ulSf = rgSCHUtlSubFrmGet (cell, cell->hiDci0Time);
@@ -8690,15 +8071,10 @@ RgTfuCntrlReqInfo  *cntrlInfo;
  * Returns: Void
  *
  */
-#ifdef ANSI
 static Void rgSchTomUtlTddRlsSfAndHarq
 (
-RgSchCellCb        *cell
+RgSchCellCb  *cell
 )
-#else
-static Void rgSchTomUtlTddRlsSfAndHarq (cell)
-RgSchCellCb        *cell;
-#endif
 {
 
    /* ccpu00132341-MOD- rgSchTddRlsDlSubfrmTbl is dependent on DELTA(=2).
@@ -8730,15 +8106,7 @@ RgSchCellCb        *cell;
  * Returns: Void
  *
  */
-#ifdef ANSI
-static Void rgSCHTomUtlProcTddUlSf
-(
-RgSchCellCb        *cell
-)
-#else
-static Void rgSCHTomUtlProcTddUlSf (cell)
-RgSchCellCb        *cell;
-#endif
+static Void rgSCHTomUtlProcTddUlSf(RgSchCellCb  *cell)
 {
    RgSchErrInfo    err;
    

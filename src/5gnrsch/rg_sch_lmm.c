@@ -118,21 +118,13 @@ void printSchCellInfo(void)
  *      -# LCM_REASON_NOT_APPL
  **/
 #ifdef UNUSE_FUN
-#ifdef ANSI
 static uint16_t rgSCHLmmSapCfg
 (
 Inst  dInst,
 RgCfg *cfg,            /* Configuaration information */
-uint8_t    sapIdx,          /* SAP index */
+uint8_t sapIdx,          /* SAP index */
 Elmnt sapType             /* SAP Type */
 )
-#else
-static uint16_t rgSCHLmmSapCfg(dInst, cfg, sapIdx, sapType)
-Inst  dInst;
-RgCfg *cfg;            /* Configuaration information */
-uint8_t    sapIdx;          /* SAP index */
-Elmnt sapType;            /* SAP Type */
-#endif
 {
    uint16_t                  ret = LCM_REASON_NOT_APPL;
    RgSchLowSapCfgInfo   *lowSapCfg = NULLP;
@@ -275,24 +267,16 @@ Elmnt sapType;            /* SAP Type */
  *     File : rg_sch_lmm.c 
  *
  **********************************************************/
-#ifdef ANSI
-static Void rgSCHLmmShutdown
-(
-Inst inst
-)
-#else
-static Void rgSCHLmmShutdown(inst)
-Inst inst;
-#endif
+static Void rgSCHLmmShutdown(Inst inst)
 {
    Inst          dInst = inst + SCH_INST_START;
-   uint8_t            idx;
+   uint8_t       idx;
 #ifdef LTE_L2_MEAS
    CmLList       *lnk = NULLP;
    RgSchCb       *instCb =  &rgSchCb[inst];
    RgSchCellCb   *cell = NULLP;
    RgSchL2MeasCb *measCb;
-   uint8_t            ulAllocIdx;
+   uint8_t       ulAllocIdx;
    RgSchCmnUlCell *cellUl;
    RgSchClcBoRpt  *bo = NULL;
 #endif
@@ -434,19 +418,7 @@ Inst inst;
  *     File : rg_sch_lmm.c 
  *
  **********************************************************/
-#ifdef ANSI
-Void rgSCHLmmGenCntrl 
-(
-RgMngmt       *cntrl,
-RgMngmt       *cfm,
-Pst           *cfmPst
-)
-#else
-Void rgSCHLmmGenCntrl(cntrl, cfm, cfmPst)
-RgMngmt       *cntrl;
-RgMngmt       *cfm;
-Pst           *cfmPst;
-#endif
+Void rgSCHLmmGenCntrl(RgMngmt *cntrl,RgMngmt *cfm,Pst  *cfmPst)
 {
    Inst      inst = (cfmPst->srcInst - SCH_INST_START); /* Scheduler instance ID */
 
@@ -562,19 +534,12 @@ Pst           *cfmPst;
  *     File : rg_sch_lmm.c 
  *
  **********************************************************/
-#ifdef ANSI
 Void rgSCHLmmSapCntrl 
 (
 RgMngmt       *cntrl,
 RgMngmt       *cfm,
 Pst           *cfmPst
 )
-#else
-Void rgSCHLmmSapCntrl(cntrl, cfm, cfmPst)
-RgMngmt       *cntrl;
-RgMngmt       *cfm;
-Pst           *cfmPst;
-#endif
 {
    uint8_t       idx;
 
@@ -754,19 +719,12 @@ Pst           *cfmPst;
  *     File : rg_sch_lmm.c 
  *
  **********************************************************/
-#ifdef ANSI
 Void SchFillCfmPst
 (
 Pst           *reqPst,
 Pst           *cfmPst,
 RgMngmt       *cfm
 )
-#else
-Void SchFillCfmPst(reqPst, cfmPst, cfm)
-Pst           *reqPst;
-Pst           *cfmPst;
-RgMngmt       *cfm;
-#endif
 {
    Inst inst;
 
@@ -805,21 +763,13 @@ RgMngmt       *cfm;
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
 S16 rgSCHLmmStartTmr
 (
-Inst               inst,
-S16                tmrEvnt,            /* Timer Event */
-uint32_t                tmrVal,             /* Wait Time */
-PTR                cb                  /* Entry for which Timer Expired */
+Inst       inst,
+S16        tmrEvnt,            /* Timer Event */
+uint32_t   tmrVal,             /* Wait Time */
+PTR        cb                  /* Entry for which Timer Expired */
 )
-#else
-S16 rgSCHLmmStartTmr(inst, tmrEvnt, tmrVal, cb)
-Inst               inst;             /* scheduler instance ID */
-S16                tmrEvnt;            /* Timer Event */
-uint32_t                tmrVal;             /* Wait Time */
-PTR                cb;                 /* Entry for which Timer Expired */
-#endif
 {
    CmTmrArg    arg;
 /*   Inst        dInst = inst + SCH_INST_START; */
@@ -862,22 +812,15 @@ PTR                cb;                 /* Entry for which Timer Expired */
  *      -# ROK
  *      -# RFAILED
  **/
-#ifdef ANSI
 S16 rgSCHLmmStopTmr
 (
-Inst               inst,             /* Scheduler instance */
-S16                tmrEvnt,            /* Timer Event */
-PTR                cb                  /* Entry for which Timer Expired */
+Inst inst,             /* Scheduler instance */
+S16  tmrEvnt,            /* Timer Event */
+PTR  cb                  /* Entry for which Timer Expired */
 )
-#else
-S16 rgSCHLmmStopTmr(inst, tmrEvnt, cb)
-Inst               inst;             /* Scheduler instance */
-S16                tmrEvnt;            /* Timer Event */
-PTR                cb;                 /* Entry for which Timer Expired */
-#endif
 {
    CmTmrArg   arg;
-   uint8_t         i;
+   uint8_t    i;
    S16        ret; 
 
    ret = RFAILED;
@@ -926,17 +869,11 @@ PTR                cb;                 /* Entry for which Timer Expired */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
 S16 rgSCHLmmTmrExpiry
 (
 PTR cb,               /* Pointer to timer control block */
 S16 tmrEvnt           /* Timer Event */
 )
-#else
-S16 rgSCHLmmTmrExpiry(cb,tmrEvnt)
-PTR cb;               /* Pointer to timer control block */
-S16 tmrEvnt;          /* Timer Event */
-#endif
 {
    S16           ret = ROK;
    RgSchLowSapCb *tfuSap = (RgSchLowSapCb *)cb;
@@ -1000,19 +937,12 @@ S16 tmrEvnt;          /* Timer Event */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
 S16 rgSCHLmmBndCfm
 (
 Pst *pst,               /* Post Structure */
 SuId suId,              /* Service user ID */
 uint8_t status               /* Status */
 )
-#else
-S16 rgSCHLmmBndCfm(pst,suId,status)
-Pst *pst;               /* Post Structure */
-SuId suId;              /* Service user Id */
-uint8_t status;              /* Status */
-#endif
 {
    S16       ret = ROK;
    RgMngmt   cntrlCfm;
@@ -1097,7 +1027,6 @@ uint8_t status;              /* Status */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
 S16 rgSCHLmmStaInd
 (
 Inst inst,
@@ -1106,14 +1035,6 @@ uint16_t  event,
 uint16_t  cause,
 RgUstaDgn *dgn
 )
-#else
-S16 rgSCHLmmStaInd(inst, category, event, cause, dgn) 
-Inst inst;
-uint16_t category;
-uint16_t event;
-uint16_t cause;
-RgUstaDgn *dgn;
-#endif
 {
    RgMngmt    usta;
 
@@ -1164,17 +1085,7 @@ RgUstaDgn *dgn;
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-S16 schActvTmr
-(
-Ent ent,
-Inst inst
-)
-#else
-S16 schActvTmr(ent, inst)
-Ent ent;
-Inst inst;
-#endif
+S16 schActvTmr(Ent ent,Inst inst)
 {
    Inst schInst = (inst  - SCH_INST_START);
 
