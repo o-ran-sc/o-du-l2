@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "042716f1_237ca1ca",
+        "filename": "src/codec_utils/common/odu_common_codec.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-11T11:52:33Z",
+      "side": 1,
+      "message": "datatype of val should also be uint64_t",
+      "revId": "7f46cac0be107a2d5e4decbe823332f1676d0f2b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7adfa953_3d98158d",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-11T11:52:33Z",
+      "side": 1,
+      "message": "Is it used anywhere ?",
+      "revId": "7f46cac0be107a2d5e4decbe823332f1676d0f2b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "714b180e_f8cd4128",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-11T11:52:33Z",
+      "side": 1,
+      "message": "can be renamed as cellIdx",
+      "revId": "7f46cac0be107a2d5e4decbe823332f1676d0f2b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7a9fc8bc_29059935",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-11T11:52:33Z",
+      "side": 1,
+      "message": "use of tmp ?",
+      "revId": "7f46cac0be107a2d5e4decbe823332f1676d0f2b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
