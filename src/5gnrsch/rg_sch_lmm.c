@@ -359,7 +359,7 @@ Inst inst;
       /* Unbind all the TFU SAP */
       if(rgSchCb[inst].tfuSap[idx].sapSta.sapState == LRG_WAIT_BNDCFM)
       {
-         rgSCHUtlTfuUBndReq(inst, rgSchCb[inst].tfuSap[idx].sapCfg, LRG_UNBND);
+         //rgSCHUtlTfuUBndReq(inst, rgSchCb[inst].tfuSap[idx].sapCfg, LRG_UNBND);
          if (rgSchCb[inst].tfuSap[idx].sapCfg.bndTmr.enb == TRUE)
          {
             rgSCHLmmStopTmr(inst, RGSCH_BNDREQ_TMR, (PTR)&rgSchCb[inst].tfuSap[idx]); 
@@ -368,7 +368,7 @@ Inst inst;
       }
       if(rgSchCb[inst].tfuSap[idx].sapSta.sapState == LRG_BND)
       {
-         rgSCHUtlTfuUBndReq(inst, rgSchCb[inst].tfuSap[idx].sapCfg, LRG_UNBND);
+         //rgSCHUtlTfuUBndReq(inst, rgSchCb[inst].tfuSap[idx].sapCfg, LRG_UNBND);
          rgSchCb[inst].tfuSap[idx].sapSta.sapState = LRG_UNBND;
       }
       /* Free the memory held by the cell associated with this SAP */
@@ -626,8 +626,8 @@ Pst           *cfmPst;
                    * Request to TFU  */
                   RgMiLrgSchCntrlCfm(cfmPst, cfm);
                   
-                  rgSCHUtlTfuBndReq(inst, rgSchCb[inst].tfuSap[idx].sapCfg.suId, 
-                                 rgSchCb[inst].tfuSap[idx].sapCfg.spId);
+                  //rgSCHUtlTfuBndReq(inst, rgSchCb[inst].tfuSap[idx].sapCfg.suId, 
+                    //             rgSchCb[inst].tfuSap[idx].sapCfg.spId);
                  return; 
                }
                break;
@@ -643,8 +643,8 @@ Pst           *cfmPst;
                }
                else
                {
-                  rgSCHUtlTfuUBndReq(inst, rgSchCb[inst].tfuSap[idx].sapCfg,
-                                  TFU_UBNDREQ_MNGMT);
+                  //rgSCHUtlTfuUBndReq(inst, rgSchCb[inst].tfuSap[idx].sapCfg,
+                    //              TFU_UBNDREQ_MNGMT);
                   if (rgSchCb[inst].tfuSap[idx].sapCfg.bndTmr.enb == TRUE)
                   {
                      rgSCHLmmStopTmr(inst, RGSCH_BNDREQ_TMR, 
@@ -661,8 +661,8 @@ Pst           *cfmPst;
                if ((rgSchCb[inst].tfuSap[idx].sapSta.sapState == LRG_WAIT_BNDCFM) ||
                    (rgSchCb[inst].tfuSap[idx].sapSta.sapState == LRG_BND))
                {
-                  rgSCHUtlTfuUBndReq(inst, rgSchCb[inst].tfuSap[idx].sapCfg,
-                                  TFU_UBNDREQ_MNGMT);
+                  //rgSCHUtlTfuUBndReq(inst, rgSchCb[inst].tfuSap[idx].sapCfg,
+                    //              TFU_UBNDREQ_MNGMT);
                   if (rgSchCb[inst].tfuSap[idx].sapCfg.bndTmr.enb == TRUE)
                   {
                      rgSCHLmmStopTmr(inst, RGSCH_BNDREQ_TMR,
@@ -966,8 +966,8 @@ S16 tmrEvnt;          /* Timer Event */
             }
 
             /* Send bind request */
-            rgSCHUtlTfuBndReq((uint8_t)(tfuSap->sapCfg.sapPst.srcInst - SCH_INST_START), 
-            tfuSap->sapCfg.suId, tfuSap->sapCfg.spId);
+            //rgSCHUtlTfuBndReq((uint8_t)(tfuSap->sapCfg.sapPst.srcInst - SCH_INST_START), 
+            //tfuSap->sapCfg.suId, tfuSap->sapCfg.spId);
          }
          break;
       default:

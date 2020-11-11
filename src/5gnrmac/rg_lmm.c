@@ -989,7 +989,7 @@ Inst inst;
     /* Unbind the TFU Sap */
    if(rgCb[inst].tfuSap.sapSta.sapState == LRG_WAIT_BNDCFM)
    {
-      rgLIMTfuUbndReq(inst,rgCb[inst].tfuSap.sapCfg.spId, LRG_UNBND);
+      //rgLIMTfuUbndReq(inst,rgCb[inst].tfuSap.sapCfg.spId, LRG_UNBND);
       if (rgCb[inst].tfuSap.sapCfg.bndTmr.enb == TRUE)
       {
          rgLMMStopTmr(inst,RG_BNDREQ_TMR, (PTR)&rgCb[inst].tfuSap); 
@@ -998,7 +998,7 @@ Inst inst;
    }
    if(rgCb[inst].tfuSap.sapSta.sapState == LRG_BND)
    {
-      rgLIMTfuUbndReq(inst,rgCb[inst].tfuSap.sapCfg.spId, LRG_UNBND);
+      //rgLIMTfuUbndReq(inst,rgCb[inst].tfuSap.sapCfg.spId, LRG_UNBND);
       rgCb[inst].tfuSap.sapSta.sapState = LRG_UNBND;
    }
 
@@ -1226,8 +1226,8 @@ Pst           *cfmPst;
                   cfm->cfm.reason = LCM_REASON_NOT_APPL;
                   RgMiLrgCntrlCfm(cfmPst, cfm);
 
-                  rgLIMTfuBndReq(inst,rgCb[inst].tfuSap.sapCfg.suId,
-                                      rgCb[inst].tfuSap.sapCfg.spId);
+                  //rgLIMTfuBndReq(inst,rgCb[inst].tfuSap.sapCfg.suId,
+                                      //rgCb[inst].tfuSap.sapCfg.spId);
                   RETVOID;
                }
                break;
@@ -1243,7 +1243,7 @@ Pst           *cfmPst;
                }
                else
                {
-                  rgLIMTfuUbndReq(inst,rgCb[inst].tfuSap.sapCfg.spId, TFU_UBNDREQ_MNGMT);
+                  //rgLIMTfuUbndReq(inst,rgCb[inst].tfuSap.sapCfg.spId, TFU_UBNDREQ_MNGMT);
                   if (rgCb[inst].tfuSap.sapCfg.bndTmr.enb == TRUE)
                   {
                      rgLMMStopTmr(inst,RG_BNDREQ_TMR, (PTR)&rgCb[inst].tfuSap);
@@ -1259,7 +1259,7 @@ Pst           *cfmPst;
                if ((rgCb[inst].tfuSap.sapSta.sapState == LRG_WAIT_BNDCFM) ||
                    (rgCb[inst].tfuSap.sapSta.sapState == LRG_BND))
                {
-                  rgLIMTfuUbndReq(inst,rgCb[inst].tfuSap.sapCfg.spId, TFU_UBNDREQ_MNGMT);
+                  //rgLIMTfuUbndReq(inst,rgCb[inst].tfuSap.sapCfg.spId, TFU_UBNDREQ_MNGMT);
                   if (rgCb[inst].tfuSap.sapCfg.bndTmr.enb == TRUE)
                   {
                      rgLMMStopTmr(inst,RG_BNDREQ_TMR, (PTR)&rgCb[inst].tfuSap);
@@ -1548,8 +1548,8 @@ S16 tmrEvnt;          /* Timer Event */
             }
 
             /* Send bind request */
-            rgLIMTfuBndReq(inst,rgCb[inst].tfuSap.sapCfg.suId,
-                                rgCb[inst].tfuSap.sapCfg.spId);
+            //rgLIMTfuBndReq(inst,rgCb[inst].tfuSap.sapCfg.suId,
+                                //rgCb[inst].tfuSap.sapCfg.spId);
          }
          break;
       default:
