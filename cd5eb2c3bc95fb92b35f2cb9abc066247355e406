@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9d537fd2_a4024090",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1689,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-11T08:25:19Z",
+      "side": 1,
+      "message": "can this be extended to all the places where S and L are being filled at DU APP. we can eliminate configuring S, L separately from du_cfg.h is possible.",
+      "revId": "cd5eb2c3bc95fb92b35f2cb9abc066247355e406",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
