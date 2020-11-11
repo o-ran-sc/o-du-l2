@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c9b61e13_d25bc46b",
+        "filename": "src/o1/Alarm.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-11T11:50:01Z",
+      "side": 1,
+      "message": "this can be uint8_t/uint16_t/uint32_t.",
+      "revId": "a3c9d36c8a3dadd17072c3c4bb4bba2a23ae8095",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ee93eea5_606f5531",
+        "filename": "src/o1/AlarmManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-11T11:50:01Z",
+      "side": 1,
+      "message": "can the description format be in uniformity with rest of the O-DU High code?",
+      "revId": "a3c9d36c8a3dadd17072c3c4bb4bba2a23ae8095",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0b7a75c8_32d0ce2f",
+        "filename": "src/o1/AlarmManager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-11T11:50:01Z",
+      "side": 1,
+      "message": "this is generic comment: Do we have to use \"int\"/ Try using a smaller and unsigned version wherever possible.",
+      "revId": "a3c9d36c8a3dadd17072c3c4bb4bba2a23ae8095",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c2cb0458_cf40239d",
+        "filename": "src/o1/o1_client/Alarm.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-11T11:50:01Z",
+      "side": 1,
+      "message": "missing 0-2 is in-line with spec or is there any other reason?",
+      "revId": "a3c9d36c8a3dadd17072c3c4bb4bba2a23ae8095",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4603fa75_c6614655",
+        "filename": "src/o1/o1_client/Alarm.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-11T11:50:01Z",
+      "side": 1,
+      "message": "Can we have abteer representation of all the magic numbers in this structure?",
+      "revId": "a3c9d36c8a3dadd17072c3c4bb4bba2a23ae8095",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
