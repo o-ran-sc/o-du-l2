@@ -338,6 +338,10 @@ uint8_t procRxDataInd(fapi_rx_data_indication_t  *fapiRxDataInd)
 
       MAC_ALLOC_SHRABL_BUF(pdu->pduData, pdu->pduLength);
       memcpy(pdu->pduData, fapiRxDataInd->pdus[pduIdx].pduData, pdu->pduLength);
+#ifdef INTEL_WLS_MEM      
+      /* Free WLS memory allocated for Rx PDU */
+      WLS_MEM_FREE(fapiRxDataInd->pdus[pduIdx].pduData, LWR_MAC_WLS_BUF_SIZE);
+#endif
    }
 
    /* Fill post and sent to MAC */

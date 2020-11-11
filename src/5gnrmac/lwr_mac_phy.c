@@ -29,6 +29,7 @@
 #include "lwr_mac_fsm.h"
 #include "mac_utils.h"
 #include "lwr_mac_utils.h"
+#include "lwr_mac.h"
 #ifdef INTEL_FAPI
 #include "fapi.h"
 #include "fapi_vendor_extension.h"
@@ -254,40 +255,12 @@ void LwrMacRecvPhyMsg()
 #endif /* INTEL_WLS_MEM */
 
 /*******************************************************************
- * 
- *  @brief Sends message to PHY Stub
- * 
- *  @details
- * 
- *    Function : LwrMacSendToPhy
- *    Functionality:
- *      -Sends message to PHY Stub
- *      -Once super header and vendor specific message is
- *       implemented for all FAPI messages, this function 
- *       can be deleted. LwrMacSendToFapi() should be used.
- * 
- *  @params[in] Message Type
- *              Message Length
- *              Messaga Pointer
- * 
- *  @return void
- * 
- * *****************************************************************/
-
-uint8_t LwrMacSendToPhy(uint8_t msgType, uint32_t msgLen, void *msg)
-{
-   l1ProcessFapiRequest(msgType, msgLen, msg);
-   return ROK;
-} /* LwrMacSendToPhy */
-
-
-/*******************************************************************
  *
  * @brief Send FAPI messages to Intel PHY/Phy stub
  *
  * @details
  *
- *    Function : LwrMacSendToFapi
+ *    Function : LwrMacSendToL1
  *
  *    Functionality: Send FAPI messages to Intel PHY/Phy stub
  *
@@ -296,7 +269,7 @@ uint8_t LwrMacSendToPhy(uint8_t msgType, uint32_t msgLen, void *msg)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t LwrMacSendToFapi(void *msg)
+uint8_t LwrMacSendToL1(void *msg)
 {
    uint8_t ret = ROK;
 #ifdef INTEL_FAPI
@@ -372,7 +345,7 @@ uint8_t LwrMacSendToFapi(void *msg)
       }
       else
       {
-	 MAC_FREE(currMsg, msgLen);   
+	 LWR_MAC_FREE(currMsg, msgLen);   
       }
       currMsg = nextMsg;
    }

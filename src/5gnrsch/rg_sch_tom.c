@@ -2863,7 +2863,7 @@ RgSchErrInfo       *err;
       return ret;
    }
    /* sending the RecpReq to Phy */
-   if (rgSCHUtlTfuRecpReq(inst, cell->tfuSap->sapCfg.suId, recpReqInfo) != ROK)
+   //if (rgSCHUtlTfuRecpReq(inst, cell->tfuSap->sapCfg.suId, recpReqInfo) != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Unable to send Cntrl info for cell");
    }
@@ -2943,7 +2943,7 @@ RgSchErrInfo       *err;
       return ret;
    }
    /* sending the RecpReq to Phy */
-   if (rgSCHUtlTfuRecpReq(inst, cell->tfuSap->sapCfg.suId, recpReqInfo) != ROK)
+   //if (rgSCHUtlTfuRecpReq(inst, cell->tfuSap->sapCfg.suId, recpReqInfo) != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHTomUtlPrcUlTddSpclSf() Unable to send "
                                "Cntrl info for cell");
@@ -3078,8 +3078,8 @@ if(0 == cntrlInfo->dlMpdcchLst.count)
 #endif
       /* Now always sending down a cntrl req */
       /* sending the cntrl data to Phy */
-      if (rgSCHUtlTfuCntrlReq(inst, cell->tfuSap->sapCfg.suId, cntrlInfo) 
-            != ROK)
+      //if (rgSCHUtlTfuCntrlReq(inst, cell->tfuSap->sapCfg.suId, cntrlInfo) 
+            //!= ROK)
       {
          RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Unable to send Cntrl info "
             "for cell");
@@ -8105,7 +8105,7 @@ RgSchErrInfo         *err;
    if (cntrlInfo->ulPdcchLst.count || cntrlInfo->phichLst.count)
 #endif
    {
-      if (rgSCHUtlTfuCntrlReq(inst, cell->tfuSap->sapCfg.suId, cntrlInfo) 
+      //if (rgSCHUtlTfuCntrlReq(inst, cell->tfuSap->sapCfg.suId, cntrlInfo) 
                != ROK)
       {
          RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Unable to send Cntrl info for"
