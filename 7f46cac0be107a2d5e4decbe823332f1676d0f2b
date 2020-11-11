@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "0abf9c5c_3050ba52",
+        "filename": "src/codec_utils/common/odu_common_codec.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-11T16:59:52Z",
+      "side": 1,
+      "message": "currently discarding this change",
+      "parentUuid": "042716f1_237ca1ca",
+      "revId": "7f46cac0be107a2d5e4decbe823332f1676d0f2b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7adfa953_3d98158d",
         "filename": "src/cu_stub/cu_f1ap_msg_hdl.h",
         "patchSetId": 2
@@ -30,6 +48,24 @@
       "writtenOn": "2020-11-11T11:52:33Z",
       "side": 1,
       "message": "Is it used anywhere ?",
+      "revId": "7f46cac0be107a2d5e4decbe823332f1676d0f2b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "319567e9_62278d9c",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-11T16:59:52Z",
+      "side": 1,
+      "message": "Yes, to send msg-4, which is on SRB 0.",
+      "parentUuid": "7adfa953_3d98158d",
       "revId": "7f46cac0be107a2d5e4decbe823332f1676d0f2b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "0b02e7d4_b2891f6f",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-11T16:59:52Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "714b180e_f8cd4128",
+      "revId": "7f46cac0be107a2d5e4decbe823332f1676d0f2b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7a9fc8bc_29059935",
         "filename": "src/du_app/du_f1ap_msg_hdl.c",
         "patchSetId": 2
@@ -64,6 +118,24 @@
       "writtenOn": "2020-11-11T11:52:33Z",
       "side": 1,
       "message": "use of tmp ?",
+      "revId": "7f46cac0be107a2d5e4decbe823332f1676d0f2b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "383587b7_f4d5b3bb",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-11T16:59:52Z",
+      "side": 1,
+      "message": "Some code was removed which elated to tmp. Will remove tmp as well.",
+      "parentUuid": "7a9fc8bc_29059935",
       "revId": "7f46cac0be107a2d5e4decbe823332f1676d0f2b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
