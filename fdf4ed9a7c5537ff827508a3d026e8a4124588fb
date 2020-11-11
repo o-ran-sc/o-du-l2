@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "68b2862e_bc658151",
+        "filename": "src/o1/GlobalDefs.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-11T12:01:46Z",
+      "side": 1,
+      "message": "do we need a class here? Is an enum not sufficient?",
+      "revId": "fdf4ed9a7c5537ff827508a3d026e8a4124588fb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a195c3d1_865b6c58",
+        "filename": "src/o1/TcpServer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-11T12:01:46Z",
+      "side": 1,
+      "message": "add alarm ID in all logs",
+      "revId": "fdf4ed9a7c5537ff827508a3d026e8a4124588fb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "faf21e08_7557cfa1",
+        "filename": "src/o1/o1_client/AlarmInterface.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-11T12:01:46Z",
+      "side": 1,
+      "message": "why is ssi.h needed here?",
+      "revId": "fdf4ed9a7c5537ff827508a3d026e8a4124588fb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7943005b_48ddfc19",
+        "filename": "src/o1/o1_client/AlarmInterface.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-11T12:01:46Z",
+      "side": 1,
+      "message": "move to header file",
+      "revId": "fdf4ed9a7c5537ff827508a3d026e8a4124588fb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6e148ec1_45a89993",
+        "filename": "src/o1/o1_client/AlarmInterface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-11T12:01:46Z",
+      "side": 1,
+      "message": "Generic comment: int can be replaced by its smaller and unsigned version wherever possible",
+      "revId": "fdf4ed9a7c5537ff827508a3d026e8a4124588fb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3be45600_7a5a356d",
+        "filename": "src/o1/o1_client/GlobalDefs.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-11T12:01:46Z",
+      "side": 1,
+      "message": "oop back address is a temp arrangement?",
+      "revId": "fdf4ed9a7c5537ff827508a3d026e8a4124588fb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
