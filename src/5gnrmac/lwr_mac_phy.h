@@ -69,7 +69,6 @@ void LwrMacStartWlsRcvr();
 #endif /* INTEL_WLS_MEM */
 
 uint8_t LwrMacSendToFapi(void *msg);
-uint8_t LwrMacSendToPhy(uint8_t msgType, uint32_t msgLen, void *msg);
 #endif
 
 /**********************************************************************

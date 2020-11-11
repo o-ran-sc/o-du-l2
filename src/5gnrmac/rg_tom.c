@@ -454,7 +454,7 @@ S16 rgTOMUtlProcDlSf (dlSf, cellCb, err)
       if((datInfo->pdus.count) || (datInfo->bchDat.pres == TRUE))
       {
          /* sending the data to Phy */
-         if (rgLIMTfuDatReq(inst,datInfo) != ROK)
+         //if (rgLIMTfuDatReq(inst,datInfo) != ROK)
          {
             RLOG_ARG0(L_ERROR,DBG_CELLID,cellCb->cellId,"Unable to send data info for cell");               
          }
