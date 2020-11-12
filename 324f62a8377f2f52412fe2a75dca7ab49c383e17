@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6e5a4fd0_6598280f",
+        "filename": "src/5gnrrlc/kw_uim.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-12T16:43:55Z",
+      "side": 1,
+      "message": "why are we still using S16 ?",
+      "revId": "324f62a8377f2f52412fe2a75dca7ab49c383e17",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5da9aa81_1195ead2",
+        "filename": "src/5gnrrlc/kw_uim.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-12T16:43:55Z",
+      "side": 1,
+      "message": "generic comment\nrename Void to void",
+      "revId": "324f62a8377f2f52412fe2a75dca7ab49c383e17",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ce626b9f_35b8fc58",
+        "filename": "src/5gnrrlc/kw_ul_ex_ms.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-12T16:43:55Z",
+      "side": 1,
+      "message": "is this function used/called ?",
+      "revId": "324f62a8377f2f52412fe2a75dca7ab49c383e17",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ca2554fe_1558d087",
+        "filename": "src/5gnrrlc/kw_umm_dl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-12T16:43:55Z",
+      "side": 1,
+      "message": "rename to void",
+      "revId": "324f62a8377f2f52412fe2a75dca7ab49c383e17",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3e2066a4_ee4bbd2a",
+        "filename": "src/5gnrrlc/kw_umm_dl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 783,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-12T16:43:55Z",
+      "side": 1,
+      "message": "if its void then why is it having a return ?\ncheck this in all void func",
+      "revId": "324f62a8377f2f52412fe2a75dca7ab49c383e17",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "476dae0a_4723a7d6",
+        "filename": "src/5gnrrlc/kw_umm_ul.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 819,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-12T16:43:55Z",
+      "side": 1,
+      "message": "Is return required here ?",
+      "revId": "324f62a8377f2f52412fe2a75dca7ab49c383e17",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
