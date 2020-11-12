@@ -34,12 +34,13 @@
 #define RAR_DELAY   2
 #define MSG4_DELAY  1
 #define PUSCH_START_RB 15
-#define PUCCH_NUM_PRB_FORMAT_0 1  /* number of PRBs in freq domain, spec 38.213 - 9.2.1 */
+#define PUCCH_NUM_PRB_FORMAT_0_1_4 1  /* number of PRBs in freq domain, spec 38.213 - 9.2.1 */
 #define SI_RNTI 0xFFFF
 #define P_RNTI  0xFFFE
 #define DMRS_MAP_TYPE_A 1
 #define NUM_DMRS_SYMBOLS 12
 #define DMRS_ADDITIONAL_POS 2
+#define SCH_DEFAULT_K1 1
 
 #define CRC_FAILED 0
 #define CRC_PASSED 1

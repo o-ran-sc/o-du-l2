@@ -45,6 +45,7 @@
    {                                                         \
       SPutSBuf(MAC_MEM_REGION, MAC_POOL,                     \
 	    (Data *)_datPtr, _size);                         \
+      _datPtr = NULLP;                                      \
    }                                                         \
 }
 
