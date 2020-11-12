@@ -69,6 +69,10 @@
 #include "DUtoCURRCContainer.h"
 #include "GBR-QoSFlowInformation.h"
 #include "QoSFlowLevelQoSParameters.h"
+#include "PUCCH-Config.h"
+#include "PUCCH-PowerControl.h"
+#include "P0-PUCCH.h"
+#include "PUCCH-PathlossReferenceRS.h"
 #include<ProtocolIE-Field.h>
 #include "ProtocolExtensionField.h"
 #include "F1AP-PDU.h"
@@ -6685,6 +6689,108 @@ void extractPuschCfg(struct BWP_UplinkDedicated__pusch_Config *cuPuschCfg, Pusch
       }
    }
 }
+
+void fillPucchPowerControl(PucchPowerControl *pwrCtrl, struct PUCCH_PowerControl *cuPwrCtrlCfg)
+{
+   uint8_t arrIdx;
+
+   if(cuPwrCtrlCfg->deltaF_PUCCH_f0)
+      pwrCtrl->deltaF_Format0 = *cuPwrCtrlCfg->deltaF_PUCCH_f0;
+   if(cuPwrCtrlCfg->deltaF_PUCCH_f1)
+      pwrCtrl->deltaF_Format1 = *cuPwrCtrlCfg->deltaF_PUCCH_f1;
+   if(cuPwrCtrlCfg->deltaF_PUCCH_f2)
+      pwrCtrl->deltaF_Format2 = *cuPwrCtrlCfg->deltaF_PUCCH_f2;
+   if(cuPwrCtrlCfg->deltaF_PUCCH_f3)
+      pwrCtrl->deltaF_Format3 = *cuPwrCtrlCfg->deltaF_PUCCH_f3;
+   if(cuPwrCtrlCfg->deltaF_PUCCH_f4)
+      pwrCtrl->deltaF_Format4 = *cuPwrCtrlCfg->deltaF_PUCCH_f4;
+   if(cuPwrCtrlCfg->p0_Set)
+   {
+      pwrCtrl->p0SetCount = cuPwrCtrlCfg->p0_Set->list.count;
+      for(arrIdx=0; arrIdx < pwrCtrl->p0SetCount; arrIdx++)
+      {
+         pwrCtrl->p0Set[arrIdx].p0PucchId =\
+	    cuPwrCtrlCfg->p0_Set->list.array[arrIdx]->p0_PUCCH_Id;
+         pwrCtrl->p0Set[arrIdx].p0PucchVal =\
+	    cuPwrCtrlCfg->p0_Set->list.array[arrIdx]->p0_PUCCH_Value;
+      }
+   }
+   if(cuPwrCtrlCfg->pathlossReferenceRSs)
+   {
+      pwrCtrl->pathLossRefRSListCount = cuPwrCtrlCfg->pathlossReferenceRSs->list.count;
+      for(arrIdx = 0; arrIdx < pwrCtrl->pathLossRefRSListCount; arrIdx++)
+      {
+         pwrCtrl->pathLossRefRSList[arrIdx].pathLossRefRSId =\
+	    cuPwrCtrlCfg->pathlossReferenceRSs->list.array[arrIdx]->pucch_PathlossReferenceRS_Id;
+
+      }
+
+   }
+
+}
+ 
+ /*******************************************************************
+ *
+ * @brief Fills PucchCfg received by CU
+ *
+ * @details
+ *
+ *    Function : extractPucchCfg
+ *
+ *    Functionality: Fills PucchCfg received  by CU
+ *
+ * @params[in] BWP_UplinkDedicated__pucch_Config *cuPucchCfg,
+ *             PucchCfg *macPucchCfg
+ * @return void
+ *
+ * ****************************************************************/
+
+void extractPucchCfg(struct BWP_UplinkDedicated__pucch_Config *cuPucchCfg, PucchCfg *macPucchCfg)         
+{
+   uint8_t arrIdx;
+
+   if(cuPucchCfg->present == BWP_UplinkDedicated__pucch_Config_PR_setup)
+   {
+      if(cuPucchCfg->choice.setup)
+      {
+         if(cuPucchCfg->choice.setup->multi_CSI_PUCCH_ResourceList)
+	 {
+            macPucchCfg->multiCsiResrcListCount = cuPucchCfg->choice.setup->multi_CSI_PUCCH_ResourceList->list.count;
+	    for(arrIdx =0; arrIdx < macPucchCfg->multiCsiResrcListCount; arrIdx++)
+	    {
+	       macPucchCfg->multiCsiResrcList[arrIdx] =\
+	         *cuPucchCfg->choice.setup->multi_CSI_PUCCH_ResourceList->list.array[arrIdx];
+	    }
+	 }
+	 if(cuPucchCfg->choice.setup->dl_DataToUL_ACK)
+	 {
+            macPucchCfg->dlDataToUlAckListCount = cuPucchCfg->choice.setup->dl_DataToUL_ACK->list.count;
+	    for(arrIdx = 0; arrIdx < macPucchCfg->dlDataToUlAckListCount; arrIdx++)
+            {
+               macPucchCfg->dlDataToUlAckList[arrIdx] =\
+                  *cuPucchCfg->choice.setup->dl_DataToUL_ACK->list.array[arrIdx];
+
+	    }
+	 }
+         if(cuPucchCfg->choice.setup->pucch_PowerControl)
+	 {
+            fillPucchPowerControl(&macPucchCfg->powerControl,\
+	       cuPucchCfg->choice.setup->pucch_PowerControl);
+	 }
+         /*TODO: Setting other optional param to NULLP, to be configured if sent by CU */
+         macPucchCfg->resrcSet = NULLP;
+         macPucchCfg->resrc = NULLP;
+         macPucchCfg->format1 = NULLP; 
+         macPucchCfg->format2 = NULLP; 
+         macPucchCfg->format3 = NULLP; 
+         macPucchCfg->format4 = NULLP;
+         macPucchCfg->schedReq = NULLP;
+         macPucchCfg->spatialInfo = NULLP;
+      }
+   }
+}
+
+
 /*******************************************************************
  *
  * @brief Fills ServingCellReconfig received by CU
@@ -6774,7 +6880,7 @@ uint8_t extractServingCellReconfig(ServingCellConfig_t *cuSrvCellCfg, ServCellCf
 	if(ulBwp->pucch_Config)
 	{
 	   macSrvCellCfg->initUlBwp.pucchPresent = true;
-           //extractPucchCfg(ulBwp->pucch_Config, &macSrvCellCfg->initUlBwp.pucchCfg); 
+           extractPucchCfg(ulBwp->pucch_Config, &macSrvCellCfg->initUlBwp.pucchCfg); 
 	}
      }
      if(cuSrvCellCfg->uplinkConfig->firstActiveUplinkBWP_Id)
