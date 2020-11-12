@@ -20,10 +20,10 @@ Version history
 | **Date**           | **Ver.**           | **Author**         | **Comment**        |
 |                    |                    |                    |                    |
 +--------------------+--------------------+--------------------+--------------------+
-| 2019-10-29         | 0.1.0              | Radisys            | Amber Release      |
+| 2020-06-17         | 0.2.0              | Radisys            | Bronze Release     |
 |                    |                    |                    |                    |
 +--------------------+--------------------+--------------------+--------------------+
-| 2020-06-17         | 0.2.0              | Radisys            | Bronze Release     |
+| 2019-10-29         | 0.1.0              | Radisys            | Amber Release      |
 |                    |                    |                    |                    |
 +--------------------+--------------------+--------------------+--------------------+
 
@@ -34,6 +34,7 @@ Summary
 Bronze
 ^^^^^^^^
 This release contains the following:
+
 - Enhancements to F1-C interface for UE attach procedure.
 
 - Implementation of F1-U interface.
@@ -55,9 +56,22 @@ This release contains the following:
 - Partial implementation of RLC layer interfaces towards upper and lower layers
   conforming to AAD spec.
 
+Amber
+^^^^^
+This release contains the following:
+
+- O-DU layer intilaizations
+
+- Implementation of F1-C interface
+
+- Exchange of F1 Setup Request, F1 Setup Response, GNB DU Config Update and GNB DU Config Update ACK between the ODU and CU STUB.
+
 
 Release Data
 ------------
+
+Bronze
+^^^^^^ 
 +--------------------------------------+--------------------------------------+
 | **Project**                          | ODUHIGH	                      |
 |                                      |                                      |
@@ -74,6 +88,27 @@ Release Data
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
 | **Purpose of the delivery**          | Bronze Release               	      |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+
+Amber
+^^^^^
++--------------------------------------+--------------------------------------+
+| **Project**                          | ODUHIGH                              |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Repo/commit-ID**                   | o-du/l2/                             |
+|                                      | d349ae65e1495488772f87e5cfa1ae71d9eab|
+|                                      | 075                                  |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Release designation**              | Amber Release                        |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Release date**                     | 2019-10-29                           |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Purpose of the delivery**          | Amber Release                        |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
 
@@ -134,6 +169,7 @@ Documentation Deliverables
 ++++++++++++++++++++++++++
 
 This release contains 
+
 - README with instruction to build and execute binaries.
 
 - overview.rst
@@ -177,6 +213,8 @@ System Limitations
 
 - O-DU High has not been integrated with O-DU Low and O-CU.
 
+- FAPI files not in-line with SCF FAPI 222.10.01.
+  O-DU High currently compatibale with FAPI files provided by Intel.
 
 Known Issues
 ^^^^^^^^^^^^
