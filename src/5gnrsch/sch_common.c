@@ -236,25 +236,39 @@ void schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotIndInfo pra
 
 uint16_t fillPucchResourceInfo(SchPucchInfo *schPucchInfo, Inst inst)
 {
-   /* derive pucchResourceSet from schCellCfg */
+   uint8_t ueIdx = 0, pucchIdx = 0;
    SchCellCb  *cell = schCb[inst].cells[inst];
-   SchPucchCfgCmn *pucchCfg = &cell->cellCfg.schInitialUlBwp.pucchCommon;
-   uint8_t pucchIdx = pucchCfg->pucchResourceCommon;
-   SchBwpParams *ulBwp = &cell->cellCfg.schInitialUlBwp.bwp;
+   SchPucchCfgCmn *pucchCfg = NULLP;
+   SchBwpParams *ulBwp = NULLP;
 
-   schPucchInfo->fdAlloc.startPrb = ulBwp->freqAlloc.startPrb + pucchResourceSet[pucchIdx][3];
-   schPucchInfo->fdAlloc.numPrb = PUCCH_NUM_PRB_FORMAT_0;
-   schPucchInfo->tdAlloc.startSymb = pucchResourceSet[pucchIdx][1];
-   schPucchInfo->tdAlloc.numSymb = pucchResourceSet[pucchIdx][2];
-   schPucchInfo->pucchFormat = pucchResourceSet[pucchIdx][0];
+   GET_UE_IDX(schPucchInfo->rnti, ueIdx);
+   if(cell->ueCb[ueIdx].ueCfg.spCellCfg.servCellCfg.initUlBwp.pucchCfgPres)
+   {
+      /* fill pucch dedicated cfg */
 
-   /* set HARQ flag to true */
-   schPucchInfo->harqFlag = true;
-   schPucchInfo->numHarqBits = 1; /* 1 bit for HARQ */
 
-   /* set SR and UCI flag to false */
-   schPucchInfo->srFlag  = true;
-   schPucchInfo->uciFlag = true;
+   }
+   else
+   {
+      /* fill pucch common cfg */
+      /* derive pucchResourceSet from schCellCfg */
+      pucchCfg = &cell->cellCfg.schInitialUlBwp.pucchCommon;
+      pucchIdx = pucchCfg->pucchResourceCommon;
+      ulBwp = &cell->cellCfg.schInitialUlBwp.bwp;
+      schPucchInfo->fdAlloc.startPrb = ulBwp->freqAlloc.startPrb + pucchResourceSet[pucchIdx][3];
+      schPucchInfo->fdAlloc.numPrb = PUCCH_NUM_PRB_FORMAT_0;
+      schPucchInfo->tdAlloc.startSymb = pucchResourceSet[pucchIdx][1];
+      schPucchInfo->tdAlloc.numSymb = pucchResourceSet[pucchIdx][2];
+      schPucchInfo->pucchFormat = pucchResourceSet[pucchIdx][0];
+
+      /* set HARQ flag to true */
+      schPucchInfo->harqFlag = true;
+      schPucchInfo->numHarqBits = 1; /* 1 bit for HARQ */
+
+      /* set SR and UCI flag to false */
+      schPucchInfo->srFlag  = true;
+      schPucchInfo->uciFlag = true;
+   }
 
    return ROK;
 }
@@ -460,10 +474,29 @@ uint8_t schDlRsrcAllocMsg4(DlMsgAlloc *msg4Alloc, SchCellCb *cell, uint16_t slot
 
 uint16_t schAllocPucchResource(SchCellCb *cell,uint16_t crnti, uint16_t slot)
 {
-   uint8_t k1 = 1; /* dl-DataToUL-ACK RRC parameter will received from DU-APP msg4-pucch config */
-   uint16_t pucchSlot = (slot + k1)  % SCH_NUM_SLOTS;
+   uint8_t k1 = 0, ueIdx = 0, dlToUlAckIdx;
+   uint16_t pucchSlot = 0;
    SchUlSlotInfo  *schUlSlotInfo = NULLP;
+   SchPucchCfg    *schPucchCfg = NULLP;
 
+   GET_UE_IDX(crnti, ueIdx);
+   if(cell->ueCb[ueIdx].ueCfg.spCellCfg.servCellCfg.initUlBwp.pucchCfgPres)
+   {
+      schPucchCfg = &(cell->ueCb[ueIdx].ueCfg.spCellCfg.servCellCfg.initUlBwp.pucchCfg);
+     if(schPucchCfg->dlDataToUlAck)
+     {
+        for(dlToUlAckIdx = 0; dlToUlAckIdx < schPucchCfg->dlDataToUlAck->dlDataToUlAckListCount; dlToUlAckIdx++)
+	{
+           k1 += schPucchCfg->dlDataToUlAck->dlDataToUlAckList[dlToUlAckIdx];
+	}
+     }
+   }
+   else
+   {
+      k1 = 1;
+   }
+   
+   pucchSlot = (slot + k1)  % SCH_NUM_SLOTS;
    schUlSlotInfo = cell->schUlSlotInfo[pucchSlot];
    memset(&schUlSlotInfo->schPucchInfo, 0, sizeof(SchPucchInfo));
 
