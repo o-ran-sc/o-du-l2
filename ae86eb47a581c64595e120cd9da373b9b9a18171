@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "63a34263_842a5a06",
+        "filename": "src/5gnrmac/lwr_mac_handle_phy.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-12T06:26:54Z",
+      "side": 1,
+      "message": "move this if condition into the macro",
+      "revId": "ae86eb47a581c64595e120cd9da373b9b9a18171",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "91c114dd_866c512d",
+        "filename": "src/5gnrmac/lwr_mac_upr_inf.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-12T06:26:54Z",
+      "side": 1,
+      "message": "if we are not using tfu.h anymore, \n1. we can reuse the number from 1.\n2. delete the tfu file from our repo",
+      "revId": "ae86eb47a581c64595e120cd9da373b9b9a18171",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}

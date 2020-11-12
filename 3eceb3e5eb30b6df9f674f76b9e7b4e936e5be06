@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "298c30ec_b3a7333a",
+        "filename": "src/5gnrmac/lwr_mac_upr_inf.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-12T06:26:54Z",
+      "side": 0,
+      "message": "how are these bits handled now?",
+      "revId": "3eceb3e5eb30b6df9f674f76b9e7b4e936e5be06",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
