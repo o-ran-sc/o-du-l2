@@ -6,7 +6,7 @@ Release-Notes
 =============
 
 
-This document provides the release notes for Bronze Release of O-DU-L2.
+This document provides the release notes for various releases of O-DU-L2.
 
 .. contents::
    :depth: 3
@@ -31,9 +31,20 @@ Version history
 Summary
 -------
 
+Amber
+^^^^^
+This release contains the following:
+
+- O-DU layer intilaizations
+
+- Implementation of F1-C interface
+
+- Exchange of F1 Setup Request, F1 Setup Response, GNB DU Config Update and GNB DU Config Update ACK between the ODU and CU STUB.
+
 Bronze
 ^^^^^^^^
 This release contains the following:
+
 - Enhancements to F1-C interface for UE attach procedure.
 
 - Implementation of F1-U interface.
@@ -58,6 +69,30 @@ This release contains the following:
 
 Release Data
 ------------
+
+Amber
+^^^^^
++--------------------------------------+--------------------------------------+
+| **Project**                          | ODUHIGH                              |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Repo/commit-ID**                   | o-du/l2/                             |
+|                                      | d349ae65e1495488772f87e5cfa1ae71d9eab|
+|                                      | 075                                  |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Release designation**              | Amber Release                        |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Release date**                     | 2019-10-29                           |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Purpose of the delivery**          | Amber Release                        |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+
+Bronze
+^^^^^^ 
 +--------------------------------------+--------------------------------------+
 | **Project**                          | ODUHIGH	                      |
 |                                      |                                      |
@@ -126,7 +161,7 @@ Software Deliverables
 
 This release contains O-DU code, along with test code as part of CU stub, RIC stub and phy stub.
 Instructions to build and execute ODU, CU and RIC stub binaries are also present.
-All of the above can be found in the o-du/l2 repo.
+All of the above can be found in the o-du/l2 repo : https://gerrit.o-ran-sc.org/r/gitweb?p=o-du/l2.git;a=tree
 
 
 
@@ -134,6 +169,7 @@ Documentation Deliverables
 ++++++++++++++++++++++++++
 
 This release contains 
+
 - README with instruction to build and execute binaries.
 
 - overview.rst
