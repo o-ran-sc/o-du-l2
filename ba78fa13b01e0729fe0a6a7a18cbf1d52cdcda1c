@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8279f4d7_7da91f66",
+        "filename": "src/cm/tfu.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-12T10:00:38Z",
+      "side": 1,
+      "message": "is this entire function is not used, remove it. This is a generic comment for all the functions where event is commented out. Can be done as a separate review",
+      "revId": "ba78fa13b01e0729fe0a6a7a18cbf1d52cdcda1c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5efd0734_5c4b0841",
+        "filename": "src/cm/tfu.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-12T10:00:38Z",
+      "side": 1,
+      "message": "delete",
+      "revId": "ba78fa13b01e0729fe0a6a7a18cbf1d52cdcda1c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
