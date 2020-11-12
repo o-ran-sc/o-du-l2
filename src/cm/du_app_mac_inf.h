@@ -57,6 +57,15 @@
 #define MAX_NUM_DRB    64
 #define MAX_NUM_SCELL  32
 
+/* PUCCH Configuration Macro */
+#define MAX_NUM_PUCCH_RESRC 128
+#define MAX_NUM_PUCCH_RESRC_SET 4
+#define MAX_NUM_PUCCH_PER_RESRC_SET 32
+#define MAX_NUM_SPATIAL_RELATIONS 8
+#define MAX_NUM_PUCCH_P0_PER_SET 8
+#define MAX_NUM_PATH_LOSS_REF_RS 4
+#define MAX_NUM_DL_DATA_TO_UL_ACK 15
+
 /* Event IDs */
 #define EVENT_MAC_CELL_CONFIG_REQ    200
 #define EVENT_MAC_CELL_CONFIG_CFM    201
@@ -867,9 +876,168 @@ typedef struct pdschServCellCfg
 }PdschServCellCfg;
 
 /* PUCCH Configuration */
+
+typedef struct pucchResrcSetInfo
+{
+   uint8_t resrcSetId;
+   uint8_t resrcListCount;
+   uint8_t resrcList[MAX_NUM_PUCCH_PER_RESRC_SET];
+   uint8_t maxPayLoadSize;
+}PucchResrcSetInfo;
+
+typedef struct pucchResrcSetCfg
+{
+   uint8_t resrcSetToAddModListCount;
+   PucchResrcSetInfo resrcSetToAddModList[MAX_NUM_PUCCH_RESRC_SET];
+   uint8_t resrcSetToRelListCount;
+   uint8_t resrcSetToRelList[MAX_NUM_PUCCH_RESRC];
+}PucchResrcSetCfg;
+
+typedef struct pucchFormat0
+{
+   uint8_t initialCyclicShift;
+   uint8_t numSymbols;
+   uint8_t startSymbolIdx;
+}PucchFormat0;
+
+typedef struct pucchFormat1
+{
+   uint8_t initialCyclicShift;
+   uint8_t numSymbols;
+   uint8_t startSymbolIdx;
+   uint8_t timeDomOCC;
+}PucchFormat1;
+
+typedef struct pucchFormat2_3
+{
+   uint8_t numPrbs;
+   uint8_t numSymbols;
+   uint8_t startSymbolIdx;
+}PucchFormat2_3;
+
+typedef struct pucchFormat4
+{
+   uint8_t numSymbols;
+   uint8_t occLen;
+   uint8_t occIdx;
+   uint8_t startSymbolIdx;
+}PucchFormat4;
+
+typedef struct pucchResrcInfo
+{
+   uint8_t  resrcId;
+   uint16_t startPrb;
+   uint8_t  intraFreqHop;
+   uint16_t secondPrbHop;
+   union{
+      PucchFormat0   *format0; 
+      PucchFormat1   *format1;
+      PucchFormat2_3 *format2;
+      PucchFormat2_3 *format3;
+      PucchFormat4   *format4;
+   }PucchFormat;
+}PucchResrcInfo;
+
+typedef struct pucchResrcCfg
+{
+   uint8_t resrcToAddModListCount;
+   PucchResrcInfo resrcToAddModList[MAX_NUM_PUCCH_RESRC];
+   uint8_t resrcToRelListCount;
+   uint8_t resrcToRelList[MAX_NUM_PUCCH_RESRC];
+}PucchResrcCfg;
+
+typedef struct pucchFormatCfg
+{
+   uint8_t interSlotFreqHop;
+   uint8_t addDmrs;
+   uint8_t maxCodeRate;
+   uint8_t numSlots;
+   bool    pi2BPSK;
+   bool    harqAckCSI;
+}PucchFormatCfg;
+
+typedef struct schedReqResrcInfo
+{
+   uint8_t resrcId;
+   uint8_t requestId;
+   uint8_t periodicityAndOffset;
+   uint8_t resrc;
+}SchedReqResrcInfo;
+
+typedef struct pucchSchedReqCfg
+{
+   uint8_t           schedAddModListCount;
+   SchedReqResrcInfo schedAddModList[MAX_NUM_SR_CFG_PER_CELL_GRP];
+   uint8_t           schedRelListCount;
+   uint8_t           schedRelList[MAX_NUM_SR_CFG_PER_CELL_GRP];
+}PucchSchedReqCfg;
+
+typedef struct spatialRelationInfo
+{
+   uint8_t spatialRelationId;
+   uint8_t servCellIdx;
+   uint8_t pathLossRefRSId;
+   uint8_t p0PucchId;
+   uint8_t closeLoopIdx;
+}SpatialRelationInfo;
+
+typedef struct pucchSpatialCfg
+{
+   uint8_t spatialAddModListCount;
+   SpatialRelationInfo spatialAddModList[MAX_NUM_SPATIAL_RELATIONS];
+   uint8_t spatialRelListCount;
+   uint8_t spatialRelList[MAX_NUM_SPATIAL_RELATIONS];
+}PucchSpatialCfg;
+
+typedef struct p0PucchCfg
+{
+   uint8_t p0PucchId;
+   int     p0PucchVal;
+}P0PucchCfg;
+
+typedef struct pathLossRefRSCfg
+{
+   uint8_t pathLossRefRSId;
+}PathLossRefRSCfg;
+
+typedef struct pucchMultiCsiCfg
+{
+   uint8_t  multiCsiResrcListCount;
+   uint8_t  multiCsiResrcList[MAX_NUM_PUCCH_RESRC-1];
+}PucchMultiCsiCfg;
+
+typedef struct pucchDlDataToUlAck
+{
+   uint8_t  dlDataToUlAckListCount;
+   uint8_t  dlDataToUlAckList[MAX_NUM_DL_DATA_TO_UL_ACK];
+}PucchDlDataToUlAck;
+
+typedef struct pucchPowerControl
+{
+   int deltaF_Format0;
+   int deltaF_Format1;
+   int deltaF_Format2;
+   int deltaF_Format3;
+   int deltaF_Format4;
+   uint8_t p0SetCount;
+   P0PucchCfg p0Set[MAX_NUM_PUCCH_P0_PER_SET];
+   uint8_t pathLossRefRSListCount;
+   PathLossRefRSCfg pathLossRefRSList[MAX_NUM_PATH_LOSS_REF_RS];
+}PucchPowerControl;
+
 typedef struct pucchCfg
 {
-   /* TODO : Not used currently */ 
+   PucchResrcSetCfg  *resrcSet;
+   PucchResrcCfg     *resrc;
+   PucchFormatCfg    *format1; 
+   PucchFormatCfg    *format2; 
+   PucchFormatCfg    *format3; 
+   PucchFormatCfg    *format4;
+   PucchSchedReqCfg  *schedReq;
+   PucchMultiCsiCfg  *multiCsiCfg;
+   PucchSpatialCfg   *spatialInfo;
+   PucchDlDataToUlAck *dlDataToUlAck;
+   PucchPowerControl *powerControl;
 }PucchCfg;
 
 /* Transform precoding disabled */
