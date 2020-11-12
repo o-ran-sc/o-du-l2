@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "514421b9_2c418f4f",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 968,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-12T06:30:19Z",
+      "side": 1,
+      "message": "considr moving this to du_utils",
+      "revId": "4e88162f523cbc0b412a429662dd7a818642bf57",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f50a207c_24e4f3b3",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1095,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-12T06:30:19Z",
+      "side": 1,
+      "message": "This function can also move to du_utils",
+      "revId": "4e88162f523cbc0b412a429662dd7a818642bf57",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
