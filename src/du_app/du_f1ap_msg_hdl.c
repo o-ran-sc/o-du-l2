@@ -76,6 +76,19 @@
 #include "DUtoCURRCContainer.h"
 #include "GBR-QoSFlowInformation.h"
 #include "QoSFlowLevelQoSParameters.h"
+#include "PUCCH-Config.h"
+#include "PUCCH-ResourceSet.h"
+#include "PUCCH-Resource.h"
+#include "PUCCH-PowerControl.h"
+#include "P0-PUCCH.h"
+#include "PUCCH-PathlossReferenceRS.h"
+#include "PUCCH-format0.h"
+#include "PUCCH-format1.h"
+#include "PUCCH-format2.h"
+#include "PUCCH-format3.h"
+#include "PUCCH-format4.h"
+#include "PUCCH-FormatConfig.h"
+#include "SchedulingRequestResourceConfig.h"
 #include<ProtocolIE-Field.h>
 #include "ProtocolExtensionField.h"
 #include "F1AP-PDU.h"
@@ -6784,13 +6797,595 @@ void extractPuschCfg(struct BWP_UplinkDedicated__pusch_Config *cuPuschCfg, Pusch
       }
    }
 }
+
+/*******************************************************************
+ *
+ * @brief Function to fill pucch Power Control
+ *
+ * @details
+ *
+ *    Function : extractPucchPowerControl
+ *
+ *    Functionality: Function to fill pucch Power Control
+ *
+ * @params[in] PucchPowerControl *pwrCtrl,
+ *             struct PUCCH_PowerControl *cuPwrCtrlCfg
+ * @return void
+ *
+ * ****************************************************************/
+
+void extractPucchPowerControl(PucchPowerControl *pwrCtrl, struct PUCCH_PowerControl *cuPwrCtrlCfg)
+{
+   uint8_t arrIdx;
+
+   if(cuPwrCtrlCfg->deltaF_PUCCH_f0)
+      pwrCtrl->deltaF_Format0 = *cuPwrCtrlCfg->deltaF_PUCCH_f0;
+   if(cuPwrCtrlCfg->deltaF_PUCCH_f1)
+      pwrCtrl->deltaF_Format1 = *cuPwrCtrlCfg->deltaF_PUCCH_f1;
+   if(cuPwrCtrlCfg->deltaF_PUCCH_f2)
+      pwrCtrl->deltaF_Format2 = *cuPwrCtrlCfg->deltaF_PUCCH_f2;
+   if(cuPwrCtrlCfg->deltaF_PUCCH_f3)
+      pwrCtrl->deltaF_Format3 = *cuPwrCtrlCfg->deltaF_PUCCH_f3;
+   if(cuPwrCtrlCfg->deltaF_PUCCH_f4)
+      pwrCtrl->deltaF_Format4 = *cuPwrCtrlCfg->deltaF_PUCCH_f4;
+   if(cuPwrCtrlCfg->p0_Set)
+   {
+      pwrCtrl->p0SetCount = cuPwrCtrlCfg->p0_Set->list.count;
+      for(arrIdx=0; arrIdx < pwrCtrl->p0SetCount; arrIdx++)
+      {
+         pwrCtrl->p0Set[arrIdx].p0PucchId =\
+	    cuPwrCtrlCfg->p0_Set->list.array[arrIdx]->p0_PUCCH_Id;
+         pwrCtrl->p0Set[arrIdx].p0PucchVal =\
+	    cuPwrCtrlCfg->p0_Set->list.array[arrIdx]->p0_PUCCH_Value;
+      }
+   }
+   if(cuPwrCtrlCfg->pathlossReferenceRSs)
+   {
+      pwrCtrl->pathLossRefRSListCount = cuPwrCtrlCfg->pathlossReferenceRSs->list.count;
+      for(arrIdx = 0; arrIdx < pwrCtrl->pathLossRefRSListCount; arrIdx++)
+      {
+         pwrCtrl->pathLossRefRSList[arrIdx].pathLossRefRSId =\
+	    cuPwrCtrlCfg->pathlossReferenceRSs->list.array[arrIdx]->pucch_PathlossReferenceRS_Id;
+      }
+   }
+}
+ 
+ /*******************************************************************
+ *
+ * @brief Function to extractResrcSetToAddModList sent by CU
+ *
+ * @details
+ *
+ *    Function : extractResrcSetToAddModList
+ *
+ *    Functionality: Fucntion to extractResrcSetToAddModList
+ *
+ * @params[in] PucchResrcSetCfg pointer,
+ *             struct PUCCH_Config__resourceSetToAddModList pointer
+ * @return void
+ *
+ * ****************************************************************/
+
+void extractResrcSetToAddModList(PucchResrcSetCfg *macRsrcSetList, struct PUCCH_Config__resourceSetToAddModList *cuRsrcSetList)
+{
+   uint8_t arrIdx, rsrcListIdx;
+
+   macRsrcSetList->resrcSetToAddModListCount = cuRsrcSetList->list.count; 
+   for(arrIdx = 0; arrIdx < macRsrcSetList->resrcSetToAddModListCount; arrIdx++)
+   {
+      macRsrcSetList->resrcSetToAddModList[arrIdx].resrcSetId     =\
+         cuRsrcSetList->list.array[arrIdx]->pucch_ResourceSetId;
+      macRsrcSetList->resrcSetToAddModList[arrIdx].resrcListCount =\
+         cuRsrcSetList->list.array[arrIdx]->resourceList.list.count;
+      for(rsrcListIdx = 0; rsrcListIdx < macRsrcSetList->resrcSetToAddModList[arrIdx].resrcListCount; rsrcListIdx++)
+      {
+         macRsrcSetList->resrcSetToAddModList[arrIdx].resrcList[rsrcListIdx] =\
+            *cuRsrcSetList->list.array[arrIdx]->resourceList.list.array[rsrcListIdx];
+      }
+      macRsrcSetList->resrcSetToAddModList[arrIdx].maxPayLoadSize =\
+         *cuRsrcSetList->list.array[arrIdx]->maxPayloadMinus1;
+   }
+}/* End of extractResrcSetToAddModList */
+
+/*******************************************************************
+ *
+ * @brief Fills extractResrcToAddModList sent by CU
+ *
+ * @details
+ *
+ *    Function : extractResrcToAddModList
+ *
+ *    Functionality: Fills extractResrcToAddModList
+ *
+ * @params[in] PucchResrcCfg pointer,
+ *             struct PUCCH_Config__resourceToAddModList pointer
+ * @return ROk/RFAILED
+ *
+ * ****************************************************************/
+
+uint8_t extractResrcToAddModList(PucchResrcCfg *macResrcList, struct PUCCH_Config__resourceToAddModList *cuResrcList)
+{
+   uint8_t arrIdx;
+   
+   macResrcList->resrcToAddModListCount = cuResrcList->list.count;
+   for(arrIdx = 0; arrIdx < macResrcList->resrcToAddModListCount; arrIdx++)
+   {
+      macResrcList->resrcToAddModList[arrIdx].resrcId      =\
+        cuResrcList->list.array[arrIdx]->pucch_ResourceId; 
+      macResrcList->resrcToAddModList[arrIdx].startPrb     =\
+        cuResrcList->list.array[arrIdx]->startingPRB;
+      if(cuResrcList->list.array[arrIdx]->intraSlotFrequencyHopping)
+      {
+         macResrcList->resrcToAddModList[arrIdx].intraFreqHop =\
+           *cuResrcList->list.array[arrIdx]->intraSlotFrequencyHopping;
+      }
+      if(cuResrcList->list.array[arrIdx]->secondHopPRB)
+      {
+         macResrcList->resrcToAddModList[arrIdx].secondPrbHop =\
+           *cuResrcList->list.array[arrIdx]->secondHopPRB;
+      }
+      /* PUCCH RSRC FORMAT */
+      if(cuResrcList->list.array[arrIdx]->format.present == PUCCH_Resource__format_PR_format0)
+      {
+         macResrcList->resrcToAddModList[arrIdx].pucchFormat = PUCCH_FORMAT_0;
+         if(cuResrcList->list.array[arrIdx]->format.choice.format0)
+	 {
+	    DU_ALLOC_SHRABL_BUF(macResrcList->resrcToAddModList[arrIdx].PucchFormat.format0, sizeof(PucchFormat0));
+	    if(macResrcList->resrcToAddModList[arrIdx].PucchFormat.format0 == NULLP)
+	    {
+               DU_LOG("\nERROR  --> F1AP : Failed to allocate memory for Format0 in extractResrcToAddModList()");
+	       return RFAILED;
+	    }
+	    macResrcList->resrcToAddModList[arrIdx].PucchFormat.format0->initialCyclicShift =\
+               cuResrcList->list.array[arrIdx]->format.choice.format0->initialCyclicShift;
+	    macResrcList->resrcToAddModList[arrIdx].PucchFormat.format0->numSymbols =\
+               cuResrcList->list.array[arrIdx]->format.choice.format0->nrofSymbols;
+	    macResrcList->resrcToAddModList[arrIdx].PucchFormat.format0->startSymbolIdx =\
+               cuResrcList->list.array[arrIdx]->format.choice.format0->startingSymbolIndex;
+	 }
+      }
+      else if(cuResrcList->list.array[arrIdx]->format.present == PUCCH_Resource__format_PR_format1)
+      {
+         macResrcList->resrcToAddModList[arrIdx].pucchFormat = PUCCH_FORMAT_1;
+         if(cuResrcList->list.array[arrIdx]->format.choice.format1)
+	 {
+            DU_ALLOC_SHRABL_BUF(macResrcList->resrcToAddModList[arrIdx].PucchFormat.format1, sizeof(PucchFormat1));
+	    if(macResrcList->resrcToAddModList[arrIdx].PucchFormat.format1 == NULLP)
+	    {
+               DU_LOG("\nERROR  --> F1AP : Failed to allocate memory for Format1 in extractResrcToAddModList()");
+	       return RFAILED;
+	    }
+            macResrcList->resrcToAddModList[arrIdx].PucchFormat.format1->initialCyclicShift =\
+                cuResrcList->list.array[arrIdx]->format.choice.format1->initialCyclicShift;
+            macResrcList->resrcToAddModList[arrIdx].PucchFormat.format1->numSymbols =\
+                cuResrcList->list.array[arrIdx]->format.choice.format1->nrofSymbols;
+            macResrcList->resrcToAddModList[arrIdx].PucchFormat.format1->startSymbolIdx =\
+                cuResrcList->list.array[arrIdx]->format.choice.format1->startingSymbolIndex;
+	    macResrcList->resrcToAddModList[arrIdx].PucchFormat.format1->timeDomOCC =\
+                cuResrcList->list.array[arrIdx]->format.choice.format1->timeDomainOCC;
+	 }
+      }
+      else if(cuResrcList->list.array[arrIdx]->format.present == PUCCH_Resource__format_PR_format2)
+      {
+         macResrcList->resrcToAddModList[arrIdx].pucchFormat = PUCCH_FORMAT_2;
+         if(cuResrcList->list.array[arrIdx]->format.choice.format2)
+	 {
+	    DU_ALLOC_SHRABL_BUF(macResrcList->resrcToAddModList[arrIdx].PucchFormat.format2, sizeof(PucchFormat2_3));
+	    if(macResrcList->resrcToAddModList[arrIdx].PucchFormat.format2 == NULLP)
+	    {
+               DU_LOG("\nERROR  --> F1AP : Failed to allocate memory for Format2 in extractResrcToAddModList()");
+	       return RFAILED;
+	    }
+            macResrcList->resrcToAddModList[arrIdx].PucchFormat.format2->numPrbs =\
+                cuResrcList->list.array[arrIdx]->format.choice.format2->nrofPRBs;
+            macResrcList->resrcToAddModList[arrIdx].PucchFormat.format2->numSymbols =\
+                cuResrcList->list.array[arrIdx]->format.choice.format2->nrofSymbols;
+            macResrcList->resrcToAddModList[arrIdx].PucchFormat.format2->startSymbolIdx =\
+                cuResrcList->list.array[arrIdx]->format.choice.format2->startingSymbolIndex;
+         }
+      }
+      else if(cuResrcList->list.array[arrIdx]->format.present == PUCCH_Resource__format_PR_format3)
+      {
+         macResrcList->resrcToAddModList[arrIdx].pucchFormat = PUCCH_FORMAT_3;
+         if(cuResrcList->list.array[arrIdx]->format.choice.format3)
+	 {
+	    DU_ALLOC_SHRABL_BUF(macResrcList->resrcToAddModList[arrIdx].PucchFormat.format3, sizeof(PucchFormat2_3));
+	    if(macResrcList->resrcToAddModList[arrIdx].PucchFormat.format3 == NULLP)
+	    {
+               DU_LOG("\nERROR  --> F1AP : Failed to allocate memory for Format3 in extractResrcToAddModList()");
+	       return RFAILED;
+	    }
+	    macResrcList->resrcToAddModList[arrIdx].PucchFormat.format3->numPrbs =\
+                cuResrcList->list.array[arrIdx]->format.choice.format3->nrofPRBs;
+            macResrcList->resrcToAddModList[arrIdx].PucchFormat.format3->numSymbols =\
+                cuResrcList->list.array[arrIdx]->format.choice.format3->nrofSymbols;
+            macResrcList->resrcToAddModList[arrIdx].PucchFormat.format3->startSymbolIdx =\
+                cuResrcList->list.array[arrIdx]->format.choice.format3->startingSymbolIndex;
+         }
+      }
+      else if(cuResrcList->list.array[arrIdx]->format.present == PUCCH_Resource__format_PR_format4)
+      {
+         macResrcList->resrcToAddModList[arrIdx].pucchFormat = PUCCH_FORMAT_4;
+         if(cuResrcList->list.array[arrIdx]->format.choice.format4)
+         {
+	    DU_ALLOC_SHRABL_BUF(macResrcList->resrcToAddModList[arrIdx].PucchFormat.format4, sizeof(PucchFormat4));
+	    if(macResrcList->resrcToAddModList[arrIdx].PucchFormat.format4 == NULLP)
+	    {
+               DU_LOG("\nERROR  --> F1AP : Failed to allocate memory for Format4 in extractResrcToAddModList()");
+	       return RFAILED;
+	    }
+            macResrcList->resrcToAddModList[arrIdx].PucchFormat.format4->numSymbols =\
+                cuResrcList->list.array[arrIdx]->format.choice.format4->nrofSymbols;
+	    macResrcList->resrcToAddModList[arrIdx].PucchFormat.format4->occLen =\
+                cuResrcList->list.array[arrIdx]->format.choice.format4->occ_Length;
+            macResrcList->resrcToAddModList[arrIdx].PucchFormat.format4->occIdx =\
+                cuResrcList->list.array[arrIdx]->format.choice.format4->occ_Index;
+            macResrcList->resrcToAddModList[arrIdx].PucchFormat.format4->startSymbolIdx =\
+                cuResrcList->list.array[arrIdx]->format.choice.format4->startingSymbolIndex;
+	 }
+      }
+   }
+   return ROK;
+
+}/* End of extractResrcToAddModList */
+
+/*******************************************************************
+ *
+ * @brief Fills fillPucchSchedReqPeriodAndOffset sent by CU
+ *
+ * @details
+ *
+ *    Function : fillPucchSchedReqPeriodAndOffset
+ *
+ *    Functionality: To fillPucchSchedReqPeriodAndOffset
+ *
+ * @params[in] macPeriodicty,
+ *     SchedulingRequestResourceConfig__periodicityAndOffset pointer
+ * @return void
+ *
+ * ****************************************************************/
+
+void fillPucchSchedReqPeriodAndOffset(uint8_t macPeriodicty, uint16_t  macOffset,\
+   struct SchedulingRequestResourceConfig__periodicityAndOffset *cuPeriodicty)
+{
+   macPeriodicty = cuPeriodicty->present;
+   switch(macPeriodicty)
+   {
+      case SchedulingRequestResourceConfig__periodicityAndOffset_PR_sym2:
+	 {
+	    macOffset     = cuPeriodicty->choice.sym2;
+	    break;
+	 }
+      case SchedulingRequestResourceConfig__periodicityAndOffset_PR_sym6or7:
+	 {
+	    macOffset     = cuPeriodicty->choice.sym6or7;
+	    break;
+	 }
+      case SchedulingRequestResourceConfig__periodicityAndOffset_PR_sl1:
+	 {
+	    macOffset     = cuPeriodicty->choice.sl1;
+	    break;
+	 }
+      case SchedulingRequestResourceConfig__periodicityAndOffset_PR_sl2:
+	 {
+	    macOffset = cuPeriodicty->choice.sl2;
+	    break;
+	 }
+      case SchedulingRequestResourceConfig__periodicityAndOffset_PR_sl4:
+	 {
+	    macOffset = cuPeriodicty->choice.sl4;
+	    break;
+	 }
+      case SchedulingRequestResourceConfig__periodicityAndOffset_PR_sl5:
+	 {
+	    macOffset = cuPeriodicty->choice.sl5;
+	    break;
+	 }
+      case SchedulingRequestResourceConfig__periodicityAndOffset_PR_sl8:
+	 {
+	    macOffset = cuPeriodicty->choice.sl8;
+	    break;
+	 }
+      case SchedulingRequestResourceConfig__periodicityAndOffset_PR_sl10:
+	 {
+	    macOffset = cuPeriodicty->choice.sl10;
+	    break;
+	 }
+      case SchedulingRequestResourceConfig__periodicityAndOffset_PR_sl16:
+	 {
+	    macOffset = cuPeriodicty->choice.sl16;
+	    break;
+	 }
+      case SchedulingRequestResourceConfig__periodicityAndOffset_PR_sl20:
+	 {
+	    macOffset = cuPeriodicty->choice.sl20;
+	    break;
+	 }
+      case SchedulingRequestResourceConfig__periodicityAndOffset_PR_sl40:
+	 {
+	    macOffset = cuPeriodicty->choice.sl40;
+	    break;
+	 }
+      case SchedulingRequestResourceConfig__periodicityAndOffset_PR_sl80:
+	 {
+	    macOffset = cuPeriodicty->choice.sl80;
+	    break;
+	 }
+      case SchedulingRequestResourceConfig__periodicityAndOffset_PR_sl160:
+	 {
+	    macOffset = cuPeriodicty->choice.sl160;
+	    break;
+	 }
+      case SchedulingRequestResourceConfig__periodicityAndOffset_PR_sl320:
+	 {
+	    macOffset = cuPeriodicty->choice.sl320;
+	    break;
+	 }
+      case SchedulingRequestResourceConfig__periodicityAndOffset_PR_sl640:
+	 {
+	    macOffset = cuPeriodicty->choice.sl640;
+	    break;
+	 }
+      default :
+         DU_LOG("\nERROR  --> F1AP : Invalid periodicity %d", macPeriodicty);
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Function to extractPucchFormatCfg sent by CU
+ *
+ * @details
+ *
+ *    Function : extractPucchFormatCfg
+ *
+ *    Functionality: Function to extractPucchFormatCfg
+ *
+ * @params[in] PucchFormatCfg pointer,
+ *             PUCCH_FormatConfig_t pointer
+ * @return void
+ *
+ * ****************************************************************/
+
+void extractPucchFormatCfg(PucchFormatCfg *macFormatCfg, PUCCH_FormatConfig_t *cuFormatCfg)
+ {
+    if(cuFormatCfg->interslotFrequencyHopping)
+       macFormatCfg->interSlotFreqHop = *cuFormatCfg->interslotFrequencyHopping;
+    if(cuFormatCfg->additionalDMRS)  
+       macFormatCfg->addDmrs = *cuFormatCfg->additionalDMRS;
+    if(cuFormatCfg->maxCodeRate)
+       macFormatCfg->maxCodeRate = *cuFormatCfg->maxCodeRate;
+    if(cuFormatCfg->nrofSlots)  
+       macFormatCfg->numSlots = *cuFormatCfg->nrofSlots;
+    if(cuFormatCfg->pi2BPSK)  
+       macFormatCfg->pi2BPSK = *cuFormatCfg->pi2BPSK;
+    if(cuFormatCfg->simultaneousHARQ_ACK_CSI)  
+       macFormatCfg->harqAckCSI = *cuFormatCfg->simultaneousHARQ_ACK_CSI;
+ }/* End of extractPucchFormatCfg */
+
+/*******************************************************************
+ *
+ * @brief Function to extractSchedReqCfgToAddMod sent by CU
+ *
+ * @details
+ *
+ *    Function : extractSchedReqCfgToAddMod
+ *
+ *    Functionality: Function to extractSchedReqCfgToAddMod
+ *
+ * @params[in] PucchSchedReqCfg pointer,
+ *      PUCCH_Config__schedulingRequestResourceToAddModList pointer
+ * @return void
+ *
+ * ****************************************************************/
+
+void extractSchedReqCfgToAddMod(PucchSchedReqCfg *macSchedReqCfg, struct PUCCH_Config__schedulingRequestResourceToAddModList *cuSchedReqList)
+{
+   uint8_t arrIdx;
+
+   macSchedReqCfg->schedAddModListCount = cuSchedReqList->list.count;
+   for(arrIdx = 0; arrIdx <  macSchedReqCfg->schedAddModListCount; arrIdx++)
+   {
+      macSchedReqCfg->schedAddModList[arrIdx].resrcId =\
+         cuSchedReqList->list.array[arrIdx]->schedulingRequestResourceId;
+      macSchedReqCfg->schedAddModList[arrIdx].requestId =\
+         cuSchedReqList->list.array[arrIdx]->schedulingRequestID;
+      if(cuSchedReqList->list.array[arrIdx]->periodicityAndOffset)
+      {
+         fillPucchSchedReqPeriodAndOffset(macSchedReqCfg->schedAddModList[arrIdx].periodicity,\
+	    macSchedReqCfg->schedAddModList[arrIdx].offset, cuSchedReqList->list.array[arrIdx]->periodicityAndOffset);
+      }
+      if(cuSchedReqList->list.array[arrIdx]->resource)
+      {
+         macSchedReqCfg->schedAddModList[arrIdx].resrc =\
+    	    *cuSchedReqList->list.array[arrIdx]->resource;
+      }
+   }
+
+}/* End of extractSchedReqCfgToAddMod */
+
+ /*******************************************************************
+ *
+ * @brief Fills PucchCfg received by CU
+ *
+ * @details
+ *
+ *    Function : extractPucchCfg
+ *
+ *    Functionality: Fills PucchCfg received  by CU
+ *
+ * @params[in] BWP_UplinkDedicated__pucch_Config *cuPucchCfg,
+ *             PucchCfg *macPucchCfg
+ * @return ROK/RFAILED
+ *
+ * ****************************************************************/
+
+uint8_t extractPucchCfg(struct BWP_UplinkDedicated__pucch_Config *cuPucchCfg, PucchCfg *macPucchCfg)         
+{
+   uint8_t arrIdx;
+
+   if(cuPucchCfg->present == BWP_UplinkDedicated__pucch_Config_PR_setup)
+   {
+      if(cuPucchCfg->choice.setup)
+      {
+         /* Resource Set Cfg */ 
+	 if(cuPucchCfg->choice.setup->resourceSetToAddModList)
+	 {
+	    DU_ALLOC_SHRABL_BUF(macPucchCfg->resrcSet, sizeof(PucchResrcSetCfg));
+	    if(macPucchCfg->resrcSet == NULLP)
+	    {
+	       DU_LOG("\nERROR --> F1AP : Failed to extract Resrc set List in extractPucchCfg()");
+	       return RFAILED;
+	    }
+	    memset(macPucchCfg->resrcSet, 0, sizeof(PucchResrcSetCfg));
+            extractResrcSetToAddModList(macPucchCfg->resrcSet, cuPucchCfg->choice.setup->resourceSetToAddModList);
+	 }
+         
+	 /* Resource Cfg */ 
+	 if(cuPucchCfg->choice.setup->resourceToAddModList)
+	 {
+            DU_ALLOC_SHRABL_BUF(macPucchCfg->resrc, sizeof(PucchResrcCfg));
+	    if(macPucchCfg->resrc == NULLP)
+	    {
+	       DU_LOG("\nERROR --> F1AP : Failed to extract Resrc List in extractPucchCfg()");
+	       return RFAILED;
+	    }
+	    memset(macPucchCfg->resrc, 0, sizeof(PucchResrcCfg));
+            extractResrcToAddModList(macPucchCfg->resrc, cuPucchCfg->choice.setup->resourceToAddModList);
+	 }
+         
+	 /* Format 1 Cfg */ 
+	 if(cuPucchCfg->choice.setup->format1)
+	 {
+	    DU_ALLOC_SHRABL_BUF(macPucchCfg->format1, sizeof(PucchFormatCfg));
+	    if(macPucchCfg->format1 == NULLP)
+	    {
+	       DU_LOG("\nERROR --> F1AP : Failed to extract format 1 Cfg in  extractPucchCfg()");
+	       return RFAILED;
+	    }
+	    memset(macPucchCfg->format1, 0, sizeof(PucchFormatCfg));
+            extractPucchFormatCfg(macPucchCfg->format1,\
+	       cuPucchCfg->choice.setup->format1->choice.setup);
+	 }
+         
+	 /* Format 2 Cfg */
+         if(cuPucchCfg->choice.setup->format2)
+	 {
+	    DU_ALLOC_SHRABL_BUF(macPucchCfg->format2, sizeof(PucchFormatCfg));
+	    if(macPucchCfg->format2 == NULLP)
+	    {
+	       DU_LOG("\nERROR --> F1AP : Failed to extract format 2 Cfg in  extractPucchCfg()");
+	       return RFAILED;
+	    }
+	    memset(macPucchCfg->format2, 0, sizeof(PucchFormatCfg));
+            extractPucchFormatCfg(macPucchCfg->format2,\
+	       cuPucchCfg->choice.setup->format2->choice.setup);
+	 }
+         
+	 /* Format 3 Cfg */
+         if(cuPucchCfg->choice.setup->format3)
+	 {
+	    DU_ALLOC_SHRABL_BUF(macPucchCfg->format3, sizeof(PucchFormatCfg));
+	    if(macPucchCfg->format3 == NULLP)
+	    {
+	       DU_LOG("\nERROR --> F1AP : Failed to extract format 3 Cfg in  extractPucchCfg()");
+	       return RFAILED;
+	    }
+	    memset(macPucchCfg->format3, 0, sizeof(PucchFormatCfg));
+            extractPucchFormatCfg(macPucchCfg->format3,\
+	       cuPucchCfg->choice.setup->format3->choice.setup);
+	 }
+
+         /* Format 4 Cfg */
+         if(cuPucchCfg->choice.setup->format4)
+	 {
+	    DU_ALLOC_SHRABL_BUF(macPucchCfg->format4, sizeof(PucchFormatCfg));
+	    if(macPucchCfg->format4 == NULLP)
+	    {
+	       DU_LOG("\nERROR --> F1AP : Failed to extract format 4 Cfg in  extractPucchCfg()");
+	       return RFAILED;
+	    }
+	    memset(macPucchCfg->format4, 0, sizeof(PucchFormatCfg));
+            extractPucchFormatCfg(macPucchCfg->format4,\
+	       cuPucchCfg->choice.setup->format4->choice.setup);
+	 }
+
+         /* Sched Req List */
+         if(cuPucchCfg->choice.setup->schedulingRequestResourceToAddModList)
+	 {
+	    DU_ALLOC_SHRABL_BUF(macPucchCfg->schedReq, sizeof(PucchSchedReqCfg));
+	    if(macPucchCfg->schedReq == NULLP)
+	    {
+	       DU_LOG("\nERROR --> F1AP : Failed to extract schedReqCfg in  extractPucchCfg()");
+	       return RFAILED;
+	    }
+	    memset(macPucchCfg->schedReq, 0, sizeof(PucchSchedReqCfg));
+            extractSchedReqCfgToAddMod(macPucchCfg->schedReq,\
+	    cuPucchCfg->choice.setup->schedulingRequestResourceToAddModList);
+	 }
+
+         /*TODO: Add support for  Spatial Info */
+
+	 /* MultiCsiCfg */
+         if(cuPucchCfg->choice.setup->multi_CSI_PUCCH_ResourceList)
+	 {
+	    DU_ALLOC_SHRABL_BUF(macPucchCfg->multiCsiCfg, sizeof(PucchMultiCsiCfg));
+	    if(macPucchCfg->multiCsiCfg == NULLP)
+	    {
+	       DU_LOG("\nERROR --> F1AP : Failed to extract multiCsiCfg in  extractPucchCfg()");
+	       return RFAILED;
+	    }
+	    memset(macPucchCfg->multiCsiCfg, 0, sizeof(PucchMultiCsiCfg));
+            macPucchCfg->multiCsiCfg->multiCsiResrcListCount = cuPucchCfg->choice.setup->multi_CSI_PUCCH_ResourceList->list.count;
+	    for(arrIdx =0; arrIdx < macPucchCfg->multiCsiCfg->multiCsiResrcListCount; arrIdx++)
+	    {
+	       macPucchCfg->multiCsiCfg->multiCsiResrcList[arrIdx] =\
+	         *cuPucchCfg->choice.setup->multi_CSI_PUCCH_ResourceList->list.array[arrIdx];
+	    }
+	 }
+
+         /* Dl_DataToUL_ACK */ 
+	 if(cuPucchCfg->choice.setup->dl_DataToUL_ACK)
+	 {
+            DU_ALLOC_SHRABL_BUF(macPucchCfg->dlDataToUlAck, sizeof(PucchDlDataToUlAck));
+	    if(macPucchCfg->dlDataToUlAck == NULLP)
+	    {
+	       DU_LOG("\nERROR --> F1AP : Failed to extract Dl_DataToUL_ACK in extractPucchCfg()");
+	       return RFAILED;
+	    }
+	    memset(macPucchCfg->dlDataToUlAck, 0, sizeof(PucchDlDataToUlAck));
+            macPucchCfg->dlDataToUlAck->dlDataToUlAckListCount = cuPucchCfg->choice.setup->dl_DataToUL_ACK->list.count;
+	    for(arrIdx = 0; arrIdx < macPucchCfg->dlDataToUlAck->dlDataToUlAckListCount; arrIdx++)
+            {
+               macPucchCfg->dlDataToUlAck->dlDataToUlAckList[arrIdx] =\
+                  *cuPucchCfg->choice.setup->dl_DataToUL_ACK->list.array[arrIdx];
+	    }
+	 }
+
+	 /* Power Control */
+         if(cuPucchCfg->choice.setup->pucch_PowerControl)
+	 {
+            DU_ALLOC_SHRABL_BUF(macPucchCfg->powerControl, sizeof(PucchPowerControl));
+	    if(macPucchCfg->powerControl == NULLP)
+	    {
+	       DU_LOG("\nERROR --> F1AP : Failed to extract power control in extractPucchCfg()");
+	       return RFAILED;
+	    }
+            extractPucchPowerControl(macPucchCfg->powerControl,\
+	       cuPucchCfg->choice.setup->pucch_PowerControl);
+	 }
+      }
+   }
+   return ROK;
+}
+
 /*******************************************************************
  *
  * @brief Fills ServingCellReconfig received by CU
  *
  * @details
  *
- *    Function : extractServingCellReconfig
+ *    Function : extractSpCellDedicatedCfg
  *
  *    Functionality: Fills ServingCellReconfig received  by CU
  *
@@ -6799,7 +7394,7 @@ void extractPuschCfg(struct BWP_UplinkDedicated__pusch_Config *cuPuschCfg, Pusch
  * @return ROK/RFAILD
  *
  * ****************************************************************/
-uint8_t extractServingCellReconfig(ServingCellConfig_t *cuSrvCellCfg, ServCellCfgInfo *macSrvCellCfg)
+uint8_t extractSpCellDedicatedCfg(ServingCellConfig_t *cuSrvCellCfg, ServCellCfgInfo *macSrvCellCfg)
 {
    uint8_t ret = ROK;
    BWP_DownlinkDedicated_t *dlBwp = NULLP;
@@ -6845,7 +7440,7 @@ uint8_t extractServingCellReconfig(ServingCellConfig_t *cuSrvCellCfg, ServCellCf
 	 }
 	 else
 	 {
-	    DU_LOG("\nMemory Alloc failed for bwpInactivityTmr at extractServingCellReconfig()");
+	    DU_LOG("\nERROR  --> F1AP : Memory Alloc failed for bwpInactivityTmr at extractSpCellDedicatedCfg()");
 	    return RFAILED;
 	 }
       }
@@ -6857,7 +7452,7 @@ uint8_t extractServingCellReconfig(ServingCellConfig_t *cuSrvCellCfg, ServCellCf
          ret = extractPdschServingCellCfg(cuSrvCellCfg->pdsch_ServingCellConfig->choice.setup, &macSrvCellCfg->pdschServCellCfg);
          if(ret == RFAILED)
 	 {
-	    DU_LOG("\nFailed at extractPdschServingCellCfg()");
+	    DU_LOG("\nERROR --> F1AP : Failed at extractPdschServingCellCfg()");
 	    return RFAILED;
 	 }
       }
@@ -6875,12 +7470,12 @@ uint8_t extractServingCellReconfig(ServingCellConfig_t *cuSrvCellCfg, ServCellCf
 	if(ulBwp->pucch_Config)
 	{
 	   macSrvCellCfg->initUlBwp.pucchPresent = true;
-           //extractPucchCfg(ulBwp->pucch_Config, &macSrvCellCfg->initUlBwp.pucchCfg); 
+	   memset(&macSrvCellCfg->initUlBwp.pucchCfg, 0, sizeof(PucchCfg));
+           extractPucchCfg(ulBwp->pucch_Config, &macSrvCellCfg->initUlBwp.pucchCfg); 
 	}
      }
      if(cuSrvCellCfg->uplinkConfig->firstActiveUplinkBWP_Id)
         macSrvCellCfg->firstActvUlBwpId = *(cuSrvCellCfg->uplinkConfig->firstActiveUplinkBWP_Id);
-
    }
    return ret;
 }
@@ -6954,8 +7549,6 @@ uint8_t extractUeReCfgCellInfo(CellGroupConfigRrc_t *cellGrp, MacUeCfg *macUeCfg
 		   macCellGroup->phr_Config->choice.setup->phr_ModeOtherCG;
 	       }
 	    }
-
-
 	 }
       }
       /* Fill Physical Cell Group Reconfig */
@@ -6981,10 +7574,10 @@ uint8_t extractUeReCfgCellInfo(CellGroupConfigRrc_t *cellGrp, MacUeCfg *macUeCfg
 	 if(cellGrp->spCellConfig->spCellConfigDedicated)
 	 {
 	    servCellCfg = ((ServingCellConfig_t *)(cellGrp->spCellConfig->spCellConfigDedicated));
-            ret = extractServingCellReconfig(servCellCfg, &macUeCfg->spCellCfg.servCellCfg);
+            ret = extractSpCellDedicatedCfg(servCellCfg, &macUeCfg->spCellCfg.servCellCfg);
 	    if(ret == RFAILED)
 	    {
-	       DU_LOG("\n Failed at extractServingCellReconfig()");
+	       DU_LOG("\nERROR --> F1AP : Failed at extractSpCellDedicatedCfg()");
 	    }
 	 }
       }
@@ -7673,7 +8266,8 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
 	       }
 	       break;
 	    }
-	 case ProtocolIE_ID_id_GNB_DU_UE_AMBR_UL:            {
+	 case ProtocolIE_ID_id_GNB_DU_UE_AMBR_UL:
+	     {
                /* MaximumBitRate Uplink */
 	       bitRateSize = ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.BitRate.size;
 	       if(bitRateSize > 0)
