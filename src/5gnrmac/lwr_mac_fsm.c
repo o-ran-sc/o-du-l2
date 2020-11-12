@@ -3789,22 +3789,63 @@ void fillPucchPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, MacCellCfg *macCellCfg,\
       ulTtiReqPdu->pdu.pucch_pdu.cyclicPrefix = macCellCfg->initialUlBwp.bwp.cyclicPrefix;
       ulTtiReqPdu->pdu.pucch_pdu.formatType   = currUlSlot->ulInfo.schPucchInfo.pucchFormat; /* Supporting PUCCH Format 0 */
       ulTtiReqPdu->pdu.pucch_pdu.multiSlotTxIndicator = 0; /* No Multi Slot transmission */
-      ulTtiReqPdu->pdu.pucch_pdu.pi2Bpsk              = 0; /* Disabled */
+      
       ulTtiReqPdu->pdu.pucch_pdu.prbStart     = currUlSlot->ulInfo.schPucchInfo.fdAlloc.startPrb;
       ulTtiReqPdu->pdu.pucch_pdu.prbSize      = currUlSlot->ulInfo.schPucchInfo.fdAlloc.numPrb;
       ulTtiReqPdu->pdu.pucch_pdu.startSymbolIndex = currUlSlot->ulInfo.schPucchInfo.tdAlloc.startSymb;
       ulTtiReqPdu->pdu.pucch_pdu.nrOfSymbols  = currUlSlot->ulInfo.schPucchInfo.tdAlloc.numSymb;
-      ulTtiReqPdu->pdu.pucch_pdu.freqHopFlag  = 0; /* Disabled */
-      ulTtiReqPdu->pdu.pucch_pdu.secondHopPrb = 0;
+      if(currUlSlot->ulInfo.schPucchInfo.intraFreqHop)
+      {
+         ulTtiReqPdu->pdu.pucch_pdu.freqHopFlag  = *currUlSlot->ulInfo.schPucchInfo.intraFreqHop;
+      }
+      else
+         ulTtiReqPdu->pdu.pucch_pdu.freqHopFlag = 0; /* Disabled */
+      if(currUlSlot->ulInfo.schPucchInfo.secondPrbHop)
+      {
+         ulTtiReqPdu->pdu.pucch_pdu.secondHopPrb = *currUlSlot->ulInfo.schPucchInfo.secondPrbHop;
+      }
+      else
+         ulTtiReqPdu->pdu.pucch_pdu.secondHopPrb = 0; /* Disabled */
+
       ulTtiReqPdu->pdu.pucch_pdu.groupHopFlag = 0;     
       ulTtiReqPdu->pdu.pucch_pdu.sequenceHopFlag = 0;
       ulTtiReqPdu->pdu.pucch_pdu.hoppingId    = 0;
-      ulTtiReqPdu->pdu.pucch_pdu.initialCyclicShift = 0;
+
+      if(currUlSlot->ulInfo.schPucchInfo.initialCyclicShift)
+      {
+         ulTtiReqPdu->pdu.pucch_pdu.initialCyclicShift = *currUlSlot->ulInfo.schPucchInfo.initialCyclicShift;
+      }
+      else
+         ulTtiReqPdu->pdu.pucch_pdu.initialCyclicShift = 0; /* Disabled */
+
       ulTtiReqPdu->pdu.pucch_pdu.dataScramblingId = 0; /* Valid for Format 2, 3, 4 */
-      ulTtiReqPdu->pdu.pucch_pdu.timeDomainOccIdx = 0; /* Valid for Format 1 */
-      ulTtiReqPdu->pdu.pucch_pdu.preDftOccIdx     = 0; /* Valid for Format 4 */
-      ulTtiReqPdu->pdu.pucch_pdu.preDftOccLen     = 0; /* Valid for Format 4 */
-      ulTtiReqPdu->pdu.pucch_pdu.addDmrsFlag      = 0; /* Valid for Format 3, 4 */
+      if(currUlSlot->ulInfo.schPucchInfo.timeDomOCC)
+      {
+         ulTtiReqPdu->pdu.pucch_pdu.timeDomainOccIdx = *currUlSlot->ulInfo.schPucchInfo.timeDomOCC; 
+      }
+      else
+         ulTtiReqPdu->pdu.pucch_pdu.timeDomainOccIdx = 0;/* Valid for Format 1 only */
+      if(currUlSlot->ulInfo.schPucchInfo.occIdx)
+      {
+         ulTtiReqPdu->pdu.pucch_pdu.preDftOccIdx = *currUlSlot->ulInfo.schPucchInfo.occIdx; 
+      }
+      else
+         ulTtiReqPdu->pdu.pucch_pdu.preDftOccIdx = 0;/* Valid for Format 4 only */
+      if(currUlSlot->ulInfo.schPucchInfo.occLen)
+      {
+         ulTtiReqPdu->pdu.pucch_pdu.preDftOccLen = *currUlSlot->ulInfo.schPucchInfo.occLen; 
+      }
+         ulTtiReqPdu->pdu.pucch_pdu.preDftOccLen = 0; /* Valid for Format 4 only */
+      if(currUlSlot->ulInfo.schPucchInfo.cmnFormatCfg != NULLP)
+      {
+         ulTtiReqPdu->pdu.pucch_pdu.pi2Bpsk = currUlSlot->ulInfo.schPucchInfo.cmnFormatCfg->pi2BPSK;
+         ulTtiReqPdu->pdu.pucch_pdu.addDmrsFlag = currUlSlot->ulInfo.schPucchInfo.cmnFormatCfg->addDmrs; 
+      }
+      else
+      {/* Valid for Format 3, 4 only */
+         ulTtiReqPdu->pdu.pucch_pdu.pi2Bpsk = 0;
+	 ulTtiReqPdu->pdu.pucch_pdu.addDmrsFlag = 0;
+      }
       ulTtiReqPdu->pdu.pucch_pdu.dmrsScramblingId = 0; /* Valid for Format 2 */
       ulTtiReqPdu->pdu.pucch_pdu.dmrsCyclicShift  = 0; /* Valid for Format 4 */
       ulTtiReqPdu->pdu.pucch_pdu.srFlag           = currUlSlot->ulInfo.schPucchInfo.srFlag;
