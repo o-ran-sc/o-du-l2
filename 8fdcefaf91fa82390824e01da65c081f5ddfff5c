@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "96686ef1_4727060d",
+        "filename": "src/du_app/du_utils.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-12T14:11:47Z",
+      "side": 1,
+      "message": "change year to 2020",
+      "revId": "8fdcefaf91fa82390824e01da65c081f5ddfff5c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
