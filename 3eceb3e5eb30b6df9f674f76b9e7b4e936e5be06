@@ -16,6 +16,24 @@
       "revId": "3eceb3e5eb30b6df9f674f76b9e7b4e936e5be06",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3ce001cc_d2dfb865",
+        "filename": "src/5gnrmac/lwr_mac_upr_inf.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-12T08:35:21Z",
+      "side": 0,
+      "message": "For f0f1, we were filling uciBits with 0 (in phy_stub) and it was not used anywhere in DU.\n\nAlso, Small cell FAPI spec does not mention uci bits at all.\nIn latest Intel FAPI, uciBits[] in fapi_uci_o_pucch_f0f1_t was removed. Hence, removed from here too.",
+      "parentUuid": "298c30ec_b3a7333a",
+      "revId": "3eceb3e5eb30b6df9f674f76b9e7b4e936e5be06",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }

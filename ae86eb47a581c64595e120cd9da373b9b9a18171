@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "833b3128_310da092",
+        "filename": "src/5gnrmac/lwr_mac_handle_phy.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-12T08:35:21Z",
+      "side": 1,
+      "message": "since #ifdef can not be used within #define MACRO, created another macro to fill selector based on flag.",
+      "parentUuid": "63a34263_842a5a06",
+      "revId": "ae86eb47a581c64595e120cd9da373b9b9a18171",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "91c114dd_866c512d",
         "filename": "src/5gnrmac/lwr_mac_upr_inf.h",
         "patchSetId": 3
@@ -33,6 +51,24 @@
       "revId": "ae86eb47a581c64595e120cd9da373b9b9a18171",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2e8ab79a_5800f9b2",
+        "filename": "src/5gnrmac/lwr_mac_upr_inf.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-12T08:35:21Z",
+      "side": 1,
+      "message": "tfu* are required for compilation of rg* and rg_sch* files.\nIn rg_ex_ms.c as well, tfu.h is included. Hence compilation fails if events are declared with same id as in tfu.h.",
+      "parentUuid": "91c114dd_866c512d",
+      "revId": "ae86eb47a581c64595e120cd9da373b9b9a18171",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
