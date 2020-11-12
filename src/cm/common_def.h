@@ -79,6 +79,11 @@
 #define MAX_DRB_LCID 32
 
 #define FREQ_DOM_RSRC_SIZE  6      /* i.e. 6 bytes because Size of frequency domain resource is 45 bits */
+#define PUCCH_FORMAT_0 0
+#define PUCCH_FORMAT_1 1
+#define PUCCH_FORMAT_2 2
+#define PUCCH_FORMAT_3 3 
+#define PUCCH_FORMAT_4 4
 
 #define BANDWIDTH_20MHZ 20
 #define BANDWIDTH_100MHZ 100
