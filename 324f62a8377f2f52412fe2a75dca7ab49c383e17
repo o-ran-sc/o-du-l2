@@ -2,6 +2,74 @@
   "comments": [
     {
       "key": {
+        "uuid": "f164e41f_3482b7c0",
+        "filename": "src/5gnrmac/rg_dux.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-13T07:29:25Z",
+      "side": 1,
+      "message": "There shouldn\u0027t be more than 80 characters in a line.\nApplicable everywhere.",
+      "revId": "324f62a8377f2f52412fe2a75dca7ab49c383e17",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "da8c7e7d_7b549321",
+        "filename": "src/5gnrmac/rg_dux.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-13T07:29:25Z",
+      "side": 1,
+      "message": "In some functions declaration, old format was retained i.e. each param in newline.\nWhereas, other functions were changed to have all params in one line. \nLets be consistent everywhere.",
+      "revId": "324f62a8377f2f52412fe2a75dca7ab49c383e17",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b9b41df0_cdfc3266",
+        "filename": "src/5gnrmac/rg_dux.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 489,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-13T07:29:25Z",
+      "side": 1,
+      "message": "make sure to give proper spaces. Applicable everywhere",
+      "revId": "324f62a8377f2f52412fe2a75dca7ab49c383e17",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8ff37085_e6a06cbe",
+        "filename": "src/5gnrmac/rg_lim.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-13T07:29:25Z",
+      "side": 1,
+      "message": "check the purpose of this flag",
+      "revId": "324f62a8377f2f52412fe2a75dca7ab49c383e17",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "6e5a4fd0_6598280f",
         "filename": "src/5gnrrlc/kw_uim.c",
         "patchSetId": 1
