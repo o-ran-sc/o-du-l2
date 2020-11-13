@@ -16,6 +16,24 @@
       "revId": "c41562c2e600b828dd5fa38dd854c47272fc1873",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3e4aaa47_99184011",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2020-11-13T17:13:11Z",
+      "side": 1,
+      "message": "Currently GlobalDefs.h file itself contain O1_ENABLE flag definition. So I intensionaly kept it outside of O1_ENABLE flag.\nIn next patch O1_ENABLE flag will be set via makefile option.",
+      "parentUuid": "c63f3a54_1700c128",
+      "revId": "c41562c2e600b828dd5fa38dd854c47272fc1873",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
