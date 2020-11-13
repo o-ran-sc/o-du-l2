@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c63f3a54_1700c128",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-13T15:42:17Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this declaration also go within O1_ENABLE flag?",
+      "revId": "c41562c2e600b828dd5fa38dd854c47272fc1873",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
