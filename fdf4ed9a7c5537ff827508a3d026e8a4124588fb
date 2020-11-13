@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "e6169a51_e232416f",
+        "filename": "src/o1/GlobalDefs.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2020-11-13T04:03:42Z",
+      "side": 1,
+      "message": "Yes, this is to keeping the global declarations within O1 class scope to avoid variable name conflicts.",
+      "parentUuid": "68b2862e_bc658151",
+      "revId": "fdf4ed9a7c5537ff827508a3d026e8a4124588fb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a195c3d1_865b6c58",
         "filename": "src/o1/TcpServer.cpp",
         "patchSetId": 2
@@ -33,6 +51,24 @@
       "revId": "fdf4ed9a7c5537ff827508a3d026e8a4124588fb",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bde83ced_c2eebc35",
+        "filename": "src/o1/TcpServer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2020-11-13T04:03:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a195c3d1_865b6c58",
+      "revId": "fdf4ed9a7c5537ff827508a3d026e8a4124588fb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "d22c730a_79a66ca0",
+        "filename": "src/o1/o1_client/AlarmInterface.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2020-11-13T04:03:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "faf21e08_7557cfa1",
+      "revId": "fdf4ed9a7c5537ff827508a3d026e8a4124588fb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7943005b_48ddfc19",
         "filename": "src/o1/o1_client/AlarmInterface.c",
         "patchSetId": 2
@@ -67,6 +121,24 @@
       "revId": "fdf4ed9a7c5537ff827508a3d026e8a4124588fb",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e1a6cd81_3b1cac86",
+        "filename": "src/o1/o1_client/AlarmInterface.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2020-11-13T04:03:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7943005b_48ddfc19",
+      "revId": "fdf4ed9a7c5537ff827508a3d026e8a4124588fb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "ed64291e_6ea5eeec",
+        "filename": "src/o1/o1_client/AlarmInterface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2020-11-13T04:03:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e148ec1_45a89993",
+      "revId": "fdf4ed9a7c5537ff827508a3d026e8a4124588fb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3be45600_7a5a356d",
         "filename": "src/o1/o1_client/GlobalDefs.h",
         "patchSetId": 2
@@ -101,6 +191,24 @@
       "revId": "fdf4ed9a7c5537ff827508a3d026e8a4124588fb",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0dc5cee1_4ab6fdbc",
+        "filename": "src/o1/o1_client/GlobalDefs.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2020-11-13T04:03:42Z",
+      "side": 1,
+      "message": "Yes this needs to be changed to IP of machine running O1 module but since both the O1 and ODU code is running on same machine loop back IP is used for testing for now. We can mention this in the README",
+      "parentUuid": "3be45600_7a5a356d",
+      "revId": "fdf4ed9a7c5537ff827508a3d026e8a4124588fb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
