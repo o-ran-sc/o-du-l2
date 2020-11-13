@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6aa98e90_477e68ea",
+        "filename": "src/o1/o1_client/AlarmInterface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-13T05:17:22Z",
+      "side": 1,
+      "message": "Do return types have to be int? We use uint8_t unless there is a bigger/signed value return expected",
+      "revId": "7028fa724efbdc9d87c0e69c3eac4891d3b7c88a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
