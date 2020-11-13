@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "8032dc8d_f2834827",
+        "filename": "src/o1/Alarm.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2020-11-13T12:20:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c9b61e13_d25bc46b",
+      "revId": "a3c9d36c8a3dadd17072c3c4bb4bba2a23ae8095",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ee93eea5_606f5531",
         "filename": "src/o1/AlarmManager.cpp",
         "patchSetId": 4
@@ -33,6 +51,24 @@
       "revId": "a3c9d36c8a3dadd17072c3c4bb4bba2a23ae8095",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5ef33b32_26c89141",
+        "filename": "src/o1/AlarmManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2020-11-13T12:20:07Z",
+      "side": 1,
+      "message": "Will do that in next patch for whole code",
+      "parentUuid": "ee93eea5_606f5531",
+      "revId": "a3c9d36c8a3dadd17072c3c4bb4bba2a23ae8095",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "d6d1fd36_d8532978",
+        "filename": "src/o1/AlarmManager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2020-11-13T12:20:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0b7a75c8_32d0ce2f",
+      "revId": "a3c9d36c8a3dadd17072c3c4bb4bba2a23ae8095",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c2cb0458_cf40239d",
         "filename": "src/o1/o1_client/Alarm.h",
         "patchSetId": 4
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "c4a3800c_f5968076",
+        "filename": "src/o1/o1_client/Alarm.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2020-11-13T12:20:07Z",
+      "side": 1,
+      "message": "This is as per defined 3gpp in yang model",
+      "parentUuid": "c2cb0458_cf40239d",
+      "revId": "a3c9d36c8a3dadd17072c3c4bb4bba2a23ae8095",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4603fa75_c6614655",
         "filename": "src/o1/o1_client/Alarm.h",
         "patchSetId": 4
@@ -84,6 +156,24 @@
       "revId": "a3c9d36c8a3dadd17072c3c4bb4bba2a23ae8095",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b2d0dfdb_40a02730",
+        "filename": "src/o1/o1_client/Alarm.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2020-11-13T12:20:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4603fa75_c6614655",
+      "revId": "a3c9d36c8a3dadd17072c3c4bb4bba2a23ae8095",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
