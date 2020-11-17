@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5cef43b2_674cca07",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1326,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-17T09:12:40Z",
+      "side": 1,
+      "message": "why keep this commented if PARAM.req is not being initiated at all?",
+      "revId": "093cfdd3bbd1ed7b150cf8ddbeffc0a3c5bf0d96",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
