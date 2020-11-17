@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "94c74dca_f63b630f",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3399,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-17T12:06:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8cbf0346_7837f587",
+      "revId": "5c88aa638b4c89125d95bd044504a13be6a62ba6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a7dba00a_48fd0df2",
         "filename": "src/5gnrmac/rg_lmm.c",
         "patchSetId": 4
@@ -33,6 +51,24 @@
       "revId": "5c88aa638b4c89125d95bd044504a13be6a62ba6",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "13fc8544_197087f8",
+        "filename": "src/5gnrmac/rg_lmm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1272,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-17T12:06:53Z",
+      "side": 1,
+      "message": "File needed for MAC general configuration.",
+      "parentUuid": "a7dba00a_48fd0df2",
+      "revId": "5c88aa638b4c89125d95bd044504a13be6a62ba6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
