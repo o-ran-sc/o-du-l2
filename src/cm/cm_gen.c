@@ -97,17 +97,11 @@ uint16_t gTransId = 0;
 *
 */
   
-#ifdef ANSI
 S16 cmPkDateTime
 (
 DateTime *dateTime,       /* date and time */
 Buffer *mBuf              /* message buffer */
 )
-#else
-S16 cmPkDateTime(dateTime, mBuf)
-DateTime *dateTime;       /* date and time */
-Buffer *mBuf;             /* message buffer */
-#endif
 {
 
    /*-- cm_gen_c_001.main_36 - added for micro seconds --*/
@@ -140,17 +134,11 @@ Buffer *mBuf;             /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmPkDuration
 (
 Duration *duration,        /* duration */
 Buffer   *mBuf             /* message buffer */
 )
-#else
-S16 cmPkDuration(duration, mBuf)
-Duration *duration;        /* duration */
-Buffer   *mBuf;            /* message buffer */
-#endif
 {
 
    CMCHKPK(oduUnpackUInt8, duration->tenths, mBuf);
@@ -176,17 +164,11 @@ Buffer   *mBuf;            /* message buffer */
 *
 */
  
-#ifdef ANSI
 S16 oduPackPointer
 (
 PTR      ptr,              /* pointer */
 Buffer   *mBuf             /* message buffer */
 )
-#else
-S16 oduPackPointer(ptr, mBuf)
-PTR      ptr;              /* pointer */
-Buffer   *mBuf;            /* message buffer */
-#endif
 {
    Data pkArray[PTRSIZE];   /* array for packing */
    S16 ret;                 /* return code */
@@ -289,17 +271,11 @@ Buffer   *mBuf;            /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmPkEntityId
 (
 EntityId *entityId,        /* entity id */
 Buffer   *mBuf             /* message buffer */
 )
-#else
-S16 cmPkEntityId(entityId, mBuf)
-EntityId *entityId;        /* entity id */
-Buffer   *mBuf;            /* message buffer */
-#endif
 {
 
    CMCHKPK(cmPkInst, entityId->inst, mBuf);
@@ -323,17 +299,11 @@ Buffer   *mBuf;            /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmPkElmntId
 (
 ElmntId *elmntId,         /* element id */
 Buffer  *mBuf             /* message buffer */
 )
-#else
-S16 cmPkElmntId(elmntId, mBuf)
-ElmntId *elmntId;         /* element id */
-Buffer  *mBuf;            /* message buffer */
-#endif
 {
 
    CMCHKPK(cmPkElmntInst3, elmntId->elmntInst3, mBuf); 
@@ -359,17 +329,11 @@ Buffer  *mBuf;            /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmPkMemoryId
 (
 MemoryId *memoryId,        /* memoryId */
 Buffer   *mBuf             /* message buffer */
 )
-#else
-S16 cmPkMemoryId(memoryId, mBuf)
-MemoryId *memoryId;        /* memoryId */
-Buffer   *mBuf;            /* message buffer */
-#endif
 {
 
    CMCHKPK(cmPkPool, memoryId->pool, mBuf); 
@@ -393,17 +357,11 @@ Buffer   *mBuf;            /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmPkSystemId
 (
 SystemId *systemId,         /* system id */
 Buffer   *mBuf              /* message buffer */
 )
-#else
-S16 cmPkSystemId(systemId, mBuf)
-SystemId *systemId;         /* system id */
-Buffer   *mBuf;             /* message buffer */
-#endif
 {
    Txt *p;                  /* part number string */
 
@@ -441,17 +399,11 @@ Buffer   *mBuf;             /* message buffer */
  *
  */
 
-#ifdef ANSI
 S16 cmPkProtAddr
 (
 ProtAddr     *pAddr,     /* protocol address */
 Buffer       *mBuf       /* buffer */
 )
-#else
-S16 cmPkProtAddr(pAddr, mBuf)
-ProtAddr     *pAddr;      /* protocol address */
-Buffer       *mBuf;          /* buffer */
-#endif
 {
    uint8_t              j;                  /* Index */
 
@@ -489,17 +441,11 @@ Buffer       *mBuf;          /* buffer */
  *
  */
 
-#ifdef ANSI
 S16 cmPkProtAddrTbl
 (
 ProtAddrTbl  *protAddr,      /* protocol address table */
 Buffer       *mBuf          /* buffer */
 )
-#else
-S16 cmPkProtAddrTbl(protAddr, mBuf)
-ProtAddrTbl  *protAddr;      /* protocol address table */
-Buffer       *mBuf;          /* buffer */
-#endif
 {
    uint8_t              i;                  /* index */
    uint8_t              j;                  /* Index */
@@ -547,17 +493,11 @@ Buffer       *mBuf;          /* buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmPkAddrs
 (
 Addrs *addrs,           /* address */
 Buffer *mBuf            /* message buffer */
 )
-#else
-S16 cmPkAddrs(addrs, mBuf)
-Addrs *addrs;           /* address */
-Buffer *mBuf;           /* message buffer */
-#endif
 {
    uint8_t i;                /* loop counter */
 
@@ -591,17 +531,11 @@ Buffer *mBuf;           /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmPkShrtAddrs
 (
 ShrtAddrs *addrs,          /* address */
 Buffer    *mBuf            /* message buffer */
 )
-#else
-S16 cmPkShrtAddrs(addrs, mBuf)
-ShrtAddrs *addrs;          /* address */
-Buffer    *mBuf;           /* message buffer */
-#endif 
 {
    uint8_t i;                /* loop counter */
 
@@ -634,17 +568,11 @@ Buffer    *mBuf;           /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmPkAddrMask
 (
 uint8_t *mask,             /* pointer to address mask array */
 Buffer  *mBuf         /* message buffer */
 )
-#else
-S16 cmPkAddrMask(mask, mBuf)
-uint8_t *mask;             /* pointer to address mask array */
-Buffer  *mBuf;        /* message buffer */
-#endif
 {
    S16 i;             /* counter */
 
@@ -673,17 +601,11 @@ Buffer  *mBuf;        /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmPkBndCfg
 (
 BndCfg *bndCfg,         /* bndCfg */
 Buffer *mBuf            /* message buffer */
 )
-#else
-S16 cmPkBndCfg(bndCfg, mBuf)
-BndCfg *bndCfg;         /* bndCfg */
-Buffer *mBuf;           /* message buffer */
-#endif
 {
    Txt *p;              /* temporary */
 
@@ -721,17 +643,11 @@ Buffer *mBuf;           /* message buffer */
 *       File:  cm_gen.c
 *
 */
-#ifdef ANSI
 S16 cmPkPst
 (
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmPkPst(pst, mBuf)
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    
    CMCHKPK(cmPkEvent, pst->event, mBuf);
@@ -767,17 +683,11 @@ Buffer *mBuf;
  *
  */
   
-#ifdef ANSI
 S16 cmPkElmtHdr
 (
 ElmtHdr *m,                  /* element header */
 Buffer  *mBuf                /* message buffer */
 )
-#else
-S16 cmPkElmtHdr(m, mBuf)
-ElmtHdr *m;                  /* element header */
-Buffer  *mBuf;               /* message buffer */
-#endif
 {
  
 #if (LCAMT || ATM_BISUP)
@@ -813,17 +723,11 @@ Buffer  *mBuf;               /* message buffer */
  *
  */
   
-#ifdef ANSI
 S16 cmPkTknUInt8
 (
 TknUInt8  *tknUInt8,              /* token uint8_t */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 cmPkTknUInt8(tknUInt8, mBuf)
-TknUInt8  *tknUInt8;              /* token uint8_t */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
 
    if (tknUInt8->pres)
@@ -853,17 +757,11 @@ Buffer *mBuf;               /* message buffer */
  *
  */
   
-#ifdef ANSI
 S16 cmPkTknS8
 (
 TknS8  *tknS8,              /* token S8 */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 cmPkTknS8(tknS8, mBuf)
-TknS8  *tknS8;              /* token S8 */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
  
    if (tknS8->pres)
@@ -893,17 +791,11 @@ Buffer *mBuf;               /* message buffer */
  *
  */
   
-#ifdef ANSI
 S16 cmPkTknUInt16
 (
 TknUInt16 *tknUInt16,             /* token uint16_t */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 cmPkTknUInt16(tknUInt16, mBuf)
-TknUInt16 *tknUInt16;             /* token uint16_t */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
 
    if (tknUInt16->pres)
@@ -933,17 +825,11 @@ Buffer *mBuf;               /* message buffer */
  *
  */
   
-#ifdef ANSI
 S16 cmPkTknUInt32
 (
 TknUInt32 *tknUInt32,             /* token uint32_t */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 cmPkTknUInt32(tknUInt32, mBuf)
-TknUInt32 *tknUInt32;             /* token uint32_t */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
 
    if (tknUInt32->pres)
@@ -973,17 +859,11 @@ Buffer *mBuf;               /* message buffer */
  *
  */
   
-#ifdef ANSI
 S16 cmPkTknStr
 (
 TknStr *tknStr,             /* token string */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 cmPkTknStr(tknStr, mBuf)
-TknStr *tknStr;             /* token string */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
    Cntr i;                    /* counter */
 
@@ -1021,17 +901,11 @@ Buffer *mBuf;               /* message buffer */
  *
  */
   
-#ifdef ANSI
 S16 cmPkTknStrM
 (
 TknStrM *tknStr,             /* token string */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 cmPkTknStrM(tknStr, mBuf)
-TknStrM *tknStr;             /* token string */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
    Cntr i;                    /* counter */
 
@@ -1069,17 +943,11 @@ Buffer *mBuf;               /* message buffer */
  *
  */
   
-#ifdef ANSI
 S16 cmPkTknStrS
 (
 TknStrS *tknStr,             /* token string */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 cmPkTknStrS(tknStr, mBuf)
-TknStrS *tknStr;             /* token string */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
    Cntr i;                    /* counter */
 
@@ -1117,17 +985,11 @@ Buffer *mBuf;               /* message buffer */
  *
  */
   
-#ifdef ANSI
 S16 cmPkTknStrE
 (
 TknStrE *tknStr,             /* token string */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 cmPkTknStrE(tknStr, mBuf)
-TknStrE *tknStr;             /* token string */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
    Cntr i;                    /* counter */
 
@@ -1167,17 +1029,11 @@ Buffer *mBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmPkPnNodeId
 (
 PnNodeId  *src,     /* source PNNI Node Id */
 Buffer *mBuf        /* message buffer */
 )
-#else
-S16 cmPkPnNodeId (src, mBuf)
-PnNodeId  *src;     /* source PNNI Node Id */
-Buffer *mBuf;       /* message buffer */
-#endif
 {
    S16 i;
    
@@ -1207,17 +1063,11 @@ Buffer *mBuf;       /* message buffer */
  *
  */
   
-#ifdef ANSI
 S16 cmPkTknStr4
 (
 TknStr4 *tknStr,             /* token string */
 Buffer  *mBuf                /* message buffer */
 )
-#else
-S16 cmPkTknStr4(tknStr, mBuf)
-TknStr4 *tknStr;             /* token string */
-Buffer  *mBuf;               /* message buffer */
-#endif
 {
 
    CMPKTKNSTR(tknStr, mBuf);
@@ -1242,17 +1092,11 @@ Buffer  *mBuf;               /* message buffer */
  *
  */
   
-#ifdef ANSI
 S16 cmPkTknStr12
 (
 TknStr12 *tknStr,             /* token string */
 Buffer   *mBuf                /* message buffer */
 )
-#else
-S16 cmPkTknStr12(tknStr, mBuf)
-TknStr12 *tknStr;             /* token string */
-Buffer   *mBuf;               /* message buffer */
-#endif
 {
 
    CMPKTKNSTR(tknStr, mBuf);
@@ -1276,17 +1120,11 @@ Buffer   *mBuf;               /* message buffer */
  *
  */
   
-#ifdef ANSI
 S16 cmPkTknStr32
 (
 TknStr32 *tknStr,             /* token string */
 Buffer   *mBuf                /* message buffer */
 )
-#else
-S16 cmPkTknStr32(tknStr, mBuf)
-TknStr32 *tknStr;             /* token string */
-Buffer   *mBuf;               /* message buffer */
-#endif
 {
 
    CMPKTKNSTR(tknStr, mBuf);
@@ -1310,17 +1148,11 @@ Buffer   *mBuf;               /* message buffer */
  *
  */
   
-#ifdef ANSI
 S16 cmPkTknStr64
 (
 TknStr64 *tknStr,             /* token string */
 Buffer   *mBuf                /* message buffer */
 )
-#else
-S16 cmPkTknStr64(tknStr, mBuf)
-TknStr64 *tknStr;             /* token string */
-Buffer   *mBuf;               /* message buffer */
-#endif
 {
 
    CMPKTKNSTR(tknStr, mBuf);
@@ -1344,17 +1176,11 @@ Buffer   *mBuf;               /* message buffer */
  *
  */
   
-#ifdef ANSI
 S16 cmPkTknStr132
 (
 TknStr132 *tknStr,             /* token string */
 Buffer   *mBuf                /* message buffer */
 )
-#else
-S16 cmPkTknStr132(tknStr, mBuf)
-TknStr132 *tknStr;             /* token string */
-Buffer   *mBuf;               /* message buffer */
-#endif
 {
 
    CMPKTKNSTR(tknStr, mBuf);
@@ -1378,17 +1204,11 @@ Buffer   *mBuf;               /* message buffer */
  *
  */
   
-#ifdef ANSI
 S16 cmPkTknStr256
 (
 TknStr256 *tknStr,             /* token string */
 Buffer    *mBuf                /* message buffer */
 )
-#else
-S16 cmPkTknStr256(tknStr, mBuf)
-TknStr256 *tknStr;             /* token string */
-Buffer    *mBuf;               /* message buffer */
-#endif
 {
 
    CMPKTKNSTR(tknStr, mBuf);
@@ -1412,17 +1232,11 @@ Buffer    *mBuf;               /* message buffer */
  *
  */
   
-#ifdef ANSI
 S16 cmPkTknOid
 (
 TknOid   *tknOid,             /* Object Identifier token */
 Buffer   *mBuf                /* message buffer */
 )
-#else
-S16 cmPkTknOid(tknOid, mBuf)
-TknOid   *tknOid;             /* Object Identifier token */
-Buffer   *mBuf;               /* message buffer */
-#endif
 {
    uint16_t    i;
 
@@ -1464,17 +1278,11 @@ Buffer   *mBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmPkTknS32
 (
 TknS32 *tknS32,             /* token S32 */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 cmPkTknS32(tknS32, mBuf)
-TknS32 *tknS32;             /* token S32 */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
 
    if (tknS32->pres)
@@ -1504,17 +1312,11 @@ Buffer *mBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmPkHeader
 (
 Header *header,             /* header */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 cmPkHeader(header, mBuf)
-Header *header;             /* header */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
 
 #ifdef LMINT3
@@ -1549,17 +1351,11 @@ Buffer *mBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmPkCmStatus
 (
 CmStatus *sta,              /* status structure */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 cmPkCmStatus(sta, mBuf)
-CmStatus *sta;              /* status structure */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
 
    CMCHKPK(oduUnpackUInt16, sta->reason, mBuf);
@@ -1583,17 +1379,11 @@ Buffer *mBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmPkCmAlarm
 (
 CmAlarm *alarm,            /* alarm structure */
 Buffer  *mBuf              /* message buffer */
 )
-#else
-S16 cmPkCmAlarm(alarm, mBuf)
-CmAlarm *alarm;             /* alarm structure */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
 
    CMCHKPK(oduUnpackUInt16, alarm->cause, mBuf);
@@ -1619,17 +1409,11 @@ Buffer *mBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmPkSmCfg
 (
 SmCfg *smCfg,           /* stack manager */
 Buffer *mBuf            /* message buffer */
 )
-#else
-S16 cmPkSmCfg(smCfg, mBuf)
-SmCfg *smCfg;           /* stack manager */
-Buffer *mBuf;           /* message buffer */
-#endif
 {
 
    CMCHKPK(cmPkSelector, smCfg->selector, mBuf); 
@@ -1658,17 +1442,11 @@ Buffer *mBuf;           /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmPkTmrCfg
 (
 TmrCfg *tmrCfg,         /* timer configuration */
 Buffer *mBuf            /* message buffer */
 )
-#else
-S16 cmPkTmrCfg(tmrCfg, mBuf)
-TmrCfg *tmrCfg;         /* timer configuration */
-Buffer *mBuf;           /* message buffer */
-#endif
 {
 
    CMCHKPK(oduUnpackUInt16, tmrCfg->val, mBuf);
@@ -1692,17 +1470,11 @@ Buffer *mBuf;           /* message buffer */
  *
  */
   
-#ifdef ANSI
 S16 cmPkTknBuf
 (
 TknBuf *tknBuf,                /* token string */
 Buffer    *mBuf                /* message buffer */
 )
-#else
-S16 cmPkTknBuf(tknBuf, mBuf)
-TknBuf *tknBuf;                /* token string */
-Buffer    *mBuf;               /* message buffer */
-#endif
 {
 
    if(tknBuf->pres)
@@ -1739,17 +1511,11 @@ Buffer    *mBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmPkIntf
 (
 CmIntf *intf,           /* interface info */
 Buffer *mBuf            /* message buffer */
 )
-#else
-S16 cmPkIntf(intf, mBuf)
-CmIntf *intf;           /* interface info */
-Buffer *mBuf;           /* message buffer */
-#endif
 {
 
    CMCHKPK(cmPkIntfId,  intf->intfId,  mBuf); 
@@ -1779,17 +1545,11 @@ Buffer *mBuf;           /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmUnpkDateTime
 (
 DateTime *dateTime,  /* date/time structure */
 Buffer *mBuf         /* message buffer */
 )
-#else
-S16 cmUnpkDateTime(dateTime, mBuf)
-DateTime *dateTime;  /* date/time structure */
-Buffer *mBuf;        /* message buffer */
-#endif
 {
 
    CMCHKUNPK(oduPackUInt8, &dateTime->month, mBuf); 
@@ -1823,17 +1583,11 @@ Buffer *mBuf;        /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmUnpkDuration
 (
 Duration *duration,  /* duration structure */
 Buffer *mBuf         /* message buffer */
 )
-#else
-S16 cmUnpkDuration(duration, mBuf)
-Duration *duration;  /* duration structure */
-Buffer *mBuf;        /* message buffer */
-#endif
 {
 
    CMCHKUNPK(oduPackUInt8, &duration->days, mBuf); 
@@ -1859,17 +1613,11 @@ Buffer *mBuf;        /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 oduUnpackPointer
 (
 PTR *ptr,  /* duration structure */
 Buffer *mBuf    /* message buffer */
 )
-#else
-S16 oduUnpackPointer(ptr, mBuf)
-PTR *ptr;  /* duration structure */
-Buffer *mBuf;   /* message buffer */
-#endif
 {
    uint16_t tmp16;               /* temporary value */
    uint32_t tmp32;               /* temporary value */
@@ -1990,17 +1738,11 @@ Buffer *mBuf;   /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmUnpkEntityId
 (
 EntityId *entityId,        /* entity id */
 Buffer   *mBuf             /* message buffer */
 )
-#else
-S16 cmUnpkEntityId(entityId, mBuf)
-EntityId *entityId;        /* entity id */
-Buffer   *mBuf;            /* message buffer */
-#endif
 {
 
    CMCHKUNPK(cmUnpkEnt, &entityId->ent, mBuf); 
@@ -2024,17 +1766,11 @@ Buffer   *mBuf;            /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmUnpkElmntId
 (
 ElmntId *elmntId,         /* element id */
 Buffer  *mBuf             /* message buffer */
 )
-#else
-S16 cmUnpkElmntId(elmntId, mBuf)
-ElmntId *elmntId;         /* element id */
-Buffer  *mBuf;            /* message buffer */
-#endif
 {
 
    CMCHKUNPK(cmUnpkElmnt, &elmntId->elmnt, mBuf); 
@@ -2060,17 +1796,11 @@ Buffer  *mBuf;            /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmUnpkMemoryId
 (
 MemoryId *memoryId,        /* memoryId */
 Buffer   *mBuf             /* message buffer */
 )
-#else
-S16 cmUnpkMemoryId(memoryId, mBuf)
-MemoryId *memoryId;        /* memoryId */
-Buffer   *mBuf;            /* message buffer */
-#endif
 {
 
    CMCHKUNPK(cmUnpkRegion, &memoryId->region,   mBuf); 
@@ -2094,17 +1824,11 @@ Buffer   *mBuf;            /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmUnpkSystemId
 (
 SystemId *systemId,         /* system id */
 Buffer   *mBuf              /* message buffer */
 )
-#else
-S16 cmUnpkSystemId(systemId, mBuf)
-SystemId *systemId;         /* system id */
-Buffer   *mBuf;             /* message buffer */
-#endif
 {
    S16 i;               /* loop counter */
    MsgLen len;
@@ -2142,17 +1866,11 @@ Buffer   *mBuf;             /* message buffer */
  *
  */
 
-#ifdef ANSI
 S16 cmUnpkProtAddr
 (
 ProtAddr     *pAddr,         /* protocol address */
 Buffer       *mBuf           /* buffer */
 )
-#else
-S16 cmUnpkProtAddr(pAddr, mBuf)
-ProtAddr     *pAddr;         /* protocol address table */
-Buffer       *mBuf;          /* buffer */
-#endif
 {
    uint8_t               j;                  /* Index */
 
@@ -2188,17 +1906,11 @@ Buffer       *mBuf;          /* buffer */
  *
  */
 
-#ifdef ANSI
 S16 cmUnpkProtAddrTbl
 (
 ProtAddrTbl  *protAddr,      /* protocol address table */
 Buffer       *mBuf           /* buffer */
 )
-#else
-S16 cmUnpkProtAddrTbl(protAddr, mBuf)
-ProtAddrTbl  *protAddr;      /* protocol address table */
-Buffer       *mBuf;          /* buffer */
-#endif
 {
    uint8_t               i;                  /* index */
    uint8_t               j;                  /* Index */
@@ -2241,17 +1953,11 @@ Buffer       *mBuf;          /* buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmUnpkAddrs
 (
 Addrs *addrs,     /* address */
 Buffer *mBuf      /* message buffer */
 )
-#else
-S16 cmUnpkAddrs(addrs, mBuf)
-Addrs *addrs;     /* address */
-Buffer *mBuf;     /* message buffer */
-#endif
 {
    uint8_t i;          /* loop counter */
 
@@ -2283,17 +1989,11 @@ Buffer *mBuf;     /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmUnpkShrtAddrs
 (
 ShrtAddrs *addrs,    /* address */
 Buffer    *mBuf      /* message buffer */
 )
-#else
-S16 cmUnpkShrtAddrs(addrs, mBuf)
-ShrtAddrs *addrs;    /* address */
-Buffer    *mBuf;     /* message buffer */
-#endif
 {
    uint8_t i;          /* loop counter */
 
@@ -2325,17 +2025,11 @@ Buffer    *mBuf;     /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmUnpkAddrMask
 (
 uint8_t *mask,             /* pointer to address mask */
 Buffer  *mBuf         /* message buffer */
 )
-#else
-S16 cmUnpkAddrMask(mask, mBuf)
-uint8_t *mask;             /* pointer to address mask */
-Buffer  *mBuf;        /* message buffer */
-#endif
 {
    S16 i;             /* counter */
 
@@ -2363,17 +2057,11 @@ Buffer  *mBuf;        /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmUnpkBndCfg
 (
 BndCfg *bndCfg,         /* bndCfg */
 Buffer *mBuf            /* message buffer */
 )
-#else
-S16 cmUnpkBndCfg(bndCfg, mBuf)
-BndCfg *bndCfg;         /* bndCfg */
-Buffer *mBuf;           /* message buffer */
-#endif
 {
    S16 i;               /* loop counter */
 
@@ -2410,17 +2098,11 @@ Buffer *mBuf;           /* message buffer */
 *       File:  cm_gen.c
 *
 */
-#ifdef ANSI
 S16 cmUnpkPst
 (
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkPst(pst, mBuf)
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
 
 #ifdef TDS_ROLL_UPGRADE_SUPPORT
@@ -2456,17 +2138,11 @@ Buffer *mBuf;
 *
 */
   
-#ifdef ANSI
 S16 cmUnpkElmtHdr
 (
 ElmtHdr *m,                  /* element header */
 Buffer  *mBuf                /* message buffer */
 )
-#else
-S16 cmUnpkElmtHdr(m, mBuf)
-ElmtHdr *m;                  /* element header */
-Buffer  *mBuf;               /* message buffer */
-#endif
 {
  
    /* Present */
@@ -2502,17 +2178,11 @@ Buffer  *mBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmUnpkTknUInt8
 (
 TknUInt8 *tknUInt8,               /* token uint8_t */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 cmUnpkTknUInt8(tknUInt8, mBuf)
-TknUInt8 *tknUInt8;               /* token uint8_t */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
 
    /* Token Header */
@@ -2542,17 +2212,11 @@ Buffer *mBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmUnpkTknS8
 (
 TknS8 *tknS8,               /* token S8 */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 cmUnpkTknS8(tknS8, mBuf)
-TknS8 *tknS8;               /* token S8 */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
  
    /* Token Header */
@@ -2582,17 +2246,11 @@ Buffer *mBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmUnpkTknUInt16
 (
 TknUInt16 *tknUInt16,             /* token uint16_t */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 cmUnpkTknUInt16(tknUInt16, mBuf)
-TknUInt16 *tknUInt16;             /* token uint16_t */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
 
    /* Token Header */
@@ -2622,17 +2280,11 @@ Buffer *mBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmUnpkTknUInt32
 (
 TknUInt32 *tknUInt32,             /* token uint32_t */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 cmUnpkTknUInt32(tknUInt32, mBuf)
-TknUInt32 *tknUInt32;             /* token uint32_t */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
 
    /* Token Header */
@@ -2661,17 +2313,11 @@ Buffer *mBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmUnpkTknStr
 (
 TknStr *tknStr,             /* token string */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 cmUnpkTknStr(tknStr, mBuf)
-TknStr *tknStr;             /* token string */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
    Cntr i;                     /* counter */
 
@@ -2710,17 +2356,11 @@ Buffer *mBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmUnpkTknStrM
 (
 TknStrM *tknStr,             /* token string */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 cmUnpkTknStrM(tknStr, mBuf)
-TknStrM *tknStr;             /* token string */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
    Cntr i;                     /* counter */
 
@@ -2760,17 +2400,11 @@ Buffer *mBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmUnpkTknStrS
 (
 TknStrS *tknStr,             /* token string */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 cmUnpkTknStrS(tknStr, mBuf)
-TknStrS *tknStr;             /* token string */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
    Cntr i;                     /* counter */
 
@@ -2810,17 +2444,11 @@ Buffer *mBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmUnpkTknStrE
 (
 TknStrE *tknStr,             /* token string */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 cmUnpkTknStrE(tknStr, mBuf)
-TknStrE *tknStr;             /* token string */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
    Cntr i;                     /* counter */
 
@@ -2862,17 +2490,11 @@ Buffer *mBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmUnpkPnNodeId
 (
 PnNodeId  *dst,     /* source PNNI Node Id */
 Buffer *mBuf        /* message buffer */
 )
-#else
-S16 cmUnpkPnNodeId (dst, mBuf)
-PnNodeId  *dst;     /* source PNNI Node Id */
-Buffer *mBuf;       /* message buffer */
-#endif
 {
    S16 i;
    
@@ -2902,17 +2524,11 @@ Buffer *mBuf;       /* message buffer */
  *
  */
   
-#ifdef ANSI
 S16 cmUnpkTknStr4
 (
 TknStr4 *tknStr,             /* token string */
 Buffer  *mBuf                /* message buffer */
 )
-#else
-S16 cmUnpkTknStr4(tknStr, mBuf)
-TknStr4 *tknStr;             /* token string */
-Buffer  *mBuf;               /* message buffer */
-#endif
 {
 
    CMUNPKTKNSTR(tknStr, mBuf);
@@ -2937,17 +2553,11 @@ Buffer  *mBuf;               /* message buffer */
  *
  */
   
-#ifdef ANSI
 S16 cmUnpkTknStr12
 (
 TknStr12 *tknStr,             /* token string */
 Buffer   *mBuf                /* message buffer */
 )
-#else
-S16 cmUnpkTknStr12(tknStr, mBuf)
-TknStr12 *tknStr;             /* token string */
-Buffer   *mBuf;               /* message buffer */
-#endif
 {
 
    CMUNPKTKNSTR(tknStr, mBuf);
@@ -2971,17 +2581,11 @@ Buffer   *mBuf;               /* message buffer */
  *
  */
   
-#ifdef ANSI
 S16 cmUnpkTknStr32
 (
 TknStr32 *tknStr,             /* token string */
 Buffer   *mBuf                /* message buffer */
 )
-#else
-S16 cmUnpkTknStr32(tknStr, mBuf)
-TknStr32 *tknStr;             /* token string */
-Buffer   *mBuf;               /* message buffer */
-#endif
 {
 
    CMUNPKTKNSTR(tknStr, mBuf);
@@ -3005,17 +2609,11 @@ Buffer   *mBuf;               /* message buffer */
  *
  */
   
-#ifdef ANSI
 S16 cmUnpkTknStr64
 (
 TknStr64 *tknStr,             /* token string */
 Buffer   *mBuf                /* message buffer */
 )
-#else
-S16 cmUnpkTknStr64(tknStr, mBuf)
-TknStr64 *tknStr;             /* token string */
-Buffer   *mBuf;               /* message buffer */
-#endif
 {
 
    CMUNPKTKNSTR(tknStr, mBuf);
@@ -3039,17 +2637,11 @@ Buffer   *mBuf;               /* message buffer */
  *
  */
   
-#ifdef ANSI
 S16 cmUnpkTknStr132
 (
 TknStr132 *tknStr,             /* token string */
 Buffer   *mBuf                /* message buffer */
 )
-#else
-S16 cmUnpkTknStr132(tknStr, mBuf)
-TknStr132 *tknStr;             /* token string */
-Buffer   *mBuf;               /* message buffer */
-#endif
 {
 
    CMUNPKTKNSTR(tknStr, mBuf);
@@ -3073,17 +2665,11 @@ Buffer   *mBuf;               /* message buffer */
  *
  */
   
-#ifdef ANSI
 S16 cmUnpkTknStr256
 (
 TknStr256 *tknStr,             /* token string */
 Buffer    *mBuf                /* message buffer */
 )
-#else
-S16 cmUnpkTknStr256(tknStr, mBuf)
-TknStr256 *tknStr;             /* token string */
-Buffer    *mBuf;               /* message buffer */
-#endif
 {
 
    CMUNPKTKNSTR(tknStr, mBuf);
@@ -3107,17 +2693,11 @@ Buffer    *mBuf;               /* message buffer */
  *
  */
   
-#ifdef ANSI
 S16 cmUnpkTknOid
 (
 TknOid   *tknOid,             /* Object Identifier token */
 Buffer   *mBuf                /* message buffer */
 )
-#else
-S16 cmUnpkTknOid(tknOid, mBuf)
-TknOid   *tknOid;             /* Object Identifier token */
-Buffer   *mBuf;               /* message buffer */
-#endif
 {
    uint16_t    i;
 
@@ -3161,17 +2741,11 @@ Buffer   *mBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmUnpkTknS32
 (
 TknS32 *tknS32,             /* token S32 */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 cmUnpkTknS32(tknS32, mBuf)
-TknS32 *tknS32;             /* token S32 */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
 
    /* Token Header */
@@ -3201,17 +2775,11 @@ Buffer *mBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmUnpkHeader
 (
 Header *header,   /* header structure */
 Buffer *mBuf      /* message buffer */
 )
-#else
-S16 cmUnpkHeader(header, mBuf)
-Header *header;   /* header structure */
-Buffer *mBuf;     /* message buffer */
-#endif
 {
 
    CMCHKUNPK(oduPackUInt16, &header->msgLen, mBuf); 
@@ -3246,17 +2814,11 @@ Buffer *mBuf;     /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmUnpkCmStatus
 (
 CmStatus *sta,              /* status structure */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 cmUnpkCmStatus(sta, mBuf)
-CmStatus *sta;              /* status structure */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
 
    CMCHKUNPK(oduPackUInt16, &sta->status, mBuf);
@@ -3280,17 +2842,11 @@ Buffer *mBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmUnpkCmAlarm
 (
 CmAlarm *alarm,             /* alarm structure */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 cmUnpkCmAlarm(alarm, mBuf)
-CmAlarm *alarm;             /* alarm structure */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
 
    CMCHKUNPK(cmUnpkDateTime, &alarm->dt, mBuf);
@@ -3316,17 +2872,11 @@ Buffer *mBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmUnpkSmCfg
 (
 SmCfg *smCfg,           /* stack manager */
 Buffer *mBuf            /* message buffer */
 )
-#else
-S16 cmUnpkSmCfg(smCfg, mBuf)
-SmCfg *smCfg;           /* stack manager */
-Buffer *mBuf;           /* message buffer */
-#endif
 {
 
    CMCHKUNPK(cmUnpkEnt, &smCfg->ent, mBuf); 
@@ -3355,17 +2905,11 @@ Buffer *mBuf;           /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmUnpkTmrCfg
 (
 TmrCfg *tmrCfg,         /* timer configuration */
 Buffer *mBuf            /* message buffer */
 )
-#else
-S16 cmUnpkTmrCfg(tmrCfg, mBuf)
-TmrCfg *tmrCfg;         /* timer configuration */
-Buffer *mBuf;           /* message buffer */
-#endif
 {
 
    CMCHKUNPK(oduUnpackBool, &tmrCfg->enb, mBuf); 
@@ -3388,17 +2932,11 @@ Buffer *mBuf;           /* message buffer */
  *
  */
 
-#ifdef ANSI
 S16 cmUnpkTknBuf
 (
 TknBuf *tknBuf,                /* token string */
 Buffer    **tBuf                /* message buffer */
 )
-#else
-S16 cmUnpkTknBuf(tknBuf, tBuf)
-TknBuf *tknBuf;                /* token string */
-Buffer    **tBuf;               /* message buffer */
-#endif
 {
    Buffer *mBuf;
 
@@ -3456,17 +2994,11 @@ Buffer    **tBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 cmUnpkIntf
 (
 CmIntf *intf,           /* interface info */
 Buffer *mBuf            /* message buffer */
 )
-#else
-S16 cmUnpkIntf(intf, mBuf)
-CmIntf *intf;           /* interface info */
-Buffer *mBuf;           /* message buffer */
-#endif
 {
 
    CMCHKUNPK(cmUnpkIntfVer, &intf->intfVer, mBuf); 

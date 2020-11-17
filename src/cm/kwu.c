@@ -55,23 +55,10 @@
 /****************************************************************************
  *                      Packing Functions
  ***************************************************************************/
-#ifdef ANSI
-S16 cmPkKwuBndReq
-(
-Pst * pst,
-SuId suId,
-SpId spId
-)
-#else
-S16 cmPkKwuBndReq(pst, suId, spId)
-Pst * pst;
-SuId suId;
-SpId spId;
-#endif
+S16 cmPkKwuBndReq(Pst * pst,SuId suId,SpId spId)
 {
    S16    ret1;
    Buffer *mBuf;
-
 
    mBuf = NULLP;
 
@@ -94,19 +81,7 @@ SpId spId;
 }
 
 
-#ifdef ANSI
-S16 cmPkKwuBndCfm
-(
-Pst * pst,
-SuId suId,
-uint8_t status
-)
-#else
-S16 cmPkKwuBndCfm(pst, suId, status)
-Pst * pst;
-SuId suId;
-uint8_t status;
-#endif
+S16 cmPkKwuBndCfm(Pst * pst,SuId suId,uint8_t status)
 {
    S16    ret1;
    Buffer *mBuf;
@@ -134,19 +109,7 @@ uint8_t status;
 }
 
 
-#ifdef ANSI
-S16 cmPkKwuUbndReq
-(
-Pst * pst,
-SuId suId,
-Reason reason
-)
-#else
-S16 cmPkKwuUbndReq(pst, suId, reason)
-Pst * pst;
-SuId suId;
-Reason reason;
-#endif
+S16 cmPkKwuUbndReq(Pst * pst,SuId suId,Reason reason)
 {
    S16 ret1;
    Buffer *mBuf;
@@ -173,20 +136,8 @@ Reason reason;
    return (SPstTsk(pst,mBuf));
 } /* cmPkKwuUbndReq */
 
-#ifdef ANSI
-uint8_t cmPkKwuDatReqInfo
-(
-KwuDatReqInfo *param,
-Buffer *mBuf
-)
-#else
-uint8_t cmPkKwuDatReqInfo(param, mBuf)
-KwuDatReqInfo *param;
-Buffer *mBuf;
-#endif
+uint8_t cmPkKwuDatReqInfo(KwuDatReqInfo *param,Buffer *mBuf)
 {
-
-
 #ifdef CCPU_OPT
    switch(param->lcType) {
       case CM_LTE_LCH_CCCH:
@@ -215,19 +166,7 @@ Buffer *mBuf;
 } /* cmPkKwuDatReqInfo */
 
 
-#ifdef ANSI
-uint8_t cmPkKwuDatReq
-(
-Pst * pst,
-KwuDatReqInfo* datReq,
-Buffer * mBuf
-)
-#else
-uint8_t cmPkKwuDatReq(pst, datReq, mBuf)
-Pst * pst;
-KwuDatReqInfo* datReq;
-Buffer * mBuf;
-#endif
+uint8_t cmPkKwuDatReq(Pst * pst,KwuDatReqInfo* datReq,Buffer * mBuf)
 {
 #ifdef LCKWU
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -390,17 +329,7 @@ Buffer * mBuf;
 } /* cmPkKwuDatReq */
 
 
-#ifdef ANSI
-uint8_t cmPkKwuDatIndInfo
-(
-KwuDatIndInfo *param,
-Buffer *mBuf
-)
-#else
-uint8_t cmPkKwuDatIndInfo(param, mBuf)
-KwuDatIndInfo *param;
-Buffer *mBuf;
-#endif
+uint8_t cmPkKwuDatIndInfo(KwuDatIndInfo *param,Buffer *mBuf)
 {
 
    CMCHKPK(oduUnpackUInt8, param->isOutOfSeq, mBuf);
@@ -412,19 +341,7 @@ Buffer *mBuf;
 }
 
 
-#ifdef ANSI
-uint8_t cmPkKwuDatInd
-(
-Pst * pst,
-KwuDatIndInfo* datInd,
-Buffer * mBuf
-)
-#else
-uint8_t cmPkKwuDatInd(pst, datInd, mBuf)
-Pst * pst;
-KwuDatIndInfo* datInd;
-Buffer * mBuf;
-#endif
+uint8_t cmPkKwuDatInd(Pst * pst,KwuDatIndInfo* datInd,Buffer * mBuf)
 {
 #ifdef LCKWU
     S16 ret1 = ROK;
@@ -504,17 +421,7 @@ Buffer * mBuf;
 } /* cmPkKwuDatInd */
 
 
-#ifdef ANSI
-S16 cmPkKwuDatCfmInfo
-(
-KwuDatCfmInfo *param,
-Buffer *mBuf
-)
-#else
-S16 cmPkKwuDatCfmInfo(param, mBuf)
-KwuDatCfmInfo *param;
-Buffer *mBuf;
-#endif
+S16 cmPkKwuDatCfmInfo(KwuDatCfmInfo *param,Buffer *mBuf)
 {
    register uint32_t iter;
 
@@ -528,19 +435,7 @@ Buffer *mBuf;
 } /* cmPkKwuDatCfmInfo */
 
 
-#ifdef ANSI
-S16 cmPkKwuDatCfm
-(
-Pst * pst,
-SuId suId,
-KwuDatCfmInfo* datCfm
-)
-#else
-S16 cmPkKwuDatCfm(pst, suId, datCfm)
-Pst * pst;
-SuId suId;
-KwuDatCfmInfo* datCfm;
-#endif
+S16 cmPkKwuDatCfm(Pst * pst,SuId suId,KwuDatCfmInfo* datCfm)
 {
 #if (ERRCLASS & ERRCLS_ADD_RES)
    S16 ret1= ROK;
@@ -601,19 +496,7 @@ KwuDatCfmInfo* datCfm;
 } /* cmPkKwuDatCfm */
 
 
-#ifdef ANSI
-S16 cmPkKwuDiscSduReq
-(
-Pst * pst,
-SpId spId,
-KwuDiscSduInfo* discSdu
-)
-#else
-S16 cmPkKwuDiscSduReq(pst, spId, discSdu)
-Pst * pst;
-SpId spId;
-KwuDiscSduInfo* discSdu;
-#endif
+S16 cmPkKwuDiscSduReq(Pst * pst,SpId spId,KwuDiscSduInfo* discSdu)
 {
 #ifdef LCKWU
    S16 ret1;
@@ -679,17 +562,7 @@ KwuDiscSduInfo* discSdu;
 } /* cmPkKwuDiscSduReq */
 
 
-#ifdef ANSI
-S16 cmPkKwuStaIndInfo
-(
-KwuStaIndInfo *param,
-Buffer *mBuf
-)
-#else
-S16 cmPkKwuStaIndInfo(param, mBuf)
-KwuStaIndInfo *param;
-Buffer *mBuf;
-#endif
+S16 cmPkKwuStaIndInfo(KwuStaIndInfo *param,Buffer *mBuf)
 {
    S16 i;
 
@@ -703,17 +576,7 @@ Buffer *mBuf;
    return ROK;
 }
 
-#ifdef ANSI
-S16 cmPkKwuFlowCntrlIndInfo
-(
-KwuFlowCntrlIndInfo *param,
-Buffer              *mBuf
-)
-#else
-S16 cmPkKwuFlowCntrlIndInfo(param, mBuf)
-KwuFlowCntrlIndInfo  *param;
-Buffer               *mBuf;
-#endif
+S16 cmPkKwuFlowCntrlIndInfo(KwuFlowCntrlIndInfo *param,Buffer *mBuf)
 {
 
    CMCHKPK(oduUnpackUInt32, param->pktAdmitCnt, mBuf);   
@@ -722,17 +585,7 @@ Buffer               *mBuf;
    return ROK;
 } /* cmPkKwuFlowCntrlIndInfo */
 
-#ifdef ANSI
-S16 cmUnpkKwuFlowCntrlIndInfo
-(
-KwuFlowCntrlIndInfo *param,
-Buffer              *mBuf
-)
-#else
-S16 cmUnpkKwuFlowCntrlIndInfo(param, mBuf)
-KwuFlowCntrlIndInfo  *param;
-Buffer               *mBuf;
-#endif
+S16 cmUnpkKwuFlowCntrlIndInfo(KwuFlowCntrlIndInfo *param,Buffer *mBuf)
 {
    
    CMCHKUNPK(cmUnpkLteRlcId, &param->rlcId, mBuf);
@@ -742,19 +595,7 @@ Buffer               *mBuf;
 } /* cmUnpkKwuFlowCntrlIndInfo */
 
 
-#ifdef ANSI
-S16 cmPkKwuStaInd
-(
-Pst * pst,
-SuId suId,
-KwuStaIndInfo* staInd
-)
-#else
-S16 cmPkKwuStaInd(pst, suId, staInd)
-Pst * pst;
-SuId suId;
-KwuStaIndInfo* staInd;
-#endif
+S16 cmPkKwuStaInd(Pst * pst,SuId suId,KwuStaIndInfo* staInd)
 {
 #ifdef LCKWU
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -817,19 +658,7 @@ KwuStaIndInfo* staInd;
 } /* cmPkKwuStaInd */
 
 
-#ifdef ANSI
-S16 cmPkKwuReEstCmpInd
-(
-Pst * pst,
-SuId suId,
-CmLteRlcId rlcId
-)
-#else
-S16 cmPkKwuReEstCmpInd(pst, suId, rlcId)
-Pst * pst;
-SuId suId;
-CmLteRlcId rlcId;
-#endif
+S16 cmPkKwuReEstCmpInd(Pst * pst,SuId suId,CmLteRlcId rlcId)
 {
 #ifdef LCKWU
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -875,19 +704,7 @@ CmLteRlcId rlcId;
 } /* cmPkKwuReEstCmpInd */
 
 /* kwu_c_001.main_3 added support for L2 Measurement */
-#ifdef ANSI
-S16 cmPkKwuDiscSduCfm
-(
-Pst            *pst,
-SpId           spId,
-KwuDiscSduInfo *discCfmSdu
-)
-#else
-S16 cmPkKwuDiscSduCfm(pst, spId, discCfmSdu)
-Pst            *pst;
-SpId           spId;
-KwuDiscSduInfo *discCfmSdu;
-#endif
+S16 cmPkKwuDiscSduCfm(Pst *pst,SpId spId,KwuDiscSduInfo *discCfmSdu)
 {
 #if (ERRCLASS & ERRCLS_ADD_RES)
    S16 ret1 = ROK;
@@ -947,19 +764,7 @@ KwuDiscSduInfo *discCfmSdu;
    return (SPstTsk(pst,mBuf));
 } /* cmPkKwuDiscSduCfm */
 
-#ifdef ANSI
-S16 cmPkKwuFlowCntrlInd
-(
-Pst            *pst,
-SuId           suId,
-KwuFlowCntrlIndInfo *flowCntrlIndInfo
-)
-#else
-S16 cmPkKwuFlowCntrlInd(pst, suId, flowCntrlIndInfo)
-Pst            *pst;
-SuId           suId;
-KwuFlowCntrlIndInfo *flowCntrlIndInfo;
-#endif
+S16 cmPkKwuFlowCntrlInd(Pst *pst,SuId suId,KwuFlowCntrlIndInfo *flowCntrlIndInfo)
 {
    Buffer *mBuf;
 
@@ -1007,17 +812,7 @@ KwuFlowCntrlIndInfo *flowCntrlIndInfo;
 } /* cmPkKwuFlowCntrlInd */
 
 #ifdef LTE_L2_MEAS
-#ifdef ANSI
-S16 cmPkKwuDatAckInfo
-(
-KwuDatAckInfo *param,
-Buffer *mBuf
-)
-#else
-S16 cmPkKwuDatAckInfo(param, mBuf)
-KwuDatAckInfo *param;
-Buffer *mBuf;
-#endif
+S16 cmPkKwuDatAckInfo(KwuDatAckInfo *param,Buffer *mBuf)
 {
 
    CMCHKPK(cmPkLteRlcId, &param->rlcId, mBuf);
@@ -1025,19 +820,7 @@ Buffer *mBuf;
    return ROK;
 }
 
-#ifdef ANSI
-S16 cmPkKwuDatAckInd
-(
-Pst * pst,
-SuId suId,
-KwuDatAckInfo* datInd
-)
-#else
-S16 cmPkKwuDatAckInd(pst, suId, datInd)
-Pst * pst;
-SuId suId;
-KwuDatAckInfo* datInd;
-#endif
+S16 cmPkKwuDatAckInd(Pst * pst,SuId suId,KwuDatAckInfo* datInd)
 {
     S16 ret1;
 
@@ -1076,19 +859,7 @@ KwuDatAckInfo* datInd;
 #endif /* LTE_L2_MEAS */
 
 
-#ifdef ANSI
-S16 cmUnpkKwuBndReq
-(
-KwuBndReq func,
-Pst *pst,
-Buffer *mBuf
-)
-#else
-S16 cmUnpkKwuBndReq(func, pst, mBuf)
-KwuBndReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
+S16 cmUnpkKwuBndReq(KwuBndReq func,Pst *pst,Buffer *mBuf)
 {
    SuId suId = 0;
    SpId spId = 0;
@@ -1101,19 +872,7 @@ Buffer *mBuf;
 }
 
 
-#ifdef ANSI
-S16 cmUnpkKwuBndCfm
-(
-KwuBndCfm func,
-Pst *pst,
-Buffer *mBuf
-)
-#else
-S16 cmUnpkKwuBndCfm(func, pst, mBuf)
-KwuBndCfm func;
-Pst *pst;
-Buffer *mBuf;
-#endif
+S16 cmUnpkKwuBndCfm(KwuBndCfm func,Pst *pst,Buffer *mBuf)
 {
    SuId suId = 0;
    uint8_t status = 0;
@@ -1127,19 +886,7 @@ Buffer *mBuf;
 }
 
 
-#ifdef ANSI
-S16 cmUnpkKwuUbndReq
-(
-KwuUbndReq func,
-Pst *pst,
-Buffer *mBuf
-)
-#else
-S16 cmUnpkKwuUbndReq(func, pst, mBuf)
-KwuUbndReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
+S16 cmUnpkKwuUbndReq(KwuUbndReq func,Pst *pst,Buffer *mBuf)
 {
    SpId spId = 0;
    Reason reason = 0;
@@ -1153,17 +900,7 @@ Buffer *mBuf;
 } /* cmUnpkKwuUbndReq */
 
 
-#ifdef ANSI
-S16 cmUnpkKwuDatReqInfo
-(
-KwuDatReqInfo *param,
-Buffer *mBuf
-)
-#else
-S16 cmUnpkKwuDatReqInfo(param, mBuf)
-KwuDatReqInfo *param;
-Buffer *mBuf;
-#endif
+S16 cmUnpkKwuDatReqInfo(KwuDatReqInfo *param,Buffer *mBuf)
 {
 
 
@@ -1196,19 +933,7 @@ Buffer *mBuf;
 }
 
 
-#ifdef ANSI
-S16 cmUnpkKwuDatReq
-(
-KwuDatReq func,
-Pst *pst,
-Buffer *mBuf
-)
-#else
-S16 cmUnpkKwuDatReq(func, pst, mBuf)
-KwuDatReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
+S16 cmUnpkKwuDatReq(KwuDatReq func,Pst *pst,Buffer *mBuf)
 {
 #if(ERRCLASS & ERRCLS_DEBUG)
    S16 ret1 = ROK; 
@@ -1268,17 +993,7 @@ Buffer *mBuf;
 } /* cmUnpkKwuDatReq */
 
 
-#ifdef ANSI
-uint8_t cmUnpkKwuDatIndInfo
-(
-KwuDatIndInfo *param,
-Buffer *mBuf
-)
-#else
-uint8_t cmUnpkKwuDatIndInfo(param, mBuf)
-KwuDatIndInfo *param;
-Buffer *mBuf;
-#endif
+uint8_t cmUnpkKwuDatIndInfo(KwuDatIndInfo *param,Buffer *mBuf)
 {
 
    CMCHKUNPK(cmUnpkLteRlcId, &param->rlcId, mBuf);
@@ -1291,19 +1006,7 @@ Buffer *mBuf;
 }
 
 
-#ifdef ANSI
-uint8_t cmUnpkKwuDatInd
-(
-KwuDatInd func,
-Pst *pst,
-Buffer *mBuf
-)
-#else
-uint8_t cmUnpkKwuDatInd(func, pst, mBuf)
-KwuDatInd func;
-Pst *pst;
-Buffer *mBuf;
-#endif
+uint8_t cmUnpkKwuDatInd(KwuDatInd func,Pst *pst,Buffer *mBuf)
 {
     S16 ret1 = ROK, retVal;
     KwuDatIndInfo *datInd = NULLP;
@@ -1374,17 +1077,7 @@ Buffer *mBuf;
 } /* cmUnpkKwuDatInd */
 
 
-#ifdef ANSI
-S16 cmUnpkKwuDatCfmInfo
-(
-KwuDatCfmInfo *param,
-Buffer *mBuf
-)
-#else
-S16 cmUnpkKwuDatCfmInfo(param, mBuf)
-KwuDatCfmInfo *param;
-Buffer *mBuf;
-#endif
+S16 cmUnpkKwuDatCfmInfo(KwuDatCfmInfo *param,Buffer *mBuf)
 {
    register S32 iter;
 
@@ -1402,19 +1095,7 @@ Buffer *mBuf;
    return ROK;
 }
 
-#ifdef ANSI
-S16 cmUnpkKwuDatCfm
-(
-KwuDatCfm func,
-Pst *pst,
-Buffer *mBuf
-)
-#else
-S16 cmUnpkKwuDatCfm(func, pst, mBuf)
-KwuDatCfm func;
-Pst *pst;
-Buffer *mBuf;
-#endif
+S16 cmUnpkKwuDatCfm(KwuDatCfm func,Pst *pst,Buffer *mBuf)
 {
    S16 ret1 = ROK;
    SuId          suId = 0;
@@ -1476,19 +1157,7 @@ Buffer *mBuf;
 } /* cmUnpkKwuDatCfm */
 
 
-#ifdef ANSI
-S16 cmUnpkKwuDiscSduReq
-(
-KwuDiscSduReq func,
-Pst *pst,
-Buffer *mBuf
-)
-#else
-S16 cmUnpkKwuDiscSduReq(func, pst, mBuf)
-KwuDiscSduReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
+S16 cmUnpkKwuDiscSduReq(KwuDiscSduReq func,Pst *pst,Buffer *mBuf)
 {
    S16 ret1 = ROK;
    SpId          spId = 0;
@@ -1547,20 +1216,9 @@ Buffer *mBuf;
 } /* cmUnpkKwuDiscSduReq */
 
 
-#ifdef ANSI
-S16 cmUnpkKwuStaIndInfo
-(
-KwuStaIndInfo *param,
-Buffer *mBuf
-)
-#else
-S16 cmUnpkKwuStaIndInfo(param, mBuf)
-KwuStaIndInfo *param;
-Buffer *mBuf;
-#endif
+S16 cmUnpkKwuStaIndInfo(KwuStaIndInfo *param,Buffer *mBuf)
 {
    uint32_t i;
-
 
    CMCHKUNPK(cmUnpkLteRlcId, &param->rlcId, mBuf);
    CMCHKUNPK(oduPackUInt32, &param->numSdu, mBuf);
@@ -1573,19 +1231,7 @@ Buffer *mBuf;
 } /* cmUnpkKwuStaIndInfo */
 
 
-#ifdef ANSI
-S16 cmUnpkKwuStaInd
-(
-KwuStaInd func,
-Pst *pst,
-Buffer *mBuf
-)
-#else
-S16 cmUnpkKwuStaInd(func, pst, mBuf)
-KwuStaInd func;
-Pst *pst;
-Buffer *mBuf;
-#endif
+S16 cmUnpkKwuStaInd(KwuStaInd func,Pst *pst,Buffer *mBuf)
 {
    S16 ret1 = ROK;
    SuId          suId = 0;
@@ -1647,19 +1293,7 @@ Buffer *mBuf;
 } /* cmUnpkKwuStaInd */
 
 
-#ifdef ANSI
-S16 cmUnpkKwuReEstCmpInd
-(
-KwuReEstCmpInd func,
-Pst *pst,
-Buffer *mBuf
-)
-#else
-S16 cmUnpkKwuReEstCmpInd(func, pst, mBuf)
-KwuReEstCmpInd func;
-Pst *pst;
-Buffer *mBuf;
-#endif
+S16 cmUnpkKwuReEstCmpInd(KwuReEstCmpInd func,Pst *pst,Buffer *mBuf)
 {
 #if(ERRCLASS & ERRCLS_DEBUG)
    S16 ret1;
@@ -1697,22 +1331,10 @@ Buffer *mBuf;
 } /* cmUnpkKwuReEstCmpInd */
 
 /* kwu_c_001.main_3 added support for L2 Measurement */
-#ifdef ANSI
-S16 cmUnpkKwuDiscSduCfm
-(
-KwuDiscSduCfm  func,
-Pst            *pst,
-Buffer         *mBuf
-)
-#else
-S16 cmUnpkKwuDiscSduCfm(func, pst, mBuf)
-KwuDiscSduCfm  func;
-Pst            *pst;
-Buffer         *mBuf;
-#endif
+S16 cmUnpkKwuDiscSduCfm(KwuDiscSduCfm  func,Pst *pst,Buffer *mBuf)
 {
    S16 ret1 = ROK;
-   SpId          spId = 0;
+   SpId  spId = 0;
    KwuDiscSduInfo *discSdu = NULLP;
 
 
@@ -1767,23 +1389,10 @@ Buffer         *mBuf;
 
    return ((*func)(pst, spId, discSdu));
 } /* cmUnpkKwuDiscSduCfm */
-#ifdef ANSI
-S16 cmUnpkKwuFlowCntrlInd
-(
-KwuFlowCntrlInd  func,
-Pst            *pst,
-Buffer         *mBuf
-)
-#else
-S16 cmUnpkKwuFlowCntrlInd(func, pst, mBuf)
-KwuFlowCntrlInd  func;
-Pst            *pst;
-Buffer         *mBuf;
-#endif
+S16 cmUnpkKwuFlowCntrlInd(KwuFlowCntrlInd func,Pst *pst,Buffer *mBuf)
 {
    SuId   suId;
    KwuFlowCntrlIndInfo *flowCntrlInfo = NULLP;
-
    
    CMCHKUNPK(SUnpkS16, &(suId), mBuf);
    switch(pst->selector)
@@ -1818,17 +1427,7 @@ Buffer         *mBuf;
 } /* cmUnpkKwuFlowCntrlInd */
 #ifdef LTE_L2_MEAS
 
-#ifdef ANSI
-S16 cmUnpkKwuDatAckInfo
-(
-KwuDatAckInfo *param,
-Buffer *mBuf
-)
-#else
-S16 cmUnpkKwuDatAckInfo(param, mBuf)
-KwuDatAckInfo *param;
-Buffer *mBuf;
-#endif
+S16 cmUnpkKwuDatAckInfo(KwuDatAckInfo *param,Buffer *mBuf)
 {
 
    CMCHKUNPK(oduPackUInt32, &param->sduId, mBuf);
@@ -1838,19 +1437,7 @@ Buffer *mBuf;
 }
 
 
-#ifdef ANSI
-S16 cmUnpkKwuDatAckInd
-(
-KwuDatAckInd func,
-Pst *pst,
-Buffer *mBuf
-)
-#else
-S16 cmUnpkKwuDatAckInd(func, pst, mBuf)
-KwuDatAckInd func;
-Pst *pst;
-Buffer *mBuf;
-#endif
+S16 cmUnpkKwuDatAckInd(KwuDatAckInd func,Pst *pst,Buffer *mBuf)
 {
     S16 ret1;
     SuId          suId = 0;

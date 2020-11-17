@@ -111,17 +111,11 @@ static S16 cmUnpkRguSapSta ARGS ((RlcRguSapSta *mkSap, Buffer *mBuf));
  *      -# Failure : RFAILED 
  */
 
-#ifdef ANSI
 S16 packRlcConfigReq
 (
 Pst *pst,                    /* post structure */
 RlcMngmt *cfg                 /* RLC LM structure */
 )
-#else
-S16 packRlcConfigReq(pst, cfg)
-Pst *pst;                    /* post structure */
-RlcMngmt *cfg;                /* RLC LM structure */
-#endif
 {
    Buffer *mBuf;             /* message buffer */
    S16 ret1;                 /* return value */
@@ -174,19 +168,12 @@ RlcMngmt *cfg;                /* RLC LM structure */
  *      -# Failure : RFAILED
  */
  
-#ifdef ANSI
 uint8_t unpackRlcConfigReq
 (
 RlcConfigReq func,              /* primitive to call */
 Pst *pst,                    /* post structure */
 Buffer *mBuf                 /* message buffer */
 )
-#else
-uint8_t unpackRlcConfigReq(func, pst, mBuf)
-RlcConfigReq func;              /* primitive to call */
-Pst *pst;                    /* post structure */
-Buffer *mBuf;                /* message buffer */
-#endif
 {
    S16 ret1;                 /* Return value */
    RlcMngmt cfg;              /* RLC LM structure */
@@ -227,17 +214,11 @@ Buffer *mBuf;                /* message buffer */
  *      -# Failure : RFAILED
  */
 
-#ifdef ANSI
 S16 cmPkLkwCntrlReq
 (
 Pst *pst,                    /* post structure */
 RlcMngmt *cntrl               /* RLC LM structure */  
 )
-#else
-S16 cmPkLkwCntrlReq(pst,cntrl)
-Pst *pst;                    /* post structure */
-RlcMngmt *cntrl;              /* RLC LM structure */
-#endif
 {
    Buffer *mBuf;             /* message buffer */
    S16 ret1;                 /* return value */
@@ -290,19 +271,12 @@ RlcMngmt *cntrl;              /* RLC LM structure */
  *      -# Failure : RFAILED
  */
 
-#ifdef ANSI
 S16 cmUnpkLkwCntrlReq
 (
 LkwCntrlReq func,            /* primitive to call */
 Pst *pst,                    /* post structure */
 Buffer *mBuf                 /* message buffer */
 )
-#else
-S16 cmUnpkLkwCntrlReq(func, pst, mBuf)
-LkwCntrlReq func;            /* primitive to call */
-Pst *pst;                    /* post structure */
-Buffer *mBuf;                /* message buffer */
-#endif
 {
    S16 ret1;                 /* return value */
    RlcMngmt cfm;              /* Confirmation */
@@ -338,17 +312,11 @@ Buffer *mBuf;                /* message buffer */
  *      -# Failure : RFAILED
  */
 
-#ifdef ANSI
 uint8_t cmPkLkwCntrlCfm
 (
 Pst *pst,                    /* post structure */
 RlcMngmt *cfm                 /* RLC LM structure */
 )
-#else
-uint8_t cmPkLkwCntrlCfm(pst, cfm)
-Pst *pst;                    /* post structure */
-RlcMngmt *cfm;                /* RLC LM structure */
-#endif
 {
    Buffer *mBuf;             /* message buffer */
    S16 ret1;                 /* return value */
@@ -402,19 +370,12 @@ RlcMngmt *cfm;                /* RLC LM structure */
  *      -# Failure : RFAILED
  */
 
-#ifdef ANSI
 S16 cmUnpkLkwCntrlCfm
 (
 LkwCntrlCfm func,            /* primitive to call */
 Pst *pst,                    /* post structure */
 Buffer *mBuf                 /* message buffer */
 )
-#else
-S16 cmUnpkLkwCntrlCfm(func, pst, mBuf)
-LkwCntrlCfm func;            /* primitive to call */
-Pst *pst;                    /* post structure */
-Buffer *mBuf;                /* message buffer */
-#endif
 {
    RlcMngmt cfm;              /* RLC LM structure */
    S16 ret1;                 /* return value */
@@ -452,19 +413,12 @@ Buffer *mBuf;                /* message buffer */
  *      -# Success : ROK
  *      -# Failure : RFAILED
  */
-#ifdef ANSI
 S16 cmUnpkLkwStsCfm
 (
 LkwStsCfm func,              /* primitive to call */
 Pst *pst,                    /* post structure */
 Buffer *mBuf                 /* message buffer */
 )
-#else
-S16 cmUnpkLkwStsCfm(func, pst, mBuf)
-LkwStsCfm func;              /* primitive to call */
-Pst *pst;                    /* post structure */
-Buffer *mBuf;                /* message buffer */
-#endif
 {
    RlcMngmt cfm;              /* RLC LM structure */
    S16 ret1;                 /* return value */
@@ -503,17 +457,11 @@ Buffer *mBuf;                /* message buffer */
  */
 
 
-#ifdef ANSI
 uint8_t packRlcConfigCfm
 (
 Pst *pst,                    /* post structure */
 RlcMngmt *cfm                 /* RLC LM structure */
 )
-#else
-uint8_t packRlcConfigCfm(pst,cfm)
-Pst *pst;                    /* post structure */
-RlcMngmt *cfm;                /* RLC LM structure */
-#endif
 {
    Buffer *mBuf;             /* message buffer */
    S16 ret1;                 /* return value */
@@ -566,19 +514,12 @@ RlcMngmt *cfm;                /* RLC LM structure */
  *      -# Success : ROK
  *      -# Failure : RFAILED
  */
-#ifdef ANSI
 uint8_t unpackRlcConfigCfm
 (
 RlcConfigCfm func,              /* primitive to call */
 Pst *pst,                    /* post structure */
 Buffer *mBuf                 /* message buffer */
 )
-#else
-uint8_t unpackRlcConfigCfm(func, pst, mBuf)
-RlcConfigCfm func;              /* primitive to call */
-Pst *pst;                    /* post structure */
-Buffer *mBuf;                /* message buffer */
-#endif
 {
    S16 ret1;                 /* return value */
    RlcMngmt cfm;              /* RLC LM structure */
@@ -617,17 +558,11 @@ Buffer *mBuf;                /* message buffer */
  *      -# Failure : RFAILED
  */
 
-#ifdef ANSI
 S16 cmPkLkwStaInd
 (
 Pst *pst,                    /* post structure */
 RlcMngmt *usta                /* RLC LM structure */
 )
-#else
-S16 cmPkLkwStaInd(pst,usta)
-Pst *pst;                    /* post structure */
-RlcMngmt *usta;               /* RLC LM structure */
-#endif
 {
    Buffer *mBuf;             /* message buffer */
    S16 ret1;                 /* return value */
@@ -681,19 +616,12 @@ RlcMngmt *usta;               /* RLC LM structure */
  *      -# Failure : RFAILED
  */
 
-#ifdef ANSI
 S16 cmUnpkLkwStaInd
 (
 LkwStaInd func,             /* primitive pointer */
 Pst *pst,                   /* post structure */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 cmUnpkLkwStaInd(func, pst, mBuf)
-LkwStaInd func;             /* primitive pointer */
-Pst *pst;                   /* post structure */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
    RlcMngmt usta;            /* RLC LM structure */
    S16 ret1;                /* return value */
@@ -730,17 +658,11 @@ Buffer *mBuf;               /* message buffer */
  *      -# Failure : RFAILED
  */
 
-#ifdef ANSI
 S16 cmPkLkwStaReq
 (
 Pst *pst,                    /* post structure */
 RlcMngmt *sta                 /* status */
 )
-#else
-S16 cmPkLkwStaReq(pst,sta)
-Pst *pst;                    /* post structure */
-RlcMngmt *sta;                /* status */
-#endif
 {
    Buffer *mBuf;             /* message buffer */
    S16 ret1;                 /* return value */
@@ -792,19 +714,12 @@ RlcMngmt *sta;                /* status */
  *      -# Success : ROK
  *      -# Failure : RFAILED
  */
-#ifdef ANSI
 S16 cmUnpkLkwStaCfm
 (
 LkwStaReq func,              /* primitive pointer */
 Pst *pst,                    /* post structure */
 Buffer *mBuf                 /* message buffer */
 )
-#else
-S16 cmUnpkLkwStaCfm(func, pst, mBuf)
-LkwStaReq func;              /* primitive pointer */
-Pst *pst;                    /* post structure */
-Buffer *mBuf;                /* message buffer */
-#endif
 {
    RlcMngmt cfm;              /* RLC LM structure */
    S16 ret1;                 /* return value */
@@ -842,19 +757,12 @@ Buffer *mBuf;                /* message buffer */
  *      -# Success : ROK
  *      -# Failure : RFAILED
  */
-#ifdef ANSI
 S16 cmUnpkLkwStsReq
 (
 LkwStsReq func,              /* primitive pointer */
 Pst *pst,                    /* post structure */
 Buffer *mBuf                 /* message buffer */
 )
-#else
-S16 cmUnpkLkwStsReq(func, pst, mBuf)
-LkwStsReq func;              /* primitive pointer */
-Pst *pst;                    /* post structure */
-Buffer *mBuf;                /* message buffer */
-#endif
 {
    RlcMngmt sts;              /* RLC LM structure */
    S16 ret1;                 /* return value */
@@ -895,19 +803,12 @@ Buffer *mBuf;                /* message buffer */
  *      -# Success : ROK
  *      -# Failure : RFAILED
  */
-#ifdef ANSI
 S16 cmUnpkLkwStaReq
 (
 LkwStaReq func,              /* primitive pointer */
 Pst *pst,                    /* post structure */
 Buffer *mBuf                 /* message buffer */
 )
-#else
-S16 cmUnpkLkwStaReq(func, pst, mBuf)
-LkwStaReq func;              /* primitive pointer */
-Pst *pst;                    /* post structure */
-Buffer *mBuf;                /* message buffer */
-#endif
 {
    RlcMngmt sta;              /* RLC LM structure */
    S16 ret1;                 /* return value */
@@ -946,19 +847,12 @@ Buffer *mBuf;                /* message buffer */
  *      -# Failure : RFAILED
  */
 
-#ifdef ANSI
 S16 cmUnpkLkwTrcInd
 (
 LkwTrcInd func,              /* primitive to call */
 Pst *pst,                    /* post structure */
 Buffer *mBuf                 /* message buffer */
 )
-#else
-S16 cmUnpkLkwTrcInd(func, pst, mBuf)
-LkwTrcInd func;              /* primitive to call */
-Pst *pst;                    /* post structure */
-Buffer *mBuf;                /* message buffer */
-#endif
 {
    S16 ret1;                 /* return value */
    RlcMngmt trc;              /* RLC LM structure */
@@ -997,17 +891,11 @@ Buffer *mBuf;                /* message buffer */
  *      -# Failure : RFAILED
  */
 
-#ifdef ANSI
 static S16 cmPkCkwSapSta 
 ( 
 RlcCkwCntSapSta *rcSap,         /* SAP statistics */      
 Buffer *mBuf                 /* Message buffer */
 )
-#else
-static S16 cmPkCkwSapSta(rcSap, mBuf)
-RlcCkwCntSapSta *rcSap;         /* SAP statistics */
-Buffer *mBuf;                /* Message buffer */
-#endif
 {
 
    CMCHKPK(cmPkState, rcSap->state, mBuf);
@@ -1027,17 +915,11 @@ Buffer *mBuf;                /* Message buffer */
  *      -# Success : ROK
  *      -# Failure : RFAILED
  */
-#ifdef ANSI
 static S16 cmUnpkCkwSapSta 
 (
 RlcCkwCntSapSta *rcSap,         /* SAP statistics */ 
 Buffer *mBuf                 /* Message buffer */
 )
-#else
-static S16 cmUnpkCkwSapSta(rcSap, mBuf)
-RlcCkwCntSapSta *rcSap;         /* SAP statistics */ 
-Buffer *mBuf;                /* Message buffer */
-#endif
 {
 
    CMCHKUNPK(SUnpkS16, &rcSap->spId, mBuf);
@@ -1056,17 +938,11 @@ Buffer *mBuf;                /* Message buffer */
  *      -# Success : ROK
  *      -# Failure : RFAILED
  */
-#ifdef ANSI
 static S16 cmPkKwuSapSta
 (
 RlcKwuSapSta *rlSap,           /* SAP statistics */       
 Buffer *mBuf                 /* Message buffer */
 )
-#else
-static S16 cmPkKwuSapSta(rlSap, mBuf)
-RlcKwuSapSta *rlSap;           /* SAP statistics */
-Buffer *mBuf;                /* Message buffer */
-#endif
 {
 
    CMCHKPK(cmPkState, rlSap->state, mBuf);
@@ -1086,17 +962,11 @@ Buffer *mBuf;                /* Message buffer */
  *      -# Success : ROK
  *      -# Failure : RFAILED
  */
-#ifdef ANSI
 static S16 cmUnpkKwuSapSta
 (
 RlcKwuSapSta *rlSap,           /* SAP statistics */                   
 Buffer *mBuf                 /* Message buffer */
 )
-#else
-static S16 cmUnpkKwuSapSta(rlSap, mBuf)
-RlcKwuSapSta *rlSap;           /* SAP statistics */
-Buffer *mBuf;                /* Message buffer */
-#endif
 {
 
    CMCHKUNPK(SUnpkS16, &rlSap->spId, mBuf);
@@ -1116,17 +986,11 @@ Buffer *mBuf;                /* Message buffer */
  *      -# Success : ROK
  *      -# Failure : RFAILED
  */
-#ifdef ANSI
 static S16 cmPkRguSapSta
 (
 RlcRguSapSta *mkSap,           /* SAP statistics */             
 Buffer *mBuf                 /* Message buffer */
 )
-#else
-static S16 cmPkRguSapSta(mkSap, mBuf)
-RlcRguSapSta *mkSap;           /* SAP statistics */
-Buffer *mBuf;                /* Message buffer */
-#endif
 {
 
    CMCHKPK(cmPkState, mkSap->state, mBuf);
@@ -1146,17 +1010,11 @@ Buffer *mBuf;                /* Message buffer */
  *      -# Success : ROK
  *      -# Failure : RFAILED
  */
-#ifdef ANSI
 static S16 cmUnpkRguSapSta
 (
 RlcRguSapSta *mkSap,           /* SAP statistics */              
 Buffer *mBuf                 /* Message buffer */
 )
-#else
-static S16 cmUnpkRguSapSta(mkSap, mBuf)
-RlcRguSapSta *mkSap;           /* SAP statistics */
-Buffer *mBuf;                /* Message buffer */
-#endif
 {
 
    CMCHKUNPK(cmUnpkSuId, &mkSap->suId, mBuf);
@@ -1176,17 +1034,11 @@ Buffer *mBuf;                /* Message buffer */
  *      -# Success : ROK
  *      -# Failure : RFAILED
  */
-#ifdef ANSI
 S16 cmPkLkwStaCfm
 (
 Pst *pst,                    /* post structure */
 RlcMngmt *cfm                 /* solicited status confirm */
 )
-#else
-S16 cmPkLkwStaCfm(pst, cfm)
-Pst *pst;                    /* post structure */
-RlcMngmt *cfm;                /* solicited status confirm */
-#endif
 {
    Buffer *mBuf;             /* message buffer */
    S16 ret1;                 /* return value */
@@ -1237,19 +1089,12 @@ RlcMngmt *cfm;                /* solicited status confirm */
  *      -# Success : ROK
  *      -# Failure : RFAILED
  */
-#ifdef ANSI
 S16 cmPkLkwTrcInd
 (
 Pst *pst,                    /* post structure */
 RlcMngmt *trc,                /* trace */
 Buffer *trcBuf                 /* trace buffer */
 )
-#else
-S16 cmPkLkwTrcInd(pst, trc, trcBuf)
-Pst *pst;                     /* post structure */
-RlcMngmt *trc;                 /* trace */
-Buffer *trcBuf;               /* trace buffer */
-#endif
 {
    S16      ret1 = ROK;       /* return value */
    Buffer   *mBuf = NULLP;    /* Buffer to trace */
@@ -1322,19 +1167,12 @@ Buffer *trcBuf;               /* trace buffer */
  *      -# Success : ROK
  *      -# Failure : RFAILED
  */
-#ifdef ANSI
 S16 cmPkLkwStsReq
 (
 Pst *pst,                    /* post structure */
 Action action,               /* action */
 RlcMngmt *sts                 /* statistics request */
 )
-#else
-S16 cmPkLkwStsReq(pst, action, sts)
-Pst *pst;                    /* post structure */
-Action action;               /* action */
-RlcMngmt *sts;                /* statistics request */
-#endif
 {
 
    Buffer *mBuf;             /* message buffer */
@@ -1388,19 +1226,12 @@ RlcMngmt *sts;                /* statistics request */
  *      -# Success : ROK
  *      -# Failure : RFAILED
  */
-#ifdef ANSI
 S16 cmPkLkwStsCfm
 (
 Pst *pst,                    /* post structure */
 Action action,               /* action */
 RlcMngmt *cfm                 /* statistics confirmation */
 )
-#else
-S16 cmPkLkwStsCfm(pst, action, cfm)
-Pst *pst;                    /* post structure */
-Action action;               /* action */
-RlcMngmt *cfm;                /* statistics confirmation */
-#endif
 {
    Buffer *mBuf;             /* message buffer */
    S16 ret1;                 /* return value */
@@ -1453,19 +1284,12 @@ RlcMngmt *cfm;                /* statistics confirmation */
  *      -# Failure : RFAILED
  */
 
-#ifdef ANSI
 static S16 cmPkRlcMngmt
 (
 RlcMngmt *param,              /* Managment */             
 Event eventType,             /* Event type */
 Buffer *mBuf                 /* Message Buffer */
 )
-#else
-static S16 cmPkRlcMngmt(param ,eventType, mBuf)
-RlcMngmt *param;              /* Managment */
-Event eventType;             /* Event type */
-Buffer *mBuf;                /* Message Buffer */
-#endif
 {
     S16 ret1;                /* return value */
 
@@ -1542,19 +1366,12 @@ Buffer *mBuf;                /* Message Buffer */
  *      -# Success : ROK
  *      -# Failure : RFAILED
  */
-#ifdef ANSI
 static S16 cmPkRlcCfg
 (
 RlcMngmt *cfg,
 Elmnt elmnt,
 Buffer *mBuf
 )
-#else
-static S16 cmPkRlcCfg(cfg, elmnt, mBuf)
-RlcMngmt *cfg;
-Elmnt elmnt;
-Buffer *mBuf;
-#endif
 {
 
     switch( elmnt )
@@ -1606,19 +1423,12 @@ Buffer *mBuf;
  *      -# Success : ROK
  *      -# Failure : RFAILED
  */
-#ifdef ANSI
 static S16 cmPkRlcCntrl
 (
 RlcMngmt *cntrl,
 Elmnt elmnt,
 Buffer *mBuf
 )
-#else
-static S16 cmPkRlcCntrl(cntrl, elmnt, mBuf)
-RlcMngmt *cntrl;
-Elmnt elmnt;
-Buffer *mBuf;
-#endif
 {
     uint8_t subAction;            /* sub action */     
 
@@ -1685,19 +1495,12 @@ Buffer *mBuf;
  *      -# Success : ROK
  *      -# Failure : RFAILED
  */
-#ifdef ANSI
 static S16 cmPkRlcUsta
 (
 RlcMngmt *usta,
 Elmnt elmnt,
 Buffer *mBuf
 )
-#else
-static S16 cmPkRlcUsta(usta, elmnt, mBuf)
-RlcMngmt *usta;
-Elmnt elmnt;
-Buffer *mBuf;
-#endif
 {
 
    /* lkw_c_001.main_2 removed warning */
@@ -1726,7 +1529,6 @@ Buffer *mBuf;
  *      -# Success : ROK
  *      -# Failure : RFAILED
  */
-#ifdef ANSI
 static S16 cmPkRlcSsta
 (
 RlcMngmt *ssta,
@@ -1734,13 +1536,6 @@ Elmnt elmnt,
 Event eventType,
 Buffer *mBuf
 )
-#else
-static S16 cmPkRlcSsta(ssta, elmnt, eventType, mBuf)
-RlcMngmt *ssta;
-Elmnt elmnt;
-Event eventType;
-Buffer *mBuf;
-#endif
 {
    S16 ret1;
 
@@ -1790,17 +1585,11 @@ Buffer *mBuf;
  *      -# Success : ROK
  *      -# Failure : RFAILED
  */
-#ifdef ANSI
 static S16 cmPkRlcTrc
 (
 RlcMngmt *trc,                /* trace */                 
 Buffer *mBuf                 /* data buffer */
 )
-#else
-static S16 cmPkRlcTrc(trc, mBuf)
-RlcMngmt *trc;                /* trace */
-Buffer *mBuf;                /* data buffer */
-#endif
 {
 
    CMCHKPK(oduUnpackUInt16, trc->t.trc.event, mBuf); 
@@ -1821,19 +1610,12 @@ Buffer *mBuf;                /* data buffer */
  *      -# Failure : RFAILED
  */
 
-#ifdef ANSI
 static S16 cmPkRlcSts
 (
 RlcMngmt *sts,
 Elmnt elmnt,
 Buffer *mBuf
 )
-#else
-static S16 cmPkRlcSts(sts, elmnt, mBuf)
-RlcMngmt *sts;
-Elmnt elmnt;
-Buffer *mBuf;
-#endif
 {
    S16 ret1;
 
@@ -1879,17 +1661,11 @@ Buffer *mBuf;
  *      -# Success : ROK
  *      -# Failure : RFAILED
  */
-#ifdef ANSI
 static S16 cmPkGenSts
 (
 RlcGenSts *gen,
 Buffer *mBuf
 )
-#else
-static S16 cmPkGenSts(gen, mBuf)
-RlcGenSts *gen;
-Buffer *mBuf;
-#endif
 {
 
    CMCHKPK(oduUnpackUInt32, gen->numSduDisc, mBuf);
@@ -1918,17 +1694,11 @@ Buffer *mBuf;
  *      -# Success : ROK
  *      -# Failure : RFAILED
  */
-#ifdef ANSI
 static S16 cmPkCkwSapSts
 (
 RlcCkwCntSts *rcSap,
 Buffer *mBuf
 )
-#else
-static S16 cmPkCkwSapSts(rcSap, mBuf)
-RlcCkwCntSts *rcSap;
-Buffer *mBuf;
-#endif
 {
 
    CMCHKPK(oduUnpackUInt32, rcSap->statMsgs, mBuf);
@@ -1946,17 +1716,11 @@ Buffer *mBuf;
  *      -# Success : ROK
  *      -# Failure : RFAILED
  */
-#ifdef ANSI
 static S16 cmPkKwuSapSts
 (
 RlcKwuSapSts *ruSap,
 Buffer *mBuf
 )
-#else
-static S16 cmPkKwuSapSts(ruSap, mBuf)
-RlcKwuSapSts *ruSap;
-Buffer *mBuf;
-#endif
 {
 
    CMCHKPK(oduUnpackUInt32, ruSap->sduTx, mBuf);
@@ -1982,19 +1746,12 @@ Buffer *mBuf;
  *      -# Success : ROK
  *      -# Failure : RFAILED
  */
-#ifdef ANSI
 static S16 cmUnpkRlcMngmt
 (
 RlcMngmt *param,
 Event eventType,
 Buffer *mBuf
 )
-#else
-static S16 cmUnpkRlcMngmt(param ,eventType, mBuf)
-RlcMngmt *param;
-Event eventType;
-Buffer *mBuf;
-#endif
 {
     S16 ret1;
 
@@ -2075,19 +1832,12 @@ Buffer *mBuf;
  *      -# Success : ROK
  *      -# Failure : RFAILED
  */
-#ifdef ANSI
 static S16 cmUnpkRlcCfg
 (
 RlcMngmt *cfg,
 Elmnt elmnt,
 Buffer *mBuf
 )
-#else
-static S16 cmUnpkRlcCfg(cfg ,elmnt, mBuf)
-RlcMngmt *cfg;
-Elmnt elmnt;
-Buffer *mBuf;
-#endif
 {
 
    switch(elmnt)
@@ -2139,19 +1889,12 @@ Buffer *mBuf;
  *      -# Success : ROK
  *      -# Failure : RFAILED
  */
-#ifdef ANSI
 static S16 cmUnpkRlcCntrl
 (
 RlcMngmt *cfm,
 Elmnt elmnt,
 Buffer *mBuf
 )
-#else
-static S16 cmUnpkRlcCntrl(cfm, elmnt, mBuf)
-RlcMngmt *cfm;
-Elmnt elmnt;
-Buffer *mBuf;
-#endif
 {
    uint8_t subAction;
    RlcDbgCntrl *dbgCntrl;
@@ -2225,19 +1968,12 @@ Buffer *mBuf;
  *      -# Success : ROK
  *      -# Failure : RFAILED
  */
-#ifdef ANSI
 static S16 cmUnpkRlcUsta
 (
 RlcMngmt *usta,
 Elmnt elmnt,
 Buffer *mBuf
 )
-#else
-static S16 cmUnpkRlcUsta(usta ,elmnt, mBuf)
-RlcMngmt *usta;
-Elmnt elmnt;
-Buffer *mBuf;
-#endif
 {
 
    /* lkw_c_001.main_2 removed warning */
@@ -2265,7 +2001,6 @@ Buffer *mBuf;
  *      -# Success : ROK
  *      -# Failure : RFAILED
  */
-#ifdef ANSI
 static S16 cmUnpkRlcSsta
 (
 RlcMngmt *ssta,
@@ -2273,13 +2008,6 @@ Elmnt elmnt,
 Event eventType,
 Buffer *mBuf
 )
-#else
-static S16 cmUnpkRlcSsta(ssta ,elmnt, eventType, mBuf)
-RlcMngmt *ssta;
-Elmnt elmnt;
-Event eventType;
-Buffer *mBuf;
-#endif
 {
    S16 ret1;           /* return value */
 
@@ -2329,17 +2057,11 @@ Buffer *mBuf;
  *      -# Success : ROK
  *      -# Failure : RFAILED
  */
-#ifdef ANSI
 static S16 cmUnpkRlcTrc
 (
 RlcMngmt *trc,
 Buffer *mBuf
 )
-#else
-static S16 cmUnpkRlcTrc(trc, mBuf)
-RlcMngmt *trc;
-Buffer *mBuf;
-#endif
 {
 
    CMCHKUNPK(cmUnpkDateTime, &trc->t.trc.dt, mBuf);
@@ -2360,19 +2082,12 @@ Buffer *mBuf;
  *      -# Success : ROK
  *      -# Failure : RFAILED
  */
-#ifdef ANSI
 static S16 cmUnpkRlcSts
 (
 RlcMngmt *sts,
 Elmnt elmnt,
 Buffer *mBuf
 )
-#else
-static S16 cmUnpkRlcSts(sts ,elmnt, mBuf)
-RlcMngmt *sts;
-Elmnt elmnt;
-Buffer *mBuf;
-#endif
 {
    S16 ret1;           /* return value */
 
@@ -2416,17 +2131,11 @@ Buffer *mBuf;
  *      -# Success : ROK
  *      -# Failure : RFAILED
  */
-#ifdef ANSI
 static S16 cmUnpkGenSts
 (
 RlcGenSts *gen,
 Buffer *mBuf
 )
-#else
-static S16 cmUnpkGenSts(gen, mBuf)
-RlcGenSts *gen;
-Buffer *mBuf;
-#endif
 {
 
    CMCHKUNPK(oduPackUInt32, &gen->numUe, mBuf);
@@ -2454,17 +2163,11 @@ Buffer *mBuf;
  *      -# Success : ROK
  *      -# Failure : RFAILED
  */
-#ifdef ANSI
 static S16 cmUnpkCkwSapSts
 (
 RlcCkwCntSts *rcSap,
 Buffer *mBuf
 )
-#else
-static S16 cmUnpkCkwSapSts(rcSap ,mBuf)
-RlcCkwCntSts *rcSap;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -2484,17 +2187,11 @@ Buffer *mBuf;
  *      -# Success : ROK
  *      -# Failure : RFAILED
  */
-#ifdef ANSI
 static S16 cmUnpkKwuSapSts
 (
 RlcKwuSapSts *ruSap,
 Buffer *mBuf
 )
-#else
-static S16 cmUnpkKwuSapSts(ruSap, mBuf)
-RlcKwuSapSts *ruSap;
-Buffer *mBuf;
-#endif
 {
 
    /* lkw_c_001.main_2 changed from suId to spId */
@@ -2508,17 +2205,11 @@ Buffer *mBuf;
 
 /* lkw_c_001.main_2 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
-#ifdef ANSI
 S16 cmPkLkwL2MeasReq
 (
 Pst * pst,
 RlcL2MeasReqEvt *measReqEvt
 )
-#else
-S16 cmPkLkwL2MeasReq(pst, measReqEvt)
-Pst * pst;
-RlcL2MeasReqEvt *measReqEvt;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -2566,17 +2257,11 @@ RlcL2MeasReqEvt *measReqEvt;
    return (SPstTsk(pst,mBuf));
 }
 
-#ifdef ANSI
 S16 cmPkRlcL2MeasReqInfo
 (
 RlcL2MeasReqInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkRlcL2MeasReqInfo(param, mBuf)
-RlcL2MeasReqInfo *param;
-Buffer *mBuf;
-#endif
 {
    uint8_t idx;
    uint16_t idx1;
@@ -2613,17 +2298,11 @@ Buffer *mBuf;
    return ROK;
 }
 
-#ifdef ANSI
 S16 cmPkLkwL2MeasStopReq
 (
 Pst *pst,
 uint8_t  measType
 )
-#else
-S16 cmPkLkwL2MeasStopReq(pst, measType)
-Pst *pst;
-uint8_t measType;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -2640,17 +2319,11 @@ uint8_t measType;
    return (SPstTsk(pst,mBuf));
 }
 
-#ifdef ANSI
 S16 cmPkLkwL2MeasSendReq
 (
 Pst *pst,
 uint8_t  measType
 )
-#else
-S16 cmPkLkwL2MeasSendReq(pst, measType)
-Pst *pst;
-uint8_t measType;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -2667,19 +2340,12 @@ uint8_t measType;
    return (SPstTsk(pst,mBuf));
 }
 #ifdef TENB_SPLIT_ARCH
-#ifdef ANSI
 S16 cmUnpkLkwL2MeasReq
 (
 LkwL2MeasReq func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkLkwL2MeasReq(func, pst, mBuf)
-LkwL2MeasReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    RlcL2MeasReqEvt measReqEvt;
    
@@ -2717,19 +2383,12 @@ Buffer *mBuf;
    return ((*func)(pst, &measReqEvt));
 }
 #else
-#ifdef ANSI
 S16 cmUnpkLkwL2MeasReq
 (
 LkwL2MeasReq func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkLkwL2MeasReq(func, pst, mBuf)
-LkwL2MeasReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    S16   ret;
    RlcL2MeasReqEvt *measReqEvt;
@@ -2781,17 +2440,11 @@ Buffer *mBuf;
 }
 #endif
 
-#ifdef ANSI
 S16 cmUnpkRlcL2MeasReqInfo
 (
 RlcL2MeasReqInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRlcL2MeasReqInfo(param, mBuf)
-RlcL2MeasReqInfo *param;
-Buffer *mBuf;
-#endif
 {
    uint8_t idx;
    uint16_t idx1; 
@@ -2830,19 +2483,12 @@ Buffer *mBuf;
    return ROK;
 }
 
-#ifdef ANSI
 S16 cmUnpkLkwL2MeasStopReq
 (
 LkwL2MeasStopReq func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkLkwL2MeasStopReq(func, pst, mBuf)
-LkwL2MeasStopReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    uint8_t measType;
 
@@ -2851,19 +2497,12 @@ Buffer *mBuf;
    return ((*func)(pst, measType));
 }
 
-#ifdef ANSI
 S16 cmUnpkLkwL2MeasSendReq
 (
 LkwL2MeasSendReq func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkLkwL2MeasSendReq(func, pst, mBuf)
-LkwL2MeasSendReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    uint8_t    measType;
 
@@ -2873,17 +2512,11 @@ Buffer *mBuf;
    return ((*func)(pst, measType));
 }
 
-#ifdef ANSI
 S16 cmPkLkwL2MeasCfm
 (
 Pst * pst,
 RlcL2MeasCfmEvt *measCfmEvt
 )
-#else
-S16 cmPkLkwL2MeasCfm(pst, measCfmEvt)
-Pst * pst;
-RlcL2MeasCfmEvt *measCfmEvt;
-#endif
 {
    Buffer *mBuf = NULLP;
    uint8_t idx;
@@ -2979,19 +2612,12 @@ RlcL2MeasCfmEvt *measCfmEvt;
    return (SPstTsk(pst,mBuf));
 }
 
-#ifdef ANSI
 S16 cmPkRlcL2MeasCfmInfo
 (
 RlcL2MeasCfmInfo *param,
 Buffer *mBuf,
 uint8_t measType
 )
-#else
-S16 cmPkRlcL2MeasCfmInfo(param, mBuf, measType)
-RlcL2MeasCfmInfo *param;
-Buffer *mBuf;
-uint8_t measType;
-#endif
 {
 
    if((measType & LKW_L2MEAS_DL_IP) ||
@@ -3013,19 +2639,12 @@ uint8_t measType;
    return ROK;
 }
 
-#ifdef ANSI
 S16 cmUnpkLkwL2MeasCfm
 (
 LkwL2MeasCfm func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkLkwL2MeasCfm(func, pst, mBuf)
-LkwL2MeasCfm func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    uint8_t idx;
    uint16_t idx1;
@@ -3107,19 +2726,12 @@ Buffer *mBuf;
    return ((*func)(pst, &measCfmEvt));
 }
 
-#ifdef ANSI
 S16 cmUnpkRlcL2MeasCfmInfo
 (
 RlcL2MeasCfmInfo *param,
 Buffer *mBuf,
 uint8_t measType
 )
-#else
-S16 cmUnpkRlcL2MeasCfmInfo(param, mBuf, measType)
-RlcL2MeasCfmInfo *param;
-Buffer *mBuf;
-uint8_t measType;
-#endif
 {
 
    if((measType & LKW_L2MEAS_DL_IP) ||
@@ -3142,19 +2754,12 @@ uint8_t measType;
 }
 
 
-#ifdef ANSI
 S16 cmPkLkwL2MeasStopCfm
 (
 Pst * pst,
 uint8_t measType,
 uint8_t status
 )
-#else
-S16 cmPkLkwL2MeasStopCfm(pst, measType,status)
-Pst * pst;
-uint8_t  measType;
-uint8_t  status
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -3172,19 +2777,13 @@ uint8_t  status
    return (SPstTsk(pst,mBuf));
 }
 
-#ifdef ANSI
+
 S16 cmUnpkLkwL2MeasStopCfm
 (
 LkwL2MeasStopCfm func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkLkwL2MeasStopCfm(func, pst, mBuf)
-LkwL2MeasStopCfm func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    uint8_t measType;
    uint8_t status;

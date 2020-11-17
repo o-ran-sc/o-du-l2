@@ -83,7 +83,6 @@ static Void cmAddMemNode ARGS((CmMemListCp *lCp,CmMemList *node));
 *
 */
   
-#ifdef ANSI
 S16 cmAllocEvnt
 (
 Size            evntSize,    /* Size of the Event structure */
@@ -91,13 +90,6 @@ Size            maxBlkSize,  /* Chunk Memory size */
 Mem             *sMem,       /* Static memory region and pool */
 Ptr             *ptr         /* Location to place allocated event ptr */
 )
-#else
-S16 cmAllocEvnt (evntSize,maxBlkSize,sMem,ptr)
-Size            evntSize;   /* Size of the Event structure */
-Size            maxBlkSize; /* Memory size requested */
-Mem             *sMem;      /* Static Memory region and pool */
-Ptr             *ptr;       /* Location to place allocated event ptr */
-#endif
 {
 
   Data          *allocPtr;  /* Allocated Memory Pointer */
@@ -199,21 +191,13 @@ Ptr             *ptr;       /* Location to place allocated event ptr */
 *
 */
   
-#ifdef ANSI
 Void cmInitMemCp
 (
 CmMemListCp     *memCp,     /* Memory control pointer */
 Size            maxBlkSize, /* Chunk Memory size */
 Mem             *sMem       /* Static memory region and pool */
 )
-#else
-Void cmInitMemCp (memCp,maxBlkSize,sMem)
-CmMemListCp     *memCp;     /* Memory control pointer */
-Size            maxBlkSize; /* Memory size requested */
-Mem             *sMem;      /* Static Memory region and pool */
-#endif
 {
-
 
   /* Intialise Memory Control Point */
   CM_INIT_MEMCP(memCp,maxBlkSize,sMem);
@@ -238,19 +222,12 @@ Mem             *sMem;      /* Static Memory region and pool */
 *
 */
   
-#ifdef ANSI
 S16 cmGetMem
 (
 Ptr           memPtr,    /* Pointer to memCp */
 Size          size,      /* Memory size requested */
 Ptr           *allocPtr  /* location to place pointer */
 )
-#else
-S16 cmGetMem (memPtr,size,allocPtr)
-Ptr          memPtr;    /* Pointer to memCp */
-Size         size;      /* Memory size requested */
-Ptr          *allocPtr; /* location to place pointer */
-#endif
 {
  
   CmMemCb   *cb;       /* Pointer to Memory Control Block */
@@ -356,7 +333,6 @@ Ptr          *allocPtr; /* location to place pointer */
 *
 */
   
-#ifdef ANSI
 S16 cmAllocEvntNoInit
 (
 Size            evntSize,    /* Size of the Event structure */
@@ -364,13 +340,6 @@ Size            maxBlkSize,  /* Chunk Memory size */
 Mem             *sMem,       /* Static memory region and pool */
 Ptr             *ptr         /* Location to place allocated event ptr */
 )
-#else
-S16 cmAllocEvntNoInit (evntSize,maxBlkSize,sMem,ptr)
-Size            evntSize;   /* Size of the Event structure */
-Size            maxBlkSize; /* Memory size requested */
-Mem             *sMem;      /* Static Memory region and pool */
-Ptr             *ptr;       /* Location to place allocated event ptr */
-#endif
 {
 
   Data          *allocPtr;  /* Allocated Memory Pointer */
@@ -459,19 +428,12 @@ Ptr             *ptr;       /* Location to place allocated event ptr */
 *
 */
   
-#ifdef ANSI
 S16 cmGetMemNoInit
 (
 Ptr           memPtr,    /* Pointer to memCp */
 Size          size,      /* Memory size requested */
 Ptr           *allocPtr  /* location to place pointer */
 )
-#else
-S16 cmGetMemNoInit (memPtr,size,allocPtr)
-Ptr          memPtr;    /* Pointer to memCp */
-Size         size;      /* Memory size requested */
-Ptr          *allocPtr; /* location to place pointer */
-#endif
 {
  
   CmMemCb   *cb;       /* Pointer to Memory Control Block */
@@ -578,15 +540,10 @@ Ptr          *allocPtr; /* location to place pointer */
 *
 */
   
-#ifdef ANSI
 Void cmFreeMem
 (
 Ptr    memPtr      /* Link List CP */
 )
-#else
-Void cmFreeMem (memPtr)
-Ptr    memPtr;     /* Link List CP */
-#endif
 {
   Mem         sMem;      /* Static Memory region and pool */
   S32         count;     /* Count of linked blocks */ 
@@ -650,17 +607,11 @@ Ptr    memPtr;     /* Link List CP */
 *       File:  cm_mblk.c
 *
 */
-#ifdef ANSI
 static Void cmAddMemNode
 (
 CmMemListCp *lCp,               /* list control point */
 CmMemList   *node               /* node to be added */
 )
-#else 
-static Void cmAddMemNode (lCp, node)
-CmMemListCp *lCp;               /* list control point */
-CmMemList   *node;              /* node to be added */
-#endif
 {
 
    lCp->count++;
@@ -697,17 +648,11 @@ CmMemList   *node;              /* node to be added */
 *
 */
   
-#ifdef ANSI
 Void cmGetMemStatus
 (
 Ptr             memPtr,    /* Memory control pointer */
 CmMemStatus     *status    /* memory region,pool and status */
 )
-#else
-Void cmGetMemStatus (memPtr,status)
-Ptr             memPtr;   /* Memory control pointer */
-CmMemStatus     *status;  /* memory region,pool and status */
-#endif
 {
 
   CmMemListCp *memCp;    /* Memory Link List */

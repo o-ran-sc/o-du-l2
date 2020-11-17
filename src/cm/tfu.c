@@ -66,19 +66,12 @@
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuBndReq
 (
 Pst * pst,
 SuId suId,
 SpId spId
 )
-#else
-S16 cmPkTfuBndReq(pst, suId, spId)
-Pst * pst;
-SuId suId;
-SpId spId;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -132,19 +125,12 @@ SpId spId;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuBndReq
 (
 TfuBndReq func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuBndReq(func, pst, mBuf)
-TfuBndReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SuId suId;
    SpId spId;
@@ -192,19 +178,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuBndCfm
 (
 Pst * pst,
 SuId suId,
 uint8_t status
 )
-#else
-S16 cmPkTfuBndCfm(pst, suId, status)
-Pst * pst;
-SuId suId;
-uint8_t status;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -258,19 +237,12 @@ uint8_t status;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuBndCfm
 (
 TfuBndCfm func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuBndCfm(func, pst, mBuf)
-TfuBndCfm func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SuId suId;
    uint8_t status;
@@ -318,19 +290,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuUbndReq
 (
 Pst * pst,
 SpId spId,
 Reason reason
 )
-#else
-S16 cmPkTfuUbndReq(pst, spId, reason)
-Pst * pst;
-SpId spId;
-Reason reason;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -384,19 +349,12 @@ Reason reason;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuUbndReq
 (
 TfuUbndReq func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuUbndReq(func, pst, mBuf)
-TfuUbndReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SpId spId;
    Reason reason;
@@ -444,19 +402,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuSchBndReq
 (
 Pst * pst,
 SuId suId,
 SpId spId
 )
-#else
-S16 cmPkTfuSchBndReq(pst, suId, spId)
-Pst * pst;
-SuId suId;
-SpId spId;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -510,19 +461,12 @@ SpId spId;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuSchBndReq
 (
 TfuSchBndReq func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuSchBndReq(func, pst, mBuf)
-TfuSchBndReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SuId suId;
    SpId spId;
@@ -570,19 +514,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuSchBndCfm
 (
 Pst * pst,
 SuId suId,
 uint8_t status
 )
-#else
-S16 cmPkTfuSchBndCfm(pst, suId, status)
-Pst * pst;
-SuId suId;
-uint8_t status;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -636,19 +573,12 @@ uint8_t status;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuSchBndCfm
 (
 TfuSchBndCfm func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuSchBndCfm(func, pst, mBuf)
-TfuSchBndCfm func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SuId suId;
    uint8_t status;
@@ -696,19 +626,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuSchUbndReq
 (
 Pst * pst,
 SpId spId,
 Reason reason
 )
-#else
-S16 cmPkTfuSchUbndReq(pst, spId, reason)
-Pst * pst;
-SpId spId;
-Reason reason;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -762,19 +685,12 @@ Reason reason;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuSchUbndReq
 (
 TfuSchUbndReq func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuSchUbndReq(func, pst, mBuf)
-TfuSchUbndReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SpId spId;
    Reason reason;
@@ -826,19 +742,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuRaReqInd
 (
 Pst * pst,
 SuId suId,
 TfuRaReqIndInfo * raReqInd
 )
-#else
-S16 cmPkTfuRaReqInd(pst, suId, raReqInd)
-Pst * pst;
-SuId suId;
-TfuRaReqIndInfo * raReqInd;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -920,19 +829,12 @@ TfuRaReqIndInfo * raReqInd;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuRaReqInd
 (
 TfuRaReqInd func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuRaReqInd(func, pst, mBuf)
-TfuRaReqInd func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SuId suId;
    TfuRaReqIndInfo *raReqInd;
@@ -1028,19 +930,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuRecpReq
 (
 Pst * pst,
 SpId spId,
 TfuRecpReqInfo * recpReq
 )
-#else
-S16 cmPkTfuRecpReq(pst, spId, recpReq)
-Pst * pst;
-SpId spId;
-TfuRecpReqInfo * recpReq;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -1133,19 +1028,12 @@ TfuRecpReqInfo * recpReq;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuRecpReq
 (
 TfuRecpReq func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuRecpReq(func, pst, mBuf)
-TfuRecpReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SpId spId;
    TfuRecpReqInfo *recpReq;
@@ -1246,19 +1134,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuUlCqiInd
 (
 Pst * pst,
 SuId suId,
 TfuUlCqiIndInfo * ulCqiInd
 )
-#else
-S16 cmPkTfuUlCqiInd(pst, suId, ulCqiInd)
-Pst * pst;
-SuId suId;
-TfuUlCqiIndInfo * ulCqiInd;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -1341,19 +1222,12 @@ TfuUlCqiIndInfo * ulCqiInd;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuUlCqiInd
 (
 TfuUlCqiInd func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuUlCqiInd(func, pst, mBuf)
-TfuUlCqiInd func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SuId suId;
    TfuUlCqiIndInfo *ulCqiInd;
@@ -1439,19 +1313,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuHqInd
 (
 Pst * pst,
 SpId spId,
 TfuHqIndInfo * hqInd
 )
-#else
-S16 cmPkTfuHqInd(pst, spId, hqInd)
-Pst * pst;
-SpId spId;
-TfuHqIndInfo * hqInd;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -1533,19 +1400,12 @@ TfuHqIndInfo * hqInd;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuHqInd
 (
 TfuHqInd func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuHqInd(func, pst, mBuf)
-TfuHqInd func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SpId spId;
    TfuHqIndInfo *hqInd;
@@ -1630,19 +1490,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuSrInd
 (
 Pst * pst,
 SpId spId,
 TfuSrIndInfo * srInd
 )
-#else
-S16 cmPkTfuSrInd(pst, spId, srInd)
-Pst * pst;
-SpId spId;
-TfuSrIndInfo * srInd;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -1723,19 +1576,12 @@ TfuSrIndInfo * srInd;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuSrInd
 (
 TfuSrInd func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuSrInd(func, pst, mBuf)
-TfuSrInd func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SpId spId;
    TfuSrIndInfo *srInd;
@@ -1818,19 +1664,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDlCqiInd
 (
 Pst * pst,
 SuId suId,
 TfuDlCqiIndInfo * dlCqiInd
 )
-#else
-S16 cmPkTfuDlCqiInd(pst, suId, dlCqiInd)
-Pst * pst;
-SuId suId;
-TfuDlCqiIndInfo * dlCqiInd;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -1908,19 +1747,12 @@ TfuDlCqiIndInfo * dlCqiInd;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDlCqiInd
 (
 TfuDlCqiInd func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDlCqiInd(func, pst, mBuf)
-TfuDlCqiInd func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SuId suId;
    TfuDlCqiIndInfo *dlCqiInd;
@@ -2010,19 +1842,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuRawCqiInd
 (
 Pst * pst,
 SuId suId,
 TfuRawCqiIndInfo * rawCqiInd
 )
-#else
-S16 cmPkTfuRawCqiInd(pst, suId, rawCqiInd)
-Pst * pst;
-SuId suId;
-TfuRawCqiIndInfo * rawCqiInd;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -2076,19 +1901,12 @@ TfuRawCqiIndInfo * rawCqiInd;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuRawCqiInd
 (
 TfuRawCqiInd func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuRawCqiInd(func, pst, mBuf)
-TfuRawCqiInd func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SuId suId;
    TfuRawCqiIndInfo *rawCqiInd;
@@ -2146,19 +1964,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuSrsInd
 (
 Pst * pst,
 SuId suId,
 TfuSrsIndInfo * srsInd
 )
-#else
-S16 cmPkTfuSrsInd(pst, suId, srsInd)
-Pst * pst;
-SuId suId;
-TfuSrsIndInfo * srsInd;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -2211,19 +2022,12 @@ TfuSrsIndInfo * srsInd;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuSrsInd
 (
 TfuSrsInd func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuSrsInd(func, pst, mBuf)
-TfuSrsInd func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SuId suId;
    TfuSrsIndInfo *srsInd;
@@ -2282,19 +2086,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDatInd
 (
 Pst * pst,
 SpId spId,
 TfuDatIndInfo * datInd
 )
-#else
-S16 cmPkTfuDatInd(pst, spId, datInd)
-Pst * pst;
-SpId spId;
-TfuDatIndInfo * datInd;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -2375,19 +2172,12 @@ TfuDatIndInfo * datInd;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDatInd
 (
 TfuDatInd func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDatInd(func, pst, mBuf)
-TfuDatInd func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SpId spId;
    TfuDatIndInfo *datInd;
@@ -2476,19 +2266,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuCrcInd
 (
 Pst * pst,
 SuId suId,
 TfuCrcIndInfo * crcIndInfo
 )
-#else
-S16 cmPkTfuCrcInd(pst, suId, crcIndInfo)
-Pst * pst;
-SuId suId;
-TfuCrcIndInfo * crcIndInfo;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -2574,19 +2357,12 @@ TfuCrcIndInfo * crcIndInfo;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuCrcInd
 (
 TfuCrcInd func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuCrcInd(func, pst, mBuf)
-TfuCrcInd func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SuId suId;
    TfuCrcIndInfo *crcIndInfo;
@@ -2672,19 +2448,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuTimingAdvInd
 (
 Pst * pst,
 SuId suId,
 TfuTimingAdvIndInfo * timingAdvInd
 )
-#else
-S16 cmPkTfuTimingAdvInd(pst, suId, timingAdvInd)
-Pst * pst;
-SuId suId;
-TfuTimingAdvIndInfo * timingAdvInd;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -2766,19 +2535,12 @@ TfuTimingAdvIndInfo * timingAdvInd;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuTimingAdvInd
 (
 TfuTimingAdvInd func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuTimingAdvInd(func, pst, mBuf)
-TfuTimingAdvInd func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SuId suId;
    TfuTimingAdvIndInfo *timingAdvInd;
@@ -2866,19 +2628,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDatReq
 (
 Pst * pst,
 SpId spId,
 TfuDatReqInfo * datReq
 )
-#else
-S16 cmPkTfuDatReq(pst, spId, datReq)
-Pst * pst;
-SpId spId;
-TfuDatReqInfo * datReq;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -2962,19 +2717,12 @@ TfuDatReqInfo * datReq;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDatReq
 (
 TfuDatReq func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDatReq(func, pst, mBuf)
-TfuDatReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SpId spId;
    TfuDatReqInfo *datReq;
@@ -3063,19 +2811,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuCntrlReq
 (
 Pst * pst,
 SpId spId,
 TfuCntrlReqInfo * cntrlReq
 )
-#else
-S16 cmPkTfuCntrlReq(pst, spId, cntrlReq)
-Pst * pst;
-SpId spId;
-TfuCntrlReqInfo * cntrlReq;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -3161,19 +2902,12 @@ TfuCntrlReqInfo * cntrlReq;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuCntrlReq
 (
 TfuCntrlReq func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuCntrlReq(func, pst, mBuf)
-TfuCntrlReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SpId spId;
    TfuCntrlReqInfo *cntrlReq;
@@ -3258,19 +2992,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuTtiInd
 (
 Pst * pst,
 SuId suId,
 TfuTtiIndInfo * ttiInd
 )
-#else
-S16 cmPkTfuTtiInd(pst, suId, ttiInd)
-Pst * pst;
-SuId suId;
-TfuTtiIndInfo * ttiInd;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -3357,17 +3084,11 @@ TfuTtiIndInfo * ttiInd;
  *     File  : 
  *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuNonRtInd
 (
 Pst * pst,
 SuId suId
 )
-#else
-S16 cmPkTfuNonRtInd(pst, suId)
-Pst * pst;
-SuId suId;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -3410,19 +3131,12 @@ SuId suId;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuNonRtInd
 (
 TfuNonRtInd func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuNonRtInd(func, pst, mBuf)
-TfuNonRtInd func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SuId suId;
 
@@ -3463,19 +3177,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuPucchDeltaPwr
 (
 Pst * pst,
 SuId suId,
 TfuPucchDeltaPwrIndInfo * pucchDeltaPwr
 )
-#else
-S16 cmPkTfuPucchDeltaPwr(pst, suId, pucchDeltaPwr)
-Pst * pst;
-SuId suId;
-TfuPucchDeltaPwrIndInfo * pucchDeltaPwr;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -3554,19 +3261,12 @@ TfuPucchDeltaPwrIndInfo * pucchDeltaPwr;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuPucchDeltaPwr
 (
 TfuPucchDeltaPwrInd func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuPucchDeltaPwr(func, pst, mBuf)
-TfuPucchDeltaPwrInd func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SuId suId;
    TfuPucchDeltaPwrIndInfo *pucchDeltaPwr;
@@ -3644,17 +3344,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuRbAssignA1Val324
 (
 TfuRbAssignA1Val324 *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuRbAssignA1Val324(param, mBuf)
-TfuRbAssignA1Val324 *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -3683,17 +3377,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuRbAssignB1Val324
 (
 TfuRbAssignB1Val324 *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuRbAssignB1Val324(param, mBuf)
-TfuRbAssignB1Val324 *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -3721,17 +3409,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuRbAssignVal326
 (
 TfuRbAssignVal326 *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuRbAssignVal326(param, mBuf)
-TfuRbAssignVal326 *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -3757,17 +3439,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuRbAssignA1Val324
 (
 TfuRbAssignA1Val324 *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuRbAssignA1Val324(param, mBuf)
-TfuRbAssignA1Val324 *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -3793,17 +3469,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuRbAssignB1Val324
 (
 TfuRbAssignB1Val324 *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuRbAssignB1Val324(param, mBuf)
-TfuRbAssignB1Val324 *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -3831,17 +3501,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuRbAssignVal326
 (
 TfuRbAssignVal326 *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuRbAssignVal326(param, mBuf)
-TfuRbAssignVal326 *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -3868,17 +3532,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDciFormatA1A2Info
 (
 TfuDciFormatA1Info *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuDciFormatA1A2Info(param, mBuf)
-TfuDciFormatA1Info *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -3936,17 +3594,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDciFormatB1B2Info
 (
 TfuDciFormatB1Info *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuDciFormatB1B2Info(param, mBuf)
-TfuDciFormatB1Info *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -4003,17 +3655,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDciFormatA1A2Info
 (
 TfuDciFormatA1Info *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDciFormatA1A2Info(param, mBuf)
-TfuDciFormatA1Info *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -4071,17 +3717,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDciFormatB1B2Info
 (
 TfuDciFormatB1Info *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDciFormatB1B2Info(param, mBuf)
-TfuDciFormatB1Info *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -4139,17 +3779,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDciFormat0Info
 (
 TfuDciFormat0Info *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuDciFormat0Info(param, mBuf)
-TfuDciFormat0Info *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -4196,17 +3830,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDciFormat0Info
 (
 TfuDciFormat0Info *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDciFormat0Info(param, mBuf)
-TfuDciFormat0Info *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -4254,17 +3882,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuAllocMapOrRiv
 (
 TfuAllocMapOrRiv *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuAllocMapOrRiv(param, mBuf)
-TfuAllocMapOrRiv *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -4315,17 +3937,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuAllocMapOrRiv
 (
 TfuAllocMapOrRiv *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuAllocMapOrRiv(param, mBuf)
-TfuAllocMapOrRiv *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -4381,17 +3997,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDciFormat1AllocInfo
 (
 TfuDciFormat1AllocInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuDciFormat1AllocInfo(param, mBuf)
-TfuDciFormat1AllocInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -4429,17 +4039,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDciFormat1AllocInfo
 (
 TfuDciFormat1AllocInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDciFormat1AllocInfo(param, mBuf)
-TfuDciFormat1AllocInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -4475,17 +4079,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDciFormat1Info
 (
 TfuDciFormat1Info *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuDciFormat1Info(param, mBuf)
-TfuDciFormat1Info *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -4520,17 +4118,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDciFormat1Info
 (
 TfuDciFormat1Info *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDciFormat1Info(param, mBuf)
-TfuDciFormat1Info *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -4566,17 +4158,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDciFormat2AAllocInfo
 (
 TfuDciFormat2AAllocInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuDciFormat2AAllocInfo(param, mBuf)
-TfuDciFormat2AAllocInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -4620,17 +4206,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDciFormat2AAllocInfo
 (
 TfuDciFormat2AAllocInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDciFormat2AAllocInfo(param, mBuf)
-TfuDciFormat2AAllocInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -4683,17 +4263,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDciFormat6AAllocInfo
 (
 TfuDciFormat61AllocInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuDciFormat6AAllocInfo(param, mBuf)
-TfuDciFormat61AllocInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -4728,17 +4302,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDciFormat6AAllocInfo
 (
 TfuDciFormat61AllocInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDciFormat6AAllocInfo(param, mBuf)
-TfuDciFormat61AllocInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -4770,17 +4338,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDciFormat2AInfo
 (
 TfuDciFormat2AInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuDciFormat2AInfo(param, mBuf)
-TfuDciFormat2AInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -4812,17 +4374,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDciFormat2AInfo
 (
 TfuDciFormat2AInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDciFormat2AInfo(param, mBuf)
-TfuDciFormat2AInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -4858,17 +4414,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDciFormat2AllocInfo
 (
 TfuDciFormat2AllocInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuDciFormat2AllocInfo(param, mBuf)
-TfuDciFormat2AllocInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -4927,17 +4477,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDciFormat2AllocInfo
 (
 TfuDciFormat2AllocInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDciFormat2AllocInfo(param, mBuf)
-TfuDciFormat2AllocInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -4995,17 +4539,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDciFormat2Info
 (
 TfuDciFormat2Info *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuDciFormat2Info(param, mBuf)
-TfuDciFormat2Info *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -5047,17 +4585,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDciFormat2Info
 (
 TfuDciFormat2Info *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDciFormat2Info(param, mBuf)
-TfuDciFormat2Info *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -5095,17 +4627,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDciFormat3Info
 (
 TfuDciFormat3Info *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuDciFormat3Info(param, mBuf)
-TfuDciFormat3Info *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -5134,17 +4660,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDciFormat3Info
 (
 TfuDciFormat3Info *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDciFormat3Info(param, mBuf)
-TfuDciFormat3Info *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -5173,17 +4693,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDciFormat3AInfo
 (
 TfuDciFormat3AInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuDciFormat3AInfo(param, mBuf)
-TfuDciFormat3AInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -5211,17 +4725,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDciFormat3AInfo
 (
 TfuDciFormat3AInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDciFormat3AInfo(param, mBuf)
-TfuDciFormat3AInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -5253,17 +4761,11 @@ Buffer *mBuf;
 *
 ************************************************************/
 
-#ifdef ANSI
 static S16 cmPkTfuDciFormat60aInfo
 (
 TfuDciFormat60aInfo *param,
 Buffer *mBuf
 )
-#else
-static S16 cmPkTfuDciFormat60aInfo(param, mBuf)
-TfuDciFormat60aInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -5300,17 +4802,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 static S16 cmPkTfuPdcchOrderInfoEmtc
 (
 TfuPdcchOrderInfoEmtc *param,
 Buffer *mBuf
 )
-#else
-static S16 cmPkTfuPdcchOrderInfoEmtc(param, mBuf)
-TfuPdcchOrderInfoEmtc *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -5337,17 +4833,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 static S16 cmPkTfudciformat61aPdsch
 (
 Tfudciformat61aPdsch *param,
 Buffer *mBuf
 )
-#else
-static S16 cmPkTfudciformat61aPdsch(param, mBuf)
-Tfudciformat61aPdsch *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -5388,17 +4878,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDciFormat61aInfo
 (
 TfuDciFormat61aInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuDciFormat61aInfo(param, mBuf)
-TfuDciFormat61aInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -5434,17 +4918,11 @@ Buffer *mBuf;
 *
 * **********************************************************/
 
-#ifdef ANSI
 static S16 cmUnpkTfuDciFormat60aInfo 
 (
 TfuDciFormat60aInfo *param,
 Buffer *mBuf
 )
-#else
-static S16 cmUnpkTfuDciFormat60aInfo(param, mBuf)
-TfuDciFormat60aInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -5483,17 +4961,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 static S16 cmUnpkTfuPdcchOrderInfoEmtc
 (
 TfuPdcchOrderInfoEmtc *param,
 Buffer *mBuf
 )
-#else
-static S16 cmUnpkTfuPdcchOrderInfoEmtc(param, mBuf)
-TfuPdcchOrderInfoEmtc *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -5521,17 +4993,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDciFormat61aInfo
 (
 TfuDciFormat61aInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDciFormat61aInfo(param, mBuf)
-TfuDciFormat61aInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -5571,17 +5037,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDciFormat1dAllocInfo
 (
 TfuDciFormat1dAllocInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuDciFormat1dAllocInfo(param, mBuf)
-TfuDciFormat1dAllocInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -5616,17 +5076,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDciFormat1dAllocInfo
 (
 TfuDciFormat1dAllocInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDciFormat1dAllocInfo(param, mBuf)
-TfuDciFormat1dAllocInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -5660,17 +5114,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDciFormat1dInfo
 (
 TfuDciFormat1dInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuDciFormat1dInfo(param, mBuf)
-TfuDciFormat1dInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -5708,17 +5156,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDciFormat1dInfo
 (
 TfuDciFormat1dInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDciFormat1dInfo(param, mBuf)
-TfuDciFormat1dInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -5757,17 +5199,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDciFormat1cInfo
 (
 TfuDciFormat1cInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuDciFormat1cInfo(param, mBuf)
-TfuDciFormat1cInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -5799,17 +5235,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDciFormat1cInfo
 (
 TfuDciFormat1cInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDciFormat1cInfo(param, mBuf)
-TfuDciFormat1cInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -5841,17 +5271,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDciFormat1bAllocInfo
 (
 TfuDciFormat1bAllocInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuDciFormat1bAllocInfo(param, mBuf)
-TfuDciFormat1bAllocInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -5889,17 +5313,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDciFormat1bAllocInfo
 (
 TfuDciFormat1bAllocInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDciFormat1bAllocInfo(param, mBuf)
-TfuDciFormat1bAllocInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -5933,17 +5351,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuPdcchOrderInfo
 (
 TfuPdcchOrderInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuPdcchOrderInfo(param, mBuf)
-TfuPdcchOrderInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -5970,17 +5382,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuPdcchOrderInfo
 (
 TfuPdcchOrderInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuPdcchOrderInfo(param, mBuf)
-TfuPdcchOrderInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -6011,17 +5417,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDciFormat1aAllocInfo
 (
 TfuDciFormat1aAllocInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuDciFormat1aAllocInfo(param, mBuf)
-TfuDciFormat1aAllocInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -6057,17 +5457,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDciFormat1aAllocInfo
 (
 TfuDciFormat1aAllocInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDciFormat1aAllocInfo(param, mBuf)
-TfuDciFormat1aAllocInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -6099,17 +5493,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfudciformat1aPdsch
 (
 Tfudciformat1aPdsch *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfudciformat1aPdsch(param, mBuf)
-Tfudciformat1aPdsch *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -6141,17 +5529,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfudciformat1aPdsch
 (
 Tfudciformat1aPdsch *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfudciformat1aPdsch(param, mBuf)
-Tfudciformat1aPdsch *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -6184,17 +5566,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfudciformat61aPdsch
 (
 Tfudciformat61aPdsch *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfudciformat61aPdsch(param, mBuf)
-Tfudciformat61aPdsch *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -6243,17 +5619,11 @@ Buffer *mBuf;
  *     File  : 
  *
  **********************************************************/
-#ifdef ANSI
 static S16 cmUnpkTfuDirectIndication
 (
- TfuDirectIndication *param,
- Buffer *mBuf
- )
-#else
-static S16 cmUnpkTfuDirectIndication(param, mBuf)
-   TfuDirectIndication *param;
-   Buffer *mBuf;
-#endif
+TfuDirectIndication *param,
+Buffer *mBuf
+)
 {
 
    CMCHKUNPK(oduPackUInt8, &param->directInd, mBuf);
@@ -6282,17 +5652,11 @@ static S16 cmUnpkTfuDirectIndication(param, mBuf)
  *     File  : 
  *
  **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDciFormat62AllocInfo
 (
- TfuDciFormat62AllocInfo *param,
- Buffer *mBuf
- )
-#else
-S16 cmUnpkTfuDciFormat62AllocInfo(param, mBuf)
-   TfuDciFormat62AllocInfo *param;
-   Buffer *mBuf;
-#endif
+TfuDciFormat62AllocInfo *param,
+Buffer *mBuf
+)
 {
    CMCHKUNPK(oduPackUInt8, &param->riv, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->mcs, mBuf);
@@ -6317,17 +5681,11 @@ S16 cmUnpkTfuDciFormat62AllocInfo(param, mBuf)
  *     File  : 
  *
  **********************************************************/
-#ifdef ANSI
 static S16 cmUnpkTfudciformat62Pdsch
 (
- Tfudciformat62Pdsch *param,
- Buffer *mBuf
- )
-#else
-static S16 cmUnpkTfudciformat62Pdsch(param, mBuf)
-   Tfudciformat62Pdsch *param;
-   Buffer *mBuf;
-#endif
+Tfudciformat62Pdsch *param,
+Buffer *mBuf
+)
 {
 
 
@@ -6356,17 +5714,11 @@ static S16 cmUnpkTfudciformat62Pdsch(param, mBuf)
  *     File  : 
  *
  **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDciFormat62Info
 (
- TfuDciFormat62Info *param,
- Buffer *mBuf
- )
-#else
-S16 cmUnpkTfuDciFormat62Info(param, mBuf)
-   TfuDciFormat62Info *param;
-   Buffer *mBuf;
-#endif
+TfuDciFormat62Info *param,
+Buffer *mBuf
+)
 {
 
       CMCHKUNPK(oduPackUInt8, &param->isPaging, mBuf);
@@ -6412,17 +5764,11 @@ S16 cmUnpkTfuDciFormat62Info(param, mBuf)
  *     File  : 
  *
  **********************************************************/
-#ifdef ANSI
 static S16 cmPkTfuDirectIndication
 (
- TfuDirectIndication *param,
- Buffer *mBuf
- )
-#else
-static S16 cmPkTfuDirectIndication(param, mBuf)
-   TfuDirectIndication *param;
-   Buffer *mBuf;
-#endif
+TfuDirectIndication *param,
+Buffer *mBuf
+)
 {
 
    CMCHKPK(oduUnpackUInt8, param->directInd, mBuf);
@@ -6453,17 +5799,11 @@ static S16 cmPkTfuDirectIndication(param, mBuf)
  *     File  : 
  *
  **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDciFormat62AllocInfo
 (
- TfuDciFormat62AllocInfo *param,
- Buffer *mBuf
- )
-#else
-S16 cmPkTfuDciFormat62AllocInfo(param, mBuf)
-   TfuDciFormat62AllocInfo *param;
-   Buffer *mBuf;
-#endif
+TfuDciFormat62AllocInfo *param,
+Buffer *mBuf
+)
 {
 
    CMCHKPK(oduUnpackUInt8, param->rv, mBuf);
@@ -6491,17 +5831,11 @@ S16 cmPkTfuDciFormat62AllocInfo(param, mBuf)
  *     File  : 
  *
  **********************************************************/
-#ifdef ANSI
 static S16 cmPkTfudciformat62Pdsch
 (
- Tfudciformat62Pdsch *param,
- Buffer *mBuf
- )
-#else
-static S16 cmPkTfudciformat62Pdsch(param, mBuf)
-   Tfudciformat62Pdsch *param;
-   Buffer *mBuf;
-#endif
+Tfudciformat62Pdsch *param,
+Buffer *mBuf
+)
 {
 
    CMCHKPK(oduUnpackUInt8, param->dciSubRepNum, mBuf);
@@ -6531,17 +5865,11 @@ static S16 cmPkTfudciformat62Pdsch(param, mBuf)
  *     File  : 
  *
  **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDciFormat62Info
 (
- TfuDciFormat62Info *param,
- Buffer *mBuf
- )
-#else
-S16 cmPkTfuDciFormat62Info(param, mBuf)
-   TfuDciFormat62Info *param;
-   Buffer *mBuf;
-#endif
+TfuDciFormat62Info *param,
+Buffer *mBuf
+)
 {
 
       switch(param->isPaging) {
@@ -6585,17 +5913,11 @@ S16 cmPkTfuDciFormat62Info(param, mBuf)
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDciFormat1aInfo
 (
 TfuDciFormat1aInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuDciFormat1aInfo(param, mBuf)
-TfuDciFormat1aInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -6634,17 +5956,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDciFormat1aInfo
 (
 TfuDciFormat1aInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDciFormat1aInfo(param, mBuf)
-TfuDciFormat1aInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -6683,17 +5999,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDciFormat1bInfo
 (
 TfuDciFormat1bInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuDciFormat1bInfo(param, mBuf)
-TfuDciFormat1bInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -6728,17 +6038,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDciFormat1bInfo
 (
 TfuDciFormat1bInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDciFormat1bInfo(param, mBuf)
-TfuDciFormat1bInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -6783,17 +6087,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDciInfo
 (
 TfuDciInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuDciInfo(param, mBuf)
-TfuDciInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -6891,17 +6189,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDciInfo
 (
 TfuDciInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDciInfo(param, mBuf)
-TfuDciInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -6990,17 +6282,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuSubbandInfo
 (
 TfuSubbandInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuSubbandInfo(param, mBuf)
-TfuSubbandInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -7027,17 +6313,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuSubbandInfo
 (
 TfuSubbandInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuSubbandInfo(param, mBuf)
-TfuSubbandInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -7064,17 +6344,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuSubbandCqiInfo
 (
 TfuSubbandCqiInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuSubbandCqiInfo(param, mBuf)
-TfuSubbandCqiInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -7100,17 +6374,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuSubbandCqiInfo
 (
 TfuSubbandCqiInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuSubbandCqiInfo(param, mBuf)
-TfuSubbandCqiInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -7136,17 +6404,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuPdcchCceInfo
 (
 TfuPdcchCceInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuPdcchCceInfo(param, mBuf)
-TfuPdcchCceInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -7172,17 +6434,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuPdcchCceInfo
 (
 TfuPdcchCceInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuPdcchCceInfo(param, mBuf)
-TfuPdcchCceInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -7209,17 +6465,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuCqiPucchMode10
 (
 TfuCqiPucchMode10 *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuCqiPucchMode10(param, mBuf)
-TfuCqiPucchMode10 *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -7255,17 +6505,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuCqiPucchMode10
 (
 TfuCqiPucchMode10 *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuCqiPucchMode10(param, mBuf)
-TfuCqiPucchMode10 *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -7301,17 +6545,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuCqiMode11Cqi
 (
 TfuCqiMode11Cqi *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuCqiMode11Cqi(param, mBuf)
-TfuCqiMode11Cqi *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -7339,17 +6577,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuCqiMode11Cqi
 (
 TfuCqiMode11Cqi *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuCqiMode11Cqi(param, mBuf)
-TfuCqiMode11Cqi *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -7377,17 +6609,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuCqiPucchMode11
 (
 TfuCqiPucchMode11 *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuCqiPucchMode11(param, mBuf)
-TfuCqiPucchMode11 *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -7423,17 +6649,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuCqiPucchMode11
 (
 TfuCqiPucchMode11 *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuCqiPucchMode11(param, mBuf)
-TfuCqiPucchMode11 *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -7468,17 +6688,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuCqiMode20SubCqi
 (
 TfuCqiMode20SubCqi *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuCqiMode20SubCqi(param, mBuf)
-TfuCqiMode20SubCqi *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -7504,17 +6718,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuCqiMode20SubCqi
 (
 TfuCqiMode20SubCqi *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuCqiMode20SubCqi(param, mBuf)
-TfuCqiMode20SubCqi *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -7541,17 +6749,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuCqiMode20Cqi
 (
 TfuCqiMode20Cqi *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuCqiMode20Cqi(param, mBuf)
-TfuCqiMode20Cqi *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -7587,17 +6789,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuCqiMode20Cqi
 (
 TfuCqiMode20Cqi *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuCqiMode20Cqi(param, mBuf)
-TfuCqiMode20Cqi *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -7633,17 +6829,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuCqiPucchMode20
 (
 TfuCqiPucchMode20 *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuCqiPucchMode20(param, mBuf)
-TfuCqiPucchMode20 *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -7679,17 +6869,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuCqiPucchMode20
 (
 TfuCqiPucchMode20 *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuCqiPucchMode20(param, mBuf)
-TfuCqiPucchMode20 *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -7725,17 +6909,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuCqiMode21SubCqi
 (
 TfuCqiMode21SubCqi *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuCqiMode21SubCqi(param, mBuf)
-TfuCqiMode21SubCqi *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -7763,17 +6941,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuCqiMode21SubCqi
 (
 TfuCqiMode21SubCqi *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuCqiMode21SubCqi(param, mBuf)
-TfuCqiMode21SubCqi *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -7801,17 +6973,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuCqiMode21WideCqi
 (
 TfuCqiMode21WideCqi *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuCqiMode21WideCqi(param, mBuf)
-TfuCqiMode21WideCqi *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -7839,17 +7005,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuCqiMode21WideCqi
 (
 TfuCqiMode21WideCqi *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuCqiMode21WideCqi(param, mBuf)
-TfuCqiMode21WideCqi *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -7877,17 +7037,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuCqiMode21Cqi
 (
 TfuCqiMode21Cqi *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuCqiMode21Cqi(param, mBuf)
-TfuCqiMode21Cqi *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -7923,17 +7077,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuCqiMode21Cqi
 (
 TfuCqiMode21Cqi *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuCqiMode21Cqi(param, mBuf)
-TfuCqiMode21Cqi *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -7969,17 +7117,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuCqiPucchMode21
 (
 TfuCqiPucchMode21 *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuCqiPucchMode21(param, mBuf)
-TfuCqiPucchMode21 *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -8015,17 +7157,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuCqiPucchMode21
 (
 TfuCqiPucchMode21 *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuCqiPucchMode21(param, mBuf)
-TfuCqiPucchMode21 *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -8060,17 +7196,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDlCqiPucch
 (
 TfuDlCqiPucch *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuDlCqiPucch(param, mBuf)
-TfuDlCqiPucch *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -8112,17 +7242,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDlCqiPucch
 (
 TfuDlCqiPucch *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDlCqiPucch(param, mBuf)
-TfuDlCqiPucch *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -8165,17 +7289,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuSubbandMode12
 (
 TfuSubbandMode12 *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuSubbandMode12(param, mBuf)
-TfuSubbandMode12 *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -8202,19 +7320,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuSubbandMode12
 (
 TfuSubbandMode12 *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuSubbandMode12(param, mBuf)
-TfuSubbandMode12 *param;
-Buffer *mBuf;
-#endif
 {
-
 
    CMCHKUNPK(oduPackUInt8, &param->pmi, mBuf);
    CMCHKUNPK(cmUnpkTfuSubbandInfo, &param->subBand, mBuf);
@@ -8239,17 +7350,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuCqiPuschMode12
 (
 TfuCqiPuschMode12 *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuCqiPuschMode12(param, mBuf)
-TfuCqiPuschMode12 *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -8282,17 +7387,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuCqiPuschMode12
 (
 TfuCqiPuschMode12 *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuCqiPuschMode12(param, mBuf)
-TfuCqiPuschMode12 *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -8325,17 +7424,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuCqiPuschMode20
 (
 TfuCqiPuschMode20 *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuCqiPuschMode20(param, mBuf)
-TfuCqiPuschMode20 *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -8367,17 +7460,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuCqiPuschMode20
 (
 TfuCqiPuschMode20 *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuCqiPuschMode20(param, mBuf)
-TfuCqiPuschMode20 *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -8408,17 +7495,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuCqiPuschMode22
 (
 TfuCqiPuschMode22 *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuCqiPuschMode22(param, mBuf)
-TfuCqiPuschMode22 *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -8458,17 +7539,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuCqiPuschMode22
 (
 TfuCqiPuschMode22 *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuCqiPuschMode22(param, mBuf)
-TfuCqiPuschMode22 *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -8491,17 +7566,11 @@ Buffer *mBuf;
 }
 
 
-#ifdef ANSI
 S16 cmPkTfuSubbandMode30
 (
 TfuSubbandMode30 *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuSubbandMode30(param, mBuf)
-TfuSubbandMode30 *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -8511,17 +7580,11 @@ Buffer *mBuf;
 }
 
 
-#ifdef ANSI
 S16 cmUnpkTfuSubbandMode30
 (
 TfuSubbandMode30 *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuSubbandMode30(param, mBuf)
-TfuSubbandMode30 *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -8548,17 +7611,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuCqiPuschMode30
 (
 TfuCqiPuschMode30 *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuCqiPuschMode30(param, mBuf)
-TfuCqiPuschMode30 *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -8589,17 +7646,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuCqiPuschMode30
 (
 TfuCqiPuschMode30 *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuCqiPuschMode30(param, mBuf)
-TfuCqiPuschMode30 *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -8613,17 +7664,11 @@ Buffer *mBuf;
 }
 
 
-#ifdef ANSI
 S16 cmPkTfuSubbandMode31
 (
 TfuSubbandMode31 *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuSubbandMode31(param, mBuf)
-TfuSubbandMode31 *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -8636,17 +7681,11 @@ Buffer *mBuf;
 }
 
 
-#ifdef ANSI
 S16 cmUnpkTfuSubbandMode31
 (
 TfuSubbandMode31 *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuSubbandMode31(param, mBuf)
-TfuSubbandMode31 *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -8676,17 +7715,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuCqiPuschMode31
 (
 TfuCqiPuschMode31 *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuCqiPuschMode31(param, mBuf)
-TfuCqiPuschMode31 *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -8727,17 +7760,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuCqiPuschMode31
 (
 TfuCqiPuschMode31 *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuCqiPuschMode31(param, mBuf)
-TfuCqiPuschMode31 *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -8779,17 +7806,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDlCqiPusch
 (
 TfuDlCqiPusch *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuDlCqiPusch(param, mBuf)
-TfuDlCqiPusch *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -8838,17 +7859,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDlCqiPusch
 (
 TfuDlCqiPusch *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDlCqiPusch(param, mBuf)
-TfuDlCqiPusch *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -8893,19 +7908,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDlCqiInfo
 (
 uint8_t selector,
 TfuDlCqiInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuDlCqiInfo(selector, param, mBuf)
-uint8_t selector;
-TfuDlCqiInfo *param;
-Buffer *mBuf;
-#endif
 {
    uint32_t idx;
 
@@ -8944,19 +7952,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDlCqiInfo
 (
 uint8_t selector,
 TfuDlCqiInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDlCqiInfo(selector, param, mBuf)
-uint8_t selector;
-TfuDlCqiInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    uint8_t idx;
@@ -9002,17 +8003,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuRecpReqInfo
 (
 TfuRecpReqInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuRecpReqInfo(param, mBuf)
-TfuRecpReqInfo *param;
-Buffer *mBuf;
-#endif
 {
    CmLList *node;
    uint32_t count;
@@ -9063,19 +8058,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuRecpReqInfo
 (
 TfuRecpReqInfo *param,
 Ptr memCp,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuRecpReqInfo(param, memCp, mBuf)
-TfuRecpReqInfo *param;
-Ptr memCp;
-Buffer *mBuf;
-#endif
 {
 
    uint32_t count, loopCnt;
@@ -9118,17 +8106,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuPdcchInfo
 (
 TfuPdcchInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuPdcchInfo(param, mBuf)
-TfuPdcchInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 #ifdef TFU_5GTF
@@ -9166,17 +8148,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuPdcchInfo
 (
 TfuPdcchInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuPdcchInfo(param, mBuf)
-TfuPdcchInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -9218,17 +8194,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuPhichInfo
 (
 TfuPhichInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuPhichInfo(param, mBuf)
-TfuPhichInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 /* tfu_c_001.main_7. Added changes of TFU_UPGRADE */
@@ -9265,17 +8235,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuPhichInfo
 (
 TfuPhichInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuPhichInfo(param, mBuf)
-TfuPhichInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -9313,17 +8277,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuCntrlReqInfo
 (
 TfuCntrlReqInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuCntrlReqInfo(param, mBuf)
-TfuCntrlReqInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    TfuPdcchInfo   *tfuPdcchInfo;
@@ -9417,19 +8375,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuCntrlReqInfo
 (
 TfuCntrlReqInfo *param,
 Ptr memCp,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuCntrlReqInfo(param, memCp, mBuf)
-TfuCntrlReqInfo *param;
-Ptr memCp;
-Buffer *mBuf;
-#endif
 {
 
    TfuPdcchInfo *tfuPdcchInfo;
@@ -9510,17 +8461,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuPdschDciInfo
 (
 TfuPdschDciInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuPdschDciInfo(param, mBuf)
-TfuPdschDciInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -9609,17 +8554,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuPdschDciInfo
 (
 TfuPdschDciInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuPdschDciInfo(param, mBuf)
-TfuPdschDciInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -9691,17 +8630,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuBfVectorInfo
 (
 TfuBfVectorInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuBfVectorInfo(param, mBuf)
-TfuBfVectorInfo *param;
-Buffer *mBuf;
-#endif
 {
    S32 idx, idx2;
    for(idx=TFU_MAX_DL_SUBBAND-1;idx>=0; idx--)
@@ -9730,17 +8663,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuBfVectorInfo
 (
    TfuBfVectorInfo *param,
    Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuBfVectorInfo(param, mBuf)
- TfuBfVectorInfo *param;
- Buffer *mBuf;
-#endif
 {
    S32 idx, idx2;
     for(idx=0;idx<TFU_MAX_DL_SUBBAND; idx++)
@@ -9770,17 +8697,11 @@ S16 cmUnpkTfuBfVectorInfo(param, mBuf)
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDatReqPduInfo
 (
 TfuDatReqPduInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuDatReqPduInfo(param, mBuf)
-TfuDatReqPduInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -9887,17 +8808,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDatReqPduInfo
 (
 TfuDatReqPduInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDatReqPduInfo(param, mBuf)
-TfuDatReqPduInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    uint8_t i;
@@ -9998,17 +8913,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDatReqInfo
 (
 TfuDatReqInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuDatReqInfo(param, mBuf)
-TfuDatReqInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    CmLList *node;
@@ -10052,19 +8961,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDatReqInfo
 (
 TfuDatReqInfo *param,
 Ptr memCp,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDatReqInfo(param, memCp, mBuf)
-TfuDatReqInfo *param;
-Ptr memCp;
-Buffer *mBuf;
-#endif
 {
 
    uint32_t count, loopCnt;
@@ -10102,17 +9004,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDatInfo
 (
 TfuDatInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuDatInfo(param, mBuf)
-TfuDatInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -10138,17 +9034,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDatInfo
 (
 TfuDatInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDatInfo(param, mBuf)
-TfuDatInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -10176,17 +9066,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDatIndInfo
 (
 TfuDatIndInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuDatIndInfo(param, mBuf)
-TfuDatIndInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    CmLList *node;
@@ -10232,19 +9116,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDatIndInfo
 (
 TfuDatIndInfo *param,
 Ptr memCp,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDatIndInfo(param, memCp, mBuf)
-TfuDatIndInfo *param;
-Ptr memCp;
-Buffer *mBuf;
-#endif
 {
 
    uint32_t count, loopCnt;
@@ -10288,17 +9165,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuSrInfo
 (
 TfuSrInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuSrInfo(param, mBuf)
-TfuSrInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -10326,17 +9197,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuSrInfo
 (
 TfuSrInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuSrInfo(param, mBuf)
-TfuSrInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -10362,17 +9227,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuSrIndInfo
 (
 TfuSrIndInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuSrIndInfo(param, mBuf)
-TfuSrIndInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    CmLList *node;
@@ -10413,19 +9272,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuSrIndInfo
 (
 TfuSrIndInfo *param,
 Ptr memCp,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuSrIndInfo(param, memCp, mBuf)
-TfuSrIndInfo *param;
-Ptr memCp;
-Buffer *mBuf;
-#endif
 {
 
    uint32_t count, loopCnt;
@@ -10464,17 +9316,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuHqInfo
 (
 TfuHqInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuHqInfo(param, mBuf)
-TfuHqInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -10512,17 +9358,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuHqInfo
 (
 TfuHqInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuHqInfo(param, mBuf)
-TfuHqInfo *param;
-Buffer *mBuf;
-#endif
 {
    S32 i;
 
@@ -10561,17 +9401,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuHqIndInfo
 (
 TfuHqIndInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuHqIndInfo(param, mBuf)
-TfuHqIndInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    CmLList *node;
@@ -10613,19 +9447,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuHqIndInfo
 (
 TfuHqIndInfo *param,
 Ptr memCp,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuHqIndInfo(param, memCp, mBuf)
-TfuHqIndInfo *param;
-Ptr memCp;
-Buffer *mBuf;
-#endif
 {
 
    uint32_t count, loopCnt;
@@ -10662,17 +9489,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuUlCqiInfo
 (
 TfuUlCqiInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuUlCqiInfo(param, mBuf)
-TfuUlCqiInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -10697,17 +9518,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuUlCqiInfo
 (
 TfuUlCqiInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuUlCqiInfo(param, mBuf)
-TfuUlCqiInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -10733,17 +9548,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuUlCqiRpt
 (
 TfuUlCqiRpt *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuUlCqiRpt(param, mBuf)
-TfuUlCqiRpt *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -10776,17 +9585,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuUlCqiRpt
 (
 TfuUlCqiRpt *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuUlCqiRpt(param, mBuf)
-TfuUlCqiRpt *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -10822,17 +9625,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuUlCqiIndInfo
 (
 TfuUlCqiIndInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuUlCqiIndInfo(param, mBuf)
-TfuUlCqiIndInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    CmLList *node;
@@ -10876,19 +9673,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuUlCqiIndInfo
 (
 TfuUlCqiIndInfo *param,
 Ptr memCp,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuUlCqiIndInfo(param, memCp, mBuf)
-TfuUlCqiIndInfo *param;
-Ptr memCp;
-Buffer *mBuf;
-#endif
 {
 
    uint32_t count, loopCnt;
@@ -10928,17 +9718,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDlCqiRpt
 (
 TfuDlCqiRpt *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuDlCqiRpt(param, mBuf)
-TfuDlCqiRpt *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -10968,17 +9752,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDlCqiRpt
 (
 TfuDlCqiRpt *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDlCqiRpt(param, mBuf)
-TfuDlCqiRpt *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -11008,17 +9786,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDlCqiIndInfo
 (
 TfuDlCqiIndInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuDlCqiIndInfo(param, mBuf)
-TfuDlCqiIndInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    CmLList *node;
@@ -11060,19 +9832,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDlCqiIndInfo
 (
 TfuDlCqiIndInfo *param,
 Ptr memCp,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDlCqiIndInfo(param, memCp, mBuf)
-TfuDlCqiIndInfo *param;
-Ptr memCp;
-Buffer *mBuf;
-#endif
 {
 
    uint32_t count, loopCnt;
@@ -11110,17 +9875,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuCrcInfo
 (
 TfuCrcInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuCrcInfo(param, mBuf)
-TfuCrcInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -11148,17 +9907,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuCrcInfo
 (
 TfuCrcInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuCrcInfo(param, mBuf)
-TfuCrcInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -11188,17 +9941,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuCrcIndInfo
 (
 TfuCrcIndInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuCrcIndInfo(param, mBuf)
-TfuCrcIndInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    CmLList *node;
@@ -11245,19 +9992,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuCrcIndInfo
 (
 TfuCrcIndInfo *param,
 Ptr memCp,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuCrcIndInfo(param, memCp, mBuf)
-TfuCrcIndInfo *param;
-Ptr memCp;
-Buffer *mBuf;
-#endif
 {
 
    uint32_t count, loopCnt;
@@ -11299,17 +10039,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuTimingAdvInfo
 (
 TfuTimingAdvInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuTimingAdvInfo(param, mBuf)
-TfuTimingAdvInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -11336,17 +10070,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuTimingAdvInfo
 (
 TfuTimingAdvInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuTimingAdvInfo(param, mBuf)
-TfuTimingAdvInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -11374,17 +10102,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuTimingAdvIndInfo
 (
 TfuTimingAdvIndInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuTimingAdvIndInfo(param, mBuf)
-TfuTimingAdvIndInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    CmLList *node;
@@ -11426,19 +10148,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuTimingAdvIndInfo
 (
 TfuTimingAdvIndInfo *param,
 Ptr memCp,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuTimingAdvIndInfo(param, memCp, mBuf)
-TfuTimingAdvIndInfo *param;
-Ptr memCp;
-Buffer *mBuf;
-#endif
 {
 
    uint32_t count, loopCnt;
@@ -11476,17 +10191,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuTtiCellInfo
 (
 TfuTtiCellInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuTtiCellInfo(param, mBuf)
-TfuTtiCellInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -11516,17 +10225,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuTtiIndInfo
 (
 TfuTtiIndInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuTtiIndInfo(param, mBuf)
-TfuTtiIndInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -11558,17 +10261,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuTtiCellInfo
 (
 TfuTtiCellInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuTtiCellInfo(param, mBuf)
-TfuTtiCellInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -11604,17 +10301,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuRaReqInfo
 (
 TfuRaReqInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuRaReqInfo(param, mBuf)
-TfuRaReqInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -11649,17 +10340,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuRaReqInfo
 (
 TfuRaReqInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuRaReqInfo(param, mBuf)
-TfuRaReqInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -11689,19 +10374,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuRachInfo
 (
- CmMemListCp   memCp,
+CmMemListCp   memCp,
 TfuRachInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuRachInfo(memCp, param, mBuf)
- CmMemListCp   memCp;
-TfuRachInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -11741,19 +10419,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuRachInfo
 (
 CmMemListCp   memCp,
 TfuRachInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuRachInfo(memCp, param, mBuf)
-CmMemListCp   memCp;
-TfuRachInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -11811,17 +10482,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuRaReqIndInfo
 (
 TfuRaReqIndInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuRaReqIndInfo(param, mBuf)
-TfuRaReqIndInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -11871,17 +10536,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuRaReqIndInfo
 (
 TfuRaReqIndInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuRaReqIndInfo(param, mBuf)
-TfuRaReqIndInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -11921,17 +10580,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuPucchDeltaPwrInfo
 (
 TfuPucchDeltaPwr *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuPucchDeltaPwrInfo(param, mBuf)
-TfuPucchDeltaPwr *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -11957,17 +10610,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuPucchDeltaPwrInfo
 (
 TfuPucchDeltaPwr *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuPucchDeltaPwrInfo(param, mBuf)
-TfuPucchDeltaPwr *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -11996,17 +10643,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuPucchDeltaPwrIndInfo
 (
 TfuPucchDeltaPwrIndInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuPucchDeltaPwrIndInfo(param, mBuf)
-TfuPucchDeltaPwrIndInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    CmLList *node;
@@ -12049,19 +10690,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuPucchDeltaPwrIndInfo
 (
 TfuPucchDeltaPwrIndInfo *param,
 Ptr memCp,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuPucchDeltaPwrIndInfo(param, memCp, mBuf)
-TfuPucchDeltaPwrIndInfo *param;
-Ptr memCp;
-Buffer *mBuf;
-#endif
 {
 
    uint32_t count, loopCnt;
@@ -12081,17 +10715,11 @@ Buffer *mBuf;
    return ROK;
 }
 
-#ifdef ANSI
 S16 cmPkBuffer
 (
 Buffer **param,
 Buffer *mBuf
 )
-#else
-S16 cmPkBuffer(param, mBuf)
-Buffer **param;
-Buffer *mBuf;
-#endif
 {
    MsgLen msgLen=0;
    if (SFndLenMsg(*param, &msgLen) != ROK)
@@ -12103,17 +10731,11 @@ Buffer *mBuf;
    CMCHKPK(cmPkMsgLen, msgLen, mBuf);
    return ROK;
 }
-#ifdef ANSI
 S16 cmUnpkBuffer
 (
 Buffer **param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkBuffer(param, mBuf)
-Buffer **param;
-Buffer *mBuf;
-#endif
 {
    MsgLen msgLen=0, totalMsgLen=0;
    CMCHKUNPK(cmUnpkMsgLen, &msgLen, mBuf);
@@ -12146,19 +10768,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDoaInd
 (
 Pst * pst,
 SuId suId,
 TfuDoaIndInfo * doaInd
 )
-#else
-S16 cmPkTfuDoaInd(pst, suId, doaInd)
-Pst * pst;
-SuId suId;
-TfuDoaIndInfo * doaInd;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -12209,19 +10824,12 @@ TfuDoaIndInfo * doaInd;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDoaInd
 (
 TfuDoaInd func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDoaInd(func, pst, mBuf)
-TfuDoaInd func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SuId suId;
    TfuDoaIndInfo *doaInd;
@@ -12274,17 +10882,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDciFormatTbInfo
 (
 TfuDciFormatTbInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuDciFormatTbInfo(param, mBuf)
-TfuDciFormatTbInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -12312,17 +10914,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDciFormatTbInfo
 (
 TfuDciFormatTbInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDciFormatTbInfo(param, mBuf)
-TfuDciFormatTbInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -12349,17 +10945,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuSubbandDlCqiInfo
 (
 TfuSubbandDlCqiInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuSubbandDlCqiInfo(param, mBuf)
-TfuSubbandDlCqiInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -12388,17 +10978,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuSubbandDlCqiInfo
 (
 TfuSubbandDlCqiInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuSubbandDlCqiInfo(param, mBuf)
-TfuSubbandDlCqiInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -12426,17 +11010,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDlCqiPuschInfo
 (
 TfuDlCqiPuschInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuDlCqiPuschInfo(param, mBuf)
-TfuDlCqiPuschInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -12475,17 +11053,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDlCqiPuschInfo
 (
 TfuDlCqiPuschInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDlCqiPuschInfo(param, mBuf)
-TfuDlCqiPuschInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -12522,17 +11094,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDoaRpt
 (
 TfuDoaRpt *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuDoaRpt(param, mBuf)
-TfuDoaRpt *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -12559,17 +11125,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDoaRpt
 (
 TfuDoaRpt *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDoaRpt(param, mBuf)
-TfuDoaRpt *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -12599,17 +11159,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuDoaIndInfo
 (
 TfuDoaIndInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuDoaIndInfo(param, mBuf)
-TfuDoaIndInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    CmLList *node;
@@ -12651,19 +11205,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuDoaIndInfo
 (
 TfuDoaIndInfo *param,
 Ptr memCp,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuDoaIndInfo(param, memCp, mBuf)
-TfuDoaIndInfo *param;
-Ptr memCp;
-Buffer *mBuf;
-#endif
 {
 
    uint32_t count, loopCnt;
@@ -12703,17 +11250,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuSrsRpt
 (
 TfuSrsRpt *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuSrsRpt(param, mBuf)
-TfuSrsRpt *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -12750,17 +11291,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuSrsRpt
 (
 TfuSrsRpt *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuSrsRpt(param, mBuf)
-TfuSrsRpt *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -12799,17 +11334,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuSrsIndInfo
 (
 TfuSrsIndInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuSrsIndInfo(param, mBuf)
-TfuSrsIndInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    CmLList *node;
@@ -12853,19 +11382,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuSrsIndInfo
 (
 TfuSrsIndInfo *param,
 Ptr memCp,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuSrsIndInfo(param, memCp, mBuf)
-TfuSrsIndInfo *param;
-Ptr memCp;
-Buffer *mBuf;
-#endif
 {
 
    uint32_t count, loopCnt;
@@ -12908,17 +11430,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuRawCqiRpt
 (
 TfuRawCqiRpt *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuRawCqiRpt(param, mBuf)
-TfuRawCqiRpt *param;
-Buffer *mBuf;
-#endif
 {
 
 #ifdef TFU_5GTF
@@ -12960,17 +11476,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuRawCqiRpt
 (
 TfuRawCqiRpt *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuRawCqiRpt(param, mBuf)
-TfuRawCqiRpt *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -13010,17 +11520,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuRawCqiIndInfo
 (
 TfuRawCqiIndInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuRawCqiIndInfo(param, mBuf)
-TfuRawCqiIndInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    uint32_t count;
@@ -13063,19 +11567,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuRawCqiIndInfo
 (
 TfuRawCqiIndInfo *param,
 Ptr memCp,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuRawCqiIndInfo(param, memCp, mBuf)
-TfuRawCqiIndInfo *param;
-Ptr memCp;
-Buffer *mBuf;
-#endif
 {
 
    uint32_t count, loopCnt;
@@ -13117,17 +11614,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuUePucchHqRecpInfo
 (
 TfuUePucchHqRecpInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuUePucchHqRecpInfo(param, mBuf)
-TfuUePucchHqRecpInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -13160,17 +11651,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuUePucchHqRecpInfo
 (
 TfuUePucchHqRecpInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuUePucchHqRecpInfo(param, mBuf)
-TfuUePucchHqRecpInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -13211,17 +11696,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuUePucchHqRecpInfo
 (
 TfuUePucchHqRecpInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuUePucchHqRecpInfo(param, mBuf)
-TfuUePucchHqRecpInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 #ifdef LTE_ADV
@@ -13257,17 +11736,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuUePucchHqRecpInfo
 (
 TfuUePucchHqRecpInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuUePucchHqRecpInfo(param, mBuf)
-TfuUePucchHqRecpInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->hqFdbkMode, mBuf);
@@ -13307,17 +11780,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuUePucchSrRecpInfo
 (
 TfuUePucchSrRecpInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuUePucchSrRecpInfo(param, mBuf)
-TfuUePucchSrRecpInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -13343,17 +11810,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuUePucchSrRecpInfo
 (
 TfuUePucchSrRecpInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuUePucchSrRecpInfo(param, mBuf)
-TfuUePucchSrRecpInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -13379,17 +11840,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuUePucchCqiRecpInfo
 (
 TfuUePucchCqiRecpInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuUePucchCqiRecpInfo(param, mBuf)
-TfuUePucchCqiRecpInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -13416,19 +11871,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuUePucchCqiRecpInfo
 (
 TfuUePucchCqiRecpInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuUePucchCqiRecpInfo(param, mBuf)
-TfuUePucchCqiRecpInfo *param;
-Buffer *mBuf;
-#endif
 {
-
 
    CMCHKUNPK(oduPackUInt16, &param->n2PucchIdx, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->cqiPmiSz, mBuf);
@@ -13453,17 +11901,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuUePucchSrsRecpInfo
 (
 TfuUePucchSrsRecpInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuUePucchSrsRecpInfo(param, mBuf)
-TfuUePucchSrsRecpInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -13477,17 +11919,11 @@ Buffer *mBuf;
 }
 
 #ifdef TFU_5GTF
-#ifdef ANSI
 S16 cmPkTfuUePucchUciRecpInfo
 (
 TfuUePucchUciRecpInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuUePucchUciRecpInfo(param, mBuf)
-TfuUePucchUciRecpInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -13515,19 +11951,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuUePucchSrsRecpInfo
 (
 TfuUePucchSrsRecpInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuUePucchSrsRecpInfo(param, mBuf)
-TfuUePucchSrsRecpInfo *param;
-Buffer *mBuf;
-#endif
 {
-
 
    CMCHKUNPK(oduPackUInt32, (uint32_t *)&param->srsBw, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->nRrc, mBuf);
@@ -13555,19 +11984,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuUePucchBsiBriRecpInfo
 (
 TfuUePucchBsiBriRecpInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuUePucchBsiBriRecpInfo(param, mBuf)
-TfuUePucchBsiBriRecpInfo *param;
-Buffer *mBuf;
-#endif
 {
-
 
    CMCHKPK(oduUnpackUInt8, param->briRpt, mBuf);
    CMCHKPK(oduUnpackUInt8, param->bsiRpt, mBuf);
@@ -13593,19 +12015,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuUePucchBsiBriRecpInfo
 (
 TfuUePucchBsiBriRecpInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuUePucchBsiBriRecpInfo(param, mBuf)
-TfuUePucchBsiBriRecpInfo *param;
-Buffer *mBuf;
-#endif
 {
-
 
    CMCHKUNPK(oduPackUInt8, &param->puschFlag, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->pucchIndex, mBuf);
@@ -13617,19 +12032,12 @@ Buffer *mBuf;
 #endif
 
 #ifdef TFU_5GTF
-#ifdef ANSI
 S16 cmUnpkTfuUePucchUciRecpInfo
 (
 TfuUePucchUciRecpInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuUePucchUciRecpInfo(param, mBuf)
-TfuUePucchUciRecpInfo *param;
-Buffer *mBuf;
-#endif
 {
-
 
    CMCHKUNPK(oduPackUInt8, &param->numBits, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->pucchIndex, mBuf);
@@ -13667,17 +12075,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuUePucchRecpReq
 (
 TfuUePucchRecpReq *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuUePucchRecpReq(param, mBuf)
-TfuUePucchRecpReq *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -13722,17 +12124,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuUePucchRecpReq
 (
 TfuUePucchRecpReq *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuUePucchRecpReq(param, mBuf)
-TfuUePucchRecpReq *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -13766,17 +12162,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuUeUlSchRecpInfo
 (
 TfuUeUlSchRecpInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuUeUlSchRecpInfo(param, mBuf)
-TfuUeUlSchRecpInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 #ifdef TFU_5GTF
@@ -13826,17 +12216,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuUeUlSchRecpInfo
 (
 TfuUeUlSchRecpInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuUeUlSchRecpInfo(param, mBuf)
-TfuUeUlSchRecpInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -13886,17 +12270,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuUePuschCqiRecpInfo
 (
 TfuUePuschCqiRecpInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuUePuschCqiRecpInfo(param, mBuf)
-TfuUePuschCqiRecpInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    uint32_t idx = 0;
@@ -13932,17 +12310,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuUePuschCqiRecpInfo
 (
 TfuUePuschCqiRecpInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuUePuschCqiRecpInfo(param, mBuf)
-TfuUePuschCqiRecpInfo *param;
-Buffer *mBuf;
-#endif
 {
 
    uint32_t idx;
@@ -13978,17 +12350,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuUePuschHqRecpInfo
 (
 TfuUePuschHqRecpInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuUePuschHqRecpInfo(param, mBuf)
-TfuUePuschHqRecpInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -14021,17 +12387,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuUePuschHqRecpInfo
 (
 TfuUePuschHqRecpInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuUePuschHqRecpInfo(param, mBuf)
-TfuUePuschHqRecpInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -14072,17 +12432,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuUePuschRecpReq
 (
 TfuUePuschRecpReq *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuUePuschRecpReq(param, mBuf)
-TfuUePuschRecpReq *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -14122,17 +12476,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuUePuschRecpReq
 (
 TfuUePuschRecpReq *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuUePuschRecpReq(param, mBuf)
-TfuUePuschRecpReq *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -14165,17 +12513,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuUeRecpReqInfo
 (
 TfuUeRecpReqInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuUeRecpReqInfo(param, mBuf)
-TfuUeRecpReqInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -14216,17 +12558,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuUeRecpReqInfo
 (
 TfuUeRecpReqInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuUeRecpReqInfo(param, mBuf)
-TfuUeRecpReqInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -14270,17 +12606,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuUePucchRecpReq
 (
 TfuUePucchRecpReq *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuUePucchRecpReq(param, mBuf)
-TfuUePucchRecpReq *param;
-Buffer *mBuf;
-#endif
 {
 
 #ifdef TFU_TDD
@@ -14350,17 +12680,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuUePucchRecpReq
 (
 TfuUePucchRecpReq *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuUePucchRecpReq(param, mBuf)
-TfuUePucchRecpReq *param;
-Buffer *mBuf;
-#endif
 {
 
 #ifdef TFU_TDD
@@ -14425,17 +12749,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuUeMsg3RecpReq
 (
 TfuUeMsg3RecpReq *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuUeMsg3RecpReq(param, mBuf)
-TfuUeMsg3RecpReq *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -14474,17 +12792,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuUeMsg3RecpReq
 (
 TfuUeMsg3RecpReq *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuUeMsg3RecpReq(param, mBuf)
-TfuUeMsg3RecpReq *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -14526,17 +12838,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuUePuschRecpReq
 (
 TfuUePuschRecpReq *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuUePuschRecpReq(param, mBuf)
-TfuUePuschRecpReq *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -14579,17 +12885,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuUePuschRecpReq
 (
 TfuUePuschRecpReq *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuUePuschRecpReq(param, mBuf)
-TfuUePuschRecpReq *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -14630,17 +12930,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuUeRecpReqInfo
 (
 TfuUeRecpReqInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkTfuUeRecpReqInfo(param, mBuf)
-TfuUeRecpReqInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -14681,17 +12975,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuUeRecpReqInfo
 (
 TfuUeRecpReqInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuUeRecpReqInfo(param, mBuf)
-TfuUeRecpReqInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -14733,17 +13021,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 static S16 cmPkTfuErrIndInfo
 (
 TfuErrIndInfo *param,
 Buffer *mBuf
 )
-#else
-static S16 cmPkTfuErrIndInfo(param, mBuf)
-TfuErrIndInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -14767,17 +13049,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 static S16 cmUnpkTfuErrIndInfo
 (
 TfuErrIndInfo *param,
 Buffer *mBuf
 )
-#else
-static S16 cmUnpkTfuErrIndInfo(param, mBuf)
-TfuErrIndInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -14812,19 +13088,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkTfuErrInd
 (
 Pst * pst,
 SuId suId,
 TfuErrIndInfo * errInd
 )
-#else
-S16 cmPkTfuErrInd(pst, suId, errInd)
-Pst * pst;
-SuId suId;
-TfuErrIndInfo * errInd;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -14916,19 +13185,12 @@ TfuErrIndInfo * errInd;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkTfuErrInd
 (
 TfuErrInd func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkTfuErrInd(func, pst, mBuf)
-TfuErrInd func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SuId suId;
    TfuErrIndInfo *errInd;

@@ -95,19 +95,12 @@
 */
  
 #ifdef SS_FAP
-#ifdef ANSI
 Void cmPrcTmr
 (
 CmTqCp   *tqCp,          /* timing que control point */
 CmTqType *tq,            /* timing queue */
 PFV      func            /* function */
 )
-#else
-Void cmPrcTmr(tqCp, tq, func)
-CmTqCp   *tqCp;          /* connection control block */
-CmTqType *tq;            /* message buffer */
-PFV      func;           /* function */
-#endif
 {
 /**/
    uint32_t expire;
@@ -164,19 +157,12 @@ PFV      func;           /* function */
 
 #else /* not defined SS_FAP */
 
-#ifdef ANSI
 Void cmPrcTmr
 (
 CmTqCp   *tqCp,          /* timing que control point */
 CmTqType *tq,            /* timing queue */
 PFV      func            /* function */
 )
-#else
-Void cmPrcTmr(tqCp, tq, func)
-CmTqCp   *tqCp;          /* connection control block */
-CmTqType *tq;            /* message buffer */
-PFV      func;           /* function */
-#endif
 {
 /**/
    uint32_t expire;
@@ -266,17 +252,11 @@ PFV      func;           /* function */
 *       File:  cm_bdy5.c
 *
 */
-#ifdef ANSI
 Void cmInitTimers
 (
 CmTimer *timers,     /* timer list */
 uint8_t max               /* maximum tmrs */
 )
-#else
-Void cmInitTimers(timers, max)
-CmTimer *timers;     /* timer list */
-uint8_t max;              /* maximum tmrs */
-#endif
 {
    CmTimer *tPtr;
    REG1 uint8_t i;
@@ -308,15 +288,7 @@ uint8_t max;              /* maximum tmrs */
 *
 */
   
-#ifdef ANSI
-Void cmPlcCbTq
-(
-CmTmrArg *arg
-)
-#else
-Void cmPlcCbTq(arg)
-CmTmrArg *arg;
-#endif
+Void cmPlcCbTq(CmTmrArg *arg)
 {
 /*added FAP modifications*/
 #ifdef SS_FAP
@@ -396,15 +368,7 @@ CmTmrArg *arg;
 *
 */
   
-#ifdef ANSI
-Void cmRstCbTq
-(
-CmTmrArg *arg
-)
-#else
-Void cmRstCbTq(arg)
-CmTmrArg *arg;
-#endif
+Void cmRstCbTq(CmTmrArg *arg)
 {
  
    arg->timers[arg->tNum].tqExpire = arg->tqCp->nxtEnt + arg->wait;
@@ -427,15 +391,7 @@ CmTmrArg *arg;
 *
 */
   
-#ifdef ANSI
-Void cmRmvCbTq
-(
-CmTmrArg *arg
-)
-#else
-Void cmRmvCbTq(arg)
-CmTmrArg *arg;
-#endif
+Void cmRmvCbTq(CmTmrArg *arg)
 {
 /*Added FAP modifications*/
 #ifdef SS_FAP

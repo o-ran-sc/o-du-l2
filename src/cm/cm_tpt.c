@@ -114,17 +114,11 @@ extern "C" {
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 S16 cmPkCmIpv4TptAddr
 (
 CmIpv4TptAddr            *pkParam,  /* IPv4 Address structure */
 Buffer                   *mBuf      /* message buffer */
 )
-#else
-S16 cmPkCmIpv4TptAddr (pkParam, mBuf)
-CmIpv4TptAddr            *pkParam;  /* IPv4 Address structure */
-Buffer                   *mBuf;     /* message buffer */
-#endif
 {
 
    CMCHKPK(cmPkCmIpv4NetAddr, pkParam->address, mBuf);
@@ -146,17 +140,11 @@ Buffer                   *mBuf;     /* message buffer */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 static S16 cmPkCmIpv6NetAddr
 (
-CmIpv6NetAddr            *pkParam,     
-Buffer                   *mBuf         /* message buffer */
+CmIpv6NetAddr  *pkParam,     
+Buffer         *mBuf         /* message buffer */
 )
-#else
-static S16 cmPkCmIpv6NetAddr (pkParam, mBuf)
-CmIpv6NetAddr            *pkParam;     
-Buffer                   *mBuf;        /* message buffer */
-#endif
 {
    uint8_t num;
    uint8_t *ptr = (uint8_t*)pkParam;
@@ -184,17 +172,11 @@ Buffer                   *mBuf;        /* message buffer */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 static S16 cmPkCmIpv6TptAddr
 (
-CmIpv6TptAddr            *pkParam,     /* IPv6 transport address */
-Buffer                   *mBuf         /* message buffer */
+CmIpv6TptAddr  *pkParam,     /* IPv6 transport address */
+Buffer         *mBuf         /* message buffer */
 )
-#else
-static S16 cmPkCmIpv6TptAddr (pkParam, mBuf)
-CmIpv6TptAddr            *pkParam;     /* IPv6 transport address */
-Buffer                   *mBuf;        /* message buffer */
-#endif
 {
 
    CMCHKPK(cmPkCmIpv6NetAddr, &pkParam->ipv6NetAddr, mBuf);
@@ -217,20 +199,14 @@ Buffer                   *mBuf;        /* message buffer */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 S16 cmPkCmNetAddrTbl
 (
-CmNetAddrTbl            *pkParam,      /* Network Address Table */
-Buffer                  *mBuf          /* message buffer */
+CmNetAddrTbl   *pkParam,      /* Network Address Table */
+Buffer         *mBuf          /* message buffer */
 )
-#else
-S16 cmPkCmNetAddrTbl (pkParam, mBuf)
-CmNetAddrTbl            *pkParam;      /* Network Address Table */
-Buffer                  *mBuf;         /* message buffer */
-#endif
 {
-   uint16_t                  idx;           /* Loop Index */
-   CmNetAddr            *netAddr;      /* Network Address */
+   uint16_t    idx;           /* Loop Index */
+   CmNetAddr   *netAddr;      /* Network Address */
 
 
    if (pkParam->count > CM_MAX_NET_ADDR)
@@ -265,17 +241,11 @@ Buffer                  *mBuf;         /* message buffer */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 S16 cmPkCmNetAddr
 (
-CmNetAddr                *pkParam,     
-Buffer                   *mBuf         /* message buffer */
+CmNetAddr  *pkParam,     
+Buffer     *mBuf         /* message buffer */
 )
-#else
-S16 cmPkCmNetAddr (pkParam, mBuf)
-CmNetAddr                *pkParam;     
-Buffer                   *mBuf;        /* message buffer */
-#endif
 {
 
    switch (pkParam->type)
@@ -313,17 +283,11 @@ Buffer                   *mBuf;        /* message buffer */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 S16 cmPkCmTptAddr
 (
-CmTptAddr                *pkParam,     
-Buffer                   *mBuf         /* message buffer */
+CmTptAddr  *pkParam,     
+Buffer     *mBuf         /* message buffer */
 )
-#else
-S16 cmPkCmTptAddr (pkParam, mBuf)
-CmTptAddr                *pkParam;     
-Buffer                   *mBuf;        /* message buffer */
-#endif
 {
 
    switch (pkParam->type)
@@ -363,17 +327,11 @@ Buffer                   *mBuf;        /* message buffer */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 S16 cmPkCmTptLocalInf
 (
-CmTptLocalInf           *pkParam,   /* local interface info */
-Buffer                  *mBuf       /* message buffer */
+CmTptLocalInf  *pkParam,   /* local interface info */
+Buffer         *mBuf       /* message buffer */
 )
-#else
-S16 cmPkCmTptLocalInf (pkParam, mBuf)
-CmTptLocalInf           *pkParam;   /* local interface info */
-Buffer                  *mBuf;      /* message buffer */
-#endif
 {
 
    if (pkParam->intfPrsnt == TRUE)
@@ -404,17 +362,11 @@ Buffer                  *mBuf;      /* message buffer */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 S16 cmPkCmNetMCastInf6
 (
-CmNetMCastInf6            *pkParam,     /* IPv6 multicast information */
-Buffer                    *mBuf         /* message buffer */
+CmNetMCastInf6  *pkParam,     /* IPv6 multicast information */
+Buffer          *mBuf         /* message buffer */
 )
-#else
-S16 cmPkCmNetMCastInf6(pkParam, mBuf)
-CmNetMCastInf6            *pkParam;     /* IPv6 multicast information */
-Buffer                    *mBuf;        /* message buffer */
-#endif
 {
 
    CMCHKPK(cmPkCmIpv6NetAddr, &pkParam->mCastAddr, mBuf);
@@ -438,17 +390,11 @@ Buffer                    *mBuf;        /* message buffer */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 static S16 cmPkCmSockOpts
 (
-CmSockOpts               *pkParam,     
-Buffer                   *mBuf         /* message buffer */
+CmSockOpts *pkParam,     
+Buffer     *mBuf         /* message buffer */
 )
-#else
-static S16 cmPkCmSockOpts (pkParam, mBuf)
-CmSockOpts               *pkParam;     
-Buffer                   *mBuf;        /* message buffer */
-#endif
 {
 
    switch (pkParam->option)
@@ -503,17 +449,11 @@ Buffer                   *mBuf;        /* message buffer */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 static S16 cmPkCmSockParam
 (
-CmSockParam              *pkParam,     
-Buffer                   *mBuf         /* message buffer */
+CmSockParam *pkParam,     
+Buffer      *mBuf         /* message buffer */
 )
-#else
-static S16 cmPkCmSockParam (pkParam, mBuf)
-CmSockParam              *pkParam;     
-Buffer                   *mBuf;        /* message buffer */
-#endif
 {
    uint32_t num;
 
@@ -547,17 +487,11 @@ Buffer                   *mBuf;        /* message buffer */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 static S16 cmPkTlsTptParam
 (
-TlsTptParam              *pkParam,     /**/
-Buffer                   *mBuf         /* message buffer */
+TlsTptParam *pkParam,     /**/
+Buffer      *mBuf         /* message buffer */
 )
-#else
-static S16 cmPkTlsTptParam(pkParam, mBuf)
-TlsTptParam              *pkParam;     /**/
-Buffer                   *mBuf;        /* message buffer */
-#endif
 {
    uint32_t num;
 
@@ -593,17 +527,11 @@ Buffer                   *mBuf;        /* message buffer */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 S16 cmPkCmTptParam
 (
-CmTptParam               *pkParam,     
-Buffer                   *mBuf         /* message buffer */
+CmTptParam *pkParam,     
+Buffer     *mBuf         /* message buffer */
 )
-#else
-S16 cmPkCmTptParam (pkParam, mBuf)
-CmTptParam               *pkParam;     
-Buffer                   *mBuf;        /* message buffer */
-#endif
 {
 
    switch (pkParam->type)
@@ -656,17 +584,11 @@ Buffer                   *mBuf;        /* message buffer */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 S16 cmUnpkCmIpv4TptAddr 
 (
-CmIpv4TptAddr            *unpkParam,     /* IPv4 Address */
-Buffer                   *mBuf           /* message buffer */
+CmIpv4TptAddr *unpkParam,     /* IPv4 Address */
+Buffer        *mBuf           /* message buffer */
 )
-#else
-S16 cmUnpkCmIpv4TptAddr (unpkParam, mBuf)
-CmIpv4TptAddr            *unpkParam;     /* IPv4 Address */
-Buffer                   *mBuf;          /* message buffer */
-#endif
 {
 
    CMCHKUNPK(oduPackUInt16, &unpkParam->port, mBuf);
@@ -689,17 +611,11 @@ Buffer                   *mBuf;          /* message buffer */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 static S16 cmUnpkCmIpv6NetAddr
 (
-CmIpv6NetAddr            *unpkParam,   /* IPv6 address */
-Buffer                   *mBuf         /* message buffer */
+CmIpv6NetAddr  *unpkParam,   /* IPv6 address */
+Buffer         *mBuf         /* message buffer */
 )
-#else
-static S16 cmUnpkCmIpv6NetAddr (unpkParam, mBuf)
-CmIpv6NetAddr            *unpkParam;   /* IPv6 address */
-Buffer                   *mBuf;        /* message buffer */
-#endif
 {
    uint32_t num;
    uint8_t *ptr = (uint8_t*)unpkParam;
@@ -729,17 +645,11 @@ Buffer                   *mBuf;        /* message buffer */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 static S16 cmUnpkCmIpv6TptAddr
 (
-CmIpv6TptAddr            *unpkParam,   /* IPv6 transport address */
-Buffer                   *mBuf         /* message buffer */
+CmIpv6TptAddr  *unpkParam,   /* IPv6 transport address */
+Buffer         *mBuf         /* message buffer */
 )
-#else
-static S16 cmUnpkCmIpv6TptAddr (unpkParam, mBuf)
-CmIpv6TptAddr            *unpkParam;   /* IPv6 transport address */
-Buffer                   *mBuf;        /* message buffer */
-#endif
 {
 
    CMCHKUNPK(oduPackUInt16, &unpkParam->port, mBuf);
@@ -762,22 +672,15 @@ Buffer                   *mBuf;        /* message buffer */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 S16 cmUnpkCmNetAddrTbl
 (
-CmNetAddrTbl            *unpkParam,    /* Network Address Table */
-Buffer                  *mBuf          /* message buffer */
+CmNetAddrTbl  *unpkParam,    /* Network Address Table */
+Buffer        *mBuf          /* message buffer */
 )
-#else
-S16 cmUnpkCmNetAddrTbl (unpkParam, mBuf )
-CmNetAddrTbl            *unpkParam;    /* Network Address Table */
-Buffer                  *mBuf;         /* message buffer */
-#endif
 {
-   uint16_t                  idx;           /* Loop Index */
-   CmNetAddr            *netAddr;      /* Network Address */
+   uint16_t   idx;           /* Loop Index */
+   CmNetAddr  *netAddr;      /* Network Address */
    
-
    /* Unpack the count */
    CMCHKUNPK(oduPackUInt16, &(unpkParam->count), mBuf);
 
@@ -808,17 +711,11 @@ Buffer                  *mBuf;         /* message buffer */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 S16 cmUnpkCmNetAddr
 (
-CmNetAddr                *unpkParam,   
-Buffer                   *mBuf         /* message buffer */
+CmNetAddr *unpkParam,   
+Buffer    *mBuf         /* message buffer */
 )
-#else
-S16 cmUnpkCmNetAddr (unpkParam, mBuf )
-CmNetAddr                *unpkParam;   
-Buffer                   *mBuf;        /* message buffer */
-#endif
 {
 
    CMCHKUNPK(oduPackUInt8, &unpkParam->type, mBuf);
@@ -857,17 +754,11 @@ Buffer                   *mBuf;        /* message buffer */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 S16 cmUnpkCmTptAddr
 (
-CmTptAddr                *unpkParam,   
-Buffer                   *mBuf         /* message buffer */
+CmTptAddr *unpkParam,   
+Buffer    *mBuf         /* message buffer */
 )
-#else
-S16 cmUnpkCmTptAddr (unpkParam, mBuf)
-CmTptAddr                *unpkParam;   
-Buffer                   *mBuf;        /* message buffer */
-#endif
 {
 
    CMCHKUNPK(oduPackUInt8, &unpkParam->type, mBuf);
@@ -908,17 +799,11 @@ Buffer                   *mBuf;        /* message buffer */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 S16 cmUnpkCmNetMCastInf6
 (
-CmNetMCastInf6            *unpkParam,   /* IPv6 multicast information */
-Buffer                    *mBuf         /* message buffer */
+CmNetMCastInf6 *unpkParam,   /* IPv6 multicast information */
+Buffer         *mBuf         /* message buffer */
 )
-#else
-S16 cmUnpkCmNetMCastInf6(unpkParam, mBuf)
-CmNetMCastInf6            *unpkParam;   /* IPv6 multicast information */
-Buffer                    *mBuf;        /* message buffer */
-#endif
 {
 
     CMCHKUNPK(oduPackUInt32, &unpkParam->localInf, mBuf);
@@ -942,17 +827,11 @@ Buffer                    *mBuf;        /* message buffer */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 static S16 cmUnpkCmSockOpts
 (
-CmSockOpts               *unpkParam,   /* socket options */
-Buffer                   *mBuf         /* message buffer */
+CmSockOpts *unpkParam,   /* socket options */
+Buffer     *mBuf         /* message buffer */
 )
-#else
-static S16 cmUnpkCmSockOpts (unpkParam, mBuf)
-CmSockOpts               *unpkParam;   /* socket options */
-Buffer                   *mBuf;        /* message buffer */
-#endif
 {
 
    CMCHKUNPK(oduPackUInt32, &unpkParam->level, mBuf);
@@ -1009,17 +888,11 @@ Buffer                   *mBuf;        /* message buffer */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 static S16 cmUnpkCmSockParam
 (
-CmSockParam              *unpkParam,   /* socket parameters */
-Buffer                   *mBuf         /* message buffer */
+CmSockParam *unpkParam,   /* socket parameters */
+Buffer      *mBuf         /* message buffer */
 )
-#else
-static S16 cmUnpkCmSockParam (unpkParam, mBuf)
-CmSockParam              *unpkParam;   /* socket parameters */
-Buffer                   *mBuf;        /* message buffer */
-#endif
 {
    uint32_t num;
 
@@ -1055,17 +928,11 @@ Buffer                   *mBuf;        /* message buffer */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 static S16 cmUnpkTlsTptParam
 (
-TlsTptParam              *unpkParam,   /* TLS parameters */
-Buffer                   *mBuf         /* message buffer */
+TlsTptParam *unpkParam,   /* TLS parameters */
+Buffer      *mBuf         /* message buffer */
 )
-#else
-static S16 cmUnpkTlsTptParam (unpkParam, mBuf)
-TlsTptParam              *unpkParam;   /* TLS parameters */
-Buffer                   *mBuf;        /* message buffer */
-#endif
 {
    uint32_t num;
 
@@ -1103,17 +970,11 @@ Buffer                   *mBuf;        /* message buffer */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 S16 cmUnpkCmTptParam
 (
-CmTptParam               *unpkParam,   /* transport parameters */
-Buffer                   *mBuf         /* message buffer */
+CmTptParam  *unpkParam,   /* transport parameters */
+Buffer      *mBuf         /* message buffer */
 )
-#else
-S16 cmUnpkCmTptParam (unpkParam, mBuf)
-CmTptParam               *unpkParam;   /* transport parameters */
-Buffer                   *mBuf;        /* message buffer */
-#endif
 {
 
    CMCHKUNPK(oduPackUInt8, &unpkParam->type, mBuf);
@@ -1163,17 +1024,11 @@ Buffer                   *mBuf;        /* message buffer */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 S16 cmPkCmIpHdrParm
 (
-CmIpHdrParm             *pkParam,   /* IP hdr parameters */ 
-Buffer                  *mBuf       /* message buffer */
+CmIpHdrParm *pkParam,   /* IP hdr parameters */ 
+Buffer      *mBuf       /* message buffer */
 )
-#else
-S16 cmPkCmIpHdrParm (pkParam, mBuf)
-CmIpHdrParm             *pkParam;   /* IP hdr parameters */
-Buffer                  *mBuf;      /* message buffer */
-#endif
 {
 
    switch (pkParam->type)
@@ -1233,17 +1088,11 @@ Buffer                  *mBuf;      /* message buffer */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 S16 cmUnpkCmTptLocalInf
 (
-CmTptLocalInf           *unpkParam, /* local interface info */
-Buffer                  *mBuf       /* message buffer */
+CmTptLocalInf *unpkParam, /* local interface info */
+Buffer        *mBuf       /* message buffer */
 )
-#else
-S16 cmUnpkCmTptLocalInf (unpkParam, mBuf)
-CmTptLocalInf           *unpkParam; /* local interface info */
-Buffer                  *mBuf;      /* message buffer */
-#endif
 {
 
    /* first unpack the bool intfPrsnt value which is always packed */
@@ -1275,17 +1124,11 @@ Buffer                  *mBuf;      /* message buffer */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 S16 cmPkCmIpv6ExtHdr
 (
-CmIpv6ExtHdr             *pkParam,   /* IPV6 extension hdrs */
-Buffer                   *mBuf       /* message buffer */
+CmIpv6ExtHdr *pkParam,   /* IPV6 extension hdrs */
+Buffer       *mBuf       /* message buffer */
 )
-#else
-S16 cmPkCmIpv6ExtHdr (pkParam, mBuf)
-CmIpv6ExtHdr             *pkParam;   /*IPV6 extension hdrs */
-Buffer                   *mBuf;      /* message buffer */
-#endif
 {
 
    /* pack first Route hdr */   
@@ -1320,17 +1163,11 @@ Buffer                   *mBuf;      /* message buffer */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 S16 cmPkCmIpv6RtHdr
 (
-CmIpv6RtHdr             *pkParam,   /* IPV6 Route hdr */
-Buffer                   *mBuf      /* message buffer */
+CmIpv6RtHdr *pkParam,   /* IPV6 Route hdr */
+Buffer      *mBuf      /* message buffer */
 )
-#else
-S16 cmPkCmIpv6RtHdr (pkParam, mBuf)
-CmIpv6RtHdr             *pkParam;   /* IPV6 Route hdr */
-Buffer                   *mBuf;     /* message buffer */
-#endif
 {
    uint8_t idx;
    
@@ -1362,19 +1199,12 @@ Buffer                   *mBuf;     /* message buffer */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 S16 cmUnpkCmIpv6RtHdr
 (
-CmIpv6RtHdr             *unpkParam,  /* IPV6 Route hdr */
-Buffer                  *mBuf,       /* message buffer */
-Mem                     *memInfo     /* meminfo to allocate for Route hdr */
+CmIpv6RtHdr *unpkParam,  /* IPV6 Route hdr */
+Buffer      *mBuf,       /* message buffer */
+Mem         *memInfo     /* meminfo to allocate for Route hdr */
 )
-#else
-S16 cmUnpkCmIpv6RtHdr (unpkParam, mBuf, memInfo)
-CmIpv6RtHdr             *unpkParam;  /* IPV6 Route hdr */
-Buffer                  *mBuf;       /* message buffer */
-Mem                     *memInfo;    /* meminfo to allocate for Route hdr */
-#endif
 {
    uint8_t idx;  /* array index */
    S32 retVal; /* temporary return value */
@@ -1418,19 +1248,12 @@ Mem                     *memInfo;    /* meminfo to allocate for Route hdr */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 S16 cmUnpkCmIpv6ExtHdr
 (
-CmIpv6ExtHdr             *unpkParam,  /* IPV6 extension hdrs */
-Buffer                   *mBuf,       /* message buffer */
-Mem                      *memInfo     /* meminfo to allocate for IPV6 ext hdr */
+CmIpv6ExtHdr *unpkParam,  /* IPV6 extension hdrs */
+Buffer       *mBuf,       /* message buffer */
+Mem          *memInfo     /* meminfo to allocate for IPV6 ext hdr */
 )
-#else
-S16 cmUnpkCmIpv6ExtHdr (unpkParam, mBuf, memInfo)
-CmIpv6ExtHdr             *unpkParam; /* IPV6 extension hdrs */
-Buffer                   *mBuf;      /* message buffer */
-Mem                      *memInfo;   /* meminfo to allocate for IPV6 ext hdr */
-#endif
 {
       
    /* unpack HBH hdr first */
@@ -1465,17 +1288,11 @@ Mem                      *memInfo;   /* meminfo to allocate for IPV6 ext hdr */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 S16 cmPkCmIpv6DestOptsArr
 (
-CmIpv6DestOptsArr       *pkParam,  /* IPV6 Dest hdr array */
-Buffer                  *mBuf      /* message buffer */
+CmIpv6DestOptsArr *pkParam,  /* IPV6 Dest hdr array */
+Buffer            *mBuf      /* message buffer */
 )
-#else
-S16 cmPkCmIpv6DestOptsArr (pkParam, mBuf)
-CmIpv6DestOptsArr       *pkParam;  /* IPV6 Dest hdr array */
-Buffer                  *mBuf;     /* message buffer */
-#endif
 {
 
    uint8_t numOptions;
@@ -1503,17 +1320,11 @@ Buffer                  *mBuf;     /* message buffer */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 S16 cmPkCmIpv6DestOptsHdr
 (
-CmIpv6DestOptsHdr       *pkParam,  /* IPV6 Dest opt */
-Buffer                  *mBuf      /* message buffer */
+CmIpv6DestOptsHdr *pkParam,  /* IPV6 Dest opt */
+Buffer            *mBuf      /* message buffer */
 )
-#else
-S16 cmPkCmIpv6DestOptsHdr (pkParam, mBuf)
-CmIpv6DestOptsHdr       *pkParam;  /* IPV6 Dest opt */
-Buffer                  *mBuf;     /* message buffer */
-#endif
 {
    uint8_t optLen;
    
@@ -1542,19 +1353,12 @@ Buffer                  *mBuf;     /* message buffer */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 S16 cmUnpkCmIpv6DestOptsHdr
 (
-CmIpv6DestOptsHdr       *unpkParam,/* IPV6 Dest Option */
-Buffer                  *mBuf,     /* message buffer */
-Mem                     *memInfo   /* meminfo to allocate mem for dest opt */
+CmIpv6DestOptsHdr *unpkParam,/* IPV6 Dest Option */
+Buffer            *mBuf,     /* message buffer */
+Mem               *memInfo   /* meminfo to allocate mem for dest opt */
 )
-#else
-S16 cmUnpkCmIpv6DestOptsHdr (unpkParam, mBuf, memInfo)
-CmIpv6DestOptsHdr       *unpkParam;/* IPV6 Dest Option */
-Buffer                  *mBuf;     /* message buffer */
-Mem                     *memInfo;  /* meminfo to allocate mem for dest opt */
-#endif
 {
    S32 retVal;                        /* temporary return value */
    uint8_t optLen;                      /* length of value field */
@@ -1596,19 +1400,12 @@ Mem                     *memInfo;  /* meminfo to allocate mem for dest opt */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 S16 cmUnpkCmIpv6DestOptsArr
 (
-CmIpv6DestOptsArr       *unpkParam, /* all IPV6 Destination Options */
-Buffer                  *mBuf,      /* message buffer */
-Mem                     *memInfo    /* meminfo to allocate mem for dest opts */
+CmIpv6DestOptsArr *unpkParam, /* all IPV6 Destination Options */
+Buffer            *mBuf,      /* message buffer */
+Mem               *memInfo    /* meminfo to allocate mem for dest opts */
 )
-#else
-S16 cmUnpkCmIpv6DestOptsArr (unpkParam, mBuf, memInfo)
-CmIpv6DestOptsArr       *unpkParam; /* all IPV6 Destination Options */
-Buffer                  *mBuf;      /* message buffer */
-Mem                     *memInfo;   /* meminfo to allocate mem for dest opts */
-#endif
 {
    uint8_t numOptions;
    S16 retVal;
@@ -1652,17 +1449,11 @@ Mem                     *memInfo;   /* meminfo to allocate mem for dest opts */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 S16 cmPkCmIpv6HBHHdrArr
 (
-CmIpv6HBHHdrArr         *pkParam,  /* all IPV6 HopByHop options */
-Buffer                  *mBuf      /* message buffer */
+CmIpv6HBHHdrArr *pkParam,  /* all IPV6 HopByHop options */
+Buffer          *mBuf      /* message buffer */
 )
-#else
-S16 cmPkCmIpv6HBHHdrArr (pkParam, mBuf)
-CmIpv6HBHHdrArr         *pkParam;  /* IPV6 HopByHop options */
-Buffer                  *mBuf;     /* message buffer */
-#endif
 {
    uint8_t numOptions;
    
@@ -1689,17 +1480,11 @@ Buffer                  *mBuf;     /* message buffer */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 S16 cmPkCmIpv6HBHHdr
 (
-CmIpv6HBHHdr            *pkParam,  /* individual IPV6 HBH options */
-Buffer                  *mBuf      /* message buffer */
+CmIpv6HBHHdr *pkParam,  /* individual IPV6 HBH options */
+Buffer       *mBuf      /* message buffer */
 )
-#else
-S16 cmPkCmIpv6HBHHdr (pkParam, mBuf)
-CmIpv6HBHHdr            *pkParam;  /* individual IPV6 HBH options */
-Buffer                  *mBuf;     /* message buffer */
-#endif
 {
    uint8_t optLen;
 
@@ -1731,23 +1516,15 @@ Buffer                  *mBuf;     /* message buffer */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 S16 cmUnpkCmIpv6HBHHdr
 (
-CmIpv6HBHHdr            *unpkParam,/* individual IPV6 HBH Option */
-Buffer                  *mBuf,     /* message buffer */
-Mem                     *memInfo   /* meminfo to allocate mem for HBH opt */
+CmIpv6HBHHdr *unpkParam,/* individual IPV6 HBH Option */
+Buffer       *mBuf,     /* message buffer */
+Mem          *memInfo   /* meminfo to allocate mem for HBH opt */
 )
-#else
-S16 cmUnpkCmIpv6HBHHdr (unpkParam, mBuf, memInfo)
-CmIpv6HBHHdr            *unpkParam;/* individual IPV6 HBH Option */
-Buffer                  *mBuf;     /* message buffer */
-Mem                     *memInfo;  /* meminfo to allocate mem for HBH opt */
-#endif
 {
    S32 retVal;                     /* temporary return value */
    uint8_t optLen;                      /* length of value field */
-  
    
    CMCHKUNPK(oduPackUInt8, &unpkParam->type, mBuf);   
    CMCHKUNPK(oduPackUInt8, &unpkParam->length, mBuf);
@@ -1784,19 +1561,12 @@ Mem                     *memInfo;  /* meminfo to allocate mem for HBH opt */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 S16 cmUnpkCmIpv6HBHHdrArr
 (
-CmIpv6HBHHdrArr       *unpkParam,  /* all HBH options */
-Buffer                *mBuf,       /* message buffer */
-Mem                   *memInfo     /* meminfo to allocate space for HBH opt */
+CmIpv6HBHHdrArr *unpkParam,  /* all HBH options */
+Buffer          *mBuf,       /* message buffer */
+Mem             *memInfo     /* meminfo to allocate space for HBH opt */
 )
-#else
-S16 cmUnpkCmIpv6HBHHdrArr (unpkParam, mBuf, memInfo)
-CmIpv6HBHHdrArr       *unpkParam;  /*  all HBH options */
-Buffer                *mBuf;       /* message buffer */
-Mem                   *memInfo;    /* meminfo to allocate space for HBH opt */
-#endif
 {
    uint8_t numOptions; 
    S16 retVal;
@@ -1837,7 +1607,6 @@ Mem                   *memInfo;    /* meminfo to allocate space for HBH opt */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 /* added */
 #ifdef IPV6_OPTS_SUPPORTED
 S16 cmUnpkCmIpHdrParm
@@ -1853,19 +1622,6 @@ CmIpHdrParm              *unpkParam,/* ip hdr parameters */
 Buffer                   *mBuf     /* message buffer */
 )
 #endif /* IPV6_OPTS_SUPPORTED */
-#else
-/* added */
-#ifdef IPV6_OPTS_SUPPORTED
-S16 cmUnpkCmIpHdrParm (unpkParam, mBuf, memInfo)
-CmIpHdrParm              *unpkParam;/* ip hdr parameters */
-Buffer                   *mBuf;     /* message buffer */
-Mem                      *memInfo;  /* meminfo to allocate mem for ipHdrParam */
-#else
-S16 cmUnpkCmIpHdrParm (unpkParam, mBuf)
-CmIpHdrParm              *unpkParam;/* ip hdr parameters */
-Buffer                   *mBuf;     /* message buffer */
-#endif /* IPV6_OPTS_SUPPORTED */
-#endif
 {
 
    CMCHKUNPK(oduPackUInt8, &unpkParam->type, mBuf);
@@ -1923,17 +1679,11 @@ Buffer                   *mBuf;     /* message buffer */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 S16 cmPkCmIcmpFilter
 (
-CmIcmpFilter             *pkParam,   
-Buffer                   *mBuf       /* message buffer */
+CmIcmpFilter *pkParam,   
+Buffer       *mBuf       /* message buffer */
 )
-#else
-S16 cmPkCmIcmpFilter (pkParam, mBuf)
-CmIcmpFilter             *pkParam;   
-Buffer                   *mBuf;      /* message buffer */
-#endif
 {
    /* Variable declaration */
    S16   idx;
@@ -1997,17 +1747,11 @@ Buffer                   *mBuf;      /* message buffer */
 *       File:  cm_tpt.c
 *
 */
-#ifdef ANSI
 S16 cmUnpkCmIcmpFilter
 (
-CmIcmpFilter             *unpkParam,   
-Buffer                   *mBuf         /* message buffer */
+CmIcmpFilter *unpkParam,   
+Buffer       *mBuf         /* message buffer */
 )
-#else
-S16 cmUnpkCmIcmpFilter (unpkParam, mBuf)
-CmIcmpFilter             *unpkParam;   
-Buffer                   *mBuf;        /* message buffer */
-#endif
 {
    /* Variable declaration */ 
    S16     idx;
