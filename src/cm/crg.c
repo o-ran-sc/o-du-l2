@@ -55,19 +55,12 @@
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkCrgBndReq
 (
 Pst* pst,
 SuId suId,
 SpId spId
 )
-#else
-S16 cmPkCrgBndReq(pst, suId, spId)
-Pst* pst;
-SuId suId;
-SpId spId;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -115,19 +108,12 @@ SpId spId;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkCrgBndReq
 (
 CrgBndReq func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkCrgBndReq(func, pst, mBuf)
-CrgBndReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SuId suId;
    SpId spId;
@@ -170,19 +156,12 @@ Buffer *mBuf;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkCrgBndCfm
 (
 Pst* pst,
 SuId suId,
 uint8_t status
 )
-#else
-S16 cmPkCrgBndCfm(pst, suId, status)
-Pst* pst;
-SuId suId;
-uint8_t status;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -231,19 +210,12 @@ uint8_t status;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkCrgBndCfm
 (
 CrgBndCfm func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkCrgBndCfm(func, pst, mBuf)
-CrgBndCfm func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SuId suId;
    uint8_t status;
@@ -285,19 +257,12 @@ Buffer *mBuf;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkCrgUbndReq
 (
 Pst* pst,
 SpId spId,
 Reason reason
 )
-#else
-S16 cmPkCrgUbndReq(pst, spId, reason)
-Pst* pst;
-SpId spId;
-Reason reason;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -345,19 +310,12 @@ Reason reason;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkCrgUbndReq
 (
 CrgUbndReq func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkCrgUbndReq(func, pst, mBuf)
-CrgUbndReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SpId spId;
    Reason reason;
@@ -401,7 +359,6 @@ Buffer *mBuf;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkCrgCfgReq
 (
 Pst* pst,
@@ -409,13 +366,6 @@ SpId spId,
 CrgCfgTransId transId,
 CrgCfgReqInfo  * cfgReqInfo
 )
-#else
-S16 cmPkCrgCfgReq(pst, spId, transId, cfgReqInfo)
-Pst* pst;
-SpId spId;
-CrgCfgTransId transId;
-CrgCfgReqInfo  * cfgReqInfo;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -488,19 +438,12 @@ CrgCfgReqInfo  * cfgReqInfo;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkCrgCfgReq
 (
 CrgCfgReq func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkCrgCfgReq(func, pst, mBuf)
-CrgCfgReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SpId spId;
    CrgCfgTransId transId;
@@ -564,7 +507,6 @@ Buffer *mBuf;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkCrgCfgCfm
 (
 Pst* pst,
@@ -572,13 +514,6 @@ SuId suId,
 CrgCfgTransId transId,
 uint8_t status
 )
-#else
-S16 cmPkCrgCfgCfm(pst, suId, transId, status)
-Pst* pst;
-SuId suId;
-CrgCfgTransId transId;
-uint8_t status;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -637,19 +572,12 @@ uint8_t status;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkCrgCfgCfm
 (
 CrgCfgCfm func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkCrgCfgCfm(func, pst, mBuf)
-CrgCfgCfm func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SuId suId;
    CrgCfgTransId transId;
@@ -703,17 +631,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkCrgCfgTransId
 (
 CrgCfgTransId *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkCrgCfgTransId(param, mBuf)
-CrgCfgTransId *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -741,17 +663,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkCrgCfgTransId
 (
 CrgCfgTransId *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkCrgCfgTransId(param, mBuf)
-CrgCfgTransId *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -779,17 +695,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkCrgBwCfg
 (
 CrgBwCfg *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkCrgBwCfg(param, mBuf)
-CrgBwCfg *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -815,17 +725,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkCrgBwCfg
 (
 CrgBwCfg *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkCrgBwCfg(param, mBuf)
-CrgBwCfg *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -851,17 +755,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkCrgRachCfg
 (
 CrgRachCfg *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkCrgRachCfg(param, mBuf)
-CrgRachCfg *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -886,17 +784,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkCrgRachCfg
 (
 CrgRachCfg *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkCrgRachCfg(param, mBuf)
-CrgRachCfg *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -921,19 +813,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkCrgCellCfg
 (
 CrgCellCfg *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkCrgCellCfg(param, mBuf)
-CrgCellCfg *param;
-Buffer *mBuf;
-#endif
 {
-
 
 #ifdef EMTC_ENABLE
    CMCHKPK(oduUnpackUInt8, param->emtcEnable, mBuf);
@@ -965,17 +850,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkCrgCellCfg
 (
 CrgCellCfg *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkCrgCellCfg(param, mBuf)
-CrgCellCfg *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -1009,17 +888,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkCrgUeUlHqCfg
 (
 CrgUeUlHqCfg *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkCrgUeUlHqCfg(param, mBuf)
-CrgUeUlHqCfg *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -1043,17 +916,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 static S16 cmPkCrgUeSCellCfg
 (
 CrgUeSCellInfo *param,
 Buffer *mBuf
 )
-#else
-static S16 cmPkCrgUeSCellCfg(param, mBuf)
-CrgUeSCellInfo *param;
-Buffer *mBuf;
-#endif
 {
    CMCHKPK(SPkS16, param->rguDlSapId, mBuf);
    CMCHKPK(SPkS16, param->rguUlSapId, mBuf);
@@ -1077,17 +944,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 static S16 cmUnpkCrgUeSCellCfg
 (
 CrgUeSCellInfo *param,
 Buffer *mBuf
 )
-#else
-static S16 cmUnpkCrgUeSCellCfg(param, mBuf)
-CrgUeSCellInfo *param;
-Buffer *mBuf;
-#endif
 {
    CMCHKUNPK(oduPackUInt16, &param->sCellId, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->macInst, mBuf);
@@ -1110,17 +971,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkCrgUeSecCellInfo
 (
 CrgUeSecCellInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkCrgUeSecCellInfo(param, mBuf)
-CrgUeSecCellInfo *param;
-Buffer *mBuf;
-#endif
 {
    S8 idx;
    for(idx = param->numSCells - 1; idx >= 0; idx--)
@@ -1149,17 +1004,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkCrgUeSecCellInfo
 (
 CrgUeSecCellInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkCrgUeSecCellInfo(param, mBuf)
-CrgUeSecCellInfo *param;
-Buffer *mBuf;
-#endif
 {
    uint8_t idx;
 
@@ -1195,17 +1044,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkCrgUeUlHqCfg
 (
 CrgUeUlHqCfg *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkCrgUeUlHqCfg(param, mBuf)
-CrgUeUlHqCfg *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -1230,17 +1073,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkCrgUeCfg
 (
 CrgUeCfg *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkCrgUeCfg(param, mBuf)
-CrgUeCfg *param;
-Buffer *mBuf;
-#endif
 {
 
 #ifdef TENB_MULT_CELL_SUPPRT
@@ -1272,17 +1109,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkCrgUeCfg
 (
 CrgUeCfg *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkCrgUeCfg(param, mBuf)
-CrgUeCfg *param;
-Buffer *mBuf;
-#endif
 {
    uint32_t tmpEnum;
    
@@ -1317,17 +1148,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkCrgDlLchCfg
 (
 CrgDlLchCfg *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkCrgDlLchCfg(param, mBuf)
-CrgDlLchCfg *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -1352,17 +1177,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkCrgDlLchCfg
 (
 CrgDlLchCfg *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkCrgDlLchCfg(param, mBuf)
-CrgDlLchCfg *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -1387,19 +1206,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkCrgUlLchCfg
 (
 CrgUlLchCfg *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkCrgUlLchCfg(param, mBuf)
-CrgUlLchCfg *param;
-Buffer *mBuf;
-#endif
 {
-
 
    CMCHKPK(oduUnpackUInt8, param->lcgId, mBuf);
    CMCHKPK(oduUnpackUInt8, param->ulTrchType, mBuf);
@@ -1423,17 +1235,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkCrgUlLchCfg
 (
 CrgUlLchCfg *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkCrgUlLchCfg(param, mBuf)
-CrgUlLchCfg *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -1459,17 +1265,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkCrgLchCfg
 (
 CrgLchCfg *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkCrgLchCfg(param, mBuf)
-CrgLchCfg *param;
-Buffer *mBuf;
-#endif
 {
 
 /* crg_c_001.main_5 - ADD - Added the packing for LTE_L2_MEAS. */
@@ -1503,17 +1303,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkCrgLchCfg
 (
 CrgLchCfg *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkCrgLchCfg(param, mBuf)
-CrgLchCfg *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -1548,17 +1342,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkCrgCfg
 (
 CrgCfg *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkCrgCfg(param, mBuf)
-CrgCfg *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -1596,17 +1384,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkCrgCfg
 (
 CrgCfg *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkCrgCfg(param, mBuf)
-CrgCfg *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -1644,17 +1426,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkCrgCellRecfg
 (
 CrgCellRecfg *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkCrgCellRecfg(param, mBuf)
-CrgCellRecfg *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -1680,17 +1456,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkCrgCellRecfg
 (
 CrgCellRecfg *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkCrgCellRecfg(param, mBuf)
-CrgCellRecfg *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -1716,17 +1486,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkCrgUeRecfg
 (
 CrgUeRecfg *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkCrgUeRecfg(param, mBuf)
-CrgUeRecfg *param;
-Buffer *mBuf;
-#endif
 {
 
 #ifdef LTE_ADV
@@ -1765,17 +1529,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkCrgUeRecfg
 (
 CrgUeRecfg *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkCrgUeRecfg(param, mBuf)
-CrgUeRecfg *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -1808,17 +1566,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkCrgLchRecfg
 (
 CrgLchRecfg *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkCrgLchRecfg(param, mBuf)
-CrgLchRecfg *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -1846,17 +1598,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkCrgLchRecfg
 (
 CrgLchRecfg *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkCrgLchRecfg(param, mBuf)
-CrgLchRecfg *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -1884,17 +1630,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkCrgRecfg
 (
 CrgRecfg *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkCrgRecfg(param, mBuf)
-CrgRecfg *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -1932,17 +1672,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkCrgRecfg
 (
 CrgRecfg *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkCrgRecfg(param, mBuf)
-CrgRecfg *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -1980,17 +1714,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkCrgDel
 (
 CrgDel *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkCrgDel(param, mBuf)
-CrgDel *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -2032,17 +1760,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkCrgDel
 (
 CrgDel *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkCrgDel(param, mBuf)
-CrgDel *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -2084,17 +1806,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkCrgRst
 (
 CrgRst *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkCrgRst(param, mBuf)
-CrgRst *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -2120,17 +1836,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkCrgRst
 (
 CrgRst *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkCrgRst(param, mBuf)
-CrgRst *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -2156,17 +1866,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkCrgCfgReqInfo
 (
 CrgCfgReqInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkCrgCfgReqInfo(param, mBuf)
-CrgCfgReqInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -2207,17 +1911,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkCrgCfgReqInfo
 (
 CrgCfgReqInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkCrgCfgReqInfo(param, mBuf)
-CrgCfgReqInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 

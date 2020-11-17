@@ -100,17 +100,7 @@ static Buffer* TSInfUtlAllocMsg ARGS((
 *
 *
 */
-#ifdef ANSI
-static Void TSInfTrigL2Stats
-(
- Region    region,
- Pool      pool
-)
-#else
-static Void TSInfTrigL2Stats(region, pool)
- Region    region;
- Pool      pool;
-#endif
+static Void TSInfTrigL2Stats(Region region,Pool pool)
 {
    Buffer* pBuf;
    Pst pst = {0};
@@ -143,17 +133,7 @@ static Void TSInfTrigL2Stats(region, pool)
 *
 *
 */
-#ifdef ANSI
-Void TSInfTrigStats
-(
- Region    region,
- Pool      pool
-)
-#else
-Void TSInfTrigStats(region, pool)
- Region    region;
- Pool      pool;
-#endif
+Void TSInfTrigStats(Region region,Pool pool)
 {
 //TODO
    TSInfTrigL2Stats(region, pool);
@@ -162,15 +142,7 @@ Void TSInfTrigStats(region, pool)
 }
 
          
-#ifdef ANSI
-static Buffer* TSInfUtlAllocMsg
-(
- Pst   *pst
-)
-#else
-static Buffer* TSInfUtlAllocMsg(pst)
- Pst   *pst;
-#endif
+static Buffer* TSInfUtlAllocMsg(Pst   *pst)
 {
    Buffer *mBuf; 
 
@@ -181,17 +153,7 @@ static Buffer* TSInfUtlAllocMsg(pst)
    return (mBuf);
 }
 
-#ifdef ANSI
-static Void TSInfUtlPackUeInfo
-(
- Buffer            *mBuf,
- TSInfL2UeStats     *stats
-)
-#else
-static Void TSInfUtlPackUeInfo(mBuf, stats)
- Buffer            *mBuf;
- TSInfL2UeStats     *stats; 
-#endif
+static Void TSInfUtlPackUeInfo(Buffer *mBuf,TSInfL2UeStats *stats)
 {
    S32 i;
    uint32_t k;
@@ -262,17 +224,7 @@ static Void TSInfUtlPackUeInfo(mBuf, stats)
    return;
 }
 
-#ifdef ANSI
-static Void TSInfUtlPackCellInfo
-(
- Buffer              *mBuf,
- TSInfL2CellStats     *stats  
-)
-#else
-static Void TSInfUtlPackCellInfo(mBuf, stats)
- Buffer              *mBuf;
- TSInfL2CellStats     *stats; 
-#endif
+static Void TSInfUtlPackCellInfo(Buffer *mBuf,TSInfL2CellStats *stats  )
 {
    S32 i,j;
 
@@ -378,17 +330,7 @@ static Void TSInfUtlPackCellInfo(mBuf, stats)
    return;
 }
 
-#ifdef ANSI
-static Void TSInfUtlUnpkUeInfo
-(
- Buffer            *mBuf,
- TSInfL2UeStats     *stats 
-)
-#else
-static Void TSInfUtlUnpkUeInfo(mBuf, stats)
- Buffer            *mBuf;
- TSInfL2UeStats     *stats; 
-#endif
+static Void TSInfUtlUnpkUeInfo(Buffer *mBuf, TSInfL2UeStats *stats )
 {
    S32 i;
    uint32_t k;
@@ -460,17 +402,7 @@ static Void TSInfUtlUnpkUeInfo(mBuf, stats)
    return;
 }
 
-#ifdef ANSI
-static Void TSInfUtlUnpkCellInfo
-(
- Buffer              *mBuf,
- TSInfL2CellStats     *stats 
-)
-#else
-static Void TSInfUtlUnpkCellInfo(mBuf, stats)
- Buffer              *mBuf;
- TSInfL2CellStats     *stats; 
-#endif
+static Void TSInfUtlUnpkCellInfo(Buffer *mBuf,TSInfL2CellStats *stats )
 {
    S32 i,j;
 
@@ -576,19 +508,7 @@ static Void TSInfUtlUnpkCellInfo(mBuf, stats)
    return;
 }
 
-#ifdef ANSI
-Void TSInfPkSndL2UeStats
-(
- Pst               *pst,
- SuId              suId,
- TSInfL2UeStats     *stats  
-)
-#else
-Void TSInfPkSndL2UeStats(pst, suId, stats)
- Pst               *pst;
- SuId              suId;
- TSInfL2UeStats     *stats;
-#endif
+Void TSInfPkSndL2UeStats(Pst  *pst,SuId suId,TSInfL2UeStats *stats)
 {
    Buffer *mBuf;
 
@@ -601,23 +521,10 @@ Void TSInfPkSndL2UeStats(pst, suId, stats)
    return;
 }
 
-#ifdef ANSI
-Void TSInfUnpkL2UeStats
-(
- TSInfL2UeStatsInd   func,
- Pst                *pst,
- Buffer             *mBuf
-)
-#else
-Void TSInfUnpkL2UeStats(func, pst, mBuf)
- TSInfL2UeStatsInd   func;
- Pst                *pst;
- Buffer             *mBuf;
-#endif
+Void TSInfUnpkL2UeStats(TSInfL2UeStatsInd func, Pst  *pst,Buffer *mBuf)
 {
    SuId              suId;
    TSInfL2UeStats     stats; 
-
 
    SUnpkS16(&suId, mBuf);
    TSInfUtlUnpkUeInfo(mBuf, &stats);
@@ -626,22 +533,9 @@ Void TSInfUnpkL2UeStats(func, pst, mBuf)
    return;
 }
 
-#ifdef ANSI
-Void TSInfPkSndL2CellStats
-(
- Pst                 *pst,
- SuId                suId,
- TSInfL2CellStats   *stats 
-)
-#else
-Void TSInfPkSndL2CellStats(pst, suId, stats)
- Pst                 *pst;
- SuId                suId;
- TSInfL2Cellstats   *stats;
-#endif
+Void TSInfPkSndL2CellStats(Pst *pst,SuId suId,TSInfL2CellStats   *stats )
 {
    Buffer *mBuf;
-
 
    mBuf = TSInfUtlAllocMsg(pst);
    TSInfUtlPackCellInfo(mBuf, stats);
@@ -651,19 +545,7 @@ Void TSInfPkSndL2CellStats(pst, suId, stats)
    return;
 }
 
-#ifdef ANSI
-Void TSInfUnpkL2CellStats
-(
- TSInfL2CellStatsInd   func,
- Pst                *pst,
- Buffer             *mBuf
-)
-#else
-Void TSInfUnpkL2CellStats(func, pst, mBuf)
- TSInfL2CellStatsInd   func;
- Pst                *pst;
- Buffer             *mBuf;
-#endif
+Void TSInfUnpkL2CellStats(TSInfL2CellStatsInd func,Pst  *pst,Buffer *mBuf)
 {
    SuId                suId;
    TSInfL2CellStats    stats; 
