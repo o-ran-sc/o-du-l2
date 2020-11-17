@@ -32,6 +32,8 @@ level as follows:
 
 -	Thread 5: SCTP Handler
 
+-       Thread 6: Lower MAC Handler
+
 
 O-DU Modules
 --------------------------
@@ -80,7 +82,8 @@ Functions of the 5G NR MAC module are as follows:
 
 -	5G NR SCH schedules resources on UL and DL for cell and UE based procedures.
 
--	Lower MAC interfaces between the MAC and the lower layers of the O-DU and implements all the messages of FAPI specification.
+-	Lower MAC interfaces between the MAC and the lower layers of the O-DU and implements all the messages of FAPI
+	specification. It has a receiver thread to handle messages from L1.
 
 O-DU Utility and Common Functions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
