@@ -62,19 +62,12 @@
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkRguBndReq
 (
 Pst* pst,
 SuId suId,
 SpId spId
 )
-#else
-S16 cmPkRguBndReq(pst, suId, spId)
-Pst* pst;
-SuId suId;
-SpId spId;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -122,23 +115,15 @@ SpId spId;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkRguBndReq
 (
 RguBndReq func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRguBndReq(func, pst, mBuf)
-RguBndReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SuId suId;
    SpId spId;
-   
 
    if (SUnpkS16(&suId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
@@ -176,19 +161,12 @@ Buffer *mBuf;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkRguUbndReq
 (
 Pst* pst,
 SpId spId,
 Reason reason
 )
-#else
-S16 cmPkRguUbndReq(pst, spId, reason)
-Pst* pst;
-SpId spId;
-Reason reason;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -236,19 +214,12 @@ Reason reason;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkRguUbndReq
 (
 RguUbndReq func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRguUbndReq(func, pst, mBuf)
-RguUbndReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SpId spId;
    Reason reason;
@@ -291,19 +262,12 @@ Buffer *mBuf;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkRguBndCfm
 (
 Pst* pst,
 SuId suId,
 uint8_t status
 )
-#else
-S16 cmPkRguBndCfm(pst, suId, status)
-Pst* pst;
-SuId suId;
-uint8_t status;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -352,23 +316,15 @@ uint8_t status;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkRguBndCfm
 (
 RguBndCfm func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRguBndCfm(func, pst, mBuf)
-RguBndCfm func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SuId suId;
    uint8_t status;
-   
 
    if (SUnpkS16(&suId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
@@ -411,17 +367,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkRguL2MUlThrpMeasReqInfo 
 (
 RguL2MUlThrpMeasReqInfo* param,
 Buffer *mBuf
 )
-#else
-S16 cmPkRguL2MUlThrpMeasReqInfo(param, mBuf)
-RguL2MUlThrpMeasReqInfo* param;
-Buffer *mBuf;
-#endif
 {
    S32 loop;
 
@@ -454,17 +404,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkRguL2MUlThrpMeasReqInfo 
 (
 RguL2MUlThrpMeasReqInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRguL2MUlThrpMeasReqInfo(param, mBuf)
-RguL2MUlThrpMeasReqInfo *param;
-Buffer *mBuf;
-#endif
 {
    uint8_t loop;
 
@@ -494,19 +438,12 @@ Buffer *mBuf;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkRguL2MUlThrpMeasReq 
 (
 Pst* pst,
 SpId spId,
 RguL2MUlThrpMeasReqInfo* measReq
 )
-#else
-S16 cmPkRguL2MUlThrpMeasReq(pst, spId, measReq)
-Pst* pst;
-SpId spId;
-RguL2MUlThrpMeasReqInfo* measReq;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -584,19 +521,12 @@ RguL2MUlThrpMeasReqInfo* measReq;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkRguL2MUlThrpMeasReq 
 (
 RguL2MUlThrpMeasReq func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRguL2MUlThrpMeasReq(func, pst, mBuf)
-RguL2MUlThrpMeasReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SpId spId;
    RguL2MUlThrpMeasReqInfo* measReq;
@@ -662,23 +592,16 @@ Buffer *mBuf;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkRguHqStaInd
 (
 Pst* pst,
 SuId suId,
 RguHarqStatusInd  *harqStatusInd
 )
-#else
-S16 cmPkRguHqStaInd(pst, suId, harqStatusInd)
-Pst* pst;
-SuId suId;
-RguHarqStatusInd  *harqStatusInd;
-#endif
 {
 
    Buffer   *mBuf;
-   uint8_t       idx;
+   uint8_t  idx;
    RguHarqStatusInd *harqStaInd = NULL;
 
 #ifdef XEON_SPECIFIC_CHANGES
@@ -785,24 +708,16 @@ RguHarqStatusInd  *harqStatusInd;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkRguHqStaInd
 (
 RguHqStaInd  func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRguHqStaInd(func, pst, mBuf)
-RguHqStaInd   func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    RguHarqStatusInd    *hqStaInd;  
-   SuId                suId;
-   uint8_t                  idx;
-
+   SuId    suId;
+   uint8_t idx;
 
    if (SUnpkS16(&suId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
@@ -860,17 +775,11 @@ Buffer *mBuf;
 }
 #endif /* LTE_L2_MEAS */
 
-#ifdef ANSI
 S16 cmPkRguLcFlowCntrlInfo
 (
 RguLcFlowCntrlInfo *param,
 Buffer             *mBuf
 )
-#else
-S16 cmPkRguLcFlowCntrlInfo (param,mBuf)
-RguLcFlowCntrlInfo *param;
-Buffer             *mBuf;
-#endif
 {
   CMCHKPK(oduUnpackUInt32, param->maxBo4FlowCtrl, mBuf);
   CMCHKPK(oduUnpackUInt32, param->pktAdmitCnt, mBuf);
@@ -879,17 +788,11 @@ Buffer             *mBuf;
   return ROK;
 }
 
-#ifdef ANSI
 S16 cmPkRguUeFlowCntrlInfo
 (
 RguUeFlowCntrlInfo *param,
 Buffer             *mBuf
 )
-#else
-S16 cmPkRguUeFlowCntrlInfo (param,mBuf)
-RguUeFlowCntrlInfo *param;
-Buffer             *mBuf;
-#endif
 {
   uint32_t idx;
 
@@ -903,20 +806,13 @@ Buffer             *mBuf;
   return ROK;
 }
 
-#ifdef ANSI
 S16 cmPkRguFlowCntrlInfo
 (
 RguFlowCntrlInd *param, 
 Buffer          *mBuf
 )
-#else
-S16 cmPkRguFlowCntrlInfo(flowCntrlInd, mBuf)
-RguFlowCntrlInd *param;
-Buffer          *mBuf;
-#endif
 {
   uint32_t idx;
-
 
   for (idx=(param->numUes - 1); idx >= 0; idx--)
   {
@@ -942,19 +838,12 @@ Buffer          *mBuf;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkRguFlowCntrlInd
 (
 Pst* pst,
 SuId suId,
 RguFlowCntrlInd  *flowCntrlInd
 )
-#else
-S16 cmPkRguFlowCntrlInd(pst, suId, flowCntrlInd)
-Pst* pst;
-SuId suId;
-RguFlowCntrlInd   *flowCntrlInd;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -996,17 +885,11 @@ RguFlowCntrlInd   *flowCntrlInd;
    return (SPstTsk(pst,mBuf));
 }
 
-#ifdef ANSI
 S16 cmUnpkRguLcFlowCntrlInfo
 (
 RguLcFlowCntrlInfo *param,
 Buffer           *mBuf
 )
-#else
-S16 cmUnpkRguLcFlowCntrlInfo (param,mBuf)
-RguLcFlowCntrlInfo *param;
-Buffer           *mBuf;
-#endif
 {
 
   CMCHKUNPK(cmUnpkLteLcId, &param->lcId, mBuf);
@@ -1015,17 +898,11 @@ Buffer           *mBuf;
   
   return ROK;
 }
-#ifdef ANSI
 S16 cmUnpkRguUeFlowCntrlInfo
 (
 RguUeFlowCntrlInfo *param,
 Buffer           *mBuf
 )
-#else
-S16 cmUnpkRguUeFlowCntrlInfo (param,mBuf)
-RguUeFlowCntrlInfo *param;
-Buffer           *mBuf;
-#endif
 {
   uint32_t idx;
   CMCHKUNPK(cmUnpkLteRnti, &param->ueId, mBuf);
@@ -1037,17 +914,11 @@ Buffer           *mBuf;
   return ROK;
 }
 
-#ifdef ANSI
 S16 cmUnpkRguFlowCntrlInfo
 (
 RguFlowCntrlInd *param, 
 Buffer           *mBuf
 )
-#else
-S16 cmUnpkRguFlowCntrlInfo(flowCntrlInfo, mBuf)
-RguFlowCntrlInd *param;
-Buffer           *mBuf;
-#endif
 {
   uint32_t idx; 
   
@@ -1076,23 +947,15 @@ Buffer           *mBuf;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkRguFlowCntrlInd
 (
 RguFlowCntrlIndInfo func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRguFlowCntrlInd(func, pst, mBuf)
-RguFlowCntrlIndInfo func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SuId suId;
    RguFlowCntrlInd *flowCntrlInd;
-   
 
    if (SUnpkS16(&suId, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
@@ -1149,20 +1012,13 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkRguPduInfo
 (
 RguPduInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkRguPduInfo(param, mBuf)
-RguPduInfo *param;
-Buffer *mBuf;
-#endif
 {
    S32 i;
-
 
    for (i=param->numPdu-1; i >= 0; i--) {
      /* rgu_c_001.main_3: ccpu00111328: S16 is renamed as MsgLen */
@@ -1196,17 +1052,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkRguPduInfo
 (
 RguPduInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRguPduInfo(param, mBuf)
-RguPduInfo *param;
-Buffer *mBuf;
-#endif
 {
    S32 i;
 
@@ -1241,19 +1091,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkRguDBoReport
 (
 RguDBoReport *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkRguDBoReport(param, mBuf)
-RguDBoReport *param;
-Buffer *mBuf;
-#endif
 {
-
 
    CMCHKPK(oduUnpackUInt32, param->oldestSduArrTime, mBuf);
    CMCHKPK(oduUnpackUInt32, param->staPduBo, mBuf);
@@ -1283,17 +1126,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkRguDBoReport
 (
 RguDBoReport *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRguDBoReport(param, mBuf)
-RguDBoReport *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -1325,20 +1162,13 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkRguCDatReqInfo
 (
 RguCDatReqInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkRguCDatReqInfo(param, mBuf)
-RguCDatReqInfo *param;
-Buffer *mBuf;
-#endif
 {
    MsgLen msgLen;
-
 
    if (param->pdu != NULLP)
    {
@@ -1388,17 +1218,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkRguCDatReqInfo
 (
 RguCDatReqInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRguCDatReqInfo(param, mBuf)
-RguCDatReqInfo *param;
-Buffer *mBuf;
-#endif
 {
    MsgLen msgLen, totalMsgLen;
 
@@ -1451,19 +1275,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkRguLchDatReq
 (
 RguLchDatReq *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkRguLchDatReq(param, mBuf)
-RguLchDatReq *param;
-Buffer *mBuf;
-#endif
 {
-
 
 #ifdef L2_OPTMZ
    CMCHKPK(oduUnpackUInt8, param->freeBuff, mBuf);
@@ -1493,19 +1310,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkRguLchDatReq
 (
 RguLchDatReq *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRguLchDatReq(param, mBuf)
-RguLchDatReq *param;
-Buffer *mBuf;
-#endif
 {
-
 
    CMCHKUNPK(cmUnpkLteLcId, &param->lcId, mBuf);
    CMCHKUNPK(cmUnpkRguDBoReport, &param->boReport, mBuf);
@@ -1534,17 +1344,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkRguDatReqTb
 (
 RguDatReqTb *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkRguDatReqTb(param, mBuf)
-RguDatReqTb *param;
-Buffer *mBuf;
-#endif
 {
    S32 i;
 
@@ -1578,7 +1382,6 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef LTE_L2_MEAS
-#ifdef ANSI
 S16 cmUnpkRguDatReqTb
 (
 Pst         *pst, 
@@ -1586,23 +1389,11 @@ RguDatReqTb *param,
 Buffer *mBuf
 )
 #else
-S16 cmUnpkRguDatReqTb(pst, param, mBuf)
-Pst         *pst;   
-RguDatReqTb *param;
-Buffer *mBuf;
-#endif
-#else
-#ifdef ANSI
 S16 cmUnpkRguDatReqTb
 (
 RguDatReqTb *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRguDatReqTb(param, mBuf)
-RguDatReqTb *param;
-Buffer *mBuf;
-#endif
 #endif
 {
    S32 i;
@@ -1638,7 +1429,6 @@ Buffer *mBuf;
 **********************************************************/
    /*rgu_c_001.main_5 - ADD - L2M Support */
 #ifdef LTE_L2_MEAS
-#ifdef ANSI
 S16 cmPkRguDDatReqInfo
 (
 Pst            *pst,
@@ -1646,23 +1436,11 @@ RguDDatReqInfo *param,
 Buffer *mBuf
 )
 #else
-S16 cmPkRguDDatReqInfo(pst, param, mBuf)
-Pst            *pst;
-RguDDatReqInfo *param;
-Buffer *mBuf;
-#endif
-#else
-#ifdef ANSI
 S16 cmPkRguDDatReqInfo
 (
 RguDDatReqInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkRguDDatReqInfo(param, mBuf)
-RguDDatReqInfo *param;
-Buffer *mBuf;
-#endif
 #endif
 {
    S32 i;
@@ -1704,7 +1482,6 @@ Buffer *mBuf;
 *
 **********************************************************/
 #ifdef LTE_L2_MEAS
-#ifdef ANSI
 S16 cmUnpkRguDDatReqInfo
 (
 Pst            *pst, 
@@ -1712,23 +1489,11 @@ RguDDatReqInfo *param,
 Buffer *mBuf
 )
 #else
-S16 cmUnpkRguDDatReqInfo(pst, param, mBuf)
-Pst            *pst;
-RguDDatReqInfo *param;
-Buffer *mBuf;
-#endif
-#else
-#ifdef ANSI
 S16 cmUnpkRguDDatReqInfo
 (
 RguDDatReqInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRguDDatReqInfo(param, mBuf)
-RguDDatReqInfo *param;
-Buffer *mBuf;
-#endif
 #endif
 {
    S32 i;
@@ -1790,20 +1555,13 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkRguCDatIndInfo
 (
 RguCDatIndInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkRguCDatIndInfo(param, mBuf)
-RguCDatIndInfo *param;
-Buffer *mBuf;
-#endif
 {
    MsgLen msgLen;
-
 
    if (SFndLenMsg(param->pdu, &msgLen) != ROK)
       return RFAILED;
@@ -1835,17 +1593,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkRguCDatIndInfo
 (
 RguCDatIndInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRguCDatIndInfo(param, mBuf)
-RguCDatIndInfo *param;
-Buffer *mBuf;
-#endif
 {
    MsgLen msgLen, totalMsgLen;
 
@@ -1879,20 +1631,14 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkRguLchDatInd
 (
 RguLchDatInd *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkRguLchDatInd(param, mBuf)
-RguLchDatInd *param;
-Buffer *mBuf;
-#endif
 {
 
-      CMCHKPK(cmPkRguPduInfo, &param->pdu, mBuf);
+   CMCHKPK(cmPkRguPduInfo, &param->pdu, mBuf);
    CMCHKPK(cmPkLteLcId, param->lcId, mBuf);
    return ROK;
 }
@@ -1915,17 +1661,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkRguLchDatInd
 (
 RguLchDatInd *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRguLchDatInd(param, mBuf)
-RguLchDatInd *param;
-Buffer *mBuf;
-#endif
 {
 
    CMCHKUNPK(cmUnpkLteLcId, &param->lcId, mBuf);
@@ -1950,17 +1690,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkRguCStaRspInfo
 (
 RguCStaRspInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkRguCStaRspInfo(param, mBuf)
-RguCStaRspInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -2004,17 +1738,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkRguCStaRspInfo
 (
 RguCStaRspInfo *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRguCStaRspInfo(param, mBuf)
-RguCStaRspInfo *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -2057,17 +1785,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkRguLchStaInd
 (
 RguLchStaInd *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkRguLchStaInd(param, mBuf)
-RguLchStaInd *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -2094,19 +1816,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkRguLchStaInd
 (
 RguLchStaInd *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRguLchStaInd(param, mBuf)
-RguLchStaInd *param;
-Buffer *mBuf;
-#endif
 {
-
 
    CMCHKUNPK(cmUnpkLteLcId, &param->lcId, mBuf);
    CMCHKUNPK(SUnpkS16, &param->totBufSize, mBuf);
@@ -2130,17 +1845,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkRguStaIndTb
 (
 RguStaIndTb *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkRguStaIndTb(param, mBuf)
-RguStaIndTb *param;
-Buffer *mBuf;
-#endif
 {
    S32 i;
 
@@ -2174,17 +1883,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkRguStaIndTb
 (
 RguStaIndTb *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRguStaIndTb(param, mBuf)
-RguStaIndTb *param;
-Buffer *mBuf;
-#endif
 {
    S32 i;
 

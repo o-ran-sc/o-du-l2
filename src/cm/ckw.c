@@ -54,19 +54,12 @@ extern "C" {
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
 S16 cmPkCkwBndReq
 (
 Pst *pst,
 SuId suId,
 SpId spId
 )
-#else
-S16 cmPkCkwBndReq(pst, suId, spId)
-Pst *pst;
-SuId suId;
-SpId spId;
-#endif
 {
     S16 ret1;
     Buffer *mBuf;
@@ -104,19 +97,12 @@ SpId spId;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
 S16 cmPkCkwUbndReq
 (
 Pst *pst,
 SpId spId,
 Reason reason
 )
-#else
-S16 cmPkCkwUbndReq(pst, spId, reason)
-Pst *pst;
-SpId spId;
-Reason reason;
-#endif
 {
     S16 ret1;
     Buffer *mBuf;
@@ -154,19 +140,12 @@ Reason reason;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
 S16 cmPkCkwBndCfm
 (
 Pst *pst,
 SuId suId,
 uint8_t status
 )
-#else
-S16 cmPkCkwBndCfm(pst, suId, status)
-Pst *pst;
-SuId suId;
-uint8_t status;
-#endif
 {
     S16 ret1;
     Buffer *mBuf;
@@ -206,17 +185,11 @@ uint8_t status;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
 S16 cmPkRlcTmInfo
 (
 RlcTmInfo      *param,
 Buffer         *mBuf
 )
-#else
-S16 cmPkRlcTmInfo(param, mBuf)
-RlcTmInfo      *param;
-Buffer         *mBuf;
-#endif
 {
 
     CMCHKPK(oduUnpackUInt32, param->dl.buffSize, mBuf);
@@ -238,17 +211,11 @@ Buffer         *mBuf;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
 S16 cmPkRlcUmInfo
 (
 RlcEntCfgInfo  *param,
 Buffer         *mBuf
 )
-#else
-S16 cmPkRlcUmInfo(param, mBuf)
-RlcEntCfgInfo  *param;
-Buffer         *mBuf;
-#endif
 {
 
     switch(param->dir)
@@ -291,17 +258,11 @@ Buffer         *mBuf;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
 S16 cmPkRlcAmInfo
 (
 RlcAmInfo      *param,
 Buffer         *mBuf
 )
-#else
-S16 cmPkRlcAmInfo(param, mBuf)
-RlcAmInfo      *param;
-Buffer         *mBuf;
-#endif
 {
 
     /* UP LINK */
@@ -333,17 +294,11 @@ Buffer         *mBuf;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
 S16 cmPkCkwLChInfo
 (
 CkwLChInfo     *param,
 Buffer         *mBuf
 )
-#else
-S16 cmPkCkwLChInfo(param, mBuf)
-CkwLChInfo     *param;
-Buffer         *mBuf;
-#endif
 {
 
     CMCHKPK(oduUnpackUInt8, param->type, mBuf);
@@ -366,17 +321,11 @@ Buffer         *mBuf;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
 S16 cmPkRlcEntCfgInfo
 (
 RlcEntCfgInfo  *param,
 Buffer         *mBuf
 )
-#else
-S16 cmPkRlcEntCfgInfo(param, mBuf)
-RlcEntCfgInfo  *param;
-Buffer         *mBuf;
-#endif
 {
 
     switch(param->entMode)
@@ -444,22 +393,14 @@ Buffer         *mBuf;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
 S16 cmPkRlcCfgInfo
 (
 RlcCfgInfo     *param,
 Pst            *pst,
 Buffer         *mBuf
 )
-#else
-S16 cmPkRlcCfgInfo(param, pst, mBuf)
-RlcCfgInfo     *param;
-Pst            *pst;
-Buffer         *mBuf;
-#endif
 {
    S16 idx;
-
 
     for (idx = param->numEnt-1; idx >= 0; idx--)
     {
@@ -488,17 +429,11 @@ Buffer         *mBuf;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
 S16 cmPkRlcEntCfgCfmInfo
 (
 RlcEntCfgCfmInfo  *param,
 Buffer            *mBuf
 )
-#else
-S16 cmPkRlcEntCfgCfmInfo(param, mBuf)
-RlcEntCfgCfmInfo  *param;
-Buffer            *mBuf;
-#endif
 {
 
     CMCHKPK(cmPkCmStatus, &(param->status), mBuf);
@@ -522,22 +457,14 @@ Buffer            *mBuf;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
 S16 cmPkRlcCfgCfmInfo
 (
 RlcCfgCfmInfo  *param,
 Pst            *pst,
 Buffer         *mBuf
 )
-#else
-S16 cmPkRlcCfgCfmInfo(param, pst, mBuf)
-RlcCfgCfmInfo  *param;
-Pst            *pst;
-Buffer         *mBuf;
-#endif
 {
     S16         idx;
-
 
     for (idx = param->numEnt-1; idx >= 0; idx--)
     {
@@ -566,19 +493,12 @@ Buffer         *mBuf;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
 S16 cmPkRlcCfgCfm
 (
 Pst               *pst,
 SuId              suId,
 RlcCfgCfmInfo     *cfgCfmInfo
 )
-#else
-S16 cmPkRlcCfgCfm(pst, suId, cfgCfmInfo)
-Pst               *pst;
-SuId              suId;
-RlcCfgCfmInfo     *cfgCfmInfo;
-#endif
 {
     S16 ret1;
     Buffer *mBuf;
@@ -644,17 +564,11 @@ RlcCfgCfmInfo     *cfgCfmInfo;
 *    File:   ckw.c
 *
 */
-#ifdef ANSI
 S16 cmPkCkwUeInfo
 (
 CkwUeInfo *param,
 Buffer    *mBuf
 )
-#else
-S16 cmPkCkwUeInfo(param, mBuf)
-CkwUeInfo *param;
-Buffer    *mBuf;
-#endif
 {
 
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
@@ -676,23 +590,14 @@ Buffer    *mBuf;
 *    File:   ckw.c
 *
 */
-#ifdef ANSI
 S16 cmPkCkwUeIdChgReq
 (
-Pst               *pst,
-SpId              spId,
-uint32_t               transId,
-CkwUeInfo         *ueInfo,
-CkwUeInfo         *newUeInfo
+Pst       *pst,
+SpId      spId,
+uint32_t  transId,
+CkwUeInfo *ueInfo,
+CkwUeInfo *newUeInfo
 )
-#else
-S16 cmPkCkwUeIdChgReq(pst, spId, transId, ueInfo, newUeInfo)
-Pst               *pst;
-SpId              spId;
-uint32_t               transId;
-CkwUeInfo         *ueInfo;
-CkwUeInfo         *newUeInfo;
-#endif
 {
     S16    ret1;
     Buffer *mBuf = NULLP;
@@ -747,23 +652,14 @@ CkwUeInfo         *newUeInfo;
 *    File:   ckw.c
 *
 */
-#ifdef ANSI
 S16 cmPkCkwUeIdChgCfm
 (
-Pst               *pst,
-SuId              suId,
-uint32_t               transId,
-CkwUeInfo         *ueInfo,
-CmStatus          status
+Pst         *pst,
+SuId        suId,
+uint32_t    transId,
+CkwUeInfo   *ueInfo,
+CmStatus    status
 )
-#else
-S16 cmPkCkwUeIdChgCfm(pst, suId, transId, ueInfo, status)
-Pst               *pst;
-SuId              suId;
-uint32_t               transId;
-CkwUeInfo         *ueInfo;
-CmStatus          status;
-#endif
 {
     S16    ret1;
     Buffer *mBuf = NULLP;
@@ -817,19 +713,12 @@ CmStatus          status;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
 S16 cmUnpkCkwBndReq
 (
 CkwBndReq      func,
 Pst            *pst,
 Buffer         *mBuf
 )
-#else
-S16 cmUnpkCkwBndReq(func, pst, mBuf)
-CkwBndReq      func;
-Pst            *pst;
-Buffer         *mBuf;
-#endif
 {
     SuId       suId = 0;
     SpId       spId = 0;
@@ -855,19 +744,12 @@ Buffer         *mBuf;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
 S16 cmUnpkCkwUbndReq
 (
 CkwUbndReq     func,
 Pst            *pst,
 Buffer         *mBuf
 )
-#else
-S16 cmUnpkCkwUbndReq(func, pst, mBuf)
-CkwUbndReq     func;
-Pst            *pst;
-Buffer         *mBuf;
-#endif
 {
     SpId       spId = 0;
     Reason     reason = 0;
@@ -892,22 +774,15 @@ Buffer         *mBuf;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
 S16 cmUnpkCkwBndCfm
 (
 CkwBndCfm      func,
 Pst            *pst,
 Buffer         *mBuf
 )
-#else
-S16 cmUnpkCkwBndCfm(func, pst, mBuf)
-CkwBndCfm      func;
-Pst            *pst;
-Buffer         *mBuf;
-#endif
 {
-    SuId       suId = 0;
-    uint8_t         status = 0;
+    SuId    suId = 0;
+    uint8_t status = 0;
     
 
     CMCHKUNPKLOG(SUnpkS16, &suId, mBuf, ECKW028, pst);
@@ -931,17 +806,11 @@ Buffer         *mBuf;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
 S16 cmUnpkRlcTmInfo
 (
 RlcTmInfo      *param,
 Buffer         *mBuf
 )
-#else
-S16 cmUnpkRlcTmInfo(param, mBuf)
-RlcTmInfo      *param;
-Buffer         *mBuf;
-#endif
 {
 
     CMCHKUNPK(oduPackUInt32, &(param->dl.buffSize), mBuf);
@@ -963,17 +832,11 @@ Buffer         *mBuf;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
 S16 cmUnpkRlcUmInfo
 (
 RlcEntCfgInfo  *param,
 Buffer         *mBuf
 )
-#else
-S16 cmUnpkRlcUmInfo(param, mBuf)
-RlcEntCfgInfo  *param;
-Buffer         *mBuf;
-#endif
 {
 
     switch(param->dir)
@@ -1016,17 +879,11 @@ Buffer         *mBuf;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
 S16 cmUnpkRlcAmInfo
 (
 RlcAmInfo      *param,
 Buffer         *mBuf
 )
-#else
-S16 cmUnpkRlcAmInfo(param, mBuf)
-RlcAmInfo      *param;
-Buffer         *mBuf;
-#endif
 {
 
     /* DOWN LINK */
@@ -1058,17 +915,11 @@ Buffer         *mBuf;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
 S16 cmUnpkCkwLChInfo
 (
 CkwLChInfo     *param,
 Buffer         *mBuf
 )
-#else
-S16 cmUnpkCkwLChInfo(param, mBuf)
-CkwLChInfo     *param;
-Buffer         *mBuf;
-#endif
 {
 
     CMCHKUNPK(oduPackUInt8, &(param->lChId), mBuf);
@@ -1091,17 +942,11 @@ Buffer         *mBuf;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
 S16 cmUnpkRlcEntCfgCfmInfo
 (
 RlcEntCfgCfmInfo  *param,
 Buffer            *mBuf
 )
-#else
-S16 cmUnpkRlcEntCfgCfmInfo(param, mBuf)
-RlcEntCfgCfmInfo  *param;
-Buffer            *mBuf;
-#endif
 {
 
     CMCHKUNPK(oduPackUInt8, &(param->rbId), mBuf);
@@ -1125,22 +970,14 @@ Buffer            *mBuf;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
 S16 cmUnpkRlcCfgCfmInfo
 (
 RlcCfgCfmInfo  *param,
 Pst            *pst,
 Buffer         *mBuf
 )
-#else
-S16 cmUnpkRlcCfgCfmInfo(param, pst, mBuf)
-RlcCfgCfmInfo  *param;
-Pst            *pst;
-Buffer         *mBuf;
-#endif
 {
     uint8_t         idx;
-
 
     CMCHKUNPKLOG(oduPackUInt32, &(param->transId), mBuf, ECKW030, pst);
     CMCHKUNPK(cmUnpkLteRnti, &(param->ueId), mBuf);
@@ -1169,17 +1006,11 @@ Buffer         *mBuf;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
 S16 cmUnpkRlcEntCfgInfo
 (
 RlcEntCfgInfo  *param,
 Buffer         *mBuf
 )
-#else
-S16 cmUnpkRlcEntCfgInfo(param, mBuf)
-RlcEntCfgInfo  *param;
-Buffer         *mBuf;
-#endif
 {
 
     CMCHKUNPK(oduPackUInt8, &(param->cfgType), mBuf);
@@ -1248,22 +1079,14 @@ Buffer         *mBuf;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
 S16 cmUnpkRlcCfgInfo
 (
 RlcCfgInfo     *param,
 Pst            *pst,
 Buffer         *mBuf
 )
-#else
-S16 cmUnpkRlcCfgInfo(param, pst, mBuf)
-RlcCfgInfo     *param;
-Pst            *pst;
-Buffer         *mBuf;
-#endif
 {
-    uint8_t         idx;
-
+    uint8_t  idx;
 
     CMCHKUNPKLOG(oduPackUInt32, &(param->transId), mBuf, ECKW031, pst);
     CMCHKUNPK(cmUnpkLteRnti, &(param->ueId), mBuf);
@@ -1292,23 +1115,16 @@ Buffer         *mBuf;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
 S16 cmUnpkRlcCfgCfm
 (
 RlcCfgCfm         func,
 Pst               *pst,
 Buffer            *mBuf
 )
-#else
-S16 cmUnpkRlcCfgCfm(func, pst, mBuf)
-RlcCfgCfm         func;
-Pst               *pst;
-Buffer            *mBuf;
-#endif
 {
     S16 ret1;
-    SuId             suId = 0;
-    RlcCfgCfmInfo    *cfgCfmInfo = NULLP;
+    SuId  suId = 0;
+    RlcCfgCfmInfo  *cfgCfmInfo = NULLP;
     
 
     if((ret1 = SGetSBuf(pst->region, pst->pool, (Data **)&cfgCfmInfo,\
@@ -1367,17 +1183,11 @@ Buffer            *mBuf;
 *    File:   ckw.c
 *
 */
-#ifdef ANSI
 S16 cmUnpkCkwUeInfo
 (
 CkwUeInfo *param,
 Buffer    *mBuf
 )
-#else
-S16 cmUnpkCkwUeInfo(param, mBuf)
-CkwUeInfo *param;
-Buffer    *mBuf;
-#endif
 {
 
    CMCHKUNPK(cmUnpkLteRnti, &(param->ueId), mBuf);
@@ -1399,23 +1209,16 @@ Buffer    *mBuf;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
 S16 cmUnpkCkwUeIdChgReq
 (
 CkwUeIdChgReq     func,
 Pst               *pst,
 Buffer            *mBuf
 )
-#else
-S16 cmUnpkCkwUeIdChgReq(func, pst, mBuf)
-CkwUeIdChgReq     func;
-Pst               *pst;
-Buffer            *mBuf;
-#endif
 {
     S16       ret1;
     SpId      spId = 0;
-    uint32_t       transId = 0;
+    uint32_t  transId = 0;
     CkwUeInfo *ueInfo = NULLP;
     CkwUeInfo *newUeInfo = NULLP;
     
@@ -1497,23 +1300,16 @@ Buffer            *mBuf;
 *    File:    ckw.c
 *
 */
-#ifdef ANSI
 S16 cmUnpkCkwUeIdChgCfm
 (
 CkwUeIdChgCfm     func,
 Pst               *pst,
 Buffer            *mBuf
 )
-#else
-S16 cmUnpkCkwUeIdChgCfm(func, pst, mBuf)
-CkwUeIdChgCfm     func;
-Pst               *pst;
-Buffer            *mBuf;
-#endif
 {
     S16       ret1;
     SuId      suId = 0;
-    uint32_t       transId = 0;
+    uint32_t  transId = 0;
     CkwUeInfo *ueInfo = NULLP;
     CmStatus  status;
     

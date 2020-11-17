@@ -57,19 +57,12 @@
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkLwLcRgmBndReq
 (
 Pst* pst,
 SuId suId,
 SpId spId
 )
-#else
-S16 cmPkLwLcRgmBndReq(pst, suId, spId)
-Pst* pst;
-SuId suId;
-SpId spId;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -108,19 +101,12 @@ SpId spId;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkLwLcRgmBndReq
 (
 RgmBndReq func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkLwLcRgmBndReq(func, pst, mBuf)
-RgmBndReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SuId suId;
    SpId spId;
@@ -159,19 +145,12 @@ Buffer *mBuf;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkLwLcRgmUbndReq
 (
 Pst* pst,
 SpId spId,
 Reason reason
 )
-#else
-S16 cmPkLwLcRgmUbndReq(pst, spId, reason)
-Pst* pst;
-SpId spId;
-Reason reason;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -208,19 +187,12 @@ Reason reason;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkLwLcRgmBndCfm
 (
 Pst* pst,
 SuId suId,
 uint8_t status
 )
-#else
-S16 cmPkLwLcRgmBndCfm(pst, suId, status)
-Pst* pst;
-SuId suId;
-uint8_t status;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -260,19 +232,12 @@ uint8_t status;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkLwLcRgmBndCfm
 (
 RgmBndCfm func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkLwLcRgmBndCfm(func, pst, mBuf)
-RgmBndCfm func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SuId suId;
    uint8_t status;
@@ -307,19 +272,12 @@ Buffer *mBuf;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkLwLcRgmCfgPrbRprt
 (
 Pst* pst,
 SpId spId,
 RgmPrbRprtCfg  * prbRprtCfg
 )
-#else
-S16 cmPkLwLcRgmCfgPrbRprt(pst, spId, prbRprtCfg)
-Pst* pst;
-SpId spId;
-RgmPrbRprtCfg  * prbRprtCfg;
-#endif
 {
    Buffer *mBuf = NULLP;
    uint32_t len = sizeof(RgmPrbRprtCfg);
@@ -362,19 +320,12 @@ RgmPrbRprtCfg  * prbRprtCfg;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkLwLcRgmCfgPrbRprt
 (
 RgmCfgPrbRprtFptr func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkLwLcRgmCfgPrbRprt(func, pst, mBuf)
-RgmCfgPrbRprtFptr func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    S16 ret;
    SpId spId;
@@ -414,19 +365,12 @@ Buffer *mBuf;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkLwLcRgmPrbRprtInd
 (
 Pst* pst,
 SuId suId,
 RgmPrbRprtInd  * prbRprtInd
 )
-#else
-S16 cmPkLwLcRgmPrbRprtInd(pst, suId, prbRprtInd)
-Pst* pst;
-SuId suId;
-RgmPrbRprtInd  * prbRprtInd;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -468,19 +412,12 @@ RgmPrbRprtInd  * prbRprtInd;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkLwLcRgmPrbRprtInd
 (
 RgmPrbRprtIndFptr func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkLwLcRgmPrbRprtInd(func, pst, mBuf)
-RgmPrbRprtIndFptr func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SuId suId;
    RgmPrbRprtInd *prbRprtInd;
@@ -523,19 +460,12 @@ Buffer *mBuf;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkRgmBndReq
 (
 Pst* pst,
 SuId suId,
 SpId spId
 )
-#else
-S16 cmPkRgmBndReq(pst, suId, spId)
-Pst* pst;
-SuId suId;
-SpId spId;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -574,19 +504,12 @@ SpId spId;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkRgmBndReq
 (
 RgmBndReq func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRgmBndReq(func, pst, mBuf)
-RgmBndReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SuId suId;
    SpId spId;
@@ -625,19 +548,12 @@ Buffer *mBuf;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkRgmUbndReq
 (
 Pst* pst,
 SpId spId,
 Reason reason
 )
-#else
-S16 cmPkRgmUbndReq(pst, spId, reason)
-Pst* pst;
-SpId spId;
-Reason reason;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -675,19 +591,12 @@ Reason reason;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkRgmUbndReq
 (
 RgmUbndReq func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRgmUbndReq(func, pst, mBuf)
-RgmUbndReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SpId spId;
    Reason reason;
@@ -722,19 +631,12 @@ Buffer *mBuf;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkRgmBndCfm
 (
 Pst* pst,
 SuId suId,
 uint8_t status
 )
-#else
-S16 cmPkRgmBndCfm(pst, suId, status)
-Pst* pst;
-SuId suId;
-uint8_t status;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -774,19 +676,12 @@ uint8_t status;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkRgmBndCfm
 (
 RgmBndCfm func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRgmBndCfm(func, pst, mBuf)
-RgmBndCfm func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SuId suId;
    uint8_t status;
@@ -822,17 +717,11 @@ Buffer *mBuf;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkCfgPrbRprt
 (
 RgmPrbRprtCfg  * prbRprtCfg,
 Buffer *mBuf
 )
-#else
-S16 cmPkCfgPrbRprt(prbRprtCfg, mBuf)
-RgmPrbRprtCfg  * prbRprtCfg;
-Buffer *mBuf;
-#endif
 {
    CMCHKPK(oduUnpackUInt16, prbRprtCfg->usPrbAvgPeriodicty, mBuf);
    CMCHKPK(oduUnpackUInt8, prbRprtCfg->bConfigType, mBuf);
@@ -851,17 +740,11 @@ Buffer *mBuf;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnPkCfgPrbRprt
 (
 RgmPrbRprtCfg  * prbRprtCfg,
 Buffer *mBuf
 )
-#else
-S16 cmUnPkCfgPrbRprt(prbRprtCfg, mBuf)
-RgmPrbRprtCfg  * prbRprtCfg;
-Buffer *mBuf;
-#endif
 {
    CMCHKUNPK(oduPackUInt8, &prbRprtCfg->bCellId, mBuf);
    CMCHKUNPK(oduPackUInt8, &prbRprtCfg->bConfigType, mBuf);
@@ -885,19 +768,12 @@ Buffer *mBuf;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkRgmCfgPrbRprt
 (
 Pst* pst,
 SpId spId,
 RgmPrbRprtCfg  * prbRprtCfg
 )
-#else
-S16 cmPkRgmCfgPrbRprt(pst, spId, prbRprtCfg)
-Pst* pst;
-SpId spId;
-RgmPrbRprtCfg  * prbRprtCfg;
-#endif
 {
    Buffer *mBuf = NULLP;
    uint32_t len = sizeof(RgmPrbRprtCfg);
@@ -943,19 +819,12 @@ RgmPrbRprtCfg  * prbRprtCfg;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkRgmCfgPrbRprt
 (
 RgmCfgPrbRprtFptr func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRgmCfgPrbRprt(func, pst, mBuf)
-RgmCfgPrbRprtFptr func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SpId spId;
    RgmPrbRprtCfg *prbRprtCfg;
@@ -996,17 +865,11 @@ Buffer *mBuf;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkRgmPrbQciRpt 
 (
- RgmPrbRptPerQci *qciPrbRprt,
- Buffer *mBuf
- )
-#else
-S16 cmPkRgmPrbQciRpt(qciPrbRprt, mBuf)
-RgmPrbRptPerQci *qciPrbRprt;
-Buffer *mBuf = NULLP;
-#endif
+RgmPrbRptPerQci *qciPrbRprt,
+Buffer *mBuf
+)
 {
    CMCHKPK(oduUnpackUInt8, qciPrbRprt->bQci, mBuf);
    CMCHKPK(oduUnpackUInt8, qciPrbRprt->bAvgPrbUlUsage, mBuf);
@@ -1027,17 +890,11 @@ Buffer *mBuf = NULLP;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkRgmPrbQciRpt 
 (
- RgmPrbRptPerQci *qciPrbRprt,
- Buffer *mBuf
- )
-#else
-S16 cmUnpkRgmPrbQciRpt(qciPrbRprt, mBuf)
-RgmPrbRptPerQci *qciPrbRprt;
-Buffer *mBuf = NULLP;
-#endif
+RgmPrbRptPerQci *qciPrbRprt,
+Buffer *mBuf
+)
 {
    CMCHKUNPK(oduPackUInt8, &qciPrbRprt->bAvgPrbDlUsage, mBuf);
    CMCHKUNPK(oduPackUInt8, &qciPrbRprt->bAvgPrbUlUsage, mBuf);
@@ -1059,17 +916,11 @@ Buffer *mBuf = NULLP;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkPrbRprtInd
 (
- RgmPrbRprtInd  * prbRprtInd,
- Buffer *mBuf
- )
-#else
-S16 cmPkPrbRprtInd(prbRprtInd, mBuf)
-   RgmPrbRprtInd  * prbRprtInd;
-   Buffer *mBuf = NULLP;
-#endif
+RgmPrbRprtInd  * prbRprtInd,
+Buffer *mBuf
+)
 {
    S32 idx = 0;
 
@@ -1097,17 +948,11 @@ S16 cmPkPrbRprtInd(prbRprtInd, mBuf)
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkPrbRprtInd
 (
- RgmPrbRprtInd  * prbRprtInd,
- Buffer *mBuf
- )
-#else
-S16 cmUnpkPrbRprtInd(prbRprtInd, mBuf)
-   RgmPrbRprtInd  * prbRprtInd;
-   Buffer *mBuf;
-#endif
+RgmPrbRprtInd  * prbRprtInd,
+Buffer *mBuf
+)
 {
    uint32_t idx = 0;
 
@@ -1139,19 +984,12 @@ S16 cmUnpkPrbRprtInd(prbRprtInd, mBuf)
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkRgmPrbRprtInd
 (
 Pst* pst,
 SuId suId,
 RgmPrbRprtInd  * prbRprtInd
 )
-#else
-S16 cmPkRgmPrbRprtInd(pst, suId, prbRprtInd)
-Pst* pst;
-SuId suId;
-RgmPrbRprtInd  * prbRprtInd;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -1193,19 +1031,12 @@ RgmPrbRprtInd  * prbRprtInd;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkRgmPrbRprtInd
 (
 RgmPrbRprtIndFptr func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRgmPrbRprtInd(func, pst, mBuf)
-RgmPrbRprtIndFptr func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SuId suId;
    RgmPrbRprtInd prbRprtInd;
@@ -1239,17 +1070,11 @@ Buffer *mBuf;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkTransModeInd
 (
- RgmTransModeInd *transModeInd,
- Buffer *mBuf
- )
-#else
-S16 cmPkTransModeInd(transModeInd, mBuf)
-   RgmTransModeInd *transModeInd;
-   Buffer *mBuf;
-#endif
+RgmTransModeInd *transModeInd,
+Buffer *mBuf
+)
 {
    CMCHKPK(oduUnpackUInt32, transModeInd->eMode, mBuf);
    CMCHKPK(oduUnpackUInt16, transModeInd->usCrnti, mBuf);
@@ -1269,17 +1094,11 @@ S16 cmPkTransModeInd(transModeInd, mBuf)
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkTransModeInd
 (
- RgmTransModeInd *transModeInd,
- Buffer *mBuf
- )
-#else
-S16 cmUnpkTransModeInd(transModeInd, mBuf)
-   RgmTransModeInd *transModeInd;
-   Buffer *mBuf;
-#endif
+RgmTransModeInd *transModeInd,
+Buffer *mBuf
+)
 {
    uint32_t tmpModeEnum;
    CMCHKUNPK(oduPackUInt8, &transModeInd->bCellId, mBuf);
@@ -1301,19 +1120,13 @@ S16 cmUnpkTransModeInd(transModeInd, mBuf)
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
+
 S16 cmPkRgmTransModeInd 
 (
 Pst* pst,
 SuId suId,
 RgmTransModeInd *transModeInd
 )
-#else
-S16 cmPkRgmTransModeInd(pst, suId, transModeInd)
-Pst* pst;
-SuId suId;
-RgmTransModeInd *transModeInd;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -1355,19 +1168,12 @@ RgmTransModeInd *transModeInd;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkRgmTransModeInd
 (
 RgmTransModeIndFptr func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRgmTransModeInd(func, pst, mBuf)
-RgmTransModeIndFptr func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    SuId suId;
    RgmTransModeInd transModeInd;

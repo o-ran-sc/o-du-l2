@@ -88,17 +88,7 @@ uint32_t cmLteTime;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
-S16 cmPkLteRlcId
-(
-CmLteRlcId *param,
-Buffer *mBuf
-)
-#else
-S16 cmPkLteRlcId(param, mBuf)
-CmLteRlcId *param;
-Buffer *mBuf;
-#endif
+S16 cmPkLteRlcId(CmLteRlcId *param,Buffer *mBuf)
 {
 
 
@@ -126,17 +116,7 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
-S16 cmUnpkLteRlcId
-(
-CmLteRlcId *param,
-Buffer *mBuf
-)
-#else
-S16 cmUnpkLteRlcId(param, mBuf)
-CmLteRlcId *param;
-Buffer *mBuf;
-#endif
+S16 cmUnpkLteRlcId(CmLteRlcId *param,Buffer *mBuf)
 {
 
 
@@ -164,17 +144,7 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
-S16 cmPkLteTimingInfo
-(
-CmLteTimingInfo *param,
-Buffer *mBuf
-)
-#else
-S16 cmPkLteTimingInfo(param, mBuf)
-CmLteTimingInfo *param;
-Buffer *mBuf;
-#endif
+S16 cmPkLteTimingInfo(CmLteTimingInfo *param,Buffer *mBuf)
 {
 
 
@@ -201,17 +171,7 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
-S16 cmUnpkLteTimingInfo
-(
-CmLteTimingInfo *param,
-Buffer *mBuf
-)
-#else
-S16 cmUnpkLteTimingInfo(param, mBuf)
-CmLteTimingInfo *param;
-Buffer *mBuf;
-#endif
+S16 cmUnpkLteTimingInfo(CmLteTimingInfo *param,Buffer *mBuf)
 {
 
 
@@ -238,17 +198,7 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
-S16 cmPkLtePdcpId
-(
-CmLtePdcpId *param,
-Buffer *mBuf
-)
-#else
-S16 cmPkLtePdcpId(param, mBuf)
-CmLtePdcpId *param;
-Buffer *mBuf;
-#endif
+S16 cmPkLtePdcpId(CmLtePdcpId *param,Buffer *mBuf)
 {
 
 
@@ -276,17 +226,7 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
-S16 cmUnpkLtePdcpId
-(
-CmLtePdcpId *param,
-Buffer *mBuf
-)
-#else
-S16 cmUnpkLtePdcpId(param, mBuf)
-CmLtePdcpId *param;
-Buffer *mBuf;
-#endif
+S16 cmUnpkLtePdcpId(CmLtePdcpId *param,Buffer *mBuf)
 {
 
 
@@ -297,15 +237,7 @@ Buffer *mBuf;
    return ROK;
 }
 #ifdef LTE_L2_MEAS 
-#ifdef ANSI
-S16 cmUpdateSsiMemInfo
-(
-CmLteMemInfo *mInfo
-)
-#else
-S16 cmUpdateSsiMemInfo(mInfo)
-CmLteMemInfo *mInfo;
-#endif
+S16 cmUpdateSsiMemInfo(CmLteMemInfo *mInfo)
 {
    uint8_t   numReg = 0;
    uint8_t   numPool = 0;
@@ -349,17 +281,7 @@ CmLteMemInfo *mInfo;
    return ROK;
 }
 
-#ifdef ANSI
-S16 cmFillMemUtilizationMeas
-(
- CmLteMemInfo *memoryInfo,
-CmLteMemInfo *memInfo
-)
-#else
-S16 cmFillMemUtilizationMeas(memoryInfo,memInfo)
-CmLteMemInfo *memoryInfo;
-CmLteMemInfo *memInfo;
-#endif
+S16 cmFillMemUtilizationMeas( CmLteMemInfo *memoryInfo,CmLteMemInfo *memInfo)
 {
    uint8_t idxReg = 0;
    uint8_t idxPool = 0;
@@ -384,15 +306,7 @@ CmLteMemInfo *memInfo;
    return ROK;
 }
 
-#ifdef ANSI
-S16 cmClearMemUtilizationCounter
-(
-CmLteMemInfo *memInfo
-)
-#else
-S16 cmClearMemUtilizationCounter(memInfo)
-CmLteMemInfo *memInfo;
-#endif
+S16 cmClearMemUtilizationCounter(CmLteMemInfo *memInfo)
 {
    uint8_t idxReg = 0;
    uint8_t idxPool = 0;
@@ -416,15 +330,7 @@ CmLteMemInfo *memInfo;
    return ROK;
 }
 
-#ifdef ANSI
-S16 cmClearCpuUtilizationCounter
-(
-CmCpuStatsInfo *cpuInfo
-)
-#else
-S16 cmClearCpuUtilizationCounter(cpuInfo)
-CmCpuStatsInfo *cpuInfo
-#endif
+S16 cmClearCpuUtilizationCounter(CmCpuStatsInfo *cpuInfo)
 {
    uint8_t idx= 0;
    for(idx=0; idx < cpuInfo->numCores; idx++)
@@ -437,17 +343,7 @@ CmCpuStatsInfo *cpuInfo
    return ROK;
 }
 
-#ifdef ANSI
-S16 cmFillCpuUtilizationMeas
-(
-CmLteCpuInfo *cpuMeasInfo,
-CmCpuStatsInfo *cpuInfo
-)
-#else
-S16 cmFillCpuUtilizationMeas(cpuMeasInfo,cpuInfo)
-CmLteCpuInfo *cpuMeasInfo;
-CmCpuStatsInfo *cpuInfo;
-#endif
+S16 cmFillCpuUtilizationMeas(CmLteCpuInfo *cpuMeasInfo,CmCpuStatsInfo *cpuInfo)
 {
    uint8_t idx= 0;
    cpuMeasInfo->numCores = cpuInfo->numCores;

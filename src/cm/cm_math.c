@@ -61,15 +61,7 @@
 *       File:  cm_math.c
 *
 */
-#ifdef ANSI
-uint32_t cmAbs
-(
-F64          val
-)
-#else
-uint32_t cmAbs(val)
-F64          val;
-#endif
+uint32_t cmAbs(F64  val)
 {
 #if (defined(SUNOS)|| defined(WIN32)|| defined(WIN2K)|| defined (SS_LINUX))
    return ((uint32_t) abs((int) val));/* G++ */
@@ -92,17 +84,7 @@ F64          val;
 *       File:  cm_math.c
 *
 */
-#ifdef ANSI
-F64 cmPow
-(
-F64          x,
-F64          y
-)
-#else
-F64 cmPow(x, y)
-F64           x;
-F64           y;
-#endif
+F64 cmPow(F64 x,F64 y)
 {
 #if (defined(SUNOS)|| defined(WIN32)|| defined(WIN2K)|| defined (SS_LINUX))
    return ((F64) pow((F64)x, (F64)y));
@@ -125,15 +107,7 @@ F64           y;
 *       File:  cm_math.c
 *
 */
-#ifdef ANSI
-F64 cmFloor
-(
-F64          x
-)
-#else
-F64 cmFloor(x)
-F64           x;
-#endif
+F64 cmFloor(F64  x)
 {
 #if (defined(SUNOS)|| defined(WIN32)|| defined(WIN2K)|| defined (SS_LINUX))
    return ((F64) floor((F64)x));
@@ -156,15 +130,7 @@ F64           x;
 *       File:  cm_math.c
 *
 */
-#ifdef ANSI
-F64 cmLog
-(
-F64          x
-)
-#else
-F64 cmLog(x)
-F64           x;
-#endif
+F64 cmLog(F64 x)
 {
 #if (defined(SUNOS)|| defined(WIN32)|| defined(WIN2K)|| defined (SS_LINUX))
    return ((F64) log((F64)x));
@@ -187,15 +153,7 @@ F64           x;
 *       File:  cm_math.c
 *
 */
-#ifdef ANSI
-F64 cmLog10
-(
-F64          x
-)
-#else
-F64 cmLog10(x)
-F64           x;
-#endif
+F64 cmLog10(F64 x)
 {
 #if (defined(SUNOS)|| defined(WIN32)|| defined(WIN2K)|| defined (SS_LINUX))
    return ((F64) log10((F64)x));

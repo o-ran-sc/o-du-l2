@@ -56,17 +56,11 @@ Configuration Request from LM to MAC.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkLrgCfgReq
 (
 Pst * pst,
 RgMngmt * cfg
 )
-#else
-S16 cmPkLrgCfgReq(pst, cfg)
-Pst * pst;
-RgMngmt * cfg;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -107,19 +101,12 @@ Configuration Request from LM to MAC.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkLrgCfgReq
 (
 LrgCfgReq func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkLrgCfgReq(func, pst, mBuf)
-LrgCfgReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    /* lrg_c_001.main_2: Changed Pointer across Interface */
    RgMngmt cfg;
@@ -152,17 +139,11 @@ Configuration Request from LM to SCH.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkLrgSchCfgReq
 (
 Pst * pst,
 RgMngmt * cfg
 )
-#else
-S16 cmPkLrgSchCfgReq(pst, cfg)
-Pst * pst;
-RgMngmt * cfg;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -203,19 +184,12 @@ Configuration Request from LM to SCH.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkLrgSchCfgReq
 (
 LrgSchCfgReq func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkLrgSchCfgReq(func, pst, mBuf)
-LrgSchCfgReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    /* lrg_c_001.main_2: Changed Pointer across Interface */
    RgMngmt cfg;
@@ -248,17 +222,11 @@ Configuration Confirm from MAC to LM.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 uint8_t cmPkLrgCfgCfm
 (
 Pst * pst,
 RgMngmt * cfm
 )
-#else
-uint8_t cmPkLrgCfgCfm(pst, cfm)
-Pst * pst;
-RgMngmt * cfm;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -300,19 +268,12 @@ Configuration Confirm from MAC to LM.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkLrgCfgCfm
 (
 LrgCfgCfm func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkLrgCfgCfm(func, pst, mBuf)
-LrgCfgCfm func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    RgMngmt cfm;
    
@@ -344,17 +305,11 @@ Configuration Confirm from SCH to LM.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 uint8_t cmPkLrgSchCfgCfm
 (
 Pst * pst,
 RgMngmt * cfg
 )
-#else
-uint8_t cmPkLrgSchCfgCfm(pst, cfg)
-Pst * pst;
-RgMngmt * cfg;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -396,19 +351,12 @@ Configuration Confirm from SCH to LM.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkLrgSchCfgCfm
 (
 LrgSchCfgCfm func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkLrgSchCfgCfm(func, pst, mBuf)
-LrgSchCfgCfm func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    RgMngmt cfg;
    
@@ -439,17 +387,11 @@ Statistics Request from LM to MAC.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkLrgStsReq
 (
 Pst * pst,
 RgMngmt * sts
 )
-#else
-S16 cmPkLrgStsReq(pst, sts)
-Pst * pst;
-RgMngmt * sts;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -491,19 +433,12 @@ Statistics Request from LM to MAC.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkLrgStsReq
 (
 LrgStsReq func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkLrgStsReq(func, pst, mBuf)
-LrgStsReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    RgMngmt sts;
    
@@ -535,17 +470,11 @@ Statistics Confirm from MAC to LM.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkLrgStsCfm
 (
 Pst * pst,
 RgMngmt * cfm
 )
-#else
-S16 cmPkLrgStsCfm(pst, cfm)
-Pst * pst;
-RgMngmt * cfm;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -587,19 +516,12 @@ Statistics Confirm from MAC to LM.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkLrgStsCfm
 (
 LrgStsCfm func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkLrgStsCfm(func, pst, mBuf)
-LrgStsCfm func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    RgMngmt cfm;
    
@@ -631,17 +553,11 @@ Status Request from LM to MAC.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkLrgStaReq
 (
 Pst * pst,
 RgMngmt * sta
 )
-#else
-S16 cmPkLrgStaReq(pst, sta)
-Pst * pst;
-RgMngmt * sta;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -681,19 +597,12 @@ Status Request from LM to MAC.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkLrgStaReq
 (
 LrgStaReq func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkLrgStaReq(func, pst, mBuf)
-LrgStaReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    RgMngmt sta;
    
@@ -726,17 +635,11 @@ Status Confirm from MAC to LM.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkLrgStaCfm
 (
 Pst * pst,
 RgMngmt * cfm
 )
-#else
-S16 cmPkLrgStaCfm(pst, cfm)
-Pst * pst;
-RgMngmt * cfm;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -776,19 +679,12 @@ Status Confirm from MAC to LM.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkLrgStaCfm
 (
 LrgStaCfm func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkLrgStaCfm(func, pst, mBuf)
-LrgStaCfm func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    RgMngmt cfm;
    
@@ -821,17 +717,11 @@ Status Indication from MAC to LM.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkLrgStaInd
 (
 Pst * pst,
 RgMngmt * usta
 )
-#else
-S16 cmPkLrgStaInd(pst, usta)
-Pst * pst;
-RgMngmt * usta;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -873,19 +763,12 @@ Status Indication from MAC to LM.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkLrgStaInd
 (
 LrgStaInd func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkLrgStaInd(func, pst, mBuf)
-LrgStaInd func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    RgMngmt usta;
    
@@ -917,17 +800,11 @@ Status Indication from SCH to LM.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkLrgSchStaInd
 (
 Pst * pst,
 RgMngmt * sta
 )
-#else
-S16 cmPkLrgSchStaInd(pst, sta)
-Pst * pst;
-RgMngmt * sta;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -969,19 +846,12 @@ Status Indication from SCH to LM.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkLrgSchStaInd
 (
 LrgSchStaInd func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkLrgSchStaInd(func, pst, mBuf)
-LrgSchStaInd func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    RgMngmt sta;
    
@@ -1013,17 +883,11 @@ Control Request from LM to MAC.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkLrgCntrlReq
 (
 Pst * pst,
 RgMngmt * cntrl
 )
-#else
-S16 cmPkLrgCntrlReq(pst, cntrl)
-Pst * pst;
-RgMngmt * cntrl;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -1065,19 +929,12 @@ Control Request from LM to MAC.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkLrgCntrlReq
 (
 LrgCntrlReq func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkLrgCntrlReq(func, pst, mBuf)
-LrgCntrlReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    RgMngmt cntrl;
    
@@ -1109,17 +966,11 @@ Control Request from LM to SCH.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkLrgSchCntrlReq
 (
 Pst * pst,
 RgMngmt * cntrl
 )
-#else
-S16 cmPkLrgSchCntrlReq(pst, cntrl)
-Pst * pst;
-RgMngmt * cntrl;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -1161,19 +1012,12 @@ Control Request from LM to SCH.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkLrgSchCntrlReq
 (
 LrgSchCntrlReq func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkLrgSchCntrlReq(func, pst, mBuf)
-LrgSchCntrlReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    RgMngmt cntrl;
    
@@ -1205,17 +1049,11 @@ Control Confirm from MAC to LM.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkLrgCntrlCfm
 (
 Pst * pst,
 RgMngmt * cfm
 )
-#else
-S16 cmPkLrgCntrlCfm(pst, cfm)
-Pst * pst;
-RgMngmt * cfm;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -1257,19 +1095,12 @@ Control Confirm from MAC to LM.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkLrgCntrlCfm
 (
 LrgCntrlCfm func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkLrgCntrlCfm(func, pst, mBuf)
-LrgCntrlCfm func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    RgMngmt cfm;
    
@@ -1301,17 +1132,11 @@ Control Confirm from SCH to LM.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkLrgSchCntrlCfm
 (
 Pst * pst,
 RgMngmt * cntrl
 )
-#else
-S16 cmPkLrgSchCntrlCfm(pst, cntrl)
-Pst * pst;
-RgMngmt * cntrl;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -1353,19 +1178,12 @@ Control Confirm from SCH to LM.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkLrgSchCntrlCfm
 (
 LrgSchCntrlCfm func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkLrgSchCntrlCfm(func, pst, mBuf)
-LrgSchCntrlCfm func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    RgMngmt cntrl;
    
@@ -1398,19 +1216,12 @@ Trace Indication from MAC to LM.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkLrgTrcInd
 (
 Pst * pst,
 RgMngmt * trc,
 Buffer * trcBuf
 )
-#else
-S16 cmPkLrgTrcInd(pst, trc, trcBuf)
-Pst * pst;
-RgMngmt * trc;
-Buffer * trcBuf;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -1476,19 +1287,12 @@ Trace Indication from MAC to LM.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkLrgTrcInd
 (
 LrgTrcInd func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkLrgTrcInd(func, pst, mBuf)
-LrgTrcInd func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    RgMngmt trc;
   /* lrg_c_001.main_3 - MODIFY -  Modified trcBuf to have it initialized to NULLP */
@@ -1532,17 +1336,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkRgGenCfg
 (
 RgGenCfg *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkRgGenCfg(param, mBuf)
-RgGenCfg *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -1575,17 +1373,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkRgGenCfg
 (
 RgGenCfg *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRgGenCfg(param, mBuf)
-RgGenCfg *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -1618,17 +1410,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkRgUpSapCfg
 (
 RgUpSapCfg *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkRgUpSapCfg(param, mBuf)
-RgUpSapCfg *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -1661,17 +1447,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkRgUpSapCfg
 (
 RgUpSapCfg *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRgUpSapCfg(param, mBuf)
-RgUpSapCfg *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -1704,17 +1484,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkRgLowSapCfg
 (
 RgLowSapCfg *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkRgLowSapCfg(param, mBuf)
-RgLowSapCfg *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -1748,17 +1522,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkRgLowSapCfg
 (
 RgLowSapCfg *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRgLowSapCfg(param, mBuf)
-RgLowSapCfg *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -1793,17 +1561,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkRgAckNack
 (
 RgAckNack *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkRgAckNack (param, mBuf)
-RgAckNack *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -1830,17 +1592,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkRgSchNackAckStats
 (
 RgSchNackAckStats *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkRgSchNackAckStats (param, mBuf)
-RgSchNackAckStats *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -1872,17 +1628,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkRgHqNumRetx
 (
 RgSchHqNumRetx *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkRgHqNumRetx (param, mBuf)
-RgSchHqNumRetx *param;
-Buffer *mBuf;
-#endif
 {
 
    CMCHKPK(oduUnpackUInt32, param->totalTx, mBuf);
@@ -1911,17 +1661,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkRgSchHqRetxStats
 (
 RgSchHqRetxStats *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkRgSchHqRetxStats (param, mBuf)
-RgSchHqRetxStats *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -1954,17 +1698,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkRgAckNack
 (
 RgAckNack *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRgAckNack (param, mBuf)
-RgAckNack *param;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -1991,17 +1729,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkRgSchNackAckStats
 (
 RgSchNackAckStats *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRgSchNackAckStats (param, mBuf)
-RgSchNackAckStats *param;
-Buffer *mBuf;
-#endif
 {
    S32 i;
 
@@ -2032,17 +1764,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkRgHqNumRetx
 (
 RgSchHqNumRetx *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRgHqNumRetx (param, mBuf)
-RgSchHqNumRetx *param;
-Buffer *mBuf;
-#endif
 {
 
    CMCHKUNPK(oduPackUInt8, &param->mcs, mBuf);
@@ -2071,17 +1797,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkRgSchHqRetxStats
 (
 RgSchHqRetxStats *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRgSchHqRetxStats (param, mBuf)
-RgSchHqRetxStats *param;
-Buffer *mBuf;
-#endif
 {
    S32 i;
 
@@ -2114,19 +1834,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkRgGenSts
 (
 RgGenSts *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkRgGenSts(param, mBuf)
-RgGenSts *param;
-Buffer *mBuf;
-#endif
 {
-
 
 #ifdef MAC_SCH_STATS
    CMCHKPK(cmPkRgSchHqRetxStats, &param->hqRetxStats, mBuf);
@@ -2155,19 +1868,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkRgGenSts
 (
 RgGenSts *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRgGenSts(param, mBuf)
-RgGenSts *param;
-Buffer *mBuf;
-#endif
 {
-
 
    CMCHKUNPK(oduPackUInt32, &param->numHarqFail, mBuf);
    CMCHKUNPK(oduPackUInt32, &param->numUeCfg, mBuf);
@@ -2196,19 +1902,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkRgSapSts
 (
 RgSapSts *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkRgSapSts(param, mBuf)
-RgSapSts *param;
-Buffer *mBuf;
-#endif
 {
-
 
    CMCHKPK(oduUnpackUInt32, param->numPduDrop, mBuf);
    CMCHKPK(oduUnpackUInt32, param->numPduTxmit, mBuf);
@@ -2233,19 +1932,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkRgSapSts
 (
 RgSapSts *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRgSapSts(param, mBuf)
-RgSapSts *param;
-Buffer *mBuf;
-#endif
 {
-
 
    CMCHKUNPK(oduPackUInt32, &param->numPduRcvd, mBuf);
    CMCHKUNPK(oduPackUInt32, &param->numPduTxmit, mBuf);
@@ -2270,17 +1962,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkRgSchInstCfg
 (
 RgSchInstCfg *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkRgSchInstCfg(param, mBuf)
-RgSchInstCfg *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -2317,17 +2003,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkRgSchInstCfg
 (
 RgSchInstCfg *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRgSchInstCfg(param, mBuf)
-RgSchInstCfg *param;
-Buffer *mBuf;
-#endif
 {
 
    S32 i;
@@ -2364,21 +2044,13 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkRgCfg
 (
 RgCfg *param,
 S16 elmnt,
 Buffer *mBuf
 )
-#else
-S16 cmPkRgCfg(param, elmnt, mBuf)
-RgCfg *param;
-S16 elmnt;
-Buffer *mBuf;
-#endif
 {
-
 
       switch(elmnt) {
          case STSCHINST:
@@ -2419,21 +2091,13 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkRgCfg
 (
 RgCfg *param,
 S16 elmnt,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRgCfg(param, elmnt, mBuf)
-RgCfg *param;
-S16 elmnt;
-Buffer *mBuf;
-#endif
 {
-
 
       switch(elmnt) {
          case STGEN:
@@ -2474,19 +2138,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkRgSapSta
 (
 RgSapSta *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkRgSapSta(param, mBuf)
-RgSapSta *param;
-Buffer *mBuf;
-#endif
 {
-
 
    CMCHKPK(oduUnpackUInt8, param->sapState, mBuf);
    return ROK;
@@ -2509,19 +2166,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkRgSapSta
 (
 RgSapSta *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRgSapSta(param, mBuf)
-RgSapSta *param;
-Buffer *mBuf;
-#endif
 {
-
 
    CMCHKUNPK(oduPackUInt8, &param->sapState, mBuf);
    return ROK;
@@ -2544,21 +2194,13 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkRgSts
 (
 RgSts *param,
 S16 elmnt,
 Buffer *mBuf
 )
-#else
-S16 cmPkRgSts(param, elmnt, mBuf)
-RgSts *param;
-S16 elmnt;
-Buffer *mBuf;
-#endif
 {
-
 
       switch(elmnt) {
          case STTFUSAP:
@@ -2602,21 +2244,13 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkRgSts
 (
 RgSts *param,
 S16 elmnt,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRgSts(param, elmnt, mBuf)
-RgSts *param;
-S16 elmnt;
-Buffer *mBuf;
-#endif
 {
-
 
    CMCHKUNPK(cmUnpkDateTime, &param->dt, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->sapInst, mBuf);
@@ -2660,7 +2294,6 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkRgSsta
 (
 Pst *pst,
@@ -2671,19 +2304,7 @@ uint8_t eventType,
 #endif
 Buffer *mBuf
 )
-#else
-S16 cmPkRgSsta(pst, param, elmnt, eventType, mBuf)
-Pst *pst;
-RgSsta *param;
-S16 elmnt;
-/* lrg_c_001.main_3 - ADD -  Added the extra parameter eventType  to the function  */
-#ifdef LRG_V1
-uint8_t eventType;
-#endif
-Buffer *mBuf;
-#endif
 {
-
 
       switch(elmnt) {
          case STTFUSAP:
@@ -2744,7 +2365,6 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkRgSsta
 (
 Pst    *pst,
@@ -2752,13 +2372,6 @@ RgSsta *param,
 S16 elmnt,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRgSsta(pst, param, elmnt, mBuf)
-Pst    *pst;
-RgSsta *param;
-S16 elmnt;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -2823,19 +2436,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkRgUstaDgn
 (
 RgUstaDgn *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkRgUstaDgn(param, mBuf)
-RgUstaDgn *param;
-Buffer *mBuf;
-#endif
 {
-
 
       switch(param->type) {
          case LRG_USTA_DGNVAL_MEM:
@@ -2865,27 +2471,22 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkRgUstaDgn
 (
 RgUstaDgn *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRgUstaDgn(param, mBuf)
-RgUstaDgn *param;
-Buffer *mBuf;
-#endif
 {
 
 
    CMCHKUNPK(oduPackUInt8, &param->type, mBuf);
-      switch(param->type) {
-         case LRG_USTA_DGNVAL_MEM:
-            CMCHKUNPK(cmUnpkMemoryId, &param->u.mem, mBuf);
-            break;
-         default :
-            break;
+   switch(param->type) 
+   {
+      case LRG_USTA_DGNVAL_MEM:
+	 CMCHKUNPK(cmUnpkMemoryId, &param->u.mem, mBuf);
+	 break;
+      default :
+	 break;
       }
    return ROK;
 }
@@ -2907,19 +2508,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkRgUsta
 (
 RgUsta *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkRgUsta(param, mBuf)
-RgUsta *param;
-Buffer *mBuf;
-#endif
 {
-
 
    CMCHKPK(cmPkRgUstaDgn, &param->dgn, mBuf);
    CMCHKPK(cmPkCmAlarm, &param->cmAlarm, mBuf);
@@ -2943,19 +2537,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkRgUsta
 (
 RgUsta *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRgUsta(param, mBuf)
-RgUsta *param;
-Buffer *mBuf;
-#endif
 {
-
 
    CMCHKUNPK(cmUnpkCmAlarm, &param->cmAlarm, mBuf);
    CMCHKUNPK(cmUnpkRgUstaDgn, &param->dgn, mBuf);
@@ -2979,19 +2566,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkRgTrc
 (
 RgTrc *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkRgTrc(param, mBuf)
-RgTrc *param;
-Buffer *mBuf;
-#endif
 {
-
 
    CMCHKPK(oduUnpackUInt8, param->evnt, mBuf);
    CMCHKPK(cmPkDateTime, &param->dt, mBuf);
@@ -3015,19 +2595,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkRgTrc
 (
 RgTrc *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRgTrc(param, mBuf)
-RgTrc *param;
-Buffer *mBuf;
-#endif
 {
-
 
    CMCHKUNPK(cmUnpkDateTime, &param->dt, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->evnt, mBuf);
@@ -3051,19 +2624,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkRgDbgCntrl
 (
 RgDbgCntrl *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkRgDbgCntrl(param, mBuf)
-RgDbgCntrl *param;
-Buffer *mBuf;
-#endif
 {
-
 
    CMCHKPK(oduUnpackUInt32, param->dbgMask, mBuf);
    return ROK;
@@ -3085,17 +2651,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkRgSchUlAllocCntrl
 (
 RgSchUlAllocCntrl *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkRgSchUlAllocCntrl(param, mBuf)
-RgSchUlAllocCntrl *param;
-Buffer *mBuf;
-#endif
 {
 
    CMCHKPK(oduUnpackUInt8, param->mcs, mBuf);
@@ -3123,17 +2683,11 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkRgSchUlAllocCntrl
 (
 RgSchUlAllocCntrl *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRgSchUlAllocCntrl(param, mBuf)
-RgSchUlAllocCntrl *param;
-Buffer *mBuf;
-#endif
 {
 
    CMCHKUNPK(oduPackUInt16, &param->logTime, mBuf);
@@ -3164,19 +2718,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkRgDbgCntrl
 (
 RgDbgCntrl *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRgDbgCntrl(param, mBuf)
-RgDbgCntrl *param;
-Buffer *mBuf;
-#endif
 {
-
 
    CMCHKUNPK(oduPackUInt32, &param->dbgMask, mBuf);
    return ROK;
@@ -3199,19 +2746,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkRgSapCntrl
 (
 RgSapCntrl *param,
 Buffer *mBuf
 )
-#else
-S16 cmPkRgSapCntrl(param, mBuf)
-RgSapCntrl *param;
-Buffer *mBuf;
-#endif
 {
-
 
    CMCHKPK(SPkS16, param->spId, mBuf);
    CMCHKPK(SPkS16, param->suId, mBuf);
@@ -3235,19 +2775,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkRgSapCntrl
 (
 RgSapCntrl *param,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRgSapCntrl(param, mBuf)
-RgSapCntrl *param;
-Buffer *mBuf;
-#endif
 {
-
 
    CMCHKUNPK(SUnpkS16, &param->suId, mBuf);
    CMCHKUNPK(SUnpkS16, &param->spId, mBuf);
@@ -3271,19 +2804,12 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkRgCntrl
 (
 RgCntrl *param,
 S16 elmnt,
 Buffer *mBuf
 )
-#else
-S16 cmPkRgCntrl(param, elmnt, mBuf)
-RgCntrl *param;
-S16 elmnt;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -3348,62 +2874,55 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkRgCntrl
 (
 RgCntrl *param,
 S16 elmnt,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRgCntrl(param, elmnt, mBuf)
-RgCntrl *param;
-S16 elmnt;
-Buffer *mBuf;
-#endif
 {
 
 
    CMCHKUNPK(cmUnpkDateTime, &param->dt, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->action, mBuf);
    CMCHKUNPK(oduPackUInt8, &param->subAction, mBuf);
-      switch(elmnt) {
-         case STGEN:
-            switch(param->subAction) {
-               case SADBG:
-                  CMCHKUNPK(cmUnpkRgDbgCntrl, &param->s.rgDbgCntrl, mBuf);
-                  break;
-               case SATRC:
-                  CMCHKUNPK(SUnpkS16, &param->s.trcLen, mBuf);
-                  break;
-               case SAUSTA:
-                  break;
+   switch(elmnt) {
+      case STGEN:
+	 switch(param->subAction) {
+	    case SADBG:
+	       CMCHKUNPK(cmUnpkRgDbgCntrl, &param->s.rgDbgCntrl, mBuf);
+	       break;
+	    case SATRC:
+	       CMCHKUNPK(SUnpkS16, &param->s.trcLen, mBuf);
+	       break;
+	    case SAUSTA:
+	       break;
 #ifdef SS_DIAG
-               case SALOG:
-                  CMCHKUNPK(oduPackUInt32, &param->s.logMask, mBuf);
-                  break;
+	    case SALOG:
+	       CMCHKUNPK(oduPackUInt32, &param->s.logMask, mBuf);
+	       break;
 #endif
 #ifdef PHY_ERROR_LOGING
-               case SAELMNT:
-			      CMCHKUNPK(cmUnpkRgSchUlAllocCntrl, &param->s.rgSchUlAllocCntrl, mBuf);
-			      break;
+	    case SAELMNT:
+	       CMCHKUNPK(cmUnpkRgSchUlAllocCntrl, &param->s.rgSchUlAllocCntrl, mBuf);
+	       break;
 #endif			   
-               default :
-                  break;
-            }
-         break;
-         case STTFUSAP:
-         case STRGUSAP:
-         case STRGRSAP:
-         case STCRGSAP:
-            switch(param->subAction) {
-               default :
-                  CMCHKUNPK(cmUnpkRgSapCntrl, &param->s.rgSapCntrl, mBuf);
-                  break;
-            }
-            break;
-         default :
-            break;
+	    default :
+	       break;
+	 }
+	 break;
+      case STTFUSAP:
+      case STRGUSAP:
+      case STRGRSAP:
+      case STCRGSAP:
+	 switch(param->subAction) {
+	    default :
+	       CMCHKUNPK(cmUnpkRgSapCntrl, &param->s.rgSapCntrl, mBuf);
+	       break;
+	 }
+	 break;
+      default :
+	 break;
       }
    return ROK;
 }
@@ -3425,7 +2944,6 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmPkRgMngmt
 (
 Pst *pst,
@@ -3433,13 +2951,6 @@ RgMngmt *param,
 uint8_t eventType,
 Buffer *mBuf
 )
-#else
-S16 cmPkRgMngmt(pst, param, eventType, mBuf)
-Pst *pst;
-RgMngmt *param;
-uint8_t eventType;
-Buffer *mBuf;
-#endif
 {
 
 
@@ -3510,7 +3021,6 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 cmUnpkRgMngmt
 (
 Pst *pst,
@@ -3518,52 +3028,45 @@ RgMngmt *param,
 uint8_t eventType,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkRgMngmt(pst, param, eventType, mBuf)
-Pst *pst;
-RgMngmt *param;
-uint8_t eventType;
-Buffer *mBuf;
-#endif
 {
 
 
    CMCHKUNPK(cmUnpkHeader, &param->hdr, mBuf);
    CMCHKUNPK(cmUnpkCmStatus, &param->cfm, mBuf);
-      switch(eventType) {
-         case EVTLRGCFGREQ:
-         case  EVTLRGCFGCFM:
-         case EVTMACSCHGENCFGREQ:
-         case  EVTMACSCHGENCFGCFM:
-            if(cmUnpkRgCfg(&param->t.cfg, param->hdr.elmId.elmnt, mBuf) != ROK)
-               return RFAILED;
-            break;
-         case EVTLRGSTSREQ:
-         case  EVTLRGSTSCFM:
-            if(cmUnpkRgSts(&param->t.sts, param->hdr.elmId.elmnt, mBuf) != ROK)
-               return RFAILED;
-            break;
-         case EVTLRGSSTAREQ:
-         case  EVTLRGSSTACFM:
-            if(cmUnpkRgSsta(pst, &param->t.ssta, param->hdr.elmId.elmnt, mBuf) != ROK)
-               return RFAILED;
-            break;
-         case EVTLRGUSTAIND:
-         case EVTLRGSCHSTAIND:
-            CMCHKUNPK(cmUnpkRgUsta, &param->t.usta, mBuf);
-            break;
-         case EVTLRGTRCIND:
-            CMCHKUNPK(cmUnpkRgTrc, &param->t.trc, mBuf);
-            break;
-         case EVTLRGCNTRLREQ:
-         case  EVTLRGCNTRLCFM:
-         case EVTLRGSCHCNTRLREQ:
-         case  EVTLRGSCHCNTRLCFM:
-            if(cmUnpkRgCntrl(&param->t.cntrl, param->hdr.elmId.elmnt, mBuf) != ROK)
-               return RFAILED;
-            break;
-         default :
-            return RFAILED;
+   switch(eventType) {
+      case EVTLRGCFGREQ:
+      case  EVTLRGCFGCFM:
+      case EVTMACSCHGENCFGREQ:
+      case  EVTMACSCHGENCFGCFM:
+	 if(cmUnpkRgCfg(&param->t.cfg, param->hdr.elmId.elmnt, mBuf) != ROK)
+	    return RFAILED;
+	 break;
+      case EVTLRGSTSREQ:
+      case  EVTLRGSTSCFM:
+	 if(cmUnpkRgSts(&param->t.sts, param->hdr.elmId.elmnt, mBuf) != ROK)
+	    return RFAILED;
+	 break;
+      case EVTLRGSSTAREQ:
+      case  EVTLRGSSTACFM:
+	 if(cmUnpkRgSsta(pst, &param->t.ssta, param->hdr.elmId.elmnt, mBuf) != ROK)
+	    return RFAILED;
+	 break;
+      case EVTLRGUSTAIND:
+      case EVTLRGSCHSTAIND:
+	 CMCHKUNPK(cmUnpkRgUsta, &param->t.usta, mBuf);
+	 break;
+      case EVTLRGTRCIND:
+	 CMCHKUNPK(cmUnpkRgTrc, &param->t.trc, mBuf);
+	 break;
+      case EVTLRGCNTRLREQ:
+      case  EVTLRGCNTRLCFM:
+      case EVTLRGSCHCNTRLREQ:
+      case  EVTLRGSCHCNTRLCFM:
+	 if(cmUnpkRgCntrl(&param->t.cntrl, param->hdr.elmId.elmnt, mBuf) != ROK)
+	    return RFAILED;
+	 break;
+      default :
+	 return RFAILED;
       }
    return ROK;
 }
@@ -3584,17 +3087,11 @@ Buffer *mBuf;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 static S16  cmPkNmbActvUeQciReq
 (
 LrgNmbActvUeQCI   *nmbActvUeQci, 
 Buffer        *mBuf
 )
-#else
-static S16 cmPkNmbActvUeQciReq(nmbActvUeQci, mBuf)
-LrgNmbActvUeQCI   *nmbActvUeQci;
-Buffer        *mBuf;
-#endif
 {
    uint8_t      idx;
 
@@ -3621,17 +3118,11 @@ Buffer        *mBuf;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 static S16  cmPkAvgPrbQciReq
 (
 LrgAvgPrbQCI  *avgPrbQciReq,
 Buffer        *mBuf
 )
-#else
-static S16 cmPkAvgPrbQciReq(avgPrbQciReq, mBuf)
-LrgAvgPrbQCI  *avgPrbQciReq;
-Buffer        *mBuf;
-#endif
 {
    uint8_t      idx;
 
@@ -3657,17 +3148,11 @@ L2 Measurement Request from LM to MAC.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkLrgSchL2MeasReq
 (
 Pst * pst,
 LrgSchMeasReqInfo  *measInfo
 )
-#else
-S16 cmPkLrgSchL2MeasReq(pst, measInfo)
-Pst * pst;
-LrgSchMeasReqInfo  *measInfo;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -3716,17 +3201,11 @@ L2 Measurement Request from LM to MAC.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkLrgSchL2MeasStopReq
 (
 Pst * pst,
 LrgSchMeasStopReqInfo *measInfo
 )
-#else
-S16 cmPkLrgSchL2MeasStopReq(pst, measInfo)
-Pst * pst;
-LrgSchMeasStopReqInfo *measInfo;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -3759,20 +3238,14 @@ L2 Measurement Request from LM to MAC.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkLrgSchL2MeasSendReq
 (
 Pst * pst,
 LrgSchMeasSndReqInfo *measInfo
 )
-#else
-S16 cmPkLrgSchL2MeasSendReq(pst, measInfo)
-Pst * pst;
-LrgSchMeasSndReqInfo *measInfo;
-#endif
 {
    Buffer *mBuf = NULLP;
- if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
+   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
@@ -3800,17 +3273,11 @@ LrgSchMeasSndReqInfo *measInfo;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 static S16 cmUnpkNmbActvUeQciReq
 (
 LrgNmbActvUeQCI  *param,
 Buffer           *mBuf
 )
-#else
-static S16 cmUnpkNmbActvUeQciReq(param, mBuf)
-LrgNmbActvUeQCI  *param;
-Buffer           *mBuf;
-#endif
 {
    uint8_t     idx;
 
@@ -3836,17 +3303,11 @@ Buffer           *mBuf;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 static S16 cmUnpkAvgPrbQciReq
 (
 LrgAvgPrbQCI     *param,
 Buffer           *mBuf
 )
-#else
-static S16 cmUnpkAvgPrbQciReq (param, mBuf)
-LrgAvgPrbQCI     *param;
-Buffer           *mBuf;
-#endif
 {
    uint8_t     idx;
 
@@ -3874,19 +3335,12 @@ Measurement  Request from LM to SCH.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkLrgSchL2MeasReq
 (
 LrgSchL2MeasReq func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkLrgSchL2MeasReq(func, pst, mBuf)
-LrgSchL2MeasReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    LrgSchMeasReqInfo  measInfo;
 
@@ -3929,19 +3383,12 @@ Measurement  Request from LM to SCH.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkLrgSchL2MeasStopReq
 (
 LrgSchL2MeasStopReq func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkLrgSchL2MeasStopReq(func, pst, mBuf)
-LrgSchL2MeasStopReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    LrgSchMeasStopReqInfo measInfo;
 
@@ -3967,19 +3414,12 @@ Measurement  Request from LM to SCH.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkLrgSchL2MeasSendReq
 (
 LrgSchL2MeasSendReq func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkLrgSchL2MeasSendReq(func, pst, mBuf)
-LrgSchL2MeasSendReq func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    LrgSchMeasSndReqInfo measInfo;
    CMCHKUNPK(cmUnpkHeader, &measInfo.hdr, mBuf);
@@ -4003,21 +3443,15 @@ L2 Measurement confirm from MAC to LM
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkLrgSchL2MeasStopCfm
 (
 Pst * pst,
 LrgSchMeasCfmInfo  *measInfo
 )
-#else
-S16 cmPkLrgSchL2MeasStopCfm(pst, measInfo)
-Pst * pst;
-LrgSchMeasCfmInfo  *measInfo;
-#endif
 {
    Buffer *mBuf = NULLP;
 
- if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
+   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
@@ -4045,19 +3479,12 @@ Measurement  Confirm from SCH to LM.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkLrgSchL2MeasStopCfm
 (
 LrgSchL2MeasStopCfm func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkLrgSchL2MeasStopCfm(func, pst, mBuf)
-LrgSchL2MeasStopCfm func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    LrgSchMeasCfmInfo  measInfo;
 
@@ -4083,17 +3510,11 @@ Buffer *mBuf;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 static S16 cmPkNumUeQciCfm
 (
 LrgNumActvUeQCICfm  *param,
 Buffer              *mBuf
 )
-#else
-static S16 cmPkNumUeQciCfm(param, mBuf)
-LrgNumActvUeQCICfm *param;
-Buffer             *mBuf;
-#endif
 {
    uint8_t         idx;
 
@@ -4121,17 +3542,11 @@ Buffer             *mBuf;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 static S16 cmPkAvgPrbQciCfm
 (
 LrgAvgPrbQCICfm    *param,
 Buffer             *mBuf
 )
-#else
-static S16  cmPkAvgPrbQciCfm(param, mBuf)
-LrgAvgPrbQCICfm    *param;
-Buffer             *mBuf;
-#endif
 {
    uint8_t         idx;
 
@@ -4158,17 +3573,11 @@ Buffer             *mBuf;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 static S16 cmPkRaPrmbsCfm
 (
 LrgRaPreamblesCfm  *param,
 Buffer             *mBuf
 )
-#else
-static S16 cmPkRaPrmbsCfm(param, mBuf)
-LrgRaPreamblesCfm  *param;
-Buffer             *mBuf;
-#endif
 {
 
    CMCHKPK(oduUnpackUInt16, param->randSelPreHighRange, mBuf);
@@ -4189,17 +3598,11 @@ Buffer             *mBuf;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 static S16 cmPkAvgPrbCfm 
 (
 LrgAvgPrbCfm  *param,
 Buffer        *mBuf
 )
-#else
-static S16 cmPkAvgPrbCfm(param, mBuf)
-LrgAvgPrbCfm  *param;
-Buffer        *mBuf;
-#endif
 {
 
    CMCHKPK(oduUnpackUInt8, param->prbPerc, mBuf);
@@ -4219,17 +3622,11 @@ L2 Measurement confirm from MAC to LM
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmPkLrgSchL2MeasCfm
 (
 Pst * pst,
 LrgSchMeasCfmInfo  *measInfo
 )
-#else
-S16 cmPkLrgSchL2MeasCfm(pst, measInfo)
-Pst * pst;
-LrgSchMeasCfmInfo  *measInfo;
-#endif
 {
    Buffer *mBuf = NULLP;
 
@@ -4306,17 +3703,11 @@ LrgSchMeasCfmInfo  *measInfo;
 *  @return   Void
 *      -# ROK
 **/
-#ifdef ANSI
 static S16 cmUnpkNumUeQciCfm
 (
 LrgNumActvUeQCICfm *param,
 Buffer          *mBuf
 )
-#else
-static S16 cmUnpkNumUeQciCfm(param, mBuf)
-LrgNumActvUeQCICfm *param; 
-Buffer          *mBuf;
-#endif
 {
    uint8_t          idx;
 
@@ -4343,17 +3734,11 @@ Buffer          *mBuf;
 *  @return  Void 
 *      -# ROK
 **/
-#ifdef ANSI
 static S16 cmUnpkAvgPrbQciCfm
 (
 LrgAvgPrbQCICfm *param,
 Buffer          *mBuf
 )
-#else
-static S16 cmUnpkAvgPrbQciCfm(param, mBuf)
-LrgAvgPrbQCICfm *param; 
-Buffer          *mBuf;
-#endif
 {
    uint8_t          idx;
 
@@ -4381,17 +3766,11 @@ Buffer          *mBuf;
 *  @return   Void
 *      -# ROK
 **/
-#ifdef ANSI
 static S16 cmUnpkRaPrmbsCfm
 (
 LrgRaPreamblesCfm *param,
 Buffer         *mBuf
 )
-#else
-static S16 cmUnpkRaPrmbsCfm(param, mBuf)
-LrgRaPreamblesCfm *param; 
-Buffer         *mBuf;
-#endif
 {
 
 
@@ -4413,17 +3792,11 @@ Buffer         *mBuf;
 *  @return   Void
 *      -# ROK
 **/
-#ifdef ANSI
 static S16 cmUnpkAvgPrbCfm
 (
 LrgAvgPrbCfm   *param, 
 Buffer         *mBuf
 )
-#else
-static S16  cmUnpkAvgPrbCfm(param, mBuf)
-LrgAvgPrbCfm   *param; 
-Buffer         *mBuf;
-#endif
 {
 
 
@@ -4444,19 +3817,12 @@ Measurement  Confirm from LM to SCH.
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
 S16 cmUnpkLrgSchL2MeasCfm
 (
 LrgSchL2MeasCfm func,
 Pst *pst,
 Buffer *mBuf
 )
-#else
-S16 cmUnpkLrgSchL2MeasCfm(func, pst, mBuf)
-LrgSchL2MeasCfm func;
-Pst *pst;
-Buffer *mBuf;
-#endif
 {
    LrgSchMeasCfmInfo  measInfo;
 
