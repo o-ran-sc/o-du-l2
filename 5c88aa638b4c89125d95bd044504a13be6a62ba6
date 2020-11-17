@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8cbf0346_7837f587",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3399,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-17T10:55:50Z",
+      "side": 1,
+      "message": "Change name to LwrMacSendToL1",
+      "revId": "5c88aa638b4c89125d95bd044504a13be6a62ba6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a7dba00a_48fd0df2",
+        "filename": "src/5gnrmac/rg_lmm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1272,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-17T10:55:50Z",
+      "side": 1,
+      "message": "are we still using this file? can it be removed?",
+      "revId": "5c88aa638b4c89125d95bd044504a13be6a62ba6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
