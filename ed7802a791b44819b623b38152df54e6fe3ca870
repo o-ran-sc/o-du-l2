@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f6ce2a3a_c79e2527",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 7380,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-18T07:41:06Z",
+      "side": 1,
+      "message": "if rrc delivery report is received from CU, we must allocate memory and set delivery report. This condition will not suffice.",
+      "revId": "ed7802a791b44819b623b38152df54e6fe3ca870",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
