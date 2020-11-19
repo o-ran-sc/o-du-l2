@@ -84,17 +84,11 @@ static S16 rgPomUeSCellDedLcCfg ARGS((RgCellCb                   *cell,
  *      -# ROK
  *      -# RFAILED
  **/
-#ifdef ANSI
 S16 RgPrgPMacSMacUeSCellLchModReq
 (
 Pst                      *pst,    
 RgPrgUeSCellLchModInfo   *lchCfgCb
 )
-#else
-S16 RgPrgPMacSMacUeSCellLchModReq(pst, lchCfgCb)
-Pst                      *pst;    
-RgPrgUeSCellLchModInfo   *lchCfgCb;
-#endif
 {
    RgPrgCfgCfmInfo  cfgCfm;
    Inst             inst = pst->dstInst;
@@ -169,19 +163,12 @@ RgPrgUeSCellLchModInfo   *lchCfgCb;
  *      -# ROK
  *      -# RFAILED
  **/
-#ifdef ANSI
 S16 rgPomSndUeSCellLchDelToSmac
 (
 Inst            inst,
 CrgDel          *lcDel,
 Bool            *isCfmRqrd
 )
-#else
-S16 rgPomSndUeSCellLchDelToSmac(inst,lcDel,isCfmRqrd)
-Inst            inst;
-CrgDel          *lcDel;
-Bool            *isCfmRqrd;
-#endif
 {
    uint8_t                    idx = 0;
    Inst                       dstMacInst;
@@ -259,7 +246,6 @@ Bool            *isCfmRqrd;
  *      -# ROK
  *      -# RFAILED
  **/
-#ifdef ANSI
 S16 rgPomSndUeSCellLchModToSmac
 (
 Inst           inst,
@@ -268,14 +254,6 @@ RgUeCb         *ue,
 CrgLchRecfg    *lchRecfg,
 Bool           *isCfmRqrd
 )
-#else
-S16 rgPomSndUeSCellLchModToSmac(inst, cell, ue, lchRecfg, isCfmRqrd)
-Inst           inst;
-RgCellCb       *cell;
-RgUeCb         *ue;
-CrgLchRecfg    *lchRecfg;
-Bool           *isCfmRqrd;
-#endif
 {
    uint8_t                   idx = 0;
    Inst                      dstMacInst;
@@ -326,7 +304,6 @@ Bool           *isCfmRqrd;
  *      -# ROK
  *      -# RFAILED
  **/
-#ifdef ANSI
 S16 rgPomSndUeSCellLchAddToSmac
 (
 Inst           inst,
@@ -335,14 +312,6 @@ RgUeCb         *ue,
 CrgLchCfg      *lchCfg,
 Bool           *isCfmRqrd
 )
-#else
-S16 rgPomSndUeSCellLchAddToSmac(inst, cell, ue, lchCfg, isCfmRqrd)
-Inst           inst;
-RgCellCb       *cell;
-RgUeCb         *ue;
-CrgLchCfg      *lchCfg;
-Bool           *isCfmRqrd;
-#endif
 {
    uint8_t                   idx = 0;
    Inst                      dstMacInst;
@@ -394,17 +363,11 @@ Bool           *isCfmRqrd;
  *      -# ROK
  *      -# RFAILED
  **/
-#ifdef ANSI
 S16 RgPrgPMacSMacUeSCellLchDelReq
 (
 Pst                       *pst,    
 RgPrgUeSCellLchDelInfo    *delLcCb
 )
-#else
-S16 RgPrgPMacSMacUeSCellLchDelReq(pst, delLcCb)
-Pst                       *pst;    
-RgPrgUeSCellLchDelInfo    *delLcCb;
-#endif
 {
    RgPrgCfgCfmInfo  cfgCfm;
    Inst             inst = pst->dstInst;
@@ -473,17 +436,11 @@ RgPrgUeSCellLchDelInfo    *delLcCb;
  *      -# ROK
  *      -# RFAILED
  **/
-#ifdef ANSI
 S16 RgPrgPMacSMacUeSCellLchAddReq
 (
 Pst                      *pst,    
 RgPrgUeSCellLchAddInfo   *lchCfgCb
 )
-#else
-S16 RgPrgPMacSMacUeSCellLchAddReq(pst, lchCfgCb)
-Pst                      *pst;    
-RgPrgUeSCellLchAddInfo   *lchCfgCb;
-#endif
 {
    RgPrgCfgCfmInfo   cfgCfm;
    Inst              inst = pst->dstInst;
@@ -552,7 +509,6 @@ RgPrgUeSCellLchAddInfo   *lchCfgCb;
  *      -# ROK
  *      -# RFAILED
  **/
-#ifdef ANSI
 S16 rgPomVldtAddLch
 (
 Inst                    inst, 
@@ -560,13 +516,6 @@ RgPrgUeSCellLchAddInfo  *lcCfg,
 RgCellCb                **cell,
 RgUeCb                  **ue
 )
-#else
-S16 rgPomVldtAddLch(inst,lcCfg, cell, ue)
-Inst                    inst;
-RgPrgUeSCellLchAddInfo  *lcCfg;
-RgCellCb                **cell;
-RgUeCb                  **ue;
-#endif
 {
 
    RGDBGPRM(inst,(rgPBuf(inst), "VALIDATE SMAC LC CONFIG: cellId %d ueId %d lcId %d\
@@ -626,7 +575,6 @@ RgUeCb                  **ue;
  *      -# ROK
  *      -# RFAILED
  **/
-#ifdef ANSI
 S16 rgPomUeSCellLcAdd
 (
 Inst                     inst,
@@ -634,13 +582,6 @@ RgCellCb                 *cell,
 RgUeCb                   *ue,
 RgPrgUeSCellLchAddInfo   *lcCfg
 )
-#else
-S16 rgPomUeSCellLcAdd(inst,cell, ue, lcCfg)
-Inst                     inst;
-RgCellCb                 *cell;
-RgUeCb                   *ue;
-RgPrgUeSCellLchAddInfo   *lcCfg;
-#endif
 {
 
    RGDBGPRM(inst,(rgPBuf(inst), "APPLYING CRG LC CONFIG: cellId %d ueId %d\
@@ -680,7 +621,6 @@ RgPrgUeSCellLchAddInfo   *lcCfg;
  *     File :
  *
  **********************************************************/
-#ifdef ANSI
 static S16 rgPomVldtSCellDedLchCfg
 (
 Inst                       inst, 
@@ -688,13 +628,6 @@ RgPrgUeSCellLchAddInfo     *lcCfg,
 RgCellCb                   **cell,
 RgUeCb                     **ue
 )
-#else
-static S16 rgPomVldtSCellDedLchCfg(inst,lcCfg, cell, ue)
-Inst                       inst;
-RgPrgUeSCellLchAddInfo     *lcCfg;
-RgCellCb                   **cell;
-RgUeCb                     **ue;
-#endif
 {
    RGDBGPRM(inst,(rgPBuf(inst), "VALIDATING CRG DEDICATED LC CONFIG \n"));
 
@@ -785,19 +718,12 @@ RgUeCb                     **ue;
  *     File :
  *
  **********************************************************/
-#ifdef ANSI
 static S16 rgPomUeSCellDedLcCfg
 (
 RgCellCb                   *cell,
 RgUeCb                     *ue,
 RgPrgUeSCellLchAddInfo     *lcCfg
 )
-#else
-static S16 rgPomUeSCellDedLcCfg(cell, ue, lcCfg)
-RgCellCb                   *cell;
-RgUeCb                     *ue;
-RgPrgUeSCellLchAddInfo     *lcCfg;
-#endif
 {
    //Inst     inst = cell->macInst - RG_INST_START;
    //RGDBGPRM(inst,(rgPBuf(inst), "APPLYING DEDICATED LC CONFIG\n"));
@@ -843,23 +769,14 @@ RgPrgUeSCellLchAddInfo     *lcCfg;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
 S16 rgPomVltdModLch
 (
- Inst                     inst,
- RgPrgUeSCellLchModInfo   *lchCfgCb,
- RgCellCb                 **cell,
- RgUeCb                   **ue,
- RgUlLcCb                 **ulLc
+Inst                     inst,
+RgPrgUeSCellLchModInfo   *lchCfgCb,
+RgCellCb                 **cell,
+RgUeCb                   **ue,
+RgUlLcCb                 **ulLc
 )
-#else
-S16 rgPomVltdModLch(inst, lchCfgCb, cell, ue, ulLc)
- Inst                     inst;
- RgPrgUeSCellLchModInfo   *lchCfgCb;
- RgCellCb                 **cell;
- RgUeCb                   **ue;
- RgUlLcCb                 **ulLc;
-#endif
 {
    RGDBGPRM(inst,(rgPBuf(inst), "VALIDATE SMAC LC RECONFIG: cellId %d ueId %d \
             lcId %d cell %p ue %p ulLc %p\n",lchCfgCb->cellId,
@@ -914,7 +831,6 @@ S16 rgPomVltdModLch(inst, lchCfgCb, cell, ue, ulLc)
  *      -# ROK
  *      -# RFAILED
  **/
-#ifdef ANSI
 S16 rgPomUeSCellLcMod
 (
 Inst                    inst,
@@ -922,13 +838,6 @@ RgUeCb                  *ue,
 RgUlLcCb                *ulLc,
 RgPrgUeSCellLchModInfo  *lchCfgCb
 )
-#else
-S16 rgPomUeSCellLcMod(inst,cell, ue, ulLc, lchCfgCb)
-Inst                    inst;
-RgUeCb                  *ue;
-RgUlLcCb                *ulLc;
-RgPrgUeSCellLchModInfo  *lchCfgCb;
-#endif
 {
    RGDBGPRM(inst,(rgPBuf(inst), "APPLYING SMAC LC RECONFIG: cellId %d ueId %d\
             lcId %d  \n",
@@ -960,25 +869,15 @@ RgPrgUeSCellLchModInfo  *lchCfgCb;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
 S16 rgPomVltdDelLch
 (
- Inst                      inst,
- RgPrgUeSCellLchDelInfo    *delLcCb,
- RgCellCb                  **cell,
- RgUeCb                    **ue,
- RgUlLcCb                  **ulLc,
- RgDlLcCb                  **dlLc
+Inst                      inst,
+RgPrgUeSCellLchDelInfo    *delLcCb,
+RgCellCb                  **cell,
+RgUeCb                    **ue,
+RgUlLcCb                  **ulLc,
+RgDlLcCb                  **dlLc
 )
-#else
-S16 rgPomVltdDelLch(inst, delLcCb, cell, ue, ulLc, dlLc)
- Inst                      inst;
- RgPrgUeSCellLchDelInfo    *delLcCb;
- RgCellCb                  **cell;
- RgUeCb                    **ue;
- RgUlLcCb                  **ulLc;
- RgDlLcCb                  **dlLc;
-#endif
 {
    RGDBGPRM(inst,(rgPBuf(inst), "VALIDATE SMAC LC RECONFIG: cellId %d ueId %d \
             lcId %d cell %p ue %p ulLc %p\n",delLcCb->cellId,
@@ -1033,7 +932,6 @@ S16 rgPomVltdDelLch(inst, delLcCb, cell, ue, ulLc, dlLc)
  *      -# ROK
  *      -# RFAILED
  **/
-#ifdef ANSI
 S16 rgPomUeSCellLcDel
 (
 Inst                      inst,
@@ -1042,14 +940,6 @@ RgUeCb                    *ue,
 RgUlLcCb                  *ulLc,
 RgDlLcCb                  *dlLc
 )
-#else
-S16 rgPomUeSCellLcDel(inst,delLcCb,ue,ulLc,dlLc)
-Inst                      inst;
-RgPrgUeSCellLchDelInfo    *delLcCb;
-RgUeCb                    *ue;
-RgUlLcCb                  *ulLc;
-RgDlLcCb                  *dlLc;
-#endif
 {
 
    RGDBGPRM(inst,(rgPBuf(inst), "APPLYING CRG LC DELETE: cellId %d ueId %d\

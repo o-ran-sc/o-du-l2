@@ -88,17 +88,11 @@
 *
 */
 
-#ifdef ANSI
 S16 SPkS8
 (
 S8 val,                     /* value */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 SPkS8(val, mBuf)
-S8 val;                     /* value */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
    S16 ret;                 /* return code */
    ret = SAddPreMsg((Data) val, mBuf);
@@ -127,17 +121,11 @@ Buffer *mBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 oduUnpackUInt8
 (
 uint8_t val,                     /* value */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 oduUnpackUInt8(val, mBuf)
-uint8_t val;                     /* value */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
    S16 ret;                 /* return code */
    ret = SAddPreMsg((Data) val, mBuf);
@@ -164,17 +152,11 @@ Buffer *mBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 SPkS16
 (
 S16 val,                    /* value */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 SPkS16(val, mBuf)
-S16 val;                    /* value */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
    Data pkArray[2];         /* array for packing */
    S16 ret;                 /* return code */
@@ -211,17 +193,11 @@ Buffer *mBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 oduUnpackUInt16
 (
 uint16_t val,                    /* value */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 oduUnpackUInt16(val, mBuf)
-uint16_t val;                    /* value */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
    Data pkArray[2];         /* array for packing */
    S16 ret;                 /* return code */
@@ -258,17 +234,11 @@ Buffer *mBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 SPkS32
 (
 S32 val,                    /* value */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 SPkS32(val, mBuf)
-S32 val;                    /* value */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
    uint16_t tmp;                 /* temporary value */
    Data pkArray[4];         /* packing array */
@@ -314,17 +284,11 @@ Buffer *mBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 oduUnpackUInt32
 (
 uint32_t val,                    /* value */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 oduUnpackUInt32(val, mBuf)
-uint32_t val;                    /* value */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
    uint16_t tmp;                 /* temporary value */
    Data pkArray[4];         /* packing array */
@@ -371,17 +335,11 @@ Buffer *mBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 SPkF32
 (
 F32 val,                    /* value */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 SPkF32(val, mBuf)
-F32 val;                    /* value */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
    S16  ret;                /* return code */
    S8   tmpArray[15];       /* temporary array */
@@ -428,17 +386,11 @@ Buffer *mBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 SPkF64
 (
 F64 val,                    /* value */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 SPkF64(val, mBuf)
-F64 val;                    /* value */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
 
    S16  ret;                /* return code */
@@ -486,17 +438,11 @@ Buffer *mBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 SUnpkS8
 (
 S8 *val,                    /* pointer to value */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 SUnpkS8(val, mBuf)
-S8 *val;                    /* pointer to value */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
    Data tmp;                /* temporary value */
    S16 ret;                 /* return code */
@@ -535,17 +481,11 @@ Buffer *mBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 oduPackUInt8
 (
 uint8_t *val,                    /* pointer to value */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 oduPackUInt8(val, mBuf)
-uint8_t *val;                    /* pointer to value */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
    Data tmp;                /* temporary value */
    S16 ret;                 /* return code */
@@ -583,17 +523,11 @@ Buffer *mBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 SUnpkS16
 (
 S16 *val,                   /* pointer to value */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 SUnpkS16(val, mBuf)
-S16 *val;                   /* pointer to value */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
    uint16_t tmp16;               /* temporary value */
    Data unpkArray[2];       /* unpacking array */
@@ -641,17 +575,11 @@ Buffer *mBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 oduPackUInt16
 (
 uint16_t *val,                   /* pointer to value */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 oduPackUInt16(val, mBuf)
-uint16_t *val;                   /* pointer to value */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
    uint16_t tmp16;               /* temporary value */
    Data unpkArray[2];       /* unpacking array */
@@ -699,17 +627,11 @@ Buffer *mBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 SUnpkS32
 (
 S32 *val,                   /* pointer to value */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 SUnpkS32(val, mBuf)
-S32 *val;                   /* pointer to value */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
    uint16_t tmp16;               /* temporary value */
    uint32_t tmp32;               /* temporary value */
@@ -767,17 +689,11 @@ Buffer *mBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 oduPackUInt32
 (
 uint32_t *val,                   /* pointer to value */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 oduPackUInt32(val, mBuf)
-uint32_t *val;                   /* pointer to value */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
    uint16_t tmp16;               /* temporary value */
    uint32_t tmp32;               /* temporary value */
@@ -839,17 +755,11 @@ Buffer *mBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 SUnpkF32
 (
 F32 *val,                   /* pointer to value */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 SUnpkF32(val, mBuf)
-F32 *val;                   /* pointer to value */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
    S16 ret;                 /* return code */
    S8 tmpArray[15];         /* temporary array */
@@ -903,17 +813,11 @@ Buffer *mBuf;               /* message buffer */
 *
 */
   
-#ifdef ANSI
 S16 SUnpkF64
 (
 F64 *val,                   /* pointer to value */
 Buffer *mBuf                /* message buffer */
 )
-#else
-S16 SUnpkF64(val, mBuf)
-F64 *val;                   /* pointer to value */
-Buffer *mBuf;               /* message buffer */
-#endif
 {
 
    S16 ret;                 /* return code */

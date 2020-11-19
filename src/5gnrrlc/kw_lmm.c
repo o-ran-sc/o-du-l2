@@ -122,17 +122,7 @@ static S16 rlcLmmGetSapSts ARGS ((RlcCb *gCb,RlcMngmt *sts,Elmnt elmnt,Action
  *    LCM_REASON_INVALID_PAR_VAL
  *    LCM_REASON_HASHING_FAILED
  */
-#ifdef ANSI
-static S16 rlcLmmGenCfg
-(
-RlcCb       *gCb,
-RlcGenCfg   *cfg
-)
-#else
-static S16 rlcLmmGenCfg(gCB,cfg)
-RlcCb       *gCb;
-RlcGenCfg   *cfg;
-#endif
+static S16 rlcLmmGenCfg(RlcCb  *gCb,RlcGenCfg *cfg)
 {
    Size     rlcSapSize;
    Size     rlcUdxSapSize;
@@ -422,7 +412,6 @@ RlcGenCfg   *cfg;
  * @return  S16
  *     -# ROK
  */
-#ifdef ANSI
 static Void rlcLmmSendCfm
 (
 RlcCb      *gCb,
@@ -431,14 +420,6 @@ RlcMngmt   *cfm,
 uint8_t    type,              
 Header     *hdr              
 )
-#else
-static Void rlcLmmSendCfm(gCb,pst, cfm, type, hdr)
-RlcCb      gCb;
-Pst        *pst;            
-RlcMngmt   *cfm;           
-uint8_t    type;          
-Header     *hdr;         
-#endif
 {
    Pst   rPst;   /* Reply post structure */
 
@@ -561,17 +542,7 @@ Header     *hdr;
  *    -# Failure : RFAILED
  */
 
-#ifdef ANSI
-uint8_t RlcMiRlcConfigReq 
-(
-Pst       *pst, 
-RlcMngmt   *cfg
-)
-#else
-uint8_t RlcMiRlcConfigReq (pst, cfg)
-Pst       *pst;
-RlcMngmt   *cfg;
-#endif
+uint8_t RlcMiRlcConfigReq (Pst *pst,RlcMngmt *cfg)
 {
    Reason   reason;   /* failure reason */
    RlcCb     *tRlcCb=NULLP;
@@ -715,17 +686,7 @@ RlcMngmt   *cfg;
  *    -# ROK
  *    -# RFAILED
  */
-#ifdef ANSI
-uint8_t RlcMiLkwCntrlReq
-(
-Pst       *pst, 
-RlcMngmt   *cntrl
-)
-#else
-uint8_t RlcMiLkwCntrlReq(pst, cntrl)
-Pst       *pst;
-RlcMngmt   *cntrl;
-#endif
+uint8_t RlcMiLkwCntrlReq(Pst *pst, RlcMngmt *cntrl)
 {
    Reason   reason;   /* failure reason */
    RlcCb     *tRlcCb=NULLP;
@@ -821,17 +782,7 @@ RlcMngmt   *cntrl;
  *    -# ROK (SUCCESS)
  *    -# RFAILED
  */
-#ifdef ANSI
-S16 RlcMiLkwStaReq
-(
-Pst       *pst, 
-RlcMngmt   *sta
-)
-#else
-S16 RlcMiLkwStaReq(pst, sta)
-Pst       *pst;
-RlcMngmt   *sta;
-#endif
+S16 RlcMiLkwStaReq(Pst *pst,RlcMngmt *sta)
 {
    RlcMngmt   rSta;     /* Status */
    Reason    reason;   /* Failure reason */
@@ -953,19 +904,7 @@ RlcMngmt   *sta;
  *    -# ROK
  *    -# RFAILED
  */
-#ifdef ANSI
-S16 RlcMiLkwStsReq 
-(
-Pst      *pst, 
-Action    action, 
-RlcMngmt   *sts
-)
-#else
-S16 RlcMiLkwStsReq (pst, action, sts)
-Pst       *pst;
-Action    action;
-RlcMngmt   *sts;
-#endif
+S16 RlcMiLkwStsReq (Pst *pst, Action action,RlcMngmt *sts)
 {
    RlcMngmt   rSts;     /* Statistics */
    Reason    reason;   /* Reason for failure */
@@ -1069,17 +1008,7 @@ measurement confirm is sent.
  *      -# Success : ROK
  *      -# Failure : RFAILED
 */
-#ifdef ANSI
-S16 RlcMiLkwL2MeasReq 
-(
-Pst            *pst, 
-RlcL2MeasReqEvt *measReqEvt 
-)
-#else
-S16 RlcMiLkwL2MeasReq (pst, measReqEvt)
-Pst            *pst; 
-RlcL2MeasReqEvt *measReqEvt;
-#endif
+S16 RlcMiLkwL2MeasReq(Pst *pst, RlcL2MeasReqEvt *measReqEvt)
 {
    S16            ret = ROK;
    uint16_t       cntr;
@@ -1196,17 +1125,7 @@ After receving this request, RLC stops L2 Measurement
  *      -# Failure : RFAILED
 */
 
-#ifdef ANSI
-S16 RlcMiLkwL2MeasStopReq
-(
-Pst            *pst,
-uint8_t             measType
-)
-#else
-S16 RlcMiLkwL2MeasStopReq (pst, measType)
-Pst            *pst;
-uint8_t             measType;
-#endif
+S16 RlcMiLkwL2MeasStopReq(Pst *pst,uint8_t measType)
 {
    S16 ret = ROK;
    RlcL2MeasEvtCb *measEvtCb = NULLP;
@@ -1262,17 +1181,7 @@ After receving this request, RLC sends L2 Measurement
  *      -# Failure : RFAILED
 */
 
-#ifdef ANSI
-S16 RlcMiLkwL2MeasSendReq
-(
-Pst            *pst,
-uint8_t             measType
-)
-#else
-S16 RlcMiLkwL2MeasSendReq (pst, measType)
-Pst            *pst;
-uint8_t             measType;
-#endif
+S16 RlcMiLkwL2MeasSendReq(Pst *pst,uint8_t measType)
 {
    /*S16 ret = ROK;*/
    RlcL2MeasEvtCb *measEvtCb = NULLP;
@@ -1320,17 +1229,7 @@ uint8_t             measType;
  *    -# LCM_REASON_MEM_NOAVAIL 
  *    -# LCM_REASON_RECONFIG_FAIL 
  */
-#ifdef ANSI
-static S16 rlcLmmCfgKwuSap
-(
-RlcCb       *gCb,
-RlcSapCfg   *cfg                
-)
-#else
-static S16 rlcLmmCfgKwuSap(gCb,cfg)
-RlcCb       *gCb;
-RlcSapCfg   *cfg;               
-#endif
+static S16 rlcLmmCfgKwuSap(RlcCb *gCb,RlcSapCfg *cfg)
 {
    RlcKwuSapCb   *rlcKwuSapCb;
 
@@ -1376,17 +1275,7 @@ RlcSapCfg   *cfg;
  *    -# LCM_REASON_INVALID_SAP 
  *    -# LCM_REASON_RECONFIG_FAIL 
  */
-#ifdef ANSI
-static S16 rlcLmmCfgCkwSap 
-(
-RlcCb       *gCb,
-RlcSapCfg   *cfg             
-)
-#else
-static S16 rlcLmmCfgCkwSap(gCb,cfg)
-RlcCb       *gCb;
-RlcSapCfg   *cfg;             
-#endif
+static S16 rlcLmmCfgCkwSap(RlcCb  *gCb,RlcSapCfg *cfg)
 {
    RlcCkwSapCb  *ckwSap;
    
@@ -1434,17 +1323,7 @@ RlcSapCfg   *cfg;
  *    -# LCM_REASON_INVALID_SAP
  *    -# LCM_REASON_RECONFIG_FAIL
  */
-#ifdef ANSI
-static S16 rlcLmmCfgUdxSap 
-(
-RlcCb       *gCb,
-RlcSapCfg   *cfg         
-)
-#else
-static S16 rlcLmmCfgUdxSap(gCb,cfg)
-RlcCb       *gCb;
-RlcSapCfg   *cfg;       
-#endif
+static S16 rlcLmmCfgUdxSap(RlcCb *gCb,RlcSapCfg *cfg)
 {
    RlcUdxDlSapCb   *udxDlSap;
    RlcUdxUlSapCb   *udxUlSap;
@@ -1508,17 +1387,7 @@ RlcSapCfg   *cfg;
  *    -# LCM_REASON_INVALID_SAP
  *    -# LCM_REASON_RECONFIG_FAIL
  */
-#ifdef ANSI
-static S16 rlcLmmCfgRguSap 
-(
-RlcCb       *gCb,
-RlcSapCfg   *cfg               
-)
-#else
-static S16 rlcLmmCfgRguSap(gCb,cfg)
-RlcCb       *gCb;
-RlcSapCfg   *cfg;             
-#endif
+static S16 rlcLmmCfgRguSap(RlcCb *gCb,RlcSapCfg *cfg)
 {
    RlcRguSapCb   *rguSap;
 
@@ -1569,15 +1438,7 @@ RlcSapCfg   *cfg;
  *    -# LCM_REASON_INVALID_SUBACTION
  *    -# LCM_REASON_INVALID_ACTION
  */
-#ifdef ANSI
-static S16 rlcLmmValidateGenCntrl
-(
-RlcMngmt   *cntrl                 
-)
-#else
-static S16 rlcLmmValidateGenCntrl(cntrl)
-RlcMngmt   *cntrl;                
-#endif
+static S16 rlcLmmValidateGenCntrl(RlcMngmt   *cntrl)
 {
    S16     reason;    /* reason for failure */
    uint8_t sAction;   /* subaction field */
@@ -1614,15 +1475,7 @@ RlcMngmt   *cntrl;
  * 
  * @return  Void
  */
-#ifdef ANSI
-static Void rlcLmmCleanGblRsrcs
-(
-RlcCb   *gCb
-)
-#else
-static Void rlcLmmCleanGblRsrcs(gCb)
-RlcCb   *gCb;
-#endif
+static Void rlcLmmCleanGblRsrcs(RlcCb *gCb)
 {
    Size   rlcSapSize;
    Size   rlcUdxSapSize;
@@ -1721,15 +1574,7 @@ RlcCb   *gCb;
  *    -# LCM_REASON_NOT_APPL (SUCCESS)
  *    -# LCM_REASON_HASHING_FAILED 
  */
-#ifdef ANSI
-static S16 rlcLmmShutdown
-(
-RlcCb   *gCb
-)
-#else
-static S16 rlcLmmShutdown(gCb)
-RlcCb   *gCb;
-#endif
+static S16 rlcLmmShutdown(RlcCb *gCb)
 {
    RlcRguSapCb   *rguSap;
    uint32_t          idx;
@@ -1785,17 +1630,7 @@ RlcCb   *gCb;
  *    -# LCM_REASON_INVALID_SUBACTION
  *    -# LCM_REASON_INVALID_ACTION
  */
-#ifdef ANSI
-static S16 rlcLmmGenCntrl
-(
-RlcCb *gCb,
-RlcMngmt *cntrl       
-)
-#else
-static S16 rlcLmmGenCntrl(gCb,cntrl)
-RlcCb    *gCb;
-RlcMngmt *cntrl;     
-#endif
+static S16 rlcLmmGenCntrl(RlcCb *gCb,RlcMngmt *cntrl)
 {
    RlcTrcCntrl *trcCntrl; /* trace */
 #ifdef DEBUGP
@@ -1890,17 +1725,7 @@ RlcMngmt *cntrl;
  *    -# LCM_REASON_INVALID_STATE
  *    -# LCM_REASON_INVALID_ACTION 
  */
-#ifdef ANSI
-static S16 rlcLmmUdxSapCntrl
-(
-RlcCb      *gCb,
-RlcMngmt   *cntrl               
-)
-#else
-static S16 rlcLmmUdxSapCntrl(gCb,cntrl)
-RlcCb      *gCb;
-RlcMngmt   *cntrl;               
-#endif
+static S16 rlcLmmUdxSapCntrl(RlcCb *gCb,RlcMngmt *cntrl)
 {
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -1971,17 +1796,7 @@ RlcMngmt   *cntrl;
  *    -# LCM_REASON_INVALID_STATE
  *    -# LCM_REASON_INVALID_ACTION 
  */
-#ifdef ANSI
-static S16 rlcLmmLSapCntrl
-(
-RlcCb      *gCb,
-RlcMngmt   *cntrl 
-)
-#else
-static S16 rlcLmmLSapCntrl(gCb,cntrl)
-RlcCb      *gCb;
-RlcMngmt   *cntrl; 
-#endif
+static S16 rlcLmmLSapCntrl(RlcCb *gCb,RlcMngmt *cntrl)
 {
    RlcRguSapCb   *rguSap;   /* rgu sap pointer */
 
@@ -2054,17 +1869,7 @@ RlcMngmt   *cntrl;
  *    -# LCM_REASON_NOT_APPL       (SUCCESS)
  *    -# LCM_REASON_INVALID_PAR_VAL(FAILURE)
  */
-#ifdef ANSI
-static S16 rlcLmmGetKwuSapSta 
-(
-RlcCb          *gCb,
-RlcKwuSapSta   *sta         
-)
-#else
-static S16 rlcLmmGetKwuSapSta(gCb,sta)
-RlcCb          *gCb;
-RlcKwuSapSta   *sta;         
-#endif
+static S16 rlcLmmGetKwuSapSta (RlcCb *gCb,RlcKwuSapSta *sta)
 {
    RlcKwuSapCb   *rlcKwSapCb;
    
@@ -2097,17 +1902,7 @@ RlcKwuSapSta   *sta;
  *    -# LCM_REASON_NOT_APPL       (SUCCESS) 
  *    -# LCM_REASON_INVALID_PAR_VAL(FAILURE) 
  */
-#ifdef ANSI
-static S16 rlcLmmGetRguSapSta 
-(
-RlcCb          *gCb,
-RlcRguSapSta   *sta         
-)
-#else
-static S16 rlcLmmGetRguSapSta(gCb,sta)
-RlcCb          *gCb;
-RlcRguSapSta   *sta;       
-#endif
+static S16 rlcLmmGetRguSapSta(RlcCb *gCb,RlcRguSapSta *sta)
 {
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -2135,17 +1930,7 @@ RlcRguSapSta   *sta;
  *    -# LCM_REASON_NOT_APPL       (SUCCESS)
  *    -# LCM_REASON_INVALID_PAR_VAL(FAILURE)
  */
-#ifdef ANSI
-static S16 rlcLmmGetCkwCntSapSta
-(
-RlcCb             *gCb,
-RlcCkwCntSapSta   *sta     
-)
-#else
-static S16 rlcLmmGetCkwCntSapSta(gCb,sta)
-rlcCb             *gCb,
-RlcCkwCntSapSta   *sta;   
-#endif
+static S16 rlcLmmGetCkwCntSapSta(RlcCb *gCb,RlcCkwCntSapSta *sta)
 {
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -2174,19 +1959,7 @@ RlcCkwCntSapSta   *sta;
  *    -# LCM_REASON_NOT_APPL       (SUCCESS)
  *    -# LCM_REASON_INVALID_PAR_VAL(FAILURE)
  */
-#ifdef ANSI
-static S16 rlcLmmGetGenSts
-(
-RlcCb       *gCb,
-RlcGenSts   *sts,       
-Action     action         
-)
-#else
-static S16 rlcLmmGetGenSts(gCb,sts, action)
-RlcCb       *gCb;
-RlcGenSts   *sts;          
-Action     action;         
-#endif
+static S16 rlcLmmGetGenSts(RlcCb *gCb,RlcGenSts *sts,Action action)
 {
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -2220,21 +1993,7 @@ Action     action;
  *    -# LCM_REASON_NOT_APPL (SUCCESS)
  *    -# LCM_REASON_INVALID_PAR_VAL (FAIL)
  */
-#ifdef ANSI
-static S16 rlcLmmGetSapSts
-(
-RlcCb      *gCb,
-RlcMngmt   *sts,               
-Elmnt     elmnt,               
-Action    action             
-)
-#else
-static S16 rlcLmmGetSapSts(sts, elmnt, action)
-RlcCb      *gCb;
-RlcMngmt   *sts;            
-Elmnt     elmnt;            
-Action    action;         
-#endif
+static S16 rlcLmmGetSapSts(RlcCb *gCb,RlcMngmt *sts,Elmnt elmnt, Action action)
 {
 
    /* Validate protocol parameters */
@@ -2307,7 +2066,6 @@ Action    action;
  * @return  Void
  */
 #ifdef LTE_L2_MEAS
-#ifdef ANSI
 Void rlcLmmSendAlarm
 (
 RlcCb      *gCb,
@@ -2318,18 +2076,7 @@ SuId        suId,
 uint32_t    ueId,  
 uint8_t     qci   
 )
-#else
-Void rlcLmmSendAlarm(category, event, cause, suId, ueId, qci)
-RlcCb   *gCb;
-uint16_t    category; 
-uint16_t    event;   
-uint16_t    cause;  
-SuId        suId;  
-uint32_t    ueId; 
-uint8_t     qci;    
-#endif
 #else /* LTE_L2_MEAS */
-#ifdef ANSI
 Void rlcLmmSendAlarm
 (
 RlcCb       *gCb,
@@ -2339,15 +2086,6 @@ uint16_t    cause,
 SuId        suId,  
 uint32_t    ueId  
 )
-#else
-Void rlcLmmSendAlarm(category, event, cause, suId, ueId)
-RlcCb       *gCb;
-uint16_t    category; 
-uint16_t    event;   
-uint16_t    cause;  
-SuId        suId;  
-uint32_t    ueId; 
-#endif
 #endif /* LTE_L2_MEAS */
 {
    RlcMngmt   usta;   /* Rlc Management Structure */
@@ -2397,19 +2135,7 @@ uint32_t    ueId;
  *    -# ROK 
  *    -# RFAILED 
  */
-#ifdef ANSI
-S16 rlcLmmSendTrc
-(
-RlcCb     *gCb,
-Event    event,     
-Buffer   *mBuf     
-)
-#else
-S16 rlcLmmSendTrc(gCb,event, mBuf)
-RlcCb     *gCb;
-Event    event;   
-Buffer   *mBuf;  
-#endif
+S16 rlcLmmSendTrc(RlcCb *gCb,Event event,Buffer *mBuf)
 {
    RlcMngmt   trc;              /* RLC management control block */
    Buffer    *dstMbuf;   
@@ -2537,17 +2263,7 @@ Buffer   *mBuf;
  *
  */
  
-#ifdef ANSI
-S16 rlcActvTmr
-(
-Ent    ent,
-Inst   inst
-)
-#else
-S16 rlcActvTmr(ent,inst)
-Ent    ent;
-Inst   inst;
-#endif
+S16 rlcActvTmr(Ent ent,Inst inst)
 {
    RlcCb   *gCb; 
 

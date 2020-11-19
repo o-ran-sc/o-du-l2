@@ -181,21 +181,7 @@ uint32_t grgUlrate_tfu;
  *      -# ROK 
  *      -# RFAILED 
  */
-#ifdef ANSI
-static S16 rgTOMUtlFillDatReqPdus 
-(
- TfuDatReqInfo *datInfo,
- RgDlSf        *dlSf,
- RgCellCb      *cellCb,
- RgErrInfo     *err
- )
-#else
-static S16 rgTOMUtlFillDatReqPdus(datInfo, dlSf, cellCb, err)
- TfuDatReqInfo *datInfo;
- RgDlSf        *dlSf;
- RgCellCb      *cellCb;
- RgErrInfo     *err;
-#endif
+static S16 rgTOMUtlFillDatReqPdus (TfuDatReqInfo *datInfo,RgDlSf *dlSf,RgCellCb *cellCb, RgErrInfo *err)
 {
    S16              ret;
    TfuDatReqPduInfo *datReq=NULLP;
@@ -371,33 +357,9 @@ static S16 rgTOMUtlFillDatReqPdus(datInfo, dlSf, cellCb, err)
  */
 /* ADD Changes for Downlink UE Timing Optimization */
 #ifndef LTEMAC_DLUE_TMGOPTMZ 
-#ifdef ANSI
-static S16 rgTOMUtlProcDlSf
-(
- RgDlSf     *dlSf,
- RgCellCb   *cellCb,
- RgErrInfo  *err
- )
+static S16 rgTOMUtlProcDlSf(RgDlSf *dlSf,RgCellCb *cellCb,RgErrInfo *err)
 #else
-static S16 rgTOMUtlProcDlSf (dlSf, cellCb, err)
- RgDlSf     *dlSf;
- RgCellCb   *cellCb;
- RgErrInfo  *err;
-#endif
-#else
-#ifdef ANSI
-S16 rgTOMUtlProcDlSf
-(
- RgDlSf     *dlSf,
- RgCellCb   *cellCb,
- RgErrInfo  *err
- )
-#else
-S16 rgTOMUtlProcDlSf (dlSf, cellCb, err)
- RgDlSf     *dlSf;
- RgCellCb   *cellCb;
- RgErrInfo  *err;
-#endif
+S16 rgTOMUtlProcDlSf(RgDlSf *dlSf,RgCellCb *cellCb,RgErrInfo *err)
 #endif
 {
    S16               ret;
@@ -485,17 +447,7 @@ uint32_t  rgMacGT;
  *      -# ROK 
  *      -# RFAILED 
  */
-#ifdef ANSI
-static S16 rgTOMUtlAllocPduEvnt 
-(
-Inst             inst,
- RgMacPdu         **pdu
- )
-#else
-static S16 rgTOMUtlAllocPduEvnt (inst,pdu)
-Inst             inst;
-RgMacPdu         **pdu;
-#endif
+static S16 rgTOMUtlAllocPduEvnt (Inst inst,RgMacPdu **pdu)
 {
 
    Mem               evntMem;
@@ -543,17 +495,7 @@ RgMacPdu         **pdu;
  * @param  [in] Bool       *error
  * @return 
  */
-#ifdef ANSI
-static Void rgTOMUtlFreePduEvnt
-(
- RgMacPdu *pdu,
- Bool      error
- )
-#else
-static Void rgTOMUtlFreePduEvnt (pdu, error)
-   RgMacPdu *pdu;
-   Bool      error;
-#endif
+static Void rgTOMUtlFreePduEvnt( RgMacPdu *pdu,Bool  error)
 {
 
    RgMacSdu       *sdu;
@@ -592,17 +534,7 @@ static Void rgTOMUtlFreePduEvnt (pdu, error)
  *      -# ROK 
  *      -# RFAILED 
  */
-#ifdef ANSI
-static S16 rgTOMInfAllocPduEvnt 
-(
-Inst           inst,
-RgInfSfDatInd **sfInfo
- )
-#else
-static S16 rgTOMInfAllocPduEvnt (inst,sfInfo)
-Inst             inst;
-RgInfSfDatInd **sfInfo;
-#endif
+static S16 rgTOMInfAllocPduEvnt (Inst inst,RgInfSfDatInd **sfInfo)
 {
 
    Mem               evntMem;
@@ -648,15 +580,7 @@ RgInfSfDatInd **sfInfo;
  * @param  [in] Bool       *error
  * @return 
  */
-#ifdef ANSI
-static Void rgTOMInfFreePduEvnt
-(
-RgInfSfDatInd *sfInfo
- )
-#else
-static Void rgTOMInfFreePduEvnt (sfInfo)
-RgInfSfDatInd *sfInfo;
-#endif
+static Void rgTOMInfFreePduEvnt(RgInfSfDatInd *sfInfo)
 {
 
    RG_FREE_MEM(sfInfo);
@@ -681,19 +605,7 @@ RgInfSfDatInd *sfInfo;
  * @param  [out] RgRguDedDatInd *dDatInd
  * @return 
  */
-#ifdef ANSI
-static S16 rgTomUtlPrepareL2MUlThrpInfo
-(
-   RgCellCb *cellCb,
-   RgUeCb  *ueCb,
-   RgRguDedDatInd  *dDatInd
- )
-#else
-static S16 rgTomUtlPrepareL2MUlThrpInfo(cellCb,ueCb,dDatInd)
-   RgCellCb *cellCb;
-   RgUeCb *ueCb;
-   RgRguDedDatInd    *dDatInd;
-#endif
+static S16 rgTomUtlPrepareL2MUlThrpInfo(RgCellCb *cellCb,RgUeCb *ueCb,RgRguDedDatInd *dDatInd)
 {
    uint8_t lcId;
    uint8_t lcgId;
@@ -750,47 +662,26 @@ static S16 rgTomUtlPrepareL2MUlThrpInfo(cellCb,ueCb,dDatInd)
  RgUeCb  *glblueCb5;
 
 #ifdef LTEMAC_SPS
-#ifdef ANSI
 static S16 rgTOMUtlProcMsg
 (
- RgCellCb      *cellCb, 
- RgUeCb        *ueCb,
- RgMacPdu      *pdu,
- Bool          isSpsRnti,
- Bool          *spsToBeActvtd,
- uint16_t      *sduSize,
- uint16_t      slot,
- uint32_t      *lcgBytes
- )
-#else
-static S16 rgTOMUtlProcMsg(cellCb, ueCb, pdu, isSpsRnti,spsToBeActvtd,sduSize, slot, lcgBytes)
-   RgCellCb      *cellCb; 
-   RgUeCb        *ueCb;
-   RgMacPdu      *pdu;
-   Bool          isSpsRnti;
-   Bool          *spsToBeActvtd;
-   uint16_t      *sduSize;
-   uint16_t      slot;
-   uint32_t      *lcgBytes;
-#endif   
+RgCellCb      *cellCb, 
+RgUeCb        *ueCb,
+RgMacPdu      *pdu,
+Bool          isSpsRnti,
+Bool          *spsToBeActvtd,
+uint16_t      *sduSize,
+uint16_t      slot,
+uint32_t      *lcgBytes
+)
 #else /* LTEMAC_SPS */
-#ifdef ANSI
 static S16 rgTOMUtlProcMsg
 (
- RgCellCb      *cellCb, 
- RgUeCb        *ueCb,
- RgMacPdu      *pdu,
- uint16_t      slot,
- uint32_t      *lcgBytes
- )
-#else
-static S16 rgTOMUtlProcMsg(cellCb, ueCb, pdu, slot, lcgBytes)
-   RgCellCb      *cellCb; 
-   RgUeCb        *ueCb;
-   RgMacPdu      *pdu;
-   uint16_t       slot;
-   uint32_t       *lcgByes;
-#endif  
+RgCellCb      *cellCb, 
+RgUeCb        *ueCb,
+RgMacPdu      *pdu,
+uint16_t      slot,
+uint32_t      *lcgBytes
+)
 #endif
 {
    Inst              inst = cellCb->macInst - RG_INST_START;
@@ -1126,7 +1017,6 @@ static S16 rgTOMUtlProcMsg(cellCb, ueCb, pdu, slot, lcgBytes)
  * @return 
  */
 #ifdef LTEMAC_SPS
-#ifdef ANSI
 static S16 rgTOMUtlInsSchInfo
 (
 RgMacPdu *pdu,
@@ -1138,18 +1028,6 @@ uint16_t       sduSize,
 uint32_t       *lcgBytes
 )
 #else
-static S16 rgTOMUtlInsSchInfo (pdu, sfInfo, ceInfo, rnti,spsToBeActvtd,sduSize, lcgBytes)
-RgMacPdu *pdu;
-RgInfSfDatInd   *sfInfo;
-RgInfCeInfo 	*ceInfo;
-CmLteRnti        rnti;
-Bool             spsToBeActvtd;
-uint16_t         sduSize;
-uint32_t         *lcgBytes;
-#endif
-
-#else
-#ifdef ANSI
 static S16 rgTOMUtlInsSchInfo
 (
 RgMacPdu *pdu,
@@ -1158,14 +1036,6 @@ RgInfCeInfo *ceInfo,
 CmLteRnti   rnti,
 uint32_t    *lcgBytes
 )
-#else
-static S16 rgTOMUtlInsSchInfo (pdu, sfInfo, ceInfo, rnti, lcgBytes)
-RgMacPdu *pdu;
-RgInfSfDatInd *sfInfo;
-RgInfCeInfo *ceInfo;
-CmLteRnti   rnti;
-uint32_t    *lcgBytes;
-#endif
 #endif
 {
    S16            ret;
@@ -1238,17 +1108,7 @@ uint32_t    *lcgBytes;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 rgTOMDatInd
-(
-Inst           inst,
- TfuDatIndInfo *datInd
- )
-#else
-S16 rgTOMDatInd(inst,datInd)
-Inst             inst;
- TfuDatIndInfo *datInd;
-#endif
+S16 rgTOMDatInd(Inst inst, TfuDatIndInfo *datInd)
 {
    S16               ret = ROK;
    RgErrInfo         err;
@@ -1532,7 +1392,6 @@ Inst             inst;
  *      -# ROK 
  *      -# RFAILED
  **/
-#ifdef ANSI
 static S16 rgHndlCmnChnl
 (
 RgCellCb            *cell,
@@ -1540,13 +1399,6 @@ CmLteTimingInfo     timingInfo,
 RgInfCmnLcInfo      *cmnLcInfo,
 RgErrInfo           *err
 )
-#else
-static S16 rgHndlCmnChnl(cell, timingInfo, cmnLcInfo, err)
-RgCellCb            *cell;
-CmLteTimingInfo     timingInfo;
-RgInfCmnLcInfo      *cmnLcInfo;
-RgErrInfo           *err;
-#endif
 {
    #if (ERRCLASS & ERRCLS_DEBUG)
    RgPcchLcCb           *pcch;
@@ -1723,7 +1575,6 @@ RgErrInfo           *err;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 static S16 rgHndlSchdUe
 (
 RgCellCb            *cell,
@@ -1731,13 +1582,6 @@ CmLteTimingInfo     timingInfo,
 RgInfUeInfo         *ueInfo,
 RgErrInfo           *err
 )
-#else
-static S16 rgHndlSchdUe(cell, timingInfo, ueInfo, err) /* laa_ut_fix */
-RgCellCb            *cell;
-CmLteTimingInfo     timingInfo;
-RgInfUeInfo         *ueInfo;
-RgErrInfo           *err;
-#endif
 {
 
 
@@ -1767,19 +1611,12 @@ RgErrInfo           *err;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 static S16 rgHndlUlUeInfo
 (
 RgCellCb            *cell,
 CmLteTimingInfo     timingInfo,
 RgInfUlUeInfo       *ueInfo
 )
-#else
-static S16 rgHndlUlUeInfo(cell, timingInfo, ueInfo)
-RgCellCb            *cell;
-CmLteTimingInfo     timingInfo;
-RgInfUlUeInfo       *ueInfo;
-#endif
 {
    Inst           inst = cell->macInst - RG_INST_START;
    uint8_t        idx;
@@ -1848,17 +1685,7 @@ RgInfUlUeInfo       *ueInfo;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
-Void rgTOMRlsSf
-(
-Inst                inst,
-RgDlSf              *dlSf
-)
-#else
-Void rgTOMRlsSf(dlSf)
-Inst                inst;
-RgDlSf              *dlSf;
-#endif
+Void rgTOMRlsSf(Inst inst,RgDlSf *dlSf)
 {
    uint8_t          idx;
 
@@ -1945,17 +1772,7 @@ RgDlSf              *dlSf;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
-S16 rgHndlFlowCntrl
-(
-RgCellCb       *cell,
-RgInfSfAlloc        *sfInfo
-)
-#else
-S16 rgHndlFlowCntrl(cell, sfInfo)
-RgCellCb            *cell;
-RgInfSfAlloc        *sfInfo;
-#endif
+S16 rgHndlFlowCntrl(RgCellCb *cell,RgInfSfAlloc *sfInfo)
 {
    RguFlowCntrlInd  *flowCntrlInd;
    Pst              *pst;
@@ -2013,17 +1830,7 @@ RgInfSfAlloc        *sfInfo;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
-S16 RgSchMacSfAllocReq
-(
-Pst                 *pst,
-RgInfSfAlloc        *sfInfo
-)
-#else
-S16 RgSchMacSfAllocReq(pst, sfInfo)
-Pst                 *pst;
-RgInfSfAlloc        *sfInfo;
-#endif
+S16 RgSchMacSfAllocReq(Pst *pst,RgInfSfAlloc *sfInfo)
 {
    RgCellCb       *cell;
    RgDlSf         *dlSf;
@@ -2159,7 +1966,6 @@ RgInfSfAlloc        *sfInfo;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 static S16 rgTOMProcCrntiCEInDatInd
 (
 RgMacPdu          *pdu,
@@ -2169,15 +1975,6 @@ TfuDatInfo        *datInfo,
 RgInfCeInfo       *ceInfo,
 uint16_t               slot
 )
-#else
-static S16 rgTOMProcCrntiCEInDatInd( pdu, prevUeCb, cellCb, datInfo, ceInfo, slot)
-RgMacPdu          *pdu;
-RgUeCb            *prevUeCb;
-RgCellCb          *cellCb;
-TfuDatInfo        *datInfo;
-RgInfCeInfo       *ceInfo;
-uint16_t               slot;
-#endif
 {
    RgUeCb *ueCb = NULLP;
    Inst   inst  = cellCb->macInst - RG_INST_START;
@@ -2260,7 +2057,6 @@ uint16_t               slot;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 static S16 rgTOMProcCCCHSduInDatInd
 (
 RgMacPdu          *pdu,
@@ -2270,15 +2066,6 @@ TfuDatInfo        *datInfo,
 RgInfCeInfo       *ceInfo,
 uint16_t               slot 
 )
-#else
-static S16 rgTOMProcCCCHSduInDatInd( pdu, prevUeCb, cellCb, datInfo, ceInfo, slot)
-RgMacPdu          *pdu;
-RgUeCb            *prevUeCb;
-RgCellCb          *cellCb;
-TfuDatInfo        *datInfo;
-RgInfCeInfo       *ceInfo;
-uint16_t               slot;
-#endif
 {
    RgUeCb *ueCb = NULLP;
    Inst   inst  = cellCb->macInst - RG_INST_START;
@@ -2358,17 +2145,7 @@ uint16_t               slot;
  * @return S16
  */
 
-#ifdef ANSI
-static S16 rgTOMUtlL2MStoreBufSz
-(
- RgUeCb      *ueCb,
- RgInfCeInfo *ceInfo
- )
-#else
-static S16 rgTOMUtlL2MStoreBufSz (ueCb, ceInfo)
- RgUeCb      *ueCb;
- RgInfCeInfo *ceInfo;
-#endif
+static S16 rgTOMUtlL2MStoreBufSz( RgUeCb *ueCb, RgInfCeInfo *ceInfo )
 {
    uint8_t lcgId;
    uint8_t bsr;
@@ -2409,21 +2186,7 @@ static S16 rgTOMUtlL2MStoreBufSz (ueCb, ceInfo)
  *      -# ROK 
  *      -# RFAILED 
  */
-#ifdef ANSI
-static Void rgTOML2MCompileActiveLCs
-(
- RgCellCb      *cellCb, 
- RgUeCb        *ueCb,
- RgMacPdu      *pdu,
- RgInfCeInfo   *ceInfo 
- )
-#else
-static Void rgTOML2MCompileActiveLCs(cellCb, ueCb, pdu, ceInfo)
-   RgCellCb      *cellCb; 
-   RgUeCb        *ueCb;
-   RgMacPdu      *pdu;
-   RgInfCeInfo   *ceInfo; 
-#endif 
+static Void rgTOML2MCompileActiveLCs(RgCellCb *cellCb,RgUeCb *ueCb,RgMacPdu *pdu,RgInfCeInfo *ceInfo)
 {
    CmLList           *node;
    RgMacSdu          *sdu;

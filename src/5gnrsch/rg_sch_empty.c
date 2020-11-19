@@ -59,13 +59,7 @@
  * 
  *  @return Void
  **/
-#ifdef ANSI
-Void rgSCHCmnSpsInit
-(
-)
-#else /* ANSI */
-Void rgSCHCmnSpsInit ()
-#endif /* ANSI */
+Void rgSCHCmnSpsInit()
 {
 
    return;
@@ -81,21 +75,7 @@ Void rgSCHCmnSpsInit ()
  * 
  *  @return Void
  **/
-#ifdef ANSI
-S16 rgSCHCmnSpsUeCfg
-(
-RgSchCellCb        *cell,
-RgSchUeCb          *ue,
-RgrUeCfg           *ueCfg,
-RgSchErrInfo       *err
-)
-#else /* ANSI */
-S16 rgSCHCmnSpsUeCfg (cell, ue, ueCfg, err)
-RgSchCellCb        *cell;
-RgSchUeCb          *ue;
-RgrUeCfg           *ueCfg;
-RgSchErrInfo       *err;
-#endif /* ANSI */
+S16 rgSCHCmnSpsUeCfg(RgSchCellCb *cell,RgSchUeCb  *ue,RgrUeCfg *ueCfg,RgSchErrInfo *err)
 {
 
    return ROK;
@@ -111,21 +91,7 @@ RgSchErrInfo       *err;
  * 
  *  @return Void
  **/
-#ifdef ANSI
-S16 rgSCHCmnSpsUeRecfg
-(
-RgSchCellCb        *cell,
-RgSchUeCb          *ue,
-RgrUeRecfg         *ueRecfg,
-RgSchErrInfo       *err
-)
-#else /* ANSI */
-S16 rgSCHCmnSpsUeRecfg (cell, ue, ueCfg, err)
-RgSchCellCb        *cell;
-RgSchUeCb          *ue;
-RgrUeRecfg         *ueRecfg;
-RgSchErrInfo       *err;
-#endif /* ANSI */
+S16 rgSCHCmnSpsUeRecfg(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeRecfg *ueRecfg,RgSchErrInfo *err)
 {
 
    return ROK;
@@ -141,17 +107,7 @@ RgSchErrInfo       *err;
  * 
  *  @return Void
  **/
-#ifdef ANSI
-Void rgSCHCmnSpsUeDel
-(
-RgSchCellCb        *cell,
-RgSchUeCb          *ue
-)
-#else /* ANSI */
-Void rgSCHCmnSpsUeDel (cell, ue)
-RgSchCellCb        *cell;
-RgSchUeCb          *ue;
-#endif /* ANSI */
+Void rgSCHCmnSpsUeDel(RgSchCellCb *cell,RgSchUeCb  *ue)
 {
 
    return;
@@ -167,19 +123,7 @@ RgSchUeCb          *ue;
  * 
  *  @return Void
  **/
-#ifdef ANSI
-S16 rgSCHCmnSpsCellCfg
-(
-RgSchCellCb        *cell,
-RgrCellCfg         *cellCfg,
-RgSchErrInfo       *err
-)
-#else /* ANSI */
-S16 rgSCHCmnSpsCellCfg(cell, cellCfg, err)
-RgSchCellCb        *cell;
-RgrCellCfg         *cellCfg;
-RgSchErrInfo       *err;
-#endif /* ANSI */
+S16 rgSCHCmnSpsCellCfg(RgSchCellCb *cell,RgrCellCfg *cellCfg,RgSchErrInfo *err)
 {
 
    return ROK;
@@ -195,15 +139,7 @@ RgSchErrInfo       *err;
  * 
  *  @return Void
  **/
-#ifdef ANSI
-Void rgSCHCmnSpsCellDel
-(
-RgSchCellCb        *cell
-)
-#else /* ANSI */
-Void rgSCHCmnSpsCellDel (cell)
-RgSchCellCb        *cell;
-#endif /* ANSI */
+Void rgSCHCmnSpsCellDel(RgSchCellCb *cell)
 {
 
    return;
@@ -219,23 +155,7 @@ RgSchCellCb        *cell;
  * 
  *  @return Void
  **/
-#ifdef ANSI
-S16 rgSCHCmnSpsDlLcCfg 
-(
-RgSchCellCb        *cell,
-RgSchUeCb          *ue,
-RgSchDlLcCb        *dlLc,
-RgrLchCfg          *lcCfg,
-RgSchErrInfo       *err
-)
-#else /* ANSI */
-S16 rgSCHCmnSpsDlLcCfg(cell, ue, dlLc, lcCfg, err)
-RgSchCellCb        *cell;
-RgSchUeCb          *ue;
-RgSchDlLcCb        *dlLc;
-RgrLchCfg          *lcCfg;
-RgSchErrInfo       *err
-#endif /* ANSI */
+S16 rgSCHCmnSpsDlLcCfg(RgSchCellCb  *cell,RgSchUeCb  *ue,RgSchDlLcCb  *dlLc,RgrLchCfg  *lcCfg,RgSchErrInfo  *err)
 {
 
    return ROK;

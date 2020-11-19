@@ -111,17 +111,11 @@
 *       File:  ss_mem.c
 *
 */
-#ifdef ANSI
 S16 SRegDynRegion
 (
 Region region,                  /* region ID */
 SRegInfo *regInfo               /* information about the region */
 )
-#else
-S16 SRegDynRegion(region, regInfo)
-Region region;                  /* region ID */
-SRegInfo *regInfo;              /* information about the region */
-#endif
 {
    S16 ret;
 
@@ -205,17 +199,11 @@ SRegInfo *regInfo;              /* information about the region */
 *       File:  ss_mem.c
 *
 */
-#ifdef ANSI
 S16 SRegRegion
 (
 Region region,                  /* region ID */
 SRegInfo *regInfo               /* information about the region */
 )
-#else
-S16 SRegRegion(region, regInfo)
-Region region;                  /* region ID */
-SRegInfo *regInfo;              /* information about the region */
-#endif
 {
    S16 ret;
 
@@ -297,15 +285,10 @@ SRegInfo *regInfo;              /* information about the region */
 *       File:  ss_mem.c
 *
 */
-#ifdef ANSI
 S16 SDeregRegion
 (
 Region region                   /* region ID */
 )
-#else
-S16 SDeregRegion(region)
-Region region;                  /* region ID */
-#endif
 {
    S16 ret;
 
@@ -384,7 +367,6 @@ Region region;                  /* region ID */
 #ifndef SS_FAP
 /* ss001.301: Additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
-#ifdef ANSI
 S16 SAlloc
 (
 Region region,                  /* region ID */
@@ -395,16 +377,6 @@ uint32_t   line,
 uint8_t    *fileName,
 uint8_t    entId
 )
-#else
-S16 SAlloc(region, size, flags, ptr, line, fileName, entId)
-Region region;                  /* region ID */
-Size *size;                     /* size of block required/allocated */
-uint32_t flags;                      /* allocation flags */
-Data **ptr;                     /* filled with pointer to block */
-uint32_t   line;
-uint8_t   *fileName;
-uint8_t    entId;
-#endif
 #else
 #ifdef T2K_MEM_LEAK_DBG
 S16 SAllocNew
@@ -417,7 +389,6 @@ char* file,
 uint32_t line
 )
 #else
-#ifdef ANSI
 S16 SAlloc
 (
 Region region,                  /* region ID */
@@ -425,13 +396,6 @@ Size *size,                     /* size of block required/allocated */
 uint32_t flags,                      /* allocation flags */
 Data **ptr                      /* filled with pointer to block */
 )
-#else
-S16 SAlloc(region, size, flags, ptr)
-Region region;                  /* region ID */
-Size *size;                     /* size of block required/allocated */
-uint32_t flags;                      /* allocation flags */
-Data **ptr;                     /* filled with pointer to block */
-#endif
 #endif
 #endif
 {
@@ -584,7 +548,6 @@ Data **ptr;                     /* filled with pointer to block */
 */
 /* ss001.301: Additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
-#ifdef ANSI
 S16 SFree
 (
 Region region,                  /* region ID */
@@ -595,16 +558,6 @@ uint8_t   *fileName,
 uint8_t   entId
 )
 #else
-S16 SFree(region, ptr, size, line, fileName, entId)
-Region region;                  /* region ID */
-Data *ptr;                      /* pointer to the allocated block */
-Size size;                      /* size of block */
-uint32_t  line;
-uint8_t   *fileName;
-uint8_t   entId;
-#endif
-#else
-#ifdef ANSI
 #ifdef T2K_MEM_LEAK_DBG
 S16 SFreeNew
 (
@@ -621,12 +574,6 @@ Region region,                  /* region ID */
 Data *ptr,                      /* pointer to the allocated block */
 Size size                       /* size of block */
 )
-#endif
-#else
-S16 SFree(region, ptr, size)
-Region region;                  /* region ID */
-Data *ptr;                      /* pointer to the allocated block */
-Size size;                      /* size of block */
 #endif
 #endif
 {
@@ -794,15 +741,10 @@ Size size;                      /* size of block */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
 S16 SHstGrmInfoShow 
 (
 Ent      *entId
 )
-#else
-S16 SHstGrmInfoShow(entId)
-Ent      *entId;
-#endif
 {
     /*ss012.301 : Increased Buffer size to fix segmentation fault*/
     Txt   					prntBuf[511];  /* Buffer to print on the console */

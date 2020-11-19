@@ -104,17 +104,7 @@ S16 rgTOMUtlProcDlSf ARGS(( RgDlSf     *dlSf,
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 rgROMDedDatReq
-(
-Inst      inst,
-RgRguDedDatReq *datReq
-)
-#else
-S16 rgROMDedDatReq(inst,datReq)
-Inst      inst;
-RgRguDedDatReq *datReq;
-#endif
+S16 rgROMDedDatReq(Inst inst,RgRguDedDatReq *datReq)
 {
 #if 0
    RgCellCb     *cell;
@@ -328,17 +318,7 @@ RgRguDedDatReq *datReq;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 rgROMCmnDatReq
-(
-Inst            inst,
-RgRguCmnDatReq *datReq
-)
-#else
-S16 rgROMCmnDatReq(inst,datReq)
-Inst            inst;
-RgRguCmnDatReq *datReq;
-#endif
+S16 rgROMCmnDatReq(Inst inst, RgRguCmnDatReq *datReq)
 {
    RgCellCb    *cell;
    RgErrInfo   err;
@@ -432,19 +412,7 @@ RgRguCmnDatReq *datReq;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-static S16 rgROMHndlCcchDatReq
-(
-RgCellCb       *cell,
-RgRguCmnDatReq *datReq,
-RgErrInfo      *err
-)
-#else
-static S16 rgROMHndlCcchDatReq(cell, datReq, err)
-RgCellCb       *cell;
-RgRguCmnDatReq *datReq;
-RgErrInfo      *err;
-#endif
+static S16 rgROMHndlCcchDatReq(RgCellCb *cell, RgRguCmnDatReq *datReq, RgErrInfo *err)
 {
    Inst     inst = cell->macInst - RG_INST_START;
    RgUeCb   *ue;
@@ -530,19 +498,7 @@ RgErrInfo      *err;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-static S16 rgROMHndlBcchPcchDatReq
-(
-RgCellCb       *cell,
-RgRguCmnDatReq *datReq,
-RgErrInfo      *err
-)
-#else
-static S16 rgROMHndlBcchPcchDatReq(cell, datReq, err)
-RgCellCb       *cell;
-RgRguCmnDatReq *datReq;
-RgErrInfo      *err;
-#endif
+static S16 rgROMHndlBcchPcchDatReq(RgCellCb *cell, RgRguCmnDatReq *datReq, RgErrInfo *err)
 {
    Inst            inst = cell->macInst - RG_INST_START;
    RgPcchLcCb      *pcch;
@@ -631,17 +587,7 @@ RgErrInfo      *err;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 rgROMDedStaRsp
-(
-Inst           inst,
-RgRguDedStaRsp *staRsp
-)
-#else
-S16 rgROMDedStaRsp(inst,staRsp)
-Inst           inst;
-RgRguDedStaRsp *staRsp;
-#endif
+S16 rgROMDedStaRsp(Inst inst, RgRguDedStaRsp *staRsp)
 {
    RgCellCb   *cell;
 
@@ -724,17 +670,7 @@ S32 bo
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 rgROMCmnStaRsp
-(
-Inst            inst, 
-RgRguCmnStaRsp *staRsp
-)
-#else
-S16 rgROMCmnStaRsp(inst,staRsp)
-Inst            inst;
-RgRguCmnStaRsp *staRsp;
-#endif
+S16 rgROMCmnStaRsp(Inst inst, RgRguCmnStaRsp *staRsp)
 {
    RgCellCb   *cell;
    RgErrInfo  err;
@@ -783,17 +719,7 @@ RgRguCmnStaRsp *staRsp;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 rgROML2MUlThrpMeasReq 
-(
-Inst                  inst,
-RgRguL2MUlThrpMeasReq *measReq
-)
-#else
-S16 rgROML2MUlThrpMeasReq(inst,measReq)
-Inst                  inst;
-RgRguL2MUlThrpMeasReq *measReq;
-#endif
+S16 rgROML2MUlThrpMeasReq(Inst inst, RgRguL2MUlThrpMeasReq *measReq)
 {
    RgCellCb   *cell;
    RgUeCb     *ue;
@@ -846,19 +772,7 @@ RgRguL2MUlThrpMeasReq *measReq;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-static S16 rgROMHndlCcchStaRsp
-(
-RgCellCb       *cell,
-RgRguCmnStaRsp *staRsp,
-RgErrInfo      *err
-)
-#else
-static S16 rgROMHndlCcchStaRsp(cell, staRsp, err)
-RgCellCb       *cell;
-RgRguCmnStaRsp *staRsp;
-RgErrInfo      *err;
-#endif
+static S16 rgROMHndlCcchStaRsp(RgCellCb *cell,RgRguCmnStaRsp *staRsp, RgErrInfo *err)
 {
    Pst      schPst;
    Inst     macInst = cell->macInst - RG_INST_START;
@@ -897,19 +811,7 @@ RgErrInfo      *err;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-static S16 rgROMHndlBcchPcchStaRsp
-(
-RgCellCb       *cell,
-RgRguCmnStaRsp *staRsp,
-RgErrInfo      *err
-)
-#else
-static S16 rgROMHndlBcchPcchStaRsp(cell, staRsp, err)
-RgCellCb       *cell;
-RgRguCmnStaRsp *staRsp;
-RgErrInfo      *err;
-#endif
+static S16 rgROMHndlBcchPcchStaRsp(RgCellCb *cell,RgRguCmnStaRsp *staRsp,RgErrInfo *err)
 {
    Pst      schPst;
    //RgInfCmnBoRpt boRpt;
@@ -977,17 +879,7 @@ RgErrInfo      *err;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-static S16 rgROMUpdDlSfRemDataCnt
-(
-RgCellCb       *cellCb,
-RgDlSf         *dlSf
-)
-#else
-static S16 rgROMUpdDlSfRemDataCnt(cellCb, dlSf)
-RgCellCb       *cellCb;
-RgDlSf         *dlSf;
-#endif
+static S16 rgROMUpdDlSfRemDataCnt(RgCellCb *cellCb, RgDlSf *dlSf)
 {
    RgErrInfo            err;
    //Inst                 inst = cellCb->macInst - RG_INST_START;

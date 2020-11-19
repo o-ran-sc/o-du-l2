@@ -315,21 +315,7 @@ static S16 rlcAddToDlL2Meas(RlcCb *gCb, RlcDlRbCb *rlcRbCb,uint8_t cellId,uint8_
  *    -#ROK
  *    -#RFAILED
  */
-#ifdef ANSI
-static S16 rlcCfgFillDlRbCb
-(
-RlcCb            *gCb,
-RlcDlRbCb        *rbCb,
-RlcDlUeCb        *ueCb,
-RlcEntCfgInfo   *entCfg
-)
-#else
-static S16 rlcCfgFillDlRbCb(gCb,rbCb,entCfg)
-RlcCb            *gCb;
-RlcDlRbCb        *rbCb;
-RlcDlUeCb        *ueCb;
-RlcEntCfgInfo   *entCfg;
-#endif
+static S16 rlcCfgFillDlRbCb(RlcCb *gCb,RlcDlRbCb *rbCb,RlcDlUeCb *ueCb,RlcEntCfgInfo *entCfg)
 {
 
    RLOG_ARG3(L_DEBUG,DBG_RBID,entCfg->rbId,
@@ -431,21 +417,13 @@ RlcEntCfgInfo   *entCfg;
  *    -#ROK
  *    -#RFAILED
  */
-#ifdef ANSI
 static S16 rlcCfgUpdateDlRb
 (
-RlcCb            *gCb,
-RlcDlRbCb        *rbCb,
+RlcCb           *gCb,
+RlcDlRbCb       *rbCb,
 void            *ptr,
 RlcEntCfgInfo   *entCfg
 )
-#else
-static S16 rlcCfgUpdateDlRb(gCb,rbCb, ptr, entCfg)
-RlcCb            *gCb;
-RlcDlRbCb        *rbCb;
-void            *ptr;
-RlcEntCfgInfo   *entCfg;
-#endif
 {
    
    if (rbCb->mode != entCfg->entMode)
@@ -546,7 +524,6 @@ RlcEntCfgInfo   *entCfg;
  *    -# ROK
  *    -# RFAILED
  */
-#ifdef ANSI
 S16 rlcCfgAddDlRb
 (
 RlcCb               *gCb,
@@ -555,14 +532,6 @@ CmLteCellId        cellId,
 RlcEntCfgInfo      *entCfg,
 RlcEntCfgCfmInfo   *entCfm
 )
-#else
-S16 rlcCfgAddDlRb(gCb,ueId, cellId, entCfg, entCfm)
-RlcCb               *gCb;
-CmLteRnti          ueId;
-CmLteCellId        cellId;
-RlcEntCfgInfo      *entCfg;
-RlcEntCfgCfmInfo   *entCfm;
-#endif
 {
    RlcDlUeCb     *ueCb = NULLP;   /* UE Control Block */
    RlcDlCellCb   *cellCb;         /* Cell Control Block */
@@ -871,7 +840,6 @@ RlcEntCfgCfmInfo   *entCfm;
  *    -#ROK
  *    -#RFAILED
  */
-#ifdef ANSI
 S16 rlcCfgReCfgDlRb
 (
 RlcCb               *gCb,
@@ -880,14 +848,6 @@ CmLteCellId        cellId,
 RlcEntCfgInfo      *entCfg,
 RlcEntCfgCfmInfo   *entCfm
 )
-#else
-S16 rlcCfgReCfgDlRb(gCb,ueId, cellId, entCfg, entCfm)
-RlcCb               *gCb;
-CmLteRnti          ueId;
-CmLteCellId        cellId;
-RlcEntCfgInfo      *entCfg;
-RlcEntCfgCfmInfo   *entCfm;
-#endif
 {
    RlcDlRbCb     *rbCb;     /* RB Control Block */
    RlcDlRbCb     tRbCb;     /* KW RB Control Block */
@@ -1072,7 +1032,6 @@ RlcEntCfgCfmInfo   *entCfm;
  *    -#ROK
  *    -#RFAILED
  */
-#ifdef ANSI
 S16 rlcCfgDelDlRb
 (
 RlcCb               *gCb,
@@ -1081,14 +1040,6 @@ CmLteCellId        cellId,
 RlcEntCfgInfo      *entCfg,
 RlcEntCfgCfmInfo   *entCfm
 )
-#else
-S16 rlcCfgDelRb(gCb,ueId, cellId, entCfg, entCfm)
-RlcCb               *gCb;
-CmLteRnti          ueId;
-CmLteCellId        cellId;
-RlcEntCfgInfo      *entCfg;
-RlcEntCfgCfmInfo   *entCfm;
-#endif
 {
    S16          ret;       /* Return Value */
    RlcDlUeCb     *ueCb;     /* UE Control Block */
@@ -1266,25 +1217,15 @@ RlcEntCfgCfmInfo   *entCfm;
  *    -# ROK
  *    -# RFAILED
  */
-#ifdef ANSI
 S16 rlcCfgReEstDlRb
 (
-RlcCb               *gCb,
+RlcCb              *gCb,
 CmLteRnti          ueId,
 CmLteCellId        cellId,
 Bool               sndReEstInd,
 RlcEntCfgInfo      *entCfg,
 RlcEntCfgCfmInfo   *entCfm
 )
-#else
-S16 rlcCfgReEstDlRb(gCb,ueId, cellId,sndReEstInd,entCfg, entCfm)
-RlcCb               *gCb;
-CmLteRnti          ueId;
-CmLteCellId        cellId;
-Bool               sndReEstInd;
-RlcEntCfgInfo      *entCfg;
-RlcEntCfgCfmInfo   *entCfm;
-#endif
 {
    RlcDlRbCb     *rbCb;   /* RB Control Block */
    CmLteRlcId   rlcId;   /* RLC Identifier */
@@ -1367,23 +1308,14 @@ RlcEntCfgCfmInfo   *entCfm;
  *    -#ROK
  *    -#RFAILED
  */
-#ifdef ANSI
 S16 rlcCfgDelDlUe
 (
-RlcCb               *gCb,
+RlcCb              *gCb,
 CmLteRnti          ueId,
 CmLteCellId        cellId,
 RlcEntCfgInfo      *entCfg,
 RlcEntCfgCfmInfo   *entCfm
 )
-#else
-S16 rlcCfgDelDlUe(ueId, cellId, entCfg, entCfm)
-RlcCb               *gCb;
-CmLteRnti          ueId;
-CmLteCellId        cellId;
-RlcEntCfgInfo      *entCfg;
-RlcEntCfgCfmInfo   *entCfm;
-#endif
 {
    S16        ret;     /* Return Value */
    RlcDlUeCb   *ueCb;   /* UE Control Block */
@@ -1458,7 +1390,6 @@ RlcEntCfgCfmInfo   *entCfm;
  *    -#ROK
  *    -#RFAILED
  */
-#ifdef ANSI
 S16 rlcCfgDelDlCell
 (
 RlcCb               *gCb,
@@ -1466,13 +1397,6 @@ CmLteCellId        cellId,
 RlcEntCfgInfo      *entCfg,
 RlcEntCfgCfmInfo   *entCfm
 )
-#else
-S16 rlcCfgDelCell(gCb,cellId, entCfg, entCfm)
-RlcCb               *gCb;
-CmLteCellId        cellId;
-RlcEntCfgInfo      *entCfg;
-RlcEntCfgCfmInfo   *entCfm;
-#endif
 {
    RlcDlCellCb   *cellCb;   /* UE Control Block */
    uint8_t       rbId;      /* RB Identifier */
@@ -1542,7 +1466,6 @@ RlcEntCfgCfmInfo   *entCfm;
  *    -# ROK
  *    -# RFAILED
  */
-#ifdef ANSI
 S16 rlcCfgDlUeIdChng
 (
 RlcCb        *gCb,
@@ -1550,13 +1473,6 @@ CkwUeInfo   *ueInfo,
 CkwUeInfo   *newUeInfo,
 CmStatus    *status
 )
-#else
-S16 rlcCfgDlUeIdChng(gCb,ueInfo,newUeInfo,status)
-RlcCb        *gCb;
-CkwUeInfo   *ueInfo;
-CkwUeInfo   *newUeInfo;
-CmStatus    *status;
-#endif
 {
    RlcDlUeCb *ueCb;
 /*kw004.201 Adding of Missing Trace in LTE RLC PDCP*/

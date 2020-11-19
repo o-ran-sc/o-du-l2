@@ -571,21 +571,7 @@ void rlcUmmProcessSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *datReq)
  *
  * @return  Void
 */ 
-#ifdef ANSI
-Void rlcDlUmmReEstablish
-(
-RlcCb         *gCb,
-CmLteRlcId   rlcId,
-Bool         sendReEst,
-RlcDlRbCb     *rbCb
-)
-#else
-Void rlcDlUmmReEstablish(gCb, rlcId, rbCb)
-RlcCb         *gCb;
-CmLteRlcId   rlcId;
-Bool         sendReEst;
-RlcDlRbCb       *rbCb;
-#endif
+Void rlcDlUmmReEstablish(RlcCb *gCb,CmLteRlcId rlcId,Bool sendReEst,RlcDlRbCb *rbCb)
 {
    /* The re-establishment indication is sent from the UL only */
 
@@ -761,19 +747,7 @@ static void rlcUmmEstHdrSz(RlcUmDl *umDl)
  *
  * @return  Void
 */
-#ifdef ANSI
-Void rlcUmmDiscSdu
-(
-RlcCb       *gCb,
-RlcDlRbCb   *rbCb,                
-uint32_t        sduId                
-)
-#else
-Void rlcUmmDiscSdu(gCb,rbCb,sduId)
-RlcCb       *gCb;
-RlcDlRbCb   *rbCb;                
-uint32_t        sduId;                
-#endif
+Void rlcUmmDiscSdu(RlcCb *gCb,RlcDlRbCb *rbCb,uint32_t sduId)
 {
    CmLList *tmpNode;  /* Temporary Node in SDU queue */
    CM_LLIST_FIRST_NODE(&rbCb->m.umDl.sduQ,tmpNode);
@@ -806,17 +780,7 @@ uint32_t        sduId;
  *
  * @return Void
  */
-#ifdef ANSI
-Void rlcUmmFreeDlRbCb
-(
-RlcCb       *gCb,
-RlcDlRbCb   *rbCb
-)
-#else
-Void rlcUmmFreeDlRbCb(gCb,rbCb)
-RlcCb       *gCb;
-RlcDlRbCb   *rbCb;
-#endif
+Void rlcUmmFreeDlRbCb(RlcCb *gCb,RlcDlRbCb *rbCb)
 {
 
    /* cat the SDU queue to the to be freed list */

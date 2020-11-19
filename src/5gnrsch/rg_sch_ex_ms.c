@@ -73,17 +73,11 @@ registered with SSI during the LTE MAC Task initialization.
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
 S16 schActvTsk
 (
 Pst     *pst,                       /* post structure       */
 Buffer  *mBuf                       /* message buffer       */
 )
-#else
-S16 schActvTsk(pst, mBuf)
-Pst     *pst;                       /* post structure       */
-Buffer  *mBuf;                      /* message buffer       */
-#endif
 {
    switch(pst->srcEnt)
    {

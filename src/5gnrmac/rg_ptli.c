@@ -204,19 +204,12 @@ static const TfuDelDatReq RgLiTfuDelDatReqMt[RG_MAX_TFU_PROV] =
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 RgLiTfuDelDatReq
 (
 Pst * pst,
 SpId spId,
 TfuDelDatReqInfo * delDatReq
 )
-#else
-S16 RgLiTfuDelDatReq(pst, spId, delDatReq)
-Pst * pst;
-SpId spId;
-TfuDelDatReqInfo * delDatReq;
-#endif
 {
 
    return ((*RgLiTfuDelDatReqMt[pst->selector])(pst, spId, delDatReq));
@@ -249,21 +242,13 @@ TfuDelDatReqInfo * delDatReq;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 PtLiTfuBndReq
 (
 Pst * pst,
 SuId suId,
 SpId spId
 )
-#else
-S16 PtLiTfuBndReq(pst, suId, spId)
-Pst * pst;
-SuId suId;
-SpId spId;
-#endif
 {
-
 
    UNUSED(pst);
    UNUSED(suId);
@@ -294,19 +279,12 @@ SpId spId;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 PtLiTfuSchBndReq
 (
 Pst * pst,
 SuId suId,
 SpId spId
 )
-#else
-S16 PtLiTfuSchBndReq(pst, suId, spId)
-Pst * pst;
-SuId suId;
-SpId spId;
-#endif
 {
 
    UNUSED(pst);
@@ -338,19 +316,12 @@ SpId spId;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 PtLiTfuUbndReq
 (
 Pst * pst,
 SpId spId,
 Reason reason
 )
-#else
-S16 PtLiTfuUbndReq(pst, spId, reason)
-Pst * pst;
-SpId spId;
-Reason reason;
-#endif
 {
 
    UNUSED(pst);
@@ -382,19 +353,12 @@ Reason reason;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 PtLiTfuSchUbndReq
 (
 Pst * pst,
 SpId spId,
 Reason reason
 )
-#else
-S16 PtLiTfuSchUbndReq(pst, spId, reason)
-Pst * pst;
-SpId spId;
-Reason reason;
-#endif
 {
 
    UNUSED(pst);
@@ -440,19 +404,12 @@ Reason reason;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 PtLiTfuRecpReq
 (
 Pst * pst,
 SpId spId,
 TfuRecpReqInfo * recpReq
 )
-#else
-S16 PtLiTfuRecpReq(pst, spId, recpReq)
-Pst * pst;
-SpId spId;
-TfuRecpReqInfo * recpReq;
-#endif
 {
 
    UNUSED(pst);
@@ -491,19 +448,12 @@ TfuRecpReqInfo * recpReq;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 PtLiTfuCntrlReq
 (
 Pst * pst,
 SpId spId,
 TfuCntrlReqInfo * cntrlReq
 )
-#else
-S16 PtLiTfuCntrlReq(pst, spId, cntrlReq)
-Pst * pst;
-SpId spId;
-TfuCntrlReqInfo * cntrlReq;
-#endif
 {
 
    UNUSED(pst);
@@ -541,19 +491,12 @@ TfuCntrlReqInfo * cntrlReq;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 PtLiTfuDatReq
 (
 Pst * pst,
 SpId spId,
 TfuDatReqInfo * datReq
 )
-#else
-S16 PtLiTfuDatReq(pst, spId, datReq)
-Pst * pst;
-SpId spId;
-TfuDatReqInfo * datReq;
-#endif
 {
 
    UNUSED(pst);
@@ -590,19 +533,12 @@ TfuDatReqInfo * datReq;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
 S16 PtLiTfuDelDatReq
 (
 Pst * pst,
 SpId spId,
 TfuDelDatReqInfo * delDatReq
 )
-#else
-S16 PtLiTfuDelDatReq(pst, spId, delDatReq)
-Pst * pst;
-SpId spId;
-TfuDelDatReqInfo * DelDatReq;
-#endif
 {
 
    UNUSED(pst);

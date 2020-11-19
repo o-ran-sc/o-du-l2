@@ -294,17 +294,7 @@ void rlcStopTmr(RlcCb *gCb, PTR cb, uint8_t tmrType)
  *
  * @return  Void
 */
-#ifdef ANSI
-Void rlcTmrExpiry
-(
-PTR   cb,
-S16   tmrEvnt 
-)
-#else
-Void rlcTmrExpiry (cb, tmrEvnt)
-PTR   cb;
-S16   tmrEvnt;
-#endif
+Void rlcTmrExpiry(PTR cb,S16 tmrEvnt)
 {
 /* kw005.201 added support for L2 Measurement */
 
@@ -416,15 +406,7 @@ bool rlcChkTmr(RlcCb *gCb, PTR cb, int16_t tmrEvnt)
  *
  * @return  Void
 */
-#ifdef ANSI
-static Void rlcBndTmrExpiry
-(
-PTR cb
-)
-#else
-static Void rlcBndTmrExpiry(cb)
-PTR cb;
-#endif
+static Void rlcBndTmrExpiry(PTR cb)
 {
    RlcRguSapCb *rguSapCb; 
 

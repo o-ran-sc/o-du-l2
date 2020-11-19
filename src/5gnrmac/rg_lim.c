@@ -83,19 +83,12 @@ static Void rgLIMUtlFreeDatReqEvnt ARGS((TfuDatReqInfo *datReq,
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 RgLiTfuBndCfm 
 (
 Pst     *pst,
 SuId    suId, 
 uint8_t status
 )
-#else
-S16 RgLiTfuBndCfm(pst, suId, status)
-Pst     *pst; 
-SuId    suId; 
-uint8_t status;
-#endif
 {
    Inst inst;
    S16 ret;
@@ -130,17 +123,7 @@ uint8_t status;
   *   -# RFAILED
   */
 #ifdef UNUSED_FUNC
-#ifdef ANSI
-static S16 rgLIMValidateSap
-(
- Inst    inst,
- SuId    suId
-)
-#else
-static S16 rgLIMValidateSap(inst,suId)
- Inst    inst;
- SuId    suId;
-#endif
+static S16 rgLIMValidateSap(Inst  inst,SuId suId)
 {
    RgLowSapCb  *tfuSap;
 
@@ -176,17 +159,7 @@ static S16 rgLIMValidateSap(inst,suId)
  * @param  [in] Bool          *error
  * @return 
  */
-#ifdef ANSI
-static Void rgLIMUtlFreeDatIndEvnt 
-(
- TfuDatIndInfo *datInd,
- Bool          error
- )
-#else
-static Void rgLIMUtlFreeDatIndEvnt(datInd, error)
- TfuDatIndInfo *datInd;
- Bool          error;
-#endif
+static Void rgLIMUtlFreeDatIndEvnt(TfuDatIndInfo *datInd,Bool error)
 {
 
    TfuDatInfo     *datInfo;
@@ -227,19 +200,12 @@ static Void rgLIMUtlFreeDatIndEvnt(datInd, error)
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 RgLiTfuDatInd
 (
 Pst                *pst, 
 SuId               suId, 
 TfuDatIndInfo    *datInd
 )
-#else
-S16 RgLiTfuDatInd(pst, suId, datInd)
-Pst                *pst; 
-SuId               suId; 
-TfuDatIndInfo    *datInd;
-#endif
 {
    Inst             inst;
    S16              ret;
@@ -296,17 +262,7 @@ TfuDatIndInfo    *datInd;
  * @param  [in] Bool          *error
  * @return 
  */
-#ifdef ANSI
-static Void rgLIMUtlFreeDatReqEvnt
-(
- TfuDatReqInfo *datReq,
- Bool          error
- )
-#else
-static Void rgLIMUtlFreeDatReqEvnt(datReq, error)
- TfuDatReqInfo *datReq;
- Bool          error;
-#endif
+static Void rgLIMUtlFreeDatReqEvnt(TfuDatReqInfo *datReq,Bool  error)
 {
 
    TfuDatReqPduInfo *datInfo;
@@ -364,17 +320,7 @@ static Void rgLIMUtlFreeDatReqEvnt(datReq, error)
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 rgLIMTfuDelDatReq 
-(
-Inst          inst,
-TfuDelDatReqInfo *delDatReq
-)
-#else
-S16 rgLIMTfuDatReq(inst,delDatReq)
-Inst          inst;
-TfuDelDatReqInfo *delDatReq;
-#endif
+S16 rgLIMTfuDelDatReq(Inst inst,TfuDelDatReqInfo *delDatReq)
 {
    S16         ret;
    RgLowSapCb  *tfuSap;
@@ -417,17 +363,7 @@ TfuDelDatReqInfo *delDatReq;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 RgLiTfuNonRtInd
-(
-Pst                 *pst,
-SuId                suId
-)
-#else
-S16 RgLiTfuNonRtInd(pst, suId)
-Pst                 *pst;
-SuId                suId;
-#endif
+S16 RgLiTfuNonRtInd(Pst  *pst,SuId  suId)
 {
 
 #ifdef NO_ERRCLS

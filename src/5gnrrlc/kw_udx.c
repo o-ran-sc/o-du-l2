@@ -53,21 +53,7 @@
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
-static S16 cmUnpkUdxStruct
-(
-Buffer    *srcMBuf,
-uint32_t  offset,
-uint8_t   *dstBuf,
-uint32_t  size
-)
-#else
-static S16 cmUnpkUdxStruct(dstMBuf,srcBuf,size)
-Buffer    *srcMBuf;
-uint32_t  offset;
-uint8_t   *dstBuf;
-MsgLen    size;
-#endif
+static S16 cmUnpkUdxStruct(Buffer *srcMBuf,uint32_t offset,uint8_t *dstBuf,uint32_t size)
 {
     MsgLen tmpLen;
 
@@ -88,19 +74,7 @@ MsgLen    size;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
-static S16 cmPkUdxStruct
-(
-uint8_t  *srcBuf,
-MsgLen   size,
-Buffer   *dstMBuf
-)
-#else
-static S16 cmPkUdxStruct(dstMBuf,srcBuf,size)
-uint8_t *srcBuf;
-MsgLen  size;
-Buffer  *dstMBuf;
-#endif
+static S16 cmPkUdxStruct(uint8_t *srcBuf,MsgLen size,Buffer *dstMBuf)
 {
 
     return (SAddPstMsgMult(srcBuf,size,dstMBuf));
@@ -119,19 +93,7 @@ Buffer  *dstMBuf;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
-S16 cmPkUdxBndReq
-(
-Pst *pst,
-SuId suId,
-SpId spId
-)
-#else
-S16 cmPkUdxBndReq(pst, suId, spId)
-Pst *pst;
-SuId suId;
-SpId spId;
-#endif
+S16 cmPkUdxBndReq(Pst *pst,SuId suId,SpId spId)
 {
     S16 ret1;
     Buffer *mBuf;
@@ -169,19 +131,7 @@ SpId spId;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
-S16 cmPkUdxUbndReq
-(
-Pst *pst,
-SpId spId,
-Reason reason
-)
-#else
-S16 cmPkUdxUbndReq(pst, spId, reason)
-Pst *pst;
-SpId spId;
-Reason reason;
-#endif
+S16 cmPkUdxUbndReq(Pst *pst,SpId spId,Reason reason)
 {
     S16 ret1;
     Buffer *mBuf;
@@ -219,19 +169,7 @@ Reason reason;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
-S16 cmPkUdxBndCfm
-(
-Pst *pst,
-SuId suId,
-uint8_t status
-)
-#else
-S16 cmPkUdxBndCfm(pst, suId, status)
-Pst *pst;
-SuId suId;
-uint8_t status;
-#endif
+S16 cmPkUdxBndCfm(Pst *pst,SuId suId,uint8_t status)
 {
     S16 ret1;
     Buffer *mBuf;
@@ -271,19 +209,7 @@ uint8_t status;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
-S16 cmPkUdxCfgReq
-(
-Pst               *pst,
-SpId              spId,
-RlcCfgInfo        *cfgInfo
-)
-#else
-S16 cmPkUdxCfgReq(pst, spId, cfgInfo)
-Pst               *pst;
-SpId              spId;
-RlcCfgInfo        *cfgInfo;
-#endif
+S16 cmPkUdxCfgReq(Pst *pst,SpId  spId,RlcCfgInfo *cfgInfo)
 {
     S16 ret1;
     Buffer *mBuf;
@@ -340,19 +266,7 @@ RlcCfgInfo        *cfgInfo;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
-S16 cmPkUdxCfgCfm
-(
-Pst               *pst,
-SuId              suId,
-RlcCfgCfmInfo     *cfgCfmInfo
-)
-#else
-S16 cmPkUdxCfgCfm(pst, suId, cfgCfmInfo)
-Pst               *pst;
-SuId              suId;
-RlcCfgCfmInfo     *cfgCfmInfo;
-#endif
+S16 cmPkUdxCfgCfm(Pst *pst,SuId suId,RlcCfgCfmInfo  *cfgCfmInfo)
 {
     S16 ret1;
     Buffer *mBuf;
@@ -411,23 +325,14 @@ RlcCfgCfmInfo     *cfgCfmInfo;
 *    File:   ckw.c
 *
 */
-#ifdef ANSI
 S16 cmPkUdxUeIdChgReq
 (
-Pst               *pst,
-SpId              spId,
-uint32_t          transId,
-CkwUeInfo         *ueInfo,
-CkwUeInfo         *newUeInfo
+Pst        *pst,
+SpId       spId,
+uint32_t   transId,
+CkwUeInfo  *ueInfo,
+CkwUeInfo  *newUeInfo
 )
-#else
-S16 cmPkUdxUeIdChgReq(pst, spId, transId, ueInfo, newUeInfo)
-Pst               *pst;
-SpId              spId;
-uint32_t          transId;
-CkwUeInfo         *ueInfo;
-CkwUeInfo         *newUeInfo;
-#endif
 {
     S16    ret1;
     Buffer *mBuf = NULLP;
@@ -491,21 +396,7 @@ CkwUeInfo         *newUeInfo;
 *    File:   ckw.c
 *
 */
-#ifdef ANSI
-S16 cmPkUdxUeIdChgCfm
-(
-Pst               *pst,
-SuId              suId,
-uint32_t               transId,
-CmStatus          status
-)
-#else
-S16 cmPkUdxUeIdChgCfm(pst, suId, transId, status)
-Pst               *pst;
-SuId              suId;
-uint32_t               transId;
-CmStatus          status;
-#endif
+S16 cmPkUdxUeIdChgCfm(Pst *pst,SuId suId,uint32_t transId,CmStatus status)
 {
     S16    ret1;
     Buffer *mBuf = NULLP;
@@ -546,21 +437,7 @@ CmStatus          status;
 *    File:   ckw.c
 *
 */
-#ifdef ANSI
-S16 cmPkUdxStaUpdCfm
-(
-Pst               *pst,
-SuId              suId,
-CmLteRlcId        *rlcId,
-RlcUdxBufLst       *pStaPdu
-)
-#else
-S16 cmPkUdxStaUpdCfm(pst, suId, rlcId,pStaPdu)
-Pst               *pst;
-SuId              suId;
-CmLteRlcId        *rlcId;
-RlcUdxBufLst       *pStaPdu;
-#endif
+S16 cmPkUdxStaUpdCfm(Pst *pst,SuId suId,CmLteRlcId *rlcId,RlcUdxBufLst *pStaPdu)
 {
     S16    ret1;
     Buffer *mBuf = NULLP;
@@ -614,19 +491,7 @@ RlcUdxBufLst       *pStaPdu;
 *    File:   Kw_udx.c
 *
 */
-#ifdef ANSI
-S16 cmPkUdxStaProhTmrStart
-(
-Pst               *pst,
-SpId              spId,
-CmLteRlcId        *rlcId
-)
-#else
-S16 cmPkUdxStaProhTmrStart(pst, suId, rlcId)
-Pst               *pst;
-SpId              spId;
-CmLteRlcId        *rlcId;
-#endif
+S16 cmPkUdxStaProhTmrStart(Pst *pst,SpId spId,CmLteRlcId *rlcId)
 {
     S16    ret1;
     Buffer *mBuf = NULLP;
@@ -678,21 +543,7 @@ CmLteRlcId        *rlcId;
 *    File:   ckw.c
 *
 */
-#ifdef ANSI
-S16 cmPkUdxStaUpdReq
-(
-Pst               *pst,
-SpId              spId,
-CmLteRlcId        *rlcId,
-RlcUdxStaPdu      *pStaPdu
-)
-#else
-S16 cmPkUdxStaUpdReq(pst, suId, rlcId,pStaPdu)
-Pst               *pst;
-SpId              spId;
-CmLteRlcId        *rlcId;
-RlcUdxStaPdu       *pStaPdu;
-#endif
+S16 cmPkUdxStaUpdReq(Pst *pst,SpId spId,CmLteRlcId *rlcId,RlcUdxStaPdu *pStaPdu)
 {
     S16    ret1;
     Buffer *mBuf = NULLP;
@@ -749,21 +600,7 @@ RlcUdxStaPdu       *pStaPdu;
 *    File:   ckw.c
 *
 */
-#ifdef ANSI
-S16 cmPkUdxStaPduReq
-(
-Pst               *pst,
-SpId              spId,
-CmLteRlcId        *rlcId,
-RlcUdxDlStaPdu     *pStaPdu
-)
-#else
-S16 cmPkUdxStaPduReq(pst, suId, rlcId,pStaPdu)
-Pst               *pst;
-SpId              spId;
-CmLteRlcId        *rlcId;
-RlcUdxDlStaPdu     *pStaPdu;
-#endif
+S16 cmPkUdxStaPduReq(Pst *pst,SpId spId,CmLteRlcId *rlcId,RlcUdxDlStaPdu *pStaPdu)
 {
     S16    ret1;
     Buffer *mBuf = NULLP;
@@ -818,17 +655,7 @@ RlcUdxDlStaPdu     *pStaPdu;
 *
 *
 */
-#ifdef ANSI
-S16 cmPkUdxL2MeasReq
-(
-Pst               *pst,
-RlcL2MeasReqEvt    *measReqEvt 
-)
-#else
-S16 cmPkUdxL2MeasReq(pst, measReqEvt)
-Pst               *pst;
-RlcL2MeasReqEvt    *measReqEvt; 
-#endif
+S16 cmPkUdxL2MeasReq(Pst  *pst,RlcL2MeasReqEvt *measReqEvt)
 {
     S16    ret1;
     Buffer *mBuf = NULLP;
@@ -876,17 +703,7 @@ RlcL2MeasReqEvt    *measReqEvt;
 *
 *
 */
-#ifdef ANSI
-S16 cmPkUdxL2MeasSendReq
-(
-Pst              *pst,
-uint8_t          measType
-)
-#else
-S16 cmPkUdxL2MeasSendReq(pst, measReqEvt)
-Pst               *pst;
-uint8_t           measType
-#endif
+S16 cmPkUdxL2MeasSendReq(Pst  *pst,uint8_t measType)
 {
     S16    ret1;
     Buffer *mBuf = NULLP;
@@ -930,17 +747,7 @@ uint8_t           measType
 *
 *
 */
-#ifdef ANSI
-S16 cmPkUdxL2MeasStopReq
-(
-Pst              *pst,
-uint8_t          measType
-)
-#else
-S16 cmPkUdxL2MeasStopReq(pst, measType)
-Pst               *pst;
-uint8_t           measType
-#endif
+S16 cmPkUdxL2MeasStopReq(Pst *pst,uint8_t measType)
 {
     S16    ret1;
     Buffer *mBuf = NULLP;
@@ -991,19 +798,7 @@ uint8_t           measType
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
-S16 cmUnpkUdxBndReq
-(
-UdxBndReq      func,
-Pst            *pst,
-Buffer         *mBuf
-)
-#else
-S16 cmUnpkUdxBndReq(func, pst, mBuf)
-UdxBndReq      func;
-Pst            *pst;
-Buffer         *mBuf;
-#endif
+S16 cmUnpkUdxBndReq(UdxBndReq func,Pst  *pst,Buffer *mBuf)
 {
     SuId       suId = 0;
     SpId       spId = 0;
@@ -1028,19 +823,7 @@ Buffer         *mBuf;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
-S16 cmUnpkUdxUbndReq
-(
-UdxUbndReq     func,
-Pst            *pst,
-Buffer         *mBuf
-)
-#else
-S16 cmUnpkUdxUbndReq(func, pst, mBuf)
-UdxUbndReq     func;
-Pst            *pst;
-Buffer         *mBuf;
-#endif
+S16 cmUnpkUdxUbndReq(UdxUbndReq func,Pst *pst,Buffer *mBuf)
 {
     SpId       spId = 0;
     Reason     reason = 0;
@@ -1064,19 +847,7 @@ Buffer         *mBuf;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
-S16 cmUnpkUdxBndCfm
-(
-UdxBndCfm      func,
-Pst            *pst,
-Buffer         *mBuf
-)
-#else
-S16 cmUnpkUdxBndCfm(func, pst, mBuf)
-UdxBndCfm      func;
-Pst            *pst;
-Buffer         *mBuf;
-#endif
+S16 cmUnpkUdxBndCfm(UdxBndCfm func,Pst *pst,Buffer *mBuf)
 {
     SuId       suId = 0;
     uint8_t         status = 0;
@@ -1102,19 +873,7 @@ Buffer         *mBuf;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
-S16 cmUnpkUdxCfgReq
-(
-UdxCfgReq         func,
-Pst               *pst,
-Buffer            *mBuf
-)
-#else
-S16 cmUnpkUdxCfgReq(func, pst, mBuf)
-UdxCfgReq         func;
-Pst               *pst;
-Buffer            *mBuf;
-#endif
+S16 cmUnpkUdxCfgReq(UdxCfgReq func,Pst  *pst,Buffer *mBuf)
 {
 #if(ERRCLASS & ERRCLS_DEBUG)
     S16           ret1;
@@ -1171,19 +930,7 @@ Buffer            *mBuf;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
-S16 cmUnpkUdxCfgCfm
-(
-UdxCfgCfm         func,
-Pst               *pst,
-Buffer            *mBuf
-)
-#else
-S16 cmUnpkUdxCfgCfm(func, pst, mBuf)
-UdxCfgCfm         func;
-Pst               *pst;
-Buffer            *mBuf;
-#endif
+S16 cmUnpkUdxCfgCfm(UdxCfgCfm func,Pst  *pst,Buffer *mBuf)
 {
     S16 ret1;
     SuId             suId = 0;
@@ -1248,19 +995,7 @@ Buffer            *mBuf;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
-S16 cmUnpkUdxUeIdChgReq
-(
-UdxUeIdChgReq     func,
-Pst               *pst,
-Buffer            *mBuf
-)
-#else
-S16 cmUnpkUdxUeIdChgReq(func, pst, mBuf)
-UdxUeIdChgReq     func;
-Pst               *pst;
-Buffer            *mBuf;
-#endif
+S16 cmUnpkUdxUeIdChgReq(UdxUeIdChgReq func,Pst *pst,Buffer *mBuf)
 {
     SpId      spId = 0;
     uint32_t  transId = 0;
@@ -1317,19 +1052,7 @@ Buffer            *mBuf;
 *    File:    ckw.c
 *
 */
-#ifdef ANSI
-S16 cmUnpkUdxUeIdChgCfm
-(
-UdxUeIdChgCfm     func,
-Pst               *pst,
-Buffer            *mBuf
-)
-#else
-S16 cmUnpkUdxUeIdChgCfm(func, pst, mBuf)
-UdxUeIdChgCfm     func;
-Pst               *pst;
-Buffer            *mBuf;
-#endif
+S16 cmUnpkUdxUeIdChgCfm(UdxUeIdChgCfm func,Pst  *pst,Buffer *mBuf)
 {
     SuId      suId = 0;
     uint32_t  transId = 0;
@@ -1361,19 +1084,7 @@ Buffer            *mBuf;
 *    File:    ckw.c
 *
 */
-#ifdef ANSI
-S16 cmUnpkUdxStaUpdCfm
-(
-UdxStaUpdCfm     func,
-Pst               *pst,
-Buffer            *mBuf
-)
-#else
-S16 cmUnpkUdxStaUpdCfm(func, pst, mBuf)
-UdxStaUpdCfm     func;
-Pst               *pst;
-Buffer            *mBuf;
-#endif
+S16 cmUnpkUdxStaUpdCfm(UdxStaUpdCfm func,Pst *pst,Buffer *mBuf)
 {
     SuId      suId = 0;
     CmLteRlcId *rlcId = NULLP;  /* KW_FIX */
@@ -1413,19 +1124,7 @@ Buffer            *mBuf;
 *    File:    ckw.c
 *
 */
-#ifdef ANSI
-S16 cmUnpkUdxStaUpdReq
-(
-UdxStaUpdReq     func,
-Pst               *pst,
-Buffer            *mBuf
-)
-#else
-S16 cmUnpkUdxStaUpdReq(func, pst, mBuf)
-UdxStaUpdReq     func;
-Pst               *pst;
-Buffer            *mBuf;
-#endif
+S16 cmUnpkUdxStaUpdReq(UdxStaUpdReq func,Pst *pst,Buffer *mBuf)
 {
     SpId      spId = 0;
     CmLteRlcId *rlcId = NULLP; /* KW_FIX */ 
@@ -1483,19 +1182,7 @@ Buffer            *mBuf;
 *    File:    ckw.c
 *
 */
-#ifdef ANSI
-S16 cmUnpkUdxStaPduReq
-(
-UdxStaPduReq     func,
-Pst               *pst,
-Buffer            *mBuf
-)
-#else
-S16 cmUnpkUdxStaPduReq(func, pst, mBuf)
-UdxStaPduReq     func;
-Pst               *pst;
-Buffer            *mBuf;
-#endif
+S16 cmUnpkUdxStaPduReq(UdxStaPduReq func,Pst *pst,Buffer *mBuf)
 {
     S16       ret1;
     SpId      spId = 0;
@@ -1552,19 +1239,7 @@ Buffer            *mBuf;
 *    File:    kw_udx.c
 *
 */
-#ifdef ANSI
-S16 cmUnpkUdxStaProhTmrStart
-(
-UdxStaProhTmrStart     func,
-Pst               *pst,
-Buffer            *mBuf
-)
-#else
-S16 cmUnpkUdxStaProhTmrStart(func, pst, mBuf)
-UdxStaProhTmrStart     func;
-Pst               *pst;
-Buffer            *mBuf;
-#endif
+S16 cmUnpkUdxStaProhTmrStart(UdxStaProhTmrStart func,Pst *pst,Buffer *mBuf)
 {
     SpId      spId = 0;
     CmLteRlcId tmpRlcId;
@@ -1604,19 +1279,7 @@ Buffer            *mBuf;
 *
 *
 */
-#ifdef ANSI
-S16 cmUnpkUdxL2MeasReq
-(
-UdxL2MeasReq     func,
-Pst              *pst,
-Buffer           *mBuf
-)
-#else
-S16 cmUnpkUdxL2MeasReq(func, pst, mBuf)
-UdxL2MeasReq     func;
-Pst              *pst;
-Buffer           *mBuf;
-#endif
+S16 cmUnpkUdxL2MeasReq(UdxL2MeasReq func,Pst *pst,Buffer *mBuf)
 {
     RlcL2MeasReqEvt    tmpMeasReqEvt;
     RlcL2MeasReqEvt    *measReqEvt = NULLP;  /* KW_FIX */
@@ -1651,19 +1314,7 @@ Buffer           *mBuf;
 *
 *
 */
-#ifdef ANSI
-S16 cmUnpkUdxL2MeasSendReq
-(
-UdxL2MeasSendReq   func,
-Pst                *pst,
-Buffer             *mBuf
-)
-#else
-S16 cmUnpkUdxL2MeasSendReq(func, pst, mBuf)
-UdxL2MeasSendReq   func;
-Pst                *pst;
-Buffer             *mBuf;
-#endif
+S16 cmUnpkUdxL2MeasSendReq(UdxL2MeasSendReq func,Pst *pst,Buffer *mBuf)
 {
     uint8_t     measType = 0;  /* KW_FIX */
 
@@ -1692,19 +1343,7 @@ Buffer             *mBuf;
 *
 *
 */
-#ifdef ANSI
-S16 cmUnpkUdxL2MeasStopReq
-(
-UdxL2MeasStopReq   func,
-Pst                *pst,
-Buffer             *mBuf
-)
-#else
-S16 cmUnpkUdxL2MeasStopReq(func, pst, mBuf)
-UdxL2MeasSendReq     func;
-Pst                  *pst;
-Buffer               *mBuf;
-#endif
+S16 cmUnpkUdxL2MeasStopReq(UdxL2MeasStopReq func,Pst *pst,Buffer *mBuf)
 {
     uint8_t     measType = 0; /* KW_FIX */
 

@@ -137,7 +137,6 @@ Pst           *cfmPst
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
 S16 rgActvInit
 (
 Ent entity,            /* entity */
@@ -145,13 +144,6 @@ Inst inst,             /* instance */
 Region region,         /* region */
 Reason reason          /* reason */
 )
-#else
-S16 rgActvInit(entity, inst, region, reason)
-Ent entity;            /* entity */
-Inst inst;             /* instance */
-Region region;         /* region */
-Reason reason;         /* reason */
-#endif
 {
    Inst macInst ;
 
@@ -233,17 +225,11 @@ Reason reason;         /* reason */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
 S16 RgMiLrgCfgReq
 (
 Pst      *pst,    /* post structure  */
 RgMngmt  *cfg     /* config structure  */
 )
-#else
-S16 RgMiLrgCfgReq(pst, cfg)
-Pst      *pst;    /* post structure  */
-RgMngmt  *cfg;    /* config structure  */
-#endif    
 {
    uint16_t  ret = LCM_PRIM_OK;
    uint16_t  reason = LCM_REASON_NOT_APPL;
@@ -327,17 +313,11 @@ RgMngmt  *cfg;    /* config structure  */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
 S16 RgMiLrgStsReq
 (
 Pst      *pst,    /* post structure  */
 RgMngmt  *sts     /* statistics structure  */
 )
-#else
-S16 RgMiLrgStsReq(pst, sts)
-Pst      *pst;    /* post structure  */
-RgMngmt  *sts;    /* statistics structure  */
-#endif    
 {
    Pst       cfmPst;
    RgMngmt   cfm;
@@ -499,17 +479,11 @@ RgMngmt  *sts;    /* statistics structure  */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
 S16 RgMiLrgStaReq
 (
 Pst      *pst,    /* post structure  */
 RgMngmt  *sta     /* status structure  */
 )
-#else
-S16 RgMiLrgStaReq(pst, sta)
-Pst      *pst;    /* post structure  */
-RgMngmt  *sta;    /* status structure  */
-#endif    
 {
    Pst       cfmPst;
    RgMngmt   cfm;
@@ -628,17 +602,11 @@ RgMngmt  *sta;    /* status structure  */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
 S16 RgMiLrgCntrlReq
 (
 Pst      *pst,    /* post structure  */
 RgMngmt  *cntrl   /* control structure  */
 )
-#else
-S16 RgMiLrgCntrlReq(pst, cntrl)
-Pst      *pst;    /* post structure  */
-RgMngmt  *cntrl;  /* control structure  */
-#endif    
 {
    S16       ret = ROK;            /* return value */
    Pst       cfmPst;
@@ -711,19 +679,12 @@ RgMngmt  *cntrl;  /* control structure  */
  *      -# LCM_REASON_INVALID_SAP
  *      -# LCM_REASON_NOT_APPL
  **/
-#ifdef ANSI
 static uint16_t rgLMMSapCfg
 (
 Inst  inst,
 RgCfg *cfg,            /* Configuaration information */
 Elmnt sapType             /* Sap Type */
 )
-#else
-static uint16_t rgLMMSapCfg(inst,cfg,sapType)
-Inst  inst;
-RgCfg *cfg;            /* Configuaration information */
-Elmnt sapType;            /* Sap Type */
-#endif
 {
    uint16_t          ret = LCM_REASON_NOT_APPL;
    RgLowSapCfgInfo   *lowSapCfg = NULLP;
@@ -858,17 +819,11 @@ Elmnt sapType;            /* Sap Type */
  *      -# LCM_REASON_INVALID_MSGTYPE
  *      -# LCM_REASON_MEM_NOAVAIL
  **/
-#ifdef ANSI
 static uint16_t rgLMMGenCfg
 (
 Inst inst,
 RgCfg *cfg            /* Configuaration information */
 )
-#else
-static uint16_t rgLMMGenCfg(inst,cfg)
-Inst inst;
-RgCfg *cfg;            /* Configuaration information */
-#endif
 {
    uint16_t    ret = LCM_REASON_NOT_APPL;
 
@@ -972,15 +927,7 @@ RgCfg *cfg;            /* Configuaration information */
  *     File : rg_lmm.c 
  *
  **********************************************************/
-#ifdef ANSI
-static Void rgLMMShutdown
-(
-Inst inst
-)
-#else
-static Void rgLMMShutdown(inst)
-Inst inst;
-#endif
+static Void rgLMMShutdown(Inst inst)
 {
    RgCellCb   *cell = rgCb[inst].cell;
    uint8_t    idx;
@@ -1051,19 +998,12 @@ Inst inst;
  *     File : rg_lmm.c 
  *
  **********************************************************/
-#ifdef ANSI
 static Void rgLMMGenCntrl 
 (
 RgMngmt       *cntrl,
 RgMngmt       *cfm,
 Pst           *cfmPst
 )
-#else
-static Void rgLMMGenCntrl(cntrl, cfm, cfmPst)
-RgMngmt       *cntrl;
-RgMngmt       *cfm;
-Pst           *cfmPst;
-#endif
 {
    Inst      inst = (cfmPst->srcInst - RG_INST_START);
 
@@ -1175,19 +1115,12 @@ Pst           *cfmPst;
  *     File : rg_lmm.c 
  *
  **********************************************************/
-#ifdef ANSI
 static Void rgLMMSapCntrl 
 (
 RgMngmt       *cntrl,
 RgMngmt       *cfm,
 Pst           *cfmPst
 )
-#else
-static Void rgLMMSapCntrl(cntrl, cfm, cfmPst)
-RgMngmt       *cntrl;
-RgMngmt       *cfm;
-Pst           *cfmPst;
-#endif
 {
    Inst      inst = cfmPst->srcInst - RG_INST_START;
 
@@ -1337,19 +1270,12 @@ Pst           *cfmPst;
  *     File : rg_lmm.c 
  *
  **********************************************************/
-#ifdef ANSI
 static Void rgLMMFillCfmPst
 (
 Pst           *reqPst,
 Pst           *cfmPst,
 RgMngmt       *cfm
 )
-#else
-static Void rgLMMFillCfmPst(reqPst, cfmPst, cfm)
-Pst           *reqPst;
-Pst           *cfmPst;
-RgMngmt       *cfm;
-#endif
 {
    Inst inst;
    inst = (reqPst->dstInst - RG_INST_START);
@@ -1389,21 +1315,13 @@ RgMngmt       *cfm;
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-   S16 rgLMMStartTmr
+S16 rgLMMStartTmr
 (
- Inst               inst,
- S16                tmrEvnt,            /* Timer Event */
- uint32_t           tmrVal,             /* Wait Time */
- PTR                cb                  /* Entry for which Timer Expired */
- )
-#else
-S16 rgLMMStartTmr(tmrEvnt, tmrVal, cb)
-   Inst               inst;
-   S16                tmrEvnt;            /* Timer Event */
-   uint32_t           tmrVal;             /* Wait Time */
-   PTR                cb;                 /* Entry for which Timer Expired */
-#endif
+Inst               inst,
+S16                tmrEvnt,            /* Timer Event */
+uint32_t           tmrVal,             /* Wait Time */
+PTR                cb                  /* Entry for which Timer Expired */
+)
 {
    CmTmrArg    arg;
 
@@ -1447,19 +1365,12 @@ S16 rgLMMStartTmr(tmrEvnt, tmrVal, cb)
  *      -# ROK
  *      -# RFAILED
  **/
-#ifdef ANSI
 S16 rgLMMStopTmr
 (
 Inst               inst,             /* Scheduler instance */
 S16                tmrEvnt,            /* Timer Event */
 PTR                cb                  /* Entry for which Timer Expired */
 )
-#else
-S16 rgLMMStopTmr(inst,tmrEvnt, cb)
-Inst               inst;             /* Scheduler instance */
-S16                tmrEvnt;            /* Timer Event */
-PTR                cb;                 /* Entry for which Timer Expired */
-#endif
 {
    CmTmrArg   arg;
    uint8_t      i;
@@ -1513,17 +1424,11 @@ PTR                cb;                 /* Entry for which Timer Expired */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
 S16 rgLMMTmrExpiry
 (
 PTR cb,               /* Pointer to timer control block */
 S16 tmrEvnt           /* Timer Event */
 )
-#else
-S16 rgLMMTmrExpiry(cb,tmrEvnt)
-PTR cb;               /* Pointer to timer control block */
-S16 tmrEvnt;          /* Timer Event */
-#endif
 {
    S16        ret = ROK;
    RgLowSapCb *tfuSap = (RgLowSapCb *)cb;
@@ -1580,7 +1485,6 @@ S16 tmrEvnt;          /* Timer Event */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
 S16 rgLMMStaInd
 (
 Inst inst,
@@ -1589,18 +1493,8 @@ uint16_t event,
 uint16_t cause,
 RgUstaDgn *dgn
 )
-#else
-S16 rgLMMStaInd(inst,category, event, cause, dgn) 
-Inst inst;
-uint16_t category;
-uint16_t event;
-uint16_t cause;
-RgUstaDgn *dgn;
-#endif
 {
    RgMngmt    usta;
-
-
    if(rgCb[inst].rgInit.usta == FALSE)
    {
       return ROK;
@@ -1643,19 +1537,12 @@ RgUstaDgn *dgn;
  *  @param[in]   uint8_t event, the trace event.
  *  @return Void 
  **/
-#ifdef ANSI
 Void rgLMMTrcInd
 (
 Inst   inst,
 Buffer *srcMbuf,    /* Message Buffer */
 uint8_t event            /* event */
 )
-#else
-Void rgLMMTrcInd(inst,srcMbuf,event)
-Inst   inst;
-Buffer *srcMbuf;    /* Message Buffer */
-uint8_t event;           /* event */
-#endif
 {
    Buffer   *dstMbuf = NULLP;   
    MsgLen   bufLen  = 0;
@@ -1795,19 +1682,12 @@ uint8_t event;           /* event */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
 S16 rgLMMBndCfm
 (
 Pst *pst,               /* Post Structure */
 SuId suId,              /* Service user ID */
 uint8_t status               /* Status */
 )
-#else
-S16 rgLMMBndCfm(pst,suId,status)
-Pst *pst;               /* Post Structure */
-SuId suId;              /* Service user ID */
-uint8_t status;              /* Status */
-#endif
 {
    Inst      inst = pst->dstInst - RG_INST_START;
    S16       ret = ROK;
@@ -1894,17 +1774,7 @@ uint8_t status;              /* Status */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-S16 rgActvTmr
-(
-Ent     ent,
-Inst    inst
-)
-#else
-S16 rgActvTmr(ent, inst)
-Ent     ent;
-Inst    inst;
-#endif
+S16 rgActvTmr(Ent ent,Inst inst)
 {
    Inst macInst = (inst  - RG_INST_START);
 

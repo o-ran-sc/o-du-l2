@@ -216,14 +216,7 @@ Void mtSigUsr2Hndlr()
 *       File:  ss_gen.c
 *
 */
-#ifdef ANSI
-S16 SInit
-(
-void
-)
-#else
-S16 SInit()
-#endif
+S16 SInit(void)
 {
    S16 ret;
    REG1 S16 i;
@@ -743,14 +736,7 @@ cleanup0:
 *       File:  ss_gen.c
 *
 */
-#ifdef ANSI
-S16 SDeInit
-(
-void
-)
-#else
-S16 SDeInit()
-#endif
+S16 SDeInit(void)
 {
   /* ss007.301 */
   uint16_t    regCnt;
@@ -805,15 +791,10 @@ S16 SDeInit()
 }
 /* ss001.301: additions */
 #ifdef SS_LOGGER_SUPPORT 
-#ifdef ANSI
 S16 SWrtLogBuf
 (
 Txt *buf                        /* buffer */
 )
-#else
-S16 SWrtLogBuf(buf)
-Txt *buf;                       /* buffer */
-#endif
 {
    S16 bufSz;
    /* buffer synchronisation*/
@@ -866,15 +847,10 @@ Txt *buf;                       /* buffer */
 *       File:  ss_gen.c
 *
 */
-#ifdef ANSI
 S16 SPrint
 (
 Txt *buf                        /* buffer */
 )
-#else
-S16 SPrint(buf)
-Txt *buf;                       /* buffer */
-#endif
 {
 
 /* ss001.301: additions */
@@ -903,17 +879,11 @@ Txt *buf;                       /* buffer */
 *       File:  ss_gen.c
 *
 */
-#ifdef ANSI
 S16 SError
 (
 Seq seq,                    /* sequence */
 Reason reason               /* reason */
 )
-#else
-S16 SError(seq, reason)
-Seq seq;                    /* sequence */
-Reason reason;              /* reason */
-#endif
 {
    S16 ret;
    DateTime dt;
@@ -946,7 +916,6 @@ Reason reason;              /* reason */
 *       File:  ss_gen.c
 *
 */
-#ifdef ANSI
 Void SLogError
 (
 Ent ent,                    /* Calling layer's entity id */
@@ -959,19 +928,6 @@ ErrCode errCode,            /* layer unique error code */
 ErrVal errVal,              /* error value */
 Txt *errDesc                /* description of error */
 )
-#else
-Void SLogError(ent, inst, procId, file, line,
-                        errCls, errCode, errVal, errDesc)
-Ent ent;                    /* Calling layer's entity id */
-Inst inst;                  /* Calling layer's instance id */
-ProcId procId;              /* Calling layer's processor id */
-Txt *file;                  /* file name where error occured */
-S32 line;                   /* line in file where error occured */
-ErrCls errCls;              /* error class */
-ErrCode errCode;            /* layer unique error code */
-ErrVal errVal;              /* error value */
-Txt *errDesc;               /* description of error */
-#endif
 {
    DateTime dt;
    Txt errBuf[512];
@@ -1015,14 +971,7 @@ Txt *errDesc;               /* description of error */
 *       File:  ss_gen.c
 *
 */
-#ifdef ANSI
-ProcId SFndProcId
-(
-void
-)
-#else
-ProcId SFndProcId()
-#endif
+ProcId SFndProcId(void)
 {
 
    return (osCp.procId);
@@ -1042,15 +991,7 @@ ProcId SFndProcId()
 *       File:  ss_gen.c
 *
 */
-#ifdef ANSI
-Void SSetProcId
-(
-ProcId procId
-)
-#else
-Void SSetProcId(procId)
-ProcId procId;
-#endif
+Void SSetProcId(ProcId procId)
 {
 
    osCp.procId = procId;
@@ -1076,15 +1017,7 @@ ProcId procId;
 *       File:  ss_gen.c
 *
 */
-#ifdef ANSI
-uint16_t SGetProcIdIdx
-(
-ProcId proc
-)
-#else
-uint16_t SGetProcIdIdx(proc)
-ProcId proc; 
-#endif
+uint16_t SGetProcIdIdx(ProcId proc)
 {
    uint16_t i;
    uint16_t idx;
@@ -1117,15 +1050,7 @@ ProcId proc;
 *       File:  ss_gen.c
 *
 */
-#ifdef ANSI
-static S16 SInsProcId
-(
-ProcId proc
-)
-#else
-static S16 SInsProcId(proc)
-ProcId proc; 
-#endif
+static S16 SInsProcId(ProcId proc)
 {
    uint16_t i;
    uint16_t idx;
@@ -1167,15 +1092,7 @@ ProcId proc;
 *       File:  ss_gen.c
 *
 */
-#ifdef ANSI
-static S16 SRemProcId
-(
-ProcId proc
-)
-#else
-static S16 SRemProcId(proc)
-ProcId proc; 
-#endif
+static S16 SRemProcId(ProcId proc)
 {
    uint16_t i;
    uint16_t idx;
@@ -1217,14 +1134,7 @@ ProcId proc;
 *       File:  ss_gen.c
 *
 */
-#ifdef ANSI
-static S16 SLockOsCp
-(
-Void
-)
-#else
-static S16 SLockOsCp(Void)
-#endif
+static S16 SLockOsCp(void)
 {
    S16 ret;
 
@@ -1276,14 +1186,7 @@ static S16 SLockOsCp(Void)
 *       File:  ss_gen.c
 *
 */
-#ifdef ANSI
-static S16 SULockOsCp
-(
-Void
-)
-#else
 static S16 SULockOsCp(Void)
-#endif
 {
 
    /* unlock the table */
@@ -1317,17 +1220,7 @@ static S16 SULockOsCp(Void)
 *       File:  ss_gen.c
 *
 */
-#ifdef ANSI
-S16 SAddProcIdLst
-(
-uint16_t numPIds,
-ProcId *pIdLst
-)
-#else
-S16 SAddProcIdLst(numPIds, pIdLst)
-uint16_t numPIds;
-ProcId *pIdLst;
-#endif
+S16 SAddProcIdLst(uint16_t numPIds,ProcId *pIdLst)
 {
    uint16_t i;
    S16 ret;
@@ -1412,17 +1305,7 @@ exceeds");
 *       File:  ss_gen.c
 *
 */
-#ifdef ANSI
-S16 SRemProcIdLst
-(
-uint16_t numPIds,
-ProcId *pIdLst
-)
-#else
-S16 SRemProcIdLst(numPIds, pIdLst)
-uint16_t numPIds;
-ProcId *pIdLst;
-#endif
+S16 SRemProcIdLst(uint16_t numPIds,ProcId *pIdLst)
 {
    uint16_t i;
 
@@ -1476,17 +1359,7 @@ ProcId *pIdLst;
 *       File:  ss_gen.c
 *
 */
-#ifdef ANSI
-S16 SGetProcIdLst
-(
-uint16_t *numPIds,
-ProcId *pIdLst
-)
-#else
-S16 SGetProcIdLst(numPIds, pIdLst)
-uint16_t *numPIds;
-ProcId *pIdLst;
-#endif
+S16 SGetProcIdLst(uint16_t *numPIds,ProcId *pIdLst)
 {
    uint16_t i;
    uint16_t count = 0;
@@ -1535,7 +1408,6 @@ ProcId *pIdLst;
 *       File:  ss_gen.c
 *
 */
-#ifdef ANSI
 S16 SGetXxCb
 (
 ProcId proc,
@@ -1543,13 +1415,6 @@ Ent ent,
 Inst inst,
 Void **xxCb
 )
-#else
-S16 SGetXxCb(proc, ent, inst, xxCb)
-ProcId proc;
-Ent ent;
-Inst inst;
-Void **xxCb;
-#endif
 {
    uint16_t procIdIdx;
    SsIdx idx;
@@ -1612,14 +1477,7 @@ Void **xxCb;
 *       File:  ss_gen.c
 *
 */
-#ifdef ANSI
-S16 SFillEntIds
-(
-Void
-)
-#else
 S16 SFillEntIds(Void)
-#endif
 {
 
    uint8_t entInfo[26][26] = {
@@ -1804,17 +1662,7 @@ S16 SFillEntIds(Void)
 *
 *
 */
-#ifdef ANSI
-S16 SGetEntInd 
-(
-Ent      *entId,
-uint8_t       *fileName
-)
-#else
-S16 SGetEntInd(entId, fileName)
-Ent      *entId;
-uint8_t       *fileName;
-#endif
+S16 SGetEntInd(Ent *entId,uint8_t *fileName)
 {
 
 
@@ -1909,18 +1757,7 @@ uint8_t       *fileName;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-S16 SLockNew 
-(
-SLockInfo *lockId,
-uint8_t         lockType
-
-)
-#else
-S16 SLockNew(lockId, lockType)
-SLockInfo *lockId;
-uint8_t         lockType;
-#endif
+S16 SLockNew(SLockInfo *lockId,uint8_t lockType)
 {
    S16    retVal = ROK;
 
@@ -1946,17 +1783,7 @@ uint8_t         lockType;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-S16 SInitLockNew 
-(
-SLockInfo *lockId,
-uint8_t         lockType
-)
-#else
-S16 SInitLockNew(lockId, lockType)
-SLockInfo *lockId;
-uint8_t         lockType;
-#endif
+S16 SInitLockNew(SLockInfo *lockId,uint8_t  lockType)
 {
    S16    retVal = ROK;
 
@@ -1982,17 +1809,7 @@ uint8_t         lockType;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-S16 SUnlockNew 
-(
-SLockInfo *lockId,
-uint8_t         lockType
-)
-#else
-S16 SUnlockNew(lockId, lockType)
-SLockInfo *lockId;
-uint8_t         lockType;
-#endif
+S16 SUnlockNew(SLockInfo *lockId,uint8_t lockType)
 {
    S16    retVal = ROK;
 
@@ -2018,17 +1835,7 @@ uint8_t         lockType;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-S16 SDestroyLockNew 
-(
-SLockInfo *lockId,
-uint8_t         lockType
-)
-#else
-S16 SDestroyLockNew(lockId, lockType)
-SLockInfo *lockId;
-uint8_t         lockType;
-#endif
+S16 SDestroyLockNew(SLockInfo *lockId,uint8_t lockType)
 {
    S16    retVal = ROK;
 
@@ -2203,14 +2010,7 @@ void DumpStaticMemLeakFiles()
  *       File: mt_ss.c
  *
  */
-#ifdef ANSI
-S16 SReInitTmr
-(
-void
-)
-#else
-S16 SReInitTmr()
-#endif
+S16 SReInitTmr(void)
 {
    uint8_t ret = ROK;
    Txt prntBuf[PRNTSZE];

@@ -82,17 +82,7 @@ static int RLOG_MODULE_ID=4096;
  *     File :
  *
  **********************************************************/
-#ifdef ANSI
-Void rgRAMFreeUeCb
-(
-Inst        inst,
-RgUeCb      *ue
-)
-#else
-Void rgRAMFreeUeCb(inst,ue)
-Inst        inst;
-RgUeCb      *ue;
-#endif
+Void rgRAMFreeUeCb(Inst  inst,RgUeCb *ue)
 {
    rgDHMFreeUe(inst,&ue->dl.hqEnt);
 
@@ -120,21 +110,7 @@ RgUeCb      *ue;
  *  @param[out]      RgErrInfo      *err
  *  @return  RgUeCb*
  **/
-#ifdef ANSI
-RgUeCb* rgRAMCreateUeCb
-(
-RgCellCb       *cell,
-CmLteRnti      tmpCrnti,
-Bool           insert,
-RgErrInfo      *err
-)
-#else
-RgUeCb* rgRAMCreateUeCb(cell, tmpCrnti, insert, err)
-RgCellCb       *cell;
-CmLteRnti      tmpCrnti;
-Bool           insert;
-RgErrInfo      *err;
-#endif
+RgUeCb* rgRAMCreateUeCb(RgCellCb *cell,CmLteRnti  tmpCrnti,Bool insert,RgErrInfo *err)
 {
    Inst       inst = cell->macInst - RG_INST_START;
    RgUeCb    *ueCb = NULLP;
@@ -192,15 +168,7 @@ RgErrInfo      *err;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
-S16 rgRAMFreeCell
-(
-RgCellCb    *cell
-)
-#else
-S16 rgRAMFreeCell(cell)
-RgCellCb    *cell;
-#endif
+S16 rgRAMFreeCell(RgCellCb *cell)
 {
    Inst    inst = cell->macInst - RG_INST_START;
    RgUeCb  *ueCb;
@@ -237,21 +205,7 @@ RgCellCb    *cell;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
-S16 rgHndlRaResp
-(
-RgCellCb            *cell,
-CmLteTimingInfo     timingInfo,
-RgInfRarInfo        *rarInfo,
-RgErrInfo           *err
-)
-#else
-S16 rgHndlRaResp(cell, timingInfo, rarInfo, err)
-RgCellCb            *cell;
-CmLteTimingInfo     timingInfo;
-RgInfRarInfo        *rarInfo;
-RgErrInfo           *err;
-#endif
+S16 rgHndlRaResp(RgCellCb *cell,CmLteTimingInfo timingInfo,RgInfRarInfo *rarInfo,RgErrInfo *err)
 {
    uint8_t  idx1,idx2;
    Buffer   *rarPdu;

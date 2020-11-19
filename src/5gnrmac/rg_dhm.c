@@ -83,8 +83,8 @@ static Void rgDHMBldTfuDatReq ARGS((RgCellCb *cellCb, RgDlSf *dlSf, RgDlHqProcCb
 #ifdef L2_OPTMZ
 S16 rgDHMFreeHqProcTB
 (
-RgDlHqProcCb         *hqP,
-uint8_t              tbIndex
+RgDlHqProcCb *hqP,
+uint8_t      tbIndex
 );
 
 #endif
@@ -111,19 +111,7 @@ uint8_t              tbIndex
  *           -# RFAILED
  *
  **/
-#ifdef ANSI
-S16 rgDHMHqEntInit
-(
-Inst               inst,
-RgDlHqEnt          *hqE,
-uint8_t            maxHqProcs
-)
-#else
-S16 rgDHMHqEntInit(inst,hqE, maxHqProcs)
-Inst               inst,
-RgDlHqEnt          *hqE;
-uint8_t            maxHqProcs;
-#endif
+S16 rgDHMHqEntInit(Inst  inst, RgDlHqEnt *hqE, uint8_t maxHqProcs)
 {
    uint8_t idx1,idx2;
 #ifdef L2_OPTMZ
@@ -195,17 +183,7 @@ uint8_t            maxHqProcs;
  *  @return  Void      
  *
  **/
-#ifdef ANSI
-Void rgDHMUeReset
-(
-RgCellCb *cell,
-RgDlHqEnt          *hqE
-)
-#else
-Void rgDHMUeReset(cell, hqE)
-RgCellCb *cell;
-RgDlHqEnt          *hqE;
-#endif
+Void rgDHMUeReset(RgCellCb *cell, RgDlHqEnt  *hqE)
 {
    uint8_t       i = 0;
 
@@ -241,16 +219,7 @@ RgDlHqEnt          *hqE;
  *  @return  Void      
  *
  **/
-#ifdef ANSI
-Void rgDHMHdlBufFree
-(
-Inst inst,
-Buffer **mBuf
-)
-#else
 Void rgDHMHdlBufFree(Inst inst, Buffer **mBuf)
-Inst inst;
-#endif
 {
    RgCb *rgCbP = &rgCb[inst];
 
@@ -287,15 +256,7 @@ Inst inst;
  *  @return  Void      
  *
  **/
-#ifdef ANSI
-Void rgDHMFreeTbBufs
-(
-Inst inst
-)
-#else
-Void rgDHMFreeTbBufs(inst)
-Inst inst;
-#endif
+Void rgDHMFreeTbBufs(Inst inst)
 {
    RgCb *rgCbP = &rgCb[inst];
    uint8_t start = rgCbP->bufCnt;
@@ -318,15 +279,7 @@ Inst inst;
    return;
 } /* rgDHMFreeTbBufs */
 
-#ifdef ANSI
-Void rgDHMFreeAllTbBufs
-(
-Inst inst
-)
-#else
-Void rgDHMFreeAllTbBufs(inst)
-Inst inst;
-#endif
+Void rgDHMFreeAllTbBufs(Inst inst)
 {
    RgCb *rgCbP = &rgCb[inst];
    uint8_t start = rgCbP->bufCnt;
@@ -358,19 +311,7 @@ Inst inst;
  *  @return  Void      
  *
  **/
-#ifdef ANSI
-S16 rgDHMRlsHqProcTB
-(
-RgCellCb             *cell,
-RgDlHqProcCb         *hqP,
-uint8_t              tbIndex
-)
-#else
-S16 rgDHMRlsHqProcTB(cell, hqP, tbIndex)
-RgCellCb             *cell;
-RgDlHqProcCb         *hqP;
-uint8_t              tbIndex;
-#endif
+S16 rgDHMRlsHqProcTB(RgCellCb  *cell, RgDlHqProcCb *hqP, uint8_t tbIndex)
 {
     uint8_t          idx;
 #ifdef L2_OPTMZ
@@ -447,19 +388,7 @@ uint8_t              tbIndex;
  *         -#   RFAILED otherwise
  *
  **/
-#ifdef ANSI
-S16 rgDHMGetHqProcFrmId
-(
-RgUeCb               *ue,
-uint8_t              idx,
-RgDlHqProcCb         **hqP
-)
-#else
-S16 rgDHMGetHqProcFrmId(ue, idx, hqP)
-RgUeCb               *ue;
-uint8_t              idx;
-RgDlHqProcCb         **hqP;
-#endif
+S16 rgDHMGetHqProcFrmId(RgUeCb *ue, uint8_t  idx, RgDlHqProcCb **hqP)
 {
    /* Pick the proc based on the index provided */
    *hqP = (ue->dl.hqEnt.procs[idx]);
@@ -487,7 +416,6 @@ RgDlHqProcCb         **hqP;
  *      -#ROK 
  *      -#RFAILED 
  **/
-#ifdef ANSI
 S16 rgDHMSndDatReq
 (
 RgCellCb        *cellCb,
@@ -496,14 +424,6 @@ RgTfuDatReqInfo *datInfo,
 RgDlHqProcCb   *hqP,
 RgErrInfo      *err 
 )
-#else
-S16 rgDHMSndDatReq(cellCb, dlSf, datInfo, hqP, err)
-RgCellCb        *cellCb;
-RgDlSf          *dlSf;
-RgTfuDatReqInfo *datInfo;
-RgDlHqProcCb    *hqP;
-RgErrInfo       *err;
-#endif
 {
    uint8_t i;
    Inst    inst = cellCb->macInst - RG_INST_START;
@@ -670,7 +590,6 @@ RgErrInfo       *err;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 rgDHMHndlDedDatReq
 (
 Inst           inst,
@@ -679,14 +598,6 @@ RgRguDDatReqPerUe *datReq,
 RgDlSf            *dlSf,
 RgErrInfo      *err
 )
-#else
-S16 rgDHMHndlDedDatReq(inst,hqProc, datReq, dlSf, err)
-Inst           inst;
-RgDlHqProcCb   *hqProc;
-RgRguDDatReqPerUe *datReq;
-RgDlSf            *dlSf;
-RgErrInfo      *err;
-#endif
 {
 //   uint32_t            len;
    uint8_t        i;
@@ -815,7 +726,6 @@ RgErrInfo      *err;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 rgDHMHndlCmnDatReq
 (
 Inst           inst,
@@ -823,13 +733,6 @@ RgDlHqProcCb   *hqProc,
 RgRguCmnDatReq *datReq,
 RgErrInfo      *err
 )
-#else
-S16 rgDHMHndlCmnDatReq(inst,hqProc, datReq, err)
-Inst           inst;
-RgDlHqProcCb   *hqProc;
-RgRguCmnDatReq *datReq;
-RgErrInfo      *err;
-#endif
 {
    RgUstaDgn      dgn;
    RgBldPduInfo   bldPdu;
@@ -896,7 +799,6 @@ RgErrInfo      *err;
  *      -# RFAILED 
  **/
  RgUeCb  *gUe =NULLP;
-#ifdef ANSI
 S16 rgDHMSndConsolidatedStaInd
 (
 RgCellCb        *cell,
@@ -904,13 +806,6 @@ RgInfUeInfo     *ueInfo,
 CmLteTimingInfo timingInfo,
 RgErrInfo       *err
 )
-#else
-S16 rgDHMSndConsolidatedStaInd(cell, ueInfo, timingInfo, err)
-RgCellCb        *cell;
-RgInfUeInfo     *ueInfo;
-CmLteTimingInfo timingInfo;
-RgErrInfo       *err;
-#endif
 {
    SuId            rguDlSpId;/*need to use spID instead of suID*/
    uint8_t         idx;
@@ -1262,7 +1157,6 @@ RgErrInfo       *err;
  *              None 
  **/
 //uint8_t crashFlag = 0;
-#ifdef ANSI
 static Void rgDHMBldTfuDatReq
 (
 RgCellCb           *cellCb,
@@ -1270,13 +1164,6 @@ RgDlSf             *dlSf,
 RgDlHqProcCb       *hqP,
 RgTfuDatReqPduInfo *datReq
 )
-#else
-static Void rgDHMBldTfuDatReq(cellCb, dlSf, hqP, datReq)
-RgCellCb           *cellCb;
-RgDlSf             *dlSf;
-RgDlHqProcCb       *hqP;
-RgTfuDatReqPduInfo *datReq;
-#endif
 {
 
 #ifndef L2_OPTMZ
@@ -1431,17 +1318,7 @@ RgTfuDatReqPduInfo *datReq;
  *  @return  Void      
  *
  **/
-#ifdef ANSI
-S16 rgDHMFreeHqProcTB
-(
-RgDlHqProcCb         *hqP,
-uint8_t              tbIndex
-)
-#else
-S16 rgDHMFreeHqProcTB(hqP, tbIndex)
-RgDlHqProcCb         *hqP;
-uint8_t              tbIndex;
-#endif
+S16 rgDHMFreeHqProcTB(RgDlHqProcCb *hqP, uint8_t tbIndex)
 {
    RgTfuDatReqTbInfo     *tb;   /* TB to be sent to CL/PHY*/
    uint8_t               idx;
@@ -1488,17 +1365,7 @@ uint8_t              tbIndex;
  *  @return     None.
  *
  **/
-#ifdef ANSI
-Void rgDHMFreeUe
-(
-Inst               inst,
-RgDlHqEnt          *hqE
-)
-#else
-Void rgDHMFreeUe(inst,hqE)
-Inst               inst;
-RgDlHqEnt          *hqE;
-#endif
+Void rgDHMFreeUe(Inst  inst, RgDlHqEnt *hqE)
 {
    uint8_t             i;
 
@@ -1545,17 +1412,7 @@ RgDlHqEnt          *hqE;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
-S16 RgSchMacRstHqEntReq
-(
-Pst*                 pst,    
-RgInfResetHqEnt*     hqEntInfo
-)
-#else
-S16 RgSchMacRstHqEntReq(pst, hqEntInfo)
-Pst*                 pst;
-RgInfResetHqEnt*     hqEntInfo;
-#endif
+S16 RgSchMacRstHqEntReq(Pst* pst, RgInfResetHqEnt* hqEntInfo)
 {
    Inst      inst;
    RgCellCb  *cell;
@@ -1603,17 +1460,7 @@ uint32_t gSaveVal;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
-S16 RgSchMacRlsHqReq
-(
-Pst                 *pst,
-RgInfRlsHqInfo      *rlshqUeInfo
-)
-#else
-S16 RgSchMacRlsHqReq(pst, rlshqUeInfo)
-Pst                 *pst;
-RgInfRlsHqInfo      *rlshqUeInfo;
-#endif
+S16 RgSchMacRlsHqReq(Pst *pst, RgInfRlsHqInfo *rlshqUeInfo)
 {
    Inst           inst;
    RgCellCb       *cell = NULLP;

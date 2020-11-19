@@ -69,17 +69,7 @@ CmLListCp        inUseL2UeStatsLst;/*!< In Use Pool of UE stats Blocks */
 *
 *
 */
-#ifdef ANSI
-Void TSL2AllocStatsMem 
-(
- Region region,
- Pool   pool 
-)
-#else
-Void TSL2AllocStatsMem(region, pool)
- Region region;
- Pool   pool;
-#endif
+Void TSL2AllocStatsMem(Region region,Pool pool)
 {
    uint32_t cnt=0;
 
@@ -130,15 +120,7 @@ Void TSL2AllocStatsMem(region, pool)
 *
 *
 */
-#ifdef ANSI
-TSL2UeStatsCb* TSL2AllocUeStatsBlk 
-(
- uint16_t   rnti
-)
-#else
-TSL2UeStatsCb* TSL2AllocUeStatsBlk(rnti)
- uint16_t   rnti;
-#endif
+TSL2UeStatsCb* TSL2AllocUeStatsBlk (uint16_t rnti)
 {
    CmLList          *tmp = NULLP;
    TSL2UeStatsCb  *statsCb = NULLP;
@@ -170,17 +152,7 @@ TSL2UeStatsCb* TSL2AllocUeStatsBlk(rnti)
 *
 *
 */
-#ifdef ANSI
-Void TSL2DeallocUeStatsBlk 
-(
- uint16_t       rnti,
- TSL2UeStatsCb  *statsCb
-)
-#else
-Void TSL2DeallocUeStatsBlk(rnti, statsCb)
- uint16_t       rnti;
- TSL2UeStatsCb  *statsCb;
-#endif
+Void TSL2DeallocUeStatsBlk(uint16_t rnti,TSL2UeStatsCb *statsCb)
 {
    statsCb->inUse = FALSE;
    cmLListDelFrm(&inUseL2UeStatsLst, &statsCb->lnk);
@@ -202,15 +174,7 @@ Void TSL2DeallocUeStatsBlk(rnti, statsCb)
 *
 *
 */
-#ifdef ANSI
-TSL2CellStatsCb* TSL2AllocCellStatsBlk 
-(
- uint32_t cellId
-)
-#else
-TSL2CellStatsCb* TSL2AllocCellStatsBlk(cellId)
- uint32_t cellId;
-#endif
+TSL2CellStatsCb* TSL2AllocCellStatsBlk(uint32_t cellId)
 {
    if (cellId != 1)
    {
@@ -232,15 +196,7 @@ TSL2CellStatsCb* TSL2AllocCellStatsBlk(cellId)
 *
 *
 */
-#ifdef ANSI
-Void TSL2DeallocCellStatsBlk 
-(
- uint32_t cellId
-)
-#else
-Void TSL2DeallocCellStatsBlk(cellId)
- uint32_t cellId;
-#endif
+Void TSL2DeallocCellStatsBlk(uint32_t cellId)
 {
 
    return;
@@ -261,17 +217,7 @@ Void TSL2DeallocCellStatsBlk(cellId)
 *
 *
 */
-#ifdef ANSI
-Void TSL2SendStatsToApp
-(
- Pst    *pst,
- SuId   suId
- )
-#else
-Void TSL2SendStatsToApp(pst, suId)
- Pst    *pst;
- SuId   suId;
-#endif
+Void TSL2SendStatsToApp(Pst    *pst, SuId   suId)
 {
    uint32_t idx;
 

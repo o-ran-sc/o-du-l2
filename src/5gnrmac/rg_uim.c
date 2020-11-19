@@ -95,19 +95,12 @@ uint8_t rgRguUlSap;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 RgUiRguBndReq
 (
 Pst  *pst,
 SuId suId,
 SpId spId
 )
-#else
-S16 RgUiRguBndReq(pst, suId, spId)
-Pst  *pst;
-SuId suId;
-SpId spId;
-#endif
 {
    Inst      inst; 
    S16       ret = ROK;
@@ -200,19 +193,12 @@ SpId spId;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 RgUiRguUbndReq
 (
 Pst    *pst,
 SpId   spId,
 Reason reason
 )
-#else
-S16 RgUiRguUbndReq(pst, spId, reason)
-Pst    *pst;
-SpId   spId;
-Reason reason;
-#endif
 {
    Inst      inst;
 
@@ -265,19 +251,7 @@ Reason reason;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 rgUIMRguBndCfm
-(
-Inst inst,
-SpId spId,
-uint8_t status
-)
-#else
-S16 rgUIMRguBndCfm(inst,spId, status)
-Inst          inst;
-SpId          spId;
-uint8_t       status;
-#endif
+S16 rgUIMRguBndCfm(Inst inst,SpId spId,uint8_t status)
 {
    S16  ret = ROK;
    
@@ -309,19 +283,7 @@ uint8_t       status;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 RgUiRguDDatReq
-(
-Pst             *pst,
-SpId            spId,
-RguDDatReqInfo  *datReq
-)
-#else
-S16 RgUiRguDDatReq(pst, spId, datReq)
-Pst             *pst;
-SpId            spId;
-RguDDatReqInfo  *datReq;
-#endif
+S16 RgUiRguDDatReq(Pst *pst,SpId spId,RguDDatReqInfo  *datReq)
 {
    S16   ret = ROK;
    Inst  inst;
@@ -428,19 +390,12 @@ RguDDatReqInfo  *datReq;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 RgUiRguCDatReq
 (
 Pst             *pst,
 SpId            spId,
 RguCDatReqInfo  *datReq
 )
-#else
-S16 RgUiRguCDatReq(pst, spId, datReq)
-Pst             *pst;
-SpId            spId;
-RguCDatReqInfo  *datReq;
-#endif
 {
    Inst  inst;
    S16   ret = ROK;
@@ -516,19 +471,12 @@ RguCDatReqInfo  *datReq;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 RgUiRguDStaRsp
 (
 Pst             *pst,
 SpId            spId,
 RguDStaRspInfo  *staRsp
 )
-#else
-S16 RgUiRguDStaRsp(pst, spId, staRsp)
-Pst             *pst;
-SpId            spId;
-RguDStaRspInfo  *staRsp;
-#endif
 {
    Inst  inst;
    S16   ret       = ROK;
@@ -572,19 +520,12 @@ RguDStaRspInfo  *staRsp;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 RgUiRguCStaRsp
 (
 Pst             *pst,
 SpId            spId,
 RguCStaRspInfo  *staRsp
 )
-#else
-S16 RgUiRguCStaRsp(pst, spId, staRsp)
-Pst             *pst;
-SpId            spId;
-RguCStaRspInfo  *staRsp;
-#endif
 {
    Inst  inst;
    S16   ret = ROK;
@@ -652,19 +593,12 @@ RguCStaRspInfo  *staRsp;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 RgUiRguL2MUlThrpMeasReq 
 (
 Pst             *pst,
 SpId            spId,
 RguL2MUlThrpMeasReqInfo  *measReq
 )
-#else
-S16 RgUiRguL2MUlThrpMeasReq(pst, spId, measReq)
-Pst             *pst;
-SpId            spId;
-RguL2MUlThrpMeasReqInfo  *measReq;
-#endif
 {
    Inst  inst;
 
@@ -733,19 +667,12 @@ RguL2MUlThrpMeasReqInfo  *measReq;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 rgUIMSndDedStaInd
 (
 Inst         inst,
 RgUpSapCb    *rguSap,
 RgRguDedStaInd  *staInd
 )
-#else
-S16 rgUIMSndDedStaInd(inst,rguSap,staInd)
-Inst         inst;
-RgUpSapCb    *rguSap;
-RgRguDedStaInd  *staInd;
-#endif
 {
    S16  ret = ROK;
    
@@ -780,19 +707,12 @@ RgRguDedStaInd  *staInd;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 rgUIMSndCmnStaInd
 (
 Inst            inst,
 RgUpSapCb    *rguDlSap,
 RgRguCmnStaInd  *staInd
 )
-#else
-S16 rgUIMSndCmnStaInd(inst,rguDlSap,staInd)
-Inst          inst,
-RgUpSapCb    *rguDlSap,
-RgRguCmnStaInd  *staInd;
-#endif
 {
    S16  ret = ROK;
 
@@ -825,19 +745,12 @@ RgRguCmnStaInd  *staInd;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 rgUIMSndDedDatInd
 (
 Inst         inst,
 RgUpSapCb    *rguUlSap,
 RgRguDedDatInd  *datInd
 )
-#else
-S16 rgUIMSndDedDatInd(datInd)
-Inst         inst;
-RgUpSapCb    *rguUlSap;
-RgRguDedDatInd  *datInd;
-#endif
 {
    S16  ret = ROK;
 
@@ -876,19 +789,7 @@ RgRguDedDatInd  *datInd;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 rgUIMSndCmnDatInd
-(
-Inst         inst,
-RgUpSapCb    *rguUlSap,
-RgRguCmnDatInd  *datInd
-)
-#else
-S16 rgUIMSndCmnDatInd(datInd)
-Inst         inst;
-RgUpSapCb    *rguUlSap;
-RgRguCmnDatInd  *datInd;
-#endif
+S16 rgUIMSndCmnDatInd(Inst inst,RgUpSapCb *rguUlSap,RgRguCmnDatInd  *datInd)
 {
    S16  ret = ROK;
 
@@ -927,19 +828,7 @@ RgRguCmnDatInd  *datInd;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 RgUiCrgBndReq
-(
-Pst   *pst, 
-SuId  suId,
-SpId  spId
-)
-#else
-S16 RgUiCrgBndReq(pst, suId, spId)
-Pst   *pst; 
-SuId  suId;
-SpId  spId;
-#endif
+S16 RgUiCrgBndReq(Pst   *pst, SuId  suId,SpId  spId)
 {
    S16       ret = ROK;
    Pst       tmpPst;   /* Temporary Post Structure */
@@ -1032,19 +921,7 @@ SpId  spId;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 RgUiCrgUbndReq
-(
-Pst    *pst,
-SpId   spId,
-Reason reason
-)
-#else
-S16 RgUiCrgUbndReq(pst, spId, reason)
-Pst    *pst; 
-SpId   spId;
-Reason reason;
-#endif
+S16 RgUiCrgUbndReq(Pst *pst,SpId spId,Reason reason)
 {
    Inst      inst;
 
@@ -1098,19 +975,7 @@ Reason reason;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-S16 rgUIMCrgBndCfm
-(
-Inst  inst,
-SuId suId,
-uint8_t status
-)
-#else
-S16 rgUIMCrgBndCfm(inst,suId, status)
-Inst          inst;
-SuId          suId;
-uint8_t       status;
-#endif
+S16 rgUIMCrgBndCfm(Inst  inst,SuId suId,uint8_t status)
 {
 
    if(RgUiCrgBndCfm(&(rgCb[inst].crgSap.sapCfg.sapPst), rgCb[inst].crgSap.sapCfg.suId, status) != ROK)
@@ -1142,7 +1007,6 @@ uint8_t       status;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 RgUiCrgCfgReq
 (
 Pst           *pst, 
@@ -1150,13 +1014,6 @@ SpId          spId,
 CrgCfgTransId transId,
 CrgCfgReqInfo *cfgReqInfo
 )
-#else
-S16 RgUiCrgCfgReq(pst, spId, transId, cfgReqInfo)
-Pst           *pst; 
-SpId          spId;
-CrgCfgTransId transId;
-CrgCfgReqInfo *cfgReqInfo;
-#endif
 {
    Inst      inst;
    S16       ret       = ROK;
@@ -1242,19 +1099,12 @@ CrgCfgReqInfo *cfgReqInfo;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
 S16 rgUIMCrgCfgCfm
 (
 Inst      inst,
 CrgCfgTransId transId,
 uint8_t       status
 )
-#else
-S16 rgUIMCrgCfgCfm(inst,transId, status)
-Inst      inst;
-CrgCfgTransId transId;
-uint8_t       status;
-#endif
 {
    S16  ret = ROK;
    uint8_t   prntTrans[CRG_CFG_TRANSID_SIZE+1];
@@ -1274,15 +1124,7 @@ uint8_t       status;
 }  /* rgUIMCrgCfgCfm */
 #if defined(SPLIT_RLC_DL_TASK) && defined(RLC_MAC_STA_RSP_RBUF)
 
-#ifdef ANSI
-S16 rgBatchProc
-(
-Void
-)
-#else
-S16 rgBatchProc()
-Void;
-#endif
+S16 rgBatchProc(Void)
 {
 /* Read from Ring Buffer and process RLC BO Update */
    Pst pst = {0};

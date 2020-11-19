@@ -112,19 +112,12 @@ static S16 rgUtlSndCrntiChngReq2AllSMacs ARGS((
  *     File : rg_utl.c
  *
  **********************************************************/
-#ifdef ANSI
 S16 rgAllocShrablSBuf
 (
 Inst    inst,
 Data    **pData,            /* Pointer of the data to be returned */
 Size    size                /* size */
 )
-#else
-S16 rgAllocShrablSBuf(inst,pData, size)
-Inst    inst;
-Data    **pData;            /* Pointer of the data to be returned */
-Size    size;               /* size */
-#endif
 {
    RgUstaDgn dgn;      /* Alarm diagnostics structure */
 
@@ -182,19 +175,12 @@ Size    size;               /* size */
  *     File : rg_utl.c
  *
  **********************************************************/
-#ifdef ANSI
 S16 rgAllocSBuf
 (
 Inst    inst,
 Data    **pData,            /* Pointer of the data to be returned */
 Size    size                /* size */
 )
-#else
-S16 rgAllocSBuf(inst,pData, size)
-Inst    inst;
-Data    **pData;            /* Pointer of the data to be returned */
-Size    size;               /* size */
-#endif
 {
    RgUstaDgn dgn;      /* Alarm diagnostics structure */
 
@@ -245,19 +231,12 @@ Size    size;               /* size */
 *
 *       File:  rg_utl.c
 */
-#ifdef ANSI
 Void rgFreeSharableSBuf
 (
 Inst inst,
 Data **data,         /* address of pointer to data */
 Size size            /* size */
 )
-#else
-Void rgFreeSharableSBuf(inst,data, size)
-Inst inst;
-Data **data;         /* address of pointer to data */
-Size size;          /* size */
-#endif
 {
 
    S16 ret;
@@ -299,19 +278,12 @@ Size size;          /* size */
 *
 *       File:  rg_utl.c
 */
-#ifdef ANSI
 Void rgFreeSBuf
 (
 Inst inst,
 Data **data,         /* address of pointer to data */
 Size size            /* size */
 )
-#else
-Void rgFreeSBuf(inst,data, size)
-Inst  inst;
-Data **data;         /* address of pointer to data */
-Size size;          /* size */
-#endif
 {
 
    S16 ret;
@@ -357,17 +329,11 @@ Size size;          /* size */
  *     File : rg_utl.c
  *
  **********************************************************/
-#ifdef ANSI
 S16 rgGetMsg
 (
 Inst    inst,
 Buffer  **mBuf            /* Message Buffer pointer be returned */
 )
-#else
-S16 rgGetMsg(inst,mBuf)
-Inst    inst;
-Buffer  **mBuf;           /* Message Buffer pointer be returned */
-#endif
 {
    S16         ret;
 
@@ -408,19 +374,12 @@ Buffer  **mBuf;           /* Message Buffer pointer be returned */
  *     File : rg_utl.c
  *
  **********************************************************/
-#ifdef ANSI
 Void rgFillDgnParams
 (
 Inst        inst,
 RgUstaDgn   *dgn,
-uint8_t          dgnType
+uint8_t     dgnType
 )
-#else
-Void rgFillDgnParams(inst,dgn, dgnType)
-Inst        inst;
-RgUstaDgn   *dgn;
-uint8_t          dgnType;
-#endif
 {
 
    switch(dgnType)
@@ -455,7 +414,6 @@ uint8_t          dgnType;
  *     File : rg_utl.c
  *
  **********************************************************/
-#ifdef ANSI
 Void rgUpdtRguDedSts
 (
 Inst           inst,
@@ -463,13 +421,6 @@ RgUpSapCb      *rguDlSap,
 uint8_t        stsType,   /* Statistics type to update */
 RgRguDedDatReq *datReq    /* DatReq pointer */
 )
-#else
-Void rgUpdtRguDedSts(inst,rguDlSap,stsType, datReq)
-Inst           inst;
-RgUpSapCb      *rguDlSap;
-uint8_t        stsType;   /* Statistics type to update */
-RgRguDedDatReq *datReq;   /* DatReq pointer */
-#endif
 {
    uint8_t idx1,idx2;
    uint32_t idx;
@@ -530,19 +481,12 @@ RgRguDedDatReq *datReq;   /* DatReq pointer */
  *     File : rg_utl.c
  *
  **********************************************************/
-#ifdef ANSI
 Void rgUpdtRguCmnSts
 (
 Inst           inst,
 RgUpSapCb     *rguDlSap,
 uint8_t       stsType   /* Statistics type to update */
 )
-#else
-Void rgUpdtRguCmnSts(inst,rguDlSap,stsType)
-Inst           inst;
-RgUpSapCb     *rguDlSap;
-uint8_t       stsType;   /* Statistics type to update */
-#endif
 {
 
    switch(stsType)
@@ -577,17 +521,7 @@ uint8_t       stsType;   /* Statistics type to update */
  *     File : rg_utl.c
  *
  **********************************************************/
-#ifdef ANSI
-Void rgUpdtCellCnt
-(
-Inst inst,
-uint8_t updtType
-)
-#else
-Void rgUpdtCellCnt(inst,updtType)
-Inst inst;
-uint8_t updtType;
-#endif
+Void rgUpdtCellCnt(Inst inst,uint8_t updtType)
 {
 
    switch (updtType)
@@ -623,17 +557,7 @@ uint8_t updtType;
  *     File : rg_utl.c
  *
  **********************************************************/
-#ifdef ANSI
-Void rgUpdtUeCnt
-(
-Inst inst,
-uint8_t updtType
-)
-#else
-Void rgUpdtUeCnt (inst,updtType)
-Inst inst;
-uint8_t updtType;
-#endif
+Void rgUpdtUeCnt(Inst inst,uint8_t updtType)
 {
    switch (updtType)
    {
@@ -663,19 +587,12 @@ uint8_t updtType;
 *       File:  rg_utl.c
 *
 */
-#ifdef ANSI
 S16 rgAllocEventMem
 (
 Inst     inst,
 Ptr       *memPtr,
 Size      memSize
 )
-#else
-S16 rgAllocEventMem(inst,memPtr, memSize)
-Inst     inst;
-Ptr       *memPtr;
-Size      memSize;
-#endif
 {
    Mem               sMem;
    volatile uint32_t startTime=0;
@@ -730,7 +647,6 @@ Size      memSize;
 *       File:  rg_utl.c
 *
 */
-#ifdef ANSI
 S16 rgGetEventMem
 (
 Inst      inst,
@@ -738,13 +654,6 @@ Ptr       *ptr,
 Size      len,
 Ptr       memCp
 )
-#else
-S16 rgGetEventMem(inst,ptr, len, memCp)
-Inst      inst;
-Ptr       *ptr;
-Size      len;
-Ptr       memCp;
-#endif
 {
    S16   ret;
 
@@ -773,19 +682,12 @@ Ptr       memCp;
  *     File : rg_utl.c
  *
  **********************************************************/
-#ifdef ANSI
 Void rgGetPstToInst
 (
 Pst           *pst,
 Inst          srcInst,
 Inst          dstInst
 )
-#else
-Void rgGetPstToInst (pst, srcInst, dstInst)
-Pst           *pst;
-Inst          srcInst;
-Inst          dstInst;
-#endif
 {
 
    pst->srcEnt = rgCb[srcInst].rgInit.ent; 
@@ -826,17 +728,7 @@ Inst          dstInst;
  *     File : rg_utl.c
  *
  **********************************************************/
-#ifdef ANSI
-S16 RgSchMacLcgRegReq
-(
-Pst            *pst,
-RgInfLcgRegReq *lcgRegReq
-)
-#else
-S16 RgSchMacLcgRegReq (pst, lcgRegReq)
-Pst            *pst;
-RgInfLcgRegReq *lcgRegReq;
-#endif
+S16 RgSchMacLcgRegReq(Pst *pst,RgInfLcgRegReq *lcgRegReq)
 {
    Inst       inst;
    RgCellCb   *cell = NULLP;
@@ -883,17 +775,7 @@ RgInfLcgRegReq *lcgRegReq;
  *     File : rg_utl.c
  *
  **********************************************************/
-#ifdef ANSI
-S16 RgSchMacUlSpsResetReq
-(
-Pst            *pst,
-RgInfUlSpsReset *ulSpsResetInfo
-)
-#else
-S16 RgSchMacUlSpsResetReq (pst, lcInfo)
-Pst            *pst;
-RgInfUlSpsReset *ulSpsResetInfo;
-#endif
+S16 RgSchMacUlSpsResetReq(Pst *pst,RgInfUlSpsReset *ulSpsResetInfo)
 {
    Inst       inst;
    RgCellCb   *cell = NULLP;
@@ -951,17 +833,7 @@ RgInfUlSpsReset *ulSpsResetInfo;
  *     File : rg_utl.c
  *
  **********************************************************/
-#ifdef ANSI
-S16 RgSchMacSpsLcRegReq
-(
-Pst            *pst,
-RgInfSpsLcInfo *lcInfo
-)
-#else
-S16 RgSchMacSpsLcRegReq (pst, lcInfo)
-Pst            *pst;
-RgInfSpsLcInfo *lcInfo;
-#endif
+S16 RgSchMacSpsLcRegReq(Pst *pst,RgInfSpsLcInfo *lcInfo)
 {
    Inst       inst;
    RgCellCb   *cell= NULLP;
@@ -1032,19 +904,7 @@ RgInfSpsLcInfo *lcInfo;
  *     File : rg_utl.c
  *
  **********************************************************/
-#ifdef ANSI
-S16 RgSchMacSpsLcDeregReq
-(
-Pst            *pst,
-CmLteCellId    cellId,
-CmLteRnti      crnti
-)
-#else
-S16 RgSchMacSpsLcDeregReq (pst, cellId, crnti)
-Pst            *pst;
-CmLteCellId    cellId;
-CmLteRnti      crnti;
-#endif
+S16 RgSchMacSpsLcDeregReq(Pst  *pst,CmLteCellId cellId,CmLteRnti crnti)
 {
    Inst       inst;
    RgCellCb   *cell = NULLP;
@@ -1098,7 +958,6 @@ CmLteRnti      crnti;
  *      -# ROK 
  *      -# RFAILED
  **/
-#ifdef ANSI
 static S16 rgUtlHndlCrntiChng 
 (
 Inst            inst,
@@ -1106,13 +965,6 @@ RgCellCb        *cell,
 CmLteRnti       rnti,
 CmLteRnti       newRnti
 )
-#else
-static S16 rgUtlHndlCrntiChng(inst,cell, rnti, newRnti)
-Inst            inst;
-RgCellCb        *cell;
-CmLteRnti       rnti;
-CmLteRnti       newRnti;
-#endif
 {
    RgUeCb         *ue = NULLP;
    RgUeCb         *newUe = NULLP;
@@ -1164,17 +1016,7 @@ CmLteRnti       newRnti;
  *  @param[in] RgUeCb    *ue
  *  @return  ROK is SUCCESS 
  **/
-#ifdef ANSI
-S16 rgDelUeFrmAllSCell
-(
-RgCellCb      *cell,
-RgUeCb        *ue
-)
-#else
-S16 rgDelUeFrmAllSCell(cell, ue)
-RgCellCb      *cell;
-RgUeCb        *ue;
-#endif
+S16 rgDelUeFrmAllSCell(RgCellCb *cell,RgUeCb *ue)
 {
    Inst        inst     = cell->macInst - RG_INST_START;
    uint8_t     idx      = 0;
@@ -1219,19 +1061,7 @@ RgUeCb        *ue;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
-S16 rgUtlVltdAddSCellCfg
-(
- RgPrgUeSCellCfgInfo *ueSCellCb,
- RgCellCb    *cell,
- Inst        inst
-)
-#else
-S16 rgUtlVltdAddSCellCfg(ueSCellCb, cell, inst)
- RgPrgUeSCellCfgInfo *ueSCellCb;
- RgCellCb    *cell;
- Inst        inst;
-#endif
+S16 rgUtlVltdAddSCellCfg(RgPrgUeSCellCfgInfo *ueSCellCb,RgCellCb *cell,Inst inst)
 {
   S16 ret = ROK; 
   
@@ -1276,19 +1106,12 @@ S16 rgUtlVltdAddSCellCfg(ueSCellCb, cell, inst)
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
 static S16 rgUtlSndCrntiChngReq2AllSMacs
 (
 RgCellCb        *cell,
 CmLteRnti       rnti,
 CmLteRnti       newRnti
 )
-#else
-static S16 rgUtlSndCrntiChngReq2AllSMacs(cell, rnti, newRnti)
-RgCellCb        *cell;
-CmLteRnti       rnti;
-CmLteRnti       newRnti;
-#endif
 {
    Inst                inst = cell->macInst - RG_INST_START;
    Inst                sCellInstIdx;
@@ -1358,17 +1181,7 @@ TfuDelDatReqInfo delDatReq;
  *  @param[in] CmLteRnti     rnti
  *  @return  Void 
  **/
-#ifdef ANSI
-static Void rgUtlHndlCrntiRls
-(
-RgCellCb        *cell,
-RgInfRlsRnti    *rlsRnti
-)
-#else
-static Void rgUtlHndlCrntiRls(cell, rlsRnti)
-RgCellCb        *cell;
-CmLteRnti       *rlsRnti;
-#endif
+static Void rgUtlHndlCrntiRls(RgCellCb *cell,RgInfRlsRnti *rlsRnti)
 {
    Inst           inst = cell->macInst - RG_INST_START;
    RgUeCb        *ue = NULLP;
@@ -1446,17 +1259,7 @@ CmLteRnti       *rlsRnti;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
-S16 RgSchMacRlsRntiReq
-(
-Pst                 *pst,
-RgInfRlsRnti        *rlsRnti
-)
-#else
-S16 RgSchMacRlsRntiReq(pst, rlsRnti)
-Pst                 *pst;
-RgInfRlsRnti        *rlsRnti;
-#endif
+S16 RgSchMacRlsRntiReq(Pst *pst,RgInfRlsRnti *rlsRnti)
 {
 //   Pst            schPst;
 //   RgInfUeDelInd  ueDelInd;
@@ -1541,15 +1344,7 @@ TfuDelDatReqInfo delDatReq;
 } /* end of RgSchMacRlsRntiReq */
 
 #ifdef L2_OPTMZ
-#ifdef ANSI
-Bool RgUtlIsTbMuxed
-(
- TfuDatReqTbInfo *tb
-)
-#else
-Bool RgUtlIsTbMuxed()
-   TfuDatReqTbInfo *tb
-#endif
+Bool RgUtlIsTbMuxed(TfuDatReqTbInfo *tb)
 {
    MsgLen len = 0;
    SFndLenMsg(tb->macHdr, &len);

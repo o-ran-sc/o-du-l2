@@ -107,15 +107,10 @@ static const SystemId sId ={
 *
 */
 
-#ifdef ANSI
 S16 rlcGetSId
 (
 SystemId *s                 /* system id */
 )
-#else
-S16 rlcGetSId(s)
-SystemId *s;                /* system id */
-#endif
 {
 
    s->mVer = sId.mVer;

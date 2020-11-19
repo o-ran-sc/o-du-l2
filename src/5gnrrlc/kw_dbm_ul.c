@@ -73,15 +73,7 @@ static int RLOG_FILE_ID=194;
  *     -# ROK 
  *     -# RFAILED 
 */
-#ifdef ANSI
-S16 rlcDbmUlInit
-(
-RlcCb *gCb
-)
-#else
-S16 rlcDbmUlInit(gCb)
-RlcCb *gCb;
-#endif
+S16 rlcDbmUlInit(RlcCb *gCb)
 {
    /* Initialize ueCb Hash List */
    if(ROK != cmHashListInit(&(gCb->u.ulCb->ueLstCp), 
@@ -140,15 +132,7 @@ RlcCb *gCb;
  *
  * @return  Void
 */
-#ifdef ANSI
-Void rlcDbmUlDeInit
-(
-RlcCb *gCb
-)
-#else
-Void rlcDbmUlDeInit(gCb)
-RlcCb *gCb;
-#endif
+Void rlcDbmUlDeInit(RlcCb *gCb)
 {
 
    /* De Initialize ueCb Hash List */
@@ -182,19 +166,12 @@ RlcCb *gCb;
  *
  * @return  Void
 */
-#ifdef ANSI
 Void rlcDbmFetchUlRbCbByRbId
 (
 RlcCb         *gCb,
 CmLteRlcId   *rlcId,  
 RlcUlRbCb     **rbCb  
 )
-#else
-Void rlcDbmFetchUlRbCbByRbId(gCb, rlcId, rbCb)
-RlcCb         *gCb;
-CmLteRlcId   *rlcId;    
-RlcUlRbCb     **rbCb;   
-#endif
 {
    *rbCb= NULLP;
 
@@ -319,19 +296,12 @@ void rlcDbmFetchUlRbCbFromLchId(RlcCb *gCb, CmLteRnti ueId, CmLteCellId cellId,\
  * @return  Void
  *
 */
-#ifdef ANSI
 Void rlcDbmDelAllUlRb
 (
 RlcCb       *gCb,
 RlcUlRbCb   **rbCbLst,          
-uint8_t         numRbCb            
+uint8_t     numRbCb            
 )
-#else
-Void rlcDbmDelAllUlRb(gCb, rbCbLst, numRbCb)
-RlcCb       *gCb;
-RlcUlRbCb   **rbCbLst;        
-uint8_t         numRbCb;         
-#endif
 {
    uint32_t idx; /* Index */
 
@@ -374,7 +344,6 @@ uint8_t         numRbCb;
  *    -# RFAILED 
  *
 */
-#ifdef ANSI
 S16 rlcDbmAddUlUeCb
 (
 RlcCb          *gCb,
@@ -382,13 +351,6 @@ CmLteRnti     ueId,
 CmLteCellId   cellId,    
 RlcUlUeCb      *ueCb    
 )
-#else
-S16 rlcDbmAddUlUeCb(gCb, ueId, cellId, ueCb)
-RlcCb          *gCb;
-CmLteRnti     ueId;    
-CmLteCellId   cellId; 
-RlcUlUeCb      *ueCb;
-#endif
 {
 
    ueCb->ueId = ueId;
@@ -426,17 +388,11 @@ RlcUlUeCb      *ueCb;
  *    -# RFAILED 
  *
 */
-#ifdef ANSI
 S16 rlcDbmAddUlTransaction 
 (
 RlcCb        *gCb,
 RlcUlCfgTmpData   *cfg
 )
-#else
-S16 rlcDbmAddUlTransaction(gCb, cfg)
-RlcCb        *gCb;
-RlcUlCfgTmpData   *cfg;
-#endif
 {
 #ifndef ALIGN_64BIT
    RLOG1(L_DEBUG, "(transId(%ld)", cfg->transId);
@@ -467,19 +423,12 @@ RlcUlCfgTmpData   *cfg;
  *    -# RFAILED 
  *
 */
-#ifdef ANSI
 S16 rlcDbmFindUlTransaction
 (
 RlcCb             *gCb,
-uint32_t              transId,
+uint32_t          transId,
 RlcUlCfgTmpData   **cfg
 )
-#else
-S16 rlcDbmFindUlTransaction(gCb, cfg)
-RlcCb             *gCb;
-uint32_t              transId;
-RlcUlCfgTmpData   **cfg;
-#endif
 {
 
    if(ROK != cmHashListFind(&(gCb->u.ulCb->transIdLstCp),
@@ -510,17 +459,11 @@ RlcUlCfgTmpData   **cfg;
  *      -# RFAILED 
  *
 */
-#ifdef ANSI
 S16 rlcDbmDelUlTransaction
 (
 RlcCb             *gCb,
 RlcUlCfgTmpData   *cfg       
 )
-#else
-S16 rlcDbmDelUlTransaction(gCb, cfg)
-RlcCb             *gCb;
-RlcUlCfgTmpData   *cfg;     
-#endif
 {
 
    if(cmHashListDelete(&(gCb->u.ulCb->transIdLstCp),(PTR) (cfg)) != ROK) 
@@ -546,15 +489,7 @@ RlcUlCfgTmpData   *cfg;
  *    -# RFAILED 
  *
 */
-#ifdef ANSI
-S16 rlcDbmDelAllUlTransactions
-(
-RlcCb *gCb
-)
-#else
-S16 rlcDbmDelAllUlTransactions(gCb)
-RlcCb *gCb;
-#endif
+S16 rlcDbmDelAllUlTransactions(RlcCb *gCb)
 {
    RlcUlCfgTmpData *cfg = NULL;
 
@@ -615,19 +550,12 @@ uint8_t rlcDbmFetchUlUeCb(RlcCb *gCb, CmLteRnti ueId, CmLteCellId  cellId, RlcUl
  * @return Void
  *
 */
-#ifdef ANSI
 Void rlcDbmDelUlUeCb
 (
 RlcCb       *gCb,
 RlcUlUeCb   *ueCb,       
 Bool       abortFlag   
 )
-#else
-Void rlcDbmDelUlUeCb(gCb,eCb, abortFlag)
-RlcCb       *gCb;
-RlcUlUeCb   *ueCb;      
-Bool       abortFlag; 
-#endif
 {
 
 #if  (!defined(KW_PDCP) || !(defined(PJ_SEC_ASYNC) || defined(PJ_CMP_ASYNC)))
@@ -669,15 +597,7 @@ Bool       abortFlag;
  *
  * @return  Void
 */
-#ifdef ANSI
-Void rlcDbmDelAllUlUe
-(
-RlcCb *gCb
-)
-#else
-Void rlcDbmDelAllUlUe(gCb)
-RlcCb *gCb;
-#endif
+Void rlcDbmDelAllUlUe(RlcCb *gCb)
 {
    RlcUlUeCb *ueCb = NULLP;  /* UE Control Block */
 
@@ -710,19 +630,12 @@ RlcCb *gCb;
  *     -# ROK 
  *     -# RFAILED 
 */
-#ifdef ANSI
 S16 rlcDbmAddUlCellCb
 (
 RlcCb          *gCb,
 CmLteCellId   cellId,    
 RlcUlCellCb    *cellCb  
 )
-#else
-S16 rlcDbmAddUlCellCb(gCb, cellId, cellCb)
-RlcCb          *gCb;
-CmLteCellId   cellId;    
-RlcUlCellCb    *cellCb;  
-#endif
 {
    RlcUlCellCb *tCellCb; 
 
@@ -785,17 +698,7 @@ void rlcDbmFetchUlCellCb(RlcCb *gCb, CmLteCellId cellId, RlcUlCellCb **cellCb)
  *
  *  @return  Void
 */
-#ifdef ANSI
-Void rlcDbmDelUlCellCb
-(
-RlcCb         *gCb,
-RlcUlCellCb   *cellCb     
-)
-#else
-Void rlcDbmDelUlCellCb(gCb, cellCb)
-RlcCb         *gCb;
-RlcUlCellCb   *cellCb;     
-#endif
+Void rlcDbmDelUlCellCb(RlcCb *gCb,RlcUlCellCb *cellCb)
 {
 
    /* Delete all rbCbs in cellCb */
@@ -824,15 +727,7 @@ RlcUlCellCb   *cellCb;
  *
  * @return  Void
 */
-#ifdef ANSI
-Void rlcDbmDelAllUlCell
-(
-RlcCb *gCb
-)
-#else
-Void rlcDbmDelAllUlCell(gCb)
-RlcCb *gCb;
-#endif
+Void rlcDbmDelAllUlCell(RlcCb *gCb)
 {
    RlcUlCellCb *cellCb = NULLP; /* Cell Control Block */
 
@@ -860,15 +755,7 @@ RlcCb *gCb;
  * @param[in] gCb      RLC Instance Control Block
  *
 */
-#ifdef ANSI
-Void rlcDbmUlShutdown
-(
-RlcCb *gCb
-)
-#else
-Void rlcDbmUlShutdown(gCb)
-RlcCb *gCb;
-#endif
+Void rlcDbmUlShutdown(RlcCb *gCb)
 {
 
    rlcDbmDelAllUlCell(gCb);
