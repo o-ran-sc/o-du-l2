@@ -34,6 +34,23 @@
       "revId": "5602c2c3167a61e200402d72f09756c4b2e87198",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f55f80db_d2d289fa",
+        "filename": "src/o1/o1_client/GlobalDefs.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-19T11:03:37Z",
+      "side": 1,
+      "message": "Please make this a compilation flag and move to makefile",
+      "revId": "5602c2c3167a61e200402d72f09756c4b2e87198",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
     }
   ]
 }
