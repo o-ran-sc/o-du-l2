@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "33ba5ce1_f4db3014",
+        "filename": "src/5gnrmac/rg_dux.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2020-11-19T15:48:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f164e41f_3482b7c0",
+      "revId": "324f62a8377f2f52412fe2a75dca7ab49c383e17",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "da8c7e7d_7b549321",
         "filename": "src/5gnrmac/rg_dux.c",
         "patchSetId": 1
@@ -70,6 +88,24 @@
     },
     {
       "key": {
+        "uuid": "173e5237_5861171f",
+        "filename": "src/5gnrmac/rg_lim.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2020-11-19T15:48:29Z",
+      "side": 1,
+      "message": "most of the function which are decleared/defined inside the flag are not using anywhere",
+      "parentUuid": "8ff37085_e6a06cbe",
+      "revId": "324f62a8377f2f52412fe2a75dca7ab49c383e17",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "6e5a4fd0_6598280f",
         "filename": "src/5gnrrlc/kw_uim.c",
         "patchSetId": 1
@@ -81,6 +117,24 @@
       "writtenOn": "2020-11-12T16:43:55Z",
       "side": 1,
       "message": "why are we still using S16 ?",
+      "revId": "324f62a8377f2f52412fe2a75dca7ab49c383e17",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1b6fe03d_800a3e43",
+        "filename": "src/5gnrrlc/kw_uim.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2020-11-19T15:48:29Z",
+      "side": 1,
+      "message": "will take this as an individual task",
+      "parentUuid": "6e5a4fd0_6598280f",
       "revId": "324f62a8377f2f52412fe2a75dca7ab49c383e17",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -104,6 +158,24 @@
     },
     {
       "key": {
+        "uuid": "7f5392bb_5ac06605",
+        "filename": "src/5gnrrlc/kw_uim.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2020-11-19T15:48:29Z",
+      "side": 1,
+      "message": "okay.. in next commit will resolve this",
+      "parentUuid": "5da9aa81_1195ead2",
+      "revId": "324f62a8377f2f52412fe2a75dca7ab49c383e17",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ce626b9f_35b8fc58",
         "filename": "src/5gnrrlc/kw_ul_ex_ms.c",
         "patchSetId": 1
@@ -121,6 +193,24 @@
     },
     {
       "key": {
+        "uuid": "49684b77_d9eb5d5a",
+        "filename": "src/5gnrrlc/kw_ul_ex_ms.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2020-11-19T15:48:29Z",
+      "side": 1,
+      "message": "no",
+      "parentUuid": "ce626b9f_35b8fc58",
+      "revId": "324f62a8377f2f52412fe2a75dca7ab49c383e17",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ca2554fe_1558d087",
         "filename": "src/5gnrrlc/kw_umm_dl.c",
         "patchSetId": 1
@@ -132,6 +222,24 @@
       "writtenOn": "2020-11-12T16:43:55Z",
       "side": 1,
       "message": "rename to void",
+      "revId": "324f62a8377f2f52412fe2a75dca7ab49c383e17",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "91d8be44_dfbd60ec",
+        "filename": "src/5gnrrlc/kw_umm_dl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2020-11-19T15:48:29Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "ca2554fe_1558d087",
       "revId": "324f62a8377f2f52412fe2a75dca7ab49c383e17",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -166,6 +274,24 @@
       "writtenOn": "2020-11-12T16:43:55Z",
       "side": 1,
       "message": "Is return required here ?",
+      "revId": "324f62a8377f2f52412fe2a75dca7ab49c383e17",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f15396ed_ad619423",
+        "filename": "src/5gnrrlc/kw_umm_ul.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 819,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2020-11-19T15:48:29Z",
+      "side": 1,
+      "message": "no, will remove return from all void  function in another commit",
+      "parentUuid": "476dae0a_4723a7d6",
       "revId": "324f62a8377f2f52412fe2a75dca7ab49c383e17",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
