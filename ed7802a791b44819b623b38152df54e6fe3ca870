@@ -16,6 +16,24 @@
       "revId": "ed7802a791b44819b623b38152df54e6fe3ca870",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6201abdb_c498faac",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 7380,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2020-11-19T06:24:57Z",
+      "side": 1,
+      "message": "modified the if condition as per the discussion. \nif(duUeCb-\u003ef1UeDb-\u003edlRrcMsg-\u003errcMsgPdu) this condition is true when we have rrc container.",
+      "parentUuid": "f6ce2a3a_c79e2527",
+      "revId": "ed7802a791b44819b623b38152df54e6fe3ca870",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
