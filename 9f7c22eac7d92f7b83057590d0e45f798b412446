@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "047224de_4ddac712",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 7386,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-19T07:01:18Z",
+      "side": 1,
+      "message": "Ignoring delivery report, since rrcContainer is not present.\nAdd this log",
+      "revId": "9f7c22eac7d92f7b83057590d0e45f798b412446",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b5266a22_4714c5b7",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1008,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-19T07:01:18Z",
+      "side": 1,
+      "message": "delete the commented line",
+      "revId": "9f7c22eac7d92f7b83057590d0e45f798b412446",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d7f684b0_acb9f097",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1009,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-19T07:01:18Z",
+      "side": 1,
+      "message": "now that you have added sleep earlier, do we still have to use \"slot+3, sfn+10?\nIf yes, do it in that slot itself instead of performing addition here.",
+      "revId": "9f7c22eac7d92f7b83057590d0e45f798b412446",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
