@@ -4,10 +4,11 @@ Directory Structure :
    a. common : contains individual module's makefile
    b. odu    : contains main makefile to generate an executable binary
    c. scripts: contains scripts for logging
+   d. o1     : contains main makefile to generate an executable binary
 
 2. l2/docs/  : contains README and other configuration files for building docs
 	
-2. l2/src/ : contains layer specific source code
+3. l2/src/ : contains layer specific source code
    a. 5gnrmac  : MAC source code
    b. 5gnrrlc  : RLC source code
    c. cm       : common, environment and interface files
@@ -16,6 +17,7 @@ Directory Structure :
    f. mt       : wrapper functions over OS
    g. phy_stub : Stub code for Physical layer
    h. rlog     : logging module
+   i. o1       : o1 module
 
 
 Pre-requisite for Compilation :
@@ -30,6 +32,30 @@ Pre-requisite for Compilation :
    b. On CentOS : yum install libpcap-devel
 
 
+Pre-requisite for running O1 module:
+-----------------------------------
+Install netconf server
+----------------------
+
+1.	Create new netconf user (login with root user and run following command)
+	$adduser --system netconf && \
+        echo "netconf:netconf" | chpasswd
+
+	$mkdir -p /home/netconf/.ssh && \
+	ssh-keygen -A && \
+	ssh-keygen -t dsa -P '' -f /home/netconf/.ssh/id_dsa && \
+        cat /home/netconf/.ssh/id_dsa.pub > /home/netconf/.ssh/authorized_keys
+2.	Install netconf packages. 
+	$cd l2/build/o1/
+	$chmod +x install_lib.sh
+	$ ./install_lib.sh
+
+Install the yang module
+-----------------------
+1. cd l2/build/o1/yang
+   sysrepoctl -i o-ran-sc-odu-alarm-v1.yang
+
+
 How to Clean and Build:
 -----------------------
 1. Building ODU binary:
@@ -37,6 +63,10 @@ How to Clean and Build:
          cd l2/build/odu
    b. Building ODU binary
          make odu MACHINE=BIT64 MODE=FDD
+
+         Build with O1 module enabled:
+         make odu MACHINE=BIT64 MODE=FDD O1_ENABLE=YES
+
    c. Cleaning ODU binary
          make clean_odu MACHINE=BIT64 MODE=FDD
 
@@ -48,7 +78,7 @@ How to Clean and Build:
    c. Cleaning CU Stub binary
          make clean_cu NODE=TEST_STUB MACHINE=BIT64 MODE=FDD
 
-2. Building RIC Stub binary:
+3. Building RIC Stub binary:
    a. Build folder
          cd l2/build/odu
    b. Building RIC Stub binary
@@ -58,6 +88,15 @@ How to Clean and Build:
 
 4. Cleaning ODU, CU Stub and RIC Stub:
       make clean_all
+
+5. Building O1 binary:
+   a. Build folder
+         cd l2/build/o1
+   b. Building O1 binary
+         make o1 MACHINE=BIT64
+   c. Cleaning O1 binary
+         make clean_o1 
+
 
 How to execute:
 ---------------
@@ -78,10 +117,17 @@ How to execute:
 5. Run RIC Stub binary:
       ./ric_stub
 
-4. DU execution folder:
+6. DU execution folder:
       cd l2/bin/odu
      
-5. Run ODU binary:
+7. Run ODU binary:
       ./odu
 
+8. O1 execution folder:
+      cd l2/build/o1/bin/o1
+
+9. Run O1 binary:
+      ./o1
+
 PS: CU stub and RIC stub must be run (in no particular sequence) before ODU
+    If O1 module is enabled it must be run before ODU
