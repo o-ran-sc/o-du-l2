@@ -14,48 +14,41 @@
 #   limitations under the License.                                             #
 ################################################################################
 
-# This is makefile for DU APP
+# This is makefile for O1 module
 
 include ../common/rsys_fancy.mak
 include ../common/env.mak
 COLOR=$(COLOR_RED)
 
-SRC_DIR=$(ROOT_DIR)/src/du_app/
-C_SRCS=$(wildcard $(SRC_DIR)/*.c)
-C_OBJS=$(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(C_SRCS))
+ROOT_DIR=$(patsubst %/build/o1,%,$(BUILD_DIR))
 
-# prepare the list of common header files
-HDR_FILES+=$(wildcard $(CM_DIR)/env*.[hx])
-HDR_FILES+=$(wildcard $(CM_DIR)/gen*.[hx])
-HDR_FILES+=$(wildcard $(CM_DIR)/ssi*.[hx])
-HDR_FILES+=$(wildcard $(CM_DIR)/cm*.[hx])
-HDR_FILES+=$(wildcard $(CM_DIR)/lkw*.[hx])
-HDR_FILES+=$(wildcard $(CM_DIR)/lrg*.[hx])
+SRC_DIR=$(ROOT_DIR)/src/o1/
+CPP_SRCS=$(wildcard $(SRC_DIR)/*.cpp)
+CPP_OBJS=$(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(CPP_SRCS))
 
-lib: $(LIB_DIR)/libduapp.a
+lib: $(LIB_DIR)/libo1.a
 include $(COM_BUILD_DIR)/compile.mak
 
-I_OPTS+=-I$(ROOT_DIR)/src/mt
-I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/common
-I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/F1AP
-I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/RRC
-I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/E2AP
+L_OPTS=-lsysrepo -lyang
+L_OPTS+= -lsysrepo-cpp -lyang-cpp
+L_OPTS+= -lm -lpthread
+I_OPTS=-I$(ROOT_DIR)/src/o1/
 I_OPTS+=-I$(ROOT_DIR)/src/o1/o1_client
 
 #-------------------------------------------------------------#
 #Linker macros
 #-------------------------------------------------------------#
-$(LIB_DIR)/libduapp.a:$(C_OBJS)
+
+$(LIB_DIR)/libo1.a:$(CPP_OBJS)
 		  @echo -e "Creating Archive $(COLOR) $@ $(REVERT_COLOR)"
-		  $(Q)ar -cr $(LIB_DIR)/libduapp.a $(C_OBJS) 
+		  $(Q)ar -cr $(LIB_DIR)/libo1.a $(CPP_OBJS)
 
 #-------------------------------------------------------------#
 #Clean macros
 #-------------------------------------------------------------#
 clean:
-		  @echo -e "$(COLOR_RED)Cleaning DU APP$(REVERT_COLOR)"
-		  @echo $(SRC_DIR) $(CM_DIR)
-		  $(Q)\rm -f $(LIB_DIR)/libduapp.a $(C_OBJS) 
+		  @echo -e "$(COLOR_RED)Cleaning O1$(REVERT_COLOR)"
+		  $(Q)\rm -f $(LIB_DIR)/libo1.a $(CPP_OBJS) 
 
 #**********************************************************************
 #         End of file

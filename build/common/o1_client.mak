@@ -14,49 +14,40 @@
 #   limitations under the License.                                             #
 ################################################################################
 
-# This is makefile for DU APP
+# This is makefile for O1 client
 
 include ../common/rsys_fancy.mak
 include ../common/env.mak
 COLOR=$(COLOR_RED)
 
-SRC_DIR=$(ROOT_DIR)/src/du_app/
+SRC_DIR=$(ROOT_DIR)/src/o1/o1_client
 C_SRCS=$(wildcard $(SRC_DIR)/*.c)
 C_OBJS=$(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(C_SRCS))
 
-# prepare the list of common header files
-HDR_FILES+=$(wildcard $(CM_DIR)/env*.[hx])
-HDR_FILES+=$(wildcard $(CM_DIR)/gen*.[hx])
-HDR_FILES+=$(wildcard $(CM_DIR)/ssi*.[hx])
-HDR_FILES+=$(wildcard $(CM_DIR)/cm*.[hx])
-HDR_FILES+=$(wildcard $(CM_DIR)/lkw*.[hx])
-HDR_FILES+=$(wildcard $(CM_DIR)/lrg*.[hx])
-
-lib: $(LIB_DIR)/libduapp.a
+lib: $(LIB_DIR)/libo1client.a
 include $(COM_BUILD_DIR)/compile.mak
 
-I_OPTS+=-I$(ROOT_DIR)/src/mt
-I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/common
-I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/F1AP
-I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/RRC
-I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/E2AP
+L_OPTS=-lsysrepo -lyang
+L_OPTS+= -lsysrepo-cpp -lyang-cpp
+L_OPTS+= -lm -lpthread
 I_OPTS+=-I$(ROOT_DIR)/src/o1/o1_client
+I_OPTS+=-I$(ROOT_DIR)/src/cm
+I_OPTS+=-I$(ROOT_DIR)/src/mt
 
 #-------------------------------------------------------------#
 #Linker macros
 #-------------------------------------------------------------#
-$(LIB_DIR)/libduapp.a:$(C_OBJS)
+$(LIB_DIR)/libo1client.a:$(C_OBJS) $(C_WO_PED_OBJS)
 		  @echo -e "Creating Archive $(COLOR) $@ $(REVERT_COLOR)"
-		  $(Q)ar -cr $(LIB_DIR)/libduapp.a $(C_OBJS) 
+		  $(Q)ar -cr $(LIB_DIR)/libo1client.a $(C_OBJS) $(C_WO_PED_OBJS)
 
 #-------------------------------------------------------------#
 #Clean macros
 #-------------------------------------------------------------#
 clean:
-		  @echo -e "$(COLOR_RED)Cleaning DU APP$(REVERT_COLOR)"
-		  @echo $(SRC_DIR) $(CM_DIR)
-		  $(Q)\rm -f $(LIB_DIR)/libduapp.a $(C_OBJS) 
-
+		  @echo -e "$(COLOR_RED)Cleaning O1 Client$(REVERT_COLOR)"
+		  $(Q)\rm -f $(LIB_DIR)/libo1client.a $(C_OBJS) $(C_WO_PED_OBJS) $(LOG_FILES) $(BAK_FILES)
+ 
 #**********************************************************************
 #         End of file
 #**********************************************************************
