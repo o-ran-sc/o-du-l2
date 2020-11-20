@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "11e1cfe4_46873446",
+        "filename": "build/odu/makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2020-11-20T13:58:54Z",
+      "side": 1,
+      "message": "Sure we will take it as a bug fix",
+      "parentUuid": "a2d5b548_fca167a7",
+      "revId": "b85b99f4675173c33e39787be1ceec428cefd51c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e8bbc80d_ed614a2d",
         "filename": "build/odu/makefile",
         "patchSetId": 2
