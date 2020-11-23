@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c8916fa4_39a4cb94",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 900,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-23T14:10:56Z",
+      "side": 1,
+      "message": "use mbr and ambr",
+      "revId": "4750cc91821b2c16099ea11d665e87405b8b39dd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3931b3df_fc3db0d7",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1289,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-23T14:10:56Z",
+      "side": 1,
+      "message": "AddUeConfigReq  failed for cellIdx: %d",
+      "revId": "4750cc91821b2c16099ea11d665e87405b8b39dd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "64dd8dd3_538281cd",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1535,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-23T14:10:56Z",
+      "side": 1,
+      "message": "since bufLen is known, can we try memcpy? Same comment for below change as well",
+      "revId": "4750cc91821b2c16099ea11d665e87405b8b39dd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3101a7be_230e4fad",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 868,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-23T14:10:56Z",
+      "side": 1,
+      "message": "rename as ambr instead of bitRate. This is a generic comment",
+      "revId": "4750cc91821b2c16099ea11d665e87405b8b39dd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
