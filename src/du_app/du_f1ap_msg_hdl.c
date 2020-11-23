@@ -7250,7 +7250,7 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
 {
    uint8_t    ret, ieIdx, ueIdx, lcId, cellIdx;
    bool ueCbFound = false;
-   uint32_t gnbCuUeF1apId, gnbDuUeF1apId;
+   uint32_t gnbCuUeF1apId, gnbDuUeF1apId, bitRateSize;
    DuUeCb   *duUeCb = NULLP;
    UEContextSetupRequest_t   *ueSetReq = NULLP;
     
@@ -7387,10 +7387,7 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
 	       }
 	       break;
 	    }
-	 //TODO: To handle maxAggrBitRate case,
-	 // Dependency: The protocolIE is not specified in ASN
-#if 0
-	 case ProtocolIE_ID_id_ULPDUSessionAggregateMaximumBitRate:            {
+	 case ProtocolIE_ID_id_GNB_DU_UE_AMBR_UL:            {
                /* MaximumBitRate Uplink */
 	       bitRateSize = ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.BitRate.size;
 	       if(bitRateSize > 0)
@@ -7403,8 +7400,9 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
 		  }
 		  else
 		  {
-                     duUeCb->f1UeDb->duUeCfg.maxAggrBitRate->ulBits =\
-		     *ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.BitRate.buf;
+		     memset(duUeCb->f1UeDb->duUeCfg.maxAggrBitRate, 0, sizeof(MaxAggrBitRate)); 
+                     memcpy(&duUeCb->f1UeDb->duUeCfg.maxAggrBitRate->ulBits,
+		     ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.BitRate.buf, bitRateSize);
                      duUeCb->f1UeDb->duUeCfg.maxAggrBitRate->dlBits = 0;
 		  }
 	       }
@@ -7412,7 +7410,6 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
 	          ret = RFAILED;
 	       break;
 	    }
-#endif
 	 default:
 	    {
 	       break;

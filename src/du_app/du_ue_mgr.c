@@ -865,24 +865,26 @@ uint8_t fillMacLcCfgToAddMod(LcCfg *lcCfg, LcCfg *ueSetReqDb)
  *
  *****************************************************************/
 
-uint8_t getMaxAggrBitRate(MaxAggrBitRate *macBitRate, MaxAggrBitRate *ueDbBitRate)
+uint8_t getMaxAggrBitRate(MaxAggrBitRate **macBitRate, MaxAggrBitRate *ueDbBitRate)
 {
    if(ueDbBitRate)
    {
-      if(!macBitRate)
+      if(*macBitRate == NULLP)
       {
-         DU_ALLOC_SHRABL_BUF(macBitRate, sizeof(MaxAggrBitRate));
-         if(!macBitRate)
+         DU_ALLOC_SHRABL_BUF(*macBitRate, sizeof(MaxAggrBitRate));
+         if(*macBitRate == NULLP)
          {
             DU_LOG("\nDUAPP: Memory Alloc Failed at getMaxAggrBitRate()");
             return RFAILED;
          }
       }
-      memcpy(macBitRate, ueDbBitRate, sizeof(MaxAggrBitRate));
+      memset(*macBitRate, 0, sizeof(MaxAggrBitRate));
+      (*macBitRate)->ulBits = ueDbBitRate->ulBits;
+      (*macBitRate)->dlBits = ueDbBitRate->dlBits;
    }
    else
    {
-      macBitRate = NULLP;
+      *macBitRate = NULLP;
    }
    return ROK;
 }
@@ -1024,7 +1026,7 @@ uint8_t fillMacUeCfg(uint16_t cellId, uint8_t ueIdx, uint16_t crnti, \
             fillStartSymbolAndLen(macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg.numTimeDomRsrcAlloc,\
 	       NULL, &macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg);
          }
-	 ret = getMaxAggrBitRate(macUeCfg->maxAggrBitRate, ueCfgDb->maxAggrBitRate);
+	 ret = getMaxAggrBitRate(&macUeCfg->maxAggrBitRate, ueCfgDb->maxAggrBitRate);
       }
 
       /* Filling LC Context */
@@ -1556,7 +1558,7 @@ uint8_t duUpdateMacCfg(MacUeCfg *macUeCfg, F1UeContextSetupDb *f1UeDb)
          fillStartSymbolAndLen(macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg.numTimeDomRsrcAlloc,\
 	       NULL, &macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg);
       }
-      ret = getMaxAggrBitRate(macUeCfg->maxAggrBitRate, f1UeDb->duUeCfg.maxAggrBitRate);
+      ret = getMaxAggrBitRate(&macUeCfg->maxAggrBitRate, f1UeDb->duUeCfg.maxAggrBitRate);
    }
    /* Filling LC Context */
    for(dbIdx = 0; (dbIdx < f1UeDb->duUeCfg.numMacLcs && ret == ROK); dbIdx++)
