@@ -29,25 +29,25 @@
 #include "mac_utils.h"
 
 /* function pointers for packing slot ind from mac to sch */
-MacSchUeCreateReqFunc macSchUeCreateReqOpts[] =
+MacSchAddUeConfigReqFunc macSchAddUeConfigReqOpts[] =
 {
-   packMacSchUeCreateReq,    /* packing for loosely coupled */
-   MacSchUeCreateReq,        /* packing for tightly coupled */
-   packMacSchUeCreateReq     /* packing for light weight loosely coupled */
+   packMacSchAddUeConfigReq,    /* packing for loosely coupled */
+   MacSchAddUeConfigReq,        /* packing for tightly coupled */
+   packMacSchAddUeConfigReq     /* packing for light weight loosely coupled */
 };
 
-MacDuUeCfgRspFunc MacDuUeCfgRspOpts[] =
+MacDuUeCfgRspFunc macDuUeCfgRspOpts[] =
 {
    packDuMacUeCfgRsp,   /* packing for loosely coupled */
    DuProcMacUeCfgRsp,   /* packing for tightly coupled */
    packDuMacUeCfgRsp   /* packing for light weight loosly coupled */
 };
 
-MacSchUeReconfigReqFunc macSchUeReconfigReqOpts[] =
+MacSchModUeConfigReqFunc macSchModUeConfigReqOpts[] =
 {
-   packMacSchUeReconfigReq,    /* packing for loosely coupled */
-   MacSchUeReconfigReq,        /* packing for tightly coupled */
-   packMacSchUeReconfigReq     /* packing for light weight loosely coupled */
+   packMacSchModUeConfigReq,    /* packing for loosely coupled */
+   MacSchModUeConfigReq,        /* packing for tightly coupled */
+   packMacSchModUeConfigReq     /* packing for light weight loosely coupled */
 };
 
 /*******************************************************************
@@ -644,12 +644,12 @@ uint8_t sendUeReqToSch(Pst *pst, SchUeCfg *schUeCfg)
    switch(pst->event)
    {
       case EVENT_MAC_UE_CREATE_REQ:
-	 FILL_PST_MAC_TO_SCH(schPst, EVENT_UE_CREATE_REQ_TO_SCH);
-	 return(*macSchUeCreateReqOpts[schPst.selector])(&schPst, schUeCfg);
+	 FILL_PST_MAC_TO_SCH(schPst, EVENT_ADD_UE_CONFIG_REQ_TO_SCH);
+	 return(*macSchAddUeConfigReqOpts[schPst.selector])(&schPst, schUeCfg);
 
       case EVENT_MAC_UE_RECONFIG_REQ:
-	 FILL_PST_MAC_TO_SCH(schPst, EVENT_UE_RECONFIG_REQ_TO_SCH);
-	 return(*macSchUeReconfigReqOpts[schPst.selector])(&schPst,schUeCfg);
+	 FILL_PST_MAC_TO_SCH(schPst, EVENT_MODIFY_UE_CONFIG_REQ_TO_SCH);
+	 return(*macSchModUeConfigReqOpts[schPst.selector])(&schPst,schUeCfg);
       default: 
 	 DU_LOG("\n Invalid Pst received %d", pst->event);
 	 return RFAILED;
@@ -897,18 +897,19 @@ uint8_t fillSchUeCfg(Pst *pst, SchUeCfg *schUeCfg, MacUeCfg *ueCfg)
       return RFAILED;
    }
 
-   schUeCfg->aggrMaxBitRate = NULL;
-   if(ueCfg->maxAggrBitRate != NULL)
+   if(ueCfg->ambrCfg != NULLP)
    {
-      MAC_ALLOC(schUeCfg->aggrMaxBitRate, sizeof(SchAggrMaxBitRate));
-      if(!schUeCfg->aggrMaxBitRate)
+      MAC_ALLOC(schUeCfg->ambrCfg, sizeof(SchAmbrCfg));
+      if(!schUeCfg->ambrCfg)
       {
 	 DU_LOG("\nMAC : Memory allocation failed in sendReconfigReqToSch");
 	 return RFAILED;
       }
-      schUeCfg->aggrMaxBitRate->ulBitRate = ueCfg->maxAggrBitRate->ulBits;
-      schUeCfg->aggrMaxBitRate->dlBitRate = ueCfg->maxAggrBitRate->dlBits;
+      schUeCfg->ambrCfg->ulBr = ueCfg->ambrCfg->ulBr;
+      schUeCfg->ambrCfg->dlBr = ueCfg->ambrCfg->dlBr;
    }
+   else
+      schUeCfg->ambrCfg = NULLP;
 
    /* Fill sch Lc Cfg  to Add/ Mod/ Del */
    ret  = fillSchLcCfgList(schUeCfg, ueCfg);
@@ -1222,11 +1223,11 @@ uint8_t modifyUeCb(uint8_t cellIdx, MacUeCb *ueCb, MacUeCfg *ueCfg)
    if((ueCb->ueIdx == ueCfg->ueIdx) && (ueCb->crnti == ueCfg->crnti)\
       &&(ueCb->state == UE_STATE_ACTIVE))
    {
-      DU_LOG("\n MAC : Reconfig Req received for CRNTI %d ", ueCfg->crnti);
+      DU_LOG("\n MAC : Modifying Ue config Req for CRNTI %d ", ueCfg->crnti);
       ret = fillMacUeCb(ueCb, ueCfg, cellIdx);
       if(ret != ROK)
       {
-         DU_LOG("\nMAC : Failed to modify Ue Cb at modifyUeCb()");
+         DU_LOG("\nMAC : Failed to modify MacUeCb at modifyUeCb()");
          return ret;
       }
       else
@@ -1282,11 +1283,15 @@ uint8_t procMacUeCfgData(Pst *pst, MacUeCfg *ueCfg)
    ueCb = &macCb.macCell[cellIdx]->ueCb[ueCfg->ueIdx -1];
    switch(pst->event)
    {
-      case EVENT_UE_CREATE_RSP_TO_MAC:
+      case EVENT_UE_CONFIG_RSP_TO_MAC:
 	 ret = createUeCb(cellIdx, ueCb, ueCfg);
+	 if(ret != ROK)
+            DU_LOG("\n: AddUeConfigReq for cellIdx :%d at procMacUeCfgData()", cellIdx);
 	 break;
       case EVENT_UE_RECONFIG_RSP_TO_MAC:
 	 ret = modifyUeCb(cellIdx, ueCb, ueCfg);
+	 if(ret != ROK)
+            DU_LOG("\n: Failed to modify Ue config Req for cellIdx :%d at procMacUeCfgData()", cellIdx);
 	 break;
       default:
 	 break;
@@ -1422,7 +1427,7 @@ uint8_t MacSendUeCreateRsp(MacRsp result, SchUeCfgRsp *schCfgRsp)
    /* Fill Post structure and send UE Create response*/
    memset(&rspPst, 0, sizeof(Pst));
    FILL_PST_MAC_TO_DUAPP(rspPst, EVENT_MAC_UE_CREATE_RSP);
-   return MacDuUeCfgRspOpts[rspPst.selector](&rspPst, cfgRsp); 
+   return (*macDuUeCfgRspOpts[rspPst.selector])(&rspPst, cfgRsp); 
 }
 
 /*******************************************************************
@@ -1462,7 +1467,7 @@ uint8_t MacSendUeReconfigRsp(MacRsp result, SchUeCfgRsp *schCfgRsp)
    /* Fill Post structure and send UE Create response*/
    memset(&rspPst, 0, sizeof(Pst));
    FILL_PST_MAC_TO_DUAPP(rspPst, EVENT_MAC_UE_RECONFIG_RSP);
-   return MacDuUeCfgRspOpts[rspPst.selector](&rspPst, cfgRsp);
+   return (*macDuUeCfgRspOpts[rspPst.selector])(&rspPst, cfgRsp);
 }
 
 /*******************************************************************
@@ -1529,11 +1534,11 @@ uint8_t MacProcSchUeCfgRsp(Pst *pst, SchUeCfgRsp *schCfgRsp)
    {
       if(schCfgRsp->rsp == RSP_NOK)
       {
-         DU_LOG("\nMAC : SCH UE Config Response : FAILURE [CRNTI %d] for event %d", schCfgRsp->crnti, pst->event);
+         DU_LOG("\nMAC : SCH UE Config Response for event[%d]: FAILURE [CRNTI %d]", pst->event, schCfgRsp->crnti);
       }
       else
       {
-         DU_LOG("\nMAC : SCH UE Config Response : SUCCESS [CRNTI %d]", schCfgRsp->crnti);
+         DU_LOG("\nMAC : SCH UE Config Response for event[%d]: SUCCESS [CRNTI %d]", pst->event, schCfgRsp->crnti);
          ret = procMacUeCfgData(pst, ueCfg);
 	 if(ret == ROK)
 	 {
@@ -1543,7 +1548,7 @@ uint8_t MacProcSchUeCfgRsp(Pst *pst, SchUeCfgRsp *schCfgRsp)
       MAC_FREE(ueCfg, sizeof(MacUeCfg));
       ueCfg = NULLP;
    }
-   if(pst->event == EVENT_UE_CREATE_RSP_TO_MAC)
+   if(pst->event == EVENT_UE_CONFIG_RSP_TO_MAC)
    {
       ret = MacSendUeCreateRsp(result, schCfgRsp);
    }

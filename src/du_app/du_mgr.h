@@ -104,7 +104,7 @@ typedef struct duUeCfg
    RlcBearerCfg rlcLcCfg[MAX_NUM_LC];
    uint8_t numMacLcs;        /* Mac Ue Cfg */
    LcCfg   macLcCfg[MAX_NUM_LC];
-   MaxAggrBitRate *maxAggrBitRate;
+   AmbrCfg *ambrCfg;
 }DuUeCfg;
 
 typedef struct f1UeContextSetup

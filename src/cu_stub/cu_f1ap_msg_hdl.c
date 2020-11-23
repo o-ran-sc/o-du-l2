@@ -1512,7 +1512,7 @@ uint8_t fillDlDcchRrcMsg(RRCContainer_t *rrcContainer)
 
 uint8_t	BuildDLRRCContainer(uint8_t rrcMsgType, RRCContainer_t *rrcContainer)
 {
-   uint8_t ret, idx2, bufLen;
+   uint8_t ret, bufLen;
    
    ret =ROK;
    if(rrcMsgType == RRC_SETUP)
@@ -1530,11 +1530,8 @@ uint8_t	BuildDLRRCContainer(uint8_t rrcMsgType, RRCContainer_t *rrcContainer)
       CU_ALLOC(rrcContainer->buf, rrcContainer->size);
       if(rrcContainer->buf != NULLP)
       {
-         memset(rrcContainer->buf, 0, encBufSize);
-         for(idx2 = 0; idx2 < encBufSize; idx2++)
-         {
-            rrcContainer->buf[idx2] = buf[idx2];
-         }
+         memset(rrcContainer->buf, 0, bufLen);
+	 memcpy(rrcContainer->buf, buf, bufLen);
       }
    }
    else if(rrcMsgType == RRC_RECONFIG)
@@ -1559,11 +1556,8 @@ uint8_t	BuildDLRRCContainer(uint8_t rrcMsgType, RRCContainer_t *rrcContainer)
       CU_ALLOC(rrcContainer->buf, rrcContainer->size);
       if(rrcContainer->buf != NULLP)
       {
-         memset(rrcContainer->buf, 0, encBufSize);
-         for(idx2 = 0; idx2 < encBufSize; idx2++)
-         {
-            rrcContainer->buf[idx2] = buf[idx2];
-         }
+         memset(rrcContainer->buf, 0, bufLen);
+	 memcpy(rrcContainer->buf, buf, bufLen);
       }
    }
    
@@ -5779,7 +5773,7 @@ uint8_t BuildAndSendUeContextSetupReq(uint8_t cuUeF1apId, uint8_t duUeF1apId, \
       ueSetReq =
 	 &f1apMsg->choice.initiatingMessage->value.choice.UEContextSetupRequest;
 
-      elementCnt = 11;
+      elementCnt = 12;
       ueSetReq->protocolIEs.list.count = elementCnt;
       ueSetReq->protocolIEs.list.size = \
 					elementCnt * sizeof(UEContextSetupRequestIEs_t *);
@@ -5908,7 +5902,7 @@ uint8_t BuildAndSendUeContextSetupReq(uint8_t cuUeF1apId, uint8_t duUeF1apId, \
       ueSetReq->protocolIEs.list.array[idx]->criticality = Criticality_reject;
       ueSetReq->protocolIEs.list.array[idx]->value.present = \
          UEContextSetupRequestIEs__value_PR_RRCContainer;
-      char buf[9]={0x00, 0x02, 0x22, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00};
+      char secModeBuf[9]={0x00, 0x02, 0x22, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00};
       bufLen =9;
       ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.size = bufLen;
       CU_ALLOC(ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf,
@@ -5918,11 +5912,8 @@ uint8_t BuildAndSendUeContextSetupReq(uint8_t cuUeF1apId, uint8_t duUeF1apId, \
          DU_LOG(" F1AP : Memory allocation for BuildAndSendUeContextSetupReq failed");
          break;
       }
-      memset(ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf, 0, encBufSize);
-      for(idx1 = 0; idx1 < encBufSize; idx1++)
-      {
-        ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf[idx1] = buf[idx1];
-      }
+      memset(ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf, 0, bufLen);
+      memcpy(ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf, secModeBuf, bufLen);
 
       /* RRC delivery status request */
       idx++;
@@ -5933,7 +5924,27 @@ uint8_t BuildAndSendUeContextSetupReq(uint8_t cuUeF1apId, uint8_t duUeF1apId, \
          UEContextSetupRequestIEs__value_PR_RRCDeliveryStatusRequest;
       ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCDeliveryStatusRequest = \
          RRCDeliveryStatusRequest_true;
-      
+
+      /* Bit Rate hardcoded as in reference logs */
+      idx++;
+      ueSetReq->protocolIEs.list.array[idx]->id = \
+         ProtocolIE_ID_id_GNB_DU_UE_AMBR_UL;
+      ueSetReq->protocolIEs.list.array[idx]->criticality = Criticality_ignore;
+      ueSetReq->protocolIEs.list.array[idx]->value.present = \
+         UEContextSetupRequestIEs__value_PR_BitRate;
+      char bitRateBuf[4]= {0x3B, 0x37, 0xF4, 0xCD};
+      bufLen = 4;
+      ueSetReq->protocolIEs.list.array[idx]->value.choice.BitRate.size = bufLen;
+      CU_ALLOC(ueSetReq->protocolIEs.list.array[idx]->value.choice.BitRate.buf,\
+         ueSetReq->protocolIEs.list.array[idx]->value.choice.BitRate.size);
+      if(!ueSetReq->protocolIEs.list.array[idx]->value.choice.BitRate.buf)
+      {
+         DU_LOG(" F1AP : Failed to allocate memory for Bit Rate in BuildAndSendUeContextSetupReq()");
+         break;
+      }
+      memset(ueSetReq->protocolIEs.list.array[idx]->value.choice.BitRate.buf, 0, bufLen);
+      memcpy(ueSetReq->protocolIEs.list.array[idx]->value.choice.BitRate.buf, bitRateBuf, bufLen);
+
       xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
 
       /* Encode the F1SetupRequest type as APER */

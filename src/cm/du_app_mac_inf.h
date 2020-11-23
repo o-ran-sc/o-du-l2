@@ -944,11 +944,11 @@ typedef struct spCellCfg
    ServCellCfgInfo   servCellCfg;
 }SpCellCfg;
 
-typedef struct maxAggrBitRate
+typedef struct ambrCfg
 {
-   uint32_t ulBits;
-   uint32_t dlBits;
-}MaxAggrBitRate;
+   uint32_t ulBr;   /* UL Bit rate */
+   uint32_t dlBr;   /* DL Bit rate */
+}AmbrCfg;
 
 /* Single Network Slice Selection assistance Info */
 typedef struct snssai
@@ -1039,7 +1039,7 @@ typedef struct macUeCfg
    MacCellGrpCfg macCellGrpCfg;
    PhyCellGrpCfg phyCellGrpCfg;
    SpCellCfg spCellCfg;
-   MaxAggrBitRate *maxAggrBitRate;
+   AmbrCfg   *ambrCfg;
    uint8_t numLcs;
    LcCfg lcCfgList[MAX_NUM_LC];
    UeCfgState macUeCfgState; /* InActive / Completed */
