@@ -10,6 +10,8 @@ Welcome to O-RAN SC O-DU-L2 Documentation
    :caption: Contents:
 
    overview.rst
+   api-docs.rst
+   user-guide.rst
    release-notes.rst
 
 
