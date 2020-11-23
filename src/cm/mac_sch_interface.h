@@ -24,12 +24,12 @@
 #define EVENT_RACH_IND_TO_SCH        5
 #define EVENT_CRC_IND_TO_SCH         6
 #define EVENT_DL_RLC_BO_INFO_TO_SCH  7
-#define EVENT_UE_CREATE_REQ_TO_SCH   8
-#define EVENT_UE_CREATE_RSP_TO_MAC   9
+#define EVENT_ADD_UE_CONFIG_REQ_TO_SCH   8
+#define EVENT_UE_CONFIG_RSP_TO_MAC   9
 #define EVENT_SLOT_IND_TO_SCH        10
 #define EVENT_SHORT_BSR              11
 #define EVENT_UCI_IND_TO_SCH         12
-#define EVENT_UE_RECONFIG_REQ_TO_SCH 13
+#define EVENT_MODIFY_UE_CONFIG_REQ_TO_SCH 13
 #define EVENT_UE_RECONFIG_RSP_TO_MAC 14
 
 
@@ -1223,11 +1223,11 @@ typedef struct schLcCfg
 }SchLcCfg;
 
 /* Aggregate max bit rate */
-typedef struct aggrMaxBitRate
+typedef struct schAmbrCfg
 {
-   uint32_t   ulBitRate;
-   uint32_t   dlBitRate;
-}SchAggrMaxBitRate;
+   uint32_t   ulBr;   /* Ul BitRate */
+   uint32_t   dlBr;   /* Dl BitRate */
+}SchAmbrCfg;
 
 /* UE configuration */
 typedef struct schUeCfg
@@ -1237,7 +1237,7 @@ typedef struct schUeCfg
    SchMacCellGrpCfg   macCellGrpCfg;
    SchPhyCellGrpCfg   phyCellGrpCfg;
    SchSpCellCfg       spCellCfg;
-   SchAggrMaxBitRate  *aggrMaxBitRate;
+   SchAmbrCfg         *ambrCfg;
    uint8_t            numLcs;
    SchLcCfg           schLcCfg[MAX_NUM_LC];
 }SchUeCfg;
@@ -1309,7 +1309,7 @@ typedef uint8_t (*MacSchDlRlcBoInfoFunc) ARGS((
 	 Pst         *pst,         /* Post structure */
 	 DlRlcBoInfo *dlBoInfo));   /* DL BO Info */
 
-typedef uint8_t (*MacSchUeCreateReqFunc) ARGS((
+typedef uint8_t (*MacSchAddUeConfigReqFunc) ARGS((
 	 Pst         *pst,           /* Post structure */
 	 SchUeCfg    *ueCfgToSch));   /* Scheduler UE Cfg */
 
@@ -1330,7 +1330,7 @@ typedef uint8_t (*MacSchSrUciIndFunc) ARGS((
 	 Pst         *pst,         /* Post structure */
 	 SrUciIndInfo  *uciInd));    /* UCI IND Info */
 
-typedef uint8_t (*MacSchUeReconfigReqFunc) ARGS((
+typedef uint8_t (*MacSchModUeConfigReqFunc) ARGS((
 	 Pst         *pst,           /* Post structure */
 	 SchUeCfg    *ueCfgToSch));   /* Scheduler UE Cfg */
 
@@ -1357,8 +1357,8 @@ uint8_t packMacSchCrcInd(Pst *pst, CrcIndInfo *crcInd);
 uint8_t MacSchCrcInd(Pst *pst, CrcIndInfo *crcInd);
 uint8_t packMacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo);
 uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo);
-uint8_t packMacSchUeCreateReq(Pst *pst, SchUeCfg *ueCfgToSch);
-uint8_t MacSchUeCreateReq(Pst *pst, SchUeCfg *ueCfgToSch);
+uint8_t packMacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfgToSch);
+uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfgToSch);
 uint8_t packSchUeCfgRsp(Pst *pst, SchUeCfgRsp *cfgRsp);
 uint8_t MacProcSchUeCfgRsp(Pst *pst, SchUeCfgRsp *cfgRsp);
 uint8_t MacSchSlotInd ARGS((Pst * pst, SlotIndInfo * slotInd));
@@ -1368,8 +1368,8 @@ uint8_t packMacSchBsr(Pst *pst, UlBufferStatusRptInd *bsrInd);
 uint8_t MacSchBsr(Pst *pst, UlBufferStatusRptInd *bsrInd);
 uint8_t packMacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd);
 uint8_t MacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd);
-uint8_t packMacSchUeReconfigReq(Pst *pst, SchUeCfg *ueCfgToSch);
-uint8_t MacSchUeReconfigReq(Pst *pst, SchUeCfg *ueCfgToSch);
+uint8_t packMacSchModUeConfigReq(Pst *pst, SchUeCfg *ueCfgToSch);
+uint8_t MacSchModUeConfigReq(Pst *pst, SchUeCfg *ueCfgToSch);
 uint8_t packSchUeReconfigRsp(Pst *pst, SchUeCfgRsp *cfgRsp);
 uint8_t MacProcSchUeReconfigRsp(Pst *pst, SchUeCfgRsp *cfgRsp);
 

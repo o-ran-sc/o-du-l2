@@ -1643,7 +1643,7 @@ uint8_t duHandleSlotInd(Pst *pst, SlotIndInfo *slotInfo)
 
    if(slotInfo->cellId <=0 || slotInfo->cellId > MAX_NUM_CELL)
    {
-      DU_LOG("\nDU APP : Invalid Cell Id %d", slotInfo->cellId);
+      DU_LOG("\nDU APP : Invalid Cell Id %d in duHandleSlotInd()", slotInfo->cellId);
       return RFAILED;
    }
 
@@ -1784,7 +1784,7 @@ uint8_t duHandleStopInd(Pst *pst, MacCellStopInfo *cellStopId)
  
    if(cellStopId->cellId <=0 || cellStopId->cellId > MAX_NUM_CELL)
    {
-      DU_LOG("\nDU APP : Invalid Cell Id %d", cellStopId->cellId);
+      DU_LOG("\nDU APP : Invalid Cell Id %d in duHandleStopInd()", cellStopId->cellId);
    }
 
    if(duGetCellCb(cellStopId->cellId, &cellCb) != ROK)
