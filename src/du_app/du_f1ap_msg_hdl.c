@@ -5531,9 +5531,10 @@ void freeDuUeCfg(DuUeCfg *ueCfg)
       DU_FREE(ueCfg->cellGrpCfg, sizeof(CellGroupConfigRrc_t));
       ueCfg->cellGrpCfg = NULLP;
    }
-   if(ueCfg->maxAggrBitRate)
+   if(ueCfg->ambrCfg)
    {
-      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, ueCfg->maxAggrBitRate, sizeof(MaxAggrBitRate));
+      memset(ueCfg->ambrCfg, 0, sizeof(AmbrCfg));
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, ueCfg->ambrCfg, sizeof(AmbrCfg));
    }
    for(lcIdx = 0; lcIdx < ueCfg->numRlcLcs; lcIdx++)
    {
@@ -7250,7 +7251,7 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
 {
    uint8_t    ret, ieIdx, ueIdx, lcId, cellIdx;
    bool ueCbFound = false;
-   uint32_t gnbCuUeF1apId, gnbDuUeF1apId;
+   uint32_t gnbCuUeF1apId, gnbDuUeF1apId, bitRateSize;
    DuUeCb   *duUeCb = NULLP;
    UEContextSetupRequest_t   *ueSetReq = NULLP;
     
@@ -7387,32 +7388,29 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
 	       }
 	       break;
 	    }
-	 //TODO: To handle maxAggrBitRate case,
-	 // Dependency: The protocolIE is not specified in ASN
-#if 0
-	 case ProtocolIE_ID_id_ULPDUSessionAggregateMaximumBitRate:            {
+	 case ProtocolIE_ID_id_GNB_DU_UE_AMBR_UL:            {
                /* MaximumBitRate Uplink */
 	       bitRateSize = ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.BitRate.size;
 	       if(bitRateSize > 0)
 	       {
-                  DU_ALLOC_SHRABL_BUF(duUeCb->f1UeDb->duUeCfg.maxAggrBitRate, bitRateSize);
-		  if(!duUeCb->f1UeDb->duUeCfg.maxAggrBitRate)
+                  DU_ALLOC_SHRABL_BUF(duUeCb->f1UeDb->duUeCfg.ambrCfg, bitRateSize);
+		  if(!duUeCb->f1UeDb->duUeCfg.ambrCfg)
 		  {
 	             DU_LOG("\nDU APP : Memory allocation failed for bitRate in procUeCtxtSetupReq");
 	             ret = RFAILED;
 		  }
 		  else
 		  {
-                     duUeCb->f1UeDb->duUeCfg.maxAggrBitRate->ulBits =\
-		     *ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.BitRate.buf;
-                     duUeCb->f1UeDb->duUeCfg.maxAggrBitRate->dlBits = 0;
+		     memset(duUeCb->f1UeDb->duUeCfg.ambrCfg, 0, sizeof(AmbrCfg)); 
+                     memcpy(&duUeCb->f1UeDb->duUeCfg.ambrCfg->ulBr,
+		     ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.BitRate.buf, bitRateSize);
+                     duUeCb->f1UeDb->duUeCfg.ambrCfg->dlBr = 0;
 		  }
 	       }
 	       else
 	          ret = RFAILED;
 	       break;
 	    }
-#endif
 	 default:
 	    {
 	       break;

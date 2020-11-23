@@ -856,33 +856,35 @@ uint8_t fillMacLcCfgToAddMod(LcCfg *lcCfg, LcCfg *ueSetReqDb)
  *
  * @details
  *
- *    Function : getMaxAggrBitRate
+ *    Function : fillAmbr
  *
  *    Functionality: Function to copy bit Rate from ueSetupReqDb
  *
- * @params[in]  MaxAggrBitRate *macBitRate, MaxAggrBitRate *ueDbBitRate
+ * @params[in]  Ambr *macBitRate, Ambr  *ueDbBitRate
  * @return ROK/RFAILED
  *
  *****************************************************************/
 
-uint8_t getMaxAggrBitRate(MaxAggrBitRate *macBitRate, MaxAggrBitRate *ueDbBitRate)
+uint8_t fillAmbr(AmbrCfg **macBr, AmbrCfg *ueDbBr)
 {
-   if(ueDbBitRate)
+   if(ueDbBr)
    {
-      if(!macBitRate)
+      if(*macBr == NULLP)
       {
-         DU_ALLOC_SHRABL_BUF(macBitRate, sizeof(MaxAggrBitRate));
-         if(!macBitRate)
+         DU_ALLOC_SHRABL_BUF(*macBr, sizeof(AmbrCfg));
+         if(*macBr == NULLP)
          {
-            DU_LOG("\nDUAPP: Memory Alloc Failed at getMaxAggrBitRate()");
+            DU_LOG("\nDUAPP: Memory Alloc Failed at fillAmbr()");
             return RFAILED;
          }
       }
-      memcpy(macBitRate, ueDbBitRate, sizeof(MaxAggrBitRate));
+      memset(*macBr, 0, sizeof(AmbrCfg));
+      (*macBr)->ulBr = ueDbBr->ulBr;
+      (*macBr)->dlBr = ueDbBr->dlBr;
    }
    else
    {
-      macBitRate = NULLP;
+      *macBr = NULLP;
    }
    return ROK;
 }
@@ -998,7 +1000,7 @@ uint8_t fillMacUeCfg(uint16_t cellId, uint8_t ueIdx, uint16_t crnti, \
       fillDefaultMacCellGrpInfo(&macUeCfg->macCellGrpCfg);
       fillDefaultPhyCellGrpInfo(&macUeCfg->phyCellGrpCfg);
       fillDefaultSpCellGrpInfo(&macUeCfg->spCellCfg);
-      macUeCfg->maxAggrBitRate = NULLP;
+      macUeCfg->ambrCfg = NULLP;
       fillMacSrb1LcCfg(&macUeCfg->lcCfgList[0]);
       macUeCfg->numLcs++;
    }
@@ -1024,7 +1026,7 @@ uint8_t fillMacUeCfg(uint16_t cellId, uint8_t ueIdx, uint16_t crnti, \
             fillStartSymbolAndLen(macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg.numTimeDomRsrcAlloc,\
 	       NULL, &macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg);
          }
-	 ret = getMaxAggrBitRate(macUeCfg->maxAggrBitRate, ueCfgDb->maxAggrBitRate);
+	 ret = fillAmbr(&macUeCfg->ambrCfg, ueCfgDb->ambrCfg);
       }
 
       /* Filling LC Context */
@@ -1556,7 +1558,7 @@ uint8_t duUpdateMacCfg(MacUeCfg *macUeCfg, F1UeContextSetupDb *f1UeDb)
          fillStartSymbolAndLen(macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg.numTimeDomRsrcAlloc,\
 	       NULL, &macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg);
       }
-      ret = getMaxAggrBitRate(macUeCfg->maxAggrBitRate, f1UeDb->duUeCfg.maxAggrBitRate);
+      ret = fillAmbr(&macUeCfg->ambrCfg, f1UeDb->duUeCfg.ambrCfg);
    }
    /* Filling LC Context */
    for(dbIdx = 0; (dbIdx < f1UeDb->duUeCfg.numMacLcs && ret == ROK); dbIdx++)
@@ -1964,7 +1966,6 @@ uint8_t DuProcRlcUeCfgRsp(Pst *pst, RlcUeCfgRsp *cfgRsp)
 	       rlcUeCfg.rlcUeCfgState = UE_RECFG_COMPLETE;
 	    if((ret = duUpdateDuUeCbCfg(cfgRsp->ueIdx, cfgRsp->cellId)) == ROK)
                BuildAndSendUeCtxtRsp(cfgRsp->ueIdx, cfgRsp->cellId);
-	      
 	 }
       }
       else
@@ -2097,22 +2098,22 @@ uint8_t duProcUeContextSetupRequest(DuUeCb *ueCb)
    if(ueCb)
    {
       cellId = duCb.actvCellLst[ueCb->f1UeDb->cellIdx]->cellId;
+      /* Send DL RRC msg for security Mode */
       if(ueCb->f1UeDb->dlRrcMsg)
       {
          if(ueCb->f1UeDb->dlRrcMsg->rrcMsgPdu)
-	 {
+         {
             /* Sending DL RRC Message to RLC */
             ret = duBuildAndSendDlRrcMsgToRlc(cellId, ueCb->rlcUeCfg, ueCb->f1UeDb->dlRrcMsg);
             if(ret == RFAILED)
             {
                DU_LOG("\nDU APP : Failed to send DL RRC msg in duProcUeContextSetupRequest()");
                DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, ueCb->f1UeDb->dlRrcMsg->rrcMsgPdu,\
-	       ueCb->f1UeDb->dlRrcMsg->rrcMsgSize);
-	       DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, ueCb->f1UeDb->dlRrcMsg, sizeof(F1DlRrcMsg));
+                  ueCb->f1UeDb->dlRrcMsg->rrcMsgSize);
+               DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, ueCb->f1UeDb->dlRrcMsg, sizeof(F1DlRrcMsg));
             }
-	 }
+         }
       }
-
       if(ret == ROK)
       {
          DU_LOG("\nDU_APP: Processing Ue Context Setup Request for cellId [%d]", cellId);
@@ -2126,7 +2127,6 @@ uint8_t duProcUeContextSetupRequest(DuUeCb *ueCb)
          if(ret == RFAILED)
             DU_LOG("\nDU_APP: Failed at build ctxt setup req for MAC at duBuildAndSendUeReCfgReqToMac()");
       }
-      
    }
    else
    {
