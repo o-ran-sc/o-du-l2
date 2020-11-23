@@ -219,11 +219,11 @@ uint8_t packSchCellCfgCfm(Pst *pst, SchCellCfgCfm *schCellCfgCfm)
 
 /*******************************************************************
  *
- * @brief Pack and Send UE Create Request from MAC to SCH
+ * @brief Pack and Send UE Config Request from MAC to SCH
  *
  * @details
  *
- *    Function : packMacSchUeCreateReq
+ *    Function : packMacSchAddUeConfigReq
  *
  *    Functionality:
  *       Pack and Send UE Create Request from MAC to SCH
@@ -233,7 +233,7 @@ uint8_t packSchCellCfgCfm(Pst *pst, SchCellCfgCfm *schCellCfgCfm)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packMacSchUeCreateReq(Pst *pst, SchUeCfg  *ueCfg)
+uint8_t packMacSchAddUeConfigReq(Pst *pst, SchUeCfg  *ueCfg)
 {
    if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LC))
    {
@@ -329,21 +329,21 @@ uint8_t packMacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
 
 /*******************************************************************
  *
- * @brief Pack and Send UE Reconfig Request from MAC to SCH
+ * @brief Pack and Send Modify UE Config Request from MAC to SCH
  *
  * @details
  *
- *    Function : packMacSchUeReconfigReq
+ *    Function : packMacSchModUeConfigReq
  *
  *    Functionality:
- *       Pack and Send UE Reconfig Request from MAC to SCH
+ *       Pack and Send Modify UE Config Request from MAC to SCH
  *
  * @params[in]
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packMacSchUeReconfigReq(Pst *pst, SchUeCfg  *ueCfg)
+uint8_t packMacSchModUeConfigReq(Pst *pst, SchUeCfg  *ueCfg)
 {
    if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LC))
    {
