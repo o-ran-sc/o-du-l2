@@ -40,6 +40,13 @@
 #include "du_utils.h"
 #include "du_cell_mgr.h" 
 
+#ifdef O1_ENABLE
+
+#include "GlobalDefs.h"
+#include "AlarmInterface.h"
+
+#endif 
+
 uint8_t rlcDlCfg = 0;
 uint8_t numRlcDlSaps = 0;
 uint8_t rlcUlCfg = 0;
@@ -1651,6 +1658,11 @@ uint8_t duHandleSlotInd(Pst *pst, SlotIndInfo *slotInfo)
       {
 	 DU_LOG("\nDU APP : 5G-NR Cell %d is UP", slotInfo->cellId);
          cellCb->cellStatus = ACTIVATED;
+
+#ifdef O1_ENABLE
+    DU_LOG("\nDU APP : Raise cell UP alarm for cell id=%d", slotInfo->cellId);
+    raiseCellAlrm(CELL_UP_ALARM_ID, slotInfo->cellId);
+#endif
       }
    }
 
@@ -1785,6 +1797,11 @@ uint8_t duHandleStopInd(Pst *pst, MacCellStopInfo *cellStopId)
       {
 	 DU_LOG("\nDU APP : 5G-NR Cell %d is DOWN", cellStopId->cellId);
 	 cellCb->cellStatus = DELETION_IN_PROGRESS;
+
+#ifdef O1_ENABLE
+       DU_LOG("\nDU APP : Raise cell down alarm for cell id=%d", cellStopId->cellId);
+       raiseCellAlrm(CELL_DOWN_ALARM_ID, cellStopId->cellId);
+#endif
       }
    }
    if((pst->selector == ODU_SELECTOR_LWLC) || (pst->selector == ODU_SELECTOR_TC))
