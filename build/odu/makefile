@@ -70,8 +70,7 @@ endif
 # macro for output file name and makefile name
 #
 
-PLTFRM_FLAGS= -UMSPD -DODU -DINTEL_FAPI #-DSS_USE_WLS_MEM -DINTEL_WLS_MEM -DDEBUG_MODE \
-              #-DODU_SLOT_IND_DEBUG_LOG -DEGTP_TEST
+PLTFRM_FLAGS= -UMSPD -DODU -DINTEL_FAPI #-DODU_SLOT_IND_DEBUG_LOG -DEGTP_TEST
 
 ifeq ($(MODE),TDD)
    PLTFRM_FLAGS += -DMODE=TDD
@@ -82,6 +81,9 @@ endif
 
 ifeq ($(NODE),TEST_STUB)
 	PLTFRM_FLAGS+=-DODU_TEST_STUB
+endif
+ifeq ($(PHY),INTEL_L1)
+	PLTFRM_FLAGS+=-DSS_USE_WLS_MEM -DINTEL_WLS_MEM -DDEBUG_MODE
 endif
 
 # The include options get merged with the options needed by
@@ -96,7 +98,10 @@ export BUILD
 export I_OPTS
 
 # Add to the linker options the platform specific components
-L_OPTS+=-lnsl -lrt -lm -lpthread -lsctp #-L/root/intel/phy/wls_lib/lib -lwls                         \
+L_OPTS+=-lnsl -lrt -lm -lpthread -lsctp 
+
+ifeq ($(PHY),INTEL_L1)
+	 L_OPTS+=-L/root/intel/phy/wls_lib/lib -lwls                         \
         -lhugetlbfs -lnuma -ldl -L/root/intel/dpdk-19.11/x86_64-native-linuxapp-gcc/lib             \
         -ldpdk -lrte_gso -lrte_pmd_atlantic -lrte_pmd_iavf -lrte_pmd_tap -lrte_acl                  \
         -lrte_hash -lrte_pmd_avp -lrte_pmd_ice -lrte_pmd_thunderx_nicvf -lrte_bbdev                 \
@@ -125,6 +130,7 @@ L_OPTS+=-lnsl -lrt -lm -lpthread -lsctp #-L/root/intel/phy/wls_lib/lib -lwls    
         -lrte_table -lrte_fib -lrte_pipeline -lrte_pmd_hinic -lrte_pmd_skeleton_event -lrte_timer   \
         -lrte_flow_classify -lrte_pmd_af_packet -lrte_pmd_hns3 -lrte_pmd_softnic -lrte_vhost        \
         -lrte_gro -lrte_pmd_ark -lrte_pmd_i40e -lrte_pmd_sw_event
+endif
 
 # Export some of the flags expected from the command line.
 # # These macros are made available for the makefiles called from this makefile
