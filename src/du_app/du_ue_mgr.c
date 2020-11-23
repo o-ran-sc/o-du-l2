@@ -865,24 +865,26 @@ uint8_t fillMacLcCfgToAddMod(LcCfg *lcCfg, LcCfg *ueSetReqDb)
  *
  *****************************************************************/
 
-uint8_t getMaxAggrBitRate(MaxAggrBitRate *macBitRate, MaxAggrBitRate *ueDbBitRate)
+uint8_t getMaxAggrBitRate(MaxAggrBitRate **macBitRate, MaxAggrBitRate *ueDbBitRate)
 {
    if(ueDbBitRate)
    {
-      if(!macBitRate)
+      if(*macBitRate == NULLP)
       {
-         DU_ALLOC_SHRABL_BUF(macBitRate, sizeof(MaxAggrBitRate));
-         if(!macBitRate)
+         DU_ALLOC_SHRABL_BUF(*macBitRate, sizeof(MaxAggrBitRate));
+         if(*macBitRate == NULLP)
          {
             DU_LOG("\nDUAPP: Memory Alloc Failed at getMaxAggrBitRate()");
             return RFAILED;
          }
       }
-      memcpy(macBitRate, ueDbBitRate, sizeof(MaxAggrBitRate));
+      memset(*macBitRate, 0, sizeof(MaxAggrBitRate));
+      (*macBitRate)->ulBits = ueDbBitRate->ulBits;
+      (*macBitRate)->dlBits = ueDbBitRate->dlBits;
    }
    else
    {
-      macBitRate = NULLP;
+      *macBitRate = NULLP;
    }
    return ROK;
 }
@@ -1024,7 +1026,7 @@ uint8_t fillMacUeCfg(uint16_t cellId, uint8_t ueIdx, uint16_t crnti, \
             fillStartSymbolAndLen(macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg.numTimeDomRsrcAlloc,\
 	       NULL, &macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg);
          }
-	 ret = getMaxAggrBitRate(macUeCfg->maxAggrBitRate, ueCfgDb->maxAggrBitRate);
+	 ret = getMaxAggrBitRate(&macUeCfg->maxAggrBitRate, ueCfgDb->maxAggrBitRate);
       }
 
       /* Filling LC Context */
@@ -1556,7 +1558,7 @@ uint8_t duUpdateMacCfg(MacUeCfg *macUeCfg, F1UeContextSetupDb *f1UeDb)
          fillStartSymbolAndLen(macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg.numTimeDomRsrcAlloc,\
 	       NULL, &macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg);
       }
-      ret = getMaxAggrBitRate(macUeCfg->maxAggrBitRate, f1UeDb->duUeCfg.maxAggrBitRate);
+      ret = getMaxAggrBitRate(&macUeCfg->maxAggrBitRate, f1UeDb->duUeCfg.maxAggrBitRate);
    }
    /* Filling LC Context */
    for(dbIdx = 0; (dbIdx < f1UeDb->duUeCfg.numMacLcs && ret == ROK); dbIdx++)
@@ -1800,6 +1802,23 @@ uint8_t duUpdateDuUeCbCfg(uint8_t ueIdx, uint8_t cellId)
          ret = duUpdateMacCfg(&ueCb->macUeCfg, ueCb->f1UeDb);
          if(ret == RFAILED)
             DU_LOG("\nDU APP: Failed while updating MAC LC Config at duUpdateDuUeCbCfg()");
+	 else
+	 /* Send DL RRC msg for security Mode */
+         if(ueCb->f1UeDb->dlRrcMsg)
+         {
+            if(ueCb->f1UeDb->dlRrcMsg->rrcMsgPdu)
+            {
+               /* Sending DL RRC Message to RLC */
+               ret = duBuildAndSendDlRrcMsgToRlc(cellId, ueCb->rlcUeCfg, ueCb->f1UeDb->dlRrcMsg);
+               if(ret == RFAILED)
+               {
+                  DU_LOG("\nDU APP : Failed to send DL RRC msg in duUpdateDuUeCbCfg()");
+                  DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, ueCb->f1UeDb->dlRrcMsg->rrcMsgPdu,\
+                                       ueCb->f1UeDb->dlRrcMsg->rrcMsgSize);
+                  DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, ueCb->f1UeDb->dlRrcMsg, sizeof(F1DlRrcMsg));
+               }
+            }
+         }
       }
       else
          DU_LOG("\nDU APP: Failed while updating RLC LC Config at duUpdateDuUeCbCfg()");
@@ -2097,22 +2116,6 @@ uint8_t duProcUeContextSetupRequest(DuUeCb *ueCb)
    if(ueCb)
    {
       cellId = duCb.actvCellLst[ueCb->f1UeDb->cellIdx]->cellId;
-      if(ueCb->f1UeDb->dlRrcMsg)
-      {
-         if(ueCb->f1UeDb->dlRrcMsg->rrcMsgPdu)
-	 {
-            /* Sending DL RRC Message to RLC */
-            ret = duBuildAndSendDlRrcMsgToRlc(cellId, ueCb->rlcUeCfg, ueCb->f1UeDb->dlRrcMsg);
-            if(ret == RFAILED)
-            {
-               DU_LOG("\nDU APP : Failed to send DL RRC msg in duProcUeContextSetupRequest()");
-               DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, ueCb->f1UeDb->dlRrcMsg->rrcMsgPdu,\
-	       ueCb->f1UeDb->dlRrcMsg->rrcMsgSize);
-	       DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, ueCb->f1UeDb->dlRrcMsg, sizeof(F1DlRrcMsg));
-            }
-	 }
-      }
-
       if(ret == ROK)
       {
          DU_LOG("\nDU_APP: Processing Ue Context Setup Request for cellId [%d]", cellId);
@@ -2126,7 +2129,6 @@ uint8_t duProcUeContextSetupRequest(DuUeCb *ueCb)
          if(ret == RFAILED)
             DU_LOG("\nDU_APP: Failed at build ctxt setup req for MAC at duBuildAndSendUeReCfgReqToMac()");
       }
-      
    }
    else
    {
