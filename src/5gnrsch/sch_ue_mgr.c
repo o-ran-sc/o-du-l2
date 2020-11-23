@@ -58,8 +58,6 @@ void SchSendUeCfgRspToMac(uint16_t event, SchUeCfg *ueCfg, Inst inst,\
 {
    Pst rspPst;
 
-   DU_LOG("\nSCH: Sending UE Create response to MAC");
-
    cfgRsp->cellId = ueCfg->cellId;
    cfgRsp->crnti = ueCfg->crnti;
    GET_UE_IDX(ueCfg->crnti, cfgRsp->ueIdx);
@@ -68,18 +66,21 @@ void SchSendUeCfgRspToMac(uint16_t event, SchUeCfg *ueCfg, Inst inst,\
    /* Filling response post */
    memset(&rspPst, 0, sizeof(Pst));
    FILL_PST_SCH_TO_MAC(rspPst, inst);
-   if(event == EVENT_UE_CREATE_REQ_TO_SCH)
+   if(event == EVENT_ADD_UE_CONFIG_REQ_TO_SCH)
    {
-      rspPst.event = EVENT_UE_CREATE_RSP_TO_MAC;
+      rspPst.event = EVENT_UE_CONFIG_RSP_TO_MAC;
+      DU_LOG("\nSCH: Sending UE Config response to MAC");
    }
-   else if(event == EVENT_UE_RECONFIG_REQ_TO_SCH)
+   else if(event == EVENT_MODIFY_UE_CONFIG_REQ_TO_SCH)
    {
       rspPst.event = EVENT_UE_RECONFIG_RSP_TO_MAC;
+      DU_LOG("\nSCH: Sending UE Reconfig response to MAC");
    }
    SchUeCfgRspOpts[rspPst.selector](&rspPst, cfgRsp);
 }
 
 /*******************************************************************
+ 
  *
  * @brief Function to fill Dl Lc Context in SCH Ue Cb
  *
@@ -293,20 +294,20 @@ SchCellCb *getSchCellCb(uint16_t srcEvent, Inst inst, SchUeCfg *ueCfg)
 
 /*******************************************************************
  *
- * @brief Hanles Ue create request from MAC
+ * @brief Function to Add Ue Config Request from MAC
  *
  * @details
  *
- *    Function : MacSchUeCreateReq
+ *    Function : MacSchAddUeConfigReq
  *
- *    Functionality: Hanles Ue create request from MAC
+ *    Functionality: Function to Add Ue config request from MAC
  *
  * @params[in] 
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t MacSchUeCreateReq(Pst *pst, SchUeCfg *ueCfg)
+uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
 {
    uint8_t ueIdx, lcIdx, ret = ROK;
    SchCellCb    *cellCb = NULLP;
@@ -317,10 +318,10 @@ uint8_t MacSchUeCreateReq(Pst *pst, SchUeCfg *ueCfg)
 
    if(!ueCfg)
    {
-      DU_LOG("\nSCH : UE create request failed at MacSchUeCreateReq()");
+      DU_LOG("\nSCH : Adding UE Config Request failed at MacSchAddUeConfigReq()");
       return RFAILED;
    }
-   DU_LOG("\nSCH : UE Create Request for CRNTI[%d]", ueCfg->crnti);
+   DU_LOG("\nSCH : Adding UE Config Request for CRNTI[%d]", ueCfg->crnti);
    cellCb = getSchCellCb(pst->event, inst, ueCfg);
 
    /* Search if UE already configured */
@@ -337,7 +338,7 @@ uint8_t MacSchUeCreateReq(Pst *pst, SchUeCfg *ueCfg)
    }
    else
    {
-      DU_LOG("\n SCH : SchUeCb not found at MacSchUeCreateReq() ");
+      DU_LOG("\n SCH : SchUeCb not found at MacSchAddUeConfigReq() ");
       SchSendUeCfgRspToMac(pst->event, ueCfg, inst, RSP_NOK, &cfgRsp);
       return RFAILED;
    }
@@ -521,20 +522,20 @@ uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo puschInfo, DciInfo *dciInfo)
 
 /*******************************************************************
  *
- * @brief Hanles Ue Reconfig request from MAC
+ * @brief Function to Modify Ue Config request from MAC
  *
  * @details
  *
- *    Function : MacSchUeReconfigReq
+ *    Function : MacSchModUeConfigReq
  *
- *    Functionality: Hanles Ue Reconfig request from MAC
+ *    Functionality: Function to modify Ue Config request from MAC
  *
  * @params[in] 
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t MacSchUeReconfigReq(Pst *pst, SchUeCfg *ueCfg)
+uint8_t MacSchModUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
 {
    uint8_t ueIdx, lcIdx, ret = ROK;
    SchCellCb    *cellCb = NULLP;
@@ -545,10 +546,10 @@ uint8_t MacSchUeReconfigReq(Pst *pst, SchUeCfg *ueCfg)
 
    if(!ueCfg)
    {
-      DU_LOG("\nSCH : Reconfig request failed at MacSchUeReconfigReq()");
+      DU_LOG("\nSCH : Modifying Ue Config request failed at MacSchModUeConfigReq()");
       return RFAILED;
    }
-   DU_LOG("\nSCH : Reconfig Request for CRNTI[%d]", ueCfg->crnti);
+   DU_LOG("\nSCH : Modifying Ue Config Request for CRNTI[%d]", ueCfg->crnti);
    cellCb = getSchCellCb(pst->event, inst, ueCfg);
 
    /* Search if UE already configured */
@@ -557,7 +558,7 @@ uint8_t MacSchUeReconfigReq(Pst *pst, SchUeCfg *ueCfg)
    
    if(!ueCb)
    {
-      DU_LOG("\n SCH : SchUeCb not found at MacSchUeReconfigReq() ");
+      DU_LOG("\n SCH : SchUeCb not found at MacSchModUeConfigReq() ");
       SchSendUeCfgRspToMac(pst->event, ueCfg, inst, RSP_NOK, &cfgRsp);
       return RFAILED;
    }
