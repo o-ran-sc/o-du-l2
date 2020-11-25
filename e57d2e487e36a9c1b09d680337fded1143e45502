@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "026b4a5a_0208318a",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1294,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-25T11:16:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f5285ed6_6e4ea624",
+      "revId": "e57d2e487e36a9c1b09d680337fded1143e45502",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "29a274f9_77c02434",
         "filename": "src/5gnrmac/mac_ue_mgr.c",
         "patchSetId": 5
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "e32d2dfc_8468049c",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1537,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-25T11:16:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "29a274f9_77c02434",
+      "revId": "e57d2e487e36a9c1b09d680337fded1143e45502",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d51711b9_c9aa7735",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 5
@@ -50,6 +86,24 @@
       "revId": "e57d2e487e36a9c1b09d680337fded1143e45502",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8778f7d5_1aafd459",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 882,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-25T11:16:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d51711b9_c9aa7735",
+      "revId": "e57d2e487e36a9c1b09d680337fded1143e45502",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
