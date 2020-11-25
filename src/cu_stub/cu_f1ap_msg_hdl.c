@@ -1745,6 +1745,9 @@ uint8_t setDlRRCMsgType()
       case UE_CONTEXT_SETUP_REQ:
         rrcMsgType = UE_CONTEXT_SETUP_REQ;
         break;
+      case SECURITY_MODE_COMPLETE:
+        rrcMsgType = SECURITY_MODE_COMPLETE;
+        break;
       case RRC_RECONFIG:
         rrcMsgType = RRC_RECONFIG;
         break;
@@ -6051,14 +6054,25 @@ uint8_t procUlRrcMsg(F1AP_PDU_t *f1apMsg)
       rrcMsgType = setDlRRCMsgType();
       if(rrcMsgType == REGISTRATION_ACCEPT)
       {
-         DU_LOG("\nSending DL RRC MSG for RRC Registration Complete"); 
+         DU_LOG("\nF1AP: Sending DL RRC MSG for RRC Registration Accept"); 
          ret = BuildAndSendDLRRCMessageTransfer(srbId, rrcMsgType);
       }
       if(rrcMsgType == UE_CONTEXT_SETUP_REQ)
       {
-         DU_LOG("\nSending Ue Context Setup Req"); 
+         DU_LOG("\nF1AP: Sending Ue Context Setup Req"); 
          ret = BuildAndSendUeContextSetupReq(cuUeF1apId, duUeF1apId,\
 	    rrcContLen, rrcContainer);
+      }
+      if(rrcMsgType == SECURITY_MODE_COMPLETE)
+      {
+         /* To trigger the DL RRC Msg for RRC Reconfig */
+         f1apMsgDb.dlRrcMsgCount++;
+         rrcMsgType = setDlRRCMsgType();
+	 if(rrcMsgType == RRC_RECONFIG)
+	 {
+            DU_LOG("\nF1AP: Sending DL RRC MSG for RRC Reconfig");
+            BuildAndSendDLRRCMessageTransfer(srbId, rrcMsgType);
+	 }
       }
    }
    return ret;
@@ -6352,16 +6366,8 @@ void F1APMsgHdlr(Buffer *mBuf)
 	    }
             case SuccessfulOutcome__value_PR_UEContextSetupResponse:
 	    {
-	       uint8_t rrcMsgType;
-
                DU_LOG("\nF1AP : UE ContextSetupResponse received");
-               f1apMsgDb.dlRrcMsgCount++;
-               rrcMsgType = setDlRRCMsgType();
-               if(rrcMsgType == RRC_RECONFIG)
-               {
-                  DU_LOG("\nImplementing DL RRC MSG for RRC Reconfig Complete");
-                  BuildAndSendDLRRCMessageTransfer(SRB1, rrcMsgType);
-               }
+               f1apMsgDb.dlRrcMsgCount++; /* keeping DL RRC Msg Count */
                break;
 	    }
             default:

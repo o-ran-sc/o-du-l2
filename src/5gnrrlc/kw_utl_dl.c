@@ -73,7 +73,9 @@ static int RLOG_FILE_ID=209;
 
 #include "rlc_utils.h"
 #include "rlc_mac_inf.h"
+#include "du_app_rlc_inf.h"
 #include "rlc_lwr_inf_api.h"
+#include "rlc_upr_inf_api.h"
 
 #include "ss_rbuf.h"
 #include "ss_rbuf.x" 
@@ -230,14 +232,15 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
    RguDatReqTb      datPerTb;   /* DL data info per TB */
    RguLchDatReq     datPerLch;  /* DL data info per Lch */
    RlcData          *dlData;    /* DL data to be sent to MAC */
+   RlcDlRrcMsgRsp   *dlRrcMsgRsp;/* DL Data Msg Rsp sent to DU */
    Pst              pst;        /* Post structure */
    uint16_t         pduLen;     /* PDU length */
    uint16_t         copyLen;    /* Number of bytes copied */
 
    dlData = NULLP;
+   dlRrcMsgRsp = NULLP;
    RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL,
                        dlData, sizeof(RlcData));
-#if (ERRCLASS & ERRCLS_ADD_RES)
    if ( dlData == NULLP )
    {
       DU_LOG("\nRLC: rlcSendDedLcDlData: Memory allocation failed for dl data");
@@ -245,7 +248,6 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
           datReqInfo, sizeof(RguDDatReqInfo));
       return RFAILED;
    }
-#endif /* ERRCLASS & ERRCLS_ADD_RES */
 
    for(ueIdx = 0; ueIdx < datReqInfo->nmbOfUeGrantPerTti; ueIdx++)
    {
@@ -304,6 +306,25 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
          }/* For Data per Lch */
       }/* For Data per Tb */
 
+      RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL,
+                     dlRrcMsgRsp, sizeof(RlcDlRrcMsgRsp));
+      if( dlRrcMsgRsp == NULLP )
+      {
+         DU_LOG("\nRLC: rlcSendDedLcDlData: Memory allocation failed for dlRrcMsgRsp");
+         for(pduIdx = 0; pduIdx < dlData->numPdu; pduIdx++)
+         {
+            RLC_FREE_SHRABL_BUF(pst.region, pst.pool, dlData->pduInfo[pduIdx].pduBuf,\
+               dlData->pduInfo[pduIdx].pduLen);
+         }
+          RLC_FREE_SHRABL_BUF(pst.region, pst.pool, dlData, sizeof(RlcData));
+         RLC_FREE_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL,
+             datReqInfo, sizeof(RguDDatReqInfo));
+         return RFAILED;
+      }
+
+      dlRrcMsgRsp->cellId = dlData->cellId;
+      dlRrcMsgRsp->crnti = dlData->rnti;
+
       /* Sending DL Data per UE to MAC */
       memset(&pst, 0, sizeof(Pst));
       FILL_PST_RLC_TO_MAC(pst, RLC_DL_INST, EVENT_DL_DATA_TO_MAC);
@@ -315,6 +336,17 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
 	       dlData->pduInfo[pduIdx].pduLen);
 	 }
          RLC_FREE_SHRABL_BUF(pst.region, pst.pool, dlData, sizeof(RlcData));
+	 /* Update DL RRC MSG Rsp State */
+         dlRrcMsgRsp->state = TRANSMISSION_FAILED;
+      }
+      else
+         dlRrcMsgRsp->state = TRANSMISSION_COMPLETE;
+
+      /* Send Dl RRC Msg Rsp to DU APP */
+      FILL_PST_RLC_TO_DUAPP(pst, RLC_DL_INST, EVENT_DL_RRC_MSG_RSP_TO_DU);
+      if(rlcSendDlRrcMsgRspToDu(&pst, dlRrcMsgRsp) != ROK)
+      {
+         RLC_FREE_SHRABL_BUF(pst.region, pst.pool, dlRrcMsgRsp, sizeof(RlcDlRrcMsgRsp));
       }
    } /* For Data per UE */
 
