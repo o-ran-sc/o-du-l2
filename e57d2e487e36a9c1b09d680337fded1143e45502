@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f5285ed6_6e4ea624",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1294,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-25T09:37:13Z",
+      "side": 1,
+      "message": "change this log similar to above",
+      "revId": "e57d2e487e36a9c1b09d680337fded1143e45502",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "29a274f9_77c02434",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1537,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-25T09:37:13Z",
+      "side": 1,
+      "message": "change logs similar to procMacUeCfgData",
+      "revId": "e57d2e487e36a9c1b09d680337fded1143e45502",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d51711b9_c9aa7735",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 882,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-25T09:37:13Z",
+      "side": 1,
+      "message": "change to macAmbr",
+      "revId": "e57d2e487e36a9c1b09d680337fded1143e45502",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
