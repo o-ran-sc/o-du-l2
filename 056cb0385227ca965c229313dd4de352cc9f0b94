@@ -1,0 +1,276 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b7e9a5e1_40f5c1cb",
+        "filename": "docs/CellUpAndBroadcast.png",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-25T17:23:39Z",
+      "side": 1,
+      "message": "For SSB transmission, DL_TTI_Req[ssb_pdu] is filled in lower mac. Image below mentions DL TTI Req[PDCCH]. Is it correct?",
+      "revId": "056cb0385227ca965c229313dd4de352cc9f0b94",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a0c3d402_e4c8eaf5",
+        "filename": "docs/O-DUHighInterfaces.jpg",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-25T17:23:39Z",
+      "side": 1,
+      "message": "O1 interface should be between OAM and O-DU High",
+      "revId": "056cb0385227ca965c229313dd4de352cc9f0b94",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "69fe7296_adef7c30",
+        "filename": "docs/UeAttach.png",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-25T17:23:39Z",
+      "side": 1,
+      "message": "1. After RAR is sent from SCH to MAC, two PUSCH indications are shown below : \"UL Grant for msg-3\" and \"UL Sched Info\". Is it correct?\n\n2. Code for CRC indication is present at Lower-MAC/MAC/SCH. In SCH, we are just printing the crc status. Also, we have not triggered it from phy-stub. So this code never hits. Should we anyway have it in the image below?\n\n3. After Msg4, UE configuration request from DU APP to MAC/RLC is missing.\n\n4. As per my understanding, Security mode command is sent in UE context setup request from CU, but below it is depicted as a separate DL RRC Message.",
+      "revId": "056cb0385227ca965c229313dd4de352cc9f0b94",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5e29167e_17d12f63",
+        "filename": "docs/overview.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-25T17:23:39Z",
+      "side": 1,
+      "message": "Should we add DU APP also here?",
+      "revId": "056cb0385227ca965c229313dd4de352cc9f0b94",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2f3e8177_2f9905c4",
+        "filename": "docs/overview.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-25T17:23:39Z",
+      "side": 1,
+      "message": "Since F1-U uses EGTP, should it be mentioned here?",
+      "revId": "056cb0385227ca965c229313dd4de352cc9f0b94",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "04b5b6ad_af58aa80",
+        "filename": "docs/overview.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-25T17:23:39Z",
+      "side": 1,
+      "message": "space needed between \"and stores\"",
+      "revId": "056cb0385227ca965c229313dd4de352cc9f0b94",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "490a351f_79a20a36",
+        "filename": "docs/overview.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-25T17:23:39Z",
+      "side": 1,
+      "message": "\"all interactions of 5G NR SCH is via the 5G NR MAC\"",
+      "revId": "056cb0385227ca965c229313dd4de352cc9f0b94",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b483dd11_0f0c112a",
+        "filename": "docs/overview.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-25T17:23:39Z",
+      "side": 1,
+      "message": "spelling of interface",
+      "revId": "056cb0385227ca965c229313dd4de352cc9f0b94",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1db1d146_6f8118c9",
+        "filename": "docs/overview.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-25T17:23:39Z",
+      "side": 1,
+      "message": "Uppercase P in prcedures",
+      "revId": "056cb0385227ca965c229313dd4de352cc9f0b94",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f2011408_ee70cedd",
+        "filename": "docs/overview.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-25T17:23:39Z",
+      "side": 1,
+      "message": "towards",
+      "revId": "056cb0385227ca965c229313dd4de352cc9f0b94",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2f0bbb7d_cf9479b1",
+        "filename": "docs/overview.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-25T17:23:39Z",
+      "side": 1,
+      "message": "exchanges",
+      "revId": "056cb0385227ca965c229313dd4de352cc9f0b94",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a988af23_8ebaa474",
+        "filename": "docs/overview.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-25T17:23:39Z",
+      "side": 1,
+      "message": "receiving",
+      "revId": "056cb0385227ca965c229313dd4de352cc9f0b94",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "61e2fe7b_c30506e4",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-25T17:23:39Z",
+      "side": 1,
+      "message": "alignment",
+      "revId": "056cb0385227ca965c229313dd4de352cc9f0b94",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9953f29f_e4e4f07c",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-25T17:23:39Z",
+      "side": 1,
+      "message": "format of date to be same as in version history",
+      "revId": "056cb0385227ca965c229313dd4de352cc9f0b94",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "812e0a01_1d7f433d",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-25T17:23:39Z",
+      "side": 1,
+      "message": "compatible",
+      "revId": "056cb0385227ca965c229313dd4de352cc9f0b94",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6c222b5e_c032316a",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-25T17:23:39Z",
+      "side": 1,
+      "message": "CM is configuration manager?",
+      "revId": "056cb0385227ca965c229313dd4de352cc9f0b94",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
