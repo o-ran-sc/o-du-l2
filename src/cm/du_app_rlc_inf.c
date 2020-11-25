@@ -482,6 +482,79 @@ uint8_t unpackRlcUeReconfigReq(DuRlcUeReconfigReq func, Pst *pst, Buffer *mBuf)
    return RFAILED;
 }
 
+/*******************************************************************
+ *
+ * @brief Pack and send DL RRC message Response from RLC to DU APP
+ *
+ * @details
+ *
+ *    Function : packRlcDlRrcMsgRspToDu
+ *
+ *    Functionality:
+ *       Pack and send DL RRC message Response from RLC to DU APP
+ *
+ * @params[in] Post structure
+ *             DL RRC Msg Response 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packRlcDlRrcMsgRspToDu(Pst *pst, RlcDlRrcMsgRsp *dlRrcMsgRsp)
+{
+   Buffer *mBuf = NULLP;
+
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+      {
+         DU_LOG("\nRLC : Memory allocation failed at packRlcDlRrcMsgRspToDu");
+         return RFAILED;
+      }
+      /* pack the address of the structure */
+      CMCHKPK(oduPackPointer,(PTR)dlRrcMsgRsp, mBuf);
+      return ODU_POST_TASK(pst,mBuf);
+   }
+   else
+   {
+      DU_LOG("\nRLC: Only LWLC supported for packRlcDlRrcMsgRspToDu");
+   }
+   return RFAILED;
+}
+
+/*******************************************************************
+ *
+ * @brief Unpack DL RRC Msg Response received at DU APP from RLC
+ *
+ * @details
+ *
+ *    Function : unpackRlcDlRrcMsgRspToDu
+ *
+ *    Functionality:
+ *      Unpack DL RRC Msg Response received at DU APP from RLC
+ *
+ * @params[in]
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t unpackRlcDlRrcMsgRspToDu(RlcDlRrcMsgRspToDuFunc func, Pst *pst, Buffer *mBuf)
+{
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      RlcDlRrcMsgRsp *dlRrcMsgRsp;
+      /* unpack the address of the structure */
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&dlRrcMsgRsp, mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
+      return (*func)(pst, dlRrcMsgRsp);
+   }
+   else
+   {
+      /* Nothing to do for other selectors */
+      DU_LOG("\nRLC: Only LWLC supported for DL RRC Message transfer ");
+      ODU_PUT_MSG_BUF(mBuf);
+   }
+   return RFAILED;
+}
 /**********************************************************************
          End of file
 ***********************************************************************/

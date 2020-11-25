@@ -1988,6 +1988,8 @@ uint8_t DuProcRlcUeCfgRsp(Pst *pst, RlcUeCfgRsp *cfgRsp)
    return ret;
 }
 
+
+
 /*******************************************************************
  *
  * @brief Builds and Send Ue Reconfig Req to RLC
@@ -2076,6 +2078,82 @@ uint8_t duBuildAndSendUeReCfgReqToMac(uint8_t cellId, uint8_t crnti, DuUeCfg *ue
 
 /*******************************************************************
  *
+ * @brief Build and Send Ue context setup request
+ *
+ * @details
+ *
+ 
+ *    Function : duBuildAndSendUeContextSetupReq
+ *
+ *    Functionality: 
+ *     Build and Send Ue context setup request
+ * 
+ *  @params[in]  cellId, crnti, DuUeCfg pointer
+ *  @return ROK     - success
+ *          RFAILED - failure
+ * 
+ *****************************************************************/
+
+uint8_t duBuildAndSendUeContextSetupReq(uint16_t cellId, uint16_t crnti, DuUeCfg *duUeCfg)
+{
+   uint8_t ret = ROK;
+
+   DU_LOG("\nDU_APP: Processing Ue Context Setup Request for cellId [%d]", cellId);
+   /* Filling RLC Ue Reconfig */ 
+   ret = duBuildAndSendUeReCfgReqToRlc(cellId, crnti, duUeCfg);
+   if(ret == RFAILED)
+      DU_LOG("\nDU_APP: Failed to build ctxt setup req for RLC at duBuildAndSendUeContextSetupReq()");
+   
+   /* Filling MAC Ue Reconfig */
+   ret = duBuildAndSendUeReCfgReqToMac(cellId, crnti, duUeCfg);
+   if(ret == RFAILED)
+      DU_LOG("\nDU_APP: Failed at build ctxt setup req for MAC at duBuildAndSendUeContextSetupReq()");
+
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Processes DL Rsp received from RLC DL
+ *
+ * @details
+ *
+ 
+ *    Function : DuProcRlcDlRrcMsgRsp
+ *
+ *    Functionality: 
+ *     Processes UE Rsp received from RLC DL
+ * 
+ *  @params[in]  Post structure
+ *               Pointer to RlcCfgCfm
+ *  @return ROK     - success
+ *          RFAILED - failure
+ * 
+ *****************************************************************/
+uint8_t DuProcRlcDlRrcMsgRsp(Pst *pst, RlcDlRrcMsgRsp *dlRrcMsg)
+{
+   uint8_t ret = ROK, ueIdx = 0;
+   DuUeCb *ueCb = NULLP;
+
+   if(dlRrcMsg->state == COMPLETE)
+   {
+      GET_UE_IDX(dlRrcMsg->crnti, ueIdx);
+      ueCb = &duCb.actvCellLst[dlRrcMsg->cellId -1]->ueCb[ueIdx -1];
+      if(ueCb->f1UeDb)
+      {
+        ret = duBuildAndSendUeContextSetupReq(dlRrcMsg->cellId, dlRrcMsg->crnti, &ueCb->f1UeDb->duUeCfg);
+	if(ret == RFAILED)
+	   DU_LOG("\nDUAPP: Failed to process ue context setup Req in DuProcRlcDlRrcMsgRsp()");
+      }
+   }
+   else
+      DU_LOG("\nDUAPP: Received Rlc Rsp is INACTIVE in DuProcRlcDlRrcMsgRsp()");
+
+   DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, dlRrcMsg, sizeof(RlcDlRrcMsgRsp));
+   return ret;
+}
+/*******************************************************************
+ *
  * @brief Process UE context setup request from CU
  *
  * @details
@@ -2114,18 +2192,13 @@ uint8_t duProcUeContextSetupRequest(DuUeCb *ueCb)
             }
          }
       }
-      if(ret == ROK)
+      else
       {
-         DU_LOG("\nDU_APP: Processing Ue Context Setup Request for cellId [%d]", cellId);
-         /* Filling RLC Ue Reconfig */ 
-         ret = duBuildAndSendUeReCfgReqToRlc(cellId, ueCb->crnti, &ueCb->f1UeDb->duUeCfg);
-         if(ret == RFAILED)
-            DU_LOG("\nDU_APP: Failed to build ctxt setup req for RLC at duBuildAndSendUeReCfgReqToRlc()");
-         
-	 /* Filling MAC Ue Reconfig */
-         ret = duBuildAndSendUeReCfgReqToMac(cellId, ueCb->crnti, &ueCb->f1UeDb->duUeCfg);
-         if(ret == RFAILED)
-            DU_LOG("\nDU_APP: Failed at build ctxt setup req for MAC at duBuildAndSendUeReCfgReqToMac()");
+         ret = duBuildAndSendUeContextSetupReq(cellId, ueCb->crnti, &ueCb->f1UeDb->duUeCfg);
+	 if(ret == RFAILED)
+	 {
+            DU_LOG("\nDU APP : Failed to build ue context setup Req in duProcUeContextSetupRequest()");
+	 }
       }
    }
    else
