@@ -346,7 +346,11 @@ uint8_t MacProcSchCellCfgCfm(Pst *pst, SchCellCfgCfm *schCellCfgCfm)
    if(schCellCfgCfm->rsp == RSP_OK)
    {
       cellId = &schCellCfgCfm->cellId;
+#ifdef INTEL_TIMER_MODE
+      sendToLowerMac(UL_IQ_SAMPLE, 0, (void *)cellId);
+#else
       sendToLowerMac(CONFIG_REQUEST, 0, (void *)cellId);
+#endif
    }
    else
    {

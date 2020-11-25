@@ -1891,6 +1891,70 @@ uint8_t lwr_mac_procParamRspEvt(void *msg)
 #endif
 }
 
+#ifdef INTEL_TIMER_MODE
+uint8_t lwr_mac_procIqSamplesReqEvt(void *msg)
+{
+   void * wlsHdlr = NULLP;
+   fapi_msg_header_t *msgHeader;
+   fapi_vendor_ext_iq_samples_req_t *iqSampleReq;
+   p_fapi_api_queue_elem_t  headerElem;
+   p_fapi_api_queue_elem_t  iqSampleElem;
+   char filename[100] = "/root/intel/FlexRAN/testcase/ul/mu0_20mhz/2/uliq00_prach_tst2.bin"; 
+
+   uint8_t buffer[] ={0,0,0,0,0,2,11,0,212,93,40,0,20,137,38,0,20,0,20,0,0,8,0,8,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,255,0,0,0,0,0,0,0,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,128,1,0,0,0,0,0,0,1,0,2,0,0,0,0,0,0,0,1,0};
+
+   size_t bufferSize = sizeof(buffer) / sizeof(buffer[0]);
+
+   /* Fill IQ sample req */
+   mtGetWlsHdl(&wlsHdlr);
+   //iqSampleElem = (p_fapi_api_queue_elem_t)WLS_Alloc(wlsHdlr, \
+      (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_vendor_ext_iq_samples_req_t))); 
+   LWR_MAC_ALLOC(iqSampleElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_vendor_ext_iq_samples_req_t)));
+   if(!iqSampleElem)
+   {
+      DU_LOG("\nLWR_MAC: Memory allocation failed for IQ sample req");
+      return RFAILED;
+   }
+   FILL_FAPI_LIST_ELEM(iqSampleElem, NULLP, FAPI_VENDOR_EXT_UL_IQ_SAMPLES, 1, \
+      sizeof(fapi_vendor_ext_iq_samples_req_t));
+
+   iqSampleReq = (fapi_vendor_ext_iq_samples_req_t *)(iqSampleElem + 1);
+   memset(iqSampleReq, 0, sizeof(fapi_vendor_ext_iq_samples_req_t));
+   fillMsgHeader(&iqSampleReq->header, FAPI_VENDOR_EXT_UL_IQ_SAMPLES, \
+      sizeof(fapi_vendor_ext_iq_samples_req_t));
+
+   iqSampleReq->iq_samples_info.carrNum = 0;
+   iqSampleReq->iq_samples_info.numSubframes = 40;
+   iqSampleReq->iq_samples_info.nIsRadioMode = 0;
+   iqSampleReq->iq_samples_info.timerModeFreqDomain = 0;
+   iqSampleReq->iq_samples_info.phaseCompensationEnable = 0;
+   iqSampleReq->iq_samples_info.startFrameNum = 0;
+   iqSampleReq->iq_samples_info.startSlotNum = 0;
+   iqSampleReq->iq_samples_info.startSymNum = 0;
+   strncpy(iqSampleReq->iq_samples_info.filename_in_ul_iq[0], filename, 100);
+   memcpy(iqSampleReq->iq_samples_info.buffer, buffer, bufferSize);
+
+   /* TODO : Fill remaining parameters */
+
+   /* Fill message header */
+   LWR_MAC_ALLOC(headerElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_msg_header_t)));
+   if(!headerElem)
+   {
+      DU_LOG("\nLWR_MAC: Memory allocation failed for FAPI header in lwr_mac_procIqSamplesReqEvt");
+      return RFAILED;
+   }
+   FILL_FAPI_LIST_ELEM(headerElem, iqSampleElem, FAPI_VENDOR_MSG_HEADER_IND, 1, \
+     sizeof(fapi_msg_header_t));
+   msgHeader = (fapi_msg_header_t *)(headerElem + 1);
+   msgHeader->num_msg = 1; 
+   msgHeader->handle = 0;
+
+   DU_LOG("\nLWR_MAC: Sending IQ Sample request to Phy");
+   LwrMacSendToL1(headerElem);
+   return ROK;
+}
+#endif
+
 /*******************************************************************
  *
  * @brief Sends FAPI Config req to PHY
@@ -4160,6 +4224,9 @@ lwrMacFsmHdlr fapiEvtHdlr[MAX_STATE][MAX_EVENT] =
 {
    {
       /* PHY_STATE_IDLE */
+#ifdef INTEL_TIMER_MODE 
+      lwr_mac_procIqSamplesReqEvt,
+#endif
       lwr_mac_procParamReqEvt,
       lwr_mac_procParamRspEvt,
       lwr_mac_procConfigReqEvt,
@@ -4169,6 +4236,9 @@ lwrMacFsmHdlr fapiEvtHdlr[MAX_STATE][MAX_EVENT] =
    },
    {
       /* PHY_STATE_CONFIGURED */
+#ifdef INTEL_TIMER_MODE
+      lwr_mac_procInvalidEvt,
+#endif
       lwr_mac_procParamReqEvt,
       lwr_mac_procParamRspEvt,
       lwr_mac_procConfigReqEvt,
@@ -4178,6 +4248,9 @@ lwrMacFsmHdlr fapiEvtHdlr[MAX_STATE][MAX_EVENT] =
    },
    {
       /* PHY_STATE_RUNNING */
+#ifdef INTEL_TIMER_MODE
+      lwr_mac_procInvalidEvt,
+#endif
       lwr_mac_procInvalidEvt,
       lwr_mac_procInvalidEvt,
       lwr_mac_procConfigReqEvt,

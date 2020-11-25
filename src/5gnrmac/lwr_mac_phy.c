@@ -215,7 +215,6 @@ void LwrMacRecvPhyMsg()
    uint16_t msgType;
    uint16_t flag = 0;
    p_fapi_api_queue_elem_t currElem  = NULLP;
-   struct timeval time;
 
    mtGetWlsHdl(&wlsHdlr);
    if(WLS_Ready(wlsHdlr) == 0) 

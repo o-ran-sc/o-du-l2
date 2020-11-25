@@ -351,6 +351,9 @@ uint8_t fapiMacSlotInd(Pst *pst, SlotIndInfo *slotInd)
    /*starting Task*/
    ODU_START_TASK(&startTime, PID_MAC_TTI_IND);
 
+/* When testing L2 with Intel-L1, any changes specific to 
+ * timer mode testing must be guarded under INTEL_TIMER_MODE*/
+#ifndef INTEL_TIMER_MODE
    /* send slot indication to scheduler */
    ret = sendSlotIndMacToSch(slotInd);
    if(ret != ROK)
@@ -367,6 +370,7 @@ uint8_t fapiMacSlotInd(Pst *pst, SlotIndInfo *slotInd)
       MAC_FREE_SHRABL_BUF(pst->region, pst->pool, slotInd, sizeof(SlotIndInfo));
       return ret;
    }
+#endif
 
    /* send slot indication to du app */
    ret = sendSlotIndMacToDuApp(slotInd);

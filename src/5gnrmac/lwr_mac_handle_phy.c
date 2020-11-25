@@ -493,6 +493,16 @@ void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
 
    switch(header->msg_id)
    {
+#ifdef INTEL_TIMER_MODE
+      case FAPI_VENDOR_EXT_UL_IQ_SAMPLES:
+         {
+            printf("\nLWR_MAC: Received FAPI_VENDOR_EXT_UL_IQ_SAMPLES");
+            //send config req
+            uint16_t cellId = 1;
+            sendToLowerMac(CONFIG_REQUEST, 0, (void *)&cellId);
+            break;
+         } 
+#endif
       case FAPI_PARAM_RESPONSE:
 	 {
             sendToLowerMac(PARAM_RESPONSE, msgSize, msg);
