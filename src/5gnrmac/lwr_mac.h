@@ -42,6 +42,9 @@ typedef enum
 
 /* Events in Lower Mac */
 typedef enum{
+#ifdef INTEL_TIMER_MODE
+   UL_IQ_SAMPLE,
+#endif
    PARAM_REQUEST,
    PARAM_RESPONSE,
    CONFIG_REQUEST,

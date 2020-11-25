@@ -1,5 +1,5 @@
-Directory Structure :
----------------------
+A. Directory Structure :
+------------------------
 1. l2/build/ : contains files required to compile the code
    a. common : contains individual module's makefile
    b. odu    : contains main makefile to generate an executable binary
@@ -20,8 +20,8 @@ Directory Structure :
    i. o1       : o1 module
 
 
-Pre-requisite for Compilation :
--------------------------------
+B. Pre-requisite for Compilation :
+----------------------------------
 1. Linux 32-bit/64-bit machine
 2. GCC version 4.6.3 and above
 3. Install LKSCTP
@@ -32,8 +32,8 @@ Pre-requisite for Compilation :
    b. On CentOS : yum install libpcap-devel
 
 
-Pre-requisite for running O1 module:
------------------------------------
+C. Pre-requisite for running O1 module:
+---------------------------------------
 Install netconf server
 ----------------------
 
@@ -56,8 +56,8 @@ Install the yang module
    sysrepoctl -i o-ran-sc-odu-alarm-v1.yang
 
 
-How to Clean and Build:
------------------------
+D. How to Clean and Build:
+--------------------------
 1. Building ODU binary:
    a. Build folder
          cd l2/build/odu
@@ -98,36 +98,101 @@ How to Clean and Build:
          make clean_o1 
 
 
-How to execute:
----------------
+E. How to execute:
+------------------
 1. Assign virtual IP addresses as follows:
-      ifconfig <interface name>:ODU "192.168.130.81"
-      ifconfig <interface name>:CU_STUB "192.168.130.82"
-      ifconfig <interface name>:RIC_STUB "192.168.130.80"
+   a. ifconfig <interface name>:ODU "192.168.130.81"
+   b. ifconfig <interface name>:CU_STUB "192.168.130.82"
+   c. ifconfig <interface name>:RIC_STUB "192.168.130.80"
 
-2. CU execution folder:
-      cd l2/bin/cu_stub
-     
-3. Run CU Stub binary:
-      ./cu_stub
+2. Execute CU Stub:
+   a. CU execution folder:
+      	cd l2/bin/cu_stub
+   b. Run CU Stub binary:
+      	./cu_stub
 
-4. RIC execution folder:
-      cd l2/bin/ric_stub
-     
-5. Run RIC Stub binary:
-      ./ric_stub
+3. Execute RIC Stub:
+   a. RIC execution folder:
+      	cd l2/bin/ric_stub
+   b. Run RIC Stub binary:
+      	./ric_stub
 
-6. DU execution folder:
-      cd l2/bin/odu
-     
-7. Run ODU binary:
-      ./odu
+4. Execute DU:
+   a. DU execution folder:
+      	cd l2/bin/odu
+   b. Run ODU binary:
+      	./odu
 
-8. O1 execution folder:
-      cd l2/build/o1/bin/o1
-
-9. Run O1 binary:
-      ./o1
+5. Execute O1
+   a. O1 execution folder:
+      	cd l2/build/o1/bin/o1
+   b. Run O1 binary:
+      	./o1
 
 PS: CU stub and RIC stub must be run (in no particular sequence) before ODU
     If O1 module is enabled it must be run before ODU
+
+F. How to test with Intel L1:
+-----------------------------
+
+I. Compilation
+   1. Build ODU :
+      a. Create folder l2/src/wls_lib. Copy wls_lib.h from <intel_directory>/phy/wls_lib/ to l2/src/wls_lib.
+      b. Create folder l2/src/dpdk_lib. Copy following files from <intel_directory>/dpdk-19.11/x86_64-native-linuxapp-gcc/include/ to l2/sr        c/dpdk_lib.
+                rte_branch_prediction.h
+                rte_common.h
+                rte_config.h
+                rte_dev.h
+                rte_log.h
+                rte_pci_dev_feature_defs.h
+                rte_bus.h
+                rte_compat.h
+                rte_debug.h
+                rte_eal.h
+                rte_os.h
+                rte_per_lcore.h
+      c. Build folder
+                cd l2/build/odu
+      d. Build ODU Binary:
+                make odu PHY=INTEL_L1 PHY_MODE=TIMER MACHINE=BIT64 MODE=FDD
+
+   2. Build CU Stub and RIC Stub:
+      a. Execute steps in sections D.2 and D.3.
+
+II. Execution
+    1. Execute L1:
+       a. Setup environment:
+                cd <intel_directory>/phy/
+                source ./setupenv.sh
+       b. Run L1 binary :
+                cd <intel_directory>/FlexRAN/l1/bin/nr5g/gnb/l1
+                To run in timer mode : ./l1.sh -e
+                L1 is up when console prints follow:
+
+                   Non BBU threads in application
+                   ===========================================================================================================
+                   nr5g_gnb_phy2mac_api_proc_stats_thread: [PID:   8659] binding on [CPU  0] [PRIO:  0] [POLICY:  1]
+                   wls_rx_handler (non-rt):                [PID:   8663] binding on [CPU  0]
+                   ===========================================================================================================
+                 
+                   PHY>welcome to application console
+
+    2. Execute FAPI Translator:
+       a. Setup environment:
+                cd <intel_directory>/phy/
+                source ./setupenv.sh
+       b. Run FAPI translator binary:
+                cd <intel_directory>/phy/fapi_5g/bin/
+                ./oran_5g_fapi --cfg=oran_5g_fapi.cfg
+
+    3. Execute CU Stub and RIC Stub:
+       a. Run steps in sections E.1-E.3
+
+    4. Execute DU:
+       a. DU execution folder
+          	cd l2/bin/odu
+       b. Export WLS library path
+          	export LD_LIBRARY_PATH=<intel_directory>/phy/wls_lib/lib:$LD_LIBRARY_PATH
+       c. Run ODU binary
+          	./odu
+
