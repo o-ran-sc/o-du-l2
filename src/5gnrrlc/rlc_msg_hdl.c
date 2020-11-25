@@ -360,14 +360,17 @@ uint8_t RlcProcDlRrcMsgTransfer(Pst *pst, RlcDlRrcMsgInfo *dlRrcMsgInfo)
    }
    oduCpyFixBufToMsg(dlRrcMsgInfo->rrcMsg, mBuf, dlRrcMsgInfo->msgLen);
 
-   rlcProcDlData(pst, datReqInfo, mBuf);
-
+   if(rlcProcDlData(pst, datReqInfo, mBuf) != ROK)
+   {
+      return RFAILED;
+   }
+#if 0
    /* RRC Delivery report is only send when RRC Delivery status report is true in DL RRC Message */
    if(dlRrcMsgInfo->deliveryStaRpt)
    {
       BuildAndSendRrcDeliveryReportToDu(dlRrcMsgInfo);
    }
-
+#endif
    /* Free memory allocated by du app */
    RLC_SHRABL_STATIC_BUF_FREE(RLC_MEM_REGION_DL, RLC_POOL, datReqInfo, sizeof(KwuDatReqInfo));
    RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, dlRrcMsgInfo->rrcMsg, dlRrcMsgInfo->msgLen);

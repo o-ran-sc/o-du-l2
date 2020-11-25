@@ -6049,6 +6049,11 @@ uint8_t procUlRrcMsg(F1AP_PDU_t *f1apMsg)
          ret = BuildAndSendUeContextSetupReq(cuUeF1apId, duUeF1apId,\
 	    rrcContLen, rrcContainer);
       }
+      if(rrcMsgType == RRC_RECONFIG)
+      {
+         DU_LOG("\nImplementing DL RRC MSG for RRC Reconfig Complete");
+         BuildAndSendDLRRCMessageTransfer(srbId, rrcMsgType);
+      }
    }
    return ret;
 }
@@ -6341,16 +6346,7 @@ void F1APMsgHdlr(Buffer *mBuf)
 	    }
             case SuccessfulOutcome__value_PR_UEContextSetupResponse:
 	    {
-	       uint8_t rrcMsgType;
-
                DU_LOG("\nF1AP : UE ContextSetupResponse received");
-               f1apMsgDb.dlRrcMsgCount++;
-               rrcMsgType = setDlRRCMsgType();
-               if(rrcMsgType == RRC_RECONFIG)
-               {
-                  DU_LOG("\nImplementing DL RRC MSG for RRC Reconfig Complete");
-                  BuildAndSendDLRRCMessageTransfer(SRB1, rrcMsgType);
-               }
                break;
 	    }
             default:
