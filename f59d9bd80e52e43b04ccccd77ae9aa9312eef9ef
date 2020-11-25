@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a8f9c258_166afe87",
+        "filename": "src/5gnrrlc/kw_utl_dl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-25T15:49:05Z",
+      "side": 1,
+      "message": "is this flag required?",
+      "revId": "f59d9bd80e52e43b04ccccd77ae9aa9312eef9ef",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2e9b1dc2_6d2aec79",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-25T15:49:05Z",
+      "side": 1,
+      "message": "let it be present. We will remove after confirmation.",
+      "range": {
+        "startLine": 367,
+        "startChar": 0,
+        "endLine": 367,
+        "endChar": 5
+      },
+      "revId": "f59d9bd80e52e43b04ccccd77ae9aa9312eef9ef",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4c8ed80a_aff7a7bd",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-25T15:49:05Z",
+      "side": 1,
+      "message": "why skip 4?",
+      "revId": "f59d9bd80e52e43b04ccccd77ae9aa9312eef9ef",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "23b5a042_7ddf7eda",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2150,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-25T15:49:05Z",
+      "side": 1,
+      "message": "inactive?",
+      "revId": "f59d9bd80e52e43b04ccccd77ae9aa9312eef9ef",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
