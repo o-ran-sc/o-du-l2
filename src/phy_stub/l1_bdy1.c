@@ -509,7 +509,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
       }
       case MSG_TYPE_RRC_RECONFIG_COMPLETE:
       {
-         DU_LOG("\nPHY_STUB: Forming RRC RECONFIGURATION PDU");
+         DU_LOG("\nPHY_STUB: Forming RRC RECONFIGURATION COMPLETE PDU");
          uint8_t  pduLen = 14;
 	 /* For rrc reconfig complete where RRC Container is dummy
 	 MAC subheader format is R/F/LCId/L (2/3 bytes)

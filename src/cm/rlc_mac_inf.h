@@ -68,14 +68,14 @@ typedef struct rlcPduInfo
    uint8_t    *pduBuf;  /*!< RLC PDU buffer */
 }RlcPduInfo;
  
-typedef struct rlcMacData
+typedef struct rlcData
 {
    // add slot info
-   uint16_t     cellId;       /*!< CELL ID */
-   uint16_t     rnti;         /*!< Temporary CRNTI */
-   SlotIndInfo  slotInfo;     /*!< Timing info */
-   uint8_t      numPdu;       /*!< Number of RLC PDUs */
-   RlcPduInfo   pduInfo[MAX_NUM_PDU];
+   uint16_t      cellId;       /*!< CELL ID */
+   uint16_t      rnti;         /*!< Temporary CRNTI */
+   SlotIndInfo   slotInfo;     /*!< Timing info */
+   uint8_t       numPdu;       /*!< Number of RLC PDUs */
+   RlcPduInfo    pduInfo[MAX_NUM_PDU];
 }RlcData;
 
 /* Function pointers */

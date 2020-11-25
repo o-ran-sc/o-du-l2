@@ -5575,6 +5575,7 @@ void freeF1UeDb(F1UeContextSetupDb *f1UeDb)
    }
    freeDuUeCfg(&f1UeDb->duUeCfg);
    memset(f1UeDb, 0, sizeof(F1UeContextSetupDb));
+   DU_FREE(f1UeDb, sizeof(F1UeContextSetupDb));
 }
 
 /*******************************************************************
@@ -7672,6 +7673,7 @@ uint8_t BuildAndSendUeContextSetupRsp(uint8_t ueIdx, uint8_t cellId)
 	             choice.DUtoCURRCInformation.cellGroupConfig, cellGrpCfg);
 	    /* Free UeContext Db created during Ue context Req */
 	    freeF1UeDb(ueCb->f1UeDb);
+	    ueCb->f1UeDb = NULLP;
          }
       }
       else

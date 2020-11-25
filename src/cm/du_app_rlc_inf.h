@@ -28,6 +28,7 @@
 #define EVENT_RRC_DELIVERY_MSG_TRANS_TO_DU 214
 #define EVENT_RLC_UE_RECONFIG_REQ  215
 #define EVENT_RLC_UE_RECONFIG_RSP  216
+#define EVENT_DL_RRC_MSG_RSP_TO_DU 217
 
 #define RB_ID_SRB 0
 #define RB_ID_DRB 1
@@ -48,6 +49,12 @@
 #define LCH_DTCH      4      /*!< DTCH Logical Channel */
 #define LCH_DCCH      5      /*!< DCCH Logical Channel */
 
+typedef enum
+{
+   TRANSMISSION_IN_PROGRESS,
+   TRANSMISSION_COMPLETE,
+   TRANSMISSION_FAILED
+}DlMsgState;
 
 typedef enum
 {
@@ -520,6 +527,14 @@ typedef struct dlRrcMsgInfo
    uint8_t    *rrcMsg;        /* RRC Message (DL-DCCH Message) */
 }RlcDlRrcMsgInfo;
 
+/* DL RRC Message Rsp From RLC to DU APP */
+typedef struct dlRrcMsgRsp
+{
+   uint16_t   cellId;         /* Cell Id */
+   uint16_t   crnti;          /* UE index */
+   DlMsgState state;         /* Dl RRC Msg State */
+}RlcDlRrcMsgRsp;
+
 /* RRC delivery message from RLC to DU APP */
 typedef struct rrcDeliveryStatus
 {
@@ -565,6 +580,11 @@ typedef uint8_t (*DuRlcUeReconfigReq) ARGS((
    Pst           *pst,
    RlcUeCfg      *ueCfg ));
 
+/* DL RRC Message from RLC to DU APP */
+typedef uint8_t (*RlcDlRrcMsgRspToDuFunc) ARGS((
+   Pst           *pst,
+   RlcDlRrcMsgRsp *dlRrcMsgRsp));
+
 /* Pack/Unpack function declarations */
 uint8_t packDuRlcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg);
 uint8_t unpackRlcUeCreateReq(DuRlcUeCreateReq func, Pst *pst, Buffer *mBuf);
@@ -578,6 +598,9 @@ uint8_t packRrcDeliveryReportToDu(Pst *pst, RrcDeliveryReport *rrcDeliveryReport
 uint8_t unpackRrcDeliveryReportToDu(RlcRrcDeliveryReportToDuFunc func,Pst *pst, Buffer *mBuf);
 uint8_t packDuRlcUeReconfigReq(Pst *pst, RlcUeCfg *ueCfg);
 uint8_t unpackRlcUeReconfigReq(DuRlcUeReconfigReq func, Pst *pst, Buffer *mBuf);
+uint8_t packRlcDlRrcMsgRspToDu(Pst *pst, RlcDlRrcMsgRsp *dlRrcMsgRsp);
+uint8_t unpackRlcDlRrcMsgRspToDu(RlcDlRrcMsgRspToDuFunc func, Pst *pst, Buffer *mBuf);
+
 
 /* Event Handler function declarations */
 uint8_t RlcProcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg);
@@ -586,6 +609,7 @@ uint8_t DuProcRlcUlRrcMsgTrans(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo);
 uint8_t RlcProcDlRrcMsgTransfer(Pst *pst, RlcDlRrcMsgInfo *dlRrcMsgInfo);
 uint8_t DuProcRlcRrcDeliveryReport(Pst *pst, RrcDeliveryReport *rrcDeliveryReport);
 uint8_t RlcProcUeReconfigReq(Pst *pst, RlcUeCfg *ueCfg);
+uint8_t DuProcRlcDlRrcMsgRsp(Pst *pst, RlcDlRrcMsgRsp *dlRrcMsg);
 
 #endif /* RLC_INF_H */
 

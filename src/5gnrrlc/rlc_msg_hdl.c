@@ -360,7 +360,10 @@ uint8_t RlcProcDlRrcMsgTransfer(Pst *pst, RlcDlRrcMsgInfo *dlRrcMsgInfo)
    }
    oduCpyFixBufToMsg(dlRrcMsgInfo->rrcMsg, mBuf, dlRrcMsgInfo->msgLen);
 
-   rlcProcDlData(pst, datReqInfo, mBuf);
+   if(rlcProcDlData(pst, datReqInfo, mBuf) != ROK)
+   {
+      return RFAILED;
+   }
 
    /* RRC Delivery report is only send when RRC Delivery status report is true in DL RRC Message */
    if(dlRrcMsgInfo->deliveryStaRpt)

@@ -188,6 +188,11 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
 		     ret = unpackRrcDeliveryReportToDu(DuProcRlcRrcDeliveryReport, pst, mBuf);
 		     break;
 		  }
+	       case EVENT_DL_RRC_MSG_RSP_TO_DU:
+                  {
+	             ret = unpackRlcDlRrcMsgRspToDu(DuProcRlcDlRrcMsgRsp, pst, mBuf);
+		     break;
+                  }
 	       default:
 		  {
 		     DU_LOG("\nDU_APP : Invalid event %d received at duActvTsk from ENTRLC", \
