@@ -1,0 +1,208 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "80f96936_a70e9c68",
+        "filename": "docs/L1-L2_Message_Flow.jpg",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-26T09:15:19Z",
+      "side": 1,
+      "message": "change the API names, as found in the FAPI spec. Also change L1 to O-DU Low",
+      "revId": "a884e5fd786b41994f2a1bf99ef01b0214686bff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5f2ebbf1_70d6ac52",
+        "filename": "docs/api-docs.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-26T09:15:19Z",
+      "side": 1,
+      "message": "and their functionality",
+      "revId": "a884e5fd786b41994f2a1bf99ef01b0214686bff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b6a6bcac_af503edf",
+        "filename": "docs/api-docs.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-26T09:15:19Z",
+      "side": 1,
+      "message": "drop the docx. This is generic comment. This can be extended as \"These are in line with ORAN-WG8.AAD-v2.05.00, hereafter referred to as AAD Spec\". And use \"AAD spec\" to the doc reference everywhere below.",
+      "revId": "a884e5fd786b41994f2a1bf99ef01b0214686bff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6fb16d54_e1cfff00",
+        "filename": "docs/api-docs.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-26T09:15:19Z",
+      "side": 1,
+      "message": "no need to add bullets like this. This can be a better approach:\n a. Data Transfer(DL) - Transfers DL data to MAC as per Section 9.2.1.1 of the AAD Spec.\n\nThis is a generic comment",
+      "revId": "a884e5fd786b41994f2a1bf99ef01b0214686bff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8f9e5fe4_eebf64ad",
+        "filename": "docs/api-docs.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-26T09:15:19Z",
+      "side": 1,
+      "message": "Add separate section for those APIs that are missing in the AAD spec and list them down in the same manner as above. Also include the new API introduced to signal the DU APP about RRC container being sent out.",
+      "revId": "a884e5fd786b41994f2a1bf99ef01b0214686bff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ebb9cdd1_dc12f58b",
+        "filename": "docs/user-guide.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-26T09:15:19Z",
+      "side": 1,
+      "message": "O-DU High",
+      "revId": "a884e5fd786b41994f2a1bf99ef01b0214686bff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "80bdc05c_a8c8999e",
+        "filename": "docs/user-guide.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-26T09:15:19Z",
+      "side": 1,
+      "message": "include \"together\" at the end of this line",
+      "revId": "a884e5fd786b41994f2a1bf99ef01b0214686bff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c80d19ef_1563f6e6",
+        "filename": "docs/user-guide.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-26T09:15:19Z",
+      "side": 1,
+      "message": "use \u003crsys_directory\u003e/l2/bin.\nThis is again a generic comment",
+      "revId": "a884e5fd786b41994f2a1bf99ef01b0214686bff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4978a0b5_cbe7c9f8",
+        "filename": "docs/user-guide.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-26T09:15:19Z",
+      "side": 1,
+      "message": "avoid using L1. Always use O-DU High.\nO-DU High open WLS interface during bring up. Message exchanges can begin once the interface is ready.",
+      "revId": "a884e5fd786b41994f2a1bf99ef01b0214686bff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "57a5701d_5eb95538",
+        "filename": "docs/user-guide.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-26T09:15:19Z",
+      "side": 1,
+      "message": "P5 message exchanges",
+      "revId": "a884e5fd786b41994f2a1bf99ef01b0214686bff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e6754796_c5ab4cb8",
+        "filename": "docs/user-guide.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-26T09:15:19Z",
+      "side": 1,
+      "message": "make width 600",
+      "revId": "a884e5fd786b41994f2a1bf99ef01b0214686bff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fbf48a11_8b50d5bd",
+        "filename": "docs/user-guide.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-26T09:15:19Z",
+      "side": 1,
+      "message": "now that the code is merged, please add the flag details",
+      "revId": "a884e5fd786b41994f2a1bf99ef01b0214686bff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
