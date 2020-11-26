@@ -36,11 +36,11 @@ CmInetNetAddrLst remoteAddrLst;
 
 typedef struct
 {
-   uint8_t           numFd;            /* Total count number of receivers socket Fd */
-   uint16_t           port;              /* Filled by the InetSctpRecvMsg during polling */              
-   uint32_t           flag;              /* Refers to the notifyHandler Flag during successful InetSctpRecvMsg*/
-   Buffer        *mBuf;             /* Buffer filled during Socket polling*/
-   MsgLen        bufLen;            /* Determines the length of the Buffer filled during socket polling */
+   uint8_t     numFd;            /* Total count number of receivers socket Fd */
+   uint16_t    port;              /* Filled by the InetSctpRecvMsg during polling */              
+   uint32_t    flag;              /* Refers to the notifyHandler Flag during successful InetSctpRecvMsg*/
+   Buffer      *mBuf;             /* Buffer filled during Socket polling*/
+   MsgLen      bufLen;            /* Determines the length of the Buffer filled during socket polling */
    CmInetNetAddr addr;              /* Determines the destination port filled during socket polling */
    CmInetFdSet      readFd;         /* Refers to the Read Fd socket */
    CmInetSctpSndRcvInfo   info;     /* Refers to Send Receivers Info*/
