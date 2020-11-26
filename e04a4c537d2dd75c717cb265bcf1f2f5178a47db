@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6ef44c2b_6ad257d7",
+        "filename": "docs/overview.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-26T15:42:30Z",
+      "side": 1,
+      "message": "comma between NR MAC and NR Scheduler",
+      "revId": "e04a4c537d2dd75c717cb265bcf1f2f5178a47db",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cd14cce1_f4fe621c",
+        "filename": "docs/overview.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-26T15:42:30Z",
+      "side": 1,
+      "message": "on UL and DL channels?",
+      "revId": "e04a4c537d2dd75c717cb265bcf1f2f5178a47db",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dba1a02e_93dde2ad",
+        "filename": "docs/overview.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-26T15:42:30Z",
+      "side": 1,
+      "message": "interactions",
+      "revId": "e04a4c537d2dd75c717cb265bcf1f2f5178a47db",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bd67768c_70d97b0e",
+        "filename": "docs/overview.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-26T15:42:30Z",
+      "side": 1,
+      "message": "received",
+      "revId": "e04a4c537d2dd75c717cb265bcf1f2f5178a47db",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
