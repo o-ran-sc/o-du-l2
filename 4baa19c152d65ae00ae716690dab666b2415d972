@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5885034d_2293b599",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-26T09:28:40Z",
+      "side": 1,
+      "message": "if this is not relevant we can remove it",
+      "revId": "4baa19c152d65ae00ae716690dab666b2415d972",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9fb8e0a6_835756d7",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2146,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-26T09:28:40Z",
+      "side": 1,
+      "message": "UE Contect Setup Request",
+      "revId": "4baa19c152d65ae00ae716690dab666b2415d972",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
