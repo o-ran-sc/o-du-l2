@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "98908ef2_67a63e33",
+        "filename": "src/5gnrrlc/kw_utl_dl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-26T09:19:27Z",
+      "side": 1,
+      "message": "not required. so removed",
+      "parentUuid": "a8f9c258_166afe87",
+      "revId": "f59d9bd80e52e43b04ccccd77ae9aa9312eef9ef",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2e9b1dc2_6d2aec79",
         "filename": "src/5gnrrlc/rlc_msg_hdl.c",
         "patchSetId": 2
@@ -42,6 +60,30 @@
     },
     {
       "key": {
+        "uuid": "7331fea6_8e6f41d0",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-26T09:19:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2e9b1dc2_6d2aec79",
+      "range": {
+        "startLine": 367,
+        "startChar": 0,
+        "endLine": 367,
+        "endChar": 5
+      },
+      "revId": "f59d9bd80e52e43b04ccccd77ae9aa9312eef9ef",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4c8ed80a_aff7a7bd",
         "filename": "src/cu_stub/cu_f1ap_msg_hdl.h",
         "patchSetId": 2
@@ -59,6 +101,24 @@
     },
     {
       "key": {
+        "uuid": "30c88f74_436d8b25",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-26T09:19:27Z",
+      "side": 1,
+      "message": "Added security mode complete",
+      "parentUuid": "4c8ed80a_aff7a7bd",
+      "revId": "f59d9bd80e52e43b04ccccd77ae9aa9312eef9ef",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "23b5a042_7ddf7eda",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 2
@@ -73,6 +133,24 @@
       "revId": "f59d9bd80e52e43b04ccccd77ae9aa9312eef9ef",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d5b20f1f_1f654931",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2150,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-11-26T09:19:27Z",
+      "side": 1,
+      "message": "Added TRANSMISSION FAILED",
+      "parentUuid": "23b5a042_7ddf7eda",
+      "revId": "f59d9bd80e52e43b04ccccd77ae9aa9312eef9ef",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
