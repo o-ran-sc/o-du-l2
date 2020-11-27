@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c0922a97_6edd705c",
+        "filename": "docs/api-docs.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-27T05:38:17Z",
+      "side": 1,
+      "message": "Drop this line. Heading is sufficient",
+      "revId": "3d0f5dbfe97d8b58d6f2963bfd1b457ea990162e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1c9c37e9_2e4585ea",
+        "filename": "docs/user-guide.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-27T05:38:17Z",
+      "side": 1,
+      "message": "is this line needed?",
+      "revId": "3d0f5dbfe97d8b58d6f2963bfd1b457ea990162e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
