@@ -14,8 +14,7 @@ Welcome to O-RAN SC O-DU-L2 Documentation
    installation-guide.rst
    user-guide.rst
    api-docs.rst
-
-
+   developer-guide.rst
 
 * :ref:`genindex`
 * :ref:`modindex`
