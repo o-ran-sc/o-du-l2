@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "90d859c0_ab4125a3",
+        "filename": "docs/api-docs.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-27T13:45:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c0922a97_6edd705c",
+      "revId": "3d0f5dbfe97d8b58d6f2963bfd1b457ea990162e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1c9c37e9_2e4585ea",
         "filename": "docs/user-guide.rst",
         "patchSetId": 4
@@ -33,6 +51,24 @@
       "revId": "3d0f5dbfe97d8b58d6f2963bfd1b457ea990162e",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b69dc150_82328451",
+        "filename": "docs/user-guide.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-27T13:45:55Z",
+      "side": 1,
+      "message": "No. removed",
+      "parentUuid": "1c9c37e9_2e4585ea",
+      "revId": "3d0f5dbfe97d8b58d6f2963bfd1b457ea990162e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
