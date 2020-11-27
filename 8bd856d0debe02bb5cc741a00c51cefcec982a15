@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3d5af639_3a15a76e",
+        "filename": "docs/installation-guide.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-11-27T12:02:46Z",
+      "side": 1,
+      "message": "O-DU High dependencies?",
+      "revId": "8bd856d0debe02bb5cc741a00c51cefcec982a15",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
