@@ -104,6 +104,7 @@
 #define ODU_CAT_MSG SCatMsg
 #define ODU_GET_PROCID SFndProcId
 #define ODU_SET_THREAD_AFFINITY SSetAffinity
+#define ODU_CREATE_TASK SCreateSTsk
 
 #define GET_UE_IDX( _crnti,_ueIdx)         \
 {                                          \
