@@ -4,7 +4,7 @@
 
 
 User Guide
-==========
+***********
 
 This is the user guide for Cherry release of O-DU/l2.
 
@@ -12,58 +12,12 @@ This is the user guide for Cherry release of O-DU/l2.
    :depth: 3
    :local:
 
-A. Compilation:
----------------
 
-1. Build O-DU High:
-
-   a. Build folder
-
-      - cd <rsys_directory>/l2/build/odu
-
-   b. Build O-DU High binary
-   
-      - make odu MACHINE=BIT64 MODE=FDD
-
-   c. Clean O-DU High binary
-
-      - make clean_odu MACHINE=BIT64 MODE=FDD
-
-2. Build CU Stub :
-
-   a. Build folder
-   
-      - cd <rsys_directory>/l2/build/odu
-
-   b. Build CU Stub binary
-   
-      - make cu_stub NODE=TEST_STUB MACHINE=BIT64 MODE=FDD
-
-   c. Clean CU Stub binary
-   
-      - make clean_cu NODE=TEST_STUB MACHINE=BIT64 MODE=FDD
-
-3. Build RIC Stub :
-
-   a. Build folder
-   
-      - cd <rsys_directory>/l2/build/odu
-
-   b. Build RIC Stub binary
-   
-      - make ric_stub NODE=TEST_STUB MACHINE=BIT64 MODE=FDD
-
-   c. Clean RIC Stub binary
-   
-      - make clean_ric NODE=TEST_STUB MACHINE=BIT64 MODE=FDD
-
-4. Clean ODU, CU Stub and RIC Stub together
-
-   a. make clean_all
-
-
-B. Execution:
+A. Execution:
 -------------
+
+I. Execution - On locally compiling O-DU High Source Code
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 1. Assign virtual IP addresses as follows:
 
@@ -73,9 +27,9 @@ B. Execution:
 
 2. Execute CU Stub:
 
-   a. CU execution folder
+   a. Navigate to CU execution folder
 
-      - cd <rsys_directory>/l2/bin/cu_stub
+      - cd <O-DU High Directory>/l2/bin/cu_stub
 
    b. Run CU Stub binary
 
@@ -83,19 +37,19 @@ B. Execution:
 
 3. Execute RIC Stub:
 
-   a. RIC execution folder
+   a. Navigate to RIC execution folder
 
-      - cd <rsys_directory>/l2/bin/ric_stub
+      - cd <O-DU High Directory>/l2/bin/ric_stub
 
    b. Run RIC Stub binary
 
       - ./ric_stub
 
-4. Execute DU:
+4. Execute O-DU High:
 
-   a. DU execution folder
+   a. Navigate to ODU execution folder
 
-      - cd <rsys_directory>/l2/bin/odu
+      - cd <O-DU High Directory>/l2/bin/odu
 
    b. Run ODU binary
 
@@ -103,20 +57,43 @@ B. Execution:
 
 PS: CU stub and RIC stub must be run (in no particular sequence) before ODU
 
+II. Execution - Using Docker Images
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-C. Testing with Intel O-DU Low:
--------------------------------
+The call flow between O-DU High and CU Stub can be achieved by executing docker containers.
+
+- Pull the last built docker images:
+    -	docker pull nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2:3.0.1
+    -	docker pull nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2-cu-stub:3.0.1
+
+- Run CU Stub docker:
+    - docker run -it –-privileged -–net=host --entrypoint bash
+      nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2-cu-stub:3.0.1   
+    - ./cu_stub
+
+- Run ODU docker:
+    - docker run -it –-privileged -–net=host --entrypoint bash
+      nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2:3.0.1   
+    - ./odu
+
+
+B. Pairwise testing with Intel O-DU Low:
+-----------------------------------------
+
+This section describes the changes required in compilation and execution of O-DU High binaries to successfully integrate
+with Intel O-DU Low in timer mode.
+
 
 I. Compilation
 ^^^^^^^^^^^^^^
 
    1. Build ODU :
 
-      a. Create folder <rsys_directory>/l2/src/wls_lib. Copy wls_lib.h from <intel_directory>/phy/wls_lib/ to 
-         <rsys_directory>/l2/src/wls_lib.
+      a. Create folder <O-DU High Directory>/l2/src/wls_lib. Copy wls_lib.h from <O-DU Low Directory>/phy/wls_lib/ to 
+         <O-DU High Directory>/l2/src/wls_lib.
 
-      b. Create folder <rsys_directory>/l2/src/dpdk_lib. Copy following files from
-         <intel_directory>/dpdk-19.11/x86_64-native-linuxapp-gcc/include/ to <rsys_directory>/l2/src/dpdk_lib.
+      b. Create folder <O-DU High Directory>/l2/src/dpdk_lib. Copy following files from
+         <O-DU Low Directory>/dpdk-19.11/x86_64-native-linuxapp-gcc/include/ to <O-DU High Directory>/l2/src/dpdk_lib.
          
          - rte_branch_prediction.h
          - rte_common.h
@@ -133,15 +110,12 @@ I. Compilation
 
       c. Build folder
 
-         - cd <rsys_directory>/l2/build/odu
+         - cd <O-DU High Directory>/l2/build/odu
 
       d. Build ODU Binary:
            
          - make odu PHY=INTEL_L1 PHY_MODE=TIMER MACHINE=BIT64 MODE=FDD
 
-   2. Build CU Stub and RIC Stub:
-
-      a. Execute steps in sections A.2 and A.3.	
 
 II. Execution
 ^^^^^^^^^^^^^
@@ -150,12 +124,12 @@ II. Execution
 
       a. Setup environment:
       
-         - cd <intel_directory>/phy/
+         - cd <O-DU Low Directory>/phy/
          - source ./setupenv.sh
 
       b. Run O-DU Low binary :
       
-         - cd <intel_directory>/FlexRAN/l1/bin/nr5g/gnb/l1
+         - cd <O-DU Low Directory>/FlexRAN/l1/bin/nr5g/gnb/l1
          - To run in timer mode : ./l1.sh -e
          - L1 is up when following prints are seen on console:
 
@@ -171,45 +145,45 @@ II. Execution
 
       a. Setup environment:
    
-         - cd <intel_directory>/phy/
+         - cd <O-DU Low Directory>/phy/
          - source ./setupenv.sh
 
       b. Run FAPI translator binary:
 
-         - cd <intel_directory>/phy/fapi_5g/bin/
+         - cd <O-DU Low Directory>/phy/fapi_5g/bin/
          - ./oran_5g_fapi --cfg=oran_5g_fapi.cfg
 
    3. Execute CU Stub and RIC Stub:
 
-      a. Run steps in sections B.1-B.3.
+      a. Run steps in sections A.I.1 through A.I.3 .
 
    4. Execute DU:
    
       a. DU execution folder
      
-         - cd <rsys_directory>/l2/bin/odu
+         - cd <O-DU High Directory>/l2/bin/odu
       
       b. Export WLS library path
 
-         - export LD_LIBRARY_PATH=<intel_directory>/phy/wls_lib/lib:$LD_LIBRARY_PATH
+         - export LD_LIBRARY_PATH=<O-DU Low Directory>/phy/wls_lib/lib:$LD_LIBRARY_PATH
       
       c. Run ODU binary
 
          - ./odu
 
 
-D. Message Flow:
+C. Message Flow:
 ----------------
 
 O-DU High opens WLS interface during bring up. Message exchanges can begin once the interface is ready.
-Following diagram shows P5 messages exchange with O-DU Low in timer mode.
+Following diagram shows P5 messages exchanged with O-DU Low in timer mode.
 
-.. figure:: L1-L2_Message_Flow.jpg
+.. figure:: O-DU_High_Low_Flow.jpg
   :width: 600
   :alt: Figure 1 O-DU High - O-DU Low Message Flow Diagram
 
-  Figure 1 - O-DU High - O-DU Low Message Flow Diagram
+  Figure 5 - O-DU High - O-DU Low Message Flow Diagram
 
 Note: UL IQ-Sample request and response are needed by Intel O-DU Low in timer mode(testing mode) only. Code changes for
-these are guarded under INTEL_TIMER_MODE flag which can be enabled using compilation option "PHY_MODE=TIMER", as mention
-in section C.I.1.d .
+these are guarded under INTEL_TIMER_MODE flag which can be enabled using compilation option "PHY_MODE=TIMER", as
+mentioned in section B.I.1.d .
