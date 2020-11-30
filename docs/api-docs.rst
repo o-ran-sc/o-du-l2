@@ -134,8 +134,6 @@ API Functions
 Additional APIs
 ----------------
 
-These APIs are not defined in the AAD Spec but were implemented in O-DU High to achieve UE attach.
-
 1. DU APP - MAC Interface
 
    A. DU APP to MAC
