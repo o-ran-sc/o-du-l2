@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "ae4ef5fb_4aa007f0",
+        "filename": "docs/installation-guide.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-30T11:52:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ead37d67_6f3586ef",
+      "revId": "f4530205fc9e515a4a7ef447dd55f7a1a4e147eb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b4e6f88c_58350791",
         "filename": "docs/user-guide.rst",
         "patchSetId": 1
@@ -33,6 +51,24 @@
       "revId": "f4530205fc9e515a4a7ef447dd55f7a1a4e147eb",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7b39bf3b_68106ec1",
+        "filename": "docs/user-guide.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-30T11:52:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b4e6f88c_58350791",
+      "revId": "f4530205fc9e515a4a7ef447dd55f7a1a4e147eb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "b91aab56_dbaa6906",
+        "filename": "docs/user-guide.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-30T11:52:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c3eaf4b2_f7177e2f",
+      "revId": "f4530205fc9e515a4a7ef447dd55f7a1a4e147eb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2d8c5bdf_31c9f4cd",
         "filename": "docs/user-guide.rst",
         "patchSetId": 1
@@ -64,6 +118,24 @@
       "writtenOn": "2020-11-30T10:28:24Z",
       "side": 1,
       "message": "We havent added docker file for ric stub but it should be executed to avoid seeing error prints on odu console. Should we mention anything in this regards?",
+      "revId": "f4530205fc9e515a4a7ef447dd55f7a1a4e147eb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4750cf0b_73eae040",
+        "filename": "docs/user-guide.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-30T11:52:44Z",
+      "side": 1,
+      "message": "We can skip it for now and add docker image for ric stub as part of next release",
+      "parentUuid": "2d8c5bdf_31c9f4cd",
       "revId": "f4530205fc9e515a4a7ef447dd55f7a1a4e147eb",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -84,6 +156,24 @@
       "revId": "f4530205fc9e515a4a7ef447dd55f7a1a4e147eb",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "10bb50e3_b6749194",
+        "filename": "docs/user-guide.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-11-30T11:52:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "73aa468c_913ae1f8",
+      "revId": "f4530205fc9e515a4a7ef447dd55f7a1a4e147eb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
