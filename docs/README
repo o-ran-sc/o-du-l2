@@ -45,6 +45,7 @@ Install netconf server
 	ssh-keygen -A && \
 	ssh-keygen -t dsa -P '' -f /home/netconf/.ssh/id_dsa && \
         cat /home/netconf/.ssh/id_dsa.pub > /home/netconf/.ssh/authorized_keys
+
 2.	Install netconf packages. 
 	$cd l2/build/o1/
 	$chmod +x install_lib.sh
