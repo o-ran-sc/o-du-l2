@@ -2,9 +2,11 @@
 .. SPDX-License-Identifier: CC-BY-4.0
 
 
+O-DU High Overview
+*********************
+
 O-DU High Architecture
 ======================
-
 
 O-DU implements the functional blocks of L2 layer of a 5G NR protocol stack in SA(StandAlone) mode.
 These layers primarily include NR MAC, NR Scheduler and NR RLC layers.
