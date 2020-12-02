@@ -79,8 +79,8 @@ Libraries
 Following libraries are required to compile and execute O-DU High:
 
 - GCC 
-   - Ubuntu : sudo apt install build-essential
-   - CentOS : sudo yum group install "Development Tools"
+   - Ubuntu : sudo apt-get install -y build-essential
+   - CentOS : sudo yum groups mark install -y “Development Tools”
 
    Ensure the version is 4.6.3 and above using
 
@@ -88,11 +88,11 @@ Following libraries are required to compile and execute O-DU High:
 
 - LKSCTP
    - Ubuntu : sudo apt-get install -y libsctp-dev
-   - CentOS : yum install lksctp-tools-devel
+   - CentOS : sudo yum install -y lksctp-tools-devel
 
 - PCAP:
    - Ubuntu : sudo apt-get install -y libpcap-dev
-   - CentOS : yum install libpcap-devel
+   - CentOS : sudo yum install -y libpcap-devel
 
 Cloning code
 --------------
