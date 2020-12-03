@@ -5,6 +5,7 @@ User Guide
 ***********
 
 This is the user guide for Cherry release of O-DU/l2.
+Follow installation-guide to get all the dependencies ready.
 
 .. contents::
    :depth: 3
@@ -82,8 +83,22 @@ This section describes the changes required in compilation and execution of O-DU
 with Intel O-DU Low in timer mode.
 
 
-I. Compilation
-^^^^^^^^^^^^^^
+I. Pre-requisites
+^^^^^^^^^^^^^^^^^^
+
+   1. Install O-DU High as per installation-guide . 
+
+   2. Clone O-DU Low code in <O-DU Low Directory> from
+
+      a. https://gerrit.o-ran-sc.org/r/admin/repos/o-du/phy and,
+
+      b. https://github.com/intel/FlexRAN
+      
+   3. Install O-DU Low as per https://docs.o-ran-sc.org/projects/o-ran-sc-o-du-phy/en/latest/index.html .
+
+
+II. Compilation
+^^^^^^^^^^^^^^^^
 
    1. Build ODU :
 
@@ -115,8 +130,8 @@ I. Compilation
          - make odu PHY=INTEL_L1 PHY_MODE=TIMER MACHINE=BIT64 MODE=FDD
 
 
-II. Execution
-^^^^^^^^^^^^^
+III. Execution
+^^^^^^^^^^^^^^^
 
    1. Execute O-DU Low:
 

@@ -103,8 +103,8 @@ Cherry
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
 | **Repo/commit-ID**                   | o-du/l2/                             |
-|                                      | 27d8d877e837c2879a452538cdbe81afe48be|
-|                                      | d62                                  |
+|                                      | fc0bcf28e944ae7ba2423ad3c9a5c794df2dc|
+|                                      | 4ff                                  |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
 | **Release designation**              | Cherry Release                       |
@@ -185,6 +185,21 @@ Cherry
 | https://jira.o-ran-sc.org/browse/ODUHIGH-189  | Integration with O-DU Low                     |
 |                                               | 				                |
 +-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-184  | UE UL Data path                               |
+|                                               | 				                |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-185  | UE DL Data path                               |
+|                                               | 				                |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-186  | Applying 64 QAM Modulation in DL              |
+|                                               | 				                |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-187  | Applying 16 QAM Modulation in UL              |
+|                                               | 				                |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-190  | Integration with VIAVI Software               |
+|                                               | 				                |
++-----------------------------------------------+-----------------------------------------------+
 | https://jira.o-ran-sc.org/browse/ODUHIGH-214  | get-AlarmList implementation on O1 interface  |
 |                                               | 				                |
 +-----------------------------------------------+-----------------------------------------------+
@@ -252,6 +267,14 @@ This release contains
 - overview.rst
 
 - release-notes.rst
+
+- installation-guide.rst
+
+- user-guide.rst
+
+- api-docs.rst
+
+- developer-guide.rst
 
 
 
