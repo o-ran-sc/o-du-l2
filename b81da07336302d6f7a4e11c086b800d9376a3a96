@@ -16,6 +16,24 @@
       "revId": "b81da07336302d6f7a4e11c086b800d9376a3a96",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b62647b8_12875538",
+        "filename": "Dockerfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2020-12-07T15:54:24Z",
+      "side": 1,
+      "message": "There are two parts of O1.\n1. O1 client + ODU : yes by default the flag is disabled \n2. O1 Module : this is an independent process and has an independent make file. So we need to compile it separately. \n\nSo we need to compile both module (ODU and O1) independently.",
+      "parentUuid": "ae629dbf_307bdbbf",
+      "revId": "b81da07336302d6f7a4e11c086b800d9376a3a96",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
