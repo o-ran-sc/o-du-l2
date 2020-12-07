@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ae629dbf_307bdbbf",
+        "filename": "Dockerfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-07T12:09:49Z",
+      "side": 1,
+      "message": "Does this mean the build will run twice? If yes, the O1 related flags are not enabled?",
+      "revId": "b81da07336302d6f7a4e11c086b800d9376a3a96",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
