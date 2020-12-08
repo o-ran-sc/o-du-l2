@@ -27,6 +27,12 @@
 #include "du_app_rlc_inf.h"
 #include "du_mgr_main.h"
 #include "du_utils.h"
+#include "RAT-Type.h"
+#include "FeatureSetDownlinkPerCC.h"
+#include "FeatureSets.h"
+#include "UE-NR-Capability.h"
+#include "UE-CapabilityRAT-Container.h"
+#include "UE-CapabilityRAT-ContainerListRRC.h"
 #include "GNB-DU-System-Information.h"
 #include "CellGroupConfigRrc.h"
 #include "MAC-CellGroupConfig.h"
@@ -6479,7 +6485,7 @@ void extractPdschCfg(PDSCH_Config_t *cuPdschCfg, PdschConfig *macPdschCfg)
 	 }
       }
    }
-   macPdschCfg->rbgSize = cuPdschCfg->rbg_Size; 
+   macPdschCfg->rbgSize = cuPdschCfg->rbg_Size;
    if(cuPdschCfg->maxNrofCodeWordsScheduledByDCI)
       macPdschCfg->numCodeWordsSchByDci = *(cuPdschCfg->maxNrofCodeWordsScheduledByDCI);
    if(cuPdschCfg->prb_BundlingType.present == PDSCH_Config__prb_BundlingType_PR_staticBundling)
@@ -6726,6 +6732,7 @@ uint8_t extractServingCellReconfig(ServingCellConfig_t *cuSrvCellCfg, ServCellCf
       {
          if(dlBwp->pdcch_Config->choice.setup)
 	 {
+	    macSrvCellCfg->initDlBwp.pdcchPresent = true;
 	    extractPdcchCfg(dlBwp->pdcch_Config->choice.setup, &macSrvCellCfg->initDlBwp.pdcchCfg);
 	 }
       }
@@ -6733,6 +6740,7 @@ uint8_t extractServingCellReconfig(ServingCellConfig_t *cuSrvCellCfg, ServCellCf
       {
          if(dlBwp->pdsch_Config->choice.setup)
 	 {
+	    macSrvCellCfg->initDlBwp.pdschPresent = true;
 	    extractPdschCfg(dlBwp->pdsch_Config->choice.setup, &macSrvCellCfg->initDlBwp.pdschCfg);
 	 }
       }
@@ -6937,6 +6945,54 @@ uint8_t procUeReCfgCellInfo(MacUeCfg *macUeCfg, void *cellInfo)
       freeUeReCfgCellGrpInfo(macUeCfg);
    }
    return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Filling modulation info in mac ue cfg
+ *
+ * @details
+ *
+ *    Function : fillModulation
+ *
+ *    Functionality: Filling modulation info in mac ue cfg
+ *
+ * @params[in] MAC UE Config
+ *             UE NR capability from CU
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void fillModulation(MacUeCfg *ueCfg, void *ueCap)
+{
+    UE_NR_Capability_t *ueNrCap = (UE_NR_Capability_t *)ueCap;
+
+    /* Filling DL modulation info */
+    switch(*(ueNrCap->featureSets->featureSetsDownlinkPerCC->list.array[0]->supportedModulationOrderDL))
+    {
+       case ModulationOrder_qpsk:
+          {
+             ueCfg->dlModInfo.modOrder = MOD_ORDER_QPSK;
+             break;
+          }
+       case ModulationOrder_qam16:
+          {
+             ueCfg->dlModInfo.modOrder = MOD_ORDER_QAM16;
+             break;
+          }
+       case ModulationOrder_qam64:
+          {
+             ueCfg->dlModInfo.modOrder = MOD_ORDER_QAM64;
+             ueCfg->dlModInfo.mcsIndex = PDSCH_MCS_INDEX;
+             ueCfg->dlModInfo.mcsTable = MCS_TABLE_QAM64;
+             break;
+          }
+       case ModulationOrder_qam256:
+          {
+             ueCfg->dlModInfo.modOrder = MOD_ORDER_QAM256;
+             break;
+          }
+    }
 }
 
 /*******************************************************************
@@ -7235,6 +7291,83 @@ uint8_t extractDlRrcMsg(uint32_t gnbDuUeF1apId, uint32_t gnbCuUeF1apId, \
 
 /*******************************************************************
  *
+ * @brief Extract UE capability info 
+ *
+ * @details
+ *
+ *    Function : extractUeCapability
+ *
+ *    Functionality: Extract UE capability info and stores in ue Cb
+ *
+ * @params[in] Octet string of UE capability RAT container list
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+UE_NR_Capability_t *extractUeCapability(UE_CapabilityRAT_ContainerList_t *ueCapablityListBuf, DuUeCb *ueCb)
+{
+   uint8_t  idx;
+   uint16_t recvBufLen;
+   asn_dec_rval_t rval;
+   UE_NR_Capability_t  *ueNrCap = NULLP;
+   UE_CapabilityRAT_ContainerListRRC_t  *ueCapRatContList = NULLP;
+
+   /* Decoding UE Capability RAT Container List */
+   recvBufLen = ueCapablityListBuf->size;
+   DU_ALLOC(ueCapRatContList, sizeof(UE_CapabilityRAT_ContainerListRRC_t));
+   if(!ueCapRatContList)
+   {
+      DU_LOG("\nF1AP : Memory allocation failed in extractUeCapability");
+      return RFAILED;
+   }
+   memset(ueCapRatContList, 0, sizeof(UE_CapabilityRAT_ContainerListRRC_t));
+   memset(&rval, 0, sizeof(asn_dec_rval_t));
+   rval = aper_decode(0, &asn_DEF_UE_CapabilityRAT_ContainerListRRC, (void **)&ueCapRatContList,
+          ueCapablityListBuf->buf, recvBufLen, 0, 0);
+   if(rval.code == RC_FAIL || rval.code == RC_WMORE)
+   {
+      DU_LOG("\nF1AP : ASN decode failed at decodeCellGrpCfg()");
+      return NULLP;
+   }
+   xer_fprint(stdout, &asn_DEF_UE_CapabilityRAT_ContainerListRRC, ueCapRatContList);
+
+   for(idx = 0; idx < ueCapRatContList->list.count; idx++)
+   {
+      if(ueCapRatContList->list.array[idx]->rat_Type == RAT_Type_nr)
+      {
+         /* Decoding UE NR Capability */
+          recvBufLen = ueCapRatContList->list.array[idx]->ue_CapabilityRAT_Container.size;
+          DU_ALLOC(ueNrCap, sizeof(UE_NR_Capability_t));
+          if(!ueNrCap)
+          {
+             DU_LOG("\nF1AP : Memory allocation failed in extractUeCapability");
+             DU_FREE(ueCapRatContList, sizeof(UE_CapabilityRAT_ContainerListRRC_t));
+             return RFAILED;
+          } 
+          memset(ueNrCap, 0, sizeof(UE_NR_Capability_t));
+          memset(&rval, 0, sizeof(asn_dec_rval_t));
+          rval = aper_decode(0, &asn_DEF_UE_NR_Capability, (void **)&ueNrCap,
+                 ueCapRatContList->list.array[idx]->ue_CapabilityRAT_Container.buf, recvBufLen, 0, 0);
+          if(rval.code == RC_FAIL || rval.code == RC_WMORE)
+          {
+             DU_LOG("\nF1AP : ASN decode failed at decodeCellGrpCfg()");
+             return NULLP;
+          }
+          xer_fprint(stdout, &asn_DEF_UE_NR_Capability, ueNrCap);
+
+          /* Free UE Capability RAT Conatiner List */
+          DU_FREE(ueCapRatContList, sizeof(UE_CapabilityRAT_ContainerListRRC_t));
+          return ueNrCap;
+      }
+   }
+
+   /* Free UE Capability RAT Conatiner List */
+   DU_FREE(ueCapRatContList, sizeof(UE_CapabilityRAT_ContainerListRRC_t));
+   return NULL;
+}
+
+/*******************************************************************
+ *
  * @brief Process UE context setup request from CU
  *
  * @details
@@ -7313,6 +7446,12 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
 	    break;
          case ProtocolIE_ID_id_CUtoDURRCInformation:
 	    {
+               if(ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.CUtoDURRCInformation.uE_CapabilityRAT_ContainerList)
+               {
+                  duUeCb->f1UeDb->duUeCfg.ueNrCapability = \
+                     extractUeCapability(ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.CUtoDURRCInformation.\
+                        uE_CapabilityRAT_ContainerList, duUeCb);
+               }
 	       if(ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.CUtoDURRCInformation.iE_Extensions)
 	       {
                   duUeCb->f1UeDb->duUeCfg.cellGrpCfg = extractCellGrpInfo(ueSetReq->protocolIEs.list.array[ieIdx]->\
