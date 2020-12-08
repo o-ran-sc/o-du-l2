@@ -121,6 +121,7 @@ uint8_t schBroadcastAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc,
       memcpy(&dlBrdcstAlloc->sib1Alloc.bwp, &cell->cellCfg.sib1SchCfg.bwp, sizeof(BwpCfg)); 
       memcpy(&dlBrdcstAlloc->sib1Alloc.sib1PdcchCfg, &cell->cellCfg.sib1SchCfg.sib1PdcchCfg, sizeof(PdcchCfg)); 
       memcpy(&dlBrdcstAlloc->sib1Alloc.sib1PdschCfg, &cell->cellCfg.sib1SchCfg.sib1PdschCfg, sizeof(PdschCfg)); 
+      dlBrdcstAlloc->sib1Alloc.sib1PdcchCfg.dci.pdschCfg = &dlBrdcstAlloc->sib1Alloc.sib1PdschCfg;
    }
    return ROK;
 }
@@ -455,6 +456,7 @@ uint8_t schDlRsrcAllocMsg4(DlMsgAlloc *msg4Alloc, SchCellCb *cell, uint16_t slot
    pdsch->txPdschPower.powerControlOffsetSS = 0;
 
    pdcch->dci.pdschCfg = pdsch;
+
    return ROK;
 }
 
@@ -495,7 +497,6 @@ uint8_t schDlRsrcAllocDlMsg(DlMsgAlloc *dlMsgAlloc, SchCellCb *cell, uint16_t cr
    uint8_t ueIdx;
    uint16_t tbSize = 0;
    uint8_t numPdschSymbols = 12; /* considering pdsch region from 2 to 13 */
-   uint8_t mcs = 4;  /* MCS fixed to 4 */
    PdcchCfg *pdcch = NULLP;
    PdschCfg *pdsch = NULLP;
    BwpCfg *bwp = NULLP;
@@ -554,9 +555,9 @@ uint8_t schDlRsrcAllocDlMsg(DlMsgAlloc *dlMsgAlloc, SchCellCb *cell, uint16_t cr
    for(cwCount = 0; cwCount < pdsch->numCodewords; cwCount++)
    {
       pdsch->codeword[cwCount].targetCodeRate = 308;
-      pdsch->codeword[cwCount].qamModOrder = 2;
-      pdsch->codeword[cwCount].mcsIndex = 4; /* mcs configured to 4 */
-      pdsch->codeword[cwCount].mcsTable = 0; /* notqam256 */
+      pdsch->codeword[cwCount].qamModOrder = ueCb.ueCfg.dlModInfo.modOrder;
+      pdsch->codeword[cwCount].mcsIndex = ueCb.ueCfg.dlModInfo.mcsIndex;
+      pdsch->codeword[cwCount].mcsTable = ueCb.ueCfg.dlModInfo.mcsTable;
       pdsch->codeword[cwCount].rvIndex = 0;
       tbSize = schCalcTbSize(accumalatedSize);
       pdsch->codeword[cwCount].tbSize = tbSize;
@@ -576,7 +577,7 @@ uint8_t schDlRsrcAllocDlMsg(DlMsgAlloc *dlMsgAlloc, SchCellCb *cell, uint16_t cr
    pdsch->dmrs.dmrsAddPos       = pdschCfg.dmrsDlCfgForPdschMapTypeA.addPos;
    pdsch->pdschFreqAlloc.resourceAllocType = 1; /* RAT type-1 RIV format */
    pdsch->pdschFreqAlloc.freqAlloc.startPrb = 1;
-   pdsch->pdschFreqAlloc.freqAlloc.numPrb = schCalcNumPrb(tbSize,mcs,numPdschSymbols);
+   pdsch->pdschFreqAlloc.freqAlloc.numPrb = schCalcNumPrb(tbSize, ueCb.ueCfg.dlModInfo.mcsIndex, numPdschSymbols);
    pdsch->pdschFreqAlloc.vrbPrbMapping = 0; /* non-interleaved */
    pdsch->pdschTimeAlloc.timeAlloc.startSymb = pdschCfg.timeDomRsrcAllociList[0].startSymbol;
    pdsch->pdschTimeAlloc.timeAlloc.numSymb = pdschCfg.timeDomRsrcAllociList[0].symbolLength;
