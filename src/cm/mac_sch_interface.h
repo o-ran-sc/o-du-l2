@@ -356,6 +356,13 @@ typedef enum
    FORMAT1_1
 }FormatType;
 
+typedef enum
+{
+   SCH_MCS_TABLE_QAM_64,
+   SCH_MCS_TABLE_QAM_256,
+   SCH_MCS_TABLE_QAM_64_LOW_SE
+}SchMcsTable;
+
 /*structures*/
 typedef struct timeDomainAlloc
 {
@@ -1229,6 +1236,13 @@ typedef struct schAmbrCfg
    uint32_t   dlBr;   /* Dl BitRate */
 }SchAmbrCfg;
 
+typedef struct schModulationInfo
+{
+   uint8_t      modOrder;
+   uint8_t      mcsIndex;
+   SchMcsTable  mcsTable;
+}SchModulationInfo;
+
 /* UE configuration */
 typedef struct schUeCfg
 {
@@ -1238,6 +1252,7 @@ typedef struct schUeCfg
    SchPhyCellGrpCfg   phyCellGrpCfg;
    SchSpCellCfg       spCellCfg;
    SchAmbrCfg         *ambrCfg;
+   SchModulationInfo  dlModInfo;
    uint8_t            numLcs;
    SchLcCfg           schLcCfg[MAX_NUM_LC];
 }SchUeCfg;

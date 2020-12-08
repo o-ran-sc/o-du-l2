@@ -746,6 +746,32 @@ void fillDefaultMacCellGrpInfo(MacCellGrpCfg *cellGrp)
    }
 }
 
+/*******************************************************************
+ *
+ * @brief 
+ *
+ * @details
+ *
+ *    Function : 
+ *
+ *    Functionality:
+ 
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void fillDefaultDlModulation(ModulationInfo *dlMod)
+{
+   if(dlMod)
+   {
+      dlMod->modOrder = MOD_ORDER_QPSK;
+      dlMod->mcsIndex = SIB1_MCS;
+      dlMod->mcsTable = MCS_TABLE_QAM64;
+   }
+}
+
 /******************************************************************
  *
  * @brief Function to fill Mac Lc Cfg for SRB1
@@ -1002,6 +1028,7 @@ uint8_t fillMacUeCfg(uint16_t cellId, uint8_t ueIdx, uint16_t crnti, \
       fillDefaultSpCellGrpInfo(&macUeCfg->spCellCfg);
       macUeCfg->ambrCfg = NULLP;
       fillMacSrb1LcCfg(&macUeCfg->lcCfgList[0]);
+      fillDefaultDlModulation(&macUeCfg->dlModInfo);
       macUeCfg->numLcs++;
    }
    else
@@ -1027,6 +1054,8 @@ uint8_t fillMacUeCfg(uint16_t cellId, uint8_t ueIdx, uint16_t crnti, \
 	       NULL, &macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg);
          }
 	 ret = fillAmbr(&macUeCfg->ambrCfg, ueCfgDb->ambrCfg);
+         
+         fillModulation(macUeCfg, ueCfgDb->ueNrCapability);
       }
 
       /* Filling LC Context */
