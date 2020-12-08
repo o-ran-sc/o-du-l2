@@ -384,7 +384,6 @@ uint8_t schFillPuschAlloc(SchUeCb *ueCb, uint16_t pdcchSlot, uint32_t dataVol, S
   uint16_t puschSlot      = 0;
   uint16_t startRb        = 0;
   uint8_t  numRb          = 0;
-  uint8_t  mcs            = 4;
   uint8_t  numPdschSymbols= 14;
   uint16_t tbSize         = 0;
   uint8_t  buffer         = 5;
@@ -399,7 +398,7 @@ uint8_t schFillPuschAlloc(SchUeCb *ueCb, uint16_t pdcchSlot, uint32_t dataVol, S
 
   startRb = cellCb->schUlSlotInfo[puschSlot]->puschCurrentPrb;
   tbSize  = schCalcTbSize(dataVol + buffer); /*  2 bytes header + some buffer */
-  numRb   = schCalcNumPrb(tbSize, mcs, numPdschSymbols);
+  numRb   = schCalcNumPrb(tbSize, ueCb->ueCfg.ulModInfo.mcsIndex, numPdschSymbols);
   /* increment PUSCH PRB */
 
   cellCb->schUlSlotInfo[puschSlot]->puschCurrentPrb += numRb;
@@ -411,7 +410,9 @@ uint8_t schFillPuschAlloc(SchUeCb *ueCb, uint16_t pdcchSlot, uint32_t dataVol, S
   puschInfo->fdAlloc.numPrb    = numRb;
   puschInfo->tdAlloc.startSymb = startSymb;
   puschInfo->tdAlloc.numSymb   = symbLen;
-  puschInfo->tbInfo.mcs        = mcs;
+  puschInfo->tbInfo.qamOrder   = ueCb->ueCfg.ulModInfo.modOrder;
+  puschInfo->tbInfo.mcs        = ueCb->ueCfg.ulModInfo.mcsIndex;
+  puschInfo->tbInfo.mcsTable   = ueCb->ueCfg.ulModInfo.mcsTable;
   puschInfo->tbInfo.ndi        = 1; /* new transmission */
   puschInfo->tbInfo.rv         = 0;
   puschInfo->tbInfo.tbSize     = tbSize;

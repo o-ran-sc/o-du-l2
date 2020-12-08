@@ -911,6 +911,16 @@ uint8_t fillSchUeCfg(Pst *pst, SchUeCfg *schUeCfg, MacUeCfg *ueCfg)
    else
       schUeCfg->ambrCfg = NULLP;
 
+   /* Fill DL modulation infor */
+   schUeCfg->dlModInfo.modOrder = ueCfg->dlModInfo.modOrder;
+   schUeCfg->dlModInfo.mcsIndex = ueCfg->dlModInfo.mcsIndex;
+   schUeCfg->dlModInfo.mcsTable = ueCfg->dlModInfo.mcsTable;
+
+   /* Fill UL modulation infor */
+   schUeCfg->ulModInfo.modOrder = ueCfg->ulModInfo.modOrder;
+   schUeCfg->ulModInfo.mcsIndex = ueCfg->ulModInfo.mcsIndex;
+   schUeCfg->ulModInfo.mcsTable = ueCfg->ulModInfo.mcsTable;
+
    /* Fill sch Lc Cfg  to Add/ Mod/ Del */
    ret  = fillSchLcCfgList(schUeCfg, ueCfg);
    if(ret == RFAILED)

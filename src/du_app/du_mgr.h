@@ -100,6 +100,7 @@ typedef struct f1DlRrcMsg
 typedef struct duUeCfg
 {
    void *cellGrpCfg;
+   void *ueNrCapability;
    uint8_t numRlcLcs;        /* Rlc Ue Cfg */
    RlcBearerCfg rlcLcCfg[MAX_NUM_LC];
    uint8_t numMacLcs;        /* Mac Ue Cfg */
