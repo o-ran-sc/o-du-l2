@@ -44,6 +44,7 @@ uint8_t BuildAndSendRrcDeliveryReport(uint32_t gnbCuUeF1apId, uint32_t gnbDuUeF1
 uint8_t sctpSend(Buffer *mBuf, uint8_t itfType);
 uint8_t duProcDlRrcMsg(F1DlRrcMsg *dlRrcMsg);
 uint8_t duProcUeContextSetupRequest(DuUeCb *ueCb);
+void fillModulation(MacUeCfg *ueCfg, void *ueCap);
 
 /**********************************************************************
          End of file
