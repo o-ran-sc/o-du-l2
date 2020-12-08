@@ -3708,6 +3708,21 @@ void fillPrachPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, MacCellCfg *macCellCfg, Ma
    }
 }
 
+/*******************************************************************
+ *
+ * @brief Filling PUSCH PDU in UL TTI Request
+ *
+ * @details
+ *
+ *    Function : fillPuschPdu
+ *
+ *    Functionality: Filling PUSCH PDU in UL TTI Request
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
 void fillPuschPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, MacCellCfg *macCellCfg, MacUlSlot *currUlSlot)
 {
    if(ulTtiReqPdu != NULLP)
@@ -3725,10 +3740,9 @@ void fillPuschPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, MacCellCfg *macCellCfg, Ma
       ulTtiReqPdu->pdu.pusch_pdu.cyclicPrefix = \
          macCellCfg->initialUlBwp.bwp.cyclicPrefix;
       ulTtiReqPdu->pdu.pusch_pdu.targetCodeRate = 308;
-      ulTtiReqPdu->pdu.pusch_pdu.qamModOrder = 2;
-      ulTtiReqPdu->pdu.pusch_pdu.mcsIndex = \
-         currUlSlot->ulInfo.schPuschInfo.tbInfo.mcs;
-      ulTtiReqPdu->pdu.pusch_pdu.mcsTable = 0;
+      ulTtiReqPdu->pdu.pusch_pdu.qamModOrder = currUlSlot->ulInfo.schPuschInfo.tbInfo.qamOrder;
+      ulTtiReqPdu->pdu.pusch_pdu.mcsIndex = currUlSlot->ulInfo.schPuschInfo.tbInfo.mcs;
+      ulTtiReqPdu->pdu.pusch_pdu.mcsTable = currUlSlot->ulInfo.schPuschInfo.tbInfo.mcsTable;
       ulTtiReqPdu->pdu.pusch_pdu.transformPrecoding = 1;
       ulTtiReqPdu->pdu.pusch_pdu.dataScramblingId = currUlSlot->ulInfo.cellId;
       ulTtiReqPdu->pdu.pusch_pdu.nrOfLayers = 1;
@@ -3773,6 +3787,21 @@ void fillPuschPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, MacCellCfg *macCellCfg, Ma
    }
 }
 
+/*******************************************************************
+ *
+ * @brief Fill PUCCH PDU in Ul TTI Request
+ *
+ * @details
+ *
+ *    Function : fillPucchPdu
+ *
+ *    Functionality: Fill PUCCH PDU in Ul TTI Request
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
 void fillPucchPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, MacCellCfg *macCellCfg,\
       MacUlSlot *currUlSlot)
 {
@@ -4027,7 +4056,7 @@ void fillUlDciPdu(fapi_dl_dci_t *ulDciPtr, DciInfo *schDciInfo)
          harqProcessNum   = schDciInfo->format.format0_0.harqProcId; 
          puschTpc         = schDciInfo->format.format0_0.tpcCmd;
          ul_SlInd         = schDciInfo->format.format0_0.sUlCfgd;
-
+     
          /* Reversing bits in each DCI field */
          dciFormatId      = reverseBits(dciFormatId, dciFormatIdSize);
          freqDomResAssign = reverseBits(freqDomResAssign, freqDomResAssignSize);

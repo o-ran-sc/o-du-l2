@@ -746,6 +746,32 @@ void fillDefaultMacCellGrpInfo(MacCellGrpCfg *cellGrp)
    }
 }
 
+/*******************************************************************
+ *
+ * @brief Fills default modulation info for a UE
+ *
+ * @details
+ *
+ *    Function : fillDefaultModulation
+ *
+ *    Functionality: Fills default modulation info for a UE
+ *
+ * @params[in] Pointer to MAC UE configuration
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void fillDefaultModulation(MacUeCfg *ueCfg)
+{
+   ueCfg->dlModInfo.modOrder = MOD_ORDER_QPSK;
+   ueCfg->dlModInfo.mcsIndex = SIB1_MCS;
+   ueCfg->dlModInfo.mcsTable = MCS_TABLE_QAM64; /* Spec 38.214-Table 5.1.3.1-1 */
+
+   ueCfg->ulModInfo.modOrder = MOD_ORDER_QPSK;
+   ueCfg->ulModInfo.mcsIndex = SIB1_MCS;
+   ueCfg->ulModInfo.mcsTable = MCS_TABLE_QAM64; /* Spec 38.214-Table 5.1.3.1-1 */
+}
+
 /******************************************************************
  *
  * @brief Function to fill Mac Lc Cfg for SRB1
@@ -1002,6 +1028,7 @@ uint8_t fillMacUeCfg(uint16_t cellId, uint8_t ueIdx, uint16_t crnti, \
       fillDefaultSpCellGrpInfo(&macUeCfg->spCellCfg);
       macUeCfg->ambrCfg = NULLP;
       fillMacSrb1LcCfg(&macUeCfg->lcCfgList[0]);
+      fillDefaultModulation(macUeCfg);
       macUeCfg->numLcs++;
    }
    else
@@ -1027,6 +1054,8 @@ uint8_t fillMacUeCfg(uint16_t cellId, uint8_t ueIdx, uint16_t crnti, \
 	       NULL, &macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg);
          }
 	 ret = fillAmbr(&macUeCfg->ambrCfg, ueCfgDb->ambrCfg);
+        
+         fillModulation(macUeCfg, duMacDb, ueCfgDb->ueNrCapability);
       }
 
       /* Filling LC Context */

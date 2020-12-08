@@ -43,12 +43,15 @@
 #define PLMN_MNC1 8
 #define PLMN_MNC2 0
 #define PLMN_SIZE 3
-#define NR_DL_ARFCN 2118460
-#define NR_UL_ARFCN 1718460
+
+/* Spec 30.104 Table 5.4.2.3-1:Applicable NR-ARFCN per operating band in FR1 */
+#define NR_DL_ARFCN 428000
+#define NR_UL_ARFCN 390000
 #define SUL_ARFCN 100
-#define NR_FREQ_BAND 257
-#define NR_FREQ_BAND_IND 78
+#define NR_FREQ_BAND 1
+#define NR_FREQ_BAND_IND 1
 #define SUL_BAND 2
+
 #define TIME_CFG 0
 #define CARRIER_IDX 1
 #define NUM_TX_ANT 2
@@ -258,6 +261,14 @@
 #define RB_ID 1
 #define LC_ID 1
 #endif
+
+/* MACRO definitions for modulcation order */
+#define MOD_ORDER_QPSK  2
+#define MOD_ORDER_QAM16 4
+#define MOD_ORDER_QAM64 6
+#define MOD_ORDER_QAM256 8
+#define PDSCH_MCS_INDEX 20  /* For 64QAM, valid mcs index: 17-28 in 38.214  - Table 5.1.3.1-1*/
+#define PUSCH_MCS_INDEX 10  /* For 16QAM, valid mcs index: 10-16 in 38.214  - Table 5.1.3.1-1*/
 
 typedef enum
 {

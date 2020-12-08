@@ -165,7 +165,9 @@ uint8_t schAllocMsg3Pusch(Inst schInst, uint16_t slot, uint16_t crnti, \
    schUlSlotInfo->schPuschInfo->fdAlloc.numPrb    = numRb;
    schUlSlotInfo->schPuschInfo->tdAlloc.startSymb = startSymb;
    schUlSlotInfo->schPuschInfo->tdAlloc.numSymb   = symbLen;
-   schUlSlotInfo->schPuschInfo->tbInfo.mcs	       = mcs;
+   schUlSlotInfo->schPuschInfo->tbInfo.qamOrder   = 2;  /* QPSK modulation */
+   schUlSlotInfo->schPuschInfo->tbInfo.mcs	  = mcs;
+   schUlSlotInfo->schPuschInfo->tbInfo.mcsTable   = SCH_MCS_TABLE_QAM_64;
    schUlSlotInfo->schPuschInfo->tbInfo.ndi        = 1; /* new transmission */
    schUlSlotInfo->schPuschInfo->tbInfo.rv	  = 0;
    schUlSlotInfo->schPuschInfo->tbInfo.tbSize     = tbSize; /*Considering 2 PRBs */
@@ -175,7 +177,6 @@ uint8_t schAllocMsg3Pusch(Inst schInst, uint16_t slot, uint16_t crnti, \
 
    *msg3StartRb = startRb;
    *msg3NumRb   = numRb;
-
    return ROK;
 }
 

@@ -356,6 +356,13 @@ typedef enum
    FORMAT1_1
 }FormatType;
 
+typedef enum
+{
+   SCH_MCS_TABLE_QAM_64,
+   SCH_MCS_TABLE_QAM_256,
+   SCH_MCS_TABLE_QAM_64_LOW_SE
+}SchMcsTable;
+
 /*structures*/
 typedef struct timeDomainAlloc
 {
@@ -812,10 +819,12 @@ typedef struct dlSchedInfo
 
 typedef struct tbInfo
 {
-   uint8_t  mcs;    /* MCS */
-   uint8_t  ndi;    /* NDI */
-   uint8_t  rv;     /* Redundancy Version */
-   uint16_t tbSize; /* TB Size */
+   uint8_t  qamOrder;  /* Modulation Order */
+   uint8_t  mcs;       /* MCS */
+   SchMcsTable  mcsTable;  /* MCS Table */
+   uint8_t  ndi;       /* NDI */
+   uint8_t  rv;        /* Redundancy Version */
+   uint16_t tbSize;    /* TB Size */
 }TbInfo;
 
 typedef struct schPuschInfo
@@ -1229,6 +1238,13 @@ typedef struct schAmbrCfg
    uint32_t   dlBr;   /* Dl BitRate */
 }SchAmbrCfg;
 
+typedef struct schModulationInfo
+{
+   uint8_t      modOrder;
+   uint8_t      mcsIndex;
+   SchMcsTable  mcsTable;
+}SchModulationInfo;
+
 /* UE configuration */
 typedef struct schUeCfg
 {
@@ -1238,6 +1254,8 @@ typedef struct schUeCfg
    SchPhyCellGrpCfg   phyCellGrpCfg;
    SchSpCellCfg       spCellCfg;
    SchAmbrCfg         *ambrCfg;
+   SchModulationInfo  dlModInfo;
+   SchModulationInfo  ulModInfo;
    uint8_t            numLcs;
    SchLcCfg           schLcCfg[MAX_NUM_LC];
 }SchUeCfg;
