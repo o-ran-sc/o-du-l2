@@ -259,6 +259,13 @@
 #define LC_ID 1
 #endif
 
+/* MACRO definitions for modulcation order */
+#define MOD_ORDER_QPSK  2
+#define MOD_ORDER_QAM16 4
+#define MOD_ORDER_QAM64 6
+#define MOD_ORDER_QAM256 8
+#define PDSCH_MCS_INDEX 20 /* For 64QAM, valid mcs index: 17-28 */
+
 typedef enum
 {
    GNBDU,

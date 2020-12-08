@@ -121,6 +121,7 @@ uint8_t schBroadcastAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc,
       memcpy(&dlBrdcstAlloc->sib1Alloc.bwp, &cell->cellCfg.sib1SchCfg.bwp, sizeof(BwpCfg)); 
       memcpy(&dlBrdcstAlloc->sib1Alloc.sib1PdcchCfg, &cell->cellCfg.sib1SchCfg.sib1PdcchCfg, sizeof(PdcchCfg)); 
       memcpy(&dlBrdcstAlloc->sib1Alloc.sib1PdschCfg, &cell->cellCfg.sib1SchCfg.sib1PdschCfg, sizeof(PdschCfg)); 
+      dlBrdcstAlloc->sib1Alloc.sib1PdcchCfg.dci.pdschCfg = &dlBrdcstAlloc->sib1Alloc.sib1PdschCfg;
    }
    return ROK;
 }
@@ -455,6 +456,7 @@ uint8_t schDlRsrcAllocMsg4(DlMsgAlloc *msg4Alloc, SchCellCb *cell, uint16_t slot
    pdsch->txPdschPower.powerControlOffsetSS = 0;
 
    pdcch->dci.pdschCfg = pdsch;
+
    return ROK;
 }
 
@@ -554,9 +556,9 @@ uint8_t schDlRsrcAllocDlMsg(DlMsgAlloc *dlMsgAlloc, SchCellCb *cell, uint16_t cr
    for(cwCount = 0; cwCount < pdsch->numCodewords; cwCount++)
    {
       pdsch->codeword[cwCount].targetCodeRate = 308;
-      pdsch->codeword[cwCount].qamModOrder = 2;
-      pdsch->codeword[cwCount].mcsIndex = 4; /* mcs configured to 4 */
-      pdsch->codeword[cwCount].mcsTable = 0; /* notqam256 */
+      pdsch->codeword[cwCount].qamModOrder = ueCb.ueCfg.dlModInfo.modOrder;
+      pdsch->codeword[cwCount].mcsIndex = ueCb.ueCfg.dlModInfo.mcsIndex;
+      pdsch->codeword[cwCount].mcsTable = ueCb.ueCfg.dlModInfo.mcsTable; /* notqam256 */
       pdsch->codeword[cwCount].rvIndex = 0;
       tbSize = schCalcTbSize(accumalatedSize);
       pdsch->codeword[cwCount].tbSize = tbSize;
