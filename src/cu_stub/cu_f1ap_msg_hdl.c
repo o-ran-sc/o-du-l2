@@ -27,6 +27,16 @@
 #include<ProtocolIE-Field.h>
 #include "ProtocolExtensionField.h"
 #include "F1AP-PDU.h"
+#include "ModulationOrder.h"
+#include "BandNR.h"
+#include "UE-CapabilityRAT-Container.h"
+#include "UE-CapabilityRAT-ContainerList.h"
+#include "UE-CapabilityRAT-ContainerListRRC.h"
+#include "SupportedBandwidth.h"
+#include "FeatureSetDownlinkPerCC.h"
+#include "FeatureSets.h"
+#include "RF-Parameters.h"
+#include "UE-NR-Capability.h"
 #include "ProtocolExtensionContainer.h"
 #include "CellGroupConfigRrc.h"
 #include "MAC-CellGroupConfig.h"
@@ -5601,6 +5611,257 @@ uint8_t fillCellGrpCfg(CellGroupConfig_t *cellGrp)
    return ROK;
 }
 
+fillUeCapRatCont(OCTET_STRING_t *ueCapRatContBuf)
+{
+   uint8_t             ret = ROK;
+   uint8_t             idx, elementCnt;
+   asn_enc_rval_t      encRetVal;
+   UE_NR_Capability_t  ueNrCap;
+
+   while(true)
+   {
+      ueNrCap.accessStratumRelease = AccessStratumRelease_rel15;
+
+      /* Filling PDCP parameters */
+      ueNrCap.pdcp_Parameters.supportedROHC_Profiles.profile0x0000 = false;
+      ueNrCap.pdcp_Parameters.supportedROHC_Profiles.profile0x0001 = false;
+      ueNrCap.pdcp_Parameters.supportedROHC_Profiles.profile0x0002 = false;
+      ueNrCap.pdcp_Parameters.supportedROHC_Profiles.profile0x0003 = false;
+      ueNrCap.pdcp_Parameters.supportedROHC_Profiles.profile0x0004 = false;
+      ueNrCap.pdcp_Parameters.supportedROHC_Profiles.profile0x0006 = false;
+      ueNrCap.pdcp_Parameters.supportedROHC_Profiles.profile0x0101 = false;
+      ueNrCap.pdcp_Parameters.supportedROHC_Profiles.profile0x0102 = false;
+      ueNrCap.pdcp_Parameters.supportedROHC_Profiles.profile0x0103 = false;
+      ueNrCap.pdcp_Parameters.supportedROHC_Profiles.profile0x0104 = false;
+      ueNrCap.pdcp_Parameters.maxNumberROHC_ContextSessions = PDCP_Parameters__maxNumberROHC_ContextSessions_cs2;
+      ueNrCap.pdcp_Parameters.uplinkOnlyROHC_Profiles = NULLP;
+      ueNrCap.pdcp_Parameters.continueROHC_Context = NULLP;
+      ueNrCap.pdcp_Parameters.outOfOrderDelivery = NULLP;
+      ueNrCap.pdcp_Parameters.shortSN = NULLP;
+      ueNrCap.pdcp_Parameters.pdcp_DuplicationSRB = NULLP;
+      ueNrCap.pdcp_Parameters.pdcp_DuplicationMCG_OrSCG_DRB = NULLP;
+
+      ueNrCap.rlc_Parameters = NULLP;
+      ueNrCap.mac_Parameters = NULLP;
+
+      /* Filling PHY parameters */
+      ueNrCap.phy_Parameters.phy_ParametersCommon = NULLP;
+      ueNrCap.phy_Parameters.phy_ParametersXDD_Diff = NULLP;
+      ueNrCap.phy_Parameters.phy_ParametersFRX_Diff = NULLP;
+      ueNrCap.phy_Parameters.phy_ParametersFR1 = NULLP;
+      ueNrCap.phy_Parameters.phy_ParametersFR2 = NULLP;
+
+      /* Filling RF parameters */
+      elementCnt = 1;
+      ueNrCap.rf_Parameters.supportedBandListNR.list.count = elementCnt;
+      ueNrCap.rf_Parameters.supportedBandListNR.list.size = elementCnt * sizeof(struct BandNR *);
+      CU_ALLOC(ueNrCap.rf_Parameters.supportedBandListNR.list.array, ueNrCap.rf_Parameters.supportedBandListNR.list.size);
+      if(!ueNrCap.rf_Parameters.supportedBandListNR.list.array)
+      {
+         DU_LOG("\nMemory allocation failed in fillUeCapRatCont");
+         ret = RFAILED;
+         break;
+      }
+
+      for(idx = 0; idx < elementCnt; idx++)
+      {
+         CU_ALLOC(ueNrCap.rf_Parameters.supportedBandListNR.list.array[idx], sizeof(struct BandNR));
+         if(!ueNrCap.rf_Parameters.supportedBandListNR.list.array[idx])
+         {
+            ret = RFAILED;
+            break;
+         }
+      }
+      if(ret == RFAILED)
+         break;
+      
+      idx = 0;
+      ueNrCap.rf_Parameters.supportedBandListNR.list.array[idx]->bandNR = 1;
+      ueNrCap.rf_Parameters.supportedBandCombinationList = NULLP;
+      ueNrCap.rf_Parameters.appliedFreqBandListFilter = NULLP;
+
+      ueNrCap.measAndMobParameters = NULLP;
+      ueNrCap.fdd_Add_UE_NR_Capabilities = NULLP;
+      ueNrCap.tdd_Add_UE_NR_Capabilities = NULLP;
+      ueNrCap.fr1_Add_UE_NR_Capabilities = NULLP;
+      ueNrCap.fr2_Add_UE_NR_Capabilities = NULLP;
+
+      CU_ALLOC(ueNrCap.featureSets, sizeof(struct FeatureSets));
+      if(!ueNrCap.featureSets)
+      {
+         DU_LOG("\nMemory allocation failed in fillUeCapRatCont");
+	 ret = RFAILED;
+	 break;
+      }
+  
+      ueNrCap.featureSets->featureSetsDownlink = NULLP;
+      CU_ALLOC(ueNrCap.featureSets->featureSetsDownlinkPerCC, sizeof(struct FeatureSets__featureSetsDownlinkPerCC));
+      if(!ueNrCap.featureSets->featureSetsDownlinkPerCC)
+      {
+         DU_LOG("\nMemory allocation failed in fillUeCapRatCont");
+	 ret = RFAILED;
+	 break;
+      }
+
+      elementCnt = 1;
+      ueNrCap.featureSets->featureSetsDownlinkPerCC->list.count = elementCnt;
+      ueNrCap.featureSets->featureSetsDownlinkPerCC->list.size = elementCnt * sizeof(struct FeatureSetDownlinkPerCC *);
+      CU_ALLOC(ueNrCap.featureSets->featureSetsDownlinkPerCC->list.array, \
+         ueNrCap.featureSets->featureSetsDownlinkPerCC->list.size);
+      if(!ueNrCap.featureSets->featureSetsDownlinkPerCC->list.array)
+      {
+         DU_LOG("\nMemory allocation failed in fillUeCapRatCont");
+	 ret = RFAILED;
+	 break;
+      }
+
+      for(idx = 0; idx < elementCnt; idx++)
+      {
+         CU_ALLOC(ueNrCap.featureSets->featureSetsDownlinkPerCC->list.array[idx], sizeof(struct FeatureSetDownlinkPerCC));
+	 if(!ueNrCap.featureSets->featureSetsDownlinkPerCC->list.array[idx])
+	 {
+	    DU_LOG("\nMemory allocation failed in fillUeCapRatCont");
+            ret = RFAILED;
+	    break;
+	 }
+      }
+      if(ret == RFAILED)
+         break;
+ 
+      idx = 0;
+      ueNrCap.featureSets->featureSetsDownlinkPerCC->list.array[idx]->supportedSubcarrierSpacingDL = \
+         SubcarrierSpacing_kHz15;
+      ueNrCap.featureSets->featureSetsDownlinkPerCC->list.array[idx]->supportedBandwidthDL.present = \
+         SupportedBandwidth_PR_fr1;
+      ueNrCap.featureSets->featureSetsDownlinkPerCC->list.array[idx]->supportedBandwidthDL.choice.fr1 = \
+         SupportedBandwidth__fr1_mhz20;
+      ueNrCap.featureSets->featureSetsDownlinkPerCC->list.array[idx]->channelBW_90mhz = NULLP;
+      ueNrCap.featureSets->featureSetsDownlinkPerCC->list.array[idx]->maxNumberMIMO_LayersPDSCH = NULLP;
+
+      CU_ALLOC(ueNrCap.featureSets->featureSetsDownlinkPerCC->list.array[idx]->supportedModulationOrderDL, \
+         sizeof(ModulationOrder_t))
+      if(!ueNrCap.featureSets->featureSetsDownlinkPerCC->list.array[idx]->supportedModulationOrderDL)
+      {
+         DU_LOG("\nMemory allocation failed in fillUeCapRatCont");
+	 ret = RFAILED;
+	 break;
+      }
+      *(ueNrCap.featureSets->featureSetsDownlinkPerCC->list.array[idx]->supportedModulationOrderDL) = ModulationOrder_qam64;
+
+      ueNrCap.featureSets->featureSetsUplink = NULLP;
+      ueNrCap.featureSets->featureSetsUplinkPerCC = NULLP;
+      ueNrCap.featureSetCombinations = NULLP;
+      ueNrCap.lateNonCriticalExtension = NULLP;
+      ueNrCap.nonCriticalExtension = NULLP;
+
+      /* encode UE Capability RAT Container List into duToCuRrcContainer */
+      xer_fprint(stdout, &asn_DEF_UE_NR_Capability, &ueNrCap);
+      cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_UE_NR_Capability, 0, &ueNrCap, PrepFinalEncBuf, encBuf);
+   
+      /* Encode results */
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG( "\n F1AP : Could not encode UE Capability RAT Container (at %s)\n",\
+            encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
+      }
+      else
+      {
+         DU_LOG("\n F1AP : Created APER encoded buffer for UE Capability RAT Container\n");
+         for(int i=0; i< encBufSize; i++)
+         {
+            printf("%x",encBuf[i]);
+         }
+      }
+
+      ueCapRatContBuf->size = encBufSize;
+      CU_ALLOC(ueCapRatContBuf->buf, ueCapRatContBuf->size);
+      if(!ueCapRatContBuf->buf)
+      {
+         DU_LOG("\nF1AP : Memory allocation failed in fillUeCapabilityContainer");
+         break;
+      }
+      memcpy(ueCapRatContBuf->buf, encBuf, ueCapRatContBuf->size);
+      ret = ROK;
+      break;
+   }
+   return ROK;
+}
+
+fillUeCapRatContList(UE_CapabilityRAT_ContainerList_t *ueCapablityListBuf)
+{
+    uint8_t          ret = RFAILED;
+    uint8_t          idx, elementCnt;
+    asn_enc_rval_t   encRetVal;
+    UE_CapabilityRAT_ContainerListRRC_t  ueCapablityList;
+
+    while(true)
+    {
+       elementCnt = 1;
+       ueCapablityList.list.count = elementCnt;
+       ueCapablityList.list.size = elementCnt * sizeof(UE_CapabilityRAT_Container_t *);
+
+       CU_ALLOC(ueCapablityList.list.array, ueCapablityList.list.size);
+       if(!ueCapablityList.list.array)
+       {
+          DU_LOG("\nMemory allocation failed in fillUeCapRatContList");
+	  ret = RFAILED;
+	  break;
+       }
+
+       for(idx=0; idx<elementCnt; idx++)
+       {
+          CU_ALLOC(ueCapablityList.list.array[idx], sizeof(UE_CapabilityRAT_Container_t));
+          if(ueCapablityList.list.array[idx] == NULLP)
+          {
+	     DU_LOG("\nMemory allocation failed in fillUeCapRatContList");
+             ret = RFAILED;
+	     break;
+          }
+       }
+       idx = 0;
+       ueCapablityList.list.array[idx].rat_Type = RAT_Type_nr;
+       ret = fillUeCapRatCont(&ueCapablityList.list.array[idx]->ue_CapabilityRAT_Container);
+
+       /* encode UE Capability RAT Container List into duToCuRrcContainer */
+       xer_fprint(stdout, &asn_DEF_UE_CapabilityRAT_ContainerListRRC, &ueCapablityList);
+       cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+       encBufSize = 0;
+       encRetVal = aper_encode(&asn_DEF_UE_CapabilityRAT_ContainerListRRC, 0, \
+          &ueCapablityList, PrepFinalEncBuf, encBuf);
+
+       /* Encode results */
+       if(encRetVal.encoded == ENCODE_FAIL)
+       {
+          DU_LOG( "\n F1AP : Could not encode UE Capability RAT Container (at %s)\n",\
+             encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+          break;
+       }
+       else
+       {
+          DU_LOG("\n F1AP : Created APER encoded buffer for UE Capability RAT Container\n");
+          for(int i=0; i< encBufSize; i++)
+          {
+             printf("%x",encBuf[i]);
+          }
+       }
+    
+       ueCapablityListBuf->size = encBufSize;
+       CU_ALLOC(ueCapablityListBuf->buf, ueCapablityListBuf->size);
+       if(!ueCapablityListBuf->buf)
+       {
+          DU_LOG("\nF1AP : Memory allocation failed in fillUeCapabilityContainer");
+          break;
+       }
+       memcpy(ueCapablityListBuf->buf, encBuf, ueCapablityListBuf->size);
+       ret = ROK;
+       break;
+    }
+    return ROK;
+}
+
 /*******************************************************************
  *
  * @brief Fills CuToDuContainer 
@@ -5624,10 +5885,18 @@ uint8_t fillCuToDuContainer(CUtoDURRCInformation_t *rrcMsg)
    uint8_t ret = ROK;
    uint8_t idx, idx2, rrcBufLen;
 
-   elementCnt = 1;
+   CU_ALLOC(rrcMsg->uE_CapabilityRAT_ContainerList, sizeof(UE_CapabilityRAT_ContainerList_t));
+   if(!rrcMsg->uE_CapabilityRAT_ContainerList)
+   {
+      DU_LOG(" F1AP : Memory allocation for CUtoDURRCInformation_ExtIEs failed");
+      return RFAILED;
+   }
+   ret = fillUeCapRatContList(rrcMsg->uE_CapabilityRAT_ContainerList);
+
    CU_ALLOC(rrcMsg->iE_Extensions, sizeof(ProtocolExtensionContainer_4624P16_t));
    if(rrcMsg->iE_Extensions)
    {
+      elementCnt = 1;
       rrcMsg->iE_Extensions->list.count = elementCnt;
       rrcMsg->iE_Extensions->list.size = elementCnt * sizeof(CUtoDURRCInformation_ExtIEs_t);
 

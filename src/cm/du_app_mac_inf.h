@@ -480,6 +480,13 @@ typedef enum
    UNSPECIFIED_MISC_CAUSE
 }MiscFailCause;
 
+typedef enum
+{
+   MCS_TABLE_QAM64,
+   MCS_TABLE_QAM256,
+   MCS_TABLE_QAM64_LOW_SE
+}McsTable;
+
 typedef struct failureCause
 {
    CauseGrp   type;
@@ -1031,6 +1038,13 @@ typedef struct lcCfg
    DlLcCfg dlLcCfg;
 }LcCfg;
 
+typedef struct modulationInfo
+{
+   uint8_t     modOrder;    /* Modulation order */
+   uint8_t     mcsIndex;    /* MCS Index */
+   McsTable    mcsTable;    /* MCS table */
+}ModulationInfo;
+
 typedef struct macUeCfg
 {
    uint16_t cellId;
@@ -1040,6 +1054,7 @@ typedef struct macUeCfg
    PhyCellGrpCfg phyCellGrpCfg;
    SpCellCfg spCellCfg;
    AmbrCfg   *ambrCfg;
+   ModulationInfo dlModInfo;  
    uint8_t numLcs;
    LcCfg lcCfgList[MAX_NUM_LC];
    UeCfgState macUeCfgState; /* InActive / Completed */
