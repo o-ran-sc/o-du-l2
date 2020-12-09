@@ -24,8 +24,8 @@ Version history
 | **Date**           | **Ver.**           | **Author**         | **Comment**        |
 |                    |                    |                    |                    |
 +--------------------+--------------------+--------------------+--------------------+
-| 2020-12-04         |  1.0               |  Radisys           |  Cherry Release    |
-|                    |                    |                    |                    |
+| 2020-12-04         |  1.0               |  Radisys, HCL      |  Cherry Release    |
+|                    |                    |  Technologies Ltd. |                    |
 +--------------------+--------------------+--------------------+--------------------+
 
 
@@ -94,6 +94,18 @@ Following libraries are required to compile and execute O-DU High:
    - Ubuntu : sudo apt-get install -y libpcap-dev
    - CentOS : sudo yum install -y libpcap-devel
 
+Following libraries are required to compile and execute O1 module:
+ 
+- Netconf:
+   - libssh, libyang, libnetconf2, sysrepo, netopeer2
+
+   Script is provided in the following folder to install these libraries
+   
+   - Ubuntu :
+              cd <O-DU High Directory>/l2/build/o1
+              sudo ./lib_install.sh
+
+
 Cloning code
 --------------
 
@@ -118,10 +130,15 @@ Compilation
    - Clean O-DU High binary
 
        make clean_odu MACHINE=BIT64 MODE=FDD
+       
 
    - Build O-DU High binary
    
        make odu MACHINE=BIT64 MODE=FDD
+       
+       To build with O1 interface enabled:
+
+       make odu MACHINE=BIT64 MODE=FDD O1_ENABLE=YES
 
 - Build CU Stub :
 
@@ -151,6 +168,25 @@ Compilation
    
        make ric_stub NODE=TEST_STUB MACHINE=BIT64 MODE=FDD
 
+- Build O1 :
+
+   - Navigate to Build folder
+   
+       cd <O-DU High Directory>/l2/build/o1
+
+   - Install the Netconf libraries
+       
+       sudo ./install_lib.sh
+
+   - Clean O1 binary
+   
+       make clean_o1 MACHINE=BIT64
+
+   - Build O1 binary
+   
+       make o1 MACHINE=BIT64
+
+
 
 The above generated images can be found at:
 
@@ -159,3 +195,5 @@ The above generated images can be found at:
 - CU Stub   - <O-DU High Directory>/l2/bin/cu_stub
 
 - RIC Stub  - <O-DU High Directory>/l2/bin/ric_stub
+
+- O1        - <O-DU High Directory>/l2/build/o1/bin/o1

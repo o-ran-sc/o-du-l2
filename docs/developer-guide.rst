@@ -26,9 +26,9 @@ O-DU High uses C languages. The coding guidelines followed are:
 
 .. figure:: LicHeader.jpg
   :width: 600
-  :alt: Figure 6 License Header and Footer
+  :alt: Figure 8 License Header and Footer
 
-  Figure 6 : License Header and Footer
+  Figure 8 : License Header and Footer
 
 O-DU High code
 ---------------
@@ -280,9 +280,9 @@ Here,
 
 .. figure:: ModeofCommunication.jpg
    :width: 600
-   :alt: Figure 7 Mode of communication between O-DU High entities
+   :alt: Figure 9 Mode of communication between O-DU High entities
 
-   Figure 7: Mode of communication between O-DU High entities
+   Figure 9: Mode of communication between O-DU High entities
 
 Steps of Communication
 ++++++++++++++++++++++
@@ -344,9 +344,9 @@ Below figure summarized the above steps of intra O-DU High communication
 
 .. figure:: StepsOfCommunication.jpg
    :width: 600
-   :alt: Figure 8 Communication between entities
+   :alt: Figure 10 Communication between entities
 
-   Figure 8: Steps of Communication between O-DU High entities
+   Figure 10: Steps of Communication between O-DU High entities
 
 
 Communication with Intel O-DU Low
@@ -751,4 +751,65 @@ Additional Utility Functions
 	  - dstIdx - index in destination message to starting copying bytes from
 	  - cnt - number of bytes to be copied
 	  - ccnt - number of bytes copied
+
+O1 Module
+----------
+
+Coding Style
+------------
+
+O1 uses GNU C++ language. The coding guidelines followed are same as defined in the O-DU High Coding Style.
+
+Inter O1-ODU Communication 
+--------------------------
+
+TCP APIs invoked from one entity (client or server) is packed into a TCP message and then sent to destination entity through TCP socket.
+Control returns to the caller immediately after the message is posted, before the destination has seen or processed it.
+
+
+Intra O1 Communication 
+----------------------
+
+There are some API provided by the sysrepo. Using those API netconf manager communicates with the sysrepo and netopeer server. 
+
+Steps of Communication
+^^^^^^^^^^^^^^^^^^^^^^
+
+1. Raise the Alarm
+	At Client :
+        Following structure need to be filled by client to send the Alarm data.
+			
+   |   typedef struct
+   |   {
+   |        MsgHeader msgHeader;
+   |        EventType eventType;
+   |        char objectClassObjectInstance[OBJ_INST_SIZE];
+   |        char alarmId[ALRM_ID_SIZE];
+   |        char alarmRaiseTime[DATE_TIME_SIZE];
+   |        char alarmChangeTime[DATE_TIME_SIZE];
+   |        char alarmClearTime[DATE_TIME_SIZE];
+   |        char probableCause[TEXT_SIZE];
+   |        SeverityLevel perceivedSeverity;
+   |        char rootCauseIndicator[TEXT_SIZE];
+   |        char additionalText[TEXT_SIZE];
+   |        char additionalInfo[TEXT_SIZE];
+   |        char specificProblem[TEXT_SIZE];
+   |   }AlarmRecord;
+   |   uint8_t raiseAlarm(AlarmRecord* alrm)
+
+   At Server :
+         Server receives the data and store it and on the netconf manager request servers the same data.
+2. Clear the Alarm
+	At Client :
+			To clear the alarm, fill the alarmId[ALRM_ID_SIZE] in the AlarmRecord structure (as mentoned above) and pass it to the clearAlarm funtion.
+			uint8_t clearAlarm(AlarmRecord\* alrm)
+
+3. Subscribe callback for alarm list 
+	Callback need to be registered by the following subscribe API.
+		void 	oper_get_items_subscribe (const char \*module_name, const char \*path, S_Callback callback, void \*private_data=nullptr, sr_subscr_options_t opts=SUBSCR_DEFAULT)
+
+3. Fill the alarm details 
+	Following is the call back funtion which need to be override and fill the details of the alarm.
+		
+	virtual int 	oper_get_items (S_Session session, const char \*module_name, const char \*path, const char \*request_xpath, uint32_t request_id, libyang::S_Data_Node &parent, void \*private_data)
 
