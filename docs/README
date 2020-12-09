@@ -196,3 +196,41 @@ II. Execution
        c. Run ODU binary
           	./odu
 
+
+G. How to execute the Health Check : get alarm-list
+----------------------------------------------------
+   
+   Steps:
+
+   1.	Start Netconf netopeer client 
+   
+   2. Connect to the server with 
+
+        user: netconf
+        pwd:  netconf
+
+   3. Send a Netconf get request for alarms xpath
+
+   Here are the steps as executed in the terminal 
+
+       netopeer2-cli
+       > connect --login netconf
+       Interactive SSH Authentication
+       Type your password:
+       Password:
+       > get --filter-xpath /o-ran-sc-odu-alarm-v1:odu/alarms
+       DATA
+       <odu xmlns="urn:o-ran:odu:alarm:1.0">
+         <alarms>
+           <alarm>
+             <alarm-id>1009</alarm-id>
+             <alarm-text>cell id  [1] is up</alarm-text>
+             <severity>2</severity>
+             <status>Active</status>
+             <additional-info>cell UP</additional-info>
+           </alarm>
+         </alarms>
+       </odu>
+
+   The XML output is a list of active alarms in the O-DU High system.
+
