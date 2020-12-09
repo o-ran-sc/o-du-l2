@@ -24,7 +24,35 @@ I. Execution - On locally compiling O-DU High Source Code
    b. ifconfig <interface name>:CU_STUB "192.168.130.82"
    c. ifconfig <interface name>:RIC_STUB "192.168.130.80"
 
-2. Execute CU Stub:
+2. Execute O1 (only if O-DU is built with O1 interface enabled):
+
+   a. Navigate to O1 build folder
+
+      - cd <O-DU High Directory>/l2/build/o1
+ 
+   b. Create a new netconf user and install the YANG module
+      
+      Switch to root user and run following commands
+      
+      | adduser --system netconf && \\
+      |    echo "netconf:netconf" | chpasswd
+
+      | mkdir -p /home/netconf/.ssh && \\
+      | ssh-keygen -A && \\
+      | ssh-keygen -t dsa -P '' -f /home/netconf/.ssh/id_dsa && \\
+      |    cat /home/netconf/.ssh/id_dsa.pub > /home/netconf/.ssh/authorized_keys
+
+      sysrepoctl -i ./yang/o-ran-sc-odu-alarm-v1.yang
+
+   c. Navigate to O1 execution folder
+
+      - cd <O-DU High Directory>/l2/build/o1/bin/o1
+
+   d. Run O1 binary
+      
+      - ./o1
+
+3. Execute CU Stub:
 
    a. Navigate to CU execution folder
 
@@ -34,7 +62,7 @@ I. Execution - On locally compiling O-DU High Source Code
 
       - ./cu_stub
 
-3. Execute RIC Stub:
+4. Execute RIC Stub:
 
    a. Navigate to RIC execution folder
 
@@ -44,7 +72,7 @@ I. Execution - On locally compiling O-DU High Source Code
 
       - ./ric_stub
 
-4. Execute O-DU High:
+5. Execute O-DU High:
 
    a. Navigate to ODU execution folder
 
@@ -54,7 +82,7 @@ I. Execution - On locally compiling O-DU High Source Code
 
       - ./odu
 
-PS: CU stub and RIC stub must be run (in no particular sequence) before ODU
+PS: CU stub and RIC stub must be run (in no particular sequence) before ODU. If O-DU High is built with O1 interface enabled, the O1 binary must be run before all other binaries.
 
 II. Execution - Using Docker Images
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -193,10 +221,50 @@ Following diagram shows P5 messages exchanged with O-DU Low in timer mode.
 
 .. figure:: O-DU_High_Low_Flow.jpg
   :width: 600
-  :alt: Figure 1 O-DU High - O-DU Low Message Flow Diagram
+  :alt: Figure 7 O-DU High - O-DU Low Message Flow Diagram
 
-  Figure 5 - O-DU High - O-DU Low Message Flow Diagram
+  Figure 7 - O-DU High - O-DU Low Message Flow Diagram
 
 Note: UL IQ-Sample request and response are needed by Intel O-DU Low in timer mode(testing mode) only. Code changes for
 these are guarded under INTEL_TIMER_MODE flag which can be enabled using compilation option "PHY_MODE=TIMER", as
 mentioned in section B.I.1.d .
+
+
+D. Health Check execution: get alarm-list
+-------------------------------------------
+
+To execute the get alarm-list flow, following steps are required to be executed:
+
+   1.	Start Netconf netopeer client 
+   
+   2. Connect to the server with 
+
+      | user: netconf
+      | pwd:  netconf
+
+   3. Send a Netconf get request for alarms xpath
+
+Here are the steps as executed in the terminal 
+
+     |  netopeer2-cli
+     |  > connect --login netconf
+     |  Interactive SSH Authentication
+     |  Type your password:
+     |  Password:
+     |  > get --filter-xpath /o-ran-sc-odu-alarm-v1\:odu/alarms
+     |  DATA
+     |  <odu xmlns=\"urn\:o-ran\:odu\:alarm\:1.0\">
+     |    <alarms>
+     |      <alarm>
+     |        <alarm-id>1009</alarm-id>
+     |        <alarm-text>cell id  [1] is up</alarm-text>
+     |        <severity>2</severity>
+     |        <status>Active</status>
+     |        <additional-info>cell UP</additional-info>
+     |      </alarm>
+     |    </alarms>
+     |  </odu>
+
+The XML output is a list of active alarms in the O-DU High system.
+
+Note: Integration with SMO/OAM is not yet done so a Netconf CLI client(netopeer2-cli) is used to connect to the Netconf server and send the get request.

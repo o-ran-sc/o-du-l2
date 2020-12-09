@@ -154,3 +154,7 @@ Additional APIs
 
       c. DL RRC Message Response - Informs DU APP if a DL RRC Message was successfuly processed at RLC and sent to MAC.
 
+3. DU APP - O1 Interface
+
+   a. DU sends alarms to O1 for cell up and cell down events using the alarm interface API
+   

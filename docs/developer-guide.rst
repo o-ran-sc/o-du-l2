@@ -26,9 +26,9 @@ O-DU High uses C languages. The coding guidelines followed are:
 
 .. figure:: LicHeader.jpg
   :width: 600
-  :alt: Figure 6 License Header and Footer
+  :alt: Figure 8 License Header and Footer
 
-  Figure 6 : License Header and Footer
+  Figure 8 : License Header and Footer
 
 O-DU High code
 ---------------
@@ -280,9 +280,9 @@ Here,
 
 .. figure:: ModeofCommunication.jpg
    :width: 600
-   :alt: Figure 7 Mode of communication between O-DU High entities
+   :alt: Figure 9 Mode of communication between O-DU High entities
 
-   Figure 7: Mode of communication between O-DU High entities
+   Figure 9: Mode of communication between O-DU High entities
 
 Steps of Communication
 ++++++++++++++++++++++
@@ -344,9 +344,9 @@ Below figure summarized the above steps of intra O-DU High communication
 
 .. figure:: StepsOfCommunication.jpg
    :width: 600
-   :alt: Figure 8 Communication between entities
+   :alt: Figure 10 Communication between entities
 
-   Figure 8: Steps of Communication between O-DU High entities
+   Figure 10: Steps of Communication between O-DU High entities
 
 
 Communication with Intel O-DU Low
@@ -752,3 +752,163 @@ Additional Utility Functions
 	  - cnt - number of bytes to be copied
 	  - ccnt - number of bytes copied
 
+O1 Module
+----------
+
+Coding Style
+^^^^^^^^^^^^
+
+O1 uses GNU C++ language.
+
+ODU - O1 Communication 
+^^^^^^^^^^^^^^^^^^^^^^
+
+O-DU High and O1 module communicate on a TCP socket.
+
+O-DU High sends alarm messages through Alarm Interface APIs.
+
+
+Alarm Structure
+   |   typedef struct
+   |   {
+   |        MsgHeader msgHeader;                           /\* Alarm action raise/clear \*/
+   |        EventType eventType;                           /\* Alarm event type \*/
+   |        char objectClassObjectInstance[OBJ_INST_SIZE]; /\* Name of object that raise/clear an alarm \*/
+   |        char alarmId[ALRM_ID_SIZE];                    /\* Alarm Id \*/
+   |        char alarmRaiseTime[DATE_TIME_SIZE];           /\* Time when alarm is raised \*/
+   |        char alarmChangeTime[DATE_TIME_SIZE];          /\* Time when alarm is updated \*/
+   |        char alarmClearTime[DATE_TIME_SIZE];           /\* Time when alarm is cleared \*/
+   |        char probableCause[TEXT_SIZE];                 /\* Probable cause of alarm \*/
+   |        SeverityLevel perceivedSeverity;               /\* Severity level of alarm \*/
+   |        char rootCauseIndicator[TEXT_SIZE];            /\* Root cause of alarm \*/
+   |        char additionalText[TEXT_SIZE];                /\* Additional text describing alarm \*/
+   |        char additionalInfo[TEXT_SIZE];                /\* Any additional information \*/
+   |        char specificProblem[TEXT_SIZE];               /\* Any specific problem related to alarm \*/
+   |   }AlarmRecord;
+
+
+Alarm APIs 
+
+1. **Raise Alarm**
+   
+   *uint8_t raiseAlarm(AlarmRecord\* alrm)*
+   
+      a. Description
+         
+         - Fill the Alarm structure with alarm information setting the action as RAISE alarm and send it to O1 module over TCP interface.
+
+      b. Input
+
+         - AlarmRecord structure
+
+      c. Returns 0 on success
+
+2. **Clear Alarm**
+   
+   *uint8_t clearAlarm(AlarmRecord\* alrm)*
+
+      a. Description
+         
+         - Fill the Alarm structure with alarm information setting the action as CLEAR alarm and send it to O1 module over TCP interface.
+
+      b. Input
+         
+         - AlarmRecord structure
+
+      c. Returns 0 on success
+
+   
+
+
+O1 - Netconf Communication 
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+O1 communicates with the Netconf server using sysrepo and libyang APIs.
+
+
+1. **Create a sysrepo connection**
+   
+   *sysrepo::S_Connection conn(new sysrepo::Connection())*
+      
+      a. Description
+
+         - Create a connection with sysrepo
+
+
+      b. Input
+       
+         - Void
+
+      c. Return
+       
+         - Connection object
+
+         
+
+2. **Create a sysrepo session**
+   
+   *sysrepo::S_Session sess(new sysrepo::Session(conn))*
+      
+      a. Description
+
+         - Create a session with sysrepo
+
+      b. Input
+
+         - Connection object
+
+      c. Return
+
+         - Session object
+
+3. **Create a sysrepo subscribe object**
+   
+   *sysrepo::S_Subscribe subscrb(new sysrepo::Subscribe(sess))*
+      
+      a. Description
+
+         - Create a sysrepo subscribe object
+
+      b. Input
+        
+         - Session object
+
+      c. Return
+         
+         - Subscribe object
+
+
+4. **Subscribe YANG module**
+	
+   *void 	oper_get_items_subscribe (const char \*module_name, const char \*path, S_Callback callback, void \*private_data=nullptr, sr_subscr_options_t opts=SUBSCR_DEFAULT)*
+      
+      a. Description
+
+         - Subscribe to YANG module xpath and register a callback handling function
+
+      b. Input
+
+         - YANG module name
+         - xpath of alarm module
+         - callback handler function
+
+      c. Return
+
+         - Void
+
+
+5. **Callback function to handle get alarm-list request**
+	
+   *virtual int 	oper_get_items (S_Session session, const char \*module_name, const char \*path, const char \*request_xpath, uint32_t request_id, libyang::S_Data_Node &parent, void \*private_data)*
+      
+      a. Description
+         
+         - Callback function that will fill the alarm list
+
+      b. Input
+
+         - Session object
+         - YANG Module name
+         - xpath of alarm module
+
+      c. Returns 0 on success
