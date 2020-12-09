@@ -26,9 +26,9 @@ O-DU High uses C languages. The coding guidelines followed are:
 
 .. figure:: LicHeader.jpg
   :width: 600
-  :alt: Figure 6 License Header and Footer
+  :alt: Figure 8 License Header and Footer
 
-  Figure 6 : License Header and Footer
+  Figure 8 : License Header and Footer
 
 O-DU High code
 ---------------
@@ -280,9 +280,9 @@ Here,
 
 .. figure:: ModeofCommunication.jpg
    :width: 600
-   :alt: Figure 7 Mode of communication between O-DU High entities
+   :alt: Figure 9 Mode of communication between O-DU High entities
 
-   Figure 7: Mode of communication between O-DU High entities
+   Figure 9: Mode of communication between O-DU High entities
 
 Steps of Communication
 ++++++++++++++++++++++
@@ -344,9 +344,9 @@ Below figure summarized the above steps of intra O-DU High communication
 
 .. figure:: StepsOfCommunication.jpg
    :width: 600
-   :alt: Figure 8 Communication between entities
+   :alt: Figure 10 Communication between entities
 
-   Figure 8: Steps of Communication between O-DU High entities
+   Figure 10: Steps of Communication between O-DU High entities
 
 
 Communication with Intel O-DU Low
@@ -752,3 +752,42 @@ Additional Utility Functions
 	  - cnt - number of bytes to be copied
 	  - ccnt - number of bytes copied
 
+O1 Module
+----------
+
+Coding Style
+^^^^^^^^^^^^
+
+O1 uses GNU C++ language.
+
+ODU - O1 Communication 
+^^^^^^^^^^^^^^^^^^^^^^
+
+O-DU High and O1 module communicate on a TCP socket.
+
+O-DU High sends alarm messages in the following structure using Alarm Interface APIs.
+
+
+Alarm Structure
+   |   typedef struct
+   |   {
+   |        MsgHeader msgHeader;                           /\* Alarm action raise/clear \*/
+   |        EventType eventType;                           /\* Alarm event type \*/
+   |        char objectClassObjectInstance[OBJ_INST_SIZE]; /\* Name of object that raise/clear an alarm \*/
+   |        char alarmId[ALRM_ID_SIZE];                    /\* Alarm Id \*/
+   |        char alarmRaiseTime[DATE_TIME_SIZE];           /\* Time when alarm is raised \*/
+   |        char alarmChangeTime[DATE_TIME_SIZE];          /\* Time when alarm is updated \*/
+   |        char alarmClearTime[DATE_TIME_SIZE];           /\* Time when alarm is cleared \*/
+   |        char probableCause[TEXT_SIZE];                 /\* Probable cause of alarm \*/
+   |        SeverityLevel perceivedSeverity;               /\* Severity level of alarm \*/
+   |        char rootCauseIndicator[TEXT_SIZE];            /\* Root cause of alarm \*/
+   |        char additionalText[TEXT_SIZE];                /\* Additional text describing alarm \*/
+   |        char additionalInfo[TEXT_SIZE];                /\* Any additional information \*/
+   |        char specificProblem[TEXT_SIZE];               /\* Any specific problem related to alarm \*/
+   |   }AlarmRecord;
+
+
+O1 - Netconf Communication 
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+O1 communicates with the Netconf server using sysrepo and libyang APIs

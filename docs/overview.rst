@@ -98,6 +98,30 @@ O-DU Utility and Common Functions
 These modules contain platform specific files and support O-DU High functionality and message exchanges.
 
 
+O1 Module
+^^^^^^^^^^
+
+.. figure:: ODU-O1-Arch.jpg
+  :width: 600
+  :alt: Figure 2 O1 Architecture
+
+  Figure 2 - O1 Architecture 
+
+As shown in figure 2 the O1 module in O-DU High runs a separate process and communicates with ODU-High process over a TCP interface. O1 module uses API calls for interacting with the Netconf server(Netopeer) and datastore(sysrepo) for providing the Netconf interface. 
+
+O1 architecture has following components:
+
+- Netconf Manager: Subscribe to Netconf YANG modules and events. Register callback handler methods.
+
+- Alarm Manager: Stores and manages(add/updated/delete) alarms.
+
+- TCP server: Receives the alarm messages sent from O-DU High over TCP socket.
+
+- TCP Client Alarm Interface : Integrates with O-DU High module and provides an interface for sending the alarm messages to O1 module over TCP socket.
+
+- Netopeer server: Serves the northbound SMO/OAM Netconf requests.
+
+
 O-DU-High Interfaces
 ======================
 
@@ -108,10 +132,10 @@ This section describes the other modules that O-DU High interfaces with, as show
   :width: 600
   :alt: O-DU High Interfaces
 
-  Figure 2 - O-DU High Interfaces
+  Figure 3 - O-DU High Interfaces
 
 
-As shown in Figure 2, O-DU High interfaces with the following modules:
+As shown in Figure 3, O-DU High interfaces with the following modules:
 
 - O-CU: O-DU High communicates with O-CU on the F1AP interface. The control message exchanges are on F1-C while
   data message exchanges are on F1-U interfaces. The below F1AP messages on F1-C are implemented, as per
@@ -204,10 +228,10 @@ This section describes the cell-up procedure within O-DU High.
   :width: 720
   :alt: Cell Up and Broadcast Procedure
 
-  Figure 3 - O-DU High Cell Up and Broadcast Procedure
+  Figure 4 - O-DU High Cell Up and Broadcast Procedure
 
 
-As seen in the Figure 3,
+As seen in the Figure 4,
 - The DU APP module of O-DU High sends F1 Setup Request to O-CU. This message contains a list of cells that the O-DU High has been configured with.
 
 - The O-CU responds with F1 Setup Response. This message contains a list of cells which must be activated.
@@ -283,15 +307,39 @@ The above channels are used to achieve the below messages:
 
   - RRC Reconfiguration Complete
 
-Figure 4 below depicts the above call flow, inclusive of all interfaces:
+Figure 5 below depicts the above call flow, inclusive of all interfaces:
 
 .. figure:: UeAttach.png
   :width: 800
   :alt: O-DU High UE Attach Flow
 
-  Figure 4 - UE Attach Flow
+  Figure 5 - UE Attach Flow
 
 
+O1 Netconf get-alarm list procedure
+-----------------------------------
+
+This section describes the *Health Status Retrieval* scenario of O-DU High health-check. It enables a northbound client(SMO) to retrieve the health of the ODU-High based on the last self-check performed. The alarm-list is provided as the response to the request via O1 Netconf interface.
+
+
+.. figure:: ODU-O1-GetAlarmListFlow.jpg
+  :width: 720
+  :alt: Figure 6 O1 get alarm-list flow  
+
+  Figure 6 - O1 get alarm-list flow
+
+ 
+As seen in the Figure 6,
+
+- On the cell state change from de-active to activate, ODU High process raises a cell up alarm message and sends it over the TCP socket using the TCP client Alarm Interface API.
+
+- On other side a TCP server, running as a thread, in O1 module receives the cell up alarm message and it passes the alarm information to the Alarm Manager.
+
+- Alarm Manager stores the alarm data in a list.
+
+- Whenever SMO/OAM requires the current alarm list, it sends a Netconf get request. The request is received by the Netopeer Server and a callback method, registered with the Netconf Manager, is invoked.
+
+- The callback function fetches the alarm list from Alarm Manager and sends it back to the client (SMO/OAM) via  Netconf interface. 
 
 OSC Testcases Supported
 =========================

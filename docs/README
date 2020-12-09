@@ -63,10 +63,6 @@ D. How to Clean and Build:
          cd l2/build/odu
    b. Building ODU binary
          make odu MACHINE=BIT64 MODE=FDD
-
-         Build with O1 module enabled:
-         make odu MACHINE=BIT64 MODE=FDD O1_ENABLE=YES
-
    c. Cleaning ODU binary
          make clean_odu MACHINE=BIT64 MODE=FDD
 
@@ -89,12 +85,19 @@ D. How to Clean and Build:
 4. Cleaning ODU, CU Stub and RIC Stub:
       make clean_all
 
-5. Building O1 binary:
+5. Building ODU binary with O1 interface enabled:
    a. Build folder
+         cd l2/build/odu
+   b. Building ODU with O1 module enabled:
+         make odu MACHINE=BIT64 MODE=FDD O1_ENABLE=YES
+   c. Cleaning ODU binary
+         make clean_odu MACHINE=BIT64 MODE=FDD
+
+   d. Build folder
          cd l2/build/o1
-   b. Building O1 binary
+   e. Building O1 binary
          make o1 MACHINE=BIT64
-   c. Cleaning O1 binary
+   f. Cleaning O1 binary
          make clean_o1 
 
 
@@ -105,29 +108,29 @@ E. How to execute:
    b. ifconfig <interface name>:CU_STUB "192.168.130.82"
    c. ifconfig <interface name>:RIC_STUB "192.168.130.80"
 
-2. Execute CU Stub:
+2. Execute O1 (only if O-DU is built with O1 interface enabled):
+   a. O1 execution folder:
+      	cd l2/build/o1/bin/o1
+   b. Run O1 binary:
+      	./o1
+
+3. Execute CU Stub:
    a. CU execution folder:
       	cd l2/bin/cu_stub
    b. Run CU Stub binary:
       	./cu_stub
 
-3. Execute RIC Stub:
+4. Execute RIC Stub:
    a. RIC execution folder:
       	cd l2/bin/ric_stub
    b. Run RIC Stub binary:
       	./ric_stub
 
-4. Execute DU:
+5. Execute DU:
    a. DU execution folder:
       	cd l2/bin/odu
    b. Run ODU binary:
       	./odu
-
-5. Execute O1
-   a. O1 execution folder:
-      	cd l2/build/o1/bin/o1
-   b. Run O1 binary:
-      	./o1
 
 PS: CU stub and RIC stub must be run (in no particular sequence) before ODU
     If O1 module is enabled it must be run before ODU
@@ -195,4 +198,42 @@ II. Execution
           	export LD_LIBRARY_PATH=<intel_directory>/phy/wls_lib/lib:$LD_LIBRARY_PATH
        c. Run ODU binary
           	./odu
+
+
+G. How to execute the Health Check : get alarm-list
+----------------------------------------------------
+   
+   Steps:
+
+   1. Start Netconf netopeer client 
+   
+   2. Connect to the server with 
+
+        user: netconf
+        pwd:  netconf
+
+   3. Send a Netconf get request for alarms xpath
+
+   Here are the steps as executed in the terminal 
+
+       netopeer2-cli
+       > connect --login netconf
+       Interactive SSH Authentication
+       Type your password:
+       Password:
+       > get --filter-xpath /o-ran-sc-odu-alarm-v1:odu/alarms
+       DATA
+       <odu xmlns="urn:o-ran:odu:alarm:1.0">
+         <alarms>
+           <alarm>
+             <alarm-id>1009</alarm-id>
+             <alarm-text>cell id  [1] is up</alarm-text>
+             <severity>2</severity>
+             <status>Active</status>
+             <additional-info>cell UP</additional-info>
+           </alarm>
+         </alarms>
+       </odu>
+
+   The XML output is a list of active alarms in the O-DU High system.
 
