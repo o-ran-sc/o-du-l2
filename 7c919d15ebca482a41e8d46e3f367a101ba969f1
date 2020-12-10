@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c10ec9fb_28924622",
+        "filename": "docs/developer-guide.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 761,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-10T14:16:41Z",
+      "side": 1,
+      "message": "Since this is an O-DU High document, the second line can be omitted. It is sufficient to only update coding language",
+      "revId": "7c919d15ebca482a41e8d46e3f367a101ba969f1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e5898973_3b1b3397",
+        "filename": "docs/developer-guide.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 768,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-10T14:16:41Z",
+      "side": 1,
+      "message": "sends.\nfull stop at the end of the line",
+      "revId": "7c919d15ebca482a41e8d46e3f367a101ba969f1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "87fcd917_95f0ff90",
+        "filename": "docs/developer-guide.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 789,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-10T14:16:41Z",
+      "side": 1,
+      "message": "this must be a part of API doc?\nWe could also remove it since all functions within the entire O-DU High system, can not be added!\nThe above added APIs are platform specific.",
+      "revId": "7c919d15ebca482a41e8d46e3f367a101ba969f1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3e8f5c12_10132c44",
+        "filename": "docs/installation-guide.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-10T14:16:41Z",
+      "side": 1,
+      "message": "better to add a separate section for O1",
+      "revId": "7c919d15ebca482a41e8d46e3f367a101ba969f1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
