@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "08deffd5_dfc5559e",
+        "filename": "docs/developer-guide.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 761,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2020-12-10T15:39:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c10ec9fb_28924622",
+      "revId": "7c919d15ebca482a41e8d46e3f367a101ba969f1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e5898973_3b1b3397",
         "filename": "docs/developer-guide.rst",
         "patchSetId": 2
@@ -33,6 +51,24 @@
       "revId": "7c919d15ebca482a41e8d46e3f367a101ba969f1",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6ec6a242_9696941c",
+        "filename": "docs/developer-guide.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 768,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2020-12-10T15:39:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e5898973_3b1b3397",
+      "revId": "7c919d15ebca482a41e8d46e3f367a101ba969f1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "c76e9547_02f4fc64",
+        "filename": "docs/developer-guide.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 789,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2020-12-10T15:39:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "87fcd917_95f0ff90",
+      "revId": "7c919d15ebca482a41e8d46e3f367a101ba969f1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3e8f5c12_10132c44",
         "filename": "docs/installation-guide.rst",
         "patchSetId": 2
@@ -67,6 +121,24 @@
       "revId": "7c919d15ebca482a41e8d46e3f367a101ba969f1",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "88eac53f_1243b100",
+        "filename": "docs/installation-guide.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2020-12-10T15:39:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3e8f5c12_10132c44",
+      "revId": "7c919d15ebca482a41e8d46e3f367a101ba969f1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
