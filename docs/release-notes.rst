@@ -316,7 +316,7 @@ System Limitations
 
 - System runs on preconfigured values due to absence of CM support on O1 interface.
 
-- O-DU High has not been integrated with O-DU Low and O-CU.
+- O-DU High has not been integrated with O-CU.
 
 Known Issues
 ^^^^^^^^^^^^^
