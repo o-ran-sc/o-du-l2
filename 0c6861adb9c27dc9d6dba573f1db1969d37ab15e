@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "38af0cd9_c2122cf5",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 500,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-11T11:28:01Z",
+      "side": 1,
+      "message": "remove this",
+      "revId": "0c6861adb9c27dc9d6dba573f1db1969d37ab15e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9e35e7c8_f1efb520",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 763,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-11T11:28:01Z",
+      "side": 1,
+      "message": "add description\nMention spec reference",
+      "revId": "0c6861adb9c27dc9d6dba573f1db1969d37ab15e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "998069b2_facb5fa8",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1058,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-11T11:28:01Z",
+      "side": 1,
+      "message": "if ue Nr capability is not present, fill default values",
+      "revId": "0c6861adb9c27dc9d6dba573f1db1969d37ab15e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
