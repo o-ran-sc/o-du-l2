@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "756b2d51_a5d74f53",
+        "filename": "docs/developer-guide.rst",
+        "patchSetId": 5
+      },
+      "lineNbr": 790,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2020-12-11T15:57:05Z",
+      "side": 1,
+      "message": "Done. As suggested currently removing O1 related API\u0027s.",
+      "parentUuid": "39177c7f_0bde4352",
+      "revId": "2c49c9f95601cc5bb0c70dac26ff77cf9ef9da85",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fb8f08e0_6b4b1735",
         "filename": "docs/installation-guide.rst",
         "patchSetId": 5
@@ -51,6 +69,24 @@
       "revId": "2c49c9f95601cc5bb0c70dac26ff77cf9ef9da85",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "40652451_b49a830e",
+        "filename": "docs/installation-guide.rst",
+        "patchSetId": 5
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2020-12-11T15:57:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb8f08e0_6b4b1735",
+      "revId": "2c49c9f95601cc5bb0c70dac26ff77cf9ef9da85",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
