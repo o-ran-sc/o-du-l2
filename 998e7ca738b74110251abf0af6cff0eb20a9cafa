@@ -16,6 +16,24 @@
       "revId": "998e7ca738b74110251abf0af6cff0eb20a9cafa",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f92202b6_2610cbde",
+        "filename": "docs/installation-guide.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2020-12-11T11:37:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c4cd9b19_a1e3c6cf",
+      "revId": "998e7ca738b74110251abf0af6cff0eb20a9cafa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
