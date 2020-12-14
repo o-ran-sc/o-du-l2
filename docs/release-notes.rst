@@ -6,7 +6,7 @@ Release-Notes
 **************
 
 
-This document provides the release notes for Bronze Release of O-DU-L2.
+This document provides the release notes for Cherry Release of O-DU-L2.
 
 .. contents::
    :depth: 3

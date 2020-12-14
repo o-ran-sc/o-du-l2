@@ -264,7 +264,6 @@ uint8_t MacSchSlotInd(Pst *pst, SlotIndInfo *slotInd)
 {
    Inst  inst = pst->dstInst-SCH_INST_START;
 
-   /* Now call the TOM (Tfu ownership module) primitive to process further */
    schProcessSlotInd(slotInd, inst);
 
    return ROK;
