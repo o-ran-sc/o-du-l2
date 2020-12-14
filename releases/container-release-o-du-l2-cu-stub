@@ -1,0 +1,11 @@
+---
+
+distribution_type: container
+container_release_tag: 3.0.1
+container_pull_registry: nexus.o-ran-sc.org:10004
+container_push_registry: nexus.o-ran-sc.org:10002
+project: o-du-l2 
+ref: ddcc8cc613851becbb4a0727b7c51db046a3998d
+containers:
+- name: o-du-l2-cu-stub
+version: 3.0.1
