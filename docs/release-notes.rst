@@ -20,8 +20,8 @@ Version history
 | **Date**           | **Ver.**           | **Author**         | **Comment**        |
 |                    |                    |                    |                    |
 +--------------------+--------------------+--------------------+--------------------+
-| 2020-12-04         | 3.0.0              | Radisys            | Cherry Release     |
-|                    |                    |                    |                    |
+| 2020-12-04         | 3.0.0              | Radisys, HCL       | Cherry Release     |
+|                    |                    | Technologies Ltd.  |                    |
 +--------------------+--------------------+--------------------+--------------------+
 | 2020-06-17         | 2.0.0              | Radisys            | Bronze Release     |
 |                    |                    |                    |                    |
@@ -317,6 +317,8 @@ System Limitations
 - System runs on preconfigured values due to absence of CM support on O1 interface.
 
 - O-DU High has not been integrated with O-CU.
+
+- O-DU High O1 module has not been integrated with SMO/OAM so a Netconf CLI client is used to demo the get alarm-list flow
 
 Known Issues
 ^^^^^^^^^^^^^
