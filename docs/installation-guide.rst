@@ -117,10 +117,7 @@ Cloning code
 
 - Clone code into <O-DU High Directory> 
 
-  git clone "https://gerrit.o-ran-sc.org/r/o-du/l2" && (cd "l2" && mkdir -p .git/hooks && curl -Lo `git rev-parse
-  --git-dir`/hooks/commit-msg https://gerrit.o-ran-sc.org/r/tools/hooks/commit-msg; chmod +x `git rev-parse
-  --git-dir`/hooks/commit-msg)
-
+  git clone "https://gerrit.o-ran-sc.org/r/o-du/l2"
 
 Compilation
 ------------
