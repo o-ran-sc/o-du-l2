@@ -2521,9 +2521,9 @@ MsgLen cnt,                 /* count */
 Buffer *mBuf
 )
 {
-   SsMsgInfo *minfo;
-   Buffer *tmp;
-   MsgLen numBytes;
+   SsMsgInfo *minfo = NULLP;
+   Buffer *tmp = NULLP;
+   MsgLen numBytes =0;
 #ifdef T2K_MEM_LEAK_DBG
    char* file = __FILE__;
    uint32_t line = __LINE__;
@@ -3370,10 +3370,10 @@ Data *dstBuf,               /* destination buffer */
 MsgLen *cCnt
 )
 {
-   Data *cptr;
-   Buffer *tmp;
-   SsMsgInfo *minfo;
-   MsgLen numBytes;
+   Data *cptr = NULLP;
+   Buffer *tmp = NULLP;
+   SsMsgInfo *minfo = NULLP;
+   MsgLen numBytes =0;
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check source message buffer */
@@ -4146,11 +4146,11 @@ Buffer *buf
 )
 #endif
 {
-   register SsDblk *dptr;
+   register SsDblk *dptr = NULLP;
    /* ss021.103 - Addition to check return value of SFree */
-   S16 ret;
+   S16 ret = ROK;
 #if (defined(SS_USE_ZBC_MEMORY) && defined (TENB_DPDK_BUF))
-   Data  *dpdkBuf;
+   Data  *dpdkBuf = NULLP;
 #endif   
  
  
@@ -5369,22 +5369,22 @@ S16 src,                    /* source id */
 S16 dst                     /* destination id */
 )
 {
-   QLen qlen;               /* queue length */
-	MsgLen mlen;             /* message length */
+   QLen qlen =0;               /* queue length */
+   MsgLen mlen =0;             /* message length */
 /*
  * SDeRegTTsk patch
  */
 	/* ss038.103 : 102061 Changed to MsgLen from S16 */
-	MsgLen i;                /* counter */
-	S16 j;                   /* counter */
-   S16 k;                   /* counter */
-   uint8_t data;                 /* data */
+   MsgLen i =0;                /* counter */
+   S16 j =0;                   /* counter */
+   S16 k =0;                   /* counter */
+   uint8_t data =0;                 /* data */
    uint8_t tdata[16] = {0};            /* temporary data */
-   S8 prntBuf[256];         /* print buffer */
-   Buffer *tmp;             /* buffer ptr */
-   Data *cptr;
+   S8 prntBuf[256] ={0};         /* print buffer */
+   Buffer *tmp = NULLP;             /* buffer ptr */
+   Data *cptr =NULLP;
 /* ss012.13: Addition */
-   Data reg;
+   Data reg =0;
 
 
 
@@ -7973,7 +7973,7 @@ S16 SPutSBufDpdk
 Data *ptr                     /* pointer to buffer */
 )
 {
-    S16   ret;
+    S16   ret = ROK;
     uint32_t   flags = 0;
 
     ntl_free(mtGetNtlHdl(), ptr);

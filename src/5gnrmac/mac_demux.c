@@ -46,15 +46,15 @@
  * ****************************************************************/
 uint8_t unpackRxData(uint16_t cellId, SlotIndInfo slotInfo, RxDataIndPdu *rxDataIndPdu)
 {
-   uint8_t   ueIdx;       /* Iterator for UE list */
-   uint8_t   lcId;        /* LC ID of a sub pdu */
-   uint8_t   fBit = 0;    /* Value of F Bit in MAC sub-header */
-   uint8_t   idx = 0;     /* Iterator for received PDU */
-   uint16_t  length;      /* Length of payload in a sub-PDU */ 
-   uint8_t   *pdu;        /* Payload in sub-PDU */
-   uint16_t  pduLen;      /* Length of undecoded PDU */
-   uint8_t   *rxDataPdu;  /* Received PDU in Rx Data Ind */
-   uint16_t  cellIdx;     /* Cell Index */
+   uint8_t   ueIdx = 0;       /* Iterator for UE list */
+   uint8_t   lcId = 0;        /* LC ID of a sub pdu */
+   uint8_t   fBit = 0;        /* Value of F Bit in MAC sub-header */
+   uint8_t   idx = 0;         /* Iterator for received PDU */
+   uint16_t  length = 0;      /* Length of payload in a sub-PDU */ 
+   uint8_t   *pdu = NULLP;    /* Payload in sub-PDU */
+   uint16_t  pduLen = 0;      /* Length of undecoded PDU */
+   uint8_t   *rxDataPdu = NULLP;  /* Received PDU in Rx Data Ind */
+   uint16_t  cellIdx = 0;     /* Cell Index */
    uint8_t   ret =ROK;
 
    GET_CELL_IDX(cellId, cellIdx);

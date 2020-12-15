@@ -142,7 +142,7 @@ void duProcGnbDuCfgUpdAckMsg()
 * ****************************************************************/
 uint8_t duGetCellCb(uint16_t cellId, DuCellCb **cellCb)
 {
-   uint8_t cellIdx;
+   uint8_t cellIdx = 0;
    for(cellIdx=0; cellIdx<duCb.numActvCells; cellIdx++)
    {
       if(duCb.actvCellLst[cellIdx]->cellId == cellId)
