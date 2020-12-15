@@ -286,8 +286,8 @@ void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint8_t *txPdu, uint16_t
 
    /* subheader fields */
    uint8_t RBit = 0;              /* Reserved bit */
-   uint8_t FBit;                  /* Format Indicator */
-   uint8_t lcid;                  /* LCID */
+   uint8_t FBit =0;                  /* Format Indicator */
+   uint8_t lcid =0;                  /* LCID */
    uint16_t lenField = 0;         /* Length field */
 
    /* subheader field size (in bits) */

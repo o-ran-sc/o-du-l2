@@ -343,7 +343,7 @@ uint8_t duProcCfgComplete()
       }
       else
       {
-	 uint8_t idx1; 
+	 uint8_t idx1=0; 
 	 memset(cell, 0, sizeof(DuCellCb));
 	 cell->cellId = ++cellId;
 	 memset(&cell->cellInfo.nrEcgi.plmn, 0, sizeof(Plmn));
@@ -1785,11 +1785,12 @@ uint8_t duHandleUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo)
 uint8_t DuProcRlcUlRrcMsgTrans(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo)
 {
    DuCellCb *cellCb = NULLP;
-   DuUeCb   ueCb;
+   DuUeCb   ueCb ={0};
   
    if(duGetCellCb(ulRrcMsgInfo->cellId, &cellCb) != ROK)
       return RFAILED;
-   
+   if(ulRrcMsgInfo->ueIdx > 0)
+   {
    ueCb = cellCb->ueCb[ulRrcMsgInfo->ueIdx -1];
 
 
@@ -1798,6 +1799,7 @@ uint8_t DuProcRlcUlRrcMsgTrans(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo)
 
    DU_FREE_SHRABL_BUF(pst->region, pst->pool, ulRrcMsgInfo->rrcMsg, ulRrcMsgInfo->msgLen);
    DU_FREE_SHRABL_BUF(pst->region, pst->pool, ulRrcMsgInfo, sizeof(RlcUlRrcMsgInfo));
+   }
    return ROK;
 }
 

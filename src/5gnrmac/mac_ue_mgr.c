@@ -638,7 +638,6 @@ void fillPucchPowerControl(PucchPowerControl *macPwrCtrl, SchPucchPowerControl *
 
 uint8_t fillOtherPucchFormatCfg(uint8_t pucchFormat, PucchFormatCfg *macFormatCfg, SchPucchCfg *schPucchCfg)
 {
-   uint8_t ret = ROK;
 
    switch(pucchFormat)
    {
@@ -702,6 +701,7 @@ uint8_t fillOtherPucchFormatCfg(uint8_t pucchFormat, PucchFormatCfg *macFormatCf
          DU_LOG("\nERROR --> MAC : Invalid Format Cfg %d in fillInitialUlBwpPucchCfg()", pucchFormat);
          return RFAILED;
    }
+   return ROK;
 }
 
 /*******************************************************************
