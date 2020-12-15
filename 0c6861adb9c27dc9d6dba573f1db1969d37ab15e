@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "8ff521fd_1331c2c6",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 500,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-15T12:32:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "38af0cd9_c2122cf5",
+      "revId": "0c6861adb9c27dc9d6dba573f1db1969d37ab15e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "159d54d8_e5cdaa96",
         "filename": "src/5gnrsch/sch_common.c",
         "patchSetId": 4
@@ -33,6 +51,24 @@
       "revId": "0c6861adb9c27dc9d6dba573f1db1969d37ab15e",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2ae7a0b8_7218faec",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 561,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-15T12:32:34Z",
+      "side": 1,
+      "message": "mcsTable value can change when UE is reconfigured. hence removing this comment all together",
+      "parentUuid": "159d54d8_e5cdaa96",
+      "revId": "0c6861adb9c27dc9d6dba573f1db1969d37ab15e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "a72e94e1_79a02189",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 5919,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-15T12:32:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5898092c_1c7597aa",
+      "revId": "0c6861adb9c27dc9d6dba573f1db1969d37ab15e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c87414a5_be38ac31",
         "filename": "src/du_app/du_cfg.h",
         "patchSetId": 4
@@ -67,6 +121,24 @@
       "revId": "0c6861adb9c27dc9d6dba573f1db1969d37ab15e",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ffeb443b_da89a097",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-15T12:32:34Z",
+      "side": 1,
+      "message": "The previously defined ARFCN value belonged to Frequency range 2 whereas we must use frequency range 1. Hence using an ARFCN from FR1.",
+      "parentUuid": "c87414a5_be38ac31",
+      "revId": "0c6861adb9c27dc9d6dba573f1db1969d37ab15e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "fc8c6286_a1b4f2b0",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-15T12:32:34Z",
+      "side": 1,
+      "message": "Same reason as above. Added spec reference",
+      "parentUuid": "a6bbfd48_185879c5",
+      "revId": "0c6861adb9c27dc9d6dba573f1db1969d37ab15e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "89e08960_e37845c9",
         "filename": "src/du_app/du_f1ap_msg_hdl.c",
         "patchSetId": 4
@@ -101,6 +191,24 @@
       "revId": "0c6861adb9c27dc9d6dba573f1db1969d37ab15e",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "56b08762_0a56f36d",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 7451,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-15T12:32:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "89e08960_e37845c9",
+      "revId": "0c6861adb9c27dc9d6dba573f1db1969d37ab15e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "50da4d5b_610a1eed",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 763,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-15T12:32:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9e35e7c8_f1efb520",
+      "revId": "0c6861adb9c27dc9d6dba573f1db1969d37ab15e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "998069b2_facb5fa8",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 4
@@ -135,6 +261,24 @@
       "revId": "0c6861adb9c27dc9d6dba573f1db1969d37ab15e",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "842449fd_eb7af91c",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1058,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-15T12:32:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "998069b2_facb5fa8",
+      "revId": "0c6861adb9c27dc9d6dba573f1db1969d37ab15e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
