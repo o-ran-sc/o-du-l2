@@ -19,6 +19,91 @@
     },
     {
       "key": {
+        "uuid": "159d54d8_e5cdaa96",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 561,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-12-15T05:18:43Z",
+      "side": 1,
+      "message": "instead we can mention which qam table is used here",
+      "revId": "0c6861adb9c27dc9d6dba573f1db1969d37ab15e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5898092c_1c7597aa",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 5919,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-12-15T05:18:43Z",
+      "side": 1,
+      "message": "deallocate the memory in freeCuToDu()",
+      "revId": "0c6861adb9c27dc9d6dba573f1db1969d37ab15e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c87414a5_be38ac31",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-12-15T05:18:43Z",
+      "side": 1,
+      "message": "macro values are changed to support any specific configuration ?",
+      "revId": "0c6861adb9c27dc9d6dba573f1db1969d37ab15e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a6bbfd48_185879c5",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-12-15T05:18:43Z",
+      "side": 1,
+      "message": "why 257 to 1?\nadd spec reference if required",
+      "revId": "0c6861adb9c27dc9d6dba573f1db1969d37ab15e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "89e08960_e37845c9",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 7451,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-12-15T05:18:43Z",
+      "side": 1,
+      "message": "deallocate the memory as well",
+      "revId": "0c6861adb9c27dc9d6dba573f1db1969d37ab15e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9e35e7c8_f1efb520",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 4
