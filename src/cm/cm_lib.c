@@ -355,7 +355,7 @@ S16 cmStrcmp(const uint8_t *s1,const uint8_t *s2)
 {
    /*cm_lib_c_001.main_14 : Fix for TRACE5 feature crash due to missing TRC MACRO*/
 #if (STRCMP_AVAIL)
-   return (strcmp((const S8 *)s1, (const S8 *)s2));
+   return (strcmp((const char *)s1, (const char *)s2));
 #else   /* STRCMP_AVAIL */
   
    while (*s1 && *s2)
@@ -414,7 +414,7 @@ MsgLen       len /* cm_lib_c_001.main_12: Changing from S16 to MsgLen.*/
 {
    /*cm_lib_c_001.main_14 : Fix for TRACE5 feature crash due to missing TRC MACRO*/
 #if (STRNCMP_AVAIL)
-   return (strncmp((const S8 *)s1, (const S8 *)s2, (size_t) len));
+   return (strncmp((const char *)s1, (const char *)s2, (size_t) len));
 #else   /* STRNCMP_AVAIL */
   
    while (*s1 && *s2 && len--)
@@ -456,7 +456,7 @@ MsgLen cmStrlen(const uint8_t *s)
 {
 #if (STRLEN_AVAIL)
    /*cm_lib_c_001.main_15 : Fix for warning due to mixed declation*/
-   return ((MsgLen)strlen((const S8 *)s));
+   return ((MsgLen)strlen((const char *)s));
 #else   /* STRLEN_AVAIL */
    MsgLen i;
   
