@@ -193,9 +193,10 @@ uint8_t MacSchCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
 {
    SchCellCfg schCellCfg;
    Pst        cfgPst;
-   uint8_t    ret;
+   uint8_t    ret =0;
 
    memset(&cfgPst, 0, sizeof(Pst));
+   memset(&schCellCfg, 0, sizeof(SchCellCfg));
    schCellCfg.cellId = macCellCfg->cellId;
    schCellCfg.phyCellId = macCellCfg->phyCellId;
    schCellCfg.bandwidth = macCellCfg->dlCarrCfg.bw;

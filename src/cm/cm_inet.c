@@ -2307,21 +2307,20 @@ uint32_t        context       /* value to be passed back, if error occurs */
    MsgLen  msgLen = 0;              /* message length */    
    MsgLen  bufLen = 0;              /* send buffer length */     
    Data   *sendBuf = NULLP;             /* plain send buffer */
-   uint32_t     flags;
+   uint32_t     flags =0;
    CmInetSockAddr *sockAddrPtr = NULLP;
    /* cm_inet_c_001.main_58 : Fix for klockwork issue */
    MsgLen          sockAddrLen = 0; 
-   struct sockaddr_in  addr;
+   struct sockaddr_in  addr ={0};
 #ifdef IPV6_SUPPORTED
 #ifdef SUN_KSCTP
    S8     *addrString = NULLP;
    uint32_t    addrLen = 0;
    S8     ipv4Format[23] = "::ffff:";
-   CmInetIpAddr ipv4NetAddr;
+   CmInetIpAddr ipv4NetAddr = {0};
 #endif /* SUN_KSCTP */
-   struct sockaddr_in6  addr6;
+   struct sockaddr_in6  addr6 ={0};
 #endif /* IPV6_SUPPORTED */
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* error check on parameters */
    if ((sockFd == NULLP) || CM_INET_INV_SOCK_FD(sockFd)
@@ -4010,48 +4009,48 @@ S16             flags           /* additional control flags, unused */
 )
 {
 #if (defined(WIN32) || defined(CMINETFLATBUF))
-   S32     ret;                 /* temporary return value */
-   MsgLen  msgLen;              /* message length */ 
-   MsgLen  bufLen;              /* send buffer length */
-   Data   *sendBuf;             /* plain send buffer */
+   S32     ret =0;                 /* temporary return value */
+   MsgLen  msgLen =0;              /* message length */ 
+   MsgLen  bufLen =0;              /* send buffer length */
+   Data   *sendBuf =0;             /* plain send buffer */
 #else
-   S32 ret;                     /* temporary return value */
-   S32 retVal;                  /* temporary return value */
-   S16 i;                       /* loop index */
-   CmInetIovec  txArr[CM_INET_MAX_DBUF]; /* scatter vector */
-   S16      numDBufs;           /* number of dBufs in message */
-   struct   msghdr msg;         /* sendmsg() message header */
-   MsgLen   msgLen;             /* message length */ 
-   uint32_t      strtEndDBufNum;     /* starting/ending DBuf number */ 
-   MsgLen   unSentLen;          /* sent len */
+   S32 ret =0;                     /* temporary return value */
+   S32 retVal =0;                  /* temporary return value */
+   S16 i =0;                       /* loop index */
+   CmInetIovec  txArr[CM_INET_MAX_DBUF] = {0}; /* scatter vector */
+   S16      numDBufs =0;           /* number of dBufs in message */
+   struct   msghdr msg ={0};         /* sendmsg() message header */
+   MsgLen   msgLen =0;             /* message length */ 
+   uint32_t      strtEndDBufNum =0;     /* starting/ending DBuf number */ 
+   MsgLen   unSentLen =0;          /* sent len */
 #ifdef IPV6_SUPPORTED 
-   uint32_t    curMsgIdx;            /* indx in cmsgData where to write an ext hdr */
+   uint32_t    curMsgIdx =0;            /* indx in cmsgData where to write an ext hdr */
    /* added for IPv6 ext hdr */
 #if (defined(SS_LINUX) || defined(_XPG4_2))
    /* alloc from stack for IPv6 ancill data */
-   uint8_t     cmsgData[CM_INET_IPV6_ANCIL_DATA];
+   uint8_t     cmsgData[CM_INET_IPV6_ANCIL_DATA]= {0};
 #endif /* SS_LINUX || _XPG4_2 */
 #else
-   uint32_t    curMsgIdx;            /* indx in cmsgData where to write an ext hdr */
+   uint32_t    curMsgIdx =0;            /* indx in cmsgData where to write an ext hdr */
 #if (defined(SS_LINUX) || defined(_XPG4_2))
    /* alloc from stack for IPv4 ancill data */ 
-    uint8_t     cmsgData[CM_INET_IPV4_ANCIL_DATA];
+    uint8_t     cmsgData[CM_INET_IPV4_ANCIL_DATA]={0};
 #endif /* SS_LINUX || _XPG4_2 */
 #endif /* IPV6_SUPPORTED */   
 #endif /* WIN32 | CMINETFLATBUF */  
 
-   struct  sockaddr_in remAddr; /* remote Internet address */   
+   struct  sockaddr_in remAddr ={0}; /* remote Internet address */   
 #ifdef IPV6_SUPPORTED
-   struct   sockaddr_in6  remAddr6; /* remote Internet address */   
+   struct   sockaddr_in6  remAddr6 = {0}; /* remote Internet address */   
 #endif /* IPV8_SUPPORTED */
-   CmInetSockAddr *sockAddrPtr;
+   CmInetSockAddr *sockAddrPtr = NULLP;
    /* cm_inet_c_001.main_58 : Fix for klockwork issue */
-   uint32_t            sizeOfAddr;    
+   uint32_t            sizeOfAddr =0;    
 
    /* cm_inet_c_001.main_50 - Added for partial send handling */
    /* cm_inet_c_001.main_59: Protected under if not defined WIN32*/
 #if (!defined(WIN32)) 
-   MsgLen         ioLen; 
+   MsgLen         ioLen =0; 
 #endif
 
 
@@ -4506,7 +4505,7 @@ S16             flags           /* additional control flags, unused */
    S32 ret;                     /* temporary return value */
    S32 retVal;                  /* temporary return value */
    S16 i;                       /* loop index */
-   CmInetIovec  txArr[CM_INET_MAX_DBUF]; /* scatter vector */
+   CmInetIovec  txArr[CM_INET_MAX_DBUF] ={0}; /* scatter vector */
    S16      numDBufs;           /* number of dBufs in message */
    struct   msghdr msg;         /* sendmsg() message header */
    MsgLen   msgLen;             /* message length */ 
@@ -5700,36 +5699,36 @@ S32              flags          /* additional control flags */
 )
 {
 #if (defined(WIN32) || defined(CMINETFLATBUF))
-   S32           ret;            /* temporary return value */
-   uint32_t           pendLen;        /* pending data length */
-   S32           recvLen;        /* number of received octets by recvmsg() */
-   MsgLen        bufLen;         /* entire number of received octets */
-   MsgLen        curLen;         /* current number of octets in buffer */ 
-   Data         *recvBuf;        /* receive buffer */
-   Data         *bufPtr;         /* current buffer position */   
-   Buffer       *mBuf;           /* received message */ 
+   S32           ret = 0;            /* temporary return value */
+   uint32_t      pendLen =0;        /* pending data length */
+   S32           recvLen =0;        /* number of received octets by recvmsg() */
+   MsgLen        bufLen =0;         /* entire number of received octets */
+   MsgLen        curLen =0;         /* current number of octets in buffer */ 
+   Data         *recvBuf =NULLP;        /* receive buffer */
+   Data         *bufPtr =NULLP;         /* current buffer position */   
+   Buffer       *mBuf = NULLP;           /* received message */ 
    uint32_t           remAddrLen;     /* length of remote address */
    struct sockaddr_in  *remAddr;    /* remote Internet address */       
 #ifdef IPV6_SUPPORTED 
    struct sockaddr_in6  *remAddr6;  /* remote Internet address */       
-   struct sockaddr_in6 remSockAddr; /* to get packet's source IP address */
+   struct sockaddr_in6 remSockAddr ={0}; /* to get packet's source IP address */
 #else
-   CmInetSockAddr  remSockAddr;     /* to get packet's source IP address */
+   CmInetSockAddr  remSockAddr ={0};     /* to get packet's source IP address */
 #endif /* IPV6_SUPPORTED */
 #else
-   S32           ret;            /* temporary return value */
+   S32           ret =0;            /* temporary return value */
   /* cm_inet_c_001.main_58: Fix for g++ compilation warning */
-   uint16_t           i;              /* index */
-   uint32_t           pendLen;        /* pending data length */
-   S32           numBuf;         /* number of allocated dBufs */
-   S32           recvLen;        /* number of received octets by recvmsg() */
-   MsgLen        bufLen;         /* entire number of received octets */
-   struct msghdr msg;            /* message header */ 
+   uint16_t           i =0;              /* index */
+   uint32_t           pendLen =0;        /* pending data length */
+   S32           numBuf =0;         /* number of allocated dBufs */
+   S32           recvLen =0;        /* number of received octets by recvmsg() */
+   MsgLen        bufLen =0;         /* entire number of received octets */
+   struct msghdr msg = {0};            /* message header */ 
    /* cm_inet_c_001.main_54: Fix for Klockworks issue */
    Buffer       *tempMsg = NULLP;        /* temporary message */
-   CmInetIovec  rxArr[CM_INET_MAX_DBUF]; /* dynamic gather array */
+   CmInetIovec  rxArr[CM_INET_MAX_DBUF]= {0};  /* dynamic gather array */
    Buffer      **dBufs = NULLP;   /* dynamic array with allocated dBufs */
-   S16           numDBufs;       /* number of allocated dBufs */
+   S16           numDBufs =0;       /* number of allocated dBufs */
 
    /* cm_inet_c_001.main_55: As remAddrLen is only being used when
     * WIN32 or CMINETFLATBUF is defined, then Removed variable
@@ -5740,7 +5739,7 @@ S32              flags          /* additional control flags */
    struct sockaddr_in6 remSockAddr;/* to get packet's source IP address */
    /* added for IPv6 ext headers support */
 #ifdef IPV6_OPTS_SUPPORTED
-   CmInetIpv6RtHdr0     rtHdr0;          /* type 0 route header */      
+   CmInetIpv6RtHdr0     rtHdr0 ={0};          /* type 0 route header */      
 #endif /* IPV6_OPTS_SUPPORTED */
 
 #ifdef LOCAL_INTF
