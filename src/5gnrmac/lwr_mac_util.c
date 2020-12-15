@@ -74,7 +74,7 @@ LwrMacCellCb * lwrMacGetCellCb
 uint32_t reverseBits(uint32_t num, uint8_t numBits)
 {
    uint32_t reverse_num = 0;
-   int i;
+   uint8_t i=0;
    for (i = 0; i < numBits; i++)
    {
       if((num & (1 << i)))

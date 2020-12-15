@@ -105,8 +105,8 @@ uint8_t procSlotInd(fapi_slot_ind_t *fapiSlotInd)
 {
    /* fill Pst structure to send to lwr_mac to MAC */
    Pst pst;
-   uint16_t ret;
-   SlotIndInfo *slotInd;
+   uint16_t ret = 0;
+   SlotIndInfo *slotInd = {0};
 
    MAC_ALLOC_SHRABL_BUF(slotInd, sizeof(SlotIndInfo));
    if(slotInd)
@@ -488,7 +488,7 @@ void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
 {
 #ifdef INTEL_FAPI
    /* extract the header */
-   fapi_msg_t *header;
+   fapi_msg_t *header = NULLP;
    header = (fapi_msg_t *)msg;
 
    switch(header->msg_id)
@@ -522,7 +522,7 @@ void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
 	       lwrMacCb.cellCb[0].state = PHY_STATE_RUNNING;
 	    }
 
-	    fapi_slot_ind_t *slotInd;
+	    fapi_slot_ind_t *slotInd = NULLP;
 	    slotInd  = (fapi_slot_ind_t *)msg;
 	    procSlotInd(slotInd);
 	    break;

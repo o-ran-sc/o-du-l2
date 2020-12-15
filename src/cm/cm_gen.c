@@ -1619,13 +1619,13 @@ PTR *ptr,  /* duration structure */
 Buffer *mBuf    /* message buffer */
 )
 {
-   uint16_t tmp16;               /* temporary value */
-   uint32_t tmp32;               /* temporary value */
-   Data unpkArray[PTRSIZE]; /* unpacking array */
-   S16 ret;                 /* return code */
+   uint16_t tmp16 =0;               /* temporary value */
+   uint32_t tmp32 =0;               /* temporary value */
+   Data unpkArray[PTRSIZE];        /* unpacking array */
+   S16 ret =ROK;                 /* return code */
 
 #if (defined(ALPHA) || defined(BIT_64))
-   uint64_t tmp64;
+   uint64_t tmp64 =0;
 #endif
    
 

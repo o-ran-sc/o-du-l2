@@ -302,7 +302,7 @@ int sendSlotIndMacToDuApp(SlotIndInfo *slotInd)
  * ****************************************************************/
 uint8_t macProcSlotInd(SlotIndInfo slotInd)
 {
-   uint16_t  cellIdx;
+   uint16_t  cellIdx = 0;
 
    GET_CELL_IDX(slotInd.cellId, cellIdx);
 
