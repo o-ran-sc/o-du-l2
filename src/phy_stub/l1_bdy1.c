@@ -338,12 +338,12 @@ uint16_t l1BuildAndSendCrcInd(uint16_t slot, uint16_t sfn)
 uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_t puschPdu)
 {
    uint8_t idx = 0;
-   fapi_rx_data_indication_t *rxDataInd;
-   fapi_pdu_ind_info_t       *pduInfo;
+   fapi_rx_data_indication_t *rxDataInd =NULLP;
+   fapi_pdu_ind_info_t       *pduInfo =NULLP;
    uint8_t  *pdu = NULLP;
    uint16_t byteIdx = 0;
    uint32_t msgLen = 0;
-   MsgType type;
+   MsgType type = 0;
 
    if(!msg3Sent)
    {
@@ -386,7 +386,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
       return RFAILED;
    }
    memset(rxDataInd, 0, sizeof(fapi_rx_data_indication_t));
-
+   
    msgLen = sizeof(fapi_rx_data_indication_t) - sizeof(fapi_msg_t);
    rxDataInd->sfn = sfn;
    rxDataInd->slot = slot;
@@ -409,7 +409,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
       printf("\nPHY_STUB: Memory allocation failed for Rx Data Pdu");
       return RFAILED;
    }
-
+   memset(pduInfo->pduData, 0, pduInfo->pdu_length);
    /* Filling PDU */
    pdu = (uint8_t *)pduInfo->pduData;
 

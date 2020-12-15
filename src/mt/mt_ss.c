@@ -1727,17 +1727,17 @@ S16 SAllocateStaticMem()
 S16 ssdInitMem(void)
 {
    /* mt018.201 - added local variable */
-   uint8_t              i;
-   uint16_t             j;
-   uint8_t              k;
-   MtRegCfg       *region;
+   uint8_t              i =0;
+   uint16_t             j =0;
+   uint8_t              k =0;
+   MtRegCfg       *region = NULLP;
    Txt             errMsg[256] = {'\0'};
 #ifdef SS_LOCKLESS_MEMORY
-   CmMmDynRegCb   *dynRegCb;
+   CmMmDynRegCb   *dynRegCb =0;
 #ifdef SS_USE_ICC_MEMORY
 #else
-   CmMmGlobRegCb  *globReg;
-   Size            memSize;
+   CmMmGlobRegCb  *globReg = NULLP;
+   Size            memSize =0;
 #endif
 #endif /* SS_LOCKLESS_MEMORY */
    
@@ -1847,7 +1847,7 @@ S16 ssdInitMem(void)
 #endif /* SS_LOCKLESS_MEMORY */
 
 #ifdef T2K_MEM_LEAK_DBG
-    uint8_t reg; 
+    uint8_t reg =0; 
     /* Initailize mem leak tool memorys for debguing */
     regMemLeakInfo.numActvRegions=0;
     for(reg=0; reg <SS_MAX_REGS; reg++)
@@ -1881,9 +1881,9 @@ S16 ssdInitMem(void)
 #endif
       if (mtCMMRegCb[i] == NULLP)
       {
-			sprintf(errMsg,"\n ssdInitMem(): Could not allocated memory \
-								for the Region:%d control block\n",i);
-			SPrint(errMsg);
+	 sprintf(errMsg,"\n ssdInitMem(): Could not allocated memory \
+	 for the Region:%d control block\n",i);
+	 SPrint(errMsg);
          for (k = 0; k < i; k++)
          {
             cmMmRegDeInit(mtCMMRegCb[k]);
@@ -1899,17 +1899,17 @@ S16 ssdInitMem(void)
       mlock(mtCMMRegCfg[i], sizeof(CmMmRegCfg));
 #endif
       if (mtCMMRegCfg[i] == NULLP)
-		{
-		  for (k = 0; k < i; k++)
-		  {
-			 cmMmRegDeInit(mtCMMRegCb[k]);
-			 free(mtCMMRegCfg[k]->vAddr);
-			 free(mtCMMRegCb[k]);
-			 free(mtCMMRegCfg[k]);
-		  }
-		  free(mtCMMRegCb[i]);
-		  return RFAILED;
-		}
+      {
+	 for (k = 0; k < i; k++)
+	 {
+	    cmMmRegDeInit(mtCMMRegCb[k]);
+	    free(mtCMMRegCfg[k]->vAddr);
+	    free(mtCMMRegCb[k]);
+	    free(mtCMMRegCfg[k]);
+	 }
+	 free(mtCMMRegCb[i]);
+	 return RFAILED;
+      }
 
 
       /* allocate space for the region */
@@ -2015,7 +2015,6 @@ S16 ssdInitMem(void)
 #ifdef SS_MEM_LEAK_STS
    cmInitMemLeakMdl();
 #endif /* SS_MEM_LEAK_STS */
-
 
    return ROK;
 }
@@ -4651,7 +4650,7 @@ Void *mtTskHdlr
 Ptr tskPtr                      /* pointer to task entry */
 )
 {
-   S16 ret;
+   S16 ret = ROK;
    SsSTskEntry *sTsk;
 
    /* get out the system task entry from the parameter */
@@ -4712,15 +4711,15 @@ S16 mtTskHdlMsg
 SsSTskEntry *sTsk
 )
 {
-   S16 i;
-   S16 ret;
-   SsIdx idx;
-   SsTTskEntry *tTsk;
-   Buffer *mBuf;
+   S16 i =0;
+   S16 ret =0;
+   SsIdx idx =0;
+   SsTTskEntry *tTsk=NULLP;
+   Buffer *mBuf=NULLP;
 #ifdef SS_PERF
-   Buffer *mBuf2;
+   Buffer *mBuf2=NULLP;
 #endif
-   SsMsgInfo *mInfo;
+   SsMsgInfo *mInfo=NULLP;
    Pst nPst;
 /* mt028.201: modification: multiple procs support related changes */
 #ifndef SS_MULTIPLE_PROCS
@@ -4730,8 +4729,8 @@ SsSTskEntry *sTsk
    /* mt015.301 Initialized the timer activation functions with NULLP */
    PFS16 tmrActvFn = NULLP;
 #else
-   PAIFTMRS16 tmrActvFn;
-   uint16_t procIdIdx;
+   PAIFTMRS16 tmrActvFn =NULLP;
+   uint16_t procIdIdx =0;
 #endif /* SS_MULTIPLE_PROCS */
 	/* mt003.301 Modifications */
 #ifdef SS_THREAD_PROFILE

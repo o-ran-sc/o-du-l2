@@ -2491,7 +2491,7 @@ void FreeULTnlInfo(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
 		  if(ulInfo->list.array[ulidx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf\
 			!=NULLP)
 		  {
-		     CU_ALLOC(ulInfo->list.array[ulidx]->uLUPTNLInformation.choice.gTPTunnel->\
+		     CU_FREE(ulInfo->list.array[ulidx]->uLUPTNLInformation.choice.gTPTunnel->\
 			   gTP_TEID.buf,ulInfo->list.array[ulidx]->uLUPTNLInformation.choice.\
 			   gTPTunnel->gTP_TEID.size);
 		  }
@@ -2695,7 +2695,7 @@ void FreeUeContextSetupReq(F1AP_PDU_t  *f1apMsg)
                      case ProtocolIE_ID_id_RRCContainer:
 		        if(ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf != NULLP)
 			{
-			  CU_ALLOC(ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf, \
+			  CU_FREE(ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf, \
 			  ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.size);
 			}
 			break;
