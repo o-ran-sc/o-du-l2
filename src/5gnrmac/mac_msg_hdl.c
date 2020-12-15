@@ -210,9 +210,9 @@ uint8_t fapiMacRxDataInd(Pst *pst, RxDataInd *rxDataInd)
  * ****************************************************************/
 uint8_t MacProcRlcDlData(Pst* pstInfo, RlcData *dlData)
 {
-   uint8_t   pduIdx;
-   uint8_t   *txPdu;
-   uint16_t  tbSize;
+   uint8_t   pduIdx =0;
+   uint8_t   *txPdu =NULLP;
+   uint16_t  tbSize =0;
    MacDlData macDlData;
    MacDlSlot *currDlSlot = NULLP;
 

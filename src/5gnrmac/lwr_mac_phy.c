@@ -137,8 +137,8 @@ void LwrMacEnqueueWlsBlock()
  * ****************************************************************/
 void addWlsBlockToFree(void *msg, uint32_t msgLen, uint8_t idx)
 {
-   CmLList         *node;
-   WlsBlockToFree  *block;
+   CmLList         *node = NULLP;
+   WlsBlockToFree  *block = NULLP;
    MAC_ALLOC(block, sizeof(WlsBlockToFree));
    if(block)
    {
@@ -272,7 +272,7 @@ uint8_t LwrMacSendToL1(void *msg)
 {
    uint8_t ret = ROK;
 #ifdef INTEL_FAPI
-   uint16_t msgLen;
+   uint16_t msgLen =0;
    p_fapi_api_queue_elem_t currMsg = NULLP;
 
 #ifdef INTEL_WLS_MEM

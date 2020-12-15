@@ -761,8 +761,8 @@ uint8_t sctpSockPoll()
  * ****************************************************************/
 uint8_t sctpSend(Buffer *mBuf, uint8_t itfType)
 {
-   uint8_t          ret;
-   MsgLen           len;          /* number of actually sent octets */
+   uint8_t          ret =0;
+   MsgLen           len =0;          /* number of actually sent octets */
    CmInetMemInfo    memInfo;                        
    
    memInfo.region = DU_APP_MEM_REGION;               

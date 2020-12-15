@@ -696,19 +696,19 @@ uint8_t BuildRrcVer(RRC_Version_t *rrcVer)
 uint8_t SendF1APMsg(Region region, Pool pool)
 {
    Buffer *mBuf;
-
+  
    if(ODU_GET_MSG_BUF(region, pool, &mBuf) == ROK)
    {
       if(ODU_ADD_POST_MSG_MULT((Data *)encBuf, encBufSize, mBuf) == ROK)
       {
-	 ODU_PRINT_MSG(mBuf, 0,0);
+	    ODU_PRINT_MSG(mBuf, 0,0);
 
-	 if(sctpSend(mBuf, F1_INTERFACE) != ROK)
-	 {
-	    DU_LOG("\nF1AP : SCTP Send failed");
-	    ODU_PUT_MSG_BUF(mBuf);
-	    return RFAILED;
-	 }
+	    if(sctpSend(mBuf, F1_INTERFACE) != ROK)
+	    {
+	       DU_LOG("\nF1AP : SCTP Send failed");
+	       ODU_PUT_MSG_BUF(mBuf);
+	       return RFAILED;
+	    }
       }
       else
       {
@@ -2061,11 +2061,11 @@ void FreeULRRCMessageTransfer( F1AP_PDU_t *f1apMsg)
 uint8_t BuildAndSendULRRCMessageTransfer(DuUeCb  ueCb, uint8_t lcId, \
       uint16_t msgLen, uint8_t *rrcMsg)
 {
-   uint8_t   elementCnt;
-   uint8_t   idx1;
-   uint8_t   idx;
-   F1AP_PDU_t      		*f1apMsg = NULL;
-   ULRRCMessageTransfer_t	*ulRRCMsg;
+   uint8_t   elementCnt =0;
+   uint8_t   idx1 =0;
+   uint8_t   idx =0;
+   F1AP_PDU_t      		*f1apMsg = NULLP;
+   ULRRCMessageTransfer_t	*ulRRCMsg = NULLP;
    asn_enc_rval_t  		encRetVal;        /* Encoder return value */
    uint8_t ret =RFAILED;
    while(true)
@@ -2078,7 +2078,6 @@ uint8_t BuildAndSendULRRCMessageTransfer(DuUeCb  ueCb, uint8_t lcId, \
 	 DU_LOG(" F1AP : Memory allocation for F1AP-PDU failed");
 	 break;
       }
-
       f1apMsg->present = F1AP_PDU_PR_initiatingMessage;
       DU_ALLOC(f1apMsg->choice.initiatingMessage,sizeof(InitiatingMessage_t));
       if(f1apMsg->choice.initiatingMessage == NULLP)
@@ -2147,11 +2146,12 @@ uint8_t BuildAndSendULRRCMessageTransfer(DuUeCb  ueCb, uint8_t lcId, \
       ulRRCMsg->protocolIEs.list.array[idx1]->value.choice.RRCContainer.size = msgLen;
       DU_ALLOC(ulRRCMsg->protocolIEs.list.array[idx1]->value.choice.RRCContainer.buf,
 	    ulRRCMsg->protocolIEs.list.array[idx1]->value.choice.RRCContainer.size)
-	 if(!ulRRCMsg->protocolIEs.list.array[idx1]->value.choice.RRCContainer.buf)
-	 {
-	    DU_LOG(" F1AP : Memory allocation for BuildAndSendULRRCMessageTransfer failed");
-	    break;
-	 }
+      if(!ulRRCMsg->protocolIEs.list.array[idx1]->value.choice.RRCContainer.buf)
+      {
+	 DU_LOG(" F1AP : Memory allocation for BuildAndSendULRRCMessageTransfer failed");
+	 break;
+      }
+      memset(ulRRCMsg->protocolIEs.list.array[idx1]->value.choice.RRCContainer.buf, 0, msgLen);
       memcpy(ulRRCMsg->protocolIEs.list.array[idx1]->value.choice.RRCContainer.buf, \
 	    rrcMsg, ulRRCMsg->protocolIEs.list.array[idx1]->value.choice.RRCContainer.size);
 
@@ -5507,6 +5507,431 @@ void  freeMacLcCfg(LcCfg *lcCfg)
    }
    memset(lcCfg, 0, sizeof(LcCfg));
 }
+/*******************************************************************
+*
+* @brief Function to free PdcchSearchSpcToAddModList
+*
+* @details
+*
+*    Function : FreePdcchSearchSpcToAddModList 
+*
+*    Functionality: Function to free PdcchSearchSpcToAddModList
+*
+* @params[in] struct PDCCH_Config__searchSpacesToAddModList *searchSpcList
+* @return void
+*
+* ****************************************************************/
+
+void FreePdcchSearchSpcToAddModList(struct PDCCH_Config__searchSpacesToAddModList *searchSpcList)
+{
+   uint8_t idx1=0;
+   uint8_t idx2=0;
+   struct  SearchSpace *searchSpc=NULLP;
+
+   if(searchSpcList->list.array)
+   {
+      if(searchSpcList->list.array[idx2])
+      {
+	 searchSpc = searchSpcList->list.array[idx2];
+	 if(searchSpc->controlResourceSetId)
+	 {
+	    if(searchSpc->monitoringSlotPeriodicityAndOffset)
+	    {
+	       if(searchSpc->monitoringSymbolsWithinSlot)
+	       {
+		  if(searchSpc->monitoringSymbolsWithinSlot->buf)
+		  {
+		     if(searchSpc->nrofCandidates)
+		     {
+			if(searchSpc->searchSpaceType)
+			{
+			   free(searchSpc->searchSpaceType->choice.ue_Specific);
+			   free(searchSpc->searchSpaceType);
+			}
+			free(searchSpc->nrofCandidates);
+		     }
+		     free(searchSpc->monitoringSymbolsWithinSlot->buf);
+		  }
+		  free(searchSpc->monitoringSymbolsWithinSlot);
+	       }
+	       free(searchSpc->monitoringSlotPeriodicityAndOffset);
+	    }
+	    free(searchSpc->controlResourceSetId);
+	 }
+      }
+      for(idx1 = 0; idx1 < searchSpcList->list.count; idx1++)
+      {
+	 free(searchSpcList->list.array[idx1]);
+      }
+      free(searchSpcList->list.array);
+   }
+}
+/*******************************************************************
+*
+* @brief Function to free BWPDlDedPdcchConfig 
+*
+* @details
+*
+*    Function : FreeBWPDlDedPdcchConfig
+*
+*    Functionality: Function to free BWPDlDedPdcchConfig
+*
+* @params[in] 
+* @return void
+*
+* ****************************************************************/
+
+
+void FreeBWPDlDedPdcchConfig(BWP_DownlinkDedicated_t *dlBwp)
+{
+   uint8_t idx1=0;
+   uint8_t idx2=0;
+   struct PDCCH_Config *pdcchCfg=NULLP;
+   struct ControlResourceSet *controlRSet=NULLP;
+   struct PDCCH_Config__controlResourceSetToAddModList *controlRSetList=NULLP;
+
+   if(dlBwp->pdcch_Config->choice.setup)
+   {
+      pdcchCfg=dlBwp->pdcch_Config->choice.setup;
+      if(pdcchCfg->controlResourceSetToAddModList)
+      {
+	 controlRSetList = pdcchCfg->controlResourceSetToAddModList;
+	 if(controlRSetList->list.array)
+	 {
+	    controlRSet = controlRSetList->list.array[idx2];
+	    if(controlRSet)
+	    {
+	       if(controlRSet->frequencyDomainResources.buf)
+	       {
+		  if(controlRSet->pdcch_DMRS_ScramblingID)
+		  {
+		     if(pdcchCfg->searchSpacesToAddModList)
+		     {
+			FreePdcchSearchSpcToAddModList(pdcchCfg->searchSpacesToAddModList);
+			free(pdcchCfg->searchSpacesToAddModList);
+		     }
+		     free(controlRSet->pdcch_DMRS_ScramblingID);
+		  }
+		  free(controlRSet->frequencyDomainResources.buf);
+	       }
+	    }
+	    for(idx1 = 0; idx1 <controlRSetList->list.count; idx1++)
+	    {
+	       free(controlRSetList->list.array[idx1]);
+	    }
+	    free(controlRSetList->list.array);
+	 }
+	 free(pdcchCfg->controlResourceSetToAddModList);
+      }
+      free(dlBwp->pdcch_Config->choice.setup);
+   }
+}
+/*******************************************************************
+*
+* @brief Function to free PdschTimeDomAllocationList 
+*
+* @details
+*
+*    Function : FreePdschTimeDomAllocationList
+*
+*    Functionality: Function to free PdschTimeDomAllocationList
+*
+* @params[in] struct PDSCH_Config__pdsch_TimeDomainAllocationList *timeDomAllocList 
+* @return void
+*
+* ****************************************************************/
+
+
+void FreePdschTimeDomAllocationList( struct PDSCH_Config__pdsch_TimeDomainAllocationList *timeDomAllocList)
+{
+   uint8_t idx1=0;
+
+   if(timeDomAllocList->choice.setup)
+   {
+      if(timeDomAllocList->choice.setup->list.array)
+      {
+	 for(idx1 = 0; idx1 <timeDomAllocList->choice.setup->list.count ; idx1++)
+	 {
+	    free(timeDomAllocList->choice.setup->list.array[idx1]);
+	 }
+	 free(timeDomAllocList->choice.setup->list.array);
+      }
+      free(timeDomAllocList->choice.setup);
+   }
+}
+
+/*******************************************************************
+*
+* @brief Function to free BWPDlDedPdschConfig 
+*
+* @details
+*
+*    Function : FreeBWPDlDedPdschConfig 
+*
+*    Functionality: Function to free BWPDlDedPdschConfig 
+*
+* @params[in] BWP_DownlinkDedicated_t *dlBwp 
+* @return void
+*
+* ****************************************************************/
+
+
+void FreeBWPDlDedPdschConfig(BWP_DownlinkDedicated_t *dlBwp)
+{
+   struct PDSCH_Config *pdschCfg=NULLP;
+   struct PDSCH_Config__prb_BundlingType *prbBndlType=NULLP;
+   struct PDSCH_Config__pdsch_TimeDomainAllocationList *timeDomAllocList=NULLP;
+   struct PDSCH_Config__dmrs_DownlinkForPDSCH_MappingTypeA *dmrsDlCfg=NULLP;
+
+   if(dlBwp->pdsch_Config->choice.setup)
+   {
+      pdschCfg=dlBwp->pdsch_Config->choice.setup;
+      if(pdschCfg->dmrs_DownlinkForPDSCH_MappingTypeA)
+      {
+	 if(pdschCfg->pdsch_TimeDomainAllocationList)
+	 {
+	    timeDomAllocList=pdschCfg->pdsch_TimeDomainAllocationList;
+	    if(pdschCfg->maxNrofCodeWordsScheduledByDCI)
+	    {
+	       prbBndlType=&pdschCfg->prb_BundlingType;
+	       free(prbBndlType->choice.staticBundling);
+	       free(pdschCfg->maxNrofCodeWordsScheduledByDCI);
+	    }
+	    FreePdschTimeDomAllocationList(timeDomAllocList);
+	    free(pdschCfg->pdsch_TimeDomainAllocationList);
+	 }
+	 dmrsDlCfg=pdschCfg->dmrs_DownlinkForPDSCH_MappingTypeA;
+	 if(dmrsDlCfg->choice.setup)
+	 {
+	    free(dmrsDlCfg->choice.setup->dmrs_AdditionalPosition);
+	    free(dmrsDlCfg->choice.setup);
+	 }
+	 free(pdschCfg->dmrs_DownlinkForPDSCH_MappingTypeA);
+      }
+      free(dlBwp->pdsch_Config->choice.setup);
+   }
+}
+/*******************************************************************
+*
+* @brief Function to free PuschTimeDomAllocListCfg 
+*
+* @details
+*
+*    Function : FreePuschTimeDomAllocListCfg
+*
+*    Functionality: Function to free PuschTimeDomAllocListCfg
+*
+* @params[in] PUSCH_Config_t *puschCfg 
+* @return void
+*
+* ****************************************************************/
+
+
+void FreePuschTimeDomAllocListCfg(PUSCH_Config_t *puschCfg)
+{
+   uint8_t idx1=0;
+   uint8_t idx2=0;
+   struct PUSCH_Config__pusch_TimeDomainAllocationList *timeDomAllocList_t=NULLP;
+
+   if(puschCfg->pusch_TimeDomainAllocationList)
+   {
+      timeDomAllocList_t=puschCfg->pusch_TimeDomainAllocationList;
+      if(timeDomAllocList_t->choice.setup)
+      {
+	 if(timeDomAllocList_t->choice.setup->list.array)
+	 {
+	    free(timeDomAllocList_t->choice.setup->list.array[idx2]->k2);
+	    for(idx1 = 0; idx1<timeDomAllocList_t->choice.setup->list.count; idx1++)
+	    {
+	       free(timeDomAllocList_t->choice.setup->list.array[idx1]);
+	    }
+	    free(timeDomAllocList_t->choice.setup->list.array);
+	 }
+	 free(timeDomAllocList_t->choice.setup);
+      }
+      free(puschCfg->transformPrecoder);
+      free(puschCfg->pusch_TimeDomainAllocationList);
+   }
+
+}
+/*******************************************************************
+*
+* @brief Function to free InitialUlBWPConfig
+*
+* @details
+*
+*    Function : FreeInitialUlBWPConfig 
+*
+*    Functionality: Function to free InitialUlBWPConfig
+*
+* @params[in]  BWP_UplinkDedicated_t *ulBwp
+* @return void
+*
+* ****************************************************************/
+
+
+void FreeInitialUlBWPConfig(BWP_UplinkDedicated_t *ulBwp)
+{
+   uint8_t  rSetIdx, rsrcIdx;
+   SRS_Config_t   *srsCfg = NULLP;
+   PUSCH_Config_t *puschCfg = NULLP;
+   struct PUSCH_Config__dmrs_UplinkForPUSCH_MappingTypeA *dmrsUlCfg = NULLP;
+   struct SRS_Config__srs_ResourceSetToAddModList *rsrcSetList = NULLP;
+   struct SRS_ResourceSet__srs_ResourceIdList *rsrcIdList = NULLP;
+   struct SRS_Config__srs_ResourceToAddModList *resourceList = NULLP;
+
+   if(ulBwp->pusch_Config)
+   {
+      if(ulBwp->pusch_Config->choice.setup)
+      {
+	 puschCfg=ulBwp->pusch_Config->choice.setup;
+	 if(puschCfg->dataScramblingIdentityPUSCH)
+	 {
+	    if(puschCfg->dmrs_UplinkForPUSCH_MappingTypeA)
+	    {
+	       FreePuschTimeDomAllocListCfg(puschCfg);
+	       dmrsUlCfg=puschCfg->dmrs_UplinkForPUSCH_MappingTypeA;
+	       if(dmrsUlCfg->choice.setup)
+	       {
+		  if(dmrsUlCfg->choice.setup->dmrs_AdditionalPosition)
+		  {
+		     if(dmrsUlCfg->choice.setup->transformPrecodingDisabled)
+		     {
+			free(dmrsUlCfg->choice.setup->transformPrecodingDisabled->scramblingID0);
+			free(dmrsUlCfg->choice.setup->transformPrecodingDisabled);
+		     }
+		     free(dmrsUlCfg->choice.setup->dmrs_AdditionalPosition);
+		  }
+		  free(dmrsUlCfg->choice.setup);
+	       }
+	       free(puschCfg->dmrs_UplinkForPUSCH_MappingTypeA);
+	    }
+	    free(puschCfg->dataScramblingIdentityPUSCH);
+	 }
+	 free(ulBwp->pusch_Config->choice.setup);
+      }
+      free(ulBwp->pusch_Config);
+
+      /* Free SRS-Config */
+      if(ulBwp->srs_Config)
+      {
+	 if(ulBwp->srs_Config->choice.setup)
+	 {
+	    srsCfg = ulBwp->srs_Config->choice.setup;
+
+	    /* Free Resource Set to add/mod list */
+	    if(srsCfg->srs_ResourceSetToAddModList)
+	    {
+	       rsrcSetList = srsCfg->srs_ResourceSetToAddModList;
+	       if(rsrcSetList->list.array)
+	       {
+		  rSetIdx = 0;
+
+		  /* Free SRS resource Id list in this SRS resource set */
+		  if(rsrcSetList->list.array[rSetIdx]->srs_ResourceIdList)
+		  {
+		     rsrcIdList =
+			rsrcSetList->list.array[rSetIdx]->srs_ResourceIdList;
+
+		     if(rsrcIdList->list.array)
+		     {
+			for(rsrcIdx = 0; rsrcIdx < rsrcIdList->list.count;
+			      rsrcIdx++)
+			{
+			   free(rsrcIdList->list.array[rsrcIdx]);
+			}
+			free(rsrcIdList->list.array);
+		     }
+		     free(rsrcSetList->list.array[rSetIdx]->srs_ResourceIdList);
+		  }
+
+		  /* Free resource type info for this SRS resource set */
+
+		  free(rsrcSetList->list.array[rSetIdx]->resourceType.choice.aperiodic);
+
+		  /* Free memory for each resource set */
+		  for(rSetIdx = 0; rSetIdx < rsrcSetList->list.count; rSetIdx++)
+		  {
+		     free(rsrcSetList->list.array[rSetIdx]);
+		  }
+		  free(rsrcSetList->list.array);
+	       }
+	       free(srsCfg->srs_ResourceSetToAddModList);
+	    }
+
+	    /* Free resource to add/modd list */
+	    if(srsCfg->srs_ResourceToAddModList)
+	    {
+	       resourceList = srsCfg->srs_ResourceToAddModList;
+	       if(resourceList->list.array)
+	       {
+		  rsrcIdx = 0;
+
+		  free(resourceList->list.array[rsrcIdx]->transmissionComb.choice.n2);
+		  free(resourceList->list.array[rsrcIdx]->resourceType.choice.aperiodic);
+
+		  for(rsrcIdx = 0; rsrcIdx < resourceList->list.count; rsrcIdx++)
+		  {
+		     free(resourceList->list.array[rsrcIdx]);
+		  }
+		  free(resourceList->list.array);
+	       }
+	       free(srsCfg->srs_ResourceToAddModList);
+	    }
+
+	    free(ulBwp->srs_Config->choice.setup);
+	 }
+	 free(ulBwp->srs_Config);
+      }
+   }
+}
+/*******************************************************************
+*
+* @brief Function to free initialUplinkBWPConfig
+*
+* @details
+*
+*    Function : FreeinitialUplinkBWPConfig
+*
+*    Functionality: Function to free initialUplinkBWPConfig
+*
+* @params[in] UplinkConfig_t *ulCfg 
+* @return void
+*
+* ****************************************************************/
+
+
+void FreeinitialUplinkBWPConfig(UplinkConfig_t *ulCfg)
+{
+   BWP_UplinkDedicated_t *ulBwp=NULLP;
+   struct UplinkConfig__pusch_ServingCellConfig *puschCfg=NULLP;
+
+   if(ulCfg->initialUplinkBWP)
+   {
+      ulBwp=ulCfg->initialUplinkBWP;
+      if(ulCfg->firstActiveUplinkBWP_Id)
+      {
+	 if(ulCfg->pusch_ServingCellConfig)
+	 {
+	    puschCfg=ulCfg->pusch_ServingCellConfig;
+	    if(puschCfg->choice.setup)
+	    {
+	       if(puschCfg->choice.setup->ext1)
+	       {
+		  free(puschCfg->choice.setup->ext1->processingType2Enabled);
+		  free(puschCfg->choice.setup->ext1->maxMIMO_Layers);
+		  free(puschCfg->choice.setup->ext1);
+	       }
+	       free(puschCfg->choice.setup);
+	    }
+	    free(ulCfg->pusch_ServingCellConfig);
+	 }
+	 free(ulCfg->firstActiveUplinkBWP_Id);
+      }
+      FreeInitialUlBWPConfig(ulBwp);
+      free(ulCfg->initialUplinkBWP);
+   }
+}
 
 /*******************************************************************
  *
@@ -5525,9 +5950,194 @@ void  freeMacLcCfg(LcCfg *lcCfg)
 void freeDuUeCfg(DuUeCfg *ueCfg)
 {
    uint8_t lcIdx;
-
+   uint8_t idx=0;
+   SpCellConfig_t *spCellCfg=NULLP;
+   ServingCellConfig_t *srvCellCfg=NULLP;
+   BWP_DownlinkDedicated_t *dlBwp=NULLP;
+   MAC_CellGroupConfig_t *macCellGrpCfg=NULLP;
+   PhysicalCellGroupConfig_t *phyCellGrpCfg=NULLP;
+   struct CellGroupConfigRrc__rlc_BearerToAddModList *rlcBearerList=NULLP;
+   struct RLC_Config *rlcConfig=NULLP;
+   struct LogicalChannelConfig *macLcConfig=NULLP;
+   struct SchedulingRequestConfig *schedulingRequestConfig=NULLP;
+   struct SchedulingRequestConfig__schedulingRequestToAddModList *schReqList=NULLP;
+   struct TAG_Config *tagConfig=NULLP;
+   struct TAG_Config__tag_ToAddModList *tagList=NULLP;
+   struct MAC_CellGroupConfig__phr_Config *phrConfig=NULLP;
+   struct ServingCellConfig__pdsch_ServingCellConfig *pdschCfg=NULLP;
+   CellGroupConfigRrc_t *cellGrpCfg = ueCfg->cellGrpCfg;
+   
    if(ueCfg->cellGrpCfg)
    {
+    
+      rlcBearerList = cellGrpCfg->rlc_BearerToAddModList;
+      if(rlcBearerList)
+      {
+	 if(rlcBearerList->list.array)
+	 {
+	    for(idx=0; idx<rlcBearerList->list.count; idx++)
+	    {
+	       if(rlcBearerList->list.array[idx])
+	       {
+		  rlcConfig   = rlcBearerList->list.array[idx]->rlc_Config;
+		  macLcConfig = rlcBearerList->list.array[idx]->mac_LogicalChannelConfig;
+		  if(rlcConfig)
+		  {
+		     if(rlcConfig->choice.am)
+		     {
+			free(rlcConfig->choice.am->ul_AM_RLC.sn_FieldLength);
+			free(rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength);
+			free(rlcConfig->choice.am);
+		     }
+		     free(rlcBearerList->list.array[idx]->rlc_Config);
+		  }
+		  free(rlcBearerList->list.array[idx]->servedRadioBearer);
+		  if(macLcConfig)
+		  {
+		     if(macLcConfig->ul_SpecificParameters)
+		     {
+			free(macLcConfig->ul_SpecificParameters->schedulingRequestID);
+			free(macLcConfig->ul_SpecificParameters->logicalChannelGroup);
+			free(macLcConfig->ul_SpecificParameters);
+		     }
+		     free(rlcBearerList->list.array[idx]->mac_LogicalChannelConfig);
+		  }
+		  free(rlcBearerList->list.array[idx]); 
+	       }
+	    }
+	    free(rlcBearerList->list.array);
+	 }
+	 free(cellGrpCfg->rlc_BearerToAddModList);
+      }
+
+      macCellGrpCfg = cellGrpCfg->mac_CellGroupConfig;
+      if(macCellGrpCfg)
+      {
+	 schedulingRequestConfig = macCellGrpCfg->schedulingRequestConfig;
+	 if(schedulingRequestConfig)
+	 {
+	    schReqList = schedulingRequestConfig->schedulingRequestToAddModList;
+	    if(schReqList)
+	    {
+	       if(schReqList->list.array)
+	       {
+		  for(idx=0;idx<schReqList->list.count; idx++)
+		  {
+		     if(schReqList->list.array[idx])
+		     {
+			free(schReqList->list.array[idx]->sr_ProhibitTimer); 
+			free(schReqList->list.array[idx]);
+		     }
+		  }
+		  free(schReqList->list.array);
+	       }
+	       free(schedulingRequestConfig->schedulingRequestToAddModList);
+	    }
+	    free(macCellGrpCfg->schedulingRequestConfig);
+	 }
+	 if(macCellGrpCfg->bsr_Config)
+	 {
+	    free(macCellGrpCfg->bsr_Config);
+	 }
+	 tagConfig = macCellGrpCfg->tag_Config;
+	 if(tagConfig)
+	 {
+	    tagList = tagConfig->tag_ToAddModList;
+	    if(tagList)
+	    {
+	       if(tagList->list.array)
+	       {
+		  for(idx=0; idx<tagList->list.count; idx++)
+		  {
+		     free(tagList->list.array[idx]);
+		  }
+		  free(tagList->list.array);
+	       }
+	       free(tagConfig->tag_ToAddModList);
+	    }
+	    free(tagConfig); 
+	 }
+
+	 phrConfig = macCellGrpCfg->phr_Config;
+	 if(phrConfig)
+	 {
+	    free(phrConfig->choice.setup); 
+	    free(phrConfig); 
+	 }
+
+	 free(macCellGrpCfg); 
+      }
+
+      phyCellGrpCfg = cellGrpCfg->physicalCellGroupConfig;
+      if(phyCellGrpCfg)
+      {
+	 free(phyCellGrpCfg->p_NR_FR1);
+	 free(phyCellGrpCfg); 
+      }
+
+      spCellCfg = cellGrpCfg->spCellConfig;
+      if(spCellCfg)
+      {
+	 if(spCellCfg->servCellIndex)
+	 {
+	    if(spCellCfg->rlmInSyncOutOfSyncThreshold)
+	    {
+	       if(spCellCfg->spCellConfigDedicated)
+	       {
+		  srvCellCfg = spCellCfg->spCellConfigDedicated;
+		  if(srvCellCfg->initialDownlinkBWP)
+		  {
+		     dlBwp = srvCellCfg->initialDownlinkBWP;
+		     if(srvCellCfg->firstActiveDownlinkBWP_Id)
+		     {
+			if(srvCellCfg->defaultDownlinkBWP_Id)
+			{
+			   if(srvCellCfg->uplinkConfig)
+			   {
+
+			      if(srvCellCfg->pdsch_ServingCellConfig)
+			      {
+				 pdschCfg=
+				    srvCellCfg->pdsch_ServingCellConfig;
+				 if(pdschCfg->choice.setup)
+				 {
+
+				    free(pdschCfg->choice.setup->nrofHARQ_ProcessesForPDSCH);
+				    free(pdschCfg->choice.setup);
+				 }
+
+				 free(srvCellCfg->pdsch_ServingCellConfig);
+			      }
+
+			      FreeinitialUplinkBWPConfig(srvCellCfg->uplinkConfig);
+			      free(srvCellCfg->uplinkConfig);
+			   }
+			   free(srvCellCfg->defaultDownlinkBWP_Id);
+			}
+
+			free(srvCellCfg->firstActiveDownlinkBWP_Id);
+		     }
+		     if(dlBwp->pdcch_Config)
+		     {
+			if(dlBwp->pdsch_Config)
+			{
+			   FreeBWPDlDedPdschConfig(dlBwp);
+			   free(dlBwp->pdsch_Config);
+			}
+			FreeBWPDlDedPdcchConfig(dlBwp);
+			free(dlBwp->pdcch_Config);
+		     }
+		     free(srvCellCfg->initialDownlinkBWP);
+		  }
+
+		  free(spCellCfg->spCellConfigDedicated);
+	       }
+	       free(spCellCfg->rlmInSyncOutOfSyncThreshold);
+	    }
+	    free(spCellCfg->servCellIndex); 
+	 }
+	 free(spCellCfg);
+      }
       DU_FREE(ueCfg->cellGrpCfg, sizeof(CellGroupConfigRrc_t));
       ueCfg->cellGrpCfg = NULLP;
    }
@@ -6959,9 +7569,9 @@ uint8_t procUeReCfgCellInfo(MacUeCfg *macUeCfg, void *cellInfo)
 CellGroupConfigRrc_t *extractCellGrpInfo(ProtocolExtensionContainer_4624P16_t *protocolIeExtn,\
    DuUeCfg *ueCfgDb)
 {
-   uint8_t idx2;
-   uint16_t id;
-   uint16_t recvBufLen;
+   uint8_t idx2 =0;
+   uint16_t id =0;
+   uint16_t recvBufLen =0;
    CellGroupConfigRrc_t *cellGrpCfg = NULLP;
    CUtoDURRCInformation_ExtIEs_t *extIeInfo = NULLP;
    asn_dec_rval_t rval; /* Decoder return value */
@@ -7232,6 +7842,256 @@ uint8_t extractDlRrcMsg(uint32_t gnbDuUeF1apId, uint32_t gnbCuUeF1apId, \
    }
    return ret;
 }
+void FreeNrcgi(NRCGI_t *nrcgi)
+{
+    if(nrcgi->pLMN_Identity.buf != NULLP)
+    {
+       if(nrcgi->nRCellIdentity.buf != NULLP)
+       {
+          free(nrcgi->nRCellIdentity.buf);
+       }
+       free(nrcgi->pLMN_Identity.buf);
+    }
+}
+
+void FreeCuToDuInfo(CUtoDURRCInformation_t *rrcMsg)
+{
+   uint8_t idx, idx2;
+
+   if(rrcMsg->iE_Extensions)
+   {
+      if(rrcMsg->iE_Extensions->list.array)
+      {
+	 for(idx= 0; idx < rrcMsg->iE_Extensions->list.count; idx++)
+	 {
+	    if(rrcMsg->iE_Extensions->list.array[idx])
+	    {
+	       switch(rrcMsg->iE_Extensions->list.array[idx]->id)
+	       {
+		  case ProtocolIE_ID_id_CellGroupConfig:
+		     if(rrcMsg->iE_Extensions->list.array[idx]->extensionValue.choice.CellGroupConfig.buf != NULLP)
+		     {
+			free(rrcMsg->iE_Extensions->list.array[idx]->extensionValue.choice.CellGroupConfig.buf);
+		     }
+		     break;
+		  default:
+		     DU_LOG("\nF1AP:Invalid Event type %ld at FreeCuToDuInfo()", \
+			   rrcMsg->iE_Extensions->list.array[idx]->id);
+		     break;
+	       }
+	    }
+	    break;
+	 }
+	 for(idx2 = 0; idx2 < idx; idx2++)
+	 {
+	    free(rrcMsg->iE_Extensions->list.array[idx2]);
+	 }
+	 free(rrcMsg->iE_Extensions->list.array);
+
+      }
+
+      free(rrcMsg->iE_Extensions);
+   }
+ }
+
+void FreeSplCellList(SCell_ToBeSetup_List_t *spCellLst)
+{
+    uint8_t  cellidx;
+    if(spCellLst->list.array != NULLP)
+    {
+       for(cellidx=0; cellidx<spCellLst->list.count; cellidx++)
+       {
+          if(cellidx==0&&spCellLst->list.array[cellidx]!=NULLP)
+          {
+             FreeNrcgi(&spCellLst->list.array[cellidx]->value.choice.SCell_ToBeSetup_Item.sCell_ID);
+          }
+          if(spCellLst->list.array[cellidx]!=NULLP)
+          {
+             free(spCellLst->list.array[cellidx]);
+          }
+       }
+       free(spCellLst->list.array);
+    }
+}
+void FreeSRBSetup(SRBs_ToBeSetup_List_t *srbSet)
+{
+    uint8_t srbidx;
+    if(srbSet->list.array != NULLP)
+    {
+       for(srbidx=0; srbidx<srbSet->list.count; srbidx++)
+       {
+          if(srbSet->list.array[srbidx]!=NULLP)
+          {
+             free(srbSet->list.array[srbidx]);
+          }
+       }
+       free(srbSet->list.array);
+    }
+}
+
+void FreeULTnlInfo(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
+{
+   uint8_t ulidx=0;
+   if(ulInfo->list.array != NULLP)
+   {
+      for(ulidx=0; ulidx<ulInfo->list.count; ulidx++)
+      {
+	 if(ulidx==0&&ulInfo->list.array[ulidx]!=NULLP)
+	 {
+	    if(ulInfo->list.array[ulidx]->uLUPTNLInformation.choice.gTPTunnel!=NULLP)
+	    {
+	       if(ulInfo->list.array[ulidx]->uLUPTNLInformation.choice.gTPTunnel->\
+		     transportLayerAddress.buf != NULLP)
+	       {
+		  if(ulInfo->list.array[ulidx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf\
+			!=NULLP)
+		  {
+		     free(ulInfo->list.array[ulidx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf);
+		  }
+		  free(ulInfo->list.array[ulidx]->uLUPTNLInformation.choice.gTPTunnel->\
+			transportLayerAddress.buf);
+	       }
+	       free(ulInfo->list.array[ulidx]->uLUPTNLInformation.choice.gTPTunnel);
+	    }
+	 }
+	 if(ulInfo->list.array[ulidx]!=NULLP)
+	 {
+	    free(ulInfo->list.array[ulidx]);
+	 }
+      }
+      free(ulInfo->list.array);
+   }
+}
+
+void FreeDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
+{
+   DRBs_ToBeSetup_Item_t *drbSetItem;
+   uint8_t  flowidx;
+   uint8_t  drbidx;
+   if(drbSet->list.array == NULLP)
+   {
+      for(drbidx=0; drbidx<drbSet->list.count; drbidx++)
+      {
+	 if(drbidx==0&&drbSet->list.array[drbidx] != NULLP)
+	 {
+	    drbSetItem =&drbSet->list.array[drbidx]->value.choice.DRBs_ToBeSetup_Item;
+	    if(drbSetItem->qoSInformation.choice.choice_extension != NULLP)
+	    {
+	       if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
+		     qoS_Characteristics.choice.non_Dynamic_5QI !=NULLP)
+	       {
+		  if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
+			qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow!=NULLP)
+		  {
+		     if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
+			   qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume!=NULLP)
+		     {
+
+			if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sST.buf!=NULLP)
+			{
+
+			   if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sD!=NULLP)
+			   {
+
+			      if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sD->buf!=NULLP)
+			      {
+
+				 if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.\
+				       flows_Mapped_To_DRB_List.list.array != NULLP)
+				 {
+
+				    for(flowidx=0;flowidx<drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.\
+					  flows_Mapped_To_DRB_List.list.count; flowidx++)
+				    {
+
+				       if(flowidx==0&&drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+					     DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx]!=NULLP)
+				       {
+					  if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+						DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx]->qoSFlowLevelQoSParameters.\
+						qoS_Characteristics.choice.non_Dynamic_5QI!=NULLP)
+					  {
+					     if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+						   DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx]->qoSFlowLevelQoSParameters.\
+						   qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow!=NULLP)
+					     {
+
+						if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+						      DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx]->\
+						      qoSFlowLevelQoSParameters.\
+						      qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume!=NULLP)
+						{
+						   FreeULTnlInfo(&drbSetItem->uLUPTNLInformation_ToBeSetup_List);
+						   free(drbSetItem->uLConfiguration);
+
+
+						   free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+							 DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx]->\
+							 qoSFlowLevelQoSParameters.\
+							 qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume);
+						}
+
+						free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+						      DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx]->\
+						      qoSFlowLevelQoSParameters.\
+						      qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow);
+					     }
+
+					     free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+
+						   DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx]->\
+						   qoSFlowLevelQoSParameters.\
+						   qoS_Characteristics.choice.non_Dynamic_5QI);
+					  }
+				       }
+				       if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+					     DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx]!=NULLP)
+				       {
+
+					  free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+						DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx]);
+				       }
+				    }
+
+				    free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+					  DRB_Information.flows_Mapped_To_DRB_List.list.array);
+				 }
+
+				 free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+				 DRB_Information.sNSSAI.sD->buf);
+			      }
+
+			      free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sD);
+			   }
+
+			   free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sST.buf);
+
+			}
+
+			free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
+
+			      qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume);
+		     }
+
+		     free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
+			   qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow);
+		  }
+
+		  free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
+			qoS_Characteristics.choice.non_Dynamic_5QI);
+	       }
+	       free(drbSetItem->qoSInformation.choice.choice_extension);
+	    }
+	 }
+	 if(drbSet->list.array[drbidx]!=NULLP)
+	 {
+	    free(drbSet->list.array[drbidx]);
+	 }
+      }
+      free(drbSet->list.array);
+   }
+}
+
 
 /*******************************************************************
  *
@@ -7250,7 +8110,7 @@ uint8_t extractDlRrcMsg(uint32_t gnbDuUeF1apId, uint32_t gnbCuUeF1apId, \
  * ****************************************************************/
 uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
 {
-   uint8_t    ret, ieIdx, ueIdx, lcId, cellIdx;
+   uint8_t    idx,ret, ieIdx, ueIdx, lcId, cellIdx;
    bool ueCbFound = false;
    uint32_t gnbCuUeF1apId, gnbDuUeF1apId, bitRateSize;
    DuUeCb   *duUeCb = NULLP;
@@ -7426,7 +8286,53 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
    }
    else
       ret = duProcUeContextSetupRequest(duUeCb);
-
+   if(ueSetReq->protocolIEs.list.array != NULLP)
+   {
+      for(idx = 0; idx < ueSetReq->protocolIEs.list.count; idx++)
+      {
+         if(ueSetReq->protocolIEs.list.array[idx])
+	 {
+	    switch(ueSetReq->protocolIEs.list.array[idx]->id)
+	    {
+	       case ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID:
+	       break;
+	       case ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID:
+	       break;
+	       case ProtocolIE_ID_id_SpCell_ID:
+	       FreeNrcgi(&ueSetReq->protocolIEs.list.array[idx]->value.choice.NRCGI);
+	       break;
+	       case ProtocolIE_ID_id_ServCellIndex:
+	       break;
+	       case ProtocolIE_ID_id_SpCellULConfigured:
+	       break;
+	       case ProtocolIE_ID_id_CUtoDURRCInformation:
+	       FreeCuToDuInfo(&ueSetReq->protocolIEs.list.array[idx]->value.choice.CUtoDURRCInformation);
+	       break;
+	       case ProtocolIE_ID_id_SCell_ToBeSetup_List:
+	       FreeSplCellList(&ueSetReq->protocolIEs.list.array[idx]->value.choice.SCell_ToBeSetup_List);
+	       break;
+	       case ProtocolIE_ID_id_SRBs_ToBeSetup_List:
+	       FreeSRBSetup(&ueSetReq->protocolIEs.list.array[idx]->value.choice.SRBs_ToBeSetup_List);
+	       break;
+	       case ProtocolIE_ID_id_DRBs_ToBeSetup_List:
+	       FreeDRBSetup(&ueSetReq->protocolIEs.list.array[idx]->value.choice.DRBs_ToBeSetup_List);
+	       break;
+	       case ProtocolIE_ID_id_RRCContainer:
+	       if(ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf !=
+	       NULLP)
+	       {
+	       free(ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf);
+	       //ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.size);
+	       }
+	       break;
+	       default:
+	       printf("\nF1AP: Invalid event type %ld", ueSetReq->protocolIEs.list.array[idx]->id);
+	    }
+	    free(ueSetReq->protocolIEs.list.array[idx]);
+	 }
+      }
+      free(ueSetReq->protocolIEs.list.array);
+   }
    return ret;
 
 }
@@ -8112,6 +9018,18 @@ uint8_t procF1ResetReq(F1AP_PDU_t *f1apMsg)
    }
    ret = BuildAndSendF1ResetAck();
    DU_LOG("\nUE release is not supported for now");
+   if(f1ResetMsg->protocolIEs.list.array)
+    {
+       for(idx=0 ;idx < f1ResetMsg->protocolIEs.list.count ; idx++)
+       {
+	  if(f1ResetMsg->protocolIEs.list.array[idx])
+	  {
+	     free(f1ResetMsg->protocolIEs.list.array[idx]);
+	  }
+       }
+       free(f1ResetMsg->protocolIEs.list.array);
+    }
+
    return ret;
 }
 
@@ -8403,6 +9321,15 @@ uint8_t procF1SetupRsp(F1AP_PDU_t *f1apMsg)
       }
       duProcF1SetupRsp();
    }
+   
+   for(idx=0; idx<f1SetRspMsg->protocolIEs.list.count; idx++)
+   {
+      if(f1SetRspMsg->protocolIEs.list.array[idx])
+      {
+         free(f1SetRspMsg->protocolIEs.list.array[idx]);
+      }	 
+   }
+   free(f1SetRspMsg->protocolIEs.list.array);
    return ret;
 }
 
@@ -8452,6 +9379,14 @@ uint8_t procF1GNBDUCfgUpdAck(F1AP_PDU_t *f1apMsg)
       return RFAILED;
    }
 #endif
+   for(ieIdx=0; ieIdx < gnbDuAck->protocolIEs.list.count; ieIdx++)
+   {
+      if(gnbDuAck->protocolIEs.list.array[ieIdx])
+      {
+         free(gnbDuAck->protocolIEs.list.array[ieIdx]);
+      }
+   }
+   free(gnbDuAck->protocolIEs.list.array);
    return ROK;
 }
 
@@ -8542,6 +9477,36 @@ uint8_t procF1DlRrcMsgTrans(F1AP_PDU_t *f1apMsg)
    }
 
    ret = duProcDlRrcMsg(&dlMsg);
+   if(f1DlRrcMsg->protocolIEs.list.array)
+   {
+      for(idx=0; idx<f1DlRrcMsg->protocolIEs.list.count; idx++)
+      {
+         if(f1DlRrcMsg->protocolIEs.list.array[idx])
+	 {
+	    switch(f1DlRrcMsg->protocolIEs.list.array[idx]->id)
+	    {
+                case ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID:
+		break;
+		case ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID:
+		break;
+	        case ProtocolIE_ID_id_SRBID:
+		break;
+	        case ProtocolIE_ID_id_RRCContainer:
+                {
+		   RRCContainer_t *rrcContainer = &f1DlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer;
+                   free(rrcContainer->buf);
+      		}
+		case ProtocolIE_ID_id_ExecuteDuplication:
+		break;
+	        case ProtocolIE_ID_id_RRCDeliveryStatusRequest:
+		break;
+		break;
+	    }
+	    free(f1DlRrcMsg->protocolIEs.list.array[idx]);
+	 }
+      }
+      free(f1DlRrcMsg->protocolIEs.list.array);
+   }
    return ret;
 }
 
@@ -8564,11 +9529,11 @@ uint8_t procF1DlRrcMsgTrans(F1AP_PDU_t *f1apMsg)
  * ****************************************************************/
 void F1APMsgHdlr(Buffer *mBuf)
 {
-   int i;
-   char *recvBuf;
-   MsgLen copyCnt;
-   MsgLen recvBufLen;
-   F1AP_PDU_t *f1apMsg;
+   int i =0;
+   char *recvBuf =NULLP;
+   MsgLen copyCnt =0;
+   MsgLen recvBufLen =0;
+   F1AP_PDU_t *f1apMsg =NULLP;
    asn_dec_rval_t rval; /* Decoder return value */
    F1AP_PDU_t f1apasnmsg ;
 
@@ -8642,6 +9607,7 @@ void F1APMsgHdlr(Buffer *mBuf)
 		     return;
 		  }
 	    }/* End of switch(successfulOutcome) */
+	    free(f1apMsg->choice.successfulOutcome);
 	    break;
 	 }
       case F1AP_PDU_PR_initiatingMessage:
@@ -8672,6 +9638,7 @@ void F1APMsgHdlr(Buffer *mBuf)
 		     return;
 		  }
 	    }/* End of switch(initiatingMessage) */
+	    free(f1apMsg->choice.initiatingMessage);
 	    break;
 	 }
 
@@ -8680,6 +9647,7 @@ void F1APMsgHdlr(Buffer *mBuf)
 	    DU_LOG("\nF1AP : Invalid type of f1apMsg->present [%d]",f1apMsg->present);
 	    return;
 	 }
+	 free(f1apMsg);
 
    }/* End of switch(f1apMsg->present) */
 
