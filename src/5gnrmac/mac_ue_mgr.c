@@ -702,6 +702,7 @@ uint8_t fillOtherPucchFormatCfg(uint8_t pucchFormat, PucchFormatCfg *macFormatCf
          DU_LOG("\nERROR --> MAC : Invalid Format Cfg %d in fillInitialUlBwpPucchCfg()", pucchFormat);
          return RFAILED;
    }
+   return ret;
 }
 
 /*******************************************************************

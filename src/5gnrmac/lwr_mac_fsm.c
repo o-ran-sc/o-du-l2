@@ -2463,24 +2463,24 @@ void fillSib1DlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *sib1PdcchInfo)
 {
    if(dlDciPtr != NULLP)
    {
-      uint8_t numBytes;
-      uint8_t bytePos;
-      uint8_t bitPos;
+      uint8_t numBytes=0;
+      uint8_t bytePos=0;
+      uint8_t bitPos=0;
 
-      uint16_t coreset0Size;
-      uint16_t rbStart;
-      uint16_t rbLen;
-      uint32_t freqDomResAssign;
-      uint32_t timeDomResAssign;
-      uint8_t  VRB2PRBMap;
-      uint32_t modNCodScheme;
-      uint8_t  redundancyVer;
-      uint32_t sysInfoInd;
-      uint32_t reserved;
+      uint16_t coreset0Size=0;
+      uint16_t rbStart=0;
+      uint16_t rbLen=0;
+      uint32_t freqDomResAssign=0;
+      uint32_t timeDomResAssign=0;
+      uint8_t  VRB2PRBMap=0;
+      uint32_t modNCodScheme=0;
+      uint8_t  redundancyVer=0;
+      uint32_t sysInfoInd=0;
+      uint32_t reserved=0;
 
       /* Size(in bits) of each field in DCI format 0_1 
        * as mentioned in spec 38.214 */
-      uint8_t freqDomResAssignSize;
+      uint8_t freqDomResAssignSize = 0;
       uint8_t timeDomResAssignSize = 4;
       uint8_t VRB2PRBMapSize       = 1;
       uint8_t modNCodSchemeSize    = 5;
@@ -2603,22 +2603,22 @@ void fillRarDlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *rarPdcchInfo)
 {
    if(dlDciPtr != NULLP)
    {
-      uint8_t numBytes;
-      uint8_t bytePos;
-      uint8_t bitPos;
+      uint8_t numBytes =0;
+      uint8_t bytePos =0;
+      uint8_t bitPos =0;
 
-      uint16_t coreset0Size;
-      uint16_t rbStart;
-      uint16_t rbLen;
-      uint32_t freqDomResAssign;
-      uint8_t timeDomResAssign;
-      uint8_t  VRB2PRBMap;
-      uint8_t modNCodScheme;
-      uint8_t tbScaling;
-      uint32_t reserved;
+      uint16_t coreset0Size =0;
+      uint16_t rbStart =0;
+      uint16_t rbLen =0;
+      uint32_t freqDomResAssign =0;
+      uint8_t timeDomResAssign =0;
+      uint8_t  VRB2PRBMap =0;
+      uint8_t modNCodScheme =0;
+      uint8_t tbScaling =0;
+      uint32_t reserved =0;
 
       /* Size(in bits) of each field in DCI format 1_0 */
-      uint8_t freqDomResAssignSize;
+      uint8_t freqDomResAssignSize = 0;
       uint8_t timeDomResAssignSize = 4;
       uint8_t VRB2PRBMapSize       = 1;
       uint8_t modNCodSchemeSize    = 5;
@@ -3304,10 +3304,10 @@ uint8_t fillDlMsgTxDataReq(fapi_tx_pdu_desc_t *pduDesc, DlMsgInfo *dlMsgInfo,
 uint16_t fillDlTtiReq(SlotIndInfo currTimingInfo)
 {
 #ifdef INTEL_FAPI
-   uint8_t idx;
+   uint8_t idx =0;
    uint8_t nPdu = 0;
    uint8_t numPduEncoded = 0;
-   uint16_t cellIdx;
+   uint16_t cellIdx =0;
    uint16_t pduIndex = 0;
 
    SlotIndInfo dlTtiReqTimingInfo;
@@ -3315,7 +3315,7 @@ uint16_t fillDlTtiReq(SlotIndInfo currTimingInfo)
    MacCellCfg macCellCfg;
    RntiType rntiType;
    fapi_dl_tti_req_t *dlTtiReq = NULLP;
-   fapi_msg_header_t *msgHeader;
+   fapi_msg_header_t *msgHeader = NULLP;
    p_fapi_api_queue_elem_t dlTtiElem;
    p_fapi_api_queue_elem_t headerElem;
 
@@ -3513,10 +3513,10 @@ uint16_t sendTxDataReq(SlotIndInfo currTimingInfo, DlSchedInfo *dlInfo)
    uint8_t nPdu = 0;
    uint16_t cellIdx;
    uint16_t pduIndex = 0;
-   fapi_tx_data_req_t       *txDataReq;
-   fapi_msg_header_t        *msgHeader;
-   p_fapi_api_queue_elem_t  txDataElem;
-   p_fapi_api_queue_elem_t  headerElem;
+   fapi_tx_data_req_t       *txDataReq =NULLP;
+   fapi_msg_header_t        *msgHeader =NULLP;
+   p_fapi_api_queue_elem_t  txDataElem = 0;
+   p_fapi_api_queue_elem_t  headerElem =0;
 
    GET_CELL_IDX(currTimingInfo.cellId, cellIdx);
 
@@ -3873,13 +3873,13 @@ void fillPucchPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, MacCellCfg *macCellCfg,\
 uint16_t fillUlTtiReq(SlotIndInfo currTimingInfo)
 {
 #ifdef INTEL_FAPI
-   uint16_t   cellIdx;
+   uint16_t   cellIdx =0;
    uint8_t    pduIdx = -1;
    SlotIndInfo ulTtiReqTimingInfo;
    MacUlSlot *currUlSlot = NULLP;
    MacCellCfg macCellCfg;
    fapi_ul_tti_req_t *ulTtiReq = NULLP;
-   fapi_msg_header_t *msgHeader;
+   fapi_msg_header_t *msgHeader = NULLP;
    p_fapi_api_queue_elem_t ulTtiElem;
    p_fapi_api_queue_elem_t headerElem;
 
@@ -3984,19 +3984,19 @@ void fillUlDciPdu(fapi_dl_dci_t *ulDciPtr, DciInfo *schDciInfo)
 {
    if(ulDciPtr != NULLP)
    {
-      uint8_t numBytes;
-      uint8_t bytePos;
-      uint8_t bitPos;
+      uint8_t numBytes =0;
+      uint8_t bytePos =0;
+      uint8_t bitPos =0;
 
       uint8_t  coreset1Size = 0;
       uint16_t rbStart = 0;
       uint16_t rbLen = 0;
       uint8_t  dciFormatId = 0;
-      uint32_t freqDomResAssign;
-      uint8_t  timeDomResAssign;
-      uint8_t  freqHopFlag;
-      uint8_t  modNCodScheme;
-      uint8_t  ndi;
+      uint32_t freqDomResAssign =0;
+      uint8_t  timeDomResAssign =0;
+      uint8_t  freqHopFlag =0;
+      uint8_t  modNCodScheme =0;
+      uint8_t  ndi =0;
       uint8_t  redundancyVer = 0;
       uint8_t  harqProcessNum = 0;
       uint8_t  puschTpc = 0;
@@ -4179,12 +4179,12 @@ uint8_t fillUlDciPdcchPdu(fapi_dci_pdu_t *ulDciReqPdu, DlSchedInfo *dlInfo, uint
 uint16_t fillUlDciReq(SlotIndInfo currTimingInfo)
 {
 #ifdef INTEL_FAPI
-   uint8_t      cellIdx;
+   uint8_t      cellIdx =0;
    uint8_t      numPduEncoded = 0;
-   SlotIndInfo  ulDciReqTimingInfo;
+   SlotIndInfo  ulDciReqTimingInfo ={0};
    MacDlSlot    *currDlSlot = NULLP;
-   fapi_ul_dci_req_t        *ulDciReq;
-   fapi_msg_header_t        *msgHeader;
+   fapi_ul_dci_req_t        *ulDciReq =NULLP;
+   fapi_msg_header_t        *msgHeader =NULLP;
    p_fapi_api_queue_elem_t  ulDciElem;
    p_fapi_api_queue_elem_t  headerElem;
 

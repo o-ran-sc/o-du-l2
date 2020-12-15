@@ -1479,8 +1479,8 @@ SSTskPrior tskPrior,            /* task priority */
 SSTskId *tskId                  /* filled in with system task ID */
 )
 {
-   S16 ret;
-   SsSTskEntry *sTsk;
+   S16 ret = ROK;
+   SsSTskEntry *sTsk = NULLP;
 
 
 
