@@ -744,15 +744,19 @@ uint8_t procE2SetupRsp(E2AP_PDU_t *e2apMsg)
          {
             /* To store the Ric Id Params */
             recvBufLen = sizeof(e2SetRspMsg->protocolIEs.list.array[idx]->value\
-				 .choice.GlobalRIC_ID.pLMN_Identity.size);
-				e2apMsgDb.plmn = NULLP;
+	    .choice.GlobalRIC_ID.pLMN_Identity.size);
+	    e2apMsgDb.plmn = NULLP;
             DU_ALLOC(e2apMsgDb.plmn, recvBufLen);
-				if(e2apMsgDb.plmn)
-				{
-				   memcpy(e2apMsgDb.plmn, e2SetRspMsg->protocolIEs.list.array[idx]\
-					 ->value.choice.GlobalRIC_ID.pLMN_Identity.buf, recvBufLen);
-				}
+	    if(e2apMsgDb.plmn)
+	    {
+		memcpy(e2apMsgDb.plmn, e2SetRspMsg->protocolIEs.list.array[idx]\
+		->value.choice.GlobalRIC_ID.pLMN_Identity.buf, recvBufLen);
+		free(e2SetRspMsg->protocolIEs.list.array[idx]->value.choice.\
+		GlobalRIC_ID.pLMN_Identity.buf);
+	    }
             bitStringToInt(&e2SetRspMsg->protocolIEs.list.array[idx]->value.choice.GlobalRIC_ID.ric_ID, &e2apMsgDb.ricId);
+	    free(e2SetRspMsg->protocolIEs.list.array[idx]->value.choice.\
+	    GlobalRIC_ID.ric_ID.buf);
             /*TODO : e2apMsgDb.plmn memory to be deallocated after the usage */
 			   break;
          }
@@ -761,7 +765,10 @@ uint8_t procE2SetupRsp(E2AP_PDU_t *e2apMsg)
                   e2SetRspMsg->protocolIEs.list.array[idx]->id);
             break;
       }
+      free(e2SetRspMsg->protocolIEs.list.array[idx]);
    }
+   free(e2SetRspMsg->protocolIEs.list.array);
+   free(e2apMsg->choice.successfulOutcome);
    return ROK;
 }
 
@@ -795,65 +802,74 @@ uint8_t procRicSubsReq(E2AP_PDU_t *e2apMsg)
 
    for(idx=0; idx<ricSubsReq->protocolIEs.list.count; idx++)
    {
-      switch(ricSubsReq->protocolIEs.list.array[idx]->id)
+      if(ricSubsReq->protocolIEs.list.array[idx])
       {
-         case ProtocolIE_IDE2_id_RICrequestID:
-         {
-            e2apMsgDb.ricReqId = ricSubsReq->protocolIEs.list.array[idx]->\
-                                   value.choice.RICrequestID.ricRequestorID;
-            e2apMsgDb.ricInstanceId = ricSubsReq->protocolIEs.list.array[idx]-> \
-                                       value.choice.RICrequestID.ricInstanceID;
-            break;
-         }
-         case ProtocolIE_IDE2_id_RANfunctionID:
-         {
-            e2apMsgDb.ranFuncId = ricSubsReq->protocolIEs.list.array[idx]-> \
-                                   value.choice.RANfunctionID; 
-            break;
-         }
-         case ProtocolIE_IDE2_id_RICsubscriptionDetails:
-         {
-			   recvBufLen = sizeof(ricSubsReq->protocolIEs.list.array[idx]->value\
-				 .choice.RICsubscriptionDetails.ricEventTriggerDefinition.size);
-			   e2apMsgDb.ricEventTrigger = NULLP;
-				DU_ALLOC(e2apMsgDb.ricEventTrigger, recvBufLen);
-				/*TODO : e2apMsgDb.ricEventTrigger memory to be deallocated after the usage */
-				if(e2apMsgDb.ricEventTrigger)
-				{
-				   memcpy(e2apMsgDb.ricEventTrigger, ricSubsReq->protocolIEs.list.array[idx]\
-					 ->value.choice.RICsubscriptionDetails.ricEventTriggerDefinition.buf, \
-					 recvBufLen);
-			   }
-            actionItem =(RICaction_ToBeSetup_ItemIEs_t *)ricSubsReq->protocolIEs.list\
-				 .array[idx]->value.choice.RICsubscriptionDetails.ricAction_ToBeSetup_List\
-				 .list.array[0];
-            
-            for(ied = 0; ied < ricSubsReq->protocolIEs.list.array[idx]->value.choice.\
-             RICsubscriptionDetails.ricAction_ToBeSetup_List.list.count; ied++)
-            {
-               switch(actionItem->id)
-               {
-                  case ProtocolIE_IDE2_id_RICaction_ToBeSetup_Item:
-                  {
-                     e2apMsgDb.ricActionId = actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionID;
-                     e2apMsgDb.ricActionType = actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionType;
-                     break;
-                  }
-                  default:
-                     DU_LOG("\nE2AP : Invalid IE received in RicSetupLst:%ld",actionItem->id);
-                  break;
-               }
-            }
- 
-            break;
-         }
+	 switch(ricSubsReq->protocolIEs.list.array[idx]->id)
+	 {
+	    case ProtocolIE_IDE2_id_RICrequestID:
+	       {
+		  e2apMsgDb.ricReqId = ricSubsReq->protocolIEs.list.array[idx]->\
+				       value.choice.RICrequestID.ricRequestorID;
+		  e2apMsgDb.ricInstanceId = ricSubsReq->protocolIEs.list.array[idx]-> \
+					    value.choice.RICrequestID.ricInstanceID;
+		  break;
+	       }
+	    case ProtocolIE_IDE2_id_RANfunctionID:
+	       {
+		  e2apMsgDb.ranFuncId = ricSubsReq->protocolIEs.list.array[idx]-> \
+					value.choice.RANfunctionID; 
+		  break;
+	       }
+	    case ProtocolIE_IDE2_id_RICsubscriptionDetails:
+	       {
+		  recvBufLen = sizeof(ricSubsReq->protocolIEs.list.array[idx]->value\
+			.choice.RICsubscriptionDetails.ricEventTriggerDefinition.size);
+		  e2apMsgDb.ricEventTrigger = NULLP;
+		  DU_ALLOC(e2apMsgDb.ricEventTrigger, recvBufLen);
+		  /*TODO : e2apMsgDb.ricEventTrigger memory to be deallocated after the usage */
+		  if(e2apMsgDb.ricEventTrigger)
+		  {
+		     memcpy(e2apMsgDb.ricEventTrigger, ricSubsReq->protocolIEs.list.array[idx]\
+			   ->value.choice.RICsubscriptionDetails.ricEventTriggerDefinition.buf, \
+			   recvBufLen);
+		     free(ricSubsReq->protocolIEs.list.array[idx]->value.choice.\
+			   RICsubscriptionDetails.ricEventTriggerDefinition.buf);
+		  }
+		  actionItem =(RICaction_ToBeSetup_ItemIEs_t *)ricSubsReq->protocolIEs.list\
+			      .array[idx]->value.choice.RICsubscriptionDetails.ricAction_ToBeSetup_List\
+			      .list.array[0];
 
-         default:
-            DU_LOG("\nE2AP : Invalid IE received in Ric SubsReq:%ld",
-                  ricSubsReq->protocolIEs.list.array[idx]->id);
-            break;
+		  for(ied = 0; ied < ricSubsReq->protocolIEs.list.array[idx]->value.choice.\
+			RICsubscriptionDetails.ricAction_ToBeSetup_List.list.count; ied++)
+		  {
+		     switch(actionItem->id)
+		     {
+			case ProtocolIE_IDE2_id_RICaction_ToBeSetup_Item:
+			   {
+			      e2apMsgDb.ricActionId = actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionID;
+			      e2apMsgDb.ricActionType = actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionType;
+			      break;
+			   }
+			default:
+			   DU_LOG("\nE2AP : Invalid IE received in RicSetupLst:%ld",actionItem->id);
+			   break;
+		     }
+		     free(actionItem);
+		  }
+
+		  break;
+	       }
+
+	    default:
+	       DU_LOG("\nE2AP : Invalid IE received in Ric SubsReq:%ld",
+		     ricSubsReq->protocolIEs.list.array[idx]->id);
+	       break;
+	 }
+	 free(ricSubsReq->protocolIEs.list.array[idx]);
       }
    }
+   free(ricSubsReq->protocolIEs.list.array);
+   free(e2apMsg->choice.initiatingMessage);
    ret = BuildAndSendRicSubscriptionRsp();
 
    return ret;
@@ -1212,13 +1228,13 @@ uint8_t SendE2APMsg(Region region, Pool pool)
 * ****************************************************************/
 void E2APMsgHdlr(Buffer *mBuf)
 {
-   int i;
-   char *recvBuf;
-   MsgLen copyCnt;
-   MsgLen recvBufLen;
-   E2AP_PDU_t *e2apMsg;
-   asn_dec_rval_t rval; /* Decoder return value */
-   E2AP_PDU_t e2apasnmsg ;
+   int i =0;
+   char *recvBuf = NULLP;
+   MsgLen copyCnt =0;
+   MsgLen recvBufLen =0;
+   E2AP_PDU_t *e2apMsg = NULLP;
+   asn_dec_rval_t rval ={0}; /* Decoder return value */
+   E2AP_PDU_t e2apasnmsg={0} ;
  
    DU_LOG("\nE2AP : Received E2AP message buffer");
    ODU_PRINT_MSG(mBuf, 0,0);
