@@ -715,20 +715,20 @@ uint8_t BuildRrcVer(RRC_Version_t *rrcVer)
  * ****************************************************************/
 uint8_t SendF1APMsg(Region region, Pool pool)
 {
-   Buffer *mBuf;
-
+   Buffer *mBuf = NULLP;
+  
    if(ODU_GET_MSG_BUF(region, pool, &mBuf) == ROK)
    {
       if(ODU_ADD_POST_MSG_MULT((Data *)encBuf, encBufSize, mBuf) == ROK)
       {
-	 ODU_PRINT_MSG(mBuf, 0,0);
+	    ODU_PRINT_MSG(mBuf, 0,0);
 
-	 if(sctpSend(mBuf, F1_INTERFACE) != ROK)
-	 {
-	    DU_LOG("\nF1AP : SCTP Send failed");
-	    ODU_PUT_MSG_BUF(mBuf);
-	    return RFAILED;
-	 }
+	    if(sctpSend(mBuf, F1_INTERFACE) != ROK)
+	    {
+	       DU_LOG("\nF1AP : SCTP Send failed");
+	       ODU_PUT_MSG_BUF(mBuf);
+	       return RFAILED;
+	    }
       }
       else
       {
@@ -2081,13 +2081,16 @@ void FreeULRRCMessageTransfer( F1AP_PDU_t *f1apMsg)
 uint8_t BuildAndSendULRRCMessageTransfer(DuUeCb  ueCb, uint8_t lcId, \
       uint16_t msgLen, uint8_t *rrcMsg)
 {
-   uint8_t   elementCnt;
-   uint8_t   idx1;
-   uint8_t   idx;
-   F1AP_PDU_t      		*f1apMsg = NULL;
-   ULRRCMessageTransfer_t	*ulRRCMsg;
+   uint8_t   elementCnt =0;
+   uint8_t   idx1 =0;
+   uint8_t   idx =0;
+   F1AP_PDU_t      		*f1apMsg = NULLP;
+   ULRRCMessageTransfer_t	*ulRRCMsg = NULLP;
    asn_enc_rval_t  		encRetVal;        /* Encoder return value */
    uint8_t ret =RFAILED;
+   
+   memset(&encRetVal, 0, sizeof(asn_enc_rval_t));
+
    while(true)
    {
       DU_LOG("\n F1AP : Building UL RRC Message Transfer Message\n");
@@ -2098,7 +2101,6 @@ uint8_t BuildAndSendULRRCMessageTransfer(DuUeCb  ueCb, uint8_t lcId, \
 	 DU_LOG(" F1AP : Memory allocation for F1AP-PDU failed");
 	 break;
       }
-
       f1apMsg->present = F1AP_PDU_PR_initiatingMessage;
       DU_ALLOC(f1apMsg->choice.initiatingMessage,sizeof(InitiatingMessage_t));
       if(f1apMsg->choice.initiatingMessage == NULLP)
@@ -2167,11 +2169,12 @@ uint8_t BuildAndSendULRRCMessageTransfer(DuUeCb  ueCb, uint8_t lcId, \
       ulRRCMsg->protocolIEs.list.array[idx1]->value.choice.RRCContainer.size = msgLen;
       DU_ALLOC(ulRRCMsg->protocolIEs.list.array[idx1]->value.choice.RRCContainer.buf,
 	    ulRRCMsg->protocolIEs.list.array[idx1]->value.choice.RRCContainer.size)
-	 if(!ulRRCMsg->protocolIEs.list.array[idx1]->value.choice.RRCContainer.buf)
-	 {
-	    DU_LOG(" F1AP : Memory allocation for BuildAndSendULRRCMessageTransfer failed");
-	    break;
-	 }
+      if(!ulRRCMsg->protocolIEs.list.array[idx1]->value.choice.RRCContainer.buf)
+      {
+	 DU_LOG(" F1AP : Memory allocation for BuildAndSendULRRCMessageTransfer failed");
+	 break;
+      }
+      memset(ulRRCMsg->protocolIEs.list.array[idx1]->value.choice.RRCContainer.buf, 0, msgLen);
       memcpy(ulRRCMsg->protocolIEs.list.array[idx1]->value.choice.RRCContainer.buf, \
 	    rrcMsg, ulRRCMsg->protocolIEs.list.array[idx1]->value.choice.RRCContainer.size);
 
@@ -5527,7 +5530,6 @@ void  freeMacLcCfg(LcCfg *lcCfg)
    }
    memset(lcCfg, 0, sizeof(LcCfg));
 }
-
 /*******************************************************************
  *
  * @brief Free UE NR Capability received in UE Context setup request
@@ -5602,6 +5604,438 @@ void freeUeNrCapability(void *ueNrCapability)
 }
 
 /*******************************************************************
+*
+* @brief Function to free PdcchSearchSpcToAddModList
+         added free part for the memory allocated by aper_decoder
+*
+* @details
+*
+*    Function : FreePdcchSearchSpcToAddModList 
+*
+*    Functionality: Function to free PdcchSearchSpcToAddModList
+*
+* @params[in] struct PDCCH_Config__searchSpacesToAddModList *searchSpcList
+* @return void
+*
+* ****************************************************************/
+
+void FreePdcchSearchSpcToAddModList(struct PDCCH_Config__searchSpacesToAddModList *searchSpcList)
+{
+   uint8_t searchSpcIdx=0;
+   uint8_t searchSpcIdx1=0;
+   struct  SearchSpace *searchSpc=NULLP;
+
+
+   if(searchSpcList->list.array)
+   {
+      if(searchSpcList->list.array[searchSpcIdx1])
+      {
+	 searchSpc = searchSpcList->list.array[searchSpcIdx1];
+	 if(searchSpc->controlResourceSetId)
+	 {
+	    if(searchSpc->monitoringSlotPeriodicityAndOffset)
+	    {
+	       if(searchSpc->monitoringSymbolsWithinSlot)
+	       {
+		  if(searchSpc->monitoringSymbolsWithinSlot->buf)
+		  {
+		     if(searchSpc->nrofCandidates)
+		     {
+			if(searchSpc->searchSpaceType)
+			{
+			   free(searchSpc->searchSpaceType->choice.ue_Specific);
+			   free(searchSpc->searchSpaceType);
+			}
+			free(searchSpc->nrofCandidates);
+		     }
+		     free(searchSpc->monitoringSymbolsWithinSlot->buf);
+		  }
+		  free(searchSpc->monitoringSymbolsWithinSlot);
+	       }
+	       free(searchSpc->monitoringSlotPeriodicityAndOffset);
+	    }
+	    free(searchSpc->controlResourceSetId);
+	 }
+      }
+      for(searchSpcIdx = 0; searchSpcIdx < searchSpcList->list.count; searchSpcIdx++)
+      {
+	 free(searchSpcList->list.array[searchSpcIdx]);
+      }
+      free(searchSpcList->list.array);
+   }
+}
+/*******************************************************************
+*
+* @brief Function to free BWPDlDedPdcchConfig and 
+*                    added free part for the memory allocated by aper_decoder
+* 
+* @details
+*
+*    Function : FreeBWPDlDedPdcchConfig
+*
+*    Functionality: Function to free BWPDlDedPdcchConfig
+*
+* @params[in] 
+* @return void
+*
+* ****************************************************************/
+
+
+void FreeBWPDlDedPdcchConfig(BWP_DownlinkDedicated_t *dlBwp)
+{
+   uint8_t idx1=0;
+   uint8_t idx2=0;
+   struct PDCCH_Config *pdcchCfg=NULLP;
+   struct ControlResourceSet *controlRSet=NULLP;
+   struct PDCCH_Config__controlResourceSetToAddModList *controlRSetList=NULLP;
+   
+   if(dlBwp->pdcch_Config->choice.setup)
+   {
+      pdcchCfg=dlBwp->pdcch_Config->choice.setup;
+      if(pdcchCfg->controlResourceSetToAddModList)
+      {
+	 controlRSetList = pdcchCfg->controlResourceSetToAddModList;
+	 if(controlRSetList->list.array)
+	 {
+	    controlRSet = controlRSetList->list.array[idx2];
+	    if(controlRSet)
+	    {
+	       if(controlRSet->frequencyDomainResources.buf)
+	       {
+		  if(controlRSet->pdcch_DMRS_ScramblingID)
+		  {
+		     if(pdcchCfg->searchSpacesToAddModList)
+		     {
+			FreePdcchSearchSpcToAddModList(pdcchCfg->searchSpacesToAddModList);
+			free(pdcchCfg->searchSpacesToAddModList);
+		     }
+		     free(controlRSet->pdcch_DMRS_ScramblingID);
+		  }
+		  free(controlRSet->frequencyDomainResources.buf);
+	       }
+	    }
+	    for(idx1 = 0; idx1 <controlRSetList->list.count; idx1++)
+	    {
+	       free(controlRSetList->list.array[idx1]);
+	    }
+	    free(controlRSetList->list.array);
+	 }
+	 free(pdcchCfg->controlResourceSetToAddModList);
+      }
+      free(dlBwp->pdcch_Config->choice.setup);
+   }
+}
+/*******************************************************************
+*
+* @brief Function to free PdschTimeDomAllocationList 
+*     And added free part for the memory allocated by aper_decoder
+* 
+* @details
+*
+*    Function : FreePdschTimeDomAllocationList
+*
+*    Functionality: Function to free PdschTimeDomAllocationList
+*
+* @params[in] struct PDSCH_Config__pdsch_TimeDomainAllocationList *timeDomAllocList 
+* @return void
+*
+* ****************************************************************/
+
+
+void FreePdschTimeDomAllocationList( struct PDSCH_Config__pdsch_TimeDomainAllocationList *timeDomAllocList)
+{
+   uint8_t idx1=0;
+
+   if(timeDomAllocList->choice.setup)
+   {
+      if(timeDomAllocList->choice.setup->list.array)
+      {
+	 for(idx1 = 0; idx1 <timeDomAllocList->choice.setup->list.count ; idx1++)
+	 {
+	    free(timeDomAllocList->choice.setup->list.array[idx1]);
+	 }
+	 free(timeDomAllocList->choice.setup->list.array);
+      }
+      free(timeDomAllocList->choice.setup);
+   }
+}
+
+/*******************************************************************
+*
+* @brief Function to free BWPDlDedPdschConfig 
+*        where the memory allocated by aper_decoder
+*  
+* @details
+*
+*    Function : FreeBWPDlDedPdschConfig 
+*
+*    Functionality: Function to free BWPDlDedPdschConfig 
+*
+* @params[in] BWP_DownlinkDedicated_t *dlBwp 
+* @return void
+*
+* ****************************************************************/
+
+
+void FreeBWPDlDedPdschConfig(BWP_DownlinkDedicated_t *dlBwp)
+{
+   struct PDSCH_Config *pdschCfg=NULLP;
+   struct PDSCH_Config__prb_BundlingType *prbBndlType=NULLP;
+   struct PDSCH_Config__pdsch_TimeDomainAllocationList *timeDomAllocList=NULLP;
+   struct PDSCH_Config__dmrs_DownlinkForPDSCH_MappingTypeA *dmrsDlCfg=NULLP;
+
+   if(dlBwp->pdsch_Config->choice.setup)
+   {
+      pdschCfg=dlBwp->pdsch_Config->choice.setup;
+      if(pdschCfg->dmrs_DownlinkForPDSCH_MappingTypeA)
+      {
+	 if(pdschCfg->pdsch_TimeDomainAllocationList)
+	 {
+	    timeDomAllocList=pdschCfg->pdsch_TimeDomainAllocationList;
+	    if(pdschCfg->maxNrofCodeWordsScheduledByDCI)
+	    {
+	       prbBndlType=&pdschCfg->prb_BundlingType;
+	       free(prbBndlType->choice.staticBundling);
+	       free(pdschCfg->maxNrofCodeWordsScheduledByDCI);
+	    }
+	    FreePdschTimeDomAllocationList(timeDomAllocList);
+	    free(pdschCfg->pdsch_TimeDomainAllocationList);
+	 }
+	 dmrsDlCfg=pdschCfg->dmrs_DownlinkForPDSCH_MappingTypeA;
+	 if(dmrsDlCfg->choice.setup)
+	 {
+	    free(dmrsDlCfg->choice.setup->dmrs_AdditionalPosition);
+	    free(dmrsDlCfg->choice.setup);
+	 }
+	 free(pdschCfg->dmrs_DownlinkForPDSCH_MappingTypeA);
+      }
+      free(dlBwp->pdsch_Config->choice.setup);
+   }
+}
+/*******************************************************************
+*
+* @brief Function to free PuschTimeDomAllocListCfg
+                 where the memory allocated by aper_decoder
+*
+* @details
+*
+*    Function : FreePuschTimeDomAllocListCfg
+*
+*    Functionality: Function to free PuschTimeDomAllocListCfg
+*
+* @params[in] PUSCH_Config_t *puschCfg 
+* @return void
+*
+* ****************************************************************/
+
+
+void FreePuschTimeDomAllocListCfg(PUSCH_Config_t *puschCfg)
+{
+   uint8_t idx1=0;
+   uint8_t idx2=0;
+   struct PUSCH_Config__pusch_TimeDomainAllocationList *timeDomAllocList_t=NULLP;
+
+   if(puschCfg->pusch_TimeDomainAllocationList)
+   {
+      timeDomAllocList_t=puschCfg->pusch_TimeDomainAllocationList;
+      if(timeDomAllocList_t->choice.setup)
+      {
+	 if(timeDomAllocList_t->choice.setup->list.array)
+	 {
+	    free(timeDomAllocList_t->choice.setup->list.array[idx2]->k2);
+	    for(idx1 = 0; idx1<timeDomAllocList_t->choice.setup->list.count; idx1++)
+	    {
+	       free(timeDomAllocList_t->choice.setup->list.array[idx1]);
+	    }
+	    free(timeDomAllocList_t->choice.setup->list.array);
+	 }
+	 free(timeDomAllocList_t->choice.setup);
+      }
+      free(puschCfg->transformPrecoder);
+      free(puschCfg->pusch_TimeDomainAllocationList);
+   }
+
+}
+/*******************************************************************
+*
+* @brief Function to free InitialUlBWPConfig where memory allocated by aper_decoder
+*
+* @details
+*
+*    Function : FreeInitialUlBWPConfig 
+*
+*    Functionality: Function to free InitialUlBWPConfig
+*
+* @params[in]  BWP_UplinkDedicated_t *ulBwp
+* @return void
+*
+* ****************************************************************/
+
+
+void FreeInitialUlBWPConfig(BWP_UplinkDedicated_t *ulBwp)
+{
+   uint8_t  rSetIdx, rsrcIdx;
+   SRS_Config_t   *srsCfg = NULLP;
+   PUSCH_Config_t *puschCfg = NULLP;
+   struct PUSCH_Config__dmrs_UplinkForPUSCH_MappingTypeA *dmrsUlCfg = NULLP;
+   struct SRS_Config__srs_ResourceSetToAddModList *rsrcSetList = NULLP;
+   struct SRS_ResourceSet__srs_ResourceIdList *rsrcIdList = NULLP;
+   struct SRS_Config__srs_ResourceToAddModList *resourceList = NULLP;
+
+   if(ulBwp->pusch_Config)
+   {
+      if(ulBwp->pusch_Config->choice.setup)
+      {
+	 puschCfg=ulBwp->pusch_Config->choice.setup;
+	 if(puschCfg->dataScramblingIdentityPUSCH)
+	 {
+	    if(puschCfg->dmrs_UplinkForPUSCH_MappingTypeA)
+	    {
+	       FreePuschTimeDomAllocListCfg(puschCfg);
+	       dmrsUlCfg=puschCfg->dmrs_UplinkForPUSCH_MappingTypeA;
+	       if(dmrsUlCfg->choice.setup)
+	       {
+		  if(dmrsUlCfg->choice.setup->dmrs_AdditionalPosition)
+		  {
+		     if(dmrsUlCfg->choice.setup->transformPrecodingDisabled)
+		     {
+			free(dmrsUlCfg->choice.setup->transformPrecodingDisabled->scramblingID0);
+			free(dmrsUlCfg->choice.setup->transformPrecodingDisabled);
+		     }
+		     free(dmrsUlCfg->choice.setup->dmrs_AdditionalPosition);
+		  }
+		  free(dmrsUlCfg->choice.setup);
+	       }
+	       free(puschCfg->dmrs_UplinkForPUSCH_MappingTypeA);
+	    }
+	    free(puschCfg->dataScramblingIdentityPUSCH);
+	 }
+	 free(ulBwp->pusch_Config->choice.setup);
+      }
+      free(ulBwp->pusch_Config);
+
+      /* Free SRS-Config */
+      if(ulBwp->srs_Config)
+      {
+	 if(ulBwp->srs_Config->choice.setup)
+	 {
+	    srsCfg = ulBwp->srs_Config->choice.setup;
+
+	    /* Free Resource Set to add/mod list */
+	    if(srsCfg->srs_ResourceSetToAddModList)
+	    {
+	       rsrcSetList = srsCfg->srs_ResourceSetToAddModList;
+	       if(rsrcSetList->list.array)
+	       {
+		  rSetIdx = 0;
+
+		  /* Free SRS resource Id list in this SRS resource set */
+		  if(rsrcSetList->list.array[rSetIdx]->srs_ResourceIdList)
+		  {
+		     rsrcIdList =
+			rsrcSetList->list.array[rSetIdx]->srs_ResourceIdList;
+
+		     if(rsrcIdList->list.array)
+		     {
+			for(rsrcIdx = 0; rsrcIdx < rsrcIdList->list.count;
+			      rsrcIdx++)
+			{
+			   free(rsrcIdList->list.array[rsrcIdx]);
+			}
+			free(rsrcIdList->list.array);
+		     }
+		     free(rsrcSetList->list.array[rSetIdx]->srs_ResourceIdList);
+		  }
+
+		  /* Free resource type info for this SRS resource set */
+
+		  free(rsrcSetList->list.array[rSetIdx]->resourceType.choice.aperiodic);
+
+		  /* Free memory for each resource set */
+		  for(rSetIdx = 0; rSetIdx < rsrcSetList->list.count; rSetIdx++)
+		  {
+		     free(rsrcSetList->list.array[rSetIdx]);
+		  }
+		  free(rsrcSetList->list.array);
+	       }
+	       free(srsCfg->srs_ResourceSetToAddModList);
+	    }
+
+	    /* Free resource to add/modd list */
+	    if(srsCfg->srs_ResourceToAddModList)
+	    {
+	       resourceList = srsCfg->srs_ResourceToAddModList;
+	       if(resourceList->list.array)
+	       {
+		  rsrcIdx = 0;
+
+		  free(resourceList->list.array[rsrcIdx]->transmissionComb.choice.n2);
+		  free(resourceList->list.array[rsrcIdx]->resourceType.choice.aperiodic);
+
+		  for(rsrcIdx = 0; rsrcIdx < resourceList->list.count; rsrcIdx++)
+		  {
+		     free(resourceList->list.array[rsrcIdx]);
+		  }
+		  free(resourceList->list.array);
+	       }
+	       free(srsCfg->srs_ResourceToAddModList);
+	    }
+
+	    free(ulBwp->srs_Config->choice.setup);
+	 }
+	 free(ulBwp->srs_Config);
+      }
+   }
+}
+/*******************************************************************
+*
+* @brief Function to free initialUplinkBWPConfig where memory allocated by aper_decoder
+*
+* @details
+*
+*    Function : FreeinitialUplinkBWPConfig
+*
+*    Functionality: Function to free initialUplinkBWPConfig
+*
+* @params[in] UplinkConfig_t *ulCfg 
+* @return void
+*
+* ****************************************************************/
+
+
+void FreeinitialUplinkBWPConfig(UplinkConfig_t *ulCfg)
+{
+   BWP_UplinkDedicated_t *ulBwp=NULLP;
+   struct UplinkConfig__pusch_ServingCellConfig *puschCfg=NULLP;
+   
+   if(ulCfg->initialUplinkBWP)
+   {
+      ulBwp=ulCfg->initialUplinkBWP;
+      if(ulCfg->firstActiveUplinkBWP_Id)
+      {
+	 if(ulCfg->pusch_ServingCellConfig)
+	 {
+	    puschCfg=ulCfg->pusch_ServingCellConfig;
+	    if(puschCfg->choice.setup)
+	    {
+	       if(puschCfg->choice.setup->ext1)
+	       {
+		  free(puschCfg->choice.setup->ext1->processingType2Enabled);
+		  free(puschCfg->choice.setup->ext1->maxMIMO_Layers);
+		  free(puschCfg->choice.setup->ext1);
+	       }
+	       free(puschCfg->choice.setup);
+	    }
+	    free(ulCfg->pusch_ServingCellConfig);
+	 }
+	 free(ulCfg->firstActiveUplinkBWP_Id);
+      }
+      FreeInitialUlBWPConfig(ulBwp);
+      free(ulCfg->initialUplinkBWP);
+   }
+}
+
+/*******************************************************************
  *
  * @brief Function to free DuUeCfg
  *
@@ -5618,15 +6052,205 @@ void freeUeNrCapability(void *ueNrCapability)
 void freeDuUeCfg(DuUeCfg *ueCfg)
 {
    uint8_t lcIdx;
-
+   uint8_t idx=0;
+   SpCellConfig_t *spCellCfg=NULLP;
+   ServingCellConfig_t *srvCellCfg=NULLP;
+   BWP_DownlinkDedicated_t *dlBwp=NULLP;
+   MAC_CellGroupConfig_t *macCellGrpCfg=NULLP;
+   PhysicalCellGroupConfig_t *phyCellGrpCfg=NULLP;
+   struct CellGroupConfigRrc__rlc_BearerToAddModList *rlcBearerList=NULLP;
+   struct RLC_Config *rlcConfig=NULLP;
+   struct LogicalChannelConfig *macLcConfig=NULLP;
+   struct SchedulingRequestConfig *schedulingRequestConfig=NULLP;
+   struct SchedulingRequestConfig__schedulingRequestToAddModList *schReqList=NULLP;
+   struct TAG_Config *tagConfig=NULLP;
+   struct TAG_Config__tag_ToAddModList *tagList=NULLP;
+   struct MAC_CellGroupConfig__phr_Config *phrConfig=NULLP;
+   struct ServingCellConfig__pdsch_ServingCellConfig *pdschCfg=NULLP;
+   CellGroupConfigRrc_t *cellGrpCfg = ueCfg->cellGrpCfg;
+  
    if(ueCfg->ueNrCapability)
    {
       freeUeNrCapability(ueCfg->ueNrCapability);
       DU_FREE(ueCfg->ueNrCapability, sizeof(UE_NR_Capability_t));
       ueCfg->ueNrCapability = NULLP;
    }
+
    if(ueCfg->cellGrpCfg)
    {
+      
+      rlcBearerList = cellGrpCfg->rlc_BearerToAddModList;
+      if(rlcBearerList)
+      {
+	 if(rlcBearerList->list.array)
+	 {
+	    for(idx=0; idx<rlcBearerList->list.count; idx++)
+	    {
+	       if(rlcBearerList->list.array[idx])
+	       {
+		  rlcConfig   = rlcBearerList->list.array[idx]->rlc_Config;
+		  macLcConfig = rlcBearerList->list.array[idx]->mac_LogicalChannelConfig;
+		  
+		  if(rlcBearerList->list.array[idx]->servedRadioBearer)
+		  {
+		     free(rlcBearerList->list.array[idx]->servedRadioBearer);
+		  }
+		  if(rlcConfig)
+		  {
+		     if(rlcConfig->choice.am)
+		     {
+			free(rlcConfig->choice.am->ul_AM_RLC.sn_FieldLength);
+			free(rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength);
+			free(rlcConfig->choice.am);
+		     }
+		     free(rlcBearerList->list.array[idx]->rlc_Config);
+		  }
+		  if(macLcConfig)
+		  {
+		     if(macLcConfig->ul_SpecificParameters)
+		     {
+			free(macLcConfig->ul_SpecificParameters->schedulingRequestID);
+			free(macLcConfig->ul_SpecificParameters->logicalChannelGroup);
+			free(macLcConfig->ul_SpecificParameters);
+		     }
+		     free(rlcBearerList->list.array[idx]->mac_LogicalChannelConfig);
+		  }
+		  free(rlcBearerList->list.array[idx]); 
+	       }
+	    }
+	    free(rlcBearerList->list.array);
+	 }
+	 free(cellGrpCfg->rlc_BearerToAddModList);
+      }
+
+      macCellGrpCfg = cellGrpCfg->mac_CellGroupConfig;
+      if(macCellGrpCfg)
+      {
+	 schedulingRequestConfig = macCellGrpCfg->schedulingRequestConfig;
+	 if(schedulingRequestConfig)
+	 {
+	    schReqList = schedulingRequestConfig->schedulingRequestToAddModList;
+	    if(schReqList)
+	    {
+	       if(schReqList->list.array)
+	       {
+		  for(idx=0;idx<schReqList->list.count; idx++)
+		  {
+		     if(schReqList->list.array[idx])
+		     {
+			free(schReqList->list.array[idx]->sr_ProhibitTimer); 
+			free(schReqList->list.array[idx]);
+		     }
+		  }
+		  free(schReqList->list.array);
+	       }
+	       free(schedulingRequestConfig->schedulingRequestToAddModList);
+	    }
+	    free(macCellGrpCfg->schedulingRequestConfig);
+	 }
+	 if(macCellGrpCfg->bsr_Config)
+	 {
+	    free(macCellGrpCfg->bsr_Config);
+	 }
+	 tagConfig = macCellGrpCfg->tag_Config;
+	 if(tagConfig)
+	 {
+	    tagList = tagConfig->tag_ToAddModList;
+	    if(tagList)
+	    {
+	       if(tagList->list.array)
+	       {
+		  for(idx=0; idx<tagList->list.count; idx++)
+		  {
+		     free(tagList->list.array[idx]);
+		  }
+		  free(tagList->list.array);
+	       }
+	       free(tagConfig->tag_ToAddModList);
+	    }
+	    free(tagConfig); 
+	 }
+
+	 phrConfig = macCellGrpCfg->phr_Config;
+	 if(phrConfig)
+	 {
+	    free(phrConfig->choice.setup); 
+	    free(phrConfig); 
+	 }
+
+	 free(macCellGrpCfg); 
+      }
+
+      phyCellGrpCfg = cellGrpCfg->physicalCellGroupConfig;
+      if(phyCellGrpCfg)
+      {
+	 free(phyCellGrpCfg->p_NR_FR1);
+	 free(phyCellGrpCfg); 
+      }
+
+      spCellCfg = cellGrpCfg->spCellConfig;
+      if(spCellCfg)
+      {
+	 if(spCellCfg->servCellIndex)
+	 {
+	    if(spCellCfg->rlmInSyncOutOfSyncThreshold)
+	    {
+	       if(spCellCfg->spCellConfigDedicated)
+	       {
+		  srvCellCfg = spCellCfg->spCellConfigDedicated;
+		  if(srvCellCfg->initialDownlinkBWP)
+		  {
+		     dlBwp = srvCellCfg->initialDownlinkBWP;
+		     if(srvCellCfg->firstActiveDownlinkBWP_Id)
+		     {
+			if(srvCellCfg->defaultDownlinkBWP_Id)
+			{
+			   if(srvCellCfg->uplinkConfig)
+			   {
+
+			      if(srvCellCfg->pdsch_ServingCellConfig)
+			      {
+				 pdschCfg=
+				    srvCellCfg->pdsch_ServingCellConfig;
+				 if(pdschCfg->choice.setup)
+				 {
+
+				    free(pdschCfg->choice.setup->nrofHARQ_ProcessesForPDSCH);
+				    free(pdschCfg->choice.setup);
+				 }
+
+				 free(srvCellCfg->pdsch_ServingCellConfig);
+			      }
+
+			      FreeinitialUplinkBWPConfig(srvCellCfg->uplinkConfig);
+			      free(srvCellCfg->uplinkConfig);
+			   }
+			   free(srvCellCfg->defaultDownlinkBWP_Id);
+			}
+
+			free(srvCellCfg->firstActiveDownlinkBWP_Id);
+		     }
+		     if(dlBwp->pdcch_Config)
+		     {
+			if(dlBwp->pdsch_Config)
+			{
+			   FreeBWPDlDedPdschConfig(dlBwp);
+			   free(dlBwp->pdsch_Config);
+			}
+			FreeBWPDlDedPdcchConfig(dlBwp);
+			free(dlBwp->pdcch_Config);
+		     }
+		     free(srvCellCfg->initialDownlinkBWP);
+		  }
+
+		  free(spCellCfg->spCellConfigDedicated);
+	       }
+	       free(spCellCfg->rlmInSyncOutOfSyncThreshold);
+	    }
+	    free(spCellCfg->servCellIndex); 
+	 }
+	 free(spCellCfg);
+      }
       DU_FREE(ueCfg->cellGrpCfg, sizeof(CellGroupConfigRrc_t));
       ueCfg->cellGrpCfg = NULLP;
    }
@@ -7584,6 +8208,360 @@ uint8_t extractUeReCfgCellInfo(CellGroupConfigRrc_t *cellGrp, MacUeCfg *macUeCfg
    }
    return ret;
 }
+/*******************************************************************
+*
+* @brief free the memory allocated by decoder
+*
+* @details
+*
+*    Function : FreeNrcgi
+*
+*    Functionality: Free Nrcgi values
+*
+* @params[in] NRCGI_t *nrcgi
+* @return void
+*
+* ****************************************************************/
+
+
+void FreeNrcgi(NRCGI_t *nrcgi)
+{
+    if(nrcgi->pLMN_Identity.buf != NULLP)
+    {
+       free(nrcgi->pLMN_Identity.buf);
+    }
+    if(nrcgi->nRCellIdentity.buf != NULLP)
+    {
+       free(nrcgi->nRCellIdentity.buf);
+    }
+}
+/*******************************************************************
+*
+* @brief free the memory allocated by decoder
+*
+* @details
+*
+*    Function : FreeCuToDuInfo 
+*
+*    Functionality:  Free Cu To Du Information
+*
+* @params[in] CUtoDURRCInformation_t *rrcMsg
+* @return void
+*
+* ****************************************************************/
+
+
+void FreeCuToDuInfo(CUtoDURRCInformation_t *rrcMsg)
+{
+   uint8_t ieExtensionIdx, ieExtensionIdx1;
+
+   if(rrcMsg->uE_CapabilityRAT_ContainerList)
+   {
+      if(rrcMsg->uE_CapabilityRAT_ContainerList->buf)
+         free(rrcMsg->uE_CapabilityRAT_ContainerList->buf);
+      free(rrcMsg->uE_CapabilityRAT_ContainerList);
+   }
+
+   if(rrcMsg->iE_Extensions)
+   {
+      if(rrcMsg->iE_Extensions->list.array)
+      {
+	 for(ieExtensionIdx= 0; ieExtensionIdx < rrcMsg->iE_Extensions->list.count; ieExtensionIdx++)
+	 {
+	    if(rrcMsg->iE_Extensions->list.array[ieExtensionIdx])
+	    {
+	       switch(rrcMsg->iE_Extensions->list.array[ieExtensionIdx]->id)
+	       {
+		  case ProtocolIE_ID_id_CellGroupConfig:
+		     if(rrcMsg->iE_Extensions->list.array[ieExtensionIdx]->extensionValue.choice.CellGroupConfig.buf != NULLP)
+		     {
+			free(rrcMsg->iE_Extensions->list.array[ieExtensionIdx]->extensionValue.choice.CellGroupConfig.buf);
+		     }
+		     break;
+		  default:
+		     DU_LOG("\nF1AP:Invalid Event type %ld at FreeCuToDuInfo()", \
+			   rrcMsg->iE_Extensions->list.array[ieExtensionIdx]->id);
+		     break;
+	       }
+	    }
+	 }
+	 for(ieExtensionIdx1 = 0; ieExtensionIdx1 < ieExtensionIdx; ieExtensionIdx1++)
+	 {
+	    free(rrcMsg->iE_Extensions->list.array[ieExtensionIdx1]);
+	 }
+	 free(rrcMsg->iE_Extensions->list.array);
+
+      }
+
+      free(rrcMsg->iE_Extensions);
+   }
+}
+/*******************************************************************
+*
+* @brief free the memory allocated by decoder
+*
+* @details 
+*
+*    Function : FreeSplCellList
+*
+*    Functionality: Free Spl Cell List 
+                    where memory allocated by aper_decoder
+*
+* @params[in]  SCell_ToBeSetup_List_t *spCellLst
+* @return void
+*
+* ****************************************************************/
+
+
+void FreeSplCellList(SCell_ToBeSetup_List_t *spCellLst)
+{
+    uint8_t  cellIdx;
+
+    if(spCellLst->list.array != NULLP)
+    {
+       for(cellIdx=0; cellIdx<spCellLst->list.count; cellIdx++)
+       {
+          if(cellIdx==0&&spCellLst->list.array[cellIdx]!=NULLP)
+          {
+             FreeNrcgi(&spCellLst->list.array[cellIdx]->value.choice.SCell_ToBeSetup_Item.sCell_ID);
+          }
+          if(spCellLst->list.array[cellIdx]!=NULLP)
+          {
+             free(spCellLst->list.array[cellIdx]);
+          }
+       }
+       free(spCellLst->list.array);
+    }
+}
+/*******************************************************************
+*
+* @brief free the memory allocated by decoder
+*
+* @details
+*
+*    Function : FreeSRBSetup 
+*
+*    Functionality: added free part for the memory allocated by aper_decoder
+*
+* @params[in] SRBs_ToBeSetup_List_t *srbSet
+* @return void
+*
+****************************************************************/
+
+
+void FreeSRBSetup(SRBs_ToBeSetup_List_t *srbSet)
+{
+    uint8_t srbIdx;
+    if(srbSet->list.array != NULLP)
+    {
+       for(srbIdx=0; srbIdx<srbSet->list.count; srbIdx++)
+       {
+          if(srbSet->list.array[srbIdx]!=NULLP)
+          {
+             free(srbSet->list.array[srbIdx]);
+          }
+       }
+       free(srbSet->list.array);
+    }
+}
+
+/*******************************************************************
+*
+* @brief free the memory allocated by decoder
+*
+* @details
+*
+*    Function : FreeULTnlInfo
+*
+*    Functionality: added free part for the memory allocated by aper_decoder
+*
+* @params[in] ULUPTNLInformation_ToBeSetup_List_t *ulInfo
+* @return void
+*
+* ****************************************************************/
+
+
+void FreeULTnlInfo(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
+{
+   uint8_t ulidx=0;
+   if(ulInfo->list.array != NULLP)
+   {
+      for(ulidx=0; ulidx<ulInfo->list.count; ulidx++)
+      {
+	 if(ulidx==0&&ulInfo->list.array[ulidx]!=NULLP)
+	 {
+	    if(ulInfo->list.array[ulidx]->uLUPTNLInformation.choice.gTPTunnel!=NULLP)
+	    {
+	       if(ulInfo->list.array[ulidx]->uLUPTNLInformation.choice.gTPTunnel->\
+		     transportLayerAddress.buf != NULLP)
+	       {
+		  if(ulInfo->list.array[ulidx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf\
+			!=NULLP)
+		  {
+		     free(ulInfo->list.array[ulidx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf);
+		  }
+		  free(ulInfo->list.array[ulidx]->uLUPTNLInformation.choice.gTPTunnel->\
+			transportLayerAddress.buf);
+	       }
+	       free(ulInfo->list.array[ulidx]->uLUPTNLInformation.choice.gTPTunnel);
+	    }
+	 }
+	 if(ulInfo->list.array[ulidx]!=NULLP)
+	 {
+	    free(ulInfo->list.array[ulidx]);
+	 }
+      }
+      free(ulInfo->list.array);
+   }
+}
+/*******************************************************************
+*
+* @brief free the memory allocated by decoder
+*
+* @details
+*
+*    Function : FreeDRBSetup  
+*
+*    Functionality: free DRBSetup which is allocated by decoder
+*
+* @params[in]  DRBs_ToBeSetup_List_t *drbSet
+* @return void
+*
+* ****************************************************************/
+
+void FreeDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
+{
+   DRBs_ToBeSetup_Item_t *drbSetItem = NULLP;
+   uint8_t  flowidx =0;
+   uint8_t  drbidx =0;
+   
+   if(drbSet->list.array != NULLP)
+   {
+      for(drbidx=0; drbidx<drbSet->list.count; drbidx++)
+      {
+	 if(drbidx==0&&drbSet->list.array[drbidx] != NULLP)
+	 {
+	    drbSetItem =&drbSet->list.array[drbidx]->value.choice.DRBs_ToBeSetup_Item;
+	    if(drbSetItem->qoSInformation.choice.choice_extension != NULLP)
+	    {
+	       if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
+		     qoS_Characteristics.choice.non_Dynamic_5QI !=NULLP)
+	       {
+		  if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
+			qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow!=NULLP)
+		  {
+		     if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
+			   qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume!=NULLP)
+		     {
+
+			if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sST.buf!=NULLP)
+			{
+
+			   if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sD!=NULLP)
+			   {
+
+			      if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sD->\
+			      buf!=NULLP)
+			      {
+
+				 if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.\
+				       flows_Mapped_To_DRB_List.list.array != NULLP)
+				 {
+
+				    for(flowidx=0;flowidx<drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+				    DRB_Information.flows_Mapped_To_DRB_List.list.count; flowidx++)
+				    {
+
+				       if(flowidx==0&&drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+					     DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx]!=NULLP)
+				       {
+					  if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+						DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx]->\
+						qoSFlowLevelQoSParameters.\
+						qoS_Characteristics.choice.non_Dynamic_5QI!=NULLP)
+					  {
+					     if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+						   DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx]->\
+						   qoSFlowLevelQoSParameters.\
+						   qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow!=NULLP)
+					     {
+
+						if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+						      DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx]->\
+						      qoSFlowLevelQoSParameters.\
+						      qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume!=NULLP)
+						{
+						   FreeULTnlInfo(&drbSetItem->uLUPTNLInformation_ToBeSetup_List);
+						   free(drbSetItem->uLConfiguration);
+
+
+						   free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+							 DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx]->\
+							 qoSFlowLevelQoSParameters.\
+							 qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume);
+						}
+
+						free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+						      DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx]->\
+						      qoSFlowLevelQoSParameters.\
+						      qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow);
+					     }
+
+					     free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+
+						   DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx]->\
+						   qoSFlowLevelQoSParameters.\
+						   qoS_Characteristics.choice.non_Dynamic_5QI);
+					  }
+				       }
+				       if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+					     DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx]!=NULLP)
+				       {
+
+					  free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+						DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx]);
+				       }
+				    }
+
+				    free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+					  DRB_Information.flows_Mapped_To_DRB_List.list.array);
+				 }
+
+				 free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+				 DRB_Information.sNSSAI.sD->buf);
+			      }
+
+			      free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sD);
+			   }
+
+			   free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sST.buf);
+
+			}
+
+			free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
+
+			      qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume);
+		     }
+
+		     free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
+			   qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow);
+		  }
+
+		  free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
+			qoS_Characteristics.choice.non_Dynamic_5QI);
+	       }
+	       free(drbSetItem->qoSInformation.choice.choice_extension);
+	    }
+	 }
+	 if(drbSet->list.array[drbidx]!=NULLP)
+	 {
+	    free(drbSet->list.array[drbidx]);
+	 }
+      }
+      free(drbSet->list.array);
+   }
+}
+
 
 /*******************************************************************
  *
@@ -7749,9 +8727,9 @@ void duFillModulationDetails(MacUeCfg *ueCfg, MacUeCfg *oldUeCfg, void *ueCap)
 CellGroupConfigRrc_t *extractCellGrpInfo(ProtocolExtensionContainer_4624P16_t *protocolIeExtn,\
    DuUeCfg *ueCfgDb)
 {
-   uint8_t idx2;
-   uint16_t id;
-   uint16_t recvBufLen;
+   uint8_t idx2 =0;
+   uint16_t id =0;
+   uint16_t recvBufLen =0;
    CellGroupConfigRrc_t *cellGrpCfg = NULLP;
    CUtoDURRCInformation_ExtIEs_t *extIeInfo = NULLP;
    asn_dec_rval_t rval; /* Decoder return value */
@@ -8066,7 +9044,6 @@ UE_NR_Capability_t *extractUeCapability(UE_CapabilityRAT_ContainerList_t *ueCapa
    xer_fprint(stdout, &asn_DEF_UE_CapabilityRAT_ContainerListRRC, ueCapRatContList);
 
    /* Free encoded buffer after decoding */
-   free(ueCapablityListBuf->buf);
 
    for(idx = 0; idx < ueCapRatContList->list.count; idx++)
    {
@@ -8103,7 +9080,90 @@ UE_NR_Capability_t *extractUeCapability(UE_CapabilityRAT_ContainerList_t *ueCapa
    DU_FREE(ueCapRatContList, sizeof(UE_CapabilityRAT_ContainerListRRC_t));
    return ueNrCap;
 }
+ 
+/*******************************************************************
+*
+* @brief free UE context setup request from CU
+*
+* @details
+*
+*    Function : freeF1UeContextSetupReq
+*
+*    Functionality: freeing part for the memory allocated by aper_decoder
+*
+* @params[in] F1AP message
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+void freeF1UeContextSetupReq(UEContextSetupRequest_t   *ueSetReq)
+{
+   uint8_t ueContextIeIdx = 0;
 
+   if(ueSetReq->protocolIEs.list.array != NULLP)
+   {
+      for(ueContextIeIdx = 0; ueContextIeIdx < ueSetReq->protocolIEs.list.count; ueContextIeIdx++)
+      {
+	 if(ueSetReq->protocolIEs.list.array[ueContextIeIdx])
+	 {
+	    switch(ueSetReq->protocolIEs.list.array[ueContextIeIdx]->id)
+	    {
+	       case ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID:
+		  break;
+	       case ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID:
+		  break;
+	       case ProtocolIE_ID_id_SpCell_ID:
+		  FreeNrcgi(&ueSetReq->protocolIEs.list.array[ueContextIeIdx]->value.choice.NRCGI);
+		  break;
+	       case ProtocolIE_ID_id_ServCellIndex:
+		  break;
+	       case ProtocolIE_ID_id_SpCellULConfigured:
+		  break;
+	       case ProtocolIE_ID_id_CUtoDURRCInformation:
+
+		  FreeCuToDuInfo(&ueSetReq->protocolIEs.list.array[ueContextIeIdx]->value.choice.CUtoDURRCInformation);
+		  break;
+	       case ProtocolIE_ID_id_SCell_ToBeSetup_List:
+
+		  FreeSplCellList(&ueSetReq->protocolIEs.list.array[ueContextIeIdx]->value.choice.SCell_ToBeSetup_List);
+		  break;
+	       case ProtocolIE_ID_id_SRBs_ToBeSetup_List:
+
+		  FreeSRBSetup(&ueSetReq->protocolIEs.list.array[ueContextIeIdx]->value.choice.SRBs_ToBeSetup_List);
+		  break;
+	       case ProtocolIE_ID_id_DRBs_ToBeSetup_List:
+
+		  FreeDRBSetup(&ueSetReq->protocolIEs.list.array[ueContextIeIdx]->value.choice.DRBs_ToBeSetup_List);
+		  break;
+	       case ProtocolIE_ID_id_RRCContainer:
+		  {
+
+		     if(ueSetReq->protocolIEs.list.array[ueContextIeIdx]->value.choice.RRCContainer.buf != NULLP)
+		     {
+
+			free(ueSetReq->protocolIEs.list.array[ueContextIeIdx]->value.choice.RRCContainer.buf);
+		     }
+		     break;
+		  }
+	       case ProtocolIE_ID_id_RRCDeliveryStatusRequest:
+		  break;
+	       case ProtocolIE_ID_id_GNB_DU_UE_AMBR_UL:
+		  {
+		     if(ueSetReq->protocolIEs.list.array[ueContextIeIdx]->value.choice.BitRate.buf)
+		     {
+			free(ueSetReq->protocolIEs.list.array[ueContextIeIdx]->value.choice.BitRate.buf);
+		     }
+		     break;
+		  }
+	       default:
+		  printf("\nF1AP: Invalid event type %ld",ueSetReq->protocolIEs.list.array[ueContextIeIdx]->id);
+	    } 
+	    free(ueSetReq->protocolIEs.list.array[ueContextIeIdx]);
+	 }
+      }
+      free(ueSetReq->protocolIEs.list.array);
+   }
+}
 /*******************************************************************
  *
  * @brief Process UE context setup request from CU
@@ -8113,6 +9173,7 @@ UE_NR_Capability_t *extractUeCapability(UE_CapabilityRAT_ContainerList_t *ueCapa
  *    Function : procF1UeContextSetupReq
  *
  *    Functionality: Process UE context setup request from CU
+ *                   And added free part for the memory allocated by aper_decoder
  *
  * @params[in] F1AP message
  * @return ROK     - success
@@ -8121,7 +9182,7 @@ UE_NR_Capability_t *extractUeCapability(UE_CapabilityRAT_ContainerList_t *ueCapa
  * ****************************************************************/
 uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
 {
-   uint8_t    ret, ieIdx, ueIdx, lcId, cellIdx;
+   uint8_t  ret, ieIdx, ueIdx, lcId, cellIdx;
    bool ueCbFound = false;
    uint32_t gnbCuUeF1apId, gnbDuUeF1apId, bitRateSize;
    DuUeCb   *duUeCb = NULLP;
@@ -8304,7 +9365,7 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
    }
    else
       ret = duProcUeContextSetupRequest(duUeCb);
-
+   freeF1UeContextSetupReq(ueSetReq); 
    return ret;
 
 }
@@ -8598,8 +9659,21 @@ uint8_t BuildAndSendUeContextSetupRsp(uint8_t ueIdx, uint8_t cellId)
    FreeUeContextSetupRsp(f1apMsg);
    return ret;
 }/* End of BuildAndSendUeContextSetupRsp */
+/*******************************************************************
+*
+* @brief  Build And Send Ue Context Rsp 
+*
+* @details
+*
+*    Function : BuildAndSendUeCtxtRsp 
+*
+*    Functionality : Build And Send Ue Context Rsp
 
-
+* @params[in]
+* @return sucess = ROK
+*         failure = RFAILED
+*
+* ****************************************************************/
 uint8_t BuildAndSendUeCtxtRsp(uint8_t ueIdx, uint8_t cellId)
 {
    uint8_t cellIdx = 0, actionType = 0; 
@@ -8942,6 +10016,36 @@ uint8_t BuildAndSendF1ResetAck()
    FreeF1ResetAck(f1apMsg);
    return ret;
 }
+/******************************************************************
+*
+* @brief free F1 reset msg allocated by aper_decoder 
+*
+* @details
+*
+*    Function : freeF1ResetMsg 
+*
+*    Functionality: free F1 reset msg allocated by aper_decoder 
+*
+* @params[in] Reset_t *f1ResetMsg 
+* @return void 
+*
+* ****************************************************************/
+
+void freeF1ResetMsg(Reset_t *f1ResetMsg)
+{
+   uint8_t ieIdx;
+   if(f1ResetMsg->protocolIEs.list.array)
+   {
+      for(ieIdx=0 ;ieIdx < f1ResetMsg->protocolIEs.list.count ; ieIdx++)
+      {
+	 if(f1ResetMsg->protocolIEs.list.array[ieIdx])
+	 {
+	    free(f1ResetMsg->protocolIEs.list.array[ieIdx]);
+	 }
+      }
+      free(f1ResetMsg->protocolIEs.list.array);
+   }
+}
 
 /******************************************************************
  *
@@ -8990,6 +10094,9 @@ uint8_t procF1ResetReq(F1AP_PDU_t *f1apMsg)
    }
    ret = BuildAndSendF1ResetAck();
    DU_LOG("\nUE release is not supported for now");
+
+   freeF1ResetMsg(f1ResetMsg);
+
    return ret;
 }
 
@@ -9215,7 +10322,115 @@ uint8_t extractCellsToBeActivated(Cells_to_be_Activated_List_t cellsToActivate)
    }
    return ret;
 }
+/******************************************************************
+*
+* @brief Processes F1 Setup Response allocated by aper_decoder 
+*
+* @details
+*
+*    Function : freeF1SetupRsp 
+*
+*    Functionality: free F1 Setup Response allocated by aper_decoder 
+*
+* @params[in] F1SetupResponse_t *f1SetRspMsg 
+* @return void 
+*
+* ****************************************************************/
 
+void freeF1SetupRsp(F1SetupResponse_t *f1SetRspMsg)
+{
+   uint8_t ieIdx =0;
+   Cells_to_be_Activated_List_t *cellToActivate =NULLP;
+   RRC_Version_t      *rrcVer =NULLP;
+
+   if(f1SetRspMsg->protocolIEs.list.array)
+   {
+      for(ieIdx=0; ieIdx<f1SetRspMsg->protocolIEs.list.count; ieIdx++)
+      {
+	 if(f1SetRspMsg->protocolIEs.list.array[ieIdx])
+	 {
+	    switch(f1SetRspMsg->protocolIEs.list.array[ieIdx]->id)
+	    {
+	       case ProtocolIE_ID_id_Cells_to_be_Activated_List:
+		  {
+		     cellToActivate =
+			&f1SetRspMsg->protocolIEs.list.array[ieIdx]->value.choice.Cells_to_be_Activated_List;
+		     if(cellToActivate->list.array)
+		     {
+			for(int ieIdx1=0; ieIdx1<cellToActivate->list.count ; ieIdx1++)
+			{
+			   if(cellToActivate->list.array[ieIdx1])
+			   {
+
+			      if(cellToActivate->list.array[0]->value.choice.Cells_to_be_Activated_List_Item.nRCGI.\
+			      pLMN_Identity.buf)
+			      {
+				 if(cellToActivate->list.array[0]->value.choice.\
+				       Cells_to_be_Activated_List_Item.nRCGI.nRCellIdentity.buf)
+				 {
+				    free(cellToActivate->list.array[0]->value.choice.\
+					  Cells_to_be_Activated_List_Item.nRCGI.nRCellIdentity.buf);
+				 }
+
+				 free(cellToActivate->list.array[0]->value.choice.Cells_to_be_Activated_List_Item.\
+				       nRCGI.pLMN_Identity.buf);
+			      }
+			      free(cellToActivate->list.array[ieIdx1]);
+			   }
+			}
+			free(cellToActivate->list.array);
+		     }
+		     break;
+		  }
+	       case ProtocolIE_ID_id_TransactionID:
+		  {
+		     break;
+		  }
+	       case ProtocolIE_ID_id_gNB_CU_Name:
+		  {
+		     free(f1SetRspMsg->protocolIEs.list.array[ieIdx]->value.choice.GNB_CU_Name.buf);
+		     break;
+		  }
+	       case ProtocolIE_ID_id_GNB_CU_RRC_Version:
+		  {
+		     rrcVer = &f1SetRspMsg->protocolIEs.list.array[ieIdx]->value.choice.RRC_Version;
+		     if(rrcVer->latest_RRC_Version.buf)
+		     {
+			if(rrcVer->iE_Extensions)
+			{
+			   if(rrcVer->iE_Extensions->list.array)
+			   {
+			      if(rrcVer->iE_Extensions->list.array[0])
+			      {
+				 if(rrcVer->iE_Extensions->list.\
+				       array[0]->extensionValue.choice.Latest_RRC_Version_Enhanced.buf)
+				 {
+				    free(rrcVer->iE_Extensions->list.\
+					  array[0]->extensionValue.choice.Latest_RRC_Version_Enhanced.buf);
+				 }
+				 free(rrcVer->iE_Extensions->list.array[0]);
+			      }
+			      free(rrcVer->iE_Extensions->list.array);
+			   }
+			   free(rrcVer->iE_Extensions);
+			}
+			free(rrcVer->latest_RRC_Version.buf);
+		     }
+		     break;
+
+		  }
+	       default:
+		  {
+		     DU_LOG("\nDU_APP : Invalid IE received in F1SetupRsp:%ld",
+			   f1SetRspMsg->protocolIEs.list.array[ieIdx]->id);
+		  }
+	    }
+	    free(f1SetRspMsg->protocolIEs.list.array[ieIdx]);
+	 }
+      }
+      free(f1SetRspMsg->protocolIEs.list.array);
+   }
+}
 /******************************************************************
  *
  * @brief Processes F1 Setup Response sent by CU
@@ -9234,11 +10449,12 @@ uint8_t extractCellsToBeActivated(Cells_to_be_Activated_List_t cellsToActivate)
 uint8_t procF1SetupRsp(F1AP_PDU_t *f1apMsg)
 {
    uint8_t ret = ROK;
-   uint16_t idx;
+   uint16_t idx =0;
    F1SetupResponse_t *f1SetRspMsg = NULLP;
    GNB_CU_Name_t     *cuName = NULLP;
-   RRC_Version_t     *rrc_Ver = NULLP;
    F1SetupRsp  f1SetRspDb;
+   RRC_Version_t      *rrcVer =NULLP;
+   
    memset(&f1SetRspDb, 0, sizeof(F1SetupRsp));
 
    DU_LOG("\nF1AP : F1 Setup Response received");
@@ -9269,10 +10485,9 @@ uint8_t procF1SetupRsp(F1AP_PDU_t *f1apMsg)
 	    }
 	 case ProtocolIE_ID_id_GNB_CU_RRC_Version:
 	    {
-	       rrc_Ver = &f1SetRspMsg->protocolIEs.list.array[idx]->\
-			 value.choice.RRC_Version;
+	       rrcVer = &f1SetRspMsg->protocolIEs.list.array[idx]->value.choice.RRC_Version;
 	       strcpy(f1SetRspDb.rrcVersion.rrcVer,
-		     (const char*)rrc_Ver->latest_RRC_Version.buf);
+		     (const char*)rrcVer->latest_RRC_Version.buf);
 	       break;
 	    }
 	 default:
@@ -9281,24 +10496,57 @@ uint8_t procF1SetupRsp(F1AP_PDU_t *f1apMsg)
       }
       duProcF1SetupRsp();
    }
+   
+   freeF1SetupRsp(f1SetRspMsg);
    return ret;
 }
-
 /*******************************************************************
- *
- * @brief Processes GNB DU config update ack
- *
- * @details
- *
- *    Function : procF1GNBDUCfgUpdAck
- *
- *    Functionality: Processes GNB DU config update ack
- *
- * @params[in] F1AP_PDU_t ASN decoded F1AP message
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
+*
+* @brief free GNB DU config update ack
+*
+* @details
+*
+*    Function : freeGnbDuAck 
+*
+*    Functionality: Processes GNB DU config update ack And
+*                     added free part for the memory allocated by aper_decoder
+*
+* @params[in] F1AP_PDU_t ASN decoded F1AP message
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+
+void freeGnbDuAck(GNBDUConfigurationUpdateAcknowledge_t *gnbDuAck)
+{
+   uint8_t ieIdx = 0;
+
+   if(gnbDuAck->protocolIEs.list.array)
+   {
+      for(ieIdx=0; ieIdx < gnbDuAck->protocolIEs.list.count; ieIdx++)
+      {
+	 if(gnbDuAck->protocolIEs.list.array[ieIdx])
+	 {
+	    free(gnbDuAck->protocolIEs.list.array[ieIdx]);
+	 }
+      }
+      free(gnbDuAck->protocolIEs.list.array);
+   }
+}
+/*******************************************************************
+*
+* @brief Processes GNB DU config update ack
+*
+* @details
+*
+*    Function : procF1GNBDUCfgUpdAck
+*
+*    Functionality: added free part for the memory allocated by aper_decoder
+*
+* @params[in] F1AP_PDU_t *f1apMsg 
+* @return void 
+*
+* ****************************************************************/
 uint8_t procF1GNBDUCfgUpdAck(F1AP_PDU_t *f1apMsg)
 {
    uint8_t ieIdx, transId;
@@ -9330,9 +10578,62 @@ uint8_t procF1GNBDUCfgUpdAck(F1AP_PDU_t *f1apMsg)
       return RFAILED;
    }
 #endif
+
+   freeGnbDuAck(gnbDuAck);
    return ROK;
 }
+/******************************************************************
+*
+* @brief free DL RRC Message Transfer allocated by aper_decoder 
+*
+* @details
+*
+*    Function : freef1DlRrcMsg 
+*
+*    Functionality: free DL RRC Message Transfer allocated by aper_decoder 
+*
+* @params[in] DLRRCMessageTransfer_t *f1DlRrcMsg 
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
 
+void freef1DlRrcMsg(DLRRCMessageTransfer_t *f1DlRrcMsg)
+{
+   uint8_t ieIdx =0;
+   RRCContainer_t *rrcContainer = NULLP;
+
+   if(f1DlRrcMsg->protocolIEs.list.array)
+   {
+      for(ieIdx=0; ieIdx<f1DlRrcMsg->protocolIEs.list.count; ieIdx++)
+      {
+	 if(f1DlRrcMsg->protocolIEs.list.array[ieIdx])
+	 {
+	    switch(f1DlRrcMsg->protocolIEs.list.array[ieIdx]->id)
+	    {
+	       case ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID:
+		  break;
+	       case ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID:
+		  break;
+	       case ProtocolIE_ID_id_SRBID:
+		  break;
+	       case ProtocolIE_ID_id_RRCContainer:
+		  {
+		     rrcContainer =&f1DlRrcMsg->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer;
+		     free(rrcContainer->buf);
+		  }
+	       case ProtocolIE_ID_id_ExecuteDuplication:
+		  break;
+	       case ProtocolIE_ID_id_RRCDeliveryStatusRequest:
+		  break;
+		  break;
+	    }
+	    free(f1DlRrcMsg->protocolIEs.list.array[ieIdx]);
+	 }
+      }
+      free(f1DlRrcMsg->protocolIEs.list.array);
+   }
+}
 /******************************************************************
  *
  * @brief Processes DL RRC Message Transfer  sent by CU
@@ -9420,6 +10721,8 @@ uint8_t procF1DlRrcMsgTrans(F1AP_PDU_t *f1apMsg)
    }
 
    ret = duProcDlRrcMsg(&dlMsg);
+
+   freef1DlRrcMsg(f1DlRrcMsg);
    return ret;
 }
 
@@ -9442,14 +10745,13 @@ uint8_t procF1DlRrcMsgTrans(F1AP_PDU_t *f1apMsg)
  * ****************************************************************/
 void F1APMsgHdlr(Buffer *mBuf)
 {
-   int i;
-   char *recvBuf;
-   MsgLen copyCnt;
-   MsgLen recvBufLen;
-   F1AP_PDU_t *f1apMsg;
+   int i =0;
+   char *recvBuf =NULLP;
+   MsgLen copyCnt =0;
+   MsgLen recvBufLen =0;
+   F1AP_PDU_t *f1apMsg =NULLP;
    asn_dec_rval_t rval; /* Decoder return value */
    F1AP_PDU_t f1apasnmsg ;
-
    DU_LOG("\nF1AP : Received F1AP message buffer");
    ODU_PRINT_MSG(mBuf, 0,0);
 
@@ -9520,6 +10822,7 @@ void F1APMsgHdlr(Buffer *mBuf)
 		     return;
 		  }
 	    }/* End of switch(successfulOutcome) */
+	    free(f1apMsg->choice.successfulOutcome);
 	    break;
 	 }
       case F1AP_PDU_PR_initiatingMessage:
@@ -9550,6 +10853,7 @@ void F1APMsgHdlr(Buffer *mBuf)
 		     return;
 		  }
 	    }/* End of switch(initiatingMessage) */
+	    free(f1apMsg->choice.initiatingMessage);
 	    break;
 	 }
 
@@ -9558,6 +10862,7 @@ void F1APMsgHdlr(Buffer *mBuf)
 	    DU_LOG("\nF1AP : Invalid type of f1apMsg->present [%d]",f1apMsg->present);
 	    return;
 	 }
+	 free(f1apMsg);
 
    }/* End of switch(f1apMsg->present) */
 
