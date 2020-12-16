@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4f5640f7_05b9dac6",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 920,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-16T08:36:25Z",
+      "side": 1,
+      "message": "occ?",
+      "revId": "068bbe130e69699840f300058f6472ead62a95cb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "83baf2c6_1850601f",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 930,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-16T08:36:25Z",
+      "side": 1,
+      "message": "variable to determine pucch format missing",
+      "revId": "068bbe130e69699840f300058f6472ead62a95cb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}

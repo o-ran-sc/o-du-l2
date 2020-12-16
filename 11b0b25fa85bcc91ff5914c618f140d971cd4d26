@@ -1,0 +1,242 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "629ce644_3312c06e",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3799,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-16T08:36:25Z",
+      "side": 1,
+      "message": "are these updated from sch? What if it is not? i.e., condition at line #3797 fails, freqHopFlag will not be given any value?\nSimilar comment for all IEs below",
+      "revId": "11b0b25fa85bcc91ff5914c618f140d971cd4d26",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8b2c4060_8d04ac65",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 758,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-16T08:36:25Z",
+      "side": 1,
+      "message": "if we are not supporting, then no need to add check or assign memory",
+      "revId": "11b0b25fa85bcc91ff5914c618f140d971cd4d26",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5921359c_42dae542",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 770,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-16T08:36:25Z",
+      "side": 1,
+      "message": "must free memory allocated above as well",
+      "revId": "11b0b25fa85bcc91ff5914c618f140d971cd4d26",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fc0127b5_206cb50e",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 783,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-16T08:36:25Z",
+      "side": 1,
+      "message": "must free memory allocated above as well",
+      "revId": "11b0b25fa85bcc91ff5914c618f140d971cd4d26",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3cbdd9d2_b18c9139",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-16T08:36:25Z",
+      "side": 1,
+      "message": "format 0?",
+      "revId": "11b0b25fa85bcc91ff5914c618f140d971cd4d26",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7c41563e_32a2d603",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-16T08:36:25Z",
+      "side": 1,
+      "message": "SCH_FREE in default as well",
+      "revId": "11b0b25fa85bcc91ff5914c618f140d971cd4d26",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f03dcd14_67374699",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-16T08:36:25Z",
+      "side": 1,
+      "message": "function header missing",
+      "revId": "11b0b25fa85bcc91ff5914c618f140d971cd4d26",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d96803fa_86d69b51",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-16T08:36:25Z",
+      "side": 1,
+      "message": "Dont use extract here. We could use other words like update/fill/populate",
+      "revId": "11b0b25fa85bcc91ff5914c618f140d971cd4d26",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ad18be88_078e2deb",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-16T08:36:25Z",
+      "side": 1,
+      "message": "generic comment: Free all allocated memory in case of failure.",
+      "revId": "11b0b25fa85bcc91ff5914c618f140d971cd4d26",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bfdc1943_90284c80",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-16T08:36:25Z",
+      "side": 1,
+      "message": "mention spec reference for num prb",
+      "revId": "11b0b25fa85bcc91ff5914c618f140d971cd4d26",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f0ea03b0_3f2dcd79",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 637,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-16T08:36:25Z",
+      "side": 1,
+      "message": "use macro and name it such that it depicts the default value",
+      "revId": "11b0b25fa85bcc91ff5914c618f140d971cd4d26",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c3135597_cd86f4ee",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 931,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-16T08:36:25Z",
+      "side": 1,
+      "message": "don\u0027t we need a variable to state the format?",
+      "revId": "11b0b25fa85bcc91ff5914c618f140d971cd4d26",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ed936cfc_ee59919b",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 7979,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-16T08:36:25Z",
+      "side": 1,
+      "message": "why do we need to explicitly use NULLP?",
+      "revId": "11b0b25fa85bcc91ff5914c618f140d971cd4d26",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9eeb6d70_413ad673",
+        "filename": "src/phy_stub/l1.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-16T08:36:25Z",
+      "side": 1,
+      "message": "why?",
+      "revId": "11b0b25fa85bcc91ff5914c618f140d971cd4d26",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
