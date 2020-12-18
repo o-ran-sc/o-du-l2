@@ -345,6 +345,7 @@ uint8_t macProcSlotInd(SlotIndInfo slotInd)
 uint8_t fapiMacSlotInd(Pst *pst, SlotIndInfo *slotInd)
 {
    uint8_t               ret = ROK;
+   uint8_t               cellIdx;
    volatile uint32_t     startTime=0;
 
 #ifdef ODU_SLOT_IND_DEBUG_LOG
@@ -375,12 +376,17 @@ uint8_t fapiMacSlotInd(Pst *pst, SlotIndInfo *slotInd)
 #endif
 
    /* send slot indication to du app */
-   ret = sendSlotIndMacToDuApp(slotInd);
-   if(ret != ROK)
+   GET_CELL_IDX(slotInd->cellId, cellIdx);
+   if(!macCb.macCell[cellIdx]->firstSlotIndRcvd)   
    {
-      DU_LOG("\nMAC :Sending of slot ind msg from MAC to DU APP failed");
-      MAC_FREE_SHRABL_BUF(pst->region, pst->pool, slotInd, sizeof(SlotIndInfo));
-      return ret;
+      macCb.macCell[cellIdx]->firstSlotIndRcvd = true;
+      ret = sendSlotIndMacToDuApp(slotInd);
+      if(ret != ROK)
+      {
+         DU_LOG("\nMAC :Sending of slot ind msg from MAC to DU APP failed");
+         MAC_FREE_SHRABL_BUF(pst->region, pst->pool, slotInd, sizeof(SlotIndInfo));
+         return ret;
+      }
    }
 
    /*stoping Task*/

@@ -1178,10 +1178,8 @@ uint8_t duSendEgtpTnlMgmtReq(uint8_t action, uint32_t lclTeid, uint32_t remTeid)
    tnlEvt.remTeid = remTeid;
 
    DU_LOG("\nDU_APP : Sending EGTP tunnel management request");
-
    duFillEgtpPst(&pst, EVTTNLMGMTREQ);
-   packEgtpTnlMgmtReq(&pst, tnlEvt);
-
+   egtpTnlMgmtReq(&pst, tnlEvt);
    return ROK;
 }
 
@@ -1208,6 +1206,9 @@ uint8_t duHdlEgtpTnlMgmtCfm(EgtpTnlEvt tnlEvtCfm)
    if(tnlEvtCfm.cfmStatus.status == LCM_PRIM_OK)
    {
       DU_LOG("\nDU_APP : Tunnel management confirm OK");
+#ifdef EGTP_TEST      
+      duSendEgtpTestData();
+#endif
    }
    else
    {
@@ -1218,6 +1219,21 @@ uint8_t duHdlEgtpTnlMgmtCfm(EgtpTnlEvt tnlEvtCfm)
    return (ret);
 }
 
+/*******************************************************************
+ *
+ * @brief Sends UL user data over to EGTP
+ *
+ * @details
+ *
+ *    Function : duSendEgtpDatInd
+ *
+ *    Functionality: Sends UL user data over to EGTP
+ *
+ * @params[in] UL data buffer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
 uint8_t duSendEgtpDatInd(Buffer *mBuf)
 {
    EgtpMsg  egtpMsg;
@@ -1508,33 +1524,6 @@ uint8_t duHdlSchCfgComplete(Pst *pst, RgMngmt *cfm)
    return ROK;
 }
 
-/*******************************************************************
- *
- * @brief Sends Slot indication to EGTP
- *
- * @details
- *
- *    Function : duSendEgtpSlotInd
- *
- *    Functionality:
- *     Sends Slot indication to EGTP
- *
- * @params[in] 
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-uint8_t duSendEgtpSlotInd()
-{
-   Pst pst;
-
-   duFillEgtpPst(&pst, EVTSLOTIND);
-   packEgtpSlotInd(&pst);
-
-   return ROK;
-
-}
-
 /**************************************************************************
  * @brief Function to fill and send MacCellconfig
  *
@@ -1665,12 +1654,6 @@ uint8_t duHandleSlotInd(Pst *pst, SlotIndInfo *slotInfo)
 #endif
       }
    }
-
-   /* TODO : Slot Indication to be moved out of EGTP_TEST when
-    * data path is established */
-#ifdef EGTP_TEST
-   duSendEgtpSlotInd();    
-#endif
 
    if((pst->selector == ODU_SELECTOR_LWLC) || (pst->selector == ODU_SELECTOR_TC)) 
       DU_FREE_SHRABL_BUF(pst->region, pst->pool, slotInfo, sizeof(SlotIndInfo));

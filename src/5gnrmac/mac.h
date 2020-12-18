@@ -178,6 +178,7 @@ typedef struct macUeCb
 struct macCellCb
 {
    uint16_t    cellId;
+   bool        firstSlotIndRcvd;
    uint8_t     crntiMap;
    MacRaCbInfo macRaCb[MAX_NUM_UE];
    MacDlSlot   dlSlot[MAX_SLOT_SUPPORTED];

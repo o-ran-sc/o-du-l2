@@ -505,7 +505,7 @@ S16 cuEgtpHdlRecvMsg(Buffer *mBuf)
    cuEgtpDecodeHdr(mBuf);
 
    /* Start Pumping data from CU to DU */
-   return (cuEgtpDatReq());
+   //return (cuEgtpDatReq());
 
 }
 
@@ -636,7 +636,7 @@ S16 cuEgtpDatReq()
    BuildEgtpMsg(&egtpMsg);
 
    /* Send Message to peer */
-   while(cnt < 1)
+   while(cnt < 200)
    {
       DU_LOG("\nEGTP : Sending message[%d]", cnt+1);
       cuEgtpSendMsg(egtpMsg.msg);

@@ -106,9 +106,9 @@ uint8_t packEgtpSrvOpenCfm(Pst *pst, CmStatus cfm);
 uint8_t unpackEgtpSrvOpenCfm(EgtpSrvOpenCfm func, Buffer *mBuf);
 uint8_t packEgtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt);
 uint8_t unpackEgtpTnlMgmtReq(EgtpTnlMgmtReq func, Pst *pst, Buffer *mBuf);
+uint8_t egtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt);
 uint8_t packEgtpTnlMgmtCfm(Pst *pst, EgtpTnlEvt tnlEvt);
+uint8_t duHdlEgtpTnlMgmtCfm(EgtpTnlEvt tnlEvtCfm);
 uint8_t unpackEgtpTnlMgmtCfm(EgtpTnlMgmtCfm func, Buffer *mBuf);
-uint8_t packEgtpSlotInd(Pst *pst);
-uint8_t unpackEgtpSlotInd(EgtpSlotInd func, Pst *pst, Buffer *mBuf);
-
+uint8_t packEgtpStartPollingReq(Pst *pst);
 #endif
