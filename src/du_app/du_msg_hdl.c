@@ -1178,10 +1178,8 @@ uint8_t duSendEgtpTnlMgmtReq(uint8_t action, uint32_t lclTeid, uint32_t remTeid)
    tnlEvt.remTeid = remTeid;
 
    DU_LOG("\nDU_APP : Sending EGTP tunnel management request");
-
    duFillEgtpPst(&pst, EVTTNLMGMTREQ);
-   packEgtpTnlMgmtReq(&pst, tnlEvt);
-
+   egtpTnlMgmtReq(&pst, tnlEvt);
    return ROK;
 }
 
@@ -1208,6 +1206,9 @@ uint8_t duHdlEgtpTnlMgmtCfm(EgtpTnlEvt tnlEvtCfm)
    if(tnlEvtCfm.cfmStatus.status == LCM_PRIM_OK)
    {
       DU_LOG("\nDU_APP : Tunnel management confirm OK");
+#ifdef EGTP_TEST      
+      duSendEgtpTestData();
+#endif
    }
    else
    {
@@ -1218,6 +1219,21 @@ uint8_t duHdlEgtpTnlMgmtCfm(EgtpTnlEvt tnlEvtCfm)
    return (ret);
 }
 
+/*******************************************************************
+ *
+ * @brief Sends UL user data over to EGTP
+ *
+ * @details
+ *
+ *    Function : duSendEgtpDatInd
+ *
+ *    Functionality: Sends UL user data over to EGTP
+ *
+ * @params[in] UL data buffer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
 uint8_t duSendEgtpDatInd(Buffer *mBuf)
 {
    EgtpMsg  egtpMsg;
@@ -1508,33 +1524,6 @@ uint8_t duHdlSchCfgComplete(Pst *pst, RgMngmt *cfm)
    return ROK;
 }
 
-/*******************************************************************
- *
- * @brief Sends Slot indication to EGTP
- *
- * @details
- *
- *    Function : duSendEgtpSlotInd
- *
- *    Functionality:
- *     Sends Slot indication to EGTP
- *
- * @params[in] 
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-uint8_t duSendEgtpSlotInd()
-{
-   Pst pst;
-
-   duFillEgtpPst(&pst, EVTSLOTIND);
-   packEgtpSlotInd(&pst);
-
-   return ROK;
-
-}
-
 /**************************************************************************
  * @brief Function to fill and send MacCellconfig
  *
@@ -1622,63 +1611,6 @@ uint8_t  duHandleMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm)
 
 /*******************************************************************
  *
- * @brief Handles slot indication from MAC
- *
- * @details
- *
- *    Function : duHandleSlotInd
- *
- *    Functionality:
- *      Handles slot indication from MAC
- *
- * @params[in] Post structure pointer
- *             Slot Info pointer
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-uint8_t duHandleSlotInd(Pst *pst, SlotIndInfo *slotInfo)
-{
-   DuCellCb *cellCb = NULLP;
-
-   if(slotInfo->cellId <=0 || slotInfo->cellId > MAX_NUM_CELL)
-   {
-      DU_LOG("\nDU APP : Invalid Cell Id %d in duHandleSlotInd()", slotInfo->cellId);
-      return RFAILED;
-   }
-
-   if(duGetCellCb(slotInfo->cellId, &cellCb) != ROK)
-      return RFAILED;
-
-   if(!cellCb->firstSlotIndRcvd)
-   {
-      DU_LOG("\nDU APP : Slot Indication received");
-      cellCb->firstSlotIndRcvd = true;
-      if((cellCb != NULL) && (cellCb->cellStatus == ACTIVATION_IN_PROGRESS))
-      {
-	 DU_LOG("\nDU APP : 5G-NR Cell %d is UP", slotInfo->cellId);
-         cellCb->cellStatus = ACTIVATED;
-
-#ifdef O1_ENABLE
-    DU_LOG("\nDU APP : Raise cell UP alarm for cell id=%d", slotInfo->cellId);
-    raiseCellAlrm(CELL_UP_ALARM_ID, slotInfo->cellId);
-#endif
-      }
-   }
-
-   /* TODO : Slot Indication to be moved out of EGTP_TEST when
-    * data path is established */
-#ifdef EGTP_TEST
-   duSendEgtpSlotInd();    
-#endif
-
-   if((pst->selector == ODU_SELECTOR_LWLC) || (pst->selector == ODU_SELECTOR_TC)) 
-      DU_FREE_SHRABL_BUF(pst->region, pst->pool, slotInfo, sizeof(SlotIndInfo));
-   return ROK;
-}
-
-/*******************************************************************
- *
  * @brief Builds and sends cell start request to MAC
  *
  * @details
@@ -1712,7 +1644,6 @@ uint8_t duBuildAndSendMacCellStartReq()
    {
       if(duCb.actvCellLst[id])
       {
-	 duCb.actvCellLst[id]->firstSlotIndRcvd = FALSE;
 	 cellStartInfo->cellId = duCb.actvCellLst[id]->cellId;
 
 	 /* Fill Pst */
@@ -1781,7 +1712,7 @@ uint8_t duBuildAndSendMacCellStopReq()
 uint8_t duHandleStopInd(Pst *pst, MacCellStopInfo *cellStopId)
 {
    DuCellCb *cellCb = NULLP;
- 
+
    if(cellStopId->cellId <=0 || cellStopId->cellId > MAX_NUM_CELL)
    {
       DU_LOG("\nDU APP : Invalid Cell Id %d in duHandleStopInd()", cellStopId->cellId);
@@ -1790,26 +1721,22 @@ uint8_t duHandleStopInd(Pst *pst, MacCellStopInfo *cellStopId)
    if(duGetCellCb(cellStopId->cellId, &cellCb) != ROK)
       return RFAILED;
 
-   if(cellCb->firstSlotIndRcvd)
+   if((cellCb->cellStatus == ACTIVATED))
    {
-      cellCb->firstSlotIndRcvd = false;
-      if((cellCb->cellStatus == ACTIVATED))
-      {
-	 DU_LOG("\nDU APP : 5G-NR Cell %d is DOWN", cellStopId->cellId);
-	 cellCb->cellStatus = DELETION_IN_PROGRESS;
+      DU_LOG("\nDU APP : 5G-NR Cell %d is DOWN", cellStopId->cellId);
+      cellCb->cellStatus = DELETION_IN_PROGRESS;
 
 #ifdef O1_ENABLE
-       DU_LOG("\nDU APP : Raise cell down alarm for cell id=%d", cellStopId->cellId);
-       raiseCellAlrm(CELL_DOWN_ALARM_ID, cellStopId->cellId);
+      DU_LOG("\nDU APP : Raise cell down alarm for cell id=%d", cellStopId->cellId);
+      raiseCellAlrm(CELL_DOWN_ALARM_ID, cellStopId->cellId);
 #endif
-      }
    }
+
    if((pst->selector == ODU_SELECTOR_LWLC) || (pst->selector == ODU_SELECTOR_TC))
       DU_FREE_SHRABL_BUF(MAC_MEM_REGION, pst->pool, cellStopId, sizeof(MacCellStopInfo));
 
    cellCb->cellStatus = CELL_OUT_OF_SERVICE; //TODO: cell status must be set to OOS after all UE and cell cleanup which is not
                                              //supported now
-
 
    return ROK;
 }

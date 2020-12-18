@@ -429,6 +429,7 @@ uint8_t sendSchedRptToRlc(DlSchedInfo dlInfo, SlotIndInfo slotInfo)
 uint8_t MacProcCellStartReq(Pst *pst, MacCellStartInfo  *cellStartInfo)
 {
    DU_LOG("\nMAC : Handling cell start request");
+   gSlotCount = 0;
    sendToLowerMac(START_REQUEST, 0, cellStartInfo);
 
    MAC_FREE_SHRABL_BUF(pst->region, pst->pool, cellStartInfo, \

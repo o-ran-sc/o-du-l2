@@ -62,7 +62,7 @@
 #define EVENT_MAC_CELL_CONFIG_CFM    201
 #define EVENT_MAC_CELL_START_REQ     202
 #define EVENT_MAC_CELL_STOP_REQ      203
-#define EVENT_MAC_SLOT_IND           204
+#define EVENT_MAC_CELL_UP_IND        204
 #define EVENT_MAC_STOP_IND           205
 #define EVENT_MAC_UL_CCCH_IND        206
 #define EVENT_MAC_DL_CCCH_IND        207
@@ -667,6 +667,11 @@ typedef struct macCellStartInfo
    uint16_t cellId;
 }MacCellStartInfo;
 
+typedef struct macCellUpInfo
+{
+   uint16_t cellId;
+}MacCellUpInfo;
+
 typedef struct macCellStopInfo
 {
    uint16_t cellId;
@@ -1083,9 +1088,9 @@ typedef struct ueCfgRsp
 }MacUeCfgRsp;
 
 /* Functions for slot Ind from MAC to DU APP*/
-typedef uint8_t (*DuMacSlotInd) ARGS((
+typedef uint8_t (*DuMacCellUpInd) ARGS((
 	 Pst       *pst,
-	 SlotIndInfo  *slotInfo ));
+	 MacCellUpInfo  *cellUpInfo ));
 
 /* Functions for stop Ind from MAC to DU APP*/
 typedef uint8_t (*DuMacStopInd) ARGS((
@@ -1144,9 +1149,9 @@ typedef uint8_t (*DuMacUeReconfigReq) ARGS((
 	 Pst           *pst,
 	 MacUeCfg      *ueCfg ));
 
-uint8_t packMacSlotInd(Pst *pst, SlotIndInfo *slotInfo );
-uint8_t unpackMacSlotInd(DuMacSlotInd func, Pst *pst, Buffer *mBuf);
-uint8_t duHandleSlotInd(Pst *pst, SlotIndInfo *slotInfo);
+uint8_t packMacCellUpInd(Pst *pst, MacCellUpInfo *cellUpInfo);
+uint8_t unpackMacCellUpInd(DuMacCellUpInd func, Pst *pst, Buffer *mBuf);
+uint8_t duHandleCellUpInd(Pst *pst, MacCellUpInfo *cellUpInfo);
 uint8_t packMacCellStartReq(Pst *pst, MacCellStartInfo *cellStartInfo);
 uint8_t unpackMacCellStartReq(DuMacCellStartReq func, Pst *pst, Buffer *mBuf);
 uint8_t MacProcCellStartReq(Pst *pst, MacCellStartInfo  *cellStartInfo);

@@ -28,6 +28,7 @@
 #include "du_app_rlc_inf.h"
 #include "du_cfg.h"
 #include "du_mgr.h"
+#include "du_utils.h"
 #include "du_cell_mgr.h"
 
 /*******************************************************************
@@ -155,6 +156,52 @@ uint8_t duGetCellCb(uint16_t cellId, DuCellCb **cellCb)
       return RFAILED;
    }
 
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Handles cell up indication from MAC
+ *
+ * @details
+ *
+ *    Function : duHandleCellUpInd
+ *
+ *    Functionality:
+ *      Handles cell up indication from MAC
+ *
+ * @params[in] Post structure pointer
+ *             cell Up info
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t duHandleCellUpInd(Pst *pst, MacCellUpInfo *cellUpInfo)
+{
+   DuCellCb *cellCb = NULLP;
+
+   if(cellUpInfo->cellId <=0 || cellUpInfo->cellId > MAX_NUM_CELL)
+   {
+      DU_LOG("\nDU APP : Invalid Cell Id %d in duHandleCellUpInd()", cellUpInfo->cellId);
+      return RFAILED;
+   }
+
+   if(duGetCellCb(cellUpInfo->cellId, &cellCb) != ROK)
+      return RFAILED;
+
+   if((cellCb != NULL) && (cellCb->cellStatus == ACTIVATION_IN_PROGRESS))
+   {
+      DU_LOG("\nDU APP : 5G-NR Cell %d is UP", cellUpInfo->cellId);
+      cellCb->cellStatus = ACTIVATED;
+
+#ifdef O1_ENABLE
+      DU_LOG("\nDU APP : Raise cell UP alarm for cell id=%d", cellUpInfo->cellId);
+      raiseCellAlrm(CELL_UP_ALARM_ID, cellUpInfo->cellId);
+#endif
+   }
+
+   if((pst->selector == ODU_SELECTOR_LWLC) || (pst->selector == ODU_SELECTOR_TC))
+      DU_FREE_SHRABL_BUF(pst->region, pst->pool, cellUpInfo, sizeof(MacCellUpInfo));
    return ROK;
 }
 

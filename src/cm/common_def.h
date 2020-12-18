@@ -180,6 +180,8 @@ typedef enum
    CONFIG_DEL
 }ConfigType;
 
+uint64_t gSlotCount;
+
 void freqDomRscAllocType0(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain);
 void oduCpyFixBufToMsg(uint8_t *fixBuf, Buffer *mBuf, uint16_t len);
 uint8_t buildPlmnId(Plmn plmn, uint8_t *buf);

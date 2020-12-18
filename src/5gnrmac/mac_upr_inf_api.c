@@ -23,12 +23,12 @@
 #include "rlc_mac_inf.h"
 #include "mac_upr_inf_api.h"
 
-/* Funtion pointer options for slot indication */
-DuMacSlotInd packMacSlotIndOpts[] =
+/* Funtion pointer options for cell up indication */
+DuMacCellUpInd packMacCellUpIndOpts[] =
 {
-   packMacSlotInd,
-   duHandleSlotInd,
-   packMacSlotInd
+   packMacCellUpInd,
+   duHandleCellUpInd,
+   packMacCellUpInd
 };
 /* Funtion pointer options for stop indication */
 DuMacStopInd packMacStopIndOpts[] =
@@ -65,25 +65,25 @@ RlcMacSchedResultRptFunc rlcMacSchedResultRptOpts[] =
 
 /*******************************************************************
  *
- * @brief Send slot indication to MAC
+ * @brief Send cell up indication to DU APP
  *
  * @details
  *
- *    Function : MacDuAppSlotInd
+ *    Function : MacDuAppCellUpInd
  *
  *    Functionality:
  *       Select appropriate function using selector value and
- *       send to MAC
+ *       send cell up indication to DU APP
  *
  * @params[in]  Post structure pointer
- *              Slot info pointer 
+ *              Cell UP info
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t MacDuAppSlotInd(Pst *pst, SlotIndInfo *slotInfo)
+uint8_t MacDuAppCellUpInd(Pst *pst, MacCellUpInfo *cellUpInfo)
 {
-   return (*packMacSlotIndOpts[pst->selector])(pst, slotInfo);
+   return (*packMacCellUpIndOpts[pst->selector])(pst, cellUpInfo);
 }
 
 /*******************************************************************

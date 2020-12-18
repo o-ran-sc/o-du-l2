@@ -107,9 +107,23 @@ uint8_t egtpActvTsk(Pst *pst, Buffer *mBuf)
                ret = unpackEgtpTnlMgmtReq(egtpTnlMgmtReq, pst, mBuf);
                break;
             }
-            case EVTSLOTIND:
+            default:
             {
-               ret = unpackEgtpSlotInd(egtpSlotInd, pst, mBuf);
+               DU_LOG("\nEGTP : Invalid event %d", pst->event);
+               ODU_PUT_MSG_BUF(mBuf);
+               ret = RFAILED;
+            }
+         }
+         break;
+      }
+      case ENTEGTP:
+      {
+         switch(pst->event)
+         {
+            case EVTSTARTPOLL:
+            {
+               DU_LOG("\nEGTP : Starting Socket Polling");
+               egtpRecvMsg();
                ODU_PUT_MSG_BUF(mBuf);
                break;
             }
@@ -119,8 +133,8 @@ uint8_t egtpActvTsk(Pst *pst, Buffer *mBuf)
                ODU_PUT_MSG_BUF(mBuf);
                ret = RFAILED;
             }
-         }
-         break;
+        }
+        break;
       }
       case ENTRLC:
       {
@@ -255,10 +269,11 @@ uint8_t egtpFillRspPst(Pst *pst, Pst *rspPst)
 uint8_t egtpSrvOpenReq(Pst *pst)
 {
 
-   uint8_t    ret;       /* Return value */
-   Pst   rspPst;    /* Response Pst structure */ 
-   CmStatus cfm;    /* Confirmation status */
-   uint8_t sockType;     /* Socket type */
+   uint8_t  ret;       /* Return value */
+   Pst      rspPst;    /* Response Pst structure */ 
+   Pst      egtpPst;   /* Self post */
+   CmStatus cfm;       /* Confirmation status */
+   uint8_t  sockType;  /* Socket type */
 
    DU_LOG("\nEGTP : Received EGTP open server request");
  
@@ -280,7 +295,20 @@ uint8_t egtpSrvOpenReq(Pst *pst)
 
    DU_LOG("\nEGTP : Receiver socket[%d] and Sender socket[%d] open", egtpCb.recvTptSrvr.sockFd.fd, egtpCb.dstCb.sendTptSrvr.sockFd.fd);
 
-   /* Filling and seing response */
+   /* Start Socket polling */
+   memset(&egtpPst, 0, sizeof(egtpPst));
+   egtpPst.srcEnt = (Ent)ENTEGTP;
+   egtpPst.srcInst = (Inst)EGTP_INST;
+   egtpPst.srcProcId = DU_PROC;
+   egtpPst.dstEnt = (Ent)ENTEGTP;
+   egtpPst.dstInst = (Inst)EGTP_INST;
+   egtpPst.dstProcId = DU_PROC;
+   egtpPst.event = EVTSTARTPOLL;
+   egtpPst.selector = ODU_SELECTOR_LC;
+   egtpPst.pool= DU_POOL;
+   packEgtpStartPollingReq(&egtpPst);
+
+   /* Filling and sending response */
    cfm.status = LCM_PRIM_OK;
    cfm.reason = LCM_REASON_NOT_APPL;
 
@@ -337,8 +365,7 @@ uint8_t egtpSrvOpenPrc(uint8_t sockType, EgtpTptSrvr *server)
  *      Functionality:
  *           This function handles EGTP tunnel managament request
  *     
- * @param[in]  Pst *pst, post structure
- *             Tunnel Eveny structure
+ * @param[in] Tunnel Eveny structure
  * @return ROK     - success
  *         RFAILED - failure
  *
@@ -347,7 +374,6 @@ uint8_t egtpSrvOpenPrc(uint8_t sockType, EgtpTptSrvr *server)
 uint8_t egtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt)
 {
    S8 ret;
-   Pst rspPst;
 
    DU_LOG("\nEGTP : Received tunnel management request");
    switch(tnlEvt.action)
@@ -386,9 +412,7 @@ uint8_t egtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt)
    }
 
    DU_LOG("\nEGTP : Sending Tunnel management confirmation");
-   egtpFillRspPst(pst, &rspPst);
-   rspPst.event = EVTTNLMGMTCFM;
-   packEgtpTnlMgmtCfm(&rspPst, tnlEvt);
+   duHdlEgtpTnlMgmtCfm(tnlEvt);
 
    return ROK;
 }
@@ -767,28 +791,6 @@ uint8_t egtpSendMsg(Buffer *mBuf)
 
 /*******************************************************************
  *
- * @brief Handles Slot Indication from PHY
- *
- * @details
- *
- *    Function : egtpSlotInd
- *
- *    Functionality:
- *       Handles TTI Indication from PHY
- *
- * @params[in] 
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-uint8_t egtpSlotInd()
-{
-   egtpRecvMsg();
-   return ROK;
-}
-
-/*******************************************************************
- *
  * @brief Receives EGTP message from UDP socket 
  *
  * @details
@@ -813,9 +815,6 @@ uint8_t egtpRecvMsg()
    CmInetAddr     fromAddr;      /* Egtp data sender address */
    CmInetMemInfo  memInfo;       /* Buffer allocation info */
 
-
-   DU_LOG("\nEGTP : Received Slot Indication");
-
    nMsg = 0;
    memInfo.region = DU_APP_MEM_REGION;
    memInfo.pool   = DU_POOL;
@@ -823,7 +822,7 @@ uint8_t egtpRecvMsg()
    fromAddr.port = egtpCb.dstCb.dstPort;
    fromAddr.address = egtpCb.dstCb.dstIp;
 
-   while(nMsg < EGTP_MAX_MSG_RECV)
+   while(true)
    {
       bufLen = -1;
       ret = cmInetRecvMsg(&(egtpCb.recvTptSrvr.sockFd), &fromAddr, &memInfo, \
@@ -840,6 +839,21 @@ uint8_t egtpRecvMsg()
    return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Handles DL User data received from CU
+ *
+ * @details
+ *
+ *    Function : egtpHdlRecvData
+ *
+ *    Functionality: Handles DL User data received from CU
+ *
+ * @params[in] DL Usre data buffer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
 uint8_t egtpHdlRecvData(Buffer *mBuf)
 {
    EgtpMsg  egtpMsg;
@@ -853,6 +867,21 @@ uint8_t egtpHdlRecvData(Buffer *mBuf)
    return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Decodes EGTP header from DL User data
+ *
+ * @details
+ *
+ *    Function : egtpDecodeHdr
+ *
+ *    Functionality: Decodes EGTP header from DL User data
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
 uint8_t egtpDecodeHdr(Buffer *mBuf, EgtpMsg  *egtpMsg)
 {
    uint8_t    tmpByte[5];         /* Holds 5 byte of data after Decoding */
@@ -1016,3 +1045,6 @@ uint8_t egtpDecodeHdr(Buffer *mBuf, EgtpMsg  *egtpMsg)
    return ROK;
 
 }
+/**********************************************************************
+         End of file
+**********************************************************************/
