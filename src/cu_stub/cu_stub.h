@@ -93,6 +93,7 @@ void readCuCfg();
 void cuAppInmsgHdlr(Buffer *mBuf);
 void sctpNtfyInd(CmInetSctpNotification *ntfy);
 uint8_t egtpInitReq();
+void *cuConsoleHandler(void *);
 
 #endif
 

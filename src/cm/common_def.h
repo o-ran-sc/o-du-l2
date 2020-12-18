@@ -159,19 +159,6 @@
    _bitPos = __builtin_ctz(_in);                 \
 }
 
-typedef struct slotIndInfo
-{
-   uint16_t cellId;
-   uint16_t sfn;
-   uint16_t slot;
-}SlotIndInfo;
-
-typedef struct PlmnIdentity
-{
-   uint8_t mcc[3];
-   uint8_t mnc[3];
-}Plmn;
-
 typedef enum
 {
    UE_CFG_INACTIVE,
@@ -186,6 +173,26 @@ typedef enum
    CONFIG_MOD,
    CONFIG_DEL
 }ConfigType;
+
+typedef struct slotIndInfo
+{
+   uint16_t cellId;
+   uint16_t sfn;
+   uint16_t slot;
+}SlotIndInfo;
+
+typedef struct PlmnIdentity
+{
+   uint8_t mcc[3];
+   uint8_t mnc[3];
+}Plmn;
+
+typedef struct oduCellId
+{
+   uint16_t cellId;
+}OduCellId;
+
+uint64_t gSlotCount;
 
 void freqDomRscAllocType0(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain);
 void oduCpyFixBufToMsg(uint8_t *fixBuf, Buffer *mBuf, uint16_t len);

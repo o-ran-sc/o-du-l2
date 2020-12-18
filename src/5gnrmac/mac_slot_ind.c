@@ -240,50 +240,47 @@ int sendSlotIndMacToSch(SlotIndInfo *slotInd)
 
 /*******************************************************************
  *
- * @brief Send slot indication to DU APP
+ * @brief Send cell up indication to DU APP
  *
  * @details
  *
- *    Function : sendSlotIndMacToDuApp
+ *    Function : sendCellUpIndMacToDuApp
  *
  *    Functionality:
- *       Send slot indication to DU APP
+ *       Send cell up indication to DU APP
  *
- * @params[in] Slot indication info 
+ * @params[in] Cell Up indication info 
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-int sendSlotIndMacToDuApp(SlotIndInfo *slotInd)
+int sendCellUpIndMacToDuApp(uint16_t cellId)
 {
    Pst pst;
    uint16_t ret;
-   SlotIndInfo  *slotInfo;
+   OduCellId *oduCellId;
 
    /*  Allocate sharable memory */
-   MAC_ALLOC_SHRABL_BUF(slotInfo, sizeof(SlotIndInfo));
-   if(!slotInfo)
+   MAC_ALLOC_SHRABL_BUF(oduCellId, sizeof(OduCellId));
+   if(!oduCellId)
    {
-      DU_LOG("\nMAC : Slot Indication memory allocation failed");
+      DU_LOG("\nMAC : Memory allocation failed for cell up indication");
       return RFAILED;
    }
-
-   slotInfo->cellId = slotInd->cellId;
-   slotInfo->sfn = slotInd->sfn;
-   slotInfo->slot = slotInd->slot;
+   oduCellId->cellId = cellId;
 
    /* Fill Pst */
-   FILL_PST_MAC_TO_DUAPP(pst, EVENT_MAC_SLOT_IND);
+   FILL_PST_MAC_TO_DUAPP(pst, EVENT_MAC_CELL_UP_IND);
 
-   ret = MacDuAppSlotInd(&pst, slotInfo);
+   ret = MacDuAppCellUpInd(&pst, oduCellId);
    if(ret != ROK)
    {
-      DU_LOG("\nMAC: Failed to send slot indication to DU APP");
-      MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, slotInfo, sizeof(SlotIndInfo));
+      DU_LOG("\nMAC: Failed to send cell up indication to DU APP");
+      MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, oduCellId, sizeof(OduCellId));
    }
 
    return ret;
-} /* sendSlotIndMacToDuApp */
+} /* sendCellUpIndMacToDuApp */
 
 /*******************************************************************
  *
@@ -352,6 +349,7 @@ uint8_t fapiMacSlotInd(Pst *pst, SlotIndInfo *slotInd)
 #endif
    /*starting Task*/
    ODU_START_TASK(&startTime, PID_MAC_TTI_IND);
+   gSlotCount++;
 
 /* When testing L2 with Intel-L1, any changes specific to 
  * timer mode testing must be guarded under INTEL_TIMER_MODE*/
@@ -375,12 +373,15 @@ uint8_t fapiMacSlotInd(Pst *pst, SlotIndInfo *slotInd)
 #endif
 
    /* send slot indication to du app */
-   ret = sendSlotIndMacToDuApp(slotInd);
-   if(ret != ROK)
+   if(gSlotCount == 1)   
    {
-      DU_LOG("\nMAC :Sending of slot ind msg from MAC to DU APP failed");
-      MAC_FREE_SHRABL_BUF(pst->region, pst->pool, slotInd, sizeof(SlotIndInfo));
-      return ret;
+      ret = sendCellUpIndMacToDuApp(slotInd->cellId);
+      if(ret != ROK)
+      {
+         DU_LOG("\nMAC :Sending of slot ind msg from MAC to DU APP failed");
+         MAC_FREE_SHRABL_BUF(pst->region, pst->pool, slotInd, sizeof(SlotIndInfo));
+         return ret;
+      }
    }
 
    /*stoping Task*/

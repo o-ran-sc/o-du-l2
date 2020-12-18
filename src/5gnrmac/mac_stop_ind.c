@@ -47,25 +47,25 @@ uint8_t sendStopIndToDuApp(uint16_t cellId)
 {
    Pst pst;
    uint8_t ret = ROK;
-   MacCellStopInfo *cellStopInd;
+   OduCellId *oduCellId;
 
    /*  Allocate sharable memory */
-   MAC_ALLOC_SHRABL_BUF(cellStopInd, sizeof(MacCellStopInfo));
-   if(!cellStopInd)
+   MAC_ALLOC_SHRABL_BUF(oduCellId, sizeof(OduCellId));
+   if(!oduCellId)
    {
       DU_LOG("\nMAC : Stop Indication memory allocation failed");
       return RFAILED;
    }
-   cellStopInd->cellId = cellId;
+   oduCellId->cellId = cellId;
 
    /* Fill Pst */
    FILL_PST_MAC_TO_DUAPP(pst, EVENT_MAC_STOP_IND);
 
-   ret = MacDuAppStopInd(&pst, cellStopInd);
+   ret = MacDuAppStopInd(&pst, oduCellId);
    if(ret != ROK)
    {
       DU_LOG("\nMAC: Failed to send stop indication to DU APP");
-      MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, cellStopInd, sizeof(MacCellStopInfo));
+      MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, oduCellId, sizeof(OduCellId));
    }
    return ROK;
 }

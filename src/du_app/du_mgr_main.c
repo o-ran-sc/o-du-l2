@@ -61,9 +61,9 @@ DuCfgParams duCfgParam;
  * ****************************************************************/
 uint8_t duAppInit(SSTskId sysTskId)
 {
-	/* Register DU APP TAPA Task for DU */
-	if(ODU_REG_TTSK((Ent)ENTDUAPP, (Inst)DU_INST, (Ttype)TTNORM, (Prior)PRIOR0,
-            duActvInit, (ActvTsk)duActvTsk) != ROK)
+   /* Register DU APP TAPA Task for DU */
+   if(ODU_REG_TTSK((Ent)ENTDUAPP, (Inst)DU_INST, (Ttype)TTNORM, (Prior)PRIOR0,
+      duActvInit, (ActvTsk)duActvTsk) != ROK)
    {
       return RFAILED;
    }
@@ -284,7 +284,7 @@ uint8_t lwrMacInit(SSTskId sysTskId)
 uint8_t commonInit()
 {
    /* Declare system task Ids */
-   SSTskId du_app_stsk, sctp_stsk, rlc_ul_stsk, rlc_mac_cl_stsk, lwr_mac_stsk;
+   SSTskId du_app_stsk, egtp_stsk, sctp_stsk, rlc_ul_stsk, rlc_mac_cl_stsk, lwr_mac_stsk;
 
    pthread_attr_t attr;
 
@@ -298,6 +298,14 @@ uint8_t commonInit()
    }
    ODU_SET_THREAD_AFFINITY(&du_app_stsk, SS_AFFINITY_MODE_EXCL, 15, 0);
 
+   /* system task for EGTP */
+   if(ODU_CREATE_TASK(PRIOR0, &egtp_stsk) != ROK)
+   {
+      DU_LOG("\nDU_APP : System Task creation for EGTP failed");
+      return RFAILED;
+   }
+   ODU_SET_THREAD_AFFINITY(&egtp_stsk, SS_AFFINITY_MODE_EXCL, 16, 0);
+
    /* system task for RLC_DL and MAC */
    if(ODU_CREATE_TASK(PRIOR0, &rlc_mac_cl_stsk) != ROK)
    {
@@ -306,7 +314,7 @@ uint8_t commonInit()
    }
    pthread_attr_init(&attr);
    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-   ODU_SET_THREAD_AFFINITY(&rlc_mac_cl_stsk, SS_AFFINITY_MODE_EXCL, 16, 0);
+   ODU_SET_THREAD_AFFINITY(&rlc_mac_cl_stsk, SS_AFFINITY_MODE_EXCL, 17, 0);
 
    /* system task for RLC UL */
    if(ODU_CREATE_TASK(PRIOR1, &rlc_ul_stsk) != ROK)
@@ -314,7 +322,7 @@ uint8_t commonInit()
       DU_LOG("\nDU_APP : System Task creation for RLC UL failed");
       return RFAILED;
    }
-   ODU_SET_THREAD_AFFINITY(&rlc_ul_stsk, SS_AFFINITY_MODE_EXCL, 17, 0);
+   ODU_SET_THREAD_AFFINITY(&rlc_ul_stsk, SS_AFFINITY_MODE_EXCL, 18, 0);
 
    /* system task for SCTP receiver thread */
    if(ODU_CREATE_TASK(PRIOR0, &sctp_stsk) != ROK)
@@ -322,7 +330,7 @@ uint8_t commonInit()
       DU_LOG("\nDU_APP : System Task creation for SCTP failed");
       return RFAILED;
    }
-   ODU_SET_THREAD_AFFINITY(&sctp_stsk, SS_AFFINITY_MODE_EXCL, 18, 0);
+   ODU_SET_THREAD_AFFINITY(&sctp_stsk, SS_AFFINITY_MODE_EXCL, 19, 0);
 
    /* system task for lower-mac receiver thread */
    if(ODU_CREATE_TASK(PRIOR0, &lwr_mac_stsk) != ROK)
@@ -330,7 +338,7 @@ uint8_t commonInit()
       DU_LOG("\nDU_APP : System Task creation for Lower MAC failed");
       return RFAILED;
    }
-   ODU_SET_THREAD_AFFINITY(&lwr_mac_stsk, SS_AFFINITY_MODE_EXCL, 19, 0);
+   ODU_SET_THREAD_AFFINITY(&lwr_mac_stsk, SS_AFFINITY_MODE_EXCL, 20, 0);
 
    /* Create TAPA tasks */
    if(duAppInit(du_app_stsk) != ROK)
@@ -339,7 +347,7 @@ uint8_t commonInit()
       return RFAILED;
    }
 
-   if(egtpInit(du_app_stsk) != ROK)
+   if(egtpInit(egtp_stsk) != ROK)
    {
       DU_LOG("\nDU_APP : EGTP TAPA Task initialization failed");
       return RFAILED;
@@ -396,7 +404,6 @@ uint8_t duInit()
    {
       ret = RFAILED;
    } 
- 
    return ret;
 }
 
@@ -404,6 +411,7 @@ void init_log()
 {
 	openlog("ODU",LOG_CONS | LOG_PID | LOG_NDELAY, LOG_LOCAL1);
 }
+
 /*******************************************************************
  *
  * @brief Entry point for the DU APP 
@@ -423,14 +431,13 @@ void init_log()
  * ****************************************************************/
 uint8_t tst(void)
 {
-	init_log();
+   init_log();
 
-	//Initialize TAPA layers
-	if(duInit() != ROK)
-	{
+   //Initialize TAPA layers
+   if(duInit() != ROK)
+   {
       return RFAILED;
    } 
-
 
    //Read all the configs from du_utils.c into duCfgParams
    duReadCfg();

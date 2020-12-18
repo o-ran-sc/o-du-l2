@@ -7459,7 +7459,7 @@ UE_NR_Capability_t *extractUeCapability(UE_CapabilityRAT_ContainerList_t *ueCapa
    if(!ueCapRatContList)
    {
       DU_LOG("\nF1AP : Memory allocation failed in extractUeCapability");
-      return RFAILED;
+      return NULLP;
    }
    memset(ueCapRatContList, 0, sizeof(UE_CapabilityRAT_ContainerListRRC_t));
    memset(&rval, 0, sizeof(asn_dec_rval_t));
@@ -7486,7 +7486,7 @@ UE_NR_Capability_t *extractUeCapability(UE_CapabilityRAT_ContainerList_t *ueCapa
           {
              DU_LOG("\nF1AP : Memory allocation failed in extractUeCapability");
              DU_FREE(ueCapRatContList, sizeof(UE_CapabilityRAT_ContainerListRRC_t));
-             return RFAILED;
+             return NULLP;
           } 
           memset(ueNrCap, 0, sizeof(UE_NR_Capability_t));
           memset(&rval, 0, sizeof(asn_dec_rval_t));
