@@ -60,9 +60,9 @@
 /* Event IDs */
 #define EVENT_MAC_CELL_CONFIG_REQ    200
 #define EVENT_MAC_CELL_CONFIG_CFM    201
-#define EVENT_MAC_CELL_START_REQ     202
-#define EVENT_MAC_CELL_STOP_REQ      203
-#define EVENT_MAC_SLOT_IND           204
+#define EVENT_MAC_CELL_START         202
+#define EVENT_MAC_CELL_STOP          203
+#define EVENT_MAC_CELL_UP_IND        204
 #define EVENT_MAC_STOP_IND           205
 #define EVENT_MAC_UL_CCCH_IND        206
 #define EVENT_MAC_DL_CCCH_IND        207
@@ -666,19 +666,9 @@ typedef struct macCellCfg
 
 typedef struct macCellCfgCfm
 {
-   uint16_t            cellId;
+   uint16_t       cellId;
    uint8_t        rsp; 
 }MacCellCfgCfm;
-
-typedef struct macCellStartInfo
-{
-   uint16_t cellId;
-}MacCellStartInfo;
-
-typedef struct macCellStopInfo
-{
-   uint16_t cellId;
-}MacCellStopInfo;
 
 typedef struct ulCcchInd
 {
@@ -1100,24 +1090,24 @@ typedef struct ueCfgRsp
 }MacUeCfgRsp;
 
 /* Functions for slot Ind from MAC to DU APP*/
-typedef uint8_t (*DuMacSlotInd) ARGS((
+typedef uint8_t (*DuMacCellUpInd) ARGS((
 	 Pst       *pst,
-	 SlotIndInfo  *slotInfo ));
+	 OduCellId *cellId ));
 
 /* Functions for stop Ind from MAC to DU APP*/
 typedef uint8_t (*DuMacStopInd) ARGS((
-	 Pst       *pst,
-	 MacCellStopInfo  *cellId ));
+	 Pst        *pst,
+	 OduCellId  *cellId ));
 
 /* Functions for mac cell start req */
-typedef uint8_t (*DuMacCellStartReq) ARGS((
-	 Pst               *pst, 
-	 MacCellStartInfo  *cellStartInfo ));
+typedef uint8_t (*DuMacCellStart) ARGS((
+	 Pst        *pst, 
+	 OduCellId  *cellId));
 
 /* Functions for mac cell stop request */
-typedef uint8_t (*DuMacCellStopReq) ARGS((
-	 Pst               *pst,
-	 MacCellStopInfo  *cellStopInfo ));
+typedef uint8_t (*DuMacCellStop) ARGS((
+	 Pst        *pst,
+	 OduCellId  *cellId ));
 
 /* Function pointers for packing macCellCfg Request and Confirm */
 typedef uint8_t (*packMacCellCfgReq) ARGS((
@@ -1161,24 +1151,24 @@ typedef uint8_t (*DuMacUeReconfigReq) ARGS((
 	 Pst           *pst,
 	 MacUeCfg      *ueCfg ));
 
-uint8_t packMacSlotInd(Pst *pst, SlotIndInfo *slotInfo );
-uint8_t unpackMacSlotInd(DuMacSlotInd func, Pst *pst, Buffer *mBuf);
-uint8_t duHandleSlotInd(Pst *pst, SlotIndInfo *slotInfo);
-uint8_t packMacCellStartReq(Pst *pst, MacCellStartInfo *cellStartInfo);
-uint8_t unpackMacCellStartReq(DuMacCellStartReq func, Pst *pst, Buffer *mBuf);
-uint8_t MacProcCellStartReq(Pst *pst, MacCellStartInfo  *cellStartInfo);
-uint8_t packMacCellStopReq(Pst *pst, MacCellStopInfo  *cellStopInfo);
-uint8_t unpackMacCellStopReq(DuMacCellStopReq func, Pst *pst, Buffer *mBuf);
-uint8_t MacProcCellStopReq(Pst *pst, MacCellStopInfo  *cellStopInfo);
+uint8_t packMacCellUpInd(Pst *pst, OduCellId *cellId);
+uint8_t unpackMacCellUpInd(DuMacCellUpInd func, Pst *pst, Buffer *mBuf);
+uint8_t duHandleCellUpInd(Pst *pst, OduCellId *cellId);
+uint8_t packMacCellStart(Pst *pst, OduCellId *cellId);
+uint8_t unpackMacCellStart(DuMacCellStart func, Pst *pst, Buffer *mBuf);
+uint8_t MacProcCellStart(Pst *pst, OduCellId *cellId);
+uint8_t packMacCellStop(Pst *pst, OduCellId *cellId);
+uint8_t unpackMacCellStop(DuMacCellStop func, Pst *pst, Buffer *mBuf);
+uint8_t MacProcCellStop(Pst *pst, OduCellId *cellId);
 uint8_t packMacCellCfg(Pst *pst, MacCellCfg *macCellCfg);
 uint8_t unpackDuMacCellCfg(DuMacCellCfgReq func,  Pst *pst,  Buffer *mBuf);
 uint8_t MacProcCellCfgReq(Pst *pst, MacCellCfg *macCellCfg);
 uint8_t packMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm);
 uint8_t unpackMacCellCfgCfm(DuMacCellCfgCfm func, Pst *pst, Buffer *mBuf);
 uint8_t duHandleMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm);
-uint8_t packMacStopInd(Pst *pst, MacCellStopInfo *cellId);
+uint8_t packMacStopInd(Pst *pst, OduCellId *cellId);
 uint8_t unpackMacStopInd(DuMacStopInd func, Pst *pst, Buffer *mBuf);
-uint8_t duHandleStopInd(Pst *pst, MacCellStopInfo *cellId);
+uint8_t duHandleStopInd(Pst *pst, OduCellId *cellId);
 uint8_t packMacUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo);
 uint8_t unpackMacUlCcchInd(DuMacUlCcchInd func, Pst *pst, Buffer *mBuf);
 uint8_t duHandleUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo);

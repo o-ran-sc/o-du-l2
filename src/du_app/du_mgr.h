@@ -143,7 +143,6 @@ typedef struct duCellCb
    CellCfgParams  cellInfo;         /* Cell info */
    /* pointer to store the address of macCellCfg params used to send du-app to MAC */
    MacCellCfg    *duMacCellCfg;
-   bool           firstSlotIndRcvd;
    CellStatus     cellStatus;       /* Cell status */
    uint32_t       numActvUes;       /* Total Active UEs */
    DuUeCb         ueCb[MAX_NUM_UE];  /* UE CONTEXT */
@@ -236,12 +235,11 @@ uint8_t duHdlEgtpCfgComplete(CmStatus cfm);
 uint8_t duSendEgtpSrvOpenReq();
 uint8_t duHdlEgtpSrvOpenComplete(CmStatus cfm);
 uint8_t duSendEgtpTnlMgmtReq(uint8_t action, uint32_t lclTeid, uint32_t remTeid);
-uint8_t duHdlEgtpTnlMgmtCfm(EgtpTnlEvt tnlEvtCfm);
 uint8_t duSendEgtpTestData();
 uint8_t duSendEgtpDatInd(Buffer *mBuf);
 uint8_t duHdlSchCfgComplete(Pst *pst, RgMngmt *cfm);
-uint8_t duBuildAndSendMacCellStartReq();
-uint8_t duBuildAndSendMacCellStopReq();
+uint8_t duBuildAndSendMacCellStart();
+uint8_t duBuildAndSendMacCellStop();
 #endif
 
 /**********************************************************************

@@ -107,13 +107,13 @@ Buffer  *mBuf                       /* message buffer       */
          /* Process MAC cell config */
          unpackDuMacCellCfg(MacProcCellCfgReq, pst, mBuf);
          break;
-      case EVENT_MAC_CELL_START_REQ:
+      case EVENT_MAC_CELL_START:
 	 /* Process MAC cell start request */
-	 unpackMacCellStartReq(MacProcCellStartReq, pst, mBuf);
+	 unpackMacCellStart(MacProcCellStart, pst, mBuf);
 	 break;
-      case EVENT_MAC_CELL_STOP_REQ:
+      case EVENT_MAC_CELL_STOP:
 	 /* Process MAC cell stop request */
-	 unpackMacCellStopReq(MacProcCellStopReq, pst, mBuf);
+	 unpackMacCellStop(MacProcCellStop, pst, mBuf);
 	 break;
       case EVENT_MAC_DL_CCCH_IND:
 	 /* Process DL CCCH Ind */

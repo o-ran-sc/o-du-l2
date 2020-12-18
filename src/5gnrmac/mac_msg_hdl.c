@@ -415,61 +415,62 @@ uint8_t sendSchedRptToRlc(DlSchedInfo dlInfo, SlotIndInfo slotInfo)
  *
  * @details
  *
- *    Function : MacProcCellStartReq
+ *    Function : MacProcCellStart
  *
  *    Functionality:
  *      Handles cell start reuqest from DU APP
  *
  * @params[in] Post structure pointer
- *             Cell Start Request info pointer 
+ *             Cell Id 
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t MacProcCellStartReq(Pst *pst, MacCellStartInfo  *cellStartInfo)
+uint8_t MacProcCellStart(Pst *pst, OduCellId  *cellId)
 {
    DU_LOG("\nMAC : Handling cell start request");
-   sendToLowerMac(START_REQUEST, 0, cellStartInfo);
+   gSlotCount = 0;
+   sendToLowerMac(START_REQUEST, 0, cellId);
 
-   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, cellStartInfo, \
-	 sizeof(MacCellStartInfo));
+   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, cellId, \
+	 sizeof(OduCellId));
 
    return ROK;
 }
 
 /*******************************************************************
  *
- * @brief Handles cell stop request from DU APP
+ * @brief Handles cell stop from DU APP
  *
  * @details
  *
- *    Function : MacProcCellStartReq
+ *    Function : MacProcCellStop
  *
  *    Functionality:
- *        Handles cell stop request from DU APP
+ *        Handles cell stop from DU APP
  *
  * @params[in] Post structure pointer
- *             Mac Cell stop information
+ *             Cell Id
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t MacProcCellStopReq(Pst *pst, MacCellStopInfo  *cellStopInfo)
+uint8_t MacProcCellStop(Pst *pst, OduCellId  *cellId)
 {
 #ifdef INTEL_FAPI
    uint16_t      cellIdx; 
    SlotIndInfo   slotInfo;
 
    DU_LOG("\nMAC : Sending cell stop request to Lower Mac");
-   GET_CELL_IDX(cellStopInfo->cellId, cellIdx);
-   slotInfo.cellId = cellStopInfo->cellId;
+   GET_CELL_IDX(cellId->cellId, cellIdx);
+   slotInfo.cellId = cellId->cellId;
    slotInfo.sfn = macCb.macCell[cellIdx]->currTime.sfn;
    slotInfo.slot = macCb.macCell[cellIdx]->currTime.slot;
    sendToLowerMac(FAPI_STOP_REQUEST, 0, &slotInfo);
 #endif
 
-   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, cellStopInfo, \
-	 sizeof(MacCellStopInfo));
+   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, cellId, \
+	 sizeof(OduCellId));
 
    return ROK;
 }

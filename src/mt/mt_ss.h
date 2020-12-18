@@ -53,7 +53,7 @@
 #define SS_MAX_TTSKS                    100
 
 #ifndef SS_MULTICORE_SUPPORT
-#define SS_MAX_STSKS                    6
+#define SS_MAX_STSKS                    7
 #else
 /* mt001.301 : Additions */
 #ifdef  SPLIT_RLC_DL_TASK
@@ -63,13 +63,13 @@
 #define SS_MAX_STSKS                    5 
 #endif
 #else 
-#define SS_MAX_STSKS                    6 
+#define SS_MAX_STSKS                    7 
 #endif 
 #endif /* SS_MULTICORE_SUPPORT */
 
 #else /* SS_MULTIPLE_PROCS */
 #define SS_MAX_TTSKS                    1000 
-#define SS_MAX_STSKS                    6
+#define SS_MAX_STSKS                    7
 #endif /* SS_MULTIPLE_PROCS */
 
 #ifdef SS_DRVR_SUPPORT
@@ -90,7 +90,7 @@
 #ifdef SS_MULTICORE_SUPPORT
 #define SS_MAX_REGS SS_MAX_STSKS
 #else
-#define SS_MAX_REGS 6
+#define SS_MAX_REGS  7
 #endif
 
 #ifdef CMM_MAX_BKT_ENT
