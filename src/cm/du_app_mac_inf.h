@@ -1144,9 +1144,9 @@ typedef uint8_t (*DuMacUeReconfigReq) ARGS((
 	 Pst           *pst,
 	 MacUeCfg      *ueCfg ));
 
-uint8_t packMacSlotInd(Pst *pst, SlotIndInfo *slotInfo );
+uint8_t packMacSlotInd(Pst *pst, uint16_t *cellId);
 uint8_t unpackMacSlotInd(DuMacSlotInd func, Pst *pst, Buffer *mBuf);
-uint8_t duHandleSlotInd(Pst *pst, SlotIndInfo *slotInfo);
+uint8_t duHandleSlotInd(Pst *pst, uint16_t *cellId);
 uint8_t packMacCellStartReq(Pst *pst, MacCellStartInfo *cellStartInfo);
 uint8_t unpackMacCellStartReq(DuMacCellStartReq func, Pst *pst, Buffer *mBuf);
 uint8_t MacProcCellStartReq(Pst *pst, MacCellStartInfo  *cellStartInfo);

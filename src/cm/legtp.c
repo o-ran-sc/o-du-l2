@@ -484,21 +484,21 @@ uint8_t unpackEgtpTnlMgmtCfm(EgtpTnlMgmtCfm func, Buffer *mBuf)
 
 /*******************************************************************
  *
- * @brief Packs Slot indication and sends to EGTP
+ * @brief Packs Polling requesting and sends to EGTP
  *
  * @details
  *
- *    Function : packEgtpSlotInd
+ *    Function : packEgtpStartPollingReq
  *
  *    Functionality:
- *       Packs slot indication and sends tp EGTP
+ *       Packs polling request and sends to EGTP
  *
  * @params[in] Post structure
  * @return ROK     - success
  *         RFAILED - failure
  *
  *******************************************************************/
-uint8_t packEgtpSlotInd(Pst *pst)
+uint8_t packEgtpStartPollingReq(Pst *pst)
 {
    Buffer *mBuf;
 
@@ -510,26 +510,8 @@ uint8_t packEgtpSlotInd(Pst *pst)
 
    ODU_POST_TASK(pst, mBuf);
    return ROK;
- 
 }
 
-/*******************************************************************
- *
- * @brief Unpacks slot indication
- *
- * @details
- *
- *    Function : unpackEgtpSlotInd
- *
- *    Functionality:
- *       Unpacks slot indication
- *
- * @params[in]
- * @return ROK     - success
- *         RFAILED - failure
- *
-******************************************************************/
-uint8_t unpackEgtpSlotInd(EgtpSlotInd func, Pst *pst, Buffer *mBuf)
-{
-    return ((*func)());
-}
+/**********************************************************************
+         End of file
+**********************************************************************/

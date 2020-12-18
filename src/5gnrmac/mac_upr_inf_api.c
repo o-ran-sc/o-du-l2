@@ -76,14 +76,14 @@ RlcMacSchedResultRptFunc rlcMacSchedResultRptOpts[] =
  *       send to MAC
  *
  * @params[in]  Post structure pointer
- *              Slot info pointer 
+ *              Cell Id pointer 
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t MacDuAppSlotInd(Pst *pst, SlotIndInfo *slotInfo)
+uint8_t MacDuAppSlotInd(Pst *pst, uint16_t *cellId)
 {
-   return (*packMacSlotIndOpts[pst->selector])(pst, slotInfo);
+   return (*packMacSlotIndOpts[pst->selector])(pst, cellId);
 }
 
 /*******************************************************************
