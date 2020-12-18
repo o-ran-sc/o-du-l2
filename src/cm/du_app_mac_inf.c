@@ -345,12 +345,12 @@ uint8_t unpackMacCellStopReq(DuMacCellStopReq func, Pst *pst, Buffer *mBuf)
  *       Packs and Sends slot ind from MAC to DUAPP
  *
  * @params[in] Post structure pointer
- *             Slot Info pointer              
+ *             Cell Id pointer              
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packMacSlotInd(Pst *pst, SlotIndInfo *slotInfo )
+uint8_t packMacSlotInd(Pst *pst, uint16_t *cellId)
 {
    Buffer *mBuf = NULLP;
 
@@ -362,24 +362,21 @@ uint8_t packMacSlotInd(Pst *pst, SlotIndInfo *slotInfo )
 
    if(pst->selector == ODU_SELECTOR_LC)
    {
-      CMCHKPK(oduUnpackUInt16, slotInfo->cellId, mBuf);
-      CMCHKPK(oduUnpackUInt16, slotInfo->sfn, mBuf);
-      CMCHKPK(oduUnpackUInt16, slotInfo->slot, mBuf);
-
-      CM_FREE_SHRABL_BUF(pst->region, pst->pool, slotInfo, sizeof(SlotIndInfo));
-      slotInfo = NULL;
+      CMCHKPK(oduUnpackUInt16, *cellId, mBuf);
+      CM_FREE_SHRABL_BUF(pst->region, pst->pool, cellId, sizeof(uint16_t));
+      cellId = NULL;
    }
    else if(pst->selector == ODU_SELECTOR_LWLC)
    {
       /* pack the address of the structure */
-      CMCHKPK(oduPackPointer,(PTR)slotInfo, mBuf);
+      CMCHKPK(oduPackPointer,(PTR)cellId, mBuf);
    }
    else
    {
       ODU_PUT_MSG_BUF(mBuf);
    }
 
-   return ODU_POST_TASK(pst,mBuf);
+   return ODU_POST_TASK(pst, mBuf);
 }
 
 /*******************************************************************
@@ -404,24 +401,19 @@ uint8_t unpackMacSlotInd(DuMacSlotInd func, Pst *pst, Buffer *mBuf)
 {
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      SlotIndInfo *slotInfo;
+      uint16_t *cellId;
 
       /* unpack the address of the structure */
-      CMCHKUNPK(oduUnpackPointer, (PTR *)&slotInfo, mBuf);
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&cellId, mBuf);
       ODU_PUT_MSG_BUF(mBuf);
-      return (*func)(pst, slotInfo);
+      return (*func)(pst, cellId);
    }
    else if(pst->selector == ODU_SELECTOR_LC)
    {
-      SlotIndInfo slotInfo;
-
-      CMCHKUNPK(oduPackUInt16, &(slotInfo.slot), mBuf);
-      CMCHKUNPK(oduPackUInt16, &(slotInfo.sfn), mBuf);
-      CMCHKUNPK(oduPackUInt16, &(slotInfo.cellId), mBuf);
-
+      uint16_t cellId;
+      CMCHKUNPK(oduPackUInt16, &cellId, mBuf);
       ODU_PUT_MSG_BUF(mBuf);
-      return (*func)(pst, &slotInfo);
-
+      return (*func)(pst, &cellId);
    }
    else
    {
