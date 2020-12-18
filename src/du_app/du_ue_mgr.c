@@ -123,7 +123,7 @@ uint8_t duHdlEgtpDlData(EgtpMsg  *egtpMsg)
    pst.srcProcId = DU_PROC;
    pst.region    = duCb.init.region;
 
-   cmPkKwuDatReq(&pst, &datReqInfo, egtpMsg->msg);
+   //cmPkKwuDatReq(&pst, &datReqInfo, egtpMsg->msg);
 #else
    //duBuildAndSendDlRrcMsgToRlc();
 #endif

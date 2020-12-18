@@ -1752,6 +1752,7 @@ uint8_t setDlRRCMsgType()
         rrcMsgType = RRC_RECONFIG;
         break;
       default:
+        rrcMsgType = NON_RRC_USER_DATA;
         break;
    }
    return rrcMsgType;   
@@ -6074,6 +6075,14 @@ uint8_t procUlRrcMsg(F1AP_PDU_t *f1apMsg)
             BuildAndSendDLRRCMessageTransfer(srbId, rrcMsgType);
 	 }
       }
+#ifdef EGTP_TEST      
+      if(rrcMsgType == NON_RRC_USER_DATA)
+      {
+         /* Start Pumping data from CU to DU */
+         DU_LOG("\nEGTP: Sending DL User Data");
+	 cuEgtpDatReq();
+      }
+#endif
    }
    return ret;
 }
