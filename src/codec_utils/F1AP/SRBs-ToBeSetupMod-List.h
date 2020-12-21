@@ -24,7 +24,7 @@ struct ProtocolIE_SingleContainer;
 
 /* SRBs-ToBeSetupMod-List */
 typedef struct SRBs_ToBeSetupMod_List {
-	A_SEQUENCE_OF(struct ProtocolIE_SingleContainer) list;
+	A_SEQUENCE_OF(struct SRBs_ToBeSetupMod_ItemIEs) list;
 	
 	/* Context for parsing across buffer boundaries */
 	asn_struct_ctx_t _asn_ctx;
