@@ -24,7 +24,7 @@ struct ProtocolIE_SingleContainer;
 
 /* DRBs-ToBeReleased-List */
 typedef struct DRBs_ToBeReleased_List {
-	A_SEQUENCE_OF(struct ProtocolIE_SingleContainer) list;
+	A_SEQUENCE_OF(struct DRBs_ToBeReleased_ItemIEs) list;
 	
 	/* Context for parsing across buffer boundaries */
 	asn_struct_ctx_t _asn_ctx;
