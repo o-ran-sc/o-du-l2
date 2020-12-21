@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "687dceb9_72d80dca",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 580,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-21T07:09:47Z",
+      "side": 1,
+      "message": "What si the difference in number of PRBS than what was allocated earlier? How is teh SCH allocation going on?Is there any conflict with any other message in the allocation?",
+      "revId": "be87e97ec25489bdf0886373350e0389a7be8e22",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "310175f8_cf5964b1",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 7051,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-21T07:09:47Z",
+      "side": 1,
+      "message": "what if supportedModulation IE is missing in the message?",
+      "revId": "be87e97ec25489bdf0886373350e0389a7be8e22",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3dfe41e4_2d90e5e9",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 7072,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-21T07:09:47Z",
+      "side": 1,
+      "message": "default?",
+      "revId": "be87e97ec25489bdf0886373350e0389a7be8e22",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
