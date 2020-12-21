@@ -10846,7 +10846,6 @@ void F1APMsgHdlr(Buffer *mBuf)
 		     procF1UeContextSetupReq(f1apMsg);
 		     break;
 		  }
-
 	       default:
 		  {
 		     DU_LOG("\nF1AP : Invalid type of initiating message[%d]",
