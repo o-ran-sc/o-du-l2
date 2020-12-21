@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "8f68ffcd_c39ec5e5",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 580,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-21T14:54:48Z",
+      "side": 1,
+      "message": "Earlier for MCS Index 4, 22 PRBs were assigned whereas with MCS Index 20, it is 4 PRBs.\nThere seems to be no conflict with other messages. Will be re-checking this thoroughly.",
+      "parentUuid": "687dceb9_72d80dca",
+      "revId": "be87e97ec25489bdf0886373350e0389a7be8e22",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "310175f8_cf5964b1",
         "filename": "src/du_app/du_f1ap_msg_hdl.c",
         "patchSetId": 5
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "fac1c51c_6f952fce",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 7051,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-21T14:54:48Z",
+      "side": 1,
+      "message": "filling modulation info with the already configured values if any of the modulation IE is absent",
+      "parentUuid": "310175f8_cf5964b1",
+      "revId": "be87e97ec25489bdf0886373350e0389a7be8e22",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3dfe41e4_2d90e5e9",
         "filename": "src/du_app/du_f1ap_msg_hdl.c",
         "patchSetId": 5
@@ -50,6 +86,24 @@
       "revId": "be87e97ec25489bdf0886373350e0389a7be8e22",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c3be1199_a65b010c",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 7072,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-21T14:54:48Z",
+      "side": 1,
+      "message": "since the switch case is based on ASN enum values, there will be encode/decode failure if incorrect value is filled. Hence default not added",
+      "parentUuid": "3dfe41e4_2d90e5e9",
+      "revId": "be87e97ec25489bdf0886373350e0389a7be8e22",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
