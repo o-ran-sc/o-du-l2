@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a0b4ac33_7a6a1745",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 3802,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-21T17:37:03Z",
+      "side": 1,
+      "message": "is it not better to memset \"ulTtiReqPdu-\u003epdu.pucch_pdu\" initially itself?\nEven if not, make sure the values are always filled at SCH. Even  if it is 0. Don\u0027t add conditions here",
+      "revId": "5ebcb20b0027754aee9262b6145a853e8c04092c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1cdc2397_6942ed97",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 681,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-21T17:37:03Z",
+      "side": 1,
+      "message": "make this a switch statement",
+      "revId": "5ebcb20b0027754aee9262b6145a853e8c04092c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5b737ddc_c88ab2ce",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 960,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-21T17:37:03Z",
+      "side": 1,
+      "message": "format0 has no allocations?",
+      "revId": "5ebcb20b0027754aee9262b6145a853e8c04092c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e09dd3d1_109b4c0a",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-21T17:37:03Z",
+      "side": 1,
+      "message": "rename to SCH_DEFAULT_K1",
+      "revId": "5ebcb20b0027754aee9262b6145a853e8c04092c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8e0924eb_cf1fc4cc",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 490,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-21T17:37:03Z",
+      "side": 1,
+      "message": "Let\u0027s discuss this function. The if and the else conditions appear mismatched",
+      "revId": "5ebcb20b0027754aee9262b6145a853e8c04092c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eba6248d_727727f9",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1237,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-21T17:37:03Z",
+      "side": 1,
+      "message": "is it possible that more than format cfg can occur at a time? If not, make a union for pucch formats",
+      "revId": "5ebcb20b0027754aee9262b6145a853e8c04092c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3768212b_dbf31328",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 7984,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-21T17:37:03Z",
+      "side": 1,
+      "message": "why is this change required?",
+      "revId": "5ebcb20b0027754aee9262b6145a853e8c04092c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
