@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "72d810bf_bb2480de",
+        "filename": "src/5gnrmac/lwr_mac_util.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-22T07:34:07Z",
+      "side": 1,
+      "message": "change to uint8_t",
+      "revId": "c679126cf4ebebff2e49214d7ffd57374d503e52",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "25004b6b_5d66e167",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-22T07:34:07Z",
+      "side": 1,
+      "message": "memset macDlData as well",
+      "revId": "c679126cf4ebebff2e49214d7ffd57374d503e52",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2cc70c47_6b2989ca",
+        "filename": "src/cm/cm_inet.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5710,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-22T07:34:07Z",
+      "side": 1,
+      "message": "initialize line #5710, 5711 and 5712",
+      "revId": "c679126cf4ebebff2e49214d7ffd57374d503e52",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8597701b_76b5d2b4",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1236,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-22T07:34:07Z",
+      "side": 1,
+      "message": "initialize these 2 variables too",
+      "revId": "c679126cf4ebebff2e49214d7ffd57374d503e52",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bda11727_ba513155",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 698,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-22T07:34:07Z",
+      "side": 1,
+      "message": "initialize to NULLP",
+      "revId": "c679126cf4ebebff2e49214d7ffd57374d503e52",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5f6bd6d4_36b89a49",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5535,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-22T07:34:07Z",
+      "side": 1,
+      "message": "using gdb, check if all these line are being hit or not. \nSame comment for all the newly added free functions.",
+      "revId": "c679126cf4ebebff2e49214d7ffd57374d503e52",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "440412bc_a39c0cbb",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 7875,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-22T07:34:07Z",
+      "side": 1,
+      "message": "why is this if condition inside the above if condition? Are they not independent?",
+      "revId": "c679126cf4ebebff2e49214d7ffd57374d503e52",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
