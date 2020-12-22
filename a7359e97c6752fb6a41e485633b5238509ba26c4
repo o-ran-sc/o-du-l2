@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "fd9dc466_3250cfdc",
+        "filename": "src/du_app/du_f1ap_msg_hdl.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-22T08:28:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9f6775a0_95483632",
+      "revId": "a7359e97c6752fb6a41e485633b5238509ba26c4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "476a9497_a7369703",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 8
@@ -33,6 +51,24 @@
       "revId": "a7359e97c6752fb6a41e485633b5238509ba26c4",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8fe2fe9f_4a55f136",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 772,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-22T08:28:04Z",
+      "side": 1,
+      "message": "mcsIndex corresponds to a 16 QAM mcs index\nmcsTable 64QAM to be used.",
+      "parentUuid": "476a9497_a7369703",
+      "revId": "a7359e97c6752fb6a41e485633b5238509ba26c4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
