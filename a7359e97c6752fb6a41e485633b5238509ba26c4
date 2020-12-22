@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9f6775a0_95483632",
+        "filename": "src/du_app/du_f1ap_msg_hdl.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-22T07:05:46Z",
+      "side": 1,
+      "message": "duFillModulationDetails",
+      "revId": "a7359e97c6752fb6a41e485633b5238509ba26c4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "476a9497_a7369703",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 772,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-22T07:05:46Z",
+      "side": 1,
+      "message": "UL must be 16QAM",
+      "revId": "a7359e97c6752fb6a41e485633b5238509ba26c4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
