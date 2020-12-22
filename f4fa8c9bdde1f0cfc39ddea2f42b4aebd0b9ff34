@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "52e2ad71_133f816c",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1755,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-22T12:26:17Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "58cc6951_50b288bd",
+      "revId": "f4fa8c9bdde1f0cfc39ddea2f42b4aebd0b9ff34",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5ff76779_d61f8b7f",
         "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
         "patchSetId": 1
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "51677c14_9ac1f3e1",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6078,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-22T12:26:17Z",
+      "side": 1,
+      "message": "Removed this part of code. Now sending DL User data when triggered from console input",
+      "parentUuid": "5ff76779_d61f8b7f",
+      "revId": "f4fa8c9bdde1f0cfc39ddea2f42b4aebd0b9ff34",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "62b88647_89ec09d4",
         "filename": "src/cu_stub/cu_f1ap_msg_hdl.h",
         "patchSetId": 1
@@ -50,6 +86,24 @@
       "revId": "f4fa8c9bdde1f0cfc39ddea2f42b4aebd0b9ff34",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f0beec5b_981febdc",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-22T12:26:17Z",
+      "side": 1,
+      "message": "Macro not needed anymore. Hence removed",
+      "parentUuid": "62b88647_89ec09d4",
+      "revId": "f4fa8c9bdde1f0cfc39ddea2f42b4aebd0b9ff34",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
