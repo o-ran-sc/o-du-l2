@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b5265889_6d778f8f",
+        "filename": "src/5gnrmac/mac.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-23T14:44:10Z",
+      "side": 1,
+      "message": "we don\u0027t need to add a new variable here.\nUse a new counter to peg slotInds received which can be declared in a common file. Refer to glblTtiCnt in seed code.\nWhen this counter is 1, send cell up indication to DU APP.",
+      "revId": "692950dab7b005b15035da162f9a15df7048b33c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5d511362_a66faf62",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-23T14:44:10Z",
+      "side": 1,
+      "message": "no need to send \"slotInd\" to DU APP. This is just a cell up notification. Hence, adding an event is sufficient in the message.",
+      "revId": "692950dab7b005b15035da162f9a15df7048b33c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "95e8cb57_642f6463",
+        "filename": "src/cu_stub/cu_stub.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-23T14:44:10Z",
+      "side": 1,
+      "message": "can we not use a system task instead?",
+      "revId": "692950dab7b005b15035da162f9a15df7048b33c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "29724462_4e2d5609",
+        "filename": "src/cu_stub/cu_stub.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-23T14:44:10Z",
+      "side": 1,
+      "message": "don\u0027t use ASCII values in code. \u0027D\u0027 can be used directly. Compiler will take the corresponding ASCII value",
+      "revId": "692950dab7b005b15035da162f9a15df7048b33c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
