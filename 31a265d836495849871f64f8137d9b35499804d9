@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9aae9cd2_dddddd18",
+        "filename": "src/5gnrmac/lwr_mac_util.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-23T14:48:36Z",
+      "side": 1,
+      "message": "not required. i is getting initialized on the for loop.\nChange variable name from i to bitIdx",
+      "revId": "31a265d836495849871f64f8137d9b35499804d9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
