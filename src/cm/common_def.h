@@ -80,6 +80,12 @@
 
 #define FREQ_DOM_RSRC_SIZE  6      /* i.e. 6 bytes because Size of frequency domain resource is 45 bits */
 
+#define BANDWIDTH_20MHZ 20
+#define BANDWIDTH_100MHZ 100
+
+#define TOTAL_PRB_20MHZ_MU0 106
+#define TOTAL_PRB_100MHZ_MU1 273
+
 /* Defining macros for common utility functions */
 #define ODU_GET_MSG_BUF SGetMsg
 #define ODU_PUT_MSG_BUF SPutMsg
