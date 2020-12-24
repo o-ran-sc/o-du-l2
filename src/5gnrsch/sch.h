@@ -19,7 +19,11 @@
 /* macros */
 #define SCH_INST_START 1
 #define SCH_MAX_INST 1
-#define SCH_NUM_SLOTS 10 /*forcing this to 10 */
+#define SCH_MU0_NUM_SLOTS 10 
+#define SCH_MU1_NUM_SLOTS 20 
+#define SCH_MU2_NUM_SLOTS 30 
+#define SCH_MU3_NUM_SLOTS 40 
+#define SCH_MU4_NUM_SLOTS 50 
 #define SCH_MAX_SFN 1024
 #define MAX_NUM_RB 106 /* value for numerology 0 15Khz */
 #define SCH_MIB_TRANS 80 
@@ -50,6 +54,15 @@
 
 typedef struct schCellCb SchCellCb;
 typedef struct schUeCb SchUeCb;
+
+typedef enum
+{
+   SCH_NUMEROLOGY_0,
+   SCH_NUMEROLOGY_1,
+   SCH_NUMEROLOGY_2,
+   SCH_NUMEROLOGY_3,
+   SCH_NUMEROLOGY_4
+}SchNumerology;
 
 typedef enum
 {
@@ -184,15 +197,15 @@ typedef struct schCellCb
    Inst          macInst;                           /*!< Index of the MAC instance */
    uint8_t       numSlots;                          /*!< Number of slots in current frame */
    SlotIndInfo   slotInfo;                          /*!< SFN, Slot info being processed*/
-   SchDlSlotInfo *schDlSlotInfo[SCH_NUM_SLOTS];     /*!< SCH resource allocations in DL */
-   SchUlSlotInfo *schUlSlotInfo[SCH_NUM_SLOTS];     /*!< SCH resource allocations in UL */
+   SchDlSlotInfo **schDlSlotInfo;                   /*!< SCH resource allocations in DL */
+   SchUlSlotInfo **schUlSlotInfo;                   /*!< SCH resource allocations in UL */
    SchCellCfg    cellCfg;                           /*!< Cell ocnfiguration */
    uint8_t       ssbStartSymbArr[SCH_MAX_SSB_BEAM]; /*!<start symbol per SSB beam */
    SchRaCb       raCb[MAX_NUM_UE];                  /*!< Rach Cb */
-   uint16_t      numActvUe;
-   uint32_t      actvUeBitMap;
-   uint32_t      boIndBitMap;
-   SchUeCb       ueCb[MAX_NUM_UE];
+   uint16_t      numActvUe;                         /*!<Number of active UEs */
+   uint32_t      actvUeBitMap;                      /*!<Bit map to find active UEs */
+   uint32_t      boIndBitMap;                       /*!<Bit map to indicate UEs that have recevied BO */
+   SchUeCb       ueCb[MAX_NUM_UE];                  /*!<Pointer to UE contexts of this cell */
 }SchCellCb;
 
 /**

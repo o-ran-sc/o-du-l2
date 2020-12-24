@@ -641,9 +641,8 @@ void schInitDlSlot(SchDlSlotInfo *schDlSlotInfo)
    {
       memset(&schDlSlotInfo->ssbInfo[itr], 0, sizeof(SsbInfo));
    }
-
-
 }
+
 /**********************************************************************
          End of file
 **********************************************************************/

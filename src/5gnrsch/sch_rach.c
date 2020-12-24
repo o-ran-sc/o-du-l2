@@ -132,7 +132,7 @@ uint8_t schAllocMsg3Pusch(Inst schInst, uint16_t slot, uint16_t crnti, \
 
    /* Slot allocation for msg3 based on 38.214 section 6.1.2.1 */
    msg3SlotAlloc = slot + k2 + delta;
-   msg3SlotAlloc = msg3SlotAlloc % SCH_NUM_SLOTS; 
+   msg3SlotAlloc = msg3SlotAlloc % cell->numSlots; 
 
    startRb = cell->schUlSlotInfo[msg3SlotAlloc]->puschCurrentPrb;
    tbSize = schCalcTbSize(8); /* 6 bytes msg3  and 2 bytes header */
@@ -205,7 +205,7 @@ uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst)
    uint8_t  ret = ROK;
 
    /* RAR will sent with a delay of RAR_DELAY */
-   rarSlot = (rachInd->timingInfo.slot+RAR_DELAY+PHY_DELTA)%SCH_NUM_SLOTS;
+   rarSlot = (rachInd->timingInfo.slot+RAR_DELAY+PHY_DELTA)%cell->numSlots;
 
    SchDlSlotInfo *schDlSlotInfo = cell->schDlSlotInfo[rarSlot]; /* RAR will sent in the next slot */
 
