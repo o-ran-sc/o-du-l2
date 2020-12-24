@@ -32,6 +32,7 @@
 #define CU_EGTP_PORT  39002
 #define NR_PCI 1
 #define NR_CELL_ID 1
+#define NR_NUMEROLOGY 0
 #define DU_NAME "ORAN_OAM_DU"
 #define CELL_TYPE SMALL
 #define DUPLEX_MODE DUP_MODE_FDD
@@ -56,10 +57,8 @@
 #define FREQ_SHIFT_7P5KHZ FALSE
 #define SSB_PBCH_PWR 0
 #define BCH_PAYLOAD PHY_GEN_TIMING_PBCH_BIT
-#define TOTAL_PRB_BW 106
 #define SUBCARRIER_SPACING 0
 #define NORMAL_CYCLIC_PREFIX 0
-#define SCS_CARRIER_BANDWIDTH 273         /* Subcarrier spacing- carrier bandwidth */
 #define OFFSET_TO_POINT_A 24                     /* PRB Offset to Point A */
 #define BETA_PSS BETA_PSS_0DB  
 #define SSB_PERIODICITY_5MS   5

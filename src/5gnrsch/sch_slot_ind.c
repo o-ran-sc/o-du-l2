@@ -240,8 +240,8 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
    memcpy(&cell->slotInfo, slotInd, sizeof(SlotIndInfo));
    dlBrdcstAlloc->ssbIdxSupported = 1;
 
-   sfnSlot = ((dlSchedInfo.schSlotValue.broadcastTime.sfn * 10) +
-	 dlSchedInfo.schSlotValue.broadcastTime.slot);
+   sfnSlot = dlSchedInfo.schSlotValue.broadcastTime.sfn * cell->numSlots +
+      dlSchedInfo.schSlotValue.broadcastTime.slot;
 
    slot = dlSchedInfo.schSlotValue.currentTime.slot;
 
