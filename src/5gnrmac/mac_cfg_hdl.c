@@ -199,6 +199,7 @@ uint8_t MacSchCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
    schCellCfg.cellId = macCellCfg->cellId;
    schCellCfg.phyCellId = macCellCfg->phyCellId;
    schCellCfg.bandwidth = macCellCfg->dlCarrCfg.bw;
+   schCellCfg.numerology = macCellCfg->numerology;
    schCellCfg.dupMode = macCellCfg->dupType;
 
    /* fill ssb scheduler parameters */

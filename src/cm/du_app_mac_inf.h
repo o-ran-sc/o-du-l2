@@ -646,9 +646,10 @@ typedef struct bwpUlConfig
 
 typedef struct macCellCfg
 {
-   uint16_t            cellId;           /* Cell Id */
-   uint8_t             carrierId;        /* Carrired Index */
-   uint16_t            phyCellId;        /* Physical cell id */
+   uint16_t       cellId;           /* Cell Id */
+   uint8_t        carrierId;        /* Carrired Index */
+   uint16_t       phyCellId;        /* Physical cell id */
+   uint8_t        numerology;       /* Supported numerology */
    DuplexMode     dupType;          /* Duplex type: TDD/FDD */
    CarrierCfg     dlCarrCfg;        /* DL Carrier configuration */
    CarrierCfg     ulCarrCfg;        /* UL Carrier configuration */

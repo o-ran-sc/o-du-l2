@@ -622,16 +622,16 @@ typedef struct schBwpUlCfg
 
 typedef struct schCellCfg
 {
-   uint16_t    cellId;           /* Cell Id */
-   uint16_t    phyCellId;        /* Physical cell id */
-   uint8_t     bandwidth;        /* Supported B/W */
+   uint16_t       cellId;           /* Cell Id */
+   uint16_t       phyCellId;        /* Physical cell id */
+   uint8_t        bandwidth;        /* Supported B/W */
+   uint8_t        numerology;       /* Supported numerology */
    SchDuplexMode  dupMode;          /* Duplex type: TDD/FDD */
-   SchSsbCfg   ssbSchCfg;        /* SSB config */
-   SchSib1Cfg  sib1SchCfg;       /* SIB1 config */
-   SchRachCfg  schRachCfg;       /* PRACH config */
-   SchBwpDlCfg schInitialDlBwp;  /* Initial DL BWP */
-   SchBwpUlCfg schInitialUlBwp;  /* Initial UL BWP */
-   uint8_t     puschMu;          /* PUSCH MU */
+   SchSsbCfg      ssbSchCfg;        /* SSB config */
+   SchSib1Cfg     sib1SchCfg;       /* SIB1 config */
+   SchRachCfg     schRachCfg;       /* PRACH config */
+   SchBwpDlCfg    schInitialDlBwp;  /* Initial DL BWP */
+   SchBwpUlCfg    schInitialUlBwp;  /* Initial UL BWP */
 }SchCellCfg;
 
 typedef struct schCellCfgCfm

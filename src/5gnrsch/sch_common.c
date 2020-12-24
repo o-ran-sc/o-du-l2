@@ -463,7 +463,7 @@ uint8_t schDlRsrcAllocMsg4(DlMsgAlloc *msg4Alloc, SchCellCb *cell, uint16_t slot
 uint16_t schAllocPucchResource(SchCellCb *cell,uint16_t crnti, uint16_t slot)
 {
    uint8_t k1 = 1; /* dl-DataToUL-ACK RRC parameter will received from DU-APP msg4-pucch config */
-   uint16_t pucchSlot = (slot + k1)  % SCH_NUM_SLOTS;
+   uint16_t pucchSlot = (slot + k1)  % cell->numSlots;
    SchUlSlotInfo  *schUlSlotInfo = NULLP;
 
    schUlSlotInfo = cell->schUlSlotInfo[pucchSlot];

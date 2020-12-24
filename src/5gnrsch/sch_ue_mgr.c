@@ -394,7 +394,7 @@ uint8_t schFillPuschAlloc(SchUeCb *ueCb, uint16_t pdcchSlot, uint32_t dataVol, S
   uint8_t  startSymb = ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.puschCfg.timeDomRsrcAllocList[0].startSymbol;
   uint8_t  symbLen = ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.puschCfg.timeDomRsrcAllocList[0].symbolLength;
 
-  puschSlot = (pdcchSlot + k2) % SCH_NUM_SLOTS;
+  puschSlot = (pdcchSlot + k2) % cellCb->numSlots;
 
   startRb = cellCb->schUlSlotInfo[puschSlot]->puschCurrentPrb;
   tbSize  = schCalcTbSize(dataVol + buffer); /*  2 bytes header + some buffer */
