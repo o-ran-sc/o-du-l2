@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e9b76309_d9012235",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 401,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-24T14:33:10Z",
+      "side": 1,
+      "message": "free schResrcCfg-\u003eresrcToAddModList[arrIdx].SchPucchFormat.format0 as well. This is a generic comment",
+      "revId": "817a16cf18b062849b9eb17f57236091664a4cfc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "85747312_57350c3e",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-24T14:33:10Z",
+      "side": 1,
+      "message": "can we not assign NULL to all formats in the beginning itself and assign values only if present in macResrcCfg?",
+      "revId": "817a16cf18b062849b9eb17f57236091664a4cfc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "204f3691_be86238e",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 657,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-24T14:33:10Z",
+      "side": 1,
+      "message": "make this a common condition before switch and there itself initialize all formats to NULL",
+      "revId": "817a16cf18b062849b9eb17f57236091664a4cfc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8d410dad_815ed1f8",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 751,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-24T14:33:10Z",
+      "side": 1,
+      "message": "Isn\u0027t there a convention followed for logs with spaces after module name and : ?\nEg: \\nMAC : \u003ctext\u003e",
+      "revId": "817a16cf18b062849b9eb17f57236091664a4cfc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
