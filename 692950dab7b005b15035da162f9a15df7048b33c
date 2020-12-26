@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "afb4b751_aece24d7",
+        "filename": "src/5gnrmac/mac.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-26T18:56:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b5265889_6d778f8f",
+      "revId": "692950dab7b005b15035da162f9a15df7048b33c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5d511362_a66faf62",
         "filename": "src/5gnrmac/mac_slot_ind.c",
         "patchSetId": 2
@@ -33,6 +51,24 @@
       "revId": "692950dab7b005b15035da162f9a15df7048b33c",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "84dd4302_ab5346e8",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-26T18:56:10Z",
+      "side": 1,
+      "message": "CellId is needed at DU APP to fetch cell cb to mark it as activate. Hence sending cellId instead of slotInd",
+      "parentUuid": "5d511362_a66faf62",
+      "revId": "692950dab7b005b15035da162f9a15df7048b33c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "0ee28c95_3ed0794f",
+        "filename": "src/cu_stub/cu_stub.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-26T18:56:10Z",
+      "side": 1,
+      "message": "As discussed, keeping console handler as pthread for now",
+      "parentUuid": "95e8cb57_642f6463",
+      "revId": "692950dab7b005b15035da162f9a15df7048b33c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "29724462_4e2d5609",
         "filename": "src/cu_stub/cu_stub.c",
         "patchSetId": 2
@@ -67,6 +121,24 @@
       "revId": "692950dab7b005b15035da162f9a15df7048b33c",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "27f19e9d_4276ea50",
+        "filename": "src/cu_stub/cu_stub.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-26T18:56:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "29724462_4e2d5609",
+      "revId": "692950dab7b005b15035da162f9a15df7048b33c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
