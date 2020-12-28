@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "246a5c52_b458736f",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-28T14:03:40Z",
+      "side": 1,
+      "message": "change to cellUpInd",
+      "revId": "da9ad6b9b4fa9404edf59ca11966e8b3b3ef793a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d742ce28_5e4b8dde",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-28T14:03:40Z",
+      "side": 1,
+      "message": "shouldn\u0027t this be uint16_t?",
+      "revId": "da9ad6b9b4fa9404edf59ca11966e8b3b3ef793a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c5b54e04_145b73c0",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 673,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-28T14:03:40Z",
+      "side": 1,
+      "message": "shouldn\u0027t this be duAppCellUpInd? What is the convention we follow? Target layer must be the prefix to the API?",
+      "revId": "da9ad6b9b4fa9404edf59ca11966e8b3b3ef793a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eab7a631_1fd0e974",
+        "filename": "src/cu_stub/cu_stub.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-28T14:03:40Z",
+      "side": 1,
+      "message": "small \u0027d\u0027 suits better",
+      "revId": "da9ad6b9b4fa9404edf59ca11966e8b3b3ef793a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
