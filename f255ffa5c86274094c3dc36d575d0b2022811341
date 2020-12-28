@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9c18df96_d0e94014",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-28T06:12:46Z",
+      "side": 1,
+      "message": "prefix g, indicating global",
+      "revId": "f255ffa5c86274094c3dc36d575d0b2022811341",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "54d5a6f8_2424ecdf",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-28T06:12:46Z",
+      "side": 1,
+      "message": "if while sending a message in the form of an API, it must always be in a structure and not a variable alone",
+      "revId": "f255ffa5c86274094c3dc36d575d0b2022811341",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "357ca394_25ad16db",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-28T06:12:46Z",
+      "side": 1,
+      "message": "what task is this?",
+      "revId": "f255ffa5c86274094c3dc36d575d0b2022811341",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c65ccfde_65661e0f",
+        "filename": "src/cu_stub/cu_stub.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-28T06:12:46Z",
+      "side": 1,
+      "message": "change to cuConsoleHandler",
+      "revId": "f255ffa5c86274094c3dc36d575d0b2022811341",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
