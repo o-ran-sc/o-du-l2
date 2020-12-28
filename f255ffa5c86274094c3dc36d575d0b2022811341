@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "d8e45464_13ff0e68",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-28T09:39:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c18df96_d0e94014",
+      "revId": "f255ffa5c86274094c3dc36d575d0b2022811341",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "54d5a6f8_2424ecdf",
         "filename": "src/5gnrmac/mac_slot_ind.c",
         "patchSetId": 4
@@ -33,6 +51,24 @@
       "revId": "f255ffa5c86274094c3dc36d575d0b2022811341",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "88862fa2_35e74883",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-28T09:39:42Z",
+      "side": 1,
+      "message": "Renamed api to cell up indication and using a structure to pass cellid",
+      "parentUuid": "54d5a6f8_2424ecdf",
+      "revId": "f255ffa5c86274094c3dc36d575d0b2022811341",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "cf1c79e7_36f7f0e4",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-28T09:39:42Z",
+      "side": 1,
+      "message": "This function returns the current time when processing of slotInd is started.",
+      "parentUuid": "357ca394_25ad16db",
+      "revId": "f255ffa5c86274094c3dc36d575d0b2022811341",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c65ccfde_65661e0f",
         "filename": "src/cu_stub/cu_stub.c",
         "patchSetId": 4
@@ -67,6 +121,24 @@
       "revId": "f255ffa5c86274094c3dc36d575d0b2022811341",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "73412315_ef92ae58",
+        "filename": "src/cu_stub/cu_stub.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-28T09:39:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c65ccfde_65661e0f",
+      "revId": "f255ffa5c86274094c3dc36d575d0b2022811341",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
