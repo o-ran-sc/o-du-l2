@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "816cf399_b9011c70",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 793,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-12-28T14:12:27Z",
+      "side": 1,
+      "message": "remove tab spaces while indenting",
+      "revId": "ee031d14c788336f9e36278723095046f7ef7971",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b452f49d_a8d85049",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6314,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-12-28T14:12:27Z",
+      "side": 1,
+      "message": "correct the ip address to 192.168.130.82",
+      "revId": "ee031d14c788336f9e36278723095046f7ef7971",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cd0b89b1_2b9d1344",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6371,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-12-28T14:12:27Z",
+      "side": 1,
+      "message": "create a macro for DRB 2 and pass it in func call",
+      "revId": "ee031d14c788336f9e36278723095046f7ef7971",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9ea70c85_8b3d7a94",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6385,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-12-28T14:12:27Z",
+      "side": 1,
+      "message": "macro for QCI 9",
+      "revId": "ee031d14c788336f9e36278723095046f7ef7971",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e3353497_49762ea2",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6610,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-12-28T14:12:27Z",
+      "side": 1,
+      "message": "from where is this triggered ?",
+      "revId": "ee031d14c788336f9e36278723095046f7ef7971",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
