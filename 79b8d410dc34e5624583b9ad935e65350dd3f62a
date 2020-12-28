@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "64d7b176_938e70f4",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-28T16:13:18Z",
+      "side": 1,
+      "message": "Okay for now. But please rename to something more suitable.",
+      "revId": "79b8d410dc34e5624583b9ad935e65350dd3f62a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
