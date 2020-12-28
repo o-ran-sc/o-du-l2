@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5572a91c_ec3fda88",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-28T15:57:49Z",
+      "side": 1,
+      "message": "not 10. It must be num slots from cell cb. Please check all your files for these kind of errors",
+      "revId": "756bf45bb405f2cf01db169ba5d2c2fa80fa585f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2aeaa8c9_af65deaf",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 436,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-28T15:57:49Z",
+      "side": 1,
+      "message": "adjust logs as per new convention",
+      "revId": "756bf45bb405f2cf01db169ba5d2c2fa80fa585f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
