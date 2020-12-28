@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ae59cd6b_a2a172d2",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-28T15:05:39Z",
+      "side": 1,
+      "message": "initialize ret to RFAILED. That will eliminate else in below cases",
+      "revId": "f0ae3c24c94da3603735c77b7211a9a47c704d8e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7b88f490_81cee2b9",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 690,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-28T15:05:39Z",
+      "side": 1,
+      "message": "initialize k1 to default. This way else can be eliminated",
+      "revId": "f0ae3c24c94da3603735c77b7211a9a47c704d8e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c23e7f98_ab1cf00e",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 693,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-28T15:05:39Z",
+      "side": 1,
+      "message": "make sure, SCH_NUM_SLOTS is replaced after re-merging. Please do a thorough checking of all such occurrences after rebasing",
+      "revId": "f0ae3c24c94da3603735c77b7211a9a47c704d8e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "30789913_093a8015",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 7044,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-28T15:05:39Z",
+      "side": 1,
+      "message": "use switch case",
+      "revId": "f0ae3c24c94da3603735c77b7211a9a47c704d8e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "28013bd4_23d32b2b",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 7216,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2020-12-28T15:05:39Z",
+      "side": 1,
+      "message": "initialize all of these else part variables to NULLP in the beginning. Thus, eliminating the else part",
+      "revId": "f0ae3c24c94da3603735c77b7211a9a47c704d8e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
