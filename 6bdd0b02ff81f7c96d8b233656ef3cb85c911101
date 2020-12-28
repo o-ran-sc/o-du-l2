@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "f96c48c5_d29dfc68",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-12-28T09:51:00Z",
+      "side": 1,
+      "message": "can we have a debug flag and add these prints in them ?",
+      "revId": "6bdd0b02ff81f7c96d8b233656ef3cb85c911101",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "dd2f8e9e_8abc4eed",
         "filename": "src/5gnrsch/sch.c",
         "patchSetId": 3
@@ -13,6 +30,40 @@
       "writtenOn": "2020-12-28T08:20:14Z",
       "side": 1,
       "message": "bandwidth parameter",
+      "revId": "6bdd0b02ff81f7c96d8b233656ef3cb85c911101",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "90664db2_cd43fb59",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-12-28T09:51:00Z",
+      "side": 1,
+      "message": "mention spec reference",
+      "revId": "6bdd0b02ff81f7c96d8b233656ef3cb85c911101",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fa2413da_0c22dda2",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-12-28T09:51:00Z",
+      "side": 1,
+      "message": "NR_NUMEROLOGY_0 0",
       "revId": "6bdd0b02ff81f7c96d8b233656ef3cb85c911101",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
