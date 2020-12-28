@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "1af3e59e_bae2d072",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 401,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-12-28T09:31:46Z",
+      "side": 1,
+      "message": "Yes, this is can taken care in freeSchPucchFormat()",
+      "parentUuid": "e9b76309_d9012235",
+      "revId": "817a16cf18b062849b9eb17f57236091664a4cfc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "85747312_57350c3e",
         "filename": "src/5gnrmac/mac_ue_mgr.c",
         "patchSetId": 6
@@ -33,6 +51,24 @@
       "revId": "817a16cf18b062849b9eb17f57236091664a4cfc",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "370e9f18_1b073087",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-12-28T09:31:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "85747312_57350c3e",
+      "revId": "817a16cf18b062849b9eb17f57236091664a4cfc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "c4ac0fc9_e390b3e7",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 657,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-12-28T09:31:46Z",
+      "side": 1,
+      "message": "i have memset, struct SchPucchCfg, so removed the NULLP initialization from here.",
+      "parentUuid": "204f3691_be86238e",
+      "revId": "817a16cf18b062849b9eb17f57236091664a4cfc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8d410dad_815ed1f8",
         "filename": "src/5gnrmac/mac_ue_mgr.c",
         "patchSetId": 6
@@ -67,6 +121,24 @@
       "revId": "817a16cf18b062849b9eb17f57236091664a4cfc",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "acf95c01_a57a70b3",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 751,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-12-28T09:31:46Z",
+      "side": 1,
+      "message": "agreed. done the changes",
+      "parentUuid": "8d410dad_815ed1f8",
+      "revId": "817a16cf18b062849b9eb17f57236091664a4cfc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
