@@ -8885,7 +8885,8 @@ uint8_t extractSrbListToSetup(SRBs_ToBeSetup_List_t *srbCfg, DuUeCfg *ueCfgDb)
  *
  * ****************************************************************/
 
-uint8_t procDrbListToSetup(uint8_t lcId, DRBs_ToBeSetup_Item_t *drbItem, LcCfg *macLcToAdd, RlcBearerCfg *rlcLcToAdd)
+uint8_t procDrbListToSetup(uint8_t lcId, DRBs_ToBeSetup_Item_t *drbItem,\
+   LcCfg *macLcToAdd, RlcBearerCfg *rlcLcToAdd)
 {
    uint8_t ret = ROK;
 
@@ -8896,7 +8897,7 @@ uint8_t procDrbListToSetup(uint8_t lcId, DRBs_ToBeSetup_Item_t *drbItem, LcCfg *
    ret = procMacLcCfg(lcId, RB_TYPE_DRB, CONFIG_ADD, drbItem, NULL, macLcToAdd);
    if(ret == RFAILED)
    { 
-      DU_LOG("\nERROR  -->  F1AP : Failed at RLC LC Cfg in extractDrbListToSetup()");
+      DU_LOG("\nERROR  --> F1AP : Failed at RLC LC Cfg in procDrbListToSetup()");
       return ret;
    }
 
@@ -8924,7 +8925,7 @@ uint8_t extractDrbListToSetup(uint8_t lcId, DRBs_ToBeSetup_List_t *drbCfg, DuUeC
 {
    uint8_t ret, drbIdx;
    DRBs_ToBeSetup_Item_t *drbItem = NULLP;
-
+   
    ret = ROK;
    if(drbCfg)
    {
@@ -8933,25 +8934,27 @@ uint8_t extractDrbListToSetup(uint8_t lcId, DRBs_ToBeSetup_List_t *drbCfg, DuUeC
          drbItem = &drbCfg->list.array[drbIdx]->value.choice.DRBs_ToBeSetup_Item;
 	 if(ueCfgDb->numMacLcs > MAX_NUM_LC)
 	 { 
-            DU_LOG("\nERROR   -->  F1AP:  MAX LC Reached in MAC ");
+            DU_LOG("\nERROR  -->  F1AP :  MAX LC Reached in MAC at extractDrbListToSetup()");
 	    ret = RFAILED;
 	    break;
 	 }
 	 if(ueCfgDb->numRlcLcs > MAX_NUM_LC)
 	 {
-            DU_LOG("\nERROR   -->  F1AP:  MAX LC Reached in RLC");
+            DU_LOG("\nERROR  -->  F1AP :  MAX LC Reached in RLC at extractDrbListToSetup()");
 	    ret = RFAILED;
 	    break;
 	 }
 	 memset(&ueCfgDb->macLcCfg[ueCfgDb->numMacLcs], 0, sizeof(LcCfg));
 	 memset(&ueCfgDb->rlcLcCfg[ueCfgDb->numRlcLcs], 0, sizeof(RlcBearerCfg));
+	    
          ret = procDrbListToSetup(lcId, drbItem, &ueCfgDb->macLcCfg[ueCfgDb->numMacLcs],\
 	    &ueCfgDb->rlcLcCfg[ueCfgDb->numRlcLcs]);
+
 	 ueCfgDb->numRlcLcs++;
 	 ueCfgDb->numMacLcs++;
 	 if(ret == RFAILED)
 	 {
-            DU_LOG("\nERROR  -->  F1AP :  Failed at extractDrbListToSetup()");
+            DU_LOG("\nERROR  --> F1AP : Failed at extractDrbListToSetup()");
 	    break;
 	 }
       }
@@ -8988,7 +8991,7 @@ uint8_t extractDlRrcMsg(uint32_t gnbDuUeF1apId, uint32_t gnbCuUeF1apId, \
       DU_ALLOC_SHRABL_BUF(dlRrcMsg->rrcMsgPdu, dlRrcMsg->rrcMsgSize);
       if(!dlRrcMsg->rrcMsgPdu)
       {
-         DU_LOG("\nERROR  -->  DU APP : Memory allocation failed for RRC Msg in procUeCtxtSetupReq");
+         DU_LOG("\nERROR  --> DU APP : Memory allocation failed for RRC Msg in extractDlRrcMsg()");
          ret = RFAILED;
       }
       else
@@ -9624,6 +9627,7 @@ uint8_t BuildAndSendUeContextSetupRsp(uint8_t ueIdx, uint8_t cellId)
       if(ret == RFAILED)
          break;
 
+      /* TODO: To send Drb list */
       xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
 
       /* Encode the UE context setup response type as APER */
