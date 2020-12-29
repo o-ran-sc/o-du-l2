@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "5948551d_3b48296a",
+        "filename": "src/codec_utils/F1AP/DRBs-ToBeModified-List.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2020-12-29T12:06:37Z",
+      "side": 1,
+      "message": "lets try to code without modifying .h files. Lets have one discussion on this",
+      "revId": "ee031d14c788336f9e36278723095046f7ef7971",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "816cf399_b9011c70",
         "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
         "patchSetId": 1
