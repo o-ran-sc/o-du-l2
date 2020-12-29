@@ -34,10 +34,6 @@
 #include "du_f1ap_msg_hdl.h"
 #include "du_ue_mgr.h"
 
-#ifdef EGTP_TEST
-uint32_t sduId = 0;
-#endif
-
 DuMacDlCcchInd packMacDlCcchIndOpts[] =
 {
    packMacDlCcchInd,   /* Loose coupling */
@@ -75,10 +71,129 @@ DuRlcUeReconfigReq packRlcUeReconfigReqOpts[] =
 
 DuMacUeReconfigReq packMacUeReconfigReqOpts[] =
 {
-   packDuMacUeReconfigReq,       /* Loose coupling */
+   packDuMacUeReconfigReq,     /* Loose coupling */
    MacProcUeReconfigReq,       /* TIght coupling */
-   packDuMacUeReconfigReq     /* Light weight-loose coupling */
+   packDuMacUeReconfigReq      /* Light weight-loose coupling */
 };
+
+DuDlUserDataToRlcFunc duSendDlUserDataToRlcOpts[] =
+{
+   packDlUserDataToRlc,          /* Loose coupling */ 
+   RlcProcDlUserDataTransfer,    /* Tight coupling */
+   packDlUserDataToRlc           /* Light weight-loose coupling */
+};
+
+/*******************************************************************
+ *
+ * @brief Function to fillDlUserDataInfo
+ *
+ * @details
+ *
+ *    Function : fillDlUserDataInfo
+ *
+ *    Functionality:
+ *      Function to fillDlUserDataInfo
+ *
+ * @params[in] teId,
+ *             dlDataMsgInfo
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+#ifdef EGTP_TEST
+void fillDlUserDataInfo(uint32_t teId, RlcDlUserDataInfo *dlDataMsgInfo)
+{
+   uint8_t ueIdx, cellIdx, tnlIdx, tnlPerRbIdx;
+
+   for(cellIdx = 0; cellIdx < duCb.numActvCells; cellIdx++)
+   {
+      for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
+      {
+         if(duCb.actvCellLst[cellIdx]->ueCb[ueIdx].f1UeDb)
+	 {
+	   for(tnlIdx =0; tnlIdx < MAX_NUM_DRB; tnlIdx++)
+	   {
+              if((duCb.actvCellLst[cellIdx]->ueCb[ueIdx].ulTnlCfg[tnlIdx]->tnlCfg.teId) == teId)
+	      {
+	         dlDataMsgInfo->cellId = duCb.actvCellLst[cellIdx]->cellId;
+	         GET_UE_IDX(duCb.actvCellLst[cellIdx]->ueCb[ueIdx].crnti, dlDataMsgInfo->ueIdx);
+                 dlDataMsgInfo->rbId = duCb.actvCellLst[cellIdx]->ueCb[ueIdx].ulTnlCfg[tnlIdx]->drbId;
+                 dlDataMsgInfo->rbType = CM_LTE_DRB;
+                 dlDataMsgInfo->lcType = CM_LTE_LCH_DTCH;
+	         break;
+	      }
+           }
+         }
+      }
+   }
+}
+
+ /*******************************************************************
+ *
+ * @brief Build and Send DL Data Message transfer to RLC
+ *
+ * @details
+ *
+ *    Function : duBuildAndSendDlUserDataToRlc
+ *
+ *    Functionality:
+ *      Build and Send DL Data Message transfer to RLC
+ *
+ * @params[in] Cell ID
+ *             UE Index
+ *             Logical Channgel ID
+ *             RRC Message
+ *             RRC Message Length
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t duBuildAndSendDlUserDataToRlc(uint16_t msgLen, EgtpMsg *egtpMsg)
+{
+   uint8_t ret = ROK;
+   uint16_t copyLen = 0;
+   Pst     pst;
+   RlcDlUserDataInfo *dlDataMsgInfo = NULLP;
+
+   DU_ALLOC_SHRABL_BUF(dlDataMsgInfo, sizeof(RlcDlUserDataInfo));
+   if(!dlDataMsgInfo)
+   {
+      DU_LOG("\nERROR  -->  DU_APP : Memory allocation failed for dlDataMsgInfo in duHdlEgtpDlData()");
+      return RFAILED;
+   }
+   memset(dlDataMsgInfo, 0, sizeof(RlcDlUserDataInfo));
+   DU_ALLOC_SHRABL_BUF(dlDataMsgInfo->dlMsg, msgLen);
+   if(!dlDataMsgInfo->dlMsg)
+   {
+      DU_LOG("\nERROR  -->  DU_APP : Memory allocation failed for dlMsg in duHdlEgtpDlData()");
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, dlDataMsgInfo, sizeof(RlcDlUserDataInfo));
+      return RFAILED;
+   }
+   memset(dlDataMsgInfo->dlMsg, 0, msgLen);
+   ODU_COPY_MSG_TO_FIX_BUF(egtpMsg->msg, 0, msgLen, dlDataMsgInfo->dlMsg, (MsgLen *)&copyLen);
+   dlDataMsgInfo->msgLen = msgLen;
+
+   /* Filling DL DATA Msg Info */
+   fillDlUserDataInfo(egtpMsg->msgHdr.teId, dlDataMsgInfo);
+
+   /* Filling post structure and sending msg */ 
+   FILL_PST_DUAPP_TO_RLC(pst, RLC_DL_INST, EVENT_DL_USER_DATA_TRANS_TO_RLC);
+   DU_LOG("\nINFO  -->  DU_APP : Sending User Data Msg to RLC \n");
+   ret = (*duSendDlUserDataToRlcOpts[pst.selector])(&pst, dlDataMsgInfo);
+   if(ret != ROK)
+   {
+      DU_LOG("\nDEBUG  -->  DU_APP : Failed to send User Data to RLC in duHdlEgtpDlData()");
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, dlDataMsgInfo->dlMsg, msgLen);
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, dlDataMsgInfo, sizeof(RlcDlUserDataInfo));
+   }
+   return ret;
+
+}
+#endif
+
 /*******************************************************************
  *
  * @brief Handles EGTP data from CU 
@@ -97,37 +212,24 @@ DuMacUeReconfigReq packMacUeReconfigReqOpts[] =
  * ****************************************************************/
 uint8_t duHdlEgtpDlData(EgtpMsg  *egtpMsg)
 {
-
-   /* TODO : Extract RbId/UeID/CellID/SduId from database
-      using tunnel id in egtp header */
-
-   DU_LOG("\nDU_APP : Processing DL data");
+   uint8_t ret = ROK;
+   uint16_t msgLen = 0;
+   DU_LOG("\nINFO  --> DU_APP : Processing DL data in duHdlEgtpDlData()");
 #ifdef EGTP_TEST
-   Pst pst;
-   KwuDatReqInfo datReqInfo;
-
-   datReqInfo.rlcId.rbId = RB_ID;
-   datReqInfo.rlcId.rbType = CM_LTE_DRB;
-   datReqInfo.rlcId.ueId = UE_ID;
-   datReqInfo.rlcId.cellId = NR_CELL_ID;
-
-   datReqInfo.sduId = ++sduId;
-   datReqInfo.lcType = CM_LTE_LCH_DTCH;
-
-   /* Filling pst and Sending to RLC DL */
-   pst.selector  = ODU_SELECTOR_LWLC;
-   pst.srcEnt    = ENTDUAPP;
-   pst.dstEnt    = ENTRLC;
-   pst.dstInst   = RLC_DL_INST;
-   pst.dstProcId = DU_PROC;
-   pst.srcProcId = DU_PROC;
-   pst.region    = duCb.init.region;
-
-   //cmPkKwuDatReq(&pst, &datReqInfo, egtpMsg->msg);
-#else
-   //duBuildAndSendDlRrcMsgToRlc();
+   if(!egtpMsg->msg)
+   {
+      DU_LOG("\nDEBUG  -->  DU_APP : Recevied Dl Data is NULLP in duHdlEgtpDlData()");
+      return RFAILED;
+   }
+   ODU_GET_MSG_LEN(egtpMsg->msg, (MsgLen *)&msgLen);
+   ret = duBuildAndSendDlUserDataToRlc(msgLen, egtpMsg);
+   if(ret != ROK)
+   {
+      DU_LOG("\nDEBUG  -->  DU_APP : Failed to build DL USer Data in duHdlEgtpDlData()");
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, egtpMsg->msg, msgLen);
+   }
 #endif
-   return ROK;
+   return ret;
 }
 
 /******************************************************************
@@ -1831,6 +1933,11 @@ uint8_t duUpdateDuUeCbCfg(uint8_t ueIdx, uint8_t cellId)
          ret = duUpdateMacCfg(&ueCb->macUeCfg, ueCb->f1UeDb);
          if(ret == RFAILED)
             DU_LOG("\nDU APP: Failed while updating MAC LC Config at duUpdateDuUeCbCfg()");
+	 else
+	 {
+	    /*TODO: create Tunnel */
+	    /*TODO: configure EGTP Params */
+	 }
       }
       else
          DU_LOG("\nDU APP: Failed while updating RLC LC Config at duUpdateDuUeCbCfg()");

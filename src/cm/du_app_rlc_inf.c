@@ -555,6 +555,82 @@ uint8_t unpackRlcDlRrcMsgRspToDu(RlcDlRrcMsgRspToDuFunc func, Pst *pst, Buffer *
    }
    return RFAILED;
 }
+
+/*******************************************************************
+ *
+ * @brief Pack and post DL Data Message from DU APP to RLC 
+ *
+ * @details
+ *
+ *    Function : packDlUserDataToRlc
+ *
+ *    Functionality: Pack and post DL Data Message from DU APP to RLC
+ *
+ * @params[in] Post structure
+ *             DL Data Message info
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packDlUserDataToRlc(Pst *pst, RlcDlUserDataInfo *dlDataMsg)
+{
+   Buffer *mBuf = NULLP;
+
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+      {
+         DU_LOG("\nERROR  --> RLC : Memory allocation failed at packRlcDlUserDataToRlc");
+         return RFAILED;
+      }
+      /* pack the address of the structure */
+      CMCHKPK(oduPackPointer,(PTR)dlDataMsg, mBuf);
+      return ODU_POST_TASK(pst,mBuf);
+   }
+   else
+   {
+      DU_LOG("\nEEROR  -->  RLC : Only LWLC supported for packDlUserDataToRlc");
+   }
+   return RFAILED;
+}
+
+/*******************************************************************
+ *
+ * @brief Unpacks DL Data Message info received at RLC from DU APP
+ *
+ * @details
+ *
+ *    Function : unpackDlUserDataToRlc
+ *
+ *    Functionality:
+ *      Unpacks the DL Data Message info received at RLC from DU APP
+ *
+ * @params[in] Pointer to handler function
+ *             Post structure
+ *             Messae buffer to be unpacked
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t unpackDlUserDataToRlc(DuDlUserDataToRlcFunc func, Pst *pst, Buffer *mBuf)
+{
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      RlcDlUserDataInfo *dlDataMsgInfo;
+      /* unpack the address of the structure */
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&dlDataMsgInfo, mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
+      return (*func)(pst, dlDataMsgInfo);
+   }
+   else
+   {
+      /* Nothing to do for other selectors */
+      DU_LOG("\nERROR -->  RLC : Only LWLC supported for DL Data Message transfer ");
+      ODU_PUT_MSG_BUF(mBuf);
+   }
+   return RFAILED;
+}
+
 /**********************************************************************
          End of file
 ***********************************************************************/
