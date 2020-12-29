@@ -58,6 +58,9 @@
 #define MAX_NUM_CELL 1
 #define MAX_NUM_UE   1
 #define MAX_NUM_LC   11
+#define MAX_NUM_SRB  3    /* Max. no of Srbs */
+#define MAX_NUM_DRB  29   /* spec 38.331, maxDRB */
+#define MAX_NUM_TUNNEL  2 /* spec 38.473, maxnoofULUPTNLInformation  */
 
 /* 5G ORAN phy delay */
 #define PHY_DELTA 2

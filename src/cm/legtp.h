@@ -49,18 +49,18 @@ typedef struct egtpIpAddr
 typedef struct egtpConfig
 {
    EgtpIpAddr  localIp;
-   uint16_t         localPort;
+   uint16_t    localPort;
    EgtpIpAddr  destIp;
-   uint16_t         destPort;
-   uint32_t       minTunnelId;
-   uint32_t       maxTunnelId;
+   uint16_t    destPort;
+   uint32_t    minTunnelId;
+   uint32_t    maxTunnelId;
 }EgtpConfig;
 
 typedef struct egtpTnlEvt
 {
-   uint8_t        action;
-   uint32_t       lclTeid;
-   uint32_t       remTeid;
+   uint8_t   action;
+   uint32_t  lclTeid;
+   uint32_t  remTeid;
    CmStatus  cfmStatus;
 }EgtpTnlEvt;
 
@@ -74,11 +74,11 @@ typedef struct egtpExtHdr
 /*Structure for MsgHdr */
 typedef struct egtpMsgHdr
 {
-   TknUInt8      nPdu;                      /**< N-PDU Number */
-   TknUInt32     seqNum;                    /**< Sequence Number */
-   EgtpExtHdr extHdr;                       /**< Extension headers present flag */
-   uint32_t        teId;                         /**< Tunnel Endpoint Id */
-   uint8_t         msgType;                      /**< eGTP-U Message Type */
+   TknUInt8      nPdu;         /**< N-PDU Number */
+   TknUInt32     seqNum;       /**< Sequence Number */
+   EgtpExtHdr    extHdr;       /**< Extension headers present flag */
+   uint32_t      teId;         /**< Tunnel Endpoint Id */
+   uint8_t       msgType;      /**< eGTP-U Message Type */
 }EgtpMsgHdr;
 
 typedef struct egtpMsg
