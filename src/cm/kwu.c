@@ -136,7 +136,7 @@ S16 cmPkKwuUbndReq(Pst * pst,SuId suId,Reason reason)
    return (SPstTsk(pst,mBuf));
 } /* cmPkKwuUbndReq */
 
-uint8_t cmPkKwuDatReqInfo(KwuDatReqInfo *param,Buffer *mBuf)
+uint8_t cmPkRlcDatReqInfo(RlcDatReqInfo *param,Buffer *mBuf)
 {
 #ifdef CCPU_OPT
    switch(param->lcType) {
@@ -163,10 +163,10 @@ uint8_t cmPkKwuDatReqInfo(KwuDatReqInfo *param,Buffer *mBuf)
    CMCHKPK(oduUnpackUInt32, param->sduId, mBuf);
    CMCHKPK(cmPkLteRlcId, &param->rlcId, mBuf);
    return ROK;
-} /* cmPkKwuDatReqInfo */
+} /* cmPkRlcDatReqInfo */
 
 
-uint8_t cmPkKwuDatReq(Pst * pst,KwuDatReqInfo* datReq,Buffer * mBuf)
+uint8_t cmPkKwuDatReq(Pst * pst,RlcDatReqInfo* datReq,Buffer * mBuf)
 {
 #ifdef LCKWU
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -174,7 +174,7 @@ uint8_t cmPkKwuDatReq(Pst * pst,KwuDatReqInfo* datReq,Buffer * mBuf)
 #endif /* LCKWU */
    S16 ret1 = ROK;
 #ifndef SS_RBUF
-   KwuDatReqInfo* datReqInfo;
+   RlcDatReqInfo* datReqInfo;
 #endif
 #ifndef SS_RBUF
    switch(pst->selector)
@@ -188,7 +188,7 @@ uint8_t cmPkKwuDatReq(Pst * pst,KwuDatReqInfo* datReq,Buffer * mBuf)
               * subsequent free would be done during the Unpack function of the
               * primitive. */
             if((ret1 = SGetStaticBuffer(pst->region, pst->pool, (Data **)&datReqInfo,
-                        sizeof(KwuDatReqInfo),SS_SHARABLE_MEMORY)) != ROK)
+                        sizeof(RlcDatReqInfo),SS_SHARABLE_MEMORY)) != ROK)
             {
 #if (ERRCLASS & ERRCLS_ADD_RES)
                if(ret1 != ROK)
@@ -200,7 +200,7 @@ uint8_t cmPkKwuDatReq(Pst * pst,KwuDatReqInfo* datReq,Buffer * mBuf)
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
                return (ret1);
             }
-            memcpy(datReqInfo,datReq,sizeof(KwuDatReqInfo));
+            memcpy(datReqInfo,datReq,sizeof(RlcDatReqInfo));
             CMCHKPK(oduPackPointer,(PTR)datReqInfo, mBuf);
            }
            else
@@ -212,7 +212,7 @@ uint8_t cmPkKwuDatReq(Pst * pst,KwuDatReqInfo* datReq,Buffer * mBuf)
      case ODU_SELECTOR_LC:
         {
 #if (ERRCLASS & ERRCLS_ADD_RES)
-           ret1 = cmPkKwuDatReqInfo( (datReq), mBuf);
+           ret1 = cmPkRlcDatReqInfo( (datReq), mBuf);
            if(ret1 != ROK)
            {
               SPutMsg(mBuf);
@@ -222,12 +222,12 @@ uint8_t cmPkKwuDatReq(Pst * pst,KwuDatReqInfo* datReq,Buffer * mBuf)
               return ( ret1 );
            }
 #else
-           cmPkKwuDatReqInfo( (datReq), mBuf);
+           cmPkRlcDatReqInfo( (datReq), mBuf);
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
            if(pst->srcEnt == ENTNH)
            {
               if (SPutStaticBuffer(pst->region, pst->pool, (Data *)datReq,
-                       sizeof(KwuDatReqInfo),SS_SHARABLE_MEMORY) != ROK)
+                       sizeof(RlcDatReqInfo),SS_SHARABLE_MEMORY) != ROK)
               {
                  SPutMsg(mBuf);
                  return RFAILED;
@@ -290,7 +290,7 @@ uint8_t cmPkKwuDatReq(Pst * pst,KwuDatReqInfo* datReq,Buffer * mBuf)
 #ifdef LCKWU
          case ODU_SELECTOR_LC:
             {
-               ret1 = cmPkKwuDatReqInfo( (datReq), mBuf);
+               ret1 = cmPkRlcDatReqInfo( (datReq), mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
                if(ret1 != ROK)
                {
@@ -317,7 +317,7 @@ uint8_t cmPkKwuDatReq(Pst * pst,KwuDatReqInfo* datReq,Buffer * mBuf)
       if(pst->selector == ODU_SELECTOR_LC)
       {
          if (SPutStaticBuffer(pst->region, pst->pool, (Data *)datReq,
-                  sizeof(KwuDatReqInfo),SS_SHARABLE_MEMORY) != ROK)
+                  sizeof(RlcDatReqInfo),SS_SHARABLE_MEMORY) != ROK)
          {
             SPutMsg(mBuf);
             return RFAILED;
@@ -900,7 +900,7 @@ S16 cmUnpkKwuUbndReq(KwuUbndReq func,Pst *pst,Buffer *mBuf)
 } /* cmUnpkKwuUbndReq */
 
 
-S16 cmUnpkKwuDatReqInfo(KwuDatReqInfo *param,Buffer *mBuf)
+S16 cmUnpkRlcDatReqInfo(RlcDatReqInfo *param,Buffer *mBuf)
 {
 
 
@@ -939,8 +939,8 @@ S16 cmUnpkKwuDatReq(KwuDatReq func,Pst *pst,Buffer *mBuf)
    S16 ret1 = ROK; 
 #endif
    S16 retVal;
-   KwuDatReqInfo *datReq = NULLP;
-   KwuDatReqInfo datReqTmp;
+   RlcDatReqInfo *datReq = NULLP;
+   RlcDatReqInfo datReqTmp;
 
 
    switch(pst->selector)
@@ -955,9 +955,9 @@ S16 cmUnpkKwuDatReq(KwuDatReq func,Pst *pst,Buffer *mBuf)
             /* Allocate the memory statically  as there is no free 
              * in RLC */
             datReq = &datReqTmp;
-            memset(datReq, 0, sizeof(KwuDatReqInfo));
+            memset(datReq, 0, sizeof(RlcDatReqInfo));
 #if(ERRCLASS & ERRCLS_DEBUG)
-            ret1 = cmUnpkKwuDatReqInfo( (datReq), mBuf);
+            ret1 = cmUnpkRlcDatReqInfo( (datReq), mBuf);
             if(ret1 != ROK)
             {
                SPutMsg(mBuf);
@@ -967,7 +967,7 @@ S16 cmUnpkKwuDatReq(KwuDatReq func,Pst *pst,Buffer *mBuf)
                return ( ret1 );
             }
 #else
-            cmUnpkKwuDatReqInfo( (datReq), mBuf);
+            cmUnpkRlcDatReqInfo( (datReq), mBuf);
 #endif /* ERRCLASS & ERRCLS_DEBUG */
          }
          break;
@@ -987,7 +987,7 @@ S16 cmUnpkKwuDatReq(KwuDatReq func,Pst *pst,Buffer *mBuf)
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
       retVal = SPutStaticBuffer(pst->region, pst->pool, (Data *)datReq,
-            sizeof(KwuDatReqInfo),SS_SHARABLE_MEMORY);
+            sizeof(RlcDatReqInfo),SS_SHARABLE_MEMORY);
    }
    return (retVal);
 } /* cmUnpkKwuDatReq */

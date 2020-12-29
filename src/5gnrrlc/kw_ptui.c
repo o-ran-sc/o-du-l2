@@ -763,7 +763,7 @@ S16 rlcDlBatchProc(Void)
 #endif
    Void *elmIndx = NULLP;
    KwuDatReqDetl *kwuDatReqDetl = NULLP;
-   KwuDatReqInfo datReq;
+   RlcDatReqInfo datReq;
 
    rngBufDeqMaxCnt = SS_RNG_MAX_DLPDCP_TO_DLRLC_DQ_CNT;
 #ifdef TENB_T2K3K_SPECIFIC_CHANGES

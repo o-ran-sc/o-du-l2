@@ -97,6 +97,23 @@ typedef struct f1DlRrcMsg
    uint8_t  *rrcMsgPdu;
 }F1DlRrcMsg;
 
+typedef struct gtpTnlCfg
+{
+   uint32_t ulTnlAddress;
+   uint32_t dlTnlAddress;
+   uint32_t teId;
+}GtpTnlCfg;
+
+typedef struct upTnlCfg
+{
+   ConfigType configType;
+   uint8_t cellId;
+   uint8_t ueIdx;
+   uint8_t drbId;
+   uint8_t numTunnels;
+   GtpTnlCfg tnlCfg[MAX_NUM_TUNNEL];
+}UpTnlCfg;
+
 typedef struct duUeCfg
 {
    void *cellGrpCfg;
@@ -135,6 +152,8 @@ typedef struct duUeCb
    UeState  ueState;         /* UE Active/ Ue Inactive state */
    MacUeCfg macUeCfg;        /* Mac Ue Cfg */
    RlcUeCfg rlcUeCfg;        /* Rlc Ue Cfg */
+   UpTnlCfg* ulTnlCfg[MAX_NUM_DRB]; /* tunnel info for every Drb */
+   UpTnlCfg* dlTnlCfg[MAX_NUM_DRB]; /* tunnel info for every Drb */
 }DuUeCb;
 
 typedef struct duCellCb
@@ -183,6 +202,8 @@ typedef struct duCb
    DuCellCb*     actvCellLst[MAX_NUM_CELL];    /* List of cells activated/to be activated of type DuCellCb */
    uint32_t       numUe;            /* current number of UEs */
    UeCcchCtxt     ueCcchCtxt[MAX_NUM_UE]; /* mapping of gnbDuUeF1apId to CRNTI required for CCCH processing*/
+   uint8_t       numDrb;           /* current number of DRbs*/
+   UpTnlCfg*     upTnlCfg[MAX_NUM_DRB]; /* tunnel info for every Drb */
 }DuCb;
 
 

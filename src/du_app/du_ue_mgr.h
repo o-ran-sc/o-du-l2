@@ -22,7 +22,7 @@
 #define __DU_UE_MGR_H__
 
 uint8_t duHdlRlcUlData(Pst *pst, KwuDatIndInfo* datInd, Buffer *mBuf);
-uint8_t cmPkKwuDatReq(Pst * pst,KwuDatReqInfo* datReq,Buffer * mBuf);
+uint8_t cmPkKwuDatReq(Pst * pst,RlcDatReqInfo* datReq,Buffer * mBuf);
 uint8_t duBuildAndSendUeCreateReqToMac(uint16_t cellId, uint8_t ueIdx,\
    uint16_t crnti, MacUeCfg *duMacUeCfg);
 uint8_t duBuildAndSendUeCreateReqToRlc(uint16_t cellId, uint8_t ueIdx, RlcUeCfg *duRlcUeCfg);
