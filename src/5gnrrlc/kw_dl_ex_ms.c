@@ -271,6 +271,11 @@ Buffer *mBuf            /* message buffer */
 		     ret = unpackDlRrcMsgToRlc(RlcProcDlRrcMsgTransfer, pst, mBuf);
 		     break;
 		  }
+               case EVENT_DL_USER_DATA_TRANS_TO_RLC:
+	          {
+		     ret = unpackDlUserDataToRlc(RlcProcDlUserDataTransfer, pst, mBuf);
+		     break;
+		  }
                default:
                   ODU_PUT_MSG_BUF(mBuf);
                   if (pst->dstInst < MAX_RLC_INSTANCES)
