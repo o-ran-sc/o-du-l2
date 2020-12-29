@@ -271,9 +271,8 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcData *dlData)
    }
    if(pstInfo->selector == ODU_SELECTOR_LWLC)
    {
-      MAC_FREE_SHRABL_BUF(pstInfo->region, pstInfo->pool, dlData, sizeof(RlcData));
+     MAC_FREE_SHRABL_BUF(pstInfo->region, pstInfo->pool, dlData, sizeof(RlcData));
    }
-
    return ROK;
 }
 

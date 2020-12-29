@@ -7261,21 +7261,30 @@ uint8_t extractDrbCfg(DRBs_ToBeSetup_Item_t *drbItem, LcCfg *macLcToAdd, UpTnlCf
    return ROK;
 }
 
-uint8_t extractMacRbCfg(uint8_t lcId, DRBs_ToBeSetup_Item_t *drbCfg, LogicalChannelConfig_t *ulLcCfg, LcCfg *lcCfg,\
-   UpTnlCfg *upTnlInfo)
-{
-   uint8_t ret = ROK;
+/*******************************************************************
+ *
+ * @brief Function to extract RB info received from CU
+ *
+ * @details
+ *
+ *    Function : extractMacRbCfg
+ *
+ *    Functionality: Function to extract RB info received from CU
+ *
+ * @params[in] F1AP message
+ * @return ROK/RFAILED
+ *
+ * ****************************************************************/
 
-   if(drbCfg)
+uint8_t extractMacRbCfg(uint8_t lcId, DRBs_ToBeSetup_Item_t *drbCfg,\
+  LogicalChannelConfig_t *ulLcCfg, LcCfg *lcCfg, UpTnlCfg *upTnlInfo)
+{
+   if(drbCfg != NULLP)
    {
-      if(drbCfg != NULLP)
+      if(extractDrbCfg(drbCfg, lcCfg, upTnlInfo) != ROK)
       {
-         ret = extractDrbCfg(drbCfg, lcCfg, upTnlInfo);
-         if(ret == RFAILED)
-         {
-            DU_LOG("ERROR  -->  F1AP : Failed to build Drb Qos at extractMacRbCfg()");
-            return ret;
-         }
+         DU_LOG("ERROR  -->  F1AP : Failed to build Drb Qos at extractMacRbCfg()");
+         return RFAILED;
       }
    }
    else
@@ -7294,8 +7303,23 @@ uint8_t extractMacRbCfg(uint8_t lcId, DRBs_ToBeSetup_Item_t *drbCfg, LogicalChan
    }
    else
       lcCfg->ulLcCfgPres = false;
-   return ret;
+   return ROK;
 }
+
+/*******************************************************************
+ *
+ * @brief Function processing LC config info received from CU
+ *
+ * @details
+ *
+ *    Function : procMacLcCfg
+ *
+ *    Functionality: Function processing LC config info received from CU
+ *
+ * @params[in] F1AP message
+ * @return ROK/RFAILED
+ *
+ * ****************************************************************/
 
 uint8_t procMacLcCfg(uint8_t lcId, uint8_t rbType, uint8_t configType,\
    DRBs_ToBeSetup_Item_t *drbItem, LogicalChannelConfig_t *ulLcCfg, LcCfg *lcCfg, UpTnlCfg *upTnlInfo)
@@ -9500,7 +9524,7 @@ uint8_t extractDrbListToSetup(uint8_t lcId, DRBs_ToBeSetup_List_t *drbCfg, DuUeC
 {
    uint8_t ret, drbIdx;
    DRBs_ToBeSetup_Item_t *drbItem = NULLP;
-
+   
    ret = ROK;
    if(drbCfg)
    {
@@ -9521,6 +9545,7 @@ uint8_t extractDrbListToSetup(uint8_t lcId, DRBs_ToBeSetup_List_t *drbCfg, DuUeC
 	 }
 	 memset(&ueCfgDb->macLcCfg[ueCfgDb->numMacLcs], 0, sizeof(LcCfg));
 	 memset(&ueCfgDb->rlcLcCfg[ueCfgDb->numRlcLcs], 0, sizeof(RlcBearerCfg));
+	    
          ret = procDrbListToSetup(lcId, drbItem, &ueCfgDb->macLcCfg[ueCfgDb->numMacLcs],\
 	    &ueCfgDb->rlcLcCfg[ueCfgDb->numRlcLcs], &ueCfgDb->upTnlInfo[ueCfgDb->numDrb]);
 
@@ -9529,7 +9554,7 @@ uint8_t extractDrbListToSetup(uint8_t lcId, DRBs_ToBeSetup_List_t *drbCfg, DuUeC
 	 ueCfgDb->numDrb++;
 	 if(ret == RFAILED)
 	 {
-            DU_LOG("\nERROR  -->  F1AP :  Failed at extractDrbListToSetup()");
+            DU_LOG("\nERROR  --> F1AP : Failed at extractDrbListToSetup()");
 	    break;
 	 }
       }
@@ -10433,6 +10458,7 @@ uint8_t BuildAndSendUeContextSetupRsp(uint8_t ueIdx, uint8_t cellId)
        freeF1UeDb(ueCb->f1UeDb);
        ueCb->f1UeDb = NULLP;
 
+      /* TODO: To send Drb list */
       xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
 
       /* Encode the UE context setup response type as APER */
