@@ -9500,7 +9500,7 @@ uint8_t extractDrbListToSetup(uint8_t lcId, DRBs_ToBeSetup_List_t *drbCfg, DuUeC
 {
    uint8_t ret, drbIdx;
    DRBs_ToBeSetup_Item_t *drbItem = NULLP;
-
+   
    ret = ROK;
    if(drbCfg)
    {
@@ -9521,6 +9521,7 @@ uint8_t extractDrbListToSetup(uint8_t lcId, DRBs_ToBeSetup_List_t *drbCfg, DuUeC
 	 }
 	 memset(&ueCfgDb->macLcCfg[ueCfgDb->numMacLcs], 0, sizeof(LcCfg));
 	 memset(&ueCfgDb->rlcLcCfg[ueCfgDb->numRlcLcs], 0, sizeof(RlcBearerCfg));
+	    
          ret = procDrbListToSetup(lcId, drbItem, &ueCfgDb->macLcCfg[ueCfgDb->numMacLcs],\
 	    &ueCfgDb->rlcLcCfg[ueCfgDb->numRlcLcs], &ueCfgDb->upTnlInfo[ueCfgDb->numDrb]);
 
@@ -9529,7 +9530,7 @@ uint8_t extractDrbListToSetup(uint8_t lcId, DRBs_ToBeSetup_List_t *drbCfg, DuUeC
 	 ueCfgDb->numDrb++;
 	 if(ret == RFAILED)
 	 {
-            DU_LOG("\nERROR  -->  F1AP :  Failed at extractDrbListToSetup()");
+            DU_LOG("\nERROR  --> F1AP : Failed at extractDrbListToSetup()");
 	    break;
 	 }
       }
@@ -10433,6 +10434,7 @@ uint8_t BuildAndSendUeContextSetupRsp(uint8_t ueIdx, uint8_t cellId)
        freeF1UeDb(ueCb->f1UeDb);
        ueCb->f1UeDb = NULLP;
 
+      /* TODO: To send Drb list */
       xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
 
       /* Encode the UE context setup response type as APER */

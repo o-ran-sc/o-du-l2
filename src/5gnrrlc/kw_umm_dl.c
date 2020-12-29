@@ -101,7 +101,7 @@ static Void rlcUmmCreatePdu ARGS ((RlcCb *gCb,
  *
  * @return  Void
 */  
-void rlcUmmQSdu(RlcCb *gCb, RlcDlRbCb *rbCb, KwuDatReqInfo *datReq, Buffer *mBuf)
+void rlcUmmQSdu(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReqInfo *datReq, Buffer *mBuf)
 {
    MsgLen   len;    /* SDU buffer length */
    RlcSdu    *sdu;   /* SDU */

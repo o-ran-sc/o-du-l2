@@ -709,7 +709,7 @@ Reason   reason
  *    -# ROK 
  *    -# RFAILED
  */
-uint8_t rlcProcDlData(Pst *pst, KwuDatReqInfo *datReq, Buffer *mBuf)
+uint8_t rlcProcDlData(Pst *pst, RlcDatReqInfo *datReq, Buffer *mBuf)
 {
    uint8_t       ret = ROK;   /* Return Value */
    RlcDlRbCb     *rbCb;       /* RB Control Block */
@@ -748,7 +748,7 @@ uint8_t rlcProcDlData(Pst *pst, KwuDatReqInfo *datReq, Buffer *mBuf)
          {
             /* kw002.201 Freeing from proper region */
             RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, datReq, 
-                        sizeof(KwuDatReqInfo));
+                        sizeof(RlcDatReqInfo));
             ODU_PUT_MSG_BUF(mBuf);
              
             return RFAILED;

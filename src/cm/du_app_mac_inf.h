@@ -51,8 +51,6 @@
 #define MAX_NUM_UL_ALLOC 16             /* Max number of pusch time domain uplink allocation */
 #define SD_SIZE   3                     /* Max size of Slice Differentiator in S-NSSAI */
 
-#define MAX_NUM_SRB    8
-#define MAX_NUM_DRB    64
 #define MAX_NUM_SCELL  32
 
 /* PUCCH Configuration Macro */

@@ -36,49 +36,151 @@
 
 DuMacDlCcchInd packMacDlCcchIndOpts[] =
 {
-   packMacDlCcchInd,   /* Loose coupling */
-   MacProcDlCcchInd,    /* TIght coupling */
-   packMacDlCcchInd    /* Light weight-loose coupling */
+   packMacDlCcchInd,           /* Loose coupling */
+   MacProcDlCcchInd,           /* TIght coupling */
+   packMacDlCcchInd            /* Light weight-loose coupling */
 };
 
 DuMacUeCreateReq packMacUeCreateReqOpts[] =
 {
    packDuMacUeCreateReq,       /* Loose coupling */
-   MacProcUeCreateReq,          /* TIght coupling */
-   packDuMacUeCreateReq       /* Light weight-loose coupling */
+   MacProcUeCreateReq,         /* TIght coupling */
+   packDuMacUeCreateReq        /* Light weight-loose coupling */
 };
 
 DuRlcUeCreateReq packRlcUeCreateReqOpts[] =
 {
    packDuRlcUeCreateReq,       /* Loose coupling */
-   RlcProcUeCreateReq,          /* TIght coupling */
-   packDuRlcUeCreateReq       /* Light weight-loose coupling */
+   RlcProcUeCreateReq,         /* TIght coupling */
+   packDuRlcUeCreateReq        /* Light weight-loose coupling */
 };
 
 DuDlRrcMsgToRlcFunc duSendDlRrcMsgToRlcOpts[] =
 {
    packDlRrcMsgToRlc,          /* Loose coupling */ 
-   RlcProcDlRrcMsgTransfer,       /* Tight coupling */
+   RlcProcDlRrcMsgTransfer,    /* Tight coupling */
    packDlRrcMsgToRlc           /* Light weight-loose coupling */
 };
 
 DuRlcUeReconfigReq packRlcUeReconfigReqOpts[] =
 {
-   packDuRlcUeReconfigReq,       /* Loose coupling */
+   packDuRlcUeReconfigReq,     /* Loose coupling */
    RlcProcUeReconfigReq,       /* TIght coupling */
-   packDuRlcUeReconfigReq       /* Light weight-loose coupling */
+   packDuRlcUeReconfigReq      /* Light weight-loose coupling */
 };
 
 DuMacUeReconfigReq packMacUeReconfigReqOpts[] =
 {
-   packDuMacUeReconfigReq,       /* Loose coupling */
+   packDuMacUeReconfigReq,     /* Loose coupling */
    MacProcUeReconfigReq,       /* TIght coupling */
-   packDuMacUeReconfigReq     /* Light weight-loose coupling */
+   packDuMacUeReconfigReq      /* Light weight-loose coupling */
 };
 
-#ifdef EGTP_TEST
-uint32_t sduId = 0;
-#endif
+DuRlcDlUserDataToRlcFunc duSendRlcDlUserDataToRlcOpts[] =
+{
+   packRlcDlUserDataToRlc,        /* Loose coupling */ 
+   RlcProcDlUserDataTransfer,  /* Tight coupling */
+   packRlcDlUserDataToRlc         /* Light weight-loose coupling */
+};
+
+/*******************************************************************
+ *
+ * @brief Function to fillDlUserDataInfo
+ *
+ * @details
+ *
+ *    Function : fillDlUserDataInfo
+ *
+ *    Functionality:
+ *      Function to fillDlUserDataInfo
+ *
+ * @params[in] teId,
+ *             dlDataMsgInfo
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t fillDlUserDataInfo(uint32_t teId, RlcDlUserDataInfo *dlDataMsgInfo)
+{
+   uint8_t drbIdx;
+
+   for(drbIdx = 0; drbIdx < duCb.numDrb; drbIdx++)
+   {
+      if(duCb.upTnlCfg[drbIdx] && (duCb.upTnlCfg[drbIdx]->tnlCfg1 != NULLP))
+      {
+        if(duCb.upTnlCfg[drbIdx]->tnlCfg1->teId == teId)
+	{
+	   dlDataMsgInfo->cellId = duCb.upTnlCfg[drbIdx]->cellId;
+	   dlDataMsgInfo->ueIdx = duCb.upTnlCfg[drbIdx]->ueIdx;
+           dlDataMsgInfo->rbId = duCb.upTnlCfg[drbIdx]->drbId;
+	   return ROK;
+	}
+      }
+   }
+   return RFAILED;
+}
+
+ /*******************************************************************
+ *
+ * @brief Build and Send DL Data Message transfer to RLC
+ *
+ * @details
+ *
+ *    Function : duBuildAndSendDlUserDataToRlc
+ *
+ *    Functionality:
+ *      Build and Send DL Data Message transfer to RLC
+ *
+ * @params[in] Cell ID
+ *             UE Index
+ *             Logical Channgel ID
+ *             RRC Message
+ *             RRC Message Length
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t duBuildAndSendDlUserDataToRlc(uint16_t msgLen, EgtpMsg *egtpMsg)
+{
+   uint8_t ret = RFAILED;
+   Pst     pst;
+   RlcDlUserDataInfo *dlDataMsgInfo = NULLP;
+
+   DU_ALLOC_SHRABL_BUF(dlDataMsgInfo, sizeof(RlcDlUserDataInfo));
+   if(!dlDataMsgInfo)
+   {
+      DU_LOG("\nERROR  -->  DU_APP : Memory allocation failed for dlDataMsgInfo in duHdlEgtpDlData()");
+      return RFAILED;
+   }
+   memset(dlDataMsgInfo, 0, sizeof(RlcDlUserDataInfo));
+   if(ODU_GET_MSG_BUF(DU_APP_MEM_REGION, DU_POOL, &dlDataMsgInfo->dlMsg) != ROK)
+   {
+      DU_LOG("\nERROR  -->  DU_APP : Memory allocation failed for dlMsg in duHdlEgtpDlData()");
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, dlDataMsgInfo, sizeof(RlcDlUserDataInfo));
+      return RFAILED;
+   }
+   dlDataMsgInfo->dlMsg = egtpMsg->msg;
+   dlDataMsgInfo->msgLen = msgLen;
+
+   /* Filling DL DATA Msg Info */
+   if(fillDlUserDataInfo(egtpMsg->msgHdr.teId, dlDataMsgInfo) == ROK)
+   {
+      /* Filling post structure and sending msg */ 
+      FILL_PST_DUAPP_TO_RLC(pst, RLC_DL_INST, EVENT_DL_USER_DATA_TRANS_TO_RLC);
+      DU_LOG("\nDEBUG  -->  DU_APP : Sending User Data Msg to RLC \n");
+      ret = (*duSendRlcDlUserDataToRlcOpts[pst.selector])(&pst, dlDataMsgInfo);
+   }
+   if(ret != ROK)
+   {
+      DU_LOG("\nERROR  -->  DU_APP : Failed to send User Data to RLC in duHdlEgtpDlData()");
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, dlDataMsgInfo->dlMsg, msgLen);
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, dlDataMsgInfo, sizeof(RlcDlUserDataInfo));
+   }
+   return ret;
+}
 
 /*******************************************************************
  *
@@ -98,50 +200,21 @@ uint32_t sduId = 0;
  * ****************************************************************/
 uint8_t duHdlEgtpDlData(EgtpMsg  *egtpMsg)
 {
-
-   /* TODO : Extract RbId/UeID/CellID/SduId from database
-      using tunnel id in egtp header */
-
-   DU_LOG("\nDEBUG   -->  DU_APP : Processing DL data");
-#ifdef EGTP_TEST
-   Pst pst;
-   uint8_t ret;
-   MsgLen copyLen;
-   RlcDlRrcMsgInfo  *dlRrcMsgInfo = NULLP;
-
-   DU_ALLOC_SHRABL_BUF(dlRrcMsgInfo, sizeof(RlcDlRrcMsgInfo));
-   if(!dlRrcMsgInfo)
+   uint16_t msgLen = 0;
+   DU_LOG("\nDEBUG  --> DU_APP : Processing DL data in duHdlEgtpDlData()");
+   
+   if(!egtpMsg->msg)
    {
-      DU_LOG("\nDU APP : Memory allocation failed for dlRrcMsgInfo in \
-         duBuildAndSendDlRrcMsgToRlc");
-      ODU_PUT_MSG_BUF(egtpMsg->msg);
+      DU_LOG("\nERROR  -->  DU_APP : Recevied Dl Data is NULLP in duHdlEgtpDlData()");
       return RFAILED;
    }
-
-   /* Filling up the RRC msg info */
-   dlRrcMsgInfo->cellId = NR_CELL_ID;
-   dlRrcMsgInfo->ueIdx = UE_ID;
-   dlRrcMsgInfo->rbType = CM_LTE_DRB;
-   dlRrcMsgInfo->rbId   = RB_ID;
-   dlRrcMsgInfo->lcType = CM_LTE_LCH_DTCH;
-   dlRrcMsgInfo->lcId   = 4;
-   dlRrcMsgInfo->execDup = false;
-   dlRrcMsgInfo->deliveryStaRpt = false;
-   ODU_GET_MSG_LEN(egtpMsg->msg, &dlRrcMsgInfo->msgLen);
-   DU_ALLOC_SHRABL_BUF(dlRrcMsgInfo->rrcMsg, dlRrcMsgInfo->msgLen);
-   ODU_COPY_MSG_TO_FIX_BUF(egtpMsg->msg, 0, dlRrcMsgInfo->msgLen, dlRrcMsgInfo->rrcMsg, (MsgLen *)&copyLen);
-   ODU_PUT_MSG_BUF(egtpMsg->msg);
-
-   /* Filling post structure and sending msg */
-   FILL_PST_DUAPP_TO_RLC(pst, RLC_DL_INST, EVENT_DL_RRC_MSG_TRANS_TO_RLC);
-   DU_LOG("\nDU_APP: Sending Dl User Msg to RLC \n");
-   ret = (*duSendDlRrcMsgToRlcOpts[pst.selector])(&pst, dlRrcMsgInfo);
-   if(ret != ROK)
+   ODU_GET_MSG_LEN(egtpMsg->msg, (MsgLen *)&msgLen);
+   if(duBuildAndSendDlUserDataToRlc(msgLen, egtpMsg) != ROK)
    {
-      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, dlRrcMsgInfo, sizeof(RlcDlRrcMsgInfo));
+      DU_LOG("\nERROR  -->  DU_APP : Failed to build DL USer Data in duHdlEgtpDlData()");
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, egtpMsg->msg, msgLen);
       return RFAILED;
    }
-#endif
    return ROK;
 }
 

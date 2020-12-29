@@ -331,9 +331,9 @@ uint8_t BuildAndSendRrcDeliveryReportToDu( RlcDlRrcMsgInfo *dlRrcMsgInfo )
 uint8_t RlcProcDlRrcMsgTransfer(Pst *pst, RlcDlRrcMsgInfo *dlRrcMsgInfo)
 {
    Buffer        *mBuf;
-   KwuDatReqInfo *datReqInfo;
+   RlcDatReqInfo *datReqInfo;
 
-   RLC_SHRABL_STATIC_BUF_ALLOC(RLC_MEM_REGION_DL, RLC_POOL, datReqInfo, sizeof(KwuDatReqInfo));
+   RLC_SHRABL_STATIC_BUF_ALLOC(RLC_MEM_REGION_DL, RLC_POOL, datReqInfo, sizeof(RlcDatReqInfo));
    if(!datReqInfo)
    {
       DU_LOG("\nERROR  -->  RLC : Memory allocation failed in RlcProcDlRrcMsgTransfer");
@@ -353,7 +353,7 @@ uint8_t RlcProcDlRrcMsgTransfer(Pst *pst, RlcDlRrcMsgInfo *dlRrcMsgInfo)
    if(ODU_GET_MSG_BUF(RLC_MEM_REGION_UL, RLC_POOL, &mBuf) != ROK)
    {
       DU_LOG("\nERROR  -->  RLC : Memory allocation failed at RlcMacProcUlData");
-      RLC_SHRABL_STATIC_BUF_FREE(RLC_MEM_REGION_DL, RLC_POOL, datReqInfo, sizeof(KwuDatReqInfo));
+      RLC_SHRABL_STATIC_BUF_FREE(RLC_MEM_REGION_DL, RLC_POOL, datReqInfo, sizeof(RlcDatReqInfo));
       RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, dlRrcMsgInfo->rrcMsg, dlRrcMsgInfo->msgLen);
       RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, dlRrcMsgInfo, sizeof(RlcDlRrcMsgInfo));
       return RFAILED;
@@ -372,7 +372,7 @@ uint8_t RlcProcDlRrcMsgTransfer(Pst *pst, RlcDlRrcMsgInfo *dlRrcMsgInfo)
    }
 
    /* Free memory allocated by du app */
-   RLC_SHRABL_STATIC_BUF_FREE(RLC_MEM_REGION_DL, RLC_POOL, datReqInfo, sizeof(KwuDatReqInfo));
+   RLC_SHRABL_STATIC_BUF_FREE(RLC_MEM_REGION_DL, RLC_POOL, datReqInfo, sizeof(RlcDatReqInfo));
    RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, dlRrcMsgInfo->rrcMsg, dlRrcMsgInfo->msgLen);
    RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, dlRrcMsgInfo, sizeof(RlcDlRrcMsgInfo));
    return ROK;
@@ -669,6 +669,58 @@ uint8_t RlcProcUeReconfigReq(Pst *pst, RlcUeCfg *ueCfg)
    return ret;
 }
 
+/* ****************************************************************
+ *
+ * @brief Process the DL Data transfer from DU APP
+ *
+ * @details
+ *
+ *    Function : RlcProcDlUserDataTransfer
+ *
+ *    Functionality: Process the DL transfer from DU APP
+ *
+ * @params[in] Post structure
+ *             DL RRC Message info
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t RlcProcDlUserDataTransfer(Pst *pst, RlcDlUserDataInfo *dlDataMsgInfo)
+{
+   Buffer        *mBuf = NULLP;
+   RlcDatReqInfo *datReqInfo = NULLP;
+
+   if(dlDataMsgInfo->dlMsg == NULLP)
+   {
+      DU_LOG("\nERROR  -->  RLC_DL : Received DL message is NULLP in RlcProcDlUserDataTransfer()");
+      return RFAILED;
+   }
+   RLC_SHRABL_STATIC_BUF_ALLOC(RLC_MEM_REGION_DL, RLC_POOL, datReqInfo, sizeof(RlcDatReqInfo));
+   if(!datReqInfo)
+   {
+      DU_LOG("\nERROR  -->  RLC_DL : Memory allocation failed for DatReq in RlcProcDlUserDataTransfer()");
+      RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, dlDataMsgInfo->dlMsg, dlDataMsgInfo->msgLen);
+      RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, dlDataMsgInfo, sizeof(RlcDlUserDataInfo));
+      return RFAILED;
+   }
+
+   datReqInfo->rlcId.rbType = RB_TYPE_DRB;
+   datReqInfo->rlcId.rbId   = dlDataMsgInfo->rbId;
+   datReqInfo->rlcId.ueId   = dlDataMsgInfo->ueIdx;
+   datReqInfo->rlcId.cellId = dlDataMsgInfo->cellId;
+   datReqInfo->lcType       = LCH_DTCH;
+   datReqInfo->sduId        = ++(rlcCb[pst->dstInst]->dlSduId);
+   mBuf = dlDataMsgInfo->dlMsg;
+   if(rlcProcDlData(pst, datReqInfo, mBuf) != ROK)
+   {
+      return RFAILED;
+   }
+    
+   /* Free memory allocated by du app */
+   RLC_SHRABL_STATIC_BUF_FREE(RLC_MEM_REGION_DL, RLC_POOL, datReqInfo, sizeof(RlcDatReqInfo));
+   RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, dlDataMsgInfo, sizeof(RlcDlUserDataInfo));
+   return ROK;
+}
 /**********************************************************************
          End of file
 **********************************************************************/

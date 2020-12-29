@@ -371,7 +371,7 @@ S16 rlcLiRguStaRspRbuf(Pst *post,SpId spId,Void *staRsp)
       ret1 = RFAILED;
    }
    return (ret1);
-} /* cmPkKwuDatReq */
+} /* cmPkRlcDatReq */
 
 #endif
 #ifdef RLC_MAC_DAT_REQ_RBUF
@@ -398,7 +398,7 @@ S16 rlcLiRguDatReqRbuf(Pst *post,SpId spId,Void *datReq)
       ret1 = RFAILED;
    }
    return (ret1);
-} /* cmPkKwuDatReq */
+} /* cmPkRlcDatReq */
 
 #endif 
 
