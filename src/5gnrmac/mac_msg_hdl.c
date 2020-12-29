@@ -246,18 +246,6 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcData *dlData)
 	 currDlSlot->dlInfo.dlMsgAlloc->dlMsgInfo.dlMsgPdu = txPdu;
       }
    }
-
-   /* Free memory */
-   for(pduIdx = 0; pduIdx < dlData->numPdu; pduIdx++)
-   {
-      MAC_FREE_SHRABL_BUF(pstInfo->region, pstInfo->pool, dlData->pduInfo[pduIdx].pduBuf,\
-         dlData->pduInfo[pduIdx].pduLen);
-   }
-   if(pstInfo->selector == ODU_SELECTOR_LWLC)
-   {
-      MAC_FREE_SHRABL_BUF(pstInfo->region, pstInfo->pool, dlData, sizeof(RlcData));
-   }
-
    return ROK;
 }
 

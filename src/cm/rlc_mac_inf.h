@@ -30,6 +30,13 @@
 /* MACRO defines */
 #define MAX_NUM_PDU     16
 
+typedef enum
+{
+   INVALID_MSG_TYPE,
+   DL_RRC_MSG_TYPE,
+   DL_USER_DATA_MSG_TYPE
+}DatMsgType;
+
 /* Buffer occupancy status information */
 typedef struct rlcBoStatus
 {
@@ -63,6 +70,7 @@ typedef struct rlcSchedResultRpt
 typedef struct rlcPduInfo
 {
    bool       commCh;   /*!<Common or Dedicated Channel */
+   DatMsgType  msgType;  /*!< RRC Data or User Data */
    uint8_t    lcId;     /*!< Logical channel ID */
    uint16_t   pduLen;   /*!< PDU Length */
    uint8_t    *pduBuf;  /*!< RLC PDU buffer */
@@ -70,7 +78,6 @@ typedef struct rlcPduInfo
  
 typedef struct rlcData
 {
-   // add slot info
    uint16_t      cellId;       /*!< CELL ID */
    uint16_t      rnti;         /*!< Temporary CRNTI */
    SlotIndInfo   slotInfo;     /*!< Timing info */
