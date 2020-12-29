@@ -342,7 +342,7 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
       else
          dlRrcMsgRsp->state = TRANSMISSION_COMPLETE;
 
-      /* Send Dl RRC Msg Rsp to DU APP */
+      /* TODO: Send Dl RRC Msg Rsp to DU APP, only if DL data is RRC MsgType*/
       FILL_PST_RLC_TO_DUAPP(pst, RLC_DL_INST, EVENT_DL_RRC_MSG_RSP_TO_DU);
       if(rlcSendDlRrcMsgRspToDu(&pst, dlRrcMsgRsp) != ROK)
       {

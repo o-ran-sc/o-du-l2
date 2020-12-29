@@ -97,6 +97,18 @@ typedef struct f1DlRrcMsg
    uint8_t  *rrcMsgPdu;
 }F1DlRrcMsg;
 
+typedef struct gTPTnlCfg
+{
+   uint32_t tnlAddress;
+   uint32_t teId;
+}GTPTnlCfg;
+
+typedef struct upTnlCfg
+{
+   uint8_t drbId;
+   GTPTnlCfg tnlCfg[MAX_NUM_TUNNEL_PER_DRB];
+}UpTnlCfg;
+
 typedef struct duUeCfg
 {
    void *cellGrpCfg;
@@ -135,6 +147,8 @@ typedef struct duUeCb
    UeState  ueState;         /* UE Active/ Ue Inactive state */
    MacUeCfg macUeCfg;        /* Mac Ue Cfg */
    RlcUeCfg rlcUeCfg;        /* Rlc Ue Cfg */
+   UpTnlCfg* ulTnlCfg[MAX_TNL_CFG]; /* tunnel info for every Drb */
+   UpTnlCfg* dlTnlCfg[MAX_TNL_CFG]; /* tunnel info for every Drb */
 }DuUeCb;
 
 typedef struct duCellCb
