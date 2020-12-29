@@ -1,0 +1,276 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e1623f15_1443f225",
+        "filename": "build/odu/makefile",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-29T15:22:44Z",
+      "side": 1,
+      "message": "Are we planning to keep the EGTP TEST flag enabled by default?",
+      "revId": "5e138962cc38ab126aa1e7f160716eabcdc42d61",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f5d705d7_671ced23",
+        "filename": "src/5gnrrlc/kw_utl_dl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-29T15:22:44Z",
+      "side": 1,
+      "message": "The if else condition is applicable to both RRC msg and User data. dlRrcMsgRsp-\u003estate should be filled only for rrc msg\n\nThis can be taken care of along with the following TODO.",
+      "revId": "5e138962cc38ab126aa1e7f160716eabcdc42d61",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "73e4a2ce_7bbb266b",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 688,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-29T15:22:44Z",
+      "side": 1,
+      "message": "\"DL Data\" could mean both User data or RRC msg. To avoid ambiguity, the API can be called as \"RlcProcDlUserDataTransfer\".",
+      "revId": "5e138962cc38ab126aa1e7f160716eabcdc42d61",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "922c10d7_517e8dba",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 696,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-29T15:22:44Z",
+      "side": 1,
+      "message": "All logs can be formatted as mentioned by Sphoorthi.",
+      "revId": "5e138962cc38ab126aa1e7f160716eabcdc42d61",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "623d56c5_9f7b6424",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-29T15:22:44Z",
+      "side": 1,
+      "message": "Should be called MAX_NUM_DRB",
+      "revId": "5e138962cc38ab126aa1e7f160716eabcdc42d61",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "babf9b1d_6ab9ce25",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-29T15:22:44Z",
+      "side": 1,
+      "message": "EVENT_DL_USER_DATA_TRANS_TO_RLC",
+      "revId": "5e138962cc38ab126aa1e7f160716eabcdc42d61",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a45e72db_69822202",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 562,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-29T15:22:44Z",
+      "side": 1,
+      "message": "Is sduId used anywhere?",
+      "revId": "5e138962cc38ab126aa1e7f160716eabcdc42d61",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "603730d2_f7d9563b",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 565,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-29T15:22:44Z",
+      "side": 1,
+      "message": "Rename structure to RlcDlUserDataInfo",
+      "revId": "5e138962cc38ab126aa1e7f160716eabcdc42d61",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8c6adbcf_80f20a1f",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 624,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-29T15:22:44Z",
+      "side": 1,
+      "message": "Rename function pointer and pack/unpack functions as well",
+      "revId": "5e138962cc38ab126aa1e7f160716eabcdc42d61",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "12904a46_74b15b78",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 7437,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-29T15:22:44Z",
+      "side": 1,
+      "message": "can remove extra blank lines. One should suffice",
+      "revId": "5e138962cc38ab126aa1e7f160716eabcdc42d61",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ecb94987_ab9af1d1",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-29T15:22:44Z",
+      "side": 1,
+      "message": "Since we are using camel case everywhere, rename to GtpTnlCfg",
+      "revId": "5e138962cc38ab126aa1e7f160716eabcdc42d61",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "64964a4a_858555f6",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-29T15:22:44Z",
+      "side": 1,
+      "message": "rename as mentioned previously",
+      "revId": "5e138962cc38ab126aa1e7f160716eabcdc42d61",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b1ea9ccb_6598c078",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-29T15:22:44Z",
+      "side": 1,
+      "message": "function descriptor missing",
+      "revId": "5e138962cc38ab126aa1e7f160716eabcdc42d61",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d9762264_3bfb6095",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-29T15:22:44Z",
+      "side": 1,
+      "message": "ueIdx can be filled directly into dlDataMsgInfo-\u003eueIdx",
+      "revId": "5e138962cc38ab126aa1e7f160716eabcdc42d61",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c068cac8_1fdb0766",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-29T15:22:44Z",
+      "side": 1,
+      "message": "Print error msg",
+      "revId": "5e138962cc38ab126aa1e7f160716eabcdc42d61",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c84a0ff0_72f123b4",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2020-12-29T15:22:44Z",
+      "side": 1,
+      "message": "this code must be moved out of EGTP_TEST flag",
+      "revId": "5e138962cc38ab126aa1e7f160716eabcdc42d61",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
