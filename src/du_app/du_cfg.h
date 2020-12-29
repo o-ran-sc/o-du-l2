@@ -73,7 +73,7 @@
 #define SSB_SUBCARRIER_OFFSET 0               
 #define SSB_MULT_CARRIER_BAND FALSE
 #define MULT_CELL_CARRIER FALSE
-#define FREQ_LOC_BW  1099              /* DL frequency location and bandwidth */
+#define FREQ_LOC_BW  28875             /* DL frequency location and bandwidth. Spec 38.508 Table 4.3.1.0B-1*/
 #define UL_P_MAX  23
 #define DMRS_TYPE_A_POS 2
 #define NUM_SYMBOLS_PER_SLOT 14       /* Number of symbols within a slot */
@@ -105,11 +105,9 @@
 #define ROOT_SEQ_LEN 139
 
 /* MACRCO Ddefine for PDCCH Configuration */
-#define PDCCH_CTRL_RSRC_SET_ZERO   13   /* Control resouce set zero */
-#define PDCCH_SEARCH_SPACE_ZERO    0    /* Search space zero */
 #define PDCCH_SEARCH_SPACE_ID      1    /* Common search space id */
 #define PDCCH_CTRL_RSRC_SET_ID     0    /* Control resource set id */
-#define PDCCH_SEARCH_SPACE_ID_SIB1 0    /* Search space id for sib1 */
+#define PDCCH_SEARCH_SPACE_ID_SIB1 1    /* Search space id for sib1 */
 #define PDCCH_SEARCH_SPACE_ID_PAGING 1  /* Search space id for paging */
 #define PDCCH_SEARCH_SPACE_ID_RA   1    /* Search spaced id for random access */
 #define PDCCH_SERACH_SPACE_DCI_FORMAT 0
@@ -214,8 +212,6 @@
 #define SYS_FRAME_NUM 0
 #define SPARE 0
 #define SSB_SC_OFFSET 8
-#define CORESET_ZERO 1
-#define SEARCH_SPACE_ZERO 8
 #define DU_RANAC 1
 #define CELL_IDENTITY 32
 

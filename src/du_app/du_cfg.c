@@ -387,8 +387,8 @@ uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
 
    /* Configuring PDCCH Config Common For SIB1 */
    pdcchCfg.present = BWP_DownlinkCommon__pdcch_ConfigCommon_PR_setup;
-   pdcchCfg.ctrlRsrcSetZero = PDCCH_CTRL_RSRC_SET_ZERO;
-   pdcchCfg.searchSpcZero = PDCCH_SEARCH_SPACE_ZERO;
+   pdcchCfg.ctrlRsrcSetZero = CORESET_0_INDEX;
+   pdcchCfg.searchSpcZero = SEARCHSPACE_0_INDEX;
    pdcchCfg.searchSpcId = PDCCH_SEARCH_SPACE_ID;
    pdcchCfg.ctrlRsrcSetId = PDCCH_CTRL_RSRC_SET_ID;
    pdcchCfg.monitorSlotPrdAndOffPresent = \
@@ -422,7 +422,7 @@ uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
       BCCH_Config__modificationPeriodCoeff_n16;
 
    /* Configuring PCCH Config for SIB1 */
-   pcchCfg.dfltPagingCycle = PagingCycle_rf64;
+   pcchCfg.dfltPagingCycle = PagingCycle_rf256;
    pcchCfg.nAndPagingFrmOffPresent = PCCH_Config__nAndPagingFrameOffset_PR_oneT;
    pcchCfg.numPagingOcc = PCCH_Config__ns_four;
    srvCellCfgComm->dlCfg.pcchCfg = pcchCfg;
@@ -550,8 +550,8 @@ uint8_t readCfg()
    mib.subCarrierSpacingCommon = MIB__subCarrierSpacingCommon_scs15or60;
    mib.ssb_SubcarrierOffset = SSB_SC_OFFSET; 
    mib.dmrs_TypeA_Position = MIB__dmrs_TypeA_Position_pos2;
-   mib.controlResourceSetZero = CORESET_ZERO;
-   mib.searchSpaceZero = SEARCH_SPACE_ZERO;
+   mib.controlResourceSetZero = CORESET_0_INDEX;
+   mib.searchSpaceZero = SEARCHSPACE_0_INDEX;
    mib.cellBarred = MIB__cellBarred_barred;
    mib.intraFreqReselection =
       MIB__intraFreqReselection_notAllowed;
