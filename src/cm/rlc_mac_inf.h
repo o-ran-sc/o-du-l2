@@ -70,7 +70,6 @@ typedef struct rlcPduInfo
  
 typedef struct rlcData
 {
-   // add slot info
    uint16_t      cellId;       /*!< CELL ID */
    uint16_t      rnti;         /*!< Temporary CRNTI */
    SlotIndInfo   slotInfo;     /*!< Timing info */

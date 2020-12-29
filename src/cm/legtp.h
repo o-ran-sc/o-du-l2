@@ -77,8 +77,8 @@ typedef struct egtpMsgHdr
    TknUInt8      nPdu;                      /**< N-PDU Number */
    TknUInt32     seqNum;                    /**< Sequence Number */
    EgtpExtHdr extHdr;                       /**< Extension headers present flag */
-   uint32_t        teId;                         /**< Tunnel Endpoint Id */
-   uint8_t         msgType;                      /**< eGTP-U Message Type */
+   uint32_t        teId;                    /**< Tunnel Endpoint Id */
+   uint8_t         msgType;                 /**< eGTP-U Message Type */
 }EgtpMsgHdr;
 
 typedef struct egtpMsg
