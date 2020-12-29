@@ -61,7 +61,7 @@ typedef struct kwuDatReqInfo
       CmLteRnti         rnti;             /*!< Temporary CRNTI:Applicable for CCCH. */
    }tm;                                   /*!< TM mode data */
 #endif                                    /* CCPU_OPT */
-}KwuDatReqInfo;
+}RlcDatReqInfo;
 
 /** @brief Data Indication Information from RLC to RRC or PDCP */
 typedef struct kwuDatIndInfo
@@ -125,7 +125,7 @@ typedef S16 (*KwuBndReq)      ARGS((Pst *pst, SuId suId,  SpId spId));
 typedef S16 (*KwuBndCfm)      ARGS((Pst *pst, SuId suId, uint8_t status));
 typedef S16 (*KwuUbndReq)     ARGS((Pst *pst, SuId suId, Reason reason));
 
-typedef S16 (*KwuDatReq)      ARGS((Pst *pst, KwuDatReqInfo* datReq, Buffer *mBuf));
+typedef S16 (*KwuDatReq)      ARGS((Pst *pst, RlcDatReqInfo* datReq, Buffer *mBuf));
 typedef uint8_t (*KwuDatInd)      ARGS((Pst *pst, KwuDatIndInfo* datInd,
          Buffer *mBuf));
 typedef S16 (*KwuDatCfm)      ARGS((Pst *pst, SuId suId, KwuDatCfmInfo* datCfm));
@@ -334,7 +334,7 @@ S16 NhLiKwuUbndReq ARGS((Pst *pst,
 
 S16 NhLiKwuDatReq ARGS((Pst *pst,
          SpId spId,
-         KwuDatReqInfo* datReq,
+         RlcDatReqInfo* datReq,
          Buffer *buf));
 
 S16 NhLiKwuDatInd ARGS((Pst *pst,
@@ -358,7 +358,7 @@ S16 DmUiKwuUbndReq ARGS((Pst *pst,
 
 S16 DmUiKwuDatReq ARGS((Pst *pst,
          SpId spId,
-         KwuDatReqInfo* datReq,
+         RlcDatReqInfo* datReq,
          Buffer *buf));
 
 S16 DmUiKwuDatInd ARGS((Pst *pst,
@@ -387,7 +387,7 @@ S16 PjLiKwuUbndReq ARGS((Pst *pst,
 
 S16 PjLiKwuDatReq ARGS((Pst *pst,
          SpId spId,
-         KwuDatReqInfo* datReq,
+         RlcDatReqInfo* datReq,
          Buffer *buf));
 
 S16 PjLiKwuDatInd ARGS((Pst *pst,
@@ -432,8 +432,8 @@ S16 rlcUlBatchProc ARGS((Void));
  ****************************************************************************/
 #ifdef LCKWU
 /* Packing Functions */
-uint8_t cmPkKwuDatReqInfo ARGS ((
-KwuDatReqInfo *param,
+uint8_t cmPkRlcDatReqInfo ARGS ((
+RlcDatReqInfo *param,
 Buffer *mBuf
 ));
 
@@ -472,7 +472,7 @@ uint8_t status
 
 uint8_t cmPkKwuDatReq ARGS ((
 Pst * pst,
-KwuDatReqInfo* datReq,
+RlcDatReqInfo* datReq,
 Buffer * mBuf
 ));
 
@@ -533,8 +533,8 @@ KwuFlowCntrlIndInfo *flowCntrlIndInfo
 ));
 
 /* Unpacking Functions */
-S16 cmUnpkKwuDatReqInfo ARGS ((
-KwuDatReqInfo *param,
+S16 cmUnpkRlcDatReqInfo ARGS ((
+RlcDatReqInfo *param,
 Buffer *mBuf
 ));
 

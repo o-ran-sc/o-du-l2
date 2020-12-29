@@ -31,6 +31,8 @@
 #define EVENT_DL_RRC_MSG_RSP_TO_DU 217
 #define EVENT_DL_USER_DATA_TRANS_TO_DU 218
 #define EVENT_UL_USER_DATA_TRANS_TO_DU 219
+#define EVENT_DL_USER_DATA_TRANS_TO_RLC 220
+
 
 #define RB_ID_SRB 0
 #define RB_ID_DRB 1
@@ -562,6 +564,16 @@ typedef struct rrcDeliveryReportInfo
    RrcDeliveryStatus  rrcDeliveryStatus;
 }RrcDeliveryReport;
 
+/* DL Data Message from DU APP to RLC */
+typedef struct dlDataMsgInfo
+{
+   uint16_t   cellId;         /* Cell Id */
+   uint16_t   ueIdx;          /* UE index */
+   uint8_t    rbId;           /* Radio Bearer Id */
+   uint16_t   msgLen;         /* Message length */
+   uint8_t    *dlMsg;         /* DL Data */
+}RlcDlUserDataInfo;
+
 /* Function Pointers */
 /* UE create Request from DU APP to RLC*/
 typedef uint8_t (*DuRlcUeCreateReq) ARGS((
@@ -602,6 +614,11 @@ typedef uint8_t (*RlcUlUserDataToDuFunc) ARGS((
    Pst           *pst,
    RlcUlUserDatInfo *ulUserData));
 
+/* DL User Data from DU APP to RLC */
+typedef uint8_t (*DuRlcDlUserDataToRlcFunc) ARGS((
+   Pst           *pst,
+   RlcDlUserDataInfo *dlDataMsg));
+
 /* Pack/Unpack function declarations */
 uint8_t packDuRlcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg);
 uint8_t unpackRlcUeCreateReq(DuRlcUeCreateReq func, Pst *pst, Buffer *mBuf);
@@ -619,6 +636,8 @@ uint8_t packRlcDlRrcMsgRspToDu(Pst *pst, RlcDlRrcMsgRsp *dlRrcMsgRsp);
 uint8_t unpackRlcDlRrcMsgRspToDu(RlcDlRrcMsgRspToDuFunc func, Pst *pst, Buffer *mBuf);
 uint8_t packRlcUlUserDataToDu(Pst *pst, RlcUlUserDatInfo *ulUserData);
 uint8_t unpackRlcUlUserDataToDu(RlcUlUserDataToDuFunc func, Pst *pst, Buffer *mBuf);
+uint8_t packRlcDlUserDataToRlc(Pst *pst, RlcDlUserDataInfo *dlDataMsg);
+uint8_t unpackRlcDlUserDataToRlc(DuRlcDlUserDataToRlcFunc func, Pst *pst, Buffer *mBuf);
 
 /* Event Handler function declarations */
 uint8_t RlcProcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg);
@@ -629,6 +648,7 @@ uint8_t DuProcRlcRrcDeliveryReport(Pst *pst, RrcDeliveryReport *rrcDeliveryRepor
 uint8_t RlcProcUeReconfigReq(Pst *pst, RlcUeCfg *ueCfg);
 uint8_t DuProcRlcDlRrcMsgRsp(Pst *pst, RlcDlRrcMsgRsp *dlRrcMsg);
 uint8_t DuProcRlcUlUserDataTrans(Pst *pst, RlcUlUserDatInfo *ulUserData);
+uint8_t RlcProcDlUserDataTransfer(Pst *pst, RlcDlUserDataInfo *dlDataMsgInfo);
 
 #endif /* RLC_INF_H */
 

@@ -642,7 +642,7 @@ Void rlcDbmDelAllDlL2MeasTbFrmUe ARGS ((RlcCb *gCb, RlcDlUeCb *ueCb));
  ***************************************************************************/
 Void rlcTmmQSdu ARGS ((RlcCb *gCb,
                             RlcDlRbCb *rbCb,
-                            KwuDatReqInfo *datReqInfo,
+                            RlcDatReqInfo *datReqInfo,
                             Buffer *mBuf));
 Void rlcTmmSendToMac ARGS ((RlcCb     *gCb,
                                 SuId     suId,
@@ -656,7 +656,7 @@ Void rlcDlTmmReEstablish ARGS ((RlcCb *gCb, RlcDlRbCb *rbCb));
  ***************************************************************************/
 Void rlcUmmQSdu ARGS ((RlcCb *gCb, 
                              RlcDlRbCb *rbCb,
-                             KwuDatReqInfo *datReq, 
+                             RlcDatReqInfo *datReq, 
                              Buffer *mBuf));
 
 Void rlcUmmDiscSdu ARGS ((RlcCb *gCb, RlcDlRbCb *rbCb, uint32_t sduId));
@@ -681,7 +681,7 @@ Void rlcAmmSendDedLcBoStatus ARGS ((RlcCb *gCb, RlcDlRbCb *rbCb, RlcAmDl *amDl))
 Void rlcAmmQSdu ARGS((RlcCb *gCb,
                             RlcDlRbCb *rbCb,
                             Buffer *mBuf, 
-                            KwuDatReqInfo *datReq));
+                            RlcDatReqInfo *datReq));
 
 void rlcAmmProcessSdus ARGS((RlcCb *gCb, 
                                    RlcDlRbCb *rbCb, 
@@ -843,7 +843,7 @@ S16 rlcUtlNotifyMacUlIp ARGS ((RlcL2MeasCb *measCb,uint16_t ueIdx, Bool enable,
                                     CmLteLcId  *lChId, uint8_t *numLCh));
 #endif
 
-uint8_t rlcProcDlData(Pst *pst, KwuDatReqInfo* datReq, Buffer *buf);
+uint8_t rlcProcDlData(Pst *pst, RlcDatReqInfo* datReq, Buffer *buf);
 uint8_t rlcProcCommLcSchedRpt(Pst *pst, SuId suId, RguCStaIndInfo  *staInd);
 uint8_t rlcProcDedLcSchedRpt(Pst *pst, SuId suId, RguDStaIndInfo  *staInd);
 

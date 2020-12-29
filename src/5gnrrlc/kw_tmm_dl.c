@@ -67,7 +67,7 @@
 #define RLC_MODULE (RLC_DBGMASK_TM | RLC_DBGMASK_DL)
 
 static Void rlcTmmSendBoSta ARGS((RlcCb *gCb, RlcDlRbCb *rbCb, 
-                                 MsgLen bo, KwuDatReqInfo *datReqInfo));
+                                 MsgLen bo, RlcDatReqInfo *datReqInfo));
 uint32_t rgMacGT ;  
 /** @addtogroup tmmode */
 /*@{*/
@@ -94,7 +94,7 @@ Void rlcTmmQSdu
 (
 RlcCb            *gCb,
 RlcDlRbCb        *rbCb,      
-KwuDatReqInfo   *datReqInfo, 
+RlcDatReqInfo   *datReqInfo, 
 Buffer          *mBuf       
 )
 {
@@ -403,7 +403,7 @@ RlcDlRbCb   *rbCb
  *    -# RFAILED 
  */
 
-static void rlcTmmSendBoSta(RlcCb *gCb, RlcDlRbCb *rbCb, MsgLen bo, KwuDatReqInfo *datReqInfo)
+static void rlcTmmSendBoSta(RlcCb *gCb, RlcDlRbCb *rbCb, MsgLen bo, RlcDatReqInfo *datReqInfo)
 {
    Pst              pst;            /* Post structure */    
    RlcBoStatus      *boStatus;      /* Buffer occupancy status information */

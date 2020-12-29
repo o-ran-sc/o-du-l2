@@ -961,7 +961,7 @@ uint32_t kwRxSdu;
  * @return Void
  *      -# void
 */
-void rlcAmmQSdu(RlcCb *gCb, RlcDlRbCb *rbCb, Buffer *mBuf, KwuDatReqInfo *datReq)
+void rlcAmmQSdu(RlcCb *gCb, RlcDlRbCb *rbCb, Buffer *mBuf, RlcDatReqInfo *datReq)
 {
    RlcSdu       *sdu;
 #ifdef LTE_L2_MEAS
