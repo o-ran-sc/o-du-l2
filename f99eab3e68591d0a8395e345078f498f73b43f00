@@ -1,0 +1,208 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "49a48711_422ee067",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 3516,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-01-04T07:27:50Z",
+      "side": 1,
+      "message": "generic comment initialize all pointers to NULLP and variables to zero",
+      "revId": "f99eab3e68591d0a8395e345078f498f73b43f00",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f3008e7b_bc555b6e",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 3984,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-01-04T07:27:50Z",
+      "side": 1,
+      "message": "initialize all these value to zero",
+      "revId": "f99eab3e68591d0a8395e345078f498f73b43f00",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f611e2c2_ef387ed2",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 4183,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-01-04T07:27:50Z",
+      "side": 1,
+      "message": "initialize to NULLP",
+      "revId": "f99eab3e68591d0a8395e345078f498f73b43f00",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5d007bac_2b4c0378",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 4184,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-01-04T07:27:50Z",
+      "side": 1,
+      "message": "initialize to NULLP",
+      "revId": "f99eab3e68591d0a8395e345078f498f73b43f00",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4a6a60fa_b703c937",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 771,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-01-04T07:27:50Z",
+      "side": 1,
+      "message": "remove this check from here and add in E2Ap Msg hdlr\nas followed in F1ap",
+      "revId": "f99eab3e68591d0a8395e345078f498f73b43f00",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f5f51bb3_e9525363",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 872,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-01-04T07:27:50Z",
+      "side": 1,
+      "message": "remove this check add in E2AP msg hdlr",
+      "revId": "f99eab3e68591d0a8395e345078f498f73b43f00",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "78ad7833_c1c0755f",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1327,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-01-04T07:27:50Z",
+      "side": 1,
+      "message": "free e2apMsg, successful Outcome, initiating message IE here\nAs done in F1AP",
+      "revId": "f99eab3e68591d0a8395e345078f498f73b43f00",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e9307d68_a668f119",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 8662,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-01-04T07:27:50Z",
+      "side": 1,
+      "message": "free bitRate",
+      "revId": "f99eab3e68591d0a8395e345078f498f73b43f00",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6a9ce448_43b34b8d",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 8723,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-01-04T07:27:50Z",
+      "side": 1,
+      "message": "add a case for \"ProtocolIE_ID_id_GNB_DU_UE_AMBR_UL\"\nand free the bit rate",
+      "revId": "f99eab3e68591d0a8395e345078f498f73b43f00",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ece46330_c4217be3",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 9692,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-01-04T07:27:50Z",
+      "side": 1,
+      "message": "check and free the Cells_to_be_Activated_List",
+      "revId": "f99eab3e68591d0a8395e345078f498f73b43f00",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "78730659_6e5adc7c",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 9909,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-01-04T07:27:50Z",
+      "side": 1,
+      "message": "multiple breaks ??\nadd a default case for switch",
+      "revId": "f99eab3e68591d0a8395e345078f498f73b43f00",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d956f390_9419ad3d",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-01-04T07:27:50Z",
+      "side": 1,
+      "message": "initialize to zero",
+      "revId": "f99eab3e68591d0a8395e345078f498f73b43f00",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
