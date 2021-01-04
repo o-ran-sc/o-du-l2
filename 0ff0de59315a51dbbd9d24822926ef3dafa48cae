@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8fbe25dc_c7cb1d79",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 7443,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-01-04T07:28:21Z",
+      "side": 1,
+      "message": "log formatting missing",
+      "revId": "0ff0de59315a51dbbd9d24822926ef3dafa48cae",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "339a22ce_d34b077b",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 7580,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-01-04T07:28:21Z",
+      "side": 1,
+      "message": "log formatting missing",
+      "revId": "0ff0de59315a51dbbd9d24822926ef3dafa48cae",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
