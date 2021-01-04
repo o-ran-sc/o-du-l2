@@ -16,6 +16,24 @@
       "revId": "237ccf5562b255fad3ba844d1bd0bbd761f3e78d",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "67c42403_07b21cf9",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-01-04T08:19:41Z",
+      "side": 1,
+      "message": "Search space zero index \u003d 0 and search space id \u003d 1",
+      "parentUuid": "ccd8fd3b_734df25e",
+      "revId": "237ccf5562b255fad3ba844d1bd0bbd761f3e78d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
