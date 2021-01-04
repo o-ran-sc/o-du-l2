@@ -36,6 +36,24 @@
     },
     {
       "key": {
+        "uuid": "49378ae7_f3199f2c",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 793,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-01-04T06:19:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "816cf399_b9011c70",
+      "revId": "ee031d14c788336f9e36278723095046f7ef7971",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b452f49d_a8d85049",
         "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
         "patchSetId": 1
@@ -53,6 +71,24 @@
     },
     {
       "key": {
+        "uuid": "ef21ae43_8c76c707",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6314,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-01-04T06:19:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b452f49d_a8d85049",
+      "revId": "ee031d14c788336f9e36278723095046f7ef7971",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "cd0b89b1_2b9d1344",
         "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
         "patchSetId": 1
@@ -64,6 +100,24 @@
       "writtenOn": "2020-12-28T14:12:27Z",
       "side": 1,
       "message": "create a macro for DRB 2 and pass it in func call",
+      "revId": "ee031d14c788336f9e36278723095046f7ef7971",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fea529df_85ecef96",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6371,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-01-04T06:19:54Z",
+      "side": 1,
+      "message": "added macro , but cant pass the drb2 in function becz in BuildDRBSetup function we are creating array of DRBs_ToBeSetup_ItemIEs_t but for ue context modification we have to create array of DRBs_ToBeSetupMod_ItemIEs_t",
+      "parentUuid": "cd0b89b1_2b9d1344",
       "revId": "ee031d14c788336f9e36278723095046f7ef7971",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -87,6 +141,24 @@
     },
     {
       "key": {
+        "uuid": "292a6eda_e6e4185f",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6385,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-01-04T06:19:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9ea70c85_8b3d7a94",
+      "revId": "ee031d14c788336f9e36278723095046f7ef7971",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e3353497_49762ea2",
         "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
         "patchSetId": 1
@@ -98,6 +170,24 @@
       "writtenOn": "2020-12-28T14:12:27Z",
       "side": 1,
       "message": "from where is this triggered ?",
+      "revId": "ee031d14c788336f9e36278723095046f7ef7971",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e8f8f644_31d3b121",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6610,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-01-04T06:19:54Z",
+      "side": 1,
+      "message": "as per  the discussion , trigger point is not added for now",
+      "parentUuid": "e3353497_49762ea2",
       "revId": "ee031d14c788336f9e36278723095046f7ef7971",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
