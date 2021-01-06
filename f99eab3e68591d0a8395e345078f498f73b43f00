@@ -87,6 +87,24 @@
     },
     {
       "key": {
+        "uuid": "e52ba510_fcc65f56",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 771,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-01-06T07:47:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4a6a60fa_b703c937",
+      "revId": "f99eab3e68591d0a8395e345078f498f73b43f00",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f5f51bb3_e9525363",
         "filename": "src/du_app/du_e2ap_msg_hdl.c",
         "patchSetId": 7
@@ -104,6 +122,24 @@
     },
     {
       "key": {
+        "uuid": "42f04923_37ae2fd1",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 872,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-01-06T07:47:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f5f51bb3_e9525363",
+      "revId": "f99eab3e68591d0a8395e345078f498f73b43f00",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "78ad7833_c1c0755f",
         "filename": "src/du_app/du_e2ap_msg_hdl.c",
         "patchSetId": 7
@@ -118,6 +154,24 @@
       "revId": "f99eab3e68591d0a8395e345078f498f73b43f00",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8ba3bc97_8bcacde9",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1327,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-01-06T07:47:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "78ad7833_c1c0755f",
+      "revId": "f99eab3e68591d0a8395e345078f498f73b43f00",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -203,6 +257,24 @@
       "revId": "f99eab3e68591d0a8395e345078f498f73b43f00",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7c4e41ef_496d8a81",
+        "filename": "src/phy_stub/l1_bdy1.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-01-06T07:47:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d956f390_9419ad3d",
+      "revId": "f99eab3e68591d0a8395e345078f498f73b43f00",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
