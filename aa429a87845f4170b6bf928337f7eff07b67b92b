@@ -1,0 +1,225 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0ce7b78b_6c98673a",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 5623,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-01-06T03:48:02Z",
+      "side": 1,
+      "message": "rename idx1 and idx2",
+      "revId": "aa429a87845f4170b6bf928337f7eff07b67b92b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2ece236d_44d63820",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 8260,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-01-06T03:48:02Z",
+      "side": 1,
+      "message": "avoid using idx, idx2. name it wisely",
+      "revId": "aa429a87845f4170b6bf928337f7eff07b67b92b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5164ed27_150eb845",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 8262,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-01-06T03:48:02Z",
+      "side": 1,
+      "message": "Generic- remove this comment and mention it function description.",
+      "revId": "aa429a87845f4170b6bf928337f7eff07b67b92b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2f9fad0a_08593cbd",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 8322,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-01-06T03:48:02Z",
+      "side": 1,
+      "message": "Use cameCase approach in naming\nchange it to cellIdx",
+      "revId": "aa429a87845f4170b6bf928337f7eff07b67b92b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0b24061f_a1820c2a",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 8358,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-01-06T03:48:02Z",
+      "side": 1,
+      "message": "rename to srbIdx",
+      "revId": "aa429a87845f4170b6bf928337f7eff07b67b92b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "935bfe5d_a03b2e51",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 8359,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-01-06T03:48:02Z",
+      "side": 1,
+      "message": "remove these comments and add it to function description",
+      "revId": "aa429a87845f4170b6bf928337f7eff07b67b92b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d444d519_9f6617c3",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 8391,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-01-06T03:48:02Z",
+      "side": 1,
+      "message": "generic- correct the naming of variables used in funcitons",
+      "revId": "aa429a87845f4170b6bf928337f7eff07b67b92b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "de965897_d9fcebe1",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 8440,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-01-06T03:48:02Z",
+      "side": 1,
+      "message": "assign to NULLP;",
+      "revId": "aa429a87845f4170b6bf928337f7eff07b67b92b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e5273133_23b3181d",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 9292,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-01-06T03:48:02Z",
+      "side": 1,
+      "message": "The overall function went so long. \nInstead create a function call and pass ueSetReq",
+      "revId": "aa429a87845f4170b6bf928337f7eff07b67b92b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "121a2e0a_3d3ec1b3",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 10313,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-01-06T03:48:02Z",
+      "side": 1,
+      "message": "Generic-\nIf the free is 2-3 line change, we can add it here.\nIf its more than that make a function call to make it more readable.",
+      "revId": "aa429a87845f4170b6bf928337f7eff07b67b92b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f533c896_0acec885",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 10389,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-01-06T03:48:02Z",
+      "side": 1,
+      "message": "Generic\nwe are freeing few in params in cases and protocol array list in other for loop.\nmaintain the uniformity, either free all in the cases\nor create a function call eg: freeAperDecodeF1SetupRsp(f1SetRspMsg)",
+      "revId": "aa429a87845f4170b6bf928337f7eff07b67b92b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "12630130_53181748",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 10451,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-01-06T03:48:02Z",
+      "side": 1,
+      "message": "can this be accommodated in above for loop",
+      "revId": "aa429a87845f4170b6bf928337f7eff07b67b92b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f08cc2bc_cb448482",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 10551,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-01-06T03:48:02Z",
+      "side": 1,
+      "message": "make this into function call",
+      "revId": "aa429a87845f4170b6bf928337f7eff07b67b92b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
