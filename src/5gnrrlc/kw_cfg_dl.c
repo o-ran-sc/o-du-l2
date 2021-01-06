@@ -341,10 +341,10 @@ static S16 rlcCfgFillDlRbCb(RlcCb *gCb,RlcDlRbCb *rbCb,RlcDlUeCb *ueCb,RlcEntCfg
          rbCb->lch.lChType = entCfg->lCh[0].type;
          rbCb->dir = entCfg->dir;
          rbCb->m.umDl.snLen = entCfg->m.umInfo.dl.snLen;
-         if (entCfg->m.umInfo.dl.snLen == RLC_UM_CFG_5BIT_SN_LEN)
-            rbCb->m.umDl.modBitMask = 0x1f;
+         if (entCfg->m.umInfo.dl.snLen == RLC_UM_CFG_6BIT_SN_LEN)
+            rbCb->m.umDl.modBitMask = 0x3f;
          else
-            rbCb->m.umDl.modBitMask = 0x3ff;
+            rbCb->m.umDl.modBitMask = 0xfff;
 
          ueCb->lCh[rbCb->lch.lChId - 1].dlRbCb = rbCb;
 
