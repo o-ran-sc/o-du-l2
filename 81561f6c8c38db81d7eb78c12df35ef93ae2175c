@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cdacc51e_82882a02",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 705,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-01-06T10:59:44Z",
+      "side": 1,
+      "message": "is variable ret required??",
+      "revId": "81561f6c8c38db81d7eb78c12df35ef93ae2175c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cd4699fa_8cc3b1c0",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-01-06T10:59:44Z",
+      "side": 1,
+      "message": "Change as:\n\nif(ricReqId \u003d\u003d NULLP)\n{\n   return RFAILED;\n}\nricReqId-\u003ericRequestorID \u003d 1;\nricReqId-\u003ericInstanceID  \u003d 1;\n  \nreturn ROK;",
+      "revId": "81561f6c8c38db81d7eb78c12df35ef93ae2175c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
