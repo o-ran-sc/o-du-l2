@@ -464,11 +464,11 @@ uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
                datReq.totMacGrant = grantPerLch[staIndTb->lchStaInd[count].lcId];
 #endif
                rlcUtlGetCurrTime(&datReq.boRep.oldestSduArrTime);
-               if ( CM_LTE_MODE_UM == rbCb->mode )
+               if ( RLC_MODE_UM == rbCb->mode )
                {
                   rlcUmmProcessSdus(gCb,rbCb,&datReq);
                }
-               else if ( CM_LTE_MODE_AM == rbCb->mode )
+               else if ( RLC_MODE_AM == rbCb->mode )
                {
                   rlcAmmProcessSdus(gCb,rbCb,&datReq,staInd->fillCtrlPdu);
                }
@@ -510,7 +510,7 @@ uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
 
 #ifdef L2_OPTMZ
                /* Set if Bearer is UM */
-               if ( CM_LTE_MODE_UM == rbCb->mode )
+               if ( RLC_MODE_UM == rbCb->mode )
                {
                   datReqTb->lchData[count].freeBuff = TRUE;
                }
@@ -623,7 +623,7 @@ uint8_t rlcUtlSendDedLcBoStatus(RlcCb *gCb, RlcDlRbCb *rbCb, int32_t bo, \
 
 #ifndef TENB_ACC
    if ((rbCb->lastRprtdBoToMac > (uint32_t)8000) && (rbCb->boUnRprtdCnt < (uint32_t)5) 
-       && (!staPduPrsnt) && ((CM_LTE_MODE_AM == rbCb->mode ) && (RLC_AMDL.nxtRetx == NULLP)))
+       && (!staPduPrsnt) && ((RLC_MODE_AM == rbCb->mode ) && (RLC_AMDL.nxtRetx == NULLP)))
    {
       rbCb->boUnRprtdCnt++;
       return ROK;
@@ -771,13 +771,13 @@ Void rlcDlUtlSetReestInProgressForRB(RlcCb *gCb,RlcDlRbCb *rbCb)
       
    rbCb->reestInProgress = TRUE;
    
-   if(rbCb->mode == CM_LTE_MODE_AM )
+   if(rbCb->mode == RLC_MODE_AM )
    {
       rbCb->m.amDl.estHdrSz = 0;
 
-      if(rlcChkTmr(gCb, (PTR)rbCb, RLC_EVT_AMDL_POLL_RETX_TMR))
+      if(rlcChkTmr(gCb, (PTR)rbCb, EVENT_RLC_AMDL_POLL_RETX_TMR))
       {
-         rlcStopTmr(gCb, (PTR)rbCb, RLC_EVT_AMDL_POLL_RETX_TMR);
+         rlcStopTmr(gCb, (PTR)rbCb, EVENT_RLC_AMDL_POLL_RETX_TMR);
       }
    }
    else
@@ -849,9 +849,9 @@ Void rlcDlUtlSetReestInProgressForAllRBs(RlcCb *gCb,RlcDlUeCb *ueCb)
          else
          {
             /* For SRB we just need to stop the poll re-transmit timer */
-            if(rlcChkTmr(gCb, (PTR)ueCb->srbCb[rbIdx], RLC_EVT_AMDL_POLL_RETX_TMR))
+            if(rlcChkTmr(gCb, (PTR)ueCb->srbCb[rbIdx], EVENT_RLC_AMDL_POLL_RETX_TMR))
             {
-               rlcStopTmr(gCb, (PTR)ueCb->srbCb[rbIdx], RLC_EVT_AMDL_POLL_RETX_TMR);
+               rlcStopTmr(gCb, (PTR)ueCb->srbCb[rbIdx], EVENT_RLC_AMDL_POLL_RETX_TMR);
             }
          }
       }
@@ -1902,7 +1902,7 @@ Void rlcUtlResetDlL2MeasInRlcRb(RlcCb *gCb,RlcL2MeasCb *measCb,uint8_t measType)
 
 static Void dumpRLCDlRbInformation(RlcDlRbCb* dlRbCb)
 {
-   if(dlRbCb->mode == CM_LTE_MODE_UM)
+   if(dlRbCb->mode == RLC_MODE_UM)
    {
       RLOG_ARG3(L_DEBUG,DBG_RBID,dlRbCb->rlcId.rbId,
                "UM Downlink UEID:%d CELLID:%d Q size = %d",
@@ -1910,7 +1910,7 @@ static Void dumpRLCDlRbInformation(RlcDlRbCb* dlRbCb)
                        dlRbCb->rlcId.cellId,
                        (int)dlRbCb->m.umDl.sduQ.count);
    }
-   else if(dlRbCb->mode == CM_LTE_MODE_AM)
+   else if(dlRbCb->mode == RLC_MODE_AM)
    {
       uint32_t j, numTxPdus=0;
       for(j = 0; j <= (RLC_AM_GET_WIN_SZ(dlRbCb->m.amDl.snLen)); j++)

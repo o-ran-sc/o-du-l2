@@ -351,8 +351,7 @@ static S16 rlcLmmGenCfg(RlcCb  *gCb,RlcGenCfg *cfg)
       }
 
       /* Register the timer */
-#if 0
-      if(SRegTmrMt(gCb->init.ent, gCb->init.inst, (uint16_t)cfg->timeRes,
+      if(ODU_REG_TMR_MT(gCb->init.ent, gCb->init.inst, (uint16_t)cfg->timeRes,
               rlcActvTmr) != ROK)
       {
          RLC_FREE(gCb,gCb->u.ulCb->udxUlSap, rlcUdxSapSize);
@@ -362,7 +361,7 @@ static S16 rlcLmmGenCfg(RlcCb  *gCb,RlcGenCfg *cfg)
 
          return (LCM_REASON_REGTMR_FAIL);
       }
-#endif
+
 #ifdef LTE_L2_MEAS
       rlcUtlL2MeasUlInit(gCb);
 #endif
@@ -1758,7 +1757,7 @@ static S16 rlcLmmUdxSapCntrl(RlcCb *gCb,RlcMngmt *cntrl)
          if(UDX_SAP.state != RLC_SAP_BND)
          {
             /* start timer to wait for bind confirm */
-            rlcStartTmr(gCb,(PTR)(&UDX_SAP), RLC_EVT_WAIT_BNDCFM);
+            rlcStartTmr(gCb,(PTR)(&UDX_SAP), EVENT_RLC_WAIT_BNDCFM);
             UDX_SAP.state = RLC_SAP_BINDING;
             rlcUlUdxBndReq(&(UDX_SAP.pst), UDX_SAP.suId, UDX_SAP.spId);
          }
@@ -1830,7 +1829,7 @@ static S16 rlcLmmLSapCntrl(RlcCb *gCb,RlcMngmt *cntrl)
          if(rguSap->state != RLC_SAP_BND)
          {
             /* start timer to wait for bind confirm */
-            rlcStartTmr(gCb,(PTR)(rguSap), RLC_EVT_WAIT_BNDCFM);
+            rlcStartTmr(gCb,(PTR)(rguSap), EVENT_RLC_WAIT_BNDCFM);
             rguSap->state = RLC_SAP_BINDING;
             rguSap->spId = cntrl->t.cntrl.s.sapCntrl.spId;
             rguSap->suId = cntrl->t.cntrl.s.sapCntrl.suId;

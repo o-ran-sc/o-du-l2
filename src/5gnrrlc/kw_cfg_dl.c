@@ -202,7 +202,7 @@ static S16 rlcAddToDlL2Meas(RlcCb *gCb, RlcDlRbCb *rlcRbCb,uint8_t cellId,uint8_
       {
          if (measCb->measType & LKW_L2MEAS_ACT_UE)
          {
-            if((rlcRbCb->mode == CM_LTE_MODE_UM) &&
+            if((rlcRbCb->mode == RLC_MODE_UM) &&
                   (rlcRbCb->dir & RLC_DIR_DL ))
             {
                if (rlcRbCb->m.umDl.sduQ.count)
@@ -214,7 +214,7 @@ static S16 rlcAddToDlL2Meas(RlcCb *gCb, RlcDlRbCb *rlcRbCb,uint8_t cellId,uint8_
                   }
                }
             }
-            else if (rlcRbCb->mode == CM_LTE_MODE_AM)
+            else if (rlcRbCb->mode == RLC_MODE_AM)
             {
                if ((rlcRbCb->m.amDl.cntrlBo) ||
                      (rlcRbCb->m.amDl.retxBo)  ||
@@ -327,7 +327,7 @@ static S16 rlcCfgFillDlRbCb(RlcCb *gCb,RlcDlRbCb *rbCb,RlcDlUeCb *ueCb,RlcEntCfg
    /* Initialize according to entMode */
    switch (entCfg->entMode)
    {
-      case CM_LTE_MODE_TM:
+      case RLC_MODE_TM:
       {
          rbCb->lch.lChId  = entCfg->lCh[0].lChId;
          rbCb->lch.lChType = entCfg->lCh[0].type;
@@ -335,22 +335,30 @@ static S16 rlcCfgFillDlRbCb(RlcCb *gCb,RlcDlRbCb *rbCb,RlcDlUeCb *ueCb,RlcEntCfg
          break;
       }
 
-      case CM_LTE_MODE_UM:
+      case RLC_MODE_UM:
       {
          rbCb->lch.lChId  = entCfg->lCh[0].lChId;
          rbCb->lch.lChType = entCfg->lCh[0].type;
          rbCb->dir = entCfg->dir;
+
+	 /* Spec 38.322 Section 7.1 
+	  * All UM state variables can take values from 0 to 63 for 6 bit SN or 
+	  * from 0 to 4095 for 12 bit SN. All arithmetic operations on UM state 
+	  * variables are affected by the UM modulus 
+	  * (i.e. final value = [value from arithmetic operation] modulo 64
+	  * for 6 bit SN and 4096 for 12 bit SN)
+	  */
          rbCb->m.umDl.snLen = entCfg->m.umInfo.dl.snLen;
-         if (entCfg->m.umInfo.dl.snLen == RLC_UM_CFG_5BIT_SN_LEN)
-            rbCb->m.umDl.modBitMask = 0x1f;
+         if (entCfg->m.umInfo.dl.snLen == RLC_UM_CFG_6BIT_SN_LEN)
+            rbCb->m.umDl.modBitMask = 0x3f;
          else
-            rbCb->m.umDl.modBitMask = 0x3ff;
+            rbCb->m.umDl.modBitMask = 0xfff;
 
          ueCb->lCh[rbCb->lch.lChId - 1].dlRbCb = rbCb;
 
          break;
       }
-      case CM_LTE_MODE_AM:
+      case RLC_MODE_AM:
       {
          /* Down Link Information 
           * indx = 0 as Down Link   */
@@ -439,7 +447,7 @@ RlcEntCfgInfo   *entCfg
 
    switch (rbCb->mode)
    {
-      case CM_LTE_MODE_TM:
+      case RLC_MODE_TM:
       {
          RlcDlCellCb *cellCb = (RlcDlCellCb *)ptr;
 
@@ -451,7 +459,7 @@ RlcEntCfgInfo   *entCfg
          break;
       }
 
-      case CM_LTE_MODE_UM:
+      case RLC_MODE_UM:
       {
          RlcDlUeCb *ueCb = (RlcDlUeCb *)ptr;
 
@@ -468,7 +476,7 @@ RlcEntCfgInfo   *entCfg
          break;
       }
 
-      case CM_LTE_MODE_AM:
+      case RLC_MODE_AM:
       {
          RlcDlUeCb *ueCb = (RlcDlUeCb *)ptr;
 
@@ -582,7 +590,7 @@ RlcEntCfgCfmInfo   *entCfm
       if (((entCfg->lCh[0].type == CM_LTE_LCH_BCCH) || 
            (entCfg->lCh[0].type == CM_LTE_LCH_PCCH) ||
            (entCfg->lCh[0].type == CM_LTE_LCH_CCCH)) &&
-          (entCfg->entMode == CM_LTE_MODE_TM))
+          (entCfg->entMode == RLC_MODE_TM))
       {
          /* Cell CB present */
          rlcDbmFetchDlCellCb(gCb, cellId, &cellCb);
@@ -653,7 +661,7 @@ RlcEntCfgCfmInfo   *entCfm
       }
       else
       {
-         reason= (entCfg->entMode != CM_LTE_MODE_TM)? CKW_CFG_REAS_RB_MODE_MIS:
+         reason= (entCfg->entMode != RLC_MODE_TM)? CKW_CFG_REAS_RB_MODE_MIS:
                                                       CKW_CFG_REAS_LCHTYPE_MIS;
          /* Fill entCfm structure */
          RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, 
@@ -675,11 +683,11 @@ RlcEntCfgCfmInfo   *entCfm
          return RFAILED;
       }
       if ((((entCfg->lCh[0].type == CM_LTE_LCH_DCCH) && 
-            (entCfg->entMode != CM_LTE_MODE_UM) && 
+            (entCfg->entMode != RLC_MODE_UM) && 
             (CM_LTE_SRB == entCfg->rbType)) ||
            ((entCfg->lCh[0].type == CM_LTE_LCH_DTCH) && 
             (CM_LTE_DRB == entCfg->rbType))) &&
-          (entCfg->entMode != CM_LTE_MODE_TM))
+          (entCfg->entMode != RLC_MODE_TM))
       {
          /* UE CB present */
          if ( rlcDbmFetchDlUeCb(gCb,ueId, cellId, &ueCb) == ROK)
@@ -717,7 +725,7 @@ RlcEntCfgCfmInfo   *entCfm
 
          /* Validate LChId for UM and AM modes */
          if ((entCfg->lCh[0].lChId <= 0) ||
-             ((entCfg->entMode == CM_LTE_MODE_AM)&&
+             ((entCfg->entMode == RLC_MODE_AM)&&
                (entCfg->lCh[1].lChId <= 0)))
          {
             /* Fill entCfm structure */                               
@@ -752,7 +760,7 @@ RlcEntCfgCfmInfo   *entCfm
       }
       else
       {
-         if (entCfg->entMode == CM_LTE_MODE_TM)
+         if (entCfg->entMode == RLC_MODE_TM)
          {
             reason = CKW_CFG_REAS_RB_MODE_MIS;
          }
@@ -1157,13 +1165,13 @@ RlcEntCfgCfmInfo   *entCfm
       RLC_UPD_L2_DECR_NONIP_PER_QCI_RB_COUNT(gCb, rlcRbCb);
 #endif
       /* Free the Buffers of RbCb */
-      if( CM_LTE_MODE_UM == rlcRbCb->mode)
+      if( RLC_MODE_UM == rlcRbCb->mode)
       {
          rlcUmmFreeDlRbCb(gCb,rlcRbCb);
          /* Delete RbCb  */
          RLC_FREE(gCb,rlcRbCb, sizeof(RlcDlRbCb));     
       }
-      else if( CM_LTE_MODE_AM == rlcRbCb->mode)
+      else if( RLC_MODE_AM == rlcRbCb->mode)
       {
          rlcAmmFreeDlRbCb(gCb,rlcRbCb);
       }
@@ -1259,19 +1267,19 @@ RlcEntCfgCfmInfo   *entCfm
 
    switch (rbCb->mode)
    {
-      case CM_LTE_MODE_TM:
+      case RLC_MODE_TM:
          {
             rlcDlTmmReEstablish(gCb,rbCb);
             break;
          }
 
-      case CM_LTE_MODE_UM:
+      case RLC_MODE_UM:
          {
             rlcDlUmmReEstablish(gCb,rlcId,sndReEstInd,rbCb);
             break;
          }
 
-      case CM_LTE_MODE_AM:
+      case RLC_MODE_AM:
          {           
             rlcAmmDlReEstablish(gCb, rlcId, rbCb);
             break;

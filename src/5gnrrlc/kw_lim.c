@@ -145,7 +145,7 @@ S16 RlcLiRguBndCfm(Pst *pst,SuId suId,uint8_t status)
    {
       case RLC_SAP_BINDING:
       {
-         rlcStopTmr (tRlcCb,(PTR)rguSap, RLC_EVT_WAIT_BNDCFM);
+         rlcStopTmr (tRlcCb,(PTR)rguSap, EVENT_RLC_WAIT_BNDCFM);
 
          rguSap->retryCnt = 0;
           
@@ -479,7 +479,7 @@ S16 RlcLiRguFlowCntrlInd(Pst *pst,SuId suId,RguFlowCntrlInd *flowCntrlInd)
                rlcUtlTrigPdbFlowCntrl(tRlcCb, rbCb, lcInfo->pktAdmitCnt);
                continue;
             }
-            if (rbCb->mode == CM_LTE_MODE_AM)
+            if (rbCb->mode == RLC_MODE_AM)
             {
                if ((rbCb->m.amDl.retxLst.count != 0) || 
                    ((rbCb->m.amDl.bo == 0) || 

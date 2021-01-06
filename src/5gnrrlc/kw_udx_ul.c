@@ -149,9 +149,9 @@ uint8_t status
    {
       case RLC_SAP_BINDING:
       {
-         if(TRUE == rlcChkTmr(tRlcCb,(PTR)udxSap,RLC_EVT_WAIT_BNDCFM))
+         if(TRUE == rlcChkTmr(tRlcCb,(PTR)udxSap,EVENT_RLC_WAIT_BNDCFM))
          {
-             rlcStopTmr (tRlcCb,(PTR)udxSap, RLC_EVT_WAIT_BNDCFM);
+             rlcStopTmr (tRlcCb,(PTR)udxSap, EVENT_RLC_WAIT_BNDCFM);
          }
          udxSap->retryCnt = 0;
           
@@ -402,7 +402,7 @@ CmLteRlcId   *rlcId
    }
 
    /* Start staProhTmr */
-   rlcStartTmr(tRlcCb,(PTR)rbCb, RLC_EVT_AMUL_STA_PROH_TMR);
+   rlcStartTmr(tRlcCb,(PTR)rbCb, EVENT_RLC_AMUL_STA_PROH_TMR);
 
    return  (ROK);
 } 

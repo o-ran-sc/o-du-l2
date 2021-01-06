@@ -103,21 +103,15 @@ typedef RguLchMapInfo KwLchMapInfo;
  * @brief  Structure to hold an Unacknowledged Mode header
  *
  * @details
- *    - fi    : Framing Info
+ *    - si    : Segmentation Info
  *    - sn    : Sequence number
- *    - numLi : Number of length indicators in the following array (li)
- *    - li    : Length indicators
+ *    - so    : Segmentation offset
 */
 typedef struct rlcUmHdr
 {
-#ifdef NR_RLC_UL
-   uint8_t  si;              /*!< Segmentation Info */
-   uint16_t so;              /*!< Segment offset 5G NR */
-#endif
-   uint8_t     fi;              /*!< Framing Info */
+   uint8_t     si;              /*!< Segmentation Info */
    RlcSn       sn;              /*!< Sequence number */
-   uint16_t    numLi;           /*!< Number of LIs */
-   uint16_t    li[RLC_MAX_UL_LI];   /*!< Array of LIs */
+   uint16_t    so;              /*!< Segmentation offset */
 }RlcUmHdr;
 
 

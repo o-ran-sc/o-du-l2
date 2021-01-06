@@ -109,19 +109,19 @@ void fillEntModeAndDir(uint8_t *entMode, uint8_t *direction, RlcMode rlcMode)
    switch(rlcMode)
    {
       case RLC_AM:
-         *entMode   = CM_LTE_MODE_AM;
+         *entMode   = RLC_MODE_AM;
          *direction = RLC_CFG_DIR_BOTH;
          break;
       case RLC_UM_BI_DIRECTIONAL:
-         *entMode = CM_LTE_MODE_UM;
+         *entMode = RLC_MODE_UM;
          *direction = RLC_CFG_DIR_BOTH;
          break;
       case RLC_UM_UNI_DIRECTIONAL_UL:
-         *entMode = CM_LTE_MODE_UM;
+         *entMode = RLC_MODE_UM;
          *direction = RLC_CFG_DIR_UL;
          break;
       case RLC_UM_UNI_DIRECTIONAL_DL:
-         *entMode = CM_LTE_MODE_UM;
+         *entMode = RLC_MODE_UM;
          *direction = RLC_CFG_DIR_DL;
          break;
       default : 
@@ -161,7 +161,7 @@ void fillLcCfg(RlcEntCfgInfo *rlcUeCfg, RlcBearerCfg *duRlcUeCfg, uint8_t cfgTyp
    switch(rlcUeCfg->entMode)
    {
 
-      case CM_LTE_MODE_AM:
+      case RLC_MODE_AM:
          {
             /* DL AM INFO */
             rlcUeCfg->m.amInfo.dl.snLen       = duRlcUeCfg->u.amCfg->dlAmCfg.snLenDl; 
@@ -176,14 +176,14 @@ void fillLcCfg(RlcEntCfgInfo *rlcUeCfg, RlcBearerCfg *duRlcUeCfg, uint8_t cfgTyp
             rlcUeCfg->lCh[lChRbIdx].type     = duRlcUeCfg->lcType;
             rlcUeCfg->m.amInfo.ul.snLen      = duRlcUeCfg->u.amCfg->ulAmCfg.snLenUl; 
             rlcUeCfg->m.amInfo.ul.staProhTmr = duRlcUeCfg->u.amCfg->ulAmCfg.statProhTmr;
-            rlcUeCfg->m.amInfo.ul.reOrdTmr   = duRlcUeCfg->u.amCfg->ulAmCfg.reAssemTmr;
+            rlcUeCfg->m.amInfo.ul.reOrdTmr   = duRlcUeCfg->u.amCfg->ulAmCfg.reAssemTmr * RLC_REASSEMBLY_TMR_BASE;
             break;
          }
-      case CM_LTE_MODE_UM:
+      case RLC_MODE_UM:
          {
             /* UL UM CONFIG */
-            rlcUeCfg->m.umInfo.ul.snLen    = duRlcUeCfg->u.umBiDirCfg->ulUmCfg.snLenUlUm; 
-            rlcUeCfg->m.umInfo.ul.reOrdTmr = duRlcUeCfg->u.umBiDirCfg->ulUmCfg.reAssemTmr;
+            rlcUeCfg->m.umInfo.ul.snLen      = duRlcUeCfg->u.umBiDirCfg->ulUmCfg.snLenUlUm; 
+            rlcUeCfg->m.umInfo.ul.reAsmblTmr = duRlcUeCfg->u.umBiDirCfg->ulUmCfg.reAssemTmr * RLC_REASSEMBLY_TMR_BASE;
 
             /* DL UM CONFIG */
             rlcUeCfg->m.umInfo.dl.snLen = duRlcUeCfg->u.umBiDirCfg->dlUmCfg.snLenDlUm; 
@@ -399,13 +399,13 @@ uint8_t RlcProcDlRrcMsgTransfer(Pst *pst, RlcDlRrcMsgInfo *dlRrcMsgInfo)
 uint8_t RlcProcUlData(Pst *pst, RlcData *ulData)
 {
    uint8_t         ret = ROK;
-   uint8_t              idx, pduIdx;
-   uint8_t              lcId;                    /* Logical Channel */
-   uint8_t              numDLch = 0;             /* Number of dedicated logical channel */
+   uint8_t         idx, pduIdx;
+   uint8_t         lcId;                    /* Logical Channel */
+   uint8_t         numDLch = 0;             /* Number of dedicated logical channel */
    bool            dLchPduPres;             /* PDU received on dedicated logical channel */
-   RguLchDatInd    dLchData[MAX_NUM_LC];  /* PDU info on dedicated logical channel */
-   RguDDatIndInfo  *dLchUlDat;               /* UL data on dedicated logical channel */
-   RguCDatIndInfo  *cLchUlDat;               /* UL data on common logical channel */
+   RguLchDatInd    dLchData[MAX_NUM_LC];    /* PDU info on dedicated logical channel */
+   RguDDatIndInfo  *dLchUlDat;              /* UL data on dedicated logical channel */
+   RguCDatIndInfo  *cLchUlDat;              /* UL data on common logical channel */
 
    /* Initializing dedicated logical channel Database */
    DU_LOG("\nRLC: Received UL Data request from MAC");
@@ -495,7 +495,7 @@ uint8_t RlcProcUlData(Pst *pst, RlcData *ulData)
       if(dLchPduPres)
       {
 	 dLchUlDat->cellId = ulData->cellId;
-	 dLchUlDat->rnti   = ulData->rnti;
+	 GET_UE_IDX(ulData->rnti, dLchUlDat->rnti);
 
 	 for(idx = 0; idx < MAX_NUM_LC; idx++)
 	 {
