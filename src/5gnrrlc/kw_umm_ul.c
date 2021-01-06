@@ -85,7 +85,7 @@ uint32_t isMemThreshReached(Region region);
  *       
  * @details
  *    Finds the next VR(UR) depending on the passed SN. Updates VR(UR) to 
- *    the SN of the first UMD PDU with SN >= _nextSn that has not been received
+ *    the SN of the first UMD PDU with SN >= _nextSn that has not been reassembled
  *
  * @param[in] umUl      pointer to Um mode uplink control block
  * @param[in] nextSn    Sequence number after which the VR(UR) is to set to
@@ -100,7 +100,7 @@ static void rlcUmmFindNextVRUR (RlcUmUl* umUl, RlcSn nextSn)
    
    while (ur < nextSnToCompare)
    {
-      if (!(umUl->recBuf[nextSn])) /* if the buffer is empty, SN not received */
+      if (umUl->recBuf[nextSn]) /* if the buffer is not empty, SN not reassembled */
       {
          umUl->vrUr = nextSn;
          break;
@@ -112,7 +112,7 @@ static void rlcUmmFindNextVRUR (RlcUmUl* umUl, RlcSn nextSn)
 
 /**
  * @brief  Checks whether a sequence number is within the 
- *         re-ordering window or not
+ *         re-assembly window or not
  *       
  * @param[in] sn        Sequence Number to be checked
  * @param[in] umUl      pointer to Um mode uplink control block
@@ -123,7 +123,7 @@ static void rlcUmmFindNextVRUR (RlcUmUl* umUl, RlcSn nextSn)
  *
  * @return  Void
 */
-static int16_t rlcUmmCheckSnInReordWindow (RlcSn sn, const RlcUmUl* const umUl)  
+static int16_t rlcUmmCheckSnInReassemblyWindow (RlcSn sn, const RlcUmUl* const umUl)  
 {
    return (RLC_UM_GET_VALUE(sn, *umUl) < RLC_UM_GET_VALUE(umUl->vrUh, *umUl)); 
 }
@@ -236,6 +236,10 @@ void rlcUmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
          gCb->genSts.errorPdusRecv++;
          continue;
       }
+
+      /* Check if the PDU should be delivered to upper layer */
+      //TODO if si == 0
+
       curSn = tmpRecBuf->umHdr.sn;
 
       /* Check if the PDU should be discarded or not */
@@ -273,22 +277,33 @@ void rlcUmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
       /* kw005.201 ccpu00117318, updating the statistics */
       gCb->genSts.bytesRecv += recBuf[curSn]->pduSz;
       
-      if (!rlcUmmCheckSnInReordWindow(curSn,&RLC_UMUL))
-      {  /* currSn is outside re-ordering window */
+      if(1 /*all byte segments with curSn are received*/)
+      {
+         rlcUmmReAssembleSdus(gCb, rbCb, recBuf[curSn]);
+	 RLC_FREE_WC(gCb,recBuf[curSn],sizeof(RlcUmRecBuf));
+	 recBuf[curSn] = NULLP;
+
+         if (curSn == *vrUr)
+         {
+            /* set VR(UR) to next SN > current VR(UR) which is not received */
+            RlcSn nextVrUr = (*vrUr + 1) & RLC_UMUL.modBitMask;
+            rlcUmmFindNextVRUR(&RLC_UMUL, nextVrUr);
+         }
+      }
+      else if (!rlcUmmCheckSnInReassemblyWindow(curSn,&RLC_UMUL))
+      {  
+         /* currSn is outside re-assembly window */
          *vrUh  = (curSn + 1) & RLC_UMUL.modBitMask;
 
-         /* re-assemble all pdus outside the modified re-ordering window */
+         /* discard all pdus outside the modified re-assembly window */
          /* the first SN is VR(UR) */
-         if (!rlcUmmCheckSnInReordWindow(*vrUr,&RLC_UMUL))
+         if (!rlcUmmCheckSnInReassemblyWindow(*vrUr,&RLC_UMUL))
          {
-            /* TODO : should it be VR(UR) + 1 ?... check, earlier it was so */
-            RlcSn sn = *vrUr; /* SN's which need to be re-assembled */
-            RlcSn lowerEdge;  /* to hold the lower-edge of the 
-                                re-ordering window */
+            RlcSn sn = *vrUr; /* SN's which need to be discarded */
+            RlcSn lowerEdge;  /* to hold the lower-edge of the re-assembly window */
 
-            /* The new value ov VR(UR) is the lower end of the window i
-             * and SN's still this value need to be re-assembled */
-            
+            /* The new value ov VR(UR) is the lower end of the window
+             * and SN that still needs to be re-assembled */
             *vrUr = (*vrUh - RLC_UMUL.umWinSz) &  RLC_UMUL.modBitMask;         
             lowerEdge = RLC_UM_GET_VALUE(*vrUr ,RLC_UMUL);
             
@@ -296,7 +311,7 @@ void rlcUmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
             {
                if (recBuf[sn])
                {
-                  rlcUmmReAssembleSdus(gCb,rbCb,recBuf[sn]);
+	          RLC_FREE_BUF(recBuf[sn]->pdu);
                   RLC_FREE_WC(gCb,recBuf[sn],sizeof(RlcUmRecBuf));
                   recBuf[sn] = NULLP;
                }
@@ -304,51 +319,35 @@ void rlcUmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
             }
          }
       }
-      if (recBuf[*vrUr])
-      {
-         RlcSn sn       = *vrUr;
-         RlcSn tSn      = RLC_UM_GET_VALUE(sn,RLC_UMUL); 
-         RlcSn tVrUr;       
 
-         /* set VR(UR) to next SN > current VR(UR) which is not received */
-         RlcSn nextVrUr = (*vrUr + 1) & RLC_UMUL.modBitMask;
-         rlcUmmFindNextVRUR(&RLC_UMUL, nextVrUr);
-
-         /* re-assemble SDUs with SN < Vr(UR) */
-         tVrUr = RLC_UM_GET_VALUE(*vrUr,RLC_UMUL);
-         while (recBuf[sn] && tSn < tVrUr)
-         {
-            rlcUmmReAssembleSdus(gCb,rbCb,recBuf[sn]);
-            RLC_FREE_WC(gCb,recBuf[sn],sizeof(RlcUmRecBuf));
-            recBuf[sn] = NULLP;
-            sn = (sn + 1) & RLC_UMUL.modBitMask;
-            tSn = RLC_UM_GET_VALUE(sn, RLC_UMUL);
-         }
-      }
-
-      tmrRunning = rlcChkTmr(gCb,(PTR)rbCb, RLC_EVT_UMUL_REORD_TMR);
+      tmrRunning = rlcChkTmr(gCb,(PTR)rbCb, RLC_EVT_UMUL_REASSEMBLE_TMR);
 
       if (tmrRunning) 
       {
          RlcSn tVrUx = RLC_UM_GET_VALUE(*vrUx, RLC_UMUL);
          RlcSn tVrUr = RLC_UM_GET_VALUE(*vrUr ,RLC_UMUL);
-
          RlcSn tVrUh = RLC_UM_GET_VALUE(*vrUh, RLC_UMUL);
 
-         S16 ret = rlcUmmCheckSnInReordWindow(*vrUx, &RLC_UMUL);
+         S16 ret = rlcUmmCheckSnInReassemblyWindow(*vrUx, &RLC_UMUL);
 
-         if ( (tVrUx <= tVrUr) || ((!ret) && (tVrUx != tVrUh))) 
+         if ((tVrUx <= tVrUr) || ((!ret) && (tVrUx != tVrUh)) || 
+	     ((RLC_UM_GET_VALUE(*vrUh, RLC_UMUL) == RLC_UM_GET_VALUE(*vrUr+1, RLC_UMUL)) && 
+	      (1/*there is no missing byte segment of the RLC SDU associated with SN = RX_Next_Reassembly 
+	       before the last byte of all received segments of this RLC SDU*/ ))) 
          {
-            rlcStopTmr(gCb,(PTR)rbCb,RLC_EVT_UMUL_REORD_TMR);
+            rlcStopTmr(gCb,(PTR)rbCb, RLC_EVT_UMUL_REASSEMBLE_TMR);
             tmrRunning = FALSE;
          }
       }
 
       if (!tmrRunning)
       {
-         if (RLC_UM_GET_VALUE(*vrUh, RLC_UMUL) > RLC_UM_GET_VALUE(*vrUr, RLC_UMUL))
+         if ((RLC_UM_GET_VALUE(*vrUh, RLC_UMUL) > RLC_UM_GET_VALUE(*vrUr+1, RLC_UMUL)) || 
+	     ((RLC_UM_GET_VALUE(*vrUh, RLC_UMUL) == RLC_UM_GET_VALUE(*vrUr+1, RLC_UMUL)) && 
+	      (1/*there is at least one missing byte segment of the RLC SDU associated with 
+	       SN = RX_Next_Reassembly before the last byte of all received segments of this RLC SDU*/ )))
          {
-            rlcStartTmr(gCb,(PTR)rbCb,RLC_EVT_UMUL_REORD_TMR); 
+            rlcStartTmr(gCb,(PTR)rbCb,RLC_EVT_UMUL_REASSEMBLE_TMR); 
             *vrUx = *vrUh;
          }
       }
@@ -383,7 +382,7 @@ static void rlcUmmReAssembleSdus(RlcCb *gCb, RlcUlRbCb *rbCb, RlcUmRecBuf *umRec
    Buffer    *sdu;           /* SDU to be sent to upper layer */
    Buffer    *remPdu;        /* Remaining PDU */
    Buffer    **partialSdu;   /* Partial SDU */
-
+#if 0
    liCount = umRecBuf->umHdr.numLi;
    fi = umRecBuf->umHdr.fi;
    sn =  umRecBuf->umHdr.sn;
@@ -498,7 +497,7 @@ static void rlcUmmReAssembleSdus(RlcCb *gCb, RlcUlRbCb *rbCb, RlcUmRecBuf *umRec
       }
    }
    rbCb->m.umUl.sn = sn;
-
+#endif
    return;
 }
 
@@ -537,9 +536,9 @@ RlcUlRbCb     *rbCb
    vrUh  = RLC_UM_GET_VALUE(rbCb->m.umUl.vrUh,rbCb->m.umUl);
    recBuf =  rbCb->m.umUl.recBuf;
 
-   if(TRUE == rlcChkTmr(gCb,(PTR)rbCb,RLC_EVT_UMUL_REORD_TMR))
+   if(TRUE == rlcChkTmr(gCb,(PTR)rbCb,RLC_EVT_UMUL_REASSEMBLE_TMR))
    {
-       rlcStopTmr(gCb,(PTR)rbCb,RLC_EVT_UMUL_REORD_TMR);
+       rlcStopTmr(gCb,(PTR)rbCb,RLC_EVT_UMUL_REASSEMBLE_TMR);
    }
    
    while (RLC_UM_GET_VALUE(curSn,rbCb->m.umUl) < vrUh)
@@ -569,8 +568,8 @@ RlcUlRbCb     *rbCb
  *       
  * @details
  *    This function is used to extract the header of a PDU and store it 
- *    along with the PDU buffer.The sequence number,framing info 
- *    and LIs are extracted by this function.
+ *    along with the PDU buffer.The sequence number, segmentation info 
+ *    and segmentation offset are extracted by this function.
  *
  * @param[in] gCb      RLC Instance control block
  * @param[in] rbCb     Rb Control block for which the pdu is received
@@ -583,157 +582,68 @@ RlcUlRbCb     *rbCb
 */
 static uint8_t rlcUmmExtractHdr(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *pdu, RlcUmHdr *umHdr)
 {
-   uint8_t   e;         /* Extension Bit */
    Data      dst[2];    /* Destination Buffer */
-   int32_t   totalSz;   /* Sum of LIs */
-   MsgLen    pduSz;     /* PDU size */
-#if (ERRCLASS & ERRCLS_DEBUG)
    uint8_t   ret;       /* Return Value */
-#endif
 
-   ODU_GET_MSG_LEN(pdu,&pduSz);
- 
-   if ( rbCb->m.umUl.snLen == 1)
+   ret = ODU_REM_PRE_MSG(dst,pdu);
+   if (ret != ROK)
    {
-#if (ERRCLASS & ERRCLS_DEBUG)
-      ret = ODU_REM_PRE_MSG(dst,pdu);
-      if (ret != ROK)
-      {
-         DU_LOG("\nRLC : rlcUmmExtractHdr : ODU_REM_PRE_MSG Failed for 5 bit SN \
-	    UEID:%d CELLID:%d", rbCb->rlcId.ueId, rbCb->rlcId.cellId);
-         return RFAILED;
-      }
-#else
-      ODU_REM_PRE_MSG(dst,pdu);
-#endif
-      pduSz--;
-      umHdr->sn = (dst[0]) & 0x1F; 
-      umHdr->fi = (dst[0]) >> 6;
-      e       = (dst[0]>>5) & 0x01;
+      DU_LOG("\nERROR  -->  RLC : rlcUmmExtractHdr : ODU_REM_PRE_MSG Failed for SI\
+        UEID:%d CELLID:%d", rbCb->rlcId.ueId, rbCb->rlcId.cellId);
+      return RFAILED;
+   }
+   umHdr->si = (dst[0]) >> 6;
+
+   /* If SI = 0, the RLC PDU contains complete RLC SDU. Header extraction complete. 
+    * No other fields present in header */
+   if(umHdr->si == 0)
+      return ROK;
+
+   /* If SI != 0, one SDU segment is present in RLC PDU. Hence extracting SN */
+   if (rbCb->m.umUl.snLen == RLC_UM_CFG_6BIT_SN_LEN)
+   {
+      /* Extractin 6-bit SN */
+      umHdr->sn = (dst[0]) & 0x3F; 
    }
    else
    {
-      /* snLen - sequnce length will be 10 bits requiring 2 bytes */ 
-#if (ERRCLASS & ERRCLS_DEBUG)
-      ret = ODU_REM_PRE_MSG_MULT(dst,2,pdu);
+      /* Extracting 12 bits SN */ 
+      umHdr->sn = (dst[0]) & 0x0F;
+      ret = ODU_REM_PRE_MSG(dst,pdu);
       if (ret != ROK)
       {
-         DU_LOG("\nRLC : rlcUmmExtractHdr : ODU_REM_PRE_MSG_MULT Failed for 10 bits SN \
-	    UEID:%d CELLID:%d", rbCb->rlcId.ueId, rbCb->rlcId.cellId);
-         return RFAILED;
+	 DU_LOG("\nERROR  -->  RLC : rlcUmmExtractHdr : ODU_REM_PRE_MSG Failed for SN\
+	       UEID:%d CELLID:%d", rbCb->rlcId.ueId, rbCb->rlcId.cellId);
+	 return RFAILED;
       }
-#else
-      ODU_REM_PRE_MSG_MULT(dst,2,pdu);
-#endif
-      pduSz -= 2;
-   
-      /* kw005.201 R9 Upgrade 3gpp spec 36.322 ver9.3.0 CR0082      *
-       * Removed the "if" condition for checking the reserved field *
-       * Added mask 0x03 for extracting the FI field.          */
-
-      umHdr->fi = ( (dst[0] ) >> 3) & 0x03;
-      e       = ( (dst[0] ) >> 2) & 0x01;
-      umHdr->sn = (  dst[0] & 0x03) << 8;
-      umHdr->sn  |= dst[1];
+      umHdr->sn = (umHdr->sn << 8) | dst[0];
    }
 
-   umHdr->numLi = 0;
-   
-   totalSz = 0;
-   while(e && umHdr->numLi < RLC_MAX_UL_LI )
+   /* SO field is present for middle and last segments of SDU, not present for first segment */
+   if((umHdr->si == RLC_SI_LAST_SEG) || (umHdr->si == RLC_SI_MID_SEG))
    {
-#if (ERRCLASS & ERRCLS_DEBUG)
       ret = ODU_REM_PRE_MSG_MULT(dst,2,pdu);
       if (ret != ROK)
       {
-         DU_LOG("\nRLC : rlcUmmExtractHdr : ODU_REM_PRE_MSG_MULT Failed UEID:%d CELLID:%d",\
-            rbCb->rlcId.ueId, rbCb->rlcId.cellId);
+         DU_LOG("\nERROR  -->  RLC : rlcUmmExtractHdr : ODU_REM_PRE_MSG_MULT Failed for 16 bits SO \
+            UEID:%d CELLID:%d", rbCb->rlcId.ueId, rbCb->rlcId.cellId);
          return RFAILED;
       }
-#else
-      ODU_REM_PRE_MSG_MULT(dst,2,pdu);
-#endif
-      umHdr->li[umHdr->numLi] = ((dst[0]) & 0x7F) << 4;
-      umHdr->li[umHdr->numLi] |= dst[1] >> 4;
-      if ( 0 == umHdr->li[umHdr->numLi] )
-      {
-         DU_LOG("\nRLC : rlcUmmExtractHdr : Received LI as 0 UEID:%d CELLID:%d",
-            rbCb->rlcId.ueId, rbCb->rlcId.cellId);
-         return RFAILED; 
-      }
-      totalSz += umHdr->li[umHdr->numLi];
-      if ( pduSz <=  totalSz )
-      {
-         DU_LOG("\nRLC : rlcUmmExtractHdr : SN [%d]: UEID:%d CELLID:%d",\
-            umHdr->sn, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
-         DU_LOG("\nRLC : rlcUmmExtractHdr : Corrupted PDU as TotSz[%d] PduSz[%d] \
-	    UEID:%d CELLID:%d ", totalSz, pduSz, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
-         return RFAILED; /* the situation where in the PDU size 
-                            is something that does not match with 
-                            the size in LIs*/
-      }
-      umHdr->numLi++;
-      pduSz -= 2;
-
-      e = ((dst[0]) & 0x80) >> 7;
-   
-      if ( e && umHdr->numLi < RLC_MAX_UL_LI)
-      {
-         uint8_t tmp = ((dst[1]) & 0x08) >> 3;
-         umHdr->li[umHdr->numLi] = ( dst[1] & 0x07) << 8;
-
-
-#if (ERRCLASS & ERRCLS_DEBUG)
-         ret = ODU_REM_PRE_MSG(dst,pdu);
-         if (ret != ROK)
-         {
-            DU_LOG("\nRLC : rlcUmmExtractHdr : ODU_REM_PRE_MSG Failed UEID:%d CELLID:%d",
-               rbCb->rlcId.ueId, rbCb->rlcId.cellId);
-            return RFAILED;
-         }
-#else
-         ODU_REM_PRE_MSG(dst,pdu);
-#endif
-         umHdr->li[umHdr->numLi] |= ( dst[0] );    /* The first byte lies in 
-                                                   the first 8 bits.We want 
-                                                   them in the last 8 bits */
-         if ( 0 == umHdr->li[umHdr->numLi] )
-         {
-            DU_LOG("\nRLC : rlcUmmExtractHdr :Received LI as 0 UEID:%d CELLID:%d",
-               rbCb->rlcId.ueId, rbCb->rlcId.cellId);
-            return RFAILED; 
-         }
-         totalSz += umHdr->li[umHdr->numLi];
-         pduSz--;
-         umHdr->numLi++;
-
-         if (pduSz < totalSz)
-         {
-            return RFAILED; /* the situation where in the PDU size is 
-                               something that does not match with the 
-                               size in LIs*/
-         }
-
-         e = tmp;
-      }
-   } /* while(e && umHdr->numLi < RLC_MAX_LI ) */
-   if (e)
-   {
-      /* PDU was constructed with LIs that exceeded RLC_MAX_LI */
-      return RFAILED;
+      umHdr->so = dst[0];
+      umHdr->so = (umHdr->so << 8) | dst[1];
    }
    return ROK; 
 }
    
 /**
- * @brief Handles expiry of re-ordering timer
+ * @brief Handles expiry of re-assembly timer
  *
  * @param[in] gCb     RLC Instance control block
- * @param[in] rbCb    Rb Control block for which re-order timer expired
+ * @param[in] rbCb    Rb Control block for which re-assembly timer expired
  *
  * @return  Void
 */
-Void rlcUmmReOrdTmrExp
+void rlcUmmReAsmblTmrExp
 (
 RlcCb       *gCb,
 RlcUlRbCb   *rbCb     
@@ -742,15 +652,13 @@ RlcUlRbCb   *rbCb
    RlcSn prevVrUr;   /* prevVrUr */
    prevVrUr = RLC_UMUL.vrUr;
 
-   /* set VR(UR) to SN >= VR(UX) that has not been received */
+   /* set VR(UR) to SN >= VR(UX) that has not been reassembled */
    rlcUmmFindNextVRUR(&RLC_UMUL, RLC_UMUL.vrUx);
 
-   while (RLC_UM_GET_VALUE(prevVrUr,RLC_UMUL) < 
-          RLC_UM_GET_VALUE(RLC_UMUL.vrUr,RLC_UMUL))
+   while (RLC_UM_GET_VALUE(prevVrUr,RLC_UMUL) < RLC_UM_GET_VALUE(RLC_UMUL.vrUr,RLC_UMUL))
    {
       if (RLC_UMUL.recBuf[prevVrUr])
       {
-         rlcUmmReAssembleSdus(gCb, rbCb, RLC_UMUL.recBuf[prevVrUr]);
          if(RLC_UMUL.recBuf[prevVrUr]->pdu != NULLP) /* RLC mem leak fix */
          {
             RLC_FREE_BUF(RLC_UMUL.recBuf[prevVrUr]->pdu);
@@ -762,10 +670,12 @@ RlcUlRbCb   *rbCb
       prevVrUr = (prevVrUr + 1) & rbCb->m.umUl.modBitMask;
    }
 
-   if (RLC_UM_GET_VALUE(RLC_UMUL.vrUh, RLC_UMUL) > 
-       RLC_UM_GET_VALUE(RLC_UMUL.vrUr, RLC_UMUL))
+   if ((RLC_UM_GET_VALUE(RLC_UMUL.vrUh, RLC_UMUL) > RLC_UM_GET_VALUE(RLC_UMUL.vrUr, RLC_UMUL)) || 
+       ((RLC_UM_GET_VALUE(RLC_UMUL.vrUh, RLC_UMUL) == RLC_UM_GET_VALUE(RLC_UMUL.vrUr + 1, RLC_UMUL)) &&
+        (1/*there is at least one missing byte segment of the RLC SDU associated with 
+	  SN = RX_Next_Reassembly before the last byte of all received segments of this RLC SDU */)))
    {
-      rlcStartTmr(gCb,(PTR)rbCb,RLC_EVT_UMUL_REORD_TMR);
+      rlcStartTmr(gCb, (PTR)rbCb, RLC_EVT_UMUL_REASSEMBLE_TMR);
       RLC_UMUL.vrUx = RLC_UMUL.vrUh;
    }
 }
@@ -798,9 +708,9 @@ RlcUlRbCb   *rbCb
 
    umRecBuf =  rbCb->m.umUl.recBuf;
 
-   if(TRUE == rlcChkTmr(gCb,(PTR)rbCb,RLC_EVT_UMUL_REORD_TMR))
+   if(TRUE == rlcChkTmr(gCb,(PTR)rbCb,RLC_EVT_UMUL_REASSEMBLE_TMR))
    {
-      rlcStopTmr(gCb,(PTR)rbCb,RLC_EVT_UMUL_REORD_TMR);
+      rlcStopTmr(gCb,(PTR)rbCb,RLC_EVT_UMUL_REASSEMBLE_TMR);
    }
    while (curSn < windSz)
    {

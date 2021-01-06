@@ -75,17 +75,17 @@ typedef struct rlcUmRecBuf
 */
 typedef struct rlcUmUl
 {
-   uint8_t           snLen;         /**< Sequence number length */
-   uint8_t           reOrdTmrInt;   /**< Timer Interval */
+   uint8_t       snLen;         /**< Sequence number length */
+   uint8_t       reAsmblTmrInt; /**< Timer Interval */
    RlcUmRecBuf   **recBuf;      /**< Reception buffer */
    RlcSn         umWinSz;       /**< UM window size */
-   uint16_t          modBitMask;    /**< Bitmask for modulus to wrap around variables */
+   uint16_t      modBitMask;    /**< Bitmask for modulus to wrap around variables */
    RlcSn         sn;            /**< Sequence number */
    RlcSn         vrUr;          /**< VR(UR) - Receive state variable */
    RlcSn         vrUh;          /**< VR(UH) - Highest received state variable */
    RlcSn         vrUx;          /**< VR(UX) - Reordering state variable */
-   CmTimer      reOrdTmr;      /**< Reordering Timer */
-   Buffer       *partialSdu;   /**< Partial SDU - Remains till the complete SDU
+   CmTimer       reAsmblTmr;    /**< Re-assembly Timer */
+   Buffer        *partialSdu;   /**< Partial SDU - Remains till the complete SDU
                                                                is received */
 }RlcUmUl;
 /*@}*/
@@ -507,7 +507,7 @@ Void rlcUmmUlReEstablish ARGS ((RlcCb *gCb,
                                      CmLteRlcId *rlcId, 
                                      RlcUlRbCb *rbCb));
 
-Void rlcUmmReOrdTmrExp ARGS((RlcCb *gCb, RlcUlRbCb  *rbCb));
+Void rlcUmmReAsmblTmrExp ARGS((RlcCb *gCb, RlcUlRbCb  *rbCb));
 
 
 Void rlcUmmFreeUlRbCb ARGS ((RlcCb *gCb, RlcUlRbCb *rbCb)); 
