@@ -111,17 +111,17 @@ void rlcStartTmr(RlcCb *gCb, PTR cb, int16_t tmrEvnt)
    /* kw002.201 Adjusting the wait time as per timeRes configured by layer manager */
    switch (tmrEvnt)
    {
-      case RLC_EVT_UMUL_REORD_TMR:
+      case RLC_EVNT_UMUL_REASSEMBLE_TMR:
       {
          RlcUmUl* umUl = &(((RlcUlRbCb *)cb)->m.umUl);
          /* kw005.201 Changed wait calculation ccpu00117634*/ 
-         RLC_TMR_CALCUATE_WAIT(arg.wait, umUl->reOrdTmrInt, gCb->genCfg.timeRes);
+         RLC_TMR_CALCUATE_WAIT(arg.wait, umUl->reAsmblTmrInt, gCb->genCfg.timeRes);
 
-         arg.timers = &umUl->reOrdTmr;
+         arg.timers = &umUl->reAsmblTmr;
          arg.max = RLC_MAX_UM_TMR;
          break;
       }
-      case RLC_EVT_AMUL_REORD_TMR:
+      case RLC_EVNT_AMUL_REORD_TMR:
       {
          RlcAmUl* amUl = &(((RlcUlRbCb *)cb)->m.amUl);
          /* kw005.201 Changed wait calculation ccpu00117634*/ 
@@ -131,7 +131,7 @@ void rlcStartTmr(RlcCb *gCb, PTR cb, int16_t tmrEvnt)
          arg.max = RLC_MAX_AM_TMR;
          break;
       }
-      case RLC_EVT_AMUL_STA_PROH_TMR:
+      case RLC_EVNT_AMUL_STA_PROH_TMR:
       {
          RlcAmUl* amUl = &(((RlcUlRbCb *)cb)->m.amUl);
          /* kw005.201 Changed wait calculation ccpu00117634*/ 
@@ -143,7 +143,7 @@ void rlcStartTmr(RlcCb *gCb, PTR cb, int16_t tmrEvnt)
          arg.max = RLC_MAX_AM_TMR;
          break;
       } 
-      case RLC_EVT_AMDL_POLL_RETX_TMR:
+      case RLC_EVNT_AMDL_POLL_RETX_TMR:
       {
          RlcAmDl* amDl = &(((RlcDlRbCb *)cb)->m.amDl);
          /* kw005.201 Changed wait calculation ccpu00117634*/ 
@@ -155,7 +155,7 @@ void rlcStartTmr(RlcCb *gCb, PTR cb, int16_t tmrEvnt)
          arg.max = RLC_MAX_AM_TMR;
          break;
       } 
-      case RLC_EVT_WAIT_BNDCFM:
+      case RLC_EVNT_WAIT_BNDCFM:
       {
          RlcRguSapCb* rguSap = (RlcRguSapCb *)cb;
          /* kw005.201 Changed wait calculation ccpu00117634*/ 
@@ -167,7 +167,7 @@ void rlcStartTmr(RlcCb *gCb, PTR cb, int16_t tmrEvnt)
       }
 /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
-      case RLC_EVT_L2_TMR:
+      case RLC_EVNT_L2_TMR:
       {
          measEvtCb = (RlcL2MeasEvtCb *)cb;
          /* kw005.201 Changed wait calculation ccpu00117634*/ 
@@ -222,31 +222,31 @@ void rlcStopTmr(RlcCb *gCb, PTR cb, uint8_t tmrType)
 
    switch (tmrType)
    {
-      case RLC_EVT_UMUL_REORD_TMR:
+      case RLC_EVNT_UMUL_REASSEMBLE_TMR:
       {
-         arg.timers  = &((RlcUlRbCb *)cb)->m.umUl.reOrdTmr;
+         arg.timers  = &((RlcUlRbCb *)cb)->m.umUl.reAsmblTmr;
          arg.max = RLC_MAX_UM_TMR;
          break;
       }
-      case RLC_EVT_AMUL_REORD_TMR:
+      case RLC_EVNT_AMUL_REORD_TMR:
       {
          arg.timers = &((RlcUlRbCb *)cb)->m.amUl.reOrdTmr;
          arg.max = RLC_MAX_AM_TMR;
          break;
       }
-      case RLC_EVT_AMUL_STA_PROH_TMR:
+      case RLC_EVNT_AMUL_STA_PROH_TMR:
       {
          arg.timers = &((RlcUlRbCb *)cb)->m.amUl.staProhTmr;
          arg.max = RLC_MAX_AM_TMR;
          break;
       } 
-      case RLC_EVT_AMDL_POLL_RETX_TMR:
+      case RLC_EVNT_AMDL_POLL_RETX_TMR:
       {
          arg.timers = &((RlcDlRbCb *)cb)->m.amDl.pollRetxTmr;
          arg.max = RLC_MAX_AM_TMR;
          break;
       } 
-      case RLC_EVT_WAIT_BNDCFM:
+      case RLC_EVNT_WAIT_BNDCFM:
       {
          arg.timers = &((RlcRguSapCb *)cb)->bndTmr;
          arg.max = RLC_MAX_RGUSAP_TMR;
@@ -254,7 +254,7 @@ void rlcStopTmr(RlcCb *gCb, PTR cb, uint8_t tmrType)
       }
 /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
-      case RLC_EVT_L2_TMR:
+      case RLC_EVNT_L2_TMR:
       {
          measEvtCb = (RlcL2MeasEvtCb *)cb;
          arg.timers   = &measEvtCb->l2Tmr;
@@ -300,27 +300,27 @@ Void rlcTmrExpiry(PTR cb,S16 tmrEvnt)
 
    switch (tmrEvnt)
    {
-      case RLC_EVT_UMUL_REORD_TMR:
+      case RLC_EVNT_UMUL_REASSEMBLE_TMR:
       {
          RlcUlRbCb *ulRbCb = (RlcUlRbCb *)cb;
-         rlcUmmReOrdTmrExp(RLC_GET_RLCCB(ulRbCb->inst), ulRbCb);
+         rlcUmmReAsmblTmrExp(RLC_GET_RLCCB(ulRbCb->inst), ulRbCb);
 
          break;
       }
-      case RLC_EVT_AMUL_REORD_TMR:
+      case RLC_EVNT_AMUL_REORD_TMR:
       {
          RlcUlRbCb *ulRbCb = (RlcUlRbCb *)cb;
          rlcAmmReOrdTmrExp(RLC_GET_RLCCB(ulRbCb->inst), ulRbCb);
          break;
       }
-      case RLC_EVT_AMUL_STA_PROH_TMR:
+      case RLC_EVNT_AMUL_STA_PROH_TMR:
       {
          RlcUlRbCb *ulRbCb = (RlcUlRbCb *)cb;
          rlcAmmStaProTmrExp(RLC_GET_RLCCB(ulRbCb->inst), ulRbCb);
 
          break;
       }
-      case RLC_EVT_AMDL_POLL_RETX_TMR:
+      case RLC_EVNT_AMDL_POLL_RETX_TMR:
       {
          RlcDlRbCb *dlRbCb = (RlcDlRbCb *)cb;
          RlcCb *gCb = RLC_GET_RLCCB(dlRbCb->inst);
@@ -330,7 +330,7 @@ Void rlcTmrExpiry(PTR cb,S16 tmrEvnt)
          gCb->genSts.protTimeOut++;
          break;
       }
-      case RLC_EVT_WAIT_BNDCFM:
+      case RLC_EVNT_WAIT_BNDCFM:
       {
          rlcBndTmrExpiry(cb);
          break;
@@ -361,29 +361,29 @@ bool rlcChkTmr(RlcCb *gCb, PTR cb, int16_t tmrEvnt)
 {
    switch (tmrEvnt)
    {
-      case RLC_EVT_UMUL_REORD_TMR:
+      case RLC_EVNT_UMUL_REASSEMBLE_TMR:
       {
-         return (((RlcUlRbCb *)cb)->m.umUl.reOrdTmr.tmrEvnt == 
-                  RLC_EVT_UMUL_REORD_TMR);
+         return (((RlcUlRbCb *)cb)->m.umUl.reAsmblTmr.tmrEvnt == 
+                  RLC_EVNT_UMUL_REASSEMBLE_TMR);
       }
-      case RLC_EVT_AMUL_REORD_TMR:
+      case RLC_EVNT_AMUL_REORD_TMR:
       {
          return (((RlcUlRbCb *)cb)->m.amUl.reOrdTmr.tmrEvnt == 
-                  RLC_EVT_AMUL_REORD_TMR);
+                  RLC_EVNT_AMUL_REORD_TMR);
       }
-      case RLC_EVT_AMUL_STA_PROH_TMR:
+      case RLC_EVNT_AMUL_STA_PROH_TMR:
       {
          return (((RlcUlRbCb *)cb)->m.amUl.staProhTmr.tmrEvnt == 
-                  RLC_EVT_AMUL_STA_PROH_TMR);
+                  RLC_EVNT_AMUL_STA_PROH_TMR);
       } 
-      case RLC_EVT_AMDL_POLL_RETX_TMR:
+      case RLC_EVNT_AMDL_POLL_RETX_TMR:
       {
          return (((RlcDlRbCb *)cb)->m.amDl.pollRetxTmr.tmrEvnt == 
-                  RLC_EVT_AMDL_POLL_RETX_TMR);
+                  RLC_EVNT_AMDL_POLL_RETX_TMR);
       } 
-      case RLC_EVT_WAIT_BNDCFM:
+      case RLC_EVNT_WAIT_BNDCFM:
       {
-         return (((RlcRguSapCb *)cb)->bndTmr.tmrEvnt == RLC_EVT_WAIT_BNDCFM);
+         return (((RlcRguSapCb *)cb)->bndTmr.tmrEvnt == RLC_EVNT_WAIT_BNDCFM);
       }
       default:
       {
@@ -419,7 +419,7 @@ static Void rlcBndTmrExpiry(PTR cb)
          /* start timer to wait for bind confirm */
          rlcStartTmr(RLC_GET_RLCCB(rguSapCb->pst.srcInst),
                     (PTR)rguSapCb, 
-                    RLC_EVT_WAIT_BNDCFM);
+                    RLC_EVNT_WAIT_BNDCFM);
          
          /* Send bind request */
          rguSapCb->retryCnt++;

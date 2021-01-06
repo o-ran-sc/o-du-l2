@@ -60,13 +60,13 @@ typedef struct rlcUmInfo
 {
    struct   _umDl
    {
-      uint8_t                snLen;               /*!< Sequence Number length in bits. Allowed values are 6 and 12*/
+      uint8_t                snLen;          /*!< Sequence Number length in bits. Allowed values are 6 and 12*/
    }dl;                                      /*!< Downlink */
    struct   _umUl
    {
-      uint8_t                snLen;               /*!< Sequence Number length in bits.*/
+      uint8_t                snLen;          /*!< Sequence Number length in bits.*/
                                              /*!< Allowed values are 6 and 12*/
-      uint8_t                reOrdTmr;            /*!< T_reordering Timer in msec */
+      uint8_t                reAsmblTmr;     /*!< T_reassembly Timer in msec */
    }ul;                                      /*!< Uplink */
 }RlcUmInfo;
 

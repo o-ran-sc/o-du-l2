@@ -32,7 +32,7 @@
 #include "lphy_stub.h"
 #include "lwr_mac_upr_inf.h"
 #include "mac_utils.h"
-#include "l1.h"
+#include "phy_stub.h"
 
 /*******************************************************************
  *
@@ -701,6 +701,7 @@ S16 l1HdlStartReq(uint32_t msgLen, void *msg)
    if(lwrMacCb.phyState == PHY_STATE_CONFIGURED)
    {
       l1HdlSlotIndicaion(FALSE);
+      l1StartConsoleHandler();
       MAC_FREE(msg, msgLen);
    }
    else
@@ -1253,6 +1254,115 @@ S16 l1HdlUlDciReq(uint16_t msgLen, void *msg)
    MAC_FREE(msg, msgLen);
 #endif
    return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Send UL user data to DU
+ *
+ * @details
+ *
+ *    Function : l1SendUlUserData
+ *
+ *    Functionality: Send UL user data to DU
+ *
+ * @params[in]
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t l1SendUlUserData()
+{
+   uint8_t cnt = 0;
+   fapi_rx_data_indication_t *rxDataInd;
+   fapi_pdu_ind_info_t       *pduInfo;
+   uint8_t  *pdu = NULLP;
+   uint16_t byteIdx = 0;
+   uint32_t msgLen = 0;
+   uint8_t idx = 0;
+
+   MAC_ALLOC(rxDataInd, sizeof(fapi_rx_data_indication_t));
+   if(!rxDataInd)
+   {
+      printf("\nERROR  -->  PHY_STUB: Memory allocation failed for Rx Data Indication");
+      return RFAILED;
+   }
+   memset(rxDataInd, 0, sizeof(fapi_rx_data_indication_t));
+
+   msgLen = sizeof(fapi_rx_data_indication_t) - sizeof(fapi_msg_t);
+   rxDataInd->sfn = 0;
+   rxDataInd->slot = 0;
+   rxDataInd->numPdus = 1;
+
+   /* TODO : Fill pduInfo using PUSCH PDU. Currently hardcoding */
+   pduInfo = &rxDataInd->pdus[idx];
+   pduInfo->handle = 100;
+   pduInfo->rnti = 100;
+   pduInfo->harqId = 1;
+   /* Since user data size = 50bytes and 2 bytes of header, setting tbsize = 54 from Table 5.1.3.2-1 spec 38.214 */
+   pduInfo->pdu_length = 54;
+   pduInfo->ul_cqi = 0;
+   pduInfo->timingAdvance = 0;
+   pduInfo->rssi = 0;
+
+   /* Filling pdu with random values for testing */
+   pduInfo->pduData = NULL;
+   MAC_ALLOC(pduInfo->pduData, pduInfo->pdu_length);
+   if(!pduInfo->pduData)
+   {
+      printf("\nERROR  -->  PHY_STUB: Memory allocation failed for Rx Data Pdu");
+      return RFAILED;
+   }
+
+   /* Filling PDU */
+   pdu = (uint8_t *)pduInfo->pduData;
+   msgLen = 51;
+
+   /* For UL User data
+      MAC subheader format is R/F/LCId/L (2/3 bytes)
+      LCId is 4 for DRB1
+      L is length of PDU i.e 50 bytes
+      From 38.321 section 6.1.1
+    */
+   uint8_t ulMsg[] = {4, msgLen, 0, 69, 0, 0, 50, 0, 0, 0, 0, 0, 1, 0, 0, 192, 168, 130, 81, 192, 168, 130, 82, 84, 104,
+   105, 115, 32, 105, 115, 32, 69, 71, 84, 80, 32, 100, 97, 116, 97, 32, 102, 114, 111, 109, 32, 68, 85, 0, 0, 0, 0, 0};
+   msgLen += 2;  /* 2bytes of header */
+   memcpy(pdu, &ulMsg, msgLen);
+   byteIdx += msgLen; /* 2 bytes of header */
+
+
+   /* Filling MAC SDU for Padding bytes*/
+   if(byteIdx < pduInfo->pdu_length)
+   {
+      /* For Padding
+         MAC subheader format is R/R/LCId (1byte)
+         LCId is 63 for padding
+         From 38.321 section 6.1.1
+       */
+      pdu[byteIdx++] = 63;
+
+      for(; byteIdx < pduInfo->pdu_length; byteIdx++)
+         pdu[byteIdx] = 0;
+   }
+   msgLen += pduInfo->pdu_length;
+
+   fillMsgHeader(&rxDataInd->header, FAPI_RX_DATA_INDICATION, msgLen);
+
+    /* Send Message to peer */
+    while(cnt < 200)
+    {
+       DU_LOG("\nDEBUG  -->  PHY STUB : Sending UL User Data[%d] at sfn %d slot %d", cnt+1, sfnValue, slotValue);
+       /* Sending Rx data indication to MAC */
+       rxDataInd->sfn = sfnValue;
+       rxDataInd->slot = slotValue;
+       procPhyMessages(rxDataInd->header.msg_id, sizeof(fapi_rx_data_indication_t), (void *)rxDataInd);
+       cnt++;
+    }
+
+    if(pduInfo->pdu_length)
+       MAC_FREE(pduInfo->pduData, pduInfo->pdu_length);
+    MAC_FREE(rxDataInd, sizeof(fapi_rx_data_indication_t));
+    return ROK;
 }
 
 /*******************************************************************

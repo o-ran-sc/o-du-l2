@@ -310,11 +310,11 @@ uint8_t     numRbCb
       if (rbCbLst[idx] != NULLP)
       {
          /* Free the Buffers of RbCb */
-         if( CM_LTE_MODE_UM == rbCbLst[idx]->mode ) 
+         if( RLC_MODE_UM == rbCbLst[idx]->mode ) 
          {
             rlcUmmFreeUlRbCb(gCb,rbCbLst[idx]);
          }
-         else if(CM_LTE_MODE_AM == rbCbLst[idx]->mode) 
+         else if(RLC_MODE_AM == rbCbLst[idx]->mode) 
          {
             rlcAmmFreeUlRbCb(gCb,rbCbLst[idx]);
          }

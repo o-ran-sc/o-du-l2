@@ -203,7 +203,7 @@ static S16 rlcAddToUlL2Meas(RlcCb *gCb, RlcUlRbCb *rlcRbCb,uint8_t cellId,uint8_
 #ifdef LTE_L2_MEAS_RLC
          if (measCb->measType & LKW_L2MEAS_ACT_UE)
          {
-            if((rlcRbCb->mode == CM_LTE_MODE_UM) &&
+            if((rlcRbCb->mode == RLC_MODE_UM) &&
                   (rlcRbCb->dir & RLC_DIR_DL ))
             {
                if (rlcRbCb->m.um.umDl.sduQ.count)
@@ -215,7 +215,7 @@ static S16 rlcAddToUlL2Meas(RlcCb *gCb, RlcUlRbCb *rlcRbCb,uint8_t cellId,uint8_
                   }
                }
             }
-            else if (rlcRbCb->mode == CM_LTE_MODE_AM)
+            else if (rlcRbCb->mode == RLC_MODE_AM)
             {
                if ((rlcRbCb->m.am.amDl.cntrlBo) ||
                      (rlcRbCb->m.am.amDl.retxBo)  ||
@@ -318,14 +318,14 @@ static S16 rlcCfgFillUlRbCb(RlcCb *gCb,RlcUlRbCb *rbCb,RlcUlUeCb *ueCb,RlcEntCfg
    /* Initialize according to entMode */
    switch (entCfg->entMode)
    {
-      case CM_LTE_MODE_TM:
+      case RLC_MODE_TM:
       {
          rbCb->lch.lChId  = entCfg->lCh[0].lChId;
          rbCb->lch.lChType = entCfg->lCh[0].type;
          rbCb->dir = entCfg->dir;
          break;
       }
-      case CM_LTE_MODE_UM:
+      case RLC_MODE_UM:
       {
          rbCb->lch.lChId  = entCfg->lCh[0].lChId;
          rbCb->lch.lChType = entCfg->lCh[0].type;
@@ -337,13 +337,13 @@ static S16 rlcCfgFillUlRbCb(RlcCb *gCb,RlcUlRbCb *rbCb,RlcUlUeCb *ueCb,RlcEntCfg
          /* the bitmask for SN = 10 is 0x3ff and for SN = 5 is 0x1f */
          rbCb->m.umUl.modBitMask = (rbCb->m.umUl.umWinSz << 1) - 1; 
 
-         rbCb->m.umUl.reOrdTmrInt = 
-            entCfg->m.umInfo.ul.reOrdTmr;
-         cmInitTimers(&(rbCb->m.umUl.reOrdTmr), 1);
+         rbCb->m.umUl.reAsmblTmrInt = 
+            entCfg->m.umInfo.ul.reAsmblTmr;
+         cmInitTimers(&(rbCb->m.umUl.reAsmblTmr), 1);
          ueCb->lCh[rbCb->lch.lChId - 1].ulRbCb = rbCb;
          break;
       }
-      case CM_LTE_MODE_AM:
+      case RLC_MODE_AM:
       {
          /* Down Link Information 
           * indx = 1 as Up Link   */
@@ -406,7 +406,7 @@ static S16 rlcCfgUpdateUlRb(RlcCb *gCb,RlcUlRbCb *rbCb,void *ptr,RlcEntCfgInfo *
    
    switch (rbCb->mode)
    {
-      case CM_LTE_MODE_TM:
+      case RLC_MODE_TM:
       {
          RlcUlCellCb *cellCb = (RlcUlCellCb *)ptr;
          rbCb->dir = entCfg->dir;
@@ -416,14 +416,14 @@ static S16 rlcCfgUpdateUlRb(RlcCb *gCb,RlcUlRbCb *rbCb,void *ptr,RlcEntCfgInfo *
          cellCb->lCh[rbCb->lch.lChId - 1].ulRbCb = rbCb;
          break;
       }
-      case CM_LTE_MODE_UM:
+      case RLC_MODE_UM:
       {
          RlcUlUeCb *ueCb = (RlcUlUeCb *)ptr;
          ueCb->lCh[rbCb->lch.lChId - 1].ulRbCb = NULLP;
          rlcCfgFillUlRbCb(gCb,rbCb, ueCb, entCfg);
          break;
       }
-      case CM_LTE_MODE_AM:
+      case RLC_MODE_AM:
       {
          RlcUlUeCb *ueCb = (RlcUlUeCb *)ptr;
 
@@ -476,15 +476,15 @@ S16 rlcValidateRbCfgParams(RlcCb *gCb,CmLteRnti ueId,CmLteCellId cellId,RlcEntCf
    {
       /* Validate LChId for UM and AM modes */
       if ((cfgToValidate->lCh[0].lChId <= 0) ||
-           ((cfgToValidate->entMode == CM_LTE_MODE_AM) &&
+           ((cfgToValidate->entMode == RLC_MODE_AM) &&
              (cfgToValidate->lCh[1].lChId <= 0)))
       {
          status->reason = CKW_CFG_REAS_INVALID_LCHID;
          return RFAILED; 
       }  
-      if((cfgToValidate->entMode == CM_LTE_MODE_UM) &&
-         (cfgToValidate->m.umInfo.ul.snLen != RLC_UM_CFG_5BIT_SN_LEN) &&
-         (cfgToValidate->m.umInfo.ul.snLen != RLC_UM_CFG_10BIT_SN_LEN))
+      if((cfgToValidate->entMode == RLC_MODE_UM) &&
+         (cfgToValidate->m.umInfo.ul.snLen != RLC_UM_CFG_6BIT_SN_LEN) &&
+         (cfgToValidate->m.umInfo.ul.snLen != RLC_UM_CFG_12BIT_SN_LEN))
       {   
          RLOG_ARG2(L_ERROR,DBG_UEID,ueId,
                "CellId[%u]:UM Mode RB[%d],Invalid SN Len[%d]",
@@ -503,9 +503,9 @@ S16 rlcValidateRbCfgParams(RlcCb *gCb,CmLteRnti ueId,CmLteCellId cellId,RlcEntCf
          }
 
          if ((cfgToValidate->lCh[0].type != CM_LTE_LCH_CCCH) &&
-               (cfgToValidate->entMode != CM_LTE_MODE_TM))
+               (cfgToValidate->entMode != RLC_MODE_TM))
          {
-            status->reason= (cfgToValidate->entMode != CM_LTE_MODE_TM)? CKW_CFG_REAS_RB_MODE_MIS:
+            status->reason= (cfgToValidate->entMode != RLC_MODE_TM)? CKW_CFG_REAS_RB_MODE_MIS:
                CKW_CFG_REAS_LCHTYPE_MIS;
             return RFAILED;
          }
@@ -518,13 +518,13 @@ S16 rlcValidateRbCfgParams(RlcCb *gCb,CmLteRnti ueId,CmLteCellId cellId,RlcEntCf
             return RFAILED;
          }
 
-         if(cfgToValidate->entMode == CM_LTE_MODE_TM)
+         if(cfgToValidate->entMode == RLC_MODE_TM)
          {
             status->reason = CKW_CFG_REAS_LCHTYPE_MIS;
             return RFAILED;
          }
          if (!(((cfgToValidate->lCh[0].type == CM_LTE_LCH_DCCH) && 
-               (cfgToValidate->entMode != CM_LTE_MODE_UM))|| 
+               (cfgToValidate->entMode != RLC_MODE_UM))|| 
                (cfgToValidate->lCh[0].type == CM_LTE_LCH_DTCH)) )
          {
             status->reason = CKW_CFG_REAS_RB_MODE_MIS;
@@ -671,22 +671,24 @@ RlcUlCfgTmpData   *cfgTmpData
             }
          }
          /*Allocating the memory for receive buffer */
-         if(CM_LTE_MODE_UM == cfgToValidate->entMode)
+         if(RLC_MODE_UM == cfgToValidate->entMode)
          {
-            uint32_t hashIndex;
+            uint16_t hashIndex;
+        
+            /* Spec 38.322 Section 7.2 
+	     * UM_Window_Size = 32 when a 6 bit SN is configured, 
+	     * UM_Window_Size = 2048 when a 12 bit SN is configured.
+	     */
             cfgEntData->rbCb->m.umUl.umWinSz = RLC_POWER(2, 
-                  ((cfgToValidate->m.umInfo.ul.snLen *5)-1));
-#ifdef NR_RLC_UL
-            RLC_ALLOC(gCb,
-                  cfgEntData->rbCb->m.umUl.recBufLst,
-                  (RLC_RCV_BUF_BIN_SIZE * sizeof(CmLListCp )));
-            for(hashIndex = 0; hashIndex < RLC_RCV_BUF_BIN_SIZE; hashIndex++)
+                  ((cfgToValidate->m.umInfo.ul.snLen *6)-1));
+            RLC_ALLOC(gCb, cfgEntData->rbCb->m.umUl.recBufLst,
+              (RLC_RCV_BUF_BIN_SIZE * sizeof(CmLListCp)));
+            for(hashIndex = 0; hashIndex < RLC_RCV_BUF_BIN_SIZE; hashIndex++ )
             {
-                cmLListInit(&(cfgEntData->rbCb->m.umUl.recBufLst[hashIndex]));
+               cmLListInit(&(cfgEntData->rbCb->m.umUl.recBufLst[hashIndex]));
             }
-#endif
          }
-         else if(CM_LTE_MODE_AM == cfgToValidate->entMode)
+         else if(RLC_MODE_AM == cfgToValidate->entMode)
          {
 #ifndef LTE_TDD 
              uint32_t hashIndex;
@@ -797,13 +799,11 @@ RlcUlEntTmpData   *cfgEntData
 
    if(CKW_CFG_ADD == cfg->cfgType)
    {
-      if(CM_LTE_MODE_UM == cfg->entMode)
+      if(RLC_MODE_UM == cfg->entMode)
       {
-         RLC_FREE(gCb,
-               cfgEntData->rbCb->m.umUl.recBuf, 
-               (cfgEntData->rbCb->m.umUl.umWinSz << 1) * sizeof(RlcUmRecBuf*));
+         RLC_FREE(gCb, cfgEntData->rbCb->m.umUl.recBufLst, (RLC_RCV_BUF_BIN_SIZE * sizeof(CmLListCp)));
       }
-      else if(CM_LTE_MODE_AM == cfg->entMode)
+      else if(RLC_MODE_AM == cfg->entMode)
       {
 #ifndef LTE_TDD 
       RLC_FREE(gCb,cfgEntData->rbCb->m.amUl.recBufLst, (RLC_RCV_BUF_BIN_SIZE * sizeof(CmLListCp)));
@@ -918,11 +918,11 @@ RlcUlCfgTmpData   *cfgTmpData
                                                                        NULLP;
 
             /* Free the Buffers of RbCb */
-            if( CM_LTE_MODE_UM == cfgEntData->rbCb->mode )
+            if( RLC_MODE_UM == cfgEntData->rbCb->mode )
             {
                rlcUmmFreeUlRbCb(gCb, cfgEntData->rbCb);
             }
-            else if(CM_LTE_MODE_AM == cfgEntData->rbCb->mode)
+            else if(RLC_MODE_AM == cfgEntData->rbCb->mode)
             {
                rlcAmmFreeUlRbCb(gCb,cfgEntData->rbCb);
             }
@@ -1173,19 +1173,19 @@ RlcUlEntTmpData *cfgEntData
    cfgEntData->rbCb->rlcId.ueId = ueId;
    switch (cfgEntData->rbCb->mode)
    {
-      case CM_LTE_MODE_TM:
+      case RLC_MODE_TM:
          {
             rlcTmmUlReEstablish(gCb,cfgEntData->rbCb);
             break;
          }
 
-      case CM_LTE_MODE_UM:
+      case RLC_MODE_UM:
          {
             rlcUmmUlReEstablish(gCb,&rlcId,cfgEntData->rbCb);
             break;
          }
 
-      case CM_LTE_MODE_AM:
+      case RLC_MODE_AM:
          {
             rlcAmmUlReEstablish(gCb,rlcId,sndReEstInd,cfgEntData->rbCb);
             break;
