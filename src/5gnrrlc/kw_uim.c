@@ -753,7 +753,7 @@ uint8_t rlcProcDlData(Pst *pst, KwuDatReqInfo *datReq, Buffer *mBuf)
    /* Dispatch according to mode of the rbCb */
    switch (rbCb->mode)
    {
-      case CM_LTE_MODE_TM:
+      case RLC_MODE_TM:
       {
          /* Verify the user */
          if (pst->srcEnt != ENTNH)
@@ -769,13 +769,13 @@ uint8_t rlcProcDlData(Pst *pst, KwuDatReqInfo *datReq, Buffer *mBuf)
          rlcTmmQSdu(tRlcCb,rbCb, datReq, mBuf);
          break;
       }
-      case CM_LTE_MODE_UM:
+      case RLC_MODE_UM:
       {
          rlcUmmQSdu(tRlcCb,rbCb, datReq, mBuf);
 
          break;
       }
-      case CM_LTE_MODE_AM:
+      case RLC_MODE_AM:
       {
          rlcAmmQSdu(tRlcCb,rbCb, mBuf, datReq);
          break;

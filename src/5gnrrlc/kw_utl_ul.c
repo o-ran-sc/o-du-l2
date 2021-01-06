@@ -34,9 +34,6 @@
      File:     kw_utl_ul.c
 
 **********************************************************************/
-static const char* RLOG_MODULE_NAME="UTL";
-static int RLOG_MODULE_ID=2048;
-static int RLOG_FILE_ID=210;
 
 /** @file kw_utl_ul.c
 @brief RLC Utility Module 
@@ -164,7 +161,7 @@ uint8_t rlcUtlRcvFrmMac(RlcCb *gCb, KwDatIndInfo  *datIndInfo)
 #ifdef SS_RBUF
       SMrkUlPkt(pduInfo->mBuf[0]);
 #endif
-      if ( rbCb->mode == CM_LTE_MODE_UM )
+      if ( rbCb->mode == RLC_MODE_UM )
       {
 /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
@@ -173,7 +170,7 @@ uint8_t rlcUtlRcvFrmMac(RlcCb *gCb, KwDatIndInfo  *datIndInfo)
          rlcUmmProcessPdus(gCb,rbCb,pduInfo);
 #endif
       }
-      else if (rbCb->mode == CM_LTE_MODE_AM )
+      else if (rbCb->mode == RLC_MODE_AM )
       {
 /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
@@ -207,7 +204,8 @@ uint8_t rlcUtlSendUlDataToDu(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *sdu)
    KwuDatIndInfo   *datIndInfo;   /* Data Indication Information */
    KwuDatIndInfo datIndInfoTmp;
 #endif
-   RlcUlRrcMsgInfo *ulRrcMsgInfo;
+   RlcUlRrcMsgInfo  *ulRrcMsgInfo;
+   RlcUlUserDatInfo *ulUserDatInfo;
    uint16_t        msgLen, copyLen;
    Pst             pst;
 
@@ -215,16 +213,13 @@ uint8_t rlcUtlSendUlDataToDu(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *sdu)
    /* Creating static memory for KwuDatIndInfo. #else will be 
     * removed once the testing is done on all platforms */
    datIndInfo = &datIndInfoTmp;
-
-#if (ERRCLASS & ERRCLS_ADD_RES )
-   if ( datIndInfo == NULLP  )
+   if (datIndInfo == NULLP)
    {
-      DU_LOG("\nRLC : rlcUtlSendUlDataToDu: Memory allocation failed UEID:%d \
+      DU_LOG("\nERROR  -->  RLC_UL: rlcUtlSendUlDataToDu: Memory allocation failed UEID:%d \
          CELLID:%d", rbCb->rlcId.ueId, rbCb->rlcId.cellId);
       ODU_PUT_MSG_BUF(sdu);
       return RFAILED;
    }
-#endif /* ERRCLASS & ERRCLS_ADD_RES */
 
    RLC_MEM_CPY(&(datIndInfo->rlcId),&(rbCb->rlcId),sizeof(CmLteRlcId));
    /* Set the "isOutofSeq" flag for each packet 
@@ -232,67 +227,102 @@ uint8_t rlcUtlSendUlDataToDu(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *sdu)
    datIndInfo->isOutOfSeq = rbCb->m.amUl.isOutOfSeq; 
 #endif /* KW_PDCP */
    
-   /* Filling UL RRC Message Info */
-   RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL,
-      ulRrcMsgInfo, sizeof(RlcUlRrcMsgInfo));
-   if (ulRrcMsgInfo)
+   if(rbCb->rlcId.rbType == RB_TYPE_SRB)
    {
-       ulRrcMsgInfo->cellId = rbCb->rlcId.cellId;
-       ulRrcMsgInfo->ueIdx = rbCb->rlcId.ueId;
-       ulRrcMsgInfo->lcId = rbCb->lch.lChId;
-       RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL,
-          ulRrcMsgInfo->rrcMsg, msgLen);
-       if (ulRrcMsgInfo->rrcMsg)
-       {
-          ODU_GET_MSG_LEN(sdu, (MsgLen *)&msgLen);
-          ODU_COPY_MSG_TO_FIX_BUF(sdu, 0, msgLen, ulRrcMsgInfo->rrcMsg, (MsgLen *)&copyLen);
-          ulRrcMsgInfo->msgLen = msgLen;
+      /* Filling UL RRC Message Info if UL msg is not received on SRBs*/
+      RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL,
+	    ulRrcMsgInfo, sizeof(RlcUlRrcMsgInfo));
+      if (ulRrcMsgInfo)
+      {
+	 ulRrcMsgInfo->cellId = rbCb->rlcId.cellId;
+	 ulRrcMsgInfo->ueIdx = rbCb->rlcId.ueId;
+	 ulRrcMsgInfo->lcId = rbCb->lch.lChId;
+	 RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL,
+	       ulRrcMsgInfo->rrcMsg, msgLen);
+	 if (ulRrcMsgInfo->rrcMsg)
+	 {
+	    ODU_GET_MSG_LEN(sdu, (MsgLen *)&msgLen);
+	    ODU_COPY_MSG_TO_FIX_BUF(sdu, 0, msgLen, ulRrcMsgInfo->rrcMsg, (MsgLen *)&copyLen);
+	    ulRrcMsgInfo->msgLen = msgLen;
 
-          /* Sending UL RRC Message transfeer to DU APP */
-          memset(&pst, 0, sizeof(Pst));
-          FILL_PST_RLC_TO_DUAPP(pst, RLC_UL_INST, EVENT_UL_RRC_MSG_TRANS_TO_DU);
-          rlcSendUlRrcMsgToDu(&pst, ulRrcMsgInfo);
-       }
-       else
-       {
-          DU_LOG("\nRLC : rlcUtlSendUlDataToDu: Memory allocation failed for rrcMsg");
-	  RLC_FREE_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL, ulRrcMsgInfo, sizeof(RlcUlRrcMsgInfo));
-	  return RFAILED;
-       }
-    }
-    else
-    {
-       DU_LOG("\nRLC : rlcUtlSendUlDataToDu: Memory allocation failed for ulRrcMsgInfo");
-       return RFAILED;
-    }
+	    /* Sending UL RRC Message transfeer to DU APP */
+	    memset(&pst, 0, sizeof(Pst));
+	    FILL_PST_RLC_TO_DUAPP(pst, RLC_UL_INST, EVENT_UL_RRC_MSG_TRANS_TO_DU);
+	    rlcSendUlRrcMsgToDu(&pst, ulRrcMsgInfo);
+	 }
+	 else
+	 {
+	    DU_LOG("\nERROR  -->  RLC_UL: rlcUtlSendUlDataToDu: Memory allocation failed for rrcMsg");
+	    RLC_FREE_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL, ulRrcMsgInfo, sizeof(RlcUlRrcMsgInfo));
+	    return RFAILED;
+	 }
+      }
+      else
+      {
+	 DU_LOG("\nERROR  -->  RLC_UL: rlcUtlSendUlDataToDu: Memory allocation failed for ulRrcMsgInfo");
+	 return RFAILED;
+      }
+   }
+   else if(rbCb->rlcId.rbType == RB_TYPE_DRB)
+   {
+      /* Filling UL User Data Info if UL msg is received on a DRB */
+      RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL, ulUserDatInfo, sizeof(RlcUlUserDatInfo));
+      if (ulUserDatInfo)
+      {
+	 ulUserDatInfo->cellId = rbCb->rlcId.cellId;
+	 ulUserDatInfo->ueIdx = rbCb->rlcId.ueId;
+         ulUserDatInfo->rbId = rbCb->rlcId.rbId;
+	 RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL, ulUserDatInfo->userData, msgLen);
+	 if (ulUserDatInfo->userData)
+	 {
+	    ODU_GET_MSG_LEN(sdu, (MsgLen *)&msgLen);
+	    ODU_COPY_MSG_TO_FIX_BUF(sdu, 0, msgLen, ulUserDatInfo->userData, (MsgLen *)&copyLen);
+	    ulUserDatInfo->msgLen = msgLen;
 
+	    /* Sending UL RRC Message transfeer to DU APP */
+	    memset(&pst, 0, sizeof(Pst));
+	    FILL_PST_RLC_TO_DUAPP(pst, RLC_UL_INST, EVENT_UL_USER_DATA_TRANS_TO_DU);
+	    rlcSendUlUserDataToDu(&pst, ulUserDatInfo);
+	 }
+	 else
+	 {
+	    DU_LOG("\nERROR  -->  RLC_UL: rlcUtlSendUlDataToDu: Memory allocation failed for user data");
+	    RLC_FREE_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL, ulUserDatInfo, sizeof(RlcUlUserDatInfo));
+	    return RFAILED;
+	 }
+      }
+      else
+      {
+	 DU_LOG("\nERROR  -->  RLC_UL: rlcUtlSendUlDataToDu: Memory allocation failed for ulUserDatInfo");
+	 return RFAILED;
+      }
+   }
    return ROK;
 } /* rlcUtlSendUlDataToDu */
 
 
 static Void dumpRLCUlRbInformation(RlcUlRbCb* ulRbCb)
 {
-   if(ulRbCb->mode == CM_LTE_MODE_UM)
+   if(ulRbCb->mode == RLC_MODE_UM)
    {
       uint32_t i;
       uint32_t pdusInReceptionBuffer = 0;
-      uint32_t windSz  = ulRbCb->m.umUl.umWinSz << 1;
+      uint32_t totalSegs = 0;
 
-      for(i = 0; i< windSz; i++)
+      for(i = 0; i< RLC_RCV_BUF_BIN_SIZE; i++)
       {
-         if(ulRbCb->m.umUl.recBuf[i] != NULLP)
+         RlcUmRecBuf *recBuf = rlcUtlGetUmRecBuf(ulRbCb->m.umUl.recBufLst, i);
+         if(recBuf != NULLP)
          {
-            pdusInReceptionBuffer++;
+	     pdusInReceptionBuffer++;
+	     totalSegs += (recBuf->segLst.count);
          }
       }
       
-      RLOG_ARG3(L_DEBUG,DBG_RBID,ulRbCb->rlcId.rbId,
-               "UM UL UEID:%d CELLID:%d Reception Buffer size = %d", 
-                       (int)ulRbCb->rlcId.ueId,
-                       (int)ulRbCb->rlcId.cellId,
-                       (int)pdusInReceptionBuffer);
+      DU_LOG("\nDEBUG  -->  RLC_UL: UM UL UEID:%d CELLID:%d Reception Buffer size = %d Total segs = %d", 
+         ulRbCb->rlcId.ueId, ulRbCb->rlcId.cellId, pdusInReceptionBuffer, totalSegs);
    }
-   else if(ulRbCb->mode == CM_LTE_MODE_AM)
+   else if(ulRbCb->mode == RLC_MODE_AM)
    {
       uint32_t i;
       uint32_t pdusInReceptionBuffer = 0;
@@ -309,13 +339,8 @@ static Void dumpRLCUlRbInformation(RlcUlRbCb* ulRbCb)
          }
       }
 
-      RLOG_ARG4(L_DEBUG,DBG_RBID,ulRbCb->rlcId.rbId,
-                "AM UL UEID:%d CELLID:%d Reception Buf size = %d"
-                "total segs = %d", 
-                       (int)ulRbCb->rlcId.ueId,
-                       (int)ulRbCb->rlcId.cellId,
-                       (int)pdusInReceptionBuffer, 
-                       (int)totalSegs);
+      DU_LOG("\nDEBUG  -->  RLC_UL: AM UL UEID:%d CELLID:%d Reception Buf size = %d total segs = %d", 
+         ulRbCb->rlcId.ueId, ulRbCb->rlcId.cellId, pdusInReceptionBuffer, totalSegs);
    }
 }
 
@@ -533,7 +558,7 @@ S16 rlcUtlHdlL2TmrExp(RlcCb *gCb,RlcL2MeasEvtCb *measEvtCb)
          measCb->val.nonIpThMeas.measData[measCb->val.nonIpThMeas.qci[qciIdx]].actUe.sampOc++;
       }
       measEvtCb->val.nonIpThMeas.measCb.numSamples--;
-      rlcStartTmr(gCb, (PTR)measEvtCb, RLC_EVT_L2_TMR); 
+      rlcStartTmr(gCb, (PTR)measEvtCb, RLC_EVNT_L2_TMR); 
       return (ROK);
    }
 #endif
@@ -1039,19 +1064,16 @@ void rlcUtlDelRecBuf(CmLListCp *recBufLst, RlcAmRecBuf *recBuf, RlcCb *gCb)
    return;
 } /* rlcUtlDelRecBuf */
 
-#ifdef NR_RLC_UL
 /**
  *
  * @brief Store the UL buffer in hashList  
  *
- *
  * @b Description
  *
- *   Use the SN % binSize as key and store the received UL buffer
+ *  Use the SN % binSize as key and store the received UL buffer
  *  @param[in] recBufLst       List CP array
  *  @param[in] recBuf          received buffer
  *  @param[in] sn              sn of the received buffer 
- *
  *
  *  @return  Void
  */
@@ -1065,17 +1087,16 @@ void rlcUtlStoreUmRecBuf(CmLListCp *recBufLst, RlcUmRecBuf *recBuf, RlcSn sn)
 
    return;
 } /* rlcUtlStoreUmRecBuf */
+
 /**
  *
  * @brief Retrieve the UL buffer from the list
- *
  *
  * @Description
  *
  *   Use the SN % binSize as key and retrieve the UL buffer
  *  @param[in] recBufLst       List CP array
  *  @param[in] sn              sn of the received buffer 
- *
  *
  *  @return  Void
  */
@@ -1101,8 +1122,32 @@ RlcUmRecBuf* rlcUtlGetUmRecBuf(CmLListCp *recBufLst, RlcSn sn)
    }
    return NULLP;
 } /* rlcUtlGetUmRecBuf */
-#endif
 
+/**
+ *
+ * @brief Delete the UM Mode UL buffer from the list
+ *
+ *
+ * @details
+ *   Use the SN % binSize as key and retrieve the UL buffer
+ *
+ *  @param[in] *recBufLst       List CP array
+ *  @param[in] *recBuf          Received buffer
+ *
+ *  @return  Void
+ */
+void rlcUtlDelUmRecBuf(RlcCb *gCb, CmLListCp *recBufLst, RlcUmRecBuf  *recBuf)
+{
+   uint32_t   hashKey;
+   CmLListCp  *recBufLstCp;
+
+   hashKey = (recBuf->sn % RLC_RCV_BUF_BIN_SIZE );
+   recBufLstCp = &recBufLst[hashKey];
+   cmLListDelFrm(recBufLstCp, &recBuf->lnk);
+   RLC_FREE(gCb, recBuf, sizeof(RlcUmRecBuf));
+
+   return;
+} /* rlcUtlDelUmRecBuf */
 
 /********************************************************************30**
          End of file

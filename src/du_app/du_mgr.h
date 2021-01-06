@@ -235,7 +235,6 @@ uint8_t duHdlEgtpCfgComplete(CmStatus cfm);
 uint8_t duSendEgtpSrvOpenReq();
 uint8_t duHdlEgtpSrvOpenComplete(CmStatus cfm);
 uint8_t duSendEgtpTnlMgmtReq(uint8_t action, uint32_t lclTeid, uint32_t remTeid);
-uint8_t duSendEgtpTestData();
 uint8_t duSendEgtpDatInd(Buffer *mBuf);
 uint8_t duHdlSchCfgComplete(Pst *pst, RgMngmt *cfm);
 uint8_t duBuildAndSendMacCellStart();

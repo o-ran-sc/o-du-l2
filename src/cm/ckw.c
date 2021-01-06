@@ -227,7 +227,7 @@ Buffer         *mBuf
           }
        case CKW_CFG_DIR_UL:
           {
-             CMCHKPK(oduUnpackUInt8, param->m.umInfo.ul.reOrdTmr, mBuf);
+             CMCHKPK(oduUnpackUInt8, param->m.umInfo.ul.reAsmblTmr, mBuf);
              CMCHKPK(oduUnpackUInt8, param->m.umInfo.ul.snLen, mBuf);
              break;
           }
@@ -235,7 +235,7 @@ Buffer         *mBuf
        case CKW_CFG_DIR_BOTH:
           {
              CMCHKPK(oduUnpackUInt8, param->m.umInfo.dl.snLen, mBuf);
-             CMCHKPK(oduUnpackUInt8, param->m.umInfo.ul.reOrdTmr, mBuf);
+             CMCHKPK(oduUnpackUInt8, param->m.umInfo.ul.reAsmblTmr, mBuf);
              CMCHKPK(oduUnpackUInt8, param->m.umInfo.ul.snLen, mBuf);
              break;
           }
@@ -849,14 +849,14 @@ Buffer         *mBuf
        case CKW_CFG_DIR_UL:
           {
              CMCHKUNPK(oduPackUInt8, &(param->m.umInfo.ul.snLen), mBuf);
-             CMCHKUNPK(oduPackUInt8, &(param->m.umInfo.ul.reOrdTmr), mBuf);
+             CMCHKUNPK(oduPackUInt8, &(param->m.umInfo.ul.reAsmblTmr), mBuf);
              break;
           }
        /* Patch ckw_c_001.main_3 */
        case CKW_CFG_DIR_BOTH:
           {
              CMCHKUNPK(oduPackUInt8, &(param->m.umInfo.ul.snLen), mBuf);
-             CMCHKUNPK(oduPackUInt8, &(param->m.umInfo.ul.reOrdTmr), mBuf);
+             CMCHKUNPK(oduPackUInt8, &(param->m.umInfo.ul.reAsmblTmr), mBuf);
              CMCHKUNPK(oduPackUInt8, &(param->m.umInfo.dl.snLen), mBuf);
              break;
           }

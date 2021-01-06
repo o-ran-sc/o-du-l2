@@ -331,18 +331,18 @@ Void rlcDbmDelAllDlRb(RlcCb *gCb,RlcDlRbCb **rbCbLst,uint8_t numRbCb)
 #ifdef LTE_L2_MEAS
          RLC_UPD_L2_DECR_NONIP_PER_QCI_RB_COUNT(gCb, (rbCbLst[idx]));
 #endif
-         if( CM_LTE_MODE_UM == rbCbLst[idx]->mode)
+         if( RLC_MODE_UM == rbCbLst[idx]->mode)
          {
             rlcUmmFreeDlRbCb(gCb,rbCbLst[idx]);
 
             RLC_FREE (gCb,rbCbLst[idx], sizeof (RlcDlRbCb));       
          }
-         else if( CM_LTE_MODE_AM == rbCbLst[idx]->mode)
+         else if( RLC_MODE_AM == rbCbLst[idx]->mode)
          {
             rlcAmmFreeDlRbCb(gCb,rbCbLst[idx]);
          }
          /* ccpu00136940 */
-         else if(CM_LTE_MODE_TM == rbCbLst[idx]->mode)
+         else if(RLC_MODE_TM == rbCbLst[idx]->mode)
          {
             cmLListCatLList(&(gCb->u.dlCb->toBeFreed.sduLst),&(rbCbLst[idx]->m.tm.sduQ));
             RLC_FREE (gCb,rbCbLst[idx], sizeof (RlcDlRbCb));       
