@@ -46,6 +46,27 @@ typedef struct rlcUlUeCb RlcUlUeCb;
 */
 
 /** 
+ * @brief  Structure to hold a RLC UM PDU segment
+ *
+ * @details
+ *    - lstEnt : This is required for the linked list in which the segments
+ *               are stored
+ *    - seg    : Holds the segment data
+ *    - segSz  : The length of the segment in bytes
+ *    - soEnd  : SOEnd
+ *    - umHdr  : The UM Header for the PDU segment
+ *
+*/
+typedef struct rlcUmSeg
+{
+   CmLList   lstEnt;   /*!< List entry for PDU segment */
+   Buffer    *seg;     /*!< PDU segment */
+   MsgLen    segSz;    /*!< Buffer Size */
+   uint16_t  soEnd;    /*!< Segment Offset End */
+   RlcUmHdr  umHdr;    /*!<Um Header */
+}RlcUmSeg;
+
+/** 
  * @brief  Structure to hold a  UM PDU
  *
  * @details
@@ -55,9 +76,17 @@ typedef struct rlcUlUeCb RlcUlUeCb;
 */
 typedef struct rlcUmRecBuf
 {
-   Buffer    *pdu;    /**< Buffer holding the UM PDU */
-   RlcUmHdr   umHdr;   /**< UM PDU Header Information */
-   MsgLen    pduSz;   /**< PDU Size */
+   RlcSn       sn;            /*!< Sequence Number */
+   CmLList     lnk;           /*!< Link to the receive buffer list */
+   Bool        allSegRcvd;    /*!< Flag to check whether all seg are received */
+   Bool        noMissingSeg;  /*!< Flag to check all the bytes are received before the last byte of segment */
+   CmLListCp   segLst;        /*!< PDU Segments list */
+   uint16_t    expSo;         /*!< Next expected seg offset */
+   Bool        allRcvd;       /*!< All bytes received or not */
+   RlcUmSeg    *expByteSeg;   /*!< Next expected byte segment */
+   Buffer      *pdu;          /**< Buffer holding the UM PDU */
+   RlcUmHdr    umHdr;         /**< UM PDU Header Information */
+   MsgLen      pduSz;         /**< PDU Size */
 }RlcUmRecBuf;
 
 /** 
@@ -75,18 +104,19 @@ typedef struct rlcUmRecBuf
 */
 typedef struct rlcUmUl
 {
-   uint8_t           snLen;         /**< Sequence number length */
-   uint8_t           reOrdTmrInt;   /**< Timer Interval */
+   uint8_t       snLen;         /**< Sequence number length */
+   uint8_t       reAsmblTmrInt; /**< Timer Interval */
+   CmLListCp     *recBufLst;     /*!<Reception Buffer List */
    RlcUmRecBuf   **recBuf;      /**< Reception buffer */
    RlcSn         umWinSz;       /**< UM window size */
-   uint16_t          modBitMask;    /**< Bitmask for modulus to wrap around variables */
-   RlcSn         sn;            /**< Sequence number */
+   uint16_t      modBitMask;    /**< Bitmask for modulus to wrap around variables */
    RlcSn         vrUr;          /**< VR(UR) - Receive state variable */
    RlcSn         vrUh;          /**< VR(UH) - Highest received state variable */
    RlcSn         vrUx;          /**< VR(UX) - Reordering state variable */
-   CmTimer      reOrdTmr;      /**< Reordering Timer */
-   Buffer       *partialSdu;   /**< Partial SDU - Remains till the complete SDU
-                                                               is received */
+   CmTimer       reAsmblTmr;    /**< Re-assembly Timer */
+   Buffer       *partialSdu;   /**< Partial SDU - Remains till the complete SDU is received */
+   uint16_t      expSo;         /*!< Expected SO for reassembly */
+   RlcSn         expSn;         /*!< Expected Sn */
 }RlcUmUl;
 /*@}*/
 
@@ -507,7 +537,7 @@ Void rlcUmmUlReEstablish ARGS ((RlcCb *gCb,
                                      CmLteRlcId *rlcId, 
                                      RlcUlRbCb *rbCb));
 
-Void rlcUmmReOrdTmrExp ARGS((RlcCb *gCb, RlcUlRbCb  *rbCb));
+Void rlcUmmReAsmblTmrExp ARGS((RlcCb *gCb, RlcUlRbCb  *rbCb));
 
 
 Void rlcUmmFreeUlRbCb ARGS ((RlcCb *gCb, RlcUlRbCb *rbCb)); 
@@ -539,6 +569,8 @@ Void rlcAmmFreeUlRbCb ARGS ((RlcCb *gCb, RlcUlRbCb *rbCb));
 /****************************************************************************
  *                    Utility Functions 
  ***************************************************************************/
+void rlcUtlDelUmRecBuf(RlcCb *gCb, CmLListCp *recBufLst, RlcUmRecBuf  *recBuf);
+
 Void rlcUtlStoreRecBuf ARGS ((CmLListCp        *recBufLst,
                                     RlcAmRecBuf       *recBuf,
                                     RlcSn              sn

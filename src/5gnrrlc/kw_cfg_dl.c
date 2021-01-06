@@ -340,11 +340,19 @@ static S16 rlcCfgFillDlRbCb(RlcCb *gCb,RlcDlRbCb *rbCb,RlcDlUeCb *ueCb,RlcEntCfg
          rbCb->lch.lChId  = entCfg->lCh[0].lChId;
          rbCb->lch.lChType = entCfg->lCh[0].type;
          rbCb->dir = entCfg->dir;
+
+	 /* Spec 38.322 Section 7.1 
+	  * All UM state variables can take values from 0 to 63 for 6 bit SN or 
+	  * from 0 to 4095 for 12 bit SN. All arithmetic operations on UM state 
+	  * variables are affected by the UM modulus 
+	  * (i.e. final value = [value from arithmetic operation] modulo 64
+	  * for 6 bit SN and 4096 for 12 bit SN)
+	  */
          rbCb->m.umDl.snLen = entCfg->m.umInfo.dl.snLen;
-         if (entCfg->m.umInfo.dl.snLen == RLC_UM_CFG_5BIT_SN_LEN)
-            rbCb->m.umDl.modBitMask = 0x1f;
+         if (entCfg->m.umInfo.dl.snLen == RLC_UM_CFG_6BIT_SN_LEN)
+            rbCb->m.umDl.modBitMask = 0x3f;
          else
-            rbCb->m.umDl.modBitMask = 0x3ff;
+            rbCb->m.umDl.modBitMask = 0xfff;
 
          ueCb->lCh[rbCb->lch.lChId - 1].dlRbCb = rbCb;
 
