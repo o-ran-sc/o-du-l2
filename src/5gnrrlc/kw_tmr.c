@@ -111,13 +111,13 @@ void rlcStartTmr(RlcCb *gCb, PTR cb, int16_t tmrEvnt)
    /* kw002.201 Adjusting the wait time as per timeRes configured by layer manager */
    switch (tmrEvnt)
    {
-      case RLC_EVT_UMUL_REORD_TMR:
+      case RLC_EVT_UMUL_REASSEMBLE_TMR:
       {
          RlcUmUl* umUl = &(((RlcUlRbCb *)cb)->m.umUl);
          /* kw005.201 Changed wait calculation ccpu00117634*/ 
-         RLC_TMR_CALCUATE_WAIT(arg.wait, umUl->reOrdTmrInt, gCb->genCfg.timeRes);
+         RLC_TMR_CALCUATE_WAIT(arg.wait, umUl->reAsmblTmrInt, gCb->genCfg.timeRes);
 
-         arg.timers = &umUl->reOrdTmr;
+         arg.timers = &umUl->reAsmblTmr;
          arg.max = RLC_MAX_UM_TMR;
          break;
       }
@@ -222,9 +222,9 @@ void rlcStopTmr(RlcCb *gCb, PTR cb, uint8_t tmrType)
 
    switch (tmrType)
    {
-      case RLC_EVT_UMUL_REORD_TMR:
+      case RLC_EVT_UMUL_REASSEMBLE_TMR:
       {
-         arg.timers  = &((RlcUlRbCb *)cb)->m.umUl.reOrdTmr;
+         arg.timers  = &((RlcUlRbCb *)cb)->m.umUl.reAsmblTmr;
          arg.max = RLC_MAX_UM_TMR;
          break;
       }
@@ -300,10 +300,10 @@ Void rlcTmrExpiry(PTR cb,S16 tmrEvnt)
 
    switch (tmrEvnt)
    {
-      case RLC_EVT_UMUL_REORD_TMR:
+      case RLC_EVT_UMUL_REASSEMBLE_TMR:
       {
          RlcUlRbCb *ulRbCb = (RlcUlRbCb *)cb;
-         rlcUmmReOrdTmrExp(RLC_GET_RLCCB(ulRbCb->inst), ulRbCb);
+         rlcUmmReAsmblTmrExp(RLC_GET_RLCCB(ulRbCb->inst), ulRbCb);
 
          break;
       }
@@ -361,10 +361,10 @@ bool rlcChkTmr(RlcCb *gCb, PTR cb, int16_t tmrEvnt)
 {
    switch (tmrEvnt)
    {
-      case RLC_EVT_UMUL_REORD_TMR:
+      case RLC_EVT_UMUL_REASSEMBLE_TMR:
       {
-         return (((RlcUlRbCb *)cb)->m.umUl.reOrdTmr.tmrEvnt == 
-                  RLC_EVT_UMUL_REORD_TMR);
+         return (((RlcUlRbCb *)cb)->m.umUl.reAsmblTmr.tmrEvnt == 
+                  RLC_EVT_UMUL_REASSEMBLE_TMR);
       }
       case RLC_EVT_AMUL_REORD_TMR:
       {

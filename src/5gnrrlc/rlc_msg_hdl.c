@@ -182,8 +182,8 @@ void fillLcCfg(RlcEntCfgInfo *rlcUeCfg, RlcBearerCfg *duRlcUeCfg, uint8_t cfgTyp
       case CM_LTE_MODE_UM:
          {
             /* UL UM CONFIG */
-            rlcUeCfg->m.umInfo.ul.snLen    = duRlcUeCfg->u.umBiDirCfg->ulUmCfg.snLenUlUm; 
-            rlcUeCfg->m.umInfo.ul.reOrdTmr = duRlcUeCfg->u.umBiDirCfg->ulUmCfg.reAssemTmr;
+            rlcUeCfg->m.umInfo.ul.snLen      = duRlcUeCfg->u.umBiDirCfg->ulUmCfg.snLenUlUm; 
+            rlcUeCfg->m.umInfo.ul.reAsmblTmr = duRlcUeCfg->u.umBiDirCfg->ulUmCfg.reAssemTmr;
 
             /* DL UM CONFIG */
             rlcUeCfg->m.umInfo.dl.snLen = duRlcUeCfg->u.umBiDirCfg->dlUmCfg.snLenDlUm; 
@@ -399,13 +399,13 @@ uint8_t RlcProcDlRrcMsgTransfer(Pst *pst, RlcDlRrcMsgInfo *dlRrcMsgInfo)
 uint8_t RlcProcUlData(Pst *pst, RlcData *ulData)
 {
    uint8_t         ret = ROK;
-   uint8_t              idx, pduIdx;
-   uint8_t              lcId;                    /* Logical Channel */
-   uint8_t              numDLch = 0;             /* Number of dedicated logical channel */
+   uint8_t         idx, pduIdx;
+   uint8_t         lcId;                    /* Logical Channel */
+   uint8_t         numDLch = 0;             /* Number of dedicated logical channel */
    bool            dLchPduPres;             /* PDU received on dedicated logical channel */
-   RguLchDatInd    dLchData[MAX_NUM_LC];  /* PDU info on dedicated logical channel */
-   RguDDatIndInfo  *dLchUlDat;               /* UL data on dedicated logical channel */
-   RguCDatIndInfo  *cLchUlDat;               /* UL data on common logical channel */
+   RguLchDatInd    dLchData[MAX_NUM_LC];    /* PDU info on dedicated logical channel */
+   RguDDatIndInfo  *dLchUlDat;              /* UL data on dedicated logical channel */
+   RguCDatIndInfo  *cLchUlDat;              /* UL data on common logical channel */
 
    /* Initializing dedicated logical channel Database */
    DU_LOG("\nRLC: Received UL Data request from MAC");
@@ -495,7 +495,7 @@ uint8_t RlcProcUlData(Pst *pst, RlcData *ulData)
       if(dLchPduPres)
       {
 	 dLchUlDat->cellId = ulData->cellId;
-	 dLchUlDat->rnti   = ulData->rnti;
+	 GET_UE_IDX(ulData->rnti, dLchUlDat->rnti);
 
 	 for(idx = 0; idx < MAX_NUM_LC; idx++)
 	 {

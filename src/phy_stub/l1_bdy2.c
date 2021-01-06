@@ -22,9 +22,25 @@
 #include "lphy_stub.h"
 #include "du_log.h"
 
+uint8_t l1SendUlUserData();
 uint16_t l1BuildAndSendSlotIndication();
 pthread_t thread = 0;
 
+/*******************************************************************
+ *
+ * @brief Generates slot indications
+ *
+ * @details
+ *
+ *    Function : GenerateTicks
+ *
+ *    Functionality: Generates slot indications
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
 void *GenerateTicks(void *arg)
 {
    int     milisec = 1;        /* 1ms */
@@ -43,6 +59,21 @@ void *GenerateTicks(void *arg)
    return((void *)NULLP);
 }
 
+/*******************************************************************
+ *
+ * @brief Create/cancel thread for generating slot indication 
+ *
+ * @details
+ *
+ *    Function : l1HdlSlotIndicaion
+ *
+ *    Functionality: Create/cancel thread for generating slot indication
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
 void l1HdlSlotIndicaion(bool stopSlotInd)
 {
    int ret;
@@ -63,6 +94,71 @@ void l1HdlSlotIndicaion(bool stopSlotInd)
          DU_LOG("\nPHY_STUB: Unable to stop thread");
       }
    }
+}
+
+/*******************************************************************
+ *
+ * @brief Handles Console input
+ *
+ * @details
+ *
+ *    Function : l1ConsoleHandler
+ *
+ *    Functionality: Handles Console input
+ *
+ * @params[in]
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void *l1ConsoleHandler(void *args)
+{
+   char ch;
+   while(true)
+   {
+      /* Send UL user data to DU when user enters 'd' on console */
+      if((ch = getchar()) == 'd')
+      {
+         /* Start Pumping data from PHY stub to DU */
+         DU_LOG("\nEGTP: Sending UL User Data");
+         l1SendUlUserData();
+      }
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Creates thread for handling console input 
+ *
+ * @details
+ *
+ *    Function : l1StartConsoleHandler
+ *
+ *    Functionality: Creates thread for handling console input
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void l1StartConsoleHandler()
+{
+   uint8_t retVal;
+   pthread_t conThrdId;
+   pthread_attr_t attr;
+
+   /* Start thread to receive console input */
+   pthread_attr_init(&attr);
+   pthread_attr_setstacksize(&attr, (size_t)NULLD);
+   pthread_attr_setscope(&attr, PTHREAD_SCOPE_SYSTEM);
+   pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+   retVal = pthread_create(&conThrdId, &attr, l1ConsoleHandler, NULLP);
+   if(retVal != 0)
+   {
+      DU_LOG("\nERROR  -->  PHY STUB : Thread creation failed. Cause %d", retVal);
+   }
+   pthread_attr_destroy(&attr);
+
 }
 
 /**********************************************************************

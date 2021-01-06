@@ -337,9 +337,9 @@ static S16 rlcCfgFillUlRbCb(RlcCb *gCb,RlcUlRbCb *rbCb,RlcUlUeCb *ueCb,RlcEntCfg
          /* the bitmask for SN = 10 is 0x3ff and for SN = 5 is 0x1f */
          rbCb->m.umUl.modBitMask = (rbCb->m.umUl.umWinSz << 1) - 1; 
 
-         rbCb->m.umUl.reOrdTmrInt = 
-            entCfg->m.umInfo.ul.reOrdTmr;
-         cmInitTimers(&(rbCb->m.umUl.reOrdTmr), 1);
+         rbCb->m.umUl.reAsmblTmrInt = 
+            entCfg->m.umInfo.ul.reAsmblTmr;
+         cmInitTimers(&(rbCb->m.umUl.reAsmblTmr), 1);
          ueCb->lCh[rbCb->lch.lChId - 1].ulRbCb = rbCb;
          break;
       }
@@ -483,8 +483,8 @@ S16 rlcValidateRbCfgParams(RlcCb *gCb,CmLteRnti ueId,CmLteCellId cellId,RlcEntCf
          return RFAILED; 
       }  
       if((cfgToValidate->entMode == CM_LTE_MODE_UM) &&
-         (cfgToValidate->m.umInfo.ul.snLen != RLC_UM_CFG_5BIT_SN_LEN) &&
-         (cfgToValidate->m.umInfo.ul.snLen != RLC_UM_CFG_10BIT_SN_LEN))
+         (cfgToValidate->m.umInfo.ul.snLen != RLC_UM_CFG_6BIT_SN_LEN) &&
+         (cfgToValidate->m.umInfo.ul.snLen != RLC_UM_CFG_12BIT_SN_LEN))
       {   
          RLOG_ARG2(L_ERROR,DBG_UEID,ueId,
                "CellId[%u]:UM Mode RB[%d],Invalid SN Len[%d]",
@@ -677,7 +677,7 @@ RlcUlCfgTmpData   *cfgTmpData
         
             
             cfgEntData->rbCb->m.umUl.umWinSz = RLC_POWER(2, 
-                  ((cfgToValidate->m.umInfo.ul.snLen *5)-1));
+                  ((cfgToValidate->m.umInfo.ul.snLen *6)-1));
             winLen =  cfgEntData->rbCb->m.umUl.umWinSz << 1;
             RLC_ALLOC(gCb,
                      cfgEntData->rbCb->m.umUl.recBuf, 

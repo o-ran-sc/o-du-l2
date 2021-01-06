@@ -48,6 +48,7 @@ length, uint16_t value, uint32_t *msgLen));
 void fillMsgHeader ARGS((fapi_msg_t *hdr, uint16_t msgType, uint16_t msgLen));
 #endif
 void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg);
+void l1StartConsoleHandler();
 
 /**********************************************************************
          End of file

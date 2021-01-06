@@ -555,6 +555,82 @@ uint8_t unpackRlcDlRrcMsgRspToDu(RlcDlRrcMsgRspToDuFunc func, Pst *pst, Buffer *
    }
    return RFAILED;
 }
+
+/*******************************************************************
+ *
+ * @brief Pack and send UL user data from RLC to DU APP
+ *
+ * @details
+ *
+ *    Function : packRlcUlUserDataToDu
+ *
+ *    Functionality:
+ *       Pack and send UL User Data from RLC to DU APP
+ *
+ * @params[in] Post structure
+ *             UL user data
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packRlcUlUserDataToDu(Pst *pst, RlcUlUserDatInfo *ulUserData)
+{
+   Buffer *mBuf = NULLP;
+
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+      {
+         DU_LOG("\nRLC : Memory allocation failed at packRlcUlUserDataToDu");
+         return RFAILED;
+      }
+      /* pack the address of the structure */
+      CMCHKPK(oduPackPointer,(PTR)ulUserData, mBuf);
+      return ODU_POST_TASK(pst,mBuf);
+   }
+   else
+   {
+      DU_LOG("\nRLC: Only LWLC supported for packRlcUlUserDataToDu");
+   }
+   return RFAILED;
+}
+
+/*******************************************************************
+ *
+ * @brief Unpack UL user data received at DU APP from RLC
+ *
+ * @details
+ *
+ *    Function : unpackRlcUlUserDataToDu
+ *
+ *    Functionality:
+ *      Unpack UL user data received at DU APP from RLC
+ *
+ * @params[in]
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t unpackRlcUlUserDataToDu(RlcUlUserDataToDuFunc func, Pst *pst, Buffer *mBuf)
+{
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      RlcUlUserDatInfo *ulUserData;
+      /* unpack the address of the structure */
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&ulUserData, mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
+      return (*func)(pst, ulUserData);
+   }
+   else
+   {
+      /* Nothing to do for other selectors */
+      DU_LOG("\nRLC: Only LWLC supported for UL User data transfer ");
+      ODU_PUT_MSG_BUF(mBuf);
+   }
+
+   return RFAILED;
+}
+
 /**********************************************************************
          End of file
 ***********************************************************************/
