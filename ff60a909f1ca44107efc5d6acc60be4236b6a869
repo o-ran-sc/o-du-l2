@@ -1,0 +1,276 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ad40679b_96710344",
+        "filename": "src/5gnrrlc/kw_utl_dl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-01-06T09:23:42Z",
+      "side": 1,
+      "message": "alignment",
+      "revId": "ff60a909f1ca44107efc5d6acc60be4236b6a869",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8244470a_4f3b0524",
+        "filename": "src/5gnrrlc/kw_utl_dl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-01-06T09:23:42Z",
+      "side": 1,
+      "message": "SRB 0 is handled as part of TM mode, which we are supporting in RLC. We can remove SRB0 from comments",
+      "revId": "ff60a909f1ca44107efc5d6acc60be4236b6a869",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "783c6657_5e9d41fa",
+        "filename": "src/5gnrrlc/kw_utl_dl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-01-06T09:23:42Z",
+      "side": 1,
+      "message": "dlRrcMsgRsp is triggered separately for each RRC msg but it seems that the content of all the responses are same. We can either have one response for all or have some kind of indication to know which RRC msg response is received at du app",
+      "revId": "ff60a909f1ca44107efc5d6acc60be4236b6a869",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bbfbfe18_62d828bf",
+        "filename": "src/cm/legtp.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-01-06T09:23:42Z",
+      "side": 1,
+      "message": "alignment",
+      "revId": "ff60a909f1ca44107efc5d6acc60be4236b6a869",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6d89fc24_f014ca62",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 7328,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-01-06T09:23:42Z",
+      "side": 1,
+      "message": "This is an ERROR log",
+      "revId": "ff60a909f1ca44107efc5d6acc60be4236b6a869",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4299d45a_b0b8dff8",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 7386,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-01-06T09:23:42Z",
+      "side": 1,
+      "message": "all of the above logs in this function are error logs",
+      "revId": "ff60a909f1ca44107efc5d6acc60be4236b6a869",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "03a6272b_8dc21e43",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-01-06T09:23:42Z",
+      "side": 1,
+      "message": "rename to gtpTnlCfg",
+      "revId": "ff60a909f1ca44107efc5d6acc60be4236b6a869",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "df16b187_878e938d",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-01-06T09:23:42Z",
+      "side": 1,
+      "message": "these functions must not be under EGTP_TEST flag since they are required in our actual code flow",
+      "revId": "ff60a909f1ca44107efc5d6acc60be4236b6a869",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "04689e33_4c11f78d",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-01-06T09:23:42Z",
+      "side": 1,
+      "message": "Will ulTnlCfg and dlTnlCfg always be the same? \nIf so, then we need not have separate structure for UL and DL. We can use a common tnlCfg.\nIf not, then we must use dlTnlCfg here since this is DL data processing.",
+      "revId": "ff60a909f1ca44107efc5d6acc60be4236b6a869",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4228278a_597ecc6f",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-01-06T09:23:42Z",
+      "side": 1,
+      "message": "ueIdx can be filled directly into dlDataMsgInfo-\u003eueIdx",
+      "revId": "ff60a909f1ca44107efc5d6acc60be4236b6a869",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d1f8cd1f_e1af855c",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-01-06T09:23:42Z",
+      "side": 1,
+      "message": "Should we continue using CM_LTE macros?",
+      "revId": "ff60a909f1ca44107efc5d6acc60be4236b6a869",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2d189ce3_7754ba66",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-01-06T09:23:42Z",
+      "side": 1,
+      "message": "error log",
+      "revId": "ff60a909f1ca44107efc5d6acc60be4236b6a869",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3534cf63_ea11fc00",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-01-06T09:23:42Z",
+      "side": 1,
+      "message": "As mentioned earlier, this code must not be under test flag",
+      "revId": "ff60a909f1ca44107efc5d6acc60be4236b6a869",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "56fb651e_d24dd13c",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-01-06T09:23:42Z",
+      "side": 1,
+      "message": "ERROR log",
+      "revId": "ff60a909f1ca44107efc5d6acc60be4236b6a869",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "313268d9_37bfabb2",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-01-06T09:23:42Z",
+      "side": 1,
+      "message": "EGTP data may be received in segments. We need to study and implement the assembly of EGTP data  before sending to RRC",
+      "revId": "ff60a909f1ca44107efc5d6acc60be4236b6a869",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3a83a8d3_e39cdd6f",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-01-06T09:23:42Z",
+      "side": 1,
+      "message": "ERROR log",
+      "revId": "ff60a909f1ca44107efc5d6acc60be4236b6a869",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
