@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "e70ef75c_4a28e5f1",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 705,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-01-06T11:31:40Z",
+      "side": 1,
+      "message": "return type needed.",
+      "parentUuid": "cdacc51e_82882a02",
+      "revId": "81561f6c8c38db81d7eb78c12df35ef93ae2175c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "cd4699fa_8cc3b1c0",
         "filename": "src/du_app/du_e2ap_msg_hdl.c",
         "patchSetId": 10
@@ -33,6 +51,24 @@
       "revId": "81561f6c8c38db81d7eb78c12df35ef93ae2175c",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "def2419b_f60d1e9f",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-01-06T11:31:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd4699fa_8cc3b1c0",
+      "revId": "81561f6c8c38db81d7eb78c12df35ef93ae2175c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
