@@ -351,8 +351,7 @@ static S16 rlcLmmGenCfg(RlcCb  *gCb,RlcGenCfg *cfg)
       }
 
       /* Register the timer */
-#if 0
-      if(SRegTmrMt(gCb->init.ent, gCb->init.inst, (uint16_t)cfg->timeRes,
+      if(ODU_REG_TMR_MT(gCb->init.ent, gCb->init.inst, (uint16_t)cfg->timeRes,
               rlcActvTmr) != ROK)
       {
          RLC_FREE(gCb,gCb->u.ulCb->udxUlSap, rlcUdxSapSize);
@@ -362,7 +361,7 @@ static S16 rlcLmmGenCfg(RlcCb  *gCb,RlcGenCfg *cfg)
 
          return (LCM_REASON_REGTMR_FAIL);
       }
-#endif
+
 #ifdef LTE_L2_MEAS
       rlcUtlL2MeasUlInit(gCb);
 #endif

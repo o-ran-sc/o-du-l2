@@ -438,7 +438,7 @@
 #define RLC_TMR_LEN                     10
 #define RLC_MAX_UM_TMR                  1
 #define RLC_MAX_AM_TMR                  3
-#define RLC_EVT_UMUL_REORD_TMR          1
+#define RLC_EVT_UMUL_REASSEMBLE_TMR     1
 #define RLC_EVT_AMUL_REORD_TMR          2
 #define RLC_EVT_AMUL_STA_PROH_TMR       3
 #define RLC_EVT_AMDL_POLL_RETX_TMR      4
@@ -487,9 +487,9 @@
 #define RLC_UMUL     rbCb->m.umUl 
 
 /* Sequence Number length defines */
-#define RLC_UM_CFG_5BIT_SN_LEN      1 /**< UM 5-bit Sequence number length 
+#define RLC_UM_CFG_6BIT_SN_LEN      1 /**< UM 6-bit Sequence number length 
                                           in bytes*/   
-#define RLC_UM_CFG_10BIT_SN_LEN     2 /**< UM 10-bit Sequence number length 
+#define RLC_UM_CFG_12BIT_SN_LEN     2 /**< UM 12-bit Sequence number length 
                                           in bytes*/
 /* 5GNR */
 /* Sequence Number length defines */
@@ -722,19 +722,18 @@
    cmLListInsCrnt(&lstCp, nodeToIns);          \
 }
 
-#define RLC_LLIST_DEL_RECBUF(_recBuf)                       \
+#define RLC_LLIST_DEL_RECBUF(_recBuf)                      \
 {                                                          \
-   RlcSeg  *_seg = NULLP;                                   \
-   RLC_LLIST_FIRST_SEG(_recBuf->segLst, _seg);              \
+   RlcSeg  *_seg = NULLP;                                  \
+   RLC_LLIST_FIRST_SEG(_recBuf->segLst, _seg);             \
    while (_seg)                                            \
    {                                                       \
       cmLListDelFrm(&_recBuf->segLst, &_seg->lstEnt);      \
-      RLC_FREE(_seg, sizeof(RlcSeg));                        \
-      RLC_LLIST_NEXT_SEG(_recBuf->segLst, _seg);            \
+      RLC_FREE(_seg, sizeof(RlcSeg));                      \
+      RLC_LLIST_NEXT_SEG(_recBuf->segLst, _seg);           \
    }                                                       \
 }
 
-#ifdef NR_RLC_UL
 #define RLC_UMM_LLIST_FIRST_SEG(lstCp, nod)         \
 {                                              \
    CmLList *tmpNode;                           \
@@ -753,8 +752,6 @@
    else                                        \
       nod = NULLP;                             \
 }/*!< next segment in um mode linked list*/
-
-#endif
 
 #define MODAMT(x, y, z,_snModMask)   \
 {                         \
