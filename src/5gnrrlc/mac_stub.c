@@ -50,7 +50,7 @@ void macStubBuildUlData(Buffer *mBuf)
    ipv4Hdr.destAddr = CM_INET_NTOH_UINT32(ipv4_cu);
   
    /* Packing IPv4 header into buffer */
-   S16          ret, cnt, idx;
+   S16          cnt, idx;
    Data         revPkArray[CM_IPV4_HDRLEN];
    Data         pkArray[CM_IPV4_HDRLEN];
   
@@ -102,7 +102,7 @@ void macStubBuildUlData(Buffer *mBuf)
         revPkArray[idx] = pkArray[CM_IPV4_HDRLEN - idx -1];
     
    /* this function automatically reverses revPkArray */
-   ret = ODU_ADD_PRE_MSG_MULT(revPkArray, (MsgLen)cnt, mBuf);
+   ODU_ADD_PRE_MSG_MULT(revPkArray, (MsgLen)cnt, mBuf);
 
    ODU_ADD_PRE_MSG_MULT((Data *)&rlcDatSn, sizeof(uint8_t), mBuf);
 
