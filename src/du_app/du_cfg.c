@@ -177,7 +177,7 @@ uint8_t readMacCfg()
    duCfgParam.macCellCfg.ssbCfg.ssbMask[1] = 0;
    if(BuildMibPdu() != ROK)
    {
-      DU_LOG("\nFailed to build MIB PDU");
+      DU_LOG("\nERROR  -->  Failed to build MIB PDU");
       memset(&duCfgParam.macCellCfg.ssbCfg.mibPdu, 0, 3*sizeof(uint8_t));
    }
    else
@@ -210,7 +210,7 @@ uint8_t readMacCfg()
 	NUM_UNUSED_ROOT_SEQ * sizeof(uint8_t));
         if(duCfgParam.macCellCfg.prachCfg.fdm[0].unsuedRootSeq == NULLP)
 	{
-	    DU_LOG("\nDU_APP : Memory allocation failed");
+	    DU_LOG("\nERROR  -->  DU_APP : Memory allocation failed at readMacCfg");
 	    return RFAILED;
 	}
 	*(duCfgParam.macCellCfg.prachCfg.fdm[0].unsuedRootSeq) = UNUSED_ROOT_SEQ;
@@ -714,7 +714,7 @@ uint8_t readCfg()
 	    strlen(encBuf));
       if(!(duCfgParam.srvdCellLst[i].duSysInfo.mibMsg))
       {
-	 DU_LOG("\nDU_APP: Memory allocation failure");
+	 DU_LOG("\nERROR  -->  DU APP : Memory allocation failure at readCfg");
 	 return RFAILED;
       }
       strcpy((char *)duCfgParam.srvdCellLst[i].duSysInfo.mibMsg, encBuf);
@@ -726,7 +726,7 @@ uint8_t readCfg()
 	    encBufSize);
       if(!(duCfgParam.srvdCellLst[i].duSysInfo.sib1Msg))
       {
-	 DU_LOG("\nDU_APP: Memory allocation failure");
+	 DU_LOG("\nERROR  -->  DU APP : Memory allocation failure at readCfg");
 	 return RFAILED;
       }
       memcpy(duCfgParam.srvdCellLst[i].duSysInfo.sib1Msg,\
@@ -737,7 +737,7 @@ uint8_t readCfg()
 
    if(readMacCfg() != ROK)
    {
-      DU_LOG("\nDU_APP : Failed while reading MAC config");
+      DU_LOG("\nERROR  -->  DU_APP : Failed while reading MAC config");
       return RFAILED;
    }
 
@@ -770,7 +770,7 @@ uint8_t duReadCfg()
    //Read configs into duCfgParams
    if(readCfg() != ROK)
    {
-      DU_LOG("\nDU_APP : Reading configuration failed");
+      DU_LOG("\nERROR  -->  DU_APP : Reading configuration failed");
       return RFAILED;
    }
 
@@ -789,13 +789,13 @@ uint8_t duReadCfg()
 
    if(ODU_GET_MSG_BUF(DFLT_REGION, DU_POOL, &mBuf) != ROK)
    {
-      DU_LOG("\nDU_APP : Memory allocation failed in duReadCfg");
+      DU_LOG("\nERROR  -->  DU_APP : Memory allocation failed in duReadCfg");
       return RFAILED;
    }
 
    if (ODU_POST_TASK(&pst, mBuf) != ROK)
    {
-      DU_LOG("\nDU_APP : ODU_POST_TASK failed in duReadCfg");
+      DU_LOG("\nERROR  -->  DU_APP : ODU_POST_TASK failed in duReadCfg");
       return RFAILED;
    }
 

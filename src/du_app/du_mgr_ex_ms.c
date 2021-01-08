@@ -142,7 +142,7 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
 		  }
 	       default:
 		  {
-		     DU_LOG("\nDU_APP : Invalid event received at duActvTsk from ENTDUAPP");
+		     DU_LOG("\nERROR  -->  DU_APP : Invalid event received at duActvTsk from ENTDUAPP");
 		     ODU_PUT_MSG_BUF(mBuf);
 		     ret = RFAILED;
 		  }
@@ -195,7 +195,7 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
                   }
 	       default:
 		  {
-		     DU_LOG("\nDU_APP : Invalid event %d received at duActvTsk from ENTRLC", \
+		     DU_LOG("\nERROR  -->  DU_APP : Invalid event %d received at duActvTsk from ENTRLC", \
 			   pst->event);
 		     ODU_PUT_MSG_BUF(mBuf);
 		     ret = RFAILED;
@@ -259,7 +259,7 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
 		  }
 	       default:
 		  {
-		     DU_LOG("\nDU_APP : Invalid event received at duActvTsk from ENTMAC");
+		     DU_LOG("\nERROR  -->  DU_APP : Invalid event received at duActvTsk from ENTMAC");
 		     ODU_PUT_MSG_BUF(mBuf);
 		     ret = RFAILED;
 		  }
@@ -288,7 +288,7 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
 		  }
 	       default:
 		  {
-		     DU_LOG("\nDU_APP : Invalid event received at duActvTsk from ENTSCTP");
+		     DU_LOG("\nERROR  -->  DU_APP : Invalid event received at duActvTsk from ENTSCTP");
 		     ret = RFAILED;
 		  }
 
@@ -317,7 +317,7 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
 		  }
 	       default:
 		  {
-		     DU_LOG("\nDU_APP : Invalid event[%d] received at duActvTsk from ENTEGTP", pst->event);
+		     DU_LOG("\nERROR  -->  DU_APP : Invalid event[%d] received at duActvTsk from ENTEGTP", pst->event);
 		     ret = RFAILED;
 		  }
 	    }
@@ -326,7 +326,7 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
 	 }
       default:
 	 {
-	    DU_LOG("\nDU_APP : DU APP can not process message from Entity %d", pst->srcEnt);
+	    DU_LOG("\nERROR  -->  DU_APP : DU APP can not process message from Entity %d", pst->srcEnt);
 	    ODU_PUT_MSG_BUF(mBuf);
 	    ret = RFAILED;
 	 }

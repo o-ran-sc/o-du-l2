@@ -54,7 +54,7 @@ EgtpGlobalCb egtpCb;
  ***************************************************************************/
 uint8_t egtpActvInit(Ent entity, Inst inst, Region region, Reason reason)
 {
-  DU_LOG("\n\nEGTP : Initializing");
+  DU_LOG("\n\nINFO   -->  EGTP : Initializing");
 
   memset (&egtpCb, 0, sizeof(EgtpGlobalCb));
   protType = CM_INET_PROTO_UDP;
@@ -109,7 +109,7 @@ uint8_t egtpActvTsk(Pst *pst, Buffer *mBuf)
             }
             default:
             {
-               DU_LOG("\nEGTP : Invalid event %d", pst->event);
+               DU_LOG("\nERROR  -->  EGTP : Invalid event %d", pst->event);
                ODU_PUT_MSG_BUF(mBuf);
                ret = RFAILED;
             }
@@ -122,14 +122,14 @@ uint8_t egtpActvTsk(Pst *pst, Buffer *mBuf)
          {
             case EVTSTARTPOLL:
             {
-               DU_LOG("\nEGTP : Starting Socket Polling");
+               DU_LOG("\nINFO   -->  EGTP : Starting Socket Polling");
                egtpRecvMsg();
                ODU_PUT_MSG_BUF(mBuf);
                break;
             }
             default:
             {
-               DU_LOG("\nEGTP : Invalid event %d", pst->event);
+               DU_LOG("\nERROR  -->  EGTP : Invalid event %d", pst->event);
                ODU_PUT_MSG_BUF(mBuf);
                ret = RFAILED;
             }
@@ -147,7 +147,7 @@ uint8_t egtpActvTsk(Pst *pst, Buffer *mBuf)
             }
             default:
             {
-               DU_LOG("\nEGTP : Invalid event %d", pst->event);
+               DU_LOG("\nERROR  -->  EGTP : Invalid event %d", pst->event);
                ret = RFAILED;
             }
          }
@@ -155,7 +155,7 @@ uint8_t egtpActvTsk(Pst *pst, Buffer *mBuf)
       }
       default:
       {
-         DU_LOG("\nEGTP : Invalid source entity %d", pst->srcEnt);
+         DU_LOG("\nERROR  -->  EGTP : Invalid source entity %d", pst->srcEnt);
          ret = RFAILED;
       }
    }
@@ -198,13 +198,13 @@ uint8_t egtpCfgReq(Pst *pst, EgtpConfig egtpCfg)
 
    if(ret != ROK)
    {
-      DU_LOG("\nEGTP : TeId hash list initialization failed");
+      DU_LOG("\nERROR  -->  EGTP : TeId hash list initialization failed");
       cfgCfm.status = LCM_PRIM_NOK;
       cfgCfm.reason = LCM_REASON_HASHING_FAILED;
    }
    else
    {
-      DU_LOG("\nEGTP : EGTP configuration successful");
+      DU_LOG("\nINFO   -->  EGTP : EGTP configuration successful");
       cfgCfm.status = LCM_PRIM_OK;
       cfgCfm.reason = LCM_REASON_NOT_APPL;
    }
@@ -275,25 +275,26 @@ uint8_t egtpSrvOpenReq(Pst *pst)
    CmStatus cfm;       /* Confirmation status */
    uint8_t  sockType;  /* Socket type */
 
-   DU_LOG("\nEGTP : Received EGTP open server request");
+   DU_LOG("\nERROR  -->  EGTP : Received EGTP open server request");
  
    sockType = CM_INET_DGRAM;
    ret = egtpSrvOpenPrc(sockType, &(egtpCb.recvTptSrvr));
 	/* Opening and Binding receiver socket */
    if(ret != ROK)
    {
-      DU_LOG("\nEGTP : Failed while opening receiver transport server");
+      DU_LOG("\nERROR  -->  EGTP : Failed while opening receiver transport server");
       return ret;
    }
    /* Opening and Binding sender socket */
 	ret = egtpSrvOpenPrc(sockType, &(egtpCb.dstCb.sendTptSrvr));
    if(ret != ROK)
    {
-      DU_LOG("\nEGTP : Failed while opening sender transport server");
+      DU_LOG("\nERROR  -->  EGTP : Failed while opening sender transport server");
       return ret;
    }
 
-   DU_LOG("\nEGTP : Receiver socket[%d] and Sender socket[%d] open", egtpCb.recvTptSrvr.sockFd.fd, egtpCb.dstCb.sendTptSrvr.sockFd.fd);
+   DU_LOG("\nINFO   -->  EGTP : Receiver socket[%d] and Sender socket[%d] open", egtpCb.recvTptSrvr.sockFd.fd,\
+   egtpCb.dstCb.sendTptSrvr.sockFd.fd);
 
    /* Start Socket polling */
    memset(&egtpPst, 0, sizeof(egtpPst));
@@ -342,13 +343,13 @@ uint8_t egtpSrvOpenPrc(uint8_t sockType, EgtpTptSrvr *server)
    ret = cmInetSocket(sockType, &(server->sockFd), protType); 
 	if(ret != ROK)
    {  
-      DU_LOG("\nEGTP : Failed to open UDP socket");
+      DU_LOG("\nERROR  -->  EGTP : Failed to open UDP socket");
       return ret;
    }
    ret = cmInetBind(&(server->sockFd), &(server->addr));  
    if(ret != ROK)
    {  
-      DU_LOG("\nEGTP : Failed to bind socket");
+      DU_LOG("\nERROR  -->  EGTP : Failed to bind socket");
       return ret;
    }
    
@@ -375,7 +376,7 @@ uint8_t egtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt)
 {
    S8 ret;
 
-   DU_LOG("\nEGTP : Received tunnel management request");
+   DU_LOG("\nINFO   -->  EGTP : Received tunnel management request");
    switch(tnlEvt.action)
    {
       case EGTP_TNL_MGMT_ADD:
@@ -395,7 +396,7 @@ uint8_t egtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt)
       }
       default:
       {
-         DU_LOG("\nEGTP : Invalid tunnel management action[%d]", tnlEvt.action);
+         DU_LOG("\nERROR  -->  EGTP : Invalid tunnel management action[%d]", tnlEvt.action);
          ret = LCM_REASON_INVALID_ACTION;
       }
    }
@@ -411,7 +412,7 @@ uint8_t egtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt)
       tnlEvt.cfmStatus.reason = ret;
    }
 
-   DU_LOG("\nEGTP : Sending Tunnel management confirmation");
+   DU_LOG("\nINFO   -->  EGTP : Sending Tunnel management confirmation");
    duHdlEgtpTnlMgmtCfm(tnlEvt);
 
    return ROK;
@@ -438,12 +439,12 @@ uint8_t egtpTnlAdd(EgtpTnlEvt tnlEvt)
    EgtpTeIdCb *teidCb;    /* Tunnel endpoint control block */
    EgtpMsgHdr preDefHdr; /* pre-define header for this tunnel */
 
-   DU_LOG("\nEGTP : Tunnel addition : LocalTeid[%d] Remote Teid[%d]", tnlEvt.lclTeid, tnlEvt.remTeid);
+   DU_LOG("\nINFO   -->  EGTP : Tunnel addition : LocalTeid[%d] Remote Teid[%d]", tnlEvt.lclTeid, tnlEvt.remTeid);
 
    DU_ALLOC(teidCb, sizeof(EgtpTeIdCb));
    if(teidCb == NULLP)
    {
-      DU_LOG("\nEGTP : Memory allocation failed");
+      DU_LOG("\nERROR  -->  EGTP : Memory allocation failed");
       return LCM_REASON_MEM_NOAVAIL;
    }
 
@@ -454,7 +455,7 @@ uint8_t egtpTnlAdd(EgtpTnlEvt tnlEvt)
    ret = cmHashListInsert(&(egtpCb.dstCb.teIdLst), (PTR)teidCb, (uint8_t *)&(teidCb->teId), sizeof(uint32_t));
    if(ret != ROK)
    {
-      DU_LOG("\nEGTP : Failed to insert in hash list");
+      DU_LOG("\nERROR  -->  EGTP : Failed to insert in hash list");
       DU_FREE(teidCb, sizeof(EgtpTeIdCb));
       return LCM_REASON_HASHING_FAILED;
    }
@@ -494,12 +495,12 @@ uint8_t egtpTnlMod(EgtpTnlEvt tnlEvt)
    uint8_t   ret;
    EgtpTeIdCb     *teidCb = NULLP;
 
-   printf("\nTunnel modification : LocalTeid[%d] Remote Teid[%d]", tnlEvt.lclTeid, tnlEvt.remTeid);
+   printf("\nINFO   -->  Tunnel modification : LocalTeid[%d] Remote Teid[%d]", tnlEvt.lclTeid, tnlEvt.remTeid);
 
    cmHashListFind(&(egtpCb.dstCb.teIdLst), (uint8_t *)&(tnlEvt.teId), sizeof(uint32_t), 0, (PTR *)&teidCb);
    if(teidCb == NULLP)
    {
-      printf("\nTunnel id not found");
+      printf("\nERROR  -->  Tunnel id not found");
       return RFAILED;
    }  
    
@@ -528,12 +529,12 @@ uint8_t egtpTnlDel(EgtpTnlEvt tnlEvt)
 {
    EgtpTeIdCb     *teidCb = NULLP;
 
-   DU_LOG("\nEGTP : Tunnel deletion : Local Teid[%d] Remote Teid[%d]", tnlEvt.lclTeid, tnlEvt.remTeid);
+   DU_LOG("\nINFO   -->  EGTP : Tunnel deletion : Local Teid[%d] Remote Teid[%d]", tnlEvt.lclTeid, tnlEvt.remTeid);
    
    cmHashListFind(&(egtpCb.dstCb.teIdLst), (uint8_t *)&(tnlEvt.lclTeid), sizeof(uint32_t), 0, (PTR *)&teidCb);
    if(teidCb == NULLP)
    {
-      DU_LOG("\nEGTP : Tunnel id[%d] not configured", tnlEvt.lclTeid);
+      DU_LOG("\nERROR  -->  EGTP : Tunnel id[%d] not configured", tnlEvt.lclTeid);
       return LCM_REASON_INVALID_PAR_VAL;
    } 
 
@@ -569,12 +570,12 @@ uint8_t egtpHdlDatInd(EgtpMsg egtpMsg)
    uint32_t    msgLen;
    EgtpMsgHdr  *msgHdr;
 
-   DU_LOG("\nEGTP : Received Data Indication");
+   DU_LOG("\nINFO   -->  EGTP : Received Data Indication");
 
    cmHashListFind(&(egtpCb.dstCb.teIdLst), (uint8_t *)&(egtpMsg.msgHdr.teId), sizeof(uint32_t), 0, (PTR *)&teidCb);
    if(teidCb == NULLP)
    {
-      DU_LOG("\nEGTP : Tunnel id[%d] not configured", egtpMsg.msgHdr.teId);
+      DU_LOG("\nERROR  -->  EGTP : Tunnel id[%d] not configured", egtpMsg.msgHdr.teId);
       return LCM_REASON_INVALID_PAR_VAL;
    }
    
@@ -619,13 +620,13 @@ uint8_t egtpHdlDatInd(EgtpMsg egtpMsg)
       teidCb->preEncodedHdr.hdr[EGTP_MAX_HDR_LEN - 1] &= ~(EGTP_MASK_BIT2);
    }
 
-   DU_LOG("\nEGTP : UL Data buffer before encoding header");
+   DU_LOG("\nDEBUG  -->  EGTP : UL Data buffer before encoding header");
    ODU_PRINT_MSG(egtpMsg.msg, 0, 0);
 
    ODU_ADD_PRE_MSG_MULT(&teidCb->preEncodedHdr.hdr[hdrLen], (EGTP_MAX_HDR_LEN - hdrLen), egtpMsg.msg);
 
 
-   DU_LOG("\nEGTP : UL Data buffer after encoding header");
+   DU_LOG("\nDEBUG  -->  EGTP : UL Data buffer after encoding header");
    ODU_PRINT_MSG(egtpMsg.msg, 0, 0);
 
    /* Send over UDP */
@@ -780,11 +781,11 @@ uint8_t egtpSendMsg(Buffer *mBuf)
       mBuf, (int16_t *)&txLen, CM_INET_NO_FLAG);
    if(ret != ROK && ret != RWOULDBLOCK)
    {
-      DU_LOG("\nEGTP : Failed sending the message");
+      DU_LOG("\nERROR  -->  EGTP : Failed sending the message");
       return RFAILED;
    }
 
-   DU_LOG("\nEGTP : Message Sent");
+   DU_LOG("\nINFO   -->  EGTP : Message Sent");
 
    return ROK;
 }
@@ -829,7 +830,7 @@ uint8_t egtpRecvMsg()
          &recvBuf, (int16_t *)&bufLen, CM_INET_NO_FLAG);
       if(ret == ROK && recvBuf != NULLP)
       {  
-         DU_LOG("\nEGTP : Received DL Message[%d]\n", nMsg+1);
+         DU_LOG("\nDEBUG  -->  EGTP : Received DL Message[%d]\n", nMsg+1);
          ODU_PRINT_MSG(recvBuf, 0 ,0);
          egtpHdlRecvData(recvBuf);
       }
@@ -900,11 +901,11 @@ uint8_t egtpDecodeHdr(Buffer *mBuf, EgtpMsg  *egtpMsg)
    /* Extracting version fro 1st byte */
    version = tmpByte[0] >> 5;
    
-   DU_LOG("\nEGTP : Version %d", version);
+   DU_LOG("\nINFO   -->  EGTP : Version %d", version);
  
    /* Decode message type */
    ODU_REM_PRE_MSG((Data*)&(egtpMsg->msgHdr.msgType), mBuf);
-   DU_LOG("\nEGTP : msgType %d", egtpMsg->msgHdr.msgType);
+   DU_LOG("\nINFO   -->  EGTP : msgType %d", egtpMsg->msgHdr.msgType);
 
    /****************************************************************************
     * Message length param is 2 bytes. So decode next 2 bytes from msg hdr and
@@ -913,7 +914,7 @@ uint8_t egtpDecodeHdr(Buffer *mBuf, EgtpMsg  *egtpMsg)
    ODU_REM_PRE_MSG(&tmpByte[1], mBuf);
    ODU_REM_PRE_MSG(&tmpByte[2], mBuf);
    msgLen = (tmpByte[1] << 8) | tmpByte[2];
-   DU_LOG("\nEGTP : msgLen %d", msgLen);
+   DU_LOG("\nINFO   -->  EGTP : msgLen %d", msgLen);
 
 
    /****************************************************************************
@@ -925,7 +926,7 @@ uint8_t egtpDecodeHdr(Buffer *mBuf, EgtpMsg  *egtpMsg)
    ODU_REM_PRE_MSG(&tmpByte[3], mBuf);
    ODU_REM_PRE_MSG(&tmpByte[4], mBuf);
    egtpMsg->msgHdr.teId = (tmpByte[1] << 24) | (tmpByte[2] << 16) | (tmpByte[3] << 8) | tmpByte[4];
-   DU_LOG("\nEGTP : teId %d",egtpMsg->msgHdr.teId);
+   DU_LOG("\nINFO   -->  EGTP : teId %d",egtpMsg->msgHdr.teId);
 
 
    /* If any one of S, E or PN flag is set, set extension present as true. */
@@ -1037,7 +1038,7 @@ uint8_t egtpDecodeHdr(Buffer *mBuf, EgtpMsg  *egtpMsg)
 
    egtpMsg->msg = mBuf;
 
-   DU_LOG("\nEGTP : DL Data Buffer after decoding header ");
+   DU_LOG("\nINFO   -->  EGTP : DL Data Buffer after decoding header ");
    ODU_PRINT_MSG(mBuf, 0, 0);
 
    /* Forward the data to duApp/RLC */
