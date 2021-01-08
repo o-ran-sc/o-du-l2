@@ -85,7 +85,7 @@ uint8_t BuildMib(MIB_t *mib)
    DU_ALLOC(mib->systemFrameNumber.buf, mib->systemFrameNumber.size);
    if(!(mib->systemFrameNumber.buf))
    {
-      DU_LOG("DU APP: MIB msg memory allocation failure");
+      DU_LOG("\nERROR  -->  DU APP: MIB msg memory allocation failure");
       return RFAILED;
    }
 
@@ -103,7 +103,7 @@ uint8_t BuildMib(MIB_t *mib)
    DU_ALLOC(mib->spare.buf, mib->spare.size);
    if(!mib->spare.buf)
    {
-      DU_LOG("DU APP: MIB msg memory allocation failure");
+      DU_LOG("\nERROR  -->  DU APP: MIB msg memory allocation failure");
       return RFAILED;
    }
    *(mib->spare.buf) = SPARE;
@@ -171,7 +171,7 @@ uint8_t BuildMibPdu()
       DU_ALLOC(bcchMsg, sizeof(BCCH_BCH_Message_t));
       if(!bcchMsg)
       {
-	 DU_LOG("\nMemory allocation failure in BuildMibPdu");
+	 DU_LOG("\nERROR  -->  Memory allocation failure in BuildMibPdu");
 	 break;
       }
 
@@ -179,7 +179,7 @@ uint8_t BuildMibPdu()
       DU_ALLOC(bcchMsg->message.choice.mib, sizeof(MIB_t));
       if(!bcchMsg->message.choice.mib)
       {
-	 DU_LOG("\nMemory allocation failure in BuildMibPdu");
+	 DU_LOG("\nERROR  -->  Memory allocation failure in BuildMibPdu");
 	 break;
       }
       BuildMibret = BuildMib(bcchMsg->message.choice.mib);
@@ -195,7 +195,7 @@ uint8_t BuildMibPdu()
       printf("\nencbufSize:%d\n", encBufSize);
       if(encRetVal.encoded	== -1) 
       {   
-	 DU_LOG("\nDU APP: Could not encode BCCH BCH Message Type structure(at %s)\n", 
+	 DU_LOG("\nERROR  -->  DU APP: Could not encode BCCH BCH Message Type structure(at %s)\n", 
 	       encRetVal.failed_type?\
 	       encRetVal.failed_type->name
 	       :"unknown");
@@ -275,7 +275,7 @@ uint8_t BuildMibMsg()
       DU_ALLOC(mibMsg, sizeof(MIB_t));
       if(!mibMsg)
       {
-	 DU_LOG("DU APP: MIB msg memory allocation failure");
+	 DU_LOG("\nERROR  -->  DU APP: MIB msg memory allocation failure");
 	 return RFAILED;
       }
       BuildMibret =  BuildMib(mibMsg);
@@ -291,7 +291,7 @@ uint8_t BuildMibMsg()
       printf("\nencbufSize:%d\n", encBufSize);
       if(encRetVal.encoded	== -1) 
       {   
-	 DU_LOG("\nDU APP: Could not encode MIB structure(at %s)\n", 
+	 DU_LOG("\nERROR  -->  DU APP: Could not encode MIB structure(at %s)\n", 
 	       encRetVal.failed_type?\
 	       encRetVal.failed_type->name
 	       :"unknown");
@@ -339,7 +339,7 @@ uint8_t BuildCellIdentity(CellIdentity_t  *cellIdentity)
    DU_ALLOC(cellIdentity->buf, cellIdentity->size);
    if(!cellIdentity->buf)
    {   
-      DU_LOG("DU APP: CellIdentity memory allocation failure");
+      DU_LOG("\nERROR  -->  DU APP: CellIdentity memory allocation failure");
       return RFAILED;
    }   
    *cellIdentity->buf = duCfgParam.sib1Params.cellIdentity;
@@ -367,7 +367,7 @@ uint8_t BuildRanac(RAN_AreaCode_t **ranAreaCode)
    DU_ALLOC(ranac, sizeof(RAN_AreaCode_t));
    if(!ranac)
    {   
-      DU_LOG("DU APP: RANAC memory allocation failure");
+      DU_LOG("\nERROR  -->  DU APP: RANAC memory allocation failure");
       return RFAILED;
    }   
    *ranac = duCfgParam.sib1Params.ranac;
@@ -397,7 +397,7 @@ uint8_t BuildTac(TrackingAreaCode_t **trackAreaCode)
    DU_ALLOC(tac, sizeof(TrackingAreaCode_t));
    if(!tac)
    {   
-      DU_LOG("DU APP: TAC memory allocation failure");
+      DU_LOG("\nERROR  -->  DU APP: TAC memory allocation failure");
       return RFAILED;
    }   
 
@@ -405,7 +405,7 @@ uint8_t BuildTac(TrackingAreaCode_t **trackAreaCode)
    DU_ALLOC(tac->buf, tac->size);
    if(!tac->buf)
    {   
-      DU_LOG("DU APP: TAC memory allocation failure");
+      DU_LOG("\nERROR  -->  DU APP: TAC memory allocation failure");
       return RFAILED;
    }   
    *(tac->buf) = duCfgParam.sib1Params.tac;
@@ -447,7 +447,7 @@ uint8_t BuildPlmnList(CellAccessRelatedInfo_t *cellAccessInfo)
 	 cellAccessInfo->plmn_IdentityList.list.size);
    if(!cellAccessInfo->plmn_IdentityList.list.array)
    {   
-      DU_LOG("DU APP: BuildPlmnList memory allocation failure");
+      DU_LOG("\nERROR  -->  DU APP: BuildPlmnList memory allocation failure");
       return RFAILED;
    }   
    elementCnt = cellAccessInfo->plmn_IdentityList.list.count; 
@@ -457,7 +457,7 @@ uint8_t BuildPlmnList(CellAccessRelatedInfo_t *cellAccessInfo)
 	    sizeof(PLMN_IdentityInfo_t));
       if(!cellAccessInfo->plmn_IdentityList.list.array[idx])
       {
-	 DU_LOG("DU APP: BuildPlmnList memory allocation failure");
+	 DU_LOG("\nERROR  -->  DU APP: BuildPlmnList memory allocation failure");
 	 return RFAILED;
       }
    }
@@ -473,7 +473,7 @@ uint8_t BuildPlmnList(CellAccessRelatedInfo_t *cellAccessInfo)
    DU_ALLOC(plmnIdInfo->list.array, plmnIdInfo->list.size);
    if(!plmnIdInfo->list.array)
    {
-      DU_LOG("DU APP: BuildPlmnList memory allocation failure");
+      DU_LOG("\nERROR  -->  DU APP: BuildPlmnList memory allocation failure");
       return RFAILED;
    }
 
@@ -483,7 +483,7 @@ uint8_t BuildPlmnList(CellAccessRelatedInfo_t *cellAccessInfo)
 	    sizeof(PLMN_IdentitY_t));
       if(!(plmnIdInfo->list.array[idx1]))
       {
-	 DU_LOG("DU APP: BuildPlmnList memory allocation failure");
+	 DU_LOG("\nERROR  -->  DU APP: BuildPlmnList memory allocation failure");
 	 return RFAILED;
       }
    }
@@ -492,7 +492,7 @@ uint8_t BuildPlmnList(CellAccessRelatedInfo_t *cellAccessInfo)
 	 sizeof(MCC_t));
    if(!plmnIdInfo->list.array[idx1]->mcc)
    {
-      DU_LOG("DU APP: BuildPlmnList memory allocation failure");
+      DU_LOG("\nERROR  -->  DU APP: BuildPlmnList memory allocation failure");
       return RFAILED;
    }
 
@@ -504,7 +504,7 @@ uint8_t BuildPlmnList(CellAccessRelatedInfo_t *cellAccessInfo)
 	 plmnIdInfo->list.array[idx1]->mcc->list.size)
       if(!(plmnIdInfo->list.array[idx1]->mcc->list.array))
       {
-	 DU_LOG("DU APP: BuildPlmnList memory allocation failure");
+	 DU_LOG("\nERROR  -->  DU APP: BuildPlmnList memory allocation failure");
 	 return RFAILED;
       }
    for(idx2=0; idx2<elementCnt; idx2++)
@@ -513,7 +513,7 @@ uint8_t BuildPlmnList(CellAccessRelatedInfo_t *cellAccessInfo)
 	    sizeof(MCC_MNC_Digit_t));
       if(!plmnIdInfo->list.array[idx1]->mcc->list.array[idx2])
       {
-	 DU_LOG("DU APP: BuildPlmnList memory allocation failure");
+	 DU_LOG("\nERROR  -->  DU APP: BuildPlmnList memory allocation failure");
 	 return RFAILED;
       }
       *(plmnIdInfo->list.array[idx1]->mcc->list.array[idx2])=\
@@ -527,7 +527,7 @@ uint8_t BuildPlmnList(CellAccessRelatedInfo_t *cellAccessInfo)
    plmnIdInfo->list.array[idx1]->mnc.list.size);
    if(!plmnIdInfo->list.array[idx1]->mnc.list.array)
    {
-      DU_LOG("DU APP: BuildPlmnList memory allocation failure");
+      DU_LOG("\nERROR  -->  DU APP: BuildPlmnList memory allocation failure");
       return RFAILED;
    }
    for(idx2=0; idx2<elementCnt; idx2++)
@@ -536,7 +536,7 @@ uint8_t BuildPlmnList(CellAccessRelatedInfo_t *cellAccessInfo)
 	    sizeof(MCC_MNC_Digit_t));
       if(!plmnIdInfo->list.array[idx1]->mnc.list.array[idx2])
       {
-	 DU_LOG("DU APP: BuildPlmnList memory allocation failure");
+	 DU_LOG("\nERROR  -->  DU APP: BuildPlmnList memory allocation failure");
 	 return RFAILED;
       }
       *(plmnIdInfo->list.array[idx1]->mnc.list.array[idx2])=\
@@ -601,7 +601,7 @@ uint8_t BuildSibMapInfoList(SIB_Mapping_t *sibMapInfo)
    DU_ALLOC(sibMapInfo->list.array, sibMapInfo->list.size);
    if(!sibMapInfo->list.array)
    {
-      DU_LOG("DU APP: BuildSibMapInfoList memory allocation failure");
+      DU_LOG("\nERROR  -->  DU APP: BuildSibMapInfoList memory allocation failure");
       return RFAILED;
    }
 
@@ -611,7 +611,7 @@ uint8_t BuildSibMapInfoList(SIB_Mapping_t *sibMapInfo)
       DU_ALLOC(sibMapInfo->list.array[itr], sizeof(SIB_TypeInfo_t));
       if(!sibMapInfo->list.array[itr])
       {
-	 DU_LOG("DU APP: BuildSibMapInfoList memory allocation failure");
+	 DU_LOG("\nERROR  -->  DU APP: BuildSibMapInfoList memory allocation failure");
 	 return RFAILED;
       }
    }
@@ -622,7 +622,7 @@ uint8_t BuildSibMapInfoList(SIB_Mapping_t *sibMapInfo)
    DU_ALLOC(sibTypeInfo->valueTag, sizeof(long));
    if(!sibTypeInfo->valueTag)
    {
-      DU_LOG("DU APP: BuildSibMapInfoList memory allocation failure");
+      DU_LOG("\nERROR  -->  DU APP: BuildSibMapInfoList memory allocation failure");
       return RFAILED;
    }
 
@@ -658,7 +658,7 @@ uint8_t BuildSiSchedInfoList(struct SI_SchedulingInfo__schedulingInfoList *si_Sc
    DU_ALLOC(si_SchedulingInfoList->list.array, si_SchedulingInfoList->list.size);
    if(!si_SchedulingInfoList->list.array)
    {
-      DU_LOG("DU APP: BuildSiSchedInfoList memory allocation failure");
+      DU_LOG("\nERROR  -->  DU APP: BuildSiSchedInfoList memory allocation failure");
       return RFAILED;
    }
 
@@ -668,7 +668,7 @@ uint8_t BuildSiSchedInfoList(struct SI_SchedulingInfo__schedulingInfoList *si_Sc
       DU_ALLOC(si_SchedulingInfoList->list.array[itr], sizeof(struct SchedulingInfo));
       if(!si_SchedulingInfoList->list.array[itr])
       {
-	 DU_LOG("DU APP: BuildSiSchedInfoList memory allocation failure");
+	 DU_LOG("\nERROR  -->  DU APP: BuildSiSchedInfoList memory allocation failure");
 	 return RFAILED;
       }
    }
@@ -717,7 +717,7 @@ uint8_t BuildScsSpecificCarrierListDl( struct FrequencyInfoDL_SIB__scs_SpecificC
    DU_ALLOC(scsCarrierList->list.array, scsCarrierList->list.size);
    if(!scsCarrierList->list.array)
    {
-      DU_LOG("\nDU APP : SCS Specific Carrier list memory allocation failed"); 
+      DU_LOG("\nERROR  -->  DU APP : SCS Specific Carrier list memory allocation failed"); 
       return RFAILED;
    }
 
@@ -726,7 +726,7 @@ uint8_t BuildScsSpecificCarrierListDl( struct FrequencyInfoDL_SIB__scs_SpecificC
       DU_ALLOC(scsCarrierList->list.array[idx], sizeof(SCS_SpecificCarrier_t));
       if(!scsCarrierList->list.array[idx])
       {
-	 DU_LOG("\nDU APP : SCS Specific Carrier list memory allocation failed");
+	 DU_LOG("\nERROR  -->  DU APP : SCS Specific Carrier list memory allocation failed");
 	 return RFAILED;
       }
    }
@@ -766,7 +766,7 @@ uint8_t BuildCommonSerachSpaceList( struct PDCCH_ConfigCommon__commonSearchSpace
    DU_ALLOC(searchSpclist->list.array, searchSpclist->list.size)
    if(!searchSpclist->list.array)
    {
-      DU_LOG("\nDU APP : Common search space list memory alloc failed");
+      DU_LOG("\nERROR  -->  DU APP : Common search space list memory alloc failed");
       return RFAILED;
    }
 
@@ -775,7 +775,7 @@ uint8_t BuildCommonSerachSpaceList( struct PDCCH_ConfigCommon__commonSearchSpace
       DU_ALLOC(searchSpclist->list.array[idx], sizeof(SearchSpace_t));
       if(!searchSpclist->list.array[idx])
       {
-	 DU_LOG("\nDU APP : Common search space list memory alloc failed");
+	 DU_LOG("\nERROR  -->  DU APP : Common search space list memory alloc failed");
 	 return RFAILED;
       }
    }
@@ -790,7 +790,7 @@ uint8_t BuildCommonSerachSpaceList( struct PDCCH_ConfigCommon__commonSearchSpace
    DU_ALLOC(searchSpace->controlResourceSetId, sizeof(ControlResourceSetId_t));
    if(!searchSpace->controlResourceSetId)
    {
-      DU_LOG("\nDU APP : Common search space list memory alloc failed");
+      DU_LOG("\nERROR  -->  DU APP : Common search space list memory alloc failed");
       return RFAILED;
    }
    *searchSpace->controlResourceSetId = duPdcchCfg.ctrlRsrcSetId;
@@ -800,7 +800,7 @@ uint8_t BuildCommonSerachSpaceList( struct PDCCH_ConfigCommon__commonSearchSpace
    sizeof(struct SearchSpace__monitoringSlotPeriodicityAndOffset));
    if(!searchSpace->monitoringSlotPeriodicityAndOffset)
    {
-      DU_LOG("\nDU APP : Common search space list memory alloc failed");
+      DU_LOG("\nERROR  -->  DU APP : Common search space list memory alloc failed");
       return RFAILED;
    }
    searchSpace->monitoringSlotPeriodicityAndOffset->present = \
@@ -884,7 +884,7 @@ uint8_t BuildCommonSerachSpaceList( struct PDCCH_ConfigCommon__commonSearchSpace
       }
       default:
       {
-	 DU_LOG("\nDU APP : Invalid value:Montoring slot periodicity and offset");
+	 DU_LOG("\nERROR  -->  DU APP : Invalid value:Montoring slot periodicity and offset");
 	 return RFAILED;
       }
    }
@@ -894,7 +894,7 @@ uint8_t BuildCommonSerachSpaceList( struct PDCCH_ConfigCommon__commonSearchSpace
    sizeof(BIT_STRING_t));
    if(!searchSpace->monitoringSymbolsWithinSlot)
    {
-      DU_LOG("\nDU APP : Common search space list memory alloc failed");
+      DU_LOG("\nERROR  -->  DU APP : Common search space list memory alloc failed");
       return RFAILED;
    }
    searchSpace->monitoringSymbolsWithinSlot->size = 2*sizeof(uint8_t);
@@ -902,7 +902,7 @@ uint8_t BuildCommonSerachSpaceList( struct PDCCH_ConfigCommon__commonSearchSpace
    searchSpace->monitoringSymbolsWithinSlot->size );
    if(!searchSpace->monitoringSymbolsWithinSlot->buf)
    {  
-      DU_LOG("\nDU APP : Common search space list memory alloc failed");
+      DU_LOG("\nERROR  -->  DU APP : Common search space list memory alloc failed");
       return RFAILED;
    }
    searchSpace->monitoringSymbolsWithinSlot->buf[0] = duPdcchCfg.monitorSymbolsInSlot[0];
@@ -914,7 +914,7 @@ uint8_t BuildCommonSerachSpaceList( struct PDCCH_ConfigCommon__commonSearchSpace
 	 sizeof(struct SearchSpace__nrofCandidates));
    if(!searchSpace->nrofCandidates)
    {
-      DU_LOG("\nDU APP : Common search space list memory alloc failed");
+      DU_LOG("\nERROR  -->  DU APP : Common search space list memory alloc failed");
       return RFAILED;
    }
    searchSpace->nrofCandidates->aggregationLevel1 = duPdcchCfg.numCandAggLvl1;
@@ -928,7 +928,7 @@ uint8_t BuildCommonSerachSpaceList( struct PDCCH_ConfigCommon__commonSearchSpace
    sizeof( struct SearchSpace__searchSpaceType));
    if(!searchSpace->searchSpaceType)
    {
-      DU_LOG("\nDU APP : Common search space list memory alloc failed");
+      DU_LOG("\nERROR  -->  DU APP : Common search space list memory alloc failed");
       return RFAILED;
    }
 
@@ -945,7 +945,7 @@ uint8_t BuildCommonSerachSpaceList( struct PDCCH_ConfigCommon__commonSearchSpace
          DU_ALLOC(searchSpace->searchSpaceType->choice.common, sizeof(struct SearchSpace__searchSpaceType__common));
 	 if(!searchSpace->searchSpaceType->choice.common)
 	 {
-	    DU_LOG("\nDU APP : Common search space list memory alloc failed");
+	    DU_LOG("\nERROR  -->  DU APP : Common search space list memory alloc failed");
 	    return RFAILED;
 	 }
 
@@ -954,7 +954,7 @@ uint8_t BuildCommonSerachSpaceList( struct PDCCH_ConfigCommon__commonSearchSpace
 	 SearchSpace__searchSpaceType__common__dci_Format0_0_AndFormat1_0));
 	 if(!searchSpace->searchSpaceType->choice.common->dci_Format0_0_AndFormat1_0)
 	 {
-	    DU_LOG("\nDU APP : Common search space list memory alloc failed");
+	    DU_LOG("\nERROR  -->  DU APP : Common search space list memory alloc failed");
 	    return RFAILED;
 	 }
 	 break;
@@ -965,7 +965,7 @@ uint8_t BuildCommonSerachSpaceList( struct PDCCH_ConfigCommon__commonSearchSpace
       }
       default:
       {
-	 DU_LOG("\nDU_APP: Invalid Search Space type");
+	 DU_LOG("\nERROR  -->  DU_APP: Invalid Search Space type");
 	 return RFAILED;
       }
    }
@@ -1017,7 +1017,7 @@ uint8_t BuildPdcchCfgCommon(struct BWP_DownlinkCommon__pdcch_ConfigCommon *pdcch
 	 DU_ALLOC(pdcchCfg->choice.setup, sizeof(PDCCH_ConfigCommon_t));
 	 if(!pdcchCfg->choice.setup)
 	 {
-	    DU_LOG("\nDU APP : PDCCH Config memory alloc failed");
+	    DU_LOG("\nERROR  -->  DU APP : PDCCH Config memory alloc failed");
 	    return RFAILED;
 	 }
 	 pdcchSetup = pdcchCfg->choice.setup;
@@ -1026,7 +1026,7 @@ uint8_t BuildPdcchCfgCommon(struct BWP_DownlinkCommon__pdcch_ConfigCommon *pdcch
 	 DU_ALLOC(pdcchSetup->controlResourceSetZero, sizeof(ControlResourceSetZero_t)); 
 	 if(!pdcchSetup->controlResourceSetZero)
 	 {
-	    DU_LOG("\nDU APP : PDCCH Config memory alloc failed");
+	    DU_LOG("\nERROR  -->  DU APP : PDCCH Config memory alloc failed");
 	    return RFAILED;
 	 }
 	 *pdcchSetup->controlResourceSetZero = duPdcchCfg.ctrlRsrcSetZero;
@@ -1035,7 +1035,7 @@ uint8_t BuildPdcchCfgCommon(struct BWP_DownlinkCommon__pdcch_ConfigCommon *pdcch
 	 DU_ALLOC(pdcchSetup->searchSpaceZero, sizeof(SearchSpaceZero_t));
 	 if(!pdcchSetup->searchSpaceZero)
 	 {
-	    DU_LOG("\nDU APP : PDCCH Config memory alloc failed");
+	    DU_LOG("\nERROR  -->  DU APP : PDCCH Config memory alloc failed");
 	    return RFAILED;
 	 }
 	 *pdcchSetup->searchSpaceZero = duPdcchCfg.searchSpcZero;
@@ -1045,7 +1045,7 @@ uint8_t BuildPdcchCfgCommon(struct BWP_DownlinkCommon__pdcch_ConfigCommon *pdcch
 		  sizeof(struct PDCCH_ConfigCommon__commonSearchSpaceList));
 	 if(!pdcchSetup->commonSearchSpaceList)
 	 {
-	    DU_LOG("\nDU APP : PDCCH Config memory alloc failed");
+	    DU_LOG("\nERROR  -->  DU APP : PDCCH Config memory alloc failed");
 	    return RFAILED;
 	 }
 	 elementCnt = ODU_VALUE_ONE;
@@ -1062,7 +1062,7 @@ uint8_t BuildPdcchCfgCommon(struct BWP_DownlinkCommon__pdcch_ConfigCommon *pdcch
 	 DU_ALLOC(pdcchSetup->searchSpaceSIB1, sizeof(SearchSpaceId_t));
 	 if(!pdcchSetup->searchSpaceSIB1)
 	 {
-	    DU_LOG("\nDU APP : PDCCH Config memory alloc failed");
+	    DU_LOG("\nERROR  -->  DU APP : PDCCH Config memory alloc failed");
 	    return RFAILED;
 	 }
 	 *pdcchSetup->searchSpaceSIB1 = duPdcchCfg.searchSpcSib1;
@@ -1071,7 +1071,7 @@ uint8_t BuildPdcchCfgCommon(struct BWP_DownlinkCommon__pdcch_ConfigCommon *pdcch
 	 DU_ALLOC(pdcchSetup->pagingSearchSpace, sizeof(SearchSpaceId_t));
 	 if(!pdcchSetup->pagingSearchSpace)
 	 {
-	    DU_LOG("\nDU APP : PDCCH Config memory alloc failed");
+	    DU_LOG("\nERROR  -->  DU APP : PDCCH Config memory alloc failed");
 	    return RFAILED;
 	 }  
 	 *pdcchSetup->pagingSearchSpace = duPdcchCfg.pagingSearchSpc;
@@ -1080,7 +1080,7 @@ uint8_t BuildPdcchCfgCommon(struct BWP_DownlinkCommon__pdcch_ConfigCommon *pdcch
 	 DU_ALLOC(pdcchSetup->ra_SearchSpace, sizeof(SearchSpaceId_t));
 	 if(!pdcchSetup->ra_SearchSpace)
 	 {
-	    DU_LOG("\nDU APP : PDCCH Config memory alloc failed");
+	    DU_LOG("\nERROR  -->  DU APP : PDCCH Config memory alloc failed");
 	    return RFAILED;
 	 }             
 	 *pdcchSetup->ra_SearchSpace = duPdcchCfg.raSearchSpc;
@@ -1089,7 +1089,7 @@ uint8_t BuildPdcchCfgCommon(struct BWP_DownlinkCommon__pdcch_ConfigCommon *pdcch
       }
       default :
       {
-	 DU_LOG("\nDU APP : Invalid PDCCH Config type");
+	 DU_LOG("\nERROR  -->  DU APP : Invalid PDCCH Config type");
 	 return RFAILED; 
       }
    }
@@ -1142,7 +1142,7 @@ uint8_t BuildPdschCfgCommon(struct BWP_DownlinkCommon__pdsch_ConfigCommon *pdsch
 	 DU_ALLOC(pdschCfg->choice.setup, sizeof(PDSCH_ConfigCommon_t));
 	 if(!pdschCfg->choice.setup)
 	 {
-	    DU_LOG("\nDU APP : PDCCH Config memory alloc failed");
+	    DU_LOG("\nERROR  -->  DU APP : PDCCH Config memory alloc failed");
 	    return RFAILED;
 	 }
 	 pdschSetup = pdschCfg->choice.setup; 
@@ -1152,7 +1152,7 @@ uint8_t BuildPdschCfgCommon(struct BWP_DownlinkCommon__pdsch_ConfigCommon *pdsch
 		  sizeof(PDSCH_TimeDomainResourceAllocationList_t));
 	 if(!pdschSetup->pdsch_TimeDomainAllocationList)
 	 {
-	    DU_LOG("\nDU APP : PDCCH Config memory alloc failed");
+	    DU_LOG("\nERROR  -->  DU APP : PDCCH Config memory alloc failed");
 	    return RFAILED;
 	 }
 	 elementCnt = ODU_VALUE_ONE;
@@ -1163,7 +1163,7 @@ uint8_t BuildPdschCfgCommon(struct BWP_DownlinkCommon__pdsch_ConfigCommon *pdsch
 	 pdschSetup->pdsch_TimeDomainAllocationList->list.size);
 	 if(!pdschSetup->pdsch_TimeDomainAllocationList->list.array)
 	 {
-	    DU_LOG("\nDU APP : PDCCH Config memory alloc failed");
+	    DU_LOG("\nERROR  -->  DU APP : PDCCH Config memory alloc failed");
 	    return RFAILED;
 	 }
 
@@ -1173,7 +1173,7 @@ uint8_t BuildPdschCfgCommon(struct BWP_DownlinkCommon__pdsch_ConfigCommon *pdsch
 	    sizeof(PDSCH_TimeDomainResourceAllocation_t));
 	    if(!pdschSetup->pdsch_TimeDomainAllocationList->list.array[idx])
 	    {
-	       DU_LOG("\nDU APP : PDCCH Config memory alloc failed");
+	       DU_LOG("\nERROR  -->  DU APP : PDCCH Config memory alloc failed");
 	       return RFAILED;
 	    }
 	 }
@@ -1185,7 +1185,7 @@ uint8_t BuildPdschCfgCommon(struct BWP_DownlinkCommon__pdsch_ConfigCommon *pdsch
 	 DU_ALLOC(timeDomRsrcAllocInfo->k0, sizeof(long));
 	 if(!timeDomRsrcAllocInfo->k0)
 	 {
-	    DU_LOG("\nDU APP : PDCCH Config memory alloc failed");
+	    DU_LOG("\nERROR  -->  DU APP : PDCCH Config memory alloc failed");
 	    return RFAILED;
 	 }
 	 *timeDomRsrcAllocInfo->k0 = duPdschCfg.k0;
@@ -1197,7 +1197,7 @@ uint8_t BuildPdschCfgCommon(struct BWP_DownlinkCommon__pdsch_ConfigCommon *pdsch
       }
       default:
       {
-         DU_LOG("\nDU APP: Invalid PDSCH Configuration type");
+         DU_LOG("\nERROR  -->  DU APP: Invalid PDSCH Configuration type");
 	 return RFAILED;
       }
    }
@@ -1236,7 +1236,7 @@ uint8_t BuildBwpDlCommon(BWP_DownlinkCommon_t *bwp)
 	 sizeof(struct BWP_DownlinkCommon__pdcch_ConfigCommon));
    if(!bwp->pdcch_ConfigCommon)
    {
-      DU_LOG("\nDU APP : DL BWP memory allocation failed");
+      DU_LOG("\nERROR  -->  DU APP : DL BWP memory allocation failed");
       return RFAILED;
    }
    ret=BuildPdcchCfgCommon(bwp->pdcch_ConfigCommon);
@@ -1249,7 +1249,7 @@ uint8_t BuildBwpDlCommon(BWP_DownlinkCommon_t *bwp)
 	 sizeof(struct BWP_DownlinkCommon__pdsch_ConfigCommon));
    if(!bwp->pdsch_ConfigCommon)
    {
-      DU_LOG("\nDU APP : DL BWP memory allocation failed");
+      DU_LOG("\nERROR  -->  DU APP : DL BWP memory allocation failed");
       return RFAILED;
    }
    ret=BuildPdschCfgCommon(bwp->pdsch_ConfigCommon);
@@ -1346,7 +1346,7 @@ uint8_t BuildPcchConfig(PCCH_Config_t *pcchCfg)
       }
       default:
       {
-	 DU_LOG("\nDU APP : Invalid nAndPagingFrameOffset configuration");
+	 DU_LOG("\nERROR  -->  DU APP : Invalid nAndPagingFrameOffset configuration");
 	 return RFAILED;
       }
    }
@@ -1392,7 +1392,7 @@ uint8_t BuildFreqInfoDl(FrequencyInfoDL_SIB_t *frequencyInfoDL)
    frequencyInfoDL->frequencyBandList.list.size);
    if(!frequencyInfoDL->frequencyBandList.list.array)
    {
-      DU_LOG("\nDU APP : SIB1 DL Configuration memory allocation failed");
+      DU_LOG("\nERROR  -->  DU APP : SIB1 DL Configuration memory allocation failed");
       return RFAILED;
    }
 
@@ -1402,7 +1402,7 @@ uint8_t BuildFreqInfoDl(FrequencyInfoDL_SIB_t *frequencyInfoDL)
       sizeof(NR_MultiBandInfo_t));
       if(!frequencyInfoDL->frequencyBandList.list.array[idx])
       {
-	 DU_LOG("\nDU APP : SIB1 DL Configuration memory allocation failed");
+	 DU_LOG("\nERROR  -->  DU APP : SIB1 DL Configuration memory allocation failed");
 	 return RFAILED;
       }
    }
@@ -1414,7 +1414,7 @@ uint8_t BuildFreqInfoDl(FrequencyInfoDL_SIB_t *frequencyInfoDL)
    DU_ALLOC(multiBandInfo->freqBandIndicatorNR, sizeof(FreqBandIndicatorNR_t));
    if(!multiBandInfo->freqBandIndicatorNR)
    {
-      DU_LOG("\nDU APP : SIB1 DL Configuration memory allocation failed");
+      DU_LOG("\nERROR  -->  DU APP : SIB1 DL Configuration memory allocation failed");
       return RFAILED;
    }
    *multiBandInfo->freqBandIndicatorNR = dlCfg.freqBandInd;
@@ -1514,7 +1514,7 @@ struct FrequencyInfoUL_SIB__scs_SpecificCarrierList *scsCarrierList
    DU_ALLOC(scsCarrierList->list.array, scsCarrierList->list.size);
    if(!scsCarrierList->list.array)
    {
-      DU_LOG("\nDU APP : SCS Specific Carrier list memory allocation failed");
+      DU_LOG("\nERROR  -->  DU APP : SCS Specific Carrier list memory allocation failed");
       return RFAILED;
    }
 
@@ -1523,7 +1523,7 @@ struct FrequencyInfoUL_SIB__scs_SpecificCarrierList *scsCarrierList
       DU_ALLOC(scsCarrierList->list.array[idx], sizeof(SCS_SpecificCarrier_t));
       if(!scsCarrierList->list.array[idx])
       {
-	 DU_LOG("\nDU APP : SCS Specific Carrier list memory allocation failed");
+	 DU_LOG("\nERROR  -->  DU APP : SCS Specific Carrier list memory allocation failed");
 	 return RFAILED;
       }
    }
@@ -1573,7 +1573,7 @@ uint8_t BuildFreqInfoUl(FrequencyInfoUL_SIB_t *frequencyInfoUL)
    DU_ALLOC(frequencyInfoUL->p_Max, sizeof(P_Max_t));
    if(!frequencyInfoUL->p_Max)
    {
-      DU_LOG("\nDU APP : UL Frequency Infoo  memory allocation failure");
+      DU_LOG("\nERROR  -->  DU APP : UL Frequency Infoo  memory allocation failure");
       return RFAILED;
    }
    *frequencyInfoUL->p_Max = ulCfg.pMax;
@@ -1623,7 +1623,7 @@ uint8_t  BuildRachCfgCommon(struct BWP_UplinkCommon__rach_ConfigCommon *rachCfg)
 	 DU_ALLOC(rachCfg->choice.setup, sizeof(RACH_ConfigCommon_t)); 
 	 if(!rachCfg->choice.setup)
 	 {
-	    DU_LOG("\nDU APP : Rach Config memory alloc failed");
+	    DU_LOG("\nERROR  -->  DU APP : Rach Config memory alloc failed");
 	    return RFAILED;
 	 }
 	 setup = rachCfg->choice.setup;
@@ -1642,7 +1642,7 @@ uint8_t  BuildRachCfgCommon(struct BWP_UplinkCommon__rach_ConfigCommon *rachCfg)
 	 DU_ALLOC(setup->totalNumberOfRA_Preambles, sizeof(long));
 	 if(!setup->totalNumberOfRA_Preambles)
 	 {
-	    DU_LOG("\nDU APP : Rach Config memory alloc failed");
+	    DU_LOG("\nERROR  -->  DU APP : Rach Config memory alloc failed");
 	    return RFAILED;
 	 }
 	 *setup->totalNumberOfRA_Preambles = duRachCfg.numRaPreamble;
@@ -1652,7 +1652,7 @@ uint8_t  BuildRachCfgCommon(struct BWP_UplinkCommon__rach_ConfigCommon *rachCfg)
 	 sizeof(struct RACH_ConfigCommon__ssb_perRACH_OccasionAndCB_PreamblesPerSSB));
 	 if(!setup->ssb_perRACH_OccasionAndCB_PreamblesPerSSB)
 	 {
-	    DU_LOG("\nDU APP : Rach Config memory alloc failed");
+	    DU_LOG("\nERROR  -->  DU APP : Rach Config memory alloc failed");
 	    return RFAILED;
 	 }
 	 setup->ssb_perRACH_OccasionAndCB_PreamblesPerSSB->present = \
@@ -1706,7 +1706,7 @@ uint8_t  BuildRachCfgCommon(struct BWP_UplinkCommon__rach_ConfigCommon *rachCfg)
 	    }
 	    default:
 	    {
-	       DU_LOG("\nDU APP: Invalid value for \
+	       DU_LOG("\nERROR  -->  DU APP: Invalid value for \
 	       ssb_PerRach_OccassionAndCB_PreamblesPerSSB");
 	       return RFAILED;
 	    }
@@ -1719,7 +1719,7 @@ uint8_t  BuildRachCfgCommon(struct BWP_UplinkCommon__rach_ConfigCommon *rachCfg)
 	 DU_ALLOC(setup->rsrp_ThresholdSSB, sizeof(RSRP_Range_t));
 	 if(!setup->rsrp_ThresholdSSB)
 	 {
-	    DU_LOG("\nDU APP : Rach Config memory alloc failed");
+	    DU_LOG("\nERROR  -->  DU APP : Rach Config memory alloc failed");
 	    return RFAILED;
 	 }
 	 *setup->rsrp_ThresholdSSB = duRachCfg.rsrpThreshSsb;
@@ -1745,7 +1745,7 @@ uint8_t  BuildRachCfgCommon(struct BWP_UplinkCommon__rach_ConfigCommon *rachCfg)
 	    }
 	    default:
 	    {
-	       DU_LOG("\nDU APP: Inavlid PRACH root sequence index type");
+	       DU_LOG("\nERROR  -->  DU APP: Inavlid PRACH root sequence index type");
 	       return RFAILED;
 	    }
 	 }
@@ -1754,7 +1754,7 @@ uint8_t  BuildRachCfgCommon(struct BWP_UplinkCommon__rach_ConfigCommon *rachCfg)
 	 DU_ALLOC(setup->msg1_SubcarrierSpacing, sizeof(SubcarrierSpacing_t));
 	 if(!setup->msg1_SubcarrierSpacing)
 	 {
-	    DU_LOG("\nDU APP : Rach Config memory alloc failed");
+	    DU_LOG("\nERROR  -->  DU APP : Rach Config memory alloc failed");
 	    return RFAILED;
 	 }
 	 *setup->msg1_SubcarrierSpacing = duRachCfg.msg1Scs;
@@ -1766,7 +1766,7 @@ uint8_t  BuildRachCfgCommon(struct BWP_UplinkCommon__rach_ConfigCommon *rachCfg)
       }
       default:
       {
-	 DU_LOG("\nDU APP : Invalid RACH Config type ");
+	 DU_LOG("\nERROR  -->  DU APP : Invalid RACH Config type ");
 	 return RFAILED;
       }
    }
@@ -1818,7 +1818,7 @@ uint8_t BuildPuschCfgCommon(struct BWP_UplinkCommon__pusch_ConfigCommon *puschCf
 	 DU_ALLOC(puschCfg->choice.setup, sizeof(PUSCH_ConfigCommon_t));
 	 if(!puschCfg->choice.setup)
 	 {
-	    DU_LOG("\nDU APP : PUSCH Config memory alloc failed");
+	    DU_LOG("\nERROR  -->  DU APP : PUSCH Config memory alloc failed");
 	    return RFAILED;
 	 }
 	 setup = puschCfg->choice.setup;
@@ -1828,7 +1828,7 @@ uint8_t BuildPuschCfgCommon(struct BWP_UplinkCommon__pusch_ConfigCommon *puschCf
 	 sizeof(PUSCH_TimeDomainResourceAllocationList_t)); 
 	 if(!setup->pusch_TimeDomainAllocationList)
 	 {
-	    DU_LOG("\nDU APP : PUSCH Config memory alloc failed");
+	    DU_LOG("\nERROR  -->  DU APP : PUSCH Config memory alloc failed");
 	    return RFAILED;
 	 }
 	 elementCnt = ODU_VALUE_ONE;
@@ -1840,7 +1840,7 @@ uint8_t BuildPuschCfgCommon(struct BWP_UplinkCommon__pusch_ConfigCommon *puschCf
 	 setup->pusch_TimeDomainAllocationList->list.size);
 	 if(!setup->pusch_TimeDomainAllocationList->list.array)
 	 {
-	    DU_LOG("\nDU APP : PUSCH Config memory alloc failed");
+	    DU_LOG("\nERROR  -->  DU APP : PUSCH Config memory alloc failed");
 	    return RFAILED;
 	 }
 
@@ -1850,7 +1850,7 @@ uint8_t BuildPuschCfgCommon(struct BWP_UplinkCommon__pusch_ConfigCommon *puschCf
 	    sizeof(PUSCH_TimeDomainResourceAllocation_t));
 	    if(!setup->pusch_TimeDomainAllocationList->list.array[idx])
 	    {
-	       DU_LOG("\nDU APP : PUSCH Config memory alloc failed");
+	       DU_LOG("\nERROR  -->  DU APP : PUSCH Config memory alloc failed");
 	       return RFAILED;
 	    }
 	 }
@@ -1862,7 +1862,7 @@ uint8_t BuildPuschCfgCommon(struct BWP_UplinkCommon__pusch_ConfigCommon *puschCf
 	 DU_ALLOC(timeDomRsrcAllocInfo->k2, sizeof(long));
 	 if(!timeDomRsrcAllocInfo->k2)
 	 {
-	    DU_LOG("\nDU APP : PUSCH Config memory alloc failed");
+	    DU_LOG("\nERROR  -->  DU APP : PUSCH Config memory alloc failed");
 	    return RFAILED;
 	 }
 	 *timeDomRsrcAllocInfo->k2 = duPuschCfg.k2;
@@ -1874,7 +1874,7 @@ uint8_t BuildPuschCfgCommon(struct BWP_UplinkCommon__pusch_ConfigCommon *puschCf
 	 DU_ALLOC(setup->msg3_DeltaPreamble, sizeof(long));
 	 if(!setup->msg3_DeltaPreamble)
 	 {
-	    DU_LOG("\nDU APP : PUSCH Config memory alloc failed");
+	    DU_LOG("\nERROR  -->  DU APP : PUSCH Config memory alloc failed");
 	    return RFAILED;
 	 }
 	 *setup->msg3_DeltaPreamble = duPuschCfg.msg3DeltaPreamble;
@@ -1883,7 +1883,7 @@ uint8_t BuildPuschCfgCommon(struct BWP_UplinkCommon__pusch_ConfigCommon *puschCf
 	 DU_ALLOC(setup->p0_NominalWithGrant, sizeof(long));
 	 if(!setup->p0_NominalWithGrant)
 	 {
-	    DU_LOG("\nDU APP : PUSCH Config memory alloc failed");
+	    DU_LOG("\nERROR  -->  DU APP : PUSCH Config memory alloc failed");
 	    return RFAILED;
 	 }
 	 *setup->p0_NominalWithGrant = duPuschCfg.p0NominalWithGrant;
@@ -1892,7 +1892,7 @@ uint8_t BuildPuschCfgCommon(struct BWP_UplinkCommon__pusch_ConfigCommon *puschCf
       }
       default:
       {
-         DU_LOG("\nDU APP : Invalid PUSCH configuration type ");
+         DU_LOG("\nERROR  -->  DU APP : Invalid PUSCH configuration type ");
          return RFAILED;
       }
    }
@@ -1942,7 +1942,7 @@ uint8_t BuildPucchCfgCommon( struct BWP_UplinkCommon__pucch_ConfigCommon *pucchC
 	 DU_ALLOC(pucchCfg->choice.setup, sizeof(PUCCH_ConfigCommon_t));
 	 if(!pucchCfg->choice.setup)
 	 {
-	    DU_LOG("\nDU APP : PUCCH Config memory alloc failed");
+	    DU_LOG("\nERROR  -->  DU APP : PUCCH Config memory alloc failed");
 	    return RFAILED;
 	 }
 	 setup = pucchCfg->choice.setup;
@@ -1951,7 +1951,7 @@ uint8_t BuildPucchCfgCommon( struct BWP_UplinkCommon__pucch_ConfigCommon *pucchC
 	 DU_ALLOC(setup->pucch_ResourceCommon, sizeof(long));
 	 if(!setup->pucch_ResourceCommon)
 	 {
-	    DU_LOG("\nDU APP : PUCCH Config memory alloc failed");
+	    DU_LOG("\nERROR  -->  DU APP : PUCCH Config memory alloc failed");
 	    return RFAILED;
 	 }
 	 *setup->pucch_ResourceCommon = duPucchCfg.rsrcComm;
@@ -1963,7 +1963,7 @@ uint8_t BuildPucchCfgCommon( struct BWP_UplinkCommon__pucch_ConfigCommon *pucchC
 	 DU_ALLOC(setup->p0_nominal, sizeof(long));
 	 if(!setup->p0_nominal)
 	 {
-	    DU_LOG("\nDU APP : PUCCH Config memory alloc failed");
+	    DU_LOG("\nERROR  -->  DU APP : PUCCH Config memory alloc failed");
 	    return RFAILED;
 	 }
 	 *setup->p0_nominal = duPucchCfg.p0Nominal;
@@ -1972,7 +1972,7 @@ uint8_t BuildPucchCfgCommon( struct BWP_UplinkCommon__pucch_ConfigCommon *pucchC
       }
       default:
       {
-         DU_LOG("\nDU APP : Invalid PUCCH Config type");
+         DU_LOG("\nERROR  -->  DU APP : Invalid PUCCH Config type");
 	 return RFAILED;
       }
    }
@@ -2011,7 +2011,7 @@ uint8_t BuildBwpUlCommon(BWP_UplinkCommon_t *bwp)
    sizeof(struct BWP_UplinkCommon__rach_ConfigCommon));
    if(!bwp->rach_ConfigCommon)
    {
-      DU_LOG("\nDU APP : UL BWP memory allocation failed");
+      DU_LOG("\nERROR  -->  DU APP : UL BWP memory allocation failed");
       return RFAILED;
    }
    ret = BuildRachCfgCommon(bwp->rach_ConfigCommon);
@@ -2026,7 +2026,7 @@ uint8_t BuildBwpUlCommon(BWP_UplinkCommon_t *bwp)
    sizeof(struct BWP_UplinkCommon__pusch_ConfigCommon));
    if(!bwp->pusch_ConfigCommon)
    {
-      DU_LOG("\nDU APP : UL BWP memory allocation failed");
+      DU_LOG("\nERROR  -->  DU APP : UL BWP memory allocation failed");
       return RFAILED;
    } 
    ret = BuildPuschCfgCommon(bwp->pusch_ConfigCommon);
@@ -2041,7 +2041,7 @@ uint8_t BuildBwpUlCommon(BWP_UplinkCommon_t *bwp)
    sizeof(struct BWP_UplinkCommon__pucch_ConfigCommon));
    if(!bwp->pucch_ConfigCommon)
    {
-      DU_LOG("\nDU APP : UL BWP memory allocation failed");
+      DU_LOG("\nERROR  -->  DU APP : UL BWP memory allocation failed");
       return RFAILED;
    } 
    ret = BuildPucchCfgCommon(bwp->pucch_ConfigCommon);
@@ -2157,7 +2157,7 @@ uint8_t BuildServCellCfgCommonSib(ServingCellConfigCommonSIB_t *srvCellCfg)
    DU_ALLOC(ssbPosInBurst->buf, ssbPosInBurst->size * sizeof(uint8_t));
    if(!ssbPosInBurst->buf)
    {
-      DU_LOG("\nDU APP : Serving cell config common  memory allocation failure");
+      DU_LOG("\nERROR  -->  DU APP : Serving cell config common  memory allocation failure");
       return RFAILED;
    } 
    ssbPosInBurst->buf[0] = duSrvCellCfg.ssbPosInBurst;  
@@ -2205,7 +2205,7 @@ uint8_t BuildServCellCfgCommonSib(ServingCellConfigCommonSIB_t *srvCellCfg)
    DU_ALLOC(srvCellCfg->uplinkConfigCommon, sizeof(UplinkConfigCommonSIB_t));
    if(!srvCellCfg->uplinkConfigCommon)
    {
-      DU_LOG("\nDU APP : Serving cell config common  memory allocation failure");
+      DU_LOG("\nERROR  -->  DU APP : Serving cell config common  memory allocation failure");
       return RFAILED;
    }
    ret = BuildUlCfgCommSib(srvCellCfg->uplinkConfigCommon);
@@ -2219,7 +2219,7 @@ uint8_t BuildServCellCfgCommonSib(ServingCellConfigCommonSIB_t *srvCellCfg)
    DU_ALLOC(srvCellCfg->tdd_UL_DL_ConfigurationCommon, sizeof(TDD_UL_DL_ConfigCommon_t));
    if(!srvCellCfg->tdd_UL_DL_ConfigurationCommon)
    {
-      DU_LOG("\nDU APP : Serving cell config common  memory allocation failure");
+      DU_LOG("\nERROR  -->  DU APP : Serving cell config common  memory allocation failure");
       return RFAILED;
    }
    ret = BuildTddUlDlCfgComm(srvCellCfg->tdd_UL_DL_ConfigurationCommon);
@@ -2258,7 +2258,7 @@ uint8_t BuildSib1Msg()
       DU_ALLOC(sib1Msg, sizeof(SIB1_t));
       if(!sib1Msg)
       {   
-	 DU_LOG("DU APP: SIB1 msg memory allocation failure");
+	 DU_LOG("\nERROR  -->  DU APP: SIB1 msg memory allocation failure");
 	 break;
       }   
 
@@ -2278,7 +2278,7 @@ uint8_t BuildSib1Msg()
       DU_ALLOC(sib1Msg->connEstFailureControl, sizeof(ConnEstFailureControl_t));
       if(!sib1Msg->connEstFailureControl)
       {
-	 DU_LOG("DU APP: sib1Msg->connEstFailureControl memory allocation failure");
+	 DU_LOG("\nERROR  -->  DU APP: sib1Msg->connEstFailureControl memory allocation failure");
 	 break;
       }
       sib1Msg->connEstFailureControl->connEstFailCount =\
@@ -2290,7 +2290,7 @@ uint8_t BuildSib1Msg()
       DU_ALLOC(sib1Msg->si_SchedulingInfo, sizeof(SI_SchedulingInfo_t));
       if(!sib1Msg->si_SchedulingInfo)
       {
-	 DU_LOG("DU APP: sib1Msg->si_SchedulingInfo memory allocation failure");
+	 DU_LOG("\nERROR  -->  DU APP: sib1Msg->si_SchedulingInfo memory allocation failure");
 	 break;
       } 
       elementCnt = ODU_VALUE_ONE;
@@ -2308,7 +2308,7 @@ uint8_t BuildSib1Msg()
       DU_ALLOC(sib1Msg->servingCellConfigCommon, sizeof(ServingCellConfigCommonSIB_t));
       if(!sib1Msg->servingCellConfigCommon)
       {
-	 DU_LOG("DU APP: sib1Msg->servingCellConfigCommon memory allocation failure");
+	 DU_LOG("\nERROR  -->  DU APP: sib1Msg->servingCellConfigCommon memory allocation failure");
 	 break;
       }
       ret1 =  BuildServCellCfgCommonSib(sib1Msg->servingCellConfigCommon);
@@ -2327,7 +2327,7 @@ uint8_t BuildSib1Msg()
       printf("\nencbufSize: %d\n", encBufSize);
       if(encRetVal.encoded == -1)
       {
-	 DU_LOG("\nDU APP : Could not encode SIB1 structure (at %s)\n",\
+	 DU_LOG("\nERROR  -->  DU APP : Could not encode SIB1 structure (at %s)\n",\
 	       encRetVal.failed_type ?
 	       encRetVal.failed_type->name :
 	       "unknown");
