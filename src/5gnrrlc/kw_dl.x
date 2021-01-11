@@ -146,13 +146,11 @@ typedef struct rlcTm
  *
  * @details
  *    - bo         : Size of the buffers at RLC
- *    - estHdrSz   : Size for all the headers as estimated by RLC
  *    - staPduPrst : Whether RLC wants to send a STATUS PDU or not
 */
 typedef struct rlcBoRep
 {
    S32      bo;            /*!< Buffer occupancy */
-   uint16_t estHdrSz;      /*!< Estimated header size for the bo */
    Bool     staPduPrsnt;   /*!< Indicate control bo present or not */
    uint32_t staPduBo;     /*!< Indicate bo for control PDU */
    uint32_t oldestSduArrTime;
@@ -192,25 +190,18 @@ typedef struct rlcDatReq
  *                    as 1 for 5 bit sequence numbers and 
  *                    2 for 10 bit sequence numbers
  *    - bo          : Current buffer occupancy for this RB
- *    - estHdrSz    : Estimated size of headers required to send 
- *                    all the SDUs in the queue
- *    - vtUs        : VT(US)
+ *    - TX_Next     : SN to be allocated to next SDU
  *    - modBitMask  : Bitmask used to do modulus operations to wrap around 
- *                    state variables, value is 0x1f or 
- *                    0x3ff for 5-bit and 10-bit sequence numbers respectively
- *    - numLi       : Number of length indicators to be sent in the next pdu
- *    - li          : Values of the lenght indicators
+ *                    state variables, value is 0x3f or 
+ *                    0xfff for 6-bit and 12-bit sequence numbers respectively
 */
 typedef struct rlcUmDl
 {
    CmLListCp   sduQ;            /*!< SDU queue for UM */
    uint8_t     snLen;           /*!< Sequence number length */
    S32         bo;              /*!< Buffer occupancy */
-   S32         estHdrSz;        /*!< Estimated header size for BO */
-   RlcSn       vtUs;            /*!< VT(US) */
+   RlcSn       txNext;          /*!< TX_Next */
    uint16_t    modBitMask;      /*!< Bitmask for modulus to wrap around vars*/   
-   uint16_t    numLi;           /*!< Number of LIs */
-   uint16_t    li[RLC_MAX_LI];   /*!< Length Indicator array */
 }RlcUmDl;
 
 /** 
@@ -725,7 +716,7 @@ Void rlcUtlRemovTxBuf ARGS ((CmLListCp      *txBufLst,
 uint8_t rlcUtlSendDedLcBoStatus ARGS ((RlcCb *gCb,
                                   RlcDlRbCb *rbCb,
                                   int32_t bo,
-                                  int32_t estHdrSz,
+				  int32_t estHdrSz,
                                   bool staPduPrsnt,
                                   uint32_t staPduBo));
 
@@ -734,11 +725,6 @@ Void rlcUtlEmptySduQ ARGS ((RlcCb *gCb, RlcDlRbCb *rbCb, CmLListCp *sduQ));
 #else /* LTE_L2_MEAS */
 Void rlcUtlEmptySduQ ARGS ((RlcCb *gCb,CmLListCp *sduQ));
 #endif /* LTE_L2_MEAS */
-
-Void rlcUtlCalcLiForSdu ARGS ((RlcCb *gCb,
-                                     uint16_t numLi, 
-                                     MsgLen msgLen,
-                                     S16 *pduSz));
 
 uint8_t rlcUtlSendToMac ARGS ((RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo));
 

@@ -811,7 +811,7 @@ uint8_t egtpSendMsg(Buffer *mBuf)
 uint8_t egtpRecvMsg()
 {
    uint8_t        ret;           /* Return value */
-   uint8_t        nMsg;          /* Number of messages to read from UDP socked */
+   uint16_t       nMsg;          /* Number of messages to read from UDP socked */
    uint16_t       bufLen;        /* Length of received buffer */
    Buffer         *recvBuf;      /* Received buffer */
    CmInetAddr     fromAddr;      /* Egtp data sender address */
@@ -834,8 +834,8 @@ uint8_t egtpRecvMsg()
          DU_LOG("\nDEBUG  -->  EGTP : Received DL Message[%d]\n", nMsg+1);
          ODU_PRINT_MSG(recvBuf, 0 ,0);
          egtpHdlRecvData(recvBuf);
+         nMsg++;
       }
-      nMsg++;
    }
    
    return ROK;

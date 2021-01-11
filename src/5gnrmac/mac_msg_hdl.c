@@ -210,15 +210,17 @@ uint8_t fapiMacRxDataInd(Pst *pst, RxDataInd *rxDataInd)
  * ****************************************************************/
 uint8_t MacProcRlcDlData(Pst* pstInfo, RlcData *dlData)
 {
-   uint8_t   pduIdx =0;
-   uint8_t   *txPdu =NULLP;
-   uint16_t  tbSize =0;
-   MacDlData macDlData;
-   MacDlSlot *currDlSlot = NULLP;
+   uint8_t    pduIdx =0;
+   uint8_t    lcIdx = 0;
+   uint8_t    *txPdu =NULLP;
+   uint16_t   tbSize =0;
+   MacDlData  macDlData;
+   MacDlSlot  *currDlSlot = NULLP;
+   DlRlcBoInfo  dlBoInfo;
   
    memset(&macDlData , 0, sizeof(MacDlData));
-   DU_LOG("\nDEBUG  -->  MAC: Received DL data for sfn=%d slot=%d", \
-      dlData->slotInfo.sfn, dlData->slotInfo.slot);
+   DU_LOG("\nDEBUG  -->  MAC: Received DL data for sfn=%d slot=%d numPdu= %d", \
+      dlData->slotInfo.sfn, dlData->slotInfo.slot, dlData->numPdu);
    /* Copy the pdus to be muxed into mac Dl data */
    macDlData.numPdu = dlData->numPdu;
    for(pduIdx = 0;  pduIdx < dlData->numPdu; pduIdx++)
@@ -245,6 +247,19 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcData *dlData)
 
 	 currDlSlot->dlInfo.dlMsgAlloc->dlMsgInfo.dlMsgPduLen = tbSize;
 	 currDlSlot->dlInfo.dlMsgAlloc->dlMsgInfo.dlMsgPdu = txPdu;
+      }
+   }
+
+   for(lcIdx = 0; lcIdx < dlData->numLc; lcIdx++)
+   {
+      if(dlData->boStatus[lcIdx].bo)
+      {
+         memset(&dlBoInfo, 0, sizeof(DlRlcBoInfo));
+         dlBoInfo.cellId = dlData->boStatus[lcIdx].cellId;
+         GET_CRNTI(dlBoInfo.crnti, dlData->boStatus[lcIdx].ueIdx);
+         dlBoInfo.lcId = dlData->boStatus[lcIdx].lcId;
+         dlBoInfo.dataVolume = dlData->boStatus[lcIdx].bo;
+         sendDlRlcBoInfoToSch(&dlBoInfo);
       }
    }
 

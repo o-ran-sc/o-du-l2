@@ -278,7 +278,7 @@ void fillMacCe(MacCeInfo *macCeInfo, uint8_t *msg3Pdu)
 
 void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint8_t *txPdu, uint16_t tbSize)
 {
-   uint8_t bytePos = 0;
+   uint16_t bytePos = 0;
    uint8_t bitPos = 7;
    uint8_t idx = 0;
    uint8_t macPdu[tbSize];
@@ -356,7 +356,6 @@ void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint8_t *txPdu, uint16_t
 	    DU_LOG("\nERROR  -->  MAC: Invalid LCID %d in mac pdu",lcid);
 	    break;
       }
-
    }
    if(bytePos < tbSize && (tbSize-bytePos >= 1))
    {
