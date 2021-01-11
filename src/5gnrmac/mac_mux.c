@@ -42,7 +42,7 @@
  * @return void
  *
  * ****************************************************************/
-void packBytes(uint8_t *buf, uint8_t *bytePos, uint8_t *bitPos, uint32_t val, uint8_t valSize)
+void packBytes(uint8_t *buf, uint16_t *bytePos, uint8_t *bitPos, uint32_t val, uint8_t valSize)
 {
    uint32_t  temp;
    uint8_t   bytePart1;
@@ -99,7 +99,7 @@ void fillRarPdu(RarInfo *rarInfo)
    uint8_t   *rarPdu = rarInfo->rarPdu;
    uint16_t  totalBits = 0;
    uint8_t   numBytes = 0;
-   uint8_t   bytePos= 0;
+   uint16_t  bytePos= 0;
    uint8_t   bitPos = 0;
 
    /* RAR subheader fields */
@@ -278,7 +278,7 @@ void fillMacCe(MacCeInfo *macCeInfo, uint8_t *msg3Pdu)
 
 void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint8_t *txPdu, uint16_t tbSize)
 {
-   uint8_t bytePos = 0;
+   uint16_t bytePos = 0;
    uint8_t bitPos = 7;
    uint8_t idx = 0;
    uint8_t macPdu[tbSize];
@@ -356,7 +356,6 @@ void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint8_t *txPdu, uint16_t
 	    DU_LOG("\nERROR  -->  MAC: Invalid LCID %d in mac pdu",lcid);
 	    break;
       }
-
    }
    if(bytePos < tbSize && (tbSize-bytePos >= 1))
    {

@@ -626,7 +626,7 @@ S16 cuEgtpDecodeHdr(Buffer *mBuf)
 
 S16 cuEgtpDatReq()
 {
-   uint8_t cnt = 0;
+   uint16_t cnt = 0;
    EgtpMsg  egtpMsg;
 
    /* Build Application message that is supposed to come from app to egtp */

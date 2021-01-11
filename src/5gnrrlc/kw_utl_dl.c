@@ -259,6 +259,7 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
       dlData->slotInfo.sfn = datPerUe.transId >> 16;
       dlData->slotInfo.slot = datPerUe.transId & 0xffff;
       dlData->numPdu = 0;
+      dlData->numLc = 0;
 
       for(tbIdx = 0; tbIdx < datPerUe.nmbOfTbs; tbIdx++)
       {
@@ -300,6 +301,12 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
 
                dlData->numPdu++;
             }/* For per PDU */
+	    dlData->boStatus[dlData->numLc].cellId = datReqInfo->cellId;
+            GET_UE_IDX(datPerUe.rnti, dlData->boStatus[dlData->numLc].ueIdx);
+	    dlData->boStatus[dlData->numLc].commCh = false;
+	    dlData->boStatus[dlData->numLc].lcId = datPerLch.lcId;
+	    dlData->boStatus[dlData->numLc].bo = datPerLch.boReport.bo + datPerLch.boReport.estRlcHdrSz;
+	    dlData->numLc++;
          }/* For Data per Lch */
       }/* For Data per Tb */
 
@@ -313,7 +320,7 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
             RLC_FREE_SHRABL_BUF(pst.region, pst.pool, dlData->pduInfo[pduIdx].pduBuf,\
                dlData->pduInfo[pduIdx].pduLen);
          }
-          RLC_FREE_SHRABL_BUF(pst.region, pst.pool, dlData, sizeof(RlcData));
+         RLC_FREE_SHRABL_BUF(pst.region, pst.pool, dlData, sizeof(RlcData));
          RLC_FREE_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL,
              datReqInfo, sizeof(RguDDatReqInfo));
          return RFAILED;
@@ -497,7 +504,7 @@ uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
 
 #ifdef CCPU_OPT
                datReqTb->lchData[count].boReport.estRlcHdrSz = 
-                  datReq.boRep.estHdrSz;
+	          datReq.boRep.estHdrSz;
                datReqTb->lchData[count].boReport.staPduPrsnt = 
                   datReq.boRep.staPduPrsnt;
 #endif /* CCPU_OPT */
@@ -636,7 +643,7 @@ uint8_t rlcUtlSendDedLcBoStatus(RlcCb *gCb, RlcDlRbCb *rbCb, int32_t bo, \
    boStatus->ueIdx = rbCb->rlcId.ueId;
    boStatus->commCh = FALSE; 
    boStatus->lcId = rbCb->lch.lChId;
-   boStatus->bo = bo;
+   boStatus->bo = bo + estHdrSz;
 
    FILL_PST_RLC_TO_MAC(pst, RLC_DL_INST, EVENT_BO_STATUS_TO_MAC);
    /* Send Status Response to MAC layer */
@@ -714,41 +721,6 @@ CmLListCp   *sduQ
 /**
  *
  * @brief 
- *    Handler for calculating the Length Indicator (LI) length for a SDU 
- * 
- * @detail:
- *    This function is used to calculate the LI (Length Indicator) length
- *    which has to be substracted from the pduSize to correctly match the
- *    formed PDU(s) size with the  size requested by MAC.
- *
- * @param[in]      gCb      RLC instance control block 
- * @param[in]      numLi    Number of LIs already present 
- * @param[in]      msgLen   Size of the SDU
- * @param[in/out]  pduSz    Size of the pDU to be formed
- *
- * @return  void 
- */
-void rlcUtlCalcLiForSdu(RlcCb *gCb, uint16_t numLi, MsgLen msgLen, int16_t *pduSz)
-{
-   if ( (*pduSz > msgLen)  && (msgLen < RLC_2K_BYTE))
-   {
-      if(0 == (numLi & RLC_BIT0)) /* check if number of LIs are odd or even */
-      {  
-         /* if number of LI's are even 2 bytes needed */
-         *pduSz -= 2;
-      }
-      else
-      {
-         /* if number of LI's are odd one byte needed */
-         *pduSz -= 1;
-      }
-   }
-   return;
-}
-
-/**
- *
- * @brief 
  *    Function to set that re-establishment has started for an RB
  * 
  * @detail:
@@ -777,11 +749,6 @@ Void rlcDlUtlSetReestInProgressForRB(RlcCb *gCb,RlcDlRbCb *rbCb)
          rlcStopTmr(gCb, (PTR)rbCb, EVENT_RLC_AMDL_POLL_RETX_TMR);
       }
    }
-   else
-   {
-      rbCb->m.umDl.estHdrSz= 0;
-   }
-
    rlcUtlSendDedLcBoStatus(gCb, rbCb, 0, 0, FALSE,0);
 
    return;

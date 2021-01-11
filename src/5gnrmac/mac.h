@@ -21,7 +21,7 @@
 /* MAX values */
 #define MAX_MAC_CE 6
 #define MAX_CRI_SIZE 6
-#define MAX_MAC_DL_PDU 10
+#define MAX_MAC_DL_PDU 16
 #define MAX_NUM_HARQ_PROC  16
 #define MAX_SLOT_SUPPORTED    10 /* numerology 0 15Khz */
 #define MAX_ZERO_CORR_CFG_IDX 16 /* max zero correlation config index */
