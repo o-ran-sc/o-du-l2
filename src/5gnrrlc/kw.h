@@ -556,6 +556,7 @@
 
 /* Each LI(Length Indicator) holds approx 1+1/2 byte and some other fields thus keeping Header Size equal to twice of MAX LI */
 /* 5GNR_RLC: Need to change value of HDRSZ as per number of PDUs going in one datReq */
+#define RLC_MIN_HDRSZ                         1
 #define RLC_MAX_HDRSZ                         5 
 #define RLC_AM_PDU_FIXED_HDRSZ                2
 #define RLC_AM_PDU_12BIT_SN_HDRSZ             2

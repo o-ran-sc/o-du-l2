@@ -1211,7 +1211,7 @@ void rlcAmmProcessSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq, bool f
    rlcDatReq->boRep.staPduBo = RLC_AMDL.cntrlBo;
 
    /* Hdr estimation is moved to kwAmmCreatePDu */
-   rlcDatReq->boRep.estHdrSz = RLC_AMDL.estHdrSz;
+   //rlcDatReq->boRep.estHdrSz = AMDL.estHdrSz;
 
    if(rlcDatReq->pduSz > 0)
    {
