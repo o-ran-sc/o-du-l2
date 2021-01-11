@@ -100,7 +100,7 @@ typedef enum
 
 typedef enum
 {
-   UM_SIZE_6,
+   UM_SIZE_6 = 1,
    UM_SIZE_12
 }SnLenUm;
 

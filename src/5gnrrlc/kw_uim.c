@@ -772,7 +772,6 @@ uint8_t rlcProcDlData(Pst *pst, KwuDatReqInfo *datReq, Buffer *mBuf)
       case CM_LTE_MODE_UM:
       {
          rlcUmmQSdu(tRlcCb,rbCb, datReq, mBuf);
-
          break;
       }
       case CM_LTE_MODE_AM:

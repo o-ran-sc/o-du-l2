@@ -512,10 +512,18 @@
 #define RLC_UMDL     rbCb->m.umDl 
 #define RLC_UMUL     rbCb->m.umUl 
 
+/* TODO : Remove 5-bit and 10-bit SN LEN macros once all DL-UL header changes are done. 
+ * Till then, keeping it to avoid compilaiion errors */
 /* Sequence Number length defines */
-#define RLC_UM_CFG_5BIT_SN_LEN      1 /**< UM 5-bit Sequence number length 
+#define RLC_UM_CFG_5BIT_SN_LEN      1 /**< UM 5-bit Sequence number length
+                                           in bytes*/
+#define RLC_UM_CFG_10BIT_SN_LEN     2 /**< UM 10-bit Sequence number length
+                                           in bytes*/
+
+/* Sequence Number length defines */
+#define RLC_UM_CFG_6BIT_SN_LEN      1 /**< UM 6-bit Sequence number length 
                                           in bytes*/   
-#define RLC_UM_CFG_10BIT_SN_LEN     2 /**< UM 10-bit Sequence number length 
+#define RLC_UM_CFG_12BIT_SN_LEN     2 /**< UM 12-bit Sequence number length 
                                           in bytes*/
 /* 5GNR */
 /* Sequence Number length defines */
@@ -575,6 +583,7 @@
 
 /* Each LI(Length Indicator) holds approx 1+1/2 byte and some other fields thus keeping Header Size equal to twice of MAX LI */
 /* 5GNR_RLC: Need to change value of HDRSZ as per number of PDUs going in one datReq */
+#define RLC_MIN_HDRSZ                         1
 #define RLC_MAX_HDRSZ                         5 
 #define RLC_AM_PDU_FIXED_HDRSZ                2
 #define RLC_AM_PDU_12BIT_SN_HDRSZ             2

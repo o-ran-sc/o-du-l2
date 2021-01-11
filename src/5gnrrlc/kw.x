@@ -96,8 +96,11 @@ typedef struct rlcSduSnMap RlcSduSnMap;
 typedef RguLchMapInfo KwLchMapInfo;
 #endif /*  LTE_L2_MEAS */
 
-
 /** @defgroup ummode UM Module Info 
+*/
+/* TODO :
+ * Remove this strcuture once UL-DL UM header changes are complete
+ * Also rename the new struct  Rlc5gUmHdr to RlcUmHdr
 */
 /** 
  * @brief  Structure to hold an Unacknowledged Mode header
@@ -115,6 +118,22 @@ typedef struct rlcUmHdr
    uint16_t    numLi;           /*!< Number of LIs */
    uint16_t    li[RLC_MAX_UL_LI];   /*!< Array of LIs */
 }RlcUmHdr;
+
+/**
+ * @brief  Structure to hold an Unacknowledged Mode header
+ *
+ * @details
+ *    - fi    : Framing Info
+ *    - sn    : Sequence number
+ *    - numLi : Number of length indicators in the following array (li)
+ *    - li    : Length indicators
+ */
+typedef struct rlc5gUmHdr
+{
+   uint8_t     si;   /*!< Segmentation Info */
+   RlcSn       sn;   /*!< Sequence number */
+   uint16_t    so;   /*!< Segmentation offset */
+}Rlc5gUmHdr;
 
 /** 
  * @brief  Structure to hold an Acknowledged Mode header
