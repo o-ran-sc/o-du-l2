@@ -89,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "8ed7991e_a85ef102",
+        "filename": "src/5gnrrlc/kw_utl_dl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-01-11T11:06:50Z",
+      "side": 1,
+      "message": "Not required. We will be sending one SRB info from DU APP at a time",
+      "parentUuid": "783c6657_5e9d41fa",
+      "revId": "ff60a909f1ca44107efc5d6acc60be4236b6a869",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bbfbfe18_62d828bf",
         "filename": "src/cm/legtp.h",
         "patchSetId": 4
@@ -369,6 +387,23 @@
     },
     {
       "key": {
+        "uuid": "8188647f_d0047b2b",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-01-11T11:06:50Z",
+      "side": 1,
+      "message": "DEBUG",
+      "revId": "ff60a909f1ca44107efc5d6acc60be4236b6a869",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "2d189ce3_7754ba66",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 4
@@ -491,6 +526,24 @@
     },
     {
       "key": {
+        "uuid": "46b9cdd7_e17a6f39",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-01-11T11:06:50Z",
+      "side": 1,
+      "message": "Yes, this need to be checked. The receiver thread will continuously receive data packets. We need to determine how these must be sent to RLC",
+      "parentUuid": "313268d9_37bfabb2",
+      "revId": "ff60a909f1ca44107efc5d6acc60be4236b6a869",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3a83a8d3_e39cdd6f",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 4
@@ -523,6 +576,23 @@
       "revId": "ff60a909f1ca44107efc5d6acc60be4236b6a869",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4667418b_f68e750a",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1938,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-01-11T11:06:50Z",
+      "side": 1,
+      "message": "why not do it now?",
+      "revId": "ff60a909f1ca44107efc5d6acc60be4236b6a869",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
     }
   ]
 }
