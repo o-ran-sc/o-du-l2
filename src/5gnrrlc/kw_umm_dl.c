@@ -75,12 +75,10 @@ uint32_t buffer_occ;
 uint32_t dlrate_kwu;
 #endif
 
-static void rlcUmmEstHdrSz ARGS ((RlcUmDl *umUl));
-
 static Void rlcUmmCreatePdu ARGS ((RlcCb *gCb,
                                   RlcDlRbCb *rbCb, 
                                   Buffer *pdu,
-                                  uint8_t fi,
+                                  RlcUmHdr *umHdr,
                                   KwPduInfo *datReqPduInfo));
 
 /** @addtogroup ummode */
@@ -142,15 +140,13 @@ void rlcUmmQSdu(RlcCb *gCb, RlcDlRbCb *rbCb, KwuDatReqInfo *datReq, Buffer *mBuf
 #endif
 #endif
    rbCb->m.umDl.bo += len;
-   
+   rbCb->m.umDl.bo += RLC_MIN_HDRSZ;
    cmLListAdd2Tail(&(rbCb->m.umDl.sduQ), &sdu->lstEnt);
    sdu->lstEnt.node = (PTR)sdu;
-   
-   rlcUmmEstHdrSz(&rbCb->m.umDl);
 
    if(!rlcDlUtlIsReestInProgress(rbCb))
    {
-      rlcUtlSendDedLcBoStatus(gCb,rbCb,rbCb->m.umDl.bo,rbCb->m.umDl.estHdrSz,FALSE,0);
+      rlcUtlSendDedLcBoStatus(gCb, rbCb, rbCb->m.umDl.bo, 0, FALSE,0);
    }
    
    /* kw005.201 added support for L2 Measurement */
@@ -188,10 +184,14 @@ void rlcUmmQSdu(RlcCb *gCb, RlcDlRbCb *rbCb, KwuDatReqInfo *datReq, Buffer *mBuf
 void rlcUmmProcessSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *datReq)
 {
    CmLList     *firstNode;   /* First Node in SDU queue */
-   uint8_t      fi=0;           /* Framing Info */
    Buffer      *pdu;         /* Buffer for holding the formed PDU */
    KwPduInfo   *pduInfo;     /* PDU Info pointer */
    int16_t     pduSz;        /* PDU Size to be constructed */
+   RlcUmHdr    umHdr;        /* Header */
+   uint32_t    rlcHdrSz;
+   uint32_t    rlcSduSz;
+   uint32_t    rlcPduSz;
+   uint32_t    macHdrSz;
    
    /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
@@ -210,7 +210,6 @@ void rlcUmmProcessSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *datReq)
    RlcSdu                *sdu;
 
    pdu = NULLP;
-
    pduInfo = &(datReq->pduInfo);
    pduSz = datReq->pduSz;
    
@@ -226,8 +225,7 @@ void rlcUmmProcessSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *datReq)
    rlcUtlGetCurrTime(&curTime);
 
    /* ccpu00143043 */
-   while ((pduSz > 0) && (rbCb->m.umDl.sduQ.count > 0) &&
-           (rbCb->m.umDl.numLi < RLC_MAX_DL_LI) && (pduInfo->numPdu < RLC_MAX_PDU))
+   while ((pduSz > 0) && (rbCb->m.umDl.sduQ.count > 0) && (pduInfo->numPdu < RLC_MAX_PDU))
    {
       CM_LLIST_FIRST_NODE(&rbCb->m.umDl.sduQ,firstNode);
       sdu = (RlcSdu *)(firstNode->node);
@@ -247,63 +245,73 @@ void rlcUmmProcessSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *datReq)
             continue;
          }
       }
-      /* When forming a new PDU, pdu == NULLP
-           -# Eliminate MAC header size for each pdu 
-           -# Initialize the li array to 0 
-           -# Substract the fixed header length based on SN length
-      */
 #ifdef LTE_L2_MEAS
       newIdx = FALSE;
 #endif
-      if (!pdu)
+      /* When forming a new PDU, pdu == NULLP
+           -# Eliminate MAC header size for each pdu
+           -# Substract the fixed header length based on SN length
+      */
+      /* account for the RLC header size
+         minimum header size will be 1 , if Sdu is not segmented */
+      rlcHdrSz = RLC_MIN_HDRSZ;
+      if(sdu->mode.um.isSegmented)
       {
-         RLC_RMV_MAC_HDR_SZ(pduSz);
+         /* value of rbCb->m.umDl.snLen will be 1 for 6 bit SN and 2 for 12 bit SN and 2 bytes of SO */
+         rlcHdrSz = (rbCb->m.umDl.snLen + 2);
+      }
+      macHdrSz = RLC_MAC_HDR_SZ2; /*Minimum MacHdr size */
+      rlcSduSz = sdu->sduSz;
+      rlcPduSz = ((rlcSduSz + rlcHdrSz) < (pduSz - macHdrSz))? (rlcSduSz + rlcHdrSz) : (pduSz - macHdrSz);
+      rlcSduSz = rlcPduSz - rlcHdrSz;
 
-         /* account for the RLC header size */
-         pduSz -= rbCb->m.umDl.snLen;
+      /*Estimate MAC Hdr based on calculated rlcPduSz */
+      macHdrSz = (rlcPduSz > 255 ) ? RLC_MAC_HDR_SZ3 : RLC_MAC_HDR_SZ2;
 
-         /* kw005.201 fixing pduSz <= 0 problem, ccpu00119417 */
-         if(pduSz <= 0)
-         {
-            break;
-         }         
-         
-         rbCb->m.umDl.numLi = 0;
-         if (sdu->mode.um.isSegmented == TRUE)
-         {
-            fi = 2;
-         }
-         else
-         {
-            fi = 0;
-         }
+      if(macHdrSz != RLC_MAC_HDR_SZ2)
+      {
+          rlcSduSz = sdu->sduSz;
+          rlcPduSz = ((rlcSduSz + rlcHdrSz) < (pduSz - macHdrSz))? (rlcSduSz + rlcHdrSz) : (pduSz - macHdrSz);
+          rlcSduSz = rlcPduSz - rlcHdrSz;
+          macHdrSz = (rlcPduSz > 255 ) ? RLC_MAC_HDR_SZ3 : RLC_MAC_HDR_SZ2;
       }
 
-      rlcUtlCalcLiForSdu(gCb,rbCb->m.umDl.numLi,sdu->sduSz,&pduSz);
+      if(sdu->mode.um.isSegmented == FALSE)
+      {
+          /* RLC SDU is estimated to be segmented first time */
+          if(rlcSduSz < sdu->sduSz)
+          {
+              rlcHdrSz = rbCb->m.umDl.snLen;
+              rlcSduSz = sdu->sduSz;
+              rlcPduSz = ((rlcSduSz + rlcHdrSz) < (pduSz - macHdrSz))? (rlcSduSz + rlcHdrSz) : (pduSz - macHdrSz);
+              rlcSduSz = rlcPduSz - rlcHdrSz;
+              /*Estimate MAC Hdr based on calculated rlcPduSz */
+              macHdrSz = (rlcPduSz > 255 ) ? RLC_MAC_HDR_SZ3 : RLC_MAC_HDR_SZ2;
+          }
+      }
+
+      pduSz -= (rlcHdrSz + macHdrSz);
+
+      if(pduSz <= 0)
+      {
+          break;
+      }
      
-      /* Exact fit scenario :
-         If the SDU size matches with the PDU size
-           -# Allocate memory equal to PDU size;
-           -# update BO
-           -# Remove SDu from queue
-           -# Append to already existing PDU portion if present .
-           -# Add Header and create complete PDU and place it in
-              pduInfo and return
-      */ 
-      if (sdu->sduSz == pduSz)
+      /* No Segmentation scenario :
+         If SDU size is less than or equal to the requested PDU size
+         -# Allocate memory and copy SDU into it.
+         -# Update BO
+         -# Remove SDU from the Queue.
+      */
+      if (sdu->sduSz <= pduSz)
       {
          if (!pdu)
          {
             pdu = sdu->mBuf;
             sdu->mBuf = NULLP;
          }
-         else
-         {
-            SCatMsg(pdu, sdu->mBuf, M1M2);    
-         }
-         
-         rbCb->m.umDl.bo -= pduSz;
-         pduSz = 0;
+         rbCb->m.umDl.bo -= sdu->sduSz;
+         pduSz -= sdu->sduSz;
 
 #ifdef LTE_L2_MEAS
         if(RLC_MEAS_IS_DL_ANY_MEAS_ON_FOR_RB(gCb,rbCb))
@@ -343,97 +351,29 @@ void rlcUmmProcessSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *datReq)
              }
           }
 #endif /*  LTE_L2_MEAS */
-         RLC_RMV_SDU(gCb,&(rbCb->m.umDl.sduQ),sdu); /* kw003.201 */
-         rlcUtlIncrementKwuStsSduTx(gCb->u.dlCb->rlcKwuDlSap + rbCb->k1wuSapId);
 
-         rlcUmmCreatePdu(gCb,rbCb,pdu,fi,pduInfo);
-         pdu = NULLP;
-         
-      }
-      /* Concatenation scenario :
-         If SDU size is less than the requested PDU size
-           -# Allocate memory and copy SDU into it.
-           -# Update BO
-           -# Remove SDU from the Queue.
-           -# Append to already existing PDU portion if present .
-           -# If the SDU size is greater than 2047 or the number of i
-                 LIs reaches max, place it as a separate PDU in pduInfo and 
-                 set pdu to NULL
-              else 
-                 place the msglen in li array and continue with the next SDU.
-           -# If the number of PDUs is more than RLC_MAX_PDU, return from 
-              the function even if pduSize > 0.
-      */
-      else if (sdu->sduSz < pduSz)
-      {
-         if (!pdu)
+         if(sdu->mode.um.isSegmented)
          {
-            pdu = sdu->mBuf;
-            sdu->mBuf = NULLP;
+             umHdr.si = RLC_SI_LAST_SEG;
+             umHdr.so = sdu->actSz - sdu->sduSz;
+             sdu->mode.um.isSegmented = FALSE;
          }
          else
          {
-            ODU_CAT_MSG(pdu, sdu->mBuf ,M1M2);
+              umHdr.si = 0;
+              umHdr.so = 0;
          }
-         rbCb->m.umDl.bo -= sdu->sduSz;
-
-         pduSz -= sdu->sduSz;
-/* kw005.201 added support for L2 Measurement */
-#ifdef LTE_L2_MEAS_RLC
-          rlcUtlUpdSduSnMap(rbCb, sdu, datReq, TRUE);
-#endif /*  LTE_L2_MEAS */
-         if (sdu->sduSz < 2048 && rbCb->m.umDl.numLi < RLC_MAX_DL_LI)
-         {
-            rbCb->m.umDl.li[(rbCb->m.umDl.numLi)++] = sdu->sduSz;
-         }
-         else 
-         {
-            rlcUmmCreatePdu(gCb, rbCb, pdu, fi, pduInfo);
-            pdu = NULLP;
-
-            if ( pduInfo->numPdu == RLC_MAX_PDU)
-            {
-                /* Could not transmit what MAC asked for because the number 
-                 * of PDUs to be transmitted has reached maximum. */
-	       DU_LOG("\nRLC: rlcUmmProcessSdus: Maximum Pdu limit has been reached\
-	          UEID:%d CELLID:%d", rbCb->rlcId.ueId, rbCb->rlcId.cellId);
-               break;
-            }
-         }
-#ifdef LTE_L2_MEAS
-        if(RLC_MEAS_IS_DL_ANY_MEAS_ON_FOR_RB(gCb,rbCb) )
-        {
-           if(sdu->mode.um.isSegmented)
-           {
-              *sduIdx    = dlIpThPut->lastSduIdx;
-           }
-           else
-           {
-              RLC_GETSDUIDX(*sduIdx);
-              newIdx = TRUE;
-           }
-           rlcUtlUpdateContainedSduLst(*sduIdx, &contSduLst);
-           rlcUtlUpdateOutStandingSduLst(dlIpThPut, *sduIdx, sdu->actSz, 
-                 sdu->mode.um.sduId, newIdx);
-           /* ccpu00143043 */
-           if ( lchInfo.numSdus < RLC_L2MEAS_SDUIDX)
-           {
-              lchInfo.sduInfo[lchInfo.numSdus].arvlTime = sdu->arrTime; 
-              lchInfo.sduInfo[lchInfo.numSdus].isRetxPdu = FALSE;
-              lchInfo.numSdus++;
-           }
-        }
-#endif
-         RLC_RMV_SDU(gCb,&(rbCb->m.umDl.sduQ),sdu);
-         /* kw005.201 ccpu00117318, updating the statistics */
-         rlcUtlIncrementKwuStsSduTx(gCb->u.dlCb->rlcKwuDlSap + rbCb->k1wuSapId);         
+         rlcUmmCreatePdu(gCb, rbCb, pdu, &umHdr, pduInfo);
+         RLC_RMV_SDU(gCb,&(rbCb->m.umDl.sduQ),sdu); /* kw003.201 */
+         rlcUtlIncrementKwuStsSduTx(gCb->u.dlCb->rlcKwuDlSap + rbCb->k1wuSapId);
+         pdu = NULLP;
       }
       /* Segmentation scenario :
          If size of SDU is greater than PDU size 
            -# Allocate memory and Segment the Sdu.
            -# Update BO
-           -# Append to already existing PDU if any.
-           -# Set the second bit of the framing info.
+           -# Add segment to the PDU
+           -# Set the second bit of the segmentation info.
            -# Create the complete PDU and place in pduInfo.
       */ 
       else 
@@ -466,29 +406,30 @@ void rlcUmmProcessSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *datReq)
            }
         }
 #endif
-         if (!pdu)
-         {
-            pdu = sdu->mBuf;
-         }
-         else 
-         {
-            ODU_CAT_MSG(pdu, sdu->mBuf, M1M2);
-            ODU_PUT_MSG_BUF(sdu->mBuf);
-         }
-
+         pdu = sdu->mBuf;
          sdu->sduSz -= pduSz;
          rbCb->m.umDl.bo -= pduSz;
-         sdu->mode.um.isSegmented = TRUE;
          sdu->mBuf = remSdu;
          pduSz = 0;
          
-         fi |= 1;
+         if(sdu->mode.um.isSegmented)
+         {
+            umHdr.si = RLC_SI_MID_SEG;
+            umHdr.so = sdu->actSz - sdu->sduSz;
+         }
+         else
+         {
+            umHdr.si = RLC_SI_FIRST_SEG;
+            umHdr.so = 0;
+            sdu->mode.um.isSegmented = TRUE;
+         }
+
 /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS_RLC
          rlcUtlUpdSduSnMap(rbCb, sdu, datReq, FALSE);
 #endif /*  LTE_L2_MEAS */
 
-         rlcUmmCreatePdu(gCb,rbCb,pdu,fi,pduInfo);
+         rlcUmmCreatePdu(gCb, rbCb, pdu, &umHdr, pduInfo);
          pdu = NULLP;
       }
 /* kw005.201 added support for L2 Measurement */
@@ -523,27 +464,7 @@ void rlcUmmProcessSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *datReq)
    *totMacGrant -= (oldBo - rbCb->m.umDl.bo);
 #endif 
 
-   /* If we have a situation wherein the size requested is greater than the total size of SDUs
-      and a pdu buffer which is not null, this if loop helps to send 
-      a non null PDU to the lower layer. 
-   */
-   if (pduSz > 0 && pdu)
-   {
-      if (pduInfo->numPdu != RLC_MAX_PDU)
-      {
-         rbCb->m.umDl.numLi--;         
-         rlcUmmCreatePdu(gCb,rbCb,pdu,fi,pduInfo);   
-         pdu = NULLP;
-      }
-      else
-      {
-         ODU_PUT_MSG_BUF(pdu);
-      }
-   }
-   
-   rlcUmmEstHdrSz(&rbCb->m.umDl);
    datReq->boRep.bo = rbCb->m.umDl.bo;
-   datReq->boRep.estHdrSz = rbCb->m.umDl.estHdrSz;
    datReq->boRep.staPduPrsnt = FALSE;
    if (rbCb->m.umDl.sduQ.count > 0)
    {
@@ -577,7 +498,7 @@ Void rlcDlUmmReEstablish(RlcCb *gCb,CmLteRlcId rlcId,Bool sendReEst,RlcDlRbCb *r
 
    rlcUmmFreeDlRbCb(gCb, rbCb);
 
-   rbCb->m.umDl.vtUs = 0;
+   rbCb->m.umDl.txNext = 0;
 
    /* this would have been set when re-establishment was triggered
       for SRB 1 */
@@ -597,137 +518,56 @@ Void rlcDlUmmReEstablish(RlcCb *gCb,CmLteRlcId rlcId,Bool sendReEst,RlcDlRbCb *r
  * @param[in]     gCb            RLC instance control block
  * @param[in,out] rbCb           RB control block 
  * @param[in]     pdu            PDU  
- * @param[in]     fi             Framing Info field
+ * @param[in]     umHdr          UM mode header
  * @param[out]    datReqPduInfo  Holder in which to copy the created PDU pointer
  *
  * @return  Void
 */ 
-static void rlcUmmCreatePdu(RlcCb *gCb, RlcDlRbCb *rbCb, Buffer *pdu, uint8_t fi, KwPduInfo *datReqPduInfo)
+static void rlcUmmCreatePdu(RlcCb *gCb, RlcDlRbCb *rbCb, Buffer *pdu, RlcUmHdr *umHdr, KwPduInfo *datReqPduInfo)
 {
-   RlcSn     sn;        /*  Sequence Number */
-   uint32_t  liCount;   /*  LI count */
-   uint8_t   e = 0;     /* Extension Bit */
-   uint32_t  count;     /* Loop Counter */
-   uint32_t  hdrSz;
-
-   /* create a big array to store the header, assuming 3 bytes per 2 L1s 
-    * (2 bytes if only a single LI) and 2 bytes for the 
-    *  FI and SN
-    * size of header = ( NumLi /2 ) * 3 + (NumLi % 2) * 2 + 2;
-    * where NumLi = Number of Length Indicators to be sent
-   */
-   uint8_t hdr[((RLC_MAX_DL_LI >> 1) * 3) + ((RLC_MAX_DL_LI & 0x01) << 1) + 2];
-   uint32_t idx = 0; /* To index to the hdr array */
+   RlcSn     sn;                   /*  Sequence Number */
+   uint8_t   hdr[RLC_MAX_HDRSZ];   /* Stores header */
+   uint32_t  idx = 0;              /* To index to the hdr array */
    
-   /* Note: idx is not checked against crossing the hdr array bound as 
-    * liCount will be < RLC_MAX_DL_LI and as per the size calculated above; 
-    * idx cannot cross the array
-    */
-
    /* stats updated before for bytes sent before adding RLC headers */
    rlcUtlIncrementGenStsBytesAndPdusSent(&gCb->genSts, pdu);
          
-   sn = rbCb->m.umDl.vtUs;
-   liCount = rbCb->m.umDl.numLi;
-   
-   if(liCount > RLC_MAX_DL_LI)
-      liCount = RLC_MAX_DL_LI;
+   /* If SI = 0, 1 byte header conatining SI/R */
+   if(umHdr->si == 0)
+   {
+      hdr[idx++] = 0;
+   }
+   else
+   {
+      /* Add SN based on SN length */
+      sn = rbCb->m.umDl.txNext;
+      if (rbCb->m.umDl.snLen == RLC_UM_CFG_6BIT_SN_LEN) 
+      {
+         hdr[idx++] = (umHdr->si << 6) | sn;
+      }
+      else
+      {
+         hdr[idx++] = (umHdr->si << 6) | (sn >> 8);
+	 hdr[idx++] = sn & 0xff ;
+      }
 
-   /* if there are any LI's then set the first E bit */
-   if(liCount)
-   {
-      e = 1;
-   }
-   
-   if (rbCb->m.umDl.snLen == 1) 
-   {
-      hdr[idx++] = (fi << 6) | (e << 5) | sn;
-   }
-   else /* SN length is 2 */
-   {
-      /* SN length is 10 bits */
-      hdr[idx] = (fi << 3) | (e << 2) | (sn >> 8);
-      hdr[++idx] = sn & 0xff;
-      ++idx;
-   }
+      /* Add SO for middle and last segments*/
+      if((umHdr->si == RLC_SI_MID_SEG) | (umHdr->si == RLC_SI_LAST_SEG))
+      {
+         hdr[idx++] = (umHdr->so >> 8);
+	 hdr[idx++] = umHdr->so & 0xff;
+      }
 
-   hdrSz = sizeof(hdr); 
-   for (count = 0;count < liCount;count++)
-   {
-      /* In each iteration we try and encode 2 LIs */
-      /* if this is the last LI then e should be 0 */
-      if(count == liCount - 1)
-      {
-         e = 0;
-      }
-      
-      /* ccpu00135170  Fixing KLOCK warning */  
-      if((idx + 1)>= hdrSz)
-      {
-	      break;
-      }
-      /* odd LI, 1st , 3rd etc */
-      hdr[idx] = (e << 7) | (rbCb->m.umDl.li[count] >> 4);
-      hdr[++idx] = (rbCb->m.umDl.li[count] & 0xf) << 4;
-      
-      count++;
-      if(count == liCount - 1)
-      {
-         e = 0;
-      }
-      else if(count >= liCount)
-      {
-         break;
-      }
-      /* ccpu00135170  Fixing KLOCK warning */  
-      if((idx + 1)>= hdrSz)
-      {
-	      break;
-      }
-      /* even one, 2nd , 4th etc LI's, count starts at 0 */
-      hdr[idx] |= ((e << 3) | (rbCb->m.umDl.li[count] >> 8));
-      hdr[++idx] = rbCb->m.umDl.li[count] & 0xff;
-      ++idx;
-   }
+      /* Increment TX_Next if this is last segment of current SDU */
+      if(umHdr->si == RLC_SI_LAST_SEG)
+         rbCb->m.umDl.txNext = (rbCb->m.umDl.txNext + 1) & rbCb->m.umDl.modBitMask;
 
-   /* if odd number of L1s increment idx */
-   if(liCount & 0x1)
-   {
-      ++idx;
    }
-
-   /* increment VT(US) */
-   rbCb->m.umDl.vtUs = (rbCb->m.umDl.vtUs + 1) & rbCb->m.umDl.modBitMask;
 
    /* add the header to the beginning of the pdu */
    ODU_ADD_PRE_MSG_MULT_IN_ORDER(hdr, idx, pdu);
 
    datReqPduInfo->mBuf[datReqPduInfo->numPdu++] = pdu;
-   return;
-}
-
-/**
- * @brief  Handler to estimate the header size of the RLC SDUs 
- *         present in the SDU queue.
- *       
- * @details
- *     This function is used to update the estimated header size variable in RB.
- *     This function is called when a SDU is queued and when a PDU is formed and
- *     sent to the lower layer.
- *
- * @param[in] umDl  UM mode downlink control block
- *
- * @return  Void
-*/ 
-static void rlcUmmEstHdrSz(RlcUmDl *umDl)
-{
-   /* The header size is estimated as :
-          If sdu count = 0 then 0
-          else sdu count * 2 + 1; the 1 is added for the FI and SN byte; 
-          2 for one LI and E
-    */   
-   umDl->estHdrSz = (umDl->sduQ.count)?((umDl->sduQ.count << 1) + 1) : 0;
-   
    return;
 }
 
