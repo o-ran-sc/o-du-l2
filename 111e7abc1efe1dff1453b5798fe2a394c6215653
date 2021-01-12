@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "39d84820_636fd55d",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 10849,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-01-12T07:36:25Z",
+      "side": 1,
+      "message": "This can be removed as we are not triggering the modification request from CU",
+      "revId": "111e7abc1efe1dff1453b5798fe2a394c6215653",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
