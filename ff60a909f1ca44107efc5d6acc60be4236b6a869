@@ -107,6 +107,24 @@
     },
     {
       "key": {
+        "uuid": "95394bba_910b7126",
+        "filename": "src/5gnrrlc/kw_utl_dl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-01-12T04:52:32Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "8ed7991e_a85ef102",
+      "revId": "ff60a909f1ca44107efc5d6acc60be4236b6a869",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bbfbfe18_62d828bf",
         "filename": "src/cm/legtp.h",
         "patchSetId": 4
@@ -404,6 +422,24 @@
     },
     {
       "key": {
+        "uuid": "c96dc9e8_4ee13874",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-01-12T04:52:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8188647f_d0047b2b",
+      "revId": "ff60a909f1ca44107efc5d6acc60be4236b6a869",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2d189ce3_7754ba66",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 4
@@ -593,6 +629,24 @@
       "revId": "ff60a909f1ca44107efc5d6acc60be4236b6a869",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1cc39b68_f4b1f4bf",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1938,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-01-12T04:52:32Z",
+      "side": 1,
+      "message": "Since egtp tunnel creation happens at very beginning in our code i.e. during sctp connections establishment so the else part is not required now\nso removed it",
+      "parentUuid": "4667418b_f68e750a",
+      "revId": "ff60a909f1ca44107efc5d6acc60be4236b6a869",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
