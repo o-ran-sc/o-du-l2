@@ -360,7 +360,7 @@ CmStatus   status
    /* only newUeInfo needs to be freed here, ueInfo would be freed at the 
       interface or by he receipient in case of tight coupling */
    RLC_PST_FREE(pst->region, pst->pool, cfgTmpData->newUeInfo, sizeof(CkwUeInfo));
-   RLC_FREE_WC(tRlcCb, cfgTmpData, sizeof (RlcUlCfgTmpData));
+   RLC_FREE(tRlcCb, cfgTmpData, sizeof (RlcUlCfgTmpData));
    return ROK;
 } 
 

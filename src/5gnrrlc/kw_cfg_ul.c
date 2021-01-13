@@ -682,6 +682,16 @@ RlcUlCfgTmpData   *cfgTmpData
             RLC_ALLOC(gCb,
                      cfgEntData->rbCb->m.umUl.recBuf, 
                      (winLen * sizeof(RlcUmRecBuf*)));
+#ifdef NR_RLC_UL
+            uint32_t hashIndex;
+            RLC_ALLOC(gCb,
+                  cfgEntData->rbCb->m.umUl.recBufLst,
+                  (RLC_RCV_BUF_BIN_SIZE * sizeof(CmLListCp )));
+            for(hashIndex = 0; hashIndex < RLC_RCV_BUF_BIN_SIZE; hashIndex++)
+            {
+                cmLListInit(&(cfgEntData->rbCb->m.umUl.recBufLst[hashIndex]));
+            }
+#endif
          }
          else if(CM_LTE_MODE_AM == cfgToValidate->entMode)
          {

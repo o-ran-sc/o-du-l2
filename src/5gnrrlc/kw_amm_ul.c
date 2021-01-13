@@ -172,7 +172,7 @@ static uint8_t rlcAmmUlSetNackInfo(RlcUlRbCb *rbCb, RlcSn sn, bool isSegment, \
     *    4) NACK_SN is continuous with previous but previous NACK_SN segments
     *       are not missing in sequence till end
     */
-   if((*prevNackSn == 0xffffffff) || ((((*prevNackSn) + 1) & AMUL.snModMask) != sn) ||
+   if((*prevNackSn == 0xffffffff) || ((((*prevNackSn) + 1) & RLC_AMUL.snModMask) != sn) ||
 	 (((*prevNackSn) == sn) && (((nackInfo->soEnd + 1) != soStart))) ||
 	 ((nackInfo->isSegment) && (((*prevNackSn) + 1) == sn) && (nackInfo->soEnd != RLC_ALL_BYTES_MISSING)))
    {
@@ -205,11 +205,11 @@ static uint8_t rlcAmmUlSetNackInfo(RlcUlRbCb *rbCb, RlcSn sn, bool isSegment, \
 
       if(isSegment)
       {
-	 sizeToBeEncd += ((AMUL.snLen == RLC_AM_CFG_12BIT_SN_LEN)?6:7); /* NACK,E1,E2,Sostart,SoEnd */
+	 sizeToBeEncd += ((RLC_AMUL.snLen == RLC_AM_CFG_12BIT_SN_LEN)?6:7); /* NACK,E1,E2,Sostart,SoEnd */
       }
       else
       {
-	 sizeToBeEncd += ((AMUL.snLen == RLC_AM_CFG_12BIT_SN_LEN)?2:3); /* NACK,E1,E2 */
+	 sizeToBeEncd += ((RLC_AMUL.snLen == RLC_AM_CFG_12BIT_SN_LEN)?2:3); /* NACK,E1,E2 */
       }
    }
    else
@@ -221,7 +221,7 @@ static uint8_t rlcAmmUlSetNackInfo(RlcUlRbCb *rbCb, RlcSn sn, bool isSegment, \
       /* This case means there are continuous SNs/Segments. If it is the next
        * Sn then increment nackRnage. if same SN but different segment then
        * dont increment nackRange */
-      if((((*prevNackSn) + 1) & AMUL.snModMask) == sn)
+      if((((*prevNackSn) + 1) & RLC_AMUL.snModMask) == sn)
       {
 	 nackInfo->nackRange++;
       }
@@ -310,11 +310,11 @@ static void rlcAmmUlAssembleCntrlInfo(RlcCb *gCb, RlcUlRbCb *rbCb)
    }
 #endif
 
-   sn = AMUL.rxNext;
-   MODAMR(sn, mSn, AMUL.rxNext, AMUL.snModMask);
-   MODAMR(AMUL.rxHighestStatus, rxHighestStatus, AMUL.rxNext, AMUL.snModMask);
+   sn = RLC_AMUL.rxNext;
+   MODAMR(sn, mSn, RLC_AMUL.rxNext, RLC_AMUL.snModMask);
+   MODAMR(RLC_AMUL.rxHighestStatus, rxHighestStatus, RLC_AMUL.rxNext, RLC_AMUL.snModMask);
    
-   recBuf =  rlcUtlGetRecBuf(AMUL.recBufLst, sn);
+   recBuf =  rlcUtlGetRecBuf(RLC_AMUL.recBufLst, sn);
 
    while (mSn < rxHighestStatus )
    {
@@ -386,11 +386,11 @@ static void rlcAmmUlAssembleCntrlInfo(RlcCb *gCb, RlcUlRbCb *rbCb)
       }
       
 
-      sn = (sn + 1) & (AMUL.snModMask); /* MOD 1024 */
-      MODAMR(sn, mSn, AMUL.rxNext, AMUL.snModMask);
+      sn = (sn + 1) & (RLC_AMUL.snModMask); /* MOD 1024 */
+      MODAMR(sn, mSn, RLC_AMUL.rxNext, RLC_AMUL.snModMask);
       
       /* Get the received Buffer the updated/next SN */
-      recBuf =  rlcUtlGetRecBuf(AMUL.recBufLst, sn);
+      recBuf =  rlcUtlGetRecBuf(RLC_AMUL.recBufLst, sn);
 
       /* Find the next missing sequence number if nackCnt reaches maximum and
          still Reordering window has some missing AMDPDUs / AMDPDU segments. The
@@ -430,7 +430,7 @@ static void rlcAmmUlAssembleCntrlInfo(RlcCb *gCb, RlcUlRbCb *rbCb)
    /* Update ACK SN with the last sn for which feedback is not assembled */
    if ( mSn == rxHighestStatus)
    {
-      pStatusPdu->ackSn = AMUL.rxHighestStatus;
+      pStatusPdu->ackSn = RLC_AMUL.rxHighestStatus;
    }
    else
    {
@@ -443,8 +443,8 @@ static void rlcAmmUlAssembleCntrlInfo(RlcCb *gCb, RlcUlRbCb *rbCb)
 
    pStatusPdu->controlBo = staPduEncSize; /*Its already in bytes */
 
-   AMUL.staTrg = FALSE;
-   AMUL.gatherStaPduInfo = FALSE;
+   RLC_AMUL.staTrg = FALSE;
+   RLC_AMUL.gatherStaPduInfo = FALSE;
 
 
    if (rlcUlUdxStaPduReq(&sapCb->pst,
@@ -506,7 +506,7 @@ void rlcAmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
    MsgLen              rlcSduSz;  /*Holds length of Rlc Sdu*/
 #endif /* LTE_L2_MEAS */
 
-   amUl = &AMUL;
+   amUl = &RLC_AMUL;
 
    numPduToProcess = RLC_MIN(pduInfo->numPdu, RGU_MAX_PDU);
    DU_LOG("\nRLC : rlcAmmProcessPdus: numPdu[%d],numPduToProcess[%d] UEID:%d CELLID:%d",
@@ -1134,9 +1134,9 @@ static void rlcAmmUlRlsAllSegs(RlcCb *gCb, RlcAmRecBuf *recBuf)
    RLC_LLIST_FIRST_SEG(recBuf->segLst, seg);
    while (seg != NULLP)
    {
-      RLC_FREE_BUF_WC(seg->seg);
+      RLC_FREE_BUF(seg->seg);
       cmLListDelFrm(&(recBuf->segLst),&(seg->lstEnt));
-      RLC_FREE_WC(gCb,seg, sizeof(RlcSeg));
+      RLC_FREE(gCb,seg, sizeof(RlcSeg));
       RLC_LLIST_FIRST_SEG(recBuf->segLst, seg);
    }
 
@@ -1172,7 +1172,7 @@ static bool rlcAmmAddRcvdSeg(RlcCb *gCb, RlcUlRbCb *rbCb, RlcAmHdr *amHdr, Buffe
    uint16_t      expSo = 0;   /* Expected SO */
 
    soEnd = amHdr->so + pduSz - 1;
-   recBuf =  rlcUtlGetRecBuf(AMUL.recBufLst, amHdr->sn);
+   recBuf =  rlcUtlGetRecBuf(RLC_AMUL.recBufLst, amHdr->sn);
 
    if (NULLP == recBuf)
    {
@@ -1187,7 +1187,7 @@ static bool rlcAmmAddRcvdSeg(RlcCb *gCb, RlcUlRbCb *rbCb, RlcAmHdr *amHdr, Buffe
          return FALSE;
       }
 #endif /* ERRCLASS & ERRCLS_RES */
-      rlcUtlStoreRecBuf(AMUL.recBufLst, recBuf, amHdr->sn);
+      rlcUtlStoreRecBuf(RLC_AMUL.recBufLst, recBuf, amHdr->sn);
    }
    else
    {
@@ -1255,7 +1255,7 @@ static bool rlcAmmAddRcvdSeg(RlcCb *gCb, RlcUlRbCb *rbCb, RlcAmHdr *amHdr, Buffe
       cmLListInsCrnt(&recBuf->segLst, &tseg->lstEnt);
    }
    tseg->lstEnt.node = (PTR)tseg;
-   rlcAmmUpdExpByteSeg(gCb,&AMUL,tseg);
+   rlcAmmUpdExpByteSeg(gCb,&RLC_AMUL,tseg);
 
    return TRUE;
 }
@@ -1319,7 +1319,7 @@ static bool rlcAmmUlPlacePduInRecBuf(RlcCb *gCb, Buffer *pdu, RlcUlRbCb *rbCb, R
             return FALSE;
          }
 #endif /* ERRCLASS & ERRCLS_RES */
-         rlcUtlStoreRecBuf(AMUL.recBufLst, recBuf, sn);
+         rlcUtlStoreRecBuf(RLC_AMUL.recBufLst, recBuf, sn);
       }
       else if (recBuf->allRcvd != TRUE)
       {
@@ -1426,39 +1426,39 @@ static void rlcAmmTriggerStatus(RlcCb *gCb, RlcUlRbCb *rbCb, RlcSn sn, bool disc
 static void rlcAmmProcPduOrSeg(RlcCb *gCb, RlcUlRbCb *rbCb, RlcAmHdr *amHdr, Buffer *pdu)
 {
 
-   if ((AMUL.expSn != amHdr->sn) || (AMUL.expSo != amHdr->so))
+   if ((RLC_AMUL.expSn != amHdr->sn) || (RLC_AMUL.expSo != amHdr->so))
    {
       /* Release the existing partial SDU as we have PDUs or */
       /* segments that are out of sequence                   */
       rbCb->m.amUl.isOutOfSeq = TRUE;
-      RLC_FREE_BUF(AMUL.partialSdu);
+      RLC_FREE_BUF(RLC_AMUL.partialSdu);
    }
 
    //if (amHdr->fi & RLC_FI_FIRST_SEG)
    if (amHdr->si == 0x01)
    {/* first Segment of the SDU */
-      if (AMUL.partialSdu != NULLP)
+      if (RLC_AMUL.partialSdu != NULLP)
       { /* Some old SDU may be present */
-         RLC_FREE_BUF_WC(AMUL.partialSdu);
+         RLC_FREE_BUF(RLC_AMUL.partialSdu);
       }
-      AMUL.partialSdu = pdu;
+      RLC_AMUL.partialSdu = pdu;
       pdu = NULLP;
    }
    else if(amHdr->si == 0x03)
    {/* Middle or last segment of the SUD */
-      ODU_CAT_MSG(AMUL.partialSdu,pdu, M1M2);
-      RLC_FREE_BUF_WC(pdu);
+      ODU_CAT_MSG(RLC_AMUL.partialSdu,pdu, M1M2);
+      RLC_FREE_BUF(pdu);
       pdu = NULLP;
    }
    else if (amHdr->si ==  0x02)
    {
-      ODU_CAT_MSG(pdu,AMUL.partialSdu,M2M1);
-      RLC_FREE_BUF_WC(AMUL.partialSdu);
+      ODU_CAT_MSG(pdu,RLC_AMUL.partialSdu,M2M1);
+      RLC_FREE_BUF(RLC_AMUL.partialSdu);
    }
 
    if (pdu != NULLP)
    {
-      AMUL.partialSdu = NULLP;
+      RLC_AMUL.partialSdu = NULLP;
       rlcUtlSendUlDataToDu(gCb,rbCb, pdu);
    }
 
@@ -1496,27 +1496,27 @@ static uint8_t rlcAmmUlReassembleSdus(RlcCb *gCb, RlcUlRbCb *rbCb, RlcAmRecBuf *
       rlcAmmProcPduOrSeg(gCb,rbCb, &recBuf->amHdr, recBuf->pdu);
       /* Assign NULLP to recBuf->pdu as this PDU is sent to PDCP */
       recBuf->pdu = NULLP;
-      AMUL.expSn = (recBuf->amHdr.sn + 1) & (AMUL.snModMask); /* MOD 1024 */
-      AMUL.expSo = 0;
+      RLC_AMUL.expSn = (recBuf->amHdr.sn + 1) & (RLC_AMUL.snModMask); /* MOD 1024 */
+      RLC_AMUL.expSo = 0;
    }
    else
    {
       /* This is a set of segments */
       RLC_LLIST_FIRST_SEG(recBuf->segLst, seg);
-      AMUL.expSn = recBuf->amHdr.sn;
-      AMUL.expSo = 0;
+      RLC_AMUL.expSn = recBuf->amHdr.sn;
+      RLC_AMUL.expSo = 0;
       while(seg)
       {
          rlcAmmProcPduOrSeg(gCb,rbCb, &seg->amHdr, seg->seg);
-         AMUL.expSo = seg->soEnd + 1;
+         RLC_AMUL.expSo = seg->soEnd + 1;
 
          cmLListDelFrm(&(recBuf->segLst),&(seg->lstEnt));
-         RLC_FREE_WC(gCb, seg, sizeof(RlcSeg));
+         RLC_FREE(gCb, seg, sizeof(RlcSeg));
 
          RLC_LLIST_FIRST_SEG(recBuf->segLst, seg);
       }
-      AMUL.expSn = (recBuf->amHdr.sn + 1) & (AMUL.snModMask); /* MOD 1024 */
-      AMUL.expSo = 0;
+      RLC_AMUL.expSn = (recBuf->amHdr.sn + 1) & (RLC_AMUL.snModMask); /* MOD 1024 */
+      RLC_AMUL.expSo = 0;
    }
 
    return ROK;
@@ -1544,15 +1544,15 @@ Void rlcAmmUlReEstablish(RlcCb *gCb,CmLteRlcId rlcId,Bool sendReEst,RlcUlRbCb  *
 #endif
    RlcAmRecBuf   *recBuf = NULLP;
 
-   sn = AMUL.rxNext;
+   sn = RLC_AMUL.rxNext;
 
-   MODAMR(AMUL.vrMr, mVrMr, AMUL.rxNext, AMUL.snModMask);
-   MODAMR(sn, mSn, AMUL.rxNext, AMUL.snModMask);
+   MODAMR(RLC_AMUL.vrMr, mVrMr, RLC_AMUL.rxNext, RLC_AMUL.snModMask);
+   MODAMR(sn, mSn, RLC_AMUL.rxNext, RLC_AMUL.snModMask);
 
    /* Reassemble SDUs from PDUs with SN less than upper edge of the window */
    while (mSn < mVrMr)
    {
-      recBuf = rlcUtlGetRecBuf(AMUL.recBufLst, sn);
+      recBuf = rlcUtlGetRecBuf(RLC_AMUL.recBufLst, sn);
       if (NULLP != recBuf)
       {
          if (recBuf->allRcvd == TRUE)
@@ -1564,15 +1564,15 @@ Void rlcAmmUlReEstablish(RlcCb *gCb,CmLteRlcId rlcId,Bool sendReEst,RlcUlRbCb  *
             /* Remove PDU and segments */
             if(recBuf->pdu)
             {
-               RLC_FREE_BUF_WC(recBuf->pdu);
+               RLC_FREE_BUF(recBuf->pdu);
             }
             /* Release all the segments*/
             rlcAmmUlRlsAllSegs(gCb,recBuf);
          }
-         rlcUtlDelRecBuf(AMUL.recBufLst, recBuf, gCb);
+         rlcUtlDelRecBuf(RLC_AMUL.recBufLst, recBuf, gCb);
       }
-      sn = (sn + 1) & (AMUL.snModMask); /* MOD 1024 */
-      MODAMR(sn, mSn, AMUL.rxNext, AMUL.snModMask);
+      sn = (sn + 1) & (RLC_AMUL.snModMask); /* MOD 1024 */
+      MODAMR(sn, mSn, RLC_AMUL.rxNext, RLC_AMUL.snModMask);
    }
    /* Discard remaining PDUs and bytesegments in recBuf */
 
@@ -1586,18 +1586,18 @@ Void rlcAmmUlReEstablish(RlcCb *gCb,CmLteRlcId rlcId,Bool sendReEst,RlcUlRbCb  *
        rlcStopTmr(gCb,(PTR)rbCb, RLC_EVT_AMUL_STA_PROH_TMR);
    }
 
-   AMUL.rxNext  = 0;
-   AMUL.rxNextHighestRcvd  = 0;
-   AMUL.rxNextStatusTrig  = 0;
+   RLC_AMUL.rxNext  = 0;
+   RLC_AMUL.rxNextHighestRcvd  = 0;
+   RLC_AMUL.rxNextStatusTrig  = 0;
    rbCb->m.amUl.vrMr = (rbCb->m.amUl.rxNext + RLC_AM_GET_WIN_SZ(rbCb->m.amUl.snLen)) & (rbCb->m.amUl.snModMask);
-   AMUL.rxHighestStatus = 0;
-   AMUL.staTrg  = FALSE;
-   AMUL.gatherStaPduInfo = FALSE;
-   AMUL.expSn = 0;
-   AMUL.expSo = 0;
-   if (AMUL.partialSdu != NULLP)
+   RLC_AMUL.rxHighestStatus = 0;
+   RLC_AMUL.staTrg  = FALSE;
+   RLC_AMUL.gatherStaPduInfo = FALSE;
+   RLC_AMUL.expSn = 0;
+   RLC_AMUL.expSo = 0;
+   if (RLC_AMUL.partialSdu != NULLP)
    {
-     RLC_FREE_BUF(AMUL.partialSdu);
+     RLC_FREE_BUF(RLC_AMUL.partialSdu);
    }
    rlcKwuSap = gCb->u.ulCb->rlcKwuUlSap + RLC_UI_PDCP;
 
@@ -1639,7 +1639,7 @@ Void rlcAmmReOrdTmrExp(RlcCb *gCb,RlcUlRbCb *rbCb)
 
    MODAMR(sn, mSn, amUl->rxNext, amUl->snModMask);
    MODAMR(amUl->vrMr, mVrMr, amUl->rxNext, amUl->snModMask);
-   recBuf = rlcUtlGetRecBuf(AMUL.recBufLst, sn);
+   recBuf = rlcUtlGetRecBuf(RLC_AMUL.recBufLst, sn);
 
    while (mSn < mVrMr)
    {
@@ -1896,7 +1896,7 @@ Void rlcAmmFreeUlRbCb(RlcCb       *gCb,RlcUlRbCb   *rbCb)
       {
          if (recBuf->pdu != NULLP)
          {
-            RLC_FREE_BUF_WC(recBuf->pdu);
+            RLC_FREE_BUF(recBuf->pdu);
          }
          /* Release all the segments */
          rlcAmmUlRlsAllSegs(gCb,recBuf);
@@ -1906,13 +1906,13 @@ Void rlcAmmFreeUlRbCb(RlcCb       *gCb,RlcUlRbCb   *rbCb)
    }while ( curSn < windSz );
 
 #ifndef LTE_TDD 
-      RLC_FREE_WC(gCb,rbCb->m.amUl.recBufLst, (RLC_RCV_BUF_BIN_SIZE * sizeof(CmLListCp)));
+      RLC_FREE(gCb,rbCb->m.amUl.recBufLst, (RLC_RCV_BUF_BIN_SIZE * sizeof(CmLListCp)));
       rbCb->m.amUl.recBufLst = NULLP;
 #endif
 
    if(rbCb->m.amUl.partialSdu != NULLP)
    {
-      RLC_FREE_BUF_WC(rbCb->m.amUl.partialSdu);
+      RLC_FREE_BUF(rbCb->m.amUl.partialSdu);
    }
    return;
 } /* rlcAmmFreeUlRbCb */

@@ -429,7 +429,7 @@ KwuDatCfmInfo ** datCfm
    CmLList *lnk;
    CmLList *nextLnk;
 
-   txBuf = rlcUtlGetTxBuf(AMDL.txBufLst, nackSnInfo->sn);
+   txBuf = rlcUtlGetTxBuf(RLC_AMDL.txBufLst, nackSnInfo->sn);
    if (txBuf == NULLP)
    {
 	   return;
@@ -466,13 +466,13 @@ KwuDatCfmInfo ** datCfm
       nextLnk = lnk->next;
       /* Delete node from the txBuf Pdu lst */
       cmLListDelFrm(&txBuf->pduLst, lnk);
-      RLC_FREE_WC(gCb, pduInfo, sizeof(RlcDlPduInfo));
+      RLC_FREE(gCb, pduInfo, sizeof(RlcDlPduInfo));
       lnk = nextLnk;
    }
    if(!txBuf->pduLst.count)
    {
       /*No more Sdu byte segment are left. Hence delete txBuf*/
-      rlcUtlDelTxBuf(AMDL.txBufLst, txBuf,gCb);
+      rlcUtlDelTxBuf(RLC_AMDL.txBufLst, txBuf,gCb);
    }
 
    return;
@@ -512,7 +512,7 @@ KwuDatCfmInfo **datCfm
 
    /* if the NACK_SN is in the transmit buffer, move it to the re-
          transmit buffer */
-   txBuf = rlcUtlGetTxBuf(AMDL.txBufLst, nackSnInfo->sn);
+   txBuf = rlcUtlGetTxBuf(RLC_AMDL.txBufLst, nackSnInfo->sn);
    if (txBuf != NULLP)
    {
       if(nackSnInfo->isSegment)
@@ -717,7 +717,7 @@ Void rlcAmmDlHndlStatusPdu(RlcCb *gCb,RlcDlRbCb *rbCb,RlcUdxStaPdu *pStaPdu)
    rlckwuSap = gCb->u.dlCb->rlcKwuDlSap + RLC_UI_PDCP;
    /* store the re-transmission bo, to check if it changes due to the
       processing of the status pdu */
-   oldRetxBo = AMDL.retxBo;
+   oldRetxBo = RLC_AMDL.retxBo;
 
    /* Allocate memory for datCfm Info */
    RLC_SHRABL_STATIC_BUF_ALLOC(rlckwuSap->pst.region, rlckwuSap->pst.pool, datCfm, sizeof(KwuDatCfmInfo));
@@ -737,8 +737,8 @@ Void rlcAmmDlHndlStatusPdu(RlcCb *gCb,RlcDlRbCb *rbCb,RlcUdxStaPdu *pStaPdu)
    datCfm->numSduIds = 0;
    datCfm->rlcId = rbCb->rlcId;
 
-   MODAMT(pStaPdu->ackSn, mAckSn, AMDL.txNextAck,AMDL.snModMask);
-   MODAMT(AMDL.txNext,mTxNext, AMDL.txNextAck,AMDL.snModMask);
+   MODAMT(pStaPdu->ackSn, mAckSn, RLC_AMDL.txNextAck,RLC_AMDL.snModMask);
+   MODAMT(RLC_AMDL.txNext,mTxNext, RLC_AMDL.txNextAck,RLC_AMDL.snModMask);
 
    if(mAckSn > mTxNext)
    {
@@ -746,7 +746,7 @@ Void rlcAmmDlHndlStatusPdu(RlcCb *gCb,RlcDlRbCb *rbCb,RlcUdxStaPdu *pStaPdu)
                "Invalid ACK SN = %d received. Current Vta =%d"
                "UEID:%d CELLID:%d", 
                pStaPdu->ackSn,
-               AMDL.txNextAck,
+               RLC_AMDL.txNextAck,
                rbCb->rlcId.ueId,
                rbCb->rlcId.cellId);
 /*      RLC_SHRABL_STATIC_BUF_ALLOC(rlckwuSap->pst.region, rlckwuSap->pst.pool, datCfm, sizeof(KwuDatCfmInfo)); */
@@ -759,7 +759,7 @@ Void rlcAmmDlHndlStatusPdu(RlcCb *gCb,RlcDlRbCb *rbCb,RlcUdxStaPdu *pStaPdu)
    rlcAmmDlCheckAndStopPollTmr(gCb, rbCb, mAckSn);
 
    /* Set the first node in retx list to retxNode */
-   retxNode = AMDL.retxLst.first;
+   retxNode = RLC_AMDL.retxLst.first;
 
    /* If NACK exists in control PDU */
    if (pStaPdu->nackCnt)
@@ -768,7 +768,7 @@ Void rlcAmmDlHndlStatusPdu(RlcCb *gCb,RlcDlRbCb *rbCb,RlcUdxStaPdu *pStaPdu)
       RlcNackInfo nackSnInfo;
       RlcSn   mNackSn;
       RlcSn   txNextAck;
-      RlcSn   transWinStartSn = AMDL.txNextAck; /*used to track the SN from which 
+      RlcSn   transWinStartSn = RLC_AMDL.txNextAck; /*used to track the SN from which 
                                            to start processing the transmission
                                            buffer */
       uint32_t    idx = 0;
@@ -801,10 +801,10 @@ Void rlcAmmDlHndlStatusPdu(RlcCb *gCb,RlcDlRbCb *rbCb,RlcUdxStaPdu *pStaPdu)
          /* move transWinStartSn to nackSnInfo.sn + 1, as the pdu's before that
             will be removed from the buffer */
          transWinStartSn = (nackSnInfo.sn + (nackSnInfo.nackRange ?\
-                  (nackSnInfo.nackRange - 1) : 0) + 1) & AMDL.snModMask;
+                  (nackSnInfo.nackRange - 1) : 0) + 1) & RLC_AMDL.snModMask;
         
         /* Clear the acked SNs from the retx list */
-         MODAMT(nackSnInfo.sn, mNackSn, AMDL.txNextAck,AMDL.snModMask);
+         MODAMT(nackSnInfo.sn, mNackSn, RLC_AMDL.txNextAck,RLC_AMDL.snModMask);
 
          if ((mNackSn > mAckSn) || (mNackSn >= mTxNext))
          {
@@ -833,12 +833,12 @@ Void rlcAmmDlHndlStatusPdu(RlcCb *gCb,RlcDlRbCb *rbCb,RlcUdxStaPdu *pStaPdu)
              * nack sn*/
             do
             {
-               RlcDlAmmGetNackSnInfoFrmNackRangeIdx(&AMDL, &pStaPdu->nackInfo[idx],
+               RlcDlAmmGetNackSnInfoFrmNackRangeIdx(&RLC_AMDL, &pStaPdu->nackInfo[idx],
                                                    retxNode, &nackSnInfo, idx1);
                
                rlcAmmDlUpdateTxAndReTxBufForNackSn(gCb, rbCb, &nackSnInfo,
                                                   &retxNode, &datCfm);
-               nackSnInfo.sn = ((nackSnInfo.sn + 1) & (AMDL.snModMask)); 
+               nackSnInfo.sn = ((nackSnInfo.sn + 1) & (RLC_AMDL.snModMask)); 
                gRlcStats.amRlcStats.numRlcAmCellNackRx++;
 
             }while((++idx1) < (nackSnInfo.nackRange));
@@ -852,7 +852,7 @@ Void rlcAmmDlHndlStatusPdu(RlcCb *gCb,RlcDlRbCb *rbCb,RlcUdxStaPdu *pStaPdu)
       rlcAmmDlUpdateTxAndReTxBufForAckSn(gCb,rbCb, mAckSn, retxNode, &datCfm);
 
       /* Update txNextAck */
-      rlcAmmDlSetTxNextAck(&AMDL,txNextAck);
+      rlcAmmDlSetTxNextAck(&RLC_AMDL,txNextAck);
    }
    else
    {
@@ -867,7 +867,7 @@ Void rlcAmmDlHndlStatusPdu(RlcCb *gCb,RlcDlRbCb *rbCb,RlcUdxStaPdu *pStaPdu)
       rlcAmmDlUpdateTxAndReTxBufForAckSn(gCb,rbCb, mAckSn, retxNode, &datCfm);
       
       /* update txNextAck */
-      rlcAmmDlSetTxNextAck(&AMDL, pStaPdu->ackSn); 
+      rlcAmmDlSetTxNextAck(&RLC_AMDL, pStaPdu->ackSn); 
    }
 
    if(datCfm->numSduIds != 0)
@@ -893,12 +893,12 @@ Void rlcAmmDlHndlStatusPdu(RlcCb *gCb,RlcDlRbCb *rbCb,RlcUdxStaPdu *pStaPdu)
    }
 
    /* Fix for memory corruption */
-   RLC_LLIST_FIRST_RETX(AMDL.retxLst, AMDL.nxtRetx);
-   /* BO update, if retransmission BO has changed. AMDL.retxBo would have
+   RLC_LLIST_FIRST_RETX(RLC_AMDL.retxLst, RLC_AMDL.nxtRetx);
+   /* BO update, if retransmission BO has changed. RLC_AMDL.retxBo would have
       canged inside the above called functions */
-   if (oldRetxBo != AMDL.retxBo)
+   if (oldRetxBo != RLC_AMDL.retxBo)
    {
-      rlcAmmSendDedLcBoStatus(gCb, rbCb, &AMDL);
+      rlcAmmSendDedLcBoStatus(gCb, rbCb, &RLC_AMDL);
    }
 
    return;
@@ -1018,26 +1018,26 @@ dlrate_kwu += sdu->sduSz;
 #endif   
    /* Update nxtTx to point to the added sdu if this is the first SDU in the
     * queue */
-   if (AMDL.nxtTx == NULLP)
+   if (RLC_AMDL.nxtTx == NULLP)
    {
       DU_LOG("\nRLC : rlcAmmQSdu: Received SDU will be transmitted next \
          UEID:%d CELLID:%d", rbCb->rlcId.ueId, rbCb->rlcId.cellId);
-      AMDL.nxtTx = sdu;
+      RLC_AMDL.nxtTx = sdu;
    }
 
    /* Add sdu to the sdu list */
-   cmLListAdd2Tail(&AMDL.sduQ, &sdu->lstEnt);
+   cmLListAdd2Tail(&RLC_AMDL.sduQ, &sdu->lstEnt);
    sdu->lstEnt.node = (PTR)sdu;
 #ifdef LTE_L2_MEAS
 #ifndef L2_L3_SPLIT
 #ifdef TENB_STATS
    if (rbCb->ueCb->tenbStats)
    {
-      if (AMDL.sduQ.count > rbCb->ueCb->tenbStats->stats.nonPersistent.rlc.dlMaxPktsInSduQ)
+      if (RLC_AMDL.sduQ.count > rbCb->ueCb->tenbStats->stats.nonPersistent.rlc.dlMaxPktsInSduQ)
       {
-         rbCb->ueCb->tenbStats->stats.nonPersistent.rlc.dlMaxPktsInSduQ = AMDL.sduQ.count;
+         rbCb->ueCb->tenbStats->stats.nonPersistent.rlc.dlMaxPktsInSduQ = RLC_AMDL.sduQ.count;
       }
-      rlcWinSz = RLC_AM_TRANS_WIN_SIZE(&AMDL);
+      rlcWinSz = RLC_AM_TRANS_WIN_SIZE(&RLC_AMDL);
       if (rlcWinSz > rbCb->ueCb->tenbStats->stats.nonPersistent.rlc.dlMaxWindowSz)
       {
          rbCb->ueCb->tenbStats->stats.nonPersistent.rlc.dlMaxWindowSz = rlcWinSz;
@@ -1047,14 +1047,14 @@ dlrate_kwu += sdu->sduSz;
 #endif
 #endif
    /* Update BO and estimate header size for the current BO */ 
-   AMDL.bo = AMDL.bo + sdu->sduSz;
-  if(AMDL.snLen == RLC_AM_CFG_12BIT_SN_LEN)
+   RLC_AMDL.bo = RLC_AMDL.bo + sdu->sduSz;
+  if(RLC_AMDL.snLen == RLC_AM_CFG_12BIT_SN_LEN)
   {
-     AMDL.estHdrSz += 2;
+     RLC_AMDL.estHdrSz += 2;
   }
   else
   {
-     AMDL.estHdrSz += 3;
+     RLC_AMDL.estHdrSz += 3;
   }
 #ifdef LTE_L2_MEAS_RLC
    /* Update numActUe if it is not active */
@@ -1068,7 +1068,7 @@ dlrate_kwu += sdu->sduSz;
 
    if(!rlcDlUtlIsReestInProgress(rbCb))
    {
-      rlcAmmSendDedLcBoStatus(gCb, rbCb, &AMDL);
+      rlcAmmSendDedLcBoStatus(gCb, rbCb, &RLC_AMDL);
    }
 
    return;
@@ -1114,17 +1114,17 @@ static void rlcAmmDlAssembleCntrlInfo(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rl
                              sapCb->suId, &(rbCb->rlcId));
 	  
       /* Update number of pdus in pduInfo */
-      rlcDatReq->pduInfo.mBuf[rlcDatReq->pduInfo.numPdu] = AMDL.mBuf; 
+      rlcDatReq->pduInfo.mBuf[rlcDatReq->pduInfo.numPdu] = RLC_AMDL.mBuf; 
       rlcDatReq->pduInfo.numPdu++;
       gRlcStats.amRlcStats.numDLStaPduSent++;
 
       RLC_FREE_SHRABL_BUF(gCb->u.dlCb->udxDlSap->pst.region, 
                          gCb->u.dlCb->udxDlSap->pst.pool,
-                         AMDL.pStaPdu,
+                         RLC_AMDL.pStaPdu,
                          sizeof(RlcUdxDlStaPdu));
 
-      AMDL.pStaPdu = NULLP;
-      AMDL.mBuf = NULLP;
+      RLC_AMDL.pStaPdu = NULLP;
+      RLC_AMDL.mBuf = NULLP;
       gRlcStats.amRlcStats.numDLStaPduSent++;
    }
 
@@ -1165,16 +1165,16 @@ void rlcAmmProcessSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq, bool f
     * flag will always be TRUE. In CA case, for PCELL it is TRUE and for SCEll
     * it is FALSE */ 
 
-   if ((AMDL.cntrlBo != 0) 
+   if ((RLC_AMDL.cntrlBo != 0) 
 #ifdef LTE_ADV
         && (fillCtrlPdu)
 #endif
                                )
    {
       rlcDatReq->boRep.staPduPrsnt = TRUE;
-      rlcDatReq->boRep.staPduBo = AMDL.cntrlBo;
+      rlcDatReq->boRep.staPduBo = RLC_AMDL.cntrlBo;
 
-      if (AMDL.pStaPdu != NULLP)
+      if (RLC_AMDL.pStaPdu != NULLP)
       {
          rlcAmmDlAssembleCntrlInfo (gCb, rbCb, rlcDatReq);
       }
@@ -1183,35 +1183,35 @@ void rlcAmmProcessSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq, bool f
          DU_LOG("\nRLC: rlcAmmProcessSdus: Miscomputation of control Bo. \
 	    UEID:%d CELLID:%d", rbCb->rlcId.ueId, rbCb->rlcId.cellId);
       }
-      AMDL.cntrlBo = 0;
+      RLC_AMDL.cntrlBo = 0;
    }   
 
    /* Retransmit PDUs /portions of PDUs available in retxLst */
-   if ((rlcDatReq->pduSz > 0) && (AMDL.nxtRetx != NULLP))
+   if ((rlcDatReq->pduSz > 0) && (RLC_AMDL.nxtRetx != NULLP))
    {
       rlcResegRetxPdus (gCb,rbCb, rlcDatReq);
    }
 
    /* Assemble SDUs to form new PDUs */ 
-   if ((rlcDatReq->pduSz > 0) && (AMDL.nxtTx != 0))
+   if ((rlcDatReq->pduSz > 0) && (RLC_AMDL.nxtTx != 0))
    {
       rlcAssembleSdus(gCb,rbCb, rlcDatReq); 
    }
   
-   if (AMDL.nxtRetx != NULLP)
+   if (RLC_AMDL.nxtRetx != NULLP)
    {
-      rlcDatReq->boRep.oldestSduArrTime = AMDL.nxtRetx->sduMap.sdu->arrTime;
+      rlcDatReq->boRep.oldestSduArrTime = RLC_AMDL.nxtRetx->sduMap.sdu->arrTime;
    }
-   else if (AMDL.nxtTx != NULLP)
+   else if (RLC_AMDL.nxtTx != NULLP)
    {
-      rlcDatReq->boRep.oldestSduArrTime = AMDL.nxtTx->arrTime;
+      rlcDatReq->boRep.oldestSduArrTime = RLC_AMDL.nxtTx->arrTime;
    }
    /* Accumulate bo */
-   rlcDatReq->boRep.bo = rlcAmmCalculateBo(&AMDL);
-   rlcDatReq->boRep.staPduBo = AMDL.cntrlBo;
+   rlcDatReq->boRep.bo = rlcAmmCalculateBo(&RLC_AMDL);
+   rlcDatReq->boRep.staPduBo = RLC_AMDL.cntrlBo;
 
    /* Hdr estimation is moved to kwAmmCreatePDu */
-   rlcDatReq->boRep.estHdrSz = AMDL.estHdrSz;
+   rlcDatReq->boRep.estHdrSz = RLC_AMDL.estHdrSz;
 
    if(rlcDatReq->pduSz > 0)
    {
@@ -1241,7 +1241,7 @@ void rlcAmmProcessSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq, bool f
 static void rlcSplitPdu(RlcCb *gCb, RlcDlRbCb *rbCb, RlcRetx *crnt, RlcRetx *next, uint16_t size)
 {
    uint8_t        si;
-   RlcAmDl        *amDl = &AMDL;
+   RlcAmDl        *amDl = &RLC_AMDL;
 
    /* Set the SN for the new segment */
    next->amHdr.sn = crnt->amHdr.sn;
@@ -1310,9 +1310,9 @@ static void rlcSplitPdu(RlcCb *gCb, RlcDlRbCb *rbCb, RlcRetx *crnt, RlcRetx *nex
    }
 
    /* Add the next to the retx list */
-   AMDL.retxLst.crnt = &crnt->lstEnt;
-   CM_LLIST_INS_AFT_CRNT(AMDL.retxLst, next); 
-   AMDL.nxtRetx = next;
+   RLC_AMDL.retxLst.crnt = &crnt->lstEnt;
+   CM_LLIST_INS_AFT_CRNT(RLC_AMDL.retxLst, next); 
+   RLC_AMDL.nxtRetx = next;
    amDl->estHdrSz += next->hdrSz;
    
    return;
@@ -1358,7 +1358,7 @@ static void rlcResegRetxPdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
    uint8_t     numSdus;
 #endif
 
-   amDl  = &AMDL;
+   amDl  = &RLC_AMDL;
 #ifdef LTE_L2_MEAS
    /* TODO : This shoould be taken care in new Trasmissions */
    /* This lchInfo should be retrieved there */
@@ -1423,7 +1423,7 @@ static void rlcResegRetxPdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
          RLC_UPD_POLL_BIT(gCb, retx, pollBit);
 
          rlcDatReq->pduSz  -= pduSz;
-         AMDL.estHdrSz    -= retx->hdrSz;
+         RLC_AMDL.estHdrSz    -= retx->hdrSz;
 #ifdef LTE_L2_MEAS   
 
          if (rbCb->rlcId.rbType == CM_LTE_DRB)
@@ -1578,7 +1578,7 @@ static void rlcAssembleSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
 {
    Buffer          *pdu         = NULLP;
    MsgLen          macGrntSz    = rlcDatReq->pduSz;
-   RlcAmDl          *amDl        = &AMDL;
+   RlcAmDl          *amDl        = &RLC_AMDL;
    RlcSdu           *sdu         = amDl->nxtTx;
    RlcSduMap        sduMap;
    bool            nxtTxUpd     = FALSE;
@@ -2199,17 +2199,17 @@ RlcDlPduInfo *pduInfo, Buffer *pdu)
  */
 static Void rlcRemRetxPdu(RlcCb *gCb,RlcDlRbCb *rbCb,RlcRetx *retx)
 {
-   cmLListDelFrm(&AMDL.retxLst, &retx->lstEnt); 
+   cmLListDelFrm(&RLC_AMDL.retxLst, &retx->lstEnt); 
 
-   if( AMDL.retxLst.count == 0)
+   if( RLC_AMDL.retxLst.count == 0)
    {
-      AMDL.nxtRetx = NULLP;
+      RLC_AMDL.nxtRetx = NULLP;
    }
 
    if(retx->pendingReTrans == TRUE)
    {
-      AMDL.retxBo -= retx->segSz;
-      AMDL.estHdrSz -= retx->hdrSz;
+      RLC_AMDL.retxBo -= retx->segSz;
+      RLC_AMDL.estHdrSz -= retx->hdrSz;
    }
 
    rlcUtlAddReTxPduToBeFreedQueue(gCb, retx);
@@ -2236,7 +2236,7 @@ static Void rlcRemRetxPdu(RlcCb *gCb,RlcDlRbCb *rbCb,RlcRetx *retx)
  */
 static Void rlcAmmDlMarkPduForReTx(RlcCb *gCb,RlcDlRbCb *rbCb,RlcRetx *retx)
 {
-   if (AMDL.maxReTxReached == TRUE)
+   if (RLC_AMDL.maxReTxReached == TRUE)
    {
       return;
    }
@@ -2246,10 +2246,10 @@ static Void rlcAmmDlMarkPduForReTx(RlcCb *gCb,RlcDlRbCb *rbCb,RlcRetx *retx)
       retx->pendingReTrans = TRUE;
       ++retx->retxCnt;
 
-      AMDL.retxBo   += retx->segSz;
-      AMDL.estHdrSz += retx->hdrSz;
+      RLC_AMDL.retxBo   += retx->segSz;
+      RLC_AMDL.estHdrSz += retx->hdrSz;
 
-      if (retx->retxCnt > AMDL.maxRetx)
+      if (retx->retxCnt > RLC_AMDL.maxRetx)
       {
          /* RLC_DL_MAX_RETX fix */
          /* Marking the RB stalled for DL scheduling. This is to avoid unnecessary */
@@ -2273,9 +2273,9 @@ static Void rlcAmmDlMarkPduForReTx(RlcCb *gCb,RlcDlRbCb *rbCb,RlcRetx *retx)
       }
 
 
-      if (AMDL.nxtRetx == NULLP)
+      if (RLC_AMDL.nxtRetx == NULLP)
       {
-         AMDL.nxtRetx = retx;
+         RLC_AMDL.nxtRetx = retx;
       }
 
       gRlcStats.amRlcStats.numDLRetransPdus++;
@@ -2355,7 +2355,7 @@ KwuDatCfmInfo    **datCfm
       }
 
       /* Remove SDU from the sduQ */
-      cmLListDelFrm(&AMDL.sduQ, &sdu->lstEnt);
+      cmLListDelFrm(&RLC_AMDL.sduQ, &sdu->lstEnt);
       rlcUtlAddSduToBeFreedQueue(gCb, sdu);
       rlcUtlRaiseDlCleanupEvent(gCb);
    }
@@ -2388,7 +2388,7 @@ KwuDatCfmInfo    **datCfm
 {
    CmLList *pduNode;
   
-   RlcTx *txBuf = rlcUtlGetTxBuf(AMDL.txBufLst, sn);
+   RlcTx *txBuf = rlcUtlGetTxBuf(RLC_AMDL.txBufLst, sn);
    
    if (txBuf == NULLP)
    {
@@ -2408,7 +2408,7 @@ KwuDatCfmInfo    **datCfm
    rlcUtlAddTxPduToBeFreedQueue(gCb, txBuf);
    rlcUtlRaiseDlCleanupEvent(gCb);
    /* so that it is not processed again */
-   rlcUtlRemovTxBuf(AMDL.txBufLst, txBuf, gCb);
+   rlcUtlRemovTxBuf(RLC_AMDL.txBufLst, txBuf, gCb);
 
    return;
 }
@@ -2683,12 +2683,12 @@ Void rlcAmmPollRetxTmrExp(RlcCb *gCb,RlcDlRbCb *rbCb)
       {
          rlcAmmDlMoveFrmTxtoRetxBuffer(gCb,amDl, &retx, sn); 
          
-         if (AMDL.nxtRetx == NULLP)
+         if (RLC_AMDL.nxtRetx == NULLP)
          {
-            AMDL.nxtRetx = retx;
+            RLC_AMDL.nxtRetx = retx;
          }
          
-         rlcAmmSendDedLcBoStatus(gCb, rbCb, &AMDL);         
+         rlcAmmSendDedLcBoStatus(gCb, rbCb, &RLC_AMDL);         
          return;
       }
       /* Get the last node in retxLst */
@@ -2698,7 +2698,7 @@ Void rlcAmmPollRetxTmrExp(RlcCb *gCb,RlcDlRbCb *rbCb)
       if (retx != NULLP)
       {
          rlcAmmDlMarkPduForReTx(gCb, rbCb, retx);
-         rlcAmmSendDedLcBoStatus(gCb, rbCb, &AMDL);         
+         rlcAmmSendDedLcBoStatus(gCb, rbCb, &RLC_AMDL);         
       }
    }
 
@@ -2742,7 +2742,7 @@ KwuDatCfmInfo   **datCfm
    {
       retx = (RlcRetx *)(retxNode->node);
       retxNode = retxNode->next;
-      MODAMT(retx->amHdr.sn, mSn, AMDL.txNextAck,AMDL.snModMask);
+      MODAMT(retx->amHdr.sn, mSn, RLC_AMDL.txNextAck,RLC_AMDL.snModMask);
       if (mSn < mAckSn) 
       {
          rlcAmmDlProcessSuccessfulReTx(gCb,rbCb, retx, datCfm);
@@ -2753,11 +2753,11 @@ KwuDatCfmInfo   **datCfm
       acknowledged by the ACK_SN*/
    /* start from the starting of the transmission window and remove till just
       before ACK_SN*/
-   mSn = 0;       /* same as MODAMT(AMDL.txNextAck, mSn, AMDL.txNextAck);*/
-   sn = AMDL.txNextAck;
+   mSn = 0;       /* same as MODAMT(RLC_AMDL.txNextAck, mSn, RLC_AMDL.txNextAck);*/
+   sn = RLC_AMDL.txNextAck;
    while(mSn < mAckSn)
    {
-      txBuf = rlcUtlGetTxBuf(AMDL.txBufLst, sn);
+      txBuf = rlcUtlGetTxBuf(RLC_AMDL.txBufLst, sn);
       if (txBuf != NULLP)
       {
          RLOG_ARG3(L_UNUSED,DBG_RBID,rbCb->rlcId.rbId, 
@@ -2770,8 +2770,8 @@ KwuDatCfmInfo   **datCfm
          rlcAmmDlProcessSuccessfulTxPdu(gCb,rbCb, sn, datCfm);
       }
       
-      sn = (sn + 1) & AMDL.snModMask;
-      MODAMT(sn, mSn, AMDL.txNextAck,AMDL.snModMask);
+      sn = (sn + 1) & RLC_AMDL.snModMask;
+      MODAMT(sn, mSn, RLC_AMDL.txNextAck,RLC_AMDL.snModMask);
    }
 
    return;
@@ -2811,7 +2811,7 @@ KwuDatCfmInfo   **datCfm
    while (*retxNode)
    {
       retx = (RlcRetx *)((*retxNode)->node);
-      MODAMT(retx->amHdr.sn, mSn, AMDL.txNextAck,AMDL.snModMask);
+      MODAMT(retx->amHdr.sn, mSn, RLC_AMDL.txNextAck,RLC_AMDL.snModMask);
       if (mSn < mNackSn)
       {
          (*retxNode) = (*retxNode)->next;
@@ -2824,12 +2824,12 @@ KwuDatCfmInfo   **datCfm
    }
 
    /* Remove all pdus with SN < NACK_SN from the transmission buffer */ 
-   MODAMT(sn, mSn, AMDL.txNextAck,AMDL.snModMask);
+   MODAMT(sn, mSn, RLC_AMDL.txNextAck,RLC_AMDL.snModMask);
    while (mSn < mNackSn)
    {
       /* this if check seems redundant,why should mSn ever be mTxSn 
          (which actually is VT(A) */
-      txBuf = rlcUtlGetTxBuf(AMDL.txBufLst, sn);
+      txBuf = rlcUtlGetTxBuf(RLC_AMDL.txBufLst, sn);
       if ((txBuf != NULLP)) 
       {
          RLOG_ARG3(L_DEBUG,DBG_RBID, rbCb->rlcId.rbId, 
@@ -2842,8 +2842,8 @@ KwuDatCfmInfo   **datCfm
          rlcAmmDlProcessSuccessfulTxPdu(gCb,rbCb, sn, datCfm);
       }
 
-      sn = (sn + 1) & AMDL.snModMask;
-      MODAMT(sn, mSn, AMDL.txNextAck,AMDL.snModMask);
+      sn = (sn + 1) & RLC_AMDL.snModMask;
+      MODAMT(sn, mSn, RLC_AMDL.txNextAck,RLC_AMDL.snModMask);
    }
    
    return;
@@ -3007,7 +3007,7 @@ RlcSn          sn
       
       /* Delete node from the txBuf Pdu lst */
       cmLListDelFrm(&txBuf->pduLst, txBuf->pduLst.first);
-      RLC_FREE_WC(gCb, pduInfo, sizeof(RlcDlPduInfo));
+      RLC_FREE(gCb, pduInfo, sizeof(RlcDlPduInfo));
    }
    /* Remove PDU from txBuf */
    rlcUtlDelTxBuf(amDl->txBufLst, txBuf,gCb); 
@@ -3077,7 +3077,7 @@ static void rlcAmmCreateStatusPdu(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDat
     RlcNackInfo      *rlcNackInfo;
     uint16_t         nkCnt = 0;
 
-    pStaPdu = AMDL.pStaPdu;
+    pStaPdu = RLC_AMDL.pStaPdu;
 
 
     /* D/C| CPT| */
@@ -3346,8 +3346,8 @@ static void rlcAmmCreateStatusPdu(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDat
     ODU_ADD_POST_MSG_MULT(cntrlPdu, cntrlPduSz, mBuf);
 
     rlcDatReq->pduSz -= cntrlPduSz;
-    /* Add mBuf to AMDL.mBuf */
-    AMDL.mBuf = mBuf;
+    /* Add mBuf to RLC_AMDL.mBuf */
+    RLC_AMDL.mBuf = mBuf;
  
     return;
 }

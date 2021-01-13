@@ -113,15 +113,15 @@ Void PrintRLCStats(Void)
                      ulInst->genSts.pdusRecv,
                      ulInst->genSts.unexpPdusRecv,
                      ulInst->genSts.errorPdusRecv);
-   RLOG4(L_ALWAYS,"RLC Stats: AMDL: "
+   RLOG4(L_ALWAYS,"RLC Stats: RLC_AMDL: "
                      "StaPduSent:%lu NacksInStaPdu:%lu BytesUnused:%lu PollTimerExpires SRB:%lu ",
                      gRlcStats.amRlcStats.numDLStaPduSent, gRlcStats.amRlcStats.numDLNacksInStaPdu, 
                      gRlcStats.amRlcStats.numDLBytesUnused, gRlcStats.amRlcStats.numDLPollTimerExpiresSrb);
-   RLOG3(L_ALWAYS,"RLC Stats: AMDL: "
+   RLOG3(L_ALWAYS,"RLC Stats: RLC_AMDL: "
                      "DRB:%lu MaxRetx:%lu RetransPdus:%lu", 
                      gRlcStats.amRlcStats.numDLPollTimerExpiresDrb, gRlcStats.amRlcStats.numDLMaxRetx, 
                      gRlcStats.amRlcStats.numDLRetransPdus);
-   RLOG4(L_ALWAYS,"RLC Stats: AMUL: "
+   RLOG4(L_ALWAYS,"RLC Stats: RLC_AMUL: "
                      " PdusDiscarded:%lu ReOrdTimerExpires:%lu StaPduRcvd:%lu NackInStaPduRcvd:%lu ", 
                      gRlcStats.amRlcStats.numULPdusDiscarded, gRlcStats.amRlcStats.numULReOrdTimerExpires, 
                      gRlcStats.amRlcStats.numULStaPduRcvd, gRlcStats.amRlcStats.numULNackInStaPduRcvd);
@@ -136,8 +136,8 @@ Void PrintRLCStats(Void)
                      ulInst->genSts.unexpPdusRecv,
                      ulInst->genSts.errorPdusRecv);
    RTLIN_DUMP_DEBUG("RLC Stats:"
-                    "AMDL: StaPduSent:%lu NacksInStaPdu:%lu BytesUnused:%lu PollTimerExpires SRB:%lu DRB:%lu MaxRetx:%lu RetransPdus:%lu \n"
-                    "AMUL: PdusDiscarded:%lu ReOrdTimerExpires:%lu StaPduRcvd:%lu NackInStaPduRcvd:%lu \n", 
+                    "RLC_AMDL: StaPduSent:%lu NacksInStaPdu:%lu BytesUnused:%lu PollTimerExpires SRB:%lu DRB:%lu MaxRetx:%lu RetransPdus:%lu \n"
+                    "RLC_AMUL: PdusDiscarded:%lu ReOrdTimerExpires:%lu StaPduRcvd:%lu NackInStaPduRcvd:%lu \n", 
                      gRlcStats.amRlcStats.numDLStaPduSent, gRlcStats.amRlcStats.numDLNacksInStaPdu, gRlcStats.amRlcStats.numDLBytesUnused, 
                      gRlcStats.amRlcStats.numDLPollTimerExpiresSrb, gRlcStats.amRlcStats.numDLPollTimerExpiresDrb, gRlcStats.amRlcStats.numDLMaxRetx, 
                      gRlcStats.amRlcStats.numDLRetransPdus, gRlcStats.amRlcStats.numULPdusDiscarded, gRlcStats.amRlcStats.numULReOrdTimerExpires, 
@@ -159,21 +159,21 @@ Void PrintRLCStats(Void)
                      ulInst->genSts.pdusRecv,
                      ulInst->genSts.unexpPdusRecv,
                      ulInst->genSts.errorPdusRecv);
-   RLOG4(L_ALWAYS,"RLC Stats: AMDL: "
+   RLOG4(L_ALWAYS,"RLC Stats: RLC_AMDL: "
                      "StaPduSent:%lu NacksInStaPdu:%lu BytesUnused:%lu PollTimerExpires SRB:%lu ",
                      gRlcStats.amRlcStats.numDLStaPduSent, gRlcStats.amRlcStats.numDLNacksInStaPdu, 
                      gRlcStats.amRlcStats.numDLBytesUnused, gRlcStats.amRlcStats.numDLPollTimerExpiresSrb);
-   RLOG3(L_ALWAYS,"RLC Stats: AMDL: "
+   RLOG3(L_ALWAYS,"RLC Stats: RLC_AMDL: "
                      "DRB:%lu MaxRetx:%lu RetransPdus:%lu", 
                      gRlcStats.amRlcStats.numDLPollTimerExpiresDrb, gRlcStats.amRlcStats.numDLMaxRetx, 
                      gRlcStats.amRlcStats.numDLRetransPdus);
-   RLOG4(L_ALWAYS,"RLC Stats: AMUL: "
+   RLOG4(L_ALWAYS,"RLC Stats: RLC_AMUL: "
                      " PdusDiscarded:%lu ReOrdTimerExpires:%lu StaPduRcvd:%lu NackInStaPduRcvd:%lu ", 
                      gRlcStats.amRlcStats.numULPdusDiscarded, gRlcStats.amRlcStats.numULReOrdTimerExpires, 
                      gRlcStats.amRlcStats.numULStaPduRcvd, gRlcStats.amRlcStats.numULNackInStaPduRcvd);
  /*  RTLIN_DUMP_DEBUG("AM RLC Stats:"
-                    "AMDL: SDUs Tx :(%u) SDU Bytes Tx :(%u) SDUs Retx :(%u) MaxRetx:(%u) WindowStalls: (%u) \n"
-                    "AMUL: DropOutWinRx :(%u) SDUs Rx :(%u) SDU Bytes Rx :(%u) SDUNack Rx :(%u) Duplicate Pdu Rx :(%u) \n",
+                    "RLC_AMDL: SDUs Tx :(%u) SDU Bytes Tx :(%u) SDUs Retx :(%u) MaxRetx:(%u) WindowStalls: (%u) \n"
+                    "RLC_AMUL: DropOutWinRx :(%u) SDUs Rx :(%u) SDU Bytes Rx :(%u) SDUNack Rx :(%u) Duplicate Pdu Rx :(%u) \n",
                      gRlcStats.amRlcStats.numRlcAmCellSduTx, gRlcStats.amRlcStats.numRlcAmCellSduBytesTx,
                      gRlcStats.amRlcStats.numRlcAmCellRetxPdu, gRlcStats.amRlcStats.numRlcAmMaxRetx, gRlcStats.amRlcStats.numRlcAmCellWinStall,
                      gRlcStats.amRlcStats.numRlcAmCellDropOutWinRx, gRlcStats.amRlcStats.numRlcAmCellSduRx,
@@ -188,10 +188,10 @@ Void PrintRLCStats(Void)
                      ulInst->genSts.pdusRecv,
                      ulInst->genSts.unexpPdusRecv,
                      ulInst->genSts.errorPdusRecv);
-   RTLIN_DUMP_DEBUG("AMDL: StaPduSent:%u NacksInStaPdu:%u BytesUnused:%u PollTimerExpires SRB:%u DRB:%u MaxRetx:%u RetransPdus:%u \n"
+   RTLIN_DUMP_DEBUG("RLC_AMDL: StaPduSent:%u NacksInStaPdu:%u BytesUnused:%u PollTimerExpires SRB:%u DRB:%u MaxRetx:%u RetransPdus:%u \n"
                     "      SDUs Tx :(%u) SDU Bytes Tx :(%u) SDUs Retx :(%u) WindowStalls: (%u) \n"
 
-                    "AMUL: PdusDiscarded:%u ReOrdTimerExpires:%u StaPduRcvd:%u NackInStaPduRcvd:%u \n"
+                    "RLC_AMUL: PdusDiscarded:%u ReOrdTimerExpires:%u StaPduRcvd:%u NackInStaPduRcvd:%u \n"
                     "      DropOutWinRx :(%u) SDUs Rx :(%u) SDU Bytes Rx :(%u) SDUNack Rx :(%u) Duplicate Pdu Rx:(%u) \n", 
                      gRlcStats.amRlcStats.numDLStaPduSent, gRlcStats.amRlcStats.numDLNacksInStaPdu, gRlcStats.amRlcStats.numDLBytesUnused, 
                      gRlcStats.amRlcStats.numDLPollTimerExpiresSrb, gRlcStats.amRlcStats.numDLPollTimerExpiresDrb,
@@ -490,8 +490,8 @@ uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
                   datIndSz += len; 
                }
                datReqTb->lchData[count].setMaxUlPrio = FALSE;
-               if (RLC_AM_IS_POLL_BIT_SET(AMDL) && 
-                   (AMDL.sduQ.count > 1))
+               if (RLC_AM_IS_POLL_BIT_SET(RLC_AMDL) && 
+                   (RLC_AMDL.sduQ.count > 1))
                { 
                   /* Poll bit is set indicate to MAC*/
                   datReqTb->lchData[count].setMaxUlPrio = TRUE;
@@ -623,7 +623,7 @@ uint8_t rlcUtlSendDedLcBoStatus(RlcCb *gCb, RlcDlRbCb *rbCb, int32_t bo, \
 
 #ifndef TENB_ACC
    if ((rbCb->lastRprtdBoToMac > (uint32_t)8000) && (rbCb->boUnRprtdCnt < (uint32_t)5) 
-       && (!staPduPrsnt) && ((CM_LTE_MODE_AM == rbCb->mode ) && (AMDL.nxtRetx == NULLP)))
+       && (!staPduPrsnt) && ((CM_LTE_MODE_AM == rbCb->mode ) && (RLC_AMDL.nxtRetx == NULLP)))
    {
       rbCb->boUnRprtdCnt++;
       return ROK;
@@ -1033,12 +1033,12 @@ static Bool rlcUtlFreeDlAmRbMemory(RlcCb *gCb,RlcDlRbCb *rbCb,uint32_t *toBeFree
    RlcSn     mTxNext;    /* send state variable */
    RlcTx      *txBuf;
 
-   MODAMT(AMDL.txNext, mTxNext, AMDL.txNextAck,AMDL.snModMask);
+   MODAMT(RLC_AMDL.txNext, mTxNext, RLC_AMDL.txNextAck,RLC_AMDL.snModMask);
 
    /* TODO : to be checked changed from <= to < */
    while ((0 < mTxNext) && *toBeFreed)
    {
-      txBuf =  rlcUtlGetTxBuf(AMDL.txBufLst, AMDL.txNextAck);
+      txBuf =  rlcUtlGetTxBuf(RLC_AMDL.txBufLst, RLC_AMDL.txNextAck);
       if (txBuf && txBuf->pduLst.first)
       {
          while(txBuf->pduLst.first)
@@ -1047,16 +1047,16 @@ static Bool rlcUtlFreeDlAmRbMemory(RlcCb *gCb,RlcDlRbCb *rbCb,uint32_t *toBeFree
 	    RLC_FREE_BUF(pduInfo->pdu);
 	    /* Delete node from the txBuf Pdu lst */
 	    cmLListDelFrm(&txBuf->pduLst, txBuf->pduLst.first);
-	    RLC_FREE_WC(gCb, pduInfo, sizeof(RlcDlPduInfo));
+	    RLC_FREE(gCb, pduInfo, sizeof(RlcDlPduInfo));
 	 }
-         rlcUtlDelTxBuf(AMDL.txBufLst, txBuf, gCb);
+         rlcUtlDelTxBuf(RLC_AMDL.txBufLst, txBuf, gCb);
          if(gCb->u.dlCb->shutdownReceived == 0)
          {   
             (*toBeFreed)--;
 	 }
       }
-      AMDL.txNextAck = (AMDL.txNextAck + 1) & AMDL.snModMask;
-      MODAMT(AMDL.txNext, mTxNext, AMDL.txNextAck,AMDL.snModMask);
+      RLC_AMDL.txNextAck = (RLC_AMDL.txNextAck + 1) & RLC_AMDL.snModMask;
+      MODAMT(RLC_AMDL.txNext, mTxNext, RLC_AMDL.txNextAck,RLC_AMDL.snModMask);
    }
    if(*toBeFreed == 0)
    {
@@ -1064,19 +1064,19 @@ static Bool rlcUtlFreeDlAmRbMemory(RlcCb *gCb,RlcDlRbCb *rbCb,uint32_t *toBeFree
    }
    
 #ifndef LTE_TDD 
-      RLC_FREE(gCb,AMDL.txBufLst, (RLC_TX_BUF_BIN_SIZE * sizeof(CmLListCp)));
+      RLC_FREE(gCb,RLC_AMDL.txBufLst, (RLC_TX_BUF_BIN_SIZE * sizeof(CmLListCp)));
 #endif
 
-   RLC_LLIST_FIRST_RETX(AMDL.retxLst, retx);
+   RLC_LLIST_FIRST_RETX(RLC_AMDL.retxLst, retx);
    while (retx && (*toBeFreed)) /* Till to be freed becomes 0 */
    {
 
       RLC_FREE_BUF(retx->seg);
 
-      cmLListDelFrm(&AMDL.retxLst, &retx->lstEnt);
-      RLC_FREE_WC(gCb, retx, sizeof(RlcRetx));
+      cmLListDelFrm(&RLC_AMDL.retxLst, &retx->lstEnt);
+      RLC_FREE(gCb, retx, sizeof(RlcRetx));
 
-      RLC_LLIST_FIRST_RETX(AMDL.retxLst, retx);
+      RLC_LLIST_FIRST_RETX(RLC_AMDL.retxLst, retx);
       if(gCb->u.dlCb->shutdownReceived == 0)
       {
       (*toBeFreed)--;
@@ -1084,18 +1084,18 @@ static Bool rlcUtlFreeDlAmRbMemory(RlcCb *gCb,RlcDlRbCb *rbCb,uint32_t *toBeFree
 
    }
 
-   AMDL.nxtRetx = NULLP;
+   RLC_AMDL.nxtRetx = NULLP;
 
    /* clean up if there is info about STATUS PDU to be sent */
-   if(AMDL.pStaPdu)
+   if(RLC_AMDL.pStaPdu)
    {
       Pst *udxPst;
       udxPst = &gCb->u.dlCb->udxDlSap->pst;
       RLC_FREE_SHRABL_BUF_WC(udxPst->region,
 			    udxPst->pool,
-			    AMDL.pStaPdu, 
+			    RLC_AMDL.pStaPdu, 
 			    sizeof(RlcUdxDlStaPdu));
-      AMDL.pStaPdu = NULLP;
+      RLC_AMDL.pStaPdu = NULLP;
    }
 
    if(*toBeFreed == 0)
@@ -1170,8 +1170,8 @@ Void rlcUtlFreeDlMemory(RlcCb *gCb)
    {
       RlcRetx* seg = (RlcRetx *)(lst->first->node);
       cmLListDelFrm(lst, lst->first);
-      RLC_FREE_BUF_WC(seg->seg);
-      RLC_FREE_WC(gCb,seg, sizeof(RlcRetx));
+      RLC_FREE_BUF(seg->seg);
+      RLC_FREE(gCb,seg, sizeof(RlcRetx));
       toBeFreed--;
    }   
 
@@ -1190,10 +1190,10 @@ Void rlcUtlFreeDlMemory(RlcCb *gCb)
          RlcDlPduInfo *pduInfo = (RlcDlPduInfo *)(pdu->pduLst.first->node);
          
 	 cmLListDelFrm(&pdu->pduLst, pdu->pduLst.first);
-	 RLC_FREE_BUF_WC(pduInfo->pdu);
-	 RLC_FREE_WC(gCb, pduInfo, sizeof(RlcDlPduInfo));
+	 RLC_FREE_BUF(pduInfo->pdu);
+	 RLC_FREE(gCb, pduInfo, sizeof(RlcDlPduInfo));
       }
-      RLC_FREE_WC(gCb,pdu, sizeof(RlcTx));
+      RLC_FREE(gCb,pdu, sizeof(RlcTx));
       toBeFreed--;
    }
 
@@ -1223,7 +1223,7 @@ Void rlcUtlFreeDlMemory(RlcCb *gCb)
       if(!moreToBeFreed)
       {
          cmLListDelFrm(lst, lst->first);
-         RLC_FREE_WC(gCb, rbCb, sizeof(RlcDlRbCb));
+         RLC_FREE(gCb, rbCb, sizeof(RlcDlRbCb));
       }
    } 
 
@@ -2158,7 +2158,7 @@ Void rlcUtlDelTxBuf (CmLListCp *txBufLst,RlcTx  *txBuf,RlcCb *gCb)
    txBufLstCp = &txBufLst[hashKey];
    //printf("D-sn(%d)\n", txBuf->hdr.sn);
    cmLListDelFrm(txBufLstCp, &txBuf->lnk);
-   RLC_FREE_WC(gCb, txBuf, sizeof(RlcTx));
+   RLC_FREE(gCb, txBuf, sizeof(RlcTx));
    return;
 } /* rlcUtlDelTxBuf */
 
