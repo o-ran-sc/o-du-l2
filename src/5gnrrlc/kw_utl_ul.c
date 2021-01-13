@@ -1010,7 +1010,7 @@ RlcAmRecBuf* rlcUtlGetRecBuf(CmLListCp *recBufLst, RlcSn sn)
       CM_LLIST_NEXT_NODE(recBufLstCp, node);
    }
    return NULLP;
-} /* rlcUtlStoreRecBuf */
+} /* rlcUtlGetRecBuf */
 /**
  *
  * @brief Delete the UL buffer from the list
@@ -1039,7 +1039,69 @@ void rlcUtlDelRecBuf(CmLListCp *recBufLst, RlcAmRecBuf *recBuf, RlcCb *gCb)
    return;
 } /* rlcUtlDelRecBuf */
 
+#ifdef NR_RLC_UL
+/**
+ *
+ * @brief Store the UL buffer in hashList  
+ *
+ *
+ * @b Description
+ *
+ *   Use the SN % binSize as key and store the received UL buffer
+ *  @param[in] recBufLst       List CP array
+ *  @param[in] recBuf          received buffer
+ *  @param[in] sn              sn of the received buffer 
+ *
+ *
+ *  @return  Void
+ */
+void rlcUtlStoreUmRecBuf(CmLListCp *recBufLst, RlcUmRecBuf *recBuf, RlcSn sn)
+{
+   uint32_t    hashKey; 
+   
+   hashKey = (sn % RLC_RCV_BUF_BIN_SIZE ); 
+   recBuf->lnk.node = (PTR)recBuf;
+   cmLListAdd2Tail(&(recBufLst[hashKey]), &recBuf->lnk);
 
+   return;
+} /* rlcUtlStoreUmRecBuf */
+/**
+ *
+ * @brief Retrieve the UL buffer from the list
+ *
+ *
+ * @Description
+ *
+ *   Use the SN % binSize as key and retrieve the UL buffer
+ *  @param[in] recBufLst       List CP array
+ *  @param[in] sn              sn of the received buffer 
+ *
+ *
+ *  @return  Void
+ */
+RlcUmRecBuf* rlcUtlGetUmRecBuf(CmLListCp *recBufLst, RlcSn sn)
+{
+   uint32_t            hashKey; 
+   CmLListCp           *recBufLstCp;
+   RlcUmRecBuf         *recBuf;
+   CmLList             *node = NULLP;
+
+   hashKey = (sn % RLC_RCV_BUF_BIN_SIZE ); 
+ 
+   recBufLstCp = &recBufLst[hashKey];
+   CM_LLIST_FIRST_NODE(recBufLstCp, node);
+   while(node)
+   {
+      recBuf = (RlcUmRecBuf *) node->node;
+      if(recBuf->umHdr.sn == sn)
+      {
+         return recBuf;
+      }
+      CM_LLIST_NEXT_NODE(recBufLstCp, node);
+   }
+   return NULLP;
+} /* rlcUtlGetUmRecBuf */
+#endif
 
 
 /********************************************************************30**

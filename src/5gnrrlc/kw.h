@@ -553,6 +553,8 @@
  ******************************************************************************/ 
 #define AMDL                           rbCb->m.amDl 
 #define AMUL                           rbCb->m.amUl
+#define UMDL                           rbCb->m.umDl
+#define UMUL                           rbCb->m.umUl
 
 /* PDU Types */
 #define RLC_DATA_PDU  1
@@ -655,7 +657,6 @@
       nod = NULLP;                             \
 }                                                          
 
-                                                           
 #define RLC_LLIST_FIRST_RETX(lstCp, nod)        \
 {                                              \
    CmLList *tmpNode;                           \
@@ -762,6 +763,28 @@
       RLC_LLIST_NEXT_SEG(_recBuf->segLst, _seg);            \
    }                                                       \
 }
+
+#ifdef NR_RLC_UL
+#define RLC_UMM_LLIST_FIRST_SEG(lstCp, nod)         \
+{                                              \
+   CmLList *tmpNode;                           \
+   if((tmpNode=cmLListFirst(&lstCp)))            \
+      nod = (RlcUmSeg *)tmpNode->node;            \
+   else                                        \
+      nod = NULLP;                             \
+} /*!< um mode first segment of linked list*/
+
+#define RLC_UMM_LLIST_NEXT_SEG(lstCp, nod)          \
+{                                              \
+   CmLList *tmpNode;                           \
+   (lstCp).crnt = &((nod)->lstEnt);            \
+   if((tmpNode = cmLListNext(&lstCp)))           \
+      nod = (RlcUmSeg *)tmpNode->node;            \
+   else                                        \
+      nod = NULLP;                             \
+}/*!< next segment in um mode linked list*/
+
+#endif
 
 #define MODAMT(x, y, z,_snModMask)   \
 {                         \

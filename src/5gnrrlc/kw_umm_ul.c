@@ -74,6 +74,28 @@ static void rlcUmmReAssembleSdus ARGS ((RlcCb *gCb,
                                         RlcUlRbCb *rbCb,
                                         RlcUmRecBuf *umRecBuf));
 
+#ifdef NR_RLC_UL
+uint8_t rlcUmUlReAssembleSdus ARGS ((RlcCb *gCb,
+                                   RlcUlRbCb *rbCb,
+                                   RlcUmRecBuf *umRecBuf));
+
+bool RlcUmmAddRcvdSeg ARGS ((RlcCb *gCb,
+                             RlcUlRbCb   *rbCb,
+                             RlcUmHdr    *umHdr,
+                             Buffer      *pdu,
+                             uint16_t    pduSz));
+
+uint8_t RlcUmmProcSeg ARGS ((RlcCb *gCb,
+                             RlcUlRbCb   *rbCb,
+                             RlcUmHdr    *umHdr,
+                             Buffer      *pdu));
+
+uint8_t rlcUmUlReassembleSdus(RlcCb *gCb, RlcUlRbCb *rbCb, RlcUmRecBuf *recBuf);
+uint8_t rlcUmUlProcSeg(RlcCb *gCb, RlcUlRbCb *rbCb, RlcUmHdr *umHdr, Buffer *pdu);
+void rlcUmUlRelAllSegs(RlcCb *gCb, RlcUmRecBuf *recBuf);
+
+#endif			    
+
 #ifndef TENB_ACC
 #ifndef LTE_PAL_ENB
 uint32_t isMemThreshReached(Region region);
@@ -127,6 +149,300 @@ static int16_t rlcUmmCheckSnInReordWindow (RlcSn sn, const RlcUmUl* const umUl)
 {
    return (RLC_UM_GET_VALUE(sn, *umUl) < RLC_UM_GET_VALUE(umUl->vrUh, *umUl)); 
 }
+
+#ifdef NR_RLC_UL
+
+/**
+ * @brief  Handler to updated expected byte seg
+ *
+ * @details
+ *    This function is used to update expected byte segment. The next segment
+ *    expected is indicated by the SO of the segment which is expected. Intially
+ *    the segment with SO 0 is expected and then in order. When all the segments
+ *    are received (which would happen when an expected SO is encountered
+ *    with LSF set) the allRcvd flag is set to TRUE
+ *
+ * @param[in]  gCb   RLC instance control block
+ * @param[in]  umUl  AM Uplink Control Block
+ * @param[in]  seg   Newly received segment
+ *
+ * @return void
+ *
+ */
+
+void rlcUmmUpdExpByteSeg(RlcCb *gCb, RlcUmUl *umUl, RlcUmSeg *seg)
+{
+   uint16_t  newExpSo; /* The new expected SO */
+   RlcSn     sn = seg->umHdr.sn;
+   bool      lstRcvd=FALSE;
+   RlcUmRecBuf *recBuf = NULLP;
+   
+   recBuf = rlcUtlGetUmRecBuf(umUl->recBufLst, sn);
+   if ((recBuf == NULLP) || (recBuf && (seg->umHdr.so != recBuf->expSo)))
+   {
+      return;
+   }
+   recBuf->noMissingSeg = FALSE;
+   newExpSo   = seg->soEnd + 1;
+   recBuf->expSo = newExpSo;
+   if(seg->umHdr.si == 0x2)
+   {  
+      lstRcvd = TRUE;
+   } 
+   /* kw003.201 - This should update seg with the one after newSeg */
+   RLC_UMM_LLIST_NEXT_SEG(recBuf->segLst, seg);
+   while(seg)
+   {
+      /* keep going ahead as long as the expectedSo match with the header so
+         else store the expSo for later checking again */
+      if(seg->umHdr.si == 0x2)
+      {  
+         lstRcvd = TRUE;
+      } 
+      if (seg->umHdr.so == newExpSo)
+      {
+         newExpSo = seg->soEnd + 1;
+         recBuf->expSo = newExpSo;
+         RLC_UMM_LLIST_NEXT_SEG(recBuf->segLst, seg);
+      }
+      else
+      {
+         recBuf->expSo = newExpSo;
+         return;
+      }
+   }
+   if (lstRcvd == TRUE)
+   {
+      recBuf->allSegRcvd = TRUE;
+   }
+   recBuf->noMissingSeg = TRUE;
+
+   return;
+}
+/**
+ * @brief Private handler to store the received segment
+ *
+ * @details
+ *    Private handler invokded by rlcUmmUlPlacePduInRecBuf to add a received
+ *    segment in reception buffer of a RBCB.
+ *    - It is responsible for detecting duplicate segments
+ *    - Adding it at appropriate position in the received buffer
+ *    - Calling ExpByteSeg to set expSo field in the receiver buffer
+ *
+ * @param[in]  gCb      RLC instance control block
+ * @param[in]  rbCb     Radio Bearer Contro Block
+ * @param[in]  umHdr    UM Header received
+ * @param[in]  pdu      Buffer received other than the headers
+ * @param[in]  pduSz    size of the PDU buffer received
+ *
+ * @return  bool
+ *   -#TRUE  Successful insertion into the receiver buffer
+ *   -#FALSE Possibly a duplicate segment
+ */
+
+bool rlcUmmAddRcvdSeg(RlcCb *gCb, RlcUlRbCb *rbCb, RlcUmHdr *umHdr, Buffer *pdu, uint16_t pduSz)
+{
+   RlcUmRecBuf   *recBuf = NULLP;
+   RlcUmSeg      *seg;
+   RlcUmSeg      *tseg;
+   uint16_t      soEnd;       /* Holds the SoEnd of received segment */
+   soEnd = umHdr->so + pduSz - 1;
+   recBuf =  rlcUtlGetUmRecBuf(UMUL.recBufLst, umHdr->sn);
+
+   if (NULLP == recBuf)
+   {
+      RLC_ALLOC(gCb,recBuf, sizeof(RlcUmRecBuf));
+      if (recBuf == NULLP)
+      {
+         DU_LOG("\nERROR  -->  RLC_UL : Failed to allocate memory to recv buf for UEID:%d CELLID:%d in rlcUmmAddRcvdSeg()",
+            rbCb->rlcId.ueId, rbCb->rlcId.cellId);
+
+         RLC_FREE_BUF(pdu);
+         return FALSE;
+      }
+      rlcUtlStoreUmRecBuf(UMUL.recBufLst, recBuf, umHdr->sn);
+   }
+   else
+   {
+      if (recBuf->allSegRcvd == TRUE)
+      {
+         RLC_FREE_BUF(pdu);
+         return FALSE;
+      }
+   }
+ 			
+   RLC_UMM_LLIST_FIRST_SEG(recBuf->segLst, seg);
+   while ((seg != NULLP) && (seg->umHdr.so < umHdr->so))
+   {
+      RLC_UMM_LLIST_NEXT_SEG(recBuf->segLst, seg);
+   }
+
+   /* If we have come this far, we have to add this segment to the   */
+   /* reception buffer as we either have eliminated duplicates or    */
+   /* have found none.                                               */
+   RLC_ALLOC_WC(gCb, tseg, sizeof(RlcUmSeg));
+   if (tseg == NULLP)
+   {
+      DU_LOG("\nEEROR -->  RLC_UL : Failed to allocate memory to segment for UEID:%d CELLID:%d in rlcUmmAddRcvdSeg()",
+         rbCb->rlcId.ueId, rbCb->rlcId.cellId);
+      RLC_FREE_BUF(pdu);
+      return FALSE;
+   }
+
+   tseg->seg = pdu;
+   tseg->segSz = pduSz;
+   RLC_MEM_CPY(&tseg->umHdr, umHdr, sizeof(RlcUmHdr));
+   recBuf->sn = umHdr->sn;
+   tseg->soEnd = soEnd;
+   if (seg == NULLP)
+   {
+      cmLListAdd2Tail(&recBuf->segLst, &tseg->lstEnt);
+   }
+   else
+   {
+      recBuf->segLst.crnt = &seg->lstEnt;
+      cmLListInsCrnt(&recBuf->segLst, &tseg->lstEnt);
+   }
+   tseg->lstEnt.node = (PTR)tseg;
+   rlcUmmUpdExpByteSeg(gCb, &UMUL, tseg);
+   return TRUE;
+}
+
+/**
+ * @brief Private handler to release all stored segments
+ *
+ * @details
+ *    Private handler invokded by rlcUmUlRelAllSegs to release the
+ *    stored segements in case a complete PDU is received later.
+ *
+ * @param[in]  gCb      RLC instance control block
+ * @param[in]  recBuf   Buffer that stores a received PDU or segments
+ *
+ * @return  void
+ *
+ */
+void rlcUmUlRelAllSegs(RlcCb *gCb, RlcUmRecBuf *recBuf)
+{
+   RlcUmSeg *seg;
+
+   RLC_UMM_LLIST_FIRST_SEG(recBuf->segLst, seg);
+   while (seg != NULLP)
+   {
+      RLC_FREE_BUF_WC(seg->seg);
+      cmLListDelFrm(&(recBuf->segLst), &(seg->lstEnt));
+      RLC_FREE_WC(gCb, seg, sizeof(RlcUmSeg));
+      RLC_UMM_LLIST_FIRST_SEG(recBuf->segLst, seg);
+   }
+
+   return;
+}
+
+/**
+ * @brief Private handler to reassemble from a segment or a PDU
+ *
+ * @details
+ *    Private handler invokded by kwAmmReassembleSdus with either a
+ *    PDU or a segment of a PDU. This is also called in the case of
+ *    reestablishment and hence out of sequence joining is also to
+ *    be supported
+ *
+ *
+ * @param[in]  gCb     RLC instance control block
+ * @param[in]  rbCb    Uplink RB control block
+ * @param[in]  umHdr   UM header received for this segment/PDU
+ * @param[in]  pdu     PDU to be reassembled
+ *
+ * @return  ROK/RFILED
+ *
+ */
+
+uint8_t rlcUmUlProcSeg(RlcCb *gCb, RlcUlRbCb *rbCb, RlcUmHdr *umHdr, Buffer *pdu)
+{
+
+   if ((UMUL.expSn != umHdr->sn) || (UMUL.expSo != umHdr->so))
+   {
+      /* Release the existing partial SDU as we have PDUs or */
+      /* segments that are out of sequence                   */
+      DU_LOG("\nDEBUG  -->  RLC_UL : Received Segments are out of sequence in rlcUmUlProcSeg()");
+      RLC_FREE_BUF(UMUL.partialSdu);
+      return RFAILED;
+   }
+
+   if (umHdr->si == 0x01)
+   {/* first Segment of the SDU */
+      if (UMUL.partialSdu != NULLP)
+      { /* Some old SDU may be present */
+         RLC_FREE_BUF_WC(UMUL.partialSdu);
+      }
+      UMUL.partialSdu = pdu;
+      pdu = NULLP;
+   }
+   else if(umHdr->si == 0x03)
+   {/* Middle or last segment of the SUD */
+      ODU_CAT_MSG(UMUL.partialSdu,pdu, M1M2);
+      RLC_FREE_BUF_WC(pdu);
+      pdu = NULLP;
+   }
+   else if(umHdr->si ==  0x02)
+   {
+      ODU_CAT_MSG(pdu, UMUL.partialSdu, M2M1);
+      RLC_FREE_BUF_WC(UMUL.partialSdu);
+   }
+
+   if (pdu != NULLP)
+   {
+      UMUL.partialSdu = NULLP;
+      rlcUtlSendUlDataToDu(gCb,rbCb, pdu);
+   }
+
+   return ROK;
+}
+/**
+ *
+ * @brief Private handler to reassemble SDUs
+ *
+ * @details
+ *    Private handler invokded by rlcAmmProcessPdus with the PDU
+ *    from the reception buffer in sequence to reassemble SDUs and
+ *    send it to PDCP.
+ *
+ *        - With the stored header info, FI and LSF segment / concatenate
+ *          PDUs or byte segments of PDUs to get the associated SDU.
+ *
+ * @param[in]  rbCb     RB control block
+ * @param[in]  pdu      PDU to be reassembled
+ *
+ *  @return  S16
+ *      -# ROK
+ *      -# RFAILED
+ *
+ */
+uint8_t rlcUmUlReassembleSdus(RlcCb *gCb, RlcUlRbCb *rbCb, RlcUmRecBuf *recBuf)
+{
+   RlcUmSeg        *seg;
+
+   /* This is a set of segments */
+   RLC_UMM_LLIST_FIRST_SEG(recBuf->segLst, seg);
+   UMUL.expSn = recBuf->sn;
+   UMUL.expSo = 0;
+   while(seg)
+   {
+      if(rlcUmUlProcSeg(gCb, rbCb, &seg->umHdr, seg->seg) == RFAILED)
+      {
+         rlcUmUlRelAllSegs(gCb, recBuf);
+      }
+      UMUL.expSo = seg->soEnd + 1;
+      cmLListDelFrm(&(recBuf->segLst),&(seg->lstEnt));
+      RLC_FREE_WC(gCb, seg, sizeof(RlcSeg));
+      RLC_UMM_LLIST_FIRST_SEG(recBuf->segLst, seg);
+   }
+   UMUL.expSn = (recBuf->umHdr.sn + 1) & (UMUL.modBitMask); /* MOD 1024 */
+   UMUL.expSo = 0;
+
+   return ROK;
+}
+
+#endif
 
 /**
  * @brief  Handler to process the Data Indication from the lower layer 
@@ -236,6 +552,13 @@ void rlcUmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
          gCb->genSts.errorPdusRecv++;
          continue;
       }
+#ifdef NR_RLC_UL
+      
+      /*TODO 1.Extract Hdr */
+      /*     2.Add Seg into Reception Buffer */
+      /*     3.If All Seg Recvd in Reception buffer list */
+      /*     4.Step 3 is true call Assemble Sdus */
+#endif
       curSn = tmpRecBuf->umHdr.sn;
 
       /* Check if the PDU should be discarded or not */

@@ -42,6 +42,29 @@ extern "C" {
 
 typedef struct rlcUlUeCb RlcUlUeCb;
 
+#ifdef NR_RLC_UL
+/** 
+ * @brief  Structure to hold a RLC UM PDU segment
+ *
+ * @details
+ *    - lstEnt : This is required for the linked list in which the segments
+ *               are stored
+ *    - seg    : Holds the segment data
+ *    - segSz  : The length of the segment in bytes
+ *    - soEnd  : SOEnd
+ *    - umHdr  : The UM Header for the PDU segment
+ *
+*/
+typedef struct rlcUmSeg
+{
+   CmLList   lstEnt;   /*!< List entry for PDU segment */
+   Buffer    *seg;     /*!< PDU segment */
+   MsgLen    segSz;    /*!< Buffer Size */
+   uint16_t  soEnd;    /*!< Segment Offset End */
+   RlcUmHdr  umHdr;    /*!<Um Header */
+}RlcUmSeg;
+#endif
+
 /** @defgroup um_uplink UM Uplink Module
 */
 
@@ -55,6 +78,16 @@ typedef struct rlcUlUeCb RlcUlUeCb;
 */
 typedef struct rlcUmRecBuf
 {
+#ifdef NR_RLC_UL
+   RlcSn       sn;            /*!< Sequence Number */
+   CmLList     lnk;           /*!< Link to the receive buffer list */
+   Bool        allSegRcvd;    /*!< Flag to check whether all seg are received */
+   Bool        noMissingSeg;  /*!< Flag to check all the bytes are received before the last byte of segment */
+   CmLListCp   segLst;        /*!< PDU Segments list */
+   uint16_t    expSo;         /*!< Next expected seg offset */
+   Bool        allRcvd;       /*!< All bytes received or not */
+   RlcUmSeg    *expByteSeg;   /*!< Next expected byte segment */
+#endif
    Buffer    *pdu;    /**< Buffer holding the UM PDU */
    RlcUmHdr   umHdr;   /**< UM PDU Header Information */
    MsgLen    pduSz;   /**< PDU Size */
@@ -77,16 +110,20 @@ typedef struct rlcUmUl
 {
    uint8_t           snLen;         /**< Sequence number length */
    uint8_t           reOrdTmrInt;   /**< Timer Interval */
+#ifdef NR_RLC_UL
+   CmLListCp    *recBufLst;                   /*!<Reception Buffer List */
+#endif
    RlcUmRecBuf   **recBuf;      /**< Reception buffer */
    RlcSn         umWinSz;       /**< UM window size */
-   uint16_t          modBitMask;    /**< Bitmask for modulus to wrap around variables */
+   uint16_t      modBitMask;    /**< Bitmask for modulus to wrap around variables */
    RlcSn         sn;            /**< Sequence number */
    RlcSn         vrUr;          /**< VR(UR) - Receive state variable */
    RlcSn         vrUh;          /**< VR(UH) - Highest received state variable */
    RlcSn         vrUx;          /**< VR(UX) - Reordering state variable */
    CmTimer      reOrdTmr;      /**< Reordering Timer */
-   Buffer       *partialSdu;   /**< Partial SDU - Remains till the complete SDU
-                                                               is received */
+   Buffer       *partialSdu;   /**< Partial SDU - Remains till the complete SDU is received */
+   uint16_t     expSo;         /*!< Expected SO for reassembly */
+   RlcSn        expSn;         /*!< Expected Sn */
 }RlcUmUl;
 /*@}*/
 
@@ -539,7 +576,17 @@ Void rlcAmmFreeUlRbCb ARGS ((RlcCb *gCb, RlcUlRbCb *rbCb));
 /****************************************************************************
  *                    Utility Functions 
  ***************************************************************************/
-Void rlcUtlStoreRecBuf ARGS ((CmLListCp        *recBufLst,
+
+#ifdef NR_RLC_UL				 
+void rlcUtlStoreUmRecBuf ARGS ((CmLListCp   *recBufLst,
+                                RlcUmRecBuf *recBuf,
+                                RlcSn        sn
+                              ));
+RlcUmRecBuf* rlcUtlGetUmRecBuf ARGS ((CmLListCp        *recBufLst,
+                                      RlcSn              sn
+                                    ));
+#endif
+void rlcUtlStoreRecBuf ARGS ((CmLListCp        *recBufLst,
                                     RlcAmRecBuf       *recBuf,
                                     RlcSn              sn
                                    ));
