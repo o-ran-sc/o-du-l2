@@ -488,19 +488,19 @@ RlcUdxDlStaPdu   *pStaPdu
       return RFAILED;
    }
 
-   AMDL.cntrlBo = pStaPdu->controlBo;
+   RLC_AMDL.cntrlBo = pStaPdu->controlBo;
    /* If there already exists a STAUS PDU, free it and take the new one
       into account */
-   if(AMDL.pStaPdu)
+   if(RLC_AMDL.pStaPdu)
    {
       RLC_FREE_SHRABL_BUF(pst->region, 
 			 pst->pool, 
-			 AMDL.pStaPdu, 
+			 RLC_AMDL.pStaPdu, 
 			 sizeof(RlcUdxDlStaPdu));
    }
    
-   AMDL.pStaPdu = pStaPdu;
-   rlcAmmSendDedLcBoStatus(tRlcCb, rbCb, &AMDL);             
+   RLC_AMDL.pStaPdu = pStaPdu;
+   rlcAmmSendDedLcBoStatus(tRlcCb, rbCb, &RLC_AMDL);             
 
    return  (ROK);
 }

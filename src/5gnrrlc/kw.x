@@ -110,11 +110,16 @@ typedef RguLchMapInfo KwLchMapInfo;
 */
 typedef struct rlcUmHdr
 {
+#ifdef NR_RLC_UL
+   uint8_t  si;              /*!< Segmentation Info */
+   uint16_t so;              /*!< Segment offset 5G NR */
+#endif
    uint8_t     fi;              /*!< Framing Info */
    RlcSn       sn;              /*!< Sequence number */
    uint16_t    numLi;           /*!< Number of LIs */
    uint16_t    li[RLC_MAX_UL_LI];   /*!< Array of LIs */
 }RlcUmHdr;
+
 
 /** 
  * @brief  Structure to hold an Acknowledged Mode header

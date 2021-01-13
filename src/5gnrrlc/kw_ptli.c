@@ -339,7 +339,7 @@ Void rlcUtlFreeUlRBuf(void)
          {
             if(datInd->lchData[numLch].pdu.mBuf[numPdu])
             {
-               RLC_FREE_BUF_WC(datInd->lchData[numLch].pdu.mBuf[numPdu]);
+               ODU_PUT_MSG_BUF(datInd->lchData[numLch].pdu.mBuf[numPdu]);
             }
          }
       }
