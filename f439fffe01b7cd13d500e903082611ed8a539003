@@ -1,0 +1,259 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "71bd57ba_799f9cf6",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-01-13T10:20:38Z",
+      "side": 1,
+      "message": "Change to received e2SetupReq is NULL",
+      "revId": "f439fffe01b7cd13d500e903082611ed8a539003",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b701e7c0_34caa70e",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1102,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-01-13T10:20:38Z",
+      "side": 1,
+      "message": "This is a generic comment:\nRIC should always be in caps.",
+      "revId": "f439fffe01b7cd13d500e903082611ed8a539003",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "707840d6_7acc3e73",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1240,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-01-13T10:20:38Z",
+      "side": 1,
+      "message": "DEBUG",
+      "revId": "f439fffe01b7cd13d500e903082611ed8a539003",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "20dcbea4_89c19fde",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1310,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-01-13T10:20:38Z",
+      "side": 1,
+      "message": "delete this log",
+      "revId": "f439fffe01b7cd13d500e903082611ed8a539003",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c9cfad16_b1439a51",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-01-13T10:20:38Z",
+      "side": 1,
+      "message": "DEBUG",
+      "revId": "f439fffe01b7cd13d500e903082611ed8a539003",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "95aeb845_507d13b6",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-01-13T10:20:38Z",
+      "side": 1,
+      "message": "All \"config success\" msgs must be either DEBUG or INFO. There must be uniformity. Please check all such messages",
+      "revId": "f439fffe01b7cd13d500e903082611ed8a539003",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "84909cb4_cb0c8633",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-01-13T10:20:38Z",
+      "side": 1,
+      "message": "DEBUG",
+      "revId": "f439fffe01b7cd13d500e903082611ed8a539003",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2adbe0c6_1d300255",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 503,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-01-13T10:20:38Z",
+      "side": 1,
+      "message": "print teID as well",
+      "revId": "f439fffe01b7cd13d500e903082611ed8a539003",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2848df7a_f418761a",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 9643,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-01-13T10:20:38Z",
+      "side": 1,
+      "message": "DEBUG",
+      "revId": "f439fffe01b7cd13d500e903082611ed8a539003",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "77bfdd3e_226dd721",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 10767,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-01-13T10:20:38Z",
+      "side": 1,
+      "message": "ERROR",
+      "revId": "f439fffe01b7cd13d500e903082611ed8a539003",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b89b636a_ef132364",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1072,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-01-13T10:20:38Z",
+      "side": 1,
+      "message": "please check uniformity. All config complete must be INFO or DEBUG",
+      "revId": "f439fffe01b7cd13d500e903082611ed8a539003",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5c90e629_fe1dd438",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1606,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-01-13T10:20:38Z",
+      "side": 1,
+      "message": "DU_APP missing",
+      "revId": "f439fffe01b7cd13d500e903082611ed8a539003",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5bafc075_05ff8a1d",
+        "filename": "src/du_app/du_sctp.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 523,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-01-13T10:20:38Z",
+      "side": 1,
+      "message": "DEBUG",
+      "revId": "f439fffe01b7cd13d500e903082611ed8a539003",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "877476e2_61cedbbf",
+        "filename": "src/du_app/du_sctp.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 573,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-01-13T10:20:38Z",
+      "side": 1,
+      "message": "print notification type",
+      "revId": "f439fffe01b7cd13d500e903082611ed8a539003",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9cd9b981_f8a259ae",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2130,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-01-13T10:20:38Z",
+      "side": 1,
+      "message": "DEBUG",
+      "revId": "f439fffe01b7cd13d500e903082611ed8a539003",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
