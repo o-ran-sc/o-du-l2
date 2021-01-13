@@ -80,7 +80,7 @@ uint8_t lwrMacActvTsk(Pst *pst, Buffer *mBuf)
 	       case EVT_START_WLS_RCVR:
 		  {
 		     SPutMsg(mBuf);
-		     DU_LOG("\nLWR MAC: Starting WLS receiver thread");
+		     DU_LOG("\nDEBUG  -->  LWR MAC: Starting WLS receiver thread");
 		     LwrMacRecvPhyMsg();
 		     break;
 		  }
@@ -88,7 +88,7 @@ uint8_t lwrMacActvTsk(Pst *pst, Buffer *mBuf)
 	       default:
 		  {
 		     SPutMsg(mBuf);
-		     DU_LOG("\nLWR MAC: Invalid event %d received", pst->event);
+		     DU_LOG("\nERROR  -->  LWR MAC: Invalid event %d received", pst->event);
 		     ret = RFAILED;
 		  }
 	    }
@@ -97,7 +97,7 @@ uint8_t lwrMacActvTsk(Pst *pst, Buffer *mBuf)
       default:
 	 {
 	    SPutMsg(mBuf);
-	    DU_LOG("\nLWR MAC: Message from invalid source entity %d", pst->srcEnt);
+	    DU_LOG("\nERROR  -->  LWR MAC: Message from invalid source entity %d", pst->srcEnt);
 	    ret = RFAILED;
 	 }
    }
