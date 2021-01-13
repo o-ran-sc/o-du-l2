@@ -673,15 +673,18 @@ RlcUlCfgTmpData   *cfgTmpData
          /*Allocating the memory for receive buffer */
          if(CM_LTE_MODE_UM == cfgToValidate->entMode)
          {
-            uint16_t winLen;
-        
-            
+            uint32_t hashIndex;
             cfgEntData->rbCb->m.umUl.umWinSz = RLC_POWER(2, 
                   ((cfgToValidate->m.umInfo.ul.snLen *5)-1));
-            winLen =  cfgEntData->rbCb->m.umUl.umWinSz << 1;
+#ifdef NR_RLC_UL
             RLC_ALLOC(gCb,
-                     cfgEntData->rbCb->m.umUl.recBuf, 
-                     (winLen * sizeof(RlcUmRecBuf*)));
+                  cfgEntData->rbCb->m.umUl.recBufLst,
+                  (RLC_RCV_BUF_BIN_SIZE * sizeof(CmLListCp )));
+            for(hashIndex = 0; hashIndex < RLC_RCV_BUF_BIN_SIZE; hashIndex++)
+            {
+                cmLListInit(&(cfgEntData->rbCb->m.umUl.recBufLst[hashIndex]));
+            }
+#endif
          }
          else if(CM_LTE_MODE_AM == cfgToValidate->entMode)
          {

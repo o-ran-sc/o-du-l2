@@ -473,7 +473,7 @@ void rlcUmmProcessSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *datReq)
          else 
          {
             ODU_CAT_MSG(pdu, sdu->mBuf, M1M2);
-            RLC_FREE_BUF_WC(sdu->mBuf);
+            ODU_PUT_MSG_BUF(sdu->mBuf);
          }
 
          sdu->sduSz -= pduSz;
@@ -537,7 +537,7 @@ void rlcUmmProcessSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *datReq)
       }
       else
       {
-         RLC_FREE_BUF_WC(pdu);
+         ODU_PUT_MSG_BUF(pdu);
       }
    }
    

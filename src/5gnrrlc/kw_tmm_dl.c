@@ -223,7 +223,7 @@ void rlcTmmSendToMac(RlcCb *gCb, SuId suId, RlcDlRbCb *rbCb, RguCStaIndInfo *sta
             DU_LOG("\nRLC: rlcTmmSendToMac: sfn %d slot %d  UEID:%d CELLID:%d",
                   sfn, slot, rbCb->rlcId.ueId, rbCb->rlcId.cellId);   
             cmLListDelFrm(&(rbCb->m.tm.sduQ), &sdu->lstEnt);
-            RLC_FREE_BUF(sdu->mBuf);
+            ODU_PUT_MSG_BUF(sdu->mBuf);
             RLC_FREE(gCb, sdu, sizeof(RlcSdu));
          }
          else
@@ -256,7 +256,7 @@ void rlcTmmSendToMac(RlcCb *gCb, SuId suId, RlcDlRbCb *rbCb, RguCStaIndInfo *sta
 	       the Sdu %u UEID:%d CELLID:%d", sdu->mode.tm.rnti, rbCb->rlcId.ueId,
                rbCb->rlcId.cellId);   
             cmLListDelFrm(&(rbCb->m.tm.sduQ), &sdu->lstEnt);
-            RLC_FREE_BUF(sdu->mBuf);
+            ODU_PUT_MSG_BUF(sdu->mBuf);
             RLC_FREE(gCb, sdu, sizeof(RlcSdu));
             continue;
          }
