@@ -113,7 +113,7 @@
 {                                                     \
    SPutMsg(_sdu->mBuf);                               \
    cmLListDelFrm(_sduQ,&_sdu->lstEnt);                \
-   RLC_FREE_WC(_cb,_sdu, sizeof(RlcSdu));               \
+   RLC_FREE(_cb,_sdu, sizeof(RlcSdu));               \
 }
 
 #define RLC_FREE(_cb,_buf, _size)                          \
@@ -121,12 +121,6 @@
       (Void) SPutSBuf(_cb->init.region, _cb->init.pool,   \
             (Data *) _buf, (Size) _size);                 \
       _buf = NULLP;                                       \
-}
-
-#define RLC_FREE_BUF(_buf)           \
-{                                   \
-      SPutMsg(_buf);                \
-      _buf = NULLP;                 \
 }
 
 #else
@@ -203,25 +197,7 @@
    }                                                      \
 }
 
-#define RLC_FREE_BUF(_buf)           \
-{                                   \
-   if (_buf != NULLP)               \
-   {                                \
-      SPutMsg(_buf);                \
-   }                                \
-      _buf = NULLP;                 \
-}
 #endif
-
-
-
-
-#define RLC_FREE_WC(_cb,_buf, _size)                       \
-{                                                         \
-      (Void) SPutSBuf(_cb->init.region, _cb->init.pool,   \
-            (Data *) _buf, (Size) _size);                 \
-      _buf = NULLP; /*assigning NULLP after free*/ \
-}
 
 /* kw002.201 Freeing from region of pst */
 #define RLC_PST_FREE(_region, _pool, _buf, _size)          \
@@ -289,8 +265,6 @@
                 (Size) _size, 0);                                        \
 }
 #endif
-
-#define RLC_FREE_BUF_WC(_buf)    SPutMsg((_buf));
 
 #define RLC_MEM_CPY(_dst, _src, _size)  memcpy(_dst, _src, _size); 
 
@@ -551,8 +525,8 @@
 /*******************************************************************************
  *                              AMM Defines 
  ******************************************************************************/ 
-#define AMDL                           rbCb->m.amDl 
-#define AMUL                           rbCb->m.amUl
+#define RLC_AMDL                           rbCb->m.amDl 
+#define RLC_AMUL                           rbCb->m.amUl
 
 /* PDU Types */
 #define RLC_DATA_PDU  1
@@ -620,10 +594,8 @@
 #define RLC_SN_POS_12BIT                0x0F
 #define RLC_SN_POS_18BIT                0x03
 #define RLC_AM_GET_WIN_SZ(_snLen)       ((RLC_AM_CFG_12BIT_SN_LEN == (_snLen)) ? (2048) : (131072)) /* 5GNR */
-#define RLC_RCV_BUF_BIN_SIZE 512   /* Could be increased to avoid the search time.
-                                      with the memory trade-off */
-#define RLC_TX_BUF_BIN_SIZE 512   /* Could be increased to avoid the search time.
-                                      with the memory trade-off */
+#define RLC_RCV_BUF_BIN_SIZE 512   /* receive buffer size */
+#define RLC_TX_BUF_BIN_SIZE 512   /* receive buffer size */
 
 #define RLC_SDU_LST                     1
 #define RLC_SEG_LST                     2
@@ -655,7 +627,6 @@
       nod = NULLP;                             \
 }                                                          
 
-                                                           
 #define RLC_LLIST_FIRST_RETX(lstCp, nod)        \
 {                                              \
    CmLList *tmpNode;                           \
@@ -763,6 +734,28 @@
    }                                                       \
 }
 
+#ifdef NR_RLC_UL
+#define RLC_UMM_LLIST_FIRST_SEG(lstCp, nod)         \
+{                                              \
+   CmLList *tmpNode;                           \
+   if((tmpNode=cmLListFirst(&lstCp)))            \
+      nod = (RlcUmSeg *)tmpNode->node;            \
+   else                                        \
+      nod = NULLP;                             \
+} /*!< um mode first segment of linked list*/
+
+#define RLC_UMM_LLIST_NEXT_SEG(lstCp, nod)          \
+{                                              \
+   CmLList *tmpNode;                           \
+   (lstCp).crnt = &((nod)->lstEnt);            \
+   if((tmpNode = cmLListNext(&lstCp)))           \
+      nod = (RlcUmSeg *)tmpNode->node;            \
+   else                                        \
+      nod = NULLP;                             \
+}/*!< next segment in um mode linked list*/
+
+#endif
+
 #define MODAMT(x, y, z,_snModMask)   \
 {                         \
    y = (x - z) & _snModMask;   \
@@ -794,7 +787,7 @@
 #endif
 
 #define RLC_AM_IS_POLL_BIT_SET(_amDl) \
-  (AMDL.pollSn == ((AMDL.txNext - 1) & AMDL.snModMask))
+  (RLC_AMDL.pollSn == ((RLC_AMDL.txNext - 1) & RLC_AMDL.snModMask))
 
 #define RLC_FILL_CNTRL_INFO(cntrlInfo, _val, _len, _idx, _eb)\
 {                                                           \
