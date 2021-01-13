@@ -315,7 +315,7 @@ void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint8_t *txPdu, uint16_t
 		  break;
 	       }
 	    default:
-	       DU_LOG("\n MAC: Invalid LCID %d in mac pdu",lcid);
+	       DU_LOG("\nERROR  -->  MAC: Invalid LCID %d in mac pdu",lcid);
 	       break;
 	 }
       }
@@ -353,7 +353,7 @@ void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint8_t *txPdu, uint16_t
 	    }
 
 	 default:
-	    DU_LOG("\n MAC: Invalid LCID %d in mac pdu",lcid);
+	    DU_LOG("\nERROR  -->  MAC: Invalid LCID %d in mac pdu",lcid);
 	    break;
       }
 

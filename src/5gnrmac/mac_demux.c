@@ -85,7 +85,7 @@ uint8_t unpackRxData(uint16_t cellId, SlotIndInfo slotInfo, RxDataIndPdu *rxData
 	       MAC_ALLOC_SHRABL_BUF(pdu, length);
 	       if(!pdu)
 	       {
-		  DU_LOG("\nMAC : UL CCCH PDU memory allocation failed");
+		  DU_LOG("\nERROR  -->  MAC : UL CCCH PDU memory allocation failed");
 		  return RFAILED;
 	       }  
 	       idx++;
@@ -103,7 +103,7 @@ uint8_t unpackRxData(uint16_t cellId, SlotIndInfo slotInfo, RxDataIndPdu *rxData
 
 	 case MAC_LCID_MIN ... MAC_LCID_MAX :
 	    {
-	       DU_LOG("\nMAC : PDU received for LC ID %d", lcId);
+	       DU_LOG("\nINFO   -->  MAC : PDU received for LC ID %d", lcId);
 	       pduLen--;
 	       idx++;
 
@@ -119,7 +119,7 @@ uint8_t unpackRxData(uint16_t cellId, SlotIndInfo slotInfo, RxDataIndPdu *rxData
 	       MAC_ALLOC_SHRABL_BUF(pdu, length);
 	       if(!pdu)
 	       {
-		  DU_LOG("\nMAC : Memory allocation failed while demuxing Rx Data PDU");
+		  DU_LOG("\nERROR  -->  MAC : Memory allocation failed while demuxing Rx Data PDU");
 		  return RFAILED;
 	       }
 	       pduLen--;
@@ -205,7 +205,7 @@ uint8_t unpackRxData(uint16_t cellId, SlotIndInfo slotInfo, RxDataIndPdu *rxData
 	 
 	 default:
 	    {
-	       DU_LOG("\nMAC : Invalid LC Id %d", lcId);
+	       DU_LOG("\nERROR  -->  MAC : Invalid LC Id %d", lcId);
 	       return RFAILED;
 	    }
       } /* End of switch */

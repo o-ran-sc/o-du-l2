@@ -157,7 +157,7 @@ void fillMsg4Pdu(uint16_t cellId, DlMsgAlloc *msg4Alloc)
 	 }
 	 else
 	 {
-	    DU_LOG("\nMAC: Failed allocating memory for msg4TxPdu");
+	    DU_LOG("\nERROR  -->  MAC: Failed allocating memory for msg4TxPdu");
 	 }
 	 /* Free memory allocated */
 	 MAC_FREE(msg4DlData.pduInfo[0].dlPdu, macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4PduLen);
@@ -177,7 +177,7 @@ void fillMsg4Pdu(uint16_t cellId, DlMsgAlloc *msg4Alloc)
    }
    else
    {
-      DU_LOG("\nMAC: Failed at macMuxPdu()");
+      DU_LOG("\nERROR  -->  MAC: Failed at macMuxPdu()");
    }
 }
 
@@ -264,7 +264,7 @@ int sendCellUpIndMacToDuApp(uint16_t cellId)
    MAC_ALLOC_SHRABL_BUF(oduCellId, sizeof(OduCellId));
    if(!oduCellId)
    {
-      DU_LOG("\nMAC : Memory allocation failed for cell up indication");
+      DU_LOG("\nERROR  -->  MAC : Memory allocation failed for cell up indication");
       return RFAILED;
    }
    oduCellId->cellId = cellId;
@@ -275,7 +275,7 @@ int sendCellUpIndMacToDuApp(uint16_t cellId)
    ret = MacDuAppCellUpInd(&pst, oduCellId);
    if(ret != ROK)
    {
-      DU_LOG("\nMAC: Failed to send cell up indication to DU APP");
+      DU_LOG("\nERROR  -->  MAC: Failed to send cell up indication to DU APP");
       MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, oduCellId, sizeof(OduCellId));
    }
 
@@ -345,7 +345,7 @@ uint8_t fapiMacSlotInd(Pst *pst, SlotIndInfo *slotInd)
    volatile uint32_t     startTime=0;
 
 #ifdef ODU_SLOT_IND_DEBUG_LOG
-   DU_LOG("\nMAC : Slot Indication received");
+   DU_LOG("\nDEBUG  -->  MAC : Slot Indication received");
 #endif
    /*starting Task*/
    ODU_START_TASK(&startTime, PID_MAC_TTI_IND);
@@ -358,7 +358,7 @@ uint8_t fapiMacSlotInd(Pst *pst, SlotIndInfo *slotInd)
    ret = sendSlotIndMacToSch(slotInd);
    if(ret != ROK)
    {
-      DU_LOG("\nMAC : Sending of slot ind msg from MAC to SCH failed");
+      DU_LOG("\nERROR  -->  MAC : Sending of slot ind msg from MAC to SCH failed");
       MAC_FREE_SHRABL_BUF(pst->region, pst->pool, slotInd, sizeof(SlotIndInfo));
       return ret;
    }
@@ -366,7 +366,7 @@ uint8_t fapiMacSlotInd(Pst *pst, SlotIndInfo *slotInd)
    ret = macProcSlotInd(*slotInd);
    if(ret != ROK)
    {
-      DU_LOG("\nMAC : macProcSlotInd failed");
+      DU_LOG("\nERROR  -->  MAC : macProcSlotInd failed");
       MAC_FREE_SHRABL_BUF(pst->region, pst->pool, slotInd, sizeof(SlotIndInfo));
       return ret;
    }
@@ -378,7 +378,7 @@ uint8_t fapiMacSlotInd(Pst *pst, SlotIndInfo *slotInd)
       ret = sendCellUpIndMacToDuApp(slotInd->cellId);
       if(ret != ROK)
       {
-         DU_LOG("\nMAC :Sending of slot ind msg from MAC to DU APP failed");
+         DU_LOG("\nERROR  -->  MAC :Sending of slot ind msg from MAC to DU APP failed");
          MAC_FREE_SHRABL_BUF(pst->region, pst->pool, slotInd, sizeof(SlotIndInfo));
          return ret;
       }
