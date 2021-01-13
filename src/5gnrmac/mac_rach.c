@@ -80,7 +80,7 @@ uint8_t fapiMacRachInd(Pst *pst, RachInd *rachInd)
    uint8_t      preambleIdx;
    RachIndInfo  rachIndInfo;
 
-   DU_LOG("\nMAC : Received RACH indication");
+   DU_LOG("\nINFO  -->  MAC : Received RACH indication");
    /* Considering one pdu and one preamble */
    pduIdx = 0;
    preambleIdx = 0;
