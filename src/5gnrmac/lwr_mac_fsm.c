@@ -86,7 +86,7 @@ void lwrMacLayerInit()
  * ****************************************************************/
 uint8_t lwr_mac_procInvalidEvt(void *msg)
 {
-   printf("\nLWR_MAC: Error Indication Event[%d] received in state [%d]", lwrMacCb.event, lwrMacCb.phyState);
+   DU_LOG("\nERROR  -->  LWR_MAC: Error Indication Event[%d] received in state [%d]", lwrMacCb.event, lwrMacCb.phyState);
    return ROK;
 }
 
@@ -1265,7 +1265,7 @@ uint32_t getParamValue(fapi_uint16_tlv_t *tlv, uint16_t type)
    }
    else
    {
-      DU_LOG("\nLWR_MAC: Value Extraction failed" );
+      DU_LOG("\nERROR  -->  LWR_MAC: Value Extraction failed" );
       return RFAILED;
    }
 }
@@ -1290,7 +1290,7 @@ void setMibPdu(uint8_t *mibPdu, uint32_t *val, uint16_t sfn)
 {
    *mibPdu |= (((uint8_t)(sfn >> 2)) & MIB_SFN_BITMASK);
    *val = (mibPdu[0] << 24 | mibPdu[1] << 16 | mibPdu[2] << 8);
-   DU_LOG("\nLWR_MAC: MIB PDU %x", *val);
+   DU_LOG("\nDEBUG  -->  LWR_MAC: MIB PDU %x", *val);
 }
 
 /*******************************************************************
@@ -1332,7 +1332,7 @@ uint8_t lwr_mac_procParamReqEvt(void *msg)
       LWR_MAC_ALLOC(headerElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_msg_header_t)));
       if(!headerElem)
       {
-         DU_LOG("\nLWR_MAC: Memory allocation failed for param req header");
+         DU_LOG("\nERROR  -->  LWR_MAC: Memory allocation failed for param req header");
          LWR_MAC_FREE(paramReqElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_param_req_t)));
          return RFAILED;
       }
@@ -1342,12 +1342,12 @@ uint8_t lwr_mac_procParamReqEvt(void *msg)
       msgHeader->num_msg = 1;
       msgHeader->handle = 0;
 
-      DU_LOG("\nLWR_MAC: Sending Param Request to Phy");
+      DU_LOG("\nDEBUG  -->  LWR_MAC: Sending Param Request to Phy");
       LwrMacSendToL1(headerElem);
    }
    else
    {
-      DU_LOG("\nLWR_MAC: Failed to allocate memory for Param Request");
+      DU_LOG("\nERROR  -->  LWR_MAC: Failed to allocate memory for Param Request");
       return RFAILED;
    }
 #endif
@@ -1381,14 +1381,14 @@ uint8_t lwr_mac_procParamRspEvt(void *msg)
    ClCellParam *cellParam = NULLP;
 
    paramRsp = (fapi_param_resp_t *)msg;
-   DU_LOG("\nLWR_MAC: Received EVENT[%d] at STATE[%d]", lwrMacCb.event, lwrMacCb.phyState);
+   DU_LOG("\nINFO  -->  LWR_MAC: Received EVENT[%d] at STATE[%d]", lwrMacCb.event, lwrMacCb.phyState);
 
    if(paramRsp != NULLP)
    {
       MAC_ALLOC(cellParam, sizeof(ClCellParam));
       if(cellParam != NULLP)
       {
-	 DU_LOG("\n LWR_MAC: Filling TLVS into MAC API");
+	 DU_LOG("\nDEBUG  -->  LWR_MAC: Filling TLVS into MAC API");
 	 if(paramRsp->error_code == MSG_OK)
 	 {
 	    for(index = 0; index < paramRsp->number_of_tlvs; index++)
@@ -1407,7 +1407,7 @@ uint8_t lwr_mac_procParamRspEvt(void *msg)
 		     encodedVal = getParamValue(&paramRsp->tlvs[index], FAPI_UINT_8);
 		     if(encodedVal != RFAILED && encodedVal != lwrMacCb.phyState)
 		     {
-			printf("\n PhyState mismatch [%d][%d]", lwrMacCb.phyState, lwrMacCb.event);
+			DU_LOG("\nERROR  -->  PhyState mismatch [%d][%d]", lwrMacCb.phyState, lwrMacCb.event);
 			return RFAILED;
 		     }
 		     break;
@@ -1861,7 +1861,7 @@ uint8_t lwr_mac_procParamRspEvt(void *msg)
 		     }
 		     break;
 		  default:
-		     //printf("\n Invalid value for TLV[%x] at index[%d]", paramRsp->tlvs[index].tl.tag, index);
+		     //DU_LOG("\nERROR  -->   Invalid value for TLV[%x] at index[%d]", paramRsp->tlvs[index].tl.tag, index);
 		     break;
 	       }
 	    }
@@ -1871,19 +1871,19 @@ uint8_t lwr_mac_procParamRspEvt(void *msg)
 	 }
 	 else
 	 {
-	    DU_LOG("\n LWR_MAC: Invalid error code %d", paramRsp->error_code);
+	    DU_LOG("\nERROR  -->   LWR_MAC: Invalid error code %d", paramRsp->error_code);
 	    return RFAILED;
 	 }
       }
       else
       {
-	 DU_LOG("\nLWR_MAC: Failed to allocate memory for cell param");
+	 DU_LOG("\nERROR  -->  LWR_MAC: Failed to allocate memory for cell param");
 	 return RFAILED;
       }
    }
    else
    {
-      DU_LOG("\nLWR_MAC:  Param Response received from PHY is NULL");
+      DU_LOG("\nERROR  -->  LWR_MAC:  Param Response received from PHY is NULL");
       return RFAILED;
    }
 #else
@@ -1912,7 +1912,7 @@ uint8_t lwr_mac_procIqSamplesReqEvt(void *msg)
    LWR_MAC_ALLOC(iqSampleElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_vendor_ext_iq_samples_req_t)));
    if(!iqSampleElem)
    {
-      DU_LOG("\nLWR_MAC: Memory allocation failed for IQ sample req");
+      DU_LOG("\nERROR  -->  LWR_MAC: Memory allocation failed for IQ sample req");
       return RFAILED;
    }
    FILL_FAPI_LIST_ELEM(iqSampleElem, NULLP, FAPI_VENDOR_EXT_UL_IQ_SAMPLES, 1, \
@@ -1940,7 +1940,7 @@ uint8_t lwr_mac_procIqSamplesReqEvt(void *msg)
    LWR_MAC_ALLOC(headerElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_msg_header_t)));
    if(!headerElem)
    {
-      DU_LOG("\nLWR_MAC: Memory allocation failed for FAPI header in lwr_mac_procIqSamplesReqEvt");
+      DU_LOG("\nERROR  -->  LWR_MAC: Memory allocation failed for FAPI header in lwr_mac_procIqSamplesReqEvt");
       return RFAILED;
    }
    FILL_FAPI_LIST_ELEM(headerElem, iqSampleElem, FAPI_VENDOR_MSG_HEADER_IND, 1, \
@@ -1949,7 +1949,7 @@ uint8_t lwr_mac_procIqSamplesReqEvt(void *msg)
    msgHeader->num_msg = 1; 
    msgHeader->handle = 0;
 
-   DU_LOG("\nLWR_MAC: Sending IQ Sample request to Phy");
+   DU_LOG("\nINFO   -->  LWR_MAC: Sending IQ Sample request to Phy");
    LwrMacSendToL1(headerElem);
    return ROK;
 }
@@ -1989,7 +1989,7 @@ uint8_t lwr_mac_procConfigReqEvt(void *msg)
    p_fapi_api_queue_elem_t  vendorMsgQElem;
    p_fapi_api_queue_elem_t  cfgReqQElem;
 
-   DU_LOG("\nLWR_MAC: Received EVENT[%d] at STATE[%d]", lwrMacCb.event, \
+   DU_LOG("\nINFO  -->  LWR_MAC: Received EVENT[%d] at STATE[%d]", lwrMacCb.event, \
 	 lwrMacCb.phyState);
 
    cellId = (uint16_t *)msg;
@@ -2006,7 +2006,7 @@ uint8_t lwr_mac_procConfigReqEvt(void *msg)
    LWR_MAC_ALLOC(vendorMsgQElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_vendor_msg_t)));  
    if(!vendorMsgQElem)
    {
-      DU_LOG("\nLWR_MAC: Memory allocation failed for vendor msg in config req");
+      DU_LOG("\nERROR  -->  LWR_MAC: Memory allocation failed for vendor msg in config req");
       return RFAILED;
    }
    FILL_FAPI_LIST_ELEM(vendorMsgQElem, NULLP, FAPI_VENDOR_MESSAGE, 1, sizeof(fapi_vendor_msg_t)); 
@@ -2021,7 +2021,7 @@ uint8_t lwr_mac_procConfigReqEvt(void *msg)
    LWR_MAC_ALLOC(cfgReqQElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_config_req_t)));
    if(!cfgReqQElem)
    {
-      DU_LOG("\nLWR_MAC: Memory allocation failed for config req");
+      DU_LOG("\nERROR  -->  LWR_MAC: Memory allocation failed for config req");
       LWR_MAC_ALLOC(vendorMsgQElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_vendor_msg_t)));
       return RFAILED;
    }
@@ -2158,7 +2158,7 @@ uint8_t lwr_mac_procConfigReqEvt(void *msg)
    LWR_MAC_ALLOC(headerElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_msg_header_t)));
    if(!headerElem)
    {
-      DU_LOG("\nLWR_MAC: Memory allocation failed for vendor msg in config req");
+      DU_LOG("\nERROR  -->  LWR_MAC: Memory allocation failed for vendor msg in config req");
       LWR_MAC_ALLOC(cfgReqQElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_config_req_t)));
       LWR_MAC_ALLOC(vendorMsgQElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_vendor_msg_t)));
       return RFAILED;
@@ -2169,7 +2169,7 @@ uint8_t lwr_mac_procConfigReqEvt(void *msg)
    msgHeader->num_msg = 2; /* Config req msg and vendor specific msg */
    msgHeader->handle = 0;
 
-   DU_LOG("\nLWR_MAC: Sending Config Request to Phy");
+   DU_LOG("\nDEBUG  -->  LWR_MAC: Sending Config Request to Phy");
    LwrMacSendToL1(headerElem);
 #endif
 
@@ -2199,14 +2199,14 @@ uint8_t lwr_mac_procConfigRspEvt(void *msg)
    fapi_config_resp_t *configRsp;
    configRsp = (fapi_config_resp_t *)msg;
 
-   DU_LOG("\nLWR_MAC: Received EVENT[%d] at STATE[%d]", lwrMacCb.event, \
+   DU_LOG("\nINFO  -->  LWR_MAC: Received EVENT[%d] at STATE[%d]", lwrMacCb.event, \
 	 lwrMacCb.phyState);
 
    if(configRsp != NULL)
    {
       if(configRsp->error_code == MSG_OK)
       {
-	 DU_LOG("\nLWR_MAC: PHY has moved to Configured state \n");
+	 DU_LOG("\nDEBUG  -->  LWR_MAC: PHY has moved to Configured state \n");
 	 lwrMacCb.phyState = PHY_STATE_CONFIGURED;
 	 lwrMacCb.cellCb[0].state = PHY_STATE_CONFIGURED;
 	 /* TODO : 
@@ -2217,13 +2217,13 @@ uint8_t lwr_mac_procConfigRspEvt(void *msg)
       }
       else
       {
-	 DU_LOG("\n LWR_MAC: Invalid error code %d", configRsp->error_code);
+	 DU_LOG("\nERROR  -->  LWR_MAC: Invalid error code %d", configRsp->error_code);
 	 return RFAILED;
       }
    }
    else
    {
-      DU_LOG("\nLWR_MAC: Config Response received from PHY is NULL");
+      DU_LOG("\nERROR  -->  LWR_MAC: Config Response received from PHY is NULL");
       return RFAILED;
    }
 #endif
@@ -2261,7 +2261,7 @@ uint8_t lwr_mac_procStartReqEvt(void *msg)
    LWR_MAC_ALLOC(vendorMsgElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_vendor_msg_t)));
    if(!vendorMsgElem)
    {
-      DU_LOG("\nLWR_MAC: Memory allocation failed for vendor msg in start req");
+      DU_LOG("\nERROR  -->  LWR_MAC: Memory allocation failed for vendor msg in start req");
       return RFAILED;
    }
    FILL_FAPI_LIST_ELEM(vendorMsgElem, NULLP, FAPI_VENDOR_MESSAGE, 1, sizeof(fapi_vendor_msg_t));
@@ -2279,7 +2279,7 @@ uint8_t lwr_mac_procStartReqEvt(void *msg)
    LWR_MAC_ALLOC(startReqElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_start_req_t)));
    if(!startReqElem)
    {
-      DU_LOG("\nLWR_MAC: Memory allocation failed for start req");
+      DU_LOG("\nERROR  -->  LWR_MAC: Memory allocation failed for start req");
       LWR_MAC_ALLOC(vendorMsgElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_vendor_msg_t)));
       return RFAILED;
    }
@@ -2294,7 +2294,7 @@ uint8_t lwr_mac_procStartReqEvt(void *msg)
    LWR_MAC_ALLOC(headerElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_msg_header_t)));
    if(!headerElem)
    {
-      DU_LOG("\nLWR_MAC: Memory allocation failed for vendor msg in config req");
+      DU_LOG("\nERROR  -->  LWR_MAC: Memory allocation failed for vendor msg in config req");
       LWR_MAC_ALLOC(startReqElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_start_req_t)));
       LWR_MAC_ALLOC(vendorMsgElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_vendor_msg_t)));
       return RFAILED;
@@ -2306,7 +2306,7 @@ uint8_t lwr_mac_procStartReqEvt(void *msg)
    msgHeader->handle = 0;
 
    /* Send to PHY */
-   DU_LOG("\nLWR_MAC: Sending Start Request to Phy");
+   DU_LOG("\nDEBUG  -->  LWR_MAC: Sending Start Request to Phy");
    LwrMacSendToL1(headerElem);
 #endif
    return ROK;
@@ -2346,7 +2346,7 @@ uint8_t lwr_mac_procStopReqEvt(void *msg)
    LWR_MAC_ALLOC(vendorMsgElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_vendor_msg_t)));
    if(!vendorMsgElem)
    {
-      DU_LOG("\nLWR_MAC: Memory allocation failed for vendor msg in stop req");
+      DU_LOG("\nERROR  -->  LWR_MAC: Memory allocation failed for vendor msg in stop req");
       return RFAILED;
    }
    FILL_FAPI_LIST_ELEM(vendorMsgElem, NULLP, FAPI_VENDOR_MESSAGE, 1, sizeof(fapi_vendor_msg_t));
@@ -2359,7 +2359,7 @@ uint8_t lwr_mac_procStopReqEvt(void *msg)
    LWR_MAC_ALLOC(stopReqElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_stop_req_t)));
    if(!stopReqElem)
    {
-      DU_LOG("\nLWR_MAC: Memory allocation failed for stop req");
+      DU_LOG("\nERROR  -->  LWR_MAC: Memory allocation failed for stop req");
       LWR_MAC_FREE(vendorMsgElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_vendor_msg_t)));
       return RFAILED;
    }
@@ -2373,7 +2373,7 @@ uint8_t lwr_mac_procStopReqEvt(void *msg)
    LWR_MAC_ALLOC(headerElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_msg_header_t)));
    if(!headerElem)
    {
-      DU_LOG("\nLWR_MAC: Memory allocation failed for header in stop req");
+      DU_LOG("\nERROR  -->  LWR_MAC: Memory allocation failed for header in stop req");
       LWR_MAC_FREE(stopReqElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_stop_req_t)));
       LWR_MAC_FREE(vendorMsgElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_vendor_msg_t)));
       return RFAILED;
@@ -2385,7 +2385,7 @@ uint8_t lwr_mac_procStopReqEvt(void *msg)
    msgHeader->handle = 0;
 
    /* Send to PHY */
-   DU_LOG("\nLWR_MAC: Sending Stop Request to Phy");
+   DU_LOG("\nINFO  -->  LWR_MAC: Sending Stop Request to Phy");
    LwrMacSendToL1(headerElem);
 
 #endif
@@ -2552,7 +2552,7 @@ void fillSib1DlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *sib1PdcchInfo)
 
       if(numBytes > FAPI_DCI_PAYLOAD_BYTE_LEN)
       {
-	 DU_LOG("\nLWR_MAC : Total bytes for DCI is more than expected");
+	 DU_LOG("\nERROR  -->  LWR_MAC : Total bytes for DCI is more than expected");
 	 return;
       }
 
@@ -2686,7 +2686,7 @@ void fillRarDlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *rarPdcchInfo)
 
       if(numBytes > FAPI_DCI_PAYLOAD_BYTE_LEN)
       {
-	 DU_LOG("\nLWR_MAC : Total bytes for DCI is more than expected");
+	 DU_LOG("\nERROR  -->  LWR_MAC : Total bytes for DCI is more than expected");
 	 return;
       }
 
@@ -2842,7 +2842,7 @@ void fillDlMsgDlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *pdcchInfo,\
 
       if(numBytes > FAPI_DCI_PAYLOAD_BYTE_LEN)
       {
-         DU_LOG("\nLWR_MAC : Total bytes for DCI is more than expected");
+         DU_LOG("\nERROR  -->  LWR_MAC : Total bytes for DCI is more than expected");
          return;
       }
 
@@ -2930,7 +2930,7 @@ uint8_t fillPdcchPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, DlSchedInfo *dlInfo, \
       }
       else
       {
-	 DU_LOG("\nLWR_MAC: Failed filling PDCCH Pdu");
+	 DU_LOG("\nERROR  -->  LWR_MAC: Failed filling PDCCH Pdu");
 	 return RFAILED;
       }
       dlTtiReqPdu->pduType = PDCCH_PDU_TYPE;
@@ -3340,7 +3340,7 @@ uint16_t fillDlTtiReq(SlotIndInfo currTimingInfo)
 	 LWR_MAC_ALLOC(headerElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_msg_header_t)));
 	 if(!headerElem)
 	 {
-	    DU_LOG("\nLWR_MAC: Memory allocation failed for header in DL TTI req");
+	    DU_LOG("\nERROR  -->  LWR_MAC: Memory allocation failed for header in DL TTI req");
 	    LWR_MAC_FREE(dlTtiElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_dl_tti_req_t)));
 	    return RFAILED;
 	 }
@@ -3376,9 +3376,9 @@ uint16_t fillDlTtiReq(SlotIndInfo currTimingInfo)
 			numPduEncoded++;
 		     }
 		  }
-		  printf("\033[1;31m");
-		  DU_LOG("\nLWR_MAC: MIB sent..");
-		  printf("\033[0m");
+		  DU_LOG("\033[1;31m");
+		  DU_LOG("\nDEBUG  -->  LWR_MAC: MIB sent..");
+		  DU_LOG("\033[0m");
 	       }
 	       if(currDlSlot->dlInfo.brdcstAlloc.sib1Trans)
 	       {
@@ -3396,9 +3396,9 @@ uint16_t fillDlTtiReq(SlotIndInfo currTimingInfo)
 		     pduIndex++;
 		     numPduEncoded++;
 		  }
-		  printf("\033[1;34m");
-                  DU_LOG("\nLWR_MAC: SIB1 sent...");
-		  printf("\033[0m");
+		  DU_LOG("\033[1;34m");
+                  DU_LOG("\nDEBUG  -->  LWR_MAC: SIB1 sent...");
+		  DU_LOG("\033[0m");
 	       }
 	    }
 	    if(currDlSlot->dlInfo.rarAlloc != NULLP)
@@ -3415,22 +3415,22 @@ uint16_t fillDlTtiReq(SlotIndInfo currTimingInfo)
 	       numPduEncoded++;
 	       pduIndex++;
 
-	       printf("\033[1;32m");
-	       DU_LOG("\nLWR_MAC: RAR sent...");
-	       printf("\033[0m");
+	       DU_LOG("\033[1;32m");
+	       DU_LOG("\nDEBUG  -->  LWR_MAC: RAR sent...");
+	       DU_LOG("\033[0m");
 	    }
 	    if(currDlSlot->dlInfo.dlMsgAlloc != NULLP)
 	    {
 	       if(currDlSlot->dlInfo.dlMsgAlloc->dlMsgInfo.dlMsgPdu != NULLP)
 	       {
 		  /* Filling Msg4 param */
-		  printf("\033[1;32m");
+		  DU_LOG("\033[1;32m");
 		  if(currDlSlot->dlInfo.dlMsgAlloc->dlMsgInfo.isMsg4Pdu)
 		  {
 		     rntiType = TC_RNTI_TYPE;
 		     fillPdcchPdu(&dlTtiReq->pdus[numPduEncoded], \
 			   &currDlSlot->dlInfo, rntiType, CORESET_TYPE0);
-		     DU_LOG("\nLWR_MAC: MSG4 sent...");
+		     DU_LOG("\nDEBUG  -->  LWR_MAC: MSG4 sent...");
 		  }
 		  else
 		  { 
@@ -3438,9 +3438,9 @@ uint16_t fillDlTtiReq(SlotIndInfo currTimingInfo)
 		     rntiType = C_RNTI_TYPE;
 		     fillPdcchPdu(&dlTtiReq->pdus[numPduEncoded], \
 			   &currDlSlot->dlInfo, rntiType, CORESET_TYPE1);
-		     DU_LOG("\nLWR_MAC: DL MSG sent...");
+		     DU_LOG("\nDEBUG  -->  LWR_MAC: DL MSG sent...");
                   }
-		  printf("\033[0m");
+		  DU_LOG("\033[0m");
 
 		  numPduEncoded++;
 		  fillPdschPdu(&dlTtiReq->pdus[numPduEncoded],
@@ -3458,7 +3458,7 @@ uint16_t fillDlTtiReq(SlotIndInfo currTimingInfo)
 	    }
 
 #ifdef ODU_SLOT_IND_DEBUG_LOG	    
-	    DU_LOG("\nLWR_MAC: Sending DL TTI Request");
+	    DU_LOG("\nDEBUG  -->  LWR_MAC: Sending DL TTI Request");
 #endif	    
             LwrMacSendToL1(headerElem);
 
@@ -3468,7 +3468,7 @@ uint16_t fillDlTtiReq(SlotIndInfo currTimingInfo)
 	 else
 	 {
 #ifdef ODU_SLOT_IND_DEBUG_LOG	    
-	    DU_LOG("\nLWR_MAC: Sending DL TTI Request");
+	    DU_LOG("\nDEBUG  -->  LWR_MAC: Sending DL TTI Request");
 #endif	    
             LwrMacSendToL1(headerElem);
 	 }
@@ -3477,7 +3477,7 @@ uint16_t fillDlTtiReq(SlotIndInfo currTimingInfo)
       }
       else
       {
-	 DU_LOG("\nLWR_MAC: Failed to allocate memory for DL TTI Request");
+	 DU_LOG("\nERROR  -->  LWR_MAC: Failed to allocate memory for DL TTI Request");
 	 memset(currDlSlot, 0, sizeof(MacDlSlot));
 	 return RFAILED;
       }
@@ -3527,7 +3527,7 @@ uint16_t sendTxDataReq(SlotIndInfo currTimingInfo, DlSchedInfo *dlInfo)
       LWR_MAC_ALLOC(txDataElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_tx_data_req_t)));
       if(txDataElem == NULLP)
       {
-	 DU_LOG("\nLWR_MAC: Failed to allocate memory for TX data Request");
+	 DU_LOG("\nERROR  -->  LWR_MAC: Failed to allocate memory for TX data Request");
 	 return RFAILED;
       }
 
@@ -3573,7 +3573,7 @@ uint16_t sendTxDataReq(SlotIndInfo currTimingInfo, DlSchedInfo *dlInfo)
       LWR_MAC_ALLOC(headerElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_msg_header_t)));
       if(!headerElem)
       {
-	 DU_LOG("\nLWR_MAC: Memory allocation failed for TxDataReq header");
+	 DU_LOG("\nERROR  -->  LWR_MAC: Memory allocation failed for TxDataReq header");
 	 LWR_MAC_FREE(txDataElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_tx_data_req_t)));
 	 return RFAILED;
       }
@@ -3583,7 +3583,7 @@ uint16_t sendTxDataReq(SlotIndInfo currTimingInfo, DlSchedInfo *dlInfo)
       msgHeader->num_msg = 1;
       msgHeader->handle = 0;
 
-      DU_LOG("\nLWR_MAC: Sending TX DATA Request");
+      DU_LOG("\nDEBUG  -->  LWR_MAC: Sending TX DATA Request");
       LwrMacSendToL1(headerElem);
    }
 #endif
@@ -3931,7 +3931,7 @@ uint16_t fillUlTtiReq(SlotIndInfo currTimingInfo)
 	 LWR_MAC_ALLOC(headerElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_msg_header_t)));
 	 if(!headerElem)
 	 {
-	    DU_LOG("\nLWR_MAC: Memory allocation failed for UL TTI req header");
+	    DU_LOG("\nERROR  -->  LWR_MAC: Memory allocation failed for UL TTI req header");
 	    LWR_MAC_FREE(ulTtiElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_ul_tti_req_t)));
 	    return RFAILED;
 	 }
@@ -3941,7 +3941,7 @@ uint16_t fillUlTtiReq(SlotIndInfo currTimingInfo)
 	 msgHeader->num_msg = 1;
 	 msgHeader->handle = 0;
 #ifdef ODU_SLOT_IND_DEBUG_LOG
-         DU_LOG("\nLWR_MAC: Sending UL TTI Request");
+         DU_LOG("\nDEBUG  -->  LWR_MAC: Sending UL TTI Request");
 #endif
 	 LwrMacSendToL1(headerElem);
 
@@ -3950,7 +3950,7 @@ uint16_t fillUlTtiReq(SlotIndInfo currTimingInfo)
       }
       else
       {
-	 DU_LOG("\nLWR_MAC: Failed to allocate memory for UL TTI Request");
+	 DU_LOG("\nERROR  -->  LWR_MAC: Failed to allocate memory for UL TTI Request");
 	 memset(currUlSlot, 0, sizeof(MacUlSlot));
 	 return RFAILED;
       }
@@ -4081,7 +4081,7 @@ void fillUlDciPdu(fapi_dl_dci_t *ulDciPtr, DciInfo *schDciInfo)
 
       if(numBytes > FAPI_DCI_PAYLOAD_BYTE_LEN)
       {
-         DU_LOG("\nLWR_MAC : Total bytes for DCI is more than expected");
+         DU_LOG("\nERROR  -->  LWR_MAC : Total bytes for DCI is more than expected");
          return;
       }
 
@@ -4221,7 +4221,7 @@ uint16_t fillUlDciReq(SlotIndInfo currTimingInfo)
 	       LWR_MAC_ALLOC(headerElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_msg_header_t)));
 	       if(!headerElem)
 	       {
-		  DU_LOG("\nLWR_MAC: Memory allocation failed for UL DCI req header");
+		  DU_LOG("\nERROR  -->  LWR_MAC: Memory allocation failed for UL DCI req header");
 		  LWR_MAC_FREE(ulDciElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_ul_dci_req_t)));
 		  return RFAILED;
 	       }
@@ -4231,14 +4231,14 @@ uint16_t fillUlDciReq(SlotIndInfo currTimingInfo)
 	       msgHeader->num_msg = 1;
 	       msgHeader->handle = 0;
 #ifdef ODU_SLOT_IND_DEBUG_LOG
-	       DU_LOG("\nLWR_MAC: Sending UL DCI Request");
+	       DU_LOG("\nDEBUG  -->  LWR_MAC: Sending UL DCI Request");
 #endif
 	       LwrMacSendToL1(headerElem);
             }
 	 }
          else
          {
-            DU_LOG("\nLWR_MAC: Failed to allocate memory for UL DCI Request");
+            DU_LOG("\nERROR  -->  LWR_MAC: Failed to allocate memory for UL DCI Request");
             memset(currDlSlot, 0, sizeof(MacDlSlot));
             return RFAILED;
          }
