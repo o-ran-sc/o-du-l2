@@ -30,6 +30,12 @@
 #include "du_mgr.h"
 #include "du_utils.h"
 #include "du_cell_mgr.h"
+#ifdef O1_ENABLE
+ 
+#include "GlobalDefs.h"
+#include "AlarmInterface.h"
+  
+#endif
 
 /*******************************************************************
  *
