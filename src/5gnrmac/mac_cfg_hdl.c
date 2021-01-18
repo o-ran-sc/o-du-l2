@@ -91,7 +91,7 @@ uint8_t MacSchGenCfgReq(Pst *pst, RgMngmt *cfg)
  **/
 uint8_t SchSendCfgCfm(Pst *pst, RgMngmt  *cfm)
 {
-   printf("\nSending Scheduler config confirm to DU APP");
+   DU_LOG("\nDEBUG  -->  Sending Scheduler config confirm to DU APP");
    pst->dstEnt = ENTDUAPP;
    pst->dstInst = 0;
    pst->srcInst = 0;
@@ -129,7 +129,7 @@ uint8_t MacProcCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
    MAC_ALLOC(macCellCb, sizeof(MacCellCb));
    if(macCellCb == NULLP)
    {
-      DU_LOG("\nMAC : macCellCb is NULL at handling of macCellCfg\n");
+      DU_LOG("\nERROR  -->  MAC : macCellCb is NULL at handling of macCellCfg\n");
       return RFAILED;
    }
    memset(macCellCb, 0, sizeof(MacCellCb));
@@ -143,7 +143,7 @@ uint8_t MacProcCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
 	 macCb.macCell[cellIdx]->macCellCfg.sib1Cfg.sib1PduLen);
    if(macCb.macCell[cellIdx]->macCellCfg.sib1Cfg.sib1Pdu == NULLP)
    {
-      DU_LOG("\nMAC : macCellCb is NULL at handling of sib1Pdu of macCellCfg\n");
+      DU_LOG("\nERROR  -->  MAC : macCellCb is NULL at handling of sib1Pdu of macCellCfg\n");
       return RFAILED;
    }
    memcpy(macCb.macCell[cellIdx]->macCellCfg.sib1Cfg.sib1Pdu, macCellCfg->sib1Cfg.sib1Pdu, \
