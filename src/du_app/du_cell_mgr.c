@@ -71,7 +71,7 @@ uint8_t duProcCellsToBeActivated(uint8_t *plmnStr, uint16_t nci, uint16_t nRPci)
       }
       else
       {
-	 DU_LOG("\nDU APP : No Cell found for NCI %d", nci);
+	 DU_LOG("\nERROR  -->  DU APP : No Cell found for NCI %d", nci);
 	 return RFAILED;
       }
    }
@@ -83,7 +83,7 @@ uint8_t duProcCellsToBeActivated(uint8_t *plmnStr, uint16_t nci, uint16_t nRPci)
 
    if(duBuildAndSendMacCellCfg(cellCb->cellId) != ROK)
    {
-      DU_LOG("\nDU APP : macCellCfg build and send failed");
+      DU_LOG("\nERROR  -->  DU APP : macCellCfg build and send failed");
       /* Delete cell from actvCellList */
       duCb.actvCellLst[--(duCb.numActvCells)] = NULLP;
       ret = RFAILED;
@@ -108,7 +108,7 @@ uint8_t duProcCellsToBeActivated(uint8_t *plmnStr, uint16_t nci, uint16_t nRPci)
  ******************************************************************/
 void duProcF1SetupRsp()
 {
-   DU_LOG("\nDU_APP : F1 Setup Response received");
+   DU_LOG("\nINFO   -->  DU_APP : F1 Setup Response received");
    duCb.f1Status = TRUE; //Set F1 status as true
 }
 
@@ -129,7 +129,7 @@ void duProcF1SetupRsp()
  ******************************************************************/
 void duProcGnbDuCfgUpdAckMsg()
 {
-   DU_LOG("\nDU APP: GNB-DU config update Ack received ");
+   DU_LOG("\nINFO   -->  DU APP: GNB-DU config update Ack received ");
 }
 /*******************************************************************
 *
@@ -158,7 +158,7 @@ uint8_t duGetCellCb(uint16_t cellId, DuCellCb **cellCb)
 
    if(!*cellCb)
    {
-      DU_LOG("\nDU APP : Cell Id %d not found in DU APP", cellId);
+      DU_LOG("\nERROR  -->  DU APP : Cell Id %d not found in DU APP", cellId);
       return RFAILED;
    }
 
@@ -188,7 +188,7 @@ uint8_t duHandleCellUpInd(Pst *pst, OduCellId *cellId)
 
    if(cellId->cellId <=0 || cellId->cellId > MAX_NUM_CELL)
    {
-      DU_LOG("\nDU APP : Invalid Cell Id %d in duHandleCellUpInd()", cellId->cellId);
+      DU_LOG("\nERROR  -->  DU APP : Invalid Cell Id %d in duHandleCellUpInd()", cellId->cellId);
       return RFAILED;
    }
 
@@ -197,11 +197,11 @@ uint8_t duHandleCellUpInd(Pst *pst, OduCellId *cellId)
 
    if((cellCb != NULL) && (cellCb->cellStatus == ACTIVATION_IN_PROGRESS))
    {
-      DU_LOG("\nDU APP : 5G-NR Cell %d is UP", cellId->cellId);
+      DU_LOG("\nINFO   -->  DU APP : 5G-NR Cell %d is UP", cellId->cellId);
       cellCb->cellStatus = ACTIVATED;
 
 #ifdef O1_ENABLE
-      DU_LOG("\nDU APP : Raise cell UP alarm for cell id=%d", cellId->cellId);
+      DU_LOG("\nINFO   -->  DU APP : Raise cell UP alarm for cell id=%d", cellId->cellId);
       raiseCellAlrm(CELL_UP_ALARM_ID, cellId->cellId);
 #endif
    }
