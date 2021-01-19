@@ -120,7 +120,7 @@ uint8_t procSlotInd(fapi_slot_ind_t *fapiSlotInd)
    }
    else
    {
-      printf("\nLWR_MAC: Memory allocation failed in procSlotInd");
+      DU_LOG("\nERROR  -->  LWR_MAC: Memory allocation failed in procSlotInd");
       ret = RFAILED;
    }
 
@@ -158,14 +158,14 @@ uint8_t procStopInd()
    MAC_ALLOC_SHRABL_BUF(cellId, sizeof(uint16_t));
    if(!cellId)
    {
-      printf("\nLWR_MAC: Memory Allocation failed in procStopInd");
+      DU_LOG("\nERROR  -->  LWR_MAC: Memory Allocation failed in procStopInd");
       return RFAILED;
    }
 
    *cellId = lwrMacCb.cellCb[0].cellId;
    lwrMacCb.phyState = PHY_STATE_CONFIGURED;
    lwrMacCb.cellCb[0].state = PHY_STATE_CONFIGURED;
-   DU_LOG("\nLWR_MAC: PHY has moved to configured state");
+   DU_LOG("\nINFO  -->  LWR_MAC: PHY has moved to configured state");
 
    FILL_PST_LWR_MAC_TO_MAC(pst, EVENT_STOP_IND_TO_MAC);
    return (*sendStopIndOpts[pst.selector])(&pst, cellId);
@@ -198,7 +198,7 @@ uint8_t procRachInd(fapi_rach_indication_t  *fapiRachInd)
    MAC_ALLOC_SHRABL_BUF(rachInd, sizeof(RachInd));
    if(!rachInd)
    {
-      printf("\nLWR_MAC: Memory Allocation failed in procRachInd");
+      DU_LOG("\nERROR  -->  LWR_MAC: Memory Allocation failed in procRachInd");
       return RFAILED;
    }
 
@@ -257,7 +257,7 @@ uint8_t procCrcInd(fapi_crc_ind_t  *fapiCrcInd)
    MAC_ALLOC_SHRABL_BUF(crcInd, sizeof(CrcInd));
    if(!crcInd)
    {
-      printf("\nLWR_MAC: Memory Allocation failed in procCrcInd");
+      DU_LOG("\nERROR  -->  LWR_MAC: Memory Allocation failed in procCrcInd");
       return RFAILED;
    }
 
@@ -316,7 +316,7 @@ uint8_t procRxDataInd(fapi_rx_data_indication_t  *fapiRxDataInd)
    MAC_ALLOC_SHRABL_BUF(rxDataInd, sizeof(RxDataInd));
    if(!rxDataInd)
    {
-      printf("\nLWR_MAC: Memory Allocation failed in procRxDataInd");
+      DU_LOG("\nERROR  -->  LWR_MAC: Memory Allocation failed in procRxDataInd");
       return RFAILED;
    }
 
@@ -423,10 +423,11 @@ uint8_t procUciInd(fapi_uci_indication_t  *fapiUciInd)
    MAC_ALLOC_SHRABL_BUF(macUciInd, sizeof(UciInd));
    if(!macUciInd)
    {
-      printf("\nLWR_MAC: Memory Allocation failed in procUciInd");
+      DU_LOG("\nERROR  -->  LWR_MAC: Memory Allocation failed in procUciInd");
       return RFAILED;
    }
 
+   DU_LOG("\nDEBUG  -->  LWR_MAC: Processing UCI Indication");
    memset(macUciInd, 0, sizeof(UciInd));
    macUciInd->cellId = lwrMacCb.cellCb[0].cellId;
    macUciInd->slotInd.sfn = fapiUciInd->sfn; 
@@ -451,7 +452,7 @@ uint8_t procUciInd(fapi_uci_indication_t  *fapiUciInd)
          case UCI_IND_PUCCH_F2F3F4:
             break;
          default:
-            DU_LOG("\nLWR_MAC: Invalid Pdu Type %d at procmacUciInd()", macUciInd->pdus[pduIdx].pduType);
+            DU_LOG("\nERROR  -->  LWR_MAC: Invalid Pdu Type %d at procmacUciInd()", macUciInd->pdus[pduIdx].pduType);
 	    ret = RFAILED;
             break;
       }
@@ -463,7 +464,7 @@ uint8_t procUciInd(fapi_uci_indication_t  *fapiUciInd)
    }
    else
    {
-      DU_LOG("\nLWR_MAC: Failed sending UCI Ind to MAC");
+      DU_LOG("\nERROR  -->  LWR_MAC: Failed sending UCI Ind to MAC");
    }
    return ret;
 }
@@ -496,7 +497,7 @@ void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
 #ifdef INTEL_TIMER_MODE
       case FAPI_VENDOR_EXT_UL_IQ_SAMPLES:
          {
-            printf("\nLWR_MAC: Received FAPI_VENDOR_EXT_UL_IQ_SAMPLES");
+            DU_LOG("\nDEBUG  -->  LWR_MAC: Received FAPI_VENDOR_EXT_UL_IQ_SAMPLES");
             //send config req
             uint16_t cellId = 1;
             sendToLowerMac(CONFIG_REQUEST, 0, (void *)&cellId);
@@ -517,7 +518,7 @@ void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
 	 {
 	    if(lwrMacCb.phyState == PHY_STATE_CONFIGURED)
 	    {
-	       DU_LOG("\nLWR_MAC: PHY has moved to running state");
+	       DU_LOG("\nINFO  -->  LWR_MAC: PHY has moved to running state");
 	       lwrMacCb.phyState = PHY_STATE_RUNNING;
 	       lwrMacCb.cellCb[0].state = PHY_STATE_RUNNING;
 	    }
@@ -565,7 +566,7 @@ void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
 	 }
       case FAPI_STOP_INDICATION:
 	 {
-	    DU_LOG("\nLWR_MAC: Handling Stop Indication");
+	    DU_LOG("\nINFO  -->  LWR_MAC: Handling Stop Indication");
 	    procStopInd();
 	    break;
 	 }  
