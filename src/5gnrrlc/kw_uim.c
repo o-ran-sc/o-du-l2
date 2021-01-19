@@ -37,10 +37,6 @@
      File:     kw_uim.c
 
 **********************************************************************/
-static const char* RLOG_MODULE_NAME="UIM";
-static int RLOG_MODULE_ID=2048;
-static int RLOG_FILE_ID=205;
-
 /** 
  * @file kw_uim.c
  * @brief RLC Upper Interface Module
@@ -116,7 +112,7 @@ SpId   spId
 
    tRlcCb = RLC_GET_RLCCB(pst->dstInst);
 
-   RLOG2(L_DEBUG, "spId(%d), suId(%d)", spId, suId);
+   DU_LOG("\nDEBUG  -->  RLC_UL : spId(%d), suId(%d)", spId, suId);
    ckwSap = &(tRlcCb->u.ulCb->ckwSap);
    /* Take action based on the current state of the SAP */
    switch(ckwSap->state)
@@ -134,7 +130,7 @@ SpId   spId
          /* Update the State */
          ckwSap->state = RLC_SAP_BND;
 
-         RLOG1(L_DEBUG, "RlcUiCkwBndReq: state (%d)", ckwSap->state);
+         DU_LOG("\nDEBUG  -->  RLC_UL : RlcUiCkwBndReq: state (%d)", ckwSap->state);
          break;
       }
       case RLC_SAP_BND:
@@ -151,7 +147,7 @@ SpId   spId
                                 LKW_EVENT_CKW_BND_REQ, 
                                 LCM_CAUSE_INV_PAR_VAL);
 
-            RLOG0(L_ERROR, "CKW SAP already Bound");
+            DU_LOG("\nERROR  -->  RLC_UL : CKW SAP already Bound");
             RlcUiCkwBndCfm(&(ckwSap->pst), ckwSap->suId, CM_BND_NOK);
             return (RFAILED);
          }
@@ -160,7 +156,7 @@ SpId   spId
       default:
       {
 #if (ERRCLASS & ERRCLS_INT_PAR)
-         RLOG0(L_ERROR, "Invalid CKW SAP State in Bind Req");
+         DU_LOG("\nERROR  -->  RLC_UL : Invalid CKW SAP State in Bind Req");
          RLC_SEND_SAPID_ALARM(tRlcCb,
                              spId, 
                              LKW_EVENT_CKW_BND_REQ, 
@@ -212,7 +208,7 @@ Reason   reason
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
    tRlcCb = RLC_GET_RLCCB(pst->dstInst);
 
-   RLOG2(L_DEBUG,"spId(%d), reason(%d)", 
+   DU_LOG("\nDEBUG  -->  RLC_UL : spId(%d), reason(%d)", 
                 spId, 
                 reason);
 
@@ -283,7 +279,7 @@ RlcCfgInfo   *cfg
    tRlcCb->u.ulCb->rlcUlUdxEventType = pst->event;
    if (rlcDbmAddUlTransaction(tRlcCb, cfgTmpData) != ROK)
    {
-      RLOG0(L_ERROR, "Addition to UL transId Lst Failed");
+      DU_LOG("\nERROR  -->  RLC_UL : Addition to UL transId Lst Failed");
       RLC_PST_FREE(pst->region, pst->pool, cfg, sizeof(RlcCfgInfo));
       
       return RFAILED;
@@ -339,15 +335,12 @@ CkwUeInfo   *newUeInfo
 
       tRlcCb = RLC_GET_RLCCB(pst->dstInst);
 #ifndef ALIGN_64BIT
-      RLOG_ARG2(L_DEBUG,DBG_CELLID,newUeInfo->cellId,
-                   "RlcUiCkwUeIdChgReq(pst, spId(%d), transId(%ld))", 
+      DU_LOG("\nDEBUG  -->  RLC_UL : RlcUiCkwUeIdChgReq(pst, spId(%d), transId(%ld))", 
                    spId, 
                    transId);
 #else
-      RLOG_ARG2(L_DEBUG,DBG_CELLID,newUeInfo->cellId, 
-                   "RlcUiCkwUeIdChgReq(pst, spId(%d), transId(%d))\n", 
-                   spId, 
-                   transId);
+      DU_LOG("\nDEBUG  -->  RLC_UL : RlcUiCkwUeIdChgReq(pst, spId(%d), transId(%d))\n", 
+                 spId, transId);
 #endif
 
       RLC_ALLOC(tRlcCb, cfgTmpData, sizeof (RlcUlCfgTmpData));
@@ -363,7 +356,7 @@ CkwUeInfo   *newUeInfo
 
       if (rlcDbmAddUlTransaction(tRlcCb, cfgTmpData))
       {
-         RLOG0(L_ERROR, "Addition to UL transId Lst Failed");
+         DU_LOG("\nERROR  -->  RLC_UL : Addition to UL transId Lst Failed");
          ret = RFAILED;
          break;
       }
@@ -387,8 +380,7 @@ CkwUeInfo   *newUeInfo
 
    if(ROK != rlcCfgValidateUeIdChng(tRlcCb,ueInfo,newUeInfo,cfgTmpData))
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cfgTmpData->ueInfo->cellId, 
-            "Validation Failure for UeId change");
+      DU_LOG("\nERROR  -->  RLC_UL : Validation Failure for UeId change");
    }
 
    rlcUlUdxUeIdChgReq(&(RLC_GET_UDX_SAP(tRlcCb)->pst),
@@ -444,8 +436,7 @@ RlcCfgInfo      *cfg
                                            &cfgTmpData->cfgEntData[idx],
                                            cfgTmpData))
                {
-                  RLOG_ARG2(L_ERROR,DBG_UEID, cfgTmpData->ueId,
-                        "CELLID [%u]:Validation Failure for UL RB [%d]",
+                  DU_LOG("\nERROR  -->  RLC_UL : CELLID [%u]:Validation Failure for UL RB [%d]",
                          cfg->cellId,cfg->entCfg[idx].rbId);
                   cfgTmpData->cfgEntData[idx].entUlCfgCfm.status.status = CKW_CFG_CFM_NOK;
                   /*Validation is getting failed so no need to do configuration at DL.
@@ -476,8 +467,7 @@ RlcCfgInfo      *cfg
                                               &cfg->entCfg[idx], 
                                               &cfgTmpData->cfgEntData[idx]))
                {
-                  RLOG_ARG2(L_ERROR,DBG_UEID,cfg->ueId,
-                        "CellID [%u]:Validation Failure for Reest UL RB [%d]",
+                  DU_LOG("\nERROR  -->  RLC_UL : CellID [%u]:Validation Failure for Reest UL RB [%d]",
                         cfg->cellId,cfg->entCfg[idx].rbId);
                   cfgTmpData->cfgEntData[idx].entUlCfgCfm.status.status = CKW_CFG_CFM_NOK;
                   /* Setting dir as UL, so that no configuration is done at DL */
@@ -506,8 +496,7 @@ RlcCfgInfo      *cfg
                                            &cfgTmpData->cfgEntData[idx],
                                            cfgTmpData))
             {
-               RLOG_ARG1(L_ERROR,DBG_CELLID,cfg->cellId,
-                     "UL UEID [%d]:Validation Failure",
+               DU_LOG("\nERROR  -->  RLC_UL : UL UEID [%d]:Validation Failure",
                      cfgTmpData->ueId);
                cfgTmpData->cfgEntData[idx].entUlCfgCfm.status.status = CKW_CFG_CFM_NOK;
                /* Setting dir as UL, so that no configuration is done at DL */
@@ -523,8 +512,7 @@ RlcCfgInfo      *cfg
                                              &cfgTmpData->cfgEntData[idx],
                                              cfgTmpData))
             {
-               RLOG_ARG0(L_ERROR,DBG_CELLID,cfg->cellId,
-                     "Del UL Cell Validation Failure");
+               DU_LOG("\nERROR  -->  RLC_UL : Del UL Cell Validation Failure");
                cfgTmpData->cfgEntData[idx].entUlCfgCfm.status.status = CKW_CFG_CFM_NOK;
                /* Setting dir as UL, so that no configuration is done at DL */
                cfg->entCfg[idx].dir = RLC_DIR_UL;
@@ -577,13 +565,13 @@ SpId   spId
    }
 #endif
    tRlcCb = RLC_GET_RLCCB(pst->dstInst);
-   RLOG2(L_DEBUG, "RlcUiKwuBndReq(pst, spId(%d), suId(%d))", spId, suId);
+   DU_LOG("\nDEBUG  -->  RLC_UL : RlcUiKwuBndReq(pst, spId(%d), suId(%d))", spId, suId);
 
     /* Validation of input parameters */
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if(!((spId < (S16) tRlcCb->genCfg.maxKwuSaps) && (spId >=0))) 
    {
-      RLOG0(L_ERROR,"Invalid spId");
+      DU_LOG("\nERROR  -->  RLC_UL : Invalid spId");
       RLC_SEND_SAPID_ALARM(tRlcCb,spId, LKW_EVENT_KWU_BND_REQ, LCM_CAUSE_INV_SAP);
       return RFAILED; 
    }
@@ -610,7 +598,7 @@ SpId   spId
          /* Update the State */
          rlckwuSap->state = RLC_SAP_BND;
 
-         RLOG1(L_DEBUG, "RlcUiKwuBndReq: state (%d)", rlckwuSap->state);
+         DU_LOG("\nDEBUG  -->  RLC_UL : RlcUiKwuBndReq: state (%d)", rlckwuSap->state);
          break;
       }
       case RLC_SAP_BND:
@@ -625,7 +613,7 @@ SpId   spId
                                 spId, 
                                 LKW_EVENT_KWU_BND_REQ, 
                                 LCM_CAUSE_INV_PAR_VAL);
-            RLOG1(L_ERROR,"RLC Mode [%d] : KWU SAP already Bound",
+            DU_LOG("\nERROR  -->  RLC_UL : RLC Mode [%d] : KWU SAP already Bound",
                   tRlcCb->genCfg.rlcMode);
             RlcUiKwuBndCfm(&(rlckwuSap->pst), rlckwuSap->suId, CM_BND_NOK);
             return (RFAILED);
@@ -636,7 +624,7 @@ SpId   spId
      default:
       {
 #if (ERRCLASS & ERRCLS_INT_PAR)
-         RLOG1(L_ERROR,"RLC Mode [%d]:Invalid KWU SAP State in Bind Req",
+         DU_LOG("\nERROR  -->  RLC_UL : RLC Mode [%d]:Invalid KWU SAP State in Bind Req",
                tRlcCb->genCfg.rlcMode);
          RLC_SEND_SAPID_ALARM(tRlcCb,
                              spId,
@@ -691,7 +679,7 @@ Reason   reason
 
    tRlcCb = RLC_GET_RLCCB(pst->dstInst);
 
-   RLOG2(L_DEBUG, "spId(%d), reason(%d)", 
+   DU_LOG("\nDEBUG  -->  RLC_UL : spId(%d), reason(%d)", 
                 spId, 
                 reason);
 
@@ -727,7 +715,7 @@ uint8_t rlcProcDlData(Pst *pst, KwuDatReqInfo *datReq, Buffer *mBuf)
    RlcDlRbCb     *rbCb;       /* RB Control Block */
    RlcCb         *tRlcCb;
 
-   DU_LOG("\nRLC : Received DL Data");
+   DU_LOG("\nDEBUG  -->  RLC_UL : Received DL Data");
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if(pst->dstInst >= MAX_RLC_INSTANCES)
@@ -743,7 +731,7 @@ uint8_t rlcProcDlData(Pst *pst, KwuDatReqInfo *datReq, Buffer *mBuf)
    rlcDbmFetchDlRbCbByRbId(tRlcCb, &datReq->rlcId, &rbCb);
    if(!rbCb)
    {
-      DU_LOG("\nRLC : CellId[%u]:DL RbId [%d] not found",
+      DU_LOG("\nERROR  -->  RLC_UL : CellId[%u]:DL RbId [%d] not found",
             datReq->rlcId.cellId,datReq->rlcId.rbId);
       ODU_PUT_MSG_BUF(mBuf);
 
@@ -782,7 +770,7 @@ uint8_t rlcProcDlData(Pst *pst, KwuDatReqInfo *datReq, Buffer *mBuf)
       }
       default:
       {
-         DU_LOG("\nRLC : Invalid RB Mode");
+         DU_LOG("\nERROR  -->  RLC_UL : Invalid RB Mode");
          break;
       }
    }

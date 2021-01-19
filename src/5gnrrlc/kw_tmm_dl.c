@@ -104,10 +104,8 @@ Buffer          *mBuf
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if ( sdu == NULLP )
    {
-      RLOG_ARG2(L_FATAL,DBG_RBID,rbCb->rlcId.rbId,
-            "Memory Allocation failed UEID:%d CELLID:%d",   
-            rbCb->rlcId.ueId,
-            rbCb->rlcId.cellId);   
+      DU_LOG("\nERROR  -->  RLC_DL : Memory Allocation failed UEID:%d CELLID:%d",   
+            rbCb->rlcId.ueId, rbCb->rlcId.cellId);   
       return;
    }
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
@@ -217,10 +215,10 @@ void rlcTmmSendToMac(RlcCb *gCb, SuId suId, RlcDlRbCb *rbCb, RguCStaIndInfo *sta
                (sdu->mode.tm.slot != ((slot+TFU_DELTA)%10)))
          {
             node = node->next;
-            DU_LOG("\nRLC: rlcTmmSendToMac: Releasing SDU of RNTI = %d for RNTI = %d \
+            DU_LOG("\nINFO  -->  RLC_DL : rlcTmmSendToMac: Releasing SDU of RNTI = %d for RNTI = %d \
 	       UEID:%d CELLID:%d", sdu->mode.tm.rnti, staInd->rnti, rbCb->rlcId.ueId,
                rbCb->rlcId.cellId);   
-            DU_LOG("\nRLC: rlcTmmSendToMac: sfn %d slot %d  UEID:%d CELLID:%d",
+            DU_LOG("\nINFO  -->  RLC_DL : rlcTmmSendToMac: sfn %d slot %d  UEID:%d CELLID:%d",
                   sfn, slot, rbCb->rlcId.ueId, rbCb->rlcId.cellId);   
             cmLListDelFrm(&(rbCb->m.tm.sduQ), &sdu->lstEnt);
             ODU_PUT_MSG_BUF(sdu->mBuf);
@@ -242,17 +240,17 @@ void rlcTmmSendToMac(RlcCb *gCb, SuId suId, RlcDlRbCb *rbCb, RguCStaIndInfo *sta
          {
             timeDiff = curTime - sdu->arrTime;
          }
-         DU_LOG("\nRLC: rlcTmmSendToMac: TMM: TmSdu Sta Indication received \
+         DU_LOG("\nDEBUG  -->  RLC_DL : rlcTmmSendToMac: TMM: TmSdu Sta Indication received \
 	    for Rnti %d Sdu Rnti %d UEID:%d CELLID:%d", staInd->rnti, 
             sdu->mode.tm.rnti, rbCb->rlcId.ueId, rbCb->rlcId.cellId);   
-	 DU_LOG("\nRLC: rlcTmmSendToMac: TMM: TmSdu Sta Indication received : \
+	 DU_LOG("\nDEBUG  -->  RLC_DL : rlcTmmSendToMac: TMM: TmSdu Sta Indication received : \
 	    timeDiff %d SduQCnt %d UEID:%d CELLID:%d", timeDiff, rbCb->m.tm.sduQ.count,
             rbCb->rlcId.ueId, rbCb->rlcId.cellId);   
          if (timeDiff > 40)
          {
             /* Memory leak needs to be fixed */
             node = node->next;
-            DU_LOG("\nRLC: rlcTmmSendToMac: timeDiff greater than 40, so deleting\
+            DU_LOG("\nERROR  -->  RLC_DL : rlcTmmSendToMac: timeDiff greater than 40, so deleting\
 	       the Sdu %u UEID:%d CELLID:%d", sdu->mode.tm.rnti, rbCb->rlcId.ueId,
                rbCb->rlcId.cellId);   
             cmLListDelFrm(&(rbCb->m.tm.sduQ), &sdu->lstEnt);
@@ -265,19 +263,19 @@ void rlcTmmSendToMac(RlcCb *gCb, SuId suId, RlcDlRbCb *rbCb, RguCStaIndInfo *sta
          {
             /* Memory leak needs to be fixed */
             node = node->next;
-	    DU_LOG("\nRLC: rlcTmmSendToMac: TMM: Searching for Rnti %d Skipping \
+	    DU_LOG("\nDEBUG  -->  RLC_DL : rlcTmmSendToMac: TMM: Searching for Rnti %d Skipping \
 	       Sdu for Rnti %d UEID:%d CELLID:%d", staInd->rnti, sdu->mode.tm.rnti, 
                rbCb->rlcId.ueId, rbCb->rlcId.cellId);   
-	    DU_LOG("\nRLC: rlcTmmSendToMac: timeDiff %d sdu->arrTime %d UEID:%d CELLID:%d", 
+	    DU_LOG("\nINFO  -->  RLC_DL : rlcTmmSendToMac: timeDiff %d sdu->arrTime %d UEID:%d CELLID:%d", 
                 timeDiff, sdu->arrTime, rbCb->rlcId.ueId, rbCb->rlcId.cellId);   
-            DU_LOG("\nRLC: rlcTmmSendToMac: curTime %d SduQCnt %d and continuing"
+            DU_LOG("\nINFO  -->  RLC_DL : rlcTmmSendToMac: curTime %d SduQCnt %d and continuing"
                " UEID:%d CELLID:%d", curTime, rbCb->m.tm.sduQ.count, rbCb->rlcId.ueId,
                rbCb->rlcId.cellId);   
             continue;
          }
          else
          {
-            DU_LOG("\nRLC: rlcTmmSendToMac: TMM: TmSdu found %u UEID:%d CELLID:%d",
+            DU_LOG("\nDEBUG  -->  RLC_DL : rlcTmmSendToMac: TMM: TmSdu found %u UEID:%d CELLID:%d",
                sdu->mode.tm.rnti, rbCb->rlcId.ueId, rbCb->rlcId.cellId);   
             break;
          }
@@ -286,7 +284,7 @@ void rlcTmmSendToMac(RlcCb *gCb, SuId suId, RlcDlRbCb *rbCb, RguCStaIndInfo *sta
    }
    if ( node == NULLP )
    {
-      DU_LOG("\nRLC: rlcTmmSendToMac: SDU not found TM Queue is empty UEID:%d CELLID:%d",
+      DU_LOG("\nERROR  -->  RLC_DL : rlcTmmSendToMac: SDU not found TM Queue is empty UEID:%d CELLID:%d",
          rbCb->rlcId.ueId, rbCb->rlcId.cellId);   
       return;
    }
@@ -297,7 +295,7 @@ void rlcTmmSendToMac(RlcCb *gCb, SuId suId, RlcDlRbCb *rbCb, RguCStaIndInfo *sta
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if ( dlData == NULLP )
    {
-      DU_LOG("\nRLC: rlcTmmSendToMac: Memory Allocation failed UEID:%d CELLID:%d",   
+      DU_LOG("\nERROR  -->  RLC_DL : rlcTmmSendToMac: Memory Allocation failed UEID:%d CELLID:%d",   
          rbCb->rlcId.ueId, rbCb->rlcId.cellId);   
       return; 
    }
@@ -317,7 +315,7 @@ void rlcTmmSendToMac(RlcCb *gCb, SuId suId, RlcDlRbCb *rbCb, RguCStaIndInfo *sta
       dlData->pduInfo[0].pduBuf, pduLen);
    if (dlData->pduInfo[0].pduBuf == NULLP )
    {
-      DU_LOG("Memory allocation failed");
+      DU_LOG("\nERROR  -->  RLC_DL : Memory allocation failed");
       return;
    }
    ODU_COPY_MSG_TO_FIX_BUF(sdu->mBuf, 0, pduLen, \
@@ -412,7 +410,7 @@ static void rlcTmmSendBoSta(RlcCb *gCb, RlcDlRbCb *rbCb, MsgLen bo, KwuDatReqInf
                        boStatus, sizeof(RlcBoStatus));
    if ( boStatus == NULLP )
    {
-      DU_LOG("Memory Allocation failed UEID:%d CELLID:%d",\
+      DU_LOG("\nERROR  -->  RLC_DL : Memory Allocation failed UEID:%d CELLID:%d",\
             rbCb->rlcId.ueId, rbCb->rlcId.cellId);   
       return;
    }
