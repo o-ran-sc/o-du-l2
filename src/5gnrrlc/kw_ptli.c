@@ -275,7 +275,7 @@ S16 rlcUlBatchProc(Void)
       }
       else
       {
-         RLOG0(L_ERROR,"Received NULL buffer");
+         DU_LOG("\nERROR  -->  RLC : Received NULL buffer");
       }
       rguDatInd->msg=NULLP;
       SRngIncrRIndx(SS_RNG_BUF_ULMAC_TO_ULRLC);
@@ -366,7 +366,7 @@ S16 rlcLiRguStaRspRbuf(Pst *post,SpId spId,Void *staRsp)
    }   
    else
    {
-      RLOG0(L_ERROR,"RLC DL STA RSP RBUF is FULL!!! ");
+      DU_LOG("\nERROR  -->  RLC_DL : RLC DL STA RSP RBUF is FULL!!! ");
       SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC].pktDrop++;
       ret1 = RFAILED;
    }
@@ -393,7 +393,7 @@ S16 rlcLiRguDatReqRbuf(Pst *post,SpId spId,Void *datReq)
    }   
    else
    {
-      printf("RLC DL DAT REQ RBUF is FULL!!! \n");
+      DU_LOG("\nERROR  -->  RLC_DL : RLC DL DAT REQ RBUF is FULL!!! \n");
       SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC_DAT_REQ].pktDrop++;
       ret1 = RFAILED;
    }
