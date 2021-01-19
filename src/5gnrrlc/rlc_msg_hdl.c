@@ -125,7 +125,7 @@ void fillEntModeAndDir(uint8_t *entMode, uint8_t *direction, RlcMode rlcMode)
          *direction = RLC_CFG_DIR_DL;
          break;
       default : 
-         DU_LOG("\nRLC: Rlc Mode invalid %d", rlcMode);
+         DU_LOG("\nERROR  -->  RLC: Rlc Mode invalid %d", rlcMode);
     break;
    }
 }
@@ -254,7 +254,7 @@ uint8_t RlcProcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg)
    RLC_ALLOC(rlcUeCb, rlcUeCfg, sizeof(RlcCfgInfo));
    if(rlcUeCfg == NULLP)
    {
-      DU_LOG("\nRLC: Failed to allocate memory at RlcProcUeCreateReq()");
+      DU_LOG("\nERROR  -->  RLC: Failed to allocate memory at RlcProcUeCreateReq()");
       ret = RFAILED;
    }
    else
@@ -263,7 +263,7 @@ uint8_t RlcProcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg)
       fillRlcCfg(rlcUeCfg, ueCfg); 
       ret = RlcProcCfgReq(pst, rlcUeCfg);
       if(ret != ROK)
-         DU_LOG("\nRLC: Failed to configure Add/Mod/Del entities at RlcProcUeCreateReq()");
+         DU_LOG("\nERROR  -->  RLC: Failed to configure Add/Mod/Del entities at RlcProcUeCreateReq()");
 
    }
    RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueCfg, sizeof(RlcUeCfg));
@@ -289,7 +289,7 @@ uint8_t BuildAndSendRrcDeliveryReportToDu( RlcDlRrcMsgInfo *dlRrcMsgInfo )
     Pst             pst;
     RrcDeliveryReport *rrcDelivery;
 
-    DU_LOG("\nRLC : Filling the RRC Delivery Report");
+    DU_LOG("\nINFO  -->  RLC : Filling the RRC Delivery Report");
     RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL, rrcDelivery, sizeof(RrcDeliveryReport));
 
     if(rrcDelivery)
@@ -307,7 +307,7 @@ uint8_t BuildAndSendRrcDeliveryReportToDu( RlcDlRrcMsgInfo *dlRrcMsgInfo )
     }
     else
     {
-       DU_LOG("\nRLC : Memory allocation failed");
+       DU_LOG("\nERROR  -->  RLC : Memory allocation failed");
     }
 
    return ROK;
@@ -336,7 +336,7 @@ uint8_t RlcProcDlRrcMsgTransfer(Pst *pst, RlcDlRrcMsgInfo *dlRrcMsgInfo)
    RLC_SHRABL_STATIC_BUF_ALLOC(RLC_MEM_REGION_DL, RLC_POOL, datReqInfo, sizeof(KwuDatReqInfo));
    if(!datReqInfo)
    {
-      DU_LOG("\nRLC : Memory allocation failed in RlcProcDlRrcMsgTransfer");
+      DU_LOG("\nERROR  -->  RLC : Memory allocation failed in RlcProcDlRrcMsgTransfer");
       RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, dlRrcMsgInfo->rrcMsg, dlRrcMsgInfo->msgLen);
       RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, dlRrcMsgInfo, sizeof(RlcDlRrcMsgInfo));
       return RFAILED;
@@ -352,7 +352,7 @@ uint8_t RlcProcDlRrcMsgTransfer(Pst *pst, RlcDlRrcMsgInfo *dlRrcMsgInfo)
    /* Copy fixed buffer to message */
    if(ODU_GET_MSG_BUF(RLC_MEM_REGION_UL, RLC_POOL, &mBuf) != ROK)
    {
-      DU_LOG("\nRLC : Memory allocation failed at RlcMacProcUlData");
+      DU_LOG("\nERROR  -->  RLC : Memory allocation failed at RlcMacProcUlData");
       RLC_SHRABL_STATIC_BUF_FREE(RLC_MEM_REGION_DL, RLC_POOL, datReqInfo, sizeof(KwuDatReqInfo));
       RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, dlRrcMsgInfo->rrcMsg, dlRrcMsgInfo->msgLen);
       RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, dlRrcMsgInfo, sizeof(RlcDlRrcMsgInfo));
@@ -408,7 +408,7 @@ uint8_t RlcProcUlData(Pst *pst, RlcData *ulData)
    RguCDatIndInfo  *cLchUlDat;               /* UL data on common logical channel */
 
    /* Initializing dedicated logical channel Database */
-   DU_LOG("\nRLC: Received UL Data request from MAC");
+   DU_LOG("\nDEBUG  -->  RLC: Received UL Data request from MAC");
    for(idx = 0; idx < MAX_NUM_LC; idx++)
    {
       dLchData[idx].lcId = idx;
@@ -426,7 +426,7 @@ uint8_t RlcProcUlData(Pst *pst, RlcData *ulData)
 	    sizeof(RguCDatIndInfo));
 	 if(!cLchUlDat)
 	 {
-	    DU_LOG("\nRLC : Memory allocation failed at RlcProcUlData");
+	    DU_LOG("\nERROR  -->  RLC : Memory allocation failed at RlcProcUlData");
 	    ret = RFAILED;
 	    break;
 	 }
@@ -439,7 +439,7 @@ uint8_t RlcProcUlData(Pst *pst, RlcData *ulData)
          /* Copy fixed buffer to message */
          if(ODU_GET_MSG_BUF(RLC_MEM_REGION_UL, RLC_POOL, &cLchUlDat->pdu) != ROK)
          {
-            DU_LOG("\nRLC : Memory allocation failed at RlcProcUlData");
+            DU_LOG("\nERROR  -->  RLC : Memory allocation failed at RlcProcUlData");
 	    RLC_SHRABL_STATIC_BUF_FREE(RLC_MEM_REGION_UL, RLC_POOL, cLchUlDat, \
 	       sizeof(RguCDatIndInfo));
             ret = RFAILED;
@@ -458,7 +458,7 @@ uint8_t RlcProcUlData(Pst *pst, RlcData *ulData)
 	       sizeof(RguDDatIndInfo));
 	    if(!dLchUlDat)
 	    {
-	       DU_LOG("\nRLC : Memory allocation failed at RlcMacProcUlData");
+	       DU_LOG("\nERROR  -->  RLC : Memory allocation failed at RlcMacProcUlData");
 	       ret = RFAILED;
 	       break;
 	    }
@@ -470,7 +470,7 @@ uint8_t RlcProcUlData(Pst *pst, RlcData *ulData)
 	 if(ODU_GET_MSG_BUF(RLC_MEM_REGION_UL, RLC_POOL, \
 		  &dLchData[lcId].pdu.mBuf[dLchData[lcId].pdu.numPdu]) != ROK)
 	 {
-	    DU_LOG("\nRLC : Memory allocation failed at RlcMacProcUlData");
+	    DU_LOG("\nERROR  -->  RLC : Memory allocation failed at RlcMacProcUlData");
 	    for(pduIdx=0; pduIdx < dLchData[lcId].pdu.numPdu; pduIdx++)
 	    {
 	       ODU_PUT_MSG_BUF(dLchData[lcId].pdu.mBuf[dLchData[lcId].pdu.numPdu]);
@@ -546,7 +546,7 @@ uint8_t RlcProcSchedResultRpt(Pst *pst, RlcSchedResultRpt *schRep)
    RguCStaIndInfo   *cLchSchInfo;    /* Common logical channel scheduling result */
    RguDStaIndInfo   *dLchSchInfo;  /* Dedicated logical channel scheduling result */
 
-   DU_LOG("\nRLC : Received scheduling report from MAC");
+   DU_LOG("\nDEBUG  -->  RLC : Received scheduling report from MAC");
    for(idx=0; idx < schRep->numLc; idx++)
    {
       /* If it is common channel, fill status indication information
@@ -557,7 +557,7 @@ uint8_t RlcProcSchedResultRpt(Pst *pst, RlcSchedResultRpt *schRep)
 	     sizeof(RguCStaIndInfo));
 	  if(!cLchSchInfo)
 	  {
-	     DU_LOG("\nRLC: RlcProcSchedResultRpt: Memory allocation failed for cLchSchInfo");
+	     DU_LOG("\nERROR  -->  RLC: RlcProcSchedResultRpt: Memory allocation failed for cLchSchInfo");
 	     ret = RFAILED;
 	     break;
 	  }
@@ -581,7 +581,7 @@ uint8_t RlcProcSchedResultRpt(Pst *pst, RlcSchedResultRpt *schRep)
 	        sizeof(RguDStaIndInfo));
              if(!dLchSchInfo)
              {
-                DU_LOG("\nRLC: RlcProcSchedResultRpt: Memory allocation failed for dLchSchInfo");
+                DU_LOG("\nERROR  -->  RLC: RlcProcSchedResultRpt: Memory allocation failed for dLchSchInfo");
                 ret = RFAILED;
                 break;
              }
@@ -647,13 +647,13 @@ uint8_t RlcProcUeReconfigReq(Pst *pst, RlcUeCfg *ueCfg)
    RlcCfgInfo *rlcUeCfg = NULLP; //Seed code Rlc cfg struct
    RlcCb *rlcUeCb = NULLP;
     
-   DU_LOG("\nRLC: UE reconfig request received. CellID[%d] UEIDX[%d]",ueCfg->cellId, ueCfg->ueIdx);
+   DU_LOG("\nDEBUG  -->  RLC: UE reconfig request received. CellID[%d] UEIDX[%d]",ueCfg->cellId, ueCfg->ueIdx);
 
    rlcUeCb = RLC_GET_RLCCB(pst->dstInst);
    RLC_ALLOC(rlcUeCb, rlcUeCfg, sizeof(RlcCfgInfo));
    if(rlcUeCfg == NULLP)
    {
-      DU_LOG("\nRLC: Failed to allocate memory at RlcProcUeReconfigReq()");
+      DU_LOG("\nERROR  -->  RLC: Failed to allocate memory at RlcProcUeReconfigReq()");
       ret = RFAILED;
    }
    else
@@ -662,7 +662,7 @@ uint8_t RlcProcUeReconfigReq(Pst *pst, RlcUeCfg *ueCfg)
       fillRlcCfg(rlcUeCfg, ueCfg);
       ret = RlcProcCfgReq(pst, rlcUeCfg);
       if(ret != ROK)
-         DU_LOG("\nRLC: Failed to configure Add/Mod/Del entities at RlcProcUeReconfigReq()");
+         DU_LOG("\nERROR  -->  RLC: Failed to configure Add/Mod/Del entities at RlcProcUeReconfigReq()");
    }
    
    RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueCfg, sizeof(RlcUeCfg));

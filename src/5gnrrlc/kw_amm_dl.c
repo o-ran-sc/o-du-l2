@@ -35,9 +35,6 @@
         File:   kw_amm_dl.c 
   
 *********************************************************************21*/
-static const char* RLOG_MODULE_NAME="AMM";
-static int RLOG_MODULE_ID=2048;
-static int RLOG_FILE_ID=189;
 /* header include files (.h) */
 #include "common_def.h"
 #include "lkw.h"           /* LKW defines */
@@ -364,7 +361,7 @@ RlcDlPduInfo   *pduInfo
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if (*retx == NULLP)
    {
-	   RLOG0(L_FATAL, "Memory allocation failed");
+	   DU_LOG("\nERROR  -->  RLC_DL : Memory allocation failed");
 	   return;
    }
 #endif /* ERRCLASS & ERRCLS_RES */
@@ -553,14 +550,12 @@ KwuDatCfmInfo **datCfm
       if ((nackSnInfo->isSegment) &&
             ((retx->soEnd < nackSnInfo->soStart) /*|| (retx->amHdr.so > soEnd)*/))
       {
-         RLOG_ARG3(L_DEBUG, DBG_RBID, rbCb->rlcId.rbId,
-               "rlcHndlStaRsp: Handle ACK for byte segment, Its "
+         DU_LOG( "\nDEBUG  -->  RLC_DL : rlcHndlStaRsp: Handle ACK for byte segment, Its "
                "sn = %d UEID:%d CELLID:%d",
                nackSnInfo->sn, 
                rbCb->rlcId.ueId,
                rbCb->rlcId.cellId);
-         RLOG_ARG4(L_DEBUG, DBG_RBID, rbCb->rlcId.rbId,
-               "soStart and soEnd = %d, %d, UEID:%d CELLID:%d",
+         DU_LOG("\nDEBUG  -->  RLC_DL : soStart and soEnd = %d, %d, UEID:%d CELLID:%d",
                retx->amHdr.so, retx->soEnd, 
                rbCb->rlcId.ueId,
                rbCb->rlcId.cellId);
@@ -725,8 +720,7 @@ Void rlcAmmDlHndlStatusPdu(RlcCb *gCb,RlcDlRbCb *rbCb,RlcUdxStaPdu *pStaPdu)
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if (datCfm == NULLP)
    {
-      RLOG_ARG2(L_FATAL,DBG_RBID,rbCb->rlcId.rbId, 
-               "Memory allocation failed UEID:%d CELLID:%d",
+      DU_LOG("\nERROR  -->  RLC_DL : Memory allocation failed UEID:%d CELLID:%d",
                rbCb->rlcId.ueId,
                rbCb->rlcId.cellId);
       RLC_SHRABL_STATIC_BUF_FREE(rlckwuSap->pst.region, rlckwuSap->pst.pool, datCfm, sizeof(KwuDatCfmInfo));
@@ -742,8 +736,7 @@ Void rlcAmmDlHndlStatusPdu(RlcCb *gCb,RlcDlRbCb *rbCb,RlcUdxStaPdu *pStaPdu)
 
    if(mAckSn > mTxNext)
    {
-      RLOG_ARG4(L_WARNING,DBG_RBID, rbCb->rlcId.rbId, 
-               "Invalid ACK SN = %d received. Current Vta =%d"
+      DU_LOG("\nERROR  -->  RLC_DL : Invalid ACK SN = %d received. Current Vta =%d"
                "UEID:%d CELLID:%d", 
                pStaPdu->ackSn,
                AMDL.txNextAck,
@@ -785,8 +778,7 @@ Void rlcAmmDlHndlStatusPdu(RlcCb *gCb,RlcDlRbCb *rbCb,RlcUdxStaPdu *pStaPdu)
          nackSnInfo.nackRange = pStaPdu->nackInfo[idx].nackRange;
          nackSnInfo.sn = pStaPdu->nackInfo[idx].sn;
          
-         RLOG_ARG3(L_DEBUG,DBG_RBID, rbCb->rlcId.rbId, 
-                  "rlcHndlStaRsp: NACK SN = %d UEID:%d CELLID:%d",
+         DU_LOG("\nDEBUG  -->  RLC_DL : rlcHndlStaRsp: NACK SN = %d UEID:%d CELLID:%d",
                   nackSnInfo.sn,
                   rbCb->rlcId.ueId,
                   rbCb->rlcId.cellId);
@@ -809,8 +801,7 @@ Void rlcAmmDlHndlStatusPdu(RlcCb *gCb,RlcDlRbCb *rbCb,RlcUdxStaPdu *pStaPdu)
          if ((mNackSn > mAckSn) || (mNackSn >= mTxNext))
          {
             /* Erroneous NACK_SN, we should raise an error towards L3 */
-            RLOG_ARG2(L_ERROR,DBG_RBID, rbCb->rlcId.rbId, 
-                     "Status Pdu is not correct UEID:%d CELLID:%d",
+            DU_LOG("\nERROR  -->  RLC_DL : Status Pdu is not correct UEID:%d CELLID:%d",
                      rbCb->rlcId.ueId,
                      rbCb->rlcId.cellId);
             RLC_SHRABL_STATIC_BUF_FREE(rlckwuSap->pst.region, rlckwuSap->pst.pool, datCfm, sizeof(KwuDatCfmInfo));
@@ -858,8 +849,7 @@ Void rlcAmmDlHndlStatusPdu(RlcCb *gCb,RlcDlRbCb *rbCb,RlcUdxStaPdu *pStaPdu)
    {
      rlcStatusAckCnt++;
       /* For All ACKs */
-      RLOG_ARG2(L_UNUSED,DBG_RBID, rbCb->rlcId.rbId,
-               "rlcHndlStaRsp: Received All ACKS UEID:%d CELLID:%d",
+      DU_LOG("\nDEBUG  -->  RLC_DL : rlcHndlStaRsp: Received All ACKS UEID:%d CELLID:%d",
                rbCb->rlcId.ueId,
                rbCb->rlcId.cellId);
 
@@ -874,8 +864,7 @@ Void rlcAmmDlHndlStatusPdu(RlcCb *gCb,RlcDlRbCb *rbCb,RlcUdxStaPdu *pStaPdu)
    {
       if(datCfm->numSduIds > 1024)
       {
-         RLOG_ARG4(L_DEBUG,DBG_RBID,datCfm->rlcId.rbId, 
-                  "Sending [%lu] SDU Cfms to PDCP & [%lu] lost for"
+         DU_LOG("\nDEBUG  -->  RLC_DL : Sending [%u] SDU Cfms to PDCP & [%u] lost for"
                   "UEID:%d CELLID:%d",
                   datCfm->numSduIds, 
                   datCfm->numSduIds-1024,
@@ -989,7 +978,7 @@ void rlcAmmQSdu(RlcCb *gCb, RlcDlRbCb *rbCb, Buffer *mBuf, KwuDatReqInfo *datReq
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if (sdu == NULLP)
    {
-      DU_LOG("\n RLC : rlcAmmQSdu : Memory allocation failed UEID:%d CELLID:%d",\
+      DU_LOG("\nERROR  -->  RLC_DL : rlcAmmQSdu : Memory allocation failed UEID:%d CELLID:%d",\
          rbCb->rlcId.ueId, rbCb->rlcId.cellId);
       return;
    }
@@ -1020,7 +1009,7 @@ dlrate_kwu += sdu->sduSz;
     * queue */
    if (AMDL.nxtTx == NULLP)
    {
-      DU_LOG("\nRLC : rlcAmmQSdu: Received SDU will be transmitted next \
+      DU_LOG("\nINFO  -->  RLC_DL : rlcAmmQSdu: Received SDU will be transmitted next \
          UEID:%d CELLID:%d", rbCb->rlcId.ueId, rbCb->rlcId.cellId);
       AMDL.nxtTx = sdu;
    }
@@ -1180,7 +1169,7 @@ void rlcAmmProcessSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq, bool f
       }
       else
       {
-         DU_LOG("\nRLC: rlcAmmProcessSdus: Miscomputation of control Bo. \
+         DU_LOG("\nERROR  -->  RLC_DL : rlcAmmProcessSdus: Miscomputation of control Bo. \
 	    UEID:%d CELLID:%d", rbCb->rlcId.ueId, rbCb->rlcId.cellId);
       }
       AMDL.cntrlBo = 0;
@@ -1390,7 +1379,7 @@ static void rlcResegRetxPdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
       /* kw003.201 - Eliminate MAC Header Size based on bites needed      */
       tmpSz = RLC_MIN((retx->segSz + retx->hdrSz), rlcDatReq->pduSz);
       pduSz = (retx->segSz + retx->hdrSz);
-      /* 5GNR_RLC: length field in 5GNR MAC Hdr is 8/16 btis*/
+      /* 5GNR_RLC_DL : length field in 5GNR MAC Hdr is 8/16 btis*/
       rlcDatReq->pduSz -= (tmpSz < 255) ?  RLC_MAC_HDR_SZ2 : RLC_MAC_HDR_SZ3;
 
       /* kw003.201 - We should have at least one more than basic header */
@@ -1405,7 +1394,7 @@ static void rlcResegRetxPdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
       {
          uint8_t pollBit;
          
-         DU_LOG("\nRLC: rlcResegRetxPdus: Send retx buf without segmentation "
+         DU_LOG("\nINFO  -->  RLC_DL : rlcResegRetxPdus: Send retx buf without segmentation "
             "UEID:%d CELLID:%d", rbCb->rlcId.ueId, rbCb->rlcId.cellId);
 
          if (retx->yetToConst)
@@ -1446,7 +1435,7 @@ static void rlcResegRetxPdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
          
          /* Segment this pdu / portion of pdu. Insert this segment into */
          /* retxLst and update offset                                   */
-         DU_LOG("\nRLC: rlcResegRetxPdus: Segment retx buf UEID:%d CELLID:%d",
+         DU_LOG("\nINFO  -->  RLC_DL : rlcResegRetxPdus: Segment retx buf UEID:%d CELLID:%d",
             rbCb->rlcId.ueId, rbCb->rlcId.cellId);
 
          /* Eliminate fixed header size if the pdu is segmented for the */
@@ -1483,7 +1472,7 @@ static void rlcResegRetxPdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
 #if (ERRCLASS & ERRCLS_ADD_RES)
          if (tNode == NULLP)
          {
-            DU_LOG("\nRLC: rlcResegRetxPdus: Memory allocation failed UEID:%d CELLID:%d",
+            DU_LOG("\nERROR  -->  RLC_DL : rlcResegRetxPdus: Memory allocation failed UEID:%d CELLID:%d",
                rbCb->rlcId.ueId, rbCb->rlcId.cellId);
             return;
          }
@@ -1543,10 +1532,10 @@ static void rlcResegRetxPdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
       amDl->retxBo -= retx->segSz;
    }
 #ifndef ALIGN_64BIT
-   DU_LOG("\nRLC: rlcResegRetxPdus: retxBo after resegmentation = %ld"
+   DU_LOG("\nINFO  -->  RLC_DL : rlcResegRetxPdus: retxBo after resegmentation = %ld"
       "UEID:%d CELLID:%d", amDl->retxBo, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
 #else
-   DU_LOG("\nRLC: rlcResegRetxPdus: retxBo after resegmentation = %d "
+   DU_LOG("\nINFO  -->  RLC_DL : rlcResegRetxPdus: retxBo after resegmentation = %d "
       "UEID:%d CELLID:%d", amDl->retxBo, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
 #endif
 
@@ -1631,7 +1620,7 @@ static void rlcAssembleSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if (discSduInfo == NULLP)
    {
-      DU_LOG("\nRLC: rlcAssembleSdus: Memory allocation failed UEID:%d CELLID:%d",
+      DU_LOG("\nERROR  -->  RLC_DL : rlcAssembleSdus: Memory allocation failed UEID:%d CELLID:%d",
          rbCb->rlcId.ueId, rbCb->rlcId.cellId);
       return;
    }
@@ -1684,7 +1673,7 @@ static void rlcAssembleSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
             /* store the info for sending it to PDCP */
             if(discSduInfo->numSduIds > 500)
             {
-               DU_LOG("\nRLC: rlcAssembleSdus: This is a big error, we shouldn't be here"
+               DU_LOG("\nERROR  -->  RLC_DL : rlcAssembleSdus: This is a big error, we shouldn't be here"
                   "UEID:%d CELLID:%d", rbCb->rlcId.ueId, rbCb->rlcId.cellId);
                break;
             }
@@ -1722,7 +1711,7 @@ static void rlcAssembleSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
       if (RLC_AM_IS_TRANS_WIN_STALLED(amDl))
       {
          //int *a = NULLP;
-         printf("\n Window stalled  \n");
+         DU_LOG("\nINFO  -->  RLC_DL : Window stalled  \n");
          gRlcStats.amRlcStats.numRlcAmCellWinStall++;
          //*a = 10;
          break;
@@ -1763,7 +1752,7 @@ static void rlcAssembleSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
          {
             uint32_t avblMem = 0;
             SRegInfoShow(gCb->init.region, &avblMem);
-            DU_LOG("\nRLC: rlcAssembleSdus: Memory allocation failed UEID:%d CELLID:%d",
+            DU_LOG("\nERROR  -->  RLC_DL : rlcAssembleSdus: Memory allocation failed UEID:%d CELLID:%d",
                rbCb->rlcId.ueId, rbCb->rlcId.cellId);
             return;
          }
@@ -1782,7 +1771,7 @@ static void rlcAssembleSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
       {
          uint32_t avblMem = 0;
          SRegInfoShow(gCb->init.region, &avblMem);
-         DU_LOG("\nRLC: rlcAssembleSdus: Memory allocation failed UEID:%d CELLID:%d",
+         DU_LOG("\nERROR  -->  RLC_DL : rlcAssembleSdus: Memory allocation failed UEID:%d CELLID:%d",
             rbCb->rlcId.ueId, rbCb->rlcId.cellId);
          return;
       }
@@ -1808,7 +1797,7 @@ static void rlcAssembleSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
          /* Update Framing Info */
          if (sdu->mode.am.isSegmented) 
          {
-            /*5GNR RLC: SN should be same for all segment of a SDU*/
+            /*5GNR RLC_DL : SN should be same for all segment of a SDU*/
             pduInfo->amHdr.sn = sdu->mode.am.sn;
             pduInfo->amHdr.si = RLC_SI_LAST_SEG; /* binary 10 */
             pduInfo->amHdr.so = sdu->actSz - sdu->sduSz;
@@ -1816,7 +1805,8 @@ static void rlcAssembleSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
 
 
             gRlcStats.amRlcStats.numRlcAmCellSduTx++;
-            //printf("\n 5GNRLOG: last segment of lcId %d SduId %u So %u macGrntSz %u sduActSz %u sdu->sduSz %u\n",
+            //DU_LOG("\nINFO  -->  RLC_DL : 5GNRLOG: last segment of lcId %d SduId %u So %u macGrntSz\
+	    %u sduActSz %u sdu->sduSz %u\n",
             //          rbCb->lch.lChId, sdu->mode.am.sduId, pduInfo->amHdr.so, macGrntSz, sdu->actSz, sdu->sduSz);
          }
          else
@@ -1827,7 +1817,7 @@ static void rlcAssembleSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
          /* Create PDU with hdr and data */
          rlcAmmCreatePdu(gCb,rbCb, amHdr, pduInfo, pdu);
 
-         //printf("\n Segmentation not required case: numPdu %d pdu  %p \n",rlcDatReq->pduInfo.numPdu, pdu);
+         //DU_LOG("\nINFO  -->  Segmentation not required case: numPdu %d pdu  %p \n",rlcDatReq->pduInfo.numPdu, pdu);
 
 #ifdef LTE_L2_MEAS_RLC
          rlcUtlUpdSduSnMap(rbCb, sdu, rlcDatReq, TRUE);
@@ -1870,7 +1860,7 @@ static void rlcAssembleSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
 
          Buffer  *remSeg = NULLP;
 
-         //printf("\n SDU segmentation case: numPdu %d pdu %p \n", rlcDatReq->pduInfo.numPdu, pdu);
+         //DU_LOG("\nINFO  -->  SDU segmentation case: numPdu %d pdu %p \n", rlcDatReq->pduInfo.numPdu, pdu);
 #ifdef LTE_L2_MEAS
          if(RLC_MEAS_IS_DL_IP_MEAS_ON_FOR_RB(gCb,rbCb) ||
                RLC_MEAS_IS_DL_DELAY_MEAS_ON_FOR_RB(gCb,rbCb) || 
@@ -1910,24 +1900,26 @@ static void rlcAssembleSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
          /* Update SI and SN */
          if (sdu->mode.am.isSegmented) 
          {
-            /*5GNR RLC: SN should be same for all segment of a SDU.
+            /*5GNR RLC_DL : SN should be same for all segment of a SDU.
              * Sdu was already segmented and segmenting again*/
             pduInfo->amHdr.sn = sdu->mode.am.sn;
             pduInfo->amHdr.si = RLC_SI_MID_SEG; /* binary 11 */
             pduInfo->amHdr.so = sdu->actSz - sdu->sduSz;
 
-            //printf("\n 5GNRLOG: mid segment of lcId %d SduId %u So %u macGrntSz %u sduActSz %u sdu->sduSz %u\n",
+            //DU_LOG("\nINFO  -->  RLC_DL : 5GNRLOG: mid segment of lcId %d SduId %u So %u macGrntSz %u sduActSz\
+	    %u sdu->sduSz %u\n",
             //         rbCb->lch.lChId, sdu->mode.am.sduId, txBuf->amHdr.so, macGrntSz, sdu->actSz, sdu->sduSz);
          }
          else
          {
-            /*5GNR RLC: This means it is the first*/
+            /*5GNR RLC_DL : This means it is the first*/
             pduInfo->amHdr.si = RLC_SI_FIRST_SEG; /* binary 01 */
-            /*5GNR_RLC: Store SN so that in sub-seqent SDU segments will use this SN*/
+            /*5GNR_RLC_DL : Store SN so that in sub-seqent SDU segments will use this SN*/
             sdu->mode.am.sn = pduInfo->amHdr.sn;
             pduInfo->amHdr.so = 0;
 
-            //printf("\n 5GNRLOG: First segment of lcId %d SduId %u So %u macGrntSz %u sduActSz %u sdu->sduSz %u\n", 
+            //DU_LOG("\nINFO  -->   RLC_DL : 5GNRLOG: First segment of lcId %d SduId %u So\
+	    %u macGrntSz %u sduActSz %u sdu->sduSz %u\n", 
             //         rbCb->lch.lChId, sdu->mode.am.sduId, txBuf->amHdr.so, macGrntSz, sdu->actSz, sdu->sduSz);
          }
 
@@ -2032,7 +2024,7 @@ static void rlcAssembleSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
       RLC_SHRABL_STATIC_BUF_FREE(rlckwuSap->pst.region, rlckwuSap->pst.pool, discSduInfo, sizeof(KwuDiscSduInfo));
    }
 
-   DU_LOG("\nRLC: rlcAssembleSdus: BO after assembly = %d UEID:%d CELLID:%d",
+   DU_LOG("\nDEBUG  -->  RLC_DL : rlcAssembleSdus: BO after assembly = %d UEID:%d CELLID:%d",
       amDl->bo, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
    return;
 }
@@ -2094,7 +2086,7 @@ static bool rlcAmmDlCheckAndSetPoll(RlcCb *gCb, RlcDlRbCb *rbCb, bool newPdu, Ms
 
       amDl->pollSn = (amDl->txNext - 1) & amDl->snModMask;
 
-      DU_LOG("\nRLC: rlcAmmDlCheckAndSetPoll: Poll SN = %d UEID:%d CELLID:%d", 
+      DU_LOG("\nINFO  -->  RLC_DL : rlcAmmDlCheckAndSetPoll: Poll SN = %d UEID:%d CELLID:%d", 
          amDl->pollSn, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
 
       /* kw005.201: Fix for poll retransmission timer. 
@@ -2141,10 +2133,10 @@ RlcDlPduInfo *pduInfo, Buffer *pdu)
    /* Update sn */
    amHdr->sn = amDl->txNext;
 
-   /*5GNR RLC: Increment txNext only if no segmentation of it is a last segment */
+   /*5GNR RLC_DL : Increment txNext only if no segmentation of it is a last segment */
    if((!amHdr->si) || (amHdr->si == RLC_SI_LAST_SEG))
    {
-      //printf("\n 5GNRLOG: no segment/last seg SDU with lcId %d Sn %u txNext %u So %u\n",
+      //DU_LOG("\nINFO  -->  RLC_DL : 5GNRLOG: no segment/last seg SDU with lcId %d Sn %u txNext %u So %u\n",
       //          rbCb->lch.lChId, amHdr->sn, amDl->txNext, amHdr->so);
       amDl->txNext = (amDl->txNext + 1) & amDl->snModMask;
    }
@@ -2339,8 +2331,7 @@ KwuDatCfmInfo    **datCfm
 #if (ERRCLASS & ERRCLS_ADD_RES)
          if (*datCfm == NULLP)
          {
-            RLOG_ARG2(L_FATAL,DBG_RBID,rbCb->rlcId.rbId, 
-                  "Memory allocation failed UEID:%d CELLID:%d",
+            DU_LOG("\nERROR  -->  RLC_DL : Memory allocation failed UEID:%d CELLID:%d",
                   rbCb->rlcId.ueId,
                   rbCb->rlcId.cellId);
             return;
@@ -2446,8 +2437,7 @@ RlcRetx     *retx
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if (staInd == NULLP)
    {
-      RLOG_ARG2(L_FATAL,DBG_RBID,rbCb->rlcId.rbId, 
-            "Memory allocation failed UEID:%d CELLID:%d",
+      DU_LOG("\nERROR  -->  RLC_DL : Memory allocation failed UEID:%d CELLID:%d",
             rbCb->rlcId.ueId,
             rbCb->rlcId.cellId);
       return;
@@ -2558,8 +2548,7 @@ RlcDlRbCb     *rbCb
  
    if (ROK != rlcDbmFetchDlUeCb(gCb,rlcId.ueId, rlcId.cellId, &ueCb))
    {
-      RLOG_ARG2(L_ERROR,DBG_CELLID, rlcId.cellId,
-               "UeId [%d]: UeCb not found RBID;%d",
+      DU_LOG("\nERROR  -->  RLC_DL : UeId [%d]: UeCb not found RBID;%d",
                rlcId.ueId,
                rlcId.rbId);
       return;
@@ -2760,9 +2749,9 @@ KwuDatCfmInfo   **datCfm
       txBuf = rlcUtlGetTxBuf(AMDL.txBufLst, sn);
       if (txBuf != NULLP)
       {
-         RLOG_ARG3(L_UNUSED,DBG_RBID,rbCb->rlcId.rbId, 
-                 "rlcAmmDlUpdateTxAndReTxBufForAckSn: ACK for PDU "
-                 "with sn = %ld UEID:%ld CELLID:%ld",
+         
+         DU_LOG("\nDEBUG  -->  RLC_DL : rlcAmmDlUpdateTxAndReTxBufForAckSn: ACK for PDU "
+                 "with sn = %d UEID:%d CELLID:%d",
                  sn,
                  rbCb->rlcId.ueId,
                  rbCb->rlcId.cellId);
@@ -2832,8 +2821,7 @@ KwuDatCfmInfo   **datCfm
       txBuf = rlcUtlGetTxBuf(AMDL.txBufLst, sn);
       if ((txBuf != NULLP)) 
       {
-         RLOG_ARG3(L_DEBUG,DBG_RBID, rbCb->rlcId.rbId, 
-               "rlcHndlStaRsp: Handle ACK (sn = %d) UEID:%d CELLID:%d",
+         DU_LOG("\nDEBUG  -->  RLC_DL : rlcHndlStaRsp: Handle ACK (sn = %d) UEID:%d CELLID:%d",
                sn,
                rbCb->rlcId.ueId,
                rbCb->rlcId.cellId);
@@ -2994,7 +2982,7 @@ RlcSn          sn
 #if (ERRCLASS & ERRCLS_ADD_RES)
       if (*retx == NULLP)
       {
-	      RLOG0(L_FATAL, "Memory allocation failed");
+	      DU_LOG("\nERROR  -->  RLC_DL : Memory allocation failed");
 	      return;
       }
 #endif /* ERRCLASS & ERRCLS_RES */
@@ -3197,7 +3185,7 @@ static void rlcAmmCreateStatusPdu(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDat
         /* set ACK SN */
        {
 
-          DU_LOG("\nRLC: rlcAssembleCntrlInfo: ACK PDU's SN = %d"\
+          DU_LOG("\nINFO  -->  RLC_DL : rlcAssembleCntrlInfo: ACK PDU's SN = %d"\
              "UEID:%d CELLID:%d", ack_sn, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
 
           cntrlPdu[0] |= (ack_sn & 0xF00)>> 8; 
@@ -3315,7 +3303,7 @@ static void rlcAmmCreateStatusPdu(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDat
        /* set ACK SN */
        {
 
-          DU_LOG("\nRLC: rlcAssembleCntrlInfo: ACK PDU's SN = %d"
+          DU_LOG("\nINFO  -->  RLC_DL : rlcAssembleCntrlInfo: ACK PDU's SN = %d"
              "UEID:%d CELLID:%d", ack_sn, rbCb->rlcId.ueId,rbCb->rlcId.cellId);
 
           cntrlPdu[0] |=  (ack_sn & 0x3C000) >> 14;
@@ -3327,7 +3315,7 @@ static void rlcAmmCreateStatusPdu(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDat
     else
     {
        /* ERROR Log */
-       DU_LOG("\nRLC: rlcAssembleCntrlInfo:Conf SN LEN  %d  is INVALID !!!! \
+       DU_LOG("\nERROR  -->  RLC_DL : rlcAssembleCntrlInfo:Conf SN LEN  %d  is INVALID !!!! \
           UEID:%d CELLID:%d", rbCb->m.amDl.snLen, rbCb->rlcId.ueId,
 	  rbCb->rlcId.cellId);
     }
@@ -3611,7 +3599,7 @@ S16 rlcProcDlStatusPdu(Pst *udxPst,SuId suId,
 
    if( ROK != rlcDbmFetchDlUeCb(gCb,rnti,cellId,&(ueCb)))
    {
-     printf("\n RLC UECb Not found...\n");
+     DU_LOG("\nERROR  -->  RLC_DL : RLC UECb Not found...\n");
      return RFAILED;
    }
 
@@ -3627,7 +3615,7 @@ S16 rlcProcDlStatusPdu(Pst *udxPst,SuId suId,
    if(ROK != SExamMsg((Data *)(&fByte),
             rlcSdu, 0))
    {
-      printf("\n Failure in Rlc Hdr SExamMsg\n");
+      DU_LOG("\nERROR  -->  RLC_DL : Failure in Rlc Hdr SExamMsg\n");
       return RFAILED;
    }
 

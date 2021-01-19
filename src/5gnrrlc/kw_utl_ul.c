@@ -34,9 +34,6 @@
      File:     kw_utl_ul.c
 
 **********************************************************************/
-static const char* RLOG_MODULE_NAME="UTL";
-static int RLOG_MODULE_ID=2048;
-static int RLOG_FILE_ID=210;
 
 /** @file kw_utl_ul.c
 @brief RLC Utility Module 
@@ -110,7 +107,7 @@ uint8_t rlcUtlRcvFrmMac(RlcCb *gCb, KwDatIndInfo  *datIndInfo)
    if( ROK != rlcDbmFetchUlUeCb(gCb,datIndInfo->rnti,datIndInfo->cellId,&(ueCb)))
    {
       /* Fetch UeCb failed */
-      DU_LOG("\nRLC : rlcUtlRcvFrmMac : UEID:%d UeCb not found",
+      DU_LOG("\nERROR  -->  RLC_UL : rlcUtlRcvFrmMac : UEID:%d UeCb not found",
                datIndInfo->rnti);
       /* free the buffers inside the datIndInfo */
       uint32_t i,j;
@@ -219,7 +216,7 @@ uint8_t rlcUtlSendUlDataToDu(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *sdu)
 #if (ERRCLASS & ERRCLS_ADD_RES )
    if ( datIndInfo == NULLP  )
    {
-      DU_LOG("\nRLC : rlcUtlSendUlDataToDu: Memory allocation failed UEID:%d \
+      DU_LOG("\nERROR  -->  RLC_UL : rlcUtlSendUlDataToDu: Memory allocation failed UEID:%d \
          CELLID:%d", rbCb->rlcId.ueId, rbCb->rlcId.cellId);
       RLC_FREE_BUF(sdu);
       return RFAILED;
@@ -255,14 +252,14 @@ uint8_t rlcUtlSendUlDataToDu(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *sdu)
        }
        else
        {
-          DU_LOG("\nRLC : rlcUtlSendUlDataToDu: Memory allocation failed for rrcMsg");
+          DU_LOG("\nERROR  -->  RLC_UL : rlcUtlSendUlDataToDu: Memory allocation failed for rrcMsg");
 	  RLC_FREE_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL, ulRrcMsgInfo, sizeof(RlcUlRrcMsgInfo));
 	  return RFAILED;
        }
     }
     else
     {
-       DU_LOG("\nRLC : rlcUtlSendUlDataToDu: Memory allocation failed for ulRrcMsgInfo");
+       DU_LOG("\nERROR  -->  RLC_UL : rlcUtlSendUlDataToDu: Memory allocation failed for ulRrcMsgInfo");
        return RFAILED;
     }
 
@@ -286,8 +283,7 @@ static Void dumpRLCUlRbInformation(RlcUlRbCb* ulRbCb)
          }
       }
       
-      RLOG_ARG3(L_DEBUG,DBG_RBID,ulRbCb->rlcId.rbId,
-               "UM UL UEID:%d CELLID:%d Reception Buffer size = %d", 
+      DU_LOG("\nDEBUG  -->  RLC_UL : UM UL UEID:%d CELLID:%d Reception Buffer size = %d", 
                        (int)ulRbCb->rlcId.ueId,
                        (int)ulRbCb->rlcId.cellId,
                        (int)pdusInReceptionBuffer);
@@ -309,8 +305,8 @@ static Void dumpRLCUlRbInformation(RlcUlRbCb* ulRbCb)
          }
       }
 
-      RLOG_ARG4(L_DEBUG,DBG_RBID,ulRbCb->rlcId.rbId,
-                "AM UL UEID:%d CELLID:%d Reception Buf size = %d"
+      DU_LOG("\nDEBUG  -->  RLC_UL : AM UL UEID:%d CELLID:%d Reception Buf size = %d"
+
                 "total segs = %d", 
                        (int)ulRbCb->rlcId.ueId,
                        (int)ulRbCb->rlcId.cellId,
@@ -407,13 +403,13 @@ Void rlcUtlCalUlIpThrPutIncTTI(RlcCb *gCb,RlcUlRbCb *rbCb,uint32_t ttiCnt)
       /*starting Task*/
       SStartTask(&startTime, PID_RLC_IP_TPT_INCTTI);
 #ifndef ALIGN_64BIT
-   RLOG_ARG4(L_UNUSED, DBG_RBID,rbCb->rlcId.rbId,"Log for ul ip throughput:"
+   DU_LOG("\nDEBUG  -->  RLC_UL : Log for ul ip throughput:"
          "RB_MeasOn:%d ttiCnt :%ld UEID:%d CELLID:%d", 
          rbCb->rbL2Cb.measOn,ttiCnt,
          rbCb->rlcId.ueId,
          rbCb->rlcId.cellId);
 #else
-   RLOG_ARG4(L_UNUSED,DBG_RBID,rbCb->rlcId.rbId, "Log for ul ip throughput:"
+   DU_LOG("\nDEBUG  -->  RLC_UL : Log for ul ip throughput:"
          "RB_MeasOn:%d ttiCnt :%d UEID:%d CELLID:%d", 
          rbCb->rbL2Cb.measOn,ttiCnt,
          rbCb->rlcId.ueId,
@@ -573,9 +569,9 @@ S16 rlcUtlSndUlL2MeasCfm(RlcCb *gCb,RlcL2MeasEvtCb  *measEvtCb)
 
    /* kw006.201 ccpu00120058 emoved 64 bit compilation warning */
 #ifndef ALIGN_64BIT
-   RLOG1(L_DEBUG,"rlcUtlSndUlL2MeasCfm(transId(%ld))", measEvtCb->transId);
+   DU_LOG("\nDEBUG  -->  RLC_UL : rlcUtlSndUlL2MeasCfm(transId(%ld))", measEvtCb->transId);
 #else
-   RLOG1(L_DEBUG,"rlcUtlSndUlL2MeasCfm(transId(%d))", measEvtCb->transId);
+   DU_LOG("\nDEBUG  -->  RLC_UL : rlcUtlSndUlL2MeasCfm(transId(%d))", measEvtCb->transId);
 #endif
 
    /* Clean up the RB data structures */
