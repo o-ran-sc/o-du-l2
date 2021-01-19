@@ -28,9 +28,6 @@
         File:    kw_ul_ex_ms.c
   
 *********************************************************************21*/
-static const char* RLOG_MODULE_NAME="RLC_UL";
-static int RLOG_MODULE_ID=2048;
-static int RLOG_FILE_ID=206;
 
 /** @file kw_ul_ex_ms.c
 @brief RLC System Services Interface
@@ -264,7 +261,7 @@ Buffer *mBuf            /* message buffer */
                   ODU_PUT_MSG_BUF(mBuf);
                   if (pst->dstInst < MAX_RLC_INSTANCES)
                   {
-                     RLOG1(L_FATAL,"Received Invalid Event[%d] from SM",
+                     DU_LOG("ERROR  -->  RLC_UL : Received Invalid Event[%d] from SM",
                             pst->event);
                   }
                   ret = RFAILED;
@@ -309,7 +306,7 @@ Buffer *mBuf            /* message buffer */
                   ODU_PUT_MSG_BUF(mBuf);
                   if (pst->dstInst < MAX_RLC_INSTANCES)
                   {
-                      RLOG1(L_ERROR,"Received Invalid Event[%d] from RLC UL",
+                      DU_LOG("ERROR  -->  RLC_UL : Received Invalid Event[%d] from RLC UL",
                             pst->event);
                   }
                   ret = RFAILED;
@@ -361,7 +358,7 @@ Buffer *mBuf            /* message buffer */
                   ODU_PUT_MSG_BUF(mBuf);
                   if (pst->dstInst < MAX_RLC_INSTANCES)
                   {
-                      RLOG1(L_ERROR,"Received Invalid Event[%d] from RRC", 
+                      DU_LOG("\nERROR  -->  RLC_UL : Received Invalid Event[%d] from RRC", 
                             pst->event);
                   }
                   ret = RFAILED;
@@ -392,7 +389,7 @@ Buffer *mBuf            /* message buffer */
                   ODU_PUT_MSG_BUF(mBuf);
                   if (pst->dstInst < MAX_RLC_INSTANCES)
                   {
-                      RLOG1(L_ERROR,"Received Invalid Event[%d] from PDCP", 
+                      DU_LOG("ERROR  -->  RLC_UL : Received Invalid Event[%d] from PDCP", 
                             pst->event);
                   }
                   ret = RFAILED;
@@ -425,7 +422,7 @@ Buffer *mBuf            /* message buffer */
                   ODU_PUT_MSG_BUF(mBuf);
                   if (pst->dstInst < MAX_RLC_INSTANCES)
                   {
-                      RLOG1(L_ERROR,"Received Invalid Event[%d] from MAC",
+                      DU_LOG("ERROR  -->  RLC_UL : Received Invalid Event[%d] from MAC",
                             pst->event);
                   }
                   ret = RFAILED;
@@ -466,7 +463,7 @@ Buffer *mBuf            /* message buffer */
                }
                default:
                {
-                  printf("\n ERROR Invalid Event[%d] from CL to PDCPUL\n", 
+                  DU_LOG("\nERROR  -->  RLC_UL : Invalid Event[%d] from CL to PDCPUL\n", 
                          pst->event);
                   ODU_PUT_MSG_BUF(mBuf);
                   break;
@@ -480,7 +477,7 @@ Buffer *mBuf            /* message buffer */
          {
           if (pst->dstInst < MAX_RLC_INSTANCES)
            {
-              RLOG1(L_ERROR, "Received Invalid Source Entity[%d]",pst->event);
+              DU_LOG("ERROR  -->  RLC_UL : Received Invalid Source Entity[%d]",pst->event);
            }
             ODU_PUT_MSG_BUF(mBuf);
             ret = RFAILED;

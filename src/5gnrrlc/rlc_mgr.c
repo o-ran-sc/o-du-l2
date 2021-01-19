@@ -71,7 +71,7 @@ uint8_t SendRlcUeRspToDu(Pst *pst, RlcCfgCfmInfo *cfgRsp)
    RLC_ALLOC_SHRABL_BUF(pst->region, pst->pool, ueRsp, sizeof(RlcUeCfgRsp));
    if(!ueRsp)
    {  
-      DU_LOG("RLC: Memory allocation failed for ueRsp at SendRlcUeCreateRspToDu()");
+      DU_LOG("ERROR  -->  RLC: Memory allocation failed for ueRsp at SendRlcUeCreateRspToDu()");
       ret = RFAILED;
    }
    else
@@ -83,13 +83,13 @@ uint8_t SendRlcUeRspToDu(Pst *pst, RlcCfgCfmInfo *cfgRsp)
          ret = (*rlcUeCfgRspOpts[pst->selector])(pst, ueRsp);
          if(ret)
          {
-            DU_LOG("RLC: Failed at SendRlcUeRspToDu()");
+            DU_LOG("ERROR  -->  RLC: Failed at SendRlcUeRspToDu()");
             RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueRsp, sizeof(RlcUeCfgRsp));
          }
       }
       else
       {
-         DU_LOG("RLC: Failed at fillRlcUeCfgRsp() for event %d", pst->event);
+         DU_LOG("ERROR  -->  RLC: Failed at fillRlcUeCfgRsp() for event %d", pst->event);
          RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueRsp, sizeof(RlcUeCfgRsp));
       }
    }
