@@ -114,7 +114,7 @@ void rlcUmmQSdu(RlcCb *gCb, RlcDlRbCb *rbCb, KwuDatReqInfo *datReq, Buffer *mBuf
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if ( sdu == NULLP )
    {
-      DU_LOG("\nRLC : Memory allocation failed in rlcUmmQSdu for UEID:%d CELLID:%d",\
+      DU_LOG("\nERROR  -->  RLC DL : Memory allocation failed in rlcUmmQSdu for UEID:%d CELLID:%d",\
                rbCb->rlcId.ueId,
                rbCb->rlcId.cellId);
       ODU_PUT_MSG_BUF(mBuf);
@@ -395,7 +395,7 @@ void rlcUmmProcessSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *datReq)
             {
                 /* Could not transmit what MAC asked for because the number 
                  * of PDUs to be transmitted has reached maximum. */
-	       DU_LOG("\nRLC: rlcUmmProcessSdus: Maximum Pdu limit has been reached\
+	        DU_LOG("\nERROR  -->  RLC DL: rlcUmmProcessSdus: Maximum Pdu limit has been reached\
 	          UEID:%d CELLID:%d", rbCb->rlcId.ueId, rbCb->rlcId.cellId);
                break;
             }
