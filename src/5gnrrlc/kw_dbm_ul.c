@@ -27,9 +27,6 @@
         File:    kw_dbm_ul.c
   
 *********************************************************************21*/
-static const char* RLOG_MODULE_NAME="DBM";
-static int RLOG_MODULE_ID=2048;
-static int RLOG_FILE_ID=194;
 
 
 /* header (.h) include files */
@@ -84,7 +81,7 @@ S16 rlcDbmUlInit(RlcCb *gCb)
                             RLC_GET_MEM_REGION(gCb), 
                             RLC_GET_MEM_POOL(gCb)))
    {
-      RLOG0(L_ERROR, "UeLstCp Initialization Failed");
+      DU_LOG("ERROR  -->  RLC_UL : UeLstCp Initialization Failed");
       return RFAILED;
    }
 
@@ -98,7 +95,7 @@ S16 rlcDbmUlInit(RlcCb *gCb)
                             RLC_GET_MEM_POOL(gCb)))
    {
       cmHashListDeinit(&gCb->u.ulCb->ueLstCp);
-      RLOG0(L_ERROR, "CellLstCp Initialization Failed");
+      DU_LOG("ERROR  -->  RLC_UL : CellLstCp Initialization Failed");
       return RFAILED;
    }
 
@@ -112,7 +109,7 @@ S16 rlcDbmUlInit(RlcCb *gCb)
    {
       cmHashListDeinit(&gCb->u.ulCb->ueLstCp);
       cmHashListDeinit(&gCb->u.ulCb->cellLstCp);
-      RLOG0(L_ERROR, "transIdLstCp Initialization Failed");
+      DU_LOG("ERROR  -->  RLC_UL : transIdLstCp Initialization Failed");
       return RFAILED;
    }
 
@@ -182,19 +179,15 @@ RlcUlRbCb     **rbCb
 
       if(rlcId->rbId >= RLC_MAX_RB_PER_CELL)
       {
-         RLOG_ARG3(L_ERROR,DBG_RBID,rlcId->rbId ,
-               "Invalid RbId, cellId:%d UEID:%d Max is [%d]",
-               rlcId->cellId, 
-               rlcId->ueId,
-               RLC_MAX_RB_PER_CELL);
+         DU_LOG("ERROR  -->  RLC_UL : Invalid RbId, cellId:%d UEID:%d Max is [%d]",
+               rlcId->cellId, rlcId->ueId, RLC_MAX_RB_PER_CELL);
          return;
       }
 
       rlcDbmFetchUlCellCb(gCb,rlcId->cellId, &cellCb);
       if(!cellCb)
       {
-         RLOG_ARG2(L_ERROR,DBG_CELLID,rlcId->cellId,
-               "CellCb not found RBID:%d UEID:%d",
+         DU_LOG("ERROR  -->  RLC_UL : CellCb not found RBID:%d UEID:%d",
                rlcId->rbId,
                rlcId->ueId);
          return;
@@ -208,8 +201,7 @@ RlcUlRbCb     **rbCb
 
       if (!(RLC_VALIDATE_UE_RBID(rlcId->rbType, rlcId->rbId)))
       {
-         RLOG_ARG3(L_ERROR,DBG_RBID, rlcId->rbId,
-               "Invalid RbId for RbType[%d] CELLID:%d UEID:%d", 
+         DU_LOG("ERROR  -->  RLC_UL : Invalid RbId for RbType[%d] CELLID:%d UEID:%d", 
                rlcId->rbType,
                rlcId->cellId,
                rlcId->ueId);
@@ -218,8 +210,7 @@ RlcUlRbCb     **rbCb
 
       if (rlcDbmFetchUlUeCb(gCb,rlcId->ueId, rlcId->cellId, &ueCb) != ROK)
       {
-         RLOG_ARG2(L_ERROR,DBG_CELLID, rlcId->cellId,
-               "UeId [%d]: UeCb not found RBID:%d",
+         DU_LOG("ERROR  -->  RLC_UL : UeId [%d]: UeCb not found RBID:%d",
                rlcId->ueId,
                rlcId->rbId);
          return;
@@ -262,7 +253,7 @@ void rlcDbmFetchUlRbCbFromLchId(RlcCb *gCb, CmLteRnti ueId, CmLteCellId cellId,\
       rlcDbmFetchUlCellCb(gCb,cellId, &cellCb);
       if(!cellCb)
       {
-         DU_LOG("\nRLC : rlcDbmFetchUlRbCbFromLchId: CellCb[%d] not found UEID:%d",\
+         DU_LOG("\nERROR  -->  RLC_UL : rlcDbmFetchUlRbCbFromLchId: CellCb[%d] not found UEID:%d",\
 	    cellId, ueId);
          return;
       }
@@ -273,7 +264,7 @@ void rlcDbmFetchUlRbCbFromLchId(RlcCb *gCb, CmLteRnti ueId, CmLteCellId cellId,\
    
    if (rlcDbmFetchUlUeCb(gCb,ueId, cellId, &ueCb) != ROK)
    {
-      DU_LOG("\nRLC : rlcDbmFetchUlRbCbFromLchId: UeId [%d]: UeCb not found",ueId);
+      DU_LOG("\nERROR  -->  RLC_UL : rlcDbmFetchUlRbCbFromLchId: UeId [%d]: UeCb not found",ueId);
       return;
    }
 
@@ -361,8 +352,7 @@ RlcUlUeCb      *ueCb
                               (uint8_t *)&(ueCb->ueId),
                               (uint16_t) sizeof(CmLteRnti)))
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cellId,
-            "UeId[%u] HashList Insertion Failed",
+      DU_LOG("ERROR  -->  RLC_UL : UeId[%u] HashList Insertion Failed",
             ueId);
       return RFAILED;
    }
@@ -395,9 +385,9 @@ RlcUlCfgTmpData   *cfg
 )
 {
 #ifndef ALIGN_64BIT
-   RLOG1(L_DEBUG, "(transId(%ld)", cfg->transId);
+   DU_LOG("\nDEBUG  -->  RLC_UL : (transId(%ld)", cfg->transId);
 #else
-   RLOG1(L_DEBUG, "(transId(%d))", cfg->transId);
+   DU_LOG("\nDEBUG  -->  RLC_UL : (transId(%d))", cfg->transId);
 #endif
 
    return (cmHashListInsert(&(gCb->u.ulCb->transIdLstCp), 
@@ -436,7 +426,7 @@ RlcUlCfgTmpData   **cfg
                             sizeof (transId), 
                             RLC_DEF_SEQ_NUM,(PTR *) cfg))
    {
-      RLOG1(L_ERROR,"TransId [%ld] not found",transId);
+      DU_LOG("ERROR  -->  RLC_UL : TransId [%d] not found",transId);
       return RFAILED;
    }
    return ROK;
@@ -468,7 +458,7 @@ RlcUlCfgTmpData   *cfg
 
    if(cmHashListDelete(&(gCb->u.ulCb->transIdLstCp),(PTR) (cfg)) != ROK) 
    {
-      RLOG0(L_ERROR,"HashList Deletion failed");
+      DU_LOG("ERROR  -->  RLC_UL : HashList Deletion failed");
       return RFAILED;
    }
 
@@ -574,8 +564,7 @@ Bool       abortFlag
    /* Delete ueCb entry from ueLstCp */
    if(ROK != cmHashListDelete(&(gCb->u.ulCb->ueLstCp), (PTR) ueCb))
    {
-      RLOG_ARG1(L_ERROR,DBG_UEID,ueCb->ueId,
-            "HashList Deletion Failed cellId(%d)",
+      DU_LOG("ERROR  -->  RLC_UL : HashList Deletion Failed cellId(%d)",
             ueCb->cellId);
    }
    /* kw005.201 ccpu00117318, updating the statistics */
@@ -647,8 +636,7 @@ RlcUlCellCb    *cellCb
                               (uint8_t *)&(tCellCb->cellId), 
                               (uint16_t) sizeof(CmLteCellId)))
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,tCellCb->cellId,
-            "HashList Insertion Failed");
+      DU_LOG("ERROR  -->  RLC_UL : HashList Insertion Failed");
       return RFAILED;
    }
 
@@ -679,7 +667,7 @@ void rlcDbmFetchUlCellCb(RlcCb *gCb, CmLteCellId cellId, RlcUlCellCb **cellCb)
                             (uint8_t *)&(cellId),sizeof(CmLteCellId), 
                             RLC_DEF_SEQ_NUM, (PTR*) cellCb))
    {
-      DU_LOG("\nRLC : rlcDbmFetchUlCellCb : CellCb[%d] not found", cellId);
+      DU_LOG("\nERROR  -->  RLC_UL : rlcDbmFetchUlCellCb : CellCb[%d] not found", cellId);
    }
 
    return;
@@ -707,8 +695,7 @@ Void rlcDbmDelUlCellCb(RlcCb *gCb,RlcUlCellCb *cellCb)
    /* Delete cellCb entry in hash list cellLstCp */
    if(ROK != cmHashListDelete(&(gCb->u.ulCb->cellLstCp), (PTR) cellCb))
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cellCb->cellId,
-            "HashList Deletion Failed");
+      DU_LOG("ERROR  -->  RLC_UL : HashList Deletion Failed");
    }
    /* Deallocate cellCb */
    RLC_FREE(gCb, cellCb, sizeof(RlcUlCellCb));

@@ -77,49 +77,49 @@ Void TSL2AllocStatsMem(Region region,Pool pool)
    cmLListInit(&freeL2UeStatsLst);      
    for (cnt=0; cnt < L2_STATS_MAX_CELLS; cnt++)
    {
-		  if(NULL == l2CellStats[cnt])
-		  {
-      		 if (SGetSBuf(region, pool, (Data **)&l2CellStats[cnt],
-               				 (Size)sizeof (TSL2CellStatsCb)) != ROK)
-      		 {
-         			printf("\n STATS Unexpected MEM Alloc Failure\n");
-      		 }
-   	  }
-        memset(l2CellStats[cnt], 0x00, sizeof(TSL2CellStatsCb));
+      if(NULL == l2CellStats[cnt])
+      {
+	 if (SGetSBuf(region, pool, (Data **)&l2CellStats[cnt],
+		  (Size)sizeof (TSL2CellStatsCb)) != ROK)
+	 {
+	    DU_LOG("\nERROR  -->  RLC : STATS Unexpected MEM Alloc Failure\n");
+	 }
+      }
+      memset(l2CellStats[cnt], 0x00, sizeof(TSL2CellStatsCb));
    }
 
    for (cnt=0; cnt < L2_STATS_MAX_UES; cnt++)
    {
-        TSL2UeStatsCb *statsCb = l2UeStats[cnt];
-		  if(NULL == statsCb)
-		  {
-      		 if (SGetSBuf(region, pool, (Data **)&statsCb,
-               				 (Size)sizeof (TSL2UeStatsCb)) != ROK)
-      		 {
-         		 	printf("\n STATS Unexpected MEM Alloc Failure at %d\n", (int)cnt);
-      		 }
-		  }
-        memset(statsCb, 0x00, sizeof(TSL2UeStatsCb));
-        statsCb->lnk.node = (PTR)statsCb;
-        cmLListAdd2Tail(&freeL2UeStatsLst, &statsCb->lnk);
-        l2UeStats[cnt] = statsCb;
+      TSL2UeStatsCb *statsCb = l2UeStats[cnt];
+      if(NULL == statsCb)
+      {
+	 if (SGetSBuf(region, pool, (Data **)&statsCb,
+		  (Size)sizeof (TSL2UeStatsCb)) != ROK)
+	 {
+	    DU_LOG("\nERROR  -->   RLC : STATS Unexpected MEM Alloc Failure at %d\n", (int)cnt);
+	 }
+      }
+      memset(statsCb, 0x00, sizeof(TSL2UeStatsCb));
+      statsCb->lnk.node = (PTR)statsCb;
+      cmLListAdd2Tail(&freeL2UeStatsLst, &statsCb->lnk);
+      l2UeStats[cnt] = statsCb;
    }
 
    return;
 }
 
 /*
-*
-*       Fun:   TSL2AllocUeStatsBlk
-*
-*       Desc:  Assign Stats Block for this UE[RNTI] 
-*
-*       Ret:   
-*
-*       Notes: None
-*
-*
-*/
+ *
+ *       Fun:   TSL2AllocUeStatsBlk
+ *
+ *       Desc:  Assign Stats Block for this UE[RNTI] 
+ *
+ *       Ret:   
+ *
+ *       Notes: None
+ *
+ *
+ */
 TSL2UeStatsCb* TSL2AllocUeStatsBlk (uint16_t rnti)
 {
    CmLList          *tmp = NULLP;
@@ -128,7 +128,7 @@ TSL2UeStatsCb* TSL2AllocUeStatsBlk (uint16_t rnti)
    tmp = freeL2UeStatsLst.first;
    if (tmp == NULLP)
    {
-      printf("\n STATS Unexpected Mem BLK unavailable for UE %d\n", rnti);
+      DU_LOG("\nERROR  -->  RLC :  STATS Unexpected Mem BLK unavailable for UE %d\n", rnti);
    }
    cmLListDelFrm(&freeL2UeStatsLst, tmp);
    statsCb = (TSL2UeStatsCb *)(tmp->node);
@@ -141,17 +141,17 @@ TSL2UeStatsCb* TSL2AllocUeStatsBlk (uint16_t rnti)
 }
 
 /*
-*
-*       Fun:   TSL2DeallocUeStatsBlk
-*
-*       Desc:  Deassign Stats Block for this UE[RNTI] 
-*
-*       Ret:   
-*
-*       Notes: None
-*
-*
-*/
+ *
+ *       Fun:   TSL2DeallocUeStatsBlk
+ *
+ *       Desc:  Deassign Stats Block for this UE[RNTI] 
+ *
+ *       Ret:   
+ *
+ *       Notes: None
+ *
+ *
+ */
 Void TSL2DeallocUeStatsBlk(uint16_t rnti,TSL2UeStatsCb *statsCb)
 {
    statsCb->inUse = FALSE;
@@ -163,39 +163,39 @@ Void TSL2DeallocUeStatsBlk(uint16_t rnti,TSL2UeStatsCb *statsCb)
 }
 
 /*
-*
-*       Fun:   TSL2AllocCellStatsBlk
-*
-*       Desc:  Assign Stats Block for this CELL[CELLID] 
-*
-*       Ret:   
-*
-*       Notes: None
-*
-*
-*/
+ *
+ *       Fun:   TSL2AllocCellStatsBlk
+ *
+ *       Desc:  Assign Stats Block for this CELL[CELLID] 
+ *
+ *       Ret:   
+ *
+ *       Notes: None
+ *
+ *
+ */
 TSL2CellStatsCb* TSL2AllocCellStatsBlk(uint32_t cellId)
 {
    if (cellId != 1)
    {
-      printf("\n STATS Unexpected CellID = %d\n", (int)cellId);
+      DU_LOG("\nERROR  -->  RLC : STATS Unexpected CellID = %d\n", (int)cellId);
    }
 
    return (l2CellStats[cellId-1]);
 }
 
 /*
-*
-*       Fun:   TSL2DeallocCellStatsBlk
-*
-*       Desc:  Deassign Stats Block for this CELL[CELLID] 
-*
-*       Ret:   
-*
-*       Notes: None
-*
-*
-*/
+ *
+ *       Fun:   TSL2DeallocCellStatsBlk
+ *
+ *       Desc:  Deassign Stats Block for this CELL[CELLID] 
+ *
+ *       Ret:   
+ *
+ *       Notes: None
+ *
+ *
+ */
 Void TSL2DeallocCellStatsBlk(uint32_t cellId)
 {
 
@@ -203,20 +203,20 @@ Void TSL2DeallocCellStatsBlk(uint32_t cellId)
 }
 
 /*
-*
-*       Fun:   TSL2SendStatsToApp
-*
-*       Desc:  Collates and Sends STATS to Application 
-*              Send UE STATS first. 10 UEs are grouped in one message.
-*              Followed by CELL Stats. All CELLS are grouped in one msg.
-*              At Reception of CELL stats APP assumes STATS reception cycle is complete.
-*
-*       Ret:   
-*
-*       Notes: None
-*
-*
-*/
+ *
+ *       Fun:   TSL2SendStatsToApp
+ *
+ *       Desc:  Collates and Sends STATS to Application 
+ *              Send UE STATS first. 10 UEs are grouped in one message.
+ *              Followed by CELL Stats. All CELLS are grouped in one msg.
+ *              At Reception of CELL stats APP assumes STATS reception cycle is complete.
+ *
+ *       Ret:   
+ *
+ *       Notes: None
+ *
+ *
+ */
 Void TSL2SendStatsToApp(Pst    *pst, SuId   suId)
 {
    uint32_t idx;
@@ -227,18 +227,18 @@ Void TSL2SendStatsToApp(Pst    *pst, SuId   suId)
       uint32_t rnti;
       if (statsCb->inUse != TRUE)
       {
-         continue;
+	 continue;
       }
       if (pst->selector == 0)
       {
-         /* Loose Coupling */
-         TSInfPkSndL2UeStats(pst, suId, &statsCb->stats);
+	 /* Loose Coupling */
+	 TSInfPkSndL2UeStats(pst, suId, &statsCb->stats);
       }
       else
       {
 #ifdef PX
-         /* Tight Coupling */
-         TSInfHdlL2UeStatsInd(pst, suId, &statsCb->stats);
+	 /* Tight Coupling */
+	 TSInfHdlL2UeStatsInd(pst, suId, &statsCb->stats);
 #endif
       }
       rnti = statsCb->stats.rnti;
@@ -254,14 +254,14 @@ Void TSL2SendStatsToApp(Pst    *pst, SuId   suId)
       uint32_t cellId;
       if (pst->selector == 0)
       {
-         /* Loose Coupling */
-         TSInfPkSndL2CellStats(pst, suId, l2CellStats[idx]);
+	 /* Loose Coupling */
+	 TSInfPkSndL2CellStats(pst, suId, l2CellStats[idx]);
       }
       else
       {
 #ifdef PX
-         /* Tight Coupling */
-         TSInfHdlL2CellStatsInd(pst, suId, l2CellStats[idx]);
+	 /* Tight Coupling */
+	 TSInfHdlL2CellStatsInd(pst, suId, l2CellStats[idx]);
 #endif
       }
       cellId = statsCellCb->cellId;
@@ -272,5 +272,5 @@ Void TSL2SendStatsToApp(Pst    *pst, SuId   suId)
 }
 #endif /* TENB_STATS */
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/
