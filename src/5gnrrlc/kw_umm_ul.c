@@ -193,7 +193,7 @@ void rlcUmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
 #if (ERRCLASS & ERRCLS_ADD_RES)
       if (tmpRecBuf == NULLP)
       {   
-         DU_LOG("\nRLC : rlcUmmProcessPdus: Memory allocation failed UEID:%d CELLID:%d",\
+         DU_LOG("\nERROR  -->  RLC_UL : rlcUmmProcessPdus: Memory allocation failed UEID:%d CELLID:%d",\
             rbCb->rlcId.ueId, rbCb->rlcId.cellId);
          ODU_PUT_MSG_BUF(pdu);
 	 return;
@@ -223,7 +223,7 @@ void rlcUmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
       /* get the pdu header */
       if (rlcUmmExtractHdr(gCb, rbCb, pdu, &(tmpRecBuf->umHdr)))  
       {
-         DU_LOG("\nRLC : rlcUmmProcessPdus: Header Extraction Failed UEID:%d CELLID:%d",\
+         DU_LOG("\nERROR  -->  RLC_UL : rlcUmmProcessPdus: Header Extraction Failed UEID:%d CELLID:%d",\
              rbCb->rlcId.ueId, rbCb->rlcId.cellId);
 
          /* Header extraction is a problem. 
@@ -247,7 +247,7 @@ void rlcUmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
           (seqNum < ur)) 
       {
          /* PDU needs to be discarded */
-         DU_LOG("\nRLC : rlcUmmProcessPdus: Received a duplicate pdu with sn %d \
+         DU_LOG("\nERROR  -->  RLC_UL : rlcUmmProcessPdus: Received a duplicate pdu with sn %d \
 	    UEID:%d CELLID:%d", curSn, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
 
          RLC_FREE_BUF(pdu);
@@ -599,7 +599,7 @@ static uint8_t rlcUmmExtractHdr(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *pdu, RlcUmH
       ret = ODU_REM_PRE_MSG(dst,pdu);
       if (ret != ROK)
       {
-         DU_LOG("\nRLC : rlcUmmExtractHdr : ODU_REM_PRE_MSG Failed for 5 bit SN \
+         DU_LOG("\nERROR  -->  RLC_UL : rlcUmmExtractHdr : ODU_REM_PRE_MSG Failed for 5 bit SN \
 	    UEID:%d CELLID:%d", rbCb->rlcId.ueId, rbCb->rlcId.cellId);
          return RFAILED;
       }
@@ -618,7 +618,7 @@ static uint8_t rlcUmmExtractHdr(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *pdu, RlcUmH
       ret = ODU_REM_PRE_MSG_MULT(dst,2,pdu);
       if (ret != ROK)
       {
-         DU_LOG("\nRLC : rlcUmmExtractHdr : ODU_REM_PRE_MSG_MULT Failed for 10 bits SN \
+         DU_LOG("\nERROR  -->  RLC_UL : rlcUmmExtractHdr : ODU_REM_PRE_MSG_MULT Failed for 10 bits SN \
 	    UEID:%d CELLID:%d", rbCb->rlcId.ueId, rbCb->rlcId.cellId);
          return RFAILED;
       }
@@ -646,7 +646,7 @@ static uint8_t rlcUmmExtractHdr(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *pdu, RlcUmH
       ret = ODU_REM_PRE_MSG_MULT(dst,2,pdu);
       if (ret != ROK)
       {
-         DU_LOG("\nRLC : rlcUmmExtractHdr : ODU_REM_PRE_MSG_MULT Failed UEID:%d CELLID:%d",\
+         DU_LOG("\nERROR  -->  RLC_UL : rlcUmmExtractHdr : ODU_REM_PRE_MSG_MULT Failed UEID:%d CELLID:%d",\
             rbCb->rlcId.ueId, rbCb->rlcId.cellId);
          return RFAILED;
       }
@@ -657,16 +657,16 @@ static uint8_t rlcUmmExtractHdr(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *pdu, RlcUmH
       umHdr->li[umHdr->numLi] |= dst[1] >> 4;
       if ( 0 == umHdr->li[umHdr->numLi] )
       {
-         DU_LOG("\nRLC : rlcUmmExtractHdr : Received LI as 0 UEID:%d CELLID:%d",
+         DU_LOG("\nERROR  -->  RLC_UL : rlcUmmExtractHdr : Received LI as 0 UEID:%d CELLID:%d",
             rbCb->rlcId.ueId, rbCb->rlcId.cellId);
          return RFAILED; 
       }
       totalSz += umHdr->li[umHdr->numLi];
       if ( pduSz <=  totalSz )
       {
-         DU_LOG("\nRLC : rlcUmmExtractHdr : SN [%d]: UEID:%d CELLID:%d",\
+         DU_LOG("\nERROR  -->  RLC_UL : rlcUmmExtractHdr : SN [%d]: UEID:%d CELLID:%d",\
             umHdr->sn, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
-         DU_LOG("\nRLC : rlcUmmExtractHdr : Corrupted PDU as TotSz[%d] PduSz[%d] \
+         DU_LOG("\nERROR  -->  RLC_UL : rlcUmmExtractHdr : Corrupted PDU as TotSz[%d] PduSz[%d] \
 	    UEID:%d CELLID:%d ", totalSz, pduSz, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
          return RFAILED; /* the situation where in the PDU size 
                             is something that does not match with 
@@ -687,7 +687,7 @@ static uint8_t rlcUmmExtractHdr(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *pdu, RlcUmH
          ret = ODU_REM_PRE_MSG(dst,pdu);
          if (ret != ROK)
          {
-            DU_LOG("\nRLC : rlcUmmExtractHdr : ODU_REM_PRE_MSG Failed UEID:%d CELLID:%d",
+            DU_LOG("\nERROR  -->  RLC_UL : rlcUmmExtractHdr : ODU_REM_PRE_MSG Failed UEID:%d CELLID:%d",
                rbCb->rlcId.ueId, rbCb->rlcId.cellId);
             return RFAILED;
          }
@@ -699,7 +699,7 @@ static uint8_t rlcUmmExtractHdr(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *pdu, RlcUmH
                                                    them in the last 8 bits */
          if ( 0 == umHdr->li[umHdr->numLi] )
          {
-            DU_LOG("\nRLC : rlcUmmExtractHdr :Received LI as 0 UEID:%d CELLID:%d",
+            DU_LOG("\nERROR  -->  RLC_UL : rlcUmmExtractHdr :Received LI as 0 UEID:%d CELLID:%d",
                rbCb->rlcId.ueId, rbCb->rlcId.cellId);
             return RFAILED; 
          }

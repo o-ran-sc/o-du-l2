@@ -182,7 +182,7 @@ void rlcStartTmr(RlcCb *gCb, PTR cb, int16_t tmrEvnt)
 #endif
       default:
       {
-         DU_LOG("\nRLC : rlcStartTmr: Invalid tmr Evnt [%d]", tmrEvnt);
+         DU_LOG("\nERROR  -->  RLC : rlcStartTmr: Invalid tmr Evnt [%d]", tmrEvnt);
       }
    } 
 
@@ -264,7 +264,7 @@ void rlcStopTmr(RlcCb *gCb, PTR cb, uint8_t tmrType)
 #endif
       default:
       {
-         DU_LOG("\nRLC : rlcStopTmr: Invalid tmr Evnt[%d]", tmrType);
+         DU_LOG("\nERROR  -->  RLC : rlcStopTmr: Invalid tmr Evnt[%d]", tmrType);
       }
    } 
    if (tmrType != TMR0)
@@ -387,7 +387,7 @@ bool rlcChkTmr(RlcCb *gCb, PTR cb, int16_t tmrEvnt)
       }
       default:
       {
-         DU_LOG("\nRLC : rlcChkTmr: Invalid tmr Evnt [%d]", tmrEvnt);
+         DU_LOG("\nERROR  -->  RLC : rlcChkTmr: Invalid tmr Evnt [%d]", tmrEvnt);
       }
    } 
 

@@ -33,9 +33,6 @@
      File:     kw_tmm_ul.c
 
 **********************************************************************/
-static const char* RLOG_MODULE_NAME="TMM";
-static int RLOG_MODULE_ID=2048;
-static int RLOG_FILE_ID=201;
 
 /** @file kw_tmm_ul.c
 @brief RLC Transparent Mode module
@@ -120,8 +117,7 @@ uint8_t rrcUeCapabilityInfo[] =
   
    SAddPstMsgMult(rrcConReq,6,pdu);
 
-   RLOG1(L_INFO,"Profiling Framework Sending RRC Connection Req to RRC for UE :%d\n",crnti);
-   printf("Profiling Framework Sending RRC Connection Req to RRC for UE :%d\n",crnti);
+   DU_LOG("\nINFO  -->  RLC_UL : Profiling Framework Sending RRC Connection Req to RRC for UE :%d\n",crnti);
    rlcSendUlDataToDu(&ulPst1, datIndInfo, pdu);
  }
  else if(2 == rrcMsgType)
@@ -137,8 +133,7 @@ uint8_t rrcUeCapabilityInfo[] =
   
     SAddPstMsgMult(rrcConSetupComplete,34,pdu);
 
-    RLOG1(L_INFO,"Profiling Framework: Sending RRC Connection Setup Complete to RRC for UE :%d\n",crnti);
-    printf("Profiling Framework: Sending RRC Connection Setup Complete to RRC for UE :%d\n",crnti);
+    DU_LOG("\nINFO  -->  RLC_UL : Profiling Framework: Sending RRC Connection Setup Complete to RRC for UE :%d\n",crnti);
 #ifdef PJ
     PjUiPjuDatInd(&ulPst2, 1, &pdcpId, pdu);
 #endif
@@ -160,8 +155,7 @@ uint8_t rrcUeCapabilityInfo[] =
 #else    
     SAddPstMsgMult(rrcUeCapabilityInfo,sizeof(rrcUeCapabilityInfo),pdu);
 #endif
-    RLOG1(L_INFO,"Profiling Framework: Sending RRC UE Capability Info to RRC for UE :%d\n",crnti);
-    printf("Profiling Framework: Sending RRC UE Capability Info to RRC for UE :%d\n",crnti);
+    DU_LOG("\nINFO  -->  RLC_UL : Profiling Framework: Sending RRC UE Capability Info to RRC for UE :%d\n",crnti);
 #ifdef PJ
     PjUiPjuDatInd(&ulPst2, 1, &pdcpId, pdu);
 #endif
@@ -181,8 +175,7 @@ uint8_t rrcUeCapabilityInfo[] =
   
     SAddPstMsgMult(rrcSecurityModeComplete,2,pdu);
 
-    RLOG1(L_INFO,"Profiling Framework: Sending RRC Security Mode Complete to RRC for UE :%d\n",crnti);
-    printf("Profiling Framework: Sending RRC Security Mode Complete to RRC for UE :%d\n",crnti);
+    DU_LOG("\nINFO  -->  RLC_UL : Profiling Framework: Sending RRC Security Mode Complete to RRC for UE :%d\n",crnti);
 #ifdef PJ
     PjUiPjuDatInd(&ulPst2, 1, &pdcpId, pdu);
 #endif
@@ -201,8 +194,7 @@ uint8_t rrcUeCapabilityInfo[] =
   
     SAddPstMsgMult(rrcReconfigComplete,2,pdu);
 
-    RLOG1(L_INFO,"Profiling Framework: Sending RRC Reconfig Complete to RRC for UE :%d\n",crnti);
-    printf("Profiling Framework: Sending RRC Reconfig Complete to RRC for UE :%d\n",crnti);
+    DU_LOG("\nINFO  -->  RLC_UL : Profiling Framework: Sending RRC Reconfig Complete to RRC for UE :%d\n",crnti);
 #ifdef PJ
     PjUiPjuDatInd(&ulPst2, 1, &pdcpId, pdu);
 #ifdef EG_GEN_LOAD_5GTF
@@ -274,12 +266,12 @@ void rlcTmmRcvFrmMac(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *pdu)
       }
       else
       {
-         DU_LOG("\nRLC : rlcTmmRcvFrmMac: Memory allocation failed for UL RRC Msg");
+         DU_LOG("\nERROR  -->  RLC_UL : rlcTmmRcvFrmMac: Memory allocation failed for UL RRC Msg");
       }
    }
    else
    {
-      DU_LOG("\nRLC : rlcTmmRcvFrmMac: Memory allocation failed for ulRrcMsgInfo");
+      DU_LOG("\nERROR  -->  RLC_UL : rlcTmmRcvFrmMac: Memory allocation failed for ulRrcMsgInfo");
    }
  
    return;
@@ -304,7 +296,7 @@ RlcCb        *gCb,
 RlcUlRbCb    *rbCb        
 )
 {
-   RLOG_ARG0(L_DEBUG,DBG_RBID,rbCb->rlcId.rbId,"do nothing for TMM for ReEstablish");
+   DU_LOG("\nINFO  -->  RLC_UL : do nothing for TMM for ReEstablish");
    return;
 }
 
