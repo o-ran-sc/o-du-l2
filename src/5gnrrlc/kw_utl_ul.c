@@ -107,7 +107,7 @@ uint8_t rlcUtlRcvFrmMac(RlcCb *gCb, KwDatIndInfo  *datIndInfo)
    if( ROK != rlcDbmFetchUlUeCb(gCb,datIndInfo->rnti,datIndInfo->cellId,&(ueCb)))
    {
       /* Fetch UeCb failed */
-      DU_LOG("\nRLC : rlcUtlRcvFrmMac : UEID:%d UeCb not found",
+      DU_LOG("\nERROR  -->  RLC_UL : rlcUtlRcvFrmMac : UEID:%d UeCb not found",
                datIndInfo->rnti);
       /* free the buffers inside the datIndInfo */
       uint32_t i,j;
@@ -432,13 +432,13 @@ Void rlcUtlCalUlIpThrPutIncTTI(RlcCb *gCb,RlcUlRbCb *rbCb,uint32_t ttiCnt)
       /*starting Task*/
       SStartTask(&startTime, PID_RLC_IP_TPT_INCTTI);
 #ifndef ALIGN_64BIT
-   RLOG_ARG4(L_UNUSED, DBG_RBID,rbCb->rlcId.rbId,"Log for ul ip throughput:"
+   DU_LOG("\nDEBUG  -->  RLC_UL : Log for ul ip throughput:"
          "RB_MeasOn:%d ttiCnt :%ld UEID:%d CELLID:%d", 
          rbCb->rbL2Cb.measOn,ttiCnt,
          rbCb->rlcId.ueId,
          rbCb->rlcId.cellId);
 #else
-   RLOG_ARG4(L_UNUSED,DBG_RBID,rbCb->rlcId.rbId, "Log for ul ip throughput:"
+   DU_LOG("\nDEBUG  -->  RLC_UL : Log for ul ip throughput:"
          "RB_MeasOn:%d ttiCnt :%d UEID:%d CELLID:%d", 
          rbCb->rbL2Cb.measOn,ttiCnt,
          rbCb->rlcId.ueId,
@@ -598,9 +598,9 @@ S16 rlcUtlSndUlL2MeasCfm(RlcCb *gCb,RlcL2MeasEvtCb  *measEvtCb)
 
    /* kw006.201 ccpu00120058 emoved 64 bit compilation warning */
 #ifndef ALIGN_64BIT
-   RLOG1(L_DEBUG,"rlcUtlSndUlL2MeasCfm(transId(%ld))", measEvtCb->transId);
+   DU_LOG("\nDEBUG  -->  RLC_UL : rlcUtlSndUlL2MeasCfm(transId(%ld))", measEvtCb->transId);
 #else
-   RLOG1(L_DEBUG,"rlcUtlSndUlL2MeasCfm(transId(%d))", measEvtCb->transId);
+   DU_LOG("\nDEBUG  -->  RLC_UL : rlcUtlSndUlL2MeasCfm(transId(%d))", measEvtCb->transId);
 #endif
 
    /* Clean up the RB data structures */
