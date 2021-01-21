@@ -580,6 +580,24 @@
     },
     {
       "key": {
+        "uuid": "05df1878_e56b33a6",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-01-21T13:54:04Z",
+      "side": 1,
+      "message": "As discussed. assembly/segmentation of data to be done by RLC\nand the receiver thread is continuous. hence as soon as the packets are received we will be processing it.",
+      "parentUuid": "46b9cdd7_e17a6f39",
+      "revId": "ff60a909f1ca44107efc5d6acc60be4236b6a869",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3a83a8d3_e39cdd6f",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 4
