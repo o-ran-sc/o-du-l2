@@ -33,9 +33,6 @@
        The functions for the configuration, control, status and statistics 
        request primitives are defined here.
 */
-static const char* RLOG_MODULE_NAME="MAC";
-static int RLOG_FILE_ID=220;
-static int RLOG_MODULE_ID=4096;
 
 /* header include files (.h) */
 #include "common_def.h"
@@ -239,8 +236,7 @@ RgMngmt  *cfg     /* config structure  */
 
 
 
-   RG_DIAG_LVL0(inst,0x0a0b0001, RG_DIAG_NA, SS_DIAG_INV_ARG,\
-   "Received CfgReq for MAC layer, Entity = %d, Instance = %d\n", pst->srcEnt, pst->srcInst,0,0);
+   DU_LOG("\nINFO  -->  MAC : Received CfgReq for MAC layer, Entity = %d, Instance = %d\n", pst->srcEnt, pst->srcInst,0,0);
 
    RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
@@ -275,7 +271,7 @@ RgMngmt  *cfg     /* config structure  */
       default:
 	 ret = LCM_PRIM_NOK;
 	 reason = LCM_REASON_INVALID_ELMNT;
-	 RLOG1(L_ERROR, "Invalid Elmnt=%d",
+	 DU_LOG("\nERROR  -->  MAC : Invalid Elmnt=%d",
 	       cfg->hdr.elmId.elmnt);
 	 break;
    }
@@ -345,7 +341,7 @@ RgMngmt  *sts     /* statistics structure  */
       cfm.cfm.status = LCM_PRIM_NOK;
       cfm.cfm.reason = LCM_REASON_GENCFG_NOT_DONE;
       RgMiLrgStsCfm(&cfmPst,&cfm);
-      RLOG0(L_ERROR, "Gen Cfg not done");
+      DU_LOG("\nERROR  -->  MAC : Gen Cfg not done");
       return ROK;
    }
 
@@ -453,7 +449,7 @@ RgMngmt  *sts     /* statistics structure  */
       default:
 	 cfm.cfm.status = LCM_PRIM_NOK;
 	 cfm.cfm.reason = LCM_REASON_INVALID_ELMNT;
-	 RLOG1(L_ERROR, "Invalid Elmnt = %d",sts->hdr.elmId.elmnt);
+	 DU_LOG("\nERROR  -->  MAC : Invalid Elmnt = %d",sts->hdr.elmId.elmnt);
 	 break;     
    }
    RgMiLrgStsCfm(&cfmPst,&cfm);
@@ -516,7 +512,7 @@ RgMngmt  *sta     /* status structure  */
 	       (Data **)&(cfm.t.ssta.s.sysId.ptNmb), LRG_MAX_PT_NUM_SIZE)
 	    != ROK)
       {
-	 RLOG0(L_ERROR, "Memory Unavailable for Confirmation");
+	 DU_LOG("\nERROR  -->  MAC : Memory Unavailable for Confirmation");
 	 return ROK;
       } 
       memset((cfm.t.ssta.s.sysId.ptNmb), 0, LRG_MAX_PT_NUM_SIZE);
@@ -525,7 +521,7 @@ RgMngmt  *sta     /* status structure  */
       cfm.cfm.reason = LCM_REASON_GENCFG_NOT_DONE;
       cfm.hdr.elmId.elmnt = sta->hdr.elmId.elmnt;
       RgMiLrgStaCfm(&cfmPst, &cfm);
-      RLOG0(L_ERROR, "Gen Cfg not done");
+      DU_LOG("\nERROR  -->  MAC : Gen Cfg not done");
       return ROK;
    }
 
@@ -537,7 +533,7 @@ RgMngmt  *sta     /* status structure  */
              (Data **)&(cfm.t.ssta.s.sysId.ptNmb), LRG_MAX_PT_NUM_SIZE)
             != ROK)
          {
-            RLOG0(L_ERROR, "Memory Unavailable for Confirmation");
+            DU_LOG("\nERROR  -->  MAC : Memory Unavailable for Confirmation");
             return ROK;
          } 
          memset((cfm.t.ssta.s.sysId.ptNmb), 0, LRG_MAX_PT_NUM_SIZE);
@@ -575,7 +571,7 @@ RgMngmt  *sta     /* status structure  */
 	 cfm.cfm.status = LCM_PRIM_NOK;
 	 cfm.cfm.reason = LCM_REASON_INVALID_ELMNT;
 	 RgMiLrgStaCfm(&cfmPst, &cfm);
-	 RLOG1(L_ERROR, "Invalid elmnt=%d",sta->hdr.elmId.elmnt);
+	 DU_LOG("\nERROR  -->  MAC : Invalid elmnt=%d",sta->hdr.elmId.elmnt);
 	 break;     
    }
    return ROK;
@@ -634,7 +630,7 @@ RgMngmt  *cntrl   /* control structure  */
       cfm.cfm.reason = LCM_REASON_GENCFG_NOT_DONE;
       cfm.hdr.elmId.elmnt = cntrl->hdr.elmId.elmnt;
       RgMiLrgCntrlCfm(&cfmPst, &cfm);
-      RLOG0(L_ERROR, "Gen Cfg not done");
+      DU_LOG("\nERROR  -->  MAC : Gen Cfg not done");
       return ROK;
    }
 
@@ -653,7 +649,7 @@ RgMngmt  *cntrl   /* control structure  */
 	 cfm.cfm.status = LCM_PRIM_NOK;
 	 cfm.cfm.reason = LCM_REASON_INVALID_PAR_VAL;
 	 RgMiLrgCntrlCfm(&cfmPst, &cfm);
-	 RLOG1(L_ERROR, "invalid elmnt=%d",cntrl->hdr.elmId.elmnt);
+	 DU_LOG("\nERROR  -->  MAC : invalid elmnt=%d",cntrl->hdr.elmId.elmnt);
 	 break;
    }
    return (ret);
@@ -704,7 +700,7 @@ Elmnt sapType             /* Sap Type */
 	       (cfg->s.rguSap.selector != ODU_SELECTOR_LC))
 	 {
 	    ret = LCM_REASON_INVALID_PAR_VAL;
-	    RLOG0(L_ERROR, "unsupported Selector value for RGU");
+	    DU_LOG("\nERROR  -->  MAC : unsupported Selector value for RGU");
 	    break;
 	 }
 	 upSapCb = &(rgCb[inst].rguSap[cfg->s.rguSap.spId]);
@@ -735,7 +731,7 @@ Elmnt sapType             /* Sap Type */
 	       (cfg->s.crgSap.selector != ODU_SELECTOR_LC))
 	 {
 	    ret = LCM_REASON_INVALID_PAR_VAL;
-	    RLOG0(L_ERROR, "unsupported Selector value for CRG");
+	    DU_LOG("\nERROR  -->  MAC : unsupported Selector value for CRG");
 	    break;
 	 }
 	 if(rgCb[inst].crgSap.sapSta.sapState == LRG_NOT_CFG)
@@ -765,7 +761,7 @@ Elmnt sapType             /* Sap Type */
 	       (cfg->s.tfuSap.selector != ODU_SELECTOR_LC))
 	 {
 	    ret = LCM_REASON_INVALID_PAR_VAL;
-	    RLOG0(L_ERROR, "unsupported Selector value for TFU");
+	    DU_LOG("\nERROR  -->  MAC : unsupported Selector value for TFU");
 	    break;
 	 }
 #endif
@@ -836,7 +832,7 @@ RgCfg *cfg            /* Configuaration information */
    if ((cfg->s.genCfg.lmPst.selector != ODU_SELECTOR_TC) &&
 	 (cfg->s.genCfg.lmPst.selector != ODU_SELECTOR_LC))
    {
-      RLOG0(L_ERROR, "unsupported Selector value for RGU");
+      DU_LOG("\nERROR  -->  MAC : unsupported Selector value for RGU");
       return (LCM_REASON_INVALID_PAR_VAL);
    }
    /* Update the Pst structure for LM interface */
@@ -860,7 +856,7 @@ RgCfg *cfg            /* Configuaration information */
 
    if(cfg->s.genCfg.numRguSaps == 0)
    {
-      RGDBGERRNEW(inst,(rgPBuf(inst), "\nrgGenCfg(): Invalid numRguSap.\n"));
+      DU_LOG("\nERROR  -->  MAC : rgGenCfg(): Invalid numRguSap.\n");
       return RFAILED;
    }
 
@@ -870,7 +866,7 @@ RgCfg *cfg            /* Configuaration information */
 	    (Data **)&rgCb[inst].rguSap,
 	    (sizeof(RgUpSapCb) * cfg->s.genCfg.numRguSaps)) != ROK)
    {
-      RGDBGERRNEW(inst,(rgPBuf(inst), "\nrgGenCfg(): Failed to allocate mem for RGU SAP's.\n"));
+      DU_LOG("\nERROR  -->  MAC : rgGenCfg(): Failed to allocate mem for RGU SAP's.\n");
       return RFAILED;
    }
    rgCb[inst].numRguSaps = cfg->s.genCfg.numRguSaps;
@@ -894,7 +890,7 @@ RgCfg *cfg            /* Configuaration information */
 	    (S16)rgCb[inst].genCfg.tmrRes, rgActvTmr) != ROK)
    {
 
-      RLOG0(L_ERROR, "Failed to register timer");
+      DU_LOG("\nERROR  -->  MAC : Failed to register timer");
 
       SPutSBuf(rgCb[inst].rgInit.region,
 	    rgCb[inst].rgInit.pool,
@@ -1050,7 +1046,7 @@ Pst           *cfmPst
 	    default:
 	       cfm->cfm.status = LCM_PRIM_NOK;
 	       cfm->cfm.reason = LCM_REASON_INVALID_PAR_VAL;
-	       RLOG1(L_ERROR, "invalid subaction=%d",cntrl->t.cntrl.subAction);
+	       DU_LOG("\nERROR  -->  MAC : invalid subaction=%d",cntrl->t.cntrl.subAction);
 	       break;
 	 }
 	 break;
@@ -1081,7 +1077,7 @@ Pst           *cfmPst
 	    default:
 	       cfm->cfm.status = LCM_PRIM_NOK;
 	       cfm->cfm.reason = LCM_REASON_INVALID_PAR_VAL;
-	       RLOG1(L_ERROR, "invalid subaction=%d",cntrl->t.cntrl.subAction);
+	       DU_LOG("\nERROR  -->  MAC : invalid subaction=%d",cntrl->t.cntrl.subAction);
 	       break;
 	 }
 	 break;
@@ -1092,7 +1088,7 @@ Pst           *cfmPst
       default:
 	 cfm->cfm.status = LCM_PRIM_NOK;
 	 cfm->cfm.reason = LCM_REASON_INVALID_PAR_VAL;
-	 RLOG1(L_ERROR, "invalid action=%d",cntrl->t.cntrl.action);
+	 DU_LOG("\nERROR  -->  MAC : invalid action=%d",cntrl->t.cntrl.action);
 	 break;
    }
    RgMiLrgCntrlCfm(cfmPst, cfm);
@@ -1206,8 +1202,8 @@ Pst           *cfmPst
             default:
                cfm->cfm.status = LCM_PRIM_NOK;
                cfm->cfm.reason = LCM_REASON_INVALID_PAR_VAL;
-               RGDBGERRNEW(inst,(rgPBuf(inst), "\nrgLMMSapCntrl(): invalid action=%d",
-               cntrl->t.cntrl.action));
+               DU_LOG("\nERROR  -->  MAC : rgLMMSapCntrl(): invalid action=%d",
+               cntrl->t.cntrl.action);
                break;
          }
          break;
@@ -1223,8 +1219,8 @@ Pst           *cfmPst
             default:
                cfm->cfm.status = LCM_PRIM_NOK;
                cfm->cfm.reason = LCM_REASON_INVALID_PAR_VAL;
-               RGDBGERRNEW(inst,(rgPBuf(inst), "\nrgLMMSapCntrl(): invalid action=%d",
-               cntrl->t.cntrl.action));
+               DU_LOG("\nERROR  -->  MAC : rgLMMSapCntrl(): invalid action=%d",
+               cntrl->t.cntrl.action);
                break;
          }
          break;
@@ -1240,7 +1236,7 @@ Pst           *cfmPst
             default:
                cfm->cfm.status = LCM_PRIM_NOK;
                cfm->cfm.reason = LCM_REASON_INVALID_PAR_VAL;
-               RLOG1(L_ERROR, "invalid action=%d",cntrl->t.cntrl.action);
+               DU_LOG("\nERROR  -->  MAC : invalid action=%d",cntrl->t.cntrl.action);
                
                break;
          }
@@ -1458,7 +1454,7 @@ S16 tmrEvnt           /* Timer Event */
          }
          break;
       default:
-         RLOG1(L_ERROR, "Invalid tmrEvnt=%d",tmrEvnt);
+         DU_LOG("\nERROR  -->  MAC : Invalid tmrEvnt=%d",tmrEvnt);
          ret = RFAILED;
          break;
    }
@@ -1555,7 +1551,7 @@ uint8_t event            /* event */
 
    if ((rgCb[inst].trcLen == LRG_NO_TRACE) || (srcMbuf == NULLP))
    {
-      RLOG0(L_ERROR, "Trace Disabled.");
+      DU_LOG("\nERROR  -->  MAC : Trace Disabled.");
       return;
    }
    
@@ -1578,7 +1574,7 @@ uint8_t event            /* event */
       if (SCpyMsgMsg(srcMbuf, pst.region, pst.pool, &dstMbuf)
 	    != ROK)
       {
-	 RLOG0(L_ERROR, "SCpyMsgMsg Failed.");
+	 DU_LOG("\nERROR  -->  MAC : SCpyMsgMsg Failed.");
 	 return;
       }
       trc.cfm.status = LCM_PRIM_OK;
@@ -1594,7 +1590,7 @@ uint8_t event            /* event */
       /* Get the length of the recvd message buffer */
       if (SFndLenMsg(srcMbuf, &bufLen) != ROK)
       {
-	 RLOG0(L_ERROR, "SFndLenMsg Failed.");
+	 DU_LOG("\nERROR  -->  MAC : SFndLenMsg Failed.");
 	 return;
       }
       /* Check if the recvd buffer size is less than request trace len */
@@ -1605,7 +1601,7 @@ uint8_t event            /* event */
 	 if (SCpyMsgMsg(srcMbuf, pst.region, pst.pool, &dstMbuf)
 	       != ROK)
 	 {
-	    RLOG0(L_ERROR, "SCpyMsgMsg Failed.");
+	    DU_LOG("\nERROR  -->  MAC : SCpyMsgMsg Failed.");
 	    return;
 	 }
 
@@ -1622,26 +1618,26 @@ uint8_t event            /* event */
 	 /* Get a temporary buffer to store the msg */
 	 if (rgAllocSBuf(inst,&tempBuf, rgCb[inst].trcLen) != ROK)
 	 {
-	    RLOG0(L_ERROR, "rgAllocSBuf Failed.");
+	    DU_LOG("\nERROR  -->  MAC : rgAllocSBuf Failed.");
 	    return;
 	 }
 
 	 /* Copy trcLen nos of bytes from the recvd message */
 	 if (SCpyMsgFix(srcMbuf,0,rgCb[inst].trcLen,tempBuf,&tempCnt) != ROK)   
 	 {
-	    RLOG0(L_ERROR, "SCpyMsgFix Failed.");
+	    DU_LOG("\nERROR  -->  MAC : SCpyMsgFix Failed.");
 	    return;
 	 }
 
 	 if (SGetMsg(pst.region, pst.pool, &dstMbuf) != ROK)
 	 {
-	    RLOG0(L_ERROR, "dstMbuf Allocation Failed");
+	    DU_LOG("\nERROR  -->  MAC : dstMbuf Allocation Failed");
 	    return;
 	 }
 	 /* Copy the tempBuf data to dst mBuf */
 	 if (SCpyFixMsg(tempBuf,dstMbuf,0,rgCb[inst].trcLen,&tempCnt) != ROK)
 	 {
-	    RLOG0(L_ERROR, "SCpyFixMsg Failed.");
+	    DU_LOG("\nERROR  -->  MAC : SCpyFixMsg Failed.");
 	    return;
 	 }
 
@@ -1700,7 +1696,7 @@ uint8_t status               /* Status */
    /* Check if the suId is valid */
    if(rgCb[inst].tfuSap.sapCfg.suId != suId)
    {
-      RLOG0(L_ERROR, "Invalid SuId");
+      DU_LOG("\nERROR  -->  MAC : Invalid SuId");
       return RFAILED;
    }
 
