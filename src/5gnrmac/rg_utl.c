@@ -32,9 +32,6 @@
 @brief This file implements utility functions for LTE MAC
 */
 
-static const char* RLOG_MODULE_NAME="MAC";
-static int RLOG_MODULE_ID=4096;
-static int RLOG_FILE_ID=179;
 
 /* header include files (.h) */
 #include "common_def.h"
@@ -138,16 +135,16 @@ Size    size                /* size */
      /*  Send an alarm to Layer Manager */
      rgLMMStaInd(inst,LCM_CATEGORY_RESOURCE, LCM_EVENT_SMEM_ALLOC_FAIL,
                                        LCM_CAUSE_MEM_ALLOC_FAIL, &dgn);
-      RGLOGERROR(inst,ERRCLS_DEBUG, ERG028, 0, "Unable to Allocate Buffer");
+      DU_LOG("\nERROR  -->  MAC : Unable to Allocate Buffer");
       return RFAILED;
    }
 
 #ifndef ALIGN_64BIT
-   RGDBGINFO(inst,(rgPBuf(inst), "SGetSBuf(Region (%d), Pool (%d), Size (%ld)), Data (0x%p))\n",
-             rgCb[inst].rgInit.region, rgCb[inst].rgInit.pool, size, *pData));
+   DU_LOG("\nDEBUG  -->  MAC : SGetSBuf(Region (%d), Pool (%d), Size (%ld)), Data (0x%p))\n",
+             rgCb[inst].rgInit.region, rgCb[inst].rgInit.pool, size, *pData);
 #else
-   RGDBGINFO(inst,(rgPBuf(inst), "SGetSBuf(Region (%d), Pool (%d), Size (%d)), Data (0x%p))\n",
-             rgCb[inst].rgInit.region, rgCb[inst].rgInit.pool, size, *pData));
+   DU_LOG("\nDEBUG  -->  MAC : SGetSBuf(Region (%d), Pool (%d), Size (%d)), Data (0x%p))\n",
+             rgCb[inst].rgInit.region, rgCb[inst].rgInit.pool, size, *pData);
 #endif
 
    /* zero out the allocated memory */
@@ -204,7 +201,7 @@ Size    size                /* size */
      /*  Send an alarm to Layer Manager */
      rgLMMStaInd(inst,LCM_CATEGORY_RESOURCE, LCM_EVENT_SMEM_ALLOC_FAIL,
                                        LCM_CAUSE_MEM_ALLOC_FAIL, &dgn);
-      RGLOGERROR(inst,ERRCLS_DEBUG, ERG028, 0, "Unable to Allocate Buffer");
+      DU_LOG("\nERROR  -->  MAC : Unable to Allocate Buffer");
       return RFAILED;
    }
 
@@ -302,7 +299,7 @@ Size size            /* size */
 
    if (ret != ROK)
    {
-      RGLOGERROR(inst,ERRCLS_DEBUG, ERG029, (ErrVal) 0, "rgFreeSBuf failed.\n");
+      DU_LOG("\nERROR  -->  MAC : rgFreeSBuf failed.\n");
       return;
    }
 
@@ -352,7 +349,7 @@ Buffer  **mBuf            /* Message Buffer pointer be returned */
       /*  Send an alarm to Layer Manager */
       rgLMMStaInd(inst,LCM_CATEGORY_RESOURCE, LCM_EVENT_DMEM_ALLOC_FAIL,
                                        LCM_CAUSE_MEM_ALLOC_FAIL, &dgn);
-      RGLOGERROR(inst,ERRCLS_DEBUG, ERG030, 0, "Unable to Allocate Buffer");
+      DU_LOG("\nERROR  -->  MAC : Unable to Allocate Buffer");
       return RFAILED;
    }
 
@@ -604,8 +601,7 @@ Size      memSize
 #if (ERRCLASS & ERRCLS_DEBUG)
    if (memSize<= 0)
    {
-      RGLOGERROR(inst,ERRCLS_INT_PAR, ERG031, memSize,
-                   "rgAllocEventMem(): memSize invalid\n");
+      DU_LOG("\nERROR  -->  MAC : rgAllocEventMem(): memSize invalid\n");
       return  (RFAILED);
    }
 #endif /* ERRCLASS & ERRCLS_DEBUG */
@@ -623,7 +619,7 @@ Size      memSize
    if(ROK != cmAllocEvnt(memSize, TFU_MAX_MEMBLK_SIZE, &sMem, memPtr))
 #endif /* */
    {
-      RLOG0(L_ERROR,"cmAllocEvnt Failed"); 
+      DU_LOG("\nERROR  -->  MAC : cmAllocEvnt Failed"); 
       return RFAILED;
    }
 
@@ -742,13 +738,13 @@ S16 RgSchMacLcgRegReq(Pst *pst,RgInfLcgRegReq *lcgRegReq)
       (cell->cellId != lcgRegReq->cellId))
    {
       
-      RLOG_ARG0(L_ERROR,DBG_CELLID,lcgRegReq->cellId,"Cell does not exist ");
+      DU_LOG("\nERROR  -->  MAC : Cell does not exist ");
       return RFAILED;
    }
 
    if ((ue = rgDBMGetUeCb(cell, lcgRegReq->crnti)) == NULLP)
    {
-      RLOG_ARG1(L_ERROR, DBG_CELLID,cell->cellId,"CRNTI:%d does not exist", 
+     DU_LOG("\nERROR  -->  MAC : CRNTI:%d does not exist", 
 		         lcgRegReq->crnti);
       return RFAILED;
    }
@@ -789,13 +785,13 @@ S16 RgSchMacUlSpsResetReq(Pst *pst,RgInfUlSpsReset *ulSpsResetInfo)
       (cell->cellId != ulSpsResetInfo->cellId))
    {
       
-      RLOG_ARG0(L_ERROR, DBG_CELLID,ulSpsResetInfo->cellId,"Cell does not exist ");
+      DU_LOG("\nERROR  -->  MAC : Cell does not exist ");
       return RFAILED;
    }
 
    if ((ue = rgDBMGetUeCb(cell, ulSpsResetInfo->crnti)) == NULLP)
    {
-      RLOG_ARG1(L_ERROR, DBG_CELLID,cell->cellId,"CRNTI:%d does not exist", 
+      DU_LOG("\nERROR  -->  MAC : CRNTI:%d does not exist", 
 		      ulSpsResetInfo->crnti);
       return RFAILED;
    }
@@ -848,13 +844,13 @@ S16 RgSchMacSpsLcRegReq(Pst *pst,RgInfSpsLcInfo *lcInfo)
       (cell->cellId != lcInfo->cellId))
    {
       
-      RLOG_ARG0(L_ERROR,DBG_CELLID,lcInfo->cellId, "Cell does not exist ");
+      DU_LOG("\nERROR  -->  MAC : Cell does not exist ");
       return RFAILED;
    }
 
    if ((ue = rgDBMGetUeCb(cell, lcInfo->crnti)) == NULLP)
    {
-      RLOG_ARG1(L_ERROR, DBG_CELLID,cell->cellId,"CRNTI:%d does not exist", 
+      DU_LOG("\nERROR  -->  MAC : CRNTI:%d does not exist", 
 		      lcInfo->crnti);
       return RFAILED;
    }
@@ -872,8 +868,7 @@ S16 RgSchMacSpsLcRegReq(Pst *pst,RgInfSpsLcInfo *lcInfo)
    /* Insert the UE into SPS UE List */
    if (rgDBMInsSpsUeCb(cell, ue) == RFAILED)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-	            "Ue insertion into SPS list failed SPS CRNTI:%d", ue->spsRnti);
+      DU_LOG("\nERROR  -->  MAC : Ue insertion into SPS list failed SPS CRNTI:%d", ue->spsRnti);
       return RFAILED;
    } 
 
@@ -918,13 +913,13 @@ S16 RgSchMacSpsLcDeregReq(Pst  *pst,CmLteCellId cellId,CmLteRnti crnti)
       (cell->cellId != cellId))
    {
       
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cellId, "Cell does not exist ");
+      DU_LOG("\nERROR  -->  MAC : Cell does not exist ");
       return RFAILED;
    }
 
    if ((ue = rgDBMGetUeCb(cell, crnti)) == NULLP)
    {
-      RLOG_ARG1(L_ERROR, DBG_CELLID,cellId,"CRNTI:%d Ue does not exist", crnti);
+      DU_LOG("\nERROR  -->  MAC : CRNTI:%d Ue does not exist", crnti);
       return RFAILED;
    }
 
@@ -973,13 +968,12 @@ CmLteRnti       newRnti
    newUe = rgDBMGetUeCbFromRachLst(cell, newRnti);
    if ((ue == NULLP) || (newUe == NULLP))
    {
-      RLOG_ARG4(L_ERROR,DBG_CELLID,cell->cellId,
-         		"RNTI:%d Failed to get UECB[%lu:%lu] or NEW RNTI:%d", 
+      DU_LOG("\nERROR  -->  MAC : RNTI:%d Failed to get UECB[%lu:%lu] or NEW RNTI:%d", 
                rnti, ((PTR)ue), ((PTR)newUe), newRnti);
       return RFAILED;
    }
 #ifdef XEON_SPECIFIC_CHANGES
-   CM_LOG_DEBUG(CM_LOG_ID_MAC, "MAC:UE[%d] id changed to %d\n", rnti, newRnti);
+   DU_LOG("\nDEBUG  -->  MAC : MAC:UE[%d] id changed to %d\n", rnti, newRnti);
 #endif
    rgDBMDelUeCb(cell, ue);
 
@@ -1069,19 +1063,18 @@ S16 rgUtlVltdAddSCellCfg(RgPrgUeSCellCfgInfo *ueSCellCb,RgCellCb *cell,Inst inst
   if((cell == NULLP) ||
         (cell->cellId != ueSCellCb->cellId))
   {
-     RGDBGERRNEW(inst, (rgPBuf(inst),
-              "[%d]Sec Cell does not exit %d\n",
-              ueSCellCb->ueId, ueSCellCb->cellId));
+     DU_LOG("\nERROR  -->  MAC : [%d]Sec Cell does not exit %d\n",
+              ueSCellCb->ueId, ueSCellCb->cellId);
      ret = RFAILED;
   }
 #ifdef TENB_MULT_CELL_SUPPRT
    if((ueSCellCb->rguDlSapId > rgCb[inst].numRguSaps) ||
       (ueSCellCb->rguUlSapId > rgCb[inst].numRguSaps))
    {
-      RGDBGERRNEW(inst,(rgPBuf(inst), "Invald Sap Id: DL %d UL %d for ueId %d failed\n",
+      DU_LOG("\nERROR  -->  MAC : Invald Sap Id: DL %d UL %d for ueId %d failed\n",
                ueSCellCb->rguDlSapId,
                ueSCellCb->rguUlSapId,
-               ueSCellCb->cellId));
+               ueSCellCb->cellId);
      ret = RFAILED;
    }
 #endif
@@ -1127,8 +1120,8 @@ TfuDelDatReqInfo delDatReq;
    ue = rgDBMGetUeCb(cell, newRnti);
    if (ue == NULLP)
    {
-      RGDBGERRNEW(inst,(rgPBuf(inst),"[%d]RNTI:Failed to get ueCb \
-               newRnti=%d\n", rnti, newRnti));
+      DU_LOG("\nERROR  -->  MAC : [%d]RNTI:Failed to get ueCb \
+               newRnti=%d\n", rnti, newRnti);
       return RFAILED;
    }
    /* For all added SCells, prepare and send ueIdChngReq */
@@ -1202,8 +1195,7 @@ static Void rgUtlHndlCrntiRls(RgCellCb *cell,RgInfRlsRnti *rlsRnti)
       }
       else
       {
-         RLOG_ARG1(L_WARNING,DBG_CELLID,cell->cellId,
-                   "RNTI:%d No ueCb found in RachLst",rlsRnti->rnti);
+          DU_LOG("\nERROR  -->  MAC : RNTI:%d No ueCb found in RachLst",rlsRnti->rnti);
       }
    }
    else
@@ -1231,8 +1223,7 @@ static Void rgUtlHndlCrntiRls(RgCellCb *cell,RgInfRlsRnti *rlsRnti)
       {
          if((ue=rgDBMGetUeCbFromRachLst (cell, rlsRnti->rnti)) != NULLP)
          {
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-	      	      	"RNTI:%d STALE UE is still present", rlsRnti->rnti);         
+	     DU_LOG("\nERROR  -->  MAC : RNTI:%d STALE UE is still present", rlsRnti->rnti);         
          }
       }
    }
@@ -1282,8 +1273,7 @@ TfuDelDatReqInfo delDatReq;
       (cell->cellId != rlsRnti->cellId))
    {
       
-      RLOG_ARG1(L_ERROR,DBG_CELLID,rlsRnti->cellId,
-               "No cellCb found with cellId for RNTI:%d", 
+      DU_LOG("\nERROR  -->  MAC : No cellCb found with cellId for RNTI:%d", 
 		         rlsRnti->rnti);
       return RFAILED;
    }
@@ -1296,8 +1286,7 @@ TfuDelDatReqInfo delDatReq;
        * is dummy */	   
       if (rgUtlHndlCrntiChng(macInst,cell, rlsRnti->rnti, rlsRnti->newRnti) != ROK)	   
       {
-         RLOG_ARG2(L_ERROR,DBG_CELLID,rlsRnti->cellId,
-	                "CRNTI change failed for RNTI:%d new RNTI:%d",
+	  DU_LOG("\nERROR  -->  MAC : CRNTI change failed for RNTI:%d new RNTI:%d",
                    rlsRnti->rnti,rlsRnti->newRnti);
          return RFAILED;
       }
