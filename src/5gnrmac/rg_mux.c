@@ -32,9 +32,6 @@
 @brief MAC Multiplexing API.
 */
 
-static const char* RLOG_MODULE_NAME="MAC";
-static int RLOG_FILE_ID=229;
-static int RLOG_MODULE_ID=4096;
 
 /* header include files -- defines (.h) */
 #include "common_def.h"
@@ -175,7 +172,7 @@ RgErrInfo      *err
          if(ret != ROK)
          {
             err->errCause = RGERR_MUX_BLD_CEHDR_FAIL;
-            RLOG0(L_ERROR, "Muxing of Contention Resolution CE sub-header is failed");
+            DU_LOG("\nERROR  -->  MAC : Muxing of Contention Resolution CE sub-header is failed");
             return RFAILED;
          }
 
@@ -184,7 +181,7 @@ RgErrInfo      *err
          if(ret != ROK)
          {
             err->errCause = RGERR_MUX_BLD_CE_FAIL;
-            RLOG0(L_ERROR, "Muxing of Contention Resolution CE is failed")
+            DU_LOG("\nERROR  -->  MAC : Muxing of Contention Resolution CE is failed");
             return RFAILED;
          }
          pdu->schdTbSz -= RG_CRES_ELM_LEN;
@@ -200,7 +197,7 @@ RgErrInfo      *err
          if(ret != ROK)
          {
             err->errCause = RGERR_MUX_BLD_CEHDR_FAIL;
-            RLOG0(L_ERROR, "Muxing of TA CE sub-hdr is failed")
+            DU_LOG("\nERROR  -->  MAC : Muxing of TA CE sub-hdr is failed");
             return RFAILED;
          }
 
@@ -210,11 +207,11 @@ RgErrInfo      *err
          if(ret != ROK)
          {
             err->errCause = RGERR_MUX_BLD_CE_FAIL;
-            RLOG0(L_ERROR, "Muxing of TA CE is failed")
+            DU_LOG("\nERROR  -->  MAC : Muxing of TA CE is failed");
             return RFAILED;
          }
          pdu->schdTbSz -= RG_TA_ELM_LEN;
-         RLOG1(L_DEBUG,"TA muxed by MAC: %u", pdu->ta.val);
+         DU_LOG("\nDEBUG  -->  MAC : TA muxed by MAC: %u", pdu->ta.val);
       }
    }
 #ifdef LTE_ADV
@@ -228,7 +225,7 @@ RgErrInfo      *err
          if(ret != ROK)
          {
             err->errCause = RGERR_MUX_BLD_CEHDR_FAIL;
-            RLOG0(L_ERROR, "Muxing of SCELL Activation CE sub-hdr is failed")
+            DU_LOG("\nERROR  -->  MAC : Muxing of SCELL Activation CE sub-hdr is failed")
             return RFAILED;
          }
 
@@ -238,7 +235,7 @@ RgErrInfo      *err
          if(ret != ROK)
          {
             err->errCause = RGERR_MUX_BLD_CE_FAIL;
-            RLOG0(L_ERROR, "Muxing of SCELL Activation CE is failed")
+            DU_LOG("\nERROR  -->  MAC : Muxing of SCELL Activation CE is failed")
             return RFAILED;
          }
          pdu->schdTbSz -= RG_SCELL_CE_ELM_LEN;
@@ -300,7 +297,7 @@ RgErrInfo      *err
       if(ret != ROK)
       {
          err->errCause = RGERR_MUX_BLD_SDUHDR_FAIL;
-         RLOG1(L_ERROR, "RGERR_MUX_BLD_SDUHDR_FAIL for LCID:%d",lcId);
+         DU_LOG("\nERROR  -->  MAC : RGERR_MUX_BLD_SDUHDR_FAIL for LCID:%d",lcId);
          return RFAILED;
       }
 
@@ -315,7 +312,7 @@ RgErrInfo      *err
       if(ret != ROK)
       {
          err->errCause = RGERR_MUX_BLD_SDU_FAIL;
-         RLOG1(L_ERROR, "RGERR_MUX_BLD_SDU_FAIL for LCID:%d",lcId);
+         DU_LOG("\nERROR  -->  MAC : RGERR_MUX_BLD_SDU_FAIL for LCID:%d",lcId);
          return RFAILED;
       }
 
@@ -324,9 +321,9 @@ RgErrInfo      *err
    else
    {
       /* This Sub-PDU can not be accodmodated at all */
-      RLOG4(L_ERROR, "Failed lcId %u, elmTotLen %d lenBytes %d LCID:%d",
+      DU_LOG("\nERROR  -->  MAC : Failed lcId %u, elmTotLen %d lenBytes %d LCID:%d",
                lcId, ((S16)elmTotLen), lenBytes,lcId);
-      RLOG3(L_ERROR, "msglen %d schdTbSz %d LCID:%d",
+      DU_LOG("\nERROR  -->  MAC : msglen %d schdTbSz %d LCID:%d",
                ((S16)msgLen), ((S16)*schdTbSz),lcId);
       return RFAILED;
    }
@@ -381,7 +378,7 @@ RgErrInfo      *err
          if(ret != ROK)
          {
             err->errCause = RGERR_MUX_BLD_PADHDR_FAIL;
-            RLOG0(L_ERROR, "RGERR_MUX_BLD_PADHDR_FAIL");
+            DU_LOG("\nERROR  -->  MAC : RGERR_MUX_BLD_PADHDR_FAIL");
             return RFAILED;
          }
 
@@ -405,7 +402,7 @@ RgErrInfo      *err
             if(ret != ROK)
             {
                err->errCause = RGERR_MUX_BLD_PAD_FAIL;
-               RLOG0(L_ERROR, "RGERR_MUX_BLD_PAD_FAIL");
+               DU_LOG("\nERROR  -->  MAC : RGERR_MUX_BLD_PAD_FAIL");
                return RFAILED;
             }
             *schdTbSz = 0;
@@ -430,7 +427,7 @@ RgErrInfo      *err
                   if(ret != ROK)
                   {
                      err->errCause = RGERR_MUX_BLD_PAD_FAIL;
-                     RLOG0(L_ERROR, "RGERR_MUX_BLD_PAD_FAIL");
+                     DU_LOG("\nERROR  -->  MAC : RGERR_MUX_BLD_PAD_FAIL");
                      return RFAILED;
                   }
 
@@ -452,7 +449,7 @@ RgErrInfo      *err
                   if(ret != ROK)
                   {
                      err->errCause = RGERR_MUX_BLD_PAD_FAIL;
-                     RLOG0(L_ERROR, "RGERR_MUX_BLD_PAD_FAIL");
+                     DU_LOG("\nERROR  -->  MAC : RGERR_MUX_BLD_PAD_FAIL");
                      return RFAILED;
 
                   }
@@ -533,7 +530,7 @@ RgErrInfo      *err
                            datReqTb->lchData[idx1].pdu.mBuf[idx2],
                            sduBuf, err) != ROK)
                         {
-                           RLOG1(L_ERROR, "FAILED for LCID:%d",datReqTb->lchData[idx1].lcId);
+                           DU_LOG("\nERROR  -->  MAC : FAILED for LCID:%d",datReqTb->lchData[idx1].lcId);
                            return RFAILED;
                         }
                      }
@@ -558,7 +555,7 @@ RgErrInfo      *err
                            datReqTb->lchData[idx1].pdu.mBuf[idx2],
                            sduBuf, err) != ROK)
                         {
-                           RLOG2(L_ERROR, "FAILED TB Size %d LCID:%d",
+                           DU_LOG("\nERROR  -->  MAC : FAILED TB Size %d LCID:%d",
                                     ((S16)pdu->schdTbSz),datReqTb->lchData[idx1].lcId);
                            return RFAILED;
                         }
@@ -575,7 +572,7 @@ RgErrInfo      *err
    } /* End of switch(reqType) */
    if(rgMUXAddPadd(inst,&pdu->schdTbSz, sduBuf, FALSE, err) != ROK)
    {
-      RLOG1(L_ERROR, "FAILED for TB Size:%d",(S16)pdu->schdTbSz);
+      DU_LOG("\nERROR  -->  MAC : FAILED for TB Size:%d",(S16)pdu->schdTbSz);
       return RFAILED;
    }
    return ROK;
@@ -623,7 +620,7 @@ RgErrInfo      *err
       /* Buffer couldnt get allocated. Return a failure */
       err->errCause = RGERR_MUX_MEM_ALLOC_FAIL;
       err->errType = RGERR_MUX_BLD_PDU;
-      RLOG1(L_FATAL, "Memory allocation failed during MUXing of MAC TB: MacInst %d", inst);
+      DU_LOG("\nERROR  -->  MAC : Memory allocation failed during MUXing of MAC TB: MacInst %d", inst);
       return RFAILED;
    }
 
@@ -631,7 +628,7 @@ RgErrInfo      *err
    {
       RG_FREE_MSG(mBuf);
       err->errType = RGERR_MUX_BLD_PDU;
-      RLOG1(L_ERROR, "Failed to Multiplex MAC CEs: MacInst %d", inst);
+      DU_LOG("\nERROR  -->  MAC : Failed to Multiplex MAC CEs: MacInst %d", inst);
       return RFAILED;
    }
 
@@ -639,7 +636,7 @@ RgErrInfo      *err
    {
       RG_FREE_MSG(mBuf);
       err->errType = RGERR_MUX_BLD_PDU;
-      RLOG1(L_ERROR, "FAILED to Multiplex MAC SDU: MacInst %d", inst);
+      DU_LOG("\nERROR  -->  MAC : FAILED to Multiplex MAC SDU: MacInst %d", inst);
       return RFAILED;
    }
 
@@ -699,7 +696,7 @@ RgErrInfo           *err
                = cDatReq->pdu;
             tb->lchInfo[tb->numLch].numPdu++;
             tb->numLch++;
-           RLOG3(L_INFO,"MSG4 is muxed  numLch=%ld numPdu=%ld tbaddr =%p", tb->numLch,tb->lchInfo[tb->numLch-1].numPdu, (uint32_t)tb);
+            DU_LOG("\nINFO   -->  MAC : MSG4 is muxed  numLch=%ld numPdu=%ld tbaddr =%p", tb->numLch,tb->lchInfo[tb->numLch-1].numPdu, (uint32_t)tb);
          }
          break;
 
@@ -753,12 +750,12 @@ RgErrInfo           *err
                              tmp = datReqTb->lchData[idx1].pdu.mBuf[idx2]->b_cont;
                              if(NULL == tmp->b_rptr)
                              {
-                                RLOG0(L_INFO,"11111Its Null here only ");
+                                DU_LOG("\nINFO   -->  MAC : 11111Its Null here only ");
                              }
                         }
                         else
                         {
-                            RLOG0(L_INFO,"222222Its Null here only \n");
+                            DU_LOG("\nINFO   -->  MAC : 222222Its Null here only \n");
                         }
                         pduIdx++;
                         //tb->lchInfo[tb->numLch].numPdu++;
@@ -817,12 +814,12 @@ RgErrInfo           *err
                              tmp = datReqTb->lchData[idx1].pdu.mBuf[idx2]->b_cont;
                              if(NULL == tmp->b_rptr)
                              {
-                                RLOG0(L_INFO,"2212121Its Null here only \n");
+                                DU_LOG("\nINFO   -->  MAC : 2212121Its Null here only \n");
                              }
                         }
                         else
                         {
-                            RLOG0(L_INFO,"343343433ts Null here only \n");
+                            DU_LOG("\nINFO   -->  MAC : 343343433ts Null here only \n");
                         }
                         pduIdx++;
                        // tb->lchInfo[tb->numLch].numPdu++;
@@ -918,7 +915,7 @@ RgErrInfo          *err
    if(rgMUXAddCes(inst, pdu, mBuf1, mBuf2, err) != ROK)
    {
       /* Reset rPtr and wPtr to the base of data buffer(db_base)*/
-      RLOG0(L_INFO,"rgMUXBldPdu: rgMUXAddCes is Failed \n");
+      DU_LOG("\nERROR  -->  MAC : rgMUXBldPdu: rgMUXAddCes is Failed \n");
       RG_FREE_TB(tb);
       err->errType = RGERR_MUX_BLD_PDU;
       //RGDBGERRNEW((rgPBuf, "FAILED"));
@@ -928,7 +925,7 @@ RgErrInfo          *err
    {
       /*TODO:MP Reset rPtr and wPtr to the base of data buffer(db_base)
        * Reset numLch and numPdu to zero and set MAC SDU buf to NULLP */
-      RLOG0(L_INFO, "rgMUXBldPdu: rgMUXAddSdus is Failed \n");
+      DU_LOG("\nERROR  -->  MAC : rgMUXBldPdu: rgMUXAddSdus is Failed \n");
       RG_FREE_TB(tb);
 
       err->errType = RGERR_MUX_BLD_PDU;
@@ -1001,7 +998,7 @@ RgErrInfo       *err
    {
       /* Buffer couldnt get allocated. Return a failure */
       err->errCause = RGERR_MUX_MEM_ALLOC_FAIL;
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId, "FAILED to getMsg");
+      DU_LOG("\nERROR  -->  MAC : FAILED to getMsg");
       return RFAILED;
    }
 
@@ -1017,7 +1014,7 @@ RgErrInfo       *err
       if(ret != ROK)
       {
          err->errCause = RGERR_MUX_BLD_BI_FAIL;
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"RGERR_MUX_BLD_BI_FAIL");
+         DU_LOG("\nERROR  -->  MAC : RGERR_MUX_BLD_BI_FAIL");
          RG_FREE_MSG(datBuf);
          return RFAILED;
       }
@@ -1037,7 +1034,7 @@ RgErrInfo       *err
          if(ret != ROK)
          {
             err->errCause = RGERR_MUX_BLD_RAPIDHDR_FAIL;
-            RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"RGERR_MUX_BLD_RAPIDHDR_FAIL");
+            DU_LOG("\nERROR  -->  MAC : RGERR_MUX_BLD_RAPIDHDR_FAIL");
             RG_FREE_MSG(datBuf);
             return RFAILED;
          }
@@ -1054,15 +1051,14 @@ RgErrInfo       *err
       data[4]  =  (alloc->crntiInfo[idx].tmpCrnti) >> 8;
       data[5]  =  (uint8_t) (alloc->crntiInfo[idx].tmpCrnti);
 
-      RLOG_ARG2(L_DEBUG,DBG_CELLID,cell->cellId,
-         		"Rar,Rapid=%d, Temp CRNTI:%d", 
+      DU_LOG("\nDEBUG  -->  MAC : Rar,Rapid=%d, Temp CRNTI:%d", 
                 alloc->crntiInfo[idx].rapId,
                 alloc->crntiInfo[idx].tmpCrnti);
      MS_BUF_ADD_ALLOC_CALLER();
       if(SAddPstMsgMult(&data[0], RG_RAR_ELEM_LEN, datBuf) != ROK)
       {
          err->errCause = RGERR_MUX_BLD_RAPID_FAIL;
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"RGERR_MUX_BLD_RAPID_FAIL");
+         DU_LOG("\nERROR  -->  MAC : RGERR_MUX_BLD_RAPID_FAIL");
          RG_FREE_MSG(datBuf);
          return RFAILED;
       }
@@ -1072,7 +1068,7 @@ RgErrInfo       *err
    if(rgMUXAddPadd(inst,&schdTbSz, datBuf, TRUE, err) != ROK)
    {
       RG_FREE_MSG(datBuf);
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"FAILED to mux add padding");
+      DU_LOG("\nERROR  -->  MAC : FAILED to mux add padding");
       return RFAILED;
    }
 

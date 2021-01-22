@@ -33,9 +33,6 @@
 manages Pst and Sap related information for upper interface APIs.
 */
 
-static const char* RLOG_MODULE_NAME="MAC";
-static int RLOG_MODULE_ID=4096;
-static int RLOG_FILE_ID=178;
 
 /* header include files -- defines (.h) */
 
@@ -133,11 +130,11 @@ SpId spId
             rgFillDgnParams(inst,&dgn, LRG_USTA_DGNVAL_MEM); 
             ret = rgLMMStaInd(inst,LCM_CATEGORY_INTERFACE,LRG_NOT_CFG,
                   LCM_CAUSE_INV_SAP, &dgn);
-            RLOG0(L_DEBUG,"SAP Not Configured");
+            DU_LOG("\nDEBUG  -->  MAC : SAP Not Configured");
             ret = RgUiRguBndCfm(&tmpPst, suId, CM_BND_NOK);
             break;
          case LRG_UNBND: /* SAP is not bound */
-            RLOG0(L_DEBUG,"SAP Not yet bound");
+            DU_LOG("\nDEBUG  -->  MAC : SAP Not yet bound");
             rgCb[inst].rguSap[spId].sapSta.sapState = LRG_BND;
             rgCb[inst].rguSap[spId].sapCfg.suId = suId;
             /* Send Bind Confirm with status as SUCCESS */
@@ -149,7 +146,7 @@ SpId spId
                   LCM_CAUSE_UNKNOWN, &dgn);
             break;
          case LRG_BND: /* SAP is already bound*/
-            RLOG0(L_DEBUG,"SAP already bound");
+            DU_LOG("\nDEBUG  -->  MAC : SAP already bound");
             /*T2K - Passing spId as it is required to access the SAP CB*/
             ret = rgUIMRguBndCfm(inst,spId, CM_BND_OK);
             break;
@@ -210,13 +207,13 @@ Reason reason
       switch(rgCb[inst].rguSap[spId].sapSta.sapState)
       {
          case LRG_BND: /* SAP is already bound*/
-            RLOG0(L_DEBUG,"SAP already bound");
+            DU_LOG("\nDEBUG  -->  MAC : SAP already bound");
             /* setting SAP state to UN BOUND */
             rgCb[inst].rguSap[spId].sapSta.sapState = LRG_UNBND;
             break;
          default:
 #if (ERRCLASS & ERRCLS_ADD_RES)      
-     RLOG1(L_ERROR,"Invalid SAP State:%d RgUiRguUbndReq failed",
+     DU_LOG("\nERROR  -->  MAC : Invalid SAP State:%d RgUiRguUbndReq failed",
                   rgCb[inst].rguSap[spId].sapSta.sapState);
        
 #endif
@@ -260,7 +257,7 @@ S16 rgUIMRguBndCfm(Inst inst,SpId spId,uint8_t status)
    if (ret != ROK)
    {
       
-      RLOG0(L_ERROR,"RgUiRguBndCfm Failed ");
+      DU_LOG("\nERROR  -->  MAC : RgUiRguBndCfm Failed ");
       return (ret);
    }
    return (ret);
@@ -299,7 +296,7 @@ S16 RgUiRguDDatReq(Pst *pst,SpId spId,RguDDatReqInfo  *datReq)
 #ifndef NO_ERRCLS
    if (datReq == NULLP)
    {
-      RLOG0(L_ERROR,"Input Message Buffer is NULL");
+      DU_LOG("\nERROR  -->  MAC : Input Message Buffer is NULL");
       return RFAILED;
    }
    
@@ -308,11 +305,11 @@ S16 RgUiRguDDatReq(Pst *pst,SpId spId,RguDDatReqInfo  *datReq)
       switch (rgCb[inst].rguSap[spId].sapSta.sapState)
       {
          case LRG_BND: /* SAP is bound */
-            RLOG0(L_DEBUG,"SAP is already bound");
+            DU_LOG("\nDEBUG  -->  MAC : SAP is already bound");
             break;
          default: /* Should never reach here */
 #if (ERRCLASS & ERRCLS_ADD_RES)      
-            RLOG1(L_ERROR,"Invalid SAP State:%d RgUiRguDDatReq failed",
+            DU_LOG("\nERROR  -->  MAC : Invalid SAP State:%d RgUiRguDDatReq failed",
                   rgCb[inst].rguSap[spId].sapSta.sapState);
 #endif
 #ifndef L2_OPTMZ
@@ -405,7 +402,7 @@ RguCDatReqInfo  *datReq
 #ifndef NO_ERRCLS
    if (datReq == NULLP)
    {
-      RLOG0(L_ERROR,"Input Message Buffer is NULL");
+      DU_LOG("\nERROR  -->  MAC : Input Message Buffer is NULL");
       return RFAILED;
    }
    
@@ -414,11 +411,11 @@ RguCDatReqInfo  *datReq
       switch (rgCb[inst].rguSap[spId].sapSta.sapState)
       {
          case LRG_BND: /* SAP is bound */
-            RLOG0(L_DEBUG,"SAP is already bound");
+            DU_LOG("\nERROR  -->  MAC : SAP is already bound");
             break;
          default: /* Should never reach here */
 #if (ERRCLASS & ERRCLS_ADD_RES)      
-            RLOG1(L_ERROR,"Invalid SAP State:%d RgUiRguCDatReq failed",
+            DU_LOG("\nERROR  -->  MAC : Invalid SAP State:%d RgUiRguCDatReq failed",
                   rgCb[inst].rguSap[spId].sapSta.sapState);
 #endif
             return RFAILED;
@@ -427,7 +424,7 @@ RguCDatReqInfo  *datReq
    else
    {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
-      RLOG1(L_ERROR,"Invalid SAP Id:%d RgUiRguCDatReq failed ",spId);
+      DU_LOG("\nERROR  -->  MAC : Invalid SAP Id:%d RgUiRguCDatReq failed ",spId);
 #endif
       return RFAILED;
    }
@@ -491,8 +488,7 @@ RguDStaRspInfo  *staRsp
    ret = rgROMDedStaRsp(inst,staRsp);
    if (ret != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,staRsp->cellId,
-                "Processing Of Status Response Failed");
+       DU_LOG("\nERROR  -->  MAC : Processing Of Status Response Failed");
    }
 
 
@@ -535,7 +531,7 @@ RguCStaRspInfo  *staRsp
 #ifndef NO_ERRCLS
    if (staRsp == NULLP)
    {
-      RLOG0(L_ERROR,"Input Response Buffer is NULL");
+      DU_LOG("\nERROR  -->  MAC : Input Response Buffer is NULL");
       return RFAILED;
    }
 
@@ -544,11 +540,11 @@ RguCStaRspInfo  *staRsp
       switch (rgCb[inst].rguSap[spId].sapSta.sapState)
       {
          case LRG_BND: /* SAP is bound */
-            RLOG0(L_DEBUG,"SAP is already bound");
+            DU_LOG("\nDEBUG  -->  MAC : SAP is already bound");
             break;
          default: /* Should never reach here */
 #if (ERRCLASS & ERRCLS_ADD_RES)      
-            RLOG1(L_ERROR,"Invalid SAP State:%d RgUiRguCStaRsp failed",
+            DU_LOG("\nERROR  -->  MAC : Invalid SAP State:%d RgUiRguCStaRsp failed",
                   rgCb[inst].rguSap[spId].sapSta.sapState);
 #endif
             return RFAILED;
@@ -557,7 +553,7 @@ RguCStaRspInfo  *staRsp
    else
    {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
-      RLOG1(L_ERROR,"Invalid SAP Id:%d RgUiRguCStaRsp failed",spId);
+      DU_LOG("\nERROR  -->  MAC : Invalid SAP Id:%d RgUiRguCStaRsp failed",spId);
 #endif
       return RFAILED;
    }
@@ -566,7 +562,7 @@ RguCStaRspInfo  *staRsp
    ret = rgROMCmnStaRsp(inst,staRsp);
    if (ret != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,staRsp->cellId,"Processing Of Status Response Failed");
+      DU_LOG("\nERROR  -->  MAC : Processing Of Status Response Failed");
       return (ret);
    }
 
@@ -609,7 +605,7 @@ RguL2MUlThrpMeasReqInfo  *measReq
 #ifndef NO_ERRCLS
    if (measReq == NULLP)
    {
-      RLOG0(L_ERROR,"Input Response Buffer is NULL");
+      DU_LOG("\nERROR  -->  MAC : Input Response Buffer is NULL");
       return RFAILED;
    }
 
@@ -618,11 +614,11 @@ RguL2MUlThrpMeasReqInfo  *measReq
       switch (rgCb[inst].rguSap[spId].sapSta.sapState)
       {
          case LRG_BND: /* SAP is bound */
-            RLOG0(L_DEBUG,"SAP is already bound");
+            DU_LOG("\nERROR  -->  MAC : SAP is already bound");
             break;
          default: /* Should never reach here */
 #if (ERRCLASS & ERRCLS_ADD_RES)      
-            RLOG1(L_ERROR,"Invalid SAP State:%d RgUiRguL2MUlThrpMeasReq failed",
+            DU_LOG("\nERROR  -->  MAC : Invalid SAP State:%d RgUiRguL2MUlThrpMeasReq failed",
                   rgCb[inst].rguSap[spId].sapSta.sapState);
 #endif
             return RFAILED;
@@ -631,7 +627,7 @@ RguL2MUlThrpMeasReqInfo  *measReq
    else
    {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
-      RLOG1(L_ERROR,"Invalid SAP Id:%d RgUiRguL2MUlThrpMeasReq failed",spId);
+      DU_LOG("\nERROR  -->  MAC : Invalid SAP Id:%d RgUiRguL2MUlThrpMeasReq failed",spId);
 #endif
       return RFAILED;
    }
@@ -640,7 +636,7 @@ RguL2MUlThrpMeasReqInfo  *measReq
    ret = rgROML2MUlThrpMeasReq(inst,measReq);
    if (ret != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,measReq->cellId,"Processing Of Meas Request Failed");
+      DU_LOG("\nERROR  -->  MAC : Processing Of Meas Request Failed");
    }
 
   SPutStaticBuffer(pst->region, pst->pool, (Data *)measReq,sizeof(RguL2MUlThrpMeasReqInfo) , SS_SHARABLE_MEMORY);
@@ -682,7 +678,7 @@ RgRguDedStaInd  *staInd
          staInd);
    if (ret != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,staInd->cellId,"RgUiRguDStaInd Failed");
+      DU_LOG("\nERROR  -->  MAC : RgUiRguDStaInd Failed");
       return (ret);
    }
    return (ret);
@@ -720,7 +716,7 @@ RgRguCmnStaInd  *staInd
          staInd);
    if (ret != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,staInd->cellId,"RgUiRguCStaInd Failed");
+      DU_LOG("\nERROR  -->  MAC : RgUiRguCStaInd Failed");
       return (ret);
    }
    return (ret);
@@ -760,7 +756,7 @@ RgRguDedDatInd  *datInd
          datInd);
    if (ret != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,datInd->cellId,"RgUiRguDdatInd Failed");
+      DU_LOG("\nERROR  -->  MAC : RgUiRguDdatInd Failed");
       return (ret);
    }
 #else
@@ -803,7 +799,7 @@ S16 rgUIMSndCmnDatInd(Inst inst,RgUpSapCb *rguUlSap,RgRguCmnDatInd  *datInd)
    if (ret != ROK)
    {
       RGDBGERRNEW(inst,(rgPBuf(inst),"RgUiRguCDatInd Failed\n"));
-      RLOG_ARG0(L_ERROR,DBG_CELLID,datInd->cellId,"RgUiRguCDatInd Failed");
+      DU_LOG("\nERROR  -->  MAC : RgUiRguCDatInd Failed");
       return (ret);
    }
    return (ret);
@@ -862,11 +858,11 @@ S16 RgUiCrgBndReq(Pst   *pst, SuId  suId,SpId  spId)
             rgFillDgnParams(inst,&dgn, LRG_USTA_DGNVAL_MEM); 
             ret = rgLMMStaInd(inst,LCM_CATEGORY_INTERFACE,LRG_NOT_CFG,
                   LCM_CAUSE_INV_SAP, &dgn);
-            RLOG0(L_DEBUG,"SAP Not Configured");
+            DU_LOG("\nDEBUG  -->  MAC : SAP Not Configured");
             ret = RgUiCrgBndCfm(&tmpPst, suId, CM_BND_NOK);
             break;
          case LRG_UNBND: /* SAP is not bound */
-            RLOG0(L_DEBUG,"SAP Not yet bound");
+            DU_LOG("\nERROR  -->  MAC : SAP Not yet bound");
             
             rgCb[inst].crgSap.sapSta.sapState = LRG_BND;
             rgCb[inst].crgSap.sapCfg.suId = suId;
@@ -878,13 +874,13 @@ S16 RgUiCrgBndReq(Pst   *pst, SuId  suId,SpId  spId)
                   LCM_CAUSE_UNKNOWN, &dgn);
             break;
          case LRG_BND: /* SAP is already bound*/
-            RLOG0(L_DEBUG,"SAP is already bound");
+            DU_LOG("\nDEBUG  -->  MAC : SAP is already bound");
             
             ret = rgUIMCrgBndCfm(inst,suId, CM_BND_OK);
             break;
          default: /* Should Never Enter here */
 #if (ERRCLASS & ERRCLS_ADD_RES)      
-            RLOG1(L_ERROR,"Invalid SAP State:%d RgUiCrgBndReq failed",
+            DU_LOG("\nERROR  -->  MAC : Invalid SAP State:%d RgUiCrgBndReq failed",
                   rgCb[inst].crgSap.sapSta.sapState);
 #endif
             ret = rgUIMCrgBndCfm(inst,suId, CM_BND_NOK);
@@ -894,7 +890,7 @@ S16 RgUiCrgBndReq(Pst   *pst, SuId  suId,SpId  spId)
    else
    {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
-      RLOG1(L_ERROR,"Invalid SAP Id:%d RgUiCrgBndReq failed",
+      DU_LOG("\nERROR  -->  MAC : Invalid SAP Id:%d RgUiCrgBndReq failed",
            rgCb[inst].crgSap.sapCfg.spId);
 #endif
       ret = rgUIMCrgBndCfm(inst,suId, CM_BND_NOK);
@@ -934,13 +930,13 @@ S16 RgUiCrgUbndReq(Pst *pst,SpId spId,Reason reason)
       {
          case LRG_BND: /* SAP is already bound*/
             /* setting SAP state to UN BOUND */
-            RLOG0(L_DEBUG, "SAP is already bound");
+            DU_LOG("\nDEBUG  -->  MAC : SAP is already bound");
             
             rgCb[inst].crgSap.sapSta.sapState = LRG_UNBND;
             break;
          default:
 #if (ERRCLASS & ERRCLS_ADD_RES)
-            RLOG1(L_ERROR,"Invalid SAP State:%d RgUiCrgUbndReq failed",
+            DU_LOG("\nERROR  -->  MAC : Invalid SAP State:%d RgUiCrgUbndReq failed",
                   rgCb[inst].crgSap.sapSta.sapState);
 #endif
             return RFAILED;
@@ -949,7 +945,7 @@ S16 RgUiCrgUbndReq(Pst *pst,SpId spId,Reason reason)
    else
    {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
-      RLOG1(L_ERROR,"Invalid SAP Id:%d RgUiCrgUbndReq failed",
+      DU_LOG("\nERROR  -->  MAC : Invalid SAP Id:%d RgUiCrgUbndReq failed",
             rgCb[inst].crgSap.sapCfg.spId);
 #endif
       return RFAILED;
@@ -980,7 +976,7 @@ S16 rgUIMCrgBndCfm(Inst  inst,SuId suId,uint8_t status)
 
    if(RgUiCrgBndCfm(&(rgCb[inst].crgSap.sapCfg.sapPst), rgCb[inst].crgSap.sapCfg.suId, status) != ROK)
    {
-      RLOG0(L_ERROR,"RgUiCrgBndCfm Failed ");
+      DU_LOG("\nERROR  -->  MAC : RgUiCrgBndCfm Failed ");
       return RFAILED;
    }
 
@@ -1030,7 +1026,7 @@ CrgCfgReqInfo *cfgReqInfo
    /* CrgCfgReqInfo Validation for NULLP */
    if (cfgReqInfo == NULLP)
    {
-      RLOG0(L_ERROR,"Input Param crgReqInfo is NULL ");
+      DU_LOG("\nERROR  -->  MAC : Input Param crgReqInfo is NULL ");
       rgUIMCrgCfgCfm(inst,transId, cfmStatus); 
       return RFAILED;
    }
@@ -1041,11 +1037,11 @@ CrgCfgReqInfo *cfgReqInfo
       switch(rgCb[inst].crgSap.sapSta.sapState)
       {
          case LRG_BND: /* SAP is already bound */
-            RLOG0(L_DEBUG,"SAP is already bound");
+            DU_LOG("\nDEBUG  -->  MAC : SAP is already bound");
             break;
          default: /* Should never reach here */
 #if (ERRCLASS & ERRCLS_ADD_RES)      
-            RLOG1(L_ERROR,"Invalid SAP State:%d RgUiCrgCfgReq failed",
+           DU_LOG("\nERROR  -->  MAC : Invalid SAP State:%d RgUiCrgCfgReq failed",
                   rgCb[inst].crgSap.sapSta.sapState);
 #endif
          SPutSBuf (pst->region, pst->pool, (Data *)cfgReqInfo,
@@ -1059,7 +1055,7 @@ CrgCfgReqInfo *cfgReqInfo
    else
    {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
-      RLOG1(L_ERROR,"Invalid SAP Id:%d RgUiCrgCfgReq failed",
+      DU_LOG("\nERROR  -->  MAC : Invalid SAP Id:%d RgUiCrgCfgReq failed",
             rgCb[inst].crgSap.sapCfg.spId);
 #endif
       SPutSBuf (pst->region, pst->pool, (Data *)cfgReqInfo,
@@ -1074,7 +1070,7 @@ CrgCfgReqInfo *cfgReqInfo
    cfgReqInfo = NULLP;
    if (ret != ROK)
    {
-      RLOG0(L_ERROR,"Configuration Request Handling Failed ");
+      DU_LOG("\nERROR  -->  MAC : Configuration Request Handling Failed ");
       return RFAILED;
    }
 
@@ -1116,7 +1112,7 @@ uint8_t       status
    ret = RgUiCrgCfgCfm(&(rgCb[inst].crgSap.sapCfg.sapPst), rgCb[inst].crgSap.sapCfg.suId, transId, status);
    if (ret != ROK)
    {
-      RLOG0(L_ERROR,"RgUiCrgCfgCfm Failed ");
+      DU_LOG("\nERROR  -->  MAC : RgUiCrgCfgCfm Failed ");
       return (ret);
    }
 

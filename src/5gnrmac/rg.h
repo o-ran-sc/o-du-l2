@@ -287,7 +287,7 @@ uint32_t macHeader[2];
   ssGetDBufOfSize(mInfo->region,_size, &_padBuf); \
   if (_padBuf == NULLP) \
   { \
-    RLOG0(L_ERROR, "RGERR_MUX_BLD_CEHDR_FAIL");\
+    DU_LOG("\nERROR  -->  MAC : RGERR_MUX_BLD_CEHDR_FAIL");\
     return RFAILED;\
   } \
   if (mInfo->endptr == NULLP) { \
