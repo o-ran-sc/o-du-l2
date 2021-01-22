@@ -1,0 +1,191 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3ec94b2a_c3ffb6ac",
+        "filename": "src/5gnrrlc/kw_cfg_ul.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 684,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-01-22T07:55:23Z",
+      "side": 1,
+      "message": "lines 676 and 681-684 can be removed",
+      "revId": "0893ff517c4f7a6fc3caebdbe114f43d9ae636d7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6e9dfb48_4cb3e40c",
+        "filename": "src/5gnrrlc/kw_cfg_ul.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 686,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-01-22T07:55:23Z",
+      "side": 1,
+      "message": "move declaration to beginning of the block i.e. line 676",
+      "revId": "0893ff517c4f7a6fc3caebdbe114f43d9ae636d7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0abc4078_8aae3d21",
+        "filename": "src/5gnrrlc/kw_ul.x",
+        "patchSetId": 2
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-01-22T07:55:23Z",
+      "side": 1,
+      "message": "can we remove this? since assembleSdu is added, this wont be needed. Please check.",
+      "revId": "0893ff517c4f7a6fc3caebdbe114f43d9ae636d7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "52b2ebd3_1a279b0a",
+        "filename": "src/5gnrrlc/kw_umm_ul.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-01-22T07:55:23Z",
+      "side": 1,
+      "message": "declared twice. at line 93 as well.",
+      "revId": "0893ff517c4f7a6fc3caebdbe114f43d9ae636d7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "efba79f6_c29d2bff",
+        "filename": "src/5gnrrlc/kw_umm_ul.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-01-22T07:55:23Z",
+      "side": 1,
+      "message": "rename to rlcUmmAddRcvdSeg. Since this is an internal function and not an interface function, it should start with a small letter, as per our convention.",
+      "revId": "0893ff517c4f7a6fc3caebdbe114f43d9ae636d7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9f88e367_9abb8405",
+        "filename": "src/5gnrrlc/kw_umm_ul.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-01-22T07:55:23Z",
+      "side": 1,
+      "message": "Remove declaration since its not defined",
+      "revId": "0893ff517c4f7a6fc3caebdbe114f43d9ae636d7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fb8b684e_f02d4d93",
+        "filename": "src/5gnrrlc/kw_umm_ul.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-01-22T07:55:23Z",
+      "side": 1,
+      "message": "All UM functions in seed code are named as \"rlcUmm\u003cfunction\u003e\". Lets use the same convention for all new functions as well",
+      "revId": "0893ff517c4f7a6fc3caebdbe114f43d9ae636d7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ea6f8b00_f5c30223",
+        "filename": "src/5gnrrlc/kw_umm_ul.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-01-22T07:55:23Z",
+      "side": 1,
+      "message": "Remove \"kw003.201\". Such texts can be removed comments as and when seen in any code that you might be working on. These numbers were used to identify any new patch added in the seed code. Not needed for us.",
+      "revId": "0893ff517c4f7a6fc3caebdbe114f43d9ae636d7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "869bf2e8_7c2be28f",
+        "filename": "src/5gnrrlc/kw_umm_ul.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-01-22T07:55:23Z",
+      "side": 1,
+      "message": "we can add a debug print for duplicate segment detected",
+      "revId": "0893ff517c4f7a6fc3caebdbe114f43d9ae636d7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3dd4f9d4_bcca84f4",
+        "filename": "src/5gnrrlc/kw_umm_ul.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-01-22T07:55:23Z",
+      "side": 1,
+      "message": "correct the caller name \"kwAmmReassembleSdus\"",
+      "revId": "0893ff517c4f7a6fc3caebdbe114f43d9ae636d7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8d7e3f26_a5cc6e68",
+        "filename": "src/5gnrrlc/kw_utl_ul.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-01-22T07:55:23Z",
+      "side": 1,
+      "message": "Instead of RLC_FREE_BUF, ODU_PUT_MSG_BUF should be used",
+      "revId": "0893ff517c4f7a6fc3caebdbe114f43d9ae636d7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
