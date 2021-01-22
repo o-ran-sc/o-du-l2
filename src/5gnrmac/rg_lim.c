@@ -32,9 +32,6 @@
 @brief It has APIs exposed by Lower Interface Modulue of MAC. It acts as an 
 Interface handler for lower interface APIs.
 */
-static const char* RLOG_MODULE_NAME="MAC";
-static int RLOG_FILE_ID=182;
-static int RLOG_MODULE_ID=4096;
 /* header include files -- defines (.h) */
 #include "common_def.h"
 #include "rgu.h"           /* RGU defines */
@@ -104,7 +101,7 @@ uint8_t status
 
    if (suId != tfuSap->sapCfg.suId)
    {
-      RLOG2(L_ERROR,"Incorrect SuId. Configured (%d) Recieved (%d)",
+      DU_LOG("\nERROR  -->  MAC : Incorrect SuId. Configured (%d) Recieved (%d)",
             tfuSap->sapCfg.suId, suId);
       return RFAILED;
    }
@@ -133,13 +130,13 @@ static S16 rgLIMValidateSap(Inst  inst,SuId suId)
    /* First lets check the suId */
    if( suId != tfuSap->sapCfg.suId)
    {
-      RLOG2(L_ERROR,"Incorrect SuId. Configured (%d) Recieved (%d)",
+      DU_LOG("\nERROR  -->  MAC : Incorrect SuId. Configured (%d) Recieved (%d)",
             tfuSap->sapCfg.suId, suId);
       return RFAILED;
    }
    if (tfuSap->sapSta.sapState != LRG_BND)
    {
-      RLOG1(L_ERROR,"Lower SAP not enabled SuId (%d)",
+      DU_LOG("\nERROR  -->  MAC : Lower SAP not enabled SuId (%d)",
             tfuSap->sapCfg.suId);
       return RFAILED;
    }
@@ -222,7 +219,7 @@ TfuDatIndInfo    *datInd
 #ifndef NO_ERRCLS 
    if ((ret = rgLIMValidateSap (inst,suId)) != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,datInd->cellId,"SAP Validation failed");
+      DU_LOG("\nERROR  -->  MAC : SAP Validation failed");
       rgLIMUtlFreeDatIndEvnt(datInd, TRUE);
       return (ret);
    }
@@ -332,7 +329,7 @@ S16 rgLIMTfuDelDatReq(Inst inst,TfuDelDatReqInfo *delDatReq)
 #ifndef NO_ERRCLS
    if (tfuSap->sapSta.sapState != LRG_BND)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,delDatReq->cellId,"Lower SAP not bound (%d)",
+      DU_LOG("\nERROR  -->  MAC : Lower SAP not bound (%d)",
             tfuSap->sapSta.sapState);
       return RFAILED;
    }
@@ -341,7 +338,7 @@ S16 rgLIMTfuDelDatReq(Inst inst,TfuDelDatReqInfo *delDatReq)
    if((ret = RgLiTfuDelDatReq (&tfuSap->sapCfg.sapPst, tfuSap->sapCfg.spId, 
                             delDatReq)) != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,delDatReq->cellId,"Call to RgLiTfuDelDatReq() failed");
+      DU_LOG("\nERROR  -->  MAC : Call to RgLiTfuDelDatReq() failed");
    }
    return (ret);
 }  /* rgLIMTfuDatReq*/

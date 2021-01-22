@@ -32,10 +32,6 @@
 @brief This file has APIs to handle the random access procedure functionality.
 */
 
-static const char* RLOG_MODULE_NAME="MAC";
-static int RLOG_FILE_ID=132;
-static int RLOG_MODULE_ID=4096;
-
 /* header include files (.h) */
 #include "common_def.h"
 #include "rg_env.h"        /* MAC Environment Defines */
@@ -115,13 +111,12 @@ RgUeCb* rgRAMCreateUeCb(RgCellCb *cell,CmLteRnti  tmpCrnti,Bool insert,RgErrInfo
    Inst       inst = cell->macInst - RG_INST_START;
    RgUeCb    *ueCb = NULLP;
 
-   RLOG_ARG1(L_INFO,DBG_CELLID,cell->cellId,"CREATE UECB FOR CRNTI:%d",
+   DU_LOG("\nINFO  -->  MAC : CREATE UECB FOR CRNTI:%d",
              tmpCrnti);
    /* Allocate the Ue control block */
    if (rgAllocSBuf(inst,(Data **)&ueCb, sizeof(*ueCb)) != ROK)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-                "Memory allocation FAILED for CRNTI:%d",tmpCrnti);
+      DU_LOG("\nERROR  -->  MAC : Memory allocation FAILED for CRNTI:%d",tmpCrnti);
       err->errCause = RGERR_RAM_MEM_EXHAUST;
       return (NULLP);
    }
@@ -255,7 +250,7 @@ S16 rgHndlRaResp(RgCellCb *cell,CmLteTimingInfo timingInfo,RgInfRarInfo *rarInfo
       }
       else
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"RARNTI:%d Creation of RAR"
+         DU_LOG("\nERROR  -->  MAC : RARNTI:%d Creation of RAR"
                   "PDU for failed", rarInfo->raRntiInfo[idx1].raRnti);
          continue;
       }
