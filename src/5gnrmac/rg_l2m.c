@@ -55,11 +55,6 @@
 #include "du_app_mac_inf.h"
 #include "rg.x"            /* MAC types */
 
-#ifdef LTE_L2_MEAS
-static const char* RLOG_MODULE_NAME="MAC";
-static int RLOG_FILE_ID=183;
-static int RLOG_MODULE_ID=4096;
-#endif 
 
 /* local defines */
 #ifdef LTE_L2_MEAS
@@ -111,7 +106,7 @@ RgErrInfo      *err
 
    if ((measCb = rgL2mAllocMeasCb(cell, measInfo, err)) == NULLP)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Allocation of RgL2MeasCb failed");
+      DU_LOG("\nERROR  -->  MAC : Allocation of RgL2MeasCb failed");
       return RFAILED;
    }
    //Memcpy is already done in rgL2mAllocMeasCb
@@ -251,7 +246,7 @@ RgInfL2MeasReq    *measInfo      /* Meas Req Info */
    if ((cellCb == NULLP) ||
        (cellCb->cellId != measInfo->cellId))
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,measInfo->cellId,"unable to get the cellCb");
+      DU_LOG("\nERROR  -->  MAC : unable to get the cellCb");
       return RFAILED;
    }
    /* Call L2M Function to store Meas req */
@@ -265,8 +260,7 @@ RgInfL2MeasReq    *measInfo      /* Meas Req Info */
       measCfm.cfm.reason   = LCM_REASON_INVALID_PAR_VAL;
       measCfm.cfm.status  = LCM_PRIM_NOK;
       rgSndL2MeasCfm(cellCb, &measCfm);
-      RLOG_ARG2(L_ERROR,DBG_CELLID,measInfo->cellId,
-               "Meas req Failed  errType(%d) errCause(%d)",
+      DU_LOG("\nERROR  -->  MAC : Meas req Failed  errType(%d) errCause(%d)",
                err.errType, err.errCause);
       return RFAILED;
    }
@@ -310,8 +304,7 @@ RgInfL2MeasStopReq *measInfo      /* Meas Req Info */
        (cellCb->cellId != measInfo->cellId))
    {
       
-      RLOG_ARG0(L_ERROR,DBG_CELLID,measInfo->cellId,
-            "Unable to get the cellCb");
+      DU_LOG("\nERROR  -->  MAC : Unable to get the cellCb");
       return RFAILED;
    }
    node = cellCb->l2mList.first; 
@@ -369,8 +362,7 @@ RgInfL2MeasSndReq *measInfo      /* Meas Req Info */
        (cellCb->cellId != measInfo->cellId))
    {
       
-      RLOG_ARG0(L_ERROR,DBG_CELLID,measInfo->cellId,
-            "Unable to get the cellCb");
+      DU_LOG("\nERROR  -->  MAC : Unable to get the cellCb");
       return RFAILED;
    }
    /*set sndL2Meas as applicatoin sent l2 meas info request*/
@@ -464,8 +456,7 @@ RgErrInfo      *err
       if((rgAllocSBuf(inst,(Data **)&(measCb),
                   sizeof(RgL2MeasCb))) == RFAILED)
       {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
-                   "Allocation of RgL2MeasCb failed");
+         DU_LOG("\nERROR  -->  MAC : Allocation of RgL2MeasCb failed");
          err->errType  = RGERR_L2M_MEASREQ;
          err->errCause = RGERR_RAM_MEM_EXHAUST;
          return (NULLP);

@@ -32,9 +32,6 @@
 @brief This module handles the configuration of MAC by RRC and RRM.
 */
 
-static const char* RLOG_MODULE_NAME="MAC";
-static int RLOG_FILE_ID=180;
-static int RLOG_MODULE_ID=4096;
 
 /* header include files -- defines (.h) */
 #include "common_def.h"
@@ -123,7 +120,7 @@ RgErrInfo   *errInfo
    if ((rgCb[inst].cell != NULLP)
          || rgCb[inst].inactiveCell != NULLP)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId,"Cell already exists");
+      DU_LOG("\nERROR  -->  MAC : Cell already exists");
       return RFAILED;
    }
    if ((cellCfg->bwCfg.dlTotalBw < RG_MIN_DL_BW
@@ -131,15 +128,13 @@ RgErrInfo   *errInfo
          || (cellCfg->bwCfg.ulTotalBw < RG_MIN_UL_BW
             || cellCfg->bwCfg.ulTotalBw > RG_MAX_UL_BW))
    {
-      RLOG_ARG2(L_ERROR,DBG_CELLID,cellCfg->cellId, 
-            "Invalid Bandwidth configuration: ul %d dl %d",
+      DU_LOG("\nERROR  -->  MAC : Invalid Bandwidth configuration: ul %d dl %d",
             cellCfg->bwCfg.ulTotalBw, cellCfg->bwCfg.dlTotalBw);
       return RFAILED;
    }
    if (cellCfg->rachCfg.maxMsg3Tx < RG_MIN_HQ_TX)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cellCfg->cellId,
-                "Invalid RACH configuration: maxMsg3Tx %d",cellCfg->rachCfg.maxMsg3Tx);
+      DU_LOG("\nERROR  -->  MAC : Invalid RACH configuration: maxMsg3Tx %d",cellCfg->rachCfg.maxMsg3Tx);
       return RFAILED;
    }
 #ifdef TENB_MULT_CELL_SUPPRT
@@ -193,7 +188,7 @@ RgErrInfo *errInfo
    if ((ueCfg->txMode.pres == PRSNT_NODEF) && 
        (ueCfg->txMode.tm == CRG_UE_TM_5))
    {
-      RLOG_ARG1(L_ERROR,DBG_CRNTI,ueCfg->crnti,"Transmission Mode=%d not supported",
+      DU_LOG("\nERROR  -->  MAC : Transmission Mode=%d not supported",
             ueCfg->txMode.tm);
       return RFAILED;
    }
@@ -202,20 +197,20 @@ RgErrInfo *errInfo
    if(((*cell = rgCb[inst].cell) == NULLP) ||
        ((*cell)->cellId != ueCfg->cellId))
    {
-      RLOG_ARG1(L_ERROR,DBG_CRNTI,ueCfg->crnti,"Active Cell does not exist for cellId%d",
+      DU_LOG("\nERROR  -->  MAC : Active Cell does not exist for cellId%d",
             ueCfg->cellId);
       return RFAILED;
    }
    /* Check if Ue already configured */
    if (rgDBMGetUeCb(*cell, ueCfg->crnti) != NULLP)
    {
-      RLOG_ARG0(L_ERROR,DBG_CRNTI,ueCfg->crnti,"Ue already exists");
+      DU_LOG("\nERROR  -->  MAC : Ue already exists");
       return RFAILED;
    }
 
    if (ueCfg->ueUlHqCfg.maxUlHqTx < RG_MIN_HQ_TX)
    {
-      RLOG_ARG1(L_ERROR,DBG_CRNTI,ueCfg->crnti, "Invalid Uplink HARQ config %d ",
+      DU_LOG("\nERROR  -->  MAC : Invalid Uplink HARQ config %d ",
             ueCfg->ueUlHqCfg.maxUlHqTx);
       return RFAILED;
    }
@@ -276,7 +271,7 @@ RgErrInfo  *errInfo
       /* Dedicated logical channels */
       if ((rgCFGVldtCrgDedLcCfg(inst,lcCfg, cell, ue, errInfo)) != ROK)
       {
-         RLOG_ARG0(L_ERROR,DBG_CRNTI,lcCfg->crnti,"Validation for dedicated LC failed");
+         DU_LOG("\nERROR  -->  MAC : Validation for dedicated LC failed");
          return RFAILED;
       }
    }
@@ -286,13 +281,13 @@ RgErrInfo  *errInfo
    {
       if ((rgCFGVldtCrgCmnLcCfg(inst,lcCfg, cell, errInfo)) != ROK)
       {
-         RLOG_ARG0(L_ERROR,DBG_CRNTI,lcCfg->crnti,"Validation for common logical channels failed");
+         DU_LOG("\nERROR  -->  MAC : Validation for common logical channels failed");
          return RFAILED;
       }
    }
    else
    {
-      RLOG_ARG1(L_ERROR,DBG_CRNTI,lcCfg->crnti,"Invalid logical channel type %d",
+      DU_LOG("\nERROR  -->  MAC : Invalid logical channel type %d",
                 lcCfg->lcType);
       return RFAILED;
    }
@@ -301,7 +296,7 @@ RgErrInfo  *errInfo
         lcCfg->qci >  RG_QCI_MAX
       )
    {
-      RLOG_ARG1(L_ERROR,DBG_CRNTI,lcCfg->crnti,"Invalid qci %x",lcCfg->qci);
+      DU_LOG("\nERROR  -->  MAC : Invalid qci %x",lcCfg->qci);
       return RFAILED;
    }
    /*validate qci */
@@ -351,19 +346,18 @@ RgErrInfo     *errInfo
    if (((*cell = rgCb[inst].cell) == NULLP)
          && ((*cell = rgCb[inst].inactiveCell) == NULLP))
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cellRecfg->cellId,"Cell does not exist");
+      DU_LOG("\nERROR  -->  MAC : Cell does not exist");
       return RFAILED;
    }
 
    if((*cell)->cellId != cellRecfg->cellId)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cellRecfg->cellId, "Cell does not exist %d\n",cellRecfg->cellId);
+      DU_LOG("\nERROR  -->  MAC : Cell does not exist %d\n",cellRecfg->cellId);
       return RFAILED;
    }
    if (cellRecfg->rachRecfg.maxMsg3Tx < RG_MIN_HQ_TX)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cellRecfg->cellId,
-                "Invalid RACH configuration: maxMsg3Tx %d",cellRecfg->rachRecfg.maxMsg3Tx);
+      DU_LOG("\nERROR  -->  MAC : Invalid RACH configuration: maxMsg3Tx %d",cellRecfg->rachRecfg.maxMsg3Tx);
       return RFAILED;
    }
    errInfo->errCause = RGERR_NONE;
@@ -412,7 +406,7 @@ RgErrInfo   *errInfo
    if ((ueRecfg->txMode.pres == PRSNT_NODEF) && 
        (ueRecfg->txMode.tm == CRG_UE_TM_5))
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,ueRecfg->cellId,"Transmission Mode=%d not supported",
+      DU_LOG("\nERROR  -->  MAC : Transmission Mode=%d not supported",
                 ueRecfg->txMode.tm);
       return RFAILED;
    }
@@ -421,7 +415,7 @@ RgErrInfo   *errInfo
    if (((*cell = rgCb[inst].cell) == NULLP) 
         || ((*cell)->cellId != ueRecfg->cellId))
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,ueRecfg->cellId, "Active Cell does not exist\n");
+      DU_LOG("\nERROR  -->  MAC : Active Cell does not exist\n");
       return RFAILED;
    }
  
@@ -429,12 +423,12 @@ RgErrInfo   *errInfo
     * by SCH. */
    if ((*ue = rgDBMGetUeCb(*cell, ueRecfg->oldCrnti)) == NULLP)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,ueRecfg->cellId,"[%d]Old Ue does not exist", ueRecfg->oldCrnti);
+      DU_LOG("\nERROR  -->  MAC : [%d]Old Ue does not exist", ueRecfg->oldCrnti);
       return RFAILED;
    }
    if (ueRecfg->ueUlHqRecfg.maxUlHqTx < RG_MIN_HQ_TX)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,ueRecfg->cellId,"Invalid Uplink HARQ config for UE %d",
+      DU_LOG("\nERROR  -->  MAC : Invalid Uplink HARQ config for UE %d",
             ueRecfg->ueUlHqRecfg.maxUlHqTx);
       return RFAILED;
    }
@@ -489,25 +483,25 @@ RgErrInfo   *errInfo
    if ((((*cell = rgCb[inst].cell)) == NULLP)
       || ((*cell)->cellId != lcRecfg->cellId))
    {
-      RLOG_ARG2(L_ERROR,DBG_CRNTI,lcRecfg->crnti,"Active Cell %u does not exist for UE %u", lcRecfg->cellId, lcRecfg->crnti);
+      DU_LOG("\nERROR  -->  MAC : Active Cell %u does not exist for UE %u", lcRecfg->cellId, lcRecfg->crnti);
       return RFAILED;
    }
    /* Fetch the Ue for dedicated channels */
    if ((*ue = rgDBMGetUeCb(*cell, lcRecfg->crnti)) == NULLP)
    {
-      RLOG_ARG0(L_ERROR,DBG_CRNTI,lcRecfg->crnti,"Ue does not exist for dedicated logical channel");
+      DU_LOG("\nERROR  -->  MAC : Ue does not exist for dedicated logical channel");
       return RFAILED;
    }
 
    if ((*ulLc = rgDBMGetUlDedLcCb((*ue), lcRecfg->lcId)) == NULLP)
    {
-      RLOG_ARG1(L_ERROR, DBG_CRNTI,lcRecfg->crnti,"Dedicated UL LC does not exist %d",lcRecfg->lcId);
+      DU_LOG("\nERROR  -->  MAC : Dedicated UL LC does not exist %d",lcRecfg->lcId);
       return RFAILED;
    }
 
    if (lcRecfg->ulRecfg.lcgId > (RG_MAX_LCG_PER_UE - 1))
    {
-      RLOG_ARG2(L_ERROR,DBG_CRNTI,lcRecfg->crnti,"Invalid lcgId for uplink logical channel lcg %d lc %d",
+      DU_LOG("\nERROR  -->  MAC : Invalid lcgId for uplink logical channel lcg %d lc %d",
                 lcRecfg->ulRecfg.lcgId, lcRecfg->lcId);
       return RFAILED;
    }
@@ -557,14 +551,14 @@ RgErrInfo   *errInfo
       || ((*cell)->cellId != reset->cellId))
    {
       RGDBGERRNEW(inst,(rgPBuf(inst), "[%d]Active Cell does not exist %d\n",reset->crnti, reset->cellId));
-      RLOG_ARG1(L_ERROR,DBG_CRNTI,reset->crnti,"Active Cell does not exist %d",reset->cellId);
+      DU_LOG("\nERROR  -->  MAC : Active Cell does not exist %d",reset->cellId);
       return RFAILED;
    }
 
    /* Fetch the Ue */
    if ((*ue = rgDBMGetUeCb(*cell, reset->crnti)) == NULLP)
    {
-      RLOG_ARG0(L_ERROR,DBG_CRNTI,reset->crnti,"UE does not exist");
+      DU_LOG("\nERROR  -->  MAC : UE does not exist");
       return RFAILED;
    }
 
@@ -617,12 +611,12 @@ RgErrInfo   *errInfo
    /* Allocate the cell control block */
    if((ret = rgAllocSBuf(inst,(Data**)&cell, sizeof(RgCellCb))) != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId,"Memory allocation FAILED for cell");
+      DU_LOG("\nERROR  -->  MAC : Memory allocation FAILED for cell");
       return RFAILED;
    }
    if (cell == NULLP)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId, "Memory allocation FAILED for cell");
+      DU_LOG("\nERROR  -->  MAC : Memory allocation FAILED for cell");
       return RFAILED;
    }
 
@@ -645,7 +639,7 @@ RgErrInfo   *errInfo
    ret = rgDBMInitCell(cell);
    if (ret != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cellCfg->cellId,"DBM initialization for cell failed");
+      DU_LOG("\nERROR  -->  MAC : DBM initialization for cell failed");
       rgCFGFreeInactvCellCb(cell);
       return RFAILED;
    }
@@ -951,12 +945,12 @@ RgErrInfo *errInfo
       /* Create UeCb and Insert in Rach List */
       if((ue=rgRAMCreateUeCb(cell, ueCfg->crnti, FALSE, errInfo)) == NULLP)
       {
-         RLOG_ARG0(L_ERROR,DBG_CRNTI,ueCfg->crnti,"UeCb creation failed");
+         DU_LOG("\nERROR  -->  MAC : UeCb creation failed");
          return RFAILED;
       }
       if(rgDHMHqEntInit(inst,&ue->dl.hqEnt, cell->maxDlHqProcPerUe) != ROK)
       {
-         RLOG_ARG0(L_ERROR,DBG_CRNTI,ueCfg->crnti,"UeCb Harq Entity Initialization failed");
+         DU_LOG("\nERROR  -->  MAC : UeCb Harq Entity Initialization failed");
          return RFAILED;
       }
       handover = TRUE;
@@ -1043,8 +1037,7 @@ CrgCfgTransId   transId
 
       if ((rgCFGCrgDedLcCfg(cell, ue, lcCfg, errInfo)) != ROK)
       {
-         RLOG_ARG1(L_ERROR,DBG_CRNTI,lcCfg->crnti,
-               "Dedicated logical channel configuration failed %d",lcCfg->lcId);
+         DU_LOG("\nERROR  -->  MAC : Dedicated logical channel configuration failed %d",lcCfg->lcId);
          return RFAILED;
       }
 #ifdef LTE_ADV
@@ -1058,14 +1051,14 @@ CrgCfgTransId   transId
    {
       if ((rgCFGCrgCmnLcCfg(inst,cell, lcCfg, errInfo)) != ROK)
       {
-         RLOG_ARG1(L_ERROR, DBG_CRNTI, lcCfg->crnti, "Common logical channel configuration"
+         DU_LOG("\nERROR  -->  MAC : Common logical channel configuration"
                   "failed %d\n", lcCfg->lcId);
          return RFAILED;
       }
    }
 
    errInfo->errCause = RGERR_NONE;
-   RLOG_ARG1(L_INFO, DBG_CRNTI,lcCfg->crnti, "CRG LC config done for UE: lcId %d\n", lcCfg->lcId);
+   DU_LOG("\nINFO   -->  MAC : CRG LC config done for UE: lcId %d\n", lcCfg->lcId);
    return ROK;
 }  /* rgCFGCrgLcCfg */
 
@@ -1233,7 +1226,7 @@ RgErrInfo   *errInfo
 )
 {
 
-   RLOG_ARG1(L_DEBUG, DBG_CRNTI, ue->ueId, "UE: of cell %d Reset\n", cell->cellId);
+   DU_LOG("\nDEBUG  -->  MAC : UE: of cell %d Reset\n", cell->cellId);
    rgDHMUeReset(cell, &ue->dl.hqEnt);
 
    errInfo->errCause = RGERR_NONE;
@@ -1282,7 +1275,7 @@ RgErrInfo   *errInfo
       {
 
          
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cellDelInfo->u.cellDel.cellId,"Cell does not exist");
+         DU_LOG("\nERROR  -->  MAC : Cell does not exist");
          return RFAILED;
       }
 
@@ -1344,12 +1337,12 @@ RgErrInfo   *errInfo
 
    errInfo->errCause = RGERR_CFG_CRG_UE_DEL;
 
-   RLOG_ARG1(L_DEBUG, DBG_CRNTI, ueDelInfo->u.ueDel.crnti, "UE %d Deletion Req at MAC\n", \
+   DU_LOG("\nDEBUG  -->  MAC : UE %d Deletion Req at MAC\n", \
             ueDelInfo->u.ueDel.crnti);
    if ((rgCb[inst].cell == NULLP)
        || (rgCb[inst].cell->cellId != ueDelInfo->u.ueDel.cellId))
    {
-      RLOG_ARG1(L_ERROR,DBG_CRNTI,ueDelInfo->u.ueDel.crnti,"Cell does not exist %d",
+      DU_LOG("\nERROR  -->  MAC : Cell does not exist %d",
                 ueDelInfo->u.ueDel.cellId);
       return RFAILED;
    }
@@ -1401,7 +1394,7 @@ CrgCfgTransId transId
    if (((cell = rgCb[inst].cell) == NULLP) ||
        (rgCb[inst].cell->cellId != lcDelInfo->u.lchDel.cellId))
    {
-      RLOG_ARG1(L_ERROR,DBG_CRNTI,lcDelInfo->u.lchDel.crnti,"Cell does not exist %d",
+      DU_LOG("\nERROR  -->  MAC : Cell does not exist %d",
                 lcDelInfo->u.lchDel.cellId);
       return RFAILED;
    }
@@ -1409,8 +1402,7 @@ CrgCfgTransId transId
    /* Fetch the Ue */
    if ((ue = rgDBMGetUeCb(cell, lcDelInfo->u.lchDel.crnti)) == NULLP)
    {
-      RLOG_ARG0(L_ERROR,DBG_CRNTI,lcDelInfo->u.lchDel.crnti,
-                "UE does not exist for dedicated logical channel");
+      DU_LOG("\nERROR  -->  MAC : UE does not exist for dedicated logical channel");
       return RFAILED;
    }
 
@@ -1420,7 +1412,7 @@ CrgCfgTransId transId
       if ((dlLc = rgDBMGetDlDedLcCb(ue, lcDelInfo->u.lchDel.lcId))
             == NULLP)
       {
-         RLOG_ARG1(L_ERROR,DBG_CRNTI,lcDelInfo->u.lchDel.crnti,"DL LC %d does not exist",
+         DU_LOG("\nERROR  -->  MAC : DL LC %d does not exist",
                    lcDelInfo->u.lchDel.lcId);
          return RFAILED;
       }
@@ -1434,7 +1426,7 @@ CrgCfgTransId transId
       if ((ulLc = rgDBMGetUlDedLcCb(ue, lcDelInfo->u.lchDel.lcId))
             == NULLP)
       {
-         RLOG_ARG1(L_ERROR,DBG_CRNTI,lcDelInfo->u.lchDel.crnti,"UL LC %d does not exist",
+         DU_LOG("\nERROR  -->  MAC : UL LC %d does not exist",
                    lcDelInfo->u.lchDel.lcId);
          return RFAILED;
       }
@@ -1444,7 +1436,7 @@ CrgCfgTransId transId
 
    if (!dirVld)
    {
-      RLOG_ARG1(L_ERROR,DBG_CRNTI,lcDelInfo->u.lchDel.crnti,"Invalid direction %d for LC Delete",
+      DU_LOG("\nERROR  -->  MAC : Invalid direction %d for LC Delete",
             lcDelInfo->u.lchDel.dir);
       return RFAILED;
    }
@@ -1491,7 +1483,7 @@ RgErrInfo     *errInfo
    if (((*cell = rgCb[inst].cell) == NULLP)
       || ((*cell)->cellId != lcCfg->cellId))
    {
-      RLOG_ARG1(L_ERROR,DBG_CRNTI,lcCfg->crnti,"Active Cell does not exist: Cell %d",
+      DU_LOG("\nERROR  -->  MAC : Active Cell does not exist: Cell %d",
                 lcCfg->cellId);
       return RFAILED;
    }
@@ -1499,7 +1491,7 @@ RgErrInfo     *errInfo
    /* Fetch the Ue */
    if ((*ue = rgDBMGetUeCb(*cell, lcCfg->crnti)) == NULLP)
    {
-      RLOG_ARG1(L_ERROR,DBG_CRNTI,lcCfg->crnti,"UE  does not exist for dedicated logical channel %d",
+      DU_LOG("\nERROR  -->  MAC : UE  does not exist for dedicated logical channel %d",
                 lcCfg->lcId);
       return RFAILED;
    }
@@ -1508,7 +1500,7 @@ RgErrInfo     *errInfo
    if ((lcCfg->lcId < RG_DEDLC_MIN_LCID)
             ||(lcCfg->lcId > RG_DEDLC_MAX_LCID))
    {
-      RLOG_ARG1(L_ERROR,DBG_CRNTI,lcCfg->crnti,"Invalid logical channel Id %d",
+      DU_LOG("\nERROR  -->  MAC : Invalid logical channel Id %d",
                 lcCfg->lcId);
       return RFAILED;
    }
@@ -1518,7 +1510,7 @@ RgErrInfo     *errInfo
    {
       if (rgDBMGetDlDedLcCb((*ue), lcCfg->lcId) != NULLP)
       {
-         RLOG_ARG1(L_ERROR,DBG_CRNTI,lcCfg->crnti,"UE: Dedicated DL LC %d already configured",
+         DU_LOG("\nERROR  -->  MAC : UE: Dedicated DL LC %d already configured",
                     lcCfg->lcId);
          return RFAILED;
       }
@@ -1530,13 +1522,13 @@ RgErrInfo     *errInfo
    {
       if (lcCfg->ulInfo.lcgId > (RG_MAX_LCG_PER_UE - 1))
       {
-         RLOG_ARG1(L_ERROR,DBG_CRNTI,lcCfg->crnti,"UE: Invalid lcgId for uplink logical channel %d",
+         DU_LOG("\nERROR  -->  MAC : UE: Invalid lcgId for uplink logical channel %d",
                    lcCfg->ulInfo.lcgId);
          return RFAILED;
       }
       if (rgDBMGetUlDedLcCb((*ue), lcCfg->lcId) != NULLP)
       {
-         RLOG_ARG1(L_ERROR,DBG_CRNTI,lcCfg->crnti,"UE: Dedicated UL LC %d already configured",
+         DU_LOG("\nERROR  -->  MAC : UE: Dedicated UL LC %d already configured",
                    lcCfg->lcId);
          return RFAILED;
       }
@@ -1545,7 +1537,7 @@ RgErrInfo     *errInfo
 
    if (!dirVld)
    {
-      RLOG_ARG1(L_ERROR,DBG_CRNTI,lcCfg->crnti,"Invalid Direction %d",
+      DU_LOG("\nERROR  -->  MAC : Invalid Direction %d",
                lcCfg->dir);
       return RFAILED;
    }
@@ -1586,7 +1578,7 @@ RgErrInfo     *errInfo
    if (((*cell = rgCb[inst].cell) != NULLP)
       && ((*cell)->cellId != lcCfg->cellId))
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,lcCfg->cellId,"Active Cell exists for common channels");
+      DU_LOG("\nERROR  -->  MAC : Active Cell exists for common channels");
       return RFAILED;
    }
 
@@ -1595,7 +1587,7 @@ RgErrInfo     *errInfo
         || ((*cell)->cellId != lcCfg->cellId))
    {
       
-      RLOG_ARG0(L_ERROR,DBG_CELLID,lcCfg->cellId,"Inactive Cell does not exist for common channels");
+      DU_LOG("\nERROR  -->  MAC : Inactive Cell does not exist for common channels");
       return RFAILED;
    }
    /* Validate downlink info */
@@ -1607,7 +1599,7 @@ RgErrInfo     *errInfo
          {
             if (rgDBMGetBcchOnDlsch(*cell,lcCfg->lcId) != NULLP)
             {
-               RLOG_ARG0(L_ERROR,DBG_CELLID,lcCfg->cellId,"BCCH on DLSCH already configured for cell");
+               DU_LOG("\nERROR  -->  MAC : BCCH on DLSCH already configured for cell");
                return RFAILED;
             }
          }
@@ -1615,13 +1607,13 @@ RgErrInfo     *errInfo
          {
             if (rgDBMGetBcchOnBch(*cell) != NULLP)
             {
-               RLOG_ARG0(L_ERROR,DBG_CELLID,lcCfg->cellId,"BCCH on BCH already configured for cell %d");
+               DU_LOG("\nERROR  -->  MAC : BCCH on BCH already configured for cell ");
                return RFAILED;
             }
          }
          else
          {
-            RLOG_ARG1(L_ERROR,DBG_CELLID,lcCfg->cellId,"Invalid transport channel %d for cell",
+            DU_LOG("\nERROR  -->  MAC : Invalid transport channel %d for cell",
                   lcCfg->dlInfo.dlTrchType);
             return RFAILED;
          }
@@ -1630,13 +1622,13 @@ RgErrInfo     *errInfo
       {
          if (rgDBMGetPcch(*cell) != NULLP)
          {
-            RLOG_ARG0(L_ERROR,DBG_CELLID,lcCfg->cellId,"PCCH already configured for cell");
+            DU_LOG("\nERROR  -->  MAC : PCCH already configured for cell");
             return RFAILED;
          }
       }
       else if (RG_DLCCCH_ISCFGD(*cell))
       {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,lcCfg->cellId,"DL CCCH already configured for cell %d");
+         DU_LOG("\nERROR  -->  MAC : DL CCCH already configured for cell ");
          return RFAILED;
       }
       dirVld = TRUE;
@@ -1648,13 +1640,13 @@ RgErrInfo     *errInfo
       /* Uplink CCCH */
       if (lcCfg->lcType != CM_LTE_LCH_CCCH)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,lcCfg->cellId,"Invalid UL common lcType %d for cell ",
+         DU_LOG("\nERROR  -->  MAC : Invalid UL common lcType %d for cell ",
                   lcCfg->lcType);
          return RFAILED;
       }
       if (RG_ULCCCH_ISCFGD(*cell))
       {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,lcCfg->cellId,"UL CCCH already configured for cell ");
+         DU_LOG("\nERROR  -->  MAC : UL CCCH already configured for cell ");
          return RFAILED;
       }
       dirVld = TRUE;
@@ -1663,7 +1655,7 @@ RgErrInfo     *errInfo
    /* Invalid direction */
    if (!dirVld)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,lcCfg->cellId,"Invalid Direction %d", lcCfg->dir);
+      DU_LOG("\nERROR  -->  MAC : Invalid Direction %d", lcCfg->dir);
       return RFAILED;
    }
 
@@ -1801,7 +1793,7 @@ RgErrInfo     *errInfo
    {
       rgCb[inst].cell = cell;
       rgCb[inst].inactiveCell = NULLP;
-      RLOG_ARG1(L_DEBUG, DBG_CELLID, cell->cellId, "Cell %d added to active list after common LC %d\
+      DU_LOG("\nDEBUG  -->  MAC : Cell  added to active list after common LC %d\
                config\n", lcCfg->lcId);
    }
 

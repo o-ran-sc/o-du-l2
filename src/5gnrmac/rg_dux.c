@@ -32,9 +32,6 @@
 @brief This module handles de-multiplexing of the data recieved at MAC.
 */
 
-static const char* RLOG_MODULE_NAME="MAC";
-static int RLOG_FILE_ID=176;
-static int RLOG_MODULE_ID=4096;
 /* header include files -- defines (.h) */
 #include "common_def.h"
   
@@ -157,7 +154,7 @@ static S16 rgDUXInsSdu(Inst inst, RgMacPdu *pdu, RgMacSdu **sdu, uint8_t lcId, u
    RG_DUX_ALLOC(pdu, sizeof(RgMacSdu), sduAloc, ret);
    if(ret != ROK)
    {
-      RLOG1(L_ERROR, "Allocation of RgSubHdr failed for LCID:%d",lcId);
+      DU_LOG("\nERROR  -->  MAC : Allocation of RgSubHdr failed for LCID:%d",lcId);
       err->errCause = RGERR_DUX_MEM_EXHAUST;
       return RFAILED;
    }
@@ -198,7 +195,7 @@ static S16 rgDUXExtSubHdr(Inst inst, RgMacPdu *pdu, Buffer *mBuf, uint8_t *lcId,
    *len = 0;   
    if(oduPackUInt8(&byte,mBuf) != ROK)
    {
-      RLOG0(L_ERROR, "oduPackUInt8 failed");
+      DU_LOG("\nERROR  -->  MAC : oduPackUInt8 failed");
       err->errCause = RGERR_DUX_UNPACK_FAILURE;
       return RFAILED;
    }
@@ -211,7 +208,7 @@ static S16 rgDUXExtSubHdr(Inst inst, RgMacPdu *pdu, Buffer *mBuf, uint8_t *lcId,
       RG_EXT_FORMT_BIT(fmt,byte);
       if(oduPackUInt8(&byte, mBuf) != ROK)
       {
-         RLOG0(L_ERROR, "oduPackUInt8 failed");
+         DU_LOG("\nERROR  -->  MAC : oduPackUInt8 failed");
          err->errCause = RGERR_DUX_UNPACK_FAILURE;
          return RFAILED;
       }
@@ -220,7 +217,7 @@ static S16 rgDUXExtSubHdr(Inst inst, RgMacPdu *pdu, Buffer *mBuf, uint8_t *lcId,
       {
          if(oduPackUInt8(&byte,mBuf) != ROK)
          {
-            RLOG0(L_ERROR, "oduPackUInt8 failed");
+            DU_LOG("\nERROR  -->  MAC : oduPackUInt8 failed");
             err->errCause = RGERR_DUX_UNPACK_FAILURE;
             return RFAILED;
          }
@@ -272,7 +269,7 @@ RgErrInfo *err)
             RG_UNPACK_EXT_PHR_CI(&Ci,mBuf,ret);
             if(ret != ROK)
             {
-               RLOG1(L_ERROR,"Unpacking of EXT PHR failed LCID:%d",lcId);
+               DU_LOG("\nERROR  -->  MAC : Unpacking of EXT PHR failed LCID:%d",lcId);
                err->errCause = RGERR_DUX_UNPACK_FAILURE;
                return RFAILED;
             }
@@ -293,7 +290,7 @@ RgErrInfo *err)
                   RG_UNPACK_EXT_PHR(&extPhrOctet,mBuf,ret);
                   if(ret != ROK)
                   {
-                     RLOG1(L_ERROR,"Unpacking of EXT PHR failed LCID:%d",lcId);
+                     DU_LOG("\nERROR  -->  MAC : Unpacking of EXT PHR failed LCID:%d",lcId);
                      err->errCause = RGERR_DUX_UNPACK_FAILURE;
                      return RFAILED;
                   }
@@ -317,7 +314,7 @@ RgErrInfo *err)
                      RG_UNPACK_EXT_PHR(&extPhrPCmax,mBuf,ret);
                      if(ret != ROK)
                      {
-                        RLOG1(L_ERROR,"Unpacking of EXT PHR failed LCID:%d",lcId);
+                        DU_LOG("\nERROR  -->  MAC : Unpacking of EXT PHR failed LCID:%d",lcId);
                         err->errCause = RGERR_DUX_UNPACK_FAILURE;
                         return RFAILED;
                      }
@@ -337,7 +334,7 @@ RgErrInfo *err)
             RG_UNPACK_PHR(&ceInfo->ces.phr,mBuf,ret);
             if(ret != ROK)
             {
-               RLOG1(L_ERROR,"Unpacking of PHR failed LCID:%d",lcId);
+               DU_LOG("\nERROR  -->  MAC : Unpacking of PHR failed LCID:%d",lcId);
                err->errCause = RGERR_DUX_UNPACK_FAILURE;
                return RFAILED;
             }
@@ -349,7 +346,7 @@ RgErrInfo *err)
             RG_UNPACK_TRUNC_BSR(&ceInfo->ces.bsr.truncBsr,mBuf,ret);
             if(ret != ROK)
             {
-               RLOG1(L_ERROR,"Unpacking of Trunc BSR failed LCID:%d",lcId);
+               DU_LOG("\nERROR  -->  MAC : Unpacking of Trunc BSR failed LCID:%d",lcId);
                err->errCause = RGERR_DUX_UNPACK_FAILURE;
                return RFAILED;
             }
@@ -361,7 +358,7 @@ RgErrInfo *err)
             RG_UNPACK_SHORT_BSR(&ceInfo->ces.bsr.shortBsr,mBuf,ret);
             if(ret != ROK)
             {
-               RLOG1(L_ERROR,"Unpacking of Short BSR failed LCID:%d",lcId);
+               DU_LOG("\nERROR  -->  MAC : Unpacking of Short BSR failed LCID:%d",lcId);
                err->errCause = RGERR_DUX_UNPACK_FAILURE;
                return RFAILED;
             }
@@ -374,7 +371,7 @@ RgErrInfo *err)
             RG_UNPACK_LONG_BSR(longBsr,mBuf,ret);
             if(ret != ROK)
             {
-               RLOG1(L_ERROR,"Unpacking of Long BSR failed LCID:%d",lcId);
+               DU_LOG("\nERROR  -->  MAC : Unpacking of Long BSR failed LCID:%d",lcId);
                err->errCause = RGERR_DUX_UNPACK_FAILURE;
                return RFAILED;
             }
@@ -391,7 +388,7 @@ RgErrInfo *err)
             RG_UNPACK_CRNTI(&ceInfo->ces.cRnti,mBuf,ret);
             if(ret != ROK)
             {
-               RLOG1(L_ERROR,"Unpacking of C-RNTI failed LCID:%d",lcId);
+               DU_LOG("\nERROR  -->  MAC : Unpacking of C-RNTI failed LCID:%d",lcId);
                err->errCause = RGERR_DUX_UNPACK_FAILURE;
                return RFAILED;
             }
@@ -399,7 +396,7 @@ RgErrInfo *err)
          }
          break;
       default:
-         RLOG1(L_ERROR, "Invalid LCID:%u received",lcId); 
+         DU_LOG("\nERROR  -->  MAC : Invalid LCID:%u received",lcId); 
          err->errCause = RGERR_DUX_INV_LCID_RX;
          return RFAILED;
    }
@@ -456,7 +453,7 @@ RgErrInfo *err)
       if((ret != ROK) && (!((ret == ROKDNA) )))
       {
          RG_FREE_MSG(tmpBuf1);
-         RLOG0(L_ERROR,"SSegMsg failed");
+         DU_LOG("\nERROR  -->  MAC : SSegMsg failed");
          err->errCause = RGERR_DUX_RLC_PDU_CREAT_FAIL;
          return RFAILED;
       }
@@ -501,7 +498,7 @@ S16 rgDUXDemuxData(Inst inst, RgMacPdu  *pdu, RgInfCeInfo *ceInfo, Buffer **mBuf
 
    if(*mBuf == NULLP) 
    {
-      RLOG0(L_ERROR, "Null Buffer Recevived");
+      DU_LOG("\nERROR  -->  MAC : Null Buffer Recevived");
       return RFAILED;
    }
    do
@@ -513,7 +510,7 @@ S16 rgDUXDemuxData(Inst inst, RgMacPdu  *pdu, RgInfCeInfo *ceInfo, Buffer **mBuf
                &subPduLen, err) != ROK)
       {
          RG_FREE_MSG(*mBuf);	      
-         RLOG0(L_ERROR, "Failed to extract pad sub headers");
+         DU_LOG("\nERROR  -->  MAC : Failed to extract pad sub headers");
          return RFAILED;
       }
       if(lcId == RG_PAD_LCID)
@@ -529,7 +526,7 @@ S16 rgDUXDemuxData(Inst inst, RgMacPdu  *pdu, RgInfCeInfo *ceInfo, Buffer **mBuf
             /* Fix : syed rgDUXExtSdu would have segmented mBuf and hence
              * will be responsible for freeing mBuf */
             *mBuf = NULLP;
-            RLOG0(L_ERROR, "failed to Extract the sdus");
+            DU_LOG("\nERROR  -->  MAC : failed to Extract the sdus");
             return RFAILED;
          }
          if(*mBuf == NULLP) /* if message read completes then return */
@@ -543,14 +540,14 @@ S16 rgDUXDemuxData(Inst inst, RgMacPdu  *pdu, RgInfCeInfo *ceInfo, Buffer **mBuf
          if(rgDUXExtCe(inst,pdu,ceInfo,*mBuf, lcId,subPduLen, err) != ROK)
          {
             RG_FREE_MSG(*mBuf);	      
-            RLOG0(L_ERROR, " failed to Extract the ces");
+            DU_LOG("\nERROR  -->  MAC : failed to Extract the ces");
             return RFAILED;
          }
       }
       if(SFndLenMsg(*mBuf,&len) != ROK)
       {
          RG_FREE_MSG(*mBuf);
-         RLOG0(L_ERROR,"mBuf length check failed");
+         DU_LOG("\nERROR  -->  MAC : mBuf length check failed");
          err->errCause = RGERR_DUX_UNPACK_FAILURE;
          return RFAILED;
       }

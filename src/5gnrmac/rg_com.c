@@ -33,9 +33,6 @@
 invoked by RRC towards MAC.
 */
 
-static const char* RLOG_MODULE_NAME="MAC";
-static int RLOG_FILE_ID=181;
-static int RLOG_MODULE_ID=4096;
 
 /* header include files -- defines (.h) */
 #include "common_def.h"
@@ -136,7 +133,7 @@ CrgCfgReqInfo *crgCfgReq
          }
       default:
          {
-            RLOG1(L_ERROR, "Invalid configuration action %d",
+            DU_LOG("\nERROR  -->  MAC : Invalid configuration action %d",
                      crgCfgReq->action);
 
             ret = RFAILED;
@@ -211,7 +208,7 @@ CrgCfgTransId    transId
          ret = rgCFGVldtCrgCellCfg(inst,&cfg->u.cellCfg,errInfo);
          if (ret != ROK)
          {
-              RLOG_ARG0(L_ERROR,DBG_CELLID,cfg->u.cellCfg.cellId, "Cell configuration validation FAILED\n");
+              DU_LOG("\nERROR  -->  MAC : Cell configuration validation FAILED\n");
               return RFAILED;
          }
          ret = rgCFGCrgCellCfg(inst,&cfg->u.cellCfg, errInfo);
@@ -223,7 +220,7 @@ CrgCfgTransId    transId
             ret = rgCFGVldtCrgUeCfg(inst,&cfg->u.ueCfg, &cell, errInfo);
             if (ret != ROK)
             {
-               RLOG_ARG0(L_ERROR,DBG_CRNTI,cfg->u.ueCfg.crnti, "Ue configuration validation FAILED\n");
+               DU_LOG("\nERROR  -->  MAC : Ue configuration validation FAILED\n");
                return RFAILED;
             }
             ret = rgCFGCrgUeCfg(inst,cell, &cfg->u.ueCfg, errInfo);
@@ -237,8 +234,7 @@ CrgCfgTransId    transId
          if (ret != ROK)
          {
             
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cfg->u.cellCfg.cellId,
-                         "LC configuration validation FAILED: LC %d\n", cfg->u.lchCfg.lcId);
+            DU_LOG("\nERROR  -->  MAC : LC configuration validation FAILED: LC %d\n", cfg->u.lchCfg.lcId);
             return RFAILED;
          }
          ret = rgCFGCrgLcCfg(inst,cell, ue, &cfg->u.lchCfg, errInfo,isCfmRqrd,transId);
@@ -246,7 +242,7 @@ CrgCfgTransId    transId
       }
       default:
       {
-         RLOG1(L_ERROR, "Should never come here: cfgType %d",cfg->cfgType);
+         DU_LOG("\nERROR  -->  MAC : Should never come here: cfgType %d",cfg->cfgType);
          return RFAILED;
       }
    }
@@ -304,8 +300,7 @@ Bool             *isCfmRqrd
          ret = rgCFGVldtCrgCellRecfg(inst,&recfg->u.cellRecfg, &cell, errInfo);
             if (ret != ROK) 
             {
-               RLOG_ARG0(L_ERROR,DBG_CELLID,recfg->u.cellRecfg.cellId,
-                         "Cell Recfg Validation FAILED");
+               DU_LOG("\nERROR  -->  MAC : Cell Recfg Validation FAILED");
                return RFAILED;
             }
          ret = rgCFGCrgCellRecfg(inst,cell, &recfg->u.cellRecfg, errInfo);
@@ -341,8 +336,7 @@ Bool             *isCfmRqrd
             ret = rgCFGVldtCrgUeRecfg(inst,&recfg->u.ueRecfg, &cell, &ue, errInfo);
             if ( ret != ROK)
             {
-               RLOG_ARG1(L_ERROR,DBG_CELLID,recfg->u.ueRecfg.cellId,
-                      "Ue Re-configuration validation FAILED OLD CRNTI:%d",
+                DU_LOG("\nERROR  -->  MAC : Ue Re-configuration validation FAILED OLD CRNTI:%d",
                       recfg->u.ueRecfg.oldCrnti);
                return RFAILED;
             }
@@ -359,8 +353,7 @@ Bool             *isCfmRqrd
                &ulLc, errInfo);
          if (ret != ROK)
          {
-            RLOG_ARG2(L_ERROR,DBG_CELLID,recfg->u.lchRecfg.cellId,
-                      "LC Re-configuration validation FAILED LCID:%d CRNTI:%d",
+            DU_LOG("\nERROR  -->  MAC : LC Re-configuration validation FAILED LCID:%d CRNTI:%d",
                       recfg->u.lchRecfg.lcId,recfg->u.lchRecfg.crnti);
             return RFAILED;
          }
@@ -377,7 +370,7 @@ Bool             *isCfmRqrd
       }
       default:
       {
-         RLOG1(L_ERROR, "Should never come here: recfgType %d",
+         DU_LOG("\nERROR  -->  MAC : Should never come here: recfgType %d",
                   recfg->recfgType);
          return RFAILED;
       }
@@ -489,7 +482,7 @@ CrgCfgTransId transId
       }
       default:
       {
-         RLOG1(L_ERROR, "Should never come here: delType %d",
+         DU_LOG("\nERROR  -->  MAC : Should never come here: delType %d",
                   del->delType);
          return RFAILED;
       }
