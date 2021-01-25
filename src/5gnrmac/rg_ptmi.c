@@ -54,18 +54,18 @@ extern "C" {
 
 /* portable functions at LRG interface */
 #ifdef PTRGMILRG
-EXTERN S16 PtMiLrgCfgCfm ARGS((Pst *pst, RgMngmt *cfm));
-EXTERN S16 PtMiLrgSchCfgCfm ARGS((Pst *pst, RgMngmt *cfm));
-EXTERN S16 PtMiLrgStsCfm ARGS((Pst *pst, RgMngmt *cfm));
-EXTERN S16 PtMiLrgStaCfm ARGS((Pst *pst, RgMngmt *cfm));
-EXTERN S16 PtMiLrgStaInd ARGS((Pst *pst, RgMngmt *usta));
-EXTERN S16 PtMiLrgSchStaInd ARGS((Pst *pst, RgMngmt *usta));
-EXTERN S16 PtMiLrgCntrlCfm ARGS((Pst *pst, RgMngmt *cfm));
-EXTERN S16 PtMiLrgSchCntrlCfm ARGS((Pst *pst, RgMngmt *cfm));
-EXTERN S16 PtMiLrgTrcInd ARGS((Pst *pst, RgMngmt *trc,Buffer *mBuf));
+S16 PtMiLrgCfgCfm ARGS((Pst *pst, RgMngmt *cfm));
+S16 PtMiLrgSchCfgCfm ARGS((Pst *pst, RgMngmt *cfm));
+S16 PtMiLrgStsCfm ARGS((Pst *pst, RgMngmt *cfm));
+S16 PtMiLrgStaCfm ARGS((Pst *pst, RgMngmt *cfm));
+S16 PtMiLrgStaInd ARGS((Pst *pst, RgMngmt *usta));
+S16 PtMiLrgSchStaInd ARGS((Pst *pst, RgMngmt *usta));
+S16 PtMiLrgCntrlCfm ARGS((Pst *pst, RgMngmt *cfm));
+S16 PtMiLrgSchCntrlCfm ARGS((Pst *pst, RgMngmt *cfm));
+S16 PtMiLrgTrcInd ARGS((Pst *pst, RgMngmt *trc,Buffer *mBuf));
 #ifdef LTE_L2_MEAS
-EXTERN S16 PtMiLrgSchL2MeasCfm ARGS((Pst *pst, LrgSchMeasCfmInfo *cfm));
-EXTERN S16 PtMiLrgSchL2MeasStopCfm ARGS((Pst *pst,LrgSchMeasCfmInfo *cfm ));
+S16 PtMiLrgSchL2MeasCfm ARGS((Pst *pst, LrgSchMeasCfmInfo *cfm));
+S16 PtMiLrgSchL2MeasStopCfm ARGS((Pst *pst,LrgSchMeasCfmInfo *cfm ));
 #endif
 #endif
 
@@ -89,7 +89,7 @@ EXTERN S16 PtMiLrgSchL2MeasStopCfm ARGS((Pst *pst,LrgSchMeasCfmInfo *cfm ));
  *  In a similar fashion, the matrices for Status, Statistics and
  *  Control confirms and, Status and trace indications are defined.
  **/
-PRIVATE CONSTANT LrgCfgCfm RgMiLrgCfgCfmMt[RG_MAX_LRG_USR] =
+static const LrgCfgCfm RgMiLrgCfgCfmMt[RG_MAX_LRG_USR] =
 {
 #ifdef LCRGMILRG
    cmPkLrgCfgCfm,                  /* 0 - loosely coupled */
@@ -99,12 +99,12 @@ PRIVATE CONSTANT LrgCfgCfm RgMiLrgCfgCfmMt[RG_MAX_LRG_USR] =
 #ifdef SM 
    SmMiLrgCfgCfm,                  /* 1 - Tightly coupled SM */
 #else
-   PtMiLrgCfgCfm,                  /* 1 - Tightly coupled SM  */
+   //PtMiLrgCfgCfm,                  /* 1 - Tightly coupled SM  */
 #endif
 };
 
 /** @brief Scheduler Config Confirm primitive Matrix */
-PRIVATE CONSTANT LrgSchCfgCfm RgMiLrgSchCfgCfmMt[RG_MAX_LRG_USR] =
+static const LrgSchCfgCfm RgMiLrgSchCfgCfmMt[RG_MAX_LRG_USR] =
 {
 #ifdef LCRGMILRG
    cmPkLrgSchCfgCfm,                  /* 0 - loosely coupled */
@@ -114,12 +114,12 @@ PRIVATE CONSTANT LrgSchCfgCfm RgMiLrgSchCfgCfmMt[RG_MAX_LRG_USR] =
 #ifdef SM 
    SmMiLrgSchCfgCfm,                  /* 1 - Tightly coupled SM */
 #else
-   PtMiLrgSchCfgCfm,                  /* 1 - Tightly coupled SM  */
+   //PtMiLrgSchCfgCfm,                  /* 1 - Tightly coupled SM  */
 #endif
 };
 
 /** @brief Statistics Confirm primitive Matrix */
-PRIVATE CONSTANT LrgStsCfm RgMiLrgStsCfmMt[RG_MAX_LRG_USR] =
+static const LrgStsCfm RgMiLrgStsCfmMt[RG_MAX_LRG_USR] =
 {
 #ifdef LCRGMILRG
    cmPkLrgStsCfm,                  /* 0 - loosely coupled */
@@ -134,7 +134,7 @@ PRIVATE CONSTANT LrgStsCfm RgMiLrgStsCfmMt[RG_MAX_LRG_USR] =
 };
 
 /** @brief Status Confirm primitive Matrix */
-PRIVATE CONSTANT LrgStaCfm RgMiLrgStaCfmMt[RG_MAX_LRG_USR] =
+static const LrgStaCfm RgMiLrgStaCfmMt[RG_MAX_LRG_USR] =
 {
 #ifdef LCRGMILRG
    cmPkLrgStaCfm,                  /* 0 - loosely coupled */
@@ -150,7 +150,7 @@ PRIVATE CONSTANT LrgStaCfm RgMiLrgStaCfmMt[RG_MAX_LRG_USR] =
 
 
 /** @brief Status Indication primitive Matrix */
-PRIVATE CONSTANT LrgStaInd RgMiLrgStaIndMt[RG_MAX_LRG_USR] =
+static const LrgStaInd RgMiLrgStaIndMt[RG_MAX_LRG_USR] =
 {
 #ifdef LCRGMILRG
    cmPkLrgStaInd,                  /* 0 - loosely coupled */
@@ -165,7 +165,7 @@ PRIVATE CONSTANT LrgStaInd RgMiLrgStaIndMt[RG_MAX_LRG_USR] =
 };
 
 /** @brief Scheduler  Status Indication primitive Matrix */
-PRIVATE CONSTANT LrgSchStaInd RgMiLrgSchStaIndMt[RG_MAX_LRG_USR] =
+static const LrgSchStaInd RgMiLrgSchStaIndMt[RG_MAX_LRG_USR] =
 {
 #ifdef LCRGMILRG
    cmPkLrgSchStaInd,                  /* 0 - loosely coupled */
@@ -181,7 +181,7 @@ PRIVATE CONSTANT LrgSchStaInd RgMiLrgSchStaIndMt[RG_MAX_LRG_USR] =
 
 
 /** @brief Control Confirm primitive Matrix */
-PRIVATE CONSTANT LrgCntrlCfm RgMiLrgCntrlCfmMt[RG_MAX_LRG_USR] =
+static const LrgCntrlCfm RgMiLrgCntrlCfmMt[RG_MAX_LRG_USR] =
 {
 #ifdef LCRGMILRG
    cmPkLrgCntrlCfm,                  /* 0 - loosely coupled */
@@ -196,7 +196,7 @@ PRIVATE CONSTANT LrgCntrlCfm RgMiLrgCntrlCfmMt[RG_MAX_LRG_USR] =
 };
 
 /** @brief Scheduler Control Confirm primitive Matrix */
-PRIVATE CONSTANT LrgSchCntrlCfm RgMiLrgSchCntrlCfmMt[RG_MAX_LRG_USR] =
+static const LrgSchCntrlCfm RgMiLrgSchCntrlCfmMt[RG_MAX_LRG_USR] =
 {
 #ifdef LCRGMILRG
    cmPkLrgSchCntrlCfm,                  /* 0 - loosely coupled */
@@ -211,7 +211,7 @@ PRIVATE CONSTANT LrgSchCntrlCfm RgMiLrgSchCntrlCfmMt[RG_MAX_LRG_USR] =
 };
 
 /** @brief Trace Indication primitive Matrix */
-PRIVATE CONSTANT LrgTrcInd RgMiLrgTrcIndMt[RG_MAX_LRG_USR] =
+static const LrgTrcInd RgMiLrgTrcIndMt[RG_MAX_LRG_USR] =
 {
 #ifdef LCRGMILRG
    cmPkLrgTrcInd,                  /* 0 - loosely coupled */
@@ -226,7 +226,7 @@ PRIVATE CONSTANT LrgTrcInd RgMiLrgTrcIndMt[RG_MAX_LRG_USR] =
 };
 #ifdef LTE_L2_MEAS
 /** @brief L2 Meas Cfm primitive Matrix */
-PRIVATE CONSTANT LrgSchL2MeasCfm RgMiLrgSchL2mMeasCfmMt[RG_MAX_LRG_USR] =
+static const LrgSchL2MeasCfm RgMiLrgSchL2mMeasCfmMt[RG_MAX_LRG_USR] =
 {
 #ifdef LCRGMILRG
    cmPkLrgSchL2MeasCfm,                /* 0 - loosely coupled */
@@ -240,7 +240,7 @@ PRIVATE CONSTANT LrgSchL2MeasCfm RgMiLrgSchL2mMeasCfmMt[RG_MAX_LRG_USR] =
 #endif
 };
 /** @brief L2 Meas Stop Cfm primitive Matrix */
-PRIVATE CONSTANT LrgSchL2MeasStopCfm RgMiLrgSchL2mMeasStopCfmMt[RG_MAX_LRG_USR] =
+static const LrgSchL2MeasStopCfm RgMiLrgSchL2mMeasStopCfmMt[RG_MAX_LRG_USR] =
 {
 #ifdef LCRGMILRG
    cmPkLrgSchL2MeasStopCfm,                /* 0 - loosely coupled */
@@ -279,24 +279,16 @@ PRIVATE CONSTANT LrgSchL2MeasStopCfm RgMiLrgSchL2mMeasStopCfmMt[RG_MAX_LRG_USR] 
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 RgMiLrgCfgCfm
+S16 RgMiLrgCfgCfm
 (
 Pst      *pst,    /* post structure  */
 RgMngmt  *cfm     /* config confirm structure  */
 )
-#else
-PUBLIC S16 RgMiLrgCfgCfm(pst, cfm)
-Pst      *pst;    /* post structure  */
-RgMngmt  *cfm;    /* config confirm structure  */
-#endif    
 {
    
-   TRC3(RgMiLrgCfgCfm);
-
    (*RgMiLrgCfgCfmMt[pst->selector])(pst, cfm);
 
-   RETVALUE(ROK);
+   return ROK;
    
 }/*-- RgMiLrgCfgCfm --*/
 
@@ -317,24 +309,16 @@ RgMngmt  *cfm;    /* config confirm structure  */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 RgMiLrgSchCfgCfm
+S16 RgMiLrgSchCfgCfm
 (
 Pst      *pst,    /* post structure  */
 RgMngmt  *cfm     /* config confirm structure  */
 )
-#else
-PUBLIC S16 RgMiLrgSchCfgCfm(pst, cfm)
-Pst      *pst;    /* post structure  */
-RgMngmt  *cfm;    /* config confirm structure  */
-#endif    
 {
    
-   TRC3(RgMiLrgSchCfgCfm);
-
    (*RgMiLrgSchCfgCfmMt[pst->selector])(pst, cfm);
 
-   RETVALUE(ROK);
+   return ROK;
    
 }/*-- RgMiLrgSchCfgCfm --*/
 
@@ -357,24 +341,16 @@ RgMngmt  *cfm;    /* config confirm structure  */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 RgMiLrgStsCfm
+S16 RgMiLrgStsCfm
 (
 Pst      *pst,    /* post structure  */
 RgMngmt  *cfm     /* statistics confirm structure  */
 )
-#else
-PUBLIC S16 RgMiLrgStsCfm(pst, cfm)
-Pst      *pst;    /* post structure  */
-RgMngmt  *cfm;    /* statistics confirm structure  */
-#endif    
 {
    
-   TRC3(RgMiLrgStsCfm);
-
    (*RgMiLrgStsCfmMt[pst->selector])(pst, cfm);
 
-   RETVALUE(ROK);
+   return ROK;
    
 }/*-- RgMiLrgStsCfm --*/
 
@@ -396,24 +372,16 @@ RgMngmt  *cfm;    /* statistics confirm structure  */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 RgMiLrgStaCfm
+S16 RgMiLrgStaCfm
 (
 Pst      *pst,    /* post structure  */
 RgMngmt  *cfm     /* status confirm structure  */
 )
-#else
-PUBLIC S16 RgMiLrgStaCfm(pst, cfm)
-Pst      *pst;    /* post structure  */
-RgMngmt  *cfm;    /* status confirm structure  */
-#endif    
 {
    
-   TRC3(RgMiLrgStaCfm);
-    
    (*RgMiLrgStaCfmMt[pst->selector])(pst,cfm);
 
-   RETVALUE(ROK);
+   return ROK;
    
 }/*-- RgMiLrgStaCfm --*/
 
@@ -435,24 +403,16 @@ RgMngmt  *cfm;    /* status confirm structure  */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 RgMiLrgCntrlCfm
+S16 RgMiLrgCntrlCfm
 (
 Pst      *pst,    /* post structure  */
 RgMngmt  *cfm     /* control confirm structure  */
 )
-#else
-PUBLIC S16 RgMiLrgCntrlCfm(pst, cfm)
-Pst      *pst;    /* post structure  */
-RgMngmt  *cfm;    /* control confirm structure  */
-#endif    
 {
    
-   TRC3(RgMiLrgCntrlCfm);
-
    (*RgMiLrgCntrlCfmMt[pst->selector])(pst,cfm);
 
-   RETVALUE(ROK);
+   return ROK;
    
 }/*-- RgMiLrgCntrlCfm --*/
 
@@ -473,24 +433,16 @@ RgMngmt  *cfm;    /* control confirm structure  */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 RgMiLrgSchCntrlCfm
+S16 RgMiLrgSchCntrlCfm
 (
 Pst      *pst,    /* post structure  */
 RgMngmt  *cfm     /* control confirm structure  */
 )
-#else
-PUBLIC S16 RgMiLrgSchCntrlCfm(pst, cfm)
-Pst      *pst;    /* post structure  */
-RgMngmt  *cfm;    /* control confirm structure  */
-#endif    
 {
    
-   TRC3(RgMiLrgSchCntrlCfm);
-
    (*RgMiLrgSchCntrlCfmMt[pst->selector])(pst,cfm);
 
-   RETVALUE(ROK);
+   return ROK;
    
 }/*-- RgMiLrgSchCntrlCfm --*/
 
@@ -512,24 +464,16 @@ RgMngmt  *cfm;    /* control confirm structure  */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 RgMiLrgStaInd
+S16 RgMiLrgStaInd
 (
 Pst      *pst,    /* post structure  */
 RgMngmt  *usta    /* status indication structure  */
 )
-#else
-PUBLIC S16 RgMiLrgStaInd(pst, usta)
-Pst      *pst;    /* post structure  */
-RgMngmt  *usta;    /* status indication structure  */
-#endif    
 {
    
-   TRC3(RgMiLrgStaInd);
-
    (*RgMiLrgStaIndMt[pst->selector])(pst,usta);
 
-   RETVALUE(ROK);
+   return ROK;
    
 }/*-- RgMiLrgStaInd --*/
 
@@ -550,24 +494,16 @@ RgMngmt  *usta;    /* status indication structure  */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 RgMiLrgSchStaInd
+S16 RgMiLrgSchStaInd
 (
 Pst      *pst,    /* post structure  */
 RgMngmt  *usta    /* status indication structure  */
 )
-#else
-PUBLIC S16 RgMiLrgSchStaInd(pst, usta)
-Pst      *pst;    /* post structure  */
-RgMngmt  *usta;    /* status indication structure  */
-#endif    
 {
    
-   TRC3(RgMiLrgSchStaInd);
-
    (*RgMiLrgSchStaIndMt[pst->selector])(pst,usta);
 
-   RETVALUE(ROK);
+   return ROK;
    
 }/*-- RgMiLrgSchStaInd --*/
 
@@ -590,49 +526,33 @@ RgMngmt  *usta;    /* status indication structure  */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 RgMiLrgTrcInd
+S16 RgMiLrgTrcInd
 (
 Pst      *pst,    /* post structure  */
 RgMngmt  *trc,    /* Trace event  */
 Buffer   *mBuf    /* Trace message  */
 )
-#else
-PUBLIC S16 RgMiLrgTrcInd(pst, trc, mBuf)
-Pst      *pst;    /* post structure  */
-RgMngmt  *trc;    /* Trace event  */
-Buffer   *mBuf;   /* Trace message  */
-#endif    
 {
    
-   TRC3(RgMiLrgTrcInd);
-
    (*RgMiLrgTrcIndMt[pst->selector])(pst,trc,mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
    
 }/*-- RgMiLrgTrcInd --*/
 
 #ifdef LTE_L2_MEAS
 
 /* TODO: Function header */
-#ifdef ANSI
-PUBLIC S16 RgMiLrgSchL2MeasCfm
+S16 RgMiLrgSchL2MeasCfm
 (
 Pst               *pst,          /* post structure  */
 LrgSchMeasCfmInfo *cfm       /* Meas Cfm Info */
 )
-#else
-PUBLIC S16 RgMiLrgSchL2MeasCfm(pst, cfm)
-Pst               *pst;          /* post structure  */
-LrgSchMeasCfmInfo *cfm;       /* Meas Cfm Info */
-#endif    
 {
-   TRC3(RgMiLrgSchL2MeasCfm)
    
    (*RgMiLrgSchL2mMeasCfmMt[pst->selector])(pst,cfm);
    
-   RETVALUE(ROK);
+   return ROK;
 
 } /* RgMiLrgSchL2MeasCfm */
 
@@ -653,23 +573,15 @@ LrgSchMeasCfmInfo *cfm;       /* Meas Cfm Info */
  *      -# ROK
  **/
 
-#ifdef ANSI 
-PUBLIC S16 RgMiLrgSchL2MeasStopCfm
+S16 RgMiLrgSchL2MeasStopCfm
 (        
 Pst               *pst,          /* post structure  */
 LrgSchMeasCfmInfo *cfm       /* Meas Cfm Info */
 )        
-#else    
-PUBLIC S16 RgMiLrgSchL2MeasStopCfm(pst, cfm)
-Pst               *pst;          /* post structure  */
-LrgSchMeasCfmInfo *cfm;       /* Meas Cfm Info */
-#endif    
 {
-   TRC3(RgMiLrgSchL2MeasStopCfm)
-        
    (*RgMiLrgSchL2mMeasStopCfmMt[pst->selector])(pst,cfm);
           
-   RETVALUE(ROK);
+   return ROK;
         
 } /* RgMiLrgSchL2MeasStopCfm */
 
@@ -698,21 +610,13 @@ LrgSchMeasCfmInfo *cfm;       /* Meas Cfm Info */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 PtMiLrgCfgCfm
+S16 PtMiLrgCfgCfm
 (
 Pst *pst,               /* post structure */
 RgMngmt *cfm            /* Config Confirm */
 )
-#else
-PUBLIC S16 PtMiLrgCfgCfm  (pst, cfm)
-Pst *pst;               /* post structure */
-RgMngmt *cfm;           /* Config Confirm */
-#endif
 {
-   TRC3(PtMiLrgCfgCfm)
-
-   RETVALUE(ROK);
+   return ROK;
 }/* end of PtMiLrgCfgCfm */
 
 /**
@@ -734,21 +638,14 @@ RgMngmt *cfm;           /* Config Confirm */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 PtMiLrgSchCfgCfm
+S16 PtMiLrgSchCfgCfm
 (
 Pst *pst,               /* post structure */
 RgMngmt *cfm            /* Config Confirm */
 )
-#else
-PUBLIC S16 PtMiLrgSchCfgCfm  (pst, cfm)
-Pst *pst;               /* post structure */
-RgMngmt *cfm;           /* Config Confirm */
-#endif
 {
-   TRC3(PtMiLrgSchCfgCfm)
 
-   RETVALUE(ROK);
+   return ROK;
 }/* end of PtMiLrgSchCfgCfm */
 
 
@@ -772,21 +669,14 @@ RgMngmt *cfm;           /* Config Confirm */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 PtMiLrgStsCfm
+S16 PtMiLrgStsCfm
 (
 Pst *pst,               /* post structure */
 RgMngmt *cfm            /* Statistics Confirm */
 )
-#else
-PUBLIC S16 PtMiLrgStsCfm  (pst, cfm)
-Pst *pst;               /* post structure */
-RgMngmt *cfm;           /* Statistics Confirm */
-#endif
 {
-   TRC3(PtMiLrgStsCfm)
 
-   RETVALUE(ROK);
+   return ROK;
 }/* end of PtMiLrgStsCfm */
 
 
@@ -810,20 +700,13 @@ RgMngmt *cfm;           /* Statistics Confirm */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 PtMiLrgStaCfm
+S16 PtMiLrgStaCfm
 (
 Pst *pst,               /* post structure */
 RgMngmt *cfm            /* Status Confirm */
 )
-#else
-PUBLIC S16 PtMiLrgStaCfm  (pst, cfm)
-Pst *pst;               /* post structure */
-RgMngmt *cfm;           /* Status Confirm */
-#endif
 {
-   TRC3(PtMiLrgStaCfm)
-   RETVALUE(ROK);
+   return ROK;
 }/* end of PtMiLrgStaCfm */
 
 
@@ -847,20 +730,13 @@ RgMngmt *cfm;           /* Status Confirm */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 PtMiLrgStaInd
+S16 PtMiLrgStaInd
 (
 Pst *pst,               /* post structure */
 RgMngmt *usta           /* Status Indication */
 )
-#else
-PUBLIC S16 PtMiLrgStaInd  (pst, usta)
-Pst *pst;               /* post structure */
-RgMngmt *usta;          /* Status indication */
-#endif
 {
-   TRC3(PtMiLrgStaInd)
-   RETVALUE(ROK);
+   return ROK;
 }/* end of PtMiLrgStaInd */
 
 /**
@@ -882,20 +758,13 @@ RgMngmt *usta;          /* Status indication */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 PtMiLrgSchStaInd
+S16 PtMiLrgSchStaInd
 (
 Pst *pst,               /* post structure */
 RgMngmt *usta           /* Status Indication */
 )
-#else
-PUBLIC S16 PtMiLrgSchStaInd  (pst, usta)
-Pst *pst;               /* post structure */
-RgMngmt *usta;          /* Status indication */
-#endif
 {
-   TRC3(PtMiLrgSchStaInd)
-   RETVALUE(ROK);
+   return ROK;
 }/* end of PtMiLrgSchStaInd */
 
 
@@ -918,20 +787,13 @@ RgMngmt *usta;          /* Status indication */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 PtMiLrgCntrlCfm
+S16 PtMiLrgCntrlCfm
 (
 Pst *pst,               /* post structure */
 RgMngmt *cfm            /* Control Confirm */
 )
-#else
-PUBLIC S16 PtMiLrgCntrlCfm (pst, cfm)
-Pst *pst;               /* post structure */
-RgMngmt *cfm;           /* Control Confirm */
-#endif
 {
-   TRC3(PtMiLrgCntrlCfm)
-   RETVALUE(ROK);
+   return ROK;
 }/* end of PtMiLrgCntrlCfm */
 
 /**
@@ -953,20 +815,13 @@ RgMngmt *cfm;           /* Control Confirm */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 PtMiLrgSchCntrlCfm
+S16 PtMiLrgSchCntrlCfm
 (
 Pst *pst,               /* post structure */
 RgMngmt *cfm            /* Control Confirm */
 )
-#else
-PUBLIC S16 PtMiLrgSchCntrlCfm (pst, cfm)
-Pst *pst;               /* post structure */
-RgMngmt *cfm;           /* Control Confirm */
-#endif
 {
-   TRC3(PtMiLrgSchCntrlCfm)
-   RETVALUE(ROK);
+   return ROK;
 }/* end of PtMiLrgSchCntrlCfm */
 
 
@@ -989,22 +844,14 @@ RgMngmt *cfm;           /* Control Confirm */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 PtMiLrgTrcInd
+S16 PtMiLrgTrcInd
 (
 Pst *pst,               /* post structure */
 RgMngmt *trc,           /* Trace Event */
 Buffer *mBuf            /* Trace message */
 )
-#else
-PUBLIC S16 PtMiLrgTrcInd (pst, trc,mBuf)
-Pst *pst;               /* post structure */
-RgMngmt *trc;           /* Trace Event */
-Buffer *mBuf;           /* Trace message */
-#endif
 {
-   TRC3(PtMiLrgTrcInd)
-   RETVALUE(ROK);
+   return ROK;
 }/* end of PtMiLrgTrcInd */
 #ifdef LTE_L2_MEAS
 /**
@@ -1021,21 +868,14 @@ Buffer *mBuf;           /* Trace message */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 PtMiLrgSchL2MeasCfm
+S16 PtMiLrgSchL2MeasCfm
 (
 Pst *pst,               /* post structure */
 LrgSchMeasCfmInfo *cfm  /* Measurement Confirm */
 )
-#else
-PUBLIC S16 PtMiLrgSchL2MeasCfm(pst, cfm)
-Pst *pst;               /* post structure */
-LrgSchMeasCfmInfo *cfm; /* Measurement Confirm */
-#endif
 {
-   TRC3(PtMiLrgSchL2MeasCfm)
 
-   RETVALUE(ROK);
+   return ROK;
 }/* end of PtMiLrgSchL2MeasCfm */
 
 /**
@@ -1052,21 +892,14 @@ LrgSchMeasCfmInfo *cfm; /* Measurement Confirm */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 PtMiLrgSchL2MeasStopCfm
+S16 PtMiLrgSchL2MeasStopCfm
 (
 Pst *pst,               /* post structure */
 LrgSchMeasCfmInfo *cfm  /* Measurement Confirm */
 )
-#else
-PUBLIC S16 PtMiLrgSchL2MeasStopCfm(pst, cfm)
-Pst *pst;               /* post structure */
-LrgSchMeasCfmInfo *cfm; /* Measurement Confirm */
-#endif
 {
-   TRC3(PtMiLrgSchL2MeasStopCfm)
 
-   RETVALUE(ROK);
+   return ROK;
 }/* end of PtMiLrgSchL2MeasStopCfm */
 #endif
 #endif /*--PTRGMILRG--*/

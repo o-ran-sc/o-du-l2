@@ -24,10 +24,14 @@
 #include "mac_sch_interface.h"
 #include "lwr_mac_upr_inf.h"
 #include "mac.h"
+#include "rlc_mac_inf.h"
 #include "mac_upr_inf_api.h"
 #include "lwr_mac.h"
 #include "lwr_mac_fsm.h"
 #include "mac_utils.h"
+#include "lwr_mac_phy.h"
+
+uint8_t ssbPeriodicity[6] = {5, 10, 20, 40, 80, 160};
 
 uint8_t MacSchCellCfgReq(Pst *pst, MacCellCfg  *macCellCfg);
 
@@ -61,7 +65,7 @@ SchCellCfgFunc SchCellCfgOpts[] =
  *  @return 
  *      -# ROK
  **/
-PUBLIC int MacSchGenCfgReq(Pst *pst, RgMngmt *cfg)
+uint8_t MacSchGenCfgReq(Pst *pst, RgMngmt *cfg)
 {
    printf("\nReceived Scheduler gen config at MAC");
    pst->dstInst = DEFAULT_CELLS + 1;
@@ -85,7 +89,7 @@ PUBLIC int MacSchGenCfgReq(Pst *pst, RgMngmt *cfg)
  *  @return 
  *      -# ROK
  **/
-PUBLIC uint8_t SchSendCfgCfm(Pst *pst, RgMngmt  *cfm)
+uint8_t SchSendCfgCfm(Pst *pst, RgMngmt  *cfm)
 {
    printf("\nSending Scheduler config confirm to DU APP");
    pst->dstEnt = ENTDUAPP;
@@ -117,10 +121,10 @@ uint8_t MacProcCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
 {
    Pst cfmPst;
    uint16_t cellIdx;
-   uint16_t ret = ROK;
+   uint8_t ret = ROK;
    MacCellCb     *macCellCb;
 
-   cmMemset((uint8_t *)&cfmPst, 0, sizeof(Pst));
+   memset((uint8_t *)&cfmPst, 0, sizeof(Pst));
 
    MAC_ALLOC(macCellCb, sizeof(MacCellCb));
    if(macCellCb == NULLP)
@@ -168,9 +172,6 @@ uint8_t MacProcCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
       MAC_FREE_SHRABL_BUF(pst->region, pst->pool, macCellCfg->sib1Cfg.sib1Pdu, macCellCfg->sib1Cfg.sib1PduLen);
       MAC_FREE_SHRABL_BUF(pst->region, pst->pool, macCellCfg ,sizeof(MacCellCfg));
    }
-#ifdef INTEL_WLS
-   LwrMacEnqueueWlsBlock();
-#endif
    return ret;
 } /* end of MacProcCellCfgReq */
 
@@ -192,19 +193,21 @@ uint8_t MacSchCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
 {
    SchCellCfg schCellCfg;
    Pst        cfgPst;
-   int ret;
+   uint8_t    ret =0;
 
-   cmMemset((uint8_t *)&cfgPst, 0, sizeof(Pst));
+   memset(&cfgPst, 0, sizeof(Pst));
+   memset(&schCellCfg, 0, sizeof(SchCellCfg));
    schCellCfg.cellId = macCellCfg->cellId;
    schCellCfg.phyCellId = macCellCfg->phyCellId;
    schCellCfg.bandwidth = macCellCfg->dlCarrCfg.bw;
+   schCellCfg.numerology = macCellCfg->numerology;
    schCellCfg.dupMode = macCellCfg->dupType;
 
    /* fill ssb scheduler parameters */
    schCellCfg.ssbSchCfg.ssbPbchPwr = macCellCfg->ssbCfg.ssbPbchPwr;
    schCellCfg.ssbSchCfg.scsCommon = macCellCfg->ssbCfg.scsCmn;
    schCellCfg.ssbSchCfg.ssbOffsetPointA = macCellCfg->ssbCfg.ssbOffsetPointA;
-   schCellCfg.ssbSchCfg.ssbPeriod = macCellCfg->ssbCfg.ssbPeriod;
+   schCellCfg.ssbSchCfg.ssbPeriod = ssbPeriodicity[macCellCfg->ssbCfg.ssbPeriod];
    schCellCfg.ssbSchCfg.ssbSubcOffset = macCellCfg->ssbCfg.ssbScOffset;
    for(uint8_t idx=0; idx<SSB_MASK_SIZE; idx++)
    {
@@ -310,7 +313,7 @@ void MacSendCellCfgCfm(uint16_t cellId, uint8_t response)
    uint16_t   cellIdx;
    MacCellCfgCfm macCellCfgCfm;
 
-   cmMemset((uint8_t *)&pst, 0, sizeof(Pst));
+   memset(&pst, 0, sizeof(Pst));
 
    GET_CELL_IDX(cellId, cellIdx);
    macCellCfgCfm.cellId = macCb.macCell[cellIdx]->macCellCfg.cellId;
@@ -345,7 +348,11 @@ uint8_t MacProcSchCellCfgCfm(Pst *pst, SchCellCfgCfm *schCellCfgCfm)
    if(schCellCfgCfm->rsp == RSP_OK)
    {
       cellId = &schCellCfgCfm->cellId;
+#ifdef INTEL_TIMER_MODE
+      sendToLowerMac(UL_IQ_SAMPLE, 0, (void *)cellId);
+#else
       sendToLowerMac(CONFIG_REQUEST, 0, (void *)cellId);
+#endif
    }
    else
    {

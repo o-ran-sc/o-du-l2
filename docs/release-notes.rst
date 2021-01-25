@@ -3,10 +3,10 @@
 
 
 Release-Notes
-=============
+**************
 
 
-This document provides the release notes for Bronze Release of O-DU-L2.
+This document provides the release notes for Cherry Release of O-DU-L2.
 
 .. contents::
    :depth: 3
@@ -20,10 +20,13 @@ Version history
 | **Date**           | **Ver.**           | **Author**         | **Comment**        |
 |                    |                    |                    |                    |
 +--------------------+--------------------+--------------------+--------------------+
-| 2019-10-29         | 0.1.0              | Radisys            | Amber Release      |
+| 2020-12-04         | 3.0.0              | Radisys, HCL       | Cherry Release     |
+|                    |                    | Technologies Ltd.  |                    |
++--------------------+--------------------+--------------------+--------------------+
+| 2020-06-17         | 2.0.0              | Radisys            | Bronze Release     |
 |                    |                    |                    |                    |
 +--------------------+--------------------+--------------------+--------------------+
-| 2020-06-17         | 0.2.0              | Radisys            | Bronze Release     |
+| 2019-12-29         | 1.0.0              | Radisys            | Amber Release      |
 |                    |                    |                    |                    |
 +--------------------+--------------------+--------------------+--------------------+
 
@@ -31,9 +34,32 @@ Version history
 Summary
 -------
 
+Cherry
+^^^^^^^^
+This release contains the following:
+
+- Implementation of UE attach signalling procedure on single carrier.
+  All message exchanges within O-DU High are in line with WG8 AAD spec.
+
+- Enhancements to F1-C interface as required for UE attach procedure.
+
+- Enhancements to FAPI interface towards O-DU Low as required for UE attach procedure.
+
+- Support for all short PRACH formats.
+
+- Integration of FAPI P5 messages with Intel's O-DU Low in Timer mode.
+
+- Code support for alignment with latest FAPI interface files from Intel.
+
+- Implementation of O1 interface.
+
+- Partial implementation of Health Check use-case with get-Alarm list API.
+
+
 Bronze
 ^^^^^^^^
 This release contains the following:
+
 - Enhancements to F1-C interface for UE attach procedure.
 
 - Implementation of F1-U interface.
@@ -56,8 +82,43 @@ This release contains the following:
   conforming to AAD spec.
 
 
+Amber
+^^^^^
+This release contains the following:
+
+- O-DU layer intilaizations
+
+- Implementation of F1-C interface
+
+- Exchange of F1 Setup Request, F1 Setup Response, GNB DU Config Update and GNB DU Config Update ACK between the ODU and CU STUB.
+
+
 Release Data
 ------------
+
+Cherry
+^^^^^^ 
++--------------------------------------+--------------------------------------+
+| **Project**                          | ODUHIGH	                      |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Repo/commit-ID**                   | o-du/l2/                             |
+|                                      | fc0bcf28e944ae7ba2423ad3c9a5c794df2dc|
+|                                      | 4ff                                  |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Release designation**              | Cherry Release                       |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Release date**                     | 2020-12-04                           |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Purpose of the delivery**          | Cherry Release               	      |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+
+Bronze
+^^^^^^ 
 +--------------------------------------+--------------------------------------+
 | **Project**                          | ODUHIGH	                      |
 |                                      |                                      |
@@ -77,41 +138,107 @@ Release Data
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
 
+Amber
+^^^^^
++--------------------------------------+--------------------------------------+
+| **Project**                          | ODUHIGH                              |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Repo/commit-ID**                   | o-du/l2/                             |
+|                                      | d349ae65e1495488772f87e5cfa1ae71d9eab|
+|                                      | 075                                  |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Release designation**              | Amber Release                        |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Release date**                     | 2019-12-29                           |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Purpose of the delivery**          | Amber Release                        |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+
 
 
 Feature Additions
-^^^^^^^^^^^^^^^^^
+------------------
 
 **JIRA BACK-LOG:**
 
-+---------------------------------------------+--------------------------------------+
-| **JIRA REFERENCE**                          | **SLOGAN**                           |
-|                                             |                                      |
-+---------------------------------------------+--------------------------------------+
-| https://jira.o-ran-sc.org/browse/ODUHIGH-1  |	F1-C enhancement                     |
-|                                             | 				     |
-+---------------------------------------------+--------------------------------------+
-| https://jira.o-ran-sc.org/browse/ODUHIGH-5  |	F1-U implementation                  |
-|                                             | 				     |
-+---------------------------------------------+--------------------------------------+
-| https://jira.o-ran-sc.org/browse/ODUHIGH-11 |	E2 implementation                    |
-|                                             | 				     |
-+---------------------------------------------+--------------------------------------+
-| https://jira.o-ran-sc.org/browse/ODUHIGH-9  |	Cell broadcast procedure             |
-|                                             | 				     |
-+---------------------------------------------+--------------------------------------+
-| https://jira.o-ran-sc.org/browse/ODUHIGH-10 |	UE attach procedure till msg-4       |
-|                                             | 				     |
-+---------------------------------------------+--------------------------------------+
-| https://jira.o-ran-sc.org/browse/ODUHIGH-8  |	FAPI interface implementation        |
-|                                             | 				     |
-+---------------------------------------------+--------------------------------------+
-| https://jira.o-ran-sc.org/browse/ODUHIGH-27 |	RLC layer interface enhancements     |
-|                                             | 				     |
-+---------------------------------------------+--------------------------------------+
+Cherry
+^^^^^^^
+
++-----------------------------------------------+-----------------------------------------------+
+| **JIRA REFERENCE**                            | **SLOGAN**                                    |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-10   | UE attach procedure with basic scheduling     |
+|                                               | 				                |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-188  | Support for all short PRACH formats	        |
+|                                               | 				                |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-191  | Explore O1 interface	                        |
+|                                               | 				                |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-189  | Integration with O-DU Low                     |
+|                                               | 				                |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-184  | UE UL Data path                               |
+|                                               | 				                |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-185  | UE DL Data path                               |
+|                                               | 				                |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-186  | Applying 64 QAM Modulation in DL              |
+|                                               | 				                |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-187  | Applying 16 QAM Modulation in UL              |
+|                                               | 				                |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-190  | Integration with VIAVI Software               |
+|                                               | 				                |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-214  | get-AlarmList implementation on O1 interface  |
+|                                               | 				                |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-196  | CM Support on O1 interface                    |
+|                                               | 				                |
++-----------------------------------------------+-----------------------------------------------+
+
+Previous Releases
+^^^^^^^^^^^^^^^^^^
+
+
++---------------------------------------------+-------------------------------------------------+
+| **JIRA REFERENCE**                          | **SLOGAN**                                      |
+|                                             |                                                 |
++---------------------------------------------+-------------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-1  |	F1-C enhancement                                |
+|                                             | 				                |
++---------------------------------------------+-------------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-5  |	F1-U implementation                             |
+|                                             | 				                |
++---------------------------------------------+-------------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-11 |	E2 implementation                               |
+|                                             | 				                |
++---------------------------------------------+-------------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-9  |	Cell broadcast procedure                        |
+|                                             | 				                |
++---------------------------------------------+-------------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-10 |	UE attach procedure till msg-4                  |
+|                                             | 				                |
++---------------------------------------------+-------------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-8  |	FAPI interface implementation                   |
+|                                             | 				                |
++---------------------------------------------+-------------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-27 |	RLC layer interface enhancements                |
+|                                             | 				                |
++---------------------------------------------+-------------------------------------------------+
 
 Bug Corrections
-^^^^^^^^^^^^^^^
+----------------
 
 **JIRA TICKETS:**
 
@@ -119,26 +246,35 @@ NA
 
 
 Deliverables
-^^^^^^^^^^^^
+-------------
 
 Software Deliverables
-+++++++++++++++++++++
+^^^^^^^^^^^^^^^^^^^^^^
 
-This release contains O-DU code, along with test code as part of CU stub, RIC stub and phy stub.
+This release contains O-DU High code, along with test code in the form of CU stub, RIC stub and phy stub.
 Instructions to build and execute ODU, CU and RIC stub binaries are also present.
 All of the above can be found in the o-du/l2 repo.
 
 
 
 Documentation Deliverables
-++++++++++++++++++++++++++
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This release contains 
+
 - README with instruction to build and execute binaries.
 
 - overview.rst
 
 - release-notes.rst
+
+- installation-guide.rst
+
+- user-guide.rst
+
+- api-docs.rst
+
+- developer-guide.rst
 
 
 
@@ -161,11 +297,16 @@ System Limitations
 
    single HARQ transmission
 
-- Support for single UE.
+   single UE.
+
+- This release implements a basic scheduler with fixed scheduling for single UE.
 
 - Cell broadcast is for SSB and SIB1 only.
 
-- This release implements a basic scheduler with fixed scheduling.
+- FAPI files not in-line with SCF FAPI 1.0.5.
+  O-DU High currently compatible with FAPI files provided by Intel.
+
+- Implementation of F1 reset is limited to intializing UE contexts.
 
 - E2 interface is limited to Traffic Steering Usecase.
 
@@ -173,13 +314,14 @@ System Limitations
 
 - On the F1-U interface, UE, RB and tunnel configurations are static.
 
-- System runs on preconfigured values due to absence of O1 interface.
+- System runs on preconfigured values due to absence of CM support on O1 interface.
 
-- O-DU High has not been integrated with O-DU Low and O-CU.
+- O-DU High has not been integrated with O-CU.
 
+- O-DU High O1 module has not been integrated with SMO/OAM so a Netconf CLI client is used to demo the get alarm-list flow
 
 Known Issues
-^^^^^^^^^^^^
+^^^^^^^^^^^^^
 None
 
 **JIRA TICKETS:**
@@ -190,7 +332,7 @@ NA
 Workarounds
 ^^^^^^^^^^^
 
-NA
+O-DU High uses FAPI interface files provided by Intel and therefore, not completely in-line with SCF FAPI 1.0.5.
 
 
 

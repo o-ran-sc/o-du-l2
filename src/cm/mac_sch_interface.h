@@ -17,16 +17,21 @@
  *******************************************************************************/
 
 /* events */
-#define EVENT_SCH_CELL_CFG      1
-#define EVENT_SCH_CELL_CFG_CFM  2
-#define EVENT_DL_ALLOC          3 
-#define EVENT_UL_SCH_INFO       4 
+#define EVENT_SCH_CELL_CFG           1
+#define EVENT_SCH_CELL_CFG_CFM       2
+#define EVENT_DL_ALLOC               3 
+#define EVENT_UL_SCH_INFO            4 
 #define EVENT_RACH_IND_TO_SCH        5
 #define EVENT_CRC_IND_TO_SCH         6
 #define EVENT_DL_RLC_BO_INFO_TO_SCH  7
-#define EVENT_UE_CREATE_REQ_TO_SCH   8
-#define EVENT_UE_CREATE_RSP_TO_MAC   9
+#define EVENT_ADD_UE_CONFIG_REQ_TO_SCH   8
+#define EVENT_UE_CONFIG_RSP_TO_MAC   9
 #define EVENT_SLOT_IND_TO_SCH        10
+#define EVENT_SHORT_BSR              11
+#define EVENT_UCI_IND_TO_SCH         12
+#define EVENT_MODIFY_UE_CONFIG_REQ_TO_SCH 13
+#define EVENT_UE_RECONFIG_RSP_TO_MAC 14
+
 
 /*macros*/
 #define NO_SSB 0
@@ -53,7 +58,9 @@
 #define SCH_DATATYPE_PRACH 16
 
 #define MAX_NUMBER_OF_CRC_IND_BITS 1
-#define MAX_NUM_LOGICAL_CHANNELS   11
+#define MAX_NUMBER_OF_UCI_IND_BITS 1
+#define MAX_SR_BITS_IN_BYTES       1
+#define MAX_NUM_LOGICAL_CHANNEL_GROUPS 8
 /* can we have a common numslot numscs between mac sch */
 #define MAX_SLOTS 10
 #define MAX_SFN   1024
@@ -67,8 +74,15 @@
 #define MAX_NUM_DL_ALLOC 16             /* Max number of pdsch time domain downlink allocation */
 #define MAX_NUM_UL_ALLOC 16             /* Max number of pusch time domain uplink allocation */
 
+/* PUCCH Configuration Macro */
+#define MAX_NUM_PUCCH_RESRC 128
+#define MAX_NUM_PUCCH_RESRC_SET 4
+#define MAX_NUM_PUCCH_PER_RESRC_SET 32
+#define MAX_NUM_SPATIAL_RELATIONS 8
+#define MAX_NUM_PUCCH_P0_PER_SET 8
+#define MAX_NUM_PATH_LOSS_REF_RS 4
+#define MAX_NUM_DL_DATA_TO_UL_ACK 15
 #define SD_SIZE   3
-#define CCCH_LCID  0
 
 #define ADD_DELTA_TO_TIME(crntTime, toFill, incr)          \
 {                                                          \
@@ -87,7 +101,6 @@
    }                                                       \
 }
 
-/*structures*/
 typedef enum
 {
    UNSPECIFIED_CAUSE,
@@ -228,13 +241,13 @@ typedef enum
 
 typedef enum
 {
-   INTERLEAVED_CCE_REG_MAPPING,
+   INTERLEAVED_CCE_REG_MAPPING = 1,
    NONINTERLEAVED_CCE_REG_MAPPING
 }SchREGMappingType;
 
 typedef enum
 {
-   SLOT_PERIODICITY_AND_OFFSET_SL_1,
+   SLOT_PERIODICITY_AND_OFFSET_SL_1 = 1,
    SLOT_PERIODICITY_AND_OFFSET_SL_2,
    SLOT_PERIODICITY_AND_OFFSET_SL_4,
    SLOT_PERIODICITY_AND_OFFSET_SL_5,
@@ -259,9 +272,15 @@ typedef enum
 
 typedef enum
 {
-   SEARCH_SPACE_TYPE_COMMON,
+   SEARCH_SPACE_TYPE_COMMON = 1,
    SEARCH_SPACE_TYPE_UE_SPECIFIC
 }SchSearchSpaceType;
+
+typedef enum
+{
+   SCH_QOS_NON_DYNAMIC = 1,
+   SCH_QOS_DYNAMIC
+}SchQosType;
 
 typedef enum
 {
@@ -289,9 +308,23 @@ typedef enum
 
 typedef enum
 {
-   STATIC_BUNDLING_TYPE,
+   STATIC_BUNDLING_TYPE = 1,
    DYNAMIC_BUNDLING_TYPE
 }SchBundlingType;
+
+typedef enum
+{
+   SCH_SET1_SIZE_N4,
+   SCH_SET1_SIZE_WIDEBAND,
+   SCH_SET1_SIZE_N2_WIDEBAND,
+   SCH_SET1_SIZE_N4_WIDEBAND
+}SchBundlingSizeSet1;
+
+typedef enum
+{
+   SCH_SET2_SIZE_N4,
+   SCH_SET2_SIZE_WIDEBAND
+}SchBundlingSizeSet2;
 
 typedef enum
 {
@@ -315,6 +348,30 @@ typedef enum
    RSP_NOK
 }SchMacRsp;
 
+typedef enum
+{
+   SHORT_BSR,
+   LONG_BSR,
+   SHORT_TRUNCATED_BSR,
+   LONG_TRUNCATED_BSR
+}BsrType;
+
+typedef enum
+{
+   FORMAT0_0,
+   FORMAT0_1,
+   FORMAT1_0,
+   FORMAT1_1
+}FormatType;
+
+typedef enum
+{
+   SCH_MCS_TABLE_QAM_64,
+   SCH_MCS_TABLE_QAM_256,
+   SCH_MCS_TABLE_QAM_64_LOW_SE
+}SchMcsTable;
+
+/*structures*/
 typedef struct timeDomainAlloc
 {
    uint16_t startSymb;
@@ -427,7 +484,7 @@ typedef struct pdschCfg
 
 typedef struct coresetCfg
 {
-   uint8_t coreSet0Size;
+   uint8_t coreSetSize;
    uint8_t startSymbolIndex;
    uint8_t durationSymbols;
    uint8_t freqDomainResource[6];
@@ -462,7 +519,7 @@ typedef struct dlDCI
 typedef struct pdcchCfg
 {
    /* coreset-0 configuration */
-   CoresetCfg coreset0Cfg;
+   CoresetCfg coresetCfg;
 
    uint16_t numDlDci;
    DlDCI    dci; /* as of now its only one DCI, later it will be numDlCi */
@@ -573,21 +630,21 @@ typedef struct schBwpUlCfg
 
 typedef struct schCellCfg
 {
-   uint16_t    cellId;           /* Cell Id */
-   uint16_t    phyCellId;        /* Physical cell id */
-   uint8_t     bandwidth;        /* Supported B/W */
+   uint16_t       cellId;           /* Cell Id */
+   uint16_t       phyCellId;        /* Physical cell id */
+   uint8_t        bandwidth;        /* Supported B/W */
+   uint8_t        numerology;       /* Supported numerology */
    SchDuplexMode  dupMode;          /* Duplex type: TDD/FDD */
-   SchSsbCfg   ssbSchCfg;        /* SSB config */
-   SchSib1Cfg  sib1SchCfg;       /* SIB1 config */
-   SchRachCfg  schRachCfg;       /* PRACH config */
-   SchBwpDlCfg schInitialDlBwp;  /* Initial DL BWP */
-   SchBwpUlCfg schInitialUlBwp;  /* Initial UL BWP */
-   uint8_t     puschMu;          /* PUSCH MU */
+   SchSsbCfg      ssbSchCfg;        /* SSB config */
+   SchSib1Cfg     sib1SchCfg;       /* SIB1 config */
+   SchRachCfg     schRachCfg;       /* PRACH config */
+   SchBwpDlCfg    schInitialDlBwp;  /* Initial DL BWP */
+   SchBwpUlCfg    schInitialUlBwp;  /* Initial UL BWP */
 }SchCellCfg;
 
 typedef struct schCellCfgCfm
 {
-   U16         cellId;     /* Cell Id */
+   uint16_t         cellId;     /* Cell Id */
    SchMacRsp   rsp;   
 }SchCellCfgCfm;
 
@@ -627,7 +684,7 @@ typedef struct dlBrdcstAlloc
     * 0 : No tranamission
     * 1 : SIB1 Transmission
     * 2 : SIB1 Repetition */
-   U8 sib1Trans;
+   uint8_t sib1Trans;
    Sib1AllocInfo sib1Alloc;
 }DlBrdcstAlloc;
 
@@ -650,7 +707,7 @@ typedef struct rarAlloc
    PdschCfg rarPdschCfg;
 }RarAlloc;
 
-typedef struct msg4Info
+typedef struct dlMsgInfo
 {
    uint16_t crnti;
    uint8_t  ndi;
@@ -660,26 +717,89 @@ typedef struct msg4Info
    uint8_t  pucchResInd;
    uint8_t  harqFeedbackInd;
    uint8_t  dciFormatId;
-   uint8_t  *msg4Pdu;
-   uint16_t  msg4PduLen;
-}Msg4Info;
+   bool     isMsg4Pdu;
+   uint16_t  dlMsgPduLen;
+   uint8_t  *dlMsgPdu;
+}DlMsgInfo;
 
-typedef struct msg4Alloc
+typedef struct lcSchInfo
 {
-   Msg4Info msg4Info;
-   BwpCfg bwp;
-   PdcchCfg msg4PdcchCfg;
-   PdschCfg msg4PdschCfg;
-}Msg4Alloc;
+   uint8_t   lcId;
+   uint16_t  schBytes; /* Number of scheduled bytes */
+}LcSchInfo;
+
+typedef struct dlMsgAlloc
+{
+   uint16_t   crnti;
+   uint8_t    numLc;
+   LcSchInfo  lcSchInfo[MAX_NUM_LC]; /* Scheduled LC info */
+   BwpCfg     bwp;
+   PdcchCfg   dlMsgPdcchCfg;
+   PdschCfg   dlMsgPdschCfg;
+   DlMsgInfo  dlMsgInfo;
+}DlMsgAlloc;
 
 typedef struct schSlotValue
 {
    SlotIndInfo currentTime;
    SlotIndInfo broadcastTime;
    SlotIndInfo rarTime;
-   SlotIndInfo msg4Time;
    SlotIndInfo dlMsgTime;
+   SlotIndInfo ulDciTime;
 }SchSlotValue;
+
+typedef struct format0_0
+{
+   uint8_t         resourceAllocType;
+   /* since we are using type-1, hence rbBitmap excluded */
+   FreqDomainAlloc freqAlloc;
+   TimeDomainAlloc timeAlloc;
+   uint16_t        rowIndex;
+   uint8_t         mcs;
+   uint8_t         harqProcId;   /* HARQ Process ID */
+   bool            puschHopFlag;
+   bool            freqHopFlag;
+   uint8_t         ndi;    /* NDI */
+   uint8_t         rv;     /* Redundancy Version */
+   uint8_t         tpcCmd;
+   bool            sUlCfgd;
+}Format0_0;
+
+typedef struct format0_1
+{
+/* TBD */
+
+}Format0_1;
+
+typedef struct format1_0
+{
+/* TBD */
+
+}Format1_0;
+
+typedef struct format1_1
+{
+/* TBD */
+}Format1_1;
+
+typedef struct dciInfo
+{
+   uint16_t      cellId;   
+   uint16_t      crnti;          /* CRNI */
+   SlotIndInfo   slotIndInfo;    /* Slot Info: sfn, slot number */
+   BwpCfg        bwpCfg;         /* BWP Cfg */
+   CoresetCfg    coresetCfg;     /* Coreset1 Cfg */
+   FormatType    formatType;     /* DCI Format */
+   union
+   {
+      Format0_0  format0_0;      /* Format 0_0 */
+      Format0_1  format0_1;      /* Format 0_1 */
+      Format1_0  format1_0;      /* Format 1_0 */
+      Format1_1  format1_1;      /* Format 1_1 */
+   }format;
+   DlDCI    dciInfo;
+}DciInfo;
+
 
 typedef struct dlSchedInfo
 {
@@ -695,19 +815,29 @@ typedef struct dlSchedInfo
    RarAlloc *rarAlloc;
 
    /* Allocation from MSG4 */
-   Msg4Alloc *msg4Alloc;
+   //Msg4Alloc *msg4Alloc;
+
+   /* UL grant in response to BSR */
+   DciInfo    *ulGrant;
+
+   /* Allocation from dedicated DL msg */
+   DlMsgAlloc *dlMsgAlloc;
+
 }DlSchedInfo;
 
 typedef struct tbInfo
 {
-   uint8_t  mcs;    /* MCS */
-   uint8_t  ndi;    /* NDI */
-   uint8_t  rv;     /* Redundancy Version */
-   uint16_t tbSize; /* TB Size */
+   uint8_t  qamOrder;  /* Modulation Order */
+   uint8_t  mcs;       /* MCS */
+   SchMcsTable  mcsTable;  /* MCS Table */
+   uint8_t  ndi;       /* NDI */
+   uint8_t  rv;        /* Redundancy Version */
+   uint16_t tbSize;    /* TB Size */
 }TbInfo;
 
 typedef struct schPuschInfo
 {
+   uint16_t         crnti;
    uint8_t          harqProcId;   /* HARQ Process ID */
    uint8_t          resAllocType; /* Resource allocation type */
    FreqDomainAlloc  fdAlloc;      /* Freq domain allocation */
@@ -717,6 +847,16 @@ typedef struct schPuschInfo
    uint8_t          nrOfDmrsSymbols;
    uint8_t          dmrsAddPos;
 }SchPuschInfo;
+
+typedef struct schPucchFormatCfg
+{
+   uint8_t interSlotFreqHop;
+   uint8_t addDmrs;
+   uint8_t maxCodeRate;
+   uint8_t numSlots;
+   bool    pi2BPSK;
+   bool    harqAckCSI;
+}SchPucchFormatCfg;
 
 typedef struct schPucchInfo
 {
@@ -729,6 +869,13 @@ typedef struct schPucchInfo
    uint8_t          numHarqBits;
    uint8_t          uciFlag;
    uint8_t          numUciBits;
+   uint8_t          intraFreqHop;
+   uint16_t         secondPrbHop;
+   uint8_t          initialCyclicShift;
+   uint8_t          occLen;
+   uint8_t          occIdx;
+   uint8_t          timeDomOCC;
+   SchPucchFormatCfg cmnFormatCfg;
 }SchPucchInfo;
 
 typedef struct ulSchedInfo
@@ -774,9 +921,9 @@ typedef struct dlRlcBOInfo
 {
    uint16_t    cellId;
    uint16_t    crnti;
-   uint16_t    numLc;
-   BOInfo      boInfo[MAX_NUM_LOGICAL_CHANNELS];
-}DlRlcBOInfo;
+   uint8_t     lcId;
+   uint32_t    dataVolume;
+}DlRlcBoInfo;
 
 /* Info of Scheduling Request to Add/Modify */
 typedef struct schSchedReqInfo
@@ -886,6 +1033,20 @@ typedef struct schPdschTimeDomRsrcAlloc
    uint8_t    symbolLength;
 }SchPdschTimeDomRsrcAlloc;
 
+
+typedef struct schPdschBundling
+{
+   struct schStaticBundling
+   {
+     SchBundlingSizeSet2 size;
+   }SchStaticBundling;
+   struct schDynamicBundling
+   {
+     SchBundlingSizeSet1 sizeSet1;
+     SchBundlingSizeSet2 sizeSet2;
+   }SchDynamicBundling;
+}SchPdschBundling;
+
 /* DMRS downlink configuration */
 typedef struct schDmrsDlCfg
 {
@@ -902,6 +1063,7 @@ typedef struct schPdschConfig
    SchRBGSize                 rbgSize;
    SchCodeWordsSchedByDci     numCodeWordsSchByDci;                    /* Number of code words scheduled by DCI */
    SchBundlingType            bundlingType;
+   SchPdschBundling           bundlingInfo;
 }SchPdschConfig;
 
 /* Initial Downlink BWP */
@@ -935,9 +1097,160 @@ typedef struct schPdschServCellCfg
 }SchPdschServCellCfg;
 
 /* PUCCH Configuration */
+typedef struct schPucchResrcSetInfo
+{
+   uint8_t resrcSetId;
+   uint8_t resrcListCount;
+   uint8_t resrcList[MAX_NUM_PUCCH_PER_RESRC_SET];
+   uint8_t maxPayLoadSize;
+}SchPucchResrcSetInfo;
+
+typedef struct schPucchResrcSetCfg
+{
+   uint8_t resrcSetToAddModListCount;
+   SchPucchResrcSetInfo resrcSetToAddModList[MAX_NUM_PUCCH_RESRC_SET];
+   uint8_t resrcSetToRelListCount;
+   uint8_t resrcSetToRelList[MAX_NUM_PUCCH_RESRC];
+}SchPucchResrcSetCfg;
+
+typedef struct schPucchFormat0
+{
+   uint8_t initialCyclicShift;
+   uint8_t numSymbols;
+   uint8_t startSymbolIdx;
+}SchPucchFormat0;
+
+typedef struct schPucchFormat1
+{
+   uint8_t initialCyclicShift;
+   uint8_t numSymbols;
+   uint8_t startSymbolIdx;
+   uint8_t timeDomOCC;
+}SchPucchFormat1;
+
+typedef struct schPucchFormat2_3
+{
+   uint8_t numPrbs;
+   uint8_t numSymbols;
+   uint8_t startSymbolIdx;
+}SchPucchFormat2_3;
+
+typedef struct schPucchFormat4
+{
+   uint8_t numSymbols;
+   uint8_t occLen;
+   uint8_t occIdx;
+   uint8_t startSymbolIdx;
+}SchPucchFormat4;
+
+typedef struct schPucchResrcInfo
+{
+   uint8_t  resrcId;
+   uint16_t startPrb;
+   uint8_t  intraFreqHop;
+   uint16_t secondPrbHop;
+   uint8_t  pucchFormat;
+   union{
+      SchPucchFormat0   *format0; 
+      SchPucchFormat1   *format1;
+      SchPucchFormat2_3 *format2;
+      SchPucchFormat2_3 *format3;
+      SchPucchFormat4   *format4;
+   }SchPucchFormat;
+}SchPucchResrcInfo;
+
+typedef struct schPucchResrcCfg
+{
+   uint8_t resrcToAddModListCount;
+   SchPucchResrcInfo resrcToAddModList[MAX_NUM_PUCCH_RESRC];
+   uint8_t resrcToRelListCount;
+   uint8_t resrcToRelList[MAX_NUM_PUCCH_RESRC];
+}SchPucchResrcCfg;
+
+
+typedef struct schSchedReqResrcInfo
+{
+   uint8_t resrcId;
+   uint8_t requestId;
+   uint8_t periodicity;
+   uint16_t offset;
+   uint8_t resrc;
+}SchSchedReqResrcInfo;
+
+typedef struct schPucchSchedReqCfg
+{
+   uint8_t           schedAddModListCount;
+   SchSchedReqResrcInfo schedAddModList[MAX_NUM_SR_CFG_PER_CELL_GRP];
+   uint8_t           schedRelListCount;
+   uint8_t           schedRelList[MAX_NUM_SR_CFG_PER_CELL_GRP];
+}SchPucchSchedReqCfg;
+
+typedef struct schSpatialRelationInfo
+{
+   uint8_t spatialRelationId;
+   uint8_t servCellIdx;
+   uint8_t pathLossRefRSId;
+   uint8_t p0PucchId;
+   uint8_t closeLoopIdx;
+}SchSpatialRelationInfo;
+
+typedef struct schPucchSpatialCfg
+{
+   uint8_t spatialAddModListCount;
+   SchSpatialRelationInfo spatialAddModList[MAX_NUM_SPATIAL_RELATIONS];
+   uint8_t spatialRelListCount;
+   uint8_t spatialRelList[MAX_NUM_SPATIAL_RELATIONS];
+}SchPucchSpatialCfg;
+
+typedef struct schP0PucchCfg
+{
+   uint8_t p0PucchId;
+   int     p0PucchVal;
+}SchP0PucchCfg;
+
+typedef struct schPathLossRefRSCfg
+{
+   uint8_t pathLossRefRSId;
+}SchPathLossRefRSCfg;
+
+typedef struct schPucchMultiCsiCfg
+{
+   uint8_t  multiCsiResrcListCount;
+   uint8_t  multiCsiResrcList[MAX_NUM_PUCCH_RESRC-1];
+}SchPucchMultiCsiCfg;
+
+typedef struct schPucchDlDataToUlAck
+{
+   uint8_t  dlDataToUlAckListCount;
+   uint8_t  dlDataToUlAckList[MAX_NUM_DL_DATA_TO_UL_ACK];
+}SchPucchDlDataToUlAck;
+
+typedef struct schPucchPowerControl
+{
+   int deltaF_Format0;
+   int deltaF_Format1;
+   int deltaF_Format2;
+   int deltaF_Format3;
+   int deltaF_Format4;
+   uint8_t p0SetCount;
+   SchP0PucchCfg p0Set[MAX_NUM_PUCCH_P0_PER_SET];
+   uint8_t pathLossRefRSListCount;
+   SchPathLossRefRSCfg pathLossRefRSList[MAX_NUM_PATH_LOSS_REF_RS];
+}SchPucchPowerControl;
+
 typedef struct schPucchCfg
 {
-   /* TODO : Not used currently */ 
+   SchPucchResrcSetCfg   *resrcSet;
+   SchPucchResrcCfg      *resrc;
+   SchPucchFormatCfg     *format1; 
+   SchPucchFormatCfg     *format2; 
+   SchPucchFormatCfg     *format3; 
+   SchPucchFormatCfg     *format4;
+   SchPucchSchedReqCfg   *schedReq;
+   SchPucchMultiCsiCfg   *multiCsiCfg;
+   SchPucchSpatialCfg    *spatialInfo;
+   SchPucchDlDataToUlAck *dlDataToUlAck;
+   SchPucchPowerControl  *powerControl;
 }SchPucchCfg;
 
 /* Transform precoding disabled */
@@ -965,6 +1278,7 @@ typedef struct schPuschTimeDomRsrcAlloc
 /* PUSCH Configuration */
 typedef struct schPuschCfg
 {
+   uint8_t                    dataScramblingId;
    SchDmrsUlCfg               dmrsUlCfgForPuschMapTypeA;
    SchResourceAllocType       resourceAllocType;
    uint8_t                    numTimeDomRsrcAlloc;
@@ -1041,7 +1355,7 @@ typedef struct schGrbQosFlowInfo
 /* DRB QoS */
 typedef struct schDrbQos
 {
-   uint8_t  fiveQiType;   /* Dynamic or non-dynamic */ 
+   SchQosType  fiveQiType;   /* Dynamic or non-dynamic */ 
    union
    {
       SchNonDynFiveQi   nonDyn5Qi;
@@ -1085,19 +1399,27 @@ typedef struct schDlLcCfg
 /* Logical Channel configuration */
 typedef struct schLcCfg
 {
+   ConfigType     configType;
    uint8_t        lcId;
    SchDrbQosInfo  *drbQos;
    SchSnssai      *snssai;
    SchDlLcCfg     dlLcCfg;
-   SchUlLcCfg     *ulLcCfg;
+   SchUlLcCfg     ulLcCfg;
 }SchLcCfg;
 
 /* Aggregate max bit rate */
-typedef struct aggrMaxBitRate
+typedef struct schAmbrCfg
 {
-   uint32_t   ulBitRate;
-   uint32_t   dlBitRate;
-}SchAggrMaxBitRate;
+   uint32_t   ulBr;   /* Ul BitRate */
+   uint32_t   dlBr;   /* Dl BitRate */
+}SchAmbrCfg;
+
+typedef struct schModulationInfo
+{
+   uint8_t      modOrder;
+   uint8_t      mcsIndex;
+   SchMcsTable  mcsTable;
+}SchModulationInfo;
 
 /* UE configuration */
 typedef struct schUeCfg
@@ -1107,9 +1429,11 @@ typedef struct schUeCfg
    SchMacCellGrpCfg   macCellGrpCfg;
    SchPhyCellGrpCfg   phyCellGrpCfg;
    SchSpCellCfg       spCellCfg;
-   SchAggrMaxBitRate  *aggrMaxBitRate;
-   uint8_t            numLc;
-   SchLcCfg           lcCfgList[MAX_NUM_LOGICAL_CHANNELS];
+   SchAmbrCfg         *ambrCfg;
+   SchModulationInfo  dlModInfo;
+   SchModulationInfo  ulModInfo;
+   uint8_t            numLcs;
+   SchLcCfg           schLcCfg[MAX_NUM_LC];
 }SchUeCfg;
 
 typedef struct schUeCfgRsp
@@ -1120,6 +1444,30 @@ typedef struct schUeCfgRsp
    SchMacRsp  rsp;
    SchFailureCause cause;
 }SchUeCfgRsp;
+
+typedef struct dataVolInfo
+{
+   uint8_t  lcgId;
+   uint32_t dataVol;
+}DataVolInfo;
+
+typedef struct ulBufferStatusRptInd
+{
+   uint16_t    cellId;
+   uint16_t    crnti;
+   BsrType     bsrType;
+   uint8_t     numLcg;
+   DataVolInfo dataVolInfo[MAX_NUM_LOGICAL_CHANNEL_GROUPS];
+}UlBufferStatusRptInd;
+
+typedef struct srUciIndInfo
+{
+   uint16_t    cellId;
+   uint16_t    crnti;
+   SlotIndInfo slotInd;
+   uint8_t     numSrBits;
+   uint8_t     srPayload[MAX_SR_BITS_IN_BYTES];
+}SrUciIndInfo;
 
 /* function pointers */
 
@@ -1153,9 +1501,9 @@ typedef uint8_t (*MacSchCrcIndFunc) ARGS((
 
 typedef uint8_t (*MacSchDlRlcBoInfoFunc) ARGS((
 	 Pst         *pst,         /* Post structure */
-	 DlRlcBOInfo *dlBoInfo));   /* DL BO Info */
+	 DlRlcBoInfo *dlBoInfo));   /* DL BO Info */
 
-typedef uint8_t (*MacSchUeCreateReqFunc) ARGS((
+typedef uint8_t (*MacSchAddUeConfigReqFunc) ARGS((
 	 Pst         *pst,           /* Post structure */
 	 SchUeCfg    *ueCfgToSch));   /* Scheduler UE Cfg */
 
@@ -1166,6 +1514,23 @@ typedef uint8_t (*SchUeCfgRspFunc) ARGS((
 typedef uint8_t (*MacSchSlotIndFunc) ARGS((
          Pst         *pst,          /* Post structure */
 	 SlotIndInfo *slotInd));    /* Slot Info */
+
+typedef uint8_t (*MacSchBsrFunc)       ARGS((
+   Pst                  *pst,
+   UlBufferStatusRptInd *bsrInd
+));
+
+typedef uint8_t (*MacSchSrUciIndFunc) ARGS(( 
+	 Pst         *pst,         /* Post structure */
+	 SrUciIndInfo  *uciInd));    /* UCI IND Info */
+
+typedef uint8_t (*MacSchModUeConfigReqFunc) ARGS((
+	 Pst         *pst,           /* Post structure */
+	 SchUeCfg    *ueCfgToSch));   /* Scheduler UE Cfg */
+
+typedef uint8_t (*SchUeReCfgRspFunc) ARGS((
+	 Pst         *pst,           /* Post structure */
+	 SchUeCfgRsp *cfgRsp));       /* Scheduler UE Cfg response */
 
 /* function declarations */
 uint8_t packMacSchSlotInd(Pst *pst, SlotIndInfo *slotInd);
@@ -1181,18 +1546,26 @@ uint8_t schActvInit(Ent entity, Inst instId, Region region, Reason reason);
 uint8_t SchSendCfgCfm(Pst *pst, RgMngmt *cfm);
 uint8_t MacProcUlSchInfo(Pst *pst, UlSchedInfo *ulSchedInfo);
 uint8_t packMacSchRachInd(Pst *pst, RachIndInfo *rachInd);
-uint8_t macSchRachInd(Pst *pst, RachIndInfo *rachInd);
+uint8_t MacSchRachInd(Pst *pst, RachIndInfo *rachInd);
 uint8_t packMacSchCrcInd(Pst *pst, CrcIndInfo *crcInd);
-uint8_t macSchCrcInd(Pst *pst, CrcIndInfo *crcInd);
-uint8_t packMacSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo);
-uint8_t macSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo);
-uint8_t packMacSchUeCreateReq(Pst *pst, SchUeCfg *ueCfgToSch);
-uint8_t macSchUeCreateReq(Pst *pst, SchUeCfg *ueCfgToSch);
+uint8_t MacSchCrcInd(Pst *pst, CrcIndInfo *crcInd);
+uint8_t packMacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo);
+uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo);
+uint8_t packMacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfgToSch);
+uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfgToSch);
 uint8_t packSchUeCfgRsp(Pst *pst, SchUeCfgRsp *cfgRsp);
 uint8_t MacProcSchUeCfgRsp(Pst *pst, SchUeCfgRsp *cfgRsp);
-uint8_t macSchSlotInd ARGS((Pst * pst, SlotIndInfo * slotInd));
+uint8_t MacSchSlotInd ARGS((Pst * pst, SlotIndInfo * slotInd));
 uint8_t packMacSchSlotInd(Pst * pst, SlotIndInfo * slotInd);
 uint8_t unpackMacSchSlotInd(MacSchSlotIndFunc func, Pst *pst, Buffer  *mBuf);
+uint8_t packMacSchBsr(Pst *pst, UlBufferStatusRptInd *bsrInd);
+uint8_t MacSchBsr(Pst *pst, UlBufferStatusRptInd *bsrInd);
+uint8_t packMacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd);
+uint8_t MacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd);
+uint8_t packMacSchModUeConfigReq(Pst *pst, SchUeCfg *ueCfgToSch);
+uint8_t MacSchModUeConfigReq(Pst *pst, SchUeCfg *ueCfgToSch);
+uint8_t packSchUeReconfigRsp(Pst *pst, SchUeCfgRsp *cfgRsp);
+uint8_t MacProcSchUeReconfigRsp(Pst *pst, SchUeCfgRsp *cfgRsp);
 
 /**********************************************************************
   End of file

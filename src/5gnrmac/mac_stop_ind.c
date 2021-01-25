@@ -22,6 +22,7 @@
 #include "du_app_mac_inf.h"
 #include "mac_sch_interface.h"
 #include "lwr_mac_upr_inf.h"
+#include "rlc_mac_inf.h"
 #include "mac.h"
 #include "mac_upr_inf_api.h"
 #include "mac_utils.h"
@@ -46,25 +47,25 @@ uint8_t sendStopIndToDuApp(uint16_t cellId)
 {
    Pst pst;
    uint8_t ret = ROK;
-   MacCellStopInfo *cellStopInd;
+   OduCellId *oduCellId;
 
    /*  Allocate sharable memory */
-   MAC_ALLOC_SHRABL_BUF(cellStopInd, sizeof(MacCellStopInfo));
-   if(!cellStopInd)
+   MAC_ALLOC_SHRABL_BUF(oduCellId, sizeof(OduCellId));
+   if(!oduCellId)
    {
-      DU_LOG("\nMAC : Stop Indication memory allocation failed");
+      DU_LOG("\nERROR  -->  MAC : Stop Indication memory allocation failed");
       return RFAILED;
    }
-   cellStopInd->cellId = cellId;
+   oduCellId->cellId = cellId;
 
    /* Fill Pst */
    FILL_PST_MAC_TO_DUAPP(pst, EVENT_MAC_STOP_IND);
 
-   ret = MacDuAppStopInd(&pst, cellStopInd);
+   ret = MacDuAppStopInd(&pst, oduCellId);
    if(ret != ROK)
    {
-      DU_LOG("\nMAC: Failed to send stop indication to DU APP");
-      MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, cellStopInd, sizeof(MacCellStopInfo));
+      DU_LOG("\nERROR  -->  MAC: Failed to send stop indication to DU APP");
+      MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, oduCellId, sizeof(OduCellId));
    }
    return ROK;
 }
@@ -81,10 +82,11 @@ uint8_t sendStopIndToDuApp(uint16_t cellId)
  *      -# ROK 
  *      -# RFAILED 
  ******************************************************************/
-uint8_t fapiMacStopInd(Pst *pst, uint16_t cellId) 
+uint8_t fapiMacStopInd(Pst *pst, uint16_t *cellId) 
 {
    uint8_t ret = ROK;
-   ret = sendStopIndToDuApp(cellId);
+   ret = sendStopIndToDuApp(*cellId);
+   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, cellId, sizeof(uint16_t));
    return ret;
 }
 

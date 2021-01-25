@@ -24,16 +24,16 @@
 
         Desc:    It contains the following common  functions for processing
                  the all the external interfaces.
-                    -- KwMiLkwCfgReq
-                    -- KwMiLkwCfgCfm 
-                    -- KwMiLkwCntrlReq
-                    -- KwMiLkwCntrlCfm
-                    -- KwMiLkwStaReq
-                    -- KwMiLkwStaCfm
-                    -- KwMiLkwStaInd
-                    -- KwMiLkwStsReq
-                    -- KwMiLkwStsCfm
-                    -- KwMiLkwTrcInd 
+                    -- RlcMiRlcConfigReq
+                    -- RlcMiRlcConfigCfm 
+                    -- RlcMiLkwCntrlReq
+                    -- RlcMiLkwCntrlCfm
+                    -- RlcMiLkwStaReq
+                    -- RlcMiLkwStaCfm
+                    -- RlcMiLkwStaInd
+                    -- RlcMiLkwStsReq
+                    -- RlcMiLkwStsCfm
+                    -- RlcMiLkwTrcInd 
 
         File:     kw_lmm.c
 
@@ -71,31 +71,31 @@ static int RLOG_FILE_ID=197;
 #include "kw_dl.x"
 #include "kw_ul.x"
 
-#define KW_MODULE KW_DBGMASK_LMM
+#define RLC_MODULE RLC_DBGMASK_LMM
 
 RLCStats gRlcStats;
 
 /*********************************************************************
  *             Forward Declaration of LKW Porting Functions
  ********************************************************************/
-PUBLIC KwCb *kwCb[KW_MAX_RLC_INSTANCES];
-EXTERN S16 kwActvTmr ARGS ((Ent ent, Inst inst));
+RlcCb *rlcCb[MAX_RLC_INSTANCES];
+S16 rlcActvTmr ARGS ((Ent ent, Inst inst));
 
-PRIVATE Void kwLmmSendCfm ARGS ((KwCb *gCb,Pst *pst,KwMngmt *cfm,U8 type,
+static Void rlcLmmSendCfm ARGS ((RlcCb *gCb,Pst *pst,RlcMngmt *cfm,uint8_t type,
                                  Header *hdr));
-PRIVATE S16 kwLmmGenCfg ARGS ((KwCb *gCb, KwGenCfg *cfg));
-PRIVATE S16 kwLmmCfgKwuSap ARGS ((KwCb *gCb,KwSapCfg *cfg));
-PRIVATE S16 kwLmmCfgUdxSap ARGS ((KwCb *gCb,KwSapCfg *cfg));
-PRIVATE S16 kwLmmCfgCkwSap ARGS ((KwCb *gCb,KwSapCfg   *cfg));
-PRIVATE S16 kwLmmCfgRguSap ARGS ((KwCb *gCb,KwSapCfg   *cfg));
-PRIVATE S16 kwLmmGenCntrl ARGS ((KwCb *gCb,KwMngmt *cntrl));
-PRIVATE S16 kwLmmUdxSapCntrl ARGS ((KwCb *gCb,KwMngmt *cntrl));
-PRIVATE S16 kwLmmLSapCntrl ARGS ((KwCb *gCb,KwMngmt *cntrl));
-PRIVATE S16 kwLmmGetKwuSapSta ARGS ((KwCb *gCb,KwKwuSapSta *sta));
-PRIVATE S16 kwLmmGetRguSapSta ARGS ((KwCb *gCb,KwRguSapSta *sta));
-PRIVATE S16 kwLmmGetCkwCntSapSta ARGS ((KwCb *gCb,KwCkwCntSapSta *sta));
-PRIVATE S16 kwLmmGetGenSts ARGS ((KwCb *gCb,KwGenSts *sts,Action action));
-PRIVATE S16 kwLmmGetSapSts ARGS ((KwCb *gCb,KwMngmt *sts,Elmnt elmnt,Action 
+static S16 rlcLmmGenCfg ARGS ((RlcCb *gCb, RlcGenCfg *cfg));
+static S16 rlcLmmCfgKwuSap ARGS ((RlcCb *gCb,RlcSapCfg *cfg));
+static S16 rlcLmmCfgUdxSap ARGS ((RlcCb *gCb,RlcSapCfg *cfg));
+static S16 rlcLmmCfgCkwSap ARGS ((RlcCb *gCb,RlcSapCfg   *cfg));
+static S16 rlcLmmCfgRguSap ARGS ((RlcCb *gCb,RlcSapCfg   *cfg));
+static S16 rlcLmmGenCntrl ARGS ((RlcCb *gCb,RlcMngmt *cntrl));
+static S16 rlcLmmUdxSapCntrl ARGS ((RlcCb *gCb,RlcMngmt *cntrl));
+static S16 rlcLmmLSapCntrl ARGS ((RlcCb *gCb,RlcMngmt *cntrl));
+static S16 rlcLmmGetKwuSapSta ARGS ((RlcCb *gCb,RlcKwuSapSta *sta));
+static S16 rlcLmmGetRguSapSta ARGS ((RlcCb *gCb,RlcRguSapSta *sta));
+static S16 rlcLmmGetCkwCntSapSta ARGS ((RlcCb *gCb,RlcCkwCntSapSta *sta));
+static S16 rlcLmmGetGenSts ARGS ((RlcCb *gCb,RlcGenSts *sts,Action action));
+static S16 rlcLmmGetSapSts ARGS ((RlcCb *gCb,RlcMngmt *sts,Elmnt elmnt,Action 
                                   action));
 
 
@@ -122,261 +122,249 @@ PRIVATE S16 kwLmmGetSapSts ARGS ((KwCb *gCb,KwMngmt *sts,Elmnt elmnt,Action
  *    LCM_REASON_INVALID_PAR_VAL
  *    LCM_REASON_HASHING_FAILED
  */
-#ifdef ANSI
-PRIVATE S16 kwLmmGenCfg
-(
-KwCb       *gCb,
-KwGenCfg   *cfg
-)
-#else
-PRIVATE S16 kwLmmGenCfg(gCB,cfg)
-KwCb       *gCb;
-KwGenCfg   *cfg;
-#endif
+static S16 rlcLmmGenCfg(RlcCb  *gCb,RlcGenCfg *cfg)
 {
-   Size     kwSapSize;
-   Size     kwUdxSapSize;
+   Size     rlcSapSize;
+   Size     rlcUdxSapSize;
    S16      ret;
-   CmTqCp   *kwTqCp;
+   CmTqCp   *rlcTqCp;
    Size     rguSapSize;
 
-   TRC2(kwLmmGenCfg)
-
-   if(cfg->maxUe > KW_MAX_UE) 
+   if(cfg->maxUe > RLC_MAX_UE) 
    {
 #if (ERRCLASS & ERRCLS_INT_PAR)
       RLOG2(L_ERROR, "Invalid maxUe : Max [%lu] Received [%lu]", 
-            KW_MAX_UE, 
+            RLC_MAX_UE, 
             cfg->maxUe);
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
-      RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+      return (LCM_REASON_INVALID_PAR_VAL);
    }
 
-   if(cfg->maxKwuSaps > KW_MAX_KWUSAPS)
+   if(cfg->maxKwuSaps > RLC_MAX_KWUSAPS)
    {
 #if (ERRCLASS & ERRCLS_INT_PAR)
       RLOG2(L_ERROR, "Invalid maxKwuSaps : Max [%lu] Received [%lu]", 
-            KW_MAX_KWUSAPS, 
+            RLC_MAX_KWUSAPS, 
             cfg->maxKwuSaps);
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
-      RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+      return (LCM_REASON_INVALID_PAR_VAL);
    }
 
-   if(cfg->maxUdxSaps > KW_MAX_UDXSAPS)
+   if(cfg->maxUdxSaps > RLC_MAX_UDXSAPS)
    {
 #if (ERRCLASS & ERRCLS_INT_PAR)
       RLOG2(L_ERROR, "Invalid maxUduSaps : Max [%lu] Received [%lu]", 
-            KW_MAX_UDXSAPS, 
+            RLC_MAX_UDXSAPS, 
             cfg->maxUdxSaps);
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
-      RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+      return (LCM_REASON_INVALID_PAR_VAL);
    }
    
-   if((cfg->maxRguSaps == 0) || (cfg->maxRguSaps > KW_MAX_RGUSAPS))
+   if((cfg->maxRguSaps == 0) || (cfg->maxRguSaps > RLC_MAX_RGUSAPS))
    {
       
 
-      RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+      return (LCM_REASON_INVALID_PAR_VAL);
    }
    if(gCb->init.cfgDone == TRUE)
    {
       /* reconfiguration not supported */
-      RETVALUE(LCM_REASON_RECONFIG_FAIL);
+      return (LCM_REASON_RECONFIG_FAIL);
    }
 
    gCb->genCfg = *cfg;
 
    /* Timer Queue Control point initialization */
-   kwTqCp         = &(gCb->kwTqCp);
-   kwTqCp->tmrLen = KW_TMR_LEN;
-   kwTqCp->nxtEnt = 0;
+   rlcTqCp         = &(gCb->rlcTqCp);
+   rlcTqCp->tmrLen = RLC_TMR_LEN;
+   rlcTqCp->nxtEnt = 0;
 
    if(gCb->genCfg.rlcMode == LKW_RLC_MODE_DL)
    {
-      KW_ALLOC(gCb,gCb->u.dlCb, sizeof (KwDlCb));
+      RLC_ALLOC(gCb,gCb->u.dlCb, sizeof (RlcDlCb));
       if (gCb->u.dlCb == NULLP)
       {  
          RLOG0(L_FATAL,"Memory Allocation failed");   
-         RETVALUE(LCM_REASON_MEM_NOAVAIL);
+         return (LCM_REASON_MEM_NOAVAIL);
       
       }
       /* allocate memory to the KWU sap's */
-      kwSapSize = (Size)((Size) gCb->genCfg.maxKwuSaps *
-                   (Size)sizeof(KwKwuSapCb));
+      rlcSapSize = (Size)((Size) gCb->genCfg.maxKwuSaps *
+                   (Size)sizeof(RlcKwuSapCb));
 
-      KW_ALLOC(gCb,gCb->u.dlCb->kwuDlSap, kwSapSize);
+      RLC_ALLOC(gCb,gCb->u.dlCb->rlcKwuDlSap, rlcSapSize);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-      if(gCb->u.dlCb->kwuDlSap == NULLP)
+      if(gCb->u.dlCb->rlcKwuDlSap == NULLP)
       {
-         KW_FREE(gCb,gCb->u.dlCb, sizeof (KwDlCb));
+         RLC_FREE(gCb,gCb->u.dlCb, sizeof (RlcDlCb));
          RLOG0(L_FATAL,"Memory Allocation failed");   
-         RETVALUE(LCM_REASON_MEM_NOAVAIL);
+         return (LCM_REASON_MEM_NOAVAIL);
       }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
       gCb->u.dlCb->numKwuSaps = gCb->genCfg.maxKwuSaps;
 
-      kwUdxSapSize = (Size)((Size) gCb->genCfg.maxUdxSaps *
-                   (Size)sizeof(KwUdxDlSapCb));
+      rlcUdxSapSize = (Size)((Size) gCb->genCfg.maxUdxSaps *
+                   (Size)sizeof(RlcUdxDlSapCb));
 
-      KW_ALLOC(gCb,gCb->u.dlCb->udxDlSap, kwUdxSapSize);
+      RLC_ALLOC(gCb,gCb->u.dlCb->udxDlSap, rlcUdxSapSize);
 #if (ERRCLASS & ERRCLS_INT_PAR)
       if(gCb->u.dlCb->udxDlSap == NULLP)
       {
-         KW_FREE(gCb,gCb->u.dlCb->kwuDlSap, kwSapSize);
-         KW_FREE(gCb,gCb->u.dlCb, sizeof (KwDlCb));
+         RLC_FREE(gCb,gCb->u.dlCb->rlcKwuDlSap, rlcSapSize);
+         RLC_FREE(gCb,gCb->u.dlCb, sizeof (RlcDlCb));
          RLOG0(L_FATAL,"Memory Allocation failed");   
-         RETVALUE(LCM_REASON_MEM_NOAVAIL);
+         return (LCM_REASON_MEM_NOAVAIL);
       }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
       rguSapSize = (Size)((Size) gCb->genCfg.maxRguSaps *
-                   (Size)sizeof(KwRguSapCb));
-      KW_ALLOC(gCb,gCb->u.dlCb->rguDlSap, rguSapSize);
+                   (Size)sizeof(RlcRguSapCb));
+      RLC_ALLOC(gCb,gCb->u.dlCb->rguDlSap, rguSapSize);
 #if (ERRCLASS & ERRCLS_INT_PAR)
       if(gCb->u.dlCb->rguDlSap == NULLP)
       {
-         KW_FREE(gCb,gCb->u.dlCb->udxDlSap, kwSapSize);
-         KW_FREE(gCb,gCb->u.dlCb->kwuDlSap, kwSapSize);
-         KW_FREE(gCb,gCb->u.dlCb, sizeof (KwDlCb));
+         RLC_FREE(gCb,gCb->u.dlCb->udxDlSap, rlcSapSize);
+         RLC_FREE(gCb,gCb->u.dlCb->rlcKwuDlSap, rlcSapSize);
+         RLC_FREE(gCb,gCb->u.dlCb, sizeof (RlcDlCb));
       
-         KWLOGERROR(gCb,ERRCLS_INT_PAR, EKW043, (ErrVal) cfg->maxUe,
-                   "kwLmmGenCfg: SgetSBuf Failed for rguSap...!");
-         RETVALUE(LCM_REASON_MEM_NOAVAIL);
+         RLCLOGERROR(gCb,ERRCLS_INT_PAR, EKW043, (ErrVal) cfg->maxUe,
+                   "rlcLmmGenCfg: SgetSBuf Failed for rguSap...!");
+         return (LCM_REASON_MEM_NOAVAIL);
       }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
       
       /* Initialize the Ue and Cell hash list */
-      ret = kwDbmDlInit(gCb);
+      ret = rlcDbmDlInit(gCb);
       if (ret != ROK)
       {
-         KW_FREE(gCb,gCb->u.dlCb->udxDlSap, kwSapSize);
-         KW_FREE(gCb,gCb->u.dlCb->kwuDlSap, kwSapSize);
-         KW_FREE(gCb,gCb->u.dlCb->rguDlSap, rguSapSize);
-         KW_FREE(gCb,gCb->u.dlCb, sizeof (KwDlCb));
+         RLC_FREE(gCb,gCb->u.dlCb->udxDlSap, rlcSapSize);
+         RLC_FREE(gCb,gCb->u.dlCb->rlcKwuDlSap, rlcSapSize);
+         RLC_FREE(gCb,gCb->u.dlCb->rguDlSap, rguSapSize);
+         RLC_FREE(gCb,gCb->u.dlCb, sizeof (RlcDlCb));
          RLOG0(L_FATAL,"RLC DL Initialization failed");   
-         RETVALUE(LCM_REASON_MEM_NOAVAIL);
+         return (LCM_REASON_MEM_NOAVAIL);
       }
 #if 0
       /* Register the timer */
 /*Pradeep: changing the SRegTmrMt() to SRegTmr()*/
-      if(SRegTmrMt(gCb->init.ent, gCb->init.inst, (U16)cfg->timeRes,
-              kwActvTmr) != ROK)
+      if(SRegTmrMt(gCb->init.ent, gCb->init.inst, (uint16_t)cfg->timeRes,
+              rlcActvTmr) != ROK)
       {
-         KW_FREE(gCb,gCb->u.dlCb->udxDlSap, kwUdxSapSize);
-         KW_FREE(gCb,gCb->u.dlCb->kwuDlSap, kwSapSize);
-         KW_FREE(gCb,gCb->u.dlCb->rguDlSap, rguSapSize);
-         KW_FREE(gCb,gCb->u.dlCb, sizeof (KwDlCb));
+         RLC_FREE(gCb,gCb->u.dlCb->udxDlSap, rlcUdxSapSize);
+         RLC_FREE(gCb,gCb->u.dlCb->rlcKwuDlSap, rlcSapSize);
+         RLC_FREE(gCb,gCb->u.dlCb->rguDlSap, rguSapSize);
+         RLC_FREE(gCb,gCb->u.dlCb, sizeof (RlcDlCb));
 
-         RETVALUE(LCM_REASON_REGTMR_FAIL);
+         return (LCM_REASON_REGTMR_FAIL);
       }
 #endif
       /* initializations for background processing of freeing memory */
-      kwUtlInitToBeFreed(gCb, &(gCb->u.dlCb->toBeFreed));
-      kwUtlInitializeSelfPst(gCb);
+      rlcUtlInitToBeFreed(gCb, &(gCb->u.dlCb->toBeFreed));
+      rlcUtlInitializeSelfPst(gCb);
 
       if(SGetMsg(gCb->init.region, 
                  gCb->init.pool,
                  &(gCb->u.dlCb->selfPstMBuf)) != ROK)
       {
-         KW_FREE(gCb,gCb->u.dlCb->udxDlSap, kwSapSize);
-         KW_FREE(gCb,gCb->u.dlCb->kwuDlSap, kwSapSize);
-         KW_FREE(gCb,gCb->u.dlCb->rguDlSap, rguSapSize);
-         KW_FREE(gCb,gCb->u.dlCb, sizeof (KwDlCb));
+         RLC_FREE(gCb,gCb->u.dlCb->udxDlSap, rlcSapSize);
+         RLC_FREE(gCb,gCb->u.dlCb->rlcKwuDlSap, rlcSapSize);
+         RLC_FREE(gCb,gCb->u.dlCb->rguDlSap, rguSapSize);
+         RLC_FREE(gCb,gCb->u.dlCb, sizeof (RlcDlCb));
 
-         RETVALUE(LCM_REASON_MEM_NOAVAIL);
+         return (LCM_REASON_MEM_NOAVAIL);
       
       }
 #ifdef LTE_L2_MEAS
-      kwUtlL2MeasDlInit(gCb);
+      rlcUtlL2MeasDlInit(gCb);
 #endif
    }
    else if(gCb->genCfg.rlcMode == LKW_RLC_MODE_UL)
    {
-      KW_ALLOC(gCb,gCb->u.ulCb, sizeof (KwUlCb));
+      RLC_ALLOC(gCb,gCb->u.ulCb, sizeof (RlcUlCb));
       if (gCb->u.ulCb == NULLP)
       {     
          RLOG0(L_FATAL,"Memory Allocation failed");   
-         RETVALUE(LCM_REASON_MEM_NOAVAIL);
+         return (LCM_REASON_MEM_NOAVAIL);
       
       }
       /* allocate memory to the KWU sap's */
-      kwSapSize = (Size)((Size) gCb->genCfg.maxKwuSaps *
-                   (Size)sizeof(KwKwuSapCb));
+      rlcSapSize = (Size)((Size) gCb->genCfg.maxKwuSaps *
+                   (Size)sizeof(RlcKwuSapCb));
 
-      KW_ALLOC(gCb,gCb->u.ulCb->kwuUlSap, kwSapSize);
+      RLC_ALLOC(gCb,gCb->u.ulCb->rlcKwuUlSap, rlcSapSize);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-      if(gCb->u.ulCb->kwuUlSap == NULLP)
+      if(gCb->u.ulCb->rlcKwuUlSap == NULLP)
       {
-         KW_FREE(gCb,gCb->u.ulCb, sizeof (KwUlCb));
+         RLC_FREE(gCb,gCb->u.ulCb, sizeof (RlcUlCb));
          RLOG0(L_FATAL,"Memory Allocation failed");   
-         RETVALUE(LCM_REASON_MEM_NOAVAIL);
+         return (LCM_REASON_MEM_NOAVAIL);
       }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
       gCb->u.ulCb->numKwuSaps = gCb->genCfg.maxKwuSaps;
 
       /* allocate memory to the KWU sap's */
-      kwUdxSapSize = (Size)((Size) gCb->genCfg.maxUdxSaps *
-                   (Size)sizeof(KwUdxUlSapCb));
+      rlcUdxSapSize = (Size)((Size) gCb->genCfg.maxUdxSaps *
+                   (Size)sizeof(RlcUdxUlSapCb));
 
-      KW_ALLOC(gCb,gCb->u.ulCb->udxUlSap, kwUdxSapSize);
+      RLC_ALLOC(gCb,gCb->u.ulCb->udxUlSap, rlcUdxSapSize);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
-      if(gCb->u.ulCb->kwuUlSap == NULLP)
+      if(gCb->u.ulCb->rlcKwuUlSap == NULLP)
       {
-         KW_FREE(gCb,gCb->u.ulCb->kwuUlSap, kwSapSize);
-         KW_FREE(gCb,gCb->u.ulCb, sizeof (KwUlCb));
+         RLC_FREE(gCb,gCb->u.ulCb->rlcKwuUlSap, rlcSapSize);
+         RLC_FREE(gCb,gCb->u.ulCb, sizeof (RlcUlCb));
          RLOG0(L_FATAL,"Memory Allocation failed");   
-         RETVALUE(LCM_REASON_MEM_NOAVAIL);
+         return (LCM_REASON_MEM_NOAVAIL);
       }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
       rguSapSize = (Size)((Size) gCb->genCfg.maxRguSaps *
-                   (Size)sizeof(KwRguSapCb));
-      KW_ALLOC(gCb,gCb->u.ulCb->rguUlSap, rguSapSize);
+                   (Size)sizeof(RlcRguSapCb));
+      RLC_ALLOC(gCb,gCb->u.ulCb->rguUlSap, rguSapSize);
 #if (ERRCLASS & ERRCLS_INT_PAR)
       if(gCb->u.ulCb->rguUlSap == NULLP)
       {
-         KW_FREE(gCb,gCb->u.ulCb->kwuUlSap, kwSapSize);
-         KW_FREE(gCb,gCb->u.ulCb->rguUlSap, kwSapSize);
-         KW_FREE(gCb,gCb->u.ulCb, sizeof (KwUlCb));
+         RLC_FREE(gCb,gCb->u.ulCb->rlcKwuUlSap, rlcSapSize);
+         RLC_FREE(gCb,gCb->u.ulCb->rguUlSap, rlcSapSize);
+         RLC_FREE(gCb,gCb->u.ulCb, sizeof (RlcUlCb));
       
-         KWLOGERROR(gCb,ERRCLS_INT_PAR, EKW043, (ErrVal) cfg->maxUe,
-                   "kwLmmGenCfg: SgetSBuf Failed for rguSap...!");
-         RETVALUE(LCM_REASON_MEM_NOAVAIL);
+         RLCLOGERROR(gCb,ERRCLS_INT_PAR, EKW043, (ErrVal) cfg->maxUe,
+                   "rlcLmmGenCfg: SgetSBuf Failed for rguSap...!");
+         return (LCM_REASON_MEM_NOAVAIL);
       }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
       /* Initialize the Ue and Cell hash list */
-      ret = kwDbmUlInit(gCb);
+      ret = rlcDbmUlInit(gCb);
       if (ret != ROK)
       {
-         KW_FREE(gCb,gCb->u.ulCb->udxUlSap, kwUdxSapSize);
-         KW_FREE(gCb,gCb->u.ulCb->kwuUlSap, kwSapSize);
-         KW_FREE(gCb,gCb->u.ulCb->rguUlSap, kwSapSize);
-         KW_FREE(gCb,gCb->u.ulCb, sizeof (KwUlCb));
+         RLC_FREE(gCb,gCb->u.ulCb->udxUlSap, rlcUdxSapSize);
+         RLC_FREE(gCb,gCb->u.ulCb->rlcKwuUlSap, rlcSapSize);
+         RLC_FREE(gCb,gCb->u.ulCb->rguUlSap, rlcSapSize);
+         RLC_FREE(gCb,gCb->u.ulCb, sizeof (RlcUlCb));
          RLOG0(L_FATAL,"RLC DL Initialization failed");   
       }
 
       /* Register the timer */
 #if 0
-      if(SRegTmrMt(gCb->init.ent, gCb->init.inst, (U16)cfg->timeRes,
-              kwActvTmr) != ROK)
+      if(SRegTmrMt(gCb->init.ent, gCb->init.inst, (uint16_t)cfg->timeRes,
+              rlcActvTmr) != ROK)
       {
-         KW_FREE(gCb,gCb->u.ulCb->udxUlSap, kwUdxSapSize);
-         KW_FREE(gCb,gCb->u.ulCb->kwuUlSap, kwSapSize);
-         KW_FREE(gCb,gCb->u.ulCb->rguUlSap, kwSapSize);
-         KW_FREE(gCb,gCb->u.ulCb, sizeof (KwUlCb));
+         RLC_FREE(gCb,gCb->u.ulCb->udxUlSap, rlcUdxSapSize);
+         RLC_FREE(gCb,gCb->u.ulCb->rlcKwuUlSap, rlcSapSize);
+         RLC_FREE(gCb,gCb->u.ulCb->rguUlSap, rlcSapSize);
+         RLC_FREE(gCb,gCb->u.ulCb, sizeof (RlcUlCb));
 
-         RETVALUE(LCM_REASON_REGTMR_FAIL);
+         return (LCM_REASON_REGTMR_FAIL);
       }
 #endif
 #ifdef LTE_L2_MEAS
-      kwUtlL2MeasUlInit(gCb);
+      rlcUtlL2MeasUlInit(gCb);
 #endif
    }
    else
@@ -385,14 +373,14 @@ KwGenCfg   *cfg;
       RLOG0(L_ERROR, "Received Invalid RLC Mode");
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
-      RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+      return (LCM_REASON_INVALID_PAR_VAL);
    }
    /* Timer Initialization  */
-   gCb->kwTqCp.tmrLen = KW_TMR_LEN;
+   gCb->rlcTqCp.tmrLen = RLC_TMR_LEN;
 
-   cmMemset((U8*)gCb->kwTq, NULLP, sizeof(CmTqType) * KW_TMR_LEN);
+   memset(gCb->rlcTq, NULLP, sizeof(CmTqType) * RLC_TMR_LEN);
 
-   KW_MEM_CPY(&(gCb->init.lmPst), &cfg->lmPst, sizeof(Pst));
+   RLC_MEM_CPY(&(gCb->init.lmPst), &cfg->lmPst, sizeof(Pst));
 
    gCb->init.lmPst.srcProcId = gCb->init.procId;
    gCb->init.lmPst.srcEnt = gCb->init.ent;
@@ -408,12 +396,12 @@ KwGenCfg   *cfg;
 
    gCb->init.cfgDone = TRUE;
 
-   RETVALUE(LCM_REASON_NOT_APPL);
+   return (LCM_REASON_NOT_APPL);
 } 
 
 /**
  * @brief
- *     Sends confirmation message to LM Called by KwMiLkwCfgReq function
+ *     Sends confirmation message to LM Called by RlcMiRlcConfigReq function
  * 
  * @param[in] gCb    RLC Instance Control Block
  * @param[in] pst    Post structure
@@ -424,29 +412,18 @@ KwGenCfg   *cfg;
  * @return  S16
  *     -# ROK
  */
-#ifdef ANSI
-PRIVATE Void kwLmmSendCfm
+static Void rlcLmmSendCfm
 (
-KwCb      *gCb,
-Pst       *pst,                
-KwMngmt   *cfm,               
-U8        type,              
-Header    *hdr              
+RlcCb      *gCb,
+Pst        *pst,                
+RlcMngmt   *cfm,               
+uint8_t    type,              
+Header     *hdr              
 )
-#else
-PRIVATE Void kwLmmSendCfm(gCb,pst, cfm, type, hdr)
-KwCb      gCb;
-Pst       *pst;            
-KwMngmt   *cfm;           
-U8        type;          
-Header    *hdr;         
-#endif
 {
    Pst   rPst;   /* Reply post structure */
 
-   TRC2(kwLmmSendCfm);
-
-   KW_MEM_SET(&rPst, 0, sizeof(Pst));   
+   RLC_MEM_SET(&rPst, 0, sizeof(Pst));   
  
    /* reply post structure for confirmation */
    if (gCb)
@@ -480,19 +457,19 @@ Header    *hdr;
    switch(type)
    {
       case TCFG:
-         KwMiLkwCfgCfm(&rPst,cfm);
+         RlcMiRlcConfigCfm(&rPst,cfm);
          break;
       case TCNTRL:
          SGetDateTime(&(cfm->t.cntrl.dt));
-         KwMiLkwCntrlCfm(&rPst,cfm);
+         RlcMiLkwCntrlCfm(&rPst,cfm);
          break;
       case TSTS:
          SGetDateTime(&(cfm->t.sts.dt));
-         KwMiLkwStsCfm(&rPst,0,cfm);
+         RlcMiLkwStsCfm(&rPst,0,cfm);
          break;
       case TSSTA:
          SGetDateTime(&(cfm->t.ssta.dt));
-         KwMiLkwStaCfm(&rPst,cfm);
+         RlcMiLkwStaCfm(&rPst,cfm);
          break;
       default:
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -505,7 +482,7 @@ Header    *hdr;
          break;
    }
 
-   RETVOID; 
+   return; 
 } 
 
 
@@ -565,45 +542,33 @@ Header    *hdr;
  *    -# Failure : RFAILED
  */
 
-#ifdef ANSI
-PUBLIC S16 KwMiLkwCfgReq 
-(
-Pst       *pst, 
-KwMngmt   *cfg
-)
-#else
-PUBLIC S16 KwMiLkwCfgReq (pst, cfg)
-Pst       *pst;
-KwMngmt   *cfg;
-#endif
+uint8_t RlcMiRlcConfigReq (Pst *pst,RlcMngmt *cfg)
 {
    Reason   reason;   /* failure reason */
-   KwCb     *tKwCb=NULLP;
-
-   TRC3(KwMiLkwCfgReq);
+   RlcCb     *tRlcCb=NULLP;
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* Check if the instance is configured */
-   if (pst->dstInst >= KW_MAX_RLC_INSTANCES)
+   if (pst->dstInst >= MAX_RLC_INSTANCES)
    {
       cfg->cfm.status = LCM_PRIM_NOK;
       cfg->cfm.reason = LCM_REASON_INVALID_INSTANCE;
-      kwLmmSendCfm(tKwCb,pst, cfg, TCFG, &cfg->hdr);     
-      RETVALUE(RFAILED);
+      rlcLmmSendCfm(tRlcCb,pst, cfg, TCFG, &cfg->hdr);     
+      return (RFAILED);
    }
 #endif
    
-   tKwCb =  KW_GET_KWCB(pst->dstInst);
+   tRlcCb =  RLC_GET_RLCCB(pst->dstInst);
 
-   if (!tKwCb)
+   if (!tRlcCb)
    {
       cfg->cfm.status = LCM_PRIM_NOK;
       cfg->cfm.reason = LCM_REASON_GENCFG_NOT_DONE;
-      kwLmmSendCfm(tKwCb,pst, cfg, TCFG, &cfg->hdr);     
-      RETVALUE(RFAILED);
+      rlcLmmSendCfm(tRlcCb,pst, cfg, TCFG, &cfg->hdr);     
+      return (RFAILED);
    }
    /* check configuration is done or not */
-   if ((tKwCb->init.cfgDone != TRUE) && 
+   if ((tRlcCb->init.cfgDone != TRUE) && 
        (cfg->hdr.elmId.elmnt != STGEN))
    {
       /*
@@ -613,37 +578,37 @@ KwMngmt   *cfg;
 
       cfg->cfm.status = LCM_PRIM_NOK;
       cfg->cfm.reason = LCM_REASON_GENCFG_NOT_DONE;
-      kwLmmSendCfm(tKwCb,pst, cfg, TCFG, &cfg->hdr);     
-      RETVALUE(RFAILED);
+      rlcLmmSendCfm(tRlcCb,pst, cfg, TCFG, &cfg->hdr);     
+      return (RFAILED);
    }
 
-   RLOG1(L_DEBUG, "KwMiLkwCfgReq elmId(%d)", cfg->hdr.elmId.elmnt);
+   RLOG1(L_DEBUG, "RlcMiRlcConfigReq elmId(%d)", cfg->hdr.elmId.elmnt);
 
    switch(cfg->hdr.elmId.elmnt)
    {
       case STGEN:
       {
-         reason = kwLmmGenCfg(tKwCb,&cfg->t.cfg.s.gen);
+         reason = rlcLmmGenCfg(tRlcCb,&cfg->t.cfg.s.gen);
          break;
       }
       case STKWUSAP:
       {
-         reason = kwLmmCfgKwuSap(tKwCb,&cfg->t.cfg.s.sap);
+         reason = rlcLmmCfgKwuSap(tRlcCb,&cfg->t.cfg.s.sap);
          break;
       }
       case STCKWSAP:
       {
-         reason = kwLmmCfgCkwSap(tKwCb,&cfg->t.cfg.s.sap);
+         reason = rlcLmmCfgCkwSap(tRlcCb,&cfg->t.cfg.s.sap);
          break;
       }
       case STRGUSAP:
       {
-         reason = kwLmmCfgRguSap(tKwCb,&cfg->t.cfg.s.sap);
+         reason = rlcLmmCfgRguSap(tRlcCb,&cfg->t.cfg.s.sap);
          break;
       }
       case STUDXSAP:
       {
-         reason = kwLmmCfgUdxSap(tKwCb,&cfg->t.cfg.s.sap);
+         reason = rlcLmmCfgUdxSap(tRlcCb,&cfg->t.cfg.s.sap);
          break;
       }
       default:
@@ -657,25 +622,25 @@ KwMngmt   *cfg;
    {
       cfg->cfm.status = LCM_PRIM_OK;
       cfg->cfm.reason = LCM_REASON_NOT_APPL;
-      kwLmmSendCfm(tKwCb,pst, cfg, TCFG, &cfg->hdr);
-      RETVALUE(ROK);
+      rlcLmmSendCfm(tRlcCb,pst, cfg, TCFG, &cfg->hdr);
+      return (ROK);
    }
    else
    {
       cfg->cfm.status = LCM_PRIM_NOK;
       cfg->cfm.reason = reason;
-      kwLmmSendCfm(tKwCb,pst, cfg, TCFG, &cfg->hdr);
-      RETVALUE(RFAILED);
+      rlcLmmSendCfm(tRlcCb,pst, cfg, TCFG, &cfg->hdr);
+      return (RFAILED);
    }
 } 
 
 /**
  * @brief 
  *    The layer manager initiates and uses the management-control procedure to 
- *    control RLC elements.The RLC control request primitive (KwMiLkwCntrlReq) 
+ *    control RLC elements.The RLC control request primitive (RlcMiLkwCntrlReq) 
  *    can be called more than once and at any time after the 
  *    management-configuration procedure.The control request primitive 
- *    is confirmed by a KwMiLkwCntrlCfm primitive.
+ *    is confirmed by a RlcMiLkwCntrlCfm primitive.
  *
  * @details
  *    This function implements the following logic: 
@@ -721,53 +686,41 @@ KwMngmt   *cfg;
  *    -# ROK
  *    -# RFAILED
  */
-#ifdef ANSI
-PUBLIC S16 KwMiLkwCntrlReq
-(
-Pst       *pst, 
-KwMngmt   *cntrl
-)
-#else
-PUBLIC S16 KwMiLkwCntrlReq(pst, cntrl)
-Pst       *pst;
-KwMngmt   *cntrl;
-#endif
+uint8_t RlcMiLkwCntrlReq(Pst *pst, RlcMngmt *cntrl)
 {
    Reason   reason;   /* failure reason */
-   KwCb     *tKwCb=NULLP;
-
-   TRC3(KwMiLkwCntrlReq)
+   RlcCb     *tRlcCb=NULLP;
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* Check if the instance is configured */
-   if (pst->dstInst >= KW_MAX_RLC_INSTANCES)
+   if (pst->dstInst >= MAX_RLC_INSTANCES)
    {
       cntrl->cfm.status = LCM_PRIM_NOK;
       cntrl->cfm.reason =  LCM_REASON_INVALID_INSTANCE;
 
-      kwLmmSendCfm(tKwCb,pst, cntrl, TCNTRL, &cntrl->hdr);
-      RETVALUE(RFAILED);
+      rlcLmmSendCfm(tRlcCb,pst, cntrl, TCNTRL, &cntrl->hdr);
+      return (RFAILED);
    }
 #endif
    
-   tKwCb =  KW_GET_KWCB(pst->dstInst);
+   tRlcCb =  RLC_GET_RLCCB(pst->dstInst);
 
-   if(!tKwCb)
+   if(!tRlcCb)
    {
       cntrl->cfm.status = LCM_PRIM_NOK;
       cntrl->cfm.reason = LCM_REASON_GENCFG_NOT_DONE;
-      kwLmmSendCfm(tKwCb,pst, cntrl, TCNTRL, &cntrl->hdr);
-      RETVALUE(RFAILED);
+      rlcLmmSendCfm(tRlcCb,pst, cntrl, TCNTRL, &cntrl->hdr);
+      return (RFAILED);
    }
 
-   if (!(tKwCb->init.cfgDone))
+   if (!(tRlcCb->init.cfgDone))
    {
       cntrl->cfm.status = LCM_PRIM_NOK;
       cntrl->cfm.reason = LCM_REASON_GENCFG_NOT_DONE;
-      kwLmmSendCfm(tKwCb,pst, cntrl, TCNTRL, &cntrl->hdr);
-      RETVALUE(RFAILED);
+      rlcLmmSendCfm(tRlcCb,pst, cntrl, TCNTRL, &cntrl->hdr);
+      return (RFAILED);
    }
-   RLOG1(L_DEBUG, "KwMiLkwCntrlReq(elmId(%d))", cntrl->hdr.elmId.elmnt);
+   RLOG1(L_DEBUG, "RlcMiLkwCntrlReq(elmId(%d))", cntrl->hdr.elmId.elmnt);
 
    /* In normal cases, LCM_REASON_NOT_APPL is returned in cfm.
     * In all error cases appropriate reason is returned
@@ -779,19 +732,19 @@ KwMngmt   *cntrl;
       case STGEN:
       {
          /* general control */
-         reason = kwLmmGenCntrl(tKwCb,cntrl);
+         reason = rlcLmmGenCntrl(tRlcCb,cntrl);
          break;
       }
       case STRGUSAP:
       {
          /* Lower SAP control */
-         reason = kwLmmLSapCntrl(tKwCb,cntrl);
+         reason = rlcLmmLSapCntrl(tRlcCb,cntrl);
          break;
       }
       case STUDXSAP:
       {
          /* Udx Sap cntrl */
-         reason = kwLmmUdxSapCntrl(tKwCb,cntrl);
+         reason = rlcLmmUdxSapCntrl(tRlcCb,cntrl);
          break;
       }
       default:
@@ -812,9 +765,9 @@ KwMngmt   *cntrl;
       cntrl->cfm.reason = reason;
    }
 
-   kwLmmSendCfm(tKwCb,pst, cntrl, TCNTRL, &cntrl->hdr);
+   rlcLmmSendCfm(tRlcCb,pst, cntrl, TCNTRL, &cntrl->hdr);
 
-   RETVALUE(ROK);
+   return ROK;
 } 
 
 /**
@@ -829,84 +782,72 @@ KwMngmt   *cntrl;
  *    -# ROK (SUCCESS)
  *    -# RFAILED
  */
-#ifdef ANSI
-PUBLIC S16 KwMiLkwStaReq
-(
-Pst       *pst, 
-KwMngmt   *sta
-)
-#else
-PUBLIC S16 KwMiLkwStaReq(pst, sta)
-Pst       *pst;
-KwMngmt   *sta;
-#endif
+S16 RlcMiLkwStaReq(Pst *pst,RlcMngmt *sta)
 {
-   KwMngmt   rSta;     /* Status */
+   RlcMngmt   rSta;     /* Status */
    Reason    reason;   /* Failure reason */
-   KwCb      *tKwCb=NULLP;
-
-   TRC3(KwMiLkwStaReq);
+   RlcCb      *tRlcCb=NULLP;
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* Check if the instance is configured */
-   if (pst->dstInst >= KW_MAX_RLC_INSTANCES)
+   if (pst->dstInst >= MAX_RLC_INSTANCES)
    {
       sta->cfm.status = LCM_PRIM_NOK;
       sta->cfm.reason = LCM_REASON_INVALID_INSTANCE;
 
-      kwLmmSendCfm(tKwCb,pst, sta, TSSTA, &sta->hdr);
-      RETVALUE(RFAILED);
+      rlcLmmSendCfm(tRlcCb,pst, sta, TSSTA, &sta->hdr);
+      return (RFAILED);
    }
 #endif
    
-   tKwCb =  KW_GET_KWCB(pst->dstInst);
-   if (!tKwCb)
+   tRlcCb =  RLC_GET_RLCCB(pst->dstInst);
+   if (!tRlcCb)
    {
       sta->cfm.status = LCM_PRIM_NOK;
       sta->cfm.reason = LCM_REASON_GENCFG_NOT_DONE;
 
-      kwLmmSendCfm(tKwCb,pst, sta, TSSTA, &sta->hdr);
-      RETVALUE(RFAILED);
+      rlcLmmSendCfm(tRlcCb,pst, sta, TSSTA, &sta->hdr);
+      return (RFAILED);
    }
 
    RLOG1(L_DEBUG, "Status request for elmId(%d))", sta->hdr.elmId.elmnt);
 
    reason = LCM_REASON_NOT_APPL;
 
-   KW_MEM_SET(&rSta, 0, sizeof(KwMngmt));
+   RLC_MEM_SET(&rSta, 0, sizeof(RlcMngmt));
    switch (sta->hdr.elmId.elmnt)
    {
       case STSID:
       {
          reason = LCM_REASON_NOT_APPL;
-         kwGetSId(&rSta.t.ssta.s.sysId);
+         rlcGetSId(&rSta.t.ssta.s.sysId);
          break;
       }
       case STKWUSAP:
       {
-         KW_MEM_CPY (&rSta.t.ssta.s.kwuSap, 
-                     &sta->t.ssta.s.kwuSap, 
-                     sizeof (KwKwuSapSta));
+         RLC_MEM_CPY (&rSta.t.ssta.s.rlckwuSap, 
+                     &sta->t.ssta.s.rlckwuSap, 
+                     sizeof (RlcKwuSapSta));
 
-         reason = kwLmmGetKwuSapSta (tKwCb,&rSta.t.ssta.s.kwuSap);
+         reason = rlcLmmGetKwuSapSta (tRlcCb,&rSta.t.ssta.s.rlckwuSap);
          break;
       }
       case STRGUSAP:
       {
-         KW_MEM_CPY (&rSta.t.ssta.s.rguSap, 
+         RLC_MEM_CPY (&rSta.t.ssta.s.rguSap, 
                      &sta->t.ssta.s.rguSap,
-                     sizeof (KwRguSapSta));
+                     sizeof (RlcRguSapSta));
 
-         reason = kwLmmGetRguSapSta (tKwCb,&rSta.t.ssta.s.rguSap);
+         reason = rlcLmmGetRguSapSta (tRlcCb,&rSta.t.ssta.s.rguSap);
          break;
       }
       case STCKWSAP:
       {
-         KW_MEM_CPY (&rSta.t.ssta.s.ckwSap, 
+         RLC_MEM_CPY (&rSta.t.ssta.s.ckwSap, 
                      &sta->t.ssta.s.ckwSap,
-                     sizeof (KwCkwCntSapSta));
+                     sizeof (RlcCkwCntSapSta));
 
-         reason = kwLmmGetCkwCntSapSta (tKwCb,&rSta.t.ssta.s.ckwSap);
+         reason = rlcLmmGetCkwCntSapSta (tRlcCb,&rSta.t.ssta.s.ckwSap);
          break;
       }
       default:
@@ -926,9 +867,9 @@ KwMngmt   *sta;
       rSta.cfm.status = LCM_PRIM_NOK;
       rSta.cfm.reason = reason;
    }
-   kwLmmSendCfm(tKwCb,pst, &rSta, TSSTA, &sta->hdr);
+   rlcLmmSendCfm(tRlcCb,pst, &rSta, TSSTA, &sta->hdr);
 
-   RETVALUE(ROK);
+   return ROK;
 } 
 
 /**
@@ -945,14 +886,14 @@ KwMngmt   *sta;
  *       - get the general statistics from the KW control block; 
  *       - if (action = RESET) 
  *          - reset the general statistic field in the RlCb; 
- *          - call KwMiLkwStsCfm to send statistics back to layer manager; 
+ *          - call RlcMiLkwStsCfm to send statistics back to layer manager; 
  *    - case STCKWSAP 
  *    - case STKWUSAP 
  *    - case STRGUSAP 
  *        - get the SAP specific statistics from KW control block; 
  *        - if (action = RESET) 
  *       - reset the general statistic field in the RlCb; 
- *       - call KwMiLkwStsCfm to send statistics to the layer manager; 
+ *       - call RlcMiLkwStsCfm to send statistics to the layer manager; 
  *  -end switch;
  *
  * @param[in] pst      post structure
@@ -963,59 +904,45 @@ KwMngmt   *sta;
  *    -# ROK
  *    -# RFAILED
  */
-#ifdef ANSI
-PUBLIC S16 KwMiLkwStsReq 
-(
-Pst      *pst, 
-Action    action, 
-KwMngmt   *sts
-)
-#else
-PUBLIC S16 KwMiLkwStsReq (pst, action, sts)
-Pst       *pst;
-Action    action;
-KwMngmt   *sts;
-#endif
+S16 RlcMiLkwStsReq (Pst *pst, Action action,RlcMngmt *sts)
 {
-   KwMngmt   rSts;     /* Statistics */
+   RlcMngmt   rSts;     /* Statistics */
    Reason    reason;   /* Reason for failure */
-   KwCb     *tKwCb=NULLP;
-
-   TRC3(KwMiLkwStsReq);
+   RlcCb     *tRlcCb=NULLP;
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* Check if the instance is configured */
-   if (pst->dstInst >= KW_MAX_RLC_INSTANCES)
+   if (pst->dstInst >= MAX_RLC_INSTANCES)
    {
       rSts.cfm.status = LCM_PRIM_NOK;
       rSts.cfm.reason = LCM_REASON_INVALID_INSTANCE;
 
-      kwLmmSendCfm(tKwCb,pst, &rSts, TCNTRL, &sts->hdr);
-      RETVALUE(RFAILED);
+      rlcLmmSendCfm(tRlcCb,pst, &rSts, TCNTRL, &sts->hdr);
+      return (RFAILED);
    }
 #endif
    
-   tKwCb =  KW_GET_KWCB(pst->dstInst);
-   if (!tKwCb)
+   tRlcCb =  RLC_GET_RLCCB(pst->dstInst);
+   if (!tRlcCb)
    {
       rSts.cfm.status = LCM_PRIM_NOK;
       rSts.cfm.reason = LCM_REASON_GENCFG_NOT_DONE;
 
-      kwLmmSendCfm(tKwCb,pst, &rSts, TCNTRL, &sts->hdr);
-      RETVALUE(RFAILED);
+      rlcLmmSendCfm(tRlcCb,pst, &rSts, TCNTRL, &sts->hdr);
+      return (RFAILED);
    }
 
-   RLOG2(L_DEBUG, "KwMiLkwStsReq(elmId(%d),action(%d))", 
+   RLOG2(L_DEBUG, "RlcMiLkwStsReq(elmId(%d),action(%d))", 
                        action, 
                        sts->hdr.elmId.elmnt);
 
-   KW_MEM_SET(&rSts, 0, sizeof(KwMngmt));
+   RLC_MEM_SET(&rSts, 0, sizeof(RlcMngmt));
 
    switch (sts->hdr.elmId.elmnt)
    {
       case STGEN:
       {
-         reason = kwLmmGetGenSts(tKwCb,&rSts.t.sts.s.gen, action);
+         reason = rlcLmmGetGenSts(tRlcCb,&rSts.t.sts.s.gen, action);
          break;
       }
       case STKWUSAP:
@@ -1023,10 +950,10 @@ KwMngmt   *sts;
       {
          if( sts->hdr.elmId.elmnt == STKWUSAP)
          {
-            /* kw005.201, modified the element of kwuSap from suId to spId */
-            rSts.t.sts.s.kwuSap.spId = sts->t.sts.s.kwuSap.spId;
+            /* kw005.201, modified the element of rlckwuSap from suId to spId */
+            rSts.t.sts.s.rlckwuSap.spId = sts->t.sts.s.rlckwuSap.spId;
          }
-         reason = kwLmmGetSapSts(tKwCb,&rSts, sts->hdr.elmId.elmnt, action);
+         reason = rlcLmmGetSapSts(tRlcCb,&rSts, sts->hdr.elmId.elmnt, action);
          break;
       }
       default:
@@ -1046,9 +973,9 @@ KwMngmt   *sts;
       rSts.cfm.status = LCM_PRIM_NOK;
       rSts.cfm.reason = reason;
    }
-   kwLmmSendCfm(tKwCb,pst, &rSts, TSTS, &sts->hdr);
+   rlcLmmSendCfm(tRlcCb,pst, &rSts, TSTS, &sts->hdr);
 
-   RETVALUE(ROK);
+   return ROK;
 } 
 
 /* kw005.201 added support for L2 Measurement */
@@ -1060,16 +987,16 @@ The L2 Measurement is start for a time period and after the timer expiry, the
 measurement confirm is sent.
 
 -  Accept only one set of measurements.
--  Allocate and initialise KwL2MeasEvtCb.
+-  Allocate and initialise RlcL2MeasEvtCb.
 -  Validate if the measurement is already in progress.
    -  Loop through the existing measEvtCb with matching measType
       -  Check if measurement is running for any qci present in the measReq
       -  If present, move the qCi to list of invalid qCIs.
--  Set KwL2MeasEvtCb.measOn to TRUE for QCIs to be measured.
+-  Set RlcL2MeasEvtCb.measOn to TRUE for QCIs to be measured.
 -  For the number of measurements requested.
    -  For all Ues with RBs matching qCI.
       -  Add RbCb to the RB linked list.
-      -  Set kwRbCb.measOn to measurement type.
+      -  Set rlcRbCb.measOn to measurement type.
       -  If Meas type is DL_DELAY
          -  Update COUNT to startCount.
 -  Start l2Timer
@@ -1081,31 +1008,19 @@ measurement confirm is sent.
  *      -# Success : ROK
  *      -# Failure : RFAILED
 */
-#ifdef ANSI
-PUBLIC S16 KwMiLkwL2MeasReq 
-(
-Pst            *pst, 
-KwL2MeasReqEvt *measReqEvt 
-)
-#else
-PUBLIC S16 KwMiLkwL2MeasReq (pst, measReqEvt)
-Pst            *pst; 
-KwL2MeasReqEvt *measReqEvt;
-#endif
+S16 RlcMiLkwL2MeasReq(Pst *pst, RlcL2MeasReqEvt *measReqEvt)
 {
    S16            ret = ROK;
-   U16            cntr;
-   U8             measType;
-   KwL2MeasCfmEvt measCfmEvt;
+   uint16_t       cntr;
+   uint8_t        measType;
+   RlcL2MeasCfmEvt measCfmEvt;
 
-   KwCb     *tKwCb;
+   RlcCb     *tRlcCb;
 
-   TRC3(KwMiLkwL2MeasReq);
-
-   tKwCb =  KW_GET_KWCB(pst->dstInst);
+   tRlcCb =  RLC_GET_RLCCB(pst->dstInst);
 
    /* Initialize measCfmEvt */
-   KW_MEM_ZERO(&measCfmEvt, sizeof(KwL2MeasCfmEvt));
+   RLC_MEM_ZERO(&measCfmEvt, sizeof(RlcL2MeasCfmEvt));
    /* validate the received measReqEvt */
    /*LTE_L2_MEAS_PHASE2*/
    if(measReqEvt->measPeriod != 0)
@@ -1114,16 +1029,16 @@ KwL2MeasReqEvt *measReqEvt;
       if((measReqEvt->measReq.measType & LKW_L2MEAS_DL_IP)|| 
             (measReqEvt->measReq.measType & LKW_L2MEAS_UL_IP))
       {
-         ret = kwUtlValidateIpThL2Meas(measReqEvt, &measCfmEvt);
+         ret = rlcUtlValidateIpThL2Meas(measReqEvt, &measCfmEvt);
       }
 
       if(ret != ROK)
       {
 #if (ERRCLASS & ERRCLS_ADD_RES)
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
-         kwUtlSndUlL2MeasNCfm(tKwCb, measReqEvt, &measCfmEvt);
-         KW_FREE(tKwCb, measReqEvt, sizeof(KwL2MeasReqEvt))
-         RETVALUE(RFAILED);
+         rlcUtlSndUlL2MeasNCfm(tRlcCb, measReqEvt, &measCfmEvt);
+         RLC_FREE(tRlcCb, measReqEvt, sizeof(RlcL2MeasReqEvt))
+         return RFAILED;
       }
    }
 
@@ -1140,9 +1055,9 @@ KwL2MeasReqEvt *measReqEvt;
       measCfmEvt.measType = measType;
       measCfmEvt.status.status = LCM_PRIM_NOK;
       measCfmEvt.status.reason = LKW_CAUSE_INVALID_MEASTYPE;
-      kwUtlSndDlL2MeasNCfm(tKwCb, measReqEvt, &measCfmEvt);
-      KW_FREE(tKwCb, measReqEvt, sizeof(KwL2MeasReqEvt))
-      RETVALUE(ROK);
+      rlcUtlSndDlL2MeasNCfm(tRlcCb, measReqEvt, &measCfmEvt);
+      RLC_FREE(tRlcCb, measReqEvt, sizeof(RlcL2MeasReqEvt))
+      return ROK;
    }
 
    /* for UL IP throughput meas enable for all QCIs */
@@ -1150,7 +1065,7 @@ KwL2MeasReqEvt *measReqEvt;
    {
       for(cntr = 0; cntr < LKW_MAX_QCI; cntr++)
       {
-         tKwCb->u.ulCb->kwL2Cb.measOn[cntr] |= LKW_L2MEAS_UL_IP;
+         tRlcCb->u.ulCb->rlcL2Cb.measOn[cntr] |= LKW_L2MEAS_UL_IP;
       }
    }
   
@@ -1158,46 +1073,46 @@ KwL2MeasReqEvt *measReqEvt;
       (LKW_L2MEAS_DL_IP | LKW_L2MEAS_DL_DISC | 
       LKW_L2MEAS_DL_DELAY | LKW_L2MEAS_UU_LOSS))
    {
-      KwL2MeasReqEvt *measEvt;
+      RlcL2MeasReqEvt *measEvt;
       Pst      *udxPst;
 
-      udxPst = &(KW_GET_UDX_SAP(tKwCb)->pst);
+      udxPst = &(RLC_GET_UDX_SAP(tRlcCb)->pst);
       
-      KW_ALLOC_SHRABL_BUF(udxPst->region, 
+      RLC_ALLOC_SHRABL_BUF(udxPst->region, 
 			  udxPst->pool,
 			  measEvt, 
-			  sizeof(KwL2MeasReqEvt));
+			  sizeof(RlcL2MeasReqEvt));
 
 #if (ERRCLASS & ERRCLS_ADD_RES) /* KW_FIX */ 
       if(measEvt == NULLP)
       {
          RLOG0(L_FATAL,"Memory Allocation failed");   
-         RETVALUE(RFAILED);
+         return RFAILED;
       }   
 #endif      
-      cmMemcpy((Void*)measEvt, (Void*)measReqEvt, sizeof(KwL2MeasReqEvt));
+      memcpy(measEvt, measReqEvt, sizeof(RlcL2MeasReqEvt));
       /*Redirect the request to DL task */
       /* NOTE:As of today, there are no cases where the Req will fail at DL
          as long as it reached the DL, so we don't wait for a confirmation from
          DL to send the confirmation to LM*/
       /* The interface for sending a confirmation back does not exist today;
          it needs to be created when the need arises */
-      KwUlUdxL2MeasReq(&(KW_GET_UDX_SAP(tKwCb)->pst),measEvt);
+      rlcUlUdxL2MeasReq(&(RLC_GET_UDX_SAP(tRlcCb)->pst),measEvt);
    }
 
    /* We need to copy the transId for sending back confirms later */
    for(cntr = 0; cntr < LKW_MAX_L2MEAS; cntr++)
    {
-      KwL2MeasEvtCb* measEvtCb = &(tKwCb->u.ulCb->kwL2Cb.kwL2EvtCb[cntr]);
+      RlcL2MeasEvtCb* measEvtCb = &(tRlcCb->u.ulCb->rlcL2Cb.rlcL2EvtCb[cntr]);
       if(measEvtCb->measCb.measType & measType)
       {
          measEvtCb->transId= measReqEvt->transId;
       }
    }
-   /*KW_FREE(tKwCb, measReqEvt, sizeof(KwL2MeasReqEvt));*/
+   /*RLC_FREE(tRlcCb, measReqEvt, sizeof(RlcL2MeasReqEvt));*/
 
-   RETVALUE(ret);
-} /* KwMiLkwL2MeasReq */
+   return (ret);
+} /* RlcMiLkwL2MeasReq */
 
 /**
 @brief 
@@ -1210,36 +1125,24 @@ After receving this request, RLC stops L2 Measurement
  *      -# Failure : RFAILED
 */
 
-#ifdef ANSI
-PUBLIC S16 KwMiLkwL2MeasStopReq
-(
-Pst            *pst,
-U8             measType
-)
-#else
-PUBLIC S16 KwMiLkwL2MeasStopReq (pst, measType)
-Pst            *pst;
-U8             measType;
-#endif
+S16 RlcMiLkwL2MeasStopReq(Pst *pst,uint8_t measType)
 {
    S16 ret = ROK;
-   KwL2MeasEvtCb *measEvtCb = NULLP;
+   RlcL2MeasEvtCb *measEvtCb = NULLP;
 
-   U16            cntr;
-   U8             status = ROK;
-   KwCb     *tKwCb;
+   uint16_t            cntr;
+   uint8_t             status = ROK;
+   RlcCb     *tRlcCb;
 
-   TRC3(KwMiLkwL2MeasStopReq);
-
-   tKwCb =  KW_GET_KWCB(pst->dstInst);
+   tRlcCb =  RLC_GET_RLCCB(pst->dstInst);
 
    /* reset the counter values for the measurement that is stopped */
    for(cntr = 0; cntr < LKW_MAX_L2MEAS; cntr++)
    {
-      measEvtCb = &(tKwCb->u.ulCb->kwL2Cb.kwL2EvtCb[cntr]);
+      measEvtCb = &(tRlcCb->u.ulCb->rlcL2Cb.rlcL2EvtCb[cntr]);
       if(measEvtCb->measCb.measType & measType)
       {
-         kwUtlResetUlL2MeasInKwRb(tKwCb, &measEvtCb->measCb, measType);
+         rlcUtlResetUlL2MeasInRlcRb(tRlcCb, &measEvtCb->measCb, measType);
 
       }
    }   
@@ -1249,7 +1152,7 @@ U8             measType;
    {
       for(cntr = 0; cntr < LKW_MAX_QCI; cntr++)
       {
-         tKwCb->u.ulCb->kwL2Cb.measOn[cntr] &= ~LKW_L2MEAS_UL_IP;
+         tRlcCb->u.ulCb->rlcL2Cb.measOn[cntr] &= ~LKW_L2MEAS_UL_IP;
       }
    }
    
@@ -1257,15 +1160,15 @@ U8             measType;
        || (measType & LKW_L2MEAS_DL_DELAY))
    {
       /*Redirect the request to DL task */
-      KwUlUdxL2MeasStopReq(&(KW_GET_UDX_SAP(tKwCb)->pst),measType);
-      /*RETVALUE(ROK);*/
+      rlcUlUdxL2MeasStopReq(&(RLC_GET_UDX_SAP(tRlcCb)->pst),measType);
+      /*return ROK;*/
    }
-   /*cmMemset((U8*)&measCfmEvt, 0, sizeof(KwL2MeasCfmEvt)); */
+   /*memset(&measCfmEvt, 0, sizeof(RlcL2MeasCfmEvt)); */
 
    status = LCM_PRIM_OK; 
-   KwMiLkwL2MeasStopCfm(&tKwCb->genCfg.lmPst, measType,status); 
+   RlcMiLkwL2MeasStopCfm(&tRlcCb->genCfg.lmPst, measType,status); 
    
-   RETVALUE(ret);
+   return (ret);
 }
 /**
 @brief 
@@ -1278,49 +1181,38 @@ After receving this request, RLC sends L2 Measurement
  *      -# Failure : RFAILED
 */
 
-#ifdef ANSI
-PUBLIC S16 KwMiLkwL2MeasSendReq
-(
-Pst            *pst,
-U8             measType
-)
-#else
-PUBLIC S16 KwMiLkwL2MeasSendReq (pst, measType)
-Pst            *pst;
-U8             measType;
-#endif
+S16 RlcMiLkwL2MeasSendReq(Pst *pst,uint8_t measType)
 {
    /*S16 ret = ROK;*/
-   KwL2MeasEvtCb *measEvtCb = NULLP;
-   U16            cntr;
-   KwCb     *tKwCb;
-   TRC3(KwMiLkwL2MeasSendReq);
+   RlcL2MeasEvtCb *measEvtCb = NULLP;
+   uint16_t            cntr;
+   RlcCb     *tRlcCb;
 
-   tKwCb =  KW_GET_KWCB(pst->dstInst);
+   tRlcCb =  RLC_GET_RLCCB(pst->dstInst);
    
    /* In case of addition of any new measType here ,appropriate handling 
-    * has to be done in RLC DL (kwUtlSndDlL2MeasCfm)*/
+    * has to be done in RLC DL (rlcUtlSndDlL2MeasCfm)*/
    if(measType & 
       (LKW_L2MEAS_DL_DISC | LKW_L2MEAS_DL_DELAY 
        | LKW_L2MEAS_UU_LOSS| LKW_L2MEAS_DL_IP))
    {
       /*Redirect the request to DL task */
-      KwUlUdxL2MeasSendReq(&(KW_GET_UDX_SAP(tKwCb)->pst),measType);
+      rlcUlUdxL2MeasSendReq(&(RLC_GET_UDX_SAP(tRlcCb)->pst),measType);
       /* L2 MEAS AGHOSH */
-      /*RETVALUE(ROK);*/
+      /*return ROK;*/
    }
 
    for(cntr = 0; cntr < LKW_MAX_L2MEAS; cntr++)
    {
-      measEvtCb = &(tKwCb->u.ulCb->kwL2Cb.kwL2EvtCb[cntr]);
+      measEvtCb = &(tRlcCb->u.ulCb->rlcL2Cb.rlcL2EvtCb[cntr]);
       /* L2 MEAS AGHOSH */
       if(measEvtCb->measCb.measType & measType)
       {
-         kwUtlHdlL2TmrExp(tKwCb, measEvtCb);
+         rlcUtlHdlL2TmrExp(tRlcCb, measEvtCb);
       }
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif /* LTE_L2_MEAS */
 
@@ -1337,48 +1229,37 @@ U8             measType;
  *    -# LCM_REASON_MEM_NOAVAIL 
  *    -# LCM_REASON_RECONFIG_FAIL 
  */
-#ifdef ANSI
-PRIVATE S16 kwLmmCfgKwuSap
-(
-KwCb       *gCb,
-KwSapCfg   *cfg                
-)
-#else
-PRIVATE S16 kwLmmCfgKwuSap(gCb,cfg)
-KwCb       *gCb;
-KwSapCfg   *cfg;               
-#endif
+static S16 rlcLmmCfgKwuSap(RlcCb *gCb,RlcSapCfg *cfg)
 {
-   KwKwuSapCb   *kwuSapCb;
-   TRC2(kwLmmCfgKwuSap)
+   RlcKwuSapCb   *rlcKwuSapCb;
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* Validate the protocol parameters */
    if((cfg->sapId >= (S16)gCb->genCfg.maxKwuSaps) || (cfg->sapId < 0))
    {
-      RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+      return (LCM_REASON_INVALID_PAR_VAL);
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
-   kwuSapCb = (gCb->genCfg.rlcMode == LKW_RLC_MODE_DL) ?
-              (KwKwuSapCb*)(gCb->u.dlCb->kwuDlSap + cfg->sapId):
-              (KwKwuSapCb*)(gCb->u.ulCb->kwuUlSap + cfg->sapId);
+   rlcKwuSapCb = (gCb->genCfg.rlcMode == LKW_RLC_MODE_DL) ?
+              (RlcKwuSapCb*)(gCb->u.dlCb->rlcKwuDlSap + cfg->sapId):
+              (RlcKwuSapCb*)(gCb->u.ulCb->rlcKwuUlSap + cfg->sapId);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* Check for reconfiguration */
-   if (kwuSapCb->state != KW_SAP_NOT_CFG)
+   if (rlcKwuSapCb->state != RLC_SAP_NOT_CFG)
    {
-      RLOG2(L_ERROR,"RLC Mode [%d] : Invalid kwuSap State [%d]",
-            gCb->genCfg.rlcMode, kwuSapCb->state);
+      RLOG2(L_ERROR,"RLC Mode [%d] : Invalid rlckwuSap State [%d]",
+            gCb->genCfg.rlcMode, rlcKwuSapCb->state);
       /* reconfiguration not allowed */
-      RETVALUE(LCM_REASON_RECONFIG_FAIL);
+      return (LCM_REASON_RECONFIG_FAIL);
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
    /* Fill the parameters */
-   KW_FILL_SAP_HELPER(kwuSapCb, cfg, gCb);
+   RLC_FILL_SAP_HELPER(rlcKwuSapCb, cfg, gCb);
 
-   RETVALUE(LCM_REASON_NOT_APPL);
+   return (LCM_REASON_NOT_APPL);
 } 
 
 /**
@@ -1394,33 +1275,21 @@ KwSapCfg   *cfg;
  *    -# LCM_REASON_INVALID_SAP 
  *    -# LCM_REASON_RECONFIG_FAIL 
  */
-#ifdef ANSI
-PRIVATE S16 kwLmmCfgCkwSap 
-(
-KwCb       *gCb,
-KwSapCfg   *cfg             
-)
-#else
-PRIVATE S16 kwLmmCfgCkwSap(gCb,cfg)
-KwCb       *gCb;
-KwSapCfg   *cfg;             
-#endif
+static S16 rlcLmmCfgCkwSap(RlcCb  *gCb,RlcSapCfg *cfg)
 {
-   KwCkwSapCb  *ckwSap;
+   RlcCkwSapCb  *ckwSap;
    
-   TRC2(kwLmmCfgCkwSap)
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* Validate config parameters */
-   if ((cfg->sapId >= KW_MAX_CKWSAPS) || (cfg->sapId < 0) )
+   if ((cfg->sapId >= RLC_MAX_CKWSAPS) || (cfg->sapId < 0) )
    {
-      RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+      return (LCM_REASON_INVALID_PAR_VAL);
    }
 
    if (gCb->genCfg.rlcMode == LKW_RLC_MODE_DL)
    {
       /* Get Sap control block */
-      RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+      return (LCM_REASON_INVALID_PAR_VAL);
    }
 #endif
 
@@ -1428,17 +1297,17 @@ KwSapCfg   *cfg;
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* Check for reconfiguration */
-   if(ckwSap->state  != KW_SAP_NOT_CFG)
+   if(ckwSap->state  != RLC_SAP_NOT_CFG)
    {
-      RLOG1(L_ERROR,"Invalid kwuSap State [%d]",ckwSap->state);
-      RETVALUE(LCM_REASON_RECONFIG_FAIL);
+      RLOG1(L_ERROR,"Invalid rlckwuSap State [%d]",ckwSap->state);
+      return (LCM_REASON_RECONFIG_FAIL);
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
    
    /* Fill the parameters */
-   KW_FILL_SAP_HELPER(ckwSap, cfg, gCb);
+   RLC_FILL_SAP_HELPER(ckwSap, cfg, gCb);
 
-   RETVALUE(LCM_REASON_NOT_APPL);
+   return (LCM_REASON_NOT_APPL);
 } 
 
 /**
@@ -1454,28 +1323,16 @@ KwSapCfg   *cfg;
  *    -# LCM_REASON_INVALID_SAP
  *    -# LCM_REASON_RECONFIG_FAIL
  */
-#ifdef ANSI
-PRIVATE S16 kwLmmCfgUdxSap 
-(
-KwCb       *gCb,
-KwSapCfg   *cfg         
-)
-#else
-PRIVATE S16 kwLmmCfgUdxSap(gCb,cfg)
-KwCb       *gCb;
-KwSapCfg   *cfg;       
-#endif
+static S16 rlcLmmCfgUdxSap(RlcCb *gCb,RlcSapCfg *cfg)
 {
-   KwUdxDlSapCb   *udxDlSap;
-   KwUdxUlSapCb   *udxUlSap;
+   RlcUdxDlSapCb   *udxDlSap;
+   RlcUdxUlSapCb   *udxUlSap;
 
-   TRC2(kwLmmCfgUdxSap);
-   
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* Validate the protocol parameters */
-   if((cfg->sapId >= KW_MAX_UDXSAPS) || (cfg->sapId < 0))
+   if((cfg->sapId >= RLC_MAX_UDXSAPS) || (cfg->sapId < 0))
    {
-      RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+      return (LCM_REASON_INVALID_PAR_VAL);
    }
 #endif
    /* Get Sap control block */
@@ -1484,15 +1341,15 @@ KwSapCfg   *cfg;
       udxDlSap = (gCb->u.dlCb->udxDlSap + cfg->sapId);
 #if (ERRCLASS & ERRCLS_INT_PAR)
       /* Check for reconfiguration */
-      if(udxDlSap->state != KW_SAP_NOT_CFG)
+      if(udxDlSap->state != RLC_SAP_NOT_CFG)
       {
          RLOG1(L_ERROR,"Invalid udxDlSap State [%d]",udxDlSap->state);
-         RETVALUE(LCM_REASON_RECONFIG_FAIL);
+         return (LCM_REASON_RECONFIG_FAIL);
       }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
       /* Fill the parameters */
-      KW_FILL_SAP_HELPER(udxDlSap, cfg, gCb);
+      RLC_FILL_SAP_HELPER(udxDlSap, cfg, gCb);
    }
    else
    {
@@ -1500,22 +1357,22 @@ KwSapCfg   *cfg;
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* Check for reconfiguration */
-      if(udxUlSap->state != KW_SAP_NOT_CFG)
+      if(udxUlSap->state != RLC_SAP_NOT_CFG)
       {
          RLOG1(L_ERROR,"Invalid udxUlSap State [%d]", udxUlSap->state);
-         RETVALUE(LCM_REASON_RECONFIG_FAIL);
+         return (LCM_REASON_RECONFIG_FAIL);
       }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
       /* Fill the parameters */
-      KW_FILL_SAP_HELPER(udxUlSap, cfg, gCb);
+      RLC_FILL_SAP_HELPER(udxUlSap, cfg, gCb);
 
       udxUlSap->bndTmrInt = cfg->bndTmrIntvl;
       udxUlSap->retryCnt = 0;
       cmInitTimers(&(udxUlSap->bndTmr), 1);
    }
 
-   RETVALUE(LCM_REASON_NOT_APPL);
+   return (LCM_REASON_NOT_APPL);
 } 
 
 /**
@@ -1530,30 +1387,18 @@ KwSapCfg   *cfg;
  *    -# LCM_REASON_INVALID_SAP
  *    -# LCM_REASON_RECONFIG_FAIL
  */
-#ifdef ANSI
-PRIVATE S16 kwLmmCfgRguSap 
-(
-KwCb       *gCb,
-KwSapCfg   *cfg               
-)
-#else
-PRIVATE S16 kwLmmCfgRguSap(gCb,cfg)
-KwCb       *gCb;
-KwSapCfg   *cfg;             
-#endif
+static S16 rlcLmmCfgRguSap(RlcCb *gCb,RlcSapCfg *cfg)
 {
-   KwRguSapCb   *rguSap;
+   RlcRguSapCb   *rguSap;
 
-   TRC2(kwLmmCfgRguSap);
-   
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* Validate the protocol parameters */
    if((cfg->sapId >= gCb->genCfg.maxRguSaps) || \
       (cfg->sapId < 0))
    {
-      KWLOGERROR(gCb,ERRCLS_INT_PAR, EKW047, (ErrVal)cfg->sapId,
-               "kwLmmCfgRguSap: Invalid RGU sapId\n");
-      RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+      RLCLOGERROR(gCb,ERRCLS_INT_PAR, EKW047, (ErrVal)cfg->sapId,
+               "rlcLmmCfgRguSap: Invalid RGU sapId\n");
+      return (LCM_REASON_INVALID_PAR_VAL);
    }
 #endif
 
@@ -1562,24 +1407,24 @@ KwSapCfg   *cfg;
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* Check for reconfiguration */
-   if(rguSap->state != KW_SAP_NOT_CFG)
+   if(rguSap->state != RLC_SAP_NOT_CFG)
    {
       RLOG2(L_ERROR,"RLC Mode [%d]: Invalid rguSap State [%d]",
             gCb->genCfg.rlcMode, rguSap->state);
-      RETVALUE(LCM_REASON_RECONFIG_FAIL);
+      return (LCM_REASON_RECONFIG_FAIL);
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
    /* Fill the parameters */
-   KW_FILL_SAP_HELPER(rguSap, cfg, gCb);
+   RLC_FILL_SAP_HELPER(rguSap, cfg, gCb);
    rguSap->suId = cfg->sapId;
    rguSap->bndTmrInt = cfg->bndTmrIntvl;
    rguSap->retryCnt = 0;
-   rguSap->state = KW_SAP_CFG;
+   rguSap->state = RLC_SAP_CFG;
 
    cmInitTimers(&(rguSap->bndTmr), 1);
 
-   RETVALUE(LCM_REASON_NOT_APPL);
+   return (LCM_REASON_NOT_APPL);
 } 
 
 /**
@@ -1593,20 +1438,10 @@ KwSapCfg   *cfg;
  *    -# LCM_REASON_INVALID_SUBACTION
  *    -# LCM_REASON_INVALID_ACTION
  */
-#ifdef ANSI
-PRIVATE S16 kwLmmValidateGenCntrl
-(
-KwMngmt   *cntrl                 
-)
-#else
-PRIVATE S16 kwLmmValidateGenCntrl(cntrl)
-KwMngmt   *cntrl;                
-#endif
+static S16 rlcLmmValidateGenCntrl(RlcMngmt   *cntrl)
 {
-   S16   reason;    /* reason for failure */
-   U8    sAction;   /* subaction field */
-
-   TRC2(kwLmmValidateGenCntrl);
+   S16     reason;    /* reason for failure */
+   uint8_t sAction;   /* subaction field */
 
    reason = LCM_REASON_NOT_APPL;
    sAction = cntrl->t.cntrl.subAction;
@@ -1629,63 +1464,53 @@ KwMngmt   *cntrl;
          break;
    }
    
-   RETVALUE(reason);
+   return (reason);
 } 
 
 /**
  * @brief
- *    it deregisters the timers and deregisters the kwuSap Control blocks 
+ *    it deregisters the timers and deregisters the rlckwuSap Control blocks 
  *
  * @param[in]  gCb   RLC Instance Control Block
  * 
  * @return  Void
  */
-#ifdef ANSI
-PRIVATE Void kwLmmCleanGblRsrcs
-(
-KwCb   *gCb
-)
-#else
-PRIVATE Void kwLmmCleanGblRsrcs(gCb)
-KwCb   *gCb;
-#endif
+static Void rlcLmmCleanGblRsrcs(RlcCb *gCb)
 {
-   Size   kwSapSize;
-   Size   kwUdxSapSize;
- 
-   TRC2(kwLmmCleanGblRsrcs)   
+   Size   rlcSapSize;
+   Size   rlcUdxSapSize;
  
    if (gCb->init.cfgDone)
    {
       /* Deregister the timers */
 /*Pradeep: changing the SDeregTmrMt() to SDeregTmr*/
       (Void) SDeregTmrMt(gCb->init.ent, gCb->init.inst,
-                        (S16)gCb->genCfg.timeRes, kwActvTmr);
+                        (S16)gCb->genCfg.timeRes, rlcActvTmr);
       /*(Void) SDeregTmr(gCb->init.ent, gCb->init.inst,
-                        (S16)gCb->genCfg.timeRes, kwActvTmr);*/
+                        (S16)gCb->genCfg.timeRes, rlcActvTmr);*/
 
-      kwSapSize = (Size)(gCb->genCfg.maxKwuSaps * sizeof(KwKwuSapCb));
+      rlcSapSize = (Size)(gCb->genCfg.maxKwuSaps * sizeof(RlcKwuSapCb));
 
       if (gCb->genCfg.rlcMode == LKW_RLC_MODE_DL)
       {
-         kwUdxSapSize = (Size)(gCb->genCfg.maxUdxSaps * sizeof(KwUdxDlSapCb));
+         rlcUdxSapSize = (Size)(gCb->genCfg.maxUdxSaps * sizeof(RlcUdxDlSapCb));
          if (gCb->u.dlCb)
          {
             gCb->u.dlCb->shutdownReceived = TRUE;
-            kwUtlFreeDlMemory(gCb); 
-            if (gCb->u.dlCb->kwuDlSap != NULLP)
+            rlcUtlFreeDlMemory(gCb); 
+            if (gCb->u.dlCb->rlcKwuDlSap != NULLP)
             {
-               KW_FREE(gCb,gCb->u.dlCb->kwuDlSap, kwSapSize);
+               RLC_FREE(gCb,gCb->u.dlCb->rlcKwuDlSap, rlcSapSize);
             }
             
             if(gCb->u.dlCb->udxDlSap != NULLP)
             {
-               KW_FREE(gCb,gCb->u.dlCb->udxDlSap, kwUdxSapSize);
+               RLC_FREE(gCb,gCb->u.dlCb->udxDlSap, rlcUdxSapSize);
             }
 
             if(gCb->u.dlCb->rguDlSap != NULLP)
             {
-               KW_FREE(gCb,gCb->u.dlCb->rguDlSap, gCb->genCfg.maxRguSaps);
+               RLC_FREE(gCb,gCb->u.dlCb->rguDlSap, gCb->genCfg.maxRguSaps);
                gCb->genCfg.maxRguSaps = 0;
             }
              if (gCb->u.dlCb->shutdownReceived) 
@@ -1694,33 +1519,33 @@ KwCb   *gCb;
                {
                   SPutMsg(gCb->u.dlCb->selfPstMBuf);
                }
-               KW_FREE(gCb,gCb->u.dlCb, sizeof (KwDlCb));
+               RLC_FREE(gCb,gCb->u.dlCb, sizeof (RlcDlCb));
             }
          }
          
       }
       else
       {
-         kwUdxSapSize = (Size)(gCb->genCfg.maxUdxSaps * sizeof(KwUdxUlSapCb));
+         rlcUdxSapSize = (Size)(gCb->genCfg.maxUdxSaps * sizeof(RlcUdxUlSapCb));
          if (gCb->u.ulCb)
          {
-            if (gCb->u.ulCb->kwuUlSap != NULLP)
+            if (gCb->u.ulCb->rlcKwuUlSap != NULLP)
             {
-               KW_FREE(gCb,gCb->u.ulCb->kwuUlSap, kwSapSize);
+               RLC_FREE(gCb,gCb->u.ulCb->rlcKwuUlSap, rlcSapSize);
             }
             
             if(gCb->u.ulCb->udxUlSap != NULLP)
             {
-               KW_FREE(gCb,gCb->u.ulCb->udxUlSap, kwUdxSapSize);
+               RLC_FREE(gCb,gCb->u.ulCb->udxUlSap, rlcUdxSapSize);
             }
          
             if(gCb->u.ulCb->rguUlSap != NULLP)
             {
-               KW_FREE(gCb,gCb->u.ulCb->rguUlSap, gCb->genCfg.maxRguSaps);
+               RLC_FREE(gCb,gCb->u.ulCb->rguUlSap, gCb->genCfg.maxRguSaps);
                gCb->genCfg.maxRguSaps = 0;
             }
          
-            KW_FREE(gCb,gCb->u.ulCb, sizeof (KwUlCb));
+            RLC_FREE(gCb,gCb->u.ulCb, sizeof (RlcUlCb));
          }
       }
 
@@ -1731,7 +1556,7 @@ KwCb   *gCb;
       gCb->init.usta = FALSE;
    }
 
-   RETVOID;
+   return;
 }
 
 /**
@@ -1749,29 +1574,19 @@ KwCb   *gCb;
  *    -# LCM_REASON_NOT_APPL (SUCCESS)
  *    -# LCM_REASON_HASHING_FAILED 
  */
-#ifdef ANSI
-PRIVATE S16 kwLmmShutdown
-(
-KwCb   *gCb
-)
-#else
-PRIVATE S16 kwLmmShutdown(gCb)
-KwCb   *gCb;
-#endif
+static S16 rlcLmmShutdown(RlcCb *gCb)
 {
-   KwRguSapCb   *rguSap;
-   U32          idx;
-
-   TRC2(kwLmmShutdown)
+   RlcRguSapCb   *rguSap;
+   uint32_t          idx;
 
    if (gCb->genCfg.rlcMode == LKW_RLC_MODE_DL)
    {
       for (idx = 0; idx < gCb->genCfg.maxRguSaps; idx++)
       {
          rguSap = &(gCb->u.dlCb->rguDlSap[idx]);
-         if ((rguSap->state == KW_SAP_BND) || (rguSap->state == KW_SAP_BINDING))
+         if ((rguSap->state == RLC_SAP_BND) || (rguSap->state == RLC_SAP_BINDING))
          {
-            KwLiRguUbndReq(&(rguSap->pst), rguSap->spId, 0);
+            RlcLiRguUbndReq(&(rguSap->pst), rguSap->spId, 0);
          }
       }
    }
@@ -1780,27 +1595,27 @@ KwCb   *gCb;
       for (idx = 0; idx < gCb->genCfg.maxRguSaps; idx++)
       {
          rguSap = &(gCb->u.ulCb->rguUlSap[idx]); 
-         if ((rguSap->state == KW_SAP_BND) || (rguSap->state == KW_SAP_BINDING))
+         if ((rguSap->state == RLC_SAP_BND) || (rguSap->state == RLC_SAP_BINDING))
          {
-            KwLiRguUbndReq(&(rguSap->pst), rguSap->spId, 0);
+            RlcLiRguUbndReq(&(rguSap->pst), rguSap->spId, 0);
          }
       }
    }
    
    if(gCb->genCfg.rlcMode == LKW_RLC_MODE_DL)
    {
-      kwDbmDlShutdown(gCb); 
+      rlcDbmDlShutdown(gCb); 
    }
    else
    {
-      kwDbmUlShutdown(gCb);
+      rlcDbmUlShutdown(gCb);
    }
 
-   kwLmmCleanGblRsrcs(gCb);
+   rlcLmmCleanGblRsrcs(gCb);
 
-   KW_MEM_SET (&(gCb->genSts), 0, sizeof (KwGenSts));
+   RLC_MEM_SET (&(gCb->genSts), 0, sizeof (RlcGenSts));
 
-   RETVALUE(LCM_REASON_NOT_APPL);
+   return (LCM_REASON_NOT_APPL);
 } 
 
 /**
@@ -1815,32 +1630,20 @@ KwCb   *gCb;
  *    -# LCM_REASON_INVALID_SUBACTION
  *    -# LCM_REASON_INVALID_ACTION
  */
-#ifdef ANSI
-PRIVATE S16 kwLmmGenCntrl
-(
-KwCb *gCb,
-KwMngmt *cntrl       
-)
-#else
-PRIVATE S16 kwLmmGenCntrl(gCb,cntrl)
-KwCb    *gCb;
-KwMngmt *cntrl;     
-#endif
+static S16 rlcLmmGenCntrl(RlcCb *gCb,RlcMngmt *cntrl)
 {
-   KwTrcCntrl *trcCntrl; /* trace */
+   RlcTrcCntrl *trcCntrl; /* trace */
 #ifdef DEBUGP
-   KwDbgCntrl *dbgCntrl; /* debug */
+   RlcDbgCntrl *dbgCntrl; /* debug */
 #endif /* DEBUGP */
    S16   reason;         /* reason for failure */
    
-   TRC2(kwLmmGenCntrl);
-
    /* Validate control parameters */
-   reason = kwLmmValidateGenCntrl (cntrl);
+   reason = rlcLmmValidateGenCntrl (cntrl);
 
    if (reason != LCM_REASON_NOT_APPL)
    {
-      RETVALUE(reason);
+      return (reason);
    }
 
    switch(cntrl->t.cntrl.action)
@@ -1851,14 +1654,14 @@ KwMngmt *cntrl;
          {
             case SAUSTA:
             {
-               KW_SET_USTA_FLAG(gCb, TRUE);
+               RLC_SET_USTA_FLAG(gCb, TRUE);
                break;
             }
             case SADBG:
             {
 #ifdef DEBUGP
                dbgCntrl = &cntrl->t.cntrl.s.dbgCntrl;
-               KW_GET_DBG_MASK(gCb) |= dbgCntrl->dbgMask;
+               RLC_GET_DBG_MASK(gCb) |= dbgCntrl->dbgMask;
 #endif /* DEBUGP */
                break;
             }
@@ -1886,7 +1689,7 @@ KwMngmt *cntrl;
             {
 #ifdef DEBUGP
                dbgCntrl = &cntrl->t.cntrl.s.dbgCntrl;
-               KW_GET_DBG_MASK(gCb) &= ~(dbgCntrl->dbgMask);
+               RLC_GET_DBG_MASK(gCb) &= ~(dbgCntrl->dbgMask);
 #endif /* DEBUGP */
             }
             break;
@@ -1902,11 +1705,11 @@ KwMngmt *cntrl;
       }
       case ASHUTDOWN:
       {
-         reason = kwLmmShutdown(gCb);
+         reason = rlcLmmShutdown(gCb);
          break;
       }
    }
-   RETVALUE(reason);
+   return (reason);
 } 
 
 /**
@@ -1922,40 +1725,29 @@ KwMngmt *cntrl;
  *    -# LCM_REASON_INVALID_STATE
  *    -# LCM_REASON_INVALID_ACTION 
  */
-#ifdef ANSI
-PRIVATE S16 kwLmmUdxSapCntrl
-(
-KwCb      *gCb,
-KwMngmt   *cntrl               
-)
-#else
-PRIVATE S16 kwLmmUdxSapCntrl(gCb,cntrl)
-KwCb      *gCb;
-KwMngmt   *cntrl;               
-#endif
+static S16 rlcLmmUdxSapCntrl(RlcCb *gCb,RlcMngmt *cntrl)
 {
-   TRC2(kwLmmUdxSapCntrl)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (gCb->genCfg.rlcMode == LKW_RLC_MODE_DL)
    {
-      RETVALUE(LCM_REASON_INVALID_SAP);
+      return (LCM_REASON_INVALID_SAP);
    }
    /* validate SuId */
    if((cntrl->t.cntrl.s.sapCntrl.suId < 0) || 
-      (cntrl->t.cntrl.s.sapCntrl.suId >= KW_MAX_UDXSAPS))
+      (cntrl->t.cntrl.s.sapCntrl.suId >= RLC_MAX_UDXSAPS))
    {
-      RETVALUE(LCM_REASON_INVALID_SAP);
+      return (LCM_REASON_INVALID_SAP);
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
 #define UDX_SAP  gCb->u.ulCb->udxUlSap[cntrl->t.cntrl.s.sapCntrl.suId]
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* validate SAP */
-   if(UDX_SAP.state == KW_SAP_NOT_CFG)
+   if(UDX_SAP.state == RLC_SAP_NOT_CFG)
    {
       RLOG0(L_ERROR,"udxUlSap not configured yet");
-      RETVALUE(LCM_REASON_INVALID_STATE);
+      return (LCM_REASON_INVALID_STATE);
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -1963,33 +1755,33 @@ KwMngmt   *cntrl;
    {
       case ABND:
       {
-         if(UDX_SAP.state != KW_SAP_BND)
+         if(UDX_SAP.state != RLC_SAP_BND)
          {
             /* start timer to wait for bind confirm */
-            kwStartTmr(gCb,(PTR)(&UDX_SAP), KW_EVT_WAIT_BNDCFM);
-            UDX_SAP.state = KW_SAP_BINDING;
-            KwUlUdxBndReq(&(UDX_SAP.pst), UDX_SAP.suId, UDX_SAP.spId);
+            rlcStartTmr(gCb,(PTR)(&UDX_SAP), RLC_EVT_WAIT_BNDCFM);
+            UDX_SAP.state = RLC_SAP_BINDING;
+            rlcUlUdxBndReq(&(UDX_SAP.pst), UDX_SAP.suId, UDX_SAP.spId);
          }
          else
          {
             /* control request received for an already bound SAP */
-            RETVALUE(LCM_REASON_INVALID_STATE);
+            return (LCM_REASON_INVALID_STATE);
          }
       }
       break;
       case AUBND:
       {
          /* make the state of UDXSAP configured but not bound */
-         UDX_SAP.state = KW_SAP_CFG;
-         KwUlUdxUbndReq(&(UDX_SAP.pst), UDX_SAP.spId, 0);
+         UDX_SAP.state = RLC_SAP_CFG;
+         rlcUlUdxUbndReq(&(UDX_SAP.pst), UDX_SAP.spId, 0);
       }
       break;
       default:
-         RETVALUE(LCM_REASON_INVALID_ACTION);
+         return (LCM_REASON_INVALID_ACTION);
          break;
    } /* end of switch */
 #undef UDX_SAP
-   RETVALUE(LCM_REASON_NOT_APPL);
+   return (LCM_REASON_NOT_APPL);
 } 
 
 /**
@@ -2004,30 +1796,18 @@ KwMngmt   *cntrl;
  *    -# LCM_REASON_INVALID_STATE
  *    -# LCM_REASON_INVALID_ACTION 
  */
-#ifdef ANSI
-PRIVATE S16 kwLmmLSapCntrl
-(
-KwCb      *gCb,
-KwMngmt   *cntrl 
-)
-#else
-PRIVATE S16 kwLmmLSapCntrl(gCb,cntrl)
-KwCb      *gCb;
-KwMngmt   *cntrl; 
-#endif
+static S16 rlcLmmLSapCntrl(RlcCb *gCb,RlcMngmt *cntrl)
 {
-   KwRguSapCb   *rguSap;   /* rgu sap pointer */
-
-   TRC2(kwLmmLSapCntrl)
+   RlcRguSapCb   *rguSap;   /* rgu sap pointer */
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* validate SuId */
    if((cntrl->t.cntrl.s.sapCntrl.suId < 0) || 
       (cntrl->t.cntrl.s.sapCntrl.suId >= gCb->genCfg.maxRguSaps))
    {
-      KWLOGERROR(gCb,ERRCLS_INT_PAR, EKW047, (ErrVal)cntrl->t.cntrl.s.sapCntrl.suId,
-               "kwLmmLSapCntrl: Invalid RGU suId\n");
-      RETVALUE(LCM_REASON_INVALID_SAP);
+      RLCLOGERROR(gCb,ERRCLS_INT_PAR, EKW047, (ErrVal)cntrl->t.cntrl.s.sapCntrl.suId,
+               "rlcLmmLSapCntrl: Invalid RGU suId\n");
+      return (LCM_REASON_INVALID_SAP);
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
    rguSap = (gCb->genCfg.rlcMode == LKW_RLC_MODE_DL) ?
@@ -2036,10 +1816,10 @@ KwMngmt   *cntrl;
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* validate SAP */
-   if(rguSap->state == KW_SAP_NOT_CFG)
+   if(rguSap->state == RLC_SAP_NOT_CFG)
    {
       RLOG1(L_ERROR,"RLC Mode [%d]:rguSap not configured yet", gCb->genCfg.rlcMode);
-      RETVALUE(LCM_REASON_INVALID_STATE);
+      return (LCM_REASON_INVALID_STATE);
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -2047,35 +1827,35 @@ KwMngmt   *cntrl;
    {
       case ABND:
       {
-         if(rguSap->state != KW_SAP_BND)
+         if(rguSap->state != RLC_SAP_BND)
          {
             /* start timer to wait for bind confirm */
-            kwStartTmr(gCb,(PTR)(rguSap), KW_EVT_WAIT_BNDCFM);
-            rguSap->state = KW_SAP_BINDING;
+            rlcStartTmr(gCb,(PTR)(rguSap), RLC_EVT_WAIT_BNDCFM);
+            rguSap->state = RLC_SAP_BINDING;
             rguSap->spId = cntrl->t.cntrl.s.sapCntrl.spId;
             rguSap->suId = cntrl->t.cntrl.s.sapCntrl.suId;
-            KwLiRguBndReq(&(rguSap->pst), rguSap->suId, rguSap->spId);
+            RlcLiRguBndReq(&(rguSap->pst), rguSap->suId, rguSap->spId);
          }
          else
          {
             /* control request received for an already bound SAP */
-            RETVALUE(LCM_REASON_INVALID_STATE);
+            return (LCM_REASON_INVALID_STATE);
          }
       }
       break;
       case AUBND:
       {
          /* make the state of RGUSAP is configure but not bound */
-         rguSap->state = KW_SAP_CFG;
-         KwLiRguUbndReq(&(rguSap->pst), rguSap->spId, 0);
+         rguSap->state = RLC_SAP_CFG;
+         RlcLiRguUbndReq(&(rguSap->pst), rguSap->spId, 0);
       }
       break;
       default:
-         RETVALUE(LCM_REASON_INVALID_ACTION);
+         return (LCM_REASON_INVALID_ACTION);
          break;
    } /* end of switch */
 
-   RETVALUE(LCM_REASON_NOT_APPL);
+   return (LCM_REASON_NOT_APPL);
 } 
 
 /**
@@ -2089,39 +1869,27 @@ KwMngmt   *cntrl;
  *    -# LCM_REASON_NOT_APPL       (SUCCESS)
  *    -# LCM_REASON_INVALID_PAR_VAL(FAILURE)
  */
-#ifdef ANSI
-PRIVATE S16 kwLmmGetKwuSapSta 
-(
-KwCb          *gCb,
-KwKwuSapSta   *sta         
-)
-#else
-PRIVATE S16 kwLmmGetKwuSapSta(gCb,sta)
-KwCb          *gCb;
-KwKwuSapSta   *sta;         
-#endif
+static S16 rlcLmmGetKwuSapSta (RlcCb *gCb,RlcKwuSapSta *sta)
 {
-   KwKwuSapCb   *kwSapCb;
+   RlcKwuSapCb   *rlcKwSapCb;
    
-   TRC2(kwLmmGetKwuSapSta);
-
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* Validate the protocol parameters */
    if ((sta->spId >= (S16)gCb->genCfg.maxKwuSaps)||
        (sta->spId < 0))
    {
-      RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+      return (LCM_REASON_INVALID_PAR_VAL);
    }
 #endif
 
    /* Get Sap control block */
-   kwSapCb = (gCb->genCfg.rlcMode == LKW_RLC_MODE_DL)? 
-             (KwKwuSapCb*)(gCb->u.dlCb->kwuDlSap + sta->spId):
-             (KwKwuSapCb*)(gCb->u.ulCb->kwuUlSap + sta->spId);
+   rlcKwSapCb = (gCb->genCfg.rlcMode == LKW_RLC_MODE_DL)? 
+             (RlcKwuSapCb*)(gCb->u.dlCb->rlcKwuDlSap + sta->spId):
+             (RlcKwuSapCb*)(gCb->u.ulCb->rlcKwuUlSap + sta->spId);
 
-   sta->state = kwSapCb->state;
+   sta->state = rlcKwSapCb->state;
 
-   RETVALUE(LCM_REASON_NOT_APPL);
+   return (LCM_REASON_NOT_APPL);
 } 
 
 /**
@@ -2134,25 +1902,14 @@ KwKwuSapSta   *sta;
  *    -# LCM_REASON_NOT_APPL       (SUCCESS) 
  *    -# LCM_REASON_INVALID_PAR_VAL(FAILURE) 
  */
-#ifdef ANSI
-PRIVATE S16 kwLmmGetRguSapSta 
-(
-KwCb          *gCb,
-KwRguSapSta   *sta         
-)
-#else
-PRIVATE S16 kwLmmGetRguSapSta(gCb,sta)
-KwCb          *gCb;
-KwRguSapSta   *sta;       
-#endif
+static S16 rlcLmmGetRguSapSta(RlcCb *gCb,RlcRguSapSta *sta)
 {
-   TRC2(kwLmmGetRguSapSta);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* Validate the protocol parameters */
-   if((sta->suId >= KW_MAX_RGUSAPS) || (sta->suId < 0))
+   if((sta->suId >= RLC_MAX_RGUSAPS) || (sta->suId < 0))
    {
-      RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+      return (LCM_REASON_INVALID_PAR_VAL);
    }
 #endif
 
@@ -2160,7 +1917,7 @@ KwRguSapSta   *sta;
                  gCb->u.dlCb->rguDlSap[sta->suId].state : 
                  gCb->u.ulCb->rguUlSap[sta->suId].state ;
 
-   RETVALUE(LCM_REASON_NOT_APPL);
+   return (LCM_REASON_NOT_APPL);
 } 
 
 /**
@@ -2173,32 +1930,21 @@ KwRguSapSta   *sta;
  *    -# LCM_REASON_NOT_APPL       (SUCCESS)
  *    -# LCM_REASON_INVALID_PAR_VAL(FAILURE)
  */
-#ifdef ANSI
-PRIVATE S16 kwLmmGetCkwCntSapSta
-(
-KwCb             *gCb,
-KwCkwCntSapSta   *sta     
-)
-#else
-PRIVATE S16 kwLmmGetCkwCntSapSta(gCb,sta)
-kwCb             *gCb,
-KwCkwCntSapSta   *sta;   
-#endif
+static S16 rlcLmmGetCkwCntSapSta(RlcCb *gCb,RlcCkwCntSapSta *sta)
 {
-   TRC2(kwLmmGetCkwCntSapSta);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* Validate config parameters */
-   if ((sta->spId >= KW_MAX_CKWSAPS ) ||
+   if ((sta->spId >= RLC_MAX_CKWSAPS ) ||
        (sta->spId < 0 ) ||
        (gCb->genCfg.rlcMode == LKW_RLC_MODE_DL))
    {
-      RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+      return (LCM_REASON_INVALID_PAR_VAL);
    }
 #endif
    sta->state =  gCb->u.ulCb->ckwSap.state;
 
-   RETVALUE(LCM_REASON_NOT_APPL);
+   return (LCM_REASON_NOT_APPL);
 
 } 
 
@@ -2213,27 +1959,14 @@ KwCkwCntSapSta   *sta;
  *    -# LCM_REASON_NOT_APPL       (SUCCESS)
  *    -# LCM_REASON_INVALID_PAR_VAL(FAILURE)
  */
-#ifdef ANSI
-PRIVATE S16 kwLmmGetGenSts
-(
-KwCb       *gCb,
-KwGenSts   *sts,       
-Action     action         
-)
-#else
-PRIVATE S16 kwLmmGetGenSts(gCb,sts, action)
-KwCb       *gCb;
-KwGenSts   *sts;          
-Action     action;         
-#endif
+static S16 rlcLmmGetGenSts(RlcCb *gCb,RlcGenSts *sts,Action action)
 {
-   TRC2(kwLmmGetGenSts);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* Validate protocol parameters */
    if ((action != LKW_ZEROSTS) && (action != LKW_NOZEROSTS))
    {
-      RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+      return (LCM_REASON_INVALID_PAR_VAL);
    }
 #endif
 
@@ -2241,10 +1974,10 @@ Action     action;
    
    if(action == LKW_ZEROSTS)
    {
-      KW_MEM_SET (&(gCb->genSts), 0, sizeof (KwGenSts));
+      RLC_MEM_SET (&(gCb->genSts), 0, sizeof (RlcGenSts));
    }
 
-   RETVALUE(LCM_REASON_NOT_APPL);
+   return (LCM_REASON_NOT_APPL);
 } 
 
 /**
@@ -2260,77 +1993,62 @@ Action     action;
  *    -# LCM_REASON_NOT_APPL (SUCCESS)
  *    -# LCM_REASON_INVALID_PAR_VAL (FAIL)
  */
-#ifdef ANSI
-PRIVATE S16 kwLmmGetSapSts
-(
-KwCb      *gCb,
-KwMngmt   *sts,               
-Elmnt     elmnt,               
-Action    action             
-)
-#else
-PRIVATE S16 kwLmmGetSapSts(sts, elmnt, action)
-KwCb      *gCb;
-KwMngmt   *sts;            
-Elmnt     elmnt;            
-Action    action;         
-#endif
+static S16 rlcLmmGetSapSts(RlcCb *gCb,RlcMngmt *sts,Elmnt elmnt, Action action)
 {
-   TRC2(kwLmmGetSapSts);
 
    /* Validate protocol parameters */
    if (action != LKW_ZEROSTS && action != LKW_NOZEROSTS)
    {
-      RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+      return (LCM_REASON_INVALID_PAR_VAL);
    }
    switch(elmnt)
    {
       case STKWUSAP:
       {
-         KwKwuSapSts  *kwuSap; 
-         KwKwuSapCb   *kwuSapCb;    
-         kwuSap = &sts->t.sts.s.kwuSap;
+         RlcKwuSapSts  *rlckwuSap; 
+         RlcKwuSapCb   *rlcKwuSapCb;    
+         rlckwuSap = &sts->t.sts.s.rlckwuSap;
 
          /* Get Sap control block */
-         /* kw005.201, modified the element of kwuSap from suId to spId */
-         kwuSapCb = (gCb->genCfg.rlcMode == LKW_RLC_MODE_DL)? 
-              (KwKwuSapCb*)(gCb->u.dlCb->kwuDlSap + kwuSap->spId):
-              (KwKwuSapCb*)(gCb->u.ulCb->kwuUlSap + kwuSap->spId);
+         /* kw005.201, modified the element of rlckwuSap from suId to spId */
+         rlcKwuSapCb = (gCb->genCfg.rlcMode == LKW_RLC_MODE_DL)? 
+              (RlcKwuSapCb*)(gCb->u.dlCb->rlcKwuDlSap + rlckwuSap->spId):
+              (RlcKwuSapCb*)(gCb->u.ulCb->rlcKwuUlSap + rlckwuSap->spId);
 
 
-         *kwuSap = kwuSapCb->sts;
+         *rlckwuSap = rlcKwuSapCb->sts;
 
          if (action == LKW_ZEROSTS)
          {
-            KW_MEM_SET (&kwuSapCb->sts, 0, sizeof (KwKwuSapSts));
+            RLC_MEM_SET (&rlcKwuSapCb->sts, 0, sizeof (RlcKwuSapSts));
          }
          break;
       }
       /* kw005.201 removed RGUSAP statistics support */
       case STCKWSAP:
       {
-         KwCkwCntSts  *ckwSap;  
+         RlcCkwCntSts  *ckwSap;  
          ckwSap = &sts->t.sts.s.ckwSap;
          if (gCb->genCfg.rlcMode == LKW_RLC_MODE_DL) 
          {
-            RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+            return (LCM_REASON_INVALID_PAR_VAL);
          }
 
          ckwSap->statMsgs = gCb->u.ulCb->ckwSap.sts.statMsgs;
 
          if (action == LKW_ZEROSTS)
          {
-            KW_MEM_SET (&(gCb->u.ulCb->ckwSap.sts), 0, sizeof (KwCkwCntSts));
+            RLC_MEM_SET (&(gCb->u.ulCb->ckwSap.sts), 0, sizeof (RlcCkwCntSts));
          }
          break;
       }
       default:
-         RETVALUE(LCM_REASON_INVALID_ELMNT);
+         return (LCM_REASON_INVALID_ELMNT);
    }
 
    SGetDateTime(&sts->t.sts.dt);
 
-   RETVALUE(LCM_REASON_NOT_APPL);
+   return (LCM_REASON_NOT_APPL);
 } 
 
 /**
@@ -2348,56 +2066,33 @@ Action    action;
  * @return  Void
  */
 #ifdef LTE_L2_MEAS
-#ifdef ANSI
-PUBLIC Void kwLmmSendAlarm
+Void rlcLmmSendAlarm
 (
-KwCb   *gCb,
-U16    category,  
-U16    event,    
-U16    cause,   
-SuId   suId,   
-U32    ueId,  
-U8     qci   
+RlcCb      *gCb,
+uint16_t    category,  
+uint16_t    event,    
+uint16_t    cause,   
+SuId        suId,   
+uint32_t    ueId,  
+uint8_t     qci   
 )
-#else
-PUBLIC Void kwLmmSendAlarm(category, event, cause, suId, ueId, qci)
-KwCb   *gCb;
-U16    category; 
-U16    event;   
-U16    cause;  
-SuId   suId;  
-U32    ueId; 
-U8     qci;    
-#endif
 #else /* LTE_L2_MEAS */
-#ifdef ANSI
-PUBLIC Void kwLmmSendAlarm
+Void rlcLmmSendAlarm
 (
-KwCb   *gCb,
-U16    category, 
-U16    event,   
-U16    cause,  
-SuId   suId,  
-U32    ueId  
+RlcCb       *gCb,
+uint16_t    category, 
+uint16_t    event,   
+uint16_t    cause,  
+SuId        suId,  
+uint32_t    ueId  
 )
-#else
-PUBLIC Void kwLmmSendAlarm(category, event, cause, suId, ueId)
-KwCb   *gCb;
-U16    category; 
-U16    event;   
-U16    cause;  
-SuId   suId;  
-U32    ueId; 
-#endif
 #endif /* LTE_L2_MEAS */
 {
-   KwMngmt   usta;   /* Rlc Management Structure */
-
-   TRC2(kwLmmSendAlarm);
+   RlcMngmt   usta;   /* Rlc Management Structure */
 
    if(gCb->init.usta == FALSE)
    {
-      RETVOID;
+      return;
    }
 
    usta.hdr.elmId.elmnt = STGEN;
@@ -2422,9 +2117,9 @@ U32    ueId;
    /* update the date and time */
    (Void) SGetDateTime(&usta.t.usta.alarm.dt);
 
-   KwMiLkwStaInd(&(gCb->init.lmPst), &usta);
+   RlcMiLkwStaInd(&(gCb->init.lmPst), &usta);
 
-   RETVOID;
+   return;
 
 } 
 
@@ -2440,34 +2135,20 @@ U32    ueId;
  *    -# ROK 
  *    -# RFAILED 
  */
-#ifdef ANSI
-PUBLIC S16 kwLmmSendTrc
-(
-KwCb     *gCb,
-Event    event,     
-Buffer   *mBuf     
-)
-#else
-PUBLIC S16 kwLmmSendTrc(gCb,event, mBuf)
-KwCb     *gCb;
-Event    event;   
-Buffer   *mBuf;  
-#endif
+S16 rlcLmmSendTrc(RlcCb *gCb,Event event,Buffer *mBuf)
 {
-   KwMngmt   trc;              /* RLC management control block */
+   RlcMngmt   trc;              /* RLC management control block */
    Buffer    *dstMbuf;   
    MsgLen    bufLen;
    Data      *tempBuf;
    MsgLen    tempCnt;
    Pst       pst;
 
-   TRC2(kwLmmSendTrc)
-
-   RLOG2(L_DEBUG, "kwLmmSendTrc(): Trace for event=%d, gCb->trcLen=%d",
+   RLOG2(L_DEBUG, "rlcLmmSendTrc(): Trace for event=%d, gCb->trcLen=%d",
                      event,
                      gCb->trcLen);
 
-   cmMemset((U8 *)&trc, 0, sizeof(KwMngmt));
+   memset(&trc, 0, sizeof(RlcMngmt));
 
    pst = gCb->init.lmPst;
 
@@ -2486,10 +2167,10 @@ Buffer   *mBuf;
         {
            /* rg005.201 removed SPutSBuf on error */
            RLOG0(L_ERROR,"SCpyMsgMsg Failed");   
-           RETVALUE(RFAILED);
+           return RFAILED;
         }
         /* Send Trace Indication to Layer manager */
-        KwMiLkwTrcInd(&pst, &trc, dstMbuf);
+        RlcMiLkwTrcInd(&pst, &trc, dstMbuf);
      }
      /* check if only a specified number of bytes are to be sent */
      else if(gCb->trcLen > 0)
@@ -2498,7 +2179,7 @@ Buffer   *mBuf;
         if (SFndLenMsg(mBuf, &bufLen) != ROK)
         {
            RLOG0(L_ERROR,"SFndLenMsg Failed");   
-           RETVALUE(RFAILED);
+           return RFAILED;
         }
         /* Check if the recvd buffer size is less than request trace len */
         if(bufLen < gCb->trcLen)
@@ -2509,25 +2190,25 @@ Buffer   *mBuf;
               != ROK)
            {
               RLOG0(L_ERROR,"SCpyMsgMsg Failed");   
-              RETVALUE(RFAILED);
+              return RFAILED;
            }
          
            /* Send Trace Indication to Layer manager */
-           KwMiLkwTrcInd(&pst, &trc, dstMbuf);
+           RlcMiLkwTrcInd(&pst, &trc, dstMbuf);
         }
         else
         {
            /* if the recvd buffer size is greater than request trace len */
            /* Get a temporary buffer to store the msg */
-           KW_ALLOC(gCb,tempBuf, gCb->trcLen);
+           RLC_ALLOC(gCb,tempBuf, gCb->trcLen);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
            if(tempBuf == NULLP)
            {
-              (Void) SPutSMem(KW_GET_MEM_REGION(gCb), KW_GET_MEM_POOL(gCb));
+              (Void) SPutSMem(RLC_GET_MEM_REGION(gCb), RLC_GET_MEM_POOL(gCb));
       
                RLOG0(L_FATAL,"Memory Allocation failed");   
-               RETVALUE(LCM_REASON_MEM_NOAVAIL);
+               return (LCM_REASON_MEM_NOAVAIL);
            }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
          
@@ -2535,34 +2216,34 @@ Buffer   *mBuf;
            if (SCpyMsgFix(mBuf,0,gCb->trcLen,tempBuf,&tempCnt) != ROK)   
            {
               RLOG0(L_ERROR,"SCpyMsgFix Failed");   
-              RETVALUE(RFAILED);
+              return RFAILED;
            }
 
            if (SGetMsg(pst.region, pst.pool, &dstMbuf) != ROK)
            {
               RLOG0(L_FATAL,"Memory Allocation failed");   
-              RETVALUE(RFAILED);
+              return RFAILED;
            }
            /* Copy the tempBuf data to dst mBuf */
            if (SCpyFixMsg(tempBuf,dstMbuf,0,gCb->trcLen,&tempCnt) != ROK)
            {
               RLOG0(L_ERROR,"SCpyMsgFix Failed");   
-              RETVALUE(RFAILED);
+              return RFAILED;
            }
   
            /* Free the memory allocated for tempBuf */
-           KW_FREE(gCb,tempBuf, gCb->trcLen);
+           RLC_FREE(gCb,tempBuf, gCb->trcLen);
            /* Send Trace Indication to Layer manager */
-           KwMiLkwTrcInd(&pst, &trc, dstMbuf);
+           RlcMiLkwTrcInd(&pst, &trc, dstMbuf);
         }
      }
    }
    else
    {
-      KwMiLkwTrcInd(&pst, &trc, mBuf);
+      RlcMiLkwTrcInd(&pst, &trc, mBuf);
    }
 
-   RETVALUE(ROK);
+   return ROK;
 } 
 
   
@@ -2582,30 +2263,19 @@ Buffer   *mBuf;
  *
  */
  
-#ifdef ANSI
-PUBLIC S16 kwActvTmr
-(
-Ent    ent,
-Inst   inst
-)
-#else
-PUBLIC S16 kwActvTmr(ent,inst)
-Ent    ent;
-Inst   inst;
-#endif
+S16 rlcActvTmr(Ent ent,Inst inst)
 {
-   KwCb   *gCb; 
-   TRC2(kwActvTmr)
+   RlcCb   *gCb; 
 
-   if (inst >= KW_MAX_RLC_INSTANCES)
+   if (inst >= MAX_RLC_INSTANCES)
    {
-      RETVALUE (RFAILED);
+      return  (RFAILED);
    }
-   gCb = KW_GET_KWCB(inst); 
-   cmPrcTmr(&(gCb->kwTqCp), gCb->kwTq, (PFV) kwTmrExpiry);
-   RETVALUE(ROK);
+   gCb = RLC_GET_RLCCB(inst); 
+   cmPrcTmr(&(gCb->rlcTqCp), gCb->rlcTq, (PFV) rlcTmrExpiry);
+   return (ROK);
 
-} /* end of kwActvTmr */
+} /* end of rlcActvTmr */
 
  
 /********************************************************************30**

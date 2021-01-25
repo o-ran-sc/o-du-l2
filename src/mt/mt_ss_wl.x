@@ -35,8 +35,8 @@
 
 typedef struct mtDynBktCfg
 {
-   U16          blkSetRelThreshold;       /* threshold value for releasing memory blocks */
-   U16          blkSetAcquireThreshold;   /* threshold for requesting additional memory blocks */
+   uint16_t          blkSetRelThreshold;       /* threshold value for releasing memory blocks */
+   uint16_t          blkSetAcquireThreshold;   /* threshold for requesting additional memory blocks */
 } MtDynBktCfg;
 
 /* The number of blocks in the buckets and size of bloks must be 
@@ -44,7 +44,7 @@ typedef struct mtDynBktCfg
 typedef struct mtDynRegCfg
 {
    Region          regionId;                  /* Region Id */
-   U16             numBkts;                   /* Number of buckets */
+   uint16_t             numBkts;                   /* Number of buckets */
    MtDynBktCfg     bkt[SS_MAX_POOLS_PER_REG]; /* Threshold value configuration for each buckets */
 } MtDynRegCfg;
 
@@ -53,7 +53,7 @@ typedef struct mtDynRegCfg
  * as of the one configured in the gloabl region */
 typedef struct mtDynMemCfg
 {
-   U8              numRegions;           /* Number of regions */
+   uint8_t              numRegions;           /* Number of regions */
    MtDynRegCfg     region[SS_MAX_REGS];  /* Configuration details of each region */
 } MtDynMemCfg;
 
@@ -62,13 +62,13 @@ typedef struct mtDynMemCfg
 typedef struct mtGlobBktCfg
 {
    Size         blkSize;          /* bucket quantum size */
-   U32          numBlks;          /* the total blocks in the bucket */
-   U16          bucketSetSize;    /* Size of each bucket set */
+   uint32_t          numBlks;          /* the total blocks in the bucket */
+   uint16_t          bucketSetSize;    /* Size of each bucket set */
 } MtGlobBktCfg;
 
 typedef struct mtGlobMemCfg
 {
-   U16              numBkts;
+   uint16_t              numBkts;
 #ifdef  XEON_SPECIFIC_CHANGES
    Size             heapSize;
 #endif   

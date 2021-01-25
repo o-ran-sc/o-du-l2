@@ -68,23 +68,23 @@ static int RLOG_MODULE_ID=4096;
 #include "ss_task.x"
 #include "ss_msg.x"            /* MAC includes */
 /* local defines */
-//EXTERN  S16 ssGetDBufOfSize(Region region,Size size,Buffer **dBuf);
+// S16 ssGetDBufOfSize(Region region,Size size,Buffer **dBuf);
 //void prc_trace_format_string(UINT32 group_mask, UINT16 level, const char *format, ...);
 #endif
 
 /* local typedefs */
  
 /* local externs */
-EXTERN S16 SIncMsgRef(Buffer *srcBuf,Region dstRegion, Pool dstPool,Buffer **dstBuf);
+S16 SIncMsgRef(Buffer *srcBuf,Region dstRegion, Pool dstPool,Buffer **dstBuf);
 
-PRIVATE Void rgDHMBldTfuDatReq ARGS((RgCellCb *cellCb, RgDlSf *dlSf, RgDlHqProcCb *hqP,
+static Void rgDHMBldTfuDatReq ARGS((RgCellCb *cellCb, RgDlSf *dlSf, RgDlHqProcCb *hqP,
                            RgTfuDatReqPduInfo *datReq));
 
 #ifdef L2_OPTMZ
-PUBLIC S16 rgDHMFreeHqProcTB
+S16 rgDHMFreeHqProcTB
 (
-RgDlHqProcCb         *hqP,
-U8                   tbIndex
+RgDlHqProcCb *hqP,
+uint8_t      tbIndex
 );
 
 #endif
@@ -111,27 +111,13 @@ U8                   tbIndex
  *           -# RFAILED
  *
  **/
-#ifdef ANSI
-PUBLIC S16 rgDHMHqEntInit
-(
-Inst               inst,
-RgDlHqEnt          *hqE,
-U8                 maxHqProcs
-)
-#else
-PUBLIC S16 rgDHMHqEntInit(inst,hqE, maxHqProcs)
-Inst               inst,
-RgDlHqEnt          *hqE;
-U8                 maxHqProcs;
-#endif
+S16 rgDHMHqEntInit(Inst  inst, RgDlHqEnt *hqE, uint8_t maxHqProcs)
 {
-   U8 idx1,idx2;
+   uint8_t idx1,idx2;
 #ifdef L2_OPTMZ
    Buffer  *hdrDBuf = NULLP;
    Buffer  *ceDBuf = NULLP;
 #endif
-
-   TRC2(rgDHMHqEntInit)
 
    hqE->numHqProcs = maxHqProcs;
    /* for each harq process */
@@ -144,7 +130,7 @@ U8                 maxHqProcs;
             rgFreeSBuf(inst,(Data **)&(hqE->procs[idx1]), sizeof(RgDlHqProcCb));
          }
          RLOG0(L_ERROR, "Memory Alloc Failure for RgDlHqProcCb");        
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
       hqE->procs[idx1]->procId      = idx1;
@@ -180,7 +166,7 @@ U8                 maxHqProcs;
    }
 
 
-   RETVALUE(ROK);
+   return ROK;
 } /* rgDHMHqEntInit */
 
 /**
@@ -197,21 +183,9 @@ U8                 maxHqProcs;
  *  @return  Void      
  *
  **/
-#ifdef ANSI
-PUBLIC Void rgDHMUeReset
-(
-RgCellCb *cell,
-RgDlHqEnt          *hqE
-)
-#else
-PUBLIC Void rgDHMUeReset(cell, hqE)
-RgCellCb *cell;
-RgDlHqEnt          *hqE;
-#endif
+Void rgDHMUeReset(RgCellCb *cell, RgDlHqEnt  *hqE)
 {
-   U8       i = 0;
-
-   TRC2(rgDHMUeReset)
+   uint8_t       i = 0;
 
    if(hqE->procs[0])
    {
@@ -226,7 +200,7 @@ RgDlHqEnt          *hqE;
 #endif
       }
    }
-   RETVOID;
+   return;
 } /* rgDHMUeReset*/
 
 /**
@@ -245,19 +219,9 @@ RgDlHqEnt          *hqE;
  *  @return  Void      
  *
  **/
-#ifdef ANSI
-PUBLIC Void rgDHMHdlBufFree
-(
-Inst inst,
-Buffer **mBuf
-)
-#else
-PUBLIC Void rgDHMHdlBufFree(Inst inst, Buffer **mBuf)
-Inst inst;
-#endif
+Void rgDHMHdlBufFree(Inst inst, Buffer **mBuf)
 {
    RgCb *rgCbP = &rgCb[inst];
-   TRC2(rgDHMHdlBufFree)
 
    if (rgCbP->bufCnt < RG_MAX_DFRD_FREE_BUFS)
    {
@@ -272,7 +236,7 @@ Inst inst;
    {
       RG_FREE_MSG(*mBuf);
    }
-   RETVOID;
+   return;
 }
 /**
  * @brief This function is called to release the 
@@ -292,21 +256,11 @@ Inst inst;
  *  @return  Void      
  *
  **/
-#ifdef ANSI
-PUBLIC Void rgDHMFreeTbBufs
-(
-Inst inst
-)
-#else
-PUBLIC Void rgDHMFreeTbBufs(inst)
-Inst inst;
-#endif
+Void rgDHMFreeTbBufs(Inst inst)
 {
    RgCb *rgCbP = &rgCb[inst];
-   U8 start = rgCbP->bufCnt;
-   U8 end = 0;
-
-   TRC2(rgDHMFreeTbBufs)
+   uint8_t start = rgCbP->bufCnt;
+   uint8_t end = 0;
 
    if (rgCbP->bufCnt < RG_MAX_FREE_BUFS_PERTTI)
    {
@@ -322,24 +276,14 @@ Inst inst;
       SPutMsg(rgCbP->bufToFree[start]);
    }
    rgCbP->bufCnt = end;
-   RETVOID;
+   return;
 } /* rgDHMFreeTbBufs */
 
-#ifdef ANSI
-PUBLIC Void rgDHMFreeAllTbBufs
-(
-Inst inst
-)
-#else
-PUBLIC Void rgDHMFreeAllTbBufs(inst)
-Inst inst;
-#endif
+Void rgDHMFreeAllTbBufs(Inst inst)
 {
    RgCb *rgCbP = &rgCb[inst];
-   U8 start = rgCbP->bufCnt;
-   U8 end = 0;
-
-   TRC2(rgDHMFreeAllTbBufs)
+   uint8_t start = rgCbP->bufCnt;
+   uint8_t end = 0;
 
    while (start != end)
    {
@@ -347,7 +291,7 @@ Inst inst;
       SPutMsg(rgCbP->bufToFree[start]);
    }
    rgCbP->bufCnt = end;
-   RETVOID;
+   return;
 } /* rgDHMFreeTbBufs */
 
 
@@ -367,32 +311,18 @@ Inst inst;
  *  @return  Void      
  *
  **/
-#ifdef ANSI
-PUBLIC S16 rgDHMRlsHqProcTB
-(
-RgCellCb             *cell,
-RgDlHqProcCb         *hqP,
-U8                   tbIndex
-)
-#else
-PUBLIC S16 rgDHMRlsHqProcTB(cell, hqP, tbIndex)
-RgCellCb             *cell;
-RgDlHqProcCb         *hqP;
-U8                   tbIndex;
-#endif
+S16 rgDHMRlsHqProcTB(RgCellCb  *cell, RgDlHqProcCb *hqP, uint8_t tbIndex)
 {
-    U8                    idx;
+    uint8_t          idx;
 #ifdef L2_OPTMZ
     RgTfuDatReqTbInfo     *tb;   /* TB to be sent to CL/PHY*/
-   // U32 lchIdx, pduIdx;
+   // uint32_t lchIdx, pduIdx;
 #endif
-
-   TRC2(rgDHMRlsHqProcTB)
 
    if((tbIndex > RG_MAX_TB_PER_UE) ||
       (tbIndex == 0))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    hqP->tbInfo[tbIndex-1].numSchLch = 0;
@@ -438,7 +368,7 @@ U8                   tbIndex;
    hqP->tbInfo[tbIndex-1].contResCe = NOTPRSNT;
    hqP->tbInfo[tbIndex-1].contResId = NULLP;
 
-   RETVALUE(ROK);
+   return ROK;
 } /* rgDHMRlsHqProc */
 
 /**
@@ -451,36 +381,22 @@ U8                   tbIndex;
  *     Invoked by: ROM
  *     
  *  @param[in]  RgUeCb        *ue
- *  @param[in]  U8            idx
+ *  @param[in]  uint8_t            idx
  *  @param[in]  RgDlHqProc    **hqP
  *  @return  S16       
  *         -#   ROK     if successful
  *         -#   RFAILED otherwise
  *
  **/
-#ifdef ANSI
-PUBLIC S16 rgDHMGetHqProcFrmId
-(
-RgUeCb               *ue,
-U8                   idx,
-RgDlHqProcCb         **hqP
-)
-#else
-PUBLIC S16 rgDHMGetHqProcFrmId(ue, idx, hqP)
-RgUeCb               *ue;
-U8                   idx;
-RgDlHqProcCb         **hqP;
-#endif
+S16 rgDHMGetHqProcFrmId(RgUeCb *ue, uint8_t  idx, RgDlHqProcCb **hqP)
 {
-   TRC2(rgDHMGetHqProcFrmId)
-
    /* Pick the proc based on the index provided */
    *hqP = (ue->dl.hqEnt.procs[idx]);
 
-   RETVALUE(ROK);
+   return ROK;
 } /* rgDHMGetHqProcFrmId */
 
-/*PRIVATE U32 dataAvl; */
+/*static uint32_t dataAvl; */
 /**
  * @brief Handler for sending data to PHY
  *
@@ -500,8 +416,7 @@ RgDlHqProcCb         **hqP;
  *      -#ROK 
  *      -#RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 rgDHMSndDatReq
+S16 rgDHMSndDatReq
 (
 RgCellCb        *cellCb,
 RgDlSf          *dlSf,
@@ -509,25 +424,15 @@ RgTfuDatReqInfo *datInfo,
 RgDlHqProcCb   *hqP,
 RgErrInfo      *err 
 )
-#else
-PUBLIC S16 rgDHMSndDatReq(cellCb, dlSf, datInfo, hqP, err)
-RgCellCb        *cellCb;
-RgDlSf          *dlSf;
-RgTfuDatReqInfo *datInfo;
-RgDlHqProcCb    *hqP;
-RgErrInfo       *err;
-#endif
 {
-   U8 i;
-   Inst               inst = cellCb->macInst - RG_INST_START;
+   uint8_t i;
+   Inst    inst = cellCb->macInst - RG_INST_START;
    RgTfuDatReqPduInfo   *datReq;
    RgBldPduInfo      bldPdu;
    /*Added this variable to figure out that whether this UE data
      has to be inclueded in the TFU Data request.*/
    Bool  dataAvlblUe;
 
-   TRC2(rgDHMSndDatReq)
-  
    dataAvlblUe = TRUE;
    for(i=0;i< RG_MAX_TB_PER_UE;i++)
    {
@@ -580,7 +485,7 @@ RgErrInfo       *err;
                   hqP->tbInfo[i].timingInfo.slot, hqP->procId, 
                   hqP->tbInfo[i].pdcch.rnti);
 
-                  RETVALUE(RFAILED);
+                  return RFAILED;
                }
             }
             else   
@@ -605,7 +510,7 @@ RgErrInfo       *err;
                   hqP->tbInfo[i].timingInfo.slot, hqP->procId, 
                   hqP->tbInfo[i].pdcch.rnti);
                   
-                  RETVALUE(RFAILED);
+                  return RFAILED;
                }
 #else
                /*Padding is not done so data for this UE will not be
@@ -635,13 +540,13 @@ RgErrInfo       *err;
          rgDHMRlsHqProcTB(cellCb, hqP, 2);
       }
       
-      RETVALUE(ROK);
+      return ROK;
    }
 
    if (rgGetEventMem(inst,(Ptr *)&datReq, sizeof(TfuDatReqPduInfo),
             &(datInfo->memCp)) != ROK)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* Fill the TFU Dat Req with information from Harq Proc */
   
@@ -662,7 +567,7 @@ RgErrInfo       *err;
    cmLListAdd2Tail(&datInfo->pdus, &(datReq->lnk));
    datReq->lnk.node = (PTR)datReq;
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgDHMSndDatReq */
 
 /**
@@ -685,8 +590,7 @@ RgErrInfo       *err;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 rgDHMHndlDedDatReq
+S16 rgDHMHndlDedDatReq
 (
 Inst           inst,
 RgDlHqProcCb   *hqProc,
@@ -694,27 +598,18 @@ RgRguDDatReqPerUe *datReq,
 RgDlSf            *dlSf,
 RgErrInfo      *err
 )
-#else
-PUBLIC S16 rgDHMHndlDedDatReq(inst,hqProc, datReq, dlSf, err)
-Inst           inst;
-RgDlHqProcCb   *hqProc;
-RgRguDDatReqPerUe *datReq;
-RgDlSf            *dlSf;
-RgErrInfo      *err;
-#endif
 {
-//   U32            len;
-   U8             i;
-   U8             j;
+//   uint32_t            len;
+   uint8_t        i;
+   uint8_t        j;
    RgBldPduInfo   bldPdu;
-   U8             tbIndex;
+   uint8_t        tbIndex;
 #ifdef L2_OPTMZ
    RgTfuDatReqTbInfo     *tb;
 #endif
 
-   TRC2(rgDHMHndlDedDatReq);
 
-   tbIndex = (U8)(datReq->transId & 0x03);
+   tbIndex = (uint8_t)(datReq->transId & 0x03);
    /* Accept all the data requests even if delayed in case nothing
     * has been sent earlier on the harq proc.
     */
@@ -728,9 +623,9 @@ RgErrInfo      *err;
          {
             j++;
          } 
-         rgDHMRlsHqProcTB(rgCb[inst].cell, hqProc, (U8)(j+1));
+         rgDHMRlsHqProcTB(rgCb[inst].cell, hqProc, (uint8_t)(j+1));
       }
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    for(i=0;i<datReq->nmbOfTbs;i++)
@@ -751,10 +646,10 @@ RgErrInfo      *err;
             {
                j++;
             }
-            rgDHMRlsHqProcTB(rgCb[inst].cell, hqProc, (U8)(j+1));
+            rgDHMRlsHqProcTB(rgCb[inst].cell, hqProc, (uint8_t)(j+1));
             printf("\nrgDHMHndlDedDatReq:: hqP %p \n", (Void *)hqProc);
          }
-         RETVALUE(RFAILED);
+         return RFAILED;
 
       }
 #ifndef L2_OPTMZ
@@ -800,15 +695,15 @@ RgErrInfo      *err;
             {
                j++;
             }
-            rgDHMRlsHqProcTB(rgCb[inst].cell, hqProc, (U8)(j+1));
+            rgDHMRlsHqProcTB(rgCb[inst].cell, hqProc, (uint8_t)(j+1));
          }
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       /*
       SFndLenMsg(hqProc->tbInfo[i].tb, &len);
       */
    }
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgDHMHndlDedDatReq */
 
 /**
@@ -831,26 +726,16 @@ RgErrInfo      *err;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 rgDHMHndlCmnDatReq
+S16 rgDHMHndlCmnDatReq
 (
 Inst           inst,
 RgDlHqProcCb   *hqProc,
 RgRguCmnDatReq *datReq,
 RgErrInfo      *err
 )
-#else
-PUBLIC S16 rgDHMHndlCmnDatReq(inst,hqProc, datReq, err)
-Inst           inst;
-RgDlHqProcCb   *hqProc;
-RgRguCmnDatReq *datReq;
-RgErrInfo      *err;
-#endif
 {
    RgUstaDgn      dgn;
    RgBldPduInfo   bldPdu;
-
-   TRC2(rgDHMHndlCmnDatReq)
 
 #ifndef L2_OPTMZ
       if (hqProc->tbInfo[0].tb != NULLP)
@@ -863,7 +748,7 @@ RgErrInfo      *err;
          rgFillDgnParams(inst,&dgn, LRG_USTA_DGNVAL_HARQ); 
          rgLMMStaInd(inst,LCM_CATEGORY_PROTOCOL, LCM_EVENT_UI_INV_EVT,
                LRG_CAUSE_HQ_PROC_BUSY, &dgn);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
    bldPdu.datReq    =  datReq;
@@ -885,10 +770,10 @@ RgErrInfo      *err;
             hqProc->tbInfo[0].pdcch.rnti);
 
       RG_FREE_MSG(datReq->pdu);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgDHMHndlCmnDatReq */
 
 /**
@@ -914,27 +799,19 @@ RgErrInfo      *err;
  *      -# RFAILED 
  **/
  RgUeCb  *gUe =NULLP;
-#ifdef ANSI
-PUBLIC S16 rgDHMSndConsolidatedStaInd
+S16 rgDHMSndConsolidatedStaInd
 (
 RgCellCb        *cell,
 RgInfUeInfo     *ueInfo,
 CmLteTimingInfo timingInfo,
 RgErrInfo       *err
 )
-#else
-PUBLIC S16 rgDHMSndConsolidatedStaInd(cell, ueInfo, timingInfo, err)
-RgCellCb        *cell;
-RgInfUeInfo     *ueInfo;
-CmLteTimingInfo timingInfo;
-RgErrInfo       *err;
-#endif
 {
    SuId            rguDlSpId;/*need to use spID instead of suID*/
-   U8              idx;
-   U8              ueIdx;
-   U8              lcIdx;
-   U8              tbIndex=0,idx1;
+   uint8_t         idx;
+   uint8_t         ueIdx;
+   uint8_t         lcIdx;
+   uint8_t         tbIndex=0,idx1;
    RgDlSf          *dlSf = &cell->subFrms[(timingInfo.slot % RG_NUM_SUB_FRAMES)];
    Inst            inst = cell->macInst - RG_INST_START;
 //   Bool            isDStaReqrd = FALSE;
@@ -945,8 +822,8 @@ RgErrInfo       *err;
    RgUeCb         *ue;
    RgDlHqProcCb   *hqP;
    RgInfUeAlloc   *allocInfo;
-   U8             activeSapCnt = 0;
-   U8             staIndCnt    = 0;
+   uint8_t        activeSapCnt = 0;
+   uint8_t        staIndCnt    = 0;
 #ifdef LTE_ADV
    Bool           hqPAdded     = FALSE;
 #endif
@@ -954,9 +831,8 @@ RgErrInfo       *err;
    RgTfuDatReqTbInfo     *tb;   /* TB to be sent to CL/PHY*/
 #endif
 
-   TRC2(rgDHMSndConsolidatedStaInd)
-   cmMemset ((U8 *)dStaInd, 0, (sizeof(RgRguDedStaInd *) * rgCb[inst].numRguSaps));
-   cmMemset ((U8 *)rguDlSap, 0, (sizeof(RgUpSapCb  *) * rgCb[inst].numRguSaps));
+   memset (dStaInd, 0, (sizeof(RgRguDedStaInd *) * rgCb[inst].numRguSaps));
+   memset (rguDlSap, 0, (sizeof(RgUpSapCb  *) * rgCb[inst].numRguSaps));
 
    /* Send StaInd for the scheduled UEs */
    for(ueIdx = 0; ueIdx < ueInfo->numUes; ueIdx++)
@@ -1123,7 +999,7 @@ RgErrInfo       *err;
                {
                   err->errType  = RGERR_DHM_SND_STA_IND;
                   err->errCause = RG_DHM_MEM_ALLOC_FAIL;
-                  RETVALUE(RFAILED); 
+                  return RFAILED; 
                }
             }
 
@@ -1172,7 +1048,7 @@ RgErrInfo       *err;
                   err->errType  = RGERR_DHM_SND_STA_IND;
                   err->errCause = RG_DHM_MEM_ALLOC_FAIL;
                   /* Need to return as memory allocation will fail for other UEs also*/
-                  RETVALUE(RFAILED);
+                  return RFAILED;
                }
                dStaInd[rguDlSpId]->nmbOfUeGrantPerTti = 0;
                rguDlSap[rguDlSpId] = ue->rguDlSap;
@@ -1261,7 +1137,7 @@ RgErrInfo       *err;
       }
 
    }
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgDHMSndConsolidatedStaInd */
 
 
@@ -1280,22 +1156,14 @@ RgErrInfo       *err;
  *  @return     Void
  *              None 
  **/
-//U8 crashFlag = 0;
-#ifdef ANSI
-PRIVATE Void rgDHMBldTfuDatReq
+//uint8_t crashFlag = 0;
+static Void rgDHMBldTfuDatReq
 (
 RgCellCb           *cellCb,
 RgDlSf             *dlSf,
 RgDlHqProcCb       *hqP,
 RgTfuDatReqPduInfo *datReq
 )
-#else
-PRIVATE Void rgDHMBldTfuDatReq(cellCb, dlSf, hqP, datReq)
-RgCellCb           *cellCb;
-RgDlSf             *dlSf;
-RgDlHqProcCb       *hqP;
-RgTfuDatReqPduInfo *datReq;
-#endif
 {
 
 #ifndef L2_OPTMZ
@@ -1306,12 +1174,11 @@ RgTfuDatReqPduInfo *datReq;
 #endif
 #endif
 
-   U8 i;
+   uint8_t i;
 
 #ifdef L2_OPTMZ
-   U32 lchIdx, pduIdx;
+   uint32_t lchIdx, pduIdx;
 #endif
-   TRC2(rgDHMBldTfuDatReq)
  
    datReq->nmbOfTBs = 0;
 #ifndef L2_OPTMZ
@@ -1430,7 +1297,7 @@ RgTfuDatReqPduInfo *datReq;
          datReq->nmbOfTBs++;
       }
    }
-   RETVOID;
+   return;
 }  /* rgDHMBldTfuDatReq */
 
 
@@ -1451,27 +1318,15 @@ RgTfuDatReqPduInfo *datReq;
  *  @return  Void      
  *
  **/
-#ifdef ANSI
-PUBLIC S16 rgDHMFreeHqProcTB
-(
-RgDlHqProcCb         *hqP,
-U8                   tbIndex
-)
-#else
-PUBLIC S16 rgDHMFreeHqProcTB(hqP, tbIndex)
-RgDlHqProcCb         *hqP;
-U8                   tbIndex;
-#endif
+S16 rgDHMFreeHqProcTB(RgDlHqProcCb *hqP, uint8_t tbIndex)
 {
    RgTfuDatReqTbInfo     *tb;   /* TB to be sent to CL/PHY*/
-   U8                    idx;
-
-   TRC2(rgDHMFreeHqProcTB)
+   uint8_t               idx;
 
    if((tbIndex > RG_MAX_TB_PER_UE) ||
       (tbIndex == 0))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    tb = &(hqP->tbInfo[tbIndex-1].tb);
@@ -1489,7 +1344,7 @@ U8                   tbIndex;
    }
       hqP->tbInfo[tbIndex-1].sfLnkInfo[idx].sf = NULLP;
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif
 
@@ -1510,20 +1365,9 @@ U8                   tbIndex;
  *  @return     None.
  *
  **/
-#ifdef ANSI
-PUBLIC Void rgDHMFreeUe
-(
-Inst               inst,
-RgDlHqEnt          *hqE
-)
-#else
-PUBLIC Void rgDHMFreeUe(inst,hqE)
-Inst               inst;
-RgDlHqEnt          *hqE;
-#endif
+Void rgDHMFreeUe(Inst  inst, RgDlHqEnt *hqE)
 {
-   U8             i;
-   TRC2(rgDHMFreeUe)
+   uint8_t             i;
 
    if(hqE->procs)
    {
@@ -1548,7 +1392,7 @@ RgDlHqEnt          *hqE;
                             assignment */
    }
 
-   RETVOID;
+   return;
 
 }  /* rgDHMFreeUe */
 /**
@@ -1568,17 +1412,7 @@ RgDlHqEnt          *hqE;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
-PUBLIC S16 RgSchMacRstHqEntReq
-(
-Pst*                 pst,    
-RgInfResetHqEnt*     hqEntInfo
-)
-#else
-PUBLIC S16 RgSchMacRstHqEntReq(pst, hqEntInfo)
-Pst*                 pst;
-RgInfResetHqEnt*     hqEntInfo;
-#endif
+S16 RgSchMacRstHqEntReq(Pst* pst, RgInfResetHqEnt* hqEntInfo)
 {
    Inst      inst;
    RgCellCb  *cell;
@@ -1591,21 +1425,21 @@ RgInfResetHqEnt*     hqEntInfo;
    {
       RGDBGERRNEW(inst,(rgPBuf(inst), "For user [%d]Cell does not exist %d\n",
                 hqEntInfo->crnti,hqEntInfo->cellId));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if ((ue = rgDBMGetUeCb(cell, hqEntInfo->crnti)) == NULLP)
    {
       RGDBGERRNEW(inst,(rgPBuf(inst), "[%d]UE does not exist for this hqEntInfo\n",
                        hqEntInfo->crnti));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    rgDHMUeReset(cell, &ue->dl.hqEnt);
 
-   RETVALUE(ROK);
+   return ROK;
 }
-U32 gSaveVal;
+uint32_t gSaveVal;
 
 /**
  * @brief Function for handling RaResp request received from scheduler to MAC
@@ -1626,32 +1460,20 @@ U32 gSaveVal;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
-PUBLIC S16 RgSchMacRlsHqReq
-(
-Pst                 *pst,
-RgInfRlsHqInfo      *rlshqUeInfo
-)
-#else
-PUBLIC S16 RgSchMacRlsHqReq(pst, rlshqUeInfo)
-Pst                 *pst;
-RgInfRlsHqInfo      *rlshqUeInfo;
-#endif
+S16 RgSchMacRlsHqReq(Pst *pst, RgInfRlsHqInfo *rlshqUeInfo)
 {
    Inst           inst;
    RgCellCb       *cell = NULLP;
    RgUeCb         *ue;
    RgDlHqProcCb   *hqP;
-   U8             idx1,idx2;
+   uint8_t        idx1,idx2;
 #ifdef LTE_L2_MEAS
-   U8                tbId;
+   uint8_t           tbId;
    RguHarqStatusInd  hqStaInd;
    Bool              isValidTbId = FALSE;
 #endif
-   U32        startTime=0;
+   uint32_t        startTime=0;
    
-   TRC2(RgSchMacRlsHqReq)
-
    RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
    cell  = rgCb[inst].cell;
@@ -1660,7 +1482,7 @@ RgInfRlsHqInfo      *rlshqUeInfo;
 
    if(NULLP == rlshqUeInfo)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if((cell  == NULLP)
@@ -1669,12 +1491,12 @@ RgInfRlsHqInfo      *rlshqUeInfo;
        
       RLOG_ARG0(L_ERROR,DBG_CELLID,rlshqUeInfo->cellId,
                 "No cellCb found with cellId");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if(NULLP == rlshqUeInfo->ueHqInfo)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    for(idx1 = 0; idx1 < rlshqUeInfo->numUes; idx1++)
@@ -1783,7 +1605,7 @@ RgInfRlsHqInfo      *rlshqUeInfo;
    /*starting Task*/
    SStopTask(startTime,PID_MAC_AM_HARQ_RLS);
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of RgSchMacRlsHqReq */
 
 

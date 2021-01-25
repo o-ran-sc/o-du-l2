@@ -87,27 +87,14 @@ extern "C" {
  *  @param[in]  RgSchUeCb    *ue
  *  @param[in]  Bool         *hdFddEnbl
  *
- *  @RETVALUE S16
+ *  @return  S16
  *      -# ROK
  *      -# RFAILED
 */ 
 
-#ifdef ANSI
-PUBLIC S16 rgSCHHdFddUeCfg 
-(
-RgSchCellCb  *cellCb,
-RgSchUeCb *ueCb,
-Bool hdFddEnbl
-)
-#else /* ANSI */
-PUBLIC S16 rgSCHHdFddUeCfg (cellCb, ueCb, hdFddEnbl)
-RgSchCellCb  *cellCb;
-RgSchUeCb *ueCb;
-Bool hdFddEnbl;
-#endif /* ANSI */
+S16 rgSCHHdFddUeCfg(RgSchCellCb  *cellCb,RgSchUeCb *ueCb,Bool hdFddEnbl)
 {
-   U8 sfi;
-   TRC3(rgSCHHdFddUeCfg)
+   uint8_t sfi;
 
    RLOG_ARG2(L_DEBUG,DBG_CELLID,cellCb->cellId,
                "rgSCHHdFddUeCfg(): UeId =%d hdFddEnbl=%d",
@@ -128,7 +115,7 @@ Bool hdFddEnbl;
                   "rgSCHHdFddUeCfg(): HD-FDD already enabled for this UE"
                   "CRNTI:%d",ueCb->ueId);
       }
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #ifdef LTEMAC_SPS
@@ -140,7 +127,7 @@ Bool hdFddEnbl;
       RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId,
       "rgSCHHdFddUeCfg(): Could'nt do HDFDD cfg, SPS already configured"
                "CRNTI:%d",ueCb->ueId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -164,10 +151,10 @@ Bool hdFddEnbl;
          RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId,
                "rgSCHHdFddUeCfg(): Could not allocate memory for hd-fdd ueCb"
                "CRNTI:%d",ueCb->ueId);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }/*rgSCHHdFddUeCfg*/
 
 
@@ -191,23 +178,12 @@ Bool hdFddEnbl;
  *  @param[in]  RgSchCellCb  *cell
  *  @param[in]  RgSchUeCb    *ue
  *
- *  @RETVALUE( S16
+ *  @return ( S16
  *      -# ROK
 *
 */
-#ifdef ANSI
-PUBLIC S16 rgSCHHdFddUeDel 
-(
-RgSchCellCb *cellCb,
-RgSchUeCb   *ueCb
-)
-#else /* ANSI */
-PUBLIC S16 rgSCHHdFddUeDel(cellCb, ueCb)
-RgSchCellCb *cellCb;
-RgSchUeCb   *ueCb;
-#endif /* ANSI */
+S16 rgSCHHdFddUeDel(RgSchCellCb *cellCb,RgSchUeCb   *ueCb)
 {
- TRC3(rgSCHHdFddUeDel)
 
    RLOG_ARG2(L_DEBUG,DBG_CELLID,cellCb->cellId,
              " rgSCHHdFddUeDel(): UeId =%d hdFdd=%x",
@@ -223,7 +199,7 @@ RgSchUeCb   *ueCb;
        ueCb->hdFddEnbld = FALSE;
     }
 
-    RETVALUE(ROK);
+    return ROK;
 } /* rgSCHHdFddUeDel */
 
 
@@ -239,35 +215,26 @@ RgSchUeCb   *ueCb;
  *               instance updates
  *               for HD FDD UEs
  *  @param[in]  RgSchCellCb *cell
- *  @RETVALUE   None
+ *  @return    None
  */
 
-#ifdef ANSI
-PUBLIC Void rgSCHCmnHdFddPtUlMrk 
-(
-RgSchCellCb *cellCb
-)
-#else /* ANSI */
-PUBLIC Void rgSCHCmnHdFddPtUlMrk (cellCb)
-RgSchCellCb *cellCb;
-#endif /* ANSI */
+Void rgSCHCmnHdFddPtUlMrk(RgSchCellCb *cellCb)
 {
-   U16                    sfn; /* System Frame Number */
-   U32                    pti; /* Index into Periodic table */
-   U16                    sfi; /* Index into HDFDD state table */
-   CmLListCp              *cqiLst;
-   CmLListCp              *srsLst;
-   CmLListCp              *srLst;
-   CmLListCp              *riLst;
-   CmLList                *cqiNode;
-   CmLList                *srsNode;
-   CmLList                *srNode;
-   CmLList                *riNode;
-   CmLteTimingInfo        timeInfo;
-   RgSchUePCqiCb          *cqiCb = NULLP;
-   RgSchUePCqiCb          *riCb = NULLP;
+   uint16_t           sfn; /* System Frame Number */
+   uint32_t           pti; /* Index into Periodic table */
+   uint16_t           sfi; /* Index into HDFDD state table */
+   CmLListCp          *cqiLst;
+   CmLListCp          *srsLst;
+   CmLListCp          *srLst;
+   CmLListCp          *riLst;
+   CmLList            *cqiNode;
+   CmLList            *srsNode;
+   CmLList            *srNode;
+   CmLList            *riNode;
+   CmLteTimingInfo    timeInfo;
+   RgSchUePCqiCb      *cqiCb = NULLP;
+   RgSchUePCqiCb      *riCb = NULLP;
 
-   TRC3(rgSCHCmnHdFddPtUlMrk)
 
    timeInfo = cellCb->crntTime;
 
@@ -346,7 +313,7 @@ RgSchCellCb *cellCb;
      CM_LLIST_NEXT_NODE(riLst, riNode);
    }
 
-   RETVOID;
+   return;
 } /* rgSCHCmnHdFddPtUlMrk */
 #endif /* ifdef TFU_UPGRADE */
 
@@ -372,31 +339,17 @@ RgSchCellCb *cellCb;
  *  @param[in]  RgSchCellCb  *cell
  *  @param[in]  RgSchUeCb    *ue
  *
- *  @RETVALUE   None
+ *  @return    None
  *
  */
-#ifdef ANSI
-PUBLIC Void rgSCHCmnHdFddChkUlAllow
-( 
- RgSchCellCb *cellCb,
- RgSchUeCb   *ueCb,
- U8          *allow
-)
-#else /* ANSI */
-PUBLIC Void rgSCHCmnHdFddChkUlAllow ( cellCb, ueCb, allow)
-RgSchCellCb *cellCb;
-RgSchUeCb   *ueCb;
-U8          *allow;
-#endif /* ANSI */
+Void rgSCHCmnHdFddChkUlAllow(RgSchCellCb *cellCb,RgSchUeCb *ueCb,uint8_t *allow)
 {
-   U16              sfn;
-   U16              sfi;
+   uint16_t         sfn;
+   uint16_t         sfi;
    CmLteTimingInfo  timeInfo;
    RgSchDlSf        *sf = NULLP; /* Dl subframe info */
-   U8               ulOffset
+   uint8_t          ulOffset
 
-   TRC3(rgSCHCmnHdFddChkUlAllow)
-   
    RLOG_ARG1(L_DEBUG,DBG_CELLID,cellCb->cellId, 
             " rgSCHCmnHdFddChkUlAllow: ueId=%d ", ueCb->ueId);
 
@@ -439,7 +392,7 @@ U8          *allow;
       RLOG_ARG1(L_DEBUG,DBG_CELLID,cellCb->cellId,  
                "rgSCHCmnHdFddChkUlAllow: Already marked for DL, ueId = %d ",
                ueCb->ueId);
-      RETVOID;
+      return;
    }
 
    /* Validate condition 3 */
@@ -455,7 +408,7 @@ U8          *allow;
       RLOG_ARG1(L_DEBUG,DBG_CELLID,cellCb->cellId,  
          "rgSCHCmnHdFddChkUlAllow: No Place for HARQ, ueId = %d ",
          ueCb->ueId);
-      RETVOID;
+      return;
 
    }
    /* Validate condition 4 */
@@ -470,7 +423,7 @@ U8          *allow;
       RLOG_ARG1(L_DEBUG,DBG_CELLID,cellCb->cellId,  
                " rgSCHCmnHdFddChkUlAllow: No Place for UL grant, ueId = %d ",
                ueCb->ueId);
-      RETVOID;
+      return;
 
    }
    /* Validate condition 5 */
@@ -485,7 +438,7 @@ U8          *allow;
       RLOG_ARG1(L_DEBUG,DBG_CELLID,cellCb->cellId,  
              " rgSCHCmnHdFddChkUlAllow: No Place for Guard time, ueId = %d ",
              ueCb->ueId);
-      RETVOID;
+      return;
 
    }
    /* Adition guard time rule check: Above check is only for PDSCH, lets check
@@ -503,13 +456,13 @@ U8          *allow;
       RLOG_ARG1(L_DEBUG,DBG_CELLID,cellCb->cellId,  
          "rgSCHCmnHdFddChkUlAllow: Already marked for Cmn DL, ueId = %d ",
          ueCb->ueId);
-      RETVOID;
+      return;
 
    }
 
    /* All validation done. Safe to for UL */
    *allow = TRUE;
-   RETVOID;
+   return;
 } /* rgSCHCmnHdFddChkUlAllow */
 
 
@@ -541,31 +494,22 @@ U8          *allow;
  *  @param[in]  RgSchCellCb  *cellCb
  *  @param[in]  RgSchUeCb    *ueCb
  *  @param[in]  CmLteTimingInfo    *timeInfo
- *  @param[out] U8 *allow -- TRUE is allowed or FALSE if no allowedi.
+ *  @param[out] uint8_t *allow -- TRUE is allowed or FALSE if no allowedi.
  *                   Valdity of this pointer is not done in this function
  *
  */
-#ifdef ANSI
-PUBLIC Void rgSCHCmnHdFddChkDlAllow 
+Void rgSCHCmnHdFddChkDlAllow 
 (
 RgSchCellCb *cellCb,
 RgSchUeCb *ueCb,
 Bool *allow /* Valdity of this pointer is not done in this function */
 )
-#else /* ANSI */
-PUBLIC Void rgSCHCmnHdFddChkDlAllow ( cellCb, ueCb, allow)
-RgSchCellCb *cellCb;
-RgSchUeCb *ueCb;
-Bool *allow; /* Valdity of this pointer is not done in this function */
-#endif /* ANSI */
 {
-   U16     sfn;
-   U16     sfi;
+   uint16_t     sfn;
+   uint16_t     sfi;
    RgSchDlSf *sf = NULLP; /* Dl subframe info */
    CmLteTimingInfo timeInfo;
    CmLteTimingInfo tempTimeInfo;
-
-   TRC3(rgSCHCmnHdFddChkDlAllow)
 
    *allow = FALSE;
 
@@ -590,7 +534,7 @@ Bool *allow; /* Valdity of this pointer is not done in this function */
       RLOG_ARG1(L_DEBUG,DBG_CELLID,cellCb->cellId,  
                "rgSCHCmnHdFddChkDlAllow: sf is UL, ueId=%d ", ueCb->ueId);
       *allow = FALSE;
-      RETVOID;
+      return;
    }
 
    /* It is not validation, but BCCH/PCCH marking is done here */
@@ -612,7 +556,7 @@ Bool *allow; /* Valdity of this pointer is not done in this function */
               " rgSCHCmnHdFddChkDlAllow: Guard time rule not met, ueId=%d ",
               ueCb->ueId);
       *allow = FALSE;
-      RETVOID;
+      return;
    }
 
    /* Validate condition 3 */
@@ -648,7 +592,7 @@ Bool *allow; /* Valdity of this pointer is not done in this function */
 
       /* Mark this sf as DLCNTRL */
       ueCb->hdFddCb->subfrm[sfi].subFrmDir =RG_SCH_HDFDD_DLCNTRL;
-      RETVOID;
+      return;
    }
 
 
@@ -679,13 +623,13 @@ Bool *allow; /* Valdity of this pointer is not done in this function */
              "ueId=%d ",ueCb->ueId);
 
       *allow = FALSE;
-      RETVOID;
+      return;
    }
    /* First check for any Common channel info is scheduled */
 
    *allow = TRUE;
    /* All validation done. Safe to for DL */
-   RETVOID;
+   return;
 } /* rgSCHCmnHdFddChkDlAllow */
 
 
@@ -701,30 +645,14 @@ Bool *allow; /* Valdity of this pointer is not done in this function */
  *
  *  @param[in]  RgSchUeCb    *ue
  *
- *  @RETVALUE None
+ *  @return  None
  *
  */
 
-#ifdef ANSI
-PUBLIC Void rgSCHCmnHdFddChkNackAllow
-(
-RgSchCellCb *cellCb,
-RgSchUeCb   *ueCb,
-CmLteTimingInfo  timeInfo,
-Bool *sndNACK
-)
-#else /* ANSI */
-PUBLIC Void rgSCHCmnHdFddChkNackAllow(cellCb, ueCb, timeInfo, sndNACK)
-RgSchCellCb *cellCb;
-RgSchUeCb   *ueCb;
-CmLteTimingInfo  timeInfo;
-Bool *sndNACK;
-#endif /* ANSI */
+Void rgSCHCmnHdFddChkNackAllow(RgSchCellCb *cellCb,RgSchUeCb *ueCb,CmLteTimingInfo  timeInfo,Bool *sndNACK)
 {
    RgSchDlSf *sf;
    CmLteTimingInfo  tempTimeInfo;
-
-   TRC3(rgSCHCmnHdFddChkNackAllow)
 
    /* Information in timeInfo contains (n+DL_DELTA) th subframe info*/
 
@@ -756,7 +684,7 @@ Bool *sndNACK;
       *sndNACK = TRUE;
    }
 
-   RETVOID;
+   return;
 } /* rgSCHCmnHdFddChkNackAllow */
 
 
@@ -777,31 +705,18 @@ Bool *sndNACK;
  *  @param[in]  RgSchCellCb  *cellCb
  *  @param[in]  RgSchUeCb    *ueCb
  *  @param[in]  CmLteTimingInfo    *timeInfo
- *  @param[out] U8 *allow -- TRUE is allowed or FALSE if no allowedi.
+ *  @param[out] uint8_t *allow -- TRUE is allowed or FALSE if no allowedi.
  *             Valdity of this pointer is not done in this function.
  *
- *  @RETVALUE None
+ *  @return  None
  */
-#ifdef ANSI
-PUBLIC Void rgSCHCmnHdFddUpdULMark
-(
-RgSchCellCb *cellCb,
-RgSchUeCb   *ueCb
-)
-#else /* ANSI */
-PUBLIC Void rgSCHCmnHdFddUpdULMark ( cellCb, ueCb)
-RgSchCellCb *cellCb;
-RgSchUeCb   *ueCb;
-#endif /* ANSI */
+Void rgSCHCmnHdFddUpdULMark(RgSchCellCb *cellCb,RgSchUeCb   *ueCb)
 {
 
-   U16 sfn;
-   U16 sfi;
+   uint16_t sfn;
+   uint16_t sfi;
    CmLteTimingInfo  timeInfo;
-   U8   ulOffset;
-
-   TRC3(rgSCHCmnHdFddUpdULMark)
-
+   uint8_t   ulOffset;
 
    ulOffset = RGSCH_PDCCH_PUSCH_DELTA - 
               TFU_CRCIND_ULDELTA + RGSCH_PDCCH_PUSCH_DELTA;
@@ -838,7 +753,7 @@ RgSchUeCb   *ueCb;
    RG_SCH_HDFDD_GETSFI(sfi, timeInfo, (ulOffset * -1));
    RG_SCH_HDFDD_MARKSTATE(ueCb, RG_SCH_HDFDD_NOSCHD, RG_SCH_HDFDD_INVSFN, sfi);
 
-   RETVOID;
+   return;
 } /* rgSCHCmnHdFddUpdULMark */
 
 
@@ -859,30 +774,18 @@ RgSchUeCb   *ueCb;
  *  @param[in]  RgSchCellCb  *cellCb
  *  @param[in]  RgSchUeCb    *ueCb
  *  @param[in]  CmLteTimingInfo    *timeInfo
- *  @param[out] U8 *allow -- TRUE is allowed or FALSE if no allowed.
+ *  @param[out] uint8_t *allow -- TRUE is allowed or FALSE if no allowed.
  *                Valdity of this pointer is not done in this function
  *
- *  @RETVALUE None
+ *  @return  None
  */
 
-#ifdef ANSI
-PUBLIC Void rgSCHCmnHdFddUpdDLMark
-(
-RgSchCellCb *cellCb,
-RgSchUeCb   *ueCb
-)
-#else /* ANSI */
-PUBLIC Void rgSCHCmnHdFddUpdDLMark (cellCb, ueCb)
-RgSchCellCb *cellCb;
-RgSchUeCb   *ueCb;
-#endif /* ANSI */
+Void rgSCHCmnHdFddUpdDLMark(RgSchCellCb *cellCb,RgSchUeCb *ueCb)
 {
 
-   U16 sfn;
-   U16 sfi;
+   uint16_t sfn;
+   uint16_t sfi;
    CmLteTimingInfo  timeInfo;
-
-   TRC3(rgSCHCmnHdFddUpdDLMark)
 
    timeInfo = cellCb->crntTime;
    RGSCH_INCR_SUB_FRAME(timeInfo, RG_SCH_CMN_DL_DELTA);
@@ -914,7 +817,7 @@ RgSchUeCb   *ueCb;
       RG_SCH_HDFDD_MARKSTATE(ueCb, RG_SCH_HDFDD_DLCNTRL, sfn, sfi);
    }
 
-   RETVOID;
+   return;
 } /* rgSCHCmnHdFddUpdDLMark */
 
 
@@ -929,31 +832,18 @@ RgSchUeCb   *ueCb;
  *
  *     Processing Steps:
  *   
- *  @param[out]  *sfn U32
+ *  @param[out]  *sfn uint32_t
  *  @param[in]  timeInfo timing information subframe of interest 
  *  @param[in]  offsest  Offest with w.r.t which SFN has to be determined
  *
- *  @RETVALUE None
+ *  @return  None
  */
 
-#ifdef ANSI
-PUBLIC Void rgSCHHdFddGetSfn
-(
- U16 *sfn,
- CmLteTimingInfo  timeInfo,
- S16 offset
-)
-#else /* ANSI */
-PUBLIC Void rgSCHHdFddGetSfn (sfn, timeInfo, offset)
- U16 *sfn;
- CmLteTimingInfo  timeInfo;
- S16 offset;
-#endif /* ANSI */
+Void rgSCHHdFddGetSfn(uint16_t *sfn,CmLteTimingInfo  timeInfo,S16 offset)
 {
-   U16 tempSfn;
+   uint16_t tempSfn;
    S16 tempSfCount;
 
-   TRC3(rgSCHHdFddGetSfn)
    if(((S16)(timeInfo.subframe) + offset) >= RGSCH_NUM_SUB_FRAMES)
    {
       /* Increament to number of times of SFNs that can be possible
@@ -981,7 +871,7 @@ PUBLIC Void rgSCHHdFddGetSfn (sfn, timeInfo, offset)
    }
    *sfn = tempSfn;
 
-   RETVOID;
+   return;
 } /* End of rgSCHHdFddGetSfn */
 
 

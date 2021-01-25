@@ -30,7 +30,7 @@
 ************************************************************************/
 #include "envopt.h"
 #include "envdep.h"
-
+#include"stdint.h"
 #include "rl_interface.h"
 #include "rl_rlog.h"
 #include "rl_platform.h"
@@ -59,7 +59,7 @@
 //  @out         : void
 //////////////////////////////////////////////////////////////////////////
 
-PUBLIC void rlInitL2SocSpecific(void)
+void rlInitL2SocSpecific(void)
 {
 #ifndef RLOG_ENABLE_TEXT_LOGGING
 
@@ -78,7 +78,7 @@ PUBLIC void rlInitL2SocSpecific(void)
    g_l2LogBufStartPtr     = g_l2rlogBuf + sizeof(g_l2LogBufLen);
 
 #endif
-   RETVOID;
+   return;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -90,7 +90,7 @@ PUBLIC void rlInitL2SocSpecific(void)
 //  @out         : void
 //////////////////////////////////////////////////////////////////////////
 
-PUBLIC void processL2LogBuff(void)
+void processL2LogBuff(void)
 {
 #ifndef RLOG_ENABLE_TEXT_LOGGING
    if(g_l2LogBufLen > 0)
@@ -107,7 +107,7 @@ PUBLIC void processL2LogBuff(void)
 
       l2rlogBuf_post = g_l2LogBufBasePtr;   /* copy logBufferPointer for later use */
       /* Set L2 Log Buffer length in first 4 bytes of flat buffer */
-      *((U32*) g_l2LogBufBasePtr) = g_l2LogBufLen; /* Set L2 Log Buffer length in 
+      *((uint32_t*) g_l2LogBufBasePtr) = g_l2LogBufLen; /* Set L2 Log Buffer length in 
                                                first 4 bytes of flat buffer */
 
       /* Re-setting pointer so that L2 will use this to write logs */
@@ -120,7 +120,7 @@ PUBLIC void processL2LogBuff(void)
 
    }
 #endif   
-   RETVOID; 
+   return; 
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -133,16 +133,16 @@ PUBLIC void processL2LogBuff(void)
 //                 logPtr   - Address of log Buffer
 //////////////////////////////////////////////////////////////////////////
 
-PUBLIC void rlGetL2LogBufPtr
+void rlGetL2LogBufPtr
 (
    void *mBuf,
-   U32 *logLen,
+   uint32_t *logLen,
    Data **logPtr
 )
 {
    /* Get Buffer pointer and length */
    *logPtr = ((Data *)mBuf) + sizeof(logLen);
-   *logLen = *((U32 *) mBuf);
+   *logLen = *((uint32_t *) mBuf);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -154,13 +154,13 @@ PUBLIC void rlGetL2LogBufPtr
 //  @out         : void
 //////////////////////////////////////////////////////////////////////////
 
-PUBLIC void rlInvalidateL2LogsInCache
+void rlInvalidateL2LogsInCache
 (
    Data *ptr,
-   U32   len
+   uint32_t   len
 )
 {
-   RETVOID;
+   return;
 }
 
 /**********************************************************************

@@ -66,25 +66,25 @@ static int RLOG_MODULE_ID=4096;
 #include "ss_msg.x"            /* MAC includes */
 /* local defines */
 #ifndef T2K_MEM_LEAK_DBG
-EXTERN  S16 ssGetDBufOfSize(Region region,Size size,Buffer **dBuf);
+ S16 ssGetDBufOfSize(Region region,Size size,Buffer **dBuf);
 #else
 char* file = __FILE__;
-U32 line = __LINE__;
+uint32_t line = __LINE__;
 #endif
 
 /* local typedefs */
 
 /* global variables */
-U32 rgDlrate_rgu;
+uint32_t rgDlrate_rgu;
 
 /* local externs */
 
-PRIVATE Void rgMUXGet20bitRarGrnt ARGS((U8 ulBw,
+static Void rgMUXGet20bitRarGrnt ARGS((uint8_t ulBw,
                                         RgInfRarUlGrnt *msg3Grnt,
-                                        U8 *grnt));
-EXTERN U16 rgMUXCalcRiv ARGS((U8 bw,
-                                U8 rbStart,
-                                U8 numRb));
+                                        uint8_t *grnt));
+uint16_t rgMUXCalcRiv ARGS((uint8_t bw,
+                                uint8_t rbStart,
+                                uint8_t numRb));
  
 #ifndef MS_MBUF_CORRUPTION
 #define MS_BUF_ADD_ALLOC_CALLER()
@@ -100,11 +100,11 @@ EXTERN U16 rgMUXCalcRiv ARGS((U8 bw,
 
 #define RG_PACK_CE(_ce, _len, _ceBuf, _ret) {\
    MS_BUF_ADD_ALLOC_CALLER(); \
-   _ret = SAddPstMsgMult((U8 *)(&(_ce)), _len, _ceBuf);\
+   _ret = SAddPstMsgMult((uint8_t *)(&(_ce)), _len, _ceBuf);\
 }
 
 #define RG_MUX_CALC_LEN(_len,_lenBytes,_elmTotLen) {\
-   U8 _hdrLen;\
+   uint8_t _hdrLen;\
    _lenBytes    = (_len <= 255) ? 1 : 2;\
    _hdrLen      = _lenBytes + RG_SDU_SHDR_LEN;\
    _elmTotLen   = _hdrLen + _len;\
@@ -155,26 +155,16 @@ EXTERN U16 rgMUXCalcRiv ARGS((U8 bw,
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PRIVATE S16 rgMUXAddCes
+static S16 rgMUXAddCes
 (
 Inst           inst,
 RgBldPduInfo   *pdu,
 Buffer         *ceBuf,
 RgErrInfo      *err
 )
-#else
-PRIVATE S16 rgMUXAddCes(inst,pdu, ceShdrBuf, ceBuf, err)
-Inst           inst;
-RgBldPduInfo   *pdu;
-Buffer         *ceBuf;
-RgErrInfo      *err;
-#endif
 {
    S16            ret;
    RgMUXSubHdr    subHdr;
-
-   TRC2(rgMUXAddCes)
 
    if (NULLP != pdu->contResId)
    {
@@ -186,7 +176,7 @@ RgErrInfo      *err;
          {
             err->errCause = RGERR_MUX_BLD_CEHDR_FAIL;
             RLOG0(L_ERROR, "Muxing of Contention Resolution CE sub-header is failed");
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
 
          RG_PACK_CE(pdu->contResId->resId[0], RG_CRES_LEN, ceBuf, ret);
@@ -195,7 +185,7 @@ RgErrInfo      *err;
          {
             err->errCause = RGERR_MUX_BLD_CE_FAIL;
             RLOG0(L_ERROR, "Muxing of Contention Resolution CE is failed")
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
          pdu->schdTbSz -= RG_CRES_ELM_LEN;
       }
@@ -204,14 +194,14 @@ RgErrInfo      *err;
    {
       if(pdu->schdTbSz >= RG_TA_ELM_LEN)
       {
-         U8 taVal; /* Moving from outer scope to available scope */
+         uint8_t taVal; /* Moving from outer scope to available scope */
          RG_PACK_SHDR_FIXD_SZ(subHdr, RG_TA_LCID_IDX, ceBuf, ret);
 
          if(ret != ROK)
          {
             err->errCause = RGERR_MUX_BLD_CEHDR_FAIL;
             RLOG0(L_ERROR, "Muxing of TA CE sub-hdr is failed")
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
 
          taVal = pdu->ta.val;
@@ -221,7 +211,7 @@ RgErrInfo      *err;
          {
             err->errCause = RGERR_MUX_BLD_CE_FAIL;
             RLOG0(L_ERROR, "Muxing of TA CE is failed")
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
          pdu->schdTbSz -= RG_TA_ELM_LEN;
          RLOG1(L_DEBUG,"TA muxed by MAC: %u", pdu->ta.val);
@@ -239,7 +229,7 @@ RgErrInfo      *err;
          {
             err->errCause = RGERR_MUX_BLD_CEHDR_FAIL;
             RLOG0(L_ERROR, "Muxing of SCELL Activation CE sub-hdr is failed")
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
 
          /* Adding the ACT CE */
@@ -249,7 +239,7 @@ RgErrInfo      *err;
          {
             err->errCause = RGERR_MUX_BLD_CE_FAIL;
             RLOG0(L_ERROR, "Muxing of SCELL Activation CE is failed")
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
          pdu->schdTbSz -= RG_SCELL_CE_ELM_LEN;
 
@@ -260,7 +250,7 @@ RgErrInfo      *err;
   /*LcId is not yet decided in 5G-NR spec for MAC CEs Hence, not writing code
    * new MAC CEs. */
 
-   RETVALUE(ROK);
+   return ROK;
 } /* rgMUXAddCes */
 
 /**
@@ -272,7 +262,7 @@ RgErrInfo      *err;
  *     
  *  @param[in]       Inst        inst
  *  @param[in]       MsgLen      *schdTbSz
- *  @param[in]       U8          lcId
+ *  @param[in]       uint8_t          lcId
  *  @param[in]       Buffer      *sdu
  *  @param[out]      Buffer      *sduBuf 
  *  @param[out]      RgErrInfo   *err 
@@ -280,32 +270,21 @@ RgErrInfo      *err;
  *      -# ROK 
  *      -# RFAILED
  **/
-#ifdef ANSI
-PRIVATE S16 rgMUXInsSdu
+static S16 rgMUXInsSdu
 (
 Inst           inst,
 MsgLen         *schdTbSz,
-U8             lcId,
+uint8_t        lcId,
 Buffer         *sdu,
 Buffer         *sduBuf,
 RgErrInfo      *err
 )
-#else
-PRIVATE S16 rgMUXInsSdu(inst,schdTbSz, lcId, sdu, sduBuf, err)
-Inst           inst;
-MsgLen         *schdTbSz;
-U8             lcId;
-Buffer         *sdu;
-Buffer         *sduBuf;
-RgErrInfo      *err;
-#endif
 {
    S16            ret;
    MsgLen         msgLen = 0;
-   U8             lenBytes;
+   uint8_t        lenBytes;
    MsgLen         elmTotLen;
 
-   TRC2(rgMUXInsSdu)
    SFndLenMsg(sdu, &msgLen);
 
    RG_MUX_CALC_LEN(msgLen,lenBytes,elmTotLen);
@@ -322,7 +301,7 @@ RgErrInfo      *err;
       {
          err->errCause = RGERR_MUX_BLD_SDUHDR_FAIL;
          RLOG1(L_ERROR, "RGERR_MUX_BLD_SDUHDR_FAIL for LCID:%d",lcId);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
 #ifndef L2_OPTMZ /* no need to pack as passing not muxing all LCs PDUs to 1*/
@@ -337,7 +316,7 @@ RgErrInfo      *err;
       {
          err->errCause = RGERR_MUX_BLD_SDU_FAIL;
          RLOG1(L_ERROR, "RGERR_MUX_BLD_SDU_FAIL for LCID:%d",lcId);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
       *schdTbSz -= elmTotLen;
@@ -349,9 +328,9 @@ RgErrInfo      *err;
                lcId, ((S16)elmTotLen), lenBytes,lcId);
       RLOG3(L_ERROR, "msglen %d schdTbSz %d LCID:%d",
                ((S16)msgLen), ((S16)*schdTbSz),lcId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -370,10 +349,9 @@ RgErrInfo      *err;
  *      -# RFAILED
  **/
 #ifdef L2_OPTMZ
-U32 padSize = 0;
+uint32_t padSize = 0;
 #endif
-#ifdef ANSI
-PUBLIC S16 rgMUXAddPadd
+S16 rgMUXAddPadd
 (
 Inst           inst,
 MsgLen         *schdTbSz,
@@ -381,19 +359,10 @@ Buffer         *sduBuf,
 Bool           isRar,
 RgErrInfo      *err
 )
-#else
-PUBLIC S16 rgMUXAddPadd(inst,schdTbSz, sduBuf, isRar, err)
-Inst           inst;
-MsgLen         *schdTbSz;
-Buffer         *sduBuf;
-Bool           isRar;
-RgErrInfo      *err;
-#endif
 {
    S16     ret = ROK;
    Buffer         *padBuf = NULLP;
    RgMUXSubHdr    subHdr;
-   TRC2(rgMUXAddPadd)
 
 #ifdef L2_OPTMZ
    padSize = 0;
@@ -413,7 +382,7 @@ RgErrInfo      *err;
          {
             err->errCause = RGERR_MUX_BLD_PADHDR_FAIL;
             RLOG0(L_ERROR, "RGERR_MUX_BLD_PADHDR_FAIL");
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
 
          *schdTbSz -= 1;
@@ -437,7 +406,7 @@ RgErrInfo      *err;
             {
                err->errCause = RGERR_MUX_BLD_PAD_FAIL;
                RLOG0(L_ERROR, "RGERR_MUX_BLD_PAD_FAIL");
-               RETVALUE(RFAILED);
+               return RFAILED;
             }
             *schdTbSz = 0;
          }
@@ -462,7 +431,7 @@ RgErrInfo      *err;
                   {
                      err->errCause = RGERR_MUX_BLD_PAD_FAIL;
                      RLOG0(L_ERROR, "RGERR_MUX_BLD_PAD_FAIL");
-                     RETVALUE(RFAILED);
+                     return RFAILED;
                   }
 
                   *schdTbSz -= RG_MAX_PAD_ARR_SZ;
@@ -484,7 +453,7 @@ RgErrInfo      *err;
                   {
                      err->errCause = RGERR_MUX_BLD_PAD_FAIL;
                      RLOG0(L_ERROR, "RGERR_MUX_BLD_PAD_FAIL");
-                     RETVALUE(RFAILED);
+                     return RFAILED;
 
                   }
                   *schdTbSz = 0;
@@ -494,7 +463,7 @@ RgErrInfo      *err;
       }
    }
 
-   RETVALUE(ROK);
+   return ROK;
 } /* rgMUXAddPadd */
 
 #ifndef L2_OPTMZ
@@ -513,26 +482,16 @@ RgErrInfo      *err;
  *      -# ROK 
  *      -# RFAILED
  **/
-#ifdef ANSI
-PRIVATE S16 rgMUXAddSdus
+static S16 rgMUXAddSdus
 (
 Inst           inst,
 RgBldPduInfo   *pdu,
 Buffer         *sduBuf,
 RgErrInfo      *err
 )
-#else
-PRIVATE S16 rgMUXAddSdus(inst,pdu, sduBuf, err)
-Inst           inst;
-RgBldPduInfo   *pdu;
-Buffer         *sduBuf;
-RgErrInfo      *err;
-#endif
 {
    RgRguDDatReqPerUe *dDatReq;
    RgRguCmnDatReq    *cDatReq;
-
-   TRC2(rgMUXAddSdus)
 
    switch(pdu->reqType)
    {
@@ -544,7 +503,7 @@ RgErrInfo      *err;
             if(rgMUXInsSdu(inst,&pdu->schdTbSz, 
                      RG_CCCH_LCID, cDatReq->pdu, sduBuf, err) != ROK)
             {
-               RETVALUE(RFAILED);
+               return RFAILED;
             }
             RG_FREE_MSG(cDatReq->pdu);
          }
@@ -557,7 +516,7 @@ RgErrInfo      *err;
          {
             if(pdu->tbIndex == 1)
             {
-               U16 idx1, idx2;
+               uint16_t idx1, idx2;
                /* Adding this temporary variable for optimization */
                RguDatReqTb *datReqTb = &dDatReq->datReqTb[0];
 
@@ -575,7 +534,7 @@ RgErrInfo      *err;
                            sduBuf, err) != ROK)
                         {
                            RLOG1(L_ERROR, "FAILED for LCID:%d",datReqTb->lchData[idx1].lcId);
-                           RETVALUE(RFAILED);
+                           return RFAILED;
                         }
                      }
                      RG_FREE_MSG(datReqTb->lchData[idx1].pdu.mBuf[idx2]);
@@ -584,7 +543,7 @@ RgErrInfo      *err;
             }
             else if(pdu->tbIndex == 2)
             {
-               U16 idx1, idx2;
+               uint16_t idx1, idx2;
                RguDatReqTb *datReqTb = &dDatReq->datReqTb[1];
                for (idx1=0; (idx1 < datReqTb->nmbLch); idx1++)
                {
@@ -601,7 +560,7 @@ RgErrInfo      *err;
                         {
                            RLOG2(L_ERROR, "FAILED TB Size %d LCID:%d",
                                     ((S16)pdu->schdTbSz),datReqTb->lchData[idx1].lcId);
-                           RETVALUE(RFAILED);
+                           return RFAILED;
                         }
                      }
                      RG_FREE_MSG(datReqTb->lchData[idx1].pdu.mBuf[idx2]);
@@ -617,9 +576,9 @@ RgErrInfo      *err;
    if(rgMUXAddPadd(inst,&pdu->schdTbSz, sduBuf, FALSE, err) != ROK)
    {
       RLOG1(L_ERROR, "FAILED for TB Size:%d",(S16)pdu->schdTbSz);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -649,34 +608,23 @@ RgErrInfo      *err;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 rgMUXBldPdu
+S16 rgMUXBldPdu
 (
 Inst           inst,
 RgBldPduInfo   *pdu,
 Buffer         **txPdu,
 RgErrInfo      *err
 )
-#else
-PUBLIC S16 rgMUXBldPdu(inst, pdu, txPdu, err)
-Inst           inst;
-RgBldPduInfo   *pdu;
-Buffer         **txPdu;
-RgErrInfo      *err;
-#endif
 {
    Buffer         *mBuf = NULLP;
 
-   TRC2(rgMUXBldPdu)
-
- 
    if (rgGetMsg(inst, &mBuf) != ROK)
    {
       /* Buffer couldnt get allocated. Return a failure */
       err->errCause = RGERR_MUX_MEM_ALLOC_FAIL;
       err->errType = RGERR_MUX_BLD_PDU;
       RLOG1(L_FATAL, "Memory allocation failed during MUXing of MAC TB: MacInst %d", inst);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if(rgMUXAddCes(inst, pdu, mBuf, err) != ROK)
@@ -684,7 +632,7 @@ RgErrInfo      *err;
       RG_FREE_MSG(mBuf);
       err->errType = RGERR_MUX_BLD_PDU;
       RLOG1(L_ERROR, "Failed to Multiplex MAC CEs: MacInst %d", inst);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if(rgMUXAddSdus(inst, pdu, mBuf, err) != ROK)
@@ -692,12 +640,12 @@ RgErrInfo      *err;
       RG_FREE_MSG(mBuf);
       err->errType = RGERR_MUX_BLD_PDU;
       RLOG1(L_ERROR, "FAILED to Multiplex MAC SDU: MacInst %d", inst);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    *txPdu = mBuf;
 
-   RETVALUE(ROK);
+   return ROK;
 
 }  /* rgMUXBldPdu */
 
@@ -717,8 +665,7 @@ RgErrInfo      *err;
  *      -# ROK 
  *      -# RFAILED
  **/
-#ifdef ANSI
-PRIVATE S16 rgMUXAddSdus
+static S16 rgMUXAddSdus
 (
 Inst                inst,
 RgBldPduInfo        *pdu,
@@ -726,20 +673,10 @@ Buffer              *sHdrBuf,
 RgTfuDatReqTbInfo   *tb,
 RgErrInfo           *err
 )
-#else
-PRIVATE S16 rgMUXAddSdus(pdu, sHdrBuf, tb, err)
-Inst                inst;
-RgBldPduInfo        *pdu;
-Buffer              *sHdrBuf;
-RgTfuDatReqTbInfo   *tb;
-RgErrInfo           *err;
-#endif
 {
    RgRguDDatReqPerUe  *dDatReq;
    RgRguCmnDatReq     *cDatReq;
-   U32 lchIdx, pduIdx;
-
-   TRC2(rgMUXAddSdus)
+   uint32_t lchIdx, pduIdx;
 
    switch(pdu->reqType)
    {
@@ -752,7 +689,7 @@ RgErrInfo           *err;
                      RG_CCCH_LCID, cDatReq->pdu, 
                      sHdrBuf, NULLP, err) != ROK)
             {
-               RETVALUE(RFAILED);
+               return RFAILED;
             }
             /* L2 Optimization for mUe/Tti: RLC pdu mbuf pointer will be passed
              * to CL it is stored in DlHqProc->TbInfo and it will be used in
@@ -762,7 +699,7 @@ RgErrInfo           *err;
                = cDatReq->pdu;
             tb->lchInfo[tb->numLch].numPdu++;
             tb->numLch++;
-           RLOG3(L_INFO,"MSG4 is muxed  numLch=%ld numPdu=%ld tbaddr =%p", tb->numLch,tb->lchInfo[tb->numLch-1].numPdu, (U32)tb);
+           RLOG3(L_INFO,"MSG4 is muxed  numLch=%ld numPdu=%ld tbaddr =%p", tb->numLch,tb->lchInfo[tb->numLch-1].numPdu, (uint32_t)tb);
          }
          break;
 
@@ -773,7 +710,7 @@ RgErrInfo           *err;
          {
             if(pdu->tbIndex == 1)
             {
-               U16 idx1, idx2;
+               uint16_t idx1, idx2;
                /* Adding this temporary variable for optimization */
                RguDatReqTb *datReqTb = &dDatReq->datReqTb[0];
              
@@ -795,7 +732,7 @@ RgErrInfo           *err;
                            sHdrBuf, NULLP, err) != ROK)
                         {
                            RGDBGERRNEW(inst,(rgPBuf(inst), "FAILED\n"));
-                           RETVALUE(RFAILED);
+                           return RFAILED;
                         }
 
                         /* L2 Optimization for mUe/Tti:Increment numPdu by 1
@@ -842,7 +779,7 @@ RgErrInfo           *err;
             }
             else if(pdu->tbIndex == 2)
             {
-               U16 idx1, idx2;
+               uint16_t idx1, idx2;
                RguDatReqTb *datReqTb = &dDatReq->datReqTb[1];
                tb->numLch = lchIdx = 0;
          //      prc_trace_format_string(0x40,3,": AddSdus: numOfLch=%d numOfPdu=%d, schdSz=%d", datReqTb->nmbLch, datReqTb->lchData[0].pdu.numPdu, pdu->schdTbSz);
@@ -862,7 +799,7 @@ RgErrInfo           *err;
                         {
                            RGDBGERRNEW(inst,(rgPBuf(inst), "FAILED TB Size %d\n",
                                     ((S16)pdu->schdTbSz)));
-                           RETVALUE(RFAILED);
+                           return RFAILED;
                         }
                          /* L2 Optimization for mUe/Tti:Increment numPdu by 1
                          * Store pdu buffer in tb to send it to CL/PHY. Increment
@@ -918,11 +855,11 @@ RgErrInfo           *err;
    if(rgMUXAddPadd(inst, &pdu->schdTbSz, sduBuf, NULLP, FALSE, err) != ROK)
    {
       //RGDBGERRNEW((rgPBuf, "FAILED"));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    tb->padSize = padSize;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -956,28 +893,18 @@ RgErrInfo           *err;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 rgMUXBldPdu
+S16 rgMUXBldPdu
 (
 Inst               inst,
 RgBldPduInfo       *pdu,
 RgTfuDatReqTbInfo  *tb,
 RgErrInfo          *err
 )
-#else
-PUBLIC S16 rgMUXBldPdu(inst, pdu, tb, err)
-Inst               inst;
-RgBldPduInfo       *pdu;
-RgTfuDatReqTbInfo  *tb;
-RgErrInfo          *err;
-#endif
 {
    Buffer         *mBuf1; /* MAC hearder */
    Buffer         *mBuf2; /* MAC CEs */
-   //U32            lchIdx, pduIdx;
+   //uint32_t            lchIdx, pduIdx;
 
-   TRC2(rgMUXBldPdu)
-   
   /* Reseting macHdr and macCes pointers */
   if(tb->macHdr)
    SResetMBuf(tb->macHdr);
@@ -995,7 +922,7 @@ RgErrInfo          *err;
       RG_FREE_TB(tb);
       err->errType = RGERR_MUX_BLD_PDU;
       //RGDBGERRNEW((rgPBuf, "FAILED"));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if(rgMUXAddSdus(inst, pdu, mBuf1, tb, err) != ROK)
    {
@@ -1006,14 +933,14 @@ RgErrInfo          *err;
 
       err->errType = RGERR_MUX_BLD_PDU;
       //RGDBGERRNEW((rgPBuf, "FAILED"));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 // UDAY 
 //      SPrntMsg(tb->macHdr, 0, 0);
 //   prc_trace_format_string(0x40,3,": padSize=%ld", tb->padSize);
 
    tb->tbPres = TRUE;
-   RETVALUE(ROK);
+   return ROK;
 
 }  /* rgMUXBldPdu */
 
@@ -1036,31 +963,21 @@ RgErrInfo          *err;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 rgMUXBldRarPdu
+S16 rgMUXBldRarPdu
 (
 RgCellCb        *cell,
 RgInfRaRntiInfo *alloc,
 Buffer          **txPdu,
 RgErrInfo       *err
 )
-#else
-PUBLIC S16 rgMUXBldRarPdu(cell, alloc, txPdu, err)
-RgCellCb        *cell;
-RgInfRaRntiInfo *alloc;
-Buffer          **txPdu;
-RgErrInfo       *err;
-#endif
 {
    Buffer      *datBuf = NULLP;
    S16         ret; 
-   U8          data[RG_RAR_ELEM_LEN];
-   U8          hdrByte;
+   uint8_t     data[RG_RAR_ELEM_LEN];
+   uint8_t     hdrByte;
    MsgLen      schdTbSz;
-   U8          idx;
+   uint8_t     idx;
    Inst        inst = cell->macInst - RG_INST_START;
-
-   TRC2(rgMUXBldRarPdu)
 
    schdTbSz = alloc->schdTbSz;
    /* RAR PDU Requirements */
@@ -1085,7 +1002,7 @@ RgErrInfo       *err;
       /* Buffer couldnt get allocated. Return a failure */
       err->errCause = RGERR_MUX_MEM_ALLOC_FAIL;
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId, "FAILED to getMsg");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (TRUE == alloc->backOffInd.pres)
@@ -1102,7 +1019,7 @@ RgErrInfo       *err;
          err->errCause = RGERR_MUX_BLD_BI_FAIL;
          RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"RGERR_MUX_BLD_BI_FAIL");
          RG_FREE_MSG(datBuf);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       schdTbSz--;
    }
@@ -1122,7 +1039,7 @@ RgErrInfo       *err;
             err->errCause = RGERR_MUX_BLD_RAPIDHDR_FAIL;
             RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"RGERR_MUX_BLD_RAPIDHDR_FAIL");
             RG_FREE_MSG(datBuf);
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
 
       /* Prepare the data */
@@ -1133,9 +1050,9 @@ RgErrInfo       *err;
       {    
          rgMUXGet20bitRarGrnt(cell->bwCfg.ulTotalBw, &(alloc->crntiInfo[idx].grnt), &data[1]);
       }
-      data[1] |=  ((U8)((alloc->crntiInfo[idx].ta.val) << 4));
+      data[1] |=  ((uint8_t)((alloc->crntiInfo[idx].ta.val) << 4));
       data[4]  =  (alloc->crntiInfo[idx].tmpCrnti) >> 8;
-      data[5]  =  (U8) (alloc->crntiInfo[idx].tmpCrnti);
+      data[5]  =  (uint8_t) (alloc->crntiInfo[idx].tmpCrnti);
 
       RLOG_ARG2(L_DEBUG,DBG_CELLID,cell->cellId,
          		"Rar,Rapid=%d, Temp CRNTI:%d", 
@@ -1147,7 +1064,7 @@ RgErrInfo       *err;
          err->errCause = RGERR_MUX_BLD_RAPID_FAIL;
          RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"RGERR_MUX_BLD_RAPID_FAIL");
          RG_FREE_MSG(datBuf);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       schdTbSz -= RG_RAR_ELEM_LEN+RG_RAR_SHDR_LEN;
    }
@@ -1156,12 +1073,12 @@ RgErrInfo       *err;
    {
       RG_FREE_MSG(datBuf);
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"FAILED to mux add padding");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    *txPdu = datBuf;
 
-   RETVALUE(ROK);
+   return ROK;
 } /* rgMUXBldRarPdu */
 
 /***********************************************************
@@ -1178,23 +1095,14 @@ RgErrInfo       *err;
  *     File : rg_mux.c
  *
  **********************************************************/
-#ifdef ANSI
-PRIVATE Void rgMUXGet20bitRarGrnt
+static Void rgMUXGet20bitRarGrnt
 (
-U8             ulBw,
+uint8_t             ulBw,
 RgInfRarUlGrnt *msg3Grnt,
-U8             *grnt
+uint8_t             *grnt
 )
-#else
-PRIVATE Void rgMUXGet20bitRarGrnt(ulBw, msg3Grnt, grnt)
-U8             ulBw;
-RgInfRarUlGrnt *msg3Grnt;
-U8             *grnt;
-#endif
 {
-   U16       riv = rgMUXCalcRiv(ulBw, msg3Grnt->rbStart, msg3Grnt->numRb);
-
-   TRC2(rgMUXGet20bitRarGrnt);
+   uint16_t       riv = rgMUXCalcRiv(ulBw, msg3Grnt->rbStart, msg3Grnt->numRb);
 
    grnt[2]  = msg3Grnt->cqiBit;   /* cqi bit is 0, output from sched */
    grnt[2] |= (msg3Grnt->delayBit << 1);
@@ -1204,12 +1112,12 @@ U8             *grnt;
    grnt[1]  = (msg3Grnt->iMcsCrnt >> 3);
    /* Forcing right shift to insert 0 as the LSB: 
     * since this is assumed in the computation */
-   grnt[1] |= (U8)((riv << 1) & 0xFE);
+   grnt[1] |= (uint8_t)((riv << 1) & 0xFE);
 
-   grnt[0]  = (U8)((riv >> 7) & 0x07);
+   grnt[0]  = (uint8_t)((riv >> 7) & 0x07);
    grnt[0] |= ((msg3Grnt->hop & 0x01) << 3);
 
-   RETVOID;
+   return;
 } /* rgMUXGet20bitRarGrnt */
 
 /***********************************************************
@@ -1225,24 +1133,15 @@ U8             *grnt;
  *     File : rg_mux.c
  *
  **********************************************************/
-#ifdef ANSI
-PUBLIC U16 rgMUXCalcRiv
+uint16_t rgMUXCalcRiv
 (
-U8           bw,
-U8           rbStart,
-U8           numRb
+uint8_t           bw,
+uint8_t           rbStart,
+uint8_t           numRb
 )
-#else
-PUBLIC U16 rgMUXCalcRiv(bw, rbStart, numRb)
-U8           bw;
-U8           rbStart;
-U8           numRb;
-#endif
 {
-   U8           numRbMinus1 = numRb - 1;
-   U16          riv;
-
-   TRC2(rgMUXCalcRiv);
+   uint8_t           numRbMinus1 = numRb - 1;
+   uint16_t          riv;
 
    if (numRbMinus1 <= bw/2)
    {
@@ -1252,7 +1151,7 @@ U8           numRb;
    {
       riv = bw * (bw - numRbMinus1) + (bw - rbStart - 1);
    }
-   RETVALUE(riv);
+   return (riv);
 } /* rgMUXCalcRiv */
 
 

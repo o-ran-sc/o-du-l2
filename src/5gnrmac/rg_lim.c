@@ -56,114 +56,15 @@ static int RLOG_MODULE_ID=4096;
 
 /* local externs */
 #ifdef UNUSED_FUNC
-PRIVATE S16  rgLIMValidateSap ARGS((Inst inst,SuId suId));
+static S16  rgLIMValidateSap ARGS((Inst inst,SuId suId));
 #endif
-PRIVATE Void rgLIMUtlFreeDatIndEvnt ARGS((TfuDatIndInfo *datInd,
+static Void rgLIMUtlFreeDatIndEvnt ARGS((TfuDatIndInfo *datInd,
                                           Bool error));
 #ifdef RG_UNUSED
-PRIVATE Void rgLIMUtlFreeDatReqEvnt ARGS((TfuDatReqInfo *datReq,
+static Void rgLIMUtlFreeDatReqEvnt ARGS((TfuDatReqInfo *datReq,
                                           Bool error));
 #endif
 /* forward references */
-
-/**
- * @brief This API is invoked to send TFU SAP bind request to PHY.
- *
- * @details
- *
- *     Function : rgLIMTfuBndReq
- *      
- *      This API is invoked to send TFU SAP bind request to PHY. It fills in 
- *      the Pst structure, spId and suId values and invokes bind request
- *      primitive at TFU.
- *           
- *  @param[in]  Inst        inst
- *  @param[in]  SuId            suId 
- *  @param[in]  SpId            spId
- *  @return  S16
- *      -# ROK 
- *      -# RFAILED 
- **/
-#ifdef ANSI
-PUBLIC S16 rgLIMTfuBndReq
-(
-Inst    inst,
-SuId    suId, 
-SpId    spId
-)
-#else
-PUBLIC S16 rgLIMTfuBndReq(inst,suId, spId)
-Inst    inst;
-SuId    suId; 
-SpId    spId;
-#endif
-{
-   S16         ret;
-   RgLowSapCb  *tfuSap;
-   Pst         pst;
-
-   TRC2(rgLIMTfuBndReq);
-
-   /* Get the lower SAP control block from the layer control block. */
-   tfuSap = &(rgCb[inst].tfuSap);
-   (Void)cmMemcpy ((U8*)&pst, (U8*)&(tfuSap->sapCfg.sapPst), sizeof(Pst));
-   if((ret = RgLiTfuBndReq (&pst, suId, spId)) != ROK)
-   {
-      RLOG0(L_ERROR,"Call to RgLiTfuBndReq() failed");
-   }
-   RETVALUE(ret);
-}  /* rgLIMTfuBndReq */
-
-
-/**
- * @brief This API is invoked to send TFU SAP unbind request to PHY.
- *
- * @details
- *
- *     Function : rgLIMTfuBndReq
- *      
- *      This API is invoked to send TFU SAP unbind request to PHY. It fills in 
- *      the Pst structure and spId value and invokes unbind request
- *      primitive at TFU.
- *           
- *  @param[in]  Inst        inst
- *  @param[in]  SpId            spId
- *  @param[in]  Reason          reason 
- *  @return  S16
- *      -# ROK 
- *      -# RFAILED 
- **/
-#ifdef ANSI
-PUBLIC S16 rgLIMTfuUbndReq
-(
-Inst    inst,
-SpId    spId, 
-Reason  reason
-)
-#else
-PUBLIC S16 rgLIMTfuUbndReq(inst,spId, reason)
-Inst    inst;
-SpId    spId; 
-Reason  reason;
-#endif
-{
-   S16         ret;
-   RgLowSapCb  *tfuSap;
-   Pst         pst;
-
-   TRC2(rgLIMTfuUbndReq);
-
-   /* Get the lower SAP control block from the layer control block. */
-   tfuSap = &(rgCb[inst].tfuSap);
-   cmMemcpy ((U8*)&pst, (U8*)&(tfuSap->sapCfg.sapPst), sizeof(Pst));
-   if((ret = RgLiTfuUbndReq (&pst, tfuSap->sapCfg.spId, reason)) != ROK)
-   {
-      RLOG0(L_ERROR,"Call to RgLiTfuUbndReq() failed");
-   }
-   RETVALUE(ret);
-
-}  /* rgLIMTfuUbndReq */
-
 
 /**
  * @brief Bind confirm API for TFU SAP 
@@ -177,30 +78,22 @@ Reason  reason;
  *           
  *  @param[in]  Pst   *pst 
  *  @param[in]  SuId  suId 
- *  @param[in]  U8    status
+ *  @param[in]  uint8_t    status
  *  @return  S16
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 RgLiTfuBndCfm 
+S16 RgLiTfuBndCfm 
 (
 Pst     *pst,
 SuId    suId, 
-U8      status
+uint8_t status
 )
-#else
-PUBLIC S16 RgLiTfuBndCfm(pst, suId, status)
-Pst     *pst; 
-SuId    suId; 
-U8      status;
-#endif
 {
    Inst inst;
    S16 ret;
    RgLowSapCb  *tfuSap;
 
-   TRC3(RgLiTfuBndCfm);
 
 
    RG_IS_INST_VALID(pst->dstInst);
@@ -213,10 +106,10 @@ U8      status;
    {
       RLOG2(L_ERROR,"Incorrect SuId. Configured (%d) Recieved (%d)",
             tfuSap->sapCfg.suId, suId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    ret = rgLMMBndCfm (pst, suId, status);
-   RETVALUE(ret);
+   return (ret);
 }  /* RgLiTfuBndCfm */
 
  /** @brief This function Validates the SAP information received along with the
@@ -230,21 +123,10 @@ U8      status;
   *   -# RFAILED
   */
 #ifdef UNUSED_FUNC
-#ifdef ANSI
-PRIVATE S16 rgLIMValidateSap
-(
- Inst    inst,
- SuId    suId
-)
-#else
-PRIVATE S16 rgLIMValidateSap(inst,suId)
- Inst    inst;
- SuId    suId;
-#endif
+static S16 rgLIMValidateSap(Inst  inst,SuId suId)
 {
    RgLowSapCb  *tfuSap;
 
-   TRC2(rgLIMValidateSap)
 
    tfuSap = &(rgCb[inst].tfuSap);
 
@@ -253,15 +135,15 @@ PRIVATE S16 rgLIMValidateSap(inst,suId)
    {
       RLOG2(L_ERROR,"Incorrect SuId. Configured (%d) Recieved (%d)",
             tfuSap->sapCfg.suId, suId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if (tfuSap->sapSta.sapState != LRG_BND)
    {
       RLOG1(L_ERROR,"Lower SAP not enabled SuId (%d)",
             tfuSap->sapCfg.suId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
-   RETVALUE(ROK);
+   return ROK;
 } /* end of rgLIMValidateSap */
 #endif
 /** @brief This function frees up the TfuDatIndInfo structure
@@ -277,23 +159,12 @@ PRIVATE S16 rgLIMValidateSap(inst,suId)
  * @param  [in] Bool          *error
  * @return 
  */
-#ifdef ANSI
-PRIVATE Void rgLIMUtlFreeDatIndEvnt 
-(
- TfuDatIndInfo *datInd,
- Bool          error
- )
-#else
-PRIVATE Void rgLIMUtlFreeDatIndEvnt(datInd, error)
- TfuDatIndInfo *datInd;
- Bool          error;
-#endif
+static Void rgLIMUtlFreeDatIndEvnt(TfuDatIndInfo *datInd,Bool error)
 {
 
    TfuDatInfo     *datInfo;
    CmLList        *node;
 
-   TRC2(rgLIMUtlFreeDatIndEvnt);
    /* Steps of freeing up the TfuDatInd.
     * 1. loop through the datIndLst and free up all the buffers.
     * 2. free up the whole event
@@ -309,7 +180,7 @@ PRIVATE Void rgLIMUtlFreeDatIndEvnt(datInd, error)
       }
    }
    RG_FREE_MEM(datInd);
-   RETVOID;
+   return;
 } /* end of rgLIMUtlFreeDatIndEvnt*/
 
 /**
@@ -329,25 +200,17 @@ PRIVATE Void rgLIMUtlFreeDatIndEvnt(datInd, error)
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 RgLiTfuDatInd
+S16 RgLiTfuDatInd
 (
 Pst                *pst, 
 SuId               suId, 
 TfuDatIndInfo    *datInd
 )
-#else
-PUBLIC S16 RgLiTfuDatInd(pst, suId, datInd)
-Pst                *pst; 
-SuId               suId; 
-TfuDatIndInfo    *datInd;
-#endif
 {
    Inst             inst;
    S16              ret;
-   VOLATILE U32     startTime=0;
+   volatile uint32_t     startTime=0;
 
-   TRC3(RgLiTfuDatInd);
 
   // printf("5GTF:: DatindRcvd\n");
 
@@ -361,7 +224,7 @@ TfuDatIndInfo    *datInd;
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,datInd->cellId,"SAP Validation failed");
       rgLIMUtlFreeDatIndEvnt(datInd, TRUE);
-      RETVALUE(ret);
+      return (ret);
    }
 #endif
    /* Now call the TOM (Tfu ownership module) primitive to process further */
@@ -382,7 +245,7 @@ TfuDatIndInfo    *datInd;
    /*stoping Task*/
    SStopTask(startTime, PID_MAC_TFU_DATIND);
 
-   RETVALUE(ret);
+   return (ret);
 }  /* RgLiTfuDatInd*/
 
 #ifdef RG_UNUSED
@@ -399,24 +262,13 @@ TfuDatIndInfo    *datInd;
  * @param  [in] Bool          *error
  * @return 
  */
-#ifdef ANSI
-PRIVATE Void rgLIMUtlFreeDatReqEvnt
-(
- TfuDatReqInfo *datReq,
- Bool          error
- )
-#else
-PRIVATE Void rgLIMUtlFreeDatReqEvnt(datReq, error)
- TfuDatReqInfo *datReq;
- Bool          error;
-#endif
+static Void rgLIMUtlFreeDatReqEvnt(TfuDatReqInfo *datReq,Bool  error)
 {
 
    TfuDatReqPduInfo *datInfo;
    CmLList          *node;
-   U8               i;
+   uint8_t          i;
 
-   TRC2(rgLIMUtlFreeDatReqEvnt);
    /* Steps of freeing up the TfuDatReq.
     * 1. Free the bch buffer.
     * 2. loop through the pdus list and free up all the buffers.
@@ -446,69 +298,9 @@ PRIVATE Void rgLIMUtlFreeDatReqEvnt(datReq, error)
       }
    }
    RG_FREE_MEM(datReq);
-   RETVOID;
+   return;
 } /* end of rgLIMUtlFreeDatReqEvnt*/
 #endif
-/**
- * @brief This API is invoked to send Data to PHY.
- *
- * @details
- *
- *     Function : rgLIMTfuDatReq
- *      
- *      This API is invoked to send Data to PHY. It 
- *      fills in the Pst structure, spId value and invokes Data
- *      request primitive at TFU.
- *           
- *  @param[in]  Inst        inst
- *  @param[in]  TfuDatReqInfo *datReq
- *  @return  S16
- *      -# ROK 
- *      -# RFAILED 
- **/
-#ifdef ANSI
-PUBLIC S16 rgLIMTfuDatReq 
-(
-Inst          inst,
-TfuDatReqInfo *datReq
-)
-#else
-PUBLIC S16 rgLIMTfuDatReq(inst,datReq)
-Inst          inst;
-TfuDatReqInfo *datReq;
-#endif
-{
-   S16         ret;
-   RgLowSapCb  *tfuSap;
-
-   TRC2(rgLIMTfuDatReq)
-
-   /* Get the lower SAP control block from the layer control block. */
-   tfuSap = &(rgCb[inst].tfuSap);
-
-#ifndef NO_ERRCLS
-   if (tfuSap->sapSta.sapState != LRG_BND)
-   {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,datReq->cellId,"Lower SAP not bound (%d)",
-            tfuSap->sapSta.sapState);
-#ifdef RG_UNUSED
-      /* This case will never be hit if sap is not bound then we dont get TTI */
-      rgLIMUtlFreeDatReqEvnt(datReq, TRUE);
-#endif
-      RETVALUE(RFAILED);
-   }
-#endif
-
-   tfuSap->sapSts.numPduTxmit += datReq->pdus.count; 
-
-   /* Using existing pst - for optimization */
-   if((ret = RgLiTfuDatReq (&tfuSap->sapCfg.sapPst, tfuSap->sapCfg.spId, 
-                            datReq)) != ROK)
-   {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,datReq->cellId,"Call to RgLiTfuDatReq() failed");
-   }
-   RETVALUE(ret);
-}  /* rgLIMTfuDatReq*/
 
 #ifdef L2_OPTMZ
 /**
@@ -528,22 +320,11 @@ TfuDatReqInfo *datReq;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 rgLIMTfuDelDatReq 
-(
-Inst          inst,
-TfuDelDatReqInfo *delDatReq
-)
-#else
-PUBLIC S16 rgLIMTfuDatReq(inst,delDatReq)
-Inst          inst;
-TfuDelDatReqInfo *delDatReq;
-#endif
+S16 rgLIMTfuDelDatReq(Inst inst,TfuDelDatReqInfo *delDatReq)
 {
    S16         ret;
    RgLowSapCb  *tfuSap;
 
-   TRC2(rgLIMTfuDelDatReq)
 
    /* Get the lower SAP control block from the layer control block. */
    tfuSap = &(rgCb[inst].tfuSap);
@@ -553,7 +334,7 @@ TfuDelDatReqInfo *delDatReq;
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,delDatReq->cellId,"Lower SAP not bound (%d)",
             tfuSap->sapSta.sapState);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -562,7 +343,7 @@ TfuDelDatReqInfo *delDatReq;
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,delDatReq->cellId,"Call to RgLiTfuDelDatReq() failed");
    }
-   RETVALUE(ret);
+   return (ret);
 }  /* rgLIMTfuDatReq*/
 #endif /*L2_OPTMZ */
 
@@ -582,29 +363,18 @@ TfuDelDatReqInfo *delDatReq;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 RgLiTfuNonRtInd
-(
-Pst                 *pst,
-SuId                suId
-)
-#else
-PUBLIC S16 RgLiTfuNonRtInd(pst, suId)
-Pst                 *pst;
-SuId                suId;
-#endif
+S16 RgLiTfuNonRtInd(Pst  *pst,SuId  suId)
 {
-   TRC3(RgLiTfuNonRtInd);
 
 #ifdef NO_ERRCLS
    if (rgLIMValidateSap (pst->dstInst - RG_INST_START, suId) != ROK)
    {
       RGDBGERRNEW(pst->dstInst - RG_INST_START, (rgPBuf(pst->dstInst - RG_INST_START),"RgLiTfuNonRtInd() SAP Validation failed.\n"));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
    rgDHMFreeTbBufs(pst->dstInst - RG_INST_START);
-   RETVALUE(ROK);
+   return ROK;
 }  /* RgLiTfuNonRtInd */
 
 #endif

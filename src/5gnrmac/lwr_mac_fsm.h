@@ -29,10 +29,22 @@
 #define CORESET_TYPE2 2
 #define CORESET_TYPE3 3
 
+#define FILL_FAPI_LIST_ELEM(_currElem, _nextElem, _msgType, _numMsgInBlock, _alignOffset)\
+{\
+   _currElem->msg_type             = (uint8_t) _msgType;\
+   _currElem->num_message_in_block = _numMsgInBlock;\
+   _currElem->align_offset         = (uint16_t) _alignOffset;\
+   _currElem->msg_len              = _numMsgInBlock * _alignOffset;\
+   _currElem->p_next               = _nextElem;\
+   _currElem->p_tx_data_elm_list   = NULL;\
+   _currElem->time_stamp           = 0;\
+}
+
 typedef enum{
    SI_RNTI_TYPE,
    RA_RNTI_TYPE,
-   TC_RNTI_TYPE
+   TC_RNTI_TYPE,
+   C_RNTI_TYPE
 }RntiType;
 
 uint8_t lwr_mac_procInvalidEvt(void *msg);
@@ -44,6 +56,9 @@ uint8_t lwr_mac_procStartReqEvt(void *msg);
 uint8_t lwr_mac_procStopReqEvt(void *msg);
 void sendToLowerMac(uint16_t, uint32_t, void *);
 void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg);
+uint16_t fillUlTtiReq(SlotIndInfo currTimingInfo);
+uint16_t fillDlTtiReq(SlotIndInfo currTimingInfo);
+uint16_t fillUlDciReq(SlotIndInfo currTimingInfo);
 
 typedef uint8_t (*lwrMacFsmHdlr)(void *);
 #endif

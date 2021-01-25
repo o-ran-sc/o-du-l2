@@ -29,7 +29,7 @@
 MacSchRachIndFunc macSchRachIndOpts[]=
 {
    packMacSchRachInd,
-   macSchRachInd,
+   MacSchRachInd,
    packMacSchRachInd
 };
 
@@ -80,27 +80,26 @@ uint8_t fapiMacRachInd(Pst *pst, RachInd *rachInd)
    uint8_t      preambleIdx;
    RachIndInfo  rachIndInfo;
 
-   DU_LOG("\nMAC : Received RACH indication");
+   DU_LOG("\nINFO  -->  MAC : Received RACH indication");
    /* Considering one pdu and one preamble */
    pduIdx = 0;
    preambleIdx = 0;
 
-   rachIndInfo.cellId = rachInd->rachPdu[pduIdx].pci;
-   /* TODO : A.ocate unique crnti for each ue */
-   rachIndInfo.crnti = 100;
+   rachIndInfo.cellId = rachInd->cellId;
    rachIndInfo.timingInfo.sfn = rachInd->timingInfo.sfn;
    rachIndInfo.timingInfo.slot = rachInd->timingInfo.slot;
    rachIndInfo.slotIdx = rachInd->rachPdu[pduIdx].slotIdx;
    rachIndInfo.symbolIdx = rachInd->rachPdu[pduIdx].symbolIdx;
    rachIndInfo.freqIdx = rachInd->rachPdu[pduIdx].freqIdx;
    rachIndInfo.preambleIdx = \
-			     rachInd->rachPdu[pduIdx].preamInfo[preambleIdx].preamIdx;
+      rachInd->rachPdu[pduIdx].preamInfo[preambleIdx].preamIdx;
    rachIndInfo.timingAdv = \
-			   rachInd->rachPdu[pduIdx].preamInfo[preambleIdx].timingAdv;
+      rachInd->rachPdu[pduIdx].preamInfo[preambleIdx].timingAdv;
 
    /* storing the value in macRaCb */
-   createMacRaCb(rachIndInfo.cellId, rachIndInfo.crnti);
+   createMacRaCb(&rachIndInfo);
 
+   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, rachInd, sizeof(RachInd));
    return(sendRachIndMacToSch(&rachIndInfo));
 }
 

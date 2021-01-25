@@ -61,11 +61,11 @@ static int RLOG_MODULE_ID=4096;
 #include "rg_pom_scell.x"
 #endif
 /* local defines */
-PRIVATE S16 rgCOMHndlCfgReq ARGS((Inst inst,CrgCfg  *cfg, RgErrInfo *errInfo,Bool *isCfmRqrd,CrgCfgTransId transId));
-PRIVATE S16 rgCOMHndlRecfgReq ARGS((Inst inst,CrgRecfg *recfg, RgErrInfo *errInfo, \
+static S16 rgCOMHndlCfgReq ARGS((Inst inst,CrgCfg  *cfg, RgErrInfo *errInfo,Bool *isCfmRqrd,CrgCfgTransId transId));
+static S16 rgCOMHndlRecfgReq ARGS((Inst inst,CrgRecfg *recfg, RgErrInfo *errInfo, \
          CrgCfgTransId transId,Bool *isCfmRqrd));
-PRIVATE S16 rgCOMHndlDelReq ARGS((Inst inst,CrgDel *del, RgErrInfo *errInfo, Bool *isCfmRqrd, CrgCfgTransId transId));
-PRIVATE S16 rgCOMHndlResetReq ARGS((Inst inst,CrgRst *reset,RgErrInfo *errInfo));
+static S16 rgCOMHndlDelReq ARGS((Inst inst,CrgDel *del, RgErrInfo *errInfo, Bool *isCfmRqrd, CrgCfgTransId transId));
+static S16 rgCOMHndlResetReq ARGS((Inst inst,CrgRst *reset,RgErrInfo *errInfo));
 /* local typedefs */
  
 /* local externs */
@@ -97,26 +97,17 @@ PRIVATE S16 rgCOMHndlResetReq ARGS((Inst inst,CrgRst *reset,RgErrInfo *errInfo))
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 rgCOMCfgReq
+S16 rgCOMCfgReq
 (
 Inst          inst,
 CrgCfgTransId transId,
 CrgCfgReqInfo *crgCfgReq
 )
-#else
-PUBLIC S16 rgCOMCfgReq(inst,transId, crgCfgReq)
-Inst          inst;
-CrgCfgTransId transId;
-CrgCfgReqInfo *crgCfgReq;
-#endif
 {
    S16             ret;
-   U8              cfmStatus = CRG_CFG_CFM_OK;
+   uint8_t         cfmStatus = CRG_CFG_CFM_OK;
    RgErrInfo       errInfo;
    Bool            isCfmRqrd = TRUE;
-
-   TRC2(rgCOMCfgReq);
 
    /* Process Config/Reconfig/Delete request from RRC */
    switch (crgCfgReq->action)
@@ -170,7 +161,7 @@ if(TRUE == isCfmRqrd)
    }
 #endif
    RGDBGINFO(inst,(rgPBuf(inst), "CRG Configuration request processed\n"));
-   RETVALUE(ret);
+   return (ret);
 }  /* rgCOMCfgReq */
 /**
  * @brief Handler for processing Cell/Ue/Logical channel configuration request
@@ -197,8 +188,7 @@ if(TRUE == isCfmRqrd)
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PRIVATE S16 rgCOMHndlCfgReq
+static S16 rgCOMHndlCfgReq
 (
 Inst             inst,
 CrgCfg           *cfg,
@@ -206,20 +196,10 @@ RgErrInfo        *errInfo,
 Bool             *isCfmRqrd,
 CrgCfgTransId    transId
 )
-#else
-PRIVATE S16 rgCOMHndlCfgReq(inst,cfg, errInfo,isCfmRqrd,transId)
-Inst            inst;
-CrgCfg          *cfg;
-RgErrInfo       *errInfo;
-Bool            *isCfmRqrd;
-CrgCfgTransId   transId;
-#endif
 {
    S16       ret;
    RgCellCb  *cell = NULLP;
    RgUeCb    *ue   = NULLP;
-
-   TRC2(rgCOMHndlCfgReq);
 
    errInfo->errType = RGERR_COM_CFG_REQ;
 
@@ -232,7 +212,7 @@ CrgCfgTransId   transId;
          if (ret != ROK)
          {
               RLOG_ARG0(L_ERROR,DBG_CELLID,cfg->u.cellCfg.cellId, "Cell configuration validation FAILED\n");
-              RETVALUE(RFAILED);
+              return RFAILED;
          }
          ret = rgCFGCrgCellCfg(inst,&cfg->u.cellCfg, errInfo);
          break;
@@ -244,7 +224,7 @@ CrgCfgTransId   transId;
             if (ret != ROK)
             {
                RLOG_ARG0(L_ERROR,DBG_CRNTI,cfg->u.ueCfg.crnti, "Ue configuration validation FAILED\n");
-               RETVALUE(RFAILED);
+               return RFAILED;
             }
             ret = rgCFGCrgUeCfg(inst,cell, &cfg->u.ueCfg, errInfo);
          }
@@ -259,7 +239,7 @@ CrgCfgTransId   transId;
             
             RLOG_ARG1(L_ERROR,DBG_CELLID,cfg->u.cellCfg.cellId,
                          "LC configuration validation FAILED: LC %d\n", cfg->u.lchCfg.lcId);
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
          ret = rgCFGCrgLcCfg(inst,cell, ue, &cfg->u.lchCfg, errInfo,isCfmRqrd,transId);
          break;
@@ -267,11 +247,11 @@ CrgCfgTransId   transId;
       default:
       {
          RLOG1(L_ERROR, "Should never come here: cfgType %d",cfg->cfgType);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
-   RETVALUE(ret);
+   return (ret);
 }  /* rgCOMHndlCfgReq */
 
 
@@ -300,8 +280,7 @@ CrgCfgTransId   transId;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PRIVATE S16 rgCOMHndlRecfgReq
+static S16 rgCOMHndlRecfgReq
 (
 Inst             inst,
 CrgRecfg         *recfg,
@@ -309,21 +288,11 @@ RgErrInfo        *errInfo,
 CrgCfgTransId    transId,
 Bool             *isCfmRqrd
 )
-#else
-PRIVATE S16 rgCOMHndlRecfgReq(inst,recfg, errInfo, transId, isCfmRqrd)
-Inst            inst;
-CrgRecfg        *recfg;
-RgErrInfo       *errInfo;
-CrgCfgTransId   transId;
-Bool            *isCfmRqrd;
-#endif
 {
    S16       ret;
    RgCellCb  *cell = rgCb[inst].cell;
    RgUeCb    *ue   = NULLP;
    RgUlLcCb  *ulLc = NULLP;
-
-   TRC2(rgCOMHndlRecfgReq);
 
    errInfo->errType = RGERR_COM_RECFG_REQ;
    
@@ -337,7 +306,7 @@ Bool            *isCfmRqrd;
             {
                RLOG_ARG0(L_ERROR,DBG_CELLID,recfg->u.cellRecfg.cellId,
                          "Cell Recfg Validation FAILED");
-               RETVALUE(RFAILED);
+               return RFAILED;
             }
          ret = rgCFGCrgCellRecfg(inst,cell, &recfg->u.cellRecfg, errInfo);
          break;
@@ -362,7 +331,7 @@ Bool            *isCfmRqrd;
             {
                RGDBGERRNEW(inst,(rgPBuf(inst), "[%d]Ue SCell configuration FAILED for inst [%d]\n",
                         recfg->u.ueRecfg.oldCrnti, inst));
-               RETVALUE(RFAILED);
+               return RFAILED;
             }
 
          }
@@ -375,7 +344,7 @@ Bool            *isCfmRqrd;
                RLOG_ARG1(L_ERROR,DBG_CELLID,recfg->u.ueRecfg.cellId,
                       "Ue Re-configuration validation FAILED OLD CRNTI:%d",
                       recfg->u.ueRecfg.oldCrnti);
-               RETVALUE(RFAILED);
+               return RFAILED;
             }
             ret = rgCFGCrgUeRecfg(inst,cell, ue, &recfg->u.ueRecfg, errInfo);
          }
@@ -393,12 +362,12 @@ Bool            *isCfmRqrd;
             RLOG_ARG2(L_ERROR,DBG_CELLID,recfg->u.lchRecfg.cellId,
                       "LC Re-configuration validation FAILED LCID:%d CRNTI:%d",
                       recfg->u.lchRecfg.lcId,recfg->u.lchRecfg.crnti);
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
 
 #ifdef LTE_ADV
          /*ERAB- multicell fix*/
-         cmMemcpy( (U8*)&(ue->cfgCfmInfo.transId), (U8*)&transId,
+         memcpy( &(ue->cfgCfmInfo.transId), &transId,
                sizeof(CrgCfgTransId));
 #endif
          ret = rgCFGCrgLcRecfg(inst,cell, ue, ulLc,
@@ -410,11 +379,11 @@ Bool            *isCfmRqrd;
       {
          RLOG1(L_ERROR, "Should never come here: recfgType %d",
                   recfg->recfgType);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
-   RETVALUE(ret);
+   return (ret);
 }  /* rgCOMHndlRecfgReq */
 
 /*Start: LTEMAC_2.1_DEV_CFG */
@@ -439,27 +408,18 @@ Bool            *isCfmRqrd;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PRIVATE S16 rgCOMHndlResetReq
+static S16 rgCOMHndlResetReq
 (
 Inst       inst,
 CrgRst     *reset,
 RgErrInfo  *errInfo
 )
-#else
-PRIVATE S16 rgCOMHndlResetReq(inst,reset, errInfo)
-Inst       inst;
-CrgRst     *reset;
-RgErrInfo  *errInfo;
-#endif
 {
-   TRC2(rgCOMHndlResetReq);
-
    /* Fix : ccpu00126865: ignore CRG reset. Let SCH trigger it. */
    
    errInfo->errCause = RGERR_NONE;
    RGDBGINFO(inst,(rgPBuf(inst), "CRG UE Reset processed \n"));
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgCOMHndlResetReq */
 /*End: LTEMAC_2.1_DEV_CFG */
 
@@ -485,8 +445,7 @@ RgErrInfo  *errInfo;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PRIVATE S16 rgCOMHndlDelReq
+static S16 rgCOMHndlDelReq
 (
 Inst        inst,
 CrgDel      *del,
@@ -494,21 +453,11 @@ RgErrInfo   *errInfo,
 Bool        *isCfmRqrd,
 CrgCfgTransId transId
 )
-#else
-PRIVATE S16 rgCOMHndlDelReq(inst,del, errInfo,isCfmRqrd,transId)
-Inst        inst;
-CrgDel      *del;
-RgErrInfo   *errInfo;
-Bool        *isCfmRqrd;
-CrgCfgTransId transId;
-#endif
 {
 
-   S16            ret;
-   VOLATILE U32   startTime=0;
+   S16      ret;
+   volatile uint32_t   startTime=0;
 
-   TRC2(rgCOMHndlDelReq);
-   
    errInfo->errType = RGERR_COM_DEL_REQ;
    
    /* Process the delete request */ 
@@ -542,11 +491,11 @@ CrgCfgTransId transId;
       {
          RLOG1(L_ERROR, "Should never come here: delType %d",
                   del->delType);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
-   RETVALUE(ret);
+   return (ret);
 }  /* rgCOMHndlDelReq */
 
 #ifdef LTE_ADV
@@ -570,17 +519,11 @@ CrgCfgTransId transId;
  *      -# ROK
  *      -# RFAILED
  **/
-#ifdef ANSI
-PUBLIC S16 RgPrgPMacSMacUeSCellCfgReq
+S16 RgPrgPMacSMacUeSCellCfgReq
 (
 Pst         *pst,    
 RgPrgUeSCellCfgInfo *ueSCellCb
 )
-#else
-PUBLIC S16 RgPrgPMacSMacUeSCellCfgReq(pst, ueSCellCb)
-Pst         *pst;    
-RgPrgUeSCellCfgInfo *ueSCellCb;
-#endif
 {
    RgPrgCfgCfmInfo  cfgCfm;
    Inst             inst = pst->dstInst;
@@ -588,7 +531,6 @@ RgPrgUeSCellCfgInfo *ueSCellCb;
    S16              ret;
    Pst              cfmPst;    
 
-   TRC2(RgPrgPMacSMacUeSCellCfgReq);
    
    RGDBGPRM(inst,(rgPBuf(inst),
             "APPLYING CRG UE SCELL CONFIG: cellId %d ueId %d\n",
@@ -625,7 +567,7 @@ RgPrgUeSCellCfgInfo *ueSCellCb;
 
   /* Send positive confirmation to primary cell*/
   RgPrgSMacPMacCfg(&cfmPst, &cfgCfm);
-  RETVALUE(ROK);
+  return ROK;
 }  /* RgPrgPMacSMacUeSCellCfgReq */
 
 /**
@@ -652,23 +594,15 @@ RgPrgUeSCellCfgInfo *ueSCellCb;
  *      -# ROK
  *      -# RFAILED
  **/
-#ifdef ANSI
-PUBLIC S16 RgPrgSMacPMacCfgCfm
+S16 RgPrgSMacPMacCfgCfm
 (
 Pst             *pst,    
 RgPrgCfgCfmInfo *cfgCfm
 )
-#else
-PUBLIC S16 RgPrgSMacPMacCfgCfm(pst, cfgCfm)
-Pst             *pst;    
-RgPrgCfgCfmInfo *cfgCfm;
-#endif
 {
    Inst      inst = pst->dstInst;
    RgCellCb *cell;
    RgUeCb   *ue;
-   TRC2(RgPrgSMacPMacCfgCfm);
-
 
    RG_IS_INST_VALID(inst);
 
@@ -682,7 +616,7 @@ RgPrgCfgCfmInfo *cfgCfm;
    {
       RGDBGERRNEW(inst,(rgPBuf(inst), 
                "[%d]Ue does not exist\n", cfgCfm->ueId));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    switch(cfgCfm->event)
    {
@@ -730,11 +664,11 @@ RgPrgCfgCfmInfo *cfgCfm;
             RGDBGERRNEW(inst,(rgPBuf(inst), "Invalid configuration confirm event %d\n",
                      cfgCfm->event));
 
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
 
    }
-   RETVALUE(ROK);
+   return ROK;
 }  /* RgPrgSMacPMacCfgCfm */
 
 /**
@@ -752,36 +686,28 @@ RgPrgCfgCfmInfo *cfgCfm;
  *  @param[in] RgPrgUeSCellDelInfo *ueSCellDelInfo
  *  @return  ROK is SUCCESS 
  **/
-#ifdef ANSI
-PUBLIC S16 RgPrgPMacSMacUeSCellDelReq
+S16 RgPrgPMacSMacUeSCellDelReq
 (
 Pst                 *pst,
 RgPrgUeSCellDelInfo *ueSCellDelInfo
 )
-#else
-PUBLIC S16 RgPrgPMacSMacUeSCellDelReq(pst, ueSCellDelInfo)
-Pst                 *pst;
-RgPrgUeSCellDelInfo *ueSCellDelInfo;
-#endif
 {
    Inst        inst     = pst->dstInst - RG_INST_START;
    RgCellCb    *sCell   = rgCb[inst].cell;
    RgUeCb      *sCellUe = NULLP;
 
-   TRC2(RgPrgPMacSMacUeSCellDelReq)
-
    /* Checking for cell Cb because in case of shutdownReq it is possible that
     * cell is already deleted for this cell*/
    if(sCell == NULLP)
    {
-      RETVALUE(ROK);
+      return ROK;
    }
    /* Retrive the UeCb from sec cell*/
    if ((sCellUe = rgDBMGetUeCb(sCell, ueSCellDelInfo->ueId)) == NULLP)
    {
       RGDBGERRNEW(inst, (rgPBuf(inst), "[%d]UE:does not exist in sCell(%d)\n",
                ueSCellDelInfo->ueId, sCell->cellId));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    
    /*PMAC_Reest: ueId and newRnti is different that means its a UeId change
@@ -794,7 +720,7 @@ RgPrgUeSCellDelInfo *ueSCellDelInfo;
      {
         RGDBGERRNEW(inst, (rgPBuf(inst), "[%d]UE:UE context already exist in\
                  sCell(%d)",ueSCellDelInfo->newRnti, sCell->cellId));
-        RETVALUE(RFAILED);
+        return RFAILED;
      }
 
      rgDBMDelUeCb(sCell, sCellUe);
@@ -812,7 +738,7 @@ RgPrgUeSCellDelInfo *ueSCellDelInfo;
      rgCFGFreeUeCb(sCell, sCellUe);
   }
 
-   RETVALUE(ROK);
+   return ROK;
 } /* RgPrgPMacSMacUeSCellDelReq */
 #endif /*LTE_ADV */
 /**********************************************************************

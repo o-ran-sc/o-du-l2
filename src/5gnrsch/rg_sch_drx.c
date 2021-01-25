@@ -109,7 +109,7 @@ static int RLOG_FILE_ID=163;
  *             in TDD config 2 where no DwPTS exits.
  */
 
-PRIVATE U8 rgSchDrxDlSfTddCfg[RGSCH_MAX_SFCFG][RGSCH_MAX_TDD_CFG] = 
+static uint8_t rgSchDrxDlSfTddCfg[RGSCH_MAX_SFCFG][RGSCH_MAX_TDD_CFG] = 
 {
    {2,4,6,6,7,8,3},
    {4,6,8,7,8,9,5}
@@ -124,7 +124,7 @@ PRIVATE U8 rgSchDrxDlSfTddCfg[RGSCH_MAX_SFCFG][RGSCH_MAX_TDD_CFG] =
  *   
  */
 
-PRIVATE U8 rgSchDrxDLSfTillNxtSFN[RGSCH_MAX_SFCFG][RGSCH_MAX_TDD_CFG]
+static uint8_t rgSchDrxDLSfTillNxtSFN[RGSCH_MAX_SFCFG][RGSCH_MAX_TDD_CFG]
                             [RGSCH_NUM_SUB_FRAMES]= 
 {
    {
@@ -157,7 +157,7 @@ PRIVATE U8 rgSchDrxDLSfTillNxtSFN[RGSCH_MAX_SFCFG][RGSCH_MAX_TDD_CFG]
  *   
  */
 
-PRIVATE U8 rgSchDrxDLSftoDLSfIdx[RGSCH_MAX_SFCFG][RGSCH_MAX_TDD_CFG]
+static uint8_t rgSchDrxDLSftoDLSfIdx[RGSCH_MAX_SFCFG][RGSCH_MAX_TDD_CFG]
                          [RGSCH_NUM_SUB_FRAMES]= 
 {
    {
@@ -183,7 +183,7 @@ PRIVATE U8 rgSchDrxDLSftoDLSfIdx[RGSCH_MAX_SFCFG][RGSCH_MAX_TDD_CFG]
 /* The k+4 th subframe in TDD at which HARQ RTT expires may be an Uplink SF.
    In such case, the drx retx timer may start at the next pdcch sf instead
    of at k+4 itself */
-U8 rgSchDrxHarqRetxFirstPsf[RGSCH_MAX_TDD_CFG][RGSCH_NUM_SUB_FRAMES] = {
+uint8_t rgSchDrxHarqRetxFirstPsf[RGSCH_MAX_TDD_CFG][RGSCH_NUM_SUB_FRAMES] = {
   {0, 0, 4, 0, 6, 0, 0, 4, 0, 6}, 
   {0, 0, 4, 6, 0, 0, 0, 4, 6, 0}, 
   {0, 0, 4, 0, 0, 0, 0, 4, 0, 0}, 
@@ -197,66 +197,66 @@ U8 rgSchDrxHarqRetxFirstPsf[RGSCH_MAX_TDD_CFG][RGSCH_NUM_SUB_FRAMES] = {
 /******************************************************************************
  *                         Start of Function declarations                     *
  ******************************************************************************/
-PRIVATE Void rgSCHDrxTtiHdlOnDurUl ARGS((
+static Void rgSCHDrxTtiHdlOnDurUl ARGS((
 RgSchCellCb        *cell,
-U16                ulIndex
+uint16_t                ulIndex
 ));
-PRIVATE Void rgSCHDrxTtiHdlOnDurDl ARGS((
+static Void rgSCHDrxTtiHdlOnDurDl ARGS((
 RgSchCellCb    *cell,
-U16                dlIndex
+uint16_t                dlIndex
 ));
-PRIVATE Void rgSCHDrxTtiHdlDlHarqRTT ARGS((
+static Void rgSCHDrxTtiHdlDlHarqRTT ARGS((
 RgSchCellCb          *cell,
-U16                   dlIndex
+uint16_t                   dlIndex
 ));
-PRIVATE Void rgSCHDrxTtiHdlUlHarqRTT ARGS((
+static Void rgSCHDrxTtiHdlUlHarqRTT ARGS((
 RgSchCellCb          *cell,
-U16                   ulIndex
+uint16_t                   ulIndex
 ));
- PRIVATE S16 rgSCHDrxTtiHdlOnDur ARGS((RgSchCellCb *cellCb, U16 dlIndex, 
-                                        U16 ulIndex));
- PRIVATE S16 rgSCHDrxTtiHdlInActv ARGS((RgSchCellCb *cellCb, U16 dlIndex,
-                                        U16 ulIndex));
- PRIVATE S16 rgSCHDrxTtiHdlShortCycle ARGS((RgSchCellCb *cell, U16 dlIndex, 
-                                       U16 ulIndex));
- PRIVATE S16 rgSCHDrxTtiHdlDlHarq ARGS((RgSchCellCb *cellCb, U16 dlIndex,
-                                       U16 ulIndex));
- PRIVATE S16 rgSCHDrxCpyUeCfg ARGS((RgSchDrxUeCb *drxCb,
+static S16 rgSCHDrxTtiHdlOnDur ARGS((RgSchCellCb *cellCb, uint16_t dlIndex, 
+                                        uint16_t ulIndex));
+static S16 rgSCHDrxTtiHdlInActv ARGS((RgSchCellCb *cellCb, uint16_t dlIndex,
+                                        uint16_t ulIndex));
+static S16 rgSCHDrxTtiHdlShortCycle ARGS((RgSchCellCb *cell, uint16_t dlIndex, 
+                                       uint16_t ulIndex));
+static S16 rgSCHDrxTtiHdlDlHarq ARGS((RgSchCellCb *cellCb, uint16_t dlIndex,
+                                       uint16_t ulIndex));
+static S16 rgSCHDrxCpyUeCfg ARGS((RgSchDrxUeCb *drxCb,
                                      RgrUeDrxCfg* ueDrxCfg));
  
- PRIVATE S16 rgSCHDrxGetNxtOnDur ARGS((RgSchCellCb* cell,RgSchDrxUeCb* drxCb,
+static S16 rgSCHDrxGetNxtOnDur ARGS((RgSchCellCb* cell,RgSchDrxUeCb* drxCb,
                                        CmLteTimingInfo* nxtOnDur,
-                                       U8 delta));
+                                       uint8_t delta));
  
-PRIVATE Void rgSCHDrxMvToNxtOnDurOcc ARGS((RgSchCellCb* cell,
+static Void rgSCHDrxMvToNxtOnDurOcc ARGS((RgSchCellCb* cell,
                                            RgSchUeCb* ue,
-                                           U16      idx,
+                                           uint16_t      idx,
                                            Bool    calcFrmOffst));
 #ifdef LTE_TDD
-PRIVATE Void rgSCHDrxCalcNxtTmrExpry ARGS((RgSchCellCb     *cell,
+static Void rgSCHDrxCalcNxtTmrExpry ARGS((RgSchCellCb     *cell,
                                            RgSchUeCb       *ue,
-                                           U16              delta,
-                                           U32              tmrLen,
+                                           uint16_t              delta,
+                                           uint32_t              tmrLen,
                                            S16             *distance,
-                                           U16             *idx
+                                           uint16_t             *idx
                                           ));
-PRIVATE S16 rgSCHDrxGetNxtTmrExpry ARGS((RgSchCellCb *cell,U16 curTime,
-                                          U32 duration, 
+static S16 rgSCHDrxGetNxtTmrExpry ARGS((RgSchCellCb *cell,uint16_t curTime,
+                                          uint32_t duration, 
                                          CmLteTimingInfo* tmrExpryIdx));
 #endif /* LTE_TDD */
 #ifdef EMTC_ENABLE
-EXTERN S16 rgSCHEmtcDrxCpyUeCfg
+S16 rgSCHEmtcDrxCpyUeCfg
 (
  RgSchUeCb     *ueCb,
  RgrUeDrxCfg   *drxCfg
 );
-EXTERN S16 rgSCHDrxTtiHdlUlHarq 
+S16 rgSCHDrxTtiHdlUlHarq 
 (
 RgSchCellCb          *cell,
-U16                   dlIndex,
-U16                   ulIndex
+uint16_t                   dlIndex,
+uint16_t                   ulIndex
 );
-EXTERN Void rgSCHDrxUeUlHqReset
+Void rgSCHDrxUeUlHqReset
 (
 RgSchCellCb   *cell,
 RgSchUeCb     *ue,
@@ -302,21 +302,10 @@ RgUeUlHqCb   *hqE
  *                            added*
  * @return 
  */
-#ifdef ANSI
-PUBLIC Void rgSCHDrxTtiInd 
-(
-RgSchCellCb  *cell
-)
-#else
-PUBLIC Void rgSCHDrxTtiInd (cell)
-RgSchCellCb  *cell;
-#endif
+Void rgSCHDrxTtiInd(RgSchCellCb  *cell)
 {
-   U16 dlIndex;
-   U16 ulIndex;
-
-   TRC2(rgSCHDrxTtiInd );
-
+   uint16_t dlIndex;
+   uint16_t ulIndex;
 
    dlIndex = (cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G + cell->crntTime.slot +
          RG_SCH_DRX_DL_DELTA) % RG_SCH_MAX_DRXQ_SIZE;
@@ -355,7 +344,7 @@ RgSchCellCb  *cell;
 
 #endif /*LTEMAC_R9*/
 
-   RETVOID;
+   return;
 
 }/*rgSCHDrxTtiInd*/
 
@@ -380,32 +369,18 @@ RgSchCellCb  *cell;
  *
  *
  * @param  RgSchCellCb  *cellCb
- * @param  U16          dlIndex
- * @param  U16          ulIndex
+ * @param  uint16_t          dlIndex
+ * @param  uint16_t          ulIndex
  * @return ROK/RFAILED 
  */
 
-#ifdef ANSI
-PRIVATE S16 rgSCHDrxTtiHdlOnDur
-(
-RgSchCellCb*  cell,
-U16           dlIndex,
-U16           ulIndex
-)
-#else
-PRIVATE S16 rgSCHDrxTtiHdlOnDur(cell, dlIndex, ulIndex)
-RgSchCellCb*  cell;
-U16           dlIndex;
-U16           ulIndex;
-#endif
+static S16 rgSCHDrxTtiHdlOnDur(RgSchCellCb *cell,uint16_t dlIndex,uint16_t ulIndex)
 {
-
-   TRC2(rgSCHDrxTtiHdlOnDur);
 
 #if ( ERRCLASS & ERRCLS_INT_PAR )
    if ( cell == (RgSchCellCb* )NULLP )
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -413,7 +388,7 @@ U16           ulIndex;
   
    rgSCHDrxTtiHdlOnDurUl(cell, ulIndex);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }/*rgSCHDrxTtiHdlOnDur*/
 
@@ -439,41 +414,27 @@ U16           ulIndex;
  *
  *
  * @param  RgSchCellCb *cellCb
- * @param  U16          dlIndex
- * @param  U16          ulIndex
+ * @param  uint16_t          dlIndex
+ * @param  uint16_t          ulIndex
  * @return ROK/RFAILED 
  */
 
-#ifdef ANSI
-PUBLIC S16 rgSCHDrxTtiHdlInActv
-(
-RgSchCellCb  *cell,
-U16 dlIndex,
-U16 ulIndex
-)
-#else
-PUBLIC S16 rgSCHDrxTtiHdlInActv(cell, dlIndex, ulIndex)
-RgSchCellCb  *cell;
-U16 dlIndex;
-U16 ulIndex;
-#endif
+S16 rgSCHDrxTtiHdlInActv(RgSchCellCb  *cell,uint16_t dlIndex,uint16_t ulIndex)
 {
    CmLList           *node;
    RgSchDRXCellCb    *drxCell=NULLP;
    RgSchUeCb         *ue=NULLP;
    RgSchDrxUeCb      *drxUe=NULLP;
-   U16                shrtCycleExpIndx;
+   uint16_t                shrtCycleExpIndx;
    CmLListCp         dlInactvLst; /* list of UE's becoming DL-inactive */
    CmLListCp         ulInactvLst; /* list of UE's becoming UL-inactive */
    RgSchCmnCell      *cellSch = NULLP;
    Bool              delInUlScan = FALSE;
 
-   TRC2(rgSCHDrxTtiHdlInActv);
-
 #if ( ERRCLASS & ERRCLS_INT_PAR )   
    if ( cell == (RgSchCellCb* )NULLP) 
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -661,7 +622,7 @@ U16 ulIndex;
    cellSch = RG_SCH_CMN_GET_CELL(cell);
    cellSch->apisDl->rgSCHDlInactvtUes(cell,&dlInactvLst);
 
-      RETVALUE(ROK);
+      return ROK;
 }/*rgSCHDrxTtiHdlInActv*/
 
  /** @brief This function handles the per TTI processing for DRX short cycle
@@ -680,36 +641,22 @@ U16 ulIndex;
  *
  *
  * @param  RgSchCellCb    *cell
- * @param  U16          dlIndex
- * @param  U16          ulIndex
+ * @param  uint16_t          dlIndex
+ * @param  uint16_t          ulIndex
  * @return ROK/RFAILED 
  */
 
-#ifdef ANSI
-PUBLIC S16 rgSCHDrxTtiHdlShortCycle 
-(
-RgSchCellCb  *cell,
-U16           dlIndex,
-U16           ulIndex
-)
-#else
-PUBLIC S16 rgSCHDrxTtiHdlShortCycle (cell, dlIndex, ulIndex)
-RgSchCellCb  *cell;
-U16           dlIndex;
-U16           ulIndex;
-#endif
+S16 rgSCHDrxTtiHdlShortCycle(RgSchCellCb  *cell,uint16_t dlIndex,uint16_t ulIndex)
 {
    CmLList           *node;
    RgSchDRXCellCb    *drxCell=NULLP;
    RgSchUeCb         *ue=NULLP;
    RgSchDrxUeCb      *drxUe=NULLP;
 
-   TRC2(rgSCHDrxTtiHdlShortCycle );
-
 #if ( ERRCLASS & ERRCLS_INT_PAR )
    if ( cell == (RgSchCellCb* )NULLP )
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -745,7 +692,7 @@ U16           ulIndex;
       rgSCHDrxMvToNxtOnDurOcc(cell,ue,RG_SCH_DRX_DL_DELTA,TRUE);
    }/*while(node)...*/
 
-   RETVALUE(ROK);
+   return ROK;
 }/*rgSCHDrxTtiHdlShortCycle*/
 
 
@@ -772,41 +719,27 @@ U16           ulIndex;
  *
  *
  * @param  RgSchCellCb *cellCb
- * @param  U16          dlIndex
- * @param  U16          ulIndex
+ * @param  uint16_t          dlIndex
+ * @param  uint16_t          ulIndex
   * @return ROK/RFAILED 
   */
 
-#ifdef ANSI
-PRIVATE S16 rgSCHDrxTtiHdlDlHarq 
-(
-RgSchCellCb          *cell,
-U16                   dlIndex,
-U16                   ulIndex
-)
-#else /* ANSI */
-PRIVATE S16 rgSCHDrxTtiHdlDlHarq (cell, dlIndex, ulIndex)
-RgSchCellCb          *cell;
-U16                   dlIndex;
-U16                   ulIndex;
-#endif /* ANSI */
+static S16 rgSCHDrxTtiHdlDlHarq(RgSchCellCb *cell,uint16_t dlIndex,uint16_t ulIndex)
 {
 
 #if ( ERRCLASS & ERRCLS_INT_PAR)
    if ( cell == (RgSchCellCb *)NULLP )
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /*ERRCLASS & ERRCLS_INT_PAR*/
 
 
-   TRC2(rgSCHDrxTtiHdlDlHarq );
-   
    rgSCHDrxTtiHdlDlHarqRTT(cell, dlIndex);
 
    rgSCHDrxTtiHdlUlHarqRTT(cell, ulIndex);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
  /** @brief This function is called by the common scheduler as part of
@@ -824,46 +757,30 @@ U16                   ulIndex;
   *
   * @param  RgSchCellCb *cell
   * @param  CmLListCp   *ueUlLst
-  * @param  U8           direction 
+  * @param  uint8_t           direction 
   * @return Void 
   */
 
-#ifdef ANSI
-PUBLIC Void rgSCHDrxStrtInActvTmr
-(
-RgSchCellCb  *cell,
-CmLListCp    *ueLst,
-U8            direction
-)
-#else
-PUBLIC Void rgSCHDrxStrtInActvTmr(cell, ueLst, direction)
-RgSchCellCb  *cell;
-CmLListCp    *ueLst;
-U8            direction;
-#endif
+Void rgSCHDrxStrtInActvTmr(RgSchCellCb  *cell,CmLListCp *ueLst,uint8_t direction)
 {
    CmLList         *node;
    CmLList         *delNode;
    RgSchUeCb       *ueCb;
    RgSchDrxUeCb    *ueDrxCb;
 #ifndef LTE_TDD
-   U16             index1;
+   uint16_t        index1;
 #endif
-   U16             inActvTmrExpIndx;
+   uint16_t        inActvTmrExpIndx;
 #ifndef LTE_TDD
-   U16             curTimeInSf; /* current time in number of subframes */
+   uint16_t        curTimeInSf; /* current time in number of subframes */
 #endif
 #ifdef LTE_TDD
-   U16             delta;
+   uint16_t        delta;
 #endif /*LTE_TDD*/
    CmLListCp         dlInactvLst; /* list of UE's becoming DL-inactive */
    CmLListCp         ulInactvLst; /* list of UE's becoming UL-inactive */
    RgSchCmnCell      *cellSch = NULLP;
    Bool              delInUlScan = FALSE;
-
-
-   TRC2(rgSCHDrxStrtInActvTmr);
-
 
    if ( direction == RG_SCH_DRX_UL)
    {
@@ -1008,7 +925,7 @@ U8            direction;
    cellSch = RG_SCH_CMN_GET_CELL(cell);
    cellSch->apisDl->rgSCHDlInactvtUes(cell,&dlInactvLst);
 
-   RETVOID; 
+   return; 
 }/*rgSCHDrxStrtInActvTmr*/
 
  /** @brief This function is called by the downlink HARQ module on receiving a
@@ -1024,33 +941,19 @@ U8            direction;
   *
   * @param  RgSchCellCb       *cell
   * @param  RgSchDlHqProcCb   *dlHq
-  * @param  U8                tbCnt
+  * @param  uint8_t                tbCnt
   * @return Void 
   */
-#ifdef ANSI
-PUBLIC Void rgSCHDrxStartHarqRTTTmr
-(
-RgSchCellCb            *cell,
-RgSchDlHqProcCb        *hqP,
-U8                     tbCnt
-)
-#else
-PUBLIC Void rgSCHDrxStartHarqRTTTmr(cell, hqP, tbCnt)
-RgSchCellCb             *cell;
-RgSchDlHqProcCb         *hqP;
-U8                      tbCnt;
-#endif
+Void rgSCHDrxStartHarqRTTTmr(RgSchCellCb  *cell,RgSchDlHqProcCb *hqP,uint8_t tbCnt)
 {
    RgSchDRXCellCb      *drxCell =NULLP;
    RgSchDrxDlHqProcCb  *drxHq   =NULLP;
-   U16                  harqRTTExpIndx;
-   U8                   fdbkDelta;
+   uint16_t            harqRTTExpIndx;
+   uint8_t             fdbkDelta;
 #ifdef LTE_TDD   
-   U8                   firstDlTxOcassion;
-   U8                   drxRetxTmrStartSf;
+   uint8_t             firstDlTxOcassion;
+   uint8_t             drxRetxTmrStartSf;
 #endif    
-   TRC2(rgSCHDrxStartHarqRTTTmr);
-
 
    drxCell = RG_SCH_DRX_GET_CELL(cell);
    drxHq   = RG_SCH_DRX_GET_DL_HQ(hqP);
@@ -1092,7 +995,7 @@ U8                      tbCnt;
          may not be possible */ 
       drxRetxTmrStartSf = (hqP->tbInfo[tbCnt].fdbkTime.subframe + 
                                  firstDlTxOcassion) % RGSCH_NUM_SUB_FRAMES;
-      U8 i;
+      uint8_t i;
       /* We are here because the Retx Timer start is moved by atleast one 
          position. Hence the timer will be reduced by minimum one */ 
       drxHq->retxTmrReduction = 1;
@@ -1129,7 +1032,7 @@ U8                      tbCnt;
    drxHq->harqRTTEnt.node = (PTR)hqP;
    drxHq->rttIndx         = harqRTTExpIndx;
 
-   RETVOID;
+   return;
 
 }/*rgSCHDrxStartHarqRTTTmr*/
 
@@ -1156,36 +1059,21 @@ U8                      tbCnt;
  * -# ROK
  * -# RFAILED
  */
-#ifdef ANSI
-PUBLIC S16 rgSCHDrxUeCfg 
-(
- RgSchCellCb *cell,
- RgSchUeCb   *ue,
- RgrUeCfg    *ueCfg
- )
-#else
-PUBLIC S16 rgSCHDrxUeCfg (cell, ue, ueCfg)
- RgSchCellCb *cell;
- RgSchUeCb   *ue;
- RgrUeCfg    *ueCfg;
-#endif
+S16 rgSCHDrxUeCfg(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeCfg *ueCfg)
 {
    S16               ret       = ROK;
    RgSchDrxUeCb      *ueDrxCb;
    CmLteTimingInfo   nxtOnDur;
-   U16               onDurIndx;
-   U16               nxtOnDurTime;
-   U16               curTime;
-   U8                cellIdx;
-
-
-   TRC2(rgSCHDrxUeCfg);
+   uint16_t          onDurIndx;
+   uint16_t          nxtOnDurTime;
+   uint16_t          curTime;
+   uint8_t           cellIdx;
 
 
 #if ( ERRCLASS & ERRCLS_INT_PAR )   
    if ( cell == (RgSchCellCb* )NULLP) 
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if ((ue == (RgSchUeCb* )NULLP)
@@ -1194,7 +1082,7 @@ PUBLIC S16 rgSCHDrxUeCfg (cell, ue, ueCfg)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId, "rgSCHDrxUeCfg():"
                "Invalid params.cell or ue or ueCfg is NULL ");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -1207,7 +1095,7 @@ PUBLIC S16 rgSCHDrxUeCfg (cell, ue, ueCfg)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
                "Memory allocation FAILED for DRX UECB CRBTI:%d",ue->ueId);
-      RETVALUE(ret);
+      return (ret);
    }
 
    ueDrxCb = ue->drxCb;
@@ -1290,7 +1178,7 @@ PUBLIC S16 rgSCHDrxUeCfg (cell, ue, ueCfg)
       ueDrxCb->shortCycleEnt.node = (PTR)ue;
    }
 
-   RETVALUE(ret);
+   return (ret);
 } /* end of rgSCHDrxUeCfg */
 
 /** @brief This function gets the next occurance of onDurationTimer from the
@@ -1316,37 +1204,22 @@ PUBLIC S16 rgSCHDrxUeCfg (cell, ue, ueCfg)
  * @param  RgSchCellCb     *cell
  * @param  RgSchDrxUeCb    *drxCb
  * @param  CmLteTimingInfo *nxtOnDur
- * @param  U8              delta
+ * @param  uint8_t              delta
  * @return ROK/RFAILED 
  */
-#ifdef ANSI
-PRIVATE S16 rgSCHDrxGetNxtOnDur
-(
- RgSchCellCb         *cell,
- RgSchDrxUeCb        *drxCb,
- CmLteTimingInfo     *nxtOnDur,
- U8                   delta
- )
-#else
-PRIVATE S16 rgSCHDrxGetNxtOnDur (cell, drxCb, nxtOnDur, delta)
- RgSchCellCb         *cell;
- RgSchDrxUeCb        *drxCb;
- CmLteTimingInfo     *nxtOnDur;
- U8                   delta;
-#endif
+static S16 rgSCHDrxGetNxtOnDur(RgSchCellCb *cell,RgSchDrxUeCb *drxCb,CmLteTimingInfo *nxtOnDur,uint8_t delta)
 {
-   U16               curTime;
-   U16               curDist;
-   U16               cycleLen;
-   U32               numOfCycles;
-   U32               nxtDist;
+   uint16_t   curTime;
+   uint16_t   curDist;
+   uint16_t   cycleLen;
+   uint32_t   numOfCycles;
+   uint32_t   nxtDist;
 
-   TRC3(rgSCHDrxGetNxtOnDur);
 
 #if ( ERRCLASS & ERRCLS_INT_PAR ) 
    if ( cell == (RgSchCellCb* )NULLP ) 
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if( (drxCb == (RgSchDrxUeCb* )NULLP)
@@ -1357,7 +1230,7 @@ PRIVATE S16 rgSCHDrxGetNxtOnDur (cell, drxCb, nxtOnDur, delta)
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
                         "rgSCHDrxGetNxOnDur():Invalid params."
                         "cell/drxCb/nxtOnDur is NULL");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -1379,7 +1252,7 @@ PRIVATE S16 rgSCHDrxGetNxtOnDur (cell, drxCb, nxtOnDur, delta)
    {
       /* offset is the nextOnDur */
       nxtOnDur->sfn = drxCb->drxStartOffset / RGSCH_NUM_SUB_FRAMES_5G;
-      nxtOnDur->slot = (U8)(drxCb->drxStartOffset % RGSCH_NUM_SUB_FRAMES_5G);
+      nxtOnDur->slot = (uint8_t)(drxCb->drxStartOffset % RGSCH_NUM_SUB_FRAMES_5G);
       nxtDist = ((nxtOnDur->sfn * RGSCH_NUM_SUB_FRAMES_5G) + nxtOnDur->slot); 
    }
    else
@@ -1392,8 +1265,8 @@ PRIVATE S16 rgSCHDrxGetNxtOnDur (cell, drxCb, nxtOnDur, delta)
       {
          /* Perfect match pick up the current time */
          /*nxtOnDur should be set to equal to currentTime + DELTA */
-         nxtOnDur->sfn      = (U16)curTime / RGSCH_NUM_SUB_FRAMES_5G;
-         nxtOnDur->slot = (U16)curTime % RGSCH_NUM_SUB_FRAMES_5G;
+         nxtOnDur->sfn      = (uint16_t)curTime / RGSCH_NUM_SUB_FRAMES_5G;
+         nxtOnDur->slot = (uint16_t)curTime % RGSCH_NUM_SUB_FRAMES_5G;
          nxtDist = ((nxtOnDur->sfn * RGSCH_NUM_SUB_FRAMES_5G) + nxtOnDur->slot); 
 
       }
@@ -1401,8 +1274,8 @@ PRIVATE S16 rgSCHDrxGetNxtOnDur (cell, drxCb, nxtOnDur, delta)
       {
          nxtDist            = drxCb->drxStartOffset + (numOfCycles + 1) * 
                               cycleLen;
-         nxtOnDur->sfn      = (U16)nxtDist / RGSCH_NUM_SUB_FRAMES_5G;
-         nxtOnDur->slot = (U16)nxtDist % RGSCH_NUM_SUB_FRAMES_5G;
+         nxtOnDur->sfn      = (uint16_t)nxtDist / RGSCH_NUM_SUB_FRAMES_5G;
+         nxtOnDur->slot = (uint16_t)nxtDist % RGSCH_NUM_SUB_FRAMES_5G;
 
       }
    }
@@ -1412,10 +1285,10 @@ PRIVATE S16 rgSCHDrxGetNxtOnDur (cell, drxCb, nxtOnDur, delta)
    if((nxtDist - (curTime - delta)) <= RG_SCH_DRX_MAX_DELTA)
    {
       nxtDist = nxtDist + cycleLen;
-      nxtOnDur->sfn      = (U16)nxtDist / RGSCH_NUM_SUB_FRAMES_5G;
-      nxtOnDur->slot = (U16)nxtDist % RGSCH_NUM_SUB_FRAMES_5G;
+      nxtOnDur->sfn      = (uint16_t)nxtDist / RGSCH_NUM_SUB_FRAMES_5G;
+      nxtOnDur->slot = (uint16_t)nxtDist % RGSCH_NUM_SUB_FRAMES_5G;
    }
-   RETVALUE(ROK);
+   return ROK;
 } /* end of rgSCHDrxGetNxtOnDur */ 
 
 /** @brief This function is a utility function to copy the UE configuration from
@@ -1433,19 +1306,8 @@ PRIVATE S16 rgSCHDrxGetNxtOnDur (cell, drxCb, nxtOnDur, delta)
  * @param  RgrUeDrxCfg  *drxCfg
  * @return ROK/RFAILED 
  */
-#ifdef ANSI
-PRIVATE S16 rgSCHDrxCpyUeCfg
-(
- RgSchDrxUeCb  *ueCb,
- RgrUeDrxCfg   *drxCfg
-)
-#else
-PRIVATE S16 rgSCHDrxCpyUeCfg (ueCb, drxCfg)
- RgSchDrxUeCb  *ueCb;
- RgrUeDrxCfg   *drxCfg;
-#endif
+static S16 rgSCHDrxCpyUeCfg(RgSchDrxUeCb  *ueCb,RgrUeDrxCfg   *drxCfg)
 {
-   TRC3(rgSCHDrxCpyUeCfg);
 
 #if ( ERRCLASS & ERRCLS_INT_PAR ) 
    if ( (ueCb == (RgSchDrxUeCb* )NULLP ) 
@@ -1453,7 +1315,7 @@ PRIVATE S16 rgSCHDrxCpyUeCfg (ueCb, drxCfg)
         (drxCfg == (RgrUeDrxCfg* )NULLP)
       )
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -1471,7 +1333,7 @@ PRIVATE S16 rgSCHDrxCpyUeCfg (ueCb, drxCfg)
    ueCb->shortDrxCycle        = drxCfg->drxShortDrx.shortDrxCycle;
    ueCb->shortCycleTmrLen     = drxCfg->drxShortDrx.drxShortCycleTmr;
    
-   RETVALUE(ROK);
+   return ROK;
 } /* end of rgSCHDrxCpyUeCfg */ 
 
 #ifdef RGR_V2
@@ -1498,38 +1360,23 @@ PRIVATE S16 rgSCHDrxCpyUeCfg (ueCb, drxCfg)
  * @param   RgrUeRecfg     *ueReCfg
  * @return  ROK/RFAILED
  */
-#ifdef ANSI
-PUBLIC S16 rgSCHDrxUeReCfg 
-(
- RgSchCellCb *cell, 
- RgSchUeCb   *ue, 
- RgrUeRecfg  *ueReCfg
- )
-#else
-PUBLIC S16 rgSCHDrxUeReCfg (cell, ue, ueReCfg)
- RgSchCellCb *cell; 
- RgSchUeCb   *ue; 
- RgrUeRecfg  *ueReCfg;
-#endif
+S16 rgSCHDrxUeReCfg(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeRecfg  *ueReCfg)
 {
       /* DRX_INFI_LOOP */
    RgSchCmnCell      *cellSch = NULLP;
    CmLListCp         dlInactvLst; /* list of UE's becoming DL-inactive */
-
    S16               ret       = ROK;
    Inst              instIdx   = cell->instIdx;
    RgSchDrxUeCb      *ueDrxCb;
    CmLteTimingInfo   nxtOnDur;
-   U16               nxtOnDurTime;
-   U16               onDurIndx;
-   U16               curTime;
-   U16               shrtCycleExpIndx;
-   U16               onDurExpTime;
-   U16               cycleLen;
-   U16               curIndx;
-   U8                cellIdx;
-
-   TRC2(rgSCHDrxUeReCfg);
+   uint16_t          nxtOnDurTime;
+   uint16_t          onDurIndx;
+   uint16_t          curTime;
+   uint16_t          shrtCycleExpIndx;
+   uint16_t          onDurExpTime;
+   uint16_t          cycleLen;
+   uint16_t          curIndx;
+   uint8_t           cellIdx;
 
 
   /* drx was disabled but now enabled for this ue */ 
@@ -1547,7 +1394,7 @@ PUBLIC S16 rgSCHDrxUeReCfg (cell, ue, ueReCfg)
         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
            "rgSCHdrxUeReCfg():""Memory allocation FAILED for DRX UE Cb CRNTI:%d",
                   ue->ueId);
-        RETVALUE(ret);
+        return (ret);
      }
 
      ue->isDrxEnabled = TRUE;    /* sachin */
@@ -1578,7 +1425,7 @@ PUBLIC S16 rgSCHDrxUeReCfg (cell, ue, ueReCfg)
   }
   if( ue->drxCb == NULLP ) 
   { 
-     RETVALUE(RFAILED); 
+     return RFAILED; 
   }
    ueDrxCb = ue->drxCb;
    
@@ -1730,7 +1577,7 @@ PUBLIC S16 rgSCHDrxUeReCfg (cell, ue, ueReCfg)
       }   
    }
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of rgSCHDrxUeReCfg */
 #endif
@@ -1748,27 +1595,11 @@ PUBLIC S16 rgSCHDrxUeReCfg (cell, ue, ueReCfg)
  * @param  RgSchCellCb  *cell
  * @return ROK/RFAILED
  */
-#ifdef ANSI
-PUBLIC Void rgSCHDrxUeHqReset
-(
- RgSchCellCb   *cell,
- RgSchUeCb     *ue,
- RgSchDlHqEnt  *hqE,
- U8            cellIdx
- )
-#else
-PUBLIC Void rgSCHDrxUeHqReset(cell, ue, hqE, cellIdx)
- RgSchCellCb   *cell; 
- RgSchUeCb     *ue;
- RgSchDlHqEnt  *hqE;
- U8            cellIdx;
-#endif
+Void rgSCHDrxUeHqReset(RgSchCellCb *cell,RgSchUeCb *ue,RgSchDlHqEnt  *hqE,uint8_t cellIdx)
 { 
    RgSchDlHqProcCb     *hqP;
    RgSchDrxDlHqProcCb  *drxHq   =NULLP;
-   U8                  i;
-
-   TRC2(rgSCHDrxUeHqReset);
+   uint8_t             i;
 
    for(i=0; i < hqE->numHqPrcs; i++)
    {
@@ -1820,26 +1651,15 @@ PUBLIC Void rgSCHDrxUeHqReset(cell, ue, hqE, cellIdx)
  * @param  RgSchUeCb    *ue
  * @return ROK/RFAILED
  */
-#ifdef ANSI
-PUBLIC S16 rgSCHDrxUeDel
-(
- RgSchCellCb   *cell,
- RgSchUeCb      *ue
- )
-#else
-PUBLIC S16 rgSCHDrxUeDel (cell, ue)
- RgSchCellCb   *cell; 
- RgSchUeCb     *ue;
-#endif
+S16 rgSCHDrxUeDel(RgSchCellCb *cell,RgSchUeCb *ue)
 {
    RgSchDrxUeCb       *ueDrxCb;
    RgSchDlHqEnt       *hqE = NULLP;
-   U8                  cellIdx;
+   uint8_t            cellIdx;
    RgSchUeCellInfo    *cellInfo = NULLP;
 #ifdef EMTC_ENABLE
    RgSchCmnUlUe *ueUl = RG_SCH_CMN_GET_UL_UE(ue, cell);
 #endif
-   TRC2(rgSCHDrxUeDel);
 
 
    /* ccpu00129899: Moved the drx-enabled check to the caller */   
@@ -1900,7 +1720,7 @@ PUBLIC S16 rgSCHDrxUeDel (cell, ue)
    ueDrxCb->drxDlInactvMask = DRX_UE_INACTIVE;
    ueDrxCb->drxUlInactvMask = DRX_UE_INACTIVE;
 
-   RETVALUE(ROK);
+   return ROK;
 }/*rgSCHDrxUeDel*/
 
 /** @brief This function is called at the time of RGR cell configuration.
@@ -1911,31 +1731,18 @@ PUBLIC S16 rgSCHDrxUeDel (cell, ue)
  *     Function: rgSCHDrxCellCfg 
  *
  *         Processing steps:
- *         - Initializes the following drxQ (cmMemset would do).
+ *         - Initializes the following drxQ (memset would do).
  *
  *
  * @param RgSchCellCb   *cell
  * @param RgrCellCfg    *cellCfg
  * @return ROK/RFAILED
  */
-#ifdef ANSI
-PUBLIC S16 rgSCHDrxCellCfg 
-(
- RgSchCellCb   *cell,
- RgrCellCfg    *cellCfg
- )
-#else
-PUBLIC S16 rgSCHDrxCellCfg (cell, cellCfg)
- RgSchCellCb   *cell; 
- RgrCellCfg    *cellCfg;
-#endif
+S16 rgSCHDrxCellCfg(RgSchCellCb *cell,RgrCellCfg *cellCfg)
 {
 
    S16               ret       = ROK;
    Inst              instIdx   = cell->instIdx;
-
-   TRC2(rgSCHDrxCellCfg);
-
 
 #if ( ERRCLASS & ERRCLS_INT_PAR )
   /*KWORK_FIX :Removed check for cell being NULL*/ 
@@ -1943,7 +1750,7 @@ PUBLIC S16 rgSCHDrxCellCfg (cell, cellCfg)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
                 "rgSCHDrxCellCfg():Invalid Params. cell/cellCfg is NULL");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -1955,7 +1762,7 @@ PUBLIC S16 rgSCHDrxCellCfg (cell, cellCfg)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHDrxCellCfg():"
                "Memory allocation FAILED for DRX cell Cb");
-      RETVALUE(ret);
+      return (ret);
    }
 
    /* delInUlScan determines which index scans the queue last.
@@ -1975,7 +1782,7 @@ PUBLIC S16 rgSCHDrxCellCfg (cell, cellCfg)
       cell->drxCb->delInUlScan = TRUE;
    }
 
-   RETVALUE(ret);
+   return (ret);
 } /* end of rgSchDrxCellCfg */
 
 
@@ -1995,21 +1802,10 @@ PUBLIC S16 rgSCHDrxCellCfg (cell, cellCfg)
  * @param  RgSchCellCb  *cell
  * @return Void
  */
-#ifdef ANSI
-PUBLIC Void rgSCHDrxCellDel 
-(
- RgSchCellCb *cell
- )
-#else
-PUBLIC Void rgSCHDrxCellDel (cell)
- RgSchCellCb *cell;
-#endif
+Void rgSCHDrxCellDel(RgSchCellCb *cell)
 {
    Inst              instIdx      = cell->instIdx;
 
-   TRC2(rgSCHCfgRgrCellDel);
-
-   
    if (cell->drxCb)
    {
       /* ccpu00117052 - MOD - Passing double pointer
@@ -2017,7 +1813,7 @@ PUBLIC Void rgSCHDrxCellDel (cell)
       rgSCHUtlFreeSBuf(instIdx, (Data **)(&(cell->drxCb)),
             sizeof(RgSchDRXCellCb));
    }
-   RETVOID;
+   return;
 } /* end of rgSchDrxCellDel */
 
 /** @brief This function is called when an SR is received from the UE. In this
@@ -2046,34 +1842,21 @@ PUBLIC Void rgSCHDrxCellDel (cell)
  * @param   RgSchUeCb    *ue
  * @return  ROK/RFAILED
  */
-#ifdef ANSI
-PUBLIC S16 rgSCHDrxSrInd 
-(
- RgSchCellCb   *cell, 
- RgSchUeCb     *ue
- )
-#else
-PUBLIC S16 rgSCHDrxSrInd (cell, ue)
- RgSchCellCb   *cell; 
- RgSchUeCb     *ue;
-#endif
+S16 rgSCHDrxSrInd(RgSchCellCb *cell,RgSchUeCb  *ue)
 {
    RgSchDrxUeCb      *drxCb;
-
-   TRC2(rgSCHDrxSrInd);
-
 
 #if ( ERRCLASS & ERRCLS_INT_PAR )
    if ( cell == (RgSchCellCb* )NULLP)
    {
-      RETVALUE(ROK);
+      return ROK;
    }
 
    if( (ue == (RgSchUeCb* )NULLP))
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
                  "rgSCHDrxSrInd():Invalid Params. cell/ue is NULL");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
  #endif
    /* KWork fix - shifted this down */
@@ -2087,7 +1870,7 @@ PUBLIC S16 rgSCHDrxSrInd (cell, ue)
    /* Update UE's inactive mask and if required move UE to ACTIVE state */
    RG_SCH_CMN_UL_UPDT_INACTV_MASK( cell, ue, RG_DRX_INACTIVE);
 
-   RETVALUE(ROK);
+   return ROK;
 } /* rgSCHDrxSrInd */
 
 
@@ -2115,22 +1898,9 @@ PUBLIC S16 rgSCHDrxSrInd (cell, ue)
  * @param  RgSchUeCb    *ueCb
  * @return Void 
  */
-#ifdef ANSI
-PUBLIC Void rgSCHDrxDedRa 
-(
-RgSchCellCb   *cellCb, 
-RgSchUeCb     *ueCb
- )
-#else
-PUBLIC Void rgSCHDrxDedRa (cellCb, ueCb)
-RgSchCellCb   *cellCb; 
-RgSchUeCb     *ueCb;
-#endif
+Void rgSCHDrxDedRa(RgSchCellCb *cellCb, RgSchUeCb *ueCb)
 {
    RgSchDrxUeCb      *drxCb;
-
-   TRC2(rgSCHDrxDedRa);
-
 
    drxCb = RG_SCH_DRX_GET_UE(ueCb);
 
@@ -2145,7 +1915,7 @@ RgSchUeCb     *ueCb;
 
    drxCb->raRcvd = TRUE;
 
-   RETVOID;
+   return;
 } /* end of rgSCHDrxDedRa */
 
 
@@ -2162,38 +1932,23 @@ RgSchUeCb     *ueCb;
  *
  * @param  RgSchCellCb     *cell
  * @param  RgSchUeCb       *ueCb
- * @param  U16              idx  - if calcFrmOffst is TRUE,
+ * @param  uint16_t              idx  - if calcFrmOffst is TRUE,
  *                                 idx is delta to be added
  * @param  Bool             calcFrmOffst
  * @return Void 
  */
-#ifdef ANSI
-PRIVATE Void rgSCHDrxMvToNxtOnDurOcc 
-(
-RgSchCellCb      *cell,
-RgSchUeCb        *ueCb,
-U16               idx,
-Bool              calcFrmOffst
-)
-#else
-PRIVATE Void rgSCHDrxMvToNxtOnDurOcc (cell, ueCb, idx, calcFrmOffst)
-RgSchCellCb      *cell;
-RgSchUeCb        *ueCb; 
-U16               idx;
-Bool              calcFrmOffst;
-#endif
+static Void rgSCHDrxMvToNxtOnDurOcc(RgSchCellCb *cell,RgSchUeCb *ueCb,uint16_t idx,Bool calcFrmOffst)
 {
-   U16             nxtOnDurIndex;
-   U16             curTime;
+   uint16_t        nxtOnDurIndex;
+   uint16_t        curTime;
    RgSchDrxUeCb    *drxUe;
    RgSchDRXCellCb  *drxCell;
-   CmLteTimingInfo  nxtOnDur; /* to be used when calcFrmOffset is set */
-   U16              nxtOnDurInSf; /* next On Duration in no of subframes */
+   CmLteTimingInfo nxtOnDur; /* to be used when calcFrmOffset is set */
+   uint16_t        nxtOnDurInSf; /* next On Duration in no of subframes */
 
    drxCell = cell->drxCb;
    drxUe   = ueCb->drxCb;
 
-   TRC2(rgSCHDrxMvToNxtOnDurOcc)
 
    if(calcFrmOffst == FALSE)
    {
@@ -2212,7 +1967,7 @@ Bool              calcFrmOffst;
    }
    else
    {
-      rgSCHDrxGetNxtOnDur(cell,drxUe,&nxtOnDur,(U8)idx);
+      rgSCHDrxGetNxtOnDur(cell,drxUe,&nxtOnDur,(uint8_t)idx);
       
       nxtOnDurInSf = ((nxtOnDur.sfn * RGSCH_NUM_SUB_FRAMES_5G) + 
                          nxtOnDur.slot);
@@ -2243,7 +1998,7 @@ Bool              calcFrmOffst;
    drxUe->onDurationEnt.node = (PTR)ueCb;
    drxUe->onDurIndx          = nxtOnDurIndex;
 
-   RETVOID;
+   return;
 }/*rgSCHDrxMvToNxtOnDurOcc*/
 
 #ifdef LTE_TDD
@@ -2278,34 +2033,18 @@ Bool              calcFrmOffst;
  *                and will expire on (15,1)
  *
  * @param  RgSchUeCb       *ue          Ue control block.
- * @param  U16             curTime      current Time 
- * @param  U32             duration     Timer duration 
+ * @param  uint16_t             curTime      current Time 
+ * @param  uint32_t             duration     Timer duration 
  * @param  CmLteTimingInfo *tmrExpryIdx Timer expry (SFN,sf)
  * @return ROK/RFAILED
  */
-#ifdef ANSI
-PRIVATE S16 rgSCHDrxGetNxtTmrExpry 
-(
- RgSchCellCb        *cell,
- U16                curTime,
- U32                duration, 
- CmLteTimingInfo    *tmrExpryIdx
-)
-#else
-PRIVATE S16 rgSCHDrxGetNxtTmrExpry (cell,curTime,duration,tmrExpryIdx)
- RgSchCellCb         *cell;
- U16                 curTime;
- U32                 duration;
- CmLteTimingInfo     *tmrExpryIdx;
-#endif
+static S16 rgSCHDrxGetNxtTmrExpry(RgSchCellCb *cell, uint16_t curTime, uint32_t duration,CmLteTimingInfo *tmrExpryIdx)
 {
-   U32             dlSfTillNxtSFN;  /*!< DL subframes till next SFN */
-   U8              tddCfgMode;      /*!< tdd config mode */
+   uint32_t        dlSfTillNxtSFN;  /*!< DL subframes till next SFN */
+   uint8_t         tddCfgMode;      /*!< tdd config mode */
    Bool            isDwPtsCnted;    /*!< is DwPts counted as PDCCH sf */
    CmLteTimingInfo crntTime;        /*!< current SFN & sf */
 
-
-   TRC2(rgSCHDrxGetNxtTmrExpry);
 
 #if ( ERRCLASS & ERRCLS_INT_PAR )
    if ( (cell == (RgSchCellCb* )NULLP) 
@@ -2313,7 +2052,7 @@ PRIVATE S16 rgSCHDrxGetNxtTmrExpry (cell,curTime,duration,tmrExpryIdx)
          (tmrExpryIdx == (CmLteTimingInfo* )NULLP)
       )
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -2335,7 +2074,7 @@ PRIVATE S16 rgSCHDrxGetNxtTmrExpry (cell,curTime,duration,tmrExpryIdx)
    if ( dlSfTillNxtSFN >= duration )
    {
       /* the timer would expire on the same RF */
-      U32 diff = dlSfTillNxtSFN - duration;
+      uint32_t diff = dlSfTillNxtSFN - duration;
 
       tmrExpryIdx->sfn = crntTime.sfn; 
 
@@ -2346,7 +2085,7 @@ PRIVATE S16 rgSCHDrxGetNxtTmrExpry (cell,curTime,duration,tmrExpryIdx)
       }
       else
       {
-         U8 arrayIdx;
+         uint8_t arrayIdx;
          /* to know the DL sf index based on diff */
          arrayIdx = rgSchDrxDlSfTddCfg[isDwPtsCnted][tddCfgMode]; 
 
@@ -2356,15 +2095,15 @@ PRIVATE S16 rgSCHDrxGetNxtTmrExpry (cell,curTime,duration,tmrExpryIdx)
    }/* if ( dlSfTillNxtSFN >= duration...*/
    else
    {
-      U32             remSf;           /*!< remaining subframes */
-      U32             numRf;           /*!< num of complete radio frames */
-      U32             numRemSfs;       /*!< num of remaining subframes */
+      uint32_t             remSf;           /*!< remaining subframes */
+      uint32_t             numRf;           /*!< num of complete radio frames */
+      uint32_t             numRemSfs;       /*!< num of remaining subframes */
 
       remSf = duration - dlSfTillNxtSFN;
 
       /* move to (currSFN,9) having consued dlSfTillNxtSFN DL subframes */
       tmrExpryIdx->sfn      = crntTime.sfn;
-      tmrExpryIdx->subframe = (U8)9;
+      tmrExpryIdx->subframe = (uint8_t)9;
 
       numRf      = (1 * remSf)/rgSchDrxDlSfTddCfg[isDwPtsCnted][tddCfgMode];
       numRemSfs  = (1 * remSf)%rgSchDrxDlSfTddCfg[isDwPtsCnted][tddCfgMode];
@@ -2411,7 +2150,7 @@ PRIVATE S16 rgSCHDrxGetNxtTmrExpry (cell,curTime,duration,tmrExpryIdx)
       tmrExpryIdx->sfn = tmrExpryIdx->sfn - (RG_SCH_CMN_MAX_SFN_NUM + 1);
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }/*rgSCHDrxGetNxtTmrExpry*/
 
 /** @brief This function calculates the next onDuration Occurence
@@ -2426,38 +2165,18 @@ PRIVATE S16 rgSCHDrxGetNxtTmrExpry (cell,curTime,duration,tmrExpryIdx)
  *
  * @param  RgSchCellCb      *cell
  * @param  RgSchUeCb        *ue
- * @param  U16               delta
- * @param  U32               tmrLen 
- * @param  U16              *distance
+ * @param  uint16_t               delta
+ * @param  uint32_t               tmrLen 
+ * @param  uint16_t              *distance
  * @param  S16              *idx
  * @return ROK/RFAILED
  */
-#ifdef ANSI
-PRIVATE Void rgSCHDrxCalcNxtTmrExpry
-(
- RgSchCellCb     *cell,
- RgSchUeCb       *ue,
- U16              delta,
- U32              tmrLen,
- S16             *distance,
- U16             *idx
-)
-#else
-PRIVATE Void rgSCHDrxCalcNxtTmrExpry (cell,ue,delta,tmrLen,distance,idx)
- RgSchCellCb     *cell;
- RgSchUeCb       *ue;
- U16              delta;
- U32              tmrLen;
- S16             *distance;
- U16             *idx;
-#endif
+static Void rgSCHDrxCalcNxtTmrExpry(RgSchCellCb *cell, RgSchUeCb *ue, uint16_t delta, uint32_t tmrLen, S16 *distance, uint16_t *idx)
 {
-   U16             curTimeInSf;  /*current time in no of subframes*/
+   uint16_t        curTimeInSf;  /*current time in no of subframes*/
    CmLteTimingInfo tmrExpry;
-   U16             tmrExpryInSf; /*timer expry in no of subframes*/
+   uint16_t        tmrExpryInSf; /*timer expry in no of subframes*/
 
-   TRC2(rgSCHDrxCalcNxtTmrExpry)
-   
    curTimeInSf = cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G +
                    cell->crntTime.slot;
 
@@ -2497,7 +2216,7 @@ PRIVATE Void rgSCHDrxCalcNxtTmrExpry (cell,ue,delta,tmrLen,distance,idx)
       }      
    }
   
-   RETVOID;
+   return;
 }/*rgSCHDrxCalcNxtTmrExpry*/
 
 /* ccpu00134670- Validating onduration timer versus DRX cycle*/
@@ -2519,26 +2238,11 @@ PRIVATE Void rgSCHDrxCalcNxtTmrExpry (cell,ue,delta,tmrLen,distance,idx)
  *     File :
  *
  **********************************************************/
-#ifdef ANSI
-PUBLIC S16 rgSCHCfgVldtTddDrxCycCfg
-(
-RgSchCellCb  *cell,
-U16           drxCycle,
-U8            onDurTmr, 
-U16           offSet
-)
-#else
-PUBLIC S16 rgSCHCfgVldtTddDrxCycCfg(cell, drxCycle, onDurTmr, offSet)
-RgSchCellCb  *cell;
-U16           drxCycle;
-U8            onDurTmr;
-U16           offSet; 
-#endif
+S16 rgSCHCfgVldtTddDrxCycCfg(RgSchCellCb *cell,uint16_t drxCycle,uint8_t onDurTmr, uint16_t offSet)
 {
-   U16             startTime;
-   U16             endTimeInSf;
+   uint16_t       startTime;
+   uint16_t       endTimeInSf;
    CmLteTimingInfo endTime; 
-   TRC2(rgSCHCfgVldtTddDrxCycCfg)
 
    startTime = offSet;
    do
@@ -2550,7 +2254,7 @@ U16           offSet;
       if(((RGSCH_MAX_SUBFRM_5G + endTimeInSf- startTime) % RGSCH_MAX_SUBFRM_5G) >= 
           drxCycle)
       {
-          RETVALUE(RFAILED);
+          return RFAILED;
       }
       
       startTime = (startTime + drxCycle);
@@ -2562,7 +2266,7 @@ U16           offSet;
    }while((drxCycle % RGSCH_NUM_SUB_FRAMES) && 
        (startTime < (drxCycle * RGSCH_NUM_SUB_FRAMES/2)));
    
-   RETVALUE(ROK);
+   return ROK;
 }
 
 #endif /*LTE_TDD */
@@ -2584,21 +2288,11 @@ U16           offSet;
  *
  *
  * @param  RgSchCellCb  *cellCb
- * @param  U16          ulIndex
+ * @param  uint16_t          ulIndex
  * @return Void 
  */
 
-#ifdef ANSI
-PRIVATE Void rgSCHDrxTtiHdlOnDurUl
-(
-RgSchCellCb        *cell,
-U16                ulIndex
-)
-#else
-PRIVATE Void rgSCHDrxTtiHdlOnDurUl(cell, ulIndex)
-RgSchCellCb   *cell;
-U16           ulIndex;
-#endif
+static Void rgSCHDrxTtiHdlOnDurUl(RgSchCellCb *cell,uint16_t ulIndex)
 {
    CmLList           *node;
    RgSchDRXCellCb    *drxCell  = NULLP;
@@ -2608,8 +2302,6 @@ U16           ulIndex;
    RgSchCmnCell      *cellSch = NULLP;
    Bool              delInUlScan = FALSE;
    
-   TRC2(rgSCHDrxTtiHdlOnDurUl)
-  
    drxCell     = (cell->drxCb);
    delInUlScan = drxCell->delInUlScan;
    /***********************************************************
@@ -2707,7 +2399,7 @@ U16           ulIndex;
    cellSch = RG_SCH_CMN_GET_CELL(cell);
    cellSch->apisUl->rgSCHUlInactvtUes(cell, &ulInactvLst);
    
-   RETVOID;
+   return;
 }
 
 /** @brief This function is called to handle onDurationTimer per TTI processing.
@@ -2726,28 +2418,18 @@ U16           ulIndex;
  *
  *
  * @param  RgSchCellCb  *cellCb
- * @param  U16          dlIndex
+ * @param  uint16_t          dlIndex
  * @return Void
  */
 
-#ifdef ANSI
-PRIVATE Void rgSCHDrxTtiHdlOnDurDl
-(
-RgSchCellCb    *cell,
-U16                dlIndex
-)
-#else
-PRIVATE Void rgSCHDrxTtiHdlOnDurDl(cell, dlIndex)
-RgSchCellCb   *cell;
-U16           dlIndex;
-#endif
+static Void rgSCHDrxTtiHdlOnDurDl(RgSchCellCb *cell,uint16_t dlIndex)
 {
    CmLList           *node;
    RgSchDRXCellCb    *drxCell  = NULLP;
    RgSchUeCb         *ue       = NULLP;
    RgSchDrxUeCb      *drxUe    = NULLP;
    RgSchCmnCell      *cellSch = NULLP;
-   U16               expiryIndex;
+   uint16_t          expiryIndex;
    CmLListCp         dlInactvLst; /* list of UE's becoming DL-inactive */
    Bool              delInUlScan = FALSE;
 
@@ -2755,7 +2437,6 @@ U16           dlIndex;
     * in the onDurationTmrExprQ. If !delInUlScan, then calculate the next
     * OnDuration occurence, q it there and remove it from the current location.
     */
-   TRC2(rgSCHDrxTtiHdlOnDurDl)
    /***********************************************************
     *    Scanning OnDurationQ in DL
     ***********************************************************/
@@ -2896,7 +2577,7 @@ U16           dlIndex;
    cellSch = RG_SCH_CMN_GET_CELL(cell);
    cellSch->apisDl->rgSCHDlInactvtUes(cell, &dlInactvLst);
 
-   RETVOID;
+   return;
 }/*rgSCHDrxTtiHdlOnDurDl*/
 
  /** @brief This function handles the Dl HARQ timer's processing per TTI.
@@ -2913,36 +2594,24 @@ U16           dlIndex;
  *             process accordingly. 
  *
  * @param  RgSchCellCb *cellCb
- * @param  U16          dlIndex
+ * @param  uint16_t          dlIndex
  * @return Void 
  */
 
-#ifdef ANSI
-PRIVATE Void rgSCHDrxTtiHdlDlHarqRTT
-(
-RgSchCellCb          *cell,
-U16                   dlIndex
-)
-#else /* ANSI */
-PRIVATE Void rgSCHDrxTtiHdlDlHarqRTT(cell, dlIndex)
-RgSchCellCb          *cell;
-U16                   dlIndex;
-#endif /* ANSI */
+static Void rgSCHDrxTtiHdlDlHarqRTT(RgSchCellCb *cell,uint16_t dlIndex)
 {
    CmLList             *node;
    RgSchDrxDlHqProcCb  *drxHq;
    RgSchDlHqProcCb     *dlHq;
    RgSchDRXCellCb      *drxCell;
    RgSchDrxUeCb        *drxUe;
-   U16                 reTxExpIndx;
+   uint16_t            reTxExpIndx;
    Bool                delInUlScan;
    RgSchUeCb           *ue;
    CmLListCp           dlInactvLst; /* list of UE's becoming DL-inactive */
    RgSchCmnCell        *cellSch = RG_SCH_CMN_GET_CELL(cell);
-   U8                  cellIdx;
-   U32                 dlInactvMask;
-
-   TRC2(rgSCHDrxTtiHdlDlHarqRTT);
+   uint8_t             cellIdx;
+   uint32_t            dlInactvMask;
 
    drxCell     = cell->drxCb;
    delInUlScan = drxCell->delInUlScan;
@@ -3077,7 +2746,7 @@ U16                   dlIndex;
    /*Call schedulers to inactivate ue*/
    cellSch->apisDl->rgSCHDlInactvtUes(cell, &dlInactvLst);
 
-   RETVOID;
+   return;
 }
 
  /** @brief This function handles the Ul HARQ timer's processing per TTI.
@@ -3102,37 +2771,25 @@ U16                   dlIndex;
  *
  *
  * @param  RgSchCellCb *cellCb
- * @param  U16          ulIndex
+ * @param  uint16_t          ulIndex
   * @return Void 
   */
 
-#ifdef ANSI
-PRIVATE Void rgSCHDrxTtiHdlUlHarqRTT
-(
-RgSchCellCb          *cell,
-U16                   ulIndex
-)
-#else /* ANSI */
-PRIVATE Void rgSCHDrxTtiHdlUlHarqRTT(cell, ulIndex)
-RgSchCellCb          *cell;
-U16                   ulIndex;
-#endif /* ANSI */
+static Void rgSCHDrxTtiHdlUlHarqRTT(RgSchCellCb *cell,uint16_t ulIndex)
 {
    CmLList             *node;
    RgSchDrxDlHqProcCb  *drxHq;
    RgSchDlHqProcCb     *dlHq;
    RgSchDRXCellCb      *drxCell;
    RgSchDrxUeCb        *drxUe;
-   Bool              delInUlScan;
-   RgSchUeCb          *ue;
-   CmLListCp         ulInactvLst; /* list of UE's becoming DL-inactive */
-   RgSchCmnCell      *cellSch = RG_SCH_CMN_GET_CELL(cell);
-   U8                cellIdx;
-   U32               ulInactvMask;
+   Bool                delInUlScan;
+   RgSchUeCb           *ue;
+   CmLListCp           ulInactvLst; /* list of UE's becoming DL-inactive */
+   RgSchCmnCell        *cellSch = RG_SCH_CMN_GET_CELL(cell);
+   uint8_t             cellIdx;
+   uint32_t            ulInactvMask;
 
 
-   TRC2(rgSCHDrxTtiHdlUlHarqRTT);
-   
    drxCell     = cell->drxCb;
    delInUlScan = drxCell->delInUlScan;
 
@@ -3222,7 +2879,7 @@ U16                   ulIndex;
    }
    cellSch->apisUl->rgSCHUlInactvtUes(cell, &ulInactvLst);
 
-   RETVOID;
+   return;
 
 }
 

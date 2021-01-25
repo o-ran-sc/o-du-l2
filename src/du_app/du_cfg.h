@@ -32,6 +32,7 @@
 #define CU_EGTP_PORT  39002
 #define NR_PCI 1
 #define NR_CELL_ID 1
+#define NR_NUMEROLOGY 0
 #define DU_NAME "ORAN_OAM_DU"
 #define CELL_TYPE SMALL
 #define DUPLEX_MODE DUP_MODE_FDD
@@ -43,22 +44,24 @@
 #define PLMN_MNC1 8
 #define PLMN_MNC2 0
 #define PLMN_SIZE 3
-#define NR_ARFCN  2079427
+
+/* Spec 30.104 Table 5.4.2.3-1:Applicable NR-ARFCN per operating band in FR1 */
+#define NR_DL_ARFCN 428000
+#define NR_UL_ARFCN 390000
 #define SUL_ARFCN 100
-#define NR_FREQ_BAND 257
-#define NR_FREQ_BAND_IND 78
+#define NR_FREQ_BAND 1
+#define NR_FREQ_BAND_IND 1
 #define SUL_BAND 2
+
 #define TIME_CFG 0
 #define CARRIER_IDX 1
 #define NUM_TX_ANT 2
 #define NUM_RX_ANT 2
 #define FREQ_SHIFT_7P5KHZ FALSE
-#define SSB_PBCH_PWR -5
-#define BCH_PAYLOAD MAC_GEN_FULL_PBCH_PAYLD
-#define TOTAL_PRB_BW 106
+#define SSB_PBCH_PWR 0
+#define BCH_PAYLOAD PHY_GEN_TIMING_PBCH_BIT
 #define SUBCARRIER_SPACING 0
 #define NORMAL_CYCLIC_PREFIX 0
-#define SCS_CARRIER_BANDWIDTH 273         /* Subcarrier spacing- carrier bandwidth */
 #define OFFSET_TO_POINT_A 24                     /* PRB Offset to Point A */
 #define BETA_PSS BETA_PSS_0DB  
 #define SSB_PERIODICITY_5MS   5
@@ -70,22 +73,23 @@
 #define SSB_SUBCARRIER_OFFSET 0               
 #define SSB_MULT_CARRIER_BAND FALSE
 #define MULT_CELL_CARRIER FALSE
-#define FREQ_LOC_BW  1099              /* DL frequency location and bandwidth */
+#define FREQ_LOC_BW  28875             /* DL frequency location and bandwidth. Spec 38.508 Table 4.3.1.0B-1*/
 #define UL_P_MAX  23
-#define BANDWIDTH 20
 #define DMRS_TYPE_A_POS 2
 #define NUM_SYMBOLS_PER_SLOT 14       /* Number of symbols within a slot */
+#define CORESET0_END_PRB   48
+#define CORESET1_NUM_PRB   24
 
 /* MACRO defines for PRACH Configuration */
 #define PRACH_CONFIG_IDX   88
 #define PRACH_FREQ_START   0
 #define PRACH_SEQ_LEN SHORT_SEQUENCE
-#define PRACH_SUBCARRIER_SPACING 1
+#define PRACH_SUBCARRIER_SPACING 0
 #define PRACH_RESTRICTED_SET_CFG 0
 #define NUM_PRACH_FDM 1
-#define ROOT_SEQ_IDX 24
+#define ROOT_SEQ_IDX 0
 #define NUM_ROOT_SEQ 1
-#define ZERO_CORRELATION_ZONE_CFG 6
+#define ZERO_CORRELATION_ZONE_CFG 4
 #define NUM_UNUSED_ROOT_SEQ 0
 #define UNUSED_ROOT_SEQ 1
 #define SSB_PER_RACH 1
@@ -101,11 +105,9 @@
 #define ROOT_SEQ_LEN 139
 
 /* MACRCO Ddefine for PDCCH Configuration */
-#define PDCCH_CTRL_RSRC_SET_ZERO   13   /* Control resouce set zero */
-#define PDCCH_SEARCH_SPACE_ZERO    0    /* Search space zero */
 #define PDCCH_SEARCH_SPACE_ID      1    /* Common search space id */
 #define PDCCH_CTRL_RSRC_SET_ID     0    /* Control resource set id */
-#define PDCCH_SEARCH_SPACE_ID_SIB1 0    /* Search space id for sib1 */
+#define PDCCH_SEARCH_SPACE_ID_SIB1 1    /* Search space id for sib1 */
 #define PDCCH_SEARCH_SPACE_ID_PAGING 1  /* Search space id for paging */
 #define PDCCH_SEARCH_SPACE_ID_RA   1    /* Search spaced id for random access */
 #define PDCCH_SERACH_SPACE_DCI_FORMAT 0
@@ -119,13 +121,12 @@
 #define PDCCH_SRCH_SPC_TWO_AGG_LVL8_CANDIDATE 2   /* Num of candidate at aggregation level 8 */
 #define PDCCH_SRCH_SPC_TWO_AGG_LVL16_CANDIDATE 1  /* Num of candidate at aggregation level 16 */
 #define PDCCH_SRCH_SPC_TWO_UE_SPEC_DCI_FORMAT  0  /* format 0-0 and 1-0 */
-#define PDCCH_FREQ_DOM_RSRC 255          /* Frequency domain Resource Value */
 #define PDCCH_SYMBOL_WITHIN_SLOT 128     /* Symbol within Slot Value */
 
 
 #define SIB1_VALUE_TAG 10
 
-/* MACRCO Ddefine for PDSCH Configuration */
+/* MACRO Ddefine for PDSCH Configuration */
 #define PDSCH_K0  0
 #define PDSCH_START_SYMBOL  2
 #define PDSCH_LENGTH_SYMBOL 12
@@ -192,7 +193,7 @@
 /* Macro definitions for F1 procedures */
 #define CU_DU_NAME_LEN_MAX 30      /* Max length of CU/DU name string */
 #define MAX_F1_CONNECTIONS 65536    /* Max num of F1 connections */
-#define MAX_PLMN           6        /* Max num of broadcast PLMN ids */
+#define MAX_PLMN           1        /* Max num of broadcast PLMN ids */
 #define MAXNRARFCN         3279165  /* Maximum values of NRAFCN */
 #define MAXNRCELLBANDS     2       /* Maximum number of frequency bands */
 #define MAX_NUM_OF_SLICE_ITEMS 1024     /* Maximum number of signalled slice support items */
@@ -211,8 +212,6 @@
 #define SYS_FRAME_NUM 0
 #define SPARE 0
 #define SSB_SC_OFFSET 8
-#define CORESET_ZERO 1
-#define SEARCH_SPACE_ZERO 8
 #define DU_RANAC 1
 #define CELL_IDENTITY 32
 
@@ -230,8 +229,6 @@
 #define PHR_PROHIBHIT_TMR 0
 #define PHR_PWR_FACTOR_CHANGE 3
 #define PHR_MODE_OTHER_CG 0
-#define RLC_LCID 1 
-#define SRB_ID_1 1
 #define SN_FIELD_LEN 0
 #define T_POLL_RETRANSMIT 8 
 #define POLL_PDU 0
@@ -258,6 +255,14 @@
 #define RB_ID 1
 #define LC_ID 1
 #endif
+
+/* MACRO definitions for modulcation order */
+#define MOD_ORDER_QPSK  2
+#define MOD_ORDER_QAM16 4
+#define MOD_ORDER_QAM64 6
+#define MOD_ORDER_QAM256 8
+#define PDSCH_MCS_INDEX 20  /* For 64QAM, valid mcs index: 17-28 in 38.214  - Table 5.1.3.1-1*/
+#define PUSCH_MCS_INDEX 10  /* For 16QAM, valid mcs index: 10-16 in 38.214  - Table 5.1.3.1-1*/
 
 typedef enum
 {
@@ -799,7 +804,7 @@ typedef struct f1UacAssistInfo
 }F1UacAssistInfo;
 
 /* F1 setup related structures */
-
+#if 0
 typedef struct f1SetupReq
 {
    uint32_t                transId;                       /* Uniquely identify transaction */
@@ -964,6 +969,7 @@ typedef struct f1NwkAccessRateRed
    uint32_t          transId;        /* Uniquely identifies transaction */
    F1UacAssistInfo   uacAssistInfo;  /* UAC Assistance Information */
 }F1NwkAccessRateRed;
+#endif
 
 typedef struct f1Ipaddr
 {
@@ -974,11 +980,11 @@ typedef struct f1Ipaddr
 typedef struct sctpParams
 {
    F1IpAddr  duIpAddr;
-   U16       duPort[MAX_DU_PORT];
+   uint16_t       duPort[MAX_DU_PORT];
    F1IpAddr  cuIpAddr;
-   U16       cuPort;
+   uint16_t       cuPort;
    F1IpAddr  ricIpAddr;
-   U16       ricPort;
+   uint16_t       ricPort;
 }SctpParams;
 
 typedef struct f1EgtpParams
@@ -1188,9 +1194,9 @@ typedef struct duCfgParams
 
 /*function declarations */
 void FillSlotConfig();
-S16 readClCfg();
-S16 readCfg();
-S16 duReadCfg(); 
+uint8_t readClCfg();
+uint8_t readCfg();
+uint8_t duReadCfg(); 
 uint16_t calcSliv(uint8_t startSymbol, uint8_t lengthSymbol);
 
 #endif /* __DU_CONFIG_H__ */

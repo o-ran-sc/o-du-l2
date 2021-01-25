@@ -37,7 +37,7 @@
   *         NULLP - failure
   *
   * ****************************************************************/
-PUBLIC LwrMacCellCb * lwrMacGetCellCb
+LwrMacCellCb * lwrMacGetCellCb
 (
    uint16_t cellId
 )
@@ -46,7 +46,7 @@ PUBLIC LwrMacCellCb * lwrMacGetCellCb
 
    if(cellId >= MAX_NUM_CELL)
    {
-      printf("\n Invalid Cell Id [%d]. rgClUtlGetCellCb failed.", cellId);
+      DU_LOG("\nERROR  -->  Invalid Cell Id [%d]. rgClUtlGetCellCb failed.", cellId);
       return NULLP;
    }
    
@@ -74,11 +74,11 @@ PUBLIC LwrMacCellCb * lwrMacGetCellCb
 uint32_t reverseBits(uint32_t num, uint8_t numBits)
 {
    uint32_t reverse_num = 0;
-   int i;
-   for (i = 0; i < numBits; i++)
+   uint8_t bitIdx;
+   for (bitIdx = 0; bitIdx < numBits; bitIdx++)
    {
-      if((num & (1 << i)))
-	 reverse_num |= 1 << ((numBits - 1) - i);
+      if((num & (1 << bitIdx)))
+	 reverse_num |= 1 << ((numBits - 1) - bitIdx);
    }
    return reverse_num;
 }

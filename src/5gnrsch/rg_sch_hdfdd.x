@@ -64,10 +64,10 @@ extern "C" {
 
 typedef struct rgSchUeHdFddSfInfo
 {
-  U16             sfn;                   /*!< Store the sfn for updated state 
+  uint16_t             sfn;                   /*!< Store the sfn for updated state 
                                               Default Value= 0xffff
                                           */
-  U8              state;
+  uint8_t              state;
                                          /*!< 0x00= DFLT
                                               0x01= DL DATA +(OPT:CNTRL INFO)
                                               0x02= DL CNTRL

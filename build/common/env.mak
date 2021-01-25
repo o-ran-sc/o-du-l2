@@ -14,29 +14,6 @@
 #   limitations under the License.                                             #
 ################################################################################
 
-#*********************************************************************17*/
-#
-#       Name:   gNodeB Sample Application
-#
-#       Type:   make file
-#
-#       Desc:   Compile, assemble and link product software for
-#               various configurations. Further comments are
-#               embedded in the file. 
-#
-#               This file supports a variety of environments and
-#               build targets. The default build target will be the
-#               portable target for the Linu 2.4.x with GNU C(gcc)
-#
-#       Env:    Linux 2.4.x with GNU C (gcc)
-#
-#       File:   env.mak
-#
-#********************************************************************21*/
-#=======================================================================
-
-STOPTS=-DENB 
-
 Q=
 S=
 # Check for verbose build
@@ -80,3 +57,7 @@ export EXT_LIB_DIR
 CMENBE2EOPTS += $(RLOG_OPTS_TEXT)
 
 L_OPTS = -lrt -lm -lpthread -lpcap -lstdc++  -L $(LIB_ROOT)
+
+#**********************************************************************
+#         End of file
+#**********************************************************************

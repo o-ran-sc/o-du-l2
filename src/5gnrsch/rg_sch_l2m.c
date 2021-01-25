@@ -55,19 +55,19 @@
 #include "rg_sch.x"        /* typedefs for Scheduler */
 #include "rg_sch_cmn.x"    /* typedefs for Scheduler */
 /* local defines */
-U32 dlPrbCnt;
+uint32_t dlPrbCnt;
 #ifdef LTE_L2_MEAS
 
 static const char* RLOG_MODULE_NAME="MAC";
 static int RLOG_MODULE_ID=4096;
 static int RLOG_FILE_ID=166;
 
-PRIVATE S16 rgSchL2mInsertMeasCb ARGS((
+static S16 rgSchL2mInsertMeasCb ARGS((
          RgSchCellCb       *cell,
          RgSchL2MeasCb     *measCb,
          LrgSchMeasReqInfo *measInfo ));
 
-PRIVATE RgSchL2MeasCb * rgSchL2mAllocMeasCb ARGS((
+static RgSchL2MeasCb * rgSchL2mAllocMeasCb ARGS((
          RgSchCellCb       *cell,
          LrgSchMeasReqInfo *measInfo,
          RgSchErrInfo      err));
@@ -86,29 +86,19 @@ PRIVATE RgSchL2MeasCb * rgSchL2mAllocMeasCb ARGS((
  * @param  [in] measTime
  * @return  Void
  */
-#ifdef ANSI
-PUBLIC S16 rgSchFillL2MeasCfm
+S16 rgSchFillL2MeasCfm
 (
 RgSchCellCb       *cell,
 RgSchL2MeasCb     *measCb,
 LrgSchMeasCfmInfo *cfm,
-U32               measTime   
+uint32_t          measTime   
 )
-#else
-PUBLIC S16 rgSchFillL2MeasCfm(cell, measCb, cfm, measTime)
-RgSchCellCb       *cell;
-RgSchL2MeasCb     *measCb;
-LrgSchMeasCfmInfo *cfm;
-U32               measTime;
-#endif
 {
-   U8                 idx;
+   uint8_t            idx;
    LrgSchMeasReqInfo  *measInfo;
-   U8                 qciVal = 0;
-   U32                 sampOc = 0;
+   uint8_t            qciVal = 0;
+   uint32_t           sampOc = 0;
 
-   TRC3(rgSchFillL2MeasCfm)
-   
    measInfo = &measCb->measReq;   
 
    cfm->hdr.transId  = measInfo->hdr.transId;
@@ -304,7 +294,7 @@ U32               measTime;
    measCb->dlTotalBw = 0;
    measCb->ulTotalBw = 0;
 
-   RETVALUE(ROK);
+   return ROK;
 } /* rgSchFillL2MeasCfm */
 
 /** @brief This function sends the L2 measurement confirm to LM 
@@ -319,27 +309,17 @@ U32               measTime;
  * @param  [in] Bool     isErr
  * @return  Void
  */
-#ifdef ANSI
-PUBLIC S16 rgSchL2mSndCfm
+S16 rgSchL2mSndCfm
 (
 Pst               *pst,
 RgSchL2MeasCb     *measCb,
 LrgSchMeasReqInfo *measInfo,
 Bool              isErr
 )
-#else
-PUBLIC S16 rgSchL2mSndCfm(pst, measCb, measInfo, isErr)
-Pst               *pst;
-RgSchL2MeasCb     *measCb;
-LrgSchMeasReqInfo *measInfo;
-Bool              isErr;
-#endif
 {
    LrgSchMeasCfmInfo   cfm;
 
-   TRC3(rgSchL2mSndCfm)
-
-   cmMemset((U8 *)&cfm, (U8)0, sizeof(LrgSchMeasCfmInfo));
+   memset(&cfm, 0, sizeof(LrgSchMeasCfmInfo));
    cfm.hdr.transId  = measInfo->hdr.transId;
    cfm.measType     = measInfo->measType;
    cfm.cellId       = measInfo->cellId;
@@ -349,9 +329,9 @@ Bool              isErr;
       cfm.cfm.status   = LCM_PRIM_NOK;
       cfm.cfm.reason   = LCM_REASON_INVALID_PAR_VAL;
       RgMiLrgSchL2MeasCfm(pst, &cfm);
-      RETVALUE(ROK);
+      return ROK;
    }
-   RETVALUE(ROK);
+   return ROK;
 } /* rgSchL2mSndCfm */
 
 /** @brief This function fills the LM confirmation pst structure 
@@ -365,25 +345,14 @@ Bool              isErr;
  * @param  [in] LrgSchMeasReqInfo *measInfo
  * @return  Void
  */
-#ifdef ANSI
-PUBLIC Void rgSchL2mFillCfmPst
+Void rgSchL2mFillCfmPst
 (
 Pst    *pst,
 Pst    *cfmPst,
 LrgSchMeasReqInfo *measInfo 
 )
-#else
-PUBLIC Void rgSchL2mFillCfmPst(pst, cfmPst, measInfo)
-Pst    *pst;
-Pst    *cfmPst;
-LrgSchMeasReqInfo *measInfo;
-#endif
 {
  
-
-   TRC3(rgSchL2mFillCfmPst)
-
-
    cfmPst->srcEnt    = pst->dstEnt;
    cfmPst->srcInst   = pst->dstInst;
    cfmPst->srcProcId = pst->dstProcId;
@@ -397,7 +366,7 @@ LrgSchMeasReqInfo *measInfo;
    cfmPst->region    = measInfo->hdr.response.mem.region;
    cfmPst->pool      = measInfo->hdr.response.mem.pool;
 
-   RETVOID;
+   return;
 } /* rgSchL2mFillCfmPst */
 
 /** @brief This function inserts the MeasCb in to data base
@@ -413,25 +382,17 @@ LrgSchMeasReqInfo *measInfo;
  *      -# ROK 
  *      -# RFAILED 
  */
-#ifdef ANSI
-PRIVATE S16 rgSchL2mInsertMeasCb
+static S16 rgSchL2mInsertMeasCb
 (
 RgSchCellCb       *cell,
 RgSchL2MeasCb     *measCb,
 LrgSchMeasReqInfo *measInfo
 )
-#else
-PRIVATE S16 rgSchL2mInsertMeasCb(cell, measCb, measInfo)
-RgSchCellCb       *cell;
-RgSchL2MeasCb     *measCb;
-LrgSchMeasReqInfo *measInfo;
-#endif
 {
    CmLList   *lnk, *node;
    RgSchL2MeasCb   *oldMeasCb;
-   U32              diffTime;
+   uint32_t        diffTime;
    
-   TRC3(rgSchL2mInsertMeasCb)
    /* 
     * 1. Check if l2mList has any entries.
     * 2. If yes 
@@ -455,7 +416,7 @@ LrgSchMeasReqInfo *measInfo;
       {
          cell->l2mList.crnt = lnk;
          cmLListInsCrnt(&(cell->l2mList), node);
-         RETVALUE(ROK);
+         return ROK;
       }
       else
       {
@@ -463,7 +424,7 @@ LrgSchMeasReqInfo *measInfo;
       }
    }  /* End of While */
    cmLListAdd2Tail(&(cell->l2mList), node);
-   RETVALUE(ROK);
+   return ROK;
 } /* rgSchL2mInsertMeasCb */
 
 /** @brief This function calculates the Down link prb count 
@@ -475,23 +436,13 @@ LrgSchMeasReqInfo *measInfo;
  *
  * @param  [in] RgSchCellCb       *cell
  */
-#ifdef ANSI
-PRIVATE Void rgSchL2CalDlPrbCount
-(
-RgSchCellCb       *cell
-)
-#else
-PRIVATE Void rgSchL2CalDlPrbCount(cell)
-RgSchCellCb       *cell;
-#endif
+static Void rgSchL2CalDlPrbCount(RgSchCellCb *cell)
 {
    CmLteTimingInfo    frm;
    RgSchDlSf          *sf = NULLP;
 #ifdef LTE_TDD
-   U8                 idx;
+   uint8_t            idx;
 #endif
-
-   TRC3(rgSchL2CalDlPrbCount)
 
    frm   = cell->crntTime;
    RGSCH_INCR_SUB_FRAME(frm, RG_SCH_CMN_DL_DELTA);
@@ -507,7 +458,7 @@ RgSchCellCb       *cell;
 #else
    cell->avgPrbDl.prbCount += sf->bwAssigned;
 #endif
-   RETVOID;
+   return;
 }
 
 /** @brief This function calculates the up link prb count 
@@ -519,23 +470,13 @@ RgSchCellCb       *cell;
  *
  * @param  [in] RgSchCellCb       *cell
  */
-#ifdef ANSI
-PRIVATE Void rgSchL2CalUlPrbCount
-(
-RgSchCellCb       *cell
-)
-#else
-PRIVATE Void rgSchL2CalUlPrbCount(cell)
-RgSchCellCb       *cell;
-#endif
+static Void rgSchL2CalUlPrbCount(RgSchCellCb  *cell)
 {
    RgSchUlSf        *sf = NULLP;
    RgSchCmnUlCell   *cellUl = RG_SCH_CMN_GET_UL_CELL(cell);
 #ifdef LTE_TDD
-   U8                 idx;
+   uint8_t  idx;
 #endif
-
-   TRC3(rgSchL2CalUlPrbCount)
 
 #ifdef LTE_TDD
    idx = cellUl->schdIdx;
@@ -548,7 +489,7 @@ RgSchCellCb       *cell;
    sf = &cellUl->ulSfArr[cellUl->schdIdx];
    cell->avgPrbUl.prbCount += sf->totPrb;
 #endif
-   RETVOID;
+   return;
 }
 /** @brief This function allocates memory from the heap
  *
@@ -561,39 +502,31 @@ RgSchCellCb       *cell;
  * @param  [out] RgSchErrInfo      *err
  * @return  RgSchL2MeasCb *
  */
-#ifdef ANSI
-PRIVATE RgSchL2MeasCb * rgSchL2mAllocMeasCb
+static RgSchL2MeasCb * rgSchL2mAllocMeasCb
 (
 RgSchCellCb       *cell,
 LrgSchMeasReqInfo *measInfo,
 RgSchErrInfo      err
 )
-#else
-PRIVATE RgSchL2MeasCb * rgSchL2mAllocMeasCb(cell, measInfo, err)
-RgSchCellCb       *cell;
-LrgSchMeasReqInfo *measInfo;
-RgSchErrInfo      err;
-#endif
 {
    RgSchL2MeasCb       *measCb = NULLP;
    Inst                inst = cell->instIdx;
    UNUSED(err);
-   TRC3(rgSchL2mAllocMeasCb)
 
    if((rgSCHUtlAllocSBuf(inst, (Data **)&measCb,
                    sizeof(RgSchL2MeasCb))) == RFAILED)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"rgSchL2mAllocMeasCb():"
                   "Allocation of RgSchL2MeasCb failed");
-      RETVALUE(NULLP);
+      return (NULLP);
    }
-   cmMemcpy((U8 *)&measCb->measReq, (U8 *)measInfo, sizeof(LrgSchMeasReqInfo));
+   memcpy(&measCb->measReq, measInfo, sizeof(LrgSchMeasReqInfo));
    RGSCHCPYTIMEINFO(cell->crntTime, measCb->startTime);
 
    measCb->dlTotalBw = 0;
    measCb->ulTotalBw = 0;
 
-   RETVALUE(measCb);
+   return (measCb);
 } /* rgSchL2mAllocMeasCb */
 
 /**
@@ -615,25 +548,17 @@ RgSchErrInfo      err;
  *      -# ROK
  *      -# RFAILED
  **/
-#ifdef ANSI
-PUBLIC S16 rgSchL2mMeasReq 
+S16 rgSchL2mMeasReq 
 (
 RgSchCellCb       *cell,
 LrgSchMeasReqInfo *measInfo,
 RgSchErrInfo      err
 )
-#else
-PUBLIC S16 rgSchL2mMeasReq(cell, measInfo, err)
-RgSchCellCb       *cell;
-LrgSchMeasReqInfo *measInfo;
-RgSchErrInfo      err;
-#endif    
 {
    RgSchL2MeasCb *measCb;
-   U8            idx;
-   U8            qciVal;
+   uint8_t       idx;
+   uint8_t       qciVal;
 
-   TRC3(rgSchL2mMeasReq)
 
    qciVal = 0;
    if ((measCb = rgSchL2mAllocMeasCb(cell, measInfo, err)) == NULLP)
@@ -642,9 +567,9 @@ RgSchErrInfo      err;
                     RGSCHERR_SCH_ALLOC_FAILED);
        RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId, "rgSchL2mMeasReq():"
                 "Allocation of RgSchL2MeasCb failed");
-       RETVALUE(RFAILED);
+       return RFAILED;
    }
-   /*cmMemcpy((U8 *)&measCb->measReq, (CONSTANT U8 *)measInfo,\
+   /*memcpy(&measCb->measReq, measInfo,\
              sizeof(LrgSchMeasReqInfo));*/
    rgSchL2mInsertMeasCb(cell, measCb, measInfo);
   
@@ -681,7 +606,7 @@ RgSchErrInfo      err;
    {
       RgInfL2MeasReq    measReq;
       Pst               pst;
-      cmMemset((U8 *)&measReq, 0, sizeof(RgInfL2MeasReq));
+      memset(&measReq, 0, sizeof(RgInfL2MeasReq));
       measReq.transId  = measInfo->hdr.transId;
       measReq.measType = measInfo->measType;
       measReq.timePrd  = measInfo->timePrd;
@@ -695,7 +620,7 @@ RgSchErrInfo      err;
       rgSCHUtlGetPstToLyr(&pst, &rgSchCb[cell->instIdx], cell->macInst);
       RgSchMacL2Meas(&pst, &measReq);
    }
-   RETVALUE(ROK);
+   return ROK;
 } /* rgSchL2mMeasReq */
 
 /**
@@ -711,36 +636,29 @@ RgSchErrInfo      err;
  *      -# ROK
  *      -# RFAILED
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHL2Meas
+S16 rgSCHL2Meas
 (
 RgSchCellCb  *cell,
-U8 isCalrCrcInd
+uint8_t isCalrCrcInd
 )
-#else
-PUBLIC S16 rgschL2Meas(cell,isCalrCrcInd)
-RgSchCellCb  *cell;
-U8 isCalrCrcInd
-#endif
 {
    CmLList           *node = NULLP;
    RgSchL2MeasCb     *measCb = NULLP;
-   U8                idx;
+   uint8_t           idx;
    LrgSchMeasCfmInfo measCfm;
-   U8                qciVal = 0;
-   U32               sfDiff;
-   U32               meas;
+   uint8_t           qciVal = 0;
+   uint32_t          sfDiff;
+   uint32_t          meas;
 #ifdef LTE_TDD
-   U8                sfIdx;
+   uint8_t           sfIdx;
    Bool              isDlDataAllowed;  
-   U8                rem;
-   U32               numDlSf;
-   U32               numUlSf;
+   uint8_t           rem;
+   uint32_t          numDlSf;
+   uint32_t          numUlSf;
 #endif
-   TRC3(rgSCHL2Meas)
 
-      node = cell->l2mList.first;
-   cmMemset((U8 *)&measCfm, 0, sizeof(LrgSchMeasCfmInfo));
+   node = cell->l2mList.first;
+   memset(&measCfm, 0, sizeof(LrgSchMeasCfmInfo));
    while(node != NULLP)
    {
       measCb = (RgSchL2MeasCb *)node->node;
@@ -809,7 +727,7 @@ U8 isCalrCrcInd
          }
          RgMiLrgSchL2MeasCfm(&(rgSchCb[cell->instIdx].rgSchInit.lmPst),
                &measCfm);
-         cmMemset((U8 *)&measCfm, 0, sizeof(LrgSchMeasCfmInfo));
+         memset(&measCfm, 0, sizeof(LrgSchMeasCfmInfo));
          
          /* Delete this measCb from the list */
          if(measCb->measReq.timePrd > 0)
@@ -823,7 +741,7 @@ U8 isCalrCrcInd
             measCb->startTime = cell->crntTime;
             measCb->sfnCycle = 0;
             measCb->cfmRcvd = FALSE;
-            cmMemset((U8 *)&measCb->avgPrbQciUl, 0, sizeof(LrgAvgPrbQCICfm));
+            memset(&measCb->avgPrbQciUl, 0, sizeof(LrgAvgPrbQCICfm));
             cell->sndL2Meas = FALSE;
          } 
          /* ccpu00117052 - MOD - Passing double pointer
@@ -908,7 +826,7 @@ U8 isCalrCrcInd
          }
       }
    }/* end of while */
-   RETVALUE(ROK);
+   return ROK;
 } /* rgSCHL2MEas */
 #endif /* LTE_L2_MEAS */
 /**********************************************************************

@@ -52,26 +52,26 @@ S16 SendE2APMsg(Region region, Pool pool)
 {
    Buffer *mBuf;
 
-   if(SGetMsg(region, pool, &mBuf) == ROK)
+   if(ODU_GET_MSG_BUF(region, pool, &mBuf) == ROK)
    {
-      if(SAddPstMsgMult((Data *)encBuf, encBufSize, mBuf) == ROK)
+      if(ODU_ADD_POST_MSG_MULT((Data *)encBuf, encBufSize, mBuf) == ROK)
       {
-         SPrntMsg(mBuf, 0,0);
+         ODU_PRINT_MSG(mBuf, 0,0);
  
          if(sctpSend(mBuf) != ROK)
          {
             DU_LOG("\nE2AP : SCTP Send for E2  failed");
-            SPutMsg(mBuf);
+            ODU_PUT_MSG_BUF(mBuf);
             return RFAILED;
          }
       }
       else
       {
-         DU_LOG("\nE2AP : SAddPstMsgMult failed");
-         SPutMsg(mBuf);
+         DU_LOG("\nE2AP : ODU_ADD_POST_MSG_MULT failed");
+         ODU_PUT_MSG_BUF(mBuf);
          return RFAILED;
       }
-      SPutMsg(mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
    }
    else
    {
@@ -100,16 +100,16 @@ S16 SendE2APMsg(Region region, Pool pool)
 
 S16 BuildGlobalRicId(GlobalRIC_ID_t *ricId)
 {
-   U8 unused = 4;
-   U8 byteSize = 3;
-   U8 val = 1;
+   uint8_t unused = 4;
+   uint8_t byteSize = 3;
+   uint8_t val = 1;
    if(ricId != NULLP)
    {
-      ricId->pLMN_Identity.size = byteSize * sizeof(U8);
+      ricId->pLMN_Identity.size = byteSize * sizeof(uint8_t);
       RIC_ALLOC(ricId->pLMN_Identity.buf,  ricId->pLMN_Identity.size);
-      buildPlmnId(ricCfgParams.plmn , &ricId->pLMN_Identity);
+      buildPlmnId(ricCfgParams.plmn , ricId->pLMN_Identity.buf);
       /* fill ric Id */
-      ricId->ric_ID.size = byteSize * sizeof(U8);
+      ricId->ric_ID.size = byteSize * sizeof(uint8_t);
       RIC_ALLOC(ricId->ric_ID.buf, ricId->ric_ID.size);
       fillBitString(&ricId->ric_ID, unused, byteSize, val);
    }
@@ -139,8 +139,8 @@ S16 BuildAndSendE2SetupRsp()
    E2AP_PDU_t         *e2apMsg = NULL;
    E2setupResponse_t  *e2SetupRsp;
    asn_enc_rval_t     encRetVal; 
-   U8 idx;
-   U8 elementCnt;
+   uint8_t            idx;
+   uint8_t            elementCnt;
 
  
    DU_LOG("\nE2AP : Building E2 Setup Response\n");
@@ -204,7 +204,7 @@ S16 BuildAndSendE2SetupRsp()
    BuildGlobalRicId(&(e2SetupRsp->protocolIEs.list.array[idx]->value.choice.GlobalRIC_ID));
 
    xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apMsg);
-   cmMemset((U8 *)encBuf, 0, ENC_BUF_MAX_LEN);
+   memset(encBuf, 0, ENC_BUF_MAX_LEN);
    encBufSize = 0;
    encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf, encBuf);
 
@@ -284,7 +284,7 @@ RICaction_ToBeSetup_Item_t* fillSetupItems(RICaction_ToBeSetup_Item_t *setupItem
       setupItems->ricActionType = RICactionType_report;
    }
 
-   RETVALUE(setupItems);
+   return (setupItems);
 }
 
 /*******************************************************************
@@ -334,16 +334,16 @@ S16 fillSubsDetails(RICaction_ToBeSetup_ItemIEs_t *items)
 S16 BuildRicSubsDetails(RICsubscriptionDetails_t *subsDetails)
 {
 
-   U8 elementCnt;
+   uint8_t elementCnt;
 
    if(subsDetails != NULLP)
    {
       /* Octet string to be build here */
       /* Sending PLMN as Octect string */
-      U8 byteSize = 3;
-      subsDetails->ricEventTriggerDefinition.size = byteSize * sizeof(U8);
+      uint8_t byteSize = 3;
+      subsDetails->ricEventTriggerDefinition.size = byteSize * sizeof(uint8_t);
       RIC_ALLOC(subsDetails->ricEventTriggerDefinition.buf,  subsDetails->ricEventTriggerDefinition.size);
-      buildPlmnId(ricCfgParams.plmn, &subsDetails->ricEventTriggerDefinition);
+      buildPlmnId(ricCfgParams.plmn, subsDetails->ricEventTriggerDefinition.buf);
       elementCnt = 1;
       subsDetails->ricAction_ToBeSetup_List.list.count = elementCnt;
       subsDetails->ricAction_ToBeSetup_List.list.size = \
@@ -380,13 +380,13 @@ S16 BuildRicSubsDetails(RICsubscriptionDetails_t *subsDetails)
 S16 BuildAndSendRicSubscriptionReq()
 {
 
-   E2AP_PDU_t   *e2apRicMsg = NULL;
+   E2AP_PDU_t                 *e2apRicMsg = NULL;
    RICsubscriptionRequest_t   *ricSubscriptionReq;
-   U8   elementCnt;
-   U8   idx;
-   U8   ieId;
-   S16  ret; 
-   asn_enc_rval_t             encRetVal;        /* Encoder return value */
+   uint8_t         elementCnt;
+   uint8_t         idx;
+   uint8_t         ieId;
+   S16             ret; 
+   asn_enc_rval_t  encRetVal;        /* Encoder return value */
    ricSubsStatus = TRUE;
 
    DU_LOG("\nE2AP : Building RIC Subscription Request\n");
@@ -480,7 +480,7 @@ S16 BuildAndSendRicSubscriptionReq()
    /* Prints the Msg formed */
    xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apRicMsg);
 
-   cmMemset((U8 *)encBuf, 0, ENC_BUF_MAX_LEN);
+   memset(encBuf, 0, ENC_BUF_MAX_LEN);
    encBufSize = 0;
    encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apRicMsg, PrepFinalEncBuf,\
                encBuf);
@@ -530,25 +530,27 @@ S16 BuildAndSendRicSubscriptionReq()
 * ****************************************************************/
 void E2APMsgHdlr(Buffer *mBuf)
 {
-   int i;
-   char *recvBuf;
-   MsgLen copyCnt;
-   MsgLen recvBufLen;
-   E2AP_PDU_t *e2apMsg;
-   asn_dec_rval_t rval; /* Decoder return value */
-   E2AP_PDU_t e2apasnmsg ;
+   int             i;
+   char            *recvBuf;
+   MsgLen          copyCnt;
+   MsgLen          recvBufLen;
+   E2AP_PDU_t      *e2apMsg;
+   asn_dec_rval_t  rval; /* Decoder return value */
+   E2AP_PDU_t      e2apasnmsg ;
  
    DU_LOG("\nE2AP : Received E2AP message buffer");
-   SPrntMsg(mBuf, 0,0);
+   ODU_PRINT_MSG(mBuf, 0,0);
  
    /* Copy mBuf into char array to decode it */
-   SFndLenMsg(mBuf, &recvBufLen);
-   if(SGetSBuf(DFLT_REGION, DFLT_POOL, (Data **)&recvBuf, (Size)recvBufLen) != ROK)
+   ODU_GET_MSG_LEN(mBuf, &recvBufLen);
+   RIC_ALLOC(recvBuf, (Size)recvBufLen);
+
+   if(recvBuf == NULLP)
    {
       DU_LOG("\nE2AP : Memory allocation failed");
       return;
    }
-   if(SCpyMsgFix(mBuf, 0, recvBufLen, (Data *)recvBuf, &copyCnt) != ROK)
+   if(ODU_COPY_MSG_TO_FIX_BUF(mBuf, 0, recvBufLen, (Data *)recvBuf, &copyCnt) != ROK)
    {
       DU_LOG("\nE2AP : Failed while copying %d", copyCnt);
       return;
@@ -565,7 +567,8 @@ void E2APMsgHdlr(Buffer *mBuf)
    memset(e2apMsg, 0, sizeof(E2AP_PDU_t));
 
    rval = aper_decode(0, &asn_DEF_E2AP_PDU, (void **)&e2apMsg, recvBuf, recvBufLen, 0, 0);
-   SPutSBuf(DFLT_REGION, DFLT_POOL, (Data *)recvBuf, (Size)recvBufLen);
+   RIC_FREE(recvBuf, (Size)recvBufLen);
+
    if(rval.code == RC_FAIL || rval.code == RC_WMORE)
    {
       DU_LOG("\nE2AP : ASN decode failed");

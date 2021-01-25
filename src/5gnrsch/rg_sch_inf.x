@@ -46,15 +46,15 @@ extern "C" {
  */
 typedef struct rgInfEmtcCEmodeARarUlGrt
 {
-   U8 msg3PUSCHNbIdx;        /*!< Indicates the Msg3 PUSCH narrowband index. */          
-   U8 rbStart;               /*!< Start Resource block of allocation. */
-   U8 numRb;                 /*!< Number of resource blocks allocated. */
-   U8 msg3PUSCHNumRep;       /*!< Number of repetitions for Msg3 PUSCH. */
-   U8 iMcsCrnt;              /*!< Current MCS index of the grant. */
-   U8 tpc;                   /*!< TPC command for the uplink grant. */
-   U8 cqiBit;                /*!< Indicates the CQI is enabled or not. */
-   U8 delayBit;              /*!< Indicates the Delay bit. */
-   U8 msg34MPDCCHNbIdx;      /*!< Indicates Msg3/4 MPDCCH narrowband index. */          
+   uint8_t msg3PUSCHNbIdx;        /*!< Indicates the Msg3 PUSCH narrowband index. */          
+   uint8_t rbStart;               /*!< Start Resource block of allocation. */
+   uint8_t numRb;                 /*!< Number of resource blocks allocated. */
+   uint8_t msg3PUSCHNumRep;       /*!< Number of repetitions for Msg3 PUSCH. */
+   uint8_t iMcsCrnt;              /*!< Current MCS index of the grant. */
+   uint8_t tpc;                   /*!< TPC command for the uplink grant. */
+   uint8_t cqiBit;                /*!< Indicates the CQI is enabled or not. */
+   uint8_t delayBit;              /*!< Indicates the Delay bit. */
+   uint8_t msg34MPDCCHNbIdx;      /*!< Indicates Msg3/4 MPDCCH narrowband index. */          
 } RgInfEmtcCEmodeARarUlGrnt;
 
 /** 
@@ -63,12 +63,12 @@ typedef struct rgInfEmtcCEmodeARarUlGrt
  */
 typedef struct rgInfEmtcCEmodeBRarUlGrnt
 {
-   U8 msg3PUSCHNbIdx;        /*!< Indicates the Msg3 PUSCH narrowband index. */          
-   U8 rbStart;               /*!< Start Resource block of allocation. */
-   U8 numRb;                 /*!< Number of resource blocks allocated. */
-   U8 msg3PUSCHNumRep;       /*!< Number of repetitions for Msg3 PUSCH. */
-   U8 iTbsCrnt;              /*!< Current TBS index of the grant. */
-   U8 msg34MPDCCHNbIdx;      /*!< Indicates Msg3/4 MPDCCH narrowband index. */          
+   uint8_t msg3PUSCHNbIdx;        /*!< Indicates the Msg3 PUSCH narrowband index. */          
+   uint8_t rbStart;               /*!< Start Resource block of allocation. */
+   uint8_t numRb;                 /*!< Number of resource blocks allocated. */
+   uint8_t msg3PUSCHNumRep;       /*!< Number of repetitions for Msg3 PUSCH. */
+   uint8_t iTbsCrnt;              /*!< Current TBS index of the grant. */
+   uint8_t msg34MPDCCHNbIdx;      /*!< Indicates Msg3/4 MPDCCH narrowband index. */          
 }RgInfEmtcCEmodeBRarUlGrnt;
 
 typedef enum rgEmtcCEmodeType
@@ -84,7 +84,7 @@ typedef enum rgEmtcCEmodeType
  */
 typedef struct rgInfEmtcRarUlGrnt 
 {
-   U8 rgEmtcCEmodeType;
+   uint8_t rgEmtcCEmodeType;
    union
    {
       RgInfEmtcCEmodeARarUlGrnt  emtcCEmodeARarUlGrnt;
@@ -110,8 +110,8 @@ typedef struct rgInfCmnBoRpt
                                       CM_LTE_LCH_DTCH */
    S32 bo;                      /*!< Buffer occupancy reported by RLC in bytes. */
 #ifdef EMTC_ENABLE
-   U8         emtcDIReason;   /*!< Reason for DI message to send. */
-   U8         pnb;            /*!< Pagging narrowBand on which Ue perfom paging reception*/
+   uint8_t         emtcDIReason;   /*!< Reason for DI message to send. */
+   uint8_t         pnb;            /*!< Pagging narrowBand on which Ue perfom paging reception*/
 #endif
    union                        /*!< lcType in the primitive is the union selector. */
    {
@@ -133,11 +133,11 @@ typedef struct rgInfDedBoRpt
    S32          bo;         /*!< Number of bytes reported as Buffer occupancy by RLC. */
 #ifdef CCPU_OPT
    Bool         staPduPrsnt;   /*!< Is status PDU present reported by RLC. */
-   U16          estRlcHdrSz;/*!< Estimated hader size reported by RLC */
+   uint16_t          estRlcHdrSz;/*!< Estimated hader size reported by RLC */
 #endif
-   U32          staPduBo;   /*!< Number of bytes reported as Buffer occupancy for status PDU by RLC. 
+   uint32_t          staPduBo;   /*!< Number of bytes reported as Buffer occupancy for status PDU by RLC. 
                                  This is already included in BO.*/
-  U32          oldestSduArrTime; /*!< Oldest SDU Arrival Time from Upper Layer */	
+  uint32_t          oldestSduArrTime; /*!< Oldest SDU Arrival Time from Upper Layer */	
   Bool         setMaxUlPrio; /*!< set when Pollbit is set from RLC in PDU */
   Bool         setMaxDlPrio; /*!< Set when there is a status PDU in the DL*/			 
 } RgInfDedBoRpt;
@@ -165,21 +165,21 @@ typedef struct rgInfUeDelInd
 typedef struct rgInfRarUlGrnt
 {
 #ifndef MAC_5GTF_UPDATE
-   U8 hop;        /*!< Indicates the hopping flag. */     
+   uint8_t hop;        /*!< Indicates the hopping flag. */     
 #else
-   U8 xPuschRange; /*!< xPUSCH range */
+   uint8_t xPuschRange; /*!< xPUSCH range */
 #endif
-   U8 rbStart;    /*!< Start Resource block of allocation. */
-   U8 numRb;      /*!< Number of resource blocks allocated. */
-   U8 tpc;        /*!< TPC command for the uplink grant. */
-   U8 iMcsCrnt;   /*!< Current MCS index of the grant. */
-   U8 delayBit;   /*!< Indicates the Delay bit. */
+   uint8_t rbStart;    /*!< Start Resource block of allocation. */
+   uint8_t numRb;      /*!< Number of resource blocks allocated. */
+   uint8_t tpc;        /*!< TPC command for the uplink grant. */
+   uint8_t iMcsCrnt;   /*!< Current MCS index of the grant. */
+   uint8_t delayBit;   /*!< Indicates the Delay bit. */
 #ifndef MAC_5GTF_UPDATE
-   U8 cqiBit;     /*!< Indicates the CQI is enabled or not. */
+   uint8_t cqiBit;     /*!< Indicates the CQI is enabled or not. */
 #else
-   U8 numBsiRep;   /*!< Number of BSI reports. */
-   U8 bsiBetaOffIdx; /*!< Index of BSI beta offset used in Msg3 */
-   U8 pcrs;         /*!< UL dual PCRS */
+   uint8_t numBsiRep;   /*!< Number of BSI reports. */
+   uint8_t bsiBetaOffIdx; /*!< Index of BSI beta offset used in Msg3 */
+   uint8_t pcrs;         /*!< UL dual PCRS */
 #endif
 } RgInfRarUlGrnt;
 
@@ -189,8 +189,8 @@ typedef struct rgInfRarUlGrnt
 typedef struct rgInfCrntiInfo
 {
     CmLteRnti       tmpCrnti;    /*!< Temporary C-RNTI. RNTI range is specified in Section 7.1 in 36.321 specification. */     
-    U8              rapId;       /*!< rapId identifies the index of the Random Access Preamble. rapId ranges from 0 to 63.*/ 
-    TknU16          ta;          /*!< Timing Adjustment. Timing Adjustment Value range is defined in Section 6.1.3.5 in 36.321 specification. */ 
+    uint8_t              rapId;       /*!< rapId identifies the index of the Random Access Preamble. rapId ranges from 0 to 63.*/ 
+    TknUInt16          ta;          /*!< Timing Adjustment. Timing Adjustment Value range is defined in Section 6.1.3.5 in 36.321 specification. */ 
     RgInfRarUlGrnt  grnt;        /*!< Uplink Grant to go in RAR. */ 
     Bool            isContFree; /*!< Indicates whether the procedure is contention-free or not. */
 #ifdef EMTC_ENABLE
@@ -204,14 +204,14 @@ typedef struct rgInfCrntiInfo
 */
 typedef struct rgInfRaRntiInfo
 {
-   U16             raRnti;     /*!< RA-RNTI. RNTI range is specified in Section 7.1 in 36.321 specification. */
+   uint16_t             raRnti;     /*!< RA-RNTI. RNTI range is specified in Section 7.1 in 36.321 specification. */
    TfuPdschDciInfo dciInfo;    /*!< PDCCH allocated for RA-RNTI. For more information
                                     refer to <i>TFU Interface Service Definition</i> (p/n 1100091). */
-   U32             schdTbSz;   /*!< Scheduled TB size. schdTbSz value range is defined in Section 7.1.7.2.1 in 36.213
+   uint32_t             schdTbSz;   /*!< Scheduled TB size. schdTbSz value range is defined in Section 7.1.7.2.1 in 36.213
                                     specification. */
-   TknU8           backOffInd; /*!< Indicates the Backoff Indicator value. backOffInd value range
+   TknUInt8           backOffInd; /*!< Indicates the Backoff Indicator value. backOffInd value range
                                     is defined in Section 7.2 in 36.321 specification. */
-   U8              numCrnti;   /*!< Number of valid RARs in the array. */
+   uint8_t              numCrnti;   /*!< Number of valid RARs in the array. */
    RgInfCrntiInfo  *crntiInfo; /*!< RAR information. */
 }RgInfRaRntiInfo;
   
@@ -221,9 +221,9 @@ typedef struct rgInfRaRntiInfo
  */
 typedef struct rgInfRarInfo
 {
- U8              numRaRntis;    /*!< Indicates the number of valid RA-RNTIs present. */
+ uint8_t              numRaRntis;    /*!< Indicates the number of valid RA-RNTIs present. */
  RgInfRaRntiInfo *raRntiInfo;   /*!< Contains allocation information per RA-RNTI.  */
- U16             txPwrOffset;   /*!< PDSCH tx power offset for RAR transmission */ 
+ uint16_t             txPwrOffset;   /*!< PDSCH tx power offset for RAR transmission */ 
 }RgInfRarInfo;
 
 /**
@@ -232,9 +232,9 @@ typedef struct rgInfRarInfo
 typedef struct rgInfLcDatInfo
 {
    CmLList  lchLstEnt;   /*!< Is not used when part of resource allocation. */
-   U8       lcId;        /*!< Identifies the logical channel. lcId value range is defined
+   uint8_t       lcId;        /*!< Identifies the logical channel. lcId value range is defined
                               in Section 6.2.1 in 36.321 specification. */
-   U32      numBytes;    /*!< Number of bytes allocated/received to logical channel. */
+   uint32_t      numBytes;    /*!< Number of bytes allocated/received to logical channel. */
 } RgInfLcDatInfo; 
 
 /**
@@ -243,16 +243,16 @@ typedef struct rgInfLcDatInfo
  */
 typedef struct rgInfExtPhrSCellInfo
 {
-   U8    sCellIdx;      /*!< SCELL index for which PHR is reported */
-   U8    phr;  /*!< PHR value. PHR value is defined in Section 6.1.3.6a in 36.321 specification. */
-   U8    pCmax; /*!< PCMAX value. PCMAX value is defined in Table 6.1.3.6a-1 in 36.321 specification. */
-   U8    pBackOff; /*!< If UE applied back off due to P-MPRc in 36.321 specification. */
+   uint8_t    sCellIdx;      /*!< SCELL index for which PHR is reported */
+   uint8_t    phr;  /*!< PHR value. PHR value is defined in Section 6.1.3.6a in 36.321 specification. */
+   uint8_t    pCmax; /*!< PCMAX value. PCMAX value is defined in Table 6.1.3.6a-1 in 36.321 specification. */
+   uint8_t    pBackOff; /*!< If UE applied back off due to P-MPRc in 36.321 specification. */
 }RgInfExtPhrSCellInfo;
 typedef struct rgInfExtPhrCEInfo
 {
-   U8    type2Phr;  /*!< PHR value. PHR value is defined in Section 6.1.3.6a in 36.321 specification. */
-   U8    type2PCMax; /*!< PCMAX value. PCMAX value is defined in Table 6.1.3.6a-1 in 36.321 specification. */
-   U8    numServCells; /*!< Number of serving cells for which PHR is reported */
+   uint8_t    type2Phr;  /*!< PHR value. PHR value is defined in Section 6.1.3.6a in 36.321 specification. */
+   uint8_t    type2PCMax; /*!< PCMAX value. PCMAX value is defined in Table 6.1.3.6a-1 in 36.321 specification. */
+   uint8_t    numServCells; /*!< Number of serving cells for which PHR is reported */
    RgInfExtPhrSCellInfo servCellPhr[CM_LTE_MAX_CELLS];
 }RgInfExtPhrCEInfo;  /*!< EXT PHR value. EXT PHR value is defined in Section 6.1.3.6a in 36.321 R10 specification. */
 
@@ -262,56 +262,56 @@ typedef struct rgInfExtPhrCEInfo
  */
 typedef struct rgInfCeInfo
 {
-   U16         bitMask;   /*!< Bitmask for the MAC Control elements present. */
+   uint16_t         bitMask;   /*!< Bitmask for the MAC Control elements present. */
    struct                                                  
    {                                                       
-      U16   cRnti;        /*!< C-RNTI value. RNTI range is specified in Section 7.1 in 36.321 specification. */
-      U8    phr;          /*!< PHR value. PHR value is defined in Section 6.1.3.6 in 36.321 specification. */
+      uint16_t   cRnti;        /*!< C-RNTI value. RNTI range is specified in Section 7.1 in 36.321 specification. */
+      uint8_t    phr;          /*!< PHR value. PHR value is defined in Section 6.1.3.6 in 36.321 specification. */
       union                                                
       {                                                    
-         U8    truncBsr;  /*!< Truncated BSR value. BSR value is defined in 
+         uint8_t    truncBsr;  /*!< Truncated BSR value. BSR value is defined in 
                                Section 6.1.3.1 in 36.321 specification. */
-         U8    shortBsr;  /*!< Short BSR  value.BSR value is defined in 
+         uint8_t    shortBsr;  /*!< Short BSR  value.BSR value is defined in 
                                Section 6.1.3.1 in 36.321 specification. */
          struct                                            
          {                                                 
-            U8    bs1;   /*!< Buffer size 1 of long BSR. */ 
-            U8    bs2;   /*!< Buffer size 2 of long BSR. */ 
-            U8    bs3;   /*!< Buffer size 3 of long BSR. */ 
-            U8    bs4;   /*!< Buffer size 4 of long BSR. */ 
+            uint8_t    bs1;   /*!< Buffer size 1 of long BSR. */ 
+            uint8_t    bs2;   /*!< Buffer size 2 of long BSR. */ 
+            uint8_t    bs3;   /*!< Buffer size 3 of long BSR. */ 
+            uint8_t    bs4;   /*!< Buffer size 4 of long BSR. */ 
          }longBsr;       /*!< BSR value is defined in Section 6.1.3.1 in 36.321 specification. */ 
       }bsr;   
       RgInfExtPhrCEInfo extPhr;  /*!< EXT PHR value. EXT PHR value is defined in Section 6.1.3.6a in 36.321 R10 specification. */
 #ifdef MAC_5GTF_UPDATE
  struct
       {
-        U8 bar;         /*!< Beam Adjusment Request */
-        U8 numBsiFields; /*!< Number of BSI fields UE sent in BSI Feedback */
+        uint8_t bar;         /*!< Beam Adjusment Request */
+        uint8_t numBsiFields; /*!< Number of BSI fields UE sent in BSI Feedback */
         struct 
         {
-           U16 bi;         /*!< BSI Feedback : 9 bits Beam Index */
-           U8 brsrp;       /*!< BSI Feedback :7 bits BRSRP */
+           uint16_t bi;         /*!< BSI Feedback : 9 bits Beam Index */
+           uint8_t brsrp;       /*!< BSI Feedback :7 bits BRSRP */
         }bsiFdbk[4];
       }beam;
 #endif
    } ces;
       /* L2_COUNTERS */
 #ifdef LTE_L2_MEAS
-   U8 ulActLCs[RGINF_MAX_NUM_DED_LC];
+   uint8_t ulActLCs[RGINF_MAX_NUM_DED_LC];
                         /*!< List of LCs for which Data is received in UL */
 #endif
 
 
 #ifdef LTEMAC_SPS
-   U16 spsSduSize;
+   uint16_t spsSduSize;
 #endif
 
 } RgInfCeInfo;
 
 typedef struct rgInfLcgInfo
 {
-   U8    lcgId;        /*!< LCGID. GBR DRB LCG */
-   U32   bytesRcvd;    /*!< Contains bytes received for LCG */
+   uint8_t    lcgId;        /*!< LCGID. GBR DRB LCG */
+   uint32_t   bytesRcvd;    /*!< Contains bytes received for LCG */
 }RgInfLcgInfo;
 
 /** 
@@ -335,7 +335,7 @@ typedef struct rgInfSfDatInd
    CmMemListCp       memCp;      /*!< Memory control point. */
    CmLListCp         ueLst;      /*!< Pointer to the UE linked list. */
    /* RRM_SP1_START */
-   U32               qcisUlPrbCnt[RGINF_MAX_GBR_QCI_REPORTS];/*!< UL gbr LC's PRB count*/
+   uint32_t               qcisUlPrbCnt[RGINF_MAX_GBR_QCI_REPORTS];/*!< UL gbr LC's PRB count*/
    /* RRM_SP1_END */
    S16               cellSapId;  /*!< Cell SAP Identifier. CellSAP ID value must be within the set of configured cell SAP IDs. */
    CmLteCellId       cellId;     /*!< Identifies the cell. CellId must be within the set of configured cell IDs. */
@@ -352,22 +352,22 @@ typedef struct rgInfUeTbInfo
    Bool                 disTb;       /*!< Currently, not used, but is 
                                           applicable in MIMO case. */
    Bool                 isReTx;      /*!< Indicates the TB transmission type. */
-   TknU8                ta;          /*!< Timing Adjustment. */ 
+   TknUInt8                ta;          /*!< Timing Adjustment. */ 
 #ifdef LTE_ADV
-  TknU8                 sCellActCe;   /* !< SCell Act values and whether
+  TknUInt8                 sCellActCe;   /* !< SCell Act values and whether
                                           scheduled or not */
 #endif
 
    /* Changed as a result of CR timer implementation*/
-   U8 contResCe; /*!< Indicating presence of Contention Resolution CE across MAC-SCH
+   uint8_t contResCe; /*!< Indicating presence of Contention Resolution CE across MAC-SCH
                    interface to
                   * identify CCCH SDU transmissions which need to
                   * be done without the
                   * contention resolution CE.*/
 
-   U8                   numSchLch;   /*!< Indicates the number of logical 
+   uint8_t                   numSchLch;   /*!< Indicates the number of logical 
                                           channels scheduled. */    
-   U32                  schdTbSz; 
+   uint32_t                  schdTbSz; 
    RgInfLcDatInfo       schdDat[RGINF_MAX_NUM_DED_LC]; /*!< Contains 
                                           information about scheduled logical
                                           channel. */
@@ -379,10 +379,10 @@ typedef struct rgInfUeTbInfo
  */
 typedef struct rgLaaTbReqInfo
 {
-   U8      sMacInstId;
-   U8      sCellHqPId;
-   U8      tbId;
-   U16     hqPStamp;
+   uint8_t      sMacInstId;
+   uint8_t      sCellHqPId;
+   uint8_t      tbId;
+   uint16_t     hqPStamp;
 }RgLaaTbReqInfo;
 
 /** 
@@ -403,9 +403,9 @@ typedef struct rgInfUeAlloc
 
    TfuPdschDciInfo  dciInfo;   /*!< Contains Downlink Control Information. For more information, 
                                     refer to <i>TFU Interface Service Definition</i> (p/n 1100091). */
-   U8               hqProcId;  /*!< HARQ process Identifier. hqProcId ranges between 1 and 8 for FDD mode and 1 and 15 for TDD mode */
+   uint8_t               hqProcId;  /*!< HARQ process Identifier. hqProcId ranges between 1 and 8 for FDD mode and 1 and 15 for TDD mode */
    S8                  tbStrtIdx;
-   TknU32              doa;
+   TknUInt32              doa;
    TfuTxMode           txMode;
    Bool                puschRptUsd;/*!< True, if Precoding Information in PDCCH has to be
                                    in-accordance with the latest PUSCH report */
@@ -413,15 +413,15 @@ typedef struct rgInfUeAlloc
                                        * information to PHY during a PDSCH */
 
 
-   U8               nmbOfTBs;  /*!< Indicates the number of TBs. Currently this is set to 1. */
+   uint8_t               nmbOfTBs;  /*!< Indicates the number of TBs. Currently this is set to 1. */
    RgInfUeTbInfo    tbInfo[RGINF_MAX_TB_PER_UE]; /*!< Contains TB identifier. */
    /* LTE_ADV_FLAG_REMOVED_START */
 #ifdef TFU_UPGRADE
-   U8                  pa;          /*!<  DL Power control paramter P_A
+   uint8_t                  pa;          /*!<  DL Power control paramter P_A
                                         configured by higher layers
                                         Ref: RRC 36.331, 6.3.2, PDSCH-Config */
 #endif
-   U8   isEnbSFR;     /*To check if SFR is enabled*/
+   uint8_t   isEnbSFR;     /*To check if SFR is enabled*/
    /* LTE_ADV_FLAG_REMOVED_END */
 #ifdef LTE_ADV
    Bool                 fillCtrlPdu; /*!< Based upon this flag RLC will fill RLC Control PDU 
@@ -438,7 +438,7 @@ typedef struct rgInfUeAlloc
  */
 typedef struct rgInfUeInfo
 {
-   U8               numUes;    /*!< Number of UEs allocated. */
+   uint8_t               numUes;    /*!< Number of UEs allocated. */
    RgInfUeAlloc     *allocInfo; /*!< Allocation information per UE. */
 }RgInfUeInfo;
 
@@ -459,7 +459,7 @@ typedef struct rgInfBcchInfo
 #else
    Buffer               *pdu;       /*!< PDU being specified for BCCH. */
 #endif
-   U16                  txPwrOffset;   /*!< PDSCH tx power offset for BCCH 
+   uint16_t                  txPwrOffset;   /*!< PDSCH tx power offset for BCCH 
                                             transmission */ 
 }RgInfBcchInfo;
 
@@ -474,7 +474,7 @@ typedef struct rgInfPcchInfo
    CmLteLcId            lcId;      /*!< Logical Channel Identifier. lcId value range is defined in
                                         Section 6.2.1 in 36.321 specification. */
                                         
-   U16                  txPwrOffset;   /*!< PDSCH tx power offset for PCCH 
+   uint16_t                  txPwrOffset;   /*!< PDSCH tx power offset for PCCH 
                                             transmission */ 
 }RgInfPcchInfo;
 
@@ -498,7 +498,7 @@ typedef struct rgInfBchInfo
  */
 typedef struct rgInfCmnLcInfo
 {
-   U16               bitMask;   /*!< Bitmask representing all the common channels present. */
+   uint16_t               bitMask;   /*!< Bitmask representing all the common channels present. */
    RgInfBchInfo      bchInfo;   /*!< BCH channel Information. */
    RgInfPcchInfo     pcchInfo;  /*!< Paging Logical Channel Information. */
    RgInfBcchInfo     bcchInfo;  /*!< Broadcast Logical Channel Information. */
@@ -522,7 +522,7 @@ typedef struct rgInfEmtcBcchInfo
  */
 typedef struct rgInfEmtcCmnLcInfo
 {
-   U16               bitMask;   /*!< Bitmask representing all the common channels present. */
+   uint16_t               bitMask;   /*!< Bitmask representing all the common channels present. */
    RgInfBchInfo      bchInfo;   /*!< BCH channel Information. */
    RgInfPcchInfo     pcchInfo;  /*!< Paging Logical Channel Information. */
    RgInfEmtcBcchInfo emtcBcchInfo;  /*!< Broadcast Logical Channel Information. */
@@ -536,7 +536,7 @@ typedef struct rgInfEmtcCmnLcInfo
 typedef struct rgInfUeUlAlloc
 {
    CmLteRnti            rnti;        /*!< UE ID */ 
-   U8                   numPrb;      /*!< Number of total PRB's allocated for this UE */
+   uint8_t                   numPrb;      /*!< Number of total PRB's allocated for this UE */
 } RgInfUeUlAlloc;
 
 /**
@@ -544,7 +544,7 @@ typedef struct rgInfUeUlAlloc
  * */
 typedef struct rgInfUlUeInfo
 {
-   U8                   numUes;      /*!< Number of UE's*/
+   uint8_t                   numUes;      /*!< Number of UE's*/
    CmLteTimingInfo      timingInfo;  /*!< Uplink timing information */
    RgInfUeUlAlloc       *ulAllocInfo;/*!< Uplink Allocations information */
 }RgInfUlUeInfo;
@@ -555,8 +555,8 @@ typedef struct rgInfUlUeInfo
 typedef struct rgInfLcInfo
 {
    CmLteLcId   lcId;        /*!< lcId for flow control*/
-   U32         pktAdmitCnt; /*!<Pkts allowed for the LC */
-   U32         maxBo4FlowCtrl; /*!< MAX BO of Queued SDUs at RLC beyond which Flow is Controlled */
+   uint32_t         pktAdmitCnt; /*!<Pkts allowed for the LC */
+   uint32_t         maxBo4FlowCtrl; /*!< MAX BO of Queued SDUs at RLC beyond which Flow is Controlled */
 }RgInfLcFlowCntrlInfo;
 
 
@@ -565,14 +565,14 @@ typedef struct rgInfLcInfo
 typedef struct rgInfUeFlowCntrlInfo 
 {
    CmLteRnti            ueId;  /*!<ueId for flow control*/
-   U32                  numLcs;/*!<numLcs in the UE*/
+   uint32_t                  numLcs;/*!<numLcs in the UE*/
    RgInfLcFlowCntrlInfo lcInfo[RGINF_MAX_NUM_DED_LC]; /*!<LC list*/
 }RgInfUeFlowCntrlInfo;  
 /**
 * @brief This structure contains the flow control information to be sent to MAC */
 typedef struct rgInfFlowCntrlInfo
 {
-   U32                   numUes;/*!<Num UEs for flow control */
+   uint32_t                   numUes;/*!<Num UEs for flow control */
    RgInfUeFlowCntrlInfo  ueFlowCntrlInfo[RGINF_MAX_NUM_UE_PER_TTI]; /*!<Ue Info for flow control */
 }RgInfFlowCntrlInfo;
 #ifdef EMTC_ENABLE
@@ -624,19 +624,19 @@ typedef struct rgInfUeHqInfo
 {
    CmLteRnti   rnti;                        /*!< RNTI which uniquely identifies the UE. RNTI value range is 
                                                  specified in Section 7.1 in 25.321 */
-   U8          hqProcId;                    /*!< HARQ Process Identifier.
+   uint8_t          hqProcId;                    /*!< HARQ Process Identifier.
                                                  hqProcId ranges between 1 and 8 for FDD mode and 1 and 15 for TDD mode. */
-   U8          numOfTBs;                    /*!< Identifies the number of TBs. Currently this is set to 1. */
-   U8          tbId[RGINF_MAX_TB_PER_UE];   /*!< Indicates the TB Identifier. */
+   uint8_t          numOfTBs;                    /*!< Identifies the number of TBs. Currently this is set to 1. */
+   uint8_t          tbId[RGINF_MAX_TB_PER_UE];   /*!< Indicates the TB Identifier. */
    /* MS_WORKAROUND: to increase Harq Fail Counter .
        The status field is required for tracking the number of harq faliures at MAC.
        As this is already present under L2_MEAS flag, we have replaced it with platform flag */
-   U8                   status[RGINF_MAX_TB_PER_UE];      /*!< Indicates HARQ ACK or NACK */ 
-   U8          rlsOperationType;            /*!< Decides action to be taken in MAC
+   uint8_t                   status[RGINF_MAX_TB_PER_UE];      /*!< Indicates HARQ ACK or NACK */ 
+   uint8_t          rlsOperationType;            /*!< Decides action to be taken in MAC
                                                  0x00 RGINF_RLS_HQ_NO_ACTION - Free Hq Procs and TBs
                                                  0x01 RGINF_RLS_HQ_SAVE_TB - Free Hq Proc but save the TBs
                                                  0x02 RGINF_RLS_HQ_DEL_TB - Del already saved TBs */
-   U16         saveId;                     /*!< Uniquely identify an particular HqP save */                                              
+   uint16_t         saveId;                     /*!< Uniquely identify an particular HqP save */                                              
 } RgInfUeHqInfo;
 
 /** 
@@ -648,7 +648,7 @@ typedef struct rgInfRlsHqInfo
 {
    CmLteCellId   cellId;           /*!< Identifies Cell. CellId should be within
                                         the set of configured cell IDs. */
-   U8            numUes;           /*!< Indicates number of UEs present. */
+   uint8_t            numUes;           /*!< Indicates number of UEs present. */
    RgInfUeHqInfo *ueHqInfo;        /*!< Contains UE specific HARQ information. */
 }RgInfRlsHqInfo;
 
@@ -681,7 +681,7 @@ typedef struct rgInfCellReg
 {
    CmLteCellId cellId;            /*!< Identifies the cell. cellId value should be within the set of configured cell IDs. */
    S16         cellSapId;         /*!< Identifies the cell SAP. cellSapId value should be within the set of configured cell SAP IDs. */
-   U8          maxDlHqProcPerUe;  /*!< Indicates Maximum number of downlink HARQ processes per UE. */
+   uint8_t          maxDlHqProcPerUe;  /*!< Indicates Maximum number of downlink HARQ processes per UE. */
 }RgInfCellReg;
 
 #ifdef LTE_L2_MEAS
@@ -691,16 +691,16 @@ typedef struct rgInfCellReg
  * */
 typedef struct rgInfPrbReq
 {
-   U8                   numQci;      /*!< Number fo QCI's in Request */
-   U8                   qci[LRG_MAX_QCI_PER_REQ];  /*!< QCI for which PRB has
+   uint8_t                   numQci;      /*!< Number fo QCI's in Request */
+   uint8_t                   qci[LRG_MAX_QCI_PER_REQ];  /*!< QCI for which PRB has
                                           to be measured */
 } RgInfPrbReq;
 
 
 typedef struct prbUsage
 {
-   U8                   qciValue;   /*!< Qci Value */
-   U32                  prbUsage;   /*!<Prb Usage for this Qci */
+   uint8_t                   qciValue;   /*!< Qci Value */
+   uint32_t                  prbUsage;   /*!<Prb Usage for this Qci */
 }PrbUsage;
 /**
  * @brief struture to hold measurement confirm for Uplink Average PRB usage per
@@ -708,7 +708,7 @@ typedef struct prbUsage
  * */
 typedef struct rgInfPrbCfm
 {
-   U8                   numQci;      /*!< Number fo QCI's in Request */
+   uint8_t                   numQci;      /*!< Number fo QCI's in Request */
    PrbUsage             prbUsage[LRG_MAX_QCI_PER_REQ];  /*!< Average PRB usage
                                           per QCI */
 } RgInfPrbCfm;
@@ -718,10 +718,10 @@ typedef struct rgInfPrbCfm
  * */
 typedef struct RgInfL2MeasReq
 {
-   U32                  transId;     /*!< TransId to uniquely identify request */
-   U16                  measType;    /*!< For action type Avegare PRB usage 
+   uint32_t                  transId;     /*!< TransId to uniquely identify request */
+   uint16_t                  measType;    /*!< For action type Avegare PRB usage 
                                           in Uplink */
-   U16                  timePrd;     /*!< Time Period for which measurement
+   uint16_t                  timePrd;     /*!< Time Period for which measurement
                                           is done */
    CmLteCellId          cellId;      /*!< CellId for which measurement done*/
    union {
@@ -734,8 +734,8 @@ typedef struct RgInfL2MeasReq
  * */
 typedef struct RgInfL2MeasStopReq
 {
-   U32                  transId;     /*!< TransId to uniquely identify request */
-   U8                   measType;    /*!< For action type Avegare PRB usage 
+   uint32_t                  transId;     /*!< TransId to uniquely identify request */
+   uint8_t                   measType;    /*!< For action type Avegare PRB usage 
                                           in Uplink */
    CmLteCellId          cellId;      /*!< CellId for which measurement done*/
 } RgInfL2MeasStopReq;
@@ -746,10 +746,10 @@ typedef struct RgInfL2MeasStopReq
  * */
 typedef struct RgInfL2MeasSndReq
 {
-   U32                  transId;     /*!< TransId to uniquely identify request */
-   U8                   measType;    /*!< For action type Avegare PRB usage 
+   uint32_t                  transId;     /*!< TransId to uniquely identify request */
+   uint8_t                   measType;    /*!< For action type Avegare PRB usage 
                                           in Uplink */
-   U16                  timePrd;     /*!< Time Period for which measurement
+   uint16_t                  timePrd;     /*!< Time Period for which measurement
                                           is done */
    CmLteCellId          cellId;      /*!< CellId for which measurement done*/
 } RgInfL2MeasSndReq;
@@ -759,8 +759,8 @@ typedef struct RgInfL2MeasSndReq
  * */
 typedef struct rgInfL2MeasCfm
 {
-   U16                  transId;     /*!< transId to map to request */
-   U8                   measType;    /*!< Action for which measurement done */
+   uint16_t                  transId;     /*!< transId to map to request */
+   uint8_t                   measType;    /*!< Action for which measurement done */
    CmLteCellId          cellId;      /*!< CellId for which measurement done*/
    CmStatus             cfm;        /*!< Confirmation possible Values when measType
                                   is invalid status -> NOK and reason -> INVALID */
@@ -778,7 +778,7 @@ typedef struct rgInfL2MeasCfm
  * This API carries a transId to uniquely identify the confirm received for 
  * this request from LTEMAC.
  * */
-EXTERN S16 RgSchMacL2MeasReq ARGS((
+S16 RgSchMacL2MeasReq ARGS((
    Pst*                 pst,
    RgInfL2MeasReq*      l2MeasReq
 ));
@@ -788,7 +788,7 @@ EXTERN S16 RgSchMacL2MeasReq ARGS((
  * it sends L2 measurement to layer manager.
  * */
 
-EXTERN S16 RgSchMacL2MeasSendReq ARGS((
+S16 RgSchMacL2MeasSendReq ARGS((
    Pst*                 pst,
    RgInfL2MeasSndReq*      l2MeasReq
 ));
@@ -797,7 +797,7 @@ EXTERN S16 RgSchMacL2MeasSendReq ARGS((
  * When Scheduler receives a measurement stop request from stack manager,
  * it stops L2 Measurement 
  */
-EXTERN S16 RgSchMacL2MeasStopReq ARGS((
+S16 RgSchMacL2MeasStopReq ARGS((
    Pst*                 pst,
    RgInfL2MeasStopReq*      l2MeasReq
 ));
@@ -808,7 +808,7 @@ EXTERN S16 RgSchMacL2MeasStopReq ARGS((
  * period, It invokes this API to indicate result back to scheduler. LTE  
  * MAC sends the same transId received in measurement request from Scheduler.
  * */
-EXTERN S16 RgMacSchL2MeasCfm ARGS((
+S16 RgMacSchL2MeasCfm ARGS((
    Pst*                 pst,
    RgInfL2MeasCfm*      l2MeasCfm
 ));
@@ -817,12 +817,12 @@ EXTERN S16 RgMacSchL2MeasCfm ARGS((
  * stops L2 measurement, it sends L2 measurement cfm.
  * */
 
-EXTERN S16 RgMacSchL2MeasStopCfm ARGS((
+S16 RgMacSchL2MeasStopCfm ARGS((
    Pst*                 pst,
    RgInfL2MeasCfm*      l2MeasCfm
 ));
 
-EXTERN S16 RgMacSchL2MeasStop ARGS
+S16 RgMacSchL2MeasStop ARGS
 ((
 Pst*                pst,   
 RgInfL2MeasCfm      *measInfo
@@ -835,7 +835,7 @@ typedef struct rgInfLcgRegReq
    CmLteRnti            crnti;       /*!< RNTI which uniquely identifies the UE
                                           RNTI range is specified in Section 
                                           7.1 in 25.321 Specification. */
-   U8                   lcgId;
+   uint8_t                   lcgId;
    Bool                 isGbr;       /* Indicate if the LCG is Gbr */
 } RgInfLcgRegReq;
 
@@ -854,14 +854,14 @@ typedef struct rgInfSpsLcInfo
                                           7.1 in 25.321 Specification. */
    CmLteRnti            spsRnti;     /*!< SPS RNTI. RNTI range is specified in
                                           Section 7.1 in 25.321 Specification. */
-   U8                   spsLcCnt;    /*!< identifies the number of SPS
+   uint8_t                   spsLcCnt;    /*!< identifies the number of SPS
                                           configured logical channels */ 
-   U8                   spsLcId[RGINF_MAX_NUM_DED_LC]; /*!< Logical Channel
+   uint8_t                   spsLcId[RGINF_MAX_NUM_DED_LC]; /*!< Logical Channel
                                           Identifier. lcId value range is 
                                           defined in Section 6.2.1
                                           in 36.321 Specification. */
-   U8                   implRelCnt;  /*!< "implicitRelAfter" vallue */  
-   U16                  spsPrd;      /*!< SPS periodicity of the UE */
+   uint8_t                   implRelCnt;  /*!< "implicitRelAfter" vallue */  
+   uint16_t                  spsPrd;      /*!< SPS periodicity of the UE */
 } RgInfSpsLcInfo;
 
 /** 
@@ -897,7 +897,7 @@ typedef struct rgInfSpsRelInfo
  * @brief Request from Scheduler to MAC to register a cell. 
  * @details This primitive is used for light-weight loose coupling.
  */
-EXTERN S16 cmPkSchMacCellRegReq ARGS((
+S16 cmPkSchMacCellRegReq ARGS((
    Pst*                 pst,    
    RgInfCellReg*        regReq  
 ));
@@ -914,7 +914,7 @@ typedef S16 (*CellRegReq) ARGS((
  *  creates a mapping of the cell which is uniquely idetified by cell ID and 
  *  scheduler instance that is serving the cell.
  */
-EXTERN S16 RgSchMacCellRegReq ARGS((
+S16 RgSchMacCellRegReq ARGS((
    Pst*                 pst,
    RgInfCellReg*        regReq
 ));
@@ -922,7 +922,7 @@ EXTERN S16 RgSchMacCellRegReq ARGS((
  * @brief Request from Scheduler to MAC to register a cell. 
  * @details This primitive is used for light-weight loose coupling.
  */
-EXTERN S16 cmUnpkSchMacCellRegReq ARGS((
+S16 cmUnpkSchMacCellRegReq ARGS((
    CellRegReq           func,
    Pst*                 pst,
    Buffer               *mBuf
@@ -931,7 +931,7 @@ EXTERN S16 cmUnpkSchMacCellRegReq ARGS((
  * @brief Request from MAC to scheduler to update dedicated BO.
  * @details This primitive is used for light-weight loose coupling.
  */
-EXTERN S16 cmPkMacSchDedBoUpdtReq ARGS((
+S16 cmPkMacSchDedBoUpdtReq ARGS((
    Pst*                 pst,    
    RgInfDedBoRpt*       boRpt  
 ));
@@ -948,7 +948,7 @@ typedef S16 (*DedBoUpdtReq) ARGS((
  *  takes the buffer occupancy information into consideration while taking
  *  scheduling decisons. 
  */
-EXTERN S16 RgMacSchDedBoUpdtReq ARGS((
+S16 RgMacSchDedBoUpdtReq ARGS((
    Pst*                 pst,
    RgInfDedBoRpt*       boRpt
 ));
@@ -956,7 +956,7 @@ EXTERN S16 RgMacSchDedBoUpdtReq ARGS((
  * @brief Request from MAC to scheduler to update dedicated BO.
  * @details This primitive is used for light-weight loose coupling.
  */
-EXTERN S16 cmUnpkMacSchDedBoUpdtReq ARGS((
+S16 cmUnpkMacSchDedBoUpdtReq ARGS((
    DedBoUpdtReq         func,
    Pst*                 pst,
    Buffer               *mBuf
@@ -965,7 +965,7 @@ EXTERN S16 cmUnpkMacSchDedBoUpdtReq ARGS((
  * @brief Request from MAC to scheduler to update common channel BO.
  * @details This primitive is used for light-weight loose coupling. 
  */
-EXTERN S16 cmPkMacSchCmnBoUpdtReq ARGS((
+S16 cmPkMacSchCmnBoUpdtReq ARGS((
    Pst*                 pst,    
    RgInfCmnBoRpt*       boRpt  
 ));
@@ -982,7 +982,7 @@ typedef S16 (*CmnBoUpdtReq) ARGS((
  *  takes the buffer occupancy information into consideration while taking
  *  scheduling decisons. 
  */
-EXTERN S16 RgMacSchCmnBoUpdtReq ARGS((
+S16 RgMacSchCmnBoUpdtReq ARGS((
    Pst*                 pst,
    RgInfCmnBoRpt*       boRpt
 ));
@@ -990,7 +990,7 @@ EXTERN S16 RgMacSchCmnBoUpdtReq ARGS((
  * @brief Request from MAC to scheduler to update common channel BO.
  * @details This primitive is used for light-weight loose coupling. 
  */
-EXTERN S16 cmUnpkMacSchCmnBoUpdtReq ARGS((
+S16 cmUnpkMacSchCmnBoUpdtReq ARGS((
    CmnBoUpdtReq         func,
    Pst*                 pst,
    Buffer               *mBuf
@@ -1001,7 +1001,7 @@ EXTERN S16 cmUnpkMacSchCmnBoUpdtReq ARGS((
  * @brief UE delete indication from MAC to scheduler.
  * @details This primitive is used for light-weight loose coupling. 
  */
-EXTERN S16 cmPkMacSchUeDelInd ARGS((
+S16 cmPkMacSchUeDelInd ARGS((
    Pst*                 pst,    
    RgInfUeDelInd*       ueDelInd
 ));
@@ -1017,7 +1017,7 @@ typedef S16 (*UeDelInd) ARGS((
  *  receives UE delete Request. As the UE is now deleted at MAC, it should 
  *  not be scheduled.
  */
-EXTERN S16 RgMacSchUeDelInd ARGS((
+S16 RgMacSchUeDelInd ARGS((
    Pst*                 pst,
    RgInfUeDelInd*       ueDelInd
 ));
@@ -1025,7 +1025,7 @@ EXTERN S16 RgMacSchUeDelInd ARGS((
  * @brief UE delete Indication Request from MAC to scheduler.
  * @details This primitive is used for light-weight loose coupling. 
  */
-EXTERN S16 cmUnpkMacSchUeDelInd ARGS((
+S16 cmUnpkMacSchUeDelInd ARGS((
    UeDelInd            func,
    Pst*                 pst,
    Buffer               *mBuf
@@ -1035,7 +1035,7 @@ EXTERN S16 cmUnpkMacSchUeDelInd ARGS((
  * @brief Data Indication Request from MAC to scheduler.
  * @details This primitive is used for light-weight loose coupling. 
  */
-EXTERN S16 cmPkMacSchSfRecpInd ARGS((
+S16 cmPkMacSchSfRecpInd ARGS((
    Pst*                 pst,    
    RgInfSfDatInd*       datInd
 ));
@@ -1052,7 +1052,7 @@ typedef S16 (*SfRecpInd) ARGS((
  *  takes these control elements into consideration while taking scheduling 
  *  decisons for the uplink.
  */
-EXTERN S16 RgMacSchSfRecpInd ARGS((
+S16 RgMacSchSfRecpInd ARGS((
    Pst*                 pst,
    RgInfSfDatInd*       datInd
 ));
@@ -1060,7 +1060,7 @@ EXTERN S16 RgMacSchSfRecpInd ARGS((
  * @brief Data Indication Request from MAC to scheduler.
  * @details This primitive is used for light-weight loose coupling. 
  */
-EXTERN S16 cmUnpkMacSchSfRecpInd ARGS((
+S16 cmUnpkMacSchSfRecpInd ARGS((
    SfRecpInd            func,
    Pst*                 pst,
    Buffer               *mBuf
@@ -1069,7 +1069,7 @@ EXTERN S16 cmUnpkMacSchSfRecpInd ARGS((
  * @brief Resource Allocation Request from Scheduler to MAC.
  * @details This primitive is used for light-weight loose coupling.
  */ 
-EXTERN S16 cmPkSchMacSfAllocReq ARGS((
+S16 cmPkSchMacSfAllocReq ARGS((
    Pst*                 pst,    
    RgInfSfAlloc*        resAllocReq
 ));
@@ -1085,7 +1085,7 @@ typedef S16 (*SfAllocReq) ARGS((
  *  inform the scheduling decisions taken for uplink grants, common channels
  *  and list of UEs to be scheduling during this TTI.
  */
-EXTERN S16 RgSchMacSfAllocReq ARGS((
+S16 RgSchMacSfAllocReq ARGS((
    Pst*                 pst,
    RgInfSfAlloc*        resAllocReq
 ));
@@ -1093,7 +1093,7 @@ EXTERN S16 RgSchMacSfAllocReq ARGS((
  * @brief Resource Allocation Request from Scheduler to MAC.
  * @details This primitive is used for light-weight loose coupling.
  */ 
-EXTERN S16 cmUnpkSchMacSfAllocReq ARGS((
+S16 cmUnpkSchMacSfAllocReq ARGS((
    SfAllocReq           func,
    Pst*                 pst,
    Buffer               *mBuf
@@ -1102,7 +1102,7 @@ EXTERN S16 cmUnpkSchMacSfAllocReq ARGS((
  * @brief Request from Scheduler to release HARQ processes at MAC.
  * @details This primitive is used for light-weight loose coupling.
  */
-EXTERN S16 cmPkSchMacRlsHqReq ARGS((
+S16 cmPkSchMacRlsHqReq ARGS((
    Pst*                 pst,    
    RgInfRlsHqInfo*      sfHqInfo
 ));
@@ -1119,7 +1119,7 @@ typedef S16 (*RlsHqReq) ARGS((
  *  primitive when a positive acknowledgement is received for the TB transmitted
  *  or a TB is retransmitted for the allowed maximum number of retransmissions. 
  */
-EXTERN S16 RgSchMacRlsHqReq ARGS((
+S16 RgSchMacRlsHqReq ARGS((
    Pst*                 pst,
    RgInfRlsHqInfo*      sfHqInfo
 ));
@@ -1128,7 +1128,7 @@ EXTERN S16 RgSchMacRlsHqReq ARGS((
  * @details This primitive is used for light-weight loose coupling.
  */
 
-EXTERN S16 cmUnpkSchMacRlsHqReq ARGS((
+S16 cmUnpkSchMacRlsHqReq ARGS((
    RlsHqReq             func,
    Pst*                 pst,
    Buffer               *mBuf
@@ -1138,7 +1138,7 @@ EXTERN S16 cmUnpkSchMacRlsHqReq ARGS((
  * @brief Request from Scheduler to reset HARQ Entity at MAC.
  * @details This primitive is used for light-weight loose coupling.
  */
-EXTERN S16 cmPkSchMacRstHqEntReq ARGS((
+S16 cmPkSchMacRstHqEntReq ARGS((
    Pst*                 pst,    
    RgInfResetHqEnt*     hqEntInfo
 ));
@@ -1152,7 +1152,7 @@ typedef S16 (*RstHqEntReq) ARGS((
  * @brief Request from Scheduler to reset HARQ entity at MAC for a scell of an ue.
  * This is triggered upon deactivation of a scell
  */
-EXTERN S16 RgSchMacRstHqEntReq ARGS((
+S16 RgSchMacRstHqEntReq ARGS((
    Pst*                 pst,
    RgInfResetHqEnt*     hqEntInfo
 ));
@@ -1161,7 +1161,7 @@ EXTERN S16 RgSchMacRstHqEntReq ARGS((
  * @details This primitive is used for light-weight loose coupling.
  */
 
-EXTERN S16 cmUnpkSchMacRstHqEntReq ARGS((
+S16 cmUnpkSchMacRstHqEntReq ARGS((
    RstHqEntReq          func,
    Pst*                 pst,
    Buffer               *mBuf
@@ -1170,7 +1170,7 @@ EXTERN S16 cmUnpkSchMacRstHqEntReq ARGS((
  * @brief Request from Scheduler to release RNTI at MAC.
  * @details  This primitive is used for light-weight loose coupling.
  */
-EXTERN S16 cmPkSchMacRlsRntiReq ARGS((
+S16 cmPkSchMacRlsRntiReq ARGS((
    Pst*                 pst,    
    RgInfRlsRnti*        rlsRnti
 ));
@@ -1185,7 +1185,7 @@ typedef S16 (*RlsRntiReq) ARGS((
  * @details The Scheduler calls this primitive to send the list of RNTIs for 
  *  which the RRC Connection is being rejected.
  */
-EXTERN S16 RgSchMacRlsRntiReq ARGS((
+S16 RgSchMacRlsRntiReq ARGS((
    Pst*                 pst,
    RgInfRlsRnti*        rlsRnt
 ));
@@ -1193,7 +1193,7 @@ EXTERN S16 RgSchMacRlsRntiReq ARGS((
  * @brief Request from Scheduler to release RNTI at MAC.
  * @details  This primitive is used for light-weight loose coupling.
  */
-EXTERN S16 cmUnpkSchMacRlsRntiReq ARGS((
+S16 cmUnpkSchMacRlsRntiReq ARGS((
    RlsRntiReq           func,
    Pst*                 pst,
    Buffer               *mBuf
@@ -1205,20 +1205,20 @@ typedef S16 (*LcgReg) ARGS((
    RgInfLcgRegReq       *lcgRegReq    
 ));
 
-EXTERN S16 cmPkSchMacLcgRegReq ARGS((
+S16 cmPkSchMacLcgRegReq ARGS((
    Pst*                 pst,
    RgInfLcgRegReq       *lcgRegReq  
 ));
 
-EXTERN S16  RgSchMacLcgRegReq ARGS((Pst *pst, RgInfLcgRegReq *lcgRegReq));
+S16  RgSchMacLcgRegReq ARGS((Pst *pst, RgInfLcgRegReq *lcgRegReq));
 
-EXTERN S16 cmUnpkSchMacLcgRegReq ARGS((
+S16 cmUnpkSchMacLcgRegReq ARGS((
    LcgReg          func,
    Pst             *pst,
    Buffer          *mBuf
 ));
 
-EXTERN S16  RgSchMacLcgReg ARGS((Pst* pst, RgInfLcgRegReq *lcgRegReq));
+S16  RgSchMacLcgReg ARGS((Pst* pst, RgInfLcgRegReq *lcgRegReq));
 
 #ifdef LTEMAC_SPS
 /** 
@@ -1226,7 +1226,7 @@ EXTERN S16  RgSchMacLcgReg ARGS((Pst* pst, RgInfLcgRegReq *lcgRegReq));
  * a SPS UE
  * @details  This primitive is used for light-weight loose coupling.
  */
-EXTERN S16 cmPkSchMacSpsLcRegReq ARGS((
+S16 cmPkSchMacSpsLcRegReq ARGS((
    Pst*                 pst,
    RgInfSpsLcInfo       *lcInfo    
 ));
@@ -1241,9 +1241,9 @@ typedef S16 (*SpsLcReg) ARGS((
  * @details  Scheduler calls this primitive to send the list of logical channels
  *  that belong to the SPS logical channel group.   
  */
-EXTERN S16  RgSchMacSpsLcRegReq ARGS((Pst *pst, RgInfSpsLcInfo *lcInfo));
+S16  RgSchMacSpsLcRegReq ARGS((Pst *pst, RgInfSpsLcInfo *lcInfo));
 
-EXTERN S16 cmUnpkSchMacSpsLcRegReq ARGS((
+S16 cmUnpkSchMacSpsLcRegReq ARGS((
    SpsLcReg        func,
    Pst             *pst,
    Buffer          *mBuf
@@ -1254,7 +1254,7 @@ EXTERN S16 cmUnpkSchMacSpsLcRegReq ARGS((
  * @brief Primitive from Scheduler to MAC to Reset UL SPS related Params
  * @details  This primitive is used for light-weight loose coupling.
  */
-EXTERN S16 cmPkSchMacUlSpsResetReq ARGS((
+S16 cmPkSchMacUlSpsResetReq ARGS((
    Pst*                 pst,
    RgInfUlSpsReset       *ulSpsResetInfo    
 ));
@@ -1269,9 +1269,9 @@ typedef S16 (*UlSpsReset) ARGS((
  * @details  Scheduler calls this primitive to reset implicit and explicit
  * release counters for the UE
  */
-EXTERN S16  RgSchMacUlSpsResetReq ARGS((Pst *pst, RgInfUlSpsReset *ulSpsResetInfo));
+S16  RgSchMacUlSpsResetReq ARGS((Pst *pst, RgInfUlSpsReset *ulSpsResetInfo));
 
-EXTERN S16 cmUnpkSchMacUlSpsResetReq ARGS((
+S16 cmUnpkSchMacUlSpsResetReq ARGS((
    UlSpsReset        func,
    Pst             *pst,
    Buffer          *mBuf
@@ -1284,7 +1284,7 @@ EXTERN S16 cmUnpkSchMacUlSpsResetReq ARGS((
  * a SPS UE
  * @details  This primitive is used for light-weight loose coupling.
  */
-EXTERN S16 cmPkSchMacSpsLcDeregReq ARGS((
+S16 cmPkSchMacSpsLcDeregReq ARGS((
    Pst*                 pst,    
    CmLteCellId          cellId,
    CmLteRnti            crnti
@@ -1301,10 +1301,10 @@ typedef S16 (*SpsLcDereg) ARGS((
  * @details  Scheduler calls this primitive to send the deregistration request
  * for a UE once SPS is released for it
  */
-EXTERN S16  RgSchMacSpsLcDeregReq ARGS((Pst *pst, CmLteCellId cellId, CmLteRnti
+S16  RgSchMacSpsLcDeregReq ARGS((Pst *pst, CmLteCellId cellId, CmLteRnti
     crnti));
 
-EXTERN S16 cmUnpkSchMacSpsLcDeregReq ARGS((
+S16 cmUnpkSchMacSpsLcDeregReq ARGS((
    SpsLcDereg           func,
    Pst*                 pst,
    Buffer               *mBuf
@@ -1314,7 +1314,7 @@ EXTERN S16 cmUnpkSchMacSpsLcDeregReq ARGS((
  * @brief Primitive from MAC to Scheduler to indicate release of UL SPS for a UE
  * @details  This primitive is used for light-weight loose coupling.
  */
-EXTERN S16 cmPkMacSchSpsRelInd ARGS((
+S16 cmPkMacSchSpsRelInd ARGS((
    Pst*                 pst,    
    RgInfSpsRelInfo*     relInfo
 ));
@@ -1329,9 +1329,9 @@ typedef S16 (*SpsRelInd) ARGS((
  * @details  MAC calls this primitive to inform the scheduler that UL SPS needs
  * to be released for a UE
  */
-EXTERN S16  RgMacSchSpsRelInd ARGS((Pst *pst, RgInfSpsRelInfo *relInfo));
+S16  RgMacSchSpsRelInd ARGS((Pst *pst, RgInfSpsRelInfo *relInfo));
 
-EXTERN S16 cmUnpkMacSchSpsRelInd ARGS((
+S16 cmUnpkMacSchSpsRelInd ARGS((
    SpsRelInd            func,
    Pst*                 pst,
    Buffer               *mBuf
@@ -1339,28 +1339,28 @@ EXTERN S16 cmUnpkMacSchSpsRelInd ARGS((
 
 #endif
 #ifdef LTE_L2_MEAS
-EXTERN S16 cmPkMacSchL2MeasCfm ARGS((
+S16 cmPkMacSchL2MeasCfm ARGS((
 Pst*                 pst,
 RgInfL2MeasCfm       *measCfm
 ));
 
-EXTERN S16 cmPkMacSchL2MeasStopCfm ARGS((
+S16 cmPkMacSchL2MeasStopCfm ARGS((
 Pst*                 pst,
 RgInfL2MeasCfm       *measCfm
 ));
 
 
-EXTERN S16 cmPkSchMacL2MeasReq ARGS((
+S16 cmPkSchMacL2MeasReq ARGS((
    Pst*                 pst,
    RgInfL2MeasReq      *measInfo
 ));
 
-EXTERN S16 cmPkSchMacL2MeasStopReq ARGS((
+S16 cmPkSchMacL2MeasStopReq ARGS((
    Pst*                 pst,
    RgInfL2MeasStopReq *measInfo
 ));
 
-EXTERN S16 cmPkSchMacL2MeasSendReq ARGS((
+S16 cmPkSchMacL2MeasSendReq ARGS((
    Pst*                 pst,
    RgInfL2MeasSndReq *measInfo
 ));
@@ -1387,57 +1387,57 @@ typedef S16 (*L2MeasCfm) ARGS((
    Pst                *pst, 
    RgInfL2MeasCfm     *measCfm
 ));
-EXTERN S16 cmUnpkMacSchL2MeasCfm ARGS
+S16 cmUnpkMacSchL2MeasCfm ARGS
 ((
 L2MeasCfm      func,
 Pst            *pst,
 Buffer         *mBuf
 ));
-EXTERN S16 cmUnpkSchMacL2MeasReq ARGS((
+S16 cmUnpkSchMacL2MeasReq ARGS((
    L2MeasReq      func,
    Pst            *pst,
    Buffer         *mBuf
 ));
-EXTERN S16 cmUnpkSchMacL2MeasSendReq ARGS((
+S16 cmUnpkSchMacL2MeasSendReq ARGS((
    L2MeasSendReq      func,
    Pst            *pst,
    Buffer         *mBuf
 ));
-EXTERN S16 cmUnpkSchMacL2MeasStopReq ARGS((
+S16 cmUnpkSchMacL2MeasStopReq ARGS((
    L2MeasStopReq      func,
    Pst            *pst,
    Buffer         *mBuf
 ));
 
-EXTERN S16 cmUnpkMacSchL2MeasStopCfm ARGS((
+S16 cmUnpkMacSchL2MeasStopCfm ARGS((
    L2MeasCfm      func,
    Pst            *pst,
    Buffer         *mBuf
 ));
 #endif
-EXTERN S16  RgSchMacRlsRnti ARGS((Pst* pst, RgInfRlsRnti* rlsRnti));
-EXTERN S16  RgSchMacRlsHq ARGS((Pst* pst, RgInfRlsHqInfo* sfHqInfo));
-EXTERN S16  RgSchMacSfAlloc ARGS((Pst* pst, RgInfSfAlloc* resAllocReq));
-EXTERN S16  RgSchMacRstHqEnt ARGS((Pst* pst, RgInfResetHqEnt* hqEntInfo));
-EXTERN S16  RgMacSchSfRecp ARGS((Pst* pst, RgInfSfDatInd* datInd));
-EXTERN S16  RgMacSchCmnBoUpdt ARGS(( Pst* pst, RgInfCmnBoRpt* boRpt));
-EXTERN S16 RgMacSchDedBoUpdt ARGS(( Pst* pst, RgInfDedBoRpt* boRpt));
-EXTERN S16  RgSchMacCellReg ARGS((Pst* pst,RgInfCellReg* regReq));
+S16  RgSchMacRlsRnti ARGS((Pst* pst, RgInfRlsRnti* rlsRnti));
+S16  RgSchMacRlsHq ARGS((Pst* pst, RgInfRlsHqInfo* sfHqInfo));
+S16  RgSchMacSfAlloc ARGS((Pst* pst, RgInfSfAlloc* resAllocReq));
+S16  RgSchMacRstHqEnt ARGS((Pst* pst, RgInfResetHqEnt* hqEntInfo));
+S16  RgMacSchSfRecp ARGS((Pst* pst, RgInfSfDatInd* datInd));
+S16  RgMacSchCmnBoUpdt ARGS(( Pst* pst, RgInfCmnBoRpt* boRpt));
+S16 RgMacSchDedBoUpdt ARGS(( Pst* pst, RgInfDedBoRpt* boRpt));
+S16  RgSchMacCellReg ARGS((Pst* pst,RgInfCellReg* regReq));
 #ifdef LTE_L2_MEAS
-EXTERN S16 RgSchMacL2Meas ARGS((Pst* pst, RgInfL2MeasReq* l2MeasReq));
-EXTERN S16 RgMacSchL2Meas ARGS((Pst* pst, RgInfL2MeasCfm* l2MeasCfm));
-EXTERN S16 RgSchMacL2MeasStop ARGS((Pst* pst, RgInfL2MeasStopReq *measInfo));
-EXTERN S16 RgSchMacL2MeasSend ARGS((Pst* pst, RgInfL2MeasSndReq *measInfo));
+S16 RgSchMacL2Meas ARGS((Pst* pst, RgInfL2MeasReq* l2MeasReq));
+S16 RgMacSchL2Meas ARGS((Pst* pst, RgInfL2MeasCfm* l2MeasCfm));
+S16 RgSchMacL2MeasStop ARGS((Pst* pst, RgInfL2MeasStopReq *measInfo));
+S16 RgSchMacL2MeasSend ARGS((Pst* pst, RgInfL2MeasSndReq *measInfo));
 #endif  /* LTE_L2_MEAS */
 /* Added support for SPS*/
 #ifdef LTEMAC_SPS
-EXTERN S16 RgSchMacSpsLcReg ARGS((Pst *pst, RgInfSpsLcInfo *lcInfo));
-EXTERN S16 RgSchMacUlSpsReset ARGS((Pst *pst, RgInfUlSpsReset *lcInfo));
-EXTERN S16 RgSchMacSpsLcDereg ARGS((Pst *pst, CmLteCellId cellId, CmLteRnti
+S16 RgSchMacSpsLcReg ARGS((Pst *pst, RgInfSpsLcInfo *lcInfo));
+S16 RgSchMacUlSpsReset ARGS((Pst *pst, RgInfUlSpsReset *lcInfo));
+S16 RgSchMacSpsLcDereg ARGS((Pst *pst, CmLteCellId cellId, CmLteRnti
     crnti));
-EXTERN S16 RgMacSchSpsRel ARGS((Pst *pst, RgInfSpsRelInfo* relInfo));
+S16 RgMacSchSpsRel ARGS((Pst *pst, RgInfSpsRelInfo* relInfo));
 #endif
-EXTERN S16 RgMacSchUeDel ARGS((Pst* pst, RgInfUeDelInd*  ueDelInd));
+S16 RgMacSchUeDel ARGS((Pst* pst, RgInfUeDelInd*  ueDelInd));
 #ifdef __cplusplus
 }
 #endif

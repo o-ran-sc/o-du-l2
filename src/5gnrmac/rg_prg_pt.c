@@ -54,7 +54,7 @@
 #include "rg_pom_scell.x"
 
 /* Matrix for Ue SCell Config Req*/
-PRIVATE CONSTANT RgPrgUeSCellCfgReq RgPrgPMacSMacUeSCellCfgReqMt[RG_PRG_MAX] =
+static const RgPrgUeSCellCfgReq RgPrgPMacSMacUeSCellCfgReqMt[RG_PRG_MAX] =
 {
 #ifdef LCPRG
   cmPkPrgPMacSMacUeSCellCfgReq,
@@ -75,26 +75,14 @@ PRIVATE CONSTANT RgPrgUeSCellCfgReq RgPrgPMacSMacUeSCellCfgReqMt[RG_PRG_MAX] =
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgPrgPMacSMacUeSCellCfg
-(
- Pst         *pst,
- RgPrgUeSCellCfgInfo *ueSCellCfgInfo
-)
-#else
-PUBLIC S16 RgPrgPMacSMacUeSCellCfg(pst, ueSCellCfgInfo)
- Pst         *pst;
- RgPrgUeSCellCfgInfo *ueSCellCfgInfo;
-#endif
+S16 RgPrgPMacSMacUeSCellCfg(Pst *pst, RgPrgUeSCellCfgInfo *ueSCellCfgInfo)
 {
 
-   TRC3(RgPrgPMacSMacUeSCellCfg);
-
-   RETVALUE((*RgPrgPMacSMacUeSCellCfgReqMt[0])(pst, ueSCellCfgInfo));
+   return ((*RgPrgPMacSMacUeSCellCfgReqMt[0])(pst, ueSCellCfgInfo));
 }
 
 /* Matrix for config confirm from SMac to Pmac*/
-PRIVATE CONSTANT RgSMacPMacCfgCfm RgPrgSMacPMacCfgCfmMt[RG_PRG_MAX] =
+static const RgSMacPMacCfgCfm RgPrgSMacPMacCfgCfmMt[RG_PRG_MAX] =
 {
 #ifdef LCPRG
    cmPkPrgSMacPMacCfgCfm,
@@ -115,26 +103,14 @@ PRIVATE CONSTANT RgSMacPMacCfgCfm RgPrgSMacPMacCfgCfmMt[RG_PRG_MAX] =
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgPrgSMacPMacCfg
-(
- Pst             *pst,
- RgPrgCfgCfmInfo *cfgCfm
-)
-#else
-PUBLIC S16 RgPrgSMacPMacCfg(pst, cfgCfm)
- Pst             *pst;
- RgPrgCfgCfmInfo *cfgCfm;
-#endif
+S16 RgPrgSMacPMacCfg(Pst *pst,RgPrgCfgCfmInfo *cfgCfm)
 {
 
-   TRC3(RgPrgSMacPMacCfg);
-
-   RETVALUE((*RgPrgSMacPMacCfgCfmMt[0])(pst, cfgCfm));
+   return ((*RgPrgSMacPMacCfgCfmMt[0])(pst, cfgCfm));
 }
 
 /* Matrix for Ue SCell delete req/Ue Id change req from PMac to SMac */
-PRIVATE CONSTANT RgUeSCellDelReq RgPrgPMacSMacUeSCellDelReqMt[RG_PRG_MAX] =
+static const RgUeSCellDelReq RgPrgPMacSMacUeSCellDelReqMt[RG_PRG_MAX] =
 {
 #ifdef LCPRG
    cmPkPrgPMacSMacUeSCellDelReq,
@@ -155,28 +131,16 @@ PRIVATE CONSTANT RgUeSCellDelReq RgPrgPMacSMacUeSCellDelReqMt[RG_PRG_MAX] =
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgPrgPMacSMacUeSCellDel
-(
- Pst                 *pst,
- RgPrgUeSCellDelInfo *ueSCellDelInfo
-)
-#else
-PUBLIC S16 RgPrgPMacSMacUeSCellDel(pst, ueSCellDelInfo)
- Pst                 *pst;
- RgPrgUeSCellDelInfo *ueSCellDelInfo;
-#endif
+S16 RgPrgPMacSMacUeSCellDel(Pst *pst,RgPrgUeSCellDelInfo *ueSCellDelInfo)
 {
 
-   TRC3(RgPrgPMacSMacUeSCellDel);
-
-   RETVALUE((*RgPrgPMacSMacUeSCellDelReqMt[0])(pst, ueSCellDelInfo));
+   return ((*RgPrgPMacSMacUeSCellDelReqMt[0])(pst, ueSCellDelInfo));
 }
 
 
 
 /* Matrix for Lch ReConfig Req*/
-PRIVATE CONSTANT RgPrgUeScellModLchReq RgPrgPMacSMacUeScellModLchReqMt[RG_PRG_MAX] =
+static const RgPrgUeScellModLchReq RgPrgPMacSMacUeScellModLchReqMt[RG_PRG_MAX] =
 {
 #ifdef LCPRG
   cmPkPrgPMacSMacUeSCellLchModReq,
@@ -198,27 +162,15 @@ PRIVATE CONSTANT RgPrgUeScellModLchReq RgPrgPMacSMacUeScellModLchReqMt[RG_PRG_MA
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgPrgPMacSMacUeScellLchMod
-(
- Pst                      *pst,
- RgPrgUeSCellLchModInfo   *lchCfgInfo
-)
-#else
-PUBLIC S16 RgPrgPMacSMacUeScellLchMod(pst, lchCfgInfo)
- Pst                      *pst;
- RgPrgUeSCellLchModInfo   *lchCfgInfo;
-#endif
+S16 RgPrgPMacSMacUeScellLchMod(Pst *pst,RgPrgUeSCellLchModInfo *lchCfgInfo)
 {
 
-   TRC3(RgPrgPMacSMacUeScellLchMod);
-
-   RETVALUE((*RgPrgPMacSMacUeScellModLchReqMt[0])(pst, lchCfgInfo));
+   return ((*RgPrgPMacSMacUeScellModLchReqMt[0])(pst, lchCfgInfo));
 }
 
 
 /* Matrix for delete Lch Req*/
-PRIVATE CONSTANT RgPrgUeScellDelLchReq RgPrgPMacSMacUeScellDelLchReqMt[RG_PRG_MAX] =
+static const RgPrgUeScellDelLchReq RgPrgPMacSMacUeScellDelLchReqMt[RG_PRG_MAX] =
 {
 #ifdef LCPRG
   cmPkPrgPMacSMacUeSCellLchDelReq,
@@ -240,27 +192,15 @@ PRIVATE CONSTANT RgPrgUeScellDelLchReq RgPrgPMacSMacUeScellDelLchReqMt[RG_PRG_MA
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgPrgPMacSMacUeScellLchDel
-(
- Pst                       *pst,
- RgPrgUeSCellLchDelInfo    *delLcCb
-)
-#else
-PUBLIC S16 RgPrgPMacSMacUeScellLchDel(pst, delLcCb)
- Pst                       *pst;
- RgPrgUeSCellLchDelInfo    *delLcCb;
-#endif
+S16 RgPrgPMacSMacUeScellLchDel(Pst *pst,RgPrgUeSCellLchDelInfo *delLcCb)
 {
 
-   TRC3(RgPrgPMacSMacUeScellLchDel);
-
-   RETVALUE((*RgPrgPMacSMacUeScellDelLchReqMt[0])(pst, delLcCb));
+   return ((*RgPrgPMacSMacUeScellDelLchReqMt[0])(pst, delLcCb));
 }
 
 
 /* Matrix for Lch Config Req*/
-PRIVATE CONSTANT RgPrgUeScellAddLchReq RgPrgPMacSMacUeScellAddLchReqMt[RG_PRG_MAX] =
+static const RgPrgUeScellAddLchReq RgPrgPMacSMacUeScellAddLchReqMt[RG_PRG_MAX] =
 {
 #ifdef LCPRG
   cmPkPrgPMacSMacUeSCellLchAddReq,
@@ -282,22 +222,10 @@ PRIVATE CONSTANT RgPrgUeScellAddLchReq RgPrgPMacSMacUeScellAddLchReqMt[RG_PRG_MA
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgPrgPMacSMacUeScellLchAdd
-(
- Pst                      *pst,
- RgPrgUeSCellLchAddInfo   *lchCfgInfo
-)
-#else
-PUBLIC S16 RgPrgPMacSMacUeScellLchAdd(pst, lchCfgInfo)
- Pst                      *pst;
- RgPrgUeSCellLchAddInfo   *lchCfgInfo;
-#endif
+S16 RgPrgPMacSMacUeScellLchAdd(Pst *pst,RgPrgUeSCellLchAddInfo *lchCfgInfo)
 {
 
-   TRC3(RgPrgPMacSMacUeScellLchAdd);
-
-   RETVALUE((*RgPrgPMacSMacUeScellAddLchReqMt[0])(pst, lchCfgInfo));
+   return ((*RgPrgPMacSMacUeScellAddLchReqMt[0])(pst, lchCfgInfo));
 }
 
 #endif /* LTE_ADV */

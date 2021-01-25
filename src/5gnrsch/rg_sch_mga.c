@@ -56,36 +56,36 @@ static int RLOG_FILE_ID=169;
 #include "rg_sch.x"        /* typedefs for Scheduler */
 
 /* local defines */
-PRIVATE S16 rgSCHMeasGapANRepUtlAddUe ARGS((
+static S16 rgSCHMeasGapANRepUtlAddUe ARGS((
 RgSchCellCb       *cell,
 RgSchUeCb          *ue,
 RgrUeMeasGapCfg    *cfg));
 
-PRIVATE S16 rgSCHMeasGapANRepUtlRmvUe ARGS((
+static S16 rgSCHMeasGapANRepUtlRmvUe ARGS((
 RgSchCellCb       *cell,
 RgSchUeCb          *ue));
 
-PRIVATE S16 rgSchAckNackRepUtlRmvUe ARGS((
+static S16 rgSchAckNackRepUtlRmvUe ARGS((
  RgSchCellCb      *cell,
  RgSchUeCb        *ue));
 
-PRIVATE Void rgSchAckNackRepUtlHdlTti ARGS((
+static Void rgSchAckNackRepUtlHdlTti ARGS((
 RgSchCellCb *cell,
 CmLListCp   *ackNackRepQ));
 
-PRIVATE Void rgSCHMeasGapANRepUtlHdlTti ARGS((
+static Void rgSCHMeasGapANRepUtlHdlTti ARGS((
 RgSchCellCb *cell,
 CmLListCp   *measGapQ));
 #ifdef LTE_TDD
-PRIVATE U8 rgSCHAckNakRepFindUlDuration ARGS((
+static uint8_t rgSCHAckNakRepFindUlDuration ARGS((
 RgSchCellCb       *cell,
 RgSchDlSf         *dlSf,
 CmLteTimingInfo   repTime,
-U8                repCnt));
-PRIVATE Void rgSCHAckNakRepGetUlOffsetFrmDl ARGS((
+uint8_t                repCnt));
+static Void rgSCHAckNakRepGetUlOffsetFrmDl ARGS((
 RgSchDlSf         *dlSf,
 CmLteTimingInfo   crntDlTime,
-U8                *noSubfrms));
+uint8_t                *noSubfrms));
 #endif
 
 /**
@@ -124,23 +124,8 @@ U8                *noSubfrms));
  *      -# ROK
  **/
 
-#ifdef ANSI
-PUBLIC S16 rgSCHMeasGapANRepUeCfg
-(
-RgSchCellCb *cell,
-RgSchUeCb   *ue,
-RgrUeCfg    *ueCfg
-)
-#else
-PUBLIC S16 rgSCHMeasGapANRepUeCfg(cell, ue, ueCfg)
-RgSchCellCb *cell;
-RgSchUeCb   *ue;
-RgrUeCfg    *ueCfg;
-#endif
+S16 rgSCHMeasGapANRepUeCfg(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeCfg *ueCfg)
 {
-
-   TRC2(rgSCHMeasGapANRepUeCfg);
-
 
    ue->measGapCb.isMesGapEnabled = ueCfg->ueMesGapCfg.isMesGapEnabled;
 
@@ -165,7 +150,7 @@ RgrUeCfg    *ueCfg;
       cmInitTimers (&ue->ackNakRepCb.ackNakRepDlInactvTmr, 1);
       cmInitTimers (&ue->ackNakRepCb.ackNakRepTmr, 1);
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -200,27 +185,12 @@ RgrUeCfg    *ueCfg;
  *      -# RFAILED
  **/
 
-#ifdef ANSI
-PUBLIC S16 rgSCHMeasGapANRepUeRecfg
-(
-RgSchCellCb    *cell,
-RgSchUeCb      *ue,
-RgrUeRecfg     *ueRecfg
-)
-#else
-PUBLIC S16 rgSCHMeasGapANRepUeRecfg(cell, ue, ueRecfg)
-RgSchCellCb    *cell;
-RgSchUeCb      *ue;
-RgrUeRecfg     *ueRecfg;
-#endif
+S16 rgSCHMeasGapANRepUeRecfg(RgSchCellCb  *cell,RgSchUeCb *ue,RgrUeRecfg *ueRecfg)
 {
    RgrUeMeasGapCfg         *reCfg;
    RgSchUeMeasGapCb        *ueMeasCb;
    RgrUeAckNackRepCfg      *ackNackReCfg = &(ueRecfg->ueAckNackRecfg);
    RgSchUeAckNakRepCb      *ackNakRepCb = &(ue->ackNakRepCb);
-
-   TRC2(rgSCHMeasGapANRepUeRecfg);
-
 
    reCfg    = &(ueRecfg->ueMeasGapRecfg);
    ueMeasCb = &(ue->measGapCb);
@@ -289,7 +259,7 @@ RgrUeRecfg     *ueRecfg;
       ackNakRepCb->isAckNackEnabled = FALSE;
    } /* repetition disabled in re configuration */
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
  /** @brief This function is a utility to add the UE to the correct Measurement
@@ -307,22 +277,8 @@ RgrUeRecfg     *ueRecfg;
   * @param 
   * @return 
   */
-#ifdef ANSI
-PRIVATE S16 rgSCHMeasGapANRepUtlAddUe 
-(
-RgSchCellCb       *cell,
-RgSchUeCb          *ue,
-RgrUeMeasGapCfg    *cfg
-)
-#else
-PRIVATE S16 rgSCHMeasGapANRepUtlAddUe (cell, ue, cfg)
-RgSchCellCb         *cell;
-RgSchUeCb            *ue;
-RgrUeMeasGapCfg      *cfg;
-#endif
+static S16 rgSCHMeasGapANRepUtlAddUe(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeMeasGapCfg *cfg)
 {
-
-   TRC2(rgSCHMeasGapANRepUtlAddUe);
 
    switch (cfg->gapPrd)
    {
@@ -341,9 +297,9 @@ RgrUeMeasGapCfg      *cfg;
          RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, 
                   "rgSCHMeasGapANRepUeRecfg() Incorrect GAP Period"
                   "CRNTI:%d",ue->ueId);
-         RETVALUE(RFAILED);
+         return RFAILED;
    }
-   RETVALUE(ROK);
+   return ROK;
 } /* end of rgSCHMeasGapANRepUtlAddUe */ 
 
 
@@ -361,20 +317,8 @@ RgrUeMeasGapCfg      *cfg;
   * @param 
   * @return 
   */
-#ifdef ANSI
-PRIVATE S16 rgSCHMeasGapANRepUtlRmvUe 
-(
-RgSchCellCb       *cell,
-RgSchUeCb          *ue
-)
-#else
-PRIVATE S16 rgSCHMeasGapANRepUtlRmvUe (cell, ue)
-RgSchCellCb       *cell;
-RgSchUeCb          *ue;
-#endif
+static S16 rgSCHMeasGapANRepUtlRmvUe(RgSchCellCb *cell,RgSchUeCb *ue)
 {
-
-   TRC2(rgSCHMeasGapANRepUtlRmvUe);
 
    switch (ue->measGapCb.gapPrd)
    {
@@ -391,7 +335,7 @@ RgSchUeCb          *ue;
          ue->measGapCb.measQLnk.node = NULLP;
          break;
    }
-   RETVALUE(ROK);
+   return ROK;
 } /* end of rgSCHMeasGapANRepUtlRmvUe */ 
 
 /**
@@ -423,23 +367,8 @@ RgSchUeCb          *ue;
  *      -# ROK
  **/
 
-#ifdef ANSI
-PUBLIC Void rgSCHMeasGapANRepUeDel
-(
-RgSchCellCb *cell,
-RgSchUeCb   *ue,
-Bool        isUeDel
-)
-#else
-PUBLIC Void rgSCHMeasGapANRepUeDel(cell, ue, isUeDel)
-RgSchCellCb *cell;
-RgSchUeCb   *ue;
-Bool        isUeDel;
-#endif
+Void rgSCHMeasGapANRepUeDel(RgSchCellCb *cell,RgSchUeCb *ue,Bool isUeDel)
 {
-
-
-   TRC2(rgSCHMeasGapANRepUeDel);
 
    if (ue->measGapCb.isMesGapEnabled)
    {
@@ -485,7 +414,7 @@ Bool        isUeDel;
       rgSCHTmrStopTmr (cell, RG_SCH_TMR_ACKNACK_REP, ue);
       rgSchAckNackRepUtlRmvUe (cell, ue);
    }
-   RETVOID;
+   return;
 }
 
  /** @brief This function deletes the UEs information related to ACK NACK
@@ -504,28 +433,16 @@ Bool        isUeDel;
   * @param 
   * @return 
   */
-#ifdef ANSI
-PRIVATE S16 rgSchAckNackRepUtlRmvUe
-(
- RgSchCellCb      *cell,
- RgSchUeCb        *ue
- )
-#else
-PRIVATE S16 rgSchAckNackRepUtlRmvUe (cell, ue)
- RgSchCellCb      *cell;
- RgSchUeCb        *ue;
-#endif
+static S16 rgSchAckNackRepUtlRmvUe(RgSchCellCb *cell,RgSchUeCb *ue)
 {
 
 
-   U8                hqIdx;
-   U8                repIdx;
+   uint8_t           hqIdx;
+   uint8_t           repIdx;
    RgSchDlHqProcCb   *hqP;
-   U8                tbCnt;
+   uint8_t           tbCnt;
 
-   RgSchDlHqEnt          *hqEnt = RG_SCH_CMN_GET_UE_HQE(ue, cell);
-
-   TRC3(rgSchAckNackRepUtlRmvUe);
+   RgSchDlHqEnt      *hqEnt = RG_SCH_CMN_GET_UE_HQE(ue, cell);
 
    for (hqIdx = 0; hqIdx < hqEnt->numHqPrcs; hqIdx++)
    {
@@ -547,7 +464,7 @@ PRIVATE S16 rgSchAckNackRepUtlRmvUe (cell, ue)
       }
    }
  
-   RETVALUE(ROK);
+   return ROK;
 } /* end of */ 
 
 
@@ -617,22 +534,12 @@ PRIVATE S16 rgSchAckNackRepUtlRmvUe (cell, ue)
  *      -# ROK
  **/
 
-#ifdef ANSI
-PUBLIC S16 rgSCHMeasGapANRepTtiHndl
-(
-RgSchCellCb *cell
-)
-#else
-PUBLIC S16 rgSCHMeasGapANRepTtiHndl(cell)
-RgSchCellCb *cell;
-#endif
+S16 rgSCHMeasGapANRepTtiHndl(RgSchCellCb *cell)
 {
-   U8               offset;
+   uint8_t          offset;
    CmLListCp        *queue;
    RgSchDlSf        *dlSf;
    CmLteTimingInfo   repTime;
-
-   TRC2(rgSCHMeasGapANRepTtiHndl);
 
    /* Measurement GAP Starts at offSet - however at MAC we are concerned at
     * subframe + TFU_DELTA.
@@ -679,7 +586,7 @@ RgSchCellCb *cell;
    queue = &(dlSf->ueLst);
    rgSchAckNackRepUtlHdlTti (cell, queue);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
  /** @brief This function Marks the UE as ackNakRep so that Reception request
@@ -699,22 +606,10 @@ RgSchCellCb *cell;
   * @param  CmLListCp   *ackNakRepQ
   * @return Void
   */
-#ifdef ANSI
-PRIVATE Void rgSchAckNackRepUtlHdlTti
-(
-RgSchCellCb *cell,
-CmLListCp   *ackNackRepQ
-)
-#else
-PRIVATE Void rgSchAckNackRepUtlHdlTti (cell, ackNackRepQ)
-RgSchCellCb *cell;
-CmLListCp   *ackNackRepQ;
-#endif
+static Void rgSchAckNackRepUtlHdlTti(RgSchCellCb *cell,CmLListCp   *ackNackRepQ)
 {
    CmLList           *node;
    RgSchUeCb         *ue;
-
-   TRC2(rgSchAckNackRepUtlHdlTti);
 
    node = ackNackRepQ->first;
    while (node)
@@ -728,7 +623,7 @@ CmLListCp   *ackNackRepQ;
       }
       node = node->next;
    } /* end of while */
-   RETVOID;
+   return;
 } /* end of */ 
 
 
@@ -746,22 +641,10 @@ CmLListCp   *ackNackRepQ;
   * @param 
   * @return 
   */
-#ifdef ANSI
-PRIVATE Void rgSCHMeasGapANRepUtlHdlTti
-(
-RgSchCellCb *cell,
-CmLListCp   *measGapQ
-)
-#else
-PRIVATE Void rgSCHMeasGapANRepUtlHdlTti (cell, measGapQ)
-RgSchCellCb *cell;
-CmLListCp   *measGapQ;
-#endif
+static Void rgSCHMeasGapANRepUtlHdlTti(RgSchCellCb *cell,CmLListCp   *measGapQ)
 {
    CmLList           *node;
    RgSchUeCb         *ue;
-
-   TRC2(rgSCHMeasGapANRepUtlHdlTti);
 
    node = measGapQ->first;
    while (node)
@@ -771,7 +654,7 @@ CmLListCp   *measGapQ;
       rgSCHTmrStartTmr (cell, ue, RG_SCH_TMR_MEASGAP, RG_SCH_MEAS_GAP_LEN);
       node = node->next;
    } /* end of while */
-   RETVOID;
+   return;
 } /* end of */ 
 
 
@@ -821,35 +704,23 @@ CmLListCp   *measGapQ;
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHMeasGapANRepGetDlInactvUe
-(
-RgSchCellCb *cell,
-CmLListCp   *dlInactvUeLst
-)
-#else
-PUBLIC S16 rgSCHMeasGapANRepGetDlInactvUe(cell, dlInactvUeLst)
-RgSchCellCb *cell;
-CmLListCp   *dlInactvUeLst;
-#endif
+S16 rgSCHMeasGapANRepGetDlInactvUe(RgSchCellCb *cell,CmLListCp   *dlInactvUeLst)
 {
-   U8                offset;
+   uint8_t           offset;
    CmLList           *node;
    CmLList           *hqNode;
    CmLListCp         *queue;
    RgSchUeCb         *ue;
    RgSchDlSf         *dlSf;
    CmLteTimingInfo   ackNakTime;
-   U16               schedTime;
-   U8                harqFdbkOffset;
+   uint16_t          schedTime;
+   uint8_t           harqFdbkOffset;
 #ifdef LTE_TDD
-   U8                repCntr;
+   uint8_t           repCntr;
 #endif
    RgSchDlHqProcCb   *hqP;
    RgSchDlHqTbCb     *tbCb;
-   U32               i;
-
-   TRC2(rgSCHMeasGapANRepGetDlInactvUe);
+   uint32_t          i;
 
    schedTime = cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G + cell->crntTime.slot + RG_DL_DELTA; 
 
@@ -858,7 +729,7 @@ CmLListCp   *dlInactvUeLst;
    if(rgSchTddUlDlSubfrmTbl[cell->ulDlCfgIdx][ackNakTime.subframe] !=
          RG_SCH_TDD_DL_SUBFRAME)
    {
-      RETVALUE(ROK);
+      return ROK;
    }
 
    dlSf = rgSCHUtlSubFrmGet (cell, ackNakTime);
@@ -921,7 +792,7 @@ CmLListCp   *dlInactvUeLst;
 #ifdef LTE_TDD
    if(cell->ulDlCfgIdx == 5)
    {
-      RETVALUE(ROK);
+      return ROK;
    }
    rgSCHUtlGetPrevDlSfInfo(cell, ackNakTime, &ackNakTime, &repCntr);
    dlSf = rgSCHUtlSubFrmGet (cell, ackNakTime);
@@ -970,7 +841,7 @@ CmLListCp   *dlInactvUeLst;
                /* Start timer */
 #ifdef LTE_TDD
                repCntr = rgSCHAckNakRepFindUlDuration(cell, dlSf, ackNakTime, 
-                     (U8)(ue->ackNakRepCb.repCntr - 1));
+                     (uint8_t)(ue->ackNakRepCb.repCntr - 1));
                rgSCHTmrStartTmr (cell, ue, RG_SCH_TMR_DL_ACKNACK, repCntr);
 #else
                rgSCHTmrStartTmr (cell, ue, RG_SCH_TMR_DL_ACKNACK, 
@@ -980,7 +851,7 @@ CmLListCp   *dlInactvUeLst;
          }
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -1028,37 +899,25 @@ CmLListCp   *dlInactvUeLst;
  *      -# ROK
  **/
 
-#ifdef ANSI
-PUBLIC S16 rgSCHMeasGapANRepGetUlInactvUe
-(
-RgSchCellCb *cell,
-CmLListCp   *ulInactvUeLst
-)
-#else
-PUBLIC S16 rgSCHMeasGapANRepGetUlInactvUe(cell, ulInactvUeLst)
-RgSchCellCb *cell;
-CmLListCp   *ulInactvUeLst;
-#endif
+S16 rgSCHMeasGapANRepGetUlInactvUe(RgSchCellCb *cell,CmLListCp   *ulInactvUeLst)
 {
 
-   U8                offset;
-   CmLList           *node;
-   CmLList           *hqNode;
-   CmLListCp         *queue;
-   RgSchUeCb         *ue;
-   CmLteTimingInfo   ackNakTime;
-   RgSchDlSf         *dlSf;
-   U16               schedTime;
-   U8                pdcchToPuschGap;
-   U8                idx=0;
+   uint8_t         offset;
+   CmLList         *node;
+   CmLList         *hqNode;
+   CmLListCp       *queue;
+   RgSchUeCb       *ue;
+   CmLteTimingInfo ackNakTime;
+   RgSchDlSf       *dlSf;
+   uint16_t        schedTime;
+   uint8_t         pdcchToPuschGap;
+   uint8_t         idx=0;
 #ifdef LTE_TDD
-   U8                repCntr;
+   uint8_t         repCntr;
 #endif
    RgSchDlHqProcCb   *hqP;
    RgSchDlHqTbCb     *tbCb;
-   U32               i;
-
-   TRC2(rgSCHMeasGapANRepGetUlInactvUe);
+   uint32_t          i;
 
    /*ccpu00139481- Meas Gap should be monitored in UL with TFU_ULCNTRL_DLDELTA*/
    schedTime = cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G + cell->crntTime.slot + \
@@ -1126,13 +985,13 @@ CmLListCp   *ulInactvUeLst;
 #ifdef LTE_TDD
    if(cell->ulDlCfgIdx == 5)
    {
-      RETVALUE(ROK);
+      return ROK;
    }
    RG_SCH_ADD_TO_CRNT_TIME(cell->crntTime, ackNakTime, TFU_DELTA);
    if(rgSchTddUlDlSubfrmTbl[cell->ulDlCfgIdx][ackNakTime.subframe] !=
          RG_SCH_TDD_DL_SUBFRAME)
    {
-      RETVALUE(ROK);
+      return ROK;
    }
 #else
    /* Introduced timing delta for DL control in FDD */
@@ -1177,7 +1036,7 @@ CmLListCp   *ulInactvUeLst;
          }
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -1207,21 +1066,10 @@ CmLListCp   *ulInactvUeLst;
  *      -# ROK
  **/
 
-#ifdef ANSI
-PUBLIC Void rgSCHMeasGapANRepDlInactvTmrExpry
-(
-RgSchUeCb *ue,
-U8         tmrEvnt
-)
-#else
-PUBLIC Void rgSCHMeasGapANRepDlInactvTmrExpry(ue, tmrEvnt)
-RgSchUeCb *ue;
-U8         tmrEvnt;
-#endif
+Void rgSCHMeasGapANRepDlInactvTmrExpry(RgSchUeCb *ue,uint8_t tmrEvnt)
 {
 
    RgSchCellCb    *cell = ue->cell;
-   TRC2(rgSCHMeasGapANRepDlInactvTmrExpry);
 
    switch (tmrEvnt)
    {
@@ -1237,7 +1085,7 @@ U8         tmrEvnt;
       cmInitTimers (&ue->measGapCb.measGapDlInactvTmr, 1);
       cmInitTimers (&ue->ackNakRepCb.ackNakRepDlInactvTmr, 1);
    }
-   RETVOID;
+   return;
 }
 
 /**
@@ -1267,20 +1115,9 @@ U8         tmrEvnt;
  *      -# ROK
  **/
 
-#ifdef ANSI
-PUBLIC Void rgSCHMeasGapANRepUlInactvTmrExpry
-(
-RgSchUeCb *ue,
-U8         tmrEvnt
-)
-#else
-PUBLIC Void rgSCHMeasGapANRepUlInactvTmrExpry(ue, tmrEvnt)
-RgSchUeCb *ue;
-U8         tmrEvnt;
-#endif
+Void rgSCHMeasGapANRepUlInactvTmrExpry(RgSchUeCb *ue,uint8_t tmrEvnt)
 {
    RgSchCellCb       *cell = ue->cell;
-   TRC2(rgSCHMeasGapANRepUlInactvTmrExpry);
 
    switch (tmrEvnt)
    {
@@ -1296,7 +1133,7 @@ U8         tmrEvnt;
       cmInitTimers (&ue->measGapCb.measGapUlInactvTmr, 1);
       cmInitTimers (&ue->ackNakRepCb.ackNakRepUlInactvTmr, 1);
    }
-   RETVOID;
+   return;
 }
 
 /**
@@ -1321,23 +1158,13 @@ U8         tmrEvnt;
  *      -# ROK
  **/
 
-#ifdef ANSI
-PUBLIC Void rgSCHMeasGapANRepTmrExpry
-(
-RgSchUeCb *ue
-)
-#else
-PUBLIC Void rgSCHMeasGapANRepTmrExpry(ue)
-RgSchUeCb *ue;
-#endif
+Void rgSCHMeasGapANRepTmrExpry(RgSchUeCb *ue)
 {
-
-   TRC2(rgSCHMeasGapANRepTmrExpry);
 
    ue->measGapCb.isMeasuring = FALSE;
    cmInitTimers (&ue->measGapCb.measGapTmr, 1);
 
-   RETVOID;
+   return;
 }
 
 /**
@@ -1362,23 +1189,13 @@ RgSchUeCb *ue;
  *      -# ROK
  **/
 
-#ifdef ANSI
-PUBLIC Void rgSCHAckNakRepTmrExpry
-(
-RgSchUeCb *ue
-)
-#else
-PUBLIC Void rgSCHAckNakRepTmrExpry(ue)
-RgSchUeCb *ue;
-#endif
+Void rgSCHAckNakRepTmrExpry(RgSchUeCb *ue)
 {
-
-   TRC2(rgSCHAckNakRepTmrExpry);
 
    ue->ackNakRepCb.isAckNakRep = FALSE;
    cmInitTimers (&ue->ackNakRepCb.ackNakRepTmr, 1);
 
-   RETVOID; 
+   return; 
 }
 
 
@@ -1413,26 +1230,14 @@ RgSchUeCb *ue;
  *      -# ROK
  **/
 
-#ifdef ANSI
-PUBLIC Void rgSCHAckNakRepAddToQ
-(
-RgSchCellCb       *cell,
-RgSchDlSf         *crntDlSf
-)
-#else
-PUBLIC Void rgSCHAckNakRepAddToQ(cell, crntDlSf)
-RgSchCellCb          *cell;
-RgSchDlSf            *crntDlSf;
-#endif
+Void rgSCHAckNakRepAddToQ(RgSchCellCb       *cell,RgSchDlSf         *crntDlSf)
 {
    RgSchUeCb         *ue;
    CmLList           *node;
    CmLList           *hqNode;
    RgSchDlHqProcCb   *hqP;
    RgSchDlHqTbCb     *tbCb;
-   U32               i;
-
-   TRC2(rgSCHAckNakRepAddToQ);
+   uint32_t               i;
 
    node = crntDlSf->ueLst.first;
    while (node)
@@ -1458,7 +1263,7 @@ RgSchDlSf            *crntDlSf;
          }
       }
    }
-   RETVOID;
+   return;
 }
 
 
@@ -1476,36 +1281,21 @@ RgSchDlSf            *crntDlSf;
  *  @param[in]  RgSchCellCb  *cell
  *  @param[in]  RgSchDlSf        *dlSf
  *  @param[in]  CmLteTimingInfo  repTime
- *  @param[in]  U8           repCnt
+ *  @param[in]  uint8_t           repCnt
  *
- *  @return  U8
+ *  @return  uint8_t
  *      
  **/
 
-#ifdef ANSI
-PRIVATE U8 rgSCHAckNakRepFindUlDuration
-(
-RgSchCellCb       *cell,
-RgSchDlSf         *dlSf,
-CmLteTimingInfo   repTime,
-U8                repCnt
-)
-#else
-PRIVATE U8 rgSCHAckNakRepFindUlDuration(cell, dlSf, repTime, repCnt)
-RgSchCellCb       *cell;
-RgSchDlSf         *dlSf;
-CmLteTimingInfo   repTime;
-U8                repCnt;
-#endif
+static uint8_t rgSCHAckNakRepFindUlDuration(RgSchCellCb *cell,RgSchDlSf *dlSf,CmLteTimingInfo repTime,uint8_t repCnt)
 {
    CmLteTimingInfo   ulfrm;
-   U8    noSubfrms = 0;
-   U16   ulDlCfgIdx = cell->ulDlCfgIdx;
-   S16               rem = 0;
+   uint8_t    noSubfrms = 0;
+   uint16_t   ulDlCfgIdx = cell->ulDlCfgIdx;
+   S16   rem = 0;
    S16   idx;
-   S8                diff;
+   S8    diff;
 
-   TRC2(rgSCHAckNakRepFindUlDuration)
    rgSCHAckNakRepGetUlOffsetFrmDl(dlSf, repTime, &noSubfrms);
    RG_SCH_ADD_TO_CRNT_TIME(repTime, ulfrm, noSubfrms);
    diff = repCnt-1;
@@ -1522,7 +1312,7 @@ U8                repCnt;
       }
    noSubfrms += rem;
 
-   RETVALUE(noSubfrms);
+   return (noSubfrms);
    }
 
 /**
@@ -1538,27 +1328,14 @@ U8                repCnt;
  *
  *  @param[in]  RgSchDlSf        *dlSf
  *  @param[in]  CmLteTimingInfo  crntDlTime
- *  @param[in]  U8               *noSubfrms
+ *  @param[in]  uint8_t               *noSubfrms
  *
- *  @return  U8
+ *  @return  uint8_t
  *      
  **/
 
-#ifdef ANSI
-PRIVATE Void rgSCHAckNakRepGetUlOffsetFrmDl 
-(
-RgSchDlSf         *dlSf,
-CmLteTimingInfo   crntDlTime,
-U8                *noSubfrms 
-)
-#else
-PRIVATE Void rgSCHAckNakRepGetUlOffsetFrmDl(dlSf, crntDlTime, noSubfrms)
-RgSchDlSf         *dlSf;
-CmLteTimingInfo   crntDlTime;
-U8                *noSubfrms;
-#endif
-         {
-   TRC2(rgSCHAckNakRepGetUlOffsetFrmDl)
+static Void rgSCHAckNakRepGetUlOffsetFrmDl(RgSchDlSf *dlSf,CmLteTimingInfo crntDlTime,uint8_t *noSubfrms )
+{
 
    if(dlSf->dlFdbkInfo.sfnOffset != 0)
             {
@@ -1570,7 +1347,7 @@ U8                *noSubfrms;
    {
       *noSubfrms = dlSf->dlFdbkInfo.subframe - crntDlTime.subframe;
    }
-   RETVOID;
+   return;
 }
 #endif
 

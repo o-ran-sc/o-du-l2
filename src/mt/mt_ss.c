@@ -36,9 +36,6 @@
 #define _POSIX_C_SOURCE         199309L
 #endif
 /* mt003.301 moved env files to use the __USE_UNIX98 flag in sys includes */
-#include "envopt.h"        /* environment options */
-#include "envdep.h"        /* environment dependent */
-#include "envind.h"        /* environment independent */
 
 #include <fcntl.h>
 #include <pthread.h>
@@ -62,11 +59,7 @@
 /* header include files (.h) */
 
 
-#include "gen.h"           /* general layer */
-#include "ssi.h"           /* system services */
-
-#include "cm5.h"           /* common timers */
-
+#include "common_def.h"
 #include "mt_ss.h"         /* MTSS specific */
 #include "mt_err.h"        /* MTSS error defines */
 
@@ -78,7 +71,6 @@
 /* mt003.301 Additions - Task deregistration */
 #include "ss_err.h"        /* error */
 #include "cm_mem.h"        /* common memory manager */
-#include "cm_lte.h"        /* common lte param */
 /* mt001.301 : Additions */
 #ifdef SS_THREAD_PROFILE
 #include "ss_err.h"
@@ -109,6 +101,12 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #endif /* SS_WATCHDOG */
+
+#ifdef SS_USE_WLS_MEM
+#include <rte_common.h>
+#include <rte_debug.h>
+#include <rte_eal.h>
+#endif
 
 /* header/extern include files (.x) */
 
@@ -161,24 +159,20 @@
 #include "sys/syscall.h"
 #endif
 
-#if defined(RGL_SPECIFIC_CHANGES) || defined(INTEL_WLS)
+#if defined(RGL_SPECIFIC_CHANGES) || defined(INTEL_WLS) || defined(SS_USE_WLS_MEM)
 #include <wls_lib.h>
 #include <hugetlbfs.h>
 #endif
 
-#ifdef INTEL_WLS
-EXTERN void LwrMacRecvPhyMsg();
-#endif
-
 #if defined(SPLIT_RLC_DL_TASK) && defined(RLC_MAC_STA_RSP_RBUF)
-EXTERN S16 rgBatchProc (Void);
+S16 rgBatchProc (Void);
 #endif
 #ifdef RLC_MAC_DAT_REQ_RBUF
-EXTERN S16 rgDlDatReqBatchProc ARGS(( 
+S16 rgDlDatReqBatchProc ARGS(( 
          Void));
 #endif
 #if defined(SPLIT_RLC_DL_TASK) && defined(RLC_MAC_STA_RSP_RBUF)
-EXTERN S16 rgBatchProc ARGS((
+S16 rgBatchProc ARGS((
     Void));
 #endif  
 
@@ -210,14 +204,7 @@ Void cmPrcTmr ARGS((CmTqCp* tqCp, CmTqType* tq, PFV func));
 
 void            dump_external(void);
 
-#ifdef ANSI
-PRIVATE Void mtDelSigals
-(
-Void
-)
-#else
-PRIVATE Void mtDelSignals()
-#endif
+static Void mtDelSigals(Void)
 {
    struct sigaction sa;
 
@@ -231,7 +218,7 @@ PRIVATE Void mtDelSignals()
    sa.sa_handler = SIG_DFL;
    sigaction(SIGILL, &sa, NULL);
 
-   RETVOID;
+   return;
 }
 static void signal_segv(int signum, siginfo_t * info, void *ptr)
 {
@@ -326,90 +313,90 @@ typedef struct _SPThreadCreateArg
    void *(*start_routine) (void *); /* function from which pthread starts */   
 }SPThreadCreateArg;
 
-PUBLIC void *pthreadCreateHdlr(void*  arg);
+void *pthreadCreateHdlr(void*  arg);
 
 #ifdef SS_LOCKLESS_MEMORY
-PUBLIC Buffer *mtTskBuffer1;
-PUBLIC Buffer *mtTskBuffer2;
+Buffer *mtTskBuffer1;
+Buffer *mtTskBuffer2;
 
-EXTERN pthread_t tmpRegTidMap[20];
-EXTERN U8 stopBtInfo;
-EXTERN  S16 SGlobMemInfoShow(void);
+pthread_t tmpRegTidMap[20];
+uint8_t stopBtInfo;
+ S16 SGlobMemInfoShow(void);
 #endif /* SS_LOCKLESS_MEMORY */
 
 #ifdef L2_L3_SPLIT
-EXTERN APP_CONTEXT AppContext;
-EXTERN S32 clusterMode;
+APP_CONTEXT AppContext;
+S32 clusterMode;
 #endif
 
 #ifdef TENB_T2K3K_SPECIFIC_CHANGES
-EXTERN unsigned int tlPost(void *handle);
+unsigned int tlPost(void *handle);
 #endif
 
 /* forward references */
 /* mt003.301 Modifications - Moved to ss_gen.x */
 #ifdef TENB_T2K3K_SPECIFIC_CHANGES
-PUBLIC Void *mtTskHdlrT2kL2 ARGS((Void*));
-PUBLIC  void mtSigSegvHndlr ARGS((void));
-PUBLIC  void mtSigUsr2Hndlr ARGS((void));
+Void *mtTskHdlrT2kL2 ARGS((Void*));
+ void mtSigSegvHndlr ARGS((void));
+ void mtSigUsr2Hndlr ARGS((void));
 #endif
 
-PRIVATE S16 ssdSetPthreadAttr ARGS ((S32 tskPrior, pthread_attr_t *attr));
-PRIVATE Void *mtTskHdlr ARGS((void *));
-PRIVATE S16 mtTskHdlMsg ARGS((SsSTskEntry *sTsk));
+static S16 ssdSetPthreadAttr ARGS ((S32 tskPrior, pthread_attr_t *attr));
+static Void *mtTskHdlr ARGS((void *));
+static S16 mtTskHdlMsg ARGS((SsSTskEntry *sTsk));
 
-PRIVATE Void *mtTmrHdlr ARGS((void *));
-PRIVATE Void mtTimeout ARGS((PTR tCb, S16 evnt));
+static Void *mtTmrHdlr ARGS((void *));
+static Void mtTimeout ARGS((PTR tCb, S16 evnt));
 
 /*mt010.301 Fix for core when run with -o option and when killed with SIGINT*/
-PRIVATE Void mtIntSigHndlr ARGS((int));
-PRIVATE Void mtExitClnup ARGS((void));
+static Void mtIntSigHndlr ARGS((int));
+static Void mtExitClnup ARGS((void));
 
 #ifdef CONAVL
-PRIVATE Void *mtConHdlr ARGS((void *));
+static Void *mtConHdlr ARGS((void *));
 #endif
 
 #ifndef L2_L3_SPLIT
 #ifdef SS_DRVR_SUPPORT
-PRIVATE Void *mtIsTskHdlr ARGS((void *));
+static Void *mtIsTskHdlr ARGS((void *));
 #endif
 #endif
 
 /* mt020.201 - Addition for no command line available */
 #ifndef NOCMDLINE
-PRIVATE Void mtGetOpts ARGS((void));
+static Void mtGetOpts ARGS((void));
 /* mt003.301 Additions - File Based task registration made
  * common for both MULTICORE and NON-MULTICORE
  */
-PRIVATE Bool fileBasedMemCfg = FALSE;
+static Bool fileBasedMemCfg = FALSE;
 #endif
 
 /* mt033.201 - addition of local function to print the statistics such as
 * (size vs. numAttempts) and (allocations vs. deallocations)
 */
 #ifdef SSI_DEBUG_LEVEL1
-PRIVATE S16 SPrintRegMemStats ARGS((Region region));
+static S16 SPrintRegMemStats ARGS((Region region));
 #endif /* SSI_DEBUG_LEVEL1 */
 
 #ifdef SS_MULTICORE_SUPPORT
-PRIVATE SsSTskEntry* ssdAddTmrSTsk(Void);
-PRIVATE SsSTskEntry* ssdReAddTmrSTsk ARGS((U8 idx));
+static SsSTskEntry* ssdAddTmrSTsk(Void);
+static SsSTskEntry* ssdReAddTmrSTsk ARGS((uint8_t idx));
 #ifndef SS_LOCKLESS_MEMORY
 #ifndef RGL_SPECIFIC_CHANGES
-PRIVATE S16 ssdInitMemInfo ARGS((void));
+static S16 ssdInitMemInfo ARGS((void));
 #endif
 #endif
 #endif
 
 /* mt005.301: Cavium changes */
 #ifdef SS_SEUM_CAVIUM
-PRIVATE Void *workRcvTsk ARGS((void *));
+static Void *workRcvTsk ARGS((void *));
 #endif /* SS_SEUM_CAVIUM */
 
 #ifdef SS_THR_REG_MAP
-PUBLIC S32 ssCheckAndAddMemoryRegionMap ARGS((pthread_t  threadId,
+S32 ssCheckAndAddMemoryRegionMap ARGS((pthread_t  threadId,
                                                Region region));
-PUBLIC S32 ssCheckAndDelMemoryRegionMap ARGS((pthread_t  threadId));
+S32 ssCheckAndDelMemoryRegionMap ARGS((pthread_t  threadId));
 #endif /* SS_THR_REG_MAP */
 
 /* type declarations */
@@ -417,8 +404,8 @@ PUBLIC S32 ssCheckAndDelMemoryRegionMap ARGS((pthread_t  threadId));
 #ifdef SS_DRVR_SUPPORT
 typedef struct mtIsFlag
 {
-   U16 id;
-   U8 action;
+   uint16_t id;
+   uint8_t  action;
 
 } MtIsFlag;
 #endif
@@ -427,13 +414,13 @@ typedef struct mtIsFlag
 
 /* public variable declarations */
 
-PUBLIC Cntr cfgNumRegs = SS_MAX_REGS;
+Cntr cfgNumRegs = SS_MAX_REGS;
 /* Set memory configuration as false.
  * Set to true if memory configuration through file is successfull.
  */
-PUBLIC Bool memConfigured = FALSE;
+Bool memConfigured = FALSE;
 /* mt022.201 - Modification for shared memory relay region and memcal tool */
-PUBLIC SsRegCfg cfgRegInfo[SS_MAX_REGS] =
+SsRegCfg cfgRegInfo[SS_MAX_REGS] =
 {
    {
       SS_DFLT_REGION, SS_MAX_POOLS_PER_REG - 1,
@@ -442,6 +429,7 @@ PUBLIC SsRegCfg cfgRegInfo[SS_MAX_REGS] =
          { SS_POOL_DYNAMIC, MT_POOL_1_DSIZE },
          { SS_POOL_DYNAMIC, MT_POOL_2_DSIZE },
          { SS_POOL_DYNAMIC, MT_POOL_3_DSIZE },
+	 { SS_POOL_DYNAMIC, MT_POOL_4_DSIZE },
          { SS_POOL_STATIC, 0 }
       }
    }
@@ -468,6 +456,7 @@ PUBLIC SsRegCfg cfgRegInfo[SS_MAX_REGS] =
          { SS_POOL_DYNAMIC, MT_POOL_1_DSIZE },
          { SS_POOL_DYNAMIC, MT_POOL_2_DSIZE },
          { SS_POOL_DYNAMIC, MT_POOL_3_DSIZE },
+	 { SS_POOL_DYNAMIC, MT_POOL_4_DSIZE },
          { SS_POOL_STATIC, 0 }
       }
    },
@@ -478,6 +467,7 @@ PUBLIC SsRegCfg cfgRegInfo[SS_MAX_REGS] =
          { SS_POOL_DYNAMIC, MT_POOL_1_DSIZE },
          { SS_POOL_DYNAMIC, MT_POOL_2_DSIZE },
          { SS_POOL_DYNAMIC, MT_POOL_3_DSIZE },
+	 { SS_POOL_DYNAMIC, MT_POOL_4_DSIZE },
          { SS_POOL_STATIC, 0 }
       }
    },
@@ -488,6 +478,7 @@ PUBLIC SsRegCfg cfgRegInfo[SS_MAX_REGS] =
          { SS_POOL_DYNAMIC, MT_POOL_1_DSIZE },
          { SS_POOL_DYNAMIC, MT_POOL_2_DSIZE },
          { SS_POOL_DYNAMIC, MT_POOL_3_DSIZE },
+	 { SS_POOL_DYNAMIC, MT_POOL_4_DSIZE },
          { SS_POOL_STATIC, 0 }
       }
    }, 
@@ -498,9 +489,33 @@ PUBLIC SsRegCfg cfgRegInfo[SS_MAX_REGS] =
          { SS_POOL_DYNAMIC, MT_POOL_1_DSIZE },
          { SS_POOL_DYNAMIC, MT_POOL_2_DSIZE },
          { SS_POOL_DYNAMIC, MT_POOL_3_DSIZE },
+	 { SS_POOL_DYNAMIC, MT_POOL_4_DSIZE },
          { SS_POOL_STATIC, 0 }
       }
-   } 
+   },
+   {
+      SS_DFLT_REGION + 5, SS_MAX_POOLS_PER_REG - 1,
+      {
+         { SS_POOL_DYNAMIC, MT_POOL_0_DSIZE },
+         { SS_POOL_DYNAMIC, MT_POOL_1_DSIZE },
+         { SS_POOL_DYNAMIC, MT_POOL_2_DSIZE },
+         { SS_POOL_DYNAMIC, MT_POOL_3_DSIZE },
+         { SS_POOL_DYNAMIC, MT_POOL_4_DSIZE },
+         { SS_POOL_STATIC, 0 }
+      }
+   },
+   {
+      SS_DFLT_REGION + 6, SS_MAX_POOLS_PER_REG - 1,
+      {
+         { SS_POOL_DYNAMIC, MT_POOL_0_DSIZE },
+         { SS_POOL_DYNAMIC, MT_POOL_1_DSIZE },
+         { SS_POOL_DYNAMIC, MT_POOL_2_DSIZE },
+         { SS_POOL_DYNAMIC, MT_POOL_3_DSIZE },
+         { SS_POOL_DYNAMIC, MT_POOL_4_DSIZE },
+         { SS_POOL_STATIC, 0 }
+      }
+   }
+
 #endif /* SS_LOCKLESS_MEMORY */
 };
 /* mt003.301 Modifications - File Based task registration made
@@ -508,7 +523,7 @@ PUBLIC SsRegCfg cfgRegInfo[SS_MAX_REGS] =
  */
 
 #ifdef SS_LOCKLESS_MEMORY
-PUBLIC MtDynMemCfg mtDynMemoCfg =
+MtDynMemCfg mtDynMemoCfg =
 {
   SS_MAX_REGS,                                /* number of regions */
   {
@@ -520,7 +535,8 @@ PUBLIC MtDynMemCfg mtDynMemoCfg =
            {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
            {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
            {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD} 
+           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD}, 
+	   {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD}
         }
      },
      {
@@ -531,7 +547,8 @@ PUBLIC MtDynMemCfg mtDynMemoCfg =
            {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
            {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
            {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD} 
+           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+  	   {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD} 
         }
      },
      {
@@ -542,7 +559,8 @@ PUBLIC MtDynMemCfg mtDynMemoCfg =
            {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
            {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
            {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD} 
+           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	   {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD}
         }
      },
       {
@@ -553,7 +571,8 @@ PUBLIC MtDynMemCfg mtDynMemoCfg =
            {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
            {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
            {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD} 
+           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	   {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD} 
         }
      },
       {
@@ -564,13 +583,38 @@ PUBLIC MtDynMemCfg mtDynMemoCfg =
            {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
            {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
            {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD} 
+           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	   {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD}
+        }
+     },
+     {
+        SS_DFLT_REGION + 5,                         /* region id */
+        MT_MAX_BKTS,                            /* number of buckets */
+        {
+           /* block size, no. of blocks, Upper threshold, lower threshold */
+           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD}
+        }
+     },
+     {
+        SS_DFLT_REGION + 6,                         /* region id */
+        MT_MAX_BKTS,                            /* number of buckets */
+        {
+           /* block size, no. of blocks, Upper threshold, lower threshold */
+           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD}
         }
      }
 #if ((defined (SPLIT_RLC_DL_TASK)) && (!defined (L2_L3_SPLIT)))
      ,
      {
-        SS_DFLT_REGION + 4,                         /* region id */
+        SS_DFLT_REGION + 7,                         /* region id */
         MT_MAX_BKTS,                            /* number of buckets */
         {
            /* block size, no. of blocks, Upper threshold, lower threshold */
@@ -585,7 +629,7 @@ PUBLIC MtDynMemCfg mtDynMemoCfg =
 
 };
 
-PUBLIC MtGlobMemCfg mtGlobMemoCfg =
+MtGlobMemCfg mtGlobMemoCfg =
 {
    MT_MAX_BKTS,                            /* number of buckets */
    {
@@ -594,7 +638,8 @@ PUBLIC MtGlobMemCfg mtGlobMemoCfg =
       {MT_BKT_0_DSIZE, (MT_BKT_0_NUMBLKS + MT_BKT_0_NUMBLKS), SS_DFLT_MEM_BLK_SET_SIZE},
       {MT_BKT_1_DSIZE, MT_BKT_1_NUMBLKS, SS_DFLT_MEM_BLK_SET_SIZE},
       {MT_BKT_2_DSIZE, MT_BKT_2_NUMBLKS, SS_DFLT_MEM_BLK_SET_SIZE},
-      {MT_BKT_3_DSIZE, MT_BKT_3_NUMBLKS, SS_DFLT_MEM_BLK_SET_SIZE}
+      {MT_BKT_3_DSIZE, MT_BKT_3_NUMBLKS, SS_DFLT_MEM_BLK_SET_SIZE},
+      {MT_BKT_4_DSIZE, MT_BKT_4_NUMBLKS, SS_DFLT_MEM_BLK_SET_SIZE}
 #else
       {1024, 12800 /* MT_BKT_0_NUMBLKS */, SS_DFLT_MEM_BLK_SET_SIZE},
       {1664, 12800 /* MT_BKT_1_NUMBLKS */, SS_DFLT_MEM_BLK_SET_SIZE},
@@ -607,7 +652,7 @@ PUBLIC MtGlobMemCfg mtGlobMemoCfg =
 
 /* mt022.201 - Modification for memory calculator tool */
 /* mt018.201 - added memory configuration matrix */
-PUBLIC MtMemCfg mtMemoCfg =
+MtMemCfg mtMemoCfg =
 {
 #ifdef  RY_ENBS5SHM
   SS_MAX_REGS - 1,                            /* number of regions */
@@ -628,7 +673,8 @@ PUBLIC MtMemCfg mtMemoCfg =
          {MT_BKT_0_DSIZE, MT_BKT_0_STATIC_NUMBLKS},   /* block size, no. of blocks */
          {MT_BKT_1_DSIZE, MT_BKT_1_STATIC_NUMBLKS},    /* block size, no. of blocks */
          {MT_BKT_2_DSIZE, MT_BKT_2_STATIC_NUMBLKS},   /* block size, no. of blocks */
-         {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS}    /* block size, no. of blocks */
+         {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS},    /* block size, no. of blocks */
+         {MT_BKT_4_DSIZE, MT_BKT_4_STATIC_NUMBLKS}
 #else
          {256, 491520}, /* 60 pages of 2M*/
          {512, 12288},  /* 3 pages of 2M */
@@ -667,7 +713,8 @@ PUBLIC MtMemCfg mtMemoCfg =
         {MT_BKT_0_DSIZE, MT_BKT_0_STATIC_NUMBLKS},   /* block size, no. of blocks */
         {MT_BKT_1_DSIZE, MT_BKT_1_STATIC_NUMBLKS},    /* block size, no. of blocks */
         {MT_BKT_2_DSIZE, MT_BKT_2_STATIC_NUMBLKS},   /* block size, no. of blocks */
-        {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS}    /* block size, no. of blocks */
+        {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS},    /* block size, no. of blocks */
+        {MT_BKT_4_DSIZE, MT_BKT_4_STATIC_NUMBLKS}    /* block size, no. of blocks */
       }
     },
     {
@@ -678,7 +725,8 @@ PUBLIC MtMemCfg mtMemoCfg =
         {MT_BKT_0_DSIZE, MT_BKT_0_STATIC_NUMBLKS},   /* block size, no. of blocks */
         {MT_BKT_1_DSIZE, MT_BKT_1_STATIC_NUMBLKS},    /* block size, no. of blocks */
         {MT_BKT_2_DSIZE, MT_BKT_2_STATIC_NUMBLKS},   /* block size, no. of blocks */
-        {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS}    /* block size, no. of blocks */
+        {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS},    /* block size, no. of blocks */
+	{MT_BKT_4_DSIZE, MT_BKT_4_STATIC_NUMBLKS}    /* block size, no. of blocks */
       }
     },
      {
@@ -689,7 +737,8 @@ PUBLIC MtMemCfg mtMemoCfg =
         {MT_BKT_0_DSIZE, MT_BKT_0_STATIC_NUMBLKS},   /* block size, no. of blocks */
         {MT_BKT_1_DSIZE, MT_BKT_1_STATIC_NUMBLKS},    /* block size, no. of blocks */
         {MT_BKT_2_DSIZE, MT_BKT_2_STATIC_NUMBLKS},   /* block size, no. of blocks */
-        {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS}    /* block size, no. of blocks */
+        {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS},    /* block size, no. of blocks */
+	{MT_BKT_4_DSIZE, MT_BKT_4_STATIC_NUMBLKS}    /* block size, no. of blocks */
       }
     },
     {
@@ -700,10 +749,34 @@ PUBLIC MtMemCfg mtMemoCfg =
           {MT_BKT_0_DSIZE, MT_BKT_0_STATIC_NUMBLKS},   /* block size, no. of blocks */
           {MT_BKT_1_DSIZE, MT_BKT_1_STATIC_NUMBLKS},    /* block size, no. of blocks */
           {MT_BKT_2_DSIZE, MT_BKT_2_STATIC_NUMBLKS},   /* block size, no. of blocks */
-          {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS}    /* block size, no. of blocks */
+          {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS},    /* block size, no. of blocks */
+	  {MT_BKT_4_DSIZE, MT_BKT_4_STATIC_NUMBLKS}    /* block size, no. of blocks */
+       }
+    },
+    {
+       SS_DFLT_REGION + 5,                         /* region id */
+       MT_MAX_BKTS,                            /* number of buckets */
+       MT_HEAP_SIZE,                           /* heap size */
+       {
+          {MT_BKT_0_DSIZE, MT_BKT_0_STATIC_NUMBLKS},   /* block size, no. of blocks */
+          {MT_BKT_1_DSIZE, MT_BKT_1_STATIC_NUMBLKS},    /* block size, no. of blocks */
+          {MT_BKT_2_DSIZE, MT_BKT_2_STATIC_NUMBLKS},   /* block size, no. of blocks */
+          {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS},    /* block size, no. of blocks */
+          {MT_BKT_4_DSIZE, MT_BKT_4_STATIC_NUMBLKS}    /* block size, no. of blocks */
+       }
+    },
+    {
+       SS_DFLT_REGION + 5,                         /* region id */
+       MT_MAX_BKTS,                            /* number of buckets */
+       MT_HEAP_SIZE,                           /* heap size */
+       {
+          {MT_BKT_0_DSIZE, MT_BKT_0_STATIC_NUMBLKS},   /* block size, no. of blocks */
+          {MT_BKT_1_DSIZE, MT_BKT_1_STATIC_NUMBLKS},    /* block size, no. of blocks */
+          {MT_BKT_2_DSIZE, MT_BKT_2_STATIC_NUMBLKS},   /* block size, no. of blocks */
+          {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS},    /* block size, no. of blocks */
+          {MT_BKT_4_DSIZE, MT_BKT_4_STATIC_NUMBLKS}    /* block size, no. of blocks */
        }
     }
-
 #endif /* SS_LOCKLESS_MEMORY */
     STATIC_MEM_CFG
   }
@@ -713,34 +786,41 @@ PUBLIC MtMemCfg mtMemoCfg =
  * bucket info, as different regions may request for different no.
  * of blocks
  */
-PUBLIC MtBktCfg mtBktInfo[MT_MAX_BKTS];
-PUBLIC S16 msArgc;              /* argc */
-PUBLIC Txt **msArgv;            /* argv */
-PUBLIC S16 msOptInd;            /* SGetOpt vars */
-PUBLIC S8 *msOptArg;            /* SGetOpt vars */
+MtBktCfg mtBktInfo[MT_MAX_BKTS];
+S16 msArgc;              /* argc */
+Txt **msArgv;            /* argv */
+S16 msOptInd;            /* SGetOpt vars */
+S8 *msOptArg;            /* SGetOpt vars */
 
 
-#ifdef INTEL_WLS
+#if defined (INTEL_WLS) || defined (SS_USE_WLS_MEM)
 typedef struct _MtRegMemSz
 {
-   U32   reqdSz;
-   U8    *startAddr;
+   uint32_t   reqdSz;
+   uint8_t    *startAddr;
 }MtRegMemSz;
 
-PRIVATE MtRegMemSz mtRegMemSz[MT_MAX_BKTS+1];
+#ifdef SS_USE_WLS_MEM
+static MtRegMemSz mtDynMemSz[MT_MAX_BKTS];
+static S16 SPartitionWlsDynMem();
+static S16 SAllocateWlsDynMem();
+#endif
+#ifdef INTEL_WLS
+static MtRegMemSz mtRegMemSz[MT_MAX_BKTS+1];
+#endif
 #endif
 
 
 /* private variable declarations */
 /* mt018.201 - change mtCMMRegCfg as array of pointers */
-PRIVATE CmMmRegCfg *mtCMMRegCfg[SS_MAX_REGS];
-PRIVATE CmMmRegCb *mtCMMRegCb[SS_MAX_REGS];
+static CmMmRegCfg *mtCMMRegCfg[SS_MAX_REGS];
+static CmMmRegCb *mtCMMRegCb[SS_MAX_REGS];
 /* mt003.301 - Fixed compilation warnings */
 /*mt004.301-addede new veriable for FAP*/
 /*mt010.301 - removed veriable defined for FA*/
 
 
-#ifdef INTEL_WLS
+#if defined (INTEL_WLS) || defined (SS_USE_WLS_MEM)
 
 #ifdef NTL_LIB
 void mtSetNtlHdl(unsigned int hdl)
@@ -754,21 +834,33 @@ unsigned int mtGetNtlHdl()
 }
 
 #endif  /* NTL_LIB */
-
-void * mtGetWlsHdl()
+void mtGetWlsHdl(void **hdlr)
 {
-   RETVALUE(osCp.wls.intf);
-}
+   *hdlr = osCp.wls.intf;
+}	
 
 #ifdef XEON_MULTIPLE_CELL_CHANGES
-EXTERN S8 gWrWlsDeviceName[MAX_WLS_DEVICE_NAME_LEN];
-EXTERN S16 smWrReadWlsConfigParams (Void);
+S8 gWrWlsDeviceName[MAX_WLS_DEVICE_NAME_LEN];
+S16 smWrReadWlsConfigParams (Void);
 #endif
 
-PRIVATE int SOpenWlsIntf()
+static int SOpenWlsIntf()
 {
+   uint8_t i;
    void *hdl;
-   #define WLS_DEVICE_NAME "/dev/wls"
+   #define WLS_DEVICE_NAME "wls0"
+   
+   char *my_argv[] = {"gnodeb", "-c3", "--proc-type=auto", "--file-prefix", WLS_DEVICE_NAME, "--iova-mode=pa"};
+   printf("Calling rte_eal_init: ");
+   for (i = 0; i < RTE_DIM(my_argv); i++)
+   {
+       printf("%s ", my_argv[i]); 
+   }
+   printf("\n");
+
+   if (rte_eal_init(RTE_DIM(my_argv), my_argv) < 0)
+       rte_panic("Cannot init EAL\n");
+
 
 #ifdef XEON_SPECIFIC_CHANGES
 #ifdef XEON_MULTIPLE_CELL_CHANGES
@@ -777,7 +869,7 @@ PRIVATE int SOpenWlsIntf()
    hdl = WLS_Open(WLS_DEVICE_NAME, 1);
 #endif
 #else
-   hdl = WLS_Open(WLS_DEVICE_NAME, WLS_MASTER_CLIENT, (512 *1024 * 1024));
+   hdl = WLS_Open(WLS_DEVICE_NAME, WLS_MASTER_CLIENT, WLS_MEM_SIZE);
 #endif
 
    osCp.wls.intf = hdl;
@@ -785,10 +877,10 @@ PRIVATE int SOpenWlsIntf()
    if(!osCp.wls.intf)
    {
      printf("Could not open WLS Interface \n");
-     RETVALUE(0);
+     return (0);
    }
 
-   RETVALUE(1);
+   return (1);
 }
 #endif
 
@@ -811,32 +903,25 @@ PRIVATE int SOpenWlsIntf()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC int main
+int main
 (
 int argc,                       /* argument count */
 char **argv                     /* argument vector */
 )
-#else
-PUBLIC int main(argc, argv)
-int argc;                       /* argument count */
-char **argv;                    /* argument vector */
-#endif
 {
-   TRC0(main);
 
 #ifdef XEON_MULTIPLE_CELL_CHANGES
    /* Read the WLS parameters from the file and copy into global control block */
    if(smWrReadWlsConfigParams() != ROK)
    {
       fprintf(stderr, "Failed to read WLS params from file wr_cfg.txt");
-      RETVALUE(RFAILED);
+      return RFAILED;
    } /* end of if statement */
 #endif
 
-#ifdef INTEL_WLS
+#if defined (INTEL_WLS) || defined (SS_USE_WLS_MEM)
    if(!SOpenWlsIntf())
-    RETVALUE(0);
+    return (0);
 #endif /* INTEL_WLS */
 
    msArgc = argc;
@@ -847,11 +932,11 @@ char **argv;                    /* argument vector */
 		printf("\n SInit failed, SSI could not start \n");
 		/* pthread_exit(NULLP);*/ /* Commented to Come out of Main thread*/
 
-		RETVALUE(0);
+		return (0);
 	}
    /*mt010.301  cleanup part exposed to user*/
    SFini();
-   RETVALUE(0);
+   return (0);
 }
 
 #else
@@ -872,19 +957,12 @@ char **argv;                    /* argument vector */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC int ssMain
+int ssMain
 (
 int argc,                       /* argument count */
 char **argv                     /* argument vector */
 )
-#else
-PUBLIC int ssMain(argc, argv)
-int argc;                       /* argument count */
-char **argv;                    /* argument vector */
-#endif
 {
-   TRC0(ssMain);
 
 
    msArgc = argc;
@@ -893,7 +971,7 @@ char **argv;                    /* argument vector */
 
    SInit();
 
-   RETVALUE(0);
+   return (0);
 }
 
 #endif
@@ -915,14 +993,7 @@ char **argv;                    /* argument vector */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 ssdInitGen
-(
-void
-)
-#else
-PUBLIC S16 ssdInitGen()
-#endif
+S16 ssdInitGen(void)
 {
    struct sigaction act;
    sigset_t set;
@@ -930,7 +1001,6 @@ PUBLIC S16 ssdInitGen()
    struct sigaction sa;
 #endif
 
-   TRC0(ssdInitGen);
 
   /*mt014.301 : 4GMX release related changes*/
 #ifdef SS_4GMX_UCORE
@@ -952,7 +1022,7 @@ PUBLIC S16 ssdInitGen()
 	if(fileBasedMemCfg == TRUE && memConfigured == FALSE)
 	{
 		printf("\n File Based Memory configuration failed \n");
-		RETVALUE(RFAILED);
+		return RFAILED;
 	}
 #endif
 
@@ -968,7 +1038,7 @@ PUBLIC S16 ssdInitGen()
    /* initialize the started semaphore */
    if (sem_init(&osCp.dep.ssStarted, 0, 0) != 0)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* mt028.201 added compile time flag to allow not to mask signals */
@@ -1012,27 +1082,27 @@ PUBLIC S16 ssdInitGen()
     if(sigaction(SIGILL, &sa, NULL) != 0)
     {
        printf("Failed to process sigaction for the SIGILL\n");
-       RETVALUE(RFAILED);
+       return RFAILED;
     }
     if(sigaction(SIGSEGV, &sa, NULL) != 0)
     {
        printf("Failed to process sigaction for the SIGSEGV\n");
-       RETVALUE(RFAILED);
+       return RFAILED;
     }
     if(sigaction(SIGABRT, &sa, NULL) != 0)
     {
        printf("Failed to process sigaction for the SIGABRT\n");
-       RETVALUE(RFAILED);
+       return RFAILED;
     }
     if(sigaction(SIGTERM, &sa, NULL) != 0)
     {
        printf("Failed to process sigaction for the SIGTERM\n");
-       RETVALUE(RFAILED);
+       return RFAILED;
     }
     if(sigaction(SIGHUP, &sa, NULL) != 0)
     {
        printf("Failed to process sigaction for the SIGHUP\n");
-       RETVALUE(RFAILED);
+       return RFAILED;
     }
 #endif    
 #else
@@ -1051,14 +1121,14 @@ PUBLIC S16 ssdInitGen()
    act.sa_flags = 0;
    if (sigaction(SIGINT, &act, NULLP) != 0)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
    /* mt040.201 initialise random seed */
    osCp.dep.randSeed = time(NULLP);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -1075,22 +1145,14 @@ PUBLIC S16 ssdInitGen()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC Void ssdDeinitGen
-(
-void
-)
-#else
-PUBLIC Void ssdDeinitGen()
-#endif
+Void ssdDeinitGen(void)
 {
-   TRC0(ssdDeinitGen);
 
 
    sem_destroy(&osCp.dep.ssStarted);
 
 
-   RETVOID;
+   return;
 }
 #ifdef SS_LOCKLESS_MEMORY
 #ifdef USE_MALLOC
@@ -1109,31 +1171,24 @@ PUBLIC Void ssdDeinitGen()
 *       File:  cm_mem.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 ssPutDynMemBlkSet
+S16 ssPutDynMemBlkSet
 (
-U8                    bktIdx,        /* Index to bucket list */
+uint8_t                    bktIdx,        /* Index to bucket list */
 CmMmBlkSetElement    *dynMemSetElem  /* Memory set element which is needs to be 
                                         added to global region */
 )
-#else
-PUBLIC S16 ssPutDynMemBlkSet(bktIdx, dynMemSetElem)
-U8                    bktIdx;        /* Index to bucket list */
-CmMmBlkSetElement    *dynMemSetElem; /* Memory set element which is needs to be 
-                                        added to global region */
-#endif
 {
    CmMmGlobRegCb        *globReg;
    CmMmGlobalBktCb      *bktCb;
    Data                 *blkPtr;
-   U8                    blkCnt;
+   uint8_t                    blkCnt;
 
    globReg = osCp.globRegCb;
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if(bktIdx >= globReg->numBkts)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -1149,7 +1204,7 @@ CmMmBlkSetElement    *dynMemSetElem; /* Memory set element which is needs to be
    dynMemSetElem->nextBktPtr = NULLP;
    dynMemSetElem->numFreeBlks = 0;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -1167,33 +1222,26 @@ CmMmBlkSetElement    *dynMemSetElem; /* Memory set element which is needs to be
 *       File:  cm_mem.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 ssGetDynMemBlkSet
+S16 ssGetDynMemBlkSet
 (
-U8                     bktIdx,        /* Index to bucket list */
+uint8_t               bktIdx,        /* Index to bucket list */
 CmMmBlkSetElement     *dynMemSetElem  /* Memory set element which is updated 
                                       with new set values */
 )
-#else
-PUBLIC S16 ssGetDynMemBlkSet(bktIdx, dynMemSetElem)
-U8                     bktIdx;        /* Index to bucket list */
-CmMmBlkSetElement     *dynMemSetElem; /* Memory set element which is updated 
-                                      with new set values */
-#endif
 {
 
    CmMmGlobRegCb        *globReg;
    CmMmGlobalBktCb      *bktCb;
    Data                **basePtr;
    Data                 *blkPtr;
-   U8                    blkCnt;
+   uint8_t                    blkCnt;
 
    globReg = osCp.globRegCb;
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if(bktIdx >= globReg->numBkts)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -1209,7 +1257,7 @@ CmMmBlkSetElement     *dynMemSetElem; /* Memory set element which is updated
 
    dynMemSetElem->numFreeBlks = bktCb->bucketSetSize;
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* ssGetDynMemBlkSet */
 
@@ -1229,21 +1277,13 @@ CmMmBlkSetElement     *dynMemSetElem; /* Memory set element which is updated
 *       File:  cm_mem.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 ssPutDynMemBlkSet
+S16 ssPutDynMemBlkSet
 (
-U8                    bktIdx,               /* Index to bucket list */
+uint8_t              bktIdx,               /* Index to bucket list */
 CmMmBlkSetElement    *dynMemSetElem,        /* Memory set element which is needs to be 
                                                added to global region */
-U32                    doNotBlockForLock    /* Boolean whether to block for lock or not */
+uint32_t             doNotBlockForLock    /* Boolean whether to block for lock or not */
 )
-#else
-PUBLIC S16 ssPutDynMemBlkSet(bktIdx, dynMemSetElem)
-U8                    bktIdx;               /* Index to bucket list */
-CmMmBlkSetElement    *dynMemSetElem;        /* Memory set element which is needs to be 
-                                               added to global region */
-U32                    doNotBlockForLock;   /* Boolean whether to block for lock or not */
-#endif
 {
    CmMmGlobRegCb       *globReg;
    CmMmGlobalBktCb     *bktCb;
@@ -1251,14 +1291,13 @@ U32                    doNotBlockForLock;   /* Boolean whether to block for lock
    CmMmBlkSetElement   *globMemNode;
    S16                  lockRet = 0;
 
-   TRC1(ssPutDynMemBlkSet);
 
    globReg = osCp.globRegCb;
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if(bktIdx >= globReg->numBkts)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -1280,7 +1319,7 @@ U32                    doNotBlockForLock;   /* Boolean whether to block for lock
       if(lstNode == NULLP)
       {
          SUnlock(&(bktCb->bucketLock));
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
       cmLListDelFrm(&(bktCb->listFreeBktSet), lstNode);
@@ -1298,7 +1337,7 @@ U32                    doNotBlockForLock;   /* Boolean whether to block for lock
       SUnlock(&(bktCb->bucketLock));
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -1317,21 +1356,13 @@ U32                    doNotBlockForLock;   /* Boolean whether to block for lock
 *       File:  cm_mem.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 ssGetDynMemBlkSet
+S16 ssGetDynMemBlkSet
 (
-U8                     bktIdx,              /* Index to bucket list */
+uint8_t                     bktIdx,              /* Index to bucket list */
 CmMmBlkSetElement     *dynMemSetElem,       /* Memory set element which is updated 
                                                with new set values */
-U32                    doNotBlockForLock    /* Boolean whether to block for lock or not */
+uint32_t                    doNotBlockForLock    /* Boolean whether to block for lock or not */
 )
-#else
-PUBLIC S16 ssGetDynMemBlkSet(bktIdx, dynMemSetElem)
-U8                     bktIdx;              /* Index to bucket list */
-CmMmBlkSetElement     *dynMemSetElem;       /* Memory set element which is updated 
-                                               with new set values */
-U32                    doNotBlockForLock;   /* Boolean whether to block for lock or not */
-#endif
 {
    CmMmGlobRegCb        *globReg;
    CmMmGlobalBktCb      *bktCb;
@@ -1339,14 +1370,13 @@ U32                    doNotBlockForLock;   /* Boolean whether to block for lock
    CmMmBlkSetElement    *globMemNode;
    S16                   lockRet = 0;
 
-   TRC1(ssGetDynMemBlkSet);
 
    globReg = osCp.globRegCb;
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if(bktIdx >= globReg->numBkts)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -1367,7 +1397,7 @@ U32                    doNotBlockForLock;   /* Boolean whether to block for lock
       if(lstNode == NULLP)
       {
          SUnlock(&(bktCb->bucketLock));
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
       /* Delete the node from the valid linked list and copy the values of the
@@ -1383,34 +1413,26 @@ U32                    doNotBlockForLock;   /* Boolean whether to block for lock
       SUnlock(&(bktCb->bucketLock));
    }
 
-   RETVALUE(ROK);
+   return ROK;
 } /* ssGetDynMemBlkSet */
 
 
 #define NUM_CALLS_TO_CHECK_MEM_DYN_AGAIN 100
-U32 gDynMemAlrm[4];
-PRIVATE U32 memoryCheckCounter;
+uint32_t gDynMemAlrm[4];
+static uint32_t memoryCheckCounter;
 
-#ifdef ANSI
-PUBLIC U32 isMemThreshReached(
-Region reg
-)
-#else
-PUBLIC U32 isMemThreshReached(reg)
-Region reg;
-#endif
+uint32_t isMemThreshReached(Region reg)
 {
    CmMmGlobRegCb        *globReg;
    CmMmGlobalBktCb      *bktCb;
-   U8 bktIdx= reg;
- TRC3(isMemThreshReached)
+   uint8_t bktIdx= reg;
 
    globReg = osCp.globRegCb;
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if(bktIdx >= globReg->numBkts)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
@@ -1426,7 +1448,7 @@ Region reg;
      //      printf ("recoverd bktCb->listValidBktSet.count %d bktIdx %d\n",bktCb->listValidBktSet.count ,bktIdx);
              }
 	   SUnlock(&(bktCb->bucketLock));
-	   RETVALUE(RFAILED);
+	   return RFAILED;
    }
    else
    {
@@ -1441,7 +1463,7 @@ Region reg;
 		   SUnlock(&(bktCb->bucketLock));
 	   }
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 #endif /* USE_MALLOC */
@@ -1463,50 +1485,87 @@ Region reg;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC Void * ssGetIccHdl  
-(
-Region region
-)
-#else
-PUBLIC Void * ssGetIccHdl()
-Region region;
-#endif
+Void * ssGetIccHdl(Region region)
 {
    CmMmDynRegCb *dynRegCb;
 
    /* Klock work fix ccpu00148484 */
    if(!(region < SS_MAX_REGS))
    {
-      RETVALUE(NULLP);
+      return (NULLP);
    }
    
    dynRegCb = (CmMmDynRegCb *)osCp.dynRegionTbl[region].regCb; 
 
-   RETVALUE(dynRegCb->iccHdl);
+   return (dynRegCb->iccHdl);
 }
 #endif /* SS_USE_ICC_MEMORY */
 
 #ifdef T2K_MEM_LEAK_DBG
-extern RegionMemLeakInfo regMemLeakInfo;
+RegionMemLeakInfo regMemLeakInfo;
 #endif /* T2K_MEM_LEAK_DBG */
+
+#ifdef SS_USE_WLS_MEM
+static S16 SPartitionWlsDynMem()
+{
+   uint32_t i;
+   uint8_t *bktMemStrtAddr = (uint8_t *)(((uint8_t*)osCp.wls.allocAddr) + (4 * 1024 * 1024));
+
+   for (i = 0 ; i < mtGlobMemoCfg.numBkts ; i++)
+   {
+      mtDynMemSz[i].startAddr = bktMemStrtAddr;
+      bktMemStrtAddr += mtDynMemSz[i].reqdSz;
+   }
+
+   printf("Global Memory Info: \n");
+   for (i = 0 ; i <  mtGlobMemoCfg.numBkts ; i++)
+   {
+      printf("mtDynMemSz[%d]: [0x%016lx]\n", i, (unsigned long int)mtDynMemSz[i].startAddr);
+   }
+   return ROK;
+}
+
+static S16 SAllocateWlsDynMem()
+{
+   uint32_t     reqdMemSz;
+   uint32_t     i;
+   reqdMemSz = 0;
+   memset(&mtDynMemSz[0], 0, sizeof(mtDynMemSz));
+
+   for (i = 0 ; i < mtGlobMemoCfg.numBkts ; i++)
+   {
+      reqdMemSz += (mtGlobMemoCfg.bkt[i].blkSize * mtGlobMemoCfg.bkt[i].numBlks);
+      mtDynMemSz[i].reqdSz += (mtGlobMemoCfg.bkt[i].blkSize * mtGlobMemoCfg.bkt[i].numBlks);
+   }
+   osCp.wls.allocAddr = WLS_Alloc(osCp.wls.intf,
+#ifdef INTEL_L1_V19_10
+   WLS_MEMORY_SIZE);
+#else
+   (reqdMemSz + (4 * 1024 * 1024)));
+#endif
+   printf("\n *************** \n WLS memory: %lx, %d\n", (PTR)osCp.wls.allocAddr, reqdMemSz);
+   SPartitionWlsDynMem();
+   return ROK;
+}
+
+#endif
 
 #ifdef INTEL_WLS
 
-PUBLIC S16 SPartitionWlsMemory()
+S16 SPartitionWlsMemory()
 {
-   U32    i;
+   uint32_t    i;
 #ifndef ALIGN_64BIT
-   U64    reqdSz;
-   U64   pageSize[1], hugePageSize;
+   uint64_t    reqdSz;
+   uint64_t   pageSize[1], hugePageSize;
 #else
    long int reqdSz;
    long int pageSize[1], hugePageSize;
 #endif
-   U32 numHugePg;
+   uint32_t numHugePg;
    #define DIV_ROUND_OFFSET(X,Y) ( X/Y + ((X%Y)?1:0) )
 
-   U8   *regMemStrtAddr = (U8 *)osCp.wls.allocAddr;
+   uint8_t   *regMemStrtAddr = (uint8_t *)osCp.wls.allocAddr;
 
    gethugepagesizes(pageSize,1);
    hugePageSize = pageSize[0];
@@ -1520,17 +1579,17 @@ PUBLIC S16 SPartitionWlsMemory()
       regMemStrtAddr += reqdSz;
 #ifdef T2K_MEM_LEAK_DBG
       /* Since wls is region 0 */
-      regMemLeakInfo.regStartAddr[i] = (U64)mtRegMemSz[i].startAddr;
+      regMemLeakInfo.regStartAddr[i] = (uint64_t)mtRegMemSz[i].startAddr;
       regMemLeakInfo.numActvRegions++;
 #endif /* T2K_MEM_LEAK_DBG */
    }
    //Store last region addr for validation
    mtRegMemSz[i].startAddr = regMemStrtAddr;
-   RETVALUE(ROK);
+   return ROK;
 }
 
 #ifdef SS_MEM_WL_DEBUG
-PUBLIC Void SChkAddrValid(int type, int region, PTR ptr)
+Void SChkAddrValid(int type, int region, PTR ptr)
 {
    char *tryPtr = NULL;
    if(type == 0) //Global
@@ -1554,12 +1613,12 @@ PUBLIC Void SChkAddrValid(int type, int region, PTR ptr)
 }
 #endif /* SS_MEM_WL_DEBUG */
 
-PUBLIC S16 SPartitionStaticMemory(U8  *startAddr)
+S16 SPartitionStaticMemory(uint8_t  *startAddr)
 {
    int    i;
-   U32    reqdSz;
+   uint32_t    reqdSz;
 
-   U8   *regMemStrtAddr = (U8 *)startAddr;
+   uint8_t   *regMemStrtAddr = (uint8_t *)startAddr;
 
 
    //for (i = 0; i < mtMemoCfg.numRegions; i++)
@@ -1570,18 +1629,18 @@ PUBLIC S16 SPartitionStaticMemory(U8  *startAddr)
       regMemStrtAddr += reqdSz;
 #ifdef T2K_MEM_LEAK_DBG
       {  /* Since region 1 onwards are used for non wls */
-         regMemLeakInfo.regStartAddr[i] = (U64)mtRegMemSz[i].startAddr;
+         regMemLeakInfo.regStartAddr[i] = (uint64_t)mtRegMemSz[i].startAddr;
          regMemLeakInfo.numActvRegions++;
       }
 #endif /* T2K_MEM_LEAK_DBG */
    }
-   RETVALUE(ROK);
+   return ROK;
 }
-PUBLIC S16 SAllocateWlsMem()
+S16 SAllocateWlsMem()
 {
 
-   U32            reqdMemSz;
-   U32            i, j;
+   uint32_t            reqdMemSz;
+   uint32_t            i, j;
    MtRegCfg       *region;
 
    reqdMemSz = 0;
@@ -1609,15 +1668,15 @@ PUBLIC S16 SAllocateWlsMem()
    printf("\n ************* \n WLS memory: %lx, %d\n ****** \n", (PTR)osCp.wls.allocAddr, reqdMemSz); 
 #endif
    SPartitionWlsMemory();
-   RETVALUE(ROK);
+   return ROK;
 }
-PUBLIC S16 SAllocateStaticMem()
+S16 SAllocateStaticMem()
 {
 
-   U32            reqdMemSz;
+   uint32_t            reqdMemSz;
    int            i, j;
    MtRegCfg       *region;
-   U8             *startAddr;
+   uint8_t             *startAddr;
 
    reqdMemSz = 0;
    //memset(&mtRegMemSz[0], sizeof(mtRegMemSz), 0);
@@ -1644,7 +1703,7 @@ PUBLIC S16 SAllocateStaticMem()
    printf("\n ************* \n Static memory: %lx, %d\n ****** \n", (PTR)startAddr, reqdMemSz); 
 #endif
    SPartitionStaticMemory(startAddr);
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif /* INTEL_WLS */
 
@@ -1665,31 +1724,23 @@ PUBLIC S16 SAllocateStaticMem()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 ssdInitMem
-(
-void
-)
-#else
-PUBLIC S16 ssdInitMem()
-#endif
+S16 ssdInitMem(void)
 {
    /* mt018.201 - added local variable */
-   U8              i;
-   U16             j;
-   U8              k;
-   MtRegCfg       *region;
+   uint8_t              i =0;
+   uint16_t             j =0;
+   uint8_t              k =0;
+   MtRegCfg       *region = NULLP;
    Txt             errMsg[256] = {'\0'};
 #ifdef SS_LOCKLESS_MEMORY
-   CmMmDynRegCb   *dynRegCb;
+   CmMmDynRegCb   *dynRegCb =0;
 #ifdef SS_USE_ICC_MEMORY
 #else
-   CmMmGlobRegCb  *globReg;
-   Size            memSize;
+   CmMmGlobRegCb  *globReg = NULLP;
+   Size            memSize =0;
 #endif
 #endif /* SS_LOCKLESS_MEMORY */
    
-   TRC0(ssdInitMem);
 
    /* Use the default SSI memory manager if the ICC memory manager is not 
     * avilable. If ICC memory manager is avilable, it will be used for
@@ -1703,7 +1754,7 @@ PUBLIC S16 ssdInitMem()
       dynRegCb = (CmMmDynRegCb *)calloc(1, sizeof(CmMmDynRegCb));
       if(dynRegCb == NULLP)
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       for(k = 0; k < mtDynMemoCfg.region[i].numBkts; k++)
       {
@@ -1722,22 +1773,31 @@ PUBLIC S16 ssdInitMem()
 
    if(osCp.globRegCb == NULLP)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    globReg = (CmMmGlobRegCb *)osCp.globRegCb;
 
+#ifdef SS_USE_WLS_MEM
+   SAllocateWlsDynMem();
+#endif
+
    for(i = 0; i < mtGlobMemoCfg.numBkts; i++)
    {
       memSize = (mtGlobMemoCfg.bkt[i].blkSize * mtGlobMemoCfg.bkt[i].numBlks);
+#if !defined (INTEL_WLS) && defined (SS_USE_WLS_MEM)
+      globReg->bktTbl[i].startAddr = (Data *)mtDynMemSz[i].startAddr;
+      printf("Starting Address of Bkt Entry [%d]: [0x%016lx], memSize[%d]\n", i, (unsigned long int)globReg->bktTbl[i].startAddr, memSize);
+#else
 #ifndef INTEL_WLS      
       globReg->bktTbl[i].startAddr = (Data *)calloc(memSize, sizeof(Data));
 #else
       globReg->bktTbl[i].startAddr = (Data *)mtRegMemSz[i].startAddr;
 #endif
+#endif
       if(globReg->bktTbl[i].startAddr == NULLP)
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       globReg->bktTbl[i].poolId = i;
       globReg->bktTbl[i].size = mtGlobMemoCfg.bkt[i].blkSize;
@@ -1755,7 +1815,7 @@ PUBLIC S16 ssdInitMem()
       dynRegCb = (CmMmDynRegCb *)calloc(1, sizeof(CmMmDynRegCb));
       if(dynRegCb == NULLP)
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       for(k = 0; k < mtDynMemoCfg.region[i].numBkts; k++)
       {
@@ -1767,8 +1827,9 @@ PUBLIC S16 ssdInitMem()
 #ifdef XEON_SPECIFIC_CHANGES
             free(dynRegCb);
 #endif            
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
+         dynRegCb->bktTbl[k].poolId = k;
          dynRegCb->bktTbl[k].size = mtGlobMemoCfg.bkt[k].blkSize;
          dynRegCb->bktTbl[k].blkSetRelThreshold = mtDynMemoCfg.region[i].bkt[k].blkSetRelThreshold;
          dynRegCb->bktTbl[k].blkSetAcquireThreshold = mtDynMemoCfg.region[i].bkt[k].blkSetAcquireThreshold;
@@ -1786,7 +1847,7 @@ PUBLIC S16 ssdInitMem()
 #endif /* SS_LOCKLESS_MEMORY */
 
 #ifdef T2K_MEM_LEAK_DBG
-    U8 reg; 
+    uint8_t reg =0; 
     /* Initailize mem leak tool memorys for debguing */
     regMemLeakInfo.numActvRegions=0;
     for(reg=0; reg <SS_MAX_REGS; reg++)
@@ -1801,7 +1862,7 @@ PUBLIC S16 ssdInitMem()
        if (pthread_mutex_init(&(regMemLeakInfo.memLock[reg]), NULL) != 0)
        {
           printf("\n mutex init failed\n");
-          RETVALUE(RFAILED);
+          return RFAILED;
        }
     }
 #endif
@@ -1820,9 +1881,9 @@ PUBLIC S16 ssdInitMem()
 #endif
       if (mtCMMRegCb[i] == NULLP)
       {
-			sprintf(errMsg,"\n ssdInitMem(): Could not allocated memory \
-								for the Region:%d control block\n",i);
-			SPrint(errMsg);
+	 sprintf(errMsg,"\n ssdInitMem(): Could not allocated memory \
+	 for the Region:%d control block\n",i);
+	 SPrint(errMsg);
          for (k = 0; k < i; k++)
          {
             cmMmRegDeInit(mtCMMRegCb[k]);
@@ -1830,7 +1891,7 @@ PUBLIC S16 ssdInitMem()
             free(mtCMMRegCb[k]);
 	    free(mtCMMRegCfg[k]);
          }
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
       mtCMMRegCfg[i] = (CmMmRegCfg *)calloc(1, sizeof(CmMmRegCfg));
@@ -1838,17 +1899,17 @@ PUBLIC S16 ssdInitMem()
       mlock(mtCMMRegCfg[i], sizeof(CmMmRegCfg));
 #endif
       if (mtCMMRegCfg[i] == NULLP)
-		{
-		  for (k = 0; k < i; k++)
-		  {
-			 cmMmRegDeInit(mtCMMRegCb[k]);
-			 free(mtCMMRegCfg[k]->vAddr);
-			 free(mtCMMRegCb[k]);
-			 free(mtCMMRegCfg[k]);
-		  }
-		  free(mtCMMRegCb[i]);
-		  RETVALUE(RFAILED);
-		}
+      {
+	 for (k = 0; k < i; k++)
+	 {
+	    cmMmRegDeInit(mtCMMRegCb[k]);
+	    free(mtCMMRegCfg[k]->vAddr);
+	    free(mtCMMRegCb[k]);
+	    free(mtCMMRegCfg[k]);
+	 }
+	 free(mtCMMRegCb[i]);
+	 return RFAILED;
+      }
 
 
       /* allocate space for the region */
@@ -1892,7 +1953,7 @@ PUBLIC S16 ssdInitMem()
          }
          free(mtCMMRegCb[i]);
          free(mtCMMRegCfg[i]);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
 
@@ -1925,7 +1986,7 @@ PUBLIC S16 ssdInitMem()
          free(mtCMMRegCfg[i]->vAddr);
          free(mtCMMRegCb[i]);
          free(mtCMMRegCfg[i]);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
 
@@ -1946,7 +2007,7 @@ PUBLIC S16 ssdInitMem()
             free(mtCMMRegCfg[i]->vAddr);
             free(mtCMMRegCb[i]);
             free(mtCMMRegCfg[i]);
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
       }
    }
@@ -1955,8 +2016,7 @@ PUBLIC S16 ssdInitMem()
    cmInitMemLeakMdl();
 #endif /* SS_MEM_LEAK_STS */
 
-
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -1973,19 +2033,11 @@ PUBLIC S16 ssdInitMem()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC Void ssdDeinitMem
-(
-void
-)
-#else
-PUBLIC Void ssdDeinitMem()
-#endif
+Void ssdDeinitMem(void)
 {
    /* mt018.201 - added local variables */
-   U8     i;
+   uint8_t     i;
 
-   TRC0(ssdDeinitMem);
 	/* mt008.301 Additions */
 #ifdef SS_MEM_LEAK_STS
 	cmDeinitMemLeakMdl();
@@ -1999,7 +2051,7 @@ PUBLIC Void ssdDeinitMem()
       free(mtCMMRegCfg[i]);
    }
 
-   RETVOID;
+   return;
 }
 
 
@@ -2017,22 +2069,14 @@ PUBLIC Void ssdDeinitMem()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 ssdInitTsk
-(
-void
-)
-#else
-PUBLIC S16 ssdInitTsk()
-#endif
+S16 ssdInitTsk(void)
 {
 /* mt001.301 : Additions */
 /*mt013.301 :Added SS_AFFINITY_SUPPORT  */
 #if defined(SS_MULTICORE_SUPPORT) ||defined(SS_AFFINITY_SUPPORT)
-   U32 tskInd = 0;
+   uint32_t tskInd = 0;
 #endif /* SS_MULTICORE_SUPPORT || SS_AFFINITY_SUPPORT */
 
-   TRC0(ssdInitTsk);
 
 
 /*mt013.301 :Added SS_AFFINITY_SUPPORT  */
@@ -2043,7 +2087,7 @@ PUBLIC S16 ssdInitTsk()
       osCp.sTskTbl[tskInd].dep.lwpId = 0;
    }
 #endif /* SS_MULTICORE_SUPPORT || SS_AFFINITY_SUPPORT */
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -2061,18 +2105,10 @@ PUBLIC S16 ssdInitTsk()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC Void ssdDeinitTsk
-(
-void
-)
-#else
-PUBLIC Void ssdDeinitTsk()
-#endif
+Void ssdDeinitTsk(void)
 {
-   TRC0(ssdDeinitTsk);
 
-   RETVOID;
+   return;
 }
 
 
@@ -2091,21 +2127,13 @@ PUBLIC Void ssdDeinitTsk()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 ssdInitDrvr
-(
-void
-)
-#else
-PUBLIC S16 ssdInitDrvr()
-#endif
+S16 ssdInitDrvr(void)
 {
    S16 i;
 #ifndef L2_L3_SPLIT
    pthread_attr_t attr;
 #endif
 
-   TRC0(ssdInitDrvr);
 
 
    /* initialize the dependent portion of the driver task entries */
@@ -2120,7 +2148,7 @@ PUBLIC S16 ssdInitDrvr()
     */
    if (pipe(osCp.dep.isFildes) != 0)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #ifndef L2_L3_SPLIT
@@ -2135,7 +2163,7 @@ PUBLIC S16 ssdInitDrvr()
       /* mt020.201 - Addition for destroying thread attribute object attr */
       pthread_attr_destroy(&attr);
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif   
 
@@ -2152,7 +2180,7 @@ PUBLIC S16 ssdInitDrvr()
    pthread_attr_destroy(&attr);
 #endif
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -2170,16 +2198,8 @@ PUBLIC S16 ssdInitDrvr()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC Void ssdDeinitDrvr
-(
-void
-)
-#else
-PUBLIC Void ssdDeinitDrvr()
-#endif
+Void ssdDeinitDrvr(void)
 {
-   TRC0(ssdDeinitDrvr);
   /* mt008.301: Terminate the Driver Task on exit */
   while(pthread_cancel(osCp.dep.isTskHdlrTID));
 
@@ -2191,7 +2211,7 @@ PUBLIC Void ssdDeinitDrvr()
   }
 #endif
 
-   RETVOID;
+   return;
 }
 #endif /* SS_DRVR_SUPPORT */
 
@@ -2210,14 +2230,7 @@ PUBLIC Void ssdDeinitDrvr()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 ssdInitTmr
-(
-void
-)
-#else
-PUBLIC S16 ssdInitTmr()
-#endif
+S16 ssdInitTmr(void)
 {
    pthread_attr_t attr;
    struct sched_param param_sched;
@@ -2227,10 +2240,9 @@ PUBLIC S16 ssdInitTmr()
    SsSTskEntry     *sTsk;
 #endif /* SS_MULTICORE_SUPPORT */
 #ifdef SS_THR_REG_MAP
-   U32 threadCreated = FALSE;
+   uint32_t threadCreated = FALSE;
 #endif /* SS_THR_REG_MAP */
 
-   TRC0(ssdInitTmr);
 
 
    osCp.dep.tmrTqCp.tmrLen = SS_MAX_TMRS;
@@ -2245,7 +2257,7 @@ PUBLIC S16 ssdInitTmr()
    sTsk = ssdAddTmrSTsk();
    if(!sTsk)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* SS_MULTICORE_SUPPORT */
    /* create the timer handler thread */
@@ -2274,7 +2286,7 @@ PUBLIC S16 ssdInitTmr()
          /* mt020.201 - Addition for destroying thread attribute object attr */
          pthread_attr_destroy(&attr);
 
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
 #ifdef SS_THR_REG_MAP
@@ -2290,7 +2302,7 @@ PUBLIC S16 ssdInitTmr()
    pthread_attr_destroy(&attr);
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -2308,21 +2320,13 @@ PUBLIC S16 ssdInitTmr()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC Void ssdDeinitTmr
-(
-void
-)
-#else
-PUBLIC Void ssdDeinitTmr()
-#endif
+Void ssdDeinitTmr(void)
 {
 #ifdef SS_MULTICORE_SUPPORT
    SsSTskEntry *sTsk;
    S16         ret;
 #endif /* SS_MULTICORE_SUPPORT */
 
-   TRC0(ssdDeinitTmr);
 
 #ifdef SS_MULTICORE_SUPPORT
    ret = SLock(&osCp.sTskTblLock);
@@ -2333,7 +2337,7 @@ PUBLIC Void ssdDeinitTmr()
       MTLOGERROR(ERRCLS_DEBUG, EMT008, (ErrVal) ret,
                  "Could not lock system task table");
 #endif
-      RETVOID;
+      return;
    }
    sTsk = &osCp.sTskTbl[0]; /* first entry is timer entry always */
    /* clean up the system task entry */
@@ -2356,7 +2360,7 @@ PUBLIC Void ssdDeinitTmr()
 #endif /* SS_MULTICORE_SUPPORT */
   /* mt008.301: Terminate the timer thread on exit */
   while(pthread_cancel(osCp.dep.tmrHdlrTID));
-  RETVOID;
+  return;
 }
 
 
@@ -2374,14 +2378,7 @@ PUBLIC Void ssdDeinitTmr()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 ssdInitLog
-(
-void
-)
-#else
-PUBLIC S16 ssdInitLog()
-#endif
+S16 ssdInitLog(void)
 {
 /* mt027.201 - Modification to fix warnings with no STDIN and STDOUT */
 #ifdef CONAVL
@@ -2396,7 +2393,6 @@ PUBLIC S16 ssdInitLog()
 #endif /* CONAVL */
 
 /* mt008.301: ssdInitFinal changed to ssdInitLog */
-   TRC0(ssdInitLog);
 
 
 #ifdef CONAVL
@@ -2412,7 +2408,7 @@ PUBLIC S16 ssdInitLog()
    if ((tcgetattr(fd, &tio)) != 0)
    {
       printf("Error: disable canonical input processing\n");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    tio.c_lflag &= ~ICANON;
@@ -2421,7 +2417,7 @@ PUBLIC S16 ssdInitLog()
    if ((tcsetattr(fd, TCSANOW, &tio)) != 0)
    {
       printf("Error: while tcsetattr() processing\n");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #endif /* CONSTDIO */
@@ -2434,7 +2430,7 @@ PUBLIC S16 ssdInitLog()
    if (fcntl(fd, F_SETFL, flags) == -1)
    {
       printf("Error: while fcntl processing\n");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 
@@ -2452,7 +2448,7 @@ PUBLIC S16 ssdInitLog()
       pthread_attr_destroy(&attr);
 
       printf("Error: Logging Thread creation failed \n");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* mt020.201 - Addition for destroying thread attribute object attr */
@@ -2462,7 +2458,7 @@ PUBLIC S16 ssdInitLog()
 #endif /* CONAVL */
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -2481,17 +2477,9 @@ PUBLIC S16 ssdInitLog()
 *
 */
 /* mt008.301: ssdDeinitFinal changed to ssdDeinitLog */
-#ifdef ANSI
-PUBLIC Void ssdDeinitLog
-(
-void
-)
-#else
-PUBLIC Void ssdDeinitLog()
-#endif
+Void ssdDeinitLog(void)
 {
 /* mt008.301: ssdDeinitFinal changed to ssdDeinitLog */
-   TRC0(ssdDeinitLog);
 #ifdef CONAVL
 #ifndef CONRD
   /* mt008.301: Terminate the console reader on exit */
@@ -2499,23 +2487,15 @@ PUBLIC Void ssdDeinitLog()
 #endif /* CONRD */
 #endif /* CONVAL */
 
-   RETVOID;
+   return;
 }
 /* mt001.301 : Additions */
 #ifdef SS_WATCHDOG
 
 
-#ifdef ANSI
-PUBLIC S16 ssdInitWatchDog
-(
-U16 port
-)
-#else
-PUBLIC S16 ssdInitWatchDog(port)
-U16 port;
-#endif
+S16 ssdInitWatchDog(uint16_t port)
 {
-   U8 idx;
+   uint8_t idx;
    Txt prntBuf[PRNTSZE];
    Pst     pst;
    Buffer *mBuf;
@@ -2528,11 +2508,10 @@ U16 port;
    ProcId procId = SS_WD_WDPROC;
    if (SAddProcIdLst(1, &procId) != ROK)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* SS_MULTIPLE_PROCS */
 
-   TRC0(ssdInitWatchDog);
 
    SInitLock(&osCp.wdCp.wdLock, SS_LOCK_MUTEX);
 
@@ -2571,7 +2550,7 @@ U16 port;
    ssdInitWatchDgPst(&(osCp.wdCp.watchDgPst));
    /* Initialize the watch dog timer resolution default is 1 sec */
 
-   cmInitTimers(osCp.wdCp.watchDgTmr, (U8)1);
+   cmInitTimers(osCp.wdCp.watchDgTmr, (uint8_t)1);
    osCp.wdCp.watchDgTqCp.nxtEnt = 0;
    osCp.wdCp.watchDgTqCp.tmrLen = 1;
    for(idx = 0; idx < 1; idx++)
@@ -2613,7 +2592,7 @@ U16 port;
 
    if (SGetMsg(SS_DFLT_REGION, SS_DFLT_POOL, &mBuf) != ROK)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #ifndef SS_MULTIPLE_PROCS
    pst.srcProcId = SFndProcId();
@@ -2626,20 +2605,11 @@ U16 port;
    ssdInitWatchDgPst(&pst);
    SPstTsk(&pst, mBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
-#ifdef ANSI
-PUBLIC S16 ssdInitWatchDgPst
-(
-Pst *pst
-)
-#else
-PUBLIC S16 ssdInitWatchDgPst(pst)
-Pst *pst;
-#endif
+S16 ssdInitWatchDgPst(Pst *pst)
 {
-   TRC1(ssInitWatchDgPst);
 
    pst->selector  = SS_LOOSE_COUPLING;
 
@@ -2654,49 +2624,31 @@ Pst *pst;
    pst->srcEnt    = ENTDW;                   /* source entity */
    pst->srcInst   = 0;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 #ifdef SS_MULTIPLE_PROCS
-#ifdef ANSI
-PUBLIC S16 ssdWatchDgActvTmr
+S16 ssdWatchDgActvTmr
 (
 ProcId proc,
 Ent ent,
 Inst inst
 )
 #else
-PUBLIC S16 ssdWatchDgActvTmr(proc, ent, inst)
-#endif
-#else
-#ifdef ANSI
-PUBLIC S16 ssdWatchDgActvTmr
-(
-Void
-)
-#else
-PUBLIC S16 ssdWatchDgActvTmr()
-#endif
+S16 ssdWatchDgActvTmr(Void)
 #endif /* SS_MULTIPLE_PROCS */
 {
-   TRC3(ssWatchDgActvTmr);
 
    cmPrcTmr(&osCp.wdCp.watchDgTqCp, osCp.wdCp.watchDgTs, (PFV)ssdWatchDgTmrEvt);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
-#ifdef ANSI
-PUBLIC Void ssdWatchDgTmrEvt
+Void ssdWatchDgTmrEvt
 (
 PTR       cb,        /* control block */
 S16       event      /* timer number */
 )
-#else
-PUBLIC Void ssdWatchDgTmrEvt(cb, event)
-PTR       cb;        /* control block */
-S16       event;     /* timer number */
-#endif
 {
 /* mt003.301 Fixed warings */
 #ifdef DEBUGP
@@ -2706,7 +2658,6 @@ S16       event;     /* timer number */
    Bool restartTmr;
    int i;
 
-   TRC2(ssWatchDgTmrEvt);
 
    switch(event)
    {
@@ -2747,19 +2698,12 @@ S16       event;     /* timer number */
 
 }
 
-#ifdef ANSI
-PUBLIC Void ssdStartWatchDgTmr
+Void ssdStartWatchDgTmr
 (
-void             *cb,
-S16              event,
-U16              wait
+void     *cb,
+S16      event,
+uint16_t wait
 )
-#else
-PUBLIC Void ssdStartWatchDgTmr(cb, event, wait)
-void             *cb;
-S16              event;
-U16              wait;
-#endif
 {
    CmTmrArg    arg;
    int i;
@@ -2769,7 +2713,6 @@ U16              wait;
 #endif
 
 
-   TRC2(ssStartWatchDgTmr)
 	/* mt003.301 Modifications */
 #ifdef DEBUGP
    SGetDateTime(&dt);
@@ -2800,20 +2743,14 @@ U16              wait;
    arg.max    = 1;
    cmPlcCbTq(&arg);
 
-   RETVOID;
+   return;
 }
 
-#ifdef ANSI
-PUBLIC Void ssdStopWatchDgTmr
+Void ssdStopWatchDgTmr
 (
-void             *cb,
-S16              event
+void *cb,
+S16  event
 )
-#else
-PUBLIC Void ssdStopWatchDgTmr(cb, event)
-void             *cb;
-S16              event;
-#endif
 {
    CmTmrArg    arg;
 #ifdef DEBUGP
@@ -2822,7 +2759,6 @@ S16              event;
    int i;
 #endif
 
-   TRC2(ssStopWatchDgTmr)
 	/* mt003.301 Modifications */
 #ifdef DEBUGP
    SGetDateTime(&dt);
@@ -2851,20 +2787,14 @@ S16              event;
    arg.max    = 1;
    cmRmvCbTq(&arg);
 
-   RETVOID;
+   return;
 }
 
-#ifdef ANSI
-PUBLIC S16 ssdSndHrtBtMsg
+S16 ssdSndHrtBtMsg
 (
-Bool             restart,
-U32              type
+Bool      restart,
+uint32_t  type
 )
-#else
-PUBLIC S16 ssdSndHrtBtMsg(restart, type)
-Bool             restart;
-U32              type;
-#endif
 {
    S16     ret = ROK;
 #ifdef DEBUGP
@@ -2876,7 +2806,6 @@ U32              type;
    int             n;
    int             err;
 
-   TRC2(ssdSndHrtBtReq)
 
 #ifdef DEBUGP
    SGetDateTime(&dt);
@@ -2927,7 +2856,7 @@ U32              type;
    }
    SUnlock(&osCp.wdCp.wdLock);
 
-   RETVALUE(ret);
+   return (ret);
 }
 
 #endif /* SS_WATCHDOG */
@@ -2949,14 +2878,7 @@ U32              type;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PRIVATE Void mtGetOpts
-(
-void
-)
-#else
-PRIVATE Void mtGetOpts()
-#endif
+static Void mtGetOpts(void)
 {
    S32 argc;
    S8 **argv;
@@ -2965,7 +2887,7 @@ PRIVATE Void mtGetOpts()
 #ifndef NOFILESYS
    FILE         *memOpt;             /* memory options file pointer */
    Txt pBuf[128];
-   U8 i;
+   uint8_t i;
 /* mt007.301 : Fix related to file based mem config on 64 bit machine */
    PTR numReg;
    PTR numBkts;
@@ -2990,7 +2912,6 @@ PRIVATE Void mtGetOpts()
    Cntr   idx=0;
 #endif
 
-   TRC0(mtGetOpts);
 
 
    msOptInd = 1;
@@ -3293,7 +3214,7 @@ PRIVATE Void mtGetOpts()
    msOptInd = 1;
 
 
-   RETVOID;
+   return;
 }
 #endif
 
@@ -3334,19 +3255,12 @@ PRIVATE Void mtGetOpts()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SGetOpt
+S16 SGetOpt
 (
 int argc,                   /* argument count */
 char **argv,                /* argument value */
 char *opts                  /* options */
 )
-#else
-PUBLIC S16 SGetOpt(argc, argv, opts)
-int argc;                   /* argument count */
-char **argv;                /* argument value */
-char *opts;                 /* options */
-#endif
 {
    /* mt020.201 - Removed for no command line */
 #ifndef NOCMDLINE
@@ -3355,7 +3269,6 @@ char *opts;                 /* options */
    S8 *cp;
 #endif
 
-   TRC1(SGetOpt);
 
    /* mt020.201 - Addition for no command line */
 #ifdef NOCMDLINE
@@ -3363,7 +3276,7 @@ char *opts;                 /* options */
    UNUSED(argv);
    UNUSED(opts);
 
-   RETVALUE(EOF);
+   return (EOF);
 #else
 
    sp = 1;
@@ -3372,19 +3285,19 @@ char *opts;                 /* options */
        /*mt013.301 : Changes as per coding standards*/
       if (msOptInd >= (S16) argc  ||  argv[msOptInd][0] == '\0')
       {
-          RETVALUE(EOF);
+          return (EOF);
       }
       else
       {
          if (!strcmp(argv[msOptInd], "--"))
          {
             msOptInd++;
-            RETVALUE(EOF);
+            return (EOF);
          }
          else if (argv[msOptInd][0] != '-')
          {
             msOptInd++;
-            RETVALUE('?');
+            return ('?');
          }
       }
    }
@@ -3398,7 +3311,7 @@ char *opts;                 /* options */
          sp = 1;
       }
 
-      RETVALUE('?');
+      return ('?');
    }
 
    if (*++cp == ':')
@@ -3409,7 +3322,7 @@ char *opts;                 /* options */
          if (++msOptInd >= (S16) argc)
          {
             sp = 1;
-            RETVALUE('?');
+            return ('?');
          }
          else msOptArg = argv[msOptInd++];
 
@@ -3428,7 +3341,7 @@ char *opts;                 /* options */
    }
 
 
-   RETVALUE(c);
+   return (c);
 
 #endif /* NOCMDLINE */
 }
@@ -3449,19 +3362,11 @@ char *opts;                 /* options */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC Void ssdStart
-(
-void
-)
-#else
-PUBLIC Void ssdStart()
-#endif
+Void ssdStart(void)
 {
    S16 i;
 
 
-   TRC0(ssdStart);
 
 
    /* mt025.201 - Modification for adding lock to timer handler */
@@ -3471,7 +3376,7 @@ PUBLIC Void ssdStart()
    }
 
 
-   RETVOID;
+   return;
 }
 
 
@@ -3494,23 +3399,14 @@ PUBLIC Void ssdStart()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 ssdAttachTTsk
+S16 ssdAttachTTsk
 (
 SsTTskEntry *tTsk           /* pointer to TAPA task entry */
 )
-#else
-PUBLIC S16 ssdAttachTTsk(tTsk)
-SsTTskEntry *tTsk;          /* pointer to TAPA task entry */
-#endif
 {
    Buffer *mBuf;
    SsMsgInfo *mInfo;
    S16 ret;
-
-
-   TRC0(ssdAttachTTsk);
-
 
    if (tTsk->tskType == SS_TSK_PERMANENT)
    {
@@ -3523,7 +3419,7 @@ SsTTskEntry *tTsk;          /* pointer to TAPA task entry */
 #if (ERRCLASS & ERRCLS_DEBUG)
          MTLOGERROR(ERRCLS_DEBUG, EMT001, ret, "SGetMsg() failed");
 #endif
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
       mInfo = (SsMsgInfo *)mBuf->b_rptr;
@@ -3560,12 +3456,12 @@ SsTTskEntry *tTsk;          /* pointer to TAPA task entry */
          MTLOGERROR(ERRCLS_DEBUG, EMT002, ret,
                         "Could not write to demand queue");
 #endif
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -3582,20 +3478,13 @@ SsTTskEntry *tTsk;          /* pointer to TAPA task entry */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 ssdDetachTTsk
+S16 ssdDetachTTsk
 (
 SsTTskEntry *tTsk           /* pointer to TAPA task entry */
 )
-#else
-PUBLIC S16 ssdDetachTTsk(tTsk)
-SsTTskEntry *tTsk;          /* pointer to TAPA task entry */
-#endif
 {
-   TRC0(ssdDetachTTsk);
 
-
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -3613,24 +3502,19 @@ SsTTskEntry *tTsk;          /* pointer to TAPA task entry */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 ssdCreateSTsk
+S16 ssdCreateSTsk
 (
 SsSTskEntry *sTsk           /* pointer to system task entry */
 )
-#else
-PUBLIC S16 ssdCreateSTsk(sTsk)
-SsSTskEntry *sTsk;          /* pointer to system task entry */
-#endif
 {
+   S16  ret;
    pthread_attr_t attr;
    /* struct sched_param param_sched;*/
 
 #ifdef SS_THR_REG_MAP
-   U32 threadCreated = FALSE;
+   uint32_t threadCreated = FALSE;
 #endif
 
-   TRC0(ssdCreateSTsk);
 
 
 #ifdef SS_SINGLE_THREADED
@@ -3649,7 +3533,7 @@ SsSTskEntry *sTsk;          /* pointer to system task entry */
 #endif /* SS_MULTICORE_SUPPORT */
 #endif /* SS_WATCHDOG */
    {
-      RETVALUE(ROK);
+      return ROK;
    }
 #endif
 
@@ -3680,16 +3564,17 @@ SsSTskEntry *sTsk;          /* pointer to system task entry */
       while(threadCreated == FALSE)
       {
 #endif
-         if ((pthread_create(&sTsk->dep.tId, &attr, mtTskHdlrT2kL2, (Ptr)sTsk)) != 0)
+         ret = pthread_create(&sTsk->dep.tId, &attr, mtTskHdlr, (Ptr)sTsk);
+         if (ret != 0)
          {
-
+            DU_LOG("\nDU APP : Failed to create thread. Cause[%d]",ret);
             pthread_attr_destroy(&attr);
 
 #if (ERRCLASS & ERRCLS_DEBUG)
             MTLOGERROR(ERRCLS_DEBUG, EMT004, ERRZERO, "Could not create thread");
 #endif
 
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
 #ifdef SS_THR_REG_MAP
          threadCreated = ssCheckAndAddMemoryRegionMap(sTsk->dep.tId, 
@@ -3710,7 +3595,8 @@ SsSTskEntry *sTsk;          /* pointer to system task entry */
       while(threadCreated == FALSE)
       {
 #endif
-         if ((pthread_create(&sTsk->dep.tId, &attr, mtTskHdlr, (Ptr)sTsk)) != 0)
+         ret = pthread_create(&sTsk->dep.tId, &attr, mtTskHdlr, (Ptr)sTsk);
+         if (ret != 0)
          {
 
             /* mt020.201 - Addition for destroying thread attribute object attr */
@@ -3720,7 +3606,7 @@ SsSTskEntry *sTsk;          /* pointer to system task entry */
             MTLOGERROR(ERRCLS_DEBUG, EMT004, ERRZERO, "Could not create thread");
 #endif
 
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
 #ifdef SS_THR_REG_MAP
          threadCreated = ssCheckAndAddMemoryRegionMap(sTsk->dep.tId, 
@@ -3733,7 +3619,7 @@ SsSTskEntry *sTsk;          /* pointer to system task entry */
 /*mt013.301 :Added SS_AFFINITY_SUPPORT  */
 #if defined(SS_MULTICORE_SUPPORT) ||defined(SS_AFFINITY_SUPPORT)
    {
-     static U32 stLwpId = 3;
+     static uint32_t stLwpId = 3;
      sTsk->dep.lwpId = ++stLwpId;
    }
 #endif /* SS_MULTICORE_SUPPORT || SS_AFFINITY_SUPPORT */
@@ -3741,41 +3627,32 @@ SsSTskEntry *sTsk;          /* pointer to system task entry */
    /* mt020.201 - Addition for destroying thread attribute object attr */
    pthread_attr_destroy(&attr);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
-#ifdef ANSI
-PUBLIC int SCreatePThread
+int SCreatePThread
 (
 pthread_t* tid,
 pthread_attr_t* attr,
 void *(*start_routine) (void *),
 void* arg
 )
-#else
-PUBLIC int SCreatePThread(tid, attr, start_routine, arg)
-pthread_t* tid;
-pthread_attr_t* attr;
-void *(*start_routine) (void *);
-void* arg;
-#endif
 {
    int retVal = 0;
 #ifdef SS_THR_REG_MAP
-   U32 threadCreated = FALSE;
+   uint32_t threadCreated = FALSE;
 #endif
 
    SPThreadCreateArg* threadArg = (SPThreadCreateArg*)malloc(sizeof(SPThreadCreateArg));
    /* Klock work fix ccpu00148484 */
    if(threadArg == NULLP)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    threadArg->argument = arg;
    threadArg->start_routine = start_routine;
    
-   TRC0(SCreatePThread);
 
    printf("Creating thread here %s %d\n", __FILE__, __LINE__);
    {
@@ -3793,7 +3670,7 @@ void* arg;
          if (((retVal = pthread_create(tid, attr, pthreadCreateHdlr, threadArg))) != 0)
          {
 
-            RETVALUE(retVal);
+            return (retVal);
          }
 #ifdef SS_THR_REG_MAP
          threadCreated = ssCheckAndAddMemoryRegionMap(*tid, SS_MAX_REGS - 1);
@@ -3801,7 +3678,7 @@ void* arg;
 #endif
    }
 
-   RETVALUE(retVal);
+   return (retVal);
 }
 
 
@@ -3820,21 +3697,14 @@ void* arg;
 *
 */
 
-#ifdef ANSI
-PRIVATE S16 ssdSetPthreadAttr
+static S16 ssdSetPthreadAttr
 (
 S32              tskPrior,
 pthread_attr_t  *attr
 )
-#else
-PRIVATE S16 ssdSetPthreadAttr(sTsk, attr)
-S32               tskPrior,
-pthread_attr_t   *attr
-#endif
 {
    struct sched_param    param;
 
-   TRC0 (ssdSetPthreadAttr)
 
    SMemSet(&param, 0, sizeof(param));
 
@@ -3875,7 +3745,7 @@ pthread_attr_t   *attr
 #endif
    pthread_attr_setschedparam(attr, &param);
 
-   RETVALUE (ROK);
+   return  (ROK);
 
 } /* ssdSetPthreadAttr */
 
@@ -3899,33 +3769,26 @@ pthread_attr_t   *attr
 *       File:  ss_task.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 ssdGetAffinity
+S16 ssdGetAffinity
 (
 SSTskId *tskId,                  /* filled in with system task ID */
-U32 *coreId                      /* the core/processor id to which the affinity is set */
+uint32_t *coreId                      /* the core/processor id to which the affinity is set */
 )
-#else
-PUBLIC S16 ssdGetAffinity(tskId, coreId)
-SSTskId *tskId;                 /* filled in with system task ID */
-U32 *coreId;                    /* the core/processor id to which the affinity is set */
-#endif
 {
 
-   U32 tskInd;
+   uint32_t tskInd;
 
 #ifdef SS_LINUX
 
    pthread_t tId =0;
    cpu_set_t cpuSet;
-   U32 cpuInd = 0;
+   uint32_t cpuInd = 0;
    /*mt013.301 :Fix for TRACE5 feature crash due to missing TRC MACRO*/
 #else
 #ifdef SUNOS
-   U32 lwpId = *tskId;
+   uint32_t lwpId = *tskId;
 #endif /*SUNOS*/
 #endif /*SS_LINUX*/
-   TRC0(ssdGetAffinity);
 #ifdef SS_LINUX
    for (tskInd = 0;  tskInd < SS_MAX_STSKS;  tskInd++)
    {
@@ -3940,7 +3803,7 @@ U32 *coreId;                    /* the core/processor id to which the affinity i
    if (tskInd == SS_MAX_STSKS)
    {
        MTLOGERROR(ERRCLS_DEBUG, EMT036, ERRZERO, "Invalid system task Id\n");
-       RETVALUE(RFAILED);
+       return RFAILED;
    }
 
 
@@ -3953,7 +3816,7 @@ U32 *coreId;                    /* the core/processor id to which the affinity i
 #if (ERRCLASS & ERRCLS_DEBUG)
         MTLOGERROR(ERRCLS_DEBUG, EMT037, ERRZERO, "Could not get thread affinity\n");
 #endif
-       RETVALUE(RFAILED);
+       return RFAILED;
     } /* end if pthread_setaffinity fails */
 
    for (cpuInd = 0; cpuInd <CPU_SETSIZE; cpuInd++)
@@ -3980,7 +3843,7 @@ U32 *coreId;                    /* the core/processor id to which the affinity i
    if (tskInd == SS_MAX_STSKS)
    {
        MTLOGERROR(ERRCLS_DEBUG, EMT036, ERRZERO, "Invalid system task Id\n");
-       RETVALUE(RFAILED);
+       return RFAILED;
    }
 
    /* set thread affinity for Solaris */
@@ -3989,13 +3852,13 @@ U32 *coreId;                    /* the core/processor id to which the affinity i
 #if (ERRCLASS & ERRCLS_DEBUG)
       MTLOGERROR(ERRCLS_DEBUG, EMT037, ERRZERO, "Could not get thread affinity\n");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    } /* end if processor_bind fails */
 
 #endif /* SUNOS */
 #endif /* SS_LINUX */
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* ssdGetAffinity */
 
@@ -4016,20 +3879,14 @@ U32 *coreId;                    /* the core/processor id to which the affinity i
 *       File:  ss_task.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 ssdSetAffinity
+S16 ssdSetAffinity
 (
 SSTskId *tskId,                  /* filled in with system task ID */
-U32 coreId                       /* the core/processor id to which the affinity has to be set */
+uint32_t coreId                       /* the core/processor id to which the affinity has to be set */
 )
-#else
-PUBLIC S16 ssdSetAffinity(tskId, coreId)
-SSTskId *tskId;                 /* filled in with system task ID */
-U32 coreId;                     /* the core/processor id to which the affinity has to be set */
-#endif
 {
 
-   U32 tskInd = 0;
+   uint32_t tskInd = 0;
 #ifdef SS_LINUX
 
    pthread_t tId = 0;
@@ -4037,11 +3894,10 @@ U32 coreId;                     /* the core/processor id to which the affinity h
    /*mt013.301 :Fix for TRACE5 feature crash due to missing TRC MACRO*/
 #else
 #ifdef SUNOS
-   U32 lwpId = *tskId;
+   uint32_t lwpId = *tskId;
 #endif /*SUNOS*/
 #endif /*SS_LINUX*/
 
-   TRC0(ssdSetAffinity)
 
 #ifdef SS_LINUX
    for (tskInd = 0;  tskInd < SS_MAX_STSKS;  tskInd++)
@@ -4060,7 +3916,7 @@ U32 coreId;                     /* the core/processor id to which the affinity h
    if (tskInd == SS_MAX_STSKS)
    {
        MTLOGERROR(ERRCLS_DEBUG, EMT036, ERRZERO, "Invalid system task Id\n");
-       RETVALUE(RFAILED);
+       return RFAILED;
    }
 
    /* initialize the cpu mask */
@@ -4075,7 +3931,7 @@ U32 coreId;                     /* the core/processor id to which the affinity h
 #if (ERRCLASS & ERRCLS_DEBUG)
       MTLOGERROR(ERRCLS_DEBUG, EMT038, ERRZERO, "Could not set thread affinity\n");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    } /* end if pthread_setaffinity fails */
 
 #else
@@ -4094,7 +3950,7 @@ U32 coreId;                     /* the core/processor id to which the affinity h
    if (tskInd == SS_MAX_STSKS)
    {
       MTLOGERROR(ERRCLS_DEBUG, EMT036, ERRZERO, "Invalid system task Id\n");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* set thread affinity for Solaris */
@@ -4103,12 +3959,12 @@ U32 coreId;                     /* the core/processor id to which the affinity h
 #if (ERRCLASS & ERRCLS_DEBUG)
       MTLOGERROR(ERRCLS_DEBUG, EMT038, ERRZERO, "Could not set thread affinity\n");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    } /* end if processor_bind fails */
 
 #endif /* SUNOS */
 #endif /* SS_LINUX */
-   RETVALUE(ROK);
+   return ROK;
 } /* ssdSetAffinity */
 
 #endif /* SS_MULTICORE_SUPPORT || SS_AFFINITY_SUPPORT */
@@ -4129,21 +3985,15 @@ U32 coreId;                     /* the core/processor id to which the affinity h
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 ssdDestroySTsk
+S16 ssdDestroySTsk
 (
 SsSTskEntry *sTsk           /* pointer to system task entry */
 )
-#else
-PUBLIC S16 ssdDestroySTsk(sTsk)
-SsSTskEntry *sTsk;          /* pointer to system task entry */
-#endif
 {
    Buffer *mBuf;
    SsMsgInfo *mInfo;
 
 
-   TRC0(ssdDestroySTsk);
 
 
    /* we send a message to this system task to tell it to die */
@@ -4154,7 +4004,7 @@ SsSTskEntry *sTsk;          /* pointer to system task entry */
       MTLOGERROR(ERRCLS_DEBUG, EMT005, ERRZERO, "Could not get a message");
 #endif
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    mInfo = (SsMsgInfo *)mBuf->b_rptr;
@@ -4169,11 +4019,11 @@ SsSTskEntry *sTsk;          /* pointer to system task entry */
                      "Could not write to demand queue");
 #endif
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /* mt023.201 - Added SThreadYield function to yield CPU
@@ -4191,17 +4041,9 @@ SsSTskEntry *sTsk;          /* pointer to system task entry */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SThreadYield
-(
-void
-)
-#else
-PUBLIC S16 SThreadYield()
-#endif
+S16 SThreadYield(void)
 {
 
-   TRC0(SThreadYield);
 
 /* mt024.201 - seperated Linux and other UNIX implementations
  */
@@ -4213,11 +4055,11 @@ PUBLIC S16 SThreadYield()
       tw.tv_sec=0;
       tw.tv_usec=0;
 
-      RETVALUE(select(0,0,0,0,&tw) == 0 ? ROK : RFAILED);
+      return (select(0,0,0,0,&tw) == 0 ? ROK : RFAILED);
    }
 #else /* other UNICes */
 
-   RETVALUE(sleep(0) == 0 ? ROK : RFAILED);
+   return (sleep(0) == 0 ? ROK : RFAILED);
 
 #endif /* SS_LINUX */
 
@@ -4243,20 +4085,14 @@ PUBLIC S16 SThreadYield()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 ssdRegTmr
+S16 ssdRegTmr
 (
 SsTmrEntry *tmr             /* pointer to timer entry */
 )
-#else
-PUBLIC S16 ssdRegTmr(tmr)
-SsTmrEntry *tmr;            /* pointer to timer entry */
-#endif
 {
    CmTmrArg arg;
 
 
-   TRC0(ssdRegTmr);
 
 
    /* initialize common timers */
@@ -4276,7 +4112,7 @@ SsTmrEntry *tmr;            /* pointer to timer entry */
    cmPlcCbTq(&arg);
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -4293,20 +4129,14 @@ SsTmrEntry *tmr;            /* pointer to timer entry */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 ssdDeregTmr
+S16 ssdDeregTmr
 (
 SsTmrEntry *tmr             /* pointer to timer entry */
 )
-#else
-PUBLIC S16 ssdDeregTmr(tmr)
-SsTmrEntry *tmr;            /* pointer to timer entry */
-#endif
 {
    CmTmrArg arg;
 
 
-   TRC0(ssdDeregTmr);
 
 
    /* stop the timer */
@@ -4322,7 +4152,7 @@ SsTmrEntry *tmr;            /* pointer to timer entry */
    cmRmvCbTq(&arg);
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -4339,24 +4169,17 @@ SsTmrEntry *tmr;            /* pointer to timer entry */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 ssdError
+S16 ssdError
 (
 Seq seq,                    /* sequence number */
 Reason reason               /* reset reason */
 )
-#else
-PUBLIC S16 ssdError(seq, reason)
-Seq seq;                    /* sequence number */
-Reason reason;              /* reset reason */
-#endif
 {
    S16 i;
    pthread_t tId;
    Txt errBuf[256];
 
 
-   TRC0(ssdError);
 
 
    /* get calling task ID */
@@ -4365,7 +4188,7 @@ Reason reason;              /* reset reason */
 
    /* set up the message to display */
    sprintf(errBuf, "\n\nFATAL ERROR - taskid = %x, errno = %d,"
-            "reason = %d\n\n", (U8)tId, seq, reason);
+            "reason = %d\n\n", (uint8_t)tId, seq, reason);
    SPrint(errBuf);
 
 
@@ -4385,7 +4208,7 @@ Reason reason;              /* reset reason */
 
 
    /* won't reach here */
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -4402,8 +4225,7 @@ Reason reason;              /* reset reason */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC Void ssdLogError
+Void ssdLogError
 (
 Ent ent,                    /* Calling layer's entity id */
 Inst inst,                  /* Calling layer's instance id */
@@ -4415,19 +4237,6 @@ ErrCode errCode,            /* layer unique error code */
 ErrVal errVal,              /* error value */
 Txt *errDesc                /* description of error */
 )
-#else
-PUBLIC Void ssdLogError(ent, inst, procId, file, line,
-                        errCls, errCode, errVal, errDesc)
-Ent ent;                    /* Calling layer's entity id */
-Inst inst;                  /* Calling layer's instance id */
-ProcId procId;              /* Calling layer's processor id */
-Txt *file;                  /* file name where error occured */
-S32 line;                   /* line in file where error occured */
-ErrCls errCls;              /* error class */
-ErrCode errCode;            /* layer unique error code */
-ErrVal errVal;              /* error value */
-Txt *errDesc;               /* description of error */
-#endif
 {
 #ifndef DEBUGNOEXIT
    S16 i;
@@ -4437,7 +4246,6 @@ Txt *errDesc;               /* description of error */
    Txt errBuf[512];
 
 
-   TRC0(ssdLogError);
 
 
    /* get calling task ID */
@@ -4517,7 +4325,7 @@ Txt *errDesc;               /* description of error */
 #endif
 
 
-   RETVOID;
+   return;
 }
 
 #ifdef ENB_RELAY
@@ -4536,20 +4344,14 @@ Txt *errDesc;               /* description of error */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 ssdRegDrvrTsk
+S16 ssdRegDrvrTsk
 (
 SsDrvrTskEntry *drvrTsk         /* driver task entry */
 )
-#else
-PUBLIC S16 ssdRegDrvrTsk(drvrTsk)
-SsDrvrTskEntry *drvrTsk;        /* driver task entry */
-#endif
 {
-   TRC0(ssdRegDrvrTsk);
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 /* mt001.30 : Additions */
 /*
@@ -4566,20 +4368,14 @@ SsDrvrTskEntry *drvrTsk;        /* driver task entry */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 ssdDeregDrvrTsk
+S16 ssdDeregDrvrTsk
 (
 SsDrvrTskEntry *drvrTsk         /* driver task entry */
 )
-#else
-PUBLIC S16 ssdDeregDrvrTsk(drvrTsk)
-SsDrvrTskEntry *drvrTsk;        /* driver task entry */
-#endif
 {
-   TRC0(ssdDeregDrvrTsk);
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif
 
@@ -4590,31 +4386,18 @@ SsDrvrTskEntry *drvrTsk;        /* driver task entry */
  * mt003.301 Additions - SDeRegTTsk fix
  */
 #ifdef SS_MULTIPLE_PROCS
-#ifdef ANSI
-PUBLIC S16 ssdProcTTskTerm
+S16 ssdProcTTskTerm
 (
 ProcId procIdx,
 SsTTskEntry *tTsk,
 SsIdx idx
 )
-#else
-PUBLIC S16 ssdProcTTskTerm(procIdx, tTsk, idx)
-ProcId procIdx;
-SsTTskEntry *tTsk;
-SsIdx idx;
-#endif
 #else /*SS_MULTIPLE_PROCS*/
-#ifdef ANSI
-PUBLIC S16 ssdProcTTskTerm
+S16 ssdProcTTskTerm
 (
 SsTTskEntry *tTsk,
 SsIdx idx
 )
-#else
-PUBLIC S16 ssdProcTTskTerm(tTsk, idx)
-SsTTskEntry *tTsk;
-SsIdx idx;
-#endif
 #endif /*SS_MULTIPLE_PROCS*/
 {
 #ifdef SS_MULTIPLE_PROCS
@@ -4626,7 +4409,6 @@ SsIdx idx;
    S16 n;
 	S16  ret;
 
-   TRC0(ssdProcTTskTerm);
 
 
    ent = tTsk->ent;
@@ -4639,7 +4421,7 @@ SsIdx idx;
    if (ret != ROK)
    {
        MTLOGERROR(ERRCLS_DEBUG, EMTXXX, ERRZERO, "Could not lock system task table");
-       RETVALUE(RFAILED);
+       return RFAILED;
    }
 	SS_ACQUIRE_ALL_SEMA(&osCp.tTskTblSem, ret);
    if (ret != ROK)
@@ -4651,11 +4433,11 @@ SsIdx idx;
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
        	MTLOGERROR(ERRCLS_DEBUG, EMTXXX, ERRZERO, "Could not Unlock system task table");
-          RETVALUE(RFAILED);
+          return RFAILED;
 #endif
       }
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #ifdef SS_MULTIPLE_PROCS
@@ -4735,26 +4517,21 @@ SsIdx idx;
 #if (ERRCLASS & ERRCLS_DEBUG)
       MTLOGERROR(ERRCLS_DEBUG, EMTXXX, ERRZERO, "Could not Unlock system task table");
 #endif
-       RETVALUE(RFAILED);
+       return RFAILED;
    }
-	RETVALUE(ROK);
+	return ROK;
 }
 
 //#ifndef SPLIT_RLC_DL_TASK
 #ifdef TENB_T2K3K_SPECIFIC_CHANGES
 #if defined (L2_L3_SPLIT) && defined(SPLIT_RLC_DL_TASK) 
-EXTERN Void ysMtTskHdlr(Void);
-EXTERN Void ysMtPollPhyMsg(U8 region);
-EXTERN Void ysMtRcvPhyMsg(Void);
-#ifdef ANSI
-PUBLIC Void *mtTskHdlrT2kL2
+Void ysMtTskHdlr(Void);
+Void ysMtPollPhyMsg(uint8_t region);
+Void ysMtRcvPhyMsg(Void);
+Void *mtTskHdlrT2kL2
 (
 Ptr tskPtr                      /* pointer to task entry */
 )
-#else
-PUBLIC Void *mtTskHdlrT2kL2(tskPtr)
-Ptr tskPtr;                     /* pointer to task entry */
-#endif
 {
    S16 ret;
 
@@ -4777,20 +4554,15 @@ Ptr tskPtr;                     /* pointer to task entry */
                       * (processes L1 msgs) */
   }
 
-  RETVALUE(NULLP);
+  return (NULLP);
 }
 #else
-EXTERN Void ysMtTskHdlr(Void);
-EXTERN Void YsPhyRecvMsg();
-#ifdef ANSI
-PUBLIC Void *mtTskHdlrT2kL2
+Void ysMtTskHdlr(Void);
+Void YsPhyRecvMsg();
+Void *mtTskHdlrT2kL2
 (
 Ptr tskPtr                      /* pointer to task entry */
 )
-#else
-PUBLIC Void *mtTskHdlrT2kL2(tskPtr)
-Ptr tskPtr;                     /* pointer to task entry */
-#endif
 {
    S16 ret;
    SsSTskEntry *sTsk;
@@ -4837,20 +4609,12 @@ Ptr tskPtr;                     /* pointer to task entry */
 #endif  
    }
 
-   RETVALUE(NULLP);
+   return (NULLP);
 }
 #endif /* TENB_T2K3K_SPECIFIC_CHANGES */
 #endif
 
-#ifdef ANSI
-PUBLIC void *pthreadCreateHdlr
-(
-void * arg
-)
-#else
-PUBLIC void *pthreadCreateHdlr(pthreadCreateArg)
-void *arg;
-#endif
+void *pthreadCreateHdlr(void * arg)
 {
    S16 ret;
    SPThreadCreateArg*  pthreadCreateArg = (SPThreadCreateArg*)arg;
@@ -4859,7 +4623,7 @@ void *arg;
       continue;
 
    pthreadCreateArg->start_routine(pthreadCreateArg->argument);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -4881,17 +4645,12 @@ void *arg;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC Void *mtTskHdlr
+Void *mtTskHdlr
 (
 Ptr tskPtr                      /* pointer to task entry */
 )
-#else
-PUBLIC Void *mtTskHdlr(tskPtr)
-Ptr tskPtr;                     /* pointer to task entry */
-#endif
 {
-   S16 ret;
+   S16 ret = ROK;
    SsSTskEntry *sTsk;
 
    /* get out the system task entry from the parameter */
@@ -4908,11 +4667,6 @@ Ptr tskPtr;                     /* pointer to task entry */
 #endif   
    while (1)
    {
-#ifndef ODU_TEST_STUB
-#ifdef INTEL_WLS
-      LwrMacRecvPhyMsg();
-#endif
-#endif
       /* Wait for a message from the demand queue */
 #ifdef SS_CDMNDQ_SUPPORT
       ret = ssCDmndQWait(&sTsk->dQ);
@@ -4929,7 +4683,7 @@ Ptr tskPtr;                     /* pointer to task entry */
       }
    }
 
-   RETVALUE(NULLP);
+   return (NULLP);
 }
 
 
@@ -4952,25 +4706,20 @@ Ptr tskPtr;                     /* pointer to task entry */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 mtTskHdlMsg
+S16 mtTskHdlMsg
 (
 SsSTskEntry *sTsk
 )
-#else
-PUBLIC S16 mtTskHdlMsg(sTsk)
-SsSTskEntry *sTsk
-#endif
 {
-   S16 i;
-   S16 ret;
-   SsIdx idx;
-   SsTTskEntry *tTsk;
-   Buffer *mBuf;
+   S16 i =0;
+   S16 ret =0;
+   SsIdx idx =0;
+   SsTTskEntry *tTsk=NULLP;
+   Buffer *mBuf=NULLP;
 #ifdef SS_PERF
-   Buffer *mBuf2;
+   Buffer *mBuf2=NULLP;
 #endif
-   SsMsgInfo *mInfo;
+   SsMsgInfo *mInfo=NULLP;
    Pst nPst;
 /* mt028.201: modification: multiple procs support related changes */
 #ifndef SS_MULTIPLE_PROCS
@@ -4980,8 +4729,8 @@ SsSTskEntry *sTsk
    /* mt015.301 Initialized the timer activation functions with NULLP */
    PFS16 tmrActvFn = NULLP;
 #else
-   PAIFTMRS16 tmrActvFn;
-   U16 procIdIdx;
+   PAIFTMRS16 tmrActvFn =NULLP;
+   uint16_t procIdIdx =0;
 #endif /* SS_MULTIPLE_PROCS */
 	/* mt003.301 Modifications */
 #ifdef SS_THREAD_PROFILE
@@ -4993,7 +4742,7 @@ SsSTskEntry *sTsk
    if (ret != ROK)
    {
       /* nothing to receive */
-      RETVALUE(ROK);
+      return ROK;
    }
 
    /* if we can't lock this system task entry, return the message */
@@ -5006,7 +4755,7 @@ SsSTskEntry *sTsk
                      "Could not lock system task entry");
 #endif
       SPutMsg(mBuf);
-      RETVALUE(ROK);
+      return ROK;
    }
 
 /* mt034.201 */
@@ -5058,7 +4807,7 @@ SsSTskEntry *sTsk
                            "Could not lock system task table");
 #endif
                /* what to do here? */
-               RETVALUE(ROK);
+               return ROK;
             }
 
             /* clean up the system task entry */
@@ -5087,7 +4836,7 @@ SsSTskEntry *sTsk
             /* unlock the system task table */
             SUnlock(&osCp.sTskTblLock);
 
-            RETVALUE(RFAILED);
+            return RFAILED;
 
 
          /* this is a data message or a permanent task keep-alive message */
@@ -5130,7 +4879,7 @@ SsSTskEntry *sTsk
 
             /* copy the Pst structure into a local duplicate */
             for (i = 0;  i < (S16) sizeof(Pst);  i++)
-               *(((U8 *)(&nPst)) + i) = *(((U8 *)&mInfo->pst) + i);
+               *(((uint8_t *)(&nPst)) + i) = *(((uint8_t *)&mInfo->pst) + i);
 
             /* Give the message to the task activation function. If
              *  its a normal data message, we pass it, if this is a
@@ -5142,7 +4891,7 @@ SsSTskEntry *sTsk
             {
 #ifndef RGL_SPECIFIC_CHANGES
 #ifdef SS_TSKLOG_ENABLE
-              U32 t = MacGetTick();
+              uint32_t t = MacGetTick();
 #endif
 #endif
 				  /* mt003.301 Modifications */
@@ -5158,8 +4907,8 @@ SsSTskEntry *sTsk
 #endif
 #if SS_THREAD_PROFILE
                 SGetEpcTime(&et2);
-                tTsk->curEvtTime = (U32)(et2 - et1);
-                tTsk->totTime += (U64)tTsk->curEvtTime;
+                tTsk->curEvtTime = (uint32_t)(et2 - et1);
+                tTsk->totTime += (uint64_t)tTsk->curEvtTime;
 #endif /* SS_THREAD_PROFILE */
             }
             else
@@ -5351,20 +5100,14 @@ SsSTskEntry *sTsk
    SThreadYield();
 #endif
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 Bool g_usettitmr;
 /*
 *       Fun:   mtTmrHdlrPublic
 */
-#ifdef ANSI
-PUBLIC Void mtTmrHdlrPublic
-(
-)
-#else
-PUBLIC Void mtTmrHdlrPublic()
-#endif
+Void mtTmrHdlrPublic()
 {
    if (SLock(&osCp.tmrTblLock) != ROK)
    {
@@ -5395,30 +5138,24 @@ PUBLIC Void mtTmrHdlrPublic()
 *
 */
 /*mt041.201 Modified SSI tick handling in mtTmrHdlr() */
-#ifdef ANSI
-PRIVATE Void *mtTmrHdlr
+static Void *mtTmrHdlr
 (
 void *parm                        /* unused */
 )
-#else
-   /* mt009.21: addition */
-PRIVATE Void *mtTmrHdlr(parm)
-void *parm;                       /* unused */
-#endif
 {
 /*mt004.301-addede new region*/
 /* mt010.301 Removed SS_FAP portion and
  * enabled oroginal code in function mtTmrHdlr */
 
    struct timespec ts;
-   U32 time_int;
-   U32 i, cnt, oldTicks, newTicks;
+   uint32_t time_int;
+   uint32_t i, cnt, oldTicks, newTicks;
    struct timeval tv1,tv2;
    /* mt038.201 added return */
    S16 ret;
    /* mt039.201 changes for nanosleep */
    struct timespec tsN;
-   PRIVATE U32 err_in_usec;
+   static uint32_t err_in_usec;
 
    /*mt013.301 : doesn't need TRC macro ,as this will never return*/
 
@@ -5539,7 +5276,7 @@ void *parm;                       /* unused */
    }
 
    /* mt009.21: addition */
-   RETVALUE( (Void *) NULLP);
+   return ( (Void *) NULLP);
    /* will not reach here */
 }
 
@@ -5558,17 +5295,11 @@ void *parm;                       /* unused */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC Void mtTimeout
+Void mtTimeout
 (
 PTR tCb,                        /* control block */
 S16 evnt                        /* event */
 )
-#else
-PUBLIC Void mtTimeout(tCb, evnt)
-PTR tCb;                        /* control block */
-S16 evnt;                       /* event */
-#endif
 {
    Buffer *mBuf;
    SsMsgInfo *mInfo;
@@ -5581,15 +5312,14 @@ S16 evnt;                       /* event */
 #endif
 /* mt028.201: modification: multiple procs support related changes */
 #ifdef SS_MULTIPLE_PROCS
-   U16 procIdIdx;
+   uint16_t procIdIdx;
 #endif /* SS_MULTIPLE_PROCS */
 #ifdef RGL_SPECIFIC_CHANGES
 #ifdef MSPD_MLOG_NEW
-   U32 t = GetTIMETICK();
+   uint32_t t = GetTIMETICK();
 #endif
 #endif
 
-   TRC0(mtTimeout);
 
 
    /* get the timer entry */
@@ -5599,7 +5329,7 @@ S16 evnt;                       /* event */
    /* if the timer was deleted, this will be NULL, so drop it */
    if (tEnt == NULL)
    {
-      RETVOID;
+      return;
    }
 
 /* mt008.301 Deletion: tmrTbl Lock is moved to mtTmrHdlr */
@@ -5610,7 +5340,7 @@ S16 evnt;                       /* event */
     */
    if (tEnt->used == FALSE)
    {
-      RETVOID;
+      return;
    }
 
 
@@ -5632,7 +5362,7 @@ S16 evnt;                       /* event */
       MTLOGERROR(ERRCLS_DEBUG, EMT017, ERRZERO, "Could not get message");
 #endif
 
-      RETVOID;
+      return;
    }
 
    mInfo = (SsMsgInfo *)mBuf->b_rptr;
@@ -5673,7 +5403,7 @@ S16 evnt;                       /* event */
       MTLOGERROR(ERRCLS_DEBUG, EMT018, ret, "Could not lock TAPA task table");
 #endif
 
-      RETVOID;
+      return;
    }
 #endif
 
@@ -5692,7 +5422,7 @@ S16 evnt;                       /* event */
       SS_RELEASE_SEMA(&osCp.tTskTblSem);
 #endif
       SPutMsg(mBuf);
-      RETVOID;
+      return;
    }
 
 
@@ -5704,7 +5434,7 @@ S16 evnt;                       /* event */
       SS_RELEASE_SEMA(&osCp.tTskTblSem);
 #endif
       SPutMsg(mBuf);
-      RETVOID;
+      return;
    }
    /* Klock work fix ccpu00148484 */
    /* write the timer message to the queue of the destination task */
@@ -5721,7 +5451,7 @@ S16 evnt;                       /* event */
                         "Could not write to demand queue");
 #endif
 
-      RETVOID;
+      return;
    }
 #ifdef SS_LOCKLESS_MEMORY
    mInfo->pst.region = tTsk->sTsk->region;
@@ -5740,7 +5470,7 @@ S16 evnt;                       /* event */
                         "Could not write to demand queue");
 #endif
 
-      RETVOID;
+      return;
    }
 /* Fix for ccpu00130657 */
 #ifdef TENB_T2K3K_SPECIFIC_CHANGES
@@ -5776,7 +5506,7 @@ S16 evnt;                       /* event */
    MLogTask(131313, RESOURCE_LARM, t, GetTIMETICK());
 #endif
 #endif
-   RETVOID;
+   return;
 }
 
 
@@ -5795,16 +5525,10 @@ S16 evnt;                       /* event */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PRIVATE Void *mtConHdlr
+static Void *mtConHdlr
 (
 Ptr parm                        /* unused */
 )
-#else
-  /* mt009.21: addition */
-PRIVATE Void *mtConHdlr(parm)
-Ptr parm;                       /* unused */
-#endif
 {
    int fd;
    Data data;
@@ -5820,7 +5544,7 @@ Ptr parm;                       /* unused */
    if (osCp.dep.conInFp == NULLP)
    {
       /* die */
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 
    fd = fileno(osCp.dep.conInFp);
@@ -5863,26 +5587,16 @@ Ptr parm;                       /* unused */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
   /* mt009.21: addition */
-PRIVATE Void *mtIsTskHdlr
+static Void *mtIsTskHdlr
 (
 Ptr tskPtr                      /* pointer to task entry */
 )
-#else
-  /* mt009.21: addition */
-PRIVATE Void *mtIsTskHdlr(tskPtr)
-Ptr tskPtr;                     /* pointer to task entry */
-#endif
 {
 #if (ERRCLASS & ERRCLS_DEBUG)
    int ret;
 #endif
    MtIsFlag isFlag;
-
-
-   TRC0(mtIsTskHdlr);
-
 
    for (; ;)
    {
@@ -5950,7 +5664,7 @@ Ptr tskPtr;                     /* pointer to task entry */
       }
    }
   /* mt009.21: addition */
-  RETVALUE( (Void *) NULLP);
+  return ( (Void *) NULLP);
 
    /* not reached */
 }
@@ -5972,18 +5686,8 @@ Ptr tskPtr;                     /* pointer to task entry */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC Void mtIntSigHndlr
-(
-int arg
-)
-#else
-PUBLIC Void mtIntSigHndlr(arg)
-int arg;
-#endif
+Void mtIntSigHndlr(int arg)
 {
-
-   TRC0(mtIntSigHndlr);
 
    osCp.dep.sigEvnt=TRUE;
 
@@ -5993,7 +5697,7 @@ int arg;
 #endif
 #endif
 
-   RETVOID;
+   return;
 }
 
 /*mt010.301 Fix for core when run with -o option and when killed with SIGINT*/
@@ -6010,20 +5714,11 @@ int arg;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC Void mtExitClnup
-(
-void
-)
-#else
-PUBLIC Void mtExitClnup()
-#endif
+Void mtExitClnup(void)
 {
    Ticks ticks;
    S8 buf[128];
 
-
-   TRC0(mtExitClnup);
 
    SGetSysTime(&ticks);
 #ifdef ALIGN_64BIT
@@ -6074,33 +5769,26 @@ Ticks SGetTtiCount(Void)
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SDisplay
+S16 SDisplay
 (
 S16 chan,                   /* channel */
 Txt *buf                    /* buffer */
 )
-#else
-PUBLIC S16 SDisplay(chan, buf)
-S16 chan;                   /* channel */
-Txt *buf;                   /* buffer */
-#endif
 {
-   TRC1(SDisplay);
 
 /* mt020.201 - Fixed typo */
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (buf == NULLP)
    {
       MTLOGERROR(ERRCLS_INT_PAR, EMT022, ERRZERO, "Null pointer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
 #ifndef XEON_SPECIFIC_CHANGES
 #ifdef TENB_T2K3K_SPECIFIC_CHANGES
    ssMemlog(buf, strlen(buf));
-   RETVALUE(ROK);
+   return ROK;
 #endif
 #endif
 
@@ -6128,7 +5816,7 @@ Txt *buf;                   /* buffer */
 #endif
 #endif
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*mt010.301 */
@@ -6145,16 +5833,8 @@ Txt *buf;                   /* buffer */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SFini
-(
-void
-)
-#else
-PUBLIC S16 SFini()
-#endif
+S16 SFini(void)
 {
-   TRC1(SFini);
 
    /* mt030.201 added under compilet time flag SS_LINUX and SLES9_PLUS
       a loop to overcome the child processes being killed upon exiting the
@@ -6173,7 +5853,7 @@ PUBLIC S16 SFini()
 
 #endif
    pthread_exit(NULLP);
-   RETVALUE(0);
+   return (0);
 }
 
 /*
@@ -6190,23 +5870,16 @@ PUBLIC S16 SFini()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SSetDateTime
+S16 SSetDateTime
 (
 REG1 DateTime *dt           /* date and time */
 )
-#else
-PUBLIC S16 SSetDateTime(dt)
-REG1 DateTime *dt;          /* date and time */
-#endif
 {
-   TRC1(SSetDateTime);
-
 
    UNUSED(dt);
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -6226,15 +5899,10 @@ REG1 DateTime *dt;          /* date and time */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SGetDateTime
+S16 SGetDateTime
 (
 REG1 DateTime *dt           /* date and time */
 )
-#else
-PUBLIC S16 SGetDateTime(dt)
-REG1 DateTime *dt;          /* date and time */
-#endif
 {
    /*-- mt035.201 : SSI enhancements for micro second in datetime struct --*/
    /* time_t tt; --*/
@@ -6247,14 +5915,12 @@ REG1 DateTime *dt;          /* date and time */
    struct tm tme;
 
 
-   TRC1(SGetDateTime);
-
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (dt == NULLP)
    {
       MTLOGERROR(ERRCLS_INT_PAR, EMT023, ERRZERO, "Null pointer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -6271,12 +5937,12 @@ REG1 DateTime *dt;          /* date and time */
 #endif
    localtime_r(&ptime.tv_sec, &tme);
 
-   dt->month = (U8) tme.tm_mon + 1;
-   dt->day = (U8) tme.tm_mday;
-   dt->year = (U8) tme.tm_year;
-   dt->hour = (U8) tme.tm_hour;
-   dt->min = (U8) tme.tm_min;
-   dt->sec = (U8) tme.tm_sec;
+   dt->month = (uint8_t) tme.tm_mon + 1;
+   dt->day = (uint8_t) tme.tm_mday;
+   dt->year = (uint8_t) tme.tm_year;
+   dt->hour = (uint8_t) tme.tm_hour;
+   dt->min = (uint8_t) tme.tm_min;
+   dt->sec = (uint8_t) tme.tm_sec;
    dt->tenths = 0;
 
 #ifdef SS_DATETIME_USEC
@@ -6287,7 +5953,7 @@ REG1 DateTime *dt;          /* date and time */
 #endif
 #endif /*-- SS_DATETIME_USEC --*/
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -6307,33 +5973,27 @@ REG1 DateTime *dt;          /* date and time */
 *       File:  mt_ss.c
 */
 /* mt003.301 Modifications */
-#ifdef ANSI
-PUBLIC S16 SGetEpcTime
+S16 SGetEpcTime
 (
 EpcTime *et           /* date and time */
 )
-#else
-PUBLIC S16 SGetEpcTime(et)
-EpcTime *et;          /* date and time */
-#endif
 {
 /* mt003.301 Modifications */
-PRIVATE U64 now;
-		  U64  to_sec  = 1000000;
-		  U64  to_nsec = 1000;
+static uint64_t now;
+		  uint64_t  to_sec  = 1000000;
+		  uint64_t  to_nsec = 1000;
 #ifndef SS_LINUX
    struct timespec ptime;
 #else
    struct timeval ptime;
 #endif
 
-   TRC1(SEpcTime);
 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (et == NULLP)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -6356,7 +6016,7 @@ PRIVATE U64 now;
 
    *et = now;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -6374,24 +6034,18 @@ PRIVATE U64 now;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SGetSysTime
+S16 SGetSysTime
 (
 Ticks *sysTime              /* system time */
 )
-#else
-PUBLIC S16 SGetSysTime(sysTime)
-Ticks *sysTime;             /* system time */
-#endif
 {
-   TRC1(SGetSysTime);
 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (sysTime == NULLP)
    {
       MTLOGERROR(ERRCLS_INT_PAR, EMT024, ERRZERO, "Null pointer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -6399,7 +6053,7 @@ Ticks *sysTime;             /* system time */
    *sysTime = osCp.dep.sysTicks;
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /* mt021.201 - Addition of SGetRefTime function */
@@ -6422,19 +6076,12 @@ Ticks *sysTime;             /* system time */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SGetRefTime
+S16 SGetRefTime
 (
-U32 refTime,             /* reference time */
-U32 *sec,
-U32 *usec
+uint32_t refTime,             /* reference time */
+uint32_t *sec,
+uint32_t *usec
 )
-#else
-PUBLIC S16 SGetRefTime(refTime, sec, usec)
-U32 refTime;             /* reference time */
-U32 *sec;
-U32 *usec;
-#endif
 {
 
 #ifndef SS_LINUX
@@ -6443,7 +6090,6 @@ U32 *usec;
    struct timeval ptime;
 #endif
 
-   TRC1(SGetSysTime);
 
 #ifndef SS_LINUX
   clock_gettime(CLOCK_REALTIME, &ptime);
@@ -6455,13 +6101,13 @@ U32 *usec;
    if (sec == NULLP || usec == NULLP)
    {
       MTLOGERROR(ERRCLS_INT_PAR, EMT025, ERRZERO, "Null pointer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* mt022.201 - Modification to fix compile warning */
-   if (refTime > (U32)(ptime.tv_sec))
+   if (refTime > (uint32_t)(ptime.tv_sec))
    {
       MTLOGERROR(ERRCLS_INT_PAR, EMT026, ERRZERO, "Reference time exceeds present time");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -6472,7 +6118,7 @@ U32 *usec;
    *usec = ptime.tv_usec;
 #endif
 
-  RETVALUE(ROK);
+  return ROK;
 
 }
 
@@ -6492,17 +6138,11 @@ U32 *usec;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SRandom
+S16 SRandom
 (
 Random *value               /* random number */
 )
-#else
-PUBLIC S16 SRandom(value)
-Random *value;              /* random number */
-#endif
 {
-   TRC1(SRandom);
 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -6510,7 +6150,7 @@ Random *value;              /* random number */
    {
  /* mt011.21: addition */
       MTLOGERROR(ERRCLS_INT_PAR, EMT028, (ErrVal)0 , "Null pointer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -6518,7 +6158,7 @@ Random *value;              /* random number */
    *value = (Random) rand_r(&osCp.dep.randSeed);
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -6535,19 +6175,11 @@ Random *value;              /* random number */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SExitTsk
-(
-void
-)
-#else
-PUBLIC S16 SExitTsk()
-#endif
+S16 SExitTsk(void)
 {
-   TRC1(SExitTsk);
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -6564,19 +6196,11 @@ PUBLIC S16 SExitTsk()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SExitInt
-(
-void
-)
-#else
-PUBLIC S16 SExitInt()
-#endif
+S16 SExitInt(void)
 {
-   TRC1(SExitInt);
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -6597,19 +6221,11 @@ PUBLIC S16 SExitInt()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SHoldInt
-(
-void
-)
-#else
-PUBLIC S16 SHoldInt()
-#endif
+S16 SHoldInt(void)
 {
-   TRC1(SHoldInt);
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -6626,19 +6242,11 @@ PUBLIC S16 SHoldInt()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SRelInt
-(
-void
-)
-#else
-PUBLIC S16 SRelInt()
-#endif
+S16 SRelInt(void)
 {
-   TRC1(SRelInt);
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -6656,19 +6264,11 @@ PUBLIC S16 SRelInt()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC INLINE S16 SEnbInt
-(
-void
-)
-#else
-PUBLIC INLINE S16 SEnbInt()
-#endif
+inline S16 SEnbInt(void)
 {
-   TRC1(SEnbInt);
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -6686,19 +6286,11 @@ PUBLIC INLINE S16 SEnbInt()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC INLINE S16 SDisInt
-(
-void
-)
-#else
-PUBLIC INLINE S16 SDisInt()
-#endif
+inline S16 SDisInt(void)
 {
-   TRC1(SDisInt);
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -6716,26 +6308,19 @@ PUBLIC INLINE S16 SDisInt()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SGetVect
+S16 SGetVect
 (
 VectNmb vectNmb,                /* vector number */
 PIF *vectFnct                   /* vector function */
 )
-#else
-PUBLIC S16 SGetVect(vectNmb, vectFnct)
-VectNmb vectNmb;                /* vector number */
-PIF *vectFnct;                  /* vector function */
-#endif
 {
-   TRC1(SGetVect);
 
 
    UNUSED(vectNmb);
    UNUSED(vectFnct);
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -6753,26 +6338,19 @@ PIF *vectFnct;                  /* vector function */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SPutVect
+S16 SPutVect
 (
 VectNmb vectNmb,                /* vector number */
 PIF vectFnct                    /* vector function */
 )
-#else
-PUBLIC S16 SPutVect(vectNmb, vectFnct)
-VectNmb vectNmb;                /* vector number */
-PIF vectFnct;                   /* vector function */
-#endif
 {
-   TRC1(SPutVect);
 
 
    UNUSED(vectNmb);
    UNUSED(vectFnct);
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /* mt028.201: modification: multiple procs support related changes */
@@ -6793,17 +6371,11 @@ PIF vectFnct;                   /* vector function */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SGetEntInst
+S16 SGetEntInst
 (
 Ent *ent,                       /* entity */
 Inst *inst                      /* instance */
 )
-#else
-PUBLIC S16 SGetEntInst(ent, inst)
-Ent *ent;                       /* entity */
-Inst *inst;                     /* instance */
-#endif
 {
    S16 i;
    S16 ret;
@@ -6811,7 +6383,6 @@ Inst *inst;                     /* instance */
    SsSTskEntry *sTsk;
 
 
-   TRC1(SGetEntInst);
 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -6819,7 +6390,7 @@ Inst *inst;                     /* instance */
    if (ent == NULLP  ||  inst == NULLP)
    {
       MTLOGERROR(ERRCLS_INT_PAR, EMT029, ERRZERO, "Null pointer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -6833,7 +6404,7 @@ Inst *inst;                     /* instance */
    ret = SLock(&osCp.sTskTblLock);
    if (ret != ROK)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    for (i = 0;  i < SS_MAX_STSKS;  i++)
    {
@@ -6851,7 +6422,7 @@ Inst *inst;                     /* instance */
    SUnlock(&osCp.sTskTblLock);
 
 
-   RETVALUE(ret == ROK ? ROK : RFAILED);
+   return (ret == ROK ? ROK : RFAILED);
 }
 
 
@@ -6868,17 +6439,11 @@ Inst *inst;                     /* instance */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SSetEntInst
+S16 SSetEntInst
 (
 Ent ent,                    /* entity */
 Inst inst                   /* instance */
 )
-#else
-PUBLIC S16 SSetEntInst(ent, inst)
-Ent ent;                    /* entity */
-Inst inst;                  /* instance */
-#endif
 {
    S16 i;
    S16 ret;
@@ -6886,7 +6451,6 @@ Inst inst;                  /* instance */
    SsSTskEntry *sTsk;
 
 
-   TRC1(SSetEntInst);
 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -6894,7 +6458,7 @@ Inst inst;                  /* instance */
    if (ent >= ENTNC  ||  inst >= INSTNC)
    {
       MTLOGERROR(ERRCLS_INT_PAR, EMT030, ERRZERO, "Invalid entity/instance");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -6908,7 +6472,7 @@ Inst inst;                  /* instance */
    ret = SLock(&osCp.sTskTblLock);
    if (ret != ROK)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    for (i = 0;  i < SS_MAX_STSKS;  i++)
    {
@@ -6926,7 +6490,7 @@ Inst inst;                  /* instance */
    SUnlock(&osCp.sTskTblLock);
 
 
-   RETVALUE(ret == ROK ? ROK : RFAILED);
+   return (ret == ROK ? ROK : RFAILED);
 }
 
 #endif /* SS_MULTIPLE_PROCS */
@@ -6947,29 +6511,22 @@ Inst inst;                  /* instance */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC INLINE S16 SSetIntPend
+inline S16 SSetIntPend
 (
-U16 id,                         /* driver task identifier */
+uint16_t id,                         /* driver task identifier */
 Bool flag                       /* flag */
 )
-#else
-PUBLIC INLINE S16 SSetIntPend(id, flag)
-U16 id;                         /* driver task identifier */
-Bool flag;                      /* flag */
-#endif
 {
    MtIsFlag isFlag;
 
 
-   TRC1(SSetIntPend);
 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (id >= SS_MAX_DRVRTSKS  ||  osCp.drvrTskTbl[id].used == FALSE)
    {
       MTLOGERROR(ERRCLS_INT_PAR, EMT031, id, "Invalid instance");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -6979,11 +6536,11 @@ Bool flag;                      /* flag */
 
    if (write(osCp.dep.isFildes[1], &isFlag, sizeof(isFlag)) != sizeof(isFlag))
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif  /* SS_DRVR_SUPPORT */
 
@@ -7003,20 +6560,12 @@ Bool flag;                      /* flag */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SGlobMemInfoShow
-(
-Void
-)
-#else
-PUBLIC S16 SGlobMemInfoShow()
-#endif
+S16 SGlobMemInfoShow(Void)
 {
-   U16   idx;
+   uint16_t   idx;
    Txt   prntBuf[100];
    CmMmGlobRegCb   *globReg;
    
-   TRC1(SGlobMemInfoShow);
 
    globReg = osCp.globRegCb;
 
@@ -7051,7 +6600,7 @@ PUBLIC S16 SGlobMemInfoShow()
    sprintf(prntBuf, "--------------------------------------------------------------\n");
    SDisplay(0, prntBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }   
 
 #endif /* SS_LOCKLESS_MEMORY */
@@ -7066,9 +6615,9 @@ Bool IsMemoryThresholdHit(Region reg, Pool pool)
                pool,
                mtCMMRegCb[reg]->bktTbl[pool].numAlloc,
                mtCMMRegCb[reg]->bktTbl[pool].numBlks);
-     RETVALUE(TRUE);
+     return (TRUE);
   }
-  RETVALUE(FALSE);
+  return (FALSE);
 }
 */
 
@@ -7105,28 +6654,21 @@ Bool IsMemoryThresholdHit(Region reg, Pool pool)
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SRegInfoShow
+S16 SRegInfoShow
 (
 Region region,
-U32 *availmem
+uint32_t *availmem
 )
-#else
-PUBLIC S16 SRegInfoShow(region, availmem)
-Region region;
-U32 *availmem;
-#endif
 {
-   U16   idx;
+   uint16_t   idx;
    Txt   prntBuf[100];
 
-   TRC1(SRegInfoShow);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (region > (SS_MAX_REGS-1) )
    {
       MTLOGERROR(ERRCLS_INT_PAR, EMT032, ERRZERO, "Invalid Region");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -7206,28 +6748,22 @@ U32 *availmem;
    SDisplay(0, prntBuf);
 #endif
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #ifdef XEON_SPECIFIC_CHANGES
 #define  SSI_MAX_BKT_THRESHOLD 6
 #define  SSI_MAX_REG_THRESHOLD 2
-U32 SMemMaxThreshold[SSI_MAX_REG_THRESHOLD][SSI_MAX_BKT_THRESHOLD] = {{0}};
-U32 SMemMidThreshold[SSI_MAX_REG_THRESHOLD][SSI_MAX_BKT_THRESHOLD] = {{0}};
-U32 SMemLowThreshold[SSI_MAX_REG_THRESHOLD][SSI_MAX_BKT_THRESHOLD] = {{0}};
+uint32_t SMemMaxThreshold[SSI_MAX_REG_THRESHOLD][SSI_MAX_BKT_THRESHOLD] = {{0}};
+uint32_t SMemMidThreshold[SSI_MAX_REG_THRESHOLD][SSI_MAX_BKT_THRESHOLD] = {{0}};
+uint32_t SMemLowThreshold[SSI_MAX_REG_THRESHOLD][SSI_MAX_BKT_THRESHOLD] = {{0}};
 
-#ifdef ANSI
-PRIVATE Void SInitMemThreshold
+static Void SInitMemThreshold
 (
 Region region,
-U8     maxBkt
+uint8_t     maxBkt
 )
-#else
-PRIVATE Void SInitMemThreshold(region, maxBkt)
-Region region;
-U8     maxBkt;
-#endif
 {
-   U8   idx = 0;
+   uint8_t   idx = 0;
    for (idx = 0; (idx < maxBkt && idx < mtCMMRegCb[region]->numBkts); idx++)
    {
       SMemMaxThreshold[region][idx] = (mtCMMRegCb[region]->bktTbl[idx].numBlks*95)/100;
@@ -7237,21 +6773,15 @@ U8     maxBkt;
    }
 }
 
-#ifdef ANSI
-PUBLIC S16 SRegReachedMemThreshold
+S16 SRegReachedMemThreshold
 (
 Region region,
-U8     maxBkt
+uint8_t     maxBkt
 )
-#else
-PUBLIC S16 SRegReachedMemThreshold(region, maxBkt)
-Region region;
-U8     maxBkt;
-#endif
 {
-   U8           idx       = 0;
-   U8           memStatus = 3;
-   PRIVATE U8   initFlag  = 1;
+   uint8_t           idx       = 0;
+   uint8_t           memStatus = 3;
+   static uint8_t   initFlag  = 1;
    if(initFlag)
    {
       initFlag = 0;
@@ -7274,7 +6804,7 @@ U8     maxBkt;
          memStatus = 2;
       }
    }
-   RETVALUE(memStatus);
+   return (memStatus);
 }
 #endif
 /* mt033.201 - addition of API to return the memory statistical data */
@@ -7294,27 +6824,20 @@ U8     maxBkt;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SGetRegInfo
+S16 SGetRegInfo
 (
 Region region,
 SsMemDbgInfo *dbgInfo
 )
-#else
-PUBLIC S16 SGetRegInfo(region, dbgInfo)
-Region region;
-SsMemDbgInfo *dbgInfo;
-#endif
 {
-   U32 idx;
+   uint32_t idx;
 
-   TRC1(SGetRegInfo);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (region >= mtMemoCfg.numRegions )
    {
       MTLOGERROR(ERRCLS_INT_PAR, EMT033, ERRZERO, "Invalid Region");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -7349,27 +6872,21 @@ SsMemDbgInfo *dbgInfo;
    dbgInfo->numFragBlk = mtCMMRegCb[region]->heapCb.numFragBlk;
 #endif
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
-#ifdef ANSI
-PUBLIC S16 SGetRegPoolInfo
+S16 SGetRegPoolInfo
 (
-U8 *numRegion,
-U8 *numPool
+uint8_t *numRegion,
+uint8_t *numPool
 )
-#else
-PUBLIC S16 SGetRegPoolInfo(numRegion, numPool)
-U8 *numRegion;
-U8 *numPool;
-#endif
 {
    /* Send number of Region available */
    *numRegion = mtMemoCfg.numRegions;
    /* Send number of Pools available */
    *numPool = cfgRegInfo[0].numPools;
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /* mt033.201 - addition of APIs to print the memory statistical data
@@ -7395,30 +6912,23 @@ U8 *numPool;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SPrintRegMemStatusInfo
+S16 SPrintRegMemStatusInfo
 (
 Region region,
-U8 typeFlag
+uint8_t typeFlag
 )
-#else
-PUBLIC S16 SPrintRegMemStatusInfo(region, typeFlag)
-Region region;
-U8 typeFlag;
-#endif
 {
    Txt prntBuf[150];
-   U32 idx;
-   U32 statMemSize;
-   U32 dynMemSize;
+   uint32_t idx;
+   uint32_t statMemSize;
+   uint32_t dynMemSize;
 
-   TRC1(SPrintRegMemStatusInfo);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (region >= mtMemoCfg.numRegions )
    {
       MTLOGERROR(ERRCLS_INT_PAR, EMT034, ERRZERO, "Invalid Region");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -7483,7 +6993,7 @@ U8 typeFlag;
    else if (typeFlag == SS_MEM_BLK_SIZE_PROFILE)
    {
       /* Bucket Memory allocation Statistics */
-      RETVALUE(SPrintRegMemStats(region));
+      return (SPrintRegMemStats(region));
    }
    else
    {
@@ -7492,7 +7002,7 @@ U8 typeFlag;
       SDisplay(0, prntBuf);
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -7510,22 +7020,13 @@ U8 typeFlag;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PRIVATE S16 SPrintRegMemStats
-(
-Region region
-)
-#else
-PRIVATE S16 SPrintRegMemStats(region)
-Region region;
-#endif
+static S16 SPrintRegMemStats(Region region)
 {
    CmMmHashListCp *hashListCp;
    Txt prntBuf[150];
-   U32 idx;
-   U32 cntEnt;
+   uint32_t idx;
+   uint32_t cntEnt;
 
-   TRC1(SPrintRegMemStats);
 
    hashListCp = &mtCMMRegCb[region]->hashListCp;
 
@@ -7599,7 +7100,7 @@ Region region;
    sprintf(prntBuf, "\n");
    SDisplay(0, prntBuf);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -7617,23 +7118,15 @@ Region region;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC Void SRegMemErrHdlr
+Void SRegMemErrHdlr
 (
 Region region,
 Data *ptr,
 S16 errCode
 )
-#else
-PUBLIC Void SRegMemErrHdlr(region, ptr, errCode)
-Region region;
-Data *ptr;
-S16 errCode;
-#endif
 {
    Txt prntBuf[150];
 
-   TRC1(SRegMemErrHdlr);
 
    if (errCode == RDBLFREE)
    {
@@ -7646,7 +7139,7 @@ S16 errCode;
       SDisplay(0, prntBuf);
    }
 
-   RETVOID;
+   return;
 }
 
 /*
@@ -7665,15 +7158,10 @@ S16 errCode;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SPrintRegMemProfile
+S16 SPrintRegMemProfile
 (
 Region region
 )
-#else
-PUBLIC S16 SPrintRegMemProfile(region)
-Region region;
-#endif
 {
    CmMmHeapCb *heapCb;
    CmMmRegCb *regCb;
@@ -7682,17 +7170,16 @@ Region region;
    Size offsetToNxtBlk;
    Size hdrSize;
    Txt prntBuf[250];
-   U32 idx;
-   U32 blkCnt;
+   uint32_t idx;
+   uint32_t blkCnt;
 
 
-   TRC1(SPrintRegMemProfile);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (region >= mtMemoCfg.numRegions )
    {
       MTLOGERROR(ERRCLS_INT_PAR, EMT035, ERRZERO, "Invalid Region");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -7830,7 +7317,7 @@ Region region;
          * we cannot rely on this size. So it is better to stop here unless there
          * exists any other mechanism(?) to know the offset to next block.
          */
-         RETVALUE(ROK);
+         return ROK;
       }
 
 /*mt009.301 Fixed 64BIT compilation warnings*/
@@ -7881,7 +7368,7 @@ Region region;
 
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif /* SSI_DEBUG_LEVEL1 */
 
@@ -7900,15 +7387,10 @@ Region region;
 *       File:  mt_ss.c
 *
 --*/
-#ifdef ANSI
-PUBLIC S16 SGetTimeStamp
+S16 SGetTimeStamp
 (
 S8    *ts
 )
-#else
-PUBLIC S16 SGetTimeStamp(ts)
-S8    *ts;
-#endif
 {
 
 #ifndef SS_LINUX
@@ -7921,7 +7403,6 @@ S8    *ts;
    S8 time_string[40];
    S32 microseconds;
 
-   TRC1(SGetTimeStamp);
 
 #ifndef SS_LINUX
   clock_gettime(CLOCK_REALTIME, &ptime);
@@ -7954,7 +7435,7 @@ S8    *ts;
    sprintf(ts, "%s.%03ld", time_string, microseconds);
 #endif
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 /*-- mt037.201 : Added new API for SGetSystemTsk --*/
@@ -7971,18 +7452,10 @@ S8    *ts;
 *       File:  mt_ss.c
 *
 --*/
-#ifdef ANSI
-PUBLIC U32 SGetSystemTsk
-(
-Void
-)
-#else
-PUBLIC U32 SGetSystemTsk()
-#endif
+uint32_t SGetSystemTsk(Void)
 {
-   TRC1(SGetSystemTskS);
 
-   RETVALUE(pthread_self());
+   return (pthread_self());
 
 } /* end of SGetSystemTsk */
 
@@ -8001,16 +7474,11 @@ PUBLIC U32 SGetSystemTsk()
 *       File:  mt_ss.c
 *
 --*/
-#ifdef ANSI
-PRIVATE SsSTskEntry* ssdAddTmrSTsk(Void)
-#else
-PRIVATE SsSTskEntry* ssdAddTmrSTsk()
-#endif
+static SsSTskEntry* ssdAddTmrSTsk(Void)
 {
    SsSTskEntry *sTsk;
    S16 ret;
 
-   TRC1(ssdAddTmrSTsk);
    sTsk = NULLP;
    /* lock the system task table */
    ret = SLock(&osCp.sTskTblLock);
@@ -8022,7 +7490,7 @@ PRIVATE SsSTskEntry* ssdAddTmrSTsk()
                      "Could not lock system task table");
 #endif
 
-      RETVALUE(sTsk);
+      return (sTsk);
    }
 
    /* check count of system tasks */
@@ -8034,7 +7502,7 @@ PRIVATE SsSTskEntry* ssdAddTmrSTsk()
 #if (ERRCLASS & ERRCLS_DEBUG)
            MTLOGERROR(ERRCLS_DEBUG, EMT040, ERRZERO,
                        "Could not give the Semaphore");
-           RETVALUE(sTsk);
+           return (sTsk);
 #endif
       }
 
@@ -8042,7 +7510,7 @@ PRIVATE SsSTskEntry* ssdAddTmrSTsk()
       MTLOGERROR(ERRCLS_ADD_RES, EMT041, ERRZERO, "Too many system tasks");
 #endif
 
-      RETVALUE(sTsk);
+      return (sTsk);
    }
 
 
@@ -8061,7 +7529,7 @@ PRIVATE SsSTskEntry* ssdAddTmrSTsk()
 #if (ERRCLASS & ERRCLS_DEBUG)
            MTLOGERROR(ERRCLS_DEBUG, EMT042, ERRZERO,
                        "Could not give the Semaphore");
-           RETVALUE(NULLP);
+           return (NULLP);
 #endif
       }
 
@@ -8070,7 +7538,7 @@ PRIVATE SsSTskEntry* ssdAddTmrSTsk()
                   "Could not initialize demand queue");
 #endif
 
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 
    /* initialize the system task entry lock */
@@ -8083,7 +7551,7 @@ PRIVATE SsSTskEntry* ssdAddTmrSTsk()
 #if (ERRCLASS & ERRCLS_DEBUG)
            MTLOGERROR(ERRCLS_DEBUG, EMT044, ERRZERO,
                        "Could not give the Semaphore");
-           RETVALUE(NULLP);
+           return (NULLP);
 #endif
       }
 
@@ -8092,7 +7560,7 @@ PRIVATE SsSTskEntry* ssdAddTmrSTsk()
                   "Could not initialize system task entry lock");
 #endif
 
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 
 
@@ -8110,11 +7578,11 @@ PRIVATE SsSTskEntry* ssdAddTmrSTsk()
 #if (ERRCLASS & ERRCLS_DEBUG)
            MTLOGERROR(ERRCLS_DEBUG, EMT046, ERRZERO,
                        "Could not give the Semaphore");
-           RETVALUE(NULLP);
+           return (NULLP);
 #endif
       }
 
-   RETVALUE(sTsk);
+   return (sTsk);
 }
 #endif /* SS_MULTICORE_SUPPORT */
 /* mt003.301 Readwrite lock and recursive mutex additions */
@@ -8132,17 +7600,7 @@ PRIVATE SsSTskEntry* ssdAddTmrSTsk()
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 ssdInitLockNew
-(
-SLockInfo *lockId,
-U8        lockType
-)
-#else
-PUBLIC S16 ssdInitLockNew(lockId, lockType)
-SLockInfo *lockId;
-U8        lockType;
-#endif
+S16 ssdInitLockNew(SLockInfo *lockId,uint8_t lockType)
 {
 
 #ifdef SS_REC_LOCK_SUPPORT
@@ -8151,7 +7609,6 @@ U8        lockType;
    Txt prntBuf[PRNTSZE];
    S16    retVal = ROK;
 
-   TRC1(ssdInitLockNew);
 
    switch(lockType)
    {
@@ -8162,7 +7619,7 @@ U8        lockType;
          {
             sprintf(prntBuf, "\n\n ssdInitLockNew(): Initialization of read write lock failed,Error# retVal %d\n", retVal);
             SDisplay(0, prntBuf);
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
          break;
       }
@@ -8176,7 +7633,7 @@ U8        lockType;
 		  {
 			 sprintf(prntBuf,"\n ssdInitLockNew(): mutexattr init failed,Error# %d \n",retVal);
 			 SPrint(prntBuf);
-			 RETVALUE(RFAILED);
+			 return RFAILED;
 		  }
 #ifdef SS_LINUX
 		  retVal = pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE_NP);
@@ -8188,7 +7645,7 @@ U8        lockType;
 			 sprintf(prntBuf,"\n ssdInitLockNew(): mutexattr settype failed,Error# %d \n",retVal);
 			 pthread_mutexattr_destroy(&attr);
 			 SPrint(prntBuf);
-			 RETVALUE(RFAILED);
+			 return RFAILED;
 		  }
 		  retVal = pthread_mutex_init((pthread_mutex_t *)&(lockId->l.recurLock), &attr);
 		  if(retVal != 0)
@@ -8196,7 +7653,7 @@ U8        lockType;
 			 sprintf(prntBuf,"\n ssdInitLockNew(): mutex init failed,Error# %d \n",retVal);
 			 pthread_mutexattr_destroy(&attr);
 			 SPrint(prntBuf);
-			 RETVALUE(RFAILED);
+			 return RFAILED;
 		  }
 		  break;
 		}
@@ -8205,10 +7662,10 @@ U8        lockType;
       {
          sprintf(prntBuf, "\n\n ssdInitLockNew(): Invalid lock type %d\n", lockType);
          SDisplay(0, prntBuf);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 /*
 *
@@ -8223,23 +7680,12 @@ U8        lockType;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 ssdLockNew
-(
-SLockInfo *lockId,
-U8         lockType
-)
-#else
-PUBLIC S16 ssdLockNew(lockId, lockType)
-SLockInfo *lockId;
-U8         lockType;
-#endif
+S16 ssdLockNew(SLockInfo *lockId,uint8_t lockType)
 {
 
    Txt prntBuf[PRNTSZE];
    S16    retVal = ROK;
 
-   TRC1(ssdLockNew);
 
    switch(lockType)
    {
@@ -8250,7 +7696,7 @@ U8         lockType;
          {
            sprintf(prntBuf, "\n\n ssdLockNew(): Failed to aquire the read lock,Error# %d\n", retVal);
            SDisplay(0, prntBuf);
-           RETVALUE(RFAILED);
+           return RFAILED;
          }
          break;
       }
@@ -8260,7 +7706,7 @@ U8         lockType;
          {
            sprintf(prntBuf, "\n\n ssdLockNew(): Failed to aquire the write lock,Error# %d\n", retVal);
            SDisplay(0, prntBuf);
-           RETVALUE(RFAILED);
+           return RFAILED;
          }
          break;
       }
@@ -8270,7 +7716,7 @@ U8         lockType;
          {
            sprintf(prntBuf, "\n\n ssdLockNew(): Failed to aquire the read lock,Error# %d\n", retVal);
            SDisplay(0, prntBuf);
-           RETVALUE(RFAILED);
+           return RFAILED;
          }
          break;
       }
@@ -8280,7 +7726,7 @@ U8         lockType;
          {
            sprintf(prntBuf, "\n\n ssdLockNew(): Failed to aquire the read lock,Error# %d\n", retVal);
            SDisplay(0, prntBuf);
-           RETVALUE(RFAILED);
+           return RFAILED;
          }
          break;
       }
@@ -8292,7 +7738,7 @@ U8         lockType;
 			{
 				sprintf(prntBuf, "\n\n ssdLockNew(): Failed to aquire the recursive mutex,Error# %d\n", retVal);
         		SDisplay(0, prntBuf);
-        		RETVALUE(RFAILED);
+        		return RFAILED;
 		   }
 		  break;
 		}
@@ -8301,11 +7747,11 @@ U8         lockType;
       {
          sprintf(prntBuf, "\n\n ssdLockNew(): Invalid lock type %d\n", lockType);
          SDisplay(0, prntBuf);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -8322,23 +7768,12 @@ U8         lockType;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 ssdUnlockNew
-(
-SLockInfo *lockId,
-U8        lockType
-)
-#else
-PUBLIC S16 ssdUnlockNew(lockId, lockType)
-SLockInfo *lockId;
-U8        lockType;
-#endif
+S16 ssdUnlockNew(SLockInfo *lockId,uint8_t lockType)
 {
 
    Txt prntBuf[PRNTSZE];
    S16    retVal = ROK;
 
-   TRC1(ssdUnlockNew);
 
    switch(lockType)
    {
@@ -8349,7 +7784,7 @@ U8        lockType;
          {
             sprintf(prntBuf, "\n\n ssdUnLockNew(): Failed to unlock the lock,Error# %d\n", retVal);
             SDisplay(0, prntBuf);
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
          break;
       }
@@ -8361,7 +7796,7 @@ U8        lockType;
 			{
 				sprintf(prntBuf, "\n\n ssdUnLockNew(): Failed to aquire the recursive mutex,Error# %d\n", retVal);
         		SDisplay(0, prntBuf);
-        		RETVALUE(RFAILED);
+        		return RFAILED;
 		   }
 		  break;
 		}
@@ -8370,10 +7805,10 @@ U8        lockType;
       {
          sprintf(prntBuf, "\n\n ssdUnlockNew(): Invalid lock type %d\n", lockType);
          SDisplay(0, prntBuf);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -8389,22 +7824,11 @@ U8        lockType;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 ssdDestroyLockNew
-(
-SLockInfo *lockId,
-U8        lockType
-)
-#else
-PUBLIC S16 ssdDestroyLockNew(lockId, lockType)
-SLockInfo *lockId;
-U8        lockType;
-#endif
+S16 ssdDestroyLockNew(SLockInfo *lockId,uint8_t lockType)
 {
    Txt prntBuf[PRNTSZE];
    S16    retVal = ROK;
 
-   TRC1(ssdDestroyLockNew);
 
    switch(lockType)
    {
@@ -8415,7 +7839,7 @@ U8        lockType;
          {
             sprintf(prntBuf, "\n\n ssdDestroyLockNew(): Failed to destroy the lock,Error# %d\n", retVal);
             SDisplay(0, prntBuf);
-            RETVALUE(RFAILED);
+            return RFAILED;
          }
          break;
       }
@@ -8427,7 +7851,7 @@ U8        lockType;
 			{
             sprintf(prntBuf, "\n\n ssdDestroyLockNew(): Failed to destroy the mutex,Error# %d\n", retVal);
         		SDisplay(0, prntBuf);
-        		RETVALUE(RFAILED);
+        		return RFAILED;
 		   }
 		  break;
 		}
@@ -8436,10 +7860,10 @@ U8        lockType;
       {
          sprintf(prntBuf, "\n\n ssdDestroyLockNew(): Invalid lock type %d\n", lockType);
          SDisplay(0, prntBuf);
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif /* SS_LOCK_SUPPORT */
 
@@ -8463,19 +7887,11 @@ U8        lockType;
  *       File:
  *
  **/
-#ifdef ANSI
-PUBLIC S16 ssInitRcvWork
-(
- void
- )
-#else
-PUBLIC S16 ssInitRcvWork()
-#endif
+S16 ssInitRcvWork(void)
 {
   pthread_attr_t attr;
   pthread_t      thread;
 
-  TRC1(ssInitRcvWork);
 
   /* set the required attributes */
   pthread_attr_init(&attr);
@@ -8488,12 +7904,12 @@ PUBLIC S16 ssInitRcvWork()
   {
 	 pthread_attr_destroy(&attr);
 
-	 RETVALUE(RFAILED);
+	 return RFAILED;
   }
 
   pthread_attr_destroy(&attr);
 
-  RETVALUE(ROK);
+  return ROK;
 
 }/* ssInitRcvWork */
 
@@ -8516,15 +7932,7 @@ PUBLIC S16 ssInitRcvWork()
  *
  **/
 
-#ifdef ANSI
-PRIVATE void *workRcvTsk
-(
- Ptr ptr
- )
-#else
-PRIVATE void *workRcvTsk (ptr)
-  Ptr ptr;
-#endif
+static void *workRcvTsk(Ptr ptr)
 {
 
   cvmx_wqe_t *workPtr;
@@ -8534,7 +7942,6 @@ PRIVATE void *workRcvTsk (ptr)
   struct timespec ts;
   Pst         pst;
 
-  TRC1(workRcvTsk);
 
 
   for (;;)
@@ -8612,7 +8019,7 @@ PRIVATE void *workRcvTsk (ptr)
 #endif /* SS_SEUM_CAVIUM */
 
 #ifdef TENB_RTLIN_CHANGES
-PUBLIC S16 SInitLock(SLockId *l, U8 t)
+S16 SInitLock(SLockId *l, uint8_t t)
 {
    S16 r = 0;
    pthread_mutexattr_t prior;
@@ -8641,7 +8048,7 @@ PUBLIC S16 SInitLock(SLockId *l, U8 t)
  *
  */
 
-PUBLIC Void ssRegMainThread(Void)
+Void ssRegMainThread(Void)
 {
 
    if(SS_INVALID_THREAD_REG_MAP != SS_GET_THREAD_MEM_REGION())
@@ -8685,17 +8092,16 @@ PUBLIC Void ssRegMainThread(Void)
  *       File: mt_ss.c
  *
  */
-PUBLIC S32 ssCheckAndAddMemoryRegionMap
+S32 ssCheckAndAddMemoryRegionMap
 (
 pthread_t    threadId,    /* Thread Id of system task */
 Region       region       /* Region associated with thread */
 )
 {
-   PRIVATE U32       createdThreads;
-   PRIVATE pthread_t createdThreadIds[SS_MAX_THREAD_CREATE_RETRY];
-   U32               indx;
+   static uint32_t       createdThreads;
+   static pthread_t createdThreadIds[SS_MAX_THREAD_CREATE_RETRY];
+   uint32_t               indx;
 
-   TRC1(ssCheckAndAddMemoryRegionMap);
 
    /* Here  0xFF is considered as invalid region and if the mapping table
     * contains 0xFF, that mapping entry is free
@@ -8711,7 +8117,7 @@ Region       region       /* Region associated with thread */
          exit(1);
       }
       createdThreadIds[createdThreads++] = threadId;
-      RETVALUE(FALSE);
+      return (FALSE);
    }
    /* If we found free mapping table entry, place the region and send pthread_cancel
     * for all the thread Ids which are created before this 
@@ -8731,7 +8137,7 @@ Region       region       /* Region associated with thread */
    }
    createdThreads = 0;
 
-   RETVALUE(TRUE);
+   return (TRUE);
 
 } /* ssCheckAndAddMemoryRegionMap */
 
@@ -8759,13 +8165,12 @@ Region       region       /* Region associated with thread */
  *       File: mt_ss.c
  *
  */
-PUBLIC S32 ssCheckAndDelMemoryRegionMap
+S32 ssCheckAndDelMemoryRegionMap
 (
 pthread_t    threadId    /* Thread Id of system task */
 )
 {
 
-   TRC1(ssCheckAndDelMemoryRegionMap);
 
    /* Raghu To-Do Check with team, is it necessary to acquire lock
     * as del and add may go parallel */
@@ -8776,18 +8181,18 @@ pthread_t    threadId    /* Thread Id of system task */
             osCp.threadMemoryRegionMap[((threadId >> SS_MEM_THREAD_ID_SHIFT) % SS_MAX_THREAD_REGION_MAP)])
    {
 #ifndef ALIGN_64BIT
-      printf("Invalid Thread ID (%ld)\n", (U32)threadId);
+      printf("Invalid Thread ID (%ld)\n", (uint32_t)threadId);
 #else
-      printf("Invalid Thread ID (%d)\n", (U32)threadId);
+      printf("Invalid Thread ID (%d)\n", (uint32_t)threadId);
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* If we found free mapping table entry, place the region and send pthread_cancel
     * for all the thread Ids which are created before this 
     */
    osCp.threadMemoryRegionMap[((threadId >> SS_MEM_THREAD_ID_SHIFT) % SS_MAX_THREAD_REGION_MAP)] = SS_INVALID_THREAD_REG_MAP;
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* ssCheckAndAddMemoryRegionMap */
 
@@ -8807,22 +8212,16 @@ pthread_t    threadId    /* Thread Id of system task */
 *       File:  pt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SStartTask
+S16 SStartTask
 (
-VOLATILE U32      *startTime,
-U32       taskId
+volatile uint32_t      *startTime,
+uint32_t       taskId
 )
-#else
-PUBLIC S16 SStartTask(startTime, taskId)
-VOLATILE U32      *startTime;
-U32       taskId;
-#endif
 {
 #ifdef MSPD_MLOG_NEW
    *startTime = GetTIMETICK();
 #endif
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -8840,19 +8239,13 @@ U32       taskId;
 *       File:  pt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SStopTask
+S16 SStopTask
 (
-VOLATILE U32       startTime,
-U32       taskId
+volatile uint32_t       startTime,
+uint32_t       taskId
 )
-#else
-PUBLIC S16 SStopTask(startTime, taskId)
-VOLATILE U32       startTime;
-U32       taskId;
-#endif
 {
-   /*U32      stopTime;*/
+   /*uint32_t      stopTime;*/
    switch(taskId)
    {
       case PID_MAC_HARQ_IND:
@@ -8886,38 +8279,26 @@ U32       taskId;
 #endif
          break;
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 #else
-#ifdef ANSI
-PUBLIC S16 SStartTask
+S16 SStartTask
 (
-VOLATILE U32      * startTime,
-U32       taskId
+volatile uint32_t * startTime,
+uint32_t taskId
 )
-#else
-PUBLIC S16 SStartTask(startTime, taskId)
-VOLATILE U32      * startTime;
-U32       taskId;
-#endif
 {
    *startTime = 0;
-   RETVALUE(ROK);
+   return ROK;
 }
 
-#ifdef ANSI
-PUBLIC S16 SStopTask
+S16 SStopTask
 (
-VOLATILE U32       startTime,
-U32       taskId
+volatile uint32_t startTime,
+uint32_t taskId
 )
-#else
-PUBLIC S16 SStopTask(startTime, taskId)
-VOLATILE U32       startTime;
-U32       taskId;
-#endif
 {
-   RETVALUE(ROK);
+   return ROK;
 }
 
 #endif /*#ifdef SS_TSKLOG_ENABLE */
@@ -8930,32 +8311,26 @@ U32       taskId;
 *
 * @return  Void - function is always success
 */
-#ifdef ANSI
-PUBLIC Void UpdateSocCpuInfo
+Void UpdateSocCpuInfo
 (
 CmCpuStatsInfo *cpuInfo, 
-U8    idx
+uint8_t    idx
 )
-#else
-PUBLIC Void UpdateSocCpuInfo(*cpuInfo, idx)
-CmCpuStatsInfo *cpuInfo;
-U8       idx;
-#endif
 {
    FILE       *mipsFd;
-   S8          mipsStr[MIPS_STRING_LEN];
+   S8         mipsStr[MIPS_STRING_LEN];
    S8         *strPart;
-   U32         l2FreeCpu;
-   U32         l2CpuUsed;
-   U32         l3FreeCpu;
-   U32         l3CpuUsed;
+   uint32_t   l2FreeCpu;
+   uint32_t   l2CpuUsed;
+   uint32_t   l3FreeCpu;
+   uint32_t   l3CpuUsed;
 
    /* Open the file which holds the MIPS available value */
    mipsFd = fopen(MIPS_FILE, "r");
 
    if(mipsFd == NULLP)
    {
-      RETVOID;
+      return;
    }
 
    /* Get the free mips available value from the file */
@@ -8963,7 +8338,7 @@ U8       idx;
    {
       printf("fgets to get the free mips available failed\n");
       fclose(mipsFd);
-      RETVOID;
+      return;
    }
 
    strtok(mipsStr, " ");
@@ -8977,7 +8352,7 @@ U8       idx;
          l2FreeCpu = atoi(strPart);   
          l2CpuUsed = 100 - l2FreeCpu;
          cpuInfo->cpuUtil[0].totCpuUtil += l2CpuUsed;
-         cpuInfo->cpuUtil[0].maxCpuUtil = GET_CPU_MAX((cpuInfo->cpuUtil[0].maxCpuUtil), l2CpuUsed);;
+         cpuInfo->cpuUtil[0].maxCpuUtil = GET_CPU_MAX((cpuInfo->cpuUtil[0].maxCpuUtil), l2CpuUsed);
          cpuInfo->cpuUtil[0].numSamples++;
       }
    }
@@ -8989,7 +8364,7 @@ U8       idx;
          l3FreeCpu = atoi(strPart);   
          l3CpuUsed = 100 - l3FreeCpu;
          cpuInfo->cpuUtil[0].totCpuUtil += l3CpuUsed;
-         cpuInfo->cpuUtil[0].maxCpuUtil = GET_CPU_MAX((cpuInfo->cpuUtil[0].maxCpuUtil), l3CpuUsed);;
+         cpuInfo->cpuUtil[0].maxCpuUtil = GET_CPU_MAX((cpuInfo->cpuUtil[0].maxCpuUtil), l3CpuUsed);
          cpuInfo->cpuUtil[0].numSamples++;
       }
    }
@@ -9003,7 +8378,7 @@ U8       idx;
    }
    fclose(mipsFd);
 
-   RETVOID;
+   return;
 }
 #endif /* TENB_T2K3K_SPECIFIC_CHANGES */
 #ifdef SS_MULTICORE_SUPPORT
@@ -9021,19 +8396,13 @@ U8       idx;
 *       File:  mt_ss.c
 *
 --*/
-#ifdef ANSI
-PRIVATE SsSTskEntry* ssdReAddTmrSTsk(
-U8 idx
+static SsSTskEntry* ssdReAddTmrSTsk(
+uint8_t idx
 )
-#else
-PRIVATE SsSTskEntry* ssdReAddTmrSTsk(idx)
-U8 idx;
-#endif
 {
    SsSTskEntry *sTsk;
    S16 ret;
 
-   TRC1(ssdReAddTmrSTsk);
    sTsk = NULLP;
    /* lock the system task table */
    ret = SLock(&osCp.sTskTblLock);
@@ -9045,7 +8414,7 @@ U8 idx;
                      "Could not lock system task table");
 #endif
 
-      RETVALUE(sTsk);
+      return (sTsk);
    }
 
    /* initialize the system task entry with the information we have */
@@ -9070,7 +8439,7 @@ U8 idx;
 #if (ERRCLASS & ERRCLS_DEBUG)
            MTLOGERROR(ERRCLS_DEBUG, EMT042, ERRZERO,
                        "Could not give the Semaphore");
-           RETVALUE(NULLP);
+           return (NULLP);
 #endif
       }
 
@@ -9079,7 +8448,7 @@ U8 idx;
                   "Could not initialize demand queue");
 #endif
 
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 
    /* initialize the system task entry lock */
@@ -9092,7 +8461,7 @@ U8 idx;
 #if (ERRCLASS & ERRCLS_DEBUG)
            MTLOGERROR(ERRCLS_DEBUG, EMT044, ERRZERO,
                        "Could not give the Semaphore");
-           RETVALUE(NULLP);
+           return (NULLP);
 #endif
       }
 
@@ -9101,7 +8470,7 @@ U8 idx;
                   "Could not initialize system task entry lock");
 #endif
 
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 
 
@@ -9117,11 +8486,11 @@ U8 idx;
 #if (ERRCLASS & ERRCLS_DEBUG)
            MTLOGERROR(ERRCLS_DEBUG, EMT046, ERRZERO,
                        "Could not give the Semaphore");
-           RETVALUE(NULLP);
+           return (NULLP);
 #endif
       }
 
-   RETVALUE(sTsk);
+   return (sTsk);
 }
 #endif /* SS_MULTICORE_SUPPORT */
 
@@ -9140,28 +8509,20 @@ U8 idx;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 ssdReInitTmr
-(
-void
-)
-#else
-PUBLIC S16 ssdReInitTmr()
-#endif
+S16 ssdReInitTmr(void)
 {
    pthread_attr_t attr;
    struct sched_param param_sched;
 #ifndef XEON_SPECIFIC_CHANGES
-   U8 ret = ROK;
+   uint8_t ret = ROK;
 #endif
 #ifdef SS_MULTICORE_SUPPORT
    SsSTskEntry     *sTsk;
 #endif /* SS_MULTICORE_SUPPORT */
 #ifdef SS_THR_REG_MAP
-   U32 threadCreated = FALSE;
+   uint32_t threadCreated = FALSE;
 #endif /* SS_THR_REG_MAP */
 
-   TRC0(ssdReInitTmr);
 
 #ifndef XEON_SPECIFIC_CHANGES
    ret = ssCheckAndDelMemoryRegionMap(osCp.dep.tmrHdlrTID);
@@ -9171,7 +8532,7 @@ PUBLIC S16 ssdReInitTmr()
        MTLOGERROR(ERRCLS_DEBUG, EMT046, ERRZERO,
                        "Could not give the Semaphore");
 #endif
-       RETVALUE(RFAILED);
+       return RFAILED;
    }
 #endif   
 
@@ -9182,7 +8543,7 @@ PUBLIC S16 ssdReInitTmr()
    sTsk = ssdReAddTmrSTsk(0);
    if(!sTsk)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* SS_MULTICORE_SUPPORT */
    /* create the timer handler thread */
@@ -9212,7 +8573,7 @@ PUBLIC S16 ssdReInitTmr()
          /* mt020.201 - Addition for destroying thread attribute object attr */
          pthread_attr_destroy(&attr);
 
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
 #ifdef SS_THR_REG_MAP
@@ -9227,7 +8588,7 @@ PUBLIC S16 ssdReInitTmr()
    /* mt020.201 - Addition for destroying thread attribute object attr */
    pthread_attr_destroy(&attr);
    sem_post(&osCp.dep.ssStarted);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**********************************************************************

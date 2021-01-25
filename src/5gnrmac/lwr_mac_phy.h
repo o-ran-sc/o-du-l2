@@ -32,17 +32,18 @@ typedef enum
    MSG_TX_ERR
 }ErrorCode;
 
-#ifdef INTEL_WLS
+#ifdef INTEL_WLS_MEM
 #define WLS_MEM_FREE_PRD       10        /* Free memory after 10 slot ind */
-#define LWR_MAC_WLS_BUF_SIZE   8192      /* Size of WLS memory block */
+#define LWR_MAC_WLS_BUF_SIZE   32000      /* Size of WLS memory block */
+#define EVT_START_WLS_RCVR     1
 
 /* allocate static buffer from WLS memory */
 #define WLS_MEM_ALLOC(_datPtr, _size)                        \
 {                                                            \
-   int16_t _ret;                                             \
+   uint8_t _ret;                                             \
    _ret = SGetSBufWls(0, 0, (Data **)&_datPtr, _size);       \
    if(_ret == ROK)                                           \
-      cmMemset((U8*)_datPtr, 0, _size);                      \
+      memset(_datPtr, 0, _size);                      \
    else                                                      \
       _datPtr = NULLP;                                       \
 }                                                              
@@ -54,18 +55,20 @@ typedef enum
 
 typedef struct wlsBlockToFree
 {
-   void *ptr;
+   void     *ptr;
    uint32_t size;
 }WlsBlockToFree;
 
 CmLListCp wlsBlockToFreeList[WLS_MEM_FREE_PRD];
-extern uint8_t slotIndIdx;
+uint8_t slotIndIdx;
 
-EXTERN void freeWlsBlockList(uint8_t idx);
-EXTERN void LwrMacEnqueueWlsBlock();
-#endif /* INTEL_WLS */
+void freeWlsBlockList(uint8_t idx);
+void LwrMacEnqueueWlsBlock();
+void LwrMacRecvPhyMsg();
+void LwrMacStartWlsRcvr();
+#endif /* INTEL_WLS_MEM */
 
-EXTERN uint16_t LwrMacSendToPhy(uint8_t msgType, uint32_t msgLen, void *msg);
+uint8_t LwrMacSendToL1(void *msg);
 #endif
 
 /**********************************************************************

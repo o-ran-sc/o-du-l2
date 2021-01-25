@@ -85,10 +85,27 @@ void init_log()
  *
  * ****************************************************************/
 
-S16 tst()
+uint8_t tst()
 {
+   int retVal=0;
+   pthread_t conThrdId;
+   pthread_attr_t attr;
+
    init_log();   
-   DU_LOG("\nStarting CU_STUB");
+   DU_LOG("\nStarting CU_STUB\n");
+
+   /* Start thread to receive console input */
+   pthread_attr_init(&attr);
+   pthread_attr_setstacksize(&attr, (size_t)NULLD);
+   pthread_attr_setscope(&attr, PTHREAD_SCOPE_SYSTEM);
+   pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+   retVal = pthread_create(&conThrdId, &attr, cuConsoleHandler, NULLP);
+   if(retVal != 0)
+   {
+      DU_LOG("\nCU_STUB: Thread creation failed. Cause %d", retVal);
+   }
+   pthread_attr_destroy(&attr);
+
    /* Read CU configurations */
    readCuCfg();
 
@@ -103,7 +120,7 @@ S16 tst()
    sctpCfgReq();
    sctpStartReq();
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*******************************************************************
@@ -125,13 +142,12 @@ S16 tst()
 
 void readCuCfg()
 {
-   U32 ipv4_du, ipv4_cu;
+   uint32_t ipv4_du, ipv4_cu;
 
    DU_LOG("\nReading CU configurations");
 
    cmInetAddr((S8*)DU_IP_V4_ADDR, &ipv4_du);
    cmInetAddr((S8*)CU_IP_V4_ADDR, &ipv4_cu);
-   //U32 ipv6_int = inet_addr(DU_IP_V6_ADDR);
  
    cuCfgParams.cuId = CU_ID;
    strcpy(cuCfgParams.cuName, CU_NAME);
@@ -170,6 +186,36 @@ void readCuCfg()
    cuCfgParams.egtpParams.maxTunnelId = 10;
 
 } /* End of readCuCfg */
+
+/*******************************************************************
+ *
+ * @brief Handles Console input
+ *
+ * @details
+ *
+ *    Function : cuConsoleHandler
+ *
+ *    Functionality: Handles Console input
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void *cuConsoleHandler(void *args)
+{
+   char ch;
+   while(true) 
+   {
+      /* Send DL user data to CU when user enters 'd' on console */
+      if((ch = getchar()) == 'd')
+      {
+         /* Start Pumping data from CU to DU */
+         DU_LOG("\nEGTP: Sending DL User Data");
+         cuEgtpDatReq();      
+      } 
+   }
+}
 /**********************************************************************
          End of file
 **********************************************************************/

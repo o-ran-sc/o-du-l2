@@ -34,15 +34,7 @@
        Portable functions corresponding to these primitives are also defined.
 */
 /* header include files (.h) */
-#include "envopt.h"        /* environment options */
-#include "envdep.h"        /* environment dependent */
-#include "envind.h"        /* environment independent */
-#include "gen.h"           /* general */
-#include "ssi.h"           /* system services */
-#include "cm_tkns.h"       /* Common Token Defines */
-#include "cm_llist.h"      /* Common Link List Defines */
-#include "cm_hash.h"       /* Common Hash List Defines */
-#include "cm_lte.h"        /* Common LTE Defines */
+#include "common_def.h"
 #include "rg_env.h"        /* MAC Environment Defines */
 #include "crg.h"           /* CRG Interface defines */
 #include "rgr.h"           /* RGR Interface defines */
@@ -50,13 +42,6 @@
 #include "rgm.h"           /* RGM Interface defines*/
 
 /* header/extern include files (.x) */
-#include "gen.x"           /* general */
-#include "ssi.x"           /* system services */
-#include "cm_tkns.x"       /* Common Token Definitions */
-#include "cm_llist.x"      /* Common Link List Definitions */
-#include "cm_lib.x"        /* Common Library Definitions */
-#include "cm_hash.x"       /* Common Hash List Definitions */
-#include "cm_lte.x"        /* Common LTE Defines */
 #include "crg.x"           /* CRG Interface includes */
 #include "rgr.x"           /* RGR Interface includes */
 #include "rgu.x"           /* RGU Interface includes */
@@ -98,51 +83,51 @@ extern "C" {
 #ifdef PTRGUIRGU
 /** @brief Confirmation from MAC to RLC for the bind/Unbind 
  * request for the interface saps */
-EXTERN S16 PtUiRguBndCfm ARGS((Pst* pst, SuId suId, U8 status));
+S16 PtUiRguBndCfm ARGS((Pst* pst, SuId suId, uint8_t status));
 /** @brief Data Indication from MAC to RLC to 
  * forward the data received for common channels*/
-EXTERN S16 PtUiRguCDatInd ARGS((Pst* pst, SuId suId, RguCDatIndInfo  * datInd));
+S16 PtUiRguCDatInd ARGS((Pst* pst, SuId suId, RguCDatIndInfo  * datInd));
 /** @brief Data Indication from MAC to RLC to 
  * forward the data received for dedicated channels*/
-EXTERN S16 PtUiRguDDatInd ARGS((Pst* pst, SuId suId, RguDDatIndInfo  * datInd));
+S16 PtUiRguDDatInd ARGS((Pst* pst, SuId suId, RguDDatIndInfo  * datInd));
 /** @brief Status Indication from MAC to RLC  
  * as a response to the staRsp primitive from RLC.
  * Informs RLC of the totalBufferSize and Timing Info 
  * for the transmission on common channels. */
-EXTERN S16 PtUiRguCStaInd ARGS((Pst* pst, SuId suId, RguCStaIndInfo  * staInd));
+S16 PtUiRguCStaInd ARGS((Pst* pst, SuId suId, RguCStaIndInfo  * staInd));
 /** @brief Status Indication from MAC to RLC  
  * as a response to the staRsp primitive from RLC.
  * Informs RLC of the totalBufferSize and Timing Info 
  * for the transmission on dedicated channels. */
-EXTERN S16 PtUiRguDStaInd ARGS((Pst* pst, SuId suId, RguDStaIndInfo  * staInd));
+S16 PtUiRguDStaInd ARGS((Pst* pst, SuId suId, RguDStaIndInfo  * staInd));
 #ifdef LTE_L2_MEAS
 /**@brief HARQ Status Indication from MAC to RLC */
-EXTERN S16 PtUiRguHqStaInd ARGS((Pst* pst,SuId suId,
+S16 PtUiRguHqStaInd ARGS((Pst* pst,SuId suId,
          RguHarqStatusInd *harqStatusInd));
 #endif
 /**@brief PDB FLow Control Indication from MAC to RLC */
-EXTERN S16 PtUiRguFlowCntrlInd ARGS((Pst* pst,SuId suId,
+S16 PtUiRguFlowCntrlInd ARGS((Pst* pst,SuId suId,
          RguFlowCntrlInd *flowCntrlInd));
 #endif /*--#ifdef PTRGUIRGU--*/
 S16 RgUiRguFlowCntrlInd(Pst* pst, SuId suId, RguFlowCntrlInd *flowCntrlInd);
 #ifdef LTE_L2_MEAS
 #ifdef MAC_RLC_HARQ_STA_RBUF
-PUBLIC S16 RgUiRguHqStaIndRbuf ARGS((Pst* pst,SuId suId,RguHarqStatusInd *harqStatusInd));
+S16 RgUiRguHqStaIndRbuf ARGS((Pst* pst,SuId suId,RguHarqStatusInd *harqStatusInd));
 #endif 
 #endif
 
 #if defined(MAC_RLC_UL_RBUF) && !defined(SS_RBUF)
-PRIVATE S16  RgUiRguDDatIndRbuf ARGS((RguDDatIndInfo  *datInd));
+static S16  RgUiRguDDatIndRbuf ARGS((RguDDatIndInfo  *datInd));
 #endif
-EXTERN Void rgFreeSharableSBuf ARGS((Data **data, Size size));
+Void rgFreeSharableSBuf ARGS((Data **data, Size size));
 
 #ifdef RGR_CQI_REPT 
-EXTERN S16 PtUiRgrStaInd ARGS(( Pst* pst, SuId suId, RgrStaIndInfo *staInd));
+S16 PtUiRgrStaInd ARGS(( Pst* pst, SuId suId, RgrStaIndInfo *staInd));
 #endif
 /* LTE_ADV_FLAG_REMOVED_START */
-EXTERN S16 PtUiRgrLoadInfInd ARGS(( Pst* pst, SuId suId, RgrLoadInfIndInfo *loadInfInd));
+S16 PtUiRgrLoadInfInd ARGS(( Pst* pst, SuId suId, RgrLoadInfIndInfo *loadInfInd));
 /* LTE_ADV_FLAG_REMOVED_END */
-EXTERN S16 PtUiRgrUeStaInd ARGS
+S16 PtUiRgrUeStaInd ARGS
 ((
 Pst* pst, 
 SuId suId, 
@@ -151,38 +136,38 @@ RgrUeStaIndInfo *staInd
 #ifdef PTRGUICRG
 /** @brief Confirmation from MAC to RRC for the bind/Unbind 
  * request for the interface saps */
-EXTERN S16 PtUiCrgBndCfm ARGS((Pst* pst, SuId suId, U8 status));
+S16 PtUiCrgBndCfm ARGS((Pst* pst, SuId suId, uint8_t status));
 /** @brief Configuration Confirm from MAC to RRC */
-EXTERN S16 PtUiCrgCfgCfm ARGS((Pst* pst, SuId suId, CrgCfgTransId transId, U8 status));
+S16 PtUiCrgCfgCfm ARGS((Pst* pst, SuId suId, CrgCfgTransId transId, uint8_t status));
 #endif /*--#ifdef PTRGUICRG--*/
 
 #ifdef PTRGUIRGR
 /** @brief Confirmation from MAC to RRM for the bind/Unbind 
  * request for the interface saps */
-EXTERN S16 PtUiRgrBndCfm ARGS((Pst* pst, SuId suId, U8 status));
+S16 PtUiRgrBndCfm ARGS((Pst* pst, SuId suId, uint8_t status));
 /** @brief Configuration Confirm from MAC to RRM */
-EXTERN S16 PtUiRgrCfgCfm ARGS((Pst* pst, SuId suId, RgrCfgTransId transId, U8 status));
-EXTERN S16 PtUiRgrTtiInd ARGS((Pst* pst, SuId suId, RgrTtiIndInfo *ttiInd));
+S16 PtUiRgrCfgCfm ARGS((Pst* pst, SuId suId, RgrCfgTransId transId, uint8_t status));
+S16 PtUiRgrTtiInd ARGS((Pst* pst, SuId suId, RgrTtiIndInfo *ttiInd));
 /* Added for SI Enhancement*/
 #ifdef RGR_SI_SCH
-EXTERN S16 PtUiRgrSiCfgCfm ARGS((Pst* pst, SuId suId, RgrCfgTransId transId, U8 status));
-EXTERN S16 PtUiRgrWarningSiCfgCfm ARGS((Pst* pst, SuId suId, 
-                                RgrCfgTransId transId, U8 siId, U8 status));
+S16 PtUiRgrSiCfgCfm ARGS((Pst* pst, SuId suId, RgrCfgTransId transId, uint8_t status));
+S16 PtUiRgrWarningSiCfgCfm ARGS((Pst* pst, SuId suId, 
+                                RgrCfgTransId transId, uint8_t siId, uint8_t status));
 #endif/*RGR_SI_SCH*/
 #endif /*--#ifdef PTRGUIRGR--*/
 
 #ifdef PTRGUIRGM
-PUBLIC S16 PtUiRgmPrbRprtInd ARGS((Pst* pst, SuId suId, RgmPrbRprtInd *prbRprtInd));
-PUBLIC S16 PtUiRgmBndCfm ARGS((Pst* pst, SuId suId, U8 status));
-PUBLIC S16 PtUiRgmTransModeInd  ARGS((Pst* pst, SuId suId, RgmTransModeInd *transModeInd));
+S16 PtUiRgmPrbRprtInd ARGS((Pst* pst, SuId suId, RgmPrbRprtInd *prbRprtInd));
+S16 PtUiRgmBndCfm ARGS((Pst* pst, SuId suId, uint8_t status));
+S16 PtUiRgmTransModeInd  ARGS((Pst* pst, SuId suId, RgmTransModeInd *transModeInd));
 #endif
-PUBLIC S16 RgUiRgmSendPrbRprtInd ARGS((Pst* pst, SuId suId, RgmPrbRprtInd *prbRprtInd));
-PUBLIC S16 RgUiRgmChangeTransModeInd ARGS((Pst* pst, SuId suId, RgmTransModeInd *transModeInd));
+S16 RgUiRgmSendPrbRprtInd ARGS((Pst* pst, SuId suId, RgmPrbRprtInd *prbRprtInd));
+S16 RgUiRgmChangeTransModeInd ARGS((Pst* pst, SuId suId, RgmTransModeInd *transModeInd));
 
-PUBLIC S16 RgUiRguFlowCntrlInd ARGS((Pst* pst, SuId suId, RguFlowCntrlInd *flowCntrlInd));
+S16 RgUiRguFlowCntrlInd ARGS((Pst* pst, SuId suId, RguFlowCntrlInd *flowCntrlInd));
 /* Added for sending TTI tick to RRM */
 /** @brief TTI indication from MAC to RRM */
-PRIVATE CONSTANT RgrTtiInd RgUiRgrTtiIndMt[RG_MAX_RGR_USR] =
+static const RgrTtiInd RgUiRgrTtiIndMt[RG_MAX_RGR_USR] =
 {
 #ifdef LCRGUIRGR
    cmPkRgrTtiInd,
@@ -199,7 +184,7 @@ PRIVATE CONSTANT RgrTtiInd RgUiRgrTtiIndMt[RG_MAX_RGR_USR] =
 
 /** @brief Confirmation from MAC to RRM for the bind/Unbind 
  * request for the interface saps */
-PRIVATE CONSTANT RgrBndCfm RgUiRgrBndCfmMt[RG_MAX_RGR_USR] =
+static const RgrBndCfm RgUiRgrBndCfmMt[RG_MAX_RGR_USR] =
 {
 #ifdef LCRGUIRGR
    cmPkRgrBndCfm,
@@ -215,7 +200,7 @@ PRIVATE CONSTANT RgrBndCfm RgUiRgrBndCfmMt[RG_MAX_RGR_USR] =
 
 /** @brief Confirmation from MAC to RRM for the bind/Unbind 
  * request for the interface saps  via RGM interface*/
-PRIVATE CONSTANT RgmBndCfm RgUiRgmBndCfmMt[RG_MAX_RGM_USR] =
+static const RgmBndCfm RgUiRgmBndCfmMt[RG_MAX_RGM_USR] =
 {
 #ifdef RGM_LC
    cmPkRgmBndCfm,
@@ -231,7 +216,7 @@ PRIVATE CONSTANT RgmBndCfm RgUiRgmBndCfmMt[RG_MAX_RGM_USR] =
 
 
 /** @brief Configuration Confirm from MAC to RRM */
-PRIVATE CONSTANT RgrCfgCfm RgUiRgrCfgCfmMt[RG_MAX_RGR_USR] =
+static const RgrCfgCfm RgUiRgrCfgCfmMt[RG_MAX_RGR_USR] =
 {
 #ifdef LCRGUIRGR
    cmPkRgrCfgCfm,
@@ -246,7 +231,7 @@ PRIVATE CONSTANT RgrCfgCfm RgUiRgrCfgCfmMt[RG_MAX_RGR_USR] =
 /* Added for SI Enhancement*/
 #ifdef RGR_SI_SCH
 /** @brief SI Configuration Confirm from MAC to RRM */
-PRIVATE CONSTANT RgrSiCfgCfm RgUiRgrSiCfgCfmMt[RG_MAX_RGR_USR] =
+static const RgrSiCfgCfm RgUiRgrSiCfgCfmMt[RG_MAX_RGR_USR] =
 {
 #ifdef LCRGUIRGR
    cmPkRgrSiCfgCfm,
@@ -262,7 +247,7 @@ PRIVATE CONSTANT RgrSiCfgCfm RgUiRgrSiCfgCfmMt[RG_MAX_RGR_USR] =
 
 
 /** @brief Warning SI Configuration Confirm from MAC to RRM */
-PRIVATE CONSTANT RgrWarningSiCfgCfm RgUiRgrWarningSiCfgCfmMt[RG_MAX_RGR_USR] =
+static const RgrWarningSiCfgCfm RgUiRgrWarningSiCfgCfmMt[RG_MAX_RGR_USR] =
 {
 #ifdef LCRGUIRGR
    cmPkRgrWarningSiCfgCfm,
@@ -279,7 +264,7 @@ PRIVATE CONSTANT RgrWarningSiCfgCfm RgUiRgrWarningSiCfgCfmMt[RG_MAX_RGR_USR] =
 #endif/*RGR_SI_SCH */
 /** @brief Confirmation from MAC to RRC for the bind/Unbind 
  * request for the interface saps */
-PRIVATE CONSTANT CrgBndCfm RgUiCrgBndCfmMt[RG_MAX_CRG_USR] =
+static const CrgBndCfm RgUiCrgBndCfmMt[RG_MAX_CRG_USR] =
 {
 #ifdef LCRGUICRG
    cmPkCrgBndCfm,
@@ -294,7 +279,7 @@ PRIVATE CONSTANT CrgBndCfm RgUiCrgBndCfmMt[RG_MAX_CRG_USR] =
 };
 
 /** @brief Configuration Confirm from MAC to RRC */
-PRIVATE CONSTANT CrgCfgCfm RgUiCrgCfgCfmMt[RG_MAX_CRG_USR] =
+static const CrgCfgCfm RgUiCrgCfgCfmMt[RG_MAX_CRG_USR] =
 {
 #ifdef LCRGUICRG
    cmPkCrgCfgCfm,
@@ -311,7 +296,7 @@ PRIVATE CONSTANT CrgCfgCfm RgUiCrgCfgCfmMt[RG_MAX_CRG_USR] =
 
 /** @brief Confirmation from MAC to RLC for the bind/Unbind 
  * request for the interface saps */
-PRIVATE CONSTANT RguBndCfm RgUiRguBndCfmMt[RG_MAX_RGU_USR] =
+static const RguBndCfm RgUiRguBndCfmMt[RG_MAX_RGU_USR] =
 {
 #ifdef LCRGUIRGU
    cmPkRguBndCfm,
@@ -319,7 +304,7 @@ PRIVATE CONSTANT RguBndCfm RgUiRguBndCfmMt[RG_MAX_RGU_USR] =
    PtUiRguBndCfm,
 #endif
 #ifdef KW
-   KwLiRguBndCfm,
+   RlcLiRguBndCfm,
 #else
    PtUiRguBndCfm,
 #endif
@@ -332,7 +317,7 @@ PRIVATE CONSTANT RguBndCfm RgUiRguBndCfmMt[RG_MAX_RGU_USR] =
 
 /** @brief Data Indication from MAC to RLC to 
  * forward the data received for common channels*/
-PRIVATE CONSTANT RguCDatInd RgUiRguCDatIndMt[RG_MAX_RGU_USR] =
+static const RguCDatInd RgUiRguCDatIndMt[RG_MAX_RGU_USR] =
 {
 #ifdef LCRGUIRGU
 //   cmPkRguCDatInd, /* TODO : Call packRcvdUlData instead */
@@ -340,7 +325,7 @@ PRIVATE CONSTANT RguCDatInd RgUiRguCDatIndMt[RG_MAX_RGU_USR] =
    PtUiRguCDatInd,
 #endif
 #ifdef KW
-   KwLiRguCDatInd,
+   //RlcProcCommLcUlData,
 #else
    PtUiRguCDatInd,
 #endif
@@ -353,7 +338,7 @@ PRIVATE CONSTANT RguCDatInd RgUiRguCDatIndMt[RG_MAX_RGU_USR] =
 
 /** @brief Data Indication from MAC to RLC to 
  * forward the data received for dedicated channels*/
-PRIVATE CONSTANT RguDDatInd RgUiRguDDatIndMt[RG_MAX_RGU_USR] =
+static const RguDDatInd RgUiRguDDatIndMt[RG_MAX_RGU_USR] =
 {
 #ifdef LCRGUIRGU
 //   cmPkRguDDatInd,  /* TODO: Call packRcvdUlData instead */
@@ -361,7 +346,7 @@ PRIVATE CONSTANT RguDDatInd RgUiRguDDatIndMt[RG_MAX_RGU_USR] =
    PtUiRguDDatInd,
 #endif
 #ifdef KW
-   KwLiRguDDatInd,
+   //RlcProcDedLcUlData,
 #else
    PtUiRguDDatInd,
 #endif
@@ -376,7 +361,7 @@ PRIVATE CONSTANT RguDDatInd RgUiRguDDatIndMt[RG_MAX_RGU_USR] =
  * as a response to the staRsp primitive from RLC.
  * Informs RLC of the totalBufferSize and Timing Info 
  * for the transmission on common channels. */
-PRIVATE CONSTANT RguCStaInd RgUiRguCStaIndMt[RG_MAX_RGU_USR] =
+static const RguCStaInd RgUiRguCStaIndMt[RG_MAX_RGU_USR] =
 {
 #ifdef LCRGUIRGU
    //cmPkRguCStaInd, /* TODO: Call packSchedRep instead of cmPkRguCStaInd */
@@ -399,7 +384,7 @@ PRIVATE CONSTANT RguCStaInd RgUiRguCStaIndMt[RG_MAX_RGU_USR] =
  * as a response to the staRsp primitive from RLC.
  * Informs RLC of the totalBufferSize and Timing Info 
  * for the transmission on dedicated channels. */
-PRIVATE CONSTANT RguDStaInd RgUiRguDStaIndMt[RG_MAX_RGU_USR] =
+static const RguDStaInd RgUiRguDStaIndMt[RG_MAX_RGU_USR] =
 {
 #ifdef LCRGUIRGU
    //cmPkRguDStaInd, /* TODO: Call packSchedRep instead of cmPkRguDStaInd */
@@ -423,7 +408,7 @@ PRIVATE CONSTANT RguDStaInd RgUiRguDStaIndMt[RG_MAX_RGU_USR] =
  * as a response to the DdatReq primitive from RLC.
  * Informs RLC of the successful transmission of TB's 
  * (ACK/NACK) along with Mapping Info. */
-PRIVATE CONSTANT RguHqStaInd RgUiRguHqStaIndMt[RG_MAX_RGU_USR] =
+static const RguHqStaInd RgUiRguHqStaIndMt[RG_MAX_RGU_USR] =
 {
 #ifdef LCRGUIRGU
    cmPkRguHqStaInd,
@@ -431,7 +416,7 @@ PRIVATE CONSTANT RguHqStaInd RgUiRguHqStaIndMt[RG_MAX_RGU_USR] =
    PtUiRguHqStaInd,
 #endif
 #ifdef KW
-   KwLiRguHqStaInd,
+   RlcLiRguHqStaInd,
 #else
    PtUiRguHqStaInd,
 #endif
@@ -447,7 +432,7 @@ PRIVATE CONSTANT RguHqStaInd RgUiRguHqStaIndMt[RG_MAX_RGU_USR] =
    RGR_RRM_DLPWR_CNTRL to RGR_CQI_REPT */
 #ifdef RGR_CQI_REPT
 /** @brief TTI indication from MAC to RRM */
-PRIVATE CONSTANT RgrStaInd RgUiRgrStaIndMt[RG_MAX_RGR_USR] =
+static const RgrStaInd RgUiRgrStaIndMt[RG_MAX_RGR_USR] =
 {
 #ifdef LCRGUIRGR
    cmPkRgrStaInd,
@@ -464,7 +449,7 @@ PRIVATE CONSTANT RgrStaInd RgUiRgrStaIndMt[RG_MAX_RGR_USR] =
 
 /* LTE_ADV_FLAG_REMOVED_START */
 /** @brief LOAD INF indication from MAC to RRM */
-PRIVATE CONSTANT RgrLoadInfInd RgUiRgrLoadInfIndMt[RG_MAX_RGR_USR] =
+static const RgrLoadInfInd RgUiRgrLoadInfIndMt[RG_MAX_RGR_USR] =
 {
 #ifdef LCRGUIRGR
    cmPkRgrLoadInfInd,
@@ -480,7 +465,7 @@ PRIVATE CONSTANT RgrLoadInfInd RgUiRgrLoadInfIndMt[RG_MAX_RGR_USR] =
 /* LTE_ADV_FLAG_REMOVED_END */
 
 /** @brief TTI indication from MAC to RRM */
-PRIVATE CONSTANT RgrUeStaInd RgUiRgrUeStaIndMt[RG_MAX_RGR_USR] =
+static const RgrUeStaInd RgUiRgrUeStaIndMt[RG_MAX_RGR_USR] =
 {
 #ifdef LCRGUIRGR
    cmPkRgrUeStaInd,
@@ -495,7 +480,7 @@ PRIVATE CONSTANT RgrUeStaInd RgUiRgrUeStaIndMt[RG_MAX_RGR_USR] =
 };
 
 /** @brief Average PRB usage indication from MAC to RRM */
-PRIVATE CONSTANT RgmPrbRprtIndFptr RgUiRgmSendPrbRprtIndMt[RG_MAX_RGM_USR] =
+static const RgmPrbRprtIndFptr RgUiRgmSendPrbRprtIndMt[RG_MAX_RGM_USR] =
 {
 #ifdef RGM_LC
    cmPkRgmPrbRprtInd,
@@ -511,7 +496,7 @@ PRIVATE CONSTANT RgmPrbRprtIndFptr RgUiRgmSendPrbRprtIndMt[RG_MAX_RGM_USR] =
 
 
 /** @brief Transmission Mode Change indication from MAC to RRM */
-PRIVATE CONSTANT RgmTransModeIndFptr RgUiRgmChangeTransModeIndMt[RG_MAX_RGM_USR] =
+static const RgmTransModeIndFptr RgUiRgmChangeTransModeIndMt[RG_MAX_RGM_USR] =
 {
 #ifdef RGM_LC
    cmPkRgmTransModeInd,
@@ -525,7 +510,7 @@ PRIVATE CONSTANT RgmTransModeIndFptr RgUiRgmChangeTransModeIndMt[RG_MAX_RGM_USR]
 #endif
 };
 
-PRIVATE CONSTANT RguFlowCntrlIndInfo RgUiRguFlowCntrlIndMt[RG_MAX_RGU_USR] =
+static const RguFlowCntrlIndInfo RgUiRguFlowCntrlIndMt[RG_MAX_RGU_USR] =
 {
 #ifdef LCRGUIRGU
    cmPkRguFlowCntrlInd,
@@ -533,7 +518,7 @@ PRIVATE CONSTANT RguFlowCntrlIndInfo RgUiRguFlowCntrlIndMt[RG_MAX_RGU_USR] =
    PtUiRguFlowCntrlInd,
 #endif
 #ifdef KW
-   KwLiRguFlowCntrlInd,
+   RlcLiRguFlowCntrlInd,
 #else
    PtUiRguFlowCntrlInd,
 #endif
@@ -559,28 +544,14 @@ PRIVATE CONSTANT RguFlowCntrlIndInfo RgUiRguFlowCntrlIndMt[RG_MAX_RGU_USR] =
 *
 *  @param[in]   Pst*  pst
 *  @param[in]   SuId  suId
-*  @param[in]   U8  status
+*  @param[in]   uint8_t  status
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgUiRgrBndCfm
-(
-Pst* pst,
-SuId suId,
-U8 status
-)
-#else
-PUBLIC S16 RgUiRgrBndCfm(pst, suId, status)
-Pst* pst;
-SuId suId;
-U8 status;
-#endif
+S16 RgUiRgrBndCfm(Pst* pst,SuId suId,uint8_t status)
 {
 
-   TRC3(RgUiRgrBndCfm);
-
-   RETVALUE((*RgUiRgrBndCfmMt[pst->selector])(pst, suId, status));
+   return ((*RgUiRgrBndCfmMt[pst->selector])(pst, suId, status));
 
 }
 /**
@@ -593,28 +564,14 @@ U8 status;
 *
 *  @param[in]   Pst*  pst
 *  @param[in]   SuId  suId
-*  @param[in]   U8  status
+*  @param[in]   uint8_t  status
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgUiRgmBndCfm
-(
-Pst* pst,
-SuId suId,
-U8 status
-)
-#else
-PUBLIC S16 RgUiRgmBndCfm(pst, suId, status)
-Pst* pst;
-SuId suId;
-U8 status;
-#endif
+S16 RgUiRgmBndCfm(Pst* pst,SuId suId,uint8_t status)
 {
 
-   TRC3(RgUiRgmBndCfm);
-
-   RETVALUE((*RgUiRgmBndCfmMt[pst->selector])(pst, suId, status));
+   return ((*RgUiRgmBndCfmMt[pst->selector])(pst, suId, status));
 
 }
 
@@ -635,24 +592,10 @@ U8 status;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgUiRgrTtiInd
-(
-Pst* pst,
-SuId suId,
-RgrTtiIndInfo  *ttiInd
-)
-#else
-PUBLIC S16 RgUiRgrTtiInd(pst, suId, ttiInd)
-Pst* pst;
-SuId suId;
-RgrTtiIndInfo *ttiInd;
-#endif
+S16 RgUiRgrTtiInd(Pst* pst,SuId suId,RgrTtiIndInfo *ttiInd)
 {
 
-   TRC3(RgUiRgrTtiInd);
-
-   RETVALUE((*RgUiRgrTtiIndMt[pst->selector])(pst, suId, ttiInd));
+   return ((*RgUiRgrTtiIndMt[pst->selector])(pst, suId, ttiInd));
 
 }
 
@@ -668,28 +611,14 @@ RgrTtiIndInfo *ttiInd;
 *  @param[in]   Pst*  pst
 *  @param[in]   SuId  suId
 *  @param[in]   RgrCfgTransId  transId
-*  @param[in]   U8  status
+*  @param[in]   uint8_t  status
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgUiRgrCfgCfm
-(
-Pst* pst,
-RgrCfgTransId transId,
-U8 status
-)
-#else
-PUBLIC S16 RgUiRgrCfgCfm(pst, transId, status)
-Pst* pst;
-RgrCfgTransId transId;
-U8 status;
-#endif
+S16 RgUiRgrCfgCfm(Pst* pst,RgrCfgTransId transId,uint8_t status)
 {
 
-   TRC3(RgUiRgrCfgCfm);
-
-   RETVALUE((*RgUiRgrCfgCfmMt[pst->selector])(pst, transId, status));
+   return ((*RgUiRgrCfgCfmMt[pst->selector])(pst, transId, status));
 
 }
 
@@ -704,28 +633,14 @@ U8 status;
 *
 *  @param[in]   Pst*  pst
 *  @param[in]   SuId  suId
-*  @param[in]   U8  status
+*  @param[in]   uint8_t  status
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgUiCrgBndCfm
-(
-Pst* pst,
-SuId suId,
-U8 status
-)
-#else
-PUBLIC S16 RgUiCrgBndCfm(pst, suId, status)
-Pst* pst;
-SuId suId;
-U8 status;
-#endif
+S16 RgUiCrgBndCfm(Pst* pst,SuId suId,uint8_t status)
 {
 
-   TRC3(RgUiCrgBndCfm);
-
-   RETVALUE((*RgUiCrgBndCfmMt[pst->selector])(pst, suId, status));
+   return ((*RgUiCrgBndCfmMt[pst->selector])(pst, suId, status));
 
 }
 
@@ -741,30 +656,14 @@ U8 status;
 *  @param[in]   Pst*  pst
 *  @param[in]   SuId  suId
 *  @param[in]   CrgCfgTransId  transId
-*  @param[in]   U8  status
+*  @param[in]   uint8_t  status
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgUiCrgCfgCfm
-(
-Pst* pst,
-SuId suId,
-CrgCfgTransId transId,
-U8 status
-)
-#else
-PUBLIC S16 RgUiCrgCfgCfm(pst, suId, transId, status)
-Pst* pst;
-SuId suId;
-CrgCfgTransId transId;
-U8 status;
-#endif
+S16 RgUiCrgCfgCfm(Pst* pst,SuId suId,CrgCfgTransId transId,uint8_t status)
 {
 
-   TRC3(RgUiCrgCfgCfm);
-
-   RETVALUE((*RgUiCrgCfgCfmMt[pst->selector])(pst, suId, transId, status));
+   return ((*RgUiCrgCfgCfmMt[pst->selector])(pst, suId, transId, status));
 
 }
 
@@ -779,33 +678,19 @@ U8 status;
 *
 *  @param[in]   Pst*  pst
 *  @param[in]   SuId  suId
-*  @param[in]   U8  status
+*  @param[in]   uint8_t  status
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgUiRguBndCfm
-(
-Pst* pst,
-SuId suId,
-U8 status
-)
-#else
-PUBLIC S16 RgUiRguBndCfm(pst, suId, status)
-Pst* pst;
-SuId suId;
-U8 status;
-#endif
+S16 RgUiRguBndCfm(Pst* pst,SuId suId,uint8_t status)
 {
 
-   TRC3(RgUiRguBndCfm);
-
-   RETVALUE((*RgUiRguBndCfmMt[pst->selector])(pst, suId, status));
+   return ((*RgUiRguBndCfmMt[pst->selector])(pst, suId, status));
 
 }
 
-PUBLIC int macDDatIndSnt;
-PUBLIC int macCDatIndSnt;
+int macDDatIndSnt;
+int macCDatIndSnt;
 
 
 /**
@@ -822,25 +707,11 @@ PUBLIC int macCDatIndSnt;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgUiRguCDatInd
-(
-Pst* pst,
-SuId suId,
-RguCDatIndInfo  * datInd
-)
-#else
-PUBLIC S16 RgUiRguCDatInd(pst, suId, datInd)
-Pst* pst;
-SuId suId;
-RguCDatIndInfo  * datInd;
-#endif
+S16 RgUiRguCDatInd(Pst* pst,SuId suId,RguCDatIndInfo *datInd)
 {
    macCDatIndSnt++;
 
-   TRC3(RgUiRguCDatInd);
-
-   RETVALUE((*RgUiRguCDatIndMt[pst->selector])(pst, suId, datInd));
+   return ((*RgUiRguCDatIndMt[pst->selector])(pst, suId, datInd));
 
 }
 
@@ -859,28 +730,14 @@ RguCDatIndInfo  * datInd;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgUiRguDDatInd
-(
-Pst* pst,
-SuId suId,
-RguDDatIndInfo  * datInd
-)
-#else
-PUBLIC S16 RgUiRguDDatInd(pst, suId, datInd)
-Pst* pst;
-SuId suId;
-RguDDatIndInfo  * datInd;
-#endif
+S16 RgUiRguDDatInd(Pst* pst,SuId suId,RguDDatIndInfo *datInd)
 {
    macDDatIndSnt++;
 
-   TRC3(RgUiRguDDatInd);
-
 #if defined(MAC_RLC_UL_RBUF) && !defined(SS_RBUF)
-   RETVALUE(RgUiRguDDatIndRbuf(datInd));
+   return (RgUiRguDDatIndRbuf(datInd));
 #else 
-   RETVALUE((*RgUiRguDDatIndMt[pst->selector])(pst, suId, datInd));
+   return ((*RgUiRguDDatIndMt[pst->selector])(pst, suId, datInd));
 #endif    
 }
 
@@ -902,24 +759,10 @@ RguDDatIndInfo  * datInd;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgUiRguCStaInd
-(
-Pst* pst,
-SuId suId,
-RguCStaIndInfo  * staInd
-)
-#else
-PUBLIC S16 RgUiRguCStaInd(pst, suId, staInd)
-Pst* pst;
-SuId suId;
-RguCStaIndInfo  * staInd;
-#endif
+S16 RgUiRguCStaInd(Pst* pst,SuId suId,RguCStaIndInfo *staInd)
 {
 
-   TRC3(RgUiRguCStaInd);
-
-   RETVALUE((*RgUiRguCStaIndMt[pst->selector])(pst, suId, staInd));
+   return ((*RgUiRguCStaIndMt[pst->selector])(pst, suId, staInd));
 
 }
 
@@ -941,70 +784,31 @@ RguCStaIndInfo  * staInd;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgUiRguDStaInd
-(
-Pst* pst,
-SuId suId,
-RguDStaIndInfo  * staInd
-)
-#else
-PUBLIC S16 RgUiRguDStaInd(pst, suId, staInd)
-Pst* pst;
-SuId suId;
-RguDStaIndInfo  * staInd;
-#endif
+S16 RgUiRguDStaInd(Pst* pst,SuId suId,RguDStaIndInfo  *staInd)
 {
 
-   TRC3(RgUiRguDStaInd);
-
-   RETVALUE((*RgUiRguDStaIndMt[pst->selector])(pst, suId, staInd));
+   return ((*RgUiRguDStaIndMt[pst->selector])(pst, suId, staInd));
 
 }
 #ifdef LTE_L2_MEAS
 /* TODO: Function header */
-#ifdef ANSI
-PUBLIC S16 RgUiRguHqStaInd
-(
-Pst* pst,
-SuId suId,
-RguHarqStatusInd *harqStatusInd
-)
-#else
-PUBLIC S16 RgUiRguHqStaInd(pst, suId, harqStatusInd)
-Pst* pst;
-SuId suId;
-RguHarqStatusInd *harqStatusInd;
-#endif
+S16 RgUiRguHqStaInd(Pst* pst,SuId suId,RguHarqStatusInd *harqStatusInd)
 {
 
-   TRC3(RgUiRguHqStaInd);
 #if defined(SPLIT_RLC_DL_TASK) && defined(MAC_RLC_HARQ_STA_RBUF)
    S16 ret=ROK;
    ret = RgUiRguHqStaIndRbuf(pst,suId,harqStatusInd);
-   RETVALUE(ret);
+   return (ret);
 #else 
-   RETVALUE((*RgUiRguHqStaIndMt[pst->selector])(pst, suId, harqStatusInd));
+   return ((*RgUiRguHqStaIndMt[pst->selector])(pst, suId, harqStatusInd));
 #endif 
 
 } /* RgUiRguHqStaInd */
 #endif /* LTE_L2_MEAS */
 
-#ifdef ANSI
-PUBLIC S16 RgUiRguFlowCntrlInd
-(
-Pst* pst,
-SuId suId,
-RguFlowCntrlInd *flowCntrlInd
-)
-#else
-PUBLIC S16 RgUiRguFlowCntrlInd(pst, suId, harqStatusInd)
-Pst* pst;
-SuId suId;
-RguFlowCntrlInd *flowCntrlInd;
-#endif
+S16 RgUiRguFlowCntrlInd(Pst* pst,SuId suId,RguFlowCntrlInd *flowCntrlInd)
 {
-  RETVALUE((*RgUiRguFlowCntrlIndMt[pst->selector])(pst, suId, flowCntrlInd));
+  return ((*RgUiRguFlowCntrlIndMt[pst->selector])(pst, suId, flowCntrlInd));
 }
 /* Added for SI Enhancement*/
 #ifdef RGR_SI_SCH
@@ -1018,30 +822,14 @@ RguFlowCntrlInd *flowCntrlInd;
 *  @param[in]   Pst*  pst
 *  @param[in]   SuId  suId
 *  @param[in]   RgrCfgTransId  transId
-*  @param[in]   U8  status
+*  @param[in]   uint8_t  status
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgUiRgrSiCfgCfm
-(
-Pst* pst,
-SuId suId,
-RgrCfgTransId transId,
-U8 status
-)
-#else
-PUBLIC S16 RgUiRgrSiCfgCfm(pst, suId, transId, status)
-Pst* pst;
-SuId suId;
-RgrCfgTransId transId;
-U8 status;
-#endif
+S16 RgUiRgrSiCfgCfm(Pst* pst,SuId suId,RgrCfgTransId transId,uint8_t status)
 {
 
-   TRC3(RgUiRgrSiCfgCfm);
-
-   RETVALUE((*RgUiRgrSiCfgCfmMt[pst->selector])(pst, suId, transId, status));
+   return ((*RgUiRgrSiCfgCfmMt[pst->selector])(pst, suId, transId, status));
 
 }
 
@@ -1055,32 +843,14 @@ U8 status;
 *  @param[in]   Pst*  pst
 *  @param[in]   SuId  suId
 *  @param[in]   RgrCfgTransId  transId
-*  @param[in]   U8   siId
-*  @param[in]   U8  status
+*  @param[in]   uint8_t   siId
+*  @param[in]   uint8_t  status
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgUiRgrWarningSiCfgCfm
-(
-Pst* pst,
-SuId suId,
-RgrCfgTransId transId,
-U8   siId,
-U8 status
-)
-#else
-PUBLIC S16 RgUiRgrWarningSiCfgCfm(pst, suId, transId, siId,status)
-Pst* pst;
-SuId suId;
-RgrCfgTransId transId;
-U8  siId;
-U8 status;
-#endif
+S16 RgUiRgrWarningSiCfgCfm(Pst* pst,SuId suId,RgrCfgTransId transId,uint8_t siId,uint8_t status)
 {
-   TRC3(RgUiRgrWarningSiCfgCfm);
-
-   RETVALUE((*RgUiRgrWarningSiCfgCfmMt[pst->selector])
+   return ((*RgUiRgrWarningSiCfgCfmMt[pst->selector])
          (pst, suId, transId, siId, status));
 }
 
@@ -1103,24 +873,10 @@ U8 status;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgUiRgrStaInd
-(
-Pst* pst,
-SuId suId,
-RgrStaIndInfo  *staInd
-)
-#else
-PUBLIC S16 RgUiRgrStaInd(pst, suId, staInd)
-Pst* pst;
-SuId suId;
-RgrStaIndInfo *staInd;
-#endif
+S16 RgUiRgrStaInd(Pst* pst,SuId suId,RgrStaIndInfo *staInd)
 {
 
-   TRC3(RgUiRgrStaInd);
-
-   RETVALUE((*RgUiRgrStaIndMt[pst->selector])(pst, suId, staInd));
+   return ((*RgUiRgrStaIndMt[pst->selector])(pst, suId, staInd));
 
 }
 #endif /* End of RGR_CQI_REPT */
@@ -1139,24 +895,10 @@ RgrStaIndInfo *staInd;
  *  @return   S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 RgUiRgrLoadInfInd
-(
- Pst* pst,
- SuId suId,
- RgrLoadInfIndInfo  *loadInfInd
- )
-#else
-PUBLIC S16 RgUiRgrLoadInfInd(pst, suId, loadInfInd)
-   Pst* pst;
-   SuId suId;
-   RgrLoadInfIndInfo *loadInfInd;
-#endif
+S16 RgUiRgrLoadInfInd( Pst* pst, SuId suId,RgrLoadInfIndInfo *loadInfInd )
 {
 
-   TRC3(RgUiRgrLoadInfInd);
-
-   RETVALUE((*RgUiRgrLoadInfIndMt[pst->selector])(pst, suId, loadInfInd));
+   return ((*RgUiRgrLoadInfIndMt[pst->selector])(pst, suId, loadInfInd));
 
 }
 /* LTE_ADV_FLAG_REMOVED_END */
@@ -1174,24 +916,10 @@ PUBLIC S16 RgUiRgrLoadInfInd(pst, suId, loadInfInd)
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgUiRgrUeStaInd
-(
-Pst             *pst,
-SuId            suId,
-RgrUeStaIndInfo *ueStaInd
-)
-#else
-PUBLIC S16 RgUiRgrUeStaInd(pst, suId, ueStaInd)
-Pst             *pst;
-SuId            suId;
-RgrUeStaIndInfo *ueStaInd;
-#endif
+S16 RgUiRgrUeStaInd(Pst  *pst,SuId  suId,RgrUeStaIndInfo *ueStaInd)
 {
 
-   TRC3(RgUiRgrUeStaInd);
-
-   RETVALUE((*RgUiRgrUeStaIndMt[pst->selector])(pst, suId, ueStaInd));
+   return ((*RgUiRgrUeStaIndMt[pst->selector])(pst, suId, ueStaInd));
 
 }
 #endif /*--ifdef RG--*/
@@ -1208,32 +936,18 @@ RgrUeStaIndInfo *ueStaInd;
 *
 *  @param[in]   Pst*  pst
 *  @param[in]   SuId  suId
-*  @param[in]   U8  status
+*  @param[in]   uint8_t  status
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 PtUiCrgBndCfm
-(
-Pst* pst,
-SuId suId,
-U8 status
-)
-#else
-PUBLIC S16 PtUiCrgBndCfm(pst, suId, status)
-Pst* pst;
-SuId suId;
-U8 status;
-#endif
+S16 PtUiCrgBndCfm(Pst* pst,SuId suId,uint8_t status)
 {
-
-   TRC3(PtUiCrgBndCfm);
 
    UNUSED(pst);
    UNUSED(suId);
    UNUSED(status);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1249,35 +963,19 @@ U8 status;
 *  @param[in]   Pst*  pst
 *  @param[in]   SuId  suId
 *  @param[in]   CrgCfgTransId  transId
-*  @param[in]   U8  status
+*  @param[in]   uint8_t  status
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 PtUiCrgCfgCfm
-(
-Pst* pst,
-SuId suId,
-CrgCfgTransId transId,
-U8 status
-)
-#else
-PUBLIC S16 PtUiCrgCfgCfm(pst, suId, transId, status)
-Pst* pst;
-SuId suId;
-CrgCfgTransId transId;
-U8 status;
-#endif
+S16 PtUiCrgCfgCfm(Pst* pst,SuId suId,CrgCfgTransId transId,uint8_t status)
 {
-
-   TRC3(PtUiCrgCfgCfm);
 
    UNUSED(pst);
    UNUSED(suId);
    UNUSED(transId);
    UNUSED(status);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 #endif /*--ifdef PTRGUICRG--*/
@@ -1294,32 +992,18 @@ U8 status;
 *
 *  @param[in]   Pst*  pst
 *  @param[in]   SuId  suId
-*  @param[in]   U8  status
+*  @param[in]   uint8_t  status
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 PtUiRguBndCfm
-(
-Pst* pst,
-SuId suId,
-U8 status
-)
-#else
-PUBLIC S16 PtUiRguBndCfm(pst, suId, status)
-Pst* pst;
-SuId suId;
-U8 status;
-#endif
+S16 PtUiRguBndCfm(Pst* pst,SuId suId,uint8_t status)
 {
-
-   TRC3(PtUiRguBndCfm);
 
    UNUSED(pst);
    UNUSED(suId);
    UNUSED(status);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1339,28 +1023,14 @@ U8 status;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 PtUiRguCDatInd
-(
-Pst* pst,
-SuId suId,
-RguCDatIndInfo  * datInd
-)
-#else
-PUBLIC S16 PtUiRguCDatInd(pst, suId, datInd)
-Pst* pst;
-SuId suId;
-RguCDatIndInfo  * datInd;
-#endif
+S16 PtUiRguCDatInd(Pst* pst,SuId suId,RguCDatIndInfo  *datInd)
 {
-
-   TRC3(PtUiRguCDatInd);
 
    UNUSED(pst);
    UNUSED(suId);
    UNUSED(datInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1380,28 +1050,14 @@ RguCDatIndInfo  * datInd;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 PtUiRguDDatInd
-(
-Pst* pst,
-SuId suId,
-RguDDatIndInfo  * datInd
-)
-#else
-PUBLIC S16 PtUiRguDDatInd(pst, suId, datInd)
-Pst* pst;
-SuId suId;
-RguDDatIndInfo  * datInd;
-#endif
+S16 PtUiRguDDatInd(Pst* pst,SuId suId,RguDDatIndInfo  *datInd)
 {
-
-   TRC3(PtUiRguDDatInd);
 
    UNUSED(pst);
    UNUSED(suId);
    UNUSED(datInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1423,28 +1079,14 @@ RguDDatIndInfo  * datInd;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 PtUiRguCStaInd
-(
-Pst* pst,
-SuId suId,
-RguCStaIndInfo  * staInd
-)
-#else
-PUBLIC S16 PtUiRguCStaInd(pst, suId, staInd)
-Pst* pst;
-SuId suId;
-RguCStaIndInfo  * staInd;
-#endif
+S16 PtUiRguCStaInd(Pst* pst,SuId suId,RguCStaIndInfo *staInd)
 {
-
-   TRC3(PtUiRguCStaInd);
 
    UNUSED(pst);
    UNUSED(suId);
    UNUSED(staInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1466,80 +1108,38 @@ RguCStaIndInfo  * staInd;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 PtUiRguDStaInd
-(
-Pst* pst,
-SuId suId,
-RguDStaIndInfo  * staInd
-)
-#else
-PUBLIC S16 PtUiRguDStaInd(pst, suId, staInd)
-Pst* pst;
-SuId suId;
-RguDStaIndInfo  * staInd;
-#endif
+S16 PtUiRguDStaInd(Pst* pst,SuId suId,RguDStaIndInfo *staInd)
 {
-
-   TRC3(PtUiRguDStaInd);
 
    UNUSED(pst);
    UNUSED(suId);
    UNUSED(staInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 #ifdef LTE_L2_MEAS
 /* TODO: Function Header */
-#ifdef ANSI
-PUBLIC S16 PtUiRguHqStaInd
-(
-Pst* pst,
-SuId suId,
-RguHarqStatusInd *harqStatusInd
-)
-#else
-PUBLIC S16 PtUiRguHqStaInd(pst, suId, harqStatusInd)
-Pst* pst;
-SuId suId;
-RguHarqStatusInd *harqStatusInd;
-#endif
+S16 PtUiRguHqStaInd(Pst* pst,SuId suId,RguHarqStatusInd *harqStatusInd)
 {
-
-   TRC3(PtUiRguHqStaInd);
 
    UNUSED(pst);
    UNUSED(suId);
    UNUSED(harqStatusInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 #endif /* LTE_L2_MEAS */
 
-#ifdef ANSI
-PUBLIC S16 PtUiRguFlowCntrlInd
-(
-Pst* pst,
-SuId suId,
-RguFlowCntrlInd *flowCntrlInd
-)
-#else
-PUBLIC S16 PtUiRguFlowCntrlInd(pst, suId, flowCntrlInd)
-Pst* pst;
-SuId suId;
-RguHarqStatusInd *flowCntrlInd;
-#endif
+S16 PtUiRguFlowCntrlInd(Pst* pst,SuId suId,RguFlowCntrlInd *flowCntrlInd)
 {
-
-   TRC3(PtUiRguFlowCntrlInd);
 
    UNUSED(pst);
    UNUSED(suId);
    UNUSED(flowCntrlInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1557,32 +1157,18 @@ RguHarqStatusInd *flowCntrlInd;
 *
 *  @param[in]   Pst*  pst
 *  @param[in]   SuId  suId
-*  @param[in]   U8  status
+*  @param[in]   uint8_t  status
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 PtUiRgrBndCfm
-(
-Pst* pst,
-SuId suId,
-U8 status
-)
-#else
-PUBLIC S16 PtUiRgrBndCfm(pst, suId, status)
-Pst* pst;
-SuId suId;
-U8 status;
-#endif
+S16 PtUiRgrBndCfm(Pst* pst,SuId suId,uint8_t status)
 {
-
-   TRC3(PtUiRgrBndCfm);
 
    UNUSED(pst);
    UNUSED(suId);
    UNUSED(status);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1601,28 +1187,14 @@ U8 status;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 PtUiRgrTtiInd
-(
-Pst* pst,
-SuId suId,
-RgrTtiIndInfo *ttiInd
-)
-#else
-PUBLIC S16 PtUiRgrTtiInd(pst, suId, ttiInd)
-Pst* pst;
-SuId suId;
-RgrTtiIndInfo *ttiInd;
-#endif
+S16 PtUiRgrTtiInd(Pst* pst,SuId suId,RgrTtiIndInfo *ttiInd)
 {
-
-   TRC3(PtUiRgrTtiInd);
 
    UNUSED(pst);
    UNUSED(suId);
    UNUSED(ttiInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1638,35 +1210,19 @@ RgrTtiIndInfo *ttiInd;
 *  @param[in]   Pst*  pst
 *  @param[in]   SuId  suId
 *  @param[in]   RgrCfgTransId  transId
-*  @param[in]   U8  status
+*  @param[in]   uint8_t  status
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 PtUiRgrCfgCfm
-(
-Pst* pst,
-SuId suId,
-RgrCfgTransId transId,
-U8 status
-)
-#else
-PUBLIC S16 PtUiRgrCfgCfm(pst, suId, transId, status)
-Pst* pst;
-SuId suId;
-RgrCfgTransId transId;
-U8 status;
-#endif
+S16 PtUiRgrCfgCfm(Pst* pst,SuId suId,RgrCfgTransId transId,uint8_t status)
 {
-
-   TRC3(PtUiRgrCfgCfm);
 
    UNUSED(pst);
    UNUSED(suId);
    UNUSED(transId);
    UNUSED(status);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1682,35 +1238,19 @@ U8 status;
 *  @param[in]   Pst*  pst
 *  @param[in]   SuId  suId
 *  @param[in]   RgrCfgTransId  transId
-*  @param[in]   U8  status
+*  @param[in]   uint8_t  status
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 PtUiRgrSiCfgCfm
-(
-Pst* pst,
-SuId suId,
-RgrCfgTransId transId,
-U8 status
-)
-#else
-PUBLIC S16 PtUiRgrSiCfgCfm(pst, suId, transId, status)
-Pst* pst;
-SuId suId;
-RgrCfgTransId transId;
-U8 status;
-#endif
+S16 PtUiRgrSiCfgCfm(Pst* pst,SuId suId,RgrCfgTransId transId,uint8_t status)
 {
-
-   TRC3(PtUiRgrSiCfgCfm);
 
    UNUSED(pst);
    UNUSED(suId);
    UNUSED(transId);
    UNUSED(status);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1724,38 +1264,20 @@ U8 status;
 *  @param[in]   Pst*  pst
 *  @param[in]   SuId  suId
 *  @param[in]   RgrCfgTransId  transId
-*  @param[in]   U8 siId
-*  @param[in]   U8  status
+*  @param[in]   uint8_t siId
+*  @param[in]   uint8_t  status
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 PtUiRgrWarningSiCfgCfm
-(
-Pst* pst,
-SuId suId,
-RgrCfgTransId transId,
-U8 siId,
-U8 status
-)
-#else
-PUBLIC S16 PtUiRgrWarningSiCfgCfm(pst, suId, transId, siId, status)
-Pst* pst;
-SuId suId;
-RgrCfgTransId transId;
-U8  siId;
-U8 status;
-#endif
+S16 PtUiRgrWarningSiCfgCfm(Pst* pst,SuId suId,RgrCfgTransId transId,uint8_t siId,uint8_t status)
 {
-   TRC3(PtUiRgrWarningSiCfgCfm);
-
    UNUSED(pst);
    UNUSED(suId);
    UNUSED(transId);
    UNUSED(siId);
    UNUSED(status);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif/* RGR_SI_SCH */
 
@@ -1776,28 +1298,14 @@ U8 status;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 PtUiRgrStaInd
-(
-Pst* pst,
-SuId suId,
-RgrStaIndInfo  *staInd
-)
-#else
-PUBLIC S16 PtUiRgrStaInd(pst, suId, staInd)
-Pst* pst;
-SuId suId;
-RgrStaIndInfo *staInd;
-#endif
+S16 PtUiRgrStaInd(Pst* pst,SuId suId,RgrStaIndInfo *staInd)
 {
-
-   TRC3(PtUiRgrStaInd);
 
    UNUSED(pst);
    UNUSED(suId);
    UNUSED(staInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 #endif /* End of RGR_CQI_REPT */
@@ -1815,28 +1323,14 @@ RgrStaIndInfo *staInd;
  *  @return   S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 PtUiRgrLoadInfInd
-(
- Pst* pst,
- SuId suId,
- RgrLoadInfIndInfo  *loadInfInd
- )
-#else
-PUBLIC S16 PtUiRgrLoadInfInd(pst, suId, loadInfInd)
-   Pst* pst;
-   SuId suId;
-   RgrLoadInfIndInfo *loadInfInd;
-#endif
+S16 PtUiRgrLoadInfInd( Pst* pst, SuId suId, RgrLoadInfIndInfo *loadInfInd )
 {
-
-   TRC3(PtUiRgrLoadInfInd);
 
    UNUSED(pst);
    UNUSED(suId);
    UNUSED(loadInfInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 /* LTE_ADV_FLAG_REMOVED_END */
@@ -1854,28 +1348,14 @@ PUBLIC S16 PtUiRgrLoadInfInd(pst, suId, loadInfInd)
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 PtUiRgrUeStaInd
-(
-Pst* pst,
-SuId suId,
-RgrUeStaIndInfo  *ueStaInd
-)
-#else
-PUBLIC S16 PtUiRgrUeStaInd(pst, suId, ueStaInd)
-Pst* pst;
-SuId suId;
-RgrUeStaIndInfo *ueStaInd;
-#endif
+S16 PtUiRgrUeStaInd(Pst* pst,SuId suId,RgrUeStaIndInfo  *ueStaInd)
 {
-
-   TRC3(PtUiRgrUeStaInd);
 
    UNUSED(pst);
    UNUSED(suId);
    UNUSED(ueStaInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 #endif /*--ifdef PTRGUIRGR--*/
@@ -1892,32 +1372,18 @@ RgrUeStaIndInfo *ueStaInd;
 *
 *  @param[in]   Pst*  pst
 *  @param[in]   SuId  suId
-*  @param[in]   U8  status
+*  @param[in]   uint8_t  status
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 PtUiRgmBndCfm
-(
-Pst* pst,
-SuId suId,
-U8 status
-)
-#else
-PUBLIC S16 PtUiRgmBndCfm(pst, suId, status)
-Pst* pst;
-SuId suId;
-U8 status;
-#endif
+S16 PtUiRgmBndCfm(Pst* pst,SuId suId,uint8_t status)
 {
-
-   TRC3(PtUiRgmBndCfm);
 
    UNUSED(pst);
    UNUSED(suId);
    UNUSED(status);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1934,28 +1400,14 @@ U8 status;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 PtUiRgmPrbRprtInd
-(
-Pst* pst,
-SuId suId,
-RgmPrbRprtInd *prbRprtInd
-)
-#else
-PUBLIC S16 PtUiRgmPrbRprtInd(pst, suId, prbRprtInd)
-Pst* pst;
-SuId suId;
-RgmPrbRprtInd *prbRprtInd;
-#endif
+S16 PtUiRgmPrbRprtInd(Pst* pst,SuId suId,RgmPrbRprtInd *prbRprtInd)
 {
-
-   TRC3(PtUiRgmPrbRprtInd);
 
    UNUSED(pst);
    UNUSED(suId);
    UNUSED(prbRprtInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 
@@ -1972,28 +1424,14 @@ RgmPrbRprtInd *prbRprtInd;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 PtUiRgmTransModeInd
-(
-Pst* pst,
-SuId suId,
-RgmTransModeInd *transModeInd
-)
-#else
-PUBLIC S16 PtUiRgmTransModeInd(pst, suId, transModeInd)
-Pst* pst;
-SuId suId;
-RgmTransModeInd *transModeInd;
-#endif
+S16 PtUiRgmTransModeInd(Pst* pst,SuId suId,RgmTransModeInd *transModeInd)
 {
-
-   TRC3(PtUiRgmTransModeInd);
 
    UNUSED(pst);
    UNUSED(suId);
    UNUSED(transModeInd);
 
-   RETVALUE(ROK);
+   return ROK;
 
 }
 #endif
@@ -2011,23 +1449,9 @@ RgmTransModeInd *transModeInd;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgUiRgmSendPrbRprtInd
-(
-Pst* pst,
-SuId suId,
-RgmPrbRprtInd *prbRprtInd
-)
-#else
-PUBLIC S16 RgUiRgmSendPrbRprtInd(pst, suId, prbRprtInd)
-Pst* pst;
-SuId suId;
-RgmPrbRprtInd *prbRprtInd;
-#endif
-
+S16 RgUiRgmSendPrbRprtInd(Pst* pst,SuId suId,RgmPrbRprtInd *prbRprtInd)
 {
-   TRC2(RgUiRgmSendPrbRprtInd);
-   RETVALUE((*RgUiRgmSendPrbRprtIndMt[pst->selector])(pst, suId, prbRprtInd));
+   return ((*RgUiRgmSendPrbRprtIndMt[pst->selector])(pst, suId, prbRprtInd));
 }
 
 /**
@@ -2043,27 +1467,13 @@ RgmPrbRprtInd *prbRprtInd;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgUiRgmChangeTransModeInd
-(
-Pst* pst,
-SuId suId,
-RgmTransModeInd *transModeInd
-)
-#else
-PUBLIC S16 RgUiRgmChangeTransModeInd(pst, suId, transModeInd)
-Pst* pst;
-SuId suId;
-RgmTransModeInd *transModeInd;
-#endif
-
+S16 RgUiRgmChangeTransModeInd(Pst* pst,SuId suId,RgmTransModeInd *transModeInd)
 {
-   TRC2(RgUiRgmChangeTransModeInd);
-   RETVALUE((*RgUiRgmChangeTransModeIndMt[pst->selector])(pst, suId, transModeInd));
+   return ((*RgUiRgmChangeTransModeIndMt[pst->selector])(pst, suId, transModeInd));
 }
 
 #if defined(MAC_RLC_UL_RBUF) && !defined(SS_RBUF)
-PRIVATE S16 RgUiRguDDatIndRbuf(RguDDatIndInfo  *datInd)
+static S16 RgUiRguDDatIndRbuf(RguDDatIndInfo  *datInd)
 {
       S16  ret = ROK;
       Void *elem = NULLP;
@@ -2073,7 +1483,7 @@ PRIVATE S16 RgUiRguDDatIndRbuf(RguDDatIndInfo  *datInd)
       if (NULLP == elem)
       {
          SsRngInfoTbl[SS_RNG_BUF_ULMAC_TO_ULRLC].pktDrop++;
-         U32 i,j;
+         uint32_t i,j;
          for(i = 0; i< datInd->numLch; i++)
          {
             for(j = 0; j < datInd->lchData[i].pdu.numPdu; j++)
@@ -2093,32 +1503,27 @@ PRIVATE S16 RgUiRguDDatIndRbuf(RguDDatIndInfo  *datInd)
          SRngIncrWIndx(SS_RNG_BUF_ULMAC_TO_ULRLC);
          SsRngInfoTbl[SS_RNG_BUF_ULMAC_TO_ULRLC].pktRate++;
       }
-  RETVALUE(ret);
+  return (ret);
 }
 #endif
 #ifdef RLC_MAC_DAT_REQ_RBUF
-#ifdef ANSI
-PUBLIC S16 rgDlDatReqBatchProc
+S16 rgDlDatReqBatchProc
 (
 Void
 )
-#else
-PUBLIC S16 rgDlDatReqBatchProc()
-Void;
-#endif
 {
 /* Read from Ring Buffer and process PDCP packets */
 
-   U8 rngBufDeqIndx = 0;
-   PRIVATE Pst rgDDatRbfuPst ={1,1,ENTRG,0,ENTKW,1,PRIOR0,RTESPEC,EVTRGUDDATREQ,0,0,2,0};
-   PRIVATE Pst rgCDatRbfuPst ={1,1,ENTRG,0,ENTKW,1,PRIOR0,RTESPEC,EVTRGUCDATREQ,0,0,2,0};
+   uint8_t rngBufDeqIndx = 0;
+   static Pst rgDDatRbfuPst ={1,1,ENTMAC,0,ENTRLC,1,PRIOR0,RTESPEC,EVTRGUDDATREQ,0,0,2,0};
+   static Pst rgCDatRbfuPst ={1,1,ENTMAC,0,ENTRLC,1,PRIOR0,RTESPEC,EVTRGUCDATREQ,0,0,2,0};
    Void *elmIndx = NULLP;
    RguInfoRingElem *datReqRing=NULLP;
    elmIndx = SRngGetRIndx(SS_RNG_BUF_DLRLC_TO_DLMAC_DAT_REQ);
    while(NULLP != elmIndx)
    {
       datReqRing= (RguInfoRingElem *)elmIndx;
-      SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC_DAT_REQ].nPktProc++;;//Number of pkt processed in tti
+      SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC_DAT_REQ].nPktProc++;//Number of pkt processed in tti
       if(datReqRing->msg)
       {
          if(datReqRing->event == EVTRGUDDATREQ)
@@ -2162,26 +1567,18 @@ Void;
       break;
    }
  
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif 
 
 #ifdef RLC_MAC_STA_RSP_RBUF
-#ifdef ANSI
-PUBLIC S16 rgDlStaRspBatchProc
-(
-Void
-)
-#else
-PUBLIC S16 rgDlStaRspBatchProc()
-Void;
-#endif
+S16 rgDlStaRspBatchProc(Void)
 {
 /* Read from Ring Buffer and process PDCP packets */
 
-   U8 rngBufDeqIndx = 0;
-   PRIVATE Pst rgDStaRbfuPst ={1,1,ENTRG,0,ENTKW,1,PRIOR0,RTESPEC,EVTRGUDSTARSP,0,0,2,0};
-   PRIVATE Pst rgCStaRbfuPst ={1,1,ENTRG,0,ENTKW,1,PRIOR0,RTESPEC,EVTRGUCSTARSP,0,0,2,0};
+   uint8_t rngBufDeqIndx = 0;
+   static Pst rgDStaRbfuPst ={1,1,ENTMAC,0,ENTRLC,1,PRIOR0,RTESPEC,EVTRGUDSTARSP,0,0,2,0};
+   static Pst rgCStaRbfuPst ={1,1,ENTMAC,0,ENTRLC,1,PRIOR0,RTESPEC,EVTRGUCSTARSP,0,0,2,0};
    Void *elmIndx = NULLP;
    RguInfoRingElem *staRspRing=NULLP;
 
@@ -2189,7 +1586,7 @@ Void;
    while(NULLP != elmIndx)
    {
       staRspRing= (RguInfoRingElem *)elmIndx;
-      SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC].nPktProc++;;//Number of pkt processed in tti
+      SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC].nPktProc++;//Number of pkt processed in tti
       
       if(staRspRing->msg!= NULLP)
       {
@@ -2234,24 +1631,12 @@ Void;
       break;
    }
  
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif 
 #ifdef LTE_L2_MEAS
 #ifdef MAC_RLC_HARQ_STA_RBUF
-#ifdef ANSI
-PUBLIC S16 RgUiRguHqStaIndRbuf 
-(
-Pst* pst,
-SuId suId,
-RguHarqStatusInd *harqStatusInd
-)
-#else
-PUBLIC S16 RgUiRguHqStaIndRbuf(pst, suId, harqStatusInd)
-Pst* pst;
-SuId suId;
-RguHarqStatusInd *harqStatusInd;
-#endif
+S16 RgUiRguHqStaIndRbuf (Pst* pst,SuId suId,RguHarqStatusInd *harqStatusInd)
 {
    S16  ret = ROK;
    Void *elem = NULLP;
@@ -2265,12 +1650,12 @@ RguHarqStatusInd *harqStatusInd;
    }
    else
    {
-      cmMemcpy((U8 *)&(harqStaInd->hqStatusInd), (U8 *)harqStatusInd, sizeof(RguHarqStatusInd));
-      cmMemcpy((U8 *)&(harqStaInd->pst), (U8 *)pst, sizeof(Pst));
+      memcpy(&(harqStaInd->hqStatusInd), harqStatusInd, sizeof(RguHarqStatusInd));
+      memcpy(&(harqStaInd->pst), pst, sizeof(Pst));
       SRngIncrWIndx(SS_RNG_BUF_MAC_HARQ);
       SsRngInfoTbl[SS_RNG_BUF_MAC_HARQ].pktRate++;
    }
-   RETVALUE(ret);
+   return (ret);
 }
 #endif
 #endif

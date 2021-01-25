@@ -56,6 +56,8 @@ registered with SSI during the LTE MAC Task initialization.
 #include "rg_prg.x"        /*PRG interface includes*/
 #include "du_app_mac_inf.h"
 #include "rg.x"            /* typedefs for MAC */
+#include "rlc_mac_inf.h"
+#include "lwr_mac_upr_inf.h"
 
 /**
  * @brief Task Activation callback function Entity SM. 
@@ -71,20 +73,12 @@ registered with SSI during the LTE MAC Task initialization.
  *  @param[in]  Reason reason.
  *  @return  void
  **/
-#ifdef ANSI
-PRIVATE INLINE void rgHdlSMEvents
+static inline void rgHdlSMEvents
 (
 Pst     *pst,                       /* post structure       */
 Buffer  *mBuf                       /* message buffer       */
 )
-#else
-PRIVATE INLINE void rgHdlSMEvents(pst, mBuf)
-Pst     *pst;                       /* post structure       */
-Buffer  *mBuf;                      /* message buffer       */
-#endif
 {
-   TRC2(rgHdlSMEvents)
-
    switch(pst->event)
    {
 #ifdef LCRGMILRG
@@ -113,22 +107,26 @@ Buffer  *mBuf;                      /* message buffer       */
          /* Process MAC cell config */
          unpackDuMacCellCfg(MacProcCellCfgReq, pst, mBuf);
          break;
-      case EVENT_MAC_CELL_START_REQ:
-         /* Process MAC cell start request */
-         unpackMacCellStartReq(MacProcCellStartReq, pst, mBuf);
-         break;
-		case EVENT_MAC_CELL_STOP_REQ:
-			/* Process MAC cell stop request */
-			unpackMacCellStopReq(MacProcCellStopReq, pst, mBuf);
-			break;
-		case EVENT_MAC_DL_CCCH_IND:
-			/* Process DL CCCH Ind */
-			unpackMacDlCcchInd(MacProcDlCcchInd, pst, mBuf);
-			break;
-		case EVENT_MAC_UE_CREATE_REQ:
-		   /* Process Ue Create Request */
-			unpackMacUeCreateReq(MacProcUeCreateReq, pst, mBuf);
-			break;
+      case EVENT_MAC_CELL_START:
+	 /* Process MAC cell start request */
+	 unpackMacCellStart(MacProcCellStart, pst, mBuf);
+	 break;
+      case EVENT_MAC_CELL_STOP:
+	 /* Process MAC cell stop request */
+	 unpackMacCellStop(MacProcCellStop, pst, mBuf);
+	 break;
+      case EVENT_MAC_DL_CCCH_IND:
+	 /* Process DL CCCH Ind */
+	 unpackMacDlCcchInd(MacProcDlCcchInd, pst, mBuf);
+	 break;
+      case EVENT_MAC_UE_CREATE_REQ:
+	 /* Process Ue Create Request */
+	 unpackMacUeCreateReq(MacProcUeCreateReq, pst, mBuf);
+	 break;
+      case EVENT_MAC_UE_RECONFIG_REQ:
+	 /* Process Ue Reconfig Request */
+	 unpackMacUeReconfigReq(MacProcUeReconfigReq, pst, mBuf);
+	 break;
       default:
          RG_FREE_MSG(mBuf);
          break;
@@ -150,20 +148,12 @@ Buffer  *mBuf;                      /* message buffer       */
  *  @param[in]  Reason reason.
  *  @return  void
  **/
-#ifdef ANSI
-PRIVATE INLINE void rgHdlNHEvents
+static inline void rgHdlNHEvents
 (
 Pst     *pst,                       /* post structure       */
 Buffer  *mBuf                       /* message buffer       */
 )
-#else
-PRIVATE INLINE void rgHdlNHEvents(pst, mBuf)
-Pst     *pst;                       /* post structure       */
-Buffer  *mBuf;                      /* message buffer       */
-#endif
 {
-   TRC2(rgHdlNHEvents)
-
    switch(pst->event)
    {
 #ifdef LCRGUICRG
@@ -197,20 +187,12 @@ Buffer  *mBuf;                      /* message buffer       */
  *  @param[in]  Reason reason.
  *  @return  void
  **/
-#ifdef ANSI
-PRIVATE INLINE void rgHdlKWEvents
+static inline void rgHdlKWEvents
 (
 Pst     *pst,                       /* post structure       */
 Buffer  *mBuf                       /* message buffer       */
 )
-#else
-PRIVATE INLINE void rgHdlKWEvents(pst, mBuf)
-Pst     *pst;                       /* post structure       */
-Buffer  *mBuf;                      /* message buffer       */
-#endif
 {
-   TRC2(rgHdlKWEvents)
-
    switch(pst->event)
    {
 #ifdef LCRGUIRGU
@@ -220,11 +202,11 @@ Buffer  *mBuf;                      /* message buffer       */
       case EVTRGUUBNDREQ:
          cmUnpkRguUbndReq(RgUiRguUbndReq, pst, mBuf);
          break;
-      case EVTRLCDLDAT:
-         unpackDlData(MacRlcProcDlData, pst, mBuf);
+      case EVENT_DL_DATA_TO_MAC:
+         unpackRlcDlData(MacProcRlcDlData, pst, mBuf);
          break;
-      case EVTRLCBOSTA:
-         unpackBOStatus(MacRlcProcBOStatus, pst, mBuf);
+      case EVENT_BO_STATUS_TO_MAC:
+         unpackRlcBoStatus(MacProcRlcBoStatus, pst, mBuf);
          break;
 #ifdef LTE_L2_MEAS
 
@@ -254,35 +236,32 @@ Buffer  *mBuf;                      /* message buffer       */
  *  @param[in]  Reason reason.
  *  @return  void
  **/
-#ifdef ANSI
-PRIVATE INLINE void rgHdlTFEvents
+static inline void rgHdlTFEvents
 (
 Pst     *pst,                       /* post structure       */
 Buffer  *mBuf                       /* message buffer       */
 )
-#else
-PRIVATE INLINE void rgHdlTFEvents(pst, mBuf)
-Pst     *pst;                       /* post structure       */
-Buffer  *mBuf;                      /* message buffer       */
-#endif
 {
-   TRC2(rgHdlTFEvents)
-
    switch(pst->event)
    {
-#if  (defined(LCRGLITFU) || defined(LWLCRGLITFU))
-      case EVTTFUBNDCFM:
-         cmUnpkTfuBndCfm(RgLiTfuBndCfm, pst, mBuf);
+      case EVENT_SLOT_IND_TO_MAC:
+	 unpackSlotInd(fapiMacSlotInd, pst, mBuf);
          break;
-      case EVTTFUDATIND:
-         cmUnpkTfuDatInd(RgLiTfuDatInd, pst, mBuf);
-         break;
-#if defined(TENB_T2K3K_SPECIFIC_CHANGES) && defined(LTE_TDD)
-      case EVTTFUNONRTIND:
-         cmUnpkTfuNonRtInd(RgLiTfuNonRtInd, pst, mBuf);
-         break;
-#endif
-#endif            
+      case EVENT_STOP_IND_TO_MAC:
+	 unpackStopInd(fapiMacStopInd, pst, mBuf);
+	 break;
+      case EVENT_RACH_IND_TO_MAC:
+	 unpackRachInd(fapiMacRachInd, pst, mBuf);
+	 break;
+      case EVENT_CRC_IND_TO_MAC:
+	 unpackCrcInd(fapiMacCrcInd, pst, mBuf);
+	 break;
+      case EVENT_RX_DATA_IND_TO_MAC:
+	 unpackRxDataInd(fapiMacRxDataInd, pst, mBuf);
+	 break;
+      case EVENT_UCI_IND_TO_MAC:
+	 unpackUciInd(FapiMacUciInd, pst, mBuf);
+	 break;
       default:
          RG_FREE_MSG(mBuf);
          break;
@@ -304,20 +283,12 @@ Buffer  *mBuf;                      /* message buffer       */
  *  @param[in]  Reason reason.
  *  @return  void
  **/
-#ifdef ANSI
-PRIVATE INLINE void rgHdlRGEvents
+static inline void rgHdlRGEvents
 (
 Pst     *pst,                       /* post structure       */
 Buffer  *mBuf                       /* message buffer       */
 )
-#else
-PRIVATE INLINE void rgHdlRGEvents(pst, mBuf)
-Pst     *pst;                       /* post structure       */
-Buffer  *mBuf;                      /* message buffer       */
-#endif
 {
-   TRC2(rgHdlRGEvents)
-
    switch(pst->event)
    {
 #ifdef LCRG
@@ -430,20 +401,12 @@ Buffer  *mBuf;                      /* message buffer       */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 rgActvTsk
+S16 rgActvTsk
 (
 Pst     *pst,                       /* post structure       */
 Buffer  *mBuf                       /* message buffer       */
 )
-#else
-PUBLIC S16 rgActvTsk(pst, mBuf)
-Pst     *pst;                       /* post structure       */
-Buffer  *mBuf;                      /* message buffer       */
-#endif
 {
-   TRC2(rgActvTsk)
-
    switch(pst->srcEnt)
    {
       /* The originator of this message is the stack manager,
@@ -454,21 +417,21 @@ Buffer  *mBuf;                      /* message buffer       */
       case ENTNH:
           rgHdlNHEvents(pst, mBuf);
           break;
-      case ENTKW:
+      case ENTRLC:
           rgHdlKWEvents(pst, mBuf);
           break;
-      case ENTTF:
+      case ENTLWRMAC:
           rgHdlTFEvents(pst, mBuf);
           break;
-      case ENTRG: /* When scheduler instance sends msg to MAC */
+      case ENTMAC: /* When scheduler instance sends msg to MAC */
           rgHdlRGEvents(pst, mBuf);
           break;
        default:
           RG_FREE_MSG(mBuf);
           break;
    }
-   SExitTsk();
-   RETVALUE(ROK);
+   ODU_EXIT_TASK();
+   return ROK;
 }/* end of rgActvTsk */
 
 

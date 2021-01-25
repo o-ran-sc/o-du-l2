@@ -63,7 +63,7 @@
 #define SS_MAX_STSKS                    5 
 #endif
 #else 
-#define SS_MAX_STSKS                    5 
+#define SS_MAX_STSKS                    7 
 #endif 
 #endif /* SS_MULTICORE_SUPPORT */
 
@@ -90,7 +90,7 @@
 #ifdef SS_MULTICORE_SUPPORT
 #define SS_MAX_REGS SS_MAX_STSKS
 #else
-#define SS_MAX_REGS 5
+#define SS_MAX_REGS  7
 #endif
 
 #ifdef CMM_MAX_BKT_ENT
@@ -133,8 +133,10 @@
 #ifndef TENB_RTLIN_CHANGES
 #define SInitLock(l, t)                 pthread_mutex_init(l, NULL)
 #endif
-/*extern U32 gt[128]; */
-/*#define SLock(l)                        (((gt[0x000000FF &((U32)pthread_self())]=MacGetTick())&&pthread_mutex_lock(l)&&MLogTask(30340, RESOURCE_LINL2, gt[0x000000FF &((U32)pthread_self())], MacGetTick()))?0:0)*/
+/*uint32_t gt[128]; */
+/*#define SLock(l)                        (((gt[0x000000FF
+ * &((uint32_t)pthread_self())]=MacGetTick())&&pthread_mutex_lock(l)&&MLogTask(30340, RESOURCE_LINL2, gt[0x000000FF
+ * &((uint32_t)pthread_self())], MacGetTick()))?0:0)*/
 #define SLock(l)                        pthread_mutex_lock(l)
 #define SUnlock(l)                      pthread_mutex_unlock(l)
 #define SDestroyLock(l)                 pthread_mutex_destroy(l)
@@ -176,7 +178,7 @@ exit(0); \
 /*mt041.201 Value of MT_TICK_CNT changed*/
 /*mt004.301- defining the MT_TICK_CNT in Micro seconds (usecs) */
 /* mt010.301  Removed #ifdef SS_FAP portion and enabled oroginal code */
-#define MT_TICK_CNT             (((U32)0x0F4240)/SS_TICKS_SEC)
+#define MT_TICK_CNT             (((uint32_t)0x0F4240)/SS_TICKS_SEC)
 
 #define MT_MAX_TICK_CNT_VAL     35
 #define MT_MIN_TICK_CNT_VAL     1
@@ -209,7 +211,11 @@ that are configured below.
 #ifdef XEON_SPECIFIC_CHANGES
 #define MT_BKT_0_NUMBLKS        5248 /* 10500 Modified from 3500 to 10500 */
 #else
+#ifdef SS_USE_WLS_MEM
+#define MT_BKT_0_NUMBLKS        200704 /* 10500 Modified from 3500 to 10500 */
+#else
 #define MT_BKT_0_NUMBLKS        10000 /* 10500 Modified from 3500 to 10500 */
+#endif
 #endif
 #else
 #define MT_BKT_0_NUMBLKS        10000
@@ -223,7 +229,11 @@ that are configured below.
 #else
 #define MT_BKT_1_DSIZE          1280  /* Modified from 256 to 4096 */
 #endif
+#ifdef SS_USE_WLS_MEM
+#define MT_BKT_1_NUMBLKS        310720 /* 1000*/
+#else
 #define MT_BKT_1_NUMBLKS        10496 /* 1000*/
+#endif
 #else
 /*mt010.301*/
 #define MT_BKT_1_DSIZE          256
@@ -256,10 +266,13 @@ that are configured below.
 #define MT_BKT_3_DSIZE     4224      /* Fill in this value as required */
 #define MT_BKT_3_NUMBLKS   5248 /*10496 */       /* Fill in this value as required */
 #else
-#define MT_BKT_3_DSIZE     12000      /* Fill in this value as required */
+#define MT_BKT_3_DSIZE     12200      /* Fill in this value as required */
 #define MT_BKT_3_NUMBLKS   1000 /*10496 */       /* Fill in this value as required */
 #endif
 #endif
+
+#define MT_BKT_4_DSIZE   65000
+#define MT_BKT_4_NUMBLKS 1000
 
 /* For Non-Sharable regions/static regions */
 #ifdef XEON_SPECIFIC_CHANGES
@@ -273,16 +286,18 @@ that are configured below.
 #define MT_BKT_1_STATIC_NUMBLKS   15000     /* Fill in this value as required */
 #define MT_BKT_2_STATIC_NUMBLKS   500     /* Fill in this value as required */
 #define MT_BKT_3_STATIC_NUMBLKS   1600     /* Fill in this value as required */
+#define MT_BKT_4_STATIC_NUMBLKS   1000     /* Fill in this value as required */
 #endif
 /*mt010.301*/
 #ifdef RGL_SPECIFIC_CHANGES
 #define MT_MAX_BKTS             5
 #else
-#define MT_MAX_BKTS             4
+#define MT_MAX_BKTS             5
 #endif
 
 /* mt029.201 corrected typos */
 /* memory pool data size definitions for pool-to-size mapping table */
+#define MT_POOL_4_DSIZE        (MT_BKT_4_DSIZE-(sizeof(SsMblk)+sizeof(SsDblk)))
 #define MT_POOL_3_DSIZE        (MT_BKT_3_DSIZE-(sizeof(SsMblk)+sizeof(SsDblk)))
 #define MT_POOL_2_DSIZE        (MT_BKT_2_DSIZE-(sizeof(SsMblk)+sizeof(SsDblk)))
 #define MT_POOL_1_DSIZE        (MT_BKT_1_DSIZE-(sizeof(SsMblk)+sizeof(SsDblk)))
@@ -371,6 +386,7 @@ that are configured below.
 #endif
 #endif
 
+#define WLS_MEM_SIZE  0x7ec00000 /* Total size of WLS memory configured */
 
 #endif  /*  __MTSSH__  */
 

@@ -47,16 +47,16 @@ uint8_t packMacCellCfg(Pst *pst, MacCellCfg *macCellCfg)
    {
       Buffer *mBuf = NULLP;
 
-      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK) 
       {
 	 return RFAILED;
       }
 
       /* pack the address of the structure */
-      CMCHKPK(cmPkPtr,(PTR)macCellCfg, mBuf);
+      CMCHKPK(oduPackPointer,(PTR)macCellCfg, mBuf);
 
       DU_LOG("\nDU-APP : MAC CELL config sent");
-      return SPstTsk(pst,mBuf);
+      return ODU_POST_TASK(pst,mBuf);
    } 
    return ROK;
 }
@@ -81,13 +81,13 @@ uint8_t packMacCellCfg(Pst *pst, MacCellCfg *macCellCfg)
  ***************************************************************************/
 uint8_t  unpackDuMacCellCfg(DuMacCellCfgReq func, Pst *pst, Buffer *mBuf)
 {
-   U16 ret = ROK;
+   uint16_t ret = ROK;
    MacCellCfg *macCellCfg;
 
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
       /* unpack the address of the structure */
-      CMCHKUNPK(cmUnpkPtr, (PTR *)&macCellCfg, mBuf);
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&macCellCfg, mBuf);
       ret = (*func)(pst, macCellCfg);
    }
    else
@@ -121,16 +121,16 @@ uint8_t  packMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm)
    if(pst->selector == ODU_SELECTOR_LC)
    {
       Buffer *mBuf = NULLP;
-      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK) 
       {
 	 return RFAILED;
       }
 
       /* pack the transaction ID in CNF structure */
-      CMCHKPK(SPkU16, macCellCfgCfm->cellId, mBuf);
-      CMCHKPK(SPkU8, macCellCfgCfm->rsp, mBuf);
+      CMCHKPK(oduUnpackUInt16, macCellCfgCfm->cellId, mBuf);
+      CMCHKPK(oduUnpackUInt8, macCellCfgCfm->rsp, mBuf);
 
-      return SPstTsk(pst,mBuf);
+      return ODU_POST_TASK(pst,mBuf);
    }
    else if(pst->selector == ODU_SELECTOR_LWLC)
    {
@@ -164,8 +164,8 @@ uint8_t unpackMacCellCfgCfm(DuMacCellCfgCfm func, Pst *pst, Buffer *mBuf)
    if(pst->selector == ODU_SELECTOR_LC)
    {
       /* unpack the transaction ID in CNF structure */
-      CMCHKUNPK(SUnpkU8, &(macCellCfgCfm.rsp), mBuf);
-      CMCHKUNPK(SUnpkU16, &(macCellCfgCfm.cellId), mBuf);
+      CMCHKUNPK(oduPackUInt8, &(macCellCfgCfm.rsp), mBuf);
+      CMCHKUNPK(oduPackUInt16, &(macCellCfgCfm.cellId), mBuf);
       return (*func)(pst, &macCellCfgCfm);
    }
    else
@@ -181,18 +181,18 @@ uint8_t unpackMacCellCfgCfm(DuMacCellCfgCfm func, Pst *pst, Buffer *mBuf)
  *
  * @details
  *
- *    Function : packMacCellStartReq
+ *    Function : packMacCellStart
  *
  *    Functionality:
  *      Packs and Sends Cell Start Request to MAC
  *
  * @params[in] Post structure pointer
- *             MacCellStartInfo pointer
+ *             Cell Id
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packMacCellStartReq(Pst *pst, MacCellStartInfo  *cellStartInfo)
+uint8_t packMacCellStart(Pst *pst, OduCellId *cellId)
 {
    Buffer *mBuf = NULLP;
 
@@ -204,17 +204,17 @@ uint8_t packMacCellStartReq(Pst *pst, MacCellStartInfo  *cellStartInfo)
    else if(pst->selector == ODU_SELECTOR_LWLC)
    {
 
-      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
 	 DU_LOG("\nDU APP : Memory allocation failed for cell start req pack");
 	 return RFAILED;
       }
 
       /* pack the address of the structure */
-      CMCHKPK(cmPkPtr,(PTR)cellStartInfo, mBuf);
+      CMCHKPK(oduPackPointer,(PTR)cellId, mBuf);
 
    }
-   return SPstTsk(pst,mBuf);
+   return ODU_POST_TASK(pst,mBuf);
 }
 
 /*******************************************************************
@@ -223,33 +223,33 @@ uint8_t packMacCellStartReq(Pst *pst, MacCellStartInfo  *cellStartInfo)
  *
  * @details
  *
- *    Function : unpackMaCellStartReq
+ *    Function : unpackMaCellStart
  *
  *    Functionality:
  *      Unpacks MAC Cell Start Request from DU APP
  *
  * @params[in] Function pointer of cell start request handler
  *             Post structure pointer
- *             Cell Start Request Info Pointer
+ *             Message Buffer
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t unpackMacCellStartReq(DuMacCellStartReq func, Pst *pst, Buffer *mBuf)
+uint8_t unpackMacCellStart(DuMacCellStart func, Pst *pst, Buffer *mBuf)
 {
-   MacCellStartInfo  *cellStartInfo;
+   OduCellId  *cellId;
 
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
       /* unpack the address of the structure */
-      CMCHKUNPK(cmUnpkPtr, (PTR *)&cellStartInfo, mBuf);
-      SPutMsg(mBuf); 
-      return (*func)(pst, cellStartInfo);
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&cellId, mBuf);
+      ODU_PUT_MSG_BUF(mBuf); 
+      return (*func)(pst, cellId);
    }
    else
    {
       /* Nothing to do for loose coupling */
-      SPutMsg(mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
       return ROK;
    }
 }
@@ -260,18 +260,18 @@ uint8_t unpackMacCellStartReq(DuMacCellStartReq func, Pst *pst, Buffer *mBuf)
  *
  * @details
  *
- *    Function : packMacCellStopReq
+ *    Function : packMacCellStop
  *
  *    Functionality:
  *       Packs and Send cell stop request to MAC
  *
  * @params[in] Post structure pointer
- *             Cell stop info structure 
+ *             Cell Id 
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packMacCellStopReq(Pst *pst, MacCellStopInfo  *cellStopInfo)
+uint8_t packMacCellStop(Pst *pst, OduCellId  *cellId)
 {
    if(pst->selector == ODU_SELECTOR_LC)
    {
@@ -282,16 +282,16 @@ uint8_t packMacCellStopReq(Pst *pst, MacCellStopInfo  *cellStopInfo)
    {
       Buffer *mBuf = NULLP;
 
-      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
 	 DU_LOG("\nDU APP : Memory allocation failed for cell stop req pack");
 	 return RFAILED;
       }
 
       /* pack the address of the structure */
-      CMCHKPK(cmPkPtr,(PTR)cellStopInfo, mBuf);
+      CMCHKPK(oduPackPointer,(PTR)cellId, mBuf);
 
-      return SPstTsk(pst,mBuf);
+      return ODU_POST_TASK(pst,mBuf);
    }
    return ROK;
 }
@@ -302,7 +302,7 @@ uint8_t packMacCellStopReq(Pst *pst, MacCellStopInfo  *cellStopInfo)
  *
  * @details
  *
- *    Function : unpackMaCellStopReq 
+ *    Function : unpackMaCellStop 
  *
  *    Functionality:
  *       Unpacks cell stop request from DU APP 
@@ -314,84 +314,81 @@ uint8_t packMacCellStopReq(Pst *pst, MacCellStopInfo  *cellStopInfo)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t unpackMacCellStopReq(DuMacCellStopReq func, Pst *pst, Buffer *mBuf)
+uint8_t unpackMacCellStop(DuMacCellStop func, Pst *pst, Buffer *mBuf)
 {
-   MacCellStopInfo  *cellStopInfo;
-
+   OduCellId *cellId;
+   
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
       /* unpack the address of the structure */
-      CMCHKUNPK(cmUnpkPtr, (PTR *)&cellStopInfo, mBuf);
-      SPutMsg(mBuf);
-      return (*func)(pst, cellStopInfo);
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&cellId, mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
+      return (*func)(pst, cellId);
    }
    else
    {
       /* Nothing to do for loose coupling */
-      SPutMsg(mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
       return ROK;
    }
 }
 
 /*******************************************************************
  *
- * @brief Packs and Sends slot ind from MAC to DUAPP
+ * @brief Packs and Sends cell up ind from MAC to DUAPP
  *
  * @details
  *
- *    Function : packMacSlotInd
+ *    Function : packMacCellUpInd
  *
  *    Functionality:
- *       Packs and Sends slot ind from MAC to DUAPP
+ *       Packs and Sends cell up ind from MAC to DUAPP
  *
  * @params[in] Post structure pointer
- *             Slot Info pointer              
+ *             Cell Id
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packMacSlotInd(Pst *pst, SlotIndInfo *slotInfo )
+uint8_t packMacCellUpInd(Pst *pst, OduCellId *cellId)
 {
    Buffer *mBuf = NULLP;
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
+   if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
    {
-      DU_LOG("\nDU APP : Memory allocation failed for cell start req pack");
+      DU_LOG("\nDU APP : Memory allocation failed for packMacCellUpInd");
       return RFAILED;
    }
 
    if(pst->selector == ODU_SELECTOR_LC)
    {
-      CMCHKPK(SPkU16, slotInfo->cellId, mBuf);
-      CMCHKPK(SPkU16, slotInfo->sfn, mBuf);
-      CMCHKPK(SPkU16, slotInfo->slot, mBuf);
-
-      CM_FREE_SHRABL_BUF(pst->region, pst->pool, slotInfo, sizeof(SlotIndInfo));
-      slotInfo = NULL;
+      CMCHKPK(oduUnpackUInt16, cellId->cellId, mBuf);
+      CM_FREE_SHRABL_BUF(pst->region, pst->pool, cellId, sizeof(OduCellId));
+      cellId = NULL;
    }
    else if(pst->selector == ODU_SELECTOR_LWLC)
    {
       /* pack the address of the structure */
-      CMCHKPK(cmPkPtr,(PTR)slotInfo, mBuf);
+      CMCHKPK(oduPackPointer,(PTR)cellId, mBuf);
    }
    else
    {
-      SPutMsg(mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
    }
 
-   return SPstTsk(pst,mBuf);
+   return ODU_POST_TASK(pst, mBuf);
 }
 
 /*******************************************************************
  *
- * @brief Unpacks slot indication from MAC
+ * @brief Unpacks cell up indication from MAC
  *
  * @details
  *
- *    Function : unpackMacSlotInd
+ *    Function : unpackMacCellUpInd
  *
  *    Functionality:
- *         Unpacks slot indication from MAC
+ *         Unpacks cell up indication from MAC
  *
  * @params[in] Pointer to Handler
  *             Post structure pointer
@@ -400,33 +397,28 @@ uint8_t packMacSlotInd(Pst *pst, SlotIndInfo *slotInfo )
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t unpackMacSlotInd(DuMacSlotInd func, Pst *pst, Buffer *mBuf)
+uint8_t unpackMacCellUpInd(DuMacCellUpInd func, Pst *pst, Buffer *mBuf)
 {
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      SlotIndInfo *slotInfo;
+      OduCellId *cellId;
 
       /* unpack the address of the structure */
-      CMCHKUNPK(cmUnpkPtr, (PTR *)&slotInfo, mBuf);
-      SPutMsg(mBuf);
-      return (*func)(pst, slotInfo);
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&cellId, mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
+      return (*func)(pst, cellId);
    }
    else if(pst->selector == ODU_SELECTOR_LC)
    {
-      SlotIndInfo slotInfo;
-
-      CMCHKUNPK(SUnpkU16, &(slotInfo.slot), mBuf);
-      CMCHKUNPK(SUnpkU16, &(slotInfo.sfn), mBuf);
-      CMCHKUNPK(SUnpkU16, &(slotInfo.cellId), mBuf);
-
-      SPutMsg(mBuf);
-      return (*func)(pst, &slotInfo);
-
+      OduCellId cellId;
+      CMCHKUNPK(oduPackUInt16, &cellId.cellId, mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
+      return (*func)(pst, &cellId);
    }
    else
    {
       /* Nothing to do for loose coupling */
-      SPutMsg(mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
       return ROK;
    }
    return ROK;
@@ -448,11 +440,11 @@ uint8_t unpackMacSlotInd(DuMacSlotInd func, Pst *pst, Buffer *mBuf)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packMacStopInd(Pst *pst, MacCellStopInfo *cellStopId)
+uint8_t packMacStopInd(Pst *pst, OduCellId *cellId)
 {
    Buffer *mBuf = NULLP;
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
+   if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
    {
       DU_LOG("\nDU APP : Memory allocation failed for stop Ind pack");
       return RFAILED;
@@ -462,21 +454,21 @@ uint8_t packMacStopInd(Pst *pst, MacCellStopInfo *cellStopId)
    {
       /*pack the payload here*/
       DU_LOG("\nDU APP : Packed CellId");
-      CMCHKPK(SPkU16, cellStopId->cellId, mBuf);
-      CM_FREE_SHRABL_BUF(pst->region, pst->pool, cellStopId, sizeof(MacCellStopInfo));
-      cellStopId = NULL;
+      CMCHKPK(oduUnpackUInt16, cellId->cellId, mBuf);
+      CM_FREE_SHRABL_BUF(pst->region, pst->pool, cellId, sizeof(OduCellId));
+      cellId = NULL;
    }
    else if(pst->selector == ODU_SELECTOR_LWLC)
    {
       /* pack the address of the structure */
-      CMCHKPK(cmPkPtr,(PTR)cellStopId, mBuf);
+      CMCHKPK(oduPackPointer,(PTR)cellId, mBuf);
    }
    else
    {
-      SPutMsg(mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
    }
 
-   return SPstTsk(pst,mBuf);
+   return ODU_POST_TASK(pst,mBuf);
 }
 
 /*******************************************************************
@@ -501,25 +493,25 @@ uint8_t unpackMacStopInd(DuMacStopInd func, Pst *pst, Buffer *mBuf)
 {
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      MacCellStopInfo *cellStopId;
+      OduCellId *cellId;
       /* unpack the address of the structure */
-      CMCHKUNPK(cmUnpkPtr, (PTR *)&cellStopId, mBuf);
-      SPutMsg(mBuf);
-      return (*func)(pst, cellStopId);
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&cellId, mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
+      return (*func)(pst, cellId);
    }
    else if(pst->selector == ODU_SELECTOR_LC)
    {
-      MacCellStopInfo cellStopId;
-      CMCHKUNPK(SUnpkU16, &(cellStopId.cellId), mBuf);
+      OduCellId cellId;
+      CMCHKUNPK(oduPackUInt16, &(cellId.cellId), mBuf);
 
-      SPutMsg(mBuf);
-      return (*func)(pst, &cellStopId);
+      ODU_PUT_MSG_BUF(mBuf);
+      return (*func)(pst, &cellId);
 
    }
    else
    {
       /* Nothing to do for loose coupling */
-      SPutMsg(mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
       return ROK;
    }
    return ROK;
@@ -548,13 +540,13 @@ uint8_t packMacUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo)
 
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
 	 DU_LOG("\nMAC : Memory allocation failed at packMacUlCcchInd");
 	 return RFAILED;
       }
       /* pack the address of the structure */
-      CMCHKPK(cmPkPtr,(PTR)ulCcchIndInfo, mBuf);
+      CMCHKPK(oduPackPointer,(PTR)ulCcchIndInfo, mBuf);
    }
    else
    {
@@ -562,7 +554,7 @@ uint8_t packMacUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo)
       return RFAILED;
    }
 
-   return SPstTsk(pst,mBuf);
+   return ODU_POST_TASK(pst,mBuf);
 }
 
 /*******************************************************************
@@ -590,15 +582,15 @@ uint8_t unpackMacUlCcchInd(DuMacUlCcchInd func, Pst *pst, Buffer *mBuf)
       UlCcchIndInfo *ulCcchIndInfo;
 
       /* unpack the address of the structure */
-      CMCHKUNPK(cmUnpkPtr, (PTR *)&ulCcchIndInfo, mBuf);
-      SPutMsg(mBuf);
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&ulCcchIndInfo, mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
       return (*func)(pst, ulCcchIndInfo);
    }
    else
    {
       /* Nothing to do for other selectors */
       DU_LOG("\n Only LWLC supported for UL CCCH Ind ");
-      SPutMsg(mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
    }
    return RFAILED;
 }
@@ -627,13 +619,13 @@ uint8_t packMacDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo)
 
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
 	 DU_LOG("\nMAC : Memory allocation failed at packMacDlCcchInd");
 	 return RFAILED;
       }
       /* pack the address of the structure */
-      CMCHKPK(cmPkPtr,(PTR)dlCcchIndInfo, mBuf);
+      CMCHKPK(oduPackPointer,(PTR)dlCcchIndInfo, mBuf);
    }
    else
    {
@@ -641,7 +633,7 @@ uint8_t packMacDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo)
       return RFAILED;
    }
 
-   return SPstTsk(pst,mBuf);
+   return ODU_POST_TASK(pst,mBuf);
 }
 
 /*******************************************************************
@@ -669,15 +661,15 @@ uint8_t unpackMacDlCcchInd(DuMacDlCcchInd func, Pst *pst, Buffer *mBuf)
       DlCcchIndInfo *dlCcchIndInfo;
 
       /* unpack the address of the structure */
-      CMCHKUNPK(cmUnpkPtr, (PTR *)&dlCcchIndInfo, mBuf);
-      SPutMsg(mBuf);
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&dlCcchIndInfo, mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
       return (*func)(pst, dlCcchIndInfo);
    }
    else
    {
       /* Nothing to do for other selectors */
       DU_LOG("\n Only LWLC supported for DL CCCH Ind ");
-      SPutMsg(mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
    }
 
    return RFAILED;
@@ -707,13 +699,13 @@ uint8_t packDuMacUeCreateReq(Pst *pst, MacUeCfg *ueCfg)
 
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
 	 DU_LOG("\nMAC : Memory allocation failed at packDuMacUeCreateReq");
 	 return RFAILED;
       }
       /* pack the address of the structure */
-      CMCHKPK(cmPkPtr,(PTR)ueCfg, mBuf);
+      CMCHKPK(oduPackPointer,(PTR)ueCfg, mBuf);
    }
    else
    {
@@ -721,7 +713,7 @@ uint8_t packDuMacUeCreateReq(Pst *pst, MacUeCfg *ueCfg)
       return RFAILED;
    }
 
-   return SPstTsk(pst,mBuf);
+   return ODU_POST_TASK(pst,mBuf);
 }
 
 /*******************************************************************
@@ -749,15 +741,15 @@ uint8_t unpackMacUeCreateReq(DuMacUeCreateReq func, Pst *pst, Buffer *mBuf)
       MacUeCfg *ueCfg;
 
       /* unpack the address of the structure */
-      CMCHKUNPK(cmUnpkPtr, (PTR *)&ueCfg, mBuf);
-      SPutMsg(mBuf);
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&ueCfg, mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
       return (*func)(pst, ueCfg);
    }
    else
    {
       /* Nothing to do for other selectors */
       DU_LOG("\n Only LWLC supported for UE Create Request ");
-      SPutMsg(mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
    }
 
    return RFAILED;
@@ -769,7 +761,7 @@ uint8_t unpackMacUeCreateReq(DuMacUeCreateReq func, Pst *pst, Buffer *mBuf)
  *
  * @details
  *
- *    Function : packDuMacUeCreateRsp
+ *    Function : packDuMacUeCfgRsp
  *
  *    Functionality:
  *       Pack and send UE config response from MAC to DU APP
@@ -779,19 +771,19 @@ uint8_t unpackMacUeCreateReq(DuMacUeCreateReq func, Pst *pst, Buffer *mBuf)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packDuMacUeCreateRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
+uint8_t packDuMacUeCfgRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
 {
    Buffer *mBuf = NULLP;
 
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
 	 DU_LOG("\nMAC : Memory allocation failed at packDuMacUeCfgRsp");
 	 return RFAILED;
       }
       /* pack the address of the structure */
-      CMCHKPK(cmPkPtr,(PTR)cfgRsp, mBuf);
+      CMCHKPK(oduPackPointer,(PTR)cfgRsp, mBuf);
    }
    else
    {
@@ -799,7 +791,7 @@ uint8_t packDuMacUeCreateRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
       return RFAILED;
    }
 
-   return SPstTsk(pst,mBuf);
+   return ODU_POST_TASK(pst,mBuf);
 }
 
 /*******************************************************************
@@ -808,7 +800,7 @@ uint8_t packDuMacUeCreateRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
  *
  * @details
  *
- *    Function : unpackDuMacUeCreateRsp
+ *    Function : unpackDuMacUeCfgRsp
  *
  *    Functionality: Unpack UE Config Response from MAC to DU APP
  *
@@ -817,19 +809,98 @@ uint8_t packDuMacUeCreateRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t unpackDuMacUeCreateRsp(DuMacUeCreateRspFunc func, Pst *pst, Buffer *mBuf)
+uint8_t unpackDuMacUeCfgRsp(MacDuUeCfgRspFunc func, Pst *pst, Buffer *mBuf)
 {
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      MacUeCfgRsp *cfgRsp;
+      MacUeCfgRsp *cfgRsp = NULLP;
 
       /* unpack the address of the structure */
-      CMCHKUNPK(cmUnpkPtr, (PTR *)&cfgRsp, mBuf);
-      SPutMsg(mBuf);
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&cfgRsp, mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
       return (*func)(pst, cfgRsp);
    }
 
-   SPutMsg(mBuf);
+   ODU_PUT_MSG_BUF(mBuf);
+   return RFAILED;
+}
+
+/*******************************************************************
+ *
+ * @brief Packs and Sends UE Reconig Request from DUAPP to MAC
+ *
+ * @details
+ *
+ *    Function : packDuMacUeReconfigReq
+ *
+ *    Functionality:
+ *       Packs and Sends UE Reconfig Request from DUAPP to MAC
+ *
+ *
+ * @params[in] Post structure pointer
+ *             MacUeCfg pointer              
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packDuMacUeReconfigReq(Pst *pst, MacUeCfg *ueCfg)
+{
+   Buffer *mBuf = NULLP;
+
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+      {
+	 DU_LOG("\nMAC : Memory allocation failed at packDuMacUeReconfigReq");
+	 return RFAILED;
+      }
+      /* pack the address of the structure */
+      CMCHKPK(oduPackPointer,(PTR)ueCfg, mBuf);
+   }
+   else
+   {
+      DU_LOG("\nMAC: Only LWLC supported for packDuMacUeReconfigReq");
+      return RFAILED;
+   }
+
+   return ODU_POST_TASK(pst,mBuf);
+}
+/*******************************************************************
+ *
+ * @brief Unpacks UE Reconfig Request received from DU APP
+ *
+ * @details
+ *
+ *    Function : unpackMacUeReconfigReq
+ *
+ *    Functionality:
+ *         Unpacks UE Reconfig Request received from DU APP
+ *
+ * @params[in] Pointer to Handler
+ *             Post structure pointer
+ *             Message Buffer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t unpackMacUeReconfigReq(DuMacUeReconfigReq func, Pst *pst, Buffer *mBuf)
+{
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      MacUeCfg *ueCfg;
+
+      /* unpack the address of the structure */
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&ueCfg, mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
+      return (*func)(pst, ueCfg);
+   }
+   else
+   {
+      /* Nothing to do for other selectors */
+      DU_LOG("\n Only LWLC supported for UE Create Request ");
+      ODU_PUT_MSG_BUF(mBuf);
+   }
+
    return RFAILED;
 }
 

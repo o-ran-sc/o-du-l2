@@ -20,14 +20,15 @@
  * invoked from MAC */
 #include "common_def.h"
 #include "du_app_mac_inf.h"
+#include "rlc_mac_inf.h"
 #include "mac_upr_inf_api.h"
 
-/* Funtion pointer options for slot indication */
-DuMacSlotInd packMacSlotIndOpts[] =
+/* Funtion pointer options for cell up indication */
+DuMacCellUpInd packMacCellUpIndOpts[] =
 {
-   packMacSlotInd,
-   duHandleSlotInd,
-   packMacSlotInd
+   packMacCellUpInd,
+   duHandleCellUpInd,
+   packMacCellUpInd
 };
 /* Funtion pointer options for stop indication */
 DuMacStopInd packMacStopIndOpts[] =
@@ -45,27 +46,44 @@ DuMacUlCcchInd packMacUlCcchIndOpts[] =
    packMacUlCcchInd
 };
 
+/* Function pointer options for UL Data to RLC */
+RlcMacUlDataFunc rlcMacSendUlDataOpts[] =
+{
+   packRlcUlData,
+   RlcProcUlData,
+   packRlcUlData
+};
+
+/* Funtion pointer options for schedule result reporting */
+RlcMacSchedResultRptFunc rlcMacSchedResultRptOpts[] =
+{
+   packRlcSchedResultRpt,
+   RlcProcSchedResultRpt,
+   packRlcSchedResultRpt
+};
+	 
+
 /*******************************************************************
  *
- * @brief Send slot indication to MAC
+ * @brief Send cell up indication to DU APP
  *
  * @details
  *
- *    Function : MacDuAppSlotInd
+ *    Function : MacDuAppCellUpInd
  *
  *    Functionality:
  *       Select appropriate function using selector value and
- *       send to MAC
+ *       send cell up indication to DU APP
  *
  * @params[in]  Post structure pointer
- *              Slot info pointer 
+ *              Cell UP info
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t MacDuAppSlotInd(Pst *pst, SlotIndInfo *slotInfo)
+uint8_t MacDuAppCellUpInd(Pst *pst, OduCellId *cellId)
 {
-   return (*packMacSlotIndOpts[pst->selector])(pst, slotInfo);
+   return (*packMacCellUpIndOpts[pst->selector])(pst, cellId);
 }
 
 /*******************************************************************
@@ -84,9 +102,9 @@ uint8_t MacDuAppSlotInd(Pst *pst, SlotIndInfo *slotInfo)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t MacDuAppStopInd(Pst *pst, MacCellStopInfo *cellStopId)
+uint8_t MacDuAppStopInd(Pst *pst, OduCellId *cellId)
 {
-   return (*packMacStopIndOpts[pst->selector])(pst, cellStopId);
+   return (*packMacStopIndOpts[pst->selector])(pst, cellId);
 }
 
 /*******************************************************************
@@ -112,6 +130,46 @@ uint8_t MacDuAppUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo)
    return (*packMacUlCcchIndOpts[pst->selector])(pst, ulCcchIndInfo);
 }
 
+/*******************************************************************
+ *
+ * @brief Send UL data to RLC
+ *
+ * @details
+ *
+ *    Function : MacRlcSendUlData
+ *
+ *    Functionality: Send UL data to RLC
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t MacSendUlDataToRlc(Pst *pst, RlcData *ulData)
+{
+   return (*rlcMacSendUlDataOpts[pst->selector])(pst, ulData);
+}
+
+/*******************************************************************
+ *
+ * @brief Send Schedule result report to RLC
+ *
+ * @details
+ *
+ *    Function : MacSendSchedResultRptToRlc
+ *
+ *    Functionality: Send Schedule result report to RLC
+ *
+ * @params[in] Post structure
+ *             Schedule result report
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t MacSendSchedResultRptToRlc(Pst *pst, RlcSchedResultRpt *schedRpt)
+{
+   return (*rlcMacSchedResultRptOpts[pst->selector])(pst, schedRpt);
+}
 
 /**********************************************************************
   End of file

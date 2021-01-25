@@ -33,7 +33,7 @@
 #define __KWU_X__
 
 #ifdef __cplusplus
-EXTERN "C" {
+extern "C" {
 #endif  /*for extern "C"*/
 
 /** @file kwu.x
@@ -48,12 +48,12 @@ EXTERN "C" {
 typedef struct kwuDatReqInfo
 {
    CmLteRlcId        rlcId;               /*!< RLC ID */
-   U32               sduId;               /*!< SDU ID */
+   uint32_t               sduId;               /*!< SDU ID */
 #ifdef CCPU_OPT
    CmLteLcType       lcType;              /*!<Logical Channel Type */ 
 #ifdef EMTC_ENABLE
-   U8                emtcDiReason;    /* !< DI reason */
-   U8                pnb;                  /*!<paging narrowBand on which Ue perform Paging Reception*/
+   uint8_t                emtcDiReason;    /* !< DI reason */
+   uint8_t                pnb;                  /*!<paging narrowBand on which Ue perform Paging Reception*/
 #endif
    union
    {
@@ -78,8 +78,8 @@ typedef struct kwuDatIndInfo
 typedef struct kwuDatCfmInfo
 {
   CmLteRlcId         rlcId;          /*!< RLC ID */
-  U32                numSduIds;      /*!< Number of Id's in the sudIds array */
-  U32                sduIds[KWU_MAX_DAT_CFM];    /*!< SDU Ids */
+  uint32_t                numSduIds;      /*!< Number of Id's in the sudIds array */
+  uint32_t                sduIds[KWU_MAX_DAT_CFM];    /*!< SDU Ids */
 }KwuDatCfmInfo;
 
 /** @brief Discard SDU Request Information from PDCP to RLC */
@@ -89,14 +89,14 @@ typedef KwuDatCfmInfo KwuDiscSduInfo;
 typedef struct kwuStaIndInfo
 {
    CmLteRlcId        rlcId;               /*!< RLC ID */
-   U32               numSdu;              /*!< Number of SDUs */
-   U32               sduId[KWU_MAX_STA_IND_SDU]; /*!< SDU Id Array */
+   uint32_t               numSdu;              /*!< Number of SDUs */
+   uint32_t               sduId[KWU_MAX_STA_IND_SDU]; /*!< SDU Id Array */
 }KwuStaIndInfo;
 
 typedef struct kwuFlowCntrlIndInfo
 {
    CmLteRlcId   rlcId; 
-   U32          pktAdmitCnt;
+   uint32_t          pktAdmitCnt;
 }KwuFlowCntrlIndInfo;
 /* kwu_x_001.main_3 Added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
@@ -104,7 +104,7 @@ typedef struct kwuFlowCntrlIndInfo
 typedef struct kwuDatAckInfo
 {
    CmLteRlcId        rlcId;               /*!< RLC ID */
-   U32               sduId;               /*!< SDU Id Array */
+   uint32_t               sduId;               /*!< SDU Id Array */
 }KwuDatAckInfo;
 #endif /* LTE_L2_MEAS */
 
@@ -115,18 +115,18 @@ typedef struct kwuDatReqDetl
   Buffer       *mBuf;
   CmLteLcType  lcType;
   Ticks        arrTime; 
-  U32          sduId;
+  uint32_t          sduId;
   CmLteRlcId   rlcId;
 }KwuDatReqDetl;
 #endif 
 
 /* Control primitives towards LTE RRC */
 typedef S16 (*KwuBndReq)      ARGS((Pst *pst, SuId suId,  SpId spId));
-typedef S16 (*KwuBndCfm)      ARGS((Pst *pst, SuId suId, U8 status));
+typedef S16 (*KwuBndCfm)      ARGS((Pst *pst, SuId suId, uint8_t status));
 typedef S16 (*KwuUbndReq)     ARGS((Pst *pst, SuId suId, Reason reason));
 
 typedef S16 (*KwuDatReq)      ARGS((Pst *pst, KwuDatReqInfo* datReq, Buffer *mBuf));
-typedef S16 (*KwuDatInd)      ARGS((Pst *pst, KwuDatIndInfo* datInd,
+typedef uint8_t (*KwuDatInd)      ARGS((Pst *pst, KwuDatIndInfo* datInd,
          Buffer *mBuf));
 typedef S16 (*KwuDatCfm)      ARGS((Pst *pst, SuId suId, KwuDatCfmInfo* datCfm));
 typedef S16 (*KwuDiscSduReq)  ARGS((Pst *pst, SpId spId, KwuDiscSduInfo* discSdu));
@@ -144,7 +144,7 @@ typedef S16 (*KwuDiscSduCfm) ARGS((Pst *pst, SuId suId, KwuDiscSduInfo *discCfmI
  * @details This primitive binds the RLC service user entity to the RLC product.
  * The RLC service user must bind each KWU SAP individually before sending any
  * other request. RLC acknowledges the receipt of the bind request by sending
- * a KwUiKwuBndCfm primitive.
+ * a RlcUiKwuBndCfm primitive.
 
  * @param[in] pst    -  For the bind request, the event field in the Pst structure is set to
 EVTKWUBNDREQ
@@ -156,13 +156,13 @@ Allowable values: 0 to 32767.
  *    -# ROK
  *    -# RFAILED
  */
-EXTERN S16 KwUiKwuBndReq ARGS((Pst *pst,
+S16 RlcUiKwuBndReq ARGS((Pst *pst,
          SuId suId,
          SpId spId));
 
 /** 
  * @details RLC invokes the bind confirm primitive to acknowledge the receipt
- * of the KwUiKwuBndReq primitive from the service user. The status field
+ * of the RlcUiKwuBndReq primitive from the service user. The status field
  * indicates whether the bind request succeeded or failed. The bind request
  * may fail due to invalid parameters in the bind request from the
  * service user (for example, an invalid spId).
@@ -178,9 +178,9 @@ CM_BND_NOK: Error encountered during the processing of the bind request.
  *    -# ROK
  *    -# RFAILED
  */
-EXTERN S16 KwUiKwuBndCfm ARGS((Pst *pst,
+S16 RlcUiKwuBndCfm ARGS((Pst *pst,
          SuId suId,
-         U8 status));
+         uint8_t status));
 
 /** 
  * @details The RLC service user initiates this primitive for performing
@@ -196,27 +196,9 @@ disassociated from its service user SAP. Allowable values: 0 to 32767.
  *    -# ROK
  *    -# RFAILED
  */
-EXTERN S16 KwUiKwuUbndReq ARGS((Pst *pst,
+S16 RlcUiKwuUbndReq ARGS((Pst *pst,
          SpId spId,
          Reason reason));
-
-/**
- *@details This primitive is used by RRC to transfer the SDU data to the RLC.
- RLC will send the data to logical channels in the form of PDUs by assembling 
- [concatenating/segmenting/retransmission (in case of AM), concatenating if
- required (in case of UM)] SDUs received from the service user (RRC/PDCP).
-
- * @param[in] pst    -  Pointer to the pst structure
- * @param[in] spId   -  Service provider ID
- * @param[in] datReq -  Data request parameter
- * @param[in] buf    -  RLC SDU
- * @return  S16 
- *   -# ROK
- *   -# RFAILED
- */
-EXTERN S16 KwUiKwuDatReq ARGS((Pst *pst,
-         KwuDatReqInfo* datReq,
-         Buffer *buf));
 
 /**
  *@details This primitive is used by RLC to transfer the SDU data to the service
@@ -231,12 +213,12 @@ EXTERN S16 KwUiKwuDatReq ARGS((Pst *pst,
  *   -# ROK
  *   -# RFAILED
  */
-EXTERN S16 KwUiKwuDatInd ARGS((Pst *pst,
-         KwuDatIndInfo* datInd,
-         Buffer *mBuf));
+S16 rlcSendUlDataToDu ARGS((Pst *pst,
+       KwuDatIndInfo* datInd,
+       Buffer *mBuf));
 
 /**
- *@details This primitive is used by RLC as the confirmation for the KwUiKwuDatReq
+ *@details This primitive is used by RLC as the confirmation for the RlcProcDlData
  to the service user (RLC/PDCP). It is used only in AM mode data transfers for
  RLC.
 
@@ -247,7 +229,7 @@ EXTERN S16 KwUiKwuDatInd ARGS((Pst *pst,
  *   -# ROK
  *   -# RFAILED 
  */
-EXTERN S16 KwUiKwuDatCfm ARGS((Pst *pst,
+S16 RlcUiKwuDatCfm ARGS((Pst *pst,
          SuId suId,
          KwuDatCfmInfo* datCfm));
 
@@ -263,7 +245,7 @@ EXTERN S16 KwUiKwuDatCfm ARGS((Pst *pst,
  *   -# ROK
  *   -# RFAILED
  */
-EXTERN S16 KwUiKwuDiscSduReq ARGS((Pst *pst,
+S16 RlcUiKwuDiscSduReq ARGS((Pst *pst,
          SpId spId,
          KwuDiscSduInfo* discSdu));
 
@@ -279,7 +261,7 @@ EXTERN S16 KwUiKwuDiscSduReq ARGS((Pst *pst,
  *   -# ROK
  *   -# RFAILED
  */
-EXTERN S16 KwUiKwuStaInd ARGS((Pst *pst,
+S16 RlcUiKwuStaInd ARGS((Pst *pst,
          SuId suId,
          KwuStaIndInfo* staInd));
 
@@ -295,7 +277,7 @@ EXTERN S16 KwUiKwuStaInd ARGS((Pst *pst,
  *   -# ROK
  *   -# RFAILED
  */
-EXTERN S16 KwUiKwuDiscSduCfm ARGS((Pst *pst,
+S16 RlcUiKwuDiscSduCfm ARGS((Pst *pst,
          SpId spId,
          KwuDiscSduInfo* discCfmSdu));
 
@@ -310,7 +292,7 @@ EXTERN S16 KwUiKwuDiscSduCfm ARGS((Pst *pst,
  *   -# ROK
  *   -# RFAILED
  */
-EXTERN S16 KwUiKwuFlowCntrlInd ARGS((Pst *pst,
+S16 RlcUiKwuFlowCntrlInd ARGS((Pst *pst,
          SuId suId,
          KwuFlowCntrlIndInfo* flowCntrlIndInfo));
 #ifdef LTE_L2_MEAS
@@ -326,199 +308,199 @@ EXTERN S16 KwUiKwuFlowCntrlInd ARGS((Pst *pst,
  *   -# ROK
  *   -# RFAILED
  */
-EXTERN S16 KwUiKwuDatAckInd ARGS((Pst *pst,
+S16 RlcUiKwuDatAckInd ARGS((Pst *pst,
          SuId suId,
          KwuDatAckInfo* ackInd));
 #endif /* LTE_L2_MEAS */
 
-EXTERN S16 KwUiKwuReEstCmpInd ARGS((Pst *pst,
+S16 RlcUiKwuReEstCmpInd ARGS((Pst *pst,
          SuId suId,
          CmLteRlcId rlcId
 ));
 
 /* RRC Extern Declarations */
 #ifdef NH
-EXTERN S16 NhLiKwuBndReq ARGS((Pst *pst,
+S16 NhLiKwuBndReq ARGS((Pst *pst,
          SuId suId,
          SpId spId));
 
-EXTERN S16 NhLiKwuBndCfm ARGS((Pst *pst,
+S16 NhLiKwuBndCfm ARGS((Pst *pst,
          SuId suId,
-         U8 status));
+         uint8_t status));
 
-EXTERN S16 NhLiKwuUbndReq ARGS((Pst *pst,
+S16 NhLiKwuUbndReq ARGS((Pst *pst,
          SpId spId,
          Reason reason));
 
-EXTERN S16 NhLiKwuDatReq ARGS((Pst *pst,
+S16 NhLiKwuDatReq ARGS((Pst *pst,
          SpId spId,
          KwuDatReqInfo* datReq,
          Buffer *buf));
 
-EXTERN S16 NhLiKwuDatInd ARGS((Pst *pst,
+S16 NhLiKwuDatInd ARGS((Pst *pst,
          KwuDatIndInfo* datInd,
          Buffer *buf));
 #endif /* NH */
 
 /* Dummy RRC Interface primitives */
 #ifdef DM
-EXTERN S16 DmUiKwuBndReq ARGS((Pst *pst,
+S16 DmUiKwuBndReq ARGS((Pst *pst,
          SuId suId,
          SpId spId));
 
-EXTERN S16 DmUiKwuBndCfm ARGS((Pst *pst,
+S16 DmUiKwuBndCfm ARGS((Pst *pst,
          SuId suId,
-         U8 status));
+         uint8_t status));
 
-EXTERN S16 DmUiKwuUbndReq ARGS((Pst *pst,
+S16 DmUiKwuUbndReq ARGS((Pst *pst,
          SpId spId,
          Reason reason));
 
-EXTERN S16 DmUiKwuDatReq ARGS((Pst *pst,
+S16 DmUiKwuDatReq ARGS((Pst *pst,
          SpId spId,
          KwuDatReqInfo* datReq,
          Buffer *buf));
 
-EXTERN S16 DmUiKwuDatInd ARGS((Pst *pst,
+S16 DmUiKwuDatInd ARGS((Pst *pst,
          SuId suId,
          KwuDatIndInfo* datInd,
          Buffer *buf));
 
-EXTERN S16 DmUiKwuReEstCmpInd ARGS((Pst *pst,
+S16 DmUiKwuReEstCmpInd ARGS((Pst *pst,
          SuId suId, CmLteRlcId rlcId));
 
 #endif /* DM */
 
 /* PDCP Extern Declarations */
 #ifdef PJ
-EXTERN S16 PjLiKwuBndReq ARGS((Pst *pst,
+S16 PjLiKwuBndReq ARGS((Pst *pst,
          SuId suId,
          SpId spId));
 
-EXTERN S16 PjLiKwuBndCfm ARGS((Pst *pst,
+S16 PjLiKwuBndCfm ARGS((Pst *pst,
          SuId suId,
-         U8 status));
+         uint8_t status));
 
-EXTERN S16 PjLiKwuUbndReq ARGS((Pst *pst,
+S16 PjLiKwuUbndReq ARGS((Pst *pst,
          SpId spId,
          Reason reason));
 
-EXTERN S16 PjLiKwuDatReq ARGS((Pst *pst,
+S16 PjLiKwuDatReq ARGS((Pst *pst,
          SpId spId,
          KwuDatReqInfo* datReq,
          Buffer *buf));
 
-EXTERN S16 PjLiKwuDatInd ARGS((Pst *pst,
+S16 PjLiKwuDatInd ARGS((Pst *pst,
          KwuDatIndInfo* datInd,
          Buffer *buf));
 
-EXTERN S16 PjLiKwuDatCfm ARGS((Pst *pst,
+S16 PjLiKwuDatCfm ARGS((Pst *pst,
          SuId suId,
          KwuDatCfmInfo* datCfm));
 
-EXTERN S16 PjLiKwuStaInd ARGS((Pst *pst,
+S16 PjLiKwuStaInd ARGS((Pst *pst,
          SuId suId,
          KwuStaIndInfo* staInd));
 
-EXTERN S16 PjLiKwuDiscSduReq ARGS((Pst *pst,
+S16 PjLiKwuDiscSduReq ARGS((Pst *pst,
          SpId spId,
          KwuDiscSduInfo* discSdu));
 
 
-EXTERN S16 PjLiKwuReEstCmpInd ARGS((Pst *pst,
+S16 PjLiKwuReEstCmpInd ARGS((Pst *pst,
          SuId suId, CmLteRlcId rlcId));
 
 /* kwu_x_001.main_3 Added support for L2 Measurement */
-EXTERN S16 PjLiKwuDiscSduCfm ARGS((Pst *pst,
+S16 PjLiKwuDiscSduCfm ARGS((Pst *pst,
          SpId spId,
          KwuDiscSduInfo* discCfmSdu));
-EXTERN S16 PjLiKwuFlowCntrlInd ARGS((Pst *pst,       
+S16 PjLiKwuFlowCntrlInd ARGS((Pst *pst,       
          SuId suId,       
          KwuFlowCntrlIndInfo *flowCntrlInfo));
 #ifdef LTE_L2_MEAS
-EXTERN S16 PjLiKwuDatAckInd ARGS((Pst *pst,
+S16 PjLiKwuDatAckInd ARGS((Pst *pst,
          SuId suId,
          KwuDatAckInfo* ackInd));
 #endif /* LTE_L2_MEAS */
 
 #endif /* PJ */
 #ifdef MAC_RLC_UL_RBUF
-EXTERN S16 kwUlBatchProc ARGS((Void));
+S16 rlcUlBatchProc ARGS((Void));
 #endif 
 /*****************************************************************************
  *                      PACK/UNPACK FUNCTIONS
  ****************************************************************************/
 #ifdef LCKWU
 /* Packing Functions */
-EXTERN S16 cmPkKwuDatReqInfo ARGS ((
+uint8_t cmPkKwuDatReqInfo ARGS ((
 KwuDatReqInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkKwuDatIndInfo ARGS ((
+uint8_t cmPkKwuDatIndInfo ARGS ((
 KwuDatIndInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkKwuDatCfmInfo ARGS ((
+S16 cmPkKwuDatCfmInfo ARGS ((
 KwuDatCfmInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkKwuStaIndInfo ARGS ((
+S16 cmPkKwuStaIndInfo ARGS ((
 KwuStaIndInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkKwuBndReq ARGS ((
+S16 cmPkKwuBndReq ARGS ((
 Pst * pst,
 SuId suId,
 SpId spId
 ));
 
-EXTERN S16 cmPkKwuUbndReq ARGS ((
+S16 cmPkKwuUbndReq ARGS ((
 Pst * pst,
 SuId suId,
 Reason reason
 ));
 
-EXTERN S16 cmPkKwuBndCfm ARGS ((
+S16 cmPkKwuBndCfm ARGS ((
 Pst * pst,
 SuId suId,
-U8 status
+uint8_t status
 ));
 
-EXTERN S16 cmPkKwuDatReq ARGS ((
+uint8_t cmPkKwuDatReq ARGS ((
 Pst * pst,
 KwuDatReqInfo* datReq,
 Buffer * mBuf
 ));
 
-EXTERN S16 cmPkKwuDatInd ARGS ((
+uint8_t cmPkKwuDatInd ARGS ((
 Pst * pst,
 KwuDatIndInfo* datInd,
 Buffer * mBuf
 ));
 
-EXTERN S16 cmPkKwuDatCfm ARGS ((
+S16 cmPkKwuDatCfm ARGS ((
 Pst * pst,
 SuId suId,
 KwuDatCfmInfo* datCfm
 ));
 
-EXTERN S16 cmPkKwuStaInd ARGS ((
+S16 cmPkKwuStaInd ARGS ((
 Pst * pst,
 SuId suId,
 KwuStaIndInfo* staInd
 ));
 
-EXTERN S16 cmPkKwuReEstCmpInd ARGS ((
+S16 cmPkKwuReEstCmpInd ARGS ((
 Pst * pst,
 SuId suId,
 CmLteRlcId rlcId
 ));
 
-EXTERN S16 cmPkKwuDiscSduReq ARGS ((
+S16 cmPkKwuDiscSduReq ARGS ((
 Pst * pst,
 SpId spId,
 KwuDiscSduInfo* discSdu
@@ -526,105 +508,105 @@ KwuDiscSduInfo* discSdu
 
 /* kwu_x_001.main_3 Added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
-EXTERN S16 cmPkKwuDatAckInfo ARGS ((
+S16 cmPkKwuDatAckInfo ARGS ((
 KwuDatAckInfo* datAckInd,
 Buffer * mBuf
 ));
 
-EXTERN S16 cmPkKwuDatAckInd ARGS ((
+S16 cmPkKwuDatAckInd ARGS ((
 Pst * pst,
 SuId suId,
 KwuDatAckInfo* ackInfo
 ));
 #endif /* LTE_L2_MEAS */
 
-EXTERN S16 cmPkKwuDiscSduCfm ARGS ((
+S16 cmPkKwuDiscSduCfm ARGS ((
 Pst * pst,
 SpId spId,
 KwuDiscSduInfo* cfmSdu
 ));
 
-EXTERN S16 cmPkKwuFlowCntrlInd ARGS ((
+S16 cmPkKwuFlowCntrlInd ARGS ((
 Pst *pst,
 SuId suId,
 KwuFlowCntrlIndInfo *flowCntrlIndInfo
 ));
 
 /* Unpacking Functions */
-EXTERN S16 cmUnpkKwuDatReqInfo ARGS ((
+S16 cmUnpkKwuDatReqInfo ARGS ((
 KwuDatReqInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkKwuDatIndInfo ARGS ((
+uint8_t cmUnpkKwuDatIndInfo ARGS ((
 KwuDatIndInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkKwuDatCfmInfo ARGS ((
+S16 cmUnpkKwuDatCfmInfo ARGS ((
 KwuDatCfmInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkKwuStaIndInfo ARGS ((
+S16 cmUnpkKwuStaIndInfo ARGS ((
 KwuStaIndInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkKwuBndReq ARGS ((
+S16 cmUnpkKwuBndReq ARGS ((
 KwuBndReq func,
 Pst *pst,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkKwuUbndReq ARGS ((
+S16 cmUnpkKwuUbndReq ARGS ((
 KwuUbndReq func,
 Pst *pst,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkKwuBndCfm ARGS ((
+S16 cmUnpkKwuBndCfm ARGS ((
 KwuBndCfm func,
 Pst *pst,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkKwuDatReq ARGS ((
+S16 cmUnpkKwuDatReq ARGS ((
 KwuDatReq func,
 Pst *pst,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkKwuDatInd ARGS ((
+uint8_t cmUnpkKwuDatInd ARGS ((
 KwuDatInd func,
 Pst *pst,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkKwuDatCfm ARGS ((
+S16 cmUnpkKwuDatCfm ARGS ((
 KwuDatCfm func,
 Pst *pst,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkKwuStaInd ARGS ((
+S16 cmUnpkKwuStaInd ARGS ((
 KwuStaInd func,
 Pst *pst,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkKwuReEstCmpInd ARGS ((
+S16 cmUnpkKwuReEstCmpInd ARGS ((
 KwuReEstCmpInd func,
 Pst *pst,
 Buffer *mBuf
 ));
-EXTERN S16 cmUnpkKwuDiscSduReq ARGS ((
+S16 cmUnpkKwuDiscSduReq ARGS ((
 KwuDiscSduReq func,
 Pst *pst,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkKwuFlowCntrlInd ARGS ((
+S16 cmUnpkKwuFlowCntrlInd ARGS ((
 KwuFlowCntrlInd func,
 Pst *pst,
 Buffer *mBuf
@@ -632,30 +614,30 @@ Buffer *mBuf
 
 /* kwu_x_001.main_3 Added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
-EXTERN S16 cmUnpkKwuDatAckInfo ARGS ((
+S16 cmUnpkKwuDatAckInfo ARGS ((
 KwuDatAckInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkKwuDatAckInd ARGS ((
+S16 cmUnpkKwuDatAckInd ARGS ((
 KwuDatAckInd func,
 Pst *pst,
 Buffer *mBuf
 ));
 #endif /* LTE_L2_MEAS */
 
-EXTERN S16 cmUnpkKwuDiscSduCfm ARGS ((
+S16 cmUnpkKwuDiscSduCfm ARGS ((
 KwuDiscSduCfm func,
 Pst *pst,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmPkKwuFlowCntrlIndInfo ARGS((
+S16 cmPkKwuFlowCntrlIndInfo ARGS((
 KwuFlowCntrlIndInfo *param,
 Buffer              *mBuf
 ));
 
-EXTERN S16 cmUnpkKwuFlowCntrlIndInfo ARGS((
+S16 cmUnpkKwuFlowCntrlIndInfo ARGS((
 KwuFlowCntrlIndInfo *param,
 Buffer              *mBuf
 ));

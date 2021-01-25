@@ -32,7 +32,7 @@
    _ret = SGetSBuf(RIC_APP_MEM_REG, RIC_POOL,                  \
                      (Data **)&_datPtr, _size);                  \
    if(_ret == ROK)                                              \
-      cmMemset((uint8_t*)_datPtr, 0, _size);                         \
+      memset(_datPtr, 0, _size);                         \
    else                                                         \
       _datPtr = NULLP;                                          \
 }

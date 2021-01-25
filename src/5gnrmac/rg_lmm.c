@@ -74,44 +74,44 @@ static int RLOG_MODULE_ID=4096;
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
-EXTERN Void rgGetSId ARGS((SystemId *s));
+Void rgGetSId ARGS((SystemId *s));
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
 
 /* Public variable declaration */
 LwrMacCb   lwrMacCb;
-extern MacCb  macCb;
+MacCb  macCb;
 
 /* forward references */
-PRIVATE U16 rgLMMGenCfg ARGS((
+static uint16_t rgLMMGenCfg ARGS((
    Inst           inst,
    RgCfg          *cfg           
 ));
 
-PRIVATE U16 rgLMMSapCfg ARGS((
+static uint16_t rgLMMSapCfg ARGS((
    Inst           inst,
    RgCfg          *cfg,
    Elmnt          sapType
 ));
 
-PRIVATE Void rgLMMShutdown ARGS((
+static Void rgLMMShutdown ARGS((
    Inst           inst
 ));
 
-PRIVATE Void rgLMMFillCfmPst ARGS((
+static Void rgLMMFillCfmPst ARGS((
    Pst           *reqPst,
    Pst           *cfmPst,
    RgMngmt       *cfm
 ));
 
-PRIVATE Void rgLMMGenCntrl ARGS((
+static Void rgLMMGenCntrl ARGS((
 RgMngmt       *cntrl,
 RgMngmt       *cfm,
 Pst           *cfmPst
 ));
 
-PRIVATE Void rgLMMSapCntrl ARGS((
+static Void rgLMMSapCntrl ARGS((
 RgMngmt       *cntrl,
 RgMngmt       *cfm,
 Pst           *cfmPst
@@ -137,30 +137,21 @@ Pst           *cfmPst
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 rgActvInit
+S16 rgActvInit
 (
 Ent entity,            /* entity */
 Inst inst,             /* instance */
 Region region,         /* region */
 Reason reason          /* reason */
 )
-#else
-PUBLIC S16 rgActvInit(entity, inst, region, reason)
-Ent entity;            /* entity */
-Inst inst;             /* instance */
-Region region;         /* region */
-Reason reason;         /* reason */
-#endif
 {
    Inst macInst ;
-   TRC2(rgActvInit);
 
    RG_IS_INST_VALID(inst);
 
    macInst = inst - RG_INST_START;
    /* Initialize the MAC TskInit structure to zero */
-   cmMemset ((U8 *)&rgCb[macInst], 0, sizeof(RgCb));
+   memset (&rgCb[macInst], 0, sizeof(RgCb));
 
    /* Initialize the MAC TskInit with received values */
    rgCb[macInst].rgInit.ent = entity;
@@ -176,7 +167,7 @@ Reason reason;         /* reason */
 #ifdef DEBUGP
 #ifdef RG_DEBUG
    /* disabling debugs by default */
-    rgCb[macInst].rgInit.dbgMask = 0xffffffff; 
+   rgCb[macInst].rgInit.dbgMask = 0xffffffff; 
 #endif
 #endif /* DEBUGP */
 #ifdef SS_DIAG
@@ -207,12 +198,12 @@ Reason reason;         /* reason */
    lwrMacCb.phyState = PHY_STATE_IDLE; 
 
    /* Initialize Scheduler as well */
-   schActvInit(ENTRG, (DEFAULT_CELLS + SCH_INST_START), DFLT_REGION, PWR_UP);
+   schActvInit(ENTMAC, (DEFAULT_CELLS + SCH_INST_START), DFLT_REGION, PWR_UP);
 
    /* Initialize lower mac */
-   lwrMacInit();
+   lwrMacLayerInit();
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* rgActvInit */
 
@@ -234,30 +225,22 @@ Reason reason;         /* reason */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 RgMiLrgCfgReq
+S16 RgMiLrgCfgReq
 (
 Pst      *pst,    /* post structure  */
 RgMngmt  *cfg     /* config structure  */
 )
-#else
-PUBLIC S16 RgMiLrgCfgReq(pst, cfg)
-Pst      *pst;    /* post structure  */
-RgMngmt  *cfg;    /* config structure  */
-#endif    
 {
-   U16       ret = LCM_PRIM_OK;
-   U16       reason = LCM_REASON_NOT_APPL;
+   uint16_t  ret = LCM_PRIM_OK;
+   uint16_t  reason = LCM_REASON_NOT_APPL;
    RgMngmt   cfm;
    Pst       cfmPst;
    Inst      inst;
 
-   TRC2(RgMiLrgCfgReq)
-   
 
-   RG_DIAG_LVL0(inst,0x0a0b0001, RG_DIAG_NA, SS_DIAG_INV_ARG,
-              "Received CfgReq for MAC layer, Entity = %d, Instance = %d\n",
-              pst->srcEnt, pst->srcInst,0,0);
+
+   RG_DIAG_LVL0(inst,0x0a0b0001, RG_DIAG_NA, SS_DIAG_INV_ARG,\
+   "Received CfgReq for MAC layer, Entity = %d, Instance = %d\n", pst->srcEnt, pst->srcInst,0,0);
 
    RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
@@ -265,7 +248,7 @@ RgMngmt  *cfg;    /* config structure  */
    /* Fill the post structure for sending the confirmation */
    rgLMMFillCfmPst(pst, &cfmPst, cfg);
 
-   cmMemset((U8 *)&cfm, 0, sizeof(RgMngmt));
+   memset(&cfm, 0, sizeof(RgMngmt));
 
 #ifdef LMINT3
    cfm.hdr.transId = cfg->hdr.transId;
@@ -276,19 +259,25 @@ RgMngmt  *cfg;    /* config structure  */
    switch(cfg->hdr.elmId.elmnt)
    {
       case STGEN:
-         reason = rgLMMGenCfg(inst,&cfg->t.cfg); 
-         break;
+#ifdef INTEL_WLS_MEM
+         /* Start WLS message receiver thread */
+         LwrMacStartWlsRcvr();
+         /* Allocate memory for UL transmissions */
+         LwrMacEnqueueWlsBlock();
+#endif
+	 reason = rgLMMGenCfg(inst,&cfg->t.cfg); 
+	 break;
       case STRGUSAP:
       case STCRGSAP:
       case STTFUSAP:
-         reason = rgLMMSapCfg(inst,&cfg->t.cfg, cfg->hdr.elmId.elmnt);
-         break;
+	 reason = rgLMMSapCfg(inst,&cfg->t.cfg, cfg->hdr.elmId.elmnt);
+	 break;
       default:
-         ret = LCM_PRIM_NOK;
-         reason = LCM_REASON_INVALID_ELMNT;
-         RLOG1(L_ERROR, "Invalid Elmnt=%d",
-                  cfg->hdr.elmId.elmnt);
-         break;
+	 ret = LCM_PRIM_NOK;
+	 reason = LCM_REASON_INVALID_ELMNT;
+	 RLOG1(L_ERROR, "Invalid Elmnt=%d",
+	       cfg->hdr.elmId.elmnt);
+	 break;
    }
 
    if (reason != LCM_REASON_NOT_APPL)
@@ -300,8 +289,8 @@ RgMngmt  *cfg;    /* config structure  */
    cfm.cfm.reason = reason;
 
    RgMiLrgCfgCfm(&cfmPst, &cfm);
-   
-   RETVALUE(ROK);
+
+   return ROK;
 }/*-- RgMiLrgCfgReq --*/
 
 
@@ -324,31 +313,22 @@ RgMngmt  *cfg;    /* config structure  */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 RgMiLrgStsReq
+S16 RgMiLrgStsReq
 (
 Pst      *pst,    /* post structure  */
 RgMngmt  *sts     /* statistics structure  */
 )
-#else
-PUBLIC S16 RgMiLrgStsReq(pst, sts)
-Pst      *pst;    /* post structure  */
-RgMngmt  *sts;    /* statistics structure  */
-#endif    
 {
    Pst       cfmPst;
    RgMngmt   cfm;
    Inst      inst;
-
-   TRC2(RgMiLrgStsReq)
-   
 
    RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
    /* Fill the post structure for sending the confirmation */
    rgLMMFillCfmPst(pst, &cfmPst, sts);
 
-   cmMemset((U8 *)&cfm, 0, sizeof(RgMngmt));
+   memset(&cfm, 0, sizeof(RgMngmt));
 
 #ifdef LMINT3
    cfm.hdr.transId = sts->hdr.transId;
@@ -366,14 +346,14 @@ RgMngmt  *sts;    /* statistics structure  */
       cfm.cfm.reason = LCM_REASON_GENCFG_NOT_DONE;
       RgMiLrgStsCfm(&cfmPst,&cfm);
       RLOG0(L_ERROR, "Gen Cfg not done");
-      RETVALUE(ROK);
+      return ROK;
    }
 
    switch(sts->hdr.elmId.elmnt)
    {
       case STGEN:
          {
-            cmMemcpy((U8 *)&(cfm.t.sts.s.genSts), (U8 *)&rgCb[inst].genSts,
+            memcpy(&(cfm.t.sts.s.genSts), &rgCb[inst].genSts,
                   sizeof(RgGenSts));
             /* check if action is read and reset */
             if(sts->t.sts.action == ARST)
@@ -384,7 +364,7 @@ RgMngmt  *sts;    /* statistics structure  */
 #ifdef MAC_SCH_STATS
             {
                RgGenSts *genSts = &(cfm.t.sts.s.genSts);
-               U8       cqi = 0;
+               uint8_t       cqi = 0;
                for(cqi=0; cqi <= 14; cqi++)
                {
                   /* Filling DL ACK/NACK stats */
@@ -434,50 +414,50 @@ RgMngmt  *sts;    /* statistics structure  */
                /* Reset statistics */
                if(sts->t.sts.action == ZEROSTS)
                {
-                  cmMemset((U8 *)&hqRetxStats, 0, \
+                  memset(&hqRetxStats, 0, \
                         sizeof(RgSchHqRetxStats));
-                  cmMemset((U8 *)&hqFailStats, 0, \
+                  memset(&hqFailStats, 0, \
                         sizeof(RgSchNackAckStats));
                }
             }
 #endif /* MAC_SCH_STATS*/
-         }
-         break;
+	 }
+	 break;
       case STRGUSAP:
-         cmMemcpy((U8 *)&(cfm.t.sts.s.rguSts), (U8 *)&rgCb[inst].rguSap[sts->t.sts.sapInst].sapSts,
+         memcpy(&(cfm.t.sts.s.rguSts), &rgCb[inst].rguSap[sts->t.sts.sapInst].sapSts,
                   sizeof(RgSapSts));
 
          /* check if action is read and reset */
          if(sts->t.sts.action == ARST)
-            cmMemset((U8 *)&rgCb[inst].rguSap[sts->t.sts.sapInst].sapSts, 0, sizeof(RgSapSts));
+            memset(&rgCb[inst].rguSap[sts->t.sts.sapInst].sapSts, 0, sizeof(RgSapSts));
 
-         break;
+	 break;
       case STCRGSAP:
-         cmMemcpy((U8 *)&(cfm.t.sts.s.crgSts), (U8 *)&rgCb[inst].crgSap.sapSts,
+         memcpy(&(cfm.t.sts.s.crgSts), &rgCb[inst].crgSap.sapSts,
                   sizeof(RgSapSts));
 
          /* check if action is read and reset */
          if(sts->t.sts.action == ARST)
-            cmMemset((U8 *)&rgCb[inst].crgSap.sapSts, 0, sizeof(RgSapSts));
+            memset(&rgCb[inst].crgSap.sapSts, 0, sizeof(RgSapSts));
 
-         break;
+	 break;
       case STTFUSAP:
-         cmMemcpy((U8 *)&(cfm.t.sts.s.tfuSts), (U8 *)&rgCb[inst].tfuSap.sapSts,
+         memcpy(&(cfm.t.sts.s.tfuSts), &rgCb[inst].tfuSap.sapSts,
                   sizeof(RgSapSts));
 
          /* check if action is read and reset */
          if(sts->t.sts.action == ARST)
-            cmMemset((U8 *)&rgCb[inst].tfuSap.sapSts, 0, sizeof(RgSapSts));
+            memset(&rgCb[inst].tfuSap.sapSts, 0, sizeof(RgSapSts));
 
-         break;
+	 break;
       default:
-         cfm.cfm.status = LCM_PRIM_NOK;
-         cfm.cfm.reason = LCM_REASON_INVALID_ELMNT;
-         RLOG1(L_ERROR, "Invalid Elmnt = %d",sts->hdr.elmId.elmnt);
-         break;     
+	 cfm.cfm.status = LCM_PRIM_NOK;
+	 cfm.cfm.reason = LCM_REASON_INVALID_ELMNT;
+	 RLOG1(L_ERROR, "Invalid Elmnt = %d",sts->hdr.elmId.elmnt);
+	 break;     
    }
    RgMiLrgStsCfm(&cfmPst,&cfm);
-   RETVALUE(ROK);
+   return ROK;
 }/*-- RgMiLrgStsReq --*/
 
 
@@ -499,24 +479,16 @@ RgMngmt  *sts;    /* statistics structure  */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 RgMiLrgStaReq
+S16 RgMiLrgStaReq
 (
 Pst      *pst,    /* post structure  */
 RgMngmt  *sta     /* status structure  */
 )
-#else
-PUBLIC S16 RgMiLrgStaReq(pst, sta)
-Pst      *pst;    /* post structure  */
-RgMngmt  *sta;    /* status structure  */
-#endif    
 {
    Pst       cfmPst;
    RgMngmt   cfm;
    Inst      inst ;
 
-   TRC2(RgMiLrgStaReq)
-   
 
    RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
@@ -530,7 +502,7 @@ RgMngmt  *sta;    /* status structure  */
       SPutSBuf(pst->region, pst->pool, (Data *)sta->t.ssta.s.sysId.ptNmb, LRG_MAX_PT_NUM_SIZE);
    }
    
-   cmMemset((U8 *)&cfm, 0, sizeof(RgMngmt));
+   memset(&cfm, 0, sizeof(RgMngmt));
    cfm.hdr.elmId.elmnt = sta->hdr.elmId.elmnt;
 
 #ifdef LMINT3
@@ -541,20 +513,20 @@ RgMngmt  *sta;    /* status structure  */
    {
       SGetDateTime(&cfm.t.ssta.dt);
       if (SGetSBuf(cfmPst.region, cfmPst.pool, 
-          (Data **)&(cfm.t.ssta.s.sysId.ptNmb), LRG_MAX_PT_NUM_SIZE)
-         != ROK)
+	       (Data **)&(cfm.t.ssta.s.sysId.ptNmb), LRG_MAX_PT_NUM_SIZE)
+	    != ROK)
       {
-         RLOG0(L_ERROR, "Memory Unavailable for Confirmation");
-         RETVALUE(ROK);
+	 RLOG0(L_ERROR, "Memory Unavailable for Confirmation");
+	 return ROK;
       } 
-      cmMemset((U8 *)(cfm.t.ssta.s.sysId.ptNmb), 0, LRG_MAX_PT_NUM_SIZE);
+      memset((cfm.t.ssta.s.sysId.ptNmb), 0, LRG_MAX_PT_NUM_SIZE);
       rgGetSId(&cfm.t.ssta.s.sysId);
       cfm.cfm.status = LCM_PRIM_NOK;
       cfm.cfm.reason = LCM_REASON_GENCFG_NOT_DONE;
       cfm.hdr.elmId.elmnt = sta->hdr.elmId.elmnt;
       RgMiLrgStaCfm(&cfmPst, &cfm);
       RLOG0(L_ERROR, "Gen Cfg not done");
-      RETVALUE(ROK);
+      return ROK;
    }
 
    switch(sta->hdr.elmId.elmnt)
@@ -566,9 +538,9 @@ RgMngmt  *sta;    /* status structure  */
             != ROK)
          {
             RLOG0(L_ERROR, "Memory Unavailable for Confirmation");
-            RETVALUE(ROK);
+            return ROK;
          } 
-         cmMemset((U8 *)(cfm.t.ssta.s.sysId.ptNmb), 0, LRG_MAX_PT_NUM_SIZE);
+         memset((cfm.t.ssta.s.sysId.ptNmb), 0, LRG_MAX_PT_NUM_SIZE);
          rgGetSId(&cfm.t.ssta.s.sysId);
          cfm.cfm.status = LCM_PRIM_OK;
          cfm.cfm.reason = LCM_REASON_NOT_APPL;
@@ -578,8 +550,8 @@ RgMngmt  *sta;    /* status structure  */
          cfm.cfm.status = LCM_PRIM_OK;
          cfm.cfm.reason = LCM_REASON_NOT_APPL;
          SGetDateTime(&cfm.t.ssta.dt);
-         cmMemcpy((U8 *)&(cfm.t.ssta.s.rguSapSta), 
-				(U8 *)&rgCb[inst].rguSap[sta->t.ssta.sapInst].sapSta,
+         memcpy(&(cfm.t.ssta.s.rguSapSta), 
+				&rgCb[inst].rguSap[sta->t.ssta.sapInst].sapSta,
             sizeof(RgSapSta));
          RgMiLrgStaCfm(&cfmPst, &cfm);
          break;
@@ -587,7 +559,7 @@ RgMngmt  *sta;    /* status structure  */
          cfm.cfm.status = LCM_PRIM_OK;
          cfm.cfm.reason = LCM_REASON_NOT_APPL;
          SGetDateTime(&cfm.t.ssta.dt);
-         cmMemcpy((U8 *)&(cfm.t.ssta.s.crgSapSta), (U8 *)&rgCb[inst].crgSap.sapSta,
+         memcpy(&(cfm.t.ssta.s.crgSapSta), &rgCb[inst].crgSap.sapSta,
          sizeof(RgSapSta));
          RgMiLrgStaCfm(&cfmPst, &cfm);
          break;
@@ -595,18 +567,18 @@ RgMngmt  *sta;    /* status structure  */
          cfm.cfm.status = LCM_PRIM_OK;
          cfm.cfm.reason = LCM_REASON_NOT_APPL;
          SGetDateTime(&cfm.t.ssta.dt);
-         cmMemcpy((U8 *)&(cfm.t.ssta.s.tfuSapSta), (U8 *)&rgCb[inst].tfuSap.sapSta,
+         memcpy(&(cfm.t.ssta.s.tfuSapSta), &rgCb[inst].tfuSap.sapSta,
          sizeof(RgSapSta));
          RgMiLrgStaCfm(&cfmPst, &cfm);
          break;
       default:
-         cfm.cfm.status = LCM_PRIM_NOK;
-         cfm.cfm.reason = LCM_REASON_INVALID_ELMNT;
-         RgMiLrgStaCfm(&cfmPst, &cfm);
-         RLOG1(L_ERROR, "Invalid elmnt=%d",sta->hdr.elmId.elmnt);
-         break;     
+	 cfm.cfm.status = LCM_PRIM_NOK;
+	 cfm.cfm.reason = LCM_REASON_INVALID_ELMNT;
+	 RgMiLrgStaCfm(&cfmPst, &cfm);
+	 RLOG1(L_ERROR, "Invalid elmnt=%d",sta->hdr.elmId.elmnt);
+	 break;     
    }
-   RETVALUE(ROK);
+   return ROK;
 }/*-- RgMiLrgStaReq --*/
 
 
@@ -630,25 +602,16 @@ RgMngmt  *sta;    /* status structure  */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 RgMiLrgCntrlReq
+S16 RgMiLrgCntrlReq
 (
 Pst      *pst,    /* post structure  */
 RgMngmt  *cntrl   /* control structure  */
 )
-#else
-PUBLIC S16 RgMiLrgCntrlReq(pst, cntrl)
-Pst      *pst;    /* post structure  */
-RgMngmt  *cntrl;  /* control structure  */
-#endif    
 {
    S16       ret = ROK;            /* return value */
    Pst       cfmPst;
    RgMngmt   cfm;
    Inst      inst;
-   
-   TRC2(RgMiLrgCntrlReq)
-   
    /* Fill the post structure for sending the confirmation */
 
    RG_IS_INST_VALID(pst->dstInst);
@@ -656,7 +619,7 @@ RgMngmt  *cntrl;  /* control structure  */
 
    rgLMMFillCfmPst(pst, &cfmPst, cntrl);
 
-   cmMemset((U8 *)&cfm, 0, sizeof(RgMngmt));
+   memset(&cfm, 0, sizeof(RgMngmt));
 #ifdef LMINT3
    cfm.hdr.transId = cntrl->hdr.transId;
 #endif
@@ -672,28 +635,28 @@ RgMngmt  *cntrl;  /* control structure  */
       cfm.hdr.elmId.elmnt = cntrl->hdr.elmId.elmnt;
       RgMiLrgCntrlCfm(&cfmPst, &cfm);
       RLOG0(L_ERROR, "Gen Cfg not done");
-      RETVALUE(ROK);
+      return ROK;
    }
- 
+
    /* General Config done, process the Control request */   
    switch(cntrl->hdr.elmId.elmnt)
    {
       case STGEN:
-         rgLMMGenCntrl(cntrl, &cfm, &cfmPst);
-         break;
+	 rgLMMGenCntrl(cntrl, &cfm, &cfmPst);
+	 break;
       case STTFUSAP:
       case STRGUSAP:
       case STCRGSAP:
-         rgLMMSapCntrl(cntrl, &cfm, &cfmPst);
-         break;
+	 rgLMMSapCntrl(cntrl, &cfm, &cfmPst);
+	 break;
       default:
-         cfm.cfm.status = LCM_PRIM_NOK;
-         cfm.cfm.reason = LCM_REASON_INVALID_PAR_VAL;
-         RgMiLrgCntrlCfm(&cfmPst, &cfm);
-         RLOG1(L_ERROR, "invalid elmnt=%d",cntrl->hdr.elmId.elmnt);
-         break;
+	 cfm.cfm.status = LCM_PRIM_NOK;
+	 cfm.cfm.reason = LCM_REASON_INVALID_PAR_VAL;
+	 RgMiLrgCntrlCfm(&cfmPst, &cfm);
+	 RLOG1(L_ERROR, "invalid elmnt=%d",cntrl->hdr.elmId.elmnt);
+	 break;
    }
-   RETVALUE(ret);
+   return (ret);
 }/*-- RgMiLrgCntrlReq --*/
 
 
@@ -711,108 +674,100 @@ RgMngmt  *cntrl;  /* control structure  */
  *     
  *  @param[in]  Inst        inst
  *  @param[in]  RgCfg *cfg, the Configuaration information 
- *  @return  U16
+ *  @return  uint16_t
  *      -# LCM_REASON_GENCFG_NOT_DONE
  *      -# LCM_REASON_INVALID_SAP
  *      -# LCM_REASON_NOT_APPL
  **/
-#ifdef ANSI
-PRIVATE U16 rgLMMSapCfg
+static uint16_t rgLMMSapCfg
 (
 Inst  inst,
 RgCfg *cfg,            /* Configuaration information */
 Elmnt sapType             /* Sap Type */
 )
-#else
-PRIVATE U16 rgLMMSapCfg(inst,cfg,sapType)
-Inst  inst;
-RgCfg *cfg;            /* Configuaration information */
-Elmnt sapType;            /* Sap Type */
-#endif
 {
-   U16               ret = LCM_REASON_NOT_APPL;
+   uint16_t          ret = LCM_REASON_NOT_APPL;
    RgLowSapCfgInfo   *lowSapCfg = NULLP;
    RgUpSapCfgInfo    *upSapCfg = NULLP;
-   RgUpSapCb          *upSapCb  = NULLP;
+   RgUpSapCb         *upSapCb  = NULLP;
 
-   TRC2(rgLMMSapCfg)
 
-   /* Check if Gen Config has been done */
+      /* Check if Gen Config has been done */
    if(rgCb[inst].rgInit.cfgDone != TRUE)
-      RETVALUE(LCM_REASON_GENCFG_NOT_DONE);
+	 return (LCM_REASON_GENCFG_NOT_DONE);
 
    switch(sapType)
    {   
       case STRGUSAP:
-         if ((cfg->s.rguSap.spId > LRG_MAX_RGU_SAPS) &&
-             (cfg->s.rguSap.selector != ODU_SELECTOR_TC) &&
-             (cfg->s.rguSap.selector != ODU_SELECTOR_LC))
-         {
-            ret = LCM_REASON_INVALID_PAR_VAL;
-            RLOG0(L_ERROR, "unsupported Selector value for RGU");
-            break;
-         }
-         upSapCb = &(rgCb[inst].rguSap[cfg->s.rguSap.spId]);
-         if(upSapCb->sapSta.sapState == LRG_NOT_CFG)
-         { 
-            upSapCb->sapSta.sapState = LRG_UNBND;
-         }
-         upSapCfg = &(upSapCb->sapCfg);
-         upSapCfg->sapPst.dstEnt = cfg->s.rguSap.ent;
-         upSapCfg->sapPst.dstInst = cfg->s.rguSap.inst;
-         upSapCfg->sapPst.dstProcId = cfg->s.rguSap.procId;
-         upSapCfg->sapPst.srcEnt = rgCb[inst].rgInit.ent;
-         upSapCfg->sapPst.srcInst = rgCb[inst].rgInit.inst;
-         upSapCfg->sapPst.srcProcId = rgCb[inst].rgInit.procId;
-         upSapCfg->sapPst.region = cfg->s.rguSap.mem.region;
-         upSapCfg->sapPst.pool = cfg->s.rguSap.mem.pool;
-         upSapCfg->sapPst.selector = cfg->s.rguSap.selector;
-         upSapCfg->sapPst.route = cfg->s.rguSap.route;
-         upSapCfg->sapPst.intfVer = 0; 
-         upSapCfg->sapPst.prior = cfg->s.rguSap.prior;
-         upSapCfg->suId = cfg->s.rguSap.suId;
-         upSapCfg->spId = cfg->s.rguSap.spId;
-         /*T2K uses 2 saps, T3K uses 1 sap. change the rgRguDlSap to 1 only if
-          * there is cfg request with sap is 1*/
-         break;
+	 if ((cfg->s.rguSap.spId > LRG_MAX_RGU_SAPS) &&
+	       (cfg->s.rguSap.selector != ODU_SELECTOR_TC) &&
+	       (cfg->s.rguSap.selector != ODU_SELECTOR_LC))
+	 {
+	    ret = LCM_REASON_INVALID_PAR_VAL;
+	    RLOG0(L_ERROR, "unsupported Selector value for RGU");
+	    break;
+	 }
+	 upSapCb = &(rgCb[inst].rguSap[cfg->s.rguSap.spId]);
+	 if(upSapCb->sapSta.sapState == LRG_NOT_CFG)
+	 { 
+	    upSapCb->sapSta.sapState = LRG_UNBND;
+	 }
+	 upSapCfg = &(upSapCb->sapCfg);
+	 upSapCfg->sapPst.dstEnt = cfg->s.rguSap.ent;
+	 upSapCfg->sapPst.dstInst = cfg->s.rguSap.inst;
+	 upSapCfg->sapPst.dstProcId = cfg->s.rguSap.procId;
+	 upSapCfg->sapPst.srcEnt = rgCb[inst].rgInit.ent;
+	 upSapCfg->sapPst.srcInst = rgCb[inst].rgInit.inst;
+	 upSapCfg->sapPst.srcProcId = rgCb[inst].rgInit.procId;
+	 upSapCfg->sapPst.region = cfg->s.rguSap.mem.region;
+	 upSapCfg->sapPst.pool = cfg->s.rguSap.mem.pool;
+	 upSapCfg->sapPst.selector = cfg->s.rguSap.selector;
+	 upSapCfg->sapPst.route = cfg->s.rguSap.route;
+	 upSapCfg->sapPst.intfVer = 0; 
+	 upSapCfg->sapPst.prior = cfg->s.rguSap.prior;
+	 upSapCfg->suId = cfg->s.rguSap.suId;
+	 upSapCfg->spId = cfg->s.rguSap.spId;
+	 /*T2K uses 2 saps, T3K uses 1 sap. change the rgRguDlSap to 1 only if
+	  * there is cfg request with sap is 1*/
+	 break;
       case STCRGSAP:
-         if ((cfg->s.crgSap.selector != ODU_SELECTOR_TC) &&
-             (cfg->s.crgSap.selector != ODU_SELECTOR_LC))
-         {
-            ret = LCM_REASON_INVALID_PAR_VAL;
-            RLOG0(L_ERROR, "unsupported Selector value for CRG");
-            break;
-         }
-         if(rgCb[inst].crgSap.sapSta.sapState == LRG_NOT_CFG)
-         { 
-            rgCb[inst].crgSap.sapSta.sapState = LRG_UNBND;
-         }
-         upSapCfg = &rgCb[inst].crgSap.sapCfg;
+	 if ((cfg->s.crgSap.selector != ODU_SELECTOR_TC) &&
+	       (cfg->s.crgSap.selector != ODU_SELECTOR_LC))
+	 {
+	    ret = LCM_REASON_INVALID_PAR_VAL;
+	    RLOG0(L_ERROR, "unsupported Selector value for CRG");
+	    break;
+	 }
+	 if(rgCb[inst].crgSap.sapSta.sapState == LRG_NOT_CFG)
+	 { 
+	    rgCb[inst].crgSap.sapSta.sapState = LRG_UNBND;
+	 }
+	 upSapCfg = &rgCb[inst].crgSap.sapCfg;
 
-         upSapCfg->sapPst.dstEnt = cfg->s.crgSap.ent;
-         upSapCfg->sapPst.dstInst = cfg->s.crgSap.inst;
-         upSapCfg->sapPst.dstProcId = cfg->s.crgSap.procId;
-         upSapCfg->sapPst.srcEnt = rgCb[inst].rgInit.ent;
-         upSapCfg->sapPst.srcInst = rgCb[inst].rgInit.inst;
-         upSapCfg->sapPst.srcProcId = rgCb[inst].rgInit.procId;
-         upSapCfg->sapPst.region = cfg->s.crgSap.mem.region;
-         upSapCfg->sapPst.pool = cfg->s.crgSap.mem.pool;
-         upSapCfg->sapPst.selector = cfg->s.crgSap.selector;
-         upSapCfg->sapPst.route = cfg->s.crgSap.route;
-         upSapCfg->sapPst.intfVer = 0; 
-         upSapCfg->sapPst.prior = cfg->s.crgSap.prior;
-         upSapCfg->suId = cfg->s.crgSap.suId;
-         upSapCfg->spId = cfg->s.crgSap.spId;
-         break;
+	 upSapCfg->sapPst.dstEnt = cfg->s.crgSap.ent;
+	 upSapCfg->sapPst.dstInst = cfg->s.crgSap.inst;
+	 upSapCfg->sapPst.dstProcId = cfg->s.crgSap.procId;
+	 upSapCfg->sapPst.srcEnt = rgCb[inst].rgInit.ent;
+	 upSapCfg->sapPst.srcInst = rgCb[inst].rgInit.inst;
+	 upSapCfg->sapPst.srcProcId = rgCb[inst].rgInit.procId;
+	 upSapCfg->sapPst.region = cfg->s.crgSap.mem.region;
+	 upSapCfg->sapPst.pool = cfg->s.crgSap.mem.pool;
+	 upSapCfg->sapPst.selector = cfg->s.crgSap.selector;
+	 upSapCfg->sapPst.route = cfg->s.crgSap.route;
+	 upSapCfg->sapPst.intfVer = 0; 
+	 upSapCfg->sapPst.prior = cfg->s.crgSap.prior;
+	 upSapCfg->suId = cfg->s.crgSap.suId;
+	 upSapCfg->spId = cfg->s.crgSap.spId;
+	 break;
       case STTFUSAP:
 #ifndef CL_MAC_LWLC 
-         if ((cfg->s.tfuSap.selector != ODU_SELECTOR_TC) &&
-             (cfg->s.tfuSap.selector != ODU_SELECTOR_LC))
-         {
-            ret = LCM_REASON_INVALID_PAR_VAL;
-            RLOG0(L_ERROR, "unsupported Selector value for TFU");
-            break;
-         }
+	 if ((cfg->s.tfuSap.selector != ODU_SELECTOR_TC) &&
+	       (cfg->s.tfuSap.selector != ODU_SELECTOR_LC))
+	 {
+	    ret = LCM_REASON_INVALID_PAR_VAL;
+	    RLOG0(L_ERROR, "unsupported Selector value for TFU");
+	    break;
+	 }
 #endif
          if (rgCb[inst].tfuSap.sapSta.sapState == LRG_NOT_CFG) 
          { 
@@ -834,14 +789,14 @@ Elmnt sapType;            /* Sap Type */
          lowSapCfg->sapPst.prior = cfg->s.tfuSap.prior;
          lowSapCfg->suId = cfg->s.tfuSap.suId;
          lowSapCfg->spId = cfg->s.tfuSap.spId;
-         cmMemcpy((U8 *)&lowSapCfg->bndTmr, (U8 *)&cfg->s.tfuSap.bndTmr,
+         memcpy(&lowSapCfg->bndTmr, &cfg->s.tfuSap.bndTmr,
                    sizeof(TmrCfg));
          break;
       default:
-         /* would never reach here */
-         break;
+	 /* would never reach here */
+	 break;
    }
-   RETVALUE(ret);
+   return (ret);
 }
 
 
@@ -859,40 +814,33 @@ Elmnt sapType;            /* Sap Type */
  *     
  *  @param[in]  Inst        inst
  *  @param[in]  RgCfg *cfg, the Configuaration information 
- *  @return  U16
+ *  @return  uint16_t
  *      -# LCM_REASON_NOT_APPL 
  *      -# LCM_REASON_INVALID_MSGTYPE
  *      -# LCM_REASON_MEM_NOAVAIL
  **/
-#ifdef ANSI
-PRIVATE U16 rgLMMGenCfg
+static uint16_t rgLMMGenCfg
 (
 Inst inst,
 RgCfg *cfg            /* Configuaration information */
 )
-#else
-PRIVATE U16 rgLMMGenCfg(inst,cfg)
-Inst inst;
-RgCfg *cfg;            /* Configuaration information */
-#endif
 {
-   U16    ret = LCM_REASON_NOT_APPL;
+   uint16_t    ret = LCM_REASON_NOT_APPL;
 
-   TRC2(rgLMMGenCfg)
 
    /* Check if General Configuration is done already */
    if (rgCb[inst].rgInit.cfgDone == TRUE)
    {
-      RETVALUE(LCM_REASON_INVALID_MSGTYPE);
+      return (LCM_REASON_INVALID_MSGTYPE);
    }
    if ((cfg->s.genCfg.lmPst.selector != ODU_SELECTOR_TC) &&
-       (cfg->s.genCfg.lmPst.selector != ODU_SELECTOR_LC))
+	 (cfg->s.genCfg.lmPst.selector != ODU_SELECTOR_LC))
    {
       RLOG0(L_ERROR, "unsupported Selector value for RGU");
-      RETVALUE(LCM_REASON_INVALID_PAR_VAL);
+      return (LCM_REASON_INVALID_PAR_VAL);
    }
    /* Update the Pst structure for LM interface */
-   cmMemcpy((U8 *)&rgCb[inst].rgInit.lmPst, (U8 *)&cfg->s.genCfg.lmPst,
+   memcpy(&rgCb[inst].rgInit.lmPst, &cfg->s.genCfg.lmPst,
              sizeof(Pst));
 
    rgCb[inst].rgInit.lmPst.srcProcId = rgCb[inst].rgInit.procId;
@@ -913,53 +861,53 @@ RgCfg *cfg;            /* Configuaration information */
    if(cfg->s.genCfg.numRguSaps == 0)
    {
       RGDBGERRNEW(inst,(rgPBuf(inst), "\nrgGenCfg(): Invalid numRguSap.\n"));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* allocate RGR saps */
    if (SGetSBuf(rgCb[inst].rgInit.region,
-                rgCb[inst].rgInit.pool,
-                (Data **)&rgCb[inst].rguSap,
-                (sizeof(RgUpSapCb) * cfg->s.genCfg.numRguSaps)) != ROK)
+	    rgCb[inst].rgInit.pool,
+	    (Data **)&rgCb[inst].rguSap,
+	    (sizeof(RgUpSapCb) * cfg->s.genCfg.numRguSaps)) != ROK)
    {
       RGDBGERRNEW(inst,(rgPBuf(inst), "\nrgGenCfg(): Failed to allocate mem for RGU SAP's.\n"));
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    rgCb[inst].numRguSaps = cfg->s.genCfg.numRguSaps;
 
    for (int idx = 0; idx < rgCb[inst].numRguSaps; idx++)
    {
       rgCb[inst].rguSap[idx].sapSta.sapState = LRG_NOT_CFG;
-      cmMemset((U8 *)&rgCb[inst].rguSap[idx], 0, sizeof(RgUpSapCb));
+      memset(&rgCb[inst].rguSap[idx], 0, sizeof(RgUpSapCb));
    }
    rgCb[inst].tfuSap.sapSta.sapState = LRG_NOT_CFG;
    /* Initialize the timer blocks */
    cmInitTimers(rgCb[inst].tmrBlk, RG_MAX_TIMER);
    /* Initialzie the timer queue */   
-   cmMemset((U8 *)&rgCb[inst].tmrTq, 0, sizeof(CmTqType)*RG_TQ_SIZE);
+   memset(&rgCb[inst].tmrTq, 0, sizeof(CmTqType)*RG_TQ_SIZE);
    /* Initialize the timer control point */
-   cmMemset((U8 *)&rgCb[inst].tmrTqCp, 0, sizeof(CmTqCp));
+   memset(&rgCb[inst].tmrTqCp, 0, sizeof(CmTqCp));
    rgCb[inst].tmrTqCp.tmrLen = RG_TQ_SIZE;
 #if 0
    /* Timer Registration request to SSI */
    if (SRegTmrMt(rgCb[inst].rgInit.ent, rgCb[inst].rgInit.inst,
-            (S16)rgCb[inst].genCfg.tmrRes, rgActvTmr) != ROK)
+	    (S16)rgCb[inst].genCfg.tmrRes, rgActvTmr) != ROK)
    {
-      
+
       RLOG0(L_ERROR, "Failed to register timer");
 
       SPutSBuf(rgCb[inst].rgInit.region,
-                rgCb[inst].rgInit.pool,
-                (Data *)rgCb[inst].rguSap,
-                (sizeof(RgUpSapCb) * cfg->s.genCfg.numRguSaps));
+	    rgCb[inst].rgInit.pool,
+	    (Data *)rgCb[inst].rguSap,
+	    (sizeof(RgUpSapCb) * cfg->s.genCfg.numRguSaps));
 
-      RETVALUE(LCM_REASON_MEM_NOAVAIL);
+      return (LCM_REASON_MEM_NOAVAIL);
    }
 #endif
    /* Set Config done in TskInit */
    rgCb[inst].rgInit.cfgDone = TRUE;
 
-   RETVALUE(ret);
+   return (ret);
 }
 
 
@@ -979,34 +927,25 @@ RgCfg *cfg;            /* Configuaration information */
  *     File : rg_lmm.c 
  *
  **********************************************************/
-#ifdef ANSI
-PRIVATE Void rgLMMShutdown
-(
-Inst inst
-)
-#else
-PRIVATE Void rgLMMShutdown(inst)
-Inst inst;
-#endif
+static Void rgLMMShutdown(Inst inst)
 {
    RgCellCb   *cell = rgCb[inst].cell;
-   U8 idx;
+   uint8_t    idx;
 
-   TRC2(rgLMMShutdown)
 
-   /* Unbind the TFU Sap */
+    /* Unbind the TFU Sap */
    if(rgCb[inst].tfuSap.sapSta.sapState == LRG_WAIT_BNDCFM)
    {
-      rgLIMTfuUbndReq(inst,rgCb[inst].tfuSap.sapCfg.spId, LRG_UNBND);
+      //rgLIMTfuUbndReq(inst,rgCb[inst].tfuSap.sapCfg.spId, LRG_UNBND);
       if (rgCb[inst].tfuSap.sapCfg.bndTmr.enb == TRUE)
       {
          rgLMMStopTmr(inst,RG_BNDREQ_TMR, (PTR)&rgCb[inst].tfuSap); 
-      }
+      } 
       rgCb[inst].tfuSap.sapSta.sapState = LRG_UNBND;
    }
    if(rgCb[inst].tfuSap.sapSta.sapState == LRG_BND)
    {
-      rgLIMTfuUbndReq(inst,rgCb[inst].tfuSap.sapCfg.spId, LRG_UNBND);
+      //rgLIMTfuUbndReq(inst,rgCb[inst].tfuSap.sapCfg.spId, LRG_UNBND);
       rgCb[inst].tfuSap.sapSta.sapState = LRG_UNBND;
    }
 
@@ -1015,7 +954,7 @@ Inst inst;
    {
       for(idx=0;idx < RG_NUM_SUB_FRAMES; idx++)
       {
-         rgTOMRlsSf(inst,&cell->subFrms[idx]);
+	 rgTOMRlsSf(inst,&cell->subFrms[idx]);
       }
 
       rgCFGFreeCellCb(cell);
@@ -1023,9 +962,9 @@ Inst inst;
 
    /* Deleting the RGU SAPs */
    SPutSBuf(rgCb[inst].rgInit.region,
-                rgCb[inst].rgInit.pool,
-                (Data *)rgCb[inst].rguSap,
-                (sizeof(RgUpSapCb) * rgCb[inst].numRguSaps));
+	 rgCb[inst].rgInit.pool,
+	 (Data *)rgCb[inst].rguSap,
+	 (sizeof(RgUpSapCb) * rgCb[inst].numRguSaps));
    rgCb[inst].rguSap = NULLP;
 
    rgCb[inst].inactiveCell = NULLP;
@@ -1033,14 +972,14 @@ Inst inst;
 
    /* De-register the Timer Service */
    (Void) SDeregTmrMt(rgCb[inst].rgInit.ent, rgCb[inst].rgInit.inst,
-                     (S16)rgCb[inst].genCfg.tmrRes, rgActvTmr); 
+	 (S16)rgCb[inst].genCfg.tmrRes, rgActvTmr); 
 
    /* call back the task initialization function to intialize
     * the global RgCb Struct */
    rgActvInit(rgCb[inst].rgInit.ent, rgCb[inst].rgInit.inst, rgCb[inst].rgInit.region, 
-              rgCb[inst].rgInit.reason);
+	 rgCb[inst].rgInit.reason);
 
-   RETVOID;
+   return;
 }
 
 
@@ -1059,26 +998,18 @@ Inst inst;
  *     File : rg_lmm.c 
  *
  **********************************************************/
-#ifdef ANSI
-PRIVATE Void rgLMMGenCntrl 
+static Void rgLMMGenCntrl 
 (
 RgMngmt       *cntrl,
 RgMngmt       *cfm,
 Pst           *cfmPst
 )
-#else
-PRIVATE Void rgLMMGenCntrl(cntrl, cfm, cfmPst)
-RgMngmt       *cntrl;
-RgMngmt       *cfm;
-Pst           *cfmPst;
-#endif
 {
    Inst      inst = (cfmPst->srcInst - RG_INST_START);
-   TRC2(rgLMMGenCntrl)
 
    cfm->cfm.status = LCM_PRIM_OK;
    cfm->cfm.reason = LCM_REASON_NOT_APPL;
-   
+
 
    switch(cntrl->t.cntrl.action)
    {
@@ -1091,8 +1022,8 @@ Pst           *cfmPst;
                rgCb[inst].rgInit.trc = TRUE;
                rgCb[inst].trcLen = cntrl->t.cntrl.s.trcLen;
                /*Store the response and TransId for sending the Traces */
-               cmMemcpy((U8 *)&rgCb[inst].genCfg.trcResp.response, 
-               (U8 *)&cntrl->hdr.response, sizeof(Resp));
+               memcpy(&rgCb[inst].genCfg.trcResp.response, 
+               &cntrl->hdr.response, sizeof(Resp));
                rgCb[inst].genCfg.trcResp.transId = cntrl->hdr.transId;
                
                break;
@@ -1100,72 +1031,72 @@ Pst           *cfmPst;
             /* Enable Unsolicited Status (alarms) */
                rgCb[inst].rgInit.usta = TRUE;
                /*Store the response and TransId for sending the Alarms */
-               cmMemcpy((U8 *)&rgCb[inst].genCfg.ustaResp.response, 
-               (U8 *)&cntrl->hdr.response, sizeof(Resp));
+               memcpy(&rgCb[inst].genCfg.ustaResp.response, 
+               &cntrl->hdr.response, sizeof(Resp));
                rgCb[inst].genCfg.ustaResp.transId = cntrl->hdr.transId;
                break;
             case SADBG:
             /* Enable Debug Printing */
 #ifdef DEBUGP
-               rgCb[inst].rgInit.dbgMask |= cntrl->t.cntrl.s.rgDbgCntrl.dbgMask;
+	       rgCb[inst].rgInit.dbgMask |= cntrl->t.cntrl.s.rgDbgCntrl.dbgMask;
 #endif
-               break;
+	       break;
 #ifdef SS_DIAG
-            case SALOG:
-               rgCb[inst].rgInit.logMask = cntrl->t.cntrl.s.logMask;
-               break;
+	    case SALOG:
+	       rgCb[inst].rgInit.logMask = cntrl->t.cntrl.s.logMask;
+	       break;
 #endif
 
-            default:
-               cfm->cfm.status = LCM_PRIM_NOK;
-               cfm->cfm.reason = LCM_REASON_INVALID_PAR_VAL;
-               RLOG1(L_ERROR, "invalid subaction=%d",cntrl->t.cntrl.subAction);
-               break;
-         }
-         break;
+	    default:
+	       cfm->cfm.status = LCM_PRIM_NOK;
+	       cfm->cfm.reason = LCM_REASON_INVALID_PAR_VAL;
+	       RLOG1(L_ERROR, "invalid subaction=%d",cntrl->t.cntrl.subAction);
+	       break;
+	 }
+	 break;
       case ADISIMM:
-         /* Action is Diable immidiately */
-         switch(cntrl->t.cntrl.subAction)
-         {
-            case SATRC:
-            /* Disable Traces */
-               rgCb[inst].rgInit.trc = FALSE;
-               break;
-            case SAUSTA:
-            /* Disable Unsolicited Status (alarms) */
-               rgCb[inst].rgInit.usta = FALSE;
-               break;
-            case SADBG:
-            /* Disable Debug Printing */
+	 /* Action is Diable immidiately */
+	 switch(cntrl->t.cntrl.subAction)
+	 {
+	    case SATRC:
+	       /* Disable Traces */
+	       rgCb[inst].rgInit.trc = FALSE;
+	       break;
+	    case SAUSTA:
+	       /* Disable Unsolicited Status (alarms) */
+	       rgCb[inst].rgInit.usta = FALSE;
+	       break;
+	    case SADBG:
+	       /* Disable Debug Printing */
 #ifdef DEBUGP
-               rgCb[inst].rgInit.dbgMask &=~cntrl->t.cntrl.s.rgDbgCntrl.dbgMask;
+	       rgCb[inst].rgInit.dbgMask &=~cntrl->t.cntrl.s.rgDbgCntrl.dbgMask;
 #endif
-               break;
+	       break;
 #ifdef SS_DIAG
-            case SALOG:
-               rgCb[inst].rgInit.logMask = cntrl->t.cntrl.s.logMask;
-                break;
+	    case SALOG:
+	       rgCb[inst].rgInit.logMask = cntrl->t.cntrl.s.logMask;
+	       break;
 #endif
 
-            default:
-               cfm->cfm.status = LCM_PRIM_NOK;
-               cfm->cfm.reason = LCM_REASON_INVALID_PAR_VAL;
-               RLOG1(L_ERROR, "invalid subaction=%d",cntrl->t.cntrl.subAction);
-               break;
-         }
-         break;
+	    default:
+	       cfm->cfm.status = LCM_PRIM_NOK;
+	       cfm->cfm.reason = LCM_REASON_INVALID_PAR_VAL;
+	       RLOG1(L_ERROR, "invalid subaction=%d",cntrl->t.cntrl.subAction);
+	       break;
+	 }
+	 break;
       case ASHUTDOWN:
-         /* Free all the memory dynamically allocated by MAC */
-         rgLMMShutdown(inst);
-         break;
+	 /* Free all the memory dynamically allocated by MAC */
+	 rgLMMShutdown(inst);
+	 break;
       default:
-         cfm->cfm.status = LCM_PRIM_NOK;
-         cfm->cfm.reason = LCM_REASON_INVALID_PAR_VAL;
-         RLOG1(L_ERROR, "invalid action=%d",cntrl->t.cntrl.action);
-         break;
+	 cfm->cfm.status = LCM_PRIM_NOK;
+	 cfm->cfm.reason = LCM_REASON_INVALID_PAR_VAL;
+	 RLOG1(L_ERROR, "invalid action=%d",cntrl->t.cntrl.action);
+	 break;
    }
    RgMiLrgCntrlCfm(cfmPst, cfm);
-   RETVOID;
+   return;
 }
 
 
@@ -1184,22 +1115,14 @@ Pst           *cfmPst;
  *     File : rg_lmm.c 
  *
  **********************************************************/
-#ifdef ANSI
-PRIVATE Void rgLMMSapCntrl 
+static Void rgLMMSapCntrl 
 (
 RgMngmt       *cntrl,
 RgMngmt       *cfm,
 Pst           *cfmPst
 )
-#else
-PRIVATE Void rgLMMSapCntrl(cntrl, cfm, cfmPst)
-RgMngmt       *cntrl;
-RgMngmt       *cfm;
-Pst           *cfmPst;
-#endif
 {
    Inst      inst = cfmPst->srcInst - RG_INST_START;
-   TRC2(rgLMMSapCntrl)
 
    /* Only TFU Sap can be controlled by LM */
    switch(cntrl->hdr.elmId.elmnt)
@@ -1227,8 +1150,8 @@ Pst           *cfmPst;
                   rgCb[inst].tfuSap.numBndRetries++;
                   /* Store the response and TransId for sending 
                    * the Control confirm */
-                  cmMemcpy((U8 *)&rgCb[inst].genCfg.bndCfmResp.response,
-                           (U8 *)&cntrl->hdr.response, sizeof(Resp));
+                  memcpy(&rgCb[inst].genCfg.bndCfmResp.response,
+                           &cntrl->hdr.response, sizeof(Resp));
                   rgCb[inst].genCfg.bndCfmResp.transId = cntrl->hdr.transId;
 
                   /* Sending Status Indication to Layer Manager */
@@ -1236,8 +1159,8 @@ Pst           *cfmPst;
                   cfm->cfm.reason = LCM_REASON_NOT_APPL;
                   RgMiLrgCntrlCfm(cfmPst, cfm);
 
-                  rgLIMTfuBndReq(inst,rgCb[inst].tfuSap.sapCfg.suId,
-                                      rgCb[inst].tfuSap.sapCfg.spId);
+                  //rgLIMTfuBndReq(inst,rgCb[inst].tfuSap.sapCfg.suId,
+                                      //rgCb[inst].tfuSap.sapCfg.spId);
                   RETVOID;
                }
                break;
@@ -1253,7 +1176,7 @@ Pst           *cfmPst;
                }
                else
                {
-                  rgLIMTfuUbndReq(inst,rgCb[inst].tfuSap.sapCfg.spId, TFU_UBNDREQ_MNGMT);
+                  //rgLIMTfuUbndReq(inst,rgCb[inst].tfuSap.sapCfg.spId, TFU_UBNDREQ_MNGMT);
                   if (rgCb[inst].tfuSap.sapCfg.bndTmr.enb == TRUE)
                   {
                      rgLMMStopTmr(inst,RG_BNDREQ_TMR, (PTR)&rgCb[inst].tfuSap);
@@ -1269,13 +1192,13 @@ Pst           *cfmPst;
                if ((rgCb[inst].tfuSap.sapSta.sapState == LRG_WAIT_BNDCFM) ||
                    (rgCb[inst].tfuSap.sapSta.sapState == LRG_BND))
                {
-                  rgLIMTfuUbndReq(inst,rgCb[inst].tfuSap.sapCfg.spId, TFU_UBNDREQ_MNGMT);
+                  //rgLIMTfuUbndReq(inst,rgCb[inst].tfuSap.sapCfg.spId, TFU_UBNDREQ_MNGMT);
                   if (rgCb[inst].tfuSap.sapCfg.bndTmr.enb == TRUE)
                   {
                      rgLMMStopTmr(inst,RG_BNDREQ_TMR, (PTR)&rgCb[inst].tfuSap);
                   }
                }
-               cmMemset((U8 *)&rgCb[inst].tfuSap, 0, sizeof(RgLowSapCb));
+               memset(&rgCb[inst].tfuSap, 0, sizeof(RgLowSapCb));
                rgCb[inst].tfuSap.sapSta.sapState = LRG_NOT_CFG;
                cfm->cfm.status = LCM_PRIM_OK;
                cfm->cfm.reason = LCM_REASON_NOT_APPL;
@@ -1292,7 +1215,7 @@ Pst           *cfmPst;
          switch(cntrl->t.cntrl.action)
          {
             case ADEL:
-               cmMemset((U8 *)&rgCb[inst].rguSap[cntrl->t.cntrl.instId], 0, sizeof(RgUpSapCb));
+               memset(&rgCb[inst].rguSap[cntrl->t.cntrl.instId], 0, sizeof(RgUpSapCb));
                rgCb[inst].rguSap[cntrl->t.cntrl.instId].sapSta.sapState = LRG_NOT_CFG;
                cfm->cfm.status = LCM_PRIM_OK;
                cfm->cfm.reason = LCM_REASON_NOT_APPL;
@@ -1309,7 +1232,7 @@ Pst           *cfmPst;
          switch(cntrl->t.cntrl.action)
          {
             case ADEL:
-               cmMemset((U8 *)&rgCb[inst].crgSap, 0, sizeof(RgUpSapCb));
+               memset(&rgCb[inst].crgSap, 0, sizeof(RgUpSapCb));
                rgCb[inst].crgSap.sapSta.sapState = LRG_NOT_CFG;
                cfm->cfm.status = LCM_PRIM_OK;
                cfm->cfm.reason = LCM_REASON_NOT_APPL;
@@ -1327,7 +1250,7 @@ Pst           *cfmPst;
          RETVOID;
    }
    RgMiLrgCntrlCfm(cfmPst, cfm);
-   RETVOID;
+   return;
 }
 
 
@@ -1347,22 +1270,14 @@ Pst           *cfmPst;
  *     File : rg_lmm.c 
  *
  **********************************************************/
-#ifdef ANSI
-PRIVATE Void rgLMMFillCfmPst
+static Void rgLMMFillCfmPst
 (
 Pst           *reqPst,
 Pst           *cfmPst,
 RgMngmt       *cfm
 )
-#else
-PRIVATE Void rgLMMFillCfmPst(reqPst, cfmPst, cfm)
-Pst           *reqPst;
-Pst           *cfmPst;
-RgMngmt       *cfm;
-#endif
 {
    Inst inst;
-   TRC2(rgLMMFillCfmPst)
    inst = (reqPst->dstInst - RG_INST_START);
 
    cfmPst->srcEnt    = rgCb[inst].rgInit.ent;
@@ -1378,7 +1293,7 @@ RgMngmt       *cfm;
    cfmPst->region    = cfm->hdr.response.mem.region;
    cfmPst->pool      = cfm->hdr.response.mem.pool;
 
-   RETVOID;
+   return;
 }
 
 
@@ -1395,35 +1310,26 @@ RgMngmt       *cfm;
  *     
  *  @param[in]  Inst        inst
  *  @param[in]  S16   tmrEvnt, the Timer Event    
- *  @param[in]  U32   tmrVal,  the Wait Time
+ *  @param[in]  uint32_t   tmrVal,  the Wait Time
  *  @param[in]  PTR   cb,  Entry for which Timer expired
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 rgLMMStartTmr
+S16 rgLMMStartTmr
 (
 Inst               inst,
 S16                tmrEvnt,            /* Timer Event */
-U32                tmrVal,             /* Wait Time */
+uint32_t           tmrVal,             /* Wait Time */
 PTR                cb                  /* Entry for which Timer Expired */
 )
-#else
-PUBLIC S16 rgLMMStartTmr(tmrEvnt, tmrVal, cb)
-Inst               inst;
-S16                tmrEvnt;            /* Timer Event */
-U32                tmrVal;             /* Wait Time */
-PTR                cb;                 /* Entry for which Timer Expired */
-#endif
 {
    CmTmrArg    arg;
 
-   TRC2(rgLMMStartTmr)
 
-   UNUSED(tmrEvnt);
+      UNUSED(tmrEvnt);
 
    /* Initialize the arg structure */
-   cmMemset((U8 *)&arg, 0, sizeof(CmTmrArg));
+   memset(&arg, 0, sizeof(CmTmrArg));
 
    arg.tqCp = &rgCb[inst].tmrTqCp;
    arg.tq = rgCb[inst].tmrTq;
@@ -1435,7 +1341,7 @@ PTR                cb;                 /* Entry for which Timer Expired */
    arg.wait = tmrVal;      
    cmPlcCbTq(&arg);
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -1459,25 +1365,17 @@ PTR                cb;                 /* Entry for which Timer Expired */
  *      -# ROK
  *      -# RFAILED
  **/
-#ifdef ANSI
-PUBLIC S16 rgLMMStopTmr
+S16 rgLMMStopTmr
 (
 Inst               inst,             /* Scheduler instance */
 S16                tmrEvnt,            /* Timer Event */
 PTR                cb                  /* Entry for which Timer Expired */
 )
-#else
-PUBLIC S16 rgLMMStopTmr(inst,tmrEvnt, cb)
-Inst               inst;             /* Scheduler instance */
-S16                tmrEvnt;            /* Timer Event */
-PTR                cb;                 /* Entry for which Timer Expired */
-#endif
 {
    CmTmrArg   arg;
-   U8         i;
+   uint8_t      i;
    S16        ret; 
 
-   TRC2(rgLMMStopTmr)
 
    ret = RFAILED;
 
@@ -1487,7 +1385,7 @@ PTR                cb;                 /* Entry for which Timer Expired */
       if(rgCb[inst].tmrBlk[i].tmrEvnt == tmrEvnt)
       {
          /* Initialize the arg structure */
-         cmMemset((U8 *)&arg, 0, sizeof(CmTmrArg));
+         memset(&arg, 0, sizeof(CmTmrArg));
 
          arg.tqCp = &rgCb[inst].tmrTqCp;
          arg.tq = rgCb[inst].tmrTq;
@@ -1506,7 +1404,7 @@ PTR                cb;                 /* Entry for which Timer Expired */
    }
 
 
-   RETVALUE(ret);
+   return (ret);
 }
 
 
@@ -1526,25 +1424,16 @@ PTR                cb;                 /* Entry for which Timer Expired */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 rgLMMTmrExpiry
+S16 rgLMMTmrExpiry
 (
 PTR cb,               /* Pointer to timer control block */
 S16 tmrEvnt           /* Timer Event */
 )
-#else
-PUBLIC S16 rgLMMTmrExpiry(cb,tmrEvnt)
-PTR cb;               /* Pointer to timer control block */
-S16 tmrEvnt;          /* Timer Event */
-#endif
 {
    S16        ret = ROK;
    RgLowSapCb *tfuSap = (RgLowSapCb *)cb;
    Inst          inst = tfuSap->sapCfg.sapPst.srcInst - RG_INST_START;
 
-   TRC2(rgLMMTmrExpiry)
-
-   
    switch(tmrEvnt)
    {
       case RG_BNDREQ_TMR:
@@ -1564,8 +1453,8 @@ S16 tmrEvnt;          /* Timer Event */
             }
 
             /* Send bind request */
-            rgLIMTfuBndReq(inst,rgCb[inst].tfuSap.sapCfg.suId,
-                                rgCb[inst].tfuSap.sapCfg.spId);
+            //rgLIMTfuBndReq(inst,rgCb[inst].tfuSap.sapCfg.suId,
+                                //rgCb[inst].tfuSap.sapCfg.spId);
          }
          break;
       default:
@@ -1573,7 +1462,7 @@ S16 tmrEvnt;          /* Timer Event */
          ret = RFAILED;
          break;
    }
-   RETVALUE(ret);
+   return (ret);
 }
 
 
@@ -1589,41 +1478,29 @@ S16 tmrEvnt;          /* Timer Event */
  *     status indication to the Layer Manager.
  *     
  *  @param[in]  Inst        inst
- *  @param[in]  U16 category, the Alarm category
- *  @param[in]  U16 event, the Alarm event
- *  @param[in]  U16 cause, the cause of the Alarm
+ *  @param[in]  uint16_t category, the Alarm category
+ *  @param[in]  uint16_t event, the Alarm event
+ *  @param[in]  uint16_t cause, the cause of the Alarm
  *  @param[in]  RgUstaDgn *dgn, Alarm Diagonostics
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 rgLMMStaInd
+S16 rgLMMStaInd
 (
 Inst inst,
-U16 category,
-U16 event,
-U16 cause,
+uint16_t category,
+uint16_t event,
+uint16_t cause,
 RgUstaDgn *dgn
 )
-#else
-PUBLIC S16 rgLMMStaInd(inst,category, event, cause, dgn) 
-Inst inst;
-U16 category;
-U16 event;
-U16 cause;
-RgUstaDgn *dgn;
-#endif
 {
    RgMngmt    usta;
-
-   TRC2(rgLMMStaInd)
-
    if(rgCb[inst].rgInit.usta == FALSE)
    {
-      RETVALUE(ROK);
+      return ROK;
    }
 
-   cmMemset((U8 *)&usta, 0, sizeof(RgMngmt));
+   memset(&usta, 0, sizeof(RgMngmt));
 
    SGetDateTime(&usta.t.usta.cmAlarm.dt);
    usta.t.usta.cmAlarm.category = category;
@@ -1631,7 +1508,7 @@ RgUstaDgn *dgn;
    usta.t.usta.cmAlarm.cause = cause;
    if (dgn != NULLP)
    {
-      cmMemcpy((U8 *)&usta.t.usta.dgn, (U8 *)dgn, sizeof(RgUstaDgn));
+      memcpy(&usta.t.usta.dgn, dgn, sizeof(RgUstaDgn));
    }
 
    rgCb[inst].rgInit.lmPst.selector = rgCb[inst].genCfg.ustaResp.response.selector;
@@ -1641,7 +1518,7 @@ RgUstaDgn *dgn;
    rgCb[inst].rgInit.lmPst.pool = rgCb[inst].genCfg.ustaResp.response.mem.pool;
    usta.hdr.transId = rgCb[inst].genCfg.ustaResp.transId;
 
-   RETVALUE(RgMiLrgStaInd(&rgCb[inst].rgInit.lmPst, &usta));
+   return (RgMiLrgStaInd(&rgCb[inst].rgInit.lmPst, &usta));
 }
 
 
@@ -1657,22 +1534,15 @@ RgUstaDgn *dgn;
  *     
  *  @param[in]  Inst        inst
  *  @param[in]   Buffer *srcMbuf, the Message Buffer .
- *  @param[in]   U8 event, the trace event.
+ *  @param[in]   uint8_t event, the trace event.
  *  @return Void 
  **/
-#ifdef ANSI
-PUBLIC Void rgLMMTrcInd
+Void rgLMMTrcInd
 (
 Inst   inst,
 Buffer *srcMbuf,    /* Message Buffer */
-U8 event            /* event */
+uint8_t event            /* event */
 )
-#else
-PUBLIC Void rgLMMTrcInd(inst,srcMbuf,event)
-Inst   inst;
-Buffer *srcMbuf;    /* Message Buffer */
-U8 event;           /* event */
-#endif
 {
    Buffer   *dstMbuf = NULLP;   
    MsgLen   bufLen  = 0;
@@ -1681,16 +1551,15 @@ U8 event;           /* event */
    RgMngmt  trc;
    Pst      pst;
 
-   TRC2(rgLMMTrcInd)
 
 
    if ((rgCb[inst].trcLen == LRG_NO_TRACE) || (srcMbuf == NULLP))
    {
       RLOG0(L_ERROR, "Trace Disabled.");
-      RETVOID;
+      return;
    }
    
-   cmMemset((U8 *)&trc, 0, sizeof(RgMngmt));
+   memset(&trc, 0, sizeof(RgMngmt));
 
    pst = rgCb[inst].rgInit.lmPst;
    pst.selector = rgCb[inst].genCfg.trcResp.response.selector;
@@ -1702,20 +1571,20 @@ U8 event;           /* event */
    trc.hdr.transId = rgCb[inst].genCfg.trcResp.transId;
 
    SGetDateTime(&trc.t.trc.dt);
-      
+
    /* Check if the whole buffer is to be sent in Trace indication */
    if(rgCb[inst].trcLen == LRG_FULL_TRACE)
    {
       if (SCpyMsgMsg(srcMbuf, pst.region, pst.pool, &dstMbuf)
-         != ROK)
+	    != ROK)
       {
-         RLOG0(L_ERROR, "SCpyMsgMsg Failed.");
-         RETVOID;
+	 RLOG0(L_ERROR, "SCpyMsgMsg Failed.");
+	 return;
       }
       trc.cfm.status = LCM_PRIM_OK;
       trc.cfm.reason = LCM_REASON_NOT_APPL;
       trc.t.trc.evnt = event;
-         
+
       /* Send Trace Indication to Layer manager */
       RgMiLrgTrcInd(&pst, &trc, dstMbuf);
    }
@@ -1725,71 +1594,71 @@ U8 event;           /* event */
       /* Get the length of the recvd message buffer */
       if (SFndLenMsg(srcMbuf, &bufLen) != ROK)
       {
-         RLOG0(L_ERROR, "SFndLenMsg Failed.");
-         RETVOID;
+	 RLOG0(L_ERROR, "SFndLenMsg Failed.");
+	 return;
       }
       /* Check if the recvd buffer size is less than request trace len */
       if(bufLen < rgCb[inst].trcLen)
       {
-         /* Copy the whole of the recvd buffer in trace indication */
-      
-         if (SCpyMsgMsg(srcMbuf, pst.region, pst.pool, &dstMbuf)
-            != ROK)
-         {
-            RLOG0(L_ERROR, "SCpyMsgMsg Failed.");
-            RETVOID;
-         }
-         
-         trc.cfm.status = LCM_PRIM_OK;
-         trc.cfm.reason = LCM_REASON_NOT_APPL;
-         trc.t.trc.evnt = event;
+	 /* Copy the whole of the recvd buffer in trace indication */
 
-         /* Send Trace Indication to Layer manager */
-         RgMiLrgTrcInd(&pst, &trc, dstMbuf);
+	 if (SCpyMsgMsg(srcMbuf, pst.region, pst.pool, &dstMbuf)
+	       != ROK)
+	 {
+	    RLOG0(L_ERROR, "SCpyMsgMsg Failed.");
+	    return;
+	 }
+
+	 trc.cfm.status = LCM_PRIM_OK;
+	 trc.cfm.reason = LCM_REASON_NOT_APPL;
+	 trc.t.trc.evnt = event;
+
+	 /* Send Trace Indication to Layer manager */
+	 RgMiLrgTrcInd(&pst, &trc, dstMbuf);
       }
       /* if the recvd buffer size is greater than request trace len */
       if(bufLen >= rgCb[inst].trcLen)
       {
-         /* Get a temporary buffer to store the msg */
-         if (rgAllocSBuf(inst,&tempBuf, rgCb[inst].trcLen) != ROK)
-         {
-            RLOG0(L_ERROR, "rgAllocSBuf Failed.");
-            RETVOID;
-         }
-         
-         /* Copy trcLen nos of bytes from the recvd message */
-         if (SCpyMsgFix(srcMbuf,0,rgCb[inst].trcLen,tempBuf,&tempCnt) != ROK)   
-         {
-            RLOG0(L_ERROR, "SCpyMsgFix Failed.");
-            RETVOID;
-         }
+	 /* Get a temporary buffer to store the msg */
+	 if (rgAllocSBuf(inst,&tempBuf, rgCb[inst].trcLen) != ROK)
+	 {
+	    RLOG0(L_ERROR, "rgAllocSBuf Failed.");
+	    return;
+	 }
 
-         if (SGetMsg(pst.region, pst.pool, &dstMbuf) != ROK)
-         {
-            RLOG0(L_ERROR, "dstMbuf Allocation Failed");
-            RETVOID;
-         }
-         /* Copy the tempBuf data to dst mBuf */
-         if (SCpyFixMsg(tempBuf,dstMbuf,0,rgCb[inst].trcLen,&tempCnt) != ROK)
-         {
-            RLOG0(L_ERROR, "SCpyFixMsg Failed.");
-            RETVOID;
-         }
+	 /* Copy trcLen nos of bytes from the recvd message */
+	 if (SCpyMsgFix(srcMbuf,0,rgCb[inst].trcLen,tempBuf,&tempCnt) != ROK)   
+	 {
+	    RLOG0(L_ERROR, "SCpyMsgFix Failed.");
+	    return;
+	 }
 
-         /*ccpu00117052 - MOD - Passing double pointer for proper NULLP 
-                               assignment */
-         /* Free the memory allocated for tempBuf */
-         rgFreeSBuf(inst,&tempBuf, rgCb[inst].trcLen);
-               
-         trc.cfm.status = LCM_PRIM_OK;
-         trc.cfm.reason = LCM_REASON_NOT_APPL;
-         trc.t.trc.evnt = event;
-      
-         /* Send Trace Indication to Layer manager */
-         RgMiLrgTrcInd(&pst, &trc, dstMbuf);
+	 if (SGetMsg(pst.region, pst.pool, &dstMbuf) != ROK)
+	 {
+	    RLOG0(L_ERROR, "dstMbuf Allocation Failed");
+	    return;
+	 }
+	 /* Copy the tempBuf data to dst mBuf */
+	 if (SCpyFixMsg(tempBuf,dstMbuf,0,rgCb[inst].trcLen,&tempCnt) != ROK)
+	 {
+	    RLOG0(L_ERROR, "SCpyFixMsg Failed.");
+	    return;
+	 }
+
+	 /*ccpu00117052 - MOD - Passing double pointer for proper NULLP 
+	   assignment */
+	 /* Free the memory allocated for tempBuf */
+	 rgFreeSBuf(inst,&tempBuf, rgCb[inst].trcLen);
+
+	 trc.cfm.status = LCM_PRIM_OK;
+	 trc.cfm.reason = LCM_REASON_NOT_APPL;
+	 trc.t.trc.evnt = event;
+
+	 /* Send Trace Indication to Layer manager */
+	 RgMiLrgTrcInd(&pst, &trc, dstMbuf);
       }
    }
-   RETVOID;
+   return;
 }
 
 
@@ -1809,30 +1678,22 @@ U8 event;           /* event */
  *     
  *  @param[in]   Pst *pst, Post Structure
  *  @param[in]   SuId suId, Service user ID
- *  @param[in]   U8 status, Status
+ *  @param[in]   uint8_t status, Status
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 rgLMMBndCfm
+S16 rgLMMBndCfm
 (
 Pst *pst,               /* Post Structure */
 SuId suId,              /* Service user ID */
-U8 status               /* Status */
+uint8_t status               /* Status */
 )
-#else
-PUBLIC S16 rgLMMBndCfm(pst,suId,status)
-Pst *pst;               /* Post Structure */
-SuId suId;              /* Service user ID */
-U8 status;              /* Status */
-#endif
 {
    Inst      inst = pst->dstInst - RG_INST_START;
    S16       ret = ROK;
    RgMngmt   cntrlCfm;
    Pst       cfmPst;
 
-   TRC3(rgLMMBndCfm)
 
    UNUSED(pst);
 
@@ -1840,19 +1701,19 @@ U8 status;              /* Status */
    if(rgCb[inst].tfuSap.sapCfg.suId != suId)
    {
       RLOG0(L_ERROR, "Invalid SuId");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* check the Sap State */
    switch(rgCb[inst].tfuSap.sapSta.sapState)
    {
       case LRG_WAIT_BNDCFM:
-         break;
+	 break;
       case LRG_BND:
-         /* SAP is already bound */
-         RETVALUE(ROK);
+	 /* SAP is already bound */
+	 return ROK;
       default:
-         RETVALUE(RFAILED);
+	 return RFAILED;
    }
 
    cfmPst = rgCb[inst].rgInit.lmPst;
@@ -1862,33 +1723,33 @@ U8 status;              /* Status */
    cfmPst.region = rgCb[inst].genCfg.bndCfmResp.response.mem.region;
    cfmPst.pool = rgCb[inst].genCfg.bndCfmResp.response.mem.pool;
    
-   cmMemset((U8 *)&cntrlCfm, 0, sizeof(RgMngmt));
+   memset(&cntrlCfm, 0, sizeof(RgMngmt));
 
    switch(status)
    {
       case CM_BND_OK: /* status is OK */
-         /* Change SAP state to Bound */
-         rgCb[inst].tfuSap.sapSta.sapState = LRG_BND;
-         if (rgCb[inst].tfuSap.sapCfg.bndTmr.enb == TRUE)
-         {
-            ret = rgLMMStopTmr(inst,RG_BNDREQ_TMR, (PTR)&rgCb[inst].tfuSap);
-         }
-         /* Send Control Confirm with status as OK to Layer Manager */
-         cntrlCfm.cfm.status = LCM_PRIM_OK;
-         cntrlCfm.cfm.reason = LCM_REASON_NOT_APPL;
-         break;
+	 /* Change SAP state to Bound */
+	 rgCb[inst].tfuSap.sapSta.sapState = LRG_BND;
+	 if (rgCb[inst].tfuSap.sapCfg.bndTmr.enb == TRUE)
+	 {
+	    ret = rgLMMStopTmr(inst,RG_BNDREQ_TMR, (PTR)&rgCb[inst].tfuSap);
+	 }
+	 /* Send Control Confirm with status as OK to Layer Manager */
+	 cntrlCfm.cfm.status = LCM_PRIM_OK;
+	 cntrlCfm.cfm.reason = LCM_REASON_NOT_APPL;
+	 break;
 
       default:
-         /* Change SAP state to UnBound */
-         rgCb[inst].tfuSap.sapSta.sapState = LRG_UNBND;
-         if (rgCb[inst].tfuSap.sapCfg.bndTmr.enb == TRUE)
-         {
-            ret = rgLMMStopTmr(inst,RG_BNDREQ_TMR, (PTR)&rgCb[inst].tfuSap);
-         }
-         /* Send Control Confirm with status as NOK to Layer Manager */
-         cntrlCfm.cfm.status = LCM_PRIM_NOK;
-         cntrlCfm.cfm.reason = LCM_REASON_NEG_CFM;
-         break;
+	 /* Change SAP state to UnBound */
+	 rgCb[inst].tfuSap.sapSta.sapState = LRG_UNBND;
+	 if (rgCb[inst].tfuSap.sapCfg.bndTmr.enb == TRUE)
+	 {
+	    ret = rgLMMStopTmr(inst,RG_BNDREQ_TMR, (PTR)&rgCb[inst].tfuSap);
+	 }
+	 /* Send Control Confirm with status as NOK to Layer Manager */
+	 cntrlCfm.cfm.status = LCM_PRIM_NOK;
+	 cntrlCfm.cfm.reason = LCM_REASON_NEG_CFM;
+	 break;
    }
    rgCb[inst].tfuSap.numBndRetries = 0;
    cntrlCfm.hdr.elmId.elmnt = STTFUSAP;
@@ -1896,7 +1757,7 @@ U8 status;              /* Status */
 
    ret = RgMiLrgCntrlCfm(&cfmPst, &cntrlCfm);
 
-   RETVALUE(ret);
+   return (ret);
 }
 
 
@@ -1913,29 +1774,18 @@ U8 status;              /* Status */
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 rgActvTmr
-(
- Ent     ent,
- Inst    inst
-)
-#else
-PUBLIC S16 rgActvTmr(ent, inst)
-Ent     ent;
-Inst    inst;
-#endif
+S16 rgActvTmr(Ent ent,Inst inst)
 {
    Inst macInst = (inst  - RG_INST_START);
-   TRC3(rgActvTmr)
 
    /* Check if any MAC timer has expired */ 
    cmPrcTmr(&rgCb[macInst].tmrTqCp, rgCb[macInst].tmrTq, (PFV) rgLMMTmrExpiry);
- 
-   RETVALUE(ROK);
- 
+
+   return ROK;
+
 } /* end of rgActvTmr */
 
 /**********************************************************************
- 
-         End of file
-**********************************************************************/
+
+  End of file
+ **********************************************************************/

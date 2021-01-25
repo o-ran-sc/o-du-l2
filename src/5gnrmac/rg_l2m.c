@@ -63,12 +63,12 @@ static int RLOG_MODULE_ID=4096;
 
 /* local defines */
 #ifdef LTE_L2_MEAS
-PRIVATE S16 rgL2mInsertMeasCb ARGS((
+static S16 rgL2mInsertMeasCb ARGS((
          RgCellCb       *cell,
          RgL2MeasCb     *measCb,
          RgInfL2MeasReq *measInfo ));
 
-PRIVATE RgL2MeasCb * rgL2mAllocMeasCb ARGS((
+static RgL2MeasCb * rgL2mAllocMeasCb ARGS((
          RgCellCb       *cell,
          RgInfL2MeasReq *measInfo,
          RgErrInfo      *err));
@@ -86,46 +86,36 @@ PRIVATE RgL2MeasCb * rgL2mAllocMeasCb ARGS((
  *
  * @param  [in] RgCellCb       *cell
  * @param  [in] RgInfL2MeasReq *measInfo
- * @param  [in] U8             measType
+ * @param  [in] uint8_t             measType
  * @param  [out] RgErrInfo      *err
  * @return  S16
  *      -# ROK 
  *      -# RFAILED 
  *
  */
-#ifdef ANSI
-PUBLIC S16 rgL2mCreateMeasCb 
+S16 rgL2mCreateMeasCb 
 (
 RgCellCb       *cell,
 RgInfL2MeasReq *measInfo, 
-U8              measType,
+uint8_t        measType,
 RgErrInfo      *err
 )
-#else
-PUBLIC S16 rgL2mCreateMeasCb(cell, measInfo, measType, err)
-RgCellCb       *cell;
-RgInfL2MeasReq *measInfo; 
-U8              measType;
-RgErrInfo      *err;
-#endif    
 {
   // Inst    inst = cell->macInst - RG_INST_START;
-   U32     idx;
-   RgL2MeasCb       *measCb = NULLP;
-   U8            qciVal = 0;
+   uint32_t     idx;
+   RgL2MeasCb   *measCb = NULLP;
+   uint8_t      qciVal = 0;
 
    UNUSED(measType);
    UNUSED(err);
 
-   TRC3(rgL2mCreateMeasCb)
-
-      if ((measCb = rgL2mAllocMeasCb(cell, measInfo, err)) == NULLP)
-      {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Allocation of RgL2MeasCb failed");
-         RETVALUE(RFAILED);
-      }
+   if ((measCb = rgL2mAllocMeasCb(cell, measInfo, err)) == NULLP)
+   {
+      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Allocation of RgL2MeasCb failed");
+      return RFAILED;
+   }
    //Memcpy is already done in rgL2mAllocMeasCb
-   /*cmMemcpy((U8 *)&measCb->measReq, (CONSTANT U8 *)measInfo,\
+   /*memcpy(&measCb->measReq, (const uint8_t *)measInfo,\
      sizeof(RgInfL2MeasReq));*/
    rgL2mInsertMeasCb(cell, measCb, measInfo);
    measCb->measReq.timePrd = measInfo->timePrd;
@@ -144,7 +134,7 @@ RgErrInfo      *err;
       }
       cell->qciArray[measInfo->t.prbReq.qci[idx]].mask = TRUE;
    }
-   RETVALUE(ROK);
+   return ROK;
 } /* rgL2mCreateMeasCb */
 
 
@@ -166,31 +156,23 @@ RgErrInfo      *err;
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 rgL2mMeasReq 
+S16 rgL2mMeasReq 
 (
 RgCellCb       *cell,
 RgInfL2MeasReq *measInfo,
 RgErrInfo      *err
 )
-#else
-PUBLIC S16 rgL2mMeasReq(cell, measInfo, err)
-RgCellCb       *cell;
-RgInfL2MeasReq *measInfo; 
-RgErrInfo      *err;
-#endif    
 {
    S16  ret=RFAILED;
 
-   TRC3(rgL2mMeasReq)
    /* Creaet MeasCb Insert in cell->l2mList and return*/
    if ( (ret = rgL2mCreateMeasCb(cell, measInfo,
                LRG_L2MEAS_AVG_PRB_PER_QCI_UL, err)) != ROK)
    {
       /* Clear Downlink MeasCb created Above If exists*/
-      RETVALUE(ret);
+      return (ret);
    }
-   RETVALUE(ROK);
+   return ROK;
 } /* rgL2mMeasReq */
 /** @brief This function sends the measurement confirm
  *  from mac to scheduler
@@ -202,27 +184,16 @@ RgErrInfo      *err;
  * @param  [in] RgCellCb          *cell
  * @param  [in] RgInfL2MeasCfm    *measCfm
  */
-#ifdef ANSI
-PRIVATE Void rgSndL2MeasCfm
-(
-RgCellCb          *cell, 
-RgInfL2MeasCfm    *measCfm
-)
-#else
-PRIVATE Void rgSndL2MeasCfm (cell, measCfm)
-RgCellCb          *cell; 
-RgInfL2MeasCfm    *measCfm;   
-#endif
+static Void rgSndL2MeasCfm(RgCellCb *cell, RgInfL2MeasCfm *measCfm)
 {
    Pst             pst;
    Inst            macInst = cell->macInst - RG_INST_START;
-   TRC3(rgSndL2MeasCfm)
 
-      cmMemset((U8 *)&pst, 0, sizeof(Pst));
+   memset(&pst, 0, sizeof(Pst));
    rgGetPstToInst(&pst,macInst, cell->schInstMap.schInst);
    RgMacSchL2Meas(&pst, measCfm);
 
-   RETVOID;
+   return;
 }/* rgSndL2MeasCfm */
 
 /** @brief This function sends the measurement stop confirm
@@ -235,27 +206,16 @@ RgInfL2MeasCfm    *measCfm;
  * @param  [in] RgCellCb          *cell
  * @param  [in] RgInfL2MeasCfm    *measCfm
  */
-#ifdef ANSI
-PRIVATE Void rgSndL2MeasStopCfm
-(
-RgCellCb          *cell,
-RgInfL2MeasCfm    *measCfm
-)
-#else
-PRIVATE Void rgSndL2MeasStopCfm (cell, measCfm)
-RgCellCb          *cell;
-RgInfL2MeasCfm    *measCfm;
-#endif
+static Void rgSndL2MeasStopCfm(RgCellCb *cell,RgInfL2MeasCfm *measCfm)
 {
    Pst             pst;
    Inst            macInst = cell->macInst - RG_INST_START;
 
-   TRC3(rgSndL2MeasStopCfm)
-      cmMemset((U8 *)&pst, 0, sizeof(Pst));
+   memset(&pst, 0, sizeof(Pst));
    rgGetPstToInst(&pst,macInst, cell->schInstMap.schInst);
    RgMacSchL2MeasStop(&pst, measCfm);
 
-   RETVOID;
+   return;
 }/* rgSndL2MeasStopCfm */
 
 /**
@@ -272,26 +232,17 @@ RgInfL2MeasCfm    *measCfm;
  *      -# ROK
  *      -# RFAILED
  **/
-#ifdef ANSI
-PUBLIC S16 RgSchMacL2MeasReq
+S16 RgSchMacL2MeasReq
 (
 Pst               *pst,          /* post structure  */
 RgInfL2MeasReq    *measInfo      /* Meas Req Info */
 )
-#else
-PUBLIC S16 RgSchMacL2MeasReq(pst, measInfo)
-Pst               *pst;          /* post structure  */
-RgInfL2MeasReq    *measInfo;      /* Meas Req Info */
-#endif    
 {
    Inst            inst;
    RgCellCb        *cellCb = NULLP;
    RgErrInfo       err;
    S16             ret = ROK;
    RgInfL2MeasCfm   measCfm;
-
-   TRC3(RgSchMacL2MeasReq)
-
 
    RG_IS_INST_VALID(pst->dstInst);
    inst   = pst->dstInst - RG_INST_START;
@@ -301,13 +252,13 @@ RgInfL2MeasReq    *measInfo;      /* Meas Req Info */
        (cellCb->cellId != measInfo->cellId))
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,measInfo->cellId,"unable to get the cellCb");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* Call L2M Function to store Meas req */
    ret = rgL2mMeasReq(cellCb, measInfo, &err);
    if (ret != ROK)
    {
-      cmMemset((U8 *)&measCfm, 0, sizeof(RgInfL2MeasCfm));
+      memset(&measCfm, 0, sizeof(RgInfL2MeasCfm));
       measCfm.transId     = measInfo->transId;
       measCfm.cellId      = measInfo->cellId;
       measCfm.measType    = measInfo->measType;
@@ -317,9 +268,9 @@ RgInfL2MeasReq    *measInfo;      /* Meas Req Info */
       RLOG_ARG2(L_ERROR,DBG_CELLID,measInfo->cellId,
                "Meas req Failed  errType(%d) errCause(%d)",
                err.errType, err.errCause);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
-   RETVALUE(ret);
+   return (ret);
 } /* -- RgSchMacL2MeasReq-- */
 
 /**
@@ -336,30 +287,20 @@ RgInfL2MeasReq    *measInfo;      /* Meas Req Info */
  *      -# ROK
  *      -# RFAILED
  **/
-#ifdef ANSI
-PUBLIC S16 RgSchMacL2MeasStopReq
+S16 RgSchMacL2MeasStopReq
 (
 Pst               *pst,          /* post structure  */
 RgInfL2MeasStopReq *measInfo      /* Meas Req Info */
 )
-#else
-PUBLIC S16 RgSchMacL2MeasStopReq(pst, measInfo)
-Pst               *pst;          /* post structure  */
-RgInfL2MeasStopReq *measInfo;      /* Meas Req Info */
-#endif
 {
-   S16             ret = ROK;   
-   CmLList         *node   = NULLP;
-   RgL2MeasCb      *measCb = NULLP;
-   U8               idx;
-   U8               qciVal;
-   Inst             inst;
-   RgCellCb        *cellCb = NULLP;
-
+   S16            ret = ROK;   
+   CmLList        *node   = NULLP;
+   RgL2MeasCb     *measCb = NULLP;
+   uint8_t        idx;
+   uint8_t        qciVal;
+   Inst           inst;
+   RgCellCb       *cellCb = NULLP;
    RgInfL2MeasCfm  measCfm;
-
-   TRC3(RgSchMacL2MeasStopReq)
-
 
    RG_IS_INST_VALID(pst->dstInst);
    inst   = pst->dstInst - RG_INST_START;
@@ -371,7 +312,7 @@ RgInfL2MeasStopReq *measInfo;      /* Meas Req Info */
       
       RLOG_ARG0(L_ERROR,DBG_CELLID,measInfo->cellId,
             "Unable to get the cellCb");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    node = cellCb->l2mList.first; 
    while(node != NULLP)
@@ -387,13 +328,13 @@ RgInfL2MeasStopReq *measInfo;      /* Meas Req Info */
       cmLListDelFrm(&cellCb->l2mList, &measCb->measLnk);
       rgFreeSBuf(inst,(Data**)&measCb, sizeof(RgL2MeasCb));
    }
-   cmMemset((U8 *)&measCfm, 0, sizeof(RgInfL2MeasCfm));
+   memset(&measCfm, 0, sizeof(RgInfL2MeasCfm));
    measCfm.transId     = measInfo->transId;
    measCfm.cellId      = measInfo->cellId;
    measCfm.measType    = measInfo->measType;
    measCfm.cfm.status  = LCM_PRIM_OK;
    rgSndL2MeasStopCfm(cellCb, &measCfm);
-   RETVALUE(ret);
+   return (ret);
 } /* -- RgSchMacL2MeasStopReq-- */
 
 /**
@@ -410,24 +351,15 @@ RgInfL2MeasStopReq *measInfo;      /* Meas Req Info */
  *      -# ROK
  *      -# RFAILED
  **/
-#ifdef ANSI
-PUBLIC S16 RgSchMacL2MeasSendReq
+S16 RgSchMacL2MeasSendReq
 (
 Pst               *pst,          /* post structure  */
 RgInfL2MeasSndReq *measInfo      /* Meas Req Info */
 )
-#else
-PUBLIC S16 RgSchMacL2MeasSendReq(pst, measInfo)
-Pst               *pst;          /* post structure  */
-RgInfL2MeasSndReq *measInfo;      /* Meas Req Info */
-#endif
 {
    Inst            inst;
    RgCellCb       *cellCb = NULLP;
    S16             ret    = ROK;
-
-   TRC3(RgSchMacL2MeasSendReq)
-
 
    RG_IS_INST_VALID(pst->dstInst);
    inst   = pst->dstInst - RG_INST_START;
@@ -439,12 +371,12 @@ RgInfL2MeasSndReq *measInfo;      /* Meas Req Info */
       
       RLOG_ARG0(L_ERROR,DBG_CELLID,measInfo->cellId,
             "Unable to get the cellCb");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /*set sndL2Meas as applicatoin sent l2 meas info request*/
    cellCb->sndL2Meas = TRUE;
 
-   RETVALUE(ret);
+   return (ret);
 }/*RgSchMacL2MeasSendReq*/ 
 
 /** @brief This function inserts the MeasCb in to data base
@@ -460,25 +392,16 @@ RgInfL2MeasSndReq *measInfo;      /* Meas Req Info */
  *      -# ROK 
  *      -# RFAILED 
  */
-#ifdef ANSI
-PRIVATE S16 rgL2mInsertMeasCb
+static S16 rgL2mInsertMeasCb
 (
 RgCellCb       *cell,
 RgL2MeasCb     *measCb,
 RgInfL2MeasReq *measInfo
 )
-#else
-PRIVATE S16 rgL2mInsertMeasCb(cell, measCb, measInfo)
-RgCellCb       *cell;
-RgL2MeasCb     *measCb;
-RgInfL2MeasReq *measInfo;
-#endif
 {
-   CmLList   *lnk, *node;
-   RgL2MeasCb  *oldMeasCb;
-   U16         diffTime;
-
-   TRC3(rgL2mInsertMeasCb)
+   CmLList    *lnk, *node;
+   RgL2MeasCb *oldMeasCb;
+   uint16_t   diffTime;
 
       /* 
        * 1. Check if l2mList has any entries.
@@ -504,7 +427,7 @@ RgInfL2MeasReq *measInfo;
       {
          cell->l2mList.crnt = lnk;
          cmLListInsCrnt(&(cell->l2mList), node);
-         RETVALUE(ROK);
+         return ROK;
       }
       else
       {
@@ -513,7 +436,7 @@ RgInfL2MeasReq *measInfo;
    }  /* End of While */
 
    cmLListAdd2Tail(&(cell->l2mList), node);
-   RETVALUE(ROK);
+   return ROK;
 } /* rgL2mInsertMeasCb */
 
 /** @brief This function allocates memory from the heap
@@ -527,24 +450,16 @@ RgInfL2MeasReq *measInfo;
  * @param  [out] RgErrInfo      *err
  * @return  RgSchL2MeasCb *
  */
-#ifdef ANSI
-PRIVATE RgL2MeasCb * rgL2mAllocMeasCb
+static RgL2MeasCb * rgL2mAllocMeasCb
 (
 RgCellCb       *cell,
 RgInfL2MeasReq *measInfo,
 RgErrInfo      *err
 )
-#else
-PRIVATE RgL2MeasCb * rgL2mAllocMeasCb(cell, measInfo, err)
-RgCellCb       *cell;
-RgInfL2MeasReq *measInfo;
-RgErrInfo      *err;
-#endif
 {
    RgL2MeasCb       *measCb = NULLP;
    Inst             inst = cell->macInst - RG_INST_START;
 
-   TRC3(rgL2mAllocMeasCb)
 
       if((rgAllocSBuf(inst,(Data **)&(measCb),
                   sizeof(RgL2MeasCb))) == RFAILED)
@@ -553,12 +468,12 @@ RgErrInfo      *err;
                    "Allocation of RgL2MeasCb failed");
          err->errType  = RGERR_L2M_MEASREQ;
          err->errCause = RGERR_RAM_MEM_EXHAUST;
-         RETVALUE(NULLP);
+         return (NULLP);
       }
-   cmMemcpy((U8 *)&measCb->measReq, (U8 *)measInfo, sizeof(RgInfL2MeasReq));
+   memcpy(&measCb->measReq, measInfo, sizeof(RgInfL2MeasReq));
    RGCPYTIMEINFO(cell->crntTime, measCb->startTime);
 
-   RETVALUE(measCb);
+   return (measCb);
 } /* rgL2mAllocMeasCb */
 
 
@@ -576,27 +491,17 @@ RgErrInfo      *err;
  *      -# ROK
  *      -# RFAILED
  **/
-#ifdef ANSI
-PUBLIC S16 rgL2Meas
-(
-RgCellCb  *cell
-)
-#else
-PUBLIC S16 rgL2Meas(cell)
-RgCellCb  *cell;
-#endif
+S16 rgL2Meas(RgCellCb  *cell)
 {
    CmLList         *node   = NULLP;
    RgL2MeasCb      *measCb = NULLP;
-   RgInfL2MeasCfm  measCfm;
-   U8              idx = 0;
-   U8              qciVal = 0;
-   U32             measPrd; /*LTE_L2_MEAS_PHASE2*/
+   RgInfL2MeasCfm   measCfm;
+   uint8_t          idx = 0;
+   uint8_t          qciVal = 0;
+   uint32_t         measPrd; /*LTE_L2_MEAS_PHASE2*/
    CmLteTimingInfo  crntTime;
-   Inst           inst = cell->macInst - RG_INST_START;
+   Inst             inst = cell->macInst - RG_INST_START;
    
-   TRC3(rgL2Meas)
-
    node = cell->l2mList.first;
 
    while(node != NULLP)
@@ -616,7 +521,7 @@ RgCellCb  *cell;
       /*LTE_L2_MEAS_PHASE2*/
       if (cell->sndL2Meas || measPrd == measCb->measReq.timePrd)
       {
-         cmMemset((U8 *)&measCfm, 0, sizeof(RgInfL2MeasCfm));
+         memset(&measCfm, 0, sizeof(RgInfL2MeasCfm));
          for(idx = 0; idx < measCb->measReq.t.prbReq.numQci; idx++)
          {
             qciVal = measCb->measReq.t.prbReq.qci[idx];
@@ -652,7 +557,7 @@ RgCellCb  *cell;
          continue;
       } 
    }
-   RETVALUE(ROK);
+   return ROK;
 } /* rgL2MEas */
 
 #endif /* LTE_L2_MEAS */

@@ -47,12 +47,12 @@
 /* allocate and zero out a static buffer */
 #define SCH_ALLOC(_datPtr, _size)                               \
 {                                                               \
-   int _ret;                                                    \
+   uint8_t _ret;                                                    \
    _ret = SGetSBuf(SCH_MEM_REGION, SCH_POOL,                    \
           (Data **)&_datPtr, _size);                             \
    if(_ret == ROK)                                              \
    {                                                            \
-      cmMemset((U8*)_datPtr, 0, _size);                         \
+      memset(_datPtr, 0, _size);                         \
    }                                                            \
    else                                                         \
    {                                                            \
@@ -67,28 +67,34 @@
    {                                                            \
       SPutSBuf(SCH_MEM_REGION, SCH_POOL,                        \
             (Data *)_datPtr, _size);                            \
+      _datPtr = NULLP;                                          \
    }                                                            \
 }
                           
 /* Fill post structure for msg from SCH to MAC */
 #define FILL_PST_SCH_TO_MAC(_pst, _inst)                     \
 {                                                            \
-   _pst.srcProcId = SFndProcId();                            \
-   _pst.dstProcId = SFndProcId();                            \
-   _pst.srcEnt    = ENTRG;                                   \
-   _pst.dstEnt    = ENTRG;                                   \
+   _pst.srcProcId = ODU_GET_PROCID();                       \
+   _pst.dstProcId = ODU_GET_PROCID();                       \
+   _pst.srcEnt    = ENTMAC;                                  \
+   _pst.dstEnt    = ENTMAC;                                  \
    _pst.srcInst   = 1;                                       \
    _pst.dstInst   = 0;                                       \
    _pst.selector  = ODU_SELECTOR_TC;                         \
 }
 
+int8_t coresetIdxTable[MAX_CORESET_INDEX][4];
+int8_t searchSpaceIdxTable[MAX_SEARCH_SPACE_INDEX][4];
+
 /* functions declarations */
-void schAllocFreqDomRscType0(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain);
+void freqDomRscAllocType0(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain);
 uint16_t schCalcTbSize(uint16_t payLoadSize);
 uint16_t schCalcNumPrb(uint16_t tbSize, uint16_t mcs, uint8_t numSymbols);
+uint16_t schCalcTbSizeFromNPrb(uint16_t numPrb, uint16_t mcs, uint8_t numSymbols);
+SchUeCb* schGetUeCb(SchCellCb *cellCb, uint16_t crnti);
+void schInitUlSlot(SchUlSlotInfo *schUlSlotInfo);
+void schInitDlSlot(SchDlSlotInfo *schDlSlotInfo);
 
-extern int8_t coresetIdxTable[MAX_CORESET_INDEX][4];
-extern int8_t searchSpaceIdxTable[MAX_SEARCH_SPACE_INDEX][4];
 
 /**********************************************************************
   End of file

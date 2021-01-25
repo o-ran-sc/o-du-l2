@@ -110,34 +110,34 @@
  extern "C" {
 #endif
 
-PRIVATE S16 cmHashFuncBCD8   ARGS((CmHashListCp *hashListCp, U8 *key, 
-                                         U16 keyLen, U16 *idx));
+static S16 cmHashFuncBCD8   ARGS((CmHashListCp *hashListCp, uint8_t *key, 
+                                         uint16_t keyLen, uint16_t *idx));
 
-PRIVATE S16 cmHashFuncConId  ARGS((CmHashListCp *hashListCp, U8 *key, 
-                                         U16 keyLen, U16 *idx));
+static S16 cmHashFuncConId  ARGS((CmHashListCp *hashListCp, uint8_t *key, 
+                                         uint16_t keyLen, uint16_t *idx));
 
-PRIVATE S16 cmHashFuncU32Mod  ARGS((CmHashListCp *hashListCp, U8 *key, 
-                                         U16 keyLen, U16 *idx));
+static S16 cmHashFuncU32Mod  ARGS((CmHashListCp *hashListCp, uint8_t *key, 
+                                         uint16_t keyLen, uint16_t *idx));
 
-PRIVATE S16 cmHashFuncString  ARGS((CmHashListCp *hashListCp, U8 *key, 
-                                         U16 keyLen, U16 *idx));
+static S16 cmHashFuncString  ARGS((CmHashListCp *hashListCp, uint8_t *key, 
+                                         uint16_t keyLen, uint16_t *idx));
 
-PRIVATE S16 cmHashFuncDefault ARGS((CmHashListCp *hashListCp, U8 *key, 
-                                         U16 keyLen, U16 *idx));
+static S16 cmHashFuncDefault ARGS((CmHashListCp *hashListCp, uint8_t *key, 
+                                         uint16_t keyLen, uint16_t *idx));
 
-PRIVATE S16 cmHashFuncAnyKey  ARGS((CmHashListCp *hashListCp, U8 *key, 
-                                         U16 keyLen, U16 *idx));
+static S16 cmHashFuncAnyKey  ARGS((CmHashListCp *hashListCp, uint8_t *key, 
+                                         uint16_t keyLen, uint16_t *idx));
 
-PRIVATE S16 cmHashMatchKey ARGS((U8 *key1, U16 keyLen1, U8 *key2, U16 keyLen2));
+static S16 cmHashMatchKey ARGS((uint8_t *key1, uint16_t keyLen1, uint8_t *key2, uint16_t keyLen2));
 
-PRIVATE S16 cmListInsert   ARGS((CmListEnt *oldEntry, CmListEnt *newEntry));
+static S16 cmListInsert   ARGS((CmListEnt *oldEntry, CmListEnt *newEntry));
 
-PRIVATE S16 cmListDelete   ARGS((CmListEnt *entry));
+static S16 cmListDelete   ARGS((CmListEnt *entry));
 
 /* cm_hash_c_001.main_22: Fixing warnings on GCC compiler */
-PRIVATE S16 cmHashFuncMult24 ARGS((CmHashListCp *hashListCp, U8 *key, U16 keyLen, U16 *idx));
+static S16 cmHashFuncMult24 ARGS((CmHashListCp *hashListCp, uint8_t *key, uint16_t keyLen, uint16_t *idx));
 
-PRIVATE S16 cmHashFuncDirIdx ARGS((CmHashListCp *hashListCp, U8 *key, U16 keyLen, U16 *idx));
+static S16 cmHashFuncDirIdx ARGS((CmHashListCp *hashListCp, uint8_t *key, uint16_t keyLen, uint16_t *idx));
 
 #ifdef __cplusplus
  }
@@ -171,29 +171,20 @@ PRIVATE S16 cmHashFuncDirIdx ARGS((CmHashListCp *hashListCp, U8 *key, U16 keyLen
 *
 */
 
-#ifdef ANSI
-PRIVATE S16 cmHashFuncAnyKey
+static S16 cmHashFuncAnyKey
 (
-CmHashListCp       *hashListCp,        /* hash list control point */
-U8                 *key,               /* key string */
-U16                keyLen,             /* length of key string */
-U16                *idx                /* idx to return */
+CmHashListCp  *hashListCp,        /* hash list control point */
+uint8_t       *key,               /* key string */
+uint16_t      keyLen,             /* length of key string */
+uint16_t      *idx                /* idx to return */
 ) 
-#else
-PRIVATE S16 cmHashFuncAnyKey (hashListCp, key, keyLen, idx)
-CmHashListCp       *hashListCp;        /* hash list control point */
-U8                 *key;               /* key string */
-U16                keyLen;             /* length of key string */
-U16                *idx;               /* idx to return */
-#endif
 {
-   U32             a;                 /* hash variables */
-   U32             b;                 /* hash variables */         
-   U32             c;                 /* hash variables */
-   U32             len;               /* length */
+   uint32_t   a;                 /* hash variables */
+   uint32_t   b;                 /* hash variables */         
+   uint32_t   c;                 /* hash variables */
+   uint32_t   len;               /* length */
 
    /*cm_hash_c_001.main_23 : Fix for TRACE5 feature crash due to missing TRC MACRO*/
-   TRC2(cmHashFuncAnyKey);
    /* Set up the internal state */
    len = keyLen;    /* key length */
    a = 0x9e3779b9;  /* a = b = the golden ratio; an arbitrary value */
@@ -203,9 +194,9 @@ U16                *idx;               /* idx to return */
    /*---------------------------------------- handle most of the key */
    while (len >= 12)
    {
-      a += (key[0] +((U32)key[1]<<8) +((U32)key[2]<<16) +((U32)key[3]<<24));
-      b += (key[4] +((U32)key[5]<<8) +((U32)key[6]<<16) +((U32)key[7]<<24));
-      c += (key[8] +((U32)key[9]<<8) +((U32)key[10]<<16)+((U32)key[11]<<24));
+      a += (key[0] +((uint32_t)key[1]<<8) +((uint32_t)key[2]<<16) +((uint32_t)key[3]<<24));
+      b += (key[4] +((uint32_t)key[5]<<8) +((uint32_t)key[6]<<16) +((uint32_t)key[7]<<24));
+      c += (key[8] +((uint32_t)key[9]<<8) +((uint32_t)key[10]<<16)+((uint32_t)key[11]<<24));
       CM_HASH_MIX(a, b, c);
       key += 12; len -= 12;
    }
@@ -214,17 +205,17 @@ U16                *idx;               /* idx to return */
    c += keyLen;
    switch(len)              /* all the case statements fall through */
    {
-   case 11: c+=((U32)key[10]<<24);
-   case 10: c+=((U32)key[9]<<16);
-   case 9 : c+=((U32)key[8]<<8);
+   case 11: c+=((uint32_t)key[10]<<24);
+   case 10: c+=((uint32_t)key[9]<<16);
+   case 9 : c+=((uint32_t)key[8]<<8);
       /* the first byte of c is reserved for the keyLen */
-   case 8 : b+=((U32)key[7]<<24);
-   case 7 : b+=((U32)key[6]<<16);
-   case 6 : b+=((U32)key[5]<<8);
+   case 8 : b+=((uint32_t)key[7]<<24);
+   case 7 : b+=((uint32_t)key[6]<<16);
+   case 6 : b+=((uint32_t)key[5]<<8);
    case 5 : b+=key[4];
-   case 4 : a+=((U32)key[3]<<24);
-   case 3 : a+=((U32)key[2]<<16);
-   case 2 : a+=((U32)key[1]<<8);
+   case 4 : a+=((uint32_t)key[3]<<24);
+   case 3 : a+=((uint32_t)key[2]<<16);
+   case 2 : a+=((uint32_t)key[1]<<8);
    case 1 : a+=key[0];
      /* case 0: nothing left to add */
    }
@@ -233,11 +224,11 @@ U16                *idx;               /* idx to return */
 
    /* if nmbBins is a power of 2, use shift, else use division */
    if (hashListCp->binBitMask != CM_HASH_NOBITMASK)
-      *idx = (U16) (c & hashListCp->binBitMask);
+      *idx = (uint16_t) (c & hashListCp->binBitMask);
    else
-      *idx = (U16) (c % hashListCp->nmbBins);
+      *idx = (uint16_t) (c % hashListCp->nmbBins);
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmHashFuncAnyKey */
 
 
@@ -258,39 +249,30 @@ U16                *idx;               /* idx to return */
 *
 */
 
-#ifdef ANSI
-PRIVATE S16 cmHashFuncU32Mod
+static S16 cmHashFuncU32Mod
 (
-CmHashListCp       *hashListCp,        /* hash list control point */
-U8                 *key,               /* key string */
-U16                keyLen,             /* length of key string */
-U16                *idx                /* idx to return */
+CmHashListCp *hashListCp,        /* hash list control point */
+uint8_t      *key,               /* key string */
+uint16_t     keyLen,             /* length of key string */
+uint16_t     *idx                /* idx to return */
 ) 
-#else
-PRIVATE S16 cmHashFuncU32Mod (hashListCp, key, keyLen, idx)
-CmHashListCp       *hashListCp;        /* hash list control point */
-U8                 *key;               /* key string */
-U16                keyLen;             /* length of key string */
-U16                *idx;               /* idx to return */
-#endif
 {
-   U32             sum;                /* Sum of octets for hash function */
+   uint32_t  sum;                /* Sum of octets for hash function */
 
-   TRC2(cmHashFuncU32Mod);
 
    /* keyLen is marked Unused to remove compilation 
     * warnings. */
    UNUSED(keyLen);
 
-   sum = *((U32 *)key);
+   sum = *((uint32_t *)key);
 
    /* if nmbBins is a power of 2, use shift, else use division */
    if (hashListCp->binBitMask != CM_HASH_NOBITMASK)
-      *idx = (U16) (sum & hashListCp->binBitMask);
+      *idx = (uint16_t) (sum & hashListCp->binBitMask);
    else
-      *idx = (U16) (sum % hashListCp->nmbBins);
+      *idx = (uint16_t) (sum % hashListCp->nmbBins);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of cmHashFuncU32Mod () */
 
@@ -302,9 +284,9 @@ U16                *idx;               /* idx to return */
 *              key of type CM_HASH_KEYTYPE_BCD8. 
 *
 *       Steps:
-*              1. Converts the 8 BCD coded octets into 2 U32s 
-*              2. Adds 2 U32s to get one U32. 
-*              3. Apply U32Mod technique to get the index 
+*              1. Converts the 8 BCD coded octets into 2 uint32_ts 
+*              2. Adds 2 uint32_ts to get one uint32_t. 
+*              3. Apply uint32_tMod technique to get the index 
 *              4. Return the index
 *
 *       Note: 
@@ -319,59 +301,50 @@ U16                *idx;               /* idx to return */
 *
 */
 
-#ifdef ANSI
-PRIVATE S16 cmHashFuncBCD8
+static S16 cmHashFuncBCD8
 (
 CmHashListCp  *hashListCp,        /* hash list control point */
-U8            *key,               /* key string */
-U16           keyLen,             /* length of key string */
-U16           *idx                /* idx to return */
+uint8_t       *key,               /* key string */
+uint16_t      keyLen,             /* length of key string */
+uint16_t      *idx                /* idx to return */
 ) 
-#else
-PRIVATE S16 cmHashFuncBCD8 (hashListCp, key, keyLen, idx)
-CmHashListCp  *hashListCp;        /* hash list control point */
-U8            *key;               /* key string */
-U16           keyLen;             /* length of key string */
-U16           *idx;               /* idx to return */
-#endif
 {
-   U16      tmp16 = 0;
-   U32      firstU32 = 0;    /* First  U32 prepared for lower 4 octets */
-   U32      secondU32 = 0;   /* Second U32 prepared for higher 4 octets */
-   U32      sum;             /* Sum of the above 2 octets to get the index */
+   uint16_t  tmp16 = 0;
+   uint32_t  firstUInt32 = 0;    /* First  uint32_t prepared for lower 4 octets */
+   uint32_t  secondUInt32 = 0;   /* Second uint32_t prepared for higher 4 octets */
+   uint32_t  sum;             /* Sum of the above 2 octets to get the index */
 
-   TRC2(cmHashFuncBCD8);
 
    /* keyLen is marked Unused to remove compilation 
     * warnings. */
    UNUSED(keyLen);
 
-   /* Compute second U32 */
-   tmp16 = (U16) PutHiByte(tmp16, (U8) key[0]); 
-   tmp16 = (U16) PutLoByte(tmp16, (U8) key[1]);
-   secondU32 = (U32) PutHiWord(secondU32, (U16) tmp16); 
-   tmp16 = (U16) PutHiByte(tmp16, (U8) key[2]);
-   tmp16 = (U16) PutLoByte(tmp16, (U8) key[3]);
-   secondU32 = (U32) PutLoWord(secondU32, (U16) tmp16); 
+   /* Compute second uint32_t */
+   tmp16 = (uint16_t) PutHiByte(tmp16, (uint8_t) key[0]); 
+   tmp16 = (uint16_t) PutLoByte(tmp16, (uint8_t) key[1]);
+   secondUInt32 = (uint32_t) PutHiWord(secondUInt32, (uint16_t) tmp16); 
+   tmp16 = (uint16_t) PutHiByte(tmp16, (uint8_t) key[2]);
+   tmp16 = (uint16_t) PutLoByte(tmp16, (uint8_t) key[3]);
+   secondUInt32 = (uint32_t) PutLoWord(secondUInt32, (uint16_t) tmp16); 
 
 
-   /* Compute first U32 */
-   tmp16 = (U16) PutHiByte(tmp16, (U8) key[4]); 
-   tmp16 = (U16) PutLoByte(tmp16, (U8) key[5]);
-   firstU32 = (U32) PutHiWord(firstU32, (U16) tmp16); 
-   tmp16 = (U16) PutHiByte(tmp16, (U8) key[6]);
-   tmp16 = (U16) PutLoByte(tmp16, (U8) key[7]);
-   firstU32 = (U32) PutLoWord(firstU32, (U16) tmp16); 
+   /* Compute first uint32_t */
+   tmp16 = (uint16_t) PutHiByte(tmp16, (uint8_t) key[4]); 
+   tmp16 = (uint16_t) PutLoByte(tmp16, (uint8_t) key[5]);
+   firstUInt32 = (uint32_t) PutHiWord(firstUInt32, (uint16_t) tmp16); 
+   tmp16 = (uint16_t) PutHiByte(tmp16, (uint8_t) key[6]);
+   tmp16 = (uint16_t) PutLoByte(tmp16, (uint8_t) key[7]);
+   firstUInt32 = (uint32_t) PutLoWord(firstUInt32, (uint16_t) tmp16); 
 
-   sum = firstU32 + secondU32;
+   sum = firstUInt32 + secondUInt32;
 
    /* if nmbBins is a power of 2, use shift, else use division */
    if (hashListCp->binBitMask != CM_HASH_NOBITMASK)
-      *idx = (U16) (sum & hashListCp->binBitMask);
+      *idx = (uint16_t) (sum & hashListCp->binBitMask);
    else
-      *idx = (U16) (sum % hashListCp->nmbBins);
+      *idx = (uint16_t) (sum % hashListCp->nmbBins);
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmHashFuncBCD8 () */
 
 /*
@@ -394,26 +367,17 @@ U16           *idx;               /* idx to return */
 *
 */
 
-#ifdef ANSI
-PRIVATE S16 cmHashFuncString
+static S16 cmHashFuncString
 (
-CmHashListCp       *hashListCp,        /* hash list control point */
-U8                 *key,               /* key string */
-U16                keyLen,             /* length of key string */
-U16                *idx                /* idx to return */
+CmHashListCp *hashListCp,        /* hash list control point */
+uint8_t      *key,               /* key string */
+uint16_t     keyLen,             /* length of key string */
+uint16_t     *idx                /* idx to return */
 ) 
-#else
-PRIVATE S16 cmHashFuncString (hashListCp, key, keyLen, idx)
-CmHashListCp       *hashListCp;        /* hash list control point */
-U8                 *key;               /* key string */
-U16                keyLen;             /* length of key string */
-U16                *idx;               /* idx to return */
-#endif
 {
-   U16             cntr;               /* Index */
-   U32             sum;                /* Sum of octets for hash function */
+   uint16_t  cntr;               /* Index */
+   uint32_t  sum;                /* Sum of octets for hash function */
 
-   TRC2(cmHashFuncString)
 
    sum = 0;
 
@@ -424,11 +388,11 @@ U16                *idx;               /* idx to return */
 
    /* if nmbBins is a power of 2, use shift, else use division */
    if (hashListCp->binBitMask != CM_HASH_NOBITMASK)
-      *idx = (U16) (sum & hashListCp->binBitMask);
+      *idx = (uint16_t) (sum & hashListCp->binBitMask);
    else
-      *idx = (U16) (sum % hashListCp->nmbBins);
+      *idx = (uint16_t) (sum % hashListCp->nmbBins);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of cmHashFuncString () */
 
@@ -452,40 +416,31 @@ U16                *idx;               /* idx to return */
 *
 */
 
-#ifdef ANSI
-PRIVATE S16 cmHashFuncDefault
+static S16 cmHashFuncDefault
 (
-CmHashListCp       *hashListCp,        /* hash list control point */
-U8                 *key,               /* key string */
-U16                keyLen,             /* length of key string */
-U16                *idx                /* index to return */
+CmHashListCp *hashListCp,        /* hash list control point */
+uint8_t      *key,               /* key string */
+uint16_t     keyLen,             /* length of key string */
+uint16_t     *idx                /* index to return */
 ) 
-#else
-PRIVATE S16 cmHashFuncDefault(hashListCp, key, keyLen, idx)
-CmHashListCp       *hashListCp;        /* hash list control point */
-U8                 *key;               /* key string */
-U16                keyLen;             /* length of key string */
-U16                *idx;               /* index to return */
-#endif
 {
-   U32             sum;                /* sum of key string octets */
+   uint32_t  sum;                /* sum of key string octets */
 
-   TRC2(cmHashFuncDefault);
 
    /* add all bytes of the key */
    sum = 0;
    while (keyLen--)
-      sum += (U32) (*key++);
+      sum += (uint32_t) (*key++);
 
    /* compute index by dividing the range into the sum */
 
    /* if nmbBins is a power of 2, use shift, else use division */
    if (hashListCp->binBitMask != CM_HASH_NOBITMASK)
-      *idx = (U16) (sum & hashListCp->binBitMask);
+      *idx = (uint16_t) (sum & hashListCp->binBitMask);
    else
-      *idx = (U16) (sum % hashListCp->nmbBins);
+      *idx = (uint16_t) (sum % hashListCp->nmbBins);
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of cmHashFuncDefault */
 
@@ -521,41 +476,32 @@ U16                *idx;               /* index to return */
 *
 */
 
-#ifdef ANSI
-PRIVATE S16 cmHashFuncMult24
+static S16 cmHashFuncMult24
 (
-CmHashListCp       *hashListCp,        /* hash list control point */
-U8                 *key,               /* key string */
-U16                keyLen,             /* length of key string */
-U16                *idx                /* index to return */
+CmHashListCp *hashListCp,        /* hash list control point */
+uint8_t      *key,               /* key string */
+uint16_t     keyLen,             /* length of key string */
+uint16_t     *idx                /* index to return */
 ) 
-#else
-PRIVATE S16 cmHashFuncMult24(hashListCp, key, keyLen, idx)
-CmHashListCp       *hashListCp;        /* hash list control point */
-U8                 *key;               /* key string */
-U16                keyLen;             /* length of key string */
-U16                *idx;               /* index to return */
-#endif
 {
-   U32             prod;               /* (constant multiplier * key) */
-   U8              shift;              /* Bits to be shifted to get index */
+   uint32_t  prod;               /* (constant multiplier * key) */
+   uint8_t   shift;              /* Bits to be shifted to get index */
 
-   TRC2(cmHashFuncMult24);
 
    UNUSED(keyLen);
 
 #if (ERRCLASS & ERRCLS_DEBUG)
    /* error check on parameters */
    if (hashListCp->binBitMask == CM_HASH_NOBITMASK)
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
 
-   prod = CM_HASH_MULT24_CONST * *((U32 *)key);
+   prod = CM_HASH_MULT24_CONST * *((uint32_t *)key);
 
    shift = CM_HASH_MULT24_BITPOS - hashListCp->nmbBinBits;
-   *idx = ((U16) (prod & (hashListCp->binBitMask << shift))) >> shift;
+   *idx = ((uint16_t) (prod & (hashListCp->binBitMask << shift))) >> shift;
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmHashFuncMult24 */
 
 
@@ -569,7 +515,7 @@ U16                *idx;               /* index to return */
 *              key of type CM_HASH_KEYTYPE_CONID. 
 *
 *              This function can be used for keys that are an integer whose 
-*              size is U8, U16 or U32. Instead of adding all octets of the key,
+*              size is uint8_t, uint16_t or uint32_t. Instead of adding all octets of the key,
 *              this fn computes the "index" of the bin in which the entry
 *              needs to be inserted by taking a modulo of the integer with the 
 *              total number of bins.
@@ -584,53 +530,44 @@ U16                *idx;               /* index to return */
 *
 */
 
-#ifdef ANSI
-PRIVATE S16 cmHashFuncConId
+static S16 cmHashFuncConId
 (
-CmHashListCp       *hashListCp,        /* hash list control point */
-U8                 *key,               /* key string */
-U16                keyLen,             /* length of key string */
-U16                *idx                /* index to return */
+CmHashListCp *hashListCp,        /* hash list control point */
+uint8_t      *key,               /* key string */
+uint16_t     keyLen,             /* length of key string */
+uint16_t     *idx                /* index to return */
 ) 
-#else
-PRIVATE S16 cmHashFuncConId(hashListCp, key, keyLen, idx)
-CmHashListCp       *hashListCp;        /* hash list control point */
-U8                 *key;               /* key string */
-U16                keyLen;             /* length of key string */
-U16                *idx;               /* index to return */
-#endif
 {
 
-   TRC2(cmHashFuncConId);
 
    /* switch based on the length of the key */
    switch (keyLen)
    {
-      case CM_HASHKEYLEN_U32:
+      case CM_HASHKEYLEN_UINT32:
         if (hashListCp->binBitMask != CM_HASH_NOBITMASK)
-         *idx = (U16) (((U32) *((U32 *)key)) & hashListCp->binBitMask);
+         *idx = (uint16_t) (((uint32_t) *((uint32_t *)key)) & hashListCp->binBitMask);
         else
-         *idx = (U16) (((U32) *((U32 *)key)) % hashListCp->nmbBins);  
+         *idx = (uint16_t) (((uint32_t) *((uint32_t *)key)) % hashListCp->nmbBins);  
         break;
 
-      case CM_HASHKEYLEN_U16:
+      case CM_HASHKEYLEN_UINT16:
          if (hashListCp->binBitMask != CM_HASH_NOBITMASK)
-           *idx = (U16) (((U16)*((U16 *)key)) & hashListCp->binBitMask);
+           *idx = (uint16_t) (((uint16_t)*((uint16_t *)key)) & hashListCp->binBitMask);
          else
-           *idx = (U16) (((U16)*((U16 *)key)) % hashListCp->nmbBins);
+           *idx = (uint16_t) (((uint16_t)*((uint16_t *)key)) % hashListCp->nmbBins);
          break;
 
-      case CM_HASHKEYLEN_U8:
+      case CM_HASHKEYLEN_UINT8:
          if (hashListCp->binBitMask != CM_HASH_NOBITMASK)
-           *idx = (U16) (((U8)*((U8 *)key)) & hashListCp->binBitMask);
+           *idx = (uint16_t) (((uint8_t)*((uint8_t *)key)) & hashListCp->binBitMask);
          else
-           *idx = (U16) (((U8)*((U8 *)key)) % hashListCp->nmbBins);
+           *idx = (uint16_t) (((uint8_t)*((uint8_t *)key)) % hashListCp->nmbBins);
          break;
 
       default:
-         RETVALUE(RFAILED);
+         return RFAILED;
    }
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of cmHashFuncConId */
 
@@ -653,30 +590,21 @@ U16                *idx;               /* index to return */
 *
 */
 
-#ifdef ANSI
-PRIVATE S16 cmHashFuncDirIdx
+static S16 cmHashFuncDirIdx
 (
-CmHashListCp       *hashListCp,        /* hash list control point */
-U8                 *key,               /* key string */
-U16                keyLen,             /* length of key string */
-U16                *idx                /* index to return */
+CmHashListCp *hashListCp,        /* hash list control point */
+uint8_t      *key,               /* key string */
+uint16_t     keyLen,             /* length of key string */
+uint16_t     *idx                /* index to return */
 ) 
-#else
-PRIVATE S16 cmHashFuncDirIdx(hashListCp, key, keyLen, idx)
-CmHashListCp       *hashListCp;        /* hash list control point */
-U8                 *key;               /* key string */
-U16                keyLen;             /* length of key string */
-U16                *idx;               /* index to return */
-#endif
 {
-   TRC2(cmHashFuncDirIdx);
 
    UNUSED(hashListCp);
    UNUSED(keyLen);
 
-   *idx = *((U16 *) key);
+   *idx = *((uint16_t *) key);
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmHashFuncDirIdx */
 
   
@@ -695,30 +623,21 @@ U16                *idx;               /* index to return */
 *
 */
 
-#ifdef ANSI
-PRIVATE S16 cmHashMatchKey
+static S16 cmHashMatchKey
 (
-U8 *key1,                         /* first key string */
-U16 keyLen1,                      /* length of first key string */
-U8 *key2,                         /* second key string */
-U16 keyLen2                       /* length of second key string */
+uint8_t *key1,                         /* first key string */
+uint16_t keyLen1,                      /* length of first key string */
+uint8_t *key2,                         /* second key string */
+uint16_t keyLen2                       /* length of second key string */
 ) 
-#else
-PRIVATE S16 cmHashMatchKey(key1, keyLen1, key2, keyLen2)
-U8 *key1;                         /* first key string */
-U16 keyLen1;                      /* length of first key string */
-U8 *key2;                         /* second key string */
-U16 keyLen2;                      /* length of second key string */
-#endif
 {
-   TRC2(cmHashMatchKey);
 
    /* compare key lengths */
    if (keyLen1 != keyLen2)
-      RETVALUE(RFAILED);
+      return RFAILED;
 
    /* compare key strings */
-   RETVALUE(cmMemcmp(key1, key2, (PTR) keyLen1));
+   return (cmMemcmp(key1, key2, (PTR) keyLen1));
 } /* end of cmHashMatchKey */
 
   
@@ -736,26 +655,19 @@ U16 keyLen2;                      /* length of second key string */
 *
 */
 
-#ifdef ANSI
-PRIVATE S16 cmListInsert
+static S16 cmListInsert
 (
 CmListEnt *oldEntry,                    /* add new entry after this entry */
 CmListEnt *newEntry                     /* new entry to add */
 ) 
-#else
-PRIVATE S16 cmListInsert(oldEntry, newEntry) 
-CmListEnt *oldEntry;                    /* add new entry after this entry */
-CmListEnt *newEntry;                    /* new entry to add */
-#endif
 {
-   TRC2(cmListInsert);
 
    newEntry->next         = oldEntry->next;
    newEntry->prev         = oldEntry;
    oldEntry->next         = newEntry;
    (newEntry->next)->prev = newEntry;
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmListInsert */
 
   
@@ -773,20 +685,14 @@ CmListEnt *newEntry;                    /* new entry to add */
 *
 */
 
-#ifdef ANSI
-PRIVATE S16 cmListDelete
+static S16 cmListDelete
 (
 CmListEnt *entry                        /* entry to delete */
 ) 
-#else
-PRIVATE S16 cmListDelete(entry) 
-CmListEnt *entry;                       /* entry to delete */
-#endif
 {
-   TRC2(cmListDelete);
 
    if (entry == NULLP) 
-      RETVALUE(RFAILED);
+      return RFAILED;
 
    if (entry->prev != NULLP)
       (entry->prev)->next = entry->next;
@@ -794,7 +700,7 @@ CmListEnt *entry;                       /* entry to delete */
    if (entry->next != NULLP)
       (entry->next)->prev = entry->prev;
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmListDelete */
 
 
@@ -835,41 +741,29 @@ CmListEnt *entry;                       /* entry to delete */
 *       File:  cm_hash.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmHashListInit
+S16 cmHashListInit
 (
 CmHashListCp *hashListCp,  /* hash list to initialize */
-U16          nmbBins,      /* number of hash list bins */
-U16          offset,       /* offset of CmHashListEnt in entries */
+uint16_t     nmbBins,      /* number of hash list bins */
+uint16_t     offset,       /* offset of CmHashListEnt in entries */
 Bool         dupFlg,       /* allow duplicate keys */
-U16          keyType,      /* key type for selecting hash fn */
+uint16_t     keyType,      /* key type for selecting hash fn */
 Region       region,       /* memory region to allocate bins */
 Pool         pool          /* memory pool to allocate bins */
 )
-#else
-PUBLIC S16 cmHashListInit(hashListCp, nmbBins, offset, dupFlg, keyType, region, pool)
-CmHashListCp *hashListCp;  /* hash list to initialize */
-U16          nmbBins;      /* number of hash list bins */
-U16          offset;       /* offset of CmHashListEnt in entries */
-Bool         dupFlg;       /* allow duplicate keys */
-U16          keyType;      /* key type for selecting hash fn */
-Region       region;       /* memory region to allocate bins */
-Pool         pool;         /* memory pool to allocate bins */
-#endif
 {
-   U16 i;
+   uint16_t i;
 #ifndef CM_MT_HASH_BIN
    CmListEnt *hl;
 #else
    CmListBinEnt *hl;
 #endif
 
-   TRC2(cmHashListInit);
 
 #if (ERRCLASS & ERRCLS_DEBUG)
    /* error check on parameters */
    if (hashListCp == NULLP) 
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
 
    /* initialize control point fields */
@@ -893,7 +787,7 @@ Pool         pool;         /* memory pool to allocate bins */
       case CM_HASH_KEYTYPE_MULT24:
          /* return failure if number of bins is not a power of 2 */
          if (((nmbBins) & (nmbBins - 1)) != 0)
-            RETVALUE (RFAILED);
+            return  (RFAILED);
 
          hashListCp->hashFunc = cmHashFuncMult24;
          break;
@@ -906,7 +800,7 @@ Pool         pool;         /* memory pool to allocate bins */
          hashListCp->hashFunc = cmHashFuncString;
          break;
 
-      case CM_HASH_KEYTYPE_U32MOD:
+      case CM_HASH_KEYTYPE_UINT32_MOD:
          hashListCp->hashFunc = cmHashFuncU32Mod;
          break;
 
@@ -934,11 +828,11 @@ Pool         pool;         /* memory pool to allocate bins */
 #ifndef CM_MT_HASH_BIN
       if (SGetSBuf(region, pool, (Data **) &hashListCp->hl, 
                    (Size) (nmbBins * sizeof(CmListEnt))) != ROK)
-         RETVALUE(RFAILED);
+         return RFAILED;
 #else
       if (SGetSBuf(region, pool, (Data **) &hashListCp->hl, 
                    (Size) (nmbBins * sizeof(CmListBinEnt))) != ROK)
-         RETVALUE(RFAILED);
+         return RFAILED;
 #endif
 
       /* initialize bin pointers */
@@ -962,7 +856,7 @@ Pool         pool;         /* memory pool to allocate bins */
       /* initialize bin bit mask */
       if (((nmbBins) & (nmbBins - 1)) == 0)
       {
-         U16   binBitMask;
+         uint16_t   binBitMask;
 
          /* number of bins is a power of 2 */
          hashListCp->binBitMask = nmbBins - 1;
@@ -974,7 +868,7 @@ Pool         pool;         /* memory pool to allocate bins */
       }
    }
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmHashListInit */
 
 
@@ -994,22 +888,16 @@ Pool         pool;         /* memory pool to allocate bins */
 *       File:  cm_hash.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmHashListDeinit
+S16 cmHashListDeinit
 (
 CmHashListCp *hashListCp   /* hash list to deinitialize */
 )
-#else
-PUBLIC S16 cmHashListDeinit(hashListCp)
-CmHashListCp *hashListCp;  /* hash list to deinitialize */
-#endif
 {
-   TRC2(cmHashListDeinit);
 
 #if (ERRCLASS & ERRCLS_DEBUG)
    /* error check on parameters */
    if (hashListCp == NULLP) 
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
 
    /* deallocate memory for bins */
@@ -1038,7 +926,7 @@ CmHashListCp *hashListCp;  /* hash list to deinitialize */
    hashListCp->keyType = CM_HASH_KEYTYPE_DEF;
    hashListCp->hashFunc = NULLP;
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmHashListDeinit */
 
   
@@ -1063,33 +951,24 @@ CmHashListCp *hashListCp;  /* hash list to deinitialize */
 *
 */
 
-#ifdef ANSI
-PUBLIC S16 cmHashListInsert
+S16 cmHashListInsert
 (
 CmHashListCp *hashListCp,  /* hash list to add to */
 PTR          entry,        /* entry to add */
-U8           *key,         /* pointer to key */
-U16          keyLen        /* length of key */
+uint8_t      *key,         /* pointer to key */
+uint16_t     keyLen        /* length of key */
 )
-#else
-PUBLIC S16 cmHashListInsert(hashListCp, entry, key, keyLen)
-CmHashListCp *hashListCp;  /* hash list to add to */
-PTR          entry;        /* entry to add */
-U8           *key;         /* pointer to key */
-U16          keyLen;       /* length of key */
-#endif
 {
    CmHashListEnt *hashListEnt;    /* pointer to hash list entry header */
    PTR dupEntry;                  /* pointer to entry with duplicate key */
-   U16 idx;                       /* index for insertion into hash list */
+   uint16_t idx;                       /* index for insertion into hash list */
 
-   TRC2(cmHashListInsert);
 
 #if (ERRCLASS & ERRCLS_DEBUG)
    /* error check on parameters */
    if ((hashListCp == NULLP) || (entry == NULLP) || 
        (key == NULLP) || (keyLen == 0))
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
 
    /* check for duplicates */
@@ -1097,11 +976,11 @@ U16          keyLen;       /* length of key */
    {
       /* no duplicates allowed, check if key already exists */
       if (cmHashListFind(hashListCp, key, keyLen, 0, &dupEntry) == ROK)
-         RETVALUE(ROKDUP);
+         return (ROKDUP);
    }
 
    /* get pointer to hash list entry header */
-   hashListEnt = (CmHashListEnt *) (((U8 *) entry) + hashListCp->offset);
+   hashListEnt = (CmHashListEnt *) (((uint8_t *) entry) + hashListCp->offset);
 
    /* initialize hash list entry header */
    hashListEnt->list.next = NULLP;
@@ -1111,7 +990,7 @@ U16          keyLen;       /* length of key */
 
    /* compute index for insertion */
    if ((*hashListCp->hashFunc)(hashListCp, key, keyLen, &idx) != ROK)
-      RETVALUE(RFAILED);
+      return RFAILED;
 
    hashListEnt->hashVal   = idx;
 
@@ -1125,7 +1004,7 @@ U16          keyLen;       /* length of key */
    hashListCp->hl[idx].nmbEnt++;
 #endif /* #ifndef CM_MT_HASH_BIN */
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmHashListInsert */
 
   
@@ -1147,44 +1026,37 @@ U16          keyLen;       /* length of key */
 *
 */
 
-#ifdef ANSI
-PUBLIC S16 cmHashListDelete
+S16 cmHashListDelete
 (
 CmHashListCp *hashListCp,  /* hash list to delete from */
 PTR          entry         /* entry to delete */
 )
-#else
-PUBLIC S16 cmHashListDelete(hashListCp, entry)
-CmHashListCp *hashListCp;  /* hash list to delete from */
-PTR          entry;        /* entry to delete */
-#endif
 {
    CmHashListEnt *hashListEnt;    /* pointer to hash list entry header */
 #ifdef CM_MT_HASH_BIN
-   U16 idx;           /* index for selecting the right hash list bin */
+   uint16_t idx;           /* index for selecting the right hash list bin */
 #endif
 
-   TRC2(cmHashListDelete);
 
 #if (ERRCLASS & ERRCLS_DEBUG)
    /* error check on parameters */
    if ((hashListCp == NULLP) || (entry == NULLP)) 
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
 
    /* get pointer to hash list entry header */
-   hashListEnt = (CmHashListEnt *) (((U8 *) entry) + hashListCp->offset);
+   hashListEnt = (CmHashListEnt *) (((uint8_t *) entry) + hashListCp->offset);
 
    /* check if entry is already deleted if yes then return OK */
    if((hashListEnt->list.next == NULLP) ||
       (hashListEnt->list.prev == NULLP))
-      RETVALUE(ROK);
+      return ROK;
 
 #ifdef CM_MT_HASH_BIN
    /* compute index for insertion */
    if ((*hashListCp->hashFunc)(hashListCp, hashListEnt->key, 
                               hashListEnt->keyLen, &idx) != ROK)
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif /* #ifdef CM_MT_HASH_BIN */
 
    /* delete entry from list */
@@ -1205,7 +1077,7 @@ PTR          entry;        /* entry to delete */
    hashListCp->hl[idx].nmbEnt--;
 #endif /* #ifndef CM_MT_HASH_BIN */
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmHashListDelete */
 
   
@@ -1231,46 +1103,36 @@ PTR          entry;        /* entry to delete */
 *
 */
 
-#ifdef ANSI
-PUBLIC S16 cmHashListFind
+S16 cmHashListFind
 (
 CmHashListCp *hashListCp,  /* hash list to search */
-U8           *key,         /* pointer to key */
-U16          keyLen,       /* length of key */
-U16          seqNmb,       /* used in case of duplicate keys */
+uint8_t      *key,         /* pointer to key */
+uint16_t     keyLen,       /* length of key */
+uint16_t     seqNmb,       /* used in case of duplicate keys */
 PTR          *entry        /* entry to be returned */
 )
-#else
-PUBLIC S16 cmHashListFind(hashListCp, key, keyLen, seqNmb, entry)
-CmHashListCp *hashListCp;  /* hash list to search */
-U8           *key;         /* pointer to key */
-U16          keyLen;       /* length of key */
-U16          seqNmb;       /* used in case of duplicate keys */
-PTR          *entry;       /* entry to be returned */
-#endif
 {
    CmHashListEnt *hashListEnt;    /* pointer to hash list entry header */
 #ifndef CM_MT_HASH_BIN
    CmListEnt *hashListBin;        /* pointer to hash list bin */
 #else
    CmListBinEnt *hashListBin;        /* pointer to hash list bin */
-   U16 entCnt=0;                     /* counter for number of entries */
+   uint16_t entCnt=0;                     /* counter for number of entries */
 #endif
-   U16 i;                         /* counter for sequence number */
-   U16 idx;                       /* index for insertion into hash list */
+   uint16_t i;                         /* counter for sequence number */
+   uint16_t idx;                       /* index for insertion into hash list */
 
-   TRC2(cmHashListFind);
 
 #if (ERRCLASS & ERRCLS_DEBUG)
    /* error check on parameters */
    if ((hashListCp == NULLP) || (key == NULLP) || 
        (keyLen == 0) || (entry == NULLP))
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
 
    /* compute hash table index */
    if ((*hashListCp->hashFunc)(hashListCp, key, keyLen, &idx) != ROK)
-      RETVALUE(RFAILED);
+      return RFAILED;
 
    /* search this bin for exact key match */
    hashListBin = &hashListCp->hl[idx];
@@ -1289,15 +1151,15 @@ PTR          *entry;       /* entry to be returned */
           == ROK)
       {
          /* matching key */
-         *entry = (PTR) (((U8 *) hashListEnt) - hashListCp->offset);
+         *entry = (PTR) (((uint8_t *) hashListEnt) - hashListCp->offset);
 
          /* check for duplicates */
          if (!hashListCp->dupFlg)
-            RETVALUE(ROK);
+            return ROK;
 
          /* for duplicate key, check sequence number */
          if (i++ == seqNmb)
-            RETVALUE(ROK);
+            return ROK;
       }
 
       /* go to next entry */
@@ -1305,7 +1167,7 @@ PTR          *entry;       /* entry to be returned */
    }
 
    /* no matching key found */
-   RETVALUE(RFAILED);
+   return RFAILED;
 } /* end of cmHashListFind */
 
 
@@ -1337,19 +1199,12 @@ PTR          *entry;       /* entry to be returned */
 *       File:  cm_hash.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmHashListGetNext
+S16 cmHashListGetNext
 (
 CmHashListCp *hashListCp,    /* hash list to get from */
 PTR          prevEnt,        /* previous entry */
 PTR          *entry          /* entry to be returned */
 )
-#else
-PUBLIC S16 cmHashListGetNext(hashListCp, prevEnt, entry)
-CmHashListCp *hashListCp;    /* hash list to get from */
-PTR          prevEnt;        /* previous entry */
-PTR          *entry;         /* entry to be returned */
-#endif
 {
 #ifndef CM_MT_HASH_BIN
    CmListEnt     *hashListBin;   /* temporary hash list bin pointer */
@@ -1358,14 +1213,13 @@ PTR          *entry;         /* entry to be returned */
 #endif
    CmHashListEnt *hashListEnt;   /* temporary hash list entry pointer */
    CmHashListEnt *prevListEnt;   /* previous hash list entry pointer */
-   U16           i;              /* hash list counter */
+   uint16_t           i;              /* hash list counter */
 
-   TRC2(cmHashListGetNext);
 
 #if (ERRCLASS & ERRCLS_DEBUG)
    /* error check on parameters */
    if ((hashListCp == NULLP) || (entry == NULLP))
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
 
    /* check if need to get first entry */
@@ -1384,19 +1238,19 @@ PTR          *entry;         /* entry to be returned */
             hashListEnt = (CmHashListEnt *) hashListCp->hl[i].next;
 
             /* requested entry is in nxtEnt */
-            *entry = (PTR) (((U8 *) hashListEnt) - hashListCp->offset);
+            *entry = (PTR) (((uint8_t *) hashListEnt) - hashListCp->offset);
 
-            RETVALUE(ROK);
+            return ROK;
          }
 
       /* no more entries */
-      RETVALUE(ROKDNA);
+      return (ROKDNA);
    }
 
    /* use previous entry to find next entry */
 
    /* get pointer to previous hash list entry header */
-   prevListEnt = (CmHashListEnt *) (((U8 *) prevEnt) + hashListCp->offset);
+   prevListEnt = (CmHashListEnt *) (((uint8_t *) prevEnt) + hashListCp->offset);
 
    /* get index of previous entry */
    i = prevListEnt->hashVal;
@@ -1410,9 +1264,9 @@ PTR          *entry;         /* entry to be returned */
       if (prevListEnt != (CmHashListEnt *) hashListBin)
       {
          /* found next entry */
-         *entry = (PTR) (((U8 *) prevListEnt) - hashListCp->offset);
+         *entry = (PTR) (((uint8_t *) prevListEnt) - hashListCp->offset);
 
-         RETVALUE(ROK);
+         return ROK;
       }
 
       /* no more entries in this bin, go to next bin, check if more bins */
@@ -1426,7 +1280,7 @@ PTR          *entry;         /* entry to be returned */
    }
 
    /* no more entries */
-   RETVALUE(ROKDNA);
+   return (ROKDNA);
 } /* end of cmHashListGetNext */
 
 #ifdef CM_MT_HASH_BIN
@@ -1455,32 +1309,23 @@ PTR          *entry;         /* entry to be returned */
 *       File:  cm_hash.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmHashListBinGetNextEntry
+S16 cmHashListBinGetNextEntry
 (
 CmHashListCp *hashListCp,    /* hash list to get from */
-U16          binIdx,         /* Bin Index to retreive the entry */
+uint16_t     binIdx,         /* Bin Index to retreive the entry */
 PTR          prevEnt,        /* previous entry */
 PTR          *entry          /* entry to be returned */
 )
-#else
-PUBLIC S16 cmHashListBinGetNextEntry(hashListCp, binIdx, prevEnt, entry)
-CmHashListCp *hashListCp;    /* hash list to get from */
-U16          binIdx;         /* Bin Index to retreive the entry */
-PTR          prevEnt;        /* previous entry */
-PTR          *entry;         /* entry to be returned */
-#endif
 {
    CmListBinEnt  *hashListBin;   /* temporary hash list bin pointer */
    CmHashListEnt *hashListEnt;   /* temporary hash list entry pointer */
    CmHashListEnt *prevListEnt;   /* previous hash list entry pointer */
 
-   TRC2(cmHashListBinGetNextEntry);
 
 #if (ERRCLASS & ERRCLS_DEBUG)
    /* error check on parameters */
    if ((hashListCp == NULLP) || (entry == NULLP))
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
 
    /* check if need to get first entry */
@@ -1494,19 +1339,19 @@ PTR          *entry;         /* entry to be returned */
          hashListEnt = (CmHashListEnt *) hashListCp->hl[binIdx].next;
 
          /* requested entry is in nxtEnt */
-         *entry = (PTR) (((U8 *) hashListEnt) - hashListCp->offset);
+         *entry = (PTR) (((uint8_t *) hashListEnt) - hashListCp->offset);
 
-         RETVALUE(ROK);
+         return ROK;
       }
 
       /* no more entries */
-      RETVALUE(ROKDNA);
+      return (ROKDNA);
    }
 
    /* use previous entry to find next entry */
 
    /* get pointer to previous hash list entry header */
-   prevListEnt = (CmHashListEnt *) (((U8 *) prevEnt) + hashListCp->offset);
+   prevListEnt = (CmHashListEnt *) (((uint8_t *) prevEnt) + hashListCp->offset);
 
    /* set pointers to get next entry */
    hashListBin = &hashListCp->hl[binIdx];
@@ -1516,13 +1361,13 @@ PTR          *entry;         /* entry to be returned */
    if (prevListEnt != (CmHashListEnt *) hashListBin)
    {
       /* found next entry */
-      *entry = (PTR) (((U8 *) prevListEnt) - hashListCp->offset);
+      *entry = (PTR) (((uint8_t *) prevListEnt) - hashListCp->offset);
 
-      RETVALUE(ROK);
+      return ROK;
    }
 
    /* no more entries */
-   RETVALUE(ROKDNA);
+   return (ROKDNA);
 } /* end of cmHashListBinGetNextEntry */
 #endif
 
@@ -1546,32 +1391,24 @@ PTR          *entry;         /* entry to be returned */
 *       File:  cm_hash.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmHashListQuery
+S16 cmHashListQuery
 (
 CmHashListCp *hashListCp,    /* hash list to query */
-U8           queryType,      /* type of query */
-U16          *result         /* result of query */
+uint8_t      queryType,      /* type of query */
+uint16_t     *result         /* result of query */
 )
-#else
-PUBLIC S16 cmHashListQuery(hashListCp, queryType, result)
-CmHashListCp *hashListCp;    /* hash list to query */
-U8           queryType;      /* type of query */
-U16          *result;        /* result of query */
-#endif
 {
 #ifdef CM_MT_HASH_BIN
-   U8       i;
+   uint8_t       i;
 #endif
 
-   TRC2(cmHashListQuery);
 
    /* deal with queries that do not need hashListCp */
 
 #if (ERRCLASS & ERRCLS_DEBUG)
    /* error check on parameters */
    if (result == NULLP)
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
 
    /* respond depending on query type */
@@ -1579,11 +1416,11 @@ U16          *result;        /* result of query */
    {
       /* storage for each bin */
 #ifndef CM_MT_HASH_BIN
-      *result = (U16) sizeof(CmListEnt);
+      *result = (uint16_t) sizeof(CmListEnt);
 #else
-      *result = (U16) sizeof(CmListBinEnt);
+      *result = (uint16_t) sizeof(CmListBinEnt);
 #endif
-      RETVALUE(ROK);
+      return ROK;
    }
 
    /* deal with queries that do need hashListCp */
@@ -1591,7 +1428,7 @@ U16          *result;        /* result of query */
 #if (ERRCLASS & ERRCLS_DEBUG)
    /* error check on parameters */
    if (hashListCp == NULLP)
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
 
    /* respond depending on query type */
@@ -1599,7 +1436,7 @@ U16          *result;        /* result of query */
    {
       case CM_HASH_QUERYTYPE_ENTRIES:   /* current number of entries */
 #ifndef CM_MT_HASH_BIN
-         *result = (U16) hashListCp->nmbEnt;
+         *result = (uint16_t) hashListCp->nmbEnt;
 #else
          *result = 0;
          for (i=0; i < hashListCp->nmbBins; i++)
@@ -1607,30 +1444,30 @@ U16          *result;        /* result of query */
             *result += hashListCp->hl[i].nmbEnt;
          }
 #endif
-         RETVALUE(ROK);
+         return ROK;
 
       case CM_HASH_QUERYTYPE_BINS:      /* number of bins */
-         *result = (U16) hashListCp->nmbBins;
-         RETVALUE(ROK);
+         *result = (uint16_t) hashListCp->nmbBins;
+         return ROK;
 
       case CM_HASH_QUERYTYPE_OFFSET:    /* offset of CmHashListEnt in entries */
-         *result = (U16) hashListCp->offset;
-         RETVALUE(ROK);
+         *result = (uint16_t) hashListCp->offset;
+         return ROK;
 
       case CM_HASH_QUERYTYPE_DUPFLG:    /* allow duplicate keys */
-         *result = (U16) hashListCp->dupFlg;
-         RETVALUE(ROK);
+         *result = (uint16_t) hashListCp->dupFlg;
+         return ROK;
 
       case CM_HASH_QUERYTYPE_KEYTYPE:   /* key type for selecting hash functions */
-         *result = (U16) hashListCp->keyType;
-         RETVALUE(ROK);
+         *result = (uint16_t) hashListCp->keyType;
+         return ROK;
 
       default:                          /* process other query types */
          break;
    }
 
    /* illegal query type */
-   RETVALUE(RFAILED);
+   return RFAILED;
 } /* end of cmHashListQuery */
 
 #ifdef HASH_OPEN_ADDRESSING
@@ -1657,21 +1494,13 @@ U16          *result;        /* result of query */
 *
 */
 
-#ifdef ANSI
-PUBLIC S16 cmHashListOAInsert
+S16 cmHashListOAInsert
 (
 CmHashListCp *hashListCp,  /* hash table to add to */
 PTR          entry,        /* entry to add */
-U8           *key,         /* pointer to key */
-U16          keyLen        /* length of key */
+uint8_t      *key,         /* pointer to key */
+uint16_t     keyLen        /* length of key */
 )
-#else
-PUBLIC S16 cmHashListOAInsert(hashListCp, entry, key, keyLen)
-CmHashListCp *hashListCp;  /* hash table to add to */
-PTR          entry;        /* entry to add */
-U8           *key;         /* pointer to key */
-U16          keyLen;       /* length of key */
-#endif
 {
 /* cm_hash_c_001.main_21. Modify. Compilation Issue resolved. */
 #ifndef CM_MT_HASH_BIN
@@ -1680,19 +1509,18 @@ U16          keyLen;       /* length of key */
    CmListBinEnt  *hashBin;        /* temporary hash list bin pointer */
 #endif
    CmHashListEnt *hashListEnt;    /* pointer to hash list entry header */
-   U16 idx;                       /* index for insertion into hash list */
-   U16 hashSize;                  /* hash size */
-   U16 i;
+   uint16_t idx;                       /* index for insertion into hash list */
+   uint16_t hashSize;                  /* hash size */
+   uint16_t i;
    /* cm_hash_c_001.main_21. Modify. Compilation Issue resolved. */
-   U16 nmbEnt;
+   uint16_t nmbEnt;
 
-   TRC2(cmHashListOAInsert);
 
 #if (ERRCLASS & ERRCLS_DEBUG)
    /* error check on parameters */
    if ((hashListCp == NULLP) || (entry == NULLP) || 
        (key == NULLP) || (keyLen == 0))
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
 
 #ifndef CM_MT_HASH_BIN
@@ -1706,10 +1534,10 @@ U16          keyLen;       /* length of key */
 #endif
    /* check if table is full */
    if (hashListCp->nmbBins == nmbEnt)
-      RETVALUE(ROUTRES);
+      return (ROUTRES);
 
    /* get pointer to hash list entry header */
-   hashListEnt = (CmHashListEnt *) (((U8 *) entry) + hashListCp->offset);
+   hashListEnt = (CmHashListEnt *) (((uint8_t *) entry) + hashListCp->offset);
 
    /* initialize hash list entry header */
    hashListEnt->list.next = NULLP;
@@ -1719,7 +1547,7 @@ U16          keyLen;       /* length of key */
 
    /* compute index for insertion */
    if ((*hashListCp->hashFunc)(hashListCp, key, keyLen, &idx) != ROK)
-      RETVALUE(RFAILED);
+      return RFAILED;
 
    /*
     *  find an empty bin
@@ -1741,7 +1569,7 @@ U16          keyLen;       /* length of key */
 
    /* insert into list */
    if (cmListInsert(hashBin->prev, &hashListEnt->list) != ROK)
-      RETVALUE(RFAILED);
+      return RFAILED;
 
    hashListEnt->hashVal   = idx;
 
@@ -1752,7 +1580,7 @@ U16          keyLen;       /* length of key */
    hashBin->nmbEnt++;
 #endif
 
-   RETVALUE(ROK);
+   return ROK;
 } /* end of cmHashListOAInsert */
 
 

@@ -33,19 +33,9 @@ I_OPTS+=-I$(ROOT_DIR)/src/du_app
 I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/common
 
 #-------------------------------------------------------------#
-#User macros (to be modified)
-#-------------------------------------------------------------#
-#CCrmFLAGS=-DLRM_LWLC -DRMU_LWLC -URMU_NPLC -DRGM_LWLC -DLWLCSMRMMILRM -DLCSMRMMILRM -DSM -DRM_INTF
-#CCnlFlags=-DLWLCSMSONILNL -DNLU_LWLC -DLCSMSONILNL -DNLU_TC -DTCSMSONILNL -DNL
-#CCcmFLAGS=-DSS_MT_TMR -DSS_FLOAT  -DRGR_V1 -DLSZV1 -DVE_SB_SCTP $(CCrmFLAGS)
-#CCsmFLAGS=-DHI -DSB -DEG -DWR -DKW -DKW_PDCP -DPJ -DSZ -DYS -DRG -DNH -UVE_SM_LOG_TO_FILE -DRGR_SI_SCH -DTA_NEW -DSI_NEW -DCZ $(CCrmFLAGS) $(CCnlFlags)
-
-#-------------------------------------------------------------#
 # Define all the layers that are part of this binary so that  #
 # their coupling requirements get defined from envopt.h.      #
 #-------------------------------------------------------------#
-# TODO -DRM has conflict with some cm_atm files. It is temp-  #
-# orarily removed from this list.                             #
 MOD_FLAGS=-DNH -DWR -DNX -DSZ -DCZ -DSB -DHI -DEG -DSM -DNL -DSM -DRG -DKW -DYS
 #This module does not support binary logging so disable it
 TEXT_LOG=YES
@@ -89,4 +79,6 @@ clean:
 	@echo -e "$(COLOR_RED) $(REVERT_COLOR)"
 	$(Q)\rm -f $(LIB_DIR)/libcm.a $(C_OBJS_WO_LOG)
 
-
+#**********************************************************************
+#         End of file
+#**********************************************************************

@@ -22,16 +22,20 @@
 #include "legtp.h"
 #include "lrg.x"
 #include "lkw.x"
+#include "rgr.h"
+#include "rgr.x"
 #include "du_app_mac_inf.h"
+#include "du_app_rlc_inf.h"
 #include "du_cfg.h"
-#include "E2AP-PDU.h"
-#include<ProtocolIE-Field.h>
-#include "F1AP-PDU.h"
+#include "du_mgr.h"
+#include "du_utils.h"
 #include "du_cell_mgr.h"
-#include "odu_common_codec.h"
-
-extern DuCfgParams duCfgParam;
-extern S16 duBuildAndSendMacCellCfg();
+#ifdef O1_ENABLE
+ 
+#include "GlobalDefs.h"
+#include "AlarmInterface.h"
+  
+#endif
 
 /*******************************************************************
  *
@@ -39,7 +43,7 @@ extern S16 duBuildAndSendMacCellCfg();
  *
  * @details
  *
- *    Function : procCellsToBeActivated
+ *    Function : duProcCellsToBeActivated
  *
  *    Functionality:
  *      - Processes cells to be activated list received in F1SetupRsp
@@ -49,168 +53,163 @@ extern S16 duBuildAndSendMacCellCfg();
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 procCellsToBeActivated(Cells_to_be_Activated_List_t cellsToActivate)
+uint8_t duProcCellsToBeActivated(uint8_t *plmnStr, uint16_t nci, uint16_t nRPci)
 {
-   U16 idx = 0;
-   S16 ret = ROK;
+   uint8_t ret = ROK;
+   DuCellCb *cellCb = NULLP;
+   uint8_t cfgIdx, tmpPlmn[4];
 
-   for(idx=0; idx<cellsToActivate.list.count; idx++)
+   for(cfgIdx=0; cfgIdx<duCb.numCfgCells; cfgIdx++)
    {
-      U16 nci = 0;
-      U16 pci = 0;
-      DuCellCb *cellCb = NULLP;
-
-      Cells_to_be_Activated_List_Item_t cell = cellsToActivate.list.array[idx]->\
-          value.choice.Cells_to_be_Activated_List_Item;
-
-      bitStringToInt(&cell.nRCGI.nRCellIdentity, &nci);
-      if(nci <= 0 || nci > MAX_NUM_CELL)
+      memset(tmpPlmn, 0, 4);
+      buildPlmnId(duCb.cfgCellLst[cfgIdx]->cellInfo.nrEcgi.plmn, tmpPlmn);
+      if(duCb.cfgCellLst[cfgIdx]->cellInfo.nrEcgi.cellId == nci &&
+	    (strcmp((const char*)tmpPlmn, (const char*)plmnStr) == 0))
       {
-         DU_LOG("\nDU APP : Invalid NCI %d", nci);
-         return RFAILED;
+	 cellCb = duCb.cfgCellLst[cfgIdx];
+	 break;
       }
-
-      if(cell.nRPCI)
+      else
       {
-         pci = *cell.nRPCI;
+	 DU_LOG("\nERROR  -->  DU APP : No Cell found for NCI %d", nci);
+	 return RFAILED;
       }
+   }
 
-      cellCb = duCb.cfgCellLst[nci-1];
+   cellCb->cellStatus = ACTIVATION_IN_PROGRESS; 
+   cellCb->cellInfo.nrPci = nRPci;
 
-      if(!cellCb)
-      {
-         DU_LOG("\nDU APP : No Cell found for NCI %d", nci);
-         return RFAILED;
-      }
-      cellCb->cellStatus = ACTIVATION_IN_PROGRESS; 
-      cellCb->cellInfo.nrPci = pci;
+   duCb.actvCellLst[duCb.numActvCells++] = cellCb;
 
-      /* Now remove this cell from configured list and move to active list */
-      duCb.cfgCellLst[nci-1] = NULL;
-      duCb.actvCellLst[nci-1] = cellCb;
-      duCb.numActvCells++;
-      /* Build and send Mac Cell Cfg for the number of active cells */
-      ret = duBuildAndSendMacCellCfg();
-      if(ret != ROK)
-      {
-         DU_LOG("\nDU APP : macCellCfg build and send failed");
-         return RFAILED;
-      }
+   if(duBuildAndSendMacCellCfg(cellCb->cellId) != ROK)
+   {
+      DU_LOG("\nERROR  -->  DU APP : macCellCfg build and send failed");
+      /* Delete cell from actvCellList */
+      duCb.actvCellLst[--(duCb.numActvCells)] = NULLP;
+      ret = RFAILED;
    }
    return ret;
 }
 
-/******************************************************************
+/*******************************************************************
+ *
+ * @brief Handles DU F1Setup Rsp received in F1AP
+ *
+ * @details
+ *
+ *    Function : duProcF1SetupRsp
+ *
+ *    Functionality:
+ *      - Handles DU F1Setup Rsp received in F1AP
+ *
+ * @params[in] Pointer to F1SetupRsp 
+ * @return void
+ *
+ ******************************************************************/
+void duProcF1SetupRsp()
+{
+   DU_LOG("\nINFO   -->  DU_APP : F1 Setup Response received");
+   duCb.f1Status = TRUE; //Set F1 status as true
+}
+
+/*******************************************************************
+ *
+ * @brief Handles GNB DU Cfg Update Ack received in F1AP
+ *
+ * @details
+ *
+ *    Function : duProcGnbDuCfgUpdAckMsg
+ *
+ *    Functionality:
+ *      - Handles GNB DU Cfg Update Ack received in F1AP
+ *
+ * @params[in] Pointer to F1GnbDuCfgUpdAck
+ * @return void
+ *  
+ ******************************************************************/
+void duProcGnbDuCfgUpdAckMsg()
+{
+   DU_LOG("\nINFO   -->  DU APP: GNB-DU config update Ack received ");
+}
+/*******************************************************************
 *
-* @brief Processes F1 Setup Response sent by CU
+* @brief Returns cellCb based on cell ID
 *
 * @details
 *
-*    Function : procF1SetupRsp
+*    Function : duGetCellCb
 *
-*    Functionality: Processes F1 Setup Response sent by CU
+*    Functionality: Returns DU APP CellCb based on cell ID
 *
 * @params[in] F1AP_PDU_t ASN decoded F1AP message
 * @return ROK     - success
 *         RFAILED - failure
 *
 * ****************************************************************/
-uint8_t procF1SetupRsp(F1AP_PDU_t *f1apMsg)
+uint8_t duGetCellCb(uint16_t cellId, DuCellCb **cellCb)
 {
-   uint8_t ret = ROK;
-
-   F1SetupResponse_t *f1SetRspMsg;
-   F1SetupRsp    f1SetRspDb;
-   GNB_CU_Name_t *cuName;
-   RRC_Version_t *rrc_Ver;
-   U16 idx;
-
-   DU_LOG("\nDU_APP : F1 Setup Response received"); 
- 	printf("\nDU_APP : F1 Setup Response received");
-   duCb.f1Status = TRUE; //Set F1 status as true
-   f1SetRspMsg = &f1apMsg->choice.successfulOutcome->value.choice.F1SetupResponse;
-
-   for(idx=0; idx<f1SetRspMsg->protocolIEs.list.count; idx++)
+   uint8_t cellIdx = 0;
+   for(cellIdx=0; cellIdx<duCb.numActvCells; cellIdx++)
    {
-//      F1SetupResponseIEs_t f1RspIe = f1SetRspMsg->protocolIEs.list.array[idx];
-      switch(f1SetRspMsg->protocolIEs.list.array[idx]->id)
-      {
-         case ProtocolIE_ID_id_Cells_to_be_Activated_List:
-         {
-            procCellsToBeActivated(f1SetRspMsg->protocolIEs.list.array[idx]->\
-                  value.choice.Cells_to_be_Activated_List);
-            break;
-         }
-         //TODO: where to store and how to use below variables?can they be skipped
-         case ProtocolIE_ID_id_TransactionID:
-         {
-            f1SetRspDb.transId = f1SetRspMsg->protocolIEs.list.array[idx]->\
-                                 value.choice.TransactionID;
-            break;
-         }
-         case ProtocolIE_ID_id_gNB_CU_Name:
-         {
-            cuName = &f1SetRspMsg->protocolIEs.list.array[idx]->\
-                     value.choice.GNB_CU_Name;
-            strcpy(f1SetRspDb.cuName, (const char*)cuName->buf);
-            break;
-         }
-         case ProtocolIE_ID_id_GNB_CU_RRC_Version:
-         {
-            rrc_Ver = &f1SetRspMsg->protocolIEs.list.array[idx]->\
-                      value.choice.RRC_Version;
-            strcpy(f1SetRspDb.rrcVersion.rrcVer,
-                  (const char*)rrc_Ver->latest_RRC_Version.buf);
-            break;
-         }
-         default:
-            DU_LOG("\nDU_APP : Invalid IE received in F1SetupRsp:%ld",
-                  f1SetRspMsg->protocolIEs.list.array[idx]->id);
-      }
+      if(duCb.actvCellLst[cellIdx]->cellId == cellId)
+         *cellCb = duCb.actvCellLst[cellIdx];
+	 break;
    }
- 
-   /* TODO :Check the deallocation */
-#if 0
-   SPutSBuf(DU_APP_MEM_REGION, DU_POOL,(Data *)&(f1SetupRsp->protocolIEs.list.array),\
-         (Size)elementCnt * sizeof(F1SetupResponseIEs_t *));
-   SPutSBuf(DU_APP_MEM_REGION, DU_POOL,(Data *)&(f1apMsg->choice.successfulOutcome),\
-         (Size)sizeof(SuccessfulOutcome_t));
-   SPutSBuf(DU_APP_MEM_REGION, DU_POOL,(Data *)&f1apMsg,(Size)sizeof(F1AP_PDU_t));
-#endif
- 
-   return ret;
+
+   if(!*cellCb)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Cell Id %d not found in DU APP", cellId);
+      return RFAILED;
+   }
+
+   return ROK;
 }
 
 /*******************************************************************
  *
- * @brief Processes GNB DU config update ack
+ * @brief Handles cell up indication from MAC
  *
  * @details
  *
- *    Function : procGNBDUCfgUpdAck
+ *    Function : duHandleCellUpInd
  *
- *    Functionality: Processes GNB DU config update ack
+ *    Functionality:
+ *      Handles cell up indication from MAC
  *
- * @params[in] F1AP_PDU_t ASN decoded F1AP message
+ * @params[in] Post structure pointer
+ *             cell Up info
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 procGNBDUCfgUpdAck(F1AP_PDU_t *f1apMsg)
+uint8_t duHandleCellUpInd(Pst *pst, OduCellId *cellId)
 {
-   DU_LOG("\nF1AP : GNB-DU config update acknowledgment received");
-/* TODO :Check the deallocation */
-#if 0
-   SPutSBuf(DU_APP_MEM_REGION,DU_POOL,(Data*)&(gNBDuCfgAck->protocolIEs.list.array),\
-           (Size)elementCnt * sizeof(GNBDUConfigurationUpdateAcknowledgeIEs_t
-));
-   SPutSBuf(DU_APP_MEM_REGION,DU_POOL,(Data*)&(f1apMsg->choice.successfulOutcome),\
-           (Size)sizeof(SuccessfulOutcome_t));
-   SPutSBuf(DU_APP_MEM_REGION,DU_POOL,(Data*)&f1apMsg,(Size)sizeof(F1AP_PDU_t));
-#endif
-    return ROK;
-}
+   DuCellCb *cellCb = NULLP;
 
+   if(cellId->cellId <=0 || cellId->cellId > MAX_NUM_CELL)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Invalid Cell Id %d in duHandleCellUpInd()", cellId->cellId);
+      return RFAILED;
+   }
+
+   if(duGetCellCb(cellId->cellId, &cellCb) != ROK)
+      return RFAILED;
+
+   if((cellCb != NULL) && (cellCb->cellStatus == ACTIVATION_IN_PROGRESS))
+   {
+      DU_LOG("\nINFO   -->  DU APP : 5G-NR Cell %d is UP", cellId->cellId);
+      cellCb->cellStatus = ACTIVATED;
+
+#ifdef O1_ENABLE
+      DU_LOG("\nINFO   -->  DU APP : Raise cell UP alarm for cell id=%d", cellId->cellId);
+      raiseCellAlrm(CELL_UP_ALARM_ID, cellId->cellId);
+#endif
+   }
+
+   if((pst->selector == ODU_SELECTOR_LWLC) || (pst->selector == ODU_SELECTOR_TC))
+      DU_FREE_SHRABL_BUF(pst->region, pst->pool, cellId, sizeof(OduCellId));
+   return ROK;
+}
 
 /**********************************************************************
   End of file

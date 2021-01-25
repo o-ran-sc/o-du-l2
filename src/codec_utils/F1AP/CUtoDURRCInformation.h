@@ -29,7 +29,7 @@ typedef struct CUtoDURRCInformation {
 	CG_ConfigInfo_t	*cG_ConfigInfo;	/* OPTIONAL */
 	UE_CapabilityRAT_ContainerList_t	*uE_CapabilityRAT_ContainerList;	/* OPTIONAL */
 	MeasConfig_t	*measConfig;	/* OPTIONAL */
-	struct ProtocolExtensionContainer	*iE_Extensions;	/* OPTIONAL */
+	struct ProtocolExtensionContainer_4624P16 *iE_Extensions;	/* OPTIONAL */
 	/*
 	 * This type is extensible,
 	 * possible extensions are below.

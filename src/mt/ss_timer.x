@@ -74,7 +74,7 @@ typedef struct ssTmrEntry
    Ent          ownerEnt;               /* owner task entity ID */
    Inst         ownerInst;              /* owner task instance ID */
    /* ss028.103 - Modification for SRegCfgTmr support */
-   U32          interval;               /* timer interval */
+   uint32_t     interval;               /* timer interval */
    /* ss029.103: modification: timer function type modified */ 
    /* ss015.301 Enclosed all timer activation functions in a union. */
    SsTmrActvFn  ssTmrActvFn;

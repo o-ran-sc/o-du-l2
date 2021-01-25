@@ -70,7 +70,7 @@
 
 
 /* public variable declarations */
-PUBLIC U32 cmLteTime;
+uint32_t cmLteTime;
 
 
 /***********************************************************
@@ -88,26 +88,15 @@ PUBLIC U32 cmLteTime;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
-PUBLIC S16 cmPkLteRlcId
-(
-CmLteRlcId *param,
-Buffer *mBuf
-)
-#else
-PUBLIC S16 cmPkLteRlcId(param, mBuf)
-CmLteRlcId *param;
-Buffer *mBuf;
-#endif
+S16 cmPkLteRlcId(CmLteRlcId *param,Buffer *mBuf)
 {
 
-   TRC3(cmPkLteRlcId);
 
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
    CMCHKPK(cmPkLteRnti, param->ueId, mBuf);
-   CMCHKPK(SPkU8, param->rbType, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->rbType, mBuf);
    CMCHKPK(cmPkLteRbId, param->rbId, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -127,26 +116,15 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
-PUBLIC S16 cmUnpkLteRlcId
-(
-CmLteRlcId *param,
-Buffer *mBuf
-)
-#else
-PUBLIC S16 cmUnpkLteRlcId(param, mBuf)
-CmLteRlcId *param;
-Buffer *mBuf;
-#endif
+S16 cmUnpkLteRlcId(CmLteRlcId *param,Buffer *mBuf)
 {
 
-   TRC3(cmUnpkLteRlcId);
 
    CMCHKUNPK(cmUnpkLteRbId, &param->rbId, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->rbType, mBuf);
+   CMCHKUNPK(oduPackUInt8, &param->rbType, mBuf);
    CMCHKUNPK(cmUnpkLteRnti, &param->ueId, mBuf);
    CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -166,25 +144,14 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
-PUBLIC S16 cmPkLteTimingInfo
-(
-CmLteTimingInfo *param,
-Buffer *mBuf
-)
-#else
-PUBLIC S16 cmPkLteTimingInfo(param, mBuf)
-CmLteTimingInfo *param;
-Buffer *mBuf;
-#endif
+S16 cmPkLteTimingInfo(CmLteTimingInfo *param,Buffer *mBuf)
 {
 
-   TRC3(cmPkLteTimingInfo);
 
-   CMCHKPK(SPkU16, param->slot, mBuf);
-   CMCHKPK(SPkU16, param->sfn, mBuf);
-   //CMCHKPK(SPkU16, param->hSfn, mBuf);
-   RETVALUE(ROK);
+   CMCHKPK(oduUnpackUInt16, param->slot, mBuf);
+   CMCHKPK(oduUnpackUInt16, param->sfn, mBuf);
+   //CMCHKPK(oduUnpackUInt16, param->hSfn, mBuf);
+   return ROK;
 }
 
 
@@ -204,25 +171,14 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
-PUBLIC S16 cmUnpkLteTimingInfo
-(
-CmLteTimingInfo *param,
-Buffer *mBuf
-)
-#else
-PUBLIC S16 cmUnpkLteTimingInfo(param, mBuf)
-CmLteTimingInfo *param;
-Buffer *mBuf;
-#endif
+S16 cmUnpkLteTimingInfo(CmLteTimingInfo *param,Buffer *mBuf)
 {
 
-   TRC3(cmUnpkLteTimingInfo);
 
-   //CMCHKUNPK(SUnpkU16, &param->hSfn, mBuf);
-   CMCHKUNPK(SUnpkU16, &param->sfn, mBuf);
-   CMCHKUNPK(SUnpkU16,&param->slot, mBuf);
-   RETVALUE(ROK);
+   //CMCHKUNPK(oduPackUInt16, &param->hSfn, mBuf);
+   CMCHKUNPK(oduPackUInt16, &param->sfn, mBuf);
+   CMCHKUNPK(oduPackUInt16,&param->slot, mBuf);
+   return ROK;
 }
 
 
@@ -242,26 +198,15 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
-PUBLIC S16 cmPkLtePdcpId
-(
-CmLtePdcpId *param,
-Buffer *mBuf
-)
-#else
-PUBLIC S16 cmPkLtePdcpId(param, mBuf)
-CmLtePdcpId *param;
-Buffer *mBuf;
-#endif
+S16 cmPkLtePdcpId(CmLtePdcpId *param,Buffer *mBuf)
 {
 
-   TRC3(cmPkLtePdcpId);
 
-   CMCHKPK(SPkU8, param->rbType, mBuf);
+   CMCHKPK(oduUnpackUInt8, param->rbType, mBuf);
    CMCHKPK(cmPkLteRbId, param->rbId, mBuf);
    CMCHKPK(cmPkLteRnti, param->ueId, mBuf);
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -281,42 +226,23 @@ Buffer *mBuf;
 *     File  : 
 *
 **********************************************************/
-#ifdef ANSI
-PUBLIC S16 cmUnpkLtePdcpId
-(
-CmLtePdcpId *param,
-Buffer *mBuf
-)
-#else
-PUBLIC S16 cmUnpkLtePdcpId(param, mBuf)
-CmLtePdcpId *param;
-Buffer *mBuf;
-#endif
+S16 cmUnpkLtePdcpId(CmLtePdcpId *param,Buffer *mBuf)
 {
 
-   TRC3(cmUnpkLtePdcpId);
 
    CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
    CMCHKUNPK(cmUnpkLteRnti, &param->ueId, mBuf);
    CMCHKUNPK(cmUnpkLteRbId, &param->rbId, mBuf);
-   CMCHKUNPK(SUnpkU8, &param->rbType, mBuf);
-   RETVALUE(ROK);
+   CMCHKUNPK(oduPackUInt8, &param->rbType, mBuf);
+   return ROK;
 }
 #ifdef LTE_L2_MEAS 
-#ifdef ANSI
-PUBLIC S16 cmUpdateSsiMemInfo
-(
-CmLteMemInfo *mInfo
-)
-#else
-PUBLIC S16 cmUpdateSsiMemInfo(mInfo)
-CmLteMemInfo *mInfo;
-#endif
+S16 cmUpdateSsiMemInfo(CmLteMemInfo *mInfo)
 {
-   U8   numReg = 0;
-   U8   numPool = 0;
-   U8   idxReg;
-   U8   idxPool;
+   uint8_t   numReg = 0;
+   uint8_t   numPool = 0;
+   uint8_t   idxReg;
+   uint8_t   idxPool;
    SsMemDbgInfo dbgInfo;
 
    SGetRegPoolInfo(&numReg,&numPool); 
@@ -352,24 +278,14 @@ CmLteMemInfo *mInfo;
          mInfo->regInfo[idxReg].isGenMemInfoUpdated = TRUE; 
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
-#ifdef ANSI
-PUBLIC S16 cmFillMemUtilizationMeas
-(
- CmLteMemInfo *memoryInfo,
-CmLteMemInfo *memInfo
-)
-#else
-PUBLIC S16 cmFillMemUtilizationMeas(memoryInfo,memInfo)
-CmLteMemInfo *memoryInfo;
-CmLteMemInfo *memInfo;
-#endif
+S16 cmFillMemUtilizationMeas( CmLteMemInfo *memoryInfo,CmLteMemInfo *memInfo)
 {
-   U8 idxReg = 0;
-   U8 idxPool = 0;
-   U8 numPool = 0;
+   uint8_t idxReg = 0;
+   uint8_t idxPool = 0;
+   uint8_t numPool = 0;
 
    memoryInfo->numRegions = memInfo->numRegions;
    for(idxReg=0; idxReg < memInfo->numRegions; idxReg++)
@@ -387,22 +303,14 @@ CmLteMemInfo *memInfo;
          memoryInfo->regInfo[idxReg].poolInfo[idxPool].maxUsed  = memInfo->regInfo[idxReg].poolInfo[idxPool].maxUsed;
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
-#ifdef ANSI
-PUBLIC S16 cmClearMemUtilizationCounter
-(
-CmLteMemInfo *memInfo
-)
-#else
-PUBLIC S16 cmClearMemUtilizationCounter(memInfo)
-CmLteMemInfo *memInfo;
-#endif
+S16 cmClearMemUtilizationCounter(CmLteMemInfo *memInfo)
 {
-   U8 idxReg = 0;
-   U8 idxPool = 0;
-   U8 numPool = 0;
+   uint8_t idxReg = 0;
+   uint8_t idxPool = 0;
+   uint8_t numPool = 0;
    for(idxReg=0; idxReg < memInfo->numRegions; idxReg++)
    {
       memInfo->regInfo[idxReg].regionId = 0;
@@ -419,20 +327,12 @@ CmLteMemInfo *memInfo;
          memInfo->regInfo[idxReg].poolInfo[idxPool].maxUsed  = 0;
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
-#ifdef ANSI
-PUBLIC S16 cmClearCpuUtilizationCounter
-(
-CmCpuStatsInfo *cpuInfo
-)
-#else
-PUBLIC S16 cmClearCpuUtilizationCounter(cpuInfo)
-CmCpuStatsInfo *cpuInfo
-#endif
+S16 cmClearCpuUtilizationCounter(CmCpuStatsInfo *cpuInfo)
 {
-   U8 idx= 0;
+   uint8_t idx= 0;
    for(idx=0; idx < cpuInfo->numCores; idx++)
    {
       cpuInfo->cpuUtil[idx].maxCpuUtil = 0;
@@ -440,29 +340,19 @@ CmCpuStatsInfo *cpuInfo
       cpuInfo->cpuUtil[idx].numSamples = 0;
    }
    cpuInfo->numCores = 0;
-   RETVALUE(ROK);
+   return ROK;
 }
 
-#ifdef ANSI
-PUBLIC S16 cmFillCpuUtilizationMeas
-(
-CmLteCpuInfo *cpuMeasInfo,
-CmCpuStatsInfo *cpuInfo
-)
-#else
-PUBLIC S16 cmFillCpuUtilizationMeas(cpuMeasInfo,cpuInfo)
-CmLteCpuInfo *cpuMeasInfo;
-CmCpuStatsInfo *cpuInfo;
-#endif
+S16 cmFillCpuUtilizationMeas(CmLteCpuInfo *cpuMeasInfo,CmCpuStatsInfo *cpuInfo)
 {
-   U8 idx= 0;
+   uint8_t idx= 0;
    cpuMeasInfo->numCores = cpuInfo->numCores;
    for(idx=0; idx < cpuInfo->numCores; idx++)
    {
       cpuMeasInfo->cpuUtil[idx].avgCpuUtil = cpuInfo->cpuUtil[idx].totCpuUtil/cpuInfo->cpuUtil[idx].numSamples;
       cpuMeasInfo->cpuUtil[idx].maxCpuUtil = cpuInfo->cpuUtil[idx].maxCpuUtil;
    }
-   RETVALUE(ROK);
+   return ROK;
 
 }
 #endif
@@ -471,7 +361,7 @@ CmCpuStatsInfo *cpuInfo;
 CmTtiProc ttiProc;
 #define TTI_1MS 950
 
-PUBLIC Void cmUpdateTtiCounters(U32 ttiProcessingTime)
+Void cmUpdateTtiCounters(uint32_t ttiProcessingTime)
 {
    ttiProc.numOfTti++;
    ttiProc.totTtiProcessingTime += ttiProcessingTime;
@@ -487,10 +377,10 @@ PUBLIC Void cmUpdateTtiCounters(U32 ttiProcessingTime)
    {
       ttiProc.ttiStretchCount++;
    }
-   RETVOID;    
+   return;    
 }
 
-PUBLIC Void cmResetTtiCounters(Void)
+Void cmResetTtiCounters(Void)
 {
 	ttiProc.totTtiProcessingTime = 0;
 	ttiProc.numOfTti = 0;
@@ -498,7 +388,7 @@ PUBLIC Void cmResetTtiCounters(Void)
 	ttiProc.ttiStretchCount = 0;
 	ttiProc.ttiThresholdExceedCount = 0;
 	ttiProc.phyReptTtiStretchCount = 0;
-	RETVOID;
+	return;
 }
 #endif
 

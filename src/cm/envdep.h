@@ -31,7 +31,6 @@
      File:     envdep.h
   
 *********************************************************************21*/
-
 #ifndef __ENVDEPH__
 #define __ENVDEPH__
 
@@ -676,16 +675,12 @@ typedef char *Ptr; /* K&R vanilla pointer type definition */
 
 typedef unsigned char   Bool;     /* boolean */
 typedef char            S8;       /* signed - 8 bits */
-typedef unsigned char   U8;       /* unsigned - 8 bits */
 
 typedef int             S16;      /* signed - 16 bits */
-typedef unsigned int    U16;      /* unsigned - 16 bits */
 
 typedef long            S32;      /* signed - 32 bits */
-typedef unsigned long   U32;      /* unsigned - 32 bits */
 /* envdep_h_001.main_71 */
 typedef __int64			 S64;     /* signed - 64 bits */
-typedef unsigned __int64 U64;     /* unsigned - 64 bits */
 
 /*
    void
@@ -709,13 +704,10 @@ typedef Void (INTERRPT *PIF) ARGS((void ));     /* pointer to interrupt function
 
 typedef unsigned char   Bool;     /* boolean */
 typedef char            S8;       /* signed - 8 bits */
-typedef unsigned char   U8;       /* unsigned - 8 bits */
 
 typedef int             S16;      /* signed - 16 bits */
-typedef unsigned int    U16;      /* unsigned - 16 bits */
 
 typedef long            S32;      /* signed - 32 bits */
-typedef unsigned long   U32;      /* unsigned - 32 bits */
 
 /*
    void
@@ -747,36 +739,28 @@ typedef char            S8;       /* signed - 8 bits */
 /*envdep_h_001.main_78 :removed signed to supress sprintf' differ in signedness warnings */
 typedef char     S8;       /* signed - 8 bits*/
 #endif
-typedef unsigned char   U8;       /* unsigned - 8 bits */
 
 typedef short           S16;      /* signed - 16 bits */
-typedef unsigned short  U16;      /* unsigned - 16 bits */
 
 #if !(defined(ALPHA) || defined(BIT_64))
 typedef long            S32;      /* signed - 32 bits */
-typedef unsigned long   U32;      /* unsigned - 32 bits */
 /* envdep_h_001.main_71 */
 #ifdef SS_LINUX
 /* envdep_h_001.main_79 RVDT compiler warning fix */
 #ifndef SS_4GMX_LCORE
 /* envdep_h_001.main_72: Support for C89 standard */
 __extension__ typedef long long       S64;      /* signed - 64 bits */
-__extension__ typedef unsigned long long U64;   /* unsigned - 64 bits */
 #else
 typedef long long       S64;      /* signed - 64 bits */
-typedef unsigned long long U64;   /* unsigned - 64 bits */
 #define Void void /* RVDT compiler warning fix */
 #endif /* SS_4GMX_LCORE */
 #else
 typedef long long       S64;      /* signed - 64 bits */
-typedef unsigned long long U64;   /* unsigned - 64 bits */
 #endif /* SS_LINUX */
 #else /* ALPHA  & BIT_64 */
 typedef int             S32;      /* signed - 32 bits */
-typedef unsigned int    U32;      /* unsigned - 32 bits */
 /* envdep_h_001.main_71 */
 typedef long            S64;      /* signed - 64 bits */
-typedef unsigned long   U64;      /* unsigned - 64 bits */
 #endif /* ALPHA  & BIT_64 */
 /* 1. Added F32 and F64 */
 #ifdef SS_FLOAT
@@ -813,13 +797,10 @@ typedef Void (INTERRPT *PIF) ARGS((void ));    /* pointer to interrupt function 
 
 typedef unsigned char   Bool;     /* boolean */
 typedef char            S8;       /* signed - 8 bits */
-typedef unsigned char   U8;       /* unsigned - 8 bits */
 
 typedef short           S16;      /* signed - 16 bits */
-typedef unsigned short  U16;      /* unsigned - 16 bits */
 
 typedef int             S32;      /* signed - 32 bits */
-typedef unsigned int    U32;      /* unsigned - 32 bits */
 
 #ifndef ANSI
 /* size_t is not defined, for some odd reason, in mcc68k's stddef.h */
@@ -848,13 +829,10 @@ typedef Void (*PIF) ARGS((void )); /* pointer to interrupt function */
 
 typedef unsigned char   Bool;     /* boolean */
 typedef char            S8;       /* signed - 8 bits */
-typedef unsigned char   U8;       /* unsigned - 8 bits */
 
 typedef short           S16;      /* signed - 16 bits */
-typedef unsigned short  U16;      /* unsigned - 16 bits */
 
 typedef int             S32;      /* signed - 32 bits */
-typedef unsigned int    U32;      /* unsigned - 32 bits */
 
 /*
    void
@@ -878,13 +856,10 @@ typedef Void (*PIF) ARGS((void ));    /* pointer to interrupt function */
 
 typedef unsigned char   Bool;     /* boolean */
 typedef char            S8;       /* signed - 8 bits */
-typedef unsigned char   U8;       /* unsigned - 8 bits */
 
 typedef short           S16;      /* signed - 16 bits */
-typedef unsigned short  U16;      /* unsigned - 16 bits */
 
 typedef int             S32;      /* signed - 32 bits */
-typedef unsigned int    U32;      /* unsigned - 32 bits */
 
 /*
    void
@@ -908,16 +883,12 @@ typedef Void (INTERRPT *PIF) ARGS((void )); /* pointer to interrupt function */
 
 typedef unsigned char   Bool;     /* boolean */
 typedef char            S8;       /* signed - 8 bits */
-typedef unsigned char   U8;       /* unsigned - 8 bits */
 
 typedef short           S16;      /* signed - 16 bits */
-typedef unsigned short  U16;      /* unsigned - 16 bits */
 
 typedef int             S32;      /* signed - 32 bits */
-typedef unsigned int    U32;      /* unsigned - 32 bits */
 /* envdep_h_001.main_71 */
 typedef long long       S64;      /* signed - 64 bits */
-typedef unsigned long long U64;   /* unsigned - 64 bits */
 /* 1. Added F32 and F64 types  */
 #ifdef SS_FLOAT
 typedef float           F32;      /* float - 32 bits */
@@ -952,13 +923,10 @@ typedef Void (INTERRPT *PIF) ARGS((void )); /* pointer to interrupt function */
 #ifdef SOLMRI43                   /* solaris microtec c cross-compiler */
 typedef unsigned char   Bool;     /* boolean */
 typedef char            S8;       /* signed - 8 bits */
-typedef unsigned char   U8;       /* unsigned - 8 bits */
 
 typedef short           S16;      /* signed - 16 bits */
-typedef unsigned short  U16;      /* unsigned - 16 bits */
 
 typedef int             S32;      /* signed - 32 bits */
-typedef unsigned int    U32;      /* unsigned - 32 bits */
 
 /*
    void
@@ -982,13 +950,10 @@ typedef INTERRPT Void (*PIF) ARGS((void)); /* pointer to interrupt function */
 
 typedef unsigned char   Bool;     /* boolean */
 typedef char            S8;       /* signed - 8 bits */
-typedef unsigned char   U8;       /* unsigned - 8 bits */
 
 typedef short           S16;      /* signed - 16 bits */
-typedef unsigned short  U16;      /* unsigned - 16 bits */
 
 typedef long            S32;      /* signed - 32 bits */
-typedef unsigned long   U32;      /* unsigned - 32 bits */
 
 /*
    void
@@ -1011,18 +976,14 @@ typedef INTERRPT Void (*PIF) ARGS((void )); /* pointer to interrupt function */
 #ifdef WIN32
 typedef unsigned char   Bool;     /* boolean */
 typedef char            S8;       /* signed - 8 bits */
-typedef unsigned char   U8;       /* unsigned - 8 bits */
 
 typedef short           S16;      /* signed - 16 bits */
-typedef unsigned short  U16;      /* unsigned - 16 bits */
  
 typedef int             S32;      /* signed - 32 bits */
-typedef unsigned int    U32;      /* unsigned - 32 bits */
 /* envdep_h_001.main_76  Take care of the windows compiler non compliance
  * to ANSI-C for data type ranges
 */ 
 typedef long long          S64;      /* signed - 64 bits */
-typedef unsigned long long U64;   /* unsigned - 64 bits */
 
 /* 1. Added F32 and F64 types  */
 #ifdef SS_FLOAT
@@ -1049,13 +1010,10 @@ typedef Void (INTERRPT *PIF) ARGS((void )); /* pointer to interrupt function */
 #ifdef PROC_68349
 typedef unsigned char   Bool;     /* boolean */
 typedef char            S8;       /* signed - 8 bits */
-typedef unsigned char   U8;       /* unsigned - 8 bits */
 
 typedef short           S16;      /* signed - 16 bits */
-typedef unsigned short  U16;      /* unsigned - 16 bits */
 
 typedef long            S32;      /* signed - 32 bits */
-typedef unsigned long   U32;      /* unsigned - 32 bits */
 
 /*
    void
@@ -1078,22 +1036,16 @@ typedef INTERRPT Void (*PIF) ARGS((void )); /* pointer to interrupt function */
 #ifdef PROC_PPC
 typedef unsigned char   Bool;     /* boolean */
 typedef char            S8;       /* signed - 8 bits */
-typedef unsigned char   U8;       /* unsigned - 8 bits */
  
 typedef short           S16;      /* signed - 16 bits */
-typedef unsigned short  U16;      /* unsigned - 16 bits */
 #ifndef BIT_64
 typedef long            S32;      /* signed - 32 bits */
-typedef unsigned long   U32;      /* unsigned - 32 bits */
 
 /* envdep_h_001.main_74 - additions */
 typedef long long          S64;		/* signed - 64 bits */
-typedef unsigned long long U64;   /* unsigned - 64 bits */
 #else /* BIT_64 */
 typedef int             S32;      /* signed - 32 bits */
-typedef unsigned int    U32;      /* unsigned - 32 bits */
 typedef long            S64;      /* signed - 64 bits */
-typedef unsigned long   U64;      /* unsigned - 64 bits */
 #endif /* BIT_64 */
 
 /* 1. Added F32 and F64 types  */
@@ -1122,23 +1074,17 @@ typedef INTERRPT Void (*PIF) ARGS((void )); /* pointer to interrupt function */
 #ifdef SS_PS
 typedef unsigned char   Bool;     /* boolean */
 typedef char            S8;       /* signed - 8 bits */
-typedef unsigned char   U8;       /* unsigned - 8 bits */
  
 typedef short           S16;      /* signed - 16 bits */
-typedef unsigned short  U16;      /* unsigned - 16 bits */
  
 #ifndef BIT_64
 typedef long            S32;      /* signed - 32 bits */
-typedef unsigned long   U32;      /* unsigned - 32 bits */
 
 /* envdep_h_001.main_71 - additions */
 typedef int64_t         S64;		/* signed - 64 bits */
-typedef uint64_t        U64;   /* unsigned - 64 bits */
 #else /* BIT_64 */
 typedef int             S32;      /* signed - 32 bits */
-typedef unsigned int    U32;      /* unsigned - 32 bits */
 typedef long            S64;      /* signed - 64 bits */
-typedef unsigned long   U64;      /* unsigned - 64 bits */
 #endif /* BIT_64 */
 
 /*
@@ -1161,13 +1107,10 @@ typedef Void (INTERRPT *PIF) ARGS((void )); /* pointer to interrupt function */
 
 typedef unsigned char   Bool;     /* boolean */
 typedef char            S8;       /* signed - 8 bits */
-typedef unsigned char   U8;       /* unsigned - 8 bits */
 
 typedef int             S16;      /* signed - 16 bits */
-typedef unsigned int    U16;      /* unsigned - 16 bits */
 
 typedef long            S32;      /* signed - 32 bits */
-typedef unsigned long   U32;      /* unsigned - 32 bits */
 
 /*
    void
@@ -1205,119 +1148,11 @@ typedef INTERRPT Void (*PIF) ARGS((void )); /* pointer to interrupt function */
 #define PUBLIC
 #endif /* PUBLIC */
 
-#ifdef PRIVATE
-#undef PRIVATE
-#define PRIVATE       static      /* private is c static scope */
-#else /* not PRIVATE */
-#define PRIVATE       static      /* private is c static scope */
-#endif /* PRIVATE */
 
-#ifdef EXTERN
-#undef EXTERN
-#define EXTERN  extern
-#else /* not EXTERN */
-#define EXTERN  extern
-#endif /* EXTERN */
-
-
-#ifdef ANSI
-#define CONSTANT const            /* constant */
-#else
-#define CONSTANT
-#endif /* ANSI */
-
-#ifdef _MCC68K                    /* microtec 68K cross compiler */
-
-#ifdef VOLATILE
-#undef VOLATILE
-#define VOLATILE     volatile     /* volatile */
-#else
-#define VOLATILE    volatile
-#endif
-
-#if _STR_CMP(_VERSION,"4.4") >= 0  /* MCC68K only, check version */
-#ifdef INLINE
-#undef INLINE
-#define INLINE       inline       /* inline */
-#else /* not INLINE */
-#define INLINE       inline       /* inline */
-#endif /* INLINE */
-#else
-#define INLINE                    /* no inline */
-#endif /* __STR_CMP */
-#else /* not _MCC68K */
-#ifdef __GNUC__
-#ifndef __STRICT_ANSI__
-#ifdef INLINE
-#undef INLINE
-#define INLINE __inline__
-#else /* not inline */
-#define INLINE __inline__
-#endif /* INLINE */
-#else /* not strict ansi */
-#ifdef INLINE
-#undef INLINE
-#define INLINE
-#else /* not inline */
-#define INLINE
-#endif /* INLINE */
-#endif /* __STRICT_ANSI */
-#ifdef VOLATILE
-#undef VOLATILE
-#define VOLATILE     volatile     /* volatile */
-#else /* volatile */
-#define VOLATILE    volatile
-#endif
-#else /* not gnuc */
-#ifdef WIN32
-#ifdef VOLATILE
-#undef VOLATILE
-#define VOLATILE  volatile
-#else /* VOLATILE */
-#define VOLATILE  volatile
-#endif /* VOLATILE */
-
-#ifdef INLINE
-#undef INLINE
-#define INLINE
-#else
-#define INLINE
-#endif /* INLINE */
-#else /* not WIN32 */
-
-#ifdef VOLATILE
-#undef VOLATILE
-#define VOLATILE                  /* volatile */
-#else
-#define VOLATILE                  /* volatile */
-#endif /* VOLATILE */
-
-#ifdef INLINE
-#undef INLINE
-#define INLINE
-#else
-#define INLINE
-#endif /* INLINE */
-
-#endif /* WIN32 */
-#endif /* __GNUC__ */
-#endif /* _MCC68K */
 
 /*envdep_h_001.main_77 SSI-4GMX specfic changes*/
 /*envdep_h_001.main_78 : removed SSI-4GMX specfic changes*/
-#ifdef VOLATILE
-#undef VOLATILE
-#define VOLATILE volatile
-#else
-#define VOLATILE volatile
-#endif
 
-#ifdef __cplusplus
-#ifdef INLINE
-#undef INLINE
-#endif
-#define INLINE
-#endif
 
 
 /**********************************************************************
@@ -1329,25 +1164,25 @@ typedef INTERRPT Void (*PIF) ARGS((void )); /* pointer to interrupt function */
 #ifndef STDIO_INCLD
 
 #ifdef SUNOS41
-EXTERN  S8 *sprintf ARGS((S8 *buffer, CONSTANT S8 *format, /* args */ ...));
+S8 *sprintf ARGS((S8 *buffer, const S8 *format, /* args */ ...));
 #else
 #ifdef SUNOS51
 #else /* not SUNOS51 */
 #ifdef HPOS 
-EXTERN int sprintf ARGS((S8 *s, CONSTANT S8 *format, /* args */ ... ));
+int sprintf ARGS((S8 *s, const S8 *format, /* args */ ... ));
 #else
 #ifdef _MCC68K
-EXTERN Void sprintf ARGS((S8 *outbuf, S8 *fmt, /* args */ ...)); /* td68k.x */
+Void sprintf ARGS((S8 *outbuf, S8 *fmt, /* args */ ...)); /* td68k.x */
 #else
 /* other os */
 #ifdef WIN32
-EXTERN  int sprintf ARGS((S8 *buffer,CONSTANT S8 *format, /* args */ ...)); 
+int sprintf ARGS((S8 *buffer,const S8 *format, /* args */ ...)); 
 #else
 #ifdef VW
-EXTERN  int sprintf ARGS((S8 *buffer,CONSTANT S8 *format, /* args */ ...)); 
+int sprintf ARGS((S8 *buffer,const S8 *format, /* args */ ...)); 
 #else
 #ifdef SS_PS
-EXTERN  int sprintf ARGS((S8 *buffer,CONSTANT S8 *format, /* args */ ...)); 
+int sprintf ARGS((S8 *buffer,const S8 *format, /* args */ ...)); 
 #endif /* SS_PS */
 #endif /* VW */
 #endif /* WIN32 */
@@ -1371,10 +1206,10 @@ EXTERN  int sprintf ARGS((S8 *buffer,CONSTANT S8 *format, /* args */ ...));
  
 #ifdef I86SM          /* Intel 80x86 small model */
 
-#define NULLP         0           /* null pointer */
-#define NULLD         0L          /* null data */
-#define PTR           U16         /* pointer */
-#define PTRSIZE       sizeof(U16) /* pointer size */
+#define NULLP         0                /* null pointer */
+#define NULLD         0L               /* null data */
+#define PTR           uint16_t         /* pointer */
+#define PTRSIZE       sizeof(uint16_t) /* pointer size */
 #define STKALIGN      2           /* stack alignment */
 
 #define REG1          register    /* register 1 - highest priority */
@@ -1393,10 +1228,10 @@ EXTERN  int sprintf ARGS((S8 *buffer,CONSTANT S8 *format, /* args */ ...));
 
 #ifdef I86MM          /* Intel 80x86 medium model */
 
-#define NULLP         0           /* null pointer */
-#define NULLD         0L          /* null data */
-#define PTR           U16         /* pointer */
-#define PTRSIZE       sizeof(U16) /* pointer size */
+#define NULLP         0                /* null pointer */
+#define NULLD         0L               /* null data */
+#define PTR           uint16_t         /* pointer */
+#define PTRSIZE       sizeof(uint16_t) /* pointer size */
 #define STKALIGN      2           /* stack alignment */
 
 #define REG1          register    /* register 1 - highest priority */
@@ -1418,14 +1253,14 @@ EXTERN  int sprintf ARGS((S8 *buffer,CONSTANT S8 *format, /* args */ ...));
 #define NULLP         0L          /* null pointer */
 #define NULLD         0L          /* null data */
 #ifndef BIT_64
-#define PTR           U32         /* pointer */
-#define PTRSIZE       sizeof(U32) /* pointer size */
+#define PTR           uint32_t         /* pointer */
+#define PTRSIZE       sizeof(uint32_t) /* pointer size */
 /* #define PTRFAR                     pointer far */
 #define STKALIGN      4           /* stack alignment */
 #else /* BIT_64 */
-#define PTR           U64         /* pointer */
+#define PTR           uint64_t         /* pointer */
 /* envdep_h_001.main_78:Warning fix*/
-#define PTRSIZE       sizeof(U64) /* pointer size */
+#define PTRSIZE       sizeof(uint64_t) /* pointer size */
 /* #define PTRFAR                     pointer far */
 #define STKALIGN      8           /* stack alignment */
 #endif /* BIT_64 */
@@ -1451,14 +1286,14 @@ EXTERN  int sprintf ARGS((S8 *buffer,CONSTANT S8 *format, /* args */ ...));
 #define NULLP         0L          /* null pointer */
 #define NULLD         0L          /* null data */
 #ifndef BIT_64
-#define PTR           U32         /* pointer */
-#define PTRSIZE       sizeof(U32) /* pointer size */
+#define PTR           uint32_t         /* pointer */
+#define PTRSIZE       sizeof(uint32_t) /* pointer size */
 #define PTRFAR                    /* pointer far */
 #define STKALIGN      4           /* stack alignment */
 #else /* BIT_64 */
-#define PTR           U64         /* pointer */
+#define PTR           uint64_t         /* pointer */
 /* envdep_h_001.main_78:Warning fix*/
-#define PTRSIZE       sizeof(U64) /* pointer size */
+#define PTRSIZE       sizeof(uint64_t) /* pointer size */
 /* #define PTRFAR                     pointer far */
 #define STKALIGN      8           /* stack alignment */
 #endif /* BIT_64 */
@@ -1482,13 +1317,13 @@ EXTERN  int sprintf ARGS((S8 *buffer,CONSTANT S8 *format, /* args */ ...));
 #define NULLP         0L          /* null pointer */
 #define NULLD         0L          /* null data */
 #ifndef BIT_64
-#define PTR           U32         /* pointer */
-#define PTRSIZE       sizeof(U32) /* pointer size */
+#define PTR           uint32_t         /* pointer */
+#define PTRSIZE       sizeof(uint32_t) /* pointer size */
 #define PTRFAR                    /* pointer far */
 #define STKALIGN      4           /* stack alignment */
 #else  /* BIT_64 */
-#define PTR           U64         /* pointer */
-#define PTRSIZE       sizeof(U64) /* pointer size */
+#define PTR           uint64_t         /* pointer */
+#define PTRSIZE       sizeof(uint64_t) /* pointer size */
 #define PTRFAR                    /* pointer far */
 #define STKALIGN      8           /* stack alignment */
 #endif  /* BIT_64 */
@@ -1511,8 +1346,8 @@ EXTERN  int sprintf ARGS((S8 *buffer,CONSTANT S8 *format, /* args */ ...));
 
 #define NULLP         0L          /* null pointer */
 #define NULLD         0L          /* null data */
-#define PTR           U32         /* pointer */
-#define PTRSIZE       sizeof(U32) /* pointer size */
+#define PTR           uint32_t         /* pointer */
+#define PTRSIZE       sizeof(uint32_t) /* pointer size */
 /* #define PTRFAR                     pointer far */
 #define STKALIGN      4           /* stack alignment */
 
@@ -1546,13 +1381,13 @@ EXTERN  int sprintf ARGS((S8 *buffer,CONSTANT S8 *format, /* args */ ...));
 #define NULLP         0L          /* null pointer */
 #define NULLD         0L          /* null data */
 #ifndef BIT_64
-#define PTR           U32         /* pointer */
-#define PTRSIZE       sizeof(U32) /* pointer size */
+#define PTR           uint32_t         /* pointer */
+#define PTRSIZE       sizeof(uint32_t) /* pointer size */
 /* #define PTRFAR                     pointer far */
 #define STKALIGN      4           /* stack alignment */
 #else  /* BIT_64 */
-#define PTR           U64         /* pointer */
-#define PTRSIZE       sizeof(U64) /* pointer size */
+#define PTR           uint64_t         /* pointer */
+#define PTRSIZE       sizeof(uint64_t) /* pointer size */
 /* #define PTRFAR                     pointer far */
 #define STKALIGN      8           /* stack alignment */
 #endif /* BIT_64 */
@@ -1578,13 +1413,13 @@ EXTERN  int sprintf ARGS((S8 *buffer,CONSTANT S8 *format, /* args */ ...));
 #define NULLP         0L          /* null pointer */
 #define NULLD         0L          /* null data */
 #ifndef BIT_64
-#define PTR           U32         /* pointer */
-#define PTRSIZE       sizeof(U32) /* pointer size */
+#define PTR           uint32_t         /* pointer */
+#define PTRSIZE       sizeof(uint32_t) /* pointer size */
 /* #define PTRFAR                     pointer far */
 #define STKALIGN      4           /* stack alignment */
 #else
-#define PTR           U64         /* pointer */
-#define PTRSIZE       sizeof(U64) /* pointer size */
+#define PTR           uint64_t         /* pointer */
+#define PTRSIZE       sizeof(uint64_t) /* pointer size */
 /* #define PTRFAR                     pointer far */
 #define STKALIGN      8           /* stack alignment */
 #endif /* BIT_64 */
@@ -1613,12 +1448,12 @@ EXTERN  int sprintf ARGS((S8 *buffer,CONSTANT S8 *format, /* args */ ...));
 #define NULLP         0L          /* null pointer */
 #define NULLD         0L          /* null data */
 #ifndef BIT_64
-#define PTR           U32         /* pointer */
-#define PTRSIZE       sizeof(U32) /* pointer size */
+#define PTR           uint32_t         /* pointer */
+#define PTRSIZE       sizeof(uint32_t) /* pointer size */
 #define STKALIGN      4           /* stack alignment */
 #else  /* BIT_64 */
-#define PTR           U64         /* pointer */
-#define PTRSIZE       sizeof(U64) /* pointer size */
+#define PTR           uint64_t         /* pointer */
+#define PTRSIZE       sizeof(uint64_t) /* pointer size */
 #define STKALIGN      8           /* stack alignment */
 #endif /* BIT_64 */
 
@@ -1636,8 +1471,8 @@ EXTERN  int sprintf ARGS((S8 *buffer,CONSTANT S8 *format, /* args */ ...));
 
 #define NULLP         0L          /* null pointer */
 #define NULLD         0L          /* null data */
-#define PTR           U32         /* pointer */
-#define PTRSIZE       sizeof(U32) /* pointer size */
+#define PTR           uint32_t         /* pointer */
+#define PTRSIZE       sizeof(uint32_t) /* pointer size */
 /* #define PTRFAR                     pointer far */
 #define STKALIGN      4           /* stack alignment */
 
@@ -1660,8 +1495,8 @@ EXTERN  int sprintf ARGS((S8 *buffer,CONSTANT S8 *format, /* args */ ...));
 
 #define NULLP         0L          /* null pointer */
 #define NULLD         0L          /* null data */
-#define PTR           U64         /* pointer */
-#define PTRSIZE       sizeof(U64) /* pointer size */
+#define PTR           uint64_t         /* pointer */
+#define PTRSIZE       sizeof(uint64_t) /* pointer size */
 /* #define PTRFAR                     pointer far */
 #define STKALIGN      8           /* stack alignment */
 
@@ -1683,8 +1518,8 @@ EXTERN  int sprintf ARGS((S8 *buffer,CONSTANT S8 *format, /* args */ ...));
 
 #define NULLP         0L          /* null pointer */
 #define NULLD         0L          /* null data */
-#define PTR           U32         /* pointer */
-#define PTRSIZE       sizeof(U32) /* pointer size */
+#define PTR           uint32_t         /* pointer */
+#define PTRSIZE       sizeof(uint32_t) /* pointer size */
 /* #define PTRFAR                     pointer far */
 #define STKALIGN      4           /* stack alignment */
 
@@ -1709,13 +1544,13 @@ EXTERN  int sprintf ARGS((S8 *buffer,CONSTANT S8 *format, /* args */ ...));
 #define NULLP         0L          /* null pointer */
 #define NULLD         0L          /* null data */
 #ifndef BIT_64
-#define PTR           U32         /* pointer */
-#define PTRSIZE       sizeof(U32) /* pointer size */
+#define PTR           uint32_t         /* pointer */
+#define PTRSIZE       sizeof(uint32_t) /* pointer size */
 /* #define PTRFAR                     pointer far */
 #define STKALIGN      4           /* stack alignment */
 #else  /* BIT_64 */
-#define PTR           U64         /* pointer */
-#define PTRSIZE       sizeof(U64) /* pointer size */
+#define PTR           uint64_t         /* pointer */
+#define PTRSIZE       sizeof(uint64_t) /* pointer size */
 /* #define PTRFAR                     pointer far */
 #define STKALIGN      8           /* stack alignment */
 #endif /* BIT_64 */
@@ -1739,12 +1574,12 @@ EXTERN  int sprintf ARGS((S8 *buffer,CONSTANT S8 *format, /* args */ ...));
 #define NULLP         0L          /* null pointer */
 #define NULLD         0L          /* null data */
 #ifndef BIT_64
-#define PTR           U32         /* pointer */
-#define PTRSIZE       sizeof(U32) /* pointer size */
+#define PTR           uint32_t         /* pointer */
+#define PTRSIZE       sizeof(uint32_t) /* pointer size */
 #define STKALIGN      4           /* stack alignment */
 #else  /* BIT_64 */
-#define PTR           U64         /* pointer */
-#define PTRSIZE       sizeof(U64) /* pointer size */
+#define PTR           uint64_t         /* pointer */
+#define PTRSIZE       sizeof(uint64_t) /* pointer size */
 #define STKALIGN      8           /* stack alignment */
 #endif /* BIT_64 */
 
@@ -1773,17 +1608,17 @@ EXTERN  int sprintf ARGS((S8 *buffer,CONSTANT S8 *format, /* args */ ...));
 /*envdep_h_001.main_77 SSI-4GMX specfic changes*/
 #ifndef SS_4GMX_LCORE
 #ifdef _WIN64
-#define PTR           U64         /* pointer */
-#define PTRSIZE       sizeof(U64) /* pointer size */
+#define PTR           uint64_t         /* pointer */
+#define PTRSIZE       sizeof(uint64_t) /* pointer size */
 #define STKALIGN      8           /* stack alignment */
 #else /* _WIN64 */
-#define PTR           U32         /* pointer */
-#define PTRSIZE       sizeof(U32) /* pointer size */
+#define PTR           uint32_t         /* pointer */
+#define PTRSIZE       sizeof(uint32_t) /* pointer size */
 #define STKALIGN      4           /* stack alignment */
 #endif
 #else
-#define PTR           U32         /* pointer */
-#define PTRSIZE       sizeof(U32) /* pointer size */
+#define PTR           uint32_t         /* pointer */
+#define PTRSIZE       sizeof(uint32_t) /* pointer size */
 #define STKALIGN      4           /* stack alignment */
 #endif
 
@@ -1816,7 +1651,6 @@ EXTERN  int sprintf ARGS((S8 *buffer,CONSTANT S8 *format, /* args */ ...));
 
 /* message function type macro */
 
-typedef U32 MFTYPE;
 
 
 /* typedef and defines for argument manipulation */
@@ -1842,15 +1676,6 @@ typedef S8               *ARGTYPE;
 **********************************************************************/
 
 /*
-   trace macros are at the beginning of each function. they may
-   be used for debugging purposes. the trace macros are turned on
-   by the following command line option:
-
-   TRACE0  - trace mos support functions
-   TRACE1  - trace mos interface functions
-   TRACE2  - trace layer support functions
-   TRACE3  - trace layer interface functions
-   TRACE4  - trace interrupt service functions
 
    there is one additional trace macro which turns on trace macros 0 - 4
    and pushes the text within trace macros 0 - 4 onto a stack. the text
@@ -1861,109 +1686,12 @@ typedef S8               *ARGTYPE;
 */
   
 #ifdef TRACE5           /* trace 5 - call stack */
-#define TRACE0          /* trace 0 - mos support functions */
-#define TRACE1          /* trace 1 - mos interface functions */
-#define TRACE2          /* trace 2 - layer support functions */
-#define TRACE3          /* trace 3 - layer interface functions */
-#define TRACE4          /* trace 4 - interrupt service functions */
 
 #define T5M 64          /* trace 5 - maximum call stack height */
-extern S8 *t5s[];       /* trace 5 - call stack */
-extern S16 t5t;         /* trace 5 - top of call stack */
+S8 *t5s[];       /* trace 5 - call stack */
+S16 t5t;         /* trace 5 - top of call stack */
 #ifdef ERRCHK
-extern Void FAR exit(int);
-#endif
-#endif
-
-#ifdef TRACE5           /* trace 5 - call stack */
-#ifdef ERRCHK
-#define TRC0(a)         if(t5t>=0&&t5t<T5M-1) t5s[t5t++] = #a; else exit(0); 
-#else
-#define TRC0(a)         t5s[t5t++] = #a;
-#endif
-#else
-#ifdef TRACE0           /* trace 0 - mos support functions */
-#ifdef ANSI             /* ansi */
-#define TRC0(a)         printf(#a "\n");
-#else                   /* not ansi */
-#define TRC0(a);
-#endif
-#else
-#define TRC0(a);
-#endif
-#endif
-  
-#ifdef TRACE5           /* trace 5 - call stack */
-#ifdef ERRCHK
-#define TRC1(a)         if(t5t>=0&&t5t<T5M-1) t5s[t5t++] = #a; else exit(0); 
-#else
-#define TRC1(a)         t5s[t5t++] = #a;
-#endif
-#else
-#ifdef TRACE1           /* trace 1 - mos interface functions */
-#ifdef ANSI             /* ansi */
-#define TRC1(a)         printf(#a "\n");
-#else                   /* not ansi */
-#define TRC1(a)         ; 
-#endif
-#else
-#define TRC1(a);
-#endif
-#endif
-  
-#ifdef TRACE5           /* trace 5 - call stack */
-#ifdef ERRCHK
-#define TRC2(a)         if(t5t>=0&&t5t<T5M-1) t5s[t5t++] = #a; else exit(0); 
-#else
-#define TRC2(a)         t5s[t5t++] = #a;
-#endif
-#else
-#ifdef TRACE2           /* trace 2 - layer support functions */
-#ifdef ANSI             /* ansi */
-/* envdep_h_001.main_68  Corrected the macro */
-#define TRC2(a)         printf(#a "\n"); 
-#else                   /* not ansi */
-#define TRC2(a)         ; 
-#endif
-#else
-#define TRC2(a);
-#endif
-#endif
-  
-#ifdef TRACE5           /* trace 5 - call stack */
-#ifdef ERRCHK
-#define TRC3(a)         if(t5t>=0&&t5t<T5M-1) t5s[t5t++] = #a; else exit(0); 
-#else
-#define TRC3(a)         t5s[t5t++] = #a;
-#endif
-#else
-#ifdef TRACE3           /* trace 3 - layer interface functions */
-#ifdef ANSI             /* ansi */
-/* envdep_h_001.main_68  Corrected the macro */
-#define TRC3(a)         printf(#a "\n");
-#else                   /* not ansi */
-#define TRC3(a)         ; 
-#endif
-#else
-#define TRC3(a);
-#endif
-#endif
-
-#ifdef TRACE5           /* trace 5 - call stack */
-#ifdef ERRCHK
-#define TRC4(a)         if(t5t>=0&&t5t<T5M-1) t5s[t5t++] = #a; else exit(0); 
-#else
-#define TRC4(a)         t5s[t5t++] = #a;
-#endif
-#else
-#ifdef TRACE4           /* trace 4 - interrupt service functions */
-#ifdef ANSI             /* ansi */
-#define TRC4(a)         printf(#a "\n");
-#else                   /* not ansi */
-#define TRC4(a);
-#endif
-#else
-#define TRC4(a);
+Void FAR exit(int);
 #endif
 #endif
 

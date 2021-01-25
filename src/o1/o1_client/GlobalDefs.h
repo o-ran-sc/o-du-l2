@@ -32,7 +32,6 @@
 #define TCP_SERVER_IP      "127.0.0.1"
 #define CELL_UP_ALARM_ID   1009
 #define CELL_DOWN_ALARM_ID 1010
-#define O1_ENABLE          1
 
 #endif
 

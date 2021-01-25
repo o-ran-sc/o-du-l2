@@ -27,6 +27,20 @@
 #define DU_POOL  1
 #define RLC_POOL  1
 #define MAC_POOL 1
+#define MAX_SLIV_CONFIG_IDX 105
+
+/* Events */
+#define EVTCFG 0
+#define EVTSCTPSTRT  1
+#define EVENT_CU_DATA  2
+#define EVENT_SCTP_NTFY  3
+#define EVTSRVOPENREQ  4
+#define EVTSRVOPENCFM  5
+#define EVTTNLMGMTREQ  6
+#define EVTTNLMGMTCFM  7
+#define EVTSLOTIND    8
+#define EVTSTARTPOLL  9
+#define EVENT_RIC_DATA  10
 
 /* allocate and zero out a static buffer */
 #define DU_ALLOC(_datPtr, _size)                                \
@@ -35,7 +49,7 @@
    _ret = SGetSBuf(DU_APP_MEM_REGION, DU_POOL,                  \
                     (Data **)&_datPtr, _size);                  \
    if(_ret == ROK)                                              \
-      cmMemset((U8*)_datPtr, 0, _size);                         \
+      memset(_datPtr, 0, _size);                         \
    else                                                         \
       _datPtr = NULLP;                                          \
 }
@@ -53,7 +67,7 @@
    if(SGetStaticBuffer(DU_APP_MEM_REGION, DU_POOL,           \
       (Data **)&_buf, (Size) _size, 0) == ROK)               \
    {                                                         \
-      cmMemset((U8 *)(_buf), 0, _size);                      \
+      memset((_buf), 0, _size);                      \
    }                                                         \
    else                                                      \
    {                                                         \
@@ -77,7 +91,7 @@
 {                                                           \
    _pst.selector  = ODU_SELECTOR_LWLC;                      \
    _pst.srcEnt    = ENTDUAPP;                               \
-   _pst.dstEnt    = ENTRG;                                  \
+   _pst.dstEnt    = ENTMAC;                                  \
    _pst.dstInst   = 0;                                      \
    _pst.srcInst   = 0;                                      \
    _pst.dstProcId = DU_PROC;                                \
@@ -89,6 +103,28 @@
    _pst.prior = 0;                                          \
    _pst.intfVer = 0;                                        \
 }
+
+/* Fill Pst structure for sending msg from DU_APP to RLC */
+#define FILL_PST_DUAPP_TO_RLC(_pst, _dstInst, _event)       \
+{                                                           \
+   _pst.selector  = ODU_SELECTOR_LWLC;                      \
+   _pst.srcEnt    = ENTDUAPP;                               \
+   _pst.dstEnt    = ENTRLC;                                  \
+   _pst.dstInst   = _dstInst;                               \
+   _pst.srcInst   = DU_INST;                                \
+   _pst.dstProcId = DU_PROC;                                \
+   _pst.srcProcId = DU_PROC;                                \
+   _pst.region = DU_APP_MEM_REGION;                         \
+   _pst.pool = DU_POOL;                                     \
+   _pst.event = _event;                                     \
+   _pst.route = 0;                                          \
+   _pst.prior = 0;                                          \
+   _pst.intfVer = 0;                                        \
+}
+
+
+void fillStartSymbolAndLen(uint8_t numRsrcAlloc, PdschConfig *pdschCfg, PuschCfg *puschCfg)
+;
 
 /**********************************************************************
          End of file

@@ -36,14 +36,14 @@
 #define RLOG_LIMIT_L2_COUNT 100
 #define RLOG_LIMIT_L3_COUNT 500
 
-PUBLIC void rlInitL2SocSpecific(void);
-PUBLIC void processL2LogBuff(void);
-PUBLIC void rlGetL2LogBufPtr(void *mBuf,U32 *logLen,Data **logPtr);
-PUBLIC void rlInvalidateL2LogsInCache(Data *ptr,U32   len);
+void rlInitL2SocSpecific(void);
+void processL2LogBuff(void);
+void rlGetL2LogBufPtr(void *mBuf,uint32_t *logLen,Data **logPtr);
+void rlInvalidateL2LogsInCache(Data *ptr,uint32_t   len);
 
-extern void rlInitL2SocSpecific(void);
-extern void processL2LogBuff(void);
-extern void rlGetL2LogBufPtr(void *mBuf,U32 *logLen,Data **logPtr);
+void rlInitL2SocSpecific(void);
+void processL2LogBuff(void);
+void rlGetL2LogBufPtr(void *mBuf,uint32_t *logLen,Data **logPtr);
 
 /**********************************************************************
          End of file

@@ -92,31 +92,25 @@
 *       File:  ss_queue.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SInitQueue
+S16 SInitQueue
 (
 Queue *q               /* queue */
 )
-#else
-PUBLIC S16 SInitQueue(q)
-Queue *q;              /* queue */
-#endif
 {
-   TRC1(SInitQueue)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check queue pointer */
    if (q == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS266, ERRZERO, "Null Ptr");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
    q->head     = NULLP;
    q->tail     = NULLP;
    q->crntSize = 0;
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of SInitQueue */
 
@@ -142,15 +136,10 @@ Queue *q;              /* queue */
 *       File:  ss_queue.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SFlushQueue
+S16 SFlushQueue
 (
 Queue *q                    /* queue */
 )
-#else
-PUBLIC S16 SFlushQueue(q)
-Queue *q;                   /* queue */
-#endif
 {
    Buffer *tBuf;
    Buffer *mBuf;
@@ -158,17 +147,16 @@ Queue *q;                   /* queue */
 
 #ifdef T2K_MEM_LEAK_DBG
    char* file = __FILE__;
-   U32 line = __LINE__;
+   uint32_t line = __LINE__;
 #endif
 
-   TRC1(SFlushQueue)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check queue */
    if (q == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS267, ERRZERO, "Null Q Ptr");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -189,7 +177,7 @@ Queue *q;                   /* queue */
    q->head     = NULLP;
    q->tail     = NULLP;
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of SFlushQueue */
 
@@ -217,46 +205,38 @@ Queue *q;                   /* queue */
 *       File:  ss_queue.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SCatQueue
+S16 SCatQueue
 (
 Queue *q1,                  /* queue 1 */
 Queue *q2,                  /* queue 2 */
 Order order                 /* order */
 )
-#else
-PUBLIC S16 SCatQueue(q1, q2, order)
-Queue *q1;                  /* queue 1 */
-Queue *q2;                  /* queue 2 */
-Order order;                /* order */
-#endif
 {
-   TRC1(SCatQueue)
  
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (q1 == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS268, ERRZERO, "Null Q1 Ptr");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
  
    if (q2 == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS269, ERRZERO, "Null Q2 Ptr");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    
    if ((order != Q1Q2) && (order != Q2Q1))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS270, ERRZERO, "Invalid queue order");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* ss021.103 - Addition if Q1 is Q2 */
    if (q2 == q1)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS271, ERRZERO, "Q1 == Q2");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    
 #endif /* ERRCLASS */
@@ -271,12 +251,12 @@ Order order;                /* order */
       q2->tail       = NULLP;
       q2->crntSize   = 0;
       
-      RETVALUE(ROK);
+      return ROK;
    }
 
    if (q2->crntSize == 0)
    {
-      RETVALUE(ROK);
+      return ROK;
    }
    
    switch (order)
@@ -299,7 +279,7 @@ Order order;                /* order */
          break;
       }
       default:
-         RETVALUE(RFAILED);
+         return RFAILED;
    }
 
    q1->crntSize  += q2->crntSize;
@@ -308,7 +288,7 @@ Order order;                /* order */
    q2->tail       = NULLP;
    q2->crntSize   = 0;
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of SCatQueue */
 
@@ -329,38 +309,31 @@ Order order;                /* order */
 *       File:  ss_queue.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SFndLenQueue
+S16 SFndLenQueue
 (
 Queue *q,                   /* queue */
 QLen  *lngPtr               /* pointer to length */
 )
-#else
-PUBLIC S16 SFndLenQueue(q, lngPtr)
-Queue *q;                   /* queue */
-QLen  *lngPtr;              /* pointer to length */
-#endif
 {
-   TRC1(SFndLenQueue)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check queue */
    if (q == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS272, ERRZERO, "Null Q Ptr");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* check length */
    if (lngPtr == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS273, ERRZERO, "Null Q Len Ptr");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
    *lngPtr = q->crntSize;
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of SFndLenQueue */
 
@@ -386,52 +359,44 @@ QLen  *lngPtr;              /* pointer to length */
 *       File:  ss_queue.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SExamQueue
+S16 SExamQueue
 (
 Buffer **bufPtr,            /* pointer to buffer */
 Queue  *q,                  /* queue */
 QLen   idx                  /* index */
 )
-#else
-PUBLIC S16 SExamQueue(bufPtr, q, idx)
-Buffer **bufPtr;            /* pointer to buffer */
-Queue  *q;                  /* queue */
-QLen   idx;                 /* index */
-#endif
 {
    Buffer *tmpBuf;
    QLen   i;
 
-   TRC1(SExamQueue)
  
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check buffer pointer */
    if (bufPtr == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS274, ERRZERO, "Null Buf Ptr");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
  
    /* check index */
    if ((S32)idx < 0)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS275, ERRZERO, "-ve index ");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
  
    /* check queue */
    if (q == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS276, ERRZERO, "Null Q Ptr");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif /* ERRCLASS */
  
    if (idx >= q->crntSize)
    {
       *bufPtr = NULLP;
-      RETVALUE(ROKDNA);
+      return (ROKDNA);
    }
 
    if (idx == 0)
@@ -452,7 +417,7 @@ QLen   idx;                 /* index */
       *bufPtr = tmpBuf;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of SExamQueue */
 
@@ -481,50 +446,42 @@ QLen   idx;                 /* index */
 *       File:  ss_queue.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SAddQueue
+S16 SAddQueue
 (
 Buffer *mBuf,                /* buffer */
 Queue  *q,                   /* queue */
 QLen   idx                   /* index */
 )
-#else
-PUBLIC S16 SAddQueue(mBuf, q, idx)
-Buffer *mBuf;                /* buffer */
-Queue  *q;                   /* queue */
-QLen   idx;                  /* index */
-#endif
 {
    Buffer *tBuf;
    QLen   i;
 
-   TRC1(SAddQueue)
  
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check queue */
    if (q == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS277, ERRZERO, "Null Q Ptr");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
  
    if (mBuf == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS278, ERRZERO, "Null Buf Ptr");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
  
    if ((S32)idx < 0)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS279, ERRZERO, "-ve index");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* ss021.103 - Addition to check buffer type and if duplicate message */
    if (mBuf->b_datap->db_type != SS_M_PROTO)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS280, ERRZERO, 
                  "Incorrect buffer type");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    tBuf = q->head;
    while (tBuf != (Buffer *)NULLP)
@@ -532,7 +489,7 @@ QLen   idx;                  /* index */
       if (tBuf == mBuf)
       {
          SSLOGERROR(ERRCLS_INT_PAR, ESS281, ERRZERO, "Duplicate queued mBuf");
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
       tBuf = tBuf->b_next;
    }
@@ -541,7 +498,7 @@ QLen   idx;                  /* index */
    if (idx > q->crntSize)
    {
       SSLOGERROR(ERRCLS_DEBUG, ESS282, ERRZERO, "Invalid index");
-      RETVALUE(ROKDNA);
+      return (ROKDNA);
    }
    else if (q->crntSize == 0)
    {
@@ -579,7 +536,7 @@ QLen   idx;                  /* index */
       tBuf->b_prev         = mBuf;
    }
    q->crntSize++;
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of SAddQueue */
 
@@ -606,51 +563,43 @@ QLen   idx;                  /* index */
 *       File:  ss_queue.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SRemQueue
+S16 SRemQueue
 (
 Buffer **bufPtr,            /* pointer to buffer */
 Queue  *q,                  /* queue */
 QLen   idx                  /* index */
 )
-#else
-PUBLIC S16 SRemQueue(bufPtr, q, idx)
-Buffer **bufPtr;            /* pointer to buffer */
-Queue  *q;                  /* queue */
-QLen   idx;                 /* index */
-#endif
 {
    Buffer *tBuf;
    QLen   i;
 
-   TRC1(SRemQueue)
  
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check buffer pointer */
    if (bufPtr == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS283, ERRZERO, "Null Buf Ptr");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
  
    /* check queue */
    if (q == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS284, ERRZERO, "Null Q Ptr");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
  
    if ((S32)idx < 0)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS285, ERRZERO, "-ve Index");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }      
 #endif /* ERRCLASS */   
  
    if (idx >= q->crntSize)
    {
       *bufPtr = NULLP;
-      RETVALUE(ROKDNA);
+      return (ROKDNA);
    }
    if (idx == 0)
    {
@@ -687,7 +636,7 @@ QLen   idx;                 /* index */
    }
    q->crntSize--;
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of SRemQueue */
 
@@ -714,21 +663,14 @@ QLen   idx;                 /* index */
 *       File:  ss_queue.c
 *
 */
-#ifdef ANSI
-PUBLIC INLINE S16 SQueueFirst
+inline S16 SQueueFirst
 (
 Buffer *buf,                /* buffer */
 Queue *q                    /* queue */
 )
-#else
-PUBLIC INLINE S16 SQueueFirst(buf, q)
-Buffer *buf;                /* buffer */
-Queue *q;                   /* queue */
-#endif
 {
-   TRC1(SQueueFirst)
 
-   RETVALUE(SAddQueue(buf, q, 0));
+   return (SAddQueue(buf, q, 0));
 } /* end of SQueueFirst */
 
   
@@ -753,21 +695,14 @@ Queue *q;                   /* queue */
 *       File:  ss_queue.c
 *
 */
-#ifdef ANSI
-PUBLIC INLINE S16 SDequeueFirst
+inline S16 SDequeueFirst
 (
 Buffer **bufPtr,            /* pointer to buffer */
 Queue *q                    /* queue */
 )
-#else
-PUBLIC INLINE S16 SDequeueFirst(bufPtr, q)
-Buffer **bufPtr;            /* pointer to buffer */
-Queue *q;                   /* queue */
-#endif
 {
-   TRC2(SDequeueFirst)
 
-   RETVALUE(SRemQueue(bufPtr, q, 0));
+   return (SRemQueue(bufPtr, q, 0));
 } /* end of SDequeueFirst */
 
   
@@ -790,35 +725,28 @@ Queue *q;                   /* queue */
 *       File:  ss_queue.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SQueueLast
+S16 SQueueLast
 (
 Buffer *buf,                /* buffer */
 Queue *q                    /* queue */
 )
-#else
-PUBLIC S16 SQueueLast(buf, q)
-Buffer *buf;                /* buffer */
-Queue *q;                   /* queue */
-#endif
 {
-   TRC1(SQueueLast)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check queue */
    if (q == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS286, ERRZERO, "Null Q Ptr");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* check queue */
    if (buf == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS287, ERRZERO, "Null Buf Ptr");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
-   RETVALUE(SAddQueue(buf, (q), ((q)->crntSize)));
+   return (SAddQueue(buf, (q), ((q)->crntSize)));
 }
 
 
@@ -844,34 +772,27 @@ Queue *q;                   /* queue */
 *       File:  ss_queue.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SDequeueLast
+S16 SDequeueLast
 (
 Buffer **bufPtr,            /* pointer to buffer */
 Queue *q                    /* queue */
 )
-#else
-PUBLIC S16 SDequeueLast(bufPtr, q)
-Buffer **bufPtr;            /* pointer to buffer */
-Queue *q;                   /* queue */
-#endif
 {
    S16   ret;
 
-   TRC1(SDequeueLast)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* check buffer pointer */
    if (!bufPtr)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS288, ERRZERO, "Null Buf Ptr");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* check queue */
    if (!q)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS289, ERRZERO, "Null Q Ptr");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
    if(q->crntSize > 0)
@@ -879,7 +800,7 @@ Queue *q;                   /* queue */
    else
       ret = SRemQueue(bufPtr, q, q->crntSize);
 
-   RETVALUE(ret);
+   return (ret);
 }
 
 #endif /* SS_ENABLE_MACROS */
@@ -899,26 +820,20 @@ Queue *q;                   /* queue */
 *       File:  ss_queue.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 ssInitDmndQ
+S16 ssInitDmndQ
 (
 SsDmndQ *dQueue                 /* Demand Queue */
 )
-#else
-PUBLIC S16 ssInitDmndQ(dQueue)
-SsDmndQ *dQueue;                /* Demand Queue */
-#endif
 {
-   U8  i;
+   uint8_t  i;
    S16 ret;
 
-   TRC0(ssInitDmnddQ)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (dQueue == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS290, ERRZERO, "NULL DQ Pointer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -950,7 +865,7 @@ SsDmndQ *dQueue;                /* Demand Queue */
          SSLOGERROR(ERRCLS_DEBUG, ESS291, (ErrVal)ret,
                                    "Failed to initialize lock");
 #endif
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
@@ -975,9 +890,9 @@ SsDmndQ *dQueue;                /* Demand Queue */
       SSLOGERROR(ERRCLS_DEBUG, ESS292, (ErrVal)ret, 
                                    "Failed to init semaphore");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
-   RETVALUE (ROK);
+   return  (ROK);
 
 } /* End of ssInitDmndQ */
 
@@ -997,27 +912,21 @@ SsDmndQ *dQueue;                /* Demand Queue */
 *       File:  ss_queue.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 ssDestroyDmndQ
+S16 ssDestroyDmndQ
 (
 SsDmndQ *dQueue                        /* demand Queue */
 )
-#else
-PUBLIC S16 ssDestroyDmndQ(dQueue)
-SsDmndQ *dQueue;                       /* demand Queue */
-#endif
 {
-   U8     i;
+   uint8_t     i;
    Buffer *tBuf;
    S16    ret;
 
-   TRC0(ssDestroyDmndQ)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (dQueue == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS293, ERRZERO, "NULL DQ Pointer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -1038,7 +947,7 @@ SsDmndQ *dQueue;                       /* demand Queue */
 #if (ERRCLASS & ERRCLS_DEBUG)
          SSLOGERROR(ERRCLS_DEBUG, ESS294, (ErrVal)ret, "Failed to destroy lock");
 #endif
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
    for (i = 0; i < SS_MAX_NUM_DQ; i++)
@@ -1056,10 +965,10 @@ SsDmndQ *dQueue;                       /* demand Queue */
    {
       SSLOGERROR(ERRCLS_DEBUG, ESS295, ERRZERO,
                          "Could not delete the Semaphore");
-      RETVALUE(RFAILED);
+      return RFAILED;
 
    }
-   RETVALUE (ROK);
+   return  (ROK);
 
 } /* end of ssDestroyDmndQ */
 
@@ -1081,63 +990,54 @@ SsDmndQ *dQueue;                       /* demand Queue */
 *       File:  ss_queue.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 ssDmndQPut
+S16 ssDmndQPut
 (
 SsDmndQ *dQueue,                       /* demand Queue */
 Buffer  *mBuf,                         /* message buffer */
 Prior   priority,                      /* priority */
 Order   order                          /* position */
 )
-#else
-PUBLIC S16 ssDmndQPut(dQueue, mBuf, priority, order)
-SsDmndQ *dQueue;                       /* demand Queue */
-Buffer  *mBuf;                         /* message buffer */
-Prior   priority;                      /* priority */
-Order   order;                         /* position */
-#endif
 {
 #ifndef TENB_RTLIN_CHANGES
-   U8     maskIndex;                   /* mask Index */
-   U8     bitPosition;                 /* bit position in index */
+   uint8_t     maskIndex;                   /* mask Index */
+   uint8_t     bitPosition;                 /* bit position in index */
 #else
-   U8    qIndex;
+   uint8_t    qIndex;
 #endif
    Queue *queue;                       /* queue in demand queue */
    S16    ret;                         /* return value */
 #ifdef SS_PERF
    int    value;
-   U32    size;
+   uint32_t    size;
 #endif
 #ifdef MSPD_MLOG_NEW 
-   U32    t = MacGetTick();
+   uint32_t    t = MacGetTick();
 #endif 
 
-   TRC0(ssDmndQPut)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (dQueue == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS296, ERRZERO, "NULL DQ Pointer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (mBuf == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS297, ERRZERO, "NULL mBuf Pointer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if ((priority == PRIORNC) || (priority > SS_MAX_DQ_PRIOR))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS298, ERRZERO, "invalid priority ");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if ((order != SS_DQ_FIRST) && (order != SS_DQ_LAST))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS299, ERRZERO, "invalid order ");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
    
@@ -1169,7 +1069,7 @@ Order   order;                         /* position */
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS300, (ErrVal)ret, "Failed to get lock");
 #endif
-      RETVALUE (RFAILED);
+      return  (RFAILED);
    }
 
    if (queue->crntSize == 0)
@@ -1234,7 +1134,7 @@ Order   order;                         /* position */
       {
          SDequeueFirst(&mBuf, queue);
       }
-      RETVALUE (RFAILED);
+      return  (RFAILED);
    }
 
    /* increment the counting semaphore */
@@ -1246,7 +1146,7 @@ Order   order;                         /* position */
   {
      sem_getvalue(&dQueue->dmndQSema, &value);
      if (value > 0)
-           RETVALUE(ROK);
+           return ROK;
   }
 #endif
    if (ssPostSema(&dQueue->dmndQSema) != ROK)
@@ -1263,10 +1163,10 @@ Order   order;                         /* position */
        {
           SDequeueFirst(&mBuf, queue);
        } 
-       RETVALUE(RFAILED);
+       return RFAILED;
 #endif
    }
-   RETVALUE(ROK);
+   return ROK;
 
 } /* End of ssDmndQPut */
 
@@ -1287,25 +1187,19 @@ Order   order;                         /* position */
 *       File:  ss_queue.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 ssDmndQWait
+S16 ssDmndQWait
 (
 SsDmndQ *dQueue                          /* demand queue */
 )
-#else
-PUBLIC S16 ssDmndQWait(dQueue)
-SsDmndQ *dQueue;                          /* demand queue */
-#endif
 {
    S16   ret;
 
-   TRC0(ssDmndQWait)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (dQueue == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS303, ERRZERO, "NULL DQ Pointer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #endif
@@ -1318,10 +1212,10 @@ SsDmndQ *dQueue;                          /* demand queue */
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS306, (ErrVal)ret, "Failed to get semaphore");
 #endif
-      RETVALUE (RFAILED);
+      return  (RFAILED);
    }
 
-   RETVALUE (ROK);
+   return  (ROK);
 } /* End of ssDmndQWait */
 
 
@@ -1342,41 +1236,33 @@ SsDmndQ *dQueue;                          /* demand queue */
 *       File:  ss_queue.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 ssDmndQGet
+S16 ssDmndQGet
 (
 SsDmndQ *dQueue,                          /* demand queue */
 Buffer  **mBuf,                           /* message buffer */
 Order   order                             /* position */ 
 )
-#else
-PUBLIC S16 ssDmndQGet(dQueue, mBuf, order)
-SsDmndQ *dQueue;                          /* demand queue */
-Buffer  **mBuf;                           /* message buffer */
-Order   order;                            /* position */
-#endif
 {
    Queue *queue;
    S16   ret;
    S16   i;
 #ifndef TENB_RTLIN_CHANGES
-   U8    bitPosition;
-   U8    qIndex;
+   uint8_t    bitPosition;
+   uint8_t    qIndex;
 #endif
 
-   TRC0(ssDmndQGet)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (mBuf == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS304, ERRZERO, "NULL mBuf Pointer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if ((order != SS_DQ_FIRST) && (order != SS_DQ_LAST))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS305, ERRZERO, "invalid order ");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -1394,7 +1280,7 @@ Order   order;                            /* position */
 #if (ERRCLASS & ERRCLS_DEBUG)
          SSLOGERROR(ERRCLS_DEBUG, ESS307, (ErrVal)ret, "Failed to get lock");
 #endif
-         RETVALUE (RFAILED);
+         return  (RFAILED);
       }
 
       bitPosition = osCp.dmndQLookupTbl[dQueue->bitMask[i]];
@@ -1412,14 +1298,14 @@ Order   order;                            /* position */
 #if (ERRCLASS & ERRCLS_DEBUG)
          SSLOGERROR(ERRCLS_DEBUG, ESS308, ret, "Failed to release lock");
 #endif
-         RETVALUE (RFAILED);
+         return  (RFAILED);
       }
    }
    if (i >= SS_DQ_BIT_MASK_LEN)
    {
       /* Demand Queue is empty */
       *mBuf = NULLP;
-      RETVALUE (ROKDNA);
+      return  (ROKDNA);
    }
    
    qIndex = (i * 8) +  (7 - bitPosition);
@@ -1437,7 +1323,7 @@ Order   order;                            /* position */
    {
       /* Demand Queue is empty */
       *mBuf = NULLP;
-      RETVALUE (ROKDNA);
+      return  (ROKDNA);
    }
 
    /* ss039.103 : Replaced SLock with WTLock */
@@ -1451,7 +1337,7 @@ Order   order;                            /* position */
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS307, (ErrVal)ret, "Failed to get lock");
 #endif
-      RETVALUE (RFAILED);
+      return  (RFAILED);
    }
 
 #endif
@@ -1502,10 +1388,10 @@ setting the crntSize to 0 and removing the message */
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS309, (ErrVal)ret, "Failed to release lock");
 #endif
-      RETVALUE (RFAILED);
+      return  (RFAILED);
    }
 
-   RETVALUE (ROK);
+   return  (ROK);
 
 } /* End of ssDmndQGet */
 
@@ -1526,31 +1412,23 @@ setting the crntSize to 0 and removing the message */
 *       File:  ss_queue.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 ssFndLenDmndQ
+S16 ssFndLenDmndQ
 (
 SsDmndQ *dQueue,                               /* demand queue */
 Prior   priority,                              /* priority */
 QLen    *len                                   /* queue length */
 )
-#else
-PUBLIC S16 ssFndLenDmndQ(dQueue, priority, len)
-SsDmndQ *dQueue;                               /* demand queue */
-Prior   priority;                              /* priority */
-QLen    *len;                                  /* queue length */
-#endif
 {
    
    S16  ret;                                   /* return value */
-   U8   i;
+   uint8_t   i;
 
-   TRC0(ssFndLenDmndQ)
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if ((dQueue == NULLP) || (len == NULLP))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS310, ERRZERO, "NULL Pointer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -1569,7 +1447,7 @@ QLen    *len;                                  /* queue length */
 #if (ERRCLASS & ERRCLS_DEBUG)
          SSLOGERROR(ERRCLS_DEBUG, ESS311, (ErrVal)ret, "Failed to get lock");
 #endif
-         RETVALUE (RFAILED);
+         return  (RFAILED);
       }
 
       *len = dQueue->queue[priority].crntSize;
@@ -1586,7 +1464,7 @@ QLen    *len;                                  /* queue length */
          SSLOGERROR(ERRCLS_DEBUG, ESS312, (ErrVal)ret,  \
                                          "Failed to release lock");
 #endif
-         RETVALUE (RFAILED);
+         return  (RFAILED);
       }
    }
    else
@@ -1623,14 +1501,14 @@ QLen    *len;                                  /* queue length */
 #if (ERRCLASS & ERRCLS_DEBUG)
                    SSLOGERROR(ERRCLS_DEBUG, ESS314, ERRZERO,
                          "Could not give the Semaphore");
-                   RETVALUE(RFAILED);
+                   return RFAILED;
 #endif
                 }
 
                i--;
             }
 
-            RETVALUE (RFAILED);
+            return  (RFAILED);
          }
       }
 
@@ -1654,11 +1532,11 @@ QLen    *len;                                  /* queue length */
 #if (ERRCLASS & ERRCLS_DEBUG)
             SSLOGERROR(ERRCLS_DEBUG, ESS315, (ErrVal)ret, "Failed to get lock");
 #endif
-            RETVALUE (RFAILED);
+            return  (RFAILED);
          }
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 
 } /* End of ssFndLenDmndQ */
 

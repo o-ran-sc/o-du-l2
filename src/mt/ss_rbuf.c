@@ -39,19 +39,19 @@
 #include "ss_rbuf.h"
 #include "ss_rbuf.x"
 
-U32 ssRngBufStatus = 0;
+uint32_t ssRngBufStatus = 0;
 
 /* Global Ring Loop Up Table */
 SsRngBufTbl SsRngInfoTbl[SS_RNG_BUF_MAX];
 
 
-PUBLIC Void SsRngBufEnable(Void)
+Void SsRngBufEnable(Void)
 {
   ssRngBufStatus = TRUE;
 }
 
 
-PUBLIC Void SsRngBufDisable(Void)
+Void SsRngBufDisable(Void)
 {
   ssRngBufStatus = FALSE;
 
@@ -62,23 +62,14 @@ Desc: Creates Ring Buffer for the given Id.
       Ring Structure is allocated from given 
       Region and Pool
 */
-#ifdef ANSI
-PUBLIC S16 SCreateSRngBuf
+S16 SCreateSRngBuf
 (
-U32 id,  
+uint32_t id,  
 Region region,
 Pool pool,
-U32 elmSize,
-U32 rngSize
+uint32_t elmSize,
+uint32_t rngSize
 )
-#else
-PUBLIC S16 SCreateSRngBuf (id, region, pool, elmSize, rngSize)
-U32 id; 
-Region region;
-Pool pool;
-U32 elmSize;
-U32 rngSize;
-#endif
 {
    SsRngBuf* ring;
 
@@ -88,7 +79,7 @@ U32 rngSize;
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESSXXX, id, "Invalid RBUF ID");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    if(SsRngInfoTbl[id].r_addr != 0)
    {
@@ -96,7 +87,7 @@ U32 rngSize;
       SSLOGERROR(ERRCLS_DEBUG, ESSXXX, id, 
             "Failed to Create Ring Buffer Id Ring already exist");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    /* Get Element Size */
    
@@ -108,7 +99,7 @@ U32 rngSize;
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "Allocating Ring  Failed!!!")
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESSXXX, ring, 
@@ -128,7 +119,7 @@ U32 rngSize;
       SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "Allocating Ring  Failed!!!")
 #endif
       free(ring);
-      RETVALUE(RFAILED);
+      return RFAILED;
     }
     /* Update Buffer Id Table */
     SsRngInfoTbl[id].r_addr   = ring;
@@ -141,7 +132,7 @@ U32 rngSize;
 #else
     printf("Ring Buffer Created with id =%d rSize:%d eSize:%d %lx\n",id,ring->size,ring->type,(PTR)ring);
 #endif
-    RETVALUE(ROK);
+    return ROK;
 }
 
 /*
@@ -149,19 +140,12 @@ Func: SAttachSRngBuf
 Desc: Attach the calling Entity to a ring buffer 
       as consumer(Rx) or producer (Tx)
 */
-#ifdef ANSI
-PUBLIC S16 SAttachSRngBuf
+S16 SAttachSRngBuf
 (
-U32 id,  
-U32 ent,
-U32 txRx
+uint32_t id,  
+uint32_t ent,
+uint32_t txRx
 )
-#else
-PUBLIC S16 SAttachSRngBuf (id, ent, txRx)
-U32 id;
-U32 ent;
-U32 txRx;
-#endif
 {
     /* Retrive Buffer from Global Info Table */
     if( id >= SS_RNG_BUF_MAX)
@@ -169,7 +153,7 @@ U32 txRx;
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESSXXX, id, "Invalid RBUF ID");
 #endif
-       RETVALUE(RFAILED);
+       return RFAILED;
     }
     if(SsRngInfoTbl[id].rngState < SS_RNG_CREATED)
     {
@@ -184,7 +168,7 @@ U32 txRx;
        printf("Attach Request in Invalid Ring State %d id%d \n",
          SsRngInfoTbl[id].rngState,id);
 #endif
-       RETVALUE(RFAILED);
+       return RFAILED;
     }
     if(txRx == SS_RNG_TX)
     {
@@ -196,27 +180,21 @@ U32 txRx;
         SsRngInfoTbl[id].rxEnt = ent;
         SsRngInfoTbl[id].rngState = SS_RNG_RX_ATTACHED;
     }
-    RETVALUE(ROK);
+    return ROK;
 }
 /* 
 Func: SConnectSRngBuf
 Desc: Establish a pipe between producer and consumer
 
 */
-#ifdef ANSI
-PUBLIC S16 SConnectSRngBuf
+S16 SConnectSRngBuf
 (
-U32 id,  
-U32 rxEnt
+uint32_t id,  
+uint32_t rxEnt
 )
-#else
-PUBLIC S16 SConnectSRngBuf (id, rxEnt)
-U32 id;
-U32 rxEnt;
-#endif
 {
    /* Send to Reciever ENT*/ 
-   RETVALUE(ROK); 
+   return ROK; 
 }
 
 /*
@@ -251,7 +229,7 @@ inline static S16 IsEmpty(SsRngBuf* rBuf)
    return (rBuf->write == rBuf->read); 
 }
 
-PUBLIC S16 isRngEmpty(U32 id)
+S16 isRngEmpty(uint32_t id)
 {
    return (IsEmpty(SsRngInfoTbl[id].r_addr));
 }
@@ -259,116 +237,85 @@ PUBLIC S16 isRngEmpty(U32 id)
 Func: SEnqSRngBuf
 Desc: Perform Queue operation on Ring bufer
 */
-#ifdef ANSI
-PUBLIC S16 SEnqSRngBuf 
+S16 SEnqSRngBuf 
 (
-U32 id, 
+uint32_t id, 
 Void* elem
 )
-#else
-PUBLIC S16 SEnqSRngBuf(id,elem) 
-U32 id;
-Void* elem;
-#endif
 {
-   U8* w_ptr;
-   U8 i=0;
-   U8 *element = (U8 *)elem;
-   U32 wrIndex;
+   uint8_t* w_ptr;
+   uint8_t i=0;
+   uint8_t *element = (uint8_t *)elem;
+   uint32_t wrIndex;
    /* TBD To replace id with ring addr when SAttachSRngBuf is used*/
    /* Retrive Buffer from Id */
    SsRngBuf* ring = SsRngInfoTbl[id].r_addr;
    if (IsFull(ring))
    {
         SsRngInfoTbl[id].nWriteFail++;
-        RETVALUE(RFAILED);
+        return RFAILED;
    }
    /* TBD Avoid multiplication for optimisation */
-   w_ptr = (U8*)ring->elem + (ring->write * ring->type);
+   w_ptr = (uint8_t*)ring->elem + (ring->write * ring->type);
    /* TBD Avoid for loop - use memcpy */
    for( i=0; i < ring->type; i++)
    {
-      *(U8*)w_ptr = *(U8*)element;
+      *(uint8_t*)w_ptr = *(uint8_t*)element;
       w_ptr++;
-      (U8*)element++;
+      (uint8_t*)element++;
    }
    /* Increment write index */
     wrIndex = ring->write + 1 ;
     ring->write = (wrIndex == ring->size)?0: wrIndex;
    /* Update Statistics */
    SsRngInfoTbl[id].n_write++;
-   RETVALUE(ROK);
+   return ROK;
 }
 
-#ifdef ANSI
-PUBLIC S16 SGetNumElemInRng
-(
-U32 id
-)
-#else
-PUBLIC S16 SGetNumElemInRng (id)
-U32 id;
-#endif
+S16 SGetNumElemInRng(uint32_t id)
 {
 
    S16 freeDist = (SsRngInfoTbl[id].n_write- SsRngInfoTbl[id].n_read);
 
-	RETVALUE(freeDist);
+	return (freeDist);
 }
 /*
 Func: SDeqSRngBuf
 Desc: Perform DeQueue operation on Ring bufer
 */
-#ifdef ANSI
-PUBLIC S16 SDeqSRngBuf
-(
-U32 id,
-Void *elem
-)
-#else
-PUBLIC S16 SDeqSRngBuf (id,elem)
-U8 id;
-Void *elem;
-#endif
+S16 SDeqSRngBuf(uint32_t id,Void *elem)
 {
-   U8* r_ptr;
-   U8 i=0;
-   U8 *element = (U8 *)elem;
-   U32 rdIndex;
+   uint8_t* r_ptr;
+   uint8_t i=0;
+   uint8_t *element = (uint8_t *)elem;
+   uint32_t rdIndex;
    /* Retrive Buffer from Id*/
    SsRngBuf* ring  = SsRngInfoTbl[id].r_addr;
    if(IsEmpty(ring))
    {  
        SsRngInfoTbl[id].nReadFail++;
-       RETVALUE(RFAILED);
+       return RFAILED;
    }
-   r_ptr = (U8*)ring->elem + (ring->read * ring->type);
+   r_ptr = (uint8_t*)ring->elem + (ring->read * ring->type);
    for(i=0; i<ring->type; i++)
    {
-      *(U8*)element = *r_ptr;
-      (U8*)element++;
+      *(uint8_t*)element = *r_ptr;
+      (uint8_t*)element++;
       r_ptr++;
    }
    // Avoiding % operation for wrap around
    rdIndex= ring->read + 1;
    ring->read = (rdIndex == ring->size)?0:rdIndex;
    SsRngInfoTbl[id].n_read++;
-   RETVALUE(ROK);
+   return ROK;
 }
 
-#ifdef ANSI
-PUBLIC S16 SDestroySRngBuf 
+S16 SDestroySRngBuf 
 (
-U32 id,
+uint32_t id,
 Region region,
 Pool pool
 )
-#else
-PUBLIC S16 SDestroySRngBuf(id, region, pool)
-U32 id;
-Region region;
-Pool pool;
-#endif
 {
    /* Retrive Buffer from Id */
    SsRngBuf* ring = SsRngInfoTbl[id].r_addr;
@@ -384,25 +331,17 @@ Pool pool;
       SsRngInfoTbl[id].rngState = SS_RNG_DESTROYED;
       SsRngInfoTbl[id].r_addr = 0;
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
-#ifdef ANSI
-PUBLIC S16 SPrintSRngStats
-(
-Void
-)
-#else
-PUBLIC S16 SPrintSRngStats ()
-Void;
-#endif
+S16 SPrintSRngStats(Void)
 {
-U32 i; 
+uint32_t i; 
 
    Txt   prntBuf[100];
 
 #ifdef RGL_SPECIFIC_CHANGES
-   RETVALUE(ROK);
+   return ROK;
 #endif
    for(i=0; i< SS_RNG_BUF_MAX;i++)
    {
@@ -458,66 +397,42 @@ U32 i;
 #endif
       }
    }
-   RETVALUE(ROK); 
+   return ROK; 
 }
 
-#ifdef ANSI
-PUBLIC Void* SRngGetWIndx
-(
-U32 rngId
-)
-#else
-PUBLIC Void* SRngGetWIndx (rngId)
-U32 rngId;
-#endif
+Void* SRngGetWIndx(uint32_t rngId)
 {
    /* Retrive Buffer from Id*/
    SsRngBuf* ring  = SsRngInfoTbl[rngId].r_addr;
    if (IsFull(ring))
    {
       SsRngInfoTbl[rngId].nWriteFail++;
-      RETVALUE(NULLP);
+      return (NULLP);
    }
    else
    {
-      RETVALUE(((U8 *)ring->elem) + (ring->type * ring->write));
+      return (((uint8_t *)ring->elem) + (ring->type * ring->write));
    }
 }
 
-#ifdef ANSI
-PUBLIC Void* SRngGetRIndx
-(
-U32 rngId
-)
-#else
-PUBLIC Void* SRngGetRIndx (rngId)
-U32 rngId;
-#endif
+Void* SRngGetRIndx(uint32_t rngId)
 {
    /* Retrive Buffer from Id*/
    SsRngBuf* ring  = SsRngInfoTbl[rngId].r_addr;
    if(IsEmpty(ring))
    {
       SsRngInfoTbl[rngId].nReadFail++;
-      RETVALUE(NULLP);
+      return (NULLP);
    }
    else
    {
-      RETVALUE(((U8 *)ring->elem) + (ring->type * ring->read));
+      return (((uint8_t *)ring->elem) + (ring->type * ring->read));
    }
 }
 
-#ifdef ANSI
-PUBLIC Void SRngIncrWIndx
-(
-U32 rngId
-)
-#else
-PUBLIC Void SRngIncrWIndx (rngId)
-U32 rngId;
-#endif
+Void SRngIncrWIndx(uint32_t rngId)
 {
-   U32 wrIndex;
+   uint32_t wrIndex;
    /* Retrive Buffer from Id*/
    SsRngBuf* ring  = SsRngInfoTbl[rngId].r_addr;
    wrIndex = ring->write + 1;
@@ -526,17 +441,9 @@ U32 rngId;
    SsRngInfoTbl[rngId].n_write++;
 }
 
-#ifdef ANSI
-PUBLIC Void SRngIncrRIndx
-(
-U32 rngId
-)
-#else
-PUBLIC Void SRngIncrRIndx (rngId)
-U32 rngId;
-#endif
+Void SRngIncrRIndx(uint32_t rngId)
 {
-   U32 rdIndex;
+   uint32_t rdIndex;
    /* Retrive Buffer from Id*/
    SsRngBuf* ring  = SsRngInfoTbl[rngId].r_addr;
    rdIndex = ring->read + 1;
@@ -546,7 +453,7 @@ U32 rngId;
 }
 #ifdef XEON_SPECIFIC_CHANGES
 #if (defined (MAC_FREE_RING_BUF) || defined (RLC_FREE_RING_BUF))
-S16 mtAddBufToRing(SsRngBufId ringId,void *bufPtr,U8 freeType)
+S16 mtAddBufToRing(SsRngBufId ringId,void *bufPtr,uint8_t freeType)
 {
    S16 ret1 = ROK;
    
@@ -572,7 +479,7 @@ S16 mtAddBufToRing(SsRngBufId ringId,void *bufPtr,U8 freeType)
       SsRngInfoTbl[ringId].pktDrop++;
       ret1 = RFAILED;
    }
-   RETVALUE(ret1);
+   return (ret1);
 }
 #endif
 #endif

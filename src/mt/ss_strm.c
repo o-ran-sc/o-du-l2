@@ -76,7 +76,7 @@
 
 /* private variable declarations */
 
-PRIVATE struct
+static struct
 {
    Region mdRegion;     /* region for message and data blocks */
    Region datRegion;    /* region for data buffers */
@@ -103,26 +103,18 @@ PRIVATE struct
 *       File:  ss_strm.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 ssStrmCfg
+S16 ssStrmCfg
 (
 Region mdRegId,                 /* region for message and data blocks */
 Region datRegId                 /* region for data buffers */
 )
-#else
-PUBLIC S16 ssStrmCfg(mdRegId, datRegId)
-Region mdRegId;                 /* region for message and data blocks */
-Region datRegId;                /* region for data buffers */
-#endif
 {
-   TRC1(ssStrmCfg);
-
 
    strmCfg.mdRegion = mdRegId;
    strmCfg.datRegion = datRegId;
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -152,40 +144,30 @@ Region datRegId;                /* region for data buffers */
 *       File:  ss_strm.c
 *
 */
-#ifdef ANSI
-PUBLIC S32 ssAdjMsg
+S32 ssAdjMsg
 (
 SsMblk *mp,                     /* message */
 S32 len                         /* bytes to remove */
 )
-#else
-PUBLIC S32 ssAdjMsg(mp, len)
-SsMblk *mp;                     /* message */
-S32 len;                        /* bytes to remove */
-#endif
 {
    S32 n;                       /* counter */
    S32 size;                    /* size of mblks of same type as head/tail */
-   U8 type;                     /* message type */
+   uint8_t type;                     /* message type */
    SsMblk *bp;                  /* mblk for iteration */
    SsMblk *first;               /* first mblk to be adjusted */
-
-
-   TRC1(ssAdjMsg);
-
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (mp == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS325, ERRZERO, "Null pointer");
-      RETVALUE(0);
+      return (0);
    }
 #endif
 
 
    if (len == 0)                /* nothing to do */
    {
-      RETVALUE(1);
+      return (1);
    }
 
 
@@ -210,7 +192,7 @@ S32 len;                        /* bytes to remove */
       /* if we can't trim len bytes, fail */
       if (len > size)
       {
-         RETVALUE(0);
+         return (0);
       }
 
 
@@ -266,7 +248,7 @@ S32 len;                        /* bytes to remove */
       size += len;
       if (size < 0)
       {
-         RETVALUE(0);
+         return (0);
       }
 
 
@@ -294,7 +276,7 @@ S32 len;                        /* bytes to remove */
    }
 
 
-   RETVALUE(1);
+   return (1);
 } /* ssAdjMsg */
 
 
@@ -315,17 +297,11 @@ S32 len;                        /* bytes to remove */
 *       File:  ss_strm.c
 *
 */
-#ifdef ANSI
-PUBLIC SsMblk *ssAllocB
+SsMblk *ssAllocB
 (
 S32 size,                       /* required size */
-U32 pri                         /* message priority */
+uint32_t pri                         /* message priority */
 )
-#else
-PUBLIC SsMblk *ssAllocB(size, pri)
-S32 size;                       /* required size */
-U32 pri;                        /* message priority */
-#endif
 {
    SsMblk *bp;                  /* mblk for iteration */
    Data *dat;                   /* pointer to data buffer */
@@ -336,10 +312,8 @@ U32 pri;                        /* message priority */
 
 #ifdef T2K_MEM_LEAK_DBG
    char* file = __FILE__;
-   U32 line = __LINE__;
+   uint32_t line = __LINE__;
 #endif
-   TRC1(ssAllocB);
-
 
    UNUSED(pri);
 
@@ -348,7 +322,7 @@ U32 pri;                        /* message priority */
    m = (sizeof(SsMblk) + sizeof(SsDblk));
 /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT
-   r = SAlloc(strmCfg.mdRegion, &m, 0, (Data **)&bp, __LINE__, (U8*)__FILE__, ENTNC);
+   r = SAlloc(strmCfg.mdRegion, &m, 0, (Data **)&bp, __LINE__, (uint8_t*)__FILE__, ENTNC);
 #else
    r = SAlloc(strmCfg.mdRegion, &m, 0, (Data **)&bp);
 #endif /* SS_HISTOGRAM_SUPPORT */
@@ -358,7 +332,7 @@ U32 pri;                        /* message priority */
       SSLOGERROR(ERRCLS_ADD_RES, ESS326, (ErrVal) r, "SAlloc() failed");
 #endif
 
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 
 
@@ -368,7 +342,7 @@ U32 pri;                        /* message priority */
       n = size;
 /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT
-      r = SAlloc(strmCfg.datRegion, &n, 0, &dat, __LINE__, (U8*)__FILE__, ENTNC);
+      r = SAlloc(strmCfg.datRegion, &n, 0, &dat, __LINE__, (uint8_t*)__FILE__, ENTNC);
 #else
       r = SAlloc(strmCfg.datRegion, &n, 0, &dat);
 #endif /* SS_HISTOGRAM_SUPPORT */
@@ -380,11 +354,11 @@ U32 pri;                        /* message priority */
 
 /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT
-         SFree(strmCfg.mdRegion, (Data *)bp, m, __LINE__, (U8*)__FILE__, ENTNC);
+         SFree(strmCfg.mdRegion, (Data *)bp, m, __LINE__, (uint8_t*)__FILE__, ENTNC);
 #else
          SFree(strmCfg.mdRegion, (Data *)bp, m);
 #endif /* SS_HISTOGRAM_SUPPORT */
-         RETVALUE(NULLP);
+         return (NULLP);
       }
    }
    /* we _can_ allocate a message with an empty data block */
@@ -394,10 +368,10 @@ U32 pri;                        /* message priority */
    }
 
    /* generic set-up-message function */
-   SS_STRM_INITB(bp, (SsDblk *)(((U8 *)bp) + sizeof(SsMblk)), dat, size, NULLP);
+   SS_STRM_INITB(bp, (SsDblk *)(((uint8_t *)bp) + sizeof(SsMblk)), dat, size, NULLP);
 
 
-   RETVALUE(bp);
+   return (bp);
 } /* ssAllocB */
 
 
@@ -417,29 +391,21 @@ U32 pri;                        /* message priority */
 *       File:  ss_strm.c
 *
 */
-#ifdef ANSI
-PUBLIC SsMblk *ssCopyB
+SsMblk *ssCopyB
 (
 SsMblk *mp                      /* message block */
 )
-#else
-PUBLIC SsMblk *ssCopyB(mp)
-SsMblk *mp;                     /* message block */
-#endif
 {
    SsMblk *bp;                  /* mblk for iteration */
-   U8 *ptr;                     /* pointer to data */
-   U32 size;                    /* size of data content */
-
-
-   TRC1(ssCopyB);
+   uint8_t *ptr;                     /* pointer to data */
+   uint32_t size;                    /* size of data content */
 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (mp == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS328, ERRZERO, "Null pointer");
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 #endif
 
@@ -452,7 +418,7 @@ SsMblk *mp;                     /* message block */
       SSLOGERROR(ERRCLS_ADD_RES, ESS329, ERRZERO, "ssAllocB() failed");
 #endif
 
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 
 
@@ -468,7 +434,7 @@ SsMblk *mp;                     /* message block */
    }
 
 
-   RETVALUE(bp);
+   return (bp);
 } /* ssCopyB */
 
 
@@ -488,28 +454,19 @@ SsMblk *mp;                     /* message block */
 *       File:  ss_strm.c
 *
 */
-#ifdef ANSI
-PUBLIC SsMblk *ssCopyMsg
+SsMblk *ssCopyMsg
 (
 SsMblk *mp                      /* message block */
 )
-#else
-PUBLIC SsMblk *ssCopyMsg(mp)
-SsMblk *mp;                     /* message block */
-#endif
 {
    SsMblk *first;               /* first mblk in message */
    SsMblk *bp;                  /* mblk for iteration */
-
-
-   TRC1(ssCopyMsg);
-
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (mp == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS330, ERRZERO, "Null pointer");
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 #endif
 
@@ -522,7 +479,7 @@ SsMblk *mp;                     /* message block */
       SSLOGERROR(ERRCLS_ADD_RES, ESS331, ERRZERO, "ssCopyB() failed");
 #endif
 
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 
 
@@ -541,14 +498,14 @@ SsMblk *mp;                     /* message block */
 #endif
 
          ssFreeMsg(first);
-         RETVALUE(NULLP);
+         return (NULLP);
       }
 
       bp = bp->b_cont;
    }
 
 
-   RETVALUE(first);
+   return (first);
 } /* ssCopyMsg */
 
 
@@ -569,27 +526,19 @@ SsMblk *mp;                     /* message block */
 *       File:  ss_strm.c
 *
 */
-#ifdef ANSI
-PUBLIC SsMblk *ssDupB
+SsMblk *ssDupB
 (
 SsMblk *mp                      /* message block */
 )
-#else
-PUBLIC SsMblk *ssDupB(mp)
-SsMblk *mp;                     /* message block */
-#endif
 {
    SsMblk *bp;                  /* mblk for iteration */
    /* ss028.103 - Addition of lock for mBuf reference count */
-
-   TRC1(ssDupB);
-
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (mp == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS333, ERRZERO, "Null pointer");
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 #endif
 
@@ -602,7 +551,7 @@ SsMblk *mp;                     /* message block */
       SSLOGERROR(ERRCLS_ADD_RES, ESS334, ERRZERO, "ssAllocB() failed");
 #endif
 
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 
 
@@ -627,7 +576,7 @@ SsMblk *mp;                     /* message block */
    {
       SSLOGERROR(ERRCLS_DEBUG, ESS335, ERRZERO,
                      "Could not lock the mBuf Ref Lock");
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 #endif
 
@@ -642,12 +591,12 @@ SsMblk *mp;                     /* message block */
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS336, ERRZERO,
                       "Could not give the Semaphore");
-      RETVALUE(NULLP);
+      return (NULLP);
 #endif
    }
 #endif
 
-   RETVALUE(bp);
+   return (bp);
 } /* ssDupB */
 
 
@@ -667,22 +616,13 @@ SsMblk *mp;                     /* message block */
 *       File:  ss_strm.c
 *
 */
-#ifdef ANSI
-PUBLIC SsMblk *ssDupMsg
+SsMblk *ssDupMsg
 (
 SsMblk *mp                      /* message block */
 )
-#else
-PUBLIC SsMblk *ssDupMsg(mp)
-SsMblk *mp;                     /* message block */
-#endif
 {
    SsMblk *first;               /* first mblk in message */
    SsMblk *bp;                  /* mblk for iteration */
-
-
-   TRC1(ssDupMsg);
-
 
    /* dup the first mblock */
    first = bp = ssDupB(mp);
@@ -692,7 +632,7 @@ SsMblk *mp;                     /* message block */
       SSLOGERROR(ERRCLS_ADD_RES, ESS337, ERRZERO, "ssDupB() failed");
 #endif
 
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 
 
@@ -711,14 +651,14 @@ SsMblk *mp;                     /* message block */
 #endif
 
          ssFreeMsg(first);
-         RETVALUE(NULLP);
+         return (NULLP);
       }
 
       bp = bp->b_cont;
    }
 
 
-   RETVALUE(first);
+   return (first);
 } /* ssDupMsg */
 
 
@@ -737,29 +677,17 @@ SsMblk *mp;                     /* message block */
 *       File:  ss_strm.c
 *
 */
-#ifdef ANSI
-PUBLIC SsMblk *ssESBAlloc
+SsMblk *ssESBAlloc
 (
-U8 *base,                       /* client supplied data buffer */
+uint8_t *base,                       /* client supplied data buffer */
 S32 size,                       /* size of data buffer */
 S32 pri,                        /* message priority */
 SsFrtn *fr_rtn                  /* free routine */
 )
-#else
-PUBLIC SsMblk *ssESBAlloc(base, size, pri, fr_rtn)
-U8 *base;                       /* client supplied data buffer */
-S32 size;                       /* size of data buffer */
-S32 pri;                        /* message priority */
-SsFrtn *fr_rtn;                 /* free routine */
-#endif
 {
    SsMblk *bp;                  /* mblk for iteration */
    Size m;                      /* mblk + dblk */
    S16 r;                       /* return value */
-
-
-   TRC1(ssESBAlloc);
-
 
    UNUSED(pri);
 
@@ -768,7 +696,7 @@ SsFrtn *fr_rtn;                 /* free routine */
    if (base == NULLP  ||  fr_rtn == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS339, ERRZERO, "Null pointer");
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 #endif
 
@@ -777,11 +705,11 @@ SsFrtn *fr_rtn;                 /* free routine */
    m = (sizeof(SsMblk) + sizeof(SsDblk));
 /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT
-   r = SAlloc(strmCfg.mdRegion, &m, 0, (Data **)&bp, __LINE__, (U8*)__FILE__, ENTNC);
+   r = SAlloc(strmCfg.mdRegion, &m, 0, (Data **)&bp, __LINE__, (uint8_t*)__FILE__, ENTNC);
 #else
 #ifdef T2K_MEM_LEAK_DBG
    char* file = __FILE__;
-   U32 line = __LINE__;
+   uint32_t line = __LINE__;
 #endif
    r = SAlloc(strmCfg.mdRegion, &m, 0, (Data **)&bp);
 #endif /* SS_HISTOGRAM_SUPPORT */
@@ -791,16 +719,16 @@ SsFrtn *fr_rtn;                 /* free routine */
       SSLOGERROR(ERRCLS_ADD_RES, ESS340, (ErrVal) r, "SAlloc() failed");
 #endif
 
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 
 
    /* use the generic set-up-message function to initialize everything */
-   SS_STRM_INITB(bp, (SsDblk *)(((U8 *)bp) + sizeof(SsMblk)),
+   SS_STRM_INITB(bp, (SsDblk *)(((uint8_t *)bp) + sizeof(SsMblk)),
                   base, size, fr_rtn);
 
 
-   RETVALUE(bp);
+   return (bp);
 } /* ssESBAlloc */
 
 
@@ -820,15 +748,10 @@ SsFrtn *fr_rtn;                 /* free routine */
 *       File:  ss_strm.c
 *
 */
-#ifdef ANSI
-PUBLIC Void ssFreeB
+Void ssFreeB
 (
 SsMblk *mp                      /* message block */
 )
-#else
-PUBLIC Void ssFreeB(mp)
-SsMblk *mp;                     /* message block */
-#endif
 {
    SsMblk *bp;                  /* mblk for iteration */
    Size size;                   /* mblk + dblk */
@@ -836,17 +759,14 @@ SsMblk *mp;                     /* message block */
 
 #ifdef T2K_MEM_LEAK_DBG
    char* file = __FILE__;
-   U32 line = __LINE__;
+   uint32_t line = __LINE__;
 #endif
-
-   TRC1(ssFreeB);
-
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (mp == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS341, ERRZERO, "Null pointer");
-      RETVOID;
+      return;
    }
 #endif
 
@@ -861,7 +781,7 @@ SsMblk *mp;                     /* message block */
 
    if (mp->b_datap == NULLP)
    {
-      RETVOID;
+      return;
    }
 
 
@@ -875,7 +795,7 @@ SsMblk *mp;                     /* message block */
 
 /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT
-      SFree(strmCfg.mdRegion, (Data *)mp, size, __LINE__, (U8*)__FILE__, ENTNC);
+      SFree(strmCfg.mdRegion, (Data *)mp, size, __LINE__, (uint8_t*)__FILE__, ENTNC);
 #else
 #ifdef T2K_MEM_LEAK_DBG
       SFree(strmCfg.mdRegion, (Data *)mp, size);
@@ -883,7 +803,7 @@ SsMblk *mp;                     /* message block */
       SFree(strmCfg.mdRegion, (Data *)mp, size);
 #endif
 #endif /* SS_HISTOGRAM_SUPPORT */
-      RETVOID;
+      return;
    }
 
    /* ss028.103 - Addition of lock for mBuf reference count */
@@ -893,7 +813,7 @@ SsMblk *mp;                     /* message block */
    {
       SSLOGERROR(ERRCLS_DEBUG, ESS343, ERRZERO,
                      "Could not lock the mBuf Ref Lock");
-      RETVOID;
+      return;
    }
 #endif
 
@@ -907,7 +827,7 @@ SsMblk *mp;                     /* message block */
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS344, ERRZERO,
                       "Could not give the Semaphore");
-      RETVOID;
+      return;
 #endif
    }
 #endif
@@ -938,7 +858,7 @@ SsMblk *mp;                     /* message block */
 #ifdef SS_HISTOGRAM_SUPPORT
          SFree(strmCfg.datRegion, mp->b_datap->db_base,
                   (Size)(mp->b_datap->db_lim - mp->b_datap->db_base), 
-						__LINE__, (U8*)__FILE__, ENTNC);
+						__LINE__, (uint8_t*)__FILE__, ENTNC);
 #else
          SFree(strmCfg.datRegion, mp->b_datap->db_base,
                   (Size)(mp->b_datap->db_lim - mp->b_datap->db_base));
@@ -956,7 +876,7 @@ SsMblk *mp;                     /* message block */
          bp = (SsMblk *)(mp->b_datap - sizeof (SsMblk));
 /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT
-         SFree(strmCfg.mdRegion, (Data *)bp, size, __LINE__, (U8*)__FILE__, ENTNC);
+         SFree(strmCfg.mdRegion, (Data *)bp, size, __LINE__, (uint8_t*)__FILE__, ENTNC);
 #else
          SFree(strmCfg.mdRegion, (Data *)bp, size);
 #endif /* SS_HISTOGRAM_SUPPORT */
@@ -964,7 +884,7 @@ SsMblk *mp;                     /* message block */
 
 /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT
-      SFree(strmCfg.mdRegion, (Data *)mp, size, __LINE__, (U8*)__FILE__, ENTNC);
+      SFree(strmCfg.mdRegion, (Data *)mp, size, __LINE__, (uint8_t*)__FILE__, ENTNC);
 #else
       SFree(strmCfg.mdRegion, (Data *)mp, size);
 #endif /* SS_HISTOGRAM_SUPPORT */
@@ -985,14 +905,14 @@ SsMblk *mp;                     /* message block */
       {
 /* ss001.301: additions */
 #ifdef SS_HISTOGRAM_SUPPORT
-         SFree(strmCfg.mdRegion, (Data *)mp, size, __LINE__, (U8*)__FILE__, ENTNC);
+         SFree(strmCfg.mdRegion, (Data *)mp, size, __LINE__, (uint8_t*)__FILE__, ENTNC);
 #else
          SFree(strmCfg.mdRegion, (Data *)mp, size);
 #endif /* SS_HISTOGRAM_SUPPORT */
       }
    }
 
-   RETVOID;
+   return;
 } /* ssFreeB */
 
 
@@ -1011,21 +931,12 @@ SsMblk *mp;                     /* message block */
 *       File:  ss_strm.c
 *
 */
-#ifdef ANSI
-PUBLIC Void ssFreeMsg
+Void ssFreeMsg
 (
 SsMblk *mp                      /* message block */
 )
-#else
-PUBLIC Void ssFreeMsg(mp)
-SsMblk *mp;                     /* message block */
-#endif
 {
    SsMblk *bp;                  /* mblk for iteration */
-
-
-   TRC1(ssFreeMsg);
-
 
    /* free all the message blocks in the message */
    while (mp)
@@ -1035,7 +946,7 @@ SsMblk *mp;                     /* message block */
       ssFreeB(bp);
    }
 
-   RETVOID;
+   return;
 } /* ssFreeMsg */
 
 
@@ -1053,26 +964,18 @@ SsMblk *mp;                     /* message block */
 *       File:  ss_strm.c
 *
 */
-#ifdef ANSI
-PUBLIC Void ssLinkB
+Void ssLinkB
 (
 SsMblk *mp,                     /* first message block */
 SsMblk *bp                      /* second message block */
 )
-#else
-PUBLIC Void ssLinkB(mp, bp)
-SsMblk *mp;                     /* first message block */
-SsMblk *bp;                     /* second message block */
-#endif
 {
-   TRC1(ssLinkB);
-
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (mp == NULLP  ||  bp == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS345, ERRZERO, "Null pointer");
-      RETVOID;
+      return;
    }
 #endif
 
@@ -1087,7 +990,7 @@ SsMblk *bp;                     /* second message block */
    /* link in the passed mblock */
    mp->b_cont = bp;
 
-   RETVOID;
+   return;
 } /* ssLinkB */
 
 
@@ -1105,22 +1008,13 @@ SsMblk *bp;                     /* second message block */
 *       File:  ss_strm.c
 *
 */
-#ifdef ANSI
-PUBLIC S32 ssMsgDSize
+S32 ssMsgDSize
 (
 SsMblk *mp                      /* message block */
 )
-#else
-PUBLIC S32 ssMsgDSize(mp)
-SsMblk *mp;                     /* message block */
-#endif
 {
    S32 n;                       /* temporary */
    S32 size;                    /* size of data */
-
-
-   TRC1(ssMsgDSize);
-
 
    /* for all blocks that are of type data, count the bytes */
    size = 0;
@@ -1139,7 +1033,7 @@ SsMblk *mp;                     /* message block */
    }
 
 
-   RETVALUE(size);
+   return (size);
 } /* ssMsgDSize */
 
 
@@ -1159,25 +1053,19 @@ SsMblk *mp;                     /* message block */
 *       File:  ss_strm.c
 *
 */
-#ifdef ANSI
-PUBLIC S32 ssPullupMsg
+S32 ssPullupMsg
 (
 SsMblk *mp,                     /* message block */
 S32 len                         /* number of bytes to align */
 )
-#else
-PUBLIC S32 ssPullupMsg(mp, len)
-SsMblk *mp;                     /* message block */
-S32 len;                        /* number of bytes to align */
-#endif
 {
    SsMblk *bp;                  /* mblk for iteration */
    SsMblk *newbp;               /* the new mblk */
    SsMblk *prev;                /* mblk of same type */
-   U8 *base;                    /* for swapping data buffers */
-   U8 *lim;                     /* for swapping data buffers */
-   U8 *rptr;                    /* for swapping data buffers */
-   U8 *wptr;                    /* for swapping data buffers */
+   uint8_t *base;                    /* for swapping data buffers */
+   uint8_t *lim;                     /* for swapping data buffers */
+   uint8_t *rptr;                    /* for swapping data buffers */
+   uint8_t *wptr;                    /* for swapping data buffers */
 	/* ss008.301 */
 #ifdef SS_DBLK_FREE_RTN
    SsFrtn *frtn;                /* for swapping data buffers */
@@ -1185,23 +1073,19 @@ S32 len;                        /* number of bytes to align */
    S32 mLen;                    /* number of bytes in all blocks of same type */
    S32 m;                       /* temporary */
    S32 n;                       /* temporary */
-   U8 type;                     /* message type */
-
-
-   TRC1(ssPullupMsg);
-
+   uint8_t type;                     /* message type */
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (mp == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS346, ERRZERO, "Null pointer");
-      RETVALUE(0);
+      return (0);
    }
    
    if (len < -1)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS347, len, "Invalid length");
-      RETVALUE(0);
+      return (0);
    }
 #endif
 
@@ -1229,14 +1113,14 @@ S32 len;                        /* number of bytes to align */
 
    if (len == 0)
    {
-      RETVALUE(1);
+      return (1);
    }
 
 
    /* do we have enough bytes to pull up? */
    if (len < 0  ||  len > mLen)
    {
-      RETVALUE(0);
+      return (0);
    }
 
 
@@ -1244,7 +1128,7 @@ S32 len;                        /* number of bytes to align */
    newbp = ssAllocB(len, 0);
    if (newbp == NULLP)
    {
-      RETVALUE(0);
+      return (0);
    }
 
    newbp->b_datap->db_type = mp->b_datap->db_type;
@@ -1341,7 +1225,7 @@ S32 len;                        /* number of bytes to align */
    ssFreeB(newbp);
 
 
-   RETVALUE(1);
+   return (1);
 } /* ssPullupMsg */
 
 
@@ -1362,29 +1246,19 @@ S32 len;                        /* number of bytes to align */
 *       File:  ss_strm.c
 *
 */
-#ifdef ANSI
-PUBLIC SsMblk *ssRmvB
+SsMblk *ssRmvB
 (
 SsMblk *mp,                     /* message */
 SsMblk *bp                      /* message block */
 )
-#else
-PUBLIC SsMblk *ssRmvB(mp, bp)
-SsMblk *mp;                     /* message */
-SsMblk *bp;                     /* message block */
-#endif
 {
    SsMblk *rp;                  /* mblk that will be returned */
-
-
-   TRC1(ssRmvB);
-
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (mp == NULLP  ||  bp == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS348, ERRZERO, "Null pointer");
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 #endif
 
@@ -1405,7 +1279,7 @@ SsMblk *bp;                     /* message block */
       {
          if (mp == NULLP)
          {
-            RETVALUE((SsMblk *)-1);
+            return ((SsMblk *)-1);
          }
          else if (mp->b_cont == bp)
          {
@@ -1424,7 +1298,7 @@ SsMblk *bp;                     /* message block */
    bp->b_cont = NULLP;
 
 
-   RETVALUE(rp);
+   return (rp);
 } /* ssRmvB */
 
 
@@ -1445,33 +1319,23 @@ SsMblk *bp;                     /* message block */
 *       File:  ss_strm.c
 *
 */
-#ifdef ANSI
-PUBLIC S32 ssTestB
+S32 ssTestB
 (
 S32 size,                       /* size required */
-U32 pri                         /* priority of the message buffer */
+uint32_t pri                         /* priority of the message buffer */
 )
-#else
-PUBLIC S32 ssTestB(size, pri)
-S32 size;                       /* size required */
-U32 pri;                        /* priority of the message buffer */
-#endif
 {
    SsMblk *bp;                  /* mblk for iteration */
-
-
-   TRC1(ssTestB);
-
 
    bp = ssAllocB(size, pri);
    if (bp)
    {
       ssFreeB(bp);
-      RETVALUE(1);
+      return (1);
    }
 
 
-   RETVALUE(0);
+   return (0);
 } /* ssTestB */
 
 
@@ -1491,27 +1355,18 @@ U32 pri;                        /* priority of the message buffer */
 *       File:  ss_strm.c
 *
 */
-#ifdef ANSI
-PUBLIC SsMblk *ssUnlinkB
+SsMblk *ssUnlinkB
 (
 SsMblk *mp                      /* message */
 )
-#else
-PUBLIC SsMblk *ssUnlinkB(mp)
-SsMblk *mp;                     /* message */
-#endif
 {
    SsMblk *bp;                  /* mblk for iteration */
-
-
-   TRC1(ssUnlinkB);
-
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (mp == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS349, ERRZERO, "Null pointer");
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 #endif
 
@@ -1521,7 +1376,7 @@ SsMblk *mp;                     /* message */
    mp->b_cont = NULLP;
 
 
-   RETVALUE(bp);
+   return (bp);
 } /* ssUnlinkB */
 
 /**********************************************************************

@@ -51,23 +51,17 @@
 *       File:  rr_clist.c
 *
 */
-#ifdef ANSI
-PUBLIC Void rgSCHRrCListInit
+Void rgSCHRrCListInit
 (
 RgSchRrCListCp *lCp                /* list control point */
 )
-#else 
-PUBLIC Void rgSCHRrCListInit(lCp)
-RgSchRrCListCp *lCp;               /* list control point */
-#endif
 {
-   TRC2(rgSCHRrCListInit);
    
    lCp->first = (RgSchRrCList *)NULLP;
    lCp->crnt  = (RgSchRrCList *)NULLP;
    lCp->count = 0;
 
-   RETVOID;
+   return;
 } /* end of rgSCHRrCListInit */
 
 /* LTE_ADV_FLAG_REMOVED_START */
@@ -82,22 +76,15 @@ RgSchRrCListCp *lCp;               /* list control point */
  * 
  *        File:  rr_clist.c
  */
-#ifdef ANSI
-PUBLIC Void rgSCHRrCListAdd2Crnt
+Void rgSCHRrCListAdd2Crnt
 (
- RgSchRrCListCp *lCp,               /* list control point */
- RgSchRrCList   *node               /* node to be added */
- )
-#else
-PUBLIC Void rgSCHRrCListAdd2Crnt(lCp, node)
-   RgSchRrCListCp *lCp;               /* list control point */
-   RgSchRrCList   *node;              /* node to be added */
-#endif
+RgSchRrCListCp *lCp,               /* list control point */
+RgSchRrCList   *node               /* node to be added */
+)
 {
-   TRC2(rgSCHRrCListAdd2Crnt);
 #ifdef ERRCHK
    if (lCp == (RgSchRrCListCp *)NULLP)
-      RETVOID;
+      return;
 #endif
 
    lCp->count++;
@@ -110,7 +97,7 @@ PUBLIC Void rgSCHRrCListAdd2Crnt(lCp, node)
 
       lCp->crnt = lCp->first;
 
-      RETVOID;
+      return;
    }
 
    node->next = lCp->crnt;
@@ -118,7 +105,7 @@ PUBLIC Void rgSCHRrCListAdd2Crnt(lCp, node)
    lCp->crnt->prev->next = node;
    lCp->crnt->prev = node;
 
-   RETVOID;
+   return;
 }
 /* LTE_ADV_FLAG_REMOVED_END */
 
@@ -135,23 +122,16 @@ PUBLIC Void rgSCHRrCListAdd2Crnt(lCp, node)
 *       File:  rr_clist.c
 *
 */
-#ifdef ANSI
-PUBLIC Void rgSCHRrCListAdd2Tail
+Void rgSCHRrCListAdd2Tail
 (
 RgSchRrCListCp *lCp,               /* list control point */
 RgSchRrCList   *node               /* node to be added */
 )
-#else 
-PUBLIC Void rgSCHRrCListAdd2Tail(lCp, node)
-RgSchRrCListCp *lCp;               /* list control point */
-RgSchRrCList   *node;              /* node to be added */
-#endif
 {
-   TRC2(rgSCHRrCListAdd2Tail);
 
 #ifdef ERRCHK
    if (lCp == (RgSchRrCListCp *)NULLP)
-      RETVOID;
+      return;
 #endif
  
    lCp->count++;
@@ -164,7 +144,7 @@ RgSchRrCList   *node;              /* node to be added */
 
       lCp->crnt = lCp->first;
 
-      RETVOID;
+      return;
    }
 
    node->next = lCp->first;
@@ -172,7 +152,7 @@ RgSchRrCList   *node;              /* node to be added */
    lCp->first->prev->next = node;
    lCp->first->prev = node;
 
-   RETVOID;
+   return;
 } /* end of rgSCHRrCListAdd2Tail */
 
 /*
@@ -190,28 +170,21 @@ RgSchRrCList   *node;              /* node to be added */
 *       File:  rr_clist.c
 *
 */
-#ifdef ANSI
-PUBLIC RgSchRrCList *rgSCHRrCListDelFrm
+RgSchRrCList *rgSCHRrCListDelFrm
 (
 RgSchRrCListCp *lCp,                /* list control pointer */
 RgSchRrCList *node                  /* node to be removed */
 )
-#else 
-PUBLIC RgSchRrCList *rgSCHRrCListDelFrm(lCp, node)
-RgSchRrCListCp *lCp;               /* list control pointer */
-RgSchRrCList *node;                /* node to be removed */
-#endif
 {
-   TRC2(rgSCHRrCListDelFrm);
   
 #ifdef ERRCHK
    if (lCp == (RgSchRrCListCp *)NULLP)
-      RETVALUE(NULLP);
+      return (NULLP);
 #endif
 
    if(lCp->count == 0)
    {
-      RETVALUE(NULLP);
+      return (NULLP);
    }
    if (lCp->count == 1)
    {
@@ -220,9 +193,9 @@ RgSchRrCList *node;                /* node to be removed */
          lCp->first = lCp->crnt = (RgSchRrCList *)NULLP;
          lCp->count = 0;
          node->next = node->prev = (RgSchRrCList *)NULLP;
-         RETVALUE(node);
+         return (node);
       }
-      RETVALUE(NULLP);
+      return (NULLP);
    }
    
    if (lCp->first == node)
@@ -238,7 +211,7 @@ RgSchRrCList *node;                /* node to be removed */
        /* Adding this check and guarding the decrement of counter when
        node is deleted with reshuffling */
       lCp->count--;
-      RETVALUE(node);
+      return (node);
    }
 
    if(node->prev && node->next)
@@ -252,7 +225,7 @@ RgSchRrCList *node;                /* node to be removed */
       lCp->crnt = node->next;
    }
    node->next = node->prev = (RgSchRrCList *)NULLP;
-   RETVALUE(node);
+   return (node);
 } /* end of rgSCHRrCListDelFrm */
 
 /*
@@ -269,24 +242,17 @@ RgSchRrCList *node;                /* node to be removed */
 *       File:  rr_clist.c
 *
 */
-#ifdef ANSI
-PUBLIC Void rgSCHRrCListInsrtAtCrnt
+Void rgSCHRrCListInsrtAtCrnt
 (
 RgSchRrCListCp *lCp,                /* list control pointer */
 RgSchRrCList *node                  /* node to be removed */
 )
-#else 
-PUBLIC Void rgSCHRrCListInsrtAtCrnt(lCp, node)
-RgSchRrCListCp *lCp;               /* list control pointer */
-RgSchRrCList *node;                /* node to be inserted */
-#endif
 {
    RgSchRrCList *crnt;
-   TRC2(rgSCHRrCListInsrtAtCrnt);
 
 #ifdef ERRCHK
    if (lCp == (RgSchRrCListCp *)NULLP)
-      RETVOID;
+      return;
 #endif
 
    crnt = lCp->crnt;
@@ -299,7 +265,7 @@ RgSchRrCList *node;                /* node to be inserted */
 
    lCp->count++;
 
-   RETVOID;
+   return;
 }
 
 /********************************************************************30**

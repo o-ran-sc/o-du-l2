@@ -69,7 +69,7 @@ extern "C" {
 #endif /* __cplusplus */
 
 /* Functions called from outside */
-PRIVATE S16 rgSCHSc1RgrDlCellRecfg ARGS((
+static S16 rgSCHSc1RgrDlCellRecfg ARGS((
 RgSchCellCb             *cell,
 RgrCellRecfg            *recfg,
 RgSchErrInfo            *err
@@ -78,76 +78,76 @@ RgSchErrInfo            *err
 /*--------------------------*
  * DL SCHED STATIC declarations START
  *---------------------------*/
-PRIVATE Void rgSCHSc1DlSvcAddToSchd ARGS((
+static Void rgSCHSc1DlSvcAddToSchd ARGS((
 RgSchCellCb                *cell,
 RgSchDlLcCb                *svc
 ));
-PRIVATE Void rgSCHSc1DlAdd2UeSchdSvcs ARGS((
+static Void rgSCHSc1DlAdd2UeSchdSvcs ARGS((
 RgSchCellCb                *cell,
 RgSchUeCb          *ue,
 RgSchDlLcCb        *svc
 ));
-PRIVATE Void rgSCHSc1DlRmvUeFrmPrioQs ARGS((
+static Void rgSCHSc1DlRmvUeFrmPrioQs ARGS((
 RgSchCellCb  *cell,
 RgSchUeCb    *ue
 ));
-PRIVATE Void rgSCHSc1DlSuspendUe ARGS((
+static Void rgSCHSc1DlSuspendUe ARGS((
 RgSchCellCb  *cell,
 RgSchUeCb    *ue
 ));
-PRIVATE Void rgSCHSc1DlInactvtUe ARGS((
+static Void rgSCHSc1DlInactvtUe ARGS((
 RgSchCellCb  *cell,
 RgSchUeCb    *ue
 ));
-PRIVATE Void rgSCHSc1DlProcRmvFrmCellRetx ARGS((
+static Void rgSCHSc1DlProcRmvFrmCellRetx ARGS((
 RgSchCellCb                *cell,
 RgSchDlHqProcCb            *hqP
 ));
-PRIVATE Void rgSCHSc1DlProcRmvFrmUeRetx ARGS((
+static Void rgSCHSc1DlProcRmvFrmUeRetx ARGS((
 RgSchCellCb                *cell,
 RgSchUeCb                  *ue,
 RgSchDlHqProcCb            *hqP
 ));
-PRIVATE Void rgSCHSc1DlMngPrio0SvcPosn ARGS((
+static Void rgSCHSc1DlMngPrio0SvcPosn ARGS((
 RgSchCellCb                *cell,
 RgSchUeCb                  *ue,
 RgSchDlLcCb                *svc
 ));
-PRIVATE Void rgSCHSc1DlMngGbrSvcPosn ARGS((
+static Void rgSCHSc1DlMngGbrSvcPosn ARGS((
 RgSchCellCb                *cell,
 RgSchUeCb                  *ue,
 RgSchDlLcCb                *svc
 ));
-PRIVATE Void rgSCHSc1DlMngAmbrSvcPosn ARGS((
+static Void rgSCHSc1DlMngAmbrSvcPosn ARGS((
 RgSchCellCb                *cell,
 RgSchUeCb                  *ue,
 RgSchDlLcCb                *svc
 ));
-PRIVATE Void rgSCHSc1DlMngSvcPosn ARGS((
+static Void rgSCHSc1DlMngSvcPosn ARGS((
 RgSchCellCb                *cell,
 RgSchUeCb                  *ue,
 RgSchDlLcCb                *svc
 ));
-PRIVATE Void rgSCHSc1DlUeAddToSchd ARGS((
+static Void rgSCHSc1DlUeAddToSchd ARGS((
 RgSchCellCb                *cell,
 RgSchUeCb                  *ue
 ));
-PRIVATE Void rgSCHSc1DlTaCmd ARGS((
+static Void rgSCHSc1DlTaCmd ARGS((
 RgSchCellCb           *cell,
 RgSchCmnDlRbAllocInfo *allocInfo
 ));
-PRIVATE Void rgSCHSc1DlInitQueues ARGS((
+static Void rgSCHSc1DlInitQueues ARGS((
 RgSchSc1DlCell *cellDl
 ));
-PRIVATE Void rgSCHSc1DlDeinitQueues ARGS((
+static Void rgSCHSc1DlDeinitQueues ARGS((
 RgSchSc1DlCell *cellDl
 ));
-PRIVATE Void rgSCHSc1DlAdd2UeLcsWithData ARGS((
+static Void rgSCHSc1DlAdd2UeLcsWithData ARGS((
 RgSchCellCb                *cell,
 RgSchUeCb                  *ue,
 RgSchDlLcCb                *svc
 ));
-PRIVATE Void rgSCHSc1DlRmFrmUeLcsWithData ARGS((
+static Void rgSCHSc1DlRmFrmUeLcsWithData ARGS((
 RgSchCellCb                *cell,
 RgSchUeCb                  *ue,
 RgSchDlLcCb                *svc
@@ -155,33 +155,33 @@ RgSchDlLcCb                *svc
 /*--------------------------*
  * UL SCHED STATIC declarations START
  *---------------------------*/
-PRIVATE Void rgSCHSc1UlPosnUeInQ ARGS((
+static Void rgSCHSc1UlPosnUeInQ ARGS((
 RgSchCellCb         *cell,
 RgSchUeCb           *ue
 ));
-PRIVATE Void rgSCHSc1UlSchdUeTxLst ARGS((
+static Void rgSCHSc1UlSchdUeTxLst ARGS((
 RgSchCellCb         *cell,
 CmLListCp             *ueTxLst,
 RgSchCmnUlRbAllocInfo *allocInfo,
-U8                    *remUe
+uint8_t                    *remUe
 ));
-PRIVATE Void rgSCHSc1DlProcRmvFrmRetx ARGS((
+static Void rgSCHSc1DlProcRmvFrmRetx ARGS((
 RgSchCellCb                *cell,
 RgSchUeCb                  *ue,
 RgSchDlHqProcCb            *hqP
 ));
-PUBLIC Void rgSCHSc1DlScanUpdPdbPrio ARGS((
+Void rgSCHSc1DlScanUpdPdbPrio ARGS((
 RgSchCellCb *cell
 ));
-PUBLIC S16 rgSCHSc1DlFillFlowCntrlInfo ARGS(( 
+S16 rgSCHSc1DlFillFlowCntrlInfo ARGS(( 
 RgSchCellCb    *cell,
 RgInfSfAlloc   *sfAlloc
 ));
 
-PRIVATE Void rgSCHSc1DlPreSchd ARGS ((
+static Void rgSCHSc1DlPreSchd ARGS ((
 RgSchCellCb   *cell
 ));
-PRIVATE Void rgSCHSc1DlPstSchd ARGS ((
+static Void rgSCHSc1DlPstSchd ARGS ((
  Inst       schInst
 ));
 #ifdef __cplusplus
@@ -208,23 +208,12 @@ PRIVATE Void rgSCHSc1DlPstSchd ARGS ((
  *     File : 
  *
  **********************************************************/
-#ifdef ANSI
-PUBLIC Void rgSCHSc1DlUeReset 
-(
-RgSchCellCb    *cell,
-RgSchUeCb      *ue
-)
-#else
-PUBLIC Void rgSCHSc1DlUeReset(cell, ue)
-RgSchCellCb    *cell;
-RgSchUeCb      *ue;
-#endif
+Void rgSCHSc1DlUeReset(RgSchCellCb *cell,RgSchUeCb *ue)
 {
-   TRC2(rgSCHSc1DlUeReset);
 
    rgSCHSc1DlSuspendUe(cell, ue);
 
-   RETVOID;
+   return;
 }
 
 
@@ -243,25 +232,14 @@ RgSchUeCb      *ue;
  *     File : 
  *
  **********************************************************/
-#ifdef ANSI
-PUBLIC Void rgSCHSc1DlActvtUe 
-(
-RgSchCellCb    *cell,
-RgSchUeCb      *ue
-)
-#else
-PUBLIC Void rgSCHSc1DlActvtUe(cell, ue)
-RgSchCellCb    *cell;
-RgSchUeCb      *ue;
-#endif
+Void rgSCHSc1DlActvtUe(RgSchCellCb *cell,RgSchUeCb  *ue)
 {
    RgSchSc1DlUe    *ueDl = RG_GET_SC1_UE_DL(ue, cell);
    CmLListCp       *lst;
    CmLList         *node;
    RgSchDlHqProcCb *hqP;
    RgSchDlLcCb     *svc;
-   U8              idx;
-   TRC2(rgSCHSc1DlActvtUe);
+   uint8_t         idx;
 
    /* Add UE's HqProcs From UERetxLst to CellRetxLst */
    lst = &ueDl->retxHqProcs;
@@ -291,7 +269,7 @@ RgSchUeCb      *ue;
       rgSCHSc1DlUeAddToSchd(cell, ue);
    }
 
-   RETVOID;
+   return;
 }
 
 
@@ -310,17 +288,7 @@ RgSchUeCb      *ue;
  *     File : 
  *
  **********************************************************/
-#ifdef ANSI
-PUBLIC Void rgSCHSc1DlUeRefresh
-(
-RgSchCellCb    *cell,
-RgSchUeCb      *ue
-)
-#else
-PUBLIC Void rgSCHSc1DlUeRefresh(cell, ue)
-RgSchCellCb    *cell;
-RgSchUeCb      *ue;
-#endif
+Void rgSCHSc1DlUeRefresh(RgSchCellCb *cell,RgSchUeCb *ue)
 {
    RgSchSc1DlUe   *ueDl = RG_GET_SC1_UE_DL(ue, cell);
                            /*cell added as part of CA dev*/
@@ -329,7 +297,6 @@ RgSchUeCb      *ue;
    CmLListCp   *lst;
    CmLList     *node;
    RgSchDlLcCb *svc;
-   TRC2(rgSCHSc1DlUeRefresh);
 
    if (ue->dl.ambrCfgd)
    {
@@ -360,7 +327,7 @@ RgSchUeCb      *ue;
       /* Update the SVC's positioning in the Queue */
       rgSCHSc1DlMngGbrSvcPosn(cell, ue, svc);
    }
-   RETVOID;
+   return;
 }
 
 
@@ -382,22 +349,10 @@ RgSchUeCb      *ue;
  *  @return  Void
  *
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlProcRmvFrmCellRetx
-(
-RgSchCellCb                *cell,
-RgSchDlHqProcCb            *hqP
-)
-#else
-PRIVATE Void rgSCHSc1DlProcRmvFrmCellRetx(cell, hqP)
-RgSchCellCb                *cell;
-RgSchDlHqProcCb            *hqP;
-#endif
+static Void rgSCHSc1DlProcRmvFrmCellRetx(RgSchCellCb *cell,RgSchDlHqProcCb  *hqP)
 {
    RgSchSc1DlCell       *cellDl = RG_GET_SC1_CELL_DL(cell);
    RgSchCmnDlHqProc     *hqProcDl = RG_SCH_CMN_GET_DL_HQP(hqP);
-
-   TRC2(rgSCHSc1DlProcRmvFrmCellRetx);
 
    if (hqProcDl->retxLnk.node != NULLP)
    {
@@ -405,7 +360,7 @@ RgSchDlHqProcCb            *hqP;
                     (hqProcDl->schSpfc))->prio], &(hqProcDl->retxLnk));
       hqProcDl->retxLnk.node = NULLP;
    }
-   RETVOID;
+   return;
 }
 
 
@@ -425,24 +380,10 @@ RgSchDlHqProcCb            *hqP;
  *  @return  Void
  *
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlProcRmvFrmUeRetx
-(
-RgSchCellCb                *cell,
-RgSchUeCb                  *ue,
-RgSchDlHqProcCb            *hqP
-)
-#else
-PRIVATE Void rgSCHSc1DlProcRmvFrmUeRetx(cell, ue, hqP)
-RgSchCellCb                *cell;
-RgSchUeCb                  *ue;
-RgSchDlHqProcCb            *hqP;
-#endif
+static Void rgSCHSc1DlProcRmvFrmUeRetx(RgSchCellCb *cell,RgSchUeCb  *ue,RgSchDlHqProcCb *hqP)
 {
    RgSchSc1DlUe            *sc1Ue = RG_GET_SC1_UE_DL(ue, cell);
    RgSchSc1DlHqProc     *hqProcDl = RG_GET_SC1_HQP_DL(hqP);
-
-   TRC2(rgSCHSc1DlProcRmvFrmUeRetx);
 
    if (hqProcDl->retxLnkUe.node != NULLP)
    {
@@ -450,7 +391,7 @@ RgSchDlHqProcCb            *hqP;
                   &(hqProcDl->retxLnkUe));
       hqProcDl->retxLnkUe.node = NULLP;
    }
-   RETVOID;
+   return;
 }
 
 
@@ -471,29 +412,15 @@ RgSchDlHqProcCb            *hqP;
  *  @return  Void
  *
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlProcAddToUeRetx
-(
-RgSchCellCb                *cell,
-RgSchUeCb                  *ue,
-RgSchDlHqProcCb            *hqP
-)
-#else
-PRIVATE Void rgSCHSc1DlProcAddToUeRetx(cell, ue, hqP)
-RgSchCellCb                *cell;
-RgSchUeCb                  *ue;
-RgSchDlHqProcCb            *hqP;
-#endif
+static Void rgSCHSc1DlProcAddToUeRetx(RgSchCellCb *cell,RgSchUeCb *ue,RgSchDlHqProcCb *hqP)
 {
    RgSchSc1DlUe            *sc1Ue = RG_GET_SC1_UE_DL(ue, cell);
    RgSchSc1DlHqProc     *cmnHqDl = RG_GET_SC1_HQP_DL(hqP);
 
-   TRC2(rgSCHSc1DlProcAddToUeRetx);
-
    cmLListAdd2Tail(&sc1Ue->retxHqProcs, 
                     &(cmnHqDl->retxLnkUe));
    cmnHqDl->retxLnkUe.node = (PTR)hqP;
-   RETVOID;
+   return;
 }
 
 
@@ -514,32 +441,21 @@ RgSchDlHqProcCb            *hqP;
  *  @return  Void
  *
  **/
-#ifdef ANSI
-PUBLIC Void rgSCHSc1DlProcAddToCellRetx
-(
-RgSchCellCb                *cell,
-RgSchDlHqProcCb            *hqP
-)
-#else
-PUBLIC Void rgSCHSc1DlProcAddToCellRetx(cell, hqP)
-RgSchCellCb                *cell;
-RgSchDlHqProcCb            *hqP;
-#endif
+Void rgSCHSc1DlProcAddToCellRetx(RgSchCellCb *cell,RgSchDlHqProcCb  *hqP)
 {
    RgSchSc1DlCell          *sc1CellDl = RG_GET_SC1_CELL_DL(cell);
    RgSchCmnDlHqProc     *cmnHqDl = RG_SCH_CMN_GET_DL_HQP(hqP);
 
-   TRC2(rgSCHSc1DlProcAddToCellRetx);
 
    if (!RG_SCH_CMN_DL_IS_UE_ACTIVE(hqP->hqE->ue))
    {
       rgSCHSc1DlProcAddToUeRetx(cell, hqP->hqE->ue, hqP);
-      RETVOID;
+      return;
    }
    cmLListAdd2Tail(&sc1CellDl->retxLst[((RgSchSc1DlHqProc *)\
                   (cmnHqDl->schSpfc))->prio], &(cmnHqDl->retxLnk));
    cmnHqDl->retxLnk.node = (PTR)hqP;
-   RETVOID;
+   return;
 }
 
 
@@ -560,21 +476,9 @@ RgSchDlHqProcCb            *hqP;
  *  @return  Void
  *
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlRetxAlloc
-(
-RgSchCellCb                *cell,
-RgSchDlSf                  *subFrm,
-RgSchCmnDlRbAllocInfo      *allocInfo
-)
-#else
-PRIVATE Void rgSCHSc1DlRetxAlloc(cell, subFrm, allocInfo)
-RgSchCellCb                *cell;
-RgSchDlSf                  *subFrm;
-RgSchCmnDlRbAllocInfo      *allocInfo;
-#endif
+static Void rgSCHSc1DlRetxAlloc(RgSchCellCb *cell,RgSchDlSf *subFrm,RgSchCmnDlRbAllocInfo *allocInfo)
 {
-   U8                   i;
+   uint8_t              i;
    CmLListCp            *retxLst;
    CmLList              *node;
    RgSchDlHqProcCb      *hqP;
@@ -584,13 +488,12 @@ RgSchCmnDlRbAllocInfo      *allocInfo;
 #if (defined(LTEMAC_SPS) || (!defined(LTE_TDD)))
    CmLteTimingInfo      schdTime;
 #endif
-   U32                  effBo;
+   uint32_t             effBo;
    RgSchUeCb            *ue = NULLP;
 #ifdef LTEMAC_HDFDD
    Bool                 dlAllowed = FALSE;
 #endif
    RgSchDlRbAlloc *dlAllocCb;
-   TRC2(rgSCHSc1DlRetxAlloc);
 
    sc1CellDl = RG_GET_SC1_CELL_DL(cell);
 #if (defined(LTEMAC_SPS) || (!defined(LTE_TDD)))
@@ -664,7 +567,7 @@ RgSchCmnDlRbAllocInfo      *allocInfo;
                ROK)
          {
             /* SF/RETX Bandwidth expired */
-            RETVOID;
+            return;
          }
          if (effBo == 0)
          {
@@ -675,7 +578,7 @@ RgSchCmnDlRbAllocInfo      *allocInfo;
             && (hqP->tbInfo[1].state == HQ_TB_ACKED))
          {
             rgSCHSc1DlProcRmvFrmCellRetx(cell, hqP);
-            RETVOID;
+            return;
          }
 
          cmnUeDl->proc = hqP;
@@ -683,7 +586,7 @@ RgSchCmnDlRbAllocInfo      *allocInfo;
          /*rgSCHCmnDlRbInfoAddUeRetx(allocInfo, ue);*/
       }
    }
-   RETVOID;
+   return;
 }
 
 /***********************************************************
@@ -699,19 +602,10 @@ RgSchCmnDlRbAllocInfo      *allocInfo;
  *     File : 
  *
  **********************************************************/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1RlsHqProc
-(
-RgSchDlHqProcCb      *hqProc
-)
-#else
-PRIVATE Void rgSCHSc1RlsHqProc(hqProc)
-RgSchDlHqProcCb      *hqProc;
-#endif
+static Void rgSCHSc1RlsHqProc(RgSchDlHqProcCb *hqProc)
 {
-   TRC2(rgSCHSc1RlsHqProc)
    rgSCHDhmRlsHqProc(hqProc);
-   RETVOID;
+   return;
 }
 
 /**
@@ -728,33 +622,17 @@ RgSchDlHqProcCb      *hqProc;
  *  @param[in]  RgSchCellCb            *cell
  *  @param[in]  RgSchDlSf              *subFrm
  *  @param[in]  RgSchDlLcCb            *svc
- *  @param[in]  U32                    bo
+ *  @param[in]  uint32_t                    bo
  *  @param[in]  RgSchCmnDlRbAllocInfo  *allocInfo
  *  @return  S16 
  *
  **/
-#ifdef ANSI
-PRIVATE S16 rgSCHSc1DlDedSvcAlloc
-(
-RgSchCellCb                *cell,
-RgSchDlSf                  *subFrm,
-RgSchDlLcCb                *svc,
-U32                        bo,
-RgSchCmnDlRbAllocInfo      *allocInfo
-)
-#else
-PRIVATE S16 rgSCHSc1DlDedSvcAlloc(cell, subFrm, svc, bo, allocInfo)
-RgSchCellCb                *cell;
-RgSchDlSf                  *subFrm;
-RgSchDlLcCb                *svc;
-U32                        bo;
-RgSchCmnDlRbAllocInfo      *allocInfo;
-#endif
+static S16 rgSCHSc1DlDedSvcAlloc(RgSchCellCb *cell,RgSchDlSf *subFrm,RgSchDlLcCb *svc,uint32_t bo,RgSchCmnDlRbAllocInfo *allocInfo)
 {
    RgSchUeCb               *ue;
    RgSchDlHqProcCb         *proc;
-   U16                     rlcHdrEstmt;
-   U32                     effBo;
+   uint16_t                rlcHdrEstmt;
+   uint32_t                effBo;
    RgSchCmnDlCell          *cmnCellDl = RG_SCH_CMN_GET_DL_CELL(cell);
    RgSchCmnDlSvc           *svcCmn = RG_SCH_CMN_GET_DL_SVC(svc);
    RgSchSc1DlSvc           *svcSc1;
@@ -769,7 +647,6 @@ RgSchCmnDlRbAllocInfo      *allocInfo;
 #endif
    S16                  ret;
 
-   TRC2(rgSCHSc1DlDedSvcAlloc);
 
    /* Get the UE to which this service belongs to */
    ue = svc->ue;
@@ -779,7 +656,7 @@ RgSchCmnDlRbAllocInfo      *allocInfo;
          rgSCHCmnHdFddChkDlAllow ( cell, ue, &dlAllowed);
          if (dlAllowed == FALSE)
          {
-            RETVALUE(ROK);
+            return ROK;
          }
       }
 #endif
@@ -793,7 +670,7 @@ RgSchCmnDlRbAllocInfo      *allocInfo;
    RGSCH_INCR_SUB_FRAME(schdTime, RG_SCH_CMN_DL_DELTA);
    if (RG_SCH_CMN_IS_UE_SPS_SCHDLD(ue, cell, schdTime))
    {
-      RETVALUE(ROK);
+      return ROK;
    }
 #endif
    if (RG_SCH_CMN_IS_UE_SCHDLD(ue, cell))
@@ -805,7 +682,7 @@ RgSchCmnDlRbAllocInfo      *allocInfo;
       {
          RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"CRNTI:%d rgSCHSc1DlDedSvcAlloc():"
             "Ue retransmitting",ue->ueId);
-         RETVALUE(ROK);
+         return ROK;
       }
       /* UE is scheduled for either other services or TA */
       sc1HqDl = RG_GET_SC1_HQP_DL(proc);
@@ -821,7 +698,7 @@ RgSchCmnDlRbAllocInfo      *allocInfo;
       {
          RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, "CRNTI:%d rgSCHSc1DlDedSvcAlloc():"
             " No HARQ Proc available", ue->ueId);
-         RETVALUE(ROK);
+         return ROK;
       }
       sc1HqDl = RG_GET_SC1_HQP_DL(proc);
       cmnHqDl = RG_SCH_CMN_GET_DL_HQP(proc);
@@ -854,7 +731,7 @@ RgSchCmnDlRbAllocInfo      *allocInfo;
          /* ccpu00126519: proc should be set to NULLP in UE's DL scratch pad info as well. */
          ueDl->proc = NULLP;
       }
-      RETVALUE(ret);
+      return (ret);
    }
    svcSc1 = RG_GET_SC1_SVC_DL(ue,svc,cell);
    svcSc1->hdrEstimate = rlcHdrEstmt;
@@ -865,7 +742,7 @@ RgSchCmnDlRbAllocInfo      *allocInfo;
    rgSCHSc1DlAdd2UeSchdSvcs(cell, ue, svc);
    /* 3.1 MIMO moving this call to cmn scheduler */
    /*rgSCHCmnDlRbInfoAddUeTx(allocInfo, ue); */
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -883,28 +760,15 @@ RgSchCmnDlRbAllocInfo      *allocInfo;
  *  @return  Void
  *
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlAdd2UeSchdSvcs
-(
-RgSchCellCb                *cell,
-RgSchUeCb          *ue,
-RgSchDlLcCb        *svc
-)
-#else
-PRIVATE Void rgSCHSc1DlAdd2UeSchdSvcs(cell, ue, svc)
-RgSchCellCb                *cell;
-RgSchUeCb          *ue;
-RgSchDlLcCb        *svc;
-#endif
+static Void rgSCHSc1DlAdd2UeSchdSvcs(RgSchCellCb *cell,RgSchUeCb *ue,RgSchDlLcCb *svc)
 {
    RgSchSc1DlSvc  *svcSc1 = RG_GET_SC1_SVC_DL(ue,svc,cell);
    RgSchSc1DlUe   *ueSc1 = RG_GET_SC1_UE_DL(ue, cell);
-   TRC2(rgSCHSc1DlAdd2UeSchdSvcs);
 
    /* checking SVC's presence in this lst is unnecessary */
    cmLListAdd2Tail(&ueSc1->schdSvcs, &svcSc1->schdSvcLnk);
    svcSc1->schdSvcLnk.node = (PTR)svc;
-   RETVOID;
+   return;
 }
 
 
@@ -933,30 +797,17 @@ RgSchDlLcCb        *svc;
  *  @return  Void
  *
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlDedTx
-(
-RgSchCellCb                *cell,
-RgSchDlSf                  *subFrm,
-RgSchCmnDlRbAllocInfo      *allocInfo
-)
-#else
-PRIVATE Void rgSCHSc1DlDedTx(cell, subFrm, allocInfo)
-RgSchCellCb                *cell;
-RgSchDlSf                  *subFrm;
-RgSchCmnDlRbAllocInfo      *allocInfo;
-#endif
+static Void rgSCHSc1DlDedTx(RgSchCellCb *cell,RgSchDlSf *subFrm,RgSchCmnDlRbAllocInfo *allocInfo)
 {
    CmLListCp            *lst;
    CmLList              *node;
    RgSchUeCb            *ue = NULLP;
    RgSchDlLcCb          *svc;
-   U8                   i;
+   uint8_t              i;
    RgSchSc1DlSvc        *svcSc1;
    RgSchSc1DlUe         *ueDl;
    RgSchSc1DlCell       *sc1CellDl = RG_GET_SC1_CELL_DL(cell);
    
-   TRC2(rgSCHSc1DlDedTx);
 
    /* Process the first queue that is for RRC signalling and is of */
    /* highest priority.                                            */
@@ -972,7 +823,7 @@ RgSchCmnDlRbAllocInfo      *allocInfo;
       if (rgSCHSc1DlDedSvcAlloc(cell, subFrm, svc, svcSc1->bo, allocInfo) != ROK) 
       {
          /* sf bw expired */
-         RETVOID;
+         return;
       }
    }
 
@@ -991,7 +842,7 @@ RgSchCmnDlRbAllocInfo      *allocInfo;
          if (rgSCHSc1DlDedSvcAlloc(cell, subFrm, svc, svcSc1->effMbr, allocInfo) != ROK) 
          {
             /* sf bw expired */
-            RETVOID;
+            return;
          }
       }
    }
@@ -1011,11 +862,11 @@ RgSchCmnDlRbAllocInfo      *allocInfo;
          if (rgSCHSc1DlDedSvcAlloc(cell, subFrm, svc, ueDl->effAmbr, allocInfo) != ROK) 
          {
             /* sf bw expired */
-            RETVOID;
+            return;
          }
       }
    }
-   RETVOID;
+   return;
 }
 
 /**
@@ -1031,19 +882,10 @@ RgSchCmnDlRbAllocInfo      *allocInfo;
  *  @param[in]  Inst      schInst
  *  @return  Void
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlPreSchd
-(
- RgSchCellCb   *cell
-)
-#else
-PUBLIC Void rgSCHSc1DlPreSchd(cell)
- RgSchCellCb   *cell;
-#endif
+static Void rgSCHSc1DlPreSchd( RgSchCellCb   *cell)
 {
-   TRC2(rgSCHSc1DlPreSchd);
    
-   RETVOID;
+   return;
 }
 /**
  * @brief scheduling for a cell
@@ -1058,19 +900,10 @@ PUBLIC Void rgSCHSc1DlPreSchd(cell)
  *  @param[in]  Inst      schInst
  *  @return  Void
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlPstSchd
-(
- Inst       schInst
-)
-#else
-PUBLIC Void rgSCHSc1DlPstSchd(schInst)
- Inst       schInst
-#endif
+static Void rgSCHSc1DlPstSchd(Inst  schInst)
 {
-   TRC2(rgSCHSc1DlPstSchd);
    
-   RETVOID;
+   return;
 }
 
 
@@ -1090,30 +923,19 @@ PUBLIC Void rgSCHSc1DlPstSchd(schInst)
  *  @return  Void
  *
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlDedNewTx
-(
-RgSchCellCb           *cell,
-RgSchCmnDlRbAllocInfo *allocInfo
-)
-#else
-PRIVATE Void rgSCHSc1DlDedNewTx(cell, allocInfo)
-RgSchCellCb           *cell;
-RgSchCmnDlRbAllocInfo *allocInfo;
-#endif
+static Void rgSCHSc1DlDedNewTx(RgSchCellCb *cell,RgSchCmnDlRbAllocInfo *allocInfo)
 {
    RgSchDlSf            *subFrm = allocInfo->dedAlloc.dedDlSf;
 #ifdef DEBUGP
    Inst                 inst = cell->instIdx;
 #endif
-   TRC2(rgSCHSc1DlDedNewTx);
    RGSCHDBGPRM(inst, (rgSchPBuf(inst), "rgSCHSc1DlDedNewTx\n"));
 
    /* Now perform the new UE selections */
    rgSCHSc1DlDedTx(cell, subFrm, allocInfo);
 
   /* Stack Crash problem for TRACE5 changes. Added the return below */
-  RETVOID;
+  return;
 
 }
 /**
@@ -1132,28 +954,17 @@ RgSchCmnDlRbAllocInfo *allocInfo;
  *  @return  Void
  *
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlDedRetx
-(
-RgSchCellCb           *cell,
-RgSchCmnDlRbAllocInfo *allocInfo
-)
-#else
-PRIVATE Void rgSCHSc1DlDedRetx(cell, allocInfo)
-RgSchCellCb           *cell;
-RgSchCmnDlRbAllocInfo *allocInfo;
-#endif
+static Void rgSCHSc1DlDedRetx(RgSchCellCb *cell,RgSchCmnDlRbAllocInfo *allocInfo)
 {
    RgSchDlSf            *subFrm = allocInfo->dedAlloc.dedDlSf;
 #ifdef DEBUGP
    Inst                 inst = cell->instIdx;
 #endif
-   TRC2(rgSCHSc1DlDedRetx);
    RGSCHDBGPRM(inst, (rgSchPBuf(inst), "rgSCHSc1DlDedRetx\n"));
 
    rgSCHSc1DlRetxAlloc(cell, subFrm, allocInfo);
 
-   RETVOID;
+   return;
 
 }
 
@@ -1175,17 +986,7 @@ RgSchCmnDlRbAllocInfo *allocInfo;
  *  @return  Void
  *
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlSvcAddToSchd
-(
-RgSchCellCb                *cell,
-RgSchDlLcCb                *svc
-)
-#else
-PRIVATE Void rgSCHSc1DlSvcAddToSchd(cell, svc)
-RgSchCellCb                *cell;
-RgSchDlLcCb                *svc;
-#endif
+static Void rgSCHSc1DlSvcAddToSchd(RgSchCellCb *cell,RgSchDlLcCb  *svc)
 {
    CmLListCp            *lst;
    CmLList              *node;
@@ -1195,13 +996,12 @@ RgSchDlLcCb                *svc;
    RgSchSc1DlCell       *sc1CellDl = RG_GET_SC1_CELL_DL(cell);
    RgSchCmnDlSvc        *svcCmn = RG_SCH_CMN_GET_DL_SVC(svc);
 
-   TRC2(rgSCHSc1DlSvcAddToSchd);
 
    svcSc1 = RG_GET_SC1_SVC_DL(svc->ue,svc,cell);
    /* The service is already in the scheduler */
    if (svcSc1->prioLnk.node != NULLP)
    {
-      RETVOID;
+      return;
    }
 
    /* If the priority = 0, it is the highest priority with infinite */
@@ -1215,7 +1015,7 @@ RgSchDlLcCb                *svc;
       /* If a svc is put in to cell wide priority Qs
        * then add the same to UE's lcsWithData List */
       rgSCHSc1DlAdd2UeLcsWithData(cell, svc->ue, svc);
-      RETVOID;
+      return;
    }
 
    /* Handle GBR services. We have them of next importance */
@@ -1223,7 +1023,7 @@ RgSchDlLcCb                *svc;
    if (svcCmn->prio <= RG_SCH_SC1_DL_GBR_PRIO_END)
    {
       if (!RG_SC1_SVC_HAS_DATA(svc,cell))
-         RETVOID;
+         return;
       lst  = &(sc1CellDl->prioLst[svcCmn->prio]);
       node = lst->first;
       while(node)
@@ -1256,7 +1056,7 @@ RgSchDlLcCb                *svc;
        * then add the same to UE's lcsWithData List */
       rgSCHSc1DlAdd2UeLcsWithData(cell, svc->ue, svc);
    }
-   RETVOID;
+   return;
 }
 
 
@@ -1277,23 +1077,12 @@ RgSchDlLcCb                *svc;
  *  @return  Void
  *
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlUeRmvFrmSchd
-(
-RgSchCellCb                *cell,
-RgSchUeCb                  *ue
-)
-#else
-PRIVATE Void rgSCHSc1DlUeRmvFrmSchd(cell, ue)
-RgSchCellCb                *cell;
-RgSchUeCb                  *ue;
-#endif
+static Void rgSCHSc1DlUeRmvFrmSchd(RgSchCellCb *cell,RgSchUeCb *ue)
 {
    RgSchSc1DlCell *cellDl = RG_GET_SC1_CELL_DL(cell);
    RgSchSc1DlUe   *ueDl = RG_GET_SC1_UE_DL(ue, cell);
    CmLListCp   *lst;
 
-   TRC2(rgSCHSc1DlUeRmvFrmSchd);
 
    lst  = &cellDl->prioLst[ueDl->prio];
    if (ueDl->prioLnk.node != NULLP)
@@ -1304,7 +1093,7 @@ RgSchUeCb                  *ue;
        * then remove the same from UE's lcsWithData List */
       rgSCHSc1DlRmFrmUeLcsWithData(cell, ue, ueDl->ambrSvc);
    }
-   RETVOID;
+   return;
 }
 
 
@@ -1323,25 +1112,11 @@ RgSchUeCb                  *ue;
  *  @return  Void
  *
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlSvcRmvFrmUeAmbrLst 
-(
-RgSchCellCb                *cell,
-RgSchUeCb                  *ue,
-RgSchDlLcCb                *svc
-)
-#else
-PRIVATE Void rgSCHSc1DlSvcRmvFrmUeAmbrLst(cell, ue, svc)
-RgSchCellCb                *cell;
-RgSchUeCb                  *ue;
-RgSchDlLcCb                *svc;
-#endif
+static Void rgSCHSc1DlSvcRmvFrmUeAmbrLst(RgSchCellCb *cell,RgSchUeCb  *ue,RgSchDlLcCb  *svc)
 {
    RgSchSc1DlUe *ueDl = RG_GET_SC1_UE_DL(ue, cell);
    RgSchSc1DlSvc *svcSc1 = RG_GET_SC1_SVC_DL(ue,svc,cell);
    CmLListCp            *lst;
-
-   TRC2(rgSCHSc1DlSvcRmvFrmUeAmbrLst);
 
    lst  = &ueDl->ambrLst;
    if (svcSc1->prioLnk.node != NULLP)
@@ -1349,7 +1124,7 @@ RgSchDlLcCb                *svc;
       cmLListDelFrm(lst, &svcSc1->prioLnk);
       svcSc1->prioLnk.node = (PTR)NULLP;
    }
-   RETVOID;
+   return;
 }
 
 
@@ -1368,31 +1143,18 @@ RgSchDlLcCb                *svc;
  *  @return  Void
  *
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlSvcAddToUeAmbrLst 
-(
-RgSchCellCb                *cell,
-RgSchUeCb                  *ue,
-RgSchDlLcCb                *svc
-)
-#else
-PRIVATE Void rgSCHSc1DlSvcAddToUeAmbrLst(cell, ue, svc)
-RgSchCellCb                *cell;
-RgSchUeCb                  *ue;
-RgSchDlLcCb                *svc;
-#endif
+static Void rgSCHSc1DlSvcAddToUeAmbrLst(RgSchCellCb *cell,RgSchUeCb *ue,RgSchDlLcCb *svc)
 {
-   RgSchSc1DlUe            *ueDl = RG_GET_SC1_UE_DL(ue, cell);
-   CmLList              *node;
-   RgSchDlLcCb          *lsvc;
-   RgSchSc1DlSvc           *svcSc1 = RG_GET_SC1_SVC_DL(ue,svc,cell);
-   RgSchCmnDlSvc        *svcCmn = RG_SCH_CMN_GET_DL_SVC(svc);
+   RgSchSc1DlUe    *ueDl = RG_GET_SC1_UE_DL(ue, cell);
+   CmLList         *node;
+   RgSchDlLcCb     *lsvc;
+   RgSchSc1DlSvc   *svcSc1 = RG_GET_SC1_SVC_DL(ue,svc,cell);
+   RgSchCmnDlSvc   *svcCmn = RG_SCH_CMN_GET_DL_SVC(svc);
 
-   TRC2(rgSCHSc1DlSvcAddToUeAmbrLst);
 
    /* If svc already present in AMBR List return */
    if (svcSc1->prioLnk.node != NULLP)
-      RETVOID;
+      return;
 
    node = ueDl->ambrLst.first;
    while(node)
@@ -1416,7 +1178,7 @@ RgSchDlLcCb                *svc;
       svcSc1->prioLnk.node = (PTR)svc;
    }
    
-   RETVOID;
+   return;
 }
 
 
@@ -1435,24 +1197,13 @@ RgSchDlLcCb                *svc;
  *  @return  Void
  *
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlSvcRmvFrmSchd
-(
-RgSchCellCb                *cell,
-RgSchDlLcCb                *svc
-)
-#else
-PRIVATE Void rgSCHSc1DlSvcRmvFrmSchd(cell, svc)
-RgSchCellCb                *cell;
-RgSchDlLcCb                *svc;
-#endif
+static Void rgSCHSc1DlSvcRmvFrmSchd(RgSchCellCb *cell,RgSchDlLcCb  *svc)
 {
    RgSchSc1DlCell *cellDl = RG_GET_SC1_CELL_DL(cell);
    RgSchSc1DlSvc *svcDl = RG_GET_SC1_SVC_DL(svc->ue,svc,cell);
    RgSchCmnDlSvc *svcCmn = RG_SCH_CMN_GET_DL_SVC(svc);
    CmLListCp    *lst;
 
-   TRC2(rgSCHSc1DlSvcRmvFrmSchd);
 
    lst = &(cellDl->prioLst[svcCmn->prio]);
    if (svcDl->prioLnk.node != NULLP)
@@ -1463,7 +1214,7 @@ RgSchDlLcCb                *svc;
        * then remove the same from UE's lcsWithData List */
       rgSCHSc1DlRmFrmUeLcsWithData(cell, svc->ue, svc);
    }
-   RETVOID;
+   return;
 }
 
 
@@ -1484,26 +1235,11 @@ RgSchDlLcCb                *svc;
  *  @return                    Void 
  *
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlSvcAdd
-(
-RgSchCellCb                *cell,
-RgSchUeCb               *ue,
-RgSchDlLcCb             *svc,
-RgrDlLchCfg             *cfg
-)
-#else
-PRIVATE Void rgSCHSc1DlSvcAdd(cell, ue, svc, cfg)
-RgSchCellCb                *cell;
-RgSchUeCb               *ue;
-RgSchDlLcCb             *svc;
-RgrDlLchCfg             *cfg;
-#endif
+static Void rgSCHSc1DlSvcAdd(RgSchCellCb *cell,RgSchUeCb *ue,RgSchDlLcCb *svc,RgrDlLchCfg *cfg)
 {
    RgSchSc1DlUe  *ueDl = RG_GET_SC1_UE_DL(ue, cell);
    RgSchSc1DlSvc *svcSc1 = RG_GET_SC1_SVC_DL(ue,svc,cell);
    RgSchCmnDlSvc *svcCmn = RG_SCH_CMN_GET_DL_SVC(svc);
-   TRC2(rgSCHSc1DlSvcAdd);
 
    UNUSED(cfg);
 
@@ -1514,7 +1250,7 @@ RgrDlLchCfg             *cfg;
       cmLListAdd2Tail(&ueDl->gbrSvcs, &svcSc1->gbrLnk);
       svcSc1->gbrLnk.node = (PTR)svc;
    }
-   RETVOID;
+   return;
 }
 
 
@@ -1535,29 +1271,16 @@ RgrDlLchCfg             *cfg;
  *  @return  Void
  *
  **/
-#ifdef ANSI
-PUBLIC Void rgSCHSc1DlLcRmv
-(
-RgSchCellCb                *cell,
-RgSchUeCb                  *ue,
-RgSchDlLcCb                *svc
-)
-#else
-PUBLIC Void rgSCHSc1DlLcRmv(cell, ue, svc)
-RgSchCellCb                *cell;
-RgSchUeCb                  *ue;
-RgSchDlLcCb                *svc;
-#endif
+Void rgSCHSc1DlLcRmv(RgSchCellCb *cell,RgSchUeCb *ue,RgSchDlLcCb *svc)
 {
    RgSchSc1DlUe  *ueDl;
    RgSchSc1DlSvc *svcSc1 = RG_GET_SC1_SVC_DL(ue,svc,cell);
    RgSchCmnDlSvc *svcCmn = RG_SCH_CMN_GET_DL_SVC(svc);
 
-   TRC2(rgSCHSc1DlLcRmv);
 
    if (svcSc1 == NULLP)
    {
-      RETVOID;
+      return;
    }
    ueDl = RG_GET_SC1_UE_DL(ue, cell);
 
@@ -1600,7 +1323,7 @@ RgSchDlLcCb                *svc;
    for proper NULLP assignment*/
    rgSCHUtlFreeSBuf(cell->instIdx, 
          (Data**)(&(RG_SCH_CMN_GET_LC_SCH_SPFC(ue,svc,cell))), (sizeof(RgSchSc1DlSvc)));
-   RETVOID;
+   return;
 }
 
 /**
@@ -1619,25 +1342,10 @@ RgSchDlLcCb                *svc;
  *  @return     Void 
  *
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlSvcMod
-(
-RgSchCellCb                *cell,
-RgSchUeCb                  *ue,
-RgSchDlLcCb                *svc,
-RgrLchRecfg             *recfg
-)
-#else
-PRIVATE Void rgSCHSc1DlSvcMod(cell,ue,svc, recfg)
-RgSchCellCb                *cell;
-RgSchUeCb                  *ue;
-RgSchDlLcCb                *svc;
-RgrLchRecfg             *recfg;
-#endif
+static Void rgSCHSc1DlSvcMod(RgSchCellCb *cell,RgSchUeCb *ue,RgSchDlLcCb *svc,RgrLchRecfg  *recfg)
 { 
    RgSchSc1DlSvc *svcSc1 = RG_GET_SC1_SVC_DL(ue,svc,cell);
    RgSchCmnDlSvc *svcCmn = RG_SCH_CMN_GET_DL_SVC(svc);
-   TRC2(rgSCHSc1DlSvcMod);
 
    if (RG_SCH_CMN_SVC_IS_GBR(svc))
    {
@@ -1645,7 +1353,7 @@ RgrLchRecfg             *recfg;
       svcSc1->gbr   = svcCmn->gbr;
       svcSc1->mbr   = svcCmn->mbr;
    }
-   RETVOID;
+   return;
 }
 
 /**
@@ -1664,25 +1372,14 @@ RgrLchRecfg             *recfg;
  *  @return                    Void
  *
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlUeAddToSchd
-(
-RgSchCellCb                *cell,
-RgSchUeCb                  *ue
-)
-#else
-PRIVATE Void rgSCHSc1DlUeAddToSchd(cell, ue)
-RgSchCellCb                *cell;
-RgSchUeCb                  *ue;
-#endif
+static Void rgSCHSc1DlUeAddToSchd(RgSchCellCb *cell,RgSchUeCb *ue)
 {
    RgSchSc1DlCell *cellDl = RG_GET_SC1_CELL_DL(cell);
    RgSchSc1DlUe   *ueDl = RG_GET_SC1_UE_DL(ue, cell);
    RgSchSc1DlUe   *lueDl;
    CmLList        *node;
    CmLListCp      *lst;
-   RgSchUeCb                  *nodeUe = NULLP;
-   TRC2(rgSCHSc1DlUeAddToSchd);
+   RgSchUeCb      *nodeUe = NULLP;
 
    ueDl->prio = ((RgSchCmnDlSvc *)(ueDl->ambrSvc->sch))->prio;
    lst  = &cellDl->prioLst[ueDl->prio]; 
@@ -1719,7 +1416,7 @@ RgSchUeCb                  *ue;
    /* If a svc is put in to cell wide priority Qs
     * then add the same to UE's lcsWithData List */
    rgSCHSc1DlAdd2UeLcsWithData(cell, ue, ueDl->ambrSvc);
-   RETVOID;
+   return;
 }
 
 
@@ -1740,24 +1437,10 @@ RgSchUeCb                  *ue;
  *  @return  Void
  *
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlMngAmbrSvcPosn
-(
-RgSchCellCb                *cell,
-RgSchUeCb                  *ue,
-RgSchDlLcCb                *svc
-)
-#else
-PRIVATE Void rgSCHSc1DlMngAmbrSvcPosn(cell, ue, svc)
-RgSchCellCb                *cell;
-RgSchUeCb                  *ue;
-RgSchDlLcCb                *svc;
-#endif
+static Void rgSCHSc1DlMngAmbrSvcPosn(RgSchCellCb *cell,RgSchUeCb *ue,RgSchDlLcCb *svc)
 {
    RgSchSc1DlUe    *ueDl = RG_GET_SC1_UE_DL(ue, cell);
    RgSchSc1DlSvc   *svcSc1 = RG_GET_SC1_SVC_DL(ue,svc,cell);
-
-   TRC2(rgSCHSc1DlMngAmbrSvcPosn);
 
    if (svcSc1->bo == 0)
    {
@@ -1798,7 +1481,7 @@ RgSchDlLcCb                *svc;
                rgSCHSc1DlUeRmvFrmSchd(cell, ue);
             }
          }
-         RETVOID;
+         return;
       }
       rgSCHSc1DlSvcAddToUeAmbrLst(cell, ue, svc);
       /* Current ambr svc is always the first node of ambrLst.*/ 
@@ -1819,7 +1502,7 @@ RgSchDlLcCb                *svc;
          }
       }
    }
-   RETVOID;
+   return;
 }
 
 
@@ -1840,36 +1523,23 @@ RgSchDlLcCb                *svc;
  *  @return  Void
  *
  **/
-#ifdef ANSI
-PUBLIC Void rgSCHSc1DlLcBoUpd
-(
-RgSchCellCb                *cell,
-RgSchUeCb                  *ue,
-RgSchDlLcCb                *svc
-)
-#else
-PUBLIC Void rgSCHSc1DlLcBoUpd(cell, ue, svc)
-RgSchCellCb                *cell;
-RgSchUeCb                  *ue;
-RgSchDlLcCb                *svc;
-#endif
+Void rgSCHSc1DlLcBoUpd(RgSchCellCb *cell,RgSchUeCb  *ue,RgSchDlLcCb *svc)
 {
    RgSchSc1DlSvc   *svcSc1 = RG_GET_SC1_SVC_DL(ue,svc,cell);
-   TRC2(rgSCHSc1DlLcBoUpd);
 
    if (svcSc1->bo == svc->bo)
    {
-      RETVOID;
+      return;
    }
    svcSc1->bo = svc->bo;
    if (!RG_SCH_CMN_DL_IS_UE_ACTIVE(ue))
    {
-      RETVOID;
+      return;
    }
    rgSCHSc1DlMngSvcPosn(cell, ue, svc);
 
   /* Stack Crash problem for TRACE5 changes. Added the return below */
-  RETVOID;
+  return;
 
 }
 
@@ -1893,22 +1563,9 @@ RgSchDlLcCb                *svc;
  *  @return  Void
  *
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlMngPrio0SvcPosn
-(
-RgSchCellCb                *cell,
-RgSchUeCb                  *ue,
-RgSchDlLcCb                *svc
-)
-#else
-PRIVATE Void rgSCHSc1DlMngPrio0SvcPosn(cell, ue, svc)
-RgSchCellCb                *cell;
-RgSchUeCb                  *ue;
-RgSchDlLcCb                *svc;
-#endif
+static Void rgSCHSc1DlMngPrio0SvcPosn(RgSchCellCb *cell,RgSchUeCb  *ue,RgSchDlLcCb  *svc)
 { 
    RgSchSc1DlSvc *svcSc1 = RG_GET_SC1_SVC_DL(ue,svc,cell);
-   TRC2(rgSCHSc1DlMngPrio0SvcPosn);
 
    /* In this priority, we just add or remove to the queue */
    if (svcSc1->bo > 0)
@@ -1919,7 +1576,7 @@ RgSchDlLcCb                *svc;
    {
       rgSCHSc1DlSvcRmvFrmSchd(cell, svc);
    }
-   RETVOID;
+   return;
 }
 
 
@@ -1942,22 +1599,9 @@ RgSchDlLcCb                *svc;
  *  @return  Void
  *
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlMngGbrSvcPosn 
-(
-RgSchCellCb                *cell,
-RgSchUeCb                  *ue,
-RgSchDlLcCb                *svc
-)
-#else
-PRIVATE Void rgSCHSc1DlMngGbrSvcPosn(cell, ue, svc)
-RgSchCellCb                *cell;
-RgSchUeCb                  *ue;
-RgSchDlLcCb                *svc;
-#endif
+static Void rgSCHSc1DlMngGbrSvcPosn(RgSchCellCb *cell,RgSchUeCb *ue,RgSchDlLcCb *svc)
 { 
    RgSchSc1DlSvc *svcSc1 = RG_GET_SC1_SVC_DL(ue,svc,cell);
-   TRC2(rgSCHSc1DlMngGbrSvcPosn);
 
    /* Handle a GBR service. */
    svcSc1->effGbr = RGSCH_MIN(svcSc1->bo, svcSc1->gbr);
@@ -1965,7 +1609,7 @@ RgSchDlLcCb                *svc;
    /* Adjust the SVC priority within the queue */
    rgSCHSc1DlSvcRmvFrmSchd(cell, svc);
    rgSCHSc1DlSvcAddToSchd(cell, svc);
-   RETVOID;
+   return;
 }
 
 
@@ -1988,26 +1632,13 @@ RgSchDlLcCb                *svc;
  *  @return  Void
  *
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlMngSvcPosn 
-(
-RgSchCellCb                *cell,
-RgSchUeCb                  *ue,
-RgSchDlLcCb                *svc
-)
-#else
-PRIVATE Void rgSCHSc1DlMngSvcPosn(cell, ue, svc)
-RgSchCellCb                *cell;
-RgSchUeCb                  *ue;
-RgSchDlLcCb                *svc;
-#endif
+static Void rgSCHSc1DlMngSvcPosn(RgSchCellCb *cell,RgSchUeCb  *ue,RgSchDlLcCb *svc)
 { 
    RgSchCmnDlSvc *svcCmn = RG_SCH_CMN_GET_DL_SVC(svc);
    RgSchSc1DlCell *cellDl = RG_GET_SC1_CELL_DL(cell);
-   TRC2(rgSCHSc1DlMngSvcPosn);
 
    (cellDl->svcMngFunc[svcCmn->prio])(cell, ue, svc);
-   RETVOID; 
+   return; 
 }
 
 /*--------------------------*
@@ -2034,24 +1665,10 @@ RgSchDlLcCb                *svc;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHSc1RgrDlCellCfg
-(
-RgSchCellCb   *cell,
-RgrCellCfg    *cellCfg,
-RgSchErrInfo  *err
-)
-#else
-PUBLIC S16 rgSCHSc1RgrDlCellCfg(cell, cellCfg, err)
-RgSchCellCb   *cell;
-RgrCellCfg    *cellCfg;
-RgSchErrInfo  *err;
-#endif
+S16 rgSCHSc1RgrDlCellCfg(RgSchCellCb *cell,RgrCellCfg *cellCfg,RgSchErrInfo *err)
 {
    S16         ret;
    RgSchSc1DlCell *cellDl;
-
-   TRC2(rgSCHSc1RgrDlCellCfg);
 
    if((ret = rgSCHUtlAllocSBuf(cell->instIdx, 
       (Data**)&(((RgSchCmnCell*)((cell)->sc.sch))->dl.schSpfc), \
@@ -2060,13 +1677,13 @@ RgSchErrInfo  *err;
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
          "Memory allocation FAILED");
       err->errCause = RGSCHERR_SCH_SC1_DL_CFG;
-      RETVALUE(ret);
+      return (ret);
    }
 
    cellDl = RG_GET_SC1_CELL_DL(cell);
    /* Now perform downlink Queues related initializations  */
    rgSCHSc1DlInitQueues(cellDl);
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHSc1RgrDlCellCfg */
 
 /***********************************************************
@@ -2082,25 +1699,16 @@ RgSchErrInfo  *err;
  *     File : 
  *
  **********************************************************/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlDeinitQueues
-(
-RgSchSc1DlCell *cellDl
-)
-#else
-PRIVATE Void rgSCHSc1DlDeinitQueues(cellDl)
-RgSchSc1DlCell *cellDl;
-#endif
+static Void rgSCHSc1DlDeinitQueues(RgSchSc1DlCell *cellDl)
 {
-   U8          i;
-   TRC2(rgSCHSc1DlDeinitQueues);
+   uint8_t i;
 
    for (i = 0; i < RG_SC1_DL_NUM_Q; ++i)
    {
       cmLListInit(&cellDl->prioLst[i]);
       cmLListInit(&cellDl->retxLst[i]);
    } 
-   RETVOID;
+   return;
 }
 
 
@@ -2117,22 +1725,13 @@ RgSchSc1DlCell *cellDl;
  *  @param[in]  RgSchCellCb  *cell
  *  @return  Void
  **/
-#ifdef ANSI
-PUBLIC Void rgSCHSc1DlCellDel
-(
-RgSchCellCb  *cell
-)
-#else
-PUBLIC Void rgSCHSc1DlCellDel(cell)
-RgSchCellCb  *cell;
-#endif
+Void rgSCHSc1DlCellDel(RgSchCellCb  *cell)
 {
-   TRC2(rgSCHSc1DlCellDel);
 
    if (((RgSchSc1DlCell *)((RgSchCmnCell*)((cell)->sc.sch))->dl.schSpfc) \
        == NULLP)
    {
-      RETVOID;
+      return;
    }
       
    /* Perform the deinit for the DL scheduler */
@@ -2142,7 +1741,7 @@ RgSchCellCb  *cell;
    rgSCHUtlFreeSBuf(cell->instIdx, 
       (Data**)(&(((RgSchCmnCell*)((cell)->sc.sch))->dl.schSpfc)),
       (sizeof(RgSchSc1DlCell)));
-   RETVOID;
+   return;
 }  /* rgSCHSc1DlCellDel */
 
 /**
@@ -2163,27 +1762,12 @@ RgSchCellCb  *cell;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHSc1RgrDlUeCfg
-(
-RgSchCellCb  *cell,
-RgSchUeCb    *ue,
-RgrUeCfg     *ueCfg,
-RgSchErrInfo *err
-)
-#else
-PUBLIC S16 rgSCHSc1RgrDlUeCfg(cell, ue, ueCfg, err)
-RgSchCellCb  *cell;
-RgSchUeCb    *ue;
-RgrUeCfg     *ueCfg;
-RgSchErrInfo *err;
-#endif
+S16 rgSCHSc1RgrDlUeCfg(RgSchCellCb  *cell,RgSchUeCb *ue,RgrUeCfg *ueCfg,RgSchErrInfo *err)
 {
    RgSchCmnUe         *ueSchCmn = RG_SCH_CMN_GET_UE(ue, cell);
    Inst               inst = cell->instIdx;
    RgSchSc1DlUe       *ueDl;
 
-   TRC2(rgSCHSc1RgrDlUeCfg);
 
    if((rgSCHUtlAllocSBuf(inst, 
                (Data**)&(ueSchCmn->dl.schSpfc), (sizeof(RgSchSc1DlUe))) != ROK))
@@ -2191,7 +1775,7 @@ RgSchErrInfo *err;
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, "Memory allocation FAILED"
                "CRNTI:%d",ue->ueId);
       err->errCause = RGSCHERR_SCH_SC1_DL_CFG;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    ueDl = (RgSchSc1DlUe *)ueSchCmn->dl.schSpfc;
    if (ue->dl.ambrCfgd)
@@ -2207,7 +1791,7 @@ RgSchErrInfo *err;
    cmLListInit(&ueDl->ambrLst);
    cmLListInit(&ueDl->schdSvcs);
    cmLListInit(&ueDl->retxHqProcs);
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHSc1RgrDlUeCfg */
 
 
@@ -2227,22 +1811,11 @@ RgSchErrInfo *err;
  *      -# ROK
  *      -# RFAILED
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHSc1DlUeHqEntInit
-(
- RgSchCellCb      *cell,
- RgSchDlHqEnt     *hqEnt
- )
-#else
-PUBLIC S16 rgSCHSc1DlUeHqEntInit(cell, hqEnt)
-   RgSchCellCb      *cell;
-   RgSchDlHqEnt     *hqEnt
-#endif
+S16 rgSCHSc1DlUeHqEntInit(RgSchCellCb *cell,RgSchDlHqEnt *hqEnt)
 {
    RgSchSc1DlHqProc   *hqSpcSch;
    RgSchDlHqProcCb    *hqP;
-   U8                 cnt;
-   TRC2(rgSCHSc1DlUeHqEntInit);
+   uint8_t            cnt;
    /* making use of hqE->sch for one shot allocation 
     * of RgSchSc1DlHqProc structures */
    if (rgSCHUtlAllocSBuf(cell->instIdx, 
@@ -2251,7 +1824,7 @@ PUBLIC S16 rgSCHSc1DlUeHqEntInit(cell, hqEnt)
    {
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
                "Memory allocation FAILED CRNTI:%d",hqEnt->ue->ueId);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    hqSpcSch = (RgSchSc1DlHqProc *)(hqEnt->sch);
    for(cnt = 0; cnt < hqEnt->numHqPrcs; cnt++)
@@ -2260,7 +1833,7 @@ PUBLIC S16 rgSCHSc1DlUeHqEntInit(cell, hqEnt)
       ((RgSchCmnDlHqProc *)((hqP)->sch))->schSpfc = \
                                                     hqSpcSch++;
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -2277,19 +1850,8 @@ PUBLIC S16 rgSCHSc1DlUeHqEntInit(cell, hqEnt)
  *  @param[in]  RgSchDlHqEnt     *hqE 
  *  @return  Void
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHSc1DlUeHqEntDeInit 
-(
-RgSchCellCb      *cell,
-RgSchDlHqEnt     *hqE
-)
-#else
-PUBLIC S16 rgSCHSc1DlUeHqEntDeInit(cell, hqE)
-RgSchCellCb      *cell;
-RgSchDlHqEnt     *hqE;
-#endif
+S16 rgSCHSc1DlUeHqEntDeInit(RgSchCellCb *cell,RgSchDlHqEnt *hqE)
 {
-   TRC2(rgSCHSc1DlUeHqEntDeInit);
 
    if(hqE->sch)
    {
@@ -2299,9 +1861,9 @@ RgSchDlHqEnt     *hqE;
    }
    else
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 /**
  * @brief UE reconfiguration for scheduler
@@ -2321,27 +1883,12 @@ RgSchDlHqEnt     *hqE;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHSc1RgrDlUeRecfg
-(
-RgSchCellCb  *cell,
-RgSchUeCb    *ue,
-RgrUeRecfg   *ueRecfg,
-RgSchErrInfo *err
-)
-#else
-PUBLIC S16 rgSCHSc1RgrDlUeRecfg(cell, ue, ueRecfg, err)
-RgSchCellCb  *cell;
-RgSchUeCb    *ue;
-RgrUeRecfg   *ueRecfg;
-RgSchErrInfo *err;
-#endif
+S16 rgSCHSc1RgrDlUeRecfg(RgSchCellCb  *cell,RgSchUeCb  *ue,RgrUeRecfg  *ueRecfg,RgSchErrInfo *err)
 {
    RgSchSc1DlUe *ueDl     = RG_GET_SC1_UE_DL(ue, cell);
    RgSchCmnDlUe *ueCmnDl = RG_SCH_CMN_GET_DL_UE(ue,cell);
                            /*cell added as part of CA dev*/
    RgSchDlHqEnt          *hqEnt = RG_SCH_CMN_GET_UE_HQE(ue, cell);
-   TRC2(rgSCHSc1RgrDlUeRecfg);
 
    if (ue->dl.ambrCfgd)
    {
@@ -2367,7 +1914,7 @@ RgSchErrInfo *err;
       RgSchDlHqProcCb    *hqP;
       Pst                pst;
       RgInfRlsHqInfo     *rlsHqBufs = &(cell->rlsHqArr[cell->crntHqIdx]);
-      U8                 i;
+      uint8_t                 i;
 
       /* Prepare TB2 release information to be sent to MAC */
       rlsHqBufs->numUes = 0;
@@ -2398,7 +1945,7 @@ RgSchErrInfo *err;
          RgSchMacRlsHq (&pst, rlsHqBufs);
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHSc1RgrDlUeRecfg */
 
 /**
@@ -2413,23 +1960,12 @@ RgSchErrInfo *err;
  *  @param[in]  RgSchUeCb    *ue
  *  @return  Void
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlRmvUeFrmPrioQs
-(
-RgSchCellCb  *cell,
-RgSchUeCb    *ue
-)
-#else
-PRIVATE Void rgSCHSc1DlRmvUeFrmPrioQs(cell, ue)
-RgSchCellCb  *cell;
-RgSchUeCb    *ue;
-#endif
+static Void rgSCHSc1DlRmvUeFrmPrioQs(RgSchCellCb  *cell,RgSchUeCb    *ue)
 {
    RgSchSc1DlUe         *sc1Ue;
    RgSchDlLcCb          *svc;
-   U32                  idx;
+   uint32_t             idx;
 
-   TRC2(rgSCHSc1DlRmvUeFrmPrioQs);
 
    sc1Ue = RG_GET_SC1_UE_DL(ue, cell);
 
@@ -2449,7 +1985,7 @@ RgSchUeCb    *ue;
       rgSCHSc1DlSvcRmvFrmSchd(cell, svc);
    }
    
-   RETVOID;
+   return;
 }  /* rgSCHSc1DlRmvUeFrmPrioQs */
 
 /**
@@ -2464,25 +2000,14 @@ RgSchUeCb    *ue;
  *  @param[in]  RgSchUeCb    *ue
  *  @return  Void
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlInactvtUe
-(
-RgSchCellCb  *cell,
-RgSchUeCb    *ue
-)
-#else
-PRIVATE Void rgSCHSc1DlInactvtUe(cell, ue)
-RgSchCellCb  *cell;
-RgSchUeCb    *ue;
-#endif
+static Void rgSCHSc1DlInactvtUe(RgSchCellCb  *cell,RgSchUeCb    *ue)
 {
    RgSchSc1DlCell       *cellDl = RG_GET_SC1_CELL_DL(cell);
    RgSchDlHqProcCb      *hqP;
    RgSchCmnDlHqProc     *hqProcDl;
-   U8                   i;
-   RgSchDlHqEnt          *hqEnt = RG_SCH_CMN_GET_UE_HQE(ue, cell);
+   uint8_t              i;
+   RgSchDlHqEnt         *hqEnt = RG_SCH_CMN_GET_UE_HQE(ue, cell);
 
-   TRC2(rgSCHSc1DlInactvtUe);
 
    /* ccpu00130170: UE related HARQ Procs are cleared only 
       if UE's Re-establishment procedure is not in progress*/
@@ -2513,7 +2038,7 @@ RgSchUeCb    *ue;
 
    rgSCHSc1DlRmvUeFrmPrioQs(cell, ue);
 
-   RETVOID;
+   return;
 }  /* rgSCHSc1DlInactvtUe */
 
 
@@ -2531,24 +2056,13 @@ RgSchUeCb    *ue;
  *  @param[in]  RgSchUeCb    *ue
  *  @return  Void
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlSuspendUe 
-(
-RgSchCellCb  *cell,
-RgSchUeCb    *ue
-)
-#else
-PRIVATE Void rgSCHSc1DlSuspendUe(cell, ue)
-RgSchCellCb  *cell;
-RgSchUeCb    *ue;
-#endif
+static Void rgSCHSc1DlSuspendUe(RgSchCellCb  *cell,RgSchUeCb    *ue)
 {
    RgSchDlHqProcCb      *hqP;
-   U8                   i;
-   U8                   j;
-   RgSchDlHqEnt          *hqEnt = RG_SCH_CMN_GET_UE_HQE(ue, cell);
+   uint8_t              i;
+   uint8_t              j;
+   RgSchDlHqEnt         *hqEnt = RG_SCH_CMN_GET_UE_HQE(ue, cell);
 
-   TRC2(rgSCHSc1DlSuspendUe);
 
    /* remove all in use HARQ processes from the subframes.
     * Store them in UEs hqProc Lst. Add back to cell's
@@ -2582,7 +2096,7 @@ RgSchUeCb    *ue;
    }
    rgSCHSc1DlRmvUeFrmPrioQs(cell, ue);
 
-   RETVOID;
+   return;
 }  /* rgSCHSc1DlSuspendUe */
 
 /***********************************************************
@@ -2599,19 +2113,10 @@ RgSchUeCb    *ue;
  *     File :
  *
  **********************************************************/
-#ifdef ANSI
-PUBLIC Void rgSCHSc1DlScanUpdPdbPrio
-(
-RgSchCellCb *cell
-)
-#else
-PUBLIC Void rgSCHSc1DlScanUpdPdbPrio (cell)
-RgSchCellCb *cell;
-#endif
+Void rgSCHSc1DlScanUpdPdbPrio(RgSchCellCb *cell)
 {
-   TRC2(rgSCHSc1DlScanUpdPdbPrio);
    
-   RETVOID;
+   return;
 }
 
 /**
@@ -2634,20 +2139,9 @@ RgSchCellCb *cell;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHSc1DlFillFlowCntrlInfo
-(
-RgSchCellCb    *cell,
-RgInfSfAlloc   *sfAlloc
-)
-#else
-PUBLIC S16 rgSCHSc1DlFillFlowCntrlInfo(cell,sfAlloc)
-RgSchCellCb    *cell;
-RgInfSfAlloc   *sfAlloc;
-#endif
+S16 rgSCHSc1DlFillFlowCntrlInfo(RgSchCellCb    *cell,RgInfSfAlloc   *sfAlloc)
 {
-  TRC2(rgSCHSc1DlFillFlowCntrlInfo);
-  RETVALUE(ROK);
+  return ROK;
 }
 /**
  * @brief UE deletion for scheduler
@@ -2663,26 +2157,15 @@ RgInfSfAlloc   *sfAlloc;
  *  @param[in]  RgSchUeCb    *ue
  *  @return  Void
  **/
-#ifdef ANSI
-PUBLIC Void rgSCHSc1DlUeDel
-(
-RgSchCellCb  *cell,
-RgSchUeCb    *ue
-)
-#else
-PUBLIC Void rgSCHSc1DlUeDel(cell, ue)
-RgSchCellCb  *cell;
-RgSchUeCb    *ue;
-#endif
+Void rgSCHSc1DlUeDel(RgSchCellCb  *cell,RgSchUeCb    *ue)
 {
    RgSchDlHqEnt          *hqEnt = RG_SCH_CMN_GET_UE_HQE(ue, cell);
    RgSchSc1DlUe *sc1DlUe = RG_GET_SC1_UE_DL(ue, cell);
 
-   TRC2(rgSCHSc1DlUeDel);
 
    if (sc1DlUe == NULLP)
    {
-      RETVOID;
+      return;
    }
    if( hqEnt)
    {
@@ -2704,7 +2187,7 @@ RgSchUeCb    *ue;
    for proper NULLP assignment*/
    rgSCHUtlFreeSBuf(cell->instIdx, (Data**)(&sc1DlUe), (sizeof(RgSchSc1DlUe))); 
 
-   RETVOID;
+   return;
 }  /* rgSCHSc1DlUeDel */
 
 /**
@@ -2726,26 +2209,9 @@ RgSchUeCb    *ue;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHSc1RgrLcCfg
-(
-RgSchCellCb  *cell,
-RgSchUeCb    *ue,
-RgSchDlLcCb  *dlLc,
-RgrLchCfg *lcCfg,
-RgSchErrInfo *err
-)
-#else
-PUBLIC S16 rgSCHSc1RgrLcCfg(cell, ue, dlLc, lcCfg, err)
-RgSchCellCb  *cell;
-RgSchUeCb    *ue;
-RgSchDlLcCb  *dlLc;
-RgrLchCfg *lcCfg;
-RgSchErrInfo *err;
-#endif
+S16 rgSCHSc1RgrLcCfg(RgSchCellCb  *cell,RgSchUeCb    *ue,RgSchDlLcCb  *dlLc,RgrLchCfg *lcCfg,RgSchErrInfo *err)
 {
    S16      ret;
-   TRC2(rgSCHSc1RgrLcCfg);
 
    ret = rgSCHUtlAllocSBuf(cell->instIdx, 
       (Data**)&(RG_SCH_CMN_GET_LC_SCH_SPFC(ue,dlLc,cell)), \
@@ -2755,11 +2221,11 @@ RgSchErrInfo *err;
       RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId, "rgSCHSc1CrgLcCfg():"
       "SCH struct alloc failed CRNTI:%d LCID:%d",ue->ueId,lcCfg->lcId);
       err->errCause = RGSCHERR_SCH_SC1_DL_CFG;
-      RETVALUE(ret);
+      return (ret);
    }
 
    rgSCHSc1DlSvcAdd(cell, ue, dlLc, &lcCfg->dlInfo);
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHSc1RgrLcCfg */
 
 
@@ -2785,31 +2251,14 @@ RgSchErrInfo *err;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHSc1RgrLcRecfg
-(
-RgSchCellCb  *cell,
-RgSchUeCb    *ue,
-RgSchDlLcCb  *dlLc,
-RgrLchRecfg  *lcRecfg,
-RgSchErrInfo *err
-)
-#else
-PUBLIC S16 rgSCHSc1RgrLcRecfg(cell, ue, dlLc, lcRecfg, err)
-RgSchCellCb  *cell;
-RgSchUeCb    *ue;
-RgSchDlLcCb  *dlLc;
-RgrLchRecfg  *lcRecfg;
-RgSchErrInfo *err;
-#endif
+S16 rgSCHSc1RgrLcRecfg(RgSchCellCb  *cell,RgSchUeCb  *ue,RgSchDlLcCb  *dlLc,RgrLchRecfg  *lcRecfg,RgSchErrInfo *err)
 {
-   TRC2(rgSCHSc1RgrLcRecfg);
 
    UNUSED(err);
 
    rgSCHSc1DlSvcMod(cell,ue,dlLc, lcRecfg);
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHSc1RgrLcRecfg */
 
 
@@ -2827,22 +2276,9 @@ RgSchErrInfo *err;
  *  @return  Void
  *
  **/
-#ifdef ANSI
-PRIVATE S16 rgSCHSc1RgrDlCellRecfg
-(
-RgSchCellCb             *cell,
-RgrCellRecfg            *recfg,
-RgSchErrInfo            *err
-)
-#else
-PRIVATE S16 rgSCHSc1RgrDlCellRecfg(cell, recfg, err)
-RgSchCellCb             *cell;
-RgrCellRecfg            *recfg;
-RgSchErrInfo            *err;
-#endif
+static S16 rgSCHSc1RgrDlCellRecfg(RgSchCellCb *cell,RgrCellRecfg *recfg,RgSchErrInfo *err)
 {
-   TRC2(rgSCHSc1DlUeReset);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -2864,23 +2300,13 @@ RgSchErrInfo            *err;
  *  @return  Void
  *
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlTaCmd
-(
-RgSchCellCb           *cell,
-RgSchCmnDlRbAllocInfo *allocInfo
-)
-#else
-PRIVATE Void rgSCHSc1DlTaCmd(cell, allocInfo)
-RgSchCellCb           *cell;
-RgSchCmnDlRbAllocInfo *allocInfo;
-#endif
+static Void rgSCHSc1DlTaCmd(RgSchCellCb *cell,RgSchCmnDlRbAllocInfo *allocInfo)
 {
    CmLListCp            *lst;
    CmLList              *node;
    RgSchDlHqProcCb      *proc;
    RgSchUeCb            *ue;
-   U32                  effBo;
+   uint32_t             effBo;
    RgSchCmnDlCell       *cellCmnDl = RG_SCH_CMN_GET_DL_CELL(cell);
    RgSchCmnDlUe         *cmnUeDl; 
    RgSchSc1DlUe         *ueDl;
@@ -2889,7 +2315,6 @@ RgSchCmnDlRbAllocInfo *allocInfo;
 #ifdef LTEMAC_HDFDD
    Bool                 dlAllowed = FALSE;
 #endif
-   TRC2(rgSCHSc1DlTaCmd);
 
    lst  = &cellCmnDl->taLst;
    node = lst->first;
@@ -2952,7 +2377,7 @@ RgSchCmnDlRbAllocInfo *allocInfo;
       /* 3.1 MIMO moving this call to cmn scheduler */
       /*rgSCHCmnDlRbInfoAddUeTx(allocInfo, ue);*/
    }
-   RETVOID;
+   return;
 }
 
 /**
@@ -2970,22 +2395,10 @@ RgSchCmnDlRbAllocInfo *allocInfo;
  *  @param[out] CmLListCp   *inactvLst
  *  @return  Void
  **/
-#ifdef ANSI
-PUBLIC Void rgSCHSc1DlHndlInActUes
-(
-RgSchCellCb           *cell,
-CmLListCp             *inactvLst
-)
-#else
-PUBLIC Void rgSCHSc1DlHndlInActUes(cell, inactvLst)
-RgSchCellCb           *cell;
-CmLListCp             *inactvLst;
-#endif
+Void rgSCHSc1DlHndlInActUes(RgSchCellCb *cell,CmLListCp *inactvLst)
 {
    CmLList   *node;
    RgSchUeCb *ue;
-
-   TRC2(rgSCHSc1DlHndlInActUes);
 
    node = inactvLst->first;
    while(node)
@@ -2996,7 +2409,7 @@ CmLListCp             *inactvLst;
        * till it is activated again. */
       rgSCHSc1DlInactvtUe(cell, ue);
    }
-   RETVOID;
+   return;
 }
 
 /**
@@ -3016,17 +2429,8 @@ CmLListCp             *inactvLst;
  *  @return  Void
  *
  **/
-#ifdef ANSI
-PUBLIC Void rgSCHSc1DlInit
-(
-RgDlSchdApis *rgSchDlApis
-)
-#else
-PUBLIC Void rgSCHSc1DlInit(rgSchDlApis)
-RgDlSchdApis *rgSchDlApis;
-#endif
+Void rgSCHSc1DlInit(RgDlSchdApis *rgSchDlApis)
 {
-   TRC2(rgSCHSc1DlInit);
    /* Init the function pointers */
    rgSchDlApis->rgSCHRgrDlUeCfg        = rgSCHSc1RgrDlUeCfg;
    rgSchDlApis->rgSCHRgrDlUeRecfg      = rgSCHSc1RgrDlUeRecfg;
@@ -3056,7 +2460,7 @@ RgDlSchdApis *rgSchDlApis;
    rgSchDlApis->rgSCHDlTickForPdbTrkng = rgSCHSc1DlScanUpdPdbPrio;
    rgSchDlApis->rgSCHDlFillFlwCtrlInfo = rgSCHSc1DlFillFlowCntrlInfo; 
 
-   RETVOID;
+   return;
 }
 
 
@@ -3075,18 +2479,9 @@ RgDlSchdApis *rgSchDlApis;
  *     File : 
  *
  **********************************************************/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlInitQueues
-(
-RgSchSc1DlCell *cellDl
-)
-#else
-PRIVATE Void rgSCHSc1DlInitQueues(cellDl)
-RgSchSc1DlCell *cellDl;
-#endif
+static Void rgSCHSc1DlInitQueues(RgSchSc1DlCell *cellDl)
 {
-   U8            i;
-   TRC2(rgSCHSc1DlInitQueues);
+   uint8_t i;
 
    for (i = 0; i < RG_SC1_DL_NUM_Q; ++i)
    {
@@ -3110,7 +2505,7 @@ RgSchSc1DlCell *cellDl;
    {
       cellDl->svcMngFunc[i] = rgSCHSc1DlMngAmbrSvcPosn;
    }
-   RETVOID;
+   return;
 }
 
 
@@ -3137,23 +2532,12 @@ RgSchSc1DlCell *cellDl;
  *  @return  Void
  *
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlRetxAllocFnlz 
-(
-RgSchCellCb           *cell,
-RgSchCmnDlRbAllocInfo *allocInfo
-)
-#else
-PRIVATE Void rgSCHSc1DlRetxAllocFnlz(cell, allocInfo)
-RgSchCellCb           *cell;
-RgSchCmnDlRbAllocInfo *allocInfo;
-#endif
+static Void rgSCHSc1DlRetxAllocFnlz(RgSchCellCb *cell,RgSchCmnDlRbAllocInfo *allocInfo)
 {
    CmLList          *node;
    RgSchUeCb        *ue;
    RgSchDlHqProcCb  *hqP;
    RgSchDlRbAlloc *dlAllocCb = NULLP;
-   TRC2(rgSCHSc1DlRetxAllocFnlz);
 
    node = allocInfo->dedAlloc.schdRetxHqPLst.first;
    while(node)
@@ -3194,7 +2578,7 @@ RgSchCmnDlRbAllocInfo *allocInfo;
       /* reset the UE allocation Information */
       rgSCHCmnDlUeResetTemp(ue, hqP);
    }
-   RETVOID;
+   return;
 }
 
 /* 3.1 MIMO Alloc distribution functions being performed
@@ -3217,33 +2601,16 @@ RgSchCmnDlRbAllocInfo *allocInfo;
  *     File : 
  *
  **********************************************************/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlSprTxTbDstn
-(
-RgSchCellCb    *cell,
-RgSchUeCb      *ue,
-RgSchDlHqTbCb  *tbInfo,
-U32            *effAlloc,
-CmLList        **node
-)
-#else
-PRIVATE Void rgSCHSc1DlSprTxTbDstn(cell, ue, tbInfo, effAlloc, node)
-RgSchCellCb    *cell;
-RgSchUeCb      *ue;
-RgSchDlHqTbCb  *tbInfo;
-U32            *effAlloc;
-CmLList        **node;
-#endif
+static Void rgSCHSc1DlSprTxTbDstn(RgSchCellCb *cell,RgSchUeCb *ue,RgSchDlHqTbCb  *tbInfo,uint32_t  *effAlloc,CmLList **node)
 {
    RgSchDlLcCb        *svc;
    RgSchSc1DlSvc      *svcSc1;
    RgSchSc1DlUe       *ueDl = RG_GET_SC1_UE_DL(ue, cell);
-   U32                bytes;
+   uint32_t           bytes;
    RgSchLchAllocInfo  lchSchdData;
-   U32                effBo;
-   U32                rlcHdrEstmt;
+   uint32_t           effBo;
+   uint32_t           rlcHdrEstmt;
 
-   TRC2(rgSCHSc1DlSprTxTbDstn);
 
    while((*node) && (*effAlloc > 0))
    {
@@ -3332,7 +2699,7 @@ CmLList        **node;
       lchSchdData.schdData = bytes;
       rgSCHDhmAddLcData(cell->instIdx, &lchSchdData, tbInfo);
    }
-   RETVOID;
+   return;
 }
 
 
@@ -3351,32 +2718,15 @@ CmLList        **node;
  *     File : 
  *
  **********************************************************/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlNewTxTbDstn 
-(
-RgSchCellCb    *cell,
-RgSchUeCb      *ue,
-RgSchDlHqTbCb  *tbInfo,
-U32            *effAlloc,
-CmLList        **node
-)
-#else
-PRIVATE Void rgSCHSc1DlNewTxTbDstn(cell, ue, tbInfo, effAlloc, node)
-RgSchCellCb    *cell;
-RgSchUeCb      *ue;
-RgSchDlHqTbCb  *tbInfo;
-U32            *effAlloc;
-CmLList        **node;
-#endif
+static Void rgSCHSc1DlNewTxTbDstn(RgSchCellCb *cell,RgSchUeCb *ue,RgSchDlHqTbCb  *tbInfo,uint32_t *effAlloc,CmLList **node)
 {
    RgSchDlLcCb        *svc;
    RgSchSc1DlSvc      *svcSc1 = NULLP;
    RgSchSc1DlUe       *ueDl = RG_GET_SC1_UE_DL(ue, cell);
-   U32                bytes;
+   uint32_t           bytes;
    RgSchLchAllocInfo  lchSchdData;
    CmLList            *prev = NULLP;
 
-   TRC2(rgSCHSc1DlNewTxTbDstn);
 
    if (ueDl->taReqBytes)
    {
@@ -3479,14 +2829,14 @@ CmLList        **node;
       rgSCHSc1DlSprTxTbDstn(cell, ue, tbInfo, effAlloc,
                             &ueDl->lcsWithData.first);
       *node = NULLP;
-      RETVOID;
+      return;
    }
    /* make sure node points to the svc not completely
     * satisfied.
     * make sure if not served completely then 
     * the other TB allocation accomodates the same */
    *node = prev;
-   RETVOID;
+   return;
 }
 
 
@@ -3505,19 +2855,7 @@ CmLList        **node;
  *     File : 
  *
  **********************************************************/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlNewTxUeFnlz 
-(
-RgSchCellCb    *cell,
-RgSchCmnDlRbAllocInfo *allocInfo,
-RgSchUeCb      *ue
-)
-#else
-PRIVATE Void rgSCHSc1DlNewTxUeFnlz(cell, allocInfo, ue)
-RgSchCellCb    *cell;
-RgSchCmnDlRbAllocInfo *allocInfo;
-RgSchUeCb      *ue;
-#endif
+static Void rgSCHSc1DlNewTxUeFnlz (RgSchCellCb  *cell,RgSchCmnDlRbAllocInfo *allocInfo,RgSchUeCb *ue)
 {
    CmLList            *node;
    RgSchSc1DlUe       *ueDl = RG_GET_SC1_UE_DL(ue, cell);
@@ -3525,13 +2863,12 @@ RgSchUeCb      *ue;
                                  /*cell added as part of CA dev*/
    /* 3.1 MIMO Distribute data of each TB across services */
    RgSchDlRbAlloc *dlAllocCb = RG_SCH_CMN_GET_ALLOCCB_FRM_UE(ue, cell);
-   U32                remTb1Bytes = dlAllocCb->tbInfo[0].bytesAlloc;
-   U32                remTb2Bytes = dlAllocCb->tbInfo[1].bytesAlloc;
-   U32                effAlloc = 0;
+   uint32_t           remTb1Bytes = dlAllocCb->tbInfo[0].bytesAlloc;
+   uint32_t           remTb2Bytes = dlAllocCb->tbInfo[1].bytesAlloc;
+   uint32_t           effAlloc = 0;
    /*ccpu00120365-ADD-added to code to check if second TB is utilized */
-   U32                tb2Bytes = 0;
+   uint32_t           tb2Bytes = 0;
 
-   TRC2(rgSCHSc1DlNewTxUeFnlz);
 
 
    /* 3.1 MIMO Consider the allocation of New TX TB for distribution */
@@ -3580,13 +2917,13 @@ RgSchUeCb      *ue;
       rgSCHUtlPdcchPut(cell, &dlAllocCb->dlSf->pdcchInfo, 
             dlAllocCb->pdcch);
       rgSCHSc1RlsHqProc(cmnUeDl->proc);
-      RETVOID;
+      return;
    }
 
    /* Fill PDCCH and assign it to HqP */
    rgSCHCmnFillHqPPdcch(cell, dlAllocCb, cmnUeDl->proc);
 
-   RETVOID;
+   return;
 }
 
 
@@ -3609,23 +2946,12 @@ RgSchUeCb      *ue;
  *  @return  Void
  *
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlNewTxAllocFnlz 
-(
-RgSchCellCb           *cell,
-RgSchCmnDlRbAllocInfo *allocInfo
-)
-#else
-PRIVATE Void rgSCHSc1DlNewTxAllocFnlz(cell, allocInfo)
-RgSchCellCb           *cell;
-RgSchCmnDlRbAllocInfo *allocInfo;
-#endif
+static Void rgSCHSc1DlNewTxAllocFnlz (RgSchCellCb  *cell,RgSchCmnDlRbAllocInfo *allocInfo)
 {
    CmLList          *node;
    RgSchUeCb        *ue;
    RgSchCmnDlUe     *cmnUeDl;
    RgSchDlHqProcCb  *hqP;
-   TRC2(rgSCHSc1DlNewTxAllocFnlz);
 
    node = allocInfo->dedAlloc.schdTxHqPLst.first;
    while(node)
@@ -3663,7 +2989,7 @@ RgSchCmnDlRbAllocInfo *allocInfo;
       cmLListInit(&((RgSchSc1DlUe *)(cmnUeDl->schSpfc))->schdSvcs);
       rgSCHCmnDlUeResetTemp(ue, hqP);
    }
-   RETVOID;
+   return;
 }
 
 /* 3.1 Added new function to handle TX+RETX alloc fnlz'n */
@@ -3691,29 +3017,18 @@ RgSchCmnDlRbAllocInfo *allocInfo;
  *  @return  Void
  *
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlRetxNewTxAllocFnlz 
-(
-RgSchCellCb           *cell,
-RgSchCmnDlRbAllocInfo *cellAllocInfo
-)
-#else
-PRIVATE Void rgSCHSc1DlRetxNewTxAllocFnlz(cell, cellAllocInfo)
-RgSchCellCb           *cell;
-RgSchCmnDlRbAllocInfo *cellAllocInfo;
-#endif
+static Void rgSCHSc1DlRetxNewTxAllocFnlz(RgSchCellCb *cell,RgSchCmnDlRbAllocInfo *cellAllocInfo)
 {
    CmLList          *node;
    RgSchUeCb        *ue;
    RgSchSc1DlUe     *sc1DlUe;
    RgSchDlHqProcCb  *hqP;
    RgSchDlHqTbCb    *newTxTbInfo;
-   U32              effAlloc;
-   U32              remTbBytes;
+   uint32_t         effAlloc;
+   uint32_t         remTbBytes;
    RgSchDlRbAlloc   *ueAllocInfo; 
-   RgSchDlRbAlloc *dlAllocCb;
+   RgSchDlRbAlloc   *dlAllocCb;
 
-   TRC2(rgSCHSc1DlRetxNewTxAllocFnlz);
    
    node = cellAllocInfo->dedAlloc.schdTxRetxHqPLst.first;
    while(node)
@@ -3789,19 +3104,8 @@ RgSchCmnDlRbAllocInfo *cellAllocInfo;
  *  @return  Void
  *
  **/
-#ifdef ANSI
-PUBLIC Void rgSCHSc1DlAllocFnlz
-(
-RgSchCellCb           *cell,
-RgSchCmnDlRbAllocInfo *allocInfo
-)
-#else
-PUBLIC Void rgSCHSc1DlAllocFnlz(cell, allocInfo)
-RgSchCellCb           *cell;
-RgSchCmnDlRbAllocInfo *allocInfo;
-#endif
+Void rgSCHSc1DlAllocFnlz(RgSchCellCb *cell,RgSchCmnDlRbAllocInfo *allocInfo)
 {
-   TRC2(rgSCHSc1DlAllocFnlz);
 
    rgSCHSc1DlRetxAllocFnlz(cell, allocInfo);
 
@@ -3810,7 +3114,7 @@ RgSchCmnDlRbAllocInfo *allocInfo;
    /*3.1 MIMO new Function added to handle TX+RETX 
     * harq process scheduling finalization */
    rgSCHSc1DlRetxNewTxAllocFnlz(cell, allocInfo);
-   RETVOID;
+   return;
 }
 
 
@@ -3831,24 +3135,9 @@ RgSchCmnDlRbAllocInfo *allocInfo;
  *  @return  Void
  *
  **/
-#ifdef ANSI
-PUBLIC Void rgSCHSc1DlCqiInd
-(
-RgSchCellCb        *cell,
-RgSchUeCb          *ue,
-Bool               isPucchInfo,
-Void               *dlCqi
-)
-#else
-PUBLIC Void rgSCHSc1DlCqiInd(cell, ue, isPucchInfo, dlCqi)
-RgSchCellCb        *cell;
-RgSchUeCb          *ue;
-Bool               isPucchInfo;
-Void               *dlCqi;
-#endif
+Void rgSCHSc1DlCqiInd(RgSchCellCb *cell,RgSchUeCb *ue,Bool isPucchInfo,Void *dlCqi)
 {
-   TRC2(rgSCHSc1DlCqiInd);
-   RETVOID;
+   return;
 }
 
 
@@ -3874,19 +3163,7 @@ Void               *dlCqi;
  *  @return  Void
  *
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlAdd2UeLcsWithData
-(
-RgSchCellCb                *cell,
-RgSchUeCb                  *ue,
-RgSchDlLcCb                *svc
-)
-#else
-PRIVATE Void rgSCHSc1DlAdd2UeLcsWithData(cell, ue, svc)
-RgSchCellCb                *cell;
-RgSchUeCb                  *ue;
-RgSchDlLcCb                *svc;
-#endif
+static Void rgSCHSc1DlAdd2UeLcsWithData(RgSchCellCb *cell,RgSchUeCb *ue,RgSchDlLcCb *svc)
 {
    CmLListCp            *lst;
    CmLList              *node;
@@ -3895,7 +3172,6 @@ RgSchDlLcCb                *svc;
    RgSchSc1DlUe         *sc1DlUe  = RG_GET_SC1_UE_DL(ue, cell);
    RgSchCmnDlSvc        *cmnDlLstSvc;
 
-   TRC2(rgSCHSc1DlAdd2UeLcsWithData);
    
    lst  = &(sc1DlUe->lcsWithData);
    node = lst->first;
@@ -3919,7 +3195,7 @@ RgSchDlLcCb                *svc;
       cmLListInsCrnt(lst, &sc1DlSvc->lcWithDataLnk);
       sc1DlSvc->lcWithDataLnk.node = (PTR)svc;
    }
-   RETVOID;
+   return;
 }
 
 
@@ -3945,28 +3221,15 @@ RgSchDlLcCb                *svc;
  *  @return  Void
  *
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1DlRmFrmUeLcsWithData
-(
-RgSchCellCb                *cell,
-RgSchUeCb                  *ue,
-RgSchDlLcCb                *svc
-)
-#else
-PRIVATE Void rgSCHSc1DlRmFrmUeLcsWithData(cell, ue, svc)
-RgSchCellCb                *cell;
-RgSchUeCb                  *ue;
-RgSchDlLcCb                *svc;
-#endif
+static Void rgSCHSc1DlRmFrmUeLcsWithData(RgSchCellCb *cell,RgSchUeCb *ue,RgSchDlLcCb  *svc)
 {
    RgSchSc1DlSvc        *sc1DlSvc = RG_GET_SC1_SVC_DL(ue,svc,cell);
    RgSchSc1DlUe         *sc1DlUe  = RG_GET_SC1_UE_DL(ue, cell);
 
-   TRC2(rgSCHSc1DlRmFrmUeLcsWithData);
    
    cmLListDelFrm(&(sc1DlUe->lcsWithData), &sc1DlSvc->lcWithDataLnk);
    sc1DlSvc->lcWithDataLnk.node = NULLP;
-   RETVOID;
+   return;
 }
 /***************** SC1 DL SCHEDULER FUNCTION DEFNs END HERE ****************/
 
@@ -3994,7 +3257,7 @@ RgSchDlLcCb                *svc;
  *  @return  S16
  *      -# ROK
  **/
-PUBLIC S16 rgSCHSc1UlLchCfg 
+S16 rgSCHSc1UlLchCfg 
 (
 RgSchCellCb      *cell,
 RgSchUeCb        *ue,
@@ -4002,7 +3265,7 @@ RgrLchCfg        *cfg,
 RgSchErrInfo     *err
 )
 {
-   RETVALUE(ROK);
+   return ROK;
 }
 /**
  * @brief UE Lc Reconfig for RR 
@@ -4020,7 +3283,7 @@ RgSchErrInfo     *err
  *  @return  S16
  *      -# ROK
  **/
-PUBLIC S16 rgSCHSc1UlLchRecfg 
+S16 rgSCHSc1UlLchRecfg 
 (
 RgSchCellCb      *cell,
 RgSchUeCb        *ue,
@@ -4028,7 +3291,7 @@ RgrLchRecfg      *recfg,
 RgSchErrInfo     *err
 )
 {
-   RETVALUE(ROK);
+   return ROK;
 }
 /**
  * @brief LC deletion for PFS
@@ -4045,23 +3308,9 @@ RgSchErrInfo     *err
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHSc1UlLchDel
-(
-RgSchCellCb      *cell,
-RgSchUeCb        *ue,
-CmLteLcId        lcId,
-U8               lcgId
-)
-#else
-PUBLIC S16 rgSCHRrUlLchDel(cell, ue, lcId, lcgId)
-RgSchCellCb      *cell;
-RgSchUeCb        *ue;
-CmLteLcId        lcId;
-U8               lcgId;
-#endif
+S16 rgSCHSc1UlLchDel(RgSchCellCb *cell,RgSchUeCb  *ue,CmLteLcId lcId,uint8_t lcgId)
 {
-  RETVALUE (ROK);
+  return  (ROK);
 }
 
 /**
@@ -4081,17 +3330,8 @@ U8               lcgId;
  *  @return  Void
  *
  **/
-#ifdef ANSI
-PUBLIC Void rgSCHSc1UlInit
-(
-RgUlSchdApis *rgSchUlApis
-)
-#else
-PUBLIC Void rgSCHSc1UlInit(rgSchUlApis)
-RgUlSchdApis *rgSchUlApis;
-#endif
+Void rgSCHSc1UlInit(RgUlSchdApis *rgSchUlApis)
 {
-   TRC2(rgSCHSc1UlInit);
    /* Init the function pointers */
    rgSchUlApis->rgSCHRgrUlUeCfg     = rgSCHSc1RgrUlUeCfg;
    rgSchUlApis->rgSCHRgrUlUeRecfg   = rgSCHSc1RgrUlUeRecfg;
@@ -4118,7 +3358,7 @@ RgUlSchdApis *rgSchUlApis;
    rgSchUlApis->rgSCHUlActvtUe      = rgSCHSc1UlActvtUe;
    rgSchUlApis->rgSCHUlUeReset      = rgSCHSc1UlUeReset;
    rgSchUlApis->rgSCHRgrUlLcgUpd    = rgSCHSc1UlLcgUpd;
-   RETVOID;
+   return;
 }
 
 /**
@@ -4139,25 +3379,10 @@ RgUlSchdApis *rgSchUlApis;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHSc1RgrUlUeCfg
-(
-RgSchCellCb  *cell,
-RgSchUeCb    *ue,
-RgrUeCfg     *ueCfg,
-RgSchErrInfo *err
-)
-#else
-PUBLIC S16 rgSCHSc1RgrUlUeCfg(cell, ue, ueCfg, err)
-RgSchCellCb  *cell;
-RgSchUeCb    *ue;
-RgrUeCfg     *ueCfg;
-RgSchErrInfo *err;
-#endif
+S16 rgSCHSc1RgrUlUeCfg(RgSchCellCb  *cell,RgSchUeCb *ue,RgrUeCfg  *ueCfg,RgSchErrInfo *err)
 {
   
    RgSchCmnUe *ueSchCmn = RG_SCH_CMN_GET_UE(ue, cell);
-   TRC2(rgSCHSc1RgrUlUeCfg);
 
    if(rgSCHUtlAllocSBuf(cell->instIdx, 
       (Data**)&(ueSchCmn->ul.schSpfc), (sizeof(RgSchSc1UlUe))) != ROK)
@@ -4165,10 +3390,10 @@ RgSchErrInfo *err;
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
       "Memory allocation FAILED CRNTI:%d",ue->ueId);
       err->errCause = RGSCHERR_SCH_SC1_UL_CFG;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHSc1RgrUlUeCfg */
 
 /**
@@ -4189,24 +3414,9 @@ RgSchErrInfo *err;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHSc1RgrUlUeRecfg
-(
-RgSchCellCb  *cell,
-RgSchUeCb    *ue,
-RgrUeRecfg   *ueRecfg,
-RgSchErrInfo *err
-)
-#else
-PUBLIC S16 rgSCHSc1RgrUlUeRecfg(cell, ue, ueRecfg, err)
-RgSchCellCb  *cell;
-RgSchUeCb    *ue;
-RgrUeRecfg   *ueRecfg;
-RgSchErrInfo *err;
-#endif
+S16 rgSCHSc1RgrUlUeRecfg(RgSchCellCb *cell,RgSchUeCb  *ue,RgrUeRecfg *ueRecfg,RgSchErrInfo *err)
 {
-   TRC2(rgSCHSc1RgrUlUeRecfg);
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHSc1RgrUeRecfg */
 
 /**
@@ -4223,26 +3433,15 @@ RgSchErrInfo *err;
  *  @param[in]  RgSchUeCb    *ue
  *  @return  Void
  **/
-#ifdef ANSI
-PUBLIC Void rgSCHSc1UlUeDel
-(
-RgSchCellCb  *cell,
-RgSchUeCb    *ue
-)
-#else
-PUBLIC Void rgSCHSc1UlUeDel(cell, ue)
-RgSchCellCb  *cell;
-RgSchUeCb    *ue;
-#endif
+Void rgSCHSc1UlUeDel(RgSchCellCb *cell,RgSchUeCb *ue)
 {
    RgSchSc1UlCell *cellUl = RG_GET_SC1_CELL_UL(cell);
    RgSchSc1UlUe   *ueUl   = RG_GET_SC1_UE_UL(ue, cell);
    
-   TRC2(rgSCHSc1UlUeDel);
 
    if (ueUl == NULLP)
    {
-      RETVOID;
+      return;
    }
    if(ueUl->txLnk.node)
    {
@@ -4259,7 +3458,7 @@ RgSchUeCb    *ue;
    rgSCHUtlFreeSBuf(cell->instIdx,
       (Data**)(&(ueUl)), (sizeof(RgSchSc1UlUe)));
 
-   RETVOID;
+   return;
 }  /* rgSCHSc1UlUeDel */
 
 /**
@@ -4275,22 +3474,11 @@ RgSchUeCb    *ue;
  *  @param[in]  RgSchUeCb    *ue
  *  @return  Void
  **/
-#ifdef ANSI
-PUBLIC Void rgSCHSc1UlUeReset 
-(
-RgSchCellCb  *cell,
-RgSchUeCb    *ue
-)
-#else
-PUBLIC Void rgSCHSc1UlUeReset(cell, ue)
-RgSchCellCb  *cell;
-RgSchUeCb    *ue;
-#endif
+Void rgSCHSc1UlUeReset(RgSchCellCb  *cell,RgSchUeCb    *ue)
 {
    RgSchSc1UlCell *cellUl = RG_GET_SC1_CELL_UL(cell);
    RgSchSc1UlUe   *ueUl   = RG_GET_SC1_UE_UL(ue, cell);
    
-   TRC2(rgSCHSc1UlUeReset);
 
    ueUl->srRcvd = FALSE;
 
@@ -4304,7 +3492,7 @@ RgSchUeCb    *ue;
       cmLListDelFrm(&(cellUl->contResLst), &(ueUl->contResLnk));
       ueUl->contResLnk.node = NULLP;
    }
-   RETVOID;
+   return;
 }  /* rgSCHSc1UlUeReset */
 
 
@@ -4326,23 +3514,9 @@ RgSchUeCb    *ue;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHSc1RgrUlCellCfg
-(
-RgSchCellCb   *cell,
-RgrCellCfg    *cellCfg,
-RgSchErrInfo  *err
-)
-#else
-PUBLIC S16 rgSCHSc1RgrUlCellCfg(cell, cellCfg, err)
-RgSchCellCb   *cell;
-RgrCellCfg    *cellCfg;
-RgSchErrInfo  *err;
-#endif
+S16 rgSCHSc1RgrUlCellCfg(RgSchCellCb  *cell,RgrCellCfg  *cellCfg,RgSchErrInfo *err)
 {
    RgSchSc1UlCell     *cellUl; 
-
-   TRC2(rgSCHSc1RgrUlCellCfg);
 
    if((rgSCHUtlAllocSBuf(cell->instIdx, 
       (Data**)&(((RgSchCmnCell*)((cell)->sc.sch))->ul.schSpfc), \
@@ -4351,14 +3525,14 @@ RgSchErrInfo  *err;
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
       "Memory allocation FAILED");
       err->errCause = RGSCHERR_SCH_SC1_UL_CFG;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    cellUl = RG_GET_SC1_CELL_UL(cell);
    cmLListInit(&cellUl->contResLst);
    cmLListInit(&cellUl->ueTxLst[0]);
    cmLListInit(&cellUl->ueTxLst[1]);
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHSc1RgrUlCellCfg */
 
 
@@ -4376,22 +3550,9 @@ RgSchErrInfo  *err;
  *  @return  Void
  *
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHSc1RgrUlCellRecfg
-(
-RgSchCellCb             *cell,
-RgrCellRecfg            *recfg,
-RgSchErrInfo            *err
-)
-#else
-PUBLIC S16 rgSCHSc1RgrUlCellRecfg(cell, recfg, err)
-RgSchCellCb             *cell;
-RgrCellRecfg            *recfg;
-RgSchErrInfo            *err;
-#endif
+S16 rgSCHSc1RgrUlCellRecfg(RgSchCellCb *cell,RgrCellRecfg  *recfg,RgSchErrInfo  *err)
 {
-   TRC2(rgSCHSc1RgrUlCellRecfg);
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -4407,30 +3568,21 @@ RgSchErrInfo            *err;
  *  @param[in]  RgSchCellCb  *cell
  *  @return  Void
  **/
-#ifdef ANSI
-PUBLIC Void rgSCHSc1UlCellDel
-(
-RgSchCellCb  *cell
-)
-#else
-PUBLIC Void rgSCHSc1UlCellDel(cell)
-RgSchCellCb  *cell;
-#endif
+Void rgSCHSc1UlCellDel(RgSchCellCb  *cell)
 {
    RgSchSc1UlCell *cellUl = RG_GET_SC1_CELL_UL(cell);
 
-   TRC2(rgSCHSc1UlCellDel);
 
    if (cellUl == NULLP)
    {
-      RETVOID;
+      return;
    }
    /* ccpu00117052 - MOD - Passing double pointer
    for proper NULLP assignment*/
    rgSCHUtlFreeSBuf(cell->instIdx,
       (Data**)(&(cellUl)), (sizeof(RgSchSc1UlCell)));
 
-   RETVOID;
+   return;
 }  /* rgSCHSc1UlCellDel */
 
 /**
@@ -4453,26 +3605,9 @@ RgSchCellCb  *cell;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHSc1RgrLcgCfg
-(
-RgSchCellCb  *cell,
-RgSchUeCb    *ue,
-RgSchLcgCb   *lcg,
-RgrLcgCfg    *lcgCfg,
-RgSchErrInfo *err
-)
-#else
-PUBLIC S16 rgSCHSc1RgrLcgCfg(cell, ue, lcg, lcgCfg, err)
-RgSchCellCb  *cell;
-RgSchUeCb    *ue;
-RgSchLcgCb   *lcg;
-RgrLcgCfg    *lcgCfg;
-RgSchErrInfo *err;
-#endif
+S16 rgSCHSc1RgrLcgCfg(RgSchCellCb *cell,RgSchUeCb *ue,RgSchLcgCb *lcg,RgrLcgCfg *lcgCfg,RgSchErrInfo *err)
 {
-   TRC2(rgSCHSc1RgrLcgCfg);
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHSc1RgrLcgCfg */
 
 /**
@@ -4497,26 +3632,9 @@ RgSchErrInfo *err;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHSc1RgrLcgRecfg
-(
-RgSchCellCb  *cell,
-RgSchUeCb    *ue,
-RgSchLcgCb   *lcg,
-RgrLcgRecfg  *reCfg,
-RgSchErrInfo *err
-)
-#else
-PUBLIC S16 rgSCHSc1RgrLcgRecfg(cell, ue, lcg, reCfg, err)
-RgSchCellCb  *cell;
-RgSchUeCb    *ue;
-RgSchLcgCb   *lcg;
-RgrLcgRecfg  *reCfg;
-RgSchErrInfo *err;
-#endif
+S16 rgSCHSc1RgrLcgRecfg(RgSchCellCb *cell,RgSchUeCb *ue,RgSchLcgCb *lcg,RgrLcgRecfg *reCfg,RgSchErrInfo *err)
 {
-   TRC2(rgSCHSc1RgrLcgRecfg);
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHSc1RgrLcgRecfg */
 
 /***********************************************************
@@ -4533,23 +3651,10 @@ RgSchErrInfo *err;
  *     File : 
  *
  **********************************************************/
-#ifdef ANSI
-PUBLIC Void rgSCHSc1LcgDel
-(
-RgSchCellCb   *cell,
-RgSchUeCb     *ue,
-RgSchLcgCb    *lcg
-)
-#else
-PUBLIC Void rgSCHSc1LcgDel(cell, ue, lcg)
-RgSchCellCb   *cell;
-RgSchUeCb     *ue;
-RgSchLcgCb    *lcg;
-#endif
+Void rgSCHSc1LcgDel(RgSchCellCb *cell,RgSchUeCb *ue,RgSchLcgCb *lcg)
 {
-   TRC2(rgSCHSc1LcgDel);
    rgSCHSc1UlPosnUeInQ(cell, ue);
-   RETVOID;
+   return;
 }
 
 /**
@@ -4569,34 +3674,23 @@ RgSchLcgCb    *lcg;
  *  @param[in]  RgSchUeCb        *ue
  *  @return  Void
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1UlSchdUe
-(
-RgSchUeCb         *ue,
-RgSchCellCb       *cell
-)
-#else
-PRIVATE Void rgSCHSc1UlSchdUe(ue,cell)
-RgSchUeCb         *ue;
-RgSchCellCb       *cell;
-#endif
+static Void rgSCHSc1UlSchdUe(RgSchUeCb *ue,RgSchCellCb *cell)
 {
    RgSchCmnUlUe      *cmnUlUe = RG_SCH_CMN_GET_UL_UE(ue, cell);
                                 /*cell added as part of CA dev*/
    RgSchSc1UlUe      *ulUe    = RG_GET_SC1_UE_UL(ue, cell);
 
-   TRC2(rgSCHSc1UlSchdUe);
 
    if(ulUe->srRcvd == TRUE)
    {
       cmnUlUe->alloc.reqBytes = RGSCH_MAX(RG_SCH_CMN_UL_SR_BYTES, \
                                 ue->ul.effBsr);
-      RETVOID;
+      return;
    }
 
    cmnUlUe->alloc.reqBytes = ue->ul.effBsr;
 
-   RETVOID;
+   return;
 }
 
 /**
@@ -4612,42 +3706,28 @@ RgSchCellCb       *cell;
  *     
  *  @param[in]  RgSchCellCb           *cell
  *  @param[out] RgSchCmnUlRbAllocInfo *allocInfo 
- *  @param[in] U8                     remUe 
+ *  @param[in] uint8_t                     remUe 
  *  @return Void 
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1UlSchdForDataTrans
-(
-RgSchCellCb           *cell,
-RgSchCmnUlRbAllocInfo *allocInfo,
-U8                    remUe
-)
-#else
-PRIVATE Void rgSCHSc1UlSchdForDataTrans(cell, allocInfo, remUe)
-RgSchCellCb           *cell;
-RgSchCmnUlRbAllocInfo *allocInfo;
-U8                    remUe;
-#endif
+static Void rgSCHSc1UlSchdForDataTrans(RgSchCellCb  *cell,RgSchCmnUlRbAllocInfo *allocInfo,uint8_t remUe)
 {
    RgSchSc1UlCell    *sc1UlCell  = RG_GET_SC1_CELL_UL(cell);
 
-   TRC2(rgSCHSc1UlSchdForDataTrans);
-
    if (remUe == 0)
    {
-      RETVOID;
+      return;
    }
    /* Allocate UEs with LCG0 data pending */
    rgSCHSc1UlSchdUeTxLst(cell, &sc1UlCell->ueTxLst[0], allocInfo, &remUe);
 
    if (remUe == 0)
    {
-      RETVOID;
+      return;
    }
    /* Allocate UEs with other LCGs data pending */
    rgSCHSc1UlSchdUeTxLst(cell, &sc1UlCell->ueTxLst[1], allocInfo, &remUe);
 
-   RETVOID;
+   return;
 }
 
 /**
@@ -4663,32 +3743,17 @@ U8                    remUe;
  *     
  *  @param[in]  CmLListCp             *ueTxLst
  *  @param[out] RgSchCmnUlRbAllocInfo *allocInfo 
- *  @param[in] U8                     *remUe 
+ *  @param[in] uint8_t                     *remUe 
  *  @return Void 
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1UlSchdUeTxLst
-(
-RgSchCellCb           *cell,
-CmLListCp             *ueTxLst,
-RgSchCmnUlRbAllocInfo *allocInfo,
-U8                    *remUe
-)
-#else
-PRIVATE Void rgSCHSc1UlSchdUeTxLst(cell, ueTxLst, allocInfo, remUe)
-RgSchCellCb           *cell;
-CmLListCp             *ueTxLst;
-RgSchCmnUlRbAllocInfo *allocInfo;
-U8                    *remUe;
-#endif
+static Void rgSCHSc1UlSchdUeTxLst(RgSchCellCb *cell,CmLListCp *ueTxLst,RgSchCmnUlRbAllocInfo *allocInfo,uint8_t *remUe)
 {
-   RgSchUeCb         *ue;
-   CmLList           *node;
+   RgSchUeCb *ue;
+   CmLList   *node;
 #ifdef LTEMAC_HDFDD
-   Bool              ulAllowed = FALSE;
+   Bool      ulAllowed = FALSE;
 #endif
 
-   TRC2(rgSCHSc1UlSchdUeTxLst);
 
    node = ueTxLst->first;
    while ((node) && (*remUe))
@@ -4728,7 +3793,7 @@ U8                    *remUe;
       --(*remUe);
    }
 
-   RETVOID;
+   return;
 }
 
 /**
@@ -4744,22 +3809,10 @@ U8                    *remUe;
  *     
  *  @param[in]  RgSchCellCb           *cell
  *  @param[out] RgSchCmnUlRbAllocInfo *allocInfo 
- *  @param[out] U8                    *remUe 
+ *  @param[out] uint8_t                    *remUe 
  *  @return Void 
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1UlSchdForContRes
-(
-RgSchCellCb           *cell,
-RgSchCmnUlRbAllocInfo *allocInfo,
-U8                    *remUe
-)
-#else
-PRIVATE Void rgSCHSc1UlSchdForContRes(cell, allocInfo, remUe)
-RgSchCellCb           *cell;
-RgSchCmnUlRbAllocInfo *allocInfo;
-U8                    *remUe;
-#endif
+static Void rgSCHSc1UlSchdForContRes(RgSchCellCb  *cell,RgSchCmnUlRbAllocInfo *allocInfo,uint8_t *remUe)
 {
    RgSchSc1UlCell    *sc1UlCell  = RG_GET_SC1_CELL_UL(cell);
    RgSchUeCb         *ue;
@@ -4769,7 +3822,6 @@ U8                    *remUe;
    Bool                 ulAllowed = FALSE;
 #endif
 
-   TRC2(rgSCHSc1UlSchdForContRes);
 
    node = sc1UlCell->contResLst.first;
    while ((node) && (*remUe))
@@ -4800,7 +3852,7 @@ U8                    *remUe;
       /* Node removal deferred to ULAllocFinalization */
    }
 
-   RETVOID;
+   return;
 }
 
 /**
@@ -4818,26 +3870,15 @@ U8                    *remUe;
  *  @param[out] RgSchCmnUlRbAllocInfo *allocInfo 
  *  @return Void 
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1UlNewTx
-(
-RgSchCellCb           *cell,
-RgSchCmnUlRbAllocInfo *allocInfo
-)
-#else
-PRIVATE Void rgSCHSc1UlNewTx(cell, allocInfo)
-RgSchCellCb           *cell;
-RgSchCmnUlRbAllocInfo *allocInfo;
-#endif
+static Void rgSCHSc1UlNewTx(RgSchCellCb *cell,RgSchCmnUlRbAllocInfo *allocInfo)
 {
    RgSchCmnUlCell  *cellUl = RG_SCH_CMN_GET_UL_CELL(cell);
-   U8               remUe = cellUl->maxUeNewTxPerTti;
+   uint8_t               remUe = cellUl->maxUeNewTxPerTti;
 
-   TRC2(rgSCHSc1UlNewTx);
 
    rgSCHSc1UlSchdForContRes(cell, allocInfo, &remUe);
    rgSCHSc1UlSchdForDataTrans(cell, allocInfo, remUe);
-   RETVOID;
+   return;
 }
 
 /**
@@ -4856,21 +3897,10 @@ RgSchCmnUlRbAllocInfo *allocInfo;
  *  @param[out] RgSchCmnUlRbAllocInfo *allocInfo 
  *  @return Void 
  **/
-#ifdef ANSI
-PUBLIC Void rgSCHSc1UlSched 
-(
-RgSchCellCb           *cell,
-RgSchCmnUlRbAllocInfo *allocInfo
-)
-#else
-PUBLIC Void rgSCHSc1UlSched(cell, allocInfo)
-RgSchCellCb           *cell;
-RgSchCmnUlRbAllocInfo *allocInfo;
-#endif
+Void rgSCHSc1UlSched(RgSchCellCb *cell,RgSchCmnUlRbAllocInfo *allocInfo)
 {
-   TRC2(rgSCHSc1UlSched);
    rgSCHSc1UlNewTx(cell, allocInfo);
-   RETVOID;
+   return;
 }
 
 /**
@@ -4887,26 +3917,13 @@ RgSchCmnUlRbAllocInfo *allocInfo;
  *  @param[in]  RgSchUeCb    *ue
  *  @return  Void 
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1UlInsUeInQ 
-(
-CmLListCp           *lst,
-RgSchUeCb           *ue,
-RgSchCellCb         *cell
-)
-#else
-PRIVATE Void rgSCHSc1UlInsUeInQ(lst, ue, cell)
-CmLListCp           *lst;
-RgSchUeCb           *ue;
-RgSchCellCb         *cell;
-#endif
+static Void rgSCHSc1UlInsUeInQ(CmLListCp *lst,RgSchUeCb *ue,RgSchCellCb *cell)
 {
                               /*cell added as part of CA dev*/
    RgSchSc1UlUe    *ueUl    = RG_GET_SC1_UE_UL(ue, cell);
    RgSchUeCb       *lUe;
    CmLList         *node;
 
-   TRC2(rgSCHSc1UlInsUeInQ);
 
    node = lst->first;
    while(node)
@@ -4931,7 +3948,7 @@ RgSchCellCb         *cell;
       ueUl->txLnk.node = (PTR)ue;
    }
 
-   RETVOID;
+   return;
 }
 /**
  * @brief UEs Buffer Status Has changed so reposition it. 
@@ -4958,17 +3975,7 @@ RgSchCellCb         *cell;
  *  @param[in]  RgSchUeCb    *ue
  *  @return  Void 
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1UlPosnUeInQ 
-(
-RgSchCellCb         *cell,
-RgSchUeCb           *ue
-)
-#else
-PRIVATE Void rgSCHSc1UlPosnUeInQ(cell, ue)
-RgSchCellCb         *cell;
-RgSchUeCb           *ue;
-#endif
+static Void rgSCHSc1UlPosnUeInQ(RgSchCellCb *cell,RgSchUeCb *ue)
 {
    RgSchSc1UlUe    *ueUl   = RG_GET_SC1_UE_UL(ue, cell);
                               /*cell added as part of CA dev*/
@@ -4976,11 +3983,10 @@ RgSchUeCb           *ue;
    RgSchCmnLcg     *cmnLcg0 = RG_SCH_CMN_GET_UL_LCG(&ue->ul.lcgArr[0]);
    CmLListCp       *lst;
 
-   TRC2(rgSCHSc1UlPosnUeInQ);
 
    if (!RG_SCH_CMN_UL_IS_UE_ACTIVE(ue))
    {
-      RETVOID;
+      return;
    }
                      
    /* Remove the UE from its existing position */
@@ -5022,7 +4028,7 @@ RgSchUeCb           *ue;
    }
 #endif
 
-   RETVOID;
+   return;
 }
 
 /**
@@ -5037,28 +4043,13 @@ RgSchUeCb           *ue;
  *  @param[in]  RgSchCellCb  *cell
  *  @param[in]  RgSchUeCb    *ue
  *  @param[in]  RgSchLcgCb   *lcg
- *  @param[in]  U8           bsr
+ *  @param[in]  uint8_t           bsr
  *  @return  Void
  **/
-#ifdef ANSI
-PUBLIC Void rgSCHSc1UpdBsrShort
-(
-RgSchCellCb  *cell,
-RgSchUeCb    *ue,
-RgSchLcgCb   *lcg,
-U8           bsr
-)
-#else
-PUBLIC Void rgSCHSc1UpdBsrShort(cell, ue, lcg, bsr)
-RgSchCellCb  *cell;
-RgSchUeCb    *ue;
-RgSchLcgCb   *lcg;
-U8           bsr;
-#endif
+Void rgSCHSc1UpdBsrShort(RgSchCellCb  *cell,RgSchUeCb    *ue,RgSchLcgCb   *lcg,uint8_t  bsr)
 {
-   TRC2(rgSCHSc1UpdBsrShort);
    rgSCHSc1UlPosnUeInQ(cell, ue);
-   RETVOID;
+   return;
 }  /* rgSCHSc1UpdBsrShort */
 
 /**
@@ -5074,28 +4065,13 @@ U8           bsr;
  *  @param[in]  RgSchCellCb  *cell
  *  @param[in]  RgSchUeCb    *ue
  *  @param[in]  RgSchLcgCb   *lcg
- *  @param[in]  U8           bsr
+ *  @param[in]  uint8_t           bsr
  *  @return  Void 
  **/
-#ifdef ANSI
-PUBLIC Void rgSCHSc1UpdBsrTrunc
-(
-RgSchCellCb  *cell,
-RgSchUeCb    *ue,
-RgSchLcgCb   *lcg,
-U8           bsr
-)
-#else
-PUBLIC Void rgSCHSc1UpdBsrTrunc(cell, ue, lcg, bsr)
-RgSchCellCb  *cell;
-RgSchUeCb    *ue;
-RgSchLcgCb   *lcg;
-U8           bsr;
-#endif
+Void rgSCHSc1UpdBsrTrunc(RgSchCellCb  *cell,RgSchUeCb    *ue,RgSchLcgCb   *lcg,uint8_t bsr)
 {
-   TRC2(rgSCHSc1UpdBsrTrunc);
    rgSCHSc1UlPosnUeInQ(cell, ue);
-   RETVOID;
+   return;
 }  /* rgSCHSc1UpdBsrTrunc */
 
 /**
@@ -5110,26 +4086,13 @@ U8           bsr;
  *
  *  @param[in]  RgSchCellCb  *cell
  *  @param[in]  RgSchUeCb    *ue
- *  @param[in]  U8 bsArr[]
+ *  @param[in]  uint8_t bsArr[]
  *  @return  Void 
  **/
-#ifdef ANSI
-PUBLIC Void rgSCHSc1UpdBsrLong
-(
-RgSchCellCb  *cell,
-RgSchUeCb    *ue,
-U8           *bsArr
-)
-#else
-PUBLIC Void rgSCHSc1UpdBsrLong(cell, ue, bsArr)
-RgSchCellCb  *cell;
-RgSchUeCb    *ue;
-U8           *bsArr;
-#endif
+Void rgSCHSc1UpdBsrLong(RgSchCellCb  *cell,RgSchUeCb *ue,uint8_t *bsArr)
 {
-   TRC2(rgSCHSc1UpdBsrLong);
    rgSCHSc1UlPosnUeInQ(cell, ue);
-   RETVOID;
+   return;
 }  /* rgSCHSc1UpdBsrLong */
 
 /**
@@ -5147,26 +4110,15 @@ U8           *bsArr;
  *  @param[in]  RgSchUeCb    *ue
  *  @return Void 
  **/
-#ifdef ANSI
-PUBLIC Void rgSCHSc1ContResUlGrant
-(
-RgSchCellCb  *cell,
-RgSchUeCb    *ue
-)
-#else
-PUBLIC Void rgSCHSc1ContResUlGrant(cell, ue)
-RgSchCellCb  *cell;
-RgSchUeCb    *ue;
-#endif
+Void rgSCHSc1ContResUlGrant(RgSchCellCb  *cell,RgSchUeCb *ue)
 {
    RgSchSc1UlUe    *ueUl   = RG_GET_SC1_UE_UL(ue, cell);
    RgSchSc1UlCell  *cellUl = RG_GET_SC1_CELL_UL(cell);
 
-   TRC2(rgSCHSc1ContResUlGrant);
 
    if (ueUl->contResLnk.node)
    {
-      RETVOID;
+      return;
    }
 
    /* Remove the UE from other Qs */
@@ -5178,7 +4130,7 @@ RgSchUeCb    *ue;
 
    cmLListAdd2Tail(&cellUl->contResLst, &ueUl->contResLnk);
    ueUl->contResLnk.node = (PTR)ue;
-   RETVOID;
+   return;
 }  /* rgSCHSc1ContResUlGrant */
 
 /**
@@ -5194,22 +4146,11 @@ RgSchUeCb    *ue;
  *  @param[in]  RgSchUeCb    *ue
  *  @return  Void
  **/
-#ifdef ANSI
-PUBLIC Void rgSCHSc1SrRcvd
-(
-RgSchCellCb  *cell,
-RgSchUeCb    *ue
-)
-#else
-PUBLIC Void rgSCHSc1SrRcvd(cell, ue)
-RgSchCellCb  *cell;
-RgSchUeCb    *ue;
-#endif
+Void rgSCHSc1SrRcvd(RgSchCellCb *cell,RgSchUeCb *ue)
 {
    RgSchSc1UlUe    *ulUe    = RG_GET_SC1_UE_UL(ue, cell);
    RgSchSc1UlCell  *ulCell  = RG_GET_SC1_CELL_UL(cell);
 
-   TRC2(rgSCHSc1SrRcvd);
 
    ulUe->srRcvd = TRUE;
 
@@ -5218,7 +4159,7 @@ RgSchUeCb    *ue;
       if (ulUe->qId == 0)
       {
          /* Already present in lcg0 Q */
-         RETVOID;
+         return;
       }
       cmLListDelFrm(&(ulCell->ueTxLst[ulUe->qId]), &(ulUe->txLnk));
    }
@@ -5227,7 +4168,7 @@ RgSchUeCb    *ue;
    ulUe->txLnk.node = (PTR)ue;
    ulUe->qId = 0;
 
-   RETVOID;
+   return;
 }  /* rgSCHSc1SrRcvd */
 
 /**
@@ -5244,24 +4185,11 @@ RgSchUeCb    *ue;
  *  @param[in]  TfuUlCqiRpt         *ulCqiInfo
  *  @return  Void
  **/
-#ifdef ANSI
-PUBLIC Void rgSCHSc1UlCqiInd
-(
-RgSchCellCb          *cell,
-RgSchUeCb            *ue,
-TfuUlCqiRpt          *ulCqiInfo
-)
-#else
-PUBLIC Void rgSCHSc1UlCqiInd(cell, ue, ulCqiInfo)
-RgSchCellCb          *cell;
-RgSchUeCb            *ue;
-TfuUlCqiRpt          *ulCqiInfo;
-#endif
+Void rgSCHSc1UlCqiInd(RgSchCellCb *cell,RgSchUeCb *ue,TfuUlCqiRpt *ulCqiInfo)
 {
-   TRC2(rgSCHSc1UlCqiInd);
 
   /* Stack Crash problem for TRACE5 changes. Added the return below */
-  RETVOID;
+  return;
 
 }
 
@@ -5279,24 +4207,10 @@ TfuUlCqiRpt          *ulCqiInfo;
  *  @param[in]  RgInfUeDatInd      *datInd
  *  @return  S16
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHSc1UlLcgUpd
-(
-RgSchCellCb         *cell,
-RgSchUeCb           *ue,
-RgInfUeDatInd       *datInd
-)
-#else
-PUBLIC S16 rgSCHSc1UlLcgUpd(cell, ue)
-RgSchCellCb         *cell;
-RgSchUeCb           *ue;
-RgInfUeDatInd       *datInd;
-#endif
+S16 rgSCHSc1UlLcgUpd(RgSchCellCb *cell,RgSchUeCb *ue,RgInfUeDatInd  *datInd)
 {
 
-   TRC2(rgSCHSc1UlLcgUpd);
-
-   RETVALUE(ROK);  
+   return ROK;  
 }
 
 
@@ -5315,21 +4229,10 @@ RgInfUeDatInd       *datInd;
  *     File : 
  *
  **********************************************************/
-#ifdef ANSI
-PUBLIC Void rgSCHSc1UlUeRefresh
-(
-RgSchCellCb    *cell,
-RgSchUeCb      *ue
-)
-#else
-PUBLIC Void rgSCHSc1UlUeRefresh(cell, ue)
-RgSchCellCb    *cell;
-RgSchUeCb      *ue;
-#endif
+Void rgSCHSc1UlUeRefresh(RgSchCellCb *cell,RgSchUeCb  *ue)
 {
-   TRC2(rgSCHSc1UlUeRefresh);
    rgSCHSc1UlPosnUeInQ(cell, ue);
-   RETVOID;
+   return;
 }
 
 /**
@@ -5351,24 +4254,13 @@ RgSchUeCb      *ue;
  *  @return  Void
  *
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1UlDatTransAllocFnlz
-(
-RgSchCellCb           *cell,
-RgSchCmnUlRbAllocInfo *allocInfo
-)
-#else
-PRIVATE Void rgSCHSc1UlDatTransAllocFnlz(cell, allocInfo)
-RgSchCellCb           *cell;
-RgSchCmnUlRbAllocInfo *allocInfo;
-#endif
+static Void rgSCHSc1UlDatTransAllocFnlz(RgSchCellCb  *cell,RgSchCmnUlRbAllocInfo *allocInfo)
 {
-   RgSchSc1UlUe         *ueUl;
+   RgSchSc1UlUe      *ueUl;
    RgSchUeCb         *ue;
    CmLList           *node;
    RgSchDrxUeCb      *drxUe    = NULLP;
    CmLListCp         ulInactvLst; /* list of UE's becoming UL-inactive */
-   TRC2(rgSCHSc1UlDatTransAllocFnlz);
 
    cmLListInit(&ulInactvLst);
    node = allocInfo->schdUeLst.first;
@@ -5418,7 +4310,7 @@ RgSchCmnUlRbAllocInfo *allocInfo;
       rgSCHCmnUlUeResetTemp(cell, ue);
    }
 
-   RETVOID;
+   return;
 }
 
 /**
@@ -5440,23 +4332,12 @@ RgSchCmnUlRbAllocInfo *allocInfo;
  *  @return  Void
  *
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHSc1UlContResAllocFnlz
-(
-RgSchCellCb           *cell,
-RgSchCmnUlRbAllocInfo *allocInfo
-)
-#else
-PRIVATE Void rgSCHSc1UlContResAllocFnlz(cell, allocInfo)
-RgSchCellCb           *cell;
-RgSchCmnUlRbAllocInfo *allocInfo;
-#endif
+static Void rgSCHSc1UlContResAllocFnlz(RgSchCellCb *cell,RgSchCmnUlRbAllocInfo *allocInfo)
 {
    RgSchSc1UlCell    *sc1UlCell  = RG_GET_SC1_CELL_UL(cell);
    RgSchSc1UlUe      *ueUl;
    RgSchUeCb         *ue;
    CmLList           *node;
-   TRC2(rgSCHSc1UlContResAllocFnlz);
 
    node = allocInfo->schdContResLst.first;
    while(node)
@@ -5488,7 +4369,7 @@ RgSchCmnUlRbAllocInfo *allocInfo;
       rgSCHCmnUlUeResetTemp(cell, ue);
    }
 
-   RETVOID;
+   return;
 }
 
 /**
@@ -5508,24 +4389,13 @@ RgSchCmnUlRbAllocInfo *allocInfo;
  *  @return  Void
  *
  **/
-#ifdef ANSI
-PUBLIC Void rgSCHSc1UlAllocFnlz
-(
-RgSchCellCb           *cell,
-RgSchCmnUlRbAllocInfo *allocInfo
-)
-#else
-PUBLIC Void rgSCHSc1UlAllocFnlz(cell, allocInfo)
-RgSchCellCb           *cell;
-RgSchCmnUlRbAllocInfo *allocInfo;
-#endif
+Void rgSCHSc1UlAllocFnlz(RgSchCellCb *cell,RgSchCmnUlRbAllocInfo *allocInfo)
 {
-   TRC2(rgSCHSc1UlAllocFnlz);
 
    rgSCHSc1UlContResAllocFnlz(cell, allocInfo);
    rgSCHSc1UlDatTransAllocFnlz(cell, allocInfo);
 
-   RETVOID;
+   return;
 }
 
 
@@ -5543,22 +4413,11 @@ RgSchCmnUlRbAllocInfo *allocInfo;
  *  @param[in]  RgSchUeCb   *ue
  *  @return  Void
  **/
-#ifdef ANSI
-PUBLIC Void rgSCHSc1UlActvtUe 
-(
-RgSchCellCb    *cell,
-RgSchUeCb      *ue
-)
-#else
-PUBLIC Void rgSCHSc1UlActvtUe(cell, ue)
-RgSchCellCb    *cell;
-RgSchUeCb      *ue;
-#endif
+Void rgSCHSc1UlActvtUe(RgSchCellCb *cell,RgSchUeCb *ue)
 {
-   TRC2(rgSCHSc1UlActvtUe);
 
    rgSCHSc1UlPosnUeInQ(cell, ue);
-   RETVOID;
+   return;
 }
 
 /**
@@ -5580,24 +4439,12 @@ RgSchUeCb      *ue;
  *  @param[out] CmLListCp   *inactvLst
  *  @return  Void
  **/
-#ifdef ANSI
-PUBLIC Void rgSCHSc1UlHndlInActUes
-(
-RgSchCellCb           *cell,
-CmLListCp             *inactvLst
-)
-#else
-PUBLIC Void rgSCHSc1UlHndlInActUes(cell, inactvLst)
-RgSchCellCb           *cell;
-CmLListCp             *inactvLst;
-#endif
+Void rgSCHSc1UlHndlInActUes(RgSchCellCb *cell,CmLListCp  *inactvLst)
 {
-   RgSchUeCb    *ue;
-   RgSchSc1UlUe    *ulUe;
-   RgSchSc1UlCell  *cellUl  = RG_GET_SC1_CELL_UL(cell);
-   CmLList      *node = inactvLst->first;
-
-   TRC2(rgSCHSc1UlHndlInActUes);
+   RgSchUeCb      *ue;
+   RgSchSc1UlUe   *ulUe;
+   RgSchSc1UlCell *cellUl  = RG_GET_SC1_CELL_UL(cell);
+   CmLList        *node = inactvLst->first;
 
    while (node)
    {
@@ -5614,7 +4461,7 @@ CmLListCp             *inactvLst;
       }
       /* Do not remove UE from contResLst */
    }
-   RETVOID;
+   return;
 }
 /**
  * @brief Scheduler invocation
@@ -5633,25 +4480,18 @@ CmLListCp             *inactvLst;
  *  @return  Void
  **/
 
-#ifdef ANSI
-PUBLIC Void rgSCHSc1DlProcRmvFrmRetx(
+Void rgSCHSc1DlProcRmvFrmRetx(
 RgSchCellCb                *cell,
 RgSchUeCb                  *ue,
 RgSchDlHqProcCb            *hqP
 )
-#else
-PUBLIC Void rgSCHSc1DlProcRmvFrmRetx(cell, ue, hqP)
-RgSchCellCb                *cell;
-RgSchUeCb                  *ue;
-RgSchDlHqProcCb            *hqP;
-#endif
 {
-   TRC2(rgSCHSc1DlProcRmvFrmRetx);
+  
    /* Remove the HqP from retx Queue.
    Release HqP.*/
    rgSCHSc1DlProcRmvFrmCellRetx(cell, hqP);
    rgSCHSc1DlProcRmvFrmUeRetx(cell, ue, hqP);
-   RETVOID;
+   return;
 }
 
 

@@ -82,20 +82,8 @@ static int RLOG_MODULE_ID=4096;
  *     File :
  *
  **********************************************************/
-#ifdef ANSI
-PUBLIC Void rgRAMFreeUeCb
-(
-Inst        inst,
-RgUeCb      *ue
-)
-#else
-PUBLIC Void rgRAMFreeUeCb(inst,ue)
-Inst        inst;
-RgUeCb      *ue;
-#endif
+Void rgRAMFreeUeCb(Inst  inst,RgUeCb *ue)
 {
-   TRC2(rgRAMFreeUeCb);
-
    rgDHMFreeUe(inst,&ue->dl.hqEnt);
 
    /*ccpu00117052 - MOD - Passing double pointer for proper NULLP 
@@ -104,7 +92,7 @@ RgUeCb      *ue;
    rgFreeSBuf(inst,(Data **)&ue, sizeof(*ue));
 
    /* Stack Crash problem for TRACE5 changes. Added the return below */
-   RETVOID;
+   return;
 
 }  /* rgRAMFreeUeCb */
 
@@ -122,26 +110,10 @@ RgUeCb      *ue;
  *  @param[out]      RgErrInfo      *err
  *  @return  RgUeCb*
  **/
-#ifdef ANSI
-PUBLIC RgUeCb* rgRAMCreateUeCb
-(
-RgCellCb       *cell,
-CmLteRnti      tmpCrnti,
-Bool           insert,
-RgErrInfo      *err
-)
-#else
-PUBLIC RgUeCb* rgRAMCreateUeCb(cell, tmpCrnti, insert, err)
-RgCellCb       *cell;
-CmLteRnti      tmpCrnti;
-Bool           insert;
-RgErrInfo      *err;
-#endif
+RgUeCb* rgRAMCreateUeCb(RgCellCb *cell,CmLteRnti  tmpCrnti,Bool insert,RgErrInfo *err)
 {
    Inst       inst = cell->macInst - RG_INST_START;
    RgUeCb    *ueCb = NULLP;
-
-   TRC2(rgRAMCreateUeCb)
 
    RLOG_ARG1(L_INFO,DBG_CELLID,cell->cellId,"CREATE UECB FOR CRNTI:%d",
              tmpCrnti);
@@ -151,7 +123,7 @@ RgErrInfo      *err;
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
                 "Memory allocation FAILED for CRNTI:%d",tmpCrnti);
       err->errCause = RGERR_RAM_MEM_EXHAUST;
-      RETVALUE(NULLP);
+      return (NULLP);
    }
 
    /* Inititialize Ue control block */
@@ -178,7 +150,7 @@ RgErrInfo      *err;
       rgDBMInsUeCbInRachLst(cell, ueCb);
    }
 
-   RETVALUE(ueCb);
+   return (ueCb);
 }  /* rgRAMCreateUeCb */
 
 /**
@@ -196,20 +168,10 @@ RgErrInfo      *err;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
-PUBLIC S16 rgRAMFreeCell
-(
-RgCellCb    *cell
-)
-#else
-PUBLIC S16 rgRAMFreeCell(cell)
-RgCellCb    *cell;
-#endif
+S16 rgRAMFreeCell(RgCellCb *cell)
 {
    Inst    inst = cell->macInst - RG_INST_START;
    RgUeCb  *ueCb;
-
-   TRC2(rgRAMFreeCell);
 
    /* Free CURRENT CRG cfg list */
    while ((ueCb = rgDBMGetNextUeCbFromRachLst(cell, NULLP)) != NULLP)
@@ -218,7 +180,7 @@ RgCellCb    *cell;
       rgRAMFreeUeCb(inst,ueCb);
    }
 
-   RETVALUE(ROK); 
+   return ROK; 
 } /* rgRAMFreeCell */
 /**
  * @brief Function for handling RA response scheduled for a subframe.
@@ -243,32 +205,16 @@ RgCellCb    *cell;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
-PUBLIC S16 rgHndlRaResp
-(
-RgCellCb            *cell,
-CmLteTimingInfo     timingInfo,
-RgInfRarInfo        *rarInfo,
-RgErrInfo           *err
-)
-#else
-PUBLIC S16 rgHndlRaResp(cell, timingInfo, rarInfo, err)
-RgCellCb            *cell;
-CmLteTimingInfo     timingInfo;
-RgInfRarInfo        *rarInfo;
-RgErrInfo           *err;
-#endif
+S16 rgHndlRaResp(RgCellCb *cell,CmLteTimingInfo timingInfo,RgInfRarInfo *rarInfo,RgErrInfo *err)
 {
-   U8       idx1,idx2;
+   uint8_t  idx1,idx2;
    Buffer   *rarPdu;
    RgDlSf   *dlSf;
-   U8       idx;
-
-   TRC2(rgHndlRaResp)
+   uint8_t  idx;
 
    if(NULLP == rarInfo->raRntiInfo)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    idx = (timingInfo.slot % RG_NUM_SUB_FRAMES);
@@ -289,7 +235,7 @@ RgErrInfo           *err;
                   rarInfo->raRntiInfo[idx1].crntiInfo[idx2].tmpCrnti, 
                   TRUE, err) == NULLP)
                {
-                  RETVALUE(RFAILED);
+                  return RFAILED;
                }
             }
          }
@@ -314,7 +260,7 @@ RgErrInfo           *err;
          continue;
       }
    } /* end of raRntis loop */
-   RETVALUE(ROK);
+   return ROK;
 } /* end of rgHndlRaResp */
 
 /**********************************************************************

@@ -73,20 +73,12 @@ registered with SSI during the LTE MAC Task initialization.
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 schActvTsk
+S16 schActvTsk
 (
 Pst     *pst,                       /* post structure       */
 Buffer  *mBuf                       /* message buffer       */
 )
-#else
-PUBLIC S16 schActvTsk(pst, mBuf)
-Pst     *pst;                       /* post structure       */
-Buffer  *mBuf;                      /* message buffer       */
-#endif
 {
-   TRC2(schActvTsk)
-
    switch(pst->srcEnt)
    {
       /* The originator of this message is the stack manager,
@@ -160,61 +152,7 @@ Buffer  *mBuf;                      /* message buffer       */
                break;
          }
          break;
-      case ENTTF:
-         switch(pst->event)
-         {
-/*#ifdef LCRGLITFU L2Split */
-#if (defined(LCRGLITFU) || defined(LWLCRGLITFU)) 
-            case EVTTFUSCHBNDCFM:
-               cmUnpkTfuBndCfm(RgLiTfuSchBndCfm, pst, mBuf);
-               break;
-            case EVTTFURAREQIND:
-               cmUnpkTfuRaReqInd(RgLiTfuRaReqInd, pst, mBuf);
-               break;
-            case EVTTFUULCQIIND:
-               cmUnpkTfuUlCqiInd(RgLiTfuUlCqiInd, pst, mBuf);
-               break;
-            case EVTTFUHQIND:
-               cmUnpkTfuHqInd(RgLiTfuHqInd, pst, mBuf);
-               break;
-            case EVTTFUSRIND:
-               cmUnpkTfuSrInd(RgLiTfuSrInd, pst, mBuf);
-               break;
-            case EVTTFUDLCQIIND:
-               cmUnpkTfuDlCqiInd(RgLiTfuDlCqiInd, pst, mBuf);
-               break;
-            case EVTTFUCRCIND:
-               /*cmUnpkTfuCrcIndInfo(RgLiTfuCrcInd, pst, mBuf); */
-               cmUnpkTfuCrcInd(RgLiTfuCrcInd, pst, mBuf);
-               break;
-            case EVTTFUTIMINGADVIND:
-               cmUnpkTfuTimingAdvInd(RgLiTfuTimingAdvInd, pst, mBuf);
-               break;
-            case EVTTFUPUCCHDELPWR:
-               cmUnpkTfuPucchDeltaPwr(RgLiTfuPucchDeltaPwrInd, pst, mBuf);
-               break;
-            case EVTTFUDOAIND:
-               cmUnpkTfuDoaInd(RgLiTfuDoaInd, pst, mBuf);
-               break;
-#ifdef TFU_UPGRADE
-            case EVTTFURAWCQIIND:
-               cmUnpkTfuRawCqiInd(RgLiTfuRawCqiInd, pst, mBuf);
-               break;
-            case EVTTFUSRSIND:
-               cmUnpkTfuSrsInd(RgLiTfuSrsInd, pst, mBuf);
-               break;
-#endif 
-               /*LAA: Error Indication on SCell*/
-            case EVTTFUERRIND:
-               cmUnpkTfuErrInd(RgLiTfuErrInd, pst, mBuf);
-               break;
-#endif            
-            default:
-               RGSCH_FREE_MSG(mBuf);
-               break;
-         }
-         break;
-      case ENTRG: /* When MAC sends a msg to Scheduler instance */
+      case ENTMAC: /* When MAC sends a msg to Scheduler instance */
          switch(pst->event)
          {
 #ifdef LCSCH
@@ -242,7 +180,7 @@ Buffer  *mBuf;                      /* message buffer       */
 #endif
 #endif            
             case EVENT_SLOT_IND_TO_SCH:
-               unpackMacSchSlotInd(macSchSlotInd, pst, mBuf);
+               unpackMacSchSlotInd(MacSchSlotInd, pst, mBuf);
                break;
             default:
                RGSCH_FREE_MSG(mBuf);
@@ -270,8 +208,8 @@ Buffer  *mBuf;                      /* message buffer       */
           RGSCH_FREE_MSG(mBuf);
           break;
    }
-   SExitTsk();
-   RETVALUE(ROK);
+   ODU_EXIT_TASK();
+   return ROK;
 }/* end of schActvTsk */
 
 

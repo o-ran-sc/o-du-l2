@@ -33,7 +33,7 @@
 #define __KWU_H__
 
 #ifdef __cplusplus
-EXTERN "C" {
+extern "C" {
 #endif  /*for extern "C"*/
 
 /** @file kwu.h

@@ -47,11 +47,11 @@
   
 /* local defines */
 
-#define KWSWMV 2             /* rlc - main version */
-#define KWSWMR 1             /* rlc - main revision */
-#define KWSWBV 0             /* rlc - branch version */
-#define KWSWBR 5             /* rlc -  kw005.201 patch level */
-#define KWSWPN "1000371"     /* rlc - part number */
+#define RLCSWMV 2             /* rlc - main version */
+#define RLCSWMR 1             /* rlc - main revision */
+#define RLCSWBV 0             /* rlc - branch version */
+#define RLCSWBR 5             /* rlc -  kw005.201 patch level */
+#define RLCSWPN "1000371"     /* rlc - part number */
 
 /* local typedefs */
 
@@ -62,30 +62,30 @@
 /* public variable declarations */
 
 #ifdef __cplusplus
-EXTERN "C" {
+extern "C" {
 #endif /* CPLUSPLUS */
 
-EXTERN S16 kwGetSId ARGS((SystemId *s));
+S16 rlcGetSId ARGS((SystemId *s));
 #ifdef __cplusplus
 }
 #endif /* CPLUSPLUS */
 
 /* copyright banner */
 
-PUBLIC CONSTANT Txt kwBan1[] =
+const Txt rlcBan1[] =
    {"(c) COPYRIGHT 1989-2002, Trillium Digital Systems, Inc."};
 
-PUBLIC CONSTANT Txt kwBan2[] =
+const Txt rlcBan2[] =
    {"                 All rights reserved."};
 
 /* system id */
 
-PRIVATE CONSTANT SystemId sId ={
-   KWSWMV,              /* rlc - main version */
-   KWSWMR,              /* rlc - main revision */
-   KWSWBV,              /* rlc - branch version */
-   KWSWBR,              /* rlc - branch revision */
-   KWSWPN               /* rlc - part number */
+static const SystemId sId ={
+   RLCSWMV,              /* rlc - main version */
+   RLCSWMR,              /* rlc - main revision */
+   RLCSWBV,              /* rlc - branch version */
+   RLCSWBR,              /* rlc - branch revision */
+   RLCSWPN               /* rlc - part number */
 };
 
 /*
@@ -107,17 +107,11 @@ PRIVATE CONSTANT SystemId sId ={
 *
 */
 
-#ifdef ANSI
-PUBLIC S16 kwGetSId
+S16 rlcGetSId
 (
 SystemId *s                 /* system id */
 )
-#else
-PUBLIC S16 kwGetSId(s)
-SystemId *s;                /* system id */
-#endif
 {
-   TRC2(kwGetSId);
 
    s->mVer = sId.mVer;
    s->mRev = sId.mRev;
@@ -125,9 +119,9 @@ SystemId *s;                /* system id */
    s->bRev = sId.bRev;
    s->ptNmb = sId.ptNmb;
 
-   RETVALUE(TRUE);
+   return (TRUE);
 
-} /* end of kwGetSId */
+} /* end of rlcGetSId */
 
   
 /********************************************************************30**

@@ -59,17 +59,10 @@
  * 
  *  @return Void
  **/
-#ifdef ANSI
-PUBLIC Void rgSCHCmnSpsInit
-(
-)
-#else /* ANSI */
-PUBLIC Void rgSCHCmnSpsInit ()
-#endif /* ANSI */
+Void rgSCHCmnSpsInit()
 {
-   TRC2(rgSCHCmnSpsInit);
 
-   RETVOID;
+   return;
 }
 
 /**
@@ -82,24 +75,8 @@ PUBLIC Void rgSCHCmnSpsInit ()
  * 
  *  @return Void
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHCmnSpsUeCfg
-(
-RgSchCellCb        *cell,
-RgSchUeCb          *ue,
-RgrUeCfg           *ueCfg,
-RgSchErrInfo       *err
-)
-#else /* ANSI */
-PUBLIC S16 rgSCHCmnSpsUeCfg (cell, ue, ueCfg, err)
-RgSchCellCb        *cell;
-RgSchUeCb          *ue;
-RgrUeCfg           *ueCfg;
-RgSchErrInfo       *err;
-#endif /* ANSI */
+S16 rgSCHCmnSpsUeCfg(RgSchCellCb *cell,RgSchUeCb  *ue,RgrUeCfg *ueCfg,RgSchErrInfo *err)
 {
-
-   TRC2(rgSCHCmnSpsUeCfg);
 
    return ROK;
 }
@@ -114,24 +91,8 @@ RgSchErrInfo       *err;
  * 
  *  @return Void
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHCmnSpsUeRecfg
-(
-RgSchCellCb        *cell,
-RgSchUeCb          *ue,
-RgrUeRecfg         *ueRecfg,
-RgSchErrInfo       *err
-)
-#else /* ANSI */
-PUBLIC S16 rgSCHCmnSpsUeRecfg (cell, ue, ueCfg, err)
-RgSchCellCb        *cell;
-RgSchUeCb          *ue;
-RgrUeRecfg         *ueRecfg;
-RgSchErrInfo       *err;
-#endif /* ANSI */
+S16 rgSCHCmnSpsUeRecfg(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeRecfg *ueRecfg,RgSchErrInfo *err)
 {
-
-   TRC2(rgSCHCmnSpsUeRecfg);
 
    return ROK;
 }
@@ -146,21 +107,10 @@ RgSchErrInfo       *err;
  * 
  *  @return Void
  **/
-#ifdef ANSI
-PUBLIC Void rgSCHCmnSpsUeDel
-(
-RgSchCellCb        *cell,
-RgSchUeCb          *ue
-)
-#else /* ANSI */
-PUBLIC Void rgSCHCmnSpsUeDel (cell, ue)
-RgSchCellCb        *cell;
-RgSchUeCb          *ue;
-#endif /* ANSI */
+Void rgSCHCmnSpsUeDel(RgSchCellCb *cell,RgSchUeCb  *ue)
 {
 
-   TRC2(rgSCHCmnSpsUeDel);
-   RETVOID;
+   return;
 }
 
 /**
@@ -173,22 +123,9 @@ RgSchUeCb          *ue;
  * 
  *  @return Void
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHCmnSpsCellCfg
-(
-RgSchCellCb        *cell,
-RgrCellCfg         *cellCfg,
-RgSchErrInfo       *err
-)
-#else /* ANSI */
-PUBLIC S16 rgSCHCmnSpsCellCfg(cell, cellCfg, err)
-RgSchCellCb        *cell;
-RgrCellCfg         *cellCfg;
-RgSchErrInfo       *err;
-#endif /* ANSI */
+S16 rgSCHCmnSpsCellCfg(RgSchCellCb *cell,RgrCellCfg *cellCfg,RgSchErrInfo *err)
 {
 
-   TRC2(rgSCHCmnSpsCellCfg);
    return ROK;
 }
 
@@ -202,19 +139,10 @@ RgSchErrInfo       *err;
  * 
  *  @return Void
  **/
-#ifdef ANSI
-PUBLIC Void rgSCHCmnSpsCellDel
-(
-RgSchCellCb        *cell
-)
-#else /* ANSI */
-PUBLIC Void rgSCHCmnSpsCellDel (cell)
-RgSchCellCb        *cell;
-#endif /* ANSI */
+Void rgSCHCmnSpsCellDel(RgSchCellCb *cell)
 {
 
-   TRC2(rgSCHCmnSpsCellDel);
-   RETVOID;
+   return;
 }
 
 /**
@@ -227,26 +155,9 @@ RgSchCellCb        *cell;
  * 
  *  @return Void
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHCmnSpsDlLcCfg 
-(
-RgSchCellCb        *cell,
-RgSchUeCb          *ue,
-RgSchDlLcCb        *dlLc,
-RgrLchCfg          *lcCfg,
-RgSchErrInfo       *err
-)
-#else /* ANSI */
-PUBLIC S16 rgSCHCmnSpsDlLcCfg(cell, ue, dlLc, lcCfg, err)
-RgSchCellCb        *cell;
-RgSchUeCb          *ue;
-RgSchDlLcCb        *dlLc;
-RgrLchCfg          *lcCfg;
-RgSchErrInfo       *err
-#endif /* ANSI */
+S16 rgSCHCmnSpsDlLcCfg(RgSchCellCb  *cell,RgSchUeCb  *ue,RgSchDlLcCb  *dlLc,RgrLchCfg  *lcCfg,RgSchErrInfo  *err)
 {
 
-   TRC2(rgSCHCmnSpsDlLcCfg);
    return ROK;
 }
 
@@ -256,8 +167,7 @@ RgSchUeCb    *ue,
 RgSchCellCb  *cell
 ))
 {
-   TRC2(rgSchCmnDlSfHqDel);
-   RETVOID;
+   return;
 }
 
 S16 rgSCHCmnSpsDlLcRecfg ARGS((
@@ -269,7 +179,6 @@ RgSchErrInfo       *err
 ))
 {
    
-   TRC2(rgSCHCmnSpsDlLcRecfg);
    return ROK;
 }
 
@@ -279,8 +188,7 @@ RgSchUeCb        *ue,
 RgSchLcgCb       *lcg
 ))
 {
-   TRC2(rgSCHCmnSpsUlLcgDel);
-   RETVOID;
+   return;
 }
 
 Void rgSCHCmnSpsDlLcDel ARGS((
@@ -289,8 +197,7 @@ RgSchUeCb          *ue,
 RgSchDlLcCb        *dlLc
 ))
 {
-   TRC2(rgSCHCmnSpsUlLcgDel);
-   RETVOID;
+   return;
 }
 
 S16 rgSCHCmnSpsUlTti ARGS((
@@ -299,7 +206,6 @@ RgSchCmnUlRbAllocInfo   *allocInfo
 ))
 {
 
-   TRC2(rgSCHCmnSpsUlTti);
    return ROK;
 }
 
@@ -310,8 +216,7 @@ RgSchDlLcCb            *dlLc
 ))
 {
 
-   TRC2(rgSCHCmnSpsDlDedBoUpd);
-   RETVOID;
+   return;
 }
 
 Void rgSCHCmnSpsDlProcAddToRetx ARGS((
@@ -320,8 +225,7 @@ RgSchDlHqProcCb       *hqP
 ))
 {
 
-   TRC2(rgSCHCmnSpsDlProcAddToRetx);
-   RETVOID;
+   return;
 }
 
 Void rgSCHCmnSpsDlCqiIndHndlr ARGS((
@@ -331,8 +235,7 @@ CmLteTimingInfo      timingInfo
 ))
 {
 
-   TRC2(rgSCHCmnSpsDlCqiIndHndlr);
-   RETVOID;
+   return;
 }
 
 S16 rgSCHCmnSpsUlCqiInd ARGS((
@@ -341,7 +244,6 @@ RgSchUeCb            *ue
 ))
 {
 
-   TRC2(rgSCHCmnSpsUlCqiInd);
    return ROK;
 }
 
@@ -352,7 +254,6 @@ RgSchLcgCb   *ulLcg
 ))
 {
 
-   TRC2(rgSCHCmnSpsBsrRpt);
    return ROK;
 }
 
@@ -362,8 +263,7 @@ RgSchUeCb           *ue
 ))
 {
 
-   TRC2(rgSCHCmnSpsPhrInd);
-   RETVOID;
+   return;
 }
 
 Void rgSCHCmnSpsDlRelPdcchFbk ARGS((
@@ -373,8 +273,7 @@ Bool                  isAck
 ))
 {
 
-   TRC2(rgSCHCmnSpsDlRelPdcchFbk);
-   RETVOID;
+   return;
 }
 
 Void rgSCHCmnSpsDlProcAck ARGS((
@@ -383,8 +282,7 @@ RgSchDlHqProcCb       *hqP
 ))
 {
 
-   TRC2(rgSCHCmnSpsDlProcAck);
-   RETVOID;
+   return;
 }
 
 Void rgSCHCmnSpsDlUeReset ARGS((
@@ -393,8 +291,7 @@ RgSchUeCb           *ue
 ))
 {
 
-   TRC2(rgSCHCmnSpsDlUeReset);
-   RETVOID;
+   return;
 }
 
 Void rgSCHCmnSpsUlUeReset ARGS((
@@ -403,8 +300,7 @@ RgSchUeCb           *ue
 ))
 {
 
-   TRC2(rgSCHCmnSpsUlUeReset);
-   RETVOID;
+   return;
 }
 
 Void rgSCHCmnSpsUlProcRelInd ARGS((
@@ -414,19 +310,17 @@ Bool                isExplRel
 ))
 {
 
-   TRC2(rgSCHCmnSpsUlProcRelInd);
-   RETVOID;
+   return;
 }
 
 Void rgSCHCmnSpsUlProcActInd ARGS((
 RgSchCellCb         *cell,
 RgSchUeCb           *ue,
-U16                 spsSduSize
+uint16_t                 spsSduSize
 ))
 {
 
-   TRC2(rgSCHCmnSpsUlProcActInd);
-   RETVOID;
+   return;
 }
 
 S16 rgSCHCmnSpsUlProcCrcInd ARGS((
@@ -436,7 +330,6 @@ CmLteTimingInfo      crcTime
 ))
 {
 
-   TRC2(rgSCHCmnSpsUlProcActInd);
    return ROK;
 }
 
@@ -447,7 +340,6 @@ CmLteTimingInfo      dtxTime
 ))
 {
 
-   TRC2(rgSCHCmnSpsUlProcDtxInd);
    return ROK;
 }
 
@@ -458,8 +350,7 @@ RgSchDlSf             *dlSf
 ))
 {
 
-   TRC2(rgSCHCmnSpsUlProcDtxInd);
-   RETVOID;
+   return;
 }
 
 

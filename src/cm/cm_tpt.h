@@ -283,10 +283,10 @@
 #endif /* __CMINETH__ */
 
 /*  packing/unpacking functions */
-#define cmPkCmIpv4NetAddr(x, mBuf)    SPkU32(x, mBuf)
+#define cmPkCmIpv4NetAddr(x, mBuf)    oduUnpackUInt32(x, mBuf)
 /* Moved all packing functions to cm_tpt from 
  * cm_inet.c files. Hence no #defines are required */
-#define cmUnpkCmIpv4NetAddr(x, mBuf)  SUnpkU32(x, mBuf)
+#define cmUnpkCmIpv4NetAddr(x, mBuf)  oduPackUInt32(x, mBuf)
 
 /* added macro to free memory allocated for IPv6
  *                      IPv6 extn hdrs*/
@@ -294,7 +294,7 @@
 #define CM_TPT_FREE_IPV6_HDRPARM(_region, _pool, _hdrParm) \
 { \
    CmIpv6HdrParm *_hdrParmIpv6; \
-   U8 numOpts; \
+   uint8_t numOpts; \
    if (_hdrParm->type == CM_HDRPARM_IPV6) \
    { \
       _hdrParmIpv6 = &_hdrParm->u.hdrParmIpv6; \

@@ -61,7 +61,7 @@
 
 #define RG_MAX_SCH 1
 
-PRIVATE CONSTANT CellRegReq RgSchMacCellRegReqMt[RG_MAX_SCH] =
+static const CellRegReq RgSchMacCellRegReqMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkSchMacCellRegReq,
@@ -70,7 +70,7 @@ PRIVATE CONSTANT CellRegReq RgSchMacCellRegReqMt[RG_MAX_SCH] =
 #endif
 };
 
-PRIVATE CONSTANT DedBoUpdtReq RgMacSchDedBoUpdtReqMt[RG_MAX_SCH] =
+static const DedBoUpdtReq RgMacSchDedBoUpdtReqMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkMacSchDedBoUpdtReq,
@@ -79,7 +79,7 @@ PRIVATE CONSTANT DedBoUpdtReq RgMacSchDedBoUpdtReqMt[RG_MAX_SCH] =
 #endif
 };
 
-PRIVATE CONSTANT CmnBoUpdtReq RgMacSchCmnBoUpdtReqMt[RG_MAX_SCH] =
+static const CmnBoUpdtReq RgMacSchCmnBoUpdtReqMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkMacSchCmnBoUpdtReq,
@@ -88,7 +88,7 @@ PRIVATE CONSTANT CmnBoUpdtReq RgMacSchCmnBoUpdtReqMt[RG_MAX_SCH] =
 #endif
 };
 
-PRIVATE CONSTANT SfRecpInd RgMacSchSfRecpIndMt[RG_MAX_SCH] =
+static const SfRecpInd RgMacSchSfRecpIndMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkMacSchSfRecpInd
@@ -97,7 +97,7 @@ PRIVATE CONSTANT SfRecpInd RgMacSchSfRecpIndMt[RG_MAX_SCH] =
 #endif
 };
 /*Fix: start: Inform UE delete to scheduler*/
-PRIVATE CONSTANT UeDelInd RgMacSchUeDelIndMt[RG_MAX_SCH] =
+static const UeDelInd RgMacSchUeDelIndMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkMacSchUeDelInd
@@ -106,7 +106,7 @@ PRIVATE CONSTANT UeDelInd RgMacSchUeDelIndMt[RG_MAX_SCH] =
 #endif
 };
 /*Fix: end: Inform UE delete to scheduler*/
-PRIVATE CONSTANT SfAllocReq RgSchMacSfAllocReqMt[RG_MAX_SCH] =
+static const SfAllocReq RgSchMacSfAllocReqMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkSchMacSfAllocReq,
@@ -115,7 +115,7 @@ PRIVATE CONSTANT SfAllocReq RgSchMacSfAllocReqMt[RG_MAX_SCH] =
 #endif
 };
 
-PRIVATE CONSTANT RstHqEntReq RgSchMacRstHqEntReqMt[RG_MAX_SCH] =
+static const RstHqEntReq RgSchMacRstHqEntReqMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkSchMacRstHqEntReq,
@@ -123,7 +123,7 @@ PRIVATE CONSTANT RstHqEntReq RgSchMacRstHqEntReqMt[RG_MAX_SCH] =
    RgSchMacRstHqEntReq
 #endif
 };
-PRIVATE CONSTANT RlsHqReq RgSchMacRlsHqReqMt[RG_MAX_SCH] =
+static const RlsHqReq RgSchMacRlsHqReqMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkSchMacRlsHqReq,
@@ -132,7 +132,7 @@ PRIVATE CONSTANT RlsHqReq RgSchMacRlsHqReqMt[RG_MAX_SCH] =
 #endif
 };
 
-PRIVATE CONSTANT RlsRntiReq RgSchMacRlsRntiReqMt[RG_MAX_SCH] =
+static const RlsRntiReq RgSchMacRlsRntiReqMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkSchMacRlsRntiReq,
@@ -141,7 +141,7 @@ PRIVATE CONSTANT RlsRntiReq RgSchMacRlsRntiReqMt[RG_MAX_SCH] =
 #endif
 };
 
-PRIVATE CONSTANT LcgReg RgSchMacLcgRegReqMt[RG_MAX_SCH] =
+static const LcgReg RgSchMacLcgRegReqMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkSchMacLcgRegReq,
@@ -151,7 +151,7 @@ PRIVATE CONSTANT LcgReg RgSchMacLcgRegReqMt[RG_MAX_SCH] =
 };
 
 #ifdef LTEMAC_SPS
-PRIVATE CONSTANT SpsLcReg RgSchMacSpsLcRegReqMt[RG_MAX_SCH] =
+static const SpsLcReg RgSchMacSpsLcRegReqMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkSchMacSpsLcRegReq,
@@ -160,7 +160,7 @@ PRIVATE CONSTANT SpsLcReg RgSchMacSpsLcRegReqMt[RG_MAX_SCH] =
 #endif
 };
 
-PRIVATE CONSTANT UlSpsReset RgSchMacUlSpsResetMt[RG_MAX_SCH] =
+static const UlSpsReset RgSchMacUlSpsResetMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkSchMacUlSpsReset,
@@ -171,7 +171,7 @@ PRIVATE CONSTANT UlSpsReset RgSchMacUlSpsResetMt[RG_MAX_SCH] =
 
 
 
-PRIVATE CONSTANT SpsLcDereg RgSchMacSpsLcDeregReqMt[RG_MAX_SCH] =
+static const SpsLcDereg RgSchMacSpsLcDeregReqMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkSchMacSpsLcDeregReq,
@@ -180,7 +180,7 @@ PRIVATE CONSTANT SpsLcDereg RgSchMacSpsLcDeregReqMt[RG_MAX_SCH] =
 #endif
 };
 
-PRIVATE CONSTANT SpsRelInd RgMacSchSpsRelIndMt[RG_MAX_SCH] =
+static const SpsRelInd RgMacSchSpsRelIndMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkMacSchSpsRelInd,
@@ -192,7 +192,7 @@ PRIVATE CONSTANT SpsRelInd RgMacSchSpsRelIndMt[RG_MAX_SCH] =
 #endif /* LTEMAC_SPS */
 
 #ifdef LTE_L2_MEAS
-PRIVATE CONSTANT L2MeasReq RgSchMacL2MeasReqMt[RG_MAX_SCH] =
+static const L2MeasReq RgSchMacL2MeasReqMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkSchMacL2MeasReq
@@ -201,7 +201,7 @@ PRIVATE CONSTANT L2MeasReq RgSchMacL2MeasReqMt[RG_MAX_SCH] =
 #endif
 };
 /*Added for Rsys oam*/
-PRIVATE CONSTANT L2MeasStopReq RgSchMacL2MeasStopReqMt[RG_MAX_SCH] =
+static const L2MeasStopReq RgSchMacL2MeasStopReqMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkSchMacL2MeasStopReq
@@ -210,7 +210,7 @@ PRIVATE CONSTANT L2MeasStopReq RgSchMacL2MeasStopReqMt[RG_MAX_SCH] =
 #endif
 };
 
-PRIVATE CONSTANT L2MeasSendReq RgSchMacL2MeasSendReqMt[RG_MAX_SCH] =
+static const L2MeasSendReq RgSchMacL2MeasSendReqMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkSchMacL2MeasSendReq
@@ -219,7 +219,7 @@ PRIVATE CONSTANT L2MeasSendReq RgSchMacL2MeasSendReqMt[RG_MAX_SCH] =
 #endif
 };
 
-PRIVATE CONSTANT L2MeasCfm RgMacSchL2MeasCfmMt[RG_MAX_SCH] =
+static const L2MeasCfm RgMacSchL2MeasCfmMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkMacSchL2MeasCfm
@@ -227,7 +227,7 @@ PRIVATE CONSTANT L2MeasCfm RgMacSchL2MeasCfmMt[RG_MAX_SCH] =
    RgMacSchL2MeasCfm
 #endif
 };
-PRIVATE CONSTANT L2MeasStopCfm RgMacSchL2MeasStopCfmMt[RG_MAX_SCH] =
+static const L2MeasStopCfm RgMacSchL2MeasStopCfmMt[RG_MAX_SCH] =
 {
 #ifdef LCSCH
    cmPkMacSchL2MeasStopCfm
@@ -250,22 +250,10 @@ PRIVATE CONSTANT L2MeasStopCfm RgMacSchL2MeasStopCfmMt[RG_MAX_SCH] =
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgSchMacCellReg
-(
-Pst* pst,
-RgInfCellReg*   regReq
-)
-#else
-PUBLIC S16 RgSchMacCellReg(pst, regReq)
-Pst* pst;
-RgInfCellReg*   regReq;
-#endif
+S16 RgSchMacCellReg(Pst* pst,RgInfCellReg* regReq)
 {
 
-   TRC3(RgSchMacCellReg);
-
-   RETVALUE((*RgSchMacCellRegReqMt[0])(pst, regReq));
+   return ((*RgSchMacCellRegReqMt[0])(pst, regReq));
 }
 
 /**
@@ -282,22 +270,10 @@ RgInfCellReg*   regReq;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgMacSchDedBoUpdt
-(
-Pst* pst,
-RgInfDedBoRpt*  boRpt
-)
-#else
-PUBLIC S16 RgMacSchDedBoUpdt(pst, boRpt)
-Pst* pst;
-RgInfDedBoRpt*  boRpt;
-#endif
+S16 RgMacSchDedBoUpdt(Pst* pst,RgInfDedBoRpt*  boRpt)
 {
 
-   TRC3(RgMacSchDedBoUpdt);
-
-   RETVALUE((*RgMacSchDedBoUpdtReqMt[0])(pst, boRpt));
+   return ((*RgMacSchDedBoUpdtReqMt[0])(pst, boRpt));
 }
 
 /**
@@ -314,22 +290,10 @@ RgInfDedBoRpt*  boRpt;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgMacSchCmnBoUpdt
-(
-Pst* pst,
-RgInfCmnBoRpt*  boRpt
-)
-#else
-PUBLIC S16 RgMacSchCmnBoUpdt(pst, boRpt)
-Pst* pst;
-RgInfCmnBoRpt*  boRpt;
-#endif
+S16 RgMacSchCmnBoUpdt(Pst* pst ,RgInfCmnBoRpt*  boRpt)
 {
 
-   TRC3(RgMacSchCmnBoUpdt);
-
-   RETVALUE((*RgMacSchCmnBoUpdtReqMt[0])(pst, boRpt));
+   return ((*RgMacSchCmnBoUpdtReqMt[0])(pst, boRpt));
 }
 
 /*Fix: start: Inform UE delete to scheduler*/
@@ -346,22 +310,10 @@ RgInfCmnBoRpt*  boRpt;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgMacSchUeDel
-(
-Pst* pst,
-RgInfUeDelInd*  ueDelInd
-)
-#else
-PUBLIC S16 RgMacSchUeDel(pst, datInd)
-Pst* pst;
-RgInfUeDelInd*  ueDelInd;
-#endif
+S16 RgMacSchUeDel(Pst* pst,RgInfUeDelInd*  ueDelInd)
 {
 
-   TRC3(RgMacSchUeDel);
-
-   RETVALUE((*RgMacSchUeDelIndMt[0])(pst, ueDelInd));
+   return ((*RgMacSchUeDelIndMt[0])(pst, ueDelInd));
 }
 /*Fix: end: Inform UE delete to scheduler*/
 /**
@@ -378,22 +330,10 @@ RgInfUeDelInd*  ueDelInd;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgMacSchSfRecp
-(
-Pst* pst,
-RgInfSfDatInd*  datInd
-)
-#else
-PUBLIC S16 RgMacSchSfRecp(pst, datInd)
-Pst* pst;
-RgInfSfDatInd*  datInd;
-#endif
+S16 RgMacSchSfRecp(Pst* pst,RgInfSfDatInd*  datInd)
 {
 
-   TRC3(RgMacSchSfRecp);
-
-   RETVALUE((*RgMacSchSfRecpIndMt[0])(pst, datInd));
+   return ((*RgMacSchSfRecpIndMt[0])(pst, datInd));
 }
 
 /**
@@ -410,22 +350,10 @@ RgInfSfDatInd*  datInd;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgSchMacSfAlloc
-(
-Pst* pst,
-RgInfSfAlloc*   resAllocReq
-)
-#else
-PUBLIC S16 RgSchMacSfAlloc(pst, resAllocReq)
-Pst* pst;
-RgInfSfAlloc*   resAllocReq;
-#endif
+S16 RgSchMacSfAlloc(Pst* pst,RgInfSfAlloc* resAllocReq)
 {
 
-   TRC3(RgSchMacSfAlloc);
-
-   RETVALUE((*RgSchMacSfAllocReqMt[0])(pst, resAllocReq));
+   return ((*RgSchMacSfAllocReqMt[0])(pst, resAllocReq));
 }
 
 /**
@@ -440,22 +368,10 @@ RgInfSfAlloc*   resAllocReq;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgSchMacRstHqEnt
-(
-Pst*                 pst,    
-RgInfResetHqEnt*     hqEntInfo
-)
-#else
-PUBLIC S16 RgSchMacRstHqEnt(pst, hqEntInfo)
-Pst*                 pst;
-RgInfResetHqEnt*     hqEntInfo;
-#endif
+S16 RgSchMacRstHqEnt(Pst* pst,RgInfResetHqEnt*  hqEntInfo)
 {
 
-   TRC3(RgSchMacRstHqEnt)
-
-   RETVALUE((*RgSchMacRstHqEntReqMt[0])(pst, hqEntInfo));
+   return ((*RgSchMacRstHqEntReqMt[0])(pst, hqEntInfo));
 }
 
 /**
@@ -472,22 +388,10 @@ RgInfResetHqEnt*     hqEntInfo;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgSchMacRlsHq
-(
-Pst* pst,
-RgInfRlsHqInfo* sfHqInfo
-)
-#else
-PUBLIC S16 RgSchMacRlsHq(pst, sfHqInfo)
-Pst* pst;
-RgInfRlsHqInfo* sfHqInfo;
-#endif
+S16 RgSchMacRlsHq(Pst* pst,RgInfRlsHqInfo* sfHqInfo)
 {
 
-   TRC3(RgSchMacRlsHq);
-
-   RETVALUE((*RgSchMacRlsHqReqMt[0])(pst, sfHqInfo));
+   return ((*RgSchMacRlsHqReqMt[0])(pst, sfHqInfo));
 }
 
 /**
@@ -504,22 +408,10 @@ RgInfRlsHqInfo* sfHqInfo;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgSchMacRlsRnti
-(
-Pst* pst,
-RgInfRlsRnti*   rlsRnti
-)
-#else
-PUBLIC S16 RgSchMacRlsRnti(pst, rlsRnti)
-Pst* pst;
-RgInfRlsRnti*   rlsRnti;
-#endif
+S16 RgSchMacRlsRnti(Pst* pst,RgInfRlsRnti*   rlsRnti)
 {
 
-   TRC3(RgSchMacRlsRnti);
-
-   RETVALUE((*RgSchMacRlsRntiReqMt[0])(pst, rlsRnti));
+   return ((*RgSchMacRlsRntiReqMt[0])(pst, rlsRnti));
 }
 
 /**
@@ -534,22 +426,10 @@ RgInfRlsRnti*   rlsRnti;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgSchMacLcgReg
-(
-Pst*                pst,
-RgInfLcgRegReq      *lcgRegReq
-)
-#else
-PUBLIC S16 RgSchMacLcgReg(pst, lcgRegReq)
-Pst*                pst;
-RgInfLcgRegReq       *lcgRegReq;
-#endif
+S16 RgSchMacLcgReg(Pst*  pst,RgInfLcgRegReq *lcgRegReq)
 {
 
-   TRC3(RgSchMacLcgReg);
-
-   RETVALUE((*RgSchMacLcgRegReqMt[0])(pst, lcgRegReq));
+   return ((*RgSchMacLcgRegReqMt[0])(pst, lcgRegReq));
 } /* end of RgSchMacLcgReg */
 
 #ifdef LTEMAC_SPS
@@ -566,22 +446,10 @@ RgInfLcgRegReq       *lcgRegReq;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgMacSchSpsRel
-(
-Pst*                pst,
-RgInfSpsRelInfo*    relInfo
-)
-#else
-PUBLIC S16 RgMacSchSpsRel(pst, relInfo)
-Pst*                pst;
-RgInfSpsRelInfo*    relInfo;
-#endif
+S16 RgMacSchSpsRel(Pst* pst,RgInfSpsRelInfo* relInfo)
 {
 
-   TRC3(RgMacSchS);
-
-   RETVALUE((*RgMacSchSpsRelIndMt[0])(pst, relInfo));
+   return ((*RgMacSchSpsRelIndMt[0])(pst, relInfo));
 } /* end of RgMacSchSpsRel */
 
 /**
@@ -596,22 +464,10 @@ RgInfSpsRelInfo*    relInfo;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgSchMacSpsLcReg
-(
-Pst*                pst,
-RgInfSpsLcInfo      *lcInfo
-)
-#else
-PUBLIC S16 RgSchMacSpsLcReg(pst, lcInfo)
-Pst*                pst;
-RgInfSpsLcInfo      *lcInfo;
-#endif
+S16 RgSchMacSpsLcReg(Pst* pst,RgInfSpsLcInfo *lcInfo)
 {
 
-   TRC3(RgSchMacSpsLcReg);
-
-   RETVALUE((*RgSchMacSpsLcRegReqMt[0])(pst, lcInfo));
+   return ((*RgSchMacSpsLcRegReqMt[0])(pst, lcInfo));
 } /* end of RgSchMacSpsLcReg */
 
 
@@ -628,22 +484,10 @@ RgInfSpsLcInfo      *lcInfo;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgSchMacUlSpsReset
-(
-Pst*                pst,
-RgInfUlSpsReset      *ulSpsResetInfo
-)
-#else
-PUBLIC S16 RgSchMacUlSpsReset(pst, ulSpsResetInfo)
-Pst*                pst;
-RgInfUlSpsReset      *ulSpsResetInfo;
-#endif
+S16 RgSchMacUlSpsReset(Pst*  pst,RgInfUlSpsReset *ulSpsResetInfo)
 {
 
-   TRC3(RgSchMacUlSpsReset);
-
-   RETVALUE((*RgSchMacUlSpsResetMt[0])(pst, ulSpsResetInfo));
+   return ((*RgSchMacUlSpsResetMt[0])(pst, ulSpsResetInfo));
 } /* end of RgSchMacUlSpsReset */
 
 
@@ -660,24 +504,10 @@ RgInfUlSpsReset      *ulSpsResetInfo;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgSchMacSpsLcDereg
-(
-Pst*                pst,
-CmLteCellId         cellId,
-CmLteRnti           crnti
-)
-#else
-PUBLIC S16 RgSchMacSpsLcDereg(pst, cellId, crnti)
-Pst*                pst;
-CmLteCellId         cellId;
-CmLteRnti           crnti;
-#endif
+S16 RgSchMacSpsLcDereg(Pst* pst,CmLteCellId  cellId,CmLteRnti crnti)
 {
 
-   TRC3(RgSchMacSpsLcDereg);
-
-   RETVALUE((*RgSchMacSpsLcDeregReqMt[0])(pst, cellId, crnti));
+   return ((*RgSchMacSpsLcDeregReqMt[0])(pst, cellId, crnti));
 } /* end of RgSchMacSpsLcDereg */
 
 #endif /* LTEMAC_SPS */
@@ -694,22 +524,10 @@ CmLteRnti           crnti;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgSchMacL2Meas
-(
-Pst*                pst,
-RgInfL2MeasReq      *measInfo
-)
-#else
-PUBLIC S16 RgSchMacL2Meas(pst, measInfo)
-Pst*                pst;
-RgInfL2MeasReq      *measInfo;
-#endif
+S16 RgSchMacL2Meas(Pst* pst,RgInfL2MeasReq  *measInfo)
 {
 
-   TRC3(RgSchMacL2Meas);
-
-   RETVALUE((*RgSchMacL2MeasReqMt[0])(pst, measInfo));
+   return ((*RgSchMacL2MeasReqMt[0])(pst, measInfo));
 } /* end of RgSchMacL2Meas */
 
 /**
@@ -724,22 +542,10 @@ RgInfL2MeasReq      *measInfo;
 *  @return   S16
 *      -# ROK
 **/   
-#ifdef ANSI
-PUBLIC S16 RgSchMacL2MeasStop
-(       
-Pst*                pst,
-RgInfL2MeasStopReq *measInfo
-)     
-#else 
-PUBLIC S16 RgSchMacL2MeasStop(pst, measInfo)
-Pst*                pst;
-RgInfL2MeasStopReq *measInfo;
-#endif
+S16 RgSchMacL2MeasStop(Pst* pst,RgInfL2MeasStopReq *measInfo)     
 {  
      
-   TRC3(RgSchMacL2MeasStop);
-        
-   RETVALUE((*RgSchMacL2MeasStopReqMt[0])(pst, measInfo));
+   return ((*RgSchMacL2MeasStopReqMt[0])(pst, measInfo));
 } /* end of RgSchMacL2Meas */
 
 /**
@@ -754,22 +560,10 @@ RgInfL2MeasStopReq *measInfo;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgSchMacL2MeasSend
-(
-Pst*                pst,
-RgInfL2MeasSndReq *measInfo
-)
-#else
-PUBLIC S16 RgSchMacL2MeasSend(pst, measInfo)
-Pst*                pst;
-RgInfL2MeasSndReq *measInfo;
-#endif
+S16 RgSchMacL2MeasSend(Pst* pst,RgInfL2MeasSndReq *measInfo)
 {
 
-   TRC3(RgSchMacL2MeasSend);
-
-   RETVALUE((*RgSchMacL2MeasSendReqMt[0])(pst, measInfo));
+   return ((*RgSchMacL2MeasSendReqMt[0])(pst, measInfo));
 } /* end of RgSchMacL2MeasSend */
 
 /**
@@ -784,22 +578,10 @@ RgInfL2MeasSndReq *measInfo;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgMacSchL2Meas
-(
-Pst*                pst,
-RgInfL2MeasCfm      *measInfo
-)
-#else
-PUBLIC S16 RgMacSchL2Meas(pst, measInfo)
-Pst*                pst;
-RgInfL2MeasCfm      *measInfo;
-#endif
+S16 RgMacSchL2Meas(Pst*  pst,RgInfL2MeasCfm *measInfo)
 {
 
-   TRC3(RgMacSchL2Meas);
-
-   RETVALUE((*RgMacSchL2MeasCfmMt[0])(pst, measInfo));
+   return ((*RgMacSchL2MeasCfmMt[0])(pst, measInfo));
 } /* end of RgSchMacL2Meas */
 /**
 * @brief Request from MAC to SCH for L2 Measurement
@@ -813,22 +595,10 @@ RgInfL2MeasCfm      *measInfo;
 *  @return   S16
 *      -# ROK
 **/
-#ifdef ANSI
-PUBLIC S16 RgMacSchL2MeasStop
-(
-Pst*                pst,   
-RgInfL2MeasCfm      *measInfo
-)
-#else
-PUBLIC S16 RgMacSchL2MeasStop(pst, measInfo)
-Pst*                pst;
-RgInfL2MeasCfm      *measInfo;
-#endif
+S16 RgMacSchL2MeasStop(Pst*  pst,RgInfL2MeasCfm  *measInfo)
 {
     
-   TRC3(RgMacSchL2MeasStop);
-
-   RETVALUE((*RgMacSchL2MeasStopCfmMt[0])(pst, measInfo));
+   return ((*RgMacSchL2MeasStopCfmMt[0])(pst, measInfo));
 } /* end of RgSchMacL2MeasStop*/
 #endif/*LTE_L2_MEAS*/
 /**********************************************************************

@@ -23,10 +23,10 @@
 #define MAX_RETRY 5
 
 /* Global variable declaration */
-U8   socket_type;      /* Socket type */
-bool nonblocking;      /* Blocking/Non-blocking socket */
-bool connUp;           /* Is connection up */
-int  assocId;          /* Assoc Id of connected assoc */
+uint8_t   socket_type;      /* Socket type */
+bool      nonblocking;      /* Blocking/Non-blocking socket */
+bool      connUp;           /* Is connection up */
+int       assocId;          /* Assoc Id of connected assoc */
   
 typedef struct
 {
@@ -54,14 +54,14 @@ typedef struct
    CmInetNetAddr         destIpNetAddr;    /* DU Ip address */ 
 }CuSctpDestCb;
 
-EXTERN S16 sctpActvInit();
-EXTERN S16 sctpSend(Buffer *mBuf);
+S16 sctpActvInit();
+S16 sctpSend(Buffer *mBuf);
 S16 sctpCfgReq();
 S16 sctpStartReq();
 S16 sctpSetSockOpts(CmInetFd *sock_Fd);
 S16 sctpAccept(CmInetFd *lstnSock_Fd, CmInetAddr *peerAddr, CmInetFd *sock_Fd);
 S16 sctpSockPoll();
-S16 processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, U32 *timeoutPtr, CmInetMemInfo *memInfo);
+S16 processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, uint32_t *timeoutPtr, CmInetMemInfo *memInfo);
 
 #endif
 

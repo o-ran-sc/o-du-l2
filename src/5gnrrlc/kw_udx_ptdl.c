@@ -59,12 +59,12 @@
 #define UDX_MAX_SEL   3
 
 #ifndef LCKWULUDX
-PRIVATE S16 PtDlUdxBndCfm ARGS(( Pst *pst,SuId suId,U8 status ));
-PRIVATE S16 PtDlUdxCfgCfm ARGS((Pst *pst, SuId suId, CkwCfgCfmInfo *cfmInfo));
-PRIVATE S16 PtDlUdxUeIdChgCfm ARGS(( Pst *pst, SuId suId,U32 transId, 
+static S16 PtDlUdxBndCfm ARGS(( Pst *pst,SuId suId,uint8_t status ));
+static S16 PtDlUdxCfgCfm ARGS((Pst *pst, SuId suId, RlcCfgCfmInfo *cfmInfo));
+static S16 PtDlUdxUeIdChgCfm ARGS(( Pst *pst, SuId suId,uint32_t transId, 
                                      CmStatus status));
-PRIVATE S16  PtDlUdxStaUpdCfm ARGS(( Pst* pst,SuId suId,CmLteRlcId *rlcId,
-                              KwUdxBufLst *pBufLst));
+static S16  PtDlUdxStaUpdCfm ARGS(( Pst* pst,SuId suId,CmLteRlcId *rlcId,
+                              RlcUdxBufLst *pBufLst));
 
 /* UDX Bind Confirm primitive */
 /**
@@ -87,25 +87,17 @@ PRIVATE S16  PtDlUdxStaUpdCfm ARGS(( Pst* pst,SuId suId,CmLteRlcId *rlcId,
  *      -# ROK 
  *
  */
-#ifdef ANSI
-PRIVATE S16 PtDlUdxBndCfm
+static S16 PtDlUdxBndCfm
 (
 Pst *pst,                       /* post structure */
 SuId suId,                      /* Service User Id */
-U8   status                     /* Status */
+uint8_t   status                     /* Status */
 )
-#else
-PRIVATE S16 PtDlUdxBndCfm(pst, suId, status)
-Pst *pst;                       /* post structure */
-SuId suId;                      /* Service User Id */
-U8   status;                    /* Status */
-#endif
 {
-   TRC3(PtDlUdxBndCfm)
 
-   RETVALUE(ROK);
+   return ROK;
 
-} /* end of KwDlUdxBndCfm */
+} /* end of rlcDlUdxBndCfm */
 
 
 
@@ -129,25 +121,17 @@ U8   status;                    /* Status */
  *      -# ROK 
  *
  */
-#ifdef ANSI
-PRIVATE S16 PtDlUdxCfgCfm
+static S16 PtDlUdxCfgCfm
 (
 Pst *pst,                       /* post structure */
 SuId suId,                      /* Service User Id */
-CkwCfgCfmInfo *cfmInfo                    /* Status */
+RlcCfgCfmInfo *cfmInfo                    /* Status */
 )
-#else
-PRIVATE S16 PtDlUdxCfgCfm(pst, suId, status)
-Pst           *pst;            /* post structure */
-SuId          suId;            /* Service User Id */
-CkwCfgCfmInfo *cfmInfo;        /* Status */
-#endif
 {
-   TRC3(PtDlUdxCfgCfm)
 
-   RETVALUE(ROK);
+   return ROK;
 
-} /* end of KwDlUdxBndCfm */
+} /* end of rlcDlUdxBndCfm */
 
 /**
  *
@@ -169,55 +153,44 @@ CkwCfgCfmInfo *cfmInfo;        /* Status */
  *      -# ROK 
  *
  */
-#ifdef ANSI
-PRIVATE S16 PtDlUdxUeIdChgCfm
+static S16 PtDlUdxUeIdChgCfm
 (
 Pst *pst,                       /* post structure */
 SuId suId,                      /* Service User Id */
-U32       transId,
-CmStatus      status
+uint32_t transId,
+CmStatus status
 )
-#else
-PRIVATE S16 PtDlUdxUeIdChgCfm(pst, suId, status)
-Pst           *pst;            /* post structure */
-SuId          suId;            /* Service User Id */
-U32           transId;
-CmStatus      status;
-#endif
 {
-   TRC3(PtDlUdxUeIdChgCfm)
 
-   RETVALUE(ROK);
+   return ROK;
 
-} /* end of KwDlUdxBndCfm */
-
+} /* end of rlcDlUdxBndCfm */
 
 
-PRIVATE S16  PtDlUdxStaUpdCfm
+
+static S16  PtDlUdxStaUpdCfm
 (
 Pst*                pst,
 SuId                suId,
 CmLteRlcId          *rlcId,
-KwUdxBufLst         *pBufLst
+RlcUdxBufLst         *pBufLst
 )
 {
-   TRC3(PtDlUdxStaUpdCfm);
-   RETVALUE(ROK);
+   return ROK;
 }
 
-PRIVATE S16  PtDlUdxStaProhTmrStart
+static S16  PtDlUdxStaProhTmrStart
 (
 Pst*                pst,
 SuId                suId,
 CmLteRlcId          *rlcId
 )
 {
-   TRC3(PtDlUdxStaProhTmrStart);
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif
 
-PRIVATE UdxBndCfm kwDlUdxBndCfmMt[UDX_MAX_SEL] =
+static UdxBndCfm rlcDlUdxBndCfmMt[UDX_MAX_SEL] =
 {
 #ifdef LCKWULUDX
    cmPkUdxBndCfm,            /* 0 - loosely coupled */
@@ -230,13 +203,13 @@ PRIVATE UdxBndCfm kwDlUdxBndCfmMt[UDX_MAX_SEL] =
    PtDlUdxBndCfm,            /* 1 - loosely coupled, portable  */
 #endif /* LCKWUIKWU */
 #ifdef KW
-   KwUlUdxBndCfm,            /* 2 - tightly coupled, RRC  */
+   rlcUlUdxBndCfm,            /* 2 - tightly coupled, RRC  */
 #else
    PtDlUdxBndCfm,            /* 2 - tightly coupled, portable */
 #endif /* KW */
 };
 
-PUBLIC UdxCfgCfm kwDlUdxCfgCfmMt[UDX_MAX_SEL] =
+UdxCfgCfm rlcDlUdxCfgCfmMt[UDX_MAX_SEL] =
 {
 #ifdef LCKWULUDX
    cmPkUdxCfgCfm,            /* 0 - loosely coupled */
@@ -249,13 +222,13 @@ PUBLIC UdxCfgCfm kwDlUdxCfgCfmMt[UDX_MAX_SEL] =
    PtDlUdxCfgCfm,            /* 1 - loosely coupled, portable  */
 #endif /* LCKWUIKWU */
 #ifdef KW
-   KwUlUdxCfgCfm,            /* 2 - tightly coupled, RRC  */
+   rlcUlUdxCfgCfm,            /* 2 - tightly coupled, RRC  */
 #else
    PtDlUdxCfgCfm,            /* 2 - tightly coupled, portable */
 #endif /* KW */
 };
 
-PUBLIC UdxUeIdChgCfm kwDlUdxUeIdChgCfmMt[UDX_MAX_SEL] =
+UdxUeIdChgCfm rlcDlUdxUeIdChgCfmMt[UDX_MAX_SEL] =
 {
 #ifdef LCKWULUDX
    cmPkUdxUeIdChgCfm,            /* 0 - loosely coupled */
@@ -268,14 +241,14 @@ PUBLIC UdxUeIdChgCfm kwDlUdxUeIdChgCfmMt[UDX_MAX_SEL] =
    PtDlUdxUeIdChgCfm,            /* 1 - loosely coupled, portable  */
 #endif /* LCKWUIKWU */
 #ifdef KW
-   KwUlUdxUeIdChgCfm,            /* 2 - tightly coupled, RRC  */
+   rlcUlUdxUeIdChgCfm,            /* 2 - tightly coupled, RRC  */
 #else
    PtDlUdxUeIdChgCfm,            /* 2 - tightly coupled, portable */
 #endif /* KW */
 };
 
 
-PRIVATE CONSTANT UdxStaProhTmrStart KwDlUdxStaProhTmrStartMt[UDX_MAX_SEL] =
+static const UdxStaProhTmrStart rlcDlUdxStaProhTmrStartMt[UDX_MAX_SEL] =
 {
 #ifdef LCKWULUDX
    cmPkUdxStaProhTmrStart,
@@ -288,7 +261,7 @@ PRIVATE CONSTANT UdxStaProhTmrStart KwDlUdxStaProhTmrStartMt[UDX_MAX_SEL] =
    PtDlUdxStaProhTmrStart,            /* 1 - loosely coupled, portable  */
 #endif /* LCKWUIKWU */
 #ifdef KW
-   KwUlUdxStaProhTmrStart,            /* 2 - tightly coupled, RRC  */
+   rlcUlUdxStaProhTmrStart,            /* 2 - tightly coupled, RRC  */
 #else
    PtDlUdxStaProhTmrStart,            /* 2 - tightly coupled, portable */
 #endif /* KW */
@@ -314,28 +287,20 @@ PRIVATE CONSTANT UdxStaProhTmrStart KwDlUdxStaProhTmrStartMt[UDX_MAX_SEL] =
  *      -# ROK 
  *
  */
-#ifdef ANSI
-PUBLIC S16 KwDlUdxBndCfm
+S16 rlcDlUdxBndCfm
 (
 Pst *pst,                       /* post structure */
 SuId suId,                      /* Service User Id */
-U8   status                     /* Status */
+uint8_t status                     /* Status */
 )
-#else
-PUBLIC S16 KwDlUdxBndCfm(pst, suId, status)
-Pst *pst;                       /* post structure */
-SuId suId;                      /* Service User Id */
-U8   status;                    /* Status */
-#endif
 {
-   TRC3(KwDlUdxBndCfm)
 
    /* jump to specific primitive depending on configured selector */
-   (*kwDlUdxBndCfmMt[pst->selector])(pst, suId, status);
+   (*rlcDlUdxBndCfmMt[pst->selector])(pst, suId, status);
 
-   RETVALUE(ROK);
+   return ROK;
 
-} /* end of KwDlUdxBndCfm */
+} /* end of rlcDlUdxBndCfm */
 
 
 
@@ -359,28 +324,20 @@ U8   status;                    /* Status */
  *      -# ROK 
  *
  */
-#ifdef ANSI
-PUBLIC S16 KwDlUdxCfgCfm
+S16 rlcDlUdxCfgCfm
 (
 Pst *pst,                       /* post structure */
 SuId suId,                      /* Service User Id */
-CkwCfgCfmInfo *cfmInfo                    /* Status */
+RlcCfgCfmInfo *cfmInfo                    /* Status */
 )
-#else
-PUBLIC S16 KwDlUdxCfgCfm(pst, suId, status)
-Pst           *pst;            /* post structure */
-SuId          suId;            /* Service User Id */
-CkwCfgCfmInfo *cfmInfo;        /* Status */
-#endif
 {
-   TRC3(KwDlUdxCfgCfm)
 
    /* jump to specific primitive depending on configured selector */
-   (*kwDlUdxCfgCfmMt[pst->selector])(pst, suId, cfmInfo);
+   (*rlcDlUdxCfgCfmMt[pst->selector])(pst, suId, cfmInfo);
 
-   RETVALUE(ROK);
+   return ROK;
 
-} /* end of KwDlUdxBndCfm */
+} /* end of rlcDlUdxBndCfm */
 
 /**
  *
@@ -402,55 +359,31 @@ CkwCfgCfmInfo *cfmInfo;        /* Status */
  *      -# ROK 
  *
  */
-#ifdef ANSI
-PUBLIC S16 KwDlUdxUeIdChgCfm
+S16 rlcDlUdxUeIdChgCfm
 (
 Pst *pst,                       /* post structure */
 SuId suId,                      /* Service User Id */
-U32           transId,
+uint32_t      transId,
 CmStatus      status
 )
-#else
-PUBLIC S16 KwDlUdxUeIdChgCfm(pst, suId, status)
-Pst           *pst;            /* post structure */
-SuId          suId;            /* Service User Id */
-U32           transId;
-CmStatus      status;
-#endif
 {
-   TRC3(KwDlUdxUeIdChgCfm)
 
    /* jump to specific primitive depending on configured selector */
-   (*kwDlUdxUeIdChgCfmMt[pst->selector])(pst, suId,transId,status);
+   (*rlcDlUdxUeIdChgCfmMt[pst->selector])(pst, suId,transId,status);
 
-   RETVALUE(ROK);
+   return ROK;
 
-} /* end of KwDlUdxBndCfm */
+} /* end of rlcDlUdxBndCfm */
 
 
-
-#ifdef ANSI
-PUBLIC S16 KwDlUdxStaProhTmrStart
-(
-Pst                 *pst,                       /* post structure */
-SuId                suId,                      /* Service User Id */
-CmLteRlcId          *rlcId
-)
-#else
-PUBLIC S16 KwDlUdxStaProhTmrStart(pst, suId, rlcId)
-Pst           *pst;            /* post structure */
-SuId          suId;            /* Service User Id */
-CmLteRlcId    *rlcId;
-#endif
+uint8_t rlcDlUdxStaProhTmrStart(Pst *pst, SuId suId, CmLteRlcId *rlcId)
 {
-   TRC3(KwDlUdxStaProhTmrStart)
-
    /* jump to specific primitive depending on configured selector */
-   (*KwDlUdxStaProhTmrStartMt[pst->selector])(pst, suId, rlcId);
+   (*rlcDlUdxStaProhTmrStartMt[pst->selector])(pst, suId, rlcId);
 
-   RETVALUE(ROK);
+   return ROK;
 
-} /* end of KwDlUdxBndCfm */
+} /* end of rlcDlUdxBndCfm */
 
 /**********************************************************************
  

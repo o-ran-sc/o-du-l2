@@ -29,7 +29,6 @@
 file should not be cirectly included by any other application although it is
 common file to logging framework and LOG MACROs used by any applicatoin.
 ***************************************************************************/
-
 #ifndef __RL_COMMON_H__
 #define __RL_COMMON_H__
 
@@ -67,9 +66,6 @@ typedef enum {
 
 #ifdef USE_RLOG_DATA_TYPES
 typedef const char* PSTR;
-typedef unsigned char U8;
-typedef unsigned short U16;
-typedef unsigned int U32;
 typedef int S32;
 typedef signed short S16;
 #else
@@ -77,37 +73,37 @@ typedef signed short S16;
 typedef const char* PSTR;
 #endif
 
-typedef U32 LOGID;
+typedef uint32_t LOGID;
 
 #ifdef RLOG_ENABLE_TEXT_LOGGING
 #include <stdio.h>
 extern FILE* g_fp;
 void logLev0(PSTR strLogLevel, PSTR modName, PSTR file, int lineno, PSTR fmtStr, ...);
-void logLev1(PSTR strLogLevel, PSTR modName, PSTR file, int lineno, PSTR fmtStr, U32 arg1, ...);
-void logLev2(PSTR strLogLevel, PSTR modName, PSTR file, int lineno, PSTR fmtStr, U32 arg1, U32 arg2, ...);
-void logLev3(PSTR strLogLevel, PSTR modName, PSTR file, int lineno, PSTR fmtStr, U32, U32, U32, ...);
-void logLev4(PSTR strLogLevel, PSTR modName, PSTR file, int lineno, PSTR fmtStr, U32, U32, U32, U32, ...);
+void logLev1(PSTR strLogLevel, PSTR modName, PSTR file, int lineno, PSTR fmtStr, uint32_t arg1, ...);
+void logLev2(PSTR strLogLevel, PSTR modName, PSTR file, int lineno, PSTR fmtStr, uint32_t arg1, uint32_t arg2, ...);
+void logLev3(PSTR strLogLevel, PSTR modName, PSTR file, int lineno, PSTR fmtStr, uint32_t, uint32_t, uint32_t, ...);
+void logLev4(PSTR strLogLevel, PSTR modName, PSTR file, int lineno, PSTR fmtStr, uint32_t, uint32_t, uint32_t, uint32_t, ...);
 void logLevN(int logLevel, const char* modName, const char* file, int lineno, const char* fmtStr, ...);
 void logLevE(PSTR strLogLevel, PSTR modName, PSTR file, int lineno, PSTR fmtStr, R_SPL_ARG splType,
-   U32 splVal, U32 arg1, U32 arg2, U32 arg3, U32 arg4, ...);
+   uint32_t splVal, uint32_t arg1, uint32_t arg2, uint32_t arg3, uint32_t arg4, ...);
 void logLevH(PSTR strLogLevel, PSTR modName, PSTR file, int lineno, PSTR fmtStr, PSTR hexdump, int hexlen, ...);
 void logLevS(PSTR strLogLevel, PSTR modName, PSTR file, int lineno, PSTR fmtStr, PSTR str, ...);
 #else
 void logLevH( LOGID logId, R_LOG_LEVEL logLevel, PSTR hex, int hexlen, ...);
 void logLev0( LOGID logId, R_LOG_LEVEL logLevel, ...);
-void logLev1( LOGID logId, R_LOG_LEVEL logLevel, U32 arg1, ...);
-void logLev2( LOGID logId, R_LOG_LEVEL logLevel, U32 arg1, U32 arg2, ...);
-void logLev3( LOGID logId, R_LOG_LEVEL logLevel, U32 arg1, U32 arg2, U32 arg3, ...);
-void logLev4( LOGID logId, R_LOG_LEVEL logLevel, U32 arg1, U32 arg2, U32 arg3, U32 arg4, ...);
-void logLevE(LOGID logId, R_LOG_LEVEL logLevel, R_SPL_ARG splType, U32 splVal,
-U32 arg1, U32 arg2, U32 arg3, U32 arg4, ...);
+void logLev1( LOGID logId, R_LOG_LEVEL logLevel, uint32_t arg1, ...);
+void logLev2( LOGID logId, R_LOG_LEVEL logLevel, uint32_t arg1, uint32_t arg2, ...);
+void logLev3( LOGID logId, R_LOG_LEVEL logLevel, uint32_t arg1, uint32_t arg2, uint32_t arg3, ...);
+void logLev4( LOGID logId, R_LOG_LEVEL logLevel, uint32_t arg1, uint32_t arg2, uint32_t arg3, uint32_t arg4, ...);
+void logLevE(LOGID logId, R_LOG_LEVEL logLevel, R_SPL_ARG splType, uint32_t splVal,
+uint32_t arg1, uint32_t arg2, uint32_t arg3, uint32_t arg4, ...);
 void logLevS( LOGID logId, R_LOG_LEVEL logLevel, const char* str, ...);
 #endif
 
 void hextostr(char* p, PSTR h, int hexlen);
 
 extern int g_logLevel;
-extern U32 g_modMask;
+extern uint32_t g_modMask;
 extern const char* g_logStr[L_MAX_LOG_LEVEL]; 
 extern const char* g_splStr[DBG_MAX_IDs];
 

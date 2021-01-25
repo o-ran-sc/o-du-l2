@@ -18,6 +18,7 @@
 
 /* Contains common utility definitions to be used at MAC */
 
+#define MAX_SHORT_BSR_TABLE_ENTRIES 32
 #define MAC_MEM_REGION   4
 #define MAC_POOL         1
 
@@ -29,7 +30,7 @@
 	 (Data **)&_datPtr, _size);                          \
    if(_ret == ROK)                                           \
    {                                                         \
-      cmMemset((uint8_t *)_datPtr, 0, _size);                \
+      memset(_datPtr, 0, _size);                \
    }                                                         \
    else                                                      \
    {                                                         \
@@ -44,6 +45,7 @@
    {                                                         \
       SPutSBuf(MAC_MEM_REGION, MAC_POOL,                     \
 	    (Data *)_datPtr, _size);                         \
+      _datPtr = NULLP;                                      \
    }                                                         \
 }
 
@@ -54,7 +56,7 @@
    if(SGetStaticBuffer(MAC_MEM_REGION, MAC_POOL,             \
 	    (Data **)&_buf, (Size) _size, 0) == ROK)         \
    {                                                         \
-      cmMemset((uint8_t *)(_buf), 0, _size);                 \
+      memset((_buf), 0, _size);                 \
    }                                                         \
    else                                                      \
    {                                                         \
@@ -77,7 +79,7 @@
 #define FILL_PST_MAC_TO_DUAPP(_pst, _event)                     \
 {                                                           \
    _pst.selector  = ODU_SELECTOR_LWLC;                      \
-   _pst.srcEnt    = ENTRG;                                  \
+   _pst.srcEnt    = ENTMAC;                                  \
    _pst.dstEnt    = ENTDUAPP;                               \
    _pst.dstInst   = 0;                                      \
    _pst.srcInst   = macCb.macInst;                          \
@@ -95,8 +97,8 @@
 #define FILL_PST_MAC_TO_SCH(_pst, _event)                       \
 {                                                           \
    _pst.selector  = ODU_SELECTOR_TC;                        \
-   _pst.srcEnt    = ENTRG;                                  \
-   _pst.dstEnt    = ENTRG;                                  \
+   _pst.srcEnt    = ENTMAC;                                  \
+   _pst.dstEnt    = ENTMAC;                                  \
    _pst.dstInst   = 1;                                      \
    _pst.srcInst   = macCb.macInst;                          \
    _pst.dstProcId = macCb.procId;                           \
@@ -109,6 +111,27 @@
    _pst.intfVer = 0;                                        \
 }
 
+/* Fills Pst to send msg to RLC */
+#define FILL_PST_MAC_TO_RLC(_pst, _dstInst, _event)        \
+{                                                      \
+   pst.selector  = ODU_SELECTOR_LWLC;                  \
+   pst.srcEnt    = ENTMAC;                              \
+   pst.dstEnt    = ENTRLC;                              \
+   pst.dstInst   = _dstInst;                           \
+   pst.srcInst   = macCb.macInst;                      \
+   pst.dstProcId = macCb.procId;                       \
+   pst.srcProcId = macCb.procId;                       \
+   pst.region    = MAC_MEM_REGION;                     \
+   pst.pool      = MAC_POOL;                           \
+   pst.event     = _event;                             \
+   pst.route     = 0;                                  \
+   pst.prior     = 0;                                  \
+   pst.intfVer   = 0;                                  \
+}
+
+/* Function declaration */
+uint16_t getNewCrnti(uint8_t *crntiMap);
+uint32_t shortBsrBytesTable[MAX_SHORT_BSR_TABLE_ENTRIES];
 /**********************************************************************
          End of file
 **********************************************************************/

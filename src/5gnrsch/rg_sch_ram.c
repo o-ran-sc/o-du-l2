@@ -63,20 +63,20 @@ static int RLOG_FILE_ID=171;
 #include "rg_sch.x"        /* Scheduler includes */
 #include "rg_sch_cmn.x"
 #ifdef EMTC_ENABLE
-EXTERN Bool rgSCHRamVldtRgrEmtcUeCfg  ARGS((
+Bool rgSCHRamVldtRgrEmtcUeCfg  ARGS((
 RgSchCellCb  *cell,
 RgrUeCfg     *ueCfg
 ));
 
-EXTERN S16 rgSCHRamRmvAllFrmEmtcRaInfoSchdLst
+S16 rgSCHRamRmvAllFrmEmtcRaInfoSchdLst
 (
 RgSchCellCb       *cell
 );
-EXTERN Void rgSCHEmtcUtlUpdCmnNb 
+Void rgSCHEmtcUtlUpdCmnNb 
 (
 RgSchRaCb      *raCb
 );
-EXTERN Void rgSCHEmtcHqPAlloc 
+Void rgSCHEmtcHqPAlloc 
 (
 RgSchCellCb       *cell,
 RgSchDlHqEnt      *hqEnt
@@ -84,30 +84,30 @@ RgSchDlHqEnt      *hqEnt
 #endif
 /* local defines */
 /* local typedefs */
-PRIVATE Void rgSCHRamUlFreeAllocation ARGS((RgSchUlSf *sf,RgSchUlAlloc *alloc, 
+static Void rgSCHRamUlFreeAllocation ARGS((RgSchUlSf *sf,RgSchUlAlloc *alloc, 
          RgSchCellCb     *cell,Bool isEmtc));
 
-PRIVATE S16 rgSCHRamContResCrnti   ARGS((RgSchCellCb *cell, RgSchUeCb *ue, 
+static S16 rgSCHRamContResCrnti   ARGS((RgSchCellCb *cell, RgSchUeCb *ue, 
                                       RgSchRaCb *raCb, RgSchErrInfo *err));
-PRIVATE S16 rgSCHRamContResCcchsdu ARGS((RgSchCellCb *cell, RgSchRaCb *raCb));
+static S16 rgSCHRamContResCcchsdu ARGS((RgSchCellCb *cell, RgSchRaCb *raCb));
 #ifdef EMTC_ENABLE
 
-EXTERN S16 rgSCHEmtcRamContResCcchsdu ARGS((RgSchCellCb *cell, RgSchRaCb *raCb));
-EXTERN S16 rgSCHRamEmtcContResCcchsdu ARGS((RgSchCellCb *cell, RgSchRaCb *raCb));
-EXTERN Void rgSCHChkEmtcContResGrdTmrExp ARGS((RgSchCellCb        *cell));
-EXTERN Void rgSCHChkEmtcContResTmrExp ARGS((RgSchCellCb        *cell));
-EXTERN Void rgSCHEmtcRaInfoFree ARGS((RgSchCellCb *cell, RgSchRaCb *raCb));
+S16 rgSCHEmtcRamContResCcchsdu ARGS((RgSchCellCb *cell, RgSchRaCb *raCb));
+S16 rgSCHRamEmtcContResCcchsdu ARGS((RgSchCellCb *cell, RgSchRaCb *raCb));
+Void rgSCHChkEmtcContResGrdTmrExp ARGS((RgSchCellCb        *cell));
+Void rgSCHChkEmtcContResTmrExp ARGS((RgSchCellCb        *cell));
+Void rgSCHEmtcRaInfoFree ARGS((RgSchCellCb *cell, RgSchRaCb *raCb));
 #endif
 #ifdef RGR_V1
-PRIVATE Void rgSCHChkContResGrdTmrExp ARGS((RgSchCellCb        *cell));
-PRIVATE Void rgSCHChkContResTmrExp ARGS((RgSchCellCb        *cell));
-PRIVATE Void rgSCHRamProcContResExp ARGS((RgSchCellCb *cell, 
+static Void rgSCHChkContResGrdTmrExp ARGS((RgSchCellCb        *cell));
+static Void rgSCHChkContResTmrExp ARGS((RgSchCellCb        *cell));
+static Void rgSCHRamProcContResExp ARGS((RgSchCellCb *cell, 
                                  RgSchRaCb  *raCb));
-PRIVATE Void rgSCHRamProcContResGrdExp ARGS((RgSchCellCb *cell,
+static Void rgSCHRamProcContResGrdExp ARGS((RgSchCellCb *cell,
                                       RgSchRaCb  *raCb));
 #ifdef EMTC_ENABLE
-EXTERN Void rgSCHChkEmtcContResGrdTmrExp ARGS((RgSchCellCb        *cell));
-EXTERN Void rgSCHChkEmtcContResTmrExp ARGS((RgSchCellCb        *cell));
+Void rgSCHChkEmtcContResGrdTmrExp ARGS((RgSchCellCb        *cell));
+Void rgSCHChkEmtcContResTmrExp ARGS((RgSchCellCb        *cell));
 #endif
 #endif
 /* forward references */
@@ -131,19 +131,8 @@ EXTERN Void rgSCHChkEmtcContResTmrExp ARGS((RgSchCellCb        *cell));
  *      -# ROK
  *      -# RFAILED
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHRamVldtUeCfg 
-(
-RgSchCellCb  *cell,
-RgrUeCfg     *ueCfg
-)
-#else
-PUBLIC S16 rgSCHRamVldtUeCfg(cell, ueCfg)
-RgSchCellCb  *cell;
-RgrUeCfg     *ueCfg;
-#endif
+S16 rgSCHRamVldtUeCfg(RgSchCellCb  *cell,RgrUeCfg     *ueCfg)
 {
-   TRC2(rgSCHRamVldtUeCfg);
    if (ueCfg->dedPreambleId.pres == PRSNT_NODEF)
    {
       if ((ueCfg->dedPreambleId.val < cell->rachCfg.numRaPreamble) ||
@@ -158,10 +147,10 @@ RgrUeCfg     *ueCfg;
 #endif          
           )
       {
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /**
@@ -184,10 +173,9 @@ RgrUeCfg     *ueCfg;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHRamProcRaReq
+S16 rgSCHRamProcRaReq
 (
-U8                raReqCnt,
+uint8_t           raReqCnt,
 RgSchCellCb       *cell,
 CmLteRnti         raRnti,
 TfuRachInfo       *raReqInd,
@@ -195,25 +183,14 @@ CmLteTimingInfo   timingInfo,
 RgSchUeCb         *ue,
 RgSchErrInfo      *err
 )
-#else
-PUBLIC S16 rgSCHRamProcRaReq(raReqCnt, cell, raRnti, raReqInd, timingInfo, ue, err)
-U8                raReqCnt;
-RgSchCellCb       *cell;
-CmLteRnti         raRnti;
-TfuRachInfo       *raReqInd;
-CmLteTimingInfo   timingInfo;
-RgSchUeCb         *ue;
-RgSchErrInfo      *err;
-#endif
 {
    RgSchRaReqInfo *raReqInfo;
-   U16            raIndex;
+   uint16_t       raIndex;
 #ifdef LTE_TDD
-   U8             fid;
-   U8             tid;
+   uint8_t        fid;
+   uint8_t        tid;
 #endif
 
-   TRC2(rgSCHRamProcRaReq)
 
 
       /* SR_RACH_STATS : RACH REQ */
@@ -244,7 +221,7 @@ RgSchErrInfo      *err;
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
                "RARNTI:%d rgSCHTomRaReqInd(): RAM processing failed errType(%d) ",
                raReqInd->raRnti);
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* SR_RACH_STATS : DED PREAMB*/
@@ -275,7 +252,7 @@ RgSchErrInfo      *err;
       RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHRamProcRaReq(): Allocation"
             " of RaReq failed RARNTI:%d",raRnti);
       err->errCause = RGSCHERR_RAM_MEM_EXHAUST;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Insert the given raReqInfo */
@@ -302,7 +279,7 @@ RgSchErrInfo      *err;
       cmLListAdd2Tail(&cell->raInfo.raReqLst[raIndex], &raReqInfo->raReqLstEnt);
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHRamProcRaReq */
 
 /**
@@ -321,24 +298,16 @@ RgSchErrInfo      *err;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHRamCreateRaCb
+S16 rgSCHRamCreateRaCb
 (
 RgSchCellCb       *cell,
 RgSchRaCb         **raCb,
 RgSchErrInfo      *err
 )
-#else
-PUBLIC S16 rgSCHRamCreateRaCb(cell, raCb, err)
-RgSchCellCb       *cell;
-RgSchRaCb         **raCb;
-RgSchErrInfo      *err;
-#endif
 {
    RgSchRntiLnk *rntiLnk;
    Inst         inst = cell->instIdx;
 
-   TRC2(rgSCHRamCreateRaCb)
 
    if((rgSCHUtlAllocSBuf(inst, (Data **)(raCb),
                       sizeof(RgSchRaCb))) == RFAILED)
@@ -346,7 +315,7 @@ RgSchErrInfo      *err;
       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHRamCreateRaCb(): Allocation of "
          "RaCb failed");
       err->errCause = RGSCHERR_RAM_MEM_EXHAUST;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    rntiLnk = rgSCHDbmGetRnti(cell);
@@ -368,7 +337,7 @@ RgSchErrInfo      *err;
       for proper NULLP assignment*/
       rgSCHUtlFreeSBuf(inst, (Data **)(raCb), sizeof(RgSchRaCb));
       err->errCause = RGSCHERR_RAM_RNTI_EXHAUST;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Allocate and initialize the DL HARQ portion of the RACB */
@@ -382,7 +351,7 @@ RgSchErrInfo      *err;
       for proper NULLP assignment*/
       rgSCHUtlFreeSBuf(inst, (Data **)(raCb), sizeof(RgSchRaCb));
       err->errCause = RGSCHERR_RAM_MEM_EXHAUST;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #ifdef EMTC_ENABLE
    (*raCb)->isEmtcRaCb = FALSE;
@@ -399,7 +368,7 @@ RgSchErrInfo      *err;
    (*raCb)->raCbLnk.node = (PTR)(*raCb);
    cmLListAdd2Tail(&cell->raInfo.raCbLst, &(*raCb)->raCbLnk);
    
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHRamCreateRaCb */
 
 /**
@@ -424,28 +393,19 @@ RgSchErrInfo      *err;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHRamRgrUeCfg
+S16 rgSCHRamRgrUeCfg
 (
 RgSchCellCb    *cell,
 RgSchUeCb      *ue,
 RgSchRaCb      *raCb,
 RgSchErrInfo   *err
 )
-#else
-PUBLIC S16 rgSCHRamRgrUeCfg(cell, ue, raCb, err)
-RgSchCellCb    *cell;
-RgSchUeCb      *ue;
-RgSchRaCb      *raCb;
-RgSchErrInfo   *err;
-#endif
 {
    /* Releasing HARQ processes of old UE when ue
     *           reconfig with new crnti */
-  /* U32 cnt; */
+  /* uint32_t cnt; */
    RgSchDlHqEnt          **hqEnt = &(RG_SCH_CMN_GET_UE_HQE(ue, cell));
    RgSchCmnUlUe *ueUl = RG_SCH_CMN_GET_UL_UE(ue, cell);
-   TRC2(rgSCHRamRgrUeCfg)
 
 
    /* Fix : set UE inactive in DL until UE is reinitialization completed */
@@ -474,10 +434,10 @@ RgSchErrInfo   *err;
       err->errCause = RGSCHERR_RAM_NO_MSG3_RCVD;
       *hqEnt = NULLP;
       raCb->dlHqE->ue = NULLP;
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHRamRgrUeCfg */
 
 
@@ -499,25 +459,16 @@ RgSchErrInfo   *err;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
-PRIVATE S16 rgSCHRamContResCrnti
+static S16 rgSCHRamContResCrnti
 (
 RgSchCellCb  *cell,
 RgSchUeCb    *ue,
 RgSchRaCb    *raCb,
 RgSchErrInfo *err
 )
-#else
-PRIVATE S16 rgSCHRamContResCrnti(cell, ue, raCb, err)
-RgSchCellCb  *cell;
-RgSchUeCb    *ue;
-RgSchRaCb    *raCb;
-RgSchErrInfo *err;
-#endif
 {
    TfuUlCqiRpt   ulCqiRpt;
    RgSchCmnCell  *cellSch= (RgSchCmnCell *)(cell->sc.sch);
-   TRC2(rgSCHRamContResCrnti)
 
 
    /* Fix: syed It is incorrect to copy over msg3HqProc to ueCb's 
@@ -546,7 +497,7 @@ RgSchErrInfo *err;
    /* No need of raCb any more */
    rgSCHRamDelRaCb(cell, raCb, TRUE);
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHRamContResCrnti */
 
 
@@ -566,30 +517,23 @@ RgSchErrInfo *err;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
-PRIVATE S16 rgSCHRamContResCcchsdu
+static S16 rgSCHRamContResCcchsdu
 (
 RgSchCellCb *cell,
 RgSchRaCb *raCb
 )
-#else
-PRIVATE S16 rgSCHRamContResCcchsdu(cell, raCb)
-RgSchCellCb *cell;
-RgSchRaCb *raCb;
-#endif
 {
 #ifdef RGR_V1 
    CmLteTimingInfo expTime = {0}; 
    RgSchCmnCell  *cellSch  = RG_SCH_CMN_GET_CELL(cell);
 #endif
-   TRC2(rgSCHRamContResCcchsdu)
    if(raCb->raState != RGSCH_RA_MSG3_PENDING)
    {
       RLOG_ARG2(L_DEBUG,DBG_CELLID,cell->cellId,
                "RNTI:%d RaCb in wrong State %d Drop Msg 3",
                raCb->rntiLnk->rnti, 
                raCb->raState);
-      RETVALUE(ROK);
+      return ROK;
    }
 
    raCb->raState = RGSCH_RA_MSG4_PENDING;
@@ -611,7 +555,7 @@ RgSchRaCb *raCb;
       raCb->contResTmrLnk.node = (PTR)(raCb);
       cmLListAdd2Tail(&(cell->contResGrdTmrLst), &(raCb->contResTmrLnk));
 #endif
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHRamContResCcchsdu */
 
 
@@ -632,8 +576,7 @@ RgSchRaCb *raCb;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHRamProcMsg3
+S16 rgSCHRamProcMsg3
 (
 RgSchCellCb     *cell,
 RgSchUeCb       *ue,
@@ -641,16 +584,7 @@ RgSchRaCb       *raCb,
 RgInfUeDatInd   *pdu,
 RgSchErrInfo    *err
 )
-#else
-PUBLIC S16 rgSCHRamProcMsg3(cell, ue, raCb, pdu, err)
-RgSchCellCb     *cell;
-RgSchUeCb       *ue;
-RgSchRaCb       *raCb;
-RgInfUeDatInd   *pdu;
-RgSchErrInfo    *err;
-#endif
 {
-   TRC2(rgSCHRamProcMsg3)
 
 
    /* Update raCb with PHR if received along with Msg3 */ 
@@ -679,7 +613,7 @@ RgSchErrInfo    *err;
       }
    } 
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHRamProcMsg3 */
 
 
@@ -698,24 +632,16 @@ RgSchErrInfo    *err;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHRamUpdtBo
+S16 rgSCHRamUpdtBo
 (
 RgSchCellCb       *cell,
 RgSchRaCb         *raCb,
 RgInfCmnBoRpt     *staRsp
 )
-#else
-PUBLIC S16 rgSCHRamUpdtBo(cell, raCb, staRsp)
-RgSchCellCb       *cell;
-RgSchRaCb         *raCb;
-RgInfCmnBoRpt     *staRsp;
-#endif
 {
-   TRC2(rgSCHRamUpdtBo)
 
    /* Update Bo in RaCb */
-   raCb->dlCcchInfo.bo = (U32)(staRsp->bo);
+   raCb->dlCcchInfo.bo = (uint32_t)(staRsp->bo);
    /* SR_RACH_STATS : MSG4 WITH CCCH SDU */
    rgNumMsg4WithCCCHSdu++;
 
@@ -724,7 +650,7 @@ RgInfCmnBoRpt     *staRsp;
    rgSCHRamAddToRaInfoSchdLst(cell, raCb);
    /* MSG4 Fix  End */      
    
-   RETVALUE(ROK);
+   return ROK;
 } /* rgSCHRamUpdtBo */
 
 /**
@@ -742,24 +668,15 @@ RgInfCmnBoRpt     *staRsp;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHRamMsg3DatInd
-(
-RgSchRaCb      *raCb
-)
-#else
-PUBLIC S16 rgSCHRamMsg3DatInd(raCb)
-RgSchRaCb      *raCb;
-#endif
+S16 rgSCHRamMsg3DatInd(RgSchRaCb *raCb)
 {
-   TRC2(rgSCHRamMsg3DatInd)
 
    /* SR_RACH_STATS : MSG3 ACK*/
    rgNumMsg3CrcPassed++;
    /*ccpu00128820 - MOD - Msg3 alloc double delete issue*/
    rgSCHUhmProcMsg3DatInd(&(raCb->msg3HqProc));
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHRamMsg3DatInd */
 
 /**
@@ -777,22 +694,13 @@ RgSchRaCb      *raCb;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHRamMsg3FailureInd
-(
-RgSchRaCb      *raCb
-)
-#else
-PUBLIC S16 rgSCHRamMsg3FailureInd(raCb)
-RgSchRaCb      *raCb;
-#endif
+S16 rgSCHRamMsg3FailureInd(RgSchRaCb *raCb)
 {
-   TRC2(rgSCHRamMsg3FailureInd)
 
    /*ccpu00128820 - MOD - Msg3 alloc double delete issue*/
    rgSCHUhmProcMsg3Failure(&(raCb->msg3HqProc));
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHRamMsg3FailureInd */
 
 /**
@@ -810,19 +718,10 @@ RgSchRaCb      *raCb;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHRamMsg4FdbkInd
-(
-RgSchRaCb      *raCb
-)
-#else
-PUBLIC S16 rgSCHRamMsg4FdbkInd(raCb)
-RgSchRaCb      *raCb;
-#endif
+S16 rgSCHRamMsg4FdbkInd(RgSchRaCb  *raCb)
 {
-   TRC2(rgSCHRamMsg4FdbkInd)
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHRamMsg4FdbkInd */
 
 
@@ -843,19 +742,8 @@ RgSchRaCb      *raCb;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHRamMsg4Done
-(
-RgSchCellCb    *cell,
-RgSchRaCb      *raCb
-)
-#else
-PUBLIC S16 rgSCHRamMsg4Done(cell, raCb)
-RgSchCellCb    *cell;
-RgSchRaCb      *raCb;
-#endif
+S16 rgSCHRamMsg4Done(RgSchCellCb *cell,RgSchRaCb *raCb)
 {
-   TRC2(rgSCHRamMsg4Done)
 
    RLOG_ARG1(L_DEBUG,DBG_CELLID,cell->cellId,
             "rgSCHRamMsg4Done(): tmpCRNTI = %u",
@@ -916,7 +804,7 @@ RgSchRaCb      *raCb;
       rgSCHDhmRlsHqpTb(raCb->dlHqE->msg4Proc, 0, TRUE);
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHRamMsg4Done */
 
 
@@ -937,23 +825,10 @@ RgSchRaCb      *raCb;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHRamDelRaCb
-(
-RgSchCellCb *cell,
-RgSchRaCb   *raCb,
-Bool        rlsRnti
-)
-#else
-PUBLIC S16 rgSCHRamDelRaCb(cell, raCb, rlsRnti)
-RgSchCellCb *cell;
-RgSchRaCb   *raCb;
-Bool        rlsRnti;
-#endif
+S16 rgSCHRamDelRaCb(RgSchCellCb *cell,RgSchRaCb   *raCb,Bool rlsRnti)
 {
-   Inst         inst = cell->instIdx;
-   Bool         isEmtc = FALSE;
-   TRC2(rgSCHRamDelRaCb)
+   Inst  inst = cell->instIdx;
+   Bool  isEmtc = FALSE;
  
     /* Delete from all the lists it is enqueued */
     cmLListDelFrm(&(cell->raInfo.raCbLst),&(raCb->raCbLnk));
@@ -1042,7 +917,7 @@ Bool        rlsRnti;
 #endif
    rgSCHUtlFreeSBuf(inst, (Data **)&raCb, sizeof(RgSchRaCb));
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgSCHRamDelRaCb */
 
 
@@ -1065,33 +940,23 @@ Bool        rlsRnti;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHRamTtiHndlr
-(
-RgSchCellCb  *cell
-)
-#else
-PUBLIC S16 rgSCHRamTtiHndlr(cell)
-RgSchCellCb  *cell;
-#endif
+S16 rgSCHRamTtiHndlr(RgSchCellCb  *cell)
 {
    RgSchRaCb   *raCb;
-   U16         raSfn;
-   U16         crntSfn;
-   U16         dist;       /* Number of frames between raCb's creation and crnt
-                              frame */
-   U8          idx;
-   U32         maxCnt;
+   uint16_t    raSfn;
+   uint16_t    crntSfn;
+   uint16_t    dist;       /* Number of frames between raCb's creation and crnt frame */
+   uint8_t     idx;
+   uint32_t    maxCnt;
 #ifndef LTE_TDD
-   U8          winGap;        
-   U8          raIdx;
+   uint8_t     winGap;        
+   uint8_t     raIdx;
    RgSchRaReqInfo *raReqInfo;
 #else
    CmLteTimingInfo      frm;
-   U8                   raIdx;
+   uint8_t     raIdx;
 #endif
 
-   TRC2(rgSCHRamTtiHndlr)
 
    crntSfn = cell->crntTime.sfn;
   
@@ -1176,7 +1041,7 @@ RgSchCellCb  *cell;
       }
    }
    
-   RETVALUE(ROK); 
+   return ROK; 
 }  /* rgSCHRamTtiHndlr */
 
 
@@ -1195,29 +1060,20 @@ RgSchCellCb  *cell;
  *  @return  S16
  *      -# ROK 
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHRamFreeCell
-(
-RgSchCellCb    *cell
-)
-#else
-PUBLIC S16 rgSCHRamFreeCell(cell)
-RgSchCellCb    *cell;
-#endif
+S16 rgSCHRamFreeCell(RgSchCellCb  *cell)
 {
    RgSchRaReqInfo  *raReqInfo;
    RgSchRaCb       *raCb;
-   U8              idx;
-   U8              raCbCnt;
+   uint8_t         idx;
+   uint8_t         raCbCnt;
    Inst            inst = cell->instIdx;
-   U8              lstSz;
+   uint8_t         lstSz;
 #ifdef LTE_TDD
-   U8              maxUlSubframes;
-   U8              maxDlSubframes;
+   uint8_t         maxUlSubframes;
+   uint8_t         maxDlSubframes;
 #endif
 
 
-   TRC2(rgSCHRamFreeCell)
 
 
 #ifdef LTE_TDD
@@ -1282,22 +1138,11 @@ RgSchCellCb    *cell;
       rgSCHRamDelRaCb(cell, raCb, TRUE);
    }
 
-   RETVALUE(ROK); 
+   return ROK; 
 } /* rgSCHRamFreeCell */
 #ifdef RGR_V1
-#ifdef ANSI
-PRIVATE Void rgSCHRamProcContResExp
-(
-RgSchCellCb *cell,
-RgSchRaCb  *raCb
-)
-#else
-PRIVATE Void rgSCHRamProcContResExp (cell, raCb)
-RgSchCellCb *cell;
-RgSchRaCb  *raCb;
-#endif
+static Void rgSCHRamProcContResExp(RgSchCellCb *cell,RgSchRaCb  *raCb)
 {
-   TRC2(rgSCHRamProcContResExp);
    raCb->expiryTime.sfn = RGSCH_CONTRES_EXP;
    /*MSG4 Fix*/
    if (raCb->ue)
@@ -1312,22 +1157,11 @@ RgSchRaCb  *raCb;
       /* Delete RACB and release RNTI */
       rgSCHRamDelRaCb(cell, raCb, TRUE);
    }
-   RETVOID;
+   return;
 }
 
-#ifdef ANSI
-PRIVATE Void rgSCHRamProcContResGrdExp
-(
-RgSchCellCb *cell,
-RgSchRaCb  *raCb
-)
-#else
-PRIVATE Void rgSCHRamProcContResGrdExp (cell, raCb)
-RgSchCellCb  *cell;
-RgSchRaCb  *raCb;
-#endif
+static Void rgSCHRamProcContResGrdExp(RgSchCellCb *cell,RgSchRaCb  *raCb)
 {
-   TRC2(rgSCHRamProcContResGrdExp)
 
 
 /*Guard timer has expired, schedule only the contention REsolution CE with 
@@ -1348,7 +1182,7 @@ RgSchRaCb  *raCb;
             raCb->rntiLnk->rnti);   
    rgSCHRamAddToRaInfoSchdLst(cell, raCb);
    /* MSG4 Fix End */    
-   RETVOID;
+   return;
    
 }
 /**
@@ -1365,20 +1199,11 @@ RgSchRaCb  *raCb;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHChkContResTmrExp
-(
-RgSchCellCb        *cell
-)
-#else
-PRIVATE Void rgSCHChkContResTmrExp(cell)
-RgSchCellCb        *cell;
-#endif
+static Void rgSCHChkContResTmrExp(RgSchCellCb *cell)
 {
-   CmLList         *chkLnk    = NULLP;
-   RgSchRaCb       *raCb = NULLP;
+   CmLList    *chkLnk    = NULLP;
+   RgSchRaCb  *raCb = NULLP;
    
-   TRC2(rgSCHChkContResTmrExp)
       
    chkLnk = cmLListFirst(&(cell->contResTmrLst));
    
@@ -1412,20 +1237,11 @@ RgSchCellCb        *cell;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PRIVATE Void rgSCHChkContResGrdTmrExp
-(
-RgSchCellCb        *cell
-)
-#else
-PRIVATE Void rgSCHChkContResGrdTmrExp(cell)
-RgSchCellCb        *cell;
-#endif
+static Void rgSCHChkContResGrdTmrExp(RgSchCellCb  *cell)
 {
-   CmLList         *chkLnk    = NULLP;
-   RgSchRaCb       *raCb = NULLP;
+   CmLList    *chkLnk    = NULLP;
+   RgSchRaCb  *raCb = NULLP;
    
-   TRC2(rgSCHChkContResGrdTmrExp)
       
    chkLnk = cmLListFirst(&(cell->contResGrdTmrLst));
    
@@ -1460,36 +1276,28 @@ RgSchCellCb        *cell;
  *
  *  @param[in,out] RgSchCellCb      *cell
  *  @param[in]     CmLteTimingInfo  timingInfo
- *  @param[in]     U8               raIdx
+ *  @param[in]     uint8_t               raIdx
  *  @return  S16
  *      -# ROK
  **/
-#ifdef ANSI
-PUBLIC S16 rgSCHRamDelRaReq
+S16 rgSCHRamDelRaReq
 (
-RgSchCellCb          *cell,
-CmLteTimingInfo      timingInfo,
-U8                   raIdx
+RgSchCellCb      *cell,
+CmLteTimingInfo  timingInfo,
+uint8_t          raIdx
 )
-#else
-PUBLIC S16 rgSCHRamDelRaReq(cell, timingInfo, raIdx)
-RgSchCellCb          *cell;
-CmLteTimingInfo      timingInfo;
-U8                   raIdx;
-#endif
 {
-   U8                   subfrmIdx;
+   uint8_t              subfrmIdx;
    RgSchTddRachRspLst   *rachRsp;
-   U16                   sfnIdx;
+   uint16_t             sfnIdx;
    S16                  calcSfn;
-   U8                   subfrm;
+   uint8_t              subfrm;
    RgSchRaReqInfo       *raReqInfo;
-   U8                   idx;
-   U8                   i;
-   U8                   raRntiIdx;
+   uint8_t              idx;
+   uint8_t              i;
+   uint8_t              raRntiIdx;
    CmLteRnti            raRnti;
 
-   TRC2(rgSCHRamDelRaReq)
 
 
    rachRsp = &cell->rachRspLst[raIdx];
@@ -1534,27 +1342,16 @@ U8                   raIdx;
       }
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif
 
 /*MSG4 Fix Start */
-#ifdef ANSI
-PUBLIC S16 rgSCHRamAddToRaInfoSchdLst
-(
-RgSchCellCb       *cell,
-RgSchRaCb         *raCb
-)
-#else
-PUBLIC S16 rgSCHRamAddToRaInfoSchdLst(cell, raCb)
-RgSchCellCb       *cell;
-RgSchRaCb         *raCb;
-#endif
+S16 rgSCHRamAddToRaInfoSchdLst(RgSchCellCb *cell,RgSchRaCb *raCb)
 {
    CmLteTimingInfo expTime ={0};
    RgSchCmnCell    *cellSch =  RG_SCH_CMN_GET_CELL(cell);
 
-   TRC2(rgSCHRamAddToRaInfoSchdLst)
 
    /*Fix: This can be called even when guard timer is not expired. 
        * In this case CR timer expiry should be guard timer expiry time + Guard timer time*/
@@ -1564,30 +1361,19 @@ RgSchRaCb         *raCb;
    cmLListAdd2Tail(&(cell->raInfo.toBeSchdLst), &(raCb->schdLnk));
    raCb->contResTmrLnk.node = (PTR)(raCb);
    cmLListAdd2Tail(&(cell->contResTmrLst), &(raCb->contResTmrLnk));
-   RETVALUE(ROK);
+   return ROK;
 } /* rgSCHRamAddToRaInfoSchdLst */
 
 
 
-#ifdef ANSI
-PUBLIC S16 rgSCHRamRmvFrmRaInfoSchdLst
-(
-RgSchCellCb       *cell,
-RgSchRaCb         *raCb
-)
-#else
-PUBLIC S16 rgSCHRamRmvFrmRaInfoSchdLst(cell, raCb)
-RgSchCellCb       *cell;
-RgSchRaCb         *raCb;
-#endif
+S16 rgSCHRamRmvFrmRaInfoSchdLst(RgSchCellCb *cell,RgSchRaCb  *raCb)
 {
-   TRC2(rgSCHRamRmvFrmRaInfoSchdLst)
 
    cmLListDelFrm(&(cell->raInfo.toBeSchdLst), &(raCb->schdLnk));
    raCb->schdLnk.node = NULLP;   
    cmLListDelFrm(&(cell->contResTmrLst), &(raCb->contResTmrLnk));
    raCb->contResTmrLnk.node = NULLP;
-   RETVALUE(ROK);
+   return ROK;
 } /* rgSCHRamRmvFrmRaInfoSchdLst */
 
 /*MSG4 Fix End*/
@@ -1606,31 +1392,21 @@ RgSchRaCb         *raCb;
  *     File :
  *
  **********************************************************/
-#ifdef ANSI
-PRIVATE Void rgSCHRamUlFreeAllocation
+static Void rgSCHRamUlFreeAllocation
 (
 RgSchUlSf       *sf,
 RgSchUlAlloc    *alloc,
 RgSchCellCb     *cell,
 Bool            isEmtc
-
 )
-#else
-PRIVATE Void rgSCHRamUlFreeAllocation(sf, alloc, cell,isEmtc)
-RgSchUlSf       *sf;
-RgSchUlAlloc    *alloc;
-RgSchCellCb     *cell;
-Bool            isEmtc;
-#endif
 {
-   TRC2(rgSCHRamUlFreeAllocation);
 
    rgSCHUhmFreeProc(alloc->hqProc, cell);
    if(!isEmtc)
    {
       rgSCHUtlUlAllocRls(sf, alloc);
    }
-   RETVOID;
+   return;
 }
 
 /**********************************************************************

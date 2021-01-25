@@ -21,20 +21,6 @@
 #define __DU_MGR_H__
 #define DU_PROC  0
 
-/* Events */
-#define EVTCFG 0
-#define EVTSCTPSTRT  1
-#define EVENT_CU_DATA  2
-#define EVENT_SCTP_NTFY  3
-#define EVTSRVOPENREQ  4
-#define EVTSRVOPENCFM  5
-#define EVTTNLMGMTREQ  6
-#define EVTTNLMGMTCFM  7
-#define EVTSLOTIND    8
-#define EVTSTARTPOLL  9
-#define EVENT_RIC_DATA  10
-
-
 /* SAP IDs */
 #define DU_MAC_SUID 0
 #define DU_MAC_SPID 0
@@ -69,7 +55,7 @@
 #define MAC_CONFIGURED (MAC_GEN_CFG | MAC_SAP_CFG)
 
 #define DU_SET_ZERO(_buf, _size)   \
-   cmMemset((U8 *)(_buf), 0, _size);
+   memset((_buf), 0, _size);
 
 typedef enum
 {
@@ -85,28 +71,78 @@ typedef enum
    UE_ACTIVE
 }UeState;
 
+typedef enum
+{
+   UE_CTXT_UNKNOWN,
+   UE_CTXT_SETUP,
+   UE_CTXT_MOD
+}UeCtxtActionType;
+
+/** F1AP Msg IE **/
+typedef struct f1setupRsp
+{
+   uint32_t transId; /* Uniquely identify transaction */
+   char     cuName[CU_DU_NAME_LEN_MAX];   /* CU Name */
+   F1RrcVersion    rrcVersion;  /* RRC version */
+}F1SetupRsp;
+
+typedef struct f1DlRrcMsg 
+{
+   uint32_t gnbDuUeF1apId;
+   uint32_t gnbCuUeF1apId;
+   uint8_t  srbId;
+   bool     execDup;
+   bool     deliveryStatRpt;
+   uint16_t rrcMsgSize;
+   uint8_t  *rrcMsgPdu;
+}F1DlRrcMsg;
+
+typedef struct duUeCfg
+{
+   void *cellGrpCfg;
+   void *ueNrCapability;
+   uint8_t numRlcLcs;        /* Rlc Ue Cfg */
+   RlcBearerCfg rlcLcCfg[MAX_NUM_LC];
+   uint8_t numMacLcs;        /* Mac Ue Cfg */
+   LcCfg   macLcCfg[MAX_NUM_LC];
+   AmbrCfg *ambrCfg;
+}DuUeCfg;
+
+typedef struct f1UeContextSetup
+{
+   UeCtxtActionType actionType;
+   uint8_t cellIdx;
+   DuUeCfg  duUeCfg;        
+   F1DlRrcMsg  *dlRrcMsg;
+}F1UeContextSetupDb;
+
 typedef struct cellCfgParams
 {
    NrEcgi      nrEcgi;         /* ECGI */
-   U16         nrPci;          /* PCI */
-   U16         fiveGsTac;         /* 5gSTac */
-   Plmn      plmn[MAX_PLMN]; /* List of serving PLMN IDs */
-   U32         maxUe;          /* max UE per slot */
+   uint16_t    nrPci;          /* PCI */
+   uint16_t    fiveGsTac;         /* 5gSTac */
+   Plmn        plmn[MAX_PLMN]; /* List of serving PLMN IDs */
+   uint32_t    maxUe;          /* max UE per slot */
 }CellCfgParams;
 
 typedef struct duUeCb
 {
-   uint32_t gnbDuUeF1apId; /* GNB DU UE F1AP ID */
-   uint32_t gnbCuUeF1apId; /* GNB CU UE F1AP ID */
-   UeState  ueState;
-   MacUeCfg macUeCfg;
+   F1UeContextSetupDb *f1UeDb;
+   uint16_t crnti;
+   uint32_t gnbDuUeF1apId;   /* GNB DU UE F1AP ID */
+   uint32_t gnbCuUeF1apId;   /* GNB CU UE F1AP ID */
+   uint32_t drbBitMap;       /* Drb Bit Map */
+   UeState  ueState;         /* UE Active/ Ue Inactive state */
+   MacUeCfg macUeCfg;        /* Mac Ue Cfg */
+   RlcUeCfg rlcUeCfg;        /* Rlc Ue Cfg */
 }DuUeCb;
 
 typedef struct duCellCb
 {
    uint16_t       cellId;           /* Internal cell Id */
    CellCfgParams  cellInfo;         /* Cell info */
-   Bool           firstSlotIndRcvd;
+   /* pointer to store the address of macCellCfg params used to send du-app to MAC */
+   MacCellCfg    *duMacCellCfg;
    CellStatus     cellStatus;       /* Cell status */
    uint32_t       numActvUes;       /* Total Active UEs */
    DuUeCb         ueCb[MAX_NUM_UE];  /* UE CONTEXT */
@@ -120,8 +156,8 @@ typedef struct duLSapCb
    State       sapState;
    Mem         mem;
    CmTimer     timer;
-   U8          bndRetryCnt;
-   U8          maxBndRetry;
+   uint8_t     bndRetryCnt;
+   uint8_t     maxBndRetry;
    TmrCfg      bndTmr;
 }DuLSapCb;
 
@@ -139,14 +175,12 @@ typedef struct duCb
    Mem           mem;    /* Memory configs */
    TskInit       init;   /* DU Init */
    //DuLSapCb      **macSap;  /* MAC SAP */
-   Bool          f1Status; /* Status of F1 connection */
-   Bool          e2Status; /* Status of E2 connection */
+   bool          f1Status; /* Status of F1 connection */
+   bool          e2Status; /* Status of E2 connection */
    uint8_t       numCfgCells; 
    DuCellCb*     cfgCellLst[MAX_NUM_CELL];     /* List of cells at DU APP of type DuCellCb */
    uint8_t       numActvCells;
    DuCellCb*     actvCellLst[MAX_NUM_CELL];    /* List of cells activated/to be activated of type DuCellCb */
-   /* pointer to store the address of macCellCfg params used to send du-app to MAC */
-   MacCellCfg    *duMacCellCfg;         /* pointer to store params while sending DU-APP to MAC */
    uint32_t       numUe;            /* current number of UEs */
    UeCcchCtxt     ueCcchCtxt[MAX_NUM_UE]; /* mapping of gnbDuUeF1apId to CRNTI required for CCCH processing*/
 }DuCb;
@@ -165,7 +199,7 @@ typedef struct duLSapCfg
    Route       dstRoute;
    Selector    dstSel;
    Mem         mem;
-   U8          maxBndRetry;
+   uint8_t          maxBndRetry;
    TmrCfg      bndTmr;
    TmrCfg      connTmr;
 }DuLSapCfg;
@@ -175,39 +209,37 @@ DuCb duCb;
 //DuCfgParams duCfgParam;
 
 /* DU Cell Functions */
-S16 duActvInit(Ent entity, Inst inst, Region region, Reason reason);
-S16 duActvTsk(Pst *pst, Buffer *mBuf);
-S16 duSendRlcUlCfg();
-S16 duSendRlcDlCfg();
-S16 duBuildRlcCfg(Inst inst);
-S16 duBuildRlcLsapCfg(Ent ent, Inst inst, U8 lsapInst);
-S16 duBuildRlcUsapCfg(U8 elemId, Ent ent, Inst inst);
-S16 duHdlRlcCfgComplete(Pst *pst, KwMngmt *cfm);
-S16 duHdlRlcCntrlCfgComplete(Pst *pst, KwMngmt *cfm);
-S16 duProcRlcUlCfgComplete(Pst *pst, KwMngmt *cfm);
-S16 duProcRlcDlCfgComplete(Pst *pst, KwMngmt *cfm);
-S16 duSendMacCfg();
-S16 duBuildMacGenCfg();
-S16 duBuildMacUsapCfg(SpId sapId);
-S16 duHdlMacCfgComplete(Pst *pst, RgMngmt *cfm);
-S16 duBindUnbindRlcToMacSap(U8 inst, U8 action);
-S16 duProcCfgComplete();
-S16 duSendSchCfg();
-S16 duSctpStartReq();
-S16 duSctpNtfyHdl(Buffer *mBuf, CmInetSctpNotification *ntfy);
+uint8_t duActvInit(Ent entity, Inst inst, Region region, Reason reason);
+uint8_t duActvTsk(Pst *pst, Buffer *mBuf);
+uint8_t duSendRlcUlCfg();
+uint8_t duSendRlcDlCfg();
+uint8_t duBuildRlcCfg(Inst inst);
+uint8_t duBuildRlcLsapCfg(Ent ent, Inst inst, uint8_t lsapInst);
+uint8_t duBuildRlcUsapCfg(uint8_t elemId, Ent ent, Inst inst);
+uint8_t DuHdlRlcCfgComplete(Pst *pst, RlcMngmt *cfm);
+uint8_t duHdlRlcCntrlCfgComplete(Pst *pst, RlcMngmt *cfm);
+uint8_t duProcRlcUlCfgComplete(Pst *pst, RlcMngmt *cfm);
+uint8_t duProcRlcDlCfgComplete(Pst *pst, RlcMngmt *cfm);
+uint8_t duSendMacCfg();
+uint8_t duBuildMacGenCfg();
+uint8_t duBuildMacUsapCfg(SpId sapId);
+uint8_t duHdlMacCfgComplete(Pst *pst, RgMngmt *cfm);
+uint8_t duBindUnbindRlcToMacSap(uint8_t inst, uint8_t action);
+uint8_t duProcCfgComplete();
+uint8_t duSendSchCfg();
+uint8_t duSctpStartReq();
+uint8_t duSctpNtfyHdl(Buffer *mBuf, CmInetSctpNotification *ntfy);
 
-S16 duBuildEgtpCfgReq();
-S16 duHdlEgtpCfgComplete(CmStatus cfm);
-S16 duSendEgtpSrvOpenReq();
-S16 duHdlEgtpSrvOpenComplete(CmStatus cfm);
-S16 duSendEgtpTnlMgmtReq(U8 action, U32 lclTeid, U32 remTeid);
-S16 duHdlEgtpTnlMgmtCfm(EgtpTnlEvt tnlEvtCfm);
-S16 duSendEgtpTestData();
-S16 duSendEgtpDatInd(Buffer *mBuf);
-S16 duHdlSchCfgComplete(Pst *pst, RgMngmt *cfm);
-uint8_t duBuildAndSendMacCellStartReq();
-uint8_t duBuildAndSendMacCellStopReq();
-
+uint8_t duBuildEgtpCfgReq();
+uint8_t duHdlEgtpCfgComplete(CmStatus cfm);
+uint8_t duSendEgtpSrvOpenReq();
+uint8_t duHdlEgtpSrvOpenComplete(CmStatus cfm);
+uint8_t duSendEgtpTnlMgmtReq(uint8_t action, uint32_t lclTeid, uint32_t remTeid);
+uint8_t duSendEgtpTestData();
+uint8_t duSendEgtpDatInd(Buffer *mBuf);
+uint8_t duHdlSchCfgComplete(Pst *pst, RgMngmt *cfm);
+uint8_t duBuildAndSendMacCellStart();
+uint8_t duBuildAndSendMacCellStop();
 #endif
 
 /**********************************************************************

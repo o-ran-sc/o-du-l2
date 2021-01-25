@@ -74,10 +74,10 @@ static int RLOG_FILE_ID=178;
 /* forward references */
 
 #if defined(SPLIT_RLC_DL_TASK) && defined(RLC_MAC_STA_RSP_RBUF)
-PUBLIC S16 rgBatchProc(Void);
+S16 rgBatchProc(Void);
 #endif
-PUBLIC U8 rgRguDlSap;
-PUBLIC U8 rgRguUlSap;
+uint8_t rgRguDlSap;
+uint8_t rgRguUlSap;
 /**
  * @brief Handler for Bind request.
  *
@@ -95,27 +95,17 @@ PUBLIC U8 rgRguUlSap;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 RgUiRguBndReq
+S16 RgUiRguBndReq
 (
 Pst  *pst,
 SuId suId,
 SpId spId
 )
-#else
-PUBLIC S16 RgUiRguBndReq(pst, suId, spId)
-Pst  *pst;
-SuId suId;
-SpId spId;
-#endif
 {
    Inst      inst; 
    S16       ret = ROK;
    Pst       tmpPst;   /* Temporary Post Structure */
    RgUstaDgn dgn;      /* Alarm diagnostics structure */
-
-   TRC3(RgUiRguBndReq)
-
 
    RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
@@ -182,7 +172,7 @@ SpId spId;
       /*T2K - Passing spId as it is required to access the SAP CB*/
       ret = rgUIMRguBndCfm(inst,spId, CM_BND_NOK);
    }
-   RETVALUE(ret);
+   return (ret);
 }  /* RgUiRguBndReq */
 
 
@@ -203,23 +193,14 @@ SpId spId;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 RgUiRguUbndReq
+S16 RgUiRguUbndReq
 (
 Pst    *pst,
 SpId   spId,
 Reason reason
 )
-#else
-PUBLIC S16 RgUiRguUbndReq(pst, spId, reason)
-Pst    *pst;
-SpId   spId;
-Reason reason;
-#endif
 {
    Inst      inst;
-   TRC3(RgUiRguUbndReq)
-   
 
    RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
@@ -248,9 +229,9 @@ Reason reason;
       RGLOGERROR(inst,ERRCLS_INT_PAR, ERG011, (ErrVal)rgCb[inst].rguSap[spId].sapCfg.spId,
             "Invalid SAP Id:RgUiRguUbndReq failed\n");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
-   RETVALUE(ROK);
+   return ROK;
 }  /* RgUiRguUbndReq */
 /**
  * @brief API for sending bind confirm from MAC to RLC
@@ -265,39 +246,24 @@ Reason reason;
  *           
  *  @param[in] Inst        inst
  *  @param[in]  SuId          suId
- *  @param[in]  U8            status
+ *  @param[in]  uint8_t            status
  *  @return  S16
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 rgUIMRguBndCfm
-(
-Inst inst,
-SpId spId,
-U8 status
-)
-#else
-PUBLIC S16 rgUIMRguBndCfm(inst,spId, status)
-Inst          inst;
-SpId          spId;
-U8            status;
-#endif
+S16 rgUIMRguBndCfm(Inst inst,SpId spId,uint8_t status)
 {
    S16  ret = ROK;
    
-   TRC2(rgUIMRguBndCfm)
-   
-
    ret = RgUiRguBndCfm(&rgCb[inst].rguSap[spId].sapCfg.sapPst, 
                       rgCb[inst].rguSap[spId].sapCfg.suId, status);
    if (ret != ROK)
    {
       
       RLOG0(L_ERROR,"RgUiRguBndCfm Failed ");
-      RETVALUE(ret);
+      return (ret);
    }
-   RETVALUE(ret);
+   return (ret);
 }  /* rgUIMRguBndCfm*/
 
 
@@ -317,39 +283,24 @@ U8            status;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 RgUiRguDDatReq
-(
-Pst             *pst,
-SpId            spId,
-RguDDatReqInfo  *datReq
-)
-#else
-PUBLIC S16 RgUiRguDDatReq(pst, spId, datReq)
-Pst             *pst;
-SpId            spId;
-RguDDatReqInfo  *datReq;
-#endif
+S16 RgUiRguDDatReq(Pst *pst,SpId spId,RguDDatReqInfo  *datReq)
 {
    S16   ret = ROK;
    Inst  inst;
 #ifndef NO_ERRCLS 
-   U32   id;
-   U32   id1;
-   U32   id2;
-   U32   id3;
+   uint32_t   id;
+   uint32_t   id1;
+   uint32_t   id2;
+   uint32_t   id3;
 #endif
    
-   TRC3(RgUiRguDDatReq)
-
-
    RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
 #ifndef NO_ERRCLS
    if (datReq == NULLP)
    {
       RLOG0(L_ERROR,"Input Message Buffer is NULL");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    
    if(rgCb[inst].rguSap[spId].sapCfg.spId == spId)
@@ -370,7 +321,7 @@ RguDDatReqInfo  *datReq;
                RG_DROP_RGUDDATREQ_MBUF(datReq->datReq[id3]);
             }
 #endif
-            RETVALUE(RFAILED);
+            return RFAILED;
       }
    }
    else
@@ -385,7 +336,7 @@ RguDDatReqInfo  *datReq;
          RG_DROP_RGUDDATREQ_MBUF(datReq->datReq[id3]);
       }
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Update RGU SAP statistics for received sdu count */
@@ -419,7 +370,7 @@ RguDDatReqInfo  *datReq;
    ret = rgROMDedDatReq(inst,datReq);
     SPutStaticBuffer(pst->region, pst->pool, (Data *)datReq,sizeof(RguDDatReqInfo), SS_SHARABLE_MEMORY);
    datReq = NULLP;
-   RETVALUE(ret);
+   return (ret);
 }  /* RgUiRguDDatReq */
 
 
@@ -439,33 +390,23 @@ RguDDatReqInfo  *datReq;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 RgUiRguCDatReq
+S16 RgUiRguCDatReq
 (
 Pst             *pst,
 SpId            spId,
 RguCDatReqInfo  *datReq
 )
-#else
-PUBLIC S16 RgUiRguCDatReq(pst, spId, datReq)
-Pst             *pst;
-SpId            spId;
-RguCDatReqInfo  *datReq;
-#endif
 {
    Inst  inst;
    S16   ret = ROK;
    
-   TRC3(RgUiRguCDatReq)
-
-
    RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
 #ifndef NO_ERRCLS
    if (datReq == NULLP)
    {
       RLOG0(L_ERROR,"Input Message Buffer is NULL");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    
    if(rgCb[inst].rguSap[spId].sapCfg.spId == spId)
@@ -480,7 +421,7 @@ RguCDatReqInfo  *datReq;
             RLOG1(L_ERROR,"Invalid SAP State:%d RgUiRguCDatReq failed",
                   rgCb[inst].rguSap[spId].sapSta.sapState);
 #endif
-            RETVALUE(RFAILED);
+            return RFAILED;
       }
    }
    else
@@ -488,7 +429,7 @@ RguCDatReqInfo  *datReq;
 #if (ERRCLASS & ERRCLS_ADD_RES)      
       RLOG1(L_ERROR,"Invalid SAP Id:%d RgUiRguCDatReq failed ",spId);
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -510,7 +451,7 @@ RguCDatReqInfo  *datReq;
    }
    ret = SPutStaticBuffer(pst->region, pst->pool,(Data *)datReq,sizeof(RguCDatReqInfo) , SS_SHARABLE_MEMORY);
    datReq = NULLP;
-   RETVALUE(ret);
+   return (ret);
 }  /* RgUiRguCDatReq */
 
 
@@ -530,26 +471,17 @@ RguCDatReqInfo  *datReq;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 RgUiRguDStaRsp
+S16 RgUiRguDStaRsp
 (
 Pst             *pst,
 SpId            spId,
 RguDStaRspInfo  *staRsp
 )
-#else
-PUBLIC S16 RgUiRguDStaRsp(pst, spId, staRsp)
-Pst             *pst;
-SpId            spId;
-RguDStaRspInfo  *staRsp;
-#endif
 {
    Inst  inst;
+   S16   ret       = ROK;
+   volatile uint32_t     startTime = 0;
 
-   S16              ret       = ROK;
-   VOLATILE U32     startTime = 0;
-
-   TRC3(RgUiRguDStaRsp)
 
    RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
@@ -566,7 +498,7 @@ RguDStaRspInfo  *staRsp;
 
    /*stoping Task*/
    SStopTask(startTime, PID_MAC_STA_RSP);
-   RETVALUE(ret);
+   return (ret);
 }  /* RgUiRguDStaRsp */
 
 
@@ -588,25 +520,15 @@ RguDStaRspInfo  *staRsp;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 RgUiRguCStaRsp
+S16 RgUiRguCStaRsp
 (
 Pst             *pst,
 SpId            spId,
 RguCStaRspInfo  *staRsp
 )
-#else
-PUBLIC S16 RgUiRguCStaRsp(pst, spId, staRsp)
-Pst             *pst;
-SpId            spId;
-RguCStaRspInfo  *staRsp;
-#endif
 {
    Inst  inst;
    S16   ret = ROK;
-
-   TRC3(RgUiRguCStaRsp)
-   
 
    RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
@@ -614,7 +536,7 @@ RguCStaRspInfo  *staRsp;
    if (staRsp == NULLP)
    {
       RLOG0(L_ERROR,"Input Response Buffer is NULL");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (spId == rgCb[inst].rguSap[spId].sapCfg.spId)
@@ -629,7 +551,7 @@ RguCStaRspInfo  *staRsp;
             RLOG1(L_ERROR,"Invalid SAP State:%d RgUiRguCStaRsp failed",
                   rgCb[inst].rguSap[spId].sapSta.sapState);
 #endif
-            RETVALUE(RFAILED);
+            return RFAILED;
       }
    }
    else
@@ -637,7 +559,7 @@ RguCStaRspInfo  *staRsp;
 #if (ERRCLASS & ERRCLS_ADD_RES)      
       RLOG1(L_ERROR,"Invalid SAP Id:%d RgUiRguCStaRsp failed",spId);
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -645,12 +567,12 @@ RguCStaRspInfo  *staRsp;
    if (ret != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,staRsp->cellId,"Processing Of Status Response Failed");
-      RETVALUE(ret);
+      return (ret);
    }
 
    ret = SPutStaticBuffer(pst->region, pst->pool, (Data *)staRsp,sizeof(RguCStaRspInfo) , SS_SHARABLE_MEMORY);
    staRsp = NULLP;
-   RETVALUE(ret);
+   return (ret);
 }  /* RgUiRguCStaRsp */
 
 #ifdef LTE_L2_MEAS
@@ -671,26 +593,16 @@ RguCStaRspInfo  *staRsp;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 RgUiRguL2MUlThrpMeasReq 
+S16 RgUiRguL2MUlThrpMeasReq 
 (
 Pst             *pst,
 SpId            spId,
 RguL2MUlThrpMeasReqInfo  *measReq
 )
-#else
-PUBLIC S16 RgUiRguL2MUlThrpMeasReq(pst, spId, measReq)
-Pst             *pst;
-SpId            spId;
-RguL2MUlThrpMeasReqInfo  *measReq;
-#endif
 {
    Inst  inst;
 
    S16   ret = ROK;
-
-   TRC3(RgUiRguL2MUlThrpMeasReq)
-   
 
    RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
@@ -698,7 +610,7 @@ RguL2MUlThrpMeasReqInfo  *measReq;
    if (measReq == NULLP)
    {
       RLOG0(L_ERROR,"Input Response Buffer is NULL");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    if (spId == rgCb[inst].rguSap[spId].sapCfg.spId)
@@ -713,7 +625,7 @@ RguL2MUlThrpMeasReqInfo  *measReq;
             RLOG1(L_ERROR,"Invalid SAP State:%d RgUiRguL2MUlThrpMeasReq failed",
                   rgCb[inst].rguSap[spId].sapSta.sapState);
 #endif
-            RETVALUE(RFAILED);
+            return RFAILED;
       }
    }
    else
@@ -721,7 +633,7 @@ RguL2MUlThrpMeasReqInfo  *measReq;
 #if (ERRCLASS & ERRCLS_ADD_RES)      
       RLOG1(L_ERROR,"Invalid SAP Id:%d RgUiRguL2MUlThrpMeasReq failed",spId);
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -733,7 +645,7 @@ RguL2MUlThrpMeasReqInfo  *measReq;
 
   SPutStaticBuffer(pst->region, pst->pool, (Data *)measReq,sizeof(RguL2MUlThrpMeasReqInfo) , SS_SHARABLE_MEMORY);
    measReq= NULLP;
-   RETVALUE(ret);
+   return (ret);
 }  /* RgUiRguL2MUlThrpMeasReq */
 #endif
 
@@ -755,23 +667,14 @@ RguL2MUlThrpMeasReqInfo  *measReq;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 rgUIMSndDedStaInd
+S16 rgUIMSndDedStaInd
 (
 Inst         inst,
 RgUpSapCb    *rguSap,
 RgRguDedStaInd  *staInd
 )
-#else
-PUBLIC S16 rgUIMSndDedStaInd(inst,rguSap,staInd)
-Inst         inst;
-RgUpSapCb    *rguSap;
-RgRguDedStaInd  *staInd;
-#endif
 {
    S16  ret = ROK;
-   
-   TRC2(rgUIMSndDedStaInd)
    
    RGDBGPRM(inst,(rgPBuf(inst),"rgUIMSndDedStaInd(): staInd = %p;\n", (void *)staInd));
    
@@ -780,9 +683,9 @@ RgRguDedStaInd  *staInd;
    if (ret != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,staInd->cellId,"RgUiRguDStaInd Failed");
-      RETVALUE(ret);
+      return (ret);
    }
-   RETVALUE(ret);
+   return (ret);
 }  /* rgUIMSndDedStaInd */
 
 
@@ -804,34 +707,23 @@ RgRguDedStaInd  *staInd;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 rgUIMSndCmnStaInd
+S16 rgUIMSndCmnStaInd
 (
 Inst            inst,
 RgUpSapCb    *rguDlSap,
 RgRguCmnStaInd  *staInd
 )
-#else
-PUBLIC S16 rgUIMSndCmnStaInd(inst,rguDlSap,staInd)
-Inst          inst,
-RgUpSapCb    *rguDlSap,
-RgRguCmnStaInd  *staInd;
-#endif
 {
    S16  ret = ROK;
-
-
-   TRC2(rgUIMSndCmnStaInd)
-   
 
    ret = RgUiRguCStaInd(&(rguDlSap->sapCfg.sapPst), rguDlSap->sapCfg.suId, 
          staInd);
    if (ret != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,staInd->cellId,"RgUiRguCStaInd Failed");
-      RETVALUE(ret);
+      return (ret);
    }
-   RETVALUE(ret);
+   return (ret);
 }  /* rgUIMSndCmnStaInd */
 
 
@@ -853,25 +745,14 @@ RgRguCmnStaInd  *staInd;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 rgUIMSndDedDatInd
+S16 rgUIMSndDedDatInd
 (
 Inst         inst,
 RgUpSapCb    *rguUlSap,
 RgRguDedDatInd  *datInd
 )
-#else
-PUBLIC S16 rgUIMSndDedDatInd(datInd)
-Inst         inst;
-RgUpSapCb    *rguUlSap;
-RgRguDedDatInd  *datInd;
-#endif
 {
    S16  ret = ROK;
-
-
-   TRC2(rgUIMSndDedDatInd)
-   
 
    rguUlSap->sapSts.numPduTxmit += datInd->numLch;
 #ifndef SS_RBUF
@@ -880,13 +761,13 @@ RgRguDedDatInd  *datInd;
    if (ret != ROK)
    {
       RLOG_ARG0(L_ERROR,DBG_CELLID,datInd->cellId,"RgUiRguDdatInd Failed");
-      RETVALUE(ret);
+      return (ret);
    }
 #else
    SRngIncrWIndx(SS_RNG_BUF_ULMAC_TO_ULRLC);
    SsRngInfoTbl[SS_RNG_BUF_ULMAC_TO_ULRLC].pktRate++;
 #endif
-   RETVALUE(ret);
+   return (ret);
 }  /* rgUIMSndDedDatInd */
 
 
@@ -908,24 +789,9 @@ RgRguDedDatInd  *datInd;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 rgUIMSndCmnDatInd
-(
-Inst         inst,
-RgUpSapCb    *rguUlSap,
-RgRguCmnDatInd  *datInd
-)
-#else
-PUBLIC S16 rgUIMSndCmnDatInd(datInd)
-Inst         inst;
-RgUpSapCb    *rguUlSap;
-RgRguCmnDatInd  *datInd;
-#endif
+S16 rgUIMSndCmnDatInd(Inst inst,RgUpSapCb *rguUlSap,RgRguCmnDatInd  *datInd)
 {
    S16  ret = ROK;
-
-   TRC2(rgUIMSndCmnDatInd)
-
 
    RGDBGPRM(inst,(rgPBuf(inst),"rgUIMSndCmnDatInd(): staInd = %p;\n", (void *)datInd));
 
@@ -938,9 +804,9 @@ RgRguCmnDatInd  *datInd;
    {
       RGDBGERRNEW(inst,(rgPBuf(inst),"RgUiRguCDatInd Failed\n"));
       RLOG_ARG0(L_ERROR,DBG_CELLID,datInd->cellId,"RgUiRguCDatInd Failed");
-      RETVALUE(ret);
+      return (ret);
    }
-   RETVALUE(ret);
+   return (ret);
 }  /* rgUIMSndCmnDatInd */
 
 /**
@@ -962,27 +828,12 @@ RgRguCmnDatInd  *datInd;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 RgUiCrgBndReq
-(
-Pst   *pst, 
-SuId  suId,
-SpId  spId
-)
-#else
-PUBLIC S16 RgUiCrgBndReq(pst, suId, spId)
-Pst   *pst; 
-SuId  suId;
-SpId  spId;
-#endif
+S16 RgUiCrgBndReq(Pst   *pst, SuId  suId,SpId  spId)
 {
    S16       ret = ROK;
    Pst       tmpPst;   /* Temporary Post Structure */
    RgUstaDgn dgn;      /* Alarm diagnostics structure */
    Inst      inst;
-
-   TRC3(RgUiCrgBndReq)
-
 
    RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
@@ -1048,7 +899,7 @@ SpId  spId;
 #endif
       ret = rgUIMCrgBndCfm(inst,suId, CM_BND_NOK);
    }
-   RETVALUE(ret);
+   return (ret);
 }  /* RgUiCrgBndReq */
 
 
@@ -1070,23 +921,9 @@ SpId  spId;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 RgUiCrgUbndReq
-(
-Pst    *pst,
-SpId   spId,
-Reason reason
-)
-#else
-PUBLIC S16 RgUiCrgUbndReq(pst, spId, reason)
-Pst    *pst; 
-SpId   spId;
-Reason reason;
-#endif
+S16 RgUiCrgUbndReq(Pst *pst,SpId spId,Reason reason)
 {
    Inst      inst;
-   TRC3(RgUiCrgUbndReq)
-
 
    RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
@@ -1106,7 +943,7 @@ Reason reason;
             RLOG1(L_ERROR,"Invalid SAP State:%d RgUiCrgUbndReq failed",
                   rgCb[inst].crgSap.sapSta.sapState);
 #endif
-            RETVALUE(RFAILED);
+            return RFAILED;
       }
    }
    else
@@ -1115,9 +952,9 @@ Reason reason;
       RLOG1(L_ERROR,"Invalid SAP Id:%d RgUiCrgUbndReq failed",
             rgCb[inst].crgSap.sapCfg.spId);
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
-   RETVALUE(ROK);
+   return ROK;
 }  /* RgUiCrgUbndReq */
 
 /**
@@ -1133,35 +970,21 @@ Reason reason;
  *           
  *  @param[in] Inst        inst
  *  @param[in]  SuId          suId
- *  @param[in]  U8            status
+ *  @param[in]  uint8_t            status
  *  @return  S16
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 rgUIMCrgBndCfm
-(
-Inst  inst,
-SuId suId,
-U8 status
-)
-#else
-PUBLIC S16 rgUIMCrgBndCfm(inst,suId, status)
-Inst          inst;
-SuId          suId;
-U8            status;
-#endif
+S16 rgUIMCrgBndCfm(Inst  inst,SuId suId,uint8_t status)
 {
-   TRC2(rgUIMCrgBndCfm)
-   
 
    if(RgUiCrgBndCfm(&(rgCb[inst].crgSap.sapCfg.sapPst), rgCb[inst].crgSap.sapCfg.suId, status) != ROK)
    {
       RLOG0(L_ERROR,"RgUiCrgBndCfm Failed ");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* rgUIMCrgBndCfm*/
 
 /**
@@ -1184,33 +1007,23 @@ U8            status;
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 RgUiCrgCfgReq
+S16 RgUiCrgCfgReq
 (
 Pst           *pst, 
 SpId          spId,
 CrgCfgTransId transId,
 CrgCfgReqInfo *cfgReqInfo
 )
-#else
-PUBLIC S16 RgUiCrgCfgReq(pst, spId, transId, cfgReqInfo)
-Pst           *pst; 
-SpId          spId;
-CrgCfgTransId transId;
-CrgCfgReqInfo *cfgReqInfo;
-#endif
 {
    Inst      inst;
    S16       ret       = ROK;
-   U8        cfmStatus = 0x00ff;
-   U8        prntTrans[CRG_CFG_TRANSID_SIZE+1];
-
-   TRC3(RgUiCrgCfgReq);
+   uint8_t   cfmStatus = 0x00ff;
+   uint8_t   prntTrans[CRG_CFG_TRANSID_SIZE+1];
 
    RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
    /* Ensuring transId is always Null terminated. */
-   cmMemcpy((U8 *)prntTrans, (U8 *)transId.trans, CRG_CFG_TRANSID_SIZE);
+   memcpy(prntTrans, transId.trans, CRG_CFG_TRANSID_SIZE);
    prntTrans[CRG_CFG_TRANSID_SIZE] = '\0';
 
 
@@ -1219,7 +1032,7 @@ CrgCfgReqInfo *cfgReqInfo;
    {
       RLOG0(L_ERROR,"Input Param crgReqInfo is NULL ");
       rgUIMCrgCfgCfm(inst,transId, cfmStatus); 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* Upper SAP Id and State validation */
@@ -1240,7 +1053,7 @@ CrgCfgReqInfo *cfgReqInfo;
          cfgReqInfo = NULLP;
 
             rgUIMCrgCfgCfm(inst,transId, cfmStatus);
-            RETVALUE(RFAILED);
+            return RFAILED;
       }
    }
    else
@@ -1253,7 +1066,7 @@ CrgCfgReqInfo *cfgReqInfo;
             sizeof(CrgCfgReqInfo));
       cfgReqInfo = NULLP;
       rgUIMCrgCfgCfm(inst,transId, cfmStatus); 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
    ret = rgCOMCfgReq(inst,transId, cfgReqInfo);
    SPutSBuf (pst->region, pst->pool, (Data *)cfgReqInfo,
@@ -1262,10 +1075,10 @@ CrgCfgReqInfo *cfgReqInfo;
    if (ret != ROK)
    {
       RLOG0(L_ERROR,"Configuration Request Handling Failed ");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 }  /* RgUiCrgCfgReq */
 
 /**
@@ -1281,31 +1094,22 @@ CrgCfgReqInfo *cfgReqInfo;
  *           
  *  @param[in] Inst        inst
  *  @param[in]  CrgCfgTransId transId
- *  @param[in]  U8            status
+ *  @param[in]  uint8_t            status
  *  @return  S16
  *      -# ROK 
  *      -# RFAILED 
  **/
-#ifdef ANSI
-PUBLIC S16 rgUIMCrgCfgCfm
+S16 rgUIMCrgCfgCfm
 (
 Inst      inst,
 CrgCfgTransId transId,
-U8            status
+uint8_t       status
 )
-#else
-PUBLIC S16 rgUIMCrgCfgCfm(inst,transId, status)
-Inst      inst;
-CrgCfgTransId transId;
-U8            status;
-#endif
 {
    S16  ret = ROK;
-   U8   prntTrans[CRG_CFG_TRANSID_SIZE+1];
+   uint8_t   prntTrans[CRG_CFG_TRANSID_SIZE+1];
 
-   TRC2(rgUIMCrgCfgCfm)
-   
-   cmMemcpy((U8 *)prntTrans, (U8 *)transId.trans, CRG_CFG_TRANSID_SIZE);
+   memcpy(prntTrans, transId.trans, CRG_CFG_TRANSID_SIZE);
    prntTrans[CRG_CFG_TRANSID_SIZE] = '\0';
 
 
@@ -1313,35 +1117,27 @@ U8            status;
    if (ret != ROK)
    {
       RLOG0(L_ERROR,"RgUiCrgCfgCfm Failed ");
-      RETVALUE(ret);
+      return (ret);
    }
 
-   RETVALUE(ret);
+   return (ret);
 }  /* rgUIMCrgCfgCfm */
 #if defined(SPLIT_RLC_DL_TASK) && defined(RLC_MAC_STA_RSP_RBUF)
 
-#ifdef ANSI
-PUBLIC S16 rgBatchProc
-(
-Void
-)
-#else
-PUBLIC S16 rgBatchProc()
-Void;
-#endif
+S16 rgBatchProc(Void)
 {
 /* Read from Ring Buffer and process RLC BO Update */
    Pst pst = {0};
    SpId spId = 0;
    RguDStaRspInfo  *staRsp;
-   U32 elmIndx = 0;
+   uint32_t elmIndx = 0;
 #ifndef LTE_ADV
 /* Fill pst */
    pst.srcProcId = 1;
    pst.dstProcId = 1;
-   pst.dstEnt = ENTRG;
+   pst.dstEnt = ENTMAC;
    pst.dstInst = 0;
-   pst.srcEnt = ENTKW;
+   pst.srcEnt = ENTRLC;
    pst.srcInst = 1;
    pst.prior = PRIOR0;
    pst.route = RTESPEC;
@@ -1352,7 +1148,7 @@ Void;
 #else
 #endif
   
-   elmIndx = (U32)SRngGetRIndx(SS_RNG_BUF_DLRLC_TO_DLMAC);
+   elmIndx = (uint32_t)SRngGetRIndx(SS_RNG_BUF_DLRLC_TO_DLMAC);
    while(NULLP != elmIndx)
    {
       staRsp = (RguDStaRspInfo *)elmIndx;
@@ -1365,10 +1161,10 @@ Void;
       staRsp = NULLP;
       SRngIncrRIndx(SS_RNG_BUF_DLRLC_TO_DLMAC);
 
-      if((elmIndx = (U32)SRngGetRIndx(SS_RNG_BUF_DLRLC_TO_DLMAC)) == NULLP)
+      if((elmIndx = (uint32_t)SRngGetRIndx(SS_RNG_BUF_DLRLC_TO_DLMAC)) == NULLP)
       break;
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif
 

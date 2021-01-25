@@ -174,8 +174,8 @@
 #endif
 
 #ifdef MS_MBUF_CORRUPTION /* Should be enabled when debugging mbuf corruption */
-EXTERN Data *startPtr128;
-EXTERN Size regMemSize;
+Data *startPtr128;
+Size regMemSize;
 #endif
 
 /*
@@ -196,28 +196,15 @@ EXTERN Size regMemSize;
 *       File:  cm_lib.c
 *
 */
-#ifdef ANSI
-PUBLIC U8 *cmMemcpy
-(
-U8           *tgt,
-CONSTANT U8  *src,
-PTR          len
-)
-#else
-PUBLIC U8 *cmMemcpy(tgt, src, len)
-U8           *tgt;
-CONSTANT U8  *src;
-PTR          len;
-#endif
+uint8_t *cmMemcpy(uint8_t *tgt,const uint8_t *src,PTR len)
 {
    /*cm_lib_c_001.main_14 : Fix for TRACE5 feature crash due to missing TRC MACRO*/
-   TRC2(cmMemcpy)
 
 #ifdef MS_MBUF_CORRUPTION /* checking for valid memory address */
 if ((tgt > startPtr128) && (tgt < (startPtr128+regMemSize)))
 {
-   if ((*((U32 *)(tgt + 4)) == 0xDEADDEAD) || (*((U32 *)(tgt + 24)) == 0xDEADDEAD) ||
-      (*((U32 *)(tgt + 44)) == 0xDEADDEAD) || (*((U32 *)(tgt + 80)) == 0xDEADDEAD))
+   if ((*((uint32_t *)(tgt + 4)) == 0xDEADDEAD) || (*((uint32_t *)(tgt + 24)) == 0xDEADDEAD) ||
+      (*((uint32_t *)(tgt + 44)) == 0xDEADDEAD) || (*((uint32_t *)(tgt + 80)) == 0xDEADDEAD))
    {
       Data *crashPtr=NULLP;
       *crashPtr = 9;
@@ -225,8 +212,8 @@ if ((tgt > startPtr128) && (tgt < (startPtr128+regMemSize)))
 }
 if ((src > startPtr128) && (src < (startPtr128+regMemSize)))
 {
-   if ((*((U32 *)(src + 4)) == 0xDEADDEAD) || (*((U32 *)(src + 24)) == 0xDEADDEAD) ||
-      (*((U32 *)(src + 44)) == 0xDEADDEAD) || (*((U32 *)(src + 80)) == 0xDEADDEAD))
+   if ((*((uint32_t *)(src + 4)) == 0xDEADDEAD) || (*((uint32_t *)(src + 24)) == 0xDEADDEAD) ||
+      (*((uint32_t *)(src + 44)) == 0xDEADDEAD) || (*((uint32_t *)(src + 80)) == 0xDEADDEAD))
    {
       Data *crashPtr=NULLP;
       *crashPtr = 9;
@@ -234,12 +221,12 @@ if ((src > startPtr128) && (src < (startPtr128+regMemSize)))
 }
 #endif 
 #if (MEMCPY_AVAIL) /* memcpy is available */
-   RETVALUE((U8 *) memcpy((Void *)tgt, (CONSTANT Void *)src, (size_t)len));
+   return ( memcpy(tgt, src, len));
 #else
    while (len--)
       *tgt++ = *src++;
 
-   RETVALUE(tgt);
+   return (tgt);
 #endif /* MEMCPY_AVAIL */
 
 } /* end of cmMemcpy */
@@ -262,33 +249,20 @@ if ((src > startPtr128) && (src < (startPtr128+regMemSize)))
 *       File:  cm_lib.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmMemcmp
-(
-CONSTANT U8     *s1,
-CONSTANT U8     *s2,
-PTR             len
-)
-#else
-PUBLIC S16 cmMemcmp (s1, s2, len)
-CONSTANT U8     *s1;
-CONSTANT U8     *s2;
-PTR             len;
-#endif
+S16 cmMemcmp(const uint8_t *s1,const uint8_t *s2,PTR len)
 {
    /*cm_lib_c_001.main_14 : Fix for TRACE5 feature crash due to missing TRC MACRO*/
-   TRC2(cmMemcmp)
 #if MEMCMP_AVAIL /* memcmp is available */
-   RETVALUE((S16) memcmp((CONSTANT Void *)s1, (CONSTANT Void *)s2, (size_t)len));
+   return ((S16) memcmp((const Void *)s1, (const Void *)s2, (size_t)len));
 #else  /* MEMCMP_AVAIL: memcmp is not available */
    while (len--)
    {
       if (*s1 ^ *s2)
-         RETVALUE((S16) (*s1 - *s2));
+         return ((S16) (*s1 - *s2));
       s1++;
       s2++;
    }
-   RETVALUE(0);
+   return (0);
 #endif /* MEMCMP_AVAIL */
 } /* end of cmMemcmp */
 
@@ -311,27 +285,14 @@ PTR             len;
 *       File:  cm_lib.c
 *
 */
-#ifdef ANSI
-PUBLIC U8 *cmMemset
-(
-U8           *str,
-U8           val,
-PTR          len
-)
-#else
-PUBLIC U8 *cmMemset(str, val, len)
-U8           *str;
-U8           val;
-PTR          len;
-#endif
+uint8_t *cmMemset(uint8_t *str,uint8_t val,PTR len)
 {
    /*cm_lib_c_001.main_14 : Fix for TRACE5 feature crash due to missing TRC MACRO*/
-   TRC2(cmMemset)
 #if MS_MBUF_CORRUPTION /* checking for valid memory address */
 if ((str > startPtr128) && (str < (startPtr128+regMemSize)))
 {
-   if ((*((U32 *)(str + 4)) == 0xDEADDEAD) || (*((U32 *)(str + 24)) == 0xDEADDEAD) ||
-      (*((U32 *)(str + 44)) == 0xDEADDEAD) || (*((U32 *)(str + 80)) == 0xDEADDEAD))
+   if ((*((uint32_t *)(str + 4)) == 0xDEADDEAD) || (*((uint32_t *)(str + 24)) == 0xDEADDEAD) ||
+      (*((uint32_t *)(str + 44)) == 0xDEADDEAD) || (*((uint32_t *)(str + 80)) == 0xDEADDEAD))
    {
       Data *crashPtr=NULLP;
       *crashPtr = 9;
@@ -345,14 +306,14 @@ if ((str > startPtr128) && (str < (startPtr128+regMemSize)))
    }
    else
    {
-      memset((void *)str,val,(size_t) len);
+      memset(str,val, len);
    }
 #else  /* MEMSET_AVAIL: memset is not available */
    while (len --)
       *str++ = val;
 
 #endif /* MEMSET_AVAIL */
-   RETVALUE(str);
+   return (str);
 } /* end of cmMemset */
 
 
@@ -390,32 +351,21 @@ if ((str > startPtr128) && (str < (startPtr128+regMemSize)))
 *       File:  cm_lib.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmStrcmp
-(
-CONSTANT U8 *s1,
-CONSTANT U8 *s2
-)
-#else
-PUBLIC S16 cmStrcmp (s1, s2)
-CONSTANT U8 *s1;
-CONSTANT U8 *s2;
-#endif
+S16 cmStrcmp(const uint8_t *s1,const uint8_t *s2)
 {
    /*cm_lib_c_001.main_14 : Fix for TRACE5 feature crash due to missing TRC MACRO*/
-   TRC2(cmStrcmp)
 #if (STRCMP_AVAIL)
-   RETVALUE(strcmp((CONSTANT S8 *)s1, (CONSTANT S8 *)s2));
+   return (strcmp((const char *)s1, (const char *)s2));
 #else   /* STRCMP_AVAIL */
   
    while (*s1 && *s2)
    {
       if (*s1 ^ *s2)
-         RETVALUE(*s1 - *s2);
+         return (*s1 - *s2);
       s1++;
       s2++;
    }
-   RETVALUE(0);
+   return (0);
 #endif      /* strcmp is not available */
 
 } /* end of cmStrcmp */
@@ -455,34 +405,26 @@ CONSTANT U8 *s2;
 *       File:  cm_lib.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmStrncmp
+S16 cmStrncmp
 (
-CONSTANT U8  *s1,
-CONSTANT U8  *s2,
+const uint8_t  *s1,
+const uint8_t  *s2,
 MsgLen       len /* cm_lib_c_001.main_12: Changing from S16 to MsgLen.*/
 )
-#else
-PUBLIC S16 cmStrncmp (s1, s2, len)
-CONSTANT U8  *s1;
-CONSTANT U8  *s2;
-MsgLen       len;
-#endif
 {
    /*cm_lib_c_001.main_14 : Fix for TRACE5 feature crash due to missing TRC MACRO*/
-   TRC2(cmStrncmp)
 #if (STRNCMP_AVAIL)
-   RETVALUE(strncmp((CONSTANT S8 *)s1, (CONSTANT S8 *)s2, (size_t) len));
+   return (strncmp((const char *)s1, (const char *)s2, (size_t) len));
 #else   /* STRNCMP_AVAIL */
   
    while (*s1 && *s2 && len--)
    {
       if (*s1 ^ *s2)
-         RETVALUE(*s1 - *s2);
+         return (*s1 - *s2);
       s1++;
       s2++;
    }
-   RETVALUE(0);
+   return (0);
 #endif   /* strncmp is not available */
 } /* end of cmStrncmp */
 
@@ -510,29 +452,18 @@ MsgLen       len;
 *       File:  cm_lib.c
 *
 */
-#ifdef ANSI
-PUBLIC MsgLen cmStrlen
-(
-CONSTANT U8 *s
-)
-#else
-/* cm_lib_c_001.main_12: Changing from S16 to MsgLen.*/
-PUBLIC MsgLen cmStrlen (s)
-CONSTANT U8 *s;
-#endif
+MsgLen cmStrlen(const uint8_t *s)
 {
 #if (STRLEN_AVAIL)
    /*cm_lib_c_001.main_15 : Fix for warning due to mixed declation*/
-   TRC2(cmStrlen)
-   RETVALUE((MsgLen)strlen((CONSTANT S8 *)s));
+   return ((MsgLen)strlen((const char *)s));
 #else   /* STRLEN_AVAIL */
    MsgLen i;
   
    /*cm_lib_c_001.main_15 : Fix for warning due to mixed declation*/
-   TRC2(cmStrlen)
 
    for (i = 0; *s; i++, s++);
-   RETVALUE(i);
+   return (i);
 #endif   /* strlen is not available */
 } /* end of cmStrlen */
 

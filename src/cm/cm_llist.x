@@ -53,17 +53,17 @@ struct cmLListCp
    CmLList *first;       /* first entry in list */
    CmLList *last;        /* last entry in list */
    CmLList *crnt;        /* entry last accessed */
-   U32     count;        /* number of entries */
+   uint32_t     count;        /* number of entries */
 };
 
-EXTERN Void     cmLListInit     ARGS ((CmLListCp *lList));
-EXTERN Void     cmLListAdd2Head ARGS ((CmLListCp *lList, CmLList *node));
-EXTERN Void     cmLListAdd2Tail ARGS ((CmLListCp *lList, CmLList *node));
-EXTERN Void     cmLListInsCrnt  ARGS ((CmLListCp *lList, CmLList *node));
+Void     cmLListInit     ARGS ((CmLListCp *lList));
+Void     cmLListAdd2Head ARGS ((CmLListCp *lList, CmLList *node));
+Void     cmLListAdd2Tail ARGS ((CmLListCp *lList, CmLList *node));
+Void     cmLListInsCrnt  ARGS ((CmLListCp *lList, CmLList *node));
 /* cm_llist_x_001.main_6 - Add function */
-EXTERN Void     cmLListInsAfterCrnt  ARGS ((CmLListCp *lList, CmLList *node));
-EXTERN CmLList *cmLListDelFrm   ARGS ((CmLListCp *lList, CmLList *node));
-EXTERN Void cmLListCatLList ARGS (( CmLListCp *list1, CmLListCp *list2));
+Void     cmLListInsAfterCrnt  ARGS ((CmLListCp *lList, CmLList *node));
+CmLList *cmLListDelFrm   ARGS ((CmLListCp *lList, CmLList *node));
+Void cmLListCatLList ARGS (( CmLListCp *list1, CmLListCp *list2));
 
 #ifdef __cplusplus
 }

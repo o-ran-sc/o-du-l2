@@ -46,7 +46,7 @@ extern "C" {
 /* Loose Coupling define */
 #define UDX_SEL_LC            0     /*!< Loose Coupling Option */
 #define UDX_SEL_LWLC          1
-#define KW_MAX_UDX 3
+#define RLC_MAX_UDX 3
 
 
 /* CKW Interface defines */

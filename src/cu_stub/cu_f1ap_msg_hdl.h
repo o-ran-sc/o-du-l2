@@ -17,6 +17,8 @@
 *******************************************************************************/
 
 /* This file contains all F1AP message handler related functionality */
+#include <stdbool.h>
+#include <string.h>
 #include<ProtocolIE-Field.h>
 #include "ProtocolExtensionField.h"
 #include "F1AP-PDU.h"
@@ -26,12 +28,17 @@
 #include "SRB-ToAddMod.h"
 #include "RRCSetup-IEs.h"
 #include "RRCSetup.h"
+#include "DL-DCCH-Message.h"
+#include "RRCReconfiguration-IEs.h"
+#include "RRCReconfiguration.h"
+#include "DRB-ToAddModList.h"
+#include "DRB-ToAddMod.h"
+#include "SDAP-Config.h"
 #include "du_log.h"
 
 #define ENCODE_FAIL -1
 #define TRANS_ID 1
 #define RRC_SIZE 1
-#define ENC_BUF_MAX_LEN 100
 #define SUL_BAND_COUNT 0
 #define UL_SRBID        1
 #define DL_SRBID        0
@@ -39,29 +46,29 @@
 #define CU_ID           1
 #define CRNTI           17017
 #define CELL_INDEX      0
+#define SRB0 0
 #define SRB1 1
+#define SRB2 2
+#define DRB1 1
+#define DRB2 2
+#define QCI  9
 
-/* allocate and zero out a static buffer */
-#define CU_ALLOC(_datPtr, _size)                                \
-{                                                               \
-   S16 _ret;                                                    \
-   _ret = SGetSBuf(CU_APP_MEM_REG, CU_POOL,                  \
-                    (Data **)&_datPtr, _size);                  \
-   if(_ret == ROK)                                              \
-      cmMemset((U8*)_datPtr, 0, _size);                         \
-   else                                                         \
-      _datPtr = NULLP;                                          \
-}
+#define CU_UE_F1AP_ID 0
+#define DU_UE_F1AP_ID 1
+#define SP_CELL_ID     2
+#define SERV_CELL_IDX 3
+#define CU_TO_DU_RRC_INF 4
 
-/* free a static buffer */
-#define CU_FREE(_datPtr, _size)                                 \
-   if(_datPtr)                                                  \
-      SPutSBuf(CU_APP_MEM_REG, CU_POOL,                      \
-         (Data *)_datPtr, _size);
-
+#define RRC_SETUP 1
+#define REGISTRATION_ACCEPT 2
+#define UE_CONTEXT_SETUP_REQ 3
+#define UE_CONTEXT_SETUP_RSP 4
+#define SECURITY_MODE_COMPLETE 5
+#define RRC_RECONFIG 6
 
 typedef struct f1apDb
 {
+   uint8_t dlRrcMsgCount;
    OCTET_STRING_t duToCuContainer;
 }F1apMsgDb;
   

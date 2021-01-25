@@ -110,41 +110,41 @@
 
 /*ss014.301: SSI-4GMX related changes*/
 #ifdef SS_4GMX_LCORE
-PUBLIC VOLATILE SsOs     osCp;           /* common OS control point */
+volatile SsOs     osCp;           /* common OS control point */
 #else
-PUBLIC SsOs     osCp;           /* common OS control point */
+SsOs     osCp;           /* common OS control point */
 #endif
 
  
-EXTERN Cntr     cfgNumRegs;
-EXTERN SsRegCfg cfgRegInfo[SS_MAX_REGS];
+Cntr     cfgNumRegs;
+SsRegCfg cfgRegInfo[SS_MAX_REGS];
 
 
 /* ss029.103: modification: multiple procId related changes */ 
 #ifdef SS_MULTIPLE_PROCS
-/* PRIVATE functions */
-PRIVATE S16 SInsProcId ARGS((ProcId proc));
-PRIVATE S16 SRemProcId ARGS((ProcId proc));
-PRIVATE S16 SLockOsCp  ARGS((Void));
-PRIVATE S16 SULockOsCp ARGS((Void));
+/* static functions */
+static S16 SInsProcId ARGS((ProcId proc));
+static S16 SRemProcId ARGS((ProcId proc));
+static S16 SLockOsCp  ARGS((Void));
+static S16 SULockOsCp ARGS((Void));
 #endif /* SS_MULTIPLE_PROCS */
 
 #ifdef SSI_STATIC_MEM_LEAK_DETECTION
-PRIVATE void InitializeForStaticMemLeak ARGS((void));
-PRIVATE void InitializeStaticMemAllocInfo ARGS((StaticMemAllocInfo* memAllocInfo));
-PUBLIC U32 GetNextFreeIdx ARGS((StaticMemAllocInfo * memAllocInfo));
-PUBLIC void FreeIdx ARGS((U8* ptr, U32 idx, StaticMemAllocInfo* memAllocInfo,U32 size, char*
-      file, U32 line));
-PUBLIC void LogForStaticMemLeak ARGS((StaticMemAllocInfo* memAllocInfo, char* file,
-      U32 line, U32 size, void* ptr, U32 idx));
-PRIVATE void PrintStaticMemAllocInfo ARGS((StaticMemAllocInfo* memAllocInfo, FILE
+static void InitializeForStaticMemLeak ARGS((void));
+static void InitializeStaticMemAllocInfo ARGS((StaticMemAllocInfo* memAllocInfo));
+uint32_t GetNextFreeIdx ARGS((StaticMemAllocInfo * memAllocInfo));
+void FreeIdx ARGS((uint8_t* ptr, uint32_t idx, StaticMemAllocInfo* memAllocInfo,uint32_t size, char*
+      file, uint32_t line));
+void LogForStaticMemLeak ARGS((StaticMemAllocInfo* memAllocInfo, char* file,
+      uint32_t line, uint32_t size, void* ptr, uint32_t idx));
+static void PrintStaticMemAllocInfo ARGS((StaticMemAllocInfo* memAllocInfo, FILE
       *opFile));
 #endif
 /* ss001.301: additions */
 
-PUBLIC void DumpSSIDemandQDebugInformation()
+void DumpSSIDemandQDebugInformation()
 {
-   U32 i,j;
+   uint32_t i,j;
    RTLIN_DUMP_DEBUG("Demand Q Information\n");
    RTLIN_DUMP_DEBUG("====================\n");
    for(i = 0; i < osCp.numSTsks; i++)
@@ -165,7 +165,7 @@ PUBLIC void DumpSSIDemandQDebugInformation()
 #ifdef TENB_T2K3K_SPECIFIC_CHANGES
 pthread_mutex_t dumpingLock = PTHREAD_MUTEX_INITIALIZER;
 
-PUBLIC Void mtSigSegvHndlr()
+Void mtSigSegvHndlr()
 {
    int i;
 
@@ -183,7 +183,7 @@ PUBLIC Void mtSigSegvHndlr()
    sleep(5);
 }
 
-PUBLIC Void mtSigUsr2Hndlr()
+Void mtSigUsr2Hndlr()
 {
    printf("Backtrace for thread Id (%lu) cause:SIGUSR2(%d)\n",(unsigned long) pthread_self(),SIGUSR2);   
 
@@ -216,14 +216,7 @@ PUBLIC Void mtSigUsr2Hndlr()
 *       File:  ss_gen.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SInit
-(
-void
-)
-#else
-PUBLIC S16 SInit()
-#endif
+S16 SInit(void)
 {
    S16 ret;
    REG1 S16 i;
@@ -239,7 +232,6 @@ PUBLIC S16 SInit()
    SsDrvrTskEntry *drvrTsk;
 #endif
 /* ss002.301 : Modications */
-   TRC1(SInit);
 
    osCp.configFilePath = "/mnt/tmp/configFile";
 
@@ -263,7 +255,7 @@ PUBLIC S16 SInit()
 #endif /* SS_MULTIPLE_PROCS */
 
 #ifdef SS_THR_REG_MAP
-   cmMemset(osCp.threadMemoryRegionMap, SS_INVALID_THREAD_REG_MAP, 
+   memset(osCp.threadMemoryRegionMap, SS_INVALID_THREAD_REG_MAP, 
             (sizeof(Region) * SS_MAX_THREAD_REGION_MAP));
    ssRegMainThread();
 #endif
@@ -276,7 +268,7 @@ PUBLIC S16 SInit()
 	  sprintf(prntBufLoc,"\n SInit(): ssdInitGen failed to initialize\
 	  							implementation specific general information \n");
       SDisplay(1,prntBufLoc);
-      RETVALUE(RFAILED);
+      return RFAILED;
 	}
  
 #ifdef SSI_STATIC_MEM_LEAK_DETECTION
@@ -646,7 +638,7 @@ PUBLIC S16 SInit()
 #ifdef SS_FBSED_TSK_REG
    /* Configure task registration based on the configuration */
    /*ss013.301 : Fixed warnings for 32/64 bit compilation*/
-   cmCfgrTskReg((U8 *)"task_info.t");
+   cmCfgrTskReg((uint8_t *)"task_info.t");
 #endif /* SS_FBSED_TSK_REG  */
 
 /*ss011.301 : RMIOS release related changes*/
@@ -667,7 +659,7 @@ PUBLIC S16 SInit()
    ssdStart();
 
 
-   RETVALUE(ROK);
+   return ROK;
 
 
 /* clean up code */
@@ -724,7 +716,7 @@ cleanup0:
    ssdDeinitGen();
 
 
-   RETVALUE(RFAILED);
+   return RFAILED;
 }
 
 
@@ -744,19 +736,10 @@ cleanup0:
 *       File:  ss_gen.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SDeInit
-(
-void
-)
-#else
-PUBLIC S16 SDeInit()
-#endif
+S16 SDeInit(void)
 {
   /* ss007.301 */
-  U16    regCnt;
-
-   TRC1(SDeInit);
+  uint16_t    regCnt;
 
 
    ssdDeinitTmr();
@@ -774,7 +757,7 @@ PUBLIC S16 SDeInit()
 #if (ERRCLASS & ERRCLS_DEBUG)
     SSLOGERROR(ERRCLS_DEBUG, ESS014, ERRZERO,
                       "Could not destroy the Semaphore");
-    RETVALUE(RFAILED);
+    return RFAILED;
 
 #endif
    }
@@ -786,7 +769,7 @@ PUBLIC S16 SDeInit()
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS015, ERRZERO,
                       "Could not destroy the Semaphore");
-      RETVALUE(RFAILED);
+      return RFAILED;
 
 #endif
    }
@@ -803,30 +786,24 @@ PUBLIC S16 SDeInit()
    SDestroyLock(&(osCp.logger.bufLock));
 #endif /* SS_LOGGER_SUPPORT */
    ssdDeinitLog();
-   RETVALUE(ROK);
+   return ROK;
 
 }
 /* ss001.301: additions */
 #ifdef SS_LOGGER_SUPPORT 
-#ifdef ANSI
-PUBLIC S16 SWrtLogBuf
+S16 SWrtLogBuf
 (
 Txt *buf                        /* buffer */
 )
-#else
-PUBLIC S16 SWrtLogBuf(buf)
-Txt *buf;                       /* buffer */
-#endif
 {
    S16 bufSz;
-   TRC1(SWrtLogBuf);
    /* buffer synchronisation*/
-   bufSz = cmStrlen((U8 *)buf);
+   bufSz = cmStrlen((uint8_t *)buf);
    SLock(&osCp.logger.bufLock);
    if(osCp.logger.started == FALSE)
    {
       (Void)SUnlock(&(osCp.logger.bufLock));
-      RETVALUE(ROK);
+      return ROK;
    }
    /*
     * Append the buffer to the global buffer
@@ -836,7 +813,7 @@ Txt *buf;                       /* buffer */
    {
       SFlushBufToLog(osCp.logger.buffer);
       osCp.logger.curBufSiz = 0;
-      cmMemset((U8 *)osCp.logger.buffer, '\0', osCp.logger.maxBufSiz);
+      memset(osCp.logger.buffer, '\0', osCp.logger.maxBufSiz);
       sprintf(osCp.logger.buffer, "%s", buf);
       osCp.logger.curBufSiz += bufSz;
    }
@@ -846,7 +823,7 @@ Txt *buf;                       /* buffer */
       osCp.logger.curBufSiz += bufSz;
    }
    (Void)SUnlock(&(osCp.logger.bufLock));
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif /* SS_LOGGER_SUPPORT  */
 /*
@@ -870,17 +847,11 @@ Txt *buf;                       /* buffer */
 *       File:  ss_gen.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SPrint
+S16 SPrint
 (
 Txt *buf                        /* buffer */
 )
-#else
-PUBLIC S16 SPrint(buf)
-Txt *buf;                       /* buffer */
-#endif
 {
-   TRC1(SPrint);
 
 /* ss001.301: additions */
    SDisplay(0, buf);
@@ -888,7 +859,7 @@ Txt *buf;                       /* buffer */
    SWrtLogBuf(buf);
 #endif /* SS_LOGGER_SUPPORT  */
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* end of SPrint */
 
@@ -908,25 +879,15 @@ Txt *buf;                       /* buffer */
 *       File:  ss_gen.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SError
+S16 SError
 (
 Seq seq,                    /* sequence */
 Reason reason               /* reason */
 )
-#else
-PUBLIC S16 SError(seq, reason)
-Seq seq;                    /* sequence */
-Reason reason;              /* reason */
-#endif
 {
    S16 ret;
    DateTime dt;
    Txt errBuf[256];
-
-
-   TRC1(SError);
-
 
    SGetDateTime(&dt);
    sprintf(errBuf, "\n\ndate: %02d/%02d/%04d time: %02d:%02d:%02d\n",
@@ -938,7 +899,7 @@ Reason reason;              /* reason */
    ret = ssdError(seq, reason);
 
 
-   RETVALUE(ret);
+   return (ret);
 }
 
 
@@ -955,8 +916,7 @@ Reason reason;              /* reason */
 *       File:  ss_gen.c
 *
 */
-#ifdef ANSI
-PUBLIC Void SLogError
+Void SLogError
 (
 Ent ent,                    /* Calling layer's entity id */
 Inst inst,                  /* Calling layer's instance id */
@@ -968,25 +928,10 @@ ErrCode errCode,            /* layer unique error code */
 ErrVal errVal,              /* error value */
 Txt *errDesc                /* description of error */
 )
-#else
-PUBLIC Void SLogError(ent, inst, procId, file, line,
-                        errCls, errCode, errVal, errDesc)
-Ent ent;                    /* Calling layer's entity id */
-Inst inst;                  /* Calling layer's instance id */
-ProcId procId;              /* Calling layer's processor id */
-Txt *file;                  /* file name where error occured */
-S32 line;                   /* line in file where error occured */
-ErrCls errCls;              /* error class */
-ErrCode errCode;            /* layer unique error code */
-ErrVal errVal;              /* error value */
-Txt *errDesc;               /* description of error */
-#endif
 {
    DateTime dt;
    Txt errBuf[512];
 
-
-   TRC1(SLogError);
 
 /*ss014.301: SSI-4GMX related changes*/
 #ifndef SS_4GMX_LCORE
@@ -1006,7 +951,7 @@ Txt *errDesc;               /* description of error */
                      errCls, errCode, errVal, errDesc);
 
 
-   RETVOID;
+   return;
 }
 
 /* ss029.103: modification: 
@@ -1026,18 +971,10 @@ Txt *errDesc;               /* description of error */
 *       File:  ss_gen.c
 *
 */
-#ifdef ANSI
-PUBLIC ProcId SFndProcId
-(
-void
-)
-#else
-PUBLIC ProcId SFndProcId()
-#endif
+ProcId SFndProcId(void)
 {
-   TRC1(SFndProcId);
 
-   RETVALUE(osCp.procId);
+   return (osCp.procId);
 } /* end of SFndProcId */
 
 
@@ -1054,21 +991,12 @@ PUBLIC ProcId SFndProcId()
 *       File:  ss_gen.c
 *
 */
-#ifdef ANSI
-PUBLIC Void SSetProcId
-(
-ProcId procId
-)
-#else
-PUBLIC Void SSetProcId(procId)
-ProcId procId;
-#endif
+Void SSetProcId(ProcId procId)
 {
-   TRC1(SSetProcId);
 
    osCp.procId = procId;
 
-   RETVOID;
+   return;
 }
 
 #endif /* SS_MULTIPLE_PROCS */
@@ -1089,20 +1017,10 @@ ProcId procId;
 *       File:  ss_gen.c
 *
 */
-#ifdef ANSI
-PUBLIC U16 SGetProcIdIdx
-(
-ProcId proc
-)
-#else
-PUBLIC U16 SGetProcIdIdx(proc)
-ProcId proc; 
-#endif
+uint16_t SGetProcIdIdx(ProcId proc)
 {
-   U16 i;
-   U16 idx;
-
-   TRC1(SGetProcIdIdx);
+   uint16_t i;
+   uint16_t idx;
 
    idx = SS_HASH_IDX(proc);
 
@@ -1115,7 +1033,7 @@ ProcId proc;
       if (osCp.procLst.procId[i] == proc)
          return i;
 
-   RETVALUE(SS_INV_PROCID_IDX);
+   return (SS_INV_PROCID_IDX);
 } /* SGetProcIdIdx */
 
 
@@ -1132,20 +1050,11 @@ ProcId proc;
 *       File:  ss_gen.c
 *
 */
-#ifdef ANSI
-PRIVATE S16 SInsProcId
-(
-ProcId proc
-)
-#else
-PRIVATE S16 SInsProcId(proc)
-ProcId proc; 
-#endif
+static S16 SInsProcId(ProcId proc)
 {
-   U16 i;
-   U16 idx;
+   uint16_t i;
+   uint16_t idx;
 
-   TRC1(SInsProcId);
 
    idx = SS_HASH_IDX(proc);
 
@@ -1154,7 +1063,7 @@ ProcId proc;
       {
          osCp.procLst.procId[i] = proc;
          osCp.procLst.free--;
-         RETVALUE(ROK);
+         return ROK;
       }
 
    /* search for free entry upto idx */
@@ -1163,10 +1072,10 @@ ProcId proc;
       {
          osCp.procLst.procId[i] = proc;
          osCp.procLst.free--;
-         RETVALUE(ROK);
+         return ROK;
       }
 
-   RETVALUE(RFAILED);
+   return RFAILED;
 } /* SInsProcId */
 
 
@@ -1183,20 +1092,11 @@ ProcId proc;
 *       File:  ss_gen.c
 *
 */
-#ifdef ANSI
-PRIVATE S16 SRemProcId
-(
-ProcId proc
-)
-#else
-PRIVATE S16 SRemProcId(proc)
-ProcId proc; 
-#endif
+static S16 SRemProcId(ProcId proc)
 {
-   U16 i;
-   U16 idx;
+   uint16_t i;
+   uint16_t idx;
 
-   TRC1(SRemProcId);
 
    idx = SS_HASH_IDX(proc);
 
@@ -1205,7 +1105,7 @@ ProcId proc;
       {
          osCp.procLst.procId[i] = SS_INV_PROCID;
          osCp.procLst.free++;
-         RETVALUE(ROK);
+         return ROK;
       }
 
    /* search upto idx */
@@ -1214,10 +1114,10 @@ ProcId proc;
       {
          osCp.procLst.procId[i] = SS_INV_PROCID;
          osCp.procLst.free++;
-         RETVALUE(ROK);
+         return ROK;
       }
 
-   RETVALUE(RFAILED);
+   return RFAILED;
 } /* SRemProcId */
 
 
@@ -1234,25 +1134,17 @@ ProcId proc;
 *       File:  ss_gen.c
 *
 */
-#ifdef ANSI
-PRIVATE S16 SLockOsCp
-(
-Void
-)
-#else
-PRIVATE S16 SLockOsCp(Void)
-#endif
+static S16 SLockOsCp(void)
 {
    S16 ret;
 
-   TRC1(SLockOsCp);
 
    ret = SLock(&osCp.sTskTblLock);
    if (ret != ROK)
    {
       SSLOGERROR(ERRCLS_DEBUG, ESS016, ERRZERO,
                      "Could not lock system task table");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    SS_ACQUIRE_ALL_SEMA(&osCp.tTskTblSem, ret);
@@ -1269,14 +1161,14 @@ PRIVATE S16 SLockOsCp(Void)
 #if (ERRCLASS & ERRCLS_DEBUG)
          SSLOGERROR(ERRCLS_DEBUG, ESS018, ERRZERO,
                       "Could not give the Semaphore");
-         RETVALUE(RFAILED);
+         return RFAILED;
 #endif
       }
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* SLockOsCp */
 
@@ -1294,16 +1186,8 @@ PRIVATE S16 SLockOsCp(Void)
 *       File:  ss_gen.c
 *
 */
-#ifdef ANSI
-PRIVATE S16 SULockOsCp
-(
-Void
-)
-#else
-PRIVATE S16 SULockOsCp(Void)
-#endif
+static S16 SULockOsCp(Void)
 {
-   TRC1(SULockOsCp);
 
    /* unlock the table */
    SS_RELEASE_ALL_SEMA(&osCp.tTskTblSem);
@@ -1313,11 +1197,11 @@ PRIVATE S16 SULockOsCp(Void)
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS019, ERRZERO,
                       "Could not give the Semaphore");
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
    }
 
-   RETVALUE(ROK);
+   return ROK;
 
 } /* SULockOsCp */
 
@@ -1336,22 +1220,11 @@ PRIVATE S16 SULockOsCp(Void)
 *       File:  ss_gen.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SAddProcIdLst
-(
-U16 numPIds,
-ProcId *pIdLst
-)
-#else
-PUBLIC S16 SAddProcIdLst(numPIds, pIdLst)
-U16 numPIds;
-ProcId *pIdLst;
-#endif
+S16 SAddProcIdLst(uint16_t numPIds,ProcId *pIdLst)
 {
-   U16 i;
+   uint16_t i;
    S16 ret;
 
-   TRC1(SAddProcIdLst);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* range check */
@@ -1359,7 +1232,7 @@ ProcId *pIdLst;
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS020, ERRZERO, "number of proc Ids exceeds\
  limit");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* find if the entry exist in the table */
@@ -1368,14 +1241,14 @@ ProcId *pIdLst;
       if (pIdLst[i] == SS_INV_PROCID)
       {
          SSLOGERROR(ERRCLS_INT_PAR, ESS021, ERRZERO, "Invalid proc Ids");
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
 #endif
    
    if (SLockOsCp() != ROK)
-      RETVALUE(RFAILED);
+      return RFAILED;
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    for (i = 0; i < numPIds; i++)
@@ -1383,7 +1256,7 @@ ProcId *pIdLst;
       {
          SSLOGERROR(ERRCLS_INT_PAR, ESS022, ERRZERO, "Duplicate proc id");
          (Void) SULockOsCp();
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
 
    if (numPIds > osCp.procLst.free)
@@ -1391,7 +1264,7 @@ ProcId *pIdLst;
       SSLOGERROR(ERRCLS_INT_PAR, ESS023, ERRZERO, "Total number of proc id \
 exceeds");
       (Void) SULockOsCp();
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif 
 
@@ -1407,15 +1280,15 @@ exceeds");
                       "Could not insert the proc id");
 #endif
          (Void) SULockOsCp();
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
    /* unlock the table */
    if (SULockOsCp() != ROK)
-      RETVALUE(RFAILED);
+      return RFAILED;
 
-   RETVALUE(ret);
+   return (ret);
 } /* SAddProcIdLst */
 
 
@@ -1432,35 +1305,24 @@ exceeds");
 *       File:  ss_gen.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SRemProcIdLst
-(
-U16 numPIds,
-ProcId *pIdLst
-)
-#else
-PUBLIC S16 SRemProcIdLst(numPIds, pIdLst)
-U16 numPIds;
-ProcId *pIdLst;
-#endif
+S16 SRemProcIdLst(uint16_t numPIds,ProcId *pIdLst)
 {
-   U16 i;
+   uint16_t i;
 
-   TRC1(SRemProcIdLst);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* range check */
    if (numPIds > SS_MAX_PROCS)
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
 
    if (SLockOsCp() != ROK)
-      RETVALUE(RFAILED);
+      return RFAILED;
 
    if (numPIds > (SS_MAX_PROCS - osCp.procLst.free))
    {
       (Void) SULockOsCp();
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* find if the entry exist in the table */
@@ -1469,7 +1331,7 @@ ProcId *pIdLst;
       if (SGetProcIdIdx(pIdLst[i]) == SS_INV_PROCID_IDX)
       {
          (Void) SULockOsCp();
-         RETVALUE(RFAILED);
+         return RFAILED;
       }
    }
 
@@ -1478,9 +1340,9 @@ ProcId *pIdLst;
       SRemProcId(pIdLst[i]);
 
    if (SULockOsCp() != ROK)
-      RETVALUE(RFAILED);
+      return RFAILED;
 
-   RETVALUE(ROK);
+   return ROK;
 } /* SRemProcIdLst */
 
 
@@ -1497,33 +1359,22 @@ ProcId *pIdLst;
 *       File:  ss_gen.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SGetProcIdLst
-(
-U16 *numPIds,
-ProcId *pIdLst
-)
-#else
-PUBLIC S16 SGetProcIdLst(numPIds, pIdLst)
-U16 *numPIds;
-ProcId *pIdLst;
-#endif
+S16 SGetProcIdLst(uint16_t *numPIds,ProcId *pIdLst)
 {
-   U16 i;
-   U16 count = 0;
+   uint16_t i;
+   uint16_t count = 0;
 
-   TRC1(SGetProcIdLst);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if ((numPIds == NULLP) || (pIdLst == NULLP))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS025, ERRZERO, "Invalid numPIds/pIdLst");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif 
 
    if (SLockOsCp() != ROK)
-      RETVALUE(RFAILED);
+      return RFAILED;
 
    for (i = 0; i < SS_MAX_PROCS; i++)
    {
@@ -1534,12 +1385,12 @@ ProcId *pIdLst;
    *numPIds = count;
 
    if (SULockOsCp() != ROK)
-      RETVALUE(RFAILED);
+      return RFAILED;
 
    if (count == 0)
-      RETVALUE(RFAILED);
+      return RFAILED;
 
-   RETVALUE(ROK);
+   return ROK;
 } /* SGetProcIdLst */
 
 
@@ -1557,32 +1408,23 @@ ProcId *pIdLst;
 *       File:  ss_gen.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SGetXxCb
+S16 SGetXxCb
 (
 ProcId proc,
 Ent ent,
 Inst inst,
 Void **xxCb
 )
-#else
-PUBLIC S16 SGetXxCb(proc, ent, inst, xxCb)
-ProcId proc;
-Ent ent;
-Inst inst;
-Void **xxCb;
-#endif
 {
-   U16 procIdIdx;
+   uint16_t procIdIdx;
    SsIdx idx;
 
-   TRC1(SGetXxCb);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if ((proc == SS_INV_PROCID) || (ent >= SS_MAX_ENT) ||  (inst >= SS_MAX_INST))
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS026, ERRZERO, "Invalid proc/entity/instance");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif 
    
@@ -1598,22 +1440,22 @@ Void **xxCb;
 #if (ERRCLASS & ERRCLS_INT_PAR)
       SSLOGERROR(ERRCLS_INT_PAR, ESS027, ERRZERO, "Could not get proc table idx");
 #endif
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    idx = osCp.tTskIds[procIdIdx][ent][inst];
    if (idx == SS_TSKNC)
    {
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* update the CB */
    *xxCb = osCp.tTskTbl[idx].xxCb;
    /*ss032.103 added a check for NULLP */
    if (*xxCb == NULLP)
-      RETVALUE(RFAILED);
+      return RFAILED;
 
-   RETVALUE(ROK);
+   return ROK;
 } /* SGetXxCb */
 
 #endif /* SS_MULTIPLE_PROCS */
@@ -1635,17 +1477,10 @@ Void **xxCb;
 *       File:  ss_gen.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SFillEntIds
-(
-Void
-)
-#else
-PUBLIC S16 SFillEntIds(Void)
-#endif
+S16 SFillEntIds(Void)
 {
 
-   U8 entInfo[26][26] = {
+   uint8_t entInfo[26][26] = {
                            /* A      B      C      D      E      F      G      H      I      J      K  *
                               L      M      N      O      P      Q      R      S      T      U      V  *
                               W      X      Y      Z */
@@ -1712,7 +1547,7 @@ PUBLIC S16 SFillEntIds(Void)
                               W      X      Y      Z */
                            {ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
                   /* K */   ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC, ENTNC,
-                            ENTKW, ENTNC, ENTNC, ENTNC},
+                            ENTRLC, ENTNC, ENTNC, ENTNC},
                            /* A      B      C      D      E      F      G      H      I      J      K  *
                               L      M      N      O      P      Q      R      S      T      U      V  *
                               W      X      Y      Z */
@@ -1806,10 +1641,9 @@ PUBLIC S16 SFillEntIds(Void)
                         };
 
    /*ss013.301 :Adding  TRC MACRO*/
-   TRC2(SFillEntIds)
-            memcpy((U8*)osCp.entId, (U8*)entInfo, sizeof(entInfo));
+            memcpy(osCp.entId, entInfo, sizeof(entInfo));
 
-   RETVALUE(ROK);
+   return ROK;
 } /* SFillEntIds */
 
 
@@ -1828,34 +1662,23 @@ PUBLIC S16 SFillEntIds(Void)
 *
 *
 */
-#ifdef ANSI
-PUBLIC S16 SGetEntInd 
-(
-Ent      *entId,
-U8       *fileName
-)
-#else
-PUBLIC S16 SGetEntInd(entId, fileName)
-Ent      *entId;
-U8       *fileName;
-#endif
+S16 SGetEntInd(Ent *entId,uint8_t *fileName)
 {
 
 
-	U8   *letter = NULLP;
+	uint8_t   *letter = NULLP;
    /* ss002.301 Additions */
 	S8   *strippedName = NULLP;
-	U8   count = 0;
-	U8   tempIdx = 0;
-	U8   firstIdx = 0;
-	U8   secondIdx = 0;
+	uint8_t   count = 0;
+	uint8_t   tempIdx = 0;
+	uint8_t   firstIdx = 0;
+	uint8_t   secondIdx = 0;
 
-   TRC1(SGetEntInd);
 
    /* ss002.301 Additions */
 	if ((strippedName = strrchr((const char *)fileName, '/')))
 	{
-	   fileName = (U8 *)strippedName + 1;
+	   fileName = (uint8_t *)strippedName + 1;
 	}
 
 	if(fileName[0] =='l' && fileName[3] == '.')
@@ -1877,7 +1700,7 @@ U8       *fileName;
 		     if (letter[1] == 'g' && letter[2] == 'u')
 		     {
 		        *entId = ENTGT;
-			     RETVALUE(ROK);
+			     return ROK;
 		     }
 		   default: 
 			     break;
@@ -1897,7 +1720,7 @@ U8       *fileName;
 	    if(letter[count] < 'a' || letter[count] > 'z')
 	    {
 		   *entId = ENTNC;
-		   RETVALUE(ROK);
+		   return ROK;
 	    }
 	    else
 	    {
@@ -1915,7 +1738,7 @@ U8       *fileName;
 	/* First two letter of file name are alphabets the get the 
 	 * entity id from the static data base which is loaded in sFillEntIds() */
 	*entId = osCp.entId[firstIdx][secondIdx];
-	RETVALUE(ROK);
+	return ROK;
 } /* SGetEntInd */
 
 #endif /* SS_HISTOGRAM_SUPPORT */
@@ -1934,29 +1757,17 @@ U8       *fileName;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SLockNew 
-(
-SLockInfo *lockId,
-U8         lockType
-
-)
-#else
-PUBLIC S16 SLockNew(lockId, lockType)
-SLockInfo *lockId;
-U8         lockType;
-#endif
+S16 SLockNew(SLockInfo *lockId,uint8_t lockType)
 {
    S16    retVal = ROK;
 
-  TRC1(SLockNew);
 
   if((retVal = ssdLockNew(lockId, lockType)) != ROK) 
   {
     SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SLockNew(): Failed to aquire the lock\n");
-    RETVALUE(RFAILED);
+    return RFAILED;
   }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -1972,28 +1783,17 @@ U8         lockType;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SInitLockNew 
-(
-SLockInfo *lockId,
-U8         lockType
-)
-#else
-PUBLIC S16 SInitLockNew(lockId, lockType)
-SLockInfo *lockId;
-U8         lockType;
-#endif
+S16 SInitLockNew(SLockInfo *lockId,uint8_t  lockType)
 {
    S16    retVal = ROK;
 
-  TRC1(SInitLockNew);
 
   if((retVal = ssdInitLockNew(lockId, lockType)) != ROK) 
   {
     SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SInitLockNew(): Initialization of lock Failed\n");
-    RETVALUE(RFAILED);
+    return RFAILED;
   }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -2009,28 +1809,17 @@ U8         lockType;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SUnlockNew 
-(
-SLockInfo *lockId,
-U8         lockType
-)
-#else
-PUBLIC S16 SUnlockNew(lockId, lockType)
-SLockInfo *lockId;
-U8         lockType;
-#endif
+S16 SUnlockNew(SLockInfo *lockId,uint8_t lockType)
 {
    S16    retVal = ROK;
 
-  TRC1(SUnlockNew);
 
   if((retVal = ssdUnlockNew(lockId, lockType)) != ROK) 
   {
     SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SUnlockNew(): Failed to release the lock\n");
-    RETVALUE(RFAILED);
+    return RFAILED;
   }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -2046,35 +1835,24 @@ U8         lockType;
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SDestroyLockNew 
-(
-SLockInfo *lockId,
-U8         lockType
-)
-#else
-PUBLIC S16 SDestroyLockNew(lockId, lockType)
-SLockInfo *lockId;
-U8         lockType;
-#endif
+S16 SDestroyLockNew(SLockInfo *lockId,uint8_t lockType)
 {
    S16    retVal = ROK;
 
-  TRC1(SDestroyLockNew);
 
   if((retVal = ssdDestroyLockNew(lockId, lockType)) != ROK) 
   {
     SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SDestroyLockNew(): Failed to destroy the lock\n");
-    RETVALUE(RFAILED);
+    return RFAILED;
   }
-   RETVALUE(ROK);
+   return ROK;
 }
 #endif /* SS_LOCK_SUPPORT */
 
 #ifdef SSI_STATIC_MEM_LEAK_DETECTION
 /* Static memory leak detection changes */
-static U32 StaticMemLeakAge;
-static U32 StaticMemLeakIntCount = 1;
+static uint32_t StaticMemLeakAge;
+static uint32_t StaticMemLeakIntCount = 1;
 
 void PrintStaticMemAllocInfo(StaticMemAllocInfo* memAllocInfo, FILE *opFile)
 {
@@ -2100,7 +1878,7 @@ void PrintStaticMemAllocInfo(StaticMemAllocInfo* memAllocInfo, FILE *opFile)
 
 void InitializeStaticMemAllocInfo(StaticMemAllocInfo* memAllocInfo)
 {
-   U32 i;
+   uint32_t i;
    /* index 0 is not used; nextIdx as 0 means end of list */
    memAllocInfo->nextFreeIdx = 1;
 
@@ -2114,11 +1892,11 @@ void InitializeStaticMemAllocInfo(StaticMemAllocInfo* memAllocInfo)
    memAllocInfo->allocations[MAX_MEM_ALLOCATIONS - 1].listInfo.nextIdx = 0;
 }
 
-U32 GetNextFreeIdx(StaticMemAllocInfo * memAllocInfo)
+uint32_t GetNextFreeIdx(StaticMemAllocInfo * memAllocInfo)
 {
-   U32 toBeReturned = memAllocInfo->nextFreeIdx;
+   uint32_t toBeReturned = memAllocInfo->nextFreeIdx;
 
-   U32 newNextFreeIdx = memAllocInfo->allocations[memAllocInfo->nextFreeIdx].listInfo.nextIdx;
+   uint32_t newNextFreeIdx = memAllocInfo->allocations[memAllocInfo->nextFreeIdx].listInfo.nextIdx;
 
    if(newNextFreeIdx == 0 || newNextFreeIdx >= MAX_MEM_ALLOCATIONS)
    {
@@ -2131,7 +1909,7 @@ U32 GetNextFreeIdx(StaticMemAllocInfo * memAllocInfo)
 }
 
 #define CRASH_ENB {int *p = 0; *p = 100;}
-void FreeIdx(U8* ptr, U32 idx, StaticMemAllocInfo* memAllocInfo,U32 size, char* file, U32 line)
+void FreeIdx(uint8_t* ptr, uint32_t idx, StaticMemAllocInfo* memAllocInfo,uint32_t size, char* file, uint32_t line)
 {
    if(idx == 0 || idx >= MAX_MEM_ALLOCATIONS)
    {
@@ -2166,7 +1944,7 @@ CRASH_ENB
 }
 
 
-void LogForStaticMemLeak(StaticMemAllocInfo* memAllocInfo, char* file, U32 line, U32 size, void* ptr, U32 idx)
+void LogForStaticMemLeak(StaticMemAllocInfo* memAllocInfo, char* file, uint32_t line, uint32_t size, void* ptr, uint32_t idx)
 {
 
    memAllocInfo->allocations[idx].file = file;
@@ -2206,7 +1984,7 @@ void InitializeForStaticMemLeak()
    }
 }
 
-PUBLIC void DumpStaticMemLeakFiles()
+void DumpStaticMemLeakFiles()
 {
    int i;
 
@@ -2232,16 +2010,9 @@ PUBLIC void DumpStaticMemLeakFiles()
  *       File: mt_ss.c
  *
  */
-#ifdef ANSI
-PUBLIC S16 SReInitTmr
-(
-void
-)
-#else
-PUBLIC S16 SReInitTmr()
-#endif
+S16 SReInitTmr(void)
 {
-   U8 ret = ROK;
+   uint8_t ret = ROK;
    Txt prntBuf[PRNTSZE];
 
    sprintf(prntBuf, "\n SReInitTmr(): ReStarting the Tmr\n");
@@ -2251,9 +2022,9 @@ PUBLIC S16 SReInitTmr()
    {
        /*ss012.301 : Fix log related issue to suite MT and NS implementations*/
     SSLOGERROR(ERRCLS_INT_PAR, ESSXXX, ERRZERO, "SReInitTmr(): Failed to Restart the Tmr\n");
-    RETVALUE(RFAILED);
+    return RFAILED;
    }
-   RETVALUE(ROK);
+   return ROK;
 }
 
 /*
@@ -2269,7 +2040,7 @@ PUBLIC S16 SReInitTmr()
  *       File: ss_gen.c
  *
  */
-PUBLIC S8* SGetConfigPath(Void)
+S8* SGetConfigPath(Void)
 {
    return osCp.configFilePath;
 }

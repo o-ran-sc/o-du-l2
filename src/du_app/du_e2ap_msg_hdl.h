@@ -20,18 +20,18 @@
 
 #define ENCODE_FAIL -1
 
-S16 sctpSend(Buffer *mBuf, U8 itfType);
+uint8_t sctpSend(Buffer *mBuf, uint8_t itfType);
 
 typedef struct e2apDb
 {
-  U16     ricId;                    
-  uint8_t *plmn;
-  U32     ricReqId;
-  U32     ricInstanceId;
-  U32     ranFuncId;
-  uint8_t *ricEventTrigger;
-  U32     ricActionId;
-  U32     ricActionType;
+   uint16_t     ricId;                    
+   uint8_t      *plmn;
+   uint32_t     ricReqId;
+   uint32_t     ricInstanceId;
+   uint32_t     ranFuncId;
+   uint8_t     *ricEventTrigger;
+   uint32_t     ricActionId;
+   uint32_t     ricActionType;
 }E2apMsgDb;
 
 E2apMsgDb e2apMsgDb;
@@ -40,5 +40,5 @@ uint8_t SendE2APMsg(Region , Pool );
 void E2APMsgHdlr(Buffer *mBuf);
 uint8_t deAllocateE2SetupReqMsg(E2AP_PDU_t *e2apMsg, E2setupRequest_t *e2SetupReq, uint8_t idx);
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

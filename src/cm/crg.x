@@ -49,29 +49,29 @@ extern "C" {
   @brief Transaction ID between MAC and RRC. */
 typedef struct crgCfgTransId
 {
-   U8 trans[CRG_CFG_TRANSID_SIZE]; /*!< RRC transaction ID */
+   uint8_t trans[CRG_CFG_TRANSID_SIZE]; /*!< RRC transaction ID */
 } CrgCfgTransId;
 
 /** 
   @brief Bandwidth configuration per cell. */
 typedef struct crgBwCfg
 {
-   U8 dlTotalBw;            /*!< Total Dowlink Bandwidth */
-   U8 ulTotalBw;            /*!< Total Uplink Bandwidth  */
+   uint8_t dlTotalBw;            /*!< Total Dowlink Bandwidth */
+   uint8_t ulTotalBw;            /*!< Total Uplink Bandwidth  */
 } CrgBwCfg;
 
 /** 
   @brief RACH configuration per cell. */
 typedef struct crgRachCfg
 {
-   U8  maxMsg3Tx;            /*!< Maximum number of message 3 transmissions */
+   uint8_t  maxMsg3Tx;            /*!< Maximum number of message 3 transmissions */
 } CrgRachCfg;
 
 #ifdef LTE_ADV
 /** @brief UE secondary cell config params to MAC*/
 typedef struct crgUeSCellInfo
 {
-  U16                  sCellId;       /*!< This will be secondary cellId */
+  uint16_t                  sCellId;       /*!< This will be secondary cellId */
   Inst                 macInst;       /*!< MAC instance for SCell */
   SuId                 rguUlSapId;    /*!< MAC-RLC UL Sap ID */ 
   SuId                 rguDlSapId;    /*!< MAC-RLC DL SAP ID */
@@ -83,7 +83,7 @@ typedef struct crgUeSecCellInfo
 {
   Bool                 isSCellCfgPres; /*!<  Bool indicates whether configuration
                                    is present */
-  U8                   numSCells;                        /*!< Number of SCells
+  uint8_t                   numSCells;                        /*!< Number of SCells
                                                           */
   CrgUeSCellInfo       ueSCellCfg[CRG_MAX_SCELL_PER_UE]; /*!< Secondary cell 
                                                            configuration per UE */
@@ -103,7 +103,7 @@ typedef struct crgCellCfg
    SpId          rguDlSapId;   /*!< RLC DL SAP Id for common channels */
 #endif
 #ifdef EMTC_ENABLE
-   U8            emtcEnable;
+   uint8_t            emtcEnable;
 #endif
 } CrgCellCfg;
 
@@ -111,7 +111,7 @@ typedef struct crgCellCfg
   @brief Uplink HARQ configuration per UE. */
 typedef struct crgUeUlHqCfg
 {
-   U8 maxUlHqTx;           /*!< Maximum number of UL HARQ transmissions */
+   uint8_t maxUlHqTx;           /*!< Maximum number of UL HARQ transmissions */
 } CrgUeUlHqCfg;
 
 /* crg_x_001.main_3 - Changes for MIMO feature addition */
@@ -154,7 +154,7 @@ typedef struct crgUeCfg
   @brief Logical channel configuration information for downlink logical channels. */
 typedef struct crgDlLchCfg 
 {
-   U8             dlTrchType; /*!< Indicates type of DL transport channel:
+   uint8_t             dlTrchType; /*!< Indicates type of DL transport channel:
                                    Validated only for BCCH at MAC. DL Transport
                                    channel type can take following values:<br>
                                    CM_LTE_TRCH_BCH<br> 
@@ -166,12 +166,12 @@ typedef struct crgDlLchCfg
   @brief Logical channel configuration information for uplink logical channels. */
 typedef struct crgUlLchCfg
 {
-   U8             ulTrchType; /*!< Indicates type of UL transport channel:
+   uint8_t             ulTrchType; /*!< Indicates type of UL transport channel:
                                    Validated only for BCCH at MAC. 
                                    UL Transport channel type can take following values:<br>
                                    CM_LTE_TRCH_RACH<br>
                                    CM_LTE_TRCH_UL_SCH */  
-   U8             lcgId;      /*!< Logical channel group ID */
+   uint8_t             lcgId;      /*!< Logical channel group ID */
 } CrgUlLchCfg;
 
 /* crg_x_001.main_2: Documentation update */
@@ -189,7 +189,7 @@ typedef struct crgLchCfg
                                       CM_LTE_LCH_DCCH<br>
                                       CM_LTE_LCH_DTCH */  
                             
-   U8            dir;        /*!< Indicates Direction. Direction can take following 
+   uint8_t            dir;        /*!< Indicates Direction. Direction can take following 
                                   values:<br>
                                   CRG_DIR_TX<br>
                                   CRG_DIR_RX<br>
@@ -199,7 +199,7 @@ typedef struct crgLchCfg
    CrgUlLchCfg   ulInfo;     /*!< Uplink logical channel configuration info */
    /* crg_x_001.main_5 - ADD - Members corresponding to LTE_L2_MEAS */
 #ifdef LTE_L2_MEAS
-   U8 qci;                   /*!< QCI for the logical channel.
+   uint8_t qci;                   /*!< QCI for the logical channel.
                                   Valid Range:[0-255] (Actual QCI - 1). */
 
 #endif /* LTE_L2_MEAS */
@@ -209,7 +209,7 @@ typedef struct crgLchCfg
   @brief Basic configuration information for MAC. */
 typedef struct crgCfg
 {
-   U8 cfgType;               /*!< Indicates configuration type */
+   uint8_t cfgType;               /*!< Indicates configuration type */
    union crgCfgU  
    {
       CrgCellCfg  cellCfg;   /*!< Cell configuration */
@@ -263,7 +263,7 @@ typedef struct crgLchRecfg
    
    struct ulRecfgS 
    {
-      U8             lcgId;  /*!< Logical channel group ID */
+      uint8_t             lcgId;  /*!< Logical channel group ID */
    } ulRecfg;                /*!< Uplink logical channel reconfiguration information */
 
 } CrgLchRecfg;
@@ -272,7 +272,7 @@ typedef struct crgLchRecfg
   @brief Basic reconfiguration information for MAC. */
 typedef struct crgRecfg
 {
-   U8 recfgType;                /*!< Indicates reconfiguration type */
+   uint8_t recfgType;                /*!< Indicates reconfiguration type */
    union crgRecfgU
    {
       CrgCellRecfg  cellRecfg;  /*!< Cell Reconfig information */
@@ -286,7 +286,7 @@ typedef struct crgRecfg
   @brief Basic Delete information for MAC. */
 typedef struct crgDel
 {
-   U8 delType;               /*!< Indicates configuration item to be deleted */
+   uint8_t delType;               /*!< Indicates configuration item to be deleted */
    union crgDelU
    {
       struct cellDelS 
@@ -305,7 +305,7 @@ typedef struct crgDel
          CmLteCellId cellId; /*!< Cell ID */
          CmLteRnti   crnti;  /*!< CRNTI for DTCH and DCCH */
          CmLteLcId   lcId;   /*!< Logical channel ID */
-         U8          dir;    /*!< Indicates Direction. Direction can take following 
+         uint8_t          dir;    /*!< Indicates Direction. Direction can take following 
                                   values:<br>
                                   CRG_DIR_TX<br>
                                   CRG_DIR_RX<br>
@@ -325,7 +325,7 @@ typedef struct crgRst
   @brief Config/Reconfig/Delete information for MAC. */
 typedef struct crgCfgReqInfo 
 {
-   U8  action;               /*!< Determines cfg/recfg/del/reset */
+   uint8_t  action;               /*!< Determines cfg/recfg/del/reset */
    union cfgReqInfoU
    {
       CrgCfg   cfgInfo;      /*!< Configuration related infomation */
@@ -348,7 +348,7 @@ typedef S16 (*CrgBndReq) ARGS((
 typedef S16 (*CrgBndCfm) ARGS((
    Pst*                 pst,
    SuId                 suId,
-   U8                   status));
+   uint8_t                   status));
 /** @brief Request from RRC to MAC to unbind the interface SAPs. */
 typedef S16 (*CrgUbndReq) ARGS((
    Pst*                 pst,
@@ -366,122 +366,122 @@ typedef S16 (*CrgCfgCfm) ARGS((
    Pst*                 pst,
    SuId                 suId,
    CrgCfgTransId        transId,
-   U8                   status));
+   uint8_t                   status));
 
 /** @brief Request from RRC to MAC to bind the interface SAPs. */
-EXTERN S16 RgUiCrgBndReq ARGS((
+S16 RgUiCrgBndReq ARGS((
    Pst*                 pst,
    SuId                 suId,
    SpId                 spId
 ));
 /** @brief Confirmation from MAC to RRC for the bind/unbind 
  * request for the interface SAPs. */
-EXTERN S16 RgUiCrgBndCfm ARGS((
+S16 RgUiCrgBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
-   U8                   status
+   uint8_t                   status
 ));
 /** @brief Request from RRC to MAC to Unbind the interface SAPs. */
-EXTERN S16 RgUiCrgUbndReq ARGS((
+S16 RgUiCrgUbndReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    Reason               reason
 ));
 /** @brief Configuration Request from RRC to MAC for 
  * configuring Cell/Ue/Lch. */
-EXTERN S16 RgUiCrgCfgReq ARGS((
+S16 RgUiCrgCfgReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    CrgCfgTransId        transId,
    CrgCfgReqInfo  *     cfgReqInfo
 ));
 /** @brief Configuration Confirm from MAC to RRC. */
-EXTERN S16 RgUiCrgCfgCfm ARGS((
+S16 RgUiCrgCfgCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    CrgCfgTransId        transId,
-   U8                   status
+   uint8_t                   status
 ));
 
 #ifdef NH
 /** @brief Request from RRC to MAC to bind the interface SAPs. */
-EXTERN S16 NhLiCrgBndReq ARGS((
+S16 NhLiCrgBndReq ARGS((
    Pst*                 pst,
    SuId                 suId,
    SpId                 spId
 ));
 /** @brief Confirmation from MAC to RRC for the bind/unbind 
  * request for the interface SAPs. */
-EXTERN S16 NhLiCrgBndCfm ARGS((
+S16 NhLiCrgBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
-   U8                   status
+   uint8_t                   status
 ));
 /** @brief Request from RRC to MAC to Unbind the interface SAPs. */
-EXTERN S16 NhLiCrgUbndReq ARGS((
+S16 NhLiCrgUbndReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    Reason               reason
 ));
 /** @brief Configuration Request from RRC to MAC for 
  * configuring Cell/Ue/Lch. */
-EXTERN S16 NhLiCrgCfgReq ARGS((
+S16 NhLiCrgCfgReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    CrgCfgTransId        transId,
    CrgCfgReqInfo  *     cfgReqInfo
 ));
 /** @brief Configuration Confirm from MAC to RRC. */
-EXTERN S16 NhLiCrgCfgCfm ARGS((
+S16 NhLiCrgCfgCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    CrgCfgTransId        transId,
-   U8                   status
+   uint8_t                   status
 ));
 #endif
 
 #ifdef LCCRG
 /** @brief Request from RRC to MAC to bind the interface SAPs. */
-EXTERN S16 cmPkCrgBndReq ARGS((
+S16 cmPkCrgBndReq ARGS((
    Pst*                 pst,
    SuId                 suId,
    SpId                 spId
 ));
 /** @brief Request from RRC to MAC to bind the interface SAPs. */
-EXTERN S16 cmUnpkCrgBndReq ARGS((
+S16 cmUnpkCrgBndReq ARGS((
    CrgBndReq            func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 /** @brief Confirmation from MAC to RRC for the bind/unbind 
  * request for the interface SAPs. */
-EXTERN S16 cmPkCrgBndCfm ARGS((
+S16 cmPkCrgBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
-   U8                   status
+   uint8_t                   status
 ));
 /** @brief Confirmation from MAC to RRC for the bind/unbind 
  * request for the interface SAPs. */
-EXTERN S16 cmUnpkCrgBndCfm ARGS((
+S16 cmUnpkCrgBndCfm ARGS((
    CrgBndCfm            func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 /** @brief Request from RRC to MAC to unbind the interface SAPs. */
-EXTERN S16 cmPkCrgUbndReq ARGS((
+S16 cmPkCrgUbndReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    Reason               reason
 ));
 /** @brief Request from RRC to MAC to unbind the interface SAPs. */
-EXTERN S16 cmUnpkCrgUbndReq ARGS((
+S16 cmUnpkCrgUbndReq ARGS((
    CrgUbndReq           func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 /** @brief Configuration Request from RRC to MAC for 
  * configuring Cell/Ue/Lch. */
-EXTERN S16 cmPkCrgCfgReq ARGS((
+S16 cmPkCrgCfgReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    CrgCfgTransId        transId,
@@ -489,178 +489,178 @@ EXTERN S16 cmPkCrgCfgReq ARGS((
 ));
 /** @brief Configuration Request from RRC to MAC for 
  * configuring Cell/Ue/Lch. */
-EXTERN S16 cmUnpkCrgCfgReq ARGS((
+S16 cmUnpkCrgCfgReq ARGS((
    CrgCfgReq            func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
 /** @brief Configuration Confirm from MAC to RRC. */
-EXTERN S16 cmPkCrgCfgCfm ARGS((
+S16 cmPkCrgCfgCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    CrgCfgTransId        transId,
-   U8                   status
+   uint8_t                   status
 ));
 /** @brief Configuration Confirm from MAC to RRC. */
-EXTERN S16 cmUnpkCrgCfgCfm ARGS((
+S16 cmUnpkCrgCfgCfm ARGS((
    CrgCfgCfm            func,
    Pst*                 pst,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCrgCfgTransId ARGS((
+S16 cmPkCrgCfgTransId ARGS((
    CrgCfgTransId        *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCrgCfgTransId ARGS((
+S16 cmUnpkCrgCfgTransId ARGS((
    CrgCfgTransId        *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCrgBwCfg ARGS((
+S16 cmPkCrgBwCfg ARGS((
    CrgBwCfg             *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCrgBwCfg ARGS((
+S16 cmUnpkCrgBwCfg ARGS((
    CrgBwCfg             *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCrgRachCfg ARGS((
+S16 cmPkCrgRachCfg ARGS((
    CrgRachCfg           *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCrgRachCfg ARGS((
+S16 cmUnpkCrgRachCfg ARGS((
    CrgRachCfg           *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCrgCellCfg ARGS((
+S16 cmPkCrgCellCfg ARGS((
    CrgCellCfg           *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCrgCellCfg ARGS((
+S16 cmUnpkCrgCellCfg ARGS((
    CrgCellCfg           *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCrgUeUlHqCfg ARGS((
+S16 cmPkCrgUeUlHqCfg ARGS((
    CrgUeUlHqCfg         *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCrgUeUlHqCfg ARGS((
+S16 cmUnpkCrgUeUlHqCfg ARGS((
    CrgUeUlHqCfg         *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCrgUeCfg ARGS((
+S16 cmPkCrgUeCfg ARGS((
    CrgUeCfg             *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCrgUeCfg ARGS((
+S16 cmUnpkCrgUeCfg ARGS((
    CrgUeCfg             *param,
    Buffer               *mBuf
 ));
 
 #ifdef LTE_ADV
-EXTERN S16 cmPkCrgUeSecCellInfo ARGS((
+S16 cmPkCrgUeSecCellInfo ARGS((
 CrgUeSecCellInfo *param,
 Buffer *mBuf
 ));
 
-EXTERN S16 cmUnpkCrgUeSecCellInfo ARGS((
+S16 cmUnpkCrgUeSecCellInfo ARGS((
 CrgUeSecCellInfo *param,
 Buffer *mBuf
 ));
 #endif /* LTE_ADV */
 
-EXTERN S16 cmPkCrgDlLchCfg ARGS((
+S16 cmPkCrgDlLchCfg ARGS((
    CrgDlLchCfg          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCrgDlLchCfg ARGS((
+S16 cmUnpkCrgDlLchCfg ARGS((
    CrgDlLchCfg          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCrgUlLchCfg ARGS((
+S16 cmPkCrgUlLchCfg ARGS((
    CrgUlLchCfg          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCrgUlLchCfg ARGS((
+S16 cmUnpkCrgUlLchCfg ARGS((
    CrgUlLchCfg          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCrgLchCfg ARGS((
+S16 cmPkCrgLchCfg ARGS((
    CrgLchCfg            *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCrgLchCfg ARGS((
+S16 cmUnpkCrgLchCfg ARGS((
    CrgLchCfg            *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCrgCfg ARGS((
+S16 cmPkCrgCfg ARGS((
    CrgCfg               *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCrgCfg ARGS((
+S16 cmUnpkCrgCfg ARGS((
    CrgCfg               *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCrgActvTime ARGS((
+S16 cmPkCrgActvTime ARGS((
    CrgActvTime          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCrgActvTime ARGS((
+S16 cmUnpkCrgActvTime ARGS((
    CrgActvTime          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCrgCellRecfg ARGS((
+S16 cmPkCrgCellRecfg ARGS((
    CrgCellRecfg         *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCrgCellRecfg ARGS((
+S16 cmUnpkCrgCellRecfg ARGS((
    CrgCellRecfg         *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCrgUeRecfg ARGS((
+S16 cmPkCrgUeRecfg ARGS((
    CrgUeRecfg           *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCrgUeRecfg ARGS((
+S16 cmUnpkCrgUeRecfg ARGS((
    CrgUeRecfg           *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCrgLchRecfg ARGS((
+S16 cmPkCrgLchRecfg ARGS((
    CrgLchRecfg          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCrgLchRecfg ARGS((
+S16 cmUnpkCrgLchRecfg ARGS((
    CrgLchRecfg          *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCrgRecfg ARGS((
+S16 cmPkCrgRecfg ARGS((
    CrgRecfg             *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCrgRecfg ARGS((
+S16 cmUnpkCrgRecfg ARGS((
    CrgRecfg             *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCrgDel ARGS((
+S16 cmPkCrgDel ARGS((
    CrgDel               *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCrgDel ARGS((
+S16 cmUnpkCrgDel ARGS((
    CrgDel               *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCrgRst ARGS((
+S16 cmPkCrgRst ARGS((
    CrgRst               *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCrgRst ARGS((
+S16 cmUnpkCrgRst ARGS((
    CrgRst               *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmPkCrgCfgReqInfo ARGS((
+S16 cmPkCrgCfgReqInfo ARGS((
    CrgCfgReqInfo        *param,
    Buffer               *mBuf
 ));
-EXTERN S16 cmUnpkCrgCfgReqInfo ARGS((
+S16 cmUnpkCrgCfgReqInfo ARGS((
    CrgCfgReqInfo        *param,
    Buffer               *mBuf
 ));
@@ -668,38 +668,38 @@ EXTERN S16 cmUnpkCrgCfgReqInfo ARGS((
 
 #ifdef DM
 /** @brief Request from RRC to MAC to bind the interface SAPs. */
-EXTERN S16 DmUiCrgBndReq ARGS((
+S16 DmUiCrgBndReq ARGS((
    Pst*                 pst,
    SuId                 suId,
    SpId                 spId
 ));
 /** @brief Confirmation from MAC to RRC for the bind/unbind 
  * request for the interface SAPs. */
-EXTERN S16 DmUiCrgBndCfm ARGS((
+S16 DmUiCrgBndCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
-   U8                   status
+   uint8_t                   status
 ));
 /** @brief Request from RRC to MAC to unbind the interface SAPs. */
-EXTERN S16 DmUiCrgUbndReq ARGS((
+S16 DmUiCrgUbndReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    Reason               reason
 ));
 /** @brief Configuration Request from RRC to MAC for 
  * configuring Cell/Ue/Lch. */
-EXTERN S16 DmUiCrgCfgReq ARGS((
+S16 DmUiCrgCfgReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    CrgCfgTransId        transId,
    CrgCfgReqInfo  *     cfgReqInfo
 ));
 /** @brief Configuration Confirm from MAC to RRC. */
-EXTERN S16 DmUiCrgCfgCfm ARGS((
+S16 DmUiCrgCfgCfm ARGS((
    Pst*                 pst,
    SuId                 suId,
    CrgCfgTransId        transId,
-   U8                   status
+   uint8_t                   status
 ));
 #endif
 

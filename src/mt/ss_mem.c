@@ -111,37 +111,27 @@
 *       File:  ss_mem.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SRegDynRegion
+S16 SRegDynRegion
 (
 Region region,                  /* region ID */
 SRegInfo *regInfo               /* information about the region */
 )
-#else
-PUBLIC S16 SRegDynRegion(region, regInfo)
-Region region;                  /* region ID */
-SRegInfo *regInfo;              /* information about the region */
-#endif
 {
    S16 ret;
-
-
-   TRC1(SRegDynRegion);
-
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* validate region ID */
    if (region >= SS_MAX_REGS)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS028, region, "Invalid region");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* validate region info pointer */
    if (regInfo == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS029, ERRZERO, "Null pointer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -156,7 +146,7 @@ SRegInfo *regInfo;              /* information about the region */
                   "Could not lock region table");
 #endif
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 
@@ -167,7 +157,7 @@ SRegInfo *regInfo;              /* information about the region */
       SS_RELEASE_ALL_SEMA(&osCp.regionTblSem);
 
       SSLOGERROR(ERRCLS_INT_PAR, ESS031, ERRZERO, "Region ID used");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -189,7 +179,7 @@ SRegInfo *regInfo;              /* information about the region */
    SS_RELEASE_ALL_SEMA(&osCp.regionTblSem);
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -209,37 +199,27 @@ SRegInfo *regInfo;              /* information about the region */
 *       File:  ss_mem.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SRegRegion
+S16 SRegRegion
 (
 Region region,                  /* region ID */
 SRegInfo *regInfo               /* information about the region */
 )
-#else
-PUBLIC S16 SRegRegion(region, regInfo)
-Region region;                  /* region ID */
-SRegInfo *regInfo;              /* information about the region */
-#endif
 {
    S16 ret;
-
-
-   TRC1(SRegRegion);
-
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* validate region ID */
    if (region >= SS_MAX_REGS)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS028, region, "Invalid region");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* validate region info pointer */
    if (regInfo == NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS029, ERRZERO, "Null pointer");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -254,7 +234,7 @@ SRegInfo *regInfo;              /* information about the region */
                   "Could not lock region table");
 #endif
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 
@@ -265,7 +245,7 @@ SRegInfo *regInfo;              /* information about the region */
       SS_RELEASE_ALL_SEMA(&osCp.regionTblSem);
 
       SSLOGERROR(ERRCLS_INT_PAR, ESS031, ERRZERO, "Region ID used");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -287,7 +267,7 @@ SRegInfo *regInfo;              /* information about the region */
    SS_RELEASE_ALL_SEMA(&osCp.regionTblSem);
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -305,28 +285,19 @@ SRegInfo *regInfo;              /* information about the region */
 *       File:  ss_mem.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SDeregRegion
+S16 SDeregRegion
 (
 Region region                   /* region ID */
 )
-#else
-PUBLIC S16 SDeregRegion(region)
-Region region;                  /* region ID */
-#endif
 {
    S16 ret;
-
-
-   TRC1(SDeregRegion);
-
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    /* validate region ID */
    if (region >= SS_MAX_REGS)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS032, region, "Invalid region");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -341,7 +312,7 @@ Region region;                  /* region ID */
                   "Could not lock region table");
 #endif
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 
@@ -351,7 +322,7 @@ Region region;                  /* region ID */
    {
       SS_RELEASE_ALL_SEMA(&osCp.regionTblSem);
       SSLOGERROR(ERRCLS_INT_PAR, ESS034, region, "Region not registered");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -373,7 +344,7 @@ Region region;                  /* region ID */
    SS_RELEASE_ALL_SEMA(&osCp.regionTblSem);
 
 
-   RETVALUE(ROK);
+   return ROK;
 }
 
 
@@ -396,54 +367,35 @@ Region region;                  /* region ID */
 #ifndef SS_FAP
 /* ss001.301: Additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
-#ifdef ANSI
-PUBLIC S16 SAlloc
+S16 SAlloc
 (
 Region region,                  /* region ID */
 Size *size,                     /* size of block required/allocated */
-U32 flags,                      /* allocation flags */
+uint32_t flags,                      /* allocation flags */
 Data **ptr,                      /* filled with pointer to block */
-U32   line,
-U8    *fileName,
-U8    entId
+uint32_t   line,
+uint8_t    *fileName,
+uint8_t    entId
 )
-#else
-PUBLIC S16 SAlloc(region, size, flags, ptr, line, fileName, entId)
-Region region;                  /* region ID */
-Size *size;                     /* size of block required/allocated */
-U32 flags;                      /* allocation flags */
-Data **ptr;                     /* filled with pointer to block */
-U32   line;
-U8   *fileName;
-U8    entId;
-#endif
 #else
 #ifdef T2K_MEM_LEAK_DBG
-PUBLIC S16 SAllocNew
+S16 SAllocNew
 (
 Region region,                  /* region ID */
 Size *size,                     /* size of block required/allocated */
-U32 flags,                      /* allocation flags */
+uint32_t flags,                      /* allocation flags */
 Data **ptr,                      /* filled with pointer to block */
 char* file,
-U32 line
+uint32_t line
 )
 #else
-#ifdef ANSI
-PUBLIC S16 SAlloc
+S16 SAlloc
 (
 Region region,                  /* region ID */
 Size *size,                     /* size of block required/allocated */
-U32 flags,                      /* allocation flags */
+uint32_t flags,                      /* allocation flags */
 Data **ptr                      /* filled with pointer to block */
 )
-#else
-PUBLIC S16 SAlloc(region, size, flags, ptr)
-Region region;                  /* region ID */
-Size *size;                     /* size of block required/allocated */
-U32 flags;                      /* allocation flags */
-Data **ptr;                     /* filled with pointer to block */
-#endif
 #endif
 #endif
 {
@@ -454,7 +406,6 @@ Data **ptr;                     /* filled with pointer to block */
 #endif /* SS_HISTOGRAM_SUPPORT */
 
 
-   TRC1(SAlloc);
 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -462,7 +413,7 @@ Data **ptr;                     /* filled with pointer to block */
    if (region >= SS_MAX_REGS)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS035, region, "Invalid region");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 #ifndef XEON_SPECIFIC_CHANGES
@@ -485,7 +436,7 @@ Data **ptr;                     /* filled with pointer to block */
                   "Could not lock region table");
 #endif
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #endif
@@ -501,12 +452,12 @@ Data **ptr;                     /* filled with pointer to block */
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS037, ERRZERO, 
                   "Could not release the semaphore");
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
       }
 #endif
       SSLOGERROR(ERRCLS_INT_PAR, ESS038, region, "Region not registered");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 /* ss001.301: Additions */
@@ -563,7 +514,7 @@ Data **ptr;                     /* filled with pointer to block */
 #if (ERRCLASS & ERRCLS_DEBUG)
      SSLOGERROR(ERRCLS_DEBUG, ESS039, ERRZERO, 
                   "Could not release the semaphore");
-     RETVALUE(RFAILED);
+     return RFAILED;
 #endif
    }
 #endif
@@ -577,7 +528,7 @@ Data **ptr;                     /* filled with pointer to block */
     }
 #endif /* SSI_DEBUG_LEVEL1 */
 
-   RETVALUE(ret);
+   return (ret);
 }
 
 
@@ -597,49 +548,32 @@ Data **ptr;                     /* filled with pointer to block */
 */
 /* ss001.301: Additions */
 #ifdef SS_HISTOGRAM_SUPPORT 
-#ifdef ANSI
-PUBLIC S16 SFree
+S16 SFree
 (
 Region region,                  /* region ID */
 Data *ptr,                      /* pointer to the allocated block */
 Size size,                      /* size of block */
-U32  line,
-U8   *fileName,
-U8   entId
+uint32_t  line,
+uint8_t   *fileName,
+uint8_t   entId
 )
 #else
-PUBLIC S16 SFree(region, ptr, size, line, fileName, entId)
-Region region;                  /* region ID */
-Data *ptr;                      /* pointer to the allocated block */
-Size size;                      /* size of block */
-U32  line;
-U8   *fileName;
-U8   entId;
-#endif
-#else
-#ifdef ANSI
 #ifdef T2K_MEM_LEAK_DBG
-PUBLIC S16 SFreeNew
+S16 SFreeNew
 (
 Region region,                  /* region ID */
 Data *ptr,                      /* pointer to the allocated block */
 Size size,                       /* size of block */
 char* file,
-U32 line
+uint32_t line
 )
 #else
-PUBLIC S16 SFree
+S16 SFree
 (
 Region region,                  /* region ID */
 Data *ptr,                      /* pointer to the allocated block */
 Size size                       /* size of block */
 )
-#endif
-#else
-PUBLIC S16 SFree(region, ptr, size)
-Region region;                  /* region ID */
-Data *ptr;                      /* pointer to the allocated block */
-Size size;                      /* size of block */
 #endif
 #endif
 {
@@ -651,7 +585,6 @@ Size size;                      /* size of block */
 #endif /* SS_HISTOGRAM_SUPPORT */
 
 
-   TRC1(SFree);
 
    /* Get the region which is assgined with this thread. The region was 
     * stored in the osCp and is taken with respect to thread ID. This macro
@@ -669,21 +602,21 @@ Size size;                      /* size of block */
    if (region >= SS_MAX_REGS)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS040, region, "Invalid region");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 /* ss021.103 - Addition to validate size and ptr */
    if (size <= NULLD)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS041, region, "Invalid size");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
    /* validate ptr */
    if (ptr == (Data *)NULLP)
    {
       SSLOGERROR(ERRCLS_INT_PAR, ESS042, region, "Invalid ptr");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 
 #endif
@@ -700,7 +633,7 @@ Size size;                      /* size of block */
                   "Could not lock region table");
 #endif
 
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -714,12 +647,12 @@ Size size;                      /* size of block */
 #if (ERRCLASS & ERRCLS_DEBUG)
          SSLOGERROR(ERRCLS_DEBUG, ESS044, ERRZERO, 
                   "Could not release the semaphore");
-         RETVALUE(RFAILED);
+         return RFAILED;
 #endif
        }
 #endif
       SSLOGERROR(ERRCLS_INT_PAR, ESS045, region, "Region not registered");
-      RETVALUE(RFAILED);
+      return RFAILED;
    }
 #endif
 
@@ -761,7 +694,7 @@ Size size;                      /* size of block */
 #if (ERRCLASS & ERRCLS_DEBUG)
       SSLOGERROR(ERRCLS_DEBUG, ESS046, ERRZERO, 
                   "Could not release the semaphore");
-      RETVALUE(RFAILED);
+      return RFAILED;
 #endif
     }
 #endif
@@ -776,7 +709,7 @@ Size size;                      /* size of block */
     }
 #endif /* SSI_DEBUG_LEVEL1 */
 
-   RETVALUE(ret);
+   return (ret);
 }
 #endif /* SS_FAP */
 
@@ -808,30 +741,24 @@ Size size;                      /* size of block */
 *       File:  mt_ss.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 SHstGrmInfoShow 
+S16 SHstGrmInfoShow 
 (
 Ent      *entId
 )
-#else
-PUBLIC S16 SHstGrmInfoShow(entId)
-Ent      *entId;
-#endif
 {
     /*ss012.301 : Increased Buffer size to fix segmentation fault*/
     Txt   					prntBuf[511];  /* Buffer to print on the console */
-	U16   					ret = ROK;     /* return value */
+	uint16_t   					ret = ROK;     /* return value */
 	Ent   					tapaTsk[SS_MAX_TTSKS]; /* List of tapa task */
-	U32   					tskCnt = 0;   /* Tapa task Count */
-	U32   					regCnt = 0;   /* Region count */
-	U32   					bktCnt = 0;   /* Bucket count in each region */
+	uint32_t   					tskCnt = 0;   /* Tapa task Count */
+	uint32_t   					regCnt = 0;   /* Region count */
+	uint32_t   					bktCnt = 0;   /* Bucket count in each region */
 	CmHstGrmHashListCp 	*hashListCp = NULLP; /* Hash List ponter of bucket */
-	U32                  binCnt = 0;   
-	U32                  entCnt = 0;
+	uint32_t                  binCnt = 0;   
+	uint32_t                  entCnt = 0;
 	CmMemEntries        *entry = NULLP;
-	U32                  blkSize = 0;
+	uint32_t                  blkSize = 0;
    
-   TRC1(SRegInfoShow);
 
    memset(tapaTsk, ENTNC, sizeof(tapaTsk));
 
@@ -1022,7 +949,7 @@ Ent      *entId;
 
 	 }/* End of for. Region Count */
 
-   RETVALUE(ROK);
+   return ROK;
 }   
 
 #endif /* SS_HISTOGRAM_SUPPORT */

@@ -187,7 +187,7 @@ acknowledge() {
 #show help for user to provide valid input
 show_help(){
    echo "use -c option for cleanup"
-   echo "ex : $./install_netconf.sh -c"
+   echo "ex : $./install_lib.sh -c"
    exit
 }
 

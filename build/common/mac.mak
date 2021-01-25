@@ -14,9 +14,6 @@
 #   limitations under the License.                                             #
 ################################################################################
 
-##-------------------------------------------------------------#
-#Makefile for product RG - script generated.
-#-------------------------------------------------------------#
 include ../common/rsys_fancy.mak
 include ../common/env.mak
 COLOR=$(COLOR_GREEN)
@@ -57,6 +54,8 @@ lib:$(LIB_DIR)/librg.a
 include $(COM_BUILD_DIR)/compile.mak
 
 I_OPTS+=-I$(ROOT_DIR)/src/5gnrsch
+I_OPTS+=-I$(ROOT_DIR)/src/intel_fapi
+I-OPTS+=-I$(ROOT_DIR)/src/wls_lib
 
 #-------------------------------------------------------------#
 #Linker macros             
@@ -72,3 +71,6 @@ clean:
 	@echo -e "$(COLOR_RED)Cleaing MAC$(REVERT_COLOR)"
 	$(Q)\rm -f $(LIB_DIR)/librg.a $(C_OBJS)
 
+#**********************************************************************
+#         End of file
+#**********************************************************************

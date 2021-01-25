@@ -20,11 +20,17 @@
 #ifndef __LWR_MAC_H__
 #define __LWR_MAC_H__
 
-#ifdef INTEL_WLS
+#ifdef INTEL_WLS_MEM
 #define LWR_MAC_ALLOC(_datPtr, _size)   WLS_MEM_ALLOC(_datPtr, _size);
 #else                                     
 #define LWR_MAC_ALLOC(_datPtr, _size)   MAC_ALLOC(_datPtr, _size);
 #endif                                    
+
+#ifdef INTEL_WLS_MEM
+#define LWR_MAC_FREE(_datPtr, _size) WLS_MEM_FREE(_datPtr, _size);
+#else
+#define LWR_MAC_FREE(_datPtr, _size) MAC_FREE(_datPtr, _size);
+#endif
 
 typedef enum
 {
@@ -36,6 +42,9 @@ typedef enum
 
 /* Events in Lower Mac */
 typedef enum{
+#ifdef INTEL_TIMER_MODE
+   UL_IQ_SAMPLE,
+#endif
    PARAM_REQUEST,
    PARAM_RESPONSE,
    CONFIG_REQUEST,
@@ -259,12 +268,12 @@ typedef struct clCellParam
    RssiMeasurement       rssiMeasurementSupport;
 }ClCellParam;
 
-EXTERN LwrMacCb lwrMacCb; 
-EXTERN LwrMacCellCb * lwrMacGetCellCb ARGS((uint16_t cellId));
-EXTERN uint32_t reverseBits(uint32_t num, uint8_t numBits);
-EXTERN void fillDlDciPayload(uint8_t *buf, uint8_t *bytePos, uint8_t *bitPos,\
+LwrMacCb lwrMacCb; 
+LwrMacCellCb * lwrMacGetCellCb ARGS((uint16_t cellId));
+uint32_t reverseBits(uint32_t num, uint8_t numBits);
+void fillDlDciPayload(uint8_t *buf, uint8_t *bytePos, uint8_t *bitPos,\
       uint32_t val, uint8_t valSize);
-EXTERN void lwrMacInit();
+void lwrMacLayerInit();
 
 #endif
 

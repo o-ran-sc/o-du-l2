@@ -39,57 +39,57 @@
 extern "C" {
 #endif
 #ifdef LTE_ADV
-EXTERN S16 RgPrgPMacSMacUeSCellLchModReq ARGS
+S16 RgPrgPMacSMacUeSCellLchModReq ARGS
 ((
  Pst                      *pst,
  RgPrgUeSCellLchModInfo   *lchCfgCb
 ));
-EXTERN S16 RgPrgPMacSMacUeSCellLchAddReq ARGS
+S16 RgPrgPMacSMacUeSCellLchAddReq ARGS
 ((
  Pst                      *pst,
  RgPrgUeSCellLchAddInfo   *lchCfgCb
 ));
-EXTERN S16 RgPrgPMacSMacUeSCellLchDelReq ARGS
+S16 RgPrgPMacSMacUeSCellLchDelReq ARGS
 ((
  Pst                       *pst,
  RgPrgUeSCellLchDelInfo    *delLcCb
 ));
-EXTERN S16 rgPomSndUeSCellLchDelToSmac ARGS((Inst inst,CrgDel *lcDel,
+S16 rgPomSndUeSCellLchDelToSmac ARGS((Inst inst,CrgDel *lcDel,
                                               Bool *isCfmRqrd));
-EXTERN S16 rgPomSndUeSCellLchAddToSmac ARGS((Inst inst,RgCellCb *cell,
+S16 rgPomSndUeSCellLchAddToSmac ARGS((Inst inst,RgCellCb *cell,
                                               RgUeCb *ue,CrgLchCfg *lchCfg,
                                               Bool *isCfmRqrd));
-EXTERN S16 rgPomSndUeSCellLchModToSmac ARGS((Inst inst,RgCellCb *cell,
+S16 rgPomSndUeSCellLchModToSmac ARGS((Inst inst,RgCellCb *cell,
                                               RgUeCb *ue,CrgLchRecfg *lchRecfg,
                                               Bool *isCfmRqrd));
-EXTERN S16 rgPomVldtAddLch ARGS((Inst                    inst,
+S16 rgPomVldtAddLch ARGS((Inst                    inst,
                                  RgPrgUeSCellLchAddInfo  *lcCfg,
                                  RgCellCb                **cell,
                                  RgUeCb                  **ue
                                ));
-EXTERN S16 rgPomUeSCellLcAdd ARGS((Inst                     inst,
+S16 rgPomUeSCellLcAdd ARGS((Inst                     inst,
                                    RgCellCb                 *cell,
                                    RgUeCb                   *ue,
                                    RgPrgUeSCellLchAddInfo   *lcCfg
                                  ));
-EXTERN S16 rgPomVltdModLch ARGS ((Inst                     inst,
+S16 rgPomVltdModLch ARGS ((Inst                     inst,
                                   RgPrgUeSCellLchModInfo   *lchCfgCb,
                                   RgCellCb                 **cell,
                                   RgUeCb                   **ue,
                                   RgUlLcCb                 **ulLc
                                  ));
-EXTERN S16 rgPomUeSCellLcMod ARGS((Inst                     inst,
+S16 rgPomUeSCellLcMod ARGS((Inst                     inst,
                                     RgUeCb                  *ue,
                                     RgUlLcCb                *ulLc,
                                     RgPrgUeSCellLchModInfo  *lchCfgCb
                                   ));
-EXTERN S16 rgPomUeSCellLcDel ARGS((Inst                   inst,
+S16 rgPomUeSCellLcDel ARGS((Inst                   inst,
                                  RgPrgUeSCellLchDelInfo   *delLcCb,
                                  RgUeCb                   *ue,
                                  RgUlLcCb                 *ulLc,
                                  RgDlLcCb                 *dlLc
                                ));
-EXTERN S16 rgPomVltdDelLch ARGS ((Inst                      inst,
+S16 rgPomVltdDelLch ARGS ((Inst                      inst,
                                   RgPrgUeSCellLchDelInfo    *delLcCb,                              
                                   RgCellCb                  **cell,
                                   RgUeCb                    **ue,

@@ -23,16 +23,16 @@
 uint8_t packMacSchSlotInd(Pst *pst, SlotIndInfo *slotInd)
 {
    Buffer *mBuf = NULLP;
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK)
+   if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
    {
       return RFAILED;
    }
 
    /* pack SFN and slot value */
-   CMCHKPK(SPkU16,slotInd->sfn, mBuf);
-   CMCHKPK(SPkU16,slotInd->slot, mBuf);
+   CMCHKPK(oduUnpackUInt16,slotInd->sfn, mBuf);
+   CMCHKPK(oduUnpackUInt16,slotInd->slot, mBuf);
 
-   return SPstTsk(pst,mBuf);
+   return ODU_POST_TASK(pst,mBuf);
 }
 
 /**
@@ -130,7 +130,7 @@ uint8_t packMacSchCrcInd(Pst *pst, CrcIndInfo *crcInd)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packMacSchDlRlcBoInfo(Pst *pst, DlRlcBOInfo *dlBoInfo)
+uint8_t packMacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
 {
    if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
    {
@@ -219,11 +219,11 @@ uint8_t packSchCellCfgCfm(Pst *pst, SchCellCfgCfm *schCellCfgCfm)
 
 /*******************************************************************
  *
- * @brief Pack and Send UE Create Request from MAC to SCH
+ * @brief Pack and Send UE Config Request from MAC to SCH
  *
  * @details
  *
- *    Function : packMacSchUeCreateReq
+ *    Function : packMacSchAddUeConfigReq
  *
  *    Functionality:
  *       Pack and Send UE Create Request from MAC to SCH
@@ -233,7 +233,7 @@ uint8_t packSchCellCfgCfm(Pst *pst, SchCellCfgCfm *schCellCfgCfm)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packMacSchUeCreateReq(Pst *pst, SchUeCfg  *ueCfg)
+uint8_t packMacSchAddUeConfigReq(Pst *pst, SchUeCfg  *ueCfg)
 {
    if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LC))
    {
@@ -266,6 +266,93 @@ uint8_t packMacSchUeCreateReq(Pst *pst, SchUeCfg  *ueCfg)
  * ****************************************************************/
 uint8_t packSchUeCfgRsp(Pst *pst, SchUeCfgRsp *cfgRsp)
 {
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Pack and Send BSR from MAC to SCH
+ *
+ * @details
+ *
+ *    Function : packMacSchBsr
+ *
+ *    Functionality:
+ *       Pack and Send BSR from MAC to SCH
+ *
+ * @params[in]
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packMacSchBsr(Pst *pst, UlBufferStatusRptInd *bsrInd)
+{
+   if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
+   {
+      /* TODO */
+   }
+   else
+   {
+      return RFAILED;
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Pack and Send SR UCI Ind from MAC to SCH
+ *
+ * @details
+ *
+ *    Function : packMacSrSchUciInd
+ *
+ *    Functionality:
+ *       Pack and Send SR UCI Ind from MAC to SCH
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packMacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
+{
+   if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
+   {
+      /* TODO */
+   }
+   else
+   {
+      return RFAILED;
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Pack and Send Modify UE Config Request from MAC to SCH
+ *
+ * @details
+ *
+ *    Function : packMacSchModUeConfigReq
+ *
+ *    Functionality:
+ *       Pack and Send Modify UE Config Request from MAC to SCH
+ *
+ * @params[in]
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packMacSchModUeConfigReq(Pst *pst, SchUeCfg  *ueCfg)
+{
+   if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LC))
+   {
+      /* TODO */
+   }
+   else
+   {
+      return RFAILED; 
+   }
    return ROK;
 }
 

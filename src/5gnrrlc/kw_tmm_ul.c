@@ -25,9 +25,9 @@
      Desc:     Source code for RLC Transparent mode assembly and
                reassembly.This file contains following functions
                 
-                  --kwTmmQSdu
-                  --kwTmmSndToLi
-                  --kwTmmRcvFrmLi
+                  --rlcTmmQSdu
+                  --rlcTmmSendToMac
+                  --rlcTmmRcvFrmMac
                   --kwTmmReEstablish 
 
      File:     kw_tmm_ul.c
@@ -61,34 +61,31 @@ static int RLOG_FILE_ID=201;
 
 #include "kw.x"
 #include "kw_ul.x"
+#include "du_app_rlc_inf.h"
+#include "rlc_utils.h"
+#include "rlc_upr_inf_api.h"
 
 #if defined(PRE_DEF_UE_CTX) || defined(PRE_DEF_UE_CTX_HO)
 #ifdef EG_GEN_LOAD_5GTF
-extern U32 loadStart;
+uint32_t loadStart;
 #endif
 
-EXTERN S16 PjUiPjuDatInd(Pst* pst,SuId suId,CmLtePdcpId * pdcpId,Buffer *mBuf);
-#ifdef ANSI
-PUBLIC Void AddUeContext
+S16 PjUiPjuDatInd(Pst* pst,SuId suId,CmLtePdcpId * pdcpId,Buffer *mBuf);
+Void AddUeContext
 (
 CmLteRnti   crnti,
-U8 rrcMsgType
+uint8_t rrcMsgType
 )
-#else
-PUBLIC Void AddUeContext(crnti,rrcMsgType)
-CmLteRnti   crnti,
-U8 rrcMsgType 
-#endif
 {
    KwuDatIndInfo   *datIndInfo;   /* Data Indication Information */
-   U8 rrcConReq[6] ={ 0x50, 0x30, 0x30, 0x30, 0x30, 0x34 };
-   U8 rrcConSetupComplete[34] ={ 0x20, 0x00, 0x3e, 0x0e, 0x82, 0x02, 0x10, 0x12, 0x20, 0x02, 0x20, 0x64, 0xa8, 0x2c, 0x48, 0x05, 0x00, 0x80, 0x00, 0x08, 0x04, 0x03, 0xa0, 0x02, 0xa0, 0x10, 0x12, 0x20, 0x02, 0x20, 0x64, 0xa8, 0x2c, 0x48};
+   uint8_t rrcConReq[6] ={ 0x50, 0x30, 0x30, 0x30, 0x30, 0x34 };
+   uint8_t rrcConSetupComplete[34] ={ 0x20, 0x00, 0x3e, 0x0e, 0x82, 0x02, 0x10, 0x12, 0x20, 0x02, 0x20, 0x64, 0xa8, 0x2c, 0x48, 0x05, 0x00, 0x80, 0x00, 0x08, 0x04, 0x03, 0xa0, 0x02, 0xa0, 0x10, 0x12, 0x20, 0x02, 0x20, 0x64, 0xa8, 0x2c, 0x48};
 #ifndef CA_PAL_5GTF 
-   U8 rrcUeCapabilityInfo[12] ={0x38, 0x01, 0x00, 0x80, 0x1b, 0xff, 0x0c, 0x00, 0x20, 0x00, 0x80, 0x00};
+   uint8_t rrcUeCapabilityInfo[12] ={0x38, 0x01, 0x00, 0x80, 0x1b, 0xff, 0x0c, 0x00, 0x20, 0x00, 0x80, 0x00};
 #else
-  /* U8 rrcUeCapabilityInfo[44] ={0x38,0x01,0x02,0x84,0x9b,0xff,0x0c,0x00,0x20,0x00,0x80,0x1f,0xfe,0xf4,0x4f,0xe0,0x40,0x03,0x80,0x11,0x04,0x0c,0x20,0x88,0x20,0x7f,0xff,0xff,0xff,0xf3,0xff,0x81,0xff,0xff,0xff,0xff,0x7f,0xf0,0x3f,0xff,0xff,0xff,0xe0,0x00};
+  /* uint8_t rrcUeCapabilityInfo[44] ={0x38,0x01,0x02,0x84,0x9b,0xff,0x0c,0x00,0x20,0x00,0x80,0x1f,0xfe,0xf4,0x4f,0xe0,0x40,0x03,0x80,0x11,0x04,0x0c,0x20,0x88,0x20,0x7f,0xff,0xff,0xff,0xf3,0xff,0x81,0xff,0xff,0xff,0xff,0x7f,0xf0,0x3f,0xff,0xff,0xff,0xe0,0x00};
 */
-U8 rrcUeCapabilityInfo[] = 
+uint8_t rrcUeCapabilityInfo[] = 
 {
  0x38,0x01,0x03,0x34,0x9b,0xff,0x0c,0x00,0x20,0x00,0x80,0x1f,0xfe,0xf4,0x4f,0xe0
  ,0x40,0x09,0x80,0x11,0x04,0x0c,0x20,0x88,0x20,0x63,0x04,0x41,0x03,0x20,0x22,0x08
@@ -97,8 +94,8 @@ U8 rrcUeCapabilityInfo[] =
 };
 
 #endif
-   U8 rrcSecurityModeComplete[2] ={0x28, 0x80};
-   U8 rrcReconfigComplete[2] ={0x10, 0x80};
+   uint8_t rrcSecurityModeComplete[2] ={0x28, 0x80};
+   uint8_t rrcReconfigComplete[2] ={0x10, 0x80};
 
    Buffer *pdu;
 
@@ -106,7 +103,6 @@ U8 rrcUeCapabilityInfo[] =
 #ifdef PJ
    Pst ulPst2 ={100,100,217,0,216,0,PRIOR0,0,68,0,1,0,0};
 #endif
-  TRC2(kwTmmRcvFrmLi) 
 
   if(1 == rrcMsgType)
   {
@@ -126,7 +122,7 @@ U8 rrcUeCapabilityInfo[] =
 
    RLOG1(L_INFO,"Profiling Framework Sending RRC Connection Req to RRC for UE :%d\n",crnti);
    printf("Profiling Framework Sending RRC Connection Req to RRC for UE :%d\n",crnti);
-   KwUiKwuDatInd(&ulPst1, datIndInfo, pdu);
+   rlcSendUlDataToDu(&ulPst1, datIndInfo, pdu);
  }
  else if(2 == rrcMsgType)
  {
@@ -214,13 +210,13 @@ U8 rrcUeCapabilityInfo[] =
 #endif
 #endif
  }
- RETVOID;
+ return;
 }
 #endif 
 /** @addtogroup tmmode */
 /*@{*/
 
-#define KW_MODULE (KW_DBGMASK_TM | KW_DBGMASK_UL)
+#define RLC_MODULE (RLC_DBGMASK_TM | RLC_DBGMASK_UL)
 
 /**
  * @brief
@@ -242,77 +238,51 @@ U8 rrcUeCapabilityInfo[] =
  *    -# RFAILED 
  */
 #ifdef CCPU_OPT
-#ifdef ANSI
-PUBLIC Void kwTmmRcvFrmLi
-(
-KwCb        *gCb,
-KwUlRbCb    *rbCb,  
-CmLteRnti   tCrnti,  
-Buffer      *pdu      
-)
+void rlcTmmRcvFrmMac(RlcCb *gCb, RlcUlRbCb *rbCb, CmLteRnti tCrnti, Buffer *pdu)
 #else
-PUBLIC Void kwTmmRcvFrmLi(gCb,rbCb, tCrnti, pdu)
-KwCb        *gCb;
-KwUlRbCb    *rbCb;  
-CmLteRnti   tCrnti; 
-Buffer      *pdu;  
+void rlcTmmRcvFrmMac(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *pdu)
 #endif
-#else
-#ifdef ANSI
-PUBLIC Void kwTmmRcvFrmLi
-(
-KwCb       *gCb,
-KwUlRbCb   *rbCb,         
-Buffer     *pdu            
-)
-#else
-PUBLIC Void kwTmmRcvFrmLi(gCb,rbCb, pdu)
-KwCb       *gCb;
-KwUlRbCb   *rbCb;         
-Buffer     *pdu;         
-#endif
-#endif 
 {
-   KwuDatIndInfo   *datIndInfo;   /* Data Indication Information */
-   MsgLen          msgLen;
+   RlcUlRrcMsgInfo  *ulRrcMsgInfo;
+   uint16_t         msgLen;
+   uint16_t         copyLen;    /* Number of bytes copied */
+   Pst              pst;
  
-   TRC2(kwTmmRcvFrmLi) 
-
-   /* Creating static memory for KwuDatIndInfo. #else will be 
-    * removed once the sanity testing is performed for all platforms */
-   KwuDatIndInfo datIndInfoTmp;
-   datIndInfo = &datIndInfoTmp;
-#if (ERRCLASS & ERRCLS_ADD_RES)
-   if ( datIndInfo == NULLP )
-   {   
-      RLOG_ARG2(L_FATAL,DBG_RBID,rbCb->rlcId.rbId,
-            "Memory Allocation failed UEID:%d CELLID:%d",
-            rbCb->rlcId.ueId,
-            rbCb->rlcId.cellId);   
-      RETVOID;
-   }
-#endif /* ERRCLASS & ERRCLS_ADD_RES */
-   KW_MEM_CPY(&(datIndInfo->rlcId),&(rbCb->rlcId),sizeof(CmLteRlcId));
-#ifdef CCPU_OPT 
-   if ( rbCb->lch.lChType == CM_LTE_LCH_CCCH ) 
-   {
-      datIndInfo->tCrnti = tCrnti;
-   }
-#endif 
    gCb->genSts.pdusRecv++;
-   SFndLenMsg(pdu, &msgLen);
+   ODU_GET_MSG_LEN(pdu, (MsgLen *)&msgLen);
    gCb->genSts.bytesRecv += msgLen;
-   /* If trace flag is enabled send the trace indication */
-   if(gCb->init.trc == TRUE)
+  
+   /* Filling UL RRC Message Info */
+   RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL,
+      ulRrcMsgInfo, sizeof(RlcUlRrcMsgInfo));
+   if (ulRrcMsgInfo)
    {
-      /* Populate the trace params */
-      kwLmmSendTrc(gCb,KWU_EVT_DAT_IND, pdu);
+      ulRrcMsgInfo->cellId = rbCb->rlcId.cellId;
+      ulRrcMsgInfo->ueIdx = rbCb->rlcId.ueId;
+      ulRrcMsgInfo->lcId = rbCb->lch.lChId;
+      RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL,
+         ulRrcMsgInfo->rrcMsg, msgLen);
+      if (ulRrcMsgInfo->rrcMsg)
+      {
+         ODU_COPY_MSG_TO_FIX_BUF(pdu, 0, msgLen, ulRrcMsgInfo->rrcMsg, (MsgLen *)&copyLen);
+         ulRrcMsgInfo->msgLen = msgLen;
+
+         /* Sending UL RRC Message transfeer to DU APP */
+         memset(&pst, 0, sizeof(Pst));
+         FILL_PST_RLC_TO_DUAPP(pst, RLC_UL_INST, EVENT_UL_RRC_MSG_TRANS_TO_DU);
+         rlcSendUlRrcMsgToDu(&pst, ulRrcMsgInfo);
+      }
+      else
+      {
+         DU_LOG("\nRLC : rlcTmmRcvFrmMac: Memory allocation failed for UL RRC Msg");
+      }
    }
-   KwUiKwuDatInd( &gCb->u.ulCb->kwuUlSap->pst, 
-                  //gCb->u.ulCb->kwuUlSap->suId, 
-                  datIndInfo, pdu);
-   
-   RETVOID;
+   else
+   {
+      DU_LOG("\nRLC : rlcTmmRcvFrmMac: Memory allocation failed for ulRrcMsgInfo");
+   }
+ 
+   return;
 }
 
 /**
@@ -328,22 +298,14 @@ Buffer     *pdu;
  *    -# ROK 
  *       
  **/
-#ifdef ANSI
-PUBLIC Void kwTmmUlReEstablish
+Void rlcTmmUlReEstablish
 (
-KwCb        *gCb,
-KwUlRbCb    *rbCb        
+RlcCb        *gCb,
+RlcUlRbCb    *rbCb        
 )
-#else
-PUBLIC Void kwTmmUlReEstablish(rbCb)
-KwCb        *gCb;
-KwRbCb      *rbCb;          
-#endif
 {
-   TRC2(kwUlTmmReEstablish)
-
    RLOG_ARG0(L_DEBUG,DBG_RBID,rbCb->rlcId.rbId,"do nothing for TMM for ReEstablish");
-   RETVOID;
+   return;
 }
 
 #ifdef _cplusplus

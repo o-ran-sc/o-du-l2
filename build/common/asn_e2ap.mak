@@ -31,9 +31,9 @@ I_OPTS+=-I$(SRC_DIR)/../common
 #-------------------------------------------------------------#
 #Linker macros
 #-------------------------------------------------------------#
-$(LIB_DIR)/libasn_e2ap.a:$(C_OBJS) $(C_WO_PED_OBJS)
+$(LIB_DIR)/libasn_e2ap.a:$(C_OBJS)
 		  @echo -e "Creating Archive $(COLOR) $@ $(REVERT_COLOR)"
-		  $(Q)ar -cr $(LIB_DIR)/libasn_e2ap.a $(C_OBJS) $(C_WO_PED_OBJS)
+		  $(Q)ar -cr $(LIB_DIR)/libasn_e2ap.a $(C_OBJS) 
 
 
 #-------------------------------------------------------------#
@@ -42,7 +42,7 @@ $(LIB_DIR)/libasn_e2ap.a:$(C_OBJS) $(C_WO_PED_OBJS)
 clean:
 		  @echo -e "$(COLOR_RED)Cleaning ASN$(REVERT_COLOR)"
 		  @echo $(SRC_DIR) $(CM_DIR)
-		  $(Q)\rm -f $(LIB_DIR)/libasn_e2ap.a $(C_OBJS) $(C_WO_PED_OBJS) $(LOG_FILES) $(BAK_FILES)
+		  $(Q)\rm -f $(LIB_DIR)/libasn_e2ap.a $(C_OBJS) 
 
 #-------------------------------------------------------------#
 #End of File

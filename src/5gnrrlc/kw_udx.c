@@ -53,26 +53,11 @@
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
-PRIVATE S16 cmUnpkUdxStruct
-(
-Buffer *srcMBuf,
-U32  offset,
-U8     *dstBuf,
-U32    size
-)
-#else
-PRIVATE S16 cmUnpkUdxStruct(dstMBuf,srcBuf,size)
-Buffer *srcMBuf;
-U32  offset;
-U8     *dstBuf;
-MsgLen    size;
-#endif
+static S16 cmUnpkUdxStruct(Buffer *srcMBuf,uint32_t offset,uint8_t *dstBuf,uint32_t size)
 {
     MsgLen tmpLen;
 
-    TRC3(cmUnpkUdxStruct)
-    RETVALUE(SCpyMsgFix(srcMBuf,offset,size,dstBuf,&tmpLen));
+    return (SCpyMsgFix(srcMBuf,offset,size,dstBuf,&tmpLen));
 
 } /*end of function cmPkUdxBndReq*/
 
@@ -89,23 +74,10 @@ MsgLen    size;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
-PRIVATE S16 cmPkUdxStruct
-(
-U8     *srcBuf,
-MsgLen    size,
-Buffer *dstMBuf
-)
-#else
-PRIVATE S16 cmPkUdxStruct(dstMBuf,srcBuf,size)
-U8     *srcBuf;
-MsgLen    size;
-Buffer *dstMBuf;
-#endif
+static S16 cmPkUdxStruct(uint8_t *srcBuf,MsgLen size,Buffer *dstMBuf)
 {
 
-    TRC3(cmPkUdxStruct)
-    RETVALUE(SAddPstMsgMult(srcBuf,size,dstMBuf));
+    return (SAddPstMsgMult(srcBuf,size,dstMBuf));
 
 } /*end of function cmPkUdxBndReq*/
 /*
@@ -121,24 +93,11 @@ Buffer *dstMBuf;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmPkUdxBndReq
-(
-Pst *pst,
-SuId suId,
-SpId spId
-)
-#else
-PUBLIC S16 cmPkUdxBndReq(pst, suId, spId)
-Pst *pst;
-SuId suId;
-SpId spId;
-#endif
+S16 cmPkUdxBndReq(Pst *pst,SuId suId,SpId spId)
 {
     S16 ret1;
     Buffer *mBuf;
     mBuf = NULLP;
-    TRC3(cmPkUdxBndReq)
 
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
@@ -150,13 +109,13 @@ SpId spId;
                (ErrVal)EUDXXXX, (ErrVal)0, "SGetMsg() failed");
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-       RETVALUE(ret1);
+       return (ret1);
     }
     CMCHKPKLOG(SPkS16, spId, mBuf, EUDXXXX, pst);
     CMCHKPKLOG(SPkS16, suId, mBuf, EUDXXXX, pst);
     pst->event = (Event) UDX_EVT_BND_REQ;
 
-    RETVALUE(SPstTsk(pst,mBuf));
+    return (SPstTsk(pst,mBuf));
 } /*end of function cmPkUdxBndReq*/
 
 /*
@@ -172,24 +131,11 @@ SpId spId;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmPkUdxUbndReq
-(
-Pst *pst,
-SpId spId,
-Reason reason
-)
-#else
-PUBLIC S16 cmPkUdxUbndReq(pst, spId, reason)
-Pst *pst;
-SpId spId;
-Reason reason;
-#endif
+S16 cmPkUdxUbndReq(Pst *pst,SpId spId,Reason reason)
 {
     S16 ret1;
     Buffer *mBuf;
     mBuf = NULLP;
-    TRC3(cmPkUdxUbndReq)
 
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
@@ -201,13 +147,13 @@ Reason reason;
                (ErrVal)EUDXXXX, (ErrVal)0, "SGetMsg() failed");
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-       RETVALUE(ret1);
+       return (ret1);
     }
     CMCHKPKLOG(SPkS16, reason, mBuf, EUDXXXX, pst);
     CMCHKPKLOG(SPkS16, spId, mBuf, EUDXXXX, pst);
     pst->event = (Event) UDX_EVT_UBND_REQ;
 
-    RETVALUE(SPstTsk(pst,mBuf));
+    return (SPstTsk(pst,mBuf));
 } /*end of function cmPkUdxUbndReq*/
 
 /*
@@ -223,24 +169,11 @@ Reason reason;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmPkUdxBndCfm
-(
-Pst *pst,
-SuId suId,
-U8 status
-)
-#else
-PUBLIC S16 cmPkUdxBndCfm(pst, suId, status)
-Pst *pst;
-SuId suId;
-U8 status;
-#endif
+S16 cmPkUdxBndCfm(Pst *pst,SuId suId,uint8_t status)
 {
     S16 ret1;
     Buffer *mBuf;
     mBuf = NULLP;
-    TRC3(cmPkUdxBndCfm)
 
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
@@ -253,13 +186,13 @@ U8 status;
        }
 
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-       RETVALUE(ret1);
+       return (ret1);
     }
-    CMCHKPKLOG(SPkU8, status, mBuf, EUDXXXX, pst);
+    CMCHKPKLOG(oduUnpackUInt8, status, mBuf, EUDXXXX, pst);
     CMCHKPKLOG(SPkS16, suId, mBuf, EUDXXXX, pst);
     pst->event = (Event) UDX_EVT_BND_CFM;
 
-    RETVALUE(SPstTsk(pst,mBuf));
+    return (SPstTsk(pst,mBuf));
 } /*end of function cmPkUdxBndCfm*/
 
 
@@ -276,24 +209,11 @@ U8 status;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmPkUdxCfgReq
-(
-Pst               *pst,
-SpId              spId,
-CkwCfgInfo        *cfgInfo
-)
-#else
-PUBLIC S16 cmPkUdxCfgReq(pst, spId, cfgInfo)
-Pst               *pst;
-SpId              spId;
-CkwCfgInfo        *cfgInfo;
-#endif
+S16 cmPkUdxCfgReq(Pst *pst,SpId  spId,RlcCfgInfo *cfgInfo)
 {
     S16 ret1;
     Buffer *mBuf;
     mBuf = NULLP;
-    TRC3(cmPkUdxCfgReq)
 
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
@@ -305,7 +225,7 @@ CkwCfgInfo        *cfgInfo;
                (ErrVal)EUDXXXX, (ErrVal)0, "SGetMsg() failed");
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-       RETVALUE(ret1);
+       return (ret1);
     }
 
     switch(pst->selector)
@@ -313,14 +233,14 @@ CkwCfgInfo        *cfgInfo;
 #ifdef LCUDX
        case UDX_SEL_LC:
           {
-             cmPkUdxStruct((U8 *)cfgInfo, sizeof(CkwCfgInfo),mBuf);
+             cmPkUdxStruct((uint8_t *)cfgInfo, sizeof(RlcCfgInfo),mBuf);
              /* Need Not free CfgInfo here as it is stored 
                 in UL */
              break;
           }
         case UDX_SEL_LWLC:
           {
-             CMCHKPKLOG(cmPkPtr,(PTR)cfgInfo,mBuf,EUDXXXX,pst);
+             CMCHKPKLOG(oduPackPointer,(PTR)cfgInfo,mBuf,EUDXXXX,pst);
              break;
           }
 #endif /* LCUDX */
@@ -329,7 +249,7 @@ CkwCfgInfo        *cfgInfo;
     CMCHKPKLOG(SPkS16, spId, mBuf, EUDXXXX, pst);
     pst->event = (Event) UDX_EVT_CFG_REQ;
 
-    RETVALUE(SPstTsk(pst,mBuf));
+    return (SPstTsk(pst,mBuf));
 } /* cmPkUdxCfgReq */
 
 
@@ -346,24 +266,11 @@ CkwCfgInfo        *cfgInfo;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmPkUdxCfgCfm
-(
-Pst               *pst,
-SuId              suId,
-CkwCfgCfmInfo     *cfgCfmInfo
-)
-#else
-PUBLIC S16 cmPkUdxCfgCfm(pst, suId, cfgCfmInfo)
-Pst               *pst;
-SuId              suId;
-CkwCfgCfmInfo     *cfgCfmInfo;
-#endif
+S16 cmPkUdxCfgCfm(Pst *pst,SuId suId,RlcCfgCfmInfo  *cfgCfmInfo)
 {
     S16 ret1;
     Buffer *mBuf;
     mBuf = NULLP;
-    TRC3(cmPkUdxCfgCfm)
 
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
@@ -375,7 +282,7 @@ CkwCfgCfmInfo     *cfgCfmInfo;
                (ErrVal)EUDXXXX, (ErrVal)0, "SGetMsg() failed");
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-       RETVALUE(ret1);
+       return (ret1);
     }
 
     switch(pst->selector)
@@ -383,16 +290,16 @@ CkwCfgCfmInfo     *cfgCfmInfo;
 #ifdef LCUDX
        case UDX_SEL_LC:
           {
-             cmPkUdxStruct((U8 *)cfgCfmInfo, sizeof(CkwCfgCfmInfo),mBuf);
+             cmPkUdxStruct((uint8_t *)cfgCfmInfo, sizeof(RlcCfgCfmInfo),mBuf);
              /* Need to free the cfgCfmInfo here as it is allocated 
                                         buffer call SPutStaticBuffer */
              SPutStaticBuffer(pst->region,pst->pool,(Data *) cfgCfmInfo,
-                          sizeof(CkwCfgCfmInfo),0);
+                          sizeof(RlcCfgCfmInfo),0);
              break;
           }
         case UDX_SEL_LWLC:
           {
-             CMCHKPKLOG(cmPkPtr,(PTR)cfgCfmInfo,mBuf,EUDXXXX,pst);
+             CMCHKPKLOG(oduPackPointer,(PTR)cfgCfmInfo,mBuf,EUDXXXX,pst);
              break;
           }
 #endif /* LCUDX */
@@ -401,7 +308,7 @@ CkwCfgCfmInfo     *cfgCfmInfo;
     CMCHKPKLOG(SPkS16, suId, mBuf, EUDXXXX, pst);
     pst->event = (Event) UDX_EVT_CFG_CFM;
 
-    RETVALUE(SPstTsk(pst,mBuf));
+    return (SPstTsk(pst,mBuf));
 } /* cmPkUdxCfgCfm */
 
 
@@ -418,28 +325,18 @@ CkwCfgCfmInfo     *cfgCfmInfo;
 *    File:   ckw.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmPkUdxUeIdChgReq
+S16 cmPkUdxUeIdChgReq
 (
-Pst               *pst,
-SpId              spId,
-U32               transId,
-CkwUeInfo         *ueInfo,
-CkwUeInfo         *newUeInfo
+Pst        *pst,
+SpId       spId,
+uint32_t   transId,
+CkwUeInfo  *ueInfo,
+CkwUeInfo  *newUeInfo
 )
-#else
-PUBLIC S16 cmPkUdxUeIdChgReq(pst, spId, transId, ueInfo, newUeInfo)
-Pst               *pst;
-SpId              spId;
-U32               transId;
-CkwUeInfo         *ueInfo;
-CkwUeInfo         *newUeInfo;
-#endif
 {
     S16    ret1;
     Buffer *mBuf = NULLP;
 
-    TRC3(cmPkUdxUeIdChgReq)
 
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
@@ -452,7 +349,7 @@ CkwUeInfo         *newUeInfo;
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
 
-       RETVALUE(ret1);
+       return (ret1);
     }
 
     switch(pst->selector)
@@ -460,15 +357,15 @@ CkwUeInfo         *newUeInfo;
 #ifdef LCUDX
        case UDX_SEL_LC:
        {
-            cmPkUdxStruct((U8 *)newUeInfo, sizeof(CkwUeInfo),mBuf);
-            cmPkUdxStruct((U8 *)ueInfo, sizeof(CkwUeInfo),mBuf);
+            cmPkUdxStruct((uint8_t *)newUeInfo, sizeof(CkwUeInfo),mBuf);
+            cmPkUdxStruct((uint8_t *)ueInfo, sizeof(CkwUeInfo),mBuf);
             /* No need to free ueInfo here as it is stored */
             break;
        }
        case UDX_SEL_LWLC:
           {
-             CMCHKPKLOG(cmPkPtr,(PTR)newUeInfo,mBuf,EUDXXXX,pst);
-             CMCHKPKLOG(cmPkPtr,(PTR)ueInfo,mBuf,EUDXXXX,pst);
+             CMCHKPKLOG(oduPackPointer,(PTR)newUeInfo,mBuf,EUDXXXX,pst);
+             CMCHKPKLOG(oduPackPointer,(PTR)ueInfo,mBuf,EUDXXXX,pst);
              break;
           }
        default:
@@ -478,11 +375,11 @@ CkwUeInfo         *newUeInfo;
        }
 #endif
     }
-    CMCHKPKLOG(SPkU32, transId, mBuf, EUDXXXX, pst);
+    CMCHKPKLOG(oduUnpackUInt32, transId, mBuf, EUDXXXX, pst);
     CMCHKPKLOG(SPkS16, spId, mBuf, EUDXXXX, pst);
     pst->event = (Event) UDX_EVT_UEIDCHG_REQ;
 
-    RETVALUE(SPstTsk(pst, mBuf));
+    return (SPstTsk(pst, mBuf));
 
 } /* cmPkUdxUeIdChgReq */
 
@@ -499,25 +396,10 @@ CkwUeInfo         *newUeInfo;
 *    File:   ckw.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmPkUdxUeIdChgCfm
-(
-Pst               *pst,
-SuId              suId,
-U32               transId,
-CmStatus          status
-)
-#else
-PUBLIC S16 cmPkUdxUeIdChgCfm(pst, suId, transId, status)
-Pst               *pst;
-SuId              suId;
-U32               transId;
-CmStatus          status;
-#endif
+S16 cmPkUdxUeIdChgCfm(Pst *pst,SuId suId,uint32_t transId,CmStatus status)
 {
     S16    ret1;
     Buffer *mBuf = NULLP;
-    TRC3(cmPkUdxUeIdChgCfm)
 
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
@@ -530,15 +412,15 @@ CmStatus          status;
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
 
-       RETVALUE(ret1);
+       return (ret1);
     }
     
     CMCHKPK(cmPkCmStatus, &status, mBuf); 
-    CMCHKPKLOG(SPkU32, transId, mBuf, EUDXXXX, pst);
+    CMCHKPKLOG(oduUnpackUInt32, transId, mBuf, EUDXXXX, pst);
     CMCHKPKLOG(SPkS16, suId, mBuf, EUDXXXX, pst);
     pst->event = (Event) UDX_EVT_UEIDCHG_CFM;
 
-    RETVALUE(SPstTsk(pst, mBuf));
+    return (SPstTsk(pst, mBuf));
 
 } /* cmPkUdxUeIdChgCfm */
 
@@ -555,26 +437,10 @@ CmStatus          status;
 *    File:   ckw.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmPkUdxStaUpdCfm
-(
-Pst               *pst,
-SuId              suId,
-CmLteRlcId        *rlcId,
-KwUdxBufLst       *pStaPdu
-)
-#else
-PUBLIC S16 cmPkUdxStaUpdCfm(pst, suId, rlcId,pStaPdu)
-Pst               *pst;
-SuId              suId;
-CmLteRlcId        *rlcId;
-KwUdxBufLst       *pStaPdu;
-#endif
+S16 cmPkUdxStaUpdCfm(Pst *pst,SuId suId,CmLteRlcId *rlcId,RlcUdxBufLst *pStaPdu)
 {
     S16    ret1;
     Buffer *mBuf = NULLP;
-
-    TRC3(cmPkUdxStaUpdCfm)
 
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
@@ -587,28 +453,28 @@ KwUdxBufLst       *pStaPdu;
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
 
-       RETVALUE(ret1);
+       return (ret1);
     }
     
     switch (pst->selector)
     {
        case UDX_SEL_LC:
        {
-         cmPkUdxStruct((U8 *)pStaPdu, sizeof(KwUdxBufLst),mBuf);
-         cmPkUdxStruct((U8 *)rlcId, sizeof(CmLteRlcId),mBuf);
+         cmPkUdxStruct((uint8_t *)pStaPdu, sizeof(RlcUdxBufLst),mBuf);
+         cmPkUdxStruct((uint8_t *)rlcId, sizeof(CmLteRlcId),mBuf);
          break;
        }
        case UDX_SEL_LWLC:
        {
-         CMCHKPK(cmPkPtr,(PTR) pStaPdu, mBuf);
-         CMCHKPK(cmPkPtr,(PTR) rlcId, mBuf); 
+         CMCHKPK(oduPackPointer,(PTR) pStaPdu, mBuf);
+         CMCHKPK(oduPackPointer,(PTR) rlcId, mBuf); 
          break;
        }
     }
     CMCHKPKLOG(SPkS16, suId, mBuf, EUDXXXX, pst);
     pst->event = (Event) UDX_EVT_STA_UPD_CFM;
 
-    RETVALUE(SPstTsk(pst, mBuf));
+    return (SPstTsk(pst, mBuf));
 
 } /* cmPkUdxStaUpdCfm */
 
@@ -625,24 +491,10 @@ KwUdxBufLst       *pStaPdu;
 *    File:   Kw_udx.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmPkUdxStaProhTmrStart
-(
-Pst               *pst,
-SpId              spId,
-CmLteRlcId        *rlcId
-)
-#else
-PUBLIC S16 cmPkUdxStaProhTmrStart(pst, suId, rlcId)
-Pst               *pst;
-SpId              spId;
-CmLteRlcId        *rlcId;
-#endif
+S16 cmPkUdxStaProhTmrStart(Pst *pst,SpId spId,CmLteRlcId *rlcId)
 {
     S16    ret1;
     Buffer *mBuf = NULLP;
-
-    TRC3(cmPkUdxStaProhTmrStart)
 
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
@@ -655,26 +507,26 @@ CmLteRlcId        *rlcId;
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
 
-       RETVALUE(ret1);
+       return (ret1);
     }
     
     switch (pst->selector)
     {
        case UDX_SEL_LC:
        {
-         cmPkUdxStruct((U8 *)rlcId, sizeof(CmLteRlcId),mBuf);
+         cmPkUdxStruct((uint8_t *)rlcId, sizeof(CmLteRlcId),mBuf);
          break;
        }
        case UDX_SEL_LWLC:
        {
-         CMCHKPK(cmPkPtr,(PTR) rlcId, mBuf); 
+         CMCHKPK(oduPackPointer,(PTR) rlcId, mBuf); 
          break;
        }
     }
     CMCHKPKLOG(SPkS16, spId, mBuf, EUDXXXX, pst);
     pst->event = (Event) UDX_EVT_STA_PHBT_TMR_START;
 
-    RETVALUE(SPstTsk(pst, mBuf));
+    return (SPstTsk(pst, mBuf));
 
 } /* cmPkUdxStaProhTmrStart */
 
@@ -691,26 +543,10 @@ CmLteRlcId        *rlcId;
 *    File:   ckw.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmPkUdxStaUpdReq
-(
-Pst               *pst,
-SpId              spId,
-CmLteRlcId        *rlcId,
-KwUdxStaPdu      *pStaPdu
-)
-#else
-PUBLIC S16 cmPkUdxStaUpdReq(pst, suId, rlcId,pStaPdu)
-Pst               *pst;
-SpId              spId;
-CmLteRlcId        *rlcId;
-KwUdxStaPdu       *pStaPdu;
-#endif
+S16 cmPkUdxStaUpdReq(Pst *pst,SpId spId,CmLteRlcId *rlcId,RlcUdxStaPdu *pStaPdu)
 {
     S16    ret1;
     Buffer *mBuf = NULLP;
-
-    TRC3(cmPkUdxStaUpdReq)
 
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
@@ -723,31 +559,31 @@ KwUdxStaPdu       *pStaPdu;
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
 
-       RETVALUE(ret1);
+       return (ret1);
     }
     
     switch (pst->selector)
     {
        case UDX_SEL_LC:
        {
-         cmPkUdxStruct((U8 *)pStaPdu, sizeof(KwUdxStaPdu),mBuf);
-         cmPkUdxStruct((U8 *)rlcId, sizeof(CmLteRlcId),mBuf);
+         cmPkUdxStruct((uint8_t *)pStaPdu, sizeof(RlcUdxStaPdu),mBuf);
+         cmPkUdxStruct((uint8_t *)rlcId, sizeof(CmLteRlcId),mBuf);
          SPutStaticBuffer(pst->region,pst->pool,(Data *) pStaPdu,
-                          sizeof(KwUdxStaPdu),0);
+                          sizeof(RlcUdxStaPdu),0);
 
          break;
        }
        case UDX_SEL_LWLC:
        {
-         CMCHKPK(cmPkPtr,(PTR) pStaPdu, mBuf);
-         CMCHKPK(cmPkPtr,(PTR) rlcId, mBuf); 
+         CMCHKPK(oduPackPointer,(PTR) pStaPdu, mBuf);
+         CMCHKPK(oduPackPointer,(PTR) rlcId, mBuf); 
          break;
        }
     }
     CMCHKPKLOG(SPkS16, spId, mBuf, EUDXXXX, pst);
     pst->event = (Event) UDX_EVT_STA_UPD_REQ;
 
-    RETVALUE(SPstTsk(pst, mBuf));
+    return (SPstTsk(pst, mBuf));
 
 } /* cmPkUdxStaUpdReq */
 
@@ -764,26 +600,10 @@ KwUdxStaPdu       *pStaPdu;
 *    File:   ckw.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmPkUdxStaPduReq
-(
-Pst               *pst,
-SpId              spId,
-CmLteRlcId        *rlcId,
-KwUdxDlStaPdu     *pStaPdu
-)
-#else
-PUBLIC S16 cmPkUdxStaPduReq(pst, suId, rlcId,pStaPdu)
-Pst               *pst;
-SpId              spId;
-CmLteRlcId        *rlcId;
-KwUdxDlStaPdu     *pStaPdu;
-#endif
+S16 cmPkUdxStaPduReq(Pst *pst,SpId spId,CmLteRlcId *rlcId,RlcUdxDlStaPdu *pStaPdu)
 {
     S16    ret1;
     Buffer *mBuf = NULLP;
-
-    TRC3(cmPkUdxStaUpdReq)
 
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
@@ -796,31 +616,31 @@ KwUdxDlStaPdu     *pStaPdu;
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
 
-       RETVALUE(ret1);
+       return (ret1);
     }
     
     switch (pst->selector)
     {
        case UDX_SEL_LC:
        {
-         cmPkUdxStruct((U8 *)pStaPdu, sizeof(KwUdxDlStaPdu),mBuf);
-         cmPkUdxStruct((U8 *)rlcId, sizeof(CmLteRlcId),mBuf);
+         cmPkUdxStruct((uint8_t *)pStaPdu, sizeof(RlcUdxDlStaPdu),mBuf);
+         cmPkUdxStruct((uint8_t *)rlcId, sizeof(CmLteRlcId),mBuf);
          /* Free status Pdu here for LC */
          SPutStaticBuffer(pst->region,pst->pool,(Data *) pStaPdu,
-                          sizeof(KwUdxDlStaPdu),0);
+                          sizeof(RlcUdxDlStaPdu),0);
          break;
        }
        case UDX_SEL_LWLC:
        {
-         CMCHKPK(cmPkPtr,(PTR) pStaPdu, mBuf);
-         CMCHKPK(cmPkPtr,(PTR) rlcId, mBuf); 
+         CMCHKPK(oduPackPointer,(PTR) pStaPdu, mBuf);
+         CMCHKPK(oduPackPointer,(PTR) rlcId, mBuf); 
          break;
        }
     }
     CMCHKPKLOG(SPkS16, spId, mBuf, EUDXXXX, pst);
     pst->event = (Event) UDX_EVT_STA_PDU_REQ;
 
-    RETVALUE(SPstTsk(pst, mBuf));
+    return (SPstTsk(pst, mBuf));
 
 } /* cmPkUdxStaUpdReq */
 
@@ -835,22 +655,10 @@ KwUdxDlStaPdu     *pStaPdu;
 *
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmPkUdxL2MeasReq
-(
-Pst               *pst,
-KwL2MeasReqEvt    *measReqEvt 
-)
-#else
-PUBLIC S16 cmPkUdxL2MeasReq(pst, measReqEvt)
-Pst               *pst;
-KwL2MeasReqEvt    *measReqEvt; 
-#endif
+S16 cmPkUdxL2MeasReq(Pst  *pst,RlcL2MeasReqEvt *measReqEvt)
 {
     S16    ret1;
     Buffer *mBuf = NULLP;
-
-    TRC3(cmPkUdxL2MeasReq)
 
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
@@ -863,25 +671,25 @@ KwL2MeasReqEvt    *measReqEvt;
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
 
-       RETVALUE(ret1);
+       return (ret1);
     }
     
     switch (pst->selector)
     {
        case UDX_SEL_LC:
        {
-         cmPkUdxStruct((U8 *)measReqEvt, sizeof(KwL2MeasReqEvt),mBuf);
+         cmPkUdxStruct((uint8_t *)measReqEvt, sizeof(RlcL2MeasReqEvt),mBuf);
          break;
        }
        case UDX_SEL_LWLC:
        {
-         CMCHKPK(cmPkPtr,(PTR) measReqEvt, mBuf);
+         CMCHKPK(oduPackPointer,(PTR) measReqEvt, mBuf);
          break;
        }
     }
     pst->event = (Event) UDX_EVT_L2MEAS_REQ;
 
-    RETVALUE(SPstTsk(pst, mBuf));
+    return (SPstTsk(pst, mBuf));
 
 } /* cmPkUdxStaUpdReq */
 
@@ -895,22 +703,10 @@ KwL2MeasReqEvt    *measReqEvt;
 *
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmPkUdxL2MeasSendReq
-(
-Pst              *pst,
-U8               measType
-)
-#else
-PUBLIC S16 cmPkUdxL2MeasSendReq(pst, measReqEvt)
-Pst               *pst;
-U8                measType
-#endif
+S16 cmPkUdxL2MeasSendReq(Pst  *pst,uint8_t measType)
 {
     S16    ret1;
     Buffer *mBuf = NULLP;
-
-    TRC3(cmPkUdxL2MeasSendReq)
 
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
@@ -923,7 +719,7 @@ U8                measType
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
 
-       RETVALUE(ret1);
+       return (ret1);
     }
     
     switch (pst->selector)
@@ -931,13 +727,13 @@ U8                measType
        case UDX_SEL_LC:
        case UDX_SEL_LWLC:
        {
-          CMCHKPKLOG(SPkU8, measType, mBuf, EUDXXXX, pst);
+          CMCHKPKLOG(oduUnpackUInt8, measType, mBuf, EUDXXXX, pst);
           break;
        }
     }
     pst->event = (Event) UDX_EVT_L2MEAS_SEND_REQ;
 
-    RETVALUE(SPstTsk(pst, mBuf));
+    return (SPstTsk(pst, mBuf));
 
 } 
 
@@ -951,22 +747,10 @@ U8                measType
 *
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmPkUdxL2MeasStopReq
-(
-Pst              *pst,
-U8               measType
-)
-#else
-PUBLIC S16 cmPkUdxL2MeasStopReq(pst, measType)
-Pst               *pst;
-U8                measType
-#endif
+S16 cmPkUdxL2MeasStopReq(Pst *pst,uint8_t measType)
 {
     S16    ret1;
     Buffer *mBuf = NULLP;
-
-    TRC3(cmPkUdxL2MeasStopReq)
 
     if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
     {
@@ -979,7 +763,7 @@ U8                measType
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
 
-       RETVALUE(ret1);
+       return (ret1);
     }
     
     switch (pst->selector)
@@ -987,13 +771,13 @@ U8                measType
        case UDX_SEL_LC:
        case UDX_SEL_LWLC:
        {
-          CMCHKPKLOG(SPkU8, measType, mBuf, EUDXXXX, pst);
+          CMCHKPKLOG(oduUnpackUInt8, measType, mBuf, EUDXXXX, pst);
           break;
        }
     }
     pst->event = (Event) UDX_EVT_L2MEAS_STOP_REQ;
 
-    RETVALUE(SPstTsk(pst, mBuf));
+    return (SPstTsk(pst, mBuf));
 
 } 
 #endif
@@ -1014,30 +798,16 @@ U8                measType
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmUnpkUdxBndReq
-(
-UdxBndReq      func,
-Pst            *pst,
-Buffer         *mBuf
-)
-#else
-PUBLIC S16 cmUnpkUdxBndReq(func, pst, mBuf)
-UdxBndReq      func;
-Pst            *pst;
-Buffer         *mBuf;
-#endif
+S16 cmUnpkUdxBndReq(UdxBndReq func,Pst  *pst,Buffer *mBuf)
 {
     SuId       suId = 0;
     SpId       spId = 0;
     
-    TRC3(cmUnpkUdxBndReq)
-
     CMCHKUNPKLOG(SUnpkS16, &suId, mBuf, EUDXXXX, pst);
     CMCHKUNPKLOG(SUnpkS16, &spId, mBuf, EUDXXXX, pst);
     SPutMsg(mBuf);
 
-    RETVALUE((*func)(pst, suId, spId));
+    return ((*func)(pst, suId, spId));
 } /*end of function cmUnpkUdxBndReq*/
 
 /*
@@ -1053,29 +823,15 @@ Buffer         *mBuf;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmUnpkUdxUbndReq
-(
-UdxUbndReq     func,
-Pst            *pst,
-Buffer         *mBuf
-)
-#else
-PUBLIC S16 cmUnpkUdxUbndReq(func, pst, mBuf)
-UdxUbndReq     func;
-Pst            *pst;
-Buffer         *mBuf;
-#endif
+S16 cmUnpkUdxUbndReq(UdxUbndReq func,Pst *pst,Buffer *mBuf)
 {
     SpId       spId = 0;
     Reason     reason = 0;
     
-    TRC3(cmUnpkUdxUbndReq)
-
     CMCHKUNPKLOG(SUnpkS16, &spId, mBuf, EUDXXXX, pst);
     CMCHKUNPKLOG(SUnpkS16, &reason, mBuf, EUDXXXX, pst);
     SPutMsg(mBuf);
-    RETVALUE((*func)(pst, spId, reason));
+    return ((*func)(pst, spId, reason));
 } /*end of function cmUnpkUdxUbndReq*/
 
 /*
@@ -1091,30 +847,16 @@ Buffer         *mBuf;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmUnpkUdxBndCfm
-(
-UdxBndCfm      func,
-Pst            *pst,
-Buffer         *mBuf
-)
-#else
-PUBLIC S16 cmUnpkUdxBndCfm(func, pst, mBuf)
-UdxBndCfm      func;
-Pst            *pst;
-Buffer         *mBuf;
-#endif
+S16 cmUnpkUdxBndCfm(UdxBndCfm func,Pst *pst,Buffer *mBuf)
 {
     SuId       suId = 0;
-    U8         status = 0;
+    uint8_t         status = 0;
     
-    TRC3(cmUnpkUdxBndCfm)
-
     CMCHKUNPKLOG(SUnpkS16, &suId, mBuf, EUDXXXX, pst);
-    CMCHKUNPKLOG(SUnpkU8, &status, mBuf, EUDXXXX, pst);
+    CMCHKUNPKLOG(oduPackUInt8, &status, mBuf, EUDXXXX, pst);
     SPutMsg(mBuf);
 
-    RETVALUE((*func)(pst, suId, status));
+    return ((*func)(pst, suId, status));
 } /*end of function cmUnpkUdxBndCfm*/
 
 
@@ -1131,29 +873,15 @@ Buffer         *mBuf;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmUnpkUdxCfgReq
-(
-UdxCfgReq         func,
-Pst               *pst,
-Buffer            *mBuf
-)
-#else
-PUBLIC S16 cmUnpkUdxCfgReq(func, pst, mBuf)
-UdxCfgReq         func;
-Pst               *pst;
-Buffer            *mBuf;
-#endif
+S16 cmUnpkUdxCfgReq(UdxCfgReq func,Pst  *pst,Buffer *mBuf)
 {
 #if(ERRCLASS & ERRCLS_DEBUG)
     S16           ret1;
 #endif /* ERRCLASS & ERRCLS_DEBUG */
     SpId          spId = 0;
-    CkwCfgInfo     tmpCfgInfo;
-    CkwCfgInfo    *cfgInfo; /*stack Variable because it is not freed */
+    RlcCfgInfo     tmpCfgInfo;
+    RlcCfgInfo    *cfgInfo; /*stack Variable because it is not freed */
     
-    TRC3(cmUnpkUdxCfgReq)
-
     CMCHKUNPK(SUnpkS16, &(spId), mBuf);
     switch(pst->selector)
     {
@@ -1161,31 +889,31 @@ Buffer            *mBuf;
        case UDX_SEL_LC:
        {
 #if(ERRCLASS & ERRCLS_DEBUG)
-          ret1 = cmUnpkUdxStruct(mBuf,0,(U8 *)&tmpCfgInfo,sizeof(CkwCfgInfo));
+          ret1 = cmUnpkUdxStruct(mBuf,0,(uint8_t *)&tmpCfgInfo,sizeof(RlcCfgInfo));
           if(ret1 != ROK)
           {
              SPutMsg(mBuf);
              SLogError(pst->dstEnt, pst->dstInst, pst->dstProcId,
                    __FILE__, __LINE__, (ErrCls)ERRCLS_DEBUG,
                   (ErrVal)EUDXXXX, (ErrVal)ret1, "Unpacking failure");
-             RETVALUE( ret1 );
+             return ( ret1 );
           }
 #else
-         cmUnpkUdxStruct(mBuf,0,(U8 *)&tmpCfgInfo,sizeof(CkwCfgInfo));
+         cmUnpkUdxStruct(mBuf,0,(uint8_t *)&tmpCfgInfo,sizeof(RlcCfgInfo));
 #endif /* ERRCLASS & ERRCLS_DEBUG */
           cfgInfo = &tmpCfgInfo;
           break;
        }
        case UDX_SEL_LWLC:
        {
-          CMCHKUNPK(cmUnpkPtr,(PTR *) &cfgInfo, mBuf);
+          CMCHKUNPK(oduUnpackPointer,(PTR *) &cfgInfo, mBuf);
           break;
        }
 #endif /* LCUDX */
     }
     SPutMsg(mBuf);
 
-    RETVALUE((*func)(pst, spId, cfgInfo));
+    return ((*func)(pst, spId, cfgInfo));
 } /* cmUnpkUdxCfgReq */
 
 
@@ -1202,26 +930,12 @@ Buffer            *mBuf;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmUnpkUdxCfgCfm
-(
-UdxCfgCfm         func,
-Pst               *pst,
-Buffer            *mBuf
-)
-#else
-PUBLIC S16 cmUnpkUdxCfgCfm(func, pst, mBuf)
-UdxCfgCfm         func;
-Pst               *pst;
-Buffer            *mBuf;
-#endif
+S16 cmUnpkUdxCfgCfm(UdxCfgCfm func,Pst  *pst,Buffer *mBuf)
 {
     S16 ret1;
     SuId             suId = 0;
-    CkwCfgCfmInfo    *cfgCfmInfo = NULLP;
+    RlcCfgCfmInfo    *cfgCfmInfo = NULLP;
     
-    TRC3(cmUnpkUdxCfgCfm)
-
     CMCHKUNPK(SUnpkS16, &suId, mBuf);
 
     switch(pst->selector)
@@ -1230,7 +944,7 @@ Buffer            *mBuf;
        case UDX_SEL_LC:
        {
            if((ret1 = SGetStaticBuffer(pst->region, pst->pool, (Data **)&cfgCfmInfo,\
-                       sizeof(CkwCfgCfmInfo),0)) != ROK)
+                       sizeof(RlcCfgCfmInfo),0)) != ROK)
            {
 #if (ERRCLASS & ERRCLS_ADD_RES)
               if(ret1 != ROK)
@@ -1240,10 +954,10 @@ Buffer            *mBuf;
                       (ErrVal)EUDXXXX, (ErrVal)0, "SGetMsg() failed");
               }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-              RETVALUE(ret1);
+              return (ret1);
            }
 
-          ret1 = cmUnpkUdxStruct(mBuf,0,(U8 *)cfgCfmInfo, sizeof(CkwCfgCfmInfo));
+          ret1 = cmUnpkUdxStruct(mBuf,0,(uint8_t *)cfgCfmInfo, sizeof(RlcCfgCfmInfo));
 #if(ERRCLASS & ERRCLS_DEBUG)
           if(ret1 != ROK)
           {
@@ -1251,21 +965,21 @@ Buffer            *mBuf;
              SLogError(pst->dstEnt, pst->dstInst, pst->dstProcId,
                    __FILE__, __LINE__, (ErrCls)ERRCLS_DEBUG,
                   (ErrVal)EUDXXXX, (ErrVal)ret1, "Unpacking failure");
-             RETVALUE( ret1 );
+             return ( ret1 );
           }
 #endif /* ERRCLASS & ERRCLS_DEBUG */
           break;
        }
        case UDX_SEL_LWLC:
        {
-          CMCHKUNPK(cmUnpkPtr,(PTR *) &cfgCfmInfo, mBuf);
+          CMCHKUNPK(oduUnpackPointer,(PTR *) &cfgCfmInfo, mBuf);
           break;
        }
 #endif /* LCUDX */
     }
     SPutMsg(mBuf);
 
-    RETVALUE((*func)(pst, suId, cfgCfmInfo));
+    return ((*func)(pst, suId, cfgCfmInfo));
 } /* cmUnpkUdxCfgCfm */
 
 /*
@@ -1281,40 +995,25 @@ Buffer            *mBuf;
 *    File:     ckw.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmUnpkUdxUeIdChgReq
-(
-UdxUeIdChgReq     func,
-Pst               *pst,
-Buffer            *mBuf
-)
-#else
-PUBLIC S16 cmUnpkUdxUeIdChgReq(func, pst, mBuf)
-UdxUeIdChgReq     func;
-Pst               *pst;
-Buffer            *mBuf;
-#endif
+S16 cmUnpkUdxUeIdChgReq(UdxUeIdChgReq func,Pst *pst,Buffer *mBuf)
 {
     SpId      spId = 0;
-    U32       transId = 0;
+    uint32_t  transId = 0;
     CkwUeInfo tmpUeInfo;
     CkwUeInfo tmpNewUeInfo;
     CkwUeInfo *ueInfo;
     CkwUeInfo *newUeInfo;
     
-    TRC3(cmUnpkUdxUeIdChgReq)
-
-
     CMCHKUNPK(SUnpkS16, &(spId), mBuf);
-    CMCHKUNPKLOG(SUnpkU32, &transId, mBuf, EUDXXXX, pst);
+    CMCHKUNPKLOG(oduPackUInt32, &transId, mBuf, EUDXXXX, pst);
 
     switch(pst->selector)
     {
 #ifdef LCUDX
        case UDX_SEL_LC:
        {
-          cmUnpkUdxStruct(mBuf,0,(U8 *)&tmpNewUeInfo, sizeof(CkwUeInfo));
-          cmUnpkUdxStruct(mBuf,sizeof(CkwUeInfo),(U8 *)&tmpUeInfo, sizeof(CkwUeInfo));
+          cmUnpkUdxStruct(mBuf,0,(uint8_t *)&tmpNewUeInfo, sizeof(CkwUeInfo));
+          cmUnpkUdxStruct(mBuf,sizeof(CkwUeInfo),(uint8_t *)&tmpUeInfo, sizeof(CkwUeInfo));
 
           ueInfo =  &tmpUeInfo;
           newUeInfo =  &tmpNewUeInfo;
@@ -1322,8 +1021,8 @@ Buffer            *mBuf;
        }
        case UDX_SEL_LWLC:
        {
-          CMCHKUNPK(cmUnpkPtr,(PTR *) &ueInfo, mBuf);
-          CMCHKUNPK(cmUnpkPtr,(PTR *) &newUeInfo, mBuf);
+          CMCHKUNPK(oduUnpackPointer,(PTR *) &ueInfo, mBuf);
+          CMCHKUNPK(oduUnpackPointer,(PTR *) &newUeInfo, mBuf);
           break;
        }
        default:
@@ -1336,7 +1035,7 @@ Buffer            *mBuf;
     }
     SPutMsg(mBuf);
 
-    RETVALUE((*func)(pst, spId, transId, ueInfo, newUeInfo));
+    return ((*func)(pst, spId, transId, ueInfo, newUeInfo));
 
 } /* cmUnpkUdxUeIdChgReq */
 
@@ -1353,36 +1052,22 @@ Buffer            *mBuf;
 *    File:    ckw.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmUnpkUdxUeIdChgCfm
-(
-UdxUeIdChgCfm     func,
-Pst               *pst,
-Buffer            *mBuf
-)
-#else
-PUBLIC S16 cmUnpkUdxUeIdChgCfm(func, pst, mBuf)
-UdxUeIdChgCfm     func;
-Pst               *pst;
-Buffer            *mBuf;
-#endif
+S16 cmUnpkUdxUeIdChgCfm(UdxUeIdChgCfm func,Pst  *pst,Buffer *mBuf)
 {
     SuId      suId = 0;
-    U32       transId = 0;
+    uint32_t  transId = 0;
     CmStatus  status;
     
-    TRC3(cmUnpkUdxUeIdChgCfm)
-
-    cmMemset((U8 *)&status, (U8)0, (PTR)sizeof(CmStatus));
+    memset(&status, 0, sizeof(CmStatus));
 
     CMCHKUNPK(SUnpkS16, &suId, mBuf);
-    CMCHKUNPKLOG(SUnpkU32, &transId, mBuf, EUDXXXX, pst);
+    CMCHKUNPKLOG(oduPackUInt32, &transId, mBuf, EUDXXXX, pst);
 
     CMCHKUNPK(cmUnpkCmStatus, &status, mBuf);
 
     SPutMsg(mBuf);
 
-    RETVALUE((*func)(pst, suId, transId, status));
+    return ((*func)(pst, suId, transId, status));
 
 } /* cmUnpkUdxUeIdChgCfm */
 
@@ -1399,26 +1084,12 @@ Buffer            *mBuf;
 *    File:    ckw.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmUnpkUdxStaUpdCfm
-(
-UdxStaUpdCfm     func,
-Pst               *pst,
-Buffer            *mBuf
-)
-#else
-PUBLIC S16 cmUnpkUdxStaUpdCfm(func, pst, mBuf)
-UdxStaUpdCfm     func;
-Pst               *pst;
-Buffer            *mBuf;
-#endif
+S16 cmUnpkUdxStaUpdCfm(UdxStaUpdCfm func,Pst *pst,Buffer *mBuf)
 {
     SuId      suId = 0;
     CmLteRlcId *rlcId = NULLP;  /* KW_FIX */
-    KwUdxBufLst *pBufLst = NULLP; /* KW_FIX*/
+    RlcUdxBufLst *pBufLst = NULLP; /* KW_FIX*/
     
-    TRC3(cmUnpkUdxStaUpdCfm)
-
     CMCHKUNPK(SUnpkS16, &suId, mBuf);
     switch (pst->selector)
     {
@@ -1428,15 +1099,15 @@ Buffer            *mBuf;
        }
        case UDX_SEL_LWLC:
        {
-          CMCHKUNPK(cmUnpkPtr, (PTR *)&rlcId,mBuf);
-          CMCHKUNPK(cmUnpkPtr, (PTR *)&pBufLst,mBuf);
+          CMCHKUNPK(oduUnpackPointer, (PTR *)&rlcId,mBuf);
+          CMCHKUNPK(oduUnpackPointer, (PTR *)&pBufLst,mBuf);
           break;
        }
     } 
 
     SPutMsg(mBuf);
 
-    RETVALUE((*func)(pst, suId, rlcId, pBufLst));
+    return ((*func)(pst, suId, rlcId, pBufLst));
 
 } /* cmUnpkUdxUeIdChgCfm */
 
@@ -1453,35 +1124,21 @@ Buffer            *mBuf;
 *    File:    ckw.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmUnpkUdxStaUpdReq
-(
-UdxStaUpdReq     func,
-Pst               *pst,
-Buffer            *mBuf
-)
-#else
-PUBLIC S16 cmUnpkUdxStaUpdReq(func, pst, mBuf)
-UdxStaUpdReq     func;
-Pst               *pst;
-Buffer            *mBuf;
-#endif
+S16 cmUnpkUdxStaUpdReq(UdxStaUpdReq func,Pst *pst,Buffer *mBuf)
 {
     SpId      spId = 0;
     CmLteRlcId *rlcId = NULLP; /* KW_FIX */ 
-    KwUdxStaPdu *pStaPdu = NULLP; /* KW_FIX */
+    RlcUdxStaPdu *pStaPdu = NULLP; /* KW_FIX */
     S16 ret1;
     CmLteRlcId tmpRlcId;
     
-    TRC3(cmUnpkUdxStaUpdCfm)
-
     CMCHKUNPK(SUnpkS16, &spId, mBuf);
     switch (pst->selector)
     {
        case UDX_SEL_LC:
        {
            if((ret1 = SGetStaticBuffer(pst->region, pst->pool, (Data **)&pStaPdu,
-                       sizeof(KwUdxStaPdu),0)) != ROK)
+                       sizeof(RlcUdxStaPdu),0)) != ROK)
            {
 #if (ERRCLASS & ERRCLS_ADD_RES)
               if(ret1 != ROK)
@@ -1491,24 +1148,24 @@ Buffer            *mBuf;
                       (ErrVal)EUDXXXX, (ErrVal)0, "SGetMsg() failed");
               }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-              RETVALUE(ret1);
+              return (ret1);
            }
-          ret1 = cmUnpkUdxStruct(mBuf,0,(U8 *)pStaPdu, sizeof(KwUdxStaPdu));
-          ret1 = cmUnpkUdxStruct(mBuf,sizeof(KwUdxStaPdu),(U8 *)&tmpRlcId,sizeof(CmLteRlcId));
+          ret1 = cmUnpkUdxStruct(mBuf,0,(uint8_t *)pStaPdu, sizeof(RlcUdxStaPdu));
+          ret1 = cmUnpkUdxStruct(mBuf,sizeof(RlcUdxStaPdu),(uint8_t *)&tmpRlcId,sizeof(CmLteRlcId));
           rlcId = &tmpRlcId; 
           break;
        }
        case UDX_SEL_LWLC:
        {
-          CMCHKUNPK(cmUnpkPtr, (PTR *)&rlcId,mBuf);
-          CMCHKUNPK(cmUnpkPtr, (PTR *)&pStaPdu,mBuf);
+          CMCHKUNPK(oduUnpackPointer, (PTR *)&rlcId,mBuf);
+          CMCHKUNPK(oduUnpackPointer, (PTR *)&pStaPdu,mBuf);
           break;
        }
     } 
 
     SPutMsg(mBuf);
 
-    RETVALUE((*func)(pst, spId, rlcId, pStaPdu));
+    return ((*func)(pst, spId, rlcId, pStaPdu));
 
 } /* cmUnpkUdxUeIdChgCfm */
 
@@ -1525,35 +1182,21 @@ Buffer            *mBuf;
 *    File:    ckw.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmUnpkUdxStaPduReq
-(
-UdxStaPduReq     func,
-Pst               *pst,
-Buffer            *mBuf
-)
-#else
-PUBLIC S16 cmUnpkUdxStaPduReq(func, pst, mBuf)
-UdxStaPduReq     func;
-Pst               *pst;
-Buffer            *mBuf;
-#endif
+S16 cmUnpkUdxStaPduReq(UdxStaPduReq func,Pst *pst,Buffer *mBuf)
 {
     S16       ret1;
     SpId      spId = 0;
     CmLteRlcId tmpRlcId;
     CmLteRlcId *rlcId = NULLP;  /* KW_FIX */
-    KwUdxDlStaPdu *pStaPdu = NULLP; /* KW_FIX */
+    RlcUdxDlStaPdu *pStaPdu = NULLP; /* KW_FIX */
     
-    TRC3(cmUnpkUdxStaUpdCfm)
-
     CMCHKUNPK(SUnpkS16, &spId, mBuf);
     switch (pst->selector)
     {
        case UDX_SEL_LC:
        {
            if((ret1 = SGetStaticBuffer(pst->region, pst->pool, (Data **)&pStaPdu,
-                       sizeof(KwUdxDlStaPdu),0)) != ROK)
+                       sizeof(RlcUdxDlStaPdu),0)) != ROK)
            {
 #if (ERRCLASS & ERRCLS_ADD_RES)
               if(ret1 != ROK)
@@ -1563,23 +1206,23 @@ Buffer            *mBuf;
                       (ErrVal)EUDXXXX, (ErrVal)0, "SGetMsg() failed");
               }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-              RETVALUE(ret1);
+              return (ret1);
            }
-          ret1 = cmUnpkUdxStruct(mBuf,0, (U8 *)pStaPdu, sizeof(KwUdxDlStaPdu));
-          ret1 = cmUnpkUdxStruct(mBuf,sizeof(KwUdxDlStaPdu),(U8 *)&tmpRlcId,sizeof(CmLteRlcId));
+          ret1 = cmUnpkUdxStruct(mBuf,0, (uint8_t *)pStaPdu, sizeof(RlcUdxDlStaPdu));
+          ret1 = cmUnpkUdxStruct(mBuf,sizeof(RlcUdxDlStaPdu),(uint8_t *)&tmpRlcId,sizeof(CmLteRlcId));
           rlcId = &tmpRlcId; 
            break;
        }
        case UDX_SEL_LWLC:
        {
-          CMCHKUNPK(cmUnpkPtr, (PTR *)&rlcId,mBuf);
-          CMCHKUNPK(cmUnpkPtr, (PTR *)&pStaPdu,mBuf);
+          CMCHKUNPK(oduUnpackPointer, (PTR *)&rlcId,mBuf);
+          CMCHKUNPK(oduUnpackPointer, (PTR *)&pStaPdu,mBuf);
           break;
        }
     } 
 
     SPutMsg(mBuf);
-    RETVALUE((*func)(pst, spId, rlcId, pStaPdu));
+    return ((*func)(pst, spId, rlcId, pStaPdu));
 
 } /* cmUnpkUdxUeIdChgCfm */
 
@@ -1596,45 +1239,31 @@ Buffer            *mBuf;
 *    File:    kw_udx.c
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmUnpkUdxStaProhTmrStart
-(
-UdxStaProhTmrStart     func,
-Pst               *pst,
-Buffer            *mBuf
-)
-#else
-PUBLIC S16 cmUnpkUdxStaProhTmrStart(func, pst, mBuf)
-UdxStaProhTmrStart     func;
-Pst               *pst;
-Buffer            *mBuf;
-#endif
+S16 cmUnpkUdxStaProhTmrStart(UdxStaProhTmrStart func,Pst *pst,Buffer *mBuf)
 {
     SpId      spId = 0;
     CmLteRlcId tmpRlcId;
     CmLteRlcId *rlcId = NULLP; /* KW_FIX */
     
-    TRC3(cmUnpkUdxStaProhTmrStart)
-
     CMCHKUNPK(SUnpkS16, &spId, mBuf);
     switch (pst->selector)
     {
        case UDX_SEL_LC:
        {
-          cmUnpkUdxStruct(mBuf,0,(U8 *)&tmpRlcId,sizeof(CmLteRlcId));
+          cmUnpkUdxStruct(mBuf,0,(uint8_t *)&tmpRlcId,sizeof(CmLteRlcId));
           rlcId = &tmpRlcId;
           break;
        }
        case UDX_SEL_LWLC:
        {
-          CMCHKUNPK(cmUnpkPtr, (PTR *)&rlcId,mBuf);
+          CMCHKUNPK(oduUnpackPointer, (PTR *)&rlcId,mBuf);
           break;
        }
     } 
 
     SPutMsg(mBuf);
 
-    RETVALUE((*func)(pst, spId, rlcId));
+    return ((*func)(pst, spId, rlcId));
 
 } /* cmUnpkUdxStaProhTmrStart */
 
@@ -1650,43 +1279,29 @@ Buffer            *mBuf;
 *
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmUnpkUdxL2MeasReq
-(
-UdxL2MeasReq     func,
-Pst              *pst,
-Buffer           *mBuf
-)
-#else
-PUBLIC S16 cmUnpkUdxL2MeasReq(func, pst, mBuf)
-UdxL2MeasReq     func;
-Pst              *pst;
-Buffer           *mBuf;
-#endif
+S16 cmUnpkUdxL2MeasReq(UdxL2MeasReq func,Pst *pst,Buffer *mBuf)
 {
-    KwL2MeasReqEvt    tmpMeasReqEvt;
-    KwL2MeasReqEvt    *measReqEvt = NULLP;  /* KW_FIX */
-
-    TRC3(cmUnpkUdxL2MeasReq)
+    RlcL2MeasReqEvt    tmpMeasReqEvt;
+    RlcL2MeasReqEvt    *measReqEvt = NULLP;  /* KW_FIX */
 
     switch (pst->selector)
     {
        case UDX_SEL_LC:
        {
-          cmUnpkUdxStruct(mBuf,0,(U8 *)&tmpMeasReqEvt,sizeof(KwL2MeasReqEvt));
+          cmUnpkUdxStruct(mBuf,0,(uint8_t *)&tmpMeasReqEvt,sizeof(RlcL2MeasReqEvt));
           measReqEvt = &tmpMeasReqEvt;
           break;
        }
        case UDX_SEL_LWLC:
        {
-         CMCHKUNPK(cmUnpkPtr, (PTR *)&measReqEvt,mBuf);
+         CMCHKUNPK(oduUnpackPointer, (PTR *)&measReqEvt,mBuf);
          break;
        }
     }
 
     SPutMsg(mBuf);
 
-    RETVALUE((*func)(pst, measReqEvt));
+    return ((*func)(pst, measReqEvt));
 } /* cmUnpkUdxL2MeasReq */
 
 /*
@@ -1699,37 +1314,23 @@ Buffer           *mBuf;
 *
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmUnpkUdxL2MeasSendReq
-(
-UdxL2MeasSendReq   func,
-Pst                *pst,
-Buffer             *mBuf
-)
-#else
-PUBLIC S16 cmUnpkUdxL2MeasSendReq(func, pst, mBuf)
-UdxL2MeasSendReq   func;
-Pst                *pst;
-Buffer             *mBuf;
-#endif
+S16 cmUnpkUdxL2MeasSendReq(UdxL2MeasSendReq func,Pst *pst,Buffer *mBuf)
 {
-    U8     measType = 0;  /* KW_FIX */
-
-    TRC3(cmUnpkUdxL2MeasSendReq)
+    uint8_t     measType = 0;  /* KW_FIX */
 
     switch (pst->selector)
     {
        case UDX_SEL_LC:
        case UDX_SEL_LWLC:
        {
-          CMCHKUNPK(SUnpkU8, &measType, mBuf);
+          CMCHKUNPK(oduPackUInt8, &measType, mBuf);
          break;
        }
     }
 
     SPutMsg(mBuf);
 
-    RETVALUE((*func)(pst, measType));
+    return ((*func)(pst, measType));
 } /* cmUnpkUdxL2MeasReq */
 
 /*
@@ -1742,37 +1343,23 @@ Buffer             *mBuf;
 *
 *
 */
-#ifdef ANSI
-PUBLIC S16 cmUnpkUdxL2MeasStopReq
-(
-UdxL2MeasStopReq   func,
-Pst                *pst,
-Buffer             *mBuf
-)
-#else
-PUBLIC S16 cmUnpkUdxL2MeasStopReq(func, pst, mBuf)
-UdxL2MeasSendReq     func;
-Pst                  *pst;
-Buffer               *mBuf;
-#endif
+S16 cmUnpkUdxL2MeasStopReq(UdxL2MeasStopReq func,Pst *pst,Buffer *mBuf)
 {
-    U8     measType = 0; /* KW_FIX */
-
-    TRC3(cmUnpkUdxL2MeasStopReq)
+    uint8_t     measType = 0; /* KW_FIX */
 
     switch (pst->selector)
     {
        case UDX_SEL_LC:
        case UDX_SEL_LWLC:
        {
-          CMCHKUNPK(SUnpkU8, &measType, mBuf);
+          CMCHKUNPK(oduPackUInt8, &measType, mBuf);
          break;
        }
     }
 
     SPutMsg(mBuf);
 
-    RETVALUE((*func)(pst, measType));
+    return ((*func)(pst, measType));
 } /* cmUnpkUdxL2MeasStopReq */
 #endif
 #endif /* LCUDX */
