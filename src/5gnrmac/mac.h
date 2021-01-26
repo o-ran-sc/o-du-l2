@@ -25,6 +25,8 @@
 #define MAX_NUM_HARQ_PROC  16
 #define MAX_SLOT_SUPPORTED    10 /* numerology 0 15Khz */
 #define MAX_ZERO_CORR_CFG_IDX 16 /* max zero correlation config index */
+#define MAC_TQ_SIZE    10        /* Timing Queue Size */
+#define MAX_NUM_TIMER  1         /* MAX number of MAC timers */
 
 #define DEFAULT_CELLS 1
 #define SI_RNTI 0xFFFF
@@ -193,6 +195,10 @@ typedef struct macCb
 {
    Inst       macInst;
    ProcId     procId;
+   uint8_t    tmrRes;                    /*!< Timer resolution */
+   CmTqCp     tmrTqCp;                   /*!< Timer Task Queue Cntrl Point */
+   CmTqType   tmrTq[MAC_TQ_SIZE];        /*!< Timer Task Queue */
+   CmTimer    tmrBlk[MAX_NUM_TIMER];     /*!< Timer Block */
    MacCellCb  *macCell[MAX_NUM_CELL];
 }MacCb;
 
@@ -200,6 +206,7 @@ typedef struct macCb
 MacCb macCb;
 
 /* Function declarations */
+short int macActvTmr(Ent ent,Inst inst);
 void fillRarPdu(RarInfo *rarInfo);
 void createMacRaCb(RachIndInfo *rachIndInfo);
 void fillMsg4DlData(MacDlData *dlData, uint16_t msg4PduLen, uint8_t *msg4Pdu);

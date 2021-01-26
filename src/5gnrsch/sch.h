@@ -45,6 +45,7 @@
 #define NUM_DMRS_SYMBOLS 12
 #define DMRS_ADDITIONAL_POS 2
 #define SCH_DEFAULT_K1 1
+#define SCH_TQ_SIZE 100   /* Timing Queue Size */
 
 #define CRC_FAILED 0
 #define CRC_PASSED 1
@@ -215,8 +216,10 @@ typedef struct schCellCb
  */
 typedef struct schCb
 {
-   TskInit       schInit;              /*!< Task Init info */
-   SchGenCb      genCfg;                 /*!< General Config info */
+   TskInit       schInit;               /*!< Task Init info */
+   SchGenCb      genCfg;                /*!< General Config info */
+   CmTqCp        tmrTqCp;               /*!< Timer Task Queue Cntrl Point */
+   CmTqType      tmrTq[SCH_TQ_SIZE];  /*!< Timer Task Queue */
    SchCellCb     *cells[MAX_NUM_CELL];  /* Array to store cellCb ptr */  
 }SchCb;
 
@@ -224,6 +227,7 @@ typedef struct schCb
 SchCb schCb[SCH_MAX_INST];
 
 /* function declarations */
+S16 schActvTmr(Ent ent,Inst inst);
 uint8_t schBroadcastAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc,uint16_t slot);
 uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst inst);
 uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst);
