@@ -247,10 +247,9 @@ static S16 rlcLmmGenCfg(RlcCb  *gCb,RlcGenCfg *cfg)
          RLOG0(L_FATAL,"RLC DL Initialization failed");   
          return (LCM_REASON_MEM_NOAVAIL);
       }
-#if 0
+
       /* Register the timer */
-/*Pradeep: changing the SRegTmrMt() to SRegTmr()*/
-      if(SRegTmrMt(gCb->init.ent, gCb->init.inst, (uint16_t)cfg->timeRes,
+      if(ODU_REG_TMR_MT(gCb->init.ent, gCb->init.inst, (uint16_t)cfg->timeRes,
               rlcActvTmr) != ROK)
       {
          RLC_FREE(gCb,gCb->u.dlCb->udxDlSap, rlcUdxSapSize);
@@ -260,7 +259,7 @@ static S16 rlcLmmGenCfg(RlcCb  *gCb,RlcGenCfg *cfg)
 
          return (LCM_REASON_REGTMR_FAIL);
       }
-#endif
+
       /* initializations for background processing of freeing memory */
       rlcUtlInitToBeFreed(gCb, &(gCb->u.dlCb->toBeFreed));
       rlcUtlInitializeSelfPst(gCb);
