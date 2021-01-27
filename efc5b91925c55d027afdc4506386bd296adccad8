@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bf3be3ad_6f2b554d",
+        "filename": "src/5gnrrlc/kw_umm_ul.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-01-27T11:02:17Z",
+      "side": 1,
+      "message": "ERROR",
+      "revId": "efc5b91925c55d027afdc4506386bd296adccad8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
