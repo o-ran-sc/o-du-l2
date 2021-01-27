@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b3d8a17d_07a94ab1",
+        "filename": "src/5gnrmac/mac.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-01-27T11:23:53Z",
+      "side": 1,
+      "message": "which timer is being referred to here?",
+      "revId": "ae4bc125996866a51835b9f89a4c89bc7f423ae6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "70685ad4_fd349eb8",
+        "filename": "src/5gnrmac/mac.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-01-27T11:23:53Z",
+      "side": 1,
+      "message": "all timer related params can be moved into 1 structure?",
+      "revId": "ae4bc125996866a51835b9f89a4c89bc7f423ae6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
