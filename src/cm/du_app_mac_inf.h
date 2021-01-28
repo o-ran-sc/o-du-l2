@@ -21,7 +21,7 @@
 #define __MACINT_H__
 
 #define NUM_NUMEROLOGY 5  /* Number of numerology */
-#define MAXIMUM_TDD_PERIODICITY 5
+#define MAXIMUM_TDD_PERIODICITY 10
 #define MAX_SYMB_PER_SLOT 14 
 
 #define NUM_SSB		1	/* max value is 64 */

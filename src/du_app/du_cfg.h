@@ -97,7 +97,11 @@
 #define PRACH_PREAMBLE_RCVD_TGT_PWR  -74   
 #define NUM_RA_PREAMBLE  63
 #define RSRP_THRESHOLD_SSB   31
-#define TDD_PERIODICITY TX_PRDCTY_MS_2P5
+
+#ifdef NR_TDD
+#define TDD_PERIODICITY TX_PRDCTY_MS_5 
+#endif
+
 #define RSS_MEASUREMENT_UNIT DONT_REPORT_RSSI
 #define RA_CONT_RES_TIMER 64
 #define RA_RSP_WINDOW 180
@@ -152,10 +156,10 @@
 #define PUCCH_P0_NOMINAL   -74
 
 /* MACRO defines for TDD DL-UL Configuration */
-#define NUM_DL_SLOTS 3
-#define NUM_DL_SYMBOLS 12
-#define NUM_UL_SLOTS 1
-#define NUM_UL_SYMBOLS 0
+#define NUM_DL_SLOTS 7
+#define NUM_DL_SYMBOLS 12 
+#define NUM_UL_SLOTS 2
+#define NUM_UL_SYMBOLS 1
 
 /* MACRO defines for SRC config */
 #define SRS_RSRC_ID  1
