@@ -23,6 +23,7 @@
 #define NUM_NUMEROLOGY 5  /* Number of numerology */
 #define MAXIMUM_TDD_PERIODICITY 5
 #define MAX_SYMB_PER_SLOT 14 
+#define MAX_NO_OF_SLOT 10 //the number of slots as per perodicity 
 
 #define NUM_SSB		1	/* max value is 64 */
 #define SSB_MASK_SIZE	1	/* SSB mask size is 32bit for sub6 */
@@ -567,7 +568,7 @@ typedef struct tddCfg
 {
    bool               pres;
    DlUlTxPeriodicity  tddPeriod;      /* DL UL Transmission periodicity */
-   SlotConfig         slotCfg[MAXIMUM_TDD_PERIODICITY][MAX_SYMB_PER_SLOT]; 
+   SlotConfig         slotCfg[MAX_NO_OF_SLOT][MAX_SYMB_PER_SLOT]; 
 }TDDCfg;
 
 typedef struct sib1CellCfg

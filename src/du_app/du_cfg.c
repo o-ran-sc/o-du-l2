@@ -82,27 +82,44 @@ char encBuf[ENC_BUF_MAX_LEN];
  * ****************************************************************/
 void FillSlotConfig()
 {
-   uint8_t slot;
-   uint8_t symbol;
+   uint8_t slot = 0;
+   uint8_t symbol =0;
 
-   for(slot = 0; slot <= 3; slot++)
+   for(slot  =0; slot < MAX_NO_OF_SLOT; slot++)
    {
-      for(symbol = 0; symbol < MAX_SYMB_PER_SLOT; symbol++)
-	 duCfgParam.macCellCfg.tddCfg.slotCfg[slot][symbol] = DL_SLOT;
+      for(symbol =0; symbol <14; symbol++)
+      {
+	 if(slot < NUM_DL_SLOTS)
+	 {
+	    duCfgParam.macCellCfg.tddCfg.slotCfg[slot][symbol] = DL_SLOT;
+	 }
+	 else if(slot == NUM_DL_SLOTS)
+	 {
+	    duCfgParam.macCellCfg.tddCfg.slotCfg[slot][symbol] = GUARD_SLOT;
+	    if(symbol < NUM_DL_SYMBOLS)
+	    {
+	       duCfgParam.macCellCfg.tddCfg.slotCfg[slot][symbol] = DL_SLOT;
+	    }
+	    else if(symbol == NUM_DL_SYMBOLS)
+	    {
+	       duCfgParam.macCellCfg.tddCfg.slotCfg[slot][symbol] = GUARD_SLOT;
+	    }
+	    else
+	    {
+	       duCfgParam.macCellCfg.tddCfg.slotCfg[slot][symbol] = UL_SLOT;
+	    }
+	 }
+	 else
+	 {
+	    duCfgParam.macCellCfg.tddCfg.slotCfg[slot][symbol] = UL_SLOT;
+	 }
+
+      }
+
    }
-
-   duCfgParam.macCellCfg.tddCfg.slotCfg[3][10] = GUARD_SLOT;
-   duCfgParam.macCellCfg.tddCfg.slotCfg[3][11] = GUARD_SLOT;
-   duCfgParam.macCellCfg.tddCfg.slotCfg[3][12] = GUARD_SLOT;
-   duCfgParam.macCellCfg.tddCfg.slotCfg[3][13] = UL_SLOT;
-
-   for(symbol = 0; symbol < MAX_SYMB_PER_SLOT; symbol++)
-      duCfgParam.macCellCfg.tddCfg.slotCfg[4][symbol] = UL_SLOT;
-
 }
 
 /*******************************************************************
- *
  * @brief Reads the CL Configuration.
  *
  * @details
@@ -476,7 +493,7 @@ uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
 
    /* Configuring TDD UL DL config common */
    tddCfg.refScs = SubcarrierSpacing_kHz30;
-   tddCfg.txPrd = TDD_UL_DL_Pattern__dl_UL_TransmissionPeriodicity_ms2p5;
+   tddCfg.txPrd = TDD_UL_DL_Pattern__dl_UL_TransmissionPeriodicity_ms5;
    tddCfg.numDlSlots = NUM_DL_SLOTS;
    tddCfg.numDlSymbols = NUM_DL_SYMBOLS;
    tddCfg.numUlSlots = NUM_UL_SLOTS;
