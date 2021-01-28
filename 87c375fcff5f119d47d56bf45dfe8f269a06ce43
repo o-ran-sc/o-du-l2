@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "39affb6d_1c1d795f",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-01-28T15:40:20Z",
+      "side": 1,
+      "message": "value is 14 and it is defined in cm/du_app_mac_inf.h",
+      "parentUuid": "fe3071bb_f956e244",
+      "revId": "87c375fcff5f119d47d56bf45dfe8f269a06ce43",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "00aefc3a_ebccce34",
         "filename": "src/du_app/du_cfg.c",
         "patchSetId": 1
@@ -33,6 +51,24 @@
       "revId": "87c375fcff5f119d47d56bf45dfe8f269a06ce43",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8aaf5a78_da4dee6d",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-01-28T15:40:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "00aefc3a_ebccce34",
+      "revId": "87c375fcff5f119d47d56bf45dfe8f269a06ce43",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
