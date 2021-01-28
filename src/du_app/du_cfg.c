@@ -61,10 +61,15 @@ char encBuf[ENC_BUF_MAX_LEN];
  *   0   DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL
  *   1   DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL
  *   2   DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL
- *   3   DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    GD    GD    GD    UL
- *   4   UL    UL    UL    UL    UL    UL    UL    UL    UL    UL    UL    UL    UL    UL
+     3   DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL
+     4   DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL
+     5   DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL
+     6   DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL
+     7   DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    F     UL
+     8   UL    UL    UL    UL    UL    UL    UL    UL    UL    UL    UL    UL    UL    UL
+     9   UL    UL    UL    UL    UL    UL    UL    UL    UL    UL    UL    UL    UL    UL  
  */
-
+#ifdef NR_TDD
 /*******************************************************************
  *
  * @brief Fills the Slot configuration 
@@ -82,27 +87,42 @@ char encBuf[ENC_BUF_MAX_LEN];
  * ****************************************************************/
 void FillSlotConfig()
 {
-   uint8_t slot;
-   uint8_t symbol;
-
-   for(slot = 0; slot <= 3; slot++)
+   uint8_t slot = 0;
+   uint8_t symbol =0;
+   
+   memset(duCfgParam.macCellCfg.tddCfg.slotCfg, 0, sizeof(duCfgParam.macCellCfg.tddCfg.slotCfg[0][0]*\
+   MAXIMUM_TDD_PERIODICITY*MAX_SYMB_PER_SLOT));
+   
+   //Filling the DL Slots
+   for(slot  =0; slot < NUM_DL_SLOTS; slot++)
    {
-      for(symbol = 0; symbol < MAX_SYMB_PER_SLOT; symbol++)
+      for(symbol =0; symbol < MAX_SYMB_PER_SLOT; symbol++)
+      {
 	 duCfgParam.macCellCfg.tddCfg.slotCfg[slot][symbol] = DL_SLOT;
+      }
+   }
+   
+   //Filling the Flexi Slot
+   for(symbol =0; symbol < NUM_DL_SYMBOLS; symbol++)
+   {
+      duCfgParam.macCellCfg.tddCfg.slotCfg[GUARD_SLOT_IDX][symbol] = DL_SLOT;
+   }
+   duCfgParam.macCellCfg.tddCfg.slotCfg[GUARD_SLOT_IDX][symbol] = GUARD_SLOT;
+   symbol++;
+   duCfgParam.macCellCfg.tddCfg.slotCfg[GUARD_SLOT_IDX][symbol] = UL_SLOT;
+
+   //Filling the UL Slot
+   for(slot  = GUARD_SLOT_IDX + 1; slot < MAXIMUM_TDD_PERIODICITY; slot++)
+   {
+      for(symbol =0; symbol < MAX_SYMB_PER_SLOT; symbol++)
+      {
+	 duCfgParam.macCellCfg.tddCfg.slotCfg[slot][symbol] = UL_SLOT;
+      }
    }
 
-   duCfgParam.macCellCfg.tddCfg.slotCfg[3][10] = GUARD_SLOT;
-   duCfgParam.macCellCfg.tddCfg.slotCfg[3][11] = GUARD_SLOT;
-   duCfgParam.macCellCfg.tddCfg.slotCfg[3][12] = GUARD_SLOT;
-   duCfgParam.macCellCfg.tddCfg.slotCfg[3][13] = UL_SLOT;
-
-   for(symbol = 0; symbol < MAX_SYMB_PER_SLOT; symbol++)
-      duCfgParam.macCellCfg.tddCfg.slotCfg[4][symbol] = UL_SLOT;
-
 }
-
+#endif
 /*******************************************************************
- *
  * @brief Reads the CL Configuration.
  *
  * @details
@@ -221,12 +241,14 @@ uint8_t readMacCfg()
    duCfgParam.macCellCfg.prachCfg.rsrpThreshSsb = RSRP_THRESHOLD_SSB;
    duCfgParam.macCellCfg.prachCfg.raRspWindow = RA_RSP_WINDOW;
    duCfgParam.macCellCfg.prachCfg.prachRestrictedSet = PRACH_RESTRICTED_SET;
+#ifdef NR_TDD   
    /* TDD configuration */
    duCfgParam.macCellCfg.tddCfg.pres = TRUE;
    duCfgParam.macCellCfg.tddCfg.tddPeriod = TDD_PERIODICITY;
 
    FillSlotConfig();
 
+#endif
    /* RSSI Measurement configuration */
    duCfgParam.macCellCfg.rssiUnit = RSS_MEASUREMENT_UNIT;
 
@@ -476,7 +498,7 @@ uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
 
    /* Configuring TDD UL DL config common */
    tddCfg.refScs = SubcarrierSpacing_kHz30;
-   tddCfg.txPrd = TDD_UL_DL_Pattern__dl_UL_TransmissionPeriodicity_ms2p5;
+   tddCfg.txPrd = TDD_UL_DL_Pattern__dl_UL_TransmissionPeriodicity_ms5;
    tddCfg.numDlSlots = NUM_DL_SLOTS;
    tddCfg.numDlSymbols = NUM_DL_SYMBOLS;
    tddCfg.numUlSlots = NUM_UL_SLOTS;
