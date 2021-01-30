@@ -21,8 +21,6 @@
 #define __MACINT_H__
 
 #define NUM_NUMEROLOGY 5  /* Number of numerology */
-#define MAXIMUM_TDD_PERIODICITY 5
-#define MAX_SYMB_PER_SLOT 14 
 
 #define NUM_SSB		1	/* max value is 64 */
 #define SSB_MASK_SIZE	1	/* SSB mask size is 32bit for sub6 */
@@ -122,25 +120,6 @@ typedef enum
    RSSI_UNIT_DBM,
    RSSI_UNIT_DBFS
 }RSSIMeasUnit;
-
-typedef enum
-{
-   DL_SLOT,
-   UL_SLOT,
-   GUARD_SLOT
-}SlotConfig;
-
-typedef enum
-{
-   TX_PRDCTY_MS_0P5,
-   TX_PRDCTY_MS_0P625,
-   TX_PRDCTY_MS_1,
-   TX_PRDCTY_MS_1P25,
-   TX_PRDCTY_MS_2,
-   TX_PRDCTY_MS_2P5,
-   TX_PRDCTY_MS_5,
-   TX_PRDCTY_MS_10
-}DlUlTxPeriodicity;
 
 typedef enum
 {
@@ -563,13 +542,6 @@ typedef struct prachCfg
    uint8_t       raRspWindow;         /* RA Response Window */
 }PrachCfg;
 
-typedef struct tddCfg
-{
-   bool               pres;
-   DlUlTxPeriodicity  tddPeriod;      /* DL UL Transmission periodicity */
-   SlotConfig         slotCfg[MAXIMUM_TDD_PERIODICITY][MAX_SYMB_PER_SLOT]; 
-}TDDCfg;
-
 typedef struct sib1CellCfg
 {
    uint8_t  *sib1Pdu;
@@ -665,7 +637,9 @@ typedef struct macCellCfg
    bool           freqShft;         /* Indicates presence of 7.5kHz frequency shift */
    SsbCfg         ssbCfg;           /* SSB configuration */          
    PrachCfg       prachCfg;         /* PRACH Configuration */
+#ifdef NR_TDD
    TDDCfg         tddCfg;           /* TDD periodicity and slot configuration */
+#endif
    RSSIMeasUnit   rssiUnit;         /* RSSI measurement unit */
    Sib1CellCfg    sib1Cfg;          /* SIB1 config */
    BwpDlConfig    initialDlBwp;     /* Initial DL BWP */

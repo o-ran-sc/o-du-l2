@@ -65,6 +65,7 @@ char encBuf[ENC_BUF_MAX_LEN];
  *   4   UL    UL    UL    UL    UL    UL    UL    UL    UL    UL    UL    UL    UL    UL
  */
 
+#ifdef NR_TDD
 /*******************************************************************
  *
  * @brief Fills the Slot configuration 
@@ -85,21 +86,34 @@ void FillSlotConfig()
    uint8_t slot;
    uint8_t symbol;
 
-   for(slot = 0; slot <= 3; slot++)
+   for(slot = 0; slot < 8; slot++)
    {
       for(symbol = 0; symbol < MAX_SYMB_PER_SLOT; symbol++)
 	 duCfgParam.macCellCfg.tddCfg.slotCfg[slot][symbol] = DL_SLOT;
    }
 
-   duCfgParam.macCellCfg.tddCfg.slotCfg[3][10] = GUARD_SLOT;
-   duCfgParam.macCellCfg.tddCfg.slotCfg[3][11] = GUARD_SLOT;
-   duCfgParam.macCellCfg.tddCfg.slotCfg[3][12] = GUARD_SLOT;
-   duCfgParam.macCellCfg.tddCfg.slotCfg[3][13] = UL_SLOT;
+   for(slot = 8; slot < 10; slot++)
+   {
+      for(symbol = 0; symbol < MAX_SYMB_PER_SLOT; symbol++)
+	 duCfgParam.macCellCfg.tddCfg.slotCfg[slot][symbol] = UL_SLOT;
+   }
+   for(symbol = 0; symbol < 12; symbol++)
+      duCfgParam.macCellCfg.tddCfg.slotCfg[7][symbol] = DL_SLOT;
 
-   for(symbol = 0; symbol < MAX_SYMB_PER_SLOT; symbol++)
-      duCfgParam.macCellCfg.tddCfg.slotCfg[4][symbol] = UL_SLOT;
+   duCfgParam.macCellCfg.tddCfg.slotCfg[7][symbol] = FLEXI_SLOT;
+   duCfgParam.macCellCfg.tddCfg.slotCfg[7][13] = UL_SLOT;
+
+   for(slot = 0;slot<10; slot++)
+   {
+      printf("\n");
+      for(symbol=0;symbol<14;symbol++)
+      {
+         printf("%d\t", duCfgParam.macCellCfg.tddCfg.slotCfg[slot][symbol]);
+      }
+   }
 
 }
+#endif
 
 /*******************************************************************
  *
@@ -221,12 +235,13 @@ uint8_t readMacCfg()
    duCfgParam.macCellCfg.prachCfg.rsrpThreshSsb = RSRP_THRESHOLD_SSB;
    duCfgParam.macCellCfg.prachCfg.raRspWindow = RA_RSP_WINDOW;
    duCfgParam.macCellCfg.prachCfg.prachRestrictedSet = PRACH_RESTRICTED_SET;
+#ifdef NR_TDD
    /* TDD configuration */
    duCfgParam.macCellCfg.tddCfg.pres = TRUE;
    duCfgParam.macCellCfg.tddCfg.tddPeriod = TDD_PERIODICITY;
 
    FillSlotConfig();
-
+#endif
    /* RSSI Measurement configuration */
    duCfgParam.macCellCfg.rssiUnit = RSS_MEASUREMENT_UNIT;
 

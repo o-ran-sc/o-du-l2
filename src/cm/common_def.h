@@ -118,6 +118,11 @@
 #define ODU_SET_THREAD_AFFINITY SSetAffinity
 #define ODU_CREATE_TASK SCreateSTsk
 
+#ifdef NR_TDD
+#define MAXIMUM_TDD_PERIODICITY 10 /* Configuring this as 10 since support if for 5ms periodicity on Mu=1 */
+#define MAX_SYMB_PER_SLOT 14 
+#endif
+
 #define GET_UE_IDX( _crnti,_ueIdx)         \
 {                                          \
    _ueIdx = _crnti - ODU_START_CRNTI + 1;  \
@@ -179,6 +184,27 @@ typedef enum
    CONFIG_DEL
 }ConfigType;
 
+#ifdef NR_TDD
+typedef enum
+{
+   DL_SLOT,
+   UL_SLOT,
+   FLEXI_SLOT
+}SlotConfig;
+
+typedef enum
+{
+   TX_PRDCTY_MS_0P5,
+   TX_PRDCTY_MS_0P625,
+   TX_PRDCTY_MS_1,
+   TX_PRDCTY_MS_1P25,
+   TX_PRDCTY_MS_2,
+   TX_PRDCTY_MS_2P5,
+   TX_PRDCTY_MS_5,
+   TX_PRDCTY_MS_10
+}DlUlTxPeriodicity;
+#endif
+
 typedef struct slotIndInfo
 {
    uint16_t cellId;
@@ -196,6 +222,15 @@ typedef struct oduCellId
 {
    uint16_t cellId;
 }OduCellId;
+
+#ifdef NR_TDD
+typedef struct tddCfg
+{
+   bool               pres;
+   DlUlTxPeriodicity  tddPeriod;      /* DL UL Transmission periodicity */
+   SlotConfig         slotCfg[MAXIMUM_TDD_PERIODICITY][MAX_SYMB_PER_SLOT]; 
+}TDDCfg;
+#endif
 
 uint64_t gSlotCount;
 
