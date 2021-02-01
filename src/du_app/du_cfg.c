@@ -131,6 +131,10 @@ uint8_t readMacCfg()
    duCfgParam.macCellCfg.numerology = NR_NUMEROLOGY;
    duCfgParam.macCellCfg.dupType = DUPLEX_MODE;
 
+#ifdef NR_TDD
+    duCfgParam.macCellCfg.numerology = NR_NUMEROLOGY_FOR_TDD;
+    duCfgParam.macCellCfg.dupType = DUPLEX_MODE_FOR_TDD;
+#endif
    /* DL carrier configuration */
    duCfgParam.macCellCfg.dlCarrCfg.pres = TRUE;
    duCfgParam.macCellCfg.dlCarrCfg.bw = BANDWIDTH_20MHZ;
