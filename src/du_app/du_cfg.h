@@ -33,9 +33,15 @@
 #define NR_PCI 1
 #define NR_CELL_ID 1
 #define NR_NUMEROLOGY 0
+
 #define DU_NAME "ORAN_OAM_DU"
 #define CELL_TYPE SMALL
 #define DUPLEX_MODE DUP_MODE_FDD
+
+#ifdef NR_TDD
+#define DUPLEX_MODE DUP_MODE_TDD
+#endif
+
 #define DU_TAC 1
 #define PLMN_MCC0 3
 #define PLMN_MCC1 1
