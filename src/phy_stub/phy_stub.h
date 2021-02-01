@@ -15,55 +15,41 @@
 #   limitations under the License.                                             #
 ################################################################################
 *******************************************************************************/
+#include <unistd.h>
 
-/* This file handles slot indication */
+#define MAX_SLOT_VALUE   9
+#define MAX_SFN_VALUE    1023
+#define NR_PCI            1
+#define SLOT_DELAY       3
 
-#include "common_def.h"
-#include "lphy_stub.h"
-#include "du_log.h"
-
-uint16_t l1BuildAndSendSlotIndication();
-pthread_t thread = 0;
-
-void *GenerateTicks(void *arg)
+uint16_t sfnValue = 0;
+uint16_t slotValue = 0;
+bool     rachIndSent = false;
+bool     msg3Sent = false;
+bool     msg5ShortBsrSent = false;
+bool     msg5Sent = false;
+bool     dlDedMsg = false;
+bool     msgSecurityModeComp =  false;
+bool 	 msgRrcReconfiguration  =  false;
+bool 	 msgRegistrationComp    = false;
+typedef enum
 {
-   int     milisec = 1;        /* 1ms */
-   struct timespec req = {0};
+   MSG_TYPE_MSG3,
+   MSG_TYPE_SHORT_BSR,
+   MSG_TYPE_MSG5,
+   MSG_TYPE_SECURITY_MODE_COMPLETE,
+   MSG_TYPE_REGISTRATION_COMPLETE,
+   MSG_TYPE_RRC_RECONFIG_COMPLETE
+}MsgType;
 
-   req.tv_sec = 0;
-   req.tv_nsec = milisec * 1000000L;
-
-   while(1)
-   {
-      nanosleep(&req, (struct timespec *)NULL);
-      
-      /* Send Slot indication indication to lower mac */
-      l1BuildAndSendSlotIndication();
-   }
-   return((void *)NULLP);
-}
-
-void l1HdlSlotIndicaion(bool stopSlotInd)
-{
-   int ret;
-
-   if(!stopSlotInd)
-   {
-      ret = pthread_create(&thread, NULL, GenerateTicks, NULL);
-      if(ret)
-      {
-         DU_LOG("\nPHY_STUB: Unable to create thread");
-      }
-   }
-   else
-   {
-      ret = pthread_cancel(thread);
-      if(ret)
-      {
-         DU_LOG("\nPHY_STUB: Unable to stop thread");
-      }
-   }
-}
+void phyToMac ARGS((uint16_t msgType, uint32_t msgLen,void *msg));
+#ifdef INTEL_FAPI
+void fillTlvs ARGS((fapi_uint16_tlv_t *tlv, uint16_t tag, uint16_t
+length, uint16_t value, uint32_t *msgLen));
+void fillMsgHeader ARGS((fapi_msg_t *hdr, uint16_t msgType, uint16_t msgLen));
+#endif
+void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg);
+void l1StartConsoleHandler();
 
 /**********************************************************************
          End of file

@@ -1205,14 +1205,11 @@ uint8_t duHdlEgtpTnlMgmtCfm(EgtpTnlEvt tnlEvtCfm)
 
    if(tnlEvtCfm.cfmStatus.status == LCM_PRIM_OK)
    {
-      DU_LOG("\nDEBUG   -->  DU_APP : Tunnel management confirm OK");
-#ifdef EGTP_TEST      
-      duSendEgtpTestData();
-#endif
+      DU_LOG("\nDEBUG  -->  DU_APP: Tunnel management confirm OK");
    }
    else
    {
-      DU_LOG("\nERROR  -->  DU_APP : Tunnel management failed");
+      DU_LOG("\nERROR  -->  DU_APP: Tunnel management failed");
       ret = RFAILED;
    }
 
@@ -1252,121 +1249,6 @@ uint8_t duSendEgtpDatInd(Buffer *mBuf)
    return ROK;
 
 }
-
-#ifdef EGTP_TEST
-/*******************************************************************
- *
- * @brief Simulate UL Data for intial test
- *
- * @details
- *
- *    Function : duSendEgtpTestData
- *
- *    Functionality:
- *      Simulate UL data for initial test
- *
- * @params[in] 
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-uint8_t duSendEgtpTestData()
-{
-   char data[30] = "This is EGTP data from DU";
-   int datSize = 30;
-
-   Buffer   *mBuf;
-
-   if(ODU_GET_MSG_BUF(DU_APP_MEM_REGION, DU_POOL, &mBuf) == ROK)
-   {
-      if(ODU_ADD_POST_MSG_MULT((Data *)data, datSize, mBuf) != ROK)
-      {
-	 DU_LOG("\nERROR  -->  DU_APP : ODU_ADD_POST_MSG_MULT failed");
-	 ODU_PUT_MSG_BUF(mBuf);
-	 return RFAILED;
-      }
-   }
-   else
-   {
-      DU_LOG("\nERROR  -->  DU_APP : Failed to allocate memory");
-      return RFAILED;
-   }
-
-   /* filling IPv4 header */ 
-   CmIpv4Hdr ipv4Hdr;
-   MsgLen    mLen;
-
-   mLen = 0;
-   ODU_GET_MSG_LEN(mBuf, &mLen);
-
-   memset(&ipv4Hdr, 0, sizeof(CmIpv4Hdr));
-   ipv4Hdr.length = CM_IPV4_HDRLEN + mLen;
-   ipv4Hdr.hdrVer = 0x45;
-   ipv4Hdr.proto = 1;
-   ipv4Hdr.srcAddr = CM_INET_NTOH_UINT32(duCfgParam.egtpParams.localIp.ipV4Addr);
-   ipv4Hdr.destAddr = CM_INET_NTOH_UINT32(duCfgParam.egtpParams.destIp.ipV4Addr);
-
-   /* Packing IPv4 header into buffer */
-   uint8_t          ret, cnt, idx;
-   Data         revPkArray[CM_IPV4_HDRLEN];
-   Data         pkArray[CM_IPV4_HDRLEN];
-
-   /* initialize locals */
-   cnt = 0;
-   memset(revPkArray, 0, CM_IPV4_HDRLEN);
-   memset(pkArray, 0, CM_IPV4_HDRLEN);
-
-   /* Pack Header Version */
-   pkArray[cnt++] = ipv4Hdr.hdrVer;
-
-   /* Pack TOS */
-   pkArray[cnt++] = ipv4Hdr.tos;
-
-   pkArray[cnt++] = (Data)GetHiByte(ipv4Hdr.length);
-   pkArray[cnt++] = (Data)GetLoByte(ipv4Hdr.length);
-
-   /* Pack Id */
-   pkArray[cnt++] = (Data) GetHiByte(ipv4Hdr.id);
-   pkArray[cnt++] = (Data) GetLoByte(ipv4Hdr.id);
-
-   /* Pack Offset */
-   pkArray[cnt++] = (Data)GetHiByte(ipv4Hdr.off);
-   pkArray[cnt++] = (Data)GetLoByte(ipv4Hdr.off);
-
-   /* Pack TTL */
-   pkArray[cnt++] = ipv4Hdr.ttl;
-
-   /* Pack Protocol */
-   pkArray[cnt++] = ipv4Hdr.proto;
-
-   /* Pack Checksum */
-   pkArray[cnt++] = (Data)GetHiByte(ipv4Hdr.chkSum);
-   pkArray[cnt++] = (Data)GetLoByte(ipv4Hdr.chkSum);
-
-   /* Pack Source Address */
-   pkArray[cnt++] = (Data)GetHiByte(GetHiWord(ipv4Hdr.srcAddr));
-   pkArray[cnt++] = (Data)GetLoByte(GetHiWord(ipv4Hdr.srcAddr));
-   pkArray[cnt++] = (Data)GetHiByte(GetLoWord(ipv4Hdr.srcAddr));
-   pkArray[cnt++] = (Data)GetLoByte(GetLoWord(ipv4Hdr.srcAddr));
-
-   /* Pack Destination Address */
-   pkArray[cnt++] = (Data)GetHiByte(GetHiWord(ipv4Hdr.destAddr));
-   pkArray[cnt++] = (Data)GetLoByte(GetHiWord(ipv4Hdr.destAddr));
-   pkArray[cnt++] = (Data)GetHiByte(GetLoWord(ipv4Hdr.destAddr));
-   pkArray[cnt++] = (Data)GetLoByte(GetLoWord(ipv4Hdr.destAddr));
-
-   for (idx = 0;  idx < CM_IPV4_HDRLEN;  idx++)
-      revPkArray[idx] = pkArray[CM_IPV4_HDRLEN - idx -1];
-
-   /* this function automatically reverses revPkArray */
-   ret = ODU_ADD_PRE_MSG_MULT(revPkArray, (MsgLen)cnt, mBuf);
-
-   duSendEgtpDatInd(mBuf);
-
-   return ROK;
-}
-#endif /* EGTP_TEST */
-
 
 /**************************************************************************
  * @brief Function to send configs to SCH
@@ -1835,6 +1717,74 @@ uint8_t DuProcRlcRrcDeliveryReport(Pst *pst, RrcDeliveryReport *rrcDeliveryRepor
    return ret;
 }
 
+/*******************************************************************
+ *
+ * @brief Process UL user data from RLC
+ *
+ * @details
+ *
+ *    Function : DuProcRlcUlUserDataTrans
+ *
+ *    Functionality: Process UL user data from RLC
+ *
+ * @params[in] Post structure
+ *             UL user data
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t DuProcRlcUlUserDataTrans(Pst *pst, RlcUlUserDatInfo *ulUserData)
+{
+   uint8_t  rbIdx;
+   DuCellCb *cellCb;
+   DuUeCb   ueCb;
+   EgtpMsg  egtpMsg;
+   Buffer   *mBuf;
+
+   if(duGetCellCb(ulUserData->cellId, &cellCb) != ROK)
+      return RFAILED;
+
+   ueCb = cellCb->ueCb[ulUserData->ueIdx -1];
+
+   DU_LOG("\nDEBUG  -->  DU APP : Received UL user data");
+
+   /* Fill EGTP header */
+   egtpMsg.msgHdr.msgType = EGTPU_MSG_GPDU;
+   egtpMsg.msgHdr.nPdu.pres = FALSE;
+   egtpMsg.msgHdr.seqNum.pres = FALSE;
+   egtpMsg.msgHdr.extHdr.udpPort.pres = FALSE;
+   egtpMsg.msgHdr.extHdr.pdcpNmb.pres = FALSE;
+
+   /* Fetch EGTP tunnel info */
+   /* TODO : keep the "#if 0" code block and test once DL User data changes are submitted */
+#if 0
+   for(rbIdx = 0; rbIdx < MAX_NUM_DRB; rbIdx++)
+   {
+      if(ueCb.ulTnlCfg[rbIx]->drbId == ulUserData->rbId)
+      {
+         egtpMsg.msgHdr.teId = ueCb.ulTnlCfg[rbIx]->tnlCfg.teId;
+      }
+   }
+#else
+   egtpMsg.msgHdr.teId = 1;
+#endif
+
+   if (ODU_GET_MSG_BUF(DU_APP_MEM_REGION, DU_POOL, &mBuf) != ROK)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Failed to allocated buffer memory in DuProcRlcUlUserDataTrans");
+      DU_FREE_SHRABL_BUF(pst->region, pst->pool, ulUserData->userData, ulUserData->msgLen);
+      DU_FREE_SHRABL_BUF(pst->region, pst->pool, ulUserData, sizeof(RlcUlUserDatInfo));
+      return RFAILED;
+   }
+   oduCpyFixBufToMsg(ulUserData->userData, mBuf, ulUserData->msgLen);
+   ODU_PRINT_MSG(mBuf, 0, 0);
+   egtpMsg.msg = mBuf;
+   egtpHdlDatInd(egtpMsg);
+
+   DU_FREE_SHRABL_BUF(pst->region, pst->pool, ulUserData->userData, ulUserData->msgLen);
+   DU_FREE_SHRABL_BUF(pst->region, pst->pool, ulUserData, sizeof(RlcUlUserDatInfo));
+   return ROK;
+}
 
 /**********************************************************************
   End of file

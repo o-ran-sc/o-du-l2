@@ -282,9 +282,9 @@ static Void rlcAmmDlCheckAndStopPollTmr(RlcCb *gCb,RlcDlRbCb *rbCb,RlcSn mAckSn)
                                                                    
    if (mPollSn <= mAckSn)                                        
    {                                                               
-      if (rlcChkTmr(gCb, (PTR)rbCb, RLC_EVT_AMDL_POLL_RETX_TMR))    
+      if (rlcChkTmr(gCb, (PTR)rbCb, EVENT_RLC_AMDL_POLL_RETX_TMR))    
       {                                                            
-         rlcStopTmr(gCb, (PTR)rbCb, RLC_EVT_AMDL_POLL_RETX_TMR);    
+         rlcStopTmr(gCb, (PTR)rbCb, EVENT_RLC_AMDL_POLL_RETX_TMR);    
       }                                                            
    }
 
@@ -2102,12 +2102,12 @@ static bool rlcAmmDlCheckAndSetPoll(RlcCb *gCb, RlcDlRbCb *rbCb, bool newPdu, Ms
        * then starting the timer. Fixes crs 
        * ccpu00117216 and ccpu00118284 .
        * */
-      if( TRUE == rlcChkTmr(gCb,(PTR)rbCb,RLC_EVT_AMDL_POLL_RETX_TMR) )
+      if( TRUE == rlcChkTmr(gCb,(PTR)rbCb,EVENT_RLC_AMDL_POLL_RETX_TMR) )
       {
-         rlcStopTmr(gCb,(PTR)rbCb, RLC_EVT_AMDL_POLL_RETX_TMR);
+         rlcStopTmr(gCb,(PTR)rbCb, EVENT_RLC_AMDL_POLL_RETX_TMR);
       }
 
-      rlcStartTmr(gCb,(PTR)rbCb, RLC_EVT_AMDL_POLL_RETX_TMR);
+      rlcStartTmr(gCb,(PTR)rbCb, EVENT_RLC_AMDL_POLL_RETX_TMR);
    }
 
    return (pollBit);
@@ -3033,9 +3033,9 @@ RlcSn          sn
 Void rlcAmmFreeDlRbCb(RlcCb  *gCb,RlcDlRbCb  *rbCb)
 {
    /* stop the re-transmission timer */
-   if(TRUE == rlcChkTmr(gCb,(PTR)rbCb,RLC_EVT_AMDL_POLL_RETX_TMR))
+   if(TRUE == rlcChkTmr(gCb,(PTR)rbCb,EVENT_RLC_AMDL_POLL_RETX_TMR))
    {
-      rlcStopTmr(gCb,(PTR)rbCb, RLC_EVT_AMDL_POLL_RETX_TMR);
+      rlcStopTmr(gCb,(PTR)rbCb, EVENT_RLC_AMDL_POLL_RETX_TMR);
    }
 
    /* store the entire Rb pointer */      
@@ -3619,7 +3619,7 @@ S16 rlcProcDlStatusPdu(Pst *udxPst,SuId suId,
    rbCb = ueCb->lCh[lcId - 1].dlRbCb;
 
    /* Skip if mode is not AM */
-   if((rbCb ==  NULLP) || (rbCb->mode != CM_LTE_MODE_AM))
+   if((rbCb ==  NULLP) || (rbCb->mode != RLC_MODE_AM))
    {
       return RFAILED;
    }

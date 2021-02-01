@@ -137,7 +137,7 @@ uint8_t unpackRxData(uint16_t cellId, SlotIndInfo slotInfo, RxDataIndPdu *rxData
                       macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4TbSize);
 	          memset(&macCb.macCell[cellIdx]->macRaCb[ueIdx], 0, sizeof(MacRaCbInfo));
 	       }
-	       
+
 	       /* Send UL Data to RLC */
 	       ret = macProcUlData(cellId, rxDataIndPdu->rnti, slotInfo, lcId, length, pdu);
 

@@ -696,7 +696,7 @@ void rlcAmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
          }
 
          /* Check if reOrdTmr is running and update rxNextStatusTrig accordingly */
-         tmrRunning = rlcChkTmr(gCb,(PTR)rbCb, RLC_EVT_AMUL_REORD_TMR);
+         tmrRunning = rlcChkTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_REORD_TMR);
          if (tmrRunning)
          {
             Bool snInWin = RLC_AM_CHK_SN_WITHIN_RECV_WINDOW(amUl->rxNextStatusTrig, amUl);
@@ -704,7 +704,7 @@ void rlcAmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
             if ( (amUl->rxNextStatusTrig == amUl->rxNext) || ( (!snInWin) &&
                                              (amUl->rxNextStatusTrig != amUl->vrMr) ) )
             {
-               rlcStopTmr(gCb,(PTR)rbCb, RLC_EVT_AMUL_REORD_TMR);
+               rlcStopTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_REORD_TMR);
                tmrRunning = FALSE;
             }
          }
@@ -713,7 +713,7 @@ void rlcAmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
          {
             if (amUl->rxNextHighestRcvd > amUl->rxNext)
             {
-               rlcStartTmr(gCb,(PTR)rbCb, RLC_EVT_AMUL_REORD_TMR);
+               rlcStartTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_REORD_TMR);
                amUl->rxNextStatusTrig = amUl->rxNextHighestRcvd;
 
                DU_LOG("\nRLC: rlcAmmProcessPdus: Updated rxNextStatusTrig = %d \
@@ -1394,7 +1394,7 @@ static void rlcAmmTriggerStatus(RlcCb *gCb, RlcUlRbCb *rbCb, RlcSn sn, bool disc
       amUl->gatherStaPduInfo = FALSE;
 
       /* Check if staProhTmr is running */
-      tmrRunning = rlcChkTmr(gCb,(PTR) rbCb, RLC_EVT_AMUL_STA_PROH_TMR);
+      tmrRunning = rlcChkTmr(gCb,(PTR) rbCb, EVENT_RLC_AMUL_STA_PROH_TMR);
 
       if (!tmrRunning)
       {
@@ -1577,13 +1577,13 @@ Void rlcAmmUlReEstablish(RlcCb *gCb,CmLteRlcId rlcId,Bool sendReEst,RlcUlRbCb  *
    /* Discard remaining PDUs and bytesegments in recBuf */
 
    /* Stop all timers and reset variables */
-   if(TRUE == rlcChkTmr(gCb,(PTR)rbCb,RLC_EVT_AMUL_REORD_TMR))
+   if(TRUE == rlcChkTmr(gCb,(PTR)rbCb,EVENT_RLC_AMUL_REORD_TMR))
    {
-       rlcStopTmr(gCb,(PTR)rbCb, RLC_EVT_AMUL_REORD_TMR);
+       rlcStopTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_REORD_TMR);
    }
-   if(TRUE == rlcChkTmr(gCb,(PTR)rbCb,RLC_EVT_AMUL_STA_PROH_TMR))
+   if(TRUE == rlcChkTmr(gCb,(PTR)rbCb,EVENT_RLC_AMUL_STA_PROH_TMR))
    {
-       rlcStopTmr(gCb,(PTR)rbCb, RLC_EVT_AMUL_STA_PROH_TMR);
+       rlcStopTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_STA_PROH_TMR);
    }
 
    RLC_AMUL.rxNext  = 0;
@@ -1651,7 +1651,7 @@ Void rlcAmmReOrdTmrExp(RlcCb *gCb,RlcUlRbCb *rbCb)
          amUl->gatherStaPduInfo = FALSE;
 
          /* Check if staProhTmr is running */
-         tmrRunning = rlcChkTmr(gCb,(PTR) rbCb, RLC_EVT_AMUL_STA_PROH_TMR);
+         tmrRunning = rlcChkTmr(gCb,(PTR) rbCb, EVENT_RLC_AMUL_STA_PROH_TMR);
 
          if (!tmrRunning)
          {
@@ -1671,7 +1671,7 @@ Void rlcAmmReOrdTmrExp(RlcCb *gCb,RlcUlRbCb *rbCb)
    MODAMR(amUl->rxHighestStatus, mrxHighestStatus, amUl->rxNext, amUl->snModMask);
    if (mrxNextHighestRcvd > mrxHighestStatus)
    {
-      rlcStartTmr(gCb,(PTR)rbCb, RLC_EVT_AMUL_REORD_TMR);
+      rlcStartTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_REORD_TMR);
       amUl->rxNextStatusTrig = amUl->rxNextHighestRcvd;
    }
 
@@ -1877,13 +1877,13 @@ Void rlcAmmFreeUlRbCb(RlcCb       *gCb,RlcUlRbCb   *rbCb)
 
    windSz  =  (RLC_AM_GET_WIN_SZ(rbCb->m.amUl.snLen)) << 1;
 
-   if(TRUE == rlcChkTmr(gCb,(PTR)rbCb,RLC_EVT_AMUL_REORD_TMR))
+   if(TRUE == rlcChkTmr(gCb,(PTR)rbCb,EVENT_RLC_AMUL_REORD_TMR))
    {
-      rlcStopTmr(gCb,(PTR)rbCb, RLC_EVT_AMUL_REORD_TMR);
+      rlcStopTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_REORD_TMR);
    }
-   if(TRUE == rlcChkTmr(gCb,(PTR)rbCb,RLC_EVT_AMUL_STA_PROH_TMR))
+   if(TRUE == rlcChkTmr(gCb,(PTR)rbCb,EVENT_RLC_AMUL_STA_PROH_TMR))
    {
-      rlcStopTmr(gCb,(PTR)rbCb, RLC_EVT_AMUL_STA_PROH_TMR);
+      rlcStopTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_STA_PROH_TMR);
    }
 
 
