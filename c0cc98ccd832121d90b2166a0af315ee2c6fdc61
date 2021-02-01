@@ -16,6 +16,24 @@
       "revId": "c0cc98ccd832121d90b2166a0af315ee2c6fdc61",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "142b9aae_8d2d4294",
+        "filename": "build/o1/install_lib.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-02-01T13:17:49Z",
+      "side": 1,
+      "message": "We did the same. Now we are using version tag (fixed release) for every library. \nWhenever we require new version of library first we will test that and then update the version so we can avoid this type of issue.",
+      "parentUuid": "5c6f6269_97d79a8f",
+      "revId": "c0cc98ccd832121d90b2166a0af315ee2c6fdc61",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
