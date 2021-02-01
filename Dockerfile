@@ -26,7 +26,7 @@ RUN cd build/odu && make clean_odu odu MACHINE=BIT64 MODE=FDD
 #cleanup netconf folder and install libraries
 RUN cd build/o1  && rm -rf netconf && /bin/bash install_lib.sh -c
 
-#RUN cd build/o1  && make o1 MACHINE=BIT64  #temporary fix
+RUN cd build/o1  && make o1 MACHINE=BIT64
 
 # Install the data models based on the ODU yang model
 RUN /usr/local/bin/sysrepoctl -i build/o1/yang/o-ran-sc-odu-alarm-v1.yang
