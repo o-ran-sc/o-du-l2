@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5c6f6269_97d79a8f",
+        "filename": "build/o1/install_lib.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-01T13:05:55Z",
+      "side": 1,
+      "message": "is it not better to take care of updates? Else the build would break on every new update",
+      "revId": "c0cc98ccd832121d90b2166a0af315ee2c6fdc61",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
