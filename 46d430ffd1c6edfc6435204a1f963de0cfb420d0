@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "09f2677a_167fc7a1",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 556,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-02T15:03:05Z",
+      "side": 1,
+      "message": "This was added for verification. Will remove this printf",
+      "parentUuid": "4dde15f8_8f015a48",
+      "revId": "46d430ffd1c6edfc6435204a1f963de0cfb420d0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e468c376_207c4e4e",
         "filename": "src/cm/common_def.h",
         "patchSetId": 1
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "6b4cfef8_4d7747e0",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-02T15:03:05Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e468c376_207c4e4e",
+      "revId": "46d430ffd1c6edfc6435204a1f963de0cfb420d0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "678a8f45_e692a703",
         "filename": "src/cm/common_def.h",
         "patchSetId": 1
@@ -47,6 +83,24 @@
       "writtenOn": "2021-02-02T12:29:02Z",
       "side": 1,
       "message": "Since we are using camel case, can this be renamed to TddCfg?",
+      "revId": "46d430ffd1c6edfc6435204a1f963de0cfb420d0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b10a733b_7840e30f",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-02T15:03:05Z",
+      "side": 1,
+      "message": "Since TDD is an acronym, retaining it",
+      "parentUuid": "678a8f45_e692a703",
       "revId": "46d430ffd1c6edfc6435204a1f963de0cfb420d0",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "1f5d7d41_d00f8c62",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-02T15:03:05Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a901fb3e_cbe57282",
+      "revId": "46d430ffd1c6edfc6435204a1f963de0cfb420d0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9317e85a_379488db",
         "filename": "src/du_app/du_cfg.c",
         "patchSetId": 1
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "64cc1212_43e42d0c",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-02T15:03:05Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "9317e85a_379488db",
+      "revId": "46d430ffd1c6edfc6435204a1f963de0cfb420d0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c0aaa038_db0c9479",
         "filename": "src/du_app/du_cfg.c",
         "patchSetId": 1
@@ -98,6 +188,24 @@
       "writtenOn": "2021-02-02T12:29:02Z",
       "side": 1,
       "message": "MAXIMUM_TDD_PERIODICITY should be used",
+      "revId": "46d430ffd1c6edfc6435204a1f963de0cfb420d0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4b02a084_1cda63e0",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-02T15:03:05Z",
+      "side": 1,
+      "message": "This is verification code. Will remove it",
+      "parentUuid": "c0aaa038_db0c9479",
       "revId": "46d430ffd1c6edfc6435204a1f963de0cfb420d0",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "14bfe9ce_b342ae7a",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-02T15:03:05Z",
+      "side": 1,
+      "message": "This is verification code. Will remove it",
+      "parentUuid": "a728e60a_f50ea705",
+      "revId": "46d430ffd1c6edfc6435204a1f963de0cfb420d0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ef8d3275_dfefe75c",
         "filename": "src/du_app/du_cfg.c",
         "patchSetId": 1
@@ -132,6 +258,24 @@
       "writtenOn": "2021-02-02T12:29:02Z",
       "side": 1,
       "message": "DU_LOG",
+      "revId": "46d430ffd1c6edfc6435204a1f963de0cfb420d0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b60f164d_34e8d70f",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-02T15:03:05Z",
+      "side": 1,
+      "message": "This is verification code. Will remove it",
+      "parentUuid": "ef8d3275_dfefe75c",
       "revId": "46d430ffd1c6edfc6435204a1f963de0cfb420d0",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
