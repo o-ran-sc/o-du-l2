@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e2e365d9_b6bf5bdf",
+        "filename": "src/5gnrrlc/kw_amm_ul.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1070,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-02T15:42:33Z",
+      "side": 1,
+      "message": "DEBUG",
+      "revId": "b8294479ed9a2058d3fb38d26d7e7cc5ae34c869",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "80c60834_6135e9f7",
+        "filename": "src/5gnrrlc/kw_lim.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-02T15:42:33Z",
+      "side": 1,
+      "message": "RLC UL. Read the log to understand if it must be classified as RLC UL or DL or none. Or even the code around it signifies UL/DL. Eg: if condition surrounding the log.\nThis is a generic comment for all RLC review patches",
+      "revId": "b8294479ed9a2058d3fb38d26d7e7cc5ae34c869",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
