@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b8ebb717_e9bc11af",
+        "filename": "src/5gnrrlc/kw_tmm_dl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-02T15:28:08Z",
+      "side": 1,
+      "message": "should all of these be INFO logs?",
+      "revId": "1eb9f59b6aa7df02499d5ce18ff1de8358481f9d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f911fe59_bc619a69",
+        "filename": "src/5gnrrlc/kw_tmm_dl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-02T15:28:08Z",
+      "side": 1,
+      "message": "should all of these be INFO logs?",
+      "revId": "1eb9f59b6aa7df02499d5ce18ff1de8358481f9d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d216ccc9_0d0bd334",
+        "filename": "src/5gnrrlc/kw_uim.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 470,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-02T15:28:08Z",
+      "side": 1,
+      "message": "all logs in this file must be RLC UL",
+      "revId": "1eb9f59b6aa7df02499d5ce18ff1de8358481f9d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
