@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3c263e60_b64c11ea",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-02T11:10:27Z",
+      "side": 1,
+      "message": "don\u0027t use 14. Use macro. Follow https://gerrit.o-ran-sc.org/r/c/o-du/l2/+/5555 and make changes accordingly",
+      "revId": "7884fe8aef8d0253af23bff2d5832b0872b9b809",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
