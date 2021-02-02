@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "babc0613_37f28084",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-02T15:02:38Z",
+      "side": 1,
+      "message": "memset the slotCfg array",
+      "revId": "a67dacfe4382be6bb00b1cba5a53d31586be1ff5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "936ade3b_d2a0eb9c",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-02T15:02:38Z",
+      "side": 1,
+      "message": "this is our configuration. We don\u0027t have to add if else logic. We can directly configure in the required slot and symbol",
+      "revId": "a67dacfe4382be6bb00b1cba5a53d31586be1ff5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
