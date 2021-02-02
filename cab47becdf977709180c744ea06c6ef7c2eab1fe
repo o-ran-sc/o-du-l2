@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "78f4e0d9_121ab816",
+        "filename": "src/5gnrrlc/kw_uim.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 568,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-02T11:24:38Z",
+      "side": 1,
+      "message": "RLC not RL",
+      "revId": "cab47becdf977709180c744ea06c6ef7c2eab1fe",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
