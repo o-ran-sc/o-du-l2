@@ -1,0 +1,242 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "310e440a_ccd86866",
+        "filename": "src/5gnrrlc/kw_amm_ul.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-02T11:57:16Z",
+      "side": 1,
+      "message": "This should perhaps be INFO or DEBUG. Please check with the author",
+      "revId": "ec34fa6c352868d8d10c275c0b6ca6bba67d303b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3cdf6f69_6744eafd",
+        "filename": "src/5gnrrlc/kw_amm_ul.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-02T11:57:16Z",
+      "side": 1,
+      "message": "DEBUG",
+      "revId": "ec34fa6c352868d8d10c275c0b6ca6bba67d303b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7e515c5e_7f325fad",
+        "filename": "src/5gnrrlc/kw_amm_ul.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-02T11:57:16Z",
+      "side": 1,
+      "message": "This should perhaps be INFO or DEBUG. Please check with the author",
+      "revId": "ec34fa6c352868d8d10c275c0b6ca6bba67d303b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c842cf4c_aa430e54",
+        "filename": "src/5gnrrlc/kw_amm_ul.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-02T11:57:16Z",
+      "side": 1,
+      "message": "DEBUG",
+      "revId": "ec34fa6c352868d8d10c275c0b6ca6bba67d303b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0c2646b8_4cef6007",
+        "filename": "src/5gnrrlc/kw_amm_ul.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 509,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-02T11:57:16Z",
+      "side": 1,
+      "message": "DEBUG",
+      "revId": "ec34fa6c352868d8d10c275c0b6ca6bba67d303b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9cd80ada_8f0be121",
+        "filename": "src/5gnrrlc/kw_amm_ul.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 622,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-02T11:57:16Z",
+      "side": 1,
+      "message": "DEBUG",
+      "revId": "ec34fa6c352868d8d10c275c0b6ca6bba67d303b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cf36780b_99e9ad40",
+        "filename": "src/5gnrrlc/kw_amm_ul.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 715,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-02T11:57:16Z",
+      "side": 1,
+      "message": "DEBUG",
+      "revId": "ec34fa6c352868d8d10c275c0b6ca6bba67d303b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "056e2d01_79fe0f76",
+        "filename": "src/5gnrrlc/kw_amm_ul.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1022,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-02T11:57:16Z",
+      "side": 1,
+      "message": "DEBUG",
+      "revId": "ec34fa6c352868d8d10c275c0b6ca6bba67d303b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "33019e79_8c697c99",
+        "filename": "src/5gnrrlc/kw_lim.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-02T11:57:16Z",
+      "side": 1,
+      "message": "DEBUG",
+      "revId": "ec34fa6c352868d8d10c275c0b6ca6bba67d303b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "56d71421_6d44a364",
+        "filename": "src/5gnrrlc/kw_lim.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-02T11:57:16Z",
+      "side": 1,
+      "message": "DEBUG",
+      "revId": "ec34fa6c352868d8d10c275c0b6ca6bba67d303b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "27f2dc82_c01b1f7c",
+        "filename": "src/5gnrrlc/kw_lim.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-02T11:57:16Z",
+      "side": 1,
+      "message": "DEBUG",
+      "revId": "ec34fa6c352868d8d10c275c0b6ca6bba67d303b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7c44c4ab_70783b19",
+        "filename": "src/5gnrrlc/kw_ptli.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-02T11:57:16Z",
+      "side": 1,
+      "message": "RLC UL",
+      "revId": "ec34fa6c352868d8d10c275c0b6ca6bba67d303b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6b50767a_a3a640b6",
+        "filename": "src/5gnrrlc/kw_umm_dl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-02T11:57:16Z",
+      "side": 1,
+      "message": "RLC DL",
+      "revId": "ec34fa6c352868d8d10c275c0b6ca6bba67d303b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f31c2ee8_d2c3dfb7",
+        "filename": "src/5gnrrlc/kw_umm_dl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-02T11:57:16Z",
+      "side": 1,
+      "message": "RLC DL",
+      "revId": "ec34fa6c352868d8d10c275c0b6ca6bba67d303b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
