@@ -16,6 +16,24 @@
       "revId": "f03490bddd8406e52c48914a8ef5d226fe334972",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cda7f771_3ce4fafc",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2147,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-02-02T11:22:34Z",
+      "side": 1,
+      "message": "checked all the IEs and and made changes as per the requirement",
+      "parentUuid": "02a3e2ff_ea8e9278",
+      "revId": "f03490bddd8406e52c48914a8ef5d226fe334972",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
