@@ -56,10 +56,14 @@
 
 /* free a static buffer */
 #define DU_FREE(_datPtr, _size)                                 \
-   if(_datPtr)                                                  \
+{                                                               \
+   if(_datPtr != NULLP)                                                  \
+   {                                                            \
       SPutSBuf(DU_APP_MEM_REGION, DU_POOL,                      \
-         (Data *)_datPtr, _size);
-
+         (Data *)_datPtr, _size);                               \
+      _datPtr = NULLP;                                          \
+   }                                                            \
+}
 /* Allocate shared memory to be used for LWLC
  * during inter-layer communication */
 #define DU_ALLOC_SHRABL_BUF(_buf, _size)                     \

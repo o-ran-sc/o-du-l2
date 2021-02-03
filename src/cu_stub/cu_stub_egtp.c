@@ -93,7 +93,7 @@ uint8_t egtpInitReq()
    }
 
    tnlEvt.action = EGTP_TNL_MGMT_ADD;
-   tnlEvt.lclTeid = 10;
+   tnlEvt.lclTeid = 1;
    tnlEvt.remTeid = 1;
    ret = cuEgtpTnlMgmtReq(tnlEvt);
    if(ret != ROK)
@@ -626,21 +626,31 @@ S16 cuEgtpDecodeHdr(Buffer *mBuf)
 
 S16 cuEgtpDatReq()
 {
-   uint8_t cnt = 0;
+   uint8_t ret = ROK, cnt = 0;
    EgtpMsg  egtpMsg;
 
    /* Build Application message that is supposed to come from app to egtp */
-   BuildAppMsg(&egtpMsg);
+   ret = BuildAppMsg(&egtpMsg);
+   if(ret != ROK)
+   {
+      DU_LOG("\nERROR  -->  EGTP : Failed to build App Msg");
+      return RFAILED;
+   }
 
    /* Encode EGTP header to build final EGTP message */
-   BuildEgtpMsg(&egtpMsg);
-
+   ret = BuildEgtpMsg(&egtpMsg);
+   if(ret != ROK)
+   {
+      DU_LOG("\nERROR  -->  EGTP : Failed to build EGTP Msg");
+      return RFAILED;
+   }
    /* Send Message to peer */
    while(cnt < 200)
    {
       DU_LOG("\nEGTP : Sending message[%d]", cnt+1);
       cuEgtpSendMsg(egtpMsg.msg);
       cnt++;
+      sleep(1);
    }
 
    ODU_PUT_MSG_BUF(egtpMsg.msg);
@@ -651,8 +661,19 @@ S16 cuEgtpDatReq()
 
 S16 BuildAppMsg(EgtpMsg  *egtpMsg)
 {
-   char data[30] = "This is EGTP data from CU";
-   int datSize = 30;
+   char data[1215] = "In telecommunications, 5G is the fifth generation technology standard for broadband cellular"
+   " networks, which cellular phone companies began deploying worldwide in 2019, and is the planned successor to the 4G "
+   " networks which provide connectivity to most current cellphones. 5G networks are predicted to have more than 1.7"
+   " billion subscribers worldwide by 2025, according to the GSM Association.Like its predecessors, 5G networks are"
+   " cellular networks,in which the service area is divided into small geographical areas called cells.All 5G wireless"
+   " devices in a cell are connected to the Internet and telephone network by radio waves through local antenna in the"
+   " cell. The main advantage of the new networks is that they will have greater bandwidth, giving higher download"
+   " speeds, eventually up to 10 gigabits per second(Gbit/s). Due to the increased bandwidth, it is expected the"
+   " networks will not exclusively serve cellphones like existing cellular networks, but also be used as general"
+   " internet service providers for laptops and desktop computers, competing with existing ISPs such as cable"
+   " internet, and also will make possible new applications in internet of things (IoT) and machine to machine areas.";
+
+   int datSize = 1215;
  
    Buffer   *mBuf;
  
@@ -745,7 +766,7 @@ S16 BuildAppMsg(EgtpMsg  *egtpMsg)
    egtpMsg->msgHdr.seqNum.pres = FALSE;
    egtpMsg->msgHdr.extHdr.udpPort.pres = FALSE;
    egtpMsg->msgHdr.extHdr.pdcpNmb.pres = FALSE;
-   egtpMsg->msgHdr.teId = 10;
+   egtpMsg->msgHdr.teId = 1;
    egtpMsg->msg = mBuf;
 
    return ret;
