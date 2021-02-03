@@ -16,7 +16,7 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains F1AP message handler functions */
+/* This file contains F1AP message handler functions **/
 #include "common_def.h"
 #include "lrg.h"
 #include "legtp.h"
