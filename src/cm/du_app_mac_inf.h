@@ -1116,7 +1116,6 @@ typedef struct spCellCfg
 typedef struct ambrCfg
 {
    uint32_t ulBr;   /* UL Bit rate */
-   uint32_t dlBr;   /* DL Bit rate */
 }AmbrCfg;
 
 /* Single Network Slice Selection assistance Info */
