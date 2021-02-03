@@ -1136,9 +1136,6 @@ uint8_t duHdlEgtpSrvOpenComplete(CmStatus cfm)
    if(cfm.status == LCM_PRIM_OK)
    {
       DU_LOG("\nDEBUG   -->  DU_APP : EGTP server opened successfully");
-#ifdef EGTP_TEST
-      duSendEgtpTnlMgmtReq(EGTP_TNL_MGMT_ADD, EGTP_LCL_TEID, EGTP_REM_TEID);
-#endif
    }
    else
    {
@@ -1168,19 +1165,28 @@ uint8_t duHdlEgtpSrvOpenComplete(CmStatus cfm)
  *
  * ****************************************************************/
 
-uint8_t duSendEgtpTnlMgmtReq(uint8_t action, uint32_t lclTeid, uint32_t remTeid)
+uint8_t duSendEgtpTnlMgmtReq(uint8_t action, uint32_t teIdTobeMod, GtpTnlCfg *ueCbTnlCfg)
 {
+   uint8_t ret =ROK;
    Pst pst;
    EgtpTnlEvt tnlEvt;
 
-   tnlEvt.action = action;
-   tnlEvt.lclTeid = lclTeid;
-   tnlEvt.remTeid = remTeid;
+   DU_LOG("\nDEBUG   -->  DU_APP : Sending EGTP tunnel management request for teId [%d]", ueCbTnlCfg->teId);
 
-   DU_LOG("\nDEBUG   -->  DU_APP : Sending EGTP tunnel management request");
+   /* ADD/MOD/DEL per tunnel */
+   tnlEvt.action = action;
+   tnlEvt.remTeid = ueCbTnlCfg->teId;
+   if(action != EGTP_TNL_MGMT_ADD)
+   {
+      tnlEvt.lclTeid = teIdTobeMod;
+   }
+   else
+   {
+      tnlEvt.lclTeid = ueCbTnlCfg->teId;
+   }
    duFillEgtpPst(&pst, EVTTNLMGMTREQ);
-   egtpTnlMgmtReq(&pst, tnlEvt);
-   return ROK;
+   ret = egtpTnlMgmtReq(&pst, tnlEvt);
+   return ret;
 }
 
 /*******************************************************************
@@ -1736,15 +1742,8 @@ uint8_t DuProcRlcRrcDeliveryReport(Pst *pst, RrcDeliveryReport *rrcDeliveryRepor
 uint8_t DuProcRlcUlUserDataTrans(Pst *pst, RlcUlUserDatInfo *ulUserData)
 {
    uint8_t  rbIdx;
-   DuCellCb *cellCb;
-   DuUeCb   ueCb;
    EgtpMsg  egtpMsg;
    Buffer   *mBuf;
-
-   if(duGetCellCb(ulUserData->cellId, &cellCb) != ROK)
-      return RFAILED;
-
-   ueCb = cellCb->ueCb[ulUserData->ueIdx -1];
 
    DU_LOG("\nDEBUG  -->  DU APP : Received UL user data");
 
@@ -1756,18 +1755,17 @@ uint8_t DuProcRlcUlUserDataTrans(Pst *pst, RlcUlUserDatInfo *ulUserData)
    egtpMsg.msgHdr.extHdr.pdcpNmb.pres = FALSE;
 
    /* Fetch EGTP tunnel info */
-   /* TODO : keep the "#if 0" code block and test once DL User data changes are submitted */
-#if 0
-   for(rbIdx = 0; rbIdx < MAX_NUM_DRB; rbIdx++)
+   for(rbIdx = 0; rbIdx < duCb.numDrb; rbIdx++)
    {
-      if(ueCb.ulTnlCfg[rbIx]->drbId == ulUserData->rbId)
+      if((duCb.upTnlCfg[rbIdx] != NULLP) && (duCb.upTnlCfg[rbIdx]->drbId == ulUserData->rbId))
       {
-         egtpMsg.msgHdr.teId = ueCb.ulTnlCfg[rbIx]->tnlCfg.teId;
+	 if(duCb.upTnlCfg[rbIdx]->tnlCfg1)
+	 {
+            egtpMsg.msgHdr.teId = duCb.upTnlCfg[rbIdx]->tnlCfg1->teId; /*As we are supporting only 1 tunnel per DRB*/
+	    break;
+	 }
       }
    }
-#else
-   egtpMsg.msgHdr.teId = 1;
-#endif
 
    if (ODU_GET_MSG_BUF(DU_APP_MEM_REGION, DU_POOL, &mBuf) != ROK)
    {

@@ -1414,7 +1414,6 @@ typedef struct schLcCfg
 typedef struct schAmbrCfg
 {
    uint32_t   ulBr;   /* Ul BitRate */
-   uint32_t   dlBr;   /* Dl BitRate */
 }SchAmbrCfg;
 
 typedef struct schModulationInfo

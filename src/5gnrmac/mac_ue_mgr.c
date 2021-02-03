@@ -1638,7 +1638,6 @@ uint8_t fillSchUeCfg(Pst *pst, SchUeCfg *schUeCfg, MacUeCfg *ueCfg)
 	 return RFAILED;
       }
       schUeCfg->ambrCfg->ulBr = ueCfg->ambrCfg->ulBr;
-      schUeCfg->ambrCfg->dlBr = ueCfg->ambrCfg->dlBr;
    }
    else
       schUeCfg->ambrCfg = NULLP;

@@ -21,6 +21,7 @@
 
 #define ENC_BUF_MAX_LEN 400
 #define ENCODE_FAIL -1
+#define TEID_BIT_SIZE 24
 
 char encBuf[ENC_BUF_MAX_LEN];
 int  encBufSize;
@@ -28,6 +29,8 @@ int  encBufSize;
 int PrepFinalEncBuf(const void *buffer, size_t size, void *encodedBuf);
 uint8_t fillBitString(BIT_STRING_t *id, uint8_t unusedBits, uint8_t byteSize, uint8_t val);
 uint8_t bitStringToInt(BIT_STRING_t *bitString, void *val);
+void fillTeIdString(uint8_t bufSize, uint32_t val, uint8_t *buf);
+void teIdStringToInt(uint8_t *buf, uint32_t *val);
 
 #endif
 

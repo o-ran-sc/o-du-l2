@@ -97,6 +97,23 @@ typedef struct f1DlRrcMsg
    uint8_t  *rrcMsgPdu;
 }F1DlRrcMsg;
 
+typedef struct gtpTnlCfg
+{
+   uint32_t ulTnlAddress;  /* remote Address */
+   uint32_t dlTnlAddress;  /* local Address */
+   uint32_t teId;
+}GtpTnlCfg;
+
+typedef struct upTnlCfg
+{
+   ConfigType configType;
+   uint8_t cellId;
+   uint8_t ueIdx;
+   uint8_t drbId;
+   GtpTnlCfg *tnlCfg1; /* Tunnel 1 */
+   GtpTnlCfg *tnlCfg2; /* Tunnel 2 */
+}UpTnlCfg;
+
 typedef struct duUeCfg
 {
    void *cellGrpCfg;
@@ -106,6 +123,8 @@ typedef struct duUeCfg
    uint8_t numMacLcs;        /* Mac Ue Cfg */
    LcCfg   macLcCfg[MAX_NUM_LC];
    AmbrCfg *ambrCfg;
+   uint8_t numDrb;
+   UpTnlCfg upTnlInfo[MAX_NUM_DRB];  /* User plane TNL Info*/
 }DuUeCfg;
 
 typedef struct f1UeContextSetup
@@ -183,6 +202,8 @@ typedef struct duCb
    DuCellCb*     actvCellLst[MAX_NUM_CELL];    /* List of cells activated/to be activated of type DuCellCb */
    uint32_t       numUe;            /* current number of UEs */
    UeCcchCtxt     ueCcchCtxt[MAX_NUM_UE]; /* mapping of gnbDuUeF1apId to CRNTI required for CCCH processing*/
+   uint8_t       numDrb;           /* current number of DRbs*/
+   UpTnlCfg*     upTnlCfg[MAX_NUM_DRB]; /* tunnel info for every Drb */
 }DuCb;
 
 
@@ -234,7 +255,7 @@ uint8_t duBuildEgtpCfgReq();
 uint8_t duHdlEgtpCfgComplete(CmStatus cfm);
 uint8_t duSendEgtpSrvOpenReq();
 uint8_t duHdlEgtpSrvOpenComplete(CmStatus cfm);
-uint8_t duSendEgtpTnlMgmtReq(uint8_t action, uint32_t lclTeid, uint32_t remTeid);
+uint8_t duSendEgtpTnlMgmtReq(uint8_t action, uint32_t teIdMod, GtpTnlCfg *tnlInfo);
 uint8_t duSendEgtpDatInd(Buffer *mBuf);
 uint8_t duHdlSchCfgComplete(Pst *pst, RgMngmt *cfm);
 uint8_t duBuildAndSendMacCellStart();

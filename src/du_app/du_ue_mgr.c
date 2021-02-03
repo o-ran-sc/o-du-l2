@@ -34,10 +34,6 @@
 #include "du_f1ap_msg_hdl.h"
 #include "du_ue_mgr.h"
 
-#ifdef EGTP_TEST
-uint32_t sduId = 0;
-#endif
-
 DuMacDlCcchInd packMacDlCcchIndOpts[] =
 {
    packMacDlCcchInd,   /* Loose coupling */
@@ -79,6 +75,11 @@ DuMacUeReconfigReq packMacUeReconfigReqOpts[] =
    MacProcUeReconfigReq,       /* TIght coupling */
    packDuMacUeReconfigReq     /* Light weight-loose coupling */
 };
+
+#ifdef EGTP_TEST
+uint32_t sduId = 0;
+#endif
+
 /*******************************************************************
  *
  * @brief Handles EGTP data from CU 
@@ -906,7 +907,6 @@ uint8_t fillAmbr(AmbrCfg **macAmbr, AmbrCfg *ueDbAmbr)
       }
       memset(*macAmbr, 0, sizeof(AmbrCfg));
       (*macAmbr)->ulBr = ueDbAmbr->ulBr;
-      (*macAmbr)->dlBr = ueDbAmbr->dlBr;
    }
    else
    {
@@ -1788,6 +1788,177 @@ uint8_t duUpdateRlcLcCfg(RlcUeCfg *rlcUeCfg, F1UeContextSetupDb *f1UeDb)
 
 /*******************************************************************
  *
+ * @brief Function to fill Tunnel Config to Add/Mod
+ * 
+ *
+ * @details
+ *
+ *    Function : fillTnlCfgToAddMod
+ *
+ *    Functionality: Function to fill tunnel Config to Add/Mod
+ *
+ * @params[in] Pointer to tnlCfgDb,
+ *             pointer to f1TnlCfg
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fillTnlCfgToAddMod(UpTnlCfg **ueCbTnlCfg, UpTnlCfg *f1TnlCfg)
+{
+   if(*ueCbTnlCfg == NULLP)
+   {
+      /* copying to DuCb Tnl Cfg */
+      DU_ALLOC(*ueCbTnlCfg, sizeof(UpTnlCfg));
+      if(*ueCbTnlCfg == NULLP)
+      {
+         DU_LOG("\nERROR  -->  DU_APP : fillTnlCfgToAddMod: Memory Alloc failed for drbId[%d]", f1TnlCfg->drbId);
+         return RFAILED;
+      }
+   }
+   memset(*ueCbTnlCfg, 0, sizeof(UpTnlCfg));
+   if(f1TnlCfg->tnlCfg1)
+   {
+      DU_ALLOC((*ueCbTnlCfg)->tnlCfg1, sizeof(GtpTnlCfg));
+      if((*ueCbTnlCfg)->tnlCfg1 == NULLP)
+      {
+         DU_LOG("\nERROR  -->  DU_APP : fillTnlCfgToAddMod: Memory Alloc failed for tnlCfg1 for drbId[%d]", f1TnlCfg->drbId);
+         return RFAILED;
+      }
+   }
+   memcpy(*ueCbTnlCfg, f1TnlCfg, sizeof(UpTnlCfg));
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Processing the tunnel Request to EGTP
+ *        
+ * @details
+ *
+ *    Function : duProcEgtpTunnelCfg
+ *
+ *    Functionality: Processing the tunnel Request to EGTP
+ *
+ * @params[in] UptnlCfg *duTnlCfg, UpTnlCfg *f1TnlCfg 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t duProcEgtpTunnelCfg(uint8_t ueCbIdx, UpTnlCfg *duTnlCfg, UpTnlCfg *f1TnlCfg)
+{
+   uint8_t ret = RFAILED, delIdx;
+
+   if(f1TnlCfg->tnlCfg1)
+   {
+      if(f1TnlCfg->configType == CONFIG_ADD)
+      {
+	 if(duSendEgtpTnlMgmtReq(EGTP_TNL_MGMT_ADD, NULLP, f1TnlCfg->tnlCfg1) == ROK)
+	 {
+	    if(fillTnlCfgToAddMod(&duCb.upTnlCfg[duCb.numDrb], f1TnlCfg) == ROK)
+	    {
+	       duCb.numDrb++;
+	       ret = ROK;
+	    }
+	 }      
+      }
+      else if(f1TnlCfg->configType == CONFIG_MOD)
+      {
+	 if(duSendEgtpTnlMgmtReq(EGTP_TNL_MGMT_MOD, duTnlCfg->tnlCfg1->teId, f1TnlCfg->tnlCfg1) == ROK)
+	 {
+	    if(fillTnlCfgToAddMod(&duTnlCfg, f1TnlCfg) == ROK)
+	    {
+	       ret = ROK;
+	    }
+	 }   
+      }
+      else if(f1TnlCfg->configType == CONFIG_DEL)
+      {
+	 if(duSendEgtpTnlMgmtReq(EGTP_TNL_MGMT_DEL, duTnlCfg->tnlCfg1->teId, f1TnlCfg->tnlCfg1) == ROK)
+	 {	   
+	    /* Free memory at drbIdx */
+	    DU_FREE(duTnlCfg->tnlCfg1, sizeof(GtpTnlCfg));
+	    DU_FREE(duTnlCfg, sizeof(UpTnlCfg));
+	    duCb.numDrb--;
+	    for(delIdx = ueCbIdx; delIdx < duCb.numDrb; delIdx++)
+	    {
+	       /* moving all elements one index ahead */
+	       ret = fillTnlCfgToAddMod(&duCb.upTnlCfg[delIdx], duCb.upTnlCfg[delIdx+1]);
+	       if(ret != ROK)
+	       {
+		  return ret;
+	       }
+	    }
+	 }   
+      }
+   }
+   return ret;
+}
+
+/***********************************************************************
+ *
+ * @brief Function to fill Tunnel Config
+ *        and sends tunnel Req to EGTP
+ * 
+ *
+ * @details
+ *
+ *    Function : duUpdateTunnelCfgDb
+ *
+ *    Functionality: Function to fill tunnel Config
+ *                   and sends tunnel Cfg Req to EGTP
+ *
+ * @params[in] ueIdx, cellId, DuUeCfg 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t duUpdateTunnelCfgDb(uint8_t ueIdx, uint8_t cellId, DuUeCfg *duUeCfg)
+{
+   uint8_t ret = ROK, drbIdx, duCbDrbIdx;
+   bool drbFound = false;
+
+   /*If Add/Mod tunnels request for that DRB is successful in EGTP */
+   /*then update drbId and tunnel Info in duCb */
+   for(drbIdx=0; drbIdx < duUeCfg->numDrb; drbIdx++)
+   {
+      duUeCfg->upTnlInfo[drbIdx].cellId = cellId;
+      duUeCfg->upTnlInfo[drbIdx].ueIdx = ueIdx;
+      for(duCbDrbIdx = 0; duCbDrbIdx < duCb.numDrb; duCbDrbIdx++)
+      {
+	 if(duCb.upTnlCfg[duCbDrbIdx]->drbId == duUeCfg->upTnlInfo[drbIdx].drbId)
+	 {
+	    drbFound = true; /* existing DRB */
+	    if(duProcEgtpTunnelCfg(duCbDrbIdx, duCb.upTnlCfg[duCbDrbIdx], &duUeCfg->upTnlInfo[drbIdx]) != ROK)
+	    {
+	       DU_LOG("\nERROR  -> DU_APP : duUpdateTunnelCfgDb: Failed to modify tunnel req for Drb id[%d]",
+	       duUeCfg->upTnlInfo[drbIdx].drbId);
+	       ret = RFAILED;
+	    }
+	    break;
+	 }
+	 else
+	    drbFound = false;
+      }
+      if(!drbFound && ret == ROK)/* new DRB to Add */
+      {
+	 if(duProcEgtpTunnelCfg(NULLP, NULLP, &duUeCfg->upTnlInfo[drbIdx]) != ROK)
+	 {
+            DU_LOG("\nERROR  -> DU_APP : duUpdateTunnelCfgDb: Failed to add tunnel req for Drb id[%d]",
+	    duUeCfg->upTnlInfo[drbIdx].drbId);
+	    ret = RFAILED;
+	    break;
+	 }
+      }
+      else
+         break;
+   }
+   return ret;
+}
+
+/*******************************************************************
+ *
  * @brief @brief To update DuUeCb Mac and Rlc Ue Cfg
  * 
  *
@@ -1831,6 +2002,14 @@ uint8_t duUpdateDuUeCbCfg(uint8_t ueIdx, uint8_t cellId)
          ret = duUpdateMacCfg(&ueCb->macUeCfg, ueCb->f1UeDb);
          if(ret == RFAILED)
             DU_LOG("\nERROR  -->  DU APP : Failed while updating MAC LC Config at duUpdateDuUeCbCfg()");
+         else
+	 {
+	    if(duUpdateTunnelCfgDb(ueIdx, cellId, &ueCb->f1UeDb->duUeCfg) != ROK)
+	    {
+               DU_LOG("\nERROR  -->  DU_APP : Failed to establish tunnel in duUpdateDuUeCbCfg()");
+	       return RFAILED;
+	    }
+	 }
       }
       else
          DU_LOG("\nERROR  -->  DU APP : Failed while updating RLC LC Config at duUpdateDuUeCbCfg()");

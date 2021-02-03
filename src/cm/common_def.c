@@ -92,8 +92,7 @@ void freqDomRscAllocType0(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDoma
  * ****************************************************************/
 void oduCpyFixBufToMsg(uint8_t *fixBuf, Buffer *mBuf, uint16_t len)                            
 {
-   uint8_t idx, revIdx, temp;
-   uint16_t copyLen;
+   uint16_t idx = 0, revIdx = 0, temp = 0, copyLen = 0;
 
    /* ODU_COPY_FIX_BUF_TO_MSG copies fixed buffer in reverse order. \
     * Hence reversing the fixed buffer before copying in order to \
