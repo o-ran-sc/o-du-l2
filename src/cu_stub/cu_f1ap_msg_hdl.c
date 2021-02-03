@@ -2205,13 +2205,13 @@ uint8_t BuildULTnlInfo(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
       return RFAILED;
    }
    ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-      transportLayerAddress.buf[0] = 4;
+      transportLayerAddress.buf[0] = 192;
    ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-      transportLayerAddress.buf[1] = 4;
+      transportLayerAddress.buf[1] = 168;
    ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-      transportLayerAddress.buf[2] = 4;
+      transportLayerAddress.buf[2] = 130;
    ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-      transportLayerAddress.buf[3] = 5;
+      transportLayerAddress.buf[3] = 82;
    ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
       transportLayerAddress.bits_unused = 0;
    /*GTP TEID*/
@@ -2226,13 +2226,13 @@ uint8_t BuildULTnlInfo(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
       return RFAILED;
    }
    ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-      gTP_TEID.buf[0] = 11;
+     gTP_TEID.buf[0] = 0;
    ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
       gTP_TEID.buf[1] = 0;
    ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
       gTP_TEID.buf[2] = 0;
    ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-      gTP_TEID.buf[3] = 2;
+      gTP_TEID.buf[3] = 1;
 
    return ROK;
 }/*End of BuildULTnlInfo*/
@@ -6086,6 +6086,7 @@ uint8_t fillCuToDuContainer(CUtoDURRCInformation_t *rrcMsg)
    uint8_t ret = ROK;
    uint8_t idx, idx2, rrcBufLen;
 
+#if 0
    CU_ALLOC(rrcMsg->uE_CapabilityRAT_ContainerList, sizeof(UE_CapabilityRAT_ContainerList_t));
    if(!rrcMsg->uE_CapabilityRAT_ContainerList)
    {
@@ -6093,6 +6094,7 @@ uint8_t fillCuToDuContainer(CUtoDURRCInformation_t *rrcMsg)
       return RFAILED;
    }
    ret = fillUeCapRatContList(rrcMsg->uE_CapabilityRAT_ContainerList);
+#endif
 
    CU_ALLOC(rrcMsg->iE_Extensions, sizeof(ProtocolExtensionContainer_4624P16_t));
    if(rrcMsg->iE_Extensions)
@@ -6830,13 +6832,13 @@ uint8_t BuildUlTnlInfoforDrb2(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
       return RFAILED;
    }
    ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->\
-      gTP_TEID.buf[0] = 11;
+      gTP_TEID.buf[0] = 0;
    ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->\
       gTP_TEID.buf[1] = 0;
    ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->\
       gTP_TEID.buf[2] = 0;
    ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->\
-      gTP_TEID.buf[3] = 1;
+      gTP_TEID.buf[3] = 2;
 
    return ROK;
 }/*End of BuildULTnlInfo*/
