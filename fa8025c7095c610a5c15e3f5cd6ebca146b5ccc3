@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "239ef857_6ce313ae",
+        "filename": "src/5gnrrlc/kw_amm_dl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1012,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-03T09:22:38Z",
+      "side": 1,
+      "message": "DEBUG",
+      "revId": "fa8025c7095c610a5c15e3f5cd6ebca146b5ccc3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "05865837_b9fd0e51",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-03T09:22:38Z",
+      "side": 1,
+      "message": "drop \"the\"",
+      "revId": "fa8025c7095c610a5c15e3f5cd6ebca146b5ccc3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
