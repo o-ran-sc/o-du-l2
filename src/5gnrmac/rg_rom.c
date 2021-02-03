@@ -32,9 +32,6 @@
 @brief APIs to handle all the primitives invoked on RGU interface.
 */
 
-static const char* RLOG_MODULE_NAME="MAC";
-static int RLOG_FILE_ID=184;
-static int RLOG_MODULE_ID=4096;
 
 /* header include files (.h) */
 #include "common_def.h"
@@ -133,8 +130,7 @@ S16 rgROMDedDatReq(Inst inst,RgRguDedDatReq *datReq)
    {
 #if (ERRCLASS & ERRCLS_INT_PAR)
       /* Handle Cell fetch failure */
-      RGLOGERROR(inst,ERRCLS_INT_PAR,ERG001,(ErrVal)datReq->cellId,
-            "rgROMDedDatReq(): Invalid cell Id");
+      DU_LOG("\nERROR  -->  MAC : rgROMDedDatReq(): Invalid cell Id");
 #endif
       err.errType = RGERR_ROM_DEDDATREQ;
       err.errCause = RGERR_ROM_INV_CELL_ID;
@@ -185,8 +181,7 @@ S16 rgROMDedDatReq(Inst inst,RgRguDedDatReq *datReq)
       {
 #if (ERRCLASS & ERRCLS_INT_PAR)
             /* Handle Ue fetch failure */
-            RGLOGERROR(inst,ERRCLS_INT_PAR,ERG002,(ErrVal)datReq->datReq[idx].rnti,
-                  "rgROMDedDatReq(): Invalid ue Id");
+           DU_LOG("\nERROR  -->  MAC : rgROMDedDatReq(): Invalid ue Id");
 #endif
             err.errType = RGERR_ROM_DEDDATREQ;
             err.errCause = RGERR_ROM_INV_UE_ID;
@@ -199,7 +194,7 @@ S16 rgROMDedDatReq(Inst inst,RgRguDedDatReq *datReq)
             ret = rgROMUpdDlSfRemDataCnt(cell, sf);
             if(ret == RFAILED)
             {
-               RLOG0(L_INFO, "Dropping due to no ue \n");
+               DU_LOG("\nERROR  -->  MAC : Dropping due to no ue \n");
 #ifndef L2_OPTMZ
                RG_DROP_RGUDDATREQ_MBUF(datReq->datReq[idx]);
 #endif
@@ -218,8 +213,7 @@ S16 rgROMDedDatReq(Inst inst,RgRguDedDatReq *datReq)
 
       if (rgDHMHndlDedDatReq(inst,hqProc, &datReq->datReq[idx], sf, &err) == RFAILED)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,datReq->cellId,
-                   "Handling of Data request in DHM failedi RNTI:%d",
+         DU_LOG("\nERROR  -->  MAC : Handling of Data request in DHM failedi RNTI:%d",
                     datReq->datReq[idx].rnti);
          err.errType = RGERR_ROM_DEDDATREQ;
          /* errcause shall be filled in appropriately by DHM */
@@ -232,7 +226,7 @@ S16 rgROMDedDatReq(Inst inst,RgRguDedDatReq *datReq)
          ret = rgROMUpdDlSfRemDataCnt(cell, sf);
          if(ret == RFAILED)
          {
-         RLOG0(L_INFO, "Dropping due to no failure of remCnt update");
+            DU_LOG("\nERROR  -->  MAC : Dropping due to no failure of remCnt update");
 #ifndef L2_OPTMZ
             RG_DROP_RGUDDATREQ_MBUF(datReq->datReq[idx]);
 #endif
@@ -285,7 +279,7 @@ S16 rgROMDedDatReq(Inst inst,RgRguDedDatReq *datReq)
       ret = rgROMUpdDlSfRemDataCnt(cell, sf);
       if(ret == RFAILED)
       {
-         RLOG0(L_INFO, "\n Dropping due to no failure of remCnt update(1) \n");
+         DU_LOG("\nERROR  -->  MAC : Dropping due to no failure of remCnt update(1) \n");
 #ifndef L2_OPTMZ
          RG_DROP_RGUDDATREQ_MBUF(datReq->datReq[idx]);
 #endif
@@ -336,8 +330,7 @@ S16 rgROMCmnDatReq(Inst inst, RgRguCmnDatReq *datReq)
    {
 #if (ERRCLASS & ERRCLS_INT_PAR)
       /* Handle Cell fetch failure */
-      RGLOGERROR(inst,ERRCLS_INT_PAR,ERG003,(ErrVal)datReq->cellId,
-                            "rgROMCmnDatReq(): Invalid cell Id");
+     DU_LOG("\nERROR  -->  MAC : rgROMCmnDatReq(): Invalid cell Id");
 #endif
       err.errCause = RGERR_ROM_INV_CELL_ID;
       /* Update stats */
@@ -432,8 +425,7 @@ static S16 rgROMHndlCcchDatReq(RgCellCb *cell, RgRguCmnDatReq *datReq, RgErrInfo
       {
    #if (ERRCLASS & ERRCLS_INT_PAR)
          /* Handle Ue fetch failure */
-         RGLOGERROR(inst,ERRCLS_INT_PAR,ERG004,(ErrVal)datReq->u.rnti,
-                              "rgROMHndlCcchDatReq(): Invalid ue Id");
+         DU_LOG("\nERROR  -->  MAC : rgROMHndlCcchDatReq(): Invalid ue Id");
    #endif
          err->errCause = RGERR_ROM_INV_UE_ID;
          return RFAILED;
@@ -468,8 +460,7 @@ static S16 rgROMHndlCcchDatReq(RgCellCb *cell, RgRguCmnDatReq *datReq, RgErrInfo
    /* invoke DHM to process CCCH data */
    if (rgDHMHndlCmnDatReq(inst,hqProc, datReq, err) == RFAILED)
    {
-      RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,
-            "Handling of Data request in DHM failed RNTI:%d LCID:%d",
+      DU_LOG("\nERROR  -->  MAC : Handling of Data request in DHM failed RNTI:%d LCID:%d",
             datReq->u.rnti,datReq->lcId);
       /* Release First TB */
       rgDHMRlsHqProcTB(cell, hqProc, 1);
@@ -563,8 +554,7 @@ static S16 rgROMHndlBcchPcchDatReq(RgCellCb *cell, RgRguCmnDatReq *datReq, RgErr
    }
 
    /* Handle lcCb fetch failure */
-   RGLOGERROR(inst,ERRCLS_INT_PAR,ERG005,(ErrVal)datReq->lcId,
-                  "rgROMHndlBcchPcchDatReq(): Invalid Lc Id");
+   DU_LOG("\nERROR  -->  MAC : rgROMHndlBcchPcchDatReq(): Invalid Lc Id");
    err->errCause = RGERR_ROM_INV_LC_ID;
 
    return RFAILED;
@@ -617,7 +607,7 @@ S16 rgROMDedStaRsp(Inst inst, RgRguDedStaRsp *staRsp)
             //TODO: commented for compilation without SCH RgMacSchDedBoUpdt(&schPst, &boRpt);
             return ROK;
    }
-   RLOG_ARG2(L_ERROR,DBG_CELLID,staRsp->cellId,"Invalid cell for CRNTI:%d LCID:%d ",
+   DU_LOG("\nERROR  -->  MAC : Invalid cell for CRNTI:%d LCID:%d ",
              staRsp->rnti,staRsp->lcId);
 
    return RFAILED;
@@ -679,8 +669,7 @@ S16 rgROMCmnStaRsp(Inst inst, RgRguCmnStaRsp *staRsp)
       || (cell->cellId != staRsp->cellId))
    {
       /* Handle Cell fetch failure */
-      RLOG_ARG2(L_ERROR,DBG_CELLID,staRsp->cellId,
-                "Invalid cell for CRNTI:%d LCID:%d",staRsp->u.rnti,staRsp->lcId);
+      DU_LOG("\nERROR  -->  MAC : Invalid cell for CRNTI:%d LCID:%d",staRsp->u.rnti,staRsp->lcId);
       err.errType = RGERR_ROM_CMNSTARSP;
       err.errCause = RGERR_ROM_INV_CELL_ID;
       return RFAILED;
@@ -747,7 +736,7 @@ S16 rgROML2MUlThrpMeasReq(Inst inst, RgRguL2MUlThrpMeasReq *measReq)
          return ROK;
       }
    }
-   RLOG_ARG1(L_ERROR,DBG_CELLID,measReq->cellId,"Invalid cell CRNTI:%d",
+   DU_LOG("\nERROR  -->  MAC : Invalid cell CRNTI:%d",
              measReq->rnti);
    return RFAILED;
 }  /* rgROML2MUlThrpMeasReq */
@@ -822,7 +811,7 @@ static S16 rgROMHndlBcchPcchStaRsp(RgCellCb *cell,RgRguCmnStaRsp *staRsp,RgErrIn
    if (rgDBMChkCmnLcCb(cell, staRsp->lcId) != ROK)
    {
       /* Handle lcCb fetch failure */
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Invalid LCID:%d",staRsp->lcId);
+      DU_LOG("\nERROR  -->  MAC : Invalid LCID:%d",staRsp->lcId);
       err->errCause = RGERR_ROM_INV_LC_ID;
       return RFAILED;
    }
@@ -888,8 +877,7 @@ static S16 rgROMUpdDlSfRemDataCnt(RgCellCb *cellCb, RgDlSf *dlSf)
    {
        /*This is an error scenario of RLC generating more data          
         * request than the allocation. Do nothing for this. */
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cellCb->cellId,
-            "RX new data while remDatReqCnt is 0 for cell");
+      DU_LOG("\nERROR  -->  MAC : RX new data while remDatReqCnt is 0 for cell");
       return RFAILED;
    }
 
@@ -907,8 +895,7 @@ static S16 rgROMUpdDlSfRemDataCnt(RgCellCb *cellCb, RgDlSf *dlSf)
 
       if (ROK != rgTOMUtlProcDlSf (dlSf, cellCb, &err))
       {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cellCb->cellId,
-               "Unable to process downlink slot for cell");
+         DU_LOG("\nERROR  -->  MAC : Unable to process downlink slot for cell");
          err.errType = RGERR_ROM_DEDDATREQ;
       }
 
