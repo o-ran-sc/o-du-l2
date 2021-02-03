@@ -172,6 +172,8 @@
 #define DMRS_ADDITIONAL_POS  0          /* DMRS Additional poistion */
 #define RES_ALLOC_TYPE       1          /* Resource allocation type */
 
+#define FIVE_QI_VALUE 9  /*spec 23.501, Table 5.7.4-1*/
+
 /*******************************************************************
 *
 * @brief Sends F1 msg over SCTP
@@ -2027,7 +2029,7 @@ uint8_t BuildQOSInfo(QoSFlowLevelQoSParameters_t *drbQos)
       return RFAILED;
    }
    /*FiveQI*/
-   drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->fiveQI = 0;
+   drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->fiveQI = FIVE_QI_VALUE;
    /*AveragingWindow*/
    CU_ALLOC(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow,\
 	 sizeof(AveragingWindow_t));
@@ -2048,11 +2050,10 @@ uint8_t BuildQOSInfo(QoSFlowLevelQoSParameters_t *drbQos)
    *(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume) = 0;
 
    /*nRGRAN Allocation Retention Priority*/
-   drbQos->nGRANallocationRetentionPriority.priorityLevel = PriorityLevel_highest;
+   drbQos->nGRANallocationRetentionPriority.priorityLevel = PriorityLevel_lowest;
    drbQos->nGRANallocationRetentionPriority.pre_emptionCapability = Pre_emptionCapability_may_trigger_pre_emption;
    drbQos->nGRANallocationRetentionPriority.pre_emptionVulnerability = Pre_emptionVulnerability_not_pre_emptable;
 
-   /* TO DO: GBR_QoSFlowInformation */
    return ROK;
 }/*End of BuildQOSInfo*/
 
@@ -2204,14 +2205,15 @@ uint8_t BuildULTnlInfo(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
    {
       return RFAILED;
    }
+   /* NOTE: Below IP address must be changed if running on different IP configuration */
    ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-      transportLayerAddress.buf[0] = 4;
+      transportLayerAddress.buf[0] = 192;
    ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-      transportLayerAddress.buf[1] = 4;
+      transportLayerAddress.buf[1] = 168;
    ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-      transportLayerAddress.buf[2] = 4;
+      transportLayerAddress.buf[2] = 130;
    ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-      transportLayerAddress.buf[3] = 5;
+      transportLayerAddress.buf[3] = 82;
    ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
       transportLayerAddress.bits_unused = 0;
    /*GTP TEID*/
@@ -2226,13 +2228,13 @@ uint8_t BuildULTnlInfo(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
       return RFAILED;
    }
    ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-      gTP_TEID.buf[0] = 11;
+     gTP_TEID.buf[0] = 0;
    ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
       gTP_TEID.buf[1] = 0;
    ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
       gTP_TEID.buf[2] = 0;
    ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-      gTP_TEID.buf[3] = 2;
+      gTP_TEID.buf[3] = 1;
 
    return ROK;
 }/*End of BuildULTnlInfo*/
@@ -6830,13 +6832,13 @@ uint8_t BuildUlTnlInfoforDrb2(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
       return RFAILED;
    }
    ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->\
-      gTP_TEID.buf[0] = 11;
+      gTP_TEID.buf[0] = 0;
    ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->\
       gTP_TEID.buf[1] = 0;
    ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->\
       gTP_TEID.buf[2] = 0;
    ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->\
-      gTP_TEID.buf[3] = 1;
+      gTP_TEID.buf[3] = 2;
 
    return ROK;
 }/*End of BuildULTnlInfo*/

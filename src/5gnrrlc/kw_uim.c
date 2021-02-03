@@ -715,7 +715,7 @@ uint8_t rlcProcDlData(Pst *pst, KwuDatReqInfo *datReq, Buffer *mBuf)
    RlcDlRbCb     *rbCb;       /* RB Control Block */
    RlcCb         *tRlcCb;
 
-   DU_LOG("\nDEBUG  -->  RLC_UL : Received DL Data");
+   DU_LOG("\nDEBUG  -->  RLC_DL : Received DL Data");
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if(pst->dstInst >= MAX_RLC_INSTANCES)
@@ -731,7 +731,7 @@ uint8_t rlcProcDlData(Pst *pst, KwuDatReqInfo *datReq, Buffer *mBuf)
    rlcDbmFetchDlRbCbByRbId(tRlcCb, &datReq->rlcId, &rbCb);
    if(!rbCb)
    {
-      DU_LOG("\nERROR  -->  RLC_UL : CellId[%u]:DL RbId [%d] not found",
+      DU_LOG("\nERROR  -->  RLC_DL : CellId[%u]:DL RbId [%d] not found",
             datReq->rlcId.cellId,datReq->rlcId.rbId);
       ODU_PUT_MSG_BUF(mBuf);
 
@@ -769,7 +769,7 @@ uint8_t rlcProcDlData(Pst *pst, KwuDatReqInfo *datReq, Buffer *mBuf)
       }
       default:
       {
-         DU_LOG("\nERROR  -->  RLC_UL : Invalid RB Mode");
+         DU_LOG("\nERROR  -->  RLC_DL : Invalid RB Mode");
          break;
       }
    }

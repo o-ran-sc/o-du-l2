@@ -96,6 +96,11 @@
 #include "du_mgr.h"
 #include "du_cell_mgr.h"
 #include "du_f1ap_msg_hdl.h"
+#include "DRBs-Setup-Item.h"
+#include "DLUPTNLInformation-ToBeSetup-List.h"
+#include "DLUPTNLInformation-ToBeSetup-Item.h"
+#include "UPTransportLayerInformation.h"
+#include "GTPTunnel.h"
 
 DuCfgParams duCfgParam;
 
@@ -6756,6 +6761,11 @@ void freeDuUeCfg(DuUeCfg *ueCfg)
    {
       freeMacLcCfg(&ueCfg->macLcCfg[lcIdx]);
    }
+   for(lcIdx = 0; lcIdx < ueCfg->numDrb; lcIdx++)
+   {
+      DU_FREE(ueCfg->upTnlInfo[lcIdx].tnlCfg1, sizeof(GtpTnlCfg));
+      memset(&ueCfg->upTnlInfo[lcIdx], 0, sizeof(UpTnlCfg));
+   }
 }
 
 /*******************************************************************
@@ -7133,10 +7143,81 @@ void extractQosInfo(DrbQosInfo *qosToAdd, QoSFlowLevelQoSParameters_t *qosFlowCf
    qosToAdd->ulPduSessAggMaxBitRate = 0;
 }
 
-uint8_t extractDrbCfg(DRBs_ToBeSetup_Item_t *drbItem, LcCfg *macLcToAdd)
+/*******************************************************************
+ *
+ * @brief Function to extract GTP Tunnel Info from CU
+ *
+ * @details
+ *
+ *    Function : extractUpTnlInfo
+ *
+ *    Functionality: Function to extract GTP Tunnel Info from CU
+ *
+ * @params[in] F1AP message
+ * @return ROK/RFAILED
+ *
+ * ****************************************************************/
+
+uint8_t extractUpTnlInfo(uint8_t drbId, uint8_t configType,\
+   ULUPTNLInformation_ToBeSetup_List_t *tnlInfo, UpTnlCfg *upTnlInfo)
+{
+   uint8_t tnlIdx;
+   uint32_t ipv4_du = 0;
+   GTPTunnel_t *gtpTunnel = NULLP;
+
+   upTnlInfo->drbId = drbId; 
+   upTnlInfo->configType = configType;
+   cmInetAddr((char *)DU_IP_V4_ADDR, &ipv4_du);
+
+   for(tnlIdx=0; tnlIdx < tnlInfo->list.count; tnlIdx++)
+   {
+      if(tnlInfo->list.array[tnlIdx]->uLUPTNLInformation.present == UPTransportLayerInformation_PR_gTPTunnel)
+      {
+	 if(tnlInfo->list.array[tnlIdx]->uLUPTNLInformation.choice.gTPTunnel)
+	 {
+	    gtpTunnel = tnlInfo->list.array[tnlIdx]->uLUPTNLInformation.choice.gTPTunnel;
+	    DU_ALLOC(upTnlInfo->tnlCfg1, sizeof(GtpTnlCfg));
+            if(upTnlInfo->tnlCfg1 == NULLP)
+	    {
+               DU_LOG("\nERROR  -->  F1AP : extractUpTnlInfo: Failed to allocate mmeory for tunnel cfg 1");
+               return RFAILED;
+	    }
+	    bitStringToInt(&gtpTunnel->transportLayerAddress, &upTnlInfo->tnlCfg1->ulTnlAddress);
+	    upTnlInfo->tnlCfg1->dlTnlAddress = ipv4_du;
+	    if(gtpTunnel->gTP_TEID.size > 0)
+	    {
+	       teIdStringToInt(gtpTunnel->gTP_TEID.buf, &upTnlInfo->tnlCfg1->teId);
+	    }
+	 }
+	 break;
+      }
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Function to extract DRB info received from CU
+ *
+ * @details
+ *
+ *    Function : extractDrbCfg
+ *
+ *    Functionality: Function to extract DRB info received from CU
+ *
+ * @params[in] F1AP message
+ * @return void
+ *
+ * ****************************************************************/
+uint8_t extractDrbCfg(DRBs_ToBeSetup_Item_t *drbItem, LcCfg *macLcToAdd, UpTnlCfg *upTnlInfo)
 {
    DRB_Information_t *drbInfo = NULLP;
 
+   if(extractUpTnlInfo(drbItem->dRBID, CONFIG_ADD, &drbItem->uLUPTNLInformation_ToBeSetup_List, upTnlInfo) != ROK)
+   {
+      DU_LOG("\nERROR  -->  DUAPP : Failed to extract tunnel Cfg at extractDrbCfg()");
+      return RFAILED;
+   }
    if(drbItem->qoSInformation.present == QoSInformation_PR_choice_extension)
    {
       if(drbItem->qoSInformation.choice.choice_extension->value.present ==
@@ -7180,17 +7261,21 @@ uint8_t extractDrbCfg(DRBs_ToBeSetup_Item_t *drbItem, LcCfg *macLcToAdd)
    return ROK;
 }
 
-uint8_t extractMacRbCfg(uint8_t lcId, DRBs_ToBeSetup_Item_t *drbCfg, LogicalChannelConfig_t *ulLcCfg, LcCfg *lcCfg)
+uint8_t extractMacRbCfg(uint8_t lcId, DRBs_ToBeSetup_Item_t *drbCfg, LogicalChannelConfig_t *ulLcCfg, LcCfg *lcCfg,\
+   UpTnlCfg *upTnlInfo)
 {
    uint8_t ret = ROK;
 
    if(drbCfg)
    {
-      ret = extractDrbCfg(drbCfg, lcCfg);
-      if(ret == RFAILED)
+      if(drbCfg != NULLP)
       {
-         DU_LOG("ERROR  -->  F1AP : Failed to build Drb Qos at extractMacRbCfg()");
-	 return ret;
+         ret = extractDrbCfg(drbCfg, lcCfg, upTnlInfo);
+         if(ret == RFAILED)
+         {
+            DU_LOG("ERROR  -->  F1AP : Failed to build Drb Qos at extractMacRbCfg()");
+            return ret;
+         }
       }
    }
    else
@@ -7213,7 +7298,7 @@ uint8_t extractMacRbCfg(uint8_t lcId, DRBs_ToBeSetup_Item_t *drbCfg, LogicalChan
 }
 
 uint8_t procMacLcCfg(uint8_t lcId, uint8_t rbType, uint8_t configType,\
-   DRBs_ToBeSetup_Item_t *drbItem, LogicalChannelConfig_t *ulLcCfg, LcCfg *lcCfg)
+   DRBs_ToBeSetup_Item_t *drbItem, LogicalChannelConfig_t *ulLcCfg, LcCfg *lcCfg, UpTnlCfg *upTnlInfo)
 {
    uint8_t ret = ROK;
 
@@ -7221,11 +7306,11 @@ uint8_t procMacLcCfg(uint8_t lcId, uint8_t rbType, uint8_t configType,\
    lcCfg->configType = configType;
    if(rbType == RB_TYPE_SRB)
    {
-      ret = extractMacRbCfg(lcId, NULL, ulLcCfg, lcCfg);
+      ret = extractMacRbCfg(lcId, NULL, ulLcCfg, lcCfg, NULL);
    }
    else if(rbType == RB_TYPE_DRB)
    {
-      ret = extractMacRbCfg(lcId, drbItem, ulLcCfg, lcCfg);
+      ret = extractMacRbCfg(lcId, drbItem, ulLcCfg, lcCfg, upTnlInfo);
    }
    return ret;
 }
@@ -7298,7 +7383,7 @@ uint8_t extractRlcCfgToAddMod(struct CellGroupConfigRrc__rlc_BearerToAddModList 
      memset(&ueCfgDb->macLcCfg[idx], 0, sizeof(LcCfg));
      memset(&ueCfgDb->rlcLcCfg[idx], 0, sizeof(RlcBearerCfg));
      procRlcLcCfg(rbId, lcId, rbType, rlcMode, CONFIG_UNKNOWN, f1RlcCfg, &(ueCfgDb->rlcLcCfg[idx]));
-     ret = procMacLcCfg(lcId, rbType, CONFIG_UNKNOWN, NULL, macUlLcCfg, &ueCfgDb->macLcCfg[idx]);
+     ret = procMacLcCfg(lcId, rbType, CONFIG_UNKNOWN, NULL, macUlLcCfg, &ueCfgDb->macLcCfg[idx], NULL);
      if(ret == RFAILED)
      {
         DU_LOG("\nERROR  -->  DU APP : Failed while filling MAC LC config at extractRlcCfgToAddMod()");
@@ -9288,7 +9373,7 @@ uint8_t procSrbListToSetup(SRBs_ToBeSetup_Item_t * srbItem, LcCfg *macLcToAdd, R
    procRlcLcCfg(srbItem->sRBID, srbItem->sRBID, RB_TYPE_SRB, RLC_AM, CONFIG_ADD, NULL, rlcLcToAdd);
 
    /* Filling MAC INFO */
-   ret = procMacLcCfg(srbItem->sRBID, RB_TYPE_SRB, CONFIG_ADD, NULL, NULL, macLcToAdd);
+   ret = procMacLcCfg(srbItem->sRBID, RB_TYPE_SRB, CONFIG_ADD, NULL, NULL, macLcToAdd, NULL);
    if(ret == RFAILED)
    { 
       DU_LOG("\nERROR  -->  F1AP : Failed at MAC LC Cfg in procSrbListToSetup()");
@@ -9375,7 +9460,8 @@ uint8_t extractSrbListToSetup(SRBs_ToBeSetup_List_t *srbCfg, DuUeCfg *ueCfgDb)
  *
  * ****************************************************************/
 
-uint8_t procDrbListToSetup(uint8_t lcId, DRBs_ToBeSetup_Item_t *drbItem, LcCfg *macLcToAdd, RlcBearerCfg *rlcLcToAdd)
+uint8_t procDrbListToSetup(uint8_t lcId, DRBs_ToBeSetup_Item_t *drbItem,\
+   LcCfg *macLcToAdd, RlcBearerCfg *rlcLcToAdd, UpTnlCfg *upTnlInfo)
 {
    uint8_t ret = ROK;
 
@@ -9383,10 +9469,10 @@ uint8_t procDrbListToSetup(uint8_t lcId, DRBs_ToBeSetup_Item_t *drbItem, LcCfg *
    procRlcLcCfg(drbItem->dRBID, lcId, RB_TYPE_DRB, drbItem->rLCMode, CONFIG_ADD, NULL, rlcLcToAdd);
 
    /* Filling MAC INFO */
-   ret = procMacLcCfg(lcId, RB_TYPE_DRB, CONFIG_ADD, drbItem, NULL, macLcToAdd);
+   ret = procMacLcCfg(lcId, RB_TYPE_DRB, CONFIG_ADD, drbItem, NULL, macLcToAdd, upTnlInfo);
    if(ret == RFAILED)
    { 
-      DU_LOG("\nERROR  -->  F1AP : Failed at RLC LC Cfg in extractDrbListToSetup()");
+      DU_LOG("\nERROR  --> F1AP : Failed at RLC LC Cfg in procDrbListToSetup()");
       return ret;
    }
 
@@ -9423,22 +9509,24 @@ uint8_t extractDrbListToSetup(uint8_t lcId, DRBs_ToBeSetup_List_t *drbCfg, DuUeC
          drbItem = &drbCfg->list.array[drbIdx]->value.choice.DRBs_ToBeSetup_Item;
 	 if(ueCfgDb->numMacLcs > MAX_NUM_LC)
 	 { 
-            DU_LOG("\nERROR   -->  F1AP:  MAX LC Reached in MAC ");
+            DU_LOG("\nERROR  -->  F1AP :  MAX LC Reached in MAC at extractDrbListToSetup()");
 	    ret = RFAILED;
 	    break;
 	 }
 	 if(ueCfgDb->numRlcLcs > MAX_NUM_LC)
 	 {
-            DU_LOG("\nERROR   -->  F1AP:  MAX LC Reached in RLC");
+            DU_LOG("\nERROR  -->  F1AP :  MAX LC Reached in RLC at extractDrbListToSetup()");
 	    ret = RFAILED;
 	    break;
 	 }
 	 memset(&ueCfgDb->macLcCfg[ueCfgDb->numMacLcs], 0, sizeof(LcCfg));
 	 memset(&ueCfgDb->rlcLcCfg[ueCfgDb->numRlcLcs], 0, sizeof(RlcBearerCfg));
          ret = procDrbListToSetup(lcId, drbItem, &ueCfgDb->macLcCfg[ueCfgDb->numMacLcs],\
-	    &ueCfgDb->rlcLcCfg[ueCfgDb->numRlcLcs]);
+	    &ueCfgDb->rlcLcCfg[ueCfgDb->numRlcLcs], &ueCfgDb->upTnlInfo[ueCfgDb->numDrb]);
+
 	 ueCfgDb->numRlcLcs++;
 	 ueCfgDb->numMacLcs++;
+	 ueCfgDb->numDrb++;
 	 if(ret == RFAILED)
 	 {
             DU_LOG("\nERROR  -->  F1AP :  Failed at extractDrbListToSetup()");
@@ -9478,7 +9566,7 @@ uint8_t extractDlRrcMsg(uint32_t gnbDuUeF1apId, uint32_t gnbCuUeF1apId, \
       DU_ALLOC_SHRABL_BUF(dlRrcMsg->rrcMsgPdu, dlRrcMsg->rrcMsgSize);
       if(!dlRrcMsg->rrcMsgPdu)
       {
-         DU_LOG("\nERROR  -->  DU APP : Memory allocation failed for RRC Msg in procUeCtxtSetupReq");
+         DU_LOG("\nERROR  --> DU APP : Memory allocation failed for RRC Msg in extractDlRrcMsg()");
          ret = RFAILED;
       }
       else
@@ -9833,7 +9921,6 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
 		     memset(duUeCb->f1UeDb->duUeCfg.ambrCfg, 0, sizeof(AmbrCfg)); 
                      memcpy(&duUeCb->f1UeDb->duUeCfg.ambrCfg->ulBr,
 		     ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.BitRate.buf, bitRateSize);
-                     duUeCb->f1UeDb->duUeCfg.ambrCfg->dlBr = 0;
 		  }
 	       }
 	       else
@@ -9858,6 +9945,57 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
    freeAperDecodeF1UeContextSetupReq(ueSetReq); 
    return ret;
 
+}
+
+/*******************************************************************
+ * @brief Free the memory allocated for Dl Tunnel Info
+ *
+ * @details
+ *
+ *    Function : freeDlTnlInfo
+ *
+ *    Functionality:
+ *       Free the memory allocated for Dl Tunnel Info
+ *
+ * @params[in] DLUPTNLInformation_ToBeSetup_List_t *
+ * @return void
+ *
+ * ****************************************************************/
+
+void freeDlTnlInfo(DLUPTNLInformation_ToBeSetup_List_t *tnlInfo)
+{
+   uint8_t arrIdx = 0;
+
+   for(arrIdx=0; arrIdx < tnlInfo->list.count; arrIdx++)
+   {
+      DU_FREE(tnlInfo->list.array[arrIdx]->dLUPTNLInformation.choice.gTPTunnel, sizeof(GTPTunnel_t));
+   }
+}
+
+/*******************************************************************
+ * @brief Free the memory allocated for DRB setup List
+ *
+ * @details
+ *
+ *    Function : freeDrbSetupList
+ *
+ *    Functionality:
+ *       Free the memory allocated for DRB setup list
+ *
+ * @params[in] DRBs_Setup_List_t *
+ * @return void
+ *
+ * ****************************************************************/
+void freeDrbSetupList(DRBs_Setup_List_t *drbSetupList)
+{
+   uint8_t arrIdx = 0;
+   DRBs_Setup_ItemIEs_t *drbItemIe = NULLP;
+
+   for(arrIdx = 0; arrIdx < drbSetupList->list.count; arrIdx++)
+   {
+      drbItemIe = ((DRBs_Setup_ItemIEs_t *)drbSetupList->list.array[arrIdx]);
+      freeDlTnlInfo(&drbItemIe->value.choice.DRBs_Setup_Item.dLUPTNLInformation_ToBeSetup_List);
+   }
 }
 
 /*******************************************************************
@@ -9910,6 +10048,11 @@ void FreeUeContextSetupRsp(F1AP_PDU_t *f1apMsg)
 			   }
 			   break;
 			}
+                    case ProtocolIE_ID_id_DRBs_Setup_List:
+		        {
+                           freeDrbSetupList(&ueSetRsp->protocolIEs.list.array[idx]->value.choice.DRBs_Setup_List); 
+                           break;
+		        }
 		     default:
 		        DU_LOG("\nERROR  -->  DUAPP: Invalid Id %ld at FreeUeContextSetupRsp()",\
 			ueSetRsp->protocolIEs.list.array[idx]->id);
@@ -9980,6 +10123,158 @@ uint8_t EncodeUeCntxtDuToCuInfo(CellGroupConfig_t *duToCuCellGrp, CellGroupConfi
 
 /*******************************************************************
  *
+ * @brief Fills Dl Gtp tunnel Info
+ *
+ * @details
+ *
+ *    Function : fillGtpTunnelforDl
+ *
+ *    Functionality: Fills Dl Gtp tunnel Info
+ *
+ * @params[in] 
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t fillGtpTunnelforDl(GTPTunnel_t *gtpDl, GtpTnlCfg *gtpUeCfg)
+{
+   uint8_t bufSize = 0;
+
+   gtpDl->transportLayerAddress.size	= 4*sizeof(uint8_t);
+   DU_ALLOC(gtpDl->transportLayerAddress.buf, gtpDl->transportLayerAddress.size);
+   if(gtpDl->transportLayerAddress.buf == NULLP)
+   {
+      return RFAILED;
+   }
+   memcpy(gtpDl->transportLayerAddress.buf, &gtpUeCfg->dlTnlAddress, gtpDl->transportLayerAddress.size);
+
+   /*GTP TEID*/
+   gtpDl->gTP_TEID.size = 4 * sizeof(uint8_t);
+   DU_ALLOC(gtpDl->gTP_TEID.buf, gtpDl->gTP_TEID.size);
+   if(gtpDl->gTP_TEID.buf == NULLP)
+   {
+      return RFAILED;
+   }
+   bufSize = 3; /*forming an Octect String*/
+   fillTeIdString(bufSize, gtpUeCfg->teId, gtpDl->gTP_TEID.buf);
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fills DL Tunnel Setup List
+ *
+ * @details
+ *
+ *    Function : fillDlTnlSetupList
+ *
+ *    Functionality: Fills the DL Tunnel Setup List
+ *
+ * @params[in] 
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t fillDlTnlSetupList(DLUPTNLInformation_ToBeSetup_List_t *dlTnlInfo, UpTnlCfg *tnlCfg)
+{
+   uint8_t ret = ROK, arrIdx = 0, eleCount = 0;
+
+   eleCount = 1;
+   dlTnlInfo->list.count = eleCount; 
+   dlTnlInfo->list.size = (eleCount * sizeof(DLUPTNLInformation_ToBeSetup_Item_t *));
+
+   /* Initialize the DL Tnl Setup List Members */
+   DU_ALLOC(dlTnlInfo->list.array, dlTnlInfo->list.size);
+   if(dlTnlInfo->list.array == NULLP)
+   {
+      DU_LOG(" ERROR  -->  F1AP : Memory allocation for DL Tnl Setup List in fillDlTnlSetupList()");
+      ret = RFAILED;
+   }
+   for(arrIdx=0; arrIdx < eleCount; arrIdx++)
+   {
+      DU_ALLOC(dlTnlInfo->list.array[arrIdx], sizeof(DLUPTNLInformation_ToBeSetup_Item_t));
+      if(dlTnlInfo->list.array[arrIdx] == NULLP)
+      {
+         DU_LOG(" ERROR  -->  F1AP : Memory allocation for arrIdx [%d] failed in fillDlTnlSetupList()", arrIdx);
+         return RFAILED;
+      }
+      dlTnlInfo->list.array[arrIdx]->dLUPTNLInformation.present = UPTransportLayerInformation_PR_gTPTunnel;
+      DU_ALLOC(dlTnlInfo->list.array[arrIdx]->dLUPTNLInformation.choice.gTPTunnel, sizeof(GTPTunnel_t));
+      if(dlTnlInfo->list.array[arrIdx]->dLUPTNLInformation.choice.gTPTunnel == NULLP)
+      {
+         DU_LOG(" ERROR  -->  F1AP : Memory allocation for DL tunnel info in fillDlTnlSetupList()");
+         return RFAILED;
+      }
+      ret = fillGtpTunnelforDl(dlTnlInfo->list.array[arrIdx]->dLUPTNLInformation.choice.gTPTunnel,\
+               tnlCfg->tnlCfg1);
+      if(ret != ROK)
+         break;
+   }
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Fills the Drb Setup List for Ue Context Setup Response
+ *
+ * @details
+ *
+ *    Function : fillDrbSetupList
+ *
+ *    Functionality: Fills the Drb Setup List for Ue Context Setup Response
+ *
+ * @params[in] 
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fillDrbSetupList(DRBs_Setup_List_t *drbSetupList, DuUeCfg *ueCfg)
+{
+   uint8_t ret = ROK, arrIdx = 0, eleCount = 0;
+   DRBs_Setup_ItemIEs_t *drbItemIe = NULLP;
+
+   eleCount = ueCfg->numDrb;
+   drbSetupList->list.count = eleCount;
+   drbSetupList->list.size = \
+	(eleCount * sizeof(DRBs_Setup_Item_t *));
+
+   /* Initialize the Drb Setup List Members */
+   DU_ALLOC(drbSetupList->list.array, drbSetupList->list.size);
+   if(drbSetupList->list.array == NULLP)
+   {
+      DU_LOG(" ERROR  -->  F1AP : Memory allocation for DRB Setup List in fillDrbSetupList()");
+      ret = RFAILED;
+   }
+
+   for(arrIdx=0; arrIdx < eleCount; arrIdx++)
+   {
+      DU_ALLOC(drbSetupList->list.array[arrIdx], sizeof(DRBs_Setup_Item_t));
+      if(drbSetupList->list.array[arrIdx] == NULLP)
+      {
+         DU_LOG(" ERROR  -->  F1AP : Memory allocation for arrIdx [%d] failed in fillDrbSetupList()", arrIdx);
+         return RFAILED;
+      }
+      drbItemIe = ((DRBs_Setup_ItemIEs_t *)drbSetupList->list.array[arrIdx]);
+      drbItemIe->id = ProtocolIE_ID_id_DRBs_Setup_Item;
+      drbItemIe->criticality = Criticality_reject;
+      drbItemIe->value.present = DRBs_Setup_ItemIEs__value_PR_DRBs_Setup_Item;
+      drbItemIe->value.choice.DRBs_Setup_Item.dRBID = ueCfg->upTnlInfo[arrIdx].drbId;
+      ret = fillDlTnlSetupList(&drbItemIe->value.choice.DRBs_Setup_Item.dLUPTNLInformation_ToBeSetup_List,\
+          &ueCfg->upTnlInfo[arrIdx]);
+      if(ret != ROK)
+         break;
+   }
+   return ret;
+}
+
+/*******************************************************************
+ *
  * @brief Builds and sends the UE Setup Response
  *
  * @details
@@ -10036,7 +10331,7 @@ uint8_t BuildAndSendUeContextSetupRsp(uint8_t ueIdx, uint8_t cellId)
 
       ueSetRsp =
 	 &f1apMsg->choice.successfulOutcome->value.choice.UEContextSetupResponse;
-      elementCnt = 3;
+      elementCnt = 4;
       ueSetRsp->protocolIEs.list.count = elementCnt;
       ueSetRsp->protocolIEs.list.size = \
 					elementCnt * sizeof(UEContextSetupResponse_t *);
@@ -10101,18 +10396,42 @@ uint8_t BuildAndSendUeContextSetupRsp(uint8_t ueIdx, uint8_t cellId)
 	    cellGrpCfg = (CellGroupConfigRrc_t*)ueCb->f1UeDb->duUeCfg.cellGrpCfg;
 	    ret = EncodeUeCntxtDuToCuInfo(&ueSetRsp->protocolIEs.list.array[idx]->value.\
 	             choice.DUtoCURRCInformation.cellGroupConfig, cellGrpCfg);
-	    /* Free UeContext Db created during Ue context Req */
-	    freeF1UeDb(ueCb->f1UeDb);
-	    ueCb->f1UeDb = NULLP;
+            if(ret == RFAILED)
+	    {
+               DU_LOG("\nERROR  -->  F1AP : Failed to EncodeUeCntxtDuToCuInfo in BuildAndSendUeContextSetupRsp()");
+               freeF1UeDb(ueCb->f1UeDb);
+               ueCb->f1UeDb = NULLP;
+               break;
+	    }
          }
       }
       else
       {
-         DU_LOG("\nERROR  -->  F1AP: Failed to form DUtoCU RRCInfo at BuildAndSendUeContextSetupRsp()");
+         DU_LOG("\nERROR  -->  F1AP : Failed to form DUtoCU RRCInfo at BuildAndSendUeContextSetupRsp()");
          ret = RFAILED;
-      }
-      if(ret == RFAILED)
          break;
+      }
+
+      /* Drb Setup List */
+      idx++;
+      ueSetRsp->protocolIEs.list.array[idx]->id  = \
+				 ProtocolIE_ID_id_DRBs_Setup_List;
+      ueSetRsp->protocolIEs.list.array[idx]->criticality = Criticality_reject;
+      ueSetRsp->protocolIEs.list.array[idx]->value.present =\
+				 UEContextSetupResponseIEs__value_PR_DRBs_Setup_List;
+      ret = fillDrbSetupList(&ueSetRsp->protocolIEs.list.array[idx]->value.choice.DRBs_Setup_List,\
+               &ueCb->f1UeDb->duUeCfg);
+      if(ret == RFAILED)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Failed to fillDrbSetupList in BuildAndSendUeContextSetupRsp()");
+         freeF1UeDb(ueCb->f1UeDb);
+         ueCb->f1UeDb = NULLP;
+         break;
+      }
+
+       /* Free UeContext Db created during Ue context Req */
+       freeF1UeDb(ueCb->f1UeDb);
+       ueCb->f1UeDb = NULLP;
 
       xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
 
@@ -10124,14 +10443,14 @@ uint8_t BuildAndSendUeContextSetupRsp(uint8_t ueIdx, uint8_t cellId)
       /* Encode results */
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-	 DU_LOG( "\nERROR  -->  F1AP : Could not encode UE Context Setup Request structure (at %s)\n",\
+	 DU_LOG( "\nERROR  -->  F1AP : Could not encode UE Context Setup Response structure (at %s)\n",\
 	       encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
 	 ret = RFAILED;
 	 break;
       }
       else
       {
-	 DU_LOG("\nDEBUG   -->  F1AP : Created APER encoded buffer for UE Context Setup Request\n");
+	 DU_LOG("\nDEBUG   -->  F1AP : Created APER encoded buffer for UE Context Setup Response\n");
 	 for(int i=0; i< encBufSize; i++)
 	 {
 	    printf("%x",encBuf[i]);
@@ -10141,7 +10460,7 @@ uint8_t BuildAndSendUeContextSetupRsp(uint8_t ueIdx, uint8_t cellId)
       /* Sending  msg  */
       if(SendF1APMsg(DU_APP_MEM_REGION,DU_POOL)	!= ROK)
       {
-	 DU_LOG("\nERROR  -->  F1AP : Sending UE Context Setup Request Failed");
+	 DU_LOG("\nERROR  -->  F1AP : Sending UE Context Setup Response failed");
 	 ret = RFAILED;
 	 break;
       }

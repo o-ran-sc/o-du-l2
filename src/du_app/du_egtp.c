@@ -375,7 +375,7 @@ uint8_t egtpSrvOpenPrc(uint8_t sockType, EgtpTptSrvr *server)
  * ***************************************************************************/
 uint8_t egtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt)
 {
-   S8 ret;
+   uint8_t ret = ROK;
 
    DU_LOG("\nDEBUG   -->  EGTP : Received tunnel management request");
    switch(tnlEvt.action)
@@ -416,7 +416,7 @@ uint8_t egtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt)
    DU_LOG("\nDEBUG   -->  EGTP : Sending Tunnel management confirmation");
    duHdlEgtpTnlMgmtCfm(tnlEvt);
 
-   return ROK;
+   return ret;
 }
 
 /**************************************************************************
@@ -492,23 +492,18 @@ uint8_t egtpTnlAdd(EgtpTnlEvt tnlEvt)
  * ***************************************************************************/
 uint8_t egtpTnlMod(EgtpTnlEvt tnlEvt)
 {
-#if 0
-   uint8_t   ret;
    EgtpTeIdCb     *teidCb = NULLP;
 
-   DU_LOG("\nINFO   -->  Tunnel modification : LocalTeid[%d] Remote Teid[%d]", tnlEvt.lclTeid, tnlEvt.remTeid);
+   DU_LOG("\nINFO   -->  EGTP : Tunnel modification : LocalTeid[%d] Remote Teid[%d]", tnlEvt.lclTeid, tnlEvt.remTeid);
 
-   cmHashListFind(&(egtpCb.dstCb.teIdLst), (uint8_t *)&(tnlEvt.teId), sizeof(uint32_t), 0, (PTR *)&teidCb);
+   cmHashListFind(&(egtpCb.dstCb.teIdLst), (uint8_t *)&(tnlEvt.lclTeid), sizeof(uint32_t), 0, (PTR *)&teidCb);
    if(teidCb == NULLP)
    {
-      DU_LOG("\nERROR  -->  Tunnel id not found");
+      DU_LOG("\nERROR  -->  EGTP : Tunnel id not found");
       return RFAILED;
    }  
-   
-   teidCb->teId = tnlEvt.lclTeid;
-   DU_LOG("\nINFO  -->  Tunnel id is" , teidCb->teId);
+   teidCb->teId = tnlEvt.remTeid;
    teidCb->remTeId = tnlEvt.remTeid;
-#endif
    return ROK;
 }
 
@@ -543,7 +538,6 @@ uint8_t egtpTnlDel(EgtpTnlEvt tnlEvt)
    cmHashListDelete(&(egtpCb.dstCb.teIdLst), (PTR)teidCb);
    DU_FREE(teidCb, sizeof(EgtpTeIdCb));
    egtpCb.dstCb.numTunn--;
-
    return ROK;
 }
 

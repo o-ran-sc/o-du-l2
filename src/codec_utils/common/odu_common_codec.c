@@ -108,7 +108,65 @@ uint8_t bitStringToInt(BIT_STRING_t *bitString, void *value)
    return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Function to decode teId value from the octect String
+ *
+ * @details
+ *
+ *    Function : teIdStringToInt
+ *
+ *    Functionality: Function to decode teId value from the octect string
+ *                   It can used as generic function to convert 
+ *                   octect string to uint32_t value 
+ *
+ * @params[in]  buf, value
+ * @return void
+ *
+ * ****************************************************************/
+void teIdStringToInt(uint8_t *buf, uint32_t *val)
+{
+   uint32_t temp1 = 0, temp2 = 0, temp3 = 0;
 
+   temp1 |= buf[0];
+   temp1 <<= 24;
+
+   temp2 |= buf[1];
+   temp2 <<= 16;
+
+   temp3 |= buf[2];
+   temp3 <<= 8;
+   
+   *val = temp1|temp2|temp3|buf[3];
+}
+
+/*******************************************************************
+ *
+ * @brief Function to encode teId value to the octect String
+ *
+ * @details
+ *
+ *    Function : fillTeIdString
+ *
+ *    Functionality: Function to encode teId value to the octect String
+ *                   It can used as generic function to encode 
+ *                   uint32_t value to octect string
+ *
+ * @params[in]  bufSize, value, buf
+ * @return void
+ *
+ * ****************************************************************/
+
+void fillTeIdString(uint8_t bufSize, uint32_t val, uint8_t *buf)
+{
+   uint8_t bitPos;
+
+   for(bitPos = 0; bitPos < TEID_BIT_SIZE; bitPos += 8, bufSize--)
+   {
+      /*extracting bitBits from the bitPos*/
+      buf[bufSize] = (((1 << 8) - 1) & (val >> (bitPos))); 
+   }
+}
 
 /**********************************************************************
   End of file
