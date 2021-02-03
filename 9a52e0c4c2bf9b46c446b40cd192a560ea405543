@@ -16,6 +16,24 @@
       "revId": "9a52e0c4c2bf9b46c446b40cd192a560ea405543",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d2c625ea_6b5058ef",
+        "filename": "src/5gnrmac/rg_cfg.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1222,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-02-03T11:16:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4f357892_842623f9",
+      "revId": "9a52e0c4c2bf9b46c446b40cd192a560ea405543",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
