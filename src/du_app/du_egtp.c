@@ -834,8 +834,8 @@ uint8_t egtpRecvMsg()
          DU_LOG("\nDEBUG  -->  EGTP : Received DL Message[%d]\n", nMsg+1);
          ODU_PRINT_MSG(recvBuf, 0 ,0);
          egtpHdlRecvData(recvBuf);
+         nMsg++;
       }
-      nMsg++;
    }
    
    return ROK;
