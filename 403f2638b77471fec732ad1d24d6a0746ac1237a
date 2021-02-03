@@ -16,6 +16,24 @@
       "revId": "403f2638b77471fec732ad1d24d6a0746ac1237a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "48995f68_edb3e802",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-03T07:54:26Z",
+      "side": 1,
+      "message": "Agreed that these names must be changed. This is to denote periodicity and the other macro denotes the max slots in given numerology and periodicity.",
+      "parentUuid": "1cfc0611_51cce033",
+      "revId": "403f2638b77471fec732ad1d24d6a0746ac1237a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
     }
   ]
 }
