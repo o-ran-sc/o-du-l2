@@ -1168,16 +1168,18 @@ uint8_t duHdlEgtpSrvOpenComplete(CmStatus cfm)
  *
  * ****************************************************************/
 
-uint8_t duSendEgtpTnlMgmtReq(uint8_t action, uint32_t lclTeid, uint32_t remTeid)
+uint8_t duSendEgtpTnlMgmtReq(uint8_t action, GtpTnlCfg *ueCbTnlCfg)
 {
+   uint8_t tnlIdx = 0;
    Pst pst;
    EgtpTnlEvt tnlEvt;
 
-   tnlEvt.action = action;
-   tnlEvt.lclTeid = lclTeid;
-   tnlEvt.remTeid = remTeid;
+   DU_LOG("\nDEBUG   -->  DU_APP : Sending EGTP tunnel management request for teId [%d]", ueCbTnlCfg->teId);
 
-   DU_LOG("\nDEBUG   -->  DU_APP : Sending EGTP tunnel management request");
+   /* ADD/MOD/DEL per tunnel */
+   tnlEvt.action = action;
+   tnlEvt.lclTeid = ueCbTnlCfg->teId;
+   tnlEvt.remTeid = ueCbTnlCfg->teId;
    duFillEgtpPst(&pst, EVTTNLMGMTREQ);
    egtpTnlMgmtReq(&pst, tnlEvt);
    return ROK;
