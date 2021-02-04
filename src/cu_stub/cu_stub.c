@@ -23,14 +23,33 @@
 #include "cu_stub_egtp.h"
 #include "du_log.h"
 
+#ifdef O1_ENABLE
+
+#include "Config.h"
+extern StartupConfig g_cfg;
+
+#endif
+
 #define CU_ID 1
 #define CU_NAME "ORAN_OAM_CU"
+
+#ifndef O1_ENABLE
+
 #define DU_IP_V4_ADDR "192.168.130.81"
 #define CU_IP_V4_ADDR "192.168.130.82"
+
+#endif
+
 #define DU_IP_V6_ADDR "0000:0000:0000:0000:0000:0000:0000:0001"
 #define CU_IP_V6_ADDR "0000:0000:0000:0000:0000:0000:0000:0011"
+
+#ifndef O1_ENABLE
+
 #define DU_PORT 38472
 #define CU_PORT 38472 
+
+#endif
+
 #define DU_EGTP_PORT 39001
 #define CU_EGTP_PORT 39002
 #define RRC_VER 0
@@ -146,21 +165,41 @@ void readCuCfg()
 
    DU_LOG("\nReading CU configurations");
 
+#ifdef O1_ENABLE
+   if( getStartupConfig(&g_cfg) != ROK )
+   {
+      RETVALUE(RFAILED);
+   }
+   DU_LOG("\nReading CU configurations---");
+   DU_LOG("\nReading CU configurations g_cfg.DU_IPV4_Addr=%s", g_cfg.DU_IPV4_Addr);
+   DU_LOG("\nReading CU configurations g_cfg.CU_IPV4_Addr=%s", g_cfg.CU_IPV4_Addr);
+   cmInetAddr((S8*)g_cfg.DU_IPV4_Addr, &ipv4_du);
+   cmInetAddr((S8*)g_cfg.CU_IPV4_Addr, &ipv4_cu);
+#else
    cmInetAddr((S8*)DU_IP_V4_ADDR, &ipv4_du);
    cmInetAddr((S8*)CU_IP_V4_ADDR, &ipv4_cu);
- 
+#endif
+    
    cuCfgParams.cuId = CU_ID;
    strcpy(cuCfgParams.cuName, CU_NAME);
  
    /* DU IP Address and Port*/
    cuCfgParams.sctpParams.duIpAddr.ipV4Addr = ipv4_du;
    cuCfgParams.sctpParams.duIpAddr.ipV6Pres = false;
+#ifdef O1_ENABLE
+   cuCfgParams.sctpParams.duPort = g_cfg.DU_Port;
+#else
    cuCfgParams.sctpParams.duPort = DU_PORT;
+#endif
 
    /* CU IP Address and Port*/
    cuCfgParams.sctpParams.cuIpAddr.ipV4Addr = ipv4_cu;
    cuCfgParams.sctpParams.cuIpAddr.ipV6Pres = false;
+#ifdef O1_ENABLE
+   cuCfgParams.sctpParams.cuPort = g_cfg.CU_Port;
+#else
    cuCfgParams.sctpParams.cuPort = CU_PORT;
+#endif
 
    /*PLMN*/
    cuCfgParams.plmn.mcc[0] = PLMN_MCC0;

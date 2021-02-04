@@ -19,9 +19,14 @@
 /* This file contains methods of Session/Connection creation and Subscription to
    YANG modules */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include "sysrepo.h"
 #include "SessionHandler.hpp"
+#include "InitConfig.hpp"
+#include <iostream>
 
-
+using namespace std;
 /* Default constructor */
 SessionHandler::SessionHandler()
 {    
@@ -45,10 +50,14 @@ bool SessionHandler::init()
 {
    try
    {
+      O1_LOG("\nO1 SessionHandler : Initialization done");
       mConn = createConnection();
+      O1_LOG("\nO1 SessionHandler : Initialization done");
       mSess = createSession(mConn);
       mSub  = createSubscribe(mSess);
       O1_LOG("\nO1 SessionHandler : Initialization done");
+      //InitConfig initConf;
+      InitConfig::instance().init(mSess);
       return true;
    }
    catch( const std::exception& e )

@@ -22,14 +22,33 @@
 #include "ric_stub_sctp.h"
 #include "du_log.h"
 
+#ifdef O1_ENABLE
+
+#include "Config.h"
+extern StartupConfig g_cfg;
+
+#endif
+
 #define RIC_ID 1
 #define RIC_NAME "ORAN_OAM_RIC"
+
+#ifndef O1_ENABLE
+
 #define DU_IP_V4_ADDR "192.168.130.81"
 #define RIC_IP_V4_ADDR "192.168.130.80"
+
+#endif
+
 #define DU_IP_V6_ADDR "0000:0000:0000:0000:0000:0000:0000:0001"
 #define RIC_IP_V6_ADDR "0000:0000:0000:0000:0000:0000:0000:0011"
+
+#ifndef O1_ENABLE
+
 #define DU_PORT 36422
 #define RIC_PORT 36422
+
+#endif
+
 #define RRC_VER 0
 #define EXT_RRC_VER 5
 #define PLMN_MCC0 3
@@ -119,21 +138,38 @@ void readRicCfg()
 
    DU_LOG("\nReading RIC configurations");
 
+#ifdef O1_ENABLE
+   if( getStartupConfig(&g_cfg) != ROK )
+   {
+      RETVALUE(RFAILED);
+   }
+   cmInetAddr((S8*)g_cfg.DU_IPV4_Addr,  &ipv4_du);
+   cmInetAddr((S8*)g_cfg.RIC_IPV4_Addr, &ipv4_ric);
+#else
    cmInetAddr((S8*)DU_IP_V4_ADDR, &ipv4_du);
    cmInetAddr((S8*)RIC_IP_V4_ADDR, &ipv4_ric);
- 
+#endif
+    
    ricCfgParams.ricId = RIC_ID;
    strcpy(ricCfgParams.ricName, RIC_NAME);
  
    /* DU IP Address and Port*/
    ricCfgParams.sctpParams.duIpAddr.ipV4Addr = ipv4_du;
    ricCfgParams.sctpParams.duIpAddr.ipV6Pres = false;
+#ifdef O1_ENABLE
+   ricCfgParams.sctpParams.duPort = g_cfg.RIC_Port;
+#else
    ricCfgParams.sctpParams.duPort = DU_PORT;
+#endif
 
    /* RIC IP Address and Port*/
    ricCfgParams.sctpParams.ricIpAddr.ipV4Addr = ipv4_ric;
    ricCfgParams.sctpParams.ricIpAddr.ipV6Pres = false;
+#ifdef O1_ENABLE
+   ricCfgParams.sctpParams.ricPort = g_cfg.RIC_Port;
+#else
    ricCfgParams.sctpParams.ricPort = RIC_PORT;
+#endif
 
    /*PLMN*/
    ricCfgParams.plmn.mcc[0] = PLMN_MCC0;

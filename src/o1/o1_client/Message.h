@@ -16,17 +16,31 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains functions to connect to a TCP server and send massages */
+/* This file contains definitions of common message structures */
 
-#ifndef __TCP_CLIENT_H__
-#define __TCP_CLIENT_H__
-#include <stdint.h>
-#include "ssi.h"
+#ifndef __MESSAGE_H__
+#define __MESSAGE_H__
 
-uint8_t openSocket(const char*, const uint16_t);
-int sendData(void*, const int);
-int receiveData(void* data, const int size);
-uint8_t closeSocket();
+#include <string.h>
+
+typedef enum
+{
+   RAISE_ALARM,
+   CLEAR_ALARM,
+   GET_STARTUP_CONFIG
+}MsgAction;
+
+typedef enum
+{
+   ALARM,
+   CONFIGURATION
+}MsgType;
+
+typedef struct
+{
+   MsgType msgType;
+   MsgAction action;
+}MsgHeader;
 
 #endif
 

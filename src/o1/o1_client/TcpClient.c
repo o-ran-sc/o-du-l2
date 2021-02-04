@@ -38,12 +38,21 @@ static uint16_t s_port;
 static const char* s_hostName = NULL;
 
 
-/********************************************************************** 
-   Description : Initilize the sockadd_in structure 
-   Params[In]  : None
-   Return      : ROK     - success
-                 RFAILED - failure
-**********************************************************************/
+/*******************************************************************
+ *
+ * @brief Initilize the sockadd_in structure
+ *
+ * @details
+ *
+ *    Function : initSockaddr
+ *
+ *    Functionality:
+ *      - Initilizes the sockadd_in structure
+ *
+ * @params[in] void 
+ * @return ROK     - success
+ *         RFAILED - failure
+ ******************************************************************/
 static uint8_t initSockaddr()
 {
 
@@ -63,12 +72,21 @@ static uint8_t initSockaddr()
 }
 
 
-/********************************************************************** 
-   Description : Open a TCP socket 
-   Params[In]  : hostName, port
-   Return      : ROK     - success
-                 RFAILED - failure
-**********************************************************************/
+/*******************************************************************
+ *
+ * @brief Open a TCP socket
+ *
+ * @details
+ *
+ *    Function : openSocket
+ *
+ *    Functionality:
+ *      - Opens a TCP socket
+ *
+ * @params[in] hostname, port 
+ * @return ROK     - success
+ *         RFAILED - failure
+ ******************************************************************/
 uint8_t openSocket(const char* hostName, const uint16_t port)
 {
    /* Create the socket. */
@@ -99,11 +117,21 @@ uint8_t openSocket(const char* hostName, const uint16_t port)
 
 }
 
-/********************************************************************** 
-   Description : Send the message on TCP socket 
-   Params[In]  : message, size of the message
-   Return      : Number of bytes sent
-**********************************************************************/
+/*******************************************************************
+ *
+ * @brief Send message over TCP socket
+ *
+ * @details
+ *
+ *    Function : sendData
+ *
+ *    Functionality:
+ *      - Sends message over TCP socket
+ *
+ * @params[in] message, size of the message
+ * @return Number of bytes sent
+ *
+ ******************************************************************/
 int sendData(void* data, const int size)
 {
    int nbytes = write (s_sock, data, size);
@@ -114,12 +142,46 @@ int sendData(void* data, const int size)
    return nbytes;
 }
 
-/********************************************************************** 
-   Description : Close the TCP socket 
-   Params[In]  : None
-   Return      : ROK     - success
-                 RFAILED - failure
-**********************************************************************/
+/*******************************************************************
+ *
+ * @brief Recieve message over TCP socket
+ *
+ * @details
+ *
+ *    Function : receiveData
+ *
+ *    Functionality:
+ *      - Recieves message over TCP socket
+ *
+ * @params[in] message, size of the message
+ * @return Number of bytes received
+ *
+ ******************************************************************/
+int receiveData(void* data, const int size)
+{
+   int nbytes = read (s_sock, data, size);
+   if (nbytes < 0)
+   {
+      O1_LOG("\nO1 TcpClient : Error reading. %d bytes sent", nbytes);
+   }
+   return nbytes;
+}
+
+/*******************************************************************
+ *
+ * @brief Close the TCP socket
+ *
+ * @details
+ *
+ *    Function : closeSocket
+ *
+ *    Functionality:
+ *      - Closes the TCP socket
+ *
+ * @params[in] message, size of the message
+ * @return ROK     - success
+ *         RFAILED - failure
+ ******************************************************************/
 uint8_t closeSocket()
 {
    if( close(s_sock) != 0 )

@@ -52,6 +52,13 @@
 #include "BWP-DownlinkCommon.h"
 #include "BWP-UplinkCommon.h"
 
+#ifdef O1_ENABLE
+
+#include "Config.h"
+extern StartupConfig g_cfg;
+
+#endif
+
 DuCfgParams duCfgParam;
 char encBuf[ENC_BUF_MAX_LEN];
 
@@ -335,9 +342,14 @@ uint8_t readMacCfg()
  * ****************************************************************/
 uint8_t fillDuPort(uint16_t *duPort)
 {
+
+#ifdef O1_ENABLE
+   duPort[F1_INTERFACE]   = g_cfg.DU_Port;     /* DU Port idx  0 38472 */
+   duPort[E2_INTERFACE]   = g_cfg.RIC_Port;    /* RIC Port idx 1 38482 */
+#else
    duPort[F1_INTERFACE]   = DU_PORT;     /* DU Port idx  0 38472 */
    duPort[E2_INTERFACE]   = RIC_PORT;    /* RIC Port idx 1 38482 */
-
+#endif
    return ROK;
 }
 
@@ -537,9 +549,20 @@ uint8_t readCfg()
    MibParams mib;
    Sib1Params sib1;	
 
+#ifdef O1_ENABLE
+   if( getStartupConfig(&g_cfg) != ROK )
+   {
+      RETVALUE(RFAILED);
+   }
+   cmInetAddr((S8*)g_cfg.DU_IPV4_Addr, &ipv4_du);
+   cmInetAddr((S8*)g_cfg.CU_IPV4_Addr, &ipv4_cu);
+   cmInetAddr((S8*)g_cfg.RIC_IPV4_Addr, &ipv4_ric);
+#else   
    cmInetAddr((S8*)DU_IP_V4_ADDR, &ipv4_du);
    cmInetAddr((S8*)CU_IP_V4_ADDR, &ipv4_cu);
    cmInetAddr((S8*)RIC_IP_V4_ADDR, &ipv4_ric);
+#endif
+
    fillDuPort(duCfgParam.sctpParams.duPort);
 
    /* F1 DU IP Address and Port*/
@@ -547,11 +570,22 @@ uint8_t readCfg()
 
    /* F1 CU IP Address and Port*/
    duCfgParam.sctpParams.cuIpAddr.ipV4Addr = ipv4_cu;
+
+#ifdef O1_ENABLE
+   duCfgParam.sctpParams.cuPort = g_cfg.CU_Port;
+#else   
    duCfgParam.sctpParams.cuPort = CU_PORT;
+#endif
 
    /* Fill RIC Params */
    duCfgParam.sctpParams.ricIpAddr.ipV4Addr = ipv4_ric;
+
+#ifdef O1_ENABLE
+   duCfgParam.sctpParams.ricPort            = g_cfg.RIC_Port;
+#else   
    duCfgParam.sctpParams.ricPort            = RIC_PORT;
+#endif
+
    /* EGTP Parameters */
    duCfgParam.egtpParams.localIp.ipV4Pres = TRUE;
    duCfgParam.egtpParams.localIp.ipV4Addr = ipv4_du;
