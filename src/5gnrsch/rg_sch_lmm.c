@@ -34,9 +34,6 @@
        request primitives are defined here.
 */
 
-static const char* RLOG_MODULE_NAME="MAC";
-static int RLOG_MODULE_ID=4096;
-static int RLOG_FILE_ID=167;
 
 /* header include files (.h) */
 #include "common_def.h"
@@ -93,8 +90,8 @@ void printSchCellInfo(void)
        * with this SAP */
       if (rgSchCb[inst].tfuSap[idx].cell != NULLP)
       {
-         RLOG1(L_INFO,"CELL %d\n", idx);
-         RLOG1(L_INFO,"NUM UEs :%d\n",rgSchCb[inst].tfuSap[idx].cell->ueLst.nmbEnt);
+         DU_LOG("\nINFO  -->  SCH : CELL %d\n", idx);
+         DU_LOG("\nINFO  -->  SCH : NUM UEs :%d\n",rgSchCb[inst].tfuSap[idx].cell->ueLst.nmbEnt);
       }
    }
 }
@@ -141,7 +138,7 @@ Elmnt sapType             /* SAP Type */
              (cfg->s.schInstCfg.rgrSap[sapIdx].selector != ODU_SELECTOR_LC))
          {
             ret = LCM_REASON_INVALID_PAR_VAL;
-            RLOG_ARG0(L_ERROR,DBG_INSTID,inst, "rgSCHLmmSapCfg(): unsupported"
+            DU_LOG("\nERROR  -->  SCH : rgSCHLmmSapCfg(): unsupported"
                " Selector value for RGR.");
             break;
          }
@@ -175,7 +172,7 @@ Elmnt sapType             /* SAP Type */
              (cfg->s.schInstCfg.tfuSap[sapIdx].selector != ODU_SELECTOR_LC))
          {
             ret = LCM_REASON_INVALID_PAR_VAL;
-            RLOG_ARG0(L_ERROR,DBG_INSTID,inst, "rgSCHLmmSapCfg(): unsupported"
+            DU_LOG("\nERROR  -->  SCH : rgSCHLmmSapCfg(): unsupported"
                      " Selector value for TFU.");
             break;
          }
@@ -215,7 +212,7 @@ Elmnt sapType             /* SAP Type */
              (cfg->s.schInstCfg.rgmSap[sapIdx].selector != RGM_SEL_TC))
          {
             ret = LCM_REASON_INVALID_PAR_VAL;
-            RLOG_ARG0(L_ERROR,DBG_INSTID,inst, "rgSCHLmmSapCfg(): unsupported"
+            DU_LOG("\nERROR  -->  SCH : rgSCHLmmSapCfg(): unsupported"
                      " Selector value for RGM.");
             break;
          }
@@ -474,7 +471,7 @@ Void rgSCHLmmGenCntrl(RgMngmt *cntrl,RgMngmt *cfm,Pst  *cfmPst)
             default:
                cfm->cfm.status = LCM_PRIM_NOK;
                cfm->cfm.reason = LCM_REASON_INVALID_PAR_VAL;
-               RLOG_ARG1(L_ERROR,DBG_INSTID,inst, "rgSCHLmmGenCntrl(): "
+               DU_LOG("\nERROR  -->  SCH : rgSCHLmmGenCntrl(): "
                   "invalid subaction=%d", cntrl->t.cntrl.subAction);
                break;
          }
@@ -498,7 +495,7 @@ Void rgSCHLmmGenCntrl(RgMngmt *cntrl,RgMngmt *cfm,Pst  *cfmPst)
             default:
                cfm->cfm.status = LCM_PRIM_NOK;
                cfm->cfm.reason = LCM_REASON_INVALID_PAR_VAL;
-               RLOG_ARG1(L_ERROR,DBG_INSTID,inst, "rgSCHLmmGenCntrl():"
+               DU_LOG("\nERROR  -->  SCH : rgSCHLmmGenCntrl():"
                  " invalid subaction=%d", cntrl->t.cntrl.subAction);
                break;
          }
@@ -510,7 +507,7 @@ Void rgSCHLmmGenCntrl(RgMngmt *cntrl,RgMngmt *cfm,Pst  *cfmPst)
       default:
          cfm->cfm.status = LCM_PRIM_NOK;
          cfm->cfm.reason = LCM_REASON_INVALID_PAR_VAL;
-         RLOG_ARG1(L_ERROR,DBG_INSTID,inst, "rgSCHLmmGenCntrl(): invalid"
+         DU_LOG("\nERROR  -->  SCH : rgSCHLmmGenCntrl(): invalid"
           " action=%d", cntrl->t.cntrl.action);
          break;
    }
@@ -642,7 +639,7 @@ Pst           *cfmPst
             default:
                cfm->cfm.status = LCM_PRIM_NOK;
                cfm->cfm.reason = LCM_REASON_INVALID_PAR_VAL;
-               RLOG_ARG1(L_ERROR,DBG_INSTID,inst, "rgSCHLmmSapCntrl(): "
+               DU_LOG("\nERROR  -->  SCH : rgSCHLmmSapCntrl(): "
                   "invalid action=%d", cntrl->t.cntrl.action);
                break;
          }
@@ -665,7 +662,7 @@ Pst           *cfmPst
             default:
                cfm->cfm.status = LCM_PRIM_NOK;
                cfm->cfm.reason = LCM_REASON_INVALID_PAR_VAL;
-               RLOG_ARG1(L_ERROR,DBG_INSTID,inst, "rgSCHLmmSapCntrl(): "
+               DU_LOG("\nERROR  -->  SCH : rgSCHLmmSapCntrl(): "
                      "invalid action=%d", cntrl->t.cntrl.action);
                break;
          }
@@ -688,7 +685,7 @@ Pst           *cfmPst
             default:
                cfm->cfm.status = LCM_PRIM_NOK;
                cfm->cfm.reason = LCM_REASON_INVALID_PAR_VAL;
-               RLOG_ARG1(L_ERROR,DBG_INSTID,inst, "rgSCHLmmSapCntrl(): "
+               DU_LOG("\nERROR  -->  SCH : rgSCHLmmSapCntrl(): "
                      "invalid action=%d", cntrl->t.cntrl.action);
                break;
          }
@@ -877,9 +874,6 @@ S16 tmrEvnt           /* Timer Event */
 {
    S16           ret = ROK;
    RgSchLowSapCb *tfuSap = (RgSchLowSapCb *)cb;
-#ifdef DEBUGP
-   Inst          inst = tfuSap->cell->instIdx;
-#endif
 
    
    switch(tmrEvnt)
@@ -908,7 +902,7 @@ S16 tmrEvnt           /* Timer Event */
          }
          break;
       default:
-         RLOG_ARG1(L_ERROR,DBG_INSTID,inst, "rgSCHLmmTmrExpiry(): Invalid"
+         DU_LOG("\nERROR  -->  SCH : rgSCHLmmTmrExpiry(): Invalid"
                  " tmrEvnt=%d", tmrEvnt);
          ret = RFAILED;
          break;
