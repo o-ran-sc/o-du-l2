@@ -24,6 +24,7 @@
 #include "TcpServer.hpp"
 #include "Alarm.hpp"
 #include "AlarmManager.hpp"
+#include "Config.h"
 #include "GlobalDefs.hpp"
 #include <iostream>
 #include <cstdio>
@@ -35,6 +36,7 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <arpa/inet.h>
+#include "InitConfig.hpp"
 
 using std::map;
 using std::pair;
@@ -46,62 +48,100 @@ TcpServer::~TcpServer()
 }
 
 
-/********************************************************************** 
-   Description : Read the data from the connected client application 
-   Params[In]  : fd - File descriptor
-   Return      : int - No of bytes read 
-**********************************************************************/
+/*******************************************************************
+ *
+ * @brief Read the data from the connected client application
+ *
+ * @details
+ *
+ *    Function : readMessage
+ *
+ *    Functionality:
+ *      - Reads the data from the connected client application
+ *
+ * @params[in] File descriptor
+ * @return No. of bytes read
+ *
+ ******************************************************************/
 int TcpServer::readMessage(int fd)
 {
-   AlarmRecord alrmRec;
-   bzero(&alrmRec,sizeof(alrmRec));
-   int nbytes = read (fd, &alrmRec, sizeof(alrmRec));
+   AlarmRecord *alrmRec = NULL;
+   char recvBuf[BUFLEN];
+   Alarm alrm;
+   bzero(&recvBuf,sizeof(recvBuf));
+   
+   int nbytes = read (fd, &recvBuf, sizeof(recvBuf));
+   
    if (nbytes > 0)
    {
-      Alarm alrm;
-      uint16_t alrmId;
-      O1_LOG("\nO1 TcpServer :\nAction %d\nalarm ID %s\n%d\n%s\n%d\n%s\n%s\nbytes %d",
-                     alrmRec.msgHeader.action,
-                     alrmRec.alarmId,
-                     alrmRec.perceivedSeverity,
-                     alrmRec.additionalText,
-                     alrmRec.eventType,
-                     alrmRec.specificProblem,
-                     alrmRec.additionalInfo,
+      MsgHeader *msgHdr = (MsgHeader*)recvBuf;
+
+      O1_LOG("\nO1 TcpServer :\nBuf size %ld", sizeof(recvBuf));
+      O1_LOG("\nO1 TcpServer :\nMsgType %d",msgHdr->msgType);
+      O1_LOG("\nO1 TcpServer :\nAction %d",msgHdr->action);
+      
+      if ( msgHdr->msgType == ALARM ){
+         uint16_t alrmId;
+         alrmRec = (AlarmRecord*) recvBuf;
+         O1_LOG("\nO1 TcpServer :\nAction %d\nalarm ID %s\n%d\n%s\n%d\n%s\n%s\nbytes %d",
+                     alrmRec->msgHeader.action,
+                     alrmRec->alarmId,
+                     alrmRec->perceivedSeverity,
+                     alrmRec->additionalText,
+                     alrmRec->eventType,
+                     alrmRec->specificProblem,
+                     alrmRec->additionalInfo,
                      nbytes
                      );
       
-      /*Fill the alarm structure */
-      sscanf(alrmRec.alarmId,"%hu",&alrmId);
-      alrm.setAlarmId(alrmId);
-      alrm.setPerceivedSeverity(alrmRec.perceivedSeverity);
-      alrm.setAdditionalText(alrmRec.additionalText);
-      alrm.setEventType(alrmRec.eventType);
-      alrm.setSpecificProblem(alrmRec.specificProblem);
-      alrm.setAdditionalInfo(alrmRec.additionalInfo);
+         /*Fill the alarm structure */
+         sscanf(alrmRec->alarmId,"%hu",&alrmId);
+         alrm.setAlarmId(alrmId);
+         alrm.setPerceivedSeverity(alrmRec->perceivedSeverity);
+         alrm.setAdditionalText(alrmRec->additionalText);
+         alrm.setEventType(alrmRec->eventType);
+         alrm.setSpecificProblem(alrmRec->specificProblem);
+         alrm.setAdditionalInfo(alrmRec->additionalInfo);
+      }
 
-      switch(alrmRec.msgHeader.action)
+      switch(msgHdr->action)
       {
-         case RAISE: 
+         case RAISE_ALARM: 
                      if(AlarmManager::instance().raiseAlarm(alrm))
                      {
-                        O1_LOG("\nO1 TcpServer : Alarm raised for alarm Id %s", alrmRec.alarmId);
+                        O1_LOG("\nO1 TcpServer : Alarm raised for alarm Id %s", alrmRec->alarmId);
                      }
                      else
                      {
-                        O1_LOG("\nO1 TcpServer : Error in raising alarm for alrm Id %s", alrmRec.alarmId);
+                        O1_LOG("\nO1 TcpServer : Error in raising alarm for alrm Id %s", alrmRec->alarmId);
                      }
                      break;  
-         case CLEAR: 
+         case CLEAR_ALARM: 
                      if(AlarmManager::instance().clearAlarm(alrm))
                      {
-                        O1_LOG("\nO1 TcpServer : Alarm cleared for alarm Id %s", alrmRec.alarmId);
+                        O1_LOG("\nO1 TcpServer : Alarm cleared for alarm Id %s", alrmRec->alarmId);
                      }
                      else
                      {
-                        O1_LOG("\nO1 TcpServer : Error in clearing alarm for alarm Id %s", alrmRec.alarmId);
+                        O1_LOG("\nO1 TcpServer : Error in clearing alarm for alarm Id %s", alrmRec->alarmId);
                      }
                      break;
+         case GET_STARTUP_CONFIG:
+                     {
+                        StartupConfig cfg;
+			               InitConfig::instance().getCurrInterfaceConfig(cfg);
+                        O1_LOG("\nO1 TcpServer : cfg.DU_IPV4_Addr [%s]", cfg.DU_IPV4_Addr);
+                        O1_LOG("\nO1 TcpServer : cfg.DU_Port [%d]", cfg.DU_Port);
+                        O1_LOG("\nO1 TcpServer : cfg.CU_IPV4_Addr [%s]", cfg.CU_IPV4_Addr);
+                        O1_LOG("\nO1 TcpServer : cfg.CU_Port [%d]", cfg.CU_Port);
+                        O1_LOG("\nO1 TcpServer : cfg.RIC_IPV4_Addr [%s]", cfg.RIC_IPV4_Addr);
+                        O1_LOG("\nO1 TcpServer : cfg.RIC_Port [%d]", cfg.RIC_Port);
+                        if (write (fd, &cfg, sizeof(cfg)) < 0)
+                        {
+                           O1_LOG("\nO1 TcpServer : Error sending startup configuration \n");
+                        }
+                        break; 
+                     }
          default:    
                      O1_LOG("\nO1 TcpServer : No action performed"); 
                      break;
@@ -112,12 +152,21 @@ int TcpServer::readMessage(int fd)
 }
 
 
-/********************************************************************** 
-   Description : Open a TCP socket and bind on the port
-   Params[In]  : None
-   Return      : O1::SUCCESS - socket open and bind successful
-                 O1::FAILURE - socket open and bind failed
-**********************************************************************/
+/*******************************************************************
+ *
+ * @brief Open a TCP socket and bind on the port
+ *
+ * @details
+ *
+ *    Function : makeSocket
+ *
+ *    Functionality:
+ *      -  Opens a TCP socket and bind on the port
+ *
+ * @params[in] void
+ * @return O1:SUCCESS - success
+ *         O1:FAILURE - failure
+ ******************************************************************/
 int TcpServer::makeSocket() 
 {
    struct sockaddr_in name;
@@ -143,24 +192,42 @@ int TcpServer::makeSocket()
 }
 
 
-/********************************************************************** 
-   Description : Start TCP server in thread    
-   Params[In]  : None
-   Return      : true  - task launched in pthread successfully
-                 false - task failed to launch
-**********************************************************************/
+/*******************************************************************
+ *
+ * @brief Start TCP server in thread
+ *
+ * @details
+ *
+ *    Function : start
+ *
+ *    Functionality:
+ *      -  Start TCP server in thread
+ *
+ * @params[in] void
+ * @return true  - success
+ *         false - failure
+ ******************************************************************/
 bool TcpServer::start()
 {
    return (pthread_create(&mThreadId, NULL, task, this) == 0);
 }
 
-/********************************************************************** 
-   Description : A TCP server to handle multiple connection using
-                 select multiplexing    
-   Params[In]  : None
-   Return      : true  - task launched in pthread successfully
-                 false - task failed to launch
-**********************************************************************/
+/*******************************************************************
+ *
+ * @brief A TCP server to handle multiple connection
+ *
+ * @details
+ *
+ *    Function : run
+ *
+ *    Functionality:
+ *      -  A TCP server to handle multiple connection 
+ *         Uses select multiplexing
+ *
+ * @params[in] void
+ * @return true  - success
+ *         false - failure
+ ******************************************************************/
 bool TcpServer::run()
 {
 
@@ -243,12 +310,22 @@ bool TcpServer::run()
 }
 
 
-/********************************************************************** 
-   Description : Static function for launching a TCP server instance 
-                 in a thread    
-   Params[In]  : TcpServer instance
-   Return      : NULL
-**********************************************************************/
+/*******************************************************************
+ *
+ * @brief Static function for launching a TCP server instance
+ *        in a thread
+ *
+ * @details
+ *
+ *    Function : task
+ *
+ *    Functionality:
+ *      - Static function for launching a TCP server instance
+ *        in a thread
+ *
+ * @params[in] TcpServer instance
+ * @return void
+ ******************************************************************/
 void* TcpServer::task(void *args)
 {
    TcpServer *tcpServer = (TcpServer*)args;
@@ -257,12 +334,21 @@ void* TcpServer::task(void *args)
 }
 
 
-/********************************************************************** 
-   Description : Wait for the thread to complete in the parent process   
-   Params[In]  : None
-   Return      : true  - pthread join success
-                 false - pthread join failed
-**********************************************************************/
+/*******************************************************************
+ *
+ * @brief Wait for the thread to complete in the parent process
+ *
+ * @details
+ *
+ *    Function : wait
+ *
+ *    Functionality:
+ *      - Waits for the thread to complete in the parent process
+ *
+ * @params[in] void
+ * @return true   : success
+ *          false : failure
+ ******************************************************************/
 bool TcpServer::wait()
 {
     return (pthread_join(mThreadId,NULL) == 0);

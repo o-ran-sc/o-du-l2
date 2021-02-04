@@ -22,6 +22,7 @@
 #define __ALARM_H__
 
 #include <string.h>
+#include "CommonMessages.h"
 #define ALRM_ID_SIZE 10
 #define OBJ_INST_SIZE 15
 #define TEXT_SIZE 50
@@ -51,16 +52,6 @@ typedef enum
    TIME_DOMAIN_VIOLATION = 11
 }EventType;
 
-typedef enum
-{
-   CLEAR = 0,
-   RAISE = 1
-}AlarmAction;
-
-typedef struct
-{
-   AlarmAction action;
-}MsgHeader;
 
 typedef struct
 {

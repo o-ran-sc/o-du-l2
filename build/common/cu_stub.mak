@@ -39,6 +39,10 @@ I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/common
 I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/F1AP
 I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/RRC
 
+ifeq ($(O1_ENABLE),YES)
+I_OPTS+=-I$(ROOT_DIR)/src/o1/o1_client
+endif
+
 #-------------------------------------------------------------#
 #Linker macros
 #-------------------------------------------------------------#

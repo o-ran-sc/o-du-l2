@@ -27,6 +27,7 @@
 #include <pthread.h>
 
 using std::string;
+#define BUFLEN 512
 
 class TcpServer
 {
