@@ -35,9 +35,6 @@
         File:    kw_amm_ul.c
 
 *********************************************************************21*/
-static const char* RLOG_MODULE_NAME="AMM";
-static int RLOG_MODULE_ID=2048;
-static int RLOG_FILE_ID=190;
 
 /* header include files (.h) */
 #include "common_def.h"
@@ -321,7 +318,7 @@ static void rlcAmmUlAssembleCntrlInfo(RlcCb *gCb, RlcUlRbCb *rbCb)
       /* For missing PDUs */
       if ((NULLP  == recBuf) && nackCnt < RLC_MAX_NACK_CNT )
       {
-         DU_LOG("\nRLC: rlcAmmUlAssembleCntrlInfo: Missing PDU's SN = %d UEID:%d \
+         DU_LOG("\nERROR  -->  RLC_UL : rlcAmmUlAssembleCntrlInfo: Missing PDU's SN = %d UEID:%d \
 	    CELLID:%d", sn, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
          staPduEncSize += rlcAmmUlSetNackInfo(rbCb,
                                              sn,
@@ -352,9 +349,9 @@ static void rlcAmmUlAssembleCntrlInfo(RlcCb *gCb, RlcUlRbCb *rbCb)
                                                    pStatusPdu,
                                                    &prevNackSn);
 
-               DU_LOG("\nRLC: rlcAmmUlAssembleCntrlInfo: Missing byte segment's" 
+               DU_LOG("\nDEBUG  -->  RLC_UL : rlcAmmUlAssembleCntrlInfo: Missing byte segment's" 
                   " SN:%d UEID:%d CELLID:%d", sn, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
-               DU_LOG("\nRLC: rlcAmmUlAssembleCntrlInfo: soStart and soEnd = %d, %d \
+               DU_LOG("\nDEBUG  -->  RLC_UL : rlcAmmUlAssembleCntrlInfo: soStart and soEnd = %d, %d \
 	           UEID:%d CELLID:%d", seqSo, seg->amHdr.so - 1, rbCb->rlcId.ueId,
                    rbCb->rlcId.cellId);
             }
@@ -376,10 +373,10 @@ static void rlcAmmUlAssembleCntrlInfo(RlcCb *gCb, RlcUlRbCb *rbCb)
                                                 pStatusPdu,
                                                 &prevNackSn);
 
-            DU_LOG("\nRLC: rlcAmmUlAssembleCntrlInfo: Missing (last) byte " 
+            DU_LOG("\nDEBUG  -->  RLC_UL : rlcAmmUlAssembleCntrlInfo: Missing (last) byte " 
                "segment's SN:%d UEID:%d CELLID:%d", sn, rbCb->rlcId.ueId,
                rbCb->rlcId.cellId);
-            DU_LOG("\nRLC: rlcAmmUlAssembleCntrlInfo: soStart and soEnd = %d, %d\
+            DU_LOG("\nDEBUG  -->  RLC_UL : rlcAmmUlAssembleCntrlInfo: soStart and soEnd = %d, %d\
 	       UEID:%d CELLID:%d", seqSo, RLC_ALL_BYTES_MISSING, rbCb->rlcId.ueId,
                rbCb->rlcId.cellId);
          }
@@ -437,7 +434,7 @@ static void rlcAmmUlAssembleCntrlInfo(RlcCb *gCb, RlcUlRbCb *rbCb)
       pStatusPdu->ackSn = sn;
    }
 
-    DU_LOG("\nRLC: rlcAmmUlAssembleCntrlInfo: ACK PDU's SN = %d"
+   DU_LOG("\nINFO  -->  RLC_UL : rlcAmmUlAssembleCntrlInfo: ACK PDU's SN = %d"
        "UEID:%d CELLID:%d", pStatusPdu->ackSn, rbCb->rlcId.ueId,
        rbCb->rlcId.cellId);
 
@@ -452,7 +449,7 @@ static void rlcAmmUlAssembleCntrlInfo(RlcCb *gCb, RlcUlRbCb *rbCb)
                         &rbCb->rlcId,
                         pStatusPdu) != ROK)
    {
-      DU_LOG("\nRLC: rlcAmmUlAssembleCntrlInfo: Failed to Send Sta Pdu UEID:%d \
+      DU_LOG("\nERROR  -->  RLC_UL : rlcAmmUlAssembleCntrlInfo: Failed to Send Sta Pdu UEID:%d \
          CELLID:%d", rbCb->rlcId.ueId, rbCb->rlcId.cellId);
       RLC_FREE_SHRABL_BUF_WC(sapCb->pst.region,
 			    sapCb->pst.pool,
@@ -509,7 +506,7 @@ void rlcAmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
    amUl = &RLC_AMUL;
 
    numPduToProcess = RLC_MIN(pduInfo->numPdu, RGU_MAX_PDU);
-   DU_LOG("\nRLC : rlcAmmProcessPdus: numPdu[%d],numPduToProcess[%d] UEID:%d CELLID:%d",
+   DU_LOG("\nDEBUG  -->  RLC_UL : rlcAmmProcessPdus: numPdu[%d],numPduToProcess[%d] UEID:%d CELLID:%d",
             numPdu, numPduToProcess, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
 
    while (numPdu < numPduToProcess)
@@ -520,7 +517,7 @@ void rlcAmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
       if (! pdu)
       {
 
-         DU_LOG("\nRLC : rlcAmmProcessPdus: Null Pdu UEID:%d CELLID:%d",
+         DU_LOG("\nERROR  -->  RLC_UL : rlcAmmProcessPdus: Null Pdu UEID:%d CELLID:%d",
             rbCb->rlcId.ueId, rbCb->rlcId.cellId);
          gCb->genSts.errorPdusRecv++;
          break;
@@ -540,7 +537,7 @@ void rlcAmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
          a single pointer */
       if (rlcAmmExtractHdr(gCb, rbCb, pdu, &amHdr, &fByte) != ROK)
       {
-         DU_LOG("\nRLC : rlcAmmProcessPdus: Header Extraction Failed UEID:%d CELLID:%d",
+         DU_LOG("\nERROR  -->  RLC_UL : rlcAmmProcessPdus: Header Extraction Failed UEID:%d CELLID:%d",
             rbCb->rlcId.ueId, rbCb->rlcId.cellId);
          ODU_PUT_MSG_BUF(pdu);
          gCb->genSts.errorPdusRecv++;
@@ -555,7 +552,7 @@ void rlcAmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
       }
       if((amHdr.si == RLC_SI_LAST_SEG) && (!amHdr.so))
       {
-         DU_LOG("\nRLC: rlcAmmProcessPdus: Dropping PDU because SO can't be zero\
+         DU_LOG("\nERROR  -->  RLC_UL : rlcAmmProcessPdus: Dropping PDU because SO can't be zero\
 	    for last segment sn:%u UEID:%d CELLID:%d", amHdr.sn, rbCb->rlcId.ueId,
             rbCb->rlcId.cellId);
          ODU_PUT_MSG_BUF(pdu);
@@ -622,7 +619,7 @@ void rlcAmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
          {
             amUl->rxNextHighestRcvd = ((sn + 1) & (amUl->snModMask)); 
 
-            DU_LOG("\nRLC: rlcAmmProcessPdus: Updated rxNextHighestRcvd = %d UEID:%d CELLID:%d",
+            DU_LOG("\nDEBUG  -->  RLC_UL : rlcAmmProcessPdus: Updated rxNextHighestRcvd = %d UEID:%d CELLID:%d",
                amUl->rxNextHighestRcvd, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
          }
          
@@ -648,8 +645,7 @@ void rlcAmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
                {
                   if ((NULLP == recBuf) || (!recBuf->allRcvd))
                   {
-                     RLOG_ARG3(L_UNUSED,DBG_RBID,rbCb->rlcId.rbId,
-                           "rlcAmmProcessPdus: Updated rxHighestStatus:%d "
+                     DU_LOG("\nDEBUG  -->  RLC_UL : rlcAmmProcessPdus: Updated rxHighestStatus:%d "
                            "UEID:%d CELLID:%d",
                            tSn,
                            rbCb->rlcId.ueId,
@@ -716,7 +712,7 @@ void rlcAmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
                rlcStartTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_REORD_TMR);
                amUl->rxNextStatusTrig = amUl->rxNextHighestRcvd;
 
-               DU_LOG("\nRLC: rlcAmmProcessPdus: Updated rxNextStatusTrig = %d \
+               DU_LOG("\nDEBUG  -->  RLC_UL : rlcAmmProcessPdus: Updated rxNextStatusTrig = %d \
 	          UEID:%d CELLID:%d", amUl->rxNextStatusTrig, rbCb->rlcId.ueId,
                   rbCb->rlcId.cellId);
             }
@@ -783,7 +779,7 @@ static uint8_t rlcAmmExtractHdr(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *pdu, RlcAmH
    amHdr->dc = (*fByte & RLC_DC_POS) >> RLC_DC_SHT;
    if (RLC_CNTRL_PDU == amHdr->dc)
    {
-   //printf ("++++++++++++ 5GNRLOG HDR extracted CTRL : \n");
+   //DU_LOG ("\nINFO  -->  RLC_UL : ++++++++++++ 5GNRLOG HDR extracted CTRL : \n");
       return ROK;
    }
 
@@ -899,7 +895,7 @@ static S16 rlcAmmExtractHdrOld(RlcCb *gCb,Buffer *pdu,RlcAmHdr *amHdr,uint8_t *f
       /* check if LI is zero */
       if (! hdrInfo.val)
       {
-         RLOG0(L_ERROR, "Received LI as 0");
+         DU_LOG("\nERROR  -->  RLC_UL : Received LI as 0");
          return RFAILED;
       }
 
@@ -911,7 +907,7 @@ static S16 rlcAmmExtractHdrOld(RlcCb *gCb,Buffer *pdu,RlcAmHdr *amHdr,uint8_t *f
    /*ccpu00122597:PDU is dropped if liCnt exceeds RLC_MAX_LI*/
    if(e && (amHdr->numLi >= RLC_MAX_UL_LI))
    {
-      RLOG2(L_ERROR,"LI Count [%u] exceeds Max LI Count[%u]", 
+      DU_LOG("\nERROR  -->  RLC_UL : LI Count [%u] exceeds Max LI Count[%u]", 
             amHdr->numLi, RLC_MAX_UL_LI);
       return RFAILED;
    }
@@ -921,7 +917,7 @@ static S16 rlcAmmExtractHdrOld(RlcCb *gCb,Buffer *pdu,RlcAmHdr *amHdr,uint8_t *f
 
    if ( totalSz >= pduSz )
    {   
-      RLOG3(L_ERROR,"SN [%d]:Corrupted PDU as TotSz[%lu] PduSz[%lu] ",
+      DU_LOG("\nERROR  -->  RLC_UL : SN [%d]:Corrupted PDU as TotSz[%lu] PduSz[%lu] ",
                amHdr->sn, totalSz, pduSz);
       return RFAILED;
    }
@@ -970,7 +966,7 @@ static void rlcAmmUlHndlStatusPdu(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *cntrlPdu,
    /* D/C has been shifted in the calling function */
    if (hdrInfo.hdr & 0xE0)
    {
-      DU_LOG("\nRLC: rlcAmmUlHndlStatusPdu: Reserved value for CPT received UEID:%d \
+      DU_LOG("\nINFO  -->  RLC_UL : rlcAmmUlHndlStatusPdu: Reserved value for CPT received UEID:%d \
          CELLID:%d", rbCb->rlcId.ueId, rbCb->rlcId.cellId);
       return;
    }
@@ -1018,12 +1014,12 @@ static void rlcAmmUlHndlStatusPdu(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *cntrlPdu,
    rlcAmmExtractElmnt(gCb, cntrlPdu, &hdrInfo);
    pStaPdu->ackSn = hdrInfo.val;
 
-   //printf ("++++++++++++ 5GNRLOG HNDL STATUS acksn %d : \n",  pStaPdu->ackSn);
+   //DU_LOG ("\nINFO  -->  RLC_UL : ++++++++++++ 5GNRLOG HNDL STATUS acksn %d : \n",  pStaPdu->ackSn);
    /* Check if NACK Exists */
    hdrInfo.len = RLC_E1_LEN;
    rlcAmmExtractElmnt(gCb, cntrlPdu, &hdrInfo);
    e1 = (uint8_t)hdrInfo.val;
-   DU_LOG("\nRLC: rlcAmmUlHndlStatusPdu: ACK SN = %d UEID:%d CELLID:%d",
+   DU_LOG("\nDEBUG  -->  RLC_UL : rlcAmmUlHndlStatusPdu: ACK SN = %d UEID:%d CELLID:%d",
       pStaPdu->ackSn, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
 
    /* Extract the Reserved Bits after ACK SN field */
@@ -1071,7 +1067,7 @@ static void rlcAmmUlHndlStatusPdu(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *cntrlPdu,
          rlcAmmExtractElmnt(gCb, cntrlPdu, &hdrInfo);
          pStaPdu->nackInfo[pStaPdu->nackCnt].soEnd   = hdrInfo.val;
 
-         DU_LOG("\nRLC: rlcAmmUlHndlStatusPdu: soStart and soEnd = %d %d"
+         DU_LOG("\nDEBUG  -->  RLC_UL : rlcAmmUlHndlStatusPdu: soStart and soEnd = %d %d"
             "UEID:%d CELLID:%d", pStaPdu->nackInfo[pStaPdu->nackCnt].soStart,
             pStaPdu->nackInfo[pStaPdu->nackCnt].soEnd, rbCb->rlcId.ueId,
             rbCb->rlcId.cellId);
@@ -1180,7 +1176,7 @@ static bool rlcAmmAddRcvdSeg(RlcCb *gCb, RlcUlRbCb *rbCb, RlcAmHdr *amHdr, Buffe
 #if (ERRCLASS & ERRCLS_ADD_RES)
       if (recBuf == NULLP)
       {
-         DU_LOG("\nRLC: rlcAmmAddRcvdSeg: Memory allocation failed UEID:%d CELLID:%d",
+         DU_LOG("\nERROR  -->  RLC_UL : rlcAmmAddRcvdSeg: Memory allocation failed UEID:%d CELLID:%d",
             rbCb->rlcId.ueId, rbCb->rlcId.cellId);
 
          ODU_PUT_MSG_BUF(pdu);
@@ -1232,7 +1228,7 @@ static bool rlcAmmAddRcvdSeg(RlcCb *gCb, RlcUlRbCb *rbCb, RlcAmHdr *amHdr, Buffe
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if (tseg == NULLP)
    {
-      DU_LOG("\nRLC: rlcAmmAddRcvdSeg: Memory allocation failed UEID:%d CELLID:%d",
+      DU_LOG("\nERROR  -->  RLC_UL : rlcAmmAddRcvdSeg: Memory allocation failed UEID:%d CELLID:%d",
          rbCb->rlcId.ueId, rbCb->rlcId.cellId);
       ODU_PUT_MSG_BUF(pdu);
       return FALSE;
@@ -1292,7 +1288,7 @@ static bool rlcAmmUlPlacePduInRecBuf(RlcCb *gCb, Buffer *pdu, RlcUlRbCb *rbCb, R
    if (!RLC_AM_CHK_SN_WITHIN_RECV_WINDOW(sn, amUl))
    {
       gRlcStats.amRlcStats.numRlcAmCellDropOutWinRx++;
-      DU_LOG("\nRLC: rlcAmmUlPlacePduInRecBuf: SN  %d outside the window"
+      DU_LOG("\nERROR  -->  RLC_UL : rlcAmmUlPlacePduInRecBuf: SN  %d outside the window"
          "UEID:%d CELLID:%d", sn, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
 
       gCb->genSts.unexpPdusRecv++;
@@ -1313,7 +1309,7 @@ static bool rlcAmmUlPlacePduInRecBuf(RlcCb *gCb, Buffer *pdu, RlcUlRbCb *rbCb, R
 #if (ERRCLASS & ERRCLS_ADD_RES)
          if (recBuf == NULLP)
          {
-            DU_LOG("\nRLC: rlcAmmUlPlacePduInRecBuf: Memory allocation failed \
+            DU_LOG("\nERROR  -->  RLC_UL : rlcAmmUlPlacePduInRecBuf: Memory allocation failed \
 	       UEID:%d CELLID:%d", rbCb->rlcId.ueId, rbCb->rlcId.cellId);
             ODU_PUT_MSG_BUF(pdu);
             return FALSE;
@@ -1387,7 +1383,7 @@ static void rlcAmmTriggerStatus(RlcCb *gCb, RlcUlRbCb *rbCb, RlcSn sn, bool disc
     * The "=" in the 2nd condition is removed */
    if ((discFlg) || (tSn < trxHighestStatus) || (tSn >= tVrMr))
    {
-      DU_LOG("\nRLC: rlcAmmTriggerStatus: Set Status Trigger UEID:%d CELLID:%d",
+      DU_LOG("\nINFO  -->  RLC_UL : rlcAmmTriggerStatus: Set Status Trigger UEID:%d CELLID:%d",
          rbCb->rlcId.ueId, rbCb->rlcId.cellId);
 
       amUl->staTrg = TRUE;
