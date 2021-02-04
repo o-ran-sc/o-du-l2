@@ -516,7 +516,7 @@ uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
    ret = sendUlSchInfoToMac(&ulSchedInfo, schInst);
    if(ret != ROK)
    {
-      DU_LOG("\nSending UL Sch info from SCH to MAC failed");
+      DU_LOG("\nERROR  -->  SCH : Sending UL Sch info from SCH to MAC failed");
    }
 
    schInitUlSlot(schUlSlotInfo);

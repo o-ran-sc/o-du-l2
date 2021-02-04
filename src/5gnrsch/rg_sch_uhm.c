@@ -122,7 +122,7 @@ Void rgSCHUhmProcDatInd(RgSchCellCb *cell,RgSchUeCb  *ue,CmLteTimingInfo frm,uin
    rgSCHUtlUlHqProcForUe(cell, frm, ue, &hqProc);
    if (hqProc == NULLP)
    {
-      printf("UE[%d] failed to find UL HqProc for [%d:%d]\n",
+      DU_LOG("\nERROR  -->  SCH : UE[%d] failed to find UL HqProc for [%d:%d]\n",
 		      ue->ueId, frm.sfn, frm.slot);
       return;
    }
@@ -181,7 +181,7 @@ Void rgSCHUhmProcMsg3DatInd(RgSchUlHqProcCb *hqProc)
 {
    hqProc->rcvdCrcInd = TRUE;
    hqProc->remTx = 0;        /*Reseting the value of rem Tx*/
-   printf("\nrgSCHUhmProcMsg3DatInd,id:%u\n",hqProc->procId);
+   DU_LOG("\nINFO  -->  SCH : rgSCHUhmProcMsg3DatInd,id:%u\n",hqProc->procId);
    return;
 }  /* rgSCHUhmProcMsg3DatInd */
 
@@ -248,7 +248,7 @@ Void rgSCHUhmProcHqFailure(RgSchCellCb  *cell,RgSchUeCb  *ue,CmLteTimingInfo  fr
    rgSCHUtlUlHqProcForUe(cell, frm, ue, &hqProc);
    if (hqProc == NULLP)
    {
-      printf("UE[%d] failed to find UL HqProc for [%d:%d]\n",
+      DU_LOG("\nERROR  -->  SCH : UE[%d] failed to find UL HqProc for [%d:%d]\n",
 		      ue->ueId, frm.sfn, frm.slot);
       return;
    }
@@ -411,7 +411,7 @@ Void rgSCHUhmFreeProc(RgSchUlHqProcCb *hqProc,RgSchCellCb *cell)
  {
 
 #ifdef UL_ADPT_DBG 
-    printf("\n\n########HARQ FREED HARQPROC ID (%d )after rgSCHUhmFreeProc inuse %ld free %ld \n",hqProc->alloc->grnt.hqProcId, (CmLListCp *)(&((RgUeUlHqCb*)hqProc->hqEnt)->inUse)->count,(CmLListCp *) (&((RgUeUlHqCb*)hqProc->hqEnt)->free)->count);
+    DU_LOG("\nDEBUG  -->  SCH : ########HARQ FREED HARQPROC ID (%d )after rgSCHUhmFreeProc inuse %ld free %ld \n",hqProc->alloc->grnt.hqProcId, (CmLListCp *)(&((RgUeUlHqCb*)hqProc->hqEnt)->inUse)->count,(CmLListCp *) (&((RgUeUlHqCb*)hqProc->hqEnt)->free)->count);
 #endif
    hqProc->alloc = NULLP;
    hqProc->ulSfIdx = RGSCH_INVALID_INFO;
@@ -425,14 +425,14 @@ Void rgSCHUhmFreeProc(RgSchUlHqProcCb *hqProc,RgSchCellCb *cell)
    cmLListAdd2Tail(&((RgUeUlHqCb*)hqProc->hqEnt)->free, &hqProc->lnk);
 
    /*
-   printf("after rgSCHUhmFreeProc inuse %ld free %ld \n", 
+   DU_LOG("\nINFO  -->  SCH : after rgSCHUhmFreeProc inuse %ld free %ld \n", 
         (CmLListCp *)(&((RgUeUlHqCb*)hqProc->hqEnt)->inUse)->count,
          (CmLListCp *) (&((RgUeUlHqCb*)hqProc->hqEnt)->free)->count);
    */
  }
  else
  {
-     printf("\nhqEnt is NULL\n");
+     DU_LOG("\nERROR  -->  SCH : hqEnt is NULL\n");
  }
    return;
 }  /* rgSCHUhmFreeProc */
@@ -777,7 +777,7 @@ S16 rgSCHUhmGetAvlHqProc(RgSchCellCb *cell,RgSchUeCb  *ue,RgSchUlHqProcCb  **hqP
       //RLOG_ARG3(L_ERROR,DBG_CELLID,cell->cellId,
        //                "rgSCHUhmGetAvlHqProc free %ld inUse %ld ue %d"
         //                                   , hqE->free.count, hqE->inUse.count, ue->ueId);
-      //printf("5GTF_ERROR rgSCHUhmGetAvlHqProc cellId %d  %ld inUse %ld ue %d"
+      //DU_LOG("5GTF_ERROR rgSCHUhmGetAvlHqProc cellId %d  %ld inUse %ld ue %d"
                               //, cell->cellId, hqE->free.count, hqE->inUse.count, ue->ueId);
       /* No Harq Process available in the free queue. */
       return RFAILED;
@@ -792,7 +792,7 @@ S16 rgSCHUhmGetAvlHqProc(RgSchCellCb *cell,RgSchUeCb  *ue,RgSchUlHqProcCb  **hqP
    cmLListAdd2Tail(&hqE->inUse, &tmpHqProc->lnk);
 
 #ifdef UL_ADPT_DBG 
-         printf("rgSCHUhmGetAvlHqProc cellId %d  free %ld inUse %ld ue %d time (%d %d)\n",cell->cellId, hqE->free.count, hqE->inUse.count, ue->ueId,cellUl->schdTime.sfn,cellUl->schdTime.slot);
+         DU_LOG("\nDEBUG  -->  SCH : rgSCHUhmGetAvlHqProc cellId %d  free %ld inUse %ld UE %d time (%d %d)\n",cell->cellId, hqE->free.count, hqE->inUse.count, ue->ueId,cellUl->schdTime.sfn,cellUl->schdTime.slot);
 #endif         
    tmpHqProc->schdTime = cellUl->schdTime;
 
@@ -830,10 +830,12 @@ RgSchUlHqProcCb* rgSCHUhmGetUlProcByTime(RgSchCellCb *cell,RgSchUeCb *ue, CmLteT
    {
       proc = (RgSchUlHqProcCb *)(lnk->node);
       lnk = lnk->next;
-      //   printf("compare rgSCHUhmGetUlProcByTime time (%d %d) CRC time (%d %d) proc->procId %d \n",proc->schdTime.sfn,proc->schdTime.slot,frm.sfn,frm.slot ,proc->procId);
+      //   DU_LOG("\nINFO  -->  SCH : compare rgSCHUhmGetUlProcByTime time (%d %d) CRC time (%d %d) proc->procId %d
+      //   \n",\proc->schdTime.sfn,proc->schdTime.slot,frm.sfn,frm.slot ,proc->procId);
       if (RGSCH_TIMEINFO_SAME(proc->schdTime, frm))
       {
-        // printf("Harq timing Matched rgSCHUhmGetUlProcByTime time (%d %d) proc->procId %d \n",proc->schdTime.sfn,proc->schdTime.slot, proc->procId);
+        // DU_LOG("\nINFO  -->  SCH : Harq timing Matched rgSCHUhmGetUlProcByTime time (%d %d) proc->procId %d \n",\
+	proc->schdTime.sfn,proc->schdTime.slot, proc->procId);
          return (proc);
       }
    }
