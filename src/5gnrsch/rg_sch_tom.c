@@ -32,9 +32,6 @@
 @brief This module does processing related to handling of lower interface APIs 
 invoked by PHY towards scheduler.
 */
-static const char* RLOG_MODULE_NAME="MAC";
-static int RLOG_FILE_ID=228;
-static int RLOG_MODULE_ID=4096;
 
 /* header include files -- defines (.h) */
 #include "common_def.h"
@@ -763,7 +760,8 @@ RgSchUeCb       **ue
 {
    RgSchCmnCell          *cellSch = (RgSchCmnCell *)(cell->sc.sch);
 
-   printf("rapId[%d] cellSch->rachCfg.dedPrmStart[%d] cellSch->rachCfg.numDedPrm[%d]\n",rapId,cellSch->rachCfg.dedPrmStart,cellSch->rachCfg.numDedPrm);
+   DU_LOG("\nINFO  -->  SCH : rapId[%d] cellSch->rachCfg.dedPrmStart[%d] cellSch->rachCfg.numDedPrm[%d]\n",\
+   rapId,cellSch->rachCfg.dedPrmStart,cellSch->rachCfg.numDedPrm);
    /* Finding UE in handOver List */
    if ((rapId < cellSch->rachCfg.dedPrmStart) ||
          (rapId > cellSch->rachCfg.dedPrmStart +
@@ -771,13 +769,13 @@ RgSchUeCb       **ue
    {
       /* This ded Preamble corresponds to handover */
       *ue = rgSCHCmnGetHoUe(cell, rapId);
-      printf(" his ded Preamble corresponds to hando\n");
+      DU_LOG("\nDEBUG  -->  SCH : ded Preamble corresponds to handover\n");
    }
    else/* Finding UE from PDCCH Order Mappings */
    {
       /* Get the UE which has transmitted this RaReq */
       *ue = rgSCHCmnGetPoUe(cell, rapId, timingInfo);
-      printf("     ==== inding UE from PDCCH Order Mapping\n");
+      DU_LOG("\nDEBUG  -->  SCH :  UE from PDCCH Order Mapping\n");
    }
    return ROK;
 }
@@ -822,8 +820,7 @@ TfuRaReqIndInfo *raReqInd
    {
       err.errType    = RGSCHERR_TOM_RAREQIND;
       err.errCause   = RGSCHERR_TOM_INV_CELL_ID;
-      RLOG_ARG3(L_ERROR,DBG_CELLID,cell->cellId, 
-         "rgSCHTomRaReqInd(): No cell found with raReq cellId = (%d) errorType (%d)"
+      DU_LOG("\nERROR  -->  SCH : rgSCHTomRaReqInd(): No cell found with raReq cellId = (%d) errorType (%d)"
          " errorCause(%d)",raReqInd->cellId, err.errType, err.errCause);
       return RFAILED;
    } 
@@ -850,9 +847,7 @@ TfuRaReqIndInfo *raReqInd
 #if (ERRCLASS & ERRCLS_DEBUG)
             if(raReqInd->rachInfoArr[raRntiCnt].raRnti > RGSCH_MAX_RA_RNTI)
             {
-               RGSCHLOGERROR(cell->instIdx, ERRCLS_INT_PAR, ERG013, 
-                     (ErrVal)raReqInd->rachInfoArr[raRntiCnt].raRnti, 
-                     ("rgSCHTomRaReqInd(): raRnti  is out of range\n"));
+               DU_LOG("\nERROR  -->  SCH : rgSCHTomRaReqInd(): raRnti  is out of range\n");
                continue;
             }
 #endif
@@ -862,8 +857,7 @@ TfuRaReqIndInfo *raReqInd
             if(ret == RFAILED)
             {
                err.errType = RGSCHERR_TOM_RAREQIND;
-               RLOG_ARG3(L_ERROR,DBG_CELLID,cell->cellId,
-                     "RARNTI:%d rgSCHTomRaReqInd(): RAM processing failed errType(%d) "
+               DU_LOG("\nERROR  -->  SCH : RARNTI:%d rgSCHTomRaReqInd(): RAM processing failed errType(%d) "
                      "errCause(%d)", raReqInd->rachInfoArr[raRntiCnt].raRnti, 
                      err.errType, err.errCause);
                continue;
@@ -909,8 +903,7 @@ TfuUlCqiIndInfo *ulCqiInd
    node =  ulCqiInd->ulCqiRpt.first;
    if(cell->cellId != ulCqiInd->cellId)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-         "rgSCHTomUlCqiInd() Unable to get the ulCqiInd cell with id(%d)", 
+      DU_LOG("\nERROR  -->  SCH : rgSCHTomUlCqiInd() Unable to get the ulCqiInd cell with id(%d)", 
          ulCqiInd->cellId);
       return RFAILED;
    }
@@ -921,7 +914,7 @@ TfuUlCqiIndInfo *ulCqiInd
 #if (ERRCLASS & ERRCLS_DEBUG)
       if(ulCqiInfo->numSubband == 0)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Num Subband is"
+         DU_LOG("\nERROR  -->  SCH : Num Subband is"
             "out of range RNTI:%d",ulCqiInfo->rnti);
          continue;
       }
@@ -932,8 +925,7 @@ TfuUlCqiIndInfo *ulCqiInd
          if((ue = rgSCHDbmGetSpsUeCb(cell, ulCqiInfo->rnti)) == NULLP)
 #endif
          {
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to get "
-                     "the ue for RNTI:%d", ulCqiInfo->rnti);
+            DU_LOG("\nERROR  -->  SCH : Unable to get the ue for RNTI:%d", ulCqiInfo->rnti);
             continue;
          }
       }
@@ -977,8 +969,7 @@ TfuPucchDeltaPwrIndInfo *pucchDeltaPwr
 
    if(cell->cellId != pucchDeltaPwr->cellId)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-         "rgSCHTomPucchDeltaPwrInd() Unable to get the pucchDeltaPwr cell with id(%d)", 
+      DU_LOG("\nERROR  -->  SCH : rgSCHTomPucchDeltaPwrInd() Unable to get the pucchDeltaPwr cell with id(%d)", 
          pucchDeltaPwr->cellId);
       return RFAILED;
    }
@@ -993,7 +984,7 @@ TfuPucchDeltaPwrIndInfo *pucchDeltaPwr
          if((ue = rgSCHDbmGetSpsUeCb(cell, ueElem->rnti)) == NULLP)
 #endif
          {
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"RNTI:%d "
+            DU_LOG("\nERROR  -->  SCH : RNTI:%d "
                      "rgSCHTomPucchDeltaPwrInd() Unable to get the ue ", 
                      ueElem->rnti);
             continue;
@@ -1046,7 +1037,7 @@ TfuHqIndInfo    *harqAckInd
    
    if(cell->cellId != harqAckInd->cellId)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHTomHarqAckInd() Unable to get"
+      DU_LOG("\nERROR  -->  SCH : rgSCHTomHarqAckInd() Unable to get"
          " the cell for cellId (%d)", harqAckInd->cellId);
       err.errType = RGSCHERR_TOM_HARQACKIND;
       err.errCause = RGSCHERR_TOM_INV_CELL_ID;
@@ -1067,7 +1058,7 @@ TfuHqIndInfo    *harqAckInd
             if ((rgSCHDhm5gtfHqFdbkInd (ue, cell, harqAckInd->timingInfo, fdbk, &err)) != ROK)
             {
                err.errType = RGSCHERR_TOM_HARQACKIND;
-               RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHTomHarqAckInd() "
+               DU_LOG("\nERROR  -->  SCH : rgSCHTomHarqAckInd() "
                      "HARQ feedback processing failed errType(%d)errCause(%d)n",
                      err.errType, err.errCause); 
                continue;
@@ -1079,7 +1070,7 @@ TfuHqIndInfo    *harqAckInd
 
    if ((rgSCHDhmRlsDlsfHqProc (cell, harqAckInd->timingInfo)) != ROK)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to Release Downlink "
+      DU_LOG("\nERROR  -->  SCH : Unable to Release Downlink "
             "subframe for cellId (%d) ", cell->cellId);
       err.errType = RGSCHERR_TOM_HARQACKIND;
    }
@@ -1120,7 +1111,7 @@ TfuHqIndInfo    *harqAckInd
                      cell, harqAckInd->timingInfo, hqInfo, rlsHqBufs, &err)) != ROK)
          {
             err.errType = RGSCHERR_TOM_HARQACKIND;
-            RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHTomHarqAckInd() HARQ"
+            DU_LOG("\nERROR  -->  SCH : rgSCHTomHarqAckInd() HARQ"
                " feedback processing failed errType(%d) errCause(%d)", 
                err.errType, err.errCause); 
             continue;
@@ -1134,7 +1125,7 @@ TfuHqIndInfo    *harqAckInd
                      cell, harqAckInd->timingInfo, hqInfo, rlsHqBufs, &err)) != ROK)
          {
             err.errType = RGSCHERR_TOM_HARQACKIND;
-            RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHTomHarqAckInd() "
+            DU_LOG("\nERROR  -->  SCH : rgSCHTomHarqAckInd() "
                "HARQ feedback processing failed errType(%d)errCause(%d)n",
                err.errType, err.errCause);
             continue;
@@ -1146,7 +1137,7 @@ TfuHqIndInfo    *harqAckInd
                      cell, harqAckInd->timingInfo, hqInfo, rlsHqBufs, &err)) != ROK)
          {
             err.errType = RGSCHERR_TOM_HARQACKIND;
-            RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHTomHarqAckInd() HARQ"
+            DU_LOG("\nERROR  -->  SCH : rgSCHTomHarqAckInd() HARQ"
                " feedback processing failed errType(%d) errCause(%d).", 
                err.errType, err.errCause); 
             continue;
@@ -1154,7 +1145,7 @@ TfuHqIndInfo    *harqAckInd
       }
       else
       {
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"RNTI:%d Unable to get the "
+            DU_LOG("\nERROR  -->  SCH : RNTI:%d Unable to get the "
                      "UE CB or RA CB ", hqInfo->rnti);
             err.errType = RGSCHERR_TOM_HARQACKIND;
             continue;
@@ -1164,7 +1155,7 @@ TfuHqIndInfo    *harqAckInd
    /* Check with TDD call DHM*/
    if ((rgSCHDhmRlsDlsfHqProc (cell, harqAckInd->timingInfo)) != ROK)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to Release Downlink "
+      DU_LOG("\nERROR  -->  SCH : Unable to Release Downlink "
          "subframe for cellId (%d) ", harqAckInd->cellId);
       err.errType = RGSCHERR_TOM_HARQACKIND;
    }
@@ -1225,7 +1216,7 @@ TfuSrIndInfo    *srInd
 
    if(cell->cellId != srInd->cellId)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to get the cell for srcInd cellId"
+      DU_LOG("\nERROR  -->  SCH : Unable to get the cell for srcInd cellId"
          ":%d ", srInd->cellId);
       err.errType = RGSCHERR_TOM_SRIND;
       err.errCause = RGSCHERR_TOM_INV_CELL_ID;
@@ -1242,7 +1233,7 @@ TfuSrIndInfo    *srInd
       ue = rgSCHDbmGetUeCb (cell, srInfo->rnti);
       if (ue == NULLP)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"RNTI:%d Unable to get the UE CB",
+         DU_LOG("\nERROR  -->  SCH : RNTI:%d Unable to get the UE CB",
             srInfo->rnti);
          continue;
       }
@@ -1256,7 +1247,7 @@ TfuSrIndInfo    *srInd
       if (ret != ROK)
       {
          err.errType = RGSCHERR_TOM_SRIND;
-         RLOG_ARG3(L_ERROR,DBG_CELLID,cell->cellId,"Scheduler processing failed "
+         DU_LOG("\nERROR  -->  SCH : Scheduler processing failed "
              "errType(%d) errCause(%d) RNTI:%d", err.errType, err.errCause,srInfo->rnti);
          continue;
       }
@@ -1298,7 +1289,7 @@ TfuDoaIndInfo   *doaInd
 
    if(cell->cellId != doaInd->cellId)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to get the cell for doaInd cellId"
+      DU_LOG("\nERROR  -->  SCH : Unable to get the cell for doaInd cellId"
          ":%d", doaInd->cellId);
       return RFAILED;
 	}
@@ -1311,7 +1302,7 @@ TfuDoaIndInfo   *doaInd
       ue = rgSCHDbmGetUeCb (cell, doaInfo->rnti);
       if (ue == NULLP)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"RNTI:%d Unable to get the UE CB",
+         DU_LOG("\nERROR  -->  SCH : RNTI:%d Unable to get the UE CB",
             doaInfo->rnti);
          continue;
       }
@@ -1353,7 +1344,7 @@ TfuDlCqiIndInfo *dlCqiInd
 
    if(cell->cellId != dlCqiInd->cellId)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to get the cell for cellId"
+      DU_LOG("\nERROR  -->  SCH : Unable to get the cell for cellId"
          ":%d", dlCqiInd->cellId);
       return RFAILED;
 	}
@@ -1366,7 +1357,7 @@ TfuDlCqiIndInfo *dlCqiInd
       ue = rgSCHDbmGetUeCb (cell, dlCqiInfo->rnti);
       if (ue == NULLP)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"RNTI:%dUnable to get the UE CB",
+         DU_LOG("\nERROR  -->  SCH : RNTI:%dUnable to get the UE CB",
             dlCqiInfo->rnti);
          continue;
       }
@@ -1428,7 +1419,7 @@ RgSchUePCqiCb   *cqiCb
    if (NULLP == cmLListDelFrm(&cell->pCqiSrsSrLst[cqiCb->nCqiTrIdx].cqiLst,
             &cqiCb->cqiLstEnt))
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"RNTI:%d Unable to remove node",
+      DU_LOG("\nERROR  -->  SCH : RNTI:%d Unable to remove node",
          ue->ueId);
    }
    cqiCb->nCqiTrIdx = cqiIdx;
@@ -1532,7 +1523,7 @@ RgSchUePCqiCb  *riCb
       if (NULLP == cmLListDelFrm(&cell->pCqiSrsSrLst[riCb->nRiTrIdx].riLst,
             &riCb->riLstEnt))
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"[%d]UEID:Unable to remove node",
+         DU_LOG("\nERROR  -->  SCH : [%d]UEID:Unable to remove node",
             ue->ueId);
       }
       RG_SCH_RECORD(&riCb->histElem,RGSCH_ACTION_DEL, &cell->pCqiSrsSrLst[riCb->nRiTrIdx].riLst);
@@ -1594,7 +1585,7 @@ RgSchUeCb      *ue
    if (NULLP == cmLListDelFrm(&cell->pCqiSrsSrLst[ue->srCb.nSrTrIdx].srLst,
             &ue->srCb.srLstEnt))
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"RNTI:%d Unable to remove node",
+      DU_LOG("\nERROR  -->  SCH : RNTI:%d Unable to remove node",
          ue->ueId);
    }
    ue->srCb.nSrTrIdx = srIdx;
@@ -1665,7 +1656,7 @@ RgSchUeCb      *ue
       if (NULLP == cmLListDelFrm(&cell->pCqiSrsSrLst[ue->srsCb.nSrsTrIdx].srsLst,
             &ue->srsCb.srsLstEnt))
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"RNTI:%d Unable to remove node",
+         DU_LOG("\nERROR  -->  SCH : RNTI:%d Unable to remove node",
             ue->ueId);
       }
       cmLListAdd2Tail(&cell->pCqiSrsSrLst[srsIdx].srsLst,
@@ -1732,7 +1723,7 @@ TfuRawCqiIndInfo *rawCqiInd
 
    if(cell->cellId != rawCqiInd->cellId)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to get the cell for cellId"
+      DU_LOG("\nERROR  -->  SCH : Unable to get the cell for cellId"
             ":%d", rawCqiInd->cellId);
       return RFAILED;
 	}
@@ -1747,7 +1738,7 @@ TfuRawCqiIndInfo *rawCqiInd
       /*
       if (ue == NULLP)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"CRNTI:%d Unable to get the UECB",
+         DU_LOG("\nERROR  -->  SCH : CRNTI:%d Unable to get the UECB",
                rawCqiInfo->crnti);
          continue;
       }
@@ -1755,7 +1746,7 @@ TfuRawCqiIndInfo *rawCqiInd
 #ifdef RG_5GTF
       /*
       if (rawCqiInfo->numBits >= 5)
-         printf("cellId [%d] crnti [%d] numBits [%d]  uciPayload [0x%08x] sfn/sf [%d:%d]\n", 
+         DU_LOG("\nINFO  -->  SCH : cellId [%d] crnti [%d] numBits [%d]  uciPayload [0x%08x] sfn/sf [%d:%d]\n", 
                 cell->cellId, rawCqiInfo->crnti, rawCqiInfo->numBits, rawCqiInfo->uciPayload, 
                 rawCqiInd->timingInfo.sfn, rawCqiInd->timingInfo.slot);
       */
@@ -1775,7 +1766,7 @@ TfuRawCqiIndInfo *rawCqiInd
             if ((rgSCHDhm5gtfHqFdbkInd (ue, cell, rawCqiInd->timingInfo, fdbk, &err)) != ROK)
             {
                err.errType = RGSCHERR_TOM_HARQACKIND;
-               RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHTomHarqAckInd() "
+               DU_LOG("\nERROR  -->  SCH : rgSCHTomHarqAckInd() "
                      "HARQ feedback processing failed errType(%d)errCause(%d)n",
                      err.errType, err.errCause); 
                continue;
@@ -1787,7 +1778,7 @@ TfuRawCqiIndInfo *rawCqiInd
                         cell, rawCqiInd->timingInfo, &hqInfo, rlsHqBufs, &err)) != ROK)
             {
                err.errType = RGSCHERR_TOM_HARQACKIND;
-               RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHTomHarqAckInd() HARQ"
+               DU_LOG("\nERROR  -->  SCH : rgSCHTomHarqAckInd() HARQ"
                      " feedback processing failed errType(%d) errCause(%d)", 
                      err.errType, err.errCause); 
                continue;
@@ -1800,7 +1791,7 @@ TfuRawCqiIndInfo *rawCqiInd
                         cell, rawCqiInd->timingInfo, &hqInfo, rlsHqBufs, &err)) != ROK)
             {
                err.errType = RGSCHERR_TOM_HARQACKIND;
-               RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHTomHarqAckInd() HARQ"
+               DU_LOG("\nERROR  -->  SCH : rgSCHTomHarqAckInd() HARQ"
                      " feedback processing failed errType(%d) errCause(%d).", 
                      err.errType, err.errCause); 
                continue;
@@ -1808,13 +1799,13 @@ TfuRawCqiIndInfo *rawCqiInd
          }
          else
          {
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"RNTI:%d Unable to get the "
+            DU_LOG("\nERROR  -->  SCH : RNTI:%d Unable to get the "
                   "UE CB or RA CB ", rawCqiInfo->crnti);
             err.errType = RGSCHERR_TOM_HARQACKIND;
             continue;
          }
          /*
-         printf("rawCqiInfo->numBits [%d]  uciPayload [0x%08x] sfn/sf [%d:%d]\n", rawCqiInfo->numBits,
+         DU_LOG("rawCqiInfo->numBits [%d]  uciPayload [0x%08x] sfn/sf [%d:%d]\n", rawCqiInfo->numBits,
                 rawCqiInfo->uciPayload, rawCqiInd->timingInfo.sfn, rawCqiInd->timingInfo.slot);
          */
       }
@@ -1826,7 +1817,7 @@ TfuRawCqiIndInfo *rawCqiInd
          if(ue) {
          if (cqi == 0)
          {
-            printf("\n UE[%d] CQI[%d] Invalid\n", ue->ueId, cqi);
+           DU_LOG("\nERROR  -->  SCH : UE[%d] CQI[%d] Invalid\n", ue->ueId, cqi);
             cqi = 15;
          }
          ue->ue5gtfCb.mcs = rgSch5gtfCqi2Mcs[cqi - 1];
@@ -1843,7 +1834,7 @@ TfuRawCqiIndInfo *rawCqiInd
 #endif
          }
          /*
-         printf("UE[%d] CQI[%d] MCS[%d] RI[%d]\n", ue->ueId, cqi, ue->ue5gtfCb.mcs, ri);
+         DU_LOG("\nERROR  -->  SCH : UE[%d] CQI[%d] MCS[%d] RI[%d]\n", ue->ueId, cqi, ue->ue5gtfCb.mcs, ri);
          */
       }
       else if (rawCqiInfo->numBits == 6)
@@ -1856,7 +1847,7 @@ TfuRawCqiIndInfo *rawCqiInd
          hqAck = (rawCqiInfo->uciPayload >> 31) & 0x1;
          if (cqi == 0)
          {
-            printf("UE[%d] CQI[%d] Invalid\n", ue->ueId, cqi);
+            DU_LOG("\nERROR  -->  SCH : UE[%d] CQI[%d] Invalid\n", ue->ueId, cqi);
             cqi = 13;
          }
          ue->ue5gtfCb.mcs = rgSch5gtfCqi2Mcs[cqi - 1];
@@ -1881,7 +1872,7 @@ TfuRawCqiIndInfo *rawCqiInd
              if ((rgSCHDhm5gtfHqFdbkInd (ue, cell, rawCqiInd->timingInfo, fdbk, &err)) != ROK)
              {
                  err.errType = RGSCHERR_TOM_HARQACKIND;
-                 RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHTomHarqAckInd() "
+                 DU_LOG("\nERROR  -->  SCH : rgSCHTomHarqAckInd() "
                          "HARQ feedback processing failed errType(%d)errCause(%d)n",
                          err.errType, err.errCause); 
                  continue;
@@ -1893,7 +1884,7 @@ TfuRawCqiIndInfo *rawCqiInd
                         cell, rawCqiInd->timingInfo, &hqInfo, rlsHqBufs, &err)) != ROK)
             {
                err.errType = RGSCHERR_TOM_HARQACKIND;
-               RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHTomHarqAckInd() HARQ"
+               DU_LOG("\nERROR  -->  SCH : rgSCHTomHarqAckInd() HARQ"
                      " feedback processing failed errType(%d) errCause(%d)", 
                      err.errType, err.errCause); 
                continue;
@@ -1906,7 +1897,7 @@ TfuRawCqiIndInfo *rawCqiInd
                         cell, rawCqiInd->timingInfo, &hqInfo, rlsHqBufs, &err)) != ROK)
             {
                err.errType = RGSCHERR_TOM_HARQACKIND;
-               RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHTomHarqAckInd() HARQ"
+               DU_LOG("\nERROR  -->  SCH : rgSCHTomHarqAckInd() HARQ"
                      " feedback processing failed errType(%d) errCause(%d).", 
                      err.errType, err.errCause); 
                continue;
@@ -1914,21 +1905,21 @@ TfuRawCqiIndInfo *rawCqiInd
          }
          else
          {
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"RNTI:%d Unable to get the "
+            DU_LOG("\nERROR  -->  SCH : RNTI:%d Unable to get the "
                   "UE CB or RA CB ", rawCqiInfo->crnti);
             err.errType = RGSCHERR_TOM_HARQACKIND;
             continue;
          }
 
          /*
-         printf("\nUE[%u] CQI[%u] MCS[%u] RI[%u] HQ[%u]\n", ue->ueId, cqi, ue->ue5gtfCb.mcs, ri, hqAck);
+         DU_LOG("\nERROR  -->  SCH : UE[%u] CQI[%u] MCS[%u] RI[%u] HQ[%u]\n", ue->ueId, cqi, ue->ue5gtfCb.mcs, ri, hqAck);
          */
       }
    }
 
    if ((rgSCHDhmRlsDlsfHqProc (cell, rawCqiInd->timingInfo)) != ROK)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to Release Downlink "
+      DU_LOG("\nERROR  -->  SCH : Unable to Release Downlink "
             "subframe for cellId (%d) ", cell->cellId);
       err.errType = RGSCHERR_TOM_HARQACKIND;
    }
@@ -1985,7 +1976,7 @@ TfuSrsIndInfo *srsInd
 
    if(cell->cellId != srsInd->cellId)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to get the cell for cellId"
+      DU_LOG("\nERROR  -->  SCH : Unable to get the cell for cellId"
          ":%d", srsInd->cellId);
       return RFAILED;
 	}
@@ -1997,7 +1988,7 @@ TfuSrsIndInfo *srsInd
       ue = rgSCHDbmGetUeCb (cell, srsInfo->ueId);
       if (ue == NULLP)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"RNTI:%d Unable to get the "
+         DU_LOG("\nERROR  -->  SCH : RNTI:%d Unable to get the "
             "UE CB", srsInfo->ueId);
          continue;
       }
@@ -2114,7 +2105,7 @@ TfuCrcIndInfo *crcInd
 
    if(cell->cellId != crcInd->cellId)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to get the cell for cellId"
+      DU_LOG("\nERROR  -->  SCH : Unable to get the cell for cellId"
          ":%d", crcInd->cellId);
       return RFAILED;
 	}
@@ -2126,7 +2117,7 @@ TfuCrcIndInfo *crcInd
       if (RGSCH_TIMEINFO_SAME(lastCrc, crntCrc))
       {
          /*Removed the WA to drop 2nd CRC*/
-         RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,"Recieved CRC "
+         DU_LOG("\nINFO  -->  SCH : Recieved CRC "
             "twice per TTI @(%u,%u)", cell->crntTime.sfn,
             cell->crntTime.slot);
       }
@@ -2291,7 +2282,7 @@ TfuCrcIndInfo *crcInd
       if ((ret = rgSCHUtlAllocEventMem(inst, (Ptr *)&cntrlInfo, 
                   sizeof(TfuCntrlReqInfo))) != ROK)
       {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Unable to Allocate TfuCntrlReqInfo "
+         DU_LOG("\nERROR  -->  SCH : Unable to Allocate TfuCntrlReqInfo "
                "for cell");
          return ret;
       }
@@ -2304,7 +2295,7 @@ TfuCrcIndInfo *crcInd
 
       if ((rgSCHTomUtlProcDlSfAtCrc (ulSf, crntHiDci0Frm, cell, cntrlInfo, &err)) != ROK)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHTomCrcInd() Unable to process"
+         DU_LOG("\nERROR  -->  SCH : rgSCHTomCrcInd() Unable to process"
                   " downlink subframe for cellId %d", crcInd->cellId);
          err.errType = RGSCHERR_TOM_TTIIND;
          return RFAILED;
@@ -2347,7 +2338,7 @@ TfuTimingAdvIndInfo *timingAdvInd
 
    if(cell->cellId != timingAdvInd->cellId)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to get the cell for cellId"
+      DU_LOG("\nERROR  -->  SCH : Unable to get the cell for cellId"
          "=(%d)", timingAdvInd->cellId);
       return RFAILED;
 	}
@@ -2360,7 +2351,7 @@ TfuTimingAdvIndInfo *timingAdvInd
       ue = rgSCHDbmGetUeCb (cell, timingAdvInfo->rnti);
       if (ue == NULLP)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"RNTI:%d Unable to get the UE CB",
+         DU_LOG("\nERROR  -->  SCH : RNTI:%d Unable to get the UE CB",
             timingAdvInfo->rnti);
          continue;
       }
@@ -2486,7 +2477,7 @@ Inst               schInst
       if ((ret = rgSCHUtlAllocEventMem((cell[i]->instIdx), (Ptr *)&cntrlInfo, 
                   sizeof(RgTfuCntrlReqInfo))) != ROK)
       {     
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cell[i]->cellId,"Unable to Allocate TfuCntrlReqInfo"
+         DU_LOG("\nERROR   -->  SCH : Unable to Allocate TfuCntrlReqInfo"
                " for cell");
          return;
       }
@@ -2524,10 +2515,10 @@ Inst               schInst
       if(gTtiCount == 3000)
       {
 #ifdef XEON_SPECIFIC_CHANGES
-         printf("SChed:: (P/S)::(%u/%u) \n",
+         DU_LOG("\nINFO   -->  SCH : SChed:: (P/S)::(%u/%u) \n",
                gPrimarySchedCount,gSCellSchedCount);
 
-         printf("\n HQFDBK :: %u\n",gHqFdbkCount);
+         DU_LOG("\nINFO   -->  SCH :  HQFDBK :: %u\n",gHqFdbkCount);
          
          long int total;
          long int total2 ;
@@ -2535,12 +2526,12 @@ Inst               schInst
          total = gPCellTb1AckCount + gPCellTb1NackCount + gPCellTb1DtxCount;
          total2 = gPCellTb2AckCount + gPCellTb2NackCount + gPCellTb2DtxCount;
          
-         printf("\n PCell:: TB1:: (A/N/D)::(%u/%u/%u)  TB2:: (A/N/D)::(%u/%u/%u)\n",
+         DU_LOG("\nINFO   -->  SCH :  PCell:: TB1:: (A/N/D)::(%u/%u/%u)  TB2:: (A/N/D)::(%u/%u/%u)\n",
                gPCellTb1AckCount,gPCellTb1NackCount,gPCellTb1DtxCount,
                gPCellTb2AckCount,gPCellTb2NackCount,gPCellTb2DtxCount);
          if ((total != 0 ) && total2 != 0)
          {
-            printf("\n PCell:: TB1:: (AP/NP/DP)::(%.2f/%.2f/%.2f)   TB2:: (AP/NP/DP)::(%.2f/%.2f/%.2f)\n",
+            DU_LOG("\nINFO   -->  SCH :  PCell:: TB1:: (AP/NP/DP)::(%.2f/%.2f/%.2f)   TB2:: (AP/NP/DP)::(%.2f/%.2f/%.2f)\n",
                   (float)gPCellTb1AckCount/total * 100,(float)gPCellTb1NackCount/total * 100,(float)gPCellTb1DtxCount/total * 100,
                   (float)gPCellTb2AckCount/total2 *100 ,(float)gPCellTb2NackCount/total2 *100 ,(float)gPCellTb2DtxCount/total2 *2);
          }
@@ -2549,25 +2540,25 @@ Inst               schInst
          total2 = gSCellTb2AckCount + gSCellTb2NackCount + gSCellTb2DtxCount;
 
 
-         printf("\n SCell:: TB1:: (A/N/D)::(%u/%u/%u)  TB2:: (A/N/D)::(%u/%u/%u)\n",
+         DU_LOG("\nINFO   -->  SCH : SCell:: TB1:: (A/N/D)::(%u/%u/%u)  TB2:: (A/N/D)::(%u/%u/%u)\n",
                gSCellTb1AckCount,gSCellTb1NackCount,gSCellTb1DtxCount,
                gSCellTb2AckCount,gSCellTb2NackCount,gSCellTb2DtxCount);
          if ((total != 0 ) && total2 != 0)
          {
-            printf("\n SCell:: TB1:: (AP/NP/DP)::(%.2f/%.2f/%.2f)   TB2:: (AP/NP/DP)::(%.2f/%.2f/%.2f)\n",
+            DU_LOG("\nINFO   -->  SCH : SCell:: TB1:: (AP/NP/DP)::(%.2f/%.2f/%.2f)   TB2:: (AP/NP/DP)::(%.2f/%.2f/%.2f)\n",
                   (float)gSCellTb1AckCount/total * 100,(float)gSCellTb1NackCount/total * 100,(float)gSCellTb1DtxCount/total * 100,
                   (float)gSCellTb2AckCount/total2 *100 ,(float)gSCellTb2NackCount/total2 *100 ,(float)gSCellTb2DtxCount/total2 *2);
          }
 
 
-         printf("\n CQI:: Recp(Pucch/Pusch):Rcvd(pcqi/rawacqireport/apcqi/AppReprt)::(%u/%u):(%u/%u/%u/%u)\n",
+         DU_LOG("\nINFO   -->  SCH : CQI:: Recp(Pucch/Pusch):Rcvd(pcqi/rawacqireport/apcqi/AppReprt)::(%u/%u):(%u/%u/%u/%u)\n",
                gCqiRecpCount,gCqiRecpPuschCount,gCqiRcvdCount,gRawACqiCount,
                gACqiRcvdCount,gCqiReptToAppCount);
               
-         printf("\n (F1BCS Count/Cqi/Ri/CqiDrop/PucchDrop/PuschCqiDrop)::(%u/%u/%u/%u/%u/%u)\n",
+         DU_LOG("\nINFO   -->  SCH : (F1BCS Count/Cqi/Ri/CqiDrop/PucchDrop/PuschCqiDrop)::(%u/%u/%u/%u/%u/%u)\n",
                gF1bCsCount,gCqiReqCount,gRiReqCount,gCqiDropCount,gPucchDropCount,gPuschCqiDropCount); 
 
-         printf("UL::(DCI0/CrcPass/CrcFail)::(%u/%u/%u)\n"
+         DU_LOG("\nINFO   -->  SCH : UL::(DCI0/CrcPass/CrcFail)::(%u/%u/%u)\n"
                "gPcellZeroBoOcc:%u\t gScellZeroBoOcc:%u dbgUeIdChngAndDatReqInClCnt: %u\n"
                "DelayedDatReqInMac: %u DelayedDatReqInCl : %u gIccPktRcvrMemDropCnt :%u\n",
                gDci0Count,
@@ -2579,28 +2570,31 @@ Inst               schInst
                dbgDelayedDatReqInMac,
               gDropDatReqCnt, gIccPktRcvrMemDropCnt);
 #else
-         printf("SChed:: (P/S)::(%ld/%ld) \n",
+         DU_LOG("\nINFO   -->  SCH : SChed:: (P/S)::(%ld/%ld) \n",
                gPrimarySchedCount,gSCellSchedCount);
 
-         printf("\n HQFDBK :: %ld\n",gHqFdbkCount);
+         DU_LOG("\nINFO   -->  SCH :  HQFDBK :: %ld\n",gHqFdbkCount);
+
          
-         printf("\n PCell:: TB1:: (A/N/D)::(%ld/%ld/%ld)  TB2:: (A/N/D)::(%ld/%ld/%ld)\n",
+         DU_LOG("\nINFO   -->  SCH :  PCell:: TB1:: (A/N/D)::(%ld/%ld/%ld)  TB2:: (A/N/D)::(%ld/%ld/%ld)\n",
                gPCellTb1AckCount,gPCellTb1NackCount,gPCellTb1DtxCount,
                gPCellTb2AckCount,gPCellTb2NackCount,gPCellTb2DtxCount);
 
-         printf("\n SCell:: TB1:: (A/N/D)::(%ld/%ld/%ld)  TB2:: (A/N/D)::(%ld/%ld/%ld)\n",
+         DU_LOG("\nINFO   -->  SCH : SCell:: TB1:: (A/N/D)::(%ld/%ld/%ld)  TB2:: (A/N/D)::(%ld/%ld/%ld)\n",
                gSCellTb1AckCount,gSCellTb1NackCount,gSCellTb1DtxCount,
                gSCellTb2AckCount,gSCellTb2NackCount,gSCellTb2DtxCount);
 
-         printf("\n CQI:: Recp(Pucch/Pusch):Rcvd(pcqi/rawacqireport/apcqi/AppReprt)::(%ld/%ld):(%ld/%ld/%ld/%ld)\n",
+         DU_LOG("\nINFO   -->  SCH : CQI:: Recp(Pucch/Pusch):Rcvd(pcqi/rawacqireport/apcqi/AppReprt)::\
+	 (%ld/%ld):(%ld/%ld/%ld/%ld)\n",
                gCqiRecpCount,gCqiRecpPuschCount,gCqiRcvdCount,gRawACqiCount,
                gACqiRcvdCount,gCqiReptToAppCount);
-         printf("\n CQI:: PucchCqiSnrDropCnt/PucchCqiConfBitMaskDropCnt/PuschCqiConfMaskDropCount  :: (%ld/%ld/%ld) \n",gCqiPucchLowSnrDropCount,gCqiPucchConfMaskDropCount,gCqiPuschConfMaskDropCount);
+         DU_LOG("\nINFO   -->  SCH : CQI:: PucchCqiSnrDropCnt/PucchCqiConfBitMaskDropCnt/PuschCqiConfMaskDropCount\
+	 :: (%ld/%ld/%ld) \n",gCqiPucchLowSnrDropCount,gCqiPucchConfMaskDropCount,gCqiPuschConfMaskDropCount);
               
-         printf("\n (F1BCS Count/Cqi/Ri/CqiDrop/PucchDrop/PuschCqiDrop)::(%ld/%ld/%ld/%ld/%ld/%ld)\n",
+         DU_LOG("\nINFO   -->  SCH : (F1BCS Count/Cqi/Ri/CqiDrop/PucchDrop/PuschCqiDrop)::(%ld/%ld/%ld/%ld/%ld/%ld)\n",
                gF1bCsCount,gCqiReqCount,gRiReqCount,gCqiDropCount,gPucchDropCount,gPuschCqiDropCount); 
 
-         printf("UL::(DCI0/CrcPass/CrcFail)::(%ld/%ld/%ld)\n"
+         DU_LOG("\nINFO   -->  SCH : UL::(DCI0/CrcPass/CrcFail)::(%ld/%ld/%ld)\n"
                "gPcellZeroBoOcc:%ld\t gScellZeroBoOcc:%ld dbgUeIdChngAndDatReqInClCnt: %ld\n"
                "DelayedDatReqInMac: %ld DelayedDatReqInCl : %ld gIccPktRcvrMemDropCnt :%ld\n",
                gDci0Count,
@@ -2611,7 +2605,7 @@ Inst               schInst
                dbgUeIdChngAndDatReqInClCnt,
                dbgDelayedDatReqInMac,
               gDropDatReqCnt, gIccPktRcvrMemDropCnt);
-         //printf ("\n delayedApiCnt:%ld",delayedApiCnt);
+         //DU_LOG("\nINFO   -->  SCH : delayedApiCnt:%ld",delayedApiCnt);
 #endif
 
         /*LAA STATS*/               
@@ -2710,7 +2704,7 @@ RgSchErrInfo       *err
    if ((ret = rgSCHUtlAllocEventMem(inst, (Ptr *)&recpReqInfo, 
                             sizeof(TfuRecpReqInfo))) != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Unable to Allocate TfuRecpReqInfo "
+      DU_LOG("\nERROR  -->  SCH : Unable to Allocate TfuRecpReqInfo "
          "for cell");
       err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
       return ret;
@@ -2727,7 +2721,7 @@ RgSchErrInfo       *err
          err);
    if (ret != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Unable to fill Data recption "
+      DU_LOG("\nERROR  -->  SCH : Unable to fill Data recption "
          "requests for cell");
       RGSCH_FREE_MEM(recpReqInfo);
       return ret;
@@ -2736,7 +2730,7 @@ RgSchErrInfo       *err
    ret = rgSCHTomUtlFillHqFdbkRecpReq (recpReqInfo, cell, validIdx,err);
    if (ret != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Unable to fill Harq Feedback "
+      DU_LOG("\nERROR  -->  SCH : Unable to fill Harq Feedback "
          "reception requests for cell");
       RGSCH_FREE_MEM(recpReqInfo);
       return ret;
@@ -2744,7 +2738,7 @@ RgSchErrInfo       *err
    /* sending the RecpReq to Phy */
    //if (rgSCHUtlTfuRecpReq(inst, cell->tfuSap->sapCfg.suId, recpReqInfo) != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Unable to send Cntrl info for cell");
+      DU_LOG("\nERROR  -->  SCH : Unable to send Cntrl info for cell");
    }
    return ROK;
 } /* end of rgSCHTomUtlProcUlSf */ 
@@ -2783,7 +2777,7 @@ RgSchErrInfo *err
    if ((ret = rgSCHUtlAllocEventMem(inst, (Ptr *)&recpReqInfo, 
                             sizeof(TfuRecpReqInfo))) != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHTomUtlPrcUlTddSpclSf() Unable to "
+      DU_LOG("\nERROR  -->  SCH : rgSCHTomUtlPrcUlTddSpclSf() Unable to "
                "Allocate TfuRecpReqInfo for cell");
       err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
       return ret;
@@ -2810,7 +2804,7 @@ RgSchErrInfo *err
    ret = rgSCHTomUtlFillSrsRecpReq (recpReqInfo, cell, validIdx, err);
    if (ret != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHTomUtlPrcUlTddSpclSf() Unable to fill"
+      DU_LOG("\nERROR  -->  SCH : rgSCHTomUtlPrcUlTddSpclSf() Unable to fill"
             " SRS recption requests for cell");
       RGSCH_FREE_MEM(recpReqInfo);
       return ret;
@@ -2818,7 +2812,7 @@ RgSchErrInfo *err
    /* sending the RecpReq to Phy */
    //if (rgSCHUtlTfuRecpReq(inst, cell->tfuSap->sapCfg.suId, recpReqInfo) != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHTomUtlPrcUlTddSpclSf() Unable to send "
+      DU_LOG("\nERROR  -->  SCH : rgSCHTomUtlPrcUlTddSpclSf() Unable to send "
                                "Cntrl info for cell");
    }
    return ROK;
@@ -2851,7 +2845,6 @@ RgTfuCntrlReqInfo    *cntrlInfo,
 RgSchErrInfo         *err
 )
 {
-   Inst    inst = cell->instIdx;
    S16     ret;
    uint8_t sfTyp = 1; /* Dl Subframe */
 
@@ -2867,7 +2860,8 @@ RgSchErrInfo         *err
       cntrlInfo->ulTiming = cell->hiDci0Time;
       if((0 == (cntrlInfo->dlTiming.sfn % 30)) && (0 == cntrlInfo->dlTiming.slot))
       {
-	 //printf("5GTF_CHECK rgSCHTomUtlProcDlSf Cntrl dl (%d : %d) ul (%d : %d)\n", cntrlInfo->dlTiming.sfn, cntrlInfo->dlTiming.subframe, cntrlInfo->ulTiming.sfn, cntrlInfo->ulTiming.subframe);
+	 //DU_LOG("\nERROR  -->  SCH : 5GTF_CHECK rgSCHTomUtlProcDlSf Cntrl dl (%d : %d) ul (%d : %d)\n", \
+	 cntrlInfo->dlTiming.sfn, cntrlInfo->dlTiming.subframe, cntrlInfo->ulTiming.sfn, cntrlInfo->ulTiming.subframe);
       }
       /* Fill PCFICH info */
       /* Fix for DCFI FLE issue: when DL delta is 1 and UL delta is 0 and CFI
@@ -2890,16 +2884,16 @@ RgSchErrInfo         *err
          /* Fill PHICH info */
          if ((ret = rgSCHTomUtlFillPhich (cell, cntrlInfo, ulSf, err)) != ROK)
          {
-            RGSCHDBGERRNEW(inst,(rgSchPBuf(inst),"Unable to send PHICH info "
-                     "for cellId (%d)\n", cell->cellId));
+            DU_LOG("\nERROR  -->  SCH : Unable to send PHICH info "
+                     "for cellId (%d)\n", cell->cellId);
             RGSCH_FREE_MEM(cntrlInfo);
             return ret;
          }
          if ((ret = rgSCHTomUtlFillUlPdcch (cell, cntrlInfo, ulSf, err)) != 
                         ROK)
          {
-            RGSCHDBGERRNEW(inst,(rgSchPBuf(inst),"Unable to send PDCCH info "
-                     "for cellId (%d)\n", cell->cellId));
+            DU_LOG("\nERROR  -->  SCH : Unable to send PDCCH info "
+                     "for cellId (%d)\n", cell->cellId);
             RGSCH_FREE_MEM(cntrlInfo);
             return ret;
          }
@@ -2920,8 +2914,8 @@ RgSchErrInfo         *err
          /* Fill PDCCH info */
          if ((ret = rgSCHTomUtlFillDlPdcch(cell,cntrlInfo, dlSf, err)) != ROK)
          {
-            RGSCHDBGERRNEW(inst,(rgSchPBuf(inst),"Unable to send PDCCH info "
-                     "for cellId (%d)\n", cell->cellId));
+            DU_LOG("\nERROR  -->  SCH : Unable to send PDCCH info "
+                     "for cellId (%d)\n", cell->cellId);
             RGSCH_FREE_MEM(cntrlInfo);
             return ret;
          }
@@ -2945,8 +2939,7 @@ if(0 == cntrlInfo->dlMpdcchLst.count)
       //if (rgSCHUtlTfuCntrlReq(inst, cell->tfuSap->sapCfg.suId, cntrlInfo) 
             //!= ROK)
       {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Unable to send Cntrl info "
-            "for cell");
+         DU_LOG("\nERROR  -->  SCH : Unable to send Cntrl info for cell");
       }
    return ROK;
 
@@ -3457,8 +3450,7 @@ RgSchErrInfo            *err
                   sizeof(TfuUeRecpReqInfo), &(recpReqInfo->memCp));
             if (ret != ROK)
             {
-               RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Unable to Allocate "
-                        "TfuUeRecpReqInfo for cell");
+               DU_LOG("\nERROR  -->  SCH : Unable to Allocate TfuUeRecpReqInfo for cell");
                err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
                return ret;
             }
@@ -3595,9 +3587,6 @@ TfuUeRecpReqInfo        *pucchRecpInfo,
 RgSchErrInfo            *err
 )
 { 
-#ifdef DEBUGP
-   Inst                 inst = cell->instIdx;
-#endif
    S16                  ret;
    RgSchUeCb            *ue;
    TfuUePucchRecpReq    *pucchReqInfo = NULLP;
@@ -3612,8 +3601,8 @@ RgSchErrInfo            *err
          sizeof(TfuUeRecpReqInfo), &(recpReqInfo->memCp));
    if (ret != ROK)
    {
-      RGSCHDBGERRNEW(inst,(rgSchPBuf(inst),"Unable to Allocate "
-               "TfuUeRecpReqInfo for cellId=%d \n", cell->cellId));
+      DU_LOG("\nERROR  -->  SCH : Unable to Allocate "
+               "TfuUeRecpReqInfo for cellId=%d \n", cell->cellId);
       err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
       return ret;
    }
@@ -3712,8 +3701,7 @@ RgSchErrInfo            *err
          sizeof(TfuUeRecpReqInfo), &(recpReqInfo->memCp));
    if (ret != ROK)
    {
-      RGSCHDBGERRNEW(inst,(rgSchPBuf(inst),"Unable to Allocate "
-               "TfuUeRecpReqInfo for cellId=%d \n", cell->cellId));
+      DU_LOG("\nERROR  -->  SCH : Unable to Allocate TfuUeRecpReqInfo for cellId=%d \n", cell->cellId);
       err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
       return ret;
    }
@@ -4018,8 +4006,8 @@ RgSchErrInfo            *err
          sizeof(TfuUeRecpReqInfo), &(recpReqInfo->memCp));
    if (ret != ROK)
    {
-      RGSCHDBGERRNEW(inst,(rgSchPBuf(inst),"Unable to Allocate "
-               "TfuUeRecpReqInfo for cellId=%d \n", cell->cellId));
+      DU_LOG("\nERROR  -->  SCH : Unable to Allocate "
+               "TfuUeRecpReqInfo for cellId=%d \n", cell->cellId);
       err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
       return ret;
    }
@@ -4204,8 +4192,7 @@ RgSchErrInfo            *err
       if ((ret = rgSCHUtlGetEventMem((Ptr *)&pucchRecpInfo,
                   sizeof(TfuUeRecpReqInfo),&(recpReqInfo->memCp))) != ROK)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to Allocate "
-            "TfuUeRecpReqInfo for cell RNTI:%d",ue->ueId);
+         DU_LOG("\nERROR  -->  SCH : Unable to Allocate TfuUeRecpReqInfo for cell RNTI:%d",ue->ueId);
          err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
          return ret;
       }
@@ -4373,7 +4360,7 @@ RgSchErrInfo         *err
          if ((ret = rgSCHUtlGetEventMem((Ptr *)&pucchRecpInfo,
                      sizeof(TfuUeRecpReqInfo),&(recpReqInfo->memCp))) != ROK)
          {
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to Allocate "
+            DU_LOG("\nERROR  -->  SCH : Unable to Allocate "
                "TfuUeRecpReqInfo for cell RNTI:%d",ue->ueId);
             err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
             return ret;
@@ -4453,8 +4440,7 @@ RgSchErrInfo         *err
          if ((ret = rgSCHUtlGetEventMem((Ptr *)&pucchRecpInfo,
                      sizeof(TfuUeRecpReqInfo),&(recpReqInfo->memCp))) != ROK)
          {
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to Allocate "
-               "TfuUeRecpReqInfo for cell RNTI:%d ", ue->ueId);
+            DU_LOG("\nERROR  -->  SCH : Unable to Allocate TfuUeRecpReqInfo for cell RNTI:%d ", ue->ueId);
             err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
             return ret;
          }
@@ -4540,16 +4526,14 @@ RgSchErrInfo         *err
       cqiPmiSz = rgSCHTomUtlFetchPcqiBitSz(ue, cell->numTxAntPorts, &ri); 
       if(!cqiPmiSz)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"RNTI:%d Unable to Fill CqiPmi "
-            "size", ue->ueId);
+         DU_LOG("\nERROR  -->  SCH : RNTI:%d Unable to Fill CqiPmi size", ue->ueId);
          continue;
       }
 
       if ((ret = rgSCHUtlGetEventMem((Ptr *)&pucchRecpInfo,
                   sizeof(TfuUeRecpReqInfo),&(recpReqInfo->memCp))) != ROK)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to Allocate "
-            "TfuUeRecpReqInfo for cell RNTI:%d ", ue->ueId);
+         DU_LOG("\nERROR  -->  SCH : Unable to Allocate TfuUeRecpReqInfo for cell RNTI:%d ", ue->ueId);
          err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
          return ret;
       }
@@ -4631,8 +4615,7 @@ RgSchErrInfo         *err
          if ((ret = rgSCHUtlGetEventMem((Ptr *)&pucchRecpInfo,
                      sizeof(TfuUeRecpReqInfo),&(recpReqInfo->memCp))) != ROK)
          {
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to Allocate "
-               "TfuUeRecpReqInfo for RNTI:%d ",ue->ueId);
+            DU_LOG("\nERROR  -->  SCH : Unable to Allocate TfuUeRecpReqInfo for RNTI:%d ",ue->ueId);
             err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
             return ret;
          }
@@ -4721,8 +4704,7 @@ RgSchErrInfo         *err
                                 sizeof(TfuUeRecpReqInfo), 
                                 &(recpReqInfo->memCp))) != ROK)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to Allocate "
-            "TfuUeRecpReqInfo for RNTI:%d ", alloc->ue->ueId);
+         DU_LOG("\nERROR  -->  SCH : Unable to Allocate TfuUeRecpReqInfo for RNTI:%d ", alloc->ue->ueId);
          err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
          return ret;
       }
@@ -4809,7 +4791,8 @@ RgSchErrInfo         *err
 
    if((0 == (recpReqInfo->timingInfo.sfn % 30)) && (0 == recpReqInfo->timingInfo.slot))
    {
-      //printf("5GTF_CHECK rgSCHTomUtlFillDatRecpReq (%d : %d)\n", recpReqInfo->timingInfo.sfn, recpReqInfo->timingInfo.slot);
+      //DU_LOG("\nERROR  -->  SCH : 5GTF_CHECK rgSCHTomUtlFillDatRecpReq (%d : %d)\n",\
+      recpReqInfo->timingInfo.sfn, recpReqInfo->timingInfo.slot);
    }
    /* processing steps are 
     * - Run through the UL allocations going out in this subframe.
@@ -4824,7 +4807,7 @@ RgSchErrInfo         *err
             sizeof(TfuUeRecpReqInfo), &(recpReqInfo->memCp));
       if(ret != ROK)            
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to Allocate "
+         DU_LOG("\nERROR  -->  SCH : Unable to Allocate "
             "TfuUeRecpReqInfo for RNTI:%d ", alloc->rnti);
          err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
          return ret;
@@ -5644,7 +5627,7 @@ uint16_t          validIdx
    cqiPmiSz = rgSCHTomUtlFetchPcqiBitSz(alloc->ue, cell->numTxAntPorts, &ri);
    if(0 == cqiPmiSz)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Unable to Fill "
+      DU_LOG("\nERROR  -->  SCH : Unable to Fill "
          "CqiPmi size RNTI:%d",alloc->rnti);
       return RFAILED;
    }
@@ -6015,8 +5998,7 @@ Bool               isDatPresOnSecCell
                rgSCHTomUtlFetchPcqiBitSz(ue, cell->numTxAntPorts, &ri); 
             if(0 == pucchRecpInfo->t.pucchRecpReq.cqiInfo.cqiPmiSz)
             {
-               RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"RNTI:%d "
-                  "Unable to Fill CqiPmi size", ue->ueId);
+               DU_LOG("\nERROR  -->  SCH : RNTI:%d Unable to Fill CqiPmi size", ue->ueId);
                return RFAILED;
             }
             if(pucchRecpInfo->t.pucchRecpReq.uciInfo == TFU_PUCCH_HARQ_SR)
@@ -6214,10 +6196,9 @@ uint16_t          validIdx
                rgSCHTomUtlFetchPcqiBitSz(ue, cell->numTxAntPorts, &ri); 
             if(0 == pucchRecpInfo->t.pucchRecpReq.cqiInfo.cqiPmiSz)
             {
-               RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"RNTI:%d"
-                  " Unable to Fill CqiPmi size", ue->ueId);
+               DU_LOG("\nERROR  -->  SCH : RNTI:%d Unable to Fill CqiPmi size", ue->ueId);
                return RFAILED;
-				}
+	    }
 
             pucchRecpInfo->t.pucchRecpReq.uciInfo = TFU_PUCCH_SR_CQI;
          }
@@ -6382,7 +6363,7 @@ RgSchDlSf       *nxtDlsf
                      sizeof(TfuUeRecpReqInfo), &(recpReqInfo->memCp));
          if (ret != ROK)            
          {
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId,"Unable to"
+            DU_LOG("\nERROR  -->  SCH : Unable to"
                "Allocate TfuUeRecpReqInfo for RNTI:%d ", ueCb->ueId);
             err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
             return ret;
@@ -7211,7 +7192,7 @@ uint8_t                 hqSz
       if ((ret = rgSCHUtlGetEventMem((Ptr *)&pucchInfo,
                   sizeof(RgSchUePucchRecpInfo), memCp)) != ROK)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId,"Unable to "
+         DU_LOG("\nERROR  -->  SCH : Unable to "
             "Allocate TfuUeRecpReqInfo for cell RNTI:%d",rnti);
          err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
          return ret;
@@ -7226,7 +7207,7 @@ uint8_t                 hqSz
       if ((ret = rgSCHUtlGetEventMem((Ptr *)&(pucchInfo->pucchRecpInfo),
                   sizeof(TfuUeRecpReqInfo), &(recpReqInfo->memCp))) != ROK)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId,"Unable to "
+         DU_LOG("\nERROR  -->  SCH : Unable to "
             "Allocate TfuUeRecpReqInfo for cell RNTI:%d",rnti);
          err->errCause = RGSCHERR_TOM_MEM_EXHAUST;
          return ret;
@@ -7292,8 +7273,7 @@ uint8_t                 hqSz
                 if(anInfo == NULL)
                 {/* ANInfo must be there. adding block
                     because of kworks*/
-                   RGSCHDBGERRNEW(cellCb->instIdx,(rgSchPBuf(cellCb->instIdx),
-                            "ANInfo should not be NULL for cellId=%d \n", cellCb->cellId));
+                   DU_LOG("\nERROR  -->  SCH : ANInfo should not be NULL for cellId=%d \n", cellCb->cellId);
                    return RFAILED;
                 }
 #endif
@@ -7302,7 +7282,7 @@ uint8_t                 hqSz
        }else
        {/* This needs to be revisited while
            adding support for PUCCH format 3 */
-          RGSCHDBGERRNEW(cellCb->instIdx,(rgSchPBuf(cellCb->instIdx),"Invalid Pucch format configured.."));
+          DU_LOG("\nERROR  -->  SCH : Invalid Pucch format configured..");
           return RFAILED;
        }
     }
@@ -7505,8 +7485,7 @@ RgSchErrInfo         *err
    /* Fill PHICH info */
    if ((ret = rgSCHTomUtlFillPhich (cell, cntrlInfo, ulSf, err)) != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Unable to send PHICH info for "
-            "cell");
+      DU_LOG("\nERROR  -->  SCH : Unable to send PHICH info for cell");
       RGSCH_FREE_MEM(cntrlInfo);
       return ret;
    }
@@ -7514,8 +7493,7 @@ RgSchErrInfo         *err
    /* Fill UL Pdcch */
    if ((ret = rgSCHTomUtlFillUlPdcch (cell, cntrlInfo, ulSf, err)) != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Unable to send PDCCH info for "
-            "cell");
+      DU_LOG("\nERROR  -->  SCH : Unable to send PDCCH info for cell");
       RGSCH_FREE_MEM(cntrlInfo);
       return ret;
    }
@@ -7533,11 +7511,9 @@ RgSchErrInfo         *err
    if (cntrlInfo->ulPdcchLst.count || cntrlInfo->phichLst.count)
 #endif
    {
-      //if (rgSCHUtlTfuCntrlReq(inst, cell->tfuSap->sapCfg.suId, cntrlInfo) 
-               != ROK)
+      //if (rgSCHUtlTfuCntrlReq(inst, cell->tfuSap->sapCfg.suId, cntrlInfo) != ROK)
       {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Unable to send Cntrl info for"
-               " cell");
+         DU_LOG("\nERROR  -->  SCH : Unable to send Cntrl info for cell");
       }
    }
    else
@@ -7575,9 +7551,8 @@ RgSchCellCb          *cell
       if (rgSCHUtlAllocSBuf (cell->instIdx,
                (Data**)&rgrTtiInd, sizeof(RgrTtiIndInfo)) != ROK)
       {
-         RGSCHDBGERRNEW(cell->instIdx,(rgSchPBuf(cell->instIdx),
-                  "Mem alloc failed for RGR TTI ind, cellId (%d))\n", 
-                  cell->cellId));
+         DU_LOG("\nERROR  -->  SCH : Mem alloc failed for RGR TTI ind, cellId (%d))\n", 
+                  cell->cellId);
          return;
       }
       rgrTtiInd->cellId = cell->cellId;
@@ -7586,9 +7561,8 @@ RgSchCellCb          *cell
 
       if (rgSCHUtlRgrTtiInd (cell, rgrTtiInd) != ROK)
       {
-         RGSCHDBGERRNEW(cell->instIdx,(rgSchPBuf(cell->instIdx),
-                  "Failed to send RGR TTI ind, cellId (%d))\n", 
-                  cell->cellId));
+         DU_LOG("\nERROR  -->  SCH : Failed to send RGR TTI ind, cellId (%d))\n", 
+                  cell->cellId);
          rgSCHUtlFreeSBuf(cell->instIdx, (Data**)&rgrTtiInd,
                sizeof(RgrTtiIndInfo));
          return;
@@ -7620,7 +7594,7 @@ static Void rgSCHDynTDDMrkCrntSfIdx(Inst   schInst)
 	rgSchDynTddInfo->crntDTddSfIdx = (rgSchDynTddInfo->crntDTddSfIdx + 1) %
 		                   RG_SCH_DYNTDD_MAX_SFINFO;
 
-   //printf("Initializing Index %d \n", rgSchDynTddInfo->crntDTddSfIdx);
+   //DU_LOG("\nERROR  -->  SCH : Initializing Index %d \n", rgSchDynTddInfo->crntDTddSfIdx);
 
    return;
 }
@@ -7676,8 +7650,7 @@ RgSchCellCb        *cells[]
       if (cell == NULLP) 
       {
          /* Use SCH inst 0 print buff */
-         RGSCHDBGERRNEW(schInst,(rgSchPBuf(schInst),
-                  "RgLiTfuTtiInd()No cell exists for cellId %d\n", 
+        DU_LOG("\nERROR  -->  SCH : RgLiTfuTtiInd()No cell exists for cellId %d\n", 
                   cellInfo->cellId));
          continue;
       }
@@ -7687,7 +7660,7 @@ RgSchCellCb        *cells[]
       /* 4UE_TTI_DELTA */
       if(cell->schTickDelta != cellInfo->schTickDelta)
       {
-         printf("\nMukesh: Delta changed for cellId=%d: curr delta=%d new delta=%d\n"
+         DU_LOG("\nERROR  -->  SCH : Delta changed for cellId=%d: curr delta=%d new delta=%d\n"
          "dlblankSf=%d ulblankSf=%d dummyTti=%d \n",
          cell->cellId, cell->schTickDelta, cellInfo->schTickDelta, cellInfo->dlBlankSf,cellInfo->ulBlankSf,
          cellInfo->isDummyTti);
@@ -7705,7 +7678,7 @@ RgSchCellCb        *cells[]
       }
       if((0 == (cellInfo->timingInfo.sfn % 30)) && (0 == cellInfo->timingInfo.slot))
       {
-	 //printf("5GTF_CHECK rgSCHTOMTtiInd (%d : %d)\n", cellInfo->timingInfo.sfn, cellInfo->timingInfo.slot);
+	 //DU_LOG("5GTF_CHECK rgSCHTOMTtiInd (%d : %d)\n", cellInfo->timingInfo.sfn, cellInfo->timingInfo.slot);
       }
 #ifndef EMTC_ENABLE 
       RGSCHCPYTIMEINFO(cellInfo->timingInfo, cell->crntTime);
@@ -7922,8 +7895,8 @@ RgSchCellCb *cell
          if(rgSCHUtlAllocSBuf (cell->instIdx,(Data**)&rgrLoadInf,
                sizeof(RgrLoadInfIndInfo)) != ROK)
          {
-            RGSCHDBGERRNEW(cell->instIdx,(rgSchPBuf(cell->instIdx),"Could not "
-                     "allocate memory for sending LoadInfo\n"));
+            DU_LOG("\nERROR  -->  SCH : Could not "\
+                     "allocate memory for sending LoadInfo\n");
             return;
          }
          cell->lteAdvCb.absLoadTtiCnt = 0;
@@ -8116,9 +8089,7 @@ static Void rgSCHTomUtlProcTddUlSf(RgSchCellCb  *cell)
       if (rgSCHTomUtlProcUlSf (cell, &err) != ROK)
       {
          /* fill in err type and call sta ind */
-         RGSCHDBGERRNEW(cell->instIdx, (rgSchPBuf(cell->instIdx),
-                  "Unable to process Uplink subframe for cellId (%d))\n", 
-                  cell->cellId));
+         DU_LOG("\nERROR  -->  SCH : Unable to process Uplink subframe for cellId (%d))\n", cell->cellId);
       }
    }
    /* TDD Fix , to allow Special SF  SRS CFg  */
@@ -8128,9 +8099,7 @@ static Void rgSCHTomUtlProcTddUlSf(RgSchCellCb  *cell)
       if (rgSCHTomUtlPrcUlTddSpclSf(cell, &err) != ROK)
       {
          /* fill in err type and call sta ind */
-         RGSCHDBGERRNEW(cell->instIdx, (rgSchPBuf(cell->instIdx),
-                  "Unable to process Sipceial subframe for cellId (%d))\n", 
-                  cell->cellId));
+         DU_LOG("\nERROR  -->  SCH : Unable to process Sipceial subframe for cellId (%d))\n", cell->cellId);
       }
    }
 

@@ -69,12 +69,12 @@ void SchSendUeCfgRspToMac(uint16_t event, SchUeCfg *ueCfg, Inst inst,\
    if(event == EVENT_ADD_UE_CONFIG_REQ_TO_SCH)
    {
       rspPst.event = EVENT_UE_CONFIG_RSP_TO_MAC;
-      DU_LOG("\nSCH: Sending UE Config response to MAC");
+      DU_LOG("\nINFO  -->  SCH :  Sending UE Config response to MAC");
    }
    else if(event == EVENT_MODIFY_UE_CONFIG_REQ_TO_SCH)
    {
       rspPst.event = EVENT_UE_RECONFIG_RSP_TO_MAC;
-      DU_LOG("\nSCH: Sending UE Reconfig response to MAC");
+      DU_LOG("\nINFO  -->  SCH :  Sending UE Reconfig response to MAC");
    }
    SchUeCfgRspOpts[rspPst.selector](&rspPst, cfgRsp);
 }
@@ -276,7 +276,7 @@ SchCellCb *getSchCellCb(uint16_t srcEvent, Inst inst, SchUeCfg *ueCfg)
    }
    if(idx == MAX_NUM_CELL)
    {
-      DU_LOG("\nSCH : Ue create request failed. Invalid cell id %d", ueCfg->cellId);
+      DU_LOG("\nERROR  -->  SCH : Ue create request failed. Invalid cell id %d", ueCfg->cellId);
       SchSendUeCfgRspToMac(srcEvent, ueCfg, inst, RSP_NOK, &cfgRsp);
       return NULLP;
    }
@@ -284,7 +284,7 @@ SchCellCb *getSchCellCb(uint16_t srcEvent, Inst inst, SchUeCfg *ueCfg)
    /* Check if max number of UE configured */
    if(cellCb->numActvUe > MAX_NUM_UE)
    {
-      DU_LOG("SCH : Max number of UE [%d] already configured", MAX_NUM_UE);
+      DU_LOG("\nERROR  -->  SCH :  Max number of UE [%d] already configured", MAX_NUM_UE);
       SchSendUeCfgRspToMac(srcEvent, ueCfg, inst, RSP_NOK, &cfgRsp);
       return NULLP;
    }
@@ -318,10 +318,10 @@ uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
 
    if(!ueCfg)
    {
-      DU_LOG("\nSCH : Adding UE Config Request failed at MacSchAddUeConfigReq()");
+      DU_LOG("\nERROR  -->  SCH :  Adding UE Config Request failed at MacSchAddUeConfigReq()");
       return RFAILED;
    }
-   DU_LOG("\nSCH : Adding UE Config Request for CRNTI[%d]", ueCfg->crnti);
+   DU_LOG("\nDEBUG  -->  SCH :  Adding UE Config Request for CRNTI[%d]", ueCfg->crnti);
    cellCb = getSchCellCb(pst->event, inst, ueCfg);
 
    /* Search if UE already configured */
@@ -331,14 +331,14 @@ uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
    {
       if((ueCb->crnti == ueCfg->crnti) && (ueCb->state == SCH_UE_STATE_ACTIVE))
       {
-	 DU_LOG("\n SCH : CRNTI %d already configured ", ueCfg->crnti);
+	 DU_LOG("\nDEBUG  -->  SCH : CRNTI %d already configured ", ueCfg->crnti);
 	 SchSendUeCfgRspToMac(pst->event, ueCfg, inst, RSP_OK, &cfgRsp);
 	 return ROK;
       }
    }
    else
    {
-      DU_LOG("\n SCH : SchUeCb not found at MacSchAddUeConfigReq() ");
+      DU_LOG("\nERROR  -->  SCH : SchUeCb not found at MacSchAddUeConfigReq() ");
       SchSendUeCfgRspToMac(pst->event, ueCfg, inst, RSP_NOK, &cfgRsp);
       return RFAILED;
    }
@@ -431,7 +431,7 @@ uint8_t schFillPuschAlloc(SchUeCb *ueCb, uint16_t pdcchSlot, uint32_t dataVol, S
   SCH_ALLOC(schUlSlotInfo->schPuschInfo, sizeof(SchPuschInfo));
   if(!schUlSlotInfo->schPuschInfo)
   {
-     DU_LOG("SCH: Memory allocation failed in schAllocMsg3Pusch");
+     DU_LOG("\nERROR  -->  SCH: Memory allocation failed in schAllocMsg3Pusch");
      return RFAILED;
   }
   memcpy(schUlSlotInfo->schPuschInfo, puschInfo, sizeof(SchPuschInfo));
@@ -547,10 +547,10 @@ uint8_t MacSchModUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
 
    if(!ueCfg)
    {
-      DU_LOG("\nSCH : Modifying Ue Config request failed at MacSchModUeConfigReq()");
+      DU_LOG("\nERROR  -->  SCH : Modifying Ue Config request failed at MacSchModUeConfigReq()");
       return RFAILED;
    }
-   DU_LOG("\nSCH : Modifying Ue Config Request for CRNTI[%d]", ueCfg->crnti);
+   DU_LOG("\nDEBUG  -->  SCH : Modifying Ue Config Request for CRNTI[%d]", ueCfg->crnti);
    cellCb = getSchCellCb(pst->event, inst, ueCfg);
 
    /* Search if UE already configured */
@@ -559,7 +559,7 @@ uint8_t MacSchModUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
    
    if(!ueCb)
    {
-      DU_LOG("\n SCH : SchUeCb not found at MacSchModUeConfigReq() ");
+      DU_LOG("\nERROR  -->  SCH : SchUeCb not found at MacSchModUeConfigReq() ");
       SchSendUeCfgRspToMac(pst->event, ueCfg, inst, RSP_NOK, &cfgRsp);
       return RFAILED;
    }

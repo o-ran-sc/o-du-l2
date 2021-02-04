@@ -123,7 +123,7 @@ uint8_t SchInstCfg(RgCfg *cfg, Inst  dInst)
    uint16_t ret = LCM_REASON_NOT_APPL;
    Inst     inst = (dInst - SCH_INST_START);
 
-   printf("\nEntered SchInstCfg()");
+   DU_LOG("\nDEBUG  -->  SCH : Entered SchInstCfg()");
    /* Check if Instance Configuration is done already */
    if (schCb[inst].schInit.cfgDone == TRUE)
    {
@@ -161,14 +161,14 @@ uint8_t SchInstCfg(RgCfg *cfg, Inst  dInst)
    if (ODU_REG_TMR_MT(schCb[inst].schInit.ent, dInst,
 	    (int)schCb[inst].genCfg.tmrRes, schActvTmr) != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_INSTID,inst, "SchInstCfg(): Failed to "
+      DU_LOG("\nERROR  -->  SCH : SchInstCfg(): Failed to "
 	    "register timer.");
       return (LCM_REASON_MEM_NOAVAIL);
    }   
 #endif               
    /* Set Config done in TskInit */
    schCb[inst].schInit.cfgDone = TRUE;
-   printf("\nScheduler gen config done");
+   DU_LOG("\nINFO  -->  SCH : Scheduler gen config done");
 
    return ret;
 }
@@ -205,7 +205,7 @@ uint8_t SchProcGenCfgReq(Pst *pst, RgMngmt *cfg)
 	    "pst->dstInst=%d SCH_INST_START=%d", pst->dstInst,SCH_INST_START); 
       return ROK;
    }
-   printf("\nSCH : Received scheduler gen config");
+   DU_LOG("\nINFO -->  SCH : SCH : Received scheduler gen config");
    /* Fill the post structure for sending the confirmation */
    memset(&cfmPst, 0 , sizeof(Pst));
    SchFillCfmPst(pst, &cfmPst, cfg);
