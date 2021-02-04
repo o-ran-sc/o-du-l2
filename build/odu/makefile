@@ -73,7 +73,7 @@ endif
 PLTFRM_FLAGS= -UMSPD -DODU -DINTEL_FAPI #-DODU_SLOT_IND_DEBUG_LOG -DEGTP_TEST
 
 ifeq ($(MODE),TDD)
-   PLTFRM_FLAGS += -DMODE=TDD
+   PLTFRM_FLAGS += -DNR_TDD
 endif
 ifeq ($(CA_ENABLE),YES)
    PLTFRM_FLAGS += -DCA_ENABLE=YES
@@ -165,7 +165,7 @@ help:
 		@echo -e "$(OPTS)    NODE=TEST_STUB       - Mandatory option for cu_stub/ric_stub$(NORM)"
 		@echo -e "$(OPTS)    MODE=TDD             - If not specified, MODE=FDD$(NORM)"
 		@echo -e "$(OPTS)    PHY=INTEL_L1         - If not specified, Phy stub is used$(NORM)"
-		@echo -e "$(OPTS)    PHY_MODE=TIMER       - Testing mode for INTEL_L1
+		@echo -e "$(OPTS)    PHY_MODE=TIMER       - Testing mode for INTEL_L1"
 		@echo -e "******************************************************************"
 
 prepare_dirs:

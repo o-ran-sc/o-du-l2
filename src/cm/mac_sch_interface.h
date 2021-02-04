@@ -640,6 +640,9 @@ typedef struct schCellCfg
    SchRachCfg     schRachCfg;       /* PRACH config */
    SchBwpDlCfg    schInitialDlBwp;  /* Initial DL BWP */
    SchBwpUlCfg    schInitialUlBwp;  /* Initial UL BWP */
+#ifdef NR_TDD
+   TDDCfg         tddCfg;           /* TDD Cfg */ 
+#endif
 }SchCellCfg;
 
 typedef struct schCellCfgCfm

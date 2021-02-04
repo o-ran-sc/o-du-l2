@@ -90,35 +90,28 @@ void FillSlotConfig()
    uint8_t slot = 0;
    uint8_t symbol =0;
    
-   memset(duCfgParam.macCellCfg.tddCfg.slotCfg, 0, sizeof(duCfgParam.macCellCfg.tddCfg.slotCfg[0][0]*\
-   MAXIMUM_TDD_PERIODICITY*MAX_SYMB_PER_SLOT));
+   memset(duCfgParam.macCellCfg.tddCfg.slotCfg, 0, sizeof(duCfgParam.macCellCfg.tddCfg.slotCfg[slot][symbol]* \
+			   MAX_TDD_PERIODICITY_SLOTS*MAX_SYMB_PER_SLOT));
    
-   //Filling the DL Slots
-   for(slot  =0; slot < NUM_DL_SLOTS; slot++)
+   //Filling the DL Slots and initializing flexi slot
+   for(slot = 0; slot <= NUM_DL_SLOTS; slot++)
    {
       for(symbol =0; symbol < MAX_SYMB_PER_SLOT; symbol++)
       {
 	 duCfgParam.macCellCfg.tddCfg.slotCfg[slot][symbol] = DL_SLOT;
       }
    }
-   
-   //Filling the Flexi Slot
-   for(symbol =0; symbol < NUM_DL_SYMBOLS; symbol++)
+  
+   //Filling UL Slots
+   for(slot = NUM_DL_SLOTS+1; slot <= NUM_DL_SLOTS+NUM_UL_SLOTS; slot++)
    {
-      duCfgParam.macCellCfg.tddCfg.slotCfg[GUARD_SLOT_IDX][symbol] = DL_SLOT;
-   }
-   duCfgParam.macCellCfg.tddCfg.slotCfg[GUARD_SLOT_IDX][symbol] = GUARD_SLOT;
-   symbol++;
-   duCfgParam.macCellCfg.tddCfg.slotCfg[GUARD_SLOT_IDX][symbol] = UL_SLOT;
-
-   //Filling the UL Slot
-   for(slot  = GUARD_SLOT_IDX + 1; slot < MAXIMUM_TDD_PERIODICITY; slot++)
-   {
-      for(symbol =0; symbol < MAX_SYMB_PER_SLOT; symbol++)
-      {
+      for(symbol = 0; symbol < MAX_SYMB_PER_SLOT; symbol++)
 	 duCfgParam.macCellCfg.tddCfg.slotCfg[slot][symbol] = UL_SLOT;
-      }
-   }
+   } 
+   //Updating Flexi Slot
+   slot = NUM_DL_SLOTS;
+   duCfgParam.macCellCfg.tddCfg.slotCfg[slot][12] = FLEXI_SLOT;
+   duCfgParam.macCellCfg.tddCfg.slotCfg[slot][13] = UL_SLOT;
 
 }
 #endif

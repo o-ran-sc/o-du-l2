@@ -327,9 +327,196 @@ uint8_t MacSchCrcInd(Pst *pst, CrcIndInfo *crcInd)
    return ROK;
 }
 
+#ifdef NR_TDD
+/**
+ *@brief Returns TDD periodicity in micro seconds
+ *
+ * @details
+ * 
+ * Function : schGetPeriodicityInMsec 
+ * 
+ * This API retunrs TDD periodicity in micro seconds
+ * 
+ * @param[in] DlUlTxPeriodicity 
+ * @return  periodicityInMsec
+ * **/
+
+uint16_t schGetPeriodicityInMsec(DlUlTxPeriodicity tddPeriod)
+{
+   uint16_t  periodicityInMsec = 0;
+   switch(tddPeriod)
+   {
+      case TX_PRDCTY_MS_0P5:
+      {
+         periodicityInMsec = 500;
+         break;
+      }
+      case TX_PRDCTY_MS_0P625:
+      {
+         periodicityInMsec = 625;
+         break;
+      }
+      case TX_PRDCTY_MS_1:
+      {
+         periodicityInMsec = 1000;
+         break;
+      }
+      case TX_PRDCTY_MS_1P25:
+      {
+         periodicityInMsec = 1250;
+         break;
+      }
+      case TX_PRDCTY_MS_2:
+      {
+         periodicityInMsec = 2000;
+         break;
+      }
+      case TX_PRDCTY_MS_2P5:
+      {
+         periodicityInMsec = 2500;
+         break;
+      }
+      case TX_PRDCTY_MS_5:
+      {
+         periodicityInMsec = 5000;
+         break;
+      }
+      case TX_PRDCTY_MS_10:
+      {
+         periodicityInMsec = 10000;
+         break;
+      }
+      default:
+      {
+	 DU_LOG("\nERROR  -->  SCH : Invalid DlUlTxPeriodicity:%d", tddPeriod);
+      }
+   }
+
+   return periodicityInMsec;
+}
+
 
 /**
- * @brief inti cellCb based on cellCfg
+ * @brief init TDD slot config 
+ *
+ * @details
+ *
+ *     Function : schInitTddSlotCfg 
+ *      
+ *      This API is invoked after receiving schCellCfg
+ *           
+ *  @param[in]  schCellCb *cell
+ *  @param[in]  SchCellCfg *schCellCfg
+ *  @return  int
+ *      -# ROK 
+ *      -# RFAILED 
+ **/
+void schInitTddSlotCfg(SchCellCb *cell, SchCellCfg *schCellCfg)
+{
+   uint16_t periodicityInMicroSec = 0;
+   uint32_t slotBitPos, symbBitPos, bitMask;
+   int8_t slotIdx, symbIdx;
+
+   periodicityInMicroSec = schGetPeriodicityInMsec(schCellCfg->tddCfg.tddPeriod);
+   schCellCfg->numerology = 1; //TODO: Remove this
+   cell->numSlotsInPeriodicity = (periodicityInMicroSec * pow(2, schCellCfg->numerology))/1000;
+cell->slotFrmtBitMap = 0;
+   cell->symbFrmtBitMap = 0;
+   slotBitPos = (cell->numSlotsInPeriodicity*2)-1; /* considering 2 bits to represent a slot */
+   symbBitPos = (MAX_SYMB_PER_SLOT*2)-1; /* considering 2 bits to represent a symbol */
+   for(slotIdx = cell->numSlotsInPeriodicity-1; slotIdx >= 0; slotIdx--)
+   {
+      symbIdx = 0;
+      /* If the first and last symbol are the same, the entire slot is the same type */
+      if((schCellCfg->tddCfg.slotCfg[slotIdx][symbIdx] == schCellCfg->tddCfg.slotCfg[slotIdx][MAX_SYMB_PER_SLOT-1]) &&
+              schCellCfg->tddCfg.slotCfg[slotIdx][symbIdx] != FLEXI_SLOT)
+      {
+         switch(schCellCfg->tddCfg.slotCfg[slotIdx][symbIdx])
+         {
+            case DL_SLOT:
+            {
+               /*BitMap to be set to 00 */
+               bitMask = 1<<slotBitPos;
+               cell->slotFrmtBitMap = (cell->slotFrmtBitMap & ~(bitMask)) | ((0<<slotBitPos) & bitMask);
+               slotBitPos--;
+               bitMask = 1<<slotBitPos;
+               cell->slotFrmtBitMap = (cell->slotFrmtBitMap & ~(bitMask)) | ((0<<slotBitPos) & bitMask);
+               slotBitPos--;
+               break;
+            }
+            case UL_SLOT:
+            {
+               /*BitMap to be set to 01 */
+               bitMask = 1<<slotBitPos;
+               cell->slotFrmtBitMap = (cell->slotFrmtBitMap & ~(bitMask)) | ((0<<slotBitPos) & bitMask);
+               slotBitPos--;
+               bitMask = 1<<slotBitPos;
+               cell->slotFrmtBitMap = (cell->slotFrmtBitMap & ~(bitMask)) | ((1<<slotBitPos) & bitMask);
+               slotBitPos--;
+               break;
+            }
+            default:
+               DU_LOG("\nERROR  -->  SCH : Invalid slot Config in schInitTddSlotCfg");
+           }
+         continue;
+      }
+      /* slot config is flexible. First set slotBitMap to 10 */
+      bitMask = 1<<slotBitPos;
+      cell->slotFrmtBitMap = (cell->slotFrmtBitMap & ~(bitMask)) | ((1<<slotBitPos) & bitMask);
+      slotBitPos--;
+      bitMask = 1<<slotBitPos;
+      cell->slotFrmtBitMap = (cell->slotFrmtBitMap & ~(bitMask)) | ((0<<slotBitPos) & bitMask);
+      slotBitPos--;
+      /* Now set symbol bitmap */ 
+      for(symbIdx = MAX_SYMB_PER_SLOT-1; symbIdx >= 0; symbIdx--)
+      {
+         switch(schCellCfg->tddCfg.slotCfg[slotIdx][symbIdx])
+         {
+            case DL_SLOT:
+            {
+               /*symbol BitMap to be set to 00 */
+               bitMask = 1<<symbBitPos;
+               cell->symbFrmtBitMap = (cell->symbFrmtBitMap & ~(bitMask)) | ((0<<symbBitPos) & bitMask);
+               symbBitPos--;
+               bitMask = 1<<symbBitPos;
+               cell->symbFrmtBitMap = (cell->symbFrmtBitMap & ~(bitMask)) | ((0<<symbBitPos) & bitMask);
+               symbBitPos--;
+               break;
+            }
+            case UL_SLOT:
+            {
+               /*symbol BitMap to be set to 01 */
+               bitMask = 1<<symbBitPos;
+               cell->symbFrmtBitMap = (cell->symbFrmtBitMap & ~(bitMask)) | ((0<<symbBitPos) & bitMask);
+               symbBitPos--;
+               bitMask = 1<<symbBitPos;
+               cell->symbFrmtBitMap = (cell->symbFrmtBitMap & ~(bitMask)) | ((1<<symbBitPos) & bitMask);
+               symbBitPos--;
+               break;
+            }
+            case FLEXI_SLOT:
+            {
+               /*symbol BitMap to be set to 10 */
+               bitMask = 1<<symbBitPos;
+               cell->symbFrmtBitMap = (cell->symbFrmtBitMap & ~(bitMask)) | ((1<<symbBitPos) & bitMask);
+               symbBitPos--;
+               bitMask = 1<<symbBitPos;
+               cell->symbFrmtBitMap = (cell->symbFrmtBitMap & ~(bitMask)) | ((0<<symbBitPos) & bitMask);
+               symbBitPos--;
+               break;
+            }
+            default:
+	       DU_LOG("\nERROR  -->  SCH : Invalid slot Config in schInitTddSlotCfg");
+         }
+      }
+   }
+
+}
+#endif
+
+
+/**
+ * @brief init cellCb based on cellCfg
  *
  * @details
  *
@@ -345,7 +532,7 @@ uint8_t MacSchCrcInd(Pst *pst, CrcIndInfo *crcInd)
  **/
 uint8_t schInitCellCb(Inst inst, SchCellCfg *schCellCfg)
 {
-   SchCellCb *cell;
+   SchCellCb *cell= NULLP;
    SCH_ALLOC(cell, sizeof(SchCellCb));
    if(!cell)
    {
@@ -385,6 +572,9 @@ uint8_t schInitCellCb(Inst inst, SchCellCfg *schCellCfg)
       default:
 	 DU_LOG("\nERROR  -->  SCH : Numerology %d not supported", schCellCfg->numerology);
    }
+#ifdef NR_TDD
+   schInitTddSlotCfg(cell, schCellCfg);   
+#endif
 
    SCH_ALLOC(cell->schDlSlotInfo, cell->numSlots * sizeof(SchDlSlotInfo*));
    if(!cell->schDlSlotInfo)

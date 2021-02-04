@@ -207,6 +207,11 @@ typedef struct schCellCb
    uint32_t      actvUeBitMap;                      /*!<Bit map to find active UEs */
    uint32_t      boIndBitMap;                       /*!<Bit map to indicate UEs that have recevied BO */
    SchUeCb       ueCb[MAX_NUM_UE];                  /*!<Pointer to UE contexts of this cell */
+#ifdef NR_TDD
+   uint8_t       numSlotsInPeriodicity;             /*!< number of slots in configured periodicity and SCS */
+   uint32_t      slotFrmtBitMap;                    /*!< 2 bits must be read together to determine D/U/S slots. 00-D, 01-U, 10-S */
+   uint32_t      symbFrmtBitMap;                    /*!< 2 bits must be read together to determine D/U/S symbols. 00-D, 01-U, 10-S */
+#endif
 }SchCellCb;
 
 /**
