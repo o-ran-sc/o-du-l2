@@ -32,9 +32,6 @@
 @brief This file has APIs to handle the random access procedure functionality for the scheduler.
 */
 
-static const char* RLOG_MODULE_NAME="MAC";
-static int RLOG_MODULE_ID=4096;
-static int RLOG_FILE_ID=171;
 
 /* header include files (.h) */
 #include "common_def.h"
@@ -218,9 +215,7 @@ RgSchErrInfo      *err
    /* allocate new raReqInfos and enqueue them */
    if (raReqInd->raReqInfoArr[raReqCnt].rapId >= RGSCH_MAX_NUM_RA_PREAMBLE)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-               "RARNTI:%d rgSCHTomRaReqInd(): RAM processing failed errType(%d) ",
-               raReqInd->raRnti);
+      DU_LOG("\nERROR  -->  SCH : RARNTI:%d rgSCHTomRaReqInd(): RAM processing failed", raReqInd->raRnti);
       return RFAILED;
    }
 
@@ -249,7 +244,7 @@ RgSchErrInfo      *err
    if((rgSCHUtlAllocSBuf(cell->instIdx, (Data **)(&raReqInfo), 
                sizeof(RgSchRaReqInfo))) == RFAILED)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHRamProcRaReq(): Allocation"
+      DU_LOG("\nERROR  -->  SCH : rgSCHRamProcRaReq(): Allocation"
             " of RaReq failed RARNTI:%d",raRnti);
       err->errCause = RGSCHERR_RAM_MEM_EXHAUST;
       return RFAILED;
@@ -312,7 +307,7 @@ RgSchErrInfo      *err
    if((rgSCHUtlAllocSBuf(inst, (Data **)(raCb),
                       sizeof(RgSchRaCb))) == RFAILED)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHRamCreateRaCb(): Allocation of "
+      DU_LOG("\nERROR  -->  SCH : rgSCHRamCreateRaCb(): Allocation of "
          "RaCb failed");
       err->errCause = RGSCHERR_RAM_MEM_EXHAUST;
       return RFAILED;
@@ -331,7 +326,7 @@ RgSchErrInfo      *err
       rgNumRarFailDuetoRntiExhaustion++;
 
       /* No rnti available! */
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHRamCreateRaCb(): Allocation of "
+      DU_LOG("\nERROR  -->  SCH : rgSCHRamCreateRaCb(): Allocation of "
          "temporary RNTI failed at MAC(CRNTI exhausted)");
       /* ccpu00117052 - MOD - Passing double pointer
       for proper NULLP assignment*/
@@ -345,7 +340,7 @@ RgSchErrInfo      *err
    if ((*raCb)->dlHqE == NULLP)
    {
       /* No memory available! */
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHRamCreateRaCb(): Creation of"
+      DU_LOG("\nERROR  -->  SCH : rgSCHRamCreateRaCb(): Creation of"
          " DL HARQ failed");
 	  /* ccpu00117052 - MOD - Passing double pointer
       for proper NULLP assignment*/
@@ -529,8 +524,7 @@ RgSchRaCb *raCb
 #endif
    if(raCb->raState != RGSCH_RA_MSG3_PENDING)
    {
-      RLOG_ARG2(L_DEBUG,DBG_CELLID,cell->cellId,
-               "RNTI:%d RaCb in wrong State %d Drop Msg 3",
+      DU_LOG("\nERROR  -->  SCH : RNTI:%d RaCb in wrong State %d Drop Msg 3",
                raCb->rntiLnk->rnti, 
                raCb->raState);
       return ROK;
@@ -745,8 +739,7 @@ S16 rgSCHRamMsg4FdbkInd(RgSchRaCb  *raCb)
 S16 rgSCHRamMsg4Done(RgSchCellCb *cell,RgSchRaCb *raCb)
 {
 
-   RLOG_ARG1(L_DEBUG,DBG_CELLID,cell->cellId,
-            "rgSCHRamMsg4Done(): tmpCRNTI = %u",
+    DU_LOG("\nDEBUG  -->  SCH : rgSCHRamMsg4Done(): tmpCRNTI = %u",
             raCb->tmpCrnti);
 
    if(raCb->ue != NULLP) 
@@ -785,7 +778,7 @@ S16 rgSCHRamMsg4Done(RgSchCellCb *cell,RgSchRaCb *raCb)
    else if(raCb->toDel == TRUE)
    {
 #ifdef XEON_SPECIFIC_CHANGES
-      CM_LOG_DEBUG(CM_LOG_ID_SCH, "Deleting RacB:%d\n", raCb->tmpCrnti);
+      DU_LOG("\nDEBUG  -->  SCH : Deleting RacB:%d\n", raCb->tmpCrnti);
 #endif
       /* Delete RACB and release RNTI */
       rgSCHRamDelRaCb(cell, raCb, TRUE);
@@ -793,14 +786,13 @@ S16 rgSCHRamMsg4Done(RgSchCellCb *cell,RgSchRaCb *raCb)
    else
    {
 #ifdef XEON_SPECIFIC_CHANGES
-      CM_LOG_DEBUG(CM_LOG_ID_SCH, "Releasing Harq of RacB:%d\n", raCb->tmpCrnti);
+      DU_LOG("\nDEBUG  -->  SCH : Releasing Harq of RacB:%d\n", raCb->tmpCrnti);
 #endif
       raCb->raState = RGSCH_RA_MSG4_DONE;
       /* Release harq process as final feedback is received for Msg4. In other
        * cases, delRaCb will take care of releasing the harq process */
-      printf("=======Harq process released \n"); 
-      RLOG_ARG0(L_DEBUG,DBG_CELLID,cell->cellId,
-                                         "Harq process released "); 
+      DU_LOG("=======Harq process released \n"); 
+      DU_LOG("\nDEBUG  -->  SCH : Harq process released "); 
       rgSCHDhmRlsHqpTb(raCb->dlHqE->msg4Proc, 0, TRUE);
    }
 
@@ -870,7 +862,7 @@ S16 rgSCHRamDelRaCb(RgSchCellCb *cell,RgSchRaCb   *raCb,Bool rlsRnti)
          if ((raCb->dlHqE->msg4Proc->subFrm != NULLP) &&
              (raCb->dlHqE->msg4Proc->hqPSfLnk.node != NULLP))
          {
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"TMP CRNTI:%d RACH FAILURE!! "
+            DU_LOG("\nERROR  -->  SCH : TMP CRNTI:%d RACH FAILURE!! "
                "msg4proc  removed from SF", raCb->tmpCrnti);
             rgSCHUtlDlHqPTbRmvFrmTx(raCb->dlHqE->msg4Proc->subFrm, 
 			            raCb->dlHqE->msg4Proc, 0, FALSE);
@@ -1177,8 +1169,7 @@ static Void rgSCHRamProcContResGrdExp(RgSchCellCb *cell,RgSchRaCb  *raCb)
    raCb->contResTmrLnk.node = NULLP;
 
    /* MSG4 Fix Start */
-   RLOG_ARG1(L_DEBUG,DBG_CELLID,cell->cellId,
-            "Con Res Grd Tmr exp RNTI:%d", 
+   DU_LOG("\nDEBUG  -->  SCH : Con Res Grd Tmr exp RNTI:%d", 
             raCb->rntiLnk->rnti);   
    rgSCHRamAddToRaInfoSchdLst(cell, raCb);
    /* MSG4 Fix End */    

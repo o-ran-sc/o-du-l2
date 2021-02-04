@@ -32,9 +32,6 @@
 @brief APIs related to Downlink HARQ for the scheduler.
 */
 
-static const char* RLOG_MODULE_NAME="MAC";
-static int RLOG_FILE_ID=242;
-static int RLOG_MODULE_ID=4096;
 
 /* header include files -- defines (.h) */
 #include "common_def.h"
@@ -321,7 +318,7 @@ RgSchDlHqEnt *rgSCHDhmHqEntInit(RgSchCellCb *cell)
    /* Init the HARQ data structure */
    if (rgSCHUtlAllocSBuf(inst, (Data **)&hqE, sizeof(RgSchDlHqEnt)) != ROK)
    {
-      RLOG_ARG0(L_DEBUG,DBG_CELLID,cell->cellId,
+      DU_LOG(
                                          "rgSCHDhmHqEntInit hqE alloc fail"); 
       return (NULLP);
    }
@@ -331,7 +328,7 @@ RgSchDlHqEnt *rgSCHDhmHqEntInit(RgSchCellCb *cell)
    if (rgSCHUtlAllocSBuf(inst, (Data **)&hqE->procs, 
                            hqE->numHqPrcs * sizeof(RgSchDlHqProcCb)) != ROK)
    {
-      RLOG_ARG0(L_DEBUG,DBG_CELLID,cell->cellId,
+      DU_LOG(
                                          "rgSCHDhmHqEntInit hqP alloc fail in hqE"); 
       return (NULLP);
    }
@@ -391,7 +388,7 @@ S16 rgSCHDhmGetAvlHqProc(RgSchCellCb *cell,RgSchUeCb *ue,CmLteTimingInfo  timing
  
    if (hqE == NULLP)
    {   
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, "rgSCHDhmGetAvlHqProc hqE NULL ue %d"
+      DU_LOG("\nERROR  -->  SCH : rgSCHDhmGetAvlHqProc hqE NULL ue %d"
                            , ue->ueId);     
       return RFAILED;
    }
@@ -401,8 +398,7 @@ S16 rgSCHDhmGetAvlHqProc(RgSchCellCb *cell,RgSchUeCb *ue,CmLteTimingInfo  timing
 
    if (NULLP == tmp)
    {
-    RLOG_ARG3(L_ERROR,DBG_CELLID,cell->cellId,
-                        "rgSCHDhmGetAvlHqProc free %ld inUse %ld ue %d"
+       DU_LOG("\nERROR  -->  SCH : rgSCHDhmGetAvlHqProc free %d inUse %d ue %d"
                                            , hqE->free.count, hqE->inUse.count, ue->ueId);
       /* No Harq Process available in the free queue. */
       return RFAILED;
@@ -866,8 +862,8 @@ rgEmtcsetNullSubFrm(hqP);
          if (hqE->free.count > 8)
          {
             int *p = NULL;
-            printf("Crashing invalid hq count after free \n");
-            printf("Crashing %d \n", *p);
+            DU_LOG("Crashing invalid hq count after free \n");
+            DU_LOG("Crashing %d \n", *p);
             *p = 10;
          }
 #endif
@@ -1109,7 +1105,7 @@ static Void rgSCHDhmFdbkIndHndlTa(RgSchDlHqProcCb *hqP,uint8_t tbIdx,uint8_t fdb
          else
          { 
 #ifdef DEBUGP            
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, "Trying to add CRNTI:%d into TA"
+            DU_LOG("\nERROR  -->  SCH : Trying to add CRNTI:%d into TA"
                      "ACK List twice", ueCb->ueId);
 #endif            
          } 
@@ -1125,8 +1121,7 @@ static Void rgSCHDhmFdbkIndHndlTa(RgSchDlHqProcCb *hqP,uint8_t tbIdx,uint8_t fdb
             hqP->hqE->ue->dl.taCb.state =  RGSCH_TA_IDLE;
 
             rgSCHUtlReTxTa(cell, ueCb);
-            RLOG_ARG0(L_DEBUG,DBG_CELLID,cell->cellId, 
-                  "Nack Rcvd for TA. Max Tries Attempted");
+            DU_LOG("\nERROR  -->  SCH : Nack Rcvd for TA. Max Tries Attempted");
          }
          break;
       case TFU_HQFDB_DTX:
@@ -1371,8 +1366,7 @@ Void rgSCHDhmHqTbTrnsFail(RgSchCellCb *cell,RgSchDlHqProcCb *hqP,uint8_t tbCnt,B
 #ifdef RGR_V1
       if(hqP->hqE->raCb->expiryTime.sfn == RGSCH_CONTRES_EXP)
       {
-         RLOG_ARG1(L_DEBUG,DBG_CELLID,cell->cellId,
-               "rgSCHDhmHqTbTrnsFail contRes exp(): tmpCRNTI = %u",
+         DU_LOG("\nDEBUG  -->  SCH : rgSCHDhmHqTbTrnsFail contRes exp(): tmpCRNTI = %u",
                hqP->hqE->raCb->tmpCrnti);
          rgSCHRamMsg4Done(cell, (RgSchRaCb *)hqP->hqE->raCb);
          return;
@@ -1505,8 +1499,7 @@ Void rgSCHDhmHqTbTrnsFail(RgSchCellCb *cell,RgSchDlHqProcCb *hqP,uint8_t tbCnt,B
 #endif
 
          /* Perform RAM MSG4 done processing */
-         RLOG_ARG1(L_DEBUG,DBG_CELLID,cell->cellId,
-               "rgSCHDhmHqTbTrnsFail(): hq max retx fail: tmpCRNTI = %u",
+         DU_LOG("\nDEBUG  -->  SCH : rgSCHDhmHqTbTrnsFail(): hq max retx fail: tmpCRNTI = %u",
                hqP->hqE->raCb->tmpCrnti);
          rgSCHRamMsg4Done(cell, (RgSchRaCb *)hqP->hqE->raCb);
       }
@@ -2439,8 +2432,7 @@ RgSchErrInfo         *err
          if ( found == FALSE ) 
          {
          RGSCH_NULL_CHECK(cellCb->instIdx, ue);
-         RLOG_ARG3(L_ERROR,DBG_CELLID,cellCb->cellId,"CRNTI:%d"
-         " NO HARQ proc available for feedback:timeInfo:snf %d,slot %d",
+         DU_LOG("\nERROR  -->  SCH : NO HARQ proc available for feedback:timeInfo:snf %d,slot %d",
          ue->ueId,timeInfo.sfn, timeInfo.slot);
          err->errType   = RGSCHERR_DHM_FDBK_IND;
          err->errCause  = RGSCHERR_DHM_FDBK_IND_INVALID_CB;
@@ -2660,13 +2652,13 @@ RgSchErrInfo    *err
          {
             /*RRC Connection Setup failure issue where RRC connection 
              * setup was not reaching UE due to message 4 HARQ failure */
-            printf("\nMSG4 Ack ,calling rgSCHRamMsg4Done\n");
+            DU_LOG("\nMSG4 Ack ,calling rgSCHRamMsg4Done\n");
             ret = rgSCHRamMsg4Done(cell, raCb);
             hqFreed = TRUE;
          }
          else
          {
-            printf("\nraCb is NULLP\n");
+            DU_LOG("\nraCb is NULLP\n");
          }
       }
       else /*ccpu00114124- HARQ Release for Msg4 */
@@ -3191,8 +3183,7 @@ RgSchErrInfo         *err
          {
             if (!sf->relPdcch)
             {
-               RLOG_ARG3(L_ERROR,DBG_CELLID,cell->cellId, 
-                  "CRNTI:%d NO HARQ proc available for feedback: TimingInfo: "
+               DU_LOG("\nERROR  -->  SCH : CRNTI:%d NO HARQ proc available for feedback: TimingInfo: "
                   "sfn %d slot %d", ue->ueId, timingInfo.sfn,
                   timingInfo.slot);
                return RFAILED;
@@ -3871,8 +3862,7 @@ S16 rgSCHDhmRlsDlsfHqProc(RgSchCellCb *cellCb,CmLteTimingInfo uciTimingInfo)
 
                            rgSCHUtlReTxTa(cellCb, ue);
 
-                           RLOG_ARG0(L_DEBUG,DBG_CELLID,cellCb->cellId,
-                                   "Nack/DTX Rcvd for TA. Max Tries Attempted");
+                           DU_LOG("\nDEBUG  -->  SCH : Nack/DTX Rcvd for TA. Max Tries Attempted");
                         }
                      }
                   }
@@ -3956,8 +3946,7 @@ S16 rgSCHDhmRlsDlsfHqProc(RgSchCellCb *cellCb,CmLteTimingInfo uciTimingInfo)
                ue->dl.taCb.state = RGSCH_TA_IDLE;
                
                rgSCHUtlReTxTa(cellCb, ue); 
-               RLOG_ARG0(L_DEBUG,DBG_CELLID,cellCb->cellId,
-                     "Nack/DTX Rcvd for TA. Max Tries Attempted");
+               DU_LOG("\nDEBUG  -->  SCH : Nack/DTX Rcvd for TA. Max Tries Attempted");
                
              }
          }
@@ -4350,7 +4339,7 @@ static S16 rgSCHDhmUpdateAckNackHistory(RgSchCellCb *cell,RgSchUeCb *ueCb,uint8_
       ueDl->laCb[tbCnt].deltaiTbs = ueDl->laCb[tbCnt].deltaiTbs - DL_LA_STEPDOWN; 
    }
    /*
-   printf("deltaiTbs[%d] cqibasediTbs[%d] iTbs[%d] tbCnt[%d]\n", 
+   DU_LOG("deltaiTbs[%d] cqibasediTbs[%d] iTbs[%d] tbCnt[%d]\n", 
            ueDl->laCb[tbCnt].deltaiTbs, ueDl->laCb[tbCnt].cqiBasediTbs, 
            (ueDl->laCb[tbCnt].deltaiTbs + ueDl->laCb[tbCnt].cqiBasediTbs)/100,
            tbCnt);
@@ -4486,8 +4475,8 @@ Void rgSCHDhmHqPAdd2FreeLst(RgSchDlHqProcCb  *hqP)
    if (hqP->hqPLst)
    {
       int *p = NULL;
-      printf("Crashing already part of free lst\n");
-      printf("Crashing %d \n", *p);
+      DU_LOG("Crashing already part of free lst\n");
+      DU_LOG("Crashing %d \n", *p);
       *p = 10;
    }
 #endif
@@ -4499,8 +4488,8 @@ Void rgSCHDhmHqPAdd2FreeLst(RgSchDlHqProcCb  *hqP)
    if (hqP->hqE->free.count > 8)
    {
       int *p = NULL;
-      printf("Crashing invalid hq count\n");
-      printf("Crashing %d \n", *p);
+      DU_LOG("Crashing invalid hq count\n");
+      DU_LOG("Crashing %d \n", *p);
       *p = 10;
    }
 #endif
@@ -4534,8 +4523,8 @@ Void rgSCHDhmHqPAdd2InUseLst(RgSchDlHqProcCb  *hqP)
    if (hqP->hqPLst)
    {
       int *p = NULL;
-      printf("Crashing already part of inuse lst\n");
-      printf("Crashing %d \n", *p);
+      DU_LOG("Crashing already part of inuse lst\n");
+      DU_LOG("Crashing %d \n", *p);
       *p = 10;
    }
 #endif
@@ -4547,8 +4536,8 @@ Void rgSCHDhmHqPAdd2InUseLst(RgSchDlHqProcCb  *hqP)
    if (hqP->hqE->inUse.count > 8)
    {
       int *p = NULL;
-      printf("Crashing invalid hq count \n");
-      printf("Crashing %d \n", *p);
+      DU_LOG("Crashing invalid hq count \n");
+      DU_LOG("Crashing %d \n", *p);
       *p = 10;
    }
 #endif
@@ -4577,8 +4566,8 @@ Void rgSCHDhmHqPDelFrmFreeLst(RgSchDlHqProcCb *hqP)
    if (!hqP->hqPLst)
    {
       int *p = NULL;
-      printf("Crashing not part of any lst\n");
-      printf("Crashing %d \n", *p);
+      DU_LOG("Crashing not part of any lst\n");
+      DU_LOG("Crashing %d \n", *p);
       *p = 10;
    }
 #endif
@@ -4586,8 +4575,8 @@ Void rgSCHDhmHqPDelFrmFreeLst(RgSchDlHqProcCb *hqP)
    if (hqP->hqPLst != &hqP->hqE->free)
    {
       int *p = NULL;
-      printf("Crashing del from wrong lst\n");
-      printf("Crashing %d \n", *p);
+      DU_LOG("Crashing del from wrong lst\n");
+      DU_LOG("Crashing %d \n", *p);
       *p = 10;
    }
 #endif
@@ -4599,8 +4588,8 @@ Void rgSCHDhmHqPDelFrmFreeLst(RgSchDlHqProcCb *hqP)
    if (hqP->hqE->free.count > 8)
    {
       int *p = NULL;
-      printf("Crashing invalid hq count\n");
-      printf("Crashing %d \n", *p);
+      DU_LOG("Crashing invalid hq count\n");
+      DU_LOG("Crashing %d \n", *p);
       *p = 10;
    }
 #endif
@@ -4631,8 +4620,8 @@ Void rgSCHDhmHqPDelFrmInUseLst(RgSchDlHqProcCb *hqP)
    if (!hqP->hqPLst)
    {
       int *p = NULL;
-      printf("Crashing not part of any lst\n");
-      printf("Crashing %d \n", *p);
+      DU_LOG("Crashing not part of any lst\n");
+      DU_LOG("Crashing %d \n", *p);
       *p = 10;
 
    }
@@ -4641,8 +4630,8 @@ Void rgSCHDhmHqPDelFrmInUseLst(RgSchDlHqProcCb *hqP)
    if (hqP->hqPLst != &hqP->hqE->inUse)
    {
       int *p = NULL;
-      printf("Crashing del from wrong lst\n");
-      printf("Crashing %d \n", *p);
+      DU_LOG("Crashing del from wrong lst\n");
+      DU_LOG("Crashing %d \n", *p);
       *p = 10;
    }
 #endif
@@ -4654,8 +4643,8 @@ Void rgSCHDhmHqPDelFrmInUseLst(RgSchDlHqProcCb *hqP)
    if (hqP->hqE->inUse.count > 8)
    {
       int *p = NULL;
-      printf("Crashing invalid hq count\n");
-      printf("Crashing %d \n", *p);
+      DU_LOG("Crashing invalid hq count\n");
+      DU_LOG("Crashing %d \n", *p);
       *p = 10;
    }
 #endif
