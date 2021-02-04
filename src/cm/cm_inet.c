@@ -4017,7 +4017,7 @@ S16             flags           /* additional control flags, unused */
    S32 ret =0;                     /* temporary return value */
    S32 retVal =0;                  /* temporary return value */
    S16 i =0;                       /* loop index */
-   CmInetIovec  txArr[CM_INET_MAX_DBUF] = {0}; /* scatter vector */
+   CmInetIovec  txArr[CM_INET_MAX_DBUF] = {{0}}; /* scatter vector */
    S16      numDBufs =0;           /* number of dBufs in message */
    struct   msghdr msg ={0};         /* sendmsg() message header */
    MsgLen   msgLen =0;             /* message length */ 
@@ -4505,7 +4505,7 @@ S16             flags           /* additional control flags, unused */
    S32 ret;                     /* temporary return value */
    S32 retVal;                  /* temporary return value */
    S16 i;                       /* loop index */
-   CmInetIovec  txArr[CM_INET_MAX_DBUF] ={0}; /* scatter vector */
+   CmInetIovec  txArr[CM_INET_MAX_DBUF] ={{0}}; /* scatter vector */
    S16      numDBufs;           /* number of dBufs in message */
    struct   msghdr msg;         /* sendmsg() message header */
    MsgLen   msgLen;             /* message length */ 
@@ -5726,7 +5726,7 @@ S32              flags          /* additional control flags */
    struct msghdr msg = {0};            /* message header */ 
    /* cm_inet_c_001.main_54: Fix for Klockworks issue */
    Buffer       *tempMsg = NULLP;        /* temporary message */
-   CmInetIovec  rxArr[CM_INET_MAX_DBUF]= {0};  /* dynamic gather array */
+   CmInetIovec  rxArr[CM_INET_MAX_DBUF]= {{0}};  /* dynamic gather array */
    Buffer      **dBufs = NULLP;   /* dynamic array with allocated dBufs */
    S16           numDBufs =0;       /* number of allocated dBufs */
 

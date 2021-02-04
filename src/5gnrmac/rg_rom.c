@@ -544,7 +544,7 @@ static S16 rgROMHndlBcchPcchDatReq(RgCellCb *cell, RgRguCmnDatReq *datReq, RgErr
       return ROK;
    }
 #endif/*RGR_SI_SCH*/
-
+   UNUSED(inst);
    pcch = rgDBMGetPcch(cell);
    if ((pcch) && (pcch->lcId == datReq->lcId))
    {

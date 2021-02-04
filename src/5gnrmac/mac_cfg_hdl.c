@@ -284,6 +284,9 @@ uint8_t MacSchCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
       macCellCfg->initialUlBwp.puschCommon.startSymbol;
    schCellCfg.schInitialUlBwp.puschCommon.lengthSymbol =
       macCellCfg->initialUlBwp.puschCommon.lengthSymbol;
+#ifdef NR_TDD
+   memcpy(&schCellCfg.tddCfg, &macCellCfg->tddCfg, sizeof(TDDCfg));
+#endif
 
    FILL_PST_MAC_TO_SCH(cfgPst, EVENT_SCH_CELL_CFG);
 
