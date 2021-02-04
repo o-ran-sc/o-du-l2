@@ -32,9 +32,6 @@
 @brief This file implements the DRX processing .
 */
 
-static const char* RLOG_MODULE_NAME="MAC";
-static int RLOG_MODULE_ID=4096;
-static int RLOG_FILE_ID=163;
 
 /* header include files -- defines (.h) */
 #include "common_def.h"
@@ -1080,7 +1077,7 @@ S16 rgSCHDrxUeCfg(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeCfg *ueCfg)
          ||
          (ueCfg == (RgrUeCfg* )NULLP))
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId, "rgSCHDrxUeCfg():"
+      DU_LOG("\nERROR  -->  SCH : rgSCHDrxUeCfg():"
                "Invalid params.cell or ue or ueCfg is NULL ");
       return RFAILED;
    }
@@ -1093,8 +1090,7 @@ S16 rgSCHDrxUeCfg(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeCfg *ueCfg)
 
    if(ret != ROK)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-               "Memory allocation FAILED for DRX UECB CRBTI:%d",ue->ueId);
+      DU_LOG("\nERROR  -->  SCH : Memory allocation FAILED for DRX UECB CRBTI:%d",ue->ueId);
       return (ret);
    }
 
@@ -1156,10 +1152,10 @@ S16 rgSCHDrxUeCfg(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeCfg *ueCfg)
    ueDrxCb->distance = (nxtOnDurTime - curTime) / RG_SCH_MAX_DRXQ_SIZE;
    if (ueDrxCb->distance < 0)
    {
-      RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId, "DRXUE. Invalid "
+      DU_LOG("\nERROR  -->  SCH : DRXUE. Invalid "
          "value for distance, %d CRNTI:%d", ueDrxCb->distance,ue->ueId);
    }
-   //printf("The onduartion index is: %d\n",(int)onDurIndx);
+   //DU_LOG("\nDEBUG  -->  SCH : The onduartion index is: %d\n",(int)onDurIndx);
    cmLListAdd2Tail(&(cell->drxCb->drxQ[onDurIndx].onDurationQ), 
          &(ueDrxCb->onDurationEnt));
 
@@ -1227,8 +1223,7 @@ static S16 rgSCHDrxGetNxtOnDur(RgSchCellCb *cell,RgSchDrxUeCb *drxCb,CmLteTiming
        (nxtOnDur == (CmLteTimingInfo* )NULLP)
       )
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
-                        "rgSCHDrxGetNxOnDur():Invalid params."
+      DU_LOG("\nERROR  -->  SCH : rgSCHDrxGetNxOnDur():Invalid params."
                         "cell/drxCb/nxtOnDur is NULL");
       return RFAILED;
    }
@@ -1391,8 +1386,7 @@ S16 rgSCHDrxUeReCfg(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeRecfg  *ueReCfg)
 
      if ( ret != ROK )
      {
-        RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-           "rgSCHdrxUeReCfg():""Memory allocation FAILED for DRX UE Cb CRNTI:%d",
+        DU_LOG("\nERROR  -->  SCH : rgSCHdrxUeReCfg():""Memory allocation FAILED for DRX UE Cb CRNTI:%d",
                   ue->ueId);
         return (ret);
      }
@@ -1505,8 +1499,7 @@ S16 rgSCHDrxUeReCfg(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeRecfg  *ueReCfg)
       if((ueDrxCb->onDurExpIndx != DRX_INVALID) && (ueDrxCb->onDurExpDistance != DRX_TMR_EXPRD))
       {
          curIndx = (curTime + RG_SCH_DRX_DL_DELTA) % RG_SCH_MAX_DRXQ_SIZE;
-         RLOG_ARG3(L_DEBUG,DBG_CELLID,cell->cellId,
-               "OLD ONDUR RUNNING-EXPIRES at %d curIdx-%d nxtOnDurTime-%d",
+         DU_LOG("\nDEBUG  -->  SCH : OLD ONDUR RUNNING-EXPIRES at %d curIdx-%d nxtOnDurTime-%d",
                ueDrxCb->onDurExpIndx, 
                curIndx,
                nxtOnDurTime);  
@@ -1514,11 +1507,13 @@ S16 rgSCHDrxUeReCfg(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeRecfg  *ueReCfg)
          /* Manipulating the time when old onDuration timer can expire */ 
          if(curIndx >= ueDrxCb->onDurExpIndx)
          {
-            onDurExpTime = curTime + ((ueDrxCb->onDurExpDistance+1) * RG_SCH_MAX_DRXQ_SIZE)+ (ueDrxCb->onDurExpIndx - curIndx + RG_SCH_DRX_DL_DELTA); 
+            onDurExpTime = curTime + ((ueDrxCb->onDurExpDistance+1) * RG_SCH_MAX_DRXQ_SIZE)+\
+	    (ueDrxCb->onDurExpIndx - curIndx + RG_SCH_DRX_DL_DELTA); 
          }
          else
          {
-            onDurExpTime = curTime + (ueDrxCb->onDurExpDistance * RG_SCH_MAX_DRXQ_SIZE)+ (ueDrxCb->onDurExpIndx - curIndx + RG_SCH_DRX_DL_DELTA); 
+            onDurExpTime = curTime + (ueDrxCb->onDurExpDistance * RG_SCH_MAX_DRXQ_SIZE)+\
+	    (ueDrxCb->onDurExpIndx - curIndx + RG_SCH_DRX_DL_DELTA); 
          }         
 
          if(nxtOnDurTime <= onDurExpTime)
@@ -1542,7 +1537,7 @@ S16 rgSCHDrxUeReCfg(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeRecfg  *ueReCfg)
       ueDrxCb->distance = (nxtOnDurTime - curTime) / RG_SCH_MAX_DRXQ_SIZE;
       if (ueDrxCb->distance < 0)
       {
-         RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,"DRXUE. Invalid "
+         DU_LOG("\nERROR  -->  SCH : DRXUE. Invalid "
             "value for distance, %d CRNTI:%d", ueDrxCb->distance,ue->ueId);
       }
     
@@ -1748,8 +1743,7 @@ S16 rgSCHDrxCellCfg(RgSchCellCb *cell,RgrCellCfg *cellCfg)
   /*KWORK_FIX :Removed check for cell being NULL*/ 
    if( (cellCfg == (RgrCellCfg* )NULLP))
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
-                "rgSCHDrxCellCfg():Invalid Params. cell/cellCfg is NULL");
+      DU_LOG("\nERROR  -->  SCH : rgSCHDrxCellCfg():Invalid Params. cell/cellCfg is NULL");
       return RFAILED;
    }
 #endif
@@ -1760,7 +1754,7 @@ S16 rgSCHDrxCellCfg(RgSchCellCb *cell,RgrCellCfg *cellCfg)
 
    if(ret != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHDrxCellCfg():"
+      DU_LOG("\nERROR  -->  SCH : rgSCHDrxCellCfg():"
                "Memory allocation FAILED for DRX cell Cb");
       return (ret);
    }
@@ -1854,8 +1848,7 @@ S16 rgSCHDrxSrInd(RgSchCellCb *cell,RgSchUeCb  *ue)
 
    if( (ue == (RgSchUeCb* )NULLP))
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
-                 "rgSCHDrxSrInd():Invalid Params. cell/ue is NULL");
+      DU_LOG("\nERROR  -->  SCH : rgSCHDrxSrInd():Invalid Params. cell/ue is NULL");
       return RFAILED;
    }
  #endif
@@ -1979,7 +1972,7 @@ static Void rgSCHDrxMvToNxtOnDurOcc(RgSchCellCb *cell,RgSchUeCb *ueCb,uint16_t i
       drxUe->distance = (nxtOnDurInSf-curTime) / RG_SCH_MAX_DRXQ_SIZE;
       if (drxUe->distance < 0)
       {
-         RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,"DRXUE. Invalid "
+         DU_LOG("\nERROR  -->  SCH : DRXUE. Invalid "
             "value for distance, %d CRNTI:%d", drxUe->distance,ueCb->ueId);
       }
    }
@@ -2211,7 +2204,7 @@ static Void rgSCHDrxCalcNxtTmrExpry(RgSchCellCb *cell, RgSchUeCb *ue, uint16_t d
       }
       if (*distance < 0)
       {
-         RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId, "DRXUE. Invalid "
+         DU_LOG("\nERROR  -->  SCH : DRXUE. Invalid "
             "value for distance, %d CRNTI:%d", *distance,ue->ueId);
       }      
    }
@@ -2443,7 +2436,7 @@ static Void rgSCHDrxTtiHdlOnDurDl(RgSchCellCb *cell,uint16_t dlIndex)
    drxCell     = (cell->drxCb);
    
    delInUlScan = drxCell->delInUlScan;
-   //printf("CELL  Timer  [SFN : %d],[SF : %d]\n",cell->crntTime.sfn,cell->crntTime.slot);
+   //DU_LOG("\nINFO  -->  SCH : CELL  Timer  [SFN : %d],[SF : %d]\n",cell->crntTime.sfn,cell->crntTime.slot);
    
    node = drxCell->drxQ[dlIndex].onDurationQ.first;
 
@@ -2478,8 +2471,7 @@ static Void rgSCHDrxTtiHdlOnDurDl(RgSchCellCb *cell,uint16_t dlIndex)
       /* Temporary fix to delete stale entry */
       if (drxUe->onDurExpIndx != DRX_INVALID)
       {
-         RLOG_ARG4(L_DEBUG,DBG_CELLID,cell->cellId, 
-               "UEID:%d PreExisted[%d:%d]in onDurExpQ new[%d]",
+         DU_LOG("\nDEBUG  -->  SCH : UEID:%d PreExisted[%d:%d]in onDurExpQ new[%d]",
                ue->ueId, 
                drxUe->onDurExpIndx, 
                drxUe->onDurExpDistance, 
@@ -2507,11 +2499,12 @@ static Void rgSCHDrxTtiHdlOnDurDl(RgSchCellCb *cell,uint16_t dlIndex)
 
       cmLListAdd2Tail(&(drxCell->drxQ[expiryIndex].onDurationExpQ),
             &(drxUe->onDurationExpEnt));
-      //printf("DRXOnDuration Timer Started at [SFN : %d],[SF : %d]\n",cell->crntTime.sfn,cell->crntTime.slot);
+      //DU_LOG("\nINFO  -->  SCH : DRXOnDuration Timer Started at [SFN : %d],[SF : %d]\n",cell->crntTime.sfn,cell->crntTime.slot);
       drxUe->onDurationExpEnt.node = (PTR)ue;
       drxUe->onDurExpIndx          = expiryIndex;
 
-      //printf("DRxOnDuration will Expire = [%d]\n",(cell->crntTime.sfn*10+cell->crntTime.slot+drxUe->onDurTmrLen));
+      //DU_LOG("\nINFO  -->  SCH : DRxOnDuration will Expire = [%d]\n",\
+      (cell->crntTime.sfn*10+cell->crntTime.slot+drxUe->onDurTmrLen));
 
       if ( delInUlScan == FALSE )
       {
@@ -2682,7 +2675,7 @@ static Void rgSCHDrxTtiHdlDlHarqRTT(RgSchCellCb *cell,uint16_t dlIndex)
          }
          else
          {
-            RLOG_ARG4(L_ERROR,DBG_CELLID,cell->cellId,"CRNTI:%d "
+            DU_LOG("\nERROR  -->  SCH : CRNTI:%d "
                "Adding Retx Node to expire at RetxIndx: %d at dlIndex %d "
                "drxHq->reTxIndx %d", ue->ueId, reTxExpIndx, dlIndex, 
                drxHq->reTxIndx); 
