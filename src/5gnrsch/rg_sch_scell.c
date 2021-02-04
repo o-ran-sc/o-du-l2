@@ -220,8 +220,7 @@ Void rgSCHSCellAddToActDeactLst(RgSchCellCb *cell,RgSchUeCb *ue)
    }
    else
    {
-      RGSCHDBGINFONEW(cell->instIdx,(rgSchPBuf(cell->instIdx),
-            "SCell is already added in the Act List: ueId(%u)\n", ue->ueId));
+      DU_LOG("\nINFO  -->  SCH : SCell is already added in the Act List: ueId(%u)\n", ue->ueId);
    }
    
    return;
@@ -299,7 +298,8 @@ Void rgSCHSCellActivation(RgSchUeCellInfo  *sCellInfo)
 #endif
 
 #ifdef CA_DBG 
-   printf("ueId is SCELL_ACTIVE\n ueCb->ueId = %d sCell->sCellIdx =%d, sCell->sCellId=%d, sCell->sCellState=%d \n", ueCb->ueId, sCellInfo->sCellIdx, sCellInfo->sCellId, sCellInfo->sCellState);
+    DU_LOG("\nINFO  -->  SCH : ueId is SCELL_ACTIVE\n ueCb->ueId = %d sCell->sCellIdx =%d,\
+    sCell->sCellId=%d, sCell->sCellState=%d \n", ueCb->ueId, sCellInfo->sCellIdx, sCellInfo->sCellId, sCellInfo->sCellState);
 #endif
    /* Start the sCellDeactivation timer if cfgd */
    if(PRSNT_NODEF == ueCb->sCellDeactTmrVal.pres)
@@ -337,19 +337,18 @@ Void rgSCHSCellActivation(RgSchUeCellInfo  *sCellInfo)
 
       cqiCb->nCqiTrIdx = cqiCb->nCqiTrIdx
          %RG_SCH_PCQI_SRS_SR_TRINS_SIZE;
-      RGSCHDBGINFONEW(inst, (rgSchPBuf(inst), "CQI Config: idx(%u) Periodicity %u"
+      DU_LOG("\nINFO  -->  SCH : CQI Config: idx(%u) Periodicity %u"
                "Offset %u uePosInQ (%u)\n", cqiCfg->cqiSetup.cqiPCfgIdx,
-               cqiCb->cqiPeri, cqiCb->cqiOffset,cqiCb->nCqiTrIdx));
+               cqiCb->cqiPeri, cqiCb->cqiOffset,cqiCb->nCqiTrIdx);
 
       cmLListAdd2Tail(&ueCb->cell->pCqiSrsSrLst[cqiCb->nCqiTrIdx].cqiLst,
             &cqiCb->cqiLstEnt);  
 
       rgSCHUtlSCellHndlCqiCollsn(cqiCb);
 
-      RGSCHDBGINFO(inst,(rgSchPBuf(inst), 
-               "\n rgSCHCfgPCqiUeCfg():"
+      DU_LOG("\nINFO  -->  SCH :  rgSCHCfgPCqiUeCfg():"
                "  CrntTime=%d  Next CqiTrInstTime=%d  Index Stored at=%d  ",
-               crntTime, cqiTrInstTime, cqiCb->nCqiTrIdx));
+               crntTime, cqiTrInstTime, cqiCb->nCqiTrIdx);
 
       if(cqiCfg->cqiSetup.riEna)
       {
@@ -426,25 +425,24 @@ Void rgSCHSCellActivation(RgSchUeCellInfo  *sCellInfo)
          rgSCHUtlSCellHndlRiCollsn(cqiCb);
          /*werror*/
 #ifndef BIT_64
-         RGSCHDBGINFONEW(inst,(rgSchPBuf(inst), "SCel RI cfg:"
+         DU_LOG("\nINFO  -->  SCH : SCel RI cfg:"
                   "idx %u period %u Offset %u posInQ(%u) riDist(%u)lst count"
                   "%lu\n", cqiCfg->cqiSetup.riCfgIdx, cqiCb->riPeri,
                   cqiCb->riOffset, cqiCb->nRiTrIdx, cqiCb->riDist, 
-                  ueCb->cell->pCqiSrsSrLst[cqiCb->nRiTrIdx].riLst.count));
+                  ueCb->cell->pCqiSrsSrLst[cqiCb->nRiTrIdx].riLst.count);
 #else
-         RGSCHDBGINFONEW(inst,(rgSchPBuf(inst), "SCel RI cfg:"
+         DU_LOG("\nINFO  -->  SCH : SCel RI cfg:"
                   "idx %u period %u Offset %u posInQ(%u) riDist(%u)lst count"
                   "%u\n", cqiCfg->cqiSetup.riCfgIdx, cqiCb->riPeri,
                   cqiCb->riOffset, cqiCb->nRiTrIdx, cqiCb->riDist, 
-                  ueCb->cell->pCqiSrsSrLst[cqiCb->nRiTrIdx].riLst.count));
+                  ueCb->cell->pCqiSrsSrLst[cqiCb->nRiTrIdx].riLst.count);
 
 
 #endif
 
-         RGSCHDBGINFO(inst,(rgSchPBuf(inst),
-                  "\n rgSCHSCellActivation(): CrntTime=%d Next RiTrInstTime=%d"
+         DU_LOG("\nINFO  -->  SCH : \n rgSCHSCellActivation(): CrntTime=%d Next RiTrInstTime=%d"
                   "Index Stored at=%d riDis=%d ",
-                  crntTime, riTrInsTime, cqiCb->nRiTrIdx, cqiCb->riDist));
+                  crntTime, riTrInsTime, cqiCb->nRiTrIdx, cqiCb->riDist);
       }
    }
 #endif
@@ -580,7 +578,8 @@ static S16 rgSCHSCellDeActivation(RgSchUeCellInfo *sCellInfo)
    cellSch->apisDl->rgSCHDlSCellDeactv(sCellInfo->cell, sCellInfo->ue);
 
 #ifdef CA_DBG 
-   printf("SCELL DEATIVATED  sCellInfo->ue->ueId =%d, sCellInfo->sCellId =%d\n", sCellInfo->ue->ueId, sCellInfo->sCellId);
+   DU_LOG("\nDEBUG  -->  SCH : SCELL DEATIVATED  sCellInfo->ue->ueId =%d, sCellInfo->sCellId =%d\n",\
+   sCellInfo->ue->ueId, sCellInfo->sCellId);
    //MSPD_DBG("SCELL DEATIVATED  sCellInfo->ue->ueId =%d, sCellInfo->sCellId =%d\n", sCellInfo->ue->ueId, sCellInfo->sCellId);
 #endif
    return ROK;
@@ -614,7 +613,7 @@ static S16 rgSCHSCellTrgMacHqEReset(Inst inst,uint16_t secCellId,uint16_  rnti)
 
    if((secCellCb = (RgSchCellCb *)rgSchUtlGetCellCb(inst, secCellId)) == NULLP)
    {
-      RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "SCell doesnt exists"));
+      DU_LOG("\nERROR  -->  SCH : SCell doesnt exists");
       return RFAILED;
    }
 
@@ -674,7 +673,7 @@ Void rgSCHSCellHndlFdbkInd(RgSchDlHqProcCb *hqP,uint8_t tbIdx,uint8_t  fdbk,Bool
                   if(ueCb->cellInfo[idx]->sCellState == RG_SCH_SCELL_ACTVTN_IN_PROG)
                   {
 #ifdef CA_DBG
-                     printf("\n starting delay timer...\n");
+                     DU_LOG("\nINFO  -->  SCH : starting delay timer...\n");
 #endif                     
                      rgSCHTmrStartTmr (cell,ueCb->cellInfo[idx] ,RG_SCH_TMR_SCELL_ACT_DELAY,
                            RG_SCH_CMN_SCELL_ACT_DELAY_TMR);
@@ -758,7 +757,7 @@ Void rgSCHSCellDeactTmrExpry(RgSchUeCellInfo *sCellInfo)
       }
       else
       {
-         printf (" !!!!!! Avoiding DEACT for UE %d because of LAA Cell !!!!!!!!!!!!! \n",
+         DU_LOG("\nERROR  -->  SCH : !!!!!! Avoiding DEACT for UE %d because of LAA Cell !!!!!!!!!!!!! \n",
          sCellInfo->ue->ueId);
       }
 
@@ -801,15 +800,14 @@ S16 rgSCHSCellTrigActDeact(RgSchCellCb *cell,RgSchUeCb *ueCb,uint8_t sCellIdx,ui
    if((sCellIdx < 1) ||
       (sCellIdx > RGR_MAX_SCELL_PER_UE))
    {
-      RGSCHDBGERRNEW(inst, (rgSchPBuf(inst),"Invalid Serv Cell Idx %d\n", \
-               sCellIdx));
+      DU_LOG("\nERROR  -->  SCH : Invalid Serv Cell Idx %d\n", sCellIdx);
       return RFAILED;
    }
 
    if(ueCb->cellInfo[sCellIdx] == NULLP)
    {
-      RGSCHDBGERRNEW(inst, (rgSchPBuf(inst),"Serv Cell not added to this Ue Scell Idx %d ueId %d\n", \
-              sCellIdx,ueCb->ueId));
+      DU_LOG("\nERROR  -->  SCH : Serv Cell not added to this Ue Scell Idx %d ueId %d\n", \
+              sCellIdx,ueCb->ueId);
       return RFAILED;
    }
 
@@ -819,8 +817,8 @@ S16 rgSCHSCellTrigActDeact(RgSchCellCb *cell,RgSchUeCb *ueCb,uint8_t sCellIdx,ui
       {
          if(ueCb->cellInfo[sCellIdx]->sCellState != RG_SCH_SCELL_INACTIVE)
          {
-            RGSCHDBGERRNEW(inst, (rgSchPBuf(inst),"Invalid state %u for preparing SCell Idx %u for UE %u\n", \
-                     ueCb->cellInfo[sCellIdx]->sCellState, sCellIdx, ueCb->ueId));
+            DU_LOG("\nERROR  -->  SCH : Invalid state %u for preparing SCell Idx %u for UE %u\n", \
+                     ueCb->cellInfo[sCellIdx]->sCellState, sCellIdx, ueCb->ueId);
             ret = RFAILED;
          }
          else
@@ -831,8 +829,10 @@ S16 rgSCHSCellTrigActDeact(RgSchCellCb *cell,RgSchUeCb *ueCb,uint8_t sCellIdx,ui
             /* Setting allocCmnUlPdcch flag to FALSE, So that PDCCH allocation will be done 
                from UE Searchspace */
             ueCb->allocCmnUlPdcch = FALSE;
-            printf("\n***** SCellIdx=%d state Changed to %d State \n",sCellIdx, ueCb->cellInfo[sCellIdx]->sCellState);
-            printf("\n***** SCellInfo Addr=%p state Changed to RG_SCH_SCELL_READY\n",(void*)ueCb->cellInfo[sCellIdx]);
+            DU_LOG("\nINFO  -->  SCH : ***** SCellIdx=%d state Changed to %d State \n",sCellIdx,\
+	    ueCb->cellInfo[sCellIdx]->sCellState);
+            DU_LOG("\nINFO  -->  SCH : ***** SCellInfo Addr=%p state Changed to RG_SCH_SCELL_READY\n",\
+	    (void*)ueCb->cellInfo[sCellIdx]);
          }
          break;
       }
@@ -840,8 +840,8 @@ S16 rgSCHSCellTrigActDeact(RgSchCellCb *cell,RgSchUeCb *ueCb,uint8_t sCellIdx,ui
       {
          if(ueCb->cellInfo[sCellIdx]->sCellState != RG_SCH_SCELL_READY)
          {
-            RGSCHDBGERRNEW(inst, (rgSchPBuf(inst),"Invalid state %u for activating SCell Idx %u for UE %u\n", \
-                     ueCb->cellInfo[sCellIdx]->sCellState, sCellIdx, ueCb->ueId));
+            DU_LOG("\nERROR  -->  SCH : Invalid state %u for activating SCell Idx %u for UE %u\n", \
+                     ueCb->cellInfo[sCellIdx]->sCellState, sCellIdx, ueCb->ueId);
             ret = RFAILED;
          }
          else
@@ -859,8 +859,8 @@ S16 rgSCHSCellTrigActDeact(RgSchCellCb *cell,RgSchUeCb *ueCb,uint8_t sCellIdx,ui
       {
          if(ueCb->cellInfo[sCellIdx]->sCellState != RG_SCH_SCELL_ACTIVE)
          {
-            RGSCHDBGERRNEW(inst, (rgSchPBuf(inst),"Invalid state %u for deactivating SCell Idx %u for UE %u\n", \
-                     ueCb->cellInfo[sCellIdx]->sCellState, sCellIdx, ueCb->ueId));
+            DU_LOG("\nERROR  -->  SCH : Invalid state %u for deactivating SCell Idx %u for UE %u\n", \
+                     ueCb->cellInfo[sCellIdx]->sCellState, sCellIdx, ueCb->ueId);
             ret = RFAILED;
          }
          else
@@ -876,8 +876,8 @@ S16 rgSCHSCellTrigActDeact(RgSchCellCb *cell,RgSchUeCb *ueCb,uint8_t sCellIdx,ui
       }
       default:
       {
-         RGSCHDBGERRNEW(inst, (rgSchPBuf(inst),"Invalid action received for SCell Idx %u for UE %u\n", \
-                  sCellIdx, ueCb->ueId));
+         DU_LOG("\nERROR  -->  SCH : Invalid action received for SCell Idx %u for UE %u\n", \
+                  sCellIdx, ueCb->ueId);
          ret = RFAILED;
          break;
       }
@@ -954,8 +954,8 @@ Void rgSCHSCellSelectAndActDeAct(RgSchCellCb  *pCell,RgSchUeCb *ueCb,uint8_t act
    if ((ret != ROK) || 
          (ROK != (rgSCHSCellTrigActDeact(pCell, ueCb, sCellIdx, action))))
    {
-      RGSCHDBGERR(pCell->instIdx,(rgSchPBuf(pCell->instIdx), "SCell Actication failed"
-               "for UE [%d] with SCellIdx [%d]\n", ueCb->ueId, sCellIdx));
+      DU_LOG("\nERROR  -->  SCH : SCell Actication failed"
+               "for UE [%d] with SCellIdx [%d]\n", ueCb->ueId, sCellIdx);
    }
    return;
 }
@@ -992,9 +992,9 @@ Void rgSCHSCellDelUeSCell(RgSchCellCb  *cellCb,RgSchUeCb *ueCb,uint8_t sCellIdx)
 
    if(sCellInfo == NULLP)
    {
-      RGSCHDBGERRNEW(inst, (rgSchPBuf(inst),"Serv Cell not added to this Ue Scell Idx %d\
+      DU_LOG("\nERROR  -->  SCH : Serv Cell not added to this Ue Scell Idx %d\
                ueId %d\n",
-               sCellIdx,ueCb->ueId));
+               sCellIdx,ueCb->ueId);
       return;
    }
 
@@ -1116,15 +1116,14 @@ uint8_t sCellIdx
    RgSchUeCellInfo *sCellInfo;
    RgSchUePCqiCb *cqiCb = NULLP;
 
-   RGSCHDBGINFO(priCellCb->instIdx, (rgSchPBuf(priCellCb->instIdx), 
-            "rgSCHSCellPCqiCfg cellId =%d, ueId = %d, CfgType =%d\n",
-            secCellCb->cellId,  ueCb->ueId, cqiCfg->type));
+   DU_LOG("\nINFO  -->  SCH : rgSCHSCellPCqiCfg cellId =%d, ueId = %d, CfgType =%d\n",
+            secCellCb->cellId,  ueCb->ueId, cqiCfg->type);
    
    if((sCellIdx < 1) ||
       (sCellIdx > RGR_MAX_SCELL_PER_UE))
    {
-      RGSCHDBGERRNEW(inst, (rgSchPBuf(inst),"Invalid Serv Cell Idx %d\n",
-               sCellIdx));
+      DU_LOG("\nERROR  -->  SCH : Invalid Serv Cell Idx %d\n",
+               sCellIdx);
       return RFAILED;
    }
 
@@ -1151,9 +1150,8 @@ uint8_t sCellIdx
 #endif
 
 
-      RGSCHDBGINFO(priCellCb->instIdx,(rgSchPBuf(priCellCb->instIdx), 
-               "\n rgSCHSCellPCqiCfg(): CQI Peri=%d, CQI Offset=%d", 
-               cqiCb->cqiPeri,cqiCb->cqiOffset));
+      DU_LOG("\nDEBUG  -->  SCH :  rgSCHSCellPCqiCfg(): CQI Peri=%d, CQI Offset=%d", 
+               cqiCb->cqiPeri,cqiCb->cqiOffset);
 
       if(RGR_UE_PCQI_SB_REP == cqiCfg->cqiSetup.cqiRepType)
       {
@@ -1186,9 +1184,8 @@ uint8_t sCellIdx
                cqiCfg->cqiSetup.riCfgIdx,
                &cqiCb->riPeri, &cqiCb->riOffset);
 
-         RGSCHDBGINFO(priCellCb->instIdx,(rgSchPBuf(priCellCb->instIdx),
-                  "\n rgSCHSCellPCqiCfg(): RI Peri=%d, RI Offset=%d", 
-                  cqiCb->riPeri,cqiCb->riOffset));
+         DU_LOG("\nDEBUG  -->  SCH :  rgSCHSCellPCqiCfg(): RI Peri=%d, RI Offset=%d", 
+                  cqiCb->riPeri,cqiCb->riOffset);
 
          if(ueCb->cellInfo[sCellIdx]->txMode.txModeEnum == RGR_UE_TM_3 
                || ueCb->cellInfo[sCellIdx]->txMode.txModeEnum == RGR_UE_TM_4)
