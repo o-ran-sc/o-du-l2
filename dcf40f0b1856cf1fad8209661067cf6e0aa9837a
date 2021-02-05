@@ -16,6 +16,24 @@
       "revId": "dcf40f0b1856cf1fad8209661067cf6e0aa9837a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e5eb9759_b22299a3",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-05T14:02:48Z",
+      "side": 1,
+      "message": "the entire pattern has been written just above this function",
+      "parentUuid": "c30485ba_d0707c38",
+      "revId": "dcf40f0b1856cf1fad8209661067cf6e0aa9837a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
