@@ -155,7 +155,7 @@ uint8_t schFillBoGrantDlSchedInfo(SchCellCb *cell, DlSchedInfo *dlSchedInfo, DlM
       SCH_ALLOC(dlMsgAlloc, sizeof(DlMsgAlloc));
       if(!dlMsgAlloc)
       {
-	 DU_LOG("\nMAC: Memory Allocation failed for ded DL msg alloc");
+	 DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for ded DL msg alloc");
 	 return RFAILED;
       }
       memset(dlMsgAlloc, 0, sizeof(DlMsgAlloc));
@@ -282,7 +282,7 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
       ret = schBroadcastAlloc(cell,dlBrdcstAlloc,slot);
       if(ret != ROK)
       {
-	 DU_LOG("\nschBroadcastAlloc failed");
+	 DU_LOG("\nERROR  -->  SCH : schBroadcastAlloc failed");
 	 return (ret);
       }
    }
@@ -294,7 +294,7 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
       SCH_ALLOC(rarAlloc, sizeof(RarAlloc));
       if(!rarAlloc)
       {
-	 DU_LOG("\nMAC: Memory Allocation failed for RAR alloc");
+	 DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for RAR alloc");
 	 return RFAILED;
       }
 
@@ -322,7 +322,7 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
       SCH_ALLOC(msg4Alloc, sizeof(DlMsgAlloc));
       if(!msg4Alloc)
       {
-	 DU_LOG("\nMAC: Memory Allocation failed for msg4 alloc");
+	 DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for msg4 alloc");
 	 return RFAILED;
       }
 
@@ -369,7 +369,7 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
 	 SCH_ALLOC(dciInfo, sizeof(DciInfo));
 	 if(!dciInfo)
 	 {
-	    DU_LOG("\nMAC: Memory Allocation failed for dciInfo alloc");
+	    DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for dciInfo alloc");
 	    return RFAILED;
 	 }
 	 memset(dciInfo,0,sizeof(DciInfo));
@@ -396,7 +396,7 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
    ret = sendDlAllocToMac(&dlSchedInfo, schInst);
    if(ret != ROK)
    {
-      DU_LOG("\nSending DL Broadcast allocation from SCH to MAC failed");
+      DU_LOG("\nERROR  -->  SCH : Sending DL Broadcast allocation from SCH to MAC failed");
       return (ret);
    }
 

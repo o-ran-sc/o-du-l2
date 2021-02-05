@@ -32,9 +32,6 @@
 @brief This module handles schedulers' power control functionality
 */
 
-static const char* RLOG_MODULE_NAME="MAC";
-static int RLOG_MODULE_ID=4096;
-static int RLOG_FILE_ID=188;
 /* header include files -- defines (.h) */
 #include "common_def.h"
 #include "lrg.h"
@@ -599,11 +596,9 @@ static Void rgSCHPwrPuschCntrl(RgSchCellCb *cell,RgSchUeCb   *ue)
        }
 #endif
    }
-   RLOG_ARG4(L_UNUSED,DBG_CELLID,cell->cellId,
-         "UEID:%d Output Max Rb (%d), phVal (%d) AvailPwr (%d) ",
+   DU_LOG("\nDEBUG  -->  SCH : UEID:%d Output Max Rb (%d), phVal (%d) AvailPwr (%d) ",
          ue->ueId, maxRb, uePwr->phVal, availPwr);
-   RLOG_ARG3(L_UNUSED,DBG_CELLID,cell->cellId,
-         "UEID:%d pwrPerRb %d remPuschPwr %d", 
+   DU_LOG("\nDEBUG  -->  SCH : UEID:%d pwrPerRb %d remPuschPwr %d", 
          ue->ueId,
          uePwr->pwrPerRb,
          uePwr->remPuschPwr);
@@ -1860,8 +1855,7 @@ Void rgSCHPwrUpdPhr(RgSchCellCb *cell,RgSchUeCb *ue,uint8_t phr,RgSchCmnAllocRec
 
    rgSCHPwrOnPuschPwrUpd(cell, ue);
 
-   RLOG_ARG4(L_DEBUG,DBG_UEID,ue->ueId,
-         "Output: Reported PHR[%d] cqi[%u] allocRb[%u] uePwr->pwrPerRb[%d]",
+   DU_LOG("\nDEBUG  -->  SCH : Output: Reported PHR[%d] cqi[%u] allocRb[%u] uePwr->pwrPerRb[%d]",
             uePwr->phVal,
             allocInfo->cqi,
             allocInfo->numRb,  
@@ -2345,31 +2339,25 @@ static S16 rgSCHPwrApplyUePwrCfg(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeUlPwrCfg *
       }
       uePwr->pucchIdx = pucchIdx;
 #ifndef ALIGN_64BIT
-      RLOG_ARG4(L_UNUSED,DBG_CELLID,cell->cellId,
-               "<GRP_PWR>PucchRntiCb cfgdUes(%ld %lu %lu) UEID:%d",
+       DU_LOG("\nDEBUG  -->  SCH : <GRP_PWR>PucchRntiCb cfgdUes(%ld %lu %lu) UEID:%d",
                pucchRntiCb->cfgdUes.count,((uint32_t)pucchRntiCb->cfgdUes.first),
                ((uint32_t)pucchRntiCb->cfgdUes.last),ue->ueId);
-      RLOG_ARG3(L_UNUSED,DBG_CELLID,cell->cellId,
-               "UEID:%d isFmt3a(%u) ueNode(%ld)",
+       DU_LOG("\nDEBUG  -->  SCH : UEID:%d isFmt3a(%u) ueNode(%ld)",
                ue->ueId,pucchRntiCb->isFmt3a,
                pucchRntiCb->schdLnk.node);
-      RLOG_ARG4(L_UNUSED,DBG_CELLID,cell->cellId,
-               "toBeSchdUes(%ld %lu %lu) tpcRnti(%u)", 
+       DU_LOG("\nDEBUG  -->  SCH : toBeSchdUes(%ld %lu %lu) tpcRnti(%u)", 
                pucchRntiCb->toBeSchdUes.count, 
                ((uint32_t)pucchRntiCb->toBeSchdUes.first),
                ((uint32_t)pucchRntiCb->toBeSchdUes.last), 
                pucchRntiCb->tpcRnti);
 #else
-      RLOG_ARG4(L_UNUSED,DBG_CELLID,cell->cellId,
-               "<GRP_PWR>PucchRntiCb cfgdUes(%ld %lu %lu) UEID:%d",
+      DU_LOG("\nDEBUG  -->  SCH : <GRP_PWR>PucchRntiCb cfgdUes(%d %lu %lu) UEID:%d",
                pucchRntiCb->cfgdUes.count,((uint64_t)pucchRntiCb->cfgdUes.first),
                ((uint64_t)pucchRntiCb->cfgdUes.last),ue->ueId);
-      RLOG_ARG3(L_UNUSED,DBG_CELLID,cell->cellId,
-               "UEID:%d isFmt3a(%u) ueNode(%ld)",
+      DU_LOG("\nDEBUG  -->  SCH : UEID:%d isFmt3a(%u) ueNode(%ld)",
                ue->ueId,pucchRntiCb->isFmt3a,
                pucchRntiCb->schdLnk.node);
-      RLOG_ARG4(L_UNUSED,DBG_CELLID,cell->cellId,
-               "toBeSchdUes(%ld %lu %lu) tpcRnti(%u)", 
+      DU_LOG("\nDEBUG  -->  SCH : toBeSchdUes(%d %lu %lu) tpcRnti(%u)", 
                pucchRntiCb->toBeSchdUes.count, 
                ((uint64_t)pucchRntiCb->toBeSchdUes.first),
                ((uint64_t)pucchRntiCb->toBeSchdUes.last), 

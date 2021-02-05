@@ -31,9 +31,6 @@
 /** @file rg_sch_dbm.c
 @brief This file contains the APIs exposed for the database handling of the scheduler.
 */
-static const char* RLOG_MODULE_NAME="MAC";
-static int RLOG_FILE_ID=230;
-static int RLOG_MODULE_ID=4096;
 /* header include files -- defines (.h) */
 #include "common_def.h"
 #include "lrg.h"
@@ -1312,7 +1309,7 @@ RgSchRntiLnk* rgSCHDbmGetRnti(RgSchCellCb *cellCb)
 
    if (!(cellCb->rntiDb.freeRnti))
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId,"RNTI exhausted count:%d",
+      DU_LOG("\nERROR  -->  SCH : RNTI exhausted count:%d",
                 cellCb->rntiDb.count);
       return (NULLP);
    }
@@ -1335,7 +1332,7 @@ RgSchRntiLnk* rgSCHDbmGetRnti(RgSchCellCb *cellCb)
 
    cellCb->rntiDb.count--;
 
-   printf("rgSCHDbmGetRnti::rntiLnk->rnti %u\n",rntiLnk->rnti);
+   DU_LOG("\nINFO  -->  SCH : rgSCHDbmGetRnti::rntiLnk->rnti %u\n",rntiLnk->rnti);
    return (rntiLnk);
 } /* rgSCHDbmGetRnti */
 

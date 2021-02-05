@@ -31,9 +31,6 @@
 /** @file rg_sch_tmr.c 
 @brief This module does processing related to timers for the scheduler.
 */
-static const char* RLOG_MODULE_NAME="MAC";
-static int RLOG_MODULE_ID=4096;
-static int RLOG_FILE_ID=175;
 
 /* header include files -- defines (.h) */
 #include "common_def.h"
@@ -101,8 +98,7 @@ Void rgSCHTmrStartTmr(RgSchCellCb *cell,Ptr cb,S16 tmrEvnt,uint32_t tmrVal)
    {
       case RG_SCH_TMR_ACKNACK_REP:
          arg.timers = &(ue->ackNakRepCb.ackNakRepTmr);
-         RLOG_ARG0(L_ERROR,DBG_INSTID,cell->instIdx, 
-            "Hit AckNackRep timer");
+           DU_LOG("\nINFO  -->  SCH : Hit AckNackRep timer");
          break;
       case RG_SCH_TMR_MEASGAP:
          arg.timers = &(ue->measGapCb.measGapTmr);
@@ -158,8 +154,7 @@ Void rgSCHTmrStartTmr(RgSchCellCb *cell,Ptr cb,S16 tmrEvnt,uint32_t tmrVal)
          }
 #endif
       default:
-         RLOG_ARG0(L_ERROR,DBG_INSTID,cell->instIdx,  
-            "rgSCHTmrStartTmr() Incorrect Timer event");
+         DU_LOG("\nERROR  -->  SCH : rgSCHTmrStartTmr() Incorrect Timer event");
          return;
    }
 
@@ -272,8 +267,7 @@ Void rgSCHTmrStopTmr(RgSchCellCb *cell,S16 tmrEvnt,Ptr cb)
 #endif
 
       default:
-         RLOG_ARG0(L_ERROR,DBG_INSTID,cell->instIdx,  
-            "rgSCHTmrStopTmr() Incorrect Timer event");
+         DU_LOG("\nERROR  -->  SCH : rgSCHTmrStopTmr() Incorrect Timer event");
          return;
    }
 
@@ -343,7 +337,7 @@ Void rgSCHTmrProcTmr(Ptr cb,S16 tmrEvnt)
          /*TODO Needto handle TA Timer expiry for EMTC UE*/
          if(TRUE == ue->isEmtcUe)
          {
-            RLOG0(L_INFO,"TA Timer Expiry is not handled for EMTC UE\n");
+            DU_LOG("\nINFO  -->  SCH : TA Timer Expiry is not handled for EMTC UE\n");
             break;
          }
 #endif
@@ -385,8 +379,7 @@ Void rgSCHTmrProcTmr(Ptr cb,S16 tmrEvnt)
       default:
         if(ue)
         {
-           RLOG_ARG0(L_ERROR,DBG_INSTID,ue->cell->instIdx,  
-                 "rgSCHTmrProcTmr() Incorrect Timer event");
+            DU_LOG("\nERROR  -->  SCH : rgSCHTmrProcTmr() Incorrect Timer event");
         }
          return;
    }
