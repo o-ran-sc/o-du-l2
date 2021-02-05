@@ -32,9 +32,6 @@
 @brief This file implements the schedulers main access to MAC layer code.
 */
 
-static const char* RLOG_MODULE_NAME="MAC";
-static int RLOG_FILE_ID=187;
-static int RLOG_MODULE_ID=4096;
 
 /* header include files -- defines (.h) */
 #include "common_def.h"
@@ -2813,15 +2810,13 @@ static S16 rgSCHCmnCcchSduAlloc(RgSchCellCb *cell,RgSchUeCb *ueCb,RgSchCmnDlRbAl
    if (allocInfo->ccchSduAlloc.ccchSduDlSf->bw <=
        allocInfo->ccchSduAlloc.ccchSduDlSf->bwAssigned)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-         "bw<=bwAssigned for UEID:%d",ueCb->ueId);
+      DU_LOG("\nERROR  -->  SCH : bw<=bwAssigned for UEID:%d",ueCb->ueId);
       return RFAILED;
    }
 
    if (rgSCHDhmGetCcchSduHqProc(ueCb, cellSch->dl.time, &(ueDl->proc)) != ROK)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-         "rgSCHDhmGetCcchSduHqProc failed UEID:%d",ueCb->ueId);
+      DU_LOG("\nERROR  -->  SCH : rgSCHDhmGetCcchSduHqProc failed UEID:%d",ueCb->ueId);
       return RFAILED;
    }
 
@@ -2832,8 +2827,7 @@ static S16 rgSCHCmnCcchSduAlloc(RgSchCellCb *cell,RgSchUeCb *ueCb,RgSchCmnDlRbAl
    {
       /* Fix : syed Minor failure handling, release hqP if Unsuccessful */    
       rgSCHDhmRlsHqpTb(ueDl->proc, 0, FALSE);
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-         "rgSCHCmnCcchSduDedAlloc failed UEID:%d",ueCb->ueId);
+      DU_LOG("\nERROR  -->  SCH : rgSCHCmnCcchSduDedAlloc failed UEID:%d",ueCb->ueId);
       return RFAILED;
    }
    cmLListAdd2Tail(&allocInfo->ccchSduAlloc.ccchSduTxLst, &ueDl->proc->reqLnk);
@@ -2894,7 +2888,7 @@ static Void rgSCHCmnDlCcchSduTx(RgSchCellCb *cell,RgSchCmnDlRbAllocInfo *allocIn
          }
          else
          {
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"ERROR!! THIS SHOULD "
+            DU_LOG("\nERROR  -->  SCH :  THIS SHOULD "
                      "NEVER HAPPEN for UEID:%d", ueCb->ueId);
             continue;
          }
@@ -3167,7 +3161,7 @@ static Void rgSCHCmnDlBcchPcch(RgSchCellCb *cell,RgSchCmnDlRbAllocInfo *allocInf
 #if (ERRCLASS & ERRCLS_DEBUG)
    if (bch == NULLP)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"BCCH on BCH is not configured");
+      DU_LOG("\nERROR  -->  SCH : BCCH on BCH is not configured");
       return;
    }
 #endif
@@ -3196,7 +3190,7 @@ static Void rgSCHCmnDlBcchPcch(RgSchCellCb *cell,RgSchCmnDlRbAllocInfo *allocInf
 #if (ERRCLASS & ERRCLS_DEBUG)
    if (bcch == NULLP)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"BCCH on DLSCH is not configured");
+      DU_LOG("\nERROR  -->  SCH : BCCH on DLSCH is not configured");
       return;
    }
 #endif
@@ -3219,7 +3213,7 @@ static Void rgSCHCmnDlBcchPcch(RgSchCellCb *cell,RgSchCmnDlRbAllocInfo *allocInf
 #if (ERRCLASS & ERRCLS_DEBUG)
       if (bcch == NULLP)
       {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"BCCH on DLSCH is not configured");
+         DU_LOG("\nERROR  -->  SCH : BCCH on DLSCH is not configured");
          return;
       }
 #endif
@@ -3259,7 +3253,7 @@ static Void rgSCHCmnDlBcchPcch(RgSchCellCb *cell,RgSchCmnDlRbAllocInfo *allocInf
 #ifdef ERRCLS_KW
    if (pcch == NULLP)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"PCCH on DLSCH is not configured");
+      DU_LOG("\nERROR  -->  SCH : PCCH on DLSCH is not configured");
       return;
    }
 #endif
@@ -3438,7 +3432,7 @@ static Void rgSCHCmnClcAlloc(RgSchCellCb *cell,RgSchDlSf *sf,RgSchClcDlLcCb  *lc
     * exceeds the available */
    if (rb > sf->bw - sf->bwAssigned)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"BW allocation "
+      DU_LOG("\nERROR  -->  SCH : BW allocation "
                 "failed for CRNTI:%d",rnti);
       return;
    }
@@ -3547,9 +3541,7 @@ RgSchPdcch *rgSCHCmnCmnPdcchAlloc(RgSchCellCb *cell,RgSchDlSf *subFrm)
 
    /* PDCCH Allocation Failed, Mark cceFailure flag as TRUE */
    subFrm->isCceFailure = TRUE;
-
-   RLOG_ARG1(L_DEBUG,DBG_CELLID,cell->cellId,
-	    "PDCCH ERR: NO PDDCH AVAIL IN COMMON SEARCH SPACE aggr:%u", 
+   DU_LOG("\nDEBUG  -->  SCH : PDCCH ERR: NO PDDCH AVAIL IN COMMON SEARCH SPACE aggr:%u", 
 	    aggrLvl);
    return (NULLP);
 }
@@ -3672,15 +3664,13 @@ static S16 rgSCHCmnMsg4Alloc(RgSchCellCb *cell,RgSchRaCb *raCb,RgSchCmnDlRbAlloc
    if (allocInfo->msg4Alloc.msg4DlSf->bw <=
        allocInfo->msg4Alloc.msg4DlSf->bwAssigned)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId ,
-         "bw<=bwAssigned");
+      DU_LOG("\nERROR  -->  SCH : bw<=bwAssigned");
       return RFAILED;
    }
 
    if (rgSCHDhmGetMsg4HqProc(raCb, cellSch->dl.time) != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
-         "rgSCHDhmGetMsg4HqProc failed");
+      DU_LOG("\nERROR  -->  SCH : rgSCHDhmGetMsg4HqProc failed");
       return RFAILED;
    }
 
@@ -3690,8 +3680,7 @@ static S16 rgSCHCmnMsg4Alloc(RgSchCellCb *cell,RgSchRaCb *raCb,RgSchCmnDlRbAlloc
    {
       /* Fix : syed Minor failure handling, release hqP if Unsuccessful */    
       rgSCHDhmRlsHqpTb(raCb->dlHqE->msg4Proc, 0, FALSE);
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
-         "rgSCHCmnMsg4DedAlloc failed.");
+      DU_LOG("\nERROR  -->  SCH : rgSCHCmnMsg4DedAlloc failed.");
       return RFAILED;
    }
    cmLListAdd2Tail(&allocInfo->msg4Alloc.msg4TxLst, &raCb->dlHqE->msg4Proc->reqLnk);
@@ -3796,8 +3785,7 @@ RgSchPdcch *rgSCHCmnPdcchAlloc(RgSchCellCb *cell,RgSchUeCb *ue,RgSchDlSf *subFrm
    {
       /* PDCCH Allocation Failed, Mark cceFailure flag as TRUE */
       subFrm->isCceFailure = TRUE;
-      RLOG_ARG1(L_DEBUG,DBG_CELLID,cell->cellId,
-            "PDCCH ERR: NO PDDCH AVAIL IN UE SEARCH SPACE :aggr(%u)", 
+      DU_LOG("\nDEBUG  -->  SCH : PDCCH ERR: NO PDDCH AVAIL IN UE SEARCH SPACE :aggr(%u)", 
             aggrLvl);
 
       return (NULLP);
@@ -3842,8 +3830,7 @@ RgSchPdcch *rgSCHCmnPdcchAlloc(RgSchCellCb *cell,RgSchUeCb *ue,RgSchDlSf *subFrm
    /* PDCCH Allocation Failed, Mark cceFailure flag as TRUE */
    subFrm->isCceFailure = TRUE;
 
-   RLOG_ARG1(L_DEBUG,DBG_CELLID,cell->cellId,
-         "PDCCH ERR: NO PDDCH AVAIL IN UE SEARCH SPACE :aggr(%u)",
+   DU_LOG("\nDEBUG  -->  SCH : PDCCH ERR: NO PDDCH AVAIL IN UE SEARCH SPACE :aggr(%u)",
          aggrLvl);
    return (NULLP);
 }
@@ -4243,16 +4230,14 @@ static S16 rgSCHCmnRaRspAlloc(RgSchCellCb *cell,RgSchDlSf *subFrm,uint16_t raInd
 
    if (subFrm->bw == subFrm->bwAssigned)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-         "bw == bwAssigned RARNTI:%d",rarnti);
+      DU_LOG("\nERROR  -->  SCH : bw == bwAssigned RARNTI:%d",rarnti);
       return RFAILED;
    }
 
    reqLst = &cell->raInfo.raReqLst[raIndex];
    if (reqLst->count == 0)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-         "reqLst Count=0 RARNTI:%d",rarnti);
+      DU_LOG("\nERROR  -->  SCH : reqLst Count=0 RARNTI:%d",rarnti);
       return RFAILED;
    }
    remNumRapid = reqLst->count;
@@ -4315,13 +4300,13 @@ static S16 rgSCHCmnRaRspAlloc(RgSchCellCb *cell,RgSchDlSf *subFrm,uint16_t raInd
       /* Allocation succeeded for 'remNumRapid' */
       isAlloc = TRUE;
       tbs = allwdTbSz/8;
-      printf("\n!!!RAR alloc noBytes:%u,allwdTbSz:%u,tbs:%u,rb:%u\n",
+      DU_LOG("\nINFO  -->  SCH : RAR alloc noBytes:%u,allwdTbSz:%u,tbs:%u,rb:%u\n",
                                       noBytes,allwdTbSz,tbs,rb);
       break;
    }
    if (!isAlloc)
    {
-      RLOG_ARG0(L_INFO,DBG_CELLID,cell->cellId,"BW alloc Failed");
+      DU_LOG("\nERROR  -->  SCH : BW alloc Failed");
       return RFAILED;
    }
 
@@ -4447,8 +4432,7 @@ uint8_t         *hqProcIdRef
          }
          else
          {
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-                     "Error! holeDb sanity check failed RNTI:%d",rnti);
+            DU_LOG("\nERROR  -->  SCH :  holeDb sanity check failed RNTI:%d",rnti);
          } 
       }
       if (numSb <= hole->num)
@@ -4478,16 +4462,13 @@ uint8_t         *hqProcIdRef
          alloc->forMsg3       = TRUE;
          alloc->hqProc        = hqProc;
          rgSCHUhmNewTx(hqProc, (uint8_t)(cell->rachCfg.maxMsg3Tx - 1), alloc);
-         //RLOG_ARG4(L_DEBUG,DBG_CELLID,cell->cellId,
-         printf(
-               "\nRNTI:%d MSG3 ALLOC proc(%lu)procId(%d)schdIdx(%d)\n",
+         DU_LOG("\nDEBUG  -->  SCH : RNTI:%d MSG3 ALLOC proc(%lu)procId(%d)schdIdx(%d)\n",
                alloc->rnti,
                ((PTR)alloc->hqProc),
                alloc->hqProc->procId,
                alloc->hqProc->ulSfIdx);
-         RLOG_ARG2(L_DEBUG,DBG_CELLID,cell->cellId,
-               "alloc(%p)maxMsg3Tx(%d)",
-               ((PTR)alloc),
+         DU_LOG("\nDEBUG  -->  SCH : alloc(%p)maxMsg3Tx(%d)",
+               ((void *)alloc),
                cell->rachCfg.maxMsg3Tx);
       }
    }
@@ -4791,7 +4772,7 @@ Void rgSCHCmnDlSetUeAllocLmtLa(RgSchCellCb *cell,RgSchUeCb *ue)
 #ifdef RG_5GTF
          ue->ue5gtfCb.mcs = ueDl->mimoInfo.cwInfo[cwIdx].iTbs[0];
          /*
-         printf("reportediTbs[%d] cqiBasediTbs[%d] deltaiTbs[%d] iTbsNew[%d] mcs[%d] cwIdx[%d]\n", 
+         DU_LOG("\nINFO   -->  SCH : reportediTbs[%d] cqiBasediTbs[%d] deltaiTbs[%d] iTbsNew[%d] mcs[%d] cwIdx[%d]\n", 
                  reportediTbs, ueDl->laCb[cwIdx].cqiBasediTbs, ueDl->laCb[cwIdx].deltaiTbs,
                  iTbsNew, ue->ue5gtfCb.mcs, cwIdx);
          */
@@ -4968,7 +4949,7 @@ Void rgSCHCmnFillPdcch(RgSchCellCb *cell,RgSchPdcch *pdcch,RgSchDlRbAlloc *rbAll
 
       case TFU_DCI_FORMAT_B2:
 	 {
-            //printf(" RG_5GTF:: Pdcch filling with DCI format B2\n");
+            //DU_LOG("\nINFO   -->  SCH : RG_5GTF:: Pdcch filling with DCI format B2\n");
 	    /* ToDo: Anoop */
 	    break; /* case TFU_DCI_FORMAT_B2: */
 	 }
@@ -5041,7 +5022,7 @@ Void rgSCHCmnFillPdcch(RgSchCellCb *cell,RgSchPdcch *pdcch,RgSchDlRbAlloc *rbAll
 #endif
          break;
       default:
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Allocator's icorrect "
+         DU_LOG("\nERROR  -->  SCH : Allocator's icorrect "
             "dciForamt Fill RNTI:%d",rbAllocInfo->rnti);
          break;
    }
@@ -5418,7 +5399,7 @@ uint8_t         tpc
 
    rgSCHCmnFillHqPTb(cell, rbAllocInfo, 0, pdcch);   
    //Currently hardcoding values here.
-   //printf("Filling 5GTF UL DCI for rnti %d \n",alloc->rnti);
+   //DU_LOG("\nINFO   -->  SCH : Filling 5GTF UL DCI for rnti %d \n",alloc->rnti);
    switch(rbAllocInfo->dciFormat)
    {
       case TFU_DCI_FORMAT_B1:
@@ -5478,7 +5459,7 @@ uint8_t         tpc
             break;
          }
          default:
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId," 5GTF_ERROR Allocator's icorrect "
+            DU_LOG("\nERROR  -->  SCH :  5GTF_ERROR Allocator's incorrect "
                "dciForamt Fill RNTI:%d",rbAllocInfo->rnti);
             break;
    }
@@ -5555,7 +5536,7 @@ Void rgSCHCmnFillHqPPdcch(RgSchCellCb *cell,RgSchDlRbAlloc *rbAllocInfo,RgSchDlH
          addedForScell +=  (rbAllocInfo->tbInfo[0].bytesAlloc << 3);
          addedForScell1 += (rbAllocInfo->tbInfo[0].bytesAlloc << 3);
 /*
-         printf (" Hqp %d cell %d addedForScell %lu addedForScell1 %lu sfn:sf %d:%d \n",
+         DU_LOG("\nINFO   -->  SCH :  Hqp %d cell %d addedForScell %lu addedForScell1 %lu sfn:sf %d:%d \n",
          hqP->procId,
          hqP->hqE->cell->cellId,
          addedForScell,
@@ -5590,7 +5571,7 @@ Void rgSCHCmnFillHqPPdcch(RgSchCellCb *cell,RgSchDlRbAlloc *rbAllocInfo,RgSchDlH
                addedForScell +=  (rbAllocInfo->tbInfo[1].bytesAlloc << 3);
                addedForScell2 += (rbAllocInfo->tbInfo[1].bytesAlloc << 3);
 /*
-         printf (" Hqp %d cell %d addedForScell %lu addedForScell2 %lu \n",
+         DU_LOG("\nINFO   -->  SCH :  Hqp %d cell %d addedForScell %lu addedForScell2 %lu \n",
          hqP->procId,
          hqP->hqE->cell->cellId,
          addedForScell,
@@ -5605,7 +5586,7 @@ Void rgSCHCmnFillHqPPdcch(RgSchCellCb *cell,RgSchDlRbAlloc *rbAllocInfo,RgSchDlH
                (rbAllocInfo->tbInfo[1].bytesAlloc << 3);
          }
          /*
-         printf ("add DL TPT is %lu  sfn:sf %d:%d \n", hqP->hqE->ue->tenbStats->stats.nonPersistent.sch[RG_SCH_CELLINDEX(hqP->hqE->cell)].dlTpt ,
+         DU_LOG("\nINFO   -->  SCH : add DL TPT is %lu  sfn:sf %d:%d \n", hqP->hqE->ue->tenbStats->stats.nonPersistent.sch[RG_SCH_CELLINDEX(hqP->hqE->cell)].dlTpt ,
          cell->crntTime.sfn,
          cell->crntTime.slot);
          */
@@ -5622,15 +5603,14 @@ Void rgSCHCmnFillHqPPdcch(RgSchCellCb *cell,RgSchDlRbAlloc *rbAllocInfo,RgSchDlH
       case TFU_DCI_FORMAT_B1:
       case TFU_DCI_FORMAT_B2:
 	   {
-        // printf(" RG_5GTF:: Pdcch filling with DCI format B1/B2\n");
+        // DU_LOG("\nINFO   -->  SCH : RG_5GTF:: Pdcch filling with DCI format B1/B2\n");
 	      rgSCHCmnFillHqPPdcchDciFrmtB1B2(cell, rbAllocInfo, hqP, \
 		    pdcch, tpc);
 	      break;
 	   }
 #endif
       default:
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-            "Allocator's incorrect dciForamt Fill for RNTI:%d",rbAllocInfo->rnti);
+         DU_LOG("\nERROR  -->  SCH : Allocator's incorrect dciForamt Fill for RNTI:%d",rbAllocInfo->rnti);
          break;
    }
    return;
@@ -5867,8 +5847,7 @@ uint8_t         tpc
        {
           /* Fixing DAI value - ccpu00109162 */
           pdcch->dci.u.format1aInfo.t.pdschInfo.dai.val = RG_SCH_MAX_DAI_IDX;
-          RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-                   "PDCCH is been scheduled without updating anInfo RNTI:%d",
+          DU_LOG("\nERROR  -->  SCH : PDCCH is been scheduled without updating anInfo RNTI:%d",
                     rbAllocInfo->rnti);
        }
 #endif
@@ -5989,8 +5968,7 @@ uint8_t         tpc
        else
        {
           pdcch->dci.u.format1bInfo.dai = RG_SCH_MAX_DAI_IDX;
-          RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-                   "PDCCH is been scheduled without updating anInfo RNTI:%d",
+          DU_LOG("\nERROR  -->  SCH : PDCCH is been scheduled without updating anInfo RNTI:%d",
                    rbAllocInfo->rnti);
        }
 #endif
@@ -6137,8 +6115,7 @@ uint8_t         tpc
         else
         {
            pdcch->dci.u.format2Info.dai = RG_SCH_MAX_DAI_IDX;
-           RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-                    "PDCCH is been scheduled without updating anInfo RNTI:%d",
+           DU_LOG("\nERROR  -->  SCH : PDCCH is been scheduled without updating anInfo RNTI:%d",
                     rbAllocInfo->rnti);
         }
 #endif
@@ -6284,8 +6261,7 @@ uint8_t         tpc
        else
        {
           pdcch->dci.u.format2AInfo.dai = RG_SCH_MAX_DAI_IDX;
-          RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-                   "PDCCH is been scheduled without updating anInfo RNTI:%d",
+          DU_LOG("\nERROR  -->  SCH : PDCCH is been scheduled without updating anInfo RNTI:%d",
                    rbAllocInfo->rnti);
        }
 #endif
@@ -6354,7 +6330,7 @@ Void rgSCHCmnUpdVars(RgSchCellCb *cell)
    idx = (cell->crntTime.sfn * RGSCH_NUM_SUB_FRAMES_5G + cell->crntTime.slot);
    cellUl->idx     = ((idx) % (RG_SCH_CMN_UL_NUM_SF));
 #ifdef UL_ADPT_DBG     
-   printf("idx %d cellUl->idx  %d RGSCH_NUM_SUB_FRAMES_5G %d  time(%d %d) \n",idx,cellUl->idx ,RGSCH_NUM_SUB_FRAMES_5G,cell->crntTime.sfn,cell->crntTime.slot);
+   DU_LOG("\nDEBUG  -->  SCH : idx %d cellUl->idx  %d RGSCH_NUM_SUB_FRAMES_5G %d  time(%d %d) \n",idx,cellUl->idx ,RGSCH_NUM_SUB_FRAMES_5G,cell->crntTime.sfn,cell->crntTime.slot);
 #endif    
    /* Need to scheduler for after SCHED_DELTA */
    /* UL allocation has been advanced by 1 subframe
@@ -6388,7 +6364,7 @@ Void rgSCHCmnUpdVars(RgSchCellCb *cell)
    /* take care of getting the correct subframe for feedback                 */
    idx = (cellUl->idx - TFU_CRCIND_ULDELTA + RG_SCH_CMN_UL_NUM_SF);
 #ifdef UL_ADPT_DBG     
-   printf("Finally setting cellUl->hqFdbkIdx[0] = %d TFU_CRCIND_ULDELTA %d RG_SCH_CMN_UL_NUM_SF %d\n",idx,TFU_CRCIND_ULDELTA,RG_SCH_CMN_UL_NUM_SF);
+   DU_LOG("\nDEBUG  -->  SCH : Finally setting cellUl->hqFdbkIdx[0] = %d TFU_CRCIND_ULDELTA %d RG_SCH_CMN_UL_NUM_SF %d\n",idx,TFU_CRCIND_ULDELTA,RG_SCH_CMN_UL_NUM_SF);
 #endif
    cellUl->hqFdbkIdx[0]   = (idx % (RG_SCH_CMN_UL_NUM_SF));
 
@@ -6396,7 +6372,7 @@ Void rgSCHCmnUpdVars(RgSchCellCb *cell)
 
    cellUl->reTxIdx[0] = (uint8_t) idx;
 #ifdef UL_ADPT_DBG     
-   printf("cellUl->hqFdbkIdx[0] %d cellUl->reTxIdx[0] %d \n",cellUl->hqFdbkIdx[0], cellUl->reTxIdx[0] );
+   DU_LOG("\nDEBUG  -->  SCH : cellUl->hqFdbkIdx[0] %d cellUl->reTxIdx[0] %d \n",cellUl->hqFdbkIdx[0], cellUl->reTxIdx[0] );
 #endif
    /* RACHO: update cmn sched specific RACH variables,
     * mainly the prachMaskIndex */
@@ -6786,7 +6762,7 @@ Void rgSCHCmnUlFillPdcchWithAlloc(RgSchPdcch *pdcch,RgSchUlAlloc *alloc,RgSchUeC
    pdcch->dci.dciFormat = alloc->grnt.dciFrmt;
 
    //Currently hardcoding values here.
-   //printf("Filling 5GTF UL DCI for rnti %d \n",alloc->rnti);
+   //DU_LOG("\nINFO   -->  SCH : Filling 5GTF UL DCI for rnti %d \n",alloc->rnti);
    switch(pdcch->dci.dciFormat)
    {
       case TFU_DCI_FORMAT_A1:
@@ -6840,7 +6816,7 @@ Void rgSCHCmnUlFillPdcchWithAlloc(RgSchPdcch *pdcch,RgSchUlAlloc *alloc,RgSchUeC
 			break;
 		}
       default:
-         RLOG1(L_ERROR," 5GTF_ERROR UL Allocator's icorrect "
+         DU_LOG("\nERROR  -->  SCH :  5GTF_ERROR UL Allocator's icorrect "
                "dciForamt Fill RNTI:%d",alloc->rnti);
          break;
    }	
@@ -7517,9 +7493,6 @@ S16 rgSCHCmnDlInitHqEnt(RgSchCellCb *cell,RgSchDlHqEnt *hqEnt)
 static uint8_t rgSCHCmnGetRefreshDist(RgSchCellCb *cell,RgSchUeCb *ue)
 {
    uint8_t   refOffst;
-#ifdef DEBUGP
-   Inst inst = cell->instIdx;
-#endif
 
    for(refOffst = 0; refOffst < RGSCH_MAX_REFRESH_OFFSET; refOffst++)
    {
@@ -7527,12 +7500,12 @@ static uint8_t rgSCHCmnGetRefreshDist(RgSchCellCb *cell,RgSchUeCb *ue)
       {
          cell->refreshUeCnt[refOffst]++;
          ue->refreshOffset = refOffst;
-         /* printf("UE[%d] refresh offset[%d]. Cell refresh ue count[%d].\n", ue->ueId, refOffst,  cell->refreshUeCnt[refOffst]); */
+         /* DU_LOG("\nINFO   -->  SCH : UE[%d] refresh offset[%d]. Cell refresh ue count[%d].\n", ue->ueId, refOffst,  cell->refreshUeCnt[refOffst]); */
          return (refOffst);
       }
    }
   
-   RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "Allocation of refresh distribution failed\n"));
+   DU_LOG("\nERROR  -->  SCH : Allocation of refresh distribution failed\n");
    /* We should not enter here  normally, but incase of failure, allocating from  last offset*/
    cell->refreshUeCnt[refOffst-1]++;
    ue->refreshOffset = refOffst-1;
@@ -7623,7 +7596,7 @@ S16 rgSCHCmnRgrSCellUeCfg(RgSchCellCb *sCell,RgSchUeCb *ue,RgrUeSecCellCfg *sCel
    if((rgSCHUtlAllocSBuf(sCell->instIdx,
                (Data**)&(((ue->cellInfo[ue->cellIdToCellIdxMap[idx]])->sch)), (sizeof(RgSchCmnUe))) != ROK))
    {
-      RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "Memory allocation FAILED\n"));
+      DU_LOG("\nERROR  -->  SCH : Memory allocation FAILED\n");
       err->errCause = RGSCHERR_SCH_CFG;
       return RFAILED;
    }
@@ -7685,7 +7658,7 @@ S16 rgSCHCmnRgrSCellUeCfg(RgSchCellCb *sCell,RgSchUeCb *ue,RgrUeSecCellCfg *sCel
 
    if ((cellSchd->apisDl->rgSCHRgrSCellDlUeCfg(sCell, ue, err)) != ROK)
    {
-      RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "Spec Sched DL UE CFG FAILED\n"));
+      DU_LOG("\nERROR  -->  SCH : Spec Sched DL UE CFG FAILED\n");
       return RFAILED;
    }
 
@@ -7696,7 +7669,7 @@ S16 rgSCHCmnRgrSCellUeCfg(RgSchCellCb *sCell,RgSchUeCb *ue,RgrUeSecCellCfg *sCel
    {
       if ((cellSchd->apisDlfs->rgSCHDlfsSCellUeCfg(sCell, ue, sCellInfoCfg, err)) != ROK)
       {
-         RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "DLFS UE config FAILED\n"));
+         DU_LOG("\nERROR  -->  SCH : DLFS UE config FAILED\n");
          return RFAILED;
       }
    }
@@ -7712,7 +7685,7 @@ S16 rgSCHCmnRgrSCellUeCfg(RgSchCellCb *sCell,RgSchUeCb *ue,RgrUeSecCellCfg *sCel
       ret = rgSCHUhmHqEntInit(sCell, ue);
       if (ret != ROK)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,sCell->cellId,"SCELL UHM HARQ Ent Init "
+         DU_LOG("\nERROR  -->  SCH : SCELL UHM HARQ Ent Init "
                "Failed for CRNTI:%d", ue->ueId);
          return RFAILED;
       }
@@ -7745,7 +7718,7 @@ S16 rgSCHCmnRgrSCellUeCfg(RgSchCellCb *sCell,RgSchUeCb *ue,RgrUeSecCellCfg *sCel
          if((rgSCHUtlAllocSBuf(sCell->instIdx,
                      (Data**)&(allRcd),sizeof(RgSchCmnAllocRecord)) != ROK))
          {
-            RLOG_ARG1(L_ERROR,DBG_CELLID,sCell->cellId,"SCELL Memory allocation FAILED"
+            DU_LOG("\nERROR  -->  SCH : SCELL Memory allocation FAILED"
                   "for CRNTI:%d",ue->ueId);
             err->errCause = RGSCHERR_SCH_CFG;
             return RFAILED;
@@ -7759,7 +7732,7 @@ S16 rgSCHCmnRgrSCellUeCfg(RgSchCellCb *sCell,RgSchUeCb *ue,RgrUeSecCellCfg *sCel
       ret = rgSCHPwrUeSCellCfg(sCell, ue, sCellInfoCfg);
       if (ret != ROK)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,sCell->cellId, "Could not do "
+         DU_LOG("\nERROR  -->  SCH : Could not do "
                "power config for UE CRNTI:%d",ue->ueId);
          return RFAILED;
       }
@@ -7769,7 +7742,7 @@ S16 rgSCHCmnRgrSCellUeCfg(RgSchCellCb *sCell,RgSchUeCb *ue,RgrUeSecCellCfg *sCel
       {
          if ((cellSchd->apisEmtcUl->rgSCHRgrUlUeCfg(sCell, ue, NULL, err)) != ROK)
          {
-            RLOG_ARG1(L_ERROR,DBG_CELLID,sCell->cellId, "Spec Sched UL UE CFG FAILED"
+            DU_LOG("\nERROR  -->  SCH : Spec Sched UL UE CFG FAILED"
                   "for CRNTI:%d",ue->ueId);
             return RFAILED;
          }
@@ -7779,7 +7752,7 @@ S16 rgSCHCmnRgrSCellUeCfg(RgSchCellCb *sCell,RgSchUeCb *ue,RgrUeSecCellCfg *sCel
       {
       if ((cellSchd->apisUl->rgSCHRgrUlUeCfg(sCell, ue, NULL, err)) != ROK)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,sCell->cellId, "Spec Sched UL UE CFG FAILED"
+         DU_LOG("\nERROR  -->  SCH : Spec Sched UL UE CFG FAILED"
                "for CRNTI:%d",ue->ueId);
          return RFAILED;
       }
@@ -7835,7 +7808,7 @@ S16 rgSCHCmnRgrSCellUeDel(RgSchUeCellInfo *sCellInfo,RgSchUeCb *ue)
    {
       if ((cellSchd->apisDlfs->rgSCHDlfsSCellUeDel(sCellInfo->cell, ue)) != ROK)
       {
-         RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "DLFS Scell del FAILED\n"));
+         DU_LOG("\nERROR  -->  SCH : DLFS Scell del FAILED\n");
          return RFAILED;
       }
    }
@@ -7884,7 +7857,7 @@ S16 rgSCHCmn5gtfUeCfg(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeCfg *cfg)
    ue->ue5gtfCb.nxtCqiRiOccn.slot = 0;
    ue->ue5gtfCb.rank = 1;
 
-   printf("\nschd cfg at mac,%u,%u,%u,%u,%u\n",ue->ue5gtfCb.grpId,ue->ue5gtfCb.BeamId,ue->ue5gtfCb.numCC,
+   DU_LOG("\nINFO  -->  SCH : schd cfg at mac,%u,%u,%u,%u,%u\n",ue->ue5gtfCb.grpId,ue->ue5gtfCb.BeamId,ue->ue5gtfCb.numCC,
 	 ue->ue5gtfCb.mcs,ue->ue5gtfCb.maxPrb); 
 
    ue5gtfGrp = &(cell->cell5gtfCb.ueGrp5gConf[ue->ue5gtfCb.BeamId]);
@@ -7893,8 +7866,7 @@ S16 rgSCHCmn5gtfUeCfg(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeCfg *cfg)
       scheduling comes into picture */
    if(ue5gtfGrp->beamBitMask & (1 << ue->ue5gtfCb.BeamId))
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-	    "5GTF_ERROR Invalid beam id CRNTI:%d",cfg->crnti);
+      DU_LOG("\nERROR  -->  SCH : 5GTF_ERROR Invalid beam id CRNTI:%d",cfg->crnti);
       return RFAILED;
    }
    ue5gtfGrp->beamBitMask |= (1 << ue->ue5gtfCb.BeamId);
@@ -7945,8 +7917,7 @@ S16 rgSCHCmnRgrUeCfg(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeCfg *ueCfg,RgSchErrInf
    if((rgSCHUtlAllocSBuf(cell->instIdx,
                (Data**)&(((ue->cellInfo[ue->cellIdToCellIdxMap[idx]])->sch)), (sizeof(RgSchCmnUe))) != ROK))
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-            "Memory allocation FAILED for CRNTI:%d",ueCfg->crnti);
+      DU_LOG("\nERROR  -->  SCH : Memory allocation FAILED for CRNTI:%d",ueCfg->crnti);
       err->errCause = RGSCHERR_SCH_CFG;
       return RFAILED;
    }
@@ -8023,7 +7994,7 @@ S16 rgSCHCmnRgrUeCfg(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeCfg *ueCfg,RgSchErrInf
     */     
    if((ueCfg->ueQosCfg.dlAmbr == 0) && (ueCfg->ueQosCfg.ueBr == 0))
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"UL Ambr and DL Ambr are"
+      DU_LOG("\nERROR  -->  SCH : UL Ambr and DL Ambr are"
          "configured as 0 for CRNTI:%d",ueCfg->crnti);
       err->errCause = RGSCHERR_SCH_CFG;
       return RFAILED;
@@ -8041,8 +8012,7 @@ S16 rgSCHCmnRgrUeCfg(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeCfg *ueCfg,RgSchErrInf
    {
       if ((cellSchd->apisEmtcDl->rgSCHRgrDlUeCfg(cell, ue, ueCfg, err)) != ROK)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-               "Spec Sched DL UE CFG FAILED for CRNTI:%d",ueCfg->crnti);
+         DU_LOG("\nERROR  -->  SCH : Spec Sched DL UE CFG FAILED for CRNTI:%d",ueCfg->crnti);
          return RFAILED;
       }
 
@@ -8052,8 +8022,7 @@ S16 rgSCHCmnRgrUeCfg(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeCfg *ueCfg,RgSchErrInf
    {
       if ((cellSchd->apisDl->rgSCHRgrDlUeCfg(cell, ue, ueCfg, err)) != ROK)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-               "Spec Sched DL UE CFG FAILED for CRNTI:%d",ueCfg->crnti);
+         DU_LOG("\nERROR  -->  SCH : Spec Sched DL UE CFG FAILED for CRNTI:%d",ueCfg->crnti);
          return RFAILED;
       }
    }
@@ -8081,7 +8050,7 @@ S16 rgSCHCmnRgrUeCfg(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeCfg *ueCfg,RgSchErrInf
       if((rgSCHUtlAllocSBuf(cell->instIdx,
                   (Data**)&(allRcd),sizeof(RgSchCmnAllocRecord)) != ROK))
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Memory allocation FAILED"
+         DU_LOG("\nERROR  -->  SCH : Memory allocation FAILED"
                    "for CRNTI:%d",ueCfg->crnti);
          err->errCause = RGSCHERR_SCH_CFG;
          return RFAILED;
@@ -8097,8 +8066,7 @@ S16 rgSCHCmnRgrUeCfg(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeCfg *ueCfg,RgSchErrInf
             (Data**)&(ue->ul.lcgArr[cnt].sch), (sizeof(RgSchCmnLcg)));
       if (ret != ROK)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-            "SCH struct alloc failed for CRNTI:%d",ueCfg->crnti);
+         DU_LOG("\nERROR  -->  SCH : SCH struct alloc failed for CRNTI:%d",ueCfg->crnti);
          err->errCause = RGSCHERR_SCH_CFG;
          return (ret);
       }
@@ -8107,7 +8075,7 @@ S16 rgSCHCmnRgrUeCfg(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeCfg *ueCfg,RgSchErrInf
    ret = rgSCHPwrUeCfg(cell, ue, ueCfg);
    if (ret != ROK)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, "Could not do "
+      DU_LOG("\nERROR  -->  SCH : Could not do "
          "power config for UE CRNTI:%d",ueCfg->crnti);
       return RFAILED;
    }
@@ -8115,7 +8083,7 @@ S16 rgSCHCmnRgrUeCfg(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeCfg *ueCfg,RgSchErrInf
    ret = rgSCHCmnSpsUeCfg(cell, ue, ueCfg, err);
    if (ret != ROK)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, "Could not do "
+      DU_LOG("\nERROR  -->  SCH : Could not do "
          "SPS config for CRNTI:%d",ueCfg->crnti);
       return RFAILED;
    }
@@ -8126,7 +8094,7 @@ S16 rgSCHCmnRgrUeCfg(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeCfg *ueCfg,RgSchErrInf
    {
       if ((cellSchd->apisEmtcUl->rgSCHRgrUlUeCfg(cell, ue, ueCfg, err)) != ROK)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, "Spec Sched UL UE CFG FAILED"
+         DU_LOG("\nERROR  -->  SCH : Spec Sched UL UE CFG FAILED"
                   "for CRNTI:%d",ueCfg->crnti);
          return RFAILED;
       }
@@ -8136,7 +8104,7 @@ S16 rgSCHCmnRgrUeCfg(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeCfg *ueCfg,RgSchErrInf
    {
    if ((cellSchd->apisUl->rgSCHRgrUlUeCfg(cell, ue, ueCfg, err)) != ROK)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, "Spec Sched UL UE CFG FAILED"
+      DU_LOG("\nERROR  -->  SCH : Spec Sched UL UE CFG FAILED"
                "for CRNTI:%d",ueCfg->crnti);
       return RFAILED;
    }
@@ -8147,7 +8115,7 @@ S16 rgSCHCmnRgrUeCfg(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeCfg *ueCfg,RgSchErrInf
    {
       if ((cellSchd->apisDlfs->rgSCHDlfsUeCfg(cell, ue, ueCfg, err)) != ROK)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, "DLFS UE config FAILED"
+         DU_LOG("\nERROR  -->  SCH : DLFS UE config FAILED"
                    "for CRNTI:%d",ueCfg->crnti);
          return RFAILED;
       }
@@ -8473,7 +8441,7 @@ S16 rgSCHCmnRgrUeRecfg(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeRecfg *ueRecfg,RgSch
             && (ueRecfg->prdDlCqiRecfg.prdModeEnum != RGR_PRD_CQI_MOD10)
             && (ueRecfg->prdDlCqiRecfg.prdModeEnum != RGR_PRD_CQI_MOD20))
       {
-         RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,"Unsupported periodic CQI "
+         DU_LOG("\nERROR  -->  SCH : Unsupported periodic CQI "
             "reporting mode %d for old CRNIT:%d", 
             (int)ueRecfg->prdDlCqiRecfg.prdModeEnum,ueRecfg->oldCrnti);
          err->errCause = RGSCHERR_SCH_CFG;
@@ -8487,8 +8455,7 @@ S16 rgSCHCmnRgrUeRecfg(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeRecfg *ueRecfg,RgSch
    {
       if (rgSCHPwrUeRecfg(cell, ue, ueRecfg) != ROK)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-               "Power Reconfiguration Failed for OLD CRNTI:%d",ueRecfg->oldCrnti);
+         DU_LOG("\nERROR  -->  SCH : Power Reconfiguration Failed for OLD CRNTI:%d",ueRecfg->oldCrnti);
          return RFAILED;
       }
    }
@@ -8498,7 +8465,7 @@ S16 rgSCHCmnRgrUeRecfg(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeRecfg *ueRecfg,RgSch
       /* Uplink Sched related Initialization */
       if ((ueRecfg->ueQosRecfg.dlAmbr == 0) && (ueRecfg->ueQosRecfg.ueBr == 0))
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Ul Ambr and DL Ambr "
+         DU_LOG("\nERROR  -->  SCH : Ul Ambr and DL Ambr "
             "configured as 0 for OLD CRNTI:%d",ueRecfg->oldCrnti);
          err->errCause = RGSCHERR_SCH_CFG;
          return RFAILED;
@@ -8521,14 +8488,12 @@ S16 rgSCHCmnRgrUeRecfg(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeRecfg *ueRecfg,RgSch
    {
       if ((cellSchCmn->apisEmtcUl->rgSCHRgrUlUeRecfg(cell, ue, ueRecfg, err)) != ROK)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, 
-               "Spec Sched UL UE ReCFG FAILED for CRNTI:%d",ue->ueId);
+         DU_LOG("\nERROR  -->  SCH : Spec Sched UL UE ReCFG FAILED for CRNTI:%d",ue->ueId);
          return RFAILED;
       }
       if ((cellSchCmn->apisEmtcDl->rgSCHRgrDlUeRecfg(cell, ue, ueRecfg, err)) != ROK)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, 
-               "Spec Sched DL UE ReCFG FAILED for CRNTI:%d",ue->ueId);
+         DU_LOG("\nERROR  -->  SCH : Spec Sched DL UE ReCFG FAILED for CRNTI:%d",ue->ueId);
          return RFAILED;
       }
    }
@@ -8537,14 +8502,12 @@ S16 rgSCHCmnRgrUeRecfg(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeRecfg *ueRecfg,RgSch
    {
       if ((cellSchCmn->apisUl->rgSCHRgrUlUeRecfg(cell, ue, ueRecfg, err)) != ROK)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, 
-            "Spec Sched UL UE ReCFG FAILED for CRNTI:%d",ue->ueId);
+         DU_LOG("\nERROR  -->  SCH : Spec Sched UL UE ReCFG FAILED for CRNTI:%d",ue->ueId);
          return RFAILED;
       }
       if ((cellSchCmn->apisDl->rgSCHRgrDlUeRecfg(cell, ue, ueRecfg, err)) != ROK)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, 
-            "Spec Sched DL UE ReCFG FAILED for CRNTI:%d",ue->ueId);
+         DU_LOG("\nERROR  -->  SCH : Spec Sched DL UE ReCFG FAILED for CRNTI:%d",ue->ueId);
          return RFAILED;
       }
    }
@@ -8554,8 +8517,7 @@ S16 rgSCHCmnRgrUeRecfg(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeRecfg *ueRecfg,RgSch
       if ((cellSchCmn->apisDlfs->rgSCHDlfsUeRecfg(cell, ue, \
          ueRecfg, err)) != ROK)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, 
-               "DLFS UE re-config FAILED for CRNTI:%d",ue->ueId);
+         DU_LOG("\nERROR  -->  SCH : DLFS UE re-config FAILED for CRNTI:%d",ue->ueId);
          return RFAILED;
       }
    }
@@ -8564,8 +8526,7 @@ S16 rgSCHCmnRgrUeRecfg(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeRecfg *ueRecfg,RgSch
    /* Invoke re-configuration on SPS module */
    if (rgSCHCmnSpsUeRecfg(cell, ue, ueRecfg, err) != ROK)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, 
-              "DL SPS ReCFG FAILED for UE CRNTI:%d", ue->ueId);
+      DU_LOG("\nERROR  -->  SCH : DL SPS ReCFG FAILED for UE CRNTI:%d", ue->ueId);
       return RFAILED;
    }
 #endif
@@ -9324,8 +9285,7 @@ static S16 rgSCHCmnDlRgrCellCfg(RgSchCellCb *cell,RgrCellCfg *cfg,RgSchErrInfo *
    /*[ccpu00138609]-ADD- Configure the Max CCCH Counter */
    if (cfg->maxCcchPerDlSf > cfg->maxUePerDlSf)
    {
-      RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId, 
-                      "Invalid configuration !: "
+      DU_LOG("\nERROR  -->  SCH : Invalid configuration !: "
                       "maxCcchPerDlSf %u > maxUePerDlSf %u",
                    cfg->maxCcchPerDlSf, cfg->maxUePerDlSf );
 
@@ -9524,8 +9484,7 @@ static S16 rgSCHCmnDlRgrCellCfg(RgSchCellCb *cell,RgrCellCfg *cfg,RgSchErrInfo *
    /* Fix: MUE_PERTTI_DL syed validating Cell Configuration */
    if (cellSch->dl.maxUePerDlSf < cellSch->dl.maxUeNewTxPerTti)
    {
-      RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,
-            "FAILED MaxUePerDlSf(%u) < MaxDlUeNewTxPerTti(%u)",
+      DU_LOG("\nERROR  -->  SCH : FAILED MaxUePerDlSf(%u) < MaxDlUeNewTxPerTti(%u)",
             cellSch->dl.maxUePerDlSf,
             cellSch->dl.maxUeNewTxPerTti);
       return RFAILED;
@@ -9533,7 +9492,7 @@ static S16 rgSCHCmnDlRgrCellCfg(RgSchCellCb *cell,RgrCellCfg *cfg,RgSchErrInfo *
    /*[ccpu00138609]-ADD- Configure the Max CCCH Counter */
    if (cfg->maxCcchPerDlSf > cfg->maxUePerDlSf)
    {
-      RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,"Invalid configuration !: "
+      DU_LOG("\nERROR  -->  SCH : Invalid configuration !: "
             "maxCcchPerDlSf %u > maxUePerDlSf %u",
             cfg->maxCcchPerDlSf, cfg->maxUePerDlSf );
 
@@ -9803,7 +9762,7 @@ static S16 rgSCHCmnUlCalcAvailBw(RgSchCellCb *cell,RgrCellCfg *cellCfg,uint8_t c
    /* Num of PUCCH RBs = puschRbStart*2 */
    if (puschRbStart * 2 >= ulBw)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"No bw available for PUSCH");
+      DU_LOG("\nERROR  -->  SCH : No bw available for PUSCH");
       return RFAILED;
    }
 
@@ -9895,17 +9854,17 @@ static S16 rgSCHCmnUlCalcAvailBw(RgSchCellCb *cell,RgrCellCfg *cellCfg,uint8_t c
    if(gPrntPucchDet)
    {
 #ifndef ALIGN_64BIT
-	   printf("CA_DBG:: puschRbStart:n1Rb:mixedRb:n1PerRb:totalCce:n1Max:n1RbPart:n2Rb::[%d:%d] [%d:%d:%ld:%d:%d:%d:%d:%d]\n",
+	DU_LOG("\nDEBUG  -->  SCH : CA_DBG:: puschRbStart:n1Rb:mixedRb:n1PerRb:totalCce:n1Max:n1RbPart:n2Rb::[%d:%d] [%d:%d:%ld:%d:%d:%d:%d:%d]\n",
         cell->crntTime.sfn, cell->crntTime.slot, puschRbStart, n1Rb, mixedRb,n1PerRb, totalCce, n1Max, n1RbPart, n2Rb);
 #else
-	   printf("CA_DBG:: puschRbStart:n1Rb:mixedRb:n1PerRb:totalCce:n1Max:n1RbPart:n2Rb::[%d:%d] [%d:%d:%d:%d:%d:%d:%d:%d]\n",
+	DU_LOG("\nDEBUG  -->  SCH : CA_DBG:: puschRbStart:n1Rb:mixedRb:n1PerRb:totalCce:n1Max:n1RbPart:n2Rb::[%d:%d] [%d:%d:%d:%d:%d:%d:%d:%d]\n",
         cell->crntTime.sfn, cell->crntTime.slot, puschRbStart, n1Rb, mixedRb,n1PerRb, totalCce, n1Max, n1RbPart, n2Rb);
 #endif
    }
 
    if (puschRbStart*2 >= ulBw)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"No bw available for PUSCH");
+      DU_LOG("\nERROR  -->  SCH : No bw available for PUSCH");
       return RFAILED;
    }
 
@@ -10010,8 +9969,7 @@ static S16 rgSCHCmnUlCellInit(RgSchCellCb  *cell,RgrCellCfg *cellCfg)
    /* Fix: MUE_PERTTI_UL syed validating Cell Configuration */
    if (cellUl->maxAllocPerUlSf < cellUl->maxUeNewTxPerTti)
    {
-      RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,
-            "FAILED: MaxUePerUlSf(%u) < MaxUlUeNewTxPerTti(%u)",
+      DU_LOG("\nERROR  -->  SCH : FAILED: MaxUePerUlSf(%u) < MaxUlUeNewTxPerTti(%u)",
             cellUl->maxAllocPerUlSf,
             cellUl->maxUeNewTxPerTti);
       return RFAILED;
@@ -10029,7 +9987,7 @@ static S16 rgSCHCmnUlCellInit(RgSchCellCb  *cell,RgrCellCfg *cellCfg)
               ulUeInfo.ulAllocInfo), (cellUl->maxAllocPerUlSf * sizeof(RgInfUeUlAlloc)));
       if (ret != ROK)
       {
-            RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Memory allocation failed ");
+         DU_LOG("\nERROR  -->  SCH : Memory allocation failed ");
             return (ret);
       }
    }
@@ -10053,7 +10011,7 @@ static S16 rgSCHCmnUlCellInit(RgSchCellCb  *cell,RgrCellCfg *cellCfg)
 
    if (sbSize != rgSchCmnMult235Tbl[sbSize].match)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Invalid subband size %d", sbSize);
+      DU_LOG("\nERROR  -->  SCH : Invalid subband size %d", sbSize);
       return RFAILED;
    }
 	//Setting the subband size to 4 which is size of VRBG in 5GTF
@@ -10064,7 +10022,7 @@ static S16 rgSCHCmnUlCellInit(RgSchCellCb  *cell,RgrCellCfg *cellCfg)
    maxSbPerUe = maxUlBwPerUe / sbSize;
    if (maxSbPerUe == 0)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId, "rgSCHCmnUlCellInit(): "
+      DU_LOG("\nERROR  -->  SCH : rgSCHCmnUlCellInit(): "
          "maxUlBwPerUe/sbSize is zero");
       return RFAILED;
    }
@@ -10074,7 +10032,7 @@ static S16 rgSCHCmnUlCellInit(RgSchCellCb  *cell,RgrCellCfg *cellCfg)
    if ((!RG_SCH_CMN_UL_IS_CQI_VALID(cellCfg->ulCmnCodeRate.ccchCqi))
          || (!RG_SCH_CMN_UL_IS_CQI_VALID(cellCfg->trgUlCqi.trgCqi)))
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHCmnUlCellInit(): "
+      DU_LOG("\nERROR  -->  SCH : rgSCHCmnUlCellInit(): "
          "Invalid cqi");
       return RFAILED;
    }
@@ -10086,9 +10044,7 @@ static S16 rgSCHCmnUlCellInit(RgSchCellCb  *cell,RgrCellCfg *cellCfg)
     * Refer to 36.213-8.6.1 */
     for (i = RG_SCH_CMN_UL_NUM_CQI - 1;i > 0; --i)
    {
-      RLOG_ARG2(L_INFO,DBG_CELLID,cell->cellId,
-            "CQI %u:iTbs %u",
-            i, 
+       DU_LOG("\nINFO  -->  SCH : CQI %u:iTbs %u",i, 
             rgSchCmnUlCqiToTbsTbl[cell->isCpUlExtend][i]);
 #ifdef MAC_SCH_STATS
       /* ccpu00128489 ADD Update mcs in hqFailStats here instead of at CRC 
@@ -10105,8 +10061,7 @@ static S16 rgSCHCmnUlCellInit(RgSchCellCb  *cell,RgrCellCfg *cellCfg)
       iTbs = rgSchCmnUlCqiToTbsTbl[cell->isCpUlExtend][i];
       if (iTbs <= RGSCH_UL_16QAM_MAX_ITBS) /* corresponds to 16QAM */
       {
-         RLOG_ARG1(L_INFO,DBG_CELLID,cell->cellId,
-            		 "16 QAM CQI %u", i);
+         DU_LOG("\nINFO  -->  SCH : 16 QAM CQI %u", i);
          cellUl->max16qamCqi = i;
          break;
       }
@@ -10194,8 +10149,7 @@ static S16 rgSCHCmnUlCellInit(RgSchCellCb  *cell,RgrCellCfg *cellCfg)
 
    if(0 == cell->dynCfiCb.maxCfi)
    {
-      RLOG_ARG3(L_ERROR,DBG_CELLID,cell->cellId, 
-               "Incorrect Default CFI(%u), maxCfi(%u), maxPucchRb(%d)",
+      DU_LOG("\nERROR  -->  SCH : Incorrect Default CFI(%u), maxCfi(%u), maxPucchRb(%d)",
                cellSch->cfiCfg.cfi, cell->dynCfiCb.maxCfi, 
                cell->pucchCfg.maxPucchRb);
             
@@ -10273,8 +10227,7 @@ S16 rgSCHCmnRgrCellCfg(RgSchCellCb *cell,RgrCellCfg *cellCfg,RgSchErrInfo *err)
    if (((ret = rgSCHUtlAllocSBuf(cell->instIdx,
       (Data**)&(cell->sc.sch), (sizeof(RgSchCmnCell)))) != ROK))
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,  
-         "Memory allocation FAILED");
+      DU_LOG("\nERROR  -->  SCH : Memory allocation FAILED");
       err->errCause = RGSCHERR_SCH_CFG;
       return (ret);
    }
@@ -10398,7 +10351,7 @@ S16 rgSCHCmnRgrCellRecfg(RgSchCellCb *cell,RgrCellRecfg *recfg,RgSchErrInfo *err
       if (!RG_SCH_CMN_UL_IS_CQI_VALID(recfg->ulCmnCodeRate.ccchCqi))
       {
          err->errCause = RGSCHERR_SCH_CFG;
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId, "rgSCHCmnRgrCellRecfg(): "
+         DU_LOG("\nERROR  -->  SCH : rgSCHCmnRgrCellRecfg(): "
             "Invalid cqi");
          return RFAILED;
       }
@@ -10713,7 +10666,7 @@ RgSchErrInfo *err
       (Data**)&((dlLc)->sch), (sizeof(RgSchCmnDlSvc)));
    if (ret != ROK)
    {
-      RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHCmnRgrLchCfg(): "
+      DU_LOG("\nERROR  -->  SCH : rgSCHCmnRgrLchCfg(): "
          "SCH struct alloc failed for CRNTI:%d LCID:%d",ue->ueId,lcCfg->lcId);
       err->errCause = RGSCHERR_SCH_CFG;
       return (ret);
@@ -10723,7 +10676,7 @@ RgSchErrInfo *err
       ret = rgSCHCmnValidateDlQos(&lcCfg->dlInfo.dlQos);
       if (ret != ROK)
       {
-         RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,"rgSchCmnCrgLcCfg(): "
+         DU_LOG("\nERROR  -->  SCH : rgSchCmnCrgLcCfg(): "
             "DlQos validation failed for CRNTI:%d LCID:%d",ue->ueId,lcCfg->lcId);
          err->errCause = RGSCHERR_SCH_CFG;
          return (ret);
@@ -10797,7 +10750,7 @@ RgSchErrInfo *err
       ret = rgSCHCmnSpsDlLcCfg(cell, ue, dlLc, lcCfg, err);
       if (ret != ROK)
       {
-         RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,  "rgSchCmnRgrLchCfg(): "
+         DU_LOG("\nERROR  -->  SCH : rgSchCmnRgrLchCfg(): "
             "SPS configuration failed for DL LC for CRNTI:%d LCID:%d",ue->ueId,lcCfg->lcId);
          err->errCause = RGSCHERR_SCH_CFG;
          return RFAILED;
@@ -10849,14 +10802,13 @@ RgSchErrInfo *err
    
       if (ret != ROK)
       {
-         RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,
-               "DlQos validation failed for CRNTI:%d LCID:%d",ue->ueId,lcRecfg->lcId);
+         DU_LOG("\nERROR  -->  SCH : DlQos validation failed for CRNTI:%d LCID:%d",ue->ueId,lcRecfg->lcId);
          err->errCause = RGSCHERR_SCH_CFG;
          return (ret);
       }
       if (((RgSchCmnDlSvc *)(dlLc->sch))->qci != lcRecfg->dlRecfg.dlQos.qci)
       {
-         RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId, "Qci, hence lc Priority change "
+         DU_LOG("\nERROR  -->  SCH : Qci, hence lc Priority change "
             "not supported for CRNTI:%d LCID:%d",ue->ueId,lcRecfg->lcId);
          err->errCause = RGSCHERR_SCH_CFG;
          return (ret);
@@ -10910,7 +10862,7 @@ RgSchErrInfo *err
          ret = rgSCHCmnSpsDlLcRecfg(cell, ue, dlLc, lcRecfg, err);
          if (ret != ROK)
          {
-            RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,"SPS re-configuration not "
+            DU_LOG("\nERROR  -->  SCH : SPS re-configuration not "
                   "supported for dlLC Ignore this CRNTI:%d LCID:%d",ue->ueId,lcRecfg->lcId);
          }
       }
@@ -11769,13 +11721,12 @@ static Void rgSCHCmnDlRaRspFnlz(RgSchCellCb  *cell,RgSchCmnDlRbAllocInfo *allocI
             /* Return the grabbed PDCCH */
             rgSCHUtlPdcchPut(cell, &subFrm->pdcchInfo, raRspAlloc->pdcch);
             subFrm->raRsp[rarCnt].pdcch = NULLP;
-            RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHCmnRaRspAlloc(): "
+            DU_LOG("\nERROR  -->  SCH : rgSCHCmnRaRspAlloc(): "
                   "Not even one RaReq.");
             return;
          }
       }
-      RLOG_ARG3(L_DEBUG,DBG_CELLID,cell->cellId, 
-            "RNTI:%d Scheduled RAR @ (%u,%u) ",
+      DU_LOG("\nDEBUG  -->  SCH : RNTI:%d Scheduled RAR @ (%u,%u) ",
             raRspAlloc->rnti, 
             cell->crntTime.sfn,
             cell->crntTime.slot);
@@ -11883,7 +11834,7 @@ static Void rgSCHCmnDlBcchPcchFnlz(RgSchCellCb *cell,RgSchCmnDlRbAllocInfo *allo
       pcch = rgSCHDbmGetPcch(cell);
       if(pcch == NULLP)
       {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHCmnDlBcchPcchFnlz( ): "
+         DU_LOG("\nERROR  -->  SCH : rgSCHCmnDlBcchPcchFnlz( ): "
                "No Pcch Present");
          return;
       }
@@ -12422,7 +12373,7 @@ RgSchUlHole  *hole
    rgSCHUhmGetAvlHqProc(cell, ue, &proc);
    if (proc == NULLP)
    {
-      //printf("UE [%d] HQ Proc unavailable\n", ue->ueId);
+      //DU_LOG("\nINFO   -->  SCH : UE [%d] HQ Proc unavailable\n", ue->ueId);
       return RFAILED;
    }
 #endif
@@ -12441,8 +12392,7 @@ RgSchUlHole  *hole
    pdcch = rgSCHCmnPdcchAllocCrntSf(cell, ue);
    if(pdcch == NULLP)
    {
-      RLOG_ARG1(L_DEBUG,DBG_CELLID,cell->cellId, 
-         "rgSCHCmnUlRbAllocForUe(): Could not get PDCCH for CRNTI:%d",ue->ueId);
+      DU_LOG("\nDEBUG  -->  SCH : rgSCHCmnUlRbAllocForUe(): Could not get PDCCH for CRNTI:%d",ue->ueId);
       return RFAILED;
    }
 	gUl5gtfPdcchSchd++;
@@ -12460,7 +12410,7 @@ RgSchUlHole  *hole
    if((sf->sfBeamInfo[ue->ue5gtfCb.BeamId].vrbgStart > MAX_5GTF_VRBG)
 	 || (sf->sfBeamInfo[ue->ue5gtfCb.BeamId].totVrbgAllocated > MAX_5GTF_VRBG))
    {
-      printf("5GTF_ERROR vrbg > 25 valstart = %d valalloc %d\n", sf->sfBeamInfo[ue->ue5gtfCb.BeamId].vrbgStart
+      DU_LOG("\nINFO  -->  SCH : 5GTF_ERROR vrbg > 25 valstart = %d valalloc %d\n", sf->sfBeamInfo[ue->ue5gtfCb.BeamId].vrbgStart
 	    , sf->sfBeamInfo[ue->ue5gtfCb.BeamId].totVrbgAllocated);
       int *p=NULLP;
       *p = 10;
@@ -12476,8 +12426,7 @@ RgSchUlHole  *hole
    }
    if (alloc == NULLP)
    {
-      RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId, 
-         "rgSCHCmnUlRbAllocForUe(): Could not get UlAlloc %d CRNTI:%d",numVrbg,ue->ueId);
+      DU_LOG("\nERROR  -->  SCH : rgSCHCmnUlRbAllocForUe(): Could not get UlAlloc %d CRNTI:%d",numVrbg,ue->ueId);
       rgSCHCmnPdcchRlsCrntSf(cell, pdcch);
       return RFAILED;
    }
@@ -12734,8 +12683,7 @@ static Void rgSCHCmnUlHndlAllocRetx(RgSchCellCb *cell,RgSchCmnUlRbAllocInfo *all
       retxAlloc = rgSCHCmnUlGetUlAlloc(cell, sf, alloc->numSb);
       if (retxAlloc == NULLP)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-               "rgSCHCmnUlRbAllocForUe():Could not get UlAlloc for msg3Retx RNTI:%d",
+         DU_LOG("\nERROR  -->  SCH : rgSCHCmnUlRbAllocForUe():Could not get UlAlloc for msg3Retx RNTI:%d",
                alloc->rnti);
          return;
       }
@@ -12826,8 +12774,7 @@ static Void rgSCHCmnUlAlloc(RgSchCellCb  *cell)
 	 }
 	 else
 	 {
-	    RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
-		  "Error! holeDb sanity check failed");
+      	    DU_LOG("\nERROR  -->  SCH :  holeDb sanity check failed");
 	 }
       }
    }
@@ -13245,7 +13192,7 @@ S16 tmrEvnt           /* Timer Event */
 #if (ERRCLASS & ERRCLS_DEBUG)
    if (tmrEvnt != RG_SCH_CMN_EVNT_UE_REFRESH)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHCmnTmrExpiry(): Invalid "
+      DU_LOG("\nERROR  -->  SCH : rgSCHCmnTmrExpiry(): Invalid "
          "timer event CRNTI:%d",ue->ueId);
       return RFAILED;
    }
@@ -13805,7 +13752,7 @@ Void rgSCHCmnDlDedBoUpd(RgSchCellCb *cell,RgSchUeCb   *ue,RgSchDlLcCb *svc)
    if((cell->emtcEnable)&&(TRUE == ue->isEmtcUe))
    {
       cellSch->apisEmtcDl->rgSCHDlDedBoUpd(cell, ue, svc);
-      //printf("rgSCHEMTCDlDedBoUpd\n");
+      //DU_LOG("\nINFO   -->  SCH : rgSCHEMTCDlDedBoUpd\n");
    }
    else
 #endif
@@ -14195,7 +14142,7 @@ TfuDlCqiPucch *pucchCqi
       }
       else
       {
-         RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,"Invalid RI value(%x) CRNTI:%d",
+         DU_LOG("\nERROR  -->  SCH : Invalid RI value(%x) CRNTI:%d",
             pucchCqi->u.mode10Info.u.ri,ue->ueId);
          return;
       }
@@ -14284,7 +14231,7 @@ TfuDlCqiPucch  *pucchCqi
       }
       else
       {
-         RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,  "Invalid RI value(%x) CRNTI:%d",
+         DU_LOG("\nERROR  -->  SCH : Invalid RI value(%x) CRNTI:%d",
             pucchCqi->u.mode11Info.u.ri,ue->ueId);
          return;
       }
@@ -14363,7 +14310,7 @@ TfuDlCqiPucch *pucchCqi
       }
       else
       {
-         RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,"Invalid RI value(%x) CRNTI:%d",
+         DU_LOG("\nERROR  -->  SCH : Invalid RI value(%x) CRNTI:%d",
             pucchCqi->u.mode20Info.u.ri,ue->ueId);
          return;
       }
@@ -14457,7 +14404,7 @@ TfuDlCqiPucch *pucchCqi
       }
       else
       {
-         RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,  "Invalid RI value(%x) CRNTI:%d",
+         DU_LOG("\nERROR  -->  SCH : Invalid RI value(%x) CRNTI:%d",
             pucchCqi->u.mode21Info.u.ri,ue->ueId);
          return;
       }
@@ -14553,7 +14500,7 @@ TfuDlCqiPucch *pucchCqi
          break;
       default:
          {
-            RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,"Unknown CQI Mode %d",
+            DU_LOG("\nERROR  -->  SCH : Unknown CQI Mode %d of UE %d",
                pucchCqi->mode,ue->ueId);
 	    /* ccpu00117452 - MOD - Changed macro name from
                RGR_RRM_DLPWR_CNTRL to RGR_CQI_REPT */
@@ -14625,7 +14572,7 @@ TfuDlCqiPusch *puschCqi
       }
       else
       {
-         RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,"Invalid RI value(%x) CRNTI:%d",
+         DU_LOG("\nERROR  -->  SCH : Invalid RI value(%x) CRNTI:%d",
             puschCqi->ri.val,ue->ueId);
          return;
       }
@@ -14802,7 +14749,7 @@ TfuDlCqiPusch *puschCqi
          break;
       default:
          {
-            RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,  "Unknown CQI Mode %d CRNTI:%d",
+            DU_LOG("\nERROR  -->  SCH : Unknown CQI Mode %d CRNTI:%d",
                puschCqi->mode,ue->ueId);
             /*  CQI decoding failed revert the RI to previous value */
             if ((puschCqi->ri.pres == PRSNT_NODEF) &&
@@ -15162,8 +15109,7 @@ Void rgSCHCmnDlTARpt(RgSchCellCb *cell,RgSchUeCb *ue)
       }
       else
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-               "<TA>TA duplicate entry attempt failed: UEID:%u", 
+         DU_LOG("\nERROR  -->  SCH : <TA>TA duplicate entry attempt failed: UEID:%u", 
                ue->ueId);
       }
    }
@@ -18685,8 +18631,7 @@ uint8_t      maxRb
                              hole);
    if (alloc == NULLP)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
-         "rgSCHCmnUlRbAllocForPoHoUe(): Could not get UlAlloc");
+      DU_LOG("\nERROR  -->  SCH : rgSCHCmnUlRbAllocForPoHoUe(): Could not get UlAlloc");
       return RFAILED;
    }
    rgSCHCmnUlAllocFillRbInfo(cell, sf, alloc);
@@ -18771,7 +18716,7 @@ RgSchRaReqInfo  *raReq
    /* KWork fix */
    if (grnt == NULLP)
    {
-      RLOG_ARG1(L_ERROR,DBG_INSTID,cell->instIdx,  "Failed to get"
+      DU_LOG("\nERROR  -->  SCH : Failed to get"
         "the grant for HO/PDCCH Order. CRNTI:%d",ue->ueId);
       return;
    }
@@ -19030,7 +18975,7 @@ RgSchUlAlloc    *srcAlloc
    /* This should never happen */
    if (dstAlloc == NULLP)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"CRNTI:%d "
+      DU_LOG("\nERROR  -->  SCH : CRNTI:%d "
          "rgSCHUtlUlGetSpfcAlloc failed in rgSCHCmnUlInsAllocFrmNewSf2OldSf",
          srcAlloc->rnti);
       return;
@@ -19225,7 +19170,7 @@ static Void rgSCHCmnUlRmvCmpltdAllocs(RgSchCellCb *cell,RgSchUlSf *sf)
    {
       nxtAlloc = rgSCHUtlUlAllocNxt(sf, alloc);
 #ifdef UL_ADPT_DBG      
-      printf("rgSCHCmnUlRmvCmpltdAllocs:time(%d %d) alloc->hqProc->remTx %d hqProcId(%d) \n",cell->crntTime.sfn,cell->crntTime.slot,alloc->hqProc->remTx, alloc->grnt.hqProcId);
+      DU_LOG("\nDEBUG  -->  SCH : rgSCHCmnUlRmvCmpltdAllocs:time(%d %d) alloc->hqProc->remTx %d hqProcId(%d) \n",cell->crntTime.sfn,cell->crntTime.slot,alloc->hqProc->remTx, alloc->grnt.hqProcId);
 #endif
       alloc->hqProc->rcvdCrcInd = TRUE;
       if ((alloc->hqProc->rcvdCrcInd) || (alloc->hqProc->remTx == 0))
@@ -19369,7 +19314,7 @@ static Void rgSCHCmnUlUpdAllocRetx(RgSchCellCb *cell,RgSchUlAlloc *alloc)
    alloc->hqProc->alloc = NULLP;
    alloc->hqProc->ulSfIdx = RGSCH_INVALID_INFO;
 #ifdef UL_ADPT_DBG  
-   printf("Adding Harq Proc Id in the retx list  hqProcId %d \n",alloc->grnt.hqProcId); 
+   DU_LOG("\nDEBUG  -->  SCH : Adding Harq Proc Id in the retx list  hqProcId %d \n",alloc->grnt.hqProcId); 
 #endif
    cmLListAdd2Tail(&cmnUlCell->reTxLst, &alloc->hqProc->reTxLnk);
    alloc->hqProc->reTxLnk.node = (PTR)alloc->hqProc;
@@ -19429,8 +19374,7 @@ RgSchUlHole       *hole
          if(alloc == NULLP)
          {
             rgSCHUtlPdcchPut(cell, &dlSf->pdcchInfo, pdcch);
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-                  "UL Alloc fail for msg3 retx for rnti: %d\n", 
+            DU_LOG("\nERROR  -->  SCH : UL Alloc fail for msg3 retx for rnti: %d\n", 
                   proc->reTxAlloc.rnti);
             return (FALSE);
          }
@@ -19532,8 +19476,7 @@ RgSchUlHole       *hole
    else /* Intg fix */
    {
       rgSCHUtlPdcchPut(cell, &dlSf->pdcchInfo, pdcch);
-      RLOG_ARG1(L_DEBUG,DBG_CELLID,cell->cellId,
-               "Num SB not suffiecient for adap retx for rnti: %d", 
+      DU_LOG("\nERROR  -->  SCH : Num SB not suffiecient for adap retx for rnti: %d", 
                proc->reTxAlloc.rnti);
       return (FALSE);
    }
@@ -19664,7 +19607,7 @@ static Void rgSCHCmnDlRbAlloc(RgSchCellCb *cell,RgSchCmnDlRbAllocInfo *allocInfo
 
    if (cellSch->dl.isDlFreqSel)
    {
-      printf("5GTF_ERROR DLFS SCH Enabled\n");
+      DU_LOG("\nINFO  -->  SCH : 5GTF_ERROR DLFS SCH Enabled\n");
       cellSch->apisDlfs->rgSCHDlfsAllocRb(cell, allocInfo);
    }
    else
@@ -21218,7 +21161,7 @@ static S16 rgSCHCmnNonDlfsCmnRbAllocRar(RgSchCellCb *cell,RgSchDlRbAlloc *allocI
    RgSchSfBeamInfo  *beamInfo = &(dlSf->sfBeamInfo[0]);
    if(beamInfo->totVrbgAllocated > MAX_5GTF_VRBG)
    {
-      printf("5GTF_ERROR vrbg allocated > 25\n");
+      DU_LOG("\nINFO  -->  SCH : 5GTF_ERROR vrbg allocated > 25\n");
       return RFAILED;
    }
 
@@ -21241,7 +21184,7 @@ static S16 rgSCHCmnNonDlfsCmnRbAllocRar(RgSchCellCb *cell,RgSchDlRbAlloc *allocI
    allocInfo->tbInfo[0].bytesAlloc = allocInfo->tbInfo[0].bytesReq;
 
 #endif
-   printf("\n[%s],allocInfo->tbInfo[0].bytesAlloc:%u,vrbgReq:%u\n",
+   DU_LOG("\nINFO  -->  SCH : [%s],allocInfo->tbInfo[0].bytesAlloc:%u,vrbgReq:%u\n",
          __func__,allocInfo->tbInfo[0].bytesAlloc,allocInfo->vrbgReq);
 
    return ROK;
@@ -21293,22 +21236,19 @@ Bool             isUeCellEdge
 
    if (dlSf->bw <= dlSf->bwAlloced)
    {
-      RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId, 
-            "BW is fully allocated for subframe (%d) CRNTI:%d", dlSf->sfNum,allocInfo->rnti);
+      DU_LOG("\nERROR  -->  SCH : BW is fully allocated for subframe (%d) CRNTI:%d", dlSf->sfNum,allocInfo->rnti);
       return FALSE;
    }
 
    if (dlSf->sfrTotalPoolInfo.ccBwFull == TRUE)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, 
-            "BW is fully allocated for CC Pool CRNTI:%d",allocInfo->rnti);
+      DU_LOG("\nERROR  -->  SCH : BW is fully allocated for CC Pool CRNTI:%d",allocInfo->rnti);
       return FALSE;
    }
 
    if ((dlSf->sfrTotalPoolInfo.ceBwFull == TRUE) && (isUeCellEdge))
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, 
-            "BW is fully allocated for CE Pool CRNTI:%d",allocInfo->rnti);
+      DU_LOG("\nERROR  -->  SCH : BW is fully allocated for CE Pool CRNTI:%d",allocInfo->rnti);
       return FALSE;
    }  
 
@@ -21673,7 +21613,7 @@ RgSchDlRbAlloc  *allocInfo
 
    if (dlSf->bw <= dlSf->bwAlloced)
    {
-      RLOG_ARG3(L_DEBUG,DBG_CELLID,cell->cellId, "(%d:%d)FAILED CRNTI:%d",
+      DU_LOG("\nERROR  -->  SCH : (%d:%d)FAILED CRNTI:%d",
          dlSf->bw, dlSf->bwAlloced,allocInfo->rnti);
       return (FALSE);
    }
@@ -21779,9 +21719,9 @@ RgSchDlRbAlloc  *allocInfo
                dlSf->lstRbgDfct = 1;
             }
 
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, "FAILED for CRNTI:%d",
+            DU_LOG("\nERROR  -->  SCH : FAILED for CRNTI:%d",
                   allocInfo->rnti);
-            printf ("RB Alloc failed for LAA TB type 0\n");
+            DU_LOG("\nERROR  -->  SCH : RB Alloc failed for LAA TB type 0\n");
             return (FALSE);
          }
          return (TRUE);
@@ -21822,8 +21762,8 @@ RgSchDlRbAlloc  *allocInfo
          }
          else
          {
-            printf ("RB Alloc failed for LAA TB type 2\n");
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"FAILED for CRNTI:%d",allocInfo->rnti);
+            DU_LOG("\nERROR  -->  SCH : RB Alloc failed for LAA TB type 2\n");
+            DU_LOG("\nERROR  -->  SCH : FAILED for CRNTI:%d",allocInfo->rnti);
             return (FALSE);
          }
          /* Fix: Number of RBs in case of RETX should be same as 
@@ -21831,7 +21771,7 @@ RgSchDlRbAlloc  *allocInfo
          return (TRUE);
       }
    }
-   RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"FAILED for CRNTI:%d",allocInfo->rnti);
+   DU_LOG("\nERROR  -->  SCH : FAILED for CRNTI:%d",allocInfo->rnti);
    return (FALSE);
 }
 #endif
@@ -21951,7 +21891,7 @@ uint8_t      numRb
       /* KWork fix */
       if (sfrCCPool1 ==  NULLP)
             {
-               RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,  "rgSCHCmnNonDlfsUpdDSFRTyp2Alloc():"
+               DU_LOG("\nERROR  -->  SCH : rgSCHCmnNonDlfsUpdDSFRTyp2Alloc():"
                         "sfrCCPool1 is NULL for CRNTI:%d",ue->ueId);
                return RFAILED;
             }
@@ -21975,7 +21915,7 @@ uint8_t      numRb
                ret = rgSCHCmnBuildRntpInfo(cell, dlSf->rntpInfo.val, dlSf->type2Start, numRb, dlSf->bw);
                if (ret != ROK)
                {
-                    RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, "rgSCHCmnNonDlfsUpdDSFRTyp2Alloc():"
+                    DU_LOG("\nERROR  -->  SCH : rgSCHCmnNonDlfsUpdDSFRTyp2Alloc():"
                       "rgSCHCmnBuildRntpInfo() function returned RFAILED for CRNTI:%d",ue->ueId);
                     return RFAILED;
                }
@@ -21992,7 +21932,7 @@ uint8_t      numRb
             ret = rgSCHCmnBuildRntpInfo(cell, dlSf->rntpInfo.val, dlSf->type2Start, numRb, dlSf->bw);
             if (ret != ROK)
             {
-               RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,   "rgSCHCmnNonDlfsUpdDSFRTyp2Alloc():" 
+               DU_LOG("\nERROR  -->  SCH : rgSCHCmnNonDlfsUpdDSFRTyp2Alloc():" 
                         "rgSCHCmnBuildRntpInfo() function returned RFAILED CRNTI:%d",ue->ueId);
                return RFAILED;
             }
@@ -22254,8 +22194,7 @@ uint16_t     bw
 
    if (rntpPtr == NULLP)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
-               "rgSCHCmnBuildRntpInfo():"
+      DU_LOG("\nERROR  -->  SCH : rgSCHCmnBuildRntpInfo():"
                "rntpPtr can't be NULLP (Memory Allocation Failed)");
       return RFAILED;
    }
@@ -22342,7 +22281,7 @@ uint8_t            numRb
             ret = rgSCHCmnBuildRntpInfo(cell, dlSf->rntpInfo.val, sfrPool->type2Start, numRb, dlSf->bw);
             if (ret != ROK)
             {
-               RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"rgSCHCmnNonDlfsUpdSFRPoolTyp2Alloc():"
+               DU_LOG("\nERROR  -->  SCH : rgSCHCmnNonDlfsUpdSFRPoolTyp2Alloc():"
                         "rgSCHCmnBuildRntpInfo() function returned RFAILED for CRNTI:%d",ue->ueId);
                return RFAILED;
             }
@@ -22354,7 +22293,7 @@ uint8_t            numRb
          ret = rgSCHCmnBuildRntpInfo(cell, dlSf->rntpInfo.val, sfrPool->type2Start, numRb, dlSf->bw);
          if (ret != ROK)
          {
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, "rgSCHCmnNonDlfsUpdSFRPoolTyp2Alloc():"
+            DU_LOG("\nERROR  -->  SCH : rgSCHCmnNonDlfsUpdSFRPoolTyp2Alloc():"
                      "rgSCHCmnBuildRntpInfo() function returned RFAILED for CRNTI:%d",ue->ueId);
             return RFAILED;
          }
@@ -22528,7 +22467,7 @@ static void rgSCHCmnNonDlfsDsfrRntpComp(RgSchCellCb *cell,RgSchDlSf *dlSf)
                sizeof(RgrLoadInfIndInfo));
       if (ret != ROK)
       {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId, "Could not "
+         DU_LOG("\nERROR  -->  SCH : Could not "
             "allocate memory for sending LoadInfo");
          return;  
       }
@@ -22548,7 +22487,7 @@ static void rgSCHCmnNonDlfsDsfrRntpComp(RgSchCellCb *cell,RgSchDlSf *dlSf)
       ret = rgSCHUtlRgrLoadInfInd(cell, rgrLoadInf);
       if(ret == RFAILED)
       {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId, "rgSCHCmnNonDlfsDsfrRntpComp():"
+         DU_LOG("\nERROR  -->  SCH : rgSCHCmnNonDlfsDsfrRntpComp():"
                   "rgSCHUtlRgrLoadInfInd() returned RFAILED");
       }
 
@@ -22717,10 +22656,9 @@ uint8_t      *isDlBwAvail
 
 	if(beamInfo->totVrbgAllocated > MAX_5GTF_VRBG)
 	{
-	   RLOG_ARG1(L_ERROR ,DBG_CELLID,cell->cellId,
-         "5GTF_ERROR : vrbg allocated > 25 :ue (%u)",
+           DU_LOG("\nERROR  -->  SCH : 5GTF_ERROR : vrbg allocated > 25 :ue (%u)",
          ue->ueId);
-	   printf("5GTF_ERROR vrbg allocated > 25\n");
+	   DU_LOG("\nERROR  -->  SCH : 5GTF_ERROR vrbg allocated > 25\n");
 		return RFAILED;
 	}
 
@@ -22737,10 +22675,9 @@ uint8_t      *isDlBwAvail
    {
       /* Returning ROK since PDCCH might be available for another UE and
        * further allocations could be done */
-      RLOG_ARG1(L_ERROR ,DBG_CELLID,cell->cellId,
-         "5GTF_ERROR : PDCCH allocation failed :ue (%u)",
+        DU_LOG("\nERROR  -->  SCH : 5GTF_ERROR : PDCCH allocation failed :ue (%u)",
          ue->ueId);
-	   printf("5GTF_ERROR PDCCH allocation failed\n");
+	DU_LOG("\nERROR  -->  SCH : 5GTF_ERROR PDCCH allocation failed\n");
       return RFAILED;
    }
 #ifdef RG_5GTF
@@ -22986,10 +22923,9 @@ RgSchDlSf          *dlSf
 	RgSchSfBeamInfo  *beamInfo = &(dlSf->sfBeamInfo[0]);
 	if(beamInfo->totVrbgAllocated > MAX_5GTF_VRBG)
 	{
-	   RLOG_ARG1(L_ERROR ,DBG_CELLID,cell->cellId,
-         "5GTF_ERROR : vrbg allocated > 25 :ue (%u)",
+           DU_LOG("\nERROR  -->  SCH : 5GTF_ERROR : vrbg allocated > 25 :ue (%u)",
          raCb->ue->ueId);
-	   printf("5GTF_ERROR vrbg allocated > 25\n");
+	   DU_LOG("\nERROR  -->  SCH : 5GTF_ERROR vrbg allocated > 25\n");
 		return RFAILED;
 	}
 #endif
@@ -23245,7 +23181,7 @@ CmLListCp          *nonSchdHqPLst
          cell->tenbStats->sch.dl5gtfRbAllocFail++;
 #endif
          /* Allocation failed : Add UE to the non-scheduled list */
-			printf("5GTF_ERROR Dl rb alloc failed adding nonSchdHqPLst\n");
+	 DU_LOG("\nERROR  -->  SCH : 5GTF_ERROR Dl rb alloc failed adding nonSchdHqPLst\n");
          cmLListAdd2Tail(nonSchdHqPLst, schdLnkNode);
       }
    }
@@ -23293,7 +23229,7 @@ RgSchCmnDlRbAllocInfo *allocInfo
    /* Allocate for MSG4 retransmissions */
    if (allocInfo->msg4Alloc.msg4RetxLst.count)
    {
-      printf("5GTF_ERROR rgSCHCmnNonDlfsMsg4Alloc RetxLst\n");
+      DU_LOG("\nINFO  -->  SCH : 5GTF_ERROR rgSCHCmnNonDlfsMsg4Alloc RetxLst\n");
       rgSCHCmnNonDlfsMsg4Alloc(cell, &(allocInfo->msg4Alloc), TRUE);
    }
 
@@ -23301,7 +23237,7 @@ RgSchCmnDlRbAllocInfo *allocInfo
    /* Assuming all the nodes in the list need allocations: rbsReq is valid */
    if (allocInfo->msg4Alloc.msg4TxLst.count)
    {
-      printf("5GTF_ERROR rgSCHCmnNonDlfsMsg4Alloc txLst\n");
+      DU_LOG("\nINFO  -->  SCH : 5GTF_ERROR rgSCHCmnNonDlfsMsg4Alloc txLst\n");
       rgSCHCmnNonDlfsMsg4Alloc(cell, &(allocInfo->msg4Alloc), FALSE);
    }
 #ifdef RGR_V1
@@ -23309,7 +23245,7 @@ RgSchCmnDlRbAllocInfo *allocInfo
     * retransmissions */
    if (allocInfo->ccchSduAlloc.ccchSduRetxLst.count)
    {
-      printf("5GTF_ERROR rgSCHCmnNonDlfsCcchSduAlloc\n");
+      DU_LOG("\nINFO  -->  SCH : 5GTF_ERROR rgSCHCmnNonDlfsCcchSduAlloc\n");
       rgSCHCmnNonDlfsCcchSduAlloc(cell, &(allocInfo->ccchSduAlloc), TRUE);
    }
 
@@ -23317,7 +23253,7 @@ RgSchCmnDlRbAllocInfo *allocInfo
    /* Allocate for CCCH SDU (received after guard timer expiry) transmissions */
    if (allocInfo->ccchSduAlloc.ccchSduTxLst.count)
    {
-      printf("5GTF_ERROR rgSCHCmnNonDlfsCcchSduAlloc\n");
+      DU_LOG("\nINFO  -->  SCH : 5GTF_ERROR rgSCHCmnNonDlfsCcchSduAlloc\n");
       rgSCHCmnNonDlfsCcchSduAlloc(cell, &(allocInfo->ccchSduAlloc), FALSE);
    }
 #endif
@@ -23331,7 +23267,7 @@ RgSchCmnDlRbAllocInfo *allocInfo
       {
          break;
       }
-      printf("5GTF_ERROR calling RAR rgSCHCmnNonDlfsCmnRbAlloc\n");
+      DU_LOG("\nINFO  -->  SCH : 5GTF_ERROR calling RAR rgSCHCmnNonDlfsCmnRbAlloc\n");
    //   if ((rgSCHCmnNonDlfsCmnRbAlloc(cell, reqAllocInfo)) != ROK)
       if ((rgSCHCmnNonDlfsCmnRbAllocRar(cell, reqAllocInfo)) != ROK)
       {
@@ -23342,7 +23278,7 @@ RgSchCmnDlRbAllocInfo *allocInfo
    /* Allocate for RETX+TX UEs */
    if(allocInfo->dedAlloc.txRetxHqPLst.count)
    {
-      printf("5GTF_ERROR TX RETX rgSCHCmnNonDlfsDedRbAlloc\n");
+      DU_LOG("\nDEBUG  -->  SCH : 5GTF_ERROR TX RETX rgSCHCmnNonDlfsDedRbAlloc\n");
       rgSCHCmnNonDlfsDedRbAlloc(cell, &(allocInfo->dedAlloc),
             &(allocInfo->dedAlloc.txRetxHqPLst),
             &(allocInfo->dedAlloc.schdTxRetxHqPLst),
@@ -23373,17 +23309,17 @@ RgSchCmnDlRbAllocInfo *allocInfo
             cmnCell->dl.maxUePerDlSf)
       {
 #ifndef ALIGN_64BIT
-         RGSCHDBGERRNEW(cell->instIdx,(rgSchPBuf(cell->instIdx),"UEs selected by"
+         DU_LOG("\nERROR  -->  SCH : UEs selected by"
                   " scheduler exceed maximumUePerDlSf(%u)tx-retx %ld retx %ld tx %ld\n",
                   cmnCell->dl.maxUePerDlSf, allocInfo->dedAlloc.txRetxHqPLst.count,
                   allocInfo->dedAlloc.retxHqPLst.count,
-                  allocInfo->dedAlloc.txHqPLst.count));
+                  allocInfo->dedAlloc.txHqPLst.count);
 #else
-         RGSCHDBGERRNEW(cell->instIdx,(rgSchPBuf(cell->instIdx),"UEs selected by"
+         DU_LOG("\nERROR  -->  SCH : UEs selected by"
                   " scheduler exceed maximumUePerDlSf(%u)tx-retx %d retx %d tx %d\n",
                   cmnCell->dl.maxUePerDlSf, allocInfo->dedAlloc.txRetxHqPLst.count,
                   allocInfo->dedAlloc.retxHqPLst.count,
-                  allocInfo->dedAlloc.txHqPLst.count));
+                  allocInfo->dedAlloc.txHqPLst.count);
 #endif
       }
    }
@@ -23391,7 +23327,7 @@ RgSchCmnDlRbAllocInfo *allocInfo
    /* LTE_ADV_FLAG_REMOVED_START */
    if(cell->lteAdvCb.dsfrCfg.status == RGR_ENABLE)
    { 	
-      printf("5GTF_ERROR RETX rgSCHCmnNonDlfsDsfrRntpComp\n");
+      DU_LOG("\nINFO  -->  SCH : 5GTF_ERROR RETX rgSCHCmnNonDlfsDsfrRntpComp\n");
       rgSCHCmnNonDlfsDsfrRntpComp(cell, allocInfo->dedAlloc.dedDlSf); 
    }  
    /* LTE_ADV_FLAG_REMOVED_END */
@@ -24023,7 +23959,7 @@ RgSchCmnDlRbAllocInfo      *cellWdAllocInfo
          (proc->tbInfo[1].state == HQ_TB_NACKED))
    {
 #ifdef LAA_DBG_LOG
-      printf ("RETX RB TM3 nack for both hqp %d cell %d \n", proc->procId, proc->hqE->cell->cellId);
+      DU_LOG("\nDEBUG  -->  SCH : RETX RB TM3 nack for both hqp %d cell %d \n", proc->procId, proc->hqE->cell->cellId);
 #endif
       /* Both TBs require RETX allocation */
       rgSCHCmnDlTM3RetxRetx(cell, subFrm, ue, bo, effBo,\
@@ -24981,7 +24917,7 @@ RgSchCmnDlRbAllocInfo *cellWdAllocInfo
    if (frthrScp)
    {
 #ifdef LAA_DBG_LOG
-      printf ("TX RETX called from proc %d cell %d \n",proc->procId, cell->cellId);
+      DU_LOG("\nDEBUG  -->  SCH : TX RETX called from proc %d cell %d \n",proc->procId, cell->cellId);
 #endif
       ret = rgSCHCmnDlAlloc2CwTxRetxRb(cell, subFrm, ue, retxTb, txTb,\
             &numRb, effBo);
@@ -25516,7 +25452,7 @@ RgSchCmnDlRbAllocInfo      *cellWdAllocInfo
 )
 {
 #if (ERRCLASS & ERRCLS_DEBUG)
-   RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, "Invalid TM 5 for CRNTI:%d",ue->ueId);
+   DU_LOG("\nERROR  -->  SCH : Invalid TM 5 for CRNTI:%d",ue->ueId);
 #endif
    return;
 }
@@ -25558,7 +25494,7 @@ RgSchCmnDlRbAllocInfo  *cellWdAllocInfo
 )
 {
 #if (ERRCLASS & ERRCLS_DEBUG)
-   RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, "Invalid TM 5 for CRNTI:%d",ue->ueId);
+   DU_LOG("\nERROR  -->  SCH : Invalid TM 5 for CRNTI:%d",ue->ueId);
 #endif
    return;
 }
@@ -26315,8 +26251,7 @@ uint32_t         *effBo
          (allocInfo->tbInfo[1].bytesReq >= ueDl->maxTbSz/8) ||
          (allocInfo->rbsReq >= ueDl->maxRb))
    {
-      RLOG_ARG0(L_DEBUG,DBG_CELLID,cell->cellId,
-            "rgSCHCmnDlAllocRb(): UEs max allocation exceed");
+      DU_LOG("\nDEBUG  -->  SCH : rgSCHCmnDlAllocRb(): UEs max allocation exceed");
       return RFAILED;
    }
 
@@ -26559,7 +26494,7 @@ uint32_t                        *effBo
 
       if(*numRb <= 3)
       {
-         RLOG1(L_ERROR," Number of RBs [%d] are less than or equal to 3",*numRb);
+         DU_LOG("\nERROR  -->  SCH : Number of RBs [%d] are less than or equal to 3",*numRb);
 	 return RFAILED;
       }
    }
@@ -26679,7 +26614,7 @@ uint32_t         *effBo
        
       if(*numRb <= 3)
       {
-         RLOG1(L_ERROR," Number of RBs [%d] are less than or equal to 3",*numRb);
+         DU_LOG("\nERROR  -->  SCH :  Number of RBs [%d] are less than or equal to 3",*numRb);
 	 return RFAILED;
       }
    }
@@ -27582,8 +27517,7 @@ RgInfSfAlloc            *subfrmAlloc
          /* LTE_ADV_FLAG_REMOVED_START */
          if(cell->siCb.siCtx.retxCntRem)
          { 
-            RGSCHLOGERROR(cell->instIdx,ERRCLS_INT_PAR,ERG011,(ErrVal)cell->siCb.siCtx.siId,
-                                "rgSCHDlSiSched(): SI not scheduled and window expired");
+             DU_LOG("\nERROR  -->  SCH : rgSCHDlSiSched(): SI not scheduled and window expired");
          }
          /* LTE_ADV_FLAG_REMOVED_END */
          if(cell->siCb.siCtx.warningSiFlag == TRUE)
@@ -27674,7 +27608,7 @@ RgInfSfAlloc            *subfrmAlloc
     * exceeds the available */
    if (rb > sf->bw - sf->bwAssigned)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,  "rgSCHDlSiSched(): "
+      DU_LOG("\nERROR  -->  SCH : rgSCHDlSiSched(): "
          "BW allocation failed CRNTI:%d",RGSCH_SI_RNTI);
       return;
    }
@@ -27752,7 +27686,7 @@ RgrUeCqiRept        *ueCqiRpt
                sizeof(RgrStaIndInfo));
       if (retVal != ROK)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, "Could not "
+         DU_LOG("\nERROR  -->  SCH : Could not "
             "allocate memory for sending StaInd CRNTI:%d",ue->ueId);
          return (retVal);
       }
@@ -27992,9 +27926,6 @@ RgInfUeDatInd  *datInd
 {
    uint32_t idx = 0;
    RgSchCmnCell *cellSch = RG_SCH_CMN_GET_CELL(cell);
-#ifdef DEBUGP
-   Inst                inst = cell->instIdx;
-#endif
 
 
    for (idx = 0; (idx < RGINF_MAX_LCG_PER_UE - 1); idx++)
@@ -28049,7 +27980,7 @@ RgInfUeDatInd  *datInd
    {
       if (cellSch->apisEmtcUl->rgSCHRgrUlLcgUpd(cell, ue, datInd) != ROK)
       {
-         RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "\n rgSCHCmnUpdUeDataIndLcg(): rgSCHRgrUlLcgUpd returned failure"));
+         DU_LOG("\nERROR  -->  SCH :  rgSCHCmnUpdUeDataIndLcg(): rgSCHRgrUlLcgUpd returned failure");
       }
 
    }
@@ -28058,7 +27989,7 @@ RgInfUeDatInd  *datInd
    {
       if (cellSch->apisUl->rgSCHRgrUlLcgUpd(cell, ue, datInd) != ROK)
       {
-         RGSCHDBGERRNEW(inst, (rgSchPBuf(inst), "\n rgSCHCmnUpdUeDataIndLcg(): rgSCHRgrUlLcgUpd returned failure"));
+         DU_LOG("\nERROR  -->  SCH : rgSCHCmnUpdUeDataIndLcg(): rgSCHRgrUlLcgUpd returned failure");
       }
    }
 }
@@ -28606,7 +28537,7 @@ Void rgSCHCmnDlSch(RgSchCellCb *cell)
          {
 		      ul5gtfsidDlAlreadyMarkUl++;
             /*
-		      printf("ul5gtfsidDlAlreadyMarkUl: %d, [sfn:sf] [%04d:%02d]\n", 
+		    DU_LOG("\nINFO   -->  SCH : ul5gtfsidDlAlreadyMarkUl: %d, [sfn:sf] [%04d:%02d]\n", 
                     ul5gtfsidDlAlreadyMarkUl, cellSch->dl.time.sfn, 
                     cellSch->dl.time.slot);
             */

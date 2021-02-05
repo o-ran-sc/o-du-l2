@@ -152,7 +152,7 @@ uint8_t schAllocMsg3Pusch(Inst schInst, uint16_t slot, uint16_t crnti, \
    SCH_ALLOC(schUlSlotInfo->schPuschInfo, sizeof(SchPuschInfo));
    if(!schUlSlotInfo->schPuschInfo)
    {
-      DU_LOG("SCH: Memory allocation failed in schAllocMsg3Pusch");
+      DU_LOG("\nERROR  -->  SCH :  Memory allocation failed in schAllocMsg3Pusch");
       return RFAILED;
    }
    tbSize = 0;  /* since nPrb has been incremented, recalculating tbSize */
@@ -214,7 +214,7 @@ uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst)
    SCH_ALLOC(rarInfo, sizeof(RarInfo));
    if(rarInfo == NULLP)
    {
-      DU_LOG("\nMAC: Memory Allocation failed for rarInfo");
+      DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for rarInfo");
       return RFAILED;
    }
 
