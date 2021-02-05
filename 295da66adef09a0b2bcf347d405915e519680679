@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "540204a2_02b695c3",
+        "filename": "src/5gnrrlc/kw_utl_dl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 347,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-02-05T10:57:31Z",
+      "side": 1,
+      "message": "move this out of all for loops since pst structure will be filled with same values in each iteration",
+      "revId": "295da66adef09a0b2bcf347d405915e519680679",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d329b963_bb95d5dd",
+        "filename": "src/5gnrrlc/kw_utl_dl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-02-05T10:57:31Z",
+      "side": 1,
+      "message": "These 3 loops are getting traversed 2 times i.e at line 269 onwards and here as well.\nCan we optimize this code to traverse the loop only once?",
+      "revId": "295da66adef09a0b2bcf347d405915e519680679",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d36ec0b7_306443ea",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 712,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-02-05T10:57:31Z",
+      "side": 1,
+      "message": "Use RLC_DL for all prints in this function",
+      "revId": "295da66adef09a0b2bcf347d405915e519680679",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d81ea454_c5783cf5",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-02-05T10:57:31Z",
+      "side": 1,
+      "message": "event at line 32 can be removed and EVENT_DL_USER_DATA_TRANS_TO_RLC can be defined as 218",
+      "revId": "295da66adef09a0b2bcf347d405915e519680679",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
