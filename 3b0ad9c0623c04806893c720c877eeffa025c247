@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "90ff6d31_2447e31b",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 513,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-05T11:46:07Z",
+      "side": 1,
+      "message": "Added for verification. Will be removed",
+      "parentUuid": "4ed94933_efa223b0",
+      "revId": "3b0ad9c0623c04806893c720c877eeffa025c247",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a9f29eea_1f553af0",
         "filename": "src/cm/common_def.h",
         "patchSetId": 1
@@ -33,6 +51,24 @@
       "revId": "3b0ad9c0623c04806893c720c877eeffa025c247",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b30b825a_1187898e",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-05T11:46:07Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a9f29eea_1f553af0",
+      "revId": "3b0ad9c0623c04806893c720c877eeffa025c247",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
