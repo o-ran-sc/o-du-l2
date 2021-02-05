@@ -21,8 +21,8 @@
 #include "lkw.h"           /* LKW defines */
 #include "ckw.h"           /* CKW defines */
 #include "kwu.h"           /* KWU defines */
-#include "kw_env.h"        /* RLC environment options */
-#include "kw.h"            /* RLC defines */
+#include "rlc_env.h"        /* RLC environment options */
+#include "rlc.h"            /* RLC defines */
 
 
 /* header/extern include files (.x) */
@@ -30,8 +30,8 @@
 #include "lkw.x"           /* LKW */
 #include "ckw.x"           /* CKW */
 #include "kwu.x"           /* KWU */
-#include "kw_err.h"
-#include "kw.x"
+#include "rlc_err.h"
+#include "rlc.x"
 
 #include "du_app_rlc_inf.h"
 #include "rlc_mgr.h"
