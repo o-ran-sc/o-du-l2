@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c30485ba_d0707c38",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-02-05T12:33:33Z",
+      "side": 1,
+      "message": "Can add a comment on slot and symbol pattern",
+      "revId": "dcf40f0b1856cf1fad8209661067cf6e0aa9837a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
