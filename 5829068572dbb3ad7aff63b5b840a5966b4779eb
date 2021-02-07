@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "72a459a1_b3d58231",
+        "filename": "src/5gnrrlc/rlc_dl.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-02-07T14:55:24Z",
+      "side": 1,
+      "message": "RLC_DL_H_",
+      "revId": "5829068572dbb3ad7aff63b5b840a5966b4779eb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "227cade8_2af2a82b",
+        "filename": "src/5gnrrlc/rlc_dl.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-02-07T14:55:24Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "5829068572dbb3ad7aff63b5b840a5966b4779eb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ce3a767a_9f9b9bb3",
+        "filename": "src/5gnrrlc/rlc_dl.x",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-02-07T14:55:24Z",
+      "side": 1,
+      "message": "generic comment: to check and rename the ifndef names as well",
+      "revId": "5829068572dbb3ad7aff63b5b840a5966b4779eb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2c9ee80c_b8de3fd0",
+        "filename": "src/5gnrrlc/rlc_dl.x",
+        "patchSetId": 1
+      },
+      "lineNbr": 855,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-02-07T14:55:24Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "5829068572dbb3ad7aff63b5b840a5966b4779eb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
