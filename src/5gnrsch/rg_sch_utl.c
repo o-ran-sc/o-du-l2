@@ -32,9 +32,6 @@
 @brief This file implements the schedulers main access to MAC layer code.
 */
 
-static const char* RLOG_MODULE_NAME="MAC";
-static int RLOG_MODULE_ID=4096;
-static int RLOG_FILE_ID=177;
 
 /* header include files -- defines (.h) */
 #include "common_def.h"
@@ -739,8 +736,7 @@ S16 rgSchSFRTotalPoolInit(RgSchCellCb *cell,RgSchDlSf *sf)
    ret = rgSCHUtlAllocSBuf(cell->instIdx, (Data **)&temp, sizeof(CmLList));
    if (ret != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
-		      "CE Pool memory allocation FAILED for cell");       
+      DU_LOG("\nERROR  -->  SCH : CE Pool memory allocation FAILED for cell");       
       rgSchSFRTotalPoolFree(&sf->sfrTotalPoolInfo, cell);
       return RFAILED;
    }
@@ -748,8 +744,7 @@ S16 rgSchSFRTotalPoolInit(RgSchCellCb *cell,RgSchDlSf *sf)
    ret = rgSCHUtlAllocSBuf(cell->instIdx, (Data **)&temp->node, sizeof(RgSchSFRPoolInfo));
    if (ret != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
-		      "CE Pool memory allocation FAILED for cell ");       
+      DU_LOG("\nERROR  -->  SCH : CE Pool memory allocation FAILED for cell ");       
       rgSchSFRTotalPoolFree(&sf->sfrTotalPoolInfo,cell);
       return RFAILED;
    }
@@ -782,8 +777,7 @@ S16 rgSchSFRTotalPoolInit(RgSchCellCb *cell,RgSchDlSf *sf)
    ret = rgSCHUtlAllocSBuf(cell->instIdx, (Data **)&temp, sizeof(CmLList));
    if (ret != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
-		      "CC Pool memory allocation FAILED for cell ");       
+      DU_LOG("\nERROR  -->  SCH : CC Pool memory allocation FAILED for cell ");       
       rgSchSFRTotalPoolFree(&sf->sfrTotalPoolInfo,cell);
       return RFAILED;
    }
@@ -791,8 +785,7 @@ S16 rgSchSFRTotalPoolInit(RgSchCellCb *cell,RgSchDlSf *sf)
    ret = rgSCHUtlAllocSBuf(cell->instIdx, (Data **)&temp->node, sizeof(RgSchSFRPoolInfo));
    if (ret != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
-		      "CC Pool memory allocation FAILED for cell ");       
+      DU_LOG("\nERROR  -->  SCH : CC Pool memory allocation FAILED for cell ");       
       rgSchSFRTotalPoolFree(&sf->sfrTotalPoolInfo,cell);
       return RFAILED;
    }
@@ -844,8 +837,7 @@ S16 rgSchSFRTotalPoolInit(RgSchCellCb *cell,RgSchDlSf *sf)
       ret = rgSCHUtlAllocSBuf(cell->instIdx, (Data **)&temp, sizeof(CmLList));
       if (ret != ROK)
       {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
-			 "CC Pool memory allocation FAILED for cell ");       
+         DU_LOG("\nERROR  -->  SCH : CC Pool memory allocation FAILED for cell ");       
          rgSchSFRTotalPoolFree(&sf->sfrTotalPoolInfo,cell);
          return RFAILED;
       }
@@ -853,8 +845,7 @@ S16 rgSchSFRTotalPoolInit(RgSchCellCb *cell,RgSchDlSf *sf)
       ret = rgSCHUtlAllocSBuf(cell->instIdx, (Data **)&temp->node, sizeof(RgSchSFRPoolInfo));
       if (ret != ROK)
       {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
-			 "CC Pool memory allocation FAILED for cell ");       
+         DU_LOG("\nERROR  -->  SCH : CC Pool memory allocation FAILED for cell ");       
          rgSchSFRTotalPoolFree(&sf->sfrTotalPoolInfo,cell);
          return RFAILED;
       }
@@ -915,7 +906,7 @@ S16   rgSchDSFRRntpInfoInit(TknStrOSXL  *rntpPtr,RgSchCellCb *cell,uint16_t bw)
    if((rgSCHUtlAllocSBuf(inst, (Data**)&(rntpPtr->val),
                (len * sizeof(uint8_t)))) != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Memory allocation FAILED for RNTP Alloc");
+      DU_LOG("\nERROR  -->  SCH : Memory allocation FAILED for RNTP Alloc");
       return RFAILED;
    }
 
@@ -1089,7 +1080,7 @@ Bool            isForMsg3
 
    if(ret != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId, " rgSCHUtlAddPhich(): "
+      DU_LOG("\nERROR  -->  SCH : rgSCHUtlAddPhich(): "
                "Allocation of RgSchPhich failed");
       return RFAILED;
    }
@@ -1674,8 +1665,7 @@ uint8_t        *hqPId
    {
       if ( ((alloc->ue) == NULLP) ||  (RG_SCH_CMN_GET_UE(alloc->ue, alloc->ue->cell) == NULLP))
       {
-         RLOG_ARG2(L_ERROR,DBG_CELLID,alloc->ue->cell->cellId,
-                     "Failed: ue->sch is null RNTI:%d,isRetx=%d",
+         DU_LOG("\nERROR  -->  SCH : Failed: ue->sch is null RNTI:%d,isRetx=%d",
                      alloc->rnti, alloc->grnt.isRtx);
          return RFAILED; 
       }
@@ -1883,7 +1873,7 @@ Void rgSCHUtlPrachCfgInit(RgSchCellCb *cell,RgrCellCfg *cellCfg)
 
    if(cellCfg->prachRscInfo.numRsc <= 0)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId, "Invalid"
+      DU_LOG("\nERROR  -->  SCH : Invalid"
                   "PRACH resources Configuration ");
       return;
    }
@@ -2196,7 +2186,7 @@ S16 rgSCHUtlRgrCellCfg(RgSchCellCb *cell,RgrCellCfg *cellCfg,RgSchErrInfo *errIn
       if((rgSCHUtlAllocSBuf(inst, (Data**)&(cell->rntpAggrInfo.val),
                   (len * sizeof(uint8_t)))) != ROK)
       {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Memory allocation FAILED for RNTP Alloc");
+         DU_LOG("\nERROR  -->  SCH : Memory allocation FAILED for RNTP Alloc");
          return RFAILED;
       }
       cell->rntpAggrInfo.pres = PRSNT_NODEF;
@@ -3202,7 +3192,7 @@ S16 rgSCHUtlRgrUeRecfg(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeRecfg *ueRecfg,RgSch
             ue->f1bCsAVal += rgSCHUtlGetMaxTbSupp(ueRecfg->txMode.txModeEnum);
 
 
-            RLOG1(L_INFO,"UeReCfg A valie is %d\n",ue->f1bCsAVal);
+            DU_LOG("\nINFO  -->  SCH : UeReCfg A valie is %d\n",ue->f1bCsAVal);
          }
 #endif
          ue->mimoInfo.txMode = ueRecfg->txMode.txModeEnum;
@@ -3772,7 +3762,7 @@ S16 rgSCHUtlGetRlsHqAlloc(RgSchCellCb *cell)
                      (Data**)&(cell->rlsHqArr[idx].ueHqInfo),
                       (sizeof(RgInfUeHqInfo)*RGSCH_MAX_UE_PER_DL_SF))) != ROK)
       {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Memory allocation FAILED for "
+         DU_LOG("\nERROR  -->  SCH : Memory allocation FAILED for "
             "UE Alloc");
          return RFAILED;
       }
@@ -3858,7 +3848,7 @@ S16 rgSCHUtlGetSfAlloc(RgSchCellCb *cell)
                      (Data**)&(cell->sfAllocArr[idx].ueInfo.allocInfo),
                       (sizeof(RgInfUeAlloc)*RGSCH_MAX_UE_PER_DL_SF))) != ROK)
       {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Memory allocation FAILED for "
+         DU_LOG("\nERROR  -->  SCH : Memory allocation FAILED for "
             "UE Alloc");
          return RFAILED;
       }
@@ -3868,7 +3858,7 @@ S16 rgSCHUtlGetSfAlloc(RgSchCellCb *cell)
                      (Data**)&(cell->sfAllocArr[idx].rarInfo.raRntiInfo),
                       (sizeof(RgInfRaRntiInfo)*RGSCH_MAX_RARNTI_PER_DL_SF))) != ROK)
       {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Memory allocation FAILED for "
+         DU_LOG("\nERROR  -->  SCH : Memory allocation FAILED for "
             "RARNTI");
          return RFAILED;
       }
@@ -3878,7 +3868,7 @@ S16 rgSCHUtlGetSfAlloc(RgSchCellCb *cell)
             (Data**)&(cell->sfAllocArr[idx].rarInfo.raRntiInfo[indx].crntiInfo),
                    (sizeof(RgInfCrntiInfo)* (cellUl->maxMsg3PerUlSf)))) != ROK)
          {
-            RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Memory allocation FAILED for "
+            DU_LOG("\nERROR  -->  SCH : Memory allocation FAILED for "
                "RNTI");
             return RFAILED;
          }
@@ -4011,8 +4001,7 @@ Size    size                /* size */
      /*  Send an alarm to Layer Manager */
      rgSCHLmmStaInd(inst, LCM_CATEGORY_RESOURCE, LCM_EVENT_SMEM_ALLOC_FAIL,
                                        LCM_CAUSE_MEM_ALLOC_FAIL, &dgn);
-     RGSCHLOGERROR(inst, ERRCLS_DEBUG, ERG015, 0, "Unable to Allocate Buffer");
-     RLOG_ARG0(L_ERROR,DBG_INSTID,inst, "Unable to Allocate the Buffer");
+     DU_LOG("\nERROR  -->  SCH : Unable to Allocate the Buffer");
      return RFAILED;
    }
 
@@ -4063,9 +4052,7 @@ Size size           /* size */
 
    if (ret != ROK)
    {
-      RGSCHLOGERROR(inst, ERRCLS_DEBUG, ERG016, (ErrVal) 0,
-                 "rgSCHUtlFreeSBuf failed.\n");
-      RLOG_ARG0(L_ERROR,DBG_INSTID,inst, "rgSCHUtlFreeSBuf failed");
+      DU_LOG("\nERROR  -->  SCH : rgSCHUtlFreeSBuf failed");
       return;
    }
 
@@ -4257,7 +4244,7 @@ S16 rgSCHUtlCalMcsAndNPrb(RgSchCellCb *cell,uint8_t cfgType,MsgLen msgLen,uint8_
       /*Get the nPrb and mcs parametr values */
    if (rgSCHUtlGetAllwdCchTbSz(msgLen*8, &nPrb, &mcs) != (msgLen*8))
       {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId, "msgLen does "
+         DU_LOG("\nERROR  -->  SCH : msgLen does "
             "not match any valid TB Size");
          return RFAILED;
       }
@@ -4797,8 +4784,7 @@ static Void rgSCHUtlFillRgInfTbInfo(RgSchDlHqProcCb *hqP,RgInfUeAlloc *allocInfo
             allocInfo->pa = (uint8_t)ue->cell->lteAdvCb.sfrCfg.pwrThreshold.pHigh;  /* KW fix for LTE_ADV */  
             if(tmpCnt++ == 100000)
             {
-               RLOG_ARG2(L_DEBUG,DBG_CELLID,ue->cell->cellId, 
-                        "DSFR::ll UEs can go HIGH, PHigh(%d) for UE(%d)",allocInfo->pa, ue->ueId);
+               DU_LOG("\nDEBUG  -->  SCH : DSFR::ll UEs can go HIGH, PHigh(%d) for UE(%d)",allocInfo->pa, ue->ueId);
                tmpCnt = 0;
             }
          }    
@@ -4812,8 +4798,7 @@ static Void rgSCHUtlFillRgInfTbInfo(RgSchDlHqProcCb *hqP,RgInfUeAlloc *allocInfo
                   allocInfo->pa = ue->cell->lteAdvCb.sfrCfg.pwrThreshold.pHigh;
                   if(tmpCnt++ == 100000)
                   {
-                     RLOG_ARG2(L_DEBUG,DBG_CELLID,ue->cell->cellId, 
-                              "SFR::UE is CELL EDGE, PHigh(%d) for UE(%d)",allocInfo->pa, ue->ueId);
+                     DU_LOG("\nDEBUG  -->  SCH : SFR::UE is CELL EDGE, PHigh(%d) for UE(%d)",allocInfo->pa, ue->ueId);
                      tmpCnt = 0;
                   }
 
@@ -4830,8 +4815,7 @@ static Void rgSCHUtlFillRgInfTbInfo(RgSchDlHqProcCb *hqP,RgInfUeAlloc *allocInfo
                      allocInfo->pa = ue->cell->lteAdvCb.sfrCfg.pwrThreshold.pLow;
                      if(tmpCnt++ == 100000)
                      {
-                        RLOG_ARG2(L_DEBUG,DBG_CELLID,ue->cell->cellId, 
-                                 "SFR::UE is CELL CENTRE, PLow(%d) for UE(%d)\n",allocInfo->pa, ue->ueId);
+                        DU_LOG("\nDEBUG  -->  SCH : SFR::UE is CELL CENTRE, PLow(%d) for UE(%d)\n",allocInfo->pa, ue->ueId);
                         tmpCnt = 0;
                      }
                   }
@@ -5064,7 +5048,7 @@ Void rgSCHUtlFillRgInfUeInfo(RgSchDlSf *sf,RgSchCellCb *cell,CmLListCp *dlDrxIna
    CM_LLIST_FIRST_NODE(lnkLst, tmp);
    while(NULLP != tmp)
    {
-      printf("5GTF_ERROR MSG4 Consolidation\n");
+      DU_LOG("\nINFO  -->  SCH : 5GTF_ERROR MSG4 Consolidation\n");
       hqCb = (RgSchDlHqProcCb *)(tmp->node);
       CM_LLIST_NEXT_NODE(lnkLst, tmp);
 
@@ -5263,7 +5247,7 @@ S16 rgSCHUtlAddUeToCcchSduLst(RgSchCellCb  *cell,RgSchUeCb *ueCb)
        ((!(ueCb->dl.dlInactvMask & RG_HQENT_INACTIVE)) &&
        ((hqP != NULLP) && (hqP->hqE->ccchSduProc))))
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"RNTI:%d Unexpected CCCH SDU BO",
+      DU_LOG("\nINFO  -->  SCH : RNTI:%d Unexpected CCCH SDU BO",
          ueCb->ueId);
       return ROK;
    }
@@ -5293,7 +5277,7 @@ S16 rgSCHUtlUpdtBo(RgSchCellCb  *cell,RgInfCmnBoRpt *staRsp)
    if ((ueCb = rgSCHDbmGetUeCb(cell, staRsp->u.rnti)) == NULLP)
    {
       /* Handle Ue fetch failure */
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Invalid UEID:%d",staRsp->u.rnti);
+      DU_LOG("\nERROR  -->  SCH : Invalid UEID:%d",staRsp->u.rnti);
       return RFAILED;
    }
    /* Update Bo in ueCb */
@@ -5341,8 +5325,7 @@ S16 rgSCHUtlHndlCcchBoUpdt(RgSchCellCb *cell,RgInfCmnBoRpt *boRpt)
       return (rgSCHUtlUpdtBo(cell, boRpt));
 #else
       /* Handle RaCb fetch failure */
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-		      "Invalid RNTI:%d to fetch raCb",boRpt->u.rnti);
+      DU_LOG("\nERROR  -->  SCH : Invalid RNTI:%d to fetch raCb",boRpt->u.rnti);
       return RFAILED;
 #endif
    }
@@ -5377,7 +5360,7 @@ S16 rgSCHUtlHndlCcchBoUpdt(RgSchCellCb *cell,RgInfCmnBoRpt *boRpt)
          if ((ueCb = rgSCHDbmGetUeCb(cell, boRpt->u.rnti)) == NULLP)
          {
             /* Handle Ue fetch failure */
-            RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Invalid RNTI:%d",boRpt->u.rnti);
+            DU_LOG("\nERROR  -->  SCH : Invalid RNTI:%d",boRpt->u.rnti);
             return RFAILED;
          }
          /* Update Bo in ueCb */
@@ -5466,8 +5449,7 @@ S16 rgSCHUtlHndlBcchPcchBoUpdt(RgSchCellCb *cell,RgInfCmnBoRpt *boUpdt)
    dlLc = rgSCHDbmGetBcchOnBch(cell);
    if (dlLc == NULLP)
    {
-      RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,
-      "No Logical Channel dlLc is NULLP for RNTI:%d LCID:%d",boUpdt->u.rnti,boUpdt->lcId);
+      DU_LOG("\nERROR  -->  SCH : No Logical Channel dlLc is NULLP for RNTI:%d LCID:%d",boUpdt->u.rnti,boUpdt->lcId);
       return RFAILED;
    }
    if (boUpdt->lcId != dlLc->lcId)
@@ -5479,7 +5461,7 @@ S16 rgSCHUtlHndlBcchPcchBoUpdt(RgSchCellCb *cell,RgInfCmnBoRpt *boUpdt)
          if (rgSCHUtlGetAllwdCchTbSz(boUpdt->bo*8, &nPrb, &mcs) 
                != (boUpdt->bo*8))
          {
-            RLOG_ARG3(L_ERROR,DBG_CELLID,cell->cellId,"[%ld]BO: does not match any "
+            DU_LOG("\nERROR  -->  SCH : [%d]BO: does not match any "
                   "valid TB Size RNTI:%d LCID:%d", boUpdt->bo,boUpdt->u.rnti,boUpdt->lcId);
             return RFAILED;
          }
@@ -5492,14 +5474,13 @@ S16 rgSCHUtlHndlBcchPcchBoUpdt(RgSchCellCb *cell,RgInfCmnBoRpt *boUpdt)
    if ((dlLc = rgSCHDbmGetCmnLcCb(cell, boUpdt->lcId)) == NULLP)
    {
       /* Handle lcCb fetch failure */
-      RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId,
-		      "LCID:%d Invalid for RNTI:%d",boUpdt->lcId,boUpdt->u.rnti);
+      DU_LOG("\nERROR  -->  SCH : LCID:%d Invalid for RNTI:%d",boUpdt->lcId,boUpdt->u.rnti);
    }
 
    if (((rgSCHUtlAllocSBuf(inst, (Data **)(&boRpt), sizeof(RgSchClcBoRpt))) ==RFAILED) ||
        (!boRpt))
    {
-      RLOG_ARG3(L_ERROR,DBG_CELLID,cell->cellId, "Allocation of common bo %dreport "
+      DU_LOG("\nERROR  -->  SCH : Allocation of common bo %dreport "
          "failed  RNTI:%d LCID:%d", boUpdt->bo,boUpdt->u.rnti,boUpdt->lcId);
       return RFAILED;
    }
@@ -5554,7 +5535,7 @@ S16 rgSCHUtlRgrBndCfm(Inst instId,SuId suId,uint8_t status)
    ret = RgUiRgrBndCfm(&rgSchCb[instId].rgrSap[suId].sapCfg.sapPst, rgSchCb[instId].rgrSap[suId].sapCfg.suId, status);
    if (ret != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_INSTID,instId,"rgSCHUtlRgrBndCfm: RgUiRgrBndCfm Failed ");
+      DU_LOG("\nERROR  -->  SCH : rgSCHUtlRgrBndCfm: RgUiRgrBndCfm Failed ");
       return (ret);
    }
    return (ret);
@@ -5584,7 +5565,7 @@ S16 rgSCHUtlRgmBndCfm(Inst instId,SuId suId,uint8_t status)
    ret = RgUiRgmBndCfm(&rgSchCb[instId].rgmSap[suId].sapCfg.sapPst, rgSchCb[instId].rgmSap[suId].sapCfg.suId, status);
    if (ret != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_INSTID,instId,"rgSCHUtlRgmBndCfm: RgUiRgrBndCfm Failed ");
+      DU_LOG("\nERROR  -->  SCH : rgSCHUtlRgmBndCfm: RgUiRgrBndCfm Failed ");
       return (ret);
    }
    return (ret);
@@ -5612,7 +5593,6 @@ S16 rgSCHUtlRgmBndCfm(Inst instId,SuId suId,uint8_t status)
 S16 schSendCfgCfm(Region reg,Pool pool,RgrCfgTransId transId,uint8_t status)
 {
    Pst cfmPst;
-   Inst inst = 0;
 
    memset((&cfmPst), 0, sizeof(Pst));
 
@@ -5628,8 +5608,7 @@ S16 schSendCfgCfm(Region reg,Pool pool,RgrCfgTransId transId,uint8_t status)
 
    if(RgUiRgrCfgCfm(&cfmPst,transId, status) != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_INSTID,inst,"schSendCfgCfm: RgUiRgrCfgCfm Failed");
-      printf("\nschSendCfgCfm: RgUiRgrCfgCfm Failed ");
+      DU_LOG("\nERROR  -->  SCH : schSendCfgCfm: RgUiRgrCfgCfm Failed ");
       return RFAILED;
    }
    return ROK;
@@ -5663,8 +5642,7 @@ S16 rgSCHUtlRgrTtiInd(RgSchCellCb *cell,RgrTtiIndInfo *rgrTti)
    rgrSap = cell->rgrSap;
    if (rgrSap->sapSta.sapState != LRG_BND)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-               "rgSCHUtlRgrTtiInd() Upper SAP not bound (%d) ",
+      DU_LOG("\nERROR  -->  SCH : rgSCHUtlRgrTtiInd() Upper SAP not bound (%d) ",
                rgrSap->sapSta.sapState);
       return RFAILED;
    }
@@ -5720,7 +5698,7 @@ RgSchErrInfo     *err
    raCb = rgSCHDbmGetRaCb (cellCb, rnti);
    if (raCb == NULLP)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId, "RNTI:%d Received MSG3, unable to "
+      DU_LOG("\nERROR  -->  SCH : RNTI:%d Received MSG3, unable to "
          "find raCb",rnti);
       return RFAILED;
    }
@@ -5730,7 +5708,7 @@ RgSchErrInfo     *err
    ret = rgSCHRamProcMsg3 (cellCb, ueCb, raCb, pdu, err);
    if (ret != ROK)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId,"Processing failed in the RAM "
+      DU_LOG("\nERROR  -->  SCH : Processing failed in the RAM "
          "RNTI:%d ",rnti);
       return (ret);
    }
@@ -5822,15 +5800,13 @@ S16 rgSCHUtlTfuGrpPwrCntrlReq(Inst inst,S16 sapId,TfuGrpPwrCntrlReqInfo *grpPwrC
    tfuSap = &(rgSchCb[inst].tfuSap[sapId]);
    if (tfuSap->sapSta.sapState != LRG_BND)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,grpPwrCntrlReq->cellId,
-		      "rgSCHUtlTfuGrpPwrCntrlReq() Lower SAP not bound (%d) ",tfuSap->sapSta.sapState);
+      DU_LOG("\nERROR  -->  SCH : rgSCHUtlTfuGrpPwrCntrlReq() Lower SAP not bound (%d) ",tfuSap->sapSta.sapState);
       return RFAILED;
    }
    memcpy (&pst, &(tfuSap->sapCfg.sapPst), sizeof(Pst));
    if((ret = RgLiTfuGrpPwrCntrlReq (&pst, tfuSap->sapCfg.spId, grpPwrCntrlReq)) != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,grpPwrCntrlReq->cellId,
-		      "rgSCHUtlTfuGrpPwrCntrlReq() Call to RgLiTfuGrpPwrCntrlReq() failed");
+       DU_LOG("\nERROR  -->  SCH : rgSCHUtlTfuGrpPwrCntrlReq() Call to RgLiTfuGrpPwrCntrlReq() failed");
    }
    return (ret);
 }  /* rgSCHUtlTfuGrpPwrCntrlReq */
@@ -5901,7 +5877,7 @@ S16 rgSCHUtlValidateTfuSap(Inst  inst,SuId  suId)
 
    if(suId >= rgSchCb[inst].numSaps)
    {
-      RLOG_ARG0(L_ERROR,DBG_INSTID,inst, "Incorrect SuId");
+      DU_LOG("\nERROR  -->  SCH : Incorrect SuId");
       return RFAILED;
    }
    tfuSap = &(rgSchCb[inst].tfuSap[suId]);
@@ -5909,13 +5885,13 @@ S16 rgSCHUtlValidateTfuSap(Inst  inst,SuId  suId)
    /* First lets check the suId */
    if( suId != tfuSap->sapCfg.suId)
    {
-      RLOG_ARG2(L_ERROR,DBG_INSTID,inst,"Incorrect SuId. Configured (%d) Recieved (%d)",
+      DU_LOG("\nERROR  -->  SCH : Incorrect SuId. Configured (%d) Recieved (%d)",
             tfuSap->sapCfg.suId, suId);
       return RFAILED;
    }
    if (tfuSap->sapSta.sapState != LRG_BND)
    {
-      RLOG_ARG1(L_ERROR,DBG_INSTID,inst,"Lower SAP not enabled SuId (%d)",
+      DU_LOG("\nERROR  -->  SCH : Lower SAP not enabled SuId (%d)",
             tfuSap->sapCfg.suId);
       return RFAILED;
    }
@@ -5948,8 +5924,7 @@ S16 rgSCHUtlAllocEventMem(Inst inst,Ptr *memPtr,Size memSize)
 #if (ERRCLASS & ERRCLS_DEBUG)
    if (memSize<= 0)
    {
-      RGSCHLOGERROR(inst, ERRCLS_INT_PAR, ERG022, memSize,
-                   "rgAllocEventMem(): memSize invalid\n");
+      DU_LOG("\nERROR  -->  SCH : rgAllocEventMem(): memSize invalid\n");
       return  (RFAILED);
    }
 #endif /* ERRCLASS & ERRCLS_DEBUG */
@@ -5965,7 +5940,7 @@ S16 rgSCHUtlAllocEventMem(Inst inst,Ptr *memPtr,Size memSize)
    if(ROK != cmAllocEvnt(memSize, TFU_MAX_MEMBLK_SIZE, &sMem, memPtr))
 #endif /* */
    {
-      RLOG_ARG0(L_ERROR,DBG_INSTID,inst,"cmAllocEvnt Failed.");
+      DU_LOG("\nERROR  -->  SCH : cmAllocEvnt Failed.");
       return RFAILED;
    }
    /*stoping Task*/
@@ -6846,10 +6821,10 @@ Void rgSCHUtlUlAllocRls(RgSchUlSf *sf,RgSchUlAlloc *alloc)
    else
    {
 
-      printf("\nError: allocDb->count is ZERO ====\n");
+      DU_LOG("\nERROR  -->  SCH :  allocDb->count is ZERO ");
    }
 
-   //printf("\nallocDb->count:%u\n",allocDb->count);
+   //DU_LOG("\nallocDb->count:%u\n",allocDb->count);
 
    return;
 }
@@ -7789,7 +7764,7 @@ S16 rgSCHUtlRgrSiCfgCfm(Inst instId,SpId  spId,RgrCfgTransId transId,uint8_t sta
                     rgSchCb[instId].rgrSap[spId].sapCfg.suId,
                     transId, status) != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_INSTID,instId,"rgSCHUtlRgrSiCfgCfm: "
+      DU_LOG("\nERROR  -->  SCH : rgSCHUtlRgrSiCfgCfm: "
                 "RgUiRgrSiCfgCfm Failed ");
       return RFAILED;
    }
@@ -7827,7 +7802,7 @@ S16 rgSCHUtlRgrWarningSiCfgCfm(Inst instId,SpId spId,uint8_t siId,RgrCfgTransId 
                     rgSchCb[instId].rgrSap[spId].sapCfg.suId, 
                     transId, siId, status) != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_INSTID,instId,"rgSCHUtlRgrSiCfgCfm: "
+      DU_LOG("\nERROR  -->  SCH : rgSCHUtlRgrSiCfgCfm: "
                 "RgUiRgrSiCfgCfm Failed ");
       return RFAILED;
    }
@@ -7912,9 +7887,6 @@ CmLListCp       *ulInActvLst
    RgSchDrxDlHqProcCb    *drxHq;
    RgSchDRXCellCb        *drxCell = cellCb->drxCb;
    RgSchDrxUeCb          *drxUe;
-#ifdef DEBUGP
-   Inst                  inst = cellCb->instIdx;
-#endif
    uint8_t                    cellIdx = ueCb->cellIdToCellIdxMap[RG_SCH_CELLINDEX(dlHq->hqE->cell)];
    uint32_t                   dlInactvMask;
    uint32_t                   ulInactvMask;
@@ -7941,9 +7913,9 @@ CmLListCp       *ulInActvLst
             /* This condition should never occur */      
             if(drxHq->reTxIndx >= RG_SCH_MAX_DRXQ_SIZE)
             {
-               RGSCHDBGERRNEW(inst,(rgSchPBuf(inst),"[%d]UE:DRXUE RETX IDX[%d]"
+                DU_LOG("\nERROR  -->  SCH : [%d]UE:DRXUE RETX IDX[%d]"
                         "is out of bound,dlInactvMask %d,procId %d\n", ueCb->ueId,
-                        drxHq->reTxIndx,ueCb->dl.dlInactvMask, dlHq->procId));
+                        drxHq->reTxIndx,ueCb->dl.dlInactvMask, dlHq->procId);
             }
 
             drxUe->drxDlInactvMaskPerCell[cellIdx]  |= (RG_SCH_DRX_DLHQ_BITMASK << dlHq->procId);
@@ -8068,7 +8040,7 @@ S16 rgSCHUtlFillSndStaInd(RgSchCellCb *cell,RgSchUeCb *ue,RgrStaIndInfo *staInfo
    /* Call utility function (rgSCHUtlRgrStaInd) to send rpts to RRM */
    if(rgSCHUtlRgrStaInd(cell, staInfo) != ROK)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Could not send "
+      DU_LOG("\nERROR  -->  SCH : Could not send "
          "CQI reports for RNTI:%d",ue->ueId);
       return RFAILED;
    }
@@ -8104,8 +8076,7 @@ S16 rgSCHUtlRgrStaInd(RgSchCellCb *cell,RgrStaIndInfo *rgrSta)
    rgrSap = cell->rgrSap;
    if (rgrSap->sapSta.sapState != LRG_BND)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-               "rgSCHUtlRgrStaInd() Upper SAP not bound (%d) ",
+      DU_LOG("\nERROR  -->  SCH : rgSCHUtlRgrStaInd() Upper SAP not bound (%d) ",
                rgrSap->sapSta.sapState);
       return RFAILED;
    }
@@ -8184,8 +8155,7 @@ S16 rgSCHUtlRgrLoadInfInd(RgSchCellCb *cell,RgrLoadInfIndInfo *rgrLoadInf)
    rgrSap = cell->rgrSap;
    if (rgrSap->sapSta.sapState != LRG_BND)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-               "rgSCHUtlRgrLoadInfInd() Upper SAP not bound (%d) ",
+      DU_LOG("\nERROR  -->  SCH : rgSCHUtlRgrLoadInfInd() Upper SAP not bound (%d) ",
                rgrSap->sapSta.sapState);
       return RFAILED;
    }
@@ -8263,7 +8233,7 @@ S16 rgSCHUtlFillSndUeStaInd(RgSchCellCb *cell,RgSchUeCb  *ue,RgrUeStaIndInfo  *u
    /* Call utility function (rgSCHUtlRgrUeStaInd) to send rpts to RRM */
    if(rgSCHUtlRgrUeStaInd(cell, ueStaInfo) != ROK)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"Could not send "
+      DU_LOG("\nERROR  -->  SCH : Could not send "
          "UE Sta reports CRNTI:%d",ue->ueId);
       return RFAILED;
    }
@@ -8299,8 +8269,7 @@ S16 rgSCHUtlRgrUeStaInd(RgSchCellCb *cell,RgrUeStaIndInfo *rgrUeSta)
    rgrSap = cell->rgrSap;
    if (rgrSap->sapSta.sapState != LRG_BND)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-               "rgSCHUtlRgrUeStaInd() Upper SAP not bound (%d) ",
+      DU_LOG("\nERROR  -->  SCH : rgSCHUtlRgrUeStaInd() Upper SAP not bound (%d) ",
                rgrSap->sapSta.sapState);
       return RFAILED;
    }
@@ -8406,10 +8375,10 @@ S16 rgSCHUtlUpdAvgPrbUsage(RgSchCellCb  *cell)
 #ifdef DBG_MAC_RRM_PRB_PRINT
    if((count % reprotForEvery20Sec) == 0 )
    {
-      printf("\n====================================================================");
-      printf("\nMAC:  QCI-1[DL:UL]  | QCI-2[DL:UL]  | QCI-3[DL:UL]  | QCI-4[DL:UL] \n");
-      printf("======================================================================\n");
-      printf(" [%d: %d]\t | [%d: %d]\t | [%d: %d]\t| [%d: %d]\t\n", 
+      DU_LOG("\n====================================================================");
+      DU_LOG("\nINFO  -->  SCH : QCI-1[DL:UL]  | QCI-2[DL:UL]  | QCI-3[DL:UL]  | QCI-4[DL:UL] \n");
+      DU_LOG("======================================================================\n");
+      DU_LOG(" [%d: %d]\t | [%d: %d]\t | [%d: %d]\t| [%d: %d]\t\n", 
                  prbRprtInd->stQciPrbRpts[0].bAvgPrbDlUsage,
                  prbRprtInd->stQciPrbRpts[0].bAvgPrbUlUsage,
                  prbRprtInd->stQciPrbRpts[1].bAvgPrbDlUsage,
@@ -9050,7 +9019,7 @@ Void rgSCHUtlSndUeSCellDel2Mac(RgSchCellCb *cell,CmLteRnti rnti)
    Inst         inst = cell->instIdx;
    RgInfRlsRnti rntiInfo;
 
-   RGSCHDBGINFONEW(inst,(rgSchPBuf(inst),"RNTI Release IND for UE(%d)\n", rnti));
+   DU_LOG("\nINFO  -->  SCH : RNTI Release IND for UE(%d)\n", rnti);
    /* Copy the info to rntiInfo */
    rntiInfo.cellId = cell->cellId;
    rntiInfo.rnti   = rnti;
@@ -9568,7 +9537,7 @@ Void rgSCHUtlCpuOvrLdAdjItbsCap( RgSchCellCb *cell)
          }
       }
 #ifdef CPU_OL_DBG_PRINTS
-      printf("\n DL CPU OL ADJ = %lu, %lu, %d\n", cell->measurements.dlTpt, cell->cpuOvrLdCntrl.tgtDlTpt, 
+      DU_LOG("\nINFO  -->  SCH :  DL CPU OL ADJ = %lu, %lu, %d\n", cell->measurements.dlTpt, cell->cpuOvrLdCntrl.tgtDlTpt, 
             cell->thresholds.maxDlItbs);
 #endif
    }
@@ -9596,7 +9565,7 @@ Void rgSCHUtlCpuOvrLdAdjItbsCap( RgSchCellCb *cell)
          }
       }
 #ifdef CPU_OL_DBG_PRINTS
-      printf("\n UL CPU OL ADJ = %lu, %lu, %d\n", cell->measurements.ulTpt, cell->cpuOvrLdCntrl.tgtUlTpt, 
+      DU_LOG("\nDEBUG  -->  SCH :  UL CPU OL ADJ = %lu, %lu, %d\n", cell->measurements.ulTpt, cell->cpuOvrLdCntrl.tgtUlTpt, 
             cell->thresholds.maxUlItbs);
 #endif
    }
@@ -9656,15 +9625,15 @@ static Void rgSCHUtlChkAndUpdNumUePerTtiCpuOvInstr(RgSchCellCb *cell,uint8_t crn
          else
          {
 #ifdef CPU_OL_DBG_PRINTS
-            printf("CPU_OL_TTI__ERROR\n");
+            DU_LOG("\nERROR  -->  SCH : CPU_OL_TTI__ERROR\n");
 #endif
-            RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Invalid CPU OL");
+            DU_LOG("\nERROR  -->  SCH : Invalid CPU OL");
          }
       }
 #ifdef CPU_OL_DBG_PRINTS
-      printf("dlNxtIndxDecNumUeTti = %d\n", cpuInstr->dlNxtIndxDecNumUeTti);
+     DU_LOG("\nDEBUG  -->  SCH : dlNxtIndxDecNumUeTti = %d\n", cpuInstr->dlNxtIndxDecNumUeTti);
 #endif
-      RLOG_ARG1(L_DEBUG,DBG_CELLID,cell->cellId,"dlNxtIndxDecNumUeTti = %d",
+      DU_LOG("\nDEBUG  -->  SCH : dlNxtIndxDecNumUeTti = %d",
          cpuInstr->dlNxtIndxDecNumUeTti);
    }
    else if ( crntCpuOvrLdIns &  RGR_CPU_OVRLD_DL_INC_NUM_UE_PER_TTI )
@@ -9680,15 +9649,15 @@ static Void rgSCHUtlChkAndUpdNumUePerTtiCpuOvInstr(RgSchCellCb *cell,uint8_t crn
          else
          {
 #ifdef CPU_OL_DBG_PRINTS
-            printf("CPU_OL_TTI__ERROR\n");
+             DU_LOG("\nERROR  -->  SCH : CPU_OL_TTI__ERROR\n");
 #endif
-            RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Invalid CPU OL");
+             DU_LOG("\nERROR  -->  SCH : Invalid CPU OL");
          }
       }
 #ifdef CPU_OL_DBG_PRINTS
-      printf("dlNxtIndxDecNumUeTti = %d\n", cpuInstr->dlNxtIndxDecNumUeTti);
+      DU_LOG("\nDEBUG  -->  SCH : dlNxtIndxDecNumUeTti = %d\n", cpuInstr->dlNxtIndxDecNumUeTti);
 #endif
-      RLOG_ARG1(L_DEBUG,DBG_CELLID,cell->cellId,"dlNxtIndxDecNumUeTti = %d",
+      DU_LOG("\nERROR  -->  SCH : dlNxtIndxDecNumUeTti = %d",
          cpuInstr->dlNxtIndxDecNumUeTti);
    }
    /* Check for UL CPU commands */
@@ -9706,15 +9675,15 @@ static Void rgSCHUtlChkAndUpdNumUePerTtiCpuOvInstr(RgSchCellCb *cell,uint8_t crn
          else
          {
 #ifdef CPU_OL_DBG_PRINTS
-            printf("CPU_OL_TTI__ERROR\n");
+            DU_LOG("\nERROR  -->  SCH : CPU_OL_TTI__ERROR\n");
 #endif
-            RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Invalid CPU OL");
+            DU_LOG("\nERROR  -->  SCH : Invalid CPU OL");
          }
       }
 #ifdef CPU_OL_DBG_PRINTS
-      printf("ulNxtIndxDecNumUeTti = %d\n", cpuInstr->ulNxtIndxDecNumUeTti);
+      DU_LOG("\nDEBUG  -->  SCH : ulNxtIndxDecNumUeTti = %d\n", cpuInstr->ulNxtIndxDecNumUeTti);
 #endif
-      RLOG_ARG1(L_DEBUG,DBG_CELLID,cell->cellId,"dlNxtIndxDecNumUeTti = %d",
+      DU_LOG("\nDEBUG  -->  SCH : dlNxtIndxDecNumUeTti = %d",
          cpuInstr->dlNxtIndxDecNumUeTti);
    }
    else if ( crntCpuOvrLdIns &  RGR_CPU_OVRLD_UL_INC_NUM_UE_PER_TTI )
@@ -9730,31 +9699,31 @@ static Void rgSCHUtlChkAndUpdNumUePerTtiCpuOvInstr(RgSchCellCb *cell,uint8_t crn
          else
          {
 #ifdef CPU_OL_DBG_PRINTS
-            printf("CPU_OL_TTI__ERROR\n");
+            DU_LOG("\nERROR  -->  SCH : CPU_OL_TTI__ERROR\n");
 #endif
-            RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"Invalid CPU OL");
+            DU_LOG("\nERROR  -->  SCH : Invalid CPU OL");
          }
       }
 #ifdef CPU_OL_DBG_PRINTS
-      printf("ulNxtIndxDecNumUeTti = %d\n", cpuInstr->ulNxtIndxDecNumUeTti);
+      DU_LOG("\nDEBUG  -->  SCH : ulNxtIndxDecNumUeTti = %d\n", cpuInstr->ulNxtIndxDecNumUeTti);
 #endif
-      RLOG_ARG1(L_DEBUG,DBG_CELLID,cell->cellId,"dlNxtIndxDecNumUeTti = %d",
+      DU_LOG("\nDEBUG  -->  SCH : dlNxtIndxDecNumUeTti = %d",
          cpuInstr->dlNxtIndxDecNumUeTti);
    }
 #ifdef CPU_OL_DBG_PRINTS 
  /* TODO: Debug Information - Shall be moved under CPU_OL_DBG_PRINTS */
-   printf("maxUeNewDlTxPerTti = %d, maxUeNewUlTxPerTti = %d\n", maxUeNewDlTxPerTti, maxUeNewUlTxPerTti);
-   printf("DL Sf numUePerTti:");
+   DU_LOG("\nDEBUG  -->  SCH : maxUeNewDlTxPerTti = %d, maxUeNewUlTxPerTti = %d\n", maxUeNewDlTxPerTti, maxUeNewUlTxPerTti);
+   DU_LOG("\nINFO  -->  SCH : DL Sf numUePerTti:");
    for ( idx = 0; idx < 10 ; idx ++ )
    {
-      printf("  %d", cpuInstr->maxUeNewTxPerTti[idx]);  
+      DU_LOG("  %d", cpuInstr->maxUeNewTxPerTti[idx]);  
    }
-   printf("\nUL Sf numUePerTti:");
+   DU_LOG("\nINFO  -->  SCH : UL Sf numUePerTti:");
    for ( idx = 0; idx < 10 ; idx ++ )
    {
-      printf("  %d", cpuInstr->maxUeNewRxPerTti[idx]);  
+      DU_LOG("  %d", cpuInstr->maxUeNewRxPerTti[idx]);  
    }
-   printf("\n");
+   DU_LOG("\n");
 #endif
 
    return;
@@ -9786,17 +9755,17 @@ S16 rgSCHUtlResetCpuOvrLdState(RgSchCellCb *cell,uint8_t crntCpuOvrLdIns)
    uint8_t idx;
 
 #ifdef CPU_OL_DBG_PRINTS
-   printf("\n CPU OVR LD Ins Rcvd = %d\n", (int)crntCpuOvrLdIns);
+   DU_LOG("\nDEBUG  -->  SCH : CPU OVR LD Ins Rcvd = %d\n", (int)crntCpuOvrLdIns);
 #endif
-   RLOG_ARG0(L_INFO,DBG_CELLID,cell->cellId,"CPU OVR LD Ins Rcvd");
+   DU_LOG("\nINFO  -->  SCH : CPU OVR LD Ins Rcvd");
 
    if ( RGR_CPU_OVRLD_RESET == crntCpuOvrLdIns )
    {
       /* The CPU OL instruction received with RESET (0), hence reset it */
 #ifdef CPU_OL_DBG_PRINTS
-      printf("rgSCHUtlResetCpuOvrLdState: RESET CPU OL instr\n");
+      DU_LOG("\nDEBUG  -->  SCH : rgSCHUtlResetCpuOvrLdState: RESET CPU OL instr\n");
 #endif
-      RLOG_ARG0(L_INFO,DBG_CELLID,cell->cellId,"RESET CPU OVR LD");
+      DU_LOG("\nINFO  -->  SCH : RESET CPU OVR LD");
       cell->cpuOvrLdCntrl.cpuOvrLdIns = 0;
       /* Reset the max UL and DL itbs to 26 */
       cell->thresholds.maxUlItbs = RG_SCH_UL_MAX_ITBS;
@@ -9861,10 +9830,10 @@ S16 rgSCHUtlResetCpuOvrLdState(RgSchCellCb *cell,uint8_t crntCpuOvrLdIns)
          cell->cpuOvrLdCntrl.tgtUlTpt = cell->measurements.ulTpt + \
             (cell->measurements.ulTpt * 2 )/100;
       }
-      RLOG_ARG3(L_DEBUG,DBG_CELLID,cell->cellId,"CPU OVR LD UL Reset to "
-            "%d, %lu, %lu", (int)crntUlCpuOL, cell->cpuOvrLdCntrl.tgtUlTpt,cell->measurements.ulTpt);
+      DU_LOG("\nDEBUG  -->  SCH : CPU OVR LD UL Reset to "
+            "%d, %u, %u", (int)crntUlCpuOL, cell->cpuOvrLdCntrl.tgtUlTpt,cell->measurements.ulTpt);
 #ifdef CPU_OL_DBG_PRINTS
-      printf("\n CPU OVR LD UL Reset to= %d, %lu, %lu\n", (int)crntUlCpuOL, cell->cpuOvrLdCntrl.tgtUlTpt,
+      DU_LOG("\nDEBUG  -->  SCH : CPU OVR LD UL Reset to= %d, %u, %u\n", (int)crntUlCpuOL, cell->cpuOvrLdCntrl.tgtUlTpt,
 		              cell->measurements.ulTpt);
 #endif
    }
@@ -9881,11 +9850,11 @@ S16 rgSCHUtlResetCpuOvrLdState(RgSchCellCb *cell,uint8_t crntCpuOvrLdIns)
          cell->cpuOvrLdCntrl.tgtDlTpt = cell->measurements.dlTpt + \
             (cell->measurements.dlTpt * 1 )/100;
       }
-      RLOG_ARG3(L_DEBUG,DBG_CELLID,cell->cellId,"CPU OVR LD DL Reset to "
-            "%d, %lu, %lu", (int)crntDlCpuOL, cell->cpuOvrLdCntrl.tgtDlTpt,cell->measurements.dlTpt);
+      DU_LOG("\nDEBUG  -->  SCH : CPU OVR LD DL Reset to "
+            "%d, %u, %u", (int)crntDlCpuOL, cell->cpuOvrLdCntrl.tgtDlTpt,cell->measurements.dlTpt);
 
 #ifdef CPU_OL_DBG_PRINTS
-      printf("\n CPU OVR LD DL Reset to= %d, %lu, %lu\n", (int)crntDlCpuOL, cell->cpuOvrLdCntrl.tgtDlTpt,
+      DU_LOG("\nDEBUG  -->  SCH :  CPU OVR LD DL Reset to= %d, %lu, %lu\n", (int)crntDlCpuOL, cell->cpuOvrLdCntrl.tgtDlTpt,
 		              cell->measurements.dlTpt);
 #endif
    }
@@ -9920,13 +9889,13 @@ RgSchIotRes *iotRes
       cp = &emtcUe->dlResLst;
    }else
    {
-      RLOG0(L_INFO, "*****restype mismatch");
+      DU_LOG("\nINFO  -->  SCH : *****restype mismatch");
    }
    if(cp != NULLP )
    { 
       if(cp->count == 0)
       {
-         RLOG0(L_INFO,"****error count*****\n");
+         DU_LOG("\nINFO  -->  SCH : ****error count*****\n");
          return ROK;
       }
    }
