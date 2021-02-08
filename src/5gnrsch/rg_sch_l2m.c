@@ -182,8 +182,7 @@ uint32_t          measTime
                    cell->qciArray[qciVal].dlTotal_UeCount / sampOc;
                 cfm->numUeQciDlCfm.numActvUeQci[idx].qciValue = qciVal;
                 
-                RLOG_ARG3(L_DEBUG,DBG_CELLID,cell->cellId,
-                      "L2_MEAS:CFM DL QCI %u TOTAL Count %lu Active UE %d ",
+                DU_LOG("\nDEBUG  -->  SCH : L2_MEAS:CFM DL QCI %u TOTAL Count %lu Active UE %d ",
                       qciVal,cell->qciArray[qciVal].dlTotal_UeCount,
                       cfm->numUeQciDlCfm.numActvUeQci[idx].numActvUeQci);
                 
@@ -204,8 +203,7 @@ uint32_t          measTime
                       cell->qciArray[qciVal].dlTotal_UeCount / sampOc;
                    cfm->numUeQciDlCfm.numActvUeQci[idx].qciValue = qciVal;
 
-                   RLOG_ARG3(L_DEBUG,DBG_CELLID,cell->cellId,
-                         "L2_MEAS:CFM DL QCI %u TOTAL Count %lu Active UE %d ",
+                   DU_LOG("\nDEBUG  -->  SCH : L2_MEAS:CFM DL QCI %u TOTAL Count %lu Active UE %d ",
                          qciVal,cell->qciArray[qciVal].dlTotal_UeCount,
                          cfm->numUeQciDlCfm.numActvUeQci[idx].numActvUeQci);
 
@@ -236,8 +234,7 @@ uint32_t          measTime
                    cell->qciArray[qciVal].ulTotal_UeCount/ sampOc;
                 cfm->numUeQciUlCfm.numActvUeQci[idx].qciValue = qciVal;
                 
-                RLOG_ARG3(L_DEBUG,DBG_CELLID,cell->cellId,
-                      "L2_MEAS:CFM UL QCI %d TOTAL Count %lu Active UE %d ",
+                DU_LOG("\nDEBUG  -->  SCH : L2_MEAS:CFM UL QCI %d TOTAL Count %lu Active UE %d ",
                       qciVal,cell->qciArray[qciVal].ulTotal_UeCount,
                       cfm->numUeQciUlCfm.numActvUeQci[idx].numActvUeQci);
                 
@@ -257,8 +254,7 @@ uint32_t          measTime
                       cell->qciArray[qciVal].ulTotal_UeCount/ sampOc;
                    cfm->numUeQciUlCfm.numActvUeQci[idx].qciValue = qciVal;
 
-                   RLOG_ARG3(L_DEBUG,DBG_CELLID,cell->cellId,
-                         "L2_MEAS:CFM UL QCI %d TOTAL Count %lu Active UE %d ",
+                   DU_LOG("\nDEBUG  -->  SCH : L2_MEAS:CFM UL QCI %d TOTAL Count %lu Active UE %d ",
                          qciVal,cell->qciArray[qciVal].ulTotal_UeCount,
                          cfm->numUeQciUlCfm.numActvUeQci[idx].numActvUeQci);
 
@@ -516,8 +512,7 @@ RgSchErrInfo      err
    if((rgSCHUtlAllocSBuf(inst, (Data **)&measCb,
                    sizeof(RgSchL2MeasCb))) == RFAILED)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,"rgSchL2mAllocMeasCb():"
-                  "Allocation of RgSchL2MeasCb failed");
+      DU_LOG("\nERROR  -->  SCH : Allocation of RgSchL2MeasCb failed");
       return (NULLP);
    }
    memcpy(&measCb->measReq, measInfo, sizeof(LrgSchMeasReqInfo));
@@ -565,8 +560,7 @@ RgSchErrInfo      err
    {
        RGSCHFILLERR(err, RGSCHERR_L2M_MEASREQ,
                     RGSCHERR_SCH_ALLOC_FAILED);
-       RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId, "rgSchL2mMeasReq():"
-                "Allocation of RgSchL2MeasCb failed");
+       DU_LOG("\nERROR  -->  SCH : Allocation of RgSchL2MeasCb failed");
        return RFAILED;
    }
    /*memcpy(&measCb->measReq, measInfo,\
