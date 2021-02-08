@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c5578bad_10b2f169",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-08T07:43:41Z",
+      "side": 1,
+      "message": "why is this required? we can add #ifdef TDD in line# 44 and set DUPLEX_MODE.\nIdea of du_cfg.h is to make it configurable. So, no need to add another macro for numerology just update the one at 35 while testing.",
+      "revId": "1ad82bbfea7bfb5011eec233ecb6f5694599381e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
