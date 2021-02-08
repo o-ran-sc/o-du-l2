@@ -16,6 +16,24 @@
       "revId": "1ad82bbfea7bfb5011eec233ecb6f5694599381e",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "84525913_be6fc9e0",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-02-08T13:44:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c5578bad_10b2f169",
+      "revId": "1ad82bbfea7bfb5011eec233ecb6f5694599381e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
