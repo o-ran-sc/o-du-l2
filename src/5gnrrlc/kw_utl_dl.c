@@ -301,12 +301,12 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
 
                dlData->numPdu++;
             }/* For per PDU */
-	    dlData->boStatus[dlData->numLc].cellId = datReqInfo->cellId;
+            dlData->boStatus[dlData->numLc].cellId = datReqInfo->cellId;
             GET_UE_IDX(datPerUe.rnti, dlData->boStatus[dlData->numLc].ueIdx);
-	    dlData->boStatus[dlData->numLc].commCh = false;
-	    dlData->boStatus[dlData->numLc].lcId = datPerLch.lcId;
-	    dlData->boStatus[dlData->numLc].bo = datPerLch.boReport.bo + datPerLch.boReport.estRlcHdrSz;
-	    dlData->numLc++;
+            dlData->boStatus[dlData->numLc].commCh = false;
+            dlData->boStatus[dlData->numLc].lcId = datPerLch.lcId;
+            dlData->boStatus[dlData->numLc].bo = datPerLch.boReport.bo + datPerLch.boReport.estRlcHdrSz;
+            dlData->numLc++;
          }/* For Data per Lch */
       }/* For Data per Tb */
 

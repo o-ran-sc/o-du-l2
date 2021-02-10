@@ -1133,10 +1133,10 @@ void fillDefaultAmInfo(AmBearerCfg *amCfg)
 {
    /* DL AM */
    amCfg->dlAmCfg.snLenDl     = AM_SIZE_12;
-   amCfg->dlAmCfg.pollRetxTmr = POLL_RETX_TMR_45MS;
-   amCfg->dlAmCfg.pollPdu     = POLL_PDU_TMR_INFINITY;
-   amCfg->dlAmCfg.pollByte    = POLL_BYTES_INFINITY;
-   amCfg->dlAmCfg.maxRetxTh   = RETX_TH_8;   
+   amCfg->dlAmCfg.pollRetxTmr = getPollRetxTmr(T_POLL_RETRANSMIT);
+   amCfg->dlAmCfg.pollPdu     = getPollPdu(POLL_PDU);
+   amCfg->dlAmCfg.pollByte    = getPollByte(POLL_BYTE);
+   amCfg->dlAmCfg.maxRetxTh   = getMaxRetx(MAX_RETX_THRESHOLD);   
  
    /* UL AM */
    amCfg->ulAmCfg.snLenUl     = AM_SIZE_12;

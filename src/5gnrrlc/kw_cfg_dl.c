@@ -47,6 +47,7 @@ static int RLOG_FILE_ID=191;
 
 /* header (.h) include files */
 #include "common_def.h"
+#include "math.h"
 #include "lkw.h"           /* LKW defines */
 #include "ckw.h"           /* CKW defines */
 #include "kwu.h"           /* KWU defines */
@@ -66,6 +67,7 @@ static int RLOG_FILE_ID=191;
 #include "kw.x"
 #include "kw_udx.x"
 #include "kw_dl.x"
+#include "du_app_rlc_inf.h"
 
 #define RLC_MODULE RLC_DBGMASK_CFG
 /*Added for adding new Ue in onging L2 Meas*/
@@ -301,6 +303,7 @@ static S16 rlcAddToDlL2Meas(RlcCb *gCb, RlcDlRbCb *rlcRbCb,uint8_t cellId,uint8_
    return ROK;
 }/*rlcAddToDlL2Meas*/ 
 #endif /*LTE_L2_MEAS*/
+
 
 /** 
  * @brief
@@ -365,8 +368,9 @@ static S16 rlcCfgFillDlRbCb(RlcCb *gCb,RlcDlRbCb *rbCb,RlcDlUeCb *ueCb,RlcEntCfg
          rbCb->lch.lChId  = entCfg->lCh[0].lChId;
          rbCb->lch.lChType = entCfg->lCh[0].type;
          rbCb->dir = RLC_DIR_BOTH;
+
          rbCb->m.amDl.pollPdu = entCfg->m.amInfo.dl.pollPdu;
-         rbCb->m.amDl.pollByte = entCfg->m.amInfo.dl.pollByte;
+	 rbCb->m.amDl.pollByte = entCfg->m.amInfo.dl.pollByte;
          rbCb->m.amDl.maxRetx = entCfg->m.amInfo.dl.maxRetx;
          rbCb->m.amDl.pollRetxTmrInt = entCfg->m.amInfo.dl.pollRetxTmr;
          rbCb->m.amDl.snLen = entCfg->m.amInfo.dl.snLen;
@@ -381,8 +385,6 @@ static S16 rlcCfgFillDlRbCb(RlcCb *gCb,RlcDlRbCb *rbCb,RlcDlUeCb *ueCb,RlcEntCfg
          }
 
          cmInitTimers(&(rbCb->m.amDl.pollRetxTmr), 1);
-      
-        
          ueCb->lCh[rbCb->lch.lChId - 1].dlRbCb = rbCb;
        
 #ifndef LTE_TDD 

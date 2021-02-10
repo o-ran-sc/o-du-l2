@@ -811,13 +811,12 @@ uint8_t egtpSendMsg(Buffer *mBuf)
 uint8_t egtpRecvMsg()
 {
    uint8_t        ret;           /* Return value */
-   uint16_t       nMsg;          /* Number of messages to read from UDP socked */
    uint16_t       bufLen;        /* Length of received buffer */
    Buffer         *recvBuf;      /* Received buffer */
    CmInetAddr     fromAddr;      /* Egtp data sender address */
    CmInetMemInfo  memInfo;       /* Buffer allocation info */
 
-   nMsg = 0;
+   gUserDataCount = 0;
    memInfo.region = DU_APP_MEM_REGION;
    memInfo.pool   = DU_POOL;
     
@@ -831,10 +830,10 @@ uint8_t egtpRecvMsg()
          &recvBuf, (int16_t *)&bufLen, CM_INET_NO_FLAG);
       if(ret == ROK && recvBuf != NULLP)
       {  
-         DU_LOG("\nDEBUG  -->  EGTP : Received DL Message[%d]\n", nMsg+1);
+         DU_LOG("\nDEBUG  -->  EGTP : Received DL Message[%d]\n", gUserDataCount+1);
          ODU_PRINT_MSG(recvBuf, 0 ,0);
          egtpHdlRecvData(recvBuf);
-         nMsg++;
+         gUserDataCount++;
       }
    }
    
