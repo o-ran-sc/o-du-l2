@@ -99,6 +99,368 @@
 
 DuCfgParams duCfgParam;
 
+/************************************************************************
+ *
+ * @brief Converts enum values into actual value of Poll retransmit timer
+ *
+ * @details
+ *
+ *    Function : getPollPdu
+ *
+ *    Functionality: Converts enum values into actual value of poll 
+ *    retransmit timer
+ *
+ * @params[in] Enum value of pollPdu
+ * @return Actual value of pollPdu
+ *
+ * **********************************************************************/
+uint16_t getPollRetxTmr(uint8_t pollRetxTmrCfg)
+{
+   uint16_t pollRetxTmr;
+
+   /* All values of poll retx timer are at interval of 5ms.
+    * This is valid upto 250ms
+    * Hence converting the enum value to actual value by multiplying it to 5
+    */
+   if(pollRetxTmrCfg <= T_PollRetransmit_ms250)
+      pollRetxTmr = (pollRetxTmrCfg + 1) * 5;
+   else
+   {
+      switch(pollRetxTmrCfg)
+      {
+         case T_PollRetransmit_ms300:
+            pollRetxTmr = 300;
+            break;
+         case T_PollRetransmit_ms350:
+            pollRetxTmr = 350;
+            break;
+         case T_PollRetransmit_ms400:
+            pollRetxTmr = 400;
+            break;
+         case T_PollRetransmit_ms450:
+            pollRetxTmr = 450;
+            break;
+         case T_PollRetransmit_ms500:
+            pollRetxTmr = 500;
+            break;
+         case T_PollRetransmit_ms800:
+            pollRetxTmr = 800;
+            break;
+         default:
+            DU_LOG("\nInvalid value of Poll Retransmit timer");
+            pollRetxTmr = 0;
+      }
+   }
+   return pollRetxTmr; 
+}
+
+/*******************************************************************
+ *
+ * @brief Converts enum values into actual value of PollPdu
+ *
+ * @details
+ *
+ *    Function : getPollPdu
+ *
+ *    Functionality: Converts enum values into actual value of PollPdu
+ *
+ * @params[in] Enum value of pollPdu
+ * @return Actual value of pollPdu
+ *
+ * ****************************************************************/
+int16_t getPollPdu(uint8_t pollPduCfg)
+{
+   int16_t pollPdu;
+   switch(pollPduCfg)
+   {
+      case PollPDU_p4:
+         pollPdu = 4;
+         break;
+      case PollPDU_p8:
+         pollPdu = 8;
+         break;
+      case PollPDU_p16:
+         pollPdu = 16;
+         break;
+      case PollPDU_p32:
+         pollPdu = 32;
+         break;
+      case PollPDU_p64:
+         pollPdu = 64;
+         break;
+      case PollPDU_p128:
+         pollPdu = 128;
+         break;
+      case PollPDU_p256:
+         pollPdu = 256;
+         break;
+      case PollPDU_p512:
+         pollPdu = 512;
+         break;
+      case PollPDU_p1024:
+         pollPdu = 1024;
+         break;
+      case PollPDU_p2048:
+         pollPdu = 2048;
+         break;
+      case PollPDU_p4096:
+         pollPdu = 4096;
+         break;
+      case PollPDU_p6144:
+         pollPdu = 6144;
+         break;
+      case PollPDU_p8192:
+         pollPdu = 8192;
+         break;
+      case PollPDU_p12288:
+         pollPdu = 12288;
+         break;
+      case PollPDU_p16384:
+         pollPdu = 16384;
+         break;
+      case PollPDU_p20480:
+         pollPdu = 20480;
+         break;
+      case PollPDU_p24576:
+         pollPdu = 24576;
+         break;
+      case PollPDU_p28672:
+         pollPdu = 28672;
+         break;
+      case PollPDU_p32768:
+         pollPdu = 32768;
+         break;
+      case PollPDU_p40960:
+         pollPdu = 40960;
+         break;
+      case PollPDU_p49152:
+         pollPdu = 49152;
+         break;
+      case PollPDU_p57344:
+         pollPdu = 57344;
+         break;
+      case PollPDU_p65536:
+         pollPdu = 65536;
+         break;
+      case PollPDU_infinity:
+         pollPdu = -1;
+	 break;
+      default:
+         DU_LOG("\nERROR  -->  DU_APP : Invalid value of poll pdu");
+	 pollPdu = 0;
+         break;
+   }
+   return pollPdu;
+}
+
+/*******************************************************************
+ *
+ * @brief Converts enum values into actual value of poll bytes
+ *
+ * @details
+ *
+ *    Function : getPollByte
+ *
+ *    Functionality: Converts enum values into actual value of pollBytes
+ *
+ * @params[in] Enum value
+ * @return Actual value
+ *
+ * ****************************************************************/
+int32_t getPollByte(uint16_t pollBytesCfg)
+{
+   int32_t pollBytes;
+   switch(pollBytesCfg)
+   {
+      case PollByte_kB1:
+         pollBytes = 1000;
+         break;
+      case PollByte_kB2:
+         pollBytes = 2000;
+         break;
+      case PollByte_kB5:
+         pollBytes = 5000;
+         break;
+      case PollByte_kB8:
+         pollBytes = 8000;
+         break;
+      case PollByte_kB10:
+         pollBytes = 10000;
+         break;
+      case PollByte_kB15:
+         pollBytes = 15000;
+         break;
+      case PollByte_kB25:
+         pollBytes = 25000;
+         break;
+      case PollByte_kB50:
+         pollBytes = 50000;
+         break;
+      case PollByte_kB75:
+         pollBytes = 75000;
+         break;
+      case PollByte_kB100:
+         pollBytes = 100000;
+         break;
+      case PollByte_kB125:
+         pollBytes = 125000;
+         break;
+      case PollByte_kB250:
+         pollBytes = 250000;
+         break;
+      case PollByte_kB375:
+         pollBytes = 375000;
+         break;
+      case PollByte_kB500:
+         pollBytes = 500000;
+         break;
+      case PollByte_kB750:
+         pollBytes = 750000;
+         break;
+      case PollByte_kB1000:
+         pollBytes = 1000000;
+         break;
+      case PollByte_kB1250:
+         pollBytes = 1250000;
+         break;
+      case PollByte_kB1500:
+         pollBytes = 1500000;
+         break;
+      case PollByte_kB2000:
+         pollBytes = 2000000;
+         break;
+      case PollByte_kB3000:
+         pollBytes = 3000000;
+         break;
+      case PollByte_kB4000:
+         pollBytes = 4000000;
+         break;
+      case PollByte_kB4500:
+         pollBytes = 4500000;
+         break;
+      case PollByte_kB5000:
+         pollBytes = 5000000;
+         break;
+      case PollByte_kB5500:
+         pollBytes = 5500000;
+         break;
+      case PollByte_kB6000:
+         pollBytes = 6000000;
+         break;
+      case PollByte_kB6500:
+         pollBytes = 6500000;
+         break;
+      case PollByte_kB7000:
+         pollBytes = 7000000;
+         break;
+      case PollByte_kB7500:
+         pollBytes = 7500000;
+         break;
+      case PollByte_mB8:
+         pollBytes = 8000000;
+         break;
+      case PollByte_mB9:
+         pollBytes = 9000000;
+         break;
+      case PollByte_mB10:
+         pollBytes = 10000000;
+         break;
+      case PollByte_mB11:
+         pollBytes = 11000000;
+         break;
+      case PollByte_mB12:
+         pollBytes = 12000000;
+         break;
+      case PollByte_mB13:
+         pollBytes = 13000000;
+         break;
+      case PollByte_mB14:
+         pollBytes = 14000000;
+         break;
+      case PollByte_mB15:
+         pollBytes = 15000000;
+         break;
+      case PollByte_mB16:
+         pollBytes = 16000000;
+         break;
+      case PollByte_mB17:
+         pollBytes = 17000000;
+         break;
+      case PollByte_mB18:
+         pollBytes = 18000000;
+         break;
+      case PollByte_mB20:
+         pollBytes = 20000000;
+         break;
+      case PollByte_mB25:
+         pollBytes = 25000000;
+         break;
+      case PollByte_mB30:
+         pollBytes = 30000000;
+         break;
+      case PollByte_mB40:
+         pollBytes = 40000000;
+         break;
+      case PollByte_infinity:
+         pollBytes = -1;
+         break;
+      default:
+         DU_LOG("\nERROR  -->  DU_APP: Invalid value of poll bytes");
+         pollBytes = 0;
+   }
+   return pollBytes;
+}
+
+/*******************************************************************
+ *
+ * @brief Converts enum values into actual value of maxRetx
+ *
+ * @details
+ *
+ *    Function : getMaxRetx
+ *
+ *    Functionality: Converts enum values into actual value of maxRetx
+ *
+ * @params[in] Enum value
+ * @return Actual value
+ *
+ * ****************************************************************/
+uint8_t getMaxRetx(uint8_t maxRetxCfg)
+{
+   uint8_t maxRetx;
+   switch(maxRetxCfg)
+   {
+      case UL_AM_RLC__maxRetxThreshold_t1:
+         maxRetx = 1;
+         break;
+      case UL_AM_RLC__maxRetxThreshold_t2:
+         maxRetx = 2;
+         break;
+      case UL_AM_RLC__maxRetxThreshold_t3:
+         maxRetx = 3;
+         break;
+      case UL_AM_RLC__maxRetxThreshold_t4:
+         maxRetx = 4;
+         break;
+      case UL_AM_RLC__maxRetxThreshold_t6:
+         maxRetx = 6;
+         break;
+      case UL_AM_RLC__maxRetxThreshold_t8:
+         maxRetx = 8;
+         break;
+      case UL_AM_RLC__maxRetxThreshold_t16:
+         maxRetx = 16;
+         break;
+      case UL_AM_RLC__maxRetxThreshold_t32:
+         maxRetx = 32;
+         break;
+      default:
+         DU_LOG("\nERROR  -->  RLC_DL: Invalid configuration for Max retransmission threshold");
+         maxRetx = 0;
+   }
+   return maxRetx;
+}
+
 /*******************************************************************
  *
  * @brief Builds Uplink Info for NR 

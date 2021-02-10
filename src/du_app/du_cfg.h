@@ -247,9 +247,9 @@
 #define PHR_PWR_FACTOR_CHANGE 3
 #define PHR_MODE_OTHER_CG 0
 #define SN_FIELD_LEN 0
-#define T_POLL_RETRANSMIT 8 
-#define POLL_PDU 0
-#define POLL_BYTE 43
+#define T_POLL_RETRANSMIT 8 /* 45ms */ 
+#define POLL_PDU 0 /* 4 */
+#define POLL_BYTE 43 /* infinity */
 #define MAX_RETX_THRESHOLD 5
 #define T_REASSEMBLY 8
 #define T_STATUS_PROHIBHIT 7

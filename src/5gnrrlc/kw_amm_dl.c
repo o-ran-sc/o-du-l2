@@ -1632,7 +1632,6 @@ static void rlcAssembleSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
    rlcUtlGetCurrTime(&curTime);
    amDl->sduQ.crnt =  &sdu->lstEnt;
    /* Eliminate fixed header size */
-   /*5GNR: value of RLC_AM_PDU_FIXED_HDRSZ will be 2 or 3 depending on SN Size*/
    if(amDl->snLen == RLC_AM_CFG_12BIT_SN_LEN)
    {
       fixedHdrSz   = RLC_AM_PDU_12BIT_SN_HDRSZ;
@@ -1653,7 +1652,6 @@ static void rlcAssembleSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
       if ((sdu->mode.am.isSegmented == FALSE) && (rbCb->discTmrInt > 0) && \
             (rbCb->rlcId.rbType == CM_LTE_DRB))
       {
-         //leftAmSdus[rbCb->qci]--;
          timeDiff = RLC_TIME_DIFF(curTime,sdu->arrTime); 
          if (timeDiff > rbCb->discTmrInt)
          {
@@ -1705,15 +1703,11 @@ static void rlcAssembleSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
 #ifdef LTE_L2_MEAS
       newIdx = FALSE;
 #endif
-      /** kw003.201 - Check for window stall when you are
-       *  creating a new PDU
-       */
+      /** Check for window stall when you are creating a new PDU */
       if (RLC_AM_IS_TRANS_WIN_STALLED(amDl))
       {
-         //int *a = NULLP;
          DU_LOG("\nINFO  -->  RLC_DL : Window stalled  \n");
          gRlcStats.amRlcStats.numRlcAmCellWinStall++;
-         //*a = 10;
          break;
       }
 
@@ -1725,15 +1719,11 @@ static void rlcAssembleSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
          hdrEstmt += 2;
       } 
       /* Eliminate MAC header */
-      /* ccpu00135743 : Fix for MAC Hdr size calculation */
-      /*5GNR: value of mac hdr length field changed to 8/16bits  */
       pduSz = RLC_MIN(macGrntSz, (sdu->sduSz + hdrEstmt));
       hdrEstmt += (pduSz < 255) ? RLC_MAC_HDR_SZ2 : RLC_MAC_HDR_SZ3;
 
       macGrntSz -= hdrEstmt;
-      /* kw005.201 Check for PDU Size is large enough.
-       * Fix for ccpu00118973 
-       * */
+      /* Check for PDU Size is large enough */
       if(macGrntSz <= 0)
       {
          break;
@@ -1790,6 +1780,12 @@ static void rlcAssembleSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
 
       pduInfo->amHdr.sn = amDl->txNext;
 
+      /* No Segmentation scenario :
+       *  If SDU size is less than or equal to the requested PDU size
+       * - Allocate memory and copy SDU into it.
+       * -# Update BO
+       * -# Remove SDU from the Queue.
+       */
       if (macGrntSz >= sdu->sduSz)
       {
          pdu = sdu->mBuf;     
@@ -1803,11 +1799,7 @@ static void rlcAssembleSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
             pduInfo->amHdr.so = sdu->actSz - sdu->sduSz;
             sdu->mode.am.isSegmented = FALSE;
 
-
             gRlcStats.amRlcStats.numRlcAmCellSduTx++;
-            //DU_LOG("\nINFO  -->  RLC_DL : 5GNRLOG: last segment of lcId %d SduId %u So %u macGrntSz\
-	    %u sduActSz %u sdu->sduSz %u\n",
-            //          rbCb->lch.lChId, sdu->mode.am.sduId, pduInfo->amHdr.so, macGrntSz, sdu->actSz, sdu->sduSz);
          }
          else
          {
@@ -1816,8 +1808,6 @@ static void rlcAssembleSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
          amHdr          = &pduInfo->amHdr; 
          /* Create PDU with hdr and data */
          rlcAmmCreatePdu(gCb,rbCb, amHdr, pduInfo, pdu);
-
-         //DU_LOG("\nINFO  -->  Segmentation not required case: numPdu %d pdu  %p \n",rlcDatReq->pduInfo.numPdu, pdu);
 
 #ifdef LTE_L2_MEAS_RLC
          rlcUtlUpdSduSnMap(rbCb, sdu, rlcDatReq, TRUE);
@@ -1841,7 +1831,6 @@ static void rlcAssembleSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
             rlcUtlUpdateOutStandingSduLst(dlIpThPut, *sduIdx, sdu->actSz, 
                   sdu->mode.am.sduId, newIdx);
             /* Update the arrival time for each SDU */
-            /* ccpu00143043 */
             if ( lchInfo.numSdus < RLC_L2MEAS_SDUIDX)
             {
                lchInfo.sduInfo[lchInfo.numSdus].arvlTime = sdu->arrTime; 
@@ -1860,7 +1849,6 @@ static void rlcAssembleSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
 
          Buffer  *remSeg = NULLP;
 
-         //DU_LOG("\nINFO  -->  SDU segmentation case: numPdu %d pdu %p \n", rlcDatReq->pduInfo.numPdu, pdu);
 #ifdef LTE_L2_MEAS
          if(RLC_MEAS_IS_DL_IP_MEAS_ON_FOR_RB(gCb,rbCb) ||
                RLC_MEAS_IS_DL_DELAY_MEAS_ON_FOR_RB(gCb,rbCb) || 
@@ -1905,10 +1893,6 @@ static void rlcAssembleSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
             pduInfo->amHdr.sn = sdu->mode.am.sn;
             pduInfo->amHdr.si = RLC_SI_MID_SEG; /* binary 11 */
             pduInfo->amHdr.so = sdu->actSz - sdu->sduSz;
-
-            //DU_LOG("\nINFO  -->  RLC_DL : 5GNRLOG: mid segment of lcId %d SduId %u So %u macGrntSz %u sduActSz\
-	    %u sdu->sduSz %u\n",
-            //         rbCb->lch.lChId, sdu->mode.am.sduId, txBuf->amHdr.so, macGrntSz, sdu->actSz, sdu->sduSz);
          }
          else
          {
@@ -1918,9 +1902,6 @@ static void rlcAssembleSdus(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDatReq)
             sdu->mode.am.sn = pduInfo->amHdr.sn;
             pduInfo->amHdr.so = 0;
 
-            //DU_LOG("\nINFO  -->   RLC_DL : 5GNRLOG: First segment of lcId %d SduId %u So\
-	    %u macGrntSz %u sduActSz %u sdu->sduSz %u\n", 
-            //         rbCb->lch.lChId, sdu->mode.am.sduId, txBuf->amHdr.so, macGrntSz, sdu->actSz, sdu->sduSz);
          }
 
          amHdr = &pduInfo->amHdr; 
@@ -2132,12 +2113,9 @@ RlcDlPduInfo *pduInfo, Buffer *pdu)
 
    /* Update sn */
    amHdr->sn = amDl->txNext;
-
    /*5GNR RLC_DL : Increment txNext only if no segmentation of it is a last segment */
    if((!amHdr->si) || (amHdr->si == RLC_SI_LAST_SEG))
    {
-      //DU_LOG("\nINFO  -->  RLC_DL : 5GNRLOG: no segment/last seg SDU with lcId %d Sn %u txNext %u So %u\n",
-      //          rbCb->lch.lChId, amHdr->sn, amDl->txNext, amHdr->so);
       amDl->txNext = (amDl->txNext + 1) & amDl->snModMask;
    }
 
