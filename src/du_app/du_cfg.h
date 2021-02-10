@@ -247,10 +247,14 @@
 #define PHR_PWR_FACTOR_CHANGE 3
 #define PHR_MODE_OTHER_CG 0
 #define SN_FIELD_LEN 0
-#define T_POLL_RETRANSMIT 8 
-#define POLL_PDU 0
-#define POLL_BYTE 43
-#define MAX_RETX_THRESHOLD 5
+#define T_POLL_RETRANSMIT 8       /* Enum for 45ms */ 
+#define T_POLL_RETRANSMIT_VAL 45  /* Value in ms */
+#define POLL_PDU 0                /* Enum for 4 pdus */
+#define POLL_PDU_VAL 4            /* Value of poll pdu */
+#define POLL_BYTE 43              /* Enum for infinite poll bytes */
+#define POLL_BYTE_VAL -1          /* Value for infinite poll byte */
+#define MAX_RETX_THRESHOLD 5      /* Enum for 8 retransmissions */
+#define MAX_RETX_THRESHOLD_VAL 8  /* Value for 8 retransmissions */
 #define T_REASSEMBLY 8
 #define T_STATUS_PROHIBHIT 7
 #define MAC_LC_PRIORITY 1
