@@ -547,7 +547,6 @@
 
 #define RLC_POLL_SET                    0x40 /* 01000000 */
 #define RLC_POLL_UNSET                  0xbf /* 10111111 */
-#define RLC_AM_WIN_SZ                   512
 #define RLC_MAX_NACK_CNT                100
 /*RLC_MAX_CNTRL_FIELDS (Maximum size of Status Pdu) 
  *  = MAX_NACK_CNT * sizeof(NACK_SN,E1,E2,E3,soStart,soEnd, nackRange)

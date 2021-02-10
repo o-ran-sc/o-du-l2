@@ -259,6 +259,7 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
       dlData->slotInfo.sfn = datPerUe.transId >> 16;
       dlData->slotInfo.slot = datPerUe.transId & 0xffff;
       dlData->numPdu = 0;
+      dlData->numLc = 0;
 
       for(tbIdx = 0; tbIdx < datPerUe.nmbOfTbs; tbIdx++)
       {
@@ -300,6 +301,12 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
 
                dlData->numPdu++;
             }/* For per PDU */
+            dlData->boStatus[dlData->numLc].cellId = datReqInfo->cellId;
+            GET_UE_IDX(datPerUe.rnti, dlData->boStatus[dlData->numLc].ueIdx);
+            dlData->boStatus[dlData->numLc].commCh = false;
+            dlData->boStatus[dlData->numLc].lcId = datPerLch.lcId;
+            dlData->boStatus[dlData->numLc].bo = datPerLch.boReport.bo + datPerLch.boReport.estRlcHdrSz;
+            dlData->numLc++;
          }/* For Data per Lch */
       }/* For Data per Tb */
 
@@ -636,7 +643,7 @@ uint8_t rlcUtlSendDedLcBoStatus(RlcCb *gCb, RlcDlRbCb *rbCb, int32_t bo, \
    boStatus->ueIdx = rbCb->rlcId.ueId;
    boStatus->commCh = FALSE; 
    boStatus->lcId = rbCb->lch.lChId;
-   boStatus->bo = bo;
+   boStatus->bo = bo + estHdrSz;
 
    FILL_PST_RLC_TO_MAC(pst, RLC_DL_INST, EVENT_BO_STATUS_TO_MAC);
    /* Send Status Response to MAC layer */

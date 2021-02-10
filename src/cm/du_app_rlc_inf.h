@@ -96,7 +96,7 @@ typedef enum
 
 typedef enum
 {
-   AM_SIZE_12,
+   AM_SIZE_12 = 1,
    AM_SIZE_18
 }SnLenAm;
 
