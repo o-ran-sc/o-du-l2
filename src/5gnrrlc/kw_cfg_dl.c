@@ -381,8 +381,6 @@ static S16 rlcCfgFillDlRbCb(RlcCb *gCb,RlcDlRbCb *rbCb,RlcDlUeCb *ueCb,RlcEntCfg
          }
 
          cmInitTimers(&(rbCb->m.amDl.pollRetxTmr), 1);
-      
-        
          ueCb->lCh[rbCb->lch.lChId - 1].dlRbCb = rbCb;
        
 #ifndef LTE_TDD 

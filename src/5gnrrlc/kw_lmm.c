@@ -249,8 +249,7 @@ static S16 rlcLmmGenCfg(RlcCb  *gCb,RlcGenCfg *cfg)
       }
 #if 0
       /* Register the timer */
-/*Pradeep: changing the SRegTmrMt() to SRegTmr()*/
-      if(SRegTmrMt(gCb->init.ent, gCb->init.inst, (uint16_t)cfg->timeRes,
+      if(ODU_REG_TMR_MT(gCb->init.ent, gCb->init.inst, (uint16_t)cfg->timeRes,
               rlcActvTmr) != ROK)
       {
          RLC_FREE(gCb,gCb->u.dlCb->udxDlSap, rlcUdxSapSize);
