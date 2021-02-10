@@ -104,28 +104,42 @@ uint8_t duHdlEgtpDlData(EgtpMsg  *egtpMsg)
    DU_LOG("\nDEBUG   -->  DU_APP : Processing DL data");
 #ifdef EGTP_TEST
    Pst pst;
-   KwuDatReqInfo datReqInfo;
+   uint8_t ret;
+   MsgLen copyLen;
+   RlcDlRrcMsgInfo  *dlRrcMsgInfo = NULLP;
 
-   datReqInfo.rlcId.rbId = RB_ID;
-   datReqInfo.rlcId.rbType = CM_LTE_DRB;
-   datReqInfo.rlcId.ueId = UE_ID;
-   datReqInfo.rlcId.cellId = NR_CELL_ID;
+   DU_ALLOC_SHRABL_BUF(dlRrcMsgInfo, sizeof(RlcDlRrcMsgInfo));
+   if(!dlRrcMsgInfo)
+   {
+      DU_LOG("\nDU APP : Memory allocation failed for dlRrcMsgInfo in \
+         duBuildAndSendDlRrcMsgToRlc");
+      ODU_PUT_MSG_BUF(egtpMsg->msg);
+      return RFAILED;
+   }
 
-   datReqInfo.sduId = ++sduId;
-   datReqInfo.lcType = CM_LTE_LCH_DTCH;
+   /* Filling up the RRC msg info */
+   dlRrcMsgInfo->cellId = NR_CELL_ID;
+   dlRrcMsgInfo->ueIdx = UE_ID;
+   dlRrcMsgInfo->rbType = CM_LTE_DRB;
+   dlRrcMsgInfo->rbId   = RB_ID;
+   dlRrcMsgInfo->lcType = CM_LTE_LCH_DTCH;
+   dlRrcMsgInfo->lcId   = 4;
+   dlRrcMsgInfo->execDup = false;
+   dlRrcMsgInfo->deliveryStaRpt = false;
+   ODU_GET_MSG_LEN(egtpMsg->msg, &dlRrcMsgInfo->msgLen);
+   DU_ALLOC_SHRABL_BUF(dlRrcMsgInfo->rrcMsg, dlRrcMsgInfo->msgLen);
+   ODU_COPY_MSG_TO_FIX_BUF(egtpMsg->msg, 0, dlRrcMsgInfo->msgLen, dlRrcMsgInfo->rrcMsg, (MsgLen *)&copyLen);
+   ODU_PUT_MSG_BUF(egtpMsg->msg);
 
-   /* Filling pst and Sending to RLC DL */
-   pst.selector  = ODU_SELECTOR_LWLC;
-   pst.srcEnt    = ENTDUAPP;
-   pst.dstEnt    = ENTRLC;
-   pst.dstInst   = RLC_DL_INST;
-   pst.dstProcId = DU_PROC;
-   pst.srcProcId = DU_PROC;
-   pst.region    = duCb.init.region;
-
-   //cmPkKwuDatReq(&pst, &datReqInfo, egtpMsg->msg);
-#else
-   //duBuildAndSendDlRrcMsgToRlc();
+   /* Filling post structure and sending msg */
+   FILL_PST_DUAPP_TO_RLC(pst, RLC_DL_INST, EVENT_DL_RRC_MSG_TRANS_TO_RLC);
+   DU_LOG("\nDU_APP: Sending Dl User Msg to RLC \n");
+   ret = (*duSendDlRrcMsgToRlcOpts[pst.selector])(&pst, dlRrcMsgInfo);
+   if(ret != ROK)
+   {
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, dlRrcMsgInfo, sizeof(RlcDlRrcMsgInfo));
+      return RFAILED;
+   }
 #endif
    return ROK;
 }
@@ -1119,10 +1133,10 @@ void fillDefaultAmInfo(AmBearerCfg *amCfg)
 {
    /* DL AM */
    amCfg->dlAmCfg.snLenDl     = AM_SIZE_12;
-   amCfg->dlAmCfg.pollRetxTmr = POLL_RETX_TMR_45MS;
-   amCfg->dlAmCfg.pollPdu     = POLL_PDU_TMR_INFINITY;
-   amCfg->dlAmCfg.pollByte    = POLL_BYTES_INFINITY;
-   amCfg->dlAmCfg.maxRetxTh   = RETX_TH_8;   
+   amCfg->dlAmCfg.pollRetxTmr = getPollRetxTmr(T_POLL_RETRANSMIT);
+   amCfg->dlAmCfg.pollPdu     = getPollPdu(POLL_PDU);
+   amCfg->dlAmCfg.pollByte    = getPollByte(POLL_BYTE);
+   amCfg->dlAmCfg.maxRetxTh   = getMaxRetx(MAX_RETX_THRESHOLD);   
  
    /* UL AM */
    amCfg->ulAmCfg.snLenUl     = AM_SIZE_12;

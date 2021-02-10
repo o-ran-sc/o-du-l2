@@ -176,7 +176,7 @@ uint8_t schFillBoGrantDlSchedInfo(SchCellCb *cell, DlSchedInfo *dlSchedInfo, DlM
 
 	    /* calculation for BO includse RLC and MAC header size */
 	    dlMsgAlloc->lcSchInfo[dlMsgAlloc->numLc].schBytes = \
-	       ueCb->dlInfo.dlLcCtxt[lcIdx].bo + RLC_HDR_SIZE + MAC_HDR_SIZE;
+	       ueCb->dlInfo.dlLcCtxt[lcIdx].bo + MAC_HDR_SIZE;
 	    accumalatedSize += dlMsgAlloc->lcSchInfo[dlMsgAlloc->numLc].schBytes;
 	    dlMsgAlloc->numLc++;
 	 }

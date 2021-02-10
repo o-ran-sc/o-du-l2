@@ -23,6 +23,7 @@
 #include "du_log.h"
 
 uint8_t l1SendUlUserData();
+uint8_t l1SendStatusPdu();
 uint16_t l1BuildAndSendSlotIndication();
 pthread_t thread = 0;
 
@@ -122,6 +123,12 @@ void *l1ConsoleHandler(void *args)
          /* Start Pumping data from PHY stub to DU */
          DU_LOG("\nDEBUG  --> PHY STUB: Sending UL User Data");
          l1SendUlUserData();
+      }
+      else if((ch = getchar()) == 'c')
+      {
+         /* Send Control PDU from PHY stub to DU */
+	 DU_LOG("\nDEBUG  --> PHY STUB: Sending Status PDU");
+	 l1SendStatusPdu();
       }
    }
 }
