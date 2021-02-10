@@ -1368,6 +1368,110 @@ uint8_t l1SendUlUserData()
 
 /*******************************************************************
  *
+ * @brief Sends RLC Status PDU to DU
+ *
+ * @details
+ *
+ *    Function : l1SendStatusPdu
+ *
+ *    Functionality: Send RLC Status PDU to DU
+ *
+ * @params[in]
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t l1SendStatusPdu()
+{
+   fapi_rx_data_indication_t *rxDataInd;
+   fapi_pdu_ind_info_t       *pduInfo;
+   uint8_t  *pdu = NULLP;
+   uint16_t byteIdx = 0;
+   uint32_t msgLen = 0;
+   uint8_t idx = 0;
+
+   MAC_ALLOC(rxDataInd, sizeof(fapi_rx_data_indication_t));
+   if(!rxDataInd)
+   {
+      printf("\nERROR  -->  PHY_STUB: Memory allocation failed for Rx Data Indication");
+      return RFAILED;
+   }
+   memset(rxDataInd, 0, sizeof(fapi_rx_data_indication_t));
+
+   msgLen = sizeof(fapi_rx_data_indication_t) - sizeof(fapi_msg_t);
+   rxDataInd->sfn = 0;
+   rxDataInd->slot = 0;
+   rxDataInd->numPdus = 1;
+
+   /* TODO : Fill pduInfo using PUSCH PDU. Currently hardcoding */
+   pduInfo = &rxDataInd->pdus[idx];
+   pduInfo->handle = 100;
+   pduInfo->rnti = 100;
+   pduInfo->harqId = 1;
+   /* Since status pdu size = 3bytes and 2 bytes of MAC header,
+    * setting tbsize = 24 from Table 5.1.3.2-1 spec 38.214 */
+   pduInfo->pdu_length = 24;
+   pduInfo->ul_cqi = 0;
+   pduInfo->timingAdvance = 0;
+   pduInfo->rssi = 0;
+
+   /* Filling pdu with random values for testing */
+   pduInfo->pduData = NULL;
+   MAC_ALLOC(pduInfo->pduData, pduInfo->pdu_length);
+   if(!pduInfo->pduData)
+   {
+      printf("\nERROR  -->  PHY_STUB: Memory allocation failed for Rx Data Pdu");
+      return RFAILED;
+   }
+
+   /* Filling PDU */
+   pdu = (uint8_t *)pduInfo->pduData;
+   msgLen = 3;
+
+   /* For RLC Status PDU
+      MAC subheader format is R/F/LCId/L (2/3 bytes)
+      LCId is 4 for DRB1
+      L is length of Status PDU i.e 3 bytes
+      From 38.321 section 6.1.1
+    */
+   uint8_t statusPdu[] = {4, msgLen, 0, 0, 0};
+   msgLen += 2;  /* 2bytes of header */
+   memcpy(pdu, &statusPdu, msgLen);
+   byteIdx += msgLen; /* 2 bytes of header */
+
+
+   /* Filling MAC SDU for Padding bytes*/
+   if(byteIdx < pduInfo->pdu_length)
+   {
+      /* For Padding
+         MAC subheader format is R/R/LCId (1byte)
+         LCId is 63 for padding
+         From 38.321 section 6.1.1
+       */
+      pdu[byteIdx++] = 63;
+
+      for(; byteIdx < pduInfo->pdu_length; byteIdx++)
+         pdu[byteIdx] = 0;
+   }
+   msgLen += pduInfo->pdu_length;
+
+   fillMsgHeader(&rxDataInd->header, FAPI_RX_DATA_INDICATION, msgLen);
+
+    /* Send Message to peer */
+    DU_LOG("\nDEBUG  -->  PHY STUB : Sending RLC status pdu at sfn %d slot %d", sfnValue, slotValue);
+    /* Sending Rx data indication to MAC */
+    rxDataInd->sfn = sfnValue;
+    rxDataInd->slot = slotValue;
+    procPhyMessages(rxDataInd->header.msg_id, sizeof(fapi_rx_data_indication_t), (void *)rxDataInd);
+
+    if(pduInfo->pdu_length)
+       MAC_FREE(pduInfo->pduData, pduInfo->pdu_length);
+    MAC_FREE(rxDataInd, sizeof(fapi_rx_data_indication_t));
+    return ROK;
+}
+
+/*******************************************************************
+ *
  * @brief Receives message from MAC
  *
  * @details

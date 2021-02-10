@@ -49,7 +49,6 @@
 #define CRC_FAILED 0
 #define CRC_PASSED 1
 
-#define RLC_HDR_SIZE  3   /* 3 bytes of RLC Header size */
 #define MAC_HDR_SIZE  3   /* 3 bytes of MAC Header */
 #define UL_GRANT_SIZE 224
 

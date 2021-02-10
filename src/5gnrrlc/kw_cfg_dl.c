@@ -47,6 +47,7 @@ static int RLOG_FILE_ID=191;
 
 /* header (.h) include files */
 #include "common_def.h"
+#include "math.h"
 #include "lkw.h"           /* LKW defines */
 #include "ckw.h"           /* CKW defines */
 #include "kwu.h"           /* KWU defines */
@@ -66,6 +67,7 @@ static int RLOG_FILE_ID=191;
 #include "kw.x"
 #include "kw_udx.x"
 #include "kw_dl.x"
+#include "du_app_rlc_inf.h"
 
 #define RLC_MODULE RLC_DBGMASK_CFG
 /*Added for adding new Ue in onging L2 Meas*/
@@ -301,6 +303,346 @@ static S16 rlcAddToDlL2Meas(RlcCb *gCb, RlcDlRbCb *rlcRbCb,uint8_t cellId,uint8_
    return ROK;
 }/*rlcAddToDlL2Meas*/ 
 #endif /*LTE_L2_MEAS*/
+
+/*******************************************************************
+ *
+ * @brief Converts enum values into actual value of PollPdu
+ *
+ * @details
+ *
+ *    Function : getPollPdu
+ *
+ *    Functionality: Converts enum values into actual value of PollPdu
+ *
+ * @params[in] Enum value of pollPdu
+ * @return Actual value of pollPdu
+ *
+ * ****************************************************************/
+int16_t getPollPdu(uint16_t pollPduCfg)
+{
+   int16_t pollPdu;
+   switch(pollPduCfg)
+   {
+      case POLL_PDU_4:
+         pollPdu = 4;
+	 break;
+      case POLL_PDU_8:
+         pollPdu = 8;
+	 break;
+      case POLL_PDU_16:
+         pollPdu = 16;
+         break;
+      case POLL_PDU_32:
+         pollPdu = 32;
+	 break;
+      case POLL_PDU_64:
+         pollPdu = 64;
+	 break;
+      case POLL_PDU_128:
+         pollPdu = 128;
+	 break;
+      case POLL_PDU_256:
+         pollPdu = 256;
+	 break;
+      case POLL_PDU_512:
+         pollPdu = 512;
+	 break;
+      case POLL_PDU_1024:
+         pollPdu = 1024;
+	 break;
+      case POLL_PDU_2048:
+         pollPdu = 2048;
+	 break;
+      case POLL_PDU_4096:
+         pollPdu = 4096;
+	 break;
+      case POLL_PDU_6144:
+         pollPdu = 6144;
+	 break;
+      case POLL_PDU_8192:
+         pollPdu = 8192;
+	 break;
+      case POLL_PDU_12288:
+         pollPdu = 12288;
+	 break;
+      case POLL_PDU_16384:
+         pollPdu = 16384;
+	 break;
+      case POLL_PDU_20480:
+         pollPdu = 20480;
+	 break;
+      case POLL_PDU_24576:
+         pollPdu = 24576;
+	 break;
+      case POLL_PDU_28672:
+         pollPdu = 28672;
+	 break;
+      case POLL_PDU_32768:
+         pollPdu = 32768;
+	 break;
+      case POLL_PDU_40960:
+         pollPdu = 40960;
+	 break;
+      case POLL_PDU_49152:
+         pollPdu = 49152;
+	 break;
+      case POLL_PDU_57344:
+         pollPdu = 57344;
+	 break;
+      case POLL_PDU_65536:
+         pollPdu = 65536;
+	 break;
+      default:
+         pollPdu = -1;
+	 break;
+   }
+   return pollPdu;
+}
+
+/*******************************************************************
+ *
+ * @brief Converts enum values into actual value of poll bytes
+ *
+ * @details
+ *
+ *    Function : getPollBytes
+ *
+ *    Functionality: Converts enum values into actual value of pollBytes
+ *
+ * @params[in] Enum value
+ * @return Actual value
+ *
+ * ****************************************************************/
+int32_t getPollByte(uint16_t pollBytesCfg)
+{
+   int32_t pollBytes;
+   switch(pollBytesCfg)
+   {
+      case POLL_BYTES_1KB:
+         pollBytes = 1000;
+	 break;
+      case POLL_BYTES_2KB:
+         pollBytes = 2000;
+	 break;
+      case POLL_BYTES_5KB:
+         pollBytes = 5000;
+	 break;
+      case POLL_BYTES_8KB:
+         pollBytes = 8000;
+	 break;
+      case POLL_BYTES_10KB:
+         pollBytes = 10000;
+	 break;
+      case POLL_BYTES_15KB:
+         pollBytes = 15000;
+	 break;
+      case POLL_BYTES_25KB:
+         pollBytes = 25000;
+	 break;
+      case POLL_BYTES_50KB:
+         pollBytes = 50000;
+	 break;
+      case POLL_BYTES_75KB:
+         pollBytes = 75000;
+	 break;
+      case POLL_BYTES_100KB:
+         pollBytes = 100000;
+	 break;
+      case POLL_BYTES_125KB:
+         pollBytes = 125000;
+	 break;
+      case POLL_BYTES_250KB:
+         pollBytes = 250000;
+	 break;
+      case POLL_BYTES_375KB:
+         pollBytes = 375000;
+	 break;
+      case POLL_BYTES_500KB:
+         pollBytes = 500000;
+	 break;
+      case POLL_BYTES_750KB:
+         pollBytes = 750000;
+	 break;
+      case POLL_BYTES_1000KB:
+         pollBytes = 1000000;
+	 break;
+      case POLL_BYTES_1250KB:
+         pollBytes = 1250000;
+         break;
+      case POLL_BYTES_1500KB:
+         pollBytes = 1500000;
+         break;
+      case POLL_BYTES_2000KB:
+         pollBytes = 2000000;
+         break;
+      case POLL_BYTES_3000KB:
+         pollBytes = 3000000;
+         break;
+      case POLL_BYTES_4000KB:
+         pollBytes = 4000000;
+         break;
+      case POLL_BYTES_4500KB:
+         pollBytes = 4500000;
+         break;
+      case POLL_BYTES_5000KB:
+         pollBytes = 5000000;
+         break;
+      case POLL_BYTES_5500KB:
+         pollBytes = 5500000;
+         break;
+      case POLL_BYTES_6000KB:
+         pollBytes = 6000000;
+         break;
+      case POLL_BYTES_6500KB:
+         pollBytes = 6500000;
+         break;
+      case POLL_BYTES_7000KB:
+         pollBytes = 7000000;
+         break;
+      case POLL_BYTES_7500KB:
+         pollBytes = 7500000;
+         break;
+      case POLL_BYTES_8MB:
+         pollBytes = 8000000;
+         break;
+      case POLL_BYTES_9MB:
+         pollBytes = 9000000;
+         break;
+      case POLL_BYTES_10MB:
+         pollBytes = 10000000;
+         break;
+      case POLL_BYTES_11MB:
+         pollBytes = 11000000;
+         break;
+      case POLL_BYTES_12MB:
+         pollBytes = 12000000;
+         break;
+      case POLL_BYTES_13MB:
+         pollBytes = 13000000;
+         break;
+      case POLL_BYTES_14MB:
+         pollBytes = 14000000;
+         break;
+      case POLL_BYTES_15MB:
+         pollBytes = 15000000;
+         break;
+      case POLL_BYTES_16MB:
+         pollBytes = 16000000;
+         break;
+      case POLL_BYTES_17MB:
+         pollBytes = 17000000;
+         break;
+      case POLL_BYTES_18MB:
+         pollBytes = 18000000;
+         break;
+      case POLL_BYTES_20MB:
+         pollBytes = 20000000;
+         break;
+      case POLL_BYTES_25MB:
+         pollBytes = 25000000;
+         break;
+      case POLL_BYTES_30MB:
+         pollBytes = 30000000;
+         break;
+      case POLL_BYTES_40MB:
+         pollBytes = 40000000;
+         break;
+      default :
+         pollBytes = -1;
+   }
+   return pollBytes;
+}
+
+/*******************************************************************
+ *
+ * @brief Converts enum values into actual value of maxRetx
+ *
+ * @details
+ *
+ *    Function : getMaxRetx
+ *
+ *    Functionality: Converts enum values into actual value of maxRetx
+ *
+ * @params[in] Enum value
+ * @return Actual value
+ *
+ * ****************************************************************/
+uint8_t getMaxRetx(uint8_t maxRetxCfg)
+{
+   uint8_t maxRetx;
+   switch(maxRetxCfg)
+   {
+      case RETX_TH_1:
+         maxRetx = 1;
+	 break;
+      case RETX_TH_2:
+         maxRetx = 2;
+	 break;
+      case RETX_TH_3:
+         maxRetx = 3;
+	 break;
+      case RETX_TH_4:
+         maxRetx = 4;
+	 break;
+      case RETX_TH_6:
+         maxRetx = 6;
+	 break;
+      case RETX_TH_8:
+         maxRetx = 8;
+	 break;
+      case RETX_TH_16:
+         maxRetx = 16;
+	 break;
+      case RETX_TH_32:
+         maxRetx = 32;
+	 break;
+      default:
+         DU_LOG("\nERROR  -->  RLC_DL: Invalid configuration for Max retransmission threshold");
+	 maxRetx = 0;
+   }
+   return maxRetx;
+}
+
+uint16_t getPollRetxTmr(uint8_t retxTmr)
+{
+   uint16_t pollRetxTmr;
+
+   /* All values of poll retx timer are at interval of 5ms. 
+    * This is valid upto 250ms
+    * Hence converting the enum value to actual value by multiplying it to 5
+    */
+   if(retxTmr <= POLL_RETX_TMR_250MS)
+      pollRetxTmr = (retxTmr + 1) * 5;
+   else
+   {
+      switch(retxTmr)
+      {
+         case POLL_RETX_TMR_300MS:
+	    pollRetxTmr = 300;
+	    break;
+	 case POLL_RETX_TMR_350MS:
+	    pollRetxTmr = 350;
+	    break;
+	 case POLL_RETX_TMR_400MS:
+	    pollRetxTmr = 400;
+	    break;
+	 case POLL_RETX_TMR_450MS:
+	    pollRetxTmr = 450;
+	    break;
+	 case POLL_RETX_TMR_500MS:
+	    pollRetxTmr = 500;
+	    break;
+	 case POLL_RETX_TMR_800MS:
+	    pollRetxTmr = 800;
+	    break;
+	 default:
+	    DU_LOG("\nInvalid value of Poll Retransmit timer");
+	    pollRetxTmr = 0;
+      }
+   }
+   return pollRetxTmr;
+}
+
 
 /** 
  * @brief
@@ -365,10 +707,15 @@ static S16 rlcCfgFillDlRbCb(RlcCb *gCb,RlcDlRbCb *rbCb,RlcDlUeCb *ueCb,RlcEntCfg
          rbCb->lch.lChId  = entCfg->lCh[0].lChId;
          rbCb->lch.lChType = entCfg->lCh[0].type;
          rbCb->dir = RLC_DIR_BOTH;
-         rbCb->m.amDl.pollPdu = entCfg->m.amInfo.dl.pollPdu;
-         rbCb->m.amDl.pollByte = entCfg->m.amInfo.dl.pollByte;
-         rbCb->m.amDl.maxRetx = entCfg->m.amInfo.dl.maxRetx;
-         rbCb->m.amDl.pollRetxTmrInt = entCfg->m.amInfo.dl.pollRetxTmr;
+
+         rbCb->m.amDl.pollPdu = getPollPdu(entCfg->m.amInfo.dl.pollPdu);
+	 rbCb->m.amDl.pollByte = getPollByte(entCfg->m.amInfo.dl.pollByte);
+         rbCb->m.amDl.maxRetx = getMaxRetx(entCfg->m.amInfo.dl.maxRetx);
+	 if(rbCb->m.amDl.maxRetx == 0)
+	    return RFAILED;
+         rbCb->m.amDl.pollRetxTmrInt = getPollRetxTmr(entCfg->m.amInfo.dl.pollRetxTmr);
+	 if(rbCb->m.amDl.pollRetxTmrInt == 0)
+	    return RFAILED;
          rbCb->m.amDl.snLen = entCfg->m.amInfo.dl.snLen;
          
          if(RLC_AM_CFG_12BIT_SN_LEN == rbCb->m.amDl.snLen)
@@ -381,8 +728,6 @@ static S16 rlcCfgFillDlRbCb(RlcCb *gCb,RlcDlRbCb *rbCb,RlcDlUeCb *ueCb,RlcEntCfg
          }
 
          cmInitTimers(&(rbCb->m.amDl.pollRetxTmr), 1);
-      
-        
          ueCb->lCh[rbCb->lch.lChId - 1].dlRbCb = rbCb;
        
 #ifndef LTE_TDD 

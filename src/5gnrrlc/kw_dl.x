@@ -342,13 +342,13 @@ typedef struct rlcAmDl
    RlcSdu           *nxtTx;           /*!< Next SDU to be transmitted */
    CmTimer          pollRetxTmr;      /*!< T_poll_retransmit Timer */
    uint16_t         pollRetxTmrInt;   /*!< Timer Interval */
-   S16              pollPdu;          /*!< Poll_PDU */
-   S32              pollByte;         /*!< Poll_Byte */
+   int16_t          pollPdu;          /*!< Poll_PDU */
+   int32_t          pollByte;         /*!< Poll_Byte */
    uint8_t          maxRetx;          /*!< Max_Retx_Threshold */
-   S32              cntrlBo;          /*!< BO of control pdu */ 
-   S32              retxBo;           /*!< BO of Retransmission PDUs */ 
+   int32_t          cntrlBo;          /*!< BO of control pdu */ 
+   int32_t          retxBo;           /*!< BO of Retransmission PDUs */ 
    uint32_t         estHdrSz;         /*!< Estimated header size for the BO */
-   S32              bo;               /*!< BO of new PDUs */
+   int32_t          bo;               /*!< BO of new PDUs */
 #ifndef LTE_TDD 
    CmLListCp        *txBufLst;       /*!< Transmission buffer list of type RlcTx */
 #else
@@ -358,8 +358,8 @@ typedef struct rlcAmDl
    RlcRetx          *nxtRetx;         /*!< Next node to be retransmitted */
    RlcSn            txNext;           /*!< 5GNR: TX_Next, in LTE  VT(S) */
    RlcSn            txNextAck;        /*!< 5GNR: TX_Next_Ack, in LTE VT(A)*/ 
-   S16              pduWoPoll;        /*!< PDU without poll bit counter */
-   S32              byteWoPoll;       /*!< Byte without poll bit counter */
+   int16_t          pduWoPoll;        /*!< PDU without poll bit counter */
+   int32_t          byteWoPoll;       /*!< Byte without poll bit counter */
    RlcSn            pollSn;           /*!< Poll SN */
    Buffer           *mBuf;            /*!< this can be removed later 
                                            Stores the Control Pdu */

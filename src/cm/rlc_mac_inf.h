@@ -76,6 +76,8 @@ typedef struct rlcData
    SlotIndInfo   slotInfo;     /*!< Timing info */
    uint8_t       numPdu;       /*!< Number of RLC PDUs */
    RlcPduInfo    pduInfo[MAX_NUM_PDU];
+   uint8_t       numLc;
+   RlcBoStatus   boStatus[MAX_NUM_LC];
 }RlcData;
 
 /* Function pointers */
