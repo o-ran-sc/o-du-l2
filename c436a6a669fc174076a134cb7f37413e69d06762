@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "d31b1493_321dc45c",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 347,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-02-11T12:50:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea186161_e5a8f2ec",
+      "revId": "c436a6a669fc174076a134cb7f37413e69d06762",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8188bad6_95c862f0",
         "filename": "src/du_app/du_cfg.c",
         "patchSetId": 1
@@ -33,6 +51,24 @@
       "revId": "c436a6a669fc174076a134cb7f37413e69d06762",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f8610f54_6b5284a4",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 559,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-02-11T12:50:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8188bad6_95c862f0",
+      "revId": "c436a6a669fc174076a134cb7f37413e69d06762",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "d571c92f_0afbf110",
+        "filename": "src/o1/TcpServer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-02-11T12:50:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "68b4250d_bcbed186",
+      "revId": "c436a6a669fc174076a134cb7f37413e69d06762",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "728f02f3_2a34d747",
         "filename": "src/ric_stub/ric_stub.c",
         "patchSetId": 1
@@ -67,6 +121,24 @@
       "revId": "c436a6a669fc174076a134cb7f37413e69d06762",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6081b759_ec92d810",
+        "filename": "src/ric_stub/ric_stub.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-02-11T12:50:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "728f02f3_2a34d747",
+      "revId": "c436a6a669fc174076a134cb7f37413e69d06762",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
