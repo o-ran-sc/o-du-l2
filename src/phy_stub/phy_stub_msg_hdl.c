@@ -60,7 +60,7 @@ S16 l1BldAndSndParamRsp(void *msg)
    MAC_ALLOC(fapiParamRsp, sizeof(fapi_param_resp_t));
    if(!fapiParamRsp)
    {
-      DU_LOG("PHY STUB: Memory allocation failed");
+      DU_LOG("\nERROR  -->  PHY STUB: Memory allocation failed");
       return RFAILED;
    }
 
@@ -139,7 +139,7 @@ S16 l1BldAndSndParamRsp(void *msg)
    fillMsgHeader(&fapiParamRsp->header, FAPI_PARAM_RESPONSE, msgLen);
    fapiParamRsp->error_code = MSG_OK;
 
-   DU_LOG("\nPHY_STUB: Sending Param Request to Lower Mac");
+   DU_LOG("\nINFO   -->  PHY_STUB: Sending Param Request to Lower Mac");
    procPhyMessages(fapiParamRsp->header.msg_id, sizeof(fapi_param_resp_t), (void *)fapiParamRsp);
    MAC_FREE(fapiParamRsp, sizeof(fapi_param_resp_t));
 #endif
@@ -172,7 +172,7 @@ S16 l1BldAndSndConfigRsp(void *msg)
    MAC_ALLOC(fapiConfigRsp, sizeof(fapi_config_resp_t));
    if(!fapiConfigRsp)
    {
-      DU_LOG("PHY STUB: Memory allocation failed");
+      DU_LOG("\nERROR  -->  PHY STUB: Memory allocation failed");
       return RFAILED;
    }
    memset(fapiConfigRsp, 0, sizeof(fapi_config_resp_t));
@@ -183,7 +183,7 @@ S16 l1BldAndSndConfigRsp(void *msg)
    msgLen = sizeof(fapi_config_resp_t) - sizeof(fapi_msg_t);
    fillMsgHeader(&fapiConfigRsp->header, FAPI_CONFIG_RESPONSE, msgLen);
 
-   DU_LOG("\nPHY_STUB: Sending Config Response to Lower Mac");
+   DU_LOG("\nINFO   -->  PHY_STUB: Sending Config Response to Lower Mac");
 
    procPhyMessages(fapiConfigRsp->header.msg_id, \
 	 sizeof(fapi_config_resp_t), (void *)fapiConfigRsp);
@@ -212,12 +212,12 @@ S16 l1BldAndSndConfigRsp(void *msg)
 void l1HdlParamReq(uint32_t msgLen, void *msg)
 {
 #ifdef INTEL_FAPI
-   DU_LOG("\nPHY_STUB: Received Param Request in PHY");
+   DU_LOG("\nINFO   -->  PHY_STUB: Received Param Request in PHY");
 
    /* Build and send PARAM RESPONSE */
    if(l1BldAndSndParamRsp(msg)!= ROK)
    {
-      DU_LOG("\nPHY_STUB: Failed Sending Param Response");
+      DU_LOG("\nERROR  -->  PHY_STUB: Failed Sending Param Response");
    }
    MAC_FREE(msg, sizeof(fapi_param_req_t));
 #endif
@@ -247,12 +247,12 @@ void l1HdlConfigReq(uint32_t msgLen, void *msg)
    p_fapi_api_queue_elem_t configReqElem = (p_fapi_api_queue_elem_t)msg;
    fapi_config_req_t *configReq = (fapi_config_req_t *)(configReqElem +1);
 
-   DU_LOG("\nPHY_STUB: Received Config Request in PHY");
+   DU_LOG("\nINFO   -->  PHY_STUB: Received Config Request in PHY");
 
    /* Handling CONFIG RESPONSE */
    if(l1BldAndSndConfigRsp(configReq)!= ROK)
    {
-      printf("\nPHY_STUB: Failed Sending config Response");
+      DU_LOG("\nERROR  -->  PHY_STUB: Failed Sending config Response");
    }
 
    MAC_FREE(msg, msgLen);
@@ -286,7 +286,7 @@ uint16_t l1BuildAndSendCrcInd(uint16_t slot, uint16_t sfn)
    MAC_ALLOC(crcInd, sizeof(fapi_crc_ind_t));
    if(!crcInd)
    {
-      printf("\nPHY_STUB: Memory allocation failed for CRC Indication Message");
+      DU_LOG("\nERROR  -->  PHY_STUB: Memory allocation failed for CRC Indication Message");
       return RFAILED;
    }
    memset(crcInd, 0, sizeof(fapi_crc_ind_t));
@@ -310,7 +310,7 @@ uint16_t l1BuildAndSendCrcInd(uint16_t slot, uint16_t sfn)
 	 sizeof(fapi_crc_ind_t) - sizeof(fapi_msg_t));
 
    /* Sending RACH indication to MAC */
-   DU_LOG("\nPHY STUB: Sending CRC Indication to MAC");
+   DU_LOG("\nINFO   -->  PHY STUB: Sending CRC Indication to MAC");
    procPhyMessages(crcInd->header.msg_id, sizeof(fapi_crc_ind_t), (void *)crcInd);
    MAC_FREE(crcInd, sizeof(fapi_crc_ind_t));
 #endif
@@ -382,7 +382,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
    MAC_ALLOC(rxDataInd, sizeof(fapi_rx_data_indication_t));
    if(!rxDataInd)
    {
-      printf("\nPHY_STUB: Memory allocation failed for Rx Data Indication");
+      DU_LOG("\nERROR  -->  PHY_STUB: Memory allocation failed for Rx Data Indication");
       return RFAILED;
    }
    memset(rxDataInd, 0, sizeof(fapi_rx_data_indication_t));
@@ -406,7 +406,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
    MAC_ALLOC(pduInfo->pduData, pduInfo->pdu_length);
    if(!pduInfo->pduData)
    {
-      printf("\nPHY_STUB: Memory allocation failed for Rx Data Pdu");
+      DU_LOG("\nERROR  -->  PHY_STUB: Memory allocation failed for Rx Data Pdu");
       return RFAILED;
    }
    memset(pduInfo->pduData, 0, pduInfo->pdu_length);
@@ -417,7 +417,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
    {
       case MSG_TYPE_MSG3: 
 	 {
-	    DU_LOG("\nPHY_STUB: Forming MSG3 PDU ");
+	    DU_LOG("\nDEBUG  -->  PHY_STUB: Forming MSG3 PDU ");
 	    /* For Initial RRC setup Request,
 	       MAC subheader format is R/R/LCId (1byte)
 	       LCId is CCCH(0)
@@ -436,7 +436,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
 	 }
       case MSG_TYPE_SHORT_BSR:
       {
-	 DU_LOG("\nPHY_STUB: Forming SHORT BSR PDU ");
+	 DU_LOG("\nDEBUG  -->  PHY_STUB: Forming SHORT BSR PDU ");
 	 uint8_t lcgId = 0;
 	 uint8_t bufferSizeIdx = 6;
 
@@ -453,7 +453,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
 
       case MSG_TYPE_MSG5:
       {
-	 DU_LOG("\nPHY_STUB: Forming MSG5 PDU");
+	 DU_LOG("\nDEBUG  -->  PHY_STUB: Forming MSG5 PDU");
 	 uint8_t  msg5PduLen = 33;
 	 /* For RRC setup complete
 	    MAC subheader format is R/F/LCId/L (2/3 bytes)
@@ -473,7 +473,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
 
       case MSG_TYPE_SECURITY_MODE_COMPLETE:
       {
-	 DU_LOG("\nPHY_STUB: Forming SECURITY MODE COMPLETE PDU");
+	 DU_LOG("\nDEBUG  -->  PHY_STUB: Forming SECURITY MODE COMPLETE PDU");
 	 uint8_t  pduLen = 12;
 	 /* For security mode complete where RRC Container is dummy
 	    MAC subheader format is R/F/LCId/L (2/3 bytes)
@@ -491,7 +491,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
       case MSG_TYPE_REGISTRATION_COMPLETE:
       {
           
-	  DU_LOG("\nPHY_STUB: Forming RRC REGISTRATION COMPLETE PDU");
+	  DU_LOG("\nDEBUG  -->  PHY_STUB: Forming RRC REGISTRATION COMPLETE PDU");
 	  uint8_t  pduLen = 12;
 	  /* For rrc reconfig complete where RRC Container is dummy
 	  MAC subheader format is R/F/LCId/L (2/3 bytes)
@@ -509,7 +509,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
       }
       case MSG_TYPE_RRC_RECONFIG_COMPLETE:
       {
-         DU_LOG("\nPHY_STUB: Forming RRC RECONFIGURATION COMPLETE PDU");
+         DU_LOG("\nDEBUG  -->  PHY_STUB: Forming RRC RECONFIGURATION COMPLETE PDU");
          uint8_t  pduLen = 14;
 	 /* For rrc reconfig complete where RRC Container is dummy
 	 MAC subheader format is R/F/LCId/L (2/3 bytes)
@@ -548,7 +548,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
    fillMsgHeader(&rxDataInd->header, FAPI_RX_DATA_INDICATION, msgLen);
 
    /* Sending Rx data indication to MAC */
-   DU_LOG("\nPHY STUB: Sending Rx data Indication to MAC");
+   DU_LOG("\nINFO   -->  PHY STUB: Sending Rx data Indication to MAC");
    procPhyMessages(rxDataInd->header.msg_id, sizeof(fapi_rx_data_indication_t), (void *)rxDataInd);
 
    if(pduInfo->pdu_length)
@@ -587,7 +587,7 @@ uint16_t l1BuildAndSendRachInd(uint16_t slot, uint16_t sfn)
    MAC_ALLOC(rachInd, sizeof(fapi_rach_indication_t));
    if(!rachInd)
    {
-      printf("\nPHY_STUB: Memory allocation failed for Rach Indication Message");
+      DU_LOG("\nERROR  -->  PHY_STUB: Memory allocation failed for Rach Indication Message");
       return RFAILED;
    }
    memset(rachInd, 0, sizeof(fapi_rach_indication_t)); 
@@ -612,7 +612,7 @@ uint16_t l1BuildAndSendRachInd(uint16_t slot, uint16_t sfn)
 	 sizeof(fapi_rach_indication_t) - sizeof(fapi_msg_t));
 
    /* Sending RACH indication to MAC */
-   DU_LOG("\nPHY STUB: Sending RACH Indication to MAC");
+   DU_LOG("\nINFO   -->  PHY STUB: Sending RACH Indication to MAC");
    procPhyMessages(rachInd->header.msg_id, sizeof(fapi_rach_indication_t), (void *)rachInd);
    MAC_FREE(rachInd, sizeof(fapi_rach_indication_t));
 #endif
@@ -644,7 +644,7 @@ uint16_t l1BuildAndSendSlotIndication()
    MAC_ALLOC(slotIndMsg, sizeof(fapi_slot_ind_t));
    if(!slotIndMsg)
    {
-      DU_LOG("\nPHY_STUB: Memory allocation failed for slot Indication Message");
+      DU_LOG("\nERROR  -->  PHY_STUB: Memory allocation failed for slot Indication Message");
       return RFAILED;
    }
    else
@@ -654,7 +654,7 @@ uint16_t l1BuildAndSendSlotIndication()
       slotIndMsg->slot = slotValue;
 
 #ifdef ODU_SLOT_IND_DEBUG_LOG
-      DU_LOG("\n\nPHY_STUB: SLOT indication [%d:%d]",sfnValue,slotValue);
+      DU_LOG("\n\nDEBUG  -->  PHY_STUB: SLOT indication [%d:%d]",sfnValue,slotValue);
 #endif
       /* increment for the next TTI */
       slotValue++;
@@ -706,7 +706,7 @@ S16 l1HdlStartReq(uint32_t msgLen, void *msg)
    }
    else
    {
-      DU_LOG("\nPHY_STUB: Received Start Req in PHY State %d", lwrMacCb.phyState);
+      DU_LOG("\nINFO   -->  PHY_STUB: Received Start Req in PHY State %d", lwrMacCb.phyState);
       MAC_FREE(msg, msgLen);
       return RFAILED;
    }
@@ -743,11 +743,11 @@ S16 l1HdlDlTtiReq(uint16_t msgLen, void *msg)
 #ifdef ODU_SLOT_IND_DEBUG_LOG
    if(dlTtiReq->nPdus == 0)
    {
-      DU_LOG("\nPHY_STUB: No PDU in DL TTI Request");
+      DU_LOG("\nDEBUG  -->  PHY_STUB: No PDU in DL TTI Request");
    }
    else
    {  
-     DU_LOG("\nPHY STUB: DL TTI Request at sfn=%d slot=%d",dlTtiReq->sfn,dlTtiReq->slot);
+     DU_LOG("\nDEBUG  -->  PHY STUB: DL TTI Request at sfn=%d slot=%d",dlTtiReq->sfn,dlTtiReq->slot);
    }
 #endif 
 
@@ -755,11 +755,11 @@ S16 l1HdlDlTtiReq(uint16_t msgLen, void *msg)
    {
       if(dlTtiReq->pdus[pduCount].pduType == 3) //SSB_PDU_TYPE
       {
-         DU_LOG("\nPHY_STUB: SSB PDU");
+         DU_LOG("\nINFO   -->  PHY_STUB: SSB PDU");
       }
       else if(dlTtiReq->pdus[pduCount].pduType == 0)
       {
-	 DU_LOG("\nPHY_STUB: PDCCH PDU");
+	 DU_LOG("\nINFO   -->  PHY_STUB: PDCCH PDU");
 	 if(dlTtiReq->pdus[pduCount].pdu.pdcch_pdu.\
 	    coreSetType == 1)
 	 {
@@ -768,7 +768,7 @@ S16 l1HdlDlTtiReq(uint16_t msgLen, void *msg)
       }
       else if(dlTtiReq->pdus[pduCount].pduType == 1)
       {
-         DU_LOG("\nPHY_STUB: PDSCH PDU");
+         DU_LOG("\nINFO   -->  PHY_STUB: PDSCH PDU");
       }
    }
 
@@ -802,10 +802,10 @@ S16 l1HdlTxDataReq(uint16_t msgLen, void *msg)
    p_fapi_api_queue_elem_t txDataElem = (p_fapi_api_queue_elem_t)msg;
    fapi_tx_data_req_t *txDataReq = (fapi_tx_data_req_t *)(txDataElem +1);
 
-   DU_LOG("\nPHY STUB: TX DATA Request at sfn=%d slot=%d",txDataReq->sfn,txDataReq->slot);
+   DU_LOG("\nINFO   -->  PHY STUB: TX DATA Request at sfn=%d slot=%d",txDataReq->sfn,txDataReq->slot);
    if(dlDedMsg)
    {
-      DU_LOG("\nPHY_STUB: TxDataPdu for DED MSG sent");
+      DU_LOG("\nINFO   -->  PHY_STUB: TxDataPdu for DED MSG sent");
       dlDedMsg = false;
    }
    MAC_FREE(msg, msgLen);
@@ -899,7 +899,7 @@ uint8_t fillUciPduInfo(fapi_uci_pdu_info_t *uciPdu, fapi_ul_pucch_pdu_t pucchPdu
       case UCI_IND_PUCCH_F2F3F4:
          break;
       default:
-         DU_LOG("\nPHY_STUB: Invalid Pdu Type %d", uciPdu->pduType);
+         DU_LOG("\nERROR  -->  PHY_STUB: Invalid Pdu Type %d", uciPdu->pduType);
          break;
    }
    return ret;
@@ -933,7 +933,7 @@ uint8_t l1BuildAndSendUciInd(uint16_t slot, uint16_t sfn, fapi_ul_pucch_pdu_t pu
    MAC_ALLOC(uciInd, sizeof(fapi_uci_indication_t));
    if(!uciInd)
    {
-      printf("\nPHY_STUB: Memory allocation failed for UCI Indication");
+      DU_LOG("\nERROR  -->  PHY_STUB: Memory allocation failed for UCI Indication");
       return RFAILED;
    }
    memset(uciInd, 0, sizeof(fapi_uci_indication_t));
@@ -953,7 +953,7 @@ uint8_t l1BuildAndSendUciInd(uint16_t slot, uint16_t sfn, fapi_ul_pucch_pdu_t pu
       fillMsgHeader(&uciInd->header, FAPI_UCI_INDICATION, msgLen);
 
       /* Sending UCI indication to MAC */
-      DU_LOG("\nPHY STUB: Sending UCI Indication to MAC");
+      DU_LOG("\nINFO   -->  PHY STUB: Sending UCI Indication to MAC");
       procPhyMessages(uciInd->header.msg_id, sizeof(fapi_uci_indication_t), (void *)uciInd);
    }
    MAC_FREE(uciInd, sizeof(fapi_uci_indication_t));
@@ -989,11 +989,11 @@ S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
 #ifdef ODU_SLOT_IND_DEBUG_LOG
    if(numPdus == 0)
    {
-      DU_LOG("\nPHY STUB: No PDU received in UL TTI Req");
+      DU_LOG("\nINFO   -->  PHY STUB: No PDU received in UL TTI Req");
    }
    else
    {
-      DU_LOG("\nPHY STUB: Received UL TTI Request");
+      DU_LOG("\nINFO   -->  PHY STUB: Received UL TTI Request");
    }
 #endif 
 
@@ -1001,17 +1001,17 @@ S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
    {
       if(ulTtiReq->pdus[numPdus-1].pduType == 0)
       {
-	 DU_LOG("\nPHY STUB: PRACH PDU");
+	 DU_LOG("\nINFO   -->  PHY STUB: PRACH PDU");
       }
       if(ulTtiReq->pdus[numPdus-1].pduType == 1)
       {
-	 DU_LOG("\nPHY STUB: PUSCH PDU");
+	 DU_LOG("\nINFO   -->  PHY STUB: PUSCH PDU");
 	 l1BuildAndSendRxDataInd(ulTtiReq->slot, ulTtiReq->sfn, \
 	       ulTtiReq->pdus[numPdus-1].pdu.pusch_pdu); 
       }
       if(ulTtiReq->pdus[numPdus-1].pduType == 2)
       {
-	 DU_LOG("\nPHY STUB: PUCCH PDU");
+	 DU_LOG("\nINFO   -->  PHY STUB: PUCCH PDU");
          fapi_ul_tti_req_t ulTtiSlotInd;
 	 memset(&ulTtiSlotInd, 0, sizeof(fapi_ul_tti_req_t));
 	 ulTtiSlotInd.slot = ulTtiReq->slot;
@@ -1058,13 +1058,13 @@ uint16_t l1BuildAndSendStopInd()
    MAC_ALLOC(stopIndMsg, sizeof(fapi_stop_ind_t));
    if(!stopIndMsg)
    {
-      DU_LOG("\nPHY_STUB: Memory allocation failed for stop Indication Message");
+      DU_LOG("\nERROR  -->  PHY_STUB: Memory allocation failed for stop Indication Message");
       return RFAILED;
    }
    else
    {
       fillMsgHeader(&stopIndMsg->header, FAPI_STOP_INDICATION, msgLen);
-      DU_LOG("\n\nPHY_STUB: Processing Stop indication to MAC");
+      DU_LOG("\n\nINFO   -->  PHY_STUB: Processing Stop indication to MAC");
       procPhyMessages(stopIndMsg->header.msg_id,\
 	    sizeof(fapi_stop_ind_t), (void*)stopIndMsg);
       MAC_FREE(stopIndMsg, sizeof(fapi_stop_ind_t));
@@ -1097,13 +1097,13 @@ S16 l1HdlStopReq(uint32_t msgLen, void *msg)
    if(lwrMacCb.phyState == PHY_STATE_RUNNING)
    {
       l1HdlSlotIndicaion(TRUE);
-      DU_LOG("\nPHY_STUB: Slot Indication is stopped successfully");
+      DU_LOG("\nINFO   -->  PHY_STUB: Slot Indication is stopped successfully");
       l1BuildAndSendStopInd();
       MAC_FREE(msg, msgLen);
    }
    else
    {
-      DU_LOG("\nPHY_STUB: Received Stop Req in PHY State %d", lwrMacCb.phyState);
+      DU_LOG("\nINFO  -->  PHY_STUB: Received Stop Req in PHY State %d", lwrMacCb.phyState);
       MAC_FREE(msg, msgLen);
       return RFAILED;
    }
@@ -1140,7 +1140,7 @@ uint8_t l1BuildAndSendMsg5(uint16_t sfn, uint16_t slot)
    MAC_ALLOC(rxDataInd, sizeof(fapi_rx_data_indication_t));
    if(!rxDataInd)
    {
-      printf("\nPHY_STUB: Memory allocation failed for Rx Data Indication for msg5");
+      DU_LOG("\nERROR  -->  PHY_STUB: Memory allocation failed for Rx Data Indication for msg5");
       return RFAILED;
    }
    memset(rxDataInd, 0, sizeof(fapi_rx_data_indication_t));
@@ -1165,7 +1165,7 @@ uint8_t l1BuildAndSendMsg5(uint16_t sfn, uint16_t slot)
    MAC_ALLOC(pduInfo->pduData, pduInfo->pdu_length);
    if(!pduInfo->pduData)
    {
-      printf("\nPHY_STUB: Memory allocation failed for Rx Data Pdu");
+      DU_LOG("\nERROR  -->  PHY_STUB: Memory allocation failed for Rx Data Pdu");
       return RFAILED;
    }
 
@@ -1205,7 +1205,7 @@ uint8_t l1BuildAndSendMsg5(uint16_t sfn, uint16_t slot)
    fillMsgHeader(&rxDataInd->header, FAPI_RX_DATA_INDICATION, msgLen);
 
    /* Sending Rx data indication to MAC */
-   DU_LOG("\nPHY STUB: Sending Rx data Indication to MAC");
+   DU_LOG("\nINFO   -->  PHY STUB: Sending Rx data Indication to MAC");
    procPhyMessages(rxDataInd->header.msg_id, sizeof(fapi_rx_data_indication_t), (void *)rxDataInd);
 
    if(pduInfo->pdu_length)
@@ -1244,7 +1244,7 @@ S16 l1HdlUlDciReq(uint16_t msgLen, void *msg)
    {
       if(ulDciReq->pdus[numPdus-1].pduType == 0)
       {
-	 DU_LOG("\nPHY STUB: Received UL DCI Request for PDCCH PDU");
+	 DU_LOG("\nINFO   -->  PHY STUB: Received UL DCI Request for PDCCH PDU");
 	 //l1BuildAndSendMsg5(ulDciReq->sfn, ulDciReq->slot);
 	 //msg5Sent = true;
       }
@@ -1284,7 +1284,7 @@ uint8_t l1SendUlUserData()
    MAC_ALLOC(rxDataInd, sizeof(fapi_rx_data_indication_t));
    if(!rxDataInd)
    {
-      printf("\nERROR  -->  PHY_STUB: Memory allocation failed for Rx Data Indication");
+      DU_LOG("\nERROR  -->  PHY_STUB: Memory allocation failed for Rx Data Indication");
       return RFAILED;
    }
    memset(rxDataInd, 0, sizeof(fapi_rx_data_indication_t));
@@ -1311,7 +1311,7 @@ uint8_t l1SendUlUserData()
    MAC_ALLOC(pduInfo->pduData, pduInfo->pdu_length);
    if(!pduInfo->pduData)
    {
-      printf("\nERROR  -->  PHY_STUB: Memory allocation failed for Rx Data Pdu");
+      DU_LOG("\nERROR  -->  PHY_STUB: Memory allocation failed for Rx Data Pdu");
       return RFAILED;
    }
 
@@ -1415,7 +1415,7 @@ void l1ProcessFapiRequest(uint8_t msgType, uint32_t msgLen, void *msg)
 	 l1HdlUlDciReq(msgLen, msg);
 	 break;
       default:
-	 DU_LOG("\nPHY_STUB: Invalid message type[%x] received at PHY", msgType);
+	 DU_LOG("\nERROR  -->  PHY_STUB: Invalid message type[%x] received at PHY", msgType);
 	 break;
 #endif
    }
