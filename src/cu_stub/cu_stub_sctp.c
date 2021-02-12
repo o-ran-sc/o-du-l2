@@ -47,7 +47,7 @@ CuSctpDestCb f1Params;
  ***************************************************************************/
 S16 sctpActvInit()
 {
-   DU_LOG("\n\nSCTP : Initializing");
+   DU_LOG("\n\nDEBUG  -->  SCTP : Initializing");
    connUp = FALSE;
    assocId = 0;
    nonblocking = FALSE;
@@ -189,19 +189,19 @@ S16 sctpStartReq()
 
    if((ret = cmInetSocket(socket_type, &f1Params.lstnSockFd, IPPROTO_SCTP) != ROK))
    {
-      DU_LOG("\nSCTP : Socket[%d] coudnt open for listening", f1Params.lstnSockFd.fd);
+      DU_LOG("\nERROR  -->  SCTP : Socket[%d] coudnt open for listening", f1Params.lstnSockFd.fd);
    } 
    else if((ret = cmInetSctpBindx(&f1Params.lstnSockFd, &f1Params.localAddrLst, f1Params.srcPort)) != ROK)
    {
-      DU_LOG("\nSCTP: Binding failed at CU");
+      DU_LOG("\nERROR  -->  SCTP: Binding failed at CU");
    }
    else if((ret = sctpAccept(&f1Params.lstnSockFd, &f1Params.peerAddr, &f1Params.sockFd)) != ROK)
    {
-      DU_LOG("\nSCTP: Unable to accept the connection at CU");
+      DU_LOG("\nERROR  -->  SCTP: Unable to accept the connection at CU");
    }
    else if(sctpSockPoll() != ROK)
    {
-      DU_LOG("\nSCTP: Polling failed to start at CU");
+      DU_LOG("\nERROR  -->  SCTP: Polling failed to start at CU");
    }
    return (ret);
 }
@@ -267,12 +267,12 @@ S16 sctpAccept(CmInetFd *lstnSock_Fd, CmInetAddr *peerAddr, CmInetFd *sock_Fd)
    ret = cmInetListen(lstnSock_Fd, 1);
    if (ret != ROK)
    {
-      DU_LOG("\nSCTP : Listening on socket failed");
+      DU_LOG("\nERROR  -->  SCTP : Listening on socket failed");
       cmInetClose(lstnSock_Fd);
       return RFAILED;
    }
    
-   DU_LOG("\nSCTP : Connecting");
+   DU_LOG("\nINFO  -->  SCTP : Connecting");
 
    while(!connUp)
    {
@@ -283,7 +283,7 @@ S16 sctpAccept(CmInetFd *lstnSock_Fd, CmInetAddr *peerAddr, CmInetFd *sock_Fd)
       }
       else if(ret != ROK)
       {
-         DU_LOG("\nSCTP : Failed to accept connection");
+         DU_LOG("\nERROR  -->  SCTP : Failed to accept connection");
          return RFAILED;
       }
       else
@@ -293,7 +293,7 @@ S16 sctpAccept(CmInetFd *lstnSock_Fd, CmInetAddr *peerAddr, CmInetFd *sock_Fd)
          break;
       }
    }
-   DU_LOG("\nSCTP : Connection established");
+   DU_LOG("\nINFO  -->  SCTP : Connection established");
 
    return ROK;
 }
@@ -320,57 +320,57 @@ S16 sctpNtfyHdlr(CmInetSctpNotification *ntfy)
    switch(ntfy->header.nType)
    {
       case CM_INET_SCTP_ASSOC_CHANGE :
-         DU_LOG("\nSCTP : Assoc change notification received");
+         DU_LOG("\nINFO  -->  SCTP : Assoc change notification received");
          switch(ntfy->u.assocChange.state)
          {
             case CM_INET_SCTP_COMM_UP:
-               DU_LOG("Event : COMMUNICATION UP");
+               DU_LOG("DEBUG  -->  Event : COMMUNICATION UP");
                connUp = TRUE;
                break;
             case CM_INET_SCTP_COMM_LOST:
-               DU_LOG("Event : COMMUNICATION LOST");
+               DU_LOG("DEBUG  -->  Event : COMMUNICATION LOST");
                connUp = FALSE;
                break;
             case CM_INET_SCTP_RESTART:
-               DU_LOG("Event : SCTP RESTART");
+               DU_LOG("DEBUG  -->  Event : SCTP RESTART");
                connUp = FALSE;
                break;
             case CM_INET_SCTP_SHUTDOWN_COMP: /* association gracefully shutdown */
-               DU_LOG("Event : SHUTDOWN COMPLETE");
+               DU_LOG("DEBUG  -->  Event : SHUTDOWN COMPLETE");
                connUp = FALSE;
                break;
             case CM_INET_SCTP_CANT_STR_ASSOC:
-               DU_LOG("Event : CANT START ASSOC");
+               DU_LOG("DEBUG  -->  Event : CANT START ASSOC");
                connUp = FALSE;
                break;
             default:
-               DU_LOG("\nInvalid event");
+               DU_LOG("\nERROR  -->  Invalid event");
                break;
          }
          break;
       case CM_INET_SCTP_PEER_ADDR_CHANGE :
-         DU_LOG("\nSCTP : Peer Address Change notificarion received");
+         DU_LOG("\nINFO  -->  SCTP : Peer Address Change notificarion received");
          /* Need to add handler */
          break;
       case CM_INET_SCTP_REMOTE_ERROR :
-         DU_LOG("\nSCTP : Remote Error notification received");
+         DU_LOG("\nINFO  -->  SCTP : Remote Error notification received");
          break;
       case CM_INET_SCTP_SEND_FAILED :
-         DU_LOG("\nSCTP : Send Failed notification received\n");
+         DU_LOG("\nINFO  -->  SCTP : Send Failed notification received\n");
          break;
       case CM_INET_SCTP_SHUTDOWN_EVENT : /* peer socket gracefully closed */
-         DU_LOG("\nSCTP : Shutdown Event notification received\n");
+         DU_LOG("\nINFO  -->  SCTP : Shutdown Event notification received\n");
          connUp = FALSE;
          exit(0);
          break;
       case CM_INET_SCTP_ADAPTATION_INDICATION :
-         DU_LOG("\nSCTP : Adaptation Indication received\n");
+         DU_LOG("\nINFO  -->  SCTP : Adaptation Indication received\n");
          break;
       case CM_INET_SCTP_PARTIAL_DELIVERY_EVENT:
-         DU_LOG("\nSCTP : Partial Delivery Event received\n");
+         DU_LOG("\nINFO  -->  SCTP : Partial Delivery Event received\n");
          break;
       default:
-         DU_LOG("\nSCTP : Invalid notification type\n");
+         DU_LOG("\nERROR  -->  SCTP : Invalid notification type\n");
          break;
    }
 
@@ -430,7 +430,7 @@ S16 sctpSockPoll()
    {
       if((ret = processPolling(&f1PollParams, &f1Params.sockFd, timeoutPtr, &memInfo)) != ROK)
       {
-         DU_LOG("\nSCTP : Failed to RecvMsg for F1 at CU\n");
+         DU_LOG("\nERROR  -->  SCTP : Failed to RecvMsg for F1 at CU\n");
       }
 
       /* Receiving EGTP data */
@@ -438,7 +438,7 @@ S16 sctpSockPoll()
       ret = cmInetRecvMsg(&(egtpCb.recvTptSrvr.sockFd), &egtpFromAddr, &memInfo, &egtpBuf, &egtpBufLen, CM_INET_NO_FLAG);
       if(ret == ROK && egtpBuf != NULLP)
       {
-         DU_LOG("\nEGTP : Received message \n");
+         DU_LOG("\nINFO  -->  EGTP : Received message \n");
          ODU_PRINT_MSG(egtpBuf, 0 ,0);
          cuEgtpHdlRecvMsg(egtpBuf);
 
@@ -490,7 +490,7 @@ S16 processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, uint32_t *t
             ret = sctpNtfyHdlr(&pollParams->ntfy);
             if(ret != ROK)
             {
-               DU_LOG("\nSCTP : Failed to process sctp notify msg\n");
+               DU_LOG("\nERROR  -->  SCTP : Failed to process sctp notify msg\n");
             }
          }
          else if(connUp & (pollParams->port == f1Params.destPort))
@@ -536,7 +536,7 @@ S16 sctpSend(Buffer *mBuf)
 
    if(ret != ROK && ret != RWOULDBLOCK)
    {
-      DU_LOG("\nSCTP : Send message failed");
+      DU_LOG("\nERROR  -->  SCTP : Send message failed");
       return RFAILED;
    }
 
