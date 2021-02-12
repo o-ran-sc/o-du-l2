@@ -200,14 +200,14 @@ S16 SendF1APMsg(Region region, Pool pool)
 
 	 if(sctpSend(mBuf) != ROK)
 	 {
-	    DU_LOG("\nF1AP : SCTP Send failed");
+	    DU_LOG("\nERROR  -->  F1AP : SCTP Send failed");
 	    ODU_PUT_MSG_BUF(mBuf);
 	    return RFAILED;
 	 }
       }
       else
       {
-	 DU_LOG("\nF1AP : ODU_ADD_POST_MSG_MULT failed");
+	 DU_LOG("\nERROR  -->  F1AP : ODU_ADD_POST_MSG_MULT failed");
 	 ODU_PUT_MSG_BUF(mBuf);
 	 return RFAILED;
       }
@@ -215,7 +215,7 @@ S16 SendF1APMsg(Region region, Pool pool)
    }
    else
    {
-      DU_LOG("\nF1AP : Failed to allocate memory");
+      DU_LOG("\nERROR  -->  F1AP : Failed to allocate memory");
       return RFAILED;
    }
 
@@ -275,13 +275,13 @@ S16 BuildAndSendF1SetupRsp()
    Cells_to_be_Activated_List_t *cellToActivate;
    RRC_Version_t      *rrcVer;
    asn_enc_rval_t     encRetVal; 
-   DU_LOG("\nF1AP : Building F1 Setup Response\n");
+   DU_LOG("\nINFO  -->  F1AP : Building F1 Setup Response\n");
 
    /* Allocate the memory for F1SetupRequest_t */
    CU_ALLOC(f1apMsg, sizeof(F1AP_PDU_t)); 
    if(f1apMsg == NULLP)
    {
-      DU_LOG("\nF1AP : Memory allocation for F1AP-PDU failed");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation for F1AP-PDU failed");
       return RFAILED;
    }
    f1apMsg->present =  F1AP_PDU_PR_successfulOutcome;
@@ -289,7 +289,7 @@ S16 BuildAndSendF1SetupRsp()
    CU_ALLOC(f1apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcome_t));
    if(f1apMsg->choice.successfulOutcome == NULLP)
    {
-      DU_LOG("\nF1AP : Memory allocation for F1AP-PDU failed");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation for F1AP-PDU failed");
       CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
       return RFAILED;  
    }
@@ -308,7 +308,7 @@ S16 BuildAndSendF1SetupRsp()
 	 elementCnt * sizeof(F1SetupResponseIEs_t *));
    if(f1SetupRsp->protocolIEs.list.array == NULLP)
    {
-      DU_LOG("\nF1AP : Memory allocation for F1ResponseIEs failed");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation for F1ResponseIEs failed");
       CU_FREE(f1apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcome_t));
       CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
       return RFAILED;
@@ -631,23 +631,23 @@ S16 BuildAndSendF1SetupRsp()
    /* Check encode results */
    if(encRetVal.encoded == ENCODE_FAIL)
    {
-      DU_LOG("\nF1AP : Could not encode F1SetupResponse structure (at %s)\n",\
+      DU_LOG("\nERROR  -->  F1AP : Could not encode F1SetupResponse structure (at %s)\n",\
 	    encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
       return RFAILED;   
    } 
    else 
    {
-      DU_LOG("\nF1AP : Created APER encoded buffer for F1SetupResponse\n");
+      DU_LOG("\nDEBUG  -->  F1AP : Created APER encoded buffer for F1SetupResponse\n");
       for(int i=0; i< encBufSize; i++)
       {
-	 printf("%x",encBuf[i]);
+	 DU_LOG("%x",encBuf[i]);
       } 
    }
 
    /* Sending msg */
    if(SendF1APMsg(CU_APP_MEM_REG, CU_POOL) != ROK)
    {
-      DU_LOG("\nF1AP : Sending F1 Setup Response failed");      
+      DU_LOG("\nERROR  -->  F1AP : Sending F1 Setup Response failed");      
       return RFAILED;
    }
 
@@ -681,13 +681,13 @@ S16 BuildAndSendDUUpdateAck()
    GNBDUConfigurationUpdateAcknowledge_t *gNBDuCfgAck;
    asn_enc_rval_t enRetVal; /* Encoder return value */
 
-   DU_LOG("\nF1AP : Building GNB-DU Config Update Ack\n");
+   DU_LOG("\nINFO  -->  F1AP : Building GNB-DU Config Update Ack\n");
 
    /* Allocate the memory for F1SetupRequest_t */
    CU_ALLOC(f1apMsg, (Size)sizeof(F1AP_PDU_t));
    if(f1apMsg == NULLP)
    {
-      DU_LOG("\nF1AP : Memory allocation for F1AP-PDU failed");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation for F1AP-PDU failed");
       return RFAILED;
    }
 
@@ -696,7 +696,7 @@ S16 BuildAndSendDUUpdateAck()
    CU_ALLOC(f1apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcome_t));
    if(f1apMsg->choice.successfulOutcome == NULLP)
    {
-      DU_LOG("\nF1AP : Memory allocation for F1AP-PDU failed");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation for F1AP-PDU failed");
       CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
       return RFAILED;
    }
@@ -714,7 +714,7 @@ S16 BuildAndSendDUUpdateAck()
    CU_ALLOC(gNBDuCfgAck->protocolIEs.list.array, elementCnt * sizeof(GNBDUConfigurationUpdateAcknowledgeIEs_t *));
    if(gNBDuCfgAck->protocolIEs.list.array == NULLP)
    {
-      DU_LOG("\nF1AP : Memory allocation for DuUpdateAcknowledgeIEs failed");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation for DuUpdateAcknowledgeIEs failed");
       CU_FREE(f1apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcome_t));
       CU_FREE(f1apMsg,(Size)sizeof(F1AP_PDU_t));
       return RFAILED;
@@ -758,22 +758,22 @@ S16 BuildAndSendDUUpdateAck()
    /* Checking encode results */
    if(enRetVal.encoded == ENCODE_FAIL) 
    {
-      DU_LOG("\nF1AP : Could not encode DUConfigUpdateAcknowledge structure (at %s)",enRetVal.failed_type ? enRetVal.failed_type->name : "unknown");
+      DU_LOG("\nERROR  -->  F1AP : Could not encode DUConfigUpdateAcknowledge structure (at %s)",enRetVal.failed_type ? enRetVal.failed_type->name : "unknown");
       return RFAILED; 
    } 
    else 
    {
-      DU_LOG("\nF1AP : Created APER encoded buffer for DuConfigUpdateAcknowledge\n");  
+      DU_LOG("\nDEBUG  -->  F1AP : Created APER encoded buffer for DuConfigUpdateAcknowledge\n");  
       for(int i=0; i< encBufSize; i++)
       {
-	 printf("%x",encBuf[i]);
+	 DU_LOG("%x",encBuf[i]);
       } 
    }
 
    /* Sending msg */
    if(SendF1APMsg(CU_APP_MEM_REG, CU_POOL) != ROK)
    {
-      DU_LOG("\nF1AP : Sending GNB-DU Config Update Ack failed");
+      DU_LOG("\nERROR  -->  F1AP : Sending GNB-DU Config Update Ack failed");
       return RFAILED;
    }
 
@@ -844,20 +844,20 @@ uint8_t BuildAndSendF1ResetReq()
    Reset_t          *f1ResetMsg = NULLP;
    F1AP_PDU_t       *f1apMsg = NULLP;
    asn_enc_rval_t   encRetVal;
-   DU_LOG("\nF1AP : Building F1 Reset request \n");
+   DU_LOG("\nINFO  -->  F1AP : Building F1 Reset request \n");
    do
    {
       CU_ALLOC(f1apMsg, sizeof(F1AP_PDU_t));
       if(f1apMsg == NULLP)
       {
-	 DU_LOG("\nF1AP : Memory allocation for the BuildAndSendF1ResetReq's F1AP-PDU failed"); 
+	 DU_LOG("\nERROR  -->  F1AP : Memory allocation for the BuildAndSendF1ResetReq's F1AP-PDU failed"); 
 	 break;
       }
       f1apMsg->present = F1AP_PDU_PR_initiatingMessage;
       CU_ALLOC(f1apMsg->choice.initiatingMessage, sizeof(InitiatingMessage_t));
       if(f1apMsg->choice.initiatingMessage == NULLP)
       {
-	 DU_LOG("\nF1AP : Memory allocation for BuildAndSendF1ResetReq failed");
+	 DU_LOG("\nERROR  -->  F1AP : Memory allocation for BuildAndSendF1ResetReq failed");
 	 break;
       }
       f1apMsg->choice.initiatingMessage->procedureCode = ProcedureCode_id_Reset;
@@ -874,7 +874,7 @@ uint8_t BuildAndSendF1ResetReq()
       CU_ALLOC(f1ResetMsg->protocolIEs.list.array,f1ResetMsg->protocolIEs.list.size);
       if(f1ResetMsg->protocolIEs.list.array == NULLP)
       {
-	 DU_LOG("\nF1AP : Memory allocation failed for BuildAndSendF1ResetReq");
+	 DU_LOG("\nERROR  -->  F1AP : Memory allocation failed for BuildAndSendF1ResetReq");
 	 break;
       }
       for(idx=0; idx<elementCnt; idx++)
@@ -882,7 +882,7 @@ uint8_t BuildAndSendF1ResetReq()
 	 CU_ALLOC(f1ResetMsg->protocolIEs.list.array[idx],sizeof(ResetIEs_t));
 	 if(f1ResetMsg->protocolIEs.list.array[idx] == NULLP)
 	 {
-	    DU_LOG("\nF1AP : Memory allocation failed for BuildAndSendF1ResetReq msg array");
+	    DU_LOG("\nERROR  -->  F1AP : Memory allocation failed for BuildAndSendF1ResetReq msg array");
 	    break;
 	 }
       }
@@ -921,22 +921,22 @@ uint8_t BuildAndSendF1ResetReq()
       /* Encode results */
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-	 DU_LOG("\nF1AP : Could not encode F1Reset structure (at %s)\n",\
+	 DU_LOG("\nERROR  -->  F1AP : Could not encode F1Reset structure (at %s)\n",\
 	       encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
 	 break;
       }
       else
       {
-	 DU_LOG("\nF1AP : Created APER encoded buffer for F1Reset\n");
+	 DU_LOG("\nDEBUG  -->  F1AP : Created APER encoded buffer for F1Reset\n");
 	 for(idx=0; idx< encBufSize; idx++)
 	 {
-	    printf("%x",encBuf[idx]);
+	    DU_LOG("%x",encBuf[idx]);
 	 }
       }
 
       if(SendF1APMsg(CU_APP_MEM_REG, CU_POOL) != ROK)
       {
-	 DU_LOG("\nF1AP : Sending F1 Reset request failed");
+	 DU_LOG("\nERROR  -->  F1AP : Sending F1 Reset request failed");
 	 break;
       }
 
@@ -1140,16 +1140,16 @@ uint8_t fillDlCcchRrcMsg(RRCContainer_t *rrcContainer)
 		  /* Encode results */
 		  if(encRetVal.encoded == ENCODE_FAIL)
 		  {
-		     DU_LOG( "\n F1AP : Could not encode RRCContainer for DL-CCCH Msg(at %s)\n",\
+		     DU_LOG( "\nERROR  -->  F1AP : Could not encode RRCContainer for DL-CCCH Msg(at %s)\n",\
 			   encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
 		     return RFAILED;
 		  }
 		  else
 		  {
-		     DU_LOG("\n F1AP : Created APER encoded buffer for RRCContainer for DL-CCCH Msg\n");
+		     DU_LOG("\nDEBUG  -->  F1AP : Created APER encoded buffer for RRCContainer for DL-CCCH Msg\n");
 		     for(int i = 0; i< encBufSize; i++)
 		     {
-			printf("%x",encBuf[i]);
+			DU_LOG("%x",encBuf[i]);
 		     }
 		     rrcContainer->size = encBufSize;
 		     CU_ALLOC(rrcContainer->buf, rrcContainer->size);
@@ -1170,13 +1170,13 @@ uint8_t fillDlCcchRrcMsg(RRCContainer_t *rrcContainer)
 	    }
 	    else
 	    {
-	       DU_LOG("\nF1AP: Memory Alloc failed for RRC Setup Msg at fillDlCcchRrcMsg()");
+	       DU_LOG("\nERROR  -->  F1AP: Memory Alloc failed for RRC Setup Msg at fillDlCcchRrcMsg()");
 	       ret = RFAILED;
 	    }
 	 }
 	 else
 	 {
-	    DU_LOG("\nF1AP: Memory Alloc failed for RRC Msg at fillDlCcchRrcMsg()");
+	    DU_LOG("\nERROR  -->  F1AP: Memory Alloc failed for RRC Msg at fillDlCcchRrcMsg()");
 	    ret = RFAILED;
 	 }
       }
@@ -1188,7 +1188,7 @@ uint8_t fillDlCcchRrcMsg(RRCContainer_t *rrcContainer)
    }
    else
    {
-      DU_LOG("\nF1AP: RRC Container is NULLP at fillDlCcchRrcMsg()");
+      DU_LOG("\nERROR  -->  F1AP: RRC Container is NULLP at fillDlCcchRrcMsg()");
       ret = RFAILED;
    }
 }
@@ -1267,14 +1267,14 @@ uint8_t fillCnAssoc(struct DRB_ToAddMod__cnAssociation *cnAssoc)
 	 }
 	 else
 	 {
-	    DU_LOG("\nF1AP: Memory alloc failed at mappedQoS_FlowsToAdd in fillCnAssoc()");
+	    DU_LOG("\nERROR  -->  F1AP: Memory alloc failed at mappedQoS_FlowsToAdd in fillCnAssoc()");
 	    CU_FREE(cnAssoc->choice.sdap_Config, sizeof(SDAP_Config_t));
 	    ret = RFAILED;
 	 }
       }
       else
       {
-	 DU_LOG("\nF1AP: Mem alloc failed at fillCnAssoc()");
+	 DU_LOG("\nERROR  -->  F1AP: Mem alloc failed at fillCnAssoc()");
 	 ret = RFAILED;
       }
    }
@@ -1380,7 +1380,7 @@ uint8_t fillRrcReconfigIE(RRCReconfiguration_IEs_t *rrcReconfigMsg)
 	    ret = fillDrbCfg(DRB1, rrcReconfigMsg->radioBearerConfig->drb_ToAddModList);
 	    if(ret == RFAILED)
 	    {
-	       DU_LOG("\n F1AP: Failed to fill DrbCfg at fillRrcReconfigIE()");
+	       DU_LOG("\nERROR  -->  F1AP : Failed to fill DrbCfg at fillRrcReconfigIE()");
 	       CU_FREE(rrcReconfigMsg->radioBearerConfig->srb_ToAddModList, sizeof(SRB_ToAddModList_t));
 	       CU_FREE(rrcReconfigMsg->radioBearerConfig->drb_ToAddModList, sizeof(DRB_ToAddModList_t));
 	    }
@@ -1388,7 +1388,7 @@ uint8_t fillRrcReconfigIE(RRCReconfiguration_IEs_t *rrcReconfigMsg)
       }
       else
       {
-	 DU_LOG("\n F1AP: memory Alloc failed at fillRrcReconfigIE()");
+	 DU_LOG("\nERROR  -->  F1AP : memory Alloc failed at fillRrcReconfigIE()");
 	 CU_FREE(rrcReconfigMsg->radioBearerConfig->srb_ToAddModList, sizeof(SRB_ToAddModList_t));
       }
    }
@@ -1454,16 +1454,16 @@ uint8_t fillDlDcchRrcMsg(RRCContainer_t *rrcContainer)
 		  /* Encode results */
 		  if(encRetVal.encoded == ENCODE_FAIL)
 		  {
-		     DU_LOG( "\n F1AP : Could not encode RRCContainer for DL-DCCH Msg (at %s)\n",\
+		     DU_LOG( "\nERROR  -->  F1AP : Could not encode RRCContainer for DL-DCCH Msg (at %s)\n",\
 			   encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
 		     return RFAILED;
 		  }
 		  else
 		  {
-		     DU_LOG("\n F1AP : Created APER encoded buffer for RRCContainer for DL-DCCH Msg\n");
+		     DU_LOG("\nDEBUG  -->  F1AP : Created APER encoded buffer for RRCContainer for DL-DCCH Msg\n");
 		     for(int i = 0; i< encBufSize; i++)
 		     {
-			printf("%x",encBuf[i]);
+			DU_LOG("%x",encBuf[i]);
 		     }
 		     rrcContainer->size = encBufSize;
 		     CU_ALLOC(rrcContainer->buf, rrcContainer->size);
@@ -1479,30 +1479,30 @@ uint8_t fillDlDcchRrcMsg(RRCContainer_t *rrcContainer)
 	       }
 	       else
 	       {
-		  DU_LOG("\nF1AP: Failed to fill RrcReconfig IE at fillDlDcchRrcMsg()");
+		  DU_LOG("\nERROR  -->  F1AP: Failed to fill RrcReconfig IE at fillDlDcchRrcMsg()");
 	       }
 	    }
 	    else
 	    {
-	       DU_LOG("\nF1AP: Memory Alloc failed for RRC Reconfig at fillDlDcchRrcMsg()");
+	       DU_LOG("\nERROR  -->  F1AP: Memory Alloc failed for RRC Reconfig at fillDlDcchRrcMsg()");
 	       ret = RFAILED;
 	    }
 	 }
 	 else
 	 {
-	    DU_LOG("\nF1AP: Memory Alloc failed for RRC Msg at fillDlDcchRrcMsg()");
+	    DU_LOG("\nERROR  -->  F1AP: Memory Alloc failed for RRC Msg at fillDlDcchRrcMsg()");
 	    ret = RFAILED;
 	 }
       }
       else
       {
-	 DU_LOG("\nF1AP: Memory Alloc failed for DL Dcch Msg choice at fillDlDcchRrcMsg()");
+	 DU_LOG("\nERROR  -->  F1AP: Memory Alloc failed for DL Dcch Msg choice at fillDlDcchRrcMsg()");
 	 ret = RFAILED;
       }
    }
    else
    {
-      DU_LOG("\nF1AP: RRC Container is NULLP at fillDlDcchRrcMsg()");
+      DU_LOG("\nERROR  -->  F1AP: RRC Container is NULLP at fillDlDcchRrcMsg()");
       ret = RFAILED;
    }
    return ret;
@@ -1535,7 +1535,7 @@ uint8_t	BuildDLRRCContainer(uint8_t rrcMsgType, RRCContainer_t *rrcContainer)
    { 
       ret = fillDlCcchRrcMsg(rrcContainer);
       if(ret == RFAILED)
-	 DU_LOG("\n F1AP: Failed to fill DL-CCCH Msg at RRC SETUP");
+	 DU_LOG("\nERROR  -->  F1AP: Failed to fill DL-CCCH Msg at RRC SETUP");
    }
    else if(rrcMsgType == REGISTRATION_ACCEPT)
    {
@@ -1606,12 +1606,12 @@ uint8_t BuildAndSendDLRRCMessageTransfer(uint8_t srbId, uint8_t rrcMsgType)
    DLRRCMessageTransfer_t  *dlRRCMsg = NULLP;
    asn_enc_rval_t   encRetVal;        /* Encoder return value */
 
-   DU_LOG("\n F1AP : Building DL RRC Message Transfer Message\n");
+   DU_LOG("\nINFO  -->  F1AP : Building DL RRC Message Transfer Message\n");
 
    CU_ALLOC(f1apMsg, sizeof(F1AP_PDU_t));
    if(f1apMsg == NULLP)
    {
-      DU_LOG(" F1AP : Memory allocation for F1AP-PDU failed");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation for F1AP-PDU failed");
       return RFAILED;
    }
 
@@ -1620,7 +1620,7 @@ uint8_t BuildAndSendDLRRCMessageTransfer(uint8_t srbId, uint8_t rrcMsgType)
 	 sizeof(InitiatingMessage_t));
    if(f1apMsg->choice.initiatingMessage == NULLP)
    {
-      DU_LOG(" F1AP : Memory allocation for  F1AP-PDU failed");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation for  F1AP-PDU failed");
       CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
       return RFAILED;
    }
@@ -1638,7 +1638,7 @@ uint8_t BuildAndSendDLRRCMessageTransfer(uint8_t srbId, uint8_t rrcMsgType)
    CU_ALLOC(dlRRCMsg->protocolIEs.list.array, dlRRCMsg->protocolIEs.list.size);
    if(dlRRCMsg->protocolIEs.list.array == NULLP)
    {
-      DU_LOG(" F1AP : Memory allocation for DL RRC MessageTransferIEs failed");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation for DL RRC MessageTransferIEs failed");
       CU_FREE(f1apMsg->choice.initiatingMessage, sizeof(InitiatingMessage_t));
       CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
       return RFAILED;
@@ -1706,23 +1706,23 @@ uint8_t BuildAndSendDLRRCMessageTransfer(uint8_t srbId, uint8_t rrcMsgType)
    /* Encode results */
    if(encRetVal.encoded == ENCODE_FAIL)
    {
-      DU_LOG( "\n F1AP : Could not encode DL RRC Message Transfer structure (at %s)\n",\
+      DU_LOG( "\nERROR  -->  F1AP : Could not encode DL RRC Message Transfer structure (at %s)\n",\
 	    encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
       return RFAILED;
    }
    else
    {
-      DU_LOG("\n F1AP : Created APER encoded buffer for DL RRC Message transfer\n");
+      DU_LOG("\nDEBUG  -->  F1AP : Created APER encoded buffer for DL RRC Message transfer\n");
       for(int i=0; i< encBufSize; i++)
       {
-	 printf("%x",encBuf[i]);
+	 DU_LOG("%x",encBuf[i]);
       }
    }
 
    /* Sending  msg  */
    if(SendF1APMsg(CU_APP_MEM_REG,CU_POOL)  !=  ROK)
    {
-      DU_LOG("\n F1AP : Sending  DL RRC Message Transfer Failed");
+      DU_LOG("\nERROR  -->  F1AP : Sending  DL RRC Message Transfer Failed");
       return RFAILED;
    }
 
@@ -1795,7 +1795,7 @@ uint8_t procInitULRRCMsg(F1AP_PDU_t *f1apMsg)
    uint8_t idx, rrcMsgType;
    uint8_t ret =ROK;
    InitialULRRCMessageTransfer_t *initULRRCMsg = NULLP;
-   DU_LOG("\n filling the required values in DB in procInitULRRCMsg");
+   DU_LOG("\nINFO -->  F1AP : filling the required values in DB in procInitULRRCMsg");
 
    initULRRCMsg = &f1apMsg->choice.initiatingMessage->value.choice.InitialULRRCMessageTransfer;
 
@@ -1817,7 +1817,7 @@ uint8_t procInitULRRCMsg(F1AP_PDU_t *f1apMsg)
 			.DUtoCURRCContainer.size > 0) && (initULRRCMsg->protocolIEs\
 			   .list.array[idx]->value.choice.DUtoCURRCContainer.buf != NULLP))
 	       {
-		  DU_LOG("\n Received Du to Cu RRC Container ");
+		  DU_LOG("\nINFO  -->  Received Du to Cu RRC Container ");
 		  f1apMsgDb.duToCuContainer.size = initULRRCMsg->protocolIEs\
 						   .list.array[idx]->value.choice.DUtoCURRCContainer.size;
 		  CU_ALLOC(f1apMsgDb.duToCuContainer.buf, \
@@ -1831,13 +1831,13 @@ uint8_t procInitULRRCMsg(F1AP_PDU_t *f1apMsg)
 	       }
 	       else
 	       {
-		  DU_LOG("\n Failed to receive Du to Cu RRC Container ");
+		  DU_LOG("\nERROR  -->  Failed to receive Du to Cu RRC Container ");
 		  ret = RFAILED;
 	       }
 	       break;
 	    }
 	 default:
-	    DU_LOG("\n Invalid Event %ld", initULRRCMsg->protocolIEs.list.array[idx]->id);
+	    DU_LOG("\nERROR  -->  Invalid Event %ld", initULRRCMsg->protocolIEs.list.array[idx]->id);
 	    break;
       }
    }
@@ -2705,7 +2705,7 @@ void FreeUeContextSetupReq(F1AP_PDU_t  *f1apMsg)
 			}
 			break;
 		     default:
-			printf("\nF1AP: Invalid event type %ld", ueSetReq->protocolIEs.list.array[idx]->id);
+			DU_LOG("\nERROR  -->  F1AP: Invalid event type %ld", ueSetReq->protocolIEs.list.array[idx]->id);
 		  }
 	       }
 	       break;
@@ -2764,7 +2764,7 @@ void FreeUeContextSetupReq(F1AP_PDU_t  *f1apMsg)
    CU_ALLOC(controlRSetList->list.array, controlRSetList->list.size);
    if(!controlRSetList->list.array)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildControlRSetToAddModList");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildControlRSetToAddModList");
       return RFAILED;
    }
 
@@ -2774,7 +2774,7 @@ void FreeUeContextSetupReq(F1AP_PDU_t  *f1apMsg)
       CU_ALLOC(controlRSetList->list.array[idx], sizeof(struct ControlResourceSet));
       if(!controlRSetList->list.array[idx])
       {
-	 DU_LOG("\nF1AP : Memory allocation failed in BuildControlRSetToAddModList");
+	 DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildControlRSetToAddModList");
 	 return RFAILED;
       }
    }
@@ -2796,7 +2796,7 @@ void FreeUeContextSetupReq(F1AP_PDU_t  *f1apMsg)
 	 controlRSet->frequencyDomainResources.size);
    if(!controlRSet->frequencyDomainResources.buf)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildControlRSetToAddModList");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildControlRSetToAddModList");
       return RFAILED;
    }
 
@@ -2824,7 +2824,7 @@ void FreeUeContextSetupReq(F1AP_PDU_t  *f1apMsg)
 	 sizeof(struct ControlResourceSet__tci_StatesPDCCH_ToAddList));
    if(!controlRset->tci_StatesPDCCH_ToAddList)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildControlRSetToAddModList");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildControlRSetToAddModList");
       return RFAILED;
    }
 
@@ -2835,7 +2835,7 @@ void FreeUeContextSetupReq(F1AP_PDU_t  *f1apMsg)
 	 controlRset->tci_StatesPDCCH_ToAddList->list.size)
       if(!controlRset->tci_StatesPDCCH_ToAddList->list.array)
       {
-	 DU_LOG("\nF1AP : Memory allocation failed in BuildControlRSetToAddModList");
+	 DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildControlRSetToAddModList");
 	 return RFAILED;
       }
 
@@ -2844,7 +2844,7 @@ void FreeUeContextSetupReq(F1AP_PDU_t  *f1apMsg)
       CU_ALLOC(controlRset->tci_StatesPDCCH_ToAddList->list.array[tciStateIdx], sizeof(TCI_StateId_t));
       if(!controlRset->tci_StatesPDCCH_ToAddList->list.array[tciStateIdx])
       {
-	 DU_LOG("\nF1AP : Memory allocation failed in BuildControlRSetToAddModList");
+	 DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildControlRSetToAddModList");
 	 return RFAILED;
       }
    }
@@ -2856,7 +2856,7 @@ void FreeUeContextSetupReq(F1AP_PDU_t  *f1apMsg)
    CU_ALLOC(controlRset->tci_PresentInDCI, sizeof(long));
    if(!controlRset->tci_PresentInDCI)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildControlRSetToAddModList");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildControlRSetToAddModList");
       return RFAILED;
    }
    /* TODO */
@@ -2867,7 +2867,7 @@ void FreeUeContextSetupReq(F1AP_PDU_t  *f1apMsg)
    CU_ALLOC(controlRSet->pdcch_DMRS_ScramblingID, sizeof(long));
    if(!controlRSet->pdcch_DMRS_ScramblingID)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildControlRSetToAddModList");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildControlRSetToAddModList");
       return RFAILED;
    }
    *(controlRSet->pdcch_DMRS_ScramblingID) = SCRAMBLING_ID;
@@ -2910,7 +2910,7 @@ void FreeUeContextSetupReq(F1AP_PDU_t  *f1apMsg)
    CU_ALLOC(searchSpcList->list.array, searchSpcList->list.size);
    if(!searchSpcList->list.array)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildSearchSpcToAddModList");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildSearchSpcToAddModList");
       return RFAILED;
    }
 
@@ -2920,7 +2920,7 @@ void FreeUeContextSetupReq(F1AP_PDU_t  *f1apMsg)
       CU_ALLOC(searchSpcList->list.array[idx], sizeof(struct SearchSpace));
       if(!searchSpcList->list.array[idx])
       {
-	 DU_LOG("\nF1AP : Memory allocation failed in BuildSearchSpcToAddModList");
+	 DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildSearchSpcToAddModList");
 	 return RFAILED;
       }
    }
@@ -2934,7 +2934,7 @@ void FreeUeContextSetupReq(F1AP_PDU_t  *f1apMsg)
    CU_ALLOC(searchSpc->controlResourceSetId, sizeof(ControlResourceSetId_t));
    if(!searchSpc->controlResourceSetId)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildSearchSpcToAddModList");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildSearchSpcToAddModList");
       return RFAILED;
    }
    *(searchSpc->controlResourceSetId) = PDCCH_CTRL_RSRC_SET_ONE_ID;
@@ -2944,7 +2944,7 @@ void FreeUeContextSetupReq(F1AP_PDU_t  *f1apMsg)
 	 sizeof(struct SearchSpace__monitoringSlotPeriodicityAndOffset));
    if(!searchSpc->monitoringSlotPeriodicityAndOffset)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildSearchSpcToAddModList");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildSearchSpcToAddModList");
       return RFAILED;
    }
    searchSpc->monitoringSlotPeriodicityAndOffset->present = \
@@ -2955,7 +2955,7 @@ void FreeUeContextSetupReq(F1AP_PDU_t  *f1apMsg)
    CU_ALLOC(searchSpc->monitoringSymbolsWithinSlot, sizeof(BIT_STRING_t));
    if(!searchSpc->monitoringSymbolsWithinSlot)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildSearchSpcToAddModList");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildSearchSpcToAddModList");
       return RFAILED;
    }
 
@@ -2973,7 +2973,7 @@ void FreeUeContextSetupReq(F1AP_PDU_t  *f1apMsg)
 	 searchSpc->monitoringSymbolsWithinSlot->size);
    if(!searchSpc->monitoringSymbolsWithinSlot->buf)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildSearchSpcToAddModList");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildSearchSpcToAddModList");
       return RFAILED;
    }
 
@@ -2987,7 +2987,7 @@ void FreeUeContextSetupReq(F1AP_PDU_t  *f1apMsg)
    CU_ALLOC(searchSpc->nrofCandidates, sizeof(struct SearchSpace__nrofCandidates));
    if(!searchSpc->nrofCandidates)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildSearchSpcToAddModList");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildSearchSpcToAddModList");
       return RFAILED;
    }
 
@@ -3006,7 +3006,7 @@ void FreeUeContextSetupReq(F1AP_PDU_t  *f1apMsg)
    CU_ALLOC(searchSpc->searchSpaceType, sizeof(struct SearchSpace__searchSpaceType));
    if(!searchSpc->searchSpaceType)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildSearchSpcToAddModList");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildSearchSpcToAddModList");
       return RFAILED;
    }
 
@@ -3017,7 +3017,7 @@ void FreeUeContextSetupReq(F1AP_PDU_t  *f1apMsg)
 	 sizeof(struct SearchSpace__searchSpaceType__ue_Specific));
    if(!searchSpc->searchSpaceType->choice.ue_Specific)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildSearchSpcToAddModList");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildSearchSpcToAddModList");
       return RFAILED;
    }  
    searchSpc->searchSpaceType->choice.ue_Specific->dci_Formats = \
@@ -3049,7 +3049,7 @@ uint8_t BuildBWPDlDedPdcchCfg(struct PDCCH_Config *pdcchCfg)
 	 sizeof(struct PDCCH_Config__controlResourceSetToAddModList));
    if(!pdcchCfg->controlResourceSetToAddModList)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildBWPDlDedPdcchCfg");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildBWPDlDedPdcchCfg");
       return RFAILED;
    }
 
@@ -3065,7 +3065,7 @@ uint8_t BuildBWPDlDedPdcchCfg(struct PDCCH_Config *pdcchCfg)
 	 sizeof(struct PDCCH_Config__searchSpacesToAddModList));
    if(!pdcchCfg->searchSpacesToAddModList)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildBWPDlDedPdcchCfg");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildBWPDlDedPdcchCfg");
       return RFAILED;
    }
 
@@ -3109,7 +3109,7 @@ uint8_t BuildBWPDlDedPdcchCfg(struct PDCCH_Config *pdcchCfg)
    CU_ALLOC(dmrsDlCfg->choice.setup, sizeof(struct DMRS_DownlinkConfig));
    if(!dmrsDlCfg->choice.setup)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildBWPDlDedPdschCfg");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildBWPDlDedPdschCfg");
       return RFAILED;
    }
 
@@ -3118,7 +3118,7 @@ uint8_t BuildBWPDlDedPdcchCfg(struct PDCCH_Config *pdcchCfg)
    CU_ALLOC(dmrsDlCfg->choice.setup->dmrs_AdditionalPosition, sizeof(long));
    if(!dmrsDlCfg->choice.setup->dmrs_AdditionalPosition)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildDMRSDLPdschMapTypeA");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildDMRSDLPdschMapTypeA");
       return RFAILED;
    }
    *(dmrsDlCfg->choice.setup->dmrs_AdditionalPosition) = DMRS_ADDITIONAL_POS;
@@ -3187,7 +3187,7 @@ uint8_t BuildTCIStatesToAddModList(struct PDSCH_Config__tci_StatesToAddModList *
 	 sizeof(struct PDSCH_TimeDomainResourceAllocationList));
    if(!timeDomAllocList->choice.setup)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildPdschTimeDomAllocList");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildPdschTimeDomAllocList");
       return RFAILED;
    }
 
@@ -3201,7 +3201,7 @@ uint8_t BuildTCIStatesToAddModList(struct PDSCH_Config__tci_StatesToAddModList *
 	 timeDomAllocList->choice.setup->list.size);
    if(!timeDomAllocList->choice.setup->list.array)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildPdschTimeDomAllocList");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildPdschTimeDomAllocList");
       return RFAILED;
    }
 
@@ -3212,7 +3212,7 @@ uint8_t BuildTCIStatesToAddModList(struct PDSCH_Config__tci_StatesToAddModList *
 	    sizeof(struct PDSCH_TimeDomainResourceAllocation));
       if(!timeDomAllocList->choice.setup->list.array[idx])
       {
-	 DU_LOG("\nF1AP : Memory allocation failed in BuildPdschTimeDomAllocList");
+	 DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildPdschTimeDomAllocList");
 	 return RFAILED;
       }
    }
@@ -3256,7 +3256,7 @@ uint8_t BuildTCIStatesToAddModList(struct PDSCH_Config__tci_StatesToAddModList *
 	 sizeof(struct PDSCH_Config__prb_BundlingType__staticBundling));
    if(!prbBndlType->choice.staticBundling)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildPdschPrbBundlingType");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildPdschPrbBundlingType");
       return RFAILED;
    }
    prbBndlType->choice.staticBundling->bundleSize = NULLP;
@@ -3289,7 +3289,7 @@ uint8_t BuildBWPDlDedPdschCfg(struct PDSCH_Config *pdschCfg)
 	 sizeof(struct PDSCH_Config__dmrs_DownlinkForPDSCH_MappingTypeA));
    if(!pdschCfg->dmrs_DownlinkForPDSCH_MappingTypeA)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildBWPDlDedPdschCfg");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildBWPDlDedPdschCfg");
       return RFAILED;
    }
 
@@ -3306,7 +3306,7 @@ uint8_t BuildBWPDlDedPdschCfg(struct PDSCH_Config *pdschCfg)
    CU_ALLOC(pdschCfg->tci_StatesToAddModList, sizeof(struct PDSCH_Config__tci_StatesToAddModList));
    if(!pdschCfg->tci_StatesToAddModList)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildBWPDlDedPdschCfg");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildBWPDlDedPdschCfg");
       return RFAILED;
    }
    if(BuildTCIStatesToAddModList(pdschCfg->tci_StatesToAddModList) != ROK)
@@ -3322,7 +3322,7 @@ uint8_t BuildBWPDlDedPdschCfg(struct PDSCH_Config *pdschCfg)
 	 sizeof(struct PDSCH_Config__pdsch_TimeDomainAllocationList));
    if(!pdschCfg->pdsch_TimeDomainAllocationList)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildBWPDlDedPdschCfg");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildBWPDlDedPdschCfg");
       return RFAILED;
    }
    if(BuildPdschTimeDomAllocList(pdschCfg->pdsch_TimeDomainAllocationList) != ROK)
@@ -3341,7 +3341,7 @@ uint8_t BuildBWPDlDedPdschCfg(struct PDSCH_Config *pdschCfg)
    CU_ALLOC(pdschCfg->maxNrofCodeWordsScheduledByDCI, sizeof(long));
    if(!pdschCfg->maxNrofCodeWordsScheduledByDCI)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildBWPDlDedPdschCfg");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildBWPDlDedPdschCfg");
       return RFAILED;
    }
    *(pdschCfg->maxNrofCodeWordsScheduledByDCI) = PDSCH_MAX_CODEWORD_SCH_BY_DCI;
@@ -3383,7 +3383,7 @@ uint8_t BuildInitialDlBWP(BWP_DownlinkDedicated_t *dlBwp)
    CU_ALLOC(dlBwp->pdcch_Config, sizeof(struct BWP_DownlinkDedicated__pdcch_Config));
    if(!dlBwp->pdcch_Config)
    {
-      DU_LOG("\nF1AP : Memory Allocation failure in BuildInitialDlBWP");
+      DU_LOG("\nERROR  -->  F1AP : Memory Allocation failure in BuildInitialDlBWP");
       return RFAILED;
    }
    dlBwp->pdcch_Config->present = BWP_DownlinkDedicated__pdcch_Config_PR_setup; 
@@ -3392,7 +3392,7 @@ uint8_t BuildInitialDlBWP(BWP_DownlinkDedicated_t *dlBwp)
    CU_ALLOC(dlBwp->pdcch_Config->choice.setup, sizeof(struct PDCCH_Config));
    if(!dlBwp->pdcch_Config->choice.setup)
    {
-      DU_LOG("\nF1AP : Memory Allocation failure in BuildInitialDlBWP");
+      DU_LOG("\nERROR  -->  F1AP : Memory Allocation failure in BuildInitialDlBWP");
       return RFAILED;
    }
    if(BuildBWPDlDedPdcchCfg(dlBwp->pdcch_Config->choice.setup) != ROK)
@@ -3404,7 +3404,7 @@ uint8_t BuildInitialDlBWP(BWP_DownlinkDedicated_t *dlBwp)
    CU_ALLOC(dlBwp->pdsch_Config, sizeof(struct BWP_DownlinkDedicated__pdsch_Config));
    if(!dlBwp->pdsch_Config)
    {
-      DU_LOG("\nF1AP : Memory Allocation failure in BuildInitialDlBWP");
+      DU_LOG("\nERROR  -->  F1AP : Memory Allocation failure in BuildInitialDlBWP");
       return RFAILED;
    }
    dlBwp->pdsch_Config->present = BWP_DownlinkDedicated__pdsch_Config_PR_setup;
@@ -3413,7 +3413,7 @@ uint8_t BuildInitialDlBWP(BWP_DownlinkDedicated_t *dlBwp)
    CU_ALLOC(dlBwp->pdsch_Config->choice.setup, sizeof(struct PDSCH_Config));
    if(!dlBwp->pdsch_Config->choice.setup)
    {
-      DU_LOG("\nF1AP : Memory Allocation failure in BuildInitialDlBWP");
+      DU_LOG("\nERROR  -->  F1AP : Memory Allocation failure in BuildInitialDlBWP");
       return RFAILED;
    }
 
@@ -3453,7 +3453,7 @@ uint8_t BuildInitialDlBWP(BWP_DownlinkDedicated_t *dlBwp)
    CU_ALLOC(dmrsUlCfg->choice.setup, sizeof(DMRS_UplinkConfig_t));
    if(!dmrsUlCfg->choice.setup)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildDMRSULPuschMapTypeA");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildDMRSULPuschMapTypeA");
       return RFAILED;
    }
 
@@ -3462,7 +3462,7 @@ uint8_t BuildInitialDlBWP(BWP_DownlinkDedicated_t *dlBwp)
    CU_ALLOC(dmrsUlCfg->choice.setup->dmrs_AdditionalPosition, sizeof(long));
    if(!dmrsUlCfg->choice.setup->dmrs_AdditionalPosition)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildDMRSULPuschMapTypeA");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildDMRSULPuschMapTypeA");
       return RFAILED;
    }
    *(dmrsUlCfg->choice.setup->dmrs_AdditionalPosition) = DMRS_ADDITIONAL_POS; 
@@ -3474,7 +3474,7 @@ uint8_t BuildInitialDlBWP(BWP_DownlinkDedicated_t *dlBwp)
 	 sizeof(struct DMRS_UplinkConfig__transformPrecodingDisabled));
    if(!dmrsUlCfg->choice.setup->transformPrecodingDisabled)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildDMRSULPuschMapTypeA");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildDMRSULPuschMapTypeA");
       return RFAILED;
    }
 
@@ -3483,7 +3483,7 @@ uint8_t BuildInitialDlBWP(BWP_DownlinkDedicated_t *dlBwp)
 	 sizeof(long));
    if(!dmrsUlCfg->choice.setup->transformPrecodingDisabled->scramblingID0)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildDMRSULPuschMapTypeA");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildDMRSULPuschMapTypeA");
       return RFAILED;
    }
    *(dmrsUlCfg->choice.setup->transformPrecodingDisabled->scramblingID0) = SCRAMBLING_ID;
@@ -3525,7 +3525,7 @@ uint8_t BuildInitialDlBWP(BWP_DownlinkDedicated_t *dlBwp)
 	 sizeof(struct PUSCH_TimeDomainResourceAllocationList));
    if(!timeDomAllocList->choice.setup)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildPuschTimeDomAllocList");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildPuschTimeDomAllocList");
       return RFAILED;
    }
 
@@ -3538,7 +3538,7 @@ uint8_t BuildInitialDlBWP(BWP_DownlinkDedicated_t *dlBwp)
 	 timeDomAllocList->choice.setup->list.size);
    if(!timeDomAllocList->choice.setup->list.array)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildPuschTimeDomAllocList");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildPuschTimeDomAllocList");
       return RFAILED;
    }
 
@@ -3549,7 +3549,7 @@ uint8_t BuildInitialDlBWP(BWP_DownlinkDedicated_t *dlBwp)
 	    sizeof(PUSCH_TimeDomainResourceAllocation_t));
       if(!timeDomAllocList->choice.setup->list.array[idx])
       {
-	 DU_LOG("\nF1AP : Memory allocation failed in BuildPuschTimeDomAllocList");
+	 DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildPuschTimeDomAllocList");
 	 return RFAILED;
       }
    }
@@ -3559,7 +3559,7 @@ uint8_t BuildInitialDlBWP(BWP_DownlinkDedicated_t *dlBwp)
    CU_ALLOC(timeDomAlloc->k2, sizeof(long));
    if(!timeDomAlloc->k2)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildPuschTimeDomAllocList");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildPuschTimeDomAllocList");
       return RFAILED;
    }
    *(timeDomAlloc->k2) = PUSCH_K2;
@@ -3591,7 +3591,7 @@ uint8_t BuildBWPUlDedPuschCfg(PUSCH_Config_t *puschCfg)
    CU_ALLOC(puschCfg->dataScramblingIdentityPUSCH, sizeof(long));
    if(!puschCfg->dataScramblingIdentityPUSCH)
    {
-      DU_LOG("\nF1AP: Memory allocation failed in BuildBWPUlDedPuschCfg");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildBWPUlDedPuschCfg");
       return RFAILED;
    }
    *(puschCfg->dataScramblingIdentityPUSCH) = SCRAMBLING_ID;
@@ -3602,7 +3602,7 @@ uint8_t BuildBWPUlDedPuschCfg(PUSCH_Config_t *puschCfg)
 	 sizeof(struct PUSCH_Config__dmrs_UplinkForPUSCH_MappingTypeA));
    if(!puschCfg->dmrs_UplinkForPUSCH_MappingTypeA)
    {
-      DU_LOG("\nF1AP: Memory allocation failed in BuildBWPUlDedPuschCfg");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildBWPUlDedPuschCfg");
       return RFAILED;
    }
 
@@ -3622,7 +3622,7 @@ uint8_t BuildBWPUlDedPuschCfg(PUSCH_Config_t *puschCfg)
 	 sizeof(struct PUSCH_Config__pusch_TimeDomainAllocationList));
    if(!puschCfg->pusch_TimeDomainAllocationList)
    {
-      DU_LOG("\nF1AP: Memory allocation failed in BuildBWPUlDedPuschCfg");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildBWPUlDedPuschCfg");
       return RFAILED;
    }
 
@@ -3638,7 +3638,7 @@ uint8_t BuildBWPUlDedPuschCfg(PUSCH_Config_t *puschCfg)
    CU_ALLOC(puschCfg->transformPrecoder, sizeof(long));
    if(!puschCfg->transformPrecoder)
    {
-      DU_LOG("\nF1AP: Memory allocation failed in BuildBWPUlDedPuschCfg");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildBWPUlDedPuschCfg");
       return RFAILED;
    }
    *(puschCfg->transformPrecoder) = PUSCH_TRANSFORM_PRECODER;
@@ -3679,7 +3679,7 @@ uint8_t BuildSrsRsrcAddModList(struct SRS_Config__srs_ResourceToAddModList *reso
    CU_ALLOC(resourceList->list.array, resourceList->list.size);
    if(!resourceList->list.array)
    {
-      DU_LOG("\nF1AP: Memory allocation failed in BuildSrsRsrcAddModList");
+      DU_LOG("\nERROR  -->  F1AP: Memory allocation failed in BuildSrsRsrcAddModList");
       return RFAILED;
    }
 
@@ -3688,7 +3688,7 @@ uint8_t BuildSrsRsrcAddModList(struct SRS_Config__srs_ResourceToAddModList *reso
       CU_ALLOC(resourceList->list.array[rsrcIdx], sizeof(SRS_Resource_t));
       if(!resourceList->list.array[rsrcIdx])
       {
-	 DU_LOG("\nF1AP: Memory allocation failed in BuildSrsRsrcAddModList");
+	 DU_LOG("\nERROR  -->  F1AP: Memory allocation failed in BuildSrsRsrcAddModList");
 	 return RFAILED;
       }
    }
@@ -3703,7 +3703,7 @@ uint8_t BuildSrsRsrcAddModList(struct SRS_Config__srs_ResourceToAddModList *reso
 	 sizeof(struct SRS_Resource__transmissionComb__n2));
    if(!resourceList->list.array[rsrcIdx]->transmissionComb.choice.n2)
    {
-      DU_LOG("\nF1AP: Memory allocation failed in BuildSrsRsrcAddModList");
+      DU_LOG("\nERROR  -->  F1AP: Memory allocation failed in BuildSrsRsrcAddModList");
       return RFAILED;
    }
    resourceList->list.array[rsrcIdx]->transmissionComb.choice.n2->combOffset_n2\
@@ -3734,7 +3734,7 @@ uint8_t BuildSrsRsrcAddModList(struct SRS_Config__srs_ResourceToAddModList *reso
 	 sizeof(struct SRS_Resource__resourceType__aperiodic));
    if(!resourceList->list.array[rsrcIdx]->resourceType.choice.aperiodic)
    {
-      DU_LOG("\nF1AP: Memory allocation failed in BuildSrsRsrcAddModList");
+      DU_LOG("\nERROR  -->  F1AP: Memory allocation failed in BuildSrsRsrcAddModList");
       return RFAILED;
    }
    resourceList->list.array[rsrcIdx]->sequenceId = SRS_SEQ_ID;
@@ -3774,7 +3774,7 @@ uint8_t BuildSrsRsrcAddModList(struct SRS_Config__srs_ResourceToAddModList *reso
    CU_ALLOC(rsrcSetList->list.array, rsrcSetList->list.size);
    if(!rsrcSetList->list.array)
    {
-      DU_LOG("\nF1AP: Memory allocation failed in BuildSrsRsrcSetAddModList");
+      DU_LOG("\nERROR  -->  F1AP: Memory allocation failed in BuildSrsRsrcSetAddModList");
       return RFAILED;
    }
 
@@ -3783,7 +3783,7 @@ uint8_t BuildSrsRsrcAddModList(struct SRS_Config__srs_ResourceToAddModList *reso
       CU_ALLOC(rsrcSetList->list.array[rSetIdx], sizeof(SRS_ResourceSet_t));
       if(!rsrcSetList->list.array[rSetIdx])
       {
-	 DU_LOG("\nF1AP: Memory allocation failed in BuildSrsRsrcSetAddModList");
+	 DU_LOG("\nERROR  -->  F1AP: Memory allocation failed in BuildSrsRsrcSetAddModList");
 	 return RFAILED;
       }
    }
@@ -3797,7 +3797,7 @@ uint8_t BuildSrsRsrcAddModList(struct SRS_Config__srs_ResourceToAddModList *reso
 	 sizeof(struct SRS_ResourceSet__srs_ResourceIdList));
    if(!rsrcSetList->list.array[rSetIdx]->srs_ResourceIdList)
    {
-      DU_LOG("\nF1AP: Memory allocation failed in BuildSrsRsrcSetAddModList");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildSrsRsrcSetAddModList");
       return RFAILED;
    }
 
@@ -3809,7 +3809,7 @@ uint8_t BuildSrsRsrcAddModList(struct SRS_Config__srs_ResourceToAddModList *reso
    CU_ALLOC(rsrcIdList->list.array, rsrcIdList->list.size);
    if(!rsrcIdList->list.array)
    {
-      DU_LOG("\nF1AP: Memory allocation failed in BuildSrsRsrcSetAddModList");
+      DU_LOG("\nERROR  -->  F1AP: Memory allocation failed in BuildSrsRsrcSetAddModList");
       return RFAILED;
    }
 
@@ -3818,7 +3818,7 @@ uint8_t BuildSrsRsrcAddModList(struct SRS_Config__srs_ResourceToAddModList *reso
       CU_ALLOC(rsrcIdList->list.array[rsrcIdx], sizeof(SRS_ResourceId_t));
       if(!rsrcIdList->list.array[rsrcIdx])
       {
-	 DU_LOG("\nF1AP: Memory allocation failed in BuildSrsRsrcSetAddModList");
+	 DU_LOG("\nERROR  -->  F1AP: Memory allocation failed in BuildSrsRsrcSetAddModList");
 	 return RFAILED;
       }
    }
@@ -3835,7 +3835,7 @@ uint8_t BuildSrsRsrcAddModList(struct SRS_Config__srs_ResourceToAddModList *reso
 	 sizeof(struct SRS_ResourceSet__resourceType__aperiodic));
    if(!rsrcSetList->list.array[rSetIdx]->resourceType.choice.aperiodic)
    {
-      DU_LOG("\nF1AP: Memory allocation failed in BuildSrsRsrcSetAddModList");
+      DU_LOG("\nERROR  -->  F1AP: Memory allocation failed in BuildSrsRsrcSetAddModList");
       return RFAILED;
    }
    rsrcSetList->list.array[rSetIdx]->resourceType.choice.aperiodic->aperiodicSRS_ResourceTrigger \
@@ -3878,7 +3878,7 @@ uint8_t BuildBWPUlDedSrsCfg(SRS_Config_t *srsCfg)
 	 sizeof(struct SRS_Config__srs_ResourceSetToAddModList));
    if(!srsCfg->srs_ResourceSetToAddModList)
    {
-      DU_LOG("\nF1AP: Memory allocation failed in BuildBWPUlDedSrsCfg");
+      DU_LOG("\nERROR  -->  F1AP: Memory allocation failed in BuildBWPUlDedSrsCfg");
       return RFAILED;
    }
    if(BuildSrsRsrcSetAddModList(srsCfg->srs_ResourceSetToAddModList) != ROK)
@@ -3894,7 +3894,7 @@ uint8_t BuildBWPUlDedSrsCfg(SRS_Config_t *srsCfg)
 	 sizeof(struct SRS_Config__srs_ResourceToAddModList));
    if(!srsCfg->srs_ResourceToAddModList)
    {
-      DU_LOG("\nF1AP: Memory allocation failed in BuildBWPUlDedSrsCfg");
+      DU_LOG("\nERROR  -->  F1AP: Memory allocation failed in BuildBWPUlDedSrsCfg");
       return RFAILED;
    }
 
@@ -3932,7 +3932,7 @@ uint8_t BuildInitialUlBWP(BWP_UplinkDedicated_t *ulBwp)
    CU_ALLOC(ulBwp->pusch_Config, sizeof(struct BWP_UplinkDedicated__pusch_Config));
    if(!ulBwp->pusch_Config)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildInitialUlBWP");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildInitialUlBWP");
       return RFAILED;
    }
 
@@ -3941,7 +3941,7 @@ uint8_t BuildInitialUlBWP(BWP_UplinkDedicated_t *ulBwp)
    CU_ALLOC(ulBwp->pusch_Config->choice.setup, sizeof(PUSCH_Config_t));
    if(!ulBwp->pusch_Config->choice.setup)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildInitialUlBWP");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildInitialUlBWP");
       return RFAILED;
    }
 
@@ -3957,7 +3957,7 @@ uint8_t BuildInitialUlBWP(BWP_UplinkDedicated_t *ulBwp)
    CU_ALLOC(ulBwp->srs_Config, sizeof(struct BWP_UplinkDedicated__srs_Config));
    if(!ulBwp->srs_Config)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildInitialUlBWP");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildInitialUlBWP");
       return RFAILED;
    }
 
@@ -3966,7 +3966,7 @@ uint8_t BuildInitialUlBWP(BWP_UplinkDedicated_t *ulBwp)
    CU_ALLOC(ulBwp->srs_Config->choice.setup, sizeof(SRS_Config_t));
    if(!ulBwp->srs_Config->choice.setup)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildInitialUlBWP");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildInitialUlBWP");
       return RFAILED;
    }
 
@@ -4003,7 +4003,7 @@ uint8_t BuildPuschSrvCellCfg(struct UplinkConfig__pusch_ServingCellConfig *pusch
    CU_ALLOC(puschCfg->choice.setup, sizeof(struct PUSCH_ServingCellConfig));
    if(!puschCfg->choice.setup)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildPuschSrvCellCfg");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildPuschSrvCellCfg");
       return RFAILED;
    }
 
@@ -4014,7 +4014,7 @@ uint8_t BuildPuschSrvCellCfg(struct UplinkConfig__pusch_ServingCellConfig *pusch
    CU_ALLOC(puschCfg->choice.setup->ext1, sizeof(struct PUSCH_ServingCellConfig__ext1));
    if(!puschCfg->choice.setup->ext1)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildPuschSrvCellCfg");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildPuschSrvCellCfg");
       return RFAILED;
    }
 
@@ -4022,7 +4022,7 @@ uint8_t BuildPuschSrvCellCfg(struct UplinkConfig__pusch_ServingCellConfig *pusch
    CU_ALLOC(puschCfg->choice.setup->ext1->maxMIMO_Layers, sizeof(long));
    if(!puschCfg->choice.setup->ext1->maxMIMO_Layers)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildPuschSrvCellCfg");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildPuschSrvCellCfg");
       return RFAILED;
    }
    *(puschCfg->choice.setup->ext1->maxMIMO_Layers) = PUSCH_MAX_MIMO_LAYERS;
@@ -4031,7 +4031,7 @@ uint8_t BuildPuschSrvCellCfg(struct UplinkConfig__pusch_ServingCellConfig *pusch
    CU_ALLOC(puschCfg->choice.setup->ext1->processingType2Enabled,sizeof(BOOLEAN_t));
    if(!puschCfg->choice.setup->ext1->processingType2Enabled)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildPuschSrvCellCfg");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildPuschSrvCellCfg");
       return RFAILED;
    }
    *(puschCfg->choice.setup->ext1->processingType2Enabled) = PUSCH_PROCESS_TYPE2_ENABLED;
@@ -4059,7 +4059,7 @@ uint8_t BuildUlCfg(UplinkConfig_t *ulCfg)
    CU_ALLOC(ulCfg->initialUplinkBWP, sizeof(BWP_UplinkDedicated_t));
    if(!ulCfg->initialUplinkBWP)
    {
-      DU_LOG("\nF1AP : Memory Allocation failed in BuildUlCfg");
+      DU_LOG("\nERROR  -->  F1AP : Memory Allocation failed in BuildUlCfg");
       return RFAILED;
    }
 
@@ -4074,7 +4074,7 @@ uint8_t BuildUlCfg(UplinkConfig_t *ulCfg)
    CU_ALLOC(ulCfg->firstActiveUplinkBWP_Id, sizeof(BWP_Id_t));
    if(!ulCfg->firstActiveUplinkBWP_Id)
    {
-      DU_LOG("\nF1AP : Memory Allocation failed in BuildUlCfg");
+      DU_LOG("\nERROR  -->  F1AP : Memory Allocation failed in BuildUlCfg");
       return RFAILED;
    }
    *(ulCfg->firstActiveUplinkBWP_Id) = ACTIVE_UL_BWP_ID;
@@ -4084,7 +4084,7 @@ uint8_t BuildUlCfg(UplinkConfig_t *ulCfg)
 	 sizeof(struct UplinkConfig__pusch_ServingCellConfig));
    if(!ulCfg->pusch_ServingCellConfig)
    {
-      DU_LOG("\nF1AP : Memory Allocation failed in BuildUlCfg");
+      DU_LOG("\nERROR  -->  F1AP : Memory Allocation failed in BuildUlCfg");
       return RFAILED;
    }
 
@@ -4120,7 +4120,7 @@ uint8_t BuildPdschSrvCellCfg(struct ServingCellConfig__pdsch_ServingCellConfig *
    CU_ALLOC(pdschCfg->choice.setup, sizeof( struct PDSCH_ServingCellConfig));
    if(!pdschCfg->choice.setup)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildPdschSrvCellCfg");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildPdschSrvCellCfg");
       return RFAILED;
    }
 
@@ -4130,7 +4130,7 @@ uint8_t BuildPdschSrvCellCfg(struct ServingCellConfig__pdsch_ServingCellConfig *
    CU_ALLOC(pdschCfg->choice.setup->nrofHARQ_ProcessesForPDSCH, sizeof(long));
    if(!pdschCfg->choice.setup->nrofHARQ_ProcessesForPDSCH)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildPdschSrvCellCfg");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildPdschSrvCellCfg");
       return RFAILED;
    }
    *(pdschCfg->choice.setup->nrofHARQ_ProcessesForPDSCH)= PDSCH_NUM_HARQ_PROC;
@@ -4184,13 +4184,13 @@ uint8_t BuildSpCellCfgDed(ServingCellConfig_t *srvCellCfg)
    CU_ALLOC(srvCellCfg->initialDownlinkBWP, sizeof(BWP_DownlinkDedicated_t));
    if(!srvCellCfg->initialDownlinkBWP)
    {
-      DU_LOG("\nF1AP : Memory allocation failure in BuildSpCellCfgDed");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildSpCellCfgDed");
       return RFAILED;
    }
 
    if(BuildInitialDlBWP(srvCellCfg->initialDownlinkBWP) != ROK)
    {
-      DU_LOG("\nF1AP : BuildInitialDlBWP failed");
+      DU_LOG("\nERROR  -->  F1AP : BuildInitialDlBWP failed");
       return RFAILED;
    }
    srvCellCfg->downlinkBWP_ToReleaseList = NULLP;
@@ -4200,7 +4200,7 @@ uint8_t BuildSpCellCfgDed(ServingCellConfig_t *srvCellCfg)
    CU_ALLOC(srvCellCfg->firstActiveDownlinkBWP_Id, sizeof(long));
    if(!srvCellCfg->firstActiveDownlinkBWP_Id)
    {
-      DU_LOG("\nF1AP : Memory allocation failure in BuildSpCellCfgDed");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildSpCellCfgDed");
       return RFAILED;
    }
    *(srvCellCfg->firstActiveDownlinkBWP_Id) = ACTIVE_DL_BWP_ID;
@@ -4211,7 +4211,7 @@ uint8_t BuildSpCellCfgDed(ServingCellConfig_t *srvCellCfg)
    CU_ALLOC(srvCellCfg->defaultDownlinkBWP_Id, sizeof(long));
    if(!srvCellCfg->defaultDownlinkBWP_Id)
    {
-      DU_LOG("\nF1AP : Memory allocation failure in BuildSpCellCfgDed");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildSpCellCfgDed");
       return RFAILED;
    }
    *(srvCellCfg->defaultDownlinkBWP_Id) = ACTIVE_DL_BWP_ID;
@@ -4220,13 +4220,13 @@ uint8_t BuildSpCellCfgDed(ServingCellConfig_t *srvCellCfg)
    CU_ALLOC(srvCellCfg->uplinkConfig, sizeof(UplinkConfig_t));
    if(!srvCellCfg->uplinkConfig)
    {
-      DU_LOG("\nF1AP : Memory allocation failure in BuildSpCellCfgDed");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildSpCellCfgDed");
       return RFAILED;
    }
 
    if(BuildUlCfg(srvCellCfg->uplinkConfig) != ROK)
    {
-      DU_LOG("\nF1AP : BuildUlCfg failed");
+      DU_LOG("\nERROR  -->  F1AP : BuildUlCfg failed");
       return RFAILED;
    }
    srvCellCfg->supplementaryUplink = NULLP;
@@ -4236,13 +4236,13 @@ uint8_t BuildSpCellCfgDed(ServingCellConfig_t *srvCellCfg)
    CU_ALLOC(srvCellCfg->pdsch_ServingCellConfig, sizeof(struct	ServingCellConfig__pdsch_ServingCellConfig));
    if(!srvCellCfg->pdsch_ServingCellConfig)
    {
-      DU_LOG("\nF1AP : Memory allocation failure in BuildSpCellCfgDed");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildSpCellCfgDed");
       return RFAILED;
    }
 
    if(BuildPdschSrvCellCfg(srvCellCfg->pdsch_ServingCellConfig) != ROK)
    {
-      DU_LOG("\nF1AP : BuildPdschSrvCellCfg failed");
+      DU_LOG("\nERROR  -->  F1AP : BuildPdschSrvCellCfg failed");
       return RFAILED;
    }
 
@@ -4251,7 +4251,7 @@ uint8_t BuildSpCellCfgDed(ServingCellConfig_t *srvCellCfg)
    CU_ALLOC(srvCellCfg->csi_MeasConfig, sizeof(struct	ServingCellConfig__csi_MeasConfig))
       if(!srvCellCfg->csi_MeasConfig)
       {
-	 DU_LOG("\nF1AP : Memory allocation failure in BuildSpCellCfgDed");
+	 DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildSpCellCfgDed");
 	 return RFAILED;
       }
 
@@ -4294,7 +4294,7 @@ uint8_t BuildSpCellCfg(SpCellConfig_t *spCellCfg)
    CU_ALLOC(spCellCfg->servCellIndex, sizeof(long));
    if(!spCellCfg->servCellIndex)
    {
-      DU_LOG("\nF1AP : Memory allocation failure in BuildSpCellCfg");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildSpCellCfg");
       return RFAILED;
    }
    *(spCellCfg->servCellIndex) = SERV_CELL_IDX;
@@ -4305,7 +4305,7 @@ uint8_t BuildSpCellCfg(SpCellConfig_t *spCellCfg)
    CU_ALLOC(spCellCfg->rlmInSyncOutOfSyncThreshold, sizeof(long));
    if(!spCellCfg->rlmInSyncOutOfSyncThreshold)
    {
-      DU_LOG("\nF1AP : Memory allocation failure in BuildSpCellCfg");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildSpCellCfg");
       return RFAILED;
    }
    *(spCellCfg->rlmInSyncOutOfSyncThreshold) = RLM_SYNC_OUT_SYNC_THRESHOLD;
@@ -4314,12 +4314,12 @@ uint8_t BuildSpCellCfg(SpCellConfig_t *spCellCfg)
    CU_ALLOC(spCellCfg->spCellConfigDedicated, sizeof(ServingCellConfig_t));
    if(!spCellCfg->spCellConfigDedicated)
    {
-      DU_LOG("\nF1AP : Memory allocation failure in BuildSpCellCfg");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildSpCellCfg");
       return RFAILED;
    }
    if(BuildSpCellCfgDed(spCellCfg->spCellConfigDedicated) != ROK)
    {
-      DU_LOG("\nF1AP : BuildSpCellCfgDed failed");
+      DU_LOG("\nERROR  -->  F1AP : BuildSpCellCfgDed failed");
       return RFAILED;
    }
    return ROK;
@@ -4349,7 +4349,7 @@ uint8_t BuildPhyCellGrpCfg(PhysicalCellGroupConfig_t *phyCellGrpCfg)
    CU_ALLOC(phyCellGrpCfg->p_NR_FR1, sizeof(long));
    if(!phyCellGrpCfg->p_NR_FR1)
    {
-      DU_LOG("\nF1AP : Memory allocation failure in BuildPhyCellGrpCfg");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildPhyCellGrpCfg");
       return RFAILED;
    }
    *(phyCellGrpCfg->p_NR_FR1)             = P_NR_FR1;
@@ -4391,7 +4391,7 @@ uint8_t BuildTagConfig(struct TAG_Config *tagConfig)
    CU_ALLOC(tagConfig->tag_ToAddModList, sizeof(struct TAG_Config__tag_ToAddModList));
    if(!tagConfig->tag_ToAddModList)
    {
-      DU_LOG("\nF1AP : Memory allocation failure in BuildTagConfig");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildTagConfig");
       return RFAILED;
    }
 
@@ -4404,7 +4404,7 @@ uint8_t BuildTagConfig(struct TAG_Config *tagConfig)
    CU_ALLOC(tagList->list.array, tagList->list.size);
    if(!tagList->list.array)
    {
-      DU_LOG("\nF1AP : Memory allocation failure in BuildTagConfig");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildTagConfig");
       return RFAILED;
    }
 
@@ -4414,7 +4414,7 @@ uint8_t BuildTagConfig(struct TAG_Config *tagConfig)
       CU_ALLOC(tagList->list.array[idx], sizeof(struct TAG));
       if(!tagList->list.array[idx])
       {
-	 DU_LOG("\nF1AP : Memory allocation failure in BuildTagConfig");
+	 DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildTagConfig");
 	 return RFAILED;
       }
    }
@@ -4450,7 +4450,7 @@ uint8_t BuildPhrConfig(struct MAC_CellGroupConfig__phr_Config *phrConfig)
    CU_ALLOC(phrConfig->choice.setup, sizeof(struct PHR_Config));
    if(!phrConfig->choice.setup)
    {
-      DU_LOG("\nF1AP : Memory allocation failure in BuildPhrConfig");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildPhrConfig");
       return RFAILED;
    }
 
@@ -4516,7 +4516,7 @@ uint8_t BuildSchedulingReqConfig(struct SchedulingRequestConfig *schedulingReque
 	 sizeof(struct SchedulingRequestConfig__schedulingRequestToAddModList));
    if(!schedulingRequestConfig->schedulingRequestToAddModList)
    {
-      DU_LOG("\nF1AP : Memory allocation failure in BuildSchedulingReqConfig");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildSchedulingReqConfig");
       return RFAILED;
    }
 
@@ -4529,7 +4529,7 @@ uint8_t BuildSchedulingReqConfig(struct SchedulingRequestConfig *schedulingReque
    CU_ALLOC(schReqList->list.array, schReqList->list.size);
    if(!schReqList->list.array)
    {
-      DU_LOG("\nF1AP : Memory allocation failure in BuildSchedulingReqConfig");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildSchedulingReqConfig");
       return RFAILED;
    }
 
@@ -4539,7 +4539,7 @@ uint8_t BuildSchedulingReqConfig(struct SchedulingRequestConfig *schedulingReque
       CU_ALLOC(schReqList->list.array[idx], sizeof(struct SchedulingRequestToAddMod));
       if(!schReqList->list.array[idx])
       {
-	 DU_LOG("\nF1AP : Memory allocation failure in BuildSchedulingReqConfig");
+	 DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildSchedulingReqConfig");
 	 return RFAILED;
       }
    }
@@ -4551,7 +4551,7 @@ uint8_t BuildSchedulingReqConfig(struct SchedulingRequestConfig *schedulingReque
    CU_ALLOC(schReqList->list.array[idx]->sr_ProhibitTimer, sizeof(long));
    if(!schReqList->list.array[idx]->sr_ProhibitTimer)
    {
-      DU_LOG("\nF1AP : Memory allocation failure in BuildSchedulingReqConfig");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildSchedulingReqConfig");
       return RFAILED;
    }
    *(schReqList->list.array[idx]->sr_ProhibitTimer) = SR_PROHIBIT_TMR;
@@ -4583,13 +4583,13 @@ uint8_t BuildMacCellGrpCfg(MAC_CellGroupConfig_t *macCellGrpCfg)
    CU_ALLOC(macCellGrpCfg->schedulingRequestConfig, sizeof(struct SchedulingRequestConfig));
    if(!macCellGrpCfg->schedulingRequestConfig)
    {
-      DU_LOG("\nF1AP : Memory allocation failure in BuildMacCellGrpCfg");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildMacCellGrpCfg");
       return RFAILED;
    }
 
    if(BuildSchedulingReqConfig(macCellGrpCfg->schedulingRequestConfig) != ROK)
    {
-      DU_LOG("\nF1AP : BuildSchedulingReqConfig failed");
+      DU_LOG("\nERROR  -->  F1AP : BuildSchedulingReqConfig failed");
       return RFAILED;
    }
 
@@ -4597,13 +4597,13 @@ uint8_t BuildMacCellGrpCfg(MAC_CellGroupConfig_t *macCellGrpCfg)
    CU_ALLOC(macCellGrpCfg->bsr_Config, sizeof(struct BSR_Config));
    if(!macCellGrpCfg->bsr_Config)
    {
-      DU_LOG("\nF1AP : Memory allocation failure in BuildMacCellGrpCfg");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildMacCellGrpCfg");
       return RFAILED;
    }
 
    if(BuildBsrConfig(macCellGrpCfg->bsr_Config) != ROK)
    {
-      DU_LOG("\nF1AP : BuildBsrConfig failed");
+      DU_LOG("\nERROR  -->  F1AP : BuildBsrConfig failed");
       return RFAILED;
    }
 
@@ -4611,13 +4611,13 @@ uint8_t BuildMacCellGrpCfg(MAC_CellGroupConfig_t *macCellGrpCfg)
    CU_ALLOC(macCellGrpCfg->tag_Config, sizeof(struct TAG_Config));
    if(!macCellGrpCfg->tag_Config)
    {
-      DU_LOG("\nF1AP : Memory allocation failure in BuildMacCellGrpCfg");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildMacCellGrpCfg");
       return RFAILED;
    }
 
    if(BuildTagConfig(macCellGrpCfg->tag_Config) != ROK)
    {
-      DU_LOG("\nF1AP : BuildTagConfig failed");
+      DU_LOG("\nERROR  -->  F1AP : BuildTagConfig failed");
       return RFAILED;
    }
 
@@ -4625,13 +4625,13 @@ uint8_t BuildMacCellGrpCfg(MAC_CellGroupConfig_t *macCellGrpCfg)
    CU_ALLOC(macCellGrpCfg->phr_Config, sizeof(struct MAC_CellGroupConfig__phr_Config));
    if(!macCellGrpCfg->phr_Config)
    {
-      DU_LOG("\nF1AP : Memory allocation failure in BuildMacCellGrpCfg");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildMacCellGrpCfg");
       return RFAILED;
    }
 
    if(BuildPhrConfig(macCellGrpCfg->phr_Config) != ROK)
    {
-      DU_LOG("\nF1AP : BuildPhrConfig failed");
+      DU_LOG("\nERROR  -->  F1AP : BuildPhrConfig failed");
       return RFAILED;
    }
 
@@ -5117,7 +5117,7 @@ uint8_t BuildRlcConfig(struct RLC_Config *rlcConfig)
    CU_ALLOC(rlcConfig->choice.am, sizeof(struct RLC_Config__am));
    if(!rlcConfig->choice.am)
    {
-      DU_LOG("\nF1AP : Memory allocation failure in BuildRlcConfig");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildRlcConfig");
       return RFAILED;
    }
 
@@ -5126,7 +5126,7 @@ uint8_t BuildRlcConfig(struct RLC_Config *rlcConfig)
    CU_ALLOC(rlcConfig->choice.am->ul_AM_RLC.sn_FieldLength, sizeof(SN_FieldLengthAM_t));
    if(!rlcConfig->choice.am->ul_AM_RLC.sn_FieldLength)
    {
-      DU_LOG("\nF1AP : Memory allocation failure in BuildRlcConfig");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildRlcConfig");
       return RFAILED;
    }
    *(rlcConfig->choice.am->ul_AM_RLC.sn_FieldLength) = SN_FIELD_LEN;
@@ -5140,7 +5140,7 @@ uint8_t BuildRlcConfig(struct RLC_Config *rlcConfig)
    CU_ALLOC(rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength, sizeof(SN_FieldLengthAM_t)); 
    if(!rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength)
    {
-      DU_LOG("\nF1AP : Memory allocation failure in BuildRlcConfig");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildRlcConfig");
       return RFAILED;
    }
    *(rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength) = SN_FIELD_LEN;
@@ -5173,7 +5173,7 @@ uint8_t BuildMacLCConfig(struct LogicalChannelConfig *macLcConfig)
    CU_ALLOC(macLcConfig->ul_SpecificParameters, sizeof(struct LogicalChannelConfig__ul_SpecificParameters));
    if(!macLcConfig->ul_SpecificParameters)
    {
-      DU_LOG("\nF1AP : Memory allocation failure in BuildMacLCConfig");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildMacLCConfig");
       return RFAILED;
    }
 
@@ -5189,7 +5189,7 @@ uint8_t BuildMacLCConfig(struct LogicalChannelConfig *macLcConfig)
    CU_ALLOC(macLcConfig->ul_SpecificParameters->logicalChannelGroup,	sizeof(long));
    if(!macLcConfig->ul_SpecificParameters->logicalChannelGroup)
    {
-      DU_LOG("\nF1AP : Memory allocation failure in BuildMacLCConfig");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildMacLCConfig");
       return RFAILED;
    }
    *(macLcConfig->ul_SpecificParameters->logicalChannelGroup) = LC_GRP;
@@ -5198,7 +5198,7 @@ uint8_t BuildMacLCConfig(struct LogicalChannelConfig *macLcConfig)
    CU_ALLOC(macLcConfig->ul_SpecificParameters->schedulingRequestID,	sizeof(SchedulingRequestId_t));
    if(!macLcConfig->ul_SpecificParameters->schedulingRequestID)
    {
-      DU_LOG("\nF1AP : Memory allocation failure in BuildMacLCConfig");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildMacLCConfig");
       return RFAILED;
    }
    *(macLcConfig->ul_SpecificParameters->schedulingRequestID) = SCH_REQ_ID;
@@ -5237,7 +5237,7 @@ uint8_t BuildRlcBearerToAddModList(struct CellGroupConfigRrc__rlc_BearerToAddMod
    CU_ALLOC(rlcBearerList->list.array, rlcBearerList->list.size);
    if(!rlcBearerList->list.array)
    {
-      DU_LOG("\nF1AP : Memory allocation failure in BuildRlcBearerToAddModList");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildRlcBearerToAddModList");
       return RFAILED;
    }
 
@@ -5247,7 +5247,7 @@ uint8_t BuildRlcBearerToAddModList(struct CellGroupConfigRrc__rlc_BearerToAddMod
       CU_ALLOC(rlcBearerList->list.array[idx], sizeof(struct RLC_BearerConfig));
       if(!rlcBearerList->list.array[idx])
       {
-	 DU_LOG("\nF1AP : Memory allocation failure in BuildRlcBearerToAddModList");
+	 DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildRlcBearerToAddModList");
 	 return RFAILED;
       }
    }
@@ -5258,7 +5258,7 @@ uint8_t BuildRlcBearerToAddModList(struct CellGroupConfigRrc__rlc_BearerToAddMod
    CU_ALLOC(rlcBearerList->list.array[idx]->servedRadioBearer, sizeof(struct RLC_BearerConfig__servedRadioBearer));
    if(!rlcBearerList->list.array[idx]->servedRadioBearer)
    {
-      DU_LOG("\nF1AP : Memory allocation failure in BuildRlcBearerToAddModList");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildRlcBearerToAddModList");
       return RFAILED;
    }
 
@@ -5270,13 +5270,13 @@ uint8_t BuildRlcBearerToAddModList(struct CellGroupConfigRrc__rlc_BearerToAddMod
    CU_ALLOC(rlcBearerList->list.array[idx]->rlc_Config, sizeof(struct RLC_Config));
    if(!rlcBearerList->list.array[idx]->rlc_Config)
    {
-      DU_LOG("\nF1AP : Memory allocation failure in BuildRlcBearerToAddModList");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildRlcBearerToAddModList");
       return RFAILED;
    }
 
    if(BuildRlcConfig(rlcBearerList->list.array[idx]->rlc_Config) != ROK)
    {
-      DU_LOG("\nF1AP : BuildRlcConfig failed");
+      DU_LOG("\nERROR  -->  F1AP : BuildRlcConfig failed");
       return RFAILED;
    }
 
@@ -5284,13 +5284,13 @@ uint8_t BuildRlcBearerToAddModList(struct CellGroupConfigRrc__rlc_BearerToAddMod
    CU_ALLOC(rlcBearerList->list.array[idx]->mac_LogicalChannelConfig, sizeof(struct LogicalChannelConfig));
    if(!rlcBearerList->list.array[idx]->mac_LogicalChannelConfig)
    {
-      DU_LOG("\nF1AP : Memory allocation failure in BuildRlcBearerToAddModList");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildRlcBearerToAddModList");
       return RFAILED;
    }
 
    if(BuildMacLCConfig(rlcBearerList->list.array[idx]->mac_LogicalChannelConfig) != ROK)
    {
-      DU_LOG("\nF1AP : BuildMacLCConfig failed");
+      DU_LOG("\nERROR  -->  F1AP : BuildMacLCConfig failed");
       return RFAILED;
    }
 
@@ -5527,12 +5527,12 @@ uint8_t fillCellGrpCfg(CellGroupConfig_t *cellGrp)
       CU_ALLOC(cellGrpCfg.rlc_BearerToAddModList, sizeof(struct CellGroupConfigRrc__rlc_BearerToAddModList));
       if(!cellGrpCfg.rlc_BearerToAddModList)
       {
-	 DU_LOG("\nF1AP : Memory allocation failure in CellGrpConfig");
+	 DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in CellGrpConfig");
 	 break;
       }
       if(BuildRlcBearerToAddModList(cellGrpCfg.rlc_BearerToAddModList) != ROK)
       {
-	 DU_LOG("\nF1AP : fillCellGrpCfg failed");
+	 DU_LOG("\nERROR  -->  F1AP : fillCellGrpCfg failed");
 	 break;
       }
 
@@ -5541,12 +5541,12 @@ uint8_t fillCellGrpCfg(CellGroupConfig_t *cellGrp)
       CU_ALLOC(cellGrpCfg.mac_CellGroupConfig, sizeof(MAC_CellGroupConfig_t));
       if(!cellGrpCfg.mac_CellGroupConfig)
       {
-	 DU_LOG("\nF1AP : Memory allocation failure in fillCellGrpCfg");
+	 DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in fillCellGrpCfg");
 	 break;
       }
       if(BuildMacCellGrpCfg(cellGrpCfg.mac_CellGroupConfig) != ROK)
       {
-	 DU_LOG("\nF1AP : BuildMacCellGrpCfg failed");
+	 DU_LOG("\nERROR  -->  F1AP : BuildMacCellGrpCfg failed");
 	 break;
       }
 
@@ -5555,12 +5555,12 @@ uint8_t fillCellGrpCfg(CellGroupConfig_t *cellGrp)
       CU_ALLOC(cellGrpCfg.physicalCellGroupConfig, sizeof(PhysicalCellGroupConfig_t));
       if(!cellGrpCfg.physicalCellGroupConfig)
       {
-	 DU_LOG("\nF1AP : Memory allocation failure in BuildDuToCuRrcContainer");
+	 DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildDuToCuRrcContainer");
 	 break;
       }
       if(BuildPhyCellGrpCfg(cellGrpCfg.physicalCellGroupConfig) != ROK)
       {
-	 DU_LOG("\nF1AP : BuildPhyCellGrpCfg failed");
+	 DU_LOG("\nERROR  -->  F1AP : BuildPhyCellGrpCfg failed");
 	 break;
       }
 
@@ -5568,12 +5568,12 @@ uint8_t fillCellGrpCfg(CellGroupConfig_t *cellGrp)
       CU_ALLOC(cellGrpCfg.spCellConfig, sizeof(SpCellConfig_t));
       if(!cellGrpCfg.spCellConfig)
       {
-	 DU_LOG("\nF1AP : Memory allocation failure in BuildDuToCuRrcContainer");
+	 DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildDuToCuRrcContainer");
 	 break;
       }
       if(BuildSpCellCfg(cellGrpCfg.spCellConfig) != ROK)
       {
-	 DU_LOG("\nF1AP : BuildSpCellCfg failed");
+	 DU_LOG("\nERROR  -->  F1AP : BuildSpCellCfg failed");
 	 break;
       }
 
@@ -5589,16 +5589,16 @@ uint8_t fillCellGrpCfg(CellGroupConfig_t *cellGrp)
       /* Encode results */
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-	 DU_LOG( "\n F1AP : Could not encode DuToCuRrcContainer (at %s)\n",\
+	 DU_LOG( "\nERROR  -->  F1AP : Could not encode DuToCuRrcContainer (at %s)\n",\
 	       encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
 	 break;
       }
       else
       {
-	 DU_LOG("\n F1AP : Created APER encoded buffer for DuToCuRrcContainer\n");
+	 DU_LOG("\nDEBUG  -->  F1AP : Created APER encodedbuffer for DuToCuRrcContainer\n");
 	 for(int i=0; i< encBufSize; i++)
 	 {
-	    printf("%x",encBuf[i]);
+	    DU_LOG("%x",encBuf[i]);
 	 }
       }
 
@@ -5606,7 +5606,7 @@ uint8_t fillCellGrpCfg(CellGroupConfig_t *cellGrp)
       CU_ALLOC(cellGrp->buf, cellGrp->size);
       if(!cellGrp->buf)
       {
-	 DU_LOG("\nF1AP : Memory allocation failed in BuildDuToCuRrcContainer");
+	 DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildDuToCuRrcContainer");
 	 break;
       }
       memcpy(cellGrp->buf, encBuf, cellGrp->size);
@@ -5741,7 +5741,7 @@ uint8_t fillFeatureSets(FeatureSets_t *featureSets)
    CU_ALLOC(featureSets->featureSetsDownlinkPerCC, sizeof(struct FeatureSets__featureSetsDownlinkPerCC));
    if(!featureSets->featureSetsDownlinkPerCC)
    {
-      DU_LOG("\nMemory allocation failed in fillFeatureSets");
+      DU_LOG("\nERROR  --> F1AP : Memory allocation failed in fillFeatureSets");
       return RFAILED;
    }
 
@@ -5751,7 +5751,7 @@ uint8_t fillFeatureSets(FeatureSets_t *featureSets)
    CU_ALLOC(featureSets->featureSetsDownlinkPerCC->list.array, featureSets->featureSetsDownlinkPerCC->list.size);
    if(!featureSets->featureSetsDownlinkPerCC->list.array)
    {
-      DU_LOG("\nMemory allocation failed in fillFeatureSets");
+      DU_LOG("\nERROR  --> F1AP : Memory allocation failed in fillFeatureSets");
       return RFAILED;
    }
 
@@ -5760,7 +5760,7 @@ uint8_t fillFeatureSets(FeatureSets_t *featureSets)
       CU_ALLOC(featureSets->featureSetsDownlinkPerCC->list.array[idx], sizeof(struct FeatureSetDownlinkPerCC));
       if(!featureSets->featureSetsDownlinkPerCC->list.array[idx])
       {
-	 DU_LOG("\nMemory allocation failed in fillFeatureSets");
+	 DU_LOG("\nERROR  --> F1AP : Memory allocation failed in fillFeatureSets");
 	 return RFAILED;
       }
    }
@@ -5775,7 +5775,7 @@ uint8_t fillFeatureSets(FeatureSets_t *featureSets)
    CU_ALLOC(featureSets->featureSetsDownlinkPerCC->list.array[idx]->supportedModulationOrderDL, sizeof(ModulationOrder_t));
    if(!featureSets->featureSetsDownlinkPerCC->list.array[idx]->supportedModulationOrderDL)
    {
-      DU_LOG("\nMemory allocation failed in fillFeatureSets");
+      DU_LOG("\nERROR  --> F1AP : Memory allocation failed in fillFeatureSets");
       return RFAILED;
    }
    *(featureSets->featureSetsDownlinkPerCC->list.array[idx]->supportedModulationOrderDL) = ModulationOrder_qam64;
@@ -5784,7 +5784,7 @@ uint8_t fillFeatureSets(FeatureSets_t *featureSets)
    CU_ALLOC(featureSets->featureSetsUplinkPerCC, sizeof(struct FeatureSets__featureSetsUplinkPerCC));
    if(!featureSets->featureSetsUplinkPerCC)
    {
-      DU_LOG("\nMemory allocation failed in fillFeatureSets");
+      DU_LOG("\nERROR  --> F1AP : Memory allocation failed in fillFeatureSets");
       return RFAILED;
    }
 
@@ -5794,7 +5794,7 @@ uint8_t fillFeatureSets(FeatureSets_t *featureSets)
    CU_ALLOC(featureSets->featureSetsUplinkPerCC->list.array, featureSets->featureSetsUplinkPerCC->list.size);
    if(!featureSets->featureSetsUplinkPerCC->list.array)
    {
-      DU_LOG("\nMemory allocation failed in fillFeatureSets");
+      DU_LOG("\nERROR  --> F1AP : Memory allocation failed in fillFeatureSets");
       return RFAILED;
    }
 
@@ -5803,7 +5803,7 @@ uint8_t fillFeatureSets(FeatureSets_t *featureSets)
       CU_ALLOC(featureSets->featureSetsUplinkPerCC->list.array[idx], sizeof(struct FeatureSetUplinkPerCC));
       if(!featureSets->featureSetsUplinkPerCC->list.array[idx])
       {
-         DU_LOG("\nMemory allocation failed in fillFeatureSets");
+         DU_LOG("\nERROR  --> F1AP : Memory allocation failed in fillFeatureSets");
          return RFAILED;
       }
    }
@@ -5819,7 +5819,7 @@ uint8_t fillFeatureSets(FeatureSets_t *featureSets)
    CU_ALLOC(featureSets->featureSetsUplinkPerCC->list.array[idx]->supportedModulationOrderUL, sizeof(ModulationOrder_t));
    if(!featureSets->featureSetsUplinkPerCC->list.array[idx]->supportedModulationOrderUL)
    {
-      DU_LOG("\nMemory allocation failed in fillFeatureSets");
+      DU_LOG("\nERROR  --> F1AP : Memory allocation failed in fillFeatureSets");
       return RFAILED;
    }
    *(featureSets->featureSetsUplinkPerCC->list.array[idx]->supportedModulationOrderUL) = ModulationOrder_qam16;
@@ -5889,7 +5889,7 @@ uint8_t fillUeCapRatCont(OCTET_STRING_t *ueCapRatContBuf)
       CU_ALLOC(ueNrCap.rf_Parameters.supportedBandListNR.list.array, ueNrCap.rf_Parameters.supportedBandListNR.list.size);
       if(!ueNrCap.rf_Parameters.supportedBandListNR.list.array)
       {
-         DU_LOG("\nMemory allocation failed in fillUeCapRatCont");
+         DU_LOG("\nERROR  --> F1AP : Memory allocation failed in fillUeCapRatCont");
          ret = RFAILED;
          break;
       }
@@ -5921,14 +5921,14 @@ uint8_t fillUeCapRatCont(OCTET_STRING_t *ueCapRatContBuf)
       CU_ALLOC(ueNrCap.featureSets, sizeof(struct FeatureSets));
       if(!ueNrCap.featureSets)
       {
-         DU_LOG("\nMemory allocation failed in fillUeCapRatCont");
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in fillUeCapRatCont");
 	 ret = RFAILED;
 	 break;
       }
 
       if(fillFeatureSets(ueNrCap.featureSets) != ROK)
       {
-         DU_LOG("\nfillDLFeatureSets() failed ");
+         DU_LOG("\nERROR  -->  fillDLFeatureSets() failed ");
          ret = RFAILED;
          break;
       }
@@ -5946,16 +5946,16 @@ uint8_t fillUeCapRatCont(OCTET_STRING_t *ueCapRatContBuf)
       /* Encode results */
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-         DU_LOG( "\n F1AP : Could not encode UE Capability RAT Container (at %s)\n",\
+         DU_LOG( "\nERROR  -->  F1AP : Could not encode UE Capability RAT Container (at %s)\n",\
             encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
          break;
       }
       else
       {
-         DU_LOG("\n F1AP : Created APER encoded buffer for UE Capability RAT Container\n");
+         DU_LOG("\nDEBUG  -->  F1AP : Created APER encodedbuffer for UE Capability RAT Container\n");
          for(int i=0; i< encBufSize; i++)
          {
-            printf("%x",encBuf[i]);
+            DU_LOG("%x",encBuf[i]);
          }
       }
 
@@ -5963,7 +5963,7 @@ uint8_t fillUeCapRatCont(OCTET_STRING_t *ueCapRatContBuf)
       CU_ALLOC(ueCapRatContBuf->buf, ueCapRatContBuf->size);
       if(!ueCapRatContBuf->buf)
       {
-         DU_LOG("\nF1AP : Memory allocation failed in fillUeCapabilityContainer");
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in fillUeCapabilityContainer");
          break;
       }
       memcpy(ueCapRatContBuf->buf, encBuf, ueCapRatContBuf->size);
@@ -6006,7 +6006,7 @@ uint8_t fillUeCapRatContList(UE_CapabilityRAT_ContainerList_t *ueCapablityListBu
        CU_ALLOC(ueCapablityList.list.array, ueCapablityList.list.size);
        if(!ueCapablityList.list.array)
        {
-          DU_LOG("\nMemory allocation failed in fillUeCapRatContList");
+          DU_LOG("\nERROR  -->  Memory allocation failed in fillUeCapRatContList");
 	  ret = RFAILED;
 	  break;
        }
@@ -6016,7 +6016,7 @@ uint8_t fillUeCapRatContList(UE_CapabilityRAT_ContainerList_t *ueCapablityListBu
           CU_ALLOC(ueCapablityList.list.array[idx], sizeof(UE_CapabilityRAT_Container_t));
           if(ueCapablityList.list.array[idx] == NULLP)
           {
-	     DU_LOG("\nMemory allocation failed in fillUeCapRatContList");
+	     DU_LOG("\nERROR  -->  Memory allocation failed in fillUeCapRatContList");
              ret = RFAILED;
 	     break;
           }
@@ -6035,16 +6035,16 @@ uint8_t fillUeCapRatContList(UE_CapabilityRAT_ContainerList_t *ueCapablityListBu
        /* Encode results */
        if(encRetVal.encoded == ENCODE_FAIL)
        {
-          DU_LOG( "\n F1AP : Could not encode UE Capability RAT Container (at %s)\n",\
+          DU_LOG( "\nERROR  -->  F1AP : Could not encode UE Capability RAT Container (at %s)\n",\
              encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
           break;
        }
        else
        {
-          DU_LOG("\n F1AP : Created APER encoded buffer for UE Capability RAT Container\n");
+          DU_LOG("\nDEBUG  -->  F1AP : Created APER encodedbuffer for UE Capability RAT Container\n");
           for(int i=0; i< encBufSize; i++)
           {
-             printf("%x",encBuf[i]);
+             DU_LOG("%x",encBuf[i]);
           }
        }
     
@@ -6052,7 +6052,7 @@ uint8_t fillUeCapRatContList(UE_CapabilityRAT_ContainerList_t *ueCapablityListBu
        CU_ALLOC(ueCapablityListBuf->buf, ueCapablityListBuf->size);
        if(!ueCapablityListBuf->buf)
        {
-          DU_LOG("\nF1AP : Memory allocation failed in fillUeCapabilityContainer");
+          DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in fillUeCapabilityContainer");
           break;
        }
        memcpy(ueCapablityListBuf->buf, encBuf, ueCapablityListBuf->size);
@@ -6089,7 +6089,7 @@ uint8_t fillCuToDuContainer(CUtoDURRCInformation_t *rrcMsg)
    CU_ALLOC(rrcMsg->uE_CapabilityRAT_ContainerList, sizeof(UE_CapabilityRAT_ContainerList_t));
    if(!rrcMsg->uE_CapabilityRAT_ContainerList)
    {
-      DU_LOG(" F1AP : Memory allocation for CUtoDURRCInformation_ExtIEs failed");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation for CUtoDURRCInformation_ExtIEs failed");
       return RFAILED;
    }
    ret = fillUeCapRatContList(rrcMsg->uE_CapabilityRAT_ContainerList);
@@ -6106,7 +6106,7 @@ uint8_t fillCuToDuContainer(CUtoDURRCInformation_t *rrcMsg)
 
       if(rrcMsg->iE_Extensions->list.array == NULLP)
       {
-	 DU_LOG(" F1AP : Memory allocation for CUtoDURRCInformation_ExtIEs failed");
+	 DU_LOG("\nERROR  -->  F1AP : Memory allocation for CUtoDURRCInformation_ExtIEs failed");
 	 ret = RFAILED;
       }
 
@@ -6175,7 +6175,7 @@ void FreeCuToDuInfo(CUtoDURRCInformation_t *rrcMsg)
 		     }
 		     break;
 		  default:
-		     DU_LOG("\nF1AP:Invalid Event type %ld at FreeCuToDuInfo()", \
+		     DU_LOG("\nERROR  -->  F1AP : Invalid Event type %ld at FreeCuToDuInfo()", \
 			   rrcMsg->iE_Extensions->list.array[idx]->id);
 		     break;
 	       }
@@ -6227,12 +6227,12 @@ uint8_t BuildAndSendUeContextSetupReq(uint8_t cuUeF1apId, uint8_t duUeF1apId, \
    uint8_t ret1;
    while(true)
    {
-      DU_LOG("\n F1AP : Building UE Context Setup Request\n");
+      DU_LOG("\nINFO  -->  F1AP : Building UE Context Setup Request\n");
 
       CU_ALLOC(f1apMsg, sizeof(F1AP_PDU_t));
       if(f1apMsg == NULLP)
       {
-	 DU_LOG(" F1AP : Memory allocation for F1AP-PDU failed");
+	 DU_LOG("\nERROR  -->  F1AP : Memory allocation for F1AP-PDU failed");
 	 break;
       }
 
@@ -6240,7 +6240,7 @@ uint8_t BuildAndSendUeContextSetupReq(uint8_t cuUeF1apId, uint8_t duUeF1apId, \
       CU_ALLOC(f1apMsg->choice.initiatingMessage, sizeof(InitiatingMessage_t));
       if(f1apMsg->choice.initiatingMessage == NULLP)
       {
-	 DU_LOG(" F1AP : Memory allocation for	F1AP-PDU failed");
+	 DU_LOG("\nERROR  -->  F1AP : Memory allocation for	F1AP-PDU failed");
 	 break;
       }
 
@@ -6262,7 +6262,7 @@ uint8_t BuildAndSendUeContextSetupReq(uint8_t cuUeF1apId, uint8_t duUeF1apId, \
 
       if(ueSetReq->protocolIEs.list.array == NULLP)
       {
-	 DU_LOG(" F1AP : Memory allocation for UE Context SetupRequest failed");
+	 DU_LOG("\nERROR  -->  F1AP : Memory allocation for UE Context SetupRequest failed");
 	 break;
       }
 
@@ -6388,7 +6388,7 @@ uint8_t BuildAndSendUeContextSetupReq(uint8_t cuUeF1apId, uint8_t duUeF1apId, \
 	    ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.size);
       if(!ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf)
       {
-	 DU_LOG(" F1AP : Memory allocation for BuildAndSendUeContextSetupReq failed");
+	 DU_LOG("\nERROR  -->  F1AP : Memory allocation for BuildAndSendUeContextSetupReq failed");
 	 break;
       }
       memset(ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf, 0, bufLen);
@@ -6418,7 +6418,7 @@ uint8_t BuildAndSendUeContextSetupReq(uint8_t cuUeF1apId, uint8_t duUeF1apId, \
 	    ueSetReq->protocolIEs.list.array[idx]->value.choice.BitRate.size);
       if(!ueSetReq->protocolIEs.list.array[idx]->value.choice.BitRate.buf)
       {
-	 DU_LOG(" F1AP : Failed to allocate memory for Bit Rate in BuildAndSendUeContextSetupReq()");
+	 DU_LOG("\nERROR  -->  F1AP : Failed to allocate memory for Bit Rate in BuildAndSendUeContextSetupReq()");
 	 break;
       }
       memset(ueSetReq->protocolIEs.list.array[idx]->value.choice.BitRate.buf, 0, bufLen);
@@ -6434,23 +6434,23 @@ uint8_t BuildAndSendUeContextSetupReq(uint8_t cuUeF1apId, uint8_t duUeF1apId, \
       /* Encode results */
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-	 DU_LOG( "\n F1AP : Could not encode UE Context Setup Request structure (at %s)\n",\
+	 DU_LOG( "\nERROR  -->  F1AP : Could not encode UE Context Setup Request structure (at %s)\n",\
 	       encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
 	 break;
       }
       else
       {
-	 DU_LOG("\n F1AP : Created APER encoded buffer for UE Context Setup Request\n");
+	 DU_LOG("\nDEBUG  -->  F1AP : Created APER encodedbuffer for UE Context Setup Request\n");
 	 for(int i=0; i< encBufSize; i++)
 	 {
-	    printf("%x",encBuf[i]);
+	    DU_LOG("%x",encBuf[i]);
 	 }
       }
 
       /* Sending  msg  */
       if(SendF1APMsg(CU_APP_MEM_REG,CU_POOL)	!=	ROK)
       {
-	 DU_LOG("\n F1AP : Sending UE Context Setup Request Failed");
+	 DU_LOG("\nERROR  -->  F1AP : Sending UE Context Setup Request Failed");
 	 break;
       }
       ret = ROK;
@@ -6511,7 +6511,7 @@ uint8_t procUlRrcMsg(F1AP_PDU_t *f1apMsg)
 	       CU_ALLOC(rrcContainer, rrcContLen)
 		  if(!rrcContainer)
 		  {
-		     DU_LOG("\nCU_STUB: Failed to allocated memory in procUlRrcMsg");
+		     DU_LOG("\nERROR  -->  F1AP : Failed to allocated memory in procUlRrcMsg");
 		     return RFAILED;
 		  }
 	       memcpy(rrcContainer, ulRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf,\
@@ -6520,7 +6520,7 @@ uint8_t procUlRrcMsg(F1AP_PDU_t *f1apMsg)
 	    }
 
 	 default:
-	    DU_LOG("\n Invalid Event %ld", ulRrcMsg->protocolIEs.list.array[idx]->id);
+	    DU_LOG("\nERROR  -->  F1AP : Invalid Event %ld", ulRrcMsg->protocolIEs.list.array[idx]->id);
 	    break;
       }
    }
@@ -6530,12 +6530,12 @@ uint8_t procUlRrcMsg(F1AP_PDU_t *f1apMsg)
       rrcMsgType = setDlRRCMsgType();
       if(rrcMsgType == REGISTRATION_ACCEPT)
       {
-	 DU_LOG("\nF1AP: Sending DL RRC MSG for RRC Registration Accept"); 
+	 DU_LOG("\nINFO  -->  F1AP: Sending DL RRC MSG for RRC Registration Accept"); 
 	 ret = BuildAndSendDLRRCMessageTransfer(srbId, rrcMsgType);
       }
       if(rrcMsgType == UE_CONTEXT_SETUP_REQ)
       {
-	 DU_LOG("\nF1AP: Sending Ue Context Setup Req"); 
+	 DU_LOG("\nINFO  -->  F1AP: Sending Ue Context Setup Req"); 
 	 ret = BuildAndSendUeContextSetupReq(cuUeF1apId, duUeF1apId,\
 	       rrcContLen, rrcContainer);
       }
@@ -6546,7 +6546,7 @@ uint8_t procUlRrcMsg(F1AP_PDU_t *f1apMsg)
 	 rrcMsgType = setDlRRCMsgType();
 	 if(rrcMsgType == RRC_RECONFIG)
 	 {
-	    DU_LOG("\nF1AP: Sending DL RRC MSG for RRC Reconfig");
+	    DU_LOG("\nINFO  -->  F1AP: Sending DL RRC MSG for RRC Reconfig");
 	    BuildAndSendDLRRCMessageTransfer(srbId, rrcMsgType);
 	 }
       }
@@ -6621,14 +6621,14 @@ uint8_t BuildAndSendF1ResetAck()
    F1AP_PDU_t             *f1apMsg = NULL;
    ResetAcknowledge_t     *f1ResetAck = NULLP;
    asn_enc_rval_t         encRetVal;
-   DU_LOG("\nF1AP : Building F1 Reset Acknowledgment \n");
+   DU_LOG("\nINFO  -->  F1AP : Building F1 Reset Acknowledgment \n");
 
    do{
       /* Allocate the memory for F1ResetRequest_t */
       CU_ALLOC(f1apMsg, sizeof(F1AP_PDU_t));
       if(f1apMsg == NULLP)
       {
-	 DU_LOG("\nF1AP : Memory allocation for F1AP-PDU failed");
+	 DU_LOG("\nERROR  -->  F1AP : Memory allocation for F1AP-PDU failed");
 	 break;
       }
 
@@ -6637,7 +6637,7 @@ uint8_t BuildAndSendF1ResetAck()
       CU_ALLOC(f1apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcome_t));
       if(f1apMsg->choice.successfulOutcome == NULLP)
       {
-	 DU_LOG("\nF1AP : Memory allocation for F1AP-PDU failed");
+	 DU_LOG("\nERROR  -->  F1AP : Memory allocation for F1AP-PDU failed");
 	 break;
       }
 
@@ -6654,7 +6654,7 @@ uint8_t BuildAndSendF1ResetAck()
       CU_ALLOC(f1ResetAck->protocolIEs.list.array, f1ResetAck->protocolIEs.list.size ); 
       if(f1ResetAck->protocolIEs.list.array == NULLP) 
       {
-	 DU_LOG("\nF1AP : Memory allocation for F1ResetAckIEs failed");
+	 DU_LOG("\nERROR  -->  F1AP : Memory allocation for F1ResetAckIEs failed");
 	 break;
       }
 
@@ -6683,22 +6683,22 @@ uint8_t BuildAndSendF1ResetAck()
       /* Check encode results */
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-	 DU_LOG("\nF1AP : Could not encode F1ResetAck structure (at %s)\n",\
+	 DU_LOG("\nERROR  -->  F1AP : Could not encode F1ResetAck structure (at %s)\n",\
 	       encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
 	 break;
       }
       else
       {
-	 DU_LOG("\nF1AP : Created APER encoded buffer for F1ResetAck \n");
+	 DU_LOG("\nDEBUG  -->  F1AP : Created APER encodedbuffer for F1ResetAck \n");
 	 for(int i=0; i< encBufSize; i++)
 	 {
-	    printf("%x",encBuf[i]);
+	    DU_LOG("%x",encBuf[i]);
 	 }
       }
       /* Sending msg */
       if(SendF1APMsg(CU_APP_MEM_REG, CU_POOL) != ROK)
       {
-	 DU_LOG("\nF1AP : Sending F1 Reset Response failed");
+	 DU_LOG("\nERROR  -->  F1AP : Sending F1 Reset Response failed");
 	 break;
       }
 
@@ -6769,7 +6769,7 @@ uint8_t BuildUlTnlInfoforDrb2(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
    CU_ALLOC(ulInfo->list.array,ulInfo->list.size);
    if(ulInfo->list.array == NULLP)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildUlTnlInfoforDrb2");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildUlTnlInfoforDrb2");
       return RFAILED;
    }
    for(arrIdx=0; arrIdx<ulCnt; arrIdx++)
@@ -6777,7 +6777,7 @@ uint8_t BuildUlTnlInfoforDrb2(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
       CU_ALLOC(ulInfo->list.array[arrIdx],sizeof(ULUPTNLInformation_ToBeSetup_Item_t));
       if(ulInfo->list.array[arrIdx] == NULLP)
       {
-         DU_LOG("\nF1AP : Memory allocation failed in BuildUlTnlInfoforDrb2");
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildUlTnlInfoforDrb2");
 	 return RFAILED;
       }
    }
@@ -6791,7 +6791,7 @@ uint8_t BuildUlTnlInfoforDrb2(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
 	 sizeof(GTPTunnel_t));
    if(ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel == NULLP)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildUlTnlInfoforDrb2");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildUlTnlInfoforDrb2");
       return RFAILED;
    }
    ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->\
@@ -6802,7 +6802,7 @@ uint8_t BuildUlTnlInfoforDrb2(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
    if(ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->\
 	 transportLayerAddress.buf == NULLP)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildUlTnlInfoforDrb2");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildUlTnlInfoforDrb2");
       return RFAILED;
    }
    
@@ -6826,7 +6826,7 @@ uint8_t BuildUlTnlInfoforDrb2(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
    if(ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf\
 	 == NULLP)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildUlTnlInfoforDrb2");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildUlTnlInfoforDrb2");
       return RFAILED;
    }
    ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->\
@@ -6961,7 +6961,7 @@ uint8_t FillDrb2Item(DRBs_ToBeSetupMod_Item_t *drbItem)
 	 CU_ALLOC(drbItem->qoSInformation.choice.eUTRANQoS, sizeof(EUTRANQoS_t));
 	 if(drbItem->qoSInformation.choice.eUTRANQoS)
 	 {  
-	    DU_LOG("\nF1AP : Memory allocation failed in FillDrb2Item");
+	    DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in FillDrb2Item");
 	    return RFAILED;
 	 }
 	 drbItem->qoSInformation.choice.eUTRANQoS->qCI = QCI;
@@ -6981,7 +6981,7 @@ uint8_t FillDrb2Item(DRBs_ToBeSetupMod_Item_t *drbItem)
 	 CU_ALLOC(drbItem->qoSInformation.choice.choice_extension,sizeof(QoSInformation_ExtIEs_t));
 	 if(drbItem->qoSInformation.choice.choice_extension == NULLP)
 	 {
-	    DU_LOG("\nF1AP : Memory allocation failed in FillDrb2Item"); 
+	    DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in FillDrb2Item"); 
 	    return RFAILED;
 	 }
 
@@ -6991,7 +6991,7 @@ uint8_t FillDrb2Item(DRBs_ToBeSetupMod_Item_t *drbItem)
 	 ret =  BuildQOSInfo(&drbItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS);
 	 if(ret != ROK)
 	 {
-	    DU_LOG("\nF1AP : BuildQOSInfo failed");
+	    DU_LOG("\nERROR  -->  F1AP : BuildQOSInfo failed");
 	    return RFAILED;
 	 }
 	 
@@ -7000,7 +7000,7 @@ uint8_t FillDrb2Item(DRBs_ToBeSetupMod_Item_t *drbItem)
 	       choice_extension->value.choice.DRB_Information.sNSSAI);
 	 if(ret != ROK)
 	 {
-	    DU_LOG("\nF1AP : BuildSNSSAI failed");
+	    DU_LOG("\nERROR  -->  F1AP : BuildSNSSAI failed");
 	    return RFAILED;
 	 }
 	 
@@ -7009,7 +7009,7 @@ uint8_t FillDrb2Item(DRBs_ToBeSetupMod_Item_t *drbItem)
 	       choice_extension->value.choice.DRB_Information.flows_Mapped_To_DRB_List);
 	 if(ret != ROK)
 	 {
-	    DU_LOG("\nF1AP : BuildFlowsMap failed");
+	    DU_LOG("\nERROR  -->  F1AP : BuildFlowsMap failed");
 	    return RFAILED;
 	 }
       }
@@ -7019,7 +7019,7 @@ uint8_t FillDrb2Item(DRBs_ToBeSetupMod_Item_t *drbItem)
    ret = BuildUlTnlInfoforDrb2(&drbItem->uLUPTNLInformation_ToBeSetup_List);
    if(ret != ROK)
    {
-      DU_LOG("\nF1AP : BuildUlTnlInfoforDrb2 failed");
+      DU_LOG("\nERROR  -->  F1AP : BuildUlTnlInfoforDrb2 failed");
       return RFAILED;
    }
 
@@ -7030,7 +7030,7 @@ uint8_t FillDrb2Item(DRBs_ToBeSetupMod_Item_t *drbItem)
    CU_ALLOC(drbItem->uLConfiguration,sizeof(ULConfiguration_t));
    if(drbItem->uLConfiguration == NULLP)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in FillDrb2Item");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in FillDrb2Item");
       return RFAILED;
    }
    drbItem->uLConfiguration->uLUEConfiguration = ULUEConfiguration_no_data;
@@ -7061,7 +7061,7 @@ uint8_t FillDrbItemList(struct DRBs_ToBeSetupMod_ItemIEs *drbItemIe)
 
    if(FillDrb2Item(&(drbItemIe->value.choice.DRBs_ToBeSetupMod_Item)) != ROK)
    {
-      DU_LOG("\nF1AP : FillDrb2Item failed"); 
+      DU_LOG("\nERROR  -->  F1AP : FillDrb2Item failed"); 
       return RFAILED;
    }
    return ROK;
@@ -7136,7 +7136,7 @@ uint8_t BuildDrbToBeSetupModList(DRBs_ToBeSetupMod_List_t *drbSet)
    CU_ALLOC(drbSet->list.array, drbSet->list.size);
    if(drbSet->list.array == NULLP)
    {
-      DU_LOG("\nF1AP : Memory allocation failed in BuildDrbToBeSetupModList");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildDrbToBeSetupModList");
       return  RFAILED;
    }
    for(arrIdx=0; arrIdx<drbCnt; arrIdx++)
@@ -7144,7 +7144,7 @@ uint8_t BuildDrbToBeSetupModList(DRBs_ToBeSetupMod_List_t *drbSet)
       CU_ALLOC(drbSet->list.array[arrIdx], sizeof(DRBs_ToBeSetupMod_ItemIEs_t));
       if(drbSet->list.array[arrIdx] == NULLP)
       {
-         DU_LOG("\nF1AP : Memory allocation failed in BuildDrbToBeSetupModList");
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildDrbToBeSetupModList");
 	 return  RFAILED;
       }
    }
@@ -7153,7 +7153,7 @@ uint8_t BuildDrbToBeSetupModList(DRBs_ToBeSetupMod_List_t *drbSet)
    ret = FillDrbItemList(drbSet->list.array[arrIdx]);
    if(ret != ROK)
    {
-      DU_LOG("\nF1AP : FillDrbItemList failed");
+      DU_LOG("\nERROR  -->  F1AP : FillDrbItemList failed");
    }
 
    return ret;
@@ -7241,14 +7241,14 @@ uint8_t BuildAndSendUeContextModificationReq()
    UEContextModificationRequest_t *ueContextModifyReq = NULLP;
 
    asn_enc_rval_t         encRetVal;
-   DU_LOG("\nF1AP : Building Ue context modification request\n");
+   DU_LOG("\nINFO  -->  F1AP : Building Ue context modification request\n");
 
    while(1)
    {
       CU_ALLOC(f1apMsg, sizeof(F1AP_PDU_t));
       if(f1apMsg == NULLP)
       {
-	 DU_LOG("\nF1AP : Memory allocation for F1AP-PDU failed Ue context modification");
+	 DU_LOG("\nERROR  -->  F1AP : Memory allocation for F1AP-PDU failed Ue context modification");
 	 break;
       }
 
@@ -7257,7 +7257,7 @@ uint8_t BuildAndSendUeContextModificationReq()
       CU_ALLOC(f1apMsg->choice.initiatingMessage, sizeof(InitiatingMessage_t));
       if(f1apMsg->choice.initiatingMessage == NULLP)
       {
-	 DU_LOG("\nF1AP : Memory allocation for F1AP-PDU failed Ue context modification");
+	 DU_LOG("\nERROR  -->  F1AP : Memory allocation for F1AP-PDU failed Ue context modification");
 	 break;
       }
       f1apMsg->choice.initiatingMessage->procedureCode = ProcedureCode_id_UEContextModification;
@@ -7274,7 +7274,7 @@ uint8_t BuildAndSendUeContextModificationReq()
       CU_ALLOC(ueContextModifyReq->protocolIEs.list.array, ueContextModifyReq->protocolIEs.list.size);
       if(ueContextModifyReq->protocolIEs.list.array == NULLP)
       { 
-	 DU_LOG("\nF1AP : Memory allocation for UE context modifcation Request failed");
+	 DU_LOG("\nERROR  -->  F1AP : Memory allocation for UE context modifcation Request failed");
 	 break;
       }
 
@@ -7283,7 +7283,7 @@ uint8_t BuildAndSendUeContextModificationReq()
 	 CU_ALLOC(ueContextModifyReq->protocolIEs.list.array[ieIdx], sizeof(UEContextModificationRequest_t));
 	 if(ueContextModifyReq->protocolIEs.list.array[ieIdx] == NULLP)
 	 {
-	    DU_LOG("\nF1AP : Memory allocation for UE context modifcation Request failed");
+	    DU_LOG("\nERROR  -->  F1AP : Memory allocation for UE context modifcation Request failed");
 	    break;
 	 }
       }
@@ -7325,22 +7325,22 @@ uint8_t BuildAndSendUeContextModificationReq()
       /* Encode results */
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-	 DU_LOG("\nF1AP : Could not encode ueContextModifyReq structure (at %s)\n",\
+	 DU_LOG("\nERROR  -->  F1AP : Could not encode ueContextModifyReq structure (at %s)\n",\
 	       encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
 	 break;
       }
       else
       {
-	 DU_LOG("\nF1AP : Created APER encoded buffer for ueContextModifyReq\n");
+	 DU_LOG("\nDEBUG  -->  F1AP : Created APER encodedbuffer for ueContextModifyReq\n");
 	 for(ieIdx=0; ieIdx< encBufSize; ieIdx++)
 	 {
-	    printf("%x",encBuf[ieIdx]);
+	    DU_LOG("%x",encBuf[ieIdx]);
 	 }
       }
 
       if(SendF1APMsg(CU_APP_MEM_REG, CU_POOL) != ROK)
       {
-	 DU_LOG("\nF1AP : Sending Ue context modification request  failed");
+	 DU_LOG("\nERROR  -->  F1AP : Sending Ue context modification request  failed");
 	 break;
       }
 
@@ -7378,7 +7378,7 @@ void F1APMsgHdlr(Buffer *mBuf)
    asn_dec_rval_t rval; /* Decoder return value */
    F1AP_PDU_t f1apasnmsg ;
 
-   DU_LOG("\nF1AP : Received F1AP message buffer");
+   DU_LOG("\nINFO  -->  F1AP : Received F1AP message buffer");
    ODU_PRINT_MSG(mBuf, 0,0);
 
    /* Copy mBuf into char array to decode it */
@@ -7387,19 +7387,19 @@ void F1APMsgHdlr(Buffer *mBuf)
 
    if(recvBuf == NULLP)
    {
-      DU_LOG("\nF1AP : Memory allocation failed");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed");
       return;
    }
    if(ODU_COPY_MSG_TO_FIX_BUF(mBuf, 0, recvBufLen, (Data *)recvBuf, &copyCnt) != ROK)
    {
-      DU_LOG("\nF1AP : Failed while copying %d", copyCnt);
+      DU_LOG("\nERROR  -->  F1AP : Failed while copying %d", copyCnt);
       return;
    }
 
-   printf("\nF1AP : Received flat buffer to be decoded : ");
+   DU_LOG("\nDEBUG  -->  F1AP : Received flat buffer to be decoded : ");
    for(i=0; i< recvBufLen; i++)
    {
-      printf("%x",recvBuf[i]);
+      DU_LOG("%x",recvBuf[i]);
    }
 
    /* Decoding flat buffer into F1AP messsage */
@@ -7411,10 +7411,10 @@ void F1APMsgHdlr(Buffer *mBuf)
 
    if(rval.code == RC_FAIL || rval.code == RC_WMORE)
    {
-      DU_LOG("\nF1AP : ASN decode failed");
+      DU_LOG("\nERROR  -->  F1AP : ASN decode failed");
       return;
    }
-   printf("\n");
+   DU_LOG("\n");
    xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
 
    switch(f1apMsg->present)
@@ -7425,47 +7425,48 @@ void F1APMsgHdlr(Buffer *mBuf)
 	    {
 	       case InitiatingMessage__value_PR_Reset:
 		  {
-		     DU_LOG("\nF1AP : F1 reset request received ");
+		     DU_LOG("\nINFO  -->  F1AP : F1 reset request received ");
 		     BuildAndSendF1ResetAck();
 		     break;
 		  }
 
 	       case InitiatingMessage__value_PR_F1SetupRequest:
 		  {
-		     DU_LOG("\nF1AP : F1 setup request received");
+		     DU_LOG("\nINFO  -->  F1AP : F1 setup request received");
 		     BuildAndSendF1SetupRsp();
 		     break;
 		  }
 
 	       case InitiatingMessage__value_PR_GNBDUConfigurationUpdate:
 		  {
-		     DU_LOG("\nF1AP : GNB-DU config update received");
+		     DU_LOG("\nINFO  -->  F1AP : GNB-DU config update received");
 		     BuildAndSendDUUpdateAck();
-		     DU_LOG("\nF1AP : Sending F1 reset request");
+		     DU_LOG("\nINFO  -->  F1AP : Sending F1 reset request");
 		     BuildAndSendF1ResetReq();
 		     break;
 		  }
 	       case InitiatingMessage__value_PR_InitialULRRCMessageTransfer:
 		  {
-		     DU_LOG("\nF1AP : Received InitialULRRCMessageTransfer");
+		     DU_LOG("\nINFO  -->  F1AP : Received InitialULRRCMessageTransfer");
 		     procInitULRRCMsg(f1apMsg);
 		     break;
 		  }
 	       case InitiatingMessage__value_PR_ULRRCMessageTransfer:
 		  {
-		     DU_LOG("\nF1AP : Received ULRRCMessageTransfer");
+		     DU_LOG("\nINFO  -->  F1AP : Received ULRRCMessageTransfer");
 		     procUlRrcMsg(f1apMsg);
 		     break;
 		  }
 
 	       case InitiatingMessage__value_PR_RRCDeliveryReport:
 		  {
-		     DU_LOG("\nF1AP : Received RRC delivery report");
+		     DU_LOG("\nINFO  -->  F1AP : Received RRC delivery report");
 		     break;
 		  }
 	       default:
 		  {
-		     DU_LOG("\nF1AP : Invalid type of intiating message [%d]",f1apMsg->choice.initiatingMessage->value.present);
+		     DU_LOG("\nERROR  -->  F1AP : Invalid type of intiating message [%d]",\
+		     f1apMsg->choice.initiatingMessage->value.present);
 		     return;
 		  }
 	    }/* End of switch(initiatingMessage) */
@@ -7478,18 +7479,18 @@ void F1APMsgHdlr(Buffer *mBuf)
 	    {
 	       case SuccessfulOutcome__value_PR_ResetAcknowledge:
 		  {
-		     DU_LOG("\nF1Reset Acknowledgement is received successfully ");
+		     DU_LOG("\nINFO  -->  F1Reset Acknowledgement is received successfully ");
 		     break;
 		  }
 	       case SuccessfulOutcome__value_PR_UEContextSetupResponse:
 		  {
-		     DU_LOG("\nF1AP : UE ContextSetupResponse received");
+		     DU_LOG("\nINFO  -->  F1AP : UE ContextSetupResponse received");
 		     f1apMsgDb.dlRrcMsgCount++; /* keeping DL RRC Msg Count */
 		     break;
 		  }
 	       default:
 		  {
-		     DU_LOG("\nF1AP : Invalid type of successful outcome message [%d]",\
+		     DU_LOG("\nERROR  -->  F1AP : Invalid type of successful outcome message [%d]",\
 			   f1apMsg->choice.successfulOutcome->value.present);
 		     return;
 		  }
@@ -7498,7 +7499,7 @@ void F1APMsgHdlr(Buffer *mBuf)
 	 } 
       default:
 	 {
-	    DU_LOG("\nF1AP : Invalid type of f1apMsg->present [%d]",f1apMsg->present);
+	    DU_LOG("\nERROR  -->  F1AP : Invalid type of f1apMsg->present [%d]",f1apMsg->present);
 	    return;
 	 }
    }/* End of switch(f1apMsg->present) */

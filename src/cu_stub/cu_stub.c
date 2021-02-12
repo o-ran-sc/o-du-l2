@@ -64,7 +64,7 @@ void sctpNtfyInd(CmInetSctpNotification *ntfy)
 
 void init_log()
 {
-	openlog("CU_STUB",LOG_CONS | LOG_PID | LOG_NDELAY, LOG_LOCAL1);
+    openlog("CU_STUB",LOG_CONS | LOG_PID | LOG_NDELAY, LOG_LOCAL1);
 }
 /*******************************************************************
  *
@@ -92,7 +92,7 @@ uint8_t tst()
    pthread_attr_t attr;
 
    init_log();   
-   DU_LOG("\nStarting CU_STUB\n");
+   DU_LOG("\nINFO   -->  CU_STUB : Starting CU_STUB\n");
 
    /* Start thread to receive console input */
    pthread_attr_init(&attr);
@@ -102,7 +102,7 @@ uint8_t tst()
    retVal = pthread_create(&conThrdId, &attr, cuConsoleHandler, NULLP);
    if(retVal != 0)
    {
-      DU_LOG("\nCU_STUB: Thread creation failed. Cause %d", retVal);
+      DU_LOG("\nERROR  -->  CU_STUB :  Thread creation failed. Cause %d", retVal);
    }
    pthread_attr_destroy(&attr);
 
@@ -144,7 +144,7 @@ void readCuCfg()
 {
    uint32_t ipv4_du, ipv4_cu;
 
-   DU_LOG("\nReading CU configurations");
+   DU_LOG("\nDEBUG  -->  CU_STUB : Reading CU configurations");
 
    cmInetAddr((S8*)DU_IP_V4_ADDR, &ipv4_du);
    cmInetAddr((S8*)CU_IP_V4_ADDR, &ipv4_cu);
@@ -211,7 +211,7 @@ void *cuConsoleHandler(void *args)
       if((ch = getchar()) == 'd')
       {
          /* Start Pumping data from CU to DU */
-         DU_LOG("\nEGTP: Sending DL User Data");
+         DU_LOG("\nDEBUG  -->  EGTP: Sending DL User Data");
          cuEgtpDatReq();      
       } 
    }
