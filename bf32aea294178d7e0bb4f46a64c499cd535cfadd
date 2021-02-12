@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ef58c087_f2a4767f",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-12T08:43:44Z",
+      "side": 1,
+      "message": "SCH is there twice",
+      "revId": "bf32aea294178d7e0bb4f46a64c499cd535cfadd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
