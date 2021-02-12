@@ -55,7 +55,7 @@ uint8_t packMacCellCfg(Pst *pst, MacCellCfg *macCellCfg)
       /* pack the address of the structure */
       CMCHKPK(oduPackPointer,(PTR)macCellCfg, mBuf);
 
-      DU_LOG("\nDU-APP : MAC CELL config sent");
+      DU_LOG("\nDEBUG  -->  DU-APP : MAC CELL config sent");
       return ODU_POST_TASK(pst,mBuf);
    } 
    return ROK;
@@ -206,7 +206,7 @@ uint8_t packMacCellStart(Pst *pst, OduCellId *cellId)
 
       if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
-	 DU_LOG("\nDU APP : Memory allocation failed for cell start req pack");
+	 DU_LOG("\nERROR  --> DU APP : Memory allocation failed for cell start req pack");
 	 return RFAILED;
       }
 
@@ -284,7 +284,7 @@ uint8_t packMacCellStop(Pst *pst, OduCellId  *cellId)
 
       if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
-	 DU_LOG("\nDU APP : Memory allocation failed for cell stop req pack");
+	 DU_LOG("\nERROR  --> DU APP : Memory allocation failed for cell stop req pack");
 	 return RFAILED;
       }
 
@@ -356,7 +356,7 @@ uint8_t packMacCellUpInd(Pst *pst, OduCellId *cellId)
 
    if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
    {
-      DU_LOG("\nDU APP : Memory allocation failed for packMacCellUpInd");
+      DU_LOG("\nERROR  --> DU APP : Memory allocation failed for packMacCellUpInd");
       return RFAILED;
    }
 
@@ -446,14 +446,14 @@ uint8_t packMacStopInd(Pst *pst, OduCellId *cellId)
 
    if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
    {
-      DU_LOG("\nDU APP : Memory allocation failed for stop Ind pack");
+      DU_LOG("\nERROR  --> DU APP : Memory allocation failed for stop Ind pack");
       return RFAILED;
    }
 
    if(pst->selector == ODU_SELECTOR_LC)
    {
       /*pack the payload here*/
-      DU_LOG("\nDU APP : Packed CellId");
+      DU_LOG("\nINFO   -->  DU APP : Packed CellId");
       CMCHKPK(oduUnpackUInt16, cellId->cellId, mBuf);
       CM_FREE_SHRABL_BUF(pst->region, pst->pool, cellId, sizeof(OduCellId));
       cellId = NULL;
@@ -542,7 +542,7 @@ uint8_t packMacUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo)
    {
       if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
-	 DU_LOG("\nMAC : Memory allocation failed at packMacUlCcchInd");
+	 DU_LOG("\nERROR  --> MAC : Memory allocation failed at packMacUlCcchInd");
 	 return RFAILED;
       }
       /* pack the address of the structure */
@@ -550,7 +550,7 @@ uint8_t packMacUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo)
    }
    else
    {
-      DU_LOG("\nMAC: Only LWLC supported for UL CCCH Ind ");
+      DU_LOG("\nDEBUG  -->  MAC: Only LWLC supported for UL CCCH Ind ");
       return RFAILED;
    }
 
@@ -589,7 +589,7 @@ uint8_t unpackMacUlCcchInd(DuMacUlCcchInd func, Pst *pst, Buffer *mBuf)
    else
    {
       /* Nothing to do for other selectors */
-      DU_LOG("\n Only LWLC supported for UL CCCH Ind ");
+      DU_LOG("\nDEBUG  -->  MAC : Only LWLC supported for UL CCCH Ind ");
       ODU_PUT_MSG_BUF(mBuf);
    }
    return RFAILED;
@@ -621,7 +621,7 @@ uint8_t packMacDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo)
    {
       if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
-	 DU_LOG("\nMAC : Memory allocation failed at packMacDlCcchInd");
+	 DU_LOG("\nERROR  --> MAC : Memory allocation failed at packMacDlCcchInd");
 	 return RFAILED;
       }
       /* pack the address of the structure */
@@ -629,7 +629,7 @@ uint8_t packMacDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo)
    }
    else
    {
-      DU_LOG("\nDU APP: Only LWLC supported for DL CCCH Ind ");
+      DU_LOG("\nDEBUG  -->  DU APP : Only LWLC supported for DL CCCH Ind ");
       return RFAILED;
    }
 
@@ -668,7 +668,7 @@ uint8_t unpackMacDlCcchInd(DuMacDlCcchInd func, Pst *pst, Buffer *mBuf)
    else
    {
       /* Nothing to do for other selectors */
-      DU_LOG("\n Only LWLC supported for DL CCCH Ind ");
+      DU_LOG("\nDEBUG  -->  DU APP : Only LWLC supported for DL CCCH Ind ");
       ODU_PUT_MSG_BUF(mBuf);
    }
 
@@ -701,7 +701,7 @@ uint8_t packDuMacUeCreateReq(Pst *pst, MacUeCfg *ueCfg)
    {
       if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
-	 DU_LOG("\nMAC : Memory allocation failed at packDuMacUeCreateReq");
+	 DU_LOG("\nERROR  --> MAC : Memory allocation failed at packDuMacUeCreateReq");
 	 return RFAILED;
       }
       /* pack the address of the structure */
@@ -709,7 +709,7 @@ uint8_t packDuMacUeCreateReq(Pst *pst, MacUeCfg *ueCfg)
    }
    else
    {
-      DU_LOG("\nMAC: Only LWLC supported for packDuMacUeCreateReq");
+      DU_LOG("\nDEBUG  -->  MAC: Only LWLC supported for packDuMacUeCreateReq");
       return RFAILED;
    }
 
@@ -748,7 +748,7 @@ uint8_t unpackMacUeCreateReq(DuMacUeCreateReq func, Pst *pst, Buffer *mBuf)
    else
    {
       /* Nothing to do for other selectors */
-      DU_LOG("\n Only LWLC supported for UE Create Request ");
+      DU_LOG("\nDEBUG  -->  DU APP : Only LWLC supported for UE Create Request ");
       ODU_PUT_MSG_BUF(mBuf);
    }
 
@@ -779,7 +779,7 @@ uint8_t packDuMacUeCfgRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
    {
       if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
-	 DU_LOG("\nMAC : Memory allocation failed at packDuMacUeCfgRsp");
+	 DU_LOG("\nERROR  --> MAC : Memory allocation failed at packDuMacUeCfgRsp");
 	 return RFAILED;
       }
       /* pack the address of the structure */
@@ -787,7 +787,7 @@ uint8_t packDuMacUeCfgRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
    }
    else
    {
-      DU_LOG("\nMAC: Only LWLC supported for packDuMacUeCfgRsp");
+      DU_LOG("\nDEBUG  -->  MAC: Only LWLC supported for packDuMacUeCfgRsp");
       return RFAILED;
    }
 
@@ -851,7 +851,7 @@ uint8_t packDuMacUeReconfigReq(Pst *pst, MacUeCfg *ueCfg)
    {
       if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
-	 DU_LOG("\nMAC : Memory allocation failed at packDuMacUeReconfigReq");
+	 DU_LOG("\nERROR  --> MAC : Memory allocation failed at packDuMacUeReconfigReq");
 	 return RFAILED;
       }
       /* pack the address of the structure */
@@ -859,7 +859,7 @@ uint8_t packDuMacUeReconfigReq(Pst *pst, MacUeCfg *ueCfg)
    }
    else
    {
-      DU_LOG("\nMAC: Only LWLC supported for packDuMacUeReconfigReq");
+      DU_LOG("\nDEBUG  -->  MAC: Only LWLC supported for packDuMacUeReconfigReq");
       return RFAILED;
    }
 
@@ -897,7 +897,7 @@ uint8_t unpackMacUeReconfigReq(DuMacUeReconfigReq func, Pst *pst, Buffer *mBuf)
    else
    {
       /* Nothing to do for other selectors */
-      DU_LOG("\n Only LWLC supported for UE Create Request ");
+      DU_LOG("\nDEBUG  -->  DU APP : Only LWLC supported for UE Create Request ");
       ODU_PUT_MSG_BUF(mBuf);
    }
 
