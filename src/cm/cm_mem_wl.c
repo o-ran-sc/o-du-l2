@@ -50,6 +50,7 @@ The following functions are provided in this file.
 #include "ssi.h"           /* system services */
 #include "cm_mem.h"        /* Common memory manager cm_mem_c_001.main_15 */ 
 #include <stdlib.h>
+#include "du_log.h"
 #ifdef SS_MEM_LEAK_STS
 #include <stdio.h>
 #include <string.h>
@@ -905,7 +906,7 @@ Data  **ptr          /* Reference to pointer for which need to be allocate */
 
    if((SLock(&iccAllocFreeLock)) != ROK)
    {
-      printf("cmIccAllocWithLock: Failed to get the ICC lock\n");
+      DU_LOG("\nERROR  -->  cmIccAllocWithLock: Failed to get the ICC lock\n");
       return RFAILED;
    }
 
@@ -913,15 +914,15 @@ Data  **ptr          /* Reference to pointer for which need to be allocate */
 
    if((SUnlock(&iccAllocFreeLock)) != ROK)
    {
-      printf("cmIccAllocWithLock: Failed to unlock the ICC lock\n");
+      DU_LOG("\nERROR  --> cmIccAllocWithLock: Failed to unlock the ICC lock\n");
       return RFAILED;
    }
 
    if ((memPtr) == NULLP)
    {
       int *p = 0;
-      printf("\n*****************Region(%d) is out of memory size = %ld******************\n",regCb->region, *size);
-      printf("Exiting...\n");
+      DU_LOG("\nERROR  --> *****************Region(%d) is out of memory size = %ld******************\n",regCb->region, *size);
+      DU_LOG("\nERROR  --> Exiting...\n");
       /* crash here */
       *p = 10;
    }
@@ -929,7 +930,7 @@ Data  **ptr          /* Reference to pointer for which need to be allocate */
 #ifdef T2K_MEM_LEAK_DBG
    if(((uint32_t)(memPtr - T2K_MEM_LEAK_START_ADDR) & 0xff) != 0)
    {
-      printf("Address returned is %p size = %ld\n",memPtr,*size);
+      DU_LOG("\nDEBUG  --> Address returned is %p size = %ld\n",memPtr,*size);
    }
 
    InsertToT2kMemLeakInfo((uint32_t)memPtr,*size,line,file);
@@ -984,7 +985,7 @@ Size    size        /* Size of the block */
 
    if((SLock(&iccAllocFreeLock)) != ROK)
    {
-      printf("cmIccFreeWithLock: Failed to get the ICC lock\n");
+      DU_LOG("\nERROR  --> cmIccFreeWithLock: Failed to get the ICC lock\n");
       return RFAILED;
    }
 
@@ -996,7 +997,7 @@ Size    size        /* Size of the block */
 
    if((SUnlock(&iccAllocFreeLock)) != ROK)
    {
-      printf("cmIccFreeWithLock: Failed to unlock the ICC lock\n");
+      DU_LOG("\nERROR  --> cmIccFreeWithLock: Failed to unlock the ICC lock\n");
       return RFAILED;
    }
 
@@ -1050,15 +1051,15 @@ Data  **ptr          /* Reference to pointer for which need to be allocate */
    if ((memPtr) == NULLP)
    {
       int *p = 0;
-      printf("\n*****************Region(%d) is out of memory size = %ld******************\n",regCb->region, *size);
-      printf("Exiting...\n");
+      DU_LOG("\nERROR  --> *****************Region(%d) is out of memory size = %ld******************\n",regCb->region, *size);
+      DU_LOG("\nERROR  --> Exiting...\n");
       /* crash here */
       *p = 10;
    }
 #ifdef T2K_MEM_LEAK_DBG
    if(((uint32_t)(memPtr - T2K_MEM_LEAK_START_ADDR) & 0xff) != 0)
    {
-      printf("Address returned is %p size = %ld\n",memPtr,*size);
+       DU_LOG("\nDEBUG  --> Address returned is %p size = %ld\n",memPtr,*size);
    }
   
    InsertToT2kMemLeakInfo((uint32_t)memPtr,*size,line,file);
@@ -1199,10 +1200,10 @@ CmMmDynRegCb   *regCb
 #endif
 #endif
 #endif
-   printf(" %s \n",regIccStr);
+   DU_LOG(" %s \n",regIccStr);
    regCb->iccHdl = TL_Open(regIccStr, 0);
 
-   printf("\nICC Region is %d\n",regCb->region);
+   DU_LOG("\nINFO  --> ICC Region is %d\n",regCb->region);
 
    /* Call SRegRegion to register the memory region with SSI */
    memset(&regInfo, 0, sizeof(regInfo));
@@ -1215,7 +1216,7 @@ CmMmDynRegCb   *regCb
       regInfo.regCb = regCb;
       if((SInitLock((&iccAllocFreeLock), SS_LOCK_MUTEX)) != ROK)
       {
-         printf("Failed to initialize the lock region lock\n");
+         DU_LOG("\nERROR  --> Failed to initialize the lock region lock\n");
       }
    }
    else
@@ -1339,7 +1340,7 @@ CmMmDynRegCb   *regCb
       regInfo.free  = cmDynFreeWithLock;
       if((SInitLock((&dynAllocFreeLock), SS_LOCK_MUTEX)) != ROK)
       {
-         printf("Failed to initialize the lock region lock\n");
+         DU_LOG("\nERROR  --> Failed to initialize the lock region lock\n");
       }
    }
    else
@@ -1725,13 +1726,13 @@ PTR              ptr
 
       tmpBtSize = backtrace(tmpBtArr, 10);
       strings = backtrace_symbols(tmpBtArr, tmpBtSize);
-      printf("**** Trying to free non allocated block BT is: \n");
+      DU_LOG("\nERROR  -->  Trying to free non allocated block BT is: \n");
       for(idx = 0; idx < tmpBtSize; idx++)
       {
-           printf("%s\n", strings[idx]);
+           DU_LOG("%s\n", strings[idx]);
       }
-      printf("*****************************************\n");
-      printf("Analysis from Array storing BT for freeing and allocation\n");
+      DU_LOG("*****************************************\n");
+      DU_LOG("\nINFO  --> Analysis from Array storing BT for freeing and allocation\n");
       cmAnalyseBtInfo(ptr, regionCb->region);
       SUnlock(&memDoubleFreeLock);
       return RFAILED;
@@ -1826,7 +1827,7 @@ Data  **ptr          /* Reference to pointer for which need to be allocate */
 
    if((SLock(&dynAllocFreeLock)) != ROK)
    {
-      printf("cmDynAllocWithLock: Failed to get the dyn lock\n");
+      DU_LOG("\nERROR  --> cmDynAllocWithLock: Failed to get the dyn lock\n");
       return RFAILED;
    }
 
@@ -1834,7 +1835,7 @@ Data  **ptr          /* Reference to pointer for which need to be allocate */
 
    if((SUnlock(&dynAllocFreeLock)) != ROK)
    {
-      printf("cmDynAllocWithLock: Failed to unlock the Dyn lock\n");
+      DU_LOG("\nERROR  --> cmDynAllocWithLock: Failed to unlock the Dyn lock\n");
       return RFAILED;
    }
  
@@ -1915,7 +1916,7 @@ Data  **ptr          /* Reference to pointer for which need to be allocate */
 #if (ERRCLASS & ERRCLS_DEBUG)
       if (regCb->mapTbl[idx].bktIdx == 0xFF)
       { 
-         printf("Failed to get the buffer of size %d\n", *size);
+         DU_LOG("\nERROR  --> Failed to get the buffer of size %d\n", *size);
          /* Some fatal error in the map table initialization. */
          return RFAILED;
       }
@@ -1943,9 +1944,9 @@ Data  **ptr          /* Reference to pointer for which need to be allocate */
       if(dynMemElem == NULLP)
       {
 #ifndef ALIGN_64BIT
-         printf("Failed to get the buffer of size %ld\n", *size);
+         DU_LOG("\nERROR  --> Failed to get the buffer of size %ld\n", *size);
 #else
-         printf("Failed to get the buffer of size %d\n", *size);
+         DU_LOG("\nERROR  --> Failed to get the buffer of size %d\n", *size);
 #endif
          return RFAILED;
       }
@@ -2002,9 +2003,9 @@ Data  **ptr          /* Reference to pointer for which need to be allocate */
 
    /* If the size is not matching, return failure to caller */
 #ifndef ALIGN_64BIT
-   printf("Failed to get the buffer of size %ld\n", *size);
+   DU_LOG("\nERROR  --> Failed to get the buffer of size %ld\n", *size);
 #else
-   printf("Failed to get the buffer of size %d\n", *size);
+   DU_LOG("\nERROR  --> Failed to get the buffer of size %d\n", *size);
 #endif
    return RFAILED;
    
@@ -2345,7 +2346,7 @@ Data  **ptr
                if (g_overused[bktIdx] == 0 && OVERUSED(bkt))
                {
                   g_overused[bktIdx] = 1;
-                  /*printf("cmAlloc: bktIdx %u overused %u numAlloc %u\n", bktIdx, g_overused[bktIdx], bkt->numAlloc); */
+                  /*DU_LOG("\nERROR  --> cmAlloc: bktIdx %u overused %u numAlloc %u\n", bktIdx, g_overused[bktIdx], bkt->numAlloc); */
                }
             }
 
@@ -2634,12 +2635,12 @@ uint32_t   idx
            uint32_t i;
            char **strings;
            strings = backtrace_symbols( btInfo->btInfo[btIdx].btArr,btInfo->btInfo[btIdx].btSize);
-           printf("*** Last Allocation Region = %d PTR %x Timestamp sec = (%ld) usec = (%ld) ***\n", idx, ptr, btInfo->btInfo[btIdx].timeStamp.tv_sec, btInfo->btInfo[btIdx].timeStamp.tv_usec);
+           DU_LOG("\nINFO  --> Last Allocation Region = %d PTR %x Timestamp sec = (%ld) usec = (%ld) ***\n", idx, ptr, btInfo->btInfo[btIdx].timeStamp.tv_sec, btInfo->btInfo[btIdx].timeStamp.tv_usec);
            for (i=0; i < btInfo->btInfo[btIdx].btSize; i++)
            {
-              printf("%s\n", strings[i]); 
+              DU_LOG("%s\n", strings[i]); 
            }
-           printf("*******************************************************\n");
+           DU_LOG("*******************************************************\n");
            
            free(strings);
          }
@@ -2684,7 +2685,7 @@ Size    size        /* Size of the block */
 
    if((SLock(&dynAllocFreeLock)) != ROK)
    {
-      printf("dynAllocWithLock: Failed to get the DYN lock\n");
+      DU_LOG("\nERROR  --> dynAllocWithLock: Failed to get the DYN lock\n");
       return RFAILED;
    }
 
@@ -2692,7 +2693,7 @@ Size    size        /* Size of the block */
 
    if((SUnlock(&dynAllocFreeLock)) != ROK)
    {
-      printf("dynAllocWithLock: Failed to unlock the dyn lock\n");
+      DU_LOG("\nERROR  --> dynAllocWithLock: Failed to unlock the dyn lock\n");
       return RFAILED;
    }
 
@@ -2796,16 +2797,16 @@ Size    size        /* Size of the block */
 #ifdef SS_MEM_WL_DEBUG
    if (size > bkt->size)
    {
-      printf("Size = %d bucket size = %d\n", size, bkt->size);
+      DU_LOG("\nINFO  --> Size = %d bucket size = %d\n", size, bkt->size);
       exit(-1);
       bkt = &(regCb->bktTbl[bktIdx = regCb->mapTbl[++idx].bktIdx]);
    }
    if(size > bkt->size)
    {
-      printf("2nd time Size = %d bucket size = %d\n", size, bkt->size);
+      DU_LOG("\nINFO  --> 2nd time Size = %d bucket size = %d\n", size, bkt->size);
       exit(-1);
       uint8_t *tmpptr = NULLP;
-      printf("Bucket Size wrong \n");
+      DU_LOG("\nERROR  --> Bucket Size wrong \n");
       *tmpptr =  10;
    }
 #endif
@@ -2825,7 +2826,7 @@ Size    size        /* Size of the block */
    if ((tmpBktIdx != bktIdx) || (tmpVal != 0xde))
    {
       uint8_t *tmpptr = NULLP;
-      printf("bktIdx wrong \n");
+      DU_LOG("\nERROR  --> bktIdx wrong \n");
       *tmpptr =  10;
    }
 
@@ -3198,7 +3199,7 @@ Size    size
         if (g_overused[bktIdx] == 1 && !OVERUSED(bkt))
         {
            g_overused[bktIdx] = 0;
-           /*printf("cmFree: bktIdx %u overused %u numAlloc %u\n", bktIdx, g_overused[bktIdx], bkt->numAlloc); */
+           /*DU_LOG("\nINFO  --> cmFree: bktIdx %u overused %u numAlloc %u\n", bktIdx, g_overused[bktIdx], bkt->numAlloc); */
         }
       }
 /*  cm_mem_c_001.main_15 : Additions */
@@ -5080,7 +5081,7 @@ uint32_t    addr
              sprintf( prntBuf,"[bt] %s\n", funcNm[i]);
              SPrint(prntBuf);
        }
-       printf("\n==============================\n");
+       DU_LOG("\n==============================\n");
 /*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
 #ifdef SS_4GMX_LCORE
        MxHeapFree(SsiHeap, funcNm);
@@ -5679,7 +5680,7 @@ uint8_t  entId    /* Tapa task which free the memory */
    /* If hash list is full then print the error tna continue */
    if(hashListCp->totalNumEntries == (CMM_HIST_MAX_MEM_BIN * CMM_HIST_MAX_MEM_ENTRY_PER_BIN))
    {
-        printf("No place in the hash list. Increase the value of macro CMM_HIST_MAX_MEM_BIN and CMM_HIST_MAX_MEM_ENTRY_PER_BIN \n");
+        DU_LOG("\nERROR  --> No place in the hash list. Increase the value of macro CMM_HIST_MAX_MEM_BIN and CMM_HIST_MAX_MEM_ENTRY_PER_BIN \n");
         return RFAILED;
    } /* End of if */
 
@@ -5753,7 +5754,7 @@ uint8_t  entId
 
    if(hashListCp->totalNumEntries == (CMM_HIST_MAX_MEM_BIN * CMM_HIST_MAX_MEM_ENTRY_PER_BIN))
    {
-        printf("No place in the hash list. Increase the value of macro CMM_HIST_MAX_MEM_BIN and CMM_HIST_MAX_MEM_ENTRY_PER_BIN\n");
+        DU_LOG("\nERROR  --> No place in the hash list. Increase the value of macro CMM_HIST_MAX_MEM_BIN and CMM_HIST_MAX_MEM_ENTRY_PER_BIN\n");
         return RFAILED;
    } /* End of if */
 
@@ -5923,12 +5924,12 @@ CmMemEntries        **entry
       } /* End of if (numEnt) */
       else
       {
-         printf ("Unable to find the entry in hash list\n");
+         DU_LOG("\nERROR  --> Unable to find the entry in hash list\n");
          return RFAILED;
       }/* End of else (numEnt) */
    }/* end of for (numBin = 0) */
 
-   printf("Unable to find the entry in the hash list\n");
+   DU_LOG("\nERROR  --> Unable to find the entry in the hash list\n");
    return RFAILED;
 } /* end of cmHstGrmFindEntry */
 
@@ -5949,7 +5950,7 @@ void InsertToT2kMemLeakInfo(uint32_t address, uint32_t size, uint32_t lineNo, ch
 
    if(((uint32_t)(address - T2K_MEM_LEAK_START_ADDR) & 0xff) !=0)
    {
-     printf("address in InsertToT2kMemLeakInfo is %lx size = %ld file is %s"
+       DU_LOG("\nDEBUG  --> address in InsertToT2kMemLeakInfo is %lx size = %ld file is %s"
            "line is %ld \n", address, size, fileName, lineNo);
    }
 
@@ -5971,9 +5972,9 @@ void InsertToT2kMemLeakInfo(uint32_t address, uint32_t size, uint32_t lineNo, ch
    }
    else
    {
-         printf("Something is wrong, trying to insert %lx idx = %ld file is %s"
+         DU_LOG("\nERROR  --> Something is wrong, trying to insert %lx idx = %ld file is %s"
                "line is %ld \n",address, idx, fileName, lineNo);
-         printf("Address present :%lx, from File:%s, Line:%ld, Size:%ld,"
+         DU_LOG("\nERROR  --> Address present :%lx, from File:%s, Line:%ld, Size:%ld,"
                "Age:%ld, differnce in Age:%ld",
                gMemLeakInfo[idx].address, gMemLeakInfo[idx].fileName,
                gMemLeakInfo[idx].lineNo, gMemLeakInfo[idx].size,
@@ -5988,7 +5989,7 @@ void RemoveFromT2kMemLeakInfo(uint32_t address, char *file, uint32_t line)
 
    if(idx >= T2K_MEM_LEAK_INFO_TABLE_SIZE)
    {
-      printf("Idx out of range = %ld address is %lx file = %s line = %ld. We are going to crash!!!\n",
+      DU_LOG("\nERROR  --> Idx out of range = %ld address is %lx file = %s line = %ld. We are going to crash!!!\n",
               idx,
               address,
               file,
@@ -6003,21 +6004,21 @@ void RemoveFromT2kMemLeakInfo(uint32_t address, char *file, uint32_t line)
 
       gMemLeakInfo[idx].lastDelLineNum = line;
       gMemLeakInfo[idx].lastDelFileName = file; 
-      /*printf("Something is wrong, Trying to double free Address = %x, Idx = %d \n",address,idx);*/
+      /*DU_LOG("\nERROR  --> Something is wrong, Trying to double free Address = %x, Idx = %d \n",address,idx);*/
    }
    else
    {
-         printf("Something is wrong, trying to remove %lx idx = %ld  from"
+         DU_LOG("\nERROR  --> Something is wrong, trying to remove %lx idx = %ld  from"
                "File=%s, line=%ld address present is %lx\n",address, idx, file,line, 
                    gMemLeakInfo[idx].address);
 
 
-         printf("\n Last Del file %s line %ld\n",gMemLeakInfo[idx].lastDelFileName,
+         DU_LOG("\nINFO  -->  Last Del file %s line %ld\n",gMemLeakInfo[idx].lastDelFileName,
                  gMemLeakInfo[idx].lastDelLineNum);
 
          if(gMemLeakInfo[idx].prevRemFileName != NULLP)
          {
-            printf("Previous File:%s, Previous Line:%ld\n",
+             DU_LOG("\nINFO  --> Previous File:%s, Previous Line:%ld\n",
                   gMemLeakInfo[idx].prevRemFileName, gMemLeakInfo[idx].prevRemLineNo);
          }
    }
@@ -6031,7 +6032,7 @@ void DumpT2kMemLeakInfoToFile()
 
    if(fp == NULL)
    {
-      printf("Could not open file for dumping mem leak info\n");
+      DU_LOG("\nERROR  --> Could not open file for dumping mem leak info\n");
       return;
    }
 

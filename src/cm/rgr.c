@@ -5455,40 +5455,40 @@ Buffer *mBuf
    CMCHKUNPK(oduPackUInt8, &(param->isHdFddEnbld), mBuf);
 
 #ifdef EMTC_DEBUG_CONSOLE_PRINTS 
-   printf("\n EMTC RGR UE unpack\n");
-   printf("\nemtcEpdcchCfg->sfPtn.pres %d ",emtcEpdcchCfg->sfPtn.pres);
+   DU_LOG("\nINFO   -->  UE :  EMTC RGR UE unpack\n");
+   DU_LOG("\nDEBUG  -->  UE :  emtcEpdcchCfg->sfPtn.pres %d ",emtcEpdcchCfg->sfPtn.pres);
 
    for(indx = 0; indx < 5; indx++)
    {
-      printf("\nemtcEpdcchCfg->sfPtn.measSfPatFDD[%d] %d ",indx,emtcEpdcchCfg->sfPtn.measSfPatFDD[indx]);
+      DU_LOG("\nDEBUG  -->  UE :  emtcEpdcchCfg->sfPtn.measSfPatFDD[%d] %d ",indx,emtcEpdcchCfg->sfPtn.measSfPatFDD[indx]);
    }
-   printf("\nemtcEpdcchCfg->startSymbolr11 %d ",emtcEpdcchCfg->startSymbolr11.pres);
-   printf("\nemtcEpdcchCfg->startSymbolr11 %d ",emtcEpdcchCfg->startSymbolr11.val);
+   DU_LOG("\nDEBUG  -->  UE :  emtcEpdcchCfg->startSymbolr11 %d ",emtcEpdcchCfg->startSymbolr11.pres);
+   DU_LOG("\nDEBUG  -->  UE :  emtcEpdcchCfg->startSymbolr11 %d ",emtcEpdcchCfg->startSymbolr11.val);
 
    for(indx = 0 ; indx < RGR_MAX_EPDCCH_SET; indx++)
    {
       epdcchAddModLst =  &(emtcEpdcchCfg->epdcchAddModLst[indx]);
-      printf("\nemtcEpdcchCfg->epdcchRelLst[indx].setCfgId %d %d ", indx,emtcEpdcchCfg->epdcchRelLst[indx].setCfgId.pres);
-      printf("\nemtcEpdcchCfg->epdcchRelLst[indx].setCfgId %d %d ", indx,emtcEpdcchCfg->epdcchRelLst[indx].setCfgId.val);
-      printf("\nepdcchAddModLst->setConfigId %d ", epdcchAddModLst->setConfigId);
-      printf("\nepdcchAddModLst->transmissionType %d ",epdcchAddModLst->transmissionType);
-      printf("\nepdcchAddModLst->resBlkAssignment.numPRBpairs %d ",epdcchAddModLst->resBlkAssignment.numPRBpairs);
+      DU_LOG("\nDEBUG  -->  UE :  emtcEpdcchCfg->epdcchRelLst[indx].setCfgId %d %d ", indx,emtcEpdcchCfg->epdcchRelLst[indx].setCfgId.pres);
+      DU_LOG("\nDEBUG  -->  UE :  emtcEpdcchCfg->epdcchRelLst[indx].setCfgId %d %d ", indx,emtcEpdcchCfg->epdcchRelLst[indx].setCfgId.val);
+      DU_LOG("\nDEBUG  -->  UE :  epdcchAddModLst->setConfigId %d ", epdcchAddModLst->setConfigId);
+      DU_LOG("\nDEBUG  -->  UE :  epdcchAddModLst->transmissionType %d ",epdcchAddModLst->transmissionType);
+      DU_LOG("\nDEBUG  -->  UE :  epdcchAddModLst->resBlkAssignment.numPRBpairs %d ",epdcchAddModLst->resBlkAssignment.numPRBpairs);
       for(idx = 0; idx < 5 ; idx++)
       {
-         printf("\nepdcchAddModLst->resBlkAssignment.rbAssignment[idx] %d ",epdcchAddModLst->resBlkAssignment.rbAssignment[idx]);
+         DU_LOG("\nDEBUG  -->  UE :  epdcchAddModLst->resBlkAssignment.rbAssignment[idx] %d ",epdcchAddModLst->resBlkAssignment.rbAssignment[idx]);
       }
-      printf("\nepdcchAddModLst->dmrsScrambSeq %d ",epdcchAddModLst->dmrsScrambSeq);
-      printf("\nepdcchAddModLst->pucchResStartoffset %d ",epdcchAddModLst->pucchResStartoffset);
-      printf("\nepdcchAddModLst->pdschRemapQLcfgId.pres %d ",epdcchAddModLst->pdschRemapQLcfgId.pres);
-      printf("\nepdcchAddModLst->pdschRemapQLcfgId.val %d ", epdcchAddModLst->pdschRemapQLcfgId.val);
-      printf("\nepdcchAddModLst->mpdcchNumPRBpair.pres %d ",  epdcchAddModLst->mpdcchNumPRBpair.pres);
-      printf("\nepdcchAddModLst->mpdcchNumPRBpair.val %d ",  epdcchAddModLst->mpdcchNumPRBpair.val);
-      printf("\nepdcchAddModLst->extaddgrp2.pres %d ",       epdcchAddModLst->extaddgrp2.pres);
-      printf("\nepdcchAddModLst->extaddgrp2.csiNumRep %d ",   epdcchAddModLst->extaddgrp2.csiNumRep);
-      printf("\nepdcchAddModLst->extaddgrp2.mpddchPdschHop %d ", epdcchAddModLst->extaddgrp2.mpddchPdschHop);
-      printf("\nepdcchAddModLst->extaddgrp2.mpdcchStartUESSFDD %d ",epdcchAddModLst->extaddgrp2.mpdcchStartUESSFDD);
-      printf("\nepdcchAddModLst->extaddgrp2.mpdcchNumRep %d ", epdcchAddModLst->extaddgrp2.mpdcchNumRep);
-      printf("\nepdcchAddModLst->extaddgrp2.mpddchNB %d ",  epdcchAddModLst->extaddgrp2.mpddchNB);
+      DU_LOG("\nDEBUG  -->  UE :  epdcchAddModLst->dmrsScrambSeq %d ",epdcchAddModLst->dmrsScrambSeq);
+      DU_LOG("\nDEBUG  -->  UE :  epdcchAddModLst->pucchResStartoffset %d ",epdcchAddModLst->pucchResStartoffset);
+      DU_LOG("\nDEBUG  -->  UE :  epdcchAddModLst->pdschRemapQLcfgId.pres %d ",epdcchAddModLst->pdschRemapQLcfgId.pres);
+      DU_LOG("\nDEBUG  -->  UE :  epdcchAddModLst->pdschRemapQLcfgId.val %d ", epdcchAddModLst->pdschRemapQLcfgId.val);
+      DU_LOG("\nDEBUG  -->  UE :  epdcchAddModLst->mpdcchNumPRBpair.pres %d ",  epdcchAddModLst->mpdcchNumPRBpair.pres);
+      DU_LOG("\nDEBUG  -->  UE :  epdcchAddModLst->mpdcchNumPRBpair.val %d ",  epdcchAddModLst->mpdcchNumPRBpair.val);
+      DU_LOG("\nDEBUG  -->  UE :  epdcchAddModLst->extaddgrp2.pres %d ",       epdcchAddModLst->extaddgrp2.pres);
+      DU_LOG("\nDEBUG  -->  UE :  epdcchAddModLst->extaddgrp2.csiNumRep %d ",   epdcchAddModLst->extaddgrp2.csiNumRep);
+      DU_LOG("\nDEBUG  -->  UE :  epdcchAddModLst->extaddgrp2.mpddchPdschHop %d ", epdcchAddModLst->extaddgrp2.mpddchPdschHop);
+      DU_LOG("\nDEBUG  -->  UE :  epdcchAddModLst->extaddgrp2.mpdcchStartUESSFDD %d ",epdcchAddModLst->extaddgrp2.mpdcchStartUESSFDD);
+      DU_LOG("\nDEBUG  -->  UE :  epdcchAddModLst->extaddgrp2.mpdcchNumRep %d ", epdcchAddModLst->extaddgrp2.mpdcchNumRep);
+      DU_LOG("\nDEBUG  -->  UE :  epdcchAddModLst->extaddgrp2.mpddchNB %d ",  epdcchAddModLst->extaddgrp2.mpddchNB);
    }
 
 #endif
@@ -5548,40 +5548,40 @@ S16 cmPkRgrEmtcUeCfg
    CMCHKPK(oduUnpackUInt8,param->pdschReptLevModeA,mBuf);
    
 #ifdef EMTC_DEBUG_CONSOLE_PRINTS 
-   printf("\n EMTC RGR UE pack\n");
-   printf("\nemtcEpdcchCfg->sfPtn.pres %d ",emtcEpdcchCfg->sfPtn.pres);
+   DU_LOG("\nINFO   -->  UE : EMTC RGR UE pack\n");
+   DU_LOG("\nDEBUG  -->  UE : emtcEpdcchCfg->sfPtn.pres %d ",emtcEpdcchCfg->sfPtn.pres);
 
    for(indx = 0; indx < 5; indx++)
    {
-      printf("\nemtcEpdcchCfg->sfPtn.measSfPatFDD[%d] %d ",indx,emtcEpdcchCfg->sfPtn.measSfPatFDD[indx]);
+      DU_LOG("\nDEBUG  -->  UE : emtcEpdcchCfg->sfPtn.measSfPatFDD[%d] %d ",indx,emtcEpdcchCfg->sfPtn.measSfPatFDD[indx]);
    }
-   printf("\nemtcEpdcchCfg->startSymbolr11 %d ",emtcEpdcchCfg->startSymbolr11.pres);
-   printf("\nemtcEpdcchCfg->startSymbolr11 %d ",emtcEpdcchCfg->startSymbolr11.val);
+   DU_LOG("\nDEBUG  -->  UE :  emtcEpdcchCfg->startSymbolr11 %d ",emtcEpdcchCfg->startSymbolr11.pres);
+   DU_LOG("\nDEBUG  -->  UE :  emtcEpdcchCfg->startSymbolr11 %d ",emtcEpdcchCfg->startSymbolr11.val);
 
    for(indx = 0 ; indx < RGR_MAX_EPDCCH_SET; indx++)
    {
       epdcchAddModLst =  &(emtcEpdcchCfg->epdcchAddModLst[indx]);
-     /* printf("\nemtcEpdcchCfg->epdcchRelLst[indx].setCfgId %d %d ", indx,emtcEpdcchCfg->epdcchRelLst[indx].setCfgId.pres);
-      printf("\nemtcEpdcchCfg->epdcchRelLst[indx].setCfgId %d %d ", indx,emtcEpdcchCfg->epdcchRelLst[indx].setCfgId.val);*/
-      printf("\nepdcchAddModLst->setConfigId %d ", epdcchAddModLst->setConfigId);
-      printf("\nepdcchAddModLst->transmissionType %d ",epdcchAddModLst->transmissionType);
-      printf("\nepdcchAddModLst->resBlkAssignment.numPRBpairs %d ",epdcchAddModLst->resBlkAssignment.numPRBpairs);
+     /* DU_LOG("\nDEBUG  -->  UE :  emtcEpdcchCfg->epdcchRelLst[indx].setCfgId %d %d ", indx,emtcEpdcchCfg->epdcchRelLst[indx].setCfgId.pres);
+      DU_LOG("\nDEBUG  -->  UE :  emtcEpdcchCfg->epdcchRelLst[indx].setCfgId %d %d ", indx,emtcEpdcchCfg->epdcchRelLst[indx].setCfgId.val);*/
+      DU_LOG("\nDEBUG  -->  UE :  epdcchAddModLst->setConfigId %d ", epdcchAddModLst->setConfigId);
+      DU_LOG("\nDEBUG  -->  UE :  epdcchAddModLst->transmissionType %d ",epdcchAddModLst->transmissionType);
+      DU_LOG("\nDEBUG  -->  UE :  epdcchAddModLst->resBlkAssignment.numPRBpairs %d ",epdcchAddModLst->resBlkAssignment.numPRBpairs);
       for(idx = 0; idx < 5 ; idx++)
       {
-         printf("\nepdcchAddModLst->resBlkAssignment.rbAssignment[idx] %d ",epdcchAddModLst->resBlkAssignment.rbAssignment[idx]);
+         DU_LOG("\nDEBUG  -->  UE :  epdcchAddModLst->resBlkAssignment.rbAssignment[idx] %d ",epdcchAddModLst->resBlkAssignment.rbAssignment[idx]);
       }
-      printf("\nepdcchAddModLst->dmrsScrambSeq %d ",epdcchAddModLst->dmrsScrambSeq);
-      printf("\nepdcchAddModLst->pucchResStartoffset %d ",epdcchAddModLst->pucchResStartoffset);
-      printf("\nepdcchAddModLst->pdschRemapQLcfgId.pres %d ",epdcchAddModLst->pdschRemapQLcfgId.pres);
-      printf("\nepdcchAddModLst->pdschRemapQLcfgId.val %d ", epdcchAddModLst->pdschRemapQLcfgId.val);
-      printf("\nepdcchAddModLst->mpdcchNumPRBpair.pres %d ",  epdcchAddModLst->mpdcchNumPRBpair.pres);
-      printf("\nepdcchAddModLst->mpdcchNumPRBpair.val %d ",  epdcchAddModLst->mpdcchNumPRBpair.val);
-      printf("\nepdcchAddModLst->extaddgrp2.pres %d ",       epdcchAddModLst->extaddgrp2.pres);
-      printf("\nepdcchAddModLst->extaddgrp2.csiNumRep %d ",   epdcchAddModLst->extaddgrp2.csiNumRep);
-      printf("\nepdcchAddModLst->extaddgrp2.mpddchPdschHop %d ", epdcchAddModLst->extaddgrp2.mpddchPdschHop);
-      printf("\nepdcchAddModLst->extaddgrp2.mpdcchStartUESSFDD %d ",epdcchAddModLst->extaddgrp2.mpdcchStartUESSFDD);
-      printf("\nepdcchAddModLst->extaddgrp2.mpdcchNumRep %d ", epdcchAddModLst->extaddgrp2.mpdcchNumRep);
-      printf("\nepdcchAddModLst->extaddgrp2.mpddchNB %d ",  epdcchAddModLst->extaddgrp2.mpddchNB);
+      DU_LOG("\nDEBUG  -->  UE :  epdcchAddModLst->dmrsScrambSeq %d ",epdcchAddModLst->dmrsScrambSeq);
+      DU_LOG("\nDEBUG  -->  UE :  epdcchAddModLst->pucchResStartoffset %d ",epdcchAddModLst->pucchResStartoffset);
+      DU_LOG("\nDEBUG  -->  UE :  epdcchAddModLst->pdschRemapQLcfgId.pres %d ",epdcchAddModLst->pdschRemapQLcfgId.pres);
+      DU_LOG("\nDEBUG  -->  UE :  epdcchAddModLst->pdschRemapQLcfgId.val %d ", epdcchAddModLst->pdschRemapQLcfgId.val);
+      DU_LOG("\nDEBUG  -->  UE :  epdcchAddModLst->mpdcchNumPRBpair.pres %d ",  epdcchAddModLst->mpdcchNumPRBpair.pres);
+      DU_LOG("\nDEBUG  -->  UE :  epdcchAddModLst->mpdcchNumPRBpair.val %d ",  epdcchAddModLst->mpdcchNumPRBpair.val);
+      DU_LOG("\nDEBUG  -->  UE :  epdcchAddModLst->extaddgrp2.pres %d ",       epdcchAddModLst->extaddgrp2.pres);
+      DU_LOG("\nDEBUG  -->  UE :  epdcchAddModLst->extaddgrp2.csiNumRep %d ",   epdcchAddModLst->extaddgrp2.csiNumRep);
+      DU_LOG("\nDEBUG  -->  UE :  epdcchAddModLst->extaddgrp2.mpddchPdschHop %d ", epdcchAddModLst->extaddgrp2.mpddchPdschHop);
+      DU_LOG("\nDEBUG  -->  UE :  epdcchAddModLst->extaddgrp2.mpdcchStartUESSFDD %d ",epdcchAddModLst->extaddgrp2.mpdcchStartUESSFDD);
+      DU_LOG("\nDEBUG  -->  UE :  epdcchAddModLst->extaddgrp2.mpdcchNumRep %d ", epdcchAddModLst->extaddgrp2.mpdcchNumRep);
+      DU_LOG("\nDEBUG  -->  UE :  epdcchAddModLst->extaddgrp2.mpddchNB %d ",  epdcchAddModLst->extaddgrp2.mpddchNB);
    }
 
 #endif
