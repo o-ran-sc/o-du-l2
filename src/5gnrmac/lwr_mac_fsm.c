@@ -1975,10 +1975,13 @@ uint8_t lwr_mac_procIqSamplesReqEvt(void *msg)
 uint8_t lwr_mac_procConfigReqEvt(void *msg)
 {
 #ifdef INTEL_FAPI
-   //uint8_t idx = 0;
+#ifdef NR_TDD
+   uint8_t slotIdx = 0; 
+   uint8_t symbolIdx =0;
+#endif   
    uint8_t index = 0;
-   uint16_t *cellId;
-   uint16_t cellIdx;
+   uint16_t *cellId =NULLP;
+   uint16_t cellIdx =0;
    uint32_t msgLen = 0;
    uint32_t mib = 0;
    MacCellCfg macCfgParams;
@@ -2140,12 +2143,20 @@ uint8_t lwr_mac_procConfigReqEvt(void *msg)
    //fillTlvs(&configReq->tlvs[index++], FAPI_MULTIPLE_CELLS_SS_PBCH_IN_A_CARRIER_TAG, \
    sizeof(uint8_t), macCfgParams.ssbCfg.multCellCarr, &msgLen);
 
+#ifdef NR_TDD
    /* fill TDD table */
-   //fillTlvs(&configReq->tlvs[index++], FAPI_TDD_PERIOD_TAG,                \
+   fillTlvs(&configReq->tlvs[index++], FAPI_TDD_PERIOD_TAG,                \
    sizeof(uint8_t), macCfgParams.tddCfg.tddPeriod, &msgLen);
-   //fillTlvs(&configReq->tlvs[index++], FAPI_SLOT_CONFIG_TAG,               \
-   sizeof(uint8_t), macCfgParams.tddCfg.slotCfg[0][0], &msgLen);
-
+   for(slotIdx =0 ;slotIdx< MAXIMUM_TDD_PERIODICITY; slotIdx++) 
+   {
+      for(symbolIdx = 0; symbolIdx< MAX_SYMB_PER_SLOT; symbolIdx++)
+      {
+	 fillTlvs(&configReq->tlvs[index++], FAPI_SLOT_CONFIG_TAG,               \
+	       sizeof(uint8_t), macCfgParams.tddCfg.slotCfg[slotIdx][symbolIdx], &msgLen);
+      }
+   }
+#endif   
+   
    /* fill measurement config */
    //fillTlvs(&configReq->tlvs[index++], FAPI_RSSI_MEASUREMENT_TAG,          \
    sizeof(uint8_t), macCfgParams.rssiUnit, &msgLen);
