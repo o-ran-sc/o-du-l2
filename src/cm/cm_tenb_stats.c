@@ -50,7 +50,7 @@
 #include "cm_lte.h"             /* Common LTE header file */
 #include "cm_llist.h"           /* Linked list header file */
 #include "cm_tkns.h"            /* Common tokens header file */
-
+#include "du_log.h"
 
 /* header/extern include files (.x) */
 
@@ -148,7 +148,7 @@ static Buffer* TSInfUtlAllocMsg(Pst   *pst)
 
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-      printf("\n MBuf Allocation failed\n");
+      DU_LOG("\nERROR  -->  RLC : MBuf Allocation failed\n");
    }
    return (mBuf);
 }
