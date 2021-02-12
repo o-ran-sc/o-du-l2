@@ -60,14 +60,14 @@ S16 SendE2APMsg(Region region, Pool pool)
  
          if(sctpSend(mBuf) != ROK)
          {
-            DU_LOG("\nE2AP : SCTP Send for E2  failed");
+            DU_LOG("\nERROR  -->  E2AP : SCTP Send for E2  failed");
             ODU_PUT_MSG_BUF(mBuf);
             return RFAILED;
          }
       }
       else
       {
-         DU_LOG("\nE2AP : ODU_ADD_POST_MSG_MULT failed");
+         DU_LOG("\nERROR  -->  E2AP : ODU_ADD_POST_MSG_MULT failed");
          ODU_PUT_MSG_BUF(mBuf);
          return RFAILED;
       }
@@ -75,7 +75,7 @@ S16 SendE2APMsg(Region region, Pool pool)
    }
    else
    {
-      DU_LOG("\nE2AP : Failed to allocate memory");
+      DU_LOG("\nERROR  -->  E2AP : Failed to allocate memory");
       return RFAILED;
    }
  
@@ -143,19 +143,19 @@ S16 BuildAndSendE2SetupRsp()
    uint8_t            elementCnt;
 
  
-   DU_LOG("\nE2AP : Building E2 Setup Response\n");
+   DU_LOG("\nINFO   -->  E2AP : Building E2 Setup Response\n");
 
    RIC_ALLOC(e2apMsg, sizeof(E2AP_PDU_t)); 
    if(e2apMsg == NULLP)
    {
-      DU_LOG("\nE2AP : Memory allocation for E2AP-PDU failed");
+      DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
       return RFAILED;
    }
    e2apMsg->present =  E2AP_PDU_PR_successfulOutcome;
    RIC_ALLOC(e2apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcomeE2_t));
    if(e2apMsg->choice.successfulOutcome == NULLP)
    {
-      DU_LOG("\nE2AP : Memory allocation for E2AP-PDU failed");
+      DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
       RIC_FREE(e2apMsg, sizeof(E2AP_PDU_t));
       return RFAILED;  
    }
@@ -174,7 +174,7 @@ S16 BuildAndSendE2SetupRsp()
               e2SetupRsp->protocolIEs.list.size);
    if(e2SetupRsp->protocolIEs.list.array == NULLP)
    {
-      DU_LOG("\nE2AP : Memory allocation for E2ResponseIEs failed");
+      DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2ResponseIEs failed");
       RIC_FREE(e2apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcomeE2_t));
       RIC_FREE(e2apMsg, sizeof(E2AP_PDU_t));
       return RFAILED;
@@ -211,23 +211,23 @@ S16 BuildAndSendE2SetupRsp()
    /* Check encode results */
    if(encRetVal.encoded == ENCODE_FAIL)
    {
-	   DU_LOG("\nE2AP : Could not encode E2SetupResponse structure (at %s)\n",\
+	   DU_LOG("\nERROR  -->  E2AP : Could not encode E2SetupResponse structure (at %s)\n",\
 			   encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
 	   return RFAILED;   
    } 
    else 
    {
-	   DU_LOG("\nE2AP : Created APER encoded buffer for E2SetupResponse\n");
+	   DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for E2SetupResponse\n");
 	   for(int i=0; i< encBufSize; i++)
 	   {
-		   printf("%x",encBuf[i]);
+		   DU_LOG("%x",encBuf[i]);
 	   } 
    }
 
 
    if(SendE2APMsg(RIC_APP_MEM_REG, RIC_POOL) != ROK)
    {
-      DU_LOG("\nE2AP : Sending E2 Setup Response failed");      
+      DU_LOG("\nERROR  -->  E2AP : Sending E2 Setup Response failed");      
       return RFAILED;
    }
 
@@ -352,7 +352,7 @@ S16 BuildRicSubsDetails(RICsubscriptionDetails_t *subsDetails)
                 subsDetails->ricAction_ToBeSetup_List.list.size);
       if(subsDetails->ricAction_ToBeSetup_List.list.array  == NULLP)
       {
-         DU_LOG("\nE2AP : Memory allocation for RICactionToBeSetup Items failed");
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation for RICactionToBeSetup Items failed");
          return RFAILED;
       } 
       RIC_ALLOC(subsDetails->ricAction_ToBeSetup_List.list.array[0],\
@@ -389,12 +389,12 @@ S16 BuildAndSendRicSubscriptionReq()
    asn_enc_rval_t  encRetVal;        /* Encoder return value */
    ricSubsStatus = TRUE;
 
-   DU_LOG("\nE2AP : Building RIC Subscription Request\n");
+   DU_LOG("\nINFO   -->  E2AP : Building RIC Subscription Request\n");
 
    RIC_ALLOC(e2apRicMsg, sizeof(E2AP_PDU_t));
    if(e2apRicMsg == NULLP)
    {
-      DU_LOG("\nE2AP : Memory allocation for E2AP-PDU failed");
+      DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
       return RFAILED;
    }
 
@@ -402,7 +402,7 @@ S16 BuildAndSendRicSubscriptionReq()
    RIC_ALLOC(e2apRicMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
    if(e2apRicMsg->choice.initiatingMessage == NULLP)
    {
-      DU_LOG("\nE2AP : Memory allocation for E2AP-PDU failed");
+      DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
       RIC_FREE(e2apRicMsg, sizeof(E2AP_PDU_t));
       return RFAILED;
    }
@@ -422,7 +422,7 @@ S16 BuildAndSendRicSubscriptionReq()
               ricSubscriptionReq->protocolIEs.list.size);
    if(ricSubscriptionReq->protocolIEs.list.array == NULLP)
    {
-      DU_LOG("\nE2AP : Memory allocation for RICSubscriptionRequestIEs failed");
+      DU_LOG("\nERROR  -->  E2AP : Memory allocation for RICSubscriptionRequestIEs failed");
       RIC_FREE(e2apRicMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
       RIC_FREE(e2apRicMsg, (Size)sizeof(E2AP_PDU_t));
       return RFAILED;
@@ -486,16 +486,16 @@ S16 BuildAndSendRicSubscriptionReq()
                encBuf);
    if(encRetVal.encoded == ENCODE_FAIL)
    {
-      DU_LOG("\nE2AP : Could not encode RicSubscriptionRequest structure (at %s)\n",\
+      DU_LOG("\nERROR  -->  E2AP : Could not encode RicSubscriptionRequest structure (at %s)\n",\
       encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
       return RFAILED;
    }
    else
    {
-      DU_LOG("\nE2AP : Created APER encoded buffer for RicSubscriptionRequest\n");
+      DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for RicSubscriptionRequest\n");
       for(int i=0; i< encBufSize; i++)
       {
-          printf("%x",encBuf[i]);
+          DU_LOG("%x",encBuf[i]);
       } 
    }
 
@@ -503,7 +503,7 @@ S16 BuildAndSendRicSubscriptionReq()
    /* Sending msg */
    if(SendE2APMsg(RIC_APP_MEM_REG, RIC_POOL) != ROK)
    {
-      DU_LOG("\nE2AP : Sending RIC subscription Request failed");
+      DU_LOG("\nERROR  -->  E2AP : Sending RIC subscription Request failed");
       return RFAILED;
    }
 
@@ -538,7 +538,7 @@ void E2APMsgHdlr(Buffer *mBuf)
    asn_dec_rval_t  rval; /* Decoder return value */
    E2AP_PDU_t      e2apasnmsg ;
  
-   DU_LOG("\nE2AP : Received E2AP message buffer");
+   DU_LOG("\nINFO  -->  E2AP : Received E2AP message buffer");
    ODU_PRINT_MSG(mBuf, 0,0);
  
    /* Copy mBuf into char array to decode it */
@@ -547,19 +547,19 @@ void E2APMsgHdlr(Buffer *mBuf)
 
    if(recvBuf == NULLP)
    {
-      DU_LOG("\nE2AP : Memory allocation failed");
+      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed");
       return;
    }
    if(ODU_COPY_MSG_TO_FIX_BUF(mBuf, 0, recvBufLen, (Data *)recvBuf, &copyCnt) != ROK)
    {
-      DU_LOG("\nE2AP : Failed while copying %d", copyCnt);
+      DU_LOG("\nERROR  -->  E2AP : Failed while copying %d", copyCnt);
       return;
    }
 
-   printf("\nE2AP : Received flat buffer to be decoded : ");
+   DU_LOG("\nDEBUG  -->  E2AP : Received flat buffer to be decoded : ");
    for(i=0; i< recvBufLen; i++)
    {
-        printf("%x",recvBuf[i]);
+        DU_LOG("%x",recvBuf[i]);
    }
 
    /* Decoding flat buffer into E2AP messsage */
@@ -571,10 +571,10 @@ void E2APMsgHdlr(Buffer *mBuf)
 
    if(rval.code == RC_FAIL || rval.code == RC_WMORE)
    {
-      DU_LOG("\nE2AP : ASN decode failed");
+      DU_LOG("\nERROR  -->  E2AP : ASN decode failed");
       return;
    }
-   printf("\n");
+   DU_LOG("\n");
    xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apMsg);
 
    switch(e2apMsg->present)
@@ -585,18 +585,18 @@ void E2APMsgHdlr(Buffer *mBuf)
          {
             case InitiatingMessageE2__value_PR_E2setupRequest:
             {
-               DU_LOG("\nE2AP : E2 setup request received");
+               DU_LOG("\nINFO  -->  E2AP : E2 setup request received");
                BuildAndSendE2SetupRsp();
 	       break;
             }
             case InitiatingMessageE2__value_PR_RICindication:
             {
-               DU_LOG("\nE2AP : RIC Indication Acknowledged");
+               DU_LOG("\nINFO  -->  E2AP : RIC Indication Acknowledged");
 	       break;
             }
             default:
             {
-               DU_LOG("\nE2AP : Invalid type of intiating message [%d]",e2apMsg->choice.initiatingMessage->value.present);
+               DU_LOG("\nERROR  -->  E2AP : Invalid type of intiating message [%d]",e2apMsg->choice.initiatingMessage->value.present);
                return;
             }
          }/* End of switch(initiatingMessage) */
@@ -608,12 +608,12 @@ void E2APMsgHdlr(Buffer *mBuf)
          {
             case SuccessfulOutcomeE2__value_PR_RICsubscriptionResponse:  
             {
-               DU_LOG("\nE2AP : RICsubscriptionResponse Msg Acknowledged");
+               DU_LOG("\nINFO  -->  E2AP : RICsubscriptionResponse Msg Acknowledged");
                break;
             }
             default:
             {
-               DU_LOG("\nE2AP : Invalid type of successfulOutcome message [%d]",e2apMsg->choice.successfulOutcome->value.present);
+               DU_LOG("\nERROR  -->  E2AP : Invalid type of successfulOutcome message [%d]",e2apMsg->choice.successfulOutcome->value.present);
                return;
             }
             break;
@@ -622,7 +622,7 @@ void E2APMsgHdlr(Buffer *mBuf)
       }
       default:
       {
-         DU_LOG("\nE2AP : Invalid type message type ");
+         DU_LOG("\nERROR  -->  E2AP : Invalid type message type ");
          return;
       }
  
