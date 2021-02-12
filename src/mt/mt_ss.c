@@ -222,79 +222,79 @@ static Void mtDelSigals(Void)
 }
 static void signal_segv(int signum, siginfo_t * info, void *ptr)
 {
-    static const char *si_codes[3] = { "", "SEGV_MAPERR", "SEGV_ACCERR" };
-    int             sz;
-    int             i;
-    ucontext_t     *ucontext = (ucontext_t *) ptr;
+   static const char *si_codes[3] = { "", "SEGV_MAPERR", "SEGV_ACCERR" };
+   int             sz;
+   int             i;
+   ucontext_t     *ucontext = (ucontext_t *) ptr;
 #ifdef XEON_SPECIFIC_CHANGES
 #else
-    int            *p32 = (int *) 0x2fff0000;
+   int            *p32 = (int *) 0x2fff0000;
 #endif
-    void           *buffer[100];
-    char          **strings;
+   void           *buffer[100];
+   char          **strings;
 
-    printf("segv ooops @ %p\n", info->si_addr);
-    my_buffer2[0] = 1;
+   DU_LOG("\nDEBUG  -->  segv ooops @ %p\n", info->si_addr);
+   my_buffer2[0] = 1;
 
-    printf("Segmentation Fault!\n");
-    printf("info.si_signo = %d\n", signum);
-    printf("info.si_errno = %d\n", info->si_errno);
-    printf("info.si_code  = %d (%s)\n", info->si_code, si_codes[info->si_code]);
-    printf("info.si_addr  = %p\n", info->si_addr);
+   DU_LOG("\nERROR  -->  Segmentation Fault!\n");
+   DU_LOG("\nERROR  -->  info.si_signo = %d\n", signum);
+   DU_LOG("\nERROR  -->  info.si_errno = %d\n", info->si_errno);
+   DU_LOG("\nERROR  -->  info.si_code  = %d (%s)\n", info->si_code, si_codes[info->si_code]);
+   DU_LOG("\nERROR  -->  info.si_addr  = %p\n", info->si_addr);
 
-    memcpy(&my_uc_mcontext, &ucontext->uc_mcontext, sizeof(struct sigcontext));
+   memcpy(&my_uc_mcontext, &ucontext->uc_mcontext, sizeof(struct sigcontext));
 
-    i = 0;
+   i = 0;
 #ifndef RGL_SPECIFIC_CHANGES
-    printf("reg[%02d]       = 0x" REGFORMAT, i++, (unsigned int)ucontext->uc_mcontext.arm_r0);
-    printf("reg[%02d]       = 0x" REGFORMAT, i++, (unsigned int)ucontext->uc_mcontext.arm_r1);
-    printf("reg[%02d]       = 0x" REGFORMAT, i++, (unsigned int)ucontext->uc_mcontext.arm_r2);
-    printf("reg[%02d]       = 0x" REGFORMAT, i++, (unsigned int)ucontext->uc_mcontext.arm_r3);
-    printf("reg[%02d]       = 0x" REGFORMAT, i++, (unsigned int)ucontext->uc_mcontext.arm_r4);
-    printf("reg[%02d]       = 0x" REGFORMAT, i++, (unsigned int)ucontext->uc_mcontext.arm_r5);
-    printf("reg[%02d]       = 0x" REGFORMAT, i++, (unsigned int)ucontext->uc_mcontext.arm_r6);
-    printf("reg[%02d]       = 0x" REGFORMAT, i++, (unsigned int)ucontext->uc_mcontext.arm_r7);
-    printf("reg[%02d]       = 0x" REGFORMAT, i++, (unsigned int)ucontext->uc_mcontext.arm_r8);
-    printf("reg[%02d]       = 0x" REGFORMAT, i++, (unsigned int)ucontext->uc_mcontext.arm_r9);
-    printf("reg[%02d]       = 0x" REGFORMAT, i++, (unsigned int)ucontext->uc_mcontext.arm_r10);
-    printf("reg[%02d]       = 0x" REGFORMAT, i++, (unsigned int)ucontext->uc_mcontext.arm_fp);
-    printf("reg[%02d]       = 0x" REGFORMAT, i++, (unsigned int)ucontext->uc_mcontext.arm_ip);
-    printf("reg[sp]       = 0x" REGFORMAT, (unsigned int)ucontext->uc_mcontext.arm_sp);
-    printf("reg[lr]       = 0x" REGFORMAT, (unsigned int)ucontext->uc_mcontext.arm_lr);
-    printf("reg[pc]       = 0x" REGFORMAT, (unsigned int)ucontext->uc_mcontext.arm_pc);
-    printf("reg[cpsr]     = 0x" REGFORMAT, (unsigned int)ucontext->uc_mcontext.arm_cpsr);
+   DU_LOG("\nDEBUG  -->  reg[%02d]       = 0x" REGFORMAT, i++, (unsigned int)ucontext->uc_mcontext.arm_r0);
+   DU_LOG("\nDEBUG  -->  reg[%02d]       = 0x" REGFORMAT, i++, (unsigned int)ucontext->uc_mcontext.arm_r1);
+   DU_LOG("\nDEBUG  -->  reg[%02d]       = 0x" REGFORMAT, i++, (unsigned int)ucontext->uc_mcontext.arm_r2);
+   DU_LOG("\nDEBUG  -->  reg[%02d]       = 0x" REGFORMAT, i++, (unsigned int)ucontext->uc_mcontext.arm_r3);
+   DU_LOG("\nDEBUG  -->  reg[%02d]       = 0x" REGFORMAT, i++, (unsigned int)ucontext->uc_mcontext.arm_r4);
+   DU_LOG("\nDEBUG  -->  reg[%02d]       = 0x" REGFORMAT, i++, (unsigned int)ucontext->uc_mcontext.arm_r5);
+   
+   DU_LOG("\nDEBUG  -->  reg[%02d]       = 0x" REGFORMAT, i++, (unsigned int)ucontext->uc_mcontext.arm_r7);
+   DU_LOG("\nDEBUG  -->  reg[%02d]       = 0x" REGFORMAT, i++, (unsigned int)ucontext->uc_mcontext.arm_r8);
+   DU_LOG("\nDEBUG  -->  reg[%02d]       = 0x" REGFORMAT, i++, (unsigned int)ucontext->uc_mcontext.arm_r9);
+   DU_LOG("\nDEBUG  -->  reg[%02d]       = 0x" REGFORMAT, i++, (unsigned int)ucontext->uc_mcontext.arm_r10);
+   DU_LOG("\nDEBUG  -->  reg[%02d]       = 0x" REGFORMAT, i++, (unsigned int)ucontext->uc_mcontext.arm_fp);
+   DU_LOG("\nDEBUG  -->  reg[%02d]       = 0x" REGFORMAT, i++, (unsigned int)ucontext->uc_mcontext.arm_ip);
+   DU_LOG("\nDEBUG  -->  reg[sp]       = 0x" REGFORMAT, (unsigned int)ucontext->uc_mcontext.arm_sp);
+   DU_LOG("\nDEBUG  -->  reg[lr]       = 0x" REGFORMAT, (unsigned int)ucontext->uc_mcontext.arm_lr);
+   DU_LOG("\nDEBUG  -->  reg[pc]       = 0x" REGFORMAT, (unsigned int)ucontext->uc_mcontext.arm_pc);
+   DU_LOG("\nDEBUG  -->  reg[cpsr]     = 0x" REGFORMAT, (unsigned int)ucontext->uc_mcontext.arm_cpsr);
 #endif
 
-    printf("Stack trace (non-dedicated):\n");
+   DU_LOG("\nERROR  -->  Stack trace (non-dedicated):\n");
 
-    sz = backtrace(buffer, 50);
-    strings = backtrace_symbols(buffer, sz);
-    for (i = 0; i < sz; ++i)
-        printf("%s\n", strings[i]);
+   sz = backtrace(buffer, 50);
+   strings = backtrace_symbols(buffer, sz);
+   for (i = 0; i < sz; ++i)
+      DU_LOG("%s\n", strings[i]);
 
-    printf("End of stack trace.");
+   DU_LOG("\nINFO  -->  End of stack trace.");
 
 #ifdef XEON_SPECIFIC_CHANGES
 #else
-    p32[0] = 1;
+   p32[0] = 1;
 #endif
 
-    /* Lets first print our debug information */
-    printf("Before dumping our Debug info\n");
-    mtStopHndlr();
-    printf("After dumping our Debug info\n");
+   /* Lets first print our debug information */
+   DU_LOG("\nDEBUG  -->  Before dumping our Debug info\n");
+   mtStopHndlr();
+   DU_LOG("\nDEBUG  -->  After dumping our Debug info\n");
 
-    /* Disable the signal and make the enodeb to dump. This will make
-     * eNB to generate the core with dumping the ccpu log
-     */
-    {
-       char           *abc = NULL;
-       mtDelSigals();
-       *abc = 100;
-    }
-    /* End printing debug information */
-    exit(1);
-    /*while (1);*/
+   /* Disable the signal and make the enodeb to dump. This will make
+    * eNB to generate the core with dumping the ccpu log
+    */
+   {
+      char           *abc = NULL;
+      mtDelSigals();
+      *abc = 100;
+   }
+   /* End printing debug information */
+   exit(1);
+   /*while (1);*/
 }
 #endif
 /*** TBD: IMPORTANT ***
@@ -321,7 +321,7 @@ Buffer *mtTskBuffer2;
 
 pthread_t tmpRegTidMap[20];
 uint8_t stopBtInfo;
- S16 SGlobMemInfoShow(void);
+S16 SGlobMemInfoShow(void);
 #endif /* SS_LOCKLESS_MEMORY */
 
 #ifdef L2_L3_SPLIT
@@ -337,8 +337,8 @@ unsigned int tlPost(void *handle);
 /* mt003.301 Modifications - Moved to ss_gen.x */
 #ifdef TENB_T2K3K_SPECIFIC_CHANGES
 Void *mtTskHdlrT2kL2 ARGS((Void*));
- void mtSigSegvHndlr ARGS((void));
- void mtSigUsr2Hndlr ARGS((void));
+void mtSigSegvHndlr ARGS((void));
+void mtSigUsr2Hndlr ARGS((void));
 #endif
 
 static S16 ssdSetPthreadAttr ARGS ((S32 tskPrior, pthread_attr_t *attr));
@@ -372,8 +372,8 @@ static Bool fileBasedMemCfg = FALSE;
 #endif
 
 /* mt033.201 - addition of local function to print the statistics such as
-* (size vs. numAttempts) and (allocations vs. deallocations)
-*/
+ * (size vs. numAttempts) and (allocations vs. deallocations)
+ */
 #ifdef SSI_DEBUG_LEVEL1
 static S16 SPrintRegMemStats ARGS((Region region));
 #endif /* SSI_DEBUG_LEVEL1 */
@@ -395,7 +395,7 @@ static Void *workRcvTsk ARGS((void *));
 
 #ifdef SS_THR_REG_MAP
 S32 ssCheckAndAddMemoryRegionMap ARGS((pthread_t  threadId,
-                                               Region region));
+	 Region region));
 S32 ssCheckAndDelMemoryRegionMap ARGS((pthread_t  threadId));
 #endif /* SS_THR_REG_MAP */
 
@@ -425,96 +425,96 @@ SsRegCfg cfgRegInfo[SS_MAX_REGS] =
    {
       SS_DFLT_REGION, SS_MAX_POOLS_PER_REG - 1,
       {
-         { SS_POOL_DYNAMIC, MT_POOL_0_DSIZE },
-         { SS_POOL_DYNAMIC, MT_POOL_1_DSIZE },
-         { SS_POOL_DYNAMIC, MT_POOL_2_DSIZE },
-         { SS_POOL_DYNAMIC, MT_POOL_3_DSIZE },
+	 { SS_POOL_DYNAMIC, MT_POOL_0_DSIZE },
+	 { SS_POOL_DYNAMIC, MT_POOL_1_DSIZE },
+	 { SS_POOL_DYNAMIC, MT_POOL_2_DSIZE },
+	 { SS_POOL_DYNAMIC, MT_POOL_3_DSIZE },
 	 { SS_POOL_DYNAMIC, MT_POOL_4_DSIZE },
-         { SS_POOL_STATIC, 0 }
+	 { SS_POOL_STATIC, 0 }
       }
    }
 #ifdef INTEL_WLS
    ,
-   {
-      SS_DFLT_REGION + 1, SS_MAX_POOLS_PER_REG - 1,
       {
-         { SS_POOL_DYNAMIC, MT_POOL_0_DSIZE },
-         { SS_POOL_DYNAMIC, MT_POOL_1_DSIZE },
-         { SS_POOL_DYNAMIC, MT_POOL_2_DSIZE },
-         { SS_POOL_DYNAMIC, MT_POOL_3_DSIZE },
-         { SS_POOL_STATIC, 0 }
+	 SS_DFLT_REGION + 1, SS_MAX_POOLS_PER_REG - 1,
+	 {
+	    { SS_POOL_DYNAMIC, MT_POOL_0_DSIZE },
+	    { SS_POOL_DYNAMIC, MT_POOL_1_DSIZE },
+	    { SS_POOL_DYNAMIC, MT_POOL_2_DSIZE },
+	    { SS_POOL_DYNAMIC, MT_POOL_3_DSIZE },
+	    { SS_POOL_STATIC, 0 }
+	 }
       }
-   }
 #endif /* INTEL_WLS */
 
 #ifdef SS_LOCKLESS_MEMORY
    ,
-   {
-      SS_DFLT_REGION + 1, SS_MAX_POOLS_PER_REG - 1,
       {
-         { SS_POOL_DYNAMIC, MT_POOL_0_DSIZE },
-         { SS_POOL_DYNAMIC, MT_POOL_1_DSIZE },
-         { SS_POOL_DYNAMIC, MT_POOL_2_DSIZE },
-         { SS_POOL_DYNAMIC, MT_POOL_3_DSIZE },
-	 { SS_POOL_DYNAMIC, MT_POOL_4_DSIZE },
-         { SS_POOL_STATIC, 0 }
-      }
-   },
-   {
-      SS_DFLT_REGION + 2, SS_MAX_POOLS_PER_REG - 1,
+	 SS_DFLT_REGION + 1, SS_MAX_POOLS_PER_REG - 1,
+	 {
+	    { SS_POOL_DYNAMIC, MT_POOL_0_DSIZE },
+	    { SS_POOL_DYNAMIC, MT_POOL_1_DSIZE },
+	    { SS_POOL_DYNAMIC, MT_POOL_2_DSIZE },
+	    { SS_POOL_DYNAMIC, MT_POOL_3_DSIZE },
+	    { SS_POOL_DYNAMIC, MT_POOL_4_DSIZE },
+	    { SS_POOL_STATIC, 0 }
+	 }
+      },
       {
-         { SS_POOL_DYNAMIC, MT_POOL_0_DSIZE },
-         { SS_POOL_DYNAMIC, MT_POOL_1_DSIZE },
-         { SS_POOL_DYNAMIC, MT_POOL_2_DSIZE },
-         { SS_POOL_DYNAMIC, MT_POOL_3_DSIZE },
-	 { SS_POOL_DYNAMIC, MT_POOL_4_DSIZE },
-         { SS_POOL_STATIC, 0 }
-      }
-   },
-    {
-      SS_DFLT_REGION + 3, SS_MAX_POOLS_PER_REG - 1,
+	 SS_DFLT_REGION + 2, SS_MAX_POOLS_PER_REG - 1,
+	 {
+	    { SS_POOL_DYNAMIC, MT_POOL_0_DSIZE },
+	    { SS_POOL_DYNAMIC, MT_POOL_1_DSIZE },
+	    { SS_POOL_DYNAMIC, MT_POOL_2_DSIZE },
+	    { SS_POOL_DYNAMIC, MT_POOL_3_DSIZE },
+	    { SS_POOL_DYNAMIC, MT_POOL_4_DSIZE },
+	    { SS_POOL_STATIC, 0 }
+	 }
+      },
       {
-         { SS_POOL_DYNAMIC, MT_POOL_0_DSIZE },
-         { SS_POOL_DYNAMIC, MT_POOL_1_DSIZE },
-         { SS_POOL_DYNAMIC, MT_POOL_2_DSIZE },
-         { SS_POOL_DYNAMIC, MT_POOL_3_DSIZE },
-	 { SS_POOL_DYNAMIC, MT_POOL_4_DSIZE },
-         { SS_POOL_STATIC, 0 }
-      }
-   }, 
-    {
-      SS_DFLT_REGION + 4, SS_MAX_POOLS_PER_REG - 1,
+	 SS_DFLT_REGION + 3, SS_MAX_POOLS_PER_REG - 1,
+	 {
+	    { SS_POOL_DYNAMIC, MT_POOL_0_DSIZE },
+	    { SS_POOL_DYNAMIC, MT_POOL_1_DSIZE },
+	    { SS_POOL_DYNAMIC, MT_POOL_2_DSIZE },
+	    { SS_POOL_DYNAMIC, MT_POOL_3_DSIZE },
+	    { SS_POOL_DYNAMIC, MT_POOL_4_DSIZE },
+	    { SS_POOL_STATIC, 0 }
+	 }
+      }, 
       {
-         { SS_POOL_DYNAMIC, MT_POOL_0_DSIZE },
-         { SS_POOL_DYNAMIC, MT_POOL_1_DSIZE },
-         { SS_POOL_DYNAMIC, MT_POOL_2_DSIZE },
-         { SS_POOL_DYNAMIC, MT_POOL_3_DSIZE },
-	 { SS_POOL_DYNAMIC, MT_POOL_4_DSIZE },
-         { SS_POOL_STATIC, 0 }
-      }
-   },
-   {
-      SS_DFLT_REGION + 5, SS_MAX_POOLS_PER_REG - 1,
+	 SS_DFLT_REGION + 4, SS_MAX_POOLS_PER_REG - 1,
+	 {
+	    { SS_POOL_DYNAMIC, MT_POOL_0_DSIZE },
+	    { SS_POOL_DYNAMIC, MT_POOL_1_DSIZE },
+	    { SS_POOL_DYNAMIC, MT_POOL_2_DSIZE },
+	    { SS_POOL_DYNAMIC, MT_POOL_3_DSIZE },
+	    { SS_POOL_DYNAMIC, MT_POOL_4_DSIZE },
+	    { SS_POOL_STATIC, 0 }
+	 }
+      },
       {
-         { SS_POOL_DYNAMIC, MT_POOL_0_DSIZE },
-         { SS_POOL_DYNAMIC, MT_POOL_1_DSIZE },
-         { SS_POOL_DYNAMIC, MT_POOL_2_DSIZE },
-         { SS_POOL_DYNAMIC, MT_POOL_3_DSIZE },
-         { SS_POOL_DYNAMIC, MT_POOL_4_DSIZE },
-         { SS_POOL_STATIC, 0 }
-      }
-   },
-   {
-      SS_DFLT_REGION + 6, SS_MAX_POOLS_PER_REG - 1,
+	 SS_DFLT_REGION + 5, SS_MAX_POOLS_PER_REG - 1,
+	 {
+	    { SS_POOL_DYNAMIC, MT_POOL_0_DSIZE },
+	    { SS_POOL_DYNAMIC, MT_POOL_1_DSIZE },
+	    { SS_POOL_DYNAMIC, MT_POOL_2_DSIZE },
+	    { SS_POOL_DYNAMIC, MT_POOL_3_DSIZE },
+	    { SS_POOL_DYNAMIC, MT_POOL_4_DSIZE },
+	    { SS_POOL_STATIC, 0 }
+	 }
+      },
       {
-         { SS_POOL_DYNAMIC, MT_POOL_0_DSIZE },
-         { SS_POOL_DYNAMIC, MT_POOL_1_DSIZE },
-         { SS_POOL_DYNAMIC, MT_POOL_2_DSIZE },
-         { SS_POOL_DYNAMIC, MT_POOL_3_DSIZE },
-         { SS_POOL_DYNAMIC, MT_POOL_4_DSIZE },
-         { SS_POOL_STATIC, 0 }
+	 SS_DFLT_REGION + 6, SS_MAX_POOLS_PER_REG - 1,
+	 {
+	    { SS_POOL_DYNAMIC, MT_POOL_0_DSIZE },
+	    { SS_POOL_DYNAMIC, MT_POOL_1_DSIZE },
+	    { SS_POOL_DYNAMIC, MT_POOL_2_DSIZE },
+	    { SS_POOL_DYNAMIC, MT_POOL_3_DSIZE },
+	    { SS_POOL_DYNAMIC, MT_POOL_4_DSIZE },
+	    { SS_POOL_STATIC, 0 }
+	 }
       }
-   }
 
 #endif /* SS_LOCKLESS_MEMORY */
 };
@@ -525,107 +525,107 @@ SsRegCfg cfgRegInfo[SS_MAX_REGS] =
 #ifdef SS_LOCKLESS_MEMORY
 MtDynMemCfg mtDynMemoCfg =
 {
-  SS_MAX_REGS,                                /* number of regions */
-  {
-     {
-        SS_DFLT_REGION,                         /* region id */
-        MT_MAX_BKTS,                            /* number of buckets */
-        {
-           /* block size, no. of blocks, Upper threshold, lower threshold */
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD}, 
-	   {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD}
-        }
-     },
-     {
-        SS_DFLT_REGION + 1,                         /* region id */
-        MT_MAX_BKTS,                            /* number of buckets */
-        {
-           /* block size, no. of blocks, Upper threshold, lower threshold */
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-  	   {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD} 
-        }
-     },
-     {
-        SS_DFLT_REGION + 2,                         /* region id */
-        MT_MAX_BKTS,                            /* number of buckets */
-        {
-           /* block size, no. of blocks, Upper threshold, lower threshold */
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-	   {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD}
-        }
-     },
+   SS_MAX_REGS,                                /* number of regions */
+   {
       {
-        SS_DFLT_REGION + 3,                         /* region id */
-        MT_MAX_BKTS,                            /* number of buckets */
-        {
-           /* block size, no. of blocks, Upper threshold, lower threshold */
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-	   {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD} 
-        }
-     },
+	 SS_DFLT_REGION,                         /* region id */
+	 MT_MAX_BKTS,                            /* number of buckets */
+	 {
+	    /* block size, no. of blocks, Upper threshold, lower threshold */
+	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD}, 
+	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD}
+	 }
+      },
       {
-        SS_DFLT_REGION + 4,                         /* region id */
-        MT_MAX_BKTS,                            /* number of buckets */
-        {
-           /* block size, no. of blocks, Upper threshold, lower threshold */
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-	   {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD}
-        }
-     },
-     {
-        SS_DFLT_REGION + 5,                         /* region id */
-        MT_MAX_BKTS,                            /* number of buckets */
-        {
-           /* block size, no. of blocks, Upper threshold, lower threshold */
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD}
-        }
-     },
-     {
-        SS_DFLT_REGION + 6,                         /* region id */
-        MT_MAX_BKTS,                            /* number of buckets */
-        {
-           /* block size, no. of blocks, Upper threshold, lower threshold */
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD}
-        }
-     }
+	 SS_DFLT_REGION + 1,                         /* region id */
+	 MT_MAX_BKTS,                            /* number of buckets */
+	 {
+	    /* block size, no. of blocks, Upper threshold, lower threshold */
+	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD} 
+	 }
+      },
+      {
+	 SS_DFLT_REGION + 2,                         /* region id */
+	 MT_MAX_BKTS,                            /* number of buckets */
+	 {
+	    /* block size, no. of blocks, Upper threshold, lower threshold */
+	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD}
+	 }
+      },
+      {
+	 SS_DFLT_REGION + 3,                         /* region id */
+	 MT_MAX_BKTS,                            /* number of buckets */
+	 {
+	    /* block size, no. of blocks, Upper threshold, lower threshold */
+	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD} 
+	 }
+      },
+      {
+	 SS_DFLT_REGION + 4,                         /* region id */
+	 MT_MAX_BKTS,                            /* number of buckets */
+	 {
+	    /* block size, no. of blocks, Upper threshold, lower threshold */
+	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD}
+	 }
+      },
+      {
+	 SS_DFLT_REGION + 5,                         /* region id */
+	 MT_MAX_BKTS,                            /* number of buckets */
+	 {
+	    /* block size, no. of blocks, Upper threshold, lower threshold */
+	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD}
+	 }
+      },
+      {
+	 SS_DFLT_REGION + 6,                         /* region id */
+	 MT_MAX_BKTS,                            /* number of buckets */
+	 {
+	    /* block size, no. of blocks, Upper threshold, lower threshold */
+	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD}
+	 }
+      }
 #if ((defined (SPLIT_RLC_DL_TASK)) && (!defined (L2_L3_SPLIT)))
-     ,
-     {
-        SS_DFLT_REGION + 7,                         /* region id */
-        MT_MAX_BKTS,                            /* number of buckets */
-        {
-           /* block size, no. of blocks, Upper threshold, lower threshold */
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
-           {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD} 
-        }
-     }
+      ,
+	 {
+	    SS_DFLT_REGION + 7,                         /* region id */
+	    MT_MAX_BKTS,                            /* number of buckets */
+	    {
+	       /* block size, no. of blocks, Upper threshold, lower threshold */
+	       {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	       {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	       {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+	       {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD} 
+	    }
+	 }
 #endif
-  }
+   }
 
 };
 
@@ -642,9 +642,9 @@ MtGlobMemCfg mtGlobMemoCfg =
       {MT_BKT_4_DSIZE, MT_BKT_4_NUMBLKS, SS_DFLT_MEM_BLK_SET_SIZE}
 #else
       {1024, 12800 /* MT_BKT_0_NUMBLKS */, SS_DFLT_MEM_BLK_SET_SIZE},
-      {1664, 12800 /* MT_BKT_1_NUMBLKS */, SS_DFLT_MEM_BLK_SET_SIZE},
-      {4096, 3840 /* MT_BKT_2_NUMBLKS*/, SS_DFLT_MEM_BLK_SET_SIZE},
-      {MT_BKT_3_DSIZE, 12800 /* MT_BKT_3_NUMBLKS */, SS_DFLT_MEM_BLK_SET_SIZE}
+	 {1664, 12800 /* MT_BKT_1_NUMBLKS */, SS_DFLT_MEM_BLK_SET_SIZE},
+	 {4096, 3840 /* MT_BKT_2_NUMBLKS*/, SS_DFLT_MEM_BLK_SET_SIZE},
+	 {MT_BKT_3_DSIZE, 12800 /* MT_BKT_3_NUMBLKS */, SS_DFLT_MEM_BLK_SET_SIZE}
 #endif
    }
 };
@@ -655,131 +655,131 @@ MtGlobMemCfg mtGlobMemoCfg =
 MtMemCfg mtMemoCfg =
 {
 #ifdef  RY_ENBS5SHM
-  SS_MAX_REGS - 1,                            /* number of regions */
+   SS_MAX_REGS - 1,                            /* number of regions */
 #else
 #ifndef XEON_SPECIFIC_CHANGES  
-  SS_MAX_REGS,                                /* number of regions */
+   SS_MAX_REGS,                                /* number of regions */
 #else
-  2,
+   2,
 #endif  
 #endif
-  {
-    {
-      SS_DFLT_REGION,                         /* region id */
-      MT_MAX_BKTS,                            /* number of buckets */
-      MT_HEAP_SIZE,                           /* heap size */
+   {
       {
+	 SS_DFLT_REGION,                         /* region id */
+	 MT_MAX_BKTS,                            /* number of buckets */
+	 MT_HEAP_SIZE,                           /* heap size */
+	 {
 #ifndef XEON_SPECIFIC_CHANGES  
-         {MT_BKT_0_DSIZE, MT_BKT_0_STATIC_NUMBLKS},   /* block size, no. of blocks */
-         {MT_BKT_1_DSIZE, MT_BKT_1_STATIC_NUMBLKS},    /* block size, no. of blocks */
-         {MT_BKT_2_DSIZE, MT_BKT_2_STATIC_NUMBLKS},   /* block size, no. of blocks */
-         {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS},    /* block size, no. of blocks */
-         {MT_BKT_4_DSIZE, MT_BKT_4_STATIC_NUMBLKS}
+	    {MT_BKT_0_DSIZE, MT_BKT_0_STATIC_NUMBLKS},   /* block size, no. of blocks */
+	    {MT_BKT_1_DSIZE, MT_BKT_1_STATIC_NUMBLKS},    /* block size, no. of blocks */
+	    {MT_BKT_2_DSIZE, MT_BKT_2_STATIC_NUMBLKS},   /* block size, no. of blocks */
+	    {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS},    /* block size, no. of blocks */
+	    {MT_BKT_4_DSIZE, MT_BKT_4_STATIC_NUMBLKS}
 #else
-         {256, 491520}, /* 60 pages of 2M*/
-         {512, 12288},  /* 3 pages of 2M */
-         {2048, 99328}, /* 97 Pages of 2M */
-         {8192, 75008}, /* 293 Pages of 2M */
-         {16384, 4096}  /* 32 pages of 2M */
+	    {256, 491520}, /* 60 pages of 2M*/
+	       {512, 12288},  /* 3 pages of 2M */
+	       {2048, 99328}, /* 97 Pages of 2M */
+	       {8192, 75008}, /* 293 Pages of 2M */
+	       {16384, 4096}  /* 32 pages of 2M */
 #endif        
-      }
-    },
+	 }
+      },
 #ifdef INTEL_WLS
 #ifndef SS_LOCKLESS_MEMORY    
-    {
-      SS_DFLT_REGION + 1,                         /* region id */
-      MT_MAX_BKTS,                            /* number of buckets */
-      /*MT_HEAP_SIZE 7194304 */ 10485760,                           /* heap size */
       {
-        //{MT_BKT_0_DSIZE, MT_BKT_0_STATIC_NUMBLKS},   /* block size, no. of blocks */
-        //{MT_BKT_1_DSIZE, MT_BKT_1_STATIC_NUMBLKS},    /* block size, no. of blocks */
-        //{MT_BKT_2_DSIZE, MT_BKT_2_STATIC_NUMBLKS},   /* block size, no. of blocks */
-        //{MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS}    /* block size, no. of blocks */
-        {128,   500000},
-        {256,   500000},
-        {2048,  200000},
-        {4096,  40960},
-        {18432, 10240}
-      }
-    },
+	 SS_DFLT_REGION + 1,                         /* region id */
+	 MT_MAX_BKTS,                            /* number of buckets */
+	 /*MT_HEAP_SIZE 7194304 */ 10485760,                           /* heap size */
+	 {
+	    //{MT_BKT_0_DSIZE, MT_BKT_0_STATIC_NUMBLKS},   /* block size, no. of blocks */
+	    //{MT_BKT_1_DSIZE, MT_BKT_1_STATIC_NUMBLKS},    /* block size, no. of blocks */
+	    //{MT_BKT_2_DSIZE, MT_BKT_2_STATIC_NUMBLKS},   /* block size, no. of blocks */
+	    //{MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS}    /* block size, no. of blocks */
+	    {128,   500000},
+	    {256,   500000},
+	    {2048,  200000},
+	    {4096,  40960},
+	    {18432, 10240}
+	 }
+      },
 #endif /* SS_LOCKLESS_MEMORY */
 #endif /* INTEL_WLS */
 #ifdef SS_LOCKLESS_MEMORY
-    {
-      SS_DFLT_REGION + 1,                         /* region id */
-      MT_MAX_BKTS,                            /* number of buckets */
-      MT_HEAP_SIZE,                           /* heap size */
       {
-        {MT_BKT_0_DSIZE, MT_BKT_0_STATIC_NUMBLKS},   /* block size, no. of blocks */
-        {MT_BKT_1_DSIZE, MT_BKT_1_STATIC_NUMBLKS},    /* block size, no. of blocks */
-        {MT_BKT_2_DSIZE, MT_BKT_2_STATIC_NUMBLKS},   /* block size, no. of blocks */
-        {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS},    /* block size, no. of blocks */
-        {MT_BKT_4_DSIZE, MT_BKT_4_STATIC_NUMBLKS}    /* block size, no. of blocks */
-      }
-    },
-    {
-      SS_DFLT_REGION + 2,                         /* region id */
-      MT_MAX_BKTS,                            /* number of buckets */
-      MT_HEAP_SIZE,                           /* heap size */
+	 SS_DFLT_REGION + 1,                         /* region id */
+	 MT_MAX_BKTS,                            /* number of buckets */
+	 MT_HEAP_SIZE,                           /* heap size */
+	 {
+	    {MT_BKT_0_DSIZE, MT_BKT_0_STATIC_NUMBLKS},   /* block size, no. of blocks */
+	    {MT_BKT_1_DSIZE, MT_BKT_1_STATIC_NUMBLKS},    /* block size, no. of blocks */
+	    {MT_BKT_2_DSIZE, MT_BKT_2_STATIC_NUMBLKS},   /* block size, no. of blocks */
+	    {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS},    /* block size, no. of blocks */
+	    {MT_BKT_4_DSIZE, MT_BKT_4_STATIC_NUMBLKS}    /* block size, no. of blocks */
+	 }
+      },
       {
-        {MT_BKT_0_DSIZE, MT_BKT_0_STATIC_NUMBLKS},   /* block size, no. of blocks */
-        {MT_BKT_1_DSIZE, MT_BKT_1_STATIC_NUMBLKS},    /* block size, no. of blocks */
-        {MT_BKT_2_DSIZE, MT_BKT_2_STATIC_NUMBLKS},   /* block size, no. of blocks */
-        {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS},    /* block size, no. of blocks */
-	{MT_BKT_4_DSIZE, MT_BKT_4_STATIC_NUMBLKS}    /* block size, no. of blocks */
-      }
-    },
-     {
-      SS_DFLT_REGION + 3,                         /* region id */
-      MT_MAX_BKTS,                            /* number of buckets */
-      MT_HEAP_SIZE,                           /* heap size */
+	 SS_DFLT_REGION + 2,                         /* region id */
+	 MT_MAX_BKTS,                            /* number of buckets */
+	 MT_HEAP_SIZE,                           /* heap size */
+	 {
+	    {MT_BKT_0_DSIZE, MT_BKT_0_STATIC_NUMBLKS},   /* block size, no. of blocks */
+	    {MT_BKT_1_DSIZE, MT_BKT_1_STATIC_NUMBLKS},    /* block size, no. of blocks */
+	    {MT_BKT_2_DSIZE, MT_BKT_2_STATIC_NUMBLKS},   /* block size, no. of blocks */
+	    {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS},    /* block size, no. of blocks */
+	    {MT_BKT_4_DSIZE, MT_BKT_4_STATIC_NUMBLKS}    /* block size, no. of blocks */
+	 }
+      },
       {
-        {MT_BKT_0_DSIZE, MT_BKT_0_STATIC_NUMBLKS},   /* block size, no. of blocks */
-        {MT_BKT_1_DSIZE, MT_BKT_1_STATIC_NUMBLKS},    /* block size, no. of blocks */
-        {MT_BKT_2_DSIZE, MT_BKT_2_STATIC_NUMBLKS},   /* block size, no. of blocks */
-        {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS},    /* block size, no. of blocks */
-	{MT_BKT_4_DSIZE, MT_BKT_4_STATIC_NUMBLKS}    /* block size, no. of blocks */
+	 SS_DFLT_REGION + 3,                         /* region id */
+	 MT_MAX_BKTS,                            /* number of buckets */
+	 MT_HEAP_SIZE,                           /* heap size */
+	 {
+	    {MT_BKT_0_DSIZE, MT_BKT_0_STATIC_NUMBLKS},   /* block size, no. of blocks */
+	    {MT_BKT_1_DSIZE, MT_BKT_1_STATIC_NUMBLKS},    /* block size, no. of blocks */
+	    {MT_BKT_2_DSIZE, MT_BKT_2_STATIC_NUMBLKS},   /* block size, no. of blocks */
+	    {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS},    /* block size, no. of blocks */
+	    {MT_BKT_4_DSIZE, MT_BKT_4_STATIC_NUMBLKS}    /* block size, no. of blocks */
+	 }
+      },
+      {
+	 SS_DFLT_REGION + 4,                         /* region id */
+	 MT_MAX_BKTS,                            /* number of buckets */
+	 MT_HEAP_SIZE,                           /* heap size */
+	 {
+	    {MT_BKT_0_DSIZE, MT_BKT_0_STATIC_NUMBLKS},   /* block size, no. of blocks */
+	    {MT_BKT_1_DSIZE, MT_BKT_1_STATIC_NUMBLKS},    /* block size, no. of blocks */
+	    {MT_BKT_2_DSIZE, MT_BKT_2_STATIC_NUMBLKS},   /* block size, no. of blocks */
+	    {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS},    /* block size, no. of blocks */
+	    {MT_BKT_4_DSIZE, MT_BKT_4_STATIC_NUMBLKS}    /* block size, no. of blocks */
+	 }
+      },
+      {
+	 SS_DFLT_REGION + 5,                         /* region id */
+	 MT_MAX_BKTS,                            /* number of buckets */
+	 MT_HEAP_SIZE,                           /* heap size */
+	 {
+	    {MT_BKT_0_DSIZE, MT_BKT_0_STATIC_NUMBLKS},   /* block size, no. of blocks */
+	    {MT_BKT_1_DSIZE, MT_BKT_1_STATIC_NUMBLKS},    /* block size, no. of blocks */
+	    {MT_BKT_2_DSIZE, MT_BKT_2_STATIC_NUMBLKS},   /* block size, no. of blocks */
+	    {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS},    /* block size, no. of blocks */
+	    {MT_BKT_4_DSIZE, MT_BKT_4_STATIC_NUMBLKS}    /* block size, no. of blocks */
+	 }
+      },
+      {
+	 SS_DFLT_REGION + 5,                         /* region id */
+	 MT_MAX_BKTS,                            /* number of buckets */
+	 MT_HEAP_SIZE,                           /* heap size */
+	 {
+	    {MT_BKT_0_DSIZE, MT_BKT_0_STATIC_NUMBLKS},   /* block size, no. of blocks */
+	    {MT_BKT_1_DSIZE, MT_BKT_1_STATIC_NUMBLKS},    /* block size, no. of blocks */
+	    {MT_BKT_2_DSIZE, MT_BKT_2_STATIC_NUMBLKS},   /* block size, no. of blocks */
+	    {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS},    /* block size, no. of blocks */
+	    {MT_BKT_4_DSIZE, MT_BKT_4_STATIC_NUMBLKS}    /* block size, no. of blocks */
+	 }
       }
-    },
-    {
-       SS_DFLT_REGION + 4,                         /* region id */
-       MT_MAX_BKTS,                            /* number of buckets */
-       MT_HEAP_SIZE,                           /* heap size */
-       {
-          {MT_BKT_0_DSIZE, MT_BKT_0_STATIC_NUMBLKS},   /* block size, no. of blocks */
-          {MT_BKT_1_DSIZE, MT_BKT_1_STATIC_NUMBLKS},    /* block size, no. of blocks */
-          {MT_BKT_2_DSIZE, MT_BKT_2_STATIC_NUMBLKS},   /* block size, no. of blocks */
-          {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS},    /* block size, no. of blocks */
-	  {MT_BKT_4_DSIZE, MT_BKT_4_STATIC_NUMBLKS}    /* block size, no. of blocks */
-       }
-    },
-    {
-       SS_DFLT_REGION + 5,                         /* region id */
-       MT_MAX_BKTS,                            /* number of buckets */
-       MT_HEAP_SIZE,                           /* heap size */
-       {
-          {MT_BKT_0_DSIZE, MT_BKT_0_STATIC_NUMBLKS},   /* block size, no. of blocks */
-          {MT_BKT_1_DSIZE, MT_BKT_1_STATIC_NUMBLKS},    /* block size, no. of blocks */
-          {MT_BKT_2_DSIZE, MT_BKT_2_STATIC_NUMBLKS},   /* block size, no. of blocks */
-          {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS},    /* block size, no. of blocks */
-          {MT_BKT_4_DSIZE, MT_BKT_4_STATIC_NUMBLKS}    /* block size, no. of blocks */
-       }
-    },
-    {
-       SS_DFLT_REGION + 5,                         /* region id */
-       MT_MAX_BKTS,                            /* number of buckets */
-       MT_HEAP_SIZE,                           /* heap size */
-       {
-          {MT_BKT_0_DSIZE, MT_BKT_0_STATIC_NUMBLKS},   /* block size, no. of blocks */
-          {MT_BKT_1_DSIZE, MT_BKT_1_STATIC_NUMBLKS},    /* block size, no. of blocks */
-          {MT_BKT_2_DSIZE, MT_BKT_2_STATIC_NUMBLKS},   /* block size, no. of blocks */
-          {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS},    /* block size, no. of blocks */
-          {MT_BKT_4_DSIZE, MT_BKT_4_STATIC_NUMBLKS}    /* block size, no. of blocks */
-       }
-    }
 #endif /* SS_LOCKLESS_MEMORY */
-    STATIC_MEM_CFG
-  }
+      STATIC_MEM_CFG
+   }
 };
 /* mt003.301 Modifications - File Based task registration made
  * common for both MULTICORE and NON-MULTICORE
@@ -825,12 +825,12 @@ static CmMmRegCb *mtCMMRegCb[SS_MAX_REGS];
 #ifdef NTL_LIB
 void mtSetNtlHdl(unsigned int hdl)
 {
-    osCp.ntl.hdl =  hdl;
+   osCp.ntl.hdl =  hdl;
 }
 
 unsigned int mtGetNtlHdl()
 {
-    return(osCp.ntl.hdl);
+   return(osCp.ntl.hdl);
 }
 
 #endif  /* NTL_LIB */
@@ -848,18 +848,18 @@ static int SOpenWlsIntf()
 {
    uint8_t i;
    void *hdl;
-   #define WLS_DEVICE_NAME "wls0"
-   
+#define WLS_DEVICE_NAME "wls0"
+
    char *my_argv[] = {"gnodeb", "-c3", "--proc-type=auto", "--file-prefix", WLS_DEVICE_NAME, "--iova-mode=pa"};
-   printf("Calling rte_eal_init: ");
+   DU_LOG("\nDEBUG  -->  Calling rte_eal_init: ");
    for (i = 0; i < RTE_DIM(my_argv); i++)
    {
-       printf("%s ", my_argv[i]); 
+      DU_LOG("%s ", my_argv[i]); 
    }
-   printf("\n");
+   DU_LOG("\n");
 
    if (rte_eal_init(RTE_DIM(my_argv), my_argv) < 0)
-       rte_panic("Cannot init EAL\n");
+      rte_panic("Cannot init EAL\n");
 
 
 #ifdef XEON_SPECIFIC_CHANGES
@@ -876,8 +876,8 @@ static int SOpenWlsIntf()
 
    if(!osCp.wls.intf)
    {
-     printf("Could not open WLS Interface \n");
-     return (0);
+      DU_LOG("\nERROR  -->  Could not open WLS Interface \n");
+      return (0);
    }
 
    return (1);
@@ -888,26 +888,26 @@ static int SOpenWlsIntf()
 #ifndef API_MAIN
 
 /*
-*
-*       Fun:   main
-*
-*       Desc:  This function is the entry point for the final binary. It
-*              calls SInit() in the common code. It can be replaced by a
-*              user function if required (SInit() must still be called).
-*
-*       Ret:   none on success
-*              exit on failure
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
-int main
+ *
+ *       Fun:   main
+ *
+ *       Desc:  This function is the entry point for the final binary. It
+ *              calls SInit() in the common code. It can be replaced by a
+ *              user function if required (SInit() must still be called).
+ *
+ *       Ret:   none on success
+ *              exit on failure
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
+   int main
 (
-int argc,                       /* argument count */
-char **argv                     /* argument vector */
-)
+ int argc,                       /* argument count */
+ char **argv                     /* argument vector */
+ )
 {
 
 #ifdef XEON_MULTIPLE_CELL_CHANGES
@@ -921,19 +921,19 @@ char **argv                     /* argument vector */
 
 #if defined (INTEL_WLS) || defined (SS_USE_WLS_MEM)
    if(!SOpenWlsIntf())
-    return (0);
+      return (0);
 #endif /* INTEL_WLS */
 
    msArgc = argc;
    msArgv = argv;
    /* mt003.301 Modifications */
    if( ROK != SInit())
-	{
-		printf("\n SInit failed, SSI could not start \n");
-		/* pthread_exit(NULLP);*/ /* Commented to Come out of Main thread*/
+   {
+      DU_LOG("\nDEBUG  -->   SInit failed, SSI could not start \n");
+      /* pthread_exit(NULLP);*/ /* Commented to Come out of Main thread*/
 
-		return (0);
-	}
+      return (0);
+   }
    /*mt010.301  cleanup part exposed to user*/
    SFini();
    return (0);
@@ -942,26 +942,26 @@ char **argv                     /* argument vector */
 #else
 
 /*
-*
-*       Fun:   ssMain
-*
-*       Desc:  This function is the entry point for the final binary. It
-*              calls SInit() in the common code. It can be replaced by a
-*              user function if required (SInit() must still be called).
-*
-*       Ret:   none on success
-*              exit on failure
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
-int ssMain
+ *
+ *       Fun:   ssMain
+ *
+ *       Desc:  This function is the entry point for the final binary. It
+ *              calls SInit() in the common code. It can be replaced by a
+ *              user function if required (SInit() must still be called).
+ *
+ *       Ret:   none on success
+ *              exit on failure
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
+   int ssMain
 (
-int argc,                       /* argument count */
-char **argv                     /* argument vector */
-)
+ int argc,                       /* argument count */
+ char **argv                     /* argument vector */
+ )
 {
 
 
@@ -976,23 +976,23 @@ char **argv                     /* argument vector */
 
 #endif
 /*
-*  initialization functions
-*/
+ *  initialization functions
+ */
 
 /*
-*
-*       Fun:   Initialize OS control point
-*
-*       Desc:  This function initializes MTSS-specific information
-*              in the OS control point.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   Initialize OS control point
+ *
+ *       Desc:  This function initializes MTSS-specific information
+ *              in the OS control point.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
 S16 ssdInitGen(void)
 {
    struct sigaction act;
@@ -1002,14 +1002,14 @@ S16 ssdInitGen(void)
 #endif
 
 
-  /*mt014.301 : 4GMX release related changes*/
+   /*mt014.301 : 4GMX release related changes*/
 #ifdef SS_4GMX_UCORE
    uarmInit();
 #endif
-/* mt005.301 : Cavium changes */
+   /* mt005.301 : Cavium changes */
 #ifdef SS_SEUM_CAVIUM
-	/* set group mask for the core */
-	cvmx_pow_set_group_mask(cvmx_get_core_num(), SS_CVMX_GRP_MASK);
+   /* set group mask for the core */
+   cvmx_pow_set_group_mask(cvmx_get_core_num(), SS_CVMX_GRP_MASK);
 #endif /* SS_SEUM_CAVIUM */
 
    osCp.dep.sysTicks = 0;
@@ -1018,12 +1018,12 @@ S16 ssdInitGen(void)
 #ifndef NOCMDLINE
    /* parse command line */
    mtGetOpts();
-	/* mt003.301 Additions */
-	if(fileBasedMemCfg == TRUE && memConfigured == FALSE)
-	{
-		printf("\n File Based Memory configuration failed \n");
-		return RFAILED;
-	}
+   /* mt003.301 Additions */
+   if(fileBasedMemCfg == TRUE && memConfigured == FALSE)
+   {
+      DU_LOG("\nDEBUG  -->   File Based Memory configuration failed \n");
+      return RFAILED;
+   }
 #endif
 
 #ifndef RGL_SPECIFIC_CHANGES /* ANOOP :: This ssdInitMemInfo() was present in 2.1 */
@@ -1065,45 +1065,45 @@ S16 ssdInitGen(void)
    /*Initialize SIGSEGV Signal */
 #ifdef TENB_T2K3K_SPECIFIC_CHANGES
 #if 1
-    memset(&sa, 0, sizeof(struct sigaction));
-    sigemptyset(&sa.sa_mask);
-    sa.sa_sigaction = signal_segv;
-    sa.sa_flags = SA_SIGINFO;
+   memset(&sa, 0, sizeof(struct sigaction));
+   sigemptyset(&sa.sa_mask);
+   sa.sa_sigaction = signal_segv;
+   sa.sa_flags = SA_SIGINFO;
 #ifndef XEON_SPECIFIC_CHANGES
-    sigaction(SIGSEGV, &sa, NULL);
+   sigaction(SIGSEGV, &sa, NULL);
 
-    memset(&sa, 0, sizeof(struct sigaction));
-    sigemptyset(&sa.sa_mask);
-    sa.sa_sigaction = signal_segv;
-    sa.sa_flags = SA_SIGINFO;
+   memset(&sa, 0, sizeof(struct sigaction));
+   sigemptyset(&sa.sa_mask);
+   sa.sa_sigaction = signal_segv;
+   sa.sa_flags = SA_SIGINFO;
 
-    sigaction(SIGILL, &sa, NULL);
+   sigaction(SIGILL, &sa, NULL);
 #else
-    if(sigaction(SIGILL, &sa, NULL) != 0)
-    {
-       printf("Failed to process sigaction for the SIGILL\n");
-       return RFAILED;
-    }
-    if(sigaction(SIGSEGV, &sa, NULL) != 0)
-    {
-       printf("Failed to process sigaction for the SIGSEGV\n");
-       return RFAILED;
-    }
-    if(sigaction(SIGABRT, &sa, NULL) != 0)
-    {
-       printf("Failed to process sigaction for the SIGABRT\n");
-       return RFAILED;
-    }
-    if(sigaction(SIGTERM, &sa, NULL) != 0)
-    {
-       printf("Failed to process sigaction for the SIGTERM\n");
-       return RFAILED;
-    }
-    if(sigaction(SIGHUP, &sa, NULL) != 0)
-    {
-       printf("Failed to process sigaction for the SIGHUP\n");
-       return RFAILED;
-    }
+   if(sigaction(SIGILL, &sa, NULL) != 0)
+   {
+      DU_LOG("\nERROR  -->  Failed to process sigaction for the SIGILL\n");
+      return RFAILED;
+   }
+   if(sigaction(SIGSEGV, &sa, NULL) != 0)
+   {
+      DU_LOG("\nERROR  -->  Failed to process sigaction for the SIGSEGV\n");
+      return RFAILED;
+   }
+   if(sigaction(SIGABRT, &sa, NULL) != 0)
+   {
+      DU_LOG("\nERROR  -->  Failed to process sigaction for the SIGABRT\n");
+      return RFAILED;
+   }
+   if(sigaction(SIGTERM, &sa, NULL) != 0)
+   {
+      DU_LOG("\nERROR  -->  Failed to process sigaction for the SIGTERM\n");
+      return RFAILED;
+   }
+   if(sigaction(SIGHUP, &sa, NULL) != 0)
+   {
+      DU_LOG("\nERROR  -->  Failed to process sigaction for the SIGHUP\n");
+      return RFAILED;
+   }
 #endif    
 #else
    signal (SIGSEGV, mtSigSegvHndlr);
@@ -1133,18 +1133,18 @@ S16 ssdInitGen(void)
 
 
 /*
-*
-*       Fun:   De-initialize OS control point
-*
-*       Desc:  This function reverses the initialization in ssdInitGen().
-*
-*       Ret:   ROK      - ok
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   De-initialize OS control point
+ *
+ *       Desc:  This function reverses the initialization in ssdInitGen().
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
 Void ssdDeinitGen(void)
 {
 
@@ -1157,26 +1157,26 @@ Void ssdDeinitGen(void)
 #ifdef SS_LOCKLESS_MEMORY
 #ifdef USE_MALLOC
 /*
-*
-*       Fun:   ssPutDynMemBlkSet
-*
-*       Desc:  Returns the set of dynamic Blocks into the global region
-*
-*
-*       Ret:   ROK     - successful, 
-*              RFAILED - unsuccessful.
-*
-*       Notes: 
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   ssPutDynMemBlkSet
+ *
+ *       Desc:  Returns the set of dynamic Blocks into the global region
+ *
+ *
+ *       Ret:   ROK     - successful, 
+ *              RFAILED - unsuccessful.
+ *
+ *       Notes: 
+ *
+ *       File:  cm_mem.c
+ *
+ */
 S16 ssPutDynMemBlkSet
 (
-uint8_t                    bktIdx,        /* Index to bucket list */
-CmMmBlkSetElement    *dynMemSetElem  /* Memory set element which is needs to be 
-                                        added to global region */
-)
+ uint8_t                    bktIdx,        /* Index to bucket list */
+ CmMmBlkSetElement    *dynMemSetElem  /* Memory set element which is needs to be 
+					 added to global region */
+ )
 {
    CmMmGlobRegCb        *globReg;
    CmMmGlobalBktCb      *bktCb;
@@ -1208,26 +1208,26 @@ CmMmBlkSetElement    *dynMemSetElem  /* Memory set element which is needs to be
 }
 
 /*
-*
-*       Fun:   ssGetDynMemBlkSet
-*
-*       Desc:  Gets the set of dynamic memory blocks from the global region
-*
-*
-*       Ret:   ROK     - successful, 
-*              RFAILED - unsuccessful.
-*
-*       Notes: 
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   ssGetDynMemBlkSet
+ *
+ *       Desc:  Gets the set of dynamic memory blocks from the global region
+ *
+ *
+ *       Ret:   ROK     - successful, 
+ *              RFAILED - unsuccessful.
+ *
+ *       Notes: 
+ *
+ *       File:  cm_mem.c
+ *
+ */
 S16 ssGetDynMemBlkSet
 (
-uint8_t               bktIdx,        /* Index to bucket list */
-CmMmBlkSetElement     *dynMemSetElem  /* Memory set element which is updated 
-                                      with new set values */
-)
+ uint8_t               bktIdx,        /* Index to bucket list */
+ CmMmBlkSetElement     *dynMemSetElem  /* Memory set element which is updated 
+					  with new set values */
+ )
 {
 
    CmMmGlobRegCb        *globReg;
@@ -1263,27 +1263,27 @@ CmMmBlkSetElement     *dynMemSetElem  /* Memory set element which is updated
 
 #else
 /*
-*
-*       Fun:   ssPutDynMemBlkSet
-*
-*       Desc:  Returns the set of dynamic Blocks into the global region
-*
-*
-*       Ret:   ROK     - successful, 
-*              RFAILED - unsuccessful.
-*
-*       Notes: 
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   ssPutDynMemBlkSet
+ *
+ *       Desc:  Returns the set of dynamic Blocks into the global region
+ *
+ *
+ *       Ret:   ROK     - successful, 
+ *              RFAILED - unsuccessful.
+ *
+ *       Notes: 
+ *
+ *       File:  cm_mem.c
+ *
+ */
 S16 ssPutDynMemBlkSet
 (
-uint8_t              bktIdx,               /* Index to bucket list */
-CmMmBlkSetElement    *dynMemSetElem,        /* Memory set element which is needs to be 
-                                               added to global region */
-uint32_t             doNotBlockForLock    /* Boolean whether to block for lock or not */
-)
+ uint8_t              bktIdx,               /* Index to bucket list */
+ CmMmBlkSetElement    *dynMemSetElem,        /* Memory set element which is needs to be 
+						added to global region */
+ uint32_t             doNotBlockForLock    /* Boolean whether to block for lock or not */
+ )
 {
    CmMmGlobRegCb       *globReg;
    CmMmGlobalBktCb     *bktCb;
@@ -1318,8 +1318,8 @@ uint32_t             doNotBlockForLock    /* Boolean whether to block for lock o
       lstNode = cmLListFirst(&(bktCb->listFreeBktSet));
       if(lstNode == NULLP)
       {
-         SUnlock(&(bktCb->bucketLock));
-         return RFAILED;
+	 SUnlock(&(bktCb->bucketLock));
+	 return RFAILED;
       }
 
       cmLListDelFrm(&(bktCb->listFreeBktSet), lstNode);
@@ -1341,28 +1341,28 @@ uint32_t             doNotBlockForLock    /* Boolean whether to block for lock o
 }
 
 /*
-*
-*       Fun:   ssGetDynMemBlkSet
-*
-*       Desc:  Gets the set of dynamic memory blocks from the global region
-*
-*
-*       Ret:   ROK     - successful, 
-*              RFAILED - unsuccessful.
-*
-*       Notes: The parameter doNotBlockForLock specifies whether to block for lock
-*              or not 
-*
-*       File:  cm_mem.c
-*
-*/
+ *
+ *       Fun:   ssGetDynMemBlkSet
+ *
+ *       Desc:  Gets the set of dynamic memory blocks from the global region
+ *
+ *
+ *       Ret:   ROK     - successful, 
+ *              RFAILED - unsuccessful.
+ *
+ *       Notes: The parameter doNotBlockForLock specifies whether to block for lock
+ *              or not 
+ *
+ *       File:  cm_mem.c
+ *
+ */
 S16 ssGetDynMemBlkSet
 (
-uint8_t                     bktIdx,              /* Index to bucket list */
-CmMmBlkSetElement     *dynMemSetElem,       /* Memory set element which is updated 
-                                               with new set values */
-uint32_t                    doNotBlockForLock    /* Boolean whether to block for lock or not */
-)
+ uint8_t                     bktIdx,              /* Index to bucket list */
+ CmMmBlkSetElement     *dynMemSetElem,       /* Memory set element which is updated 
+						with new set values */
+ uint32_t                    doNotBlockForLock    /* Boolean whether to block for lock or not */
+ )
 {
    CmMmGlobRegCb        *globReg;
    CmMmGlobalBktCb      *bktCb;
@@ -1396,8 +1396,8 @@ uint32_t                    doNotBlockForLock    /* Boolean whether to block for
 
       if(lstNode == NULLP)
       {
-         SUnlock(&(bktCb->bucketLock));
-         return RFAILED;
+	 SUnlock(&(bktCb->bucketLock));
+	 return RFAILED;
       }
 
       /* Delete the node from the valid linked list and copy the values of the
@@ -1440,28 +1440,29 @@ uint32_t isMemThreshReached(Region reg)
 
    if(gDynMemAlrm[bktIdx])
    {
-   //        printf ("under memory   bktCb->listValidBktSet.count %d bktIdx %d\n",bktCb->listValidBktSet.count ,bktIdx);
-	   SLock(&(bktCb->bucketLock));
-	   if(bktCb->listValidBktSet.count > 25)
-            {
-	   gDynMemAlrm[bktIdx] = FALSE;
-     //      printf ("recoverd bktCb->listValidBktSet.count %d bktIdx %d\n",bktCb->listValidBktSet.count ,bktIdx);
-             }
-	   SUnlock(&(bktCb->bucketLock));
-	   return RFAILED;
+      //        DU_LOG("\nINFO  -->  under memory   bktCb->listValidBktSet.count %d bktIdx %d\n",\
+      bktCb->listValidBktSet.count ,bktIdx);
+      SLock(&(bktCb->bucketLock));
+      if(bktCb->listValidBktSet.count > 25)
+      {
+	 gDynMemAlrm[bktIdx] = FALSE;
+	 //     DU_LOG("\INFO  -->  recoverd bktCb->listValidBktSet.count %d bktIdx %d\n",bktCb->listValidBktSet.count ,bktIdx);
+      }
+      SUnlock(&(bktCb->bucketLock));
+      return RFAILED;
    }
    else
    {
 
-	   if(memoryCheckCounter++ >= NUM_CALLS_TO_CHECK_MEM_DYN_AGAIN)
-	   {
-       //    printf ("CHECK  bktCb->listValidBktSet.count %d bktIdx %d\n",bktCb->listValidBktSet.count ,bktIdx);
-		   SLock(&(bktCb->bucketLock));
-		   if(bktCb->listValidBktSet.count < 15 )
-			   gDynMemAlrm[bktIdx] = TRUE;
-		   memoryCheckCounter = 0;
-		   SUnlock(&(bktCb->bucketLock));
-	   }
+      if(memoryCheckCounter++ >= NUM_CALLS_TO_CHECK_MEM_DYN_AGAIN)
+      {
+	 //     DU_LOG("\nINFO  -->  CHECK  bktCb->listValidBktSet.count %d bktIdx %d\n",bktCb->listValidBktSet.count ,bktIdx);
+	 SLock(&(bktCb->bucketLock));
+	 if(bktCb->listValidBktSet.count < 15 )
+	    gDynMemAlrm[bktIdx] = TRUE;
+	 memoryCheckCounter = 0;
+	 SUnlock(&(bktCb->bucketLock));
+      }
    }
    return ROK;
 }
@@ -1471,20 +1472,20 @@ uint32_t isMemThreshReached(Region reg)
 
 #ifdef SS_USE_ICC_MEMORY
 /*
-*
-*       Fun:   Initialize region/pool tables
-*
-*       Desc:  This function initializes MTSS-specific information
-*              in the region/pool tables and configures the common
-*              memory manager for use.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   Initialize region/pool tables
+ *
+ *       Desc:  This function initializes MTSS-specific information
+ *              in the region/pool tables and configures the common
+ *              memory manager for use.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
 Void * ssGetIccHdl(Region region)
 {
    CmMmDynRegCb *dynRegCb;
@@ -1494,7 +1495,7 @@ Void * ssGetIccHdl(Region region)
    {
       return (NULLP);
    }
-   
+
    dynRegCb = (CmMmDynRegCb *)osCp.dynRegionTbl[region].regCb; 
 
    return (dynRegCb->iccHdl);
@@ -1517,10 +1518,10 @@ static S16 SPartitionWlsDynMem()
       bktMemStrtAddr += mtDynMemSz[i].reqdSz;
    }
 
-   printf("Global Memory Info: \n");
+   DU_LOG("\nINFO  -->  Global Memory Info: \n");
    for (i = 0 ; i <  mtGlobMemoCfg.numBkts ; i++)
    {
-      printf("mtDynMemSz[%d]: [0x%016lx]\n", i, (unsigned long int)mtDynMemSz[i].startAddr);
+      DU_LOG("mtDynMemSz[%d]: [0x%016lx]\n", i, (unsigned long int)mtDynMemSz[i].startAddr);
    }
    return ROK;
 }
@@ -1539,11 +1540,11 @@ static S16 SAllocateWlsDynMem()
    }
    osCp.wls.allocAddr = WLS_Alloc(osCp.wls.intf,
 #ifdef INTEL_L1_V19_10
-   WLS_MEMORY_SIZE);
+	 WLS_MEMORY_SIZE);
 #else
    (reqdMemSz + (4 * 1024 * 1024)));
 #endif
-   printf("\n *************** \n WLS memory: %lx, %d\n", (PTR)osCp.wls.allocAddr, reqdMemSz);
+   DU_LOG("\nINFO  -->  WLS memory: %lx, %d\n", (PTR)osCp.wls.allocAddr, reqdMemSz);
    SPartitionWlsDynMem();
    return ROK;
 }
@@ -1563,7 +1564,7 @@ S16 SPartitionWlsMemory()
    long int pageSize[1], hugePageSize;
 #endif
    uint32_t numHugePg;
-   #define DIV_ROUND_OFFSET(X,Y) ( X/Y + ((X%Y)?1:0) )
+#define DIV_ROUND_OFFSET(X,Y) ( X/Y + ((X%Y)?1:0) )
 
    uint8_t   *regMemStrtAddr = (uint8_t *)osCp.wls.allocAddr;
 
@@ -1595,18 +1596,18 @@ Void SChkAddrValid(int type, int region, PTR ptr)
    if(type == 0) //Global
    {
       if(ptr < mtRegMemSz[0].startAddr || ptr >=
-              (mtRegMemSz[mtGlobMemoCfg.numBkts].startAddr + mtGlobMemoCfg.heapSize))
+	    (mtRegMemSz[mtGlobMemoCfg.numBkts].startAddr + mtGlobMemoCfg.heapSize))
       {
-         printf("****INVALID PTR in Global Region: ptr:%p start:%p end:%p***\n", ptr, mtRegMemSz[0].startAddr, mtRegMemSz[mtGlobMemoCfg.numBkts].startAddr);
-         *tryPtr = 0;
+	 DU_LOG("\nERROR  -->  INVALID PTR in Global Region: ptr:%p start:%p end:%p***\n", ptr, mtRegMemSz[0].startAddr, mtRegMemSz[mtGlobMemoCfg.numBkts].startAddr);
+	 *tryPtr = 0;
       }
    }
    else
    {
       if(ptr > mtRegMemSz[0].startAddr && ptr <= mtRegMemSz[mtGlobMemoCfg.numBkts].startAddr )
       {
-         printf("****INVALID PTR in Static Region: ptr:%p start:%p end:%p***\n", ptr, mtRegMemSz[0].startAddr, mtRegMemSz[mtGlobMemoCfg.numBkts].startAddr);
-         *tryPtr = 0;
+	 DU_LOG("\nERROR  -->  INVALID PTR in Static Region: ptr:%p start:%p end:%p***\n", ptr, mtRegMemSz[0].startAddr, mtRegMemSz[mtGlobMemoCfg.numBkts].startAddr);
+	 *tryPtr = 0;
       }
 
    }
@@ -1629,8 +1630,8 @@ S16 SPartitionStaticMemory(uint8_t  *startAddr)
       regMemStrtAddr += reqdSz;
 #ifdef T2K_MEM_LEAK_DBG
       {  /* Since region 1 onwards are used for non wls */
-         regMemLeakInfo.regStartAddr[i] = (uint64_t)mtRegMemSz[i].startAddr;
-         regMemLeakInfo.numActvRegions++;
+	 regMemLeakInfo.regStartAddr[i] = (uint64_t)mtRegMemSz[i].startAddr;
+	 regMemLeakInfo.numActvRegions++;
       }
 #endif /* T2K_MEM_LEAK_DBG */
    }
@@ -1656,16 +1657,16 @@ S16 SAllocateWlsMem()
 
       for (j = 0; j < region->numBkts; j++)
       {
-         reqdMemSz += region->bkt[j].blkSize * region->bkt[j].numBlks;
-         mtRegMemSz[i].reqdSz += region->bkt[j].blkSize * region->bkt[j].numBlks;
+	 reqdMemSz += region->bkt[j].blkSize * region->bkt[j].numBlks;
+	 mtRegMemSz[i].reqdSz += region->bkt[j].blkSize * region->bkt[j].numBlks;
       }
    }
    osCp.wls.allocAddr = WLS_Alloc(osCp.wls.intf, (512 *1024 * 1024));
    //osCp.wls.allocAddr = WLS_Alloc(osCp.wls.intf, (reqdMemSz + (1024 * 1024 * 2 * 2)));
 #ifndef ALIGN_64BIT
-   printf("\n ************* \n WLS memory: %llx, %ld\n ****** \n", osCp.wls.allocAddr, reqdMemSz); 
+   DU_LOG("\nINFO  -->  WLS memory: %llx, %ld\n", osCp.wls.allocAddr, reqdMemSz); 
 #else
-   printf("\n ************* \n WLS memory: %lx, %d\n ****** \n", (PTR)osCp.wls.allocAddr, reqdMemSz); 
+   DU_LOG("\nINFO  -->   WLS memory: %lx, %d\n", (PTR)osCp.wls.allocAddr, reqdMemSz); 
 #endif
    SPartitionWlsMemory();
    return ROK;
@@ -1691,16 +1692,16 @@ S16 SAllocateStaticMem()
 
       for (j = 0; j < region->numBkts; j++)
       {
-         reqdMemSz += region->bkt[j].blkSize * region->bkt[j].numBlks;
-         mtRegMemSz[i].reqdSz += region->bkt[j].blkSize * region->bkt[j].numBlks;
+	 reqdMemSz += region->bkt[j].blkSize * region->bkt[j].numBlks;
+	 mtRegMemSz[i].reqdSz += region->bkt[j].blkSize * region->bkt[j].numBlks;
       }
    }
 
    startAddr = malloc(reqdMemSz + (1024 * 10));
 #ifndef ALIGN_64BIT
-   printf("\n ************* \n Static memory: %llx, %ld\n ****** \n", startAddr, reqdMemSz); 
+   DU_LOG("\nINFO  -->  ************* \n Static memory: %llx, %ld\n ****** \n", startAddr, reqdMemSz); 
 #else
-   printf("\n ************* \n Static memory: %lx, %d\n ****** \n", (PTR)startAddr, reqdMemSz); 
+   DU_LOG("\nINFO  -->  ************* \n Static memory: %lx, %d\n ****** \n", (PTR)startAddr, reqdMemSz); 
 #endif
    SPartitionStaticMemory(startAddr);
    return ROK;
@@ -1710,20 +1711,20 @@ S16 SAllocateStaticMem()
 
 
 /*
-*
-*       Fun:   Initialize region/pool tables
-*
-*       Desc:  This function initializes MTSS-specific information
-*              in the region/pool tables and configures the common
-*              memory manager for use.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   Initialize region/pool tables
+ *
+ *       Desc:  This function initializes MTSS-specific information
+ *              in the region/pool tables and configures the common
+ *              memory manager for use.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
 S16 ssdInitMem(void)
 {
    /* mt018.201 - added local variable */
@@ -1740,7 +1741,7 @@ S16 ssdInitMem(void)
    Size            memSize =0;
 #endif
 #endif /* SS_LOCKLESS_MEMORY */
-   
+
 
    /* Use the default SSI memory manager if the ICC memory manager is not 
     * avilable. If ICC memory manager is avilable, it will be used for
@@ -1754,18 +1755,18 @@ S16 ssdInitMem(void)
       dynRegCb = (CmMmDynRegCb *)calloc(1, sizeof(CmMmDynRegCb));
       if(dynRegCb == NULLP)
       {
-         return RFAILED;
+	 return RFAILED;
       }
       for(k = 0; k < mtDynMemoCfg.region[i].numBkts; k++)
       {
-         dynRegCb->bktSize[k] = mtGlobMemoCfg.bkt[k].blkSize;
+	 dynRegCb->bktSize[k] = mtGlobMemoCfg.bkt[k].blkSize;
       }
       dynRegCb->region = i;
       cmMmDynRegInit(dynRegCb);
-      printf("iccHdl = %lx\n", (PTR)dynRegCb->iccHdl);
+      DU_LOG("\nDEBUG  -->  iccHdl = %lx\n", (PTR)dynRegCb->iccHdl);
       sleep(1);
    }
- /*   ysIccHdl = dynRegCb->iccHdl; */
+   /*   ysIccHdl = dynRegCb->iccHdl; */
 
 #else
    /* Initialize the global region first */
@@ -1787,7 +1788,7 @@ S16 ssdInitMem(void)
       memSize = (mtGlobMemoCfg.bkt[i].blkSize * mtGlobMemoCfg.bkt[i].numBlks);
 #if !defined (INTEL_WLS) && defined (SS_USE_WLS_MEM)
       globReg->bktTbl[i].startAddr = (Data *)mtDynMemSz[i].startAddr;
-      printf("Starting Address of Bkt Entry [%d]: [0x%016lx], memSize[%d]\n", i, (unsigned long int)globReg->bktTbl[i].startAddr, memSize);
+      DU_LOG("\nDEBUG  -->  Starting Address of Bkt Entry [%d]: [0x%016lx], memSize[%d]\n", i, (unsigned long int)globReg->bktTbl[i].startAddr, memSize);
 #else
 #ifndef INTEL_WLS      
       globReg->bktTbl[i].startAddr = (Data *)calloc(memSize, sizeof(Data));
@@ -1797,7 +1798,7 @@ S16 ssdInitMem(void)
 #endif
       if(globReg->bktTbl[i].startAddr == NULLP)
       {
-         return RFAILED;
+	 return RFAILED;
       }
       globReg->bktTbl[i].poolId = i;
       globReg->bktTbl[i].size = mtGlobMemoCfg.bkt[i].blkSize;
@@ -1815,29 +1816,29 @@ S16 ssdInitMem(void)
       dynRegCb = (CmMmDynRegCb *)calloc(1, sizeof(CmMmDynRegCb));
       if(dynRegCb == NULLP)
       {
-         return RFAILED;
+	 return RFAILED;
       }
       for(k = 0; k < mtDynMemoCfg.region[i].numBkts; k++)
       {
-         if((mtDynMemoCfg.region[i].bkt[k].blkSetRelThreshold < 
-                       mtDynMemoCfg.region[i].bkt[k].blkSetAcquireThreshold) ||
-             (mtDynMemoCfg.region[i].bkt[k].blkSetAcquireThreshold == 0) ||
-             (mtDynMemoCfg.region[i].bkt[k].blkSetRelThreshold == 0))
-         {
+	 if((mtDynMemoCfg.region[i].bkt[k].blkSetRelThreshold < 
+		  mtDynMemoCfg.region[i].bkt[k].blkSetAcquireThreshold) ||
+	       (mtDynMemoCfg.region[i].bkt[k].blkSetAcquireThreshold == 0) ||
+	       (mtDynMemoCfg.region[i].bkt[k].blkSetRelThreshold == 0))
+	 {
 #ifdef XEON_SPECIFIC_CHANGES
-            free(dynRegCb);
+	    free(dynRegCb);
 #endif            
-            return RFAILED;
-         }
-         dynRegCb->bktTbl[k].poolId = k;
-         dynRegCb->bktTbl[k].size = mtGlobMemoCfg.bkt[k].blkSize;
-         dynRegCb->bktTbl[k].blkSetRelThreshold = mtDynMemoCfg.region[i].bkt[k].blkSetRelThreshold;
-         dynRegCb->bktTbl[k].blkSetAcquireThreshold = mtDynMemoCfg.region[i].bkt[k].blkSetAcquireThreshold;
-         dynRegCb->bktTbl[k].bucketSetSize = mtGlobMemoCfg.bkt[k].bucketSetSize;
-         if(dynRegCb->bktMaxBlkSize < dynRegCb->bktTbl[k].size)
-         {
-            dynRegCb->bktMaxBlkSize = dynRegCb->bktTbl[k].size;
-         }
+	    return RFAILED;
+	 }
+	 dynRegCb->bktTbl[k].poolId = k;
+	 dynRegCb->bktTbl[k].size = mtGlobMemoCfg.bkt[k].blkSize;
+	 dynRegCb->bktTbl[k].blkSetRelThreshold = mtDynMemoCfg.region[i].bkt[k].blkSetRelThreshold;
+	 dynRegCb->bktTbl[k].blkSetAcquireThreshold = mtDynMemoCfg.region[i].bkt[k].blkSetAcquireThreshold;
+	 dynRegCb->bktTbl[k].bucketSetSize = mtGlobMemoCfg.bkt[k].bucketSetSize;
+	 if(dynRegCb->bktMaxBlkSize < dynRegCb->bktTbl[k].size)
+	 {
+	    dynRegCb->bktMaxBlkSize = dynRegCb->bktTbl[k].size;
+	 }
       }
       dynRegCb->region = i;
       dynRegCb->numBkts = mtDynMemoCfg.region[i].numBkts;
@@ -1847,24 +1848,24 @@ S16 ssdInitMem(void)
 #endif /* SS_LOCKLESS_MEMORY */
 
 #ifdef T2K_MEM_LEAK_DBG
-    uint8_t reg =0; 
-    /* Initailize mem leak tool memorys for debguing */
-    regMemLeakInfo.numActvRegions=0;
-    for(reg=0; reg <SS_MAX_REGS; reg++)
-    {   
-       regMemLeakInfo.gMemLeakInfo[reg] =  malloc(sizeof(T2kMeamLeakInfo)*T2K_MEM_LEAK_INFO_TABLE_SIZE);
-       memset(regMemLeakInfo.gMemLeakInfo[reg],0x0,
-             sizeof(T2kMeamLeakInfo)*T2K_MEM_LEAK_INFO_TABLE_SIZE);
-       regMemLeakInfo.regStartAddr[reg] = 0;
+   uint8_t reg =0; 
+   /* Initailize mem leak tool memorys for debguing */
+   regMemLeakInfo.numActvRegions=0;
+   for(reg=0; reg <SS_MAX_REGS; reg++)
+   {   
+      regMemLeakInfo.gMemLeakInfo[reg] =  malloc(sizeof(T2kMeamLeakInfo)*T2K_MEM_LEAK_INFO_TABLE_SIZE);
+      memset(regMemLeakInfo.gMemLeakInfo[reg],0x0,
+	    sizeof(T2kMeamLeakInfo)*T2K_MEM_LEAK_INFO_TABLE_SIZE);
+      regMemLeakInfo.regStartAddr[reg] = 0;
 
 
-       regMemLeakInfo.regStartAddr[reg] = 0;
-       if (pthread_mutex_init(&(regMemLeakInfo.memLock[reg]), NULL) != 0)
-       {
-          printf("\n mutex init failed\n");
-          return RFAILED;
-       }
-    }
+      regMemLeakInfo.regStartAddr[reg] = 0;
+      if (pthread_mutex_init(&(regMemLeakInfo.memLock[reg]), NULL) != 0)
+      {
+	 DU_LOG("\nERROR  -->   mutex init failed\n");
+	 return RFAILED;
+      }
+   }
 #endif
 #ifdef INTEL_WLS
    /* Now allocate WLS memory */
@@ -1882,16 +1883,16 @@ S16 ssdInitMem(void)
       if (mtCMMRegCb[i] == NULLP)
       {
 	 sprintf(errMsg,"\n ssdInitMem(): Could not allocated memory \
-	 for the Region:%d control block\n",i);
+	       for the Region:%d control block\n",i);
 	 SPrint(errMsg);
-         for (k = 0; k < i; k++)
-         {
-            cmMmRegDeInit(mtCMMRegCb[k]);
-            free(mtCMMRegCfg[k]->vAddr);
-            free(mtCMMRegCb[k]);
+	 for (k = 0; k < i; k++)
+	 {
+	    cmMmRegDeInit(mtCMMRegCb[k]);
+	    free(mtCMMRegCfg[k]->vAddr);
+	    free(mtCMMRegCb[k]);
 	    free(mtCMMRegCfg[k]);
-         }
-         return RFAILED;
+	 }
+	 return RFAILED;
       }
 
       mtCMMRegCfg[i] = (CmMmRegCfg *)calloc(1, sizeof(CmMmRegCfg));
@@ -1917,23 +1918,23 @@ S16 ssdInitMem(void)
       mtCMMRegCfg[i]->size = region->heapsize;
       for (j = 0; j < region->numBkts; j++)
       {
-/* mt033.201 - addition for including the header size while computing the total size */
+	 /* mt033.201 - addition for including the header size while computing the total size */
 #ifdef SSI_DEBUG_LEVEL1
-         mtCMMRegCfg[i]->size += (region->bkt[j].blkSize + sizeof(CmMmBlkHdr)) *\
-                                 (region->bkt[j].numBlks);
+	 mtCMMRegCfg[i]->size += (region->bkt[j].blkSize + sizeof(CmMmBlkHdr)) *\
+				 (region->bkt[j].numBlks);
 #else
-         mtCMMRegCfg[i]->size += region->bkt[j].blkSize * region->bkt[j].numBlks;
+	 mtCMMRegCfg[i]->size += region->bkt[j].blkSize * region->bkt[j].numBlks;
 #endif /* SSI_DEBUG_LEVEL1 */
       }
 #ifdef INTEL_WLS
       mtCMMRegCfg[i]->vAddr = (Data *)mtRegMemSz[i].startAddr;
 #else
       mtCMMRegCfg[i]->vAddr = (Data *)calloc(mtCMMRegCfg[i]->size,
-                                             sizeof(Data));
+	    sizeof(Data));
 #endif
 #ifdef XEON_SPECIFIC_CHANGES
       CM_LOG_DEBUG(CM_LOG_ID_MT, "Static Region-->Bkt[%d] Addr:[%p] RegionId=[%d] Size=[%d] \n", 
-                                 i, mtCMMRegCfg[i]->vAddr, region->regionId, mtCMMRegCfg[i]->size);
+	    i, mtCMMRegCfg[i]->vAddr, region->regionId, mtCMMRegCfg[i]->size);
 #endif      
 #ifdef TENB_RTLIN_CHANGES
       mlock(mtCMMRegCfg[i]->vAddr, mtCMMRegCfg[i]->size*sizeof(Data));
@@ -1941,19 +1942,19 @@ S16 ssdInitMem(void)
 
       if (mtCMMRegCfg[i]->vAddr == NULLP)
       {
-			sprintf(errMsg,"\n ssdInitMem(): Could not allocate memory \
-								for the Region:%d \n",i);
-		   SPrint(errMsg);
-         for (k = 0; k < i; k++)
-         {
-            cmMmRegDeInit(mtCMMRegCb[k]);
-            free(mtCMMRegCfg[k]->vAddr);
-            free(mtCMMRegCb[k]);
-            free(mtCMMRegCfg[k]);
-         }
-         free(mtCMMRegCb[i]);
-         free(mtCMMRegCfg[i]);
-         return RFAILED;
+	 sprintf(errMsg,"\n ssdInitMem(): Could not allocate memory \
+	       for the Region:%d \n",i);
+	 SPrint(errMsg);
+	 for (k = 0; k < i; k++)
+	 {
+	    cmMmRegDeInit(mtCMMRegCb[k]);
+	    free(mtCMMRegCfg[k]->vAddr);
+	    free(mtCMMRegCb[k]);
+	    free(mtCMMRegCfg[k]);
+	 }
+	 free(mtCMMRegCb[i]);
+	 free(mtCMMRegCfg[i]);
+	 return RFAILED;
       }
 
 
@@ -1965,53 +1966,53 @@ S16 ssdInitMem(void)
 
       for (j = 0; j < region->numBkts; j++)
       {
-         mtCMMRegCfg[i]->bktCfg[j].size    = region->bkt[j].blkSize;
-         mtCMMRegCfg[i]->bktCfg[j].numBlks = region->bkt[j].numBlks;
+	 mtCMMRegCfg[i]->bktCfg[j].size    = region->bkt[j].blkSize;
+	 mtCMMRegCfg[i]->bktCfg[j].numBlks = region->bkt[j].numBlks;
       }
 
       /* initialize the CMM */
 #ifdef SS_LOCKLESS_MEMORY
       if (cmMmStatRegInit(region->regionId, mtCMMRegCb[i], mtCMMRegCfg[i]) != ROK)
 #else
-      if (cmMmRegInit(region->regionId, mtCMMRegCb[i], mtCMMRegCfg[i]) != ROK)
+	 if (cmMmRegInit(region->regionId, mtCMMRegCb[i], mtCMMRegCfg[i]) != ROK)
 #endif /* SS_LOCKLESS_MEMORY */
-      {
-         for (k = 0; k < i; k++)
-         {
-            cmMmRegDeInit(mtCMMRegCb[k]);
-            free(mtCMMRegCfg[k]->vAddr);
-            free(mtCMMRegCb[k]);
-            free(mtCMMRegCfg[k]);
-         }
-         free(mtCMMRegCfg[i]->vAddr);
-         free(mtCMMRegCb[i]);
-         free(mtCMMRegCfg[i]);
-         return RFAILED;
-      }
+	 {
+	    for (k = 0; k < i; k++)
+	    {
+	       cmMmRegDeInit(mtCMMRegCb[k]);
+	       free(mtCMMRegCfg[k]->vAddr);
+	       free(mtCMMRegCb[k]);
+	       free(mtCMMRegCfg[k]);
+	    }
+	    free(mtCMMRegCfg[i]->vAddr);
+	    free(mtCMMRegCb[i]);
+	    free(mtCMMRegCfg[i]);
+	    return RFAILED;
+	 }
 
 
       /* initialize the STREAMS module */
       /* mt019.201: STREAMS module will only apply to DFLT_REGION */
       if (region->regionId == 0)
       {
-         if (ssStrmCfg(region->regionId, region->regionId) != ROK)
-         {
-            for (k = 0; k < i; k++)
-            {
-               cmMmRegDeInit(mtCMMRegCb[k]);
-               free(mtCMMRegCfg[k]->vAddr);
-               free(mtCMMRegCb[k]);
-               free(mtCMMRegCfg[k]);
-            }
-            cmMmRegDeInit(mtCMMRegCb[i]);
-            free(mtCMMRegCfg[i]->vAddr);
-            free(mtCMMRegCb[i]);
-            free(mtCMMRegCfg[i]);
-            return RFAILED;
-         }
+	 if (ssStrmCfg(region->regionId, region->regionId) != ROK)
+	 {
+	    for (k = 0; k < i; k++)
+	    {
+	       cmMmRegDeInit(mtCMMRegCb[k]);
+	       free(mtCMMRegCfg[k]->vAddr);
+	       free(mtCMMRegCb[k]);
+	       free(mtCMMRegCfg[k]);
+	    }
+	    cmMmRegDeInit(mtCMMRegCb[i]);
+	    free(mtCMMRegCfg[i]->vAddr);
+	    free(mtCMMRegCb[i]);
+	    free(mtCMMRegCfg[i]);
+	    return RFAILED;
+	 }
       }
    }
-/* mt001.301 : Additions */
+   /* mt001.301 : Additions */
 #ifdef SS_MEM_LEAK_STS
    cmInitMemLeakMdl();
 #endif /* SS_MEM_LEAK_STS */
@@ -2021,26 +2022,26 @@ S16 ssdInitMem(void)
 
 
 /*
-*
-*       Fun:   De-initialize region/pool tables
-*
-*       Desc:  This function reverses the initialization in ssdInitMem().
-*
-*       Ret:   ROK      - ok
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   De-initialize region/pool tables
+ *
+ *       Desc:  This function reverses the initialization in ssdInitMem().
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
 Void ssdDeinitMem(void)
 {
    /* mt018.201 - added local variables */
    uint8_t     i;
 
-	/* mt008.301 Additions */
+   /* mt008.301 Additions */
 #ifdef SS_MEM_LEAK_STS
-	cmDeinitMemLeakMdl();
+   cmDeinitMemLeakMdl();
 #endif /* SS_MEM_LEAK_STS */
 
    for (i = 0; i < mtMemoCfg.numRegions; i++)
@@ -2056,30 +2057,30 @@ Void ssdDeinitMem(void)
 
 
 /*
-*
-*       Fun:   Initialize task table
-*
-*       Desc:  This function initializes MTSS-specific information
-*              in the task table.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   Initialize task table
+ *
+ *       Desc:  This function initializes MTSS-specific information
+ *              in the task table.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
 S16 ssdInitTsk(void)
 {
-/* mt001.301 : Additions */
-/*mt013.301 :Added SS_AFFINITY_SUPPORT  */
+   /* mt001.301 : Additions */
+   /*mt013.301 :Added SS_AFFINITY_SUPPORT  */
 #if defined(SS_MULTICORE_SUPPORT) ||defined(SS_AFFINITY_SUPPORT)
    uint32_t tskInd = 0;
 #endif /* SS_MULTICORE_SUPPORT || SS_AFFINITY_SUPPORT */
 
 
 
-/*mt013.301 :Added SS_AFFINITY_SUPPORT  */
+   /*mt013.301 :Added SS_AFFINITY_SUPPORT  */
 #if defined(SS_MULTICORE_SUPPORT) || defined(SS_AFFINITY_SUPPORT)
    /* initialize system task information */
    for (tskInd = 0;  tskInd < SS_MAX_STSKS;  tskInd++)
@@ -2092,19 +2093,19 @@ S16 ssdInitTsk(void)
 
 
 /*
-*
-*       Fun:   Deinitialize task table
-*
-*       Desc:  This function reverses the initialization perfomed in
-*              ssdInitTsk().
-*
-*       Ret:   ROK      - ok
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   Deinitialize task table
+ *
+ *       Desc:  This function reverses the initialization perfomed in
+ *              ssdInitTsk().
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
 Void ssdDeinitTsk(void)
 {
 
@@ -2114,19 +2115,19 @@ Void ssdDeinitTsk(void)
 
 #ifdef SS_DRVR_SUPPORT
 /*
-*
-*       Fun:   Initialize driver task table
-*
-*       Desc:  This function initializes MTSS-specific information
-*              in the driver task table.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   Initialize driver task table
+ *
+ *       Desc:  This function initializes MTSS-specific information
+ *              in the driver task table.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
 S16 ssdInitDrvr(void)
 {
    S16 i;
@@ -2167,7 +2168,7 @@ S16 ssdInitDrvr(void)
    }
 #endif   
 
-  /*mt014.301 : 4GMX release related changes*/
+   /*mt014.301 : 4GMX release related changes*/
 #ifdef SS_4GMX_UCORE
    uarmDrvrInit();
 #endif
@@ -2185,30 +2186,30 @@ S16 ssdInitDrvr(void)
 
 
 /*
-*
-*       Fun:   Deinitialize driver information
-*
-*       Desc:  This function reverses the initialization performed in
-*              ssdInitDrvr().
-*
-*       Ret:   ROK      - ok
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   Deinitialize driver information
+ *
+ *       Desc:  This function reverses the initialization performed in
+ *              ssdInitDrvr().
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
 Void ssdDeinitDrvr(void)
 {
-  /* mt008.301: Terminate the Driver Task on exit */
-  while(pthread_cancel(osCp.dep.isTskHdlrTID));
+   /* mt008.301: Terminate the Driver Task on exit */
+   while(pthread_cancel(osCp.dep.isTskHdlrTID));
 
 #ifdef L2_L3_SPLIT
-  TL_Close(AppContext.hUAII);
-  if (clusterMode == RADIO_CLUSTER_MODE)
-  {
+   TL_Close(AppContext.hUAII);
+   if (clusterMode == RADIO_CLUSTER_MODE)
+   {
       TL_Close(AppContext.hUAII_second);
-  }
+   }
 #endif
 
    return;
@@ -2217,24 +2218,24 @@ Void ssdDeinitDrvr(void)
 
 
 /*
-*
-*       Fun:   Initialize timer table
-*
-*       Desc:  This function initializes MTSS-specific information
-*              in the timer table.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   Initialize timer table
+ *
+ *       Desc:  This function initializes MTSS-specific information
+ *              in the timer table.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
 S16 ssdInitTmr(void)
 {
    pthread_attr_t attr;
    struct sched_param param_sched;
-  /* mt010.21: addition */
+   /* mt010.21: addition */
    S32 i;
 #ifdef SS_MULTICORE_SUPPORT
    SsSTskEntry     *sTsk;
@@ -2246,7 +2247,7 @@ S16 ssdInitTmr(void)
 
 
    osCp.dep.tmrTqCp.tmrLen = SS_MAX_TMRS;
-  /* mt010.21: addition */
+   /* mt010.21: addition */
    osCp.dep.tmrTqCp.nxtEnt = 0;
    for (i=0; i< SS_MAX_TMRS; i++)
    {
@@ -2283,15 +2284,15 @@ S16 ssdInitTmr(void)
 #endif
       if ((pthread_create(&osCp.dep.tmrHdlrTID, &attr, mtTmrHdlr, NULLP)) != 0)
       {
-         /* mt020.201 - Addition for destroying thread attribute object attr */
-         pthread_attr_destroy(&attr);
+	 /* mt020.201 - Addition for destroying thread attribute object attr */
+	 pthread_attr_destroy(&attr);
 
-         return RFAILED;
+	 return RFAILED;
       }
 
 #ifdef SS_THR_REG_MAP
       threadCreated = ssCheckAndAddMemoryRegionMap(osCp.dep.tmrHdlrTID, 
-                                                   sTsk->region);
+	    sTsk->region);
    }
 #endif /* SS_THR_REG_MAP */
 #ifdef SS_MEM_WL_DEBUG
@@ -2307,19 +2308,19 @@ S16 ssdInitTmr(void)
 
 
 /*
-*
-*       Fun:   Deinitialize timer table
-*
-*       Desc:  This function reverses the initialization performed in
-*              ssdInitTmr().
-*
-*       Ret:   ROK      - ok
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   Deinitialize timer table
+ *
+ *       Desc:  This function reverses the initialization performed in
+ *              ssdInitTmr().
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
 Void ssdDeinitTmr(void)
 {
 #ifdef SS_MULTICORE_SUPPORT
@@ -2335,7 +2336,7 @@ Void ssdDeinitTmr(void)
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       MTLOGERROR(ERRCLS_DEBUG, EMT008, (ErrVal) ret,
-                 "Could not lock system task table");
+	    "Could not lock system task table");
 #endif
       return;
    }
@@ -2358,29 +2359,29 @@ Void ssdDeinitTmr(void)
    SUnlock(&osCp.sTskTblLock);
 
 #endif /* SS_MULTICORE_SUPPORT */
-  /* mt008.301: Terminate the timer thread on exit */
-  while(pthread_cancel(osCp.dep.tmrHdlrTID));
-  return;
+   /* mt008.301: Terminate the timer thread on exit */
+   while(pthread_cancel(osCp.dep.tmrHdlrTID));
+   return;
 }
 
 
 
 /*
-*
-*       Fun:   ssdInitLog
-*
-*       Desc:  Pre-tst() initialization.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   ssdInitLog
+ *
+ *       Desc:  Pre-tst() initialization.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
 S16 ssdInitLog(void)
 {
-/* mt027.201 - Modification to fix warnings with no STDIN and STDOUT */
+   /* mt027.201 - Modification to fix warnings with no STDIN and STDOUT */
 #ifdef CONAVL
 #ifndef CONRD
    S32 flags;
@@ -2392,14 +2393,14 @@ S16 ssdInitLog(void)
 #endif /* CONRD */
 #endif /* CONAVL */
 
-/* mt008.301: ssdInitFinal changed to ssdInitLog */
+   /* mt008.301: ssdInitFinal changed to ssdInitLog */
 
 
 #ifdef CONAVL
 
    osCp.dep.conInFp = (FILE *) stdin;
    osCp.dep.conOutFp = (FILE *) stdout;
-/* added compile time flag CONRD: mt017.21 */
+   /* added compile time flag CONRD: mt017.21 */
 #ifndef CONRD
 #ifndef CONSTDIO
 
@@ -2407,7 +2408,7 @@ S16 ssdInitLog(void)
    fd = fileno(osCp.dep.conInFp);
    if ((tcgetattr(fd, &tio)) != 0)
    {
-      printf("Error: disable canonical input processing\n");
+      DU_LOG("\nERROR  -->  Error: disable canonical input processing\n");
       return RFAILED;
    }
 
@@ -2416,7 +2417,7 @@ S16 ssdInitLog(void)
    tio.c_cc[VTIME] = 0;
    if ((tcsetattr(fd, TCSANOW, &tio)) != 0)
    {
-      printf("Error: while tcsetattr() processing\n");
+      DU_LOG("\nERROR  -->  Error: while tcsetattr() processing\n");
       return RFAILED;
    }
 
@@ -2429,7 +2430,7 @@ S16 ssdInitLog(void)
    flags &= ~O_NONBLOCK;
    if (fcntl(fd, F_SETFL, flags) == -1)
    {
-      printf("Error: while fcntl processing\n");
+      DU_LOG("\nERROR  -->  Error: while fcntl processing\n");
       return RFAILED;
    }
 
@@ -2447,7 +2448,7 @@ S16 ssdInitLog(void)
       /* mt020.201 - Addition for destroying thread attribute object attr */
       pthread_attr_destroy(&attr);
 
-      printf("Error: Logging Thread creation failed \n");
+      DU_LOG("\nERROR  -->  Error: Logging Thread creation failed \n");
       return RFAILED;
    }
 
@@ -2463,27 +2464,27 @@ S16 ssdInitLog(void)
 
 
 /*
-*
-*       Fun:   ssdDeinitLog
-*
-*       Desc:  This function reverses the initialization performed in
-*              ssdInitLog().
-*
-*       Ret:   ROK      - ok
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   ssdDeinitLog
+ *
+ *       Desc:  This function reverses the initialization performed in
+ *              ssdInitLog().
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
 /* mt008.301: ssdDeinitFinal changed to ssdDeinitLog */
 Void ssdDeinitLog(void)
 {
-/* mt008.301: ssdDeinitFinal changed to ssdDeinitLog */
+   /* mt008.301: ssdDeinitFinal changed to ssdDeinitLog */
 #ifdef CONAVL
 #ifndef CONRD
-  /* mt008.301: Terminate the console reader on exit */
-  while(pthread_cancel(osCp.dep.conHdlrTID));
+   /* mt008.301: Terminate the console reader on exit */
+   while(pthread_cancel(osCp.dep.conHdlrTID));
 #endif /* CONRD */
 #endif /* CONVAL */
 
@@ -2584,7 +2585,7 @@ S16 ssdInitWatchDog(uint16_t port)
 #endif /* SS_WATCHDOG_IPV6 */
 
    if(bind(osCp.wdCp.globWd.sock, (struct sockaddr *)&tmpaddr, sizeof(struct sockaddr)) != 0
-)
+     )
    {
       sprintf(prntBuf,"ssdInitWatchDog: bind failed errno [%d]\n", errno);
       SPrint(prntBuf);
@@ -2628,12 +2629,12 @@ S16 ssdInitWatchDgPst(Pst *pst)
 }
 
 #ifdef SS_MULTIPLE_PROCS
-S16 ssdWatchDgActvTmr
+   S16 ssdWatchDgActvTmr
 (
-ProcId proc,
-Ent ent,
-Inst inst
-)
+ ProcId proc,
+ Ent ent,
+ Inst inst
+ )
 #else
 S16 ssdWatchDgActvTmr(Void)
 #endif /* SS_MULTIPLE_PROCS */
@@ -2644,13 +2645,13 @@ S16 ssdWatchDgActvTmr(Void)
    return ROK;
 }
 
-Void ssdWatchDgTmrEvt
+   Void ssdWatchDgTmrEvt
 (
-PTR       cb,        /* control block */
-S16       event      /* timer number */
-)
+ PTR       cb,        /* control block */
+ S16       event      /* timer number */
+ )
 {
-/* mt003.301 Fixed warings */
+   /* mt003.301 Fixed warings */
 #ifdef DEBUGP
    DateTime dt;
 #endif /* DEBUGP */
@@ -2663,47 +2664,47 @@ S16       event      /* timer number */
    {
       case SS_TMR_HRTBT:
 #ifdef DEBUGP
-        SPrint("Timer Heartbeat Request Expired");
-        SGetDateTime(&dt);
-        sprintf(prntBuf," Time: %02d:%02d:%02d\n",dt.hour,dt.min, dt.sec);
-        SPrint(prntBuf);
+	 SPrint("Timer Heartbeat Request Expired");
+	 SGetDateTime(&dt);
+	 sprintf(prntBuf," Time: %02d:%02d:%02d\n",dt.hour,dt.min, dt.sec);
+	 SPrint(prntBuf);
 #endif
-        restartTmr=TRUE;
+	 restartTmr=TRUE;
 
-        SLock(&osCp.wdCp.wdLock);
-        for(i=0; i < osCp.wdCp.globWd.numNodes; i++)
-        {
-           if(osCp.wdCp.globWd.wdsta[i].status == 0)
-           {
-              sprintf(prntBuf, "Node [ %s ] Down. Calling user callback\n", inet_ntoa(osCp.wdCp.globWd.wdsta[i].addr));
-              SPrint(prntBuf);
-              if(osCp.wdCp.globWd.callback != 0)
-              {
-                 osCp.wdCp.globWd.callback(osCp.wdCp.globWd.data);
-              }
-           }
-        }
-        SUnlock(&osCp.wdCp.wdLock);
+	 SLock(&osCp.wdCp.wdLock);
+	 for(i=0; i < osCp.wdCp.globWd.numNodes; i++)
+	 {
+	    if(osCp.wdCp.globWd.wdsta[i].status == 0)
+	    {
+	       sprintf(prntBuf, "Node [ %s ] Down. Calling user callback\n", inet_ntoa(osCp.wdCp.globWd.wdsta[i].addr));
+	       SPrint(prntBuf);
+	       if(osCp.wdCp.globWd.callback != 0)
+	       {
+		  osCp.wdCp.globWd.callback(osCp.wdCp.globWd.data);
+	       }
+	    }
+	 }
+	 SUnlock(&osCp.wdCp.wdLock);
 
-		  if(!osCp.wdCp.globWd.watchdogStop)
-		  {
-           ssdStartWatchDgTmr(NULLP, SS_TMR_HRTBT, osCp.wdCp.globWd.timeout);
-           ssdSndHrtBtMsg(restartTmr, SS_WD_HB_REQ);
-		  }
-        break;
+	 if(!osCp.wdCp.globWd.watchdogStop)
+	 {
+	    ssdStartWatchDgTmr(NULLP, SS_TMR_HRTBT, osCp.wdCp.globWd.timeout);
+	    ssdSndHrtBtMsg(restartTmr, SS_WD_HB_REQ);
+	 }
+	 break;
 
       default:
-         break;
+	 break;
    }
 
 }
 
-Void ssdStartWatchDgTmr
+   Void ssdStartWatchDgTmr
 (
-void     *cb,
-S16      event,
-uint16_t wait
-)
+ void     *cb,
+ S16      event,
+ uint16_t wait
+ )
 {
    CmTmrArg    arg;
    int i;
@@ -2713,7 +2714,7 @@ uint16_t wait
 #endif
 
 
-	/* mt003.301 Modifications */
+   /* mt003.301 Modifications */
 #ifdef DEBUGP
    SGetDateTime(&dt);
    sprintf(prntBuf," Time: %02d:%02d:%02d\n",dt.hour,dt.min, dt.sec);
@@ -2746,11 +2747,11 @@ uint16_t wait
    return;
 }
 
-Void ssdStopWatchDgTmr
+   Void ssdStopWatchDgTmr
 (
-void *cb,
-S16  event
-)
+ void *cb,
+ S16  event
+ )
 {
    CmTmrArg    arg;
 #ifdef DEBUGP
@@ -2759,7 +2760,7 @@ S16  event
    int i;
 #endif
 
-	/* mt003.301 Modifications */
+   /* mt003.301 Modifications */
 #ifdef DEBUGP
    SGetDateTime(&dt);
    sprintf(prntBuf," Time: %02d:%02d:%02d\n",dt.hour,dt.min, dt.sec);
@@ -2790,11 +2791,11 @@ S16  event
    return;
 }
 
-S16 ssdSndHrtBtMsg
+   S16 ssdSndHrtBtMsg
 (
-Bool      restart,
-uint32_t  type
-)
+ Bool      restart,
+ uint32_t  type
+ )
 {
    S16     ret = ROK;
 #ifdef DEBUGP
@@ -2822,7 +2823,7 @@ uint32_t  type
    {
       if(osCp.wdCp.globWd.wdsta[n].addr.s_addr == 0)
       {
-         continue;
+	 continue;
       }
 
       /* Identify the destination node */
@@ -2841,16 +2842,16 @@ uint32_t  type
       if(err == -1)
       {
 #ifdef DEBUGP
-      sprintf(prntBuf,"ssdSndHrtBtMsg: HB to node [%s:%d] failed status[%d]\n",
-                      inet_ntoa(tmpaddr.sin_addr), tmpaddr.sin_port, errno);
-      SPrint(prntBuf);
+	 sprintf(prntBuf,"ssdSndHrtBtMsg: HB to node [%s:%d] failed status[%d]\n",
+	       inet_ntoa(tmpaddr.sin_addr), tmpaddr.sin_port, errno);
+	 SPrint(prntBuf);
 #endif /* DEBUGP */
       }
       else
       {
 #ifdef DEBUGP
-      sprintf(prntBuf,"ssdSndHrtBtMsg: HB to node [%s:%d] sent[%d]\n", inet_ntoa(tmpaddr.sin_addr), tmpaddr.sin_port, err);
-      SPrint(prntBuf);
+	 sprintf(prntBuf,"ssdSndHrtBtMsg: HB to node [%s:%d] sent[%d]\n", inet_ntoa(tmpaddr.sin_addr), tmpaddr.sin_port, err);
+	 SPrint(prntBuf);
 #endif /* DEBUGP */
       }
    }
@@ -2866,18 +2867,18 @@ uint32_t  type
 /* mt022.201 - Modification to fix problem when NOCMDLINE is defined */
 #ifndef NOCMDLINE
 /*
-*
-*       Fun:   mtGetOpts
-*
-*       Desc:  This function gets command line options.
-*
-*       Ret:
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   mtGetOpts
+ *
+ *       Desc:  This function gets command line options.
+ *
+ *       Ret:
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
 static Void mtGetOpts(void)
 {
    S32 argc;
@@ -2888,7 +2889,7 @@ static Void mtGetOpts(void)
    FILE         *memOpt;             /* memory options file pointer */
    Txt pBuf[128];
    uint8_t i;
-/* mt007.301 : Fix related to file based mem config on 64 bit machine */
+   /* mt007.301 : Fix related to file based mem config on 64 bit machine */
    PTR numReg;
    PTR numBkts;
    PTR bktSz = NULLP;
@@ -2932,282 +2933,282 @@ static Void mtGetOpts(void)
       switch (ret)
       {
 #ifndef NOFILESYS
-/* mt001.301 : Additions */
+	 /* mt001.301 : Additions */
 #ifdef SS_MEM_LEAK_STS
-         case 'm':
-            cmMemOpenMemLkFile(msOptArg);
-            break;
+	 case 'm':
+	    cmMemOpenMemLkFile(msOptArg);
+	    break;
 #endif
-         case 'o':
-            osCp.dep.fileOutFp = fopen(msOptArg, "w");
-            break;
-         case 'f':
-				fileBasedMemCfg = TRUE;
-            memOpt = fopen(msOptArg, "r");
+	 case 'o':
+	    osCp.dep.fileOutFp = fopen(msOptArg, "w");
+	    break;
+	 case 'f':
+	    fileBasedMemCfg = TRUE;
+	    memOpt = fopen(msOptArg, "r");
 
-            /* if file does not exist or could not be opened then use the
-             * default memory configuration as defined in mt_ss.h
-             */
-            if (memOpt == (FILE *) NULLP)
-            {
-               sprintf(pBuf, "\nMTSS: Memory configuration file: %s could not\
-									be opened, using default mem configuration\n", msOptArg);
-               SPrint(pBuf);
-               break;
-            }
-            i = 0;
-            while (fgets((Txt *)line, 256, memOpt) != NULLP)
-            {
-               if(line[0] == '#' || line[0] < '0' || line[0] > '9') /* Comment line or non numeric character, so skip it and read next line */
-                   continue;
-               if(error == TRUE)
-                   break;
-               switch  (i)
-               {
-                  case 0:  /*** INPUT: Number of regions ***/
-                     sscanf(line, "%ld", (long *) &numReg);
-                     mtMemoCfg.numRegions = numReg;
-                     if(mtMemoCfg.numRegions > SS_MAX_REGS)
-                     {
-								printf("\n No. of regions are > SS_MAX_REGS:%d \n",SS_MAX_REGS);
-                        error = TRUE;
-                        break;
-                     }
-                     i++;
-                     break;
-                  case 1: /*** INPUT: Number of buckets and number of Pools ***/
-							sscanf(line, "%ld %ld", (long *) &numBkts, (long *) &numPools);
-							if(numBkts > MT_MAX_BKTS)
-							{
-							  printf("\n No. of buckets are > MT_MAX_BKTS :%d \n",MT_MAX_BKTS);
-							  error = TRUE;
-							  break;
-							}
-							if(numPools > SS_MAX_POOLS_PER_REG)
-							{
-							  printf("\n No. of pools are > SS_MAX_POOLS_PER_REG:%d \n",SS_MAX_POOLS_PER_REG);
-							  error = TRUE;
-							  break;
-							}
-							/*
-							 * Delay updation from local variable to global
-							 * structure of number of regions and heap data to
-							 * counter error conditions present above.
-							 */
-							for(idx = 0; idx < cfgNumRegs; idx++)
-							{
-							  mtMemoCfg.region[idx].numBkts = numBkts;
-							  cfgRegInfo[idx].region = idx;
-							  cfgRegInfo[idx].numPools = numPools;
-							  /*
-								* Initialize the pool info as static type with size zero
-								*/
-							  for(poolIdx = 0; poolIdx < numPools; poolIdx++)
-							  {
-                          cfgRegInfo[idx].pools[poolIdx].type = SS_POOL_STATIC;
-                          cfgRegInfo[idx].pools[poolIdx].size = 0;
-							  }
-							}
-							i++;
-                     break;
-                  case 2: /*** INPUT: Bucket Id and size of the bucket ***/
-							if(bktUpdtCnt < numBkts) /* more set of bucket can be added */
-							{
-								sscanf(line, "%ld %ld",(long *)&bktIdx, (long *) &bktSz);
-							}
-							if(bktIdx >= numBkts)
-							{
-							  printf("\n Invalid Bucket Id, may be >= the No. of buckets:%ld\n",numBkts);
-							  error = TRUE;
-							  break;
+	    /* if file does not exist or could not be opened then use the
+	     * default memory configuration as defined in mt_ss.h
+	     */
+	    if (memOpt == (FILE *) NULLP)
+	    {
+	       sprintf(pBuf, "\nMTSS: Memory configuration file: %s could not\
+		     be opened, using default mem configuration\n", msOptArg);
+	       SPrint(pBuf);
+	       break;
+	    }
+	    i = 0;
+	    while (fgets((Txt *)line, 256, memOpt) != NULLP)
+	    {
+	       if(line[0] == '#' || line[0] < '0' || line[0] > '9') /* Comment line or non numeric character, so skip it and read next line */
+		  continue;
+	       if(error == TRUE)
+		  break;
+	       switch  (i)
+	       {
+		  case 0:  /*** INPUT: Number of regions ***/
+		     sscanf(line, "%ld", (long *) &numReg);
+		     mtMemoCfg.numRegions = numReg;
+		     if(mtMemoCfg.numRegions > SS_MAX_REGS)
+		     {
+			DU_LOG("\nERROR  -->   No. of regions are > SS_MAX_REGS:%d \n",SS_MAX_REGS);
+			error = TRUE;
+			break;
+		     }
+		     i++;
+		     break;
+		  case 1: /*** INPUT: Number of buckets and number of Pools ***/
+		     sscanf(line, "%ld %ld", (long *) &numBkts, (long *) &numPools);
+		     if(numBkts > MT_MAX_BKTS)
+		     {
+			DU_LOG("\nERROR  -->  No. of buckets are > MT_MAX_BKTS :%d \n",MT_MAX_BKTS);
+			error = TRUE;
+			break;
+		     }
+		     if(numPools > SS_MAX_POOLS_PER_REG)
+		     {
+			DU_LOG("\nERROR  -->  No. of pools are > SS_MAX_POOLS_PER_REG:%d \n",SS_MAX_POOLS_PER_REG);
+			error = TRUE;
+			break;
+		     }
+		     /*
+		      * Delay updation from local variable to global
+		      * structure of number of regions and heap data to
+		      * counter error conditions present above.
+		      */
+		     for(idx = 0; idx < cfgNumRegs; idx++)
+		     {
+			mtMemoCfg.region[idx].numBkts = numBkts;
+			cfgRegInfo[idx].region = idx;
+			cfgRegInfo[idx].numPools = numPools;
+			/*
+			 * Initialize the pool info as static type with size zero
+			 */
+			for(poolIdx = 0; poolIdx < numPools; poolIdx++)
+			{
+			   cfgRegInfo[idx].pools[poolIdx].type = SS_POOL_STATIC;
+			   cfgRegInfo[idx].pools[poolIdx].size = 0;
+			}
+		     }
+		     i++;
+		     break;
+		  case 2: /*** INPUT: Bucket Id and size of the bucket ***/
+		     if(bktUpdtCnt < numBkts) /* more set of bucket can be added */
+		     {
+			sscanf(line, "%ld %ld",(long *)&bktIdx, (long *) &bktSz);
+		     }
+		     if(bktIdx >= numBkts)
+		     {
+			DU_LOG("\nERROR  -->   Invalid Bucket Id, may be >= the No. of buckets:%ld\n",numBkts);
+			error = TRUE;
+			break;
 
-							}
-							mtBktInfo[bktIdx].blkSize  = bktSz;
-							bktUpdtCnt++;
-							if(bktUpdtCnt == numBkts)
-							{
-							  i++; /*done reading bkt info, start reading individual region info*/
-							  bktUpdtCnt = 0;
-							}
-                     break;
-                     case 3: /*** INPUT: Region Id (ranges from 0 to numRegions-1) **/
-                     sscanf(line,"%ld",(long *) &regId);
-                     if(regId >= mtMemoCfg.numRegions)
-                     {
-                       printf("\n Invalid Region Id, may be >= the No. of regions:%d\n",mtMemoCfg.numRegions);
+		     }
+		     mtBktInfo[bktIdx].blkSize  = bktSz;
+		     bktUpdtCnt++;
+		     if(bktUpdtCnt == numBkts)
+		     {
+			i++; /*done reading bkt info, start reading individual region info*/
+			bktUpdtCnt = 0;
+		     }
+		     break;
+		  case 3: /*** INPUT: Region Id (ranges from 0 to numRegions-1) **/
+		     sscanf(line,"%ld",(long *) &regId);
+		     if(regId >= mtMemoCfg.numRegions)
+		     {
+			DU_LOG("\nERROR  -->  Invalid Region Id, may be >= the No. of regions:%d\n",mtMemoCfg.numRegions);
 #ifndef XEON_SPECIFIC_CHANGES                       
-                       error = TRUE;
+			error = TRUE;
 #endif                       
-                       break;
-                     }
-                     mtMemoCfg.region[regId].regionId = regId;
-                     i++;
-                     break;
-                     case 4: /*** INPUT: BktId (ranges from 0 to numBkts-1), No. of blks ***/
-                     if(bktUpdtCnt < numBkts)
-                     {
-                       sscanf(line, "%ld %ld",(long *)&bktIdx, (long *)&bktNum);
-                       if(bktIdx >= numBkts)
-                       {
-                         printf("\n Invalid Bucket Id, may be >= the No. of buckets:%ld\n",numBkts);
-                         error = TRUE;
-                         break;
+			break;
+		     }
+		     mtMemoCfg.region[regId].regionId = regId;
+		     i++;
+		     break;
+		  case 4: /*** INPUT: BktId (ranges from 0 to numBkts-1), No. of blks ***/
+		     if(bktUpdtCnt < numBkts)
+		     {
+			sscanf(line, "%ld %ld",(long *)&bktIdx, (long *)&bktNum);
+			if(bktIdx >= numBkts)
+			{
+			   DU_LOG("\nERROR  -->  Invalid Bucket Id, may be >= the No. of buckets:%ld\n",numBkts);
+			   error = TRUE;
+			   break;
 
-                       }
-                       if(bktIdx < MT_MAX_BKTS)
-                       {
-                         mtMemoCfg.region[regId].bkt[bktIdx].blkSize = mtBktInfo[bktIdx].blkSize;
-                         mtMemoCfg.region[regId].bkt[bktIdx].numBlks = bktNum;
-                         cfgRegInfo[regId].pools[bktIdx].type = SS_POOL_DYNAMIC;
-                         cfgRegInfo[regId].pools[bktIdx].size = mtBktInfo[bktIdx].blkSize - (sizeof(SsMblk)+sizeof(SsDblk));
-                       }
-                       bktUpdtCnt++;
-                       if(bktUpdtCnt == numBkts)
-                       {
-                          i++;
-                        bktUpdtCnt = 0;
-                       }
-                     }
-                     break;
-                     case 5: /* INPUT: Heapsize ***/
-                     sscanf(line, "%ld", (long *) &heapSz);
-                     mtMemoCfg.region[regId].heapsize = heapSz;
-                     regUpdtCnt++;
-                     if(regUpdtCnt != mtMemoCfg.numRegions)
-                     {
-                        i = 3;   
-                     }
-                     else
-                     {
-                        i++;
-                     }
-                     break;
+			}
+			if(bktIdx < MT_MAX_BKTS)
+			{
+			   mtMemoCfg.region[regId].bkt[bktIdx].blkSize = mtBktInfo[bktIdx].blkSize;
+			   mtMemoCfg.region[regId].bkt[bktIdx].numBlks = bktNum;
+			   cfgRegInfo[regId].pools[bktIdx].type = SS_POOL_DYNAMIC;
+			   cfgRegInfo[regId].pools[bktIdx].size = mtBktInfo[bktIdx].blkSize - (sizeof(SsMblk)+sizeof(SsDblk));
+			}
+			bktUpdtCnt++;
+			if(bktUpdtCnt == numBkts)
+			{
+			   i++;
+			   bktUpdtCnt = 0;
+			}
+		     }
+		     break;
+		  case 5: /* INPUT: Heapsize ***/
+		     sscanf(line, "%ld", (long *) &heapSz);
+		     mtMemoCfg.region[regId].heapsize = heapSz;
+		     regUpdtCnt++;
+		     if(regUpdtCnt != mtMemoCfg.numRegions)
+		     {
+			i = 3;   
+		     }
+		     else
+		     {
+			i++;
+		     }
+		     break;
 #ifdef SS_LOCKLESS_MEMORY
-                     case 6:
-                     sscanf(line, "%ld", (long *) &numBkts);
-                     mtGlobMemoCfg.numBkts = numBkts;
+		  case 6:
+		     sscanf(line, "%ld", (long *) &numBkts);
+		     mtGlobMemoCfg.numBkts = numBkts;
 #ifndef XEON_SPECIFIC_CHANGES                     
-                     mtDynMemoCfg.numRegions = mtMemoCfg.numRegions;
+		     mtDynMemoCfg.numRegions = mtMemoCfg.numRegions;
 #endif                     
 
 #ifdef XEON_SPECIFIC_CHANGES
-                     CM_LOG_DEBUG(CM_LOG_ID_MT, "numRegions = %d numBkts = %d\n",
-                                    mtDynMemoCfg.numRegions, mtGlobMemoCfg.numBkts);
-                     for(idx = 0; idx < mtDynMemoCfg.numRegions; idx++)
+		     CM_LOG_DEBUG(CM_LOG_ID_MT, "numRegions = %d numBkts = %d\n",
+			   mtDynMemoCfg.numRegions, mtGlobMemoCfg.numBkts);
+		     for(idx = 0; idx < mtDynMemoCfg.numRegions; idx++)
 #else                     
-                     for(idx = 0; idx < mtMemoCfg.numRegions; idx++)
+			for(idx = 0; idx < mtMemoCfg.numRegions; idx++)
 #endif                        
-                     {
-                        mtDynMemoCfg.region[idx].regionId = idx;
-                        mtDynMemoCfg.region[idx].numBkts = numBkts;
-                     }
+			{
+			   mtDynMemoCfg.region[idx].regionId = idx;
+			   mtDynMemoCfg.region[idx].numBkts = numBkts;
+			}
 
-                     bktUpdtCnt = 0;
-                     i++;
-                     break;
+		     bktUpdtCnt = 0;
+		     i++;
+		     break;
 
-                     case 7:
-                     if(bktUpdtCnt < numBkts)
-                     {
-                        sscanf(line, "%ld %ld %ld %ld %ld %ld", (long *) &bktIdx,
-                                      (long *) &bktSz, (long *) &bktNum,
-                                      (long *) &bktSetSize, (long *) &bktRelThr, 
-                                      (long *) &bktAqurThr);
-                        /* Klock work fix ccpu00148484 */
-                        if(bktIdx < SS_MAX_POOLS_PER_REG)
-                        {
-                           mtGlobMemoCfg.bkt[bktIdx].blkSize = bktSz;
-                           mtGlobMemoCfg.bkt[bktIdx].numBlks = bktNum;
-                           mtGlobMemoCfg.bkt[bktIdx].bucketSetSize = bktSetSize;
+		  case 7:
+		     if(bktUpdtCnt < numBkts)
+		     {
+			sscanf(line, "%ld %ld %ld %ld %ld %ld", (long *) &bktIdx,
+			      (long *) &bktSz, (long *) &bktNum,
+			      (long *) &bktSetSize, (long *) &bktRelThr, 
+			      (long *) &bktAqurThr);
+			/* Klock work fix ccpu00148484 */
+			if(bktIdx < SS_MAX_POOLS_PER_REG)
+			{
+			   mtGlobMemoCfg.bkt[bktIdx].blkSize = bktSz;
+			   mtGlobMemoCfg.bkt[bktIdx].numBlks = bktNum;
+			   mtGlobMemoCfg.bkt[bktIdx].bucketSetSize = bktSetSize;
 #ifdef XEON_SPECIFIC_CHANGES
-                           CM_LOG_DEBUG(CM_LOG_ID_MT, "Pool [%d] blkSize %d numBlks %d bucketSetSize %d\n",
-                                 bktUpdtCnt, mtGlobMemoCfg.bkt[bktIdx].blkSize,
-                                 mtGlobMemoCfg.bkt[bktIdx].numBlks, mtGlobMemoCfg.bkt[bktIdx].bucketSetSize); 
+			   CM_LOG_DEBUG(CM_LOG_ID_MT, "Pool [%d] blkSize %d numBlks %d bucketSetSize %d\n",
+				 bktUpdtCnt, mtGlobMemoCfg.bkt[bktIdx].blkSize,
+				 mtGlobMemoCfg.bkt[bktIdx].numBlks, mtGlobMemoCfg.bkt[bktIdx].bucketSetSize); 
 
-                        if(bktIdx >= SS_MAX_POOLS_PER_REG)
-                        {
-                           printf("\nNo. of Buckets/pools are > SS_MAX_POOLS_PER_REG:%d\n",SS_MAX_POOLS_PER_REG);
-                           error = TRUE;
-                           break;
-                        }
+			   if(bktIdx >= SS_MAX_POOLS_PER_REG)
+			   {
+			      DU_LOG("\nERROR  -->  No. of Buckets/pools are > SS_MAX_POOLS_PER_REG:%d\n",SS_MAX_POOLS_PER_REG);
+			      error = TRUE;
+			      break;
+			   }
 
 #endif                           
-                        for(idx = 0; idx < mtMemoCfg.numRegions; idx++)
-                        {
-                           mtDynMemoCfg.region[idx].bkt[bktIdx].blkSetRelThreshold = bktRelThr;
-                           mtDynMemoCfg.region[idx].bkt[bktIdx].blkSetAcquireThreshold = bktAqurThr;
+			   for(idx = 0; idx < mtMemoCfg.numRegions; idx++)
+			   {
+			      mtDynMemoCfg.region[idx].bkt[bktIdx].blkSetRelThreshold = bktRelThr;
+			      mtDynMemoCfg.region[idx].bkt[bktIdx].blkSetAcquireThreshold = bktAqurThr;
 #ifdef XEON_SPECIFIC_CHANGES
-                           CM_LOG_DEBUG(CM_LOG_ID_MT, "Pool [%d] blkSetRelThreshold %d blkSetAcquireThreshold %d\n",
-                                 bktUpdtCnt, mtDynMemoCfg.region[idx].bkt[bktIdx].blkSetRelThreshold,
-                                 mtDynMemoCfg.region[idx].bkt[bktIdx].blkSetAcquireThreshold);
+			      CM_LOG_DEBUG(CM_LOG_ID_MT, "Pool [%d] blkSetRelThreshold %d blkSetAcquireThreshold %d\n",
+				    bktUpdtCnt, mtDynMemoCfg.region[idx].bkt[bktIdx].blkSetRelThreshold,
+				    mtDynMemoCfg.region[idx].bkt[bktIdx].blkSetAcquireThreshold);
 #endif                           
-                        } 
-                        }
-                        bktUpdtCnt++;
-                     }
+			   } 
+			}
+			bktUpdtCnt++;
+		     }
 #ifdef XEON_SPECIFIC_CHANGES
-                     if(bktUpdtCnt == numBkts)
-                     {   
-                        i=8;
-                     }
-                     break;
+		     if(bktUpdtCnt == numBkts)
+		     {   
+			i=8;
+		     }
+		     break;
 
-                     case 8: /* INPUT: Global Heapsize ***/
-                     sscanf(line, "%ld", (long *) &heapSz);
-                     mtGlobMemoCfg.heapSize = heapSz;
-                     CM_LOG_DEBUG(CM_LOG_ID_MT, "Global Heap size = %d\n", mtGlobMemoCfg.heapSize);
+		  case 8: /* INPUT: Global Heapsize ***/
+		     sscanf(line, "%ld", (long *) &heapSz);
+		     mtGlobMemoCfg.heapSize = heapSz;
+		     CM_LOG_DEBUG(CM_LOG_ID_MT, "Global Heap size = %d\n", mtGlobMemoCfg.heapSize);
 #endif                           
-                     break;
+		     break;
 #endif
-               }
-            }
-            if(error == TRUE)
-            {
-               memConfigured = FALSE;
-            }
-            else
-            {
-               memConfigured = TRUE;
-            }
-            fclose (memOpt);
-            break;
+	       }
+	    }
+	    if(error == TRUE)
+	    {
+	       memConfigured = FALSE;
+	    }
+	    else
+	    {
+	       memConfigured = TRUE;
+	    }
+	    fclose (memOpt);
+	    break;
 #endif
 
 
-         case 's':
-/* mt028.201: modification: multiple procs support related changes */
+	 case 's':
+	    /* mt028.201: modification: multiple procs support related changes */
 #ifndef SS_MULTIPLE_PROCS
 
 #ifdef ENB_RELAY
-            osCp.procId = PID_STK((ProcId) strtol(msOptArg, NULLP, 0));
+	    osCp.procId = PID_STK((ProcId) strtol(msOptArg, NULLP, 0));
 #else
-            osCp.procId = (ProcId) strtol(msOptArg, NULLP, 0);
+	    osCp.procId = (ProcId) strtol(msOptArg, NULLP, 0);
 #endif
 
 #else /* SS_MULTIPLE_PROCS */
-        {
-           ProcId procId;
+	    {
+	       ProcId procId;
 #ifdef ENB_RELAY
-            procId = PID_STK((ProcId) strtol(msOptArg, NULLP, 0));
+	       procId = PID_STK((ProcId) strtol(msOptArg, NULLP, 0));
 #else
-            procId = (ProcId) strtol(msOptArg, NULLP, 0);
+	       procId = (ProcId) strtol(msOptArg, NULLP, 0);
 #endif
-           SAddProcIdLst(1, &procId);
-        }
+	       SAddProcIdLst(1, &procId);
+	    }
 
 #endif /* SS_MULTIPLE_PROCS */
-            break;
+	    break;
 
-         case 'c':
-            osCp.configFilePath = msOptArg;
-            break;
+	 case 'c':
+	    osCp.configFilePath = msOptArg;
+	    break;
 
-         case '?':
-            /* fall through */
+	 case '?':
+	    /* fall through */
 
 
-         default:
-            break;
+	 default:
+	    break;
       }
    }
 
@@ -3220,47 +3221,47 @@ static Void mtGetOpts(void)
 
 
 /*
-*
-*       Fun:   SGetOpt
-*
-*       Desc:  Get options from command line
-*
-*       Ret:   option  - success
-*              '?'     - fail
-*              EOF     - end of options
-*
-*       Notes: Handles command lines like the following
-*
-*              if opts = "abc:d"
-*                 then command line should look like this...
-*                    -a foo -b foo1 -c -d foo
-*
-*              code usage:
-*
-*              while ((ret = SGetOpt(msArgc, msArgv, "ls")) != EOF )
-*              {
-*                 switch(ret)
-*                 {
-*                    case 'l':
-*                       nloops = atoi(msArgv[msOptInd]);
-*                       break;
-*                    case 's':
-*                       state1 = atoi(msArgv[msOptInd]);
-*                    case '?':
-*                    default:
-*                       break;
-*                 }
-*              }
-*
-*       File:  mt_ss.c
-*
-*/
-S16 SGetOpt
+ *
+ *       Fun:   SGetOpt
+ *
+ *       Desc:  Get options from command line
+ *
+ *       Ret:   option  - success
+ *              '?'     - fail
+ *              EOF     - end of options
+ *
+ *       Notes: Handles command lines like the following
+ *
+ *              if opts = "abc:d"
+ *                 then command line should look like this...
+ *                    -a foo -b foo1 -c -d foo
+ *
+ *              code usage:
+ *
+ *              while ((ret = SGetOpt(msArgc, msArgv, "ls")) != EOF )
+ *              {
+ *                 switch(ret)
+ *                 {
+ *                    case 'l':
+ *                       nloops = atoi(msArgv[msOptInd]);
+ *                       break;
+ *                    case 's':
+ *                       state1 = atoi(msArgv[msOptInd]);
+ *                    case '?':
+ *                    default:
+ *                       break;
+ *                 }
+ *              }
+ *
+ *       File:  mt_ss.c
+ *
+ */
+   S16 SGetOpt
 (
-int argc,                   /* argument count */
-char **argv,                /* argument value */
-char *opts                  /* options */
-)
+ int argc,                   /* argument count */
+ char **argv,                /* argument value */
+ char *opts                  /* options */
+ )
 {
    /* mt020.201 - Removed for no command line */
 #ifndef NOCMDLINE
@@ -3282,23 +3283,23 @@ char *opts                  /* options */
    sp = 1;
    if (sp == 1)
    {
-       /*mt013.301 : Changes as per coding standards*/
+      /*mt013.301 : Changes as per coding standards*/
       if (msOptInd >= (S16) argc  ||  argv[msOptInd][0] == '\0')
       {
-          return (EOF);
+	 return (EOF);
       }
       else
       {
-         if (!strcmp(argv[msOptInd], "--"))
-         {
-            msOptInd++;
-            return (EOF);
-         }
-         else if (argv[msOptInd][0] != '-')
-         {
-            msOptInd++;
-            return ('?');
-         }
+	 if (!strcmp(argv[msOptInd], "--"))
+	 {
+	    msOptInd++;
+	    return (EOF);
+	 }
+	 else if (argv[msOptInd][0] != '-')
+	 {
+	    msOptInd++;
+	    return ('?');
+	 }
       }
    }
 
@@ -3307,8 +3308,8 @@ char *opts                  /* options */
    {
       if (argv[msOptInd][++sp] == '\0')
       {
-         msOptInd++;
-         sp = 1;
+	 msOptInd++;
+	 sp = 1;
       }
 
       return ('?');
@@ -3319,22 +3320,22 @@ char *opts                  /* options */
       if (argv[msOptInd][sp+1] != '\0') msOptArg = &argv[msOptInd++][sp+1];
       else
       {
-         if (++msOptInd >= (S16) argc)
-         {
-            sp = 1;
-            return ('?');
-         }
-         else msOptArg = argv[msOptInd++];
+	 if (++msOptInd >= (S16) argc)
+	 {
+	    sp = 1;
+	    return ('?');
+	 }
+	 else msOptArg = argv[msOptInd++];
 
-         sp = 1;
+	 sp = 1;
       }
    }
    else
    {
       if (argv[msOptInd][++sp] == '\0')
       {
-         sp = 1;
-         msOptInd++;
+	 sp = 1;
+	 msOptInd++;
       }
 
       msOptArg = NULLP;
@@ -3348,20 +3349,20 @@ char *opts                  /* options */
 
 
 /*
-*
-*       Fun:   ssdStart
-*
-*       Desc:  This function starts system services execution; the
-*              permanent tasks are started and the system enters a
-*              ready state.
-*
-*       Ret:   Void
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   ssdStart
+ *
+ *       Desc:  This function starts system services execution; the
+ *              permanent tasks are started and the system enters a
+ *              ready state.
+ *
+ *       Ret:   Void
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
 Void ssdStart(void)
 {
    S16 i;
@@ -3381,28 +3382,28 @@ Void ssdStart(void)
 
 
 /*
-*     indirect interface functions to system services service user
-*/
+ *     indirect interface functions to system services service user
+ */
 
 
 /*
-*
-*       Fun:   ssdAttachTTsk
-*
-*       Desc:  This function sends the initial tick message to a TAPA
-*              task if the task is a permanent task.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
-S16 ssdAttachTTsk
+ *
+ *       Fun:   ssdAttachTTsk
+ *
+ *       Desc:  This function sends the initial tick message to a TAPA
+ *              task if the task is a permanent task.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
+   S16 ssdAttachTTsk
 (
-SsTTskEntry *tTsk           /* pointer to TAPA task entry */
-)
+ SsTTskEntry *tTsk           /* pointer to TAPA task entry */
+ )
 {
    Buffer *mBuf;
    SsMsgInfo *mInfo;
@@ -3417,16 +3418,16 @@ SsTTskEntry *tTsk           /* pointer to TAPA task entry */
       if (ret != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-         MTLOGERROR(ERRCLS_DEBUG, EMT001, ret, "SGetMsg() failed");
+	 MTLOGERROR(ERRCLS_DEBUG, EMT001, ret, "SGetMsg() failed");
 #endif
-         return RFAILED;
+	 return RFAILED;
       }
 
       mInfo = (SsMsgInfo *)mBuf->b_rptr;
       mInfo->eventInfo.event = SS_EVNT_PERMTICK;
 
       /* set up post structure */
-/* mt028.201: modification: multiple procs support related changes */
+      /* mt028.201: modification: multiple procs support related changes */
 #ifndef SS_MULTIPLE_PROCS
       mInfo->pst.dstProcId = SFndProcId();
       mInfo->pst.srcProcId = SFndProcId();
@@ -3446,17 +3447,17 @@ SsTTskEntry *tTsk           /* pointer to TAPA task entry */
       mInfo->pst.srcInst   = tTsk->inst;
 
       ret = ssDmndQPutLast(&tTsk->sTsk->dQ, mBuf,
-                           (tTsk->tskPrior * SS_MAX_MSG_PRI) + PRIOR3);
+	    (tTsk->tskPrior * SS_MAX_MSG_PRI) + PRIOR3);
 
       if (ret != ROK)
       {
-         SPutMsg(mBuf);
+	 SPutMsg(mBuf);
 
 #if (ERRCLASS & ERRCLS_DEBUG)
-         MTLOGERROR(ERRCLS_DEBUG, EMT002, ret,
-                        "Could not write to demand queue");
+	 MTLOGERROR(ERRCLS_DEBUG, EMT002, ret,
+	       "Could not write to demand queue");
 #endif
-         return RFAILED;
+	 return RFAILED;
       }
    }
 
@@ -3466,22 +3467,22 @@ SsTTskEntry *tTsk           /* pointer to TAPA task entry */
 
 
 /*
-*
-*       Fun:   ssdDetachTTsk
-*
-*       Desc:  Does nothing.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
-S16 ssdDetachTTsk
+ *
+ *       Fun:   ssdDetachTTsk
+ *
+ *       Desc:  Does nothing.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
+   S16 ssdDetachTTsk
 (
-SsTTskEntry *tTsk           /* pointer to TAPA task entry */
-)
+ SsTTskEntry *tTsk           /* pointer to TAPA task entry */
+ )
 {
 
    return ROK;
@@ -3489,23 +3490,23 @@ SsTTskEntry *tTsk           /* pointer to TAPA task entry */
 
 
 /*
-*
-*       Fun:   ssdCreateSTsk
-*
-*       Desc:  This function creates a system task. A thread is started
-*              on the system task handler function defined later.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
-S16 ssdCreateSTsk
+ *
+ *       Fun:   ssdCreateSTsk
+ *
+ *       Desc:  This function creates a system task. A thread is started
+ *              on the system task handler function defined later.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
+   S16 ssdCreateSTsk
 (
-SsSTskEntry *sTsk           /* pointer to system task entry */
-)
+ SsSTskEntry *sTsk           /* pointer to system task entry */
+ )
 {
    S16  ret;
    pthread_attr_t attr;
@@ -3518,23 +3519,23 @@ SsSTskEntry *sTsk           /* pointer to system task entry */
 
 
 #ifdef SS_SINGLE_THREADED
-/* mt001.301 : Additions */
+   /* mt001.301 : Additions */
 #ifndef SS_WATCHDOG
 #ifdef SS_MULTICORE_SUPPORT
    if (osCp.numSTsks > 1)
 #else
-   if (osCp.numSTsks > 0)
+      if (osCp.numSTsks > 0)
 #endif /* SS_MULTICORE_SUPPORT */
 #else
 #ifdef SS_MULTICORE_SUPPORT
-   if (osCp.numSTsks > 3)
+	 if (osCp.numSTsks > 3)
 #else
-   if (osCp.numSTsks > 2)
+	    if (osCp.numSTsks > 2)
 #endif /* SS_MULTICORE_SUPPORT */
 #endif /* SS_WATCHDOG */
-   {
-      return ROK;
-   }
+	    {
+	       return ROK;
+	    }
 #endif
 
 
@@ -3549,11 +3550,11 @@ SsSTskEntry *sTsk           /* pointer to system task entry */
    pthread_attr_init(&attr);
    ssdSetPthreadAttr(sTsk->tskPrior, &attr);
 
-   printf("Creating thread here %s %d\n", __FILE__, __LINE__);
+   DU_LOG("\nINFO  -->  Creating thread here %s %d\n", __FILE__, __LINE__);
 #ifdef TENB_T2K3K_SPECIFIC_CHANGES
    if (sTsk->tskPrior == 0)
    {
-      printf("Creating RT thread #######################\n");
+      DU_LOG("\nINFO  -->  Creating RT thread ");
 #ifdef SS_THR_REG_MAP
       /* When the thread is created, we check for the memory mapping table if
        * threadId can be placed in thread memory map table. If it is not able to place
@@ -3564,21 +3565,21 @@ SsSTskEntry *sTsk           /* pointer to system task entry */
       while(threadCreated == FALSE)
       {
 #endif
-         ret = pthread_create(&sTsk->dep.tId, &attr, mtTskHdlr, (Ptr)sTsk);
-         if (ret != 0)
-         {
-            DU_LOG("\nDU APP : Failed to create thread. Cause[%d]",ret);
-            pthread_attr_destroy(&attr);
+	 ret = pthread_create(&sTsk->dep.tId, &attr, mtTskHdlr, (Ptr)sTsk);
+	 if (ret != 0)
+	 {
+	    DU_LOG("\nDU APP : Failed to create thread. Cause[%d]",ret);
+	    pthread_attr_destroy(&attr);
 
 #if (ERRCLASS & ERRCLS_DEBUG)
-            MTLOGERROR(ERRCLS_DEBUG, EMT004, ERRZERO, "Could not create thread");
+	    MTLOGERROR(ERRCLS_DEBUG, EMT004, ERRZERO, "Could not create thread");
 #endif
 
-            return RFAILED;
-         }
+	    return RFAILED;
+	 }
 #ifdef SS_THR_REG_MAP
-         threadCreated = ssCheckAndAddMemoryRegionMap(sTsk->dep.tId, 
-                                                      sTsk->region);
+	 threadCreated = ssCheckAndAddMemoryRegionMap(sTsk->dep.tId, 
+	       sTsk->region);
       }
 #endif
    }
@@ -3595,32 +3596,32 @@ SsSTskEntry *sTsk           /* pointer to system task entry */
       while(threadCreated == FALSE)
       {
 #endif
-         ret = pthread_create(&sTsk->dep.tId, &attr, mtTskHdlr, (Ptr)sTsk);
-         if (ret != 0)
-         {
+	 ret = pthread_create(&sTsk->dep.tId, &attr, mtTskHdlr, (Ptr)sTsk);
+	 if (ret != 0)
+	 {
 
-            /* mt020.201 - Addition for destroying thread attribute object attr */
-            pthread_attr_destroy(&attr);
+	    /* mt020.201 - Addition for destroying thread attribute object attr */
+	    pthread_attr_destroy(&attr);
 
 #if (ERRCLASS & ERRCLS_DEBUG)
-            MTLOGERROR(ERRCLS_DEBUG, EMT004, ERRZERO, "Could not create thread");
+	    MTLOGERROR(ERRCLS_DEBUG, EMT004, ERRZERO, "Could not create thread");
 #endif
 
-            return RFAILED;
-         }
+	    return RFAILED;
+	 }
 #ifdef SS_THR_REG_MAP
-         threadCreated = ssCheckAndAddMemoryRegionMap(sTsk->dep.tId, 
-                                                      sTsk->region);
+	 threadCreated = ssCheckAndAddMemoryRegionMap(sTsk->dep.tId, 
+	       sTsk->region);
       }
 #endif
    }
 
 
-/*mt013.301 :Added SS_AFFINITY_SUPPORT  */
+   /*mt013.301 :Added SS_AFFINITY_SUPPORT  */
 #if defined(SS_MULTICORE_SUPPORT) ||defined(SS_AFFINITY_SUPPORT)
    {
-     static uint32_t stLwpId = 3;
-     sTsk->dep.lwpId = ++stLwpId;
+      static uint32_t stLwpId = 3;
+      sTsk->dep.lwpId = ++stLwpId;
    }
 #endif /* SS_MULTICORE_SUPPORT || SS_AFFINITY_SUPPORT */
 
@@ -3631,13 +3632,13 @@ SsSTskEntry *sTsk           /* pointer to system task entry */
 }
 
 
-int SCreatePThread
+   int SCreatePThread
 (
-pthread_t* tid,
-pthread_attr_t* attr,
-void *(*start_routine) (void *),
-void* arg
-)
+ pthread_t* tid,
+ pthread_attr_t* attr,
+ void *(*start_routine) (void *),
+ void* arg
+ )
 {
    int retVal = 0;
 #ifdef SS_THR_REG_MAP
@@ -3652,9 +3653,9 @@ void* arg
    }
    threadArg->argument = arg;
    threadArg->start_routine = start_routine;
-   
 
-   printf("Creating thread here %s %d\n", __FILE__, __LINE__);
+
+   DU_LOG("\nINFO  -->  Creating thread here %s %d\n", __FILE__, __LINE__);
    {
 #ifdef SS_THR_REG_MAP
       /* When the thread is created, we check for the memory mapping table if
@@ -3666,14 +3667,14 @@ void* arg
       while(threadCreated == FALSE)
       {
 #endif
-         /*pthreadCreateHdlr */
-         if (((retVal = pthread_create(tid, attr, pthreadCreateHdlr, threadArg))) != 0)
-         {
+	 /*pthreadCreateHdlr */
+	 if (((retVal = pthread_create(tid, attr, pthreadCreateHdlr, threadArg))) != 0)
+	 {
 
-            return (retVal);
-         }
+	    return (retVal);
+	 }
 #ifdef SS_THR_REG_MAP
-         threadCreated = ssCheckAndAddMemoryRegionMap(*tid, SS_MAX_REGS - 1);
+	 threadCreated = ssCheckAndAddMemoryRegionMap(*tid, SS_MAX_REGS - 1);
       }
 #endif
    }
@@ -3683,25 +3684,25 @@ void* arg
 
 
 /*
-*
-*       Fun:   Set Pthread Attributes
-*
-*       Desc:  This function is used to set various explicit
-*              pthread attributes like, priority scheduling,etc
-*
-*       Ret:   ROK      - ok
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   Set Pthread Attributes
+ *
+ *       Desc:  This function is used to set various explicit
+ *              pthread attributes like, priority scheduling,etc
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
 
-static S16 ssdSetPthreadAttr
+   static S16 ssdSetPthreadAttr
 (
-S32              tskPrior,
-pthread_attr_t  *attr
-)
+ S32              tskPrior,
+ pthread_attr_t  *attr
+ )
 {
    struct sched_param    param;
 
@@ -3718,18 +3719,18 @@ pthread_attr_t  *attr
    /* TODO:: This can be avoided by reducing the priority
     * of iccserv thread in l1_master.sh*/
 #ifdef L2_L3_SPLIT
-         if (clusterMode == RADIO_CLUSTER_MODE)
-         {
-            if(tskPrior == PRIOR1)
-            {/* DL RLC */
-               param.sched_priority = 91;
-            }
-         }
+   if (clusterMode == RADIO_CLUSTER_MODE)
+   {
+      if(tskPrior == PRIOR1)
+      {/* DL RLC */
+	 param.sched_priority = 91;
+      }
+   }
 
 #endif
 #endif
 
-   printf("Set priority %u\n", param.sched_priority);
+   DU_LOG("\nINFO  -->  Set priority %u\n", param.sched_priority);
 
    /* Set Scheduler to explicit, without this non of the below
       pthread attr works */
@@ -3754,26 +3755,26 @@ pthread_attr_t  *attr
 #if defined(SS_MULTICORE_SUPPORT) ||defined(SS_AFFINITY_SUPPORT)
 
 /*
-*
-*       Fun:   Get the current core/cpu affinity for a thread/lwp
-*
-*       Desc:  This function is used to get the current processor/core
-*              affinity for a a system task (thread/lwp). It sets the
-*              affinity based on the mode supplied by the caller.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes:
-*
-*       File:  ss_task.c
-*
-*/
-S16 ssdGetAffinity
+ *
+ *       Fun:   Get the current core/cpu affinity for a thread/lwp
+ *
+ *       Desc:  This function is used to get the current processor/core
+ *              affinity for a a system task (thread/lwp). It sets the
+ *              affinity based on the mode supplied by the caller.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes:
+ *
+ *       File:  ss_task.c
+ *
+ */
+   S16 ssdGetAffinity
 (
-SSTskId *tskId,                  /* filled in with system task ID */
-uint32_t *coreId                      /* the core/processor id to which the affinity is set */
-)
+ SSTskId *tskId,                  /* filled in with system task ID */
+ uint32_t *coreId                      /* the core/processor id to which the affinity is set */
+ )
 {
 
    uint32_t tskInd;
@@ -3794,16 +3795,16 @@ uint32_t *coreId                      /* the core/processor id to which the affi
    {
       if (osCp.sTskTbl[tskInd].tskId == *tskId)
       {
-         tId = osCp.sTskTbl[tskInd].dep.tId;
-         break;
+	 tId = osCp.sTskTbl[tskInd].dep.tId;
+	 break;
       } /* end if */
    } /* end for */
 
    /* if tskId is not found in the tskTbl */
    if (tskInd == SS_MAX_STSKS)
    {
-       MTLOGERROR(ERRCLS_DEBUG, EMT036, ERRZERO, "Invalid system task Id\n");
-       return RFAILED;
+      MTLOGERROR(ERRCLS_DEBUG, EMT036, ERRZERO, "Invalid system task Id\n");
+      return RFAILED;
    }
 
 
@@ -3811,21 +3812,21 @@ uint32_t *coreId                      /* the core/processor id to which the affi
    CPU_ZERO( &cpuSet);
 
    /* set thread affinity for linux */
-    if (pthread_getaffinity_np(tId, sizeof(cpuSet), &cpuSet) < 0)
-    {
+   if (pthread_getaffinity_np(tId, sizeof(cpuSet), &cpuSet) < 0)
+   {
 #if (ERRCLASS & ERRCLS_DEBUG)
-        MTLOGERROR(ERRCLS_DEBUG, EMT037, ERRZERO, "Could not get thread affinity\n");
+      MTLOGERROR(ERRCLS_DEBUG, EMT037, ERRZERO, "Could not get thread affinity\n");
 #endif
-       return RFAILED;
-    } /* end if pthread_setaffinity fails */
+      return RFAILED;
+   } /* end if pthread_setaffinity fails */
 
    for (cpuInd = 0; cpuInd <CPU_SETSIZE; cpuInd++)
    {
-       if (CPU_ISSET (cpuInd, & cpuSet))
-       {
-           *coreId = cpuInd;
-           break;
-       } /* end if */
+      if (CPU_ISSET (cpuInd, & cpuSet))
+      {
+	 *coreId = cpuInd;
+	 break;
+      } /* end if */
    } /* end for */
 
 #else
@@ -3834,16 +3835,16 @@ uint32_t *coreId                      /* the core/processor id to which the affi
    {
       if (osCp.sTskTbl[tskInd].tskId == *tskId)
       {
-         lwpId = osCp.sTskTbl[tskInd].dep.lwpId;
-         break;
+	 lwpId = osCp.sTskTbl[tskInd].dep.lwpId;
+	 break;
       } /* end if */
    } /* end for */
 
    /* if tskId is not found in the tskTbl */
    if (tskInd == SS_MAX_STSKS)
    {
-       MTLOGERROR(ERRCLS_DEBUG, EMT036, ERRZERO, "Invalid system task Id\n");
-       return RFAILED;
+      MTLOGERROR(ERRCLS_DEBUG, EMT036, ERRZERO, "Invalid system task Id\n");
+      return RFAILED;
    }
 
    /* set thread affinity for Solaris */
@@ -3864,26 +3865,26 @@ uint32_t *coreId                      /* the core/processor id to which the affi
 
 
 /*
-*
-*       Fun:   Set the core/cpu affinity for a thread/lwp
-*
-*       Desc:  This function is used to set processor/core affinity for a
-*              a system task (thread/lwp). It sets the affinity based on the
-*              mode supplied by the caller.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes:
-*
-*       File:  ss_task.c
-*
-*/
-S16 ssdSetAffinity
+ *
+ *       Fun:   Set the core/cpu affinity for a thread/lwp
+ *
+ *       Desc:  This function is used to set processor/core affinity for a
+ *              a system task (thread/lwp). It sets the affinity based on the
+ *              mode supplied by the caller.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes:
+ *
+ *       File:  ss_task.c
+ *
+ */
+   S16 ssdSetAffinity
 (
-SSTskId *tskId,                  /* filled in with system task ID */
-uint32_t coreId                       /* the core/processor id to which the affinity has to be set */
-)
+ SSTskId *tskId,                  /* filled in with system task ID */
+ uint32_t coreId                       /* the core/processor id to which the affinity has to be set */
+ )
 {
 
    uint32_t tskInd = 0;
@@ -3902,21 +3903,21 @@ uint32_t coreId                       /* the core/processor id to which the affi
 #ifdef SS_LINUX
    for (tskInd = 0;  tskInd < SS_MAX_STSKS;  tskInd++)
    {
-   /* Here tskId can not be used as index as the task may be terminated if
-      there is a TERM even for that tsk, thus breaking the task Id numbering
-      sequence  */
+      /* Here tskId can not be used as index as the task may be terminated if
+	 there is a TERM even for that tsk, thus breaking the task Id numbering
+	 sequence  */
       if (osCp.sTskTbl[tskInd].tskId == *tskId)
       {
-         tId = osCp.sTskTbl[tskInd].dep.tId;
-         break;
+	 tId = osCp.sTskTbl[tskInd].dep.tId;
+	 break;
       } /* end if */
    } /* end for */
 
    /* if tskId is not found in the tskTbl */
    if (tskInd == SS_MAX_STSKS)
    {
-       MTLOGERROR(ERRCLS_DEBUG, EMT036, ERRZERO, "Invalid system task Id\n");
-       return RFAILED;
+      MTLOGERROR(ERRCLS_DEBUG, EMT036, ERRZERO, "Invalid system task Id\n");
+      return RFAILED;
    }
 
    /* initialize the cpu mask */
@@ -3941,8 +3942,8 @@ uint32_t coreId                       /* the core/processor id to which the affi
       /* comment: modify to use tskId as lwpId to avoid the loop and the new lwpId variable  in dep */
       if (osCp.sTskTbl[tskInd].tskId == *tskId)
       {
-         lwpId = osCp.sTskTbl[tskInd].dep.lwpId;
-         break;
+	 lwpId = osCp.sTskTbl[tskInd].dep.lwpId;
+	 break;
       } /* end if */
    } /* end for */
 
@@ -3972,23 +3973,23 @@ uint32_t coreId                       /* the core/processor id to which the affi
 
 
 /*
-*
-*       Fun:   ssdDestroySTsk
-*
-*       Desc:  This function destroys a system task. A terminate
-*              event message is sent to the thread function.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
-S16 ssdDestroySTsk
+ *
+ *       Fun:   ssdDestroySTsk
+ *
+ *       Desc:  This function destroys a system task. A terminate
+ *              event message is sent to the thread function.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
+   S16 ssdDestroySTsk
 (
-SsSTskEntry *sTsk           /* pointer to system task entry */
-)
+ SsSTskEntry *sTsk           /* pointer to system task entry */
+ )
 {
    Buffer *mBuf;
    SsMsgInfo *mInfo;
@@ -4016,7 +4017,7 @@ SsSTskEntry *sTsk           /* pointer to system task entry */
 
 #if (ERRCLASS & ERRCLASS_DEBUG)
       MTLOGERROR(ERRCLS_DEBUG, EMT006, ERRZERO,
-                     "Could not write to demand queue");
+	    "Could not write to demand queue");
 #endif
 
       return RFAILED;
@@ -4027,26 +4028,26 @@ SsSTskEntry *sTsk           /* pointer to system task entry */
 }
 
 /* mt023.201 - Added SThreadYield function to yield CPU
-*
-*       Fun:   SThreadYield
-*
-*       Desc:  This function defers thread execution to any other ready
-*              thread.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failure
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   SThreadYield
+ *
+ *       Desc:  This function defers thread execution to any other ready
+ *              thread.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failure
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
 S16 SThreadYield(void)
 {
 
 
-/* mt024.201 - seperated Linux and other UNIX implementations
- */
+   /* mt024.201 - seperated Linux and other UNIX implementations
+    */
 #ifdef SS_LINUX
    {
       struct timeval tw;
@@ -4067,28 +4068,28 @@ S16 SThreadYield(void)
 
 
 /*
-*
-*       Fun:   Register timer
-*
-*       Desc:  This function is used to register a timer
-*              function for the service user. System services
-*              will invoke the timer activation function
-*              passed to it at the specified intervals.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: Timing is handled by the common timers. The
-*              ticks are handled by a thread that uses
-*              nanosleep() and thus timing precision will not
-*              be very accurate.
-*
-*       File:  mt_ss.c
-*
-*/
-S16 ssdRegTmr
+ *
+ *       Fun:   Register timer
+ *
+ *       Desc:  This function is used to register a timer
+ *              function for the service user. System services
+ *              will invoke the timer activation function
+ *              passed to it at the specified intervals.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: Timing is handled by the common timers. The
+ *              ticks are handled by a thread that uses
+ *              nanosleep() and thus timing precision will not
+ *              be very accurate.
+ *
+ *       File:  mt_ss.c
+ *
+ */
+   S16 ssdRegTmr
 (
-SsTmrEntry *tmr             /* pointer to timer entry */
-)
+ SsTmrEntry *tmr             /* pointer to timer entry */
+ )
 {
    CmTmrArg arg;
 
@@ -4117,22 +4118,22 @@ SsTmrEntry *tmr             /* pointer to timer entry */
 
 
 /*
-*
-*       Fun:   Deregister timer
-*
-*       Desc:  This function is used to deregister a timer function.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
-S16 ssdDeregTmr
+ *
+ *       Fun:   Deregister timer
+ *
+ *       Desc:  This function is used to deregister a timer function.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
+   S16 ssdDeregTmr
 (
-SsTmrEntry *tmr             /* pointer to timer entry */
-)
+ SsTmrEntry *tmr             /* pointer to timer entry */
+ )
 {
    CmTmrArg arg;
 
@@ -4157,23 +4158,23 @@ SsTmrEntry *tmr             /* pointer to timer entry */
 
 
 /*
-*
-*       Fun:   Critical error
-*
-*       Desc:  This function is called when a critical error occurs.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
-S16 ssdError
+ *
+ *       Fun:   Critical error
+ *
+ *       Desc:  This function is called when a critical error occurs.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
+   S16 ssdError
 (
-Seq seq,                    /* sequence number */
-Reason reason               /* reset reason */
-)
+ Seq seq,                    /* sequence number */
+ Reason reason               /* reset reason */
+ )
 {
    S16 i;
    pthread_t tId;
@@ -4188,7 +4189,7 @@ Reason reason               /* reset reason */
 
    /* set up the message to display */
    sprintf(errBuf, "\n\nFATAL ERROR - taskid = %x, errno = %d,"
-            "reason = %d\n\n", (uint8_t)tId, seq, reason);
+	 "reason = %d\n\n", (uint8_t)tId, seq, reason);
    SPrint(errBuf);
 
 
@@ -4196,9 +4197,9 @@ Reason reason               /* reset reason */
    for (i = 0;  i < SS_MAX_STSKS;  i++)
    {
       if (osCp.sTskTbl[i].used
-            &&  !pthread_equal(osCp.sTskTbl[i].dep.tId, tId))
+	    &&  !pthread_equal(osCp.sTskTbl[i].dep.tId, tId))
       {
-         pthread_kill(osCp.sTskTbl[i].dep.tId, SIGKILL);
+	 pthread_kill(osCp.sTskTbl[i].dep.tId, SIGKILL);
       }
    }
 
@@ -4213,30 +4214,30 @@ Reason reason               /* reset reason */
 
 
 /*
-*
-*       Fun:   Log error
-*
-*       Desc:  This function is called to log an error.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
-Void ssdLogError
+ *
+ *       Fun:   Log error
+ *
+ *       Desc:  This function is called to log an error.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
+   Void ssdLogError
 (
-Ent ent,                    /* Calling layer's entity id */
-Inst inst,                  /* Calling layer's instance id */
-ProcId procId,              /* Calling layer's processor id */
-Txt *file,                  /* file name where error occured */
-S32 line,                   /* line in file where error occured */
-ErrCls errCls,              /* error class */
-ErrCode errCode,            /* layer unique error code */
-ErrVal errVal,              /* error value */
-Txt *errDesc                /* description of error */
-)
+ Ent ent,                    /* Calling layer's entity id */
+ Inst inst,                  /* Calling layer's instance id */
+ ProcId procId,              /* Calling layer's processor id */
+ Txt *file,                  /* file name where error occured */
+ S32 line,                   /* line in file where error occured */
+ ErrCls errCls,              /* error class */
+ ErrCode errCode,            /* layer unique error code */
+ ErrVal errVal,              /* error value */
+ Txt *errDesc                /* description of error */
+ )
 {
 #ifndef DEBUGNOEXIT
    S16 i;
@@ -4257,44 +4258,44 @@ Txt *errDesc                /* description of error */
    switch(errCls)
    {
       case ERRCLS_ADD_RES:
-         errClsMsg = "ERRCLS_ADD_RES";
-         break;
+	 errClsMsg = "ERRCLS_ADD_RES";
+	 break;
 
       case ERRCLS_INT_PAR:
-         errClsMsg = "ERRCLS_INT_PAR";
-         break;
+	 errClsMsg = "ERRCLS_INT_PAR";
+	 break;
 
       case ERRCLS_DEBUG:
-         errClsMsg = "ERRCLS_DEBUG";
-         break;
+	 errClsMsg = "ERRCLS_DEBUG";
+	 break;
 
-/* mt028.201 : Addition - ERRCLS_FTHA changes */
+	 /* mt028.201 : Addition - ERRCLS_FTHA changes */
       case ERRCLS_FTHA:
-         errClsMsg = "ERRCLS_FTHA";
-         break;
+	 errClsMsg = "ERRCLS_FTHA";
+	 break;
 
       default:
-         errClsMsg = "INVALID ERROR CLASS!";
-         break;
+	 errClsMsg = "INVALID ERROR CLASS!";
+	 break;
    }
 
 
-/*mt009.301 Fixed 64BIT compilation warnings*/
+   /*mt009.301 Fixed 64BIT compilation warnings*/
 #ifdef ALIGN_64BIT
    sprintf(errBuf,
-             "\nmtss(posix): sw error:  ent: %03d  inst: %03d  proc id: %03d \n"
-             "file: %s line: %03d errcode: %05d errcls: %s\n"
-             "errval: %05d  errdesc: %s\n",
-           ent, inst, procId, file, line, errCode, errClsMsg, errVal, errDesc);
+	 "\nmtss(posix): sw error:  ent: %03d  inst: %03d  proc id: %03d \n"
+	 "file: %s line: %03d errcode: %05d errcls: %s\n"
+	 "errval: %05d  errdesc: %s\n",
+	 ent, inst, procId, file, line, errCode, errClsMsg, errVal, errDesc);
 #else
    sprintf(errBuf,
-             "\nmtss(posix): sw error:  ent: %03d  inst: %03d  proc id: %03d \n"
-             "file: %s line: %03ld errcode: %05ld errcls: %s\n"
-             "errval: %05ld  errdesc: %s\n",
-           ent, inst, procId, file, line, errCode, errClsMsg, errVal, errDesc);
+	 "\nmtss(posix): sw error:  ent: %03d  inst: %03d  proc id: %03d \n"
+	 "file: %s line: %03ld errcode: %05ld errcls: %s\n"
+	 "errval: %05ld  errdesc: %s\n",
+	 ent, inst, procId, file, line, errCode, errClsMsg, errVal, errDesc);
 #endif
    SDisplay(0, errBuf);
-/* mt001.301 : Additions */
+   /* mt001.301 : Additions */
 #ifdef SS_LOGGER_SUPPORT
    SWrtLogBuf(errBuf);
 #endif /* SS_LOGGER_SUPPORT  */
@@ -4304,18 +4305,18 @@ Txt *errDesc                /* description of error */
    /* debug errors halt the system */
    if (errCls == ERRCLS_DEBUG)
    {
-/* mt001.301 : Additions */
+      /* mt001.301 : Additions */
 #ifdef SS_LOGGER_SUPPORT
-     SCleanUp();
+      SCleanUp();
 #endif /* SS_LOGGER_SUPPORT  */
       /* delete all system tasks */
       for (i = 0;  i < SS_MAX_STSKS;  i++)
       {
-         if (osCp.sTskTbl[i].used
-               &&  !pthread_equal(osCp.sTskTbl[i].dep.tId, tId))
-         {
-            pthread_kill(osCp.sTskTbl[i].dep.tId, SIGKILL);
-         }
+	 if (osCp.sTskTbl[i].used
+	       &&  !pthread_equal(osCp.sTskTbl[i].dep.tId, tId))
+	 {
+	    pthread_kill(osCp.sTskTbl[i].dep.tId, SIGKILL);
+	 }
       }
 
 
@@ -4331,23 +4332,23 @@ Txt *errDesc                /* description of error */
 #ifdef ENB_RELAY
 
 /*
-*
-*       Fun:   Register driver task
-*
-*       Desc:  This function is called to register the handlers for a
-*              driver task.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
-S16 ssdRegDrvrTsk
+ *
+ *       Fun:   Register driver task
+ *
+ *       Desc:  This function is called to register the handlers for a
+ *              driver task.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
+   S16 ssdRegDrvrTsk
 (
-SsDrvrTskEntry *drvrTsk         /* driver task entry */
-)
+ SsDrvrTskEntry *drvrTsk         /* driver task entry */
+ )
 {
 
 
@@ -4355,23 +4356,23 @@ SsDrvrTskEntry *drvrTsk         /* driver task entry */
 }
 /* mt001.30 : Additions */
 /*
-*
-*       Fun:   Deregister driver task
-*
-*       Desc:  This function is called to deregister the handlers for a
-*              driver task.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
-S16 ssdDeregDrvrTsk
+ *
+ *       Fun:   Deregister driver task
+ *
+ *       Desc:  This function is called to deregister the handlers for a
+ *              driver task.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
+   S16 ssdDeregDrvrTsk
 (
-SsDrvrTskEntry *drvrTsk         /* driver task entry */
-)
+ SsDrvrTskEntry *drvrTsk         /* driver task entry */
+ )
 {
 
 
@@ -4386,18 +4387,18 @@ SsDrvrTskEntry *drvrTsk         /* driver task entry */
  * mt003.301 Additions - SDeRegTTsk fix
  */
 #ifdef SS_MULTIPLE_PROCS
-S16 ssdProcTTskTerm
+   S16 ssdProcTTskTerm
 (
-ProcId procIdx,
-SsTTskEntry *tTsk,
-SsIdx idx
-)
+ ProcId procIdx,
+ SsTTskEntry *tTsk,
+ SsIdx idx
+ )
 #else /*SS_MULTIPLE_PROCS*/
-S16 ssdProcTTskTerm
+   S16 ssdProcTTskTerm
 (
-SsTTskEntry *tTsk,
-SsIdx idx
-)
+ SsTTskEntry *tTsk,
+ SsIdx idx
+ )
 #endif /*SS_MULTIPLE_PROCS*/
 {
 #ifdef SS_MULTIPLE_PROCS
@@ -4407,23 +4408,23 @@ SsIdx idx
    Inst inst;
    SsSTskEntry *sTsk;
    S16 n;
-	S16  ret;
+   S16  ret;
 
 
 
    ent = tTsk->ent;
    inst = tTsk->inst;
-    /* We check the sTsk element; if it is not NULLP, the
-     *  task is attached. So we have to detach it before
-     *  deregistering the task.
-     */
+   /* We check the sTsk element; if it is not NULLP, the
+    *  task is attached. So we have to detach it before
+    *  deregistering the task.
+    */
    ret = SLock(&osCp.sTskTblLock);
    if (ret != ROK)
    {
-       MTLOGERROR(ERRCLS_DEBUG, EMTXXX, ERRZERO, "Could not lock system task table");
-       return RFAILED;
+      MTLOGERROR(ERRCLS_DEBUG, EMTXXX, ERRZERO, "Could not lock system task table");
+      return RFAILED;
    }
-	SS_ACQUIRE_ALL_SEMA(&osCp.tTskTblSem, ret);
+   SS_ACQUIRE_ALL_SEMA(&osCp.tTskTblSem, ret);
    if (ret != ROK)
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
@@ -4432,8 +4433,8 @@ SsIdx idx
       if ( SUnlock(&osCp.sTskTblLock) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-       	MTLOGERROR(ERRCLS_DEBUG, EMTXXX, ERRZERO, "Could not Unlock system task table");
-          return RFAILED;
+	 MTLOGERROR(ERRCLS_DEBUG, EMTXXX, ERRZERO, "Could not Unlock system task table");
+	 return RFAILED;
 #endif
       }
 
@@ -4446,14 +4447,14 @@ SsIdx idx
    {
 #ifndef USE_MEMCAL
       (Void)(*(tTsk->initTsk))(proc, ent, inst,
-                              DFLT_REGION,
-                              NRM_TERM,
-                              &(osCp.tTskTbl[idx].xxCb));
+	    DFLT_REGION,
+	    NRM_TERM,
+	    &(osCp.tTskTbl[idx].xxCb));
 #else
       (Void)(*(tTsk->initTsk))(proc, ent, inst,
-                              SS_STATIC_REGION,
-                              NRM_TERM,
-                              &(osCp.tTskTbl[idx].xxCb));
+	    SS_STATIC_REGION,
+	    NRM_TERM,
+	    &(osCp.tTskTbl[idx].xxCb));
 #endif /* USE_MEMCAL */
    }
 #endif /* SS_MULTIPLE_PROCS */
@@ -4467,48 +4468,48 @@ SsIdx idx
 
       for (n = 0;  n < SS_MAX_TTSKS;  n++)
       {
-         if (sTsk->tTsks[n] == idx)
-         {
-            sTsk->tTsks[n] = SS_INVALID_IDX;
-            sTsk->numTTsks--;
-            break;
-         }
+	 if (sTsk->tTsks[n] == idx)
+	 {
+	    sTsk->tTsks[n] = SS_INVALID_IDX;
+	    sTsk->numTTsks--;
+	    break;
+	 }
       }
 
-       /* call the implementation to detach the task */
-       ssdDetachTTsk(tTsk);
-       /* 100178 */
-       sTsk->dep.ent = ENTNC;
-       sTsk->dep.inst = INSTNC;
+      /* call the implementation to detach the task */
+      ssdDetachTTsk(tTsk);
+      /* 100178 */
+      sTsk->dep.ent = ENTNC;
+      sTsk->dep.inst = INSTNC;
    }
 
-    /* Now we empty the entry for this task and update the table
-     *  information
-     */
+   /* Now we empty the entry for this task and update the table
+    *  information
+    */
 #ifdef SS_MULTIPLE_PROCS
-    osCp.tTskIds[procIdx][ent][inst] = SS_TSKNC;
+   osCp.tTskIds[procIdx][ent][inst] = SS_TSKNC;
 #else /* SS_MULTIPLE_PROCS */
-    osCp.tTskIds[ent][inst] = SS_TSKNC;
+   osCp.tTskIds[ent][inst] = SS_TSKNC;
 #endif /* SS_MULTIPLE_PROCS */
 
-    tTsk->used    = FALSE;
+   tTsk->used    = FALSE;
 #ifdef SS_MULTIPLE_PROCS
-    tTsk->proc    = PROCNC;
+   tTsk->proc    = PROCNC;
 #endif /* SS_MULTIPLE_PROCS */
-    tTsk->ent     = ENTNC;
-    tTsk->inst    = INSTNC;
-    tTsk->tskType = TTUND;
-    tTsk->initTsk = NULLP;
-    tTsk->actvTsk = NULLP;
-    tTsk->sTsk    = NULLP;
+   tTsk->ent     = ENTNC;
+   tTsk->inst    = INSTNC;
+   tTsk->tskType = TTUND;
+   tTsk->initTsk = NULLP;
+   tTsk->actvTsk = NULLP;
+   tTsk->sTsk    = NULLP;
 
-    tTsk->nxt = osCp.nxtTTskEntry;
-    osCp.nxtTTskEntry = idx;
-    osCp.numTTsks--;
+   tTsk->nxt = osCp.nxtTTskEntry;
+   osCp.nxtTTskEntry = idx;
+   osCp.numTTsks--;
 
 #ifdef SS_MULTIPLE_PROCS
-    /* mark the control block for this task as invalid */
-    osCp.tTskTbl[idx].xxCb = NULLP;
+   /* mark the control block for this task as invalid */
+   osCp.tTskTbl[idx].xxCb = NULLP;
 #endif
 
    SS_RELEASE_ALL_SEMA(&osCp.tTskTblSem);
@@ -4517,9 +4518,9 @@ SsIdx idx
 #if (ERRCLASS & ERRCLS_DEBUG)
       MTLOGERROR(ERRCLS_DEBUG, EMTXXX, ERRZERO, "Could not Unlock system task table");
 #endif
-       return RFAILED;
+      return RFAILED;
    }
-	return ROK;
+   return ROK;
 }
 
 //#ifndef SPLIT_RLC_DL_TASK
@@ -4528,19 +4529,19 @@ SsIdx idx
 Void ysMtTskHdlr(Void);
 Void ysMtPollPhyMsg(uint8_t region);
 Void ysMtRcvPhyMsg(Void);
-Void *mtTskHdlrT2kL2
+   Void *mtTskHdlrT2kL2
 (
-Ptr tskPtr                      /* pointer to task entry */
-)
+ Ptr tskPtr                      /* pointer to task entry */
+ )
 {
    S16 ret;
 
 
    /* wait for SS to come up */
    /* It is required to block on this semaphore before starting actual processing of 
-     the thread becasue the creator of this thread might want to cance it without
-     doing any processing. When this semaphore is released, means the creator gives
-     the go ahead for actual processing and we should never come back to this point */
+      the thread becasue the creator of this thread might want to cance it without
+      doing any processing. When this semaphore is released, means the creator gives
+      the go ahead for actual processing and we should never come back to this point */
    while ((ret = sem_wait(&osCp.dep.ssStarted) != ROK) && (errno == EINTR))
       continue;
 
@@ -4551,18 +4552,18 @@ Ptr tskPtr                      /* pointer to task entry */
    while(1)
    {
       ysMtPollPhyMsg(0); /* blocks, waiting for messages for L2
-                      * (processes L1 msgs) */
-  }
+			  * (processes L1 msgs) */
+   }
 
-  return (NULLP);
+   return (NULLP);
 }
 #else
 Void ysMtTskHdlr(Void);
 Void YsPhyRecvMsg();
-Void *mtTskHdlrT2kL2
+   Void *mtTskHdlrT2kL2
 (
-Ptr tskPtr                      /* pointer to task entry */
-)
+ Ptr tskPtr                      /* pointer to task entry */
+ )
 {
    S16 ret;
    SsSTskEntry *sTsk;
@@ -4572,9 +4573,9 @@ Ptr tskPtr                      /* pointer to task entry */
 
    /* wait for SS to come up */
    /* It is required to block on this semaphore before starting actual processing of 
-     the thread becasue the creator of this thread might want to cance it without
-     doing any processing. When this semaphore is released, means the creator gives
-     the go ahead for actual processing and we should never come back to this point */
+      the thread becasue the creator of this thread might want to cance it without
+      doing any processing. When this semaphore is released, means the creator gives
+      the go ahead for actual processing and we should never come back to this point */
    while ((ret = sem_wait(&osCp.dep.ssStarted) != ROK) && (errno == EINTR))
       continue;
 
@@ -4590,7 +4591,7 @@ Ptr tskPtr                      /* pointer to task entry */
       YsPhyRecvMsg();      
 #else      
       ysMtTskHdlr(); /* blocks, waiting for messages for L2
-                      * (processes L1 msgs) */
+		      * (processes L1 msgs) */
 #endif
       /* get a message from the demand queue */
       /* RT Processing */
@@ -4601,11 +4602,11 @@ Ptr tskPtr                      /* pointer to task entry */
       ret = mtTskHdlMsg(sTsk); 
       if (ret != ROK)
       {
-         /* exit the for loop here */
-         break;
+	 /* exit the for loop here */
+	 break;
       }
 #if defined(SPLIT_RLC_DL_TASK) && defined(RLC_MAC_STA_RSP_RBUF)
-       rgBatchProc();
+      rgBatchProc();
 #endif  
    }
 
@@ -4627,28 +4628,28 @@ void *pthreadCreateHdlr(void * arg)
 }
 
 /*
-*
-*       Fun:   Task handler
-*
-*       Desc:  This is the system task handler function. It blocks on
-*              the system task's demand queue. On receiving a message,
-*              it identifies the target TAPA task, verifies that the
-*              TAPA task belongs to this system task and if so, calls
-*              the activation function of that TAPA task with the
-*              received message. The task activation function or the
-*              timer activation function may be called.
-*
-*       Ret:   (thread function)
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
-Void *mtTskHdlr
+ *
+ *       Fun:   Task handler
+ *
+ *       Desc:  This is the system task handler function. It blocks on
+ *              the system task's demand queue. On receiving a message,
+ *              it identifies the target TAPA task, verifies that the
+ *              TAPA task belongs to this system task and if so, calls
+ *              the activation function of that TAPA task with the
+ *              received message. The task activation function or the
+ *              timer activation function may be called.
+ *
+ *       Ret:   (thread function)
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
+   Void *mtTskHdlr
 (
-Ptr tskPtr                      /* pointer to task entry */
-)
+ Ptr tskPtr                      /* pointer to task entry */
+ )
 {
    S16 ret = ROK;
    SsSTskEntry *sTsk;
@@ -4663,7 +4664,7 @@ Ptr tskPtr                      /* pointer to task entry */
    while ((ret = sem_wait(&osCp.dep.ssStarted) != ROK) && (errno == EINTR))
       continue;
 #ifdef XEON_SPECIFIC_CHANGES
-   printf("\n**********MT Task Handler********\n");
+   DU_LOG("\nINFO  -->  **********MT Task Handler********\n");
 #endif   
    while (1)
    {
@@ -4674,12 +4675,12 @@ Ptr tskPtr                      /* pointer to task entry */
       ret = ssDmndQWait(&sTsk->dQ);
 #endif
       if (ret != ROK)
-         continue;
+	 continue;
 
       ret = mtTskHdlMsg(sTsk); 
       if (ret != ROK)
       {
-         break;
+	 break;
       }
    }
 
@@ -4688,28 +4689,28 @@ Ptr tskPtr                      /* pointer to task entry */
 
 
 /*
-*
-*       Fun:   Task handler
-*
-*       Desc:  This is the system task handler function. It blocks on
-*              the system task's demand queue. On receiving a message,
-*              it identifies the target TAPA task, verifies that the
-*              TAPA task belongs to this system task and if so, calls
-*              the activation function of that TAPA task with the
-*              received message. The task activation function or the
-*              timer activation function may be called.
-*
-*       Ret:   (thread function)
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
-S16 mtTskHdlMsg
+ *
+ *       Fun:   Task handler
+ *
+ *       Desc:  This is the system task handler function. It blocks on
+ *              the system task's demand queue. On receiving a message,
+ *              it identifies the target TAPA task, verifies that the
+ *              TAPA task belongs to this system task and if so, calls
+ *              the activation function of that TAPA task with the
+ *              received message. The task activation function or the
+ *              timer activation function may be called.
+ *
+ *       Ret:   (thread function)
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
+   S16 mtTskHdlMsg
 (
-SsSTskEntry *sTsk
-)
+ SsSTskEntry *sTsk
+ )
 {
    S16 i =0;
    S16 ret =0;
@@ -4721,7 +4722,7 @@ SsSTskEntry *sTsk
 #endif
    SsMsgInfo *mInfo=NULLP;
    Pst nPst;
-/* mt028.201: modification: multiple procs support related changes */
+   /* mt028.201: modification: multiple procs support related changes */
 #ifndef SS_MULTIPLE_PROCS
 #ifdef SS_MT_TMR
    PAIFTMRS16 tmrActvFnMt = NULLP;
@@ -4732,9 +4733,9 @@ SsSTskEntry *sTsk
    PAIFTMRS16 tmrActvFn =NULLP;
    uint16_t procIdIdx =0;
 #endif /* SS_MULTIPLE_PROCS */
-	/* mt003.301 Modifications */
+   /* mt003.301 Modifications */
 #ifdef SS_THREAD_PROFILE
-  EpcTime et1,et2;
+   EpcTime et1,et2;
 #endif /* SS_THREAD_PROFILE */
 
 
@@ -4752,13 +4753,13 @@ SsSTskEntry *sTsk
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       MTLOGERROR(ERRCLS_DEBUG, EMT007, (ErrVal) ret,
-                     "Could not lock system task entry");
+	    "Could not lock system task entry");
 #endif
       SPutMsg(mBuf);
       return ROK;
    }
 
-/* mt034.201 */
+   /* mt034.201 */
 #ifdef SS_PERF
    do 
    {
@@ -4769,325 +4770,325 @@ SsSTskEntry *sTsk
 #ifdef SS_MEM_WL_DEBUG
       mtTskBuffer1 = mBuf2;
       if(mBuf2)
-      mtTskBuffer2 = mBuf2->b_next;
+	 mtTskBuffer2 = mBuf2->b_next;
 
       if(mInfo == 0x5050505)
       {
-         stopBtInfo = TRUE;
-         SGlobMemInfoShow();
-         cmAnalyseBtInfo((PTR) mBuf,4);
-         SGlobMemInfoShow();
-         printf("\n In trouble .... \n");
+	 stopBtInfo = TRUE;
+	 SGlobMemInfoShow();
+	 cmAnalyseBtInfo((PTR) mBuf,4);
+	 SGlobMemInfoShow();
+	 DU_LOG("\nERROR  -->  In trouble .... \n");
       }
       else if (mInfo == 0x2020202)
       {
-         stopBtInfo = TRUE;
-         cmAnalyseBtInfo((PTR) mBuf,1);
-         printf("\n In trouble .... \n");
+	 stopBtInfo = TRUE;
+	 cmAnalyseBtInfo((PTR) mBuf,1);
+	 DU_LOG("\nERROR  -->  In trouble .... \n");
       }
 #endif /* SS_MEM_WL_DEBUG */
       switch (mInfo->eventInfo.event)
       {
-         /* this is a termination event, we die */
-         case SS_EVNT_TERM:
-            /* release the message */
-            SPutMsg(mBuf);
+	 /* this is a termination event, we die */
+	 case SS_EVNT_TERM:
+	    /* release the message */
+	    SPutMsg(mBuf);
 
-            /* Unlock the system task entry and lock the system
-             *  task table to clean our entry up.
-             */
-            SUnlock(&sTsk->lock);
+	    /* Unlock the system task entry and lock the system
+	     *  task table to clean our entry up.
+	     */
+	    SUnlock(&sTsk->lock);
 
-            ret = SLock(&osCp.sTskTblLock);
-            if (ret != ROK)
-            {
+	    ret = SLock(&osCp.sTskTblLock);
+	    if (ret != ROK)
+	    {
 
 #if (ERRCLASS & ERRCLS_DEBUG)
-               MTLOGERROR(ERRCLS_DEBUG, EMT008, (ErrVal) ret,
-                           "Could not lock system task table");
+	       MTLOGERROR(ERRCLS_DEBUG, EMT008, (ErrVal) ret,
+		     "Could not lock system task table");
 #endif
-               /* what to do here? */
-               return ROK;
-            }
+	       /* what to do here? */
+	       return ROK;
+	    }
 
-            /* clean up the system task entry */
-            sTsk->used = FALSE;
-            sTsk->tskPrior = 0;
-				/* mt003.301 Modifications - SDeRegTTsk */
-				/* sTsk->numTTsks = 0; */
-            SDestroyLock(&sTsk->lock);
-            ssDestroyDmndQ(&sTsk->dQ);
+	    /* clean up the system task entry */
+	    sTsk->used = FALSE;
+	    sTsk->tskPrior = 0;
+	    /* mt003.301 Modifications - SDeRegTTsk */
+	    /* sTsk->numTTsks = 0; */
+	    SDestroyLock(&sTsk->lock);
+	    ssDestroyDmndQ(&sTsk->dQ);
 
-            /* lock for current executing TAPA task ID */
+	    /* lock for current executing TAPA task ID */
 
-            /* make this entry available in the system task table */
-            sTsk->nxt = osCp.nxtSTskEntry;
-            for (i = 0;  i < SS_MAX_STSKS;  i++)
-            {
-               if (sTsk == &osCp.sTskTbl[i])
-               {
-                  osCp.nxtSTskEntry = i;
-                  break;
-               }
-            }
+	    /* make this entry available in the system task table */
+	    sTsk->nxt = osCp.nxtSTskEntry;
+	    for (i = 0;  i < SS_MAX_STSKS;  i++)
+	    {
+	       if (sTsk == &osCp.sTskTbl[i])
+	       {
+		  osCp.nxtSTskEntry = i;
+		  break;
+	       }
+	    }
 
-            osCp.numSTsks--;
+	    osCp.numSTsks--;
 
-            /* unlock the system task table */
-            SUnlock(&osCp.sTskTblLock);
+	    /* unlock the system task table */
+	    SUnlock(&osCp.sTskTblLock);
 
-            return RFAILED;
+	    return RFAILED;
 
 
-         /* this is a data message or a permanent task keep-alive message */
-         case SS_EVNT_DATA:
-         case SS_EVNT_PERMTICK:
-            /* message to a task. find the destination task */
-/* mt028.201: modification: multiple procs support related changes */
+	    /* this is a data message or a permanent task keep-alive message */
+	 case SS_EVNT_DATA:
+	 case SS_EVNT_PERMTICK:
+	    /* message to a task. find the destination task */
+	    /* mt028.201: modification: multiple procs support related changes */
 #ifdef SS_MULTIPLE_PROCS
-            procIdIdx = SGetProcIdIdx(mInfo->pst.dstProcId);
+	    procIdIdx = SGetProcIdIdx(mInfo->pst.dstProcId);
 
-            if (procIdIdx == SS_INV_PROCID_IDX)
-            {
-               SPutMsg(mBuf);
-               break;
-            }
+	    if (procIdIdx == SS_INV_PROCID_IDX)
+	    {
+	       SPutMsg(mBuf);
+	       break;
+	    }
 
-            idx = osCp.tTskIds[procIdIdx][mInfo->pst.dstEnt][mInfo->pst.dstInst];
+	    idx = osCp.tTskIds[procIdIdx][mInfo->pst.dstEnt][mInfo->pst.dstInst];
 #else /* SS_MULTIPLE_PROCS */
-            idx = osCp.tTskIds[mInfo->pst.dstEnt][mInfo->pst.dstInst];
+	    idx = osCp.tTskIds[mInfo->pst.dstEnt][mInfo->pst.dstInst];
 #endif /* SS_MULTIPLE_PROCS */
 
-            /* verify that it hasn't been deregistered */
-            if (idx == SS_TSKNC)
-            {
-               SPutMsg(mBuf);
-               break;
-            }
+	    /* verify that it hasn't been deregistered */
+	    if (idx == SS_TSKNC)
+	    {
+	       SPutMsg(mBuf);
+	       break;
+	    }
 
-            /* verify that this system task is still running it */
-            tTsk = &osCp.tTskTbl[idx];
-            if (tTsk->sTsk != sTsk)
-            {
-               SPutMsg(mBuf);
-               break;
-            }
+	    /* verify that this system task is still running it */
+	    tTsk = &osCp.tTskTbl[idx];
+	    if (tTsk->sTsk != sTsk)
+	    {
+	       SPutMsg(mBuf);
+	       break;
+	    }
 
-               /* set the current executing TAPA task ID */
-               sTsk->dep.ent = mInfo->pst.dstEnt;
-               sTsk->dep.inst = mInfo->pst.dstInst;
+	    /* set the current executing TAPA task ID */
+	    sTsk->dep.ent = mInfo->pst.dstEnt;
+	    sTsk->dep.inst = mInfo->pst.dstInst;
 
-            /* copy the Pst structure into a local duplicate */
-            for (i = 0;  i < (S16) sizeof(Pst);  i++)
-               *(((uint8_t *)(&nPst)) + i) = *(((uint8_t *)&mInfo->pst) + i);
+	    /* copy the Pst structure into a local duplicate */
+	    for (i = 0;  i < (S16) sizeof(Pst);  i++)
+	       *(((uint8_t *)(&nPst)) + i) = *(((uint8_t *)&mInfo->pst) + i);
 
-            /* Give the message to the task activation function. If
-             *  its a normal data message, we pass it, if this is a
-             *  keep-alive message for a permanent task then we pass
-             *  NULLP in place of the message to the task activation
-             *  function.
-             */
-            if (mInfo->eventInfo.event == SS_EVNT_DATA)
-            {
+	    /* Give the message to the task activation function. If
+	     *  its a normal data message, we pass it, if this is a
+	     *  keep-alive message for a permanent task then we pass
+	     *  NULLP in place of the message to the task activation
+	     *  function.
+	     */
+	    if (mInfo->eventInfo.event == SS_EVNT_DATA)
+	    {
 #ifndef RGL_SPECIFIC_CHANGES
 #ifdef SS_TSKLOG_ENABLE
-              uint32_t t = MacGetTick();
+	       uint32_t t = MacGetTick();
 #endif
 #endif
-				  /* mt003.301 Modifications */
+	       /* mt003.301 Modifications */
 #if SS_THREAD_PROFILE
-                tTsk->curEvent = nPst.event;
-                SGetEpcTime(&et1);
+	       tTsk->curEvent = nPst.event;
+	       SGetEpcTime(&et1);
 #endif /* SS_THREAD_PROFILE */
-               tTsk->actvTsk(&nPst, mBuf);
+	       tTsk->actvTsk(&nPst, mBuf);
 #ifndef RGL_SPECIFIC_CHANGES
 #ifdef SS_TSKLOG_ENABLE
-               SStopTask(t,PID_SSI_TSK);
+	       SStopTask(t,PID_SSI_TSK);
 #endif
 #endif
 #if SS_THREAD_PROFILE
-                SGetEpcTime(&et2);
-                tTsk->curEvtTime = (uint32_t)(et2 - et1);
-                tTsk->totTime += (uint64_t)tTsk->curEvtTime;
+	       SGetEpcTime(&et2);
+	       tTsk->curEvtTime = (uint32_t)(et2 - et1);
+	       tTsk->totTime += (uint64_t)tTsk->curEvtTime;
 #endif /* SS_THREAD_PROFILE */
-            }
-            else
-            {
+	    }
+	    else
+	    {
 #if (ERRCLASS & ERRCLS_DEBUG)
-               /* this message should only come to a permanent task */
-               if (tTsk->tskType != SS_TSK_PERMANENT)
-               {
-                  MTLOGERROR(ERRCLS_DEBUG, EMT009, ERRZERO, "Logic failure");
-                  break;
-               }
+	       /* this message should only come to a permanent task */
+	       if (tTsk->tskType != SS_TSK_PERMANENT)
+	       {
+		  MTLOGERROR(ERRCLS_DEBUG, EMT009, ERRZERO, "Logic failure");
+		  break;
+	       }
 #endif
-               tTsk->actvTsk(&nPst, NULLP);
+	       tTsk->actvTsk(&nPst, NULLP);
 
-               /* We need to re-send this message back to ourselves so
-                *  the permanent task continues to run.
-                */
-               /* Check if this task got deregistered or detached
-                *  by the activation function; if so, there's nothing
-                *  more to do here, otherwise go ahead.
-                */
-               ret = ROK;
-               if (tTsk->used == TRUE  &&  tTsk->sTsk != NULLP)
-               {
-                  ret = ssDmndQPutLast(&tTsk->sTsk->dQ, mBuf,
-                              ((tTsk->tskPrior) * SS_MAX_MSG_PRI) +
-                              mInfo->pst.prior);
-               }
+	       /* We need to re-send this message back to ourselves so
+		*  the permanent task continues to run.
+		*/
+	       /* Check if this task got deregistered or detached
+		*  by the activation function; if so, there's nothing
+		*  more to do here, otherwise go ahead.
+		*/
+	       ret = ROK;
+	       if (tTsk->used == TRUE  &&  tTsk->sTsk != NULLP)
+	       {
+		  ret = ssDmndQPutLast(&tTsk->sTsk->dQ, mBuf,
+			((tTsk->tskPrior) * SS_MAX_MSG_PRI) +
+			mInfo->pst.prior);
+	       }
 
-               /* failure here is a real problem */
-               if (ret != ROK)
-               {
+	       /* failure here is a real problem */
+	       if (ret != ROK)
+	       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-                  MTLOGERROR(ERRCLS_DEBUG, EMT010, ERRZERO,
-                              "Could not write to demand queue");
+		  MTLOGERROR(ERRCLS_DEBUG, EMT010, ERRZERO,
+			"Could not write to demand queue");
 #endif
-                  SPutMsg(mBuf);
-               }
-            }
+		  SPutMsg(mBuf);
+	       }
+	    }
 
-            /* unset the current executing TAPA task ID */
-               sTsk->dep.ent = ENTNC;
-               sTsk->dep.inst = INSTNC;
-            break;
+	    /* unset the current executing TAPA task ID */
+	    sTsk->dep.ent = ENTNC;
+	    sTsk->dep.inst = INSTNC;
+	    break;
 
 
-         case SS_EVNT_TIMER:
-            /* timer event. find the timer entry */
-            idx = mInfo->eventInfo.u.tmr.tmrIdx;
+	 case SS_EVNT_TIMER:
+	    /* timer event. find the timer entry */
+	    idx = mInfo->eventInfo.u.tmr.tmrIdx;
 
-            /* lock the timer table, coz we're going to peek in it */
-            ret = SLock(&osCp.tmrTblLock);
-            if (ret != ROK)
-            {
+	    /* lock the timer table, coz we're going to peek in it */
+	    ret = SLock(&osCp.tmrTblLock);
+	    if (ret != ROK)
+	    {
 
 #if (ERRCLASS & ERRCLS_DEBUG)
-               MTLOGERROR(ERRCLS_DEBUG, EMT011, (ErrVal) ret,
-                              "Could not lock timer table");
+	       MTLOGERROR(ERRCLS_DEBUG, EMT011, (ErrVal) ret,
+		     "Could not lock timer table");
 #endif
-               SPutMsg(mBuf);
-               break;
-            }
+	       SPutMsg(mBuf);
+	       break;
+	    }
 
-            /* Verify that this timer entry is still around and that it
-             *  belongs to our task.
-             */
-            if (osCp.tmrTbl[idx].used == FALSE
-/* mt028.201: modification: multiple procs support related changes */
+	    /* Verify that this timer entry is still around and that it
+	     *  belongs to our task.
+	     */
+	    if (osCp.tmrTbl[idx].used == FALSE
+		  /* mt028.201: modification: multiple procs support related changes */
 #ifdef SS_MULTIPLE_PROCS
-                  ||  osCp.tmrTbl[idx].ownerProc != mInfo->pst.dstProcId
+		  ||  osCp.tmrTbl[idx].ownerProc != mInfo->pst.dstProcId
 #endif /* SS_MULTIPLE_PROCS */
-                  ||  osCp.tmrTbl[idx].ownerEnt != mInfo->pst.dstEnt
-                  ||  osCp.tmrTbl[idx].ownerInst != mInfo->pst.dstInst)
-            {
-               SUnlock(&osCp.tmrTblLock);
-               SPutMsg(mBuf);
-               break;
-            }
+		  ||  osCp.tmrTbl[idx].ownerEnt != mInfo->pst.dstEnt
+		  ||  osCp.tmrTbl[idx].ownerInst != mInfo->pst.dstInst)
+	    {
+	       SUnlock(&osCp.tmrTblLock);
+	       SPutMsg(mBuf);
+	       break;
+	    }
 
- /* mt005.21: addition */
-            /* set the current executing TAPA task ID */
-               sTsk->dep.ent = mInfo->pst.dstEnt;
-               sTsk->dep.inst = mInfo->pst.dstInst;
+	    /* mt005.21: addition */
+	    /* set the current executing TAPA task ID */
+	    sTsk->dep.ent = mInfo->pst.dstEnt;
+	    sTsk->dep.inst = mInfo->pst.dstInst;
 
 #ifndef SS_MULTIPLE_PROCS
 #ifdef SS_MT_TMR
-            /*mt006.301 Adding Initializing the tmrActvFnMt*/
-            tmrActvFnMt = NULLP;
-            if (osCp.tmrTbl[idx].ssTmrActvFn.mtFlag == TRUE)
-            {
-               tmrActvFnMt = osCp.tmrTbl[idx].ssTmrActvFn.actvFnc.tmrActvFnMt;
-            }
-            else
+	    /*mt006.301 Adding Initializing the tmrActvFnMt*/
+	    tmrActvFnMt = NULLP;
+	    if (osCp.tmrTbl[idx].ssTmrActvFn.mtFlag == TRUE)
+	    {
+	       tmrActvFnMt = osCp.tmrTbl[idx].ssTmrActvFn.actvFnc.tmrActvFnMt;
+	    }
+	    else
 #endif
 #endif
-            {
-               tmrActvFn = osCp.tmrTbl[idx].ssTmrActvFn.actvFnc.tmrActvFn;
-            }
+	    {
+	       tmrActvFn = osCp.tmrTbl[idx].ssTmrActvFn.actvFnc.tmrActvFn;
+	    }
 
-            /* unlock the timer table */
-            SUnlock(&osCp.tmrTblLock);
+	    /* unlock the timer table */
+	    SUnlock(&osCp.tmrTblLock);
 
-            /* activate the timer function */
-/* mt028.201: modification: multiple procs support related changes */
+	    /* activate the timer function */
+	    /* mt028.201: modification: multiple procs support related changes */
 #ifndef SS_MULTIPLE_PROCS
 #ifdef SS_MT_TMR
-            if (tmrActvFnMt)
-            {
-               tmrActvFnMt(osCp.tmrTbl[idx].ownerEnt,
-                           osCp.tmrTbl[idx].ownerInst);
-            }
-            else
+	    if (tmrActvFnMt)
+	    {
+	       tmrActvFnMt(osCp.tmrTbl[idx].ownerEnt,
+		     osCp.tmrTbl[idx].ownerInst);
+	    }
+	    else
 #endif
-            {
-               tmrActvFn();
-            }
+	    {
+	       tmrActvFn();
+	    }
 #else
-            tmrActvFn(osCp.tmrTbl[idx].ownerProc, osCp.tmrTbl[idx].ownerEnt,
-                        osCp.tmrTbl[idx].ownerInst);
+	    tmrActvFn(osCp.tmrTbl[idx].ownerProc, osCp.tmrTbl[idx].ownerEnt,
+		  osCp.tmrTbl[idx].ownerInst);
 #endif /* SS_MULTIPLE_PROCS */
 
- /*mt005.21: addition */
-            /* unset the current executing TAPA task ID */
-               sTsk->dep.ent = ENTNC;
-               sTsk->dep.inst = INSTNC;
+	    /*mt005.21: addition */
+	    /* unset the current executing TAPA task ID */
+	    sTsk->dep.ent = ENTNC;
+	    sTsk->dep.inst = INSTNC;
 
 
-            /* return the message buffer */
-            SPutMsg(mBuf);
-            break;
-				/*
-				 * mt003.301 - SDeRegTTsk fix
-				 */
-         case SS_EVNT_TTSK_TERM:
+	    /* return the message buffer */
+	    SPutMsg(mBuf);
+	    break;
+	    /*
+	     * mt003.301 - SDeRegTTsk fix
+	     */
+	 case SS_EVNT_TTSK_TERM:
 #ifdef SS_MULTIPLE_PROCS
-            procIdIdx = SGetProcIdIdx(mInfo->pst.dstProcId);
+	    procIdIdx = SGetProcIdIdx(mInfo->pst.dstProcId);
 
-            if (procIdIdx == SS_INV_PROCID_IDX)
-            {
-               SPutMsg(mBuf);
-               break;
-            }
+	    if (procIdIdx == SS_INV_PROCID_IDX)
+	    {
+	       SPutMsg(mBuf);
+	       break;
+	    }
 
-            idx = osCp.tTskIds[procIdIdx][mInfo->pst.dstEnt][mInfo->pst.dstInst];
+	    idx = osCp.tTskIds[procIdIdx][mInfo->pst.dstEnt][mInfo->pst.dstInst];
 #else /* SS_MULTIPLE_PROCS */
-            idx = osCp.tTskIds[mInfo->pst.dstEnt][mInfo->pst.dstInst];
+	    idx = osCp.tTskIds[mInfo->pst.dstEnt][mInfo->pst.dstInst];
 #endif /* SS_MULTIPLE_PROCS */
 
-            /* verify that it hasn't been deregistered */
-            if (idx == SS_TSKNC)
-            {
-               SPutMsg(mBuf);
-               break;
-            }
+	    /* verify that it hasn't been deregistered */
+	    if (idx == SS_TSKNC)
+	    {
+	       SPutMsg(mBuf);
+	       break;
+	    }
 
-            /* verify that this system task is still running it */
-            tTsk = &osCp.tTskTbl[idx];
-            if (tTsk->sTsk != sTsk)
-            {
-               SPutMsg(mBuf);
-               break;
-            }
+	    /* verify that this system task is still running it */
+	    tTsk = &osCp.tTskTbl[idx];
+	    if (tTsk->sTsk != sTsk)
+	    {
+	       SPutMsg(mBuf);
+	       break;
+	    }
 #ifdef SS_MULTIPLE_PROCS
-            ssdProcTTskTerm(procIdIdx, tTsk, idx);
+	    ssdProcTTskTerm(procIdIdx, tTsk, idx);
 #else
-            ssdProcTTskTerm(tTsk, idx);
+	    ssdProcTTskTerm(tTsk, idx);
 #endif
-            SPutMsg(mBuf);
-            break;
+	    SPutMsg(mBuf);
+	    break;
 
-         default:
+	 default:
 #if (ERRCLASS & ERRCLS_DEBUG)
-            MTLOGERROR(ERRCLS_DEBUG, EMT012, (ErrVal) ret,
-                        "Illegal event");
+	    MTLOGERROR(ERRCLS_DEBUG, EMT012, (ErrVal) ret,
+		  "Illegal event");
 #endif
-            break;
+	    break;
       }
 #ifdef SS_PERF
-         mBuf = mBuf2;
+      mBuf = mBuf2;
    } while (mBuf != NULLP);
 #endif
 
@@ -5105,8 +5106,8 @@ SsSTskEntry *sTsk
 
 Bool g_usettitmr;
 /*
-*       Fun:   mtTmrHdlrPublic
-*/
+ *       Fun:   mtTmrHdlrPublic
+ */
 Void mtTmrHdlrPublic()
 {
    if (SLock(&osCp.tmrTblLock) != ROK)
@@ -5123,29 +5124,29 @@ Void mtTmrHdlrPublic()
 
 
 /*
-*
-*       Fun:   mtTmrHdlr
-*
-*       Desc:  The timer handler thread function. Counts time
-*              and invokes the common timer function on each
-*              tick.
-*
-*       Ret:   (thread function)
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   mtTmrHdlr
+ *
+ *       Desc:  The timer handler thread function. Counts time
+ *              and invokes the common timer function on each
+ *              tick.
+ *
+ *       Ret:   (thread function)
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
 /*mt041.201 Modified SSI tick handling in mtTmrHdlr() */
-static Void *mtTmrHdlr
+   static Void *mtTmrHdlr
 (
-void *parm                        /* unused */
-)
+ void *parm                        /* unused */
+ )
 {
-/*mt004.301-addede new region*/
-/* mt010.301 Removed SS_FAP portion and
- * enabled oroginal code in function mtTmrHdlr */
+   /*mt004.301-addede new region*/
+   /* mt010.301 Removed SS_FAP portion and
+    * enabled oroginal code in function mtTmrHdlr */
 
    struct timespec ts;
    uint32_t time_int;
@@ -5188,8 +5189,8 @@ void *parm                        /* unused */
    if (gettimeofday(&tv1, NULL) == -1)
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
-            MTLOGERROR(ERRCLS_DEBUG, EMT014, (ErrVal) errno,
-                        "Error in clock_gettime");
+      MTLOGERROR(ERRCLS_DEBUG, EMT014, (ErrVal) errno,
+	    "Error in clock_gettime");
 #endif
    }
 
@@ -5197,82 +5198,82 @@ void *parm                        /* unused */
    for (; ;)
    {
 #if 1
-     if (g_usettitmr)
-     {
+      if (g_usettitmr)
+      {
 #ifndef STUB_TTI_HANDLING_5GTF        
-        printf("Returning from mtTmrHdlr()\n");
-        return NULL;
+	 DU_LOG("\nINFO  -->  Returning from mtTmrHdlr()\n");
+	 return NULL;
 #endif        
-     }
+      }
 #endif
-     /* mt039.201 changes for nanosleep */
+      /* mt039.201 changes for nanosleep */
       /* sleep for MT_TICK_CNT milli seconds */
       ts.tv_nsec = (MT_TICK_CNT - err_in_usec) * 1000;
       while ((ret = nanosleep (&ts, &tsN) != ROK) && (errno == EINTR))
       {
-         ts.tv_nsec = tsN.tv_nsec;
-         tsN.tv_nsec = 0;
-         continue;
+	 ts.tv_nsec = tsN.tv_nsec;
+	 tsN.tv_nsec = 0;
+	 continue;
       }
 
       if (gettimeofday(&tv2,NULL) == -1)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-            MTLOGERROR(ERRCLS_DEBUG, EMT015, (ErrVal) errno,
-                        "Error in clock_gettime");
+	 MTLOGERROR(ERRCLS_DEBUG, EMT015, (ErrVal) errno,
+	       "Error in clock_gettime");
 #endif
       }
 
-     /*mt013.301 : changed check while calculating timer to fix
-      * diffrence between MTSS time and real unix time
-      */
-     if ((tv2.tv_sec == tv1.tv_sec)&&(tv2.tv_usec > tv1.tv_usec))
-     {
-        time_int = (tv2.tv_usec - tv1.tv_usec);
-     }
-     else if (tv2.tv_sec > tv1.tv_sec)
-     {
-        time_int = ((tv2.tv_sec - tv1.tv_sec)*1000000) + (tv2.tv_usec - tv1.tv_usec);
-     }
-     else /*  ts2 < ts1, this will not happen in normal scenario */
-     {
-        /* to make sure cnt = 1  */
-        err_in_usec = 0;
-        time_int = MT_TICK_CNT;
-     }
+      /*mt013.301 : changed check while calculating timer to fix
+       * diffrence between MTSS time and real unix time
+       */
+      if ((tv2.tv_sec == tv1.tv_sec)&&(tv2.tv_usec > tv1.tv_usec))
+      {
+	 time_int = (tv2.tv_usec - tv1.tv_usec);
+      }
+      else if (tv2.tv_sec > tv1.tv_sec)
+      {
+	 time_int = ((tv2.tv_sec - tv1.tv_sec)*1000000) + (tv2.tv_usec - tv1.tv_usec);
+      }
+      else /*  ts2 < ts1, this will not happen in normal scenario */
+      {
+	 /* to make sure cnt = 1  */
+	 err_in_usec = 0;
+	 time_int = MT_TICK_CNT;
+      }
 
-     oldTicks = osCp.dep.sysTicks;
-     osCp.dep.sysTicks += (time_int/(MT_TICK_CNT - err_in_usec));
-     err_in_usec = (time_int % (MT_TICK_CNT - err_in_usec));
-     newTicks = osCp.dep.sysTicks;
-     tv1.tv_usec = tv2.tv_usec;
-     tv1.tv_sec = tv2.tv_sec;
+      oldTicks = osCp.dep.sysTicks;
+      osCp.dep.sysTicks += (time_int/(MT_TICK_CNT - err_in_usec));
+      err_in_usec = (time_int % (MT_TICK_CNT - err_in_usec));
+      newTicks = osCp.dep.sysTicks;
+      tv1.tv_usec = tv2.tv_usec;
+      tv1.tv_sec = tv2.tv_sec;
 
-     cnt = newTicks - oldTicks;
+      cnt = newTicks - oldTicks;
 
-     while(err_in_usec >= MT_TICK_CNT)
-     {
-        cnt++;
-        err_in_usec -= MT_TICK_CNT;
-     }
-     if( cnt >= MT_MAX_TICK_CNT_VAL)
-        cnt = MT_MIN_TICK_CNT_VAL;
-     /* call the common timer tick handler */
-	  for (i = 0; i < cnt; i++)
-	  {
-	  	 /* mt008.301: cmPrcTmr is guarded with a lock */
-		 /* lock the timer table */
-		 if (SLock(&osCp.tmrTblLock) != ROK)
-		 {
+      while(err_in_usec >= MT_TICK_CNT)
+      {
+	 cnt++;
+	 err_in_usec -= MT_TICK_CNT;
+      }
+      if( cnt >= MT_MAX_TICK_CNT_VAL)
+	 cnt = MT_MIN_TICK_CNT_VAL;
+      /* call the common timer tick handler */
+      for (i = 0; i < cnt; i++)
+      {
+	 /* mt008.301: cmPrcTmr is guarded with a lock */
+	 /* lock the timer table */
+	 if (SLock(&osCp.tmrTblLock) != ROK)
+	 {
 #if (ERRCLASS & ERRCLS_DEBUG)
-			MTLOGERROR(ERRCLS_DEBUG, EMT016, ERRZERO, "Could not lock timer table");
+	    MTLOGERROR(ERRCLS_DEBUG, EMT016, ERRZERO, "Could not lock timer table");
 #endif
-			continue;
-		 }
-		 cmPrcTmr(&osCp.dep.tmrTqCp, osCp.dep.tmrTq, mtTimeout);
-		 /* unlock the timer table */
-		 SUnlock(&osCp.tmrTblLock);
-	  }
+	    continue;
+	 }
+	 cmPrcTmr(&osCp.dep.tmrTqCp, osCp.dep.tmrTq, mtTimeout);
+	 /* unlock the timer table */
+	 SUnlock(&osCp.tmrTblLock);
+      }
    }
 
    /* mt009.21: addition */
@@ -5282,24 +5283,24 @@ void *parm                        /* unused */
 
 
 /*
-*
-*       Fun:   mtTimeout
-*
-*       Desc:  Process timer event. Called from the common timer
-*              code when a timeout occurs.
-*
-*       Ret:   Void
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
-Void mtTimeout
+ *
+ *       Fun:   mtTimeout
+ *
+ *       Desc:  Process timer event. Called from the common timer
+ *              code when a timeout occurs.
+ *
+ *       Ret:   Void
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
+   Void mtTimeout
 (
-PTR tCb,                        /* control block */
-S16 evnt                        /* event */
-)
+ PTR tCb,                        /* control block */
+ S16 evnt                        /* event */
+ )
 {
    Buffer *mBuf;
    SsMsgInfo *mInfo;
@@ -5310,7 +5311,7 @@ S16 evnt                        /* event */
 #ifndef TENB_RTLIN_CHANGES
    S16 ret;
 #endif
-/* mt028.201: modification: multiple procs support related changes */
+   /* mt028.201: modification: multiple procs support related changes */
 #ifdef SS_MULTIPLE_PROCS
    uint16_t procIdIdx;
 #endif /* SS_MULTIPLE_PROCS */
@@ -5332,7 +5333,7 @@ S16 evnt                        /* event */
       return;
    }
 
-/* mt008.301 Deletion: tmrTbl Lock is moved to mtTmrHdlr */
+   /* mt008.301 Deletion: tmrTbl Lock is moved to mtTmrHdlr */
 
 
    /* Hmmmm, the timer might have been deleted while we've been
@@ -5351,19 +5352,19 @@ S16 evnt                        /* event */
    if (SGetMsg(SS_DFLT_REGION, SS_DFLT_POOL, &mBuf) != ROK)
 #else
 #ifdef RGL_SPECIFIC_CHANGES
-   if (SGetMsg((SS_DFLT_REGION), SS_DFLT_POOL, &mBuf) != ROK)
+      if (SGetMsg((SS_DFLT_REGION), SS_DFLT_POOL, &mBuf) != ROK)
 #else
-   if (SGetMsg((osCp.sTskTbl[0].region), SS_DFLT_POOL, &mBuf) != ROK)
+	 if (SGetMsg((osCp.sTskTbl[0].region), SS_DFLT_POOL, &mBuf) != ROK)
 #endif
 #endif
-   {
+	 {
 
 #if (ERRCLASS & ERRCLS_DEBUG)
-      MTLOGERROR(ERRCLS_DEBUG, EMT017, ERRZERO, "Could not get message");
+	    MTLOGERROR(ERRCLS_DEBUG, EMT017, ERRZERO, "Could not get message");
 #endif
 
-      return;
-   }
+	    return;
+	 }
 
    mInfo = (SsMsgInfo *)mBuf->b_rptr;
    mInfo->eventInfo.event = SS_EVNT_TIMER;
@@ -5373,7 +5374,7 @@ S16 evnt                        /* event */
    mInfo->pst.dstInst = tEnt->ownerInst;
    mInfo->pst.srcEnt = tEnt->ownerEnt;
    mInfo->pst.srcInst = tEnt->ownerInst;
-/* mt028.201: modification: multiple procs support related changes */
+   /* mt028.201: modification: multiple procs support related changes */
 #ifndef SS_MULTIPLE_PROCS
    mInfo->pst.dstProcId = SFndProcId();
    mInfo->pst.srcProcId = SFndProcId();
@@ -5409,7 +5410,7 @@ S16 evnt                        /* event */
 
 
    /* find the owner TAPA task */
-/* mt028.201: modification: multiple procs support related changes */
+   /* mt028.201: modification: multiple procs support related changes */
 #ifdef SS_MULTIPLE_PROCS
    procIdIdx = SGetProcIdIdx(tEnt->ownerProc);
    idx = osCp.tTskIds[procIdIdx][tEnt->ownerEnt][tEnt->ownerInst];
@@ -5438,7 +5439,7 @@ S16 evnt                        /* event */
    }
    /* Klock work fix ccpu00148484 */
    /* write the timer message to the queue of the destination task */
-	/* mt008.301 : check sTsk before putting into it's DQ */
+   /* mt008.301 : check sTsk before putting into it's DQ */
    if (tTsk->sTsk == NULLP)
    {
 #ifndef TENB_RTLIN_CHANGES
@@ -5448,7 +5449,7 @@ S16 evnt                        /* event */
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       MTLOGERROR(ERRCLS_DEBUG, EMT019, ERRZERO,
-                        "Could not write to demand queue");
+	    "Could not write to demand queue");
 #endif
 
       return;
@@ -5458,7 +5459,7 @@ S16 evnt                        /* event */
    mInfo->region = tTsk->sTsk->region;
 #endif /* SS_LOCKLESS_MEMORY */
    if (ssDmndQPutLast(&tTsk->sTsk->dQ, mBuf,
-               (tTsk->tskPrior * SS_MAX_MSG_PRI) + PRIOR0) != ROK)
+	    (tTsk->tskPrior * SS_MAX_MSG_PRI) + PRIOR0) != ROK)
    {
 #ifndef TENB_RTLIN_CHANGES
       SS_RELEASE_SEMA(&osCp.tTskTblSem);
@@ -5467,17 +5468,17 @@ S16 evnt                        /* event */
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       MTLOGERROR(ERRCLS_DEBUG, EMT019, ERRZERO,
-                        "Could not write to demand queue");
+	    "Could not write to demand queue");
 #endif
 
       return;
    }
-/* Fix for ccpu00130657 */
+   /* Fix for ccpu00130657 */
 #ifdef TENB_T2K3K_SPECIFIC_CHANGES
    if (tTsk->sTsk->tskPrior == PRIOR0)
    {
 #ifdef INTEL_WLS
-        WLS_WakeUp(mtGetWlsHdl());
+      WLS_WakeUp(mtGetWlsHdl());
 #else
       tlPost(NULLP);
 #endif
@@ -5512,23 +5513,23 @@ S16 evnt                        /* event */
 
 #ifdef CONAVL
 /*
-*
-*       Fun:   mtConHdlr
-*
-*       Desc:  This thread reads the console and hands over any
-*              data read to a user function.
-*
-*       Ret:   (thread function)
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
-static Void *mtConHdlr
+ *
+ *       Fun:   mtConHdlr
+ *
+ *       Desc:  This thread reads the console and hands over any
+ *              data read to a user function.
+ *
+ *       Ret:   (thread function)
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
+   static Void *mtConHdlr
 (
-Ptr parm                        /* unused */
-)
+ Ptr parm                        /* unused */
+ )
 {
    int fd;
    Data data;
@@ -5554,7 +5555,7 @@ Ptr parm                        /* unused */
    {
       if ((read(fd, &data, 1)) != 1)
       {
-         continue;
+	 continue;
       }
 
 
@@ -5570,28 +5571,28 @@ Ptr parm                        /* unused */
 #ifndef L2_L3_SPLIT
 #ifdef SS_DRVR_SUPPORT
 /*
-*
-*       Fun:   Interrupt service task handler
-*
-*       Desc:  This is the interrupt service task handler. It blocks
-*              on a pipe from which it reads an isFlag structure. The
-*              structure indicates which interrupt service task is to
-*              be executed. The thread identifies the task, calls the
-*              isTsk function and sends itself a message to repeat
-*              this operation until it receives a message to cease.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
-  /* mt009.21: addition */
-static Void *mtIsTskHdlr
+ *
+ *       Fun:   Interrupt service task handler
+ *
+ *       Desc:  This is the interrupt service task handler. It blocks
+ *              on a pipe from which it reads an isFlag structure. The
+ *              structure indicates which interrupt service task is to
+ *              be executed. The thread identifies the task, calls the
+ *              isTsk function and sends itself a message to repeat
+ *              this operation until it receives a message to cease.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
+/* mt009.21: addition */
+   static Void *mtIsTskHdlr
 (
-Ptr tskPtr                      /* pointer to task entry */
-)
+ Ptr tskPtr                      /* pointer to task entry */
+ )
 {
 #if (ERRCLASS & ERRCLS_DEBUG)
    int ret;
@@ -5602,69 +5603,69 @@ Ptr tskPtr                      /* pointer to task entry */
    {
       if (read(osCp.dep.isFildes[0], &isFlag, sizeof(isFlag)) != sizeof(isFlag))
       {
-         continue;
+	 continue;
       }
 
       switch (isFlag.action)
       {
-         case MT_IS_SET:
-            osCp.drvrTskTbl[isFlag.id].dep.flag = TRUE;
+	 case MT_IS_SET:
+	    osCp.drvrTskTbl[isFlag.id].dep.flag = TRUE;
 
-            /* call the interrupt service task activation function */
-            osCp.drvrTskTbl[isFlag.id].isTsk(isFlag.id);
+	    /* call the interrupt service task activation function */
+	    osCp.drvrTskTbl[isFlag.id].isTsk(isFlag.id);
 
-            /* send self a message to keep doing this */
-            isFlag.action = MT_IS_RESET;
-
-#if (ERRCLASS & ERRCLS_DEBUG)
-            ret = write(osCp.dep.isFildes[1], &isFlag, sizeof(isFlag));
-            if (ret != sizeof(isFlag))
-            {
-               MTLOGERROR(ERRCLS_DEBUG, EMT020, ERRZERO,
-                              "write() to pipe failed");
-            }
-#else
-            write(osCp.dep.isFildes[1], &isFlag, sizeof(isFlag));
-#endif
-
-            break;
-
-
-         case MT_IS_UNSET:
-            osCp.drvrTskTbl[isFlag.id].dep.flag = FALSE;
-            break;
-
-
-         case MT_IS_RESET:
-            if (osCp.drvrTskTbl[isFlag.id].dep.flag)
-            {
-               /* call the interrupt service task activation function */
-               osCp.drvrTskTbl[isFlag.id].isTsk(isFlag.id);
+	    /* send self a message to keep doing this */
+	    isFlag.action = MT_IS_RESET;
 
 #if (ERRCLASS & ERRCLS_DEBUG)
-               /* send self a message to do this again */
-               ret = write(osCp.dep.isFildes[1], &isFlag, sizeof(isFlag));
-
-               if (ret != sizeof(isFlag))
-               {
-                  MTLOGERROR(ERRCLS_DEBUG, EMT021, ERRZERO,
-                                 "write() to pipe failed");
-               }
+	    ret = write(osCp.dep.isFildes[1], &isFlag, sizeof(isFlag));
+	    if (ret != sizeof(isFlag))
+	    {
+	       MTLOGERROR(ERRCLS_DEBUG, EMT020, ERRZERO,
+		     "write() to pipe failed");
+	    }
 #else
-               write(osCp.dep.isFildes[1], &isFlag, sizeof(isFlag));
+	    write(osCp.dep.isFildes[1], &isFlag, sizeof(isFlag));
 #endif
 
-            }
-            break;
+	    break;
 
 
-         default:
-            /* where did THIS come from?? */
-            break;
+	 case MT_IS_UNSET:
+	    osCp.drvrTskTbl[isFlag.id].dep.flag = FALSE;
+	    break;
+
+
+	 case MT_IS_RESET:
+	    if (osCp.drvrTskTbl[isFlag.id].dep.flag)
+	    {
+	       /* call the interrupt service task activation function */
+	       osCp.drvrTskTbl[isFlag.id].isTsk(isFlag.id);
+
+#if (ERRCLASS & ERRCLS_DEBUG)
+	       /* send self a message to do this again */
+	       ret = write(osCp.dep.isFildes[1], &isFlag, sizeof(isFlag));
+
+	       if (ret != sizeof(isFlag))
+	       {
+		  MTLOGERROR(ERRCLS_DEBUG, EMT021, ERRZERO,
+			"write() to pipe failed");
+	       }
+#else
+	       write(osCp.dep.isFildes[1], &isFlag, sizeof(isFlag));
+#endif
+
+	    }
+	    break;
+
+
+	 default:
+	    /* where did THIS come from?? */
+	    break;
       }
    }
-  /* mt009.21: addition */
-  return ( (Void *) NULLP);
+   /* mt009.21: addition */
+   return ( (Void *) NULLP);
 
    /* not reached */
 }
@@ -5674,18 +5675,18 @@ Ptr tskPtr                      /* pointer to task entry */
 /*mt010.301 Fix for core when run with -o option and when killed with SIGINT*/
 
 /*
-*
-*       Fun:   mtIntSigHndlr
-*
-*       Desc:  Exit function, shuts down.
-*
-*       Ret:   Void
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   mtIntSigHndlr
+ *
+ *       Desc:  Exit function, shuts down.
+ *
+ *       Ret:   Void
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
 Void mtIntSigHndlr(int arg)
 {
 
@@ -5702,18 +5703,18 @@ Void mtIntSigHndlr(int arg)
 
 /*mt010.301 Fix for core when run with -o option and when killed with SIGINT*/
 /*
-*
-*       Fun:   mtExitClnup
-*
-*       Desc:   function, shuts down.
-*
-*       Ret:   Void
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   mtExitClnup
+ *
+ *       Desc:   function, shuts down.
+ *
+ *       Ret:   Void
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
 Void mtExitClnup(void)
 {
    Ticks ticks;
@@ -5753,30 +5754,30 @@ Ticks SGetTtiCount(Void)
 }
 
 /*
-*
-*       Fun:   SDisplay
-*
-*       Desc:  This function displays a string to a given output
-*              channel.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: Buffer should be null terminated.
-*
-*              channel 0 is reserved for backwards compatibility
-*              with SPrint
-*
-*       File:  mt_ss.c
-*
-*/
-S16 SDisplay
+ *
+ *       Fun:   SDisplay
+ *
+ *       Desc:  This function displays a string to a given output
+ *              channel.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: Buffer should be null terminated.
+ *
+ *              channel 0 is reserved for backwards compatibility
+ *              with SPrint
+ *
+ *       File:  mt_ss.c
+ *
+ */
+   S16 SDisplay
 (
-S16 chan,                   /* channel */
-Txt *buf                    /* buffer */
-)
+ S16 chan,                   /* channel */
+ Txt *buf                    /* buffer */
+ )
 {
 
-/* mt020.201 - Fixed typo */
+   /* mt020.201 - Fixed typo */
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (buf == NULLP)
    {
@@ -5792,15 +5793,15 @@ Txt *buf                    /* buffer */
 #endif
 #endif
 
- /* mt012.301 :FIX for LOG RELATED ISSUE  */
+   /* mt012.301 :FIX for LOG RELATED ISSUE  */
 #ifdef CONAVL
    if(chan==1)
    {
-       printf("%s",buf);
+      DU_LOG("%s",buf);
    }
    else
    {
-    if (osCp.dep.conOutFp) fwrite(buf, strlen(buf), 1, osCp.dep.conOutFp);
+      if (osCp.dep.conOutFp) fwrite(buf, strlen(buf), 1, osCp.dep.conOutFp);
    }
 #endif
 
@@ -5821,18 +5822,18 @@ Txt *buf                    /* buffer */
 
 /*mt010.301 */
 /*
-*
-*       Fun:   SFini
-*
-*       Desc:  function, shuts down.
-*
-*       Ret:   Void
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   SFini
+ *
+ *       Desc:  function, shuts down.
+ *
+ *       Ret:   Void
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
 S16 SFini(void)
 {
 
@@ -5847,7 +5848,7 @@ S16 SFini(void)
       pause();
       if(osCp.dep.sigEvnt==TRUE)
       {
-         mtExitClnup();
+	 mtExitClnup();
       }
    }
 
@@ -5857,23 +5858,23 @@ S16 SFini(void)
 }
 
 /*
-*
-*       Fun:   Set date and time
-*
-*       Desc:  This function is used to set the calendar
-*              date and time.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: Unimplemented
-*
-*       File:  mt_ss.c
-*
-*/
-S16 SSetDateTime
+ *
+ *       Fun:   Set date and time
+ *
+ *       Desc:  This function is used to set the calendar
+ *              date and time.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: Unimplemented
+ *
+ *       File:  mt_ss.c
+ *
+ */
+   S16 SSetDateTime
 (
-REG1 DateTime *dt           /* date and time */
-)
+ REG1 DateTime *dt           /* date and time */
+ )
 {
 
    UNUSED(dt);
@@ -5884,25 +5885,25 @@ REG1 DateTime *dt           /* date and time */
 
 
 /*
-*
-*       Fun:   Get date and time
-*
-*       Desc:  This function is used to determine the calendar
-*              date and time. This information may be used for
-*              some management functions.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - error
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
-S16 SGetDateTime
+ *
+ *       Fun:   Get date and time
+ *
+ *       Desc:  This function is used to determine the calendar
+ *              date and time. This information may be used for
+ *              some management functions.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - error
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
+   S16 SGetDateTime
 (
-REG1 DateTime *dt           /* date and time */
-)
+ REG1 DateTime *dt           /* date and time */
+ )
 {
    /*-- mt035.201 : SSI enhancements for micro second in datetime struct --*/
    /* time_t tt; --*/
@@ -5925,15 +5926,15 @@ REG1 DateTime *dt           /* date and time */
 #endif
 
 
-/*-- mt035.201 --*/
+   /*-- mt035.201 --*/
    /*--
-   time(&tt);
-   localtime_r(&tt, &tme);
-   --*/
+     time(&tt);
+     localtime_r(&tt, &tme);
+     --*/
 #ifndef SS_LINUX
-  clock_gettime(CLOCK_REALTIME, &ptime);
+   clock_gettime(CLOCK_REALTIME, &ptime);
 #else
-  gettimeofday(&ptime, NULL);
+   gettimeofday(&ptime, NULL);
 #endif
    localtime_r(&ptime.tv_sec, &tme);
 
@@ -5957,31 +5958,31 @@ REG1 DateTime *dt           /* date and time */
 }
 
 /*
-* Get time from epoch in milliseconds
-*
-*       Fun:   Get time from epoch in milliseconds
-*
-*       Desc:  This function is used to get the time from epoch in milli seconds.
-*              This information may be used for calculating a layer's activation function
-*              execution time used for thread profiling.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - error
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*/
+ * Get time from epoch in milliseconds
+ *
+ *       Fun:   Get time from epoch in milliseconds
+ *
+ *       Desc:  This function is used to get the time from epoch in milli seconds.
+ *              This information may be used for calculating a layer's activation function
+ *              execution time used for thread profiling.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - error
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ */
 /* mt003.301 Modifications */
-S16 SGetEpcTime
+   S16 SGetEpcTime
 (
-EpcTime *et           /* date and time */
-)
+ EpcTime *et           /* date and time */
+ )
 {
-/* mt003.301 Modifications */
-static uint64_t now;
-		  uint64_t  to_sec  = 1000000;
-		  uint64_t  to_nsec = 1000;
+   /* mt003.301 Modifications */
+   static uint64_t now;
+   uint64_t  to_sec  = 1000000;
+   uint64_t  to_nsec = 1000;
 #ifndef SS_LINUX
    struct timespec ptime;
 #else
@@ -5999,20 +6000,20 @@ static uint64_t now;
 
 
 #ifndef SS_LINUX
-  clock_gettime(CLOCK_REALTIME, &ptime);
+   clock_gettime(CLOCK_REALTIME, &ptime);
 #else
-  gettimeofday(&ptime, NULL);
+   gettimeofday(&ptime, NULL);
 #endif /* SS_LINUX */
 
-    now = (ptime.tv_sec * to_sec);
+   now = (ptime.tv_sec * to_sec);
 
 #ifndef SS_LINUX
    now += (ptime.tv_nsec / to_nsec);
 #else /* SS_LINUX */
-    now += (ptime.tv_usec);
+   now += (ptime.tv_usec);
 
 #endif /* SS_LINUX */
-    now = (now / to_nsec);
+   now = (now / to_nsec);
 
    *et = now;
 
@@ -6022,22 +6023,22 @@ static uint64_t now;
 
 
 /*
-*
-*       Fun:   Get system time
-*
-*       Desc:  This function is used to determine the system time.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: osCp.dep.sysTicks is updated by the timer thread.
-*
-*       File:  mt_ss.c
-*
-*/
-S16 SGetSysTime
+ *
+ *       Fun:   Get system time
+ *
+ *       Desc:  This function is used to determine the system time.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: osCp.dep.sysTicks is updated by the timer thread.
+ *
+ *       File:  mt_ss.c
+ *
+ */
+   S16 SGetSysTime
 (
-Ticks *sysTime              /* system time */
-)
+ Ticks *sysTime              /* system time */
+ )
 {
 
 
@@ -6058,30 +6059,30 @@ Ticks *sysTime              /* system time */
 
 /* mt021.201 - Addition of SGetRefTime function */
 /*
-*
-*       Fun:   Get referenced time
-*
-*       Desc:  This function is used to determine the time in seconds
-*              and microseconds from a reference time.  The reference
-*              time is expressed in seconds from UTC EPOC, January 1,
-*              1970.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - fail
-*
-*       Notes: Macros are defined for reference times:
-*                 SS_REFTIME_01_01_1970
-*                 SS_REFTIME_01_01_2002
-*
-*       File:  mt_ss.c
-*
-*/
-S16 SGetRefTime
+ *
+ *       Fun:   Get referenced time
+ *
+ *       Desc:  This function is used to determine the time in seconds
+ *              and microseconds from a reference time.  The reference
+ *              time is expressed in seconds from UTC EPOC, January 1,
+ *              1970.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - fail
+ *
+ *       Notes: Macros are defined for reference times:
+ *                 SS_REFTIME_01_01_1970
+ *                 SS_REFTIME_01_01_2002
+ *
+ *       File:  mt_ss.c
+ *
+ */
+   S16 SGetRefTime
 (
-uint32_t refTime,             /* reference time */
-uint32_t *sec,
-uint32_t *usec
-)
+ uint32_t refTime,             /* reference time */
+ uint32_t *sec,
+ uint32_t *usec
+ )
 {
 
 #ifndef SS_LINUX
@@ -6092,9 +6093,9 @@ uint32_t *usec
 
 
 #ifndef SS_LINUX
-  clock_gettime(CLOCK_REALTIME, &ptime);
+   clock_gettime(CLOCK_REALTIME, &ptime);
 #else
-  gettimeofday(&ptime, NULL);
+   gettimeofday(&ptime, NULL);
 #endif
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
@@ -6118,37 +6119,37 @@ uint32_t *usec
    *usec = ptime.tv_usec;
 #endif
 
-  return ROK;
+   return ROK;
 
 }
 
 
 /*
-*
-*       Fun:   Get Random Number
-*
-*       Desc:  Invoked by layer when a pseudorandom number is required.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: Suggested approach uses shuffled Linear Congruential
-*              Operators as described in Byte magazine October
-*              1984; "Generating and Testing Pseudorandom Numbers"
-*
-*       File:  mt_ss.c
-*
-*/
-S16 SRandom
+ *
+ *       Fun:   Get Random Number
+ *
+ *       Desc:  Invoked by layer when a pseudorandom number is required.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: Suggested approach uses shuffled Linear Congruential
+ *              Operators as described in Byte magazine October
+ *              1984; "Generating and Testing Pseudorandom Numbers"
+ *
+ *       File:  mt_ss.c
+ *
+ */
+   S16 SRandom
 (
-Random *value               /* random number */
-)
+ Random *value               /* random number */
+ )
 {
 
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (value == NULLP)
    {
- /* mt011.21: addition */
+      /* mt011.21: addition */
       MTLOGERROR(ERRCLS_INT_PAR, EMT028, (ErrVal)0 , "Null pointer");
       return RFAILED;
    }
@@ -6163,18 +6164,18 @@ Random *value               /* random number */
 
 
 /*
-*
-*       Fun:   Exit Task
-*
-*       Desc:  This function exits from a task.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: Currently does nothing.
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   Exit Task
+ *
+ *       Desc:  This function exits from a task.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: Currently does nothing.
+ *
+ *       File:  mt_ss.c
+ *
+ */
 S16 SExitTsk(void)
 {
 
@@ -6184,18 +6185,18 @@ S16 SExitTsk(void)
 
 
 /*
-*
-*       Fun:   Exit Interrupt
-*
-*       Desc:  This function exits from an interrupt.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: Currently does nothing.
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   Exit Interrupt
+ *
+ *       Desc:  This function exits from an interrupt.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: Currently does nothing.
+ *
+ *       File:  mt_ss.c
+ *
+ */
 S16 SExitInt(void)
 {
 
@@ -6205,22 +6206,22 @@ S16 SExitInt(void)
 
 
 /*
-*
-*       Fun:   Hold Interrupt
-*
-*       Desc:  This function prohibits interrupts from being enabled until
-*              release interrupt. This function should be called when
-*              interrupts are disabled and prior to any call to system
-*              services either by entry to an interrupt service routine or
-*              by explicit call to disable interrupt.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: Currently does nothing
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   Hold Interrupt
+ *
+ *       Desc:  This function prohibits interrupts from being enabled until
+ *              release interrupt. This function should be called when
+ *              interrupts are disabled and prior to any call to system
+ *              services either by entry to an interrupt service routine or
+ *              by explicit call to disable interrupt.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: Currently does nothing
+ *
+ *       File:  mt_ss.c
+ *
+ */
 S16 SHoldInt(void)
 {
 
@@ -6230,18 +6231,18 @@ S16 SHoldInt(void)
 
 
 /*
-*
-*       Fun:   Release Interrupt
-*
-*       Desc:  This function allows interrupts to be enabled.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: Currently does nothing.
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   Release Interrupt
+ *
+ *       Desc:  This function allows interrupts to be enabled.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: Currently does nothing.
+ *
+ *       File:  mt_ss.c
+ *
+ */
 S16 SRelInt(void)
 {
 
@@ -6251,19 +6252,19 @@ S16 SRelInt(void)
 
 
 /*
-*
-*       Fun:   SEnbInt
-*
-*       Desc:  Enable interrupts
-*
-*       Ret:   ROK on success
-*              RFAILED on error
-*
-*       Notes: Currently does nothing.
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   SEnbInt
+ *
+ *       Desc:  Enable interrupts
+ *
+ *       Ret:   ROK on success
+ *              RFAILED on error
+ *
+ *       Notes: Currently does nothing.
+ *
+ *       File:  mt_ss.c
+ *
+ */
 inline S16 SEnbInt(void)
 {
 
@@ -6273,19 +6274,19 @@ inline S16 SEnbInt(void)
 
 
 /*
-*
-*       Fun:   SDisInt
-*
-*       Desc:  Disable interrupts
-*
-*       Ret:   ROK on success
-*              RFAILED on error
-*
-*       Notes: Currently does nothing.
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   SDisInt
+ *
+ *       Desc:  Disable interrupts
+ *
+ *       Ret:   ROK on success
+ *              RFAILED on error
+ *
+ *       Notes: Currently does nothing.
+ *
+ *       File:  mt_ss.c
+ *
+ */
 inline S16 SDisInt(void)
 {
 
@@ -6295,24 +6296,24 @@ inline S16 SDisInt(void)
 
 
 /*
-*
-*       Fun:   Get Vector
-*
-*       Desc:  This function gets the function address stored at the
-*              specified interrupt vector.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: Currently does nothing.
-*
-*       File:  mt_ss.c
-*
-*/
-S16 SGetVect
+ *
+ *       Fun:   Get Vector
+ *
+ *       Desc:  This function gets the function address stored at the
+ *              specified interrupt vector.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: Currently does nothing.
+ *
+ *       File:  mt_ss.c
+ *
+ */
+   S16 SGetVect
 (
-VectNmb vectNmb,                /* vector number */
-PIF *vectFnct                   /* vector function */
-)
+ VectNmb vectNmb,                /* vector number */
+ PIF *vectFnct                   /* vector function */
+ )
 {
 
 
@@ -6325,24 +6326,24 @@ PIF *vectFnct                   /* vector function */
 
 
 /*
-*
-*       Fun:   Put Vector
-*
-*       Desc:  This function installs the specified function at the
-*              specified interrupt vector.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes: Currently does nothing.
-*
-*       File:  mt_ss.c
-*
-*/
-S16 SPutVect
+ *
+ *       Fun:   Put Vector
+ *
+ *       Desc:  This function installs the specified function at the
+ *              specified interrupt vector.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes: Currently does nothing.
+ *
+ *       File:  mt_ss.c
+ *
+ */
+   S16 SPutVect
 (
-VectNmb vectNmb,                /* vector number */
-PIF vectFnct                    /* vector function */
-)
+ VectNmb vectNmb,                /* vector number */
+ PIF vectFnct                    /* vector function */
+ )
 {
 
 
@@ -6357,25 +6358,25 @@ PIF vectFnct                    /* vector function */
 #ifndef SS_MULTIPLE_PROCS
 
 /*
-*
-*       Fun:   SGetEntInst
-*
-*       Desc:  This function gets the current entity and instance.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*       Notes: This function may be called by the OS or Layer 1
-*              hardware drivers.
-*
-*       File:  mt_ss.c
-*
-*/
-S16 SGetEntInst
+ *
+ *       Fun:   SGetEntInst
+ *
+ *       Desc:  This function gets the current entity and instance.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *       Notes: This function may be called by the OS or Layer 1
+ *              hardware drivers.
+ *
+ *       File:  mt_ss.c
+ *
+ */
+   S16 SGetEntInst
 (
-Ent *ent,                       /* entity */
-Inst *inst                      /* instance */
-)
+ Ent *ent,                       /* entity */
+ Inst *inst                      /* instance */
+ )
 {
    S16 i;
    S16 ret;
@@ -6410,14 +6411,14 @@ Inst *inst                      /* instance */
    {
       if (pthread_equal(osCp.sTskTbl[i].dep.tId, tId))
       {
-         sTsk = &osCp.sTskTbl[i];
-         break;
+	 sTsk = &osCp.sTskTbl[i];
+	 break;
       }
    }
    if (sTsk != NULLP)
    {
-         *ent = sTsk->dep.ent;
-         *inst = sTsk->dep.inst;
+      *ent = sTsk->dep.ent;
+      *inst = sTsk->dep.inst;
    }
    SUnlock(&osCp.sTskTblLock);
 
@@ -6427,23 +6428,23 @@ Inst *inst                      /* instance */
 
 
 /*
-*
-*       Fun:   SSetEntInst
-*
-*       Desc:  This function sets the current entity and instance.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
-S16 SSetEntInst
+ *
+ *       Fun:   SSetEntInst
+ *
+ *       Desc:  This function sets the current entity and instance.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
+   S16 SSetEntInst
 (
-Ent ent,                    /* entity */
-Inst inst                   /* instance */
-)
+ Ent ent,                    /* entity */
+ Inst inst                   /* instance */
+ )
 {
    S16 i;
    S16 ret;
@@ -6478,14 +6479,14 @@ Inst inst                   /* instance */
    {
       if (pthread_equal(osCp.sTskTbl[i].dep.tId, tId))
       {
-         sTsk = &osCp.sTskTbl[i];
-         break;
+	 sTsk = &osCp.sTskTbl[i];
+	 break;
       }
    }
    if (sTsk != NULLP)
    {
-         sTsk->dep.ent = ent;
-         sTsk->dep.inst = inst;
+      sTsk->dep.ent = ent;
+      sTsk->dep.inst = inst;
    }
    SUnlock(&osCp.sTskTblLock);
 
@@ -6498,24 +6499,24 @@ Inst inst                   /* instance */
 #ifdef SS_DRVR_SUPPORT
 
 /*
-*
-*       Fun:   SSetIntPend
-*
-*       Desc:  Set interrupt pending flag
-*
-*       Ret:   ROK on success
-*              RFAILED on error
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
-inline S16 SSetIntPend
+ *
+ *       Fun:   SSetIntPend
+ *
+ *       Desc:  Set interrupt pending flag
+ *
+ *       Ret:   ROK on success
+ *              RFAILED on error
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
+   inline S16 SSetIntPend
 (
-uint16_t id,                         /* driver task identifier */
-Bool flag                       /* flag */
-)
+ uint16_t id,                         /* driver task identifier */
+ Bool flag                       /* flag */
+ )
 {
    MtIsFlag isFlag;
 
@@ -6547,25 +6548,25 @@ Bool flag                       /* flag */
 
 #ifdef SS_LOCKLESS_MEMORY
 /*
-*
-*       Fun:   SGlobMemInfoShow
-*
-*       Desc:  This function displays the memory usage information
-*              for the destined region. It will show the usage of
-*              each configured bucket and the heap for the specified region.
-*
-*       Ret:   ROK		OK
-*              RFAILED		Region not registered
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   SGlobMemInfoShow
+ *
+ *       Desc:  This function displays the memory usage information
+ *              for the destined region. It will show the usage of
+ *              each configured bucket and the heap for the specified region.
+ *
+ *       Ret:   ROK		OK
+ *              RFAILED		Region not registered
+ *
+ *       File:  mt_ss.c
+ *
+ */
 S16 SGlobMemInfoShow(Void)
 {
    uint16_t   idx;
    Txt   prntBuf[100];
    CmMmGlobRegCb   *globReg;
-   
+
 
    globReg = osCp.globRegCb;
 
@@ -6579,20 +6580,20 @@ S16 SGlobMemInfoShow(Void)
    SDisplay(0, prntBuf);
    sprintf(prntBuf, "====================================================\n");
    SDisplay(0, prntBuf);
-   
+
 
    for (idx = 0; idx < globReg->numBkts; idx++)
    {
 #ifdef XEON_SPECIFIC_CHANGES
       sprintf(prntBuf, "%2u  %12lu  %12lu  %8lu %9lu\n",
-              idx, globReg->bktTbl[idx].size, globReg->bktTbl[idx].bucketSetSize, globReg->bktTbl[idx].listValidBktSet.count, globReg->bktTbl[idx].listFreeBktSet.count);
+	    idx, globReg->bktTbl[idx].size, globReg->bktTbl[idx].bucketSetSize, globReg->bktTbl[idx].listValidBktSet.count, globReg->bktTbl[idx].listFreeBktSet.count);
 #else      
 #ifndef ALIGN_64BIT
       sprintf(prntBuf, "%2u  %12lu  %8lu %9lu\n", 
-              idx, globReg->bktTbl[idx].bucketSetSize, globReg->bktTbl[idx].listValidBktSet.count, globReg->bktTbl[idx].listFreeBktSet.count);
+	    idx, globReg->bktTbl[idx].bucketSetSize, globReg->bktTbl[idx].listValidBktSet.count, globReg->bktTbl[idx].listFreeBktSet.count);
 #else
       sprintf(prntBuf, "%2u  %12u  %8u %9u\n", 
-              idx, globReg->bktTbl[idx].bucketSetSize, globReg->bktTbl[idx].listValidBktSet.count, globReg->bktTbl[idx].listFreeBktSet.count);
+	    idx, globReg->bktTbl[idx].bucketSetSize, globReg->bktTbl[idx].listValidBktSet.count, globReg->bktTbl[idx].listFreeBktSet.count);
 #endif
 #endif      
       SDisplay(0, prntBuf);
@@ -6606,59 +6607,59 @@ S16 SGlobMemInfoShow(Void)
 #endif /* SS_LOCKLESS_MEMORY */
 
 /*
-Bool IsMemoryThresholdHit(Region reg, Pool pool)
-{
-  if((mtCMMRegCb[reg]->bktTbl[pool].numAlloc * 100 )/mtCMMRegCb[reg]->bktTbl[pool].numBlks > 70)
-  {
-     MSPD_DBG("Threshold reached reg(%d) pool(%d) numAllc(%d) numBlks(%d)\n",
-               reg,
-               pool,
-               mtCMMRegCb[reg]->bktTbl[pool].numAlloc,
-               mtCMMRegCb[reg]->bktTbl[pool].numBlks);
-     return (TRUE);
-  }
-  return (FALSE);
-}
-*/
+   Bool IsMemoryThresholdHit(Region reg, Pool pool)
+   {
+   if((mtCMMRegCb[reg]->bktTbl[pool].numAlloc * 100 )/mtCMMRegCb[reg]->bktTbl[pool].numBlks > 70)
+   {
+   MSPD_DBG("Threshold reached reg(%d) pool(%d) numAllc(%d) numBlks(%d)\n",
+   reg,
+   pool,
+   mtCMMRegCb[reg]->bktTbl[pool].numAlloc,
+   mtCMMRegCb[reg]->bktTbl[pool].numBlks);
+   return (TRUE);
+   }
+   return (FALSE);
+   }
+ */
 
 /* mt022.201 - Addition of SRegInfoShow function */
 /*
-*
-*       Fun:   SRegInfoShow
-*
-*       Desc:  This function displays the memory usage information
-*              for the destined region. It will show the usage of
-*              each configured bucket and the heap for the specified region.
-*
-*       Ret:   ROK		OK
-*              RFAILED		Region not registered
-*
-*       Notes: A Sample Output from the function
-*       Bucket Memory: region 1
-*       ====================================================
-*       Bucket  Number of Blks configured  Size  Allocated
-*       ====================================================
-*       0                     1             16         1
-*       1                     1             32         0
-*       2                     1             80         0
-*       3                     1            256         0
-*       4                     1            320         0
-*
-*       ---------------
-*       Heap Memory: region 1
-*       Heap Size: 0
-*       Heap Allocated: 0
-*       Heap Segmented blocks: 0
-*
-*
-*       File:  mt_ss.c
-*
-*/
-S16 SRegInfoShow
+ *
+ *       Fun:   SRegInfoShow
+ *
+ *       Desc:  This function displays the memory usage information
+ *              for the destined region. It will show the usage of
+ *              each configured bucket and the heap for the specified region.
+ *
+ *       Ret:   ROK		OK
+ *              RFAILED		Region not registered
+ *
+ *       Notes: A Sample Output from the function
+ *       Bucket Memory: region 1
+ *       ====================================================
+ *       Bucket  Number of Blks configured  Size  Allocated
+ *       ====================================================
+ *       0                     1             16         1
+ *       1                     1             32         0
+ *       2                     1             80         0
+ *       3                     1            256         0
+ *       4                     1            320         0
+ *
+ *       ---------------
+ *       Heap Memory: region 1
+ *       Heap Size: 0
+ *       Heap Allocated: 0
+ *       Heap Segmented blocks: 0
+ *
+ *
+ *       File:  mt_ss.c
+ *
+ */
+   S16 SRegInfoShow
 (
-Region region,
-uint32_t *availmem
-)
+ Region region,
+ uint32_t *availmem
+ )
 {
    uint16_t   idx;
    Txt   prntBuf[100];
@@ -6691,60 +6692,60 @@ uint32_t *availmem
 #ifdef TENB_T2K3K_SPECIFIC_CHANGES
 #ifdef ALIGN_64BIT
       sprintf((char *)prntBuf, "%2u              %8u          %5u  %8u  %8u\n",
-            idx, mtCMMRegCb[region]->bktTbl[idx].numBlks,
-            mtCMMRegCb[region]->bktTbl[idx].size,
-            mtCMMRegCb[region]->bktTbl[idx].numAlloc,
-            mtCMMRegCb[region]->bktTbl[idx].maxAlloc);
+	    idx, mtCMMRegCb[region]->bktTbl[idx].numBlks,
+	    mtCMMRegCb[region]->bktTbl[idx].size,
+	    mtCMMRegCb[region]->bktTbl[idx].numAlloc,
+	    mtCMMRegCb[region]->bktTbl[idx].maxAlloc);
 #else
       sprintf((char *)prntBuf, "%2u              %8lu          %5lu  %8lu  %8lu\n",
-            idx, mtCMMRegCb[region]->bktTbl[idx].numBlks,
-            mtCMMRegCb[region]->bktTbl[idx].size,
-            mtCMMRegCb[region]->bktTbl[idx].numAlloc,
-            mtCMMRegCb[region]->bktTbl[idx].maxAlloc);
+	    idx, mtCMMRegCb[region]->bktTbl[idx].numBlks,
+	    mtCMMRegCb[region]->bktTbl[idx].size,
+	    mtCMMRegCb[region]->bktTbl[idx].numAlloc,
+	    mtCMMRegCb[region]->bktTbl[idx].maxAlloc);
 #endif
 #else
-/*mt009.301 Fixed 64BIT compilation warnings*/
+      /*mt009.301 Fixed 64BIT compilation warnings*/
 #ifdef ALIGN_64BIT
       sprintf(prntBuf, "%2u              %8u          %5u  %8u\n",
-              idx, mtCMMRegCb[region]->bktTbl[idx].numBlks,
-              mtCMMRegCb[region]->bktTbl[idx].size,
-              mtCMMRegCb[region]->bktTbl[idx].numAlloc);
+	    idx, mtCMMRegCb[region]->bktTbl[idx].numBlks,
+	    mtCMMRegCb[region]->bktTbl[idx].size,
+	    mtCMMRegCb[region]->bktTbl[idx].numAlloc);
 #else
       sprintf(prntBuf, "%2u              %8lu          %5lu  %8lu\n",
-              idx, mtCMMRegCb[region]->bktTbl[idx].numBlks,
-              mtCMMRegCb[region]->bktTbl[idx].size,
-              mtCMMRegCb[region]->bktTbl[idx].numAlloc);
+	    idx, mtCMMRegCb[region]->bktTbl[idx].numBlks,
+	    mtCMMRegCb[region]->bktTbl[idx].size,
+	    mtCMMRegCb[region]->bktTbl[idx].numAlloc);
 #endif
 #endif /* not TENB_RTLIN_CHANGES */
       SDisplay(0, prntBuf);
       *availmem = *availmem + (mtCMMRegCb[region]->bktTbl[idx].size * \
-          (mtCMMRegCb[region]->bktTbl[idx].numBlks -  \
-	   mtCMMRegCb[region]->bktTbl[idx].numAlloc));
+	    (mtCMMRegCb[region]->bktTbl[idx].numBlks -  \
+	     mtCMMRegCb[region]->bktTbl[idx].numAlloc));
    }
    sprintf(prntBuf, "\n---------------\n");
    SDisplay(0, prntBuf);
    sprintf(prntBuf, "Heap Memory: region %d\n", region);
    SDisplay(0, prntBuf);
-/*mt009.301 Fixed 64BIT compilation warnings*/
+   /*mt009.301 Fixed 64BIT compilation warnings*/
 #ifdef ALIGN_64BIT
    sprintf(prntBuf, "Heap Size: %u\n", mtCMMRegCb[region]->heapSize);
 #else
    sprintf(prntBuf, "Heap Size: %lu\n", mtCMMRegCb[region]->heapSize);
 #endif
    SDisplay(0, prntBuf);
-/*mt009.301 Fixed 64BIT compilation warnings*/
+   /*mt009.301 Fixed 64BIT compilation warnings*/
 #ifdef ALIGN_64BIT
    sprintf(prntBuf, "Heap Allocated: %u\n",
-           (mtCMMRegCb[region]->heapSize - mtCMMRegCb[region]->heapCb.avlSize));
+	 (mtCMMRegCb[region]->heapSize - mtCMMRegCb[region]->heapCb.avlSize));
 #else
    sprintf(prntBuf, "Heap Allocated: %lu\n",
-           (mtCMMRegCb[region]->heapSize - mtCMMRegCb[region]->heapCb.avlSize));
+	 (mtCMMRegCb[region]->heapSize - mtCMMRegCb[region]->heapCb.avlSize));
 #endif
    SDisplay(0, prntBuf);
    *availmem = *availmem + mtCMMRegCb[region]->heapCb.avlSize;
 #if (ERRCLASS & ERRCLS_DEBUG)
    sprintf(prntBuf, "Heap Segmented blocks: %d\n",
-                    mtCMMRegCb[region]->heapCb.numFragBlk);
+	 mtCMMRegCb[region]->heapCb.numFragBlk);
    SDisplay(0, prntBuf);
 #endif
 
@@ -6757,11 +6758,11 @@ uint32_t SMemMaxThreshold[SSI_MAX_REG_THRESHOLD][SSI_MAX_BKT_THRESHOLD] = {{0}};
 uint32_t SMemMidThreshold[SSI_MAX_REG_THRESHOLD][SSI_MAX_BKT_THRESHOLD] = {{0}};
 uint32_t SMemLowThreshold[SSI_MAX_REG_THRESHOLD][SSI_MAX_BKT_THRESHOLD] = {{0}};
 
-static Void SInitMemThreshold
+   static Void SInitMemThreshold
 (
-Region region,
-uint8_t     maxBkt
-)
+ Region region,
+ uint8_t     maxBkt
+ )
 {
    uint8_t   idx = 0;
    for (idx = 0; (idx < maxBkt && idx < mtCMMRegCb[region]->numBkts); idx++)
@@ -6769,15 +6770,15 @@ uint8_t     maxBkt
       SMemMaxThreshold[region][idx] = (mtCMMRegCb[region]->bktTbl[idx].numBlks*95)/100;
       SMemMidThreshold[region][idx] = (mtCMMRegCb[region]->bktTbl[idx].numBlks*85)/100;
       SMemLowThreshold[region][idx] = (mtCMMRegCb[region]->bktTbl[idx].numBlks*80)/100;
-      printf("REGION:%d, BKT:%d max:%d mid:%d low:%d\n", region, idx, SMemMaxThreshold[region][idx], SMemMidThreshold[region][idx], SMemLowThreshold[region][idx]);
+      DU_LOG("\nINFO  -->  REGION:%d, BKT:%d max:%d mid:%d low:%d\n", region, idx, SMemMaxThreshold[region][idx], SMemMidThreshold[region][idx], SMemLowThreshold[region][idx]);
    }
 }
 
-S16 SRegReachedMemThreshold
+   S16 SRegReachedMemThreshold
 (
-Region region,
-uint8_t     maxBkt
-)
+ Region region,
+ uint8_t     maxBkt
+ )
 {
    uint8_t           idx       = 0;
    uint8_t           memStatus = 3;
@@ -6792,16 +6793,16 @@ uint8_t     maxBkt
    {
       if(mtCMMRegCb[region]->bktTbl[idx].numAlloc >= SMemMaxThreshold[region][idx])
       {
-         memStatus = 0;
-         break;
+	 memStatus = 0;
+	 break;
       }
       else if((mtCMMRegCb[region]->bktTbl[idx].numAlloc >= SMemMidThreshold[region][idx]) && (memStatus >1))
       {
-         memStatus = 1;
+	 memStatus = 1;
       }
       else if((mtCMMRegCb[region]->bktTbl[idx].numAlloc >= SMemLowThreshold[region][idx]) && (memStatus >2))
       {
-         memStatus = 2;
+	 memStatus = 2;
       }
    }
    return (memStatus);
@@ -6809,26 +6810,26 @@ uint8_t     maxBkt
 #endif
 /* mt033.201 - addition of API to return the memory statistical data */
 /*
-*
-*       Fun:   SGetRegInfo
-*
-*       Desc:  This function returns the memory usage information
-*              for the destined region. It will return the usage of
-*              each configured bucket and the heap for the specified region.
-*
-*       Ret:   ROK   OK
-*              RFAILED   Region not registered
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
-S16 SGetRegInfo
+ *
+ *       Fun:   SGetRegInfo
+ *
+ *       Desc:  This function returns the memory usage information
+ *              for the destined region. It will return the usage of
+ *              each configured bucket and the heap for the specified region.
+ *
+ *       Ret:   ROK   OK
+ *              RFAILED   Region not registered
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
+   S16 SGetRegInfo
 (
-Region region,
-SsMemDbgInfo *dbgInfo
-)
+ Region region,
+ SsMemDbgInfo *dbgInfo
+ )
 {
    uint32_t idx;
 
@@ -6855,8 +6856,8 @@ SsMemDbgInfo *dbgInfo
       dbgInfo->bktDbgTbl[idx].numAlloc = mtCMMRegCb[region]->bktTbl[idx].numAlloc;
 
       dbgInfo->availmem += (mtCMMRegCb[region]->bktTbl[idx].size * \
-                           (mtCMMRegCb[region]->bktTbl[idx].numBlks -  \
-                            mtCMMRegCb[region]->bktTbl[idx].numAlloc));
+	    (mtCMMRegCb[region]->bktTbl[idx].numBlks -  \
+	     mtCMMRegCb[region]->bktTbl[idx].numAlloc));
    }
 
    dbgInfo->region = region;
@@ -6864,7 +6865,7 @@ SsMemDbgInfo *dbgInfo
    dbgInfo->heapSize = mtCMMRegCb[region]->heapSize;
 
    dbgInfo->heapAlloc = (mtCMMRegCb[region]->heapSize - \
-                         mtCMMRegCb[region]->heapCb.avlSize);
+	 mtCMMRegCb[region]->heapCb.avlSize);
 
    dbgInfo->availmem += mtCMMRegCb[region]->heapCb.avlSize;
 
@@ -6875,11 +6876,11 @@ SsMemDbgInfo *dbgInfo
    return ROK;
 }
 
-S16 SGetRegPoolInfo
+   S16 SGetRegPoolInfo
 (
-uint8_t *numRegion,
-uint8_t *numPool
-)
+ uint8_t *numRegion,
+ uint8_t *numPool
+ )
 {
    /* Send number of Region available */
    *numRegion = mtMemoCfg.numRegions;
@@ -6901,22 +6902,22 @@ uint8_t *numPool
  *              for the destined region. It will show the total memory
  *              used for static and dynamic memory if typeFlag is
  *              SS_MEM_BKT_ALLOC_PROFILE. It will show the number of
-*              memory block allocated for a particular size if typeFlag
-*              is SS_MEM_BLK_SIZE_PROFILE from the hash list by
-*              calling SRegPrintMemStats.
-*
-*       Ret:   ROK
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
-S16 SPrintRegMemStatusInfo
+ *              memory block allocated for a particular size if typeFlag
+ *              is SS_MEM_BLK_SIZE_PROFILE from the hash list by
+ *              calling SRegPrintMemStats.
+ *
+ *       Ret:   ROK
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
+   S16 SPrintRegMemStatusInfo
 (
-Region region,
-uint8_t typeFlag
-)
+ Region region,
+ uint8_t typeFlag
+ )
 {
    Txt prntBuf[150];
    uint32_t idx;
@@ -6949,23 +6950,23 @@ uint8_t typeFlag
       SDisplay(0, prntBuf);
       for (idx = 0; idx < mtCMMRegCb[region]->numBkts; idx++)
       {
-/*mt009.301 Fixed 64BIT compilation warnings*/
+	 /*mt009.301 Fixed 64BIT compilation warnings*/
 #ifdef ALIGN_64BIT
-         sprintf(prntBuf, "%2u           %8u           %8u\n", idx,
-                     mtCMMRegCb[region]->bktTbl[idx].staticMemUsed,
-                     mtCMMRegCb[region]->bktTbl[idx].dynamicMemUsed);
+	 sprintf(prntBuf, "%2u           %8u           %8u\n", idx,
+	       mtCMMRegCb[region]->bktTbl[idx].staticMemUsed,
+	       mtCMMRegCb[region]->bktTbl[idx].dynamicMemUsed);
 #else
-         sprintf(prntBuf, "%2lu           %8lu           %8lu\n", idx,
-                     mtCMMRegCb[region]->bktTbl[idx].staticMemUsed,
-                     mtCMMRegCb[region]->bktTbl[idx].dynamicMemUsed);
+	 sprintf(prntBuf, "%2lu           %8lu           %8lu\n", idx,
+	       mtCMMRegCb[region]->bktTbl[idx].staticMemUsed,
+	       mtCMMRegCb[region]->bktTbl[idx].dynamicMemUsed);
 #endif
-         SDisplay(0, prntBuf);
-         /* update the total count */
-         statMemSize += mtCMMRegCb[region]->bktTbl[idx].staticMemUsed;
-         dynMemSize += mtCMMRegCb[region]->bktTbl[idx].dynamicMemUsed;
+	 SDisplay(0, prntBuf);
+	 /* update the total count */
+	 statMemSize += mtCMMRegCb[region]->bktTbl[idx].staticMemUsed;
+	 dynMemSize += mtCMMRegCb[region]->bktTbl[idx].dynamicMemUsed;
       }
       /* from buckets */
-/*mt009.301 Fixed 64BIT compilation warnings*/
+      /*mt009.301 Fixed 64BIT compilation warnings*/
 #ifdef ALIGN_64BIT
       sprintf(prntBuf, "Total Static Memory allocated from buckets: %u\n", statMemSize);
       SDisplay(0, prntBuf);
@@ -6980,13 +6981,13 @@ uint8_t typeFlag
       /* from heap */
       sprintf(prntBuf, "\n\nAllocated Memory profile from Heap of region: %d \n", region);
       SDisplay(0, prntBuf);
-/*mt009.301 Fixed 64BIT compilation warnings*/
+      /*mt009.301 Fixed 64BIT compilation warnings*/
 #ifdef ALIGN_64BIT
       sprintf(prntBuf, "STATIC MEMORY: %u	DYNAMIC MEMORY:%u \n",
-         mtCMMRegCb[region]->heapCb.staticHeapMemUsed, mtCMMRegCb[region]->heapCb.dynamicHeapMemUsed);
+	    mtCMMRegCb[region]->heapCb.staticHeapMemUsed, mtCMMRegCb[region]->heapCb.dynamicHeapMemUsed);
 #else
       sprintf(prntBuf, "STATIC MEMORY: %lu	DYNAMIC MEMORY:%lu \n",
-         mtCMMRegCb[region]->heapCb.staticHeapMemUsed, mtCMMRegCb[region]->heapCb.dynamicHeapMemUsed);
+	    mtCMMRegCb[region]->heapCb.staticHeapMemUsed, mtCMMRegCb[region]->heapCb.dynamicHeapMemUsed);
 #endif
       SDisplay(0, prntBuf);
    }
@@ -7006,20 +7007,20 @@ uint8_t typeFlag
 }
 
 /*
-*
-*       Fun:   SPrintRegMemStats
-*
-*       Desc:  This function displays the memory usage information for
-*              the destined region. It will show the number of memory
-*              block allocated for a particular size from the hash list.
-*
-*       Ret:   ROK
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   SPrintRegMemStats
+ *
+ *       Desc:  This function displays the memory usage information for
+ *              the destined region. It will show the number of memory
+ *              block allocated for a particular size from the hash list.
+ *
+ *       Ret:   ROK
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
 static S16 SPrintRegMemStats(Region region)
 {
    CmMmHashListCp *hashListCp;
@@ -7033,7 +7034,7 @@ static S16 SPrintRegMemStats(Region region)
    sprintf(prntBuf, "\n\nSize Vs. NumAttempts and Alloc/Dealloc profile of region %d\n", region);
    SDisplay(0, prntBuf);
    sprintf(prntBuf, "Maximum Entries: %u    Current Entries: %u\n",
-                     hashListCp->numOfbins, hashListCp->numOfEntries);
+	 hashListCp->numOfbins, hashListCp->numOfEntries);
    SDisplay(0, prntBuf);
    sprintf(prntBuf, "===================================\n");
    SDisplay(0, prntBuf);
@@ -7043,20 +7044,20 @@ static S16 SPrintRegMemStats(Region region)
    SDisplay(0, prntBuf);
 
    for (idx = 0, cntEnt=0; (cntEnt < hashListCp->numOfEntries) &&
-               (idx < CMM_STAT_HASH_TBL_LEN); idx++)
+	 (idx < CMM_STAT_HASH_TBL_LEN); idx++)
    {
       if (hashListCp->hashList[idx].numAttempts)
       {
-         cntEnt++;
-/*mt009.301 Fixed 64BIT compilation warnings*/
+	 cntEnt++;
+	 /*mt009.301 Fixed 64BIT compilation warnings*/
 #ifdef ALIGN_64BIT
-         sprintf(prntBuf, "%8u           %8u\n", hashListCp->hashList[idx].size,
-                     hashListCp->hashList[idx].numAttempts);
+	 sprintf(prntBuf, "%8u           %8u\n", hashListCp->hashList[idx].size,
+	       hashListCp->hashList[idx].numAttempts);
 #else
-         sprintf(prntBuf, "%8lu           %8lu\n", hashListCp->hashList[idx].size,
-                     hashListCp->hashList[idx].numAttempts);
+	 sprintf(prntBuf, "%8lu           %8lu\n", hashListCp->hashList[idx].size,
+	       hashListCp->hashList[idx].numAttempts);
 #endif
-         SDisplay(0, prntBuf);
+	 SDisplay(0, prntBuf);
       }
    }
 
@@ -7072,29 +7073,29 @@ static S16 SPrintRegMemStats(Region region)
    /* Print the statistics of total number of alloc/de-alloc attempts in each bucket of this region */
    for (idx = 0; idx < mtCMMRegCb[region]->numBkts; idx++)
    {
-/*mt009.301 Fixed 64BIT compilation warnings*/
+      /*mt009.301 Fixed 64BIT compilation warnings*/
 #ifdef ALIGN_64BIT
       sprintf(prntBuf, "%4u        %8u             %8u\n", idx,
-                           mtCMMRegCb[region]->bktTbl[idx].numAllocAttempts,
-                           mtCMMRegCb[region]->bktTbl[idx].numDeallocAttempts);
+	    mtCMMRegCb[region]->bktTbl[idx].numAllocAttempts,
+	    mtCMMRegCb[region]->bktTbl[idx].numDeallocAttempts);
 #else
       sprintf(prntBuf, "%4lu        %8lu             %8lu\n", idx,
-                           mtCMMRegCb[region]->bktTbl[idx].numAllocAttempts,
-                           mtCMMRegCb[region]->bktTbl[idx].numDeallocAttempts);
+	    mtCMMRegCb[region]->bktTbl[idx].numAllocAttempts,
+	    mtCMMRegCb[region]->bktTbl[idx].numDeallocAttempts);
 #endif
       SDisplay(0, prntBuf);
    }
    sprintf(prntBuf, "\nAllocation/De-allocation profile in Heap\n");
    SDisplay(0, prntBuf);
-/*mt009.301 Fixed 64BIT compilation warnings*/
+   /*mt009.301 Fixed 64BIT compilation warnings*/
 #ifdef ALIGN_64BIT
    sprintf(prntBuf, "Num of Alloc Attempts: %u      Num of De-alloc Attempts: %u\n",
-                           mtCMMRegCb[region]->heapCb.numAllocAttempts,
-                           mtCMMRegCb[region]->heapCb.numDeallocAttempts);
+	 mtCMMRegCb[region]->heapCb.numAllocAttempts,
+	 mtCMMRegCb[region]->heapCb.numDeallocAttempts);
 #else
    sprintf(prntBuf, "Num of Alloc Attempts: %lu      Num of De-alloc Attempts: %lu\n",
-                           mtCMMRegCb[region]->heapCb.numAllocAttempts,
-                           mtCMMRegCb[region]->heapCb.numDeallocAttempts);
+	 mtCMMRegCb[region]->heapCb.numAllocAttempts,
+	 mtCMMRegCb[region]->heapCb.numDeallocAttempts);
 #endif
    SDisplay(0, prntBuf);
    sprintf(prntBuf, "\n");
@@ -7104,26 +7105,26 @@ static S16 SPrintRegMemStats(Region region)
 }
 
 /*
-*
-*       Fun:   SRegMemErrHdlr
-*
-*       Desc:  This function handles the errors returned from the memory
-*              related functions. Customers are suggested to modify this
-*              API according to their specific requirement.
-*
-*       Ret:   ROK   OK
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
-Void SRegMemErrHdlr
+ *
+ *       Fun:   SRegMemErrHdlr
+ *
+ *       Desc:  This function handles the errors returned from the memory
+ *              related functions. Customers are suggested to modify this
+ *              API according to their specific requirement.
+ *
+ *       Ret:   ROK   OK
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
+   Void SRegMemErrHdlr
 (
-Region region,
-Data *ptr,
-S16 errCode
-)
+ Region region,
+ Data *ptr,
+ S16 errCode
+ )
 {
    Txt prntBuf[150];
 
@@ -7143,25 +7144,25 @@ S16 errCode
 }
 
 /*
-*
-*       Fun:   SPrintRegMemProfile
-*
-*       Desc:  This function displays the memory profile information
-*              for the destined region. This function prints for:
-*              1) each memory bucket-Block address, size, size for which it is allocated, free/allocated, static/dynamic
-*              2) heap - memory block address, size, requested size, free/allocated, static/dynamic
-*
-*       Ret:   ROK   OK
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
-S16 SPrintRegMemProfile
+ *
+ *       Fun:   SPrintRegMemProfile
+ *
+ *       Desc:  This function displays the memory profile information
+ *              for the destined region. This function prints for:
+ *              1) each memory bucket-Block address, size, size for which it is allocated, free/allocated, static/dynamic
+ *              2) heap - memory block address, size, requested size, free/allocated, static/dynamic
+ *
+ *       Ret:   ROK   OK
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
+   S16 SPrintRegMemProfile
 (
-Region region
-)
+ Region region
+ )
 {
    CmMmHeapCb *heapCb;
    CmMmRegCb *regCb;
@@ -7196,13 +7197,13 @@ Region region
    for (idx = 0; idx < regCb->numBkts; idx++)
    {
 
-/*mt009.301 Fixed 64BIT compilation warnings*/
+      /*mt009.301 Fixed 64BIT compilation warnings*/
 #ifdef ALIGN_64BIT
       sprintf(prntBuf, "\nBucket number:%4u  of Size:%u  Num of Blocks: %u\n",
-                        idx, regCb->bktTbl[idx].size, regCb->bktTbl[idx].numBlks);
+	    idx, regCb->bktTbl[idx].size, regCb->bktTbl[idx].numBlks);
 #else
       sprintf(prntBuf, "\nBucket number:%4lu  of Size:%lu  Num of Blocks: %lu\n",
-                        idx, regCb->bktTbl[idx].size, regCb->bktTbl[idx].numBlks);
+	    idx, regCb->bktTbl[idx].size, regCb->bktTbl[idx].numBlks);
 #endif
       SDisplay(0, prntBuf);
 
@@ -7216,60 +7217,60 @@ Region region
       offsetToNxtBlk = regCb->bktTbl[idx].size + sizeof(CmMmBlkHdr);
 
       for (blkCnt=0, curBktBlk = (CmMmBlkHdr *)(regCb->bktTbl[idx].bktStartPtr);
-            ((curBktBlk) && (blkCnt < regCb->bktTbl[idx].numBlks));
-            curBktBlk = (CmMmBlkHdr *)((Data *)curBktBlk + offsetToNxtBlk), blkCnt++)
+	    ((curBktBlk) && (blkCnt < regCb->bktTbl[idx].numBlks));
+	    curBktBlk = (CmMmBlkHdr *)((Data *)curBktBlk + offsetToNxtBlk), blkCnt++)
       {
-/*mt009.301 Fixed 64BIT compilation warnings*/
+	 /*mt009.301 Fixed 64BIT compilation warnings*/
 #ifdef ALIGN_64BIT
-         sprintf(prntBuf, "%6u   %8p", blkCnt, (void *)curBktBlk);
+	 sprintf(prntBuf, "%6u   %8p", blkCnt, (void *)curBktBlk);
 #else
-         sprintf(prntBuf, "%6lu   %8p", blkCnt, (void *)curBktBlk);
+	 sprintf(prntBuf, "%6lu   %8p", blkCnt, (void *)curBktBlk);
 #endif
-         SDisplay(0, prntBuf);
-         /* check if it is a sane block, elxe jump to next block */
-         if (cmMmRegIsBlkSane(curBktBlk) != ROK)
-         {
-            sprintf(prntBuf, "     Trampled                         \n");
-            SDisplay(0, prntBuf);
+	 SDisplay(0, prntBuf);
+	 /* check if it is a sane block, elxe jump to next block */
+	 if (cmMmRegIsBlkSane(curBktBlk) != ROK)
+	 {
+	    sprintf(prntBuf, "     Trampled                         \n");
+	    SDisplay(0, prntBuf);
 
-            continue;
-         }
+	    continue;
+	 }
 
-         if (CMM_IS_STATIC(curBktBlk->memFlags))
-         {
-/*mt009.301 Fixed 64BIT compilation warnings*/
+	 if (CMM_IS_STATIC(curBktBlk->memFlags))
+	 {
+	    /*mt009.301 Fixed 64BIT compilation warnings*/
 #ifdef ALIGN_64BIT
-            sprintf(prntBuf, "     Allocated     Static      %8u\n", curBktBlk->requestedSize);
+	    sprintf(prntBuf, "     Allocated     Static      %8u\n", curBktBlk->requestedSize);
 #else
-            sprintf(prntBuf, "     Allocated     Static      %8lu\n", curBktBlk->requestedSize);
+	    sprintf(prntBuf, "     Allocated     Static      %8lu\n", curBktBlk->requestedSize);
 #endif
-            SDisplay(0, prntBuf);
-         }
-         else if (CMM_IS_DYNAMIC(curBktBlk->memFlags))
-         {
-/*mt009.301 Fixed 64BIT compilation warnings*/
+	    SDisplay(0, prntBuf);
+	 }
+	 else if (CMM_IS_DYNAMIC(curBktBlk->memFlags))
+	 {
+	    /*mt009.301 Fixed 64BIT compilation warnings*/
 #ifdef ALIGN_64BIT
-            sprintf(prntBuf, "     Allocated       Dynamic      %8u\n", curBktBlk->requestedSize);
+	    sprintf(prntBuf, "     Allocated       Dynamic      %8u\n", curBktBlk->requestedSize);
 #else
-            sprintf(prntBuf, "     Allocated       Dynamic      %8lu\n", curBktBlk->requestedSize);
+	    sprintf(prntBuf, "     Allocated       Dynamic      %8lu\n", curBktBlk->requestedSize);
 #endif
-            SDisplay(0, prntBuf);
-         }
-         else if (CMM_IS_FREE(curBktBlk->memFlags))
-         {
-/*mt009.301 Fixed 64BIT compilation warnings*/
+	    SDisplay(0, prntBuf);
+	 }
+	 else if (CMM_IS_FREE(curBktBlk->memFlags))
+	 {
+	    /*mt009.301 Fixed 64BIT compilation warnings*/
 #ifdef ALIGN_64BIT
-            sprintf(prntBuf, "     Free                        %8u\n", curBktBlk->requestedSize);
+	    sprintf(prntBuf, "     Free                        %8u\n", curBktBlk->requestedSize);
 #else
-            sprintf(prntBuf, "     Free                        %8lu\n", curBktBlk->requestedSize);
+	    sprintf(prntBuf, "     Free                        %8lu\n", curBktBlk->requestedSize);
 #endif
-            SDisplay(0, prntBuf);
-         }
-         else
-         {
-            sprintf(prntBuf, "     Trampled                         \n");
-            SDisplay(0, prntBuf);
-         }
+	    SDisplay(0, prntBuf);
+	 }
+	 else
+	 {
+	    sprintf(prntBuf, "     Trampled                         \n");
+	    SDisplay(0, prntBuf);
+	 }
       }
    }
 
@@ -7292,9 +7293,9 @@ Region region
    /* traverse the entire heap to output the heap profile */
    hdrSize = sizeof(CmHEntry);
    for (blkCnt=0, curHBlk = (CmHEntry *)heapCb->vStart;
-            ((curHBlk) && (curHBlk < (CmHEntry *)heapCb->vEnd)); blkCnt++)
+	 ((curHBlk) && (curHBlk < (CmHEntry *)heapCb->vEnd)); blkCnt++)
    {
-/*mt009.301 Fixed 64BIT compilation warnings*/
+      /*mt009.301 Fixed 64BIT compilation warnings*/
 #ifdef ALIGN_64BIT
       sprintf(prntBuf, "%6u   %8p", blkCnt, (void *)curHBlk);
 #else
@@ -7305,22 +7306,22 @@ Region region
       /* check if it is a sane block, elxe jump to next block */
       if (cmMmRegIsBlkSane((CmMmBlkHdr *)curHBlk) != ROK)
       {
-         sprintf(prntBuf, "                Trampled                         \n");
-         SDisplay(0, prntBuf);
+	 sprintf(prntBuf, "                Trampled                         \n");
+	 SDisplay(0, prntBuf);
 
-         sprintf(prntBuf, "Trampled block encountered: Stopping heap profile\n");
-         SDisplay(0, prntBuf);
+	 sprintf(prntBuf, "Trampled block encountered: Stopping heap profile\n");
+	 SDisplay(0, prntBuf);
 
-         /*
-         * To go to next block in the heap we do not have any offset value
-         * other than curHBlk->size. As the block is already trampled
-         * we cannot rely on this size. So it is better to stop here unless there
-         * exists any other mechanism(?) to know the offset to next block.
-         */
-         return ROK;
+	 /*
+	  * To go to next block in the heap we do not have any offset value
+	  * other than curHBlk->size. As the block is already trampled
+	  * we cannot rely on this size. So it is better to stop here unless there
+	  * exists any other mechanism(?) to know the offset to next block.
+	  */
+	 return ROK;
       }
 
-/*mt009.301 Fixed 64BIT compilation warnings*/
+      /*mt009.301 Fixed 64BIT compilation warnings*/
 #ifdef ALIGN_64BIT
       sprintf(prntBuf, "   %8u", curHBlk->size);
 #else
@@ -7330,38 +7331,38 @@ Region region
 
       if (CMM_IS_STATIC(curHBlk->memFlags))
       {
-/*mt009.301 Fixed 64BIT compilation warnings*/
+	 /*mt009.301 Fixed 64BIT compilation warnings*/
 #ifdef ALIGN_64BIT
-         sprintf(prntBuf, "     Allocated       Static       %8u\n", curHBlk->requestedSize);
+	 sprintf(prntBuf, "     Allocated       Static       %8u\n", curHBlk->requestedSize);
 #else
-         sprintf(prntBuf, "     Allocated       Static       %8lu\n", curHBlk->requestedSize);
+	 sprintf(prntBuf, "     Allocated       Static       %8lu\n", curHBlk->requestedSize);
 #endif
-         SDisplay(0, prntBuf);
+	 SDisplay(0, prntBuf);
       }
       else if (CMM_IS_DYNAMIC(curHBlk->memFlags))
       {
-/*mt009.301 Fixed 64BIT compilation warnings*/
+	 /*mt009.301 Fixed 64BIT compilation warnings*/
 #ifdef ALIGN_64BIT
-         sprintf(prntBuf, "     Allocated       Dynamic      %8u\n", curHBlk->requestedSize);
+	 sprintf(prntBuf, "     Allocated       Dynamic      %8u\n", curHBlk->requestedSize);
 #else
-         sprintf(prntBuf, "     Allocated       Dynamic      %8lu\n", curHBlk->requestedSize);
+	 sprintf(prntBuf, "     Allocated       Dynamic      %8lu\n", curHBlk->requestedSize);
 #endif
-         SDisplay(0, prntBuf);
+	 SDisplay(0, prntBuf);
       }
       else if (CMM_IS_FREE(curHBlk->memFlags))
       {
-/*mt009.301 Fixed 64BIT compilation warnings*/
+	 /*mt009.301 Fixed 64BIT compilation warnings*/
 #ifdef ALIGN_64BIT
-         sprintf(prntBuf, "     Free                      %8u\n", curHBlk->requestedSize);
+	 sprintf(prntBuf, "     Free                      %8u\n", curHBlk->requestedSize);
 #else
-         sprintf(prntBuf, "     Free                      %8lu\n", curHBlk->requestedSize);
+	 sprintf(prntBuf, "     Free                      %8lu\n", curHBlk->requestedSize);
 #endif
-         SDisplay(0, prntBuf);
+	 SDisplay(0, prntBuf);
       }
       else
       {
-         sprintf(prntBuf, "     Trampled                         \n");
-         SDisplay(0, prntBuf);
+	 sprintf(prntBuf, "     Trampled                         \n");
+	 SDisplay(0, prntBuf);
       }
       /* goto next block in the heap */
       curHBlk = (CmHEntry *)((Data *)curHBlk + hdrSize + curHBlk->size);
@@ -7374,23 +7375,23 @@ Region region
 
 /*-- mt035.201 : Added new API for timestamp --*/
 /*--
-*
-*       Fun:   Get TimeStamp
-*
-*       Desc:  This function is used to Get TimeStamp in micro seconds
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - error
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
---*/
-S16 SGetTimeStamp
+ *
+ *       Fun:   Get TimeStamp
+ *
+ *       Desc:  This function is used to Get TimeStamp in micro seconds
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - error
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ --*/
+   S16 SGetTimeStamp
 (
-S8    *ts
-)
+ S8    *ts
+ )
 {
 
 #ifndef SS_LINUX
@@ -7405,9 +7406,9 @@ S8    *ts
 
 
 #ifndef SS_LINUX
-  clock_gettime(CLOCK_REALTIME, &ptime);
+   clock_gettime(CLOCK_REALTIME, &ptime);
 #else
-  gettimeofday(&ptime, NULL);
+   gettimeofday(&ptime, NULL);
 #endif
 
    /* Obtain the time of day, and convert it to a tm struct. --*/
@@ -7415,8 +7416,8 @@ S8    *ts
    /* Klock work fix ccpu00148484 */
    if(ptm != NULLP)
    {
-   /* Format the date and time, down to a single second. --*/
-   strftime (time_string, sizeof (time_string), "%a %b %d %Y %H:%M:%S", ptm);
+      /* Format the date and time, down to a single second. --*/
+      strftime (time_string, sizeof (time_string), "%a %b %d %Y %H:%M:%S", ptm);
    }
 
    /* Compute microseconds. --*/
@@ -7428,7 +7429,7 @@ S8    *ts
 
    /* Print the formatted time, in seconds, followed by a decimal point
       and the microseconds. --*/
-/*mt009.301 Fixed 64BIT compilation warnings*/
+   /*mt009.301 Fixed 64BIT compilation warnings*/
 #ifdef ALIGN_64BIT
    sprintf(ts, "%s.%03d", time_string, microseconds);
 #else
@@ -7440,18 +7441,18 @@ S8    *ts
 }
 /*-- mt037.201 : Added new API for SGetSystemTsk --*/
 /*
-*
-*       Fun:   Get SGetSystemTsk
-*
-*       Desc:  This function is used to Get sytem task id
-*
-*       Ret:   task id
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
---*/
+ *
+ *       Fun:   Get SGetSystemTsk
+ *
+ *       Desc:  This function is used to Get sytem task id
+ *
+ *       Ret:   task id
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ --*/
 uint32_t SGetSystemTsk(Void)
 {
 
@@ -7461,19 +7462,19 @@ uint32_t SGetSystemTsk(Void)
 
 #ifdef SS_MULTICORE_SUPPORT
 /*
-*
-*       Fun:   Add Timer thread into system task table
-*
-*       Desc:  This function is used to add the system task
-*              associated with Timer thread.
-*
-*       Ret:   None
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
---*/
+ *
+ *       Fun:   Add Timer thread into system task table
+ *
+ *       Desc:  This function is used to add the system task
+ *              associated with Timer thread.
+ *
+ *       Ret:   None
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ --*/
 static SsSTskEntry* ssdAddTmrSTsk(Void)
 {
    SsSTskEntry *sTsk;
@@ -7487,7 +7488,7 @@ static SsSTskEntry* ssdAddTmrSTsk(Void)
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       MTLOGERROR(ERRCLS_DEBUG, EMT039, (ErrVal) ret,
-                     "Could not lock system task table");
+	    "Could not lock system task table");
 #endif
 
       return (sTsk);
@@ -7500,9 +7501,9 @@ static SsSTskEntry* ssdAddTmrSTsk(Void)
       if ( SUnlock(&osCp.sTskTblLock) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-           MTLOGERROR(ERRCLS_DEBUG, EMT040, ERRZERO,
-                       "Could not give the Semaphore");
-           return (sTsk);
+	 MTLOGERROR(ERRCLS_DEBUG, EMT040, ERRZERO,
+	       "Could not give the Semaphore");
+	 return (sTsk);
 #endif
       }
 
@@ -7527,15 +7528,15 @@ static SsSTskEntry* ssdAddTmrSTsk(Void)
       if ( SUnlock(&osCp.sTskTblLock) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-           MTLOGERROR(ERRCLS_DEBUG, EMT042, ERRZERO,
-                       "Could not give the Semaphore");
-           return (NULLP);
+	 MTLOGERROR(ERRCLS_DEBUG, EMT042, ERRZERO,
+	       "Could not give the Semaphore");
+	 return (NULLP);
 #endif
       }
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       MTLOGERROR(ERRCLS_DEBUG, EMT043, (ErrVal) ret,
-                  "Could not initialize demand queue");
+	    "Could not initialize demand queue");
 #endif
 
       return (NULLP);
@@ -7549,15 +7550,15 @@ static SsSTskEntry* ssdAddTmrSTsk(Void)
       if ( SUnlock(&osCp.sTskTblLock) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-           MTLOGERROR(ERRCLS_DEBUG, EMT044, ERRZERO,
-                       "Could not give the Semaphore");
-           return (NULLP);
+	 MTLOGERROR(ERRCLS_DEBUG, EMT044, ERRZERO,
+	       "Could not give the Semaphore");
+	 return (NULLP);
 #endif
       }
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       MTLOGERROR(ERRCLS_DEBUG, EMT045, (ErrVal) ret,
-                  "Could not initialize system task entry lock");
+	    "Could not initialize system task entry lock");
 #endif
 
       return (NULLP);
@@ -7573,14 +7574,14 @@ static SsSTskEntry* ssdAddTmrSTsk(Void)
 
    /* unlock the system task table */
 
-      if ( SUnlock(&osCp.sTskTblLock) != ROK)
-      {
+   if ( SUnlock(&osCp.sTskTblLock) != ROK)
+   {
 #if (ERRCLASS & ERRCLS_DEBUG)
-           MTLOGERROR(ERRCLS_DEBUG, EMT046, ERRZERO,
-                       "Could not give the Semaphore");
-           return (NULLP);
+      MTLOGERROR(ERRCLS_DEBUG, EMT046, ERRZERO,
+	    "Could not give the Semaphore");
+      return (NULLP);
 #endif
-      }
+   }
 
    return (sTsk);
 }
@@ -7588,23 +7589,23 @@ static SsSTskEntry* ssdAddTmrSTsk(Void)
 /* mt003.301 Readwrite lock and recursive mutex additions */
 #ifdef SS_LOCK_SUPPORT
 /*
-*
-*       Fun:   ssdInitLockNew
-*
-*       Desc:  This function is used to initialise lock/mutex
-*
-*       Ret:   ROK   OK
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   ssdInitLockNew
+ *
+ *       Desc:  This function is used to initialise lock/mutex
+ *
+ *       Ret:   ROK   OK
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
 S16 ssdInitLockNew(SLockInfo *lockId,uint8_t lockType)
 {
 
 #ifdef SS_REC_LOCK_SUPPORT
-	pthread_mutexattr_t attr;
+   pthread_mutexattr_t attr;
 #endif /* SS_REC_LOCK_SUPPORT */
    Txt prntBuf[PRNTSZE];
    S16    retVal = ROK;
@@ -7614,72 +7615,72 @@ S16 ssdInitLockNew(SLockInfo *lockId,uint8_t lockType)
    {
 #ifdef SS_RDWR_LOCK_SUPPORT
       case SRDWRLOCK :
-      {
-         if((retVal = pthread_rwlock_init((&(lockId->l.rdWrLockId)), NULLP)) != ROK)
-         {
-            sprintf(prntBuf, "\n\n ssdInitLockNew(): Initialization of read write lock failed,Error# retVal %d\n", retVal);
-            SDisplay(0, prntBuf);
-            return RFAILED;
-         }
-         break;
-      }
+	 {
+	    if((retVal = pthread_rwlock_init((&(lockId->l.rdWrLockId)), NULLP)) != ROK)
+	    {
+	       sprintf(prntBuf, "\n\n ssdInitLockNew(): Initialization of read write lock failed,Error# retVal %d\n", retVal);
+	       SDisplay(0, prntBuf);
+	       return RFAILED;
+	    }
+	    break;
+	 }
 #endif /* SS_RDWR_LOCK_SUPPORT */
 #ifdef SS_REC_LOCK_SUPPORT
-	case SMUTEXRECUR:
-		{
-		  retVal = pthread_mutexattr_init(&attr);
+      case SMUTEXRECUR:
+	 {
+	    retVal = pthread_mutexattr_init(&attr);
 
-		  if(retVal != 0)
-		  {
-			 sprintf(prntBuf,"\n ssdInitLockNew(): mutexattr init failed,Error# %d \n",retVal);
-			 SPrint(prntBuf);
-			 return RFAILED;
-		  }
+	    if(retVal != 0)
+	    {
+	       sprintf(prntBuf,"\n ssdInitLockNew(): mutexattr init failed,Error# %d \n",retVal);
+	       SPrint(prntBuf);
+	       return RFAILED;
+	    }
 #ifdef SS_LINUX
-		  retVal = pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE_NP);
+	    retVal = pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE_NP);
 #else
-		  retVal = pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
+	    retVal = pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
 #endif
-		  if(retVal != 0)
-		  {
-			 sprintf(prntBuf,"\n ssdInitLockNew(): mutexattr settype failed,Error# %d \n",retVal);
-			 pthread_mutexattr_destroy(&attr);
-			 SPrint(prntBuf);
-			 return RFAILED;
-		  }
-		  retVal = pthread_mutex_init((pthread_mutex_t *)&(lockId->l.recurLock), &attr);
-		  if(retVal != 0)
-		  {
-			 sprintf(prntBuf,"\n ssdInitLockNew(): mutex init failed,Error# %d \n",retVal);
-			 pthread_mutexattr_destroy(&attr);
-			 SPrint(prntBuf);
-			 return RFAILED;
-		  }
-		  break;
-		}
+	    if(retVal != 0)
+	    {
+	       sprintf(prntBuf,"\n ssdInitLockNew(): mutexattr settype failed,Error# %d \n",retVal);
+	       pthread_mutexattr_destroy(&attr);
+	       SPrint(prntBuf);
+	       return RFAILED;
+	    }
+	    retVal = pthread_mutex_init((pthread_mutex_t *)&(lockId->l.recurLock), &attr);
+	    if(retVal != 0)
+	    {
+	       sprintf(prntBuf,"\n ssdInitLockNew(): mutex init failed,Error# %d \n",retVal);
+	       pthread_mutexattr_destroy(&attr);
+	       SPrint(prntBuf);
+	       return RFAILED;
+	    }
+	    break;
+	 }
 #endif /* SS_REC_LOCK_SUPPORT */
       default :
-      {
-         sprintf(prntBuf, "\n\n ssdInitLockNew(): Invalid lock type %d\n", lockType);
-         SDisplay(0, prntBuf);
-         return RFAILED;
-      }
+	 {
+	    sprintf(prntBuf, "\n\n ssdInitLockNew(): Invalid lock type %d\n", lockType);
+	    SDisplay(0, prntBuf);
+	    return RFAILED;
+	 }
    }
    return ROK;
 }
 /*
-*
-*       Fun:   ssdLockNew
-*
-*       Desc:  This function is used to aquire the read write lock
-*
-*       Ret:   ROK   OK
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   ssdLockNew
+ *
+ *       Desc:  This function is used to aquire the read write lock
+ *
+ *       Ret:   ROK   OK
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
 S16 ssdLockNew(SLockInfo *lockId,uint8_t lockType)
 {
 
@@ -7691,64 +7692,64 @@ S16 ssdLockNew(SLockInfo *lockId,uint8_t lockType)
    {
 #ifdef SS_RDWR_LOCK_SUPPORT
       case SRDLOCK :
-      {
-         if((retVal = pthread_rwlock_rdlock(&(lockId->l.rdWrLockId))) != ROK)
-         {
-           sprintf(prntBuf, "\n\n ssdLockNew(): Failed to aquire the read lock,Error# %d\n", retVal);
-           SDisplay(0, prntBuf);
-           return RFAILED;
-         }
-         break;
-      }
+	 {
+	    if((retVal = pthread_rwlock_rdlock(&(lockId->l.rdWrLockId))) != ROK)
+	    {
+	       sprintf(prntBuf, "\n\n ssdLockNew(): Failed to aquire the read lock,Error# %d\n", retVal);
+	       SDisplay(0, prntBuf);
+	       return RFAILED;
+	    }
+	    break;
+	 }
       case SWRLOCK :
-      {
-         if((retVal = pthread_rwlock_wrlock(&(lockId->l.rdWrLockId))) != ROK)
-         {
-           sprintf(prntBuf, "\n\n ssdLockNew(): Failed to aquire the write lock,Error# %d\n", retVal);
-           SDisplay(0, prntBuf);
-           return RFAILED;
-         }
-         break;
-      }
+	 {
+	    if((retVal = pthread_rwlock_wrlock(&(lockId->l.rdWrLockId))) != ROK)
+	    {
+	       sprintf(prntBuf, "\n\n ssdLockNew(): Failed to aquire the write lock,Error# %d\n", retVal);
+	       SDisplay(0, prntBuf);
+	       return RFAILED;
+	    }
+	    break;
+	 }
       case STRYRDLOCK :
-      {
-         if((retVal = pthread_rwlock_tryrdlock(&(lockId->l.rdWrLockId))) != ROK)
-         {
-           sprintf(prntBuf, "\n\n ssdLockNew(): Failed to aquire the read lock,Error# %d\n", retVal);
-           SDisplay(0, prntBuf);
-           return RFAILED;
-         }
-         break;
-      }
+	 {
+	    if((retVal = pthread_rwlock_tryrdlock(&(lockId->l.rdWrLockId))) != ROK)
+	    {
+	       sprintf(prntBuf, "\n\n ssdLockNew(): Failed to aquire the read lock,Error# %d\n", retVal);
+	       SDisplay(0, prntBuf);
+	       return RFAILED;
+	    }
+	    break;
+	 }
       case STRYWRLOCK:
-      {
-         if((retVal = pthread_rwlock_trywrlock(&(lockId->l.rdWrLockId))) != ROK)
-         {
-           sprintf(prntBuf, "\n\n ssdLockNew(): Failed to aquire the read lock,Error# %d\n", retVal);
-           SDisplay(0, prntBuf);
-           return RFAILED;
-         }
-         break;
-      }
+	 {
+	    if((retVal = pthread_rwlock_trywrlock(&(lockId->l.rdWrLockId))) != ROK)
+	    {
+	       sprintf(prntBuf, "\n\n ssdLockNew(): Failed to aquire the read lock,Error# %d\n", retVal);
+	       SDisplay(0, prntBuf);
+	       return RFAILED;
+	    }
+	    break;
+	 }
 #endif /* SS_RDWR_LOCK_SUPPORT */
 #ifdef SS_REC_LOCK_SUPPORT
-		case SMUTEXRECUR:
-		{
-		   if((retVal = pthread_mutex_lock(&(lockId->l.recurLock)) != ROK))
-			{
-				sprintf(prntBuf, "\n\n ssdLockNew(): Failed to aquire the recursive mutex,Error# %d\n", retVal);
-        		SDisplay(0, prntBuf);
-        		return RFAILED;
-		   }
-		  break;
-		}
+      case SMUTEXRECUR:
+	 {
+	    if((retVal = pthread_mutex_lock(&(lockId->l.recurLock)) != ROK))
+	    {
+	       sprintf(prntBuf, "\n\n ssdLockNew(): Failed to aquire the recursive mutex,Error# %d\n", retVal);
+	       SDisplay(0, prntBuf);
+	       return RFAILED;
+	    }
+	    break;
+	 }
 #endif /* SS_REC_LOCK_SUPPORT */
       default :
-      {
-         sprintf(prntBuf, "\n\n ssdLockNew(): Invalid lock type %d\n", lockType);
-         SDisplay(0, prntBuf);
-         return RFAILED;
-      }
+	 {
+	    sprintf(prntBuf, "\n\n ssdLockNew(): Invalid lock type %d\n", lockType);
+	    SDisplay(0, prntBuf);
+	    return RFAILED;
+	 }
    }
 
    return ROK;
@@ -7756,18 +7757,18 @@ S16 ssdLockNew(SLockInfo *lockId,uint8_t lockType)
 
 
 /*
-*
-*       Fun:   ssdUnlockNew
-*
-*       Desc:  This function is used to Unlock the read write lock
-*
-*       Ret:   ROK   OK
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   ssdUnlockNew
+ *
+ *       Desc:  This function is used to Unlock the read write lock
+ *
+ *       Ret:   ROK   OK
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
 S16 ssdUnlockNew(SLockInfo *lockId,uint8_t lockType)
 {
 
@@ -7779,51 +7780,51 @@ S16 ssdUnlockNew(SLockInfo *lockId,uint8_t lockType)
    {
 #ifdef SS_RDWR_LOCK_SUPPORT
       case SRDWRLOCK :
-      {
-         if((retVal = pthread_rwlock_unlock(&(lockId->l.rdWrLockId))) != ROK)
-         {
-            sprintf(prntBuf, "\n\n ssdUnLockNew(): Failed to unlock the lock,Error# %d\n", retVal);
-            SDisplay(0, prntBuf);
-            return RFAILED;
-         }
-         break;
-      }
+	 {
+	    if((retVal = pthread_rwlock_unlock(&(lockId->l.rdWrLockId))) != ROK)
+	    {
+	       sprintf(prntBuf, "\n\n ssdUnLockNew(): Failed to unlock the lock,Error# %d\n", retVal);
+	       SDisplay(0, prntBuf);
+	       return RFAILED;
+	    }
+	    break;
+	 }
 #endif /* SS_RDWR_LOCK_SUPPORT */
 #ifdef SS_REC_LOCK_SUPPORT
-	   case SMUTEXRECUR:
-		{
-		   if((retVal = pthread_mutex_unlock(&(lockId->l.recurLock)) != ROK))
-			{
-				sprintf(prntBuf, "\n\n ssdUnLockNew(): Failed to aquire the recursive mutex,Error# %d\n", retVal);
-        		SDisplay(0, prntBuf);
-        		return RFAILED;
-		   }
-		  break;
-		}
+      case SMUTEXRECUR:
+	 {
+	    if((retVal = pthread_mutex_unlock(&(lockId->l.recurLock)) != ROK))
+	    {
+	       sprintf(prntBuf, "\n\n ssdUnLockNew(): Failed to aquire the recursive mutex,Error# %d\n", retVal);
+	       SDisplay(0, prntBuf);
+	       return RFAILED;
+	    }
+	    break;
+	 }
 #endif /* SS_REC_LOCK_SUPPORT */
       default :
-      {
-         sprintf(prntBuf, "\n\n ssdUnlockNew(): Invalid lock type %d\n", lockType);
-         SDisplay(0, prntBuf);
-         return RFAILED;
-      }
+	 {
+	    sprintf(prntBuf, "\n\n ssdUnlockNew(): Invalid lock type %d\n", lockType);
+	    SDisplay(0, prntBuf);
+	    return RFAILED;
+	 }
    }
    return ROK;
 }
 
 /*
-*
-*       Fun:   ssdDestroyLockNew
-*
-*       Desc:  This function is used to destroy the read write lock
-*
-*       Ret:   ROK   OK
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   ssdDestroyLockNew
+ *
+ *       Desc:  This function is used to destroy the read write lock
+ *
+ *       Ret:   ROK   OK
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
 S16 ssdDestroyLockNew(SLockInfo *lockId,uint8_t lockType)
 {
    Txt prntBuf[PRNTSZE];
@@ -7834,34 +7835,34 @@ S16 ssdDestroyLockNew(SLockInfo *lockId,uint8_t lockType)
    {
 #ifdef SS_RDWR_LOCK_SUPPORT
       case SRDWRLOCK :
-      {
-         if((retVal = pthread_rwlock_destroy(&(lockId->l.rdWrLockId))) != ROK)
-         {
-            sprintf(prntBuf, "\n\n ssdDestroyLockNew(): Failed to destroy the lock,Error# %d\n", retVal);
-            SDisplay(0, prntBuf);
-            return RFAILED;
-         }
-         break;
-      }
+	 {
+	    if((retVal = pthread_rwlock_destroy(&(lockId->l.rdWrLockId))) != ROK)
+	    {
+	       sprintf(prntBuf, "\n\n ssdDestroyLockNew(): Failed to destroy the lock,Error# %d\n", retVal);
+	       SDisplay(0, prntBuf);
+	       return RFAILED;
+	    }
+	    break;
+	 }
 #endif /* SS_RDWR_LOCK_SUPPORT */
 #ifdef SS_REC_LOCK_SUPPORT
-	   case SMUTEXRECUR:
-		{
-		   if((retVal = pthread_mutex_destroy(&(lockId->l.recurLock)) != ROK))
-			{
-            sprintf(prntBuf, "\n\n ssdDestroyLockNew(): Failed to destroy the mutex,Error# %d\n", retVal);
-        		SDisplay(0, prntBuf);
-        		return RFAILED;
-		   }
-		  break;
-		}
+      case SMUTEXRECUR:
+	 {
+	    if((retVal = pthread_mutex_destroy(&(lockId->l.recurLock)) != ROK))
+	    {
+	       sprintf(prntBuf, "\n\n ssdDestroyLockNew(): Failed to destroy the mutex,Error# %d\n", retVal);
+	       SDisplay(0, prntBuf);
+	       return RFAILED;
+	    }
+	    break;
+	 }
 #endif /* SS_REC_LOCK_SUPPORT */
       default :
-      {
-         sprintf(prntBuf, "\n\n ssdDestroyLockNew(): Invalid lock type %d\n", lockType);
-         SDisplay(0, prntBuf);
-         return RFAILED;
-      }
+	 {
+	    sprintf(prntBuf, "\n\n ssdDestroyLockNew(): Invalid lock type %d\n", lockType);
+	    SDisplay(0, prntBuf);
+	    return RFAILED;
+	 }
    }
    return ROK;
 }
@@ -7889,27 +7890,27 @@ S16 ssdDestroyLockNew(SLockInfo *lockId,uint8_t lockType)
  **/
 S16 ssInitRcvWork(void)
 {
-  pthread_attr_t attr;
-  pthread_t      thread;
+   pthread_attr_t attr;
+   pthread_t      thread;
 
 
-  /* set the required attributes */
-  pthread_attr_init(&attr);
-  pthread_attr_setstacksize(&attr, (size_t)MT_ISTASK_STACK);
-  pthread_attr_setscope(&attr, PTHREAD_SCOPE_SYSTEM);
-  pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+   /* set the required attributes */
+   pthread_attr_init(&attr);
+   pthread_attr_setstacksize(&attr, (size_t)MT_ISTASK_STACK);
+   pthread_attr_setscope(&attr, PTHREAD_SCOPE_SYSTEM);
+   pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
 
-  /* Create a new thread to receive the work queue messages */
-  if ((pthread_create(&thread, &attr, workRcvTsk, NULLP)) != 0)
-  {
-	 pthread_attr_destroy(&attr);
+   /* Create a new thread to receive the work queue messages */
+   if ((pthread_create(&thread, &attr, workRcvTsk, NULLP)) != 0)
+   {
+      pthread_attr_destroy(&attr);
 
-	 return RFAILED;
-  }
+      return RFAILED;
+   }
 
-  pthread_attr_destroy(&attr);
+   pthread_attr_destroy(&attr);
 
-  return ROK;
+   return ROK;
 
 }/* ssInitRcvWork */
 
@@ -7935,85 +7936,85 @@ S16 ssInitRcvWork(void)
 static void *workRcvTsk(Ptr ptr)
 {
 
-  cvmx_wqe_t *workPtr;
-  Buffer     *mBuf, *rcvdBuf;
-  SsMsgInfo  *minfoPtr;
-  S16         ret;
-  struct timespec ts;
-  Pst         pst;
+   cvmx_wqe_t *workPtr;
+   Buffer     *mBuf, *rcvdBuf;
+   SsMsgInfo  *minfoPtr;
+   S16         ret;
+   struct timespec ts;
+   Pst         pst;
 
 
 
-  for (;;)
-  {
-	 /* get the work if its avilable */
-	 workPtr = cvmx_pow_work_request_sync(CVMX_POW_NO_WAIT);
+   for (;;)
+   {
+      /* get the work if its avilable */
+      workPtr = cvmx_pow_work_request_sync(CVMX_POW_NO_WAIT);
 
-	 if ( workPtr == NULLP )
-	 {
-		/* If there is no work then sleep for 10 usec */
-		ts.tv_sec = 0;
-		ts.tv_nsec = 500000;
+      if ( workPtr == NULLP )
+      {
+	 /* If there is no work then sleep for 10 usec */
+	 ts.tv_sec = 0;
+	 ts.tv_nsec = 500000;
 
-		nanosleep(&ts, NULLP);
-		continue;
-	 }
+	 nanosleep(&ts, NULLP);
+	 continue;
+      }
 
-	 switch(workPtr->tag)
-	 {
-		/* Switch over according to the tag value */
-		case SS_CVMX_MBUF_TAG:
+      switch(workPtr->tag)
+      {
+	 /* Switch over according to the tag value */
+	 case SS_CVMX_MBUF_TAG:
 
-		  rcvdBuf = (Buffer*)workPtr->packet_ptr.ptr;
+	    rcvdBuf = (Buffer*)workPtr->packet_ptr.ptr;
 
-		  /* Convert the physical address to Pointers */
-		  ret = SConvPhyPtr(&rcvdBuf);
-		  if (ret != ROK)
-		  {
-           /* mt011.301: Cavium 32 bit changes */
-			 cvmx_fpa_free(workPtr, SS_CVMX_WQE_POOL, 0);
-			 continue;
-		  }
+	    /* Convert the physical address to Pointers */
+	    ret = SConvPhyPtr(&rcvdBuf);
+	    if (ret != ROK)
+	    {
+	       /* mt011.301: Cavium 32 bit changes */
+	       cvmx_fpa_free(workPtr, SS_CVMX_WQE_POOL, 0);
+	       continue;
+	    }
 
-		  /* Copy the buffer to this region */
-		  ret = SCpyFpaMsg(rcvdBuf, SS_DFLT_REGION, SS_DFLT_POOL, &mBuf);
-		  if( ret != ROK )
-		  {
-           /* mt011.301: Cavium 32 bit changes */
-			 cvmx_fpa_free(workPtr, SS_CVMX_WQE_POOL, 0);
-			 continue;
-		  }
+	    /* Copy the buffer to this region */
+	    ret = SCpyFpaMsg(rcvdBuf, SS_DFLT_REGION, SS_DFLT_POOL, &mBuf);
+	    if( ret != ROK )
+	    {
+	       /* mt011.301: Cavium 32 bit changes */
+	       cvmx_fpa_free(workPtr, SS_CVMX_WQE_POOL, 0);
+	       continue;
+	    }
 
-        /* mt011.301: Cavium 32 bit changes */
-		  cvmx_fpa_free(workPtr, SS_CVMX_WQE_POOL, 0);
+	    /* mt011.301: Cavium 32 bit changes */
+	    cvmx_fpa_free(workPtr, SS_CVMX_WQE_POOL, 0);
 
-		  minfoPtr = (SsMsgInfo*)mBuf->b_rptr;
+	    minfoPtr = (SsMsgInfo*)mBuf->b_rptr;
 
-		  /* Get the post strucutre and Post the message */
-		  if ( minfoPtr != NULLP)
-		  {
-			 SMemCpy( &pst, &minfoPtr->pst, sizeof(Pst));
+	    /* Get the post strucutre and Post the message */
+	    if ( minfoPtr != NULLP)
+	    {
+	       SMemCpy( &pst, &minfoPtr->pst, sizeof(Pst));
 
-			 (Void)SPstTsk(&pst, mBuf);
-		  }
-		  /* Free the buffer allocated if it cannot be sent */
-		  else
-		  {
-			 SPutMsg(mBuf);
-		  }
-		  break;
+	       (Void)SPstTsk(&pst, mBuf);
+	    }
+	    /* Free the buffer allocated if it cannot be sent */
+	    else
+	    {
+	       SPutMsg(mBuf);
+	    }
+	    break;
 
-		default:
-		  {
-			 /* Invalid tag value, drop the work */
-           /* mt011.301: Cavium 32 bit changes */
-			 cvmx_fpa_free(workPtr, SS_CVMX_WQE_POOL, 0);
-			 continue;
-		  }
-		  break;
-	 }
+	 default:
+	    {
+	       /* Invalid tag value, drop the work */
+	       /* mt011.301: Cavium 32 bit changes */
+	       cvmx_fpa_free(workPtr, SS_CVMX_WQE_POOL, 0);
+	       continue;
+	    }
+	    break;
+      }
 
-  }
+   }
 } /* workRcvTsk */
 
 #endif /* SS_SEUM_CAVIUM */
@@ -8053,7 +8054,7 @@ Void ssRegMainThread(Void)
 
    if(SS_INVALID_THREAD_REG_MAP != SS_GET_THREAD_MEM_REGION())
    {
-      printf("not able to get different Id for main thread\n");
+      DU_LOG("\nERROR  -->  not able to get different Id for main thread\n");
       exit(1);
    }
    /* Here the default region is added as we dont have any region associated with
@@ -8065,7 +8066,7 @@ Void ssRegMainThread(Void)
 #else   
    SS_GET_THREAD_MEM_REGION() = 
 #endif      
-                                                                  DFLT_REGION;
+      DFLT_REGION;
 }
 
 /*
@@ -8092,11 +8093,11 @@ Void ssRegMainThread(Void)
  *       File: mt_ss.c
  *
  */
-S32 ssCheckAndAddMemoryRegionMap
+   S32 ssCheckAndAddMemoryRegionMap
 (
-pthread_t    threadId,    /* Thread Id of system task */
-Region       region       /* Region associated with thread */
-)
+ pthread_t    threadId,    /* Thread Id of system task */
+ Region       region       /* Region associated with thread */
+ )
 {
    static uint32_t       createdThreads;
    static pthread_t createdThreadIds[SS_MAX_THREAD_CREATE_RETRY];
@@ -8107,14 +8108,14 @@ Region       region       /* Region associated with thread */
     * contains 0xFF, that mapping entry is free
     */
    if(SS_INVALID_THREAD_REG_MAP != 
-            osCp.threadMemoryRegionMap[((threadId >> SS_MEM_THREAD_ID_SHIFT) % SS_MAX_THREAD_REGION_MAP)])
+	 osCp.threadMemoryRegionMap[((threadId >> SS_MEM_THREAD_ID_SHIFT) % SS_MAX_THREAD_REGION_MAP)])
    {
       /* Klock work fix ccpu00148484 */
       if(!(createdThreads < SS_MAX_THREAD_CREATE_RETRY))
       {
-         printf("failed in index = %ld\n", ((threadId >> SS_MEM_THREAD_ID_SHIFT) % SS_MAX_THREAD_REGION_MAP));
-         printf("Not able to get the different thread ID, exiting\n");
-         exit(1);
+	 DU_LOG("\nERROR  -->  failed in index = %ld\n", ((threadId >> SS_MEM_THREAD_ID_SHIFT) % SS_MAX_THREAD_REGION_MAP));
+	 DU_LOG("\nERROR  -->  Not able to get the different thread ID, exiting\n");
+	 exit(1);
       }
       createdThreadIds[createdThreads++] = threadId;
       return (FALSE);
@@ -8124,14 +8125,14 @@ Region       region       /* Region associated with thread */
     */
    osCp.threadMemoryRegionMap[((threadId >> SS_MEM_THREAD_ID_SHIFT) % SS_MAX_THREAD_REGION_MAP)] = region;
 #ifdef XEON_SPECIFIC_CHANGES
-   printf("ThreadId %ld, Thread Idx %d, Region %d\n", threadId,
-          ((threadId >> SS_MEM_THREAD_ID_SHIFT) % 
-          SS_MAX_THREAD_REGION_MAP), region);
+   DU_LOG("\nINFO  -->  ThreadId %ld, Thread Idx %d, Region %d\n", threadId,
+	 ((threadId >> SS_MEM_THREAD_ID_SHIFT) % 
+	  SS_MAX_THREAD_REGION_MAP), region);
 #endif   
    for(indx = 0; indx < createdThreads; indx++)
    {
 #ifdef XEON_SPECIFIC_CHANGES
-      printf("Sending pthred Cancel to thread Id %d \n",createdThreadIds[indx]);
+      DU_LOG("\nINFO  -->  Sending pthred Cancel to thread Id %d \n",createdThreadIds[indx]);
 #endif      
       pthread_cancel(createdThreadIds[indx]);
    }
@@ -8165,10 +8166,10 @@ Region       region       /* Region associated with thread */
  *       File: mt_ss.c
  *
  */
-S32 ssCheckAndDelMemoryRegionMap
+   S32 ssCheckAndDelMemoryRegionMap
 (
-pthread_t    threadId    /* Thread Id of system task */
-)
+ pthread_t    threadId    /* Thread Id of system task */
+ )
 {
 
 
@@ -8178,12 +8179,12 @@ pthread_t    threadId    /* Thread Id of system task */
     * contains 0xFF, that mapping entry is free
     */
    if(SS_INVALID_THREAD_REG_MAP ==
-            osCp.threadMemoryRegionMap[((threadId >> SS_MEM_THREAD_ID_SHIFT) % SS_MAX_THREAD_REGION_MAP)])
+	 osCp.threadMemoryRegionMap[((threadId >> SS_MEM_THREAD_ID_SHIFT) % SS_MAX_THREAD_REGION_MAP)])
    {
 #ifndef ALIGN_64BIT
-      printf("Invalid Thread ID (%ld)\n", (uint32_t)threadId);
+      DU_LOG("\nERROR  -->  Invalid Thread ID (%ld)\n", (uint32_t)threadId);
 #else
-      printf("Invalid Thread ID (%d)\n", (uint32_t)threadId);
+      DU_LOG("\nERROR  -->  Invalid Thread ID (%d)\n", (uint32_t)threadId);
 #endif
       return RFAILED;
    }
@@ -8200,23 +8201,23 @@ pthread_t    threadId    /* Thread Id of system task */
 #endif
 #ifdef SS_TSKLOG_ENABLE
 /*
-*
-*       Fun:   SStartTask
-*
-*       Desc:  This function will return current time through input parameter.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*
-*       File:  pt_ss.c
-*
-*/
-S16 SStartTask
+ *
+ *       Fun:   SStartTask
+ *
+ *       Desc:  This function will return current time through input parameter.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *
+ *       File:  pt_ss.c
+ *
+ */
+   S16 SStartTask
 (
-volatile uint32_t      *startTime,
-uint32_t       taskId
-)
+ volatile uint32_t      *startTime,
+ uint32_t       taskId
+ )
 {
 #ifdef MSPD_MLOG_NEW
    *startTime = GetTIMETICK();
@@ -8225,25 +8226,25 @@ uint32_t       taskId
 }
 
 /*
-*
-*       Fun:   SStopTask
-*
-*       Desc:  This function will return current time through input parameter.
-*              and take the difference of start time provided as input parameter
-*              and current time.
-*
-*       Ret:   ROK      - ok
-*              RFAILED  - failed, general (optional)
-*
-*
-*       File:  pt_ss.c
-*
-*/
-S16 SStopTask
+ *
+ *       Fun:   SStopTask
+ *
+ *       Desc:  This function will return current time through input parameter.
+ *              and take the difference of start time provided as input parameter
+ *              and current time.
+ *
+ *       Ret:   ROK      - ok
+ *              RFAILED  - failed, general (optional)
+ *
+ *
+ *       File:  pt_ss.c
+ *
+ */
+   S16 SStopTask
 (
-volatile uint32_t       startTime,
-uint32_t       taskId
-)
+ volatile uint32_t       startTime,
+ uint32_t       taskId
+ )
 {
    /*uint32_t      stopTime;*/
    switch(taskId)
@@ -8270,33 +8271,33 @@ uint32_t       taskId
       case PID_RECPREQ_PROC:
 #ifdef CA_PHY
 #ifndef LTE_TDD               
-         MLogTask(0, taskId, RESOURCE_LARM, startTime, GetTIMETICK());
+	 MLogTask(0, taskId, RESOURCE_LARM, startTime, GetTIMETICK());
 #else
-         MLogTask(taskId, RESOURCE_LARM, startTime, GetTIMETICK());
+	 MLogTask(taskId, RESOURCE_LARM, startTime, GetTIMETICK());
 #endif
 #else
-         MLogTask(taskId, RESOURCE_LARM, startTime, GetTIMETICK());
+	 MLogTask(taskId, RESOURCE_LARM, startTime, GetTIMETICK());
 #endif
-         break;
+	 break;
    }
    return ROK;
 }
 #else
-S16 SStartTask
+   S16 SStartTask
 (
-volatile uint32_t * startTime,
-uint32_t taskId
-)
+ volatile uint32_t * startTime,
+ uint32_t taskId
+ )
 {
    *startTime = 0;
    return ROK;
 }
 
-S16 SStopTask
+   S16 SStopTask
 (
-volatile uint32_t startTime,
-uint32_t taskId
-)
+ volatile uint32_t startTime,
+ uint32_t taskId
+ )
 {
    return ROK;
 }
@@ -8304,18 +8305,18 @@ uint32_t taskId
 #endif /*#ifdef SS_TSKLOG_ENABLE */
 #ifdef TENB_T2K3K_SPECIFIC_CHANGES
 /** @details
-* This primitive is used to calculate the CPU Utilization per Core
-* for Intel T2200
-*
-* @param [in]   Void
-*
-* @return  Void - function is always success
-*/
-Void UpdateSocCpuInfo
+ * This primitive is used to calculate the CPU Utilization per Core
+ * for Intel T2200
+ *
+ * @param [in]   Void
+ *
+ * @return  Void - function is always success
+ */
+   Void UpdateSocCpuInfo
 (
-CmCpuStatsInfo *cpuInfo, 
-uint8_t    idx
-)
+ CmCpuStatsInfo *cpuInfo, 
+ uint8_t    idx
+ )
 {
    FILE       *mipsFd;
    S8         mipsStr[MIPS_STRING_LEN];
@@ -8336,7 +8337,7 @@ uint8_t    idx
    /* Get the free mips available value from the file */
    if(NULLP  == fgets(mipsStr, 24, mipsFd))
    {
-      printf("fgets to get the free mips available failed\n");
+      DU_LOG("\nERROR  -->  fgets to get the free mips available failed\n");
       fclose(mipsFd);
       return;
    }
@@ -8349,11 +8350,11 @@ uint8_t    idx
    {  
       if(strPart != NULLP)
       {
-         l2FreeCpu = atoi(strPart);   
-         l2CpuUsed = 100 - l2FreeCpu;
-         cpuInfo->cpuUtil[0].totCpuUtil += l2CpuUsed;
-         cpuInfo->cpuUtil[0].maxCpuUtil = GET_CPU_MAX((cpuInfo->cpuUtil[0].maxCpuUtil), l2CpuUsed);
-         cpuInfo->cpuUtil[0].numSamples++;
+	 l2FreeCpu = atoi(strPart);   
+	 l2CpuUsed = 100 - l2FreeCpu;
+	 cpuInfo->cpuUtil[0].totCpuUtil += l2CpuUsed;
+	 cpuInfo->cpuUtil[0].maxCpuUtil = GET_CPU_MAX((cpuInfo->cpuUtil[0].maxCpuUtil), l2CpuUsed);
+	 cpuInfo->cpuUtil[0].numSamples++;
       }
    }
    if(idx == CM_L3_CPU_UTIL)
@@ -8361,11 +8362,11 @@ uint8_t    idx
       strPart = strtok(NULLP, " ");
       if(strPart != NULLP)
       {
-         l3FreeCpu = atoi(strPart);   
-         l3CpuUsed = 100 - l3FreeCpu;
-         cpuInfo->cpuUtil[0].totCpuUtil += l3CpuUsed;
-         cpuInfo->cpuUtil[0].maxCpuUtil = GET_CPU_MAX((cpuInfo->cpuUtil[0].maxCpuUtil), l3CpuUsed);
-         cpuInfo->cpuUtil[0].numSamples++;
+	 l3FreeCpu = atoi(strPart);   
+	 l3CpuUsed = 100 - l3FreeCpu;
+	 cpuInfo->cpuUtil[0].totCpuUtil += l3CpuUsed;
+	 cpuInfo->cpuUtil[0].maxCpuUtil = GET_CPU_MAX((cpuInfo->cpuUtil[0].maxCpuUtil), l3CpuUsed);
+	 cpuInfo->cpuUtil[0].numSamples++;
       }
    }
    if(idx == CM_L2_CPU_UTIL)
@@ -8383,22 +8384,22 @@ uint8_t    idx
 #endif /* TENB_T2K3K_SPECIFIC_CHANGES */
 #ifdef SS_MULTICORE_SUPPORT
 /*
-*
-*       Fun:   Add Timer thread into system task table
-*
-*       Desc:  This function is used to add the system task
-*              associated with Timer thread.
-*
-*       Ret:   None
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
---*/
+ *
+ *       Fun:   Add Timer thread into system task table
+ *
+ *       Desc:  This function is used to add the system task
+ *              associated with Timer thread.
+ *
+ *       Ret:   None
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ --*/
 static SsSTskEntry* ssdReAddTmrSTsk(
-uint8_t idx
-)
+      uint8_t idx
+      )
 {
    SsSTskEntry *sTsk;
    S16 ret;
@@ -8411,7 +8412,7 @@ uint8_t idx
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       MTLOGERROR(ERRCLS_DEBUG, EMT039, (ErrVal) ret,
-                     "Could not lock system task table");
+	    "Could not lock system task table");
 #endif
 
       return (sTsk);
@@ -8437,15 +8438,15 @@ uint8_t idx
       if ( SUnlock(&osCp.sTskTblLock) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-           MTLOGERROR(ERRCLS_DEBUG, EMT042, ERRZERO,
-                       "Could not give the Semaphore");
-           return (NULLP);
+	 MTLOGERROR(ERRCLS_DEBUG, EMT042, ERRZERO,
+	       "Could not give the Semaphore");
+	 return (NULLP);
 #endif
       }
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       MTLOGERROR(ERRCLS_DEBUG, EMT043, (ErrVal) ret,
-                  "Could not initialize demand queue");
+	    "Could not initialize demand queue");
 #endif
 
       return (NULLP);
@@ -8459,15 +8460,15 @@ uint8_t idx
       if ( SUnlock(&osCp.sTskTblLock) != ROK)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
-           MTLOGERROR(ERRCLS_DEBUG, EMT044, ERRZERO,
-                       "Could not give the Semaphore");
-           return (NULLP);
+	 MTLOGERROR(ERRCLS_DEBUG, EMT044, ERRZERO,
+	       "Could not give the Semaphore");
+	 return (NULLP);
 #endif
       }
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       MTLOGERROR(ERRCLS_DEBUG, EMT045, (ErrVal) ret,
-                  "Could not initialize system task entry lock");
+	    "Could not initialize system task entry lock");
 #endif
 
       return (NULLP);
@@ -8481,14 +8482,14 @@ uint8_t idx
 
    /* unlock the system task table */
 
-      if ( SUnlock(&osCp.sTskTblLock) != ROK)
-      {
+   if ( SUnlock(&osCp.sTskTblLock) != ROK)
+   {
 #if (ERRCLASS & ERRCLS_DEBUG)
-           MTLOGERROR(ERRCLS_DEBUG, EMT046, ERRZERO,
-                       "Could not give the Semaphore");
-           return (NULLP);
+      MTLOGERROR(ERRCLS_DEBUG, EMT046, ERRZERO,
+	    "Could not give the Semaphore");
+      return (NULLP);
 #endif
-      }
+   }
 
    return (sTsk);
 }
@@ -8496,19 +8497,19 @@ uint8_t idx
 
 
 /*
-*
-*       Fun:   Initialize timer table
-*
-*       Desc:  This function initializes MTSS-specific information
-*              in the timer table.
-*
-*       Ret:   ROK      - ok
-*
-*       Notes:
-*
-*       File:  mt_ss.c
-*
-*/
+ *
+ *       Fun:   Initialize timer table
+ *
+ *       Desc:  This function initializes MTSS-specific information
+ *              in the timer table.
+ *
+ *       Ret:   ROK      - ok
+ *
+ *       Notes:
+ *
+ *       File:  mt_ss.c
+ *
+ */
 S16 ssdReInitTmr(void)
 {
    pthread_attr_t attr;
@@ -8529,15 +8530,15 @@ S16 ssdReInitTmr(void)
    if(ret != ROK)
    {
 #if (ERRCLASS & ERRCLS_DEBUG)
-       MTLOGERROR(ERRCLS_DEBUG, EMT046, ERRZERO,
-                       "Could not give the Semaphore");
+      MTLOGERROR(ERRCLS_DEBUG, EMT046, ERRZERO,
+	    "Could not give the Semaphore");
 #endif
-       return RFAILED;
+      return RFAILED;
    }
 #endif   
 
    osCp.dep.tmrTqCp.tmrLen = SS_MAX_TMRS;
-  /* mt010.21: addition */
+   /* mt010.21: addition */
 
 #ifdef SS_MULTICORE_SUPPORT
    sTsk = ssdReAddTmrSTsk(0);
@@ -8570,15 +8571,15 @@ S16 ssdReInitTmr(void)
 #endif
       if ((pthread_create(&osCp.dep.tmrHdlrTID, &attr, mtTmrHdlr, NULLP)) != 0)
       {
-         /* mt020.201 - Addition for destroying thread attribute object attr */
-         pthread_attr_destroy(&attr);
+	 /* mt020.201 - Addition for destroying thread attribute object attr */
+	 pthread_attr_destroy(&attr);
 
-         return RFAILED;
+	 return RFAILED;
       }
 
 #ifdef SS_THR_REG_MAP
       threadCreated = ssCheckAndAddMemoryRegionMap(osCp.dep.tmrHdlrTID, 
-                                                   sTsk->region);
+	    sTsk->region);
    }
 #endif /* SS_THR_REG_MAP */
 #ifdef SS_MEM_WL_DEBUG
@@ -8592,5 +8593,5 @@ S16 ssdReInitTmr(void)
 }
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

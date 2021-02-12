@@ -169,7 +169,7 @@ Void mtSigSegvHndlr()
 {
    int i;
 
-   printf("Backtrace for thread Id (%lu) total threads = %d\n", (unsigned long) pthread_self(), osCp.numSTsks);   
+   DU_LOG("\nDEBUG  -->  Backtrace for thread Id (%lu) total threads = %d\n", (unsigned long) pthread_self(), osCp.numSTsks);   
    ysPrntBkTrace();
    for(i = 0; i < osCp.numSTsks; i++)
    {
@@ -185,7 +185,7 @@ Void mtSigSegvHndlr()
 
 Void mtSigUsr2Hndlr()
 {
-   printf("Backtrace for thread Id (%lu) cause:SIGUSR2(%d)\n",(unsigned long) pthread_self(),SIGUSR2);   
+   DU_LOG("\nDEBUG  -->  Backtrace for thread Id (%lu) cause:SIGUSR2(%d)\n",(unsigned long) pthread_self(),SIGUSR2);   
 
    pthread_mutex_lock(&dumpingLock);  
    ysPrntBkTrace();
@@ -1900,7 +1900,7 @@ uint32_t GetNextFreeIdx(StaticMemAllocInfo * memAllocInfo)
 
    if(newNextFreeIdx == 0 || newNextFreeIdx >= MAX_MEM_ALLOCATIONS)
    {
-      printf("Something wrong in GetNextFreeIdx newNextIdx = %ld\n",newNextFreeIdx);
+      DU_LOG("\nERROR  -->  Something wrong in GetNextFreeIdx newNextIdx = %ld\n",newNextFreeIdx);
    }
 
    memAllocInfo->nextFreeIdx = newNextFreeIdx;
@@ -1913,10 +1913,10 @@ void FreeIdx(uint8_t* ptr, uint32_t idx, StaticMemAllocInfo* memAllocInfo,uint32
 {
    if(idx == 0 || idx >= MAX_MEM_ALLOCATIONS)
    {
-      printf("Something wrong in FreeIdx... idx = %ld called from %s:%ld\n",idx,file,line);
+      DU_LOG("\nERROR  -->  Something wrong in FreeIdx... idx = %ld called from %s:%ld\n",idx,file,line);
       CRASH_ENB
    }
-   /*printf("FreeIdx... idx = %d nexFree = %d\n",idx, memAllocInfo->nextFreeIdx);*/
+   /*DU_LOG("\nINFO  -->  FreeIdx... idx = %d nexFree = %d\n",idx, memAllocInfo->nextFreeIdx);*/
    memAllocInfo->allocations[idx].listInfo.nextIdx = memAllocInfo->nextFreeIdx;
    if((ptr != memAllocInfo->allocations[idx].ptr) ||
       (size != memAllocInfo->allocations[idx].size))
@@ -1925,7 +1925,7 @@ void FreeIdx(uint8_t* ptr, uint32_t idx, StaticMemAllocInfo* memAllocInfo,uint32
 CRASH_ENB
 #endif   
       
-      printf("Freeing wrong ptr stored = %p trying to free %p freeing size (%ld)"
+      DU_LOG("\nERROR  -->  Freeing wrong ptr stored = %p trying to free %p freeing size (%ld)"
             "allocated size(%ld) from %s:%ld\n",
               memAllocInfo->allocations[idx].ptr, 
               ptr,
@@ -1933,8 +1933,9 @@ CRASH_ENB
               memAllocInfo->allocations[idx].size,
               file,
               line);
-      printf("Allocation was done from %s:%ld\n",memAllocInfo->allocations[idx].file, memAllocInfo->allocations[idx].lineNo);
-      printf("***********************************************************\n");
+      DU_LOG("\nINFO  -->  Allocation was done from %s:%ld\n",memAllocInfo->allocations[idx].file,\
+      memAllocInfo->allocations[idx].lineNo);
+      DU_LOG("***********************************************************\n");
       CRASH_ENB
    }
 
@@ -1974,7 +1975,7 @@ void InitializeForStaticMemLeak()
          StaticMemLeakFileArr[3] == NULL)
    {
       int *p = 0;
-      printf("Could not open files for Static Mem Leak detection logging :( crashing...\n");
+      DU_LOG("\nERROR  -->  Could not open files for Static Mem Leak detection logging :( crashing...\n");
       *p = 100;
    }
 

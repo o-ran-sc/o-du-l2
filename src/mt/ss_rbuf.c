@@ -38,7 +38,7 @@
 #include "ssi.x"           /* system services */
 #include "ss_rbuf.h"
 #include "ss_rbuf.x"
-
+#include "du_log.h"
 uint32_t ssRngBufStatus = 0;
 
 /* Global Ring Loop Up Table */
@@ -128,9 +128,9 @@ uint32_t rngSize
     SsRngInfoTbl[id].n_read   = 0;
 
 #ifndef ALIGN_64BIT
-    printf("Ring Buffer Created with id =%ld rSize:%ld eSize:%ld %lx\n",id,ring->size,ring->type,(PTR)ring);
+    DU_LOG("\nINFO  -->  Ring Buffer Created with id =%ld rSize:%ld eSize:%ld %lx\n",id,ring->size,ring->type,(PTR)ring);
 #else
-    printf("Ring Buffer Created with id =%d rSize:%d eSize:%d %lx\n",id,ring->size,ring->type,(PTR)ring);
+    DU_LOG("\nERROR  -->  Ring Buffer Created with id =%d rSize:%d eSize:%d %lx\n",id,ring->size,ring->type,(PTR)ring);
 #endif
     return ROK;
 }
@@ -162,10 +162,10 @@ uint32_t txRx
             "Attach Request in Invalid Ring ID");
 #endif
 #ifndef ALIGN_64BIT
-       printf("Attach Request in Invalid Ring State %ld id%ld \n",
+       DU_LOG("\nERROR  -->  Attach Request in Invalid Ring State %ld id%ld \n",
          SsRngInfoTbl[id].rngState,id);
 #else
-       printf("Attach Request in Invalid Ring State %d id%d \n",
+       DU_LOG("\nERROR  -->  Attach Request in Invalid Ring State %d id%d \n",
          SsRngInfoTbl[id].rngState,id);
 #endif
        return RFAILED;
@@ -475,7 +475,7 @@ S16 mtAddBufToRing(SsRngBufId ringId,void *bufPtr,uint8_t freeType)
    }   
    else
    {
-      printf("Free Ring FULL id %d!!! \n",ringId);
+      DU_LOG("\nERROR  -->  Free Ring FULL id %d!!! \n",ringId);
       SsRngInfoTbl[ringId].pktDrop++;
       ret1 = RFAILED;
    }

@@ -35,7 +35,7 @@
 #include "envopt.h"        /* environment options */
 #include "envdep.h"        /* environment dependent */
 #include "envind.h"        /* environment independent */
-  
+#include "du_log.h"  
 #include "gen.h"           /* general layer */
 #include "ssi.h"           /* system services */
 
@@ -649,7 +649,7 @@ Buffer *mBuf
    CM_MEM_GET_REGION(tmpThrReg)
    if(tmpThrReg == 0xFF)
    {
-      printf("\n Not able to get region \n");
+      DU_LOG("\nERROR  -->  Not able to get region \n");
       return RFAILED;
    }
 #endif
@@ -1269,7 +1269,7 @@ Size size                       /* size requested */
 #endif
    /*size = tmpSize - 4;*/
    {
-      /*printf("ptr = %p *ptr = %p\n",ptr,*ptr);*/
+      /*DU_LOG("\nINFO  -->  ptr = %p *ptr = %p\n",ptr,*ptr);*/
 #ifdef XEON_SPECIFIC_CHANGES
       pthread_mutex_lock(&(memLock));
 #endif      
@@ -1280,7 +1280,7 @@ Size size                       /* size requested */
       /* store the index in the memory allocated itself */
       /**((uint32_t*)*((uint32_t*)allocatedPtr)) = idx;*/
       *((uint32_t*)allocatedPtr) = idx;
-      /*printf("region = %d idx = %d ptr = %p *ptr = %p actual = %p allocated = %p content = %d\n",region, idx, ptr, *ptr, actualPtr, allocatedPtr, *((uint32_t*)allocatedPtr));*/
+      /*DU_LOG("\nINFO  -->  region = %d idx = %d ptr = %p *ptr = %p actual = %p allocated = %p content = %d\n",region, idx, ptr, *ptr, actualPtr, allocatedPtr, *((uint32_t*)allocatedPtr));*/
 
       LogForStaticMemLeak(&SMemLeakInfo[region],
                           file,
@@ -3631,7 +3631,7 @@ Buffer **dstBuf
                (Void) SPutDBuf(minfo1->region, minfo1->pool, newblk);
                newblk = curblk;
             }
-            printf("Failed to get the buffer of size %s %d\n", __FILE__, __LINE__);
+            DU_LOG("\nERROR  -->  Failed to get the buffer of size %s %d\n", __FILE__, __LINE__);
             (Void) SPutMsg(*dstBuf);
             return (ROUTRES);
          }
@@ -4100,7 +4100,7 @@ Buffer **bufPtr
 #ifndef SS_DBUF_REFLOCK_DISABLE
    if((SInitLock (&(dptr->dBufLock), SS_LOCK_MUTEX)) != 0)
    {
-      printf("Falied to destroy lock\n");
+      DU_LOG("\nERROR  -->  Falied to destroy lock\n");
    }
 #endif
 
@@ -4257,7 +4257,7 @@ Buffer *buf
         ret = SUnlock(&dptr->dBufLock) ;
         if((SDestroyLock(&dptr->dBufLock)) != 0)
         {
-            printf("Falied to destroy lock\n");
+            DU_LOG("\nERROR  -->  Falied to destroy lock\n");
         }
 #endif
       /* free buffer to region */
@@ -5405,11 +5405,11 @@ S16 dst                     /* destination id */
            (uint16_t)qlen,(uint16_t)mlen,src,dst,reg);
    SPrint( prntBuf);
 #ifdef XEON_SPECIFIC_CHANGES
-   printf("%s\n", prntBuf);
+   DU_LOG("%s\n", prntBuf);
 #endif   
    SPrint((S8*) "dat: ");
 #ifdef XEON_SPECIFIC_CHANGES
-   printf("\ndat: ");
+   DU_LOG("\ndat: ");
 #endif   
 
    if (mlen == 0)
@@ -5435,7 +5435,7 @@ S16 dst                     /* destination id */
             sprintf( prntBuf,"%02x ",(uint16_t) data);
             SPrint( prntBuf);
 #ifdef XEON_SPECIFIC_CHANGES
-   printf("%s\n", prntBuf);
+   DU_LOG("%s\n", prntBuf);
 #endif   
             if (cptr == tmp->b_wptr)
             {
@@ -5453,7 +5453,7 @@ S16 dst                     /* destination id */
             sprintf( prntBuf,"   ");
             SPrint( prntBuf );
 #ifdef XEON_SPECIFIC_CHANGES
-   printf("%s\n", prntBuf);
+   DU_LOG("%s\n", prntBuf);
 #endif   
          }
       } 
@@ -5467,7 +5467,7 @@ S16 dst                     /* destination id */
             sprintf(prntBuf,"%c",tdata[k]);
             SPrint( prntBuf);
 #ifdef XEON_SPECIFIC_CHANGES
-   printf("%s\n", prntBuf);
+   DU_LOG("%s\n", prntBuf);
 #endif   
          }
          else
@@ -5475,14 +5475,14 @@ S16 dst                     /* destination id */
             /* print . if non printable */
             SPrint((S8*) ".");
 #ifdef XEON_SPECIFIC_CHANGES
-   printf(".");
+   DU_LOG(".");
 #endif   
          }
       }
       sprintf(prntBuf,"\n     ");
       SPrint(prntBuf);
 #ifdef XEON_SPECIFIC_CHANGES
-   printf("%s\n", prntBuf);
+   DU_LOG("%s\n", prntBuf);
 #endif   
    }
    return ROK;
@@ -7291,7 +7291,7 @@ Buffer *dstBuf              /* message 2 */
             idx -= sCnt;
             /* deallocate the sBuf here */
             tmp = sBuf->b_cont;
-            /* printf("SMovPartMsg() sBuf is completely copied sBuf->b_cont(%p)\n", sBuf->b_cont); */
+            /* DU_LOG("\nINFO  -->  SMovPartMsg() sBuf is completely copied sBuf->b_cont(%p)\n", sBuf->b_cont); */
             (Void)SPutDBuf(sMinfo->region, sMinfo->pool, sBuf);
             srcBuf->b_cont = sBuf = tmp;
          }
@@ -7558,7 +7558,7 @@ Buffer** mBuf
 #ifndef SS_DBUF_REFLOCK_DISABLE
    if((SInitLock (&(dptr->dBufLock), SS_LOCK_MUTEX)) != 0)
    {
-      printf("Falied to destroy lock\n");
+      DU_LOG("\nERROR  -->  Falied to destroy lock\n");
    }
 #endif
 
@@ -7668,7 +7668,7 @@ Buffer *buf
          ret = SUnlock(&dptr->dBufLock) ;
          if((SDestroyLock(&dptr->dBufLock)) != 0)
          {
-             printf("Falied to destroy lock\n");
+             DU_LOG("\nERROR  -->  Falied to destroy lock\n");
          }
 #endif
 #ifdef SS_HISTOGRAM_SUPPORT 
@@ -7789,7 +7789,7 @@ Buffer** mBuf
 #ifndef SS_DBUF_REFLOCK_DISABLE
    if((SInitLock (&(dptr->dBufLock), SS_LOCK_MUTEX)) != 0)
    {
-      printf("Falied to destroy lock\n");
+      DU_LOG("\nERROR  -->  Falied to destroy lock\n");
    }
 #endif
 
@@ -7800,7 +7800,7 @@ Buffer** mBuf
    minfo->len    = totalLen;
    minfo->endptr = newblk;
 
-   //printf("Mbuf PTR = %x, DBlk PTR = %x, PTR = %x\n", *mBuf, newblk, ptr);
+   //DU_LOG("\nINFO  -->  Mbuf PTR = %x, DBlk PTR = %x, PTR = %x\n", *mBuf, newblk, ptr);
    return ROK;
 }
 #endif /* INTEL_WLS */
@@ -7828,7 +7828,7 @@ Void SResetMBuf(Buffer *mbuf)
    if(tmp)
    {
 
-    //    printf("SResetMBuf The write & read ptr is %p %p %p %p \n", tmp->b_wptr, tmp->b_rptr, tmp->b_datap->db_base, tmp->b_datap->db_lim );
+    //    DU_LOG("\nINFO  -->  SResetMBuf The write & read ptr is %p %p %p %p \n", tmp->b_wptr, tmp->b_rptr, tmp->b_datap->db_base, tmp->b_datap->db_lim );
 //      tmp->b_wptr = tmp->b_rptr = tmp->b_datap->db_base;
       tmp->b_wptr = tmp->b_rptr = (tmp->b_datap->db_base + 5);
       tmp->b_datap->db_ref = 1;
@@ -7936,7 +7936,7 @@ Buffer** mBuf
 #ifndef SS_DBUF_REFLOCK_DISABLE
    if((SInitLock (&(dptr->dBufLock), SS_LOCK_MUTEX)) != 0)
    {
-      printf("Falied to destroy lock\n");
+      DU_LOG("\nERROR  -->  Falied to destroy lock\n");
    }
 #endif
 
@@ -7947,7 +7947,7 @@ Buffer** mBuf
    minfo->len    = totalLen;
    minfo->endptr = newblk;
 
-   //printf("Mbuf PTR = %x, DBlk PTR = %x, PTR = %x\n", *mBuf, newblk, ptr);
+   //DU_LOG("\nINFO  -->  Mbuf PTR = %x, DBlk PTR = %x, PTR = %x\n", *mBuf, newblk, ptr);
    return ROK;
 }
 
