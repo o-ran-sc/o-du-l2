@@ -32,9 +32,6 @@
 @brief The scheduling functionality is implemented in this file.
 */
 
-static const char* RLOG_MODULE_NAME="MAC";
-static int RLOG_MODULE_ID=4096;
-static int RLOG_FILE_ID=173;
 
 /* header include files -- defines (.h) */
 #include "common_def.h"
@@ -680,7 +677,7 @@ static S16 rgSCHSc1DlDedSvcAlloc(RgSchCellCb *cell,RgSchDlSf *subFrm,RgSchDlLcCb
       /* scheduling may be done for this UE                       */
       if (RG_SCH_CMN_PROC_SLCTD_FOR_RETX(proc))
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,"CRNTI:%d rgSCHSc1DlDedSvcAlloc():"
+         DU_LOG("\nERROR  -->  SCH : CRNTI:%d rgSCHSc1DlDedSvcAlloc():"
             "Ue retransmitting",ue->ueId);
          return ROK;
       }
@@ -696,7 +693,7 @@ static S16 rgSCHSc1DlDedSvcAlloc(RgSchCellCb *cell,RgSchDlSf *subFrm,RgSchDlLcCb
    {
       if (rgSCHDhmGetAvlHqProc(cell, ue, cmnCellDl->time, &proc) != ROK)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, "CRNTI:%d rgSCHSc1DlDedSvcAlloc():"
+         DU_LOG("\nERROR  -->  SCH : CRNTI:%d rgSCHSc1DlDedSvcAlloc():"
             " No HARQ Proc available", ue->ueId);
          return ROK;
       }
@@ -926,10 +923,7 @@ static Void rgSCHSc1DlPstSchd(Inst  schInst)
 static Void rgSCHSc1DlDedNewTx(RgSchCellCb *cell,RgSchCmnDlRbAllocInfo *allocInfo)
 {
    RgSchDlSf            *subFrm = allocInfo->dedAlloc.dedDlSf;
-#ifdef DEBUGP
-   Inst                 inst = cell->instIdx;
-#endif
-   RGSCHDBGPRM(inst, (rgSchPBuf(inst), "rgSCHSc1DlDedNewTx\n"));
+   DU_LOG("\nDEBUG  -->  SCH : rgSCHSc1DlDedNewTx\n");
 
    /* Now perform the new UE selections */
    rgSCHSc1DlDedTx(cell, subFrm, allocInfo);
@@ -956,11 +950,8 @@ static Void rgSCHSc1DlDedNewTx(RgSchCellCb *cell,RgSchCmnDlRbAllocInfo *allocInf
  **/
 static Void rgSCHSc1DlDedRetx(RgSchCellCb *cell,RgSchCmnDlRbAllocInfo *allocInfo)
 {
-   RgSchDlSf            *subFrm = allocInfo->dedAlloc.dedDlSf;
-#ifdef DEBUGP
-   Inst                 inst = cell->instIdx;
-#endif
-   RGSCHDBGPRM(inst, (rgSchPBuf(inst), "rgSCHSc1DlDedRetx\n"));
+   RgSchDlSf  *subFrm = allocInfo->dedAlloc.dedDlSf;
+   DU_LOG("\nDEBUG  -->  SCH : rgSCHSc1DlDedRetx\n");
 
    rgSCHSc1DlRetxAlloc(cell, subFrm, allocInfo);
 
@@ -1674,8 +1665,7 @@ S16 rgSCHSc1RgrDlCellCfg(RgSchCellCb *cell,RgrCellCfg *cellCfg,RgSchErrInfo *err
       (Data**)&(((RgSchCmnCell*)((cell)->sc.sch))->dl.schSpfc), \
       (sizeof(RgSchSc1DlCell)))) != ROK)
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
-         "Memory allocation FAILED");
+      DU_LOG("\nERROR  -->  SCH : Memory allocation FAILED");
       err->errCause = RGSCHERR_SCH_SC1_DL_CFG;
       return (ret);
    }
@@ -1772,7 +1762,7 @@ S16 rgSCHSc1RgrDlUeCfg(RgSchCellCb  *cell,RgSchUeCb *ue,RgrUeCfg *ueCfg,RgSchErr
    if((rgSCHUtlAllocSBuf(inst, 
                (Data**)&(ueSchCmn->dl.schSpfc), (sizeof(RgSchSc1DlUe))) != ROK))
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, "Memory allocation FAILED"
+      DU_LOG("\nERROR  -->  SCH : Memory allocation FAILED"
                "CRNTI:%d",ue->ueId);
       err->errCause = RGSCHERR_SCH_SC1_DL_CFG;
       return RFAILED;
@@ -1822,8 +1812,7 @@ S16 rgSCHSc1DlUeHqEntInit(RgSchCellCb *cell,RgSchDlHqEnt *hqEnt)
             (Data**)&(hqEnt->sch),
             (hqEnt->numHqPrcs * sizeof(RgSchSc1DlHqProc))) != ROK)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-               "Memory allocation FAILED CRNTI:%d",hqEnt->ue->ueId);
+      DU_LOG("\nERROR  -->  SCH : Memory allocation FAILED CRNTI:%d",hqEnt->ue->ueId);
       return RFAILED;
    }
    hqSpcSch = (RgSchSc1DlHqProc *)(hqEnt->sch);
@@ -2218,7 +2207,7 @@ S16 rgSCHSc1RgrLcCfg(RgSchCellCb  *cell,RgSchUeCb    *ue,RgSchDlLcCb  *dlLc,RgrL
       (sizeof(RgSchSc1DlSvc)));
    if (ret != ROK)
    {
-      RLOG_ARG2(L_ERROR,DBG_CELLID,cell->cellId, "rgSCHSc1CrgLcCfg():"
+      DU_LOG("\nERROR  -->  SCH : rgSCHSc1CrgLcCfg():"
       "SCH struct alloc failed CRNTI:%d LCID:%d",ue->ueId,lcCfg->lcId);
       err->errCause = RGSCHERR_SCH_SC1_DL_CFG;
       return (ret);
@@ -3387,8 +3376,7 @@ S16 rgSCHSc1RgrUlUeCfg(RgSchCellCb  *cell,RgSchUeCb *ue,RgrUeCfg  *ueCfg,RgSchEr
    if(rgSCHUtlAllocSBuf(cell->instIdx, 
       (Data**)&(ueSchCmn->ul.schSpfc), (sizeof(RgSchSc1UlUe))) != ROK)
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId,
-      "Memory allocation FAILED CRNTI:%d",ue->ueId);
+      DU_LOG("\nERROR  -->  SCH : Memory allocation FAILED CRNTI:%d",ue->ueId);
       err->errCause = RGSCHERR_SCH_SC1_UL_CFG;
       return RFAILED;
    }
@@ -3522,8 +3510,7 @@ S16 rgSCHSc1RgrUlCellCfg(RgSchCellCb  *cell,RgrCellCfg  *cellCfg,RgSchErrInfo *e
       (Data**)&(((RgSchCmnCell*)((cell)->sc.sch))->ul.schSpfc), \
       (sizeof(RgSchSc1UlCell))) != ROK))
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cell->cellId,
-      "Memory allocation FAILED");
+      DU_LOG("\nERROR  -->  SCH : Memory allocation FAILED");
       err->errCause = RGSCHERR_SCH_SC1_UL_CFG;
       return RFAILED;
    }

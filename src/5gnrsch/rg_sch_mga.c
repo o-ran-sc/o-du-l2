@@ -31,9 +31,6 @@
 /** @file rg_sch_mga.c
 @brief This module handles schedulers' measurement gap and ack-nack repetiton functionality */
 
-static const char* RLOG_MODULE_NAME="MAC";
-static int RLOG_MODULE_ID=4096;
-static int RLOG_FILE_ID=169;
 
 /* header include files -- defines (.h) */
 #include "common_def.h"
@@ -294,8 +291,7 @@ static S16 rgSCHMeasGapANRepUtlAddUe(RgSchCellCb *cell,RgSchUeCb *ue,RgrUeMeasGa
                &(ue->measGapCb.measQLnk));
          break;
       default:
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cell->cellId, 
-                  "rgSCHMeasGapANRepUeRecfg() Incorrect GAP Period"
+         DU_LOG("\nERROR  -->  SCH : rgSCHMeasGapANRepUeRecfg() Incorrect GAP Period"
                   "CRNTI:%d",ue->ueId);
          return RFAILED;
    }
@@ -949,7 +945,8 @@ S16 rgSCHMeasGapANRepGetUlInactvUe(RgSchCellCb *cell,CmLListCp   *ulInactvUeLst)
           * ahead - UE cant read PDCCH format0 if it is in measurement gap. */
          rgSCHTmrStartTmr (cell, ue, RG_SCH_TMR_UL_MEASGAP, 
                (RG_SCH_MEAS_GAP_LEN + pdcchToPuschGap - idx));
-   //printf("Starting Meas Gap 40 @ DL TTI- (%d:%d) K-%d offset-%d Len %d \n", ackNakTime.sfn, ackNakTime.subframe, harqFdbkOffset, offset, RG_SCH_MEAS_GAP_LEN + harqFdbkOffset-idx);
+   //DU_LOG("\nINFO  -->  SCH : Starting Meas Gap 40 @ DL TTI- (%d:%d) K-%d offset-%d Len %d \n", ackNakTime.sfn,\
+   ackNakTime.subframe, harqFdbkOffset, offset, RG_SCH_MEAS_GAP_LEN + harqFdbkOffset-idx);
          }
          node = node->next;
       }
@@ -971,7 +968,8 @@ S16 rgSCHMeasGapANRepGetUlInactvUe(RgSchCellCb *cell,CmLListCp   *ulInactvUeLst)
          /* Start timer */
          rgSCHTmrStartTmr (cell, ue, RG_SCH_TMR_UL_MEASGAP, 
                (RG_SCH_MEAS_GAP_LEN + pdcchToPuschGap - idx));
-   //printf("Starting Meas Gap 80 @ DL TTI- (%d:%d) K-%d offset-%d Len %d \n", ackNakTime.sfn, ackNakTime.subframe, harqFdbkOffset, offset, RG_SCH_MEAS_GAP_LEN + harqFdbkOffset-idx);
+   //DU_LOG("\nINFO  -->  SCH : Starting Meas Gap 80 @ DL TTI- (%d:%d) K-%d offset-%d Len %d \n", ackNakTime.sfn,\
+   ackNakTime.subframe, harqFdbkOffset, offset, RG_SCH_MEAS_GAP_LEN + harqFdbkOffset-idx);
          }
          node = node->next;
       }

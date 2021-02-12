@@ -32,11 +32,6 @@
 @brief This module handles the  Periodic CQI/PMI/RI, SRS, SR and Half Duplex 
        functionality 
 */
-#ifdef LTEMAC_HDFDD
-static const char* RLOG_MODULE_NAME="MAC";
-static int RLOG_MODULE_ID=4096;
-static int RLOG_FILE_ID=165;
-#endif
 
 /* header include files -- defines (.h) */
 #include "common_def.h"
@@ -96,23 +91,20 @@ S16 rgSCHHdFddUeCfg(RgSchCellCb  *cellCb,RgSchUeCb *ueCb,Bool hdFddEnbl)
 {
    uint8_t sfi;
 
-   RLOG_ARG2(L_DEBUG,DBG_CELLID,cellCb->cellId,
-               "rgSCHHdFddUeCfg(): UeId =%d hdFddEnbl=%d",
+   DU_LOG("\nDEBUG  -->  SCH : rgSCHHdFddUeCfg(): UeId =%d hdFddEnbl=%d",
                ueCb->ueId, hdFddEnbl);
    if(ueCb->hdFddEnbld == TRUE)
    {
       if (hdFddEnbl == FALSE)
       {
          /* Do not allow switch from HD-FDD to FD-FDD configuration */
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId,
-               "rgSCHHdFddUeCfg(): HD-FDD  to FD-FDD Configuration is not allowed"
+         DU_LOG("\nERROR  -->  SCH : rgSCHHdFddUeCfg(): HD-FDD  to FD-FDD Configuration is not allowed"
                "CRNTI:%d",ueCb->ueId);
       }
       else
       {
          /* If already enabled then it can be second reconfiguration */
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId,
-                  "rgSCHHdFddUeCfg(): HD-FDD already enabled for this UE"
+         DU_LOG("\nERROR  -->  SCH : rgSCHHdFddUeCfg(): HD-FDD already enabled for this UE"
                   "CRNTI:%d",ueCb->ueId);
       }
       return RFAILED;
@@ -124,8 +116,7 @@ S16 rgSCHHdFddUeCfg(RgSchCellCb  *cellCb,RgSchUeCb *ueCb,Bool hdFddEnbl)
        (ueCb->ul.ulSpsCfg.isUlSpsEnabled == TRUE ||
         ueCb->dl.dlSpsCfg.isDlSpsEnabled == TRUE))
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId,
-      "rgSCHHdFddUeCfg(): Could'nt do HDFDD cfg, SPS already configured"
+      DU_LOG("\nERROR  -->  SCH : rgSCHHdFddUeCfg(): Could'nt do HDFDD cfg, SPS already configured"
                "CRNTI:%d",ueCb->ueId);
       return RFAILED;
    }
@@ -148,8 +139,7 @@ S16 rgSCHHdFddUeCfg(RgSchCellCb  *cellCb,RgSchUeCb *ueCb,Bool hdFddEnbl)
       }
       else
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cellCb->cellId,
-               "rgSCHHdFddUeCfg(): Could not allocate memory for hd-fdd ueCb"
+         DU_LOG("\nERROR  -->  SCH : rgSCHHdFddUeCfg(): Could not allocate memory for hd-fdd ueCb"
                "CRNTI:%d",ueCb->ueId);
          return RFAILED;
       }
@@ -185,8 +175,7 @@ S16 rgSCHHdFddUeCfg(RgSchCellCb  *cellCb,RgSchUeCb *ueCb,Bool hdFddEnbl)
 S16 rgSCHHdFddUeDel(RgSchCellCb *cellCb,RgSchUeCb   *ueCb)
 {
 
-   RLOG_ARG2(L_DEBUG,DBG_CELLID,cellCb->cellId,
-             " rgSCHHdFddUeDel(): UeId =%d hdFdd=%x",
+    DU_LOG("\nDEBUG  -->  SCH : rgSCHHdFddUeDel(): UeId =%d hdFdd=%x",
              ueCb->ueId, ueCb->hdFddEnbld);
 
 
@@ -350,8 +339,7 @@ Void rgSCHCmnHdFddChkUlAllow(RgSchCellCb *cellCb,RgSchUeCb *ueCb,uint8_t *allow)
    RgSchDlSf        *sf = NULLP; /* Dl subframe info */
    uint8_t          ulOffset
 
-   RLOG_ARG1(L_DEBUG,DBG_CELLID,cellCb->cellId, 
-            " rgSCHCmnHdFddChkUlAllow: ueId=%d ", ueCb->ueId);
+   DU_LOG("\nDEBUG  -->  SCH :  rgSCHCmnHdFddChkUlAllow: ueId=%d ", ueCb->ueId);
 
    *allow = FALSE;
 
@@ -379,8 +367,7 @@ Void rgSCHCmnHdFddChkUlAllow(RgSchCellCb *cellCb,RgSchUeCb *ueCb,uint8_t *allow)
          /* Common channel scheduled */
          /* Mark the BCCH/PCCH occasion */
          RG_SCH_HDFDD_MARKSTATE(ueCb, RG_SCH_HDFDD_DLDATA, sfn, sfi);
-         RLOG_ARG1(L_DEBUG,DBG_CELLID,cellCb->cellId,  
-            "rgSCHCmnHdFddChkUlAllow: Already marked for Cmn DL, ueId = %d ",
+         DU_LOG("\nDEBUG  -->  SCH : rgSCHCmnHdFddChkUlAllow: Already marked for Cmn DL, ueId = %d ",
             ueCb->ueId);
    }
    if ((ueCb->hdFddCb->subfrm[sfi].sfn == sfn) &&
@@ -389,8 +376,7 @@ Void rgSCHCmnHdFddChkUlAllow(RgSchCellCb *cellCb,RgSchUeCb *ueCb,uint8_t *allow)
    {
       /* Downlink scheduled */
       *allow = FALSE;
-      RLOG_ARG1(L_DEBUG,DBG_CELLID,cellCb->cellId,  
-               "rgSCHCmnHdFddChkUlAllow: Already marked for DL, ueId = %d ",
+      DU_LOG("\nERROR  -->  SCH : rgSCHCmnHdFddChkUlAllow: Already marked for DL, ueId = %d ",
                ueCb->ueId);
       return;
    }
@@ -405,8 +391,7 @@ Void rgSCHCmnHdFddChkUlAllow(RgSchCellCb *cellCb,RgSchUeCb *ueCb,uint8_t *allow)
    {
       /* No place for HARQ feedback */
       *allow = FALSE;
-      RLOG_ARG1(L_DEBUG,DBG_CELLID,cellCb->cellId,  
-         "rgSCHCmnHdFddChkUlAllow: No Place for HARQ, ueId = %d ",
+      DU_LOG("\nERROR  -->  SCH : rgSCHCmnHdFddChkUlAllow: No Place for HARQ, ueId = %d ",
          ueCb->ueId);
       return;
 
@@ -420,8 +405,7 @@ Void rgSCHCmnHdFddChkUlAllow(RgSchCellCb *cellCb,RgSchUeCb *ueCb,uint8_t *allow)
        ueCb->hdFddCb->subfrm[sfi].subFrmDir == RG_SCH_HDFDD_UL)
    {
       *allow = FALSE;
-      RLOG_ARG1(L_DEBUG,DBG_CELLID,cellCb->cellId,  
-               " rgSCHCmnHdFddChkUlAllow: No Place for UL grant, ueId = %d ",
+      DU_LOG("\nERROR  -->  SCH :  rgSCHCmnHdFddChkUlAllow: No Place for UL grant, ueId = %d ",
                ueCb->ueId);
       return;
 
@@ -435,8 +419,7 @@ Void rgSCHCmnHdFddChkUlAllow(RgSchCellCb *cellCb,RgSchUeCb *ueCb,uint8_t *allow)
    {
       /* This subframe may be a switching gaurd time */
       *allow = FALSE;
-      RLOG_ARG1(L_DEBUG,DBG_CELLID,cellCb->cellId,  
-             " rgSCHCmnHdFddChkUlAllow: No Place for Guard time, ueId = %d ",
+      DU_LOG("\nERROR  -->  SCH :  rgSCHCmnHdFddChkUlAllow: No Place for Guard time, ueId = %d ",
              ueCb->ueId);
       return;
 
@@ -453,8 +436,7 @@ Void rgSCHCmnHdFddChkUlAllow(RgSchCellCb *cellCb,RgSchUeCb *ueCb,uint8_t *allow)
       /* Mark the BCCH/PCCH occasion */
       RG_SCH_HDFDD_MARKSTATE(ueCb, RG_SCH_HDFDD_DLDATA, timeInfo.sfn, sfi);
       *allow = FALSE;
-      RLOG_ARG1(L_DEBUG,DBG_CELLID,cellCb->cellId,  
-         "rgSCHCmnHdFddChkUlAllow: Already marked for Cmn DL, ueId = %d ",
+      DU_LOG("\nERROR  -->  SCH : rgSCHCmnHdFddChkUlAllow: Already marked for Cmn DL, ueId = %d ",
          ueCb->ueId);
       return;
 
@@ -516,8 +498,7 @@ Bool *allow /* Valdity of this pointer is not done in this function */
    timeInfo = cellCb->crntTime;
    RGSCH_INCR_SUB_FRAME(timeInfo, RG_SCH_CMN_DL_DELTA);
 
-   RLOG_ARG1(L_DEBUG,DBG_CELLID,cellCb->cellId,  
-            "rgSCHCmnHdFddDlSchAll (): ueId=%d ", ueCb->ueId);
+   DU_LOG("\nDEBUG  -->  SCH : rgSCHCmnHdFddDlSchAll (): ueId=%d ", ueCb->ueId);
 
    /* Also get subframe pointer to fetch Common Ch allocation */
    sf = rgSCHUtlSubFrmGet(cellCb, timeInfo);
@@ -531,8 +512,7 @@ Bool *allow /* Valdity of this pointer is not done in this function */
         (ueCb->hdFddCb->subfrm[sfi].subFrmDir == RG_SCH_HDFDD_UL))
    {
       /* Uplink scheduled */
-      RLOG_ARG1(L_DEBUG,DBG_CELLID,cellCb->cellId,  
-               "rgSCHCmnHdFddChkDlAllow: sf is UL, ueId=%d ", ueCb->ueId);
+      DU_LOG("\nERROR  -->  SCH : rgSCHCmnHdFddChkDlAllow: sf is UL, ueId=%d ", ueCb->ueId);
       *allow = FALSE;
       return;
    }
@@ -552,8 +532,7 @@ Bool *allow /* Valdity of this pointer is not done in this function */
           (ueCb->hdFddCb->subfrm[sfi].subFrmDir == RG_SCH_HDFDD_UL))
    {
       /* This subframe may be a switching guard time */
-      RLOG_ARG1(L_DEBUG,DBG_CELLID,cellCb->cellId,  
-              " rgSCHCmnHdFddChkDlAllow: Guard time rule not met, ueId=%d ",
+      DU_LOG("\nERROR  -->  SCH :  rgSCHCmnHdFddChkDlAllow: Guard time rule not met, ueId=%d ",
               ueCb->ueId);
       *allow = FALSE;
       return;
@@ -575,8 +554,7 @@ Bool *allow /* Valdity of this pointer is not done in this function */
          /* Common channel scheduled */
       /* Do the marking for this subframe */
       RG_SCH_HDFDD_MARKSTATE(ueCb, RG_SCH_HDFDD_DLDATA, tempTimeInfo.sfn, sfi);
-      RLOG_ARG1(L_DEBUG,DBG_CELLID,cellCb->cellId,  
-              "rgSCHCmnHdFddChkDlAllow: Possible systemInfo, ueId=%d ",
+      DU_LOG("\nDEBUG  -->  SCH : rgSCHCmnHdFddChkDlAllow: Possible systemInfo, ueId=%d ",
               ueCb->ueId);
    }
 
@@ -585,8 +563,7 @@ Bool *allow /* Valdity of this pointer is not done in this function */
        ueCb->hdFddCb->subfrm[sfi].subFrmDir != RG_SCH_HDFDD_UL)
    {
       /* No place for HARQ feedback */
-      RLOG_ARG1(L_DEBUG,DBG_CELLID,cellCb->cellId,  
-            "rgSCHCmnHdFddChkDlAllow: No place for HARQ feedback, ueId=%d ",
+      DU_LOG("\nERROR  -->  SCH : rgSCHCmnHdFddChkDlAllow: No place for HARQ feedback, ueId=%d ",
             ueCb->ueId);
       *allow = FALSE;
 
@@ -609,8 +586,7 @@ Bool *allow /* Valdity of this pointer is not done in this function */
          /* Common channel scheduled */
       /* Do the marking for this subframe */
       RG_SCH_HDFDD_MARKSTATE(ueCb, RG_SCH_HDFDD_DLDATA, tempTimeInfo.sfn, sfi);
-      RLOG_ARG1(L_DEBUG,DBG_CELLID,cellCb->cellId,
-              "rgSCHCmnHdFddChkDlAllow: (GT) Possible systemInfo, ueId=%d ",
+      DU_LOG("\nDEBUG  -->  SCH : rgSCHCmnHdFddChkDlAllow: (GT) Possible systemInfo, ueId=%d ",
               ueCb->ueId);
    }
 
@@ -618,8 +594,7 @@ Bool *allow /* Valdity of this pointer is not done in this function */
        ueCb->hdFddCb->subfrm[sfi].subFrmDir == RG_SCH_HDFDD_DLDATA)
    {
       /* No place for HARQ feedback */
-      RLOG_ARG1(L_DEBUG,DBG_CELLID,cellCb->cellId,
-            "rgSCHCmnHdFddChkDlAllow: (GT) No place for HARQ feedback,"
+      DU_LOG("\nERROR  -->  SCH : rgSCHCmnHdFddChkDlAllow: (GT) No place for HARQ feedback,"
              "ueId=%d ",ueCb->ueId);
 
       *allow = FALSE;
@@ -670,16 +645,14 @@ Void rgSCHCmnHdFddChkNackAllow(RgSchCellCb *cellCb,RgSchUeCb *ueCb,CmLteTimingIn
    if(RG_SCH_HDFDD_ISCMN_SCHED(sf))
    {
       /* Yes, Cannot send NACK */
-      RLOG_ARG1(L_DEBUG,DBG_CELLID,cellCb->cellId,
-               "rgSCHCmnHdFddChkNackAllow: Cannot send NACK, ueId = %d ",
+      DU_LOG("\nERROR  -->  SCH : rgSCHCmnHdFddChkNackAllow: Cannot send NACK, ueId = %d ",
                ueCb->ueId);
       *sndNACK = FALSE;
    }
    else
    {
       /* safe, Send NACK */
-      RLOG_ARG1(L_DEBUG,DBG_CELLID,cellCb->cellId,
-               "rgSCHCmnHdFddChkNackAllow: NACk can be sent, ueId = %d ",
+      DU_LOG("\nDEBUG  -->  SCH : rgSCHCmnHdFddChkNackAllow: NACk can be sent, ueId = %d ",
                ueCb->ueId);
       *sndNACK = TRUE;
    }
