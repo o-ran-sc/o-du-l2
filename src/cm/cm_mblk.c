@@ -102,12 +102,12 @@ Ptr             *ptr         /* Location to place allocated event ptr */
 #ifndef LTE_ENB_PAL
   if( evntSize > maxBlkSize)
   {
-     printf("\nNot Allocating memory for Event\n");
+     DU_LOG("\nERROR  -->  Not Allocating memory for Event\n");
 #ifdef ALIGN_64BIT
-     printf("eventSize [%d] greater than maxBlkSize [%d]\n",
+     DU_LOG("\nERROR  -->  eventSize [%d] greater than maxBlkSize [%d]\n",
            evntSize, maxBlkSize);
 #else
-     printf("eventSize [%ld] greater than maxBlkSize [%ld]\n",
+     DU_LOG("\nERROR  -->  eventSize [%ld] greater than maxBlkSize [%ld]\n",
            evntSize, maxBlkSize);
 #endif
      return RFAILED;
