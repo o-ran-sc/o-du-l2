@@ -169,7 +169,7 @@ Void mtSigSegvHndlr()
 {
    int i;
 
-   printf("Backtrace for thread Id (%lu) total threads = %d\n", (unsigned long) pthread_self(), osCp.numSTsks);   
+   printf("\nBacktrace for thread Id (%lu) total threads = %d\n", (unsigned long) pthread_self(), osCp.numSTsks);   
    ysPrntBkTrace();
    for(i = 0; i < osCp.numSTsks; i++)
    {
@@ -185,7 +185,7 @@ Void mtSigSegvHndlr()
 
 Void mtSigUsr2Hndlr()
 {
-   printf("Backtrace for thread Id (%lu) cause:SIGUSR2(%d)\n",(unsigned long) pthread_self(),SIGUSR2);   
+   printf("\nBacktrace for thread Id (%lu) cause:SIGUSR2(%d)\n",(unsigned long) pthread_self(),SIGUSR2);   
 
    pthread_mutex_lock(&dumpingLock);  
    ysPrntBkTrace();
@@ -1900,7 +1900,7 @@ uint32_t GetNextFreeIdx(StaticMemAllocInfo * memAllocInfo)
 
    if(newNextFreeIdx == 0 || newNextFreeIdx >= MAX_MEM_ALLOCATIONS)
    {
-      printf("Something wrong in GetNextFreeIdx newNextIdx = %ld\n",newNextFreeIdx);
+      printf("\nSomething wrong in GetNextFreeIdx newNextIdx = %ld\n",newNextFreeIdx);
    }
 
    memAllocInfo->nextFreeIdx = newNextFreeIdx;
@@ -1925,7 +1925,7 @@ void FreeIdx(uint8_t* ptr, uint32_t idx, StaticMemAllocInfo* memAllocInfo,uint32
 CRASH_ENB
 #endif   
       
-      printf("Freeing wrong ptr stored = %p trying to free %p freeing size (%ld)"
+      printf("\nFreeing wrong ptr stored = %p trying to free %p freeing size (%ld)"
             "allocated size(%ld) from %s:%ld\n",
               memAllocInfo->allocations[idx].ptr, 
               ptr,
@@ -1933,8 +1933,8 @@ CRASH_ENB
               memAllocInfo->allocations[idx].size,
               file,
               line);
-      printf("Allocation was done from %s:%ld\n",memAllocInfo->allocations[idx].file, memAllocInfo->allocations[idx].lineNo);
-      printf("***********************************************************\n");
+      printf("\nAllocation was done from %s:%ld\n",memAllocInfo->allocations[idx].file, memAllocInfo->allocations[idx].lineNo);
+      printf("\n***********************************************************\n");
       CRASH_ENB
    }
 
@@ -1974,7 +1974,7 @@ void InitializeForStaticMemLeak()
          StaticMemLeakFileArr[3] == NULL)
    {
       int *p = 0;
-      printf("Could not open files for Static Mem Leak detection logging :( crashing...\n");
+      printf("\nCould not open files for Static Mem Leak detection logging :( crashing...\n");
       *p = 100;
    }
 

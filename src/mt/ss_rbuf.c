@@ -128,9 +128,9 @@ uint32_t rngSize
     SsRngInfoTbl[id].n_read   = 0;
 
 #ifndef ALIGN_64BIT
-    printf("Ring Buffer Created with id =%ld rSize:%ld eSize:%ld %lx\n",id,ring->size,ring->type,(PTR)ring);
+    printf("\nRing Buffer Created with id =%ld rSize:%ld eSize:%ld %lx\n",id,ring->size,ring->type,(PTR)ring);
 #else
-    printf("Ring Buffer Created with id =%d rSize:%d eSize:%d %lx\n",id,ring->size,ring->type,(PTR)ring);
+    printf("\nRing Buffer Created with id =%d rSize:%d eSize:%d %lx\n",id,ring->size,ring->type,(PTR)ring);
 #endif
     return ROK;
 }
@@ -162,10 +162,10 @@ uint32_t txRx
             "Attach Request in Invalid Ring ID");
 #endif
 #ifndef ALIGN_64BIT
-       printf("Attach Request in Invalid Ring State %ld id%ld \n",
+       printf("\nAttach Request in Invalid Ring State %ld id%ld \n",
          SsRngInfoTbl[id].rngState,id);
 #else
-       printf("Attach Request in Invalid Ring State %d id%d \n",
+       printf("\nAttach Request in Invalid Ring State %d id%d \n",
          SsRngInfoTbl[id].rngState,id);
 #endif
        return RFAILED;
@@ -475,7 +475,7 @@ S16 mtAddBufToRing(SsRngBufId ringId,void *bufPtr,uint8_t freeType)
    }   
    else
    {
-      printf("Free Ring FULL id %d!!! \n",ringId);
+      printf("\nFree Ring FULL id %d!!! \n",ringId);
       SsRngInfoTbl[ringId].pktDrop++;
       ret1 = RFAILED;
    }
