@@ -86,7 +86,7 @@ uint8_t tst()
 {
    init_log();   
  
-   DU_LOG("\nStarting RIC_STUB");
+   DU_LOG("\nINFO  --> RIC : Starting RIC_STUB");
    /* Read RIC configurations */
    readRicCfg();
 
@@ -117,7 +117,7 @@ void readRicCfg()
 {
    uint32_t ipv4_du, ipv4_ric;
 
-   DU_LOG("\nReading RIC configurations");
+   DU_LOG("\nINFO  --> RIC : Reading RIC configurations");
 
    cmInetAddr((S8*)DU_IP_V4_ADDR, &ipv4_du);
    cmInetAddr((S8*)RIC_IP_V4_ADDR, &ipv4_ric);
