@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7f09696e_ee21e9b0",
+        "filename": "src/mt/mt_ss.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-15T08:41:59Z",
+      "side": 1,
+      "message": "generic comment: No need to change printf in this file. Make sure \"\\n\" is there at beginning and end of each printf",
+      "revId": "4770281f4e9044370315b3764e786d87de070568",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "89e67648_cc21eb1f",
+        "filename": "src/mt/ss_gen.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-15T08:41:59Z",
+      "side": 1,
+      "message": "don\u0027t change printf in this file. Same comment as previous file",
+      "revId": "4770281f4e9044370315b3764e786d87de070568",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f6497a91_7b460696",
+        "filename": "src/mt/ss_msg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-15T08:41:59Z",
+      "side": 1,
+      "message": "don\u0027t change printf in this file. Same comment as previous file. \nRemove this header file as well",
+      "revId": "4770281f4e9044370315b3764e786d87de070568",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d123980a_6ec919ad",
+        "filename": "src/mt/ss_rbuf.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-15T08:41:59Z",
+      "side": 1,
+      "message": "don\u0027t change printf in this file. Same comment as previous file.\nRemove this header file",
+      "revId": "4770281f4e9044370315b3764e786d87de070568",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
