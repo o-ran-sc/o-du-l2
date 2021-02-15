@@ -22,20 +22,30 @@
 #include "TcpClient.h"
 
 
-/********************************************************************** 
-   Description : Raise an alarm by sending alarm info to O1 module over
-                 TCP socket with action set to RAISE
-   Params[In]  : Alarm information
-   Return      : ROK     - success
-                 RFAILED - failure
-**********************************************************************/
+/*******************************************************************
+ *
+ * @brief Raise an alarm
+ *
+ * @details
+ *
+ *    Function : raiseAlarm
+ *
+ *    Functionality:
+ *      - Raise an alarm by sending alarm info to O1 module over
+ *        TCP socket with action set to RAISE
+ *
+ * @params[in] alarm information  
+ * @return ROK     - success
+ *         RFAILED - failure
+ ******************************************************************/
 uint8_t raiseAlarm(AlarmRecord* alrm)
 {
    if (openSocket(TCP_SERVER_IP,TCP_PORT) == RFAILED)
    {
       return RFAILED;
    }
-   alrm->msgHeader.action = RAISE;
+   alrm->msgHeader.msgType = ALARM;
+   alrm->msgHeader.action = RAISE_ALARM;
    if (sendData(alrm,sizeof(AlarmRecord)) < 0 )
    {
       closeSocket();
@@ -45,21 +55,31 @@ uint8_t raiseAlarm(AlarmRecord* alrm)
    return ROK;
 }
 
-/********************************************************************** 
-   Description : Clears an alarm raised earlier by sending the alrm
-                 information to O1 module over TCP socket with action
-                 set to CLEAR 
-   Params[In]  : Alarm information
-   Return      : ROK     - success
-                 RFAILED - failure
-**********************************************************************/
+/*******************************************************************
+ *
+ * @brief Clear an alarm
+ *
+ * @details
+ *
+ *    Function : clearAlarm
+ *
+ *    Functionality:
+ *      - Clears an alarm raised earlier by sending the alrm
+ *        information to O1 module over TCP socket with action
+ *        set to CLEAR
+ *
+ * @params[in] alarm information  
+ * @return ROK     - success
+ *         RFAILED - failure
+ ******************************************************************/
 uint8_t clearAlarm(AlarmRecord* alrm)
 {
    if (openSocket(TCP_SERVER_IP,TCP_PORT) == RFAILED)
    {
       return RFAILED;
    }
-   alrm->msgHeader.action = CLEAR;
+   alrm->msgHeader.msgType = ALARM;
+   alrm->msgHeader.action = CLEAR_ALARM;
    if (sendData(alrm,sizeof(AlarmRecord)) < 0)
    {
       closeSocket();
@@ -70,13 +90,22 @@ uint8_t clearAlarm(AlarmRecord* alrm)
 }
 
 
-/********************************************************************** 
-   Description : Fill the cell specific alarm parmeters and generate
-                 the alarm
-   Params[In]  : alarm Id, cell Id
-   Return      : ROK     - success
-                 RFAILED - failure
-**********************************************************************/
+/*******************************************************************
+ *
+ * @brief Raise a cell specific alarm
+ *
+ * @details
+ *
+ *    Function : raiseCellAlrm
+ *
+ *    Functionality:
+ *      - Fills the cell specific alarm parmeters and generate
+ *        the alarm
+ *
+ * @params[in] alarm Id, cell Id  
+ * @return ROK     - success
+ *         RFAILED - failure
+ ******************************************************************/
 uint8_t raiseCellAlrm(uint16_t alrmId, uint16_t cellId)
 {
   char buff[BUFF_SIZE];
@@ -112,12 +141,21 @@ uint8_t raiseCellAlrm(uint16_t alrmId, uint16_t cellId)
   return raiseAlarm(&alrm);
 }
 
-/********************************************************************** 
-   Description : Clear the cell alarm
-   Params[In]  : alarm Id
-   Return      : ROK     - success
-                 RFAILED - failure
-**********************************************************************/
+/*******************************************************************
+ *
+ * @brief Clear the cell alarm
+ *
+ * @details
+ *
+ *    Function : clearCellAlrm
+ *
+ *    Functionality:
+ *      - Clears the cell specific alarm using alarm id
+ *
+ * @params[in] alarm Id  
+ * @return ROK     - success
+ *         RFAILED - failure
+ ******************************************************************/
 uint8_t clearCellAlrm(uint16_t alrmId)
 {
   AlarmRecord alrm;

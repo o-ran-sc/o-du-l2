@@ -16,19 +16,61 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains functions to connect to a TCP server and send massages */
+/* This file contains definitions of startup configuration structure */
 
-#ifndef __TCP_CLIENT_H__
-#define __TCP_CLIENT_H__
-#include <stdint.h>
+#include "Config.h"
 #include "ssi.h"
+#include "GlobalDefs.h"
+#include "TcpClient.h"
 
-uint8_t openSocket(const char*, const uint16_t);
-int sendData(void*, const int);
-int receiveData(void* data, const int size);
-uint8_t closeSocket();
+StartupConfig g_cfg;
 
-#endif
+/*******************************************************************
+ *
+ * @brief Get the startup config from Netconf
+ *
+ * @details
+ *
+ *    Function : getStartupConfig
+ *
+ *    Functionality:
+ *      - Get the start up IP and port for DU,CU and RIC
+ *
+ * @params[in] pointer to StartupConfig
+ * @return ROK     - success
+ *         RFAILED - failure
+ ******************************************************************/
+uint8_t getStartupConfig(StartupConfig *cfg)
+{
+   O1_LOG("\nCONFIG : getStartupConfig ------ \n");
+   MsgHeader msg;
+   msg.msgType = CONFIGURATION;
+   msg.action = GET_STARTUP_CONFIG;
+   if (openSocket(TCP_SERVER_IP,TCP_PORT) == RFAILED)
+   {
+      return RFAILED;
+   }
+   if (sendData(&msg,sizeof(msg)) < 0 )
+   {
+      closeSocket();
+      return RFAILED;
+   }
+   if (receiveData(cfg, sizeof(StartupConfig)) < 0)
+   {
+      closeSocket();
+      return RFAILED;
+   }
+   O1_LOG("\nCONFIG : ip du %s\n",cfg->DU_IPV4_Addr );
+   O1_LOG("\nCONFIG : ip cu %s\n",cfg->CU_IPV4_Addr );
+   O1_LOG("\nCONFIG : ip ric %s\n",cfg->RIC_IPV4_Addr );
+   O1_LOG("\nCONFIG : port cu %hu\n",cfg->CU_Port);
+   O1_LOG("\nCONFIG : port du %hu\n",cfg->DU_Port);
+   O1_LOG("\nCONFIG : port ric %hu\n",cfg->RIC_Port);
+
+   closeSocket();
+   return ROK;
+}
+
 
 /**********************************************************************
          End of file

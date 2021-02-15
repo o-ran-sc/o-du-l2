@@ -1,0 +1,80 @@
+module o-ran-sc-odu-interface-v1 {
+    yang-version 1;
+    namespace "urn:o-ran:odu:interface:1.0";
+    prefix rxad;
+    
+    import ietf-inet-types { prefix inet; }
+
+    organization
+        "O-RAN Software Community";
+    contact
+        "www.o-ran.org";
+    description
+        "This module defines active interface information visible to operators
+
+        Copyright 2020 the O-RAN Alliance.
+
+        Licensed under the Apache License, Version 2.0 (the 'License');
+        you may not use this file except in compliance with the License.
+        You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+        Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an 'AS IS' BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        See the License for the specific language governing permissions and
+        limitations under the License.";
+
+    revision 2020-01-29 {
+        description
+            "initial revision";
+        reference
+            "O-RAN-OAM-Interface-Specification (O1)";
+    }
+
+    grouping interface-info {
+        leaf interface-name {
+            type string;
+            description
+                "The unique interface ID";
+        }
+        leaf interface-address {
+            type inet:ip-address;
+            mandatory true;
+            description
+               "The local IP address to listen on for incoming
+                client connections.  INADDR_ANY (0.0.0.0) or
+                INADDR6_ANY (0:0:0:0:0:0:0:0 a.k.a. ::) MUST be
+                used when the server is to listen on all IPv4 or
+                IPv6 addresses, respectively.";
+        }
+        leaf port {
+            type inet:port-number;
+            default "0";
+            description
+               "The local port number to listen on for incoming
+               client connections.  An invalid default value (0)
+               is used (instead of 'mandatory true') so that an
+               application level data model may 'refine' it with
+               an application specific default port number value.";
+        }
+        description
+            "interface information";
+    }
+ 
+    container odu {
+        container interfaces {
+            list interface {
+                key "interface-name";
+                uses interface-info;
+                description
+                    "The list of active interfaces in RIC";
+            }
+            description
+                "State data container of the interfaces";
+        }
+        description
+            "Root object for RIC interfaces";
+    }
+}

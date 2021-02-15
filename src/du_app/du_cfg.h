@@ -22,12 +22,18 @@
 /* MACROS */
 #define DU_INST 0
 #define DU_ID 1
+
+#ifndef O1_ENABLE
+
 #define DU_IP_V4_ADDR "192.168.130.81"
 #define CU_IP_V4_ADDR "192.168.130.82"
 #define RIC_IP_V4_ADDR "192.168.130.80"
 #define DU_PORT 38472
 #define CU_PORT 38472
 #define RIC_PORT 36422         /* using X2 port since E2 port not defined  */
+
+#endif
+
 #define DU_EGTP_PORT  39001
 #define CU_EGTP_PORT  39002
 #define NR_PCI 1

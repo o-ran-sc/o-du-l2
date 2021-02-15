@@ -16,17 +16,28 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains functions to connect to a TCP server and send massages */
+/* This file contains definitions of startup configuration structure */
 
-#ifndef __TCP_CLIENT_H__
-#define __TCP_CLIENT_H__
+#ifndef __CONFIG_H__
+#define __CONFIG_H__
+
 #include <stdint.h>
-#include "ssi.h"
+#include <CommonMessages.h>
 
-uint8_t openSocket(const char*, const uint16_t);
-int sendData(void*, const int);
-int receiveData(void* data, const int size);
-uint8_t closeSocket();
+#define IPV4_LEN 16
+#define PORT_LEN 10
+
+typedef struct
+{
+   char DU_IPV4_Addr[IPV4_LEN];
+   char CU_IPV4_Addr[IPV4_LEN];
+   char RIC_IPV4_Addr[IPV4_LEN];
+   uint16_t CU_Port;
+   uint16_t DU_Port;
+   uint16_t RIC_Port;
+}StartupConfig;
+
+uint8_t getStartupConfig();
 
 #endif
 
