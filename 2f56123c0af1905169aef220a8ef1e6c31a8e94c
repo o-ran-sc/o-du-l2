@@ -1,0 +1,174 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "140a206f_27b78cff",
+        "filename": "src/5gnrrlc/kw_utl_dl.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-15T12:21:54Z",
+      "side": 1,
+      "message": "We must remove this level of looping!!! There are 3 for loops here",
+      "revId": "2f56123c0af1905169aef220a8ef1e6c31a8e94c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "41f26077_940ff588",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 718,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-15T12:21:54Z",
+      "side": 1,
+      "message": "Let\u0027s try to eliminate these frequent conversions. There is one in DU APP and reverse here in RLC",
+      "revId": "2f56123c0af1905169aef220a8ef1e6c31a8e94c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1ab2817c_ddf16654",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-15T12:21:54Z",
+      "side": 1,
+      "message": "This will be too high of space storage since MAX_NUM_DRB is a very high number.\nAlso, don\u0027t we have to store numDrb to iterate through these arrays?",
+      "revId": "2f56123c0af1905169aef220a8ef1e6c31a8e94c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b37b3507_4fa57be7",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-15T12:21:54Z",
+      "side": 1,
+      "message": "required here and duUeCb?",
+      "revId": "2f56123c0af1905169aef220a8ef1e6c31a8e94c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5f69b91c_a450ba11",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-15T12:21:54Z",
+      "side": 1,
+      "message": "Let\u0027s avoid this for loop. Store, drbId, teID, ueIdx, etc required in the global database so that we can directly look up.",
+      "revId": "2f56123c0af1905169aef220a8ef1e6c31a8e94c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "170999ab_4e49b481",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-15T12:21:54Z",
+      "side": 1,
+      "message": "break must be there for outer for loop too",
+      "revId": "2f56123c0af1905169aef220a8ef1e6c31a8e94c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8ebf7916_2624ea5a",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-15T12:21:54Z",
+      "side": 1,
+      "message": "why do we need this conversion? Let\u0027s send it as mBuf itself? This will consume lot of processing time.",
+      "revId": "2f56123c0af1905169aef220a8ef1e6c31a8e94c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5d27ee50_ff6b6b25",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-15T12:21:54Z",
+      "side": 1,
+      "message": "eliminate this variable",
+      "revId": "2f56123c0af1905169aef220a8ef1e6c31a8e94c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "707a03ca_a2bf0c25",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-15T12:21:54Z",
+      "side": 1,
+      "message": "change to DEBUG",
+      "revId": "2f56123c0af1905169aef220a8ef1e6c31a8e94c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4409d85f_b2c6a098",
+        "filename": "src/du_app/du_ue_mgr.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-15T12:21:54Z",
+      "side": 1,
+      "message": "cmPkKwuDatReq must be changed to cmPkRlcDatReq as well",
+      "revId": "2f56123c0af1905169aef220a8ef1e6c31a8e94c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
