@@ -1,0 +1,293 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "870b7368_cc0d3a3c",
+        "filename": "src/cm/common_def.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-15T09:47:19Z",
+      "side": 1,
+      "message": "club lines 95 and 96",
+      "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0ae39937_07fa6008",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-15T09:47:19Z",
+      "side": 1,
+      "message": "change comment to: MAX tunnels currently tested",
+      "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ba5e27bc_f5659752",
+        "filename": "src/codec_utils/common/odu_common_codec.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-15T09:47:19Z",
+      "side": 1,
+      "message": "will the size of the octet string always be the same that only temp1, temp2, temp3 will be sufficient? Or, can we take some parameters to this function which determine number of times \"val\" must be shifted left?",
+      "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "618ad705_0fed0bfe",
+        "filename": "src/codec_utils/common/odu_common_codec.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-15T09:47:19Z",
+      "side": 1,
+      "message": "will the bit size for all octet strings always be 24?",
+      "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bc217615_6d06c51c",
+        "filename": "src/codec_utils/common/odu_common_codec.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-15T09:47:19Z",
+      "side": 1,
+      "message": "change bitString functions to take buf as well, instead of BIT_STRING_t",
+      "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e7e0711c_1ae55461",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2207,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-15T09:47:19Z",
+      "side": 1,
+      "message": "add a note above this specifying that IP must be changed here when running on a different IP configuration.",
+      "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a451c8dd_6a7f6dcb",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-15T09:47:19Z",
+      "side": 1,
+      "message": "so, are we creating a tunnel at init???",
+      "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "09949aa6_332ac350",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 653,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-15T09:47:19Z",
+      "side": 1,
+      "message": "add a note on why this is added and please work on the comments given earlier in order to get rid of this ASAP.",
+      "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bea8f3ef_2e3be742",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 501,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-15T09:47:19Z",
+      "side": 1,
+      "message": "Module name missing in all logs",
+      "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3065caaf_4c902eeb",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-15T09:47:19Z",
+      "side": 1,
+      "message": "is it required in both DuCb and DuUeCfg??",
+      "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1ef5521e_25c5d4ac",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1752,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-15T09:47:19Z",
+      "side": 1,
+      "message": "club both if using \u0026\u0026 operator. Break the loop once found",
+      "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "657be1f9_cec5b2d4",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-15T09:47:19Z",
+      "side": 1,
+      "message": "do we still need this flag?",
+      "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b8f6e5e9_5d0f568b",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1807,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-15T09:47:19Z",
+      "side": 1,
+      "message": "why do we need to memset if freeing and assigning to NULL? That way, we will not check at line #1805, since this check is already present within DU_FREE macro.",
+      "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f57e99a5_f6dd1e38",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1967,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-15T09:47:19Z",
+      "side": 1,
+      "message": "no need to use ret if this loop can be broken once drbFound is true",
+      "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1edfd146_56ddd888",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1971,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-15T09:47:19Z",
+      "side": 1,
+      "message": "isn\u0027t this also drbIdx?",
+      "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fff1fe4d_8c96e98a",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1975,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-15T09:47:19Z",
+      "side": 1,
+      "message": "break once this condition is true. check drbFound and break from outer loop too",
+      "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6cbda4fd_056620df",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2036,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-15T09:47:19Z",
+      "side": 1,
+      "message": "can we eliminate using a variable to check return type??",
+      "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
