@@ -16,6 +16,24 @@
       "revId": "d541866abe11687dfae1f3f686acb131705fc560",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "522662ce_f5374d43",
+        "filename": "src/mt/mt_ss.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 917,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-02-16T10:45:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9d6b559a_6ea08ba1",
+      "revId": "d541866abe11687dfae1f3f686acb131705fc560",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
