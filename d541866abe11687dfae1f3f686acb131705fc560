@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9d6b559a_6ea08ba1",
+        "filename": "src/mt/mt_ss.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 917,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-16T09:45:34Z",
+      "side": 1,
+      "message": "\\n is not required in fprintf",
+      "revId": "d541866abe11687dfae1f3f686acb131705fc560",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
