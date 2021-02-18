@@ -446,7 +446,7 @@
 
 /* Timer events */
 #define EVENT_RLC_UMUL_REASSEMBLE_TMR     1
-#define EVENT_RLC_AMUL_REORD_TMR          2
+#define EVENT_RLC_AMUL_REASSEMBLE_TMR          2
 #define EVENT_RLC_AMUL_STA_PROH_TMR       3
 #define EVENT_RLC_AMDL_POLL_RETX_TMR      4
 #define EVENT_RLC_WAIT_BNDCFM             5
@@ -500,9 +500,9 @@
                                           in bytes*/
 /* 5GNR */
 /* Sequence Number length defines */
-#define RLC_AM_CFG_12BIT_SN_LEN      1 /**< AM 12-bit Sequence number length 
+#define RLC_AM_CFG_12BIT_SN_LEN      0 /**< AM 12-bit Sequence number length 
                                           in bytes*/   
-#define RLC_AM_CFG_18BIT_SN_LEN      2 /**< AM 18-bit Sequence number length 
+#define RLC_AM_CFG_18BIT_SN_LEN      1 /**< AM 18-bit Sequence number length 
                                           in bytes*/
 
 /**

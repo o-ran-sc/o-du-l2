@@ -186,8 +186,8 @@ typedef struct rlcAmRecBuf
  *    - expSo            : The expected SO for reassembly
  *    - staProhTmr       : The Status Probihit Timer
  *    - staProhTmrInt    : Status Prohibit Timer interval (in ??)
- *    - reOrdTmr         : The Reordering Timer
- *    - reOrdTmrInt      : Re-ordering timer interval
+ *    - reAsmblTmr         : The Reordering Timer
+ *    - reAsmblTmrInt      : Re-ordering timer interval
  *    - gatherStaPduInfo : Whether to gather information required to create 
  *                         the STATUS PDU
  *
@@ -210,8 +210,8 @@ typedef struct rlcAmUl
    uint16_t          expSo;                 /**< Expected SO for reassembly */
    CmTimer      staProhTmr;            /**< T_status_prohibit Timer */
    uint16_t          staProhTmrInt;         /**< Timer Interval */
-   CmTimer      reOrdTmr;              /**< T_reordering Timer */
-   uint8_t           reOrdTmrInt;           /**< Timer Interval */
+   CmTimer      reAsmblTmr;              /**< T_reordering Timer */
+   uint8_t           reAsmblTmrInt;           /**< Timer Interval */
    Bool         gatherStaPduInfo;      /**< Gather STATUS PDU creation info*/
    Bool         isOutOfSeq;            /**< To identify whether packets are Out-Of-Seq or not */
    uint8_t           snLen;                 /*!< Sequence number length:12 bit or 18 bit : 5GNR RLC */
@@ -557,7 +557,7 @@ Void rlcAmmProcessPdus ARGS((RlcCb *gCb,
                                   KwPduInfo *pduInfo));
 #endif 
 
-Void rlcAmmReOrdTmrExp ARGS((RlcCb *gCb, RlcUlRbCb *rbCb));
+Void rlcAmmReAsmblTmrExp ARGS((RlcCb *gCb, RlcUlRbCb *rbCb));
 
 Void rlcAmmStaProTmrExp ARGS((RlcCb *gCb, RlcUlRbCb *rbCb));
 

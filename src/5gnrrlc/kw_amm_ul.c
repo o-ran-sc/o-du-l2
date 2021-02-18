@@ -691,8 +691,8 @@ void rlcAmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
             }
          }
 
-         /* Check if reOrdTmr is running and update rxNextStatusTrig accordingly */
-         tmrRunning = rlcChkTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_REORD_TMR);
+         /* Check if reAsmblTmr is running and update rxNextStatusTrig accordingly */
+         tmrRunning = rlcChkTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_REASSEMBLE_TMR);
          if (tmrRunning)
          {
             Bool snInWin = RLC_AM_CHK_SN_WITHIN_RECV_WINDOW(amUl->rxNextStatusTrig, amUl);
@@ -700,7 +700,7 @@ void rlcAmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
             if ( (amUl->rxNextStatusTrig == amUl->rxNext) || ( (!snInWin) &&
                                              (amUl->rxNextStatusTrig != amUl->vrMr) ) )
             {
-               rlcStopTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_REORD_TMR);
+               rlcStopTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_REASSEMBLE_TMR);
                tmrRunning = FALSE;
             }
          }
@@ -709,7 +709,7 @@ void rlcAmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
          {
             if (amUl->rxNextHighestRcvd > amUl->rxNext)
             {
-               rlcStartTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_REORD_TMR);
+               rlcStartTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_REASSEMBLE_TMR);
                amUl->rxNextStatusTrig = amUl->rxNextHighestRcvd;
 
                DU_LOG("\nDEBUG  -->  RLC_UL : rlcAmmProcessPdus: Updated rxNextStatusTrig = %d \
@@ -1356,7 +1356,7 @@ static bool rlcAmmUlPlacePduInRecBuf(RlcCb *gCb, Buffer *pdu, RlcUlRbCb *rbCb, R
  *      staTrg flag.
  *    - If staProhTmr is not running, calculate cntrlBo, else it'll be
  *      updated at the expiry of staProhTmr.
- *    - Expiry of reOrdTmr also will set staTrg flag.
+ *    - Expiry of reAsmblTmr also will set staTrg flag.
  *
  * @param[in]  gCb       RLC instance control block
  * @param[in]  rbCb      Uplink RB control block
@@ -1573,9 +1573,9 @@ Void rlcAmmUlReEstablish(RlcCb *gCb,CmLteRlcId rlcId,Bool sendReEst,RlcUlRbCb  *
    /* Discard remaining PDUs and bytesegments in recBuf */
 
    /* Stop all timers and reset variables */
-   if(TRUE == rlcChkTmr(gCb,(PTR)rbCb,EVENT_RLC_AMUL_REORD_TMR))
+   if(TRUE == rlcChkTmr(gCb,(PTR)rbCb,EVENT_RLC_AMUL_REASSEMBLE_TMR))
    {
-       rlcStopTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_REORD_TMR);
+       rlcStopTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_REASSEMBLE_TMR);
    }
    if(TRUE == rlcChkTmr(gCb,(PTR)rbCb,EVENT_RLC_AMUL_STA_PROH_TMR))
    {
@@ -1619,7 +1619,7 @@ Void rlcAmmUlReEstablish(RlcCb *gCb,CmLteRlcId rlcId,Bool sendReEst,RlcUlRbCb  *
  *
  */
 
-Void rlcAmmReOrdTmrExp(RlcCb *gCb,RlcUlRbCb *rbCb)
+Void rlcAmmReAsmblTmrExp(RlcCb *gCb,RlcUlRbCb *rbCb)
 {
    RlcAmUl *amUl = &(rbCb->m.amUl);
    RlcSn sn;
@@ -1651,7 +1651,7 @@ Void rlcAmmReOrdTmrExp(RlcCb *gCb,RlcUlRbCb *rbCb)
 
          if (!tmrRunning)
          {
-            gRlcStats.amRlcStats.numULReOrdTimerExpires++;
+            gRlcStats.amRlcStats.numULReAsmblTimerExpires++;
             amUl->gatherStaPduInfo = TRUE;
             rlcAmmUlAssembleCntrlInfo(gCb, rbCb);
          }
@@ -1667,12 +1667,12 @@ Void rlcAmmReOrdTmrExp(RlcCb *gCb,RlcUlRbCb *rbCb)
    MODAMR(amUl->rxHighestStatus, mrxHighestStatus, amUl->rxNext, amUl->snModMask);
    if (mrxNextHighestRcvd > mrxHighestStatus)
    {
-      rlcStartTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_REORD_TMR);
+      rlcStartTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_REASSEMBLE_TMR);
       amUl->rxNextStatusTrig = amUl->rxNextHighestRcvd;
    }
 
    return;
-} /* rlcAmmReOrdTmrExp */
+} /* rlcAmmReAsmblTmrExp */
 
 /**
  * @brief  Handler for status prohibit timer expiry
@@ -1873,9 +1873,9 @@ Void rlcAmmFreeUlRbCb(RlcCb       *gCb,RlcUlRbCb   *rbCb)
 
    windSz  =  (RLC_AM_GET_WIN_SZ(rbCb->m.amUl.snLen)) << 1;
 
-   if(TRUE == rlcChkTmr(gCb,(PTR)rbCb,EVENT_RLC_AMUL_REORD_TMR))
+   if(TRUE == rlcChkTmr(gCb,(PTR)rbCb,EVENT_RLC_AMUL_REASSEMBLE_TMR))
    {
-      rlcStopTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_REORD_TMR);
+      rlcStopTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_REASSEMBLE_TMR);
    }
    if(TRUE == rlcChkTmr(gCb,(PTR)rbCb,EVENT_RLC_AMUL_STA_PROH_TMR))
    {

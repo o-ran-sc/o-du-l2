@@ -1317,7 +1317,7 @@ uint8_t l1SendUlUserData()
 
    /* Filling PDU */
    pdu = (uint8_t *)pduInfo->pduData;
-   msgLen = 51;
+   msgLen = 52;
 
    /* For UL User data
       MAC subheader format is R/F/LCId/L (2/3 bytes)
@@ -1325,12 +1325,9 @@ uint8_t l1SendUlUserData()
       L is length of PDU i.e 50 bytes
       From 38.321 section 6.1.1
     */
-   uint8_t ulMsg[] = {4, msgLen, 0, 69, 0, 0, 50, 0, 0, 0, 0, 0, 1, 0, 0, 192, 168, 130, 81, 192, 168, 130, 82, 84, 104,
-   105, 115, 32, 105, 115, 32, 69, 71, 84, 80, 32, 100, 97, 116, 97, 32, 102, 114, 111, 109, 32, 68, 85, 0, 0, 0, 0, 0};
-   msgLen += 2;  /* 2bytes of header */
-   memcpy(pdu, &ulMsg, msgLen);
-   byteIdx += msgLen; /* 2 bytes of header */
-
+                               /*  SI  SN */
+    uint8_t ulMsg[] = {4, msgLen, 144, 0, 0, 0, 0, 50, 0, 0, 0, 0, 0, 1, 0, 0, 192, 168, 130, 81, 192, 168, 130, 82, 84, 104,
+    105, 115, 32, 105, 115, 32, 69, 71, 84, 80, 32, 100, 97, 116, 97, 32, 102, 114, 111, 109, 32, 68, 85, 0, 0, 0, 0, 0};
 
    /* Filling MAC SDU for Padding bytes*/
    if(byteIdx < pduInfo->pdu_length)
