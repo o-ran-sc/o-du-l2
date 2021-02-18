@@ -121,13 +121,13 @@ void rlcStartTmr(RlcCb *gCb, PTR cb, int16_t tmrEvnt)
          arg.max = RLC_MAX_UM_TMR;
          break;
       }
-      case EVENT_RLC_AMUL_REORD_TMR:
+      case EVENT_RLC_AMUL_REASSEMBLE_TMR:
       {
          RlcAmUl* amUl = &(((RlcUlRbCb *)cb)->m.amUl);
          /* kw005.201 Changed wait calculation ccpu00117634*/ 
-         RLC_TMR_CALCUATE_WAIT(arg.wait, amUl->reOrdTmrInt, gCb->genCfg.timeRes);         
+         RLC_TMR_CALCUATE_WAIT(arg.wait, amUl->reAsmblTmrInt, gCb->genCfg.timeRes);         
 
-         arg.timers = &amUl->reOrdTmr;
+         arg.timers = &amUl->reAsmblTmr;
          arg.max = RLC_MAX_AM_TMR;
          break;
       }
@@ -228,9 +228,9 @@ void rlcStopTmr(RlcCb *gCb, PTR cb, uint8_t tmrType)
          arg.max = RLC_MAX_UM_TMR;
          break;
       }
-      case EVENT_RLC_AMUL_REORD_TMR:
+      case EVENT_RLC_AMUL_REASSEMBLE_TMR:
       {
-         arg.timers = &((RlcUlRbCb *)cb)->m.amUl.reOrdTmr;
+         arg.timers = &((RlcUlRbCb *)cb)->m.amUl.reAsmblTmr;
          arg.max = RLC_MAX_AM_TMR;
          break;
       }
@@ -307,10 +307,10 @@ Void rlcTmrExpiry(PTR cb,S16 tmrEvnt)
 
          break;
       }
-      case EVENT_RLC_AMUL_REORD_TMR:
+      case EVENT_RLC_AMUL_REASSEMBLE_TMR:
       {
          RlcUlRbCb *ulRbCb = (RlcUlRbCb *)cb;
-         rlcAmmReOrdTmrExp(RLC_GET_RLCCB(ulRbCb->inst), ulRbCb);
+         rlcAmmReAsmblTmrExp(RLC_GET_RLCCB(ulRbCb->inst), ulRbCb);
          break;
       }
       case EVENT_RLC_AMUL_STA_PROH_TMR:
@@ -366,10 +366,10 @@ bool rlcChkTmr(RlcCb *gCb, PTR cb, int16_t tmrEvnt)
          return (((RlcUlRbCb *)cb)->m.umUl.reAsmblTmr.tmrEvnt == 
                   EVENT_RLC_UMUL_REASSEMBLE_TMR);
       }
-      case EVENT_RLC_AMUL_REORD_TMR:
+      case EVENT_RLC_AMUL_REASSEMBLE_TMR:
       {
-         return (((RlcUlRbCb *)cb)->m.amUl.reOrdTmr.tmrEvnt == 
-                  EVENT_RLC_AMUL_REORD_TMR);
+         return (((RlcUlRbCb *)cb)->m.amUl.reAsmblTmr.tmrEvnt == 
+                  EVENT_RLC_AMUL_REASSEMBLE_TMR);
       }
       case EVENT_RLC_AMUL_STA_PROH_TMR:
       {

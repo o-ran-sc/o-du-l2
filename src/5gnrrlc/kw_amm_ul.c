@@ -691,29 +691,33 @@ void rlcAmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
             }
          }
 
-         /* Check if reOrdTmr is running and update rxNextStatusTrig accordingly */
-         tmrRunning = rlcChkTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_REORD_TMR);
+         /* Check if reAsmblTmr is running and update rxNextStatusTrig accordingly */
+         tmrRunning = rlcChkTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_REASSEMBLE_TMR);
          if (tmrRunning)
          {
             Bool snInWin = RLC_AM_CHK_SN_WITHIN_RECV_WINDOW(amUl->rxNextStatusTrig, amUl);
 
-            if ( (amUl->rxNextStatusTrig == amUl->rxNext) || ( (!snInWin) &&
-                                             (amUl->rxNextStatusTrig != amUl->vrMr) ) )
+            if((amUl->rxNextStatusTrig == amUl->rxNext) || ( (!snInWin) &&
+                                             (amUl->rxNextStatusTrig != amUl->vrMr) )||
+	       (amUl->rxNextStatusTrig == amUl->rxNext && recBuf &&recBuf->noMissingSeg))
             {
-               rlcStopTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_REORD_TMR);
+               rlcStopTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_REASSEMBLE_TMR);
                tmrRunning = FALSE;
+               DU_LOG("\nINFO  --> RLC_UL: rlcAmmProcessPdus: Stopped ReAssembly Timer rxNextStatusTigger = %d"
+	         "rxNextReassembly = %d", amUl->rxNextStatusTrig, amUl->rxNext);
             }
          }
 
          if (!tmrRunning)
          {
-            if (amUl->rxNextHighestRcvd > amUl->rxNext)
+            if((amUl->rxNextHighestRcvd > amUl->rxNext) || ((amUl->rxNextHighestRcvd == amUl->rxNext) &&
+	       (recBuf && (!recBuf->noMissingSeg))))
             {
-               rlcStartTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_REORD_TMR);
+               rlcStartTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_REASSEMBLE_TMR);
                amUl->rxNextStatusTrig = amUl->rxNextHighestRcvd;
 
-               DU_LOG("\nDEBUG  -->  RLC_UL : rlcAmmProcessPdus: Updated rxNextStatusTrig = %d \
-	          UEID:%d CELLID:%d", amUl->rxNextStatusTrig, rbCb->rlcId.ueId,
+               DU_LOG("\nDEBUG  -->  RLC_UL : rlcAmmProcessPdus: Updated rxNextStatusTrig = %d" 
+	          "UEID:%d CELLID:%d", amUl->rxNextStatusTrig, rbCb->rlcId.ueId,
                   rbCb->rlcId.cellId);
             }
          }
@@ -804,7 +808,7 @@ static uint8_t rlcAmmExtractHdr(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *pdu, RlcAmH
 
       amHdr->sn = sn;
    }
-   if ((amHdr->si != 0) && (amHdr->si != 0x01))
+   if ((amHdr->si != 0) && (amHdr->si != RLC_SI_FIRST_SEG))
    {
       hdrInfo.len = RLC_SO_LEN_5GNR;
       rlcAmmExtractElmnt(gCb, pdu, &hdrInfo);
@@ -1356,7 +1360,7 @@ static bool rlcAmmUlPlacePduInRecBuf(RlcCb *gCb, Buffer *pdu, RlcUlRbCb *rbCb, R
  *      staTrg flag.
  *    - If staProhTmr is not running, calculate cntrlBo, else it'll be
  *      updated at the expiry of staProhTmr.
- *    - Expiry of reOrdTmr also will set staTrg flag.
+ *    - Expiry of reAsmblTmr also will set staTrg flag.
  *
  * @param[in]  gCb       RLC instance control block
  * @param[in]  rbCb      Uplink RB control block
@@ -1430,8 +1434,7 @@ static void rlcAmmProcPduOrSeg(RlcCb *gCb, RlcUlRbCb *rbCb, RlcAmHdr *amHdr, Buf
       ODU_PUT_MSG_BUF(RLC_AMUL.partialSdu);
    }
 
-   //if (amHdr->fi & RLC_FI_FIRST_SEG)
-   if (amHdr->si == 0x01)
+   if (amHdr->si == RLC_SI_FIRST_SEG)
    {/* first Segment of the SDU */
       if (RLC_AMUL.partialSdu != NULLP)
       { /* Some old SDU may be present */
@@ -1440,13 +1443,13 @@ static void rlcAmmProcPduOrSeg(RlcCb *gCb, RlcUlRbCb *rbCb, RlcAmHdr *amHdr, Buf
       RLC_AMUL.partialSdu = pdu;
       pdu = NULLP;
    }
-   else if(amHdr->si == 0x03)
+   else if(amHdr->si == RLC_SI_MID_SEG)
    {/* Middle or last segment of the SUD */
       ODU_CAT_MSG(RLC_AMUL.partialSdu,pdu, M1M2);
       ODU_PUT_MSG_BUF(pdu);
       pdu = NULLP;
    }
-   else if (amHdr->si ==  0x02)
+   else if (amHdr->si ==  RLC_SI_LAST_SEG)
    {
       ODU_CAT_MSG(pdu,RLC_AMUL.partialSdu,M2M1);
       ODU_PUT_MSG_BUF(RLC_AMUL.partialSdu);
@@ -1573,9 +1576,9 @@ Void rlcAmmUlReEstablish(RlcCb *gCb,CmLteRlcId rlcId,Bool sendReEst,RlcUlRbCb  *
    /* Discard remaining PDUs and bytesegments in recBuf */
 
    /* Stop all timers and reset variables */
-   if(TRUE == rlcChkTmr(gCb,(PTR)rbCb,EVENT_RLC_AMUL_REORD_TMR))
+   if(TRUE == rlcChkTmr(gCb,(PTR)rbCb,EVENT_RLC_AMUL_REASSEMBLE_TMR))
    {
-       rlcStopTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_REORD_TMR);
+       rlcStopTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_REASSEMBLE_TMR);
    }
    if(TRUE == rlcChkTmr(gCb,(PTR)rbCb,EVENT_RLC_AMUL_STA_PROH_TMR))
    {
@@ -1619,7 +1622,7 @@ Void rlcAmmUlReEstablish(RlcCb *gCb,CmLteRlcId rlcId,Bool sendReEst,RlcUlRbCb  *
  *
  */
 
-Void rlcAmmReOrdTmrExp(RlcCb *gCb,RlcUlRbCb *rbCb)
+Void rlcAmmReAsmblTmrExp(RlcCb *gCb,RlcUlRbCb *rbCb)
 {
    RlcAmUl *amUl = &(rbCb->m.amUl);
    RlcSn sn;
@@ -1651,7 +1654,7 @@ Void rlcAmmReOrdTmrExp(RlcCb *gCb,RlcUlRbCb *rbCb)
 
          if (!tmrRunning)
          {
-            gRlcStats.amRlcStats.numULReOrdTimerExpires++;
+            gRlcStats.amRlcStats.numULReAsmblTimerExpires++;
             amUl->gatherStaPduInfo = TRUE;
             rlcAmmUlAssembleCntrlInfo(gCb, rbCb);
          }
@@ -1665,14 +1668,15 @@ Void rlcAmmReOrdTmrExp(RlcCb *gCb,RlcUlRbCb *rbCb)
    /* Update rxNextStatusTrig */
    MODAMR(amUl->rxNextHighestRcvd, mrxNextHighestRcvd, amUl->rxNext, amUl->snModMask);
    MODAMR(amUl->rxHighestStatus, mrxHighestStatus, amUl->rxNext, amUl->snModMask);
-   if (mrxNextHighestRcvd > mrxHighestStatus)
+   if((mrxNextHighestRcvd > mrxHighestStatus) || ((mrxNextHighestRcvd == mrxHighestStatus) &&
+      ((recBuf) &&  !(recBuf->noMissingSeg))))
    {
-      rlcStartTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_REORD_TMR);
+      rlcStartTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_REASSEMBLE_TMR);
       amUl->rxNextStatusTrig = amUl->rxNextHighestRcvd;
    }
 
    return;
-} /* rlcAmmReOrdTmrExp */
+} /* rlcAmmReAsmblTmrExp */
 
 /**
  * @brief  Handler for status prohibit timer expiry
@@ -1812,11 +1816,10 @@ static void rlcAmmUpdExpByteSeg(RlcCb *gCb, RlcAmUl *amUl, RlcSeg *seg)
    {
       return;
    }
-
+   recBuf->noMissingSeg = FALSE;
    newExpSo   = seg->soEnd + 1;
    recBuf->expSo = newExpSo;
-   //lstRcvd = seg->amHdr.lsf;
-   if(seg->amHdr.si == 0x2)
+   if(seg->amHdr.si == RLC_SI_LAST_SEG)
    {  
       lstRcvd = TRUE;
    } 
@@ -1826,7 +1829,7 @@ static void rlcAmmUpdExpByteSeg(RlcCb *gCb, RlcAmUl *amUl, RlcSeg *seg)
    {
       /* keep going ahead as long as the expectedSo match with the header so
          else store the expSo for later checking again */
-      if(seg->amHdr.si == 0x2)
+      if(seg->amHdr.si == RLC_SI_LAST_SEG)
       {  
          lstRcvd = TRUE;
       } 
@@ -1834,7 +1837,6 @@ static void rlcAmmUpdExpByteSeg(RlcCb *gCb, RlcAmUl *amUl, RlcSeg *seg)
       {
          newExpSo = seg->soEnd + 1;
          recBuf->expSo = newExpSo;
-         //lstRcvd = seg->amHdr.lsf;
          RLC_LLIST_NEXT_SEG(recBuf->segLst, seg);
       }
       else
@@ -1848,7 +1850,7 @@ static void rlcAmmUpdExpByteSeg(RlcCb *gCb, RlcAmUl *amUl, RlcSeg *seg)
       recBuf->allRcvd = TRUE;
       gRlcStats.amRlcStats.numRlcAmCellSduRx++;
    }
-
+   recBuf->noMissingSeg = TRUE;
    return;
 }
 
@@ -1873,9 +1875,9 @@ Void rlcAmmFreeUlRbCb(RlcCb       *gCb,RlcUlRbCb   *rbCb)
 
    windSz  =  (RLC_AM_GET_WIN_SZ(rbCb->m.amUl.snLen)) << 1;
 
-   if(TRUE == rlcChkTmr(gCb,(PTR)rbCb,EVENT_RLC_AMUL_REORD_TMR))
+   if(TRUE == rlcChkTmr(gCb,(PTR)rbCb,EVENT_RLC_AMUL_REASSEMBLE_TMR))
    {
-      rlcStopTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_REORD_TMR);
+      rlcStopTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_REASSEMBLE_TMR);
    }
    if(TRUE == rlcChkTmr(gCb,(PTR)rbCb,EVENT_RLC_AMUL_STA_PROH_TMR))
    {

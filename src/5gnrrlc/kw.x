@@ -58,7 +58,7 @@ typedef struct _amRlcStats
    uint32_t   numDLMaxRetx;
    uint32_t   numDLRetransPdus;
    uint32_t   numULPdusDiscarded;
-   uint32_t   numULReOrdTimerExpires;
+   uint32_t   numULReAsmblTimerExpires;
    uint32_t   numULStaPduRcvd;
    uint32_t   numULNackInStaPduRcvd;
    uint32_t   numRlcAmCellSduTx; /* Count of SDUs transmitted in DL for all UEs */
@@ -78,7 +78,7 @@ typedef struct _umRlcStats
    uint32_t   numDLBytesUnused;
    uint32_t   numDLMaxRetx;
    uint32_t   numULPdusDiscarded;
-   uint32_t   numULReOrdTimerExpires;
+   uint32_t   numULReAsmblTimerExpires;
    uint32_t   numULPdusOutsideWindow;
 }UMRLCStats;
 

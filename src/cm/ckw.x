@@ -92,7 +92,7 @@ typedef struct rlcAmInfo
       uint8_t                snLen;               /*!< Sequence Number length in
                                                bits. Allowed values are 12 and 18 */
       uint16_t               staProhTmr;          /*!< T_status_prohibit Timer in msec*/
-      uint8_t                reOrdTmr;            /*!< T_reordering Timer in msec*/
+      uint8_t                reAsmblTmr;            /*!< T_reordering Timer in msec*/
    }ul;                                      /*!< Up link */
 }RlcAmInfo;
 

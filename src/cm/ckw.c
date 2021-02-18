@@ -266,7 +266,7 @@ Buffer         *mBuf
 {
 
     /* UP LINK */
-    CMCHKPK(oduUnpackUInt8, param->ul.reOrdTmr, mBuf);
+    CMCHKPK(oduUnpackUInt8, param->ul.reAsmblTmr, mBuf);
     CMCHKPK(oduUnpackUInt16, param->ul.staProhTmr, mBuf);
     CMCHKPK(oduUnpackUInt8, param->ul.snLen, mBuf);
 
@@ -896,7 +896,7 @@ Buffer         *mBuf
     /* UP LINK */
     CMCHKUNPK(oduPackUInt8, &(param->ul.snLen), mBuf);
     CMCHKUNPK(oduPackUInt16, &(param->ul.staProhTmr), mBuf);
-    CMCHKUNPK(oduPackUInt8, &(param->ul.reOrdTmr), mBuf);
+    CMCHKUNPK(oduPackUInt8, &(param->ul.reAsmblTmr), mBuf);
 
     return ROK;
 } /* cmUnpkRlcAmInfo */

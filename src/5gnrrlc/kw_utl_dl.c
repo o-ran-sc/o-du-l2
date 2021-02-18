@@ -119,8 +119,8 @@ Void PrintRLCStats(Void)
                      gRlcStats.amRlcStats.numDLPollTimerExpiresDrb, gRlcStats.amRlcStats.numDLMaxRetx, 
                      gRlcStats.amRlcStats.numDLRetransPdus);
    DU_LOG("\nINFO  -->  RLC_DL : RLC Stats: AMUL: "
-                     " PdusDiscarded:%lu ReOrdTimerExpires:%lu StaPduRcvd:%lu NackInStaPduRcvd:%lu ", 
-                     gRlcStats.amRlcStats.numULPdusDiscarded, gRlcStats.amRlcStats.numULReOrdTimerExpires, 
+                     " PdusDiscarded:%lu ReAsmblTimerExpires:%lu StaPduRcvd:%lu NackInStaPduRcvd:%lu ", 
+                     gRlcStats.amRlcStats.numULPdusDiscarded, gRlcStats.amRlcStats.numULReAsmblTimerExpires, 
                      gRlcStats.amRlcStats.numULStaPduRcvd, gRlcStats.amRlcStats.numULNackInStaPduRcvd);
 
    RTLIN_DUMP_DEBUG("RLC Stats: PDUs Sent = (%ld), PdusRext = (%ld), TimeOut = (%ld), SduDiscarded = (%ld)\n",
@@ -134,10 +134,10 @@ Void PrintRLCStats(Void)
                      ulInst->genSts.errorPdusRecv);
    RTLIN_DUMP_DEBUG("RLC Stats:"
                     "RLC_AMDL: StaPduSent:%lu NacksInStaPdu:%lu BytesUnused:%lu PollTimerExpires SRB:%lu DRB:%lu MaxRetx:%lu RetransPdus:%lu \n"
-                    "RLC_AMUL: PdusDiscarded:%lu ReOrdTimerExpires:%lu StaPduRcvd:%lu NackInStaPduRcvd:%lu \n", 
+                    "RLC_AMUL: PdusDiscarded:%lu ReAsmblTimerExpires:%lu StaPduRcvd:%lu NackInStaPduRcvd:%lu \n", 
                      gRlcStats.amRlcStats.numDLStaPduSent, gRlcStats.amRlcStats.numDLNacksInStaPdu, gRlcStats.amRlcStats.numDLBytesUnused, 
                      gRlcStats.amRlcStats.numDLPollTimerExpiresSrb, gRlcStats.amRlcStats.numDLPollTimerExpiresDrb, gRlcStats.amRlcStats.numDLMaxRetx, 
-                     gRlcStats.amRlcStats.numDLRetransPdus, gRlcStats.amRlcStats.numULPdusDiscarded, gRlcStats.amRlcStats.numULReOrdTimerExpires, 
+                     gRlcStats.amRlcStats.numDLRetransPdus, gRlcStats.amRlcStats.numULPdusDiscarded, gRlcStats.amRlcStats.numULReAsmblTimerExpires, 
                      gRlcStats.amRlcStats.numULStaPduRcvd, gRlcStats.amRlcStats.numULNackInStaPduRcvd);
 }
 #else
@@ -165,8 +165,8 @@ Void PrintRLCStats(Void)
                      gRlcStats.amRlcStats.numDLPollTimerExpiresDrb, gRlcStats.amRlcStats.numDLMaxRetx, 
                      gRlcStats.amRlcStats.numDLRetransPdus);
    DU_LOG("\nINFO  -->  RLC_DL : RLC Stats: AMUL: "
-                     " PdusDiscarded:%u ReOrdTimerExpires:%u StaPduRcvd:%u NackInStaPduRcvd:%u ", 
-                     gRlcStats.amRlcStats.numULPdusDiscarded, gRlcStats.amRlcStats.numULReOrdTimerExpires, 
+                     " PdusDiscarded:%u ReAsmblTimerExpires:%u StaPduRcvd:%u NackInStaPduRcvd:%u ", 
+                     gRlcStats.amRlcStats.numULPdusDiscarded, gRlcStats.amRlcStats.numULReAsmblTimerExpires, 
                      gRlcStats.amRlcStats.numULStaPduRcvd, gRlcStats.amRlcStats.numULNackInStaPduRcvd);
  /*  RTLIN_DUMP_DEBUG("AM RLC Stats:"
                     "RLC_AMDL: SDUs Tx :(%u) SDU Bytes Tx :(%u) SDUs Retx :(%u) MaxRetx:(%u) WindowStalls: (%u) \n"
@@ -188,14 +188,14 @@ Void PrintRLCStats(Void)
    RTLIN_DUMP_DEBUG("RLC_AMDL: StaPduSent:%u NacksInStaPdu:%u BytesUnused:%u PollTimerExpires SRB:%u DRB:%u MaxRetx:%u RetransPdus:%u \n"
                     "      SDUs Tx :(%u) SDU Bytes Tx :(%u) SDUs Retx :(%u) WindowStalls: (%u) \n"
 
-                    "RLC_AMUL: PdusDiscarded:%u ReOrdTimerExpires:%u StaPduRcvd:%u NackInStaPduRcvd:%u \n"
+                    "RLC_AMUL: PdusDiscarded:%u ReAsmblTimerExpires:%u StaPduRcvd:%u NackInStaPduRcvd:%u \n"
                     "      DropOutWinRx :(%u) SDUs Rx :(%u) SDU Bytes Rx :(%u) SDUNack Rx :(%u) Duplicate Pdu Rx:(%u) \n", 
                      gRlcStats.amRlcStats.numDLStaPduSent, gRlcStats.amRlcStats.numDLNacksInStaPdu, gRlcStats.amRlcStats.numDLBytesUnused, 
                      gRlcStats.amRlcStats.numDLPollTimerExpiresSrb, gRlcStats.amRlcStats.numDLPollTimerExpiresDrb,
                      gRlcStats.amRlcStats.numDLMaxRetx, gRlcStats.amRlcStats.numDLRetransPdus,
                      gRlcStats.amRlcStats.numRlcAmCellSduTx, gRlcStats.amRlcStats.numRlcAmCellSduBytesTx,
                      gRlcStats.amRlcStats.numRlcAmCellRetxPdu, gRlcStats.amRlcStats.numRlcAmCellWinStall,
-                     gRlcStats.amRlcStats.numULPdusDiscarded, gRlcStats.amRlcStats.numULReOrdTimerExpires, 
+                     gRlcStats.amRlcStats.numULPdusDiscarded, gRlcStats.amRlcStats.numULReAsmblTimerExpires, 
                      gRlcStats.amRlcStats.numULStaPduRcvd, gRlcStats.amRlcStats.numULNackInStaPduRcvd,
                      gRlcStats.amRlcStats.numRlcAmCellDropOutWinRx, gRlcStats.amRlcStats.numRlcAmCellSduRx,
                      gRlcStats.amRlcStats.numRlcAmCellSduBytesRx, gRlcStats.amRlcStats.numRlcAmCellNackRx, gRlcStats.amRlcStats.numRlcAmCellDupPduRx);

@@ -352,7 +352,7 @@ static S16 rlcCfgFillUlRbCb(RlcCb *gCb,RlcUlRbCb *rbCb,RlcUlUeCb *ueCb,RlcEntCfg
          rbCb->dir = RLC_DIR_BOTH;
 
          rbCb->m.amUl.staProhTmrInt = entCfg->m.amInfo.ul.staProhTmr;
-         rbCb->m.amUl.reOrdTmrInt = entCfg->m.amInfo.ul.reOrdTmr;
+         rbCb->m.amUl.reAsmblTmrInt = entCfg->m.amInfo.ul.reAsmblTmr;
 
          rbCb->m.amUl.snLen = entCfg->m.amInfo.ul.snLen; /* 5GNR */
          
@@ -365,7 +365,7 @@ static S16 rlcCfgFillUlRbCb(RlcCb *gCb,RlcUlRbCb *rbCb,RlcUlUeCb *ueCb,RlcEntCfg
             rbCb->m.amUl.snModMask = (1 << RLC_SN_LEN_18BITS) - 1; /* 5GNR */
          }
 
-         cmInitTimers(&(rbCb->m.amUl.reOrdTmr), 1);
+         cmInitTimers(&(rbCb->m.amUl.reAsmblTmr), 1);
          cmInitTimers(&(rbCb->m.amUl.staProhTmr), 1);
 
          rbCb->m.amUl.vrMr = rbCb->m.amUl.rxNext + (RLC_AM_GET_WIN_SZ(rbCb->m.amUl.snLen));
@@ -433,7 +433,7 @@ static S16 rlcCfgUpdateUlRb(RlcCb *gCb,RlcUlRbCb *rbCb,void *ptr,RlcEntCfgInfo *
          rbCb->lch.lChId = entCfg->lCh[1].lChId;
          rbCb->lch.lChType = entCfg->lCh[1].type;
          rbCb->m.amUl.staProhTmrInt = entCfg->m.amInfo.ul.staProhTmr;
-         rbCb->m.amUl.reOrdTmrInt = entCfg->m.amInfo.ul.reOrdTmr;
+         rbCb->m.amUl.reAsmblTmrInt = entCfg->m.amInfo.ul.reAsmblTmr;
          break;
       }
    }
