@@ -99,6 +99,132 @@
 
 DuCfgParams duCfgParam;
 
+/************************************************************************
+ *
+ * @brief Converts enum values into actual value of reassembly timer
+ *
+ * @details
+ *
+ *    Function : getReAsmblTmr
+ *
+ *    Functionality: Converts enum values into actual value of reassembly 
+ *    timer
+ *
+ * @params[in] Enum value of reassembly timer
+ * @return Actual value of reassembly timer
+ *
+ * **********************************************************************/
+
+int8_t getReAsmblTmr(uint8_t reAsmblTmrCfg)
+{
+   int8_t reAsmblTmr = 0;
+   
+   if(reAsmblTmrCfg == T_Reassembly_ms0)
+   {
+      reAsmblTmr = 0;
+   }
+   else if(reAsmblTmrCfg >= T_Reassembly_ms5 || reAsmblTmrCfg <= T_Reassembly_ms100)
+   {
+     /* All values of re assembly timer are at interval of 5ms.
+      * This is valid upto 100ms
+      * Hence converting the enum value to actual value by multiplying it to 5
+      */
+      reAsmblTmr = reAsmblTmrCfg * 5;
+   }
+   else if(reAsmblTmrCfg >= T_Reassembly_ms110 || reAsmblTmrCfg <= T_Reassembly_ms200)
+   {
+     /* All values of re assembly timer are at interval of 10ms.
+      * This is valid upto 200ms
+      * since enum value starts from 20 for 100ms, subtracting 10 and
+      * converting the enum value to actual value by multiplying it to 10
+      */
+      reAsmblTmr = ((reAsmblTmrCfg-10) * 10);
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  F1AP : Invalid value of Re Assembly timer %d", reAsmblTmrCfg);
+      reAsmblTmr = -1;
+   }
+   return reAsmblTmr; 
+}
+
+/************************************************************************
+ *
+ * @brief Converts enum values into actual value of status prohibit timer
+ *
+ * @details
+ *
+ *    Function : getStatProhTmr
+ *
+ *    Functionality: Converts enum values into actual value of status prohibit 
+ *    timer
+ *
+ * @params[in] Enum value of status prohibit timer
+ * @return Actual value of status prohibit timer
+ *
+ * **********************************************************************/
+
+int16_t getStatProhTmr(uint8_t statProhTmrCfg)
+{
+   int16_t statProhTmr =0;
+   
+   if(statProhTmrCfg == T_StatusProhibit_ms0)
+   {
+      statProhTmr = 0;
+   }
+   else if(statProhTmrCfg >= T_StatusProhibit_ms5 || statProhTmrCfg <= T_StatusProhibit_ms250)
+   {
+      /* All values of re assembly timer are at interval of 5ms.
+       * This is valid upto 250ms
+       * Hence converting the enum value to actual value by multiplying it to 5
+       */
+      statProhTmr = statProhTmrCfg * 5;
+   }
+   else
+   {
+      switch(statProhTmrCfg)
+      {
+         case T_StatusProhibit_ms300:
+            statProhTmr = 300;
+            break;
+         case T_StatusProhibit_ms350:
+            statProhTmr = 350;
+            break;
+         case T_StatusProhibit_ms400:
+            statProhTmr = 400;
+            break;
+         case T_StatusProhibit_ms450:
+            statProhTmr = 450;
+            break;
+         case T_StatusProhibit_ms500:
+            statProhTmr = 500;
+            break;
+         case T_StatusProhibit_ms800:
+            statProhTmr = 800;
+            break;
+         case T_StatusProhibit_ms1000:
+            statProhTmr = 1000;
+            break;
+         case T_StatusProhibit_ms1200:
+            statProhTmr = 1200;
+            break;
+         case T_StatusProhibit_ms1600:
+            statProhTmr = 1600;
+            break;
+         case T_StatusProhibit_ms2000:
+            statProhTmr = 2000;
+            break;
+         case T_StatusProhibit_ms2400:
+            statProhTmr = 2400;
+            break;
+         default:
+            DU_LOG("\nInvalid value of Status Prohibit timer %d", statProhTmrCfg);
+            statProhTmr = -1;
+	    break;
+      }
+   }
+   return statProhTmr; 
+}
 /*******************************************************************
  *
  * @brief Builds Uplink Info for NR 
@@ -6326,7 +6452,8 @@ void extractRlcAmCfg(AmBearerCfg *amCfgToSet, struct RLC_Config__am *rlcAmCfg)
       if(rlcAmCfg->dl_AM_RLC.sn_FieldLength)
       {
 	 amCfgToSet->ulAmCfg.snLenUl = *(rlcAmCfg->dl_AM_RLC.sn_FieldLength);
-	 amCfgToSet->ulAmCfg.reAssemTmr = rlcAmCfg->dl_AM_RLC.t_Reassembly;
+         /*TODO: Check the timer value when sent by real CU */
+	 amCfgToSet->ulAmCfg.reAssemTmr = rlcAmCfg->dl_AM_RLC.t_Reassembly; 
 	 amCfgToSet->ulAmCfg.statProhTmr = rlcAmCfg->dl_AM_RLC.t_StatusProhibit;
       }
 

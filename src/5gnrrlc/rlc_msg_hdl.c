@@ -176,7 +176,7 @@ void fillLcCfg(RlcEntCfgInfo *rlcUeCfg, RlcBearerCfg *duRlcUeCfg, uint8_t cfgTyp
             rlcUeCfg->lCh[lChRbIdx].type     = duRlcUeCfg->lcType;
             rlcUeCfg->m.amInfo.ul.snLen      = duRlcUeCfg->u.amCfg->ulAmCfg.snLenUl; 
             rlcUeCfg->m.amInfo.ul.staProhTmr = duRlcUeCfg->u.amCfg->ulAmCfg.statProhTmr;
-            rlcUeCfg->m.amInfo.ul.reOrdTmr   = duRlcUeCfg->u.amCfg->ulAmCfg.reAssemTmr * RLC_REASSEMBLY_TMR_BASE;
+            rlcUeCfg->m.amInfo.ul.reAsmblTmr   = duRlcUeCfg->u.amCfg->ulAmCfg.reAssemTmr * RLC_REASSEMBLY_TMR_BASE;
             break;
          }
       case RLC_MODE_UM:

@@ -45,6 +45,8 @@ uint8_t sctpSend(Buffer *mBuf, uint8_t itfType);
 uint8_t duProcDlRrcMsg(F1DlRrcMsg *dlRrcMsg);
 uint8_t duProcUeContextSetupRequest(DuUeCb *ueCb);
 void duFillModulationDetails(MacUeCfg *ueCfg, MacUeCfg *oldUeCfg, void *ueCap);
+int8_t getReAsmblTmr(uint8_t reAsmblTmrCfg);
+int16_t getStatProhTmr(uint8_t statProhTmrCfg);
 
 /**********************************************************************
          End of file
