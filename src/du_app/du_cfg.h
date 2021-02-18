@@ -255,8 +255,10 @@
 #define POLL_BYTE_VAL -1          /* Value for infinite poll byte */
 #define MAX_RETX_THRESHOLD 5      /* Enum for 8 retransmissions */
 #define MAX_RETX_THRESHOLD_VAL 8  /* Value for 8 retransmissions */
-#define T_REASSEMBLY 8
-#define T_STATUS_PROHIBHIT 7
+#define T_REASSEMBLY 8 /* enum for RE_ASM_40MS  */
+#define T_REASSEMBLY_VAL 40 /* default re assembly timer */
+#define T_STATUS_PROHIBHIT 7 /* enum for PROH_35MS */
+#define T_STATUS_PROHIBHIT_VAL 35 /* default status prohibit timer */
 #define MAC_LC_PRIORITY 1
 #define PRIORTISIED_BIT_RATE 15
 #define BUCKET_SIZE_DURATION 5

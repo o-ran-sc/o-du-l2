@@ -108,122 +108,6 @@ typedef enum
 
 typedef enum
 {
-   RE_ASM_0MS,
-   RE_ASM_5MS,
-   RE_ASM_10MS,
-   RE_ASM_15MS,
-   RE_ASM_20MS,
-   RE_ASM_25MS,
-   RE_ASM_30MS,
-   RE_ASM_35MS,
-   RE_ASM_40MS,
-   RE_ASM_45MS,
-   RE_ASM_50MS,
-   RE_ASM_55MS,
-   RE_ASM_60MS,
-   RE_ASM_65MS,
-   RE_ASM_70MS,
-   RE_ASM_75MS,
-   RE_ASM_80MS,
-   RE_ASM_85MS,
-   RE_ASM_90MS,
-   RE_ASM_95MS,
-   RE_ASM_100MS,
-   RE_ASM_105MS,
-   RE_ASM_110MS,
-   RE_ASM_115MS,
-   RE_ASM_120MS,
-   RE_ASM_125MS,
-   RE_ASM_130MS,
-   RE_ASM_135MS,
-   RE_ASM_140MS,
-   RE_ASM_145MS,
-   RE_ASM_150MS,
-   RE_ASM_155MS,
-   RE_ASM_160MS,
-   RE_ASM_165MS,
-   RE_ASM_170MS,
-   RE_ASM_175MS,
-   RE_ASM_180MS,
-   RE_ASM_185MS,
-   RE_ASM_190MS,
-   RE_ASM_195MS,
-   RE_ASM_200MS,
-   RE_ASM_SPARE1
-
-}TReAssembleTmr;
-
-typedef enum
-{
-   PROH_0MS,
-   PROH_5MS,
-   PROH_10MS,
-   PROH_15MS,
-   PROH_20MS,
-   PROH_25MS,
-   PROH_30MS,
-   PROH_35MS,
-   PROH_40MS,
-   PROH_45MS,
-   PROH_50MS,
-   PROH_55MS,
-   PROH_60MS,
-   PROH_65MS,
-   PROH_70MS,
-   PROH_75MS,
-   PROH_80MS,
-   PROH_85MS,
-   PROH_90MS,
-   PROH_95MS,
-   PROH_100MS,
-   PROH_105MS,
-   PROH_110MS,
-   PROH_115MS,
-   PROH_120MS,
-   PROH_125MS,
-   PROH_130MS,
-   PROH_135MS,
-   PROH_140MS,
-   PROH_145MS,
-   PROH_150MS,
-   PROH_155MS,
-   PROH_160MS,
-   PROH_165MS,
-   PROH_170MS,
-   PROH_175MS,
-   PROH_180MS,
-   PROH_185MS,
-   PROH_190MS,
-   PROH_195MS,
-   PROH_200MS,
-   PROH_205MS,
-   PROH_210MS,
-   PROH_215MS,
-   PROH_220MS,
-   PROH_225MS,
-   PROH_230MS,
-   PROH_235MS,
-   PROH_240MS,
-   PROH_245MS,
-   PROH_250MS,
-   PROH_300MS,
-   PROH_350MS,
-   PROH_400MS,
-   PROH_450MS,
-   PROH_500MS,
-   PROH_800MS,
-   PROH_1000MS,
-   PROH_1200MS,
-   PROH_1600MS,
-   PROH_2000MS,
-   PROH_2400MS,
-   PROH_SPARE2,
-   PROH_SPARE1
-
-}TStatProhTmr;
-
-typedef enum
-{
    RLC_DU_APP_RSP_NOK,
    RLC_DU_APP_RSP_OK
 }RlcRsp;
@@ -231,8 +115,8 @@ typedef enum
 typedef struct ulAmCfg
 {
    SnLenAm        snLenUl;              /* Sequence Number length in bits. Allowed values are 12 and 18 */
-   TReAssembleTmr reAssemTmr;           /* T_reassembling Timer in msec*/
-   TStatProhTmr   statProhTmr;          /* T_status_prohibit Timer in msec*/
+   int8_t         reAssemTmr;           /* T_reassembling Timer in msec*/
+   int16_t        statProhTmr;          /* T_status_prohibit Timer in msec*/
 
 }UlAmCfg;
 
@@ -255,7 +139,7 @@ typedef struct dlUmCfg
 typedef struct ulUmCfg
 {
    SnLenUm        snLenUlUm;             /* Sequence Number length in bits. Allowed values are 6 and 12 */
-   TReAssembleTmr reAssemTmr;            /* T_reassembling Timer in msec*/
+   int8_t         reAssemTmr;            /* T_reassembling Timer in msec*/
 
 }UlUmCfg;
 

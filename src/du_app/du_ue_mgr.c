@@ -1140,8 +1140,8 @@ void fillDefaultAmInfo(AmBearerCfg *amCfg)
  
    /* UL AM */
    amCfg->ulAmCfg.snLenUl     = AM_SIZE_12;
-   amCfg->ulAmCfg.reAssemTmr  = RE_ASM_40MS; 
-   amCfg->ulAmCfg.statProhTmr = PROH_35MS;
+   amCfg->ulAmCfg.reAssemTmr  = T_REASSEMBLY_VAL; 
+   amCfg->ulAmCfg.statProhTmr = T_STATUS_PROHIBHIT_VAL;
 }
 
 /******************************************************************
@@ -1162,7 +1162,7 @@ void fillDefaultUmBiInfo(UmBiDirBearerCfg *umBiDirCfg)
 {
    /* UL UM BI DIR INFO */
    umBiDirCfg->ulUmCfg.snLenUlUm = UM_SIZE_12;
-   umBiDirCfg->ulUmCfg.reAssemTmr = RE_ASM_40MS;
+   umBiDirCfg->ulUmCfg.reAssemTmr = T_REASSEMBLY_VAL;
 
    /* DL UM BI DIR INFO */
    umBiDirCfg->dlUmCfg.snLenDlUm  = UM_SIZE_12;
@@ -1185,7 +1185,7 @@ void fillDefaultUmBiInfo(UmBiDirBearerCfg *umBiDirCfg)
 void fillDefaultUmUlInfo(UmUniDirUlBearerCfg *UmUlCfg)
 {
    UmUlCfg->ulUmCfg.snLenUlUm = UM_SIZE_12;
-   UmUlCfg->ulUmCfg.reAssemTmr = RE_ASM_40MS;
+   UmUlCfg->ulUmCfg.reAssemTmr = T_REASSEMBLY_VAL;
 }
 
 /******************************************************************
