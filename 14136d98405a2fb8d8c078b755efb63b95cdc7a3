@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e9f1ab65_3795ee0a",
+        "filename": "src/5gnrrlc/kw_dl.x",
+        "patchSetId": 11
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-02-19T10:12:47Z",
+      "side": 1,
+      "message": "S32",
+      "revId": "14136d98405a2fb8d8c078b755efb63b95cdc7a3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ce9f26ed_939c3404",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 814,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-02-19T10:12:47Z",
+      "side": 1,
+      "message": "make it global - uint64",
+      "revId": "14136d98405a2fb8d8c078b755efb63b95cdc7a3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
