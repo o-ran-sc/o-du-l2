@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e7ac460e_a21f6795",
+        "filename": "src/5gnrrlc/kw_cfg_dl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-02-19T10:12:53Z",
+      "side": 1,
+      "message": "move to duapp",
+      "revId": "c0207260641ecb9dc3f62f9a74f8dd34d09075a7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a43579aa_3df65f7c",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1139,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-02-19T10:12:53Z",
+      "side": 1,
+      "message": "check cfg in plugfest log",
+      "revId": "c0207260641ecb9dc3f62f9a74f8dd34d09075a7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
