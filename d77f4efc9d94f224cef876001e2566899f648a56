@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "8d260e45_4c23f0ef",
+        "filename": "src/cm/common_def.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-02-20T07:06:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "870b7368_cc0d3a3c",
+      "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0ae39937_07fa6008",
         "filename": "src/cm/common_def.h",
         "patchSetId": 6
@@ -33,6 +51,24 @@
       "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "25b38f38_0501bf6c",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-02-20T07:06:22Z",
+      "side": 1,
+      "message": "removed this macro now",
+      "parentUuid": "0ae39937_07fa6008",
+      "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "01601bac_e8308724",
+        "filename": "src/codec_utils/common/odu_common_codec.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-02-20T07:06:22Z",
+      "side": 1,
+      "message": "as discussed renaming the function to teIdStringToInt",
+      "parentUuid": "ba5e27bc_f5659752",
+      "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "618ad705_0fed0bfe",
         "filename": "src/codec_utils/common/odu_common_codec.h",
         "patchSetId": 6
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "34114c15_bb436a58",
+        "filename": "src/codec_utils/common/odu_common_codec.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-02-20T07:06:22Z",
+      "side": 1,
+      "message": "renaming the macro to TEID_BIT_SIZE",
+      "parentUuid": "618ad705_0fed0bfe",
+      "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bc217615_6d06c51c",
         "filename": "src/codec_utils/common/odu_common_codec.h",
         "patchSetId": 6
@@ -84,6 +156,24 @@
       "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ddbc069c_ce172274",
+        "filename": "src/codec_utils/common/odu_common_codec.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-02-20T07:06:22Z",
+      "side": 1,
+      "message": "As discussed not changing the function",
+      "parentUuid": "bc217615_6d06c51c",
+      "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -121,6 +211,24 @@
     },
     {
       "key": {
+        "uuid": "da98e21e_6ab9fe5c",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-02-20T07:06:22Z",
+      "side": 1,
+      "message": "In cu stub we are creating at init. In DU we configuring tunnel only after context setup",
+      "parentUuid": "a451c8dd_6a7f6dcb",
+      "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "09949aa6_332ac350",
         "filename": "src/cu_stub/cu_stub_egtp.c",
         "patchSetId": 6
@@ -135,6 +243,24 @@
       "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "24892c2f_16d7c42d",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 653,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-02-20T07:06:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "09949aa6_332ac350",
+      "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -155,6 +281,24 @@
     },
     {
       "key": {
+        "uuid": "fd270dba_7e4a94b7",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 501,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-02-20T07:06:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bea8f3ef_2e3be742",
+      "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3065caaf_4c902eeb",
         "filename": "src/du_app/du_mgr.h",
         "patchSetId": 6
@@ -169,6 +313,24 @@
       "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8b842c69_f8b1d483",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-02-20T07:06:22Z",
+      "side": 1,
+      "message": "duUeCfg-\u003enumDrb will be deleted once we send context response. Later when DL/UL data has to be processed, instead of iterating to MAX_NUM_DRB we can use the numDrb itself",
+      "parentUuid": "3065caaf_4c902eeb",
+      "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -189,6 +351,24 @@
     },
     {
       "key": {
+        "uuid": "985caa17_ad2c9053",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1752,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-02-20T07:06:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "1ef5521e_25c5d4ac",
+      "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "657be1f9_cec5b2d4",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 6
@@ -203,6 +383,24 @@
       "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "18272fff_97ca12ea",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-02-20T07:06:22Z",
+      "side": 1,
+      "message": "this is removed in other patch",
+      "parentUuid": "657be1f9_cec5b2d4",
+      "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -223,6 +421,24 @@
     },
     {
       "key": {
+        "uuid": "8939d4b3_560ca0a9",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1807,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-02-20T07:06:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b8f6e5e9_5d0f568b",
+      "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f57e99a5_f6dd1e38",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 6
@@ -237,6 +453,24 @@
       "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ef1b70cf_2987d1d0",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1967,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-02-20T07:06:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f57e99a5_f6dd1e38",
+      "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -257,6 +491,24 @@
     },
     {
       "key": {
+        "uuid": "5bfd09b3_38e95f6e",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1971,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-02-20T07:06:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1edfd146_56ddd888",
+      "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fff1fe4d_8c96e98a",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 6
@@ -274,6 +526,24 @@
     },
     {
       "key": {
+        "uuid": "edfa46ff_26429402",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1975,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-02-20T07:06:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "fff1fe4d_8c96e98a",
+      "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6cbda4fd_056620df",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 6
@@ -288,6 +558,24 @@
       "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "559863ff_41193662",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2036,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-02-20T07:06:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6cbda4fd_056620df",
+      "revId": "d77f4efc9d94f224cef876001e2566899f648a56",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
