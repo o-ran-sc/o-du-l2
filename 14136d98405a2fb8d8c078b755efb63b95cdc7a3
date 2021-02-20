@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "7b942f18_b42c37c4",
+        "filename": "src/5gnrrlc/kw_dl.x",
+        "patchSetId": 11
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-02-20T13:03:23Z",
+      "side": 1,
+      "message": "Addressing this comment in DL AM changes (commit 5627)",
+      "parentUuid": "e9f1ab65_3795ee0a",
+      "revId": "14136d98405a2fb8d8c078b755efb63b95cdc7a3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ce9f26ed_939c3404",
         "filename": "src/du_app/du_egtp.c",
         "patchSetId": 11
@@ -51,6 +69,24 @@
       "revId": "14136d98405a2fb8d8c078b755efb63b95cdc7a3",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f94ccf2a_90e24f18",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 814,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-02-20T13:03:23Z",
+      "side": 1,
+      "message": "Addressing this comment in DL AM changes (commit 5627)",
+      "parentUuid": "3b4b01eb_928d5502",
+      "revId": "14136d98405a2fb8d8c078b755efb63b95cdc7a3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
