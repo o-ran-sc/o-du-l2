@@ -3339,7 +3339,6 @@ uint16_t fillDlTtiReq(SlotIndInfo currTimingInfo)
       macCellCfg = macCb.macCell[cellIdx]->macCellCfg;
 
       currDlSlot = &macCb.macCell[cellIdx]->dlSlot[dlTtiReqTimingInfo.slot]; 
-      nPdu = calcDlTtiReqPduCount(&currDlSlot->dlInfo);
 
       LWR_MAC_ALLOC(dlTtiElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_dl_tti_req_t)));
       if(dlTtiElem)
@@ -3371,7 +3370,6 @@ uint16_t fillDlTtiReq(SlotIndInfo currTimingInfo)
 	 dlTtiReq->nPdus = calcDlTtiReqPduCount(&currDlSlot->dlInfo);  /* get total Pdus */
 	 nPdu = dlTtiReq->nPdus;
 	 dlTtiReq->nGroup = 0;
-
 	 if(dlTtiReq->nPdus > 0)
 	 {
 	    if(currDlSlot->dlInfo.isBroadcastPres)

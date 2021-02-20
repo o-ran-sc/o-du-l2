@@ -760,7 +760,6 @@ uint8_t rlcProcDlData(Pst *pst, KwuDatReqInfo *datReq, Buffer *mBuf)
       case RLC_MODE_UM:
       {
          rlcUmmQSdu(tRlcCb,rbCb, datReq, mBuf);
-
          break;
       }
       case RLC_MODE_AM:
