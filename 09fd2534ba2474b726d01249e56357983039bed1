@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a3aa29e_64c4b273",
+        "filename": "src/5gnrrlc/kw_amm_ul.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 700,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-20T14:06:53Z",
+      "side": 1,
+      "message": "add spec reference for these conditions",
+      "revId": "09fd2534ba2474b726d01249e56357983039bed1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4a8de7d8_83002abe",
+        "filename": "src/5gnrrlc/kw_amm_ul.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1671,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-20T14:06:53Z",
+      "side": 1,
+      "message": "add spec ref",
+      "revId": "09fd2534ba2474b726d01249e56357983039bed1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3c8eb2a7_3ef87191",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-20T14:06:53Z",
+      "side": 1,
+      "message": "print the invalid value",
+      "revId": "09fd2534ba2474b726d01249e56357983039bed1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7771fec5_8fe8f537",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-20T14:06:53Z",
+      "side": 1,
+      "message": "what is the enum value of T_StatusProhibit_ms300 and all other cases below? Can we not add any specific formula instead of a switch case? Same comment for above function as well.",
+      "revId": "09fd2534ba2474b726d01249e56357983039bed1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "58fa4c33_72b63bf7",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-20T14:06:53Z",
+      "side": 1,
+      "message": "print invalid value",
+      "revId": "09fd2534ba2474b726d01249e56357983039bed1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6591a71c_81ad8cd2",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6481,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-20T14:06:53Z",
+      "side": 1,
+      "message": "add in pending items list to track better",
+      "revId": "09fd2534ba2474b726d01249e56357983039bed1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7de7c414_95328a76",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1129,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-20T14:06:53Z",
+      "side": 1,
+      "message": "T_REASSEMBLY in caps? is it a macro defined by DU? In that case, why do we need a function for conversion? Directly use the converted value",
+      "revId": "09fd2534ba2474b726d01249e56357983039bed1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
