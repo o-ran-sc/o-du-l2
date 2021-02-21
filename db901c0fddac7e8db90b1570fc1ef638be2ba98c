@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1e1f1d10_6bf454d5",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 9662,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-21T16:24:07Z",
+      "side": 1,
+      "message": "why another for loop here? Why not continue in the same loop as line #9652",
+      "revId": "db901c0fddac7e8db90b1570fc1ef638be2ba98c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aebe2d59_2597c556",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1852,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-21T16:24:07Z",
+      "side": 1,
+      "message": "check if f1TnlCfg-\u003etnlCfg1 is NULL and return from the function in the beginning itself",
+      "revId": "db901c0fddac7e8db90b1570fc1ef638be2ba98c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
