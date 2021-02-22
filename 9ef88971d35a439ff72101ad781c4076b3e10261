@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6cd230e2_0cb8154f",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1144,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-22T08:32:10Z",
+      "side": 1,
+      "message": "as discussed these lines must be changed",
+      "revId": "9ef88971d35a439ff72101ad781c4076b3e10261",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "68c9ba83_b2b9f799",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1165,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-22T08:32:10Z",
+      "side": 1,
+      "message": "this function must not be called, as discussed",
+      "revId": "9ef88971d35a439ff72101ad781c4076b3e10261",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dc40c0f1_edddec4d",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1188,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-22T08:32:10Z",
+      "side": 1,
+      "message": "this function must not be called, as discussed",
+      "revId": "9ef88971d35a439ff72101ad781c4076b3e10261",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
