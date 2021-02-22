@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1f597563_0fcd620c",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-02-22T07:20:25Z",
+      "side": 1,
+      "message": "print the invalid value in default cases\nERROR  --\u003e F1AP : \u003c\u003e\nformat missing",
+      "revId": "25a092c3c795618290a2e01ce01585a44cf266f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
