@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "46d32e36_5d5cf3dd",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 7267,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-02-22T13:51:23Z",
+      "side": 1,
+      "message": "eliminate ret variable",
+      "revId": "13d69430713cd381772de495739acff114be7e2a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
