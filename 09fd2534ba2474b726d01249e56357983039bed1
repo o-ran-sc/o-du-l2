@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "bbfabc05_91ff2bdc",
+        "filename": "src/5gnrrlc/kw_amm_ul.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 700,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-02-22T07:34:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a3aa29e_64c4b273",
+      "revId": "09fd2534ba2474b726d01249e56357983039bed1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4a8de7d8_83002abe",
         "filename": "src/5gnrrlc/kw_amm_ul.c",
         "patchSetId": 2
@@ -53,6 +71,24 @@
     },
     {
       "key": {
+        "uuid": "ec4681e5_af49c47f",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-02-22T07:34:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c8eb2a7_3ef87191",
+      "revId": "09fd2534ba2474b726d01249e56357983039bed1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7771fec5_8fe8f537",
         "filename": "src/du_app/du_f1ap_msg_hdl.c",
         "patchSetId": 2
@@ -67,6 +103,24 @@
       "revId": "09fd2534ba2474b726d01249e56357983039bed1",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6e4539f6_a872f774",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-02-22T07:34:29Z",
+      "side": 1,
+      "message": "The enum value for 300ms is 51. so the sequence is 300, 350 --- 500 then 800, 1000, 1200 etc\nthere is no continuous sequence so unable to form a formula for same.",
+      "parentUuid": "7771fec5_8fe8f537",
+      "revId": "09fd2534ba2474b726d01249e56357983039bed1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +141,24 @@
     },
     {
       "key": {
+        "uuid": "af83c899_60d345a8",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-02-22T07:34:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "58fa4c33_72b63bf7",
+      "revId": "09fd2534ba2474b726d01249e56357983039bed1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6591a71c_81ad8cd2",
         "filename": "src/du_app/du_f1ap_msg_hdl.c",
         "patchSetId": 2
@@ -104,6 +176,24 @@
     },
     {
       "key": {
+        "uuid": "275a9590_1af4bfcc",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6481,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-02-22T07:34:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6591a71c_81ad8cd2",
+      "revId": "09fd2534ba2474b726d01249e56357983039bed1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7de7c414_95328a76",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 2
@@ -118,6 +208,24 @@
       "revId": "09fd2534ba2474b726d01249e56357983039bed1",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6718fad9_19095817",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1129,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-02-22T07:34:29Z",
+      "side": 1,
+      "message": "this macro holds an enum value in DU. Hence conversion is required here.",
+      "parentUuid": "7de7c414_95328a76",
+      "revId": "09fd2534ba2474b726d01249e56357983039bed1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
