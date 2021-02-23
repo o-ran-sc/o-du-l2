@@ -16,6 +16,24 @@
       "revId": "13d69430713cd381772de495739acff114be7e2a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ad6f7a1a_029fe128",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 7267,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-02-23T06:48:56Z",
+      "side": 1,
+      "message": "ok will be addressed in DL code changes review 5382",
+      "parentUuid": "46d32e36_5d5cf3dd",
+      "revId": "13d69430713cd381772de495739acff114be7e2a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
