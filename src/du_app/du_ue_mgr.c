@@ -15,7 +15,8 @@
 #   limitations under the License.                                             #
 ################################################################################
  *******************************************************************************/
-/* This file contains UE management handling functionality for DU APP */
+/*** This file contains UE management handling functionality for DU APP ***/
+
 #include "common_def.h"
 #include "lrg.h"
 #include "lrg.x"
