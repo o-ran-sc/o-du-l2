@@ -15,7 +15,8 @@
 #   limitations under the License.                                             #
 ################################################################################
  *******************************************************************************/
-/* This file contains UE management handling functionality for DU APP */
+/*** This file contains UE management handling functionality for DU APP ***/
+
 #include "common_def.h"
 #include "lrg.h"
 #include "lrg.x"
@@ -36,16 +37,16 @@
 
 DuMacDlCcchInd packMacDlCcchIndOpts[] =
 {
-   packMacDlCcchInd,   /* Loose coupling */
-   MacProcDlCcchInd,    /* TIght coupling */
-   packMacDlCcchInd    /* Light weight-loose coupling */
+   packMacDlCcchInd,     /* Loose coupling */
+   MacProcDlCcchInd,     /* TIght coupling */
+   packMacDlCcchInd      /* Light weight-loose coupling */
 };
 
 DuMacUeCreateReq packMacUeCreateReqOpts[] =
 {
    packDuMacUeCreateReq,       /* Loose coupling */
-   MacProcUeCreateReq,          /* TIght coupling */
-   packDuMacUeCreateReq       /* Light weight-loose coupling */
+   MacProcUeCreateReq,         /* TIght coupling */
+   packDuMacUeCreateReq        /* Light weight-loose coupling */
 };
 
 DuRlcUeCreateReq packRlcUeCreateReqOpts[] =
