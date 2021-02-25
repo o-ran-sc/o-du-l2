@@ -65,6 +65,7 @@
 #define UE_CONTEXT_SETUP_RSP 4
 #define SECURITY_MODE_COMPLETE 5
 #define RRC_RECONFIG 6
+#define UE_CONTEXT_MOD_REQ 7
 
 typedef struct f1apDb
 {
@@ -74,7 +75,7 @@ typedef struct f1apDb
   
 F1apMsgDb f1apMsgDb;
 void F1APMsgHdlr(Buffer *mBuf);
-
+uint8_t BuildAndSendUeContextModificationReq();
 /**********************************************************************
          End of file
 **********************************************************************/

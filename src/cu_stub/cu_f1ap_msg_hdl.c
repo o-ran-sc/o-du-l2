@@ -171,7 +171,6 @@
 #define SCRAMBLING_ID  NR_PCI
 #define DMRS_ADDITIONAL_POS  0          /* DMRS Additional poistion */
 #define RES_ALLOC_TYPE       1          /* Resource allocation type */
-
 #define FIVE_QI_VALUE 9  /*spec 23.501, Table 5.7.4-1*/
 
 /*******************************************************************
@@ -1768,6 +1767,9 @@ uint8_t setDlRRCMsgType()
 	 break;
       case RRC_RECONFIG:
 	 rrcMsgType = RRC_RECONFIG;
+	 break;
+      case UE_CONTEXT_MOD_REQ:
+	 rrcMsgType = UE_CONTEXT_MOD_REQ;
 	 break;
       default:
 	 break;
@@ -6552,6 +6554,11 @@ uint8_t procUlRrcMsg(F1AP_PDU_t *f1apMsg)
 	    BuildAndSendDLRRCMessageTransfer(srbId, rrcMsgType);
 	 }
       }
+      if(rrcMsgType == UE_CONTEXT_MOD_REQ)
+      {
+         DU_LOG("\nINFO  -->  F1AP: Sending UE Context Modification Request");
+	 BuildAndSendUeContextModificationReq();
+      }
    }
    return ret;
 }
@@ -7097,7 +7104,7 @@ void FreeDrbToBeSetupModList(DRBs_ToBeSetupMod_List_t *drbSet)
 	 {
 	    if(arrIdx == 0)
 	    {
-	       drbItemIe =drbSet->list.array[arrIdx];
+	       drbItemIe = (DRBs_ToBeSetupMod_ItemIEs_t *)drbSet->list.array[arrIdx];
 	       FreeDrb2Item(&(drbItemIe->value.choice.DRBs_ToBeSetupMod_Item));
 	    }
 	    CU_FREE(drbSet->list.array[arrIdx], sizeof(DRBs_ToBeSetupMod_ItemIEs_t));
@@ -7152,7 +7159,7 @@ uint8_t BuildDrbToBeSetupModList(DRBs_ToBeSetupMod_List_t *drbSet)
    }
 
    arrIdx=0;
-   ret = FillDrbItemList(drbSet->list.array[arrIdx]);
+   ret = FillDrbItemList((DRBs_ToBeSetupMod_ItemIEs_t *)drbSet->list.array[arrIdx]);
    if(ret != ROK)
    {
       DU_LOG("\nERROR  -->  F1AP : FillDrbItemList failed");
@@ -7178,10 +7185,8 @@ uint8_t BuildDrbToBeSetupModList(DRBs_ToBeSetupMod_List_t *drbSet)
 * ****************************************************************/
 void FreeUeContextModicationRequest(F1AP_PDU_t *f1apMsg)
 {
-   uint8_t arrIdx =0 , ieId=0, drbIe=0, arrIdx1;
+   uint8_t arrIdx =0 , ieId=0; 
    UEContextModificationRequest_t *UeContextModifyReq = NULLP;
-   DRBs_ToBeSetupMod_List_t *drbSet;
-   DRBs_ToBeSetupMod_ItemIEs_t *drbItemIe = NULLP;
 
    if(f1apMsg)
    {
@@ -7488,6 +7493,11 @@ void F1APMsgHdlr(Buffer *mBuf)
 		  {
 		     DU_LOG("\nINFO  -->  F1AP : UE ContextSetupResponse received");
 		     f1apMsgDb.dlRrcMsgCount++; /* keeping DL RRC Msg Count */
+		     break;
+		  }
+	       case SuccessfulOutcome__value_PR_UEContextModificationResponse:
+	          {
+		     DU_LOG("\nINFO  -->  F1AP : UE Context Modification Response received");
 		     break;
 		  }
 	       default:

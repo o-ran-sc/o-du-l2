@@ -6955,21 +6955,21 @@ void extractRlcModeCfg(uint8_t rlcMode, RlcBearerCfg *rlcDbCfg, RLC_Config_t *lc
          case RLC_AM :
             {
                if(lcCfg->choice.am)
-	       {
+               {
                   DU_ALLOC_SHRABL_BUF(rlcDbCfg->u.amCfg, sizeof(AmBearerCfg));
-		  if(rlcDbCfg->u.amCfg)
-		     extractRlcAmCfg(rlcDbCfg->u.amCfg, lcCfg->choice.am);
-	       }
+                  if(rlcDbCfg->u.amCfg)
+                     extractRlcAmCfg(rlcDbCfg->u.amCfg, lcCfg->choice.am);
+               }
                break;
             }
          case RLC_UM_BI_DIRECTIONAL :
             {
                if(lcCfg->choice.um_Bi_Directional)
-	       {
+               {
                   DU_ALLOC_SHRABL_BUF(rlcDbCfg->u.umBiDirCfg, sizeof(UmBiDirBearerCfg));
-	          if(rlcDbCfg->u.umBiDirCfg)
+                  if(rlcDbCfg->u.umBiDirCfg)
                      extractRlcUmBiCfg(rlcDbCfg->u.umBiDirCfg, lcCfg->choice.um_Bi_Directional);
-	       }
+               }
                break;
             }
          case RLC_UM_UNI_DIRECTIONAL_UL :
@@ -6977,9 +6977,9 @@ void extractRlcModeCfg(uint8_t rlcMode, RlcBearerCfg *rlcDbCfg, RLC_Config_t *lc
                if(lcCfg->choice.um_Uni_Directional_DL)
                {
                   DU_ALLOC_SHRABL_BUF(rlcDbCfg->u.umUniDirUlCfg, sizeof(UmUniDirUlBearerCfg));
-	          if(rlcDbCfg->u.umUniDirUlCfg)
+                  if(rlcDbCfg->u.umUniDirUlCfg)
                      extractRlcUmUlCfg(rlcDbCfg->u.umUniDirUlCfg, lcCfg->choice.um_Uni_Directional_DL);
-	       }
+               }
                break;
             }
          case RLC_UM_UNI_DIRECTIONAL_DL :
@@ -6987,9 +6987,9 @@ void extractRlcModeCfg(uint8_t rlcMode, RlcBearerCfg *rlcDbCfg, RLC_Config_t *lc
                if(lcCfg->choice.um_Uni_Directional_UL)
                {
                   DU_ALLOC_SHRABL_BUF(rlcDbCfg->u.umUniDirDlCfg, sizeof(UmUniDirDlBearerCfg));
-	          if(rlcDbCfg->u.umUniDirDlCfg)
+                  if(rlcDbCfg->u.umUniDirDlCfg)
                      extractRlcUmDlCfg(rlcDbCfg->u.umUniDirDlCfg, lcCfg->choice.um_Uni_Directional_UL);
-	       }
+               }
                break;
             }
          default:
@@ -7194,7 +7194,56 @@ uint8_t extractUpTnlInfo(uint8_t drbId, uint8_t configType,\
    }
    return ROK;
 }
+/*******************************************************************
+*
+* @brief Function to extract Drb Qos Cfg Info from CU
+*
+* @details
+*
+*    Function : extractDrbQosCfg 
+*
+*    Functionality: Function to extract Drb Qos Cfg Info from CU
+*
+* @params[in] DRB_Information_t *drbInfo, LcCfg *macLcToAdd
+* @return ROK/RFAILED
+*
+* ****************************************************************/
 
+uint8_t extractDrbQosCfg(DRB_Information_t *drbInfo, LcCfg *macLcToAdd ) 
+{
+   if(!macLcToAdd->drbQos)
+   {
+      DU_ALLOC_SHRABL_BUF(macLcToAdd->drbQos, sizeof(DrbQosInfo));
+      if(macLcToAdd->drbQos == NULLP)
+      {
+         DU_LOG("\nERROR  -->  DUAPP:Memory failed at allocating DrbQos at extractDrbCfg()");
+         return RFAILED;
+      }
+
+   }
+   if(drbInfo->dRB_QoS.qoS_Characteristics.present == QoS_Characteristics_PR_non_Dynamic_5QI)
+   {
+      extractQosInfo(macLcToAdd->drbQos, &drbInfo->dRB_QoS);
+      macLcToAdd->dlLcCfg.lcp = macLcToAdd->drbQos->ngRanRetPri.priorityLevel;
+   }
+   if(!macLcToAdd->snssai)
+   {
+      DU_ALLOC_SHRABL_BUF(macLcToAdd->snssai, sizeof(Snssai));
+      if(macLcToAdd->snssai == NULLP)
+      {
+         DU_LOG("\nERROR  -->  DUAPP : Memory failed at allocating SNSSAI at extractDrbCfg()");
+         return RFAILED;
+      }
+   }
+   memcpy(&macLcToAdd->snssai->sst, drbInfo->sNSSAI.sST.buf, \
+         drbInfo->sNSSAI.sST.size);
+   if(drbInfo->sNSSAI.sD)
+   {
+      memcpy(macLcToAdd->snssai->sd, drbInfo->sNSSAI.sD->buf, \
+            drbInfo->sNSSAI.sD->size);
+   }
+   return ROK;
+}
 /*******************************************************************
  *
  * @brief Function to extract DRB info received from CU
@@ -7209,55 +7258,55 @@ uint8_t extractUpTnlInfo(uint8_t drbId, uint8_t configType,\
  * @return void
  *
  * ****************************************************************/
-uint8_t extractDrbCfg(DRBs_ToBeSetup_Item_t *drbItem, LcCfg *macLcToAdd, UpTnlCfg *upTnlInfo)
+uint8_t extractDrbCfg(DRBs_ToBeSetup_Item_t *drbItem,DRBs_ToBeSetupMod_Item_t *drbSetupModItem,\
+LcCfg *macLcToAdd, UpTnlCfg *upTnlInfo)
 {
    DRB_Information_t *drbInfo = NULLP;
 
-   if(extractUpTnlInfo(drbItem->dRBID, CONFIG_ADD, &drbItem->uLUPTNLInformation_ToBeSetup_List, upTnlInfo) != ROK)
+   if(drbItem != NULLP)
    {
-      DU_LOG("\nERROR  -->  DUAPP : Failed to extract tunnel Cfg at extractDrbCfg()");
-      return RFAILED;
-   }
-   if(drbItem->qoSInformation.present == QoSInformation_PR_choice_extension)
-   {
-      if(drbItem->qoSInformation.choice.choice_extension->value.present ==
-	    QoSInformation_ExtIEs__value_PR_DRB_Information)
+      if(extractUpTnlInfo(drbItem->dRBID, CONFIG_ADD, &drbItem->uLUPTNLInformation_ToBeSetup_List, upTnlInfo) != ROK)
       {
-	 drbInfo = &drbItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information;
-
-	 if(!macLcToAdd->drbQos)
-	 {
-	    DU_ALLOC_SHRABL_BUF(macLcToAdd->drbQos, sizeof(DrbQosInfo));
-	    if(macLcToAdd->drbQos == NULLP)
-	    {
-	       DU_LOG("\nERROR  -->  DUAPP:Memory failed at allocating DrbQos at extractDrbCfg()");
-	       return RFAILED;
-	    }
-
-	 }
-	 if(drbInfo->dRB_QoS.qoS_Characteristics.present == QoS_Characteristics_PR_non_Dynamic_5QI)
-	 {
-	    extractQosInfo(macLcToAdd->drbQos, &drbInfo->dRB_QoS);
-            macLcToAdd->dlLcCfg.lcp = macLcToAdd->drbQos->ngRanRetPri.priorityLevel;
-	 }
-	 if(!macLcToAdd->snssai)
-	 {
-	    DU_ALLOC_SHRABL_BUF(macLcToAdd->snssai, sizeof(Snssai));
-	    if(macLcToAdd->snssai == NULLP)
-	    {
-	       DU_LOG("\nERROR  -->  DUAPP : Memory failed at allocating SNSSAI at extractDrbCfg()");
-	       return RFAILED;
-	    }
-	 }
-	 memcpy(&macLcToAdd->snssai->sst, drbInfo->sNSSAI.sST.buf, \
-	       drbInfo->sNSSAI.sST.size);
-	 if(drbInfo->sNSSAI.sD)
-	 {
-	    memcpy(macLcToAdd->snssai->sd, drbInfo->sNSSAI.sD->buf, \
-		  drbInfo->sNSSAI.sD->size);
-	 }
-      }/*End of DRB Info*/
+         DU_LOG("\nERROR  -->  DUAPP : Failed to extract tunnel Cfg at extractDrbCfg()");
+         return RFAILED;
+      }
+      if(drbItem->qoSInformation.present == QoSInformation_PR_choice_extension)
+      {
+         if(drbItem->qoSInformation.choice.choice_extension->value.present == QoSInformation_ExtIEs__value_PR_DRB_Information)
+         {
+            drbInfo = &drbItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information;
+            if(extractDrbQosCfg(drbInfo , macLcToAdd) != ROK)
+            {
+               DU_LOG("\nERROR  -->  DUAPP : Failed to extract qos Cfg at extractDrbCfg()");
+               return RFAILED;
+            }
+         }
+      }
    }
+   else if(drbSetupModItem != NULLP)
+   {
+      if(extractUpTnlInfo(drbSetupModItem->dRBID, CONFIG_ADD, &drbSetupModItem->uLUPTNLInformation_ToBeSetup_List,\
+      upTnlInfo) != ROK)
+      {
+         DU_LOG("\nERROR  -->  DUAPP : Failed to extract tunnel Cfg at extractDrbCfg()");
+         return RFAILED;
+      }
+      if(drbSetupModItem->qoSInformation.present == QoSInformation_PR_choice_extension)
+      {
+         if(drbSetupModItem->qoSInformation.choice.choice_extension->value.present ==\
+         QoSInformation_ExtIEs__value_PR_DRB_Information)
+         {
+            drbInfo = &drbSetupModItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information;
+            if(extractDrbQosCfg(drbInfo , macLcToAdd) != ROK)
+            {
+               DU_LOG("\nERROR  -->  DUAPP : Failed to extract qos Cfg at extractDrbCfg()");  
+               return RFAILED;
+            }
+
+         }
+      }
+   }
+
    return ROK;
 }
 
@@ -7277,11 +7326,19 @@ uint8_t extractDrbCfg(DRBs_ToBeSetup_Item_t *drbItem, LcCfg *macLcToAdd, UpTnlCf
  * ****************************************************************/
 
 uint8_t extractMacRbCfg(uint8_t lcId, DRBs_ToBeSetup_Item_t *drbCfg,\
-  LogicalChannelConfig_t *ulLcCfg, LcCfg *lcCfg, UpTnlCfg *upTnlInfo)
+DRBs_ToBeSetupMod_Item_t *drbSetupModCfg,  LogicalChannelConfig_t *ulLcCfg, LcCfg *lcCfg, UpTnlCfg *upTnlInfo)
 {
    if(drbCfg != NULLP)
    {
-      if(extractDrbCfg(drbCfg, lcCfg, upTnlInfo) != ROK)
+      if(extractDrbCfg(drbCfg, NULL, lcCfg, upTnlInfo) != ROK)
+      {
+         DU_LOG("ERROR  -->  F1AP : Failed to build Drb Qos at extractMacRbCfg()");
+         return RFAILED;
+      }
+   }
+   else if(drbSetupModCfg != NULLP)
+   { 
+      if(extractDrbCfg(NULL, drbSetupModCfg, lcCfg, upTnlInfo) != ROK)
       {
          DU_LOG("ERROR  -->  F1AP : Failed to build Drb Qos at extractMacRbCfg()");
          return RFAILED;
@@ -7322,7 +7379,7 @@ uint8_t extractMacRbCfg(uint8_t lcId, DRBs_ToBeSetup_Item_t *drbCfg,\
  * ****************************************************************/
 
 uint8_t procMacLcCfg(uint8_t lcId, uint8_t rbType, uint8_t configType,\
-   DRBs_ToBeSetup_Item_t *drbItem, LogicalChannelConfig_t *ulLcCfg, LcCfg *lcCfg, UpTnlCfg *upTnlInfo)
+   DRBs_ToBeSetup_Item_t *drbItem, DRBs_ToBeSetupMod_Item_t *drbSetupModItem, LogicalChannelConfig_t *ulLcCfg, LcCfg *lcCfg, UpTnlCfg *upTnlInfo)
 {
    uint8_t ret = ROK;
 
@@ -7330,11 +7387,14 @@ uint8_t procMacLcCfg(uint8_t lcId, uint8_t rbType, uint8_t configType,\
    lcCfg->configType = configType;
    if(rbType == RB_TYPE_SRB)
    {
-      ret = extractMacRbCfg(lcId, NULL, ulLcCfg, lcCfg, NULL);
+      ret = extractMacRbCfg(lcId, NULL,NULL, ulLcCfg, lcCfg, NULL);
    }
    else if(rbType == RB_TYPE_DRB)
    {
-      ret = extractMacRbCfg(lcId, drbItem, ulLcCfg, lcCfg, upTnlInfo);
+      if(drbItem != NULL)
+        ret = extractMacRbCfg(lcId, drbItem, NULL, ulLcCfg, lcCfg, upTnlInfo);
+      else if(drbSetupModItem != NULL)
+        ret = extractMacRbCfg(lcId, NULL, drbSetupModItem, ulLcCfg, lcCfg, upTnlInfo);
    }
    return ret;
 }
@@ -7355,8 +7415,7 @@ uint8_t procMacLcCfg(uint8_t lcId, uint8_t rbType, uint8_t configType,\
  *
  * ****************************************************************/
 
-uint8_t extractRlcCfgToAddMod(struct CellGroupConfigRrc__rlc_BearerToAddModList *lcCfg, \
-   DuUeCfg *ueCfgDb)
+uint8_t extractRlcCfgToAddMod(struct CellGroupConfigRrc__rlc_BearerToAddModList *lcCfg, DuUeCfg *ueCfgDb)
 {
   uint8_t ret, idx, rbId, lcId, rlcMode, rbType;
   RLC_Config_t *f1RlcCfg = NULLP;
@@ -7407,7 +7466,7 @@ uint8_t extractRlcCfgToAddMod(struct CellGroupConfigRrc__rlc_BearerToAddModList 
      memset(&ueCfgDb->macLcCfg[idx], 0, sizeof(LcCfg));
      memset(&ueCfgDb->rlcLcCfg[idx], 0, sizeof(RlcBearerCfg));
      procRlcLcCfg(rbId, lcId, rbType, rlcMode, CONFIG_UNKNOWN, f1RlcCfg, &(ueCfgDb->rlcLcCfg[idx]));
-     ret = procMacLcCfg(lcId, rbType, CONFIG_UNKNOWN, NULL, macUlLcCfg, &ueCfgDb->macLcCfg[idx], NULL);
+     ret = procMacLcCfg(lcId, rbType, CONFIG_UNKNOWN, NULL, NULL, macUlLcCfg, &ueCfgDb->macLcCfg[idx], NULL);
      if(ret == RFAILED)
      {
         DU_LOG("\nERROR  -->  DU APP : Failed while filling MAC LC config at extractRlcCfgToAddMod()");
@@ -9034,129 +9093,132 @@ void freeAperDecodeDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
    DRBs_ToBeSetup_Item_t *drbSetItem = NULLP;
    uint8_t  flowIdx =0;
    uint8_t  drbIdx =0;
-   
+
    if(drbSet->list.array != NULLP)
    {
       for(drbIdx=0; drbIdx<drbSet->list.count; drbIdx++)
       {
-	 if(drbIdx==0&&drbSet->list.array[drbIdx] != NULLP)
-	 {
-	    drbSetItem =&drbSet->list.array[drbIdx]->value.choice.DRBs_ToBeSetup_Item;
-	    if(drbSetItem->qoSInformation.choice.choice_extension != NULLP)
-	    {
-	       if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
-		     qoS_Characteristics.choice.non_Dynamic_5QI !=NULLP)
-	       {
-		  if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
-			qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow!=NULLP)
-		  {
-		     if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
-			   qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume!=NULLP)
-		     {
+         if(drbIdx==0&&drbSet->list.array[drbIdx] != NULLP)
+         {
+            drbSetItem =&drbSet->list.array[drbIdx]->value.choice.DRBs_ToBeSetup_Item;
+            if(drbSetItem->qoSInformation.choice.choice_extension != NULLP)
+            {
+               if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
+                     qoS_Characteristics.choice.non_Dynamic_5QI !=NULLP)
+               {
+                  if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
+                        qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow!=NULLP)
+                  {
+                     if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
+                           qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume!=NULLP)
+                     {
 
-			if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sST.buf!=NULLP)
-			{
+                        if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sST.buf!=NULLP)
+                        {
 
-			   if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sD!=NULLP)
-			   {
+                           if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sD!=NULLP)
+                           {
 
-			      if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sD->\
-			      buf!=NULLP)
-			      {
+                              if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sD->\
+                                    buf!=NULLP)
+                              {
 
-				 if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.\
-				       flows_Mapped_To_DRB_List.list.array != NULLP)
-				 {
+                                 if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.\
+                                       flows_Mapped_To_DRB_List.list.array != NULLP)
+                                 {
 
-				    for(flowIdx=0;flowIdx<drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
-				    DRB_Information.flows_Mapped_To_DRB_List.list.count; flowIdx++)
-				    {
+                                    for(flowIdx=0;flowIdx<drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+                                          DRB_Information.flows_Mapped_To_DRB_List.list.count; flowIdx++)
+                                    {
 
-				       if(flowIdx==0&&drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
-					     DRB_Information.flows_Mapped_To_DRB_List.list.array[flowIdx]!=NULLP)
-				       {
-					  if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
-						DRB_Information.flows_Mapped_To_DRB_List.list.array[flowIdx]->\
-						qoSFlowLevelQoSParameters.\
-						qoS_Characteristics.choice.non_Dynamic_5QI!=NULLP)
-					  {
-					     if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
-						   DRB_Information.flows_Mapped_To_DRB_List.list.array[flowIdx]->\
-						   qoSFlowLevelQoSParameters.\
-						   qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow!=NULLP)
-					     {
+                                       if(flowIdx==0&&drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+                                             DRB_Information.flows_Mapped_To_DRB_List.list.array[flowIdx]!=NULLP)
+                                       {
+                                          if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+                                                DRB_Information.flows_Mapped_To_DRB_List.list.array[flowIdx]->\
+                                                qoSFlowLevelQoSParameters.\
+                                                qoS_Characteristics.choice.non_Dynamic_5QI!=NULLP)
+                                          {
+                                             if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+                                                   DRB_Information.flows_Mapped_To_DRB_List.list.array[flowIdx]->\
+                                                   qoSFlowLevelQoSParameters.\
+                                                   qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow!=NULLP)
+                                             {
 
-						if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
-						      DRB_Information.flows_Mapped_To_DRB_List.list.array[flowIdx]->\
-						      qoSFlowLevelQoSParameters.\
-						      qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume!=NULLP)
-						{
-						   freeAperDecodeULTnlInfo(&drbSetItem->uLUPTNLInformation_ToBeSetup_List);
-						   free(drbSetItem->uLConfiguration);
+                                                if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+                                                      DRB_Information.flows_Mapped_To_DRB_List.list.array[flowIdx]->\
+                                                      qoSFlowLevelQoSParameters.\
+                                                      qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume!=NULLP)
+                                                {
 
 
-						   free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
-							 DRB_Information.flows_Mapped_To_DRB_List.list.array[flowIdx]->\
-							 qoSFlowLevelQoSParameters.\
-							 qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume);
-						}
+                                                   free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+                                                         DRB_Information.flows_Mapped_To_DRB_List.list.array[flowIdx]->\
+                                                         qoSFlowLevelQoSParameters.\
+                                                         qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume);
+                                                }
 
-						free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
-						      DRB_Information.flows_Mapped_To_DRB_List.list.array[flowIdx]->\
-						      qoSFlowLevelQoSParameters.\
-						      qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow);
-					     }
+                                                free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+                                                      DRB_Information.flows_Mapped_To_DRB_List.list.array[flowIdx]->\
+                                                      qoSFlowLevelQoSParameters.\
+                                                      qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow);
+                                             }
 
-					     free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+                                             free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
 
-						   DRB_Information.flows_Mapped_To_DRB_List.list.array[flowIdx]->\
-						   qoSFlowLevelQoSParameters.\
-						   qoS_Characteristics.choice.non_Dynamic_5QI);
-					  }
-				       }
-				       if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
-					     DRB_Information.flows_Mapped_To_DRB_List.list.array[flowIdx]!=NULLP)
-				       {
+                                                   DRB_Information.flows_Mapped_To_DRB_List.list.array[flowIdx]->\
+                                                   qoSFlowLevelQoSParameters.\
+                                                   qoS_Characteristics.choice.non_Dynamic_5QI);
+                                          }
+                                       }
+                                       if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+                                             DRB_Information.flows_Mapped_To_DRB_List.list.array[flowIdx]!=NULLP)
+                                       {
 
-					  free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
-						DRB_Information.flows_Mapped_To_DRB_List.list.array[flowIdx]);
-				       }
-				    }
+                                          free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+                                                DRB_Information.flows_Mapped_To_DRB_List.list.array[flowIdx]);
+                                       }
+                                    }
 
-				    free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
-					  DRB_Information.flows_Mapped_To_DRB_List.list.array);
-				 }
+                                    free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+                                          DRB_Information.flows_Mapped_To_DRB_List.list.array);
+                                 }
 
-				 free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
-				 DRB_Information.sNSSAI.sD->buf);
-			      }
+                                 free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+                                       DRB_Information.sNSSAI.sD->buf);
+                              }
 
-			      free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sD);
-			   }
+                              free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sD);
+                           }
 
-			   free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sST.buf);
+                           free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sST.buf);
 
-			}
+                        }
 
-			free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
+                        free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
 
-			      qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume);
-		     }
+                              qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume);
+                     }
 
-		     free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
-			   qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow);
-		  }
+                     free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
+                           qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow);
+                  }
 
-		  free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
-			qoS_Characteristics.choice.non_Dynamic_5QI);
-	       }
-	       free(drbSetItem->qoSInformation.choice.choice_extension);
-	    }
-	 }
-	 if(drbSet->list.array[drbIdx]!=NULLP)
-	 {
-	    free(drbSet->list.array[drbIdx]);
-	 }
+                  free(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
+                        qoS_Characteristics.choice.non_Dynamic_5QI);
+               }
+               free(drbSetItem->qoSInformation.choice.choice_extension);
+            }
+            freeAperDecodeULTnlInfo(&drbSetItem->uLUPTNLInformation_ToBeSetup_List);
+            if(drbSetItem->uLConfiguration)
+            {
+               free(drbSetItem->uLConfiguration);
+            }
+         }
+         if(drbSet->list.array[drbIdx]!=NULLP)
+         {
+            free(drbSet->list.array[drbIdx]);
+         }
       }
       free(drbSet->list.array);
    }
@@ -9224,39 +9286,39 @@ void duFillModulationDetails(MacUeCfg *ueCfg, MacUeCfg *oldUeCfg, void *ueCap)
 
    /* Filling DL modulation info */
    if(ueNrCap->featureSets && ueNrCap->featureSets->featureSetsDownlinkPerCC && \
-	 ueNrCap->featureSets->featureSetsDownlinkPerCC->list.array[0] && \
-	 ueNrCap->featureSets->featureSetsDownlinkPerCC->list.array[0]->supportedModulationOrderDL)
+         ueNrCap->featureSets->featureSetsDownlinkPerCC->list.array[0] && \
+         ueNrCap->featureSets->featureSetsDownlinkPerCC->list.array[0]->supportedModulationOrderDL)
    {
       switch(*(ueNrCap->featureSets->featureSetsDownlinkPerCC->list.array[0]->supportedModulationOrderDL))
       {
-	 case ModulationOrder_qpsk:
-	    {
-	       ueCfg->dlModInfo.modOrder = MOD_ORDER_QPSK;
-	       break;
-	    }
-	 case ModulationOrder_qam16:
-	    {
-	       ueCfg->dlModInfo.modOrder = MOD_ORDER_QAM16;
-	       break;
-	    }
-	 case ModulationOrder_qam64:
-	    {
-	       ueCfg->dlModInfo.modOrder = MOD_ORDER_QAM64;
-	       ueCfg->dlModInfo.mcsIndex = PDSCH_MCS_INDEX;
-	       ueCfg->dlModInfo.mcsTable = MCS_TABLE_QAM64;
-	       break;
-	    }
-	 case ModulationOrder_qam256:
-	    {
-	       ueCfg->dlModInfo.modOrder = MOD_ORDER_QAM256;
-	       break;
-	    }
-	 default:
-	    {
-	       DU_LOG("\nERROR  -->  DU APP: Incorrect downlink modulation order received. Reatining old modulation configuration");
-	       memcpy(&ueCfg->dlModInfo, &oldUeCfg->dlModInfo, sizeof(ModulationInfo));
-	       break;
-	    }
+         case ModulationOrder_qpsk:
+            {
+               ueCfg->dlModInfo.modOrder = MOD_ORDER_QPSK;
+               break;
+            }
+         case ModulationOrder_qam16:
+            {
+               ueCfg->dlModInfo.modOrder = MOD_ORDER_QAM16;
+               break;
+            }
+         case ModulationOrder_qam64:
+            {
+               ueCfg->dlModInfo.modOrder = MOD_ORDER_QAM64;
+               ueCfg->dlModInfo.mcsIndex = PDSCH_MCS_INDEX;
+               ueCfg->dlModInfo.mcsTable = MCS_TABLE_QAM64;
+               break;
+            }
+         case ModulationOrder_qam256:
+            {
+               ueCfg->dlModInfo.modOrder = MOD_ORDER_QAM256;
+               break;
+            }
+         default:
+            {
+               DU_LOG("\nERROR  -->  DU APP: Incorrect downlink modulation order received. Reatining old modulation configuration");
+               memcpy(&ueCfg->dlModInfo, &oldUeCfg->dlModInfo, sizeof(ModulationInfo));
+               break;
+            }
       }
    }
    else
@@ -9266,39 +9328,39 @@ void duFillModulationDetails(MacUeCfg *ueCfg, MacUeCfg *oldUeCfg, void *ueCap)
 
    /* Filling UL modulation info */
    if(ueNrCap->featureSets && ueNrCap->featureSets->featureSetsUplinkPerCC && \
-	 ueNrCap->featureSets->featureSetsUplinkPerCC->list.array[0] && \
-	 ueNrCap->featureSets->featureSetsUplinkPerCC->list.array[0]->supportedModulationOrderUL)
+         ueNrCap->featureSets->featureSetsUplinkPerCC->list.array[0] && \
+         ueNrCap->featureSets->featureSetsUplinkPerCC->list.array[0]->supportedModulationOrderUL)
    {
       switch(*(ueNrCap->featureSets->featureSetsUplinkPerCC->list.array[0]->supportedModulationOrderUL))
       {
-	 case ModulationOrder_qpsk:
-	    {
-	       ueCfg->ulModInfo.modOrder = MOD_ORDER_QPSK;
-	       break;
-	    }
-	 case ModulationOrder_qam16:
-	    {
-	       ueCfg->ulModInfo.modOrder = MOD_ORDER_QAM16;
-	       ueCfg->ulModInfo.mcsIndex = PUSCH_MCS_INDEX;
-	       ueCfg->ulModInfo.mcsTable = MCS_TABLE_QAM64;
-	       break;
-	    }
-	 case ModulationOrder_qam64:
-	    {
-	       ueCfg->ulModInfo.modOrder = MOD_ORDER_QAM64;
-	       break;
-	    }
-	 case ModulationOrder_qam256:
-	    {
-	       ueCfg->ulModInfo.modOrder = MOD_ORDER_QAM256;
-	       break;
-	    }
-	 default:
-	    {
-	       DU_LOG("\nERROR  -->  DU APP: Incorrect uplink modulation order received. Reatining old modulation configuration");
-	       memcpy(&ueCfg->ulModInfo, &oldUeCfg->ulModInfo, sizeof(ModulationInfo));
-	       break;
-	    }
+         case ModulationOrder_qpsk:
+            {
+               ueCfg->ulModInfo.modOrder = MOD_ORDER_QPSK;
+               break;
+            }
+         case ModulationOrder_qam16:
+            {
+               ueCfg->ulModInfo.modOrder = MOD_ORDER_QAM16;
+               ueCfg->ulModInfo.mcsIndex = PUSCH_MCS_INDEX;
+               ueCfg->ulModInfo.mcsTable = MCS_TABLE_QAM64;
+               break;
+            }
+         case ModulationOrder_qam64:
+            {
+               ueCfg->ulModInfo.modOrder = MOD_ORDER_QAM64;
+               break;
+            }
+         case ModulationOrder_qam256:
+            {
+               ueCfg->ulModInfo.modOrder = MOD_ORDER_QAM256;
+               break;
+            }
+         default:
+            {
+               DU_LOG("\nERROR  -->  DU APP: Incorrect uplink modulation order received. Reatining old modulation configuration");
+               memcpy(&ueCfg->ulModInfo, &oldUeCfg->ulModInfo, sizeof(ModulationInfo));
+               break;
+            }
       }
    }
    else
@@ -9325,7 +9387,7 @@ void duFillModulationDetails(MacUeCfg *ueCfg, MacUeCfg *oldUeCfg, void *ueCap)
  * ****************************************************************/
 
 CellGroupConfigRrc_t *extractCellGrpInfo(ProtocolExtensionContainer_4624P16_t *protocolIeExtn,\
-   DuUeCfg *ueCfgDb)
+      DuUeCfg *ueCfgDb)
 {
    uint8_t idx2 =0;
    uint16_t id =0;
@@ -9397,7 +9459,7 @@ uint8_t procSrbListToSetup(SRBs_ToBeSetup_Item_t * srbItem, LcCfg *macLcToAdd, R
    procRlcLcCfg(srbItem->sRBID, srbItem->sRBID, RB_TYPE_SRB, RLC_AM, CONFIG_ADD, NULL, rlcLcToAdd);
 
    /* Filling MAC INFO */
-   ret = procMacLcCfg(srbItem->sRBID, RB_TYPE_SRB, CONFIG_ADD, NULL, NULL, macLcToAdd, NULL);
+   ret = procMacLcCfg(srbItem->sRBID, RB_TYPE_SRB, CONFIG_ADD, NULL,NULL, NULL, macLcToAdd, NULL);
    if(ret == RFAILED)
    { 
       DU_LOG("\nERROR  -->  F1AP : Failed at MAC LC Cfg in procSrbListToSetup()");
@@ -9485,21 +9547,34 @@ uint8_t extractSrbListToSetup(SRBs_ToBeSetup_List_t *srbCfg, DuUeCfg *ueCfgDb)
  * ****************************************************************/
 
 uint8_t procDrbListToSetup(uint8_t lcId, DRBs_ToBeSetup_Item_t *drbItem,\
-   LcCfg *macLcToAdd, RlcBearerCfg *rlcLcToAdd, UpTnlCfg *upTnlInfo)
+DRBs_ToBeSetupMod_Item_t *drbSetupModItem, LcCfg *macLcToAdd, RlcBearerCfg *rlcLcToAdd, UpTnlCfg *upTnlInfo)
 {
    uint8_t ret = ROK;
 
-   /* Filling RLC INFO */
-   procRlcLcCfg(drbItem->dRBID, lcId, RB_TYPE_DRB, drbItem->rLCMode, CONFIG_ADD, NULL, rlcLcToAdd);
+   if(drbItem != NULLP)
+   {
+      /* Filling RLC INFO */
+      procRlcLcCfg(drbItem->dRBID, lcId, RB_TYPE_DRB, drbItem->rLCMode, CONFIG_ADD, NULL, rlcLcToAdd);
 
-   /* Filling MAC INFO */
-   ret = procMacLcCfg(lcId, RB_TYPE_DRB, CONFIG_ADD, drbItem, NULL, macLcToAdd, upTnlInfo);
-   if(ret == RFAILED)
-   { 
-      DU_LOG("\nERROR  --> F1AP : Failed at RLC LC Cfg in procDrbListToSetup()");
-      return ret;
+      /* Filling MAC INFO */
+      ret = procMacLcCfg(lcId, RB_TYPE_DRB, CONFIG_ADD, drbItem, NULL, NULL, macLcToAdd, upTnlInfo);
+      if(ret == RFAILED)
+      { 
+         DU_LOG("\nERROR  --> F1AP : Failed at RLC LC Cfg in procDrbListToSetup()");
+         return ret;
+      }
    }
+   else if(drbSetupModItem != NULLP)
+   {
+      procRlcLcCfg(drbSetupModItem->dRBID, lcId, RB_TYPE_DRB, drbSetupModItem->rLCMode, CONFIG_ADD, NULL, rlcLcToAdd);
 
+      ret = procMacLcCfg(lcId, RB_TYPE_DRB, CONFIG_ADD, NULL, drbSetupModItem, NULL, macLcToAdd, upTnlInfo);
+      if(ret == RFAILED)
+      {
+         DU_LOG("\nERROR  --> F1AP : Failed at RLC LC Cfg in procDrbListToSetup()");
+         return ret;
+      }
+   }
    return ret;
 }
 
@@ -9520,43 +9595,64 @@ uint8_t procDrbListToSetup(uint8_t lcId, DRBs_ToBeSetup_Item_t *drbItem,\
  *
  * ****************************************************************/
 
-uint8_t extractDrbListToSetup(uint8_t lcId, DRBs_ToBeSetup_List_t *drbCfg, DuUeCfg *ueCfgDb)
+uint8_t extractDrbListToSetup(uint8_t lcId, DRBs_ToBeSetup_List_t *drbCfg,DRBs_ToBeSetupMod_List_t *drbSetupModCfg,\
+uint8_t drbCount, DuUeCfg *ueCfgDb)
 {
    uint8_t ret, drbIdx;
    DRBs_ToBeSetup_Item_t *drbItem = NULLP;
-   
-   ret = ROK;
-   if(drbCfg)
-   {
-      for(drbIdx = 0; drbIdx < drbCfg->list.count; drbIdx++)
-      {
-         drbItem = &drbCfg->list.array[drbIdx]->value.choice.DRBs_ToBeSetup_Item;
-	 if(ueCfgDb->numMacLcs > MAX_NUM_LC)
-	 { 
-            DU_LOG("\nERROR  -->  F1AP :  MAX LC Reached in MAC at extractDrbListToSetup()");
-	    ret = RFAILED;
-	    break;
-	 }
-	 if(ueCfgDb->numRlcLcs > MAX_NUM_LC)
-	 {
-            DU_LOG("\nERROR  -->  F1AP :  MAX LC Reached in RLC at extractDrbListToSetup()");
-	    ret = RFAILED;
-	    break;
-	 }
-	 memset(&ueCfgDb->macLcCfg[ueCfgDb->numMacLcs], 0, sizeof(LcCfg));
-	 memset(&ueCfgDb->rlcLcCfg[ueCfgDb->numRlcLcs], 0, sizeof(RlcBearerCfg));
-	    
-         ret = procDrbListToSetup(lcId, drbItem, &ueCfgDb->macLcCfg[ueCfgDb->numMacLcs],\
-	    &ueCfgDb->rlcLcCfg[ueCfgDb->numRlcLcs], &ueCfgDb->upTnlInfo[ueCfgDb->numDrb]);
+   DRBs_ToBeSetupMod_ItemIEs_t *drbSetupModItem = NULLP;
 
-	 ueCfgDb->numRlcLcs++;
-	 ueCfgDb->numMacLcs++;
-	 ueCfgDb->numDrb++;
-	 if(ret == RFAILED)
-	 {
+   ret = ROK;
+   if(drbCount > 0)
+   {
+      for(drbIdx = 0; drbIdx < drbCount; drbIdx++)
+      {
+         if(ueCfgDb->numMacLcs > MAX_NUM_LC)
+         { 
+            DU_LOG("\nERROR  -->  F1AP :  MAX LC Reached in MAC at extractDrbListToSetup()");
+            ret = RFAILED;
+            break;
+         }
+         if(ueCfgDb->numRlcLcs > MAX_NUM_LC)
+         {
+            DU_LOG("\nERROR  -->  F1AP :  MAX LC Reached in RLC at extractDrbListToSetup()");
+            ret = RFAILED;
+            break;
+         }
+         memset(&ueCfgDb->macLcCfg[ueCfgDb->numMacLcs], 0, sizeof(LcCfg));
+         memset(&ueCfgDb->rlcLcCfg[ueCfgDb->numRlcLcs], 0, sizeof(RlcBearerCfg));
+   
+         if(drbCfg != NULL)
+         {
+            drbItem = &drbCfg->list.array[drbIdx]->value.choice.DRBs_ToBeSetup_Item;
+            ret = procDrbListToSetup(lcId, drbItem, NULL, &ueCfgDb->macLcCfg[ueCfgDb->numMacLcs],\
+               &ueCfgDb->rlcLcCfg[ueCfgDb->numRlcLcs], &ueCfgDb->upTnlInfo[ueCfgDb->numDrb]);
+            if(ret == RFAILED)
+            {
+               DU_LOG("\nERROR  --> F1AP : Failed at extractDrbListToSetup()");
+               break;
+            }
+         }
+         else
+         {
+            drbSetupModItem = (DRBs_ToBeSetupMod_ItemIEs_t *) drbSetupModCfg->list.array[drbIdx];
+            ret = procDrbListToSetup(lcId, NULL, &(drbSetupModItem->value.choice.DRBs_ToBeSetupMod_Item) ,\
+            &ueCfgDb->macLcCfg[ueCfgDb->numMacLcs], &ueCfgDb->rlcLcCfg[ueCfgDb->numRlcLcs],\
+            &ueCfgDb->upTnlInfo[ueCfgDb->numDrb]);
+            if(ret == RFAILED)
+            {
+               DU_LOG("\nERROR  --> F1AP : Failed at extractDrbListToSetup()");
+               break;
+            }
+         }
+         ueCfgDb->numRlcLcs++;
+         ueCfgDb->numMacLcs++;
+         ueCfgDb->numDrb++;
+         if(ret == RFAILED)
+         {
             DU_LOG("\nERROR  --> F1AP : Failed at extractDrbListToSetup()");
-	    break;
-	 }
+            break;
+         }
       }
    }
    else
@@ -9790,7 +9886,8 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
    uint32_t gnbCuUeF1apId, gnbDuUeF1apId, bitRateSize;
    DuUeCb   *duUeCb = NULLP;
    UEContextSetupRequest_t   *ueSetReq = NULLP;
-    
+   DRBs_ToBeSetup_List_t *drbCfg;
+
    ret = ROK;
    
    ueSetReq = &f1apMsg->choice.initiatingMessage->value.choice.UEContextSetupRequest;
@@ -9888,8 +9985,8 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
 	       lcId = getDrbLcId(&duUeCb->drbBitMap);
 	       if(lcId != RFAILED)
 	       {
-                  if(extractDrbListToSetup(lcId, &ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.DRBs_ToBeSetup_List,\
-	             &duUeCb->f1UeDb->duUeCfg))
+             drbCfg = &ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.DRBs_ToBeSetup_List;
+             if(extractDrbListToSetup(lcId, drbCfg, NULL, drbCfg->list.count, &duUeCb->f1UeDb->duUeCfg))
 	          {
 	             DU_LOG("\nERROR  -->  DU APP : Failed at extractDrbListToSetup()");
 	             //TODO: Update the failure cause in ue context Setup Response
@@ -9971,7 +10068,6 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
    return ret;
 
 }
-
 /*******************************************************************
  * @brief Free the memory allocated for Dl Tunnel Info
  *
@@ -10523,7 +10619,7 @@ uint8_t BuildAndSendUeCtxtRsp(uint8_t ueIdx, uint8_t cellId)
          BuildAndSendUeContextSetupRsp(ueIdx, cellId);
          break;
       case UE_CTXT_MOD:
-         //TODO: Build Ue context Modification Rsp
+         BuildAndSendUeContextModResp(ueIdx, cellId);
          break;
       default:
          DU_LOG("ERROR  -->  F1AP: Invalid Action Type %d at BuildAndSendUeCtxtRsp()", actionType);
@@ -11559,7 +11655,628 @@ uint8_t procF1DlRrcMsgTrans(F1AP_PDU_t *f1apMsg)
    freeAperDecodef1DlRrcMsg(f1DlRrcMsg);
    return ret;
 }
+/*******************************************************************
+ *
+* @brief Builds the DRB to be Setup Mod list
+*
+* @details
+*
+*    Function : 
+*
+*    Functionality: Constructs the DRB to be Setup Mod list
+*
+* @params[in] DRBs_SetupMod_List_t *drbSet
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
 
+uint8_t BuildDrbSetupModList(DRBs_SetupMod_List_t *drbSet , DuUeCfg *ueCfg)
+{
+   uint8_t ret = ROK;
+   uint8_t arrIdx =0;
+   uint8_t drbCnt =0;
+   struct DRBs_SetupMod_ItemIEs *drbItemIe;
+
+   drbCnt = 1;
+   drbSet->list.count = drbCnt;
+   drbSet->list.size = drbCnt * sizeof(DRBs_SetupMod_ItemIEs_t *);
+   DU_ALLOC(drbSet->list.array, drbSet->list.size);
+   if(drbSet->list.array == NULLP)
+   {
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildDrbToBeSetupModList");
+      return  RFAILED;
+   }
+   for(arrIdx=0; arrIdx<drbCnt; arrIdx++)
+   {
+      DU_ALLOC(drbSet->list.array[arrIdx], sizeof(DRBs_SetupMod_ItemIEs_t));
+      if(drbSet->list.array[arrIdx] == NULLP)
+      {
+	      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildDrbToBeSetupModList");
+	      return  RFAILED;
+      }
+
+      drbItemIe = (struct DRBs_SetupMod_ItemIEs *)drbSet->list.array[arrIdx];
+      drbItemIe->id = ProtocolIE_ID_id_DRBs_SetupMod_Item;
+      drbItemIe->criticality = Criticality_reject;
+      drbItemIe->value.present = DRBs_SetupMod_ItemIEs__value_PR_DRBs_SetupMod_Item;
+      drbItemIe->value.choice.DRBs_SetupMod_Item.dRBID = ueCfg->upTnlInfo[arrIdx].drbId;
+      ret = fillDlTnlSetupList(&drbItemIe->value.choice.DRBs_SetupMod_Item.dLUPTNLInformation_ToBeSetup_List,\
+      &ueCfg->upTnlInfo[arrIdx]);
+      if(ret != ROK)
+      {
+         return ret;
+      }
+      
+   }
+
+   
+   return ret;
+}
+/*******************************************************************
+* @brief Free the memory allocated for DRB setup List
+*
+* @details
+*
+*    Function : FreeDrbSetupModList 
+*
+*    Functionality:
+*       Free the memory allocated for DRB setup list
+*
+* @params[in] DRBs_Setup_List_t *
+* @return void
+*
+* ****************************************************************/
+void FreeDrbSetupModList(DRBs_SetupMod_List_t *drbSetupList)
+{
+   uint8_t arrIdx = 0;
+   DRBs_SetupMod_ItemIEs_t *drbItemIe = NULLP;
+
+   for(arrIdx = 0; arrIdx < drbSetupList->list.count; arrIdx++)
+   {
+      drbItemIe = ((DRBs_SetupMod_ItemIEs_t *)drbSetupList->list.array[arrIdx]);
+      freeDlTnlInfo(&drbItemIe->value.choice.DRBs_SetupMod_Item.dLUPTNLInformation_ToBeSetup_List);
+   }
+}
+/*******************************************************************
+* @brief Free the memory allocated for UE Context Mod Response
+*
+* @details
+*
+*    Function : FreeUeContextModResp 
+*
+*    Functionality:
+*       Free the memory allocated for UE Context Mod Response
+*
+* @params[in] F1AP_PDU_t *f1apMsg
+* @return void
+*
+* ****************************************************************/
+
+void FreeUeContextModResp(F1AP_PDU_t *f1apMsg)
+{
+   uint8_t ieIdx;
+   UEContextModificationResponse_t *ueContextModifyRes = NULLP;
+   if(f1apMsg)
+   {
+      if(f1apMsg->choice.successfulOutcome)
+      {
+         ueContextModifyRes =&f1apMsg->choice.successfulOutcome->value.choice.UEContextModificationResponse;
+         if(ueContextModifyRes->protocolIEs.list.array)
+         {
+            for(ieIdx=0 ; ieIdx<ueContextModifyRes->protocolIEs.list.count; ieIdx++)
+            {
+               if(ueContextModifyRes->protocolIEs.list.array[ieIdx])
+               {
+                  switch(ueContextModifyRes->protocolIEs.list.array[ieIdx]->id)
+                  {
+                     case ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID:
+                        break;
+                     case ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID:
+                        break;
+                     case ProtocolIE_ID_id_DRBs_SetupMod_List:
+                        {
+                            FreeDrbSetupModList(&(ueContextModifyRes->protocolIEs.list.array[ieIdx]->\
+                            value.choice.DRBs_SetupMod_List));
+                            break; 
+                        }
+                  }
+                  DU_FREE(ueContextModifyRes->protocolIEs.list.array[ieIdx], sizeof(UEContextModificationResponse_t));
+               }
+
+            }
+            DU_FREE(ueContextModifyRes->protocolIEs.list.array, ueContextModifyRes->protocolIEs.list.size);
+         }
+         DU_FREE(f1apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcome_t));
+      }
+      DU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
+   }
+}
+
+/*****************************************************************i
+*
+* @brief Creating the ue context modifcation response and sending
+*
+* @details
+*
+*    Function : BuildAndSendUeContextModResp 
+*
+*    Functionality:
+*         - Creating the ue context modifcation response 
+*
+* @params[in]
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t BuildAndSendUeContextModResp(uint8_t ueIdx, uint8_t cellId)
+{
+   uint8_t   ieIdx = 0;
+   uint8_t   cellIdx =0;
+   uint8_t   elementCnt = 0;
+   uint8_t   ret = RFAILED;
+   uint32_t  gnbCuUeF1apId;   /* gNB-CU UE F1AP Id */
+   uint32_t  gnbDuUeF1apId;   /* gNB-DU UE F1AP Id */
+   F1AP_PDU_t *f1apMsg = NULLP;
+   asn_enc_rval_t         encRetVal;
+   UEContextModificationResponse_t *ueContextModifyRes = NULLP;
+   DuUeCb                   *ueCb = NULLP;
+
+   DU_LOG("\nINFO  -->  F1AP : Building Ue context modification response\n");
+
+   while(1)
+   {
+      DU_ALLOC(f1apMsg, sizeof(F1AP_PDU_t));
+      if(f1apMsg == NULLP)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation for F1AP-PDU failed Ue context modification");
+         break;
+      }
+
+      f1apMsg->present =  F1AP_PDU_PR_successfulOutcome;
+
+      DU_ALLOC(f1apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcome_t));
+      if(f1apMsg->choice.successfulOutcome == NULLP)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation for F1AP-PDU failed Ue context modification");
+         break;
+      }
+      f1apMsg->choice.successfulOutcome->procedureCode = ProcedureCode_id_UEContextModification;
+      f1apMsg->choice.successfulOutcome->criticality = Criticality_reject;
+      f1apMsg->choice.successfulOutcome->value.present = SuccessfulOutcome__value_PR_UEContextModificationResponse;
+
+      ueContextModifyRes =&f1apMsg->choice.successfulOutcome->value.choice.UEContextModificationResponse;
+
+      elementCnt = 3;
+      ueContextModifyRes->protocolIEs.list.count = elementCnt;
+      ueContextModifyRes->protocolIEs.list.size = elementCnt*sizeof(UEContextModificationResponse_t*);
+
+      /* Initialize the UE context modification members */
+      DU_ALLOC(ueContextModifyRes->protocolIEs.list.array, ueContextModifyRes->protocolIEs.list.size);
+      if(ueContextModifyRes->protocolIEs.list.array == NULLP)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation for UE context modifcation Request failed");
+         break;
+      }
+
+      for(ieIdx=0 ; ieIdx<elementCnt; ieIdx++)
+      {
+         DU_ALLOC(ueContextModifyRes->protocolIEs.list.array[ieIdx], sizeof(UEContextModificationResponse_t));
+         if(ueContextModifyRes->protocolIEs.list.array[ieIdx] == NULLP)
+         {
+            DU_LOG("\nERROR  -->  F1AP : Memory allocation for UE context modifcation Request failed");
+            break;
+         }
+      }
+
+      /* Fetching Ue Cb Info*/
+      GET_CELL_IDX(cellId, cellIdx);
+      gnbDuUeF1apId = duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].gnbDuUeF1apId;
+      gnbCuUeF1apId = duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].gnbCuUeF1apId;
+      ueCb = &duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1];
+
+      ieIdx=0;
+      ueContextModifyRes->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID;
+      ueContextModifyRes->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
+      ueContextModifyRes->protocolIEs.list.array[ieIdx]->value.present =\
+      UEContextModificationResponseIEs__value_PR_GNB_CU_UE_F1AP_ID;
+      ueContextModifyRes->protocolIEs.list.array[ieIdx]->value.choice.GNB_CU_UE_F1AP_ID = gnbCuUeF1apId;
+
+      ieIdx++;
+      ueContextModifyRes->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID;
+      ueContextModifyRes->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
+      ueContextModifyRes->protocolIEs.list.array[ieIdx]->value.present=\
+      UEContextModificationResponseIEs__value_PR_GNB_DU_UE_F1AP_ID;
+      ueContextModifyRes->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_UE_F1AP_ID = gnbDuUeF1apId;
+
+      ieIdx++;
+      ueContextModifyRes->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_DRBs_SetupMod_List;
+      ueContextModifyRes->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
+      ueContextModifyRes->protocolIEs.list.array[ieIdx]->value.present =\
+      UEContextModificationResponseIEs__value_PR_DRBs_SetupMod_List;
+      if(ueCb->f1UeDb)
+      {
+         ret = BuildDrbSetupModList(&(ueContextModifyRes->protocolIEs.list.array[ieIdx]->\
+                  value.choice.DRBs_SetupMod_List) , &ueCb->f1UeDb->duUeCfg);
+         if(ret != ROK)
+         {
+            DU_LOG( "\nERROR  -->  F1AP : Failed to build drb setupmod List ");
+            break;
+         }
+         freeF1UeDb(ueCb->f1UeDb);
+         ueCb->f1UeDb = NULLP;
+      }
+      xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
+
+      /* Encode the F1SetupRequest type as APER */
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apMsg, PrepFinalEncBuf,encBuf);
+
+      /* Encode results */
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG( "\nERROR  -->  F1AP : Could not encode UE Context Setup Request structure (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         ret = RFAILED;
+         break;
+      }
+      else
+      {
+         DU_LOG("\nDEBUG   -->  F1AP : Created APER encoded buffer for UE Context Modification Response\n");
+         for(int i=0; i< encBufSize; i++)
+         {
+            printf("%x",encBuf[i]);
+         }
+      }
+
+      /* Sending  msg  */
+      if(SendF1APMsg(DU_APP_MEM_REGION,DU_POOL) != ROK)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Sending UE Context Setup Res Failed");
+         ret = RFAILED;
+         break;
+      }
+      break;
+   }
+   FreeUeContextModResp(f1apMsg);
+   return ret;
+
+}
+/*******************************************************************
+ *
+ * @brief Deallocating the memory allocated by the aper decoder
+ *          for QOSInfo
+ *
+ * @details
+ *
+ *    Function : freeAperDecodeQosInfo
+ *
+ *    Functionality:  Deallocating the memory allocated for QOSInfo
+ *
+ * @params[in] QoSFlowLevelQoSParameters_t *drbQos
+ *
+ * @return void
+ *
+ * ****************************************************************/
+
+void freeAperDecodeQosInfo(QoSFlowLevelQoSParameters_t *drbQos)
+{
+   if(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI != NULLP)
+   {
+      if(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow!=NULLP)
+      {
+         if(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume!=NULLP)
+         {
+            free(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume);
+         }
+         free(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow);
+      }
+      free(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI);
+   }
+}
+/*******************************************************************
+ *
+ * @brief Deallocating the memory allocated by the aper decoder
+ *          for UlTnlInfoforDrb
+ *
+ * @details
+ *
+ *    Function : freeAperDecodeUlTnlInfoforDrbSetupMod 
+ *
+ *    Functionality:  Deallocating memory allocated for UlTnlInfoforDrb
+ *
+ * @params[in] ULUPTNLInformation_ToBeSetup_List_t *ulInfo
+ *
+ * @return void
+ *
+ * ****************************************************************/
+void freeAperDecodeUlTnlInfoforDrbSetupMod(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
+{
+   uint8_t arrIdx =0;
+
+   if(ulInfo->list.array)
+   {
+      for(arrIdx=0; arrIdx<ulInfo->list.count ; arrIdx++)
+      {
+         if(ulInfo->list.array[arrIdx])
+         {
+            if(ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel )
+            {
+               if(ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf)
+               {
+                  if(ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf)
+                  {
+                     free(ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->\
+                           gTP_TEID.buf);
+                  }
+                  free(ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->\
+                        transportLayerAddress.buf);
+               }
+               free(ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel);
+            }
+            free(ulInfo->list.array[arrIdx]);
+         }
+      }
+      free(ulInfo->list.array);
+   }
+}
+/*******************************************************************
+ *
+ * @brief Deallocating the memory allocated by the aper decoder
+ *          for DrbSetupModItem  
+ *
+ * @details
+ *
+ *    Function : freeAperDecodeDrbSetupModItem 
+ *
+ *    Functionality:  Deallocating memory allocated for DrbSetupModItem
+ *
+ * @params[in] DRBs_ToBeSetupMod_Item_t *drbItem
+ *
+ * @return void
+ *
+ * ****************************************************************/
+
+void freeAperDecodeDrbSetupModItem(DRBs_ToBeSetupMod_Item_t *drbItem)
+{
+   uint8_t arrIdx =0;
+   SNSSAI_t *snssai =NULLP;
+   Flows_Mapped_To_DRB_List_t *flowMap = NULLP;
+
+   drbItem->qoSInformation.present = QoSInformation_PR_choice_extension;
+   switch(drbItem->qoSInformation.present)
+   {
+      case QoSInformation_PR_NOTHING:
+         break;
+      case QoSInformation_PR_eUTRANQoS:
+         {
+            if(drbItem->qoSInformation.choice.eUTRANQoS)
+            {
+               free(drbItem->qoSInformation.choice.eUTRANQoS);
+            }
+            break;
+         }
+      case QoSInformation_PR_choice_extension:
+         {
+            if(drbItem->qoSInformation.choice.choice_extension)
+            {
+               freeAperDecodeQosInfo(&drbItem->qoSInformation.choice.choice_extension->value.choice.\
+                     DRB_Information.dRB_QoS);
+               snssai = &drbItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI;
+               if(snssai->sST.buf)
+               {
+                  free(snssai->sST.buf);
+               }
+               if(snssai->sD)
+               {
+                  if(snssai->sD->buf)
+                  {
+                     free(snssai->sD->buf);
+                  }
+                  free(snssai->sD);
+               }
+
+               flowMap = &drbItem->qoSInformation.choice.choice_extension->value.choice.\
+                         DRB_Information.flows_Mapped_To_DRB_List;
+               if(flowMap->list.array)
+               {
+                  for(arrIdx=0; arrIdx<flowMap->list.count; arrIdx++)
+                  {
+                     if(flowMap->list.array[arrIdx] )
+                     {
+                        freeAperDecodeQosInfo(&flowMap->list.array[arrIdx]->qoSFlowLevelQoSParameters);
+                        free(flowMap->list.array[arrIdx]);
+                     }
+                  }
+                  free(flowMap->list.array);
+               }
+
+               free(drbItem->qoSInformation.choice.choice_extension);
+            }
+            break;
+         }
+
+   }
+   freeAperDecodeUlTnlInfoforDrbSetupMod(&drbItem->uLUPTNLInformation_ToBeSetup_List);
+   if(drbItem->uLConfiguration)
+   {
+      free(drbItem->uLConfiguration);
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Deallocating the memory allocated by the aper decoder
+ *          for DrbToBeSetupModList
+ *
+ * @details
+ *
+ *    Function : freeAperDecodeDrbToBeSetupModList
+ *
+ *    Functionality:  Deallocating memory allocated for DrbToBeSetupModList
+ *
+ * @params[in] DRBs_ToBeSetupMod_List_t *drbSet
+ *
+ * @return void
+ *
+ * ****************************************************************/
+
+void freeAperDecodeDrbToBeSetupModList(DRBs_ToBeSetupMod_List_t *drbSet)
+{
+   uint8_t arrIdx =0;
+   struct DRBs_ToBeSetupMod_ItemIEs *drbItemIe;
+
+   if(drbSet->list.array)
+   {
+      for(arrIdx=0; arrIdx<drbSet->list.count ; arrIdx++)
+      {
+         if(drbSet->list.array[arrIdx] != NULLP)
+         {
+            if(arrIdx == 0)
+            {
+               drbItemIe = (DRBs_ToBeSetupMod_ItemIEs_t *)drbSet->list.array[arrIdx];
+               freeAperDecodeDrbSetupModItem(&(drbItemIe->value.choice.DRBs_ToBeSetupMod_Item));
+            }
+            free(drbSet->list.array[arrIdx]);
+         }
+      }
+      free(drbSet->list.array);
+   }
+
+}
+/*******************************************************************
+ *
+ * @brief Deallocating the memory allocated by the aper decoder
+ *          for UeContextModificationReqMsg
+ *
+ * @details
+ *
+ *    Function : freeAperDecodeUeContextModificationReqMsg
+ *
+ *    Functionality:  Deallocating memory allocated for
+ *                  UeContextModificationReqMsg
+ *
+ * @params[in] UEContextModificationRequest_t *UeContextModifyReq
+ *
+ * @return void
+ *
+ * ****************************************************************/
+void freeAperDecodeUeContextModificationReqMsg(UEContextModificationRequest_t *UeContextModifyReq )
+{
+   uint8_t arrIdx, ieId;
+
+   if(UeContextModifyReq->protocolIEs.list.array)
+   {
+      for( arrIdx = 0 ; arrIdx<UeContextModifyReq->protocolIEs.list.count ; arrIdx++)
+      {
+         if(UeContextModifyReq->protocolIEs.list.array[arrIdx])
+         {
+            ieId = UeContextModifyReq->protocolIEs.list.array[arrIdx]->id;
+            switch(ieId)
+            {
+               case ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID:
+                  break;
+               case ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID:
+                  break;
+               case ProtocolIE_ID_id_DRBs_ToBeSetupMod_List:
+                  {
+                     freeAperDecodeDrbToBeSetupModList(&UeContextModifyReq->protocolIEs.list.array[arrIdx]->\
+                           value.choice.DRBs_ToBeSetupMod_List);
+                     break;
+                  }
+            }
+            free(UeContextModifyReq->protocolIEs.list.array[arrIdx]);
+         }
+      }
+      free(UeContextModifyReq->protocolIEs.list.array);
+   }
+}
+/*******************************************************************
+ *
+ * @brief processing the F1 UeContextModificationReq
+ *
+ * @details
+ *
+ *    Function : procF1UeContextModificationReq
+ *
+ *    Functionality:  processing the F1 UeContextModificationReq
+ *
+ * @params[in] F1AP_PDU_t *f1apMsg
+ *
+ * @return
+ * ****************************************************************/
+uint8_t procF1UeContextModificationReq(F1AP_PDU_t *f1apMsg)
+{
+   UEContextModificationRequest_t *ueContextModifyReq = NULLP;
+   uint8_t  ret = ROK, ieIdx = 0, lcId =0,cellIdx=0, ueIdx=0;
+   DuUeCb   *duUeCb = NULLP;
+   DRBs_ToBeSetupMod_List_t *drbSetupModCfg;
+   uint32_t gnbCuUeF1apId, gnbDuUeF1apId;
+
+   ueContextModifyReq = &f1apMsg->choice.initiatingMessage->value.choice.UEContextModificationRequest;
+   for(ieIdx=0; (ieIdx < ueContextModifyReq->protocolIEs.list.count && ret == ROK); ieIdx++)
+   {
+      switch(ueContextModifyReq->protocolIEs.list.array[ieIdx]->id)
+      {
+         case ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID:
+            {
+               gnbCuUeF1apId = ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_CU_UE_F1AP_ID;
+               break;
+            }
+         case ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID:
+            {
+               gnbDuUeF1apId = ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_UE_F1AP_ID;
+               break;
+            }
+         case ProtocolIE_ID_id_DRBs_ToBeSetupMod_List:
+            {
+               for(cellIdx = 0; cellIdx < duCb.numActvCells; cellIdx++)
+               {
+                  for(ueIdx = 0; ueIdx < duCb.numUe; ueIdx++)
+                  {
+                     if((duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbDuUeF1apId == gnbDuUeF1apId)&&\
+                           (duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbCuUeF1apId == gnbCuUeF1apId))
+                     {
+
+                        duUeCb = &duCb.actvCellLst[cellIdx]->ueCb[ueIdx];
+                        lcId = getDrbLcId(&duUeCb->drbBitMap);
+                        if(lcId != RFAILED)
+                        {
+                           DU_ALLOC(duUeCb->f1UeDb, sizeof(F1UeContextSetupDb));
+                           if(duUeCb->f1UeDb)
+                           {
+                              duUeCb->f1UeDb->actionType = UE_CTXT_MOD;
+                              drbSetupModCfg = &ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.\
+                              choice.DRBs_ToBeSetupMod_List;
+                              if(extractDrbListToSetup(lcId, NULL, drbSetupModCfg ,drbSetupModCfg->list.count, \
+                              &duUeCb->f1UeDb->duUeCfg))
+                              {
+                                 DU_LOG("\nERROR  -->  DU APP : Failed at extractDrbListToSetup()");
+                                 ret = RFAILED;
+                              }
+                           }
+                        }
+                     }
+                     else
+                     {
+                        DU_LOG("\nERROR  -->  DU APP : wrong values of gnbCuUeF1apId and gnbDuUeF1apId ");
+                        ret = RFAILED;
+                     }
+                  }
+               }
+               break;
+            }
+      }
+   }
+   if(ret != RFAILED)
+   {
+     // ret = duProcUeContextModReq(duUeCb);
+   }
+   freeAperDecodeUeContextModificationReqMsg(ueContextModifyReq);
+   return ret; 
+}
 /*****************************************************************i
  *
  * @brief Handles received F1AP message and sends back response  
@@ -11628,74 +12345,79 @@ void F1APMsgHdlr(Buffer *mBuf)
    switch(f1apMsg->present)
    {
       case F1AP_PDU_PR_successfulOutcome:
-	 {
-	    switch(f1apMsg->choice.successfulOutcome->value.present)
-	    {
-	       case SuccessfulOutcome__value_PR_ResetAcknowledge:
-		  {
-		     DU_LOG("\nINFO   -->  F1AP : F1ResetAcknowledge is received successfully ");
-		     break;
-		  }
-	       case SuccessfulOutcome__value_PR_F1SetupResponse:
-		  {				
+         {
+            switch(f1apMsg->choice.successfulOutcome->value.present)
+            {
+               case SuccessfulOutcome__value_PR_ResetAcknowledge:
+                  {
+                     DU_LOG("\nINFO   -->  F1AP : F1ResetAcknowledge is received successfully ");
+                     break;
+                  }
+               case SuccessfulOutcome__value_PR_F1SetupResponse:
+                  {				
 #ifndef ODU_TEST_STUB
-		     procF1SetupRsp(f1apMsg);
+                     procF1SetupRsp(f1apMsg);
 #endif
-		     break;
-		  }
+                     break;
+                  }
 
-	       case SuccessfulOutcome__value_PR_GNBDUConfigurationUpdateAcknowledge:
-		  {
-		     procF1GNBDUCfgUpdAck(f1apMsg);
-		     break;
-		  }
+               case SuccessfulOutcome__value_PR_GNBDUConfigurationUpdateAcknowledge:
+                  {
+                     procF1GNBDUCfgUpdAck(f1apMsg);
+                     break;
+                  }
 
-	       default:
-		  {
-		     DU_LOG("\nERROR  -->  F1AP : Invalid type of SuccessfulOutcome__value_PR_ResetAcknowledge [%d]",\
-		     f1apMsg->choice.successfulOutcome->value.present);
-		     return;
-		  }
-	    }/* End of switch(successfulOutcome) */
-	    free(f1apMsg->choice.successfulOutcome);
-	    break;
-	 }
+               default:
+                  {
+                     DU_LOG("\nERROR  -->  F1AP : Invalid type of SuccessfulOutcome__value_PR_ResetAcknowledge [%d]",\
+                           f1apMsg->choice.successfulOutcome->value.present);
+                     return;
+                  }
+            }/* End of switch(successfulOutcome) */
+            free(f1apMsg->choice.successfulOutcome);
+            break;
+         }
       case F1AP_PDU_PR_initiatingMessage:
-	 {
-	    switch(f1apMsg->choice.initiatingMessage->value.present)
-	    {
-	       case InitiatingMessage__value_PR_Reset:
-		  {
-		     procF1ResetReq(f1apMsg);
-		     break;
-		  }
-	       case InitiatingMessage__value_PR_DLRRCMessageTransfer:
-		  {
-		     procF1DlRrcMsgTrans(f1apMsg);
-		     break;
-		  }
-	       case InitiatingMessage__value_PR_UEContextSetupRequest:
-		  {
-		     procF1UeContextSetupReq(f1apMsg);
-		     break;
-		  }
-	       default:
-		  {
-		     DU_LOG("\nERROR  -->  F1AP : Invalid type of F1AP_PDU_PR_initiatingMessage [%d]",
-			   f1apMsg->choice.initiatingMessage->value.present);
-		     return;
-		  }
-	    }/* End of switch(initiatingMessage) */
-	    free(f1apMsg->choice.initiatingMessage);
-	    break;
-	 }
+         {
+            switch(f1apMsg->choice.initiatingMessage->value.present)
+            {
+               case InitiatingMessage__value_PR_Reset:
+                  {
+                     procF1ResetReq(f1apMsg);
+                     break;
+                  }
+               case InitiatingMessage__value_PR_DLRRCMessageTransfer:
+                  {
+                     procF1DlRrcMsgTrans(f1apMsg);
+                     break;
+                  }
+               case InitiatingMessage__value_PR_UEContextSetupRequest:
+                  {
+                     procF1UeContextSetupReq(f1apMsg);
+                     break;
+                  }
+               case InitiatingMessage__value_PR_UEContextModificationRequest:
+                  {
+                     procF1UeContextModificationReq(f1apMsg);
+                     break;
+                  }
+               default:
+                  {
+                     DU_LOG("\nERROR  -->  F1AP : Invalid type of F1AP_PDU_PR_initiatingMessage [%d]",
+                           f1apMsg->choice.initiatingMessage->value.present);
+                     return;
+                  }
+            }/* End of switch(initiatingMessage) */
+            free(f1apMsg->choice.initiatingMessage);
+            break;
+         }
 
       default:
-	 {
-	    DU_LOG("\nERROR  -->  F1AP : Invalid type of f1apMsg->present [%d]",f1apMsg->present);
-	    return;
-	 }
-	 free(f1apMsg);
+         {
+            DU_LOG("\nERROR  -->  F1AP : Invalid type of f1apMsg->present [%d]",f1apMsg->present);
+            return;
+         }
+         free(f1apMsg);
 
    }/* End of switch(f1apMsg->present) */
 
