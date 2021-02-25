@@ -47,7 +47,9 @@ uint8_t duProcUeContextSetupRequest(DuUeCb *ueCb);
 void duFillModulationDetails(MacUeCfg *ueCfg, MacUeCfg *oldUeCfg, void *ueCap);
 int8_t getReAsmblTmr(uint8_t reAsmblTmrCfg);
 int16_t getStatProhTmr(uint8_t statProhTmrCfg);
-
+uint8_t BuildAndSendUeContextModifyRes(uint8_t ueIdx, uint8_t cellId);
+uint8_t duProcUeContextModReq(DuUeCb *ueCb);
+uint8_t BuildAndSendUeContextModResp(uint8_t ueIdx, uint8_t cellId);
 /**********************************************************************
          End of file
 **********************************************************************/
