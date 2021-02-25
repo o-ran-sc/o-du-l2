@@ -74,7 +74,7 @@ typedef struct f1apDb
   
 F1apMsgDb f1apMsgDb;
 void F1APMsgHdlr(Buffer *mBuf);
-
+uint8_t BuildAndSendUeContextModificationReq();
 /**********************************************************************
          End of file
 **********************************************************************/
