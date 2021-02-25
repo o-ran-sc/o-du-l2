@@ -171,7 +171,6 @@
 #define SCRAMBLING_ID  NR_PCI
 #define DMRS_ADDITIONAL_POS  0          /* DMRS Additional poistion */
 #define RES_ALLOC_TYPE       1          /* Resource allocation type */
-
 #define FIVE_QI_VALUE 9  /*spec 23.501, Table 5.7.4-1*/
 
 /*******************************************************************
@@ -1768,6 +1767,9 @@ uint8_t setDlRRCMsgType()
 	 break;
       case RRC_RECONFIG:
 	 rrcMsgType = RRC_RECONFIG;
+	 break;
+      case UE_CONTEXT_MOD_REQ:
+	 rrcMsgType = UE_CONTEXT_MOD_REQ;
 	 break;
       default:
 	 break;
@@ -6552,6 +6554,11 @@ uint8_t procUlRrcMsg(F1AP_PDU_t *f1apMsg)
 	    BuildAndSendDLRRCMessageTransfer(srbId, rrcMsgType);
 	 }
       }
+      if(rrcMsgType == UE_CONTEXT_MOD_REQ)
+      {
+         DU_LOG("\nINFO  -->  F1AP: Sending UE Context Modification Request");
+	 BuildAndSendUeContextModificationReq();
+      }
    }
    return ret;
 }
@@ -7488,6 +7495,11 @@ void F1APMsgHdlr(Buffer *mBuf)
 		  {
 		     DU_LOG("\nINFO  -->  F1AP : UE ContextSetupResponse received");
 		     f1apMsgDb.dlRrcMsgCount++; /* keeping DL RRC Msg Count */
+		     break;
+		  }
+	       case SuccessfulOutcome__value_PR_UEContextModificationResponse:
+	          {
+		     DU_LOG("\nINFO  -->  F1AP : UE Context Modification Response received");
 		     break;
 		  }
 	       default:

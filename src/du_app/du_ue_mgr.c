@@ -2447,7 +2447,7 @@ uint8_t DuProcRlcDlRrcMsgRsp(Pst *pst, RlcDlRrcMsgRsp *dlRrcMsg)
    {
       GET_UE_IDX(dlRrcMsg->crnti, ueIdx);
       ueCb = &duCb.actvCellLst[dlRrcMsg->cellId -1]->ueCb[ueIdx -1];
-      if(ueCb->f1UeDb)
+      if(ueCb->f1UeDb && ueCb->f1UeDb->actionType == UE_CTXT_SETUP)
       {
         ret = duBuildAndSendUeContextSetupReq(dlRrcMsg->cellId, dlRrcMsg->crnti, &ueCb->f1UeDb->duUeCfg);
 	if(ret == RFAILED)
@@ -2500,7 +2500,7 @@ uint8_t duProcUeContextSetupRequest(DuUeCb *ueCb)
             }
          }
       }
-      else
+      else if(ueCb->f1UeDb->actionType == UE_CTXT_SETUP)
       {
          ret = duBuildAndSendUeContextSetupReq(cellId, ueCb->crnti, &ueCb->f1UeDb->duUeCfg);
 	 if(ret == RFAILED)
@@ -2516,7 +2516,10 @@ uint8_t duProcUeContextSetupRequest(DuUeCb *ueCb)
    }
    return ret;
 }
-
+uint8_t duProcUeContextModReq(DuUeCb *ueCb)
+{
+    return ROK;
+}
 /**********************************************************************
   End of file
  ***********************************************************************/
