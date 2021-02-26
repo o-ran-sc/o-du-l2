@@ -44,7 +44,11 @@ pthread_t thread = 0;
  * ****************************************************************/
 void *GenerateTicks(void *arg)
 {
-   int     milisec = 1;        /* 1ms */
+#ifdef NR_TDD
+   int     milisec = 0.5;        /* 0.5ms */
+#else
+   int     milisec = 1;          /* 1ms */
+#endif
    struct timespec req = {0};
 
    req.tv_sec = 0;
@@ -52,8 +56,7 @@ void *GenerateTicks(void *arg)
 
    while(1)
    {
-      nanosleep(&req, (struct timespec *)NULL);
-      
+      clock_nanosleep(CLOCK_REALTIME, 0, &req, NULL); 
       /* Send Slot indication indication to lower mac */
       l1BuildAndSendSlotIndication();
    }

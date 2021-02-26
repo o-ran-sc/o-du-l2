@@ -824,7 +824,7 @@ uint8_t egtpRecvMsg()
          &recvBuf, (int16_t *)&bufLen, CM_INET_NO_FLAG);
       if(ret == ROK && recvBuf != NULLP)
       {  
-         DU_LOG("\nDEBUG  -->  EGTP : Received DL Message[%d]\n", gDlDataRcvdCnt + 1);
+         DU_LOG("\nDEBUG  -->  EGTP : Received DL Message[%ld]\n", gDlDataRcvdCnt + 1);
          ODU_PRINT_MSG(recvBuf, 0 ,0);
          egtpHdlRecvData(recvBuf);
          gDlDataRcvdCnt++;

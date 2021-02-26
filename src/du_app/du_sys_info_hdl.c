@@ -162,7 +162,6 @@ void FreeMibPdu(BCCH_BCH_Message_t *bcchMsg)
  * ****************************************************************/
 uint8_t BuildMibPdu()
 {
-   uint8_t BuildMibret;
    uint8_t ret = RFAILED;
    BCCH_BCH_Message_t *bcchMsg;
    asn_enc_rval_t encRetVal;        /* Encoder return value */
@@ -182,8 +181,7 @@ uint8_t BuildMibPdu()
 	 DU_LOG("\nERROR  -->  Memory allocation failure in BuildMibPdu");
 	 break;
       }
-      BuildMibret = BuildMib(bcchMsg->message.choice.mib);
-      if(BuildMibret != ROK)
+      if(BuildMib(bcchMsg->message.choice.mib) != ROK)
       {
 	 break;
       }
@@ -193,7 +191,7 @@ uint8_t BuildMibPdu()
       encRetVal = aper_encode(&asn_DEF_BCCH_BCH_Message, 0,
 	    bcchMsg, PrepFinalEncBuf, encBuf);
       printf("\nencbufSize:%d\n", encBufSize);
-      if(encRetVal.encoded	== -1) 
+      if(encRetVal.encoded == -1) 
       {   
 	 DU_LOG("\nERROR  -->  DU APP: Could not encode BCCH BCH Message Type structure(at %s)\n", 
 	       encRetVal.failed_type?\
@@ -269,7 +267,6 @@ uint8_t BuildMibMsg()
    MIB_t          *mibMsg;
    asn_enc_rval_t encRetVal;        /* Encoder return value */
    uint8_t ret = RFAILED;
-   uint8_t BuildMibret;
    while(true)
    {
       DU_ALLOC(mibMsg, sizeof(MIB_t));
@@ -278,8 +275,7 @@ uint8_t BuildMibMsg()
 	 DU_LOG("\nERROR  -->  DU APP: MIB msg memory allocation failure");
 	 return RFAILED;
       }
-      BuildMibret =  BuildMib(mibMsg);
-      if(BuildMibret != ROK)
+      if(BuildMib(mibMsg) != ROK)
       {
 	 break;
       }

@@ -2147,7 +2147,7 @@ uint8_t lwr_mac_procConfigReqEvt(void *msg)
    /* fill TDD table */
    fillTlvs(&configReq->tlvs[index++], FAPI_TDD_PERIOD_TAG,                \
    sizeof(uint8_t), macCfgParams.tddCfg.tddPeriod, &msgLen);
-   for(slotIdx =0 ;slotIdx< MAXIMUM_TDD_PERIODICITY; slotIdx++) 
+   for(slotIdx =0 ;slotIdx< MAX_TDD_PERIODICITY_SLOTS; slotIdx++) 
    {
       for(symbolIdx = 0; symbolIdx< MAX_SYMB_PER_SLOT; symbolIdx++)
       {

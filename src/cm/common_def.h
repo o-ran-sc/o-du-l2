@@ -209,6 +209,15 @@ typedef enum
 }DlUlTxPeriodicity;
 #endif
 
+typedef enum
+{
+   SCS_15KHZ,
+   SCS_30KHZ,
+   SCS_60KHZ,
+   SCS_120KHZ,
+   SCS_240KHZ
+}SCS;
+
 typedef struct slotIndInfo
 {
    uint16_t cellId;
