@@ -28,8 +28,7 @@
 #define MAX_NUM_RB 106 /* value for numerology 0 15Khz */
 #define SCH_MIB_TRANS 80 
 #define SCH_NUM_SC_PRB 12 /* number of SCs in a PRB */
-#define SCH_MAX_SSB_BEAM 4 /* since we are supporting only SCS=15KHz */
-#define SCH_SCS_15KHZ 0 /* numerology 0 and 15Khz */
+#define SCH_MAX_SSB_BEAM 8 /* since we are supporting only SCS=15KHz and 30KHz */
 #define SCH_SYMBOL_PER_SLOT 14
 #define SCH_SSB_NUM_SYMB 4
 #define SCH_SSB_NUM_PRB 20

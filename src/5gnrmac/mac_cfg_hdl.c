@@ -199,9 +199,11 @@ uint8_t MacSchCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
    memset(&schCellCfg, 0, sizeof(SchCellCfg));
    schCellCfg.cellId = macCellCfg->cellId;
    schCellCfg.phyCellId = macCellCfg->phyCellId;
-   schCellCfg.bandwidth = macCellCfg->dlCarrCfg.bw;
    schCellCfg.numerology = macCellCfg->numerology;
    schCellCfg.dupMode = macCellCfg->dupType;
+   schCellCfg.bandwidth = macCellCfg->dlCarrCfg.bw;
+   schCellCfg.dlFreq = macCellCfg->dlCarrCfg.freq;
+   schCellCfg.ulFreq = macCellCfg->ulCarrCfg.freq;
 
    /* fill ssb scheduler parameters */
    schCellCfg.ssbSchCfg.ssbPbchPwr = macCellCfg->ssbCfg.ssbPbchPwr;

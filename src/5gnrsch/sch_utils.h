@@ -94,7 +94,9 @@ uint16_t schCalcTbSizeFromNPrb(uint16_t numPrb, uint16_t mcs, uint8_t numSymbols
 SchUeCb* schGetUeCb(SchCellCb *cellCb, uint16_t crnti);
 void schInitUlSlot(SchUlSlotInfo *schUlSlotInfo);
 void schInitDlSlot(SchDlSlotInfo *schDlSlotInfo);
-
+#ifdef NR_TDD
+SlotConfig schGetSlotFrmt(uint16_t slot, uint32_t slotBitMap);
+#endif
 
 /**********************************************************************
   End of file
