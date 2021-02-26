@@ -407,9 +407,7 @@ uint16_t schGetPeriodicityInMsec(DlUlTxPeriodicity tddPeriod)
  *           
  *  @param[in]  schCellCb *cell
  *  @param[in]  SchCellCfg *schCellCfg
- *  @return  int
- *      -# ROK 
- *      -# RFAILED 
+ *  @return  void
  **/
 void schInitTddSlotCfg(SchCellCb *cell, SchCellCfg *schCellCfg)
 {
@@ -418,7 +416,6 @@ void schInitTddSlotCfg(SchCellCb *cell, SchCellCfg *schCellCfg)
    int8_t slotIdx, symbIdx;
 
    periodicityInMicroSec = schGetPeriodicityInMsec(schCellCfg->tddCfg.tddPeriod);
-   schCellCfg->numerology = 1; //TODO: Remove this
    cell->numSlotsInPeriodicity = (periodicityInMicroSec * pow(2, schCellCfg->numerology))/1000;
 cell->slotFrmtBitMap = 0;
    cell->symbFrmtBitMap = 0;
@@ -513,6 +510,70 @@ cell->slotFrmtBitMap = 0;
 
 }
 #endif
+
+/**
+ * @brief Fill SSB start symbol
+ *
+ * @details
+ *
+ *     Function : fillSsbStartSymb 
+ *      
+ *      This API stores SSB start index per beam
+ *           
+ *  @param[in]  SchCellCb     *cellCb
+ *  @return  int
+ *      -# ROK 
+ *      -# RFAILED 
+ **/
+void fillSsbStartSymb(SchCellCb *cellCb)
+{
+   uint8_t cnt, scs, symbIdx;
+
+   scs = cellCb->cellCfg.ssbSchCfg.scsCommon;
+   uint8_t ssbStartSymbArr[SCH_MAX_SSB_BEAM];
+
+   memset(ssbStartSymbArr, 0, sizeof(SCH_MAX_SSB_BEAM));
+   symbIdx = 0;
+   /* Determine value of "n" based on Section 4.1 of 3GPP TS 38.213 */
+   switch(scs)
+   {
+      case SCS_15KHZ:
+	 {
+            if(cellCb->cellCfg.dlFreq <= 300000)
+	       cnt = 2;/* n = 0, 1 */
+            else
+               cnt = 4; /* n = 0, 1, 2, 3 */
+	    for(uint8_t idx=0; idx<cnt; idx++)
+	    {
+	       /* start symbol determined using {2, 8} + 14n */
+	       ssbStartSymbArr[symbIdx++] = 2 + SCH_SYMBOL_PER_SLOT*idx;
+	       ssbStartSymbArr[symbIdx++] = 8 + SCH_SYMBOL_PER_SLOT*idx;
+	    }
+	 }
+	 break;
+      case SCS_30KHZ:
+	 {
+            if(cellCb->cellCfg.dlFreq <= 300000)
+	       cnt = 1;/* n = 0, 1 */
+            else
+               cnt = 2; /* n = 0, 1, 2, 3 */
+	    for(uint8_t idx=0; idx<cnt; idx++)
+	    {
+	       /* start symbol determined using {4, 8, 16, 20} + 28n */
+	       ssbStartSymbArr[symbIdx++] = 4 + SCH_SYMBOL_PER_SLOT*idx;
+	       ssbStartSymbArr[symbIdx++] = 8 + SCH_SYMBOL_PER_SLOT*idx;
+	       ssbStartSymbArr[symbIdx++] = 16 + SCH_SYMBOL_PER_SLOT*idx;
+	       ssbStartSymbArr[symbIdx++] = 20 + SCH_SYMBOL_PER_SLOT*idx;
+            }
+	 }
+	 break;
+      default:
+	 DU_LOG("\nERROR  -->  SCH : SCS %d is currently not supported", scs);
+   }
+   memset(cellCb->ssbStartSymbArr, 0, sizeof(SCH_MAX_SSB_BEAM));
+   memcpy(cellCb->ssbStartSymbArr, ssbStartSymbArr, SCH_MAX_SSB_BEAM);
+
+}
 
 
 /**
@@ -618,6 +679,7 @@ uint8_t schInitCellCb(Inst inst, SchCellCfg *schCellCfg)
       cell->schUlSlotInfo[idx] = schUlSlotInfo;
 
    }
+   fillSsbStartSymb(cell);
    schCb[inst].cells[inst] = cell;
 
    DU_LOG("\nINFO  -->  SCH : Cell init completed for cellId:%d", cell->cellId);
@@ -782,51 +844,6 @@ void fillSchSib1Cfg(uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg *sib1SchCfg,
    pdsch->beamPdschInfo.prg[0].beamIdx[0]    = 0;
    pdsch->txPdschPower.powerControlOffset    = 0;
    pdsch->txPdschPower.powerControlOffsetSS  = 0;
-
-}
-
-/**
- * @brief Fill SSB start symbol
- *
- * @details
- *
- *     Function : fillSsbStartSymb 
- *      
- *      This API stores SSB start index per beam
- *           
- *  @param[in]  SchCellCb     *cellCb
- *  @return  int
- *      -# ROK 
- *      -# RFAILED 
- **/
-void fillSsbStartSymb(SchCellCb *cellCb)
-{
-   uint8_t cnt, scs;
-
-   scs = cellCb->cellCfg.ssbSchCfg.scsCommon;
-   uint8_t ssbStartSymbArr[SCH_MAX_SSB_BEAM];
-
-   memset(ssbStartSymbArr, 0, sizeof(SCH_MAX_SSB_BEAM));
-   /* Determine value of "n" based on Section 4.1 of 3GPP TS 38.213 */
-   switch(scs)
-   {
-      case SCH_SCS_15KHZ:
-	 {
-	    uint8_t symbIdx=0;
-	    cnt = 2;/* n = 0, 1 for SCS = 15KHz */
-	    for(uint8_t idx=0; idx<cnt; idx++)
-	    {
-	       /* start symbol determined using {2, 8} + 14n */
-	       ssbStartSymbArr[symbIdx++]       = 2 + SCH_SYMBOL_PER_SLOT*idx;
-	       ssbStartSymbArr[symbIdx++]	= 8 + SCH_SYMBOL_PER_SLOT*idx;
-	    }
-	 }
-	 break;
-      default:
-	 DU_LOG("\nERROR  -->  SCH : SCS %d is currently not supported", scs);
-   }
-   memset(cellCb->ssbStartSymbArr, 0, sizeof(SCH_MAX_SSB_BEAM));
-   memcpy(cellCb->ssbStartSymbArr, ssbStartSymbArr, SCH_MAX_SSB_BEAM);
 
 }
 

@@ -643,6 +643,40 @@ void schInitDlSlot(SchDlSlotInfo *schDlSlotInfo)
    }
 }
 
+#ifdef NR_TDD
+
+/**
+ * @brief determines slot format
+ *
+ * @details
+ *
+ *     Function : schGetSlotFrmt 
+ *      
+ *      This API is invoked to determine if current slot is DL or UL
+ *           
+ *  @param[in]  uint16_t slot
+ *  @param[in]  uint32_t slotBitMap from cellCb
+ *  @return  SlotConfig
+ *      -# DL    - 0 
+ *      -# UL    - 1
+ *      -# FLEXI - 2
+ **/
+SlotConfig schGetSlotFrmt(uint16_t slot, uint32_t slotBitMap)
+{
+   SlotConfig slotFrmt;
+   int mask1 = 0, mask2 = 0;
+
+   slot = (slot%10)*2;
+   mask1 = 1<<(slot);
+   mask2 = 1<<(slot+1);
+   slotFrmt = ((mask1 & slotBitMap)>>slot) + (2*((mask2 & slotBitMap)>>(slot+1)));
+
+   printf("\n\n\n\n*****FormatType:%d Slot:%d****\n\n\n\n", slotFrmt, slot/2);
+
+   return slotFrmt;
+}
+
+#endif
 /**********************************************************************
          End of file
 **********************************************************************/

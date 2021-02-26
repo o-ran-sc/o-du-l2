@@ -1091,16 +1091,15 @@ uint8_t BuildServedCellList(GNB_DU_Served_Cells_List_t *duServedCell)
       return RFAILED;
    }
    /* MIB */
-   srvCellItem->gNB_DU_System_Information->mIB_message.size =\
-							     strlen(( char *)duCfgParam.srvdCellLst[0].duSysInfo.mibMsg);
+   srvCellItem->gNB_DU_System_Information->mIB_message.size = duCfgParam.srvdCellLst[0].duSysInfo.mibLen;
    DU_ALLOC(srvCellItem->gNB_DU_System_Information->mIB_message.buf,
 	 srvCellItem->gNB_DU_System_Information->mIB_message.size);
    if(!srvCellItem->gNB_DU_System_Information->mIB_message.buf)
    {
       return RFAILED;
    }
-   strcpy((char *)srvCellItem->gNB_DU_System_Information->mIB_message.buf,
-	 (char *)duCfgParam.srvdCellLst[0].duSysInfo.mibMsg);
+   memcpy(srvCellItem->gNB_DU_System_Information->mIB_message.buf, duCfgParam.srvdCellLst[0].duSysInfo.mibMsg, \
+		   srvCellItem->gNB_DU_System_Information->mIB_message.size);
 
    /* SIB1 */
    srvCellItem->gNB_DU_System_Information->sIB1_message.size =\

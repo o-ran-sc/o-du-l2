@@ -38,14 +38,23 @@
 #define CU_EGTP_PORT  39002
 #define NR_PCI 1
 #define NR_CELL_ID 1
-#define NR_NUMEROLOGY 0
 
 #define DU_NAME "ORAN_OAM_DU"
 #define CELL_TYPE SMALL
-#define DUPLEX_MODE DUP_MODE_FDD
 
+//TODO: while testing for TDD, Mu1 and 100 MHz, this flag must be removed
 #ifdef NR_TDD
 #define DUPLEX_MODE DUP_MODE_TDD
+#define NR_NUMEROLOGY 1
+#define NR_DL_ARFCN 623400
+#define NR_UL_ARFCN 623400
+#define NR_FREQ_BAND 78
+#else
+#define DUPLEX_MODE DUP_MODE_FDD
+#define NR_NUMEROLOGY 0
+#define NR_DL_ARFCN 428000
+#define NR_UL_ARFCN 390000
+#define NR_FREQ_BAND 1
 #endif
 
 #define DU_TAC 1
@@ -58,12 +67,10 @@
 #define PLMN_SIZE 3
 
 /* Spec 30.104 Table 5.4.2.3-1:Applicable NR-ARFCN per operating band in FR1 */
-#define NR_DL_ARFCN 428000
-#define NR_UL_ARFCN 390000
 #define SUL_ARFCN 100
-#define NR_FREQ_BAND 1
-#define NR_FREQ_BAND_IND 1
 #define SUL_BAND 2
+
+
 
 #define TIME_CFG 0
 #define CARRIER_IDX 1
@@ -72,7 +79,6 @@
 #define FREQ_SHIFT_7P5KHZ FALSE
 #define SSB_PBCH_PWR 0
 #define BCH_PAYLOAD PHY_GEN_TIMING_PBCH_BIT
-#define SUBCARRIER_SPACING 0
 #define NORMAL_CYCLIC_PREFIX 0
 #define OFFSET_TO_POINT_A 24                     /* PRB Offset to Point A */
 #define BETA_PSS BETA_PSS_0DB  
@@ -228,7 +234,7 @@
 /* Macro definitions for MIB/SIB1 */
 #define SYS_FRAME_NUM 0
 #define SPARE 0
-#define SSB_SC_OFFSET 8
+#define SSB_SC_OFFSET 0
 #define DU_RANAC 1
 #define CELL_IDENTITY 32
 
