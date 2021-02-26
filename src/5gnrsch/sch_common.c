@@ -79,7 +79,7 @@ uint8_t schBroadcastAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc,
    schDlSlotInfo = cell->schDlSlotInfo[slot];
    if(dlBrdcstAlloc->ssbTrans)
    {
-      ssbStartPrb = cell->cellCfg.ssbSchCfg.ssbOffsetPointA;
+      ssbStartPrb = cell->cellCfg.ssbSchCfg.ssbOffsetPointA; //+Kssb
       ssbStartSymb = cell->ssbStartSymbArr[dlBrdcstAlloc->ssbIdxSupported-1]; /*since we are
 										supporting only 1 ssb beam */
 

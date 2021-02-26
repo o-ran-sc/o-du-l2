@@ -632,9 +632,11 @@ typedef struct schCellCfg
 {
    uint16_t       cellId;           /* Cell Id */
    uint16_t       phyCellId;        /* Physical cell id */
-   uint8_t        bandwidth;        /* Supported B/W */
    uint8_t        numerology;       /* Supported numerology */
    SchDuplexMode  dupMode;          /* Duplex type: TDD/FDD */
+   uint8_t        bandwidth;        /* Supported B/W */
+   uint32_t       dlFreq;           /* DL Frequency */
+   uint32_t       ulFreq;           /* UL Frequency */
    SchSsbCfg      ssbSchCfg;        /* SSB config */
    SchSib1Cfg     sib1SchCfg;       /* SIB1 config */
    SchRachCfg     schRachCfg;       /* PRACH config */

@@ -153,7 +153,11 @@ uint8_t readMacCfg()
 
    /* DL carrier configuration */
    duCfgParam.macCellCfg.dlCarrCfg.pres = TRUE;
+#ifdef NR_TDD
+   duCfgParam.macCellCfg.dlCarrCfg.bw = BANDWIDTH_100MHZ;
+#else
    duCfgParam.macCellCfg.dlCarrCfg.bw = BANDWIDTH_20MHZ;
+#endif
    duCfgParam.macCellCfg.dlCarrCfg.freq = NR_DL_ARFCN;
    duCfgParam.macCellCfg.dlCarrCfg.k0[0] = 1;
    duCfgParam.macCellCfg.dlCarrCfg.k0[1] = 1;
@@ -169,7 +173,11 @@ uint8_t readMacCfg()
 
    /* UL Carrier configuration */
    duCfgParam.macCellCfg.ulCarrCfg.pres = TRUE;
+#ifdef NR_TDD
+   duCfgParam.macCellCfg.dlCarrCfg.bw = BANDWIDTH_100MHZ;
+#else
    duCfgParam.macCellCfg.ulCarrCfg.bw = BANDWIDTH_20MHZ;
+#endif
    duCfgParam.macCellCfg.ulCarrCfg.freq = NR_UL_ARFCN;
    duCfgParam.macCellCfg.ulCarrCfg.k0[0] = 1;
    duCfgParam.macCellCfg.ulCarrCfg.k0[1] = 1;
@@ -188,7 +196,11 @@ uint8_t readMacCfg()
    /* SSB configuration */
    duCfgParam.macCellCfg.ssbCfg.ssbPbchPwr = SSB_PBCH_PWR;
    duCfgParam.macCellCfg.ssbCfg.bchPayloadFlag = BCH_PAYLOAD;
-   duCfgParam.macCellCfg.ssbCfg.scsCmn = SUBCARRIER_SPACING;
+#ifdef NR_TDD
+   duCfgParam.macCellCfg.ssbCfg.scsCmn = SCS_30KHZ;
+#else
+   duCfgParam.macCellCfg.ssbCfg.scsCmn = SCS_15KHZ;
+#endif
    duCfgParam.macCellCfg.ssbCfg.ssbOffsetPointA = OFFSET_TO_POINT_A;
    duCfgParam.macCellCfg.ssbCfg.betaPss = BETA_PSS;
    duCfgParam.macCellCfg.ssbCfg.ssbPeriod = SSB_PRDCTY_MS_20;
@@ -267,7 +279,11 @@ uint8_t readMacCfg()
    /* fill Intial DL BWP */
    duCfgParam.macCellCfg.initialDlBwp.bwp.firstPrb = 0;
    duCfgParam.macCellCfg.initialDlBwp.bwp.numPrb = TOTAL_PRB_20MHZ_MU0; /* configured to total BW */
-   duCfgParam.macCellCfg.initialDlBwp.bwp.scs = SUBCARRIER_SPACING; /* numerology is 0, 15Khz */
+#ifdef NR_TDD
+   duCfgParam.macCellCfg.initialDlBwp.bwp.scs = SCS_30KHZ; /* numerology is 1, 30Khz */
+#else
+   duCfgParam.macCellCfg.initialDlBwp.bwp.scs = SCS_15KHZ; /* numerology is 0, 15Khz */
+#endif
    duCfgParam.macCellCfg.initialDlBwp.bwp.cyclicPrefix = NORMAL_CYCLIC_PREFIX;
    duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.searchSpaceId = SEARCHSPACE_1_INDEX;
    duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.coresetId = CORESET_0_INDEX;
@@ -299,7 +315,11 @@ uint8_t readMacCfg()
    /* fill Intial UL BWP */
    duCfgParam.macCellCfg.initialUlBwp.bwp.firstPrb = 0;
    duCfgParam.macCellCfg.initialUlBwp.bwp.numPrb = TOTAL_PRB_20MHZ_MU0; /* configured to total BW */
-   duCfgParam.macCellCfg.initialUlBwp.bwp.scs = SUBCARRIER_SPACING; /* numerology is 0, 15Khz */
+#ifdef NR_TDD
+   duCfgParam.macCellCfg.initialUlBwp.bwp.scs = SCS_30KHZ; /* numerology is 1, 30Khz */
+#else
+   duCfgParam.macCellCfg.initialUlBwp.bwp.scs = SCS_15KHZ; /* numerology is 0, 15Khz */
+#endif
    duCfgParam.macCellCfg.initialUlBwp.bwp.cyclicPrefix = NORMAL_CYCLIC_PREFIX;
    duCfgParam.macCellCfg.initialUlBwp.puschCommon.k2 = PUSCH_K2;
    duCfgParam.macCellCfg.initialUlBwp.puschCommon.mappingType = 
@@ -405,11 +425,16 @@ uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
    TddUlDlCfgCommon   tddCfg;
 
    /* Configuring DL Config Common for SIB1*/
-   srvCellCfgComm->dlCfg.freqBandInd = NR_FREQ_BAND_IND; 
+   srvCellCfgComm->dlCfg.freqBandInd = NR_FREQ_BAND; 
    srvCellCfgComm->dlCfg.offsetToPointA = OFFSET_TO_POINT_A;
    srvCellCfgComm->dlCfg.dlScsCarrier.scsOffset = SSB_SUBCARRIER_OFFSET;
-   srvCellCfgComm->dlCfg.dlScsCarrier.scs = SUBCARRIER_SPACING;
+#ifdef NR_TDD
+   srvCellCfgComm->dlCfg.dlScsCarrier.scs = SCS_30KHZ;
+   srvCellCfgComm->dlCfg.dlScsCarrier.scsBw = BANDWIDTH_100MHZ;
+#else
+   srvCellCfgComm->dlCfg.dlScsCarrier.scs = SCS_15KHZ;
    srvCellCfgComm->dlCfg.dlScsCarrier.scsBw = BANDWIDTH_20MHZ;
+#endif
    srvCellCfgComm->dlCfg.locAndBw = FREQ_LOC_BW;
 
    /* Configuring PDCCH Config Common For SIB1 */
@@ -457,8 +482,13 @@ uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
 
    /* Configuring UL Config Common */
    srvCellCfgComm->ulCfg.ulScsCarrier.scsOffset = SSB_SUBCARRIER_OFFSET;
-   srvCellCfgComm->ulCfg.ulScsCarrier.scs = SUBCARRIER_SPACING;
+#ifdef NR_TDD
+   srvCellCfgComm->ulCfg.ulScsCarrier.scs = SCS_30KHZ;
+   srvCellCfgComm->ulCfg.ulScsCarrier.scsBw = BANDWIDTH_100MHZ;
+#else
+   srvCellCfgComm->ulCfg.ulScsCarrier.scs = SCS_15KHZ;
    srvCellCfgComm->ulCfg.ulScsCarrier.scsBw = BANDWIDTH_20MHZ;
+#endif
    srvCellCfgComm->ulCfg.pMax = UL_P_MAX;
    srvCellCfgComm->ulCfg.locAndBw = FREQ_LOC_BW;
    srvCellCfgComm->ulCfg.timeAlignTimerComm = TimeAlignmentTimer_infinity;
@@ -595,7 +625,7 @@ uint8_t readCfg()
    mib.dmrs_TypeA_Position = MIB__dmrs_TypeA_Position_pos2;
    mib.controlResourceSetZero = CORESET_0_INDEX;
    mib.searchSpaceZero = SEARCHSPACE_0_INDEX;
-   mib.cellBarred = MIB__cellBarred_barred;
+   mib.cellBarred = MIB__cellBarred_notBarred;
    mib.intraFreqReselection =
       MIB__intraFreqReselection_notAllowed;
    duCfgParam.mibParams = mib;
@@ -753,14 +783,13 @@ uint8_t readCfg()
 
       /*gnb DU System Info mib msg*/
       BuildMibMsg();
-      DU_ALLOC(duCfgParam.srvdCellLst[i].duSysInfo.mibMsg,\
-	    strlen(encBuf));
+      DU_ALLOC(duCfgParam.srvdCellLst[i].duSysInfo.mibMsg, encBufSize);
       if(!(duCfgParam.srvdCellLst[i].duSysInfo.mibMsg))
       {
 	 DU_LOG("\nERROR  -->  DU APP : Memory allocation failure at readCfg");
 	 return RFAILED;
       }
-      strcpy((char *)duCfgParam.srvdCellLst[i].duSysInfo.mibMsg, encBuf);
+      memcpy(duCfgParam.srvdCellLst[i].duSysInfo.mibMsg, encBuf, encBufSize);
       duCfgParam.srvdCellLst[i].duSysInfo.mibLen = encBufSize;
 
       /*gnb DU System Info mib msg*/

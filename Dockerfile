@@ -21,6 +21,7 @@ RUN apt-get update && apt-get install -y libpcap-dev
 
 RUN cd build/odu && make clean_odu odu MACHINE=BIT64 MODE=FDD
 
+RUN cd build/odu && make clean_odu odu MACHINE=BIT64 MODE=TDD
 #CMD /opt/o-du-l2/bin/odu/odu
 
 #cleanup netconf folder and install libraries

@@ -17,7 +17,11 @@
 *******************************************************************************/
 #include <unistd.h>
 
+#ifdef NR_TDD
+#define MAX_SLOT_VALUE   19
+#else
 #define MAX_SLOT_VALUE   9
+#endif
 #define MAX_SFN_VALUE    1023
 #define NR_PCI            1
 #define SLOT_DELAY       3
