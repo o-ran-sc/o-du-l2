@@ -1,0 +1,157 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c4327715_3c2c756c",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 10525,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-01T07:07:50Z",
+      "side": 1,
+      "message": "why is this commented ?",
+      "revId": "fc02e4b541ff165659532e2a582f254f46f6b394",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cbdf7505_f5dc757d",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 11577,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-01T07:07:50Z",
+      "side": 1,
+      "message": "fillDlTnlSetupList can be reused to build DL Tnl Info.\nRemove this function",
+      "revId": "fc02e4b541ff165659532e2a582f254f46f6b394",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d10cd9a7_3ed826e2",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 11625,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-01T07:07:50Z",
+      "side": 1,
+      "message": "why harcode the address ?",
+      "revId": "fc02e4b541ff165659532e2a582f254f46f6b394",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "185d0bee_3f6e9b2b",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 11648,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-01T07:07:50Z",
+      "side": 1,
+      "message": "Generic comment\nAll harcoding to be removed\nteid is already extracted in f1UeDb, to use the same",
+      "revId": "fc02e4b541ff165659532e2a582f254f46f6b394",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "adccef21_7ce65ffb",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 11682,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-01T07:07:50Z",
+      "side": 1,
+      "message": "drbId we extracted and stored in f1UeDb TnlCfg. use the same here",
+      "revId": "fc02e4b541ff165659532e2a582f254f46f6b394",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b740584e_ff533dba",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 11942,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-01T07:07:50Z",
+      "side": 1,
+      "message": "let discuss on reusing the existing functions",
+      "revId": "fc02e4b541ff165659532e2a582f254f46f6b394",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cf1daf70_16a3d4e7",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 12250,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-01T07:07:50Z",
+      "side": 1,
+      "message": "since this used only for testing purpose to check if the modification response is populated correctly. To be removed after testing",
+      "revId": "fc02e4b541ff165659532e2a582f254f46f6b394",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "764faa7c_9e943fec",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2455,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-01T07:07:50Z",
+      "side": 1,
+      "message": "check for ue context mod to be added",
+      "revId": "fc02e4b541ff165659532e2a582f254f46f6b394",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "98fa98ae_3549ab8f",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2519,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-01T07:07:50Z",
+      "side": 1,
+      "message": "function header missing \nAdd the TODO on what has to be done in this function",
+      "revId": "fc02e4b541ff165659532e2a582f254f46f6b394",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
