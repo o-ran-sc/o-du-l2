@@ -87,6 +87,23 @@
     },
     {
       "key": {
+        "uuid": "b99e85c2_48455ced",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 11921,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-01T09:11:48Z",
+      "side": 1,
+      "message": "FreeUeContextModRsp() missing",
+      "revId": "fc02e4b541ff165659532e2a582f254f46f6b394",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b740584e_ff533dba",
         "filename": "src/du_app/du_f1ap_msg_hdl.c",
         "patchSetId": 2
@@ -217,6 +234,23 @@
       "writtenOn": "2021-03-01T07:07:50Z",
       "side": 1,
       "message": "since this used only for testing purpose to check if the modification response is populated correctly. To be removed after testing",
+      "revId": "fc02e4b541ff165659532e2a582f254f46f6b394",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ff4df028_cbd1f5d9",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 12251,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-01T09:11:48Z",
+      "side": 1,
+      "message": "freeAperDecodeUeContextModReq missing",
       "revId": "fc02e4b541ff165659532e2a582f254f46f6b394",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
