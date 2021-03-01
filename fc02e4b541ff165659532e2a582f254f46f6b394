@@ -104,6 +104,74 @@
     },
     {
       "key": {
+        "uuid": "149e5bfe_62b0dbf9",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 12011,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-01T07:11:06Z",
+      "side": 1,
+      "message": "since only one param is different form the existing function, find a logic to reuse the existing function",
+      "revId": "fc02e4b541ff165659532e2a582f254f46f6b394",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ed4384ea_1349bec0",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 12058,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-01T07:11:06Z",
+      "side": 1,
+      "message": "same comment as above",
+      "revId": "fc02e4b541ff165659532e2a582f254f46f6b394",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "221c07a1_42e57464",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 12094,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-01T07:11:06Z",
+      "side": 1,
+      "message": "same comment as above",
+      "revId": "fc02e4b541ff165659532e2a582f254f46f6b394",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1fb963ac_71c8824c",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 12129,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-01T07:11:06Z",
+      "side": 1,
+      "message": "same comment as above",
+      "revId": "fc02e4b541ff165659532e2a582f254f46f6b394",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "cf1daf70_16a3d4e7",
         "filename": "src/du_app/du_f1ap_msg_hdl.c",
         "patchSetId": 2
