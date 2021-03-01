@@ -172,6 +172,40 @@
     },
     {
       "key": {
+        "uuid": "97eec03c_2739d300",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 12140,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-01T09:07:51Z",
+      "side": 1,
+      "message": "why -1 ?? we will be overwriting if there are 2 lcs to add",
+      "revId": "fc02e4b541ff165659532e2a582f254f46f6b394",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "073ae35b_7bb4dd2b",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 12152,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-01T09:07:51Z",
+      "side": 1,
+      "message": "same comment as above",
+      "revId": "fc02e4b541ff165659532e2a582f254f46f6b394",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "cf1daf70_16a3d4e7",
         "filename": "src/du_app/du_f1ap_msg_hdl.c",
         "patchSetId": 2
