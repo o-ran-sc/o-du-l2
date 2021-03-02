@@ -1,0 +1,259 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "04ee3b7b_dc0b5104",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 7265,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-02T09:33:00Z",
+      "side": 1,
+      "message": "ret \u003d ROK and move it above line 7264",
+      "revId": "7149276b60a8579dbcfb8c2a2fe44763017973bd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5e395446_c54af47e",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 7279,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-02T09:33:00Z",
+      "side": 1,
+      "message": "remove ret check, follow line 7269 to check if it successful or not",
+      "revId": "7149276b60a8579dbcfb8c2a2fe44763017973bd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f62236ec_333023b8",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 7287,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-02T09:33:00Z",
+      "side": 1,
+      "message": "else if(drbSetupModItem !\u003d NULLP)",
+      "revId": "7149276b60a8579dbcfb8c2a2fe44763017973bd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3739a9ce_1443a900",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 7301,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-02T09:33:00Z",
+      "side": 1,
+      "message": "same comment as above",
+      "revId": "7149276b60a8579dbcfb8c2a2fe44763017973bd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2a3e1bd5_d43034e2",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 7397,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-02T09:33:00Z",
+      "side": 1,
+      "message": "else if(drbSetupModItem !\u003d NULLP)\ngeneric comment: have null check at all places of drbSetupMod",
+      "revId": "7149276b60a8579dbcfb8c2a2fe44763017973bd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "70db771a_af434416",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 9105,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-02T09:33:00Z",
+      "side": 1,
+      "message": "free tunnel info is missing.",
+      "revId": "7149276b60a8579dbcfb8c2a2fe44763017973bd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9da9182e_82654c82",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 9596,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-02T09:33:00Z",
+      "side": 1,
+      "message": "pass drbCount in function param",
+      "revId": "7149276b60a8579dbcfb8c2a2fe44763017973bd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2ae6b50c_5069f4dc",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 9605,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-02T09:33:00Z",
+      "side": 1,
+      "message": "once drbCount is passed in function param, we can eliminate the 9605- 9614 and remove checkIeValue",
+      "revId": "7149276b60a8579dbcfb8c2a2fe44763017973bd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d9a8f466_09f5fff2",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 9634,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-02T09:33:00Z",
+      "side": 1,
+      "message": "- remove checkIeValue and keep null check for drbItem and drbSetupModItem and call the function accordingly",
+      "revId": "7149276b60a8579dbcfb8c2a2fe44763017973bd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "be182106_a60977d3",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 9996,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-02T09:33:00Z",
+      "side": 1,
+      "message": "pass drbCount as a param\nproper alignment required",
+      "revId": "7149276b60a8579dbcfb8c2a2fe44763017973bd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5b1ea6ce_ee34b05e",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 11911,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-02T09:33:00Z",
+      "side": 1,
+      "message": "club both the if conditions",
+      "revId": "7149276b60a8579dbcfb8c2a2fe44763017973bd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5be82e7d_d5148671",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 12052,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-02T09:33:00Z",
+      "side": 1,
+      "message": "rename as freeApreDecodeDrbSetupModItem",
+      "revId": "7149276b60a8579dbcfb8c2a2fe44763017973bd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b359d685_d5459284",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 12112,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-02T09:33:00Z",
+      "side": 1,
+      "message": "drb2?? function name inappropriate. rename the function",
+      "revId": "7149276b60a8579dbcfb8c2a2fe44763017973bd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "30875590_3b8dbf76",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 12150,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-02T09:33:00Z",
+      "side": 1,
+      "message": "why again drb2Item? rename the function wisely",
+      "revId": "7149276b60a8579dbcfb8c2a2fe44763017973bd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "60b0cbf6_d45f6624",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2539,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-02T09:33:00Z",
+      "side": 1,
+      "message": "can be removed as this will not be triggered from here. Refer ue context setup Response",
+      "revId": "7149276b60a8579dbcfb8c2a2fe44763017973bd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
