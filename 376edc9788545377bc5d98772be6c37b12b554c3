@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d5903a7f_c294b0d6",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 542,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-03T04:14:05Z",
+      "side": 1,
+      "message": "what is 300000 ? can we have a macro for same ?",
+      "revId": "376edc9788545377bc5d98772be6c37b12b554c3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
