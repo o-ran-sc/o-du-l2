@@ -1742,11 +1742,11 @@ uint8_t fillMacLcCfgList(MacUeCb *ueCb, MacUeCfg *ueCfg)
       {
          if(ueCfg->lcCfgList[lcIdx].configType == CONFIG_ADD)
          {
-	    /*Filling DL LC CB */
+            /*Filling DL LC CB */
             ueCb->dlInfo.lcCb[ueCb->dlInfo.numDlLc].lcId = ueCfg->lcCfgList[lcIdx].lcId;
             ueCb->dlInfo.lcCb[ueCb->dlInfo.numDlLc].lcState = MAC_LC_STATE_ACTIVE;
             ueCb->dlInfo.numDlLc++;
-	    /*Filling UL LC CB */
+            /*Filling UL LC CB */
             ueCb->ulInfo.lcCb[ueCb->ulInfo.numUlLc].lcId = ueCfg->lcCfgList[lcIdx].lcId;
             ueCb->ulInfo.lcCb[ueCb->ulInfo.numUlLc].lcGrpId = ueCfg->lcCfgList[lcIdx].ulLcCfg.lcGroup;
             ueCb->ulInfo.lcCb[ueCb->ulInfo.numUlLc].lcActive = MAC_LC_STATE_ACTIVE;
@@ -1754,21 +1754,21 @@ uint8_t fillMacLcCfgList(MacUeCb *ueCb, MacUeCfg *ueCfg)
          }/*End of Add Config */
          else
          { 
-	    //searching for Lc to be Mod
-	    for(ueLcIdx = 0; ueLcIdx < ueCb->ulInfo.numUlLc; ueLcIdx++)
-	    {
+            //searching for Lc to be Mod
+            for(ueLcIdx = 0; ueLcIdx < ueCb->ulInfo.numUlLc; ueLcIdx++)
+            {
                if(ueCb->ulInfo.lcCb[ueLcIdx].lcId == ueCfg->lcCfgList[lcIdx].lcId)
                {
-	          if(ueCfg->lcCfgList[lcIdx].configType == CONFIG_MOD)
-		  {
-	             /*Nothing to Modify in DL LC CB */
+                  if(ueCfg->lcCfgList[lcIdx].configType == CONFIG_MOD)
+                  {
+                     /*Nothing to Modify in DL LC CB */
                      /*Modify UL LC CB */
                      ueCb->ulInfo.lcCb[ueLcIdx].lcGrpId = ueCfg->lcCfgList[lcIdx].ulLcCfg.lcGroup;
                      DU_LOG("\nINFO  -->  MAC: Successfully Modified LC context for lcId[%d]", ueCfg->lcCfgList[lcIdx].lcId);
                      break;
-		  }
-	          if(ueCfg->lcCfgList[lcIdx].configType == CONFIG_DEL)
-		  {
+                  }
+                  if(ueCfg->lcCfgList[lcIdx].configType == CONFIG_DEL)
+                  {
                      memset(&ueCb->dlInfo.lcCb[ueLcIdx], 0, sizeof(DlLcCb));
                      (ueCb->dlInfo.numDlLc)--;
                      updateMacDlCb(ueLcIdx, &ueCb->dlInfo);
@@ -1778,9 +1778,9 @@ uint8_t fillMacLcCfgList(MacUeCb *ueCb, MacUeCfg *ueCfg)
                      updateMacUlCb(ueLcIdx, &ueCb->ulInfo);
                      DU_LOG("\nINFO  -->  MAC: Successfully Deleted LC context for lcId[%d]", ueCfg->lcCfgList[lcIdx].lcId);
                      break;
-		  }
-	       }
-	    }
+                  }
+               }
+            }
          }/*End of Mod Config */
       }
    }

@@ -202,7 +202,6 @@ uint8_t fillSchUeCb(SchUeCb *ueCb, SchUeCfg *ueCfg)
 {
    uint8_t   lcIdx, ueLcIdx;
 
-   memset(&ueCb->ueCfg, 0, sizeof(SchUeCfg));
    memcpy(&ueCb->ueCfg, ueCfg, sizeof(SchUeCfg));
    ueCb->state = SCH_UE_STATE_ACTIVE;
 
