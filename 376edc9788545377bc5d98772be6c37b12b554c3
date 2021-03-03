@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "7f6f6a79_2c4ca674",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 533,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-03T04:51:17Z",
+      "side": 1,
+      "message": "move to beginning of this block",
+      "revId": "376edc9788545377bc5d98772be6c37b12b554c3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d5903a7f_c294b0d6",
         "filename": "src/5gnrsch/sch.c",
         "patchSetId": 2
@@ -13,6 +30,74 @@
       "writtenOn": "2021-03-03T04:14:05Z",
       "side": 1,
       "message": "what is 300000 ? can we have a macro for same ?",
+      "revId": "376edc9788545377bc5d98772be6c37b12b554c3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9153d28d_86edb41b",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 559,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-03T04:51:17Z",
+      "side": 1,
+      "message": "incorrect values of n in the comments",
+      "revId": "376edc9788545377bc5d98772be6c37b12b554c3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "012aeaee_77fd1760",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 674,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-03T04:51:17Z",
+      "side": 1,
+      "message": "Are we planning on keeping this printf?",
+      "revId": "376edc9788545377bc5d98772be6c37b12b554c3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b13fc4b9_66867549",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 628,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-03T04:51:17Z",
+      "side": 1,
+      "message": "why so?",
+      "revId": "376edc9788545377bc5d98772be6c37b12b554c3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e5f0910d_647aa681",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 793,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-03T04:51:17Z",
+      "side": 1,
+      "message": "remove commented line if not needed",
       "revId": "376edc9788545377bc5d98772be6c37b12b554c3",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
