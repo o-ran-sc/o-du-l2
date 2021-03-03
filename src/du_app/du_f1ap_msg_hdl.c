@@ -10005,6 +10005,7 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
                }
                else
                {
+                  duUeCb->f1UeDb->dlRrcMsgPres = true;
                   memset(duUeCb->f1UeDb->dlRrcMsg, 0, sizeof(F1DlRrcMsg));
                   ret = extractDlRrcMsg(gnbDuUeF1apId, gnbCuUeF1apId, duUeCb->f1UeDb->dlRrcMsg,\
                         &ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer);
