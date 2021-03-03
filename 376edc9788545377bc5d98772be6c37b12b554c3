@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "b15307bc_af851196",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 533,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-03-03T13:37:21Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7f6f6a79_2c4ca674",
+      "revId": "376edc9788545377bc5d98772be6c37b12b554c3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d5903a7f_c294b0d6",
         "filename": "src/5gnrsch/sch.c",
         "patchSetId": 2
@@ -30,6 +48,24 @@
       "writtenOn": "2021-03-03T04:14:05Z",
       "side": 1,
       "message": "what is 300000 ? can we have a macro for same ?",
+      "revId": "376edc9788545377bc5d98772be6c37b12b554c3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6b48d557_d06f3300",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 542,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-03-03T13:37:21Z",
+      "side": 1,
+      "message": "This is according to spec. There are different conditions based on freq range being less than or more than 3GHz. Spec reference given above",
+      "parentUuid": "d5903a7f_c294b0d6",
       "revId": "376edc9788545377bc5d98772be6c37b12b554c3",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "d8af8bad_52af6d66",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 559,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-03-03T13:37:21Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "9153d28d_86edb41b",
+      "revId": "376edc9788545377bc5d98772be6c37b12b554c3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "012aeaee_77fd1760",
         "filename": "src/5gnrsch/sch_utils.c",
         "patchSetId": 2
@@ -67,6 +121,24 @@
       "revId": "376edc9788545377bc5d98772be6c37b12b554c3",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "36069c86_8c5e1cf9",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 674,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-03-03T13:37:21Z",
+      "side": 1,
+      "message": "No",
+      "parentUuid": "012aeaee_77fd1760",
+      "revId": "376edc9788545377bc5d98772be6c37b12b554c3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "9f9df097_61078f03",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 628,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-03-03T13:37:21Z",
+      "side": 1,
+      "message": "No UE can access a barred cell",
+      "parentUuid": "b13fc4b9_66867549",
+      "revId": "376edc9788545377bc5d98772be6c37b12b554c3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e5f0910d_647aa681",
         "filename": "src/du_app/du_cfg.c",
         "patchSetId": 2
@@ -101,6 +191,24 @@
       "revId": "376edc9788545377bc5d98772be6c37b12b554c3",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3605d6cd_16b422af",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 793,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-03-03T13:37:21Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e5f0910d_647aa681",
+      "revId": "376edc9788545377bc5d98772be6c37b12b554c3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
