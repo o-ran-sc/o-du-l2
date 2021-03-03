@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3fed5f6a_de46f0ff",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 12270,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-03T13:10:12Z",
+      "side": 1,
+      "message": "this should be uncommented",
+      "revId": "d9757acb5cdbe91b1d4901763c3cda3adda13343",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ffd46d08_e76ccdd0",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2537,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-03T13:10:12Z",
+      "side": 1,
+      "message": "Add a TODO:After RB configuration are done Mod Response is triggered",
+      "revId": "d9757acb5cdbe91b1d4901763c3cda3adda13343",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
