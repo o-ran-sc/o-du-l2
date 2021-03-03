@@ -118,6 +118,7 @@ typedef struct duUeCfg
 {
    void *cellGrpCfg;
    void *ueNrCapability;
+   bool cellGrpCfgPres;
    uint8_t numRlcLcs;        /* Rlc Ue Cfg */
    RlcBearerCfg rlcLcCfg[MAX_NUM_LC];
    uint8_t numMacLcs;        /* Mac Ue Cfg */
@@ -132,6 +133,7 @@ typedef struct f1UeContextSetup
    UeCtxtActionType actionType;
    uint8_t cellIdx;
    DuUeCfg  duUeCfg;        
+   bool     dlRrcMsgPres;
    F1DlRrcMsg  *dlRrcMsg;
 }F1UeContextSetupDb;
 

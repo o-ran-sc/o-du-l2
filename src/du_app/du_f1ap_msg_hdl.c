@@ -9957,6 +9957,7 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
                      //TODO: Update the failure cause in ue context Setup Response
                      ret = RFAILED;
                   }
+                  duUeCb->f1UeDb->duUeCfg.cellGrpCfgPres = true;
                }
                break;
             } 
@@ -10004,6 +10005,7 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
                }
                else
                {
+                  duUeCb->f1UeDb->dlRrcMsgPres = true;
                   memset(duUeCb->f1UeDb->dlRrcMsg, 0, sizeof(F1DlRrcMsg));
                   ret = extractDlRrcMsg(gnbDuUeF1apId, gnbCuUeF1apId, duUeCb->f1UeDb->dlRrcMsg,\
                         &ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer);
