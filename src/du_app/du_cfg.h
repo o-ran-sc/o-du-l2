@@ -30,8 +30,7 @@
 #define RIC_IP_V4_ADDR "192.168.130.80"
 #define DU_PORT 38472
 #define CU_PORT 38472
-#define RIC_PORT 36422         /* using X2 port since E2 port not defined  */
-
+#define RIC_PORT 36421
 #endif
 
 #define DU_EGTP_PORT  39001
