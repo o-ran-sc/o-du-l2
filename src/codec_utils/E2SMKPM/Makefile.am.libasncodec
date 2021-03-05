@@ -1,0 +1,214 @@
+ASN_MODULE_SRCS=	\
+	./codeathon/e2smkpm/GlobalKPMnode-ID.c	\
+	./codeathon/e2smkpm/GlobalKPMnode-gNB-ID.c	\
+	./codeathon/e2smkpm/GlobalgNB-ID.c	\
+	./codeathon/e2smkpm/GNB-CU-UP-ID.c	\
+	./codeathon/e2smkpm/GNB-DU-ID.c	\
+	./codeathon/e2smkpm/GNB-ID-Choice.c	\
+	./codeathon/e2smkpm/GlobalKPMnode-en-gNB-ID.c	\
+	./codeathon/e2smkpm/GlobalenGNB-ID.c	\
+	./codeathon/e2smkpm/ENGNB-ID.c	\
+	./codeathon/e2smkpm/GlobalKPMnode-ng-eNB-ID.c	\
+	./codeathon/e2smkpm/GlobalngeNB-ID.c	\
+	./codeathon/e2smkpm/ENB-ID-Choice.c	\
+	./codeathon/e2smkpm/GlobalKPMnode-eNB-ID.c	\
+	./codeathon/e2smkpm/GlobalENB-ID.c	\
+	./codeathon/e2smkpm/ENB-ID.c	\
+	./codeathon/e2smkpm/NRCGI.c	\
+	./codeathon/e2smkpm/PLMN-Identity.c	\
+	./codeathon/e2smkpm/NRCellIdentity.c	\
+	./codeathon/e2smkpm/SNSSAI.c	\
+	./codeathon/e2smkpm/RIC-Style-Type.c	\
+	./codeathon/e2smkpm/RIC-Style-Name.c	\
+	./codeathon/e2smkpm/RIC-Format-Type.c	\
+	./codeathon/e2smkpm/E2SM-KPM-EventTriggerDefinition.c	\
+	./codeathon/e2smkpm/E2SM-KPM-EventTriggerDefinition-Format1.c	\
+	./codeathon/e2smkpm/E2SM-KPM-ActionDefinition.c	\
+	./codeathon/e2smkpm/E2SM-KPM-IndicationHeader.c	\
+	./codeathon/e2smkpm/E2SM-KPM-IndicationHeader-Format1.c	\
+	./codeathon/e2smkpm/E2SM-KPM-IndicationMessage.c	\
+	./codeathon/e2smkpm/E2SM-KPM-IndicationMessage-Format1.c	\
+	./codeathon/e2smkpm/PM-Containers-List.c	\
+	./codeathon/e2smkpm/E2SM-KPM-RANfunction-Description.c	\
+	./codeathon/e2smkpm/NI-Type.c	\
+	./codeathon/e2smkpm/RAN-Container.c	\
+	./codeathon/e2smkpm/Trigger-ConditionIE-Item.c	\
+	./codeathon/e2smkpm/RT-Period-IE.c	\
+	./codeathon/e2smkpm/RANcallProcess-ID-string.c	\
+	./codeathon/e2smkpm/RANfunction-Name.c	\
+	./codeathon/e2smkpm/RIC-EventTriggerStyle-List.c	\
+	./codeathon/e2smkpm/RIC-ReportStyle-List.c	\
+	./codeathon/e2smkpm/PF-Container.c	\
+	./codeathon/e2smkpm/GNB-CU-CP-Name.c	\
+	./codeathon/e2smkpm/GNB-DU-Name.c	\
+	./codeathon/e2smkpm/GNB-CU-UP-Name.c	\
+	./codeathon/e2smkpm/ODU-PF-Container.c	\
+	./codeathon/e2smkpm/CellResourceReportListItem.c	\
+	./codeathon/e2smkpm/ServedPlmnPerCellListItem.c	\
+	./codeathon/e2smkpm/FGC-DU-PM-Container.c	\
+	./codeathon/e2smkpm/SlicePerPlmnPerCellListItem.c	\
+	./codeathon/e2smkpm/FQIPERSlicesPerPlmnPerCellListItem.c	\
+	./codeathon/e2smkpm/EPC-DU-PM-Container.c	\
+	./codeathon/e2smkpm/PerQCIReportListItem.c	\
+	./codeathon/e2smkpm/OCUCP-PF-Container.c	\
+	./codeathon/e2smkpm/OCUUP-PF-Container.c	\
+	./codeathon/e2smkpm/PF-ContainerListItem.c	\
+	./codeathon/e2smkpm/CUUPMeasurement-Container.c	\
+	./codeathon/e2smkpm/PlmnID-List.c	\
+	./codeathon/e2smkpm/FGC-CUUP-PM-Format.c	\
+	./codeathon/e2smkpm/SliceToReportListItem.c	\
+	./codeathon/e2smkpm/FQIPERSlicesPerPlmnListItem.c	\
+	./codeathon/e2smkpm/EPC-CUUP-PM-Format.c	\
+	./codeathon/e2smkpm/PerQCIReportListItemFormat.c
+
+ASN_MODULE_HDRS=	\
+	./codeathon/e2smkpm/GlobalKPMnode-ID.h	\
+	./codeathon/e2smkpm/GlobalKPMnode-gNB-ID.h	\
+	./codeathon/e2smkpm/GlobalgNB-ID.h	\
+	./codeathon/e2smkpm/GNB-CU-UP-ID.h	\
+	./codeathon/e2smkpm/GNB-DU-ID.h	\
+	./codeathon/e2smkpm/GNB-ID-Choice.h	\
+	./codeathon/e2smkpm/GlobalKPMnode-en-gNB-ID.h	\
+	./codeathon/e2smkpm/GlobalenGNB-ID.h	\
+	./codeathon/e2smkpm/ENGNB-ID.h	\
+	./codeathon/e2smkpm/GlobalKPMnode-ng-eNB-ID.h	\
+	./codeathon/e2smkpm/GlobalngeNB-ID.h	\
+	./codeathon/e2smkpm/ENB-ID-Choice.h	\
+	./codeathon/e2smkpm/GlobalKPMnode-eNB-ID.h	\
+	./codeathon/e2smkpm/GlobalENB-ID.h	\
+	./codeathon/e2smkpm/ENB-ID.h	\
+	./codeathon/e2smkpm/NRCGI.h	\
+	./codeathon/e2smkpm/PLMN-Identity.h	\
+	./codeathon/e2smkpm/NRCellIdentity.h	\
+	./codeathon/e2smkpm/SNSSAI.h	\
+	./codeathon/e2smkpm/RIC-Style-Type.h	\
+	./codeathon/e2smkpm/RIC-Style-Name.h	\
+	./codeathon/e2smkpm/RIC-Format-Type.h	\
+	./codeathon/e2smkpm/E2SM-KPM-EventTriggerDefinition.h	\
+	./codeathon/e2smkpm/E2SM-KPM-EventTriggerDefinition-Format1.h	\
+	./codeathon/e2smkpm/E2SM-KPM-ActionDefinition.h	\
+	./codeathon/e2smkpm/E2SM-KPM-IndicationHeader.h	\
+	./codeathon/e2smkpm/E2SM-KPM-IndicationHeader-Format1.h	\
+	./codeathon/e2smkpm/E2SM-KPM-IndicationMessage.h	\
+	./codeathon/e2smkpm/E2SM-KPM-IndicationMessage-Format1.h	\
+	./codeathon/e2smkpm/PM-Containers-List.h	\
+	./codeathon/e2smkpm/E2SM-KPM-RANfunction-Description.h	\
+	./codeathon/e2smkpm/NI-Type.h	\
+	./codeathon/e2smkpm/RAN-Container.h	\
+	./codeathon/e2smkpm/Trigger-ConditionIE-Item.h	\
+	./codeathon/e2smkpm/RT-Period-IE.h	\
+	./codeathon/e2smkpm/RANcallProcess-ID-string.h	\
+	./codeathon/e2smkpm/RANfunction-Name.h	\
+	./codeathon/e2smkpm/RIC-EventTriggerStyle-List.h	\
+	./codeathon/e2smkpm/RIC-ReportStyle-List.h	\
+	./codeathon/e2smkpm/PF-Container.h	\
+	./codeathon/e2smkpm/GNB-CU-CP-Name.h	\
+	./codeathon/e2smkpm/GNB-DU-Name.h	\
+	./codeathon/e2smkpm/GNB-CU-UP-Name.h	\
+	./codeathon/e2smkpm/ODU-PF-Container.h	\
+	./codeathon/e2smkpm/CellResourceReportListItem.h	\
+	./codeathon/e2smkpm/ServedPlmnPerCellListItem.h	\
+	./codeathon/e2smkpm/FGC-DU-PM-Container.h	\
+	./codeathon/e2smkpm/SlicePerPlmnPerCellListItem.h	\
+	./codeathon/e2smkpm/FQIPERSlicesPerPlmnPerCellListItem.h	\
+	./codeathon/e2smkpm/EPC-DU-PM-Container.h	\
+	./codeathon/e2smkpm/PerQCIReportListItem.h	\
+	./codeathon/e2smkpm/OCUCP-PF-Container.h	\
+	./codeathon/e2smkpm/OCUUP-PF-Container.h	\
+	./codeathon/e2smkpm/PF-ContainerListItem.h	\
+	./codeathon/e2smkpm/CUUPMeasurement-Container.h	\
+	./codeathon/e2smkpm/PlmnID-List.h	\
+	./codeathon/e2smkpm/FGC-CUUP-PM-Format.h	\
+	./codeathon/e2smkpm/SliceToReportListItem.h	\
+	./codeathon/e2smkpm/FQIPERSlicesPerPlmnListItem.h	\
+	./codeathon/e2smkpm/EPC-CUUP-PM-Format.h	\
+	./codeathon/e2smkpm/PerQCIReportListItemFormat.h
+
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/OPEN_TYPE.h
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/OPEN_TYPE.c
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/constr_CHOICE.h
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/INTEGER.h
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/INTEGER.c
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/NativeEnumerated.h
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/NativeEnumerated.c
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/NativeInteger.h
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/NativeInteger.c
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/PrintableString.h
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/PrintableString.c
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/OCTET_STRING.h
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/asn_SEQUENCE_OF.h
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/asn_SEQUENCE_OF.c
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/asn_SET_OF.h
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/asn_SET_OF.c
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/constr_CHOICE.c
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/constr_SEQUENCE.h
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/constr_SEQUENCE.c
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/constr_SEQUENCE_OF.h
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/constr_SEQUENCE_OF.c
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/constr_SET_OF.h
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/constr_SET_OF.c
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/asn_application.h
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/asn_application.c
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/asn_ioc.h
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/asn_system.h
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/asn_codecs.h
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/asn_internal.h
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/asn_internal.c
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/asn_random_fill.h
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/asn_random_fill.c
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/asn_bit_data.h
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/asn_bit_data.c
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/OCTET_STRING.c
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/BIT_STRING.h
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/BIT_STRING.c
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/asn_codecs_prim.c
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/asn_codecs_prim.h
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/ber_tlv_length.h
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/ber_tlv_length.c
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/ber_tlv_tag.h
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/ber_tlv_tag.c
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/ber_decoder.h
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/ber_decoder.c
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/der_encoder.h
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/der_encoder.c
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/constr_TYPE.h
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/constr_TYPE.c
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/constraints.h
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/constraints.c
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/xer_support.h
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/xer_support.c
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/xer_decoder.h
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/xer_decoder.c
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/xer_encoder.h
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/xer_encoder.c
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/per_support.h
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/per_support.c
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/per_decoder.h
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/per_decoder.c
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/per_encoder.h
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/per_encoder.c
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/per_opentype.h
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/per_opentype.c
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/oer_decoder.h
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/oer_encoder.h
+ASN_MODULE_HDRS+=./codeathon/e2smkpm/oer_support.h
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/oer_decoder.c
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/oer_encoder.c
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/oer_support.c
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/OPEN_TYPE_oer.c
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/INTEGER_oer.c
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/BIT_STRING_oer.c
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/OCTET_STRING_oer.c
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/NativeInteger_oer.c
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/NativeEnumerated_oer.c
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/constr_CHOICE_oer.c
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/constr_SEQUENCE_oer.c
+ASN_MODULE_SRCS+=./codeathon/e2smkpm/constr_SET_OF_oer.c
+
+ASN_MODULE_CFLAGS=
+
+lib_LTLIBRARIES+=libasncodec.la
+libasncodec_la_SOURCES=$(ASN_MODULE_SRCS) $(ASN_MODULE_HDRS)
+libasncodec_la_CPPFLAGS=-I$(top_srcdir)/./codeathon/e2smkpm/
+libasncodec_la_CFLAGS=$(ASN_MODULE_CFLAGS)
+libasncodec_la_LDFLAGS=-lm

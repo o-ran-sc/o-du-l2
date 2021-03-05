@@ -26,6 +26,8 @@
 #include "ric_e2ap_msg_hdl.h"
 #include "GlobalE2node-gNB-ID.h"
 #include "ProtocolIE-FieldE2.h"
+#include "InitiatingMessageE2.h"
+#include "SuccessfulOutcomeE2.h"
 #include "E2AP-PDU.h"
 #include "du_log.h"
 
