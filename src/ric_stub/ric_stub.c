@@ -36,8 +36,8 @@
 
 #define DU_IP_V4_ADDR "192.168.130.81"
 #define RIC_IP_V4_ADDR "192.168.130.80"
-#define DU_PORT 36422
-#define RIC_PORT 36422
+#define DU_PORT 36421
+#define RIC_PORT 36421
 
 #endif
 
