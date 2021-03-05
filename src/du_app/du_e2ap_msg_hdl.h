@@ -18,6 +18,7 @@
 
 /* This file contains all E2AP message handler related functionality */
 
+#include "E2setupRequest.h"
 #define ENCODE_FAIL -1
 
 uint8_t sctpSend(Buffer *mBuf, uint8_t itfType);
