@@ -39,7 +39,42 @@ local InitiatingMessageE2ValuePrEnum = {
 		[7] = "InitiatingMessageE2__value_PR_RICindication",
 		[8] = "InitiatingMessageE2__value_PR_RICserviceQuery",
 		[9] = "InitiatingMessageE2__value_PR_ErrorIndicationE2" }
-	
+
+local E2PotocolIEs = {
+	[1] = "id_CauseE2",
+	[2] = "id_CriticalityDiagnosticsE2",
+	[3] = "id_GlobalE2node_ID",
+	[4] = "id_GlobalRIC_ID",
+	[5] = "id_RANfunctionID",
+	[6] = "id_RANfunctionID_Item",
+	[7] = "id_RANfunctionIEcause_Item",
+	[8] = "id_RANfunction_Item",
+	[9] = "id_RANfunctionsAccepted",
+	[10] = "id_RANfunctionsAdded",
+	[11] = "id_RANfunctionsDeleted",
+	[12] = "id_RANfunctionsModified",
+	[13] = "id_RANfunctionsRejected",
+	[14] = "id_RICaction_Admitted_Item",
+	[15] = "id_RICactionID",
+	[16] = "id_RICaction_NotAdmitted_Item",
+	[17] = "id_RICactions_Admitted",
+	[18] = "id_RICactions_NotAdmitted",
+	[19] = "id_RICaction_ToBeSetup_Item",
+	[20] = "id_RICcallProcessID",
+	[21] = "id_RICcontrolAckRequest",
+	[22] = "id_RICcontrolHeader",
+	[23] = "id_RICcontrolMessage",
+	[24] = "id_RICcontrolStatus",
+	[25] = "id_RICindicationHeader",
+	[26] = "id_RICindicationMessage",
+	[27] = "id_RICindicationSN",
+	[28] = "id_RICindicationType",
+	[29] = "id_RICrequestID",
+	[30] = "id_RICsubscriptionDetails",
+	[31] = "id_TimeToWaitE2",
+	[32] = "id_RICcontrolOutcome"
+}
+
 --payload fields start
 local RIC_indication = "Ric Indication Message"
 
@@ -69,16 +104,33 @@ ErrorIndicationE2			 = "Error Indication E2"
 local successfulOutcomeE2 = {
 	successOutcomeMsg = "successfulOutcome",
 	procedureCode = "procedureCode: ",
-	criticality = "criticality: "
+	criticality = "criticality: ",
+	valueLen = "Value Length: ",
+	value = "Value"
 }
 
-local e2SetupResponse = {
-	e2SetupResponseMsg = "E2SetupResponse"
+local e2SetupResponse = "E2SetupResponse"
+local protocolIE = "protocolIEs: "
+local protocolItem = "Item "
+local protocolIEField = {
+	protocolIEFieldMsg = "ProtocolIE-Field",
+	id = "id: ",
+	criticality = "criticality: ",
+	valueLen = "Value Length: ",
+	value = "Value"
 }
 
 E2AP.fields = {
 	--successfulOutcomeE2.procedureCode
 }
+
+function fetch2Bytes(tvbuf, offset)
+	local fbyte = tvbuf:range(offset, 1):le_uint()
+	local fbyte1 = bit.lshift(fbyte, 8)
+	local sbyte = tvbuf:range(offset + 1, 1):le_uint()
+	local result = bit.bor(fbyte1, sbyte)
+	return result
+end
 
 function addE2apInitiatingMessageToTree(tvbuf, tree, offset, endianness)
 
@@ -100,22 +152,52 @@ function addE2apInitiatingMessageToTree(tvbuf, tree, offset, endianness)
 
 end
 
-function addE2SetupResponseToTree(tvbuf, tree, offset, pktlen, endianness)
-	local valueTree = tree:add(tvbuf:range(offset, (pktlen - offset)), "value")
-		local e2SetupResponseTree = valueTree:add(e2SetupResponse.e2SetupResponseMsg)
+function addGobalRICIdToTree(tvbuf, valueTree, offset, valueLen, endianness)
+end
+
+function addE2SetupResponseToTree(tvbuf, valueTree, offset, pktlen, endianness)
+	local e2SetupResponseTree = valueTree:add(tvbuf:range(offset, pktlen), e2SetupResponse)
 			
-			local extBit = tvbuf:range(offset,1):le_uint()
-			if(extBit == 0) then
-				e2SetupResponseTree:add(tvbuf:range(offset,1), "<" .. extBit .. "... .... Extension Bit: FALSE>")
-			else
-				e2SetupResponseTree:add(tvbuf:range(offset,1), "<" .. extBit .. "... .... Extension Bit: TRUE>")
-			end
-			offset = offset + 1
+		local extBit = tvbuf:range(offset,1):le_uint()
+		if(extBit == 0) then
+			e2SetupResponseTree:add(tvbuf:range(offset,1), "<" .. extBit .. "... .... Extension Bit: FALSE>")
+		else
+			e2SetupResponseTree:add(tvbuf:range(offset,1), "<" .. extBit .. "... .... Extension Bit: TRUE>")
+		end
+		offset = offset + 1
+		
+		local seqLen = fetch2Bytes(tvbuf, offset)
+		e2SetupResponseTree:add(tvbuf:range(offset, 2), "<Sequence-Of Length: " .. seqLen .. ">")
+		local protoIeTree = e2SetupResponseTree:add(tvbuf:range(offset, 2), protocolIE .. seqLen .. " items")
+		offset = offset + 2
 			
-			local seqLen = tvbuf:range(offset, 2):le_uint()
-			e2SetupResponseTree:add(tvbuf:range(offset, 2), "<Sequence-Of Length: " .. seqLen .. ">")
-			offset = offset + 2
+		for ie=0, seqLen-1, 1
+		do
+		    local protocolIEId = fetch2Bytes(tvbuf, offset)
+			strId = tostring(E2PotocolIEs[protocolIEId])
+			local itemTree = protoIeTree:add(protocolItem .. ie .. ": " .. strId)
 			
+			strId = strId .. " (" .. tostring(protocolIEId) ..")"
+			local protocolFieldTree = itemTree:add(tvbuf:range(offset,2), protocolIEField.protocolIEFieldMsg)
+				protocolFieldTree:add(protocolIEField.id .. strId)
+				offset = offset + 2
+					
+				local criticalityId = tvbuf:range(offset,1):le_uint()
+				protocolFieldTree:add(tvbuf:range(offset,1), "<Enumerated Index: " .. criticalityId ..">")
+				strId = tostring(CriticalityE2[criticalityId]) .. " (" .. tostring(criticalityId) ..")"
+				protocolFieldTree:add(tvbuf:range(offset,1), protocolIEField.criticality .. strId)
+				offset = offset + 1
+				
+				local valueLen = tvbuf:range(offset,1):le_uint()
+				protocolFieldTree:add(tvbuf:range(offset,1), "<" .. protocolIEField.valueLen .. valueLen ..">")
+				offset = offset + 1
+				
+				local valueTree = protocolFieldTree:add(tvbuf:range(offset, valueLen), protocolIEField.value)
+				
+				if(protocolIEId == 4) then
+					addGobalRICIdToTree(tvbuf, valueTree, offset, valueLen, endianness)
+				end
+		end
 end
 
 function addE2apSuccessfulOutcomeToTree(tvbuf, tree, offset, pktlen, endianness)
@@ -132,11 +214,13 @@ function addE2apSuccessfulOutcomeToTree(tvbuf, tree, offset, pktlen, endianness)
         offset = offset + 1
 		
 		local valueLen = tvbuf:range(offset,1):le_uint()
-		successfulOutcomeTree:add(tvbuf:range(offset,1), "<Value length: " .. valueLen ..">")
+		successfulOutcomeTree:add(tvbuf:range(offset,1), "<" .. successfulOutcomeE2.valueLen .. valueLen ..">")
 		offset = offset + 1
 		
+		local valueTree = successfulOutcomeTree:add(tvbuf:range(offset, valueLen), successfulOutcomeE2.value)
+		
 		if(procId == 1) then
-			addE2SetupResponseToTree(tvbuf, successfulOutcomeTree, offset, pktlen, endianness)
+			addE2SetupResponseToTree(tvbuf, valueTree, offset, valueLen, endianness)
 		end
 end
 ----------------------------------------
