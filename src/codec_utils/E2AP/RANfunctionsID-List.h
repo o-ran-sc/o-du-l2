@@ -24,7 +24,7 @@ struct ProtocolIE_SingleContainerE2;
 
 /* RANfunctionsID-List */
 typedef struct RANfunctionsID_List {
-	A_SEQUENCE_OF(struct ProtocolIE_SingleContainerE2) list;
+	A_SEQUENCE_OF(struct ProtocolIE_SingleContainerE2_1408P4_t) list;
 	
 	/* Context for parsing across buffer boundaries */
 	asn_struct_ctx_t _asn_ctx;
