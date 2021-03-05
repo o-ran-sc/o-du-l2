@@ -28,8 +28,14 @@
 #include "ProtocolIE-FieldE2.h"
 #include "InitiatingMessageE2.h"
 #include "SuccessfulOutcomeE2.h"
+#include "RANfunctionID-Item.h"
+#include "RANfunctionsID-List.h"
+#include "ProtocolIE-SingleContainerE2.h"
+#include "ProtocolIE-FieldE2.h"
 #include "E2AP-PDU.h"
 #include "du_log.h"
+
+#define RAN_FUNCTIONID_ITEM_1 1
 
 Bool ricSubsStatus;
 
@@ -120,6 +126,60 @@ S16 BuildGlobalRicId(GlobalRIC_ID_t *ricId)
 
 /*******************************************************************
  *
+ * @brief Function to build RAN Function ID List
+ *
+ * @details
+ *
+ *    Function : BuildRanFuncIdList
+ *
+ *    Functionality: Function to build RAN Function ID List
+ *
+ * @params[in] RANfunctionsID_List_t *
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildRanFuncIdList(RANfunctionsID_List_t *ranFuncIdList)
+{
+   uint8_t idx, elementCnt =0;
+   RANfunctionID_ItemIEs_t *funcIdItem = NULLP;
+ 
+   elementCnt = 1;
+   ranFuncIdList->list.count = elementCnt;
+   ranFuncIdList->list.size  = elementCnt * sizeof(RANfunctionID_ItemIEs_t);
+
+   RIC_ALLOC(ranFuncIdList->list.array, \
+              ranFuncIdList->list.size);
+   if(ranFuncIdList->list.array == NULLP)
+   {
+      DU_LOG("\nERROR  -->  E2AP : Memory allocation for RAN Function ID List");
+      return RFAILED;
+   }
+
+   for(idx=0; idx<elementCnt; idx++)
+   {
+      RIC_ALLOC(ranFuncIdList->list.array[idx], sizeof(RANfunctionID_ItemIEs_t)); 
+      if(ranFuncIdList->list.array[idx] == NULLP)
+      {  
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation for RAN Function Item List");
+         RIC_FREE(ranFuncIdList->list.array, ranFuncIdList->list.size);
+         return RFAILED;
+      }    
+   }
+   idx =0;
+
+   funcIdItem = ranFuncIdList->list.array[idx];
+   funcIdItem->id = ProtocolIE_IDE2_id_RANfunctionID_Item; 
+   funcIdItem->criticality = CriticalityE2_reject;
+   funcIdItem->value.present = RANfunctionID_ItemIEs__value_PR_RANfunctionID_Item;
+   funcIdItem->value.choice.RANfunctionID_Item.ranFunctionID = RAN_FUNCTIONID_ITEM_1;
+   funcIdItem->value.choice.RANfunctionID_Item.ranFunctionRevision = NULLP;
+   return ROK;
+}
+
+/*******************************************************************
+ *
  * @brief Builds and sends the E2SetupResponse
  *
  * @details
@@ -168,7 +228,7 @@ S16 BuildAndSendE2SetupRsp()
          SuccessfulOutcomeE2__value_PR_E2setupResponse;
    e2SetupRsp = &e2apMsg->choice.successfulOutcome->value.choice.E2setupResponse;
 
-   elementCnt = 1;
+   elementCnt = 2;
    e2SetupRsp->protocolIEs.list.count = elementCnt;
    e2SetupRsp->protocolIEs.list.size  = elementCnt * sizeof(E2setupResponseIEs_t);
 
@@ -204,6 +264,14 @@ S16 BuildAndSendE2SetupRsp()
                                      E2setupResponseIEs__value_PR_GlobalRIC_ID;
 
    BuildGlobalRicId(&(e2SetupRsp->protocolIEs.list.array[idx]->value.choice.GlobalRIC_ID));
+
+   /* RAN FUNCTION ID */
+   idx++;
+   e2SetupRsp->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RANfunctionID;
+   e2SetupRsp->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
+   e2SetupRsp->protocolIEs.list.array[idx]->value.present = \
+                                   E2setupResponseIEs__value_PR_RANfunctionsID_List;
+   BuildRanFuncIdList(&(e2SetupRsp->protocolIEs.list.array[idx]->value.choice.RANfunctionsID_List));
 
    xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apMsg);
    memset(encBuf, 0, ENC_BUF_MAX_LEN);
