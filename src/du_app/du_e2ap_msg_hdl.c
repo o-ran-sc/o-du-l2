@@ -34,9 +34,12 @@
 #include "E2AP-PDU.h"
 #include "du_e2ap_msg_hdl.h"
 #include "odu_common_codec.h"
-
+#include "E2SM-KPM-RANfunction-Description.h"
+#include "RIC-EventTriggerStyle-List.h"
+#include "RIC-ReportStyle-List.h"
 /* Global variable */
 DuCfgParams duCfgParam;
+uint8_t fillRanFunctionsItemIe(RANfunction_ItemIEs_t *RanFunctionsItemIe);
 /*******************************************************************
  *
  * @brief Builds Global gNodeB Params
@@ -92,7 +95,321 @@ uint8_t BuildGlobalgNBId(GlobalE2node_gNB_ID_t *gNbId)
    }
    return ret;
 }
+/*******************************************************************
+ *
+ * @brief fill Ric Report Style List
+ *
+ * @details
+ *
+ *    Function : fillRicReportStyleList 
+ *
+ *    Functionality: fill Ric Report Style List 
+ *
+ * @params[in] RIC_ReportStyle_List_t *RicReportStyleList
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+                                
+uint8_t fillRicReportStyleList(RIC_ReportStyle_List_t *RicReportStyleList)
+{
+   RicReportStyleList->ric_ReportStyle_Type = 1;
+   RicReportStyleList->ric_ReportStyle_Name.size = 3 * sizeof(uint8_t);
+   DU_ALLOC(RicReportStyleList->ric_ReportStyle_Name.buf, \
+   RicReportStyleList->ric_ReportStyle_Name.size)
+   if(RicReportStyleList->ric_ReportStyle_Name.buf == NULLP)
+   {
+      return RFAILED;
+   }
+   else
+   {
+      buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn, \
+      RicReportStyleList->ric_ReportStyle_Name.buf);
+      RicReportStyleList->ric_IndicationHeaderFormat_Type = 1;
+      RicReportStyleList->ric_IndicationMessageFormat_Type = 1;
+   }
+   return ROK;
+}
 
+
+/*******************************************************************
+*
+* @brief fill Ric Event Trigger StyleList 
+*
+* @details 
+*
+*    Function : fillRicEventTriggerStyleList 
+*
+*    Functionality: fill Ric Event Trigger StyleList
+*
+* @params[in] RIC_EventTriggerStyle_List_t
+* @return ROK     - success
+*         RFAILED - failure
+*
+******************************************************************/
+uint8_t fillRicEventTriggerStyleList(RIC_EventTriggerStyle_List_t *RicEventTriggerStyleList)
+{
+    RicEventTriggerStyleList->ric_EventTriggerStyle_Type = 1;
+    RicEventTriggerStyleList->ric_EventTriggerStyle_Name.size = 3 * sizeof(uint8_t);
+    DU_ALLOC(RicEventTriggerStyleList->ric_EventTriggerStyle_Name.buf,\
+			RicEventTriggerStyleList->ric_EventTriggerStyle_Name.size);
+    if(RicEventTriggerStyleList->ric_EventTriggerStyle_Name.buf == NULLP)
+    {
+	return RFAILED;
+    }
+    else
+    {
+       buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn, \
+       RicEventTriggerStyleList->ric_EventTriggerStyle_Name.buf);
+       RicEventTriggerStyleList->ric_EventTriggerFormat_Type = 1;
+    }
+    return ROK;
+
+}
+
+/*******************************************************************
+*
+* @brief Fill Ric Report Style List
+*
+* @details
+*
+*    Function : FillRicReportStyleList
+*
+*    Functionality: Fill Ric Report Style List
+*
+* @params[in] 
+* @return ROK     - success
+*         RFAILED - failure
+*
+******************************************************************/
+
+uint8_t FillRicReportStyleList(struct E2SM_KPM_RANfunction_Description__e2SM_KPM_RANfunction_Item__ric_ReportStyle_List\
+*RICReportStyleList)
+{
+   uint8_t idx;
+   RICReportStyleList->list.count = 1;
+   RICReportStyleList->list.size =  sizeof(struct RIC_ReportStyle_List *);
+   DU_ALLOC(RICReportStyleList->list.array ,RICReportStyleList->list.size);
+   if(RICReportStyleList->list.array == NULLP)
+   {
+      return RFAILED;
+   }
+   else
+   {
+      for( idx =0 ;idx< RICReportStyleList->list.count ;idx++)
+      {
+         DU_ALLOC(RICReportStyleList->list.array[idx],sizeof(struct RIC_ReportStyle_List ));
+         if(RICReportStyleList->list.array[idx] == NULLP)
+         {
+            return RFAILED;
+         }
+         else
+         {
+            fillRicReportStyleList(RICReportStyleList->list.array[idx]);
+         }
+      }
+   }
+   return ROK;
+}
+/*******************************************************************
+*
+* @brief fill RAN functions List
+*
+* @details
+*
+*    Function : fillRANfunctions_List
+*
+*    Functionality: fill RAN functions List
+*
+* @params[in] RANfunctions_List_t *RanFunctionsList 
+* @return ROK     - success
+*         RFAILED - failure
+*
+******************************************************************/
+
+uint8_t fillRANfunctions_List(RANfunctions_List_t *RanFunctionsList)
+{
+   uint8_t arrIdx =0;
+   uint8_t ranFunCnt =0;
+   RANfunction_ItemIEs_t *RanFunctionsItemIe;
+ 
+   ranFunCnt = 1;
+   RanFunctionsList->list.count = ranFunCnt;
+   RanFunctionsList->list.size = ranFunCnt * sizeof(RANfunction_ItemIEs_t *);
+   DU_ALLOC(RanFunctionsList->list.array, RanFunctionsList->list.size );
+   if(RanFunctionsList->list.array ==  NULLP)
+   { 
+       return RFAILED;  
+     
+   }
+   else
+   {
+      for(arrIdx=0; arrIdx<ranFunCnt; arrIdx++)
+      {
+         DU_ALLOC(RanFunctionsList->list.array[arrIdx], sizeof(RANfunction_ItemIEs_t));
+         if(RanFunctionsList->list.array[arrIdx] == NULLP)
+            return RFAILED;
+         else
+         {
+            RanFunctionsItemIe =(RANfunction_ItemIEs_t*) RanFunctionsList->list.array[arrIdx];
+            RanFunctionsItemIe->id = ProtocolIE_IDE2_id_RANfunction_Item;
+            RanFunctionsItemIe->criticality = CriticalityE2_ignore;
+            RanFunctionsItemIe->value.present = RANfunctionID_ItemIEs__value_PR_RANfunctionID_Item;
+            if(fillRanFunctionsItemIe(RanFunctionsItemIe) != ROK)
+              return RFAILED;
+            else
+              return ROK;
+         }
+      }
+   }
+   return ROK;
+}
+/*******************************************************************
+*
+* @brief fill RAN functions Item IE
+* @details
+*
+*    Function : fillRanFunctionsItemIe
+*
+*    Functionality: fill RAN functions Item IE
+*
+* @params[in] RANfunction_ItemIEs_t * 
+* @return ROK     - success
+*         RFAILED - failure
+*
+******************************************************************/
+uint8_t fillRanFunctionsItemIe(RANfunction_ItemIEs_t *RanFunctionsItemIe)      
+{
+    uint8_t idx;
+    E2SM_KPM_RANfunction_Description_t RanFunctionDescription;
+    asn_enc_rval_t   encRetVal;
+	
+    RanFunctionsItemIe->value.choice.RANfunction_Item.ranFunctionID =1 ;
+
+    while(true)
+    {
+	RanFunctionDescription.ranFunction_Name.ranFunction_ShortName.size = sizeof(uint8_t);
+	DU_ALLOC(RanFunctionDescription.ranFunction_Name.ranFunction_ShortName.buf,\
+	RanFunctionDescription.ranFunction_Name.ranFunction_ShortName.size);  
+	if(RanFunctionDescription.ranFunction_Name.ranFunction_ShortName.buf == NULLP)
+	{
+	   return RFAILED;
+	}
+	else
+	{
+	   RanFunctionDescription.ranFunction_Name.ranFunction_E2SM_OID.size = sizeof(uint8_t);
+	   DU_ALLOC(RanFunctionDescription.ranFunction_Name.ranFunction_E2SM_OID.buf,\
+	   RanFunctionDescription.ranFunction_Name.ranFunction_E2SM_OID.size); 
+	   if(RanFunctionDescription.ranFunction_Name.ranFunction_E2SM_OID.buf == NULLP)
+	   {
+		return RFAILED;
+	   }
+     	   else
+           {
+	       RanFunctionDescription.ranFunction_Name.ranFunction_Description.size = sizeof(uint8_t);
+	       DU_ALLOC(RanFunctionDescription.ranFunction_Name.ranFunction_Description.buf,\
+	       RanFunctionDescription.ranFunction_Name.ranFunction_Description.size);
+	       if(RanFunctionDescription.ranFunction_Name.ranFunction_Description.buf == NULLP)
+	        {
+		   return RFAILED;
+		}
+		else
+		{
+		   DU_ALLOC(RanFunctionDescription.ranFunction_Name.ranFunction_Instance , sizeof(uint16_t));
+		   if(RanFunctionDescription.ranFunction_Name.ranFunction_Instance == NULLP) 
+     	 	   {
+		       return RFAILED;
+		   }
+      		   else
+   		   {
+  	               RanFunctionDescription.e2SM_KPM_RANfunction_Item.ric_EventTriggerStyle_List->list.count = 1;
+  		       RanFunctionDescription.e2SM_KPM_RANfunction_Item.ric_EventTriggerStyle_List->list.size = 1*\
+		       sizeof(struct RIC_EventTriggerStyle_List *);
+		       DU_ALLOC(RanFunctionDescription.e2SM_KPM_RANfunction_Item.ric_EventTriggerStyle_List->\
+                       list.array, RanFunctionDescription.e2SM_KPM_RANfunction_Item.\
+                       ric_EventTriggerStyle_List->list.size);      
+		       if(RanFunctionDescription.e2SM_KPM_RANfunction_Item.ric_EventTriggerStyle_List->\
+                       list.array == NULLP)
+		       {
+			  return RFAILED;
+		       }
+		       else
+		       {                           
+          	          for(idx=0; idx<1; idx++)
+	                  {
+	                     DU_ALLOC(RanFunctionDescription.e2SM_KPM_RANfunction_Item.\
+	                     ric_EventTriggerStyle_List->list.array[idx], sizeof(struct RIC_EventTriggerStyle_List));
+			     if(RanFunctionDescription.e2SM_KPM_RANfunction_Item.ric_EventTriggerStyle_List->list.\
+			     array[idx])
+			     {
+		   	        if(fillRicEventTriggerStyleList(RanFunctionDescription.e2SM_KPM_RANfunction_Item.\
+	                        ric_EventTriggerStyle_List->list.array[idx]) == ROK)
+	                        { 
+	                           if(FillRicReportStyleList(RanFunctionDescription.\
+	                           e2SM_KPM_RANfunction_Item.ric_ReportStyle_List) == ROK)
+	                           {
+	                              xer_fprint(stdout, &asn_DEF_E2SM_KPM_RANfunction_Description,\
+                                      &RanFunctionDescription);
+   				      cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+				      encBufSize = 0;
+				      encRetVal = aper_encode(&asn_DEF_E2SM_KPM_RANfunction_Description, 0, \
+			              &RanFunctionDescription, PrepFinalEncBuf, encBuf);
+	                              /* Encode results */
+				      if(encRetVal.encoded == ENCODE_FAIL)
+				      {
+				         DU_LOG( "\nERROR  -->  F1AP : Could not encode RANfunction Container\
+					 (at %s)\n",encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+					 return RFAILED;
+				       }
+				       else
+				       {
+					   DU_LOG("\nDEBUG  -->  F1AP : Created APER  for RANfunction Container\n");
+					   for(int i=0; i< encBufSize; i++)
+	                                   {
+                            	              DU_LOG("%x",encBuf[i]);
+	                                   }
+				        
+                                           RanFunctionsItemIe->value.choice.RANfunction_Item.\
+				           ranFunctionDefinition.size = encBufSize;
+                                           DU_ALLOC(RanFunctionsItemIe->value.choice.RANfunction_Item.\
+                                           ranFunctionDefinition.buf,\
+                                           RanFunctionsItemIe->value.choice.RANfunction_Item.ranFunctionDefinition.size);
+                                           if(RanFunctionsItemIe->value.choice.RANfunction_Item.\
+                                           ranFunctionDefinition.buf == NULLP)
+                                           {
+                                              return RFAILED;
+                                           }
+                                           else
+                                           {
+                                              memcpy(RanFunctionsItemIe->value.choice.RANfunction_Item.\
+                                              ranFunctionDefinition.buf,encBuf, RanFunctionsItemIe->value.\
+                                              choice.RANfunction_Item.ranFunctionDefinition.size);
+                                              RanFunctionsItemIe->value.choice.RANfunction_Item.ranFunctionRevision = 1;
+                                              return ROK;
+                                           }
+ 
+                                         }
+				      }
+                                      else
+                                      {
+                                          return RFAILED;
+                                      }
+                                   }
+                                   else
+                                       return RFAILED;		
+
+                                  }
+                             }
+                         }
+
+                     }
+                 }
+             }
+         }
+     }
+     return ROK;
+
+}
 /*******************************************************************
  *
  * @brief Fills the initiating IE for E2 Setup Request
@@ -116,10 +433,10 @@ uint8_t fillE2SetupReq(E2setupRequest_t **e2SetupReq, uint8_t *idx)
    uint8_t elementCnt = 0;
    uint8_t idx2 = 0;
    uint8_t ret = ROK;
-
+   RANfunctions_List_t *RanfunctionsList = NULLP;
    if(*e2SetupReq != NULLP)
    {
-      elementCnt = 1;
+      elementCnt = 2;
       (*e2SetupReq)->protocolIEs.list.count = elementCnt;
       (*e2SetupReq)->protocolIEs.list.size = \
 					     elementCnt * sizeof(E2setupRequestIEs_t);
@@ -143,38 +460,54 @@ uint8_t fillE2SetupReq(E2setupRequest_t **e2SetupReq, uint8_t *idx)
 	       DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for arrayidx [%d]", *idx);
 	       ret = RFAILED;
 	    }
-	    else
-	    {
-	       /* GlobalE2node_gNB_ID */
-	       (*e2SetupReq)->protocolIEs.list.array[idx2]->id = \
-								 ProtocolIE_IDE2_id_GlobalE2node_ID;
-	       (*e2SetupReq)->protocolIEs.list.array[idx2]->criticality = \
-									  CriticalityE2_reject;
-	       (*e2SetupReq)->protocolIEs.list.array[idx2]->value.present =\
-									   E2setupRequestIEs__value_PR_GlobalE2node_ID;
-	       (*e2SetupReq)->protocolIEs.list.array[idx2]->value.choice.\
-		  GlobalE2node_ID.present = GlobalE2node_ID_PR_gNB;
+          }
+	  
+	 idx2 =0;
 
-	       DU_ALLOC((*e2SetupReq)->protocolIEs.list.array[idx2]->value.choice.\
-		     GlobalE2node_ID.choice.gNB, sizeof(GlobalE2node_gNB_ID_t));
-	       if((*e2SetupReq)->protocolIEs.list.array[idx2]->value.choice.\
-		     GlobalE2node_ID.choice.gNB == NULLP)
-	       {
-		  DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for gNbId");
-		  ret = RFAILED;
-	       }
-	       else
-	       {
-		  ret = BuildGlobalgNBId((*e2SetupReq)->protocolIEs.list.array[idx2]->value.\
-			choice.GlobalE2node_ID.choice.gNB);
-		  if(ret != ROK)
-		  {
-		     ret = RFAILED;
-		  }
-	       }
+	 /* GlobalE2node_gNB_ID */
+	 (*e2SetupReq)->protocolIEs.list.array[idx2]->id = \
+							   ProtocolIE_IDE2_id_GlobalE2node_ID;
+	 (*e2SetupReq)->protocolIEs.list.array[idx2]->criticality = \
+								    CriticalityE2_reject;
+	 (*e2SetupReq)->protocolIEs.list.array[idx2]->value.present =\
+								     E2setupRequestIEs__value_PR_GlobalE2node_ID;
+	 (*e2SetupReq)->protocolIEs.list.array[idx2]->value.choice.\
+		 GlobalE2node_ID.present = GlobalE2node_ID_PR_gNB;
 
-	    }
+	 DU_ALLOC((*e2SetupReq)->protocolIEs.list.array[idx2]->value.choice.\
+			 GlobalE2node_ID.choice.gNB, sizeof(GlobalE2node_gNB_ID_t));
+	 if((*e2SetupReq)->protocolIEs.list.array[idx2]->value.choice.\
+			 GlobalE2node_ID.choice.gNB == NULLP)
+	 {
+		 DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for gNbId");
+		 ret = RFAILED;
 	 }
+	 else
+	 {
+		 ret = BuildGlobalgNBId((*e2SetupReq)->protocolIEs.list.array[idx2]->value.\
+				 choice.GlobalE2node_ID.choice.gNB);
+		 if(ret != ROK)
+		 {
+			 ret = RFAILED;
+		 }
+		 idx2++;
+		 /* RANfunctions_List */
+		 (*e2SetupReq)->protocolIEs.list.array[idx2]->id = \
+								   ProtocolIE_IDE2_id_RANfunctionsAdded;
+		 (*e2SetupReq)->protocolIEs.list.array[idx2]->criticality = \
+									    CriticalityE2_reject;
+		 (*e2SetupReq)->protocolIEs.list.array[idx2]->value.present =\
+									     E2setupRequestIEs__value_PR_RANfunctions_List;
+
+		 RanfunctionsList = &(*e2SetupReq)->protocolIEs.list.array[idx2]->value.choice.RANfunctions_List;
+		 if(fillRANfunctions_List(RanfunctionsList) == ROK)
+			 return ROK;
+		 else
+			 return RFAILED;
+
+
+	     }
+
       }
    }
    else
@@ -329,6 +662,8 @@ uint8_t deAllocateE2SetupReqMsg(E2AP_PDU_t *e2apMsg, \
 				 sizeof(E2setupRequestIEs_t));
 			   break;
 			}
+         case ProtocolIE_IDE2_id_RANfunctionsAdded:
+             break;
 		     default:
 			DU_LOG("\nERROR  --> E2AP: Invalid event at e2SetupRequet %ld ",\
 			      (e2SetupReq->protocolIEs.list.array[idx2]->id));
