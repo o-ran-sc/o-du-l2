@@ -84,13 +84,6 @@ local Initiating_Message_Type_Value = {
 	value = "value"--, nil,E2InitiatingMessagePresenceEnum, 0xFF)
 }
 
-local InitiatingMessageE2 = {
-	Initiating_Message_E2 = "Initiating Message E2",
-	procedureCode = "ProcedureCode: ",
-	criticality   = "Criticality: "
-}
-	--value	      = ProtoField.uint16("Initiating_Message_Type_Value.value", "value")
-
 local InitiatingMessageE2__value_u = {
 RICsubscriptionRequest		 = "RIC subscription Request",
 RICsubscriptionDeleteRequest     = "RIC subscription Delete Request",
@@ -103,6 +96,13 @@ RICserviceQuery			 = "RIC service Query",
 ErrorIndicationE2		 = "Error Indication E2"
 }
 
+local initiatingMessageE2 = {
+   initiatingMsg = "Initiating Message",
+	procedureCode = "procedureCode: ",
+	criticality = "criticality: ",
+	valueLen = "Value Length: ",
+	value = "value"
+}
 local successfulOutcomeE2 = {
 	successOutcomeMsg = "successfulOutcome",
 	procedureCode = "procedureCode: ",
@@ -122,6 +122,7 @@ local protocolIEField = {
 }
 
 local e2SetupResponse = "E2SetupResponse"
+local ricSubscriptionReq = "E2RicSubscriptionRequest"
 local ricSubscriptionRsp = "E2RicSubscriptionResponse"
 
 local globalRicId = {
@@ -148,7 +149,23 @@ local RICactionAdmittedItem = {
 	ricActionAdmittedItem = "RICaction-Admitted-Item",
 	ricActionID = "ricActionID: "
 }
-	
+local RICsubscriptionDetailsList = {
+	ricSubscriptionDetailsList = "RICsubscription-Detais-List",
+   ricEventTriggerDefinition = "ricEventTriggerDefinition: "
+}
+
+local RICactionToBeSetupList = {
+   ricActionSetupList = "RICaction-ToBeSetup-List",
+	seqLen = "Sequence-Of Length: ",
+	protocolIEContainer = "ProtocolIE-SingleContainerE2: "
+}
+
+local RICactionToBeSetupItem = {
+   ricActionToBeSetupItem = "RICaction-ToBeSetup-Item",
+	ricActionID    = "ricActionID: ",
+	ricActionType  = "ricActionType: "
+}
+
 E2AP.fields = {
 }
 
@@ -169,23 +186,144 @@ function convertBin(n)
     return table.concat(t)
 end
 
-function addE2apInitiatingMessageToTree(tvbuf, pktinfo, tree, offset, endianness)
 
-	local info = tvbuf:range(offset, 1)
-	local initiatingMessageE2Tree = tree:add(info, InitiatingMessageE2.Initiating_Message_E2)
 
-        local procId = tvbuf:range(offset,1):le_uint()
-        strId = tostring(E2ProcedureCode[procId]) .. " (" .. tostring(procId) ..")"
-        tree:add(tvbuf:range(offset,1), InitiatingMessageE2.procedureCode .. strId)
-        offset = offset + 1
+function addE2apInitiatingMessageToTree(tvbuf, pktinfo, tree, offset, pktlen, endianness)
 
-	local criticalityId = tvbuf:range(offset,1):le_uint()
+        local initiatingMessageTree = tree:add(tvbuf:range(offset, (pktlen-offset)), initiatingMessageE2.initiatingMsg)
+
+	local procId = tvbuf:range(offset,1):le_uint()
+	strId = tostring(E2ProcedureCode[procId]) .. " (" .. tostring(procId) ..")"
+	initiatingMessageTree:add(tvbuf:range(offset,1), initiatingMessageE2.procedureCode .. strId)
+	offset = offset + 1
+	
+	local fbyte = tvbuf:range(offset,1):le_uint()
+	local criticalityId = bit.rshift(fbyte, 6)
         strId = tostring(E2Criticality[criticalityId]) .. " (" .. tostring(criticalityId) ..")"
-        tree:add(tvbuf:range(offset,1), InitiatingMessageE2.criticality .. strId)
+        initiatingMessageTree:add(tvbuf:range(offset,1), initiatingMessageE2.criticality .. strId)
         offset = offset + 1
+		
+	local valueLen = tvbuf:range(offset,1):le_uint()
+	offset = offset + 1
+	
+	local valueTree = initiatingMessageTree:add(tvbuf:range(offset, valueLen), initiatingMessageE2.value)
+	
+	if(procId == 8) then
+		addE2RicSubscriptionReqToTree(tvbuf, pktinfo, valueTree, offset, valueLen, endianness)
+	end
+end
 
-	-- value cfg
-	--local valueinitiatingMessageType = initiatingMessageE2Tree:add(tvbuf:range(offset,offset),Initiating_Message_E2.value)
+function addE2RicSubscriptionReqToTree(tvbuf, pktinfo, valueTree, offset, valueLen, endianness)
+	pktinfo.cols.info:set("E2 RIC Subscription Request")
+
+	local e2RicSubscriptionReqTree = valueTree:add(tvbuf:range(offset, valueLen), ricSubscriptionReq)
+	offset = offset + 1
+		
+	local seqLen = fetch2Bytes(tvbuf, offset)
+	local protoIeTree = e2RicSubscriptionReqTree:add(tvbuf:range(offset, 2), protocolIE .. seqLen .. " items")
+	offset = offset + 2
+
+        for ie=0, seqLen-1, 1
+	do
+	    local protocolIEId = fetch2Bytes(tvbuf, offset)
+	    strId = tostring(E2PotocolIEs[protocolIEId])
+	    local itemTree = protoIeTree:add(protocolItem .. ie .. ": " .. strId)
+		
+            strId = strId .. " (" .. tostring(protocolIEId) ..")"
+	    local protocolFieldTree = itemTree:add(protocolIEField.protocolIEFieldMsg)
+		protocolFieldTree:add(tvbuf:range(offset,2), protocolIEField.id .. strId)
+		offset = offset + 2
+			
+	        local fbyte = tvbuf:range(offset,1):le_uint()
+	        local criticalityId = bit.rshift(fbyte, 6)
+		strId = tostring(E2Criticality[criticalityId]) .. " (" .. tostring(criticalityId) ..")"
+		protocolFieldTree:add(tvbuf:range(offset,1), protocolIEField.criticality .. strId)
+		offset = offset + 1
+		
+		local valueLen = tvbuf:range(offset,1):le_uint()
+		offset = offset + 1
+		
+		local valueTree = protocolFieldTree:add(tvbuf:range(offset, valueLen), protocolIEField.value)
+		
+		if(protocolIEId == 29) then
+			addRICRequestIdToTree(tvbuf, valueTree, offset, valueLen, endianness)
+			offset = offset + valueLen
+		end
+		
+		if(protocolIEId == 5) then
+			addRANFunctionIdToTree(tvbuf, valueTree, offset, valueLen, endianness)
+			offset = offset + valueLen
+		end
+		
+		if(protocolIEId == 30) then
+			addRICSubscriptionDetailsToTree(tvbuf, valueTree, offset, valueLen, endianness)
+			offset = offset + valueLen
+		end
+		
+	end
+
+end
+
+function addRICSubscriptionDetailsToTree(tvbuf, valueTree, offset, valueLen, endianness)
+
+	local ricSubscriptionTree = valueTree:add(tvbuf:range(offset, valueLen), RICsubscriptionDetailsList.ricSubscriptionDetailsList)
+	offset = offset + 1
+
+	local eventTrigger = tvbuf:range(offset,3)
+	ricSubscriptionTree:add(tvbuf:range(offset,3), RICsubscriptionDetailsList.ricEventTriggerDefinition ..
+	eventTrigger)
+	offset = offset + 3
+	offset = offset + 1 --spare
+
+	local ricActionSetupListTree = ricSubscriptionTree:add(tvbuf:range(offset, valueLen-offset), RICactionToBeSetupList.ricActionSetupList)
+
+        local fbyte = tvbuf:range(offset,1):le_uint()
+	local seqLen = bit.rshift(fbyte, 4)
+	seqLen = seqLen + 1
+
+	local protoIeTree = ricActionSetupListTree:add(tvbuf:range(offset, 1), protocolIE .. seqLen .. " items")
+	offset = offset+ 1
+
+        for ie=0, seqLen-1, 1
+	do
+	    local protocolIEId = fetch2Bytes(tvbuf, offset)
+	    strId = tostring(E2PotocolIEs[protocolIEId])
+	    local itemTree = protoIeTree:add(protocolItem .. ie .. ": " .. strId)
+			
+	    strId = strId .. " (" .. tostring(protocolIEId) ..")"
+	    local protocolFieldTree = itemTree:add(tvbuf:range(offset,2), protocolIEField.protocolIEFieldMsg)
+		protocolFieldTree:add(protocolIEField.id .. strId)
+		offset = offset + 2
+			
+		local fbyte = tvbuf:range(offset,1):le_uint()
+		local criticalityId = bit.rshift(fbyte, 6)
+		strId = tostring(E2Criticality[criticalityId]) .. " (" .. tostring(criticalityId) ..")"
+		protocolFieldTree:add(tvbuf:range(offset,1), protocolIEField.criticality .. strId)
+		offset = offset + 1
+		
+		local valueLen = tvbuf:range(offset,1):le_uint()
+		offset = offset + 1
+		
+		local valueTree = protocolFieldTree:add(tvbuf:range(offset, valueLen), protocolIEField.value)
+		
+		if(protocolIEId == 19) then
+			addRICActionItemToTree(tvbuf, valueTree, offset, valueLen, endianness)
+		end
+         end
+end
+
+function addRICActionItemToTree(tvbuf, valueTree, offset, valueLen, endianness)
+    local ricActionItemTree = valueTree:add(tvbuf:range(offset, valueLen), RICactionToBeSetupItem.ricActionToBeSetupItem)
+    offset = offset + 1
+
+    local actionId = tvbuf:range(offset,1):le_uint()
+	ricActionItemTree:add(tvbuf:range(offset,1), RICactionToBeSetupItem.ricActionID .. actionId)
+	offset = offset + 1
+
+    local fbyte = tvbuf:range(offset,1):le_uint()
+    local actionType = bit.rshift(fbyte, 4)
+	ricActionItemTree:add(tvbuf:range(offset,1), RICactionToBeSetupItem.ricActionType .. actionType)
+	offset = offset + 1
 
 end
 
@@ -242,8 +380,8 @@ function addE2SetupResponseToTree(tvbuf, pktinfo, valueTree, offset, pktlen, end
 		protocolFieldTree:add(protocolIEField.id .. strId)
 		offset = offset + 2
 			
-		local criticalityId = tvbuf:range(offset,1):le_uint()
---		protocolFieldTree:add(tvbuf:range(offset,1), "<Enumerated Index: " .. criticalityId ..">")
+	   local fbyte = tvbuf:range(offset,1):le_uint()
+	   local criticalityId = bit.rshift(fbyte, 6)
 		strId = tostring(E2Criticality[criticalityId]) .. " (" .. tostring(criticalityId) ..")"
 		protocolFieldTree:add(tvbuf:range(offset,1), protocolIEField.criticality .. strId)
 		offset = offset + 1
@@ -305,7 +443,8 @@ function addRICActionAdmittedListToTree(tvbuf, valueTree, offset, valueLen, endi
 			protocolFieldTree:add(tvbuf:range(offset,2), protocolIEField.id .. strId)
 			offset = offset + 2
 			
-			local criticalityId = tvbuf:range(offset,1):le_uint()
+	      local fbyte = tvbuf:range(offset,1):le_uint()
+	      local criticalityId = bit.rshift(fbyte, 6)
 --			protocolFieldTree:add(tvbuf:range(offset,1), "<Enumerated Index: " .. criticalityId ..">")
 			strId = tostring(E2Criticality[criticalityId]) .. " (" .. tostring(criticalityId) ..")"
 			protocolFieldTree:add(tvbuf:range(offset,1), protocolIEField.criticality .. strId)
@@ -351,11 +490,12 @@ function addE2RicSubscriptionRspToTree(tvbuf, pktinfo, valueTree, offset, valueL
 	    local itemTree = protoIeTree:add(protocolItem .. ie .. ": " .. strId)
 		
 		strId = strId .. " (" .. tostring(protocolIEId) ..")"
-	    local protocolFieldTree = itemTree:add(protocolIEField.protocolIEFieldMsg)
+	   local protocolFieldTree = itemTree:add(protocolIEField.protocolIEFieldMsg)
 		protocolFieldTree:add(tvbuf:range(offset,2), protocolIEField.id .. strId)
 		offset = offset + 2
 			
-		local criticalityId = tvbuf:range(offset,1):le_uint()
+	   local fbyte = tvbuf:range(offset,1):le_uint()
+	   local criticalityId = bit.rshift(fbyte, 6)
 --		protocolFieldTree:add(tvbuf:range(offset,1), "<Enumerated Index: " .. criticalityId ..">")
 		strId = tostring(E2Criticality[criticalityId]) .. " (" .. tostring(criticalityId) ..")"
 		protocolFieldTree:add(tvbuf:range(offset,1), protocolIEField.criticality .. strId)
@@ -392,7 +532,8 @@ function addE2apSuccessfulOutcomeToTree(tvbuf, pktinfo, tree, offset, pktlen, en
 	successfulOutcomeTree:add(tvbuf:range(offset,1), successfulOutcomeE2.procedureCode .. strId)
 	offset = offset + 1
 	
-	local criticalityId = tvbuf:range(offset,1):le_uint()
+	local fbyte = tvbuf:range(offset,1):le_uint()
+	local criticalityId = bit.rshift(fbyte, 6)
 --	successfulOutcomeTree:add(tvbuf:range(offset,1), "<Enumerated Index: " .. criticalityId ..">")
         strId = tostring(E2Criticality[criticalityId]) .. " (" .. tostring(criticalityId) ..")"
         successfulOutcomeTree:add(tvbuf:range(offset,1), successfulOutcomeE2.criticality .. strId)
@@ -445,7 +586,7 @@ function E2AP.dissector(tvbuf,pktinfo,root)
 
     -- Now let's add our protocol fields under the protocol tree we just created.
 	if (apiId == 0) then
-		addE2apInitiatingMessageToTree(tvbuf, pktinfo, e2apTree, offset, endianness)
+		addE2apInitiatingMessageToTree(tvbuf, pktinfo, e2apTree, offset, pktlen, endianness)
 	end
 	if(apiId == 1) then
 		addE2apSuccessfulOutcomeToTree(tvbuf, pktinfo, e2apTree, offset, pktlen, endianness)
