@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e6e89ec2_4a974077",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 689,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-07T10:55:35Z",
+      "side": 1,
+      "message": "to do post codeathon:\nfix alignment.\nmake sure to add the free part",
+      "revId": "e549020219091c64277023f57ae4e17cd4d1e2b1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
