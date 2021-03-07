@@ -32,6 +32,17 @@
 #include "InitiatingMessageE2.h"
 #include "SuccessfulOutcomeE2.h"
 #include "E2AP-PDU.h"
+#include "E2SM-KPM-IndicationMessage.h"
+#include "E2SM-KPM-IndicationMessage-Format1.h"
+#include "PF-Container.h"
+#include "PM-Containers-List.h"
+#include "ODU-PF-Container.h"
+#include "NRCGI.h"
+#include "CellResourceReportListItem.h"
+#include "ServedPlmnPerCellListItem.h"
+#include "FGC-DU-PM-Container.h"
+#include "SlicePerPlmnPerCellListItem.h"
+#include "FQIPERSlicesPerPlmnPerCellListItem.h"
 #include "du_e2ap_msg_hdl.h"
 #include "odu_common_codec.h"
 #include "E2SM-KPM-RANfunction-Description.h"
@@ -1312,6 +1323,329 @@ void FreeRicIndication(E2AP_PDU_t  *e2apMsg)
 }
 /*******************************************************************
  *
+ * @brief Builds NRCell ID 
+ *
+ * @details
+ *
+ *    Function : E2BuildNrCellId
+ *
+ *    Functionality: Building the NR Cell ID
+ *
+ * @params[in] BIT_STRING_t *nrcell
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+S16 E2BuildNrCellId(BIT_STRING_t *nrcell)
+{
+   memset(nrcell->buf, 0, nrcell->size);
+   nrcell->buf[4]   = 16; 
+   nrcell->bits_unused = 4;
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Builds Nrcgi 
+ *
+ * @details
+ *
+ *    Function : E2BuildNrcgi
+ *
+ *    Functionality: Building the PLMN ID and NR Cell id
+ *
+ * @params[in] NRCGI_t *nrcgi
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t E2BuildNrcgi(NRCGI_t *nrcgi)
+{
+   uint8_t ret;
+   uint8_t byteSize = 5;
+   /* Allocate Buffer Memory */
+   nrcgi->pLMN_Identity.size = PLMN_SIZE * sizeof(uint8_t);
+   DU_ALLOC(nrcgi->pLMN_Identity.buf, nrcgi->pLMN_Identity.size);
+   if(nrcgi->pLMN_Identity.buf == NULLP)
+   {
+      return RFAILED;
+   }
+   ret = buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn,\
+	 nrcgi->pLMN_Identity.buf); // Building PLMN function
+   if(ret != ROK)
+   {
+      return RFAILED;
+   }
+   /*nrCellIdentity*/
+   nrcgi->nRCellIdentity.size = byteSize * sizeof(uint8_t);
+   DU_ALLOC(nrcgi->nRCellIdentity.buf, nrcgi->nRCellIdentity.size); 
+   if(nrcgi->nRCellIdentity.buf == NULLP)
+   {
+      return RFAILED;
+   }
+   E2BuildNrCellId(&nrcgi->nRCellIdentity);
+
+   return ROK;
+}
+/*******************************************************************
+ *
+ * brief Fill the RicIndication Message
+ *
+ * @details
+ *
+ *    Function : FillRicIndMsg
+ *
+ * Functionality:Fills the RicIndication Message
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+uint8_t BuildRicIndMsg()
+{
+   asn_enc_rval_t             encRetVal;        /* Encoder return value */
+   E2SM_KPM_IndicationMessage_t *ricIndMsg;
+   E2SM_KPM_IndicationMessage_Format1_t *ricIndFrmt1;
+   PF_Container_t *perfCntr;
+   ODU_PF_Container_t *oduPfCntr;
+   ServedPlmnPerCellListItem_t *cellLstItem, *cellLstItem1;
+   uint8_t idx, idx1, idx2, idx3, idx4, elementCnt = 1;
+
+   while(true)
+   {
+      DU_ALLOC(ricIndMsg, sizeof(E2SM_KPM_IndicationMessage_t));
+      if(!ricIndMsg)
+      {
+         DU_LOG("\nMemory allocation failure in BuildRicIndMsg");
+         break;
+      }
+
+      ricIndMsg->present = E2SM_KPM_IndicationMessage_PR_indicationMessage_Format1;
+
+      DU_ALLOC(ricIndMsg->choice.indicationMessage_Format1, sizeof(E2SM_KPM_IndicationMessage_Format1_t));
+      if(!ricIndMsg->choice.indicationMessage_Format1)
+      {
+         DU_LOG("\nMemory allocation failure in BuildRicIndMsg");
+         break;
+      }
+      ricIndFrmt1 = ricIndMsg->choice.indicationMessage_Format1;
+      ricIndFrmt1->pm_Containers.list.count = elementCnt;
+      ricIndFrmt1->pm_Containers.list.size = elementCnt * sizeof(PM_Containers_List_t*);
+
+      DU_ALLOC(ricIndFrmt1->pm_Containers.list.array, ricIndFrmt1->pm_Containers.list.size);
+      if(!ricIndFrmt1->pm_Containers.list.array)
+      {
+         DU_LOG("\nMemory allocation failure in BuildRicIndMsg");
+         break;
+      }
+
+      for(idx=0; idx<elementCnt; idx++)
+      {
+         DU_ALLOC(ricIndFrmt1->pm_Containers.list.array[idx], sizeof(PM_Containers_List_t));
+         if(!ricIndFrmt1->pm_Containers.list.array[idx])
+	 {
+	    DU_LOG("\nMemory allocation failure in BuildRicIndMsg");
+	    break;
+	 }
+      }
+      idx = 0;
+      DU_ALLOC(ricIndFrmt1->pm_Containers.list.array[idx]->performanceContainer, sizeof(PF_Container_t));
+      if(!ricIndFrmt1->pm_Containers.list.array[idx]->performanceContainer)
+      {
+         DU_LOG("\nMemory allocation failure in BuildRicIndMsg");
+         break;
+      }
+      perfCntr = ricIndFrmt1->pm_Containers.list.array[idx]->performanceContainer;
+      perfCntr->present = PF_Container_PR_oDU;
+      DU_ALLOC(perfCntr->choice.oDU, sizeof(ODU_PF_Container_t));
+      if(!perfCntr->choice.oDU)
+      {
+         DU_LOG("\nMemory allocation failure in BuildRicIndMsg");
+         break;
+      }
+      oduPfCntr = perfCntr->choice.oDU;
+
+      elementCnt = 1;
+      oduPfCntr->cellResourceReportList.list.count = elementCnt;
+      oduPfCntr->cellResourceReportList.list.size = elementCnt * sizeof(CellResourceReportListItem_t*);
+
+      DU_ALLOC(oduPfCntr->cellResourceReportList.list.array, oduPfCntr->cellResourceReportList.list.size);
+      if(!oduPfCntr->cellResourceReportList.list.array)
+      {
+         DU_LOG("\nMemory allocation failure in BuildRicIndMsg");
+         break;
+      }
+      for(idx1=0; idx1<elementCnt; idx1++)
+      {
+         DU_ALLOC(oduPfCntr->cellResourceReportList.list.array[idx1], sizeof(CellResourceReportListItem_t));
+         if(!oduPfCntr->cellResourceReportList.list.array[idx1])
+	 {
+	    DU_LOG("\nMemory allocation failure in BuildRicIndMsg");
+	    break;
+	 }
+      }
+      idx1 = 0;
+      if(E2BuildNrcgi(&oduPfCntr->cellResourceReportList.list.array[idx1]->nRCGI) != ROK)
+      {
+         DU_LOG("\nBuildNrcgi failed");
+         break;
+      }
+      DU_ALLOC(oduPfCntr->cellResourceReportList.list.array[idx1]->dl_TotalofAvailablePRBs, sizeof(long));
+      if(!oduPfCntr->cellResourceReportList.list.array[idx1]->dl_TotalofAvailablePRBs)
+      {
+         DU_LOG("\nMemory allocation failure in BuildRicIndMsg");
+         break;
+      }
+      *(oduPfCntr->cellResourceReportList.list.array[idx1]->dl_TotalofAvailablePRBs) = 106; 
+      DU_ALLOC(oduPfCntr->cellResourceReportList.list.array[idx1]->ul_TotalofAvailablePRBs, sizeof(long));
+      if(!oduPfCntr->cellResourceReportList.list.array[idx1]->ul_TotalofAvailablePRBs)
+      {
+         DU_LOG("\nMemory allocation failure in BuildRicIndMsg");
+         break;
+      }
+      *(oduPfCntr->cellResourceReportList.list.array[idx1]->ul_TotalofAvailablePRBs) = 106; 
+
+      elementCnt = 1;
+      oduPfCntr->cellResourceReportList.list.array[idx1]->servedPlmnPerCellList.list.count = elementCnt;
+      oduPfCntr->cellResourceReportList.list.array[idx1]->servedPlmnPerCellList.list.size = \
+                     elementCnt * sizeof(ServedPlmnPerCellListItem_t*);
+
+      DU_ALLOC(oduPfCntr->cellResourceReportList.list.array[idx1]->servedPlmnPerCellList.list.array,
+               oduPfCntr->cellResourceReportList.list.array[idx1]->servedPlmnPerCellList.list.size);
+      if(!oduPfCntr->cellResourceReportList.list.array[idx1]->servedPlmnPerCellList.list.array)
+      {
+         DU_LOG("\nMemory allocation failure in BuildRicIndMsg");
+         break;
+      }
+
+      for(idx2=0; idx2<elementCnt; idx2++)
+      {
+         DU_ALLOC(oduPfCntr->cellResourceReportList.list.array[idx1]->servedPlmnPerCellList.list.array[idx2],
+                      sizeof(ServedPlmnPerCellListItem_t));
+         if(!oduPfCntr->cellResourceReportList.list.array[idx1]->servedPlmnPerCellList.list.array[idx2])
+         {
+            DU_LOG("\nMemory allocation failure in BuildRicIndMsg");
+            break;
+         }
+      }
+      idx2 = 0;
+      cellLstItem = oduPfCntr->cellResourceReportList.list.array[idx1]->servedPlmnPerCellList.list.array[idx2];
+
+      cellLstItem->pLMN_Identity.size = 3 * sizeof(uint8_t);
+      DU_ALLOC(cellLstItem->pLMN_Identity.buf, cellLstItem->pLMN_Identity.size);
+      if(!cellLstItem->pLMN_Identity.buf)
+      {
+         DU_LOG("\nMemory allocation failure in BuildRicIndMsg");
+         break;
+      }
+      buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn, cellLstItem->pLMN_Identity.buf);
+      cellLstItem1 = oduPfCntr->cellResourceReportList.list.array[idx1]->servedPlmnPerCellList.list.array[idx2]; 
+
+      DU_ALLOC(cellLstItem1->du_PM_5GC, sizeof(FGC_DU_PM_Container_t));
+      if(!cellLstItem1->du_PM_5GC)
+      {
+         DU_LOG("\nMemory allocation failure in BuildRicIndMsg");
+         break;
+      }
+     
+      elementCnt = 1;
+      cellLstItem1->du_PM_5GC->slicePerPlmnPerCellList.list.count = elementCnt;
+      cellLstItem1->du_PM_5GC->slicePerPlmnPerCellList.list.size = elementCnt * sizeof(SlicePerPlmnPerCellListItem_t*);
+      DU_ALLOC(cellLstItem1->du_PM_5GC->slicePerPlmnPerCellList.list.array, 
+                  cellLstItem1->du_PM_5GC->slicePerPlmnPerCellList.list.size);
+      if(!cellLstItem1->du_PM_5GC->slicePerPlmnPerCellList.list.array)
+      {
+         DU_LOG("\nMemory allocation failure in BuildRicIndMsg");
+         break;
+      }
+      for(idx3=0; idx3<elementCnt; idx3++)
+      {
+         DU_ALLOC(cellLstItem1->du_PM_5GC->slicePerPlmnPerCellList.list.array[idx3], sizeof(SlicePerPlmnPerCellListItem_t));
+         if(!cellLstItem1->du_PM_5GC->slicePerPlmnPerCellList.list.array[idx3])
+         {
+            DU_LOG("\nMemory allocation failure in BuildRicIndMsg");
+            break;
+         }
+      }
+      idx3=0;
+      cellLstItem1->du_PM_5GC->slicePerPlmnPerCellList.list.array[idx3]->sliceID.sST.size = sizeof(uint8_t);
+      DU_ALLOC(cellLstItem1->du_PM_5GC->slicePerPlmnPerCellList.list.array[idx3]->sliceID.sST.buf, cellLstItem1->du_PM_5GC->slicePerPlmnPerCellList.list.array[idx3]->sliceID.sST.size);
+      if(!cellLstItem1->du_PM_5GC->slicePerPlmnPerCellList.list.array[idx3]->sliceID.sST.buf)
+      {
+         DU_LOG("\nMemory allocation failure in BuildRicIndMsg");
+         break;
+      }
+      *(cellLstItem1->du_PM_5GC->slicePerPlmnPerCellList.list.array[idx3]->sliceID.sST.buf) = 3; 
+
+      elementCnt = 1;
+      cellLstItem1->du_PM_5GC->slicePerPlmnPerCellList.list.array[idx3]->fQIPERSlicesPerPlmnPerCellList.list.count = elementCnt;
+      cellLstItem1->du_PM_5GC->slicePerPlmnPerCellList.list.array[idx3]->fQIPERSlicesPerPlmnPerCellList.list.size = \
+              elementCnt * sizeof(FQIPERSlicesPerPlmnPerCellListItem_t*); 
+
+      DU_ALLOC(cellLstItem1->du_PM_5GC->slicePerPlmnPerCellList.list.array[idx3]->fQIPERSlicesPerPlmnPerCellList.list.array,
+               cellLstItem1->du_PM_5GC->slicePerPlmnPerCellList.list.array[idx3]->fQIPERSlicesPerPlmnPerCellList.list.size);
+      if(!cellLstItem1->du_PM_5GC->slicePerPlmnPerCellList.list.array[idx3]->fQIPERSlicesPerPlmnPerCellList.list.array)
+      {
+         DU_LOG("\nMemory allocation failure in BuildRicIndMsg");
+         break;
+      }
+
+      for(idx4=0; idx4<elementCnt; idx4++)
+      {
+         DU_ALLOC(cellLstItem1->du_PM_5GC->slicePerPlmnPerCellList.list.array[idx3]->fQIPERSlicesPerPlmnPerCellList.list.array[idx4],
+                        sizeof(FQIPERSlicesPerPlmnPerCellListItem_t));
+         if(!cellLstItem1->du_PM_5GC->slicePerPlmnPerCellList.list.array[idx3]->fQIPERSlicesPerPlmnPerCellList.list.array[idx4])
+         {
+            DU_LOG("\nMemory allocation failure in BuildRicIndMsg");
+            break;
+         }
+      }
+      idx4 = 0; 
+      cellLstItem1->du_PM_5GC->slicePerPlmnPerCellList.list.array[idx3]->fQIPERSlicesPerPlmnPerCellList.list.array[idx4]->fiveQI = 9; 
+      DU_ALLOC(cellLstItem1->du_PM_5GC->slicePerPlmnPerCellList.list.array[idx3]->fQIPERSlicesPerPlmnPerCellList.list.array[idx4]->dl_PRBUsage, sizeof(long));
+      if(!cellLstItem1->du_PM_5GC->slicePerPlmnPerCellList.list.array[idx3]->fQIPERSlicesPerPlmnPerCellList.list.array[idx4]->dl_PRBUsage)
+      {
+         DU_LOG("\nMemory allocation failure in BuildRicIndMsg");
+         break;
+      }
+      *(cellLstItem1->du_PM_5GC->slicePerPlmnPerCellList.list.array[idx3]->fQIPERSlicesPerPlmnPerCellList.list.array[idx4]->dl_PRBUsage) = 25; 
+
+      DU_ALLOC(cellLstItem1->du_PM_5GC->slicePerPlmnPerCellList.list.array[idx3]->fQIPERSlicesPerPlmnPerCellList.list.array[idx4]->ul_PRBUsage, sizeof(long));
+      if(!cellLstItem1->du_PM_5GC->slicePerPlmnPerCellList.list.array[idx3]->fQIPERSlicesPerPlmnPerCellList.list.array[idx4]->ul_PRBUsage)
+      {
+         DU_LOG("\nMemory allocation failure in BuildRicIndMsg");
+         break;
+      }
+      *(cellLstItem1->du_PM_5GC->slicePerPlmnPerCellList.list.array[idx3]->fQIPERSlicesPerPlmnPerCellList.list.array[idx4]->ul_PRBUsage) = 15; 
+
+      xer_fprint(stdout, &asn_DEF_E2SM_KPM_IndicationMessage, ricIndMsg);
+      /* Encode the RIC Ind Msg as APER */
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_E2SM_KPM_IndicationMessage, 0, ricIndMsg, PrepFinalEncBuf,\
+	    encBuf);
+
+      /* Encode results */
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+	 DU_LOG("\nERROR  -->  E2AP : Could not encode RICIndMsg (at %s)\n",\
+	       encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+	 break;
+      }
+      else
+      {
+	 DU_LOG("\nDEBUG   -->  E2AP : Created APER encoded buffer for RICIndMsg\n");
+	 for(idx=0; idx< encBufSize; idx++)
+	 {
+	    printf("%x",encBuf[idx]);
+	 }
+      }
+      break;
+   }
+   return ROK;
+}
+/*******************************************************************
+ *
  * brief Fill the RicIndication Message
  *
  * @details
@@ -1411,6 +1745,7 @@ uint8_t FillRicIndication(RICindication_t *ricIndicationMsg)
 	    idx++;
 	    /* TO BE CHANGED: RIC INDICATION DATA */
 	    /* For now filling a dummy octect data, need to tested with PRBs*/
+            BuildRicIndMsg();
 	    ricIndicationMsg->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RICindicationMessage;
 	    ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
 	    ricIndicationMsg->protocolIEs.list.array[idx]->value.present = \
