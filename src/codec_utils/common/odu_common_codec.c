@@ -58,7 +58,7 @@ uint8_t fillBitString(BIT_STRING_t *id, uint8_t unusedBits, uint8_t byteSize, ui
 
    for (tmp = 0 ; tmp < (byteSize-1); tmp++)
    {
-      id->buf[tmp] = tmp;
+      id->buf[tmp] = 0;
    }
    id->buf[byteSize-1]   = val;
    id->bits_unused = unusedBits;

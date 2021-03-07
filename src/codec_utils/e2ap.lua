@@ -121,6 +121,7 @@ local protocolIEField = {
 	value = "value"
 }
 
+local e2SetupRequest = "E2SetupRequest"
 local e2SetupResponse = "E2SetupResponse"
 local ricSubscriptionReq = "E2RicSubscriptionRequest"
 local ricSubscriptionRsp = "E2RicSubscriptionResponse"
@@ -136,8 +137,6 @@ local RICRequestId = {
 	ricRequestorID = "ricRequestorID",
 	ricInstanceID = "ricInstanceID"
 }
-
-local RANfunctionID = "RANfunctionID"
 
 local RICactionAdmittedList = {
 	ricActionAdmittedList = "RICaction-Admitted-List",
@@ -166,6 +165,60 @@ local RICactionToBeSetupItem = {
 	ricActionType  = "ricActionType: "
 }
 
+local RANfunctionID = "RANfunctionID"
+
+local RANfunctionsList = {
+	ranFunctionsList = "RANfunctions-List",
+	seqLen = "Sequence-Of Length: ",
+	protocolIEContainer = "ProtocolIE-SingleContainerE2: "
+}
+
+local RANfunctionItem = {
+	ranFunctionItem	= "RANfunction-Item",
+	ranFunctionID = "ranFunctionID: ",
+	ranFunctionDefinition = "ranFunctionDefinition: ",
+	ranFunctionRevision = "ranFunctionRevision: "
+}
+
+local E2SMKPMRANfunctionDescription = "E2SM-KPM-RANfunction-Description"
+
+local RANfunctionName = {
+	ranFunctionName = "ranFunction-Name",
+    ranFunctionShortName = "ranFunction-ShortName: ",
+    ranFunctionE2SMOID = "ranFunction-E2SM-OID: ",
+    ranFunctionDescription = "ranFunction-Description: ",
+    ranFunctionInstance = "ranFunction-Instance: "
+}
+
+local e2SMKPMRANfunctionItem = {
+	e2SM_KPM_RANfunctionItem = "e2SM-KPM-RANfunction-Item",
+	ricEventTriggerStyleList = "ric-EventTriggerStyle-List",
+	ricReportStyleList = "ric-ReportStyle-List"
+}
+
+local ricEventTriggerStyleItem = {
+	ricEventTriggerStyleType = "ric-EventTriggerStyle-Type: ",
+	ricEventTriggerStyleName = "ric-EventTriggerStyle-Name: ",
+	ricEventTriggerFormatType = "ric-EventTriggerFormat-Type: "
+}
+
+local RICReportStyleList = {
+	ricReportStyleType = "ric-ReportStyle-Type: ",
+	ricReportStyleName = "ric-ReportStyle-Name: ",
+    ricIndicationHeaderFormatType = "ric-IndicationHeaderFormat-Type: ",
+    ricIndicationMessageFormatType = "ric-IndicationMessageFormat-Type: "
+}
+
+local GlobalE2NodeId = "GlobalE2node-ID"
+
+local gnb = {
+	gNB = "gNB",
+	globalgNBID = "global-gNB-ID",
+	plmnId = "plmn-id: ",
+	gnbId = "gnb-id",
+	gnbID = "gnb-ID: "
+}
+
 E2AP.fields = {
 }
 
@@ -186,11 +239,337 @@ function convertBin(n)
     return table.concat(t)
 end
 
+function addGobalE2NodeIdToTree(tvbuf, valueTree, offset, valueLen, endianness)
+	local GlobalE2NodeIdTree = valueTree:add(tvbuf:range(offset, valueLen), GlobalE2NodeId)
+	local fbyte = tvbuf:range(offset,1):le_uint()
+	local gnbType = bit.rshift(fbyte, 4)
+	
+	if(gnbType == 0) then
+		local gnbTree = GlobalE2NodeIdTree:add(tvbuf:range(offset,valueLen), gnb.gNB)
+		offset = offset+1
+		local globalGnbIdTree = gnbTree:add(tvbuf:range(offset, (valueLen-offset)), gnb.globalgNBID)
+		
+		local plmnId0 = tvbuf:range(offset,1)
+		local plmnId1 = tvbuf:range(offset+1,1)
+		local plmnId2 = tvbuf:range(offset+2,1)
+		globalGnbIdTree:add(tvbuf:range(offset,3), gnb.plmnId .. plmnId0 .. " " .. plmnId1 .. " " .. plmnId2)
+		offset = offset + 3
+		
+		--[[ Fetch one byte and check for number of bytes in bit string and number of unused bytes
+			local fbytte = tvbuf:range(offset,1)
+		--]]
+		offset = offset +1
+		
+		local gnbId0 = tvbuf:range(offset,1)
+		local gnbId1 = tvbuf:range(offset+1,1)
+		local gnbId2 = tvbuf:range(offset+2,1)
+		local gnbId3 = tvbuf:range(offset+3,1)
+		local gnbIdTree = globalGnbIdTree:add(tvbuf:range(offset,4), gnb.gnbId)
+		gnbIdTree:add(tvbuf:range(offset,4), gnb.gnbID .. gnbId0 .. " " .. gnbId1 .. " " .. gnbId2 .. " " .. gnbId3) 
+		offset = offset + 4
+		
+	end
+end
 
+function addRANfunctionNameToTree(tvbuf, E2SM_KPM_RANfunctionDescTree, offset, ranFuncDefLen, endianness)
+	local RANfunctionNameTree = E2SM_KPM_RANfunctionDescTree:add(RANfunctionName.ranFunctionName)
+	
+	local optionalParamPres = tvbuf:range(offset, 1):le_uint()
+	offset = offset + 1
+	
+	-- Extracting RAN function short name
+	local fbyte = tvbuf:range(offset, 1):le_uint()
+	local stringLen = bit.rshift(fbyte, 4)
+	local strLen = stringLen+1 
+	offset = offset + 1
+	
+	local startOffset = offset
+	for i=0, stringLen, 1
+	do
+		local strByte = tvbuf:range(offset, 1):le_uint()
+		if(i == 0) then
+			strId = string.char(strByte)
+		else
+			strId = strId .. string.char(strByte)
+		end
+		offset = offset + 1
+	end
+	RANfunctionNameTree:add(tvbuf:range(startOffset, strLen), RANfunctionName.ranFunctionShortName .. strId)
+	
+	-- Extracting RAN function E2SM OID
+	local fByte = tvbuf:range(offset, 1):le_uint()
+	local fByte1 = bit.lshift(fByte, 16)
+	local sByte = tvbuf:range(offset+1, 1):le_uint()
+	local sByte1 = bit.lshift(sByte, 8)
+	local tByte = tvbuf:range(offset+2, 1):le_uint()
+	local tmp = bit.bor(fByte1, sByte1)
+	local stringLen = bit.bor(tmp, tByte)
+	local strLen = stringLen+1 
+	offset = offset + 3
+	local startOffset = offset
+	for i=0, stringLen, 1
+	do
+		local strByte = tvbuf:range(offset, 1):le_uint()
+		if(i == 0) then
+			strId = string.char(strByte)
+		else
+			strId = strId .. string.char(strByte)
+		end
+		offset = offset + 1
+	end
+	RANfunctionNameTree:add(tvbuf:range(startOffset, strLen), RANfunctionName.ranFunctionE2SMOID .. strId)
+	
+	--Extracting RAN function description
+	local tmpStringLen = fetch2Bytes(tvbuf, offset)
+	local stringLen = bit.rshift(tmpStringLen, 7)
+	local strLen = stringLen+1 
+	offset = offset + 2
+	local startOffset = offset
+	for i=0, stringLen, 1
+	do
+		local strByte = tvbuf:range(offset, 1):le_uint()
+		if(i == 0) then
+			strId = string.char(strByte)
+		else
+			strId = strId .. string.char(strByte)
+		end
+		offset = offset + 1
+	end
+	RANfunctionNameTree:add(tvbuf:range(startOffset, strLen), RANfunctionName.ranFunctionDescription .. strId)
+	
+	-- Extracting RAN function instance
+	local ranFuncInst = tvbuf:range(offset, 1):le_uint()
+	RANfunctionNameTree:add(tvbuf:range(offset, 1), RANfunctionName.ranFunctionInstance .. ranFuncInst)
+	offset = offset + 1
+	
+	return offset
+end
+
+function addRICEventTriggerStyleListToTree(tvbuf, RICEventTriggerStyleListTree, offset, E2SM_KPM_RANfunctionItemLen, endianness)
+		local numStypeType = fetch2Bytes(tvbuf, offset)
+		offset = offset + 2
+		local ricEventTriggerStyleType = tvbuf:range(offset, 1):le_uint()
+		RICEventTriggerStyleListTree:add(tvbuf:range(offset, 1), ricEventTriggerStyleItem.ricEventTriggerStyleType .. ricEventTriggerStyleType)
+		offset = offset + 1
+		
+		local tmpNumByte = fetch2Bytes(tvbuf, offset)
+		numByte = bit.rshift(tmpNumByte, 7)
+		offset = offset + 2
+		startOffset = offset
+		strLen = numByte + 1
+		for j=0, numByte, 1
+		do
+		   local strByte = tvbuf:range(offset, 1):le_uint()
+			if(j == 0) then
+				strId = tostring(strByte)
+			else
+				strId = strId .. tostring(strByte)
+			end
+			offset = offset + 1
+		end
+		RICEventTriggerStyleListTree:add(tvbuf:range(startOffset, strLen), ricEventTriggerStyleItem.ricEventTriggerStyleName .. strId)
+	
+		local numFormatType = tvbuf:range(offset, 1):le_uint()
+		offset = offset + 1
+		local ricEventFormatType = tvbuf:range(offset, 1):le_uint()
+		RICEventTriggerStyleListTree:add(tvbuf:range(offset, 1), ricEventTriggerStyleItem.ricEventTriggerFormatType .. ricEventFormatType)
+		offset = offset + 1
+		
+		return offset
+end
+
+function addRICReportStyleListToTree(tvbuf, RICReportStyleListTree, offset, E2SM_KPM_RANfunctionItemLen, endianness)
+	local numStypeType = fetch2Bytes(tvbuf, offset)
+	offset = offset + 2
+	local ricReportStyleType = tvbuf:range(offset, 1):le_uint()
+	RICReportStyleListTree:add(tvbuf:range(offset, 1), RICReportStyleList.ricReportStyleType .. ricReportStyleType)
+	offset = offset + 1
+		
+	local tmpNumByte = fetch2Bytes(tvbuf, offset)
+	numByte = bit.rshift(tmpNumByte, 7)
+	offset = offset + 2
+	startOffset = offset
+	strLen = numByte + 1
+	for j=0, numByte, 1
+	do
+	   local strByte = tvbuf:range(offset, 1):le_uint()
+		if(j == 0) then
+			strId = tostring(strByte)
+		else
+			strId = strId .. tostring(strByte)
+		end
+		offset = offset + 1
+	end
+	RICReportStyleListTree:add(tvbuf:range(startOffset, strLen), RICReportStyleList.ricReportStyleName .. strId)
+	
+	local numFormatType = tvbuf:range(offset, 1):le_uint()
+	offset = offset + 1
+	local ricIndHdrFormatType = tvbuf:range(offset, 1):le_uint()
+	RICReportStyleListTree:add(tvbuf:range(offset, 1), RICReportStyleList.ricIndicationHeaderFormatType .. ricIndHdrFormatType)
+	offset = offset + 1
+		
+	local numFormatType = tvbuf:range(offset, 1):le_uint()
+	offset = offset + 1
+	local ricIndMsgFormatType = tvbuf:range(offset, 1):le_uint()
+	RICReportStyleListTree:add(tvbuf:range(offset, 1), RICReportStyleList.ricIndicationMessageFormatType .. ricIndMsgFormatType)
+	offset = offset + 1
+	
+	return offset
+end
+
+function addRANfunctionDefinitionToTree(tvbuf, RANfunctionItemTree, offset, ranFuncDefLen, endianness)
+	local E2SM_KPM_RANfunctionDescTree = RANfunctionItemTree:add(tvbuf:range(offset, ranFuncDefLen), E2SMKPMRANfunctionDescription)
+	local nextOffset = addRANfunctionNameToTree(tvbuf, E2SM_KPM_RANfunctionDescTree, offset, ranFuncDefLen, endianness)
+	offset = nextOffset
+	
+	local E2SM_KPM_RANfunctionItemLen = ranFuncDefLen-offset
+	local E2SM_KPM_RANfunctionItemTree = E2SM_KPM_RANfunctionDescTree:add(tvbuf:range(offset, E2SM_KPM_RANfunctionItemLen), e2SMKPMRANfunctionItem.e2SM_KPM_RANfunctionItem)
+	local numItems = tvbuf:range(offset, 1):le_uint()
+	offset = offset + 1
+	
+	for i=0, numItems-1, 1
+	do
+		local fbyte = tvbuf:range(offset, 1):le_uint()
+		offset = offset + 1
+		
+		local extensionBit = bit.rshift(fbyte, 7)
+		local ricEvntTriggerStylePresent = bit.band(bit.rshift(fbyte, 6), 1)
+		local ricReportStylePresent = bit.band(bit.rshift(fbyte, 5), 1)
+		
+		if(ricEvntTriggerStylePresent == 1) then
+			local RICEventTriggerStyleListTree = E2SM_KPM_RANfunctionItemTree:add(e2SMKPMRANfunctionItem.ricEventTriggerStyleList)
+			nextOffset = addRICEventTriggerStyleListToTree(tvbuf, RICEventTriggerStyleListTree, offset, E2SM_KPM_RANfunctionItemLen, endianness)
+			offset = nextOffset
+		end
+	
+		if(ricReportStylePresent == 1) then
+			local RICReportStyleListTree = E2SM_KPM_RANfunctionItemTree:add(e2SMKPMRANfunctionItem.ricReportStyleList)
+			nextOffset = addRICReportStyleListToTree(tvbuf, RICReportStyleListTree, offset, E2SM_KPM_RANfunctionItemLen, endianness)
+			offset = nextOffset
+		end
+	end
+end
+
+function addRANfunctionItemToTree(tvbuf, valueTree, offset, valueLen, endianness)
+	local RANfunctionItemTree = valueTree:add(tvbuf:range(offset, valueLen), RANfunctionItem.ranFunctionItem)
+	
+--  local extBit = tvbuf:range(offset,1):le_uint()
+--	if(extBit == 0) then
+--		RANfunctionItemTree:add(tvbuf:range(offset,1), "<" .. extBit .. "... .... Extension Bit: FALSE>")
+--	else
+--		RANfunctionItemTree:add(tvbuf:range(offset,1), "<" .. extBit .. "... .... Extension Bit: TRUE>")
+--	end
+	offset = offset + 1
+	
+	local ranFuncId = fetch2Bytes(tvbuf, offset)
+	RANfunctionItemTree:add(tvbuf:range(offset,2), RANfunctionItem.ranFunctionID .. ranFuncId)
+	offset = offset + 2
+	
+	local ranFuncDefLen = tvbuf:range(offset,1):le_uint()
+	offset = offset + 1
+	
+	local ranFuncDef = tvbuf:range(offset, ranFuncDefLen)
+	local RANfunctionDefinitionTree = RANfunctionItemTree:add(tvbuf:range(offset,ranFuncDefLen), RANfunctionItem.ranFunctionDefinition .. ranFuncDef)
+	addRANfunctionDefinitionToTree(tvbuf, RANfunctionDefinitionTree, offset, ranFuncDefLen, endianness)
+	offset = offset + ranFuncDefLen
+	
+	local ranFuncRevision = fetch2Bytes(tvbuf, offset)
+	RANfunctionItemTree:add(tvbuf:range(offset,2), RANfunctionItem.ranFunctionRevision .. ranFuncRevision)
+	offset = offset + 2
+end
+
+function addRANfunctionsListToTree(tvbuf, valueTree, offset, valueLen, endianness)
+	local RANfunctionsListTree = valueTree:add(tvbuf:range(offset, valueLen), RANfunctionsList.ranFunctionsList)
+	local seqLen = fetch2Bytes(tvbuf, offset)
+	--RANfunctionsListTree:add(tvbuf:range(offset, 1), "<" .. RANfunctionsList.seqLen .. seqLen .. ">")
+	local protoIeTree = RANfunctionsListTree:add(tvbuf:range(offset, 1), protocolIE .. seqLen .. " items")
+	offset = offset+2
+		
+	for ie=0, seqLen-1, 1
+	do
+		local protocolIEId = fetch2Bytes(tvbuf, offset)
+		strId = tostring(E2PotocolIEs[protocolIEId])
+		local itemTree = protoIeTree:add(protocolItem .. ie .. ": " .. strId)
+		
+		strId = strId .. " (" .. tostring(protocolIEId) ..")"
+		local protocolFieldTree = itemTree:add(RANfunctionsList.protocolIEContainer)
+		protocolFieldTree:add(tvbuf:range(offset,2), protocolIEField.id .. strId)
+		offset = offset + 2
+			
+		local fbyte = tvbuf:range(offset,1):le_uint()
+		local criticalityId = bit.rshift(fbyte, 6)
+--		protocolFieldTree:add(tvbuf:range(offset,1), "<Enumerated Index: " .. criticalityId ..">")
+		strId = tostring(E2Criticality[criticalityId]) .. " (" .. tostring(criticalityId) ..")"
+		protocolFieldTree:add(tvbuf:range(offset,1), protocolIEField.criticality .. strId)
+		offset = offset + 1
+		
+		local valueLen = tvbuf:range(offset,1):le_uint()
+--		protocolFieldTree:add(tvbuf:range(offset,1), "<" .. protocolIEField.valueLen .. valueLen ..">")
+		offset = offset + 1
+		
+		local valueTree = protocolFieldTree:add(tvbuf:range(offset, valueLen), protocolIEField.value)
+		
+		if(protocolIEId == 8) then
+			addRANfunctionItemToTree(tvbuf, valueTree, offset, valueLen, endianness)
+			offset = offset + valueLen
+		end
+	end 
+end
+
+function addE2SetupRequestToTree(tvbuf, pktinfo, valueTree, offset, valueLen, endianness)
+	pktinfo.cols.info:set("E2 Setup Request")
+
+	local e2SetupRequestTree = valueTree:add(tvbuf:range(offset, pktlen), e2SetupRequest)
+		
+--  local extBit = tvbuf:range(offset,1):le_uint()
+--	if(extBit == 0) then
+--		e2SetupRequestTree:add(tvbuf:range(offset,1), "<" .. extBit .. "... .... Extension Bit: FALSE>")
+--	else
+--		e2SetupRequestTree:add(tvbuf:range(offset,1), "<" .. extBit .. "... .... Extension Bit: TRUE>")
+--	end
+	offset = offset + 1
+		
+	local seqLen = fetch2Bytes(tvbuf, offset)
+--	e2SetupRequestTree:add(tvbuf:range(offset, 2), "<Sequence-Of Length: " .. seqLen .. ">")
+	local protoIeTree = e2SetupRequestTree:add(tvbuf:range(offset, 2), protocolIE .. seqLen .. " items")
+	offset = offset + 2
+			
+	for ie=0, seqLen-1, 1
+	do
+	    local protocolIEId = fetch2Bytes(tvbuf, offset)
+	    strId = tostring(E2PotocolIEs[protocolIEId])
+	    local itemTree = protoIeTree:add(tvbuf:range(offset,2), protocolItem .. ie .. ": " .. strId)
+			
+	    strId = strId .. " (" .. tostring(protocolIEId) ..")"
+	    local protocolFieldTree = itemTree:add(protocolIEField.protocolIEFieldMsg)
+		protocolFieldTree:add(tvbuf:range(offset,2), protocolIEField.id .. strId)
+		offset = offset + 2
+			
+		local fbyte = tvbuf:range(offset,1):le_uint()
+		local criticalityId = bit.rshift(fbyte, 6)
+--		protocolFieldTree:add(tvbuf:range(offset,1), "<Enumerated Index: " .. criticalityId ..">")
+		strId = tostring(E2Criticality[criticalityId]) .. " (" .. tostring(criticalityId) ..")"
+		protocolFieldTree:add(tvbuf:range(offset,1), protocolIEField.criticality .. strId)
+		offset = offset + 1
+		
+		local valueLen = tvbuf:range(offset,1):le_uint()
+--		protocolFieldTree:add(tvbuf:range(offset,1), "<" .. protocolIEField.valueLen .. valueLen ..">")
+		offset = offset + 1
+		
+		local valueTree = protocolFieldTree:add(tvbuf:range(offset, valueLen), protocolIEField.value)
+		
+		if(protocolIEId == 3) then
+			addGobalE2NodeIdToTree(tvbuf, valueTree, offset, valueLen, endianness)
+			offset = offset + valueLen
+		end
+		if(protocolIEId == 10) then
+			addRANfunctionsListToTree(tvbuf, valueTree, offset, valueLen, endianness)
+		end
+	end
+end
 
 function addE2apInitiatingMessageToTree(tvbuf, pktinfo, tree, offset, pktlen, endianness)
-
-        local initiatingMessageTree = tree:add(tvbuf:range(offset, (pktlen-offset)), initiatingMessageE2.initiatingMsg)
+    local initiatingMessageTree = tree:add(tvbuf:range(offset, (pktlen-offset)), initiatingMessageE2.initiatingMsg)
 
 	local procId = tvbuf:range(offset,1):le_uint()
 	strId = tostring(E2ProcedureCode[procId]) .. " (" .. tostring(procId) ..")"
@@ -208,6 +587,9 @@ function addE2apInitiatingMessageToTree(tvbuf, pktinfo, tree, offset, pktlen, en
 	
 	local valueTree = initiatingMessageTree:add(tvbuf:range(offset, valueLen), initiatingMessageE2.value)
 	
+	if(procId == 1) then
+		addE2SetupRequestToTree(tvbuf, pktinfo, valueTree, offset, valueLen, endianness)
+	end
 	if(procId == 8) then
 		addE2RicSubscriptionReqToTree(tvbuf, pktinfo, valueTree, offset, valueLen, endianness)
 	end
