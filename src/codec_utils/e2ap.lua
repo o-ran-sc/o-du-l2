@@ -76,8 +76,80 @@ local E2PotocolIEs = {
 	[32] = "id_RICcontrolOutcome"
 }
 
-	
+local E2SM_KPM_IndicationHeader = {
+        [1] = "indicationHeader-Format1"}
+
+local GNB_ID_Choice = {
+        [0] = "gnb_ID"
+}
+local GlobalKPMnode_ID_PR = {
+        [0] = "Nothing",
+        [1] = "gNB",
+        [2] = "en_gNB",
+        [3] = "ng_eNB",
+        [4] = "eNB"}
+
+
+local GlobalKPMnode_ID = {
+        [0] = "gNB",
+        [1] = "en_gNB",
+        [2] = "ng_eNB",
+        [3] = "eNB"}
+
+
+local IndicationHeader_Format1 = {
+        [0] = "GlobalKPMnode_ID",
+        [1] = "NRCGI" ,
+        [2] = "PLMN_Identity",
+        [3] = "SNSSAI",
+        [4] = "fiveQI",
+        [5] = "qci"
+}
 --payload fields start
+local PrintableString = {
+        size = "size",
+        buf = "buf"
+}
+
+
+local SNSSAI = {
+        sST = "sST" ,
+        sD ="sD"
+}
+local E2SM_KPM_IndicationHeader_Format1 = {
+        GlobalKPMnode_ID = "GlobalKPMnode_ID",
+        NRCGI = "NRCGI",
+        PLMN_Identity = "PLMN_Identity",
+        SNSSAI = "SNSSAI",
+        fiveQI = "fiveQI",
+        qci = "qci"
+}
+
+local GlobalKPMnode_gNB_ID = {
+        global_gNB_ID ="global_gNB_ID",
+        gNB_CU_UP_ID ="gNB_CU_UP_ID",
+        gNB_DU_ID ="gNB_DU_ID"
+}
+local gnb = {
+        gNB = "gNB",
+        globalgNBID = "global-gNB-ID",
+        plmnId = "plmn-id: ",
+        gnbId = "gnb-id",
+        gnbID = "gnb-ID: "
+}
+
+
+local GlobalgNB_ID = {
+        PLMN_IdentityE2 = "PLMN_IdentityE2",
+        GNB_ID_Choice = "GNB_ID_Choice"
+}
+
+local NRCGI = {
+        plmn = "pLMNIdentity",
+        NRCellIdentity = "NRCellIdentity"
+}
+
+	
 local RIC_indication = "Ric Indication Message"
 
 local Initiating_Message_Type_Value = {
@@ -125,6 +197,7 @@ local e2SetupRequest = "E2SetupRequest"
 local e2SetupResponse = "E2SetupResponse"
 local ricSubscriptionReq = "E2RicSubscriptionRequest"
 local ricSubscriptionRsp = "E2RicSubscriptionResponse"
+local ricIndication = "E2RicIndication"
 
 local pLMNIdentity = {
 	MCC = "Mobile Country Code (MCC) : ",
@@ -141,6 +214,22 @@ local RICRequestId = {
 	ricRequestId = "RICRequestID",
 	ricRequestorID = "ricRequestorID",
 	ricInstanceID = "ricInstanceID"
+}
+
+local RANfunctionID = "RANfunctionID"
+
+local RICactionID = "RICactionID"
+
+local RICactionType = "RICactionType"
+
+local RicIndicationHeader = {
+	ricIndicationHdr = "E2SM_KPM_IndicationHeader",
+        ricIndicationHdrId = "RicIndicationHeaderID"
+}
+
+local RicIndicationMsg = {
+        ricIndicationMsg = "RicIndicationMsg",
+        ricIndicationHdrId = "RicIndicationMsgID"
 }
 
 local RICactionAdmittedList = {
@@ -235,13 +324,27 @@ function fetch2Bytes(tvbuf, offset)
 	return result
 end
 
-function convertBin(n)
-    local t = {}
-    for i = 1, 8 do
-        n = bit.rol(n, 1)
-        table.insert(t, bit.band(n, 1))
+local function int2bin(n)
+  local result = ''
+  local count = 0
+  
+  while n ~= 0 do
+    if n % 2 == 0 then
+      result = '0' .. result
+    else
+      result = '1' .. result
     end
-    return table.concat(t)
+	count = count + 1
+    n = math.floor(n / 2)
+  end
+  if(count < 8) then
+	local bitsToAdd = 8 - count
+	for i=1, bitsToAdd, 1
+	do
+		result = '0' .. result
+	end
+  end
+  return result
 end
 
 function addGobalE2NodeIdToTree(tvbuf, valueTree, offset, valueLen, endianness)
@@ -281,12 +384,16 @@ function addGobalE2NodeIdToTree(tvbuf, valueTree, offset, valueLen, endianness)
 		--]]
 		offset = offset +1
 		
-		local gnbId0 = tvbuf:range(offset,1)
-		local gnbId1 = tvbuf:range(offset+1,1)
-		local gnbId2 = tvbuf:range(offset+2,1)
-		local gnbId3 = tvbuf:range(offset+3,1)
+		local gnbIdByte1 = tvbuf:range(offset,1):le_uint()
+		local gnbId1 = tostring(int2bin(gnbIdByte1))
+		local gnbIdByte2 = tvbuf:range(offset+1,1):le_uint()
+		local gnbId2 = tostring(int2bin(gnbIdByte2))
+		local gnbIdByte3 = tvbuf:range(offset+2,1):le_uint()
+		local gnbId3 = tostring(int2bin(gnbIdByte3))
+		local gnbIdByte4 = tvbuf:range(offset+3,1):le_uint()
+		local gnbId4 = tostring(int2bin(gnbIdByte4))
 		local gnbIdTree = globalGnbIdTree:add(tvbuf:range(offset,4), gnb.gnbId)
-		gnbIdTree:add(tvbuf:range(offset,4), gnb.gnbID .. gnbId0 .. " " .. gnbId1 .. " " .. gnbId2 .. " " .. gnbId3) 
+		gnbIdTree:add(tvbuf:range(offset,4), gnb.gnbID .. gnbId1 .. gnbId2 .. gnbId3 .. gnbId4)
 		offset = offset + 4
 		
 	end
@@ -611,9 +718,313 @@ function addE2apInitiatingMessageToTree(tvbuf, pktinfo, tree, offset, pktlen, en
 	if(procId == 1) then
 		addE2SetupRequestToTree(tvbuf, pktinfo, valueTree, offset, valueLen, endianness)
 	end
+	if(procId == 5) then
+		addE2RicIndicationToTree(tvbuf, pktinfo, valueTree, offset, valueLen, endianness)
+	end
 	if(procId == 8) then
 		addE2RicSubscriptionReqToTree(tvbuf, pktinfo, valueTree, offset, valueLen, endianness)
 	end
+end
+
+function addE2RicIndicationToTree(tvbuf, pktinfo, valueTree, offset, valueLen, endianness)
+        pktinfo.cols.info:set("E2 RIC Indication ")
+
+        local e2RicIndicationTree = valueTree:add(tvbuf:range(offset, valueLen), ricIndication)
+        offset = offset + 1
+
+        local seqLen = fetch2Bytes(tvbuf, offset)
+        local protoIeTree = e2RicIndicationTree:add(tvbuf:range(offset, 2), protocolIE .. seqLen .. " items")
+        offset = offset + 2
+
+        for ie=0, seqLen-1, 1
+        do
+                local protocolIEId = fetch2Bytes(tvbuf, offset)
+                strId = tostring(E2PotocolIEs[protocolIEId])
+                local itemTree = protoIeTree:add(protocolItem .. ie .. ": " .. strId)
+
+                strId = strId .. " (" .. tostring(protocolIEId) ..")"
+                local protocolFieldTree = itemTree:add(protocolIEField.protocolIEFieldMsg)
+                        protocolFieldTree:add(tvbuf:range(offset,2), protocolIEField.id .. strId)
+                        offset = offset + 2
+
+                        local criticalityId = tvbuf:range(offset,1):le_uint()
+                        strId = tostring(E2Criticality[criticalityId]) .. " (" .. tostring(criticalityId) ..")"
+                        protocolFieldTree:add(tvbuf:range(offset,1), protocolIEField.criticality .. strId)
+                        offset = offset + 1
+
+                        local valueLen = tvbuf:range(offset,1):le_uint()
+                        offset = offset + 1
+
+
+                        local valueTree = protocolFieldTree:add(tvbuf:range(offset, valueLen), protocolIEField.value)
+
+                        if(protocolIEId == 29) then
+                                addRICRequestIdToTree(tvbuf, valueTree, offset, valueLen, endianness)
+                                offset = offset + valueLen
+                        end
+
+                       if(protocolIEId == 5) then
+                                addRANFunctionIdToTree(tvbuf, valueTree, offset, valueLen, endianness)
+                                offset = offset + valueLen
+                        end
+
+                        if(protocolIEId == 15) then
+                                addRICactionIDToTree(tvbuf, valueTree, offset, valueLen, endianness)
+                                offset = offset + valueLen
+                        end
+
+                        if(protocolIEId == 28) then
+                                addRICindicationTypeToTree(tvbuf, valueTree, offset, valueLen, endianness)
+                                offset = offset + valueLen
+                        end
+
+
+                        if(protocolIEId == 25) then
+                                addRICindicationHeaderToTree(tvbuf, valueTree, offset, valueLen, endianness)
+                                offset = offset + valueLen
+                        end
+
+                        if(protocolIEId == 26) then
+                                addRICindicationMsgToTree(tvbuf, valueTree, offset, valueLen, endianness)
+                                offset = offset + valueLen
+                        end
+
+        end
+end
+
+function addRICRequestIdToTree(tvbuf, valueTree, offset, valueLen, endianness)
+        local RICReqIdTree = valueTree:add(tvbuf:range(offset, valueLen), RICRequestId.ricRequestId)
+                --local extBit = tvbuf:range(offset,1):le_uint()
+                --if(extBit == 0) then
+                --      RICReqIdTree:add(tvbuf:range(offset,1), "<" .. extBit .. "... .... Extension Bit: FALSE>")
+                --else
+                --      RICReqIdTree:add(tvbuf:range(offset,1), "<" .. extBit .. "... .... Extension Bit: TRUE>")
+                --end
+                offset = offset + 1
+
+                local ricReqID = fetch2Bytes(tvbuf, offset)
+                RICReqIdTree:add(tvbuf:range(offset,1), RICRequestId.ricRequestorID .. ": " .. ricReqID)
+                offset = offset + 1
+
+                local ricInstID = fetch2Bytes(tvbuf, offset)
+                RICReqIdTree:add(tvbuf:range(offset,2), RICRequestId.ricInstanceID .. ": " .. ricInstID)
+                offset = offset + 2
+end
+
+function addRANFunctionIdToTree(tvbuf, valueTree, offset, valueLen, endianness)
+                local ranFuncID = fetch2Bytes(tvbuf, offset)
+                valueTree:add(tvbuf:range(offset,2), RANfunctionID .. ": " .. ranFuncID)
+                offset = offset + 2
+end
+
+function addRICactionIDToTree(tvbuf, valueTree, offset, valueLen, endianness)
+                local ricActionID = fetch2Bytes(tvbuf, offset)
+                valueTree:add(tvbuf:range(offset,2), RICactionID .. ": " .. ricActionID)
+                offset = offset + 2
+end
+
+function addRICindicationTypeToTree(tvbuf, valueTree, offset, valueLen, endianness)
+                local ricActionType = fetch2Bytes(tvbuf, offset)
+                valueTree:add(tvbuf:range(offset,2), RICactionType .. ": " .. ricActionType)
+                offset = offset + 2
+
+end
+
+function addRICindicationHeaderToTree(tvbuf, valueTree, offset, valueLen, endianness)
+
+        local ricIndicationHeader  = valueTree:add(tvbuf:range(offset, valueLen), RicIndicationHeader.ricIndicationHdr)
+        offset = offset + 1
+
+ --       local headerId = tvbuf:range(offset,valueLen)
+ --       ricIndicationHeader:add(tvbuf:range(offset,valueLen), RicIndicationHeader.ricIndicationHdrId .. ": " .. headerId)
+ --       offset = offset + valueLen
+
+        local fByte = tvbuf:range(offset,1):le_uint()
+        local apiId = bit.rshift(fByte, 5)
+        strId = tostring(E2SM_KPM_IndicationHeader[apiId]) .. " (" .. tostring(apiId) ..")"
+        local e2apTree = ricIndicationHeader:add(tvbuf:range(offset,1), "E2SM_KPM_IndicationHeader: " .. strId)
+        offset = offset + 1
+
+        local valueLen = tvbuf:range(offset,1):le_uint()
+
+        if (apiId == 1) then
+                addIndicationHeader_Format1(tvbuf , e2apTree, offset, valueLen, endianness)
+        end
+
+end
+
+function addIndicationHeader_Format1(tvbuf,  e2apTree, offset, valueLen, endianness)
+
+        local GlobalE2NodeIdTree = e2apTree:add(tvbuf:range(offset, valueLen), E2SM_KPM_IndicationHeader_Format1.GlobalKPMnode_ID)
+--      offset = offset + 1
+
+       local fbyte = tvbuf:range(offset,1):le_uint()
+       local gnbType = bit.rshift(fbyte, 4)
+
+        if(gnbType == 0) then
+                local gnbTree = GlobalE2NodeIdTree:add(tvbuf:range(offset,valueLen), gnb.gNB)
+                offset = offset+1
+                local globalGnbIdTree = gnbTree:add(tvbuf:range(offset, (valueLen-offset)), gnb.globalgNBID)
+
+			-- Extracting PLMN Identity
+			local plmnIdByte0 = tvbuf:range(offset,1)
+			local plmnIdByte1 = tvbuf:range(offset+1,1)
+			local plmnIdByte2 = tvbuf:range(offset+2,1)
+			local plmnIdTree = globalGnbIdTree:add(tvbuf:range(offset,3), gnb.plmnId .. plmnIdByte0 .. plmnIdByte1 .. plmnIdByte2)
+		
+			local mcc0 = bit.band(plmnIdByte0:le_uint(), 15)
+			local mcc1 = bit.rshift(plmnIdByte0:le_uint(), 4)
+			local mcc2 = bit.band(plmnIdByte1:le_uint(), 15)
+			plmnIdTree:add(tvbuf:range(offset,2), pLMNIdentity.MCC .. mcc0..mcc1..mcc2)
+			offset = offset + 1
+			local mnc0 = bit.rshift(plmnIdByte1:le_uint(), 4)
+			local mnc1 = bit.band(plmnIdByte2:le_uint(), 15)
+			local mnc2 = bit.rshift(plmnIdByte2:le_uint(), 4)
+			if(mnc0 == 15)
+			then
+				plmnIdTree:add(tvbuf:range(offset,2), pLMNIdentity.MNC .. mnc1..mnc2)
+			else
+				plmnIdTree:add(tvbuf:range(offset,2), pLMNIdentity.MNC .. mnc0..mnc1..mnc2)
+			end
+			offset = offset + 2
+
+                --[[ Fetch one byte and check for number of bytes in bit string and number of unused bytes
+                        local fbytte = tvbuf:range(offset,1)
+                --]]
+                offset = offset +1
+				
+			local gnbIdByte1 = tvbuf:range(offset,1):le_uint()
+			local gnbId1 = tostring(int2bin(gnbIdByte1))
+			local gnbIdByte2 = tvbuf:range(offset+1,1):le_uint()
+			local gnbId2 = tostring(int2bin(gnbIdByte2))
+			local gnbIdByte3 = tvbuf:range(offset+2,1):le_uint()
+			local gnbId3 = tostring(int2bin(gnbIdByte3))
+			local gnbIdByte4 = tvbuf:range(offset+3,1):le_uint()
+			local gnbId4 = tostring(int2bin(gnbIdByte4))
+			local gnbIdTree = globalGnbIdTree:add(tvbuf:range(offset,4), gnb.gnbId)
+			gnbIdTree:add(tvbuf:range(offset,4), gnb.gnbID .. gnbId1 .. gnbId2 .. gnbId3 .. gnbId4)
+			offset = offset + 4
+
+			local gnbCuUpId = fetch2Bytes(tvbuf, offset)
+            gnbTree:add(tvbuf:range(offset,2), GlobalKPMnode_gNB_ID.gNB_CU_UP_ID .. ": " .. gnbCuUpId)
+			offset = offset + 2
+
+			local gnbDuId = fetch2Bytes(tvbuf, offset)
+            gnbTree:add(tvbuf:range(offset,2), GlobalKPMnode_gNB_ID.gNB_DU_ID .. ": " .. gnbDuId)
+			offset = offset + 2
+        end
+		
+		offset = offset + 1
+		
+       local NrcgiTree = e2apTree:add(tvbuf:range(offset, valueLen), E2SM_KPM_IndicationHeader_Format1.NRCGI)
+
+		-- Extracting PLMN Identity
+			local plmnIdByte0 = tvbuf:range(offset,1)
+			local plmnIdByte1 = tvbuf:range(offset+1,1)
+			local plmnIdByte2 = tvbuf:range(offset+2,1)
+			local plmnIdTree = NrcgiTree:add(tvbuf:range(offset,3), gnb.plmnId .. plmnIdByte0 .. plmnIdByte1 .. plmnIdByte2)
+		
+			local mcc0 = bit.band(plmnIdByte0:le_uint(), 15)
+			local mcc1 = bit.rshift(plmnIdByte0:le_uint(), 4)
+			local mcc2 = bit.band(plmnIdByte1:le_uint(), 15)
+			plmnIdTree:add(tvbuf:range(offset,2), pLMNIdentity.MCC .. mcc0..mcc1..mcc2)
+			offset = offset + 1
+			local mnc0 = bit.rshift(plmnIdByte1:le_uint(), 4)
+			local mnc1 = bit.band(plmnIdByte2:le_uint(), 15)
+			local mnc2 = bit.rshift(plmnIdByte2:le_uint(), 4)
+			if(mnc0 == 15)
+			then
+				plmnIdTree:add(tvbuf:range(offset,2), pLMNIdentity.MNC .. mnc1..mnc2)
+			else
+				plmnIdTree:add(tvbuf:range(offset,2), pLMNIdentity.MNC .. mnc0..mnc1..mnc2)
+			end
+			offset = offset + 2
+
+        --nRCellIdentity.buf - 5 bytes 4 unudsed bits
+		local nrCellIdByte1 = tvbuf:range(offset,1):le_uint()
+		local nrCellId1 = tostring(int2bin(nrCellIdByte1))
+		local nrCellIdByte2 = tvbuf:range(offset+1,1):le_uint()
+		local nrCellId2 = tostring(int2bin(nrCellIdByte2))
+		local nrCellIdByte3 = tvbuf:range(offset+2,1):le_uint()
+		local nrCellId3 = tostring(int2bin(nrCellIdByte3))
+		local nrCellIdByte4 = tvbuf:range(offset+3,1):le_uint()
+		local nrCellId4 = tostring(int2bin(nrCellIdByte4))
+		local nrCellIdByte5 = tvbuf:range(offset+4,1):le_uint()
+		local nrCellId5 = string.sub(tostring(int2bin(nrCellIdByte5)), 1, 4)
+		--local nrCellId5Str = string.sub(nrCellId5, 1, 4)
+        NrcgiTree:add(tvbuf:range(offset, 5), NRCGI.NRCellIdentity .. ": " .. nrCellId1 .. nrCellId2 .. nrCellId3 .. nrCellId4 .. nrCellId5)
+        offset = offset + 5
+
+        -- Extracting PLMN Identity
+			local plmnIdByte0 = tvbuf:range(offset,1)
+			local plmnIdByte1 = tvbuf:range(offset+1,1)
+			local plmnIdByte2 = tvbuf:range(offset+2,1)
+			local plmnIdTree = e2apTree:add(tvbuf:range(offset,3), E2SM_KPM_IndicationHeader_Format1.PLMN_Identity .. ": " .. plmnIdByte0 .. plmnIdByte1 .. plmnIdByte2)
+		
+			local mcc0 = bit.band(plmnIdByte0:le_uint(), 15)
+			local mcc1 = bit.rshift(plmnIdByte0:le_uint(), 4)
+			local mcc2 = bit.band(plmnIdByte1:le_uint(), 15)
+			plmnIdTree:add(tvbuf:range(offset,2), pLMNIdentity.MCC .. mcc0..mcc1..mcc2)
+			offset = offset + 1
+			local mnc0 = bit.rshift(plmnIdByte1:le_uint(), 4)
+			local mnc1 = bit.band(plmnIdByte2:le_uint(), 15)
+			local mnc2 = bit.rshift(plmnIdByte2:le_uint(), 4)
+			if(mnc0 == 15)
+			then
+				plmnIdTree:add(tvbuf:range(offset,2), pLMNIdentity.MNC .. mnc1..mnc2)
+			else
+				plmnIdTree:add(tvbuf:range(offset,2), pLMNIdentity.MNC .. mnc0..mnc1..mnc2)
+			end
+			offset = offset + 2
+
+		local fbyte = tvbuf:range(offset, 1):le_uint()
+		local sdPresent = bit.band(fbyte, 128)
+        offset = offset +1
+		
+		local SnssaiTree = e2apTree:add(tvbuf:range(offset, 4), E2SM_KPM_IndicationHeader_Format1.SNSSAI)
+		local sstByte = tvbuf:range(offset, 1):le_uint()
+		local sst = bit.rshift(sstByte, 6)
+		SnssaiTree:add(tvbuf:range(offset, 1), SNSSAI.sST .. ": 0" .. sst)
+		offset = offset + 1
+
+		if(sdPresent ~= 0)
+		then
+			local sd0 = tvbuf:range(offset, 1)
+			local sd1 = tvbuf:range(offset+1, 1)
+			local sd2 = tvbuf:range(offset+2, 1)
+			SnssaiTree:add(tvbuf:range(offset, 3), SNSSAI.sD .. ": " .. sd0 .. " " .. sd1 .. " " .. sd2)
+			offset = offset + 3
+		end
+
+        local fiveQi = tvbuf:range(offset, 1):le_uint()
+        local NrcgiTree = e2apTree:add(tvbuf:range(offset, 1), E2SM_KPM_IndicationHeader_Format1.fiveQI .. ": " .. fiveQi)
+        offset = offset +1
+
+        local qci = tvbuf:range(offset, 1):le_uint()
+        local NrcgiTree = e2apTree:add(tvbuf:range(offset, 1), E2SM_KPM_IndicationHeader_Format1.qci .. ": " .. qci)
+        offset = offset +1
+
+
+
+
+end
+
+function addRICindicationMsgToTree(tvbuf, valueTree, offset, valueLen, endianness)
+
+        local msgLen =  tvbuf:range(offset,1):le_uint()
+		offset = offset + 1
+		
+		strId = ""
+		local startOffset = offset
+		for i = 1, msgLen, 1
+		do
+			local msgByte = tvbuf:range(offset,1)
+			strId = strId .. " " .. tostring(msgByte)
+			offset = offset + 1
+		end
+		
+		valueTree:add(tvbuf:range(startOffset, msgLen), RicIndicationMsg.ricIndicationMsg .. ": " .. strId)
+        offset = offset + msgLen
 end
 
 function addE2RicSubscriptionReqToTree(tvbuf, pktinfo, valueTree, offset, valueLen, endianness)
@@ -762,8 +1173,14 @@ function addGobalRICIdToTree(tvbuf, valueTree, offset, valueLen, endianness)
 		end
 		offset = offset + 2
 	
-		local ricId = tvbuf:range(offset,3)
-		gRicIdTree:add(tvbuf:range(offset,3), globalRicId.ricId .. ricId)
+		-- Extracting RIC ID buffer ie. 20 bits 
+		local ricIdByte1 = tvbuf:range(offset,1):le_uint()
+		local ricId1 = tostring(int2bin(ricIdByte1))
+		local ricIdByte2 = tvbuf:range(offset+1,1):le_uint()
+		local ricId2 = tostring(int2bin(ricIdByte2))
+		local ricIdByte3 = tvbuf:range(offset+2,1):le_uint()
+		local ricId3 = string.sub(tostring(int2bin(ricIdByte3)), 1, 4)
+		gRicIdTree:add(tvbuf:range(offset,3), globalRicId.ricId .. ricId1 .. ricId2 .. ricId3)
 		offset = offset + 3
 end
 
