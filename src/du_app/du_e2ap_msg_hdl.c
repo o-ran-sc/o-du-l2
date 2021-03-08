@@ -46,9 +46,19 @@
 #include "du_e2ap_msg_hdl.h"
 #include "odu_common_codec.h"
 #include "E2SM-KPM-RANfunction-Description.h"
+#include "E2SM-KPM-IndicationHeader.h"
+#include "E2SM-KPM-IndicationHeader-Format1.h"
+#include "GlobalKPMnode-gNB-ID.h"
+#include "GlobalKPMnode-ID.h"
+#include "GlobalenGNB-ID.h"
+#include "GlobalE2node-en-gNB-ID.h"
 #include "RIC-EventTriggerStyle-List.h"
 #include "RIC-ReportStyle-List.h"
+#include "NRCGI.h"
+#include "SNSSAI.h"
+
 /* Global variable */
+S16 BuildNrCellId(BIT_STRING_t *nrcell);
 DuCfgParams duCfgParam;
 uint8_t fillRanFunctionsItemIe(RANfunction_ItemIEs_t *RanFunctionsItemIe);
 /*******************************************************************
@@ -1645,7 +1655,420 @@ uint8_t BuildRicIndMsg()
    return ROK;
 }
 /*******************************************************************
+*
+* brief Fill RIC Indication Header nRCGI 
+*
+* @details
+*
+*    Function : FillIndHeadernRCGI
+*
+* Functionality:Fills the RicIndication Message
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+******************************************************************/
+
+uint8_t FillIndHeadernRCGI(struct NRCGI *nrcgi)
+{
+   if(nrcgi)
+   {
+      uint8_t ret;
+      uint8_t byteSize = 5;
+      /* Allocate Buffer Memory */
+      nrcgi->pLMN_Identity.size = PLMN_SIZE * sizeof(uint8_t);
+      DU_ALLOC(nrcgi->pLMN_Identity.buf, nrcgi->pLMN_Identity.size);
+      if(nrcgi->pLMN_Identity.buf == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory Allocation failed at FillIndHeadernRCGI");
+         return RFAILED;
+      }
+      ret = buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn,\
+            nrcgi->pLMN_Identity.buf); // Building PLMN function
+      if(ret != ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : failed at FillIndHeadernRCGI");
+         return RFAILED;
+      }
+      /*nrCellIdentity*/
+      nrcgi->nRCellIdentity.size = byteSize * sizeof(uint8_t);
+      DU_ALLOC(nrcgi->nRCellIdentity.buf, nrcgi->nRCellIdentity.size);
+      if(nrcgi->nRCellIdentity.buf == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory Allocation failed at FillIndHeadernRCGI");
+         return RFAILED;
+      }
+      if(BuildNrCellId(&nrcgi->nRCellIdentity) != ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : failed at FillIndHeadernRCGI");
+         return RFAILED;  
+      }
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  E2AP : failed at FillIndHeadernRCGI");
+      return RFAILED;
+   }
+   return ROK;
+}
+/*******************************************************************
+*
+* brief Fill the RicIndication Message PlmnIdentity
+*
+* @details
+*
+*    Function : FillPlmnIdentity 
+*
+* Functionality:Fills the RicIndication Message
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+******************************************************************/
+
+uint8_t FillPlmnIdentity(PLMN_Identity_t *plmnIdentity)
+{
+   if(plmnIdentity)
+   { 
+      plmnIdentity->size = 3 * sizeof(uint8_t);
+      plmnIdentity->buf = NULLP;
+      DU_ALLOC(plmnIdentity->buf , plmnIdentity->size);
+      if(plmnIdentity->buf == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory Allocation failed at FillPlmnIdentity");
+         return RFAILED;
+      }
+      else
+         buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn,\
+               plmnIdentity->buf);
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  E2AP : failed at FillPlmnIdentity");
+      return RFAILED;
+   }
+
+   return ROK;
+}
+/*******************************************************************
+*
+* brief Fill the RicIndication Message SliceId
+*
+* @details
+*
+*    Function : FillSliceId 
+*
+* Functionality:Fills the RicIndication Message
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+******************************************************************/
+
+uint8_t FillSliceId(SNSSAI_t *snssai) 
+{
+   /*SNSSAI*/
+   /*ssT*/
+   snssai->sST.size = sizeof(uint8_t);
+   DU_ALLOC(snssai->sST.buf,snssai->sST.size);
+   if(snssai->sST.buf == NULLP)
+   {
+      DU_LOG("\nERROR  -->  E2AP : failed at FillSliceId"); 
+      return RFAILED;
+   }
+   snssai->sST.buf[0] = 3;
+   /*sD*/
+   DU_ALLOC(snssai->sD,sizeof(OCTET_STRING_t));
+   if(snssai->sD == NULLP)
+   {
+      DU_LOG("\nERROR  -->  E2AP : failed at FillSliceId");
+      return RFAILED;
+   }
+   snssai->sD->size = 3*sizeof(uint8_t);
+   DU_ALLOC(snssai->sD->buf,snssai->sD->size);
+   if(snssai->sD->buf == NULLP)
+   {
+      DU_LOG("\nERROR  -->  E2AP : failed at FillSliceId");
+      return RFAILED;
+   }
+   snssai->sD->buf[0] = 3;
+   snssai->sD->buf[1] = 6;
+   snssai->sD->buf[2] = 9;
+
+   return ROK;
+}
+/*******************************************************************
+*
+* brief Fill the RicIndication Message header format
+*
+* @details
+*
+*    Function : BuildIndHdrFrmt1 
+*
+* Functionality:Fills the RicIndication Message
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+******************************************************************/
+
+uint8_t BuildIndHdrFrmt1(E2SM_KPM_IndicationHeader_Format1_t *indicationHeader)
+{
+   uint8_t unused = 0;
+   uint8_t byteSize = 4;
+   uint8_t val = 1;
+   GlobalKPMnode_ID_t *idGlobalKPMnodeID = NULLP;
+
+   if(indicationHeader != NULLP)
+   {
+      DU_ALLOC(indicationHeader->id_GlobalKPMnode_ID, sizeof(GlobalKPMnode_ID_t));
+      if(indicationHeader->id_GlobalKPMnode_ID == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP :  Memory allocation failed at BuildIndHdrFrmt1");
+         return RFAILED;  
+      }
+      else
+      {
+         idGlobalKPMnodeID = indicationHeader->id_GlobalKPMnode_ID;
+         idGlobalKPMnodeID->present = GlobalKPMnode_ID_PR_gNB;
+
+         DU_ALLOC(idGlobalKPMnodeID->choice.gNB, sizeof(GlobalKPMnode_gNB_ID_t));
+         if(idGlobalKPMnodeID->choice.gNB == NULLP)
+         { 
+            DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at BuildIndHdrFrmt1");
+            return RFAILED;
+         }
+         else
+         {
+            idGlobalKPMnodeID->choice.gNB->global_gNB_ID.plmn_id.size = 3 * sizeof(uint8_t);
+            idGlobalKPMnodeID->choice.gNB->global_gNB_ID.plmn_id.buf  = NULLP;
+            DU_ALLOC(idGlobalKPMnodeID->choice.gNB->global_gNB_ID.plmn_id.buf,\
+                  idGlobalKPMnodeID->choice.gNB->global_gNB_ID.plmn_id.size );
+            if(idGlobalKPMnodeID->choice.gNB->global_gNB_ID.plmn_id.buf == NULLP)
+            {
+               DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at BuildIndHdrFrmt1");
+               return RFAILED;
+            }
+            else
+            {
+               buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn, \
+                     idGlobalKPMnodeID->choice.gNB->global_gNB_ID.plmn_id.buf);
+               idGlobalKPMnodeID->choice.gNB->global_gNB_ID.gnb_id.present = GNB_ID_Choice_PR_gnb_ID;
+               idGlobalKPMnodeID->choice.gNB->global_gNB_ID.gnb_id.choice.gnb_ID.size =  byteSize * sizeof(uint8_t);
+               DU_ALLOC(idGlobalKPMnodeID->choice.gNB->global_gNB_ID.gnb_id.choice.gnb_ID.buf ,\
+                     idGlobalKPMnodeID->choice.gNB->global_gNB_ID.gnb_id.choice.gnb_ID.size);
+               if(idGlobalKPMnodeID->choice.gNB->global_gNB_ID.gnb_id.choice.gnb_ID.size == NULLP)
+               {
+                  DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at BuildIndHdrFrmt1");
+                  return RFAILED;
+               }
+               else
+               {  
+                  fillBitString(&(idGlobalKPMnodeID->choice.gNB->global_gNB_ID.gnb_id.choice.gnb_ID), \
+                        unused, byteSize, val);
+                  DU_ALLOC(idGlobalKPMnodeID->choice.gNB->gNB_CU_UP_ID, sizeof(GNB_CU_UP_ID_t));
+                  if(idGlobalKPMnodeID->choice.gNB->gNB_CU_UP_ID == NULLP)
+                  {
+                     DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at BuildIndHdrFrmt1");
+                     return RFAILED;
+                  }
+                  else
+                  {
+                     idGlobalKPMnodeID->choice.gNB->gNB_CU_UP_ID->size = 1 * sizeof(uint8_t);
+                     idGlobalKPMnodeID->choice.gNB->gNB_CU_UP_ID->buf = NULLP;
+                     DU_ALLOC(idGlobalKPMnodeID->choice.gNB->gNB_CU_UP_ID->buf,\
+                           idGlobalKPMnodeID->choice.gNB->gNB_CU_UP_ID->size);
+                     if(idGlobalKPMnodeID->choice.gNB->gNB_CU_UP_ID->buf == NULLP)
+                     {
+                        DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at BuildIndHdrFrmt1");
+                        return RFAILED;
+                     }
+                     else
+                     {
+                        *(idGlobalKPMnodeID->choice.gNB->gNB_CU_UP_ID->buf) = 1;
+
+                        DU_ALLOC(idGlobalKPMnodeID->choice.gNB->gNB_DU_ID,sizeof(GNB_DU_ID_t));
+                        if(idGlobalKPMnodeID->choice.gNB->gNB_DU_ID == NULLP)
+                        {
+                           DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at BuildIndHdrFrmt1");
+                           return RFAILED;
+                        }
+                        else
+                        {
+                           idGlobalKPMnodeID->choice.gNB->gNB_DU_ID->size  = 1 * sizeof(uint8_t);
+                           idGlobalKPMnodeID->choice.gNB->gNB_DU_ID->buf = NULLP;
+                           DU_ALLOC(idGlobalKPMnodeID->choice.gNB->gNB_DU_ID->buf ,\
+                                 idGlobalKPMnodeID->choice.gNB->gNB_DU_ID->size);
+                           if(idGlobalKPMnodeID->choice.gNB->gNB_DU_ID->buf == NULLP)
+                           {
+                              DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at BuildIndHdrFrmt1");
+                              return RFAILED;
+                           }
+                           else
+                           {
+                              *(idGlobalKPMnodeID->choice.gNB->gNB_DU_ID->buf) = 1;
+                              DU_ALLOC(indicationHeader->nRCGI , sizeof(struct NRCGI));
+                              if(indicationHeader->nRCGI == NULLP)
+                              {
+                                 DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at BuildIndHdrFrmt1");
+                                 return RFAILED;
+                              }
+                              else
+                              {
+                                 if(FillIndHeadernRCGI(indicationHeader->nRCGI) != ROK)
+                                 {
+                                    DU_LOG("\nERROR  -->  E2AP :  failed at BuildIndHdrFrmt1");
+                                    return RFAILED;
+                                 }
+
+                                 else
+                                 {
+                                    DU_ALLOC(indicationHeader->pLMN_Identity, sizeof(PLMN_Identity_t));
+                                    if(indicationHeader->pLMN_Identity == NULLP)
+                                    {
+                                       DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at BuildIndHdrFrmt1");
+                                       return RFAILED;
+                                    }   
+                                    else
+                                    {
+                                       if(FillPlmnIdentity(indicationHeader->pLMN_Identity) != ROK)
+                                       {
+                                          DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at BuildIndHdrFrmt1");
+                                          return RFAILED;
+                                       }
+                                       else
+                                       {
+                                          DU_ALLOC(indicationHeader->sliceID, sizeof(SNSSAI_t));
+                                          if(indicationHeader->sliceID == NULLP)
+                                          {
+                                             DU_LOG("\nERROR  -->  E2AP : Memory allocation failed\
+                                                   at BuildIndHdrFrmt1");
+                                             return RFAILED;
+                                          }
+                                          else
+                                          {
+                                             if(FillSliceId(indicationHeader->sliceID) != ROK)
+                                             {
+                                                DU_LOG("\nERROR  -->  E2AP : failed  at BuildIndHdrFrmt1");
+                                                return RFAILED;
+                                             }
+                                             else
+                                             {
+                                                DU_ALLOC(indicationHeader->fiveQI ,sizeof(uint16_t));
+                                                if(indicationHeader->fiveQI == NULLP)
+                                                {
+                                                   DU_LOG("\nERROR  -->  E2AP : Memory allocation\
+                                                         failed at BuildIndHdrFrmt1");
+                                                   return RFAILED;
+                                                }
+                                                else
+                                                {
+                                                   *(indicationHeader->fiveQI)=9;
+                                                   DU_ALLOC(indicationHeader->qci ,sizeof(uint16_t));
+                                                   if(indicationHeader->qci == NULLP)
+                                                   {
+                                                      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed\
+                                                            at BuildIndHdrFrmt1");
+                                                      return RFAILED;
+                                                   }
+                                                   else
+                                                   {
+                                                      *(indicationHeader->qci)=1;
+                                                      return ROK;
+                                                   }
+                                                }
+
+                                             }
+                                          }
+                                       }
+                                    }
+                                 }
+                              }
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+   return RFAILED;
+}
+/*******************************************************************
  *
+ * brief Builds the RicIndication Header
+ *
+ * @details
+ *
+ *    Function : Builds the RicIndication Header 
+ *
+ * Functionality:Fills the RicIndication Header
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+uint8_t BuildRicIndHdr(RICindicationHeader_t *ricIndHdr)
+{
+   E2SM_KPM_IndicationHeader_t *kpmIndHdr = NULLP;
+   asn_enc_rval_t   encRetVal;
+
+   while(true)
+   {
+      DU_ALLOC(kpmIndHdr, sizeof(E2SM_KPM_IndicationHeader_t));
+      if(kpmIndHdr == NULLP)
+      {
+         DU_LOG("\nERROR  -->  Memory allocation failure in BuildRicIndHdr");
+         return RFAILED;
+      }
+      kpmIndHdr->present = E2SM_KPM_IndicationHeader_PR_indicationHeader_Format1;
+
+      DU_ALLOC(kpmIndHdr->choice.indicationHeader_Format1, sizeof(E2SM_KPM_IndicationHeader_Format1_t));
+      if(!kpmIndHdr->choice.indicationHeader_Format1)
+      {
+         DU_LOG("\nERROR  -->  Memory allocation failure in BuildRicIndHdr");
+         return RFAILED;
+      }
+
+      if(BuildIndHdrFrmt1(kpmIndHdr->choice.indicationHeader_Format1) == ROK)
+      {
+         xer_fprint(stdout, &asn_DEF_E2SM_KPM_IndicationHeader , kpmIndHdr);
+         cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+         encBufSize = 0;
+         encRetVal = aper_encode(&asn_DEF_E2SM_KPM_IndicationHeader, 0, kpmIndHdr, PrepFinalEncBuf, encBuf);
+         /* Encode results */
+         if(encRetVal.encoded == ENCODE_FAIL)
+         {
+            DU_LOG( "\nERROR  -->  F1AP : Could not encode Indication Header\
+                  (at %s)\n",encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+            return RFAILED;
+         }
+         else
+         {
+            DU_LOG("\nDEBUG  -->  F1AP : Created APER  for RIC  Indication Header");
+            for(int i=0; i< encBufSize; i++)
+            {
+               DU_LOG("%x",encBuf[i]);
+            }
+            ricIndHdr->size = encBufSize;
+            DU_ALLOC(ricIndHdr->buf,ricIndHdr->size);
+            if(ricIndHdr->buf == NULLP)
+               return RFAILED;
+            else
+            {
+               memcpy(ricIndHdr->buf, encBuf, ricIndHdr->size);
+               return ROK;
+            }
+         }
+
+      }
+   } 
+   return ROK;
+
+}
+/*******************************************************************
+*
  * brief Fill the RicIndication Message
  *
  * @details
@@ -1666,10 +2089,10 @@ uint8_t FillRicIndication(RICindication_t *ricIndicationMsg)
    elementCnt = 6;
 
    ricIndicationMsg->protocolIEs.list.count = elementCnt;
-   ricIndicationMsg->protocolIEs.list.size  = elementCnt * sizeof(RICindication_t);
+   ricIndicationMsg->protocolIEs.list.size  = elementCnt * sizeof(RICindication_t *);
    /* Initialize the Ric Indication members */
    DU_ALLOC(ricIndicationMsg->protocolIEs.list.array, \
-	 ricIndicationMsg->protocolIEs.list.size);
+         ricIndicationMsg->protocolIEs.list.size);
    if(ricIndicationMsg->protocolIEs.list.array == NULLP)
    {
       DU_LOG("\nERROR  -->  E2AP : Memory allocation for RICindicationIEs failed");
@@ -1679,97 +2102,105 @@ uint8_t FillRicIndication(RICindication_t *ricIndicationMsg)
    {
       for(idx=0; idx<elementCnt; idx++)
       {
-	 DU_ALLOC(ricIndicationMsg->protocolIEs.list.array[idx],\
-	       sizeof(RICindication_IEs_t));
-	 if(ricIndicationMsg->protocolIEs.list.array[idx] == NULLP)
-	 {
-	    DU_LOG("\nERROR  -->  E2AP : Memory allocation for RICindicationIEs failed");
-	    ret = RFAILED;
-	 }
+         DU_ALLOC(ricIndicationMsg->protocolIEs.list.array[idx],\
+               sizeof(RICindication_IEs_t));
+         if(ricIndicationMsg->protocolIEs.list.array[idx] == NULLP)
+         {
+            DU_LOG("\nERROR  -->  E2AP : Memory allocation for RICindicationIEs failed");
+            ret = RFAILED;
+         }
       }
       if(ret != RFAILED)
       {
-	 idx = 0;
+         idx = 0;
 
-	 ricIndicationMsg->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RICrequestID;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->value.present = \
-									RICindication_IEs__value_PR_RICrequestID;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICrequestID.ricRequestorID =\
-												  e2apMsgDb.ricReqId;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICrequestID.ricInstanceID =\
-												 e2apMsgDb.ricInstanceId;
+         ricIndicationMsg->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RICrequestID;
+         ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
+         ricIndicationMsg->protocolIEs.list.array[idx]->value.present = \
+                                                                        RICindication_IEs__value_PR_RICrequestID;
+         ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICrequestID.ricRequestorID =\
+                                                                                                  e2apMsgDb.ricReqId;
+         ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICrequestID.ricInstanceID =\
+                                                                                                 e2apMsgDb.ricInstanceId;
 
-	 idx++;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RANfunctionID;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->value.present = \
-									RICindication_IEs__value_PR_RANfunctionID;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RANfunctionID =
-	    e2apMsgDb.ranFuncId;
+         idx++;
+         ricIndicationMsg->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RANfunctionID;
+         ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
+         ricIndicationMsg->protocolIEs.list.array[idx]->value.present = \
+                                                                        RICindication_IEs__value_PR_RANfunctionID;
+         ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RANfunctionID =
+            e2apMsgDb.ranFuncId;
 
-	 idx++;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RICactionID;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->value.present = \
-									RICindication_IEs__value_PR_RICactionID;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICactionID =
-	    e2apMsgDb.ricActionId;
+         idx++;
+         ricIndicationMsg->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RICactionID;
+         ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
+         ricIndicationMsg->protocolIEs.list.array[idx]->value.present = \
+                                                                        RICindication_IEs__value_PR_RICactionID;
+         ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICactionID =
+            e2apMsgDb.ricActionId;
 
-	 idx++;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RICindicationType;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->value.present = \
-									RICindication_IEs__value_PR_RICindicationType;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationType =
-	    e2apMsgDb.ricActionType;
+         idx++;
+         ricIndicationMsg->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RICindicationType;
+         ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
+         ricIndicationMsg->protocolIEs.list.array[idx]->value.present = \
+                                                                        RICindication_IEs__value_PR_RICindicationType;
+         ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationType =
+            e2apMsgDb.ricActionType;
 
-	 idx++;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RICindicationHeader;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->value.present = \
-									RICindication_IEs__value_PR_RICindicationHeader;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader.size = 3 *
-	    sizeof(uint8_t);
-	 DU_ALLOC(ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader.buf ,\
-	       ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader.size);
-	 if(ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader.buf == NULLP)
-	 {
-	    DU_LOG("\nERROR  -->  E2AP : Memory allocation for RICindicationIEs failed");
-	    ret = RFAILED;
-	 }
-	 else
-	 {
-	    buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn, \
-		  ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader.buf);
-	    idx++;
-	    /* TO BE CHANGED: RIC INDICATION DATA */
-	    /* For now filling a dummy octect data, need to tested with PRBs*/
-            BuildRicIndMsg();
-	    ricIndicationMsg->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RICindicationMessage;
-	    ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
-	    ricIndicationMsg->protocolIEs.list.array[idx]->value.present = \
-									   RICindication_IEs__value_PR_RICindicationMessage;
-	    ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationMessage.size = 3 *
-	       sizeof(uint8_t);
-	    DU_ALLOC(ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationMessage.buf ,\
-		  ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationMessage.size);
-	    if(ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationMessage.buf == NULLP)
-	    {
-	       DU_LOG("\nERROR  -->  E2AP : Memory allocation for RICindicationIEs failed");
-	       ret = RFAILED;
-	    }
-	    else
-	    {
-	       buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn, \
-		     ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationMessage.buf);
-	    }
-	 }
-      }
-   }
-   return ret;
+         idx++;
+         ricIndicationMsg->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RICindicationHeader;
+         ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
+         ricIndicationMsg->protocolIEs.list.array[idx]->value.present = \
+                                                                        RICindication_IEs__value_PR_RICindicationHeader;
+
+         if(BuildRicIndHdr(&ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader)!= ROK)
+         {
+            DU_LOG("\nERROR  -->  E2AP :  RICindicationIEs failed");
+            return RFAILED;
+         }
+#if 0
+         ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader.size = 3 *
+            sizeof(uint8_t);
+         DU_ALLOC(ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader.buf ,\
+               ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader.size);
+         if(ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader.buf == NULLP)
+         {
+            DU_LOG("\nERROR  -->  E2AP : Memory allocation for RICindicationIEs failed");
+            ret = RFAILED;
+         }
+         else
+         {
+            buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn, \
+                  ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader.buf);
+#endif
+            idx++;
+            /* TO BE CHANGED: RIC INDICATION DATA */
+            /* For now filling a dummy octect data, need to tested
+            * with PRBs*/
+            ricIndicationMsg->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RICindicationMessage;
+            ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
+            ricIndicationMsg->protocolIEs.list.array[idx]->value.present = \
+            RICindication_IEs__value_PR_RICindicationMessage;
+            ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationMessage.size = 3 *
+               sizeof(uint8_t);
+            DU_ALLOC(ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationMessage.buf ,\
+                  ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationMessage.size);
+            if(ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationMessage.buf == NULLP)
+            {
+               DU_LOG("\nERROR  -->  E2AP : Memory allocation for RICindicationIEs failed");
+               ret = RFAILED;
+            }
+            else
+            {
+               buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn, \
+                     ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationMessage.buf);
+            }
+            //}
+          }
+       }
+    return    ret;
 }
-
+            
 /*******************************************************************
  *
  * @brief Builds and Send the RicIndication Message
