@@ -126,6 +126,11 @@ local e2SetupResponse = "E2SetupResponse"
 local ricSubscriptionReq = "E2RicSubscriptionRequest"
 local ricSubscriptionRsp = "E2RicSubscriptionResponse"
 
+local pLMNIdentity = {
+	MCC = "Mobile Country Code (MCC) : ",
+	MNC = "Mobile Network Code (MNC) : "
+}
+
 local globalRicId = {
 	globalRicIdMsg = "Global RIC-Id",
 	plmnId = "PLMN-Identity: ",
@@ -249,11 +254,27 @@ function addGobalE2NodeIdToTree(tvbuf, valueTree, offset, valueLen, endianness)
 		offset = offset+1
 		local globalGnbIdTree = gnbTree:add(tvbuf:range(offset, (valueLen-offset)), gnb.globalgNBID)
 		
-		local plmnId0 = tvbuf:range(offset,1)
-		local plmnId1 = tvbuf:range(offset+1,1)
-		local plmnId2 = tvbuf:range(offset+2,1)
-		globalGnbIdTree:add(tvbuf:range(offset,3), gnb.plmnId .. plmnId0 .. " " .. plmnId1 .. " " .. plmnId2)
-		offset = offset + 3
+		-- Extracting PLMN Identity
+		local plmnIdByte0 = tvbuf:range(offset,1)
+		local plmnIdByte1 = tvbuf:range(offset+1,1)
+		local plmnIdByte2 = tvbuf:range(offset+2,1)
+		local plmnIdTree = globalGnbIdTree:add(tvbuf:range(offset,3), gnb.plmnId .. plmnIdByte0 .. plmnIdByte1 .. plmnIdByte2)
+		
+		local mcc0 = bit.band(plmnIdByte0:le_uint(), 15)
+		local mcc1 = bit.rshift(plmnIdByte0:le_uint(), 4)
+		local mcc2 = bit.band(plmnIdByte1:le_uint(), 15)
+		plmnIdTree:add(tvbuf:range(offset,2), pLMNIdentity.MCC .. mcc0..mcc1..mcc2)
+		offset = offset + 1
+		local mnc0 = bit.rshift(plmnIdByte1:le_uint(), 4)
+		local mnc1 = bit.band(plmnIdByte2:le_uint(), 15)
+		local mnc2 = bit.rshift(plmnIdByte2:le_uint(), 4)
+		if(mnc0 == 15)
+		then
+			plmnIdTree:add(tvbuf:range(offset,2), pLMNIdentity.MNC .. mnc1..mnc2)
+		else
+			plmnIdTree:add(tvbuf:range(offset,2), pLMNIdentity.MNC .. mnc0..mnc1..mnc2)
+		end
+		offset = offset + 2
 		
 		--[[ Fetch one byte and check for number of bytes in bit string and number of unused bytes
 			local fbytte = tvbuf:range(offset,1)
@@ -719,17 +740,30 @@ function addGobalRICIdToTree(tvbuf, valueTree, offset, valueLen, endianness)
 		--end
 		offset = offset + 1
 	
-		local plmnId = tvbuf:range(offset,3)
-		gRicIdTree:add(tvbuf:range(offset,3), globalRicId.plmnId .. plmnId)
-		offset = offset + 3
+		-- Extracting PLMN Identity
+		local plmnIdByte0 = tvbuf:range(offset,1)
+		local plmnIdByte1 = tvbuf:range(offset+1,1)
+		local plmnIdByte2 = tvbuf:range(offset+2,1)
+		local plmnIdTree = gRicIdTree:add(tvbuf:range(offset,3), gnb.plmnId .. plmnIdByte0 .. plmnIdByte1 .. plmnIdByte2)
+		
+		local mcc0 = bit.band(plmnIdByte0:le_uint(), 15)
+		local mcc1 = bit.rshift(plmnIdByte0:le_uint(), 4)
+		local mcc2 = bit.band(plmnIdByte1:le_uint(), 15)
+		plmnIdTree:add(tvbuf:range(offset,2), pLMNIdentity.MCC .. mcc0..mcc1..mcc2)
+		offset = offset + 1
+		local mnc0 = bit.rshift(plmnIdByte1:le_uint(), 4)
+		local mnc1 = bit.band(plmnIdByte2:le_uint(), 15)
+		local mnc2 = bit.rshift(plmnIdByte2:le_uint(), 4)
+		if(mnc0 == 15)
+		then
+			plmnIdTree:add(tvbuf:range(offset,2), pLMNIdentity.MNC .. mnc1..mnc2)
+		else
+			plmnIdTree:add(tvbuf:range(offset,2), pLMNIdentity.MNC .. mnc0..mnc1..mnc2)
+		end
+		offset = offset + 2
 	
-		local ricIdByte1 = tvbuf:range(offset,1):le_uint()
-		local ricId1 = convertBin(ricIdByte1)
-		local ricIdByte2 = tvbuf:range(offset+1,1):le_uint()
-		local ricId2 = convertBin(ricIdByte2)
-		local ricIdByte3 = tvbuf:range(offset+2,1):le_uint()
-		local ricId3 = convertBin(ricIdByte3)
-		gRicIdTree:add(tvbuf:range(offset,3), globalRicId.ricId .. ricId1 .. ricId2 .. ricId3)
+		local ricId = tvbuf:range(offset,3)
+		gRicIdTree:add(tvbuf:range(offset,3), globalRicId.ricId .. ricId)
 		offset = offset + 3
 end
 
