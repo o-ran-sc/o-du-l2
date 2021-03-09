@@ -134,8 +134,12 @@ uint8_t BuildGlobalgNBId(GlobalE2node_gNB_ID_t *gNbId)
                                 
 uint8_t fillRicReportStyleList(RIC_ReportStyle_List_t *RicReportStyleList)
 {
+   uint8_t len = 0;
+
+   char str[]="ODU Measurement container for the 5GC connected deployment";
+   len = strlen(str);
    RicReportStyleList->ric_ReportStyle_Type = 1;
-   RicReportStyleList->ric_ReportStyle_Name.size =  sizeof(uint8_t);
+   RicReportStyleList->ric_ReportStyle_Name.size =  len;
    DU_ALLOC(RicReportStyleList->ric_ReportStyle_Name.buf, \
    RicReportStyleList->ric_ReportStyle_Name.size)
    if(RicReportStyleList->ric_ReportStyle_Name.buf == NULLP)
@@ -144,7 +148,7 @@ uint8_t fillRicReportStyleList(RIC_ReportStyle_List_t *RicReportStyleList)
    }
    else
    {
-      *(RicReportStyleList->ric_ReportStyle_Name.buf) =1;
+      memcpy(RicReportStyleList->ric_ReportStyle_Name.buf, str, len);
       RicReportStyleList->ric_IndicationHeaderFormat_Type = 1;
       RicReportStyleList->ric_IndicationMessageFormat_Type = 1;
    }
@@ -169,8 +173,12 @@ uint8_t fillRicReportStyleList(RIC_ReportStyle_List_t *RicReportStyleList)
 ******************************************************************/
 uint8_t fillRicEventTriggerStyleList(RIC_EventTriggerStyle_List_t *RicEventTriggerStyleList)
 {
+    uint8_t len = 0;
+
+    char str[]="Periodic Report Event";
+    len = strlen(str);
     RicEventTriggerStyleList->ric_EventTriggerStyle_Type = 1;
-    RicEventTriggerStyleList->ric_EventTriggerStyle_Name.size =  sizeof(uint8_t);
+    RicEventTriggerStyleList->ric_EventTriggerStyle_Name.size =  len;
     DU_ALLOC(RicEventTriggerStyleList->ric_EventTriggerStyle_Name.buf,\
 			RicEventTriggerStyleList->ric_EventTriggerStyle_Name.size);
     if(RicEventTriggerStyleList->ric_EventTriggerStyle_Name.buf == NULLP)
@@ -179,7 +187,7 @@ uint8_t fillRicEventTriggerStyleList(RIC_EventTriggerStyle_List_t *RicEventTrigg
     }
     else
     {
-       *(RicEventTriggerStyleList->ric_EventTriggerStyle_Name.buf) = 1;
+       memcpy(RicEventTriggerStyleList->ric_EventTriggerStyle_Name.buf, str, len);
        RicEventTriggerStyleList->ric_EventTriggerFormat_Type = 1;
     }
     return ROK;
@@ -1964,18 +1972,7 @@ uint8_t BuildIndHdrFrmt1(E2SM_KPM_IndicationHeader_Format1_t *indicationHeader)
                                                 else
                                                 {
                                                    *(indicationHeader->fiveQI)=9;
-                                                   DU_ALLOC(indicationHeader->qci ,sizeof(uint16_t));
-                                                   if(indicationHeader->qci == NULLP)
-                                                   {
-                                                      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed\
-                                                            at BuildIndHdrFrmt1");
-                                                      return RFAILED;
-                                                   }
-                                                   else
-                                                   {
-                                                      *(indicationHeader->qci)=1;
-                                                      return ROK;
-                                                   }
+                                                   return ROK;
                                                 }
 
                                              }
