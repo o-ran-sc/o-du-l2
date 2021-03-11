@@ -1606,36 +1606,46 @@ uint8_t fillSchUeCfg(Pst *pst, SchUeCfg *schUeCfg, MacUeCfg *ueCfg)
    schUeCfg->crnti = ueCfg->crnti;
 
    /* Copy MAC cell group config */
-   memset(&schUeCfg->macCellGrpCfg, 0, sizeof(SchMacCellGrpCfg));
-   if(fillMacCellGroupCfg(ueCfg->macCellGrpCfg, &schUeCfg->macCellGrpCfg) != ROK)
+   if(ueCfg->macCellGrpCfgPres == true)
    {
-      DU_LOG("\nERROR  -->  MAC : fillMacCellGroupCfg() failed");
-      return RFAILED;
+      schUeCfg->macCellGrpCfgPres = true;
+      memset(&schUeCfg->macCellGrpCfg, 0, sizeof(SchMacCellGrpCfg));
+      if(fillMacCellGroupCfg(ueCfg->macCellGrpCfg, &schUeCfg->macCellGrpCfg) != ROK)
+      {
+         DU_LOG("\nERROR  -->  MAC : fillMacCellGroupCfg() failed");
+         return RFAILED;
+      }
+   }
+   if(ueCfg->phyCellGrpCfgPres == true)
+   {
+     schUeCfg->phyCellGrpCfgPres = true;
+     /* Copy Physical cell group config */
+      memset(&schUeCfg->phyCellGrpCfg, 0,sizeof(SchPhyCellGrpCfg));
+      if(fillPhyCellGroupCfg(ueCfg->phyCellGrpCfg, &schUeCfg->phyCellGrpCfg) != ROK)
+      {
+         DU_LOG("\nERROR  -->  MAC : fillPhyCellGroupCfg() failed");
+         return RFAILED;
+      }
    }
 
-   /* Copy Physical cell group config */
-   memset(&schUeCfg->phyCellGrpCfg, 0,sizeof(SchPhyCellGrpCfg));
-   if(fillPhyCellGroupCfg(ueCfg->phyCellGrpCfg, &schUeCfg->phyCellGrpCfg) != ROK)
+   if(ueCfg->spCellCfgPres == true)
    {
-      DU_LOG("\nERROR  -->  MAC : fillPhyCellGroupCfg() failed");
-      return RFAILED;
+      schUeCfg->spCellCfgPres = true;
+      /* Copy sp cell config */
+      memset(&schUeCfg->spCellCfg, 0, sizeof(SchSpCellCfg));
+      if(fillSpCellCfg(ueCfg->spCellCfg, &schUeCfg->spCellCfg) != ROK)
+      {
+         DU_LOG("\nERROR  -->  MAC : fillSpCellCfg() failed");
+         return RFAILED;
+      }
    }
-
-   /* Copy sp cell config */
-   memset(&schUeCfg->spCellCfg, 0, sizeof(SchSpCellCfg));
-   if(fillSpCellCfg(ueCfg->spCellCfg, &schUeCfg->spCellCfg) != ROK)
-   {
-      DU_LOG("\nERROR  -->  MAC : fillSpCellCfg() failed");
-      return RFAILED;
-   }
-
    if(ueCfg->ambrCfg != NULLP)
    {
       MAC_ALLOC(schUeCfg->ambrCfg, sizeof(SchAmbrCfg));
       if(!schUeCfg->ambrCfg)
       {
-	 DU_LOG("\nERROR  -->  MAC : Memory allocation failed in sendReconfigReqToSch");
-	 return RFAILED;
+         DU_LOG("\nERROR  -->  MAC : Memory allocation failed in sendReconfigReqToSch");
+         return RFAILED;
       }
       schUeCfg->ambrCfg->ulBr = ueCfg->ambrCfg->ulBr;
    }
@@ -2361,20 +2371,20 @@ uint8_t MacProcUeReconfigReq(Pst *pst, MacUeCfg *ueCfg)
       if(ret == ROK)
       {
          /*Sending Cfg Req to SCH */
-	 ret = fillSchUeCfg(pst, &schUeCfg, ueCfg);
-	 if(ret != ROK)
-	    DU_LOG("\nERROR  -->  MAC : Failed to fill sch Ue Cfg at MacProcUeReconfigReq()");
+         ret = fillSchUeCfg(pst, &schUeCfg, ueCfg);
+         if(ret != ROK)
+            DU_LOG("\nERROR  -->  MAC : Failed to fill sch Ue Cfg at MacProcUeReconfigReq()");
          else
-	 {
+         {
             /* Fill event and send UE create request to SCH */
             ret = sendUeReqToSch(pst, &schUeCfg);
-	    if(ret != ROK)
-	       DU_LOG("\nERROR  -->  MAC : Failed to send UE Reconfig Request to SCH");
-	 }
+            if(ret != ROK)
+               DU_LOG("\nERROR  -->  MAC : Failed to send UE Reconfig Request to SCH");
+         }
       }
       else 
       {
-	 DU_LOG("\nERROR  -->  MAC : Failed to store MAC UE Cb ");
+         DU_LOG("\nERROR  -->  MAC : Failed to store MAC UE Cb ");
       }
    }
    else
