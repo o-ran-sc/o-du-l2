@@ -1130,59 +1130,62 @@ uint8_t fillMacUeCfg(uint16_t cellId, uint8_t ueIdx, uint16_t crnti, \
       ret = procUeReCfgCellInfo(macUeCfg, ueCfgDb->cellGrpCfg);
       if(ret == ROK)
       {
-         if(macUeCfg->spCellCfg.servCellCfg.initDlBwp.pdschPresent)
-	 {
-	    fillStartSymbolAndLen(macUeCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfg.numTimeDomRsrcAlloc,\
-	       &macUeCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfg, NULL);
-	 }
-	 if(macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschPresent)
+         if(macUeCfg->spCellCfgPres == true)
          {
-            fillStartSymbolAndLen(macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg.numTimeDomRsrcAlloc,\
-	       NULL, &macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg);
+            if(macUeCfg->spCellCfg.servCellCfg.initDlBwp.pdschPresent)
+            {
+               fillStartSymbolAndLen(macUeCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfg.numTimeDomRsrcAlloc,\
+                     &macUeCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfg, NULL);
+            }
+            if(macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschPresent)
+            {
+               fillStartSymbolAndLen(macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg.numTimeDomRsrcAlloc,\
+                     NULL, &macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg);
+            }
          }
-	 ret = fillAmbr(&macUeCfg->ambrCfg, ueCfgDb->ambrCfg);
-        
+         ret = fillAmbr(&macUeCfg->ambrCfg, ueCfgDb->ambrCfg);
+
          duFillModulationDetails(macUeCfg, duMacDb, ueCfgDb->ueNrCapability);
       }
 
       /* Filling LC Context */
       for(dbIdx = 0; (dbIdx < ueCfgDb->numMacLcs && ret == ROK); dbIdx++)
       {
-	 if(!ueCfgDb->macLcCfg[dbIdx].ulLcCfgPres)
-	 {
-	    /* Filling default UL LC config in MAC if not present */
-	    ueCfgDb->macLcCfg[dbIdx].ulLcCfgPres = true;
-	    fillDefaultUlLcCfg(&ueCfgDb->macLcCfg[dbIdx].ulLcCfg);
-	 }
-	 for(lcIdx = 0; lcIdx < duMacDb->numLcs; lcIdx++)
-	 {
-	    if(ueCfgDb->macLcCfg[dbIdx].lcId == duMacDb->lcCfgList[lcIdx].lcId)
-	    {
-	       lcIdFound = true;
-	       if((ueCfgDb->macLcCfg[dbIdx].configType == CONFIG_UNKNOWN) ||
-		     (ueCfgDb->macLcCfg[dbIdx].configType == CONFIG_MOD))
-	       {
-		  ueCfgDb->macLcCfg[dbIdx].configType = CONFIG_MOD;
-		  ret = fillMacLcCfgToAddMod(&macUeCfg->lcCfgList[dbIdx], &ueCfgDb->macLcCfg[dbIdx]);
-	       }
-	    }
-	    else
-	       lcIdFound = false;
-	 }
-	 if(!lcIdFound)
-	 {
-	    /* ADD/DEL CONFIG */
-	    ret = fillMacLcCfgToAddMod(&macUeCfg->lcCfgList[dbIdx], &ueCfgDb->macLcCfg[dbIdx]);
-	 }
-	 if(ret == ROK)
-	 {
-	    macUeCfg->numLcs++;
-	 }
-	 else
-	 {
-	    DU_LOG("\nERROR  -->  DU APP : Failed to add Lc at Idx %d in fillMacUeCfg()", dbIdx); 
-	    break;
-	 }
+         if(!ueCfgDb->macLcCfg[dbIdx].ulLcCfgPres)
+         {
+            /* Filling default UL LC config in MAC if not present */
+            ueCfgDb->macLcCfg[dbIdx].ulLcCfgPres = true;
+            fillDefaultUlLcCfg(&ueCfgDb->macLcCfg[dbIdx].ulLcCfg);
+         }
+         for(lcIdx = 0; lcIdx < duMacDb->numLcs; lcIdx++)
+         {
+            if(ueCfgDb->macLcCfg[dbIdx].lcId == duMacDb->lcCfgList[lcIdx].lcId)
+            {
+               lcIdFound = true;
+               if((ueCfgDb->macLcCfg[dbIdx].configType == CONFIG_UNKNOWN) ||
+                     (ueCfgDb->macLcCfg[dbIdx].configType == CONFIG_MOD))
+               {
+                  ueCfgDb->macLcCfg[dbIdx].configType = CONFIG_MOD;
+                  ret = fillMacLcCfgToAddMod(&macUeCfg->lcCfgList[dbIdx], &ueCfgDb->macLcCfg[dbIdx]);
+               }
+            }
+            else
+               lcIdFound = false;
+         }
+         if(!lcIdFound)
+         {
+            /* ADD/DEL CONFIG */
+            ret = fillMacLcCfgToAddMod(&macUeCfg->lcCfgList[dbIdx], &ueCfgDb->macLcCfg[dbIdx]);
+         }
+         if(ret == ROK)
+         {
+            macUeCfg->numLcs++;
+         }
+         else
+         {
+            DU_LOG("\nERROR  -->  DU APP : Failed to add Lc at Idx %d in fillMacUeCfg()", dbIdx); 
+            break;
+         }
       }/*End of Outer FOR loop */
    }
    return ret;
@@ -2143,27 +2146,31 @@ uint8_t DuProcMacUeCfgRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
       if(cfgRsp->result == MAC_DU_APP_RSP_OK)
       {
          if(pst->event == EVENT_MAC_UE_CREATE_RSP)
-	 {
+         {
             DU_LOG("\nINFO   -->  DU APP : MAC UE Create Response : SUCCESS [UE IDX : %d]", cfgRsp->ueIdx);
             duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[cfgRsp->ueIdx -1].\
-	       macUeCfg.macUeCfgState = UE_CREATE_COMPLETE;
-	 }
+               macUeCfg.macUeCfgState = UE_CREATE_COMPLETE;
+         }
          else if(pst->event == EVENT_MAC_UE_RECONFIG_RSP)
          {
             DU_LOG("\nINFO   -->  DU APP : MAC UE Reconfig Response : SUCCESS [UE IDX : %d]", cfgRsp->ueIdx);
             duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[cfgRsp->ueIdx -1].\
-	       macUeCfg.macUeCfgState = UE_RECFG_COMPLETE;
+               macUeCfg.macUeCfgState = UE_RECFG_COMPLETE;
             if((ret = duUpdateDuUeCbCfg(cfgRsp->ueIdx, cfgRsp->cellId)) == ROK)
+            {
                BuildAndSendUeCtxtRsp(cfgRsp->ueIdx, cfgRsp->cellId);
+               duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[cfgRsp->ueIdx -1].\
+                  macUeCfg.macUeCfgState = 0;
+            }
          }
       }
       else
       {
          DU_LOG("\nERROR  -->  DU APP : MAC UE CFG Response for EVENT[%d]: FAILURE [UE IDX : %d]", pst->event, cfgRsp->ueIdx);
-	 if(pst->event == EVENT_MAC_UE_RECONFIG_RSP)
-	 {
-	    //TODO: Send the failure case in Ue Context Setup Response
-	 }
+         if(pst->event == EVENT_MAC_UE_RECONFIG_RSP)
+         {
+            //TODO: Send the failure case in Ue Context Setup Response
+         }
          ret = RFAILED;
       }
       DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(MacUeCfgRsp));
@@ -2262,29 +2269,33 @@ uint8_t DuProcRlcUeCfgRsp(Pst *pst, RlcUeCfgRsp *cfgRsp)
       if(cfgRsp->result == RLC_DU_APP_RSP_OK)
       {
          if(pst->event == EVENT_RLC_UE_CREATE_RSP)
-	 {
-	    DU_LOG("\nINFO   -->  DU_APP: RLC UE Create Response : SUCCESS [UE IDX:%d]", cfgRsp->ueIdx);
-	    duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[cfgRsp->ueIdx -1].\
-	       rlcUeCfg.rlcUeCfgState = UE_CREATE_COMPLETE;
-	 }
-	 else if(pst->event == EVENT_RLC_UE_RECONFIG_RSP)
-	 {
+         {
+            DU_LOG("\nINFO   -->  DU_APP: RLC UE Create Response : SUCCESS [UE IDX:%d]", cfgRsp->ueIdx);
+            duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[cfgRsp->ueIdx -1].\
+               rlcUeCfg.rlcUeCfgState = UE_CREATE_COMPLETE;
+         }
+         else if(pst->event == EVENT_RLC_UE_RECONFIG_RSP)
+         {
             DU_LOG("\nINFO   -->  DU_APP: RLC UE Reconfig Response : SUCCESS [UE IDX:%d]", cfgRsp->ueIdx);
-	    duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[cfgRsp->ueIdx -1].\
-	       rlcUeCfg.rlcUeCfgState = UE_RECFG_COMPLETE;
-	    if((ret = duUpdateDuUeCbCfg(cfgRsp->ueIdx, cfgRsp->cellId)) == ROK)
+            duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[cfgRsp->ueIdx -1].\
+               rlcUeCfg.rlcUeCfgState = UE_RECFG_COMPLETE;
+            if((ret = duUpdateDuUeCbCfg(cfgRsp->ueIdx, cfgRsp->cellId)) == ROK)
+            {
                BuildAndSendUeCtxtRsp(cfgRsp->ueIdx, cfgRsp->cellId);
-	 }
+               duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[cfgRsp->ueIdx -1].\
+                  rlcUeCfg.rlcUeCfgState = 0;
+            }   
+         }
       }
       else
       {
          DU_LOG("\nERROR  -->  DU_APP: RLC UE CFG Response for EVENT[%d] : FAILED [UE IDX : %d, REASON :%d]",\
-	    pst->event, cfgRsp->ueIdx, cfgRsp->reason);
-	 if((pst->event == EVENT_RLC_UE_RECONFIG_RSP))
-	 {
+               pst->event, cfgRsp->ueIdx, cfgRsp->reason);
+         if((pst->event == EVENT_RLC_UE_RECONFIG_RSP))
+         {
             //TODO: update failure case in ue Context setup Response
-	 }
-	 ret = RFAILED;
+         }
+         ret = RFAILED;
       }
       DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(RlcUeCfgRsp));
    }
@@ -2295,8 +2306,6 @@ uint8_t DuProcRlcUeCfgRsp(Pst *pst, RlcUeCfgRsp *cfgRsp)
    }
    return ret;
 }
-
-
 
 /*******************************************************************
  *
@@ -2447,11 +2456,20 @@ uint8_t DuProcRlcDlRrcMsgRsp(Pst *pst, RlcDlRrcMsgRsp *dlRrcMsg)
    {
       GET_UE_IDX(dlRrcMsg->crnti, ueIdx);
       ueCb = &duCb.actvCellLst[dlRrcMsg->cellId -1]->ueCb[ueIdx -1];
-      if(ueCb->f1UeDb && ueCb->f1UeDb->actionType == UE_CTXT_SETUP)
+      if(ueCb->f1UeDb && ueCb->f1UeDb->dlRrcMsgPres)
       {
-        ret = duBuildAndSendUeContextSetupReq(dlRrcMsg->cellId, dlRrcMsg->crnti, &ueCb->f1UeDb->duUeCfg);
-	if(ret == RFAILED)
-	   DU_LOG("\nERROR  -->  DU APP : Failed to process UE Context Setup Request in DuProcRlcDlRrcMsgRsp()");
+         if(ueCb->f1UeDb->actionType == UE_CTXT_SETUP)
+         {
+            ret = duBuildAndSendUeContextSetupReq(dlRrcMsg->cellId, dlRrcMsg->crnti, &ueCb->f1UeDb->duUeCfg);
+            if(ret == RFAILED)
+               DU_LOG("\nERROR  -->  DU APP : Failed to process UE Context Setup Request in DuProcRlcDlRrcMsgRsp()");
+         }
+         if(ueCb->f1UeDb->actionType == UE_CTXT_MOD)
+         {
+            ret = duBuildAndSendUeContextModReq(dlRrcMsg->cellId, dlRrcMsg->crnti, &ueCb->f1UeDb->duUeCfg);
+            if(ret == RFAILED)
+               DU_LOG("\nERROR  -->  DU APP : Failed to process UE Context Mod Request in DuProcRlcDlRrcMsgRsp()");
+         }
       }
    }
    else
@@ -2479,7 +2497,7 @@ uint8_t DuProcRlcDlRrcMsgRsp(Pst *pst, RlcDlRrcMsgRsp *dlRrcMsg)
 uint8_t duProcUeContextSetupRequest(DuUeCb *ueCb)
 {
    uint8_t ret, cellId;
-   
+
    ret = ROK;
    if(ueCb)
    {
@@ -2495,7 +2513,7 @@ uint8_t duProcUeContextSetupRequest(DuUeCb *ueCb)
             {
                DU_LOG("\nERROR  -->  DU APP : Failed to send DL RRC msg in duProcUeContextSetupRequest()");
                DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, ueCb->f1UeDb->dlRrcMsg->rrcMsgPdu,\
-                  ueCb->f1UeDb->dlRrcMsg->rrcMsgSize);
+                     ueCb->f1UeDb->dlRrcMsg->rrcMsgSize);
                DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, ueCb->f1UeDb->dlRrcMsg, sizeof(F1DlRrcMsg));
             }
          }
@@ -2503,10 +2521,10 @@ uint8_t duProcUeContextSetupRequest(DuUeCb *ueCb)
       else if(ueCb->f1UeDb->actionType == UE_CTXT_SETUP)
       {
          ret = duBuildAndSendUeContextSetupReq(cellId, ueCb->crnti, &ueCb->f1UeDb->duUeCfg);
-	 if(ret == RFAILED)
-	 {
+         if(ret == RFAILED)
+         {
             DU_LOG("\nERROR  -->  DU APP : Failed to build ue context setup Req in duProcUeContextSetupRequest()");
-	 }
+         }
       }
    }
    else
@@ -2516,26 +2534,99 @@ uint8_t duProcUeContextSetupRequest(DuUeCb *ueCb)
    }
    return ret;
 }
+
 /*******************************************************************
-*
-* @brief Process UE context modification request from CU
-*
-* @details
-*
-*    Function : duProcUeContextModReq
-*
-*    Functionality: Process UE context modification request from CU
-*
-* @params[in] DuUeCb *ueCb
-* @return ROK     - success
-*         RFAILED - failure
-*
-* ****************************************************************/
+ *
+ * @brief Build and Send Ue context mod request
+ *
+ * @details
+ *
+ *
+ *    Function : duBuildAndSendUeContextModReq
+ *
+ *    Functionality: 
+ *     Build and Send Ue context mod request
+ * 
+ *  @params[in]  cellId, crnti, DuUeCfg pointer
+ *  @return ROK     - success
+ *          RFAILED - failure
+ * 
+ *****************************************************************/
+
+uint8_t duBuildAndSendUeContextModReq(uint16_t cellId, uint16_t crnti, DuUeCfg *duUeCfg)
+{
+   uint8_t ret = ROK;
+
+   DU_LOG("\nDEBUG   -->  DU_APP: Processing Ue Context Mod Request for cellId [%d]", cellId);
+   /* Filling RLC Ue Reconfig */ 
+   ret = duBuildAndSendUeReCfgReqToRlc(cellId, crnti, duUeCfg);
+   if(ret == RFAILED)
+      DU_LOG("\nERROR  -->  DU APP : Failed to build ctxt setup req for RLC at duBuildAndSendUeContextModReq()");
+   
+   /* Filling MAC Ue Reconfig */
+   ret = duBuildAndSendUeReCfgReqToMac(cellId, crnti, duUeCfg);
+   if(ret == RFAILED)
+      DU_LOG("\nERROR  -->  DU APP : Failed at build ctxt setup req for MAC at duBuildAndSendUeContextModReq()");
+
+   return ret;
+}
+/*******************************************************************
+ *
+ * @brief Processing Ue context mod request
+ *
+ * @details
+ *
+ *
+ *    Function : duProcUeContextModReq 
+ *
+ *    Functionality:
+ *        Processing  Ue context mod request
+ *
+ *  @params[in] DuUeCb *ueCb 
+ *  @return ROK     - success
+ *          RFAILED - failure
+ *
+ *****************************************************************/
+
 uint8_t duProcUeContextModReq(DuUeCb *ueCb)
 {
-    
-    //TODO:After RB configuration are done Mod Response is triggered 
-    return ROK;
+   uint8_t ret, cellId;
+
+   ret = ROK;
+   if(ueCb)
+   {
+      cellId = duCb.actvCellLst[ueCb->f1UeDb->cellIdx]->cellId;
+      /* Send DL RRC msg for security Mode */
+      if(ueCb->f1UeDb->dlRrcMsg)
+      {
+         if(ueCb->f1UeDb->dlRrcMsg->rrcMsgPdu)
+         {
+            /* Sending DL RRC Message to RLC */
+            ret = duBuildAndSendDlRrcMsgToRlc(cellId, ueCb->rlcUeCfg, ueCb->f1UeDb->dlRrcMsg);
+            if(ret == RFAILED)
+            {
+               DU_LOG("\nERROR  -->  DU APP : Failed to send DL RRC msg in duProcUeContextModReq()");
+               DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, ueCb->f1UeDb->dlRrcMsg->rrcMsgPdu,\
+                     ueCb->f1UeDb->dlRrcMsg->rrcMsgSize);
+               DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, ueCb->f1UeDb->dlRrcMsg, sizeof(F1DlRrcMsg));
+            }
+         }
+      }
+      else
+      {
+         ret = duBuildAndSendUeContextModReq(cellId, ueCb->crnti, &ueCb->f1UeDb->duUeCfg);
+         if(ret == RFAILED)
+         {
+            DU_LOG("\nERROR  -->  DU APP : Failed to build ue context setup Req in duProcUeContextModReq()");
+         }
+      }
+   }
+   else
+   {
+      //TODO: To send the failure cause in UeContextModRsp
+      DU_LOG("ERROR  -->  DU APP : Failed to process UE CNTXT MOD REQ at duProcUeContextModReq()");
+   }
+   return ROK;
 }
 /**********************************************************************
   End of file

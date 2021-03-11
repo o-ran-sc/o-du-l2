@@ -132,6 +132,7 @@ typedef struct f1UeContextSetup
    UeCtxtActionType actionType;
    uint8_t cellIdx;
    DuUeCfg  duUeCfg;        
+   bool     dlRrcMsgPres;
    F1DlRrcMsg  *dlRrcMsg;
 }F1UeContextSetupDb;
 

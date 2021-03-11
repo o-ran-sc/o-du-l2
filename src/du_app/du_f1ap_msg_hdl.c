@@ -8788,79 +8788,82 @@ uint8_t extractUeReCfgCellInfo(CellGroupConfigRrc_t *cellGrp, MacUeCfg *macUeCfg
       /* Fill MacCell Group Reconfig  */
       if(cellGrp->mac_CellGroupConfig)
       {
+         macUeCfg->macCellGrpCfgPres = true;
          macCellGroup = ((MAC_CellGroupConfig_t *)(cellGrp->mac_CellGroupConfig));
          if(macCellGroup->schedulingRequestConfig)
-	 {
+         {
             extractSchReqReConfig(macCellGroup->schedulingRequestConfig, &macUeCfg->macCellGrpCfg.schReqCfg);
-	 }
+         }
          if(macCellGroup->tag_Config)
-	 {
+         {
             extractTagReconfig(macCellGroup->tag_Config, &macUeCfg->macCellGrpCfg.tagCfg);
-	 }
-	 if(macCellGroup->bsr_Config)
-	 {
+         }
+         if(macCellGroup->bsr_Config)
+         {
             macUeCfg->macCellGrpCfg.bsrTmrCfg.periodicTimer = macCellGroup->bsr_Config->periodicBSR_Timer;
             macUeCfg->macCellGrpCfg.bsrTmrCfg.retxTimer     = macCellGroup->bsr_Config->retxBSR_Timer;
-	    if(macCellGroup->bsr_Config->logicalChannelSR_DelayTimer)
-	    {
+            if(macCellGroup->bsr_Config->logicalChannelSR_DelayTimer)
+            {
                macUeCfg->macCellGrpCfg.bsrTmrCfg.srDelayTimer  =\
-	          *(macCellGroup->bsr_Config->logicalChannelSR_DelayTimer);
-	    }
-	 }
-	 if(macCellGroup->phr_Config)
-	 {
-	    if(macCellGroup->phr_Config->present == MAC_CellGroupConfig__phr_Config_PR_setup)
-	    {
+               *(macCellGroup->bsr_Config->logicalChannelSR_DelayTimer);
+            }
+         }
+         if(macCellGroup->phr_Config)
+         {
+            if(macCellGroup->phr_Config->present == MAC_CellGroupConfig__phr_Config_PR_setup)
+            {
                macUeCfg->macCellGrpCfg.phrCfgSetupPres = true;
                if(macCellGroup->phr_Config->choice.setup)
-	       {
-                macUeCfg->macCellGrpCfg.phrCfg.periodicTimer     = \
-		   macCellGroup->phr_Config->choice.setup->phr_PeriodicTimer;
-                macUeCfg->macCellGrpCfg.phrCfg.prohibitTimer     = \
-		   macCellGroup->phr_Config->choice.setup->phr_ProhibitTimer;
-                macUeCfg->macCellGrpCfg.phrCfg.txPowerFactor     = \
-		   macCellGroup->phr_Config->choice.setup->phr_Tx_PowerFactorChange;
-                macUeCfg->macCellGrpCfg.phrCfg.multiplePHR       = \
-		   macCellGroup->phr_Config->choice.setup->multiplePHR;
-                macUeCfg->macCellGrpCfg.phrCfg.dummy             = \
-		   macCellGroup->phr_Config->choice.setup->dummy;
-                macUeCfg->macCellGrpCfg.phrCfg.phrType2OtherCell = \
-		   macCellGroup->phr_Config->choice.setup->phr_Type2OtherCell;
-                macUeCfg->macCellGrpCfg.phrCfg.phrOtherCG        = \
-		   macCellGroup->phr_Config->choice.setup->phr_ModeOtherCG;
-	       }
-	    }
-	 }
+               {
+                  macUeCfg->macCellGrpCfg.phrCfg.periodicTimer     = \
+                  macCellGroup->phr_Config->choice.setup->phr_PeriodicTimer;
+                  macUeCfg->macCellGrpCfg.phrCfg.prohibitTimer     = \
+                  macCellGroup->phr_Config->choice.setup->phr_ProhibitTimer;
+                  macUeCfg->macCellGrpCfg.phrCfg.txPowerFactor     = \
+                  macCellGroup->phr_Config->choice.setup->phr_Tx_PowerFactorChange;
+                  macUeCfg->macCellGrpCfg.phrCfg.multiplePHR       = \
+                  macCellGroup->phr_Config->choice.setup->multiplePHR;
+                  macUeCfg->macCellGrpCfg.phrCfg.dummy             = \
+                  macCellGroup->phr_Config->choice.setup->dummy;
+                  macUeCfg->macCellGrpCfg.phrCfg.phrType2OtherCell = \
+                  macCellGroup->phr_Config->choice.setup->phr_Type2OtherCell;
+                  macUeCfg->macCellGrpCfg.phrCfg.phrOtherCG        = \
+                  macCellGroup->phr_Config->choice.setup->phr_ModeOtherCG;
+               }
+            }
+         }
       }
       /* Fill Physical Cell Group Reconfig */
       if(cellGrp->physicalCellGroupConfig)
       {
+         macUeCfg->phyCellGrpCfgPres = true;
          phyCellGrpCfg = ((PhysicalCellGroupConfig_t *)(cellGrp->physicalCellGroupConfig));
          if(phyCellGrpCfg->p_NR_FR1)
-	 {
-	    if(*(phyCellGrpCfg->p_NR_FR1) != macUeCfg->phyCellGrpCfg.pNrFr1)
+         {
+            if(*(phyCellGrpCfg->p_NR_FR1) != macUeCfg->phyCellGrpCfg.pNrFr1)
                macUeCfg->phyCellGrpCfg.pNrFr1 = *(phyCellGrpCfg->p_NR_FR1);
-	 }
+         }
          macUeCfg->phyCellGrpCfg.pdschHarqAckCodebook = phyCellGrpCfg->pdsch_HARQ_ACK_Codebook;
       }
       /* Fill SpCell Reconfig */
       if(cellGrp->spCellConfig)
       {
+         macUeCfg->spCellCfgPres = true;
          spcellCfg = ((SpCellConfig_t *)(cellGrp->spCellConfig));  
          if(spcellCfg->servCellIndex)
-	 {
+         {
             macUeCfg->spCellCfg.servCellIdx = *(spcellCfg->servCellIndex);
-	 }
+         }
          /* Fill Serving cell Reconfig info */
-	 if(cellGrp->spCellConfig->spCellConfigDedicated)
-	 {
-	    servCellCfg = ((ServingCellConfig_t *)(cellGrp->spCellConfig->spCellConfigDedicated));
+         if(cellGrp->spCellConfig->spCellConfigDedicated)
+         {
+            servCellCfg = ((ServingCellConfig_t *)(cellGrp->spCellConfig->spCellConfigDedicated));
             ret = extractSpCellDedicatedCfg(servCellCfg, &macUeCfg->spCellCfg.servCellCfg);
-	    if(ret == RFAILED)
-	    {
-	       DU_LOG("\nERROR --> F1AP : Failed at extractSpCellDedicatedCfg()");
-	    }
-	 }
+            if(ret == RFAILED)
+            {
+               DU_LOG("\nERROR --> F1AP : Failed at extractSpCellDedicatedCfg()");
+            }
+         }
       }
    }
    return ret;
@@ -10004,6 +10007,7 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
                }
                else
                {
+                  duUeCb->f1UeDb->dlRrcMsgPres = true;
                   memset(duUeCb->f1UeDb->dlRrcMsg, 0, sizeof(F1DlRrcMsg));
                   ret = extractDlRrcMsg(gnbDuUeF1apId, gnbCuUeF1apId, duUeCb->f1UeDb->dlRrcMsg,\
                         &ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer);
