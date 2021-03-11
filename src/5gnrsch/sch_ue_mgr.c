@@ -201,41 +201,53 @@ void updateSchDlCb(uint8_t delIdx, SchDlCb *dlInfo)
 uint8_t fillSchUeCb(SchUeCb *ueCb, SchUeCfg *ueCfg)
 {
    uint8_t   lcIdx, ueLcIdx;
+   
+   if(ueCfg->macCellGrpCfgPres == true)
+   {
+      ueCb->ueCfg.macCellGrpCfg = ueCfg->macCellGrpCfg;  
+   }
 
-   memset(&ueCb->ueCfg, 0, sizeof(SchUeCfg));
-   memcpy(&ueCb->ueCfg, ueCfg, sizeof(SchUeCfg));
+   if(ueCfg->phyCellGrpCfgPres == true)
+   {
+      ueCb->ueCfg.phyCellGrpCfg = ueCfg->phyCellGrpCfg;
+   }
+
+   if(ueCfg->spCellCfgPres == true)
+   {
+      ueCb->ueCfg.spCellCfg = ueCfg->spCellCfg;
+   }
    ueCb->state = SCH_UE_STATE_ACTIVE;
 
    for(lcIdx = 0; lcIdx < ueCfg->numLcs; lcIdx++)
    {
       if(ueCfg->schLcCfg[lcIdx].configType == CONFIG_ADD)
       {
-	 fillSchUlLcCtxt(&ueCb->ulInfo.ulLcCtxt[ueCb->ulInfo.numUlLc], &ueCfg->schLcCfg[lcIdx]);
-	 ueCb->ulInfo.numUlLc++;
-	 fillSchDlLcCtxt(&ueCb->dlInfo.dlLcCtxt[ueCb->dlInfo.numDlLc], &ueCfg->schLcCfg[lcIdx]);
-	 ueCb->dlInfo.numDlLc++;
+         fillSchUlLcCtxt(&ueCb->ulInfo.ulLcCtxt[ueCb->ulInfo.numUlLc], &ueCfg->schLcCfg[lcIdx]);
+         ueCb->ulInfo.numUlLc++;
+         fillSchDlLcCtxt(&ueCb->dlInfo.dlLcCtxt[ueCb->dlInfo.numDlLc], &ueCfg->schLcCfg[lcIdx]);
+         ueCb->dlInfo.numDlLc++;
       }
       else
       {
-	 for(ueLcIdx = 0; ueLcIdx < ueCb->ulInfo.numUlLc; ueLcIdx++) //searching for Lc to be Mod
+         for(ueLcIdx = 0; ueLcIdx < ueCb->ulInfo.numUlLc; ueLcIdx++) //searching for Lc to be Mod
          {
-	    if(ueCb->ulInfo.ulLcCtxt[ueLcIdx].lcId == ueCfg->schLcCfg[lcIdx].lcId)
-	    {
-	       if(ueCfg->schLcCfg[lcIdx].configType == CONFIG_MOD)
-	       {
-	          fillSchUlLcCtxt(&ueCb->ulInfo.ulLcCtxt[ueLcIdx], &ueCfg->schLcCfg[lcIdx]);
-	          fillSchDlLcCtxt(&ueCb->dlInfo.dlLcCtxt[ueLcIdx], &ueCfg->schLcCfg[lcIdx]);
-		  break;
-	       }
+            if(ueCb->ulInfo.ulLcCtxt[ueLcIdx].lcId == ueCfg->schLcCfg[lcIdx].lcId)
+            {
+               if(ueCfg->schLcCfg[lcIdx].configType == CONFIG_MOD)
+               {
+                  fillSchUlLcCtxt(&ueCb->ulInfo.ulLcCtxt[ueLcIdx], &ueCfg->schLcCfg[lcIdx]);
+                  fillSchDlLcCtxt(&ueCb->dlInfo.dlLcCtxt[ueLcIdx], &ueCfg->schLcCfg[lcIdx]);
+                  break;
+               }
                if(ueCfg->schLcCfg[ueLcIdx].configType == CONFIG_DEL)
                {
-	          memset(&ueCb->ulInfo.ulLcCtxt[ueLcIdx], 0, sizeof(SchUlLcCtxt));
-	          ueCb->ulInfo.numUlLc--;
-	          updateSchUlCb(ueLcIdx, &ueCb->ulInfo); //moving arr elements one idx ahead 
-		  memset(&ueCb->dlInfo.dlLcCtxt[ueLcIdx], 0, sizeof(SchDlLcCtxt));
-	          ueCb->dlInfo.numDlLc--;
-	          updateSchDlCb(ueLcIdx, &ueCb->dlInfo); //moving arr elements one idx ahead
-		  break;
+                  memset(&ueCb->ulInfo.ulLcCtxt[ueLcIdx], 0, sizeof(SchUlLcCtxt));
+                  ueCb->ulInfo.numUlLc--;
+                  updateSchUlCb(ueLcIdx, &ueCb->ulInfo); //moving arr elements one idx ahead 
+                  memset(&ueCb->dlInfo.dlLcCtxt[ueLcIdx], 0, sizeof(SchDlLcCtxt));
+                  ueCb->dlInfo.numDlLc--;
+                  updateSchDlCb(ueLcIdx, &ueCb->dlInfo); //moving arr elements one idx ahead
+                  break;
                }
             }
          }/*End of inner for loop */

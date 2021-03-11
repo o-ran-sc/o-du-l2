@@ -1183,8 +1183,11 @@ typedef struct macUeCfg
    uint16_t cellId;
    uint8_t  ueIdx;
    uint16_t crnti;
+   bool macCellGrpCfgPres;
    MacCellGrpCfg macCellGrpCfg;
+   bool phyCellGrpCfgPres;
    PhyCellGrpCfg phyCellGrpCfg;
+   bool spCellCfgPres;
    SpCellCfg spCellCfg;
    AmbrCfg   *ambrCfg;
    ModulationInfo dlModInfo;    /* DL modulation info */

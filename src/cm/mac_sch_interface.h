@@ -1430,8 +1430,11 @@ typedef struct schUeCfg
 {
    uint16_t        cellId;
    uint16_t        crnti;
+   bool macCellGrpCfgPres;
    SchMacCellGrpCfg   macCellGrpCfg;
+   bool phyCellGrpCfgPres;
    SchPhyCellGrpCfg   phyCellGrpCfg;
+   bool spCellCfgPres;
    SchSpCellCfg       spCellCfg;
    SchAmbrCfg         *ambrCfg;
    SchModulationInfo  dlModInfo;
