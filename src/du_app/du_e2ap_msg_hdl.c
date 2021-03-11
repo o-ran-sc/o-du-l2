@@ -2150,12 +2150,6 @@ uint8_t FillRicIndication(RICindication_t *ricIndicationMsg)
          ricIndicationMsg->protocolIEs.list.array[idx]->value.present = \
                                                                         RICindication_IEs__value_PR_RICindicationHeader;
 
-         if(BuildRicIndHdr(&ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader)!= ROK)
-         {
-            DU_LOG("\nERROR  -->  E2AP :  RICindicationIEs failed");
-            return RFAILED;
-         }
-#if 0
          ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader.size = 3 *
             sizeof(uint8_t);
          DU_ALLOC(ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader.buf ,\
@@ -2169,11 +2163,11 @@ uint8_t FillRicIndication(RICindication_t *ricIndicationMsg)
          {
             buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn, \
                   ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader.buf);
-#endif
             idx++;
             /* TO BE CHANGED: RIC INDICATION DATA */
             /* For now filling a dummy octect data, need to tested
             * with PRBs*/
+            BuildRicIndMsg();
             ricIndicationMsg->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RICindicationMessage;
             ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
             ricIndicationMsg->protocolIEs.list.array[idx]->value.present = \
@@ -2192,9 +2186,9 @@ uint8_t FillRicIndication(RICindication_t *ricIndicationMsg)
                buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn, \
                      ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationMessage.buf);
             }
-            //}
           }
        }
+    }
     return    ret;
 }
             
