@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8a6df30f_ca225de4",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1824,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-11T13:21:57Z",
+      "side": 1,
+      "message": "to fill numHarq only if spcell is present",
+      "revId": "04dcff19794d68effc02bf30f5bdc5f228a60679",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f060c0f0_143f57eb",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1827,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-11T13:21:57Z",
+      "side": 1,
+      "message": "to fill bsr only if macCellGrp is present",
+      "revId": "04dcff19794d68effc02bf30f5bdc5f228a60679",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2a279703_92dabaa6",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1979,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-03-11T13:21:57Z",
+      "side": 1,
+      "message": "test if the above macUECfg db is not modified if there is no spcell, macCell, phyCell",
+      "revId": "04dcff19794d68effc02bf30f5bdc5f228a60679",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
