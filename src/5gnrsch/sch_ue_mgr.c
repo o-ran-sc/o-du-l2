@@ -201,41 +201,67 @@ void updateSchDlCb(uint8_t delIdx, SchDlCb *dlInfo)
 uint8_t fillSchUeCb(SchUeCb *ueCb, SchUeCfg *ueCfg)
 {
    uint8_t   lcIdx, ueLcIdx;
+  
+   ueCb->ueCfg.cellId = ueCfg->cellId;
+   ueCb->ueCfg.crnti = ueCfg->crnti;
+   if(ueCfg->macCellGrpCfgPres == true)
+   {
+      memcpy(&ueCb->ueCfg.macCellGrpCfg , &ueCfg->macCellGrpCfg, sizeof(SchMacCellGrpCfg)); 
+      ueCb->ueCfg.macCellGrpCfgPres = true;
+   }
 
-   memset(&ueCb->ueCfg, 0, sizeof(SchUeCfg));
-   memcpy(&ueCb->ueCfg, ueCfg, sizeof(SchUeCfg));
+   if(ueCfg->phyCellGrpCfgPres == true)
+   {
+      memcpy(&ueCb->ueCfg.phyCellGrpCfg ,  &ueCfg->phyCellGrpCfg, sizeof(SchPhyCellGrpCfg));
+      ueCb->ueCfg.phyCellGrpCfgPres = true;
+   }
+
+   if(ueCfg->spCellCfgPres == true)
+   {
+      memcpy(&ueCb->ueCfg.spCellCfg , &ueCfg->spCellCfg, sizeof(SchSpCellCfg));
+      ueCb->ueCfg.spCellCfgPres = true;
+   }
    ueCb->state = SCH_UE_STATE_ACTIVE;
+   if(ueCfg->ambrCfg != NULLP)
+   {
+      SCH_ALLOC(ueCb->ueCfg.ambrCfg , sizeof(SchAmbrCfg));
+      memcpy(&ueCb->ueCfg.ambrCfg->ulBr , &ueCfg->ambrCfg->ulBr, sizeof(SchAmbrCfg));
+   }
+   
+   memcpy(&ueCb->ueCfg.dlModInfo,  &ueCfg->dlModInfo , sizeof(SchModulationInfo));
+   memcpy(&ueCb->ueCfg.ulModInfo,  &ueCfg->ulModInfo , sizeof(SchModulationInfo));
 
+   //Updating SchUlCb and SchDlCb DB in SchUeCb
    for(lcIdx = 0; lcIdx < ueCfg->numLcs; lcIdx++)
    {
       if(ueCfg->schLcCfg[lcIdx].configType == CONFIG_ADD)
       {
-	 fillSchUlLcCtxt(&ueCb->ulInfo.ulLcCtxt[ueCb->ulInfo.numUlLc], &ueCfg->schLcCfg[lcIdx]);
-	 ueCb->ulInfo.numUlLc++;
-	 fillSchDlLcCtxt(&ueCb->dlInfo.dlLcCtxt[ueCb->dlInfo.numDlLc], &ueCfg->schLcCfg[lcIdx]);
-	 ueCb->dlInfo.numDlLc++;
+         fillSchUlLcCtxt(&ueCb->ulInfo.ulLcCtxt[ueCb->ulInfo.numUlLc], &ueCfg->schLcCfg[lcIdx]);
+         ueCb->ulInfo.numUlLc++;
+         fillSchDlLcCtxt(&ueCb->dlInfo.dlLcCtxt[ueCb->dlInfo.numDlLc], &ueCfg->schLcCfg[lcIdx]);
+         ueCb->dlInfo.numDlLc++;
       }
       else
       {
-	 for(ueLcIdx = 0; ueLcIdx < ueCb->ulInfo.numUlLc; ueLcIdx++) //searching for Lc to be Mod
+         for(ueLcIdx = 0; ueLcIdx < ueCb->ulInfo.numUlLc; ueLcIdx++) //searching for Lc to be Mod
          {
-	    if(ueCb->ulInfo.ulLcCtxt[ueLcIdx].lcId == ueCfg->schLcCfg[lcIdx].lcId)
-	    {
-	       if(ueCfg->schLcCfg[lcIdx].configType == CONFIG_MOD)
-	       {
-	          fillSchUlLcCtxt(&ueCb->ulInfo.ulLcCtxt[ueLcIdx], &ueCfg->schLcCfg[lcIdx]);
-	          fillSchDlLcCtxt(&ueCb->dlInfo.dlLcCtxt[ueLcIdx], &ueCfg->schLcCfg[lcIdx]);
-		  break;
-	       }
+            if(ueCb->ulInfo.ulLcCtxt[ueLcIdx].lcId == ueCfg->schLcCfg[lcIdx].lcId)
+            {
+               if(ueCfg->schLcCfg[lcIdx].configType == CONFIG_MOD)
+               {
+                  fillSchUlLcCtxt(&ueCb->ulInfo.ulLcCtxt[ueLcIdx], &ueCfg->schLcCfg[lcIdx]);
+                  fillSchDlLcCtxt(&ueCb->dlInfo.dlLcCtxt[ueLcIdx], &ueCfg->schLcCfg[lcIdx]);
+                  break;
+               }
                if(ueCfg->schLcCfg[ueLcIdx].configType == CONFIG_DEL)
                {
-	          memset(&ueCb->ulInfo.ulLcCtxt[ueLcIdx], 0, sizeof(SchUlLcCtxt));
-	          ueCb->ulInfo.numUlLc--;
-	          updateSchUlCb(ueLcIdx, &ueCb->ulInfo); //moving arr elements one idx ahead 
-		  memset(&ueCb->dlInfo.dlLcCtxt[ueLcIdx], 0, sizeof(SchDlLcCtxt));
-	          ueCb->dlInfo.numDlLc--;
-	          updateSchDlCb(ueLcIdx, &ueCb->dlInfo); //moving arr elements one idx ahead
-		  break;
+                  memset(&ueCb->ulInfo.ulLcCtxt[ueLcIdx], 0, sizeof(SchUlLcCtxt));
+                  ueCb->ulInfo.numUlLc--;
+                  updateSchUlCb(ueLcIdx, &ueCb->ulInfo); //moving arr elements one idx ahead 
+                  memset(&ueCb->dlInfo.dlLcCtxt[ueLcIdx], 0, sizeof(SchDlLcCtxt));
+                  ueCb->dlInfo.numDlLc--;
+                  updateSchDlCb(ueLcIdx, &ueCb->dlInfo); //moving arr elements one idx ahead
+                  break;
                }
             }
          }/*End of inner for loop */
@@ -390,10 +416,14 @@ uint8_t schFillPuschAlloc(SchUeCb *ueCb, uint16_t pdcchSlot, uint32_t dataVol, S
   uint8_t  idx            = 0;
   SchCellCb *cellCb       = ueCb->cellCb;
   SchUlSlotInfo *schUlSlotInfo = NULLP;
-  uint8_t  k2 = ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.puschCfg.timeDomRsrcAllocList[0].k2;
-  uint8_t  startSymb = ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.puschCfg.timeDomRsrcAllocList[0].startSymbol;
-  uint8_t  symbLen = ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.puschCfg.timeDomRsrcAllocList[0].symbolLength;
-
+  uint8_t k2=0, startSymb=0 , symbLen=0;
+  
+  if(ueCb->ueCfg.spCellCfgPres == true)
+  {
+     k2 = ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.puschCfg.timeDomRsrcAllocList[0].k2;
+     startSymb = ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.puschCfg.timeDomRsrcAllocList[0].startSymbol;
+     symbLen = ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.puschCfg.timeDomRsrcAllocList[0].symbolLength;
+  }
   puschSlot = (pdcchSlot + k2) % cellCb->numSlots;
 
   startRb = cellCb->schUlSlotInfo[puschSlot]->puschCurrentPrb;
@@ -457,8 +487,16 @@ uint8_t schFillPuschAlloc(SchUeCb *ueCb, uint16_t pdcchSlot, uint32_t dataVol, S
 uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo puschInfo, DciInfo *dciInfo)
 {
    SchCellCb         *cellCb  = ueCb->cellCb;
-   SchControlRsrcSet coreset1 = ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdcchCfg.cRSetToAddModList[0];
-
+   SchControlRsrcSet coreset1 ;
+   
+   if(ueCb->ueCfg.spCellCfgPres == true)
+   {
+     coreset1 = ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdcchCfg.cRSetToAddModList[0];
+   }
+   else
+   {
+      memset(&coreset1, 0, sizeof(SchControlRsrcSet));
+   }
    dciInfo->cellId = cellCb->cellId;
    dciInfo->crnti  = ueCb->crnti;
 

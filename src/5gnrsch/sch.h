@@ -168,6 +168,21 @@ typedef struct schUlCb
    SchUlLcCtxt ulLcCtxt[MAX_NUM_LC];
 }SchUlCb;
 
+typedef struct schUeCfgCb
+{
+   uint16_t        cellId;
+   uint16_t        crnti;
+   bool macCellGrpCfgPres;
+   SchMacCellGrpCfg   macCellGrpCfg;
+   bool phyCellGrpCfgPres;
+   SchPhyCellGrpCfg   phyCellGrpCfg;
+   bool spCellCfgPres;
+   SchSpCellCfg       spCellCfg;
+   SchAmbrCfg         *ambrCfg;
+   SchModulationInfo  dlModInfo;
+   SchModulationInfo  ulModInfo;
+}SchUeCfgCb;
+
 /**
  * @brief
  * UE control block
@@ -176,7 +191,7 @@ typedef struct schUeCb
 {
    uint16_t   ueIdx;
    uint16_t   crnti;
-   SchUeCfg   ueCfg;
+   SchUeCfgCb ueCfg;
    SchUeState state;
    SchCellCb  *cellCb;
    bool       srRcvd;
