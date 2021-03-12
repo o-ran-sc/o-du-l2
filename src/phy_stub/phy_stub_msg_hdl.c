@@ -1023,7 +1023,7 @@ S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
       numPdus--;
    }
 
-   if(rachIndSent == false && ulTtiReq->sfn == 2 && ulTtiReq->slot == 6)
+   if(rachIndSent == false && ulTtiReq->sfn == 16 && ulTtiReq->slot == 6)
    {
       rachIndSent = true;
       l1BuildAndSendRachInd(ulTtiReq->slot, ulTtiReq->sfn);

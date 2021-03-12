@@ -199,6 +199,8 @@ typedef struct schCellCb
    SchDlSlotInfo **schDlSlotInfo;                   /*!< SCH resource allocations in DL */
    SchUlSlotInfo **schUlSlotInfo;                   /*!< SCH resource allocations in UL */
    SchCellCfg    cellCfg;                           /*!< Cell ocnfiguration */
+   bool          firstSsbTransmitted;
+   bool          firstSib1Transmitted;
    uint8_t       ssbStartSymbArr[SCH_MAX_SSB_BEAM]; /*!<start symbol per SSB beam */
    SchRaCb       raCb[MAX_NUM_UE];                  /*!< Rach Cb */
    uint16_t      numActvUe;                         /*!<Number of active UEs */

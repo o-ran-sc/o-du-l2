@@ -678,6 +678,8 @@ uint8_t schInitCellCb(Inst inst, SchCellCfg *schCellCfg)
       cell->schUlSlotInfo[idx] = schUlSlotInfo;
 
    }
+   cell->firstSsbTransmitted = false;
+   cell->firstSib1Transmitted = false;
    fillSsbStartSymb(cell);
    schCb[inst].cells[inst] = cell;
 

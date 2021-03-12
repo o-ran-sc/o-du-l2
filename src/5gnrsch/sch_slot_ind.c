@@ -251,8 +251,10 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
    if (sfnSlot % SCH_MIB_TRANS == 0)
    {
       dlBrdcstAlloc->ssbTrans = SSB_TRANSMISSION;
+      if(!cell->firstSsbTransmitted)
+         cell->firstSsbTransmitted = true;
    }
-   else if (sfnSlot % ssb_rep == 0)
+   else if (cell->firstSsbTransmitted && (sfnSlot % ssb_rep == 0))
    {
       dlBrdcstAlloc->ssbTrans = SSB_REPEAT;
    }
@@ -265,8 +267,10 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
    if(sfnSlot % cell->cellCfg.sib1SchCfg.sib1NewTxPeriod == 0)
    {
       dlBrdcstAlloc->sib1Trans = SIB1_TRANSMISSION;
+      if(!cell->firstSib1Transmitted)
+         cell->firstSib1Transmitted = true;
    }
-   else if (sfnSlot % cell->cellCfg.sib1SchCfg.sib1RepetitionPeriod == 0)
+   else if (cell->firstSib1Transmitted && (sfnSlot % cell->cellCfg.sib1SchCfg.sib1RepetitionPeriod == 0))
    {
       dlBrdcstAlloc->sib1Trans = SIB1_REPITITION;
    }
