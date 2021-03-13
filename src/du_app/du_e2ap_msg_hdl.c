@@ -2084,6 +2084,7 @@ uint8_t FillRicIndication(RICindication_t *ricIndicationMsg)
    uint8_t idx=0;
    uint8_t ret = ROK;
    elementCnt = 6;
+   BuildRicIndMsg();
 
    ricIndicationMsg->protocolIEs.list.count = elementCnt;
    ricIndicationMsg->protocolIEs.list.size  = elementCnt * sizeof(RICindication_t *);
@@ -2149,25 +2150,18 @@ uint8_t FillRicIndication(RICindication_t *ricIndicationMsg)
          ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
          ricIndicationMsg->protocolIEs.list.array[idx]->value.present = \
                                                                         RICindication_IEs__value_PR_RICindicationHeader;
-
-         ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader.size = 3 *
-            sizeof(uint8_t);
-         DU_ALLOC(ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader.buf ,\
-               ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader.size);
-         if(ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader.buf == NULLP)
+         /*Filling RIC Indication Header */
+         if(BuildRicIndHdr(&ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader) != ROK)
          {
-            DU_LOG("\nERROR  -->  E2AP : Memory allocation for RICindicationIEs failed");
-            ret = RFAILED;
+            DU_LOG("\nERROR  -->  E2AP : Building RicIndHdr failed");
+            return RFAILED;
          }
          else
          {
-            buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn, \
-                  ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader.buf);
             idx++;
             /* TO BE CHANGED: RIC INDICATION DATA */
             /* For now filling a dummy octect data, need to tested
             * with PRBs*/
-            BuildRicIndMsg();
             ricIndicationMsg->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RICindicationMessage;
             ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
             ricIndicationMsg->protocolIEs.list.array[idx]->value.present = \

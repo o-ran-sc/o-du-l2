@@ -105,6 +105,12 @@ local IndicationHeader_Format1 = {
         [4] = "fiveQI",
         [5] = "qci"
 }
+local RicActionTypeValue = {
+		[0] = "report",
+		[1] = "insert",
+		[2] = "policy"
+ } 
+
 --payload fields start
 local PrintableString = {
         size = "size",
@@ -489,9 +495,9 @@ function addRICEventTriggerStyleListToTree(tvbuf, RICEventTriggerStyleListTree, 
 		do
 		   local strByte = tvbuf:range(offset, 1):le_uint()
 			if(j == 0) then
-				strId = tostring(strByte)
+				strId = string.char(strByte)
 			else
-				strId = strId .. tostring(strByte)
+				strId = strId .. string.char(strByte)
 			end
 			offset = offset + 1
 		end
@@ -522,9 +528,9 @@ function addRICReportStyleListToTree(tvbuf, RICReportStyleListTree, offset, E2SM
 	do
 	   local strByte = tvbuf:range(offset, 1):le_uint()
 		if(j == 0) then
-			strId = tostring(strByte)
+			strId = string.char(strByte)
 		else
-			strId = strId .. tostring(strByte)
+			strId = strId .. string.char(strByte)
 		end
 		offset = offset + 1
 	end
@@ -631,9 +637,15 @@ function addRANfunctionsListToTree(tvbuf, valueTree, offset, valueLen, endiannes
 		protocolFieldTree:add(tvbuf:range(offset,1), protocolIEField.criticality .. strId)
 		offset = offset + 1
 		
-		local valueLen = tvbuf:range(offset,1):le_uint()
---		protocolFieldTree:add(tvbuf:range(offset,1), "<" .. protocolIEField.valueLen .. valueLen ..">")
+		local fByte = tvbuf:range(offset,1):le_uint()
 		offset = offset + 1
+		local valueLen
+		if(fByte == 128) then
+			valueLen = tvbuf:range(offset,1):le_uint()
+			offset = offset+1
+		else
+			valueLen = fByte
+		end
 		
 		local valueTree = protocolFieldTree:add(tvbuf:range(offset, valueLen), protocolIEField.value)
 		
@@ -679,10 +691,16 @@ function addE2SetupRequestToTree(tvbuf, pktinfo, valueTree, offset, valueLen, en
 		strId = tostring(E2Criticality[criticalityId]) .. " (" .. tostring(criticalityId) ..")"
 		protocolFieldTree:add(tvbuf:range(offset,1), protocolIEField.criticality .. strId)
 		offset = offset + 1
-		
-		local valueLen = tvbuf:range(offset,1):le_uint()
---		protocolFieldTree:add(tvbuf:range(offset,1), "<" .. protocolIEField.valueLen .. valueLen ..">")
+
+		local fByte = tvbuf:range(offset,1):le_uint()
 		offset = offset + 1
+		local valueLen
+		if(fByte == 128) then
+			valueLen = tvbuf:range(offset,1):le_uint()
+			offset = offset+1
+		else
+			valueLen = fByte
+		end
 		
 		local valueTree = protocolFieldTree:add(tvbuf:range(offset, valueLen), protocolIEField.value)
 		
@@ -709,9 +727,17 @@ function addE2apInitiatingMessageToTree(tvbuf, pktinfo, tree, offset, pktlen, en
         strId = tostring(E2Criticality[criticalityId]) .. " (" .. tostring(criticalityId) ..")"
         initiatingMessageTree:add(tvbuf:range(offset,1), initiatingMessageE2.criticality .. strId)
         offset = offset + 1
-		
-	local valueLen = tvbuf:range(offset,1):le_uint()
+
+	local fByte = tvbuf:range(offset,1):le_uint()
 	offset = offset + 1
+	
+	local valueLen
+	if(fByte == 128) then
+	   valueLen = tvbuf:range(offset,1):le_uint()
+	   offset = offset+1
+	else
+		valueLen = fByte
+	end
 	
 	local valueTree = initiatingMessageTree:add(tvbuf:range(offset, valueLen), initiatingMessageE2.value)
 	
@@ -727,7 +753,7 @@ function addE2apInitiatingMessageToTree(tvbuf, pktinfo, tree, offset, pktlen, en
 end
 
 function addE2RicIndicationToTree(tvbuf, pktinfo, valueTree, offset, valueLen, endianness)
-        pktinfo.cols.info:set("E2 RIC Indication ")
+        pktinfo.cols.info:set("RIC Indication ")
 
         local e2RicIndicationTree = valueTree:add(tvbuf:range(offset, valueLen), ricIndication)
         offset = offset + 1
@@ -825,7 +851,8 @@ end
 
 function addRICindicationTypeToTree(tvbuf, valueTree, offset, valueLen, endianness)
                 local ricActionType = fetch2Bytes(tvbuf, offset)
-                valueTree:add(tvbuf:range(offset,2), RICactionType .. ": " .. ricActionType)
+				strId = tostring(RicActionTypeValue[ricActionType]) .. " (" .. tostring(ricActionType) ..")"
+                valueTree:add(tvbuf:range(offset,2), RICactionType .. ": " .. strId)
                 offset = offset + 2
 
 end
@@ -997,15 +1024,8 @@ function addIndicationHeader_Format1(tvbuf,  e2apTree, offset, valueLen, endiann
 		end
 
         local fiveQi = tvbuf:range(offset, 1):le_uint()
-        local NrcgiTree = e2apTree:add(tvbuf:range(offset, 1), E2SM_KPM_IndicationHeader_Format1.fiveQI .. ": " .. fiveQi)
+        e2apTree:add(tvbuf:range(offset, 1), E2SM_KPM_IndicationHeader_Format1.fiveQI .. ": " .. fiveQi)
         offset = offset +1
-
-        local qci = tvbuf:range(offset, 1):le_uint()
-        local NrcgiTree = e2apTree:add(tvbuf:range(offset, 1), E2SM_KPM_IndicationHeader_Format1.qci .. ": " .. qci)
-        offset = offset +1
-
-
-
 
 end
 
@@ -1028,7 +1048,7 @@ function addRICindicationMsgToTree(tvbuf, valueTree, offset, valueLen, endiannes
 end
 
 function addE2RicSubscriptionReqToTree(tvbuf, pktinfo, valueTree, offset, valueLen, endianness)
-	pktinfo.cols.info:set("E2 RIC Subscription Request")
+	pktinfo.cols.info:set("RIC Subscription Request")
 
 	local e2RicSubscriptionReqTree = valueTree:add(tvbuf:range(offset, valueLen), ricSubscriptionReq)
 	offset = offset + 1
@@ -1299,7 +1319,7 @@ function addRICActionAdmittedListToTree(tvbuf, valueTree, offset, valueLen, endi
 end
 
 function addE2RicSubscriptionRspToTree(tvbuf, pktinfo, valueTree, offset, valueLen, endianness)
-	pktinfo.cols.info:set("E2 RIC Subscription Response")
+	pktinfo.cols.info:set("RIC Subscription Response")
 
 	local e2RicSubscriptionRspTree = valueTree:add(tvbuf:range(offset, valueLen), ricSubscriptionRsp)
 			
@@ -1428,9 +1448,10 @@ function E2AP.dissector(tvbuf,pktinfo,root)
 end -- end of dissector funciton
 
 	----------------------------------------
-	-- we want to have our protocol dissection invoked for a specific UDP port,
-	-- so get the udp dissector table and add our protocol to it
+	-- we want to have our protocol dissection invoked for a specific SCTP port,
+	-- so get the SCTP dissector table and add our protocol to it
 	DissectorTable.get("sctp.port"):add(36421, E2AP)
+	
 	-- our protocol (Proto) gets automatically registered after this script finishes loading
 	----------------------------------------
 
