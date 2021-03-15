@@ -142,7 +142,7 @@ typedef struct schLcCtxt
    uint8_t lcId;     // logical Channel ID
    uint8_t lcp;      // logical Channel Prioritization
    SchLcState lcState;
-   uint16_t bo;
+   uint32_t bo;
 }SchDlLcCtxt;
 
 typedef struct schDlCb
@@ -233,14 +233,14 @@ uint8_t schBroadcastAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc,uint16_t
 uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst inst);
 uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst);
 uint8_t schDlRsrcAllocMsg4(DlMsgAlloc *msg4Alloc, SchCellCb *cell, uint16_t slot);
-uint16_t schCalcTbSize(uint16_t payLoadSize);
+uint16_t schCalcTbSize(uint32_t payLoadSize);
 uint16_t schCalcNumPrb(uint16_t tbSize, uint16_t mcs, uint8_t numSymbols);
 uint16_t schAllocPucchResource(SchCellCb *cell, uint16_t crnti, uint16_t slot);
 uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst);
 uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo puschInfo, DciInfo *dciInfo);
 uint8_t schFillPuschAlloc(SchUeCb *ueCb, uint16_t pdcchSlot, uint32_t dataVol, SchPuschInfo *puschInfo);
 uint8_t schDlRsrcAllocDlMsg(DlMsgAlloc *dlMsgAlloc, SchCellCb *cell, uint16_t crnti,
-   uint16_t accumalatedSize, uint16_t slot);
+   uint32_t *accumalatedSize, uint16_t slot);
 uint16_t schAccumalateLcBoSize(SchCellCb *cell, uint16_t ueIdx);
 
 /**********************************************************************

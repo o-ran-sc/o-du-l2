@@ -56,10 +56,7 @@ uint8_t fillBitString(BIT_STRING_t *id, uint8_t unusedBits, uint8_t byteSize, ui
       return RFAILED;
    }
 
-   for (tmp = 0 ; tmp < (byteSize-1); tmp++)
-   {
-      id->buf[tmp] = tmp;
-   }
+   memset(id->buf, 0, byteSize-1);
    id->buf[byteSize-1]   = val;
    id->bits_unused = unusedBits;
    return ROK;

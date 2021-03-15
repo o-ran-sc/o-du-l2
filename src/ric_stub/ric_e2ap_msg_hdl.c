@@ -104,7 +104,7 @@ S16 BuildGlobalRicId(GlobalRIC_ID_t *ricId)
 {
    uint8_t unused = 4;
    uint8_t byteSize = 3;
-   uint8_t val = 1;
+   uint8_t val = 16;
    if(ricId != NULLP)
    {
       ricId->pLMN_Identity.size = byteSize * sizeof(uint8_t);

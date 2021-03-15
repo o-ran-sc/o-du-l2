@@ -730,7 +730,7 @@ typedef struct dlMsgInfo
 typedef struct lcSchInfo
 {
    uint8_t   lcId;
-   uint16_t  schBytes; /* Number of scheduled bytes */
+   uint32_t  schBytes; /* Number of scheduled bytes */
 }LcSchInfo;
 
 typedef struct dlMsgAlloc
