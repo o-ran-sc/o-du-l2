@@ -140,7 +140,7 @@ uint8_t schFillBoGrantDlSchedInfo(SchCellCb *cell, DlSchedInfo *dlSchedInfo, DlM
    uint8_t ueIdx, lcIdx;
    uint16_t slot;
    uint16_t crnti = 0;
-   uint16_t accumalatedSize = 0;
+   uint32_t accumalatedSize = 0;
    SchUeCb *ueCb = NULLP;
 
    while(cell->boIndBitMap)
@@ -184,7 +184,13 @@ uint8_t schFillBoGrantDlSchedInfo(SchCellCb *cell, DlSchedInfo *dlSchedInfo, DlM
       }
 
       /* pdcch and pdsch data is filled */
-      schDlRsrcAllocDlMsg(dlMsgAlloc, cell, crnti, accumalatedSize, slot);
+      schDlRsrcAllocDlMsg(dlMsgAlloc, cell, crnti, &accumalatedSize, slot);
+      /* Calculated TB size could be less than the total size requested.
+       * Hence, updated the scheduled bytes report. Following is valid only for
+       * one LC.
+       * TODO : Update the scheduling byte report for multiple LC based on QCI
+       * and Priority */
+      dlMsgAlloc->lcSchInfo[dlMsgAlloc->numLc -1].schBytes = accumalatedSize;
 
       /* PUCCH resource */
       schAllocPucchResource(cell, dlMsgAlloc->crnti, slot);

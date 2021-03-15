@@ -470,11 +470,17 @@ uint8_t pucchResourceSet[MAX_PUCCH_RES_SET_IDX][4] = {
  *  @param[in]  payLoadSize - size of payload in bytes
  *  @return     TBsize from the Table in bytes
  **/
-uint16_t schCalcTbSize(uint16_t payLoadSize)
+uint16_t schCalcTbSize(uint32_t payLoadSize)
 {
+   uint16_t tbSize = 0;
    uint8_t tbsIndex = 0;
-   payLoadSize = payLoadSize*8;
+   uint16_t maxTbSize;
 
+   maxTbSize = tbSizeTable[TOTAL_TBSIZE_VALUES -1]/8;
+   if(payLoadSize >= maxTbSize)
+      return maxTbSize;
+
+   payLoadSize = payLoadSize*8;
    while(payLoadSize > tbSizeTable[tbsIndex])
    {
       tbsIndex++;

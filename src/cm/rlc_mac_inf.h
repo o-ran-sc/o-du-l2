@@ -37,7 +37,7 @@ typedef struct rlcBoStatus
    uint16_t   ueIdx;      /*!< UE ID */
    bool       commCh;     /*!< Common or Dedicated Channel */
    uint8_t    lcId;       /*!< Logical channel ID */
-   uint16_t   bo;         /*!< Buffer occupancy reported by RLC */
+   uint32_t   bo;         /*!< Buffer occupancy reported by RLC */
 }RlcBoStatus;
 
 /* Scheduled logical channel info */
@@ -45,7 +45,7 @@ typedef struct rlcLcSchInfo
 {
    bool      commCh;      /* Common or dedicated channel */
    uint8_t   lcId;        /*!< Logical channel ID */
-   uint16_t  bufSize;  /*!< Total buffer size in bytes scheduled by MAC */
+   uint32_t  bufSize;  /*!< Total buffer size in bytes scheduled by MAC */
 }RlcLcSchInfo;
 
 /* Schedule result report */

@@ -710,7 +710,7 @@ uint16_t schAllocPucchResource(SchCellCb *cell, uint16_t crnti, uint16_t slot)
  *
  * ****************************************************************/
 uint8_t schDlRsrcAllocDlMsg(DlMsgAlloc *dlMsgAlloc, SchCellCb *cell, uint16_t crnti,
-      uint16_t accumalatedSize, uint16_t slot)
+      uint32_t *accumalatedSize, uint16_t slot)
 {
    uint8_t ueIdx;
    uint16_t tbSize = 0;
@@ -777,7 +777,9 @@ uint8_t schDlRsrcAllocDlMsg(DlMsgAlloc *dlMsgAlloc, SchCellCb *cell, uint16_t cr
       pdsch->codeword[cwCount].mcsIndex = ueCb.ueCfg.dlModInfo.mcsIndex;
       pdsch->codeword[cwCount].mcsTable = ueCb.ueCfg.dlModInfo.mcsTable;
       pdsch->codeword[cwCount].rvIndex = 0;
-      tbSize = schCalcTbSize(accumalatedSize);
+      tbSize = schCalcTbSize(*accumalatedSize);
+      if(tbSize < *accumalatedSize)
+         *accumalatedSize = tbSize;
       pdsch->codeword[cwCount].tbSize = tbSize;
    }
    pdsch->dataScramblingId = cell->cellCfg.phyCellId;

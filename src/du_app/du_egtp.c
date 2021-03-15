@@ -824,8 +824,8 @@ uint8_t egtpRecvMsg()
          &recvBuf, (int16_t *)&bufLen, CM_INET_NO_FLAG);
       if(ret == ROK && recvBuf != NULLP)
       {  
-         DU_LOG("\nDEBUG  -->  EGTP : Received DL Message[%ld]\n", gDlDataRcvdCnt + 1);
-         ODU_PRINT_MSG(recvBuf, 0 ,0);
+         //DU_LOG("\nDEBUG  -->  EGTP : Received DL Message[%ld]\n", gDlDataRcvdCnt + 1);
+         //ODU_PRINT_MSG(recvBuf, 0 ,0);
          egtpHdlRecvData(recvBuf);
          gDlDataRcvdCnt++;
       }
@@ -895,11 +895,11 @@ uint8_t egtpDecodeHdr(Buffer *mBuf, EgtpMsg  *egtpMsg)
    /* Extracting version fro 1st byte */
    version = tmpByte[0] >> 5;
    
-   DU_LOG("\nDEBUG   -->  EGTP : Version %d", version);
+   //DU_LOG("\nDEBUG   -->  EGTP : Version %d", version);
  
    /* Decode message type */
    ODU_REM_PRE_MSG((Data*)&(egtpMsg->msgHdr.msgType), mBuf);
-   DU_LOG("\nDEBUG   -->  EGTP : msgType %d", egtpMsg->msgHdr.msgType);
+   //DU_LOG("\nDEBUG   -->  EGTP : msgType %d", egtpMsg->msgHdr.msgType);
 
    /****************************************************************************
     * Message length param is 2 bytes. So decode next 2 bytes from msg hdr and
@@ -908,7 +908,7 @@ uint8_t egtpDecodeHdr(Buffer *mBuf, EgtpMsg  *egtpMsg)
    ODU_REM_PRE_MSG(&tmpByte[1], mBuf);
    ODU_REM_PRE_MSG(&tmpByte[2], mBuf);
    msgLen = (tmpByte[1] << 8) | tmpByte[2];
-   DU_LOG("\nDEBUG   -->  EGTP : msgLen %d", msgLen);
+   //DU_LOG("\nDEBUG   -->  EGTP : msgLen %d", msgLen);
 
 
    /****************************************************************************
@@ -920,7 +920,7 @@ uint8_t egtpDecodeHdr(Buffer *mBuf, EgtpMsg  *egtpMsg)
    ODU_REM_PRE_MSG(&tmpByte[3], mBuf);
    ODU_REM_PRE_MSG(&tmpByte[4], mBuf);
    egtpMsg->msgHdr.teId = (tmpByte[1] << 24) | (tmpByte[2] << 16) | (tmpByte[3] << 8) | tmpByte[4];
-   DU_LOG("\nDEBUG   -->  EGTP : teId %d",egtpMsg->msgHdr.teId);
+   //DU_LOG("\nDEBUG   -->  EGTP : teId %d",egtpMsg->msgHdr.teId);
 
 
    /* If any one of S, E or PN flag is set, set extension present as true. */
@@ -1032,8 +1032,8 @@ uint8_t egtpDecodeHdr(Buffer *mBuf, EgtpMsg  *egtpMsg)
 
    egtpMsg->msg = mBuf;
 
-   DU_LOG("\nDEBUG   -->  EGTP : DL Data Buffer after decoding header ");
-   ODU_PRINT_MSG(mBuf, 0, 0);
+   //DU_LOG("\nDEBUG   -->  EGTP : DL Data Buffer after decoding header ");
+   //ODU_PRINT_MSG(mBuf, 0, 0);
 
    /* Forward the data to duApp/RLC */
  
