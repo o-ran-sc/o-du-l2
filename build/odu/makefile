@@ -196,7 +196,6 @@ du:
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_f1ap.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_e2ap.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_rrc.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
-		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_e2smkpm.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/du_app.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/rlc.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/cm.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
@@ -219,7 +218,6 @@ clean_odu:
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_f1ap.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_e2ap.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_rrc.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
-		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_e2smkpm.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/rlc.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/cm.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/mac.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
@@ -249,7 +247,6 @@ cu:
 	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_common.mak OBJ_DIR=$(OBJ_ROOT)/cu_stub LIB_DIR=$(LIB_ROOT)/cu_stub LOG_DIR=$(LOG_ROOT)/cu_stub CC='$(CC1)'
 	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_f1ap.mak OBJ_DIR=$(OBJ_ROOT)/cu_stub LIB_DIR=$(LIB_ROOT)/cu_stub LOG_DIR=$(LOG_ROOT)/cu_stub CC='$(CC1)'
 	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_rrc.mak OBJ_DIR=$(OBJ_ROOT)/cu_stub LIB_DIR=$(LIB_ROOT)/cu_stub LOG_DIR=$(LOG_ROOT)/cu_stub CC='$(CC1)'
-	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_e2smkpm.mak OBJ_DIR=$(OBJ_ROOT)/cu_stub LIB_DIR=$(LIB_ROOT)/cu_stub LOG_DIR=$(LOG_ROOT)/cu_stub CC='$(CC1)'
 	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/cm.mak OBJ_DIR=$(OBJ_ROOT)/cu_stub LIB_DIR=$(LIB_ROOT)/cu_stub LOG_DIR=$(LOG_ROOT)/cu_stub CC='$(CC1)'
 	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/mt.mak OBJ_DIR=$(OBJ_ROOT)/cu_stub LIB_DIR=$(LIB_ROOT)/cu_stub LOG_DIR=$(LOG_ROOT)/cu_stub CC='$(CC1)'
 ifeq ($(O1_ENABLE),YES)
@@ -261,7 +258,6 @@ clean_cu:
 	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_common.mak clean OBJ_DIR=$(OBJ_ROOT)/cu_stub LIB_DIR=$(LIB_ROOT)/cu_stub LOG_DIR=$(LOG_ROOT)/cu_stub CC='$(CC1)'
 	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_f1ap.mak clean OBJ_DIR=$(OBJ_ROOT)/cu_stub LIB_DIR=$(LIB_ROOT)/cu_stub LOG_DIR=$(LOG_ROOT)/cu_stub CC='$(CC1)'
 	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_rrc.mak clean OBJ_DIR=$(OBJ_ROOT)/cu_stub LIB_DIR=$(LIB_ROOT)/cu_stub LOG_DIR=$(LOG_ROOT)/cu_stub CC='$(CC1)'
-	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_e2smkpm.mak clean OBJ_DIR=$(OBJ_ROOT)/cu_stub LIB_DIR=$(LIB_ROOT)/cu_stub LOG_DIR=$(LOG_ROOT)/cu_stub CC='$(CC1)'
 	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/cm.mak clean OBJ_DIR=$(OBJ_ROOT)/cu_stub LIB_DIR=$(LIB_ROOT)/cu_stub LOG_DIR=$(LOG_ROOT)/cu_stub CC='$(CC1)'
 	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/mt.mak clean OBJ_DIR=$(OBJ_ROOT)/cu_stub LIB_DIR=$(LIB_ROOT)/cu_stub LOG_DIR=$(LOG_ROOT)/cu_stub CC='$(CC1)'
 ifeq ($(O1_ENABLE),YES)
@@ -296,7 +292,6 @@ clean_ric:
 	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_common.mak clean OBJ_DIR=$(OBJ_ROOT)/ric_stub LIB_DIR=$(LIB_ROOT)/ric_stub LOG_DIR=$(LOG_ROOT)/ric_stub CC='$(CC1)'
 	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_e2ap.mak clean OBJ_DIR=$(OBJ_ROOT)/ric_stub LIB_DIR=$(LIB_ROOT)/ric_stub LOG_DIR=$(LOG_ROOT)/ric_stub CC='$(CC1)'
 	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_rrc.mak clean OBJ_DIR=$(OBJ_ROOT)/ric_stub LIB_DIR=$(LIB_ROOT)/ric_stub LOG_DIR=$(LOG_ROOT)/ric_stub CC='$(CC1)'
-	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/asn_e2smkpm.mak clean OBJ_DIR=$(OBJ_ROOT)/ric_stub LIB_DIR=$(LIB_ROOT)/ric_stub LOG_DIR=$(LOG_ROOT)/ric_stub CC='$(CC1)'
 	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/cm.mak clean OBJ_DIR=$(OBJ_ROOT)/ric_stub LIB_DIR=$(LIB_ROOT)/ric_stub LOG_DIR=$(LOG_ROOT)/ric_stub CC='$(CC1)'
 	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/mt.mak clean OBJ_DIR=$(OBJ_ROOT)/ric_stub LIB_DIR=$(LIB_ROOT)/ric_stub LOG_DIR=$(LOG_ROOT)/ric_stub CC='$(CC1)'
 ifeq ($(O1_ENABLE),YES)
