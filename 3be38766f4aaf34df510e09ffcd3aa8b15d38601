@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "03026ff6_33eb3beb",
+        "filename": "src/codec_utils/E2AP/E2AP-PDU.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-18T10:54:29Z",
+      "side": 1,
+      "message": "can we not directly include these header file in our c files where E2AP-PDU.h is used?",
+      "revId": "3be38766f4aaf34df510e09ffcd3aa8b15d38601",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "138d8017_29944bd1",
+        "filename": "src/codec_utils/E2AP/E2AP.asn1",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-18T10:54:29Z",
+      "side": 1,
+      "message": "Remove this file altogether",
+      "revId": "3be38766f4aaf34df510e09ffcd3aa8b15d38601",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fcdc9621_d34bd55a",
+        "filename": "src/codec_utils/E2AP/RANfunctions-List.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-18T10:54:29Z",
+      "side": 1,
+      "message": "remove this line",
+      "revId": "3be38766f4aaf34df510e09ffcd3aa8b15d38601",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
