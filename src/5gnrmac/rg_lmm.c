@@ -848,6 +848,7 @@ RgCfg *cfg            /* Configuaration information */
    rgCb[inst].rgInit.pool = cfg->s.genCfg.mem.pool;
    rgCb[inst].genCfg.tmrRes = cfg->s.genCfg.tmrRes;
 
+   macCb.tmrRes = cfg->s.genCfg.tmrRes;
    macCb.macInst = rgCb[inst].rgInit.inst;
    macCb.procId = rgCb[inst].rgInit.procId;
 
@@ -878,16 +879,15 @@ RgCfg *cfg            /* Configuaration information */
    }
    rgCb[inst].tfuSap.sapSta.sapState = LRG_NOT_CFG;
    /* Initialize the timer blocks */
-   cmInitTimers(rgCb[inst].tmrBlk, RG_MAX_TIMER);
+   cmInitTimers(macCb.tmrBlk, MAX_NUM_TIMER);
    /* Initialzie the timer queue */   
-   memset(&rgCb[inst].tmrTq, 0, sizeof(CmTqType)*RG_TQ_SIZE);
+   memset(&macCb.tmrTq, 0, sizeof(CmTqType) * MAC_TQ_SIZE);
    /* Initialize the timer control point */
-   memset(&rgCb[inst].tmrTqCp, 0, sizeof(CmTqCp));
-   rgCb[inst].tmrTqCp.tmrLen = RG_TQ_SIZE;
-#if 0
+   memset(&macCb.tmrTqCp, 0, sizeof(CmTqCp));
+   macCb.tmrTqCp.tmrLen = MAC_TQ_SIZE;
+
    /* Timer Registration request to SSI */
-   if (SRegTmrMt(rgCb[inst].rgInit.ent, rgCb[inst].rgInit.inst,
-	    (S16)rgCb[inst].genCfg.tmrRes, rgActvTmr) != ROK)
+   if(ODU_REG_TMR_MT(ENTMAC, macCb.macInst, macCb.tmrRes, macActvTmr) != ROK)
    {
 
       DU_LOG("\nERROR  -->  MAC : Failed to register timer");
@@ -899,7 +899,7 @@ RgCfg *cfg            /* Configuaration information */
 
       return (LCM_REASON_MEM_NOAVAIL);
    }
-#endif
+
    /* Set Config done in TskInit */
    rgCb[inst].rgInit.cfgDone = TRUE;
 
@@ -968,7 +968,7 @@ static Void rgLMMShutdown(Inst inst)
 
    /* De-register the Timer Service */
    (Void) SDeregTmrMt(rgCb[inst].rgInit.ent, rgCb[inst].rgInit.inst,
-	 (S16)rgCb[inst].genCfg.tmrRes, rgActvTmr); 
+	 (S16)rgCb[inst].genCfg.tmrRes, macActvTmr); 
 
    /* call back the task initialization function to intialize
     * the global RgCb Struct */
@@ -1755,31 +1755,6 @@ uint8_t status               /* Status */
 
    return (ret);
 }
-
-
-/**
- * @brief LTE MAC timer call back function registered with SSI. 
- *
- * @details
- *
- *     Function :  rgActvTmr
- *     
- *     This function is invoked by SSI for every timer activation
- *     period expiry.
- *     
- *  @return  S16
- *      -# ROK
- **/
-S16 rgActvTmr(Ent ent,Inst inst)
-{
-   Inst macInst = (inst  - RG_INST_START);
-
-   /* Check if any MAC timer has expired */ 
-   cmPrcTmr(&rgCb[macInst].tmrTqCp, rgCb[macInst].tmrTq, (PFV) rgLMMTmrExpiry);
-
-   return ROK;
-
-} /* end of rgActvTmr */
 
 /**********************************************************************
 
