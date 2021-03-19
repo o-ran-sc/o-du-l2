@@ -90,7 +90,6 @@ uint8_t rlcSendRrcDeliveryReportToDu(Pst *pst, RrcDeliveryReport *rrcDelivery)
 {
    return (*rlcSendRrcDeliveryReportToDuOpts[pst->selector])(pst, rrcDelivery);
 }
-
 /*******************************************************************
  *
  * @brief Sends DL RRC Message Status to DU APP

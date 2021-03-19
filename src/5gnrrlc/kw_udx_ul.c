@@ -75,6 +75,7 @@ static int RLOG_FILE_ID=204;
 S16 rlcHdlCrlcUlCfgReq ARGS((RlcCb  *gCb,RlcUlCfgTmpData *cfgTmpData,
                                   RlcCfgCfmInfo *cfmInfo, RlcCfgCfmInfo *cfgCfm));
 
+uint8_t sendRlcUeDeleteRspToDu(Pst *pst, uint8_t ueIdx, uint16_t cellId, UeDeleteResult result);
 /**
   * @brief
   * UDX APIs
@@ -271,12 +272,22 @@ RlcCfgCfmInfo   *cfmInfo
    if(tRlcCb->u.ulCb->rlcUlUdxEventType == EVENT_RLC_UE_CREATE_REQ)
    {
       FILL_PST_RLC_TO_DUAPP(rspPst, RLC_UL_INST, EVENT_RLC_UE_CREATE_RSP);
+      SendRlcUeRspToDu(&rspPst, cfgCfm);
    }
    else if(tRlcCb->u.ulCb->rlcUlUdxEventType == EVENT_RLC_UE_RECONFIG_REQ)
    {
       FILL_PST_RLC_TO_DUAPP(rspPst, RLC_UL_INST, EVENT_RLC_UE_RECONFIG_RSP);
+      SendRlcUeRspToDu(&rspPst, cfgCfm);
    }
-   SendRlcUeRspToDu(&rspPst, cfgCfm);
+   else if (tRlcCb->u.ulCb->rlcUlUdxEventType == EVENT_RLC_UE_DELETE_REQ)
+   {
+      FILL_PST_RLC_TO_DUAPP(rspPst, RLC_UL_INST, EVENT_RLC_UE_DELETE_RSP);
+      if(sendRlcUeDeleteRspToDu(&rspPst, cfgCfm->ueId, cfgCfm->cellId, SUCCESS) != ROK)
+      {
+         DU_LOG("ERROR  --> RLC_UL: rlcUlUdxCfgCfm(): Failed to send UE delete response ");
+         return RFAILED;
+      }
+   }
 
    /* free the memory from DL */
    RLC_FREE_SHRABL_BUF(pst->region,
@@ -523,7 +534,7 @@ RlcCfgCfmInfo    *cfgCfm
                   rlcCfgApplyDelUlUe(gCb, cfgTmpData);
                   RLC_MEM_CPY(entCfgCfm, 
                              &cfgTmpData->cfgEntData[idx].entUlCfgCfm, 
-                             sizeof(RlcEntCfgCfmInfo)); 
+                             sizeof(RlcEntCfgCfmInfo));
                }
                else
                {
