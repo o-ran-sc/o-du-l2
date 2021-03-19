@@ -62,7 +62,7 @@ RlcDuUeCfgRsp rlcUeCfgRspOpts[] =
  *      -# RFAILED
  *
  *************************************************************/
-uint8_t SendRlcUeRspToDu(Pst *pst, RlcCfgCfmInfo *cfgRsp)
+uint8_t SendRlcUeCfgRspToDu(Pst *pst, RlcCfgCfmInfo *cfgRsp)
 {
    /* jump to specific primitive depending on configured selector */
    uint8_t ret = ROK;
@@ -83,7 +83,7 @@ uint8_t SendRlcUeRspToDu(Pst *pst, RlcCfgCfmInfo *cfgRsp)
          ret = (*rlcUeCfgRspOpts[pst->selector])(pst, ueRsp);
          if(ret)
          {
-            DU_LOG("\nERROR  -->  RLC: Failed at SendRlcUeRspToDu()");
+            DU_LOG("\nERROR  -->  RLC: Failed at SendRlcUeCfgRspToDu()");
             RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueRsp, sizeof(RlcUeCfgRsp));
          }
       }
@@ -94,7 +94,7 @@ uint8_t SendRlcUeRspToDu(Pst *pst, RlcCfgCfmInfo *cfgRsp)
       }
    }
    return ret;
-} /* end of SendRlcUeRspToDu */
+} /* end of SendRlcUeCfgRspToDu */
 
 /**********************************************************************
          End of file
