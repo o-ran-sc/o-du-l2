@@ -149,15 +149,15 @@ uint8_t SchInstCfg(RgCfg *cfg, Inst  dInst)
    schCb[inst].genCfg.isSCellActDeactAlgoEnable =  cfg->s.schInstCfg.genCfg.isSCellActDeactAlgoEnable;
 #endif
    schCb[inst].genCfg.startCellId    = cfg->s.schInstCfg.genCfg.startCellId;
-#if 0
+
    /* Initialzie the timer queue */   
-   memset(&schCb[inst].tmrTq, 0, sizeof(CmTqType)*RGSCH_TQ_SIZE);
+   memset(&schCb[inst].tmrTq, 0, sizeof(CmTqType) * SCH_TQ_SIZE);
    /* Initialize the timer control point */
    memset(&schCb[inst].tmrTqCp, 0, sizeof(CmTqCp));
    schCb[inst].tmrTqCp.tmrLen = RGSCH_TQ_SIZE;
 
    /* SS_MT_TMR needs to be enabled as schActvTmr needs instance information */
-   /* Timer Registration request to SSI */
+   /* Timer Registration request to system services */
    if (ODU_REG_TMR_MT(schCb[inst].schInit.ent, dInst,
 	    (int)schCb[inst].genCfg.tmrRes, schActvTmr) != ROK)
    {
@@ -165,7 +165,7 @@ uint8_t SchInstCfg(RgCfg *cfg, Inst  dInst)
 	    "register timer.");
       return (LCM_REASON_MEM_NOAVAIL);
    }   
-#endif               
+              
    /* Set Config done in TskInit */
    schCb[inst].schInit.cfgDone = TRUE;
    DU_LOG("\nINFO  -->  SCH : Scheduler gen config done");

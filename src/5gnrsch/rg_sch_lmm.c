@@ -1063,35 +1063,6 @@ RgUstaDgn *dgn
 }
 
 
-/**
- * @brief Scheduler instance timer call back function registered with SSI. 
- *
- * @details
- *
- *     Function :  schActvTmr
- *     
- *     This function is invoked by SSI for every timer activation
- *     period expiry. Note that SS_MT_TMR flag needs to be enabled for this
- *     as isntId is needed.As part of SRegTmr call for scheduler instance 
- *     SS_MT_TMR flag needs to be enabled and schActvTmr needs to be given as 
- *     callback function
- *     
- *  @return  S16
- *      -# ROK
- **/
-S16 schActvTmr(Ent ent,Inst inst)
-{
-   Inst schInst = (inst  - SCH_INST_START);
-
-   /* Check if any timer in the scheduler instance has expired */ 
-   cmPrcTmr(&rgSchCb[schInst].tmrTqCp,
-            rgSchCb[schInst].tmrTq, (PFV) rgSCHLmmTmrExpiry);
- 
-   return ROK;
- 
-} /* end of schActvTmr */
-
-
 /**********************************************************************
  
          End of file
