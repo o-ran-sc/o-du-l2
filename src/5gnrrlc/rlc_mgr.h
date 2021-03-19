@@ -19,7 +19,7 @@
 /* This file stores defines used at RLC interface */
 uint8_t fillRlcUeCfgRsp(RlcUeCfgRsp *rlcCfgRsp, RlcCfgCfmInfo *rlcCRsp);
 uint8_t SendRlcUeRspToDu(Pst *pst, RlcCfgCfmInfo *cfgRsp);
-
+ uint8_t SendRlcUeDeleteRspToDu(Pst *pst, uint8_t ueIdx, uint16_t cellId, uint8_t result);
 /**********************************************************************
          End of file
 **********************************************************************/

@@ -352,6 +352,11 @@ RlcCfgInfo   *cfg
                   RLOG_ARG1(L_ERROR,DBG_UEID,cfg->ueId,"deletion Failed due to[%d]",
                            entCfgCfm->status.reason);
                }
+               else
+               {
+                  DU_LOG("\nINFO   -->  RLC_DL: UE information is deleted");
+                  break;
+               }
                break;
             }
          case CKW_CFG_DELETE_CELL:

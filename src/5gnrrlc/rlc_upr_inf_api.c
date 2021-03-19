@@ -48,6 +48,13 @@ RlcUlUserDataToDuFunc rlcSendUlUserDataToDuOpts[] =
    DuProcRlcUlUserDataTrans,    /* 1 - Tightly coupled */
    packRlcUlUserDataToDu        /* 2 - Light weight loosely coupled */
 };
+/*
+RlcDuUeDeleteRsp rlcUeDeleteRspOpts[] =
+{
+   packRlcDuUeDeleteRsp,     /* 0 - loosely coupled */
+ //  DuProcRlcUeDeleteRsp,     /* 1 - tightly coupled */
+  // packRlcDuUeDeleteRsp     /* 2 - LWLC loosely coupled */
+//};
 
 /*******************************************************************
  *
@@ -90,7 +97,26 @@ uint8_t rlcSendRrcDeliveryReportToDu(Pst *pst, RrcDeliveryReport *rrcDelivery)
 {
    return (*rlcSendRrcDeliveryReportToDuOpts[pst->selector])(pst, rrcDelivery);
 }
-
+/*******************************************************************
+*
+* @brief Sends ue delete  Info to DU APP
+*
+* @details
+*
+*    Function : rlcSendUeDeleteRspToDu 
+*
+*    Functionality:  Sends ue delete Info to DU APP
+*
+* @params[in] Pst structure
+*             RlcUeDeleteRsp *ueDeleteRsp 
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t rlcSendUeDeleteRspToDu(Pst *pst,  RlcUeDeleteRsp *ueDeleteRsp)
+{
+  // return (*rlcUeDeleteRspOpts[pst->selector])(pst, ueDeleteRsp);
+}
 /*******************************************************************
  *
  * @brief Sends DL RRC Message Status to DU APP

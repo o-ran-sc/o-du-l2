@@ -502,6 +502,10 @@ RlcCfgInfo      *cfg
                /* Setting dir as UL, so that no configuration is done at DL */
                cfg->entCfg[idx].dir = RLC_DIR_UL;
             }
+            else
+            {
+               break;
+            }
             break;
          }
          case CKW_CFG_DELETE_CELL :   

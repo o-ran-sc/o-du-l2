@@ -271,12 +271,19 @@ RlcCfgCfmInfo   *cfmInfo
    if(tRlcCb->u.ulCb->rlcUlUdxEventType == EVENT_RLC_UE_CREATE_REQ)
    {
       FILL_PST_RLC_TO_DUAPP(rspPst, RLC_UL_INST, EVENT_RLC_UE_CREATE_RSP);
+      SendRlcUeRspToDu(&rspPst, cfgCfm);
    }
    else if(tRlcCb->u.ulCb->rlcUlUdxEventType == EVENT_RLC_UE_RECONFIG_REQ)
    {
       FILL_PST_RLC_TO_DUAPP(rspPst, RLC_UL_INST, EVENT_RLC_UE_RECONFIG_RSP);
+      SendRlcUeRspToDu(&rspPst, cfgCfm);
    }
-   SendRlcUeRspToDu(&rspPst, cfgCfm);
+   else if (tRlcCb->u.ulCb->rlcUlUdxEventType == EVENT_RLC_UE_DELETE_REQ)
+   {
+      FILL_PST_RLC_TO_DUAPP(rspPst, RLC_UL_INST, EVENT_RLC_UE_DELETE_RSP);
+      sendRlcUeDeleteRspToDu(&rspPst, cfgCfm->ueId, cfgCfm->cellId, SUCCESS); 
+   }
+  // SendRlcUeRspToDu(&rspPst, cfgCfm);
 
    /* free the memory from DL */
    RLC_FREE_SHRABL_BUF(pst->region,
@@ -523,7 +530,8 @@ RlcCfgCfmInfo    *cfgCfm
                   rlcCfgApplyDelUlUe(gCb, cfgTmpData);
                   RLC_MEM_CPY(entCfgCfm, 
                              &cfgTmpData->cfgEntData[idx].entUlCfgCfm, 
-                             sizeof(RlcEntCfgCfmInfo)); 
+                             sizeof(RlcEntCfgCfmInfo));
+                  break;
                }
                else
                {
