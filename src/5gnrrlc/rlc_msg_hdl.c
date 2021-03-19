@@ -43,6 +43,7 @@
 #include "du_app_rlc_inf.h"
 #include "rlc_utils.h"
 #include "rlc_upr_inf_api.h"
+
 /*******************************************************************
  *
  * @brief Fills RLC UL UE Cfg Rsp from RlcCRsp 
@@ -721,6 +722,173 @@ uint8_t RlcProcDlUserDataTransfer(Pst *pst, RlcDlUserDataInfo *dlDataMsgInfo)
    RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, dlDataMsgInfo, sizeof(RlcDlUserDataInfo));
    return ROK;
 }
+
+/*******************************************************************
+ *
+ * @brief sending UE delete response to DU 
+ *
+ * @details
+ *
+ *    Function : sendRlcUeDeleteRspToDu 
+ *
+ *    Functionality:
+ *      sending UE delete response to DU 
+ *
+ * @params[in] uint8_t ueIdx, uint8_t cellId, UeDeleteResult result 
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t sendRlcUeDeleteRspToDu(uint8_t ueIdx, uint16_t cellId, UeDeleteResult result)
+{
+   Pst pst;  
+   RlcUeDeleteRsp *ueDeleteRsp = NULLP;
+   
+   FILL_PST_RLC_TO_DUAPP(pst, RLC_UL_INST, EVENT_RLC_UE_DELETE_RSP);
+
+   RLC_ALLOC_SHRABL_BUF(pst.region, pst.pool, ueDeleteRsp, sizeof(RlcUeDeleteRsp));
+   if(!ueDeleteRsp)
+   {
+      DU_LOG("\nERROR  -->  RLC: sendRlcUeDeleteRspToDu(): Memory allocation failed ");
+      return RFAILED;
+   }
+   else
+   {
+      ueDeleteRsp->cellId = cellId;
+      ueDeleteRsp->ueIdx = ueIdx;
+      ueDeleteRsp->result = result;
+  
+      if(rlcSendUeDeleteRspToDu(&pst, ueDeleteRsp) == ROK)
+      {
+         DU_LOG("\nDEBUG  -->  RLC: UE Delete response send successfully");
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  RLC: SendRlcUeDeleteRspToDu():Failed to send UE Delete response to DU");
+         RLC_FREE_SHRABL_BUF(pst.region, pst.pool, ueDeleteRsp, sizeof(RlcUeDeleteRsp));
+         return RFAILED;
+      }
+   }
+   return ROK;
+}
+
+/* ****************************************************************
+*
+* @brief filling RLC UE delete configuration  
+*
+* @details
+*
+*    Function : fillRlcCfgInfo 
+*
+*    Functionality: filling RLC UE delete configuration
+*
+* @params[in] RlcUlUeCb *ueCb, RlcCfgInfo *rlcUeCfg
+*
+* @return void
+*
+* ****************************************************************/
+
+void fillRlcUeDelInfo(RlcUlUeCb *ueCb, RlcCfgInfo *rlcUeCfg)
+{
+   uint8_t lcIdx;
+   
+   rlcUeCfg->ueId    = ueCb->ueId;
+   rlcUeCfg->cellId  = ueCb->cellId;
+   rlcUeCfg->numEnt = 0;
+   for(lcIdx=0; lcIdx<RLC_MAX_LCH_PER_UE && rlcUeCfg->numEnt < 1; lcIdx++)
+   {
+      if(ueCb->lCh[lcIdx].ulRbCb != NULLP)
+      {
+         rlcUeCfg->entCfg[rlcUeCfg->numEnt].rbId    = 0;
+         rlcUeCfg->entCfg[rlcUeCfg->numEnt].rbType  = 0;
+         rlcUeCfg->entCfg[rlcUeCfg->numEnt].cfgType = CKW_CFG_DELETE_UE;
+         rlcUeCfg->numEnt++;
+      }
+   }
+}
+
+/*******************************************************************
+*
+* @brief Handles Ue delete Request from DU APP
+*
+* @details
+*
+*    Function : RlcProcUeDeleteReq
+*
+*    Functionality:
+*      Handles Ue delete Request from DU APP
+*
+* @params[in] Post structure pointer
+*             RlcUeDelete pointer
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+
+uint8_t RlcProcUeDeleteReq(Pst *pst, RlcUeDelete *ueDelete)
+{
+   uint8_t ret = ROK;
+   RlcCb *gRlcCb = NULLP;
+   RlcCfgInfo *rlcUeCfg = NULLP;
+   RlcUlUeCb *ueCb = NULLP;
+   UeDeleteResult result=SUCCESSFUL;
+
+   DU_LOG("\nDEBUG  -->  RLC: UE Delete request received. CellID[%d] UEIDX[%d]",ueDelete->cellId, ueDelete->ueIdx);
+
+   if(ueDelete != NULLP)
+   {
+      gRlcCb = RLC_GET_RLCCB(pst->dstInst);
+      rlcDbmFetchUlUeCb(gRlcCb,ueDelete->ueIdx, ueDelete->cellId, &ueCb);
+      if(ueCb != NULLP)
+      {
+         if(ueDelete->cellId == ueCb->cellId)
+         {
+            RLC_ALLOC(gRlcCb, rlcUeCfg, sizeof(RlcCfgInfo));
+            if(rlcUeCfg == NULLP)
+            {
+               DU_LOG("\nERROR  -->  RLC: deleteRlcUeCb(): Failed to allocate memory");
+               ret = RFAILED;
+            }
+            else
+            {
+               memset(rlcUeCfg, 0, sizeof(RlcCfgInfo));
+               fillRlcUeDelInfo(ueCb, rlcUeCfg);
+               if(RlcProcCfgReq(pst, rlcUeCfg) != ROK)
+               {
+                  DU_LOG("\nERROR  -->  RLC: deleteRlcUeCb(): Failed to delete UE information");
+                  result = INVALID_UEID;
+               }
+            }
+         }
+         else
+         {
+            result = INVALID_CELLID;
+         }
+      }
+      else
+      {
+         result = INVALID_UEID;
+      }
+
+      if(result != SUCCESSFUL)
+      {
+         ret = sendRlcUeDeleteRspToDu(ueDelete->ueIdx, ueDelete->cellId, result);
+         if(ret != ROK)
+         {
+            DU_LOG("\nERROR  -->  RLC: RlcProcUeDeleteReq():Failed to send UE Delete response to DU");
+         }
+      }
+      RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueDelete, sizeof(RlcUeDelete));
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  RLC: RlcProcUeDeleteReq(): Recieved NULL pointer UE Delete ");
+      ret = RFAILED;
+   }
+   return ret;
+}
+
 /**********************************************************************
          End of file
 **********************************************************************/

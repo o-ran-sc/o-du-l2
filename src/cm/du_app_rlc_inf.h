@@ -31,7 +31,8 @@
 #define EVENT_DL_RRC_MSG_RSP_TO_DU 217
 #define EVENT_DL_USER_DATA_TRANS_TO_RLC 218
 #define EVENT_UL_USER_DATA_TRANS_TO_DU 219
-
+#define EVENT_RLC_UE_DELETE_REQ 220
+#define EVENT_RLC_UE_DELETE_RSP 221
 
 #define RB_ID_SRB 0
 #define RB_ID_DRB 1
@@ -89,6 +90,13 @@ typedef enum
 
 typedef enum
 {
+   SUCCESSFUL            ,  /*!< No Failure */
+   INVALID_CELLID      ,  /*!< CellId not present */
+   INVALID_UEID        ,  /*!< UEId not present */
+}UeDeleteResult;
+
+typedef enum
+{
    RLC_AM,                    //Acknowledged Mode
    RLC_UM_BI_DIRECTIONAL,     //UnAcknowledged Mode
    RLC_UM_UNI_DIRECTIONAL_UL,
@@ -128,7 +136,7 @@ typedef struct dlAmCfg
    int16_t      pollPdu;             /* Used to trigger a poll for every pollPdu.*/
    int32_t      pollByte;            /* Poll_Byte in bytes. */
    uint8_t      maxRetxTh;           /* Max_Retx_Threshold */
- 
+
 }DlAmCfg;
 
 typedef struct dlUmCfg
@@ -200,6 +208,19 @@ typedef struct rlcUeCfgRsp
    RlcRsp         result;
    FailureReason  reason;
 }RlcUeCfgRsp;
+
+typedef struct rlcUeDelete
+{
+   uint16_t      cellId;
+   uint8_t       ueIdx;
+}RlcUeDelete;
+
+typedef struct rlcUeDeleteRsp
+{
+   uint16_t       cellId;
+   uint8_t        ueIdx;
+   UeDeleteResult result;
+}RlcUeDeleteRsp;
 
 /* UL RRC Message from RLC to DU APP */
 typedef struct ulRrcMsgInfo
@@ -280,6 +301,11 @@ typedef uint8_t (*RlcDuUeCfgRsp) ARGS((
    Pst          *pst,
    RlcUeCfgRsp  *ueCfgRsp));
 
+/* UE Delete Response from RLC to DU APP*/
+typedef uint8_t (*RlcDuUeDeleteRsp) ARGS((
+   Pst          *pst,
+   RlcUeDeleteRsp  *ueDelRsp));
+
 /* UL RRC Message from RLC to DU APP */
 typedef uint8_t (*RlcUlRrcMsgToDuFunc) ARGS((
    Pst           *pst,
@@ -295,9 +321,15 @@ typedef uint8_t (*RlcRrcDeliveryReportToDuFunc) ARGS((
    Pst           *pst,
    RrcDeliveryReport *rrcDeliveryReport));
 
+/* UE Reconfig Request from DU APP to RLC */
 typedef uint8_t (*DuRlcUeReconfigReq) ARGS((
    Pst           *pst,
    RlcUeCfg      *ueCfg ));
+
+/* UE Delete Request from DU APP to RLC */
+typedef uint8_t (*DuRlcUeDeleteReq) ARGS((
+   Pst           *pst,
+   RlcUeDelete   *ueDelete));
 
 /* DL RRC Message from RLC to DU APP */
 typedef uint8_t (*RlcDlRrcMsgRspToDuFunc) ARGS((
@@ -333,6 +365,10 @@ uint8_t packRlcUlUserDataToDu(Pst *pst, RlcUlUserDatInfo *ulUserData);
 uint8_t unpackRlcUlUserDataToDu(RlcUlUserDataToDuFunc func, Pst *pst, Buffer *mBuf);
 uint8_t packRlcDlUserDataToRlc(Pst *pst, RlcDlUserDataInfo *dlDataMsg);
 uint8_t unpackRlcDlUserDataToRlc(DuRlcDlUserDataToRlcFunc func, Pst *pst, Buffer *mBuf);
+uint8_t packDuRlcUeDeleteReq(Pst *pst, RlcUeDelete *ueDelete);
+uint8_t unpackRlcUeDeleteReq(DuRlcUeDeleteReq func, Pst *pst, Buffer *mBuf);
+uint8_t packRlcDuUeDeleteRsp(Pst *pst, RlcUeDeleteRsp *ueDeleteRsp);
+uint8_t unpackRlcUeDeleteRsp(RlcDuUeDeleteRsp func, Pst *pst, Buffer *mBuf);
 
 /* Event Handler function declarations */
 uint8_t RlcProcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg);
@@ -344,7 +380,8 @@ uint8_t RlcProcUeReconfigReq(Pst *pst, RlcUeCfg *ueCfg);
 uint8_t DuProcRlcDlRrcMsgRsp(Pst *pst, RlcDlRrcMsgRsp *dlRrcMsg);
 uint8_t DuProcRlcUlUserDataTrans(Pst *pst, RlcUlUserDatInfo *ulUserData);
 uint8_t RlcProcDlUserDataTransfer(Pst *pst, RlcDlUserDataInfo *dlDataMsgInfo);
-
+uint8_t RlcProcUeDeleteReq(Pst *pst, RlcUeDelete *ueDelete);
+uint8_t DuProcRlcUeDeleteRsp(Pst *pst, RlcUeDeleteRsp *delRsp);
 #endif /* RLC_INF_H */
 
 /**********************************************************************
