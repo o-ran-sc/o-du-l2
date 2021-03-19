@@ -16,6 +16,24 @@
       "revId": "d75d1b078091768f45b83f2a745a25917e03b39d",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7404bec6_2c09e993",
+        "filename": "src/5gnrmac/mac_tmr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-19T13:09:56Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "adc7b608_0aec0d0a",
+      "revId": "d75d1b078091768f45b83f2a745a25917e03b39d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
