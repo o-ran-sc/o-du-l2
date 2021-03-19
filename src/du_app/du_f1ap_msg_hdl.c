@@ -11939,6 +11939,7 @@ uint8_t BuildAndSendUeContextModResp(uint8_t ueIdx, uint8_t cellId)
       break;
    }
    FreeUeContextModResp(f1apMsg);
+   ret = duProcUeDeleteReq(cellIdx, ueIdx-1);
    return ret;
 
 }
@@ -12272,6 +12273,7 @@ uint8_t procF1UeContextModificationReq(F1AP_PDU_t *f1apMsg)
    {
       ret = duProcUeContextModReq(duUeCb);
    }
+
    freeAperDecodeUeContextModificationReqMsg(ueContextModifyReq);
    return ret; 
 }

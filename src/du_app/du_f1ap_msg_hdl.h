@@ -50,6 +50,8 @@ int16_t getStatProhTmr(uint8_t statProhTmrCfg);
 uint8_t duProcUeContextModReq(DuUeCb *ueCb);
 uint8_t BuildAndSendUeContextModResp(uint8_t ueIdx, uint8_t cellId);
 uint8_t duBuildAndSendUeContextModReq(uint16_t cellId, uint16_t crnti, DuUeCfg *duUeCfg);
+uint8_t duProcUeDeleteReq(uint8_t cellIdx, uint8_t ueIdx);
+
 /**********************************************************************
          End of file
 **********************************************************************/
