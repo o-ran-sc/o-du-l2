@@ -83,6 +83,13 @@ DuRlcDlUserDataToRlcFunc duSendRlcDlUserDataToRlcOpts[] =
    packRlcDlUserDataToRlc         /* Light weight-loose coupling */
 };
 
+DuRlcUeDeleteReq packRlcUeDeleteReqOpts[] =
+{
+   packDuRlcUeDeleteReq,       /* Loose coupling */
+   RlcProcUeDeleteReq,         /* TIght coupling */
+   packDuRlcUeDeleteReq        /* Light weight-loose coupling */
+};
+
 /*******************************************************************
  *
  * @brief Function to fillDlUserDataInfo
@@ -2628,6 +2635,218 @@ uint8_t duProcUeContextModReq(DuUeCb *ueCb)
    }
    return ROK;
 }
+/*******************************************************************
+*
+* @brief Processes UE delete Rsp received from RLC 
+*
+* @details
+*
+*    Function : DuProcRlcUeDeleteRsp
+*
+*    Functionality:
+*     Processes UE delete Rsp received from RLC 
+*
+*  @params[in]  Post structure
+*               Pointer to RlcUeDeleteRsp
+*  @return ROK     - success
+*          RFAILED - failure
+*
+*****************************************************************/
+uint8_t DuProcRlcUeDeleteRsp(Pst *pst, RlcUeDeleteRsp *delRsp)
+{
+
+   if(delRsp)
+   {
+      if(delRsp->result == RLC_DU_APP_RSP_OK)
+      {
+         if(pst->event == EVENT_RLC_UE_DELETE_RES)
+         {
+            DU_LOG("\nINFO   -->  DU_APP: RLC UE Delete Response : SUCCESS [UE IDX:%d]", delRsp->ueIdx);
+            memset(&duCb.actvCellLst[delRsp->cellId -1]->ueCb[delRsp->ueIdx -1].\
+               rlcUeCfg , 0 , sizeof(RlcUeCfg));
+         }
+         else
+         {
+            DU_LOG("\nERROR  -->  DU_APP: RLC UE DELETE Response for EVENT[%d] : FAILED [UE IDX : %d]," ,\
+            pst->event, delRsp->ueIdx);
+            return RFAILED;
+         }
+      }
+      else
+      {
+         DU_LOG("\nINFO   -->  DU_APP: RLC UE Delete Response : FAILED [UE IDX:%d]", delRsp->ueIdx);
+         return RFAILED;
+      }
+   }
+   return ROK;
+}
+/*******************************************************************
+*
+* @brief Processing UE Delete Req To Rlc
+*
+* @details
+*
+*    Function : sendUeDeleteReqToRlc
+*
+*    Functionality:
+*     Processes UE Delete Req To Rlc
+*
+*  @params[in]     Pointer to RlcUeCfg
+*  @return ROK     - success
+*          RFAILED - failure
+*
+*****************************************************************/
+
+uint8_t sendUeDeleteReqToRlc(RlcUeCfg *rlcUeCfg)
+{
+   uint8_t ret;
+   Pst pst;
+
+   FILL_PST_DUAPP_TO_RLC(pst, RLC_UL_INST, EVENT_RLC_UE_DELETE_REQ);
+   if(rlcUeCfg)
+   {
+      /* Processing one Ue at a time to RLC */
+      DU_LOG("\nDEBUG   -->  DU_APP: Sending UE delete  Request to RLC UL");
+      ret = (*packRlcUeDeleteReqOpts[pst.selector])(&pst, rlcUeCfg);
+      if(ret == RFAILED)
+      {
+         DU_LOG("\nERROR  -->  DU_APP : Failed to send UE delete  Req to RLC at sendUeReCfgReqToRlc()");
+         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, rlcUeCfg, sizeof(RlcUeCfg));
+      }
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->   DU_APP: Received RlcUeCfg is NULL at sendUeReCfgReqToRlc()");
+      ret = RFAILED;
+   }
+   return ret;
+}
+/*******************************************************************
+*
+* @brief Builds and Send Ue delete Req to RLC
+*
+* @details
+*
+*    Function : duBuildAndSendUeDeleteReqToRlc
+*
+*    Functionality: Builds and Send UE delete Req to RLC
+*
+* @params[in] cellId, crnti
+*             DuUeCfg *ueCfgDb
+*             RlcUeCfg *rlcUeCfg
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t duBuildAndSendUeDeleteReqToRlc(uint8_t cellIdx, uint8_t ueIdx, RlcUeCfg  *rlcUeCfg)
+{
+   
+   if((rlcUeCfg->cellId == cellIdx + 1) && (rlcUeCfg->ueIdx == ueIdx + 1))
+   {
+      if(sendUeDeleteReqToRlc(rlcUeCfg) != ROK)
+      {
+         DU_LOG("\nERROR  -->  DU APP : failed to send UE delete req to RLC"); 
+         return RFAILED;
+      }
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  DU APP : cellId and ueIdx does not matched");
+      return RFAILED;
+   }
+   return ROK;
+}
+/*******************************************************************
+*
+* @brief Build And Send Ue Delete Req to MAC and RLC
+*
+* @details
+*
+*    Function : duBuildAndSendUeDeleteReq
+*
+*    Functionality: Build And Send Ue Delete Req to MAC and RLC
+*
+* @params[in]
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t duBuildAndSendUeDeleteReq(uint8_t cellId, uint8_t ueId)
+{
+   uint8_t ret = ROK;
+   uint8_t cellIdx, ueIdx;
+   bool cellFound, ueFound;
+   RlcUeCfg  *rlcUeCfg;
+
+   DU_LOG("\nDEBUG   -->  DU_APP: Processing UE Delete Request ");
+   for(cellIdx = 0; cellIdx < duCb.numActvCells; cellIdx++)
+   {
+      if(cellId == cellIdx)
+      {
+         cellFound = true;
+         for(ueIdx = 0; ueIdx < duCb.numUe; ueIdx++)
+         {
+            if(ueId == ueIdx)
+            {
+               ueFound = true;
+               rlcUeCfg = &duCb.actvCellLst[cellIdx]->ueCb[ueIdx].rlcUeCfg;
+               ret = duBuildAndSendUeDeleteReqToRlc(cellIdx, ueIdx, rlcUeCfg);
+               if(ret == RFAILED)
+               {
+                  DU_LOG("\nERROR  -->  DU APP : Failed to build UE  delete req for RLC ");
+                  return ret;
+               }
+               /* TODO implementation of mac ue delete */
+               //ret = duBuildAndSendUeDeleteReqToMac(cellIdx, ueIdx, macUeCfg);
+            }
+            break;
+         }
+         break;
+      }
+   }
+   if(cellFound == true)
+   {
+      if(ueFound == true)
+      {
+         DU_LOG("\nDEBUG  -->  DU APP : CellId and UeId both matched");
+         return ROK;
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  DU APP : CellId found but UeId didnot found");
+         return RFAILED;
+      }
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  DU APP : CellId and UeId didnot found");
+      return RFAILED;
+   }
+
+   return ROK;
+}
+/*******************************************************************
+*
+* @brief Process UE  delete request
+*
+* @details
+*
+*    Function : duProcUeDeleteReq
+*
+*    Functionality: Process UE delete request
+*
+* @params[in]
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t duProcUeDeleteReq(uint8_t cellIdx, uint8_t ueIdx)
+{
+   uint8_t ret;
+   ret = duBuildAndSendUeDeleteReq(cellIdx, ueIdx);
+   return ret;
+}
+
 /**********************************************************************
   End of file
- ***********************************************************************/
+***********************************************************************/

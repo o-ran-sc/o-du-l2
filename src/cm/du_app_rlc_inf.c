@@ -705,6 +705,161 @@ uint8_t unpackRlcDlUserDataToRlc(DuRlcDlUserDataToRlcFunc func, Pst *pst, Buffer
 
    return RFAILED;
 }
+/*******************************************************************
+*
+* @brief Packs and Sends UE Delete Request from DUAPP to RLC
+*
+* @details
+*
+*    Function : packDuRlcUeDeleteReq 
+*
+*    Functionality:
+*       Packs and Sends UE Delete Request from DUAPP to RLC
+*
+*
+* @params[in] Post structure pointer
+*             RlcUeCfg pointer
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t packDuRlcUeDeleteReq(Pst *pst, RlcUeCfg *ueCfg)
+{
+   Buffer *mBuf = NULLP;
+
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+      {
+         DU_LOG("\nERROR  --> RLC : Memory allocation failed at packDuRlcUeDeleteReq");
+         return RFAILED;
+      }
+      /* pack the address of the structure */
+      CMCHKPK(oduPackPointer,(PTR)ueCfg, mBuf);
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  RLC: Only LWLC supported for packDuRlcUeDeleteReq");
+      return RFAILED;
+   }
+
+   return ODU_POST_TASK(pst,mBuf);
+}
+
+/*******************************************************************
+* @brief Unpacks UE Delete Request received from DU APP
+*
+* @details
+*
+*    Function : unpackRlcUeDeleteReq 
+*
+*    Functionality:
+*         Unpacks UE Delete Request received from DU APP
+*
+* @params[in] Pointer to Handler
+*             Post structure pointer
+*             Message Buffer
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t unpackRlcUeDeleteReq(DuRlcUeDeleteReq func, Pst *pst, Buffer *mBuf)
+{
+    if(pst->selector == ODU_SELECTOR_LWLC)
+    {
+       RlcUeCfg *ueCfg;
+       /* unpack the address of the structure */
+       CMCHKUNPK(oduUnpackPointer, (PTR *)&ueCfg, mBuf);
+       ODU_PUT_MSG_BUF(mBuf);
+       return (*func)(pst, ueCfg);
+    }
+    else
+    {
+       /* Nothing to do for other selectors */
+       DU_LOG("\nERROR  -->  RLC: Only LWLC supported for UE Delete Request ");
+       ODU_PUT_MSG_BUF(mBuf);
+    }
+    return RFAILED;
+ }
+
+/*******************************************************************
+*
+* @brief Packs and Sends UE Del Response from RLC to DUAPP
+*
+* @details
+*
+*    Function : packRlcDuUeDeleteRsp
+*
+*    Functionality:
+*       Packs and Sends UE Del Response from RLC to DUAPP
+*
+*
+* @params[in] Post structure pointer
+*             RlcUeDel pointer
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t packRlcDuUeDeleteRsp(Pst *pst, RlcUeDeleteRsp *ueDel)
+{
+   Buffer *mBuf = NULLP;
+
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+      {
+         DU_LOG("\nERROR  --> RLC : Memory allocation failed at packRlcDuUeDeleteRsp");
+         return RFAILED;
+      }
+      /* pack the address of the structure */
+      CMCHKPK(oduPackPointer,(PTR)ueDel, mBuf);
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  RLC: Only LWLC supported for packRlcDuUeDeleteRsp");
+      return RFAILED;
+   }
+
+   return ODU_POST_TASK(pst,mBuf);
+}
+/*******************************************************************
+*
+* @brief Unpacks UE Del Response received from DU APP
+*
+* @details
+*
+*    Function : unpackRlcUeDeleteRsp
+*
+*    Functionality:
+*         Unpacks UE Del Response received from DU APP
+*
+* @params[in] Pointer to Handler
+*             Post structure pointer
+*             Message Buffer
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t unpackRlcUeDeleteRsp(RlcDuUeDeleteRsp func, Pst *pst, Buffer *mBuf)
+{
+    if(pst->selector == ODU_SELECTOR_LWLC)
+    {
+       RlcUeDeleteRsp *cfgRsp = NULLP;
+       /* unpack the address of the structure */
+       CMCHKUNPK(oduUnpackPointer, (PTR *)&cfgRsp, mBuf);
+       ODU_PUT_MSG_BUF(mBuf);
+       return (*func)(pst, cfgRsp);
+    }
+    else
+    {
+       /* Nothing to do for other selectors */
+       DU_LOG("\nERROR  -->  RLC: Only LWLC supported for UE Del Response ");
+       ODU_PUT_MSG_BUF(mBuf);
+    }
+
+    return RFAILED;
+}
+
 /**********************************************************************
          End of file
 ***********************************************************************/

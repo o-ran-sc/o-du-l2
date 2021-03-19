@@ -721,6 +721,127 @@ uint8_t RlcProcDlUserDataTransfer(Pst *pst, RlcDlUserDataInfo *dlDataMsgInfo)
    RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, dlDataMsgInfo, sizeof(RlcDlUserDataInfo));
    return ROK;
 }
+/*******************************************************************
+*
+* @brief freeing the memory of rlcUeCfg for Ue Delete 
+*
+* @details
+*
+*    Function : freeRlcCfg
+*
+*    Functionality:
+*      freeing the memory of rlcUeCfg for Ue Delete
+*
+* @params[in] Post structure pointer
+*             RlcUeCfg pointer
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t freeRlcCfg( RlcCb *rlcUeCb,RlcUeCfg *ueCfg)
+{
+   uint8_t lcIdx = 0;
+   RlcBearerCfg *lcCfg= NULLP;
+   if(ueCfg)
+   {
+      if(ueCfg->numLcs >0)
+      {
+         for(lcIdx =0 ; lcIdx < ueCfg->numLcs ; lcIdx++)
+         {
+            lcCfg = &ueCfg->rlcLcCfg[lcIdx];
+            if(lcCfg->u.amCfg)
+            {
+               RLC_FREE(rlcUeCb , lcCfg->u.amCfg, sizeof(AmBearerCfg));
+            }
+            if(lcCfg->u.umBiDirCfg)
+            {
+               RLC_FREE(rlcUeCb, lcCfg->u.umUniDirUlCfg, sizeof(UmUniDirUlBearerCfg));
+            }
+            if(lcCfg->u.umUniDirUlCfg)
+            {
+               RLC_FREE(rlcUeCb, lcCfg->u.umUniDirUlCfg, sizeof(UmUniDirUlBearerCfg));
+            }
+            if(lcCfg->u.umUniDirDlCfg)
+            {
+                RLC_FREE(rlcUeCb, lcCfg->u.umUniDirDlCfg, sizeof(UmUniDirDlBearerCfg));
+            }
+         }
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  RLC: No rlcLcCfg present");
+         return RFAILED;
+      }
+      RLC_FREE(rlcUeCb, ueCfg, sizeof(RlcUeCfg)); 
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  RLC: Failed to deallocate RlcUeCfg");
+      return RFAILED;
+   }
+   return ROK;
+}
+/*******************************************************************
+*
+* @brief Handles Ue delete Request from DU APP
+*
+* @details
+*
+*    Function : RlcProcUeDeleteReq
+*
+*    Functionality:
+*      Handles Ue delete Request from DU APP
+*
+* @params[in] Post structure pointer
+*             RlcUeCfg pointer
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t RlcProcUeDeleteReq(Pst *pst, RlcUeCfg *ueCfg)
+{
+   uint8_t ret = ROK;
+   RlcUeDeleteRsp *ueDeleteRsp = NULLP; //Seed code Rlc cfg struct
+   RlcCb *rlcUeCb = NULLP;
+   Pst rspPst;
+   memset(&rspPst, 0, sizeof(Pst));
+
+
+   DU_LOG("\nDEBUG  -->  RLC: UE delete request received. CellID[%d] UEIDX[%d]",ueCfg->cellId, ueCfg->ueIdx);
+
+   rlcUeCb = RLC_GET_RLCCB(pst->dstInst);
+   RLC_ALLOC(rlcUeCb, ueDeleteRsp, sizeof(RlcCfgInfo));
+   if(ueDeleteRsp == NULLP)
+   {
+      DU_LOG("\nERROR  -->  RLC: Failed to allocate memory at RlcProcUeDeleteReq()");
+      ret = RFAILED;
+   }
+   else
+   {
+      memset(ueDeleteRsp, 0, sizeof(RlcUeDeleteRsp));
+      ueDeleteRsp->cellId = ueCfg->cellId;
+      ueDeleteRsp->ueIdx  = ueCfg->ueIdx;
+      ret = freeRlcCfg(rlcUeCb ,ueCfg);
+      if(ret == ROK)
+      {
+         ueDeleteRsp->result = RLC_DU_APP_RSP_OK;
+         ueDeleteRsp->reason = RLC_CFG_REAS_NONE;
+         memset(ueCfg , 0 , sizeof(RlcUeCfg));
+      }
+      else
+      {
+         ueDeleteRsp->result = RLC_DU_APP_RSP_NOK;
+      }
+      FILL_PST_RLC_TO_DUAPP(rspPst , RLC_UL_INST, EVENT_RLC_UE_DELETE_RES);
+      rlcSendUeDeleteInfoToDu(&rspPst, ueDeleteRsp);
+      if(ret != ROK)
+         DU_LOG("\nERROR  -->  RLC: Failed to configure Add/Mod/Del entities at RlcProcUeDeleteReq()");
+   }
+
+   RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueCfg, sizeof(RlcUeCfg));
+   return ret;
+}
+
 /**********************************************************************
          End of file
 **********************************************************************/
