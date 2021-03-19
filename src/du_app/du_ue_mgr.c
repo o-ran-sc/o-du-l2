@@ -83,6 +83,13 @@ DuRlcDlUserDataToRlcFunc duSendRlcDlUserDataToRlcOpts[] =
    packRlcDlUserDataToRlc         /* Light weight-loose coupling */
 };
 
+DuRlcUeDeleteReq packRlcUeDeleteReqOpts[] =
+{
+   packDuRlcUeDeleteReq,       /* Loose coupling */
+   RlcProcUeDeleteReq,         /* TIght coupling */
+   packDuRlcUeDeleteReq        /* Light weight-loose coupling */
+};
+
 /*******************************************************************
  *
  * @brief Function to fillDlUserDataInfo
@@ -2628,6 +2635,186 @@ uint8_t duProcUeContextModReq(DuUeCb *ueCb)
    }
    return ROK;
 }
+/*******************************************************************
+*
+* @brief delete RlcUeCfg from duCb
+*
+* @details
+*
+*    Function : deleteDuRlcUeCfg 
+*
+*    Functionality:
+*       delete  RlcUeCfg from duCb    
+*
+*  @params[in]  Post structure
+*               Pointer to RlcUeDeleteRsp
+*  @return ROK     - success
+*          RFAILED - failure
+*
+*****************************************************************/
+void deleteDuRlcUeCfg(RlcUeCfg *ueCfg)
+{
+   uint8_t lcIdx = 0;
+   RlcBearerCfg *lcCfg= NULLP;
+   if(ueCfg)
+   {
+      if(ueCfg->numLcs >0)
+      {
+         for(lcIdx =0 ; lcIdx < ueCfg->numLcs ; lcIdx++)
+         {
+            lcCfg = &ueCfg->rlcLcCfg[lcIdx];
+            if(lcCfg->u.amCfg)
+            {
+               DU_FREE(lcCfg->u.amCfg, sizeof(AmBearerCfg));
+            }
+            if(lcCfg->u.umBiDirCfg)
+            {
+              DU_FREE(lcCfg->u.umUniDirUlCfg, sizeof(UmUniDirUlBearerCfg));
+            }
+            if(lcCfg->u.umUniDirUlCfg)
+            {
+              DU_FREE(lcCfg->u.umUniDirUlCfg, sizeof(UmUniDirUlBearerCfg));
+            }
+         }
+         if(lcCfg->u.umUniDirDlCfg)
+         {
+           DU_FREE(lcCfg->u.umUniDirDlCfg, sizeof(UmUniDirDlBearerCfg));
+         }
+      }
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  RLC: No rlcUeCfg present");
+      return RFAILED;
+   }
+}
+/*******************************************************************
+*
+* @brief Processes UE delete Rsp received from RLC 
+*
+* @details
+*
+*    Function : DuProcRlcUeDeleteRsp
+*
+*    Functionality:
+*     Processes UE delete Rsp received from RLC 
+*
+*  @params[in]  Post structure
+*               Pointer to RlcUeDeleteRsp
+*  @return ROK     - success
+*          RFAILED - failure
+*
+*****************************************************************/
+uint8_t DuProcRlcUeDeleteRsp(Pst *pst, RlcUeDeleteRsp *delRsp)
+{
+
+   if(delRsp)
+   {
+      if(delRsp->result == SUCCESSFUL_RESPONSE)
+      {
+         DU_LOG("\nINFO   -->  DU_APP: RLC UE Delete Response : SUCCESS [UE IDX:%d]", delRsp->ueId);
+         deleteDuRlcUeCfg(&duCb.actvCellLst[delRsp->cellId -1 ]->ueCb[delRsp->ueId -1].rlcUeCfg);
+         memset(&duCb.actvCellLst[delRsp->cellId -1 ]->ueCb[delRsp->ueId -1].\
+         rlcUeCfg , 0 , sizeof(RlcUeCfg));
+         DU_LOG("\nINFO   -->  DU_APP: RLC UE Configuration Deleted : SUCCESS [UE IDX:%d]", delRsp->ueId);
+      }
+      else
+      {
+         DU_LOG("\nINFO   -->  DU_APP: RLC UE Delete Response : FAILED [UE IDX:%d]", delRsp->ueId);
+         return RFAILED;
+      }
+   }
+   return ROK;
+}
+/*******************************************************************
+*
+* @brief Processing UE Delete Req To Rlc
+*
+* @details
+*
+*    Function : sendUeDeleteReqToRlc
+*
+*    Functionality:
+*     Processes UE Delete Req To Rlc
+*
+*  @params[in]     Pointer to RlcUeCfg
+*  @return ROK     - success
+*          RFAILED - failure
+*
+*****************************************************************/
+
+uint8_t sendUeDeleteReqToRlc(uint8_t cellId, uint8_t ueId)
+{
+   uint8_t ret;
+   Pst pst;
+   RlcUeDelete *ueDelete;
+   DU_ALLOC(ueDelete, sizeof(RlcUeDelete));
+   if(ueDelete !=NULLP)
+   {
+      ueDelete->cellId = cellId;
+      ueDelete->ueId = ueId;
+      FILL_PST_DUAPP_TO_RLC(pst, RLC_UL_INST, EVENT_RLC_UE_DELETE_REQ);
+      /* Processing one Ue at a time to RLC */
+      DU_LOG("\nDEBUG   -->  DU_APP: Sending UE delete  Request to RLC UL");
+      ret = (*packRlcUeDeleteReqOpts[pst.selector])(&pst, ueDelete);
+      if(ret == RFAILED)
+      {
+         DU_LOG("\nERROR  -->  DU_APP : Failed to send UE delete  Req to RLC at sendUeReCfgReqToRlc()");
+         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, ueDelete, sizeof(RlcUeCfg));
+      }
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->   DU_APP: Memory allocation failed in sendUeReCfgReqToRlc()");
+      ret = RFAILED;
+   }
+   return ret;
+}
+/*******************************************************************
+*
+* @brief Du preocess Ue Delete Req to MAC and RLC
+*
+* @details
+*
+*    Function : duProcUeDeleteReq
+*
+*    Functionality: Du process Ue Delete Req to MAC and RLC
+*
+* @params[in] uint8_t cellId, uint8_t ueId
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t duProcUeDeleteReq(uint8_t cellId, uint8_t ueId)
+{
+
+   DU_LOG("\nDEBUG   -->  DU_APP: Processing UE Delete Request ");
+   if(duCb.actvCellLst[cellId-1] != NULLP)
+   {
+      if(&duCb.actvCellLst[cellId-1]->ueCb[ueId-1])
+      {
+         if(sendUeDeleteReqToRlc(cellId, ueId) == RFAILED)
+         {
+            DU_LOG("\nERROR  -->  DU APP : Failed to build UE  delete req for RLC ");
+            return RFAILED;
+         }
+         /* TODO implementation of mac ue delete */
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  DU APP : UE Idx is not found");
+         return RFAILED;
+      }
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  DU APP : Cell Id is not found");
+      return RFAILED;
+   }
+
+   return ROK;
+}
+
 /**********************************************************************
   End of file
- ***********************************************************************/
+***********************************************************************/
