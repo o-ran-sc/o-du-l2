@@ -1,0 +1,276 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f5301b7e_5ea5f94b",
+        "filename": "src/5gnrrlc/kw_ul_ex_ms.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-03-19T12:53:40Z",
+      "side": 1,
+      "message": "why does the control reach UL?",
+      "revId": "d193a8d997d199647266da0e1a9b19cc4f4f44a6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4d099629_cac990b1",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 804,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-03-19T12:53:40Z",
+      "side": 1,
+      "message": "irrelevant comment",
+      "revId": "d193a8d997d199647266da0e1a9b19cc4f4f44a6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3c94a692_d70b6df0",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 813,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-03-19T12:53:40Z",
+      "side": 1,
+      "message": "first delete the UE contexts and then plan the response",
+      "revId": "d193a8d997d199647266da0e1a9b19cc4f4f44a6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e30c8384_56d0f82a",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 833,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-03-19T12:53:40Z",
+      "side": 1,
+      "message": "No, this is incorrect. We have to fill the correct response.",
+      "revId": "d193a8d997d199647266da0e1a9b19cc4f4f44a6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8a1e885c_fa869009",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 836,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-03-19T12:53:40Z",
+      "side": 1,
+      "message": "This response not info",
+      "revId": "d193a8d997d199647266da0e1a9b19cc4f4f44a6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0fe535c9_9c558a03",
+        "filename": "src/5gnrrlc/rlc_upr_inf_api.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-03-19T12:53:40Z",
+      "side": 1,
+      "message": "Rsp",
+      "revId": "d193a8d997d199647266da0e1a9b19cc4f4f44a6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "53a8d5e0_b0d7fdf8",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-03-19T12:53:40Z",
+      "side": 1,
+      "message": "change to RSP from RES",
+      "revId": "d193a8d997d199647266da0e1a9b19cc4f4f44a6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3973f398_aa4b7aab",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-03-19T12:53:40Z",
+      "side": 1,
+      "message": "Better to make a separate structure, since the causes for UE delete failure are limited to cell/UE not found or invalid FSM",
+      "revId": "d193a8d997d199647266da0e1a9b19cc4f4f44a6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "75e8858d_4b1d2ed1",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 11942,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-03-19T12:53:40Z",
+      "side": 1,
+      "message": "is this a test fixture? This is not the place this API must be invoked",
+      "revId": "d193a8d997d199647266da0e1a9b19cc4f4f44a6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f6eb7bd7_bdb2ae7f",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2662,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-03-19T12:53:40Z",
+      "side": 1,
+      "message": "do we need to check event here??",
+      "revId": "d193a8d997d199647266da0e1a9b19cc4f4f44a6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d2637096_6fd0a2fe",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2710,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-03-19T12:53:40Z",
+      "side": 1,
+      "message": "rlcUeCfg shouldn\u0027t be sent here. We have to create no structure in the DU APP/RLC interface according to API specified in AAD!!!",
+      "revId": "d193a8d997d199647266da0e1a9b19cc4f4f44a6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e7a0ccb8_af75311a",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2744,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-03-19T12:53:40Z",
+      "side": 1,
+      "message": "why is this check required? We have made all checks in caller of this function!!\nno need to call another function called sendUeDeleteReqToRlc. Achieve the functionality in this function itself.",
+      "revId": "d193a8d997d199647266da0e1a9b19cc4f4f44a6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "243a3a94_5df689f9",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2782,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-03-19T12:53:40Z",
+      "side": 1,
+      "message": "for loop is not needed. check if duCb.actvCellLst[cellId] is null or not. If it null, then cell is not found. Similarly, for ueId, directly check if duCb.actvCellLst[cellIdx]-\u003eueCb[ueIdx] exists or not",
+      "revId": "d193a8d997d199647266da0e1a9b19cc4f4f44a6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ec980b5e_85edc67f",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2793,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-03-19T12:53:40Z",
+      "side": 1,
+      "message": "we dont need variable named ret.",
+      "revId": "d193a8d997d199647266da0e1a9b19cc4f4f44a6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1be81ff0_522e4288",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2811,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-03-19T12:53:40Z",
+      "side": 1,
+      "message": "remove these logs and checks. It is sufficient to log error when cell/ue is not found",
+      "revId": "d193a8d997d199647266da0e1a9b19cc4f4f44a6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d10b45a5_b67c910c",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2846,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-03-19T12:53:40Z",
+      "side": 1,
+      "message": "There is no necessity for a separate function named \"duBuildAndSendUeDeleteReq\". Copy the contents fo that function here itself",
+      "revId": "d193a8d997d199647266da0e1a9b19cc4f4f44a6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
