@@ -12281,6 +12281,7 @@ uint8_t procF1UeContextModificationReq(F1AP_PDU_t *f1apMsg)
    {
       ret = duProcUeContextModReq(duUeCb);
    }
+
    freeAperDecodeUeContextModificationReqMsg(ueContextModifyReq);
    return ret; 
 }

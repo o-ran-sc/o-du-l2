@@ -130,216 +130,221 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
    switch(pst->srcEnt)
    {
       case ENTDUAPP:
-	 {
-	    switch(pst->event)
-	    {
-	       case EVTCFG:
-		  {
-		     DU_LOG("\n****** Received initial configs at DU APP ******\n");
-		     duProcCfgComplete();
-		     ODU_PUT_MSG_BUF(mBuf);
-		     break;
-		  }
-	       default:
-		  {
-		     DU_LOG("\nERROR  -->  DU_APP : Invalid event received at duActvTsk from ENTDUAPP");
-		     ODU_PUT_MSG_BUF(mBuf);
-		     ret = RFAILED;
-		  }
-	    }
-
-	    break;
-	 }
-      case ENTRLC:
-	 {
-	    switch(pst->event)
-	    {
-	       case LKW_EVT_CFG_CFM:
-		  {
-		     ret = unpackRlcConfigCfm(DuHdlRlcCfgComplete, pst, mBuf);
-		     break;
-		  }
-	       case LKW_EVT_CNTRL_CFM:
-		  {
-		     ret = cmUnpkLkwCntrlCfm(duHdlRlcCntrlCfgComplete, pst, mBuf);
-		     break;
-		  }
-	       case LKW_EVT_STA_IND:
-		  {
-		     break;
-		  }
-	       case EVENT_RLC_UE_CREATE_RSP:
-		  {
-		     ret = unpackRlcUeCfgRsp(DuProcRlcUeCfgRsp, pst, mBuf);
-		     break;
-		  }
-	       case EVENT_RLC_UE_RECONFIG_RSP:
-		  {
-		     ret = unpackRlcUeCfgRsp(DuProcRlcUeCfgRsp, pst, mBuf);
-		     break;
-		  }
-	       case EVENT_UL_RRC_MSG_TRANS_TO_DU:
-	          {
-	             ret = unpackRlcUlRrcMsgToDu(DuProcRlcUlRrcMsgTrans, pst, mBuf);
-		     break;
-                  }
-	       case EVENT_RRC_DELIVERY_MSG_TRANS_TO_DU:
-	          {
-		     ret = unpackRrcDeliveryReportToDu(DuProcRlcRrcDeliveryReport, pst, mBuf);
-		     break;
-		  }
-	       case EVENT_DL_RRC_MSG_RSP_TO_DU:
+         {
+            switch(pst->event)
+            {
+               case EVTCFG:
                   {
-	             ret = unpackRlcDlRrcMsgRspToDu(DuProcRlcDlRrcMsgRsp, pst, mBuf);
-		     break;
+                     DU_LOG("\n****** Received initial configs at DU APP ******\n");
+                     duProcCfgComplete();
+                     ODU_PUT_MSG_BUF(mBuf);
+                     break;
                   }
-	       case EVENT_UL_USER_DATA_TRANS_TO_DU:
-	          {
-		     ret = unpackRlcUlUserDataToDu(DuProcRlcUlUserDataTrans, pst, mBuf);
-		     break;
-		  }
-	       default:
-		  {
-		     DU_LOG("\nERROR  -->  DU_APP : Invalid event %d received at duActvTsk from ENTRLC", \
-			   pst->event);
-		     ODU_PUT_MSG_BUF(mBuf);
-		     ret = RFAILED;
-		  }
-	    }
-	    break;
-	 }
+               default:
+                  {
+                     DU_LOG("\nERROR  -->  DU_APP : Invalid event received at duActvTsk from ENTDUAPP");
+                     ODU_PUT_MSG_BUF(mBuf);
+                     ret = RFAILED;
+                  }
+            }
+
+            break;
+         }
+      case ENTRLC:
+         {
+            switch(pst->event)
+            {
+               case LKW_EVT_CFG_CFM:
+                  {
+                     ret = unpackRlcConfigCfm(DuHdlRlcCfgComplete, pst, mBuf);
+                     break;
+                  }
+               case LKW_EVT_CNTRL_CFM:
+                  {
+                     ret = cmUnpkLkwCntrlCfm(duHdlRlcCntrlCfgComplete, pst, mBuf);
+                     break;
+                  }
+               case LKW_EVT_STA_IND:
+                  {
+                     break;
+                  }
+               case EVENT_RLC_UE_CREATE_RSP:
+                  {
+                     ret = unpackRlcUeCfgRsp(DuProcRlcUeCfgRsp, pst, mBuf);
+                     break;
+                  }
+               case EVENT_RLC_UE_RECONFIG_RSP:
+                  {
+                     ret = unpackRlcUeCfgRsp(DuProcRlcUeCfgRsp, pst, mBuf);
+                     break;
+                  }
+               case EVENT_RLC_UE_DELETE_RSP:
+                  {
+                     ret = unpackRlcUeDeleteRsp(DuProcRlcUeDeleteRsp, pst, mBuf);
+                     break;
+                  }
+               case EVENT_UL_RRC_MSG_TRANS_TO_DU:
+                  {
+                     ret = unpackRlcUlRrcMsgToDu(DuProcRlcUlRrcMsgTrans, pst, mBuf);
+                     break;
+                  }
+               case EVENT_RRC_DELIVERY_MSG_TRANS_TO_DU:
+                  {
+                     ret = unpackRrcDeliveryReportToDu(DuProcRlcRrcDeliveryReport, pst, mBuf);
+                     break;
+                  }
+               case EVENT_DL_RRC_MSG_RSP_TO_DU:
+                  {
+                     ret = unpackRlcDlRrcMsgRspToDu(DuProcRlcDlRrcMsgRsp, pst, mBuf);
+                     break;
+                  }
+               case EVENT_UL_USER_DATA_TRANS_TO_DU:
+                  {
+                     ret = unpackRlcUlUserDataToDu(DuProcRlcUlUserDataTrans, pst, mBuf);
+                     break;
+                  }
+               default:
+                  {
+                     DU_LOG("\nERROR  -->  DU_APP : Invalid event %d received at duActvTsk from ENTRLC", \
+                           pst->event);
+                     ODU_PUT_MSG_BUF(mBuf);
+                     ret = RFAILED;
+                  }
+            }
+            break;
+         }
       case ENTMAC:
-	 {
-	    switch(pst->event)
-	    {
-	       //Config complete
-	       case EVTCFG:
-		  {
-		     ODU_PUT_MSG_BUF(mBuf);
-		     break;
-		  }
-	       case EVTLRGCFGCFM:
-		  {
-		     ret = cmUnpkLrgCfgCfm(duHdlMacCfgComplete, pst, mBuf);
-		     break;
-		  }
-	       case EVTLRGCNTRLCFM:
-		  {
-		     break;
-		  }
-	       case EVTMACSCHGENCFGCFM:
-		  {
-		     ret = cmUnpkLrgSchCfgCfm(duHdlSchCfgComplete, pst, mBuf);
-		     break;
-		  }
-	       case EVENT_MAC_CELL_CONFIG_CFM:
-		  {
-		     ret = unpackMacCellCfgCfm(duHandleMacCellCfgCfm, pst, mBuf);
-		     break;
-		  }
-	       case EVENT_MAC_CELL_UP_IND:
-		  {
-		     ret = unpackMacCellUpInd(duHandleCellUpInd, pst, mBuf);
-		     break;
-		  }
-	       case EVENT_MAC_STOP_IND:
-		  {
-		     ret = unpackMacStopInd(duHandleStopInd, pst, mBuf);
-		     break;
-		  }
-	       case EVENT_MAC_UL_CCCH_IND:
-		  {
-		     ret = unpackMacUlCcchInd(duHandleUlCcchInd, pst, mBuf);
-		     break;
-		  }
-	       case EVENT_MAC_UE_CREATE_RSP:
-		  {
-		     ret = unpackDuMacUeCfgRsp(DuProcMacUeCfgRsp, pst, mBuf); 
-		     break;
-		  }
+         {
+            switch(pst->event)
+            {
+               //Config complete
+               case EVTCFG:
+                  {
+                     ODU_PUT_MSG_BUF(mBuf);
+                     break;
+                  }
+               case EVTLRGCFGCFM:
+                  {
+                     ret = cmUnpkLrgCfgCfm(duHdlMacCfgComplete, pst, mBuf);
+                     break;
+                  }
+               case EVTLRGCNTRLCFM:
+                  {
+                     break;
+                  }
+               case EVTMACSCHGENCFGCFM:
+                  {
+                     ret = cmUnpkLrgSchCfgCfm(duHdlSchCfgComplete, pst, mBuf);
+                     break;
+                  }
+               case EVENT_MAC_CELL_CONFIG_CFM:
+                  {
+                     ret = unpackMacCellCfgCfm(duHandleMacCellCfgCfm, pst, mBuf);
+                     break;
+                  }
+               case EVENT_MAC_CELL_UP_IND:
+                  {
+                     ret = unpackMacCellUpInd(duHandleCellUpInd, pst, mBuf);
+                     break;
+                  }
+               case EVENT_MAC_STOP_IND:
+                  {
+                     ret = unpackMacStopInd(duHandleStopInd, pst, mBuf);
+                     break;
+                  }
+               case EVENT_MAC_UL_CCCH_IND:
+                  {
+                     ret = unpackMacUlCcchInd(duHandleUlCcchInd, pst, mBuf);
+                     break;
+                  }
+               case EVENT_MAC_UE_CREATE_RSP:
+                  {
+                     ret = unpackDuMacUeCfgRsp(DuProcMacUeCfgRsp, pst, mBuf); 
+                     break;
+                  }
                case EVENT_MAC_UE_RECONFIG_RSP:
-		  {
-		     ret = unpackDuMacUeCfgRsp(DuProcMacUeCfgRsp, pst, mBuf); 
-		     break;
-		  }
-        case EVENT_MAC_UE_DELETE_RSP:
-        {
-           ret = unpackDuMacUeDeleteRsp(DuProcMacUeDeleteRsp, pst, mBuf);
-           break;
-        }
-	       default:
-		  {
-		     DU_LOG("\nERROR  -->  DU_APP : Invalid event received at duActvTsk from ENTMAC");
-		     ODU_PUT_MSG_BUF(mBuf);
-		     ret = RFAILED;
-		  }
-	    }
+                  {
+                     ret = unpackDuMacUeCfgRsp(DuProcMacUeCfgRsp, pst, mBuf); 
+                     break;
+                  }
+               case EVENT_MAC_UE_DELETE_RSP:
+                  {
+                     ret = unpackDuMacUeDeleteRsp(DuProcMacUeDeleteRsp, pst, mBuf);
+                     break;
+                  }
+               default:
+                  {
+                     DU_LOG("\nERROR  -->  DU_APP : Invalid event received at duActvTsk from ENTMAC");
+                     ODU_PUT_MSG_BUF(mBuf);
+                     ret = RFAILED;
+                  }
+            }
 
-	    break;
-	 }
+            break;
+         }
       case ENTSCTP:
-	 {
-	    switch(pst->event)
-	    {
-	       case EVENT_CU_DATA:
-		  {
-		     F1APMsgHdlr(mBuf);
-		     break;
-		  }
-	       case EVENT_SCTP_NTFY:
-		  {
-		     ret = cmUnpkSctpNtfy(duSctpNtfyHdl, pst, mBuf);
-		     break;
-		  }
-	       case EVENT_RIC_DATA:
-		  {
-		     E2APMsgHdlr(mBuf);
-		     break;
-		  }
-	       default:
-		  {
-		     DU_LOG("\nERROR  -->  DU_APP : Invalid event received at duActvTsk from ENTSCTP");
-		     ret = RFAILED;
-		  }
+         {
+            switch(pst->event)
+            {
+               case EVENT_CU_DATA:
+                  {
+                     F1APMsgHdlr(mBuf);
+                     break;
+                  }
+               case EVENT_SCTP_NTFY:
+                  {
+                     ret = cmUnpkSctpNtfy(duSctpNtfyHdl, pst, mBuf);
+                     break;
+                  }
+               case EVENT_RIC_DATA:
+                  {
+                     E2APMsgHdlr(mBuf);
+                     break;
+                  }
+               default:
+                  {
+                     DU_LOG("\nERROR  -->  DU_APP : Invalid event received at duActvTsk from ENTSCTP");
+                     ret = RFAILED;
+                  }
 
-	    }
-	    ODU_PUT_MSG_BUF(mBuf);
-	    break;
-	 }
+            }
+            ODU_PUT_MSG_BUF(mBuf);
+            break;
+         }
       case ENTEGTP:
-	 {
-	    switch(pst->event)
-	    {
-	       case EVTCFGCFM:
-		  {
-		     unpackEgtpCfgCfm(duHdlEgtpCfgComplete, mBuf);
-		     break;
-		  }
-	       case EVTSRVOPENCFM:
-		  {
-		     unpackEgtpSrvOpenCfm(duHdlEgtpSrvOpenComplete, mBuf);
-		     break;
-		  }
-	       case EVTTNLMGMTCFM:
-		  {
-		     unpackEgtpTnlMgmtCfm(duHdlEgtpTnlMgmtCfm, mBuf);
-		     break;
-		  }
-	       default:
-		  {
-		     DU_LOG("\nERROR  -->  DU_APP : Invalid event[%d] received at duActvTsk from ENTEGTP", pst->event);
-		     ret = RFAILED;
-		  }
-	    }
-	    ODU_PUT_MSG_BUF(mBuf);
-	    break;
-	 }
+         {
+            switch(pst->event)
+            {
+               case EVTCFGCFM:
+                  {
+                     unpackEgtpCfgCfm(duHdlEgtpCfgComplete, mBuf);
+                     break;
+                  }
+               case EVTSRVOPENCFM:
+                  {
+                     unpackEgtpSrvOpenCfm(duHdlEgtpSrvOpenComplete, mBuf);
+                     break;
+                  }
+               case EVTTNLMGMTCFM:
+                  {
+                     unpackEgtpTnlMgmtCfm(duHdlEgtpTnlMgmtCfm, mBuf);
+                     break;
+                  }
+               default:
+                  {
+                     DU_LOG("\nERROR  -->  DU_APP : Invalid event[%d] received at duActvTsk from ENTEGTP", pst->event);
+                     ret = RFAILED;
+                  }
+            }
+            ODU_PUT_MSG_BUF(mBuf);
+            break;
+         }
       default:
-	 {
-	    DU_LOG("\nERROR  -->  DU_APP : DU APP can not process message from Entity %d", pst->srcEnt);
-	    ODU_PUT_MSG_BUF(mBuf);
-	    ret = RFAILED;
-	 }
+         {
+            DU_LOG("\nERROR  -->  DU_APP : DU APP can not process message from Entity %d", pst->srcEnt);
+            ODU_PUT_MSG_BUF(mBuf);
+            ret = RFAILED;
+         }
 
    }
    ODU_EXIT_TASK();
