@@ -578,6 +578,27 @@ typedef struct rlcUlCb
 #endif /* LTE_L2_MEAS */
 }RlcUlCb;
 
+typedef struct rlcThptPerUe
+{
+   uint16_t ueIdx;
+   uint64_t dataVol;
+}RlcThptPerUe;
+
+/**
+ * @brief  Structure to hold information about throughput at  RLC
+ * 
+ * @details
+ *    - thptTmrInt    : Throughput timer interval
+ *    - thptTmr       : Throughput timer
+ */
+typedef struct rlcThpt
+{
+   Inst          inst;                      /* RLC instance */
+   uint8_t       thptTmrInt;                /* Throughput timer interval */
+   CmTimer       thptTmr;                   /* Throughput Timer */
+   uint8_t       numActvUe;                 /* Number of Active UEs */
+   RlcThptPerUe  thptPerUe[MAX_NUM_UE];     /* Throughput calculated per UE */
+}RlcThpt;
 
 /** 
  * @brief  Structure to hold an information about a RLC instance
@@ -609,6 +630,7 @@ typedef struct rlcCb
       RlcDlCb   *dlCb;   /*!< Dl Control Block */
    } u;
    uint8_t    dlSduId;   /*!< Downlink SDU ID */
+   RlcThpt    rlcThpt;   /*!< Throughput at RLC*/
 }RlcCb;
 
 RlcCb *rlcCb[MAX_RLC_INSTANCES];   /*!< RLC global control block */

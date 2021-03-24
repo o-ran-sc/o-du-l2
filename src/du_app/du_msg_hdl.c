@@ -118,6 +118,7 @@ uint8_t duBuildRlcCfg(Inst inst)
    genCfg->rlcMode     = (inst == RLC_UL_INST) ?
       LKW_RLC_MODE_UL : LKW_RLC_MODE_DL;
    genCfg->timeRes     = 1; 
+   genCfg->thptTmrInt  = RLC_THROUGHPUT_TMR;
    genCfg->maxRguSaps  = DEFAULT_CELLS;
 
    /*----------- Fill lmPst

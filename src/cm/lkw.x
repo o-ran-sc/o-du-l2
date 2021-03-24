@@ -49,7 +49,8 @@ typedef struct rlcGenCfg
 /* Supported by SPLIT Architecture */
    uint16_t               maxUdxSaps;    /*!< Maximum Udx SAPs. */
 /* Supported by SPLIT Architecture ends */
-   Ticks             timeRes;       /*!< Time resolution. */
+   Ticks             timeRes;            /*!< Time resolution. */
+   uint8_t           thptTmrInt;         /*!< Throughput timer interval */
 /* Supported by SPLIT Architecture */
    uint8_t                rlcMode;       /*!< RLC_DL or RLC_UL */
 /* Supported by SPLIT Architecture ends */

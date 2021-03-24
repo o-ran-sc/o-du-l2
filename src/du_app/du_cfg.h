@@ -292,6 +292,8 @@
 #define PDSCH_MCS_INDEX 20  /* For 64QAM, valid mcs index: 17-28 in 38.214  - Table 5.1.3.1-1*/
 #define PUSCH_MCS_INDEX 10  /* For 16QAM, valid mcs index: 10-16 in 38.214  - Table 5.1.3.1-1*/
 
+#define RLC_THROUGHPUT_TMR  5 /* in milliseconds */
+
 typedef enum
 {
    GNBDU,

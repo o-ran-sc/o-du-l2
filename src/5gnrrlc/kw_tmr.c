@@ -87,6 +87,7 @@
 
 /* private function declarations */
 static Void rlcBndTmrExpiry(PTR cb);
+void rlcThptTmrExpiry(PTR cb);
 
 /**
  * @brief Handler to start timer
@@ -180,6 +181,14 @@ void rlcStartTmr(RlcCb *gCb, PTR cb, int16_t tmrEvnt)
          break;
       }
 #endif
+      case EVENT_RLC_THROUGHPUT_TMR:
+      {
+         RlcThpt *thptCb = (RlcThpt *)cb;
+         RLC_TMR_CALCUATE_WAIT(arg.wait, thptCb->thptTmrInt, gCb->genCfg.timeRes);
+         arg.timers = &thptCb->thptTmr;
+         arg.max = RLC_MAX_THPT_TMR; 
+         break;
+      }
       default:
       {
          DU_LOG("\nERROR  -->  RLC : rlcStartTmr: Invalid tmr Evnt [%d]", tmrEvnt);
@@ -262,6 +271,11 @@ void rlcStopTmr(RlcCb *gCb, PTR cb, uint8_t tmrType)
          break;
       }
 #endif
+      case EVENT_RLC_THROUGHPUT_TMR:
+      {
+         arg.timers   = &((RlcThpt *)cb)->thptTmr;
+         arg.max  = RLC_MAX_THPT_TMR;
+      }
       default:
       {
          DU_LOG("\nERROR  -->  RLC : rlcStopTmr: Invalid tmr Evnt[%d]", tmrType);
@@ -335,7 +349,11 @@ Void rlcTmrExpiry(PTR cb,S16 tmrEvnt)
          rlcBndTmrExpiry(cb);
          break;
       }
-      /* kw005.201 L2 Measurement support */
+      case EVENT_RLC_THROUGHPUT_TMR:
+      {
+         rlcThptTmrExpiry(cb);
+         break;
+      }
       default:
       {
          break;
@@ -384,6 +402,10 @@ bool rlcChkTmr(RlcCb *gCb, PTR cb, int16_t tmrEvnt)
       case EVENT_RLC_WAIT_BNDCFM:
       {
          return (((RlcRguSapCb *)cb)->bndTmr.tmrEvnt == EVENT_RLC_WAIT_BNDCFM);
+      }
+      case EVENT_RLC_THROUGHPUT_TMR:
+      {
+         return (((RlcThpt *)cb)->thptTmr.tmrEvnt == EVENT_RLC_THROUGHPUT_TMR);
       }
       default:
       {
@@ -453,6 +475,45 @@ static Void rlcBndTmrExpiry(PTR cb)
    return;
 }
 
+/**
+ * @brief Handler to do processing on expiry of the throughput timer
+ *
+ * @details
+ *    This function processes the RLC throughput timer expiry.
+ *
+ * @param[in] cb  Pointer to the RLC throughput struct
+ *
+ * @return  Void
+ */
+void rlcThptTmrExpiry(PTR cb)
+{
+   uint16_t  ueIdx;
+   long double tpt;
+   RlcThpt *rlcThptCb = (RlcThpt*)cb; 
+
+   /* Print throughput */
+   DU_LOG("\n===================== DL Throughput ==============================");
+   DU_LOG("\nNumber of UEs : %d", rlcThptCb->numActvUe);
+   for(ueIdx = 0; ueIdx < rlcThptCb->numActvUe; ueIdx++)
+   {
+      /* Spec 28.552, section 5.1.1.3 : 
+       * Throughput in kilobits/sec = (dataVol in kiloBits * 1000)/time in milligseconds
+       * 
+       * Since our dataVol is in bytes, multiplying 0.008 to covert into kilobits i.e. 
+       * Throughput[kbits/sec] = (dataVol * 0.008 * 1000)/time in ms
+       */
+      tpt = (double)(rlcThptCb->thptPerUe[ueIdx].dataVol * 8)/(double)rlcThptCb->thptTmrInt;
+      
+      DU_LOG("\nUE Id : %d   DL Tpt : %.2Lf", rlcThptCb->thptPerUe[ueIdx].ueIdx, tpt);
+      rlcThptCb->thptPerUe[ueIdx].dataVol = 0;
+   }
+   DU_LOG("\n==================================================================");
+
+   /* Restart timer */
+   rlcStartTmr(RLC_GET_RLCCB(rlcThptCb->inst), (PTR)rlcThptCb, EVENT_RLC_THROUGHPUT_TMR);
+
+   return;
+}
 
   
 /********************************************************************30**

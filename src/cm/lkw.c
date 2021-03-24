@@ -1380,6 +1380,7 @@ Buffer *mBuf
       {
          CMCHKPK(oduUnpackUInt16, cfg->t.cfg.s.gen.maxRguSaps, mBuf);
          CMCHKPK(oduUnpackUInt8, cfg->t.cfg.s.gen.rlcMode, mBuf);
+         CMCHKPK(oduUnpackUInt8, cfg->t.cfg.s.gen.thptTmrInt, mBuf);
          CMCHKPK(oduUnpackUInt32, cfg->t.cfg.s.gen.timeRes, mBuf);
          CMCHKPK(oduUnpackUInt16, cfg->t.cfg.s.gen.maxUdxSaps, mBuf);
          CMCHKPK(oduUnpackUInt16, cfg->t.cfg.s.gen.maxKwuSaps, mBuf);
@@ -1849,6 +1850,7 @@ Buffer *mBuf
          CMCHKUNPK(oduPackUInt16, &cfg->t.cfg.s.gen.maxKwuSaps, mBuf);
          CMCHKUNPK(oduPackUInt16, &cfg->t.cfg.s.gen.maxUdxSaps, mBuf);
          CMCHKUNPK(oduPackUInt32, &cfg->t.cfg.s.gen.timeRes, mBuf);
+         CMCHKUNPK(oduPackUInt8, &cfg->t.cfg.s.gen.thptTmrInt, mBuf);
          CMCHKUNPK(oduPackUInt8, &cfg->t.cfg.s.gen.rlcMode, mBuf);
          CMCHKUNPK(oduPackUInt16, &cfg->t.cfg.s.gen.maxRguSaps, mBuf);
       }
