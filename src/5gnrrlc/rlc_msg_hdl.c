@@ -699,7 +699,7 @@ uint8_t RlcProcDlUserDataTransfer(Pst *pst, RlcDlUserDataInfo *dlDataMsgInfo)
    if(!datReqInfo)
    {
       DU_LOG("\nERROR  -->  RLC_DL : Memory allocation failed for DatReq in RlcProcDlUserDataTransfer()");
-      RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, dlDataMsgInfo->dlMsg, dlDataMsgInfo->msgLen);
+      ODU_PUT_MSG_BUF(dlDataMsgInfo->dlMsg);
       RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, dlDataMsgInfo, sizeof(RlcDlUserDataInfo));
       return RFAILED;
    }
