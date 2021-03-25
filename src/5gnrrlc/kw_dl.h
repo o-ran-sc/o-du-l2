@@ -18,7 +18,7 @@
 
 /********************************************************************20**
   
-        Name:     LTE RLC file for downlink and non real time tasks 
+         for downlink and non real time tasks 
     
         Type:     C include file
   

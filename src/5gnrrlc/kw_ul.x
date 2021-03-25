@@ -18,12 +18,12 @@
 
 /********************************************************************20**
   
-        Name:    LTE RLC file for uplink and non real time tasks
+         for uplink and non real time tasks
     
         Type:    C include file
   
         Desc:    This file contains all the data structures and 
-                 prototypes for LTE RLC in the uplink.
+                 prototypes for RLC in the uplink.
  
         File:    kw_ul.x
   

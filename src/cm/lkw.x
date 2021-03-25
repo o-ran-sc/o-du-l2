@@ -359,7 +359,7 @@ typedef struct rlcL2MeasCfmEvt
 
 #endif /* LTE_L2_MEAS */
 
-/* Control primitives towards LTE RLC */
+/* Control primitives towards RLC */
 /* Pointer functions to pack/unpack primitives */
 typedef uint8_t (*RlcConfigReq)   ARGS((Pst *pst, RlcMngmt *cfg));
 typedef uint8_t (*RlcConfigCfm)   ARGS((Pst *pst, RlcMngmt *cfgCfm));

@@ -18,12 +18,12 @@
 
 /********************************************************************20**
   
-        Name:    LTE RLC file 
+         
     
         Type:    C include file
   
         Desc:    This file contains all the data structures and 
-                 prototypes for LTE RLC.
+                 prototypes for RLC.
  
         File:    kw_dl.x
   

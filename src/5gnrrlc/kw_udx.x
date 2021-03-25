@@ -18,7 +18,7 @@
 
 /**********************************************************************
  
-    Name:   LTE RLC layer
+    Name:   RLC layer
  
     Type:   C include file
  

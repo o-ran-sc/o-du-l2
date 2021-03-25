@@ -18,7 +18,7 @@
 
 /********************************************************************20**
   
-        Name:     LTE RLC file 
+         
     
         Type:     C include file
   
@@ -33,11 +33,8 @@
 
 #ifndef __KWH__
 #define __KWH__
-#include "rl_interface.h"
-#include "rl_common.h"
 #include "du_log.h"
  
-#define RLCLAYERNAME   "LTE RLC"     /* Layer Name */
 
 #define EKWxxx 1
 #define EMG099 1

@@ -43,8 +43,6 @@
 #include "rg_sch_cmn.h"
 #include "rg_sch_inf.h"         /* typedefs for Scheduler */
 #include "rg_sch_err.h"
-#include "rl_interface.h"
-#include "rl_common.h"
 
 /* header/extern include files (.x) */
 #include "tfu.x"           /* TFU types */
@@ -58,9 +56,6 @@
 uint32_t dlPrbCnt;
 #ifdef LTE_L2_MEAS
 
-static const char* RLOG_MODULE_NAME="MAC";
-static int RLOG_MODULE_ID=4096;
-static int RLOG_FILE_ID=166;
 
 static S16 rgSchL2mInsertMeasCb ARGS((
          RgSchCellCb       *cell,
