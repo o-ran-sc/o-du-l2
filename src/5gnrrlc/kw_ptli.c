@@ -18,11 +18,11 @@
 
 /********************************************************************20**
   
-        Name:    LTE-RLC Layer - Lower Interface
+        Name:    NR RLC Layer - Lower Interface
     
         Type:    C file
   
-        Desc:    C source code for the lower interface of LTE-RLC
+        Desc:    C source code for the lower interface of NR RLC
  
         File:    kw_ptli.c
   

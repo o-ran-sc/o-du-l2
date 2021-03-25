@@ -41,8 +41,6 @@
 #include "rg_sch_err.h"            /* defines and macros for MAC */
 #include "rg_sch_inf.h"            /* defines and macros for MAC */
 #include "rg_sch.h"            /* defines and macros for MAC */
-#include "rl_interface.h"
-#include "rl_common.h"
 
 
 /* header/extern include files (.x) */

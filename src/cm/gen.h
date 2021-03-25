@@ -35,26 +35,6 @@
 /* defines */
 
 #define  RTLIN_DUMP_DEBUG printf
-/* bndCfg.bufOwnshp for xxBndReq */
-
-#define SUOWN         0     /* service user (upper layer) owns buffers */
-#define SPOWN         1     /* service provider (lower layer) owns buffers */
-
-/* bndCfg.flcTyp for xxBndReq */
-
-#define FLCNOTALLOW   0     /* flow control not allowed */
-#define FLCALLOW      1     /* flow control allowed */
-
-/* bndCfg.wdw for xxBndReq */
-
-#define WDWNOTALLOW   0     /* window not allowed */
-
-/* state values (e.g., for an interface) */
-
-#define STATE_DISCONNECTED   0x00     /* disconnected state */
-#define STATE_CONNECTING     0x01     /* connecting state */
-#define STATE_CONNECTED      0x02     /* connected state */
-#define STATE_DISCONNECTING  0x03     /* disconnecting state */
 
 /* Protocol Address Structure related defines ..*/
 #define MAX_PROTADDR_LEN     16       /* Right now defined for IP, IPX 
@@ -72,592 +52,22 @@
 
 #define NOTPRSNT       0    /* not present */
 #define PRSNT_NODEF    1    /* present - no default */
-#define PRSNT_DEF      2    /* present - default */
 
 #define MF_SIZE_TKNSTRS  22 /* token string size - small */
 #define MF_SIZE_TKNSTRM  32 /* token string size - medium */
 #define MF_SIZE_TKNSTR  132 /* token string size - regular */
 #define MF_SIZE_TKNSTRE 255 /* token string size - extra large */
 #define MF_SIZE_TKNBITS 7   /* token bits size */
-#define TP_SIZE_TKNSTR  8   /* token string size */
 
-/* gen_h_001.main_133 --- size for extension container, MA_LIMIT_EXTCONT */
-#define MA_MF_EXTCONT_SIZE 20
-/* defines for type of service class */
-
-#define FRMRLY         1     /* frame relay */
-#define MACINT         2     /* mac interface */
-
-/* defines for ISUP and B-ISUP  */
-
-
-/* subsystem field */
-
-#define SSF_INTER         0      /* international subsystem field */
-#define SSF_NAT           2      /* national subsystem field */
-
-#define PRI_ZERO          0      /* priority 0 - lowest */
-#define PRI_ONE           1      /* priority 1 */
-#define PRI_TWO           2      /* priority 2 */
-
-/* direction of suspend */
-
-#define FROM_LWR          1      /* direction from lower */
-#define FROM_UPR          2      /* direction from upper */
-
-#define MOD15             0x0f   /* modulo 15 mask */
 #define NOTUSED           0      /* not used */
-
-#define DIR_OUT           1
-#define DIR_INC           2
-
-#define PRESALLOW         0
-#define PRESREST          1
-#define MFROK             0
-#define MFRFAILED         1
-#define MFREOM            2
 
 /* defines for ATM */
 
 #ifndef CMFILE_REORG_1
 
-/* special vcc's */
-
-#define ATMVPI_SIG     0     /* Q.93B signalling */
-#define ATMVCI_SIG     5     /* Q.93B signalling */
-
-#define ATMVPI_ILMI    0     /* ILMI address registration */
-#define ATMVCI_ILMI    16    /* ILMI address registration */
-
-/* loss priority */
-
-#define ATMLP_HIGH     0     /* high priority */
-#define ATMLP_LOW      1     /* low priority */
-
-/* congestion indication */
-
-#define ATMCI_NOCONG   0     /* not congested */
-#define ATMCI_CONG     1     /* congested */
-
-/* reception status */
-
-#define ATMRS_NOERROR  0     /* no error */
-#define ATMRS_ERROR    1     /* error */
-
-/* establishement */
-
-#define AM_E_DEMAND       0x00  /* demand */
-
-/* quality of service classes */
-
-#define ATMQOS_CLASS0  0     /* QoS class 0 -unspecified QoS class*/
-#define ATMQOS_CLASS1  1     /* QoS class 1 */
-#define ATMQOS_CLASS2  2     /* QoS class 2 */
-#define ATMQOS_CLASS3  3     /* QoS class 3 */
-#define ATMQOS_CLASS4  4     /* QoS class 4 */
-
-/* ATM traffic descriptor octet group identifiers */
-
-#define AM_ATD_FPCR_ID0     0x82  /* forward  peak  cell rate id, CLP = 0   */
-#define AM_ATD_BPCR_ID0     0x83  /* backward peak  cell rate id, CLP = 0   */
-#define AM_ATD_FPCR_ID1     0x84  /* forward  peak  cell rate id, CLP = 0+1 */
-#define AM_ATD_BPCR_ID1     0x85  /* backward peak  cell rate id, CLP = 0+1 */
-#define AM_ATD_FSCR_ID0     0x88  /* forward  sust. cell rate id, CLP = 0   */
-#define AM_ATD_BSCR_ID0     0x89  /* backward sust. cell rate id, CLP = 0   */
-#define AM_ATD_FSCR_ID1     0x90  /* forward  sust. cell rate id, CLP = 0+1 */
-#define AM_ATD_BSCR_ID1     0x91  /* backward sust. cell rate id, CLP = 0+1 */
-#define AM_ATD_FMBS_ID0     0xa0  /* forward  mean burst size id, CLP = 0   */
-#define AM_ATD_BMBS_ID0     0xa1  /* backward mean burst size id, CLP = 0   */
-#define AM_ATD_FMBS_ID1     0xb0  /* forward  mean burst size id, CLP = 0+1 */
-#define AM_ATD_BMBS_ID1     0xb1  /* backward mean burst size id, CLP = 0+1 */
-#define AM_ATD_BSTEFFRTIND  0xbe  /* best effort indicator */
-#define AM_ATD_TFCMGMTOPTID 0xbf  /* traffic management options id */
-
-/* number of stop bits */
-
-#define AM_NSB_UNUSED     0x00  /* none specified */
-#define AM_NSB_1          0x01  /* 1 stop bit */
-#define AM_NSB_15         0x02  /* 1.5 stop bits */
-#define AM_NSB_2          0x03  /* 2 stop bits */
-
-/* crankback blocked transit type */
-
-#define AM_CBTT_BLKSUCCEND   0x02    /* call or party has been blocked at the
-                                      * succeeding end of this interface */
-#define AM_CBTT_BLKNODE      0x03    /* blocked node */
-#define AM_CBTT_BLKLINK      0x04    /* blocked link */
-#define AM_CBTT_BLKBYDSUCC   0xff    /* call or party has been blocked at or
-                                      * beyond the succeeding node, AINI */
-
-/* Specific Crankback level for AINI */
-#define AM_AINI_CBLVL        0xff     /* Crankback level for AINI */
-
-/* crankback cause indicator */
-
-#define AM_CBCAUSE_IND       0x85    /* crankback cause indicator */
-
-/* Cranckback and general cause values */
-
-#define AM_CV_INVCAUSEVAL      0     /* invalid cause value - proprietary */
-#define AM_CV_UNALLOCNMB       1     /* unallocated (unassigned) number */
-#define AM_CV_NOROUTTRANSNET   2     /* no route to transit network */
-#define AM_CV_NOROUTDST        3     /* no route to destination */
-#define AM_CV_VCCUNACPT        10    /* UNI 3.0: VPCI/VCI unacceptable */
-#define AM_CV_NORMCALLCLR      16    /* UNI 3.1: normal call clearing */
-#define AM_CV_USRBUSY          17    /* user busy */
-#define AM_CV_NOUSRRSP         18    /* no user response */
-#define AM_CV_NOANSUSR         19    /* no answer from user */
-#define AM_CV_CALLREJ          21    /* call rejected */
-#define AM_CV_NMBCHNG          22    /* number changed */
-#define AM_CV_CALLREJCLIR      23    /* user rejects all calls with CLIR */
-#define AM_CV_DSTOUTORD        27    /* destination out of order */
-#define AM_CV_INVNMBFORM       28    /* invalid number format */
-#define AM_CV_RSPSTATENQ       30    /* response to STATUS ENQUIRY */
-#define AM_CV_NORMUNSPEC       31    /* normal unspecified */
-#define AM_CV_PNDADDPTYREQ     32    /* PNNI: too many pending add party requests */
-#define AM_CV_CHNGINPGL        34    /* PNNI: Call cleared due to change in PGL */
-#define AM_CV_REQVCCUNAVAIL    35    /* requested VPCI/VCI unavailable */
-#define AM_CV_VCCFAIL          36    /* UNI 3.1: VPCI/VCI assignment failure */
-#define AM_CV_RATEUNAVAIL1     37    /* UNI 3.1: user cell rate unavailable */
-#define AM_CV_NETOUTORD        38    /* network out of order */
-#define AM_CV_TMPFAIL          41    /* Temporary failure */
-#define AM_CV_ACCINFODISC      43    /* access info discarded */
-#define AM_CV_NOVCCAVAIL       45    /* no VPCI/VCI unavailable */
-#define AM_CV_RESAIL           47    /* resources unavailable, unspecified */
-#define AM_CV_QOSUNAVAIL       49    /* Quality of Service unavailable */
-#define AM_CV_RATEUNAVAIL      51    /* UNI 3.0: user cell rate unavailable */
-#define AM_CV_REQPVPCVCCUNAV   53    /* PNNI: Requested Called party soft PVPC/PVCC not available */
-#define AM_CV_BCAPNOTAUTH      57    /* bearer capability not authorized */
-#define AM_CV_BCAPUNAVAIL      58    /* bearer capability not available */
-#define AM_CV_SRVUNAVAIL       63    /* Service or option unavailable */
-#define AM_CV_BCAPNOTIMPL      65    /* bearer capability not implemented */
-#define AM_CV_COMBUNSUPP       73    /* unsupported comb. of traffic parameters */
-#define AM_CV_AALPARMUNSUPP1   78    /* UNI 3.1: AAL paramteres cannot be supported */
-#define AM_CV_INVCALLREF       81    /* invalid call reference */
-#define AM_CV_CHANNOTEXST      82    /* identified channel does not exist */
-#define AM_CV_DSTNOTCOMP       88    /* incompatible destination */
-#define AM_CV_INVENDPTREF      89    /* invalid endpoint reference */
-#define AM_CV_INVTRANSNET      91    /* invalid transit network selection */
-#define AM_CV_MANYADDPTYREQ    92    /* too many add party requests */
-#define AM_CV_AALPARMUNSUPP    93    /* UNI 3.0:AAL paramteres cannot be supported */
-#define AM_CV_INFOELMSSG       96    /* mandatory info element is missing */
-#define AM_CV_MSGTYPNOTIMPL    97    /* message type not implemented */
-#define AM_CV_INFOELNOTIMPL    99    /* info element not implemented */
-#define AM_CV_INVINFOEL        100   /* invalid info element */
-#define AM_CV_MSGNOTCOMP       101   /* msg type not compatible with call st */
-#define AM_CV_TMRRCVRY         102   /* recovery on timer expiry */
-#define AM_CV_INVMSGLEN        104   /* incorrect message length */
-#define AM_CV_PROTERR          111   /* protocol error, unspecified */
-#define AM_CV_OPTELMERR        127   /* opt info el content error (non-std) */
-#define AM_CV_NOROUTNEXTNODE   128   /* next node unreachable */
-#define AM_CV_DTLNOTMYNODE     160   /* DTL Transit not my node ID */
-
-/* AAL type */
-
-#define AM_AALTYP_0          0x00    /* AAL for voice */
-#define AM_AALTYP_1          0x01    /* AAL type 1 */
-#define AM_AALTYP_2          0x02    /* AAL type 2 */
-#define AM_AALTYP_34         0x03    /* AAL type 3/4 */
-#define AM_AALTYP_5          0x05    /* AAL type 5 */
-#define AM_AALTYP_USR        0x10    /* user defined AAL */
-
-/* AAL type 1 - identifiers */
-#define AM_AAL1_ID_STYPE     0x85    /* AAL Subtype ID */
-#define AM_AAL1_ID_CBR       0x86    /* CBR Rate ID */
-#define AM_AAL1_ID_MULT      0x87    /* Multiplier Identifier */
-#define AM_AAL1_ID_SCFRM     0x88    /* Source Clock Freq. Recovery Method Id */
-#define AM_AAL1_ID_ECM       0x89    /* Error correction Method Id */
-#define AM_AAL1_ID_SDTB      0x8A    /* Structured Data Transfer Blocksize Id */
-#define AM_AAL1_ID_PFC       0x8B    /* Partially filled cells Id */
-
-/* AAL type 1 subtypes */
-#define AM_AAL1_STYPE_NULL   0x00    /* Null/Empty */
-#define AM_AAL1_STYPE_VOICE  0x01    /* Voice-band based on 64 kbit/s */
-#define AM_AAL1_STYPE_SCKT   0x02    /* Synchronous circuit Emulation */
-#define AM_AAL1_STYPE_ACKT   0x03    /* Asynchronous circuit Emulation */
-#define AM_AAL1_STYPE_HQAUD  0x04    /* High Quality Audio */
-#define AM_AAL1_STYPE_VIDEO  0x05    /* Video */
-
-/* AAL type 1 CBR rates */
-#define AM_AAL1_CBR_64       0x01    /* 64 kbit/s */
-#define AM_AAL1_CBR_1544     0x04    /* 1544 kbit/s (DS1) */
-#define AM_AAL1_CBR_6312     0x05    /* 6312 kbit/s (DS2) */
-#define AM_AAL1_CBR_32064    0x06    /* 32064 kbit/s */
-#define AM_AAL1_CBR_44736    0x07    /* 44736 kbit/s (DS3) */
-#define AM_AAL1_CBR_97728    0x08    /* 97728 kbit/s */
-#define AM_AAL1_CBR_2048     0x10    /* 2048 kbit/s (E1) */
-#define AM_AAL1_CBR_8448     0x11    /* 8448 kbit/s (E2) */
-#define AM_AAL1_CBR_34368    0x12    /* 34368 kbit/s (E3) */
-#define AM_AAL1_CBR_139264   0x13    /* 139264 kbit/s */
-#define AM_AAL1_CBR_nx64     0x40    /* n x 64 kbit/s */
-#define AM_AAL1_CBR_nx8      0x41    /* n x 8  kbit/s */
-
-/* AAL type 1 Clock recovery types */
-#define AM_AAL1_SCFRM_NULL   0x00    /* Null */
-#define AM_AAL1_SCFRM_SRTS   0x01    /* Synchronous Residual Time Stamp */
-#define AM_AAL1_SCFRM_ACR    0x02    /* Adaptive clock Recovery  */
-
-/* AAL type 1 Error Correction types */
-#define AM_AAL1_ECM_NULL     0x00    /* NULL */
-#define AM_AAL1_ECM_FEC      0x01    /* Interleaved FEC */
-#define AM_AAL1_ECM_DSST     0x02    /* For delay sensitive signal transport */
-
-/* AAL type 1 Structured Data Transfer */
-#define AM_AAL1_SDTB_NULL    0x00    /* NULL */
-#define AM_AAL1_SDTB_SDT     0x01    /* Structured Data Transfer */
-
-/* AAL type 5 & 3/4 - identifiers */
-#define AM_AAL5_ID_FMSDU     0x8c    /* forward  maximum CPCS SDU size id */
-#define AM_AAL5_ID_BMSDU     0x81    /* backward maximum CPCS SDU size id */
-#define AM_AAL5_ID_MIDRNG    0x82    /* Mid Range Id */
-#define AM_AAL5_ID_MODE      0x83    /* mode identifier */
-#define AM_AAL5_ID_SSCS      0x84    /* SSCS type identifier */
-
-/* AAL type 5 & 3/4 - mode of operation */
-
-#define AM_AAL5_MODE_MSG     0x01    /* message mode */
-#define AM_AAL5_MODE_STREAM  0x02    /* streaming mode */
-
-/* AAL type 5 - SSCS type */
-
-#define AM_AAL5_SSCS_NULL    0x00    /* null SSCS */
-#define AM_AAL5_SSCS_SSCOP_A 0x01    /* SSCOP assured mode SSCS */
-#define AM_AAL5_SSCS_SSCOP_N 0x02    /* SSCOP non-assured mode SSCS */
-#define AM_AAL5_SSCS_FR      0x04    /* frame relay SSCS */
-
-/* bearer class */
-
-#define AM_BCOB_A            0x01    /* bearer class A */
-#define AM_BCOB_C            0x03    /* bearer class C */
-#define AM_BCOB_X            0x10    /* bearer class X */
-
-/* timing requirement */
-
-#define AM_TMGREQ_NOIND      0       /* no indication */
-#define AM_TMGREQ_ETOEREQ    1       /* end-to-end timing required */
-#define AM_TMGREQ_ETOENOTREQ 2       /* end-to-end timing not required */
-
-/* traffic type */
-
-#define AM_TFCTYP_NOIND      0       /* no indication */
-#define AM_TFCTYP_CBR        1       /* constant bit rate */
-#define AM_TFCTYP_VBR        2       /* variable bit rate */
-
-/* user plane connection configuration */
-
-#define AM_CONCFG_PTPT       0       /* point to point */
-#define AM_CONCFG_PTMPT      1       /* point to multipoint */
-
-/* susceptability to clipping */
-
-#define AM_SUSCLP_NO         0       /* not susceptible to clipping */
-#define AM_SUSCLP_YES        1       /* susceptible to clipping */
-
-/* layer 1 identity */
-
-#define AM_L1_IDENT       0x01  /* layer 1 identity */
-
-/* layer 2 identity */
-
-#define AM_L2_IDENT       0x02  /* layer 2 identity */
-
-/* layer 3 identity */
-
-#define AM_L3_IDENT       0x03  /* layer 3 identity */
-
-/* user information layer 1 */
-
-#define AM_UIL1_CCITTV110 0x01  /* CCITT Standardized Rate Adaptation V.110/X.30. */
-#define AM_UIL1_G711ULAW  0x02  /* Reccomendation G.711 u-Law */
-#define AM_UIL1_G711ALAW  0x03  /* Recommendation G.711 A-Law */
-#define AM_UIL1_G721ADCPM 0x04  /* Recommendation G.721 32 kbit/s ADCPM and */
-                             /* Recommendation I.460 */
-#define AM_UIL1_G722G725  0x05  /* Recommendation G.722 and G.725 - 7kHz Audio */
-#define AM_UIL1_H261      0x06  /* Recommendation H.261 - 384 kbit/s Video */
-#define AM_UIL1_NONCCITT  0x07  /* Non-CCITT  standardized Rate adaptation */
-#define AM_UIL1_CCITTV120 0x08  /* CCITT Standardized Rate Adaptation V.120 */
-#define AM_UIL1_CCITTX31  0x09  /* CCITT Standardized Rate Adaptation X.31 HDLC */
-
-/* user information layer 2 protocol */
-
-#define AM_UIL2_BASIC     0x01  /* basic mode - ISO 1745 */
-#define AM_UIL2_Q921      0x02  /* CCITT Recommendation Q.921 */
-#define AM_UIL2_X25SLP    0x06  /* CCITT Recommendation X.25, single link */
-#define AM_UIL2_X25MLP    0x07  /* CCITT Recommendation X.25, multi link */
-#define AM_UIL2_T71       0x08  /* extended LAPB for half duplex, */
-                             /* CCITT Recommendation T.71 */
-#define AM_UIL2_HDLCARM   0x09  /* HDLC ARM - ISO 4335 */
-#define AM_UIL2_HDLCNRM   0x0a  /* HDLC NRM - ISO 4335 */
-#define AM_UIL2_HDLCABM   0x0b  /* HDLC ABM - ISO 4335 */
-#define AM_UIL2_LANLLC    0x0c  /* LAN LLC - ISO 8802/2 */
-#define AM_UIL2_X75SLP    0x0d  /* CCITT Recommendation X.75, single link */
-#define AM_UIL2_Q922      0x0e  /* CCITT Recommendation Q.922 */
-#define AM_UIL2_USRSPEC   0x10  /* CCITT User specified */
-#define AM_UIL2_T90       0x11  /* CCITT T.90 */
-
-/* Layer 2/3 Operation Mode */
-#define AM_LOLYR_OPR_NORM 0x01  /* Normal mode of operation */
-#define AM_LOLYR_OPR_EXT  0x02  /* Extended mode of operation */
-
-/* user information layer 3 protocol */
-
-#define AM_UIL3_Q931      0x02  /* CCITT Recommendation Q.931 */
-#define AM_UIL3_T90       0x05  /* CCITT T.90 */
-#define AM_UIL3_X25PLP    0x06  /* CCITT Recommendation X.25, packet layer */
-#define AM_UIL3_ISO8208   0x07  /* ISO 8208 */
-#define AM_UIL3_ISO8348   0x08  /* ISO 8348 */
-#define AM_UIL3_ISO8473   0x09  /* ISO 8473 */
-#define AM_UIL3_T70       0x0a  /* CCITT Recommendation T.70 */
-#define AM_UIL3_ISO9577   0x0b  /* ISO/IEC TR 9577 */
-#define AM_UIL3_USRSPEC   0x10  /* CCITT User specified */
-
-/* presentation method of protocol profile */
-
-#define AM_PM_VAL1        0x01  /* value 1 */
-
-/* information transfer mode */
-
-#define AM_TM_CIRCUIT     0x00  /* circuit mode */
-#define AM_TM_PACKET      0x02  /* packet mode */
-
-/* information transfer capability */
-
-#define AM_ITC_SPEECH     0x00  /* speech */
-#define AM_ITC_UNRDIG     0x08  /* unrestricted digital information */
-#define AM_ITC_RESDIG     0x09  /* restricted digital information */
-#define AM_ITC_A31KHZ     0x10  /* 3.1kHz audio */
-#define AM_ITC_A7KHZ      0x11  /* 7 kHz audio */
-#define AM_ITC_A15KHZ     0x12  /* 15 kHz audio */
-#define AM_ITC_VIDEO      0x18  /* video */
-
-/* information transfer rate */
-
-#define AM_ITR_PKT        0x00  /* packet mode */
-#define AM_ITR_64KBIT     0x10  /* circuit mode - 64 kbits */
-#define AM_ITR_2X64KBIT   0x11  /* circuit mode - 2 X 64 kbits */
-#define AM_ITR_384KBIT    0x13  /* circuit mode - 384 kbits */
-#define AM_ITR_1472KBIT   0x14  /* circuit mode - 1472 kbits */
-#define AM_ITR_1536KBIT   0x15  /* circuit mode - 1536 kbits */
-#define AM_ITR_1920KBIT   0x17  /* circuit mode - 1920 kbits */
-#define AM_ITR_MULIRATE   0x18  /* circuit mode - multi rate */
-
-/* symmetry */
-
-#define AM_S_BISYM        0x00  /* bidirectional symmetry */
-
-/* structure */
-
-#define AM_S_DEF          0x00  /* default */
-#define AM_S_8KHZINTEG    0x01  /* 8 khz integrity */
-#define AM_S_SDUINTEG     0x04  /* service data unit integrity */
-#define AM_S_UNSTRUCT     0x07  /* unstructured */
-
-/* intermediate rate */
-
-#define AM_IR_NONE        0x00  /* none specified */
-#define AM_IR_8KBIT       0x01  /* 8 kbits */
-#define AM_IR_16KBIT      0x02  /* 16 kbits */
-#define AM_IR_32KBIT      0x03  /* 32 kbits */
-
-/* negotiation */
-
-#define AM_N_IBNOTPOSS    0x00  /* inband not possible */
-#define AM_N_IBPOSS       0x01  /* inband possible */
-
- /* negotiation indicator */
-
-#define AM_N_OBNOTPOSS    0x00  /* outband not possible */
-#define AM_N_OBPOSS       0x01  /* outband possible */
-
-/* synchronous/asynchronous */
-
-#define AM_SA_SYNC        0x00  /* synchronous */
-#define AM_SA_ASYNC       0x01  /* asynchronous */
-
-/* assignor/assignee */
-
-#define AM_AA_ORGASGNEE   0x00  /* originator is assignee */
-#define AM_AA_ORGASGNOR   0x01  /* originator is assignor */
-
-/* duplex mode */
-
-#define AM_DUPMODE_HALF   0x00  /* half duplex */
-#define AM_DUPMODE_FULL   0x01  /* full duplex */
-
-/* mode of operation */
-
-#define AM_MOO_BITTRANS   0x00  /* bit transparent */
-#define AM_MOO_PROTSEN    0x01  /* protocol sensitive */
-
-/* multiple frame establishment */
-
-#define AM_MFE_NOTSUP     0x00  /* not supported */
-#define AM_MFE_SUP        0x01  /* supported */
-
-/* logical link identifier */
-
-#define AM_LLI_DEF        0x00  /* default */
-#define AM_LLI_FULLNEG    0x01  /* full protocol negotiation */
-
-/* inband/outband negotiation */
-
-#define AM_ION_USRINFO    0x00  /* negotiation with user info messages */
-#define AM_ION_LL0        0x01  /* negotiation in band using logical link 0 */
-
-/* narrow band coding standards */
-
-#define AM_CSTD_CCITT     0x00  /* CCITT standards */
-#define AM_CSTD_INT       0x01  /* Other International Standards */
-#define AM_CSTD_NAT       0x02  /* National Standard */
-#define AM_CSTD_NET       0x03  /* Network Standard */
-
-/* coding standard */
-
-#define AM_CODESTD_CCITT     0       /* ITU-TS (CCITT) standardized */
-#define AM_CODESTD_NET       3       /* ATM Forum specific */
-
-/* location */
-
-#define AM_LOCN_USER         0x00    /* user */
-#define AM_LOCN_PRVNETLOC    0x01    /* private network serving local user */
-#define AM_LOCN_PUBNETLOC    0x02    /* public network serving local user */
-#define AM_LOCN_TRNSNET      0x03    /* transit network */
-#define AM_LOCN_PUBNETRMT    0x04    /* public network serving remote user */
-#define AM_LOCN_PRVNETRMT    0x05    /* private network serving remote user */
-#define AM_LOCN_INTNET       0x07    /* international network */
-#define AM_LOCN_NETINTWRK    0x0a    /* network beyond interworking point */
-
-/* extended high layer characteristics */
-
-#define AM_XHLCI_TEL      0x01  /* Telephony - Recommendation G.711 */
-#define AM_XHLCI_FAXG4    0x04  /* Facsimile Group 4 - Recommendation T.62 */
-#define AM_XHLCI_DAPFAXG4 0x21  /* Doc App Profile for Facsimile Group 4 */
-                             /* Recommendation T.503 */
-#define AM_XHLCI_DAPMIXED 0x24  /* Doc App Profile for Facsimile Group 4 */
-                             /* Recommendation T.501 */
-#define AM_XHLCI_DAPPROC  0x28  /* Doc App Profile for Facsimile Group 4 */
-                             /* Recommendation T.502 */
-#define AM_XHLCI_TELETEX  0x31  /* Teletex - Recommendation T.62/T.70 */
-#define AM_XHLCI_DAPVIDEO 0x32  /* Doc App Profile for Facsimile Group 4 */
-                             /* Recommendation T.503 */
-#define AM_XHLCI_TELEX    0x35  /* Telex */
-#define AM_XHLCI_MHS      0x38  /* Message Handling System */
-                             /* Recommendation X.400 */
-#define AM_XHLCI_OSIAPP   0x41  /* OSI Application - Recommendation X.200 */
-#define AM_XHLCI_MAINT    0x5e  /* Maintenance */
-#define AM_XHLCI_MNGMT    0x5f  /* Management */
-#define AM_XHLCI_VIDTEL   0x60  /* Videotelephony (F.xyz and AV.242) */
-#define AM_XHLCI_RESERVE  0xff  /* Reserved */
-
-
-/* ATM Traffic Descriptor tagging */
-
-#define AM_ATD_TAGNOTREQ    0       /* tagging not requested */
-#define AM_ATD_TAGREQ       1       /* tagging requested */
-
-/* ATM Traffic Descriptor Frame discard */
-
-#define AM_ATD_NOFRMDISC    0       /* frame discard not allowed */
-#define AM_ATD_FRMDISC      1       /* frame discard allowed */
-
-/* ATM Traffic Descriptor ABR specific token identifier */
-
-#define AM_ATD_ABR_FMCR_ID  0x92    /* Forward ABR minimum cell rate identifier */
-#define AM_ATD_ABR_BMCR_ID  0x93    /* Forward ABR minimum cell rate identifier */
-
-/* crankback level indicator */
-
-#define AM_CBLEVEL_IND       0x81    /* crankback level indicator */
-
-/* succeeding end block indicator */
-
-#define AM_ENDBLK_IND        0x82    /* succeeding end block indicator */
-
-/* blocked node indicator */
-
-#define AM_BLKNODE_IND       0x83    /* blocked node indicator */
-
-/* blocked link indicator */
-
-#define AM_BLKLINK_IND       0x84    /* blocked link indicator */
-
-/* connection level id */
-
-#define AM_CONLEVEL_ID       0x81    /* connection level id */
-
-/* connection level */
-
-#define AM_CONLEVEL_VCC      0x01    /* virtual channel connection */
-#define AM_CONLEVEL_VPC      0x02    /* virtual path connection */
-
-/* VPI/VCI selection type */
-
-#define AM_VPCSEL_ANY        0x00    /* any VPI/VCI */
-#define AM_VPCSEL_REQ        0x02    /* required VPI/VCI */
-#define AM_VPCSEL_ASSGN      0x04    /* assigned VPI/VCI */
-
-/* VPI id */
-
-#define AM_VPI_ID            0x81    /* VPI id */
-
-/* VCI id */
-
-#define AM_VCI_ID            0x82    /* VCI id */
-
-/* shaping indicator */
-
-#define AM_SHAPIND_NOREQ     0x00    /* no user requirement */
-#define AM_SHAPIND_NOAGG     0x01    /* no aggregation of user and OAM cells */
-
-/* payload types */
-
-#define ATMPT_USR   0     /* user cells */
-#define ATMPT_RM    1     /* RM cells */
-#define ATMPT_OAM   2     /* OAM cells */
-
-/* values for lnkNmb parameter */
-
-#define AMT_CON_LNK_UNUSED  0xffff  /* link number field not significant */
-
-
-/* defines for LAN emulation */
-
 /* MAC address length */
 
 #define MACADDRLEN                    6  /* 48 bit MAC address length */
-
-/* LANE and MAC header length */
-
-#define LANE_HDR_LEN             2  /* 2 octet LANE header length */
-#define LANE_MACHDR_LEN         14  /* 802.3 (DA/SA/Len), 802.5 (AC/FC/DA/SA) */
-
-/* Additional broadband repeat indicators */
-
-#define AM_REPIND_Q2763_1       0x00  /* reserved for use by Rec. Q.2763 */
-#define AM_REPIND_Q2763_2i      0x01  /* reserved for use by Rec. Q.2763 */
-
-/* values for AC/FC fields - to be ignored */
-
-#define LANE_HDR_8025_AC           0x00  /* no significance */
-#define LANE_HDR_8025_FC           0x40  /* LLC frame, priority 0 */
-
-/* value for pad octets */
-
-#define LANE_PAD                   0x00  /* pad octets */
-
-/* source routed frame types */
-
-#define LANE_FRAMETYPE_NSR         0x00  /* not source routed */
-#define LANE_FRAMETYPE_SRF         0x01  /* specifically routed frame */
-#define LANE_FRAMETYPE_ARE         0x02  /* all routes explorer frame */
-#define LANE_FRAMETYPE_STE         0x03  /* spanning tree explorer frame */
-#define LANE_FRAMETYPE_ERR         0x04  /* illegal frame type */
-
-/* next hop types for SRF frames */
-
-#define LANE_NEXTHOP_NONE          0x00  /* no hop */
-#define LANE_NEXTHOP_LAST          0x01  /* last hop */
-#define LANE_NEXTHOP_MORE          0x02  /* more hops */
 
 /* maximum sizes for typedef arrays */
 
@@ -667,202 +77,15 @@
 #define MAX_TLV_LEN                   4  /* max length of value in TLV entry */
 #define MAX_TLV_TBL                  16  /* size of TLV table */
 
-/* marker (special LEC id) */
-
-#define LANE_MARKER_CTRL         0xff00  /* control frame marker */
- 
-/* LAN emulation protocol */
-
-#define LANE_PROTOCOL              0x01  /* LAN Emulation protocol */
- 
-/* LAN emulation protocol version */
-
-#define LANE_VERSION               0x01  /* LAN Emulation protocol version */
-
-/* op code type */
-
-#define LANE_OPCODE_TYPE_REQ       0x00  /* request frame */
-#define LANE_OPCODE_TYPE_RSP       0x01  /* response frame */
-
-/* op code name */
-
-#define LANE_OPCODE_CFGREQ       0x0001  /* configuration request  frame */
-#define LANE_OPCODE_CFGRSP       0x0101  /* configuration response frame */
-#define LANE_OPCODE_JOINREQ      0x0002  /* join request  frame */
-#define LANE_OPCODE_JOINRSP      0x0102  /* join response frame */
-#define LANE_OPCODE_READYQUERY   0x0003  /* ready query  frame */
-#define LANE_OPCODE_READYIND     0x0103  /* ready indication frame */
-#define LANE_OPCODE_REGREQ       0x0004  /* register request  frame */
-#define LANE_OPCODE_REGRSP       0x0104  /* register response frame */
-#define LANE_OPCODE_UNREGREQ     0x0005  /* unregister request  frame */
-#define LANE_OPCODE_UNREGRSP     0x0105  /* unregister response frame */
-#define LANE_OPCODE_ARPREQ       0x0006  /* configuration request  frame */
-#define LANE_OPCODE_ARPRSP       0x0106  /* configuration response frame */
-#define LANE_OPCODE_FLUSHREQ     0x0007  /* flush request  frame */
-#define LANE_OPCODE_FLUSHRSP     0x0107  /* flush response frame */
-#define LANE_OPCODE_NARPREQ      0x0008  /* negative ARP request frame */
-#define LANE_OPCODE_TOPCHREQ     0x0009  /* topology change request  frame */
-
-/* status */
-
-#define LANE_STA_SUCCESS              0  /* success */
-#define LANE_STA_UNSUPPVER            1  /* version not supported */
-#define LANE_STA_INVPARAM             2  /* invalid request parameters */
-#define LANE_STA_DUPLANDST            4  /* duplicate LAN destination */
-#define LANE_STA_DUPATMADDR           5  /* duplicate ATM address */
-#define LANE_STA_RESAIL           6  /* insufficient resources to grant request */
-#define LANE_STA_NOACCESS             7  /* access denied */
-#define LANE_STA_INVLECID             8  /* invalid requestor-LECID */
-#define LANE_STA_INVLANDST            9  /* invalid LAN destination */
-#define LANE_STA_INVATMADDR          10  /* invalid ATM address */
-#define LANE_STA_NOCFG               20  /* no configuration */
-#define LANE_STA_LECSERR             21  /* LECS error */
-#define LANE_STA_INFOUNAVAIL         22  /* insufficient information */
-
-/* non-standard status values, for internal use */
-
-#define LANE_STA_INVCTRL         0x0f00  /* invalid control frame - unspecified */
-
-/* flag values */
-
-#define LANE_FLAG_RMTADDR        0x0001  /* remote address (unreg LAN dst) */
-#define LANE_FLAG_PROXY          0x0080  /* LEC acts as proxy */
-#define LANE_FLAG_TOPCH          0x0100  /* topology change */
-
-/* tag values for LAN destination type */
-
-#define LANE_TAG_NOTPRSNT        0x0000  /* not present */
-#define LANE_TAG_MACADDR         0x0001  /* MAC address */
-#define LANE_TAG_RD              0x0002  /* route designator */
-
-/* LAN type */
-
-#define LANE_LANTYPE_UNSPECIFIED   0x00  /* unspecified */
-#define LANE_LANTYPE_8023          0x01  /* IEEE 802.3/Ethernet */
-#define LANE_LANTYPE_8025          0x02  /* IEEE 802.5/Token Ring */
-
-/* min frame size - values */
-
-#define LANE_MIN_DATA_8023           62  /* minimum AAL SDU size for IEEE 802.3 data */
-#define LANE_MIN_DATA_8025           16  /* minimum AAL SDU size for IEEE 802.5 data */
-#define LANE_MIN_CTRL               108  /* minimum AAL SDU size for control frame */
-
-/* max frame size - index */
-
-#define LANE_MTU_IDX_UNSPECIFIED   0x00  /* unspecified */
-#define LANE_MTU_IDX_ENET          0x01  /* 1516 octets IEEE 802.3 */
-#define LANE_MTU_IDX_TR_4          0x02  /* 4544 octets IEEE 802.5 4Mbps */
-#define LANE_MTU_IDX_RFC1626       0x03  /* 9234 octets RFC  1626 */
-#define LANE_MTU_IDX_TR_16         0x04  /* 18190 octets IEEE 802.5 16Mbps */
-
-/* max frame size - values */
-
-#define LANE_MTU_VAL_UNSPECIFIED      0  /* unspecified */
-#define LANE_MTU_VAL_ENET          1516  /* 1516 octets IEEE 802.3 */
-#define LANE_MTU_VAL_TR_4          4544  /* 4544 octets IEEE 802.5 4Mbps */
-#define LANE_MTU_VAL_RFC1626       9234  /* 9234 octets RFC  1626 */
-#define LANE_MTU_VAL_TR_16        18190  /* 18190 octets IEEE 802.5 16Mbps */
-
-/* VCC nature */
-
-#define VCC_NATURE_PVC                0  /* permanent virtual circuit */
-#define VCC_NATURE_SVC                1  /* switched virtual circuit */
-#define  VCC_NATURE_PVC_SVC           2  /* mixed PVC/SVC */
-
-/* VCC type (values from LEC MIB) */
-
-#define LANE_VCC_TYPE_CTRL_DIR        0  /* control direct VCC */
-#define LANE_VCC_TYPE_CTRL_DIST       1  /* control distribute VCC */
-#define LANE_VCC_TYPE_MCAST_SND_8023  2  /* multicast send VCC for 802.3 */
-#define LANE_VCC_TYPE_MCAST_FWD_8023  3  /* multicast forward VCC for 802.3 */
-#define LANE_VCC_TYPE_MCAST_SND_8025  4  /* multicast send VCC for 802.5 */
-#define LANE_VCC_TYPE_MCAST_FWD_8025  5  /* multicast forward VCC for 802.5 */
-#define LANE_VCC_TYPE_DATA_DIR_8023   6  /* data direct VCC for 802.3 */
-#define LANE_VCC_TYPE_DATA_DIR_8025   7  /* data direct VCC for 802.5 */
-#define LANE_VCC_TYPE_UNKNOWN         8  /* unclassified VCC */
-#define LANE_VCC_TYPE_CFG_DIR         9  /* cfg direct VCC */
-
-/* LAN destination proxy class */
-
-#define LANE_CLASS_LOCAL              0  /* local LAN destination */
-#define LANE_CLASS_PROXY              1  /* proxy LAN destination */
-
-/* LAN destination mode (type) */
-
-#define LANE_LDMODE_UCAST_MACADDR     0  /* unicast MAC address */
-#define LANE_LDMODE_MCAST_MACADDR     1  /* multicast MAC address */
-#define LANE_LDMODE_MCAST_ALLGRP      2  /* all group addresses */
-#define LANE_LDMODE_MACADDR           3  /* MAC address */
-#define LANE_LDMODE_RD                4  /* route descriptor */
-#define LANE_LDMODE_UCAST_ALLUNI      5  /* all unicast addresses */
-
-/* configuration mode */
-
-#define LANE_CFGMODE_AUTO             0  /* auto cfg (use LECS ATM addr) */
-#define LANE_CFGMODE_MANUAL           1  /* manual cfg (use LES ATM addr) */
-
-/* ATM Forum OUI - 3 octets */
-
-#define OUI_ATMF               0x00a03e  /* ATM Forum OUI */
-
-/* LAN Emulation Protocol Ids - 2 octets */
-
-#define LANE_PID_CTRL            0x0001  /* control VCCs */
-#define LANE_PID_DATA_DIR_8023   0x0002  /* data direct VCCs for IEEE 802.3 */
-#define LANE_PID_DATA_DIR_8025   0x0003  /* data direct VCCs for IEEE 802.5 */
-#define LANE_PID_MCAST_8023      0x0004  /* multicast   VCCs for IEEE 802.3 */
-#define LANE_PID_MCAST_8025      0x0005  /* multicast   VCCs for IEEE 802.5 */
-
-/* LAN Emulation standard TLV types - 4 octets */
-
-#define LANE_TLV_C7              0x00a03e01  /* control timer */
-#define LANE_TLV_C10             0x00a03e02  /* max unknown frame count */
-#define LANE_TLV_C11             0x00a03e03  /* max unknown frame timer */
-#define LANE_TLV_C12             0x00a03e04  /* VCC aging timer */
-#define LANE_TLV_C13             0x00a03e05  /* max retry count */
-#define LANE_TLV_C17             0x00a03e06  /* ARP long (cache) timer */
-#define LANE_TLV_C18             0x00a03e07  /* ARP short (fwd delay) timer */
-#define LANE_TLV_C20             0x00a03e08  /* ARP Request timer */
-#define LANE_TLV_C21             0x00a03e09  /* Flush Request timer */
-#define LANE_TLV_C22             0x00a03e0a  /* path switching delay */
-#define LANE_TLV_C23             0x00a03e0b  /* local segment id */
-#define LANE_TLV_C24             0x00a03e0c  /* mcast snd VCC type */
-#define LANE_TLV_C25             0x00a03e0d  /* mcast snd VCC SCR */
-#define LANE_TLV_C26             0x00a03e0e  /* mcast snd VCC PCR */
-#define LANE_TLV_C28             0x00a03e0f  /* Ready Ind timer */
 
 #endif /* CMFILE_REORG_1 */
 
 
-
-
-/* structure */
-
-#define S_DEF          0x00  /* default */
-#define S_8KHZINTEG    0x01  /* 8 khz integrity */
-#define S_SDUINTEG     0x04  /* service data unit integrity */
-#define S_UNSTRUCT     0x07  /* unstructured */
-
-/* define for TCAP string size */
-/* gen_h_001.main_128 - redefined value of MAX_ST_STRING to 256 */
-#define MAX_ST_STRING 256    /* longest string */
-
-    
 /* defines for SPstTsk */
 
 #define SEL_LC_NEW     0     /* loosely coupled interface - new */
 #define SEL_LC_OLD     1     /* loosely coupled interface - old */
 
-/* defines for system service entity processor, region and pool id's */
-
-#define OWNPROCID      0     /* own processor id */
-#define SP_POOL     0x00     /* service provider pool id */
-#define SU_POOL     0x00     /* service user pool id */
-
-/* defines for stack manager region and pool id's */
-
-#define SMREGION       1     /* stack manager region id */
-#define SMPOOL         0     /* stack manager pool id */
 
 /* defines */
   
@@ -872,6 +95,7 @@
 #define TCNTRL           2           /* control */
 #define TSTS             3           /* statistics */
 #define TSSTA            4           /* solicited status */
+#if 0
 #define TUSTA            5           /* unsolicited status */
 #define TTRC             6           /* trace */
 #define TACNT            7           /* billing */
@@ -885,17 +109,19 @@
 #define TMIB             15          /* mib req */
 /* gen_h_001.main_124 RRC 2.0 Release*/
 #define TAUDT            16          /* Audit req */
- 
+#endif 
+
 /* Mngmt.hdr.elmId.elmnt */
   
 #define STGEN            1           /* general */
+#define STSID            8           /* system id */
+#if 0
 #define STTSAP           2           /* transport SAP */
 #define STNSAP           3           /* network SAP */
 #define STLLSAP          4           /* logical link SAP */
 #define STDLSAP          5           /* data link SAP */
 #define STMSAP           6           /* MAC SAP */
 #define STPSAP           7           /* physical SAP */
-#define STSID            8           /* system id */
 #define STHG             9           /* hunt Group */
 #define STROUT          10           /* route */
 #define STDLC           11           /* data link connection */
@@ -957,7 +183,6 @@
 #define STPNPG          63           /* PNNI PEER GROUP */
 #define STLINK          64           /* ATM Physical Link */
 #define STINFOGRP       65           /* information group */
-
 #define STNISAP         66           /* FR-ATM network interworking sap */
 #define STSISAP         67           /* FR-ATM service interworking sap */
 #define STPROF          68           /* FR-ATM aal connection's profile */
@@ -966,7 +191,6 @@
 #define STADDR          71           /* address */
 #define STSRVC          72           /* service registry */
 #define STCIPSAP        73           /* PLOA's CIPSAP */
-
 /* define for Envelope Function EFadr mapping */
 #define STEVEFADR       74           /* EV EFadr to SAP mapping */
 
@@ -979,7 +203,6 @@
 
 /* used by PQ for TDM Configuration */
 #define STTDM           78           /* TDM Configuration */
-  
 
 /* Used by LES */
 #define STLECSMPOATLV   79           /* LECS MPOA TLV entry */
@@ -994,7 +217,6 @@
 #define STGRDLSAP       87           /* data link  sap group */
 #define STALLSAP        88           /* all upper/lower SAPs */
 #define STPEERSAP       89           /* configure peer sap */
-
 /* Used by V5 */
 #define STVINTERFACE    83           /* V5 Interface */
 #define STVPORT         84           /* V5 port */
@@ -1005,8 +227,6 @@
                                         more PVC on the fly */
 #define STCIPARP        87           /* PLOA Cfg. request to configure some 
                                         extra IP-ATM binding on the fly */
-
-
 /* used by Q.93B for AalConParam of signaling channels */
 #define STSIGCONPARAM   90           /* config Signaling connection parameters */
 #define STDELSIGPARAM   91           /* Delete Signaling connection parameters */
@@ -1015,7 +235,6 @@
 #define STVPROC         92           /* Configure virtual node */
 #define STPPROC         93           /* Configure physical node */
 #define STASSOC         94           /* Configire association between vnodes */
-                                     /* and layers */
 
 /* used by TCAP over TCP/IP */
 #define STSERVER        95           /* configure TCP/UDP server */
@@ -1029,7 +248,6 @@
 #define STSMS           101          /* PLOA LANE Selective M-cast Server */
 #define STSMSGRP        102          /* PLOA SMS Multicast Group */
 #define STSMSLEC        103          /* PLOA LEC Associated with SMS */
-
 /* used by PLOA - PPPoA */
 #define STMASAP         104          /* POOA MASAP - PPPoA upper SAP */
 
@@ -1048,7 +266,6 @@
 #define STNHSEXTNS      114          /* PLOA NHS */
 #define STNHSEGRCACHE   115          /* PLOA NHS */
 #define STNHSVENDATA    116          /* PLOA NHS */
-
 /* used by H.323 Control */
 #define STSSAP          117          /* H.323 Session SAP element */
 #define ST323ENT        118          /* H323 entity element */
@@ -1077,7 +294,6 @@
 #define STSRVCTYPE      129           /* service type */
 #define STSRVCCONNINFO  130           /* service connection info */
 #define STAALPROFILE    131           /* AAL[x] profiles; x = 1, 2, 34, 5 */
-
 /* used by MPLS-LDP (+CR) */
 #define STPEER          132          /* LDP Peer */
 #define STFEC           133          /* MPLS FEC  */
@@ -1096,7 +312,6 @@
 #define STGRSNTSAP      144          /* SNT Group */
 #define STPATH          145          /* AAL2 path  */
 #define STDPC           146          /* DPC - MTP3B */
-
 /* used by Annex G */
 #define STBE                       147
 #define STGRBESAP                  148
@@ -1129,7 +344,6 @@
 #define STDELNW         163          /* delete network */
 #define STDELTSAP       164          /* delete transport sap */
 #define STDELNSAP       165          /* delete network sap */
-
 /* new elements for 3GPP-RLC */
 #define STCRSAP         166          /* RLC Control SAP */
 #define STRLSAP         167          /* RLC Data SAP */
@@ -1153,6 +367,7 @@
 /* new elements for LAPDm */
 #define STLSAP          178
 #define STRRSAP         179
+
 /*gen_h_001.main_127 - incremented values*/
 /* gen_h_001.main_123 - Add  new elements for 3GPP-PDCP */
 #define STCTSAP         180          /* PDCP Control SAP */
@@ -1164,21 +379,17 @@
 #define STPDCPENT       182          /* PDCP Entity */
 /*-- gen_h_001.main_130 --*/
 #define STINST          183          /* IuUP Instance */
-
+#endif
 /* gen_h_001.main_134 - lte rlc 2.1 */
-/* elements for LTE-RLC SAPs */
+/* elements for NR RLC SAPs */
 #define STCKWSAP        184          /*!< RLC Control SAP element. */
 #define STKWUSAP        185          /*!< RLC Data SAP element. */
 #define STRGUSAP        186          /*!< RLC MAC SAP element. */
 /* elements for LTE-PDCP SAPs */
-#define STCPJSAP        187          /*!< PDCP control SAP element. */
-#define STPJUSAP        188          /*!< PDCP control SAP element. */
 #ifdef RM_INTF
 #define STRMUSAP        189          /*!< LTE RRM control SAP element. */
 #define STRGMSAP        190
 #endif
-
-#define STNLUSAP        191          /*!< eNB APP and SON module SAP */
 
 /* Mngmt.t.cntrl.action, Mngmt.hdr.elmId.elmntInst1 */
 
@@ -1186,9 +397,12 @@
 #define ADISIMM          2           /* disable - immediately */
 #define ADISGRC          3           /* disable - gracefully */
 #define ARST             4           /* reset */
+#if 0
 #define ADGN             5           /* diagnose */
 #define AADD             6           /* add */
+#endif
 #define ADEL             7           /* delete */
+#if 0
 #define AINH             8           /* inhibit */
 #define AUNINH           9           /* uninhibit */
 #define ASPRST           10          /* signalling point restart */
@@ -1214,23 +428,23 @@
 #define ACTION_LPO       27          /* Local Processor Outage */
 #define ACTION_LPR       28          /* Local Processor Recovered */
 #define APRV_UNS         29          /* Proving Unsuccessful Response */
-
+#endif
 #define ABND             30          /* bind */
 #define AUBND            31          /* disable + unbind */
 #define AUBND_DIS        AUBND       /* unbound disable */
 
-
 /* actions for mtp3 */
-
+#if 0
 #define ADELROUT         32          /* delete rout control block */
 #define ADELLNKSET       33          /* delete all linkset control blocks, link control blocks 
                                         for a given linkset id */
 #define ADELCMBLNKSET    34          /* delete linkset control block for a given combined linkset id */
 #define ADELLNK          35          /* delete link control block */
+#endif
 #define ASHUTDOWN        36          /* shutdown the layer */
+#if 0
 #define ATRAP            37          /* trap */
 #define AGEN_STA         38          /* generate status indications -MSOC */
-
 /* actions for fault tolerance */
 #define AGO_ACT                  38   /* go active */
 #define AGO_SBY                  39   /* go standby */
@@ -1248,7 +462,6 @@
 #define ADEACTLNKSET_L2          51   /* deactivate link set: all links should be deactivated
                                          only at L2 level */
 #define AGEN_MSG                 52   /* message generation control action */
-
 /* For PLOA */
 #define ASNDTRIGG                53   /* Generate Flow detection trigger  */
 
@@ -1262,7 +475,6 @@
 #define ASRVMSG_ON               59   /* Turn on service message capability */ 
 #define ASRVMSG_OFF              60   /* Turn off service message capability */
 #define ARESTART                 61   /* Restart Interface/Channel */
-
 /* For TCR 0004.01 */
 #define AMODIFY                  62   /* Modify trace length */
 
@@ -1280,7 +492,6 @@
 /* For SIP */
 #define AADD_ASSOC_TPTSRV        70   /* Add transport server association */
 #define ADEL_ASSOC_TPTSRV        71   /* Delete transport server association */
-
 /* for SCCP congestion control (sccp3.2) */
 #define ACONG                    72   /* congestion cntrl - start sending SSC */
 /* For OAM */
@@ -1293,7 +504,6 @@
 #define ASTRTPMLL                78   /* OAM Start PM Loopback of FMC's */
 #define AENDPMLL                 79   /* OAM End Performance Generation */
 #define ARSTPM                   80   /* OAM Reset counters of PM block */
-
 #define AMODABORT                81 /* Abort Modification Request */
 #define AADD_ASSOC_ENDP          82
 #define ADEL_ASSOC_ENDP          83
@@ -1311,7 +521,6 @@
 #define ASTOP_LNK_AUDIT          95
 #define ASTOP_LNKSET_AUDIT       96
 #define ASTOP_RTE_AUDIT          97
-
 /* gen_h_001.main_125 - Addition - SUA support*/
 #ifdef LSPV2_8 
 #define AADD_ASP                 86
@@ -1319,7 +528,6 @@
 #define ADEL_ASPSSN              88
 #define ADEL_ASPCPC              89
 #endif
-
 /* Added for NBAP to support SCT(SCTP) as lower interface */
 #define AEOPENR 100
 #define AECLOSER 101
@@ -1329,7 +537,7 @@
 #define AHBEAT_DIS_ASSOC 105
 #define AHBEAT_ENB_DSTADDR 106
 #define AHBEAT_DIS_DSTADDR 107
-
+#endif
 /* Mngmt.t.cntrl.subAction */
   
 #define SAELMNT          1           /* specified element */
@@ -1337,6 +545,7 @@
 #define SAUSTA           3           /* unsolicited status generation */
 #define SATRC            4           /* trace generation */
 #define SADBG            5           /* debugging */
+#if 0
 #ifdef SS_DIAG
 /* gen_h_001.main_142:Added subaction SALOG */
 #define SALOG            6           /* logging  */
@@ -1352,7 +561,6 @@
 #define SAAUD            11          /* Audit */
 /* For GCP 1.2 */
 #define SADNS            12          /* Enable /Disable DNS Access*/   
-
 /* for SCCP traffic limitation mechanism and error report (sccp3.2) */
 #define SATRFLIM         13          /* traffic limitation mechanism */
 #define SAREPORT         14          /* sccp error perfroamce report */
@@ -1369,7 +577,6 @@
 #define MIB_REQUEST_GET_NEXT  1    /* GET-NEXT request to read
                                       lexicographically next mib variable*/
 #define MIB_REQUEST_SET       3    /* Assign mib variable a value */
- 
 /* Mngmt.t.mib.status */
 #define MIBSTATUSBASE         1000 /* Base for non standard status values */ 
 #define MIB_SUCCESS           0    /* Mib request successfully completed */
@@ -1383,9 +590,7 @@
 #define MIB_SUCCESS_NEXT_AVL_OBJ (MIBSTATUSBASE + 6) /* returning object from
                                                     * a different table than
                                                     * before */
-
 /* Mngmt.t.trc.evnt */
-  
 #define TL1FRMRX         0           /* layer 1 - frame received */
 #define TL1FRMTX         1           /* layer 1 - frame transmitted */
 #define TL2FRMRX         2           /* layer 2 - frame received */
@@ -1399,12 +604,12 @@
 #define TL7TMR           10          /* layer 7 - timer expired */
 #define TL5MSGTX         11          /* layer 5 - message transmitted */
 #define TL5MSGRX         12          /* layer 5 - message received */
-
+#endif
 /* defines for MxxStsReq */
   
 #define ZEROSTS          0           /* zero statistics counters */
 #define NOZEROSTS        1           /* dont zero statistics counters */
-
+#if 0
 /* defines for MxxCfgReq */
 
 #define THRSHA           0           /* 00% resources available */
@@ -1420,6 +625,7 @@
                                      /* to call packets */
 #define LSAP             1           /* Link Level SAP Type */
 #define XTSAP            2           /* Transport SAP Type */
+#endif
 
 #ifdef IGNORE
 #undef IGNORE
@@ -1428,15 +634,15 @@
 #define IGNORE           0           /* Ignore SAP Type */
 #endif /* IGNORE */
 
+#if 0
 #define X25LINK          0           /* X25 Link */
 #define X75LINK          1           /* X75 Link */
- 
+
 #define USER             0           /* acts as user */
 #define NETWORK          1           /* acts as network */
 #define SYM_USER         2           /* acts as symmetrical user */
 
 /* defines for MxxStaInd */
-
 #define ENTR_CONG        1           /* event - entering congst */
 #define EXIT_CONG        2           /* event - exiting congest */
 #define PROT_ST_UP       3           /* event - link up */
@@ -1468,11 +674,11 @@
 #define CIR_IN_SERV      52          /* event - circuit back in service */
 #define TERM_INIT_FAIL   53          /* event - terminal initialization failed */
 #define ERROR_LOG        54          /* event - software error logged */
- 
 #define INV_EVENT        (ERROR_LOG + 1)   /* event - invalid */
+#endif
 
 /* ss7 switch defines */
-
+#if 0
 /* #define SW_TST        0            switch - test */
 #define SW_CCITT         1           /* switch - ccitt */
 #define SW_ITU           1           /* switch - itu-t */
@@ -1484,130 +690,25 @@
 #define SW_SINGTEL       4           /* switch - singapore telecom */
 #define SW_Q767          5           /* switch - int'l isup q.767 */
 #define SW_CHINA         6           /* switch - china */
-
 /* for sccp3.2 */
 #define SW_JAPAN         7           /* switch - japan */
+#endif
 
-
 #ifndef CMFILE_REORG_1
 
 /* defines for Q.93B */
  
 /* parameter values that are at management and at upper interface */
- 
-/* switch defines */
-
-#define SW_ATMF_UNI30        0    /* switch - ATM Forum UNI v3.0 */
-#define SW_ATMF_UNI31        1    /* switch - ATM Forum UNI v3.1 */
-#define SW_IISP_UNI30        2    /* switch - Interim Inter-Switch Signalling Protocol */
-#define SW_IISP_UNI31        3    /* switch - Interim Inter-Switch Signalling Protocol */
-#define SW_Q2931             4    /* switch - ITU - 2931 */
-#define SW_ATMF_SIG_PNNI     5    /* switch - ATM Forum PNNI Signalling */
-#define SW_ATMF_UNI40        6    /* switch - ATM Forum UNI v4.0 */
-#define SW_ATMF_SIG_AINI     7    /* switch - ATM Forum AINI Signalling */
-#define SW_INVALID         0xff   /* switch - invalid value */
- 
-/* information element id's */
-
-#define AM_ME_ETOETRANSDLY    0x42   /* End-to-End Transit Delay */
-#define AM_ME_CONNNMB         0x4c   /* Connected number */
-#define AM_ME_CONNSAD         0x4d   /* Connected Subaddress */
-#define AM_ME_TFCDESC         0x59   /* ATM Traffic Descriptor */
-#define AM_ME_BHILYRINFO      0x5d   /* Broadband High Layer Info */
-#define AM_ME_BLOLYRINFO      0x5f   /* Broadband Low Layer Info */
-#define AM_ME_CDPTYNMB        0x70   /* Called Party Number */
-#define AM_ME_CDPTYSAD        0x71   /* Called Party Sub Address */
-#define AM_ME_CDPTYSOFTPVC    0xe0   /* Called party soft PVPC/PVCC */
-#define AM_ME_CRANKBACK       0xe1   /* Crankback */
-#define AM_ME_DSGTRANLST      0xe2   /* Designated Transit list */
-#define AM_ME_CGPTYSOFTPVC    0xe3   /* Calling party soft PVPC/PVCC */
-#define AM_ME_MINACCTFCDESC   0x81   /* Minimum Acceptable Tfc. Desc. */
-#define AM_ME_ALTTFCDESC      0x82   /* Alternative ATM Tfc. Desc. */
-#define AM_ME_ABRSETUPPARAM   0x84   /* ABR Setup Parameters */
-#define AM_ME_ABRADDPARAM     0xe4   /* ABR Additional Parameters */
-#define AM_ME_EXTQOSPARAM     0xec   /* Extended Qos Parameter */
-
-/* information element idx's */
-
-#define AM_MEI_TFCDESC        0x06   /* ATM Traffic Descriptor */
-#define AM_MEI_BHILYRINFO     0x09   /* Broadband High Layer Info */
-#define AM_MEI_BLOLYRINFO     0x0b   /* Broadband Low Layer Info */
-#define AM_MEI_CDPTYNMB       0x12   /* Called Party Number */
-#define AM_MEI_CDPTYSAD       0x13   /* Called Party Sub Address */
-#define AM_MEI_CRANKBACK      0x1f   /* Crankback */
-#define AM_MEI_CDPTYSOFTPVC   0x20   /* Called Party Soft PVPC/PVCC */
-#define AM_MEI_CONNNMB        0x21   /* Connected number */
-#define AM_MEI_CONNSAD        0x22   /* Connected sub address */
-#define AM_MEI_DSGTRANLST     0x23   /* Designated Transit List */
-#define AM_MEI_CGPTYSOFTPVC   0x34   /* Calling Party Soft PVPC/PVCC */
-#define AM_UNKNOWN            0xfe   /* message type unknown */
-
 /* addressing related defines */
-
-/* numbering plan identification */
- 
-#define AM_NMBPLN_UNK        0x00    /* unknown */
-#define AM_NMBPLN_ISDN       0x01    /* ISDN/telephony numbering plan (E.164) */
-#define AM_NMBPLN_NSAP       0x02    /* ISO NSAP */
-#define AM_NMBPLN_PVT        0x09    /* private */
- 
-
-/* ATM address types */
-
-#define ATMADDR_TYPE_E164   AM_NMBPLN_ISDN   /* E.164 format */
-#define ATMADDR_TYPE_AESA   AM_NMBPLN_NSAP   /* ATM forum AESA format */
 
 /* maximum size of VCC table */
 #define MAX_ATMVCCTBL_SZ      16
 
 /* maximum number of ATM addresses in the ATM address table */
 #define  MAX_ATMADDRTBL_SZ    4
-
-/* type of number */
- 
-#define AM_TYPNMB_UNK        0x00    /* unknown */
-#define AM_TYPNMB_INT        0x01    /* international */
-#define AM_TYPNMB_NAT        0x02    /* national */
-#define AM_TYPNMB_NSP        0x03    /* network specific */
-#define AM_TYPNMB_SUB        0x04    /* subscriber number */
-#define AM_TYPNMB_ABR        0x06    /* abbreviated   */
- 
-/* screening indicator */
- 
-#define AM_SCRIND_USRNOTSCR  0x00    /* user provided, not screened */
-#define AM_SCRIND_USRVERPASS 0x01    /* user provided, verified and passed */
-#define AM_SCRIND_USRVERFAIL 0x02    /* user provided, verified and failed */
-#define AM_SCRIND_NET        0x03    /* network provided */
- 
-/* presentation indicator */
- 
-#define AM_PRSIND_ALLOW      0x00    /* presentation allowed */
-#define AM_PRSIND_RESTRICT   0x01    /* presentation restricted */
-#define AM_PRSIND_NOTAVAIL   0x02    /* number not available */
- 
-/* odd/even indicator */
- 
-#define AM_OEIND_EVEN        0x00    /* even */
-#define AM_OEIND_ODD         0x01    /* odd */
- 
-/* type of subaddress */
- 
-#define AM_TYPSAD_NSAP       0x00    /* NSAP */
-#define AM_TYPSAD_USER       0x01    /* user specified - ATM Endsystem addr */
-#define AM_TYPSAD_USERSPEC   0x02    /* user specified */
  
 /* authority and format identifiers for OSI NSAP addresses */
- 
-/* AFI for individual address */
-#define AFI_DCC        0x39  /* BCD format for ISO DCC */
-#define AFI_ICD        0x47  /* BCD format for ISO ICD */
-#define AFI_E164       0x45  /* BCD format for E.164 */
-
-/* AFI for group addresses */
-#define AFI_GRP_DCC    0xBD  /* BCD format for ISO DCC */
-#define AFI_GRP_ICD    0xC5  /* BCD format for ISO ICD */
-#define AFI_GRP_E164   0xC3  /* BCD format for E.164 */
-
+#if 0 
 /* low layer information - layer 2 id */
 
 #define AM_LLI_L2ID             2       /* layer 2 id */
@@ -1704,7 +805,6 @@
 
 #define AM_EQP_ORG_USR    0x00  /* originating user */
 #define AM_EQP_ORG_INTNET 0x01  /* intermediate network */
-
 /* ABR Setup parameter identifiers */
 
 #define AM_ASP_FAICR_ID   0xC2  /* forward  ABR initial cell rate identifier */
@@ -1733,11 +833,12 @@
 #define AM_ATC_ABR            0x0C   /* ABR */
 #define AM_ATC_RTVBRCLR       0x13   /* Real time VBR with CLR commitment on CLP=0+1 */
 
+#endif
 
 /* defines for UME */
 
 #define UM_MAXLEN_OBJ_ID     34      /* max length of an object-id */
-
+#if 0
 /* PNNI qos class definitions
  */
 #define PN_QOS_CLASS_UBR          0    /* unspecified */
@@ -1749,11 +850,13 @@
 /* maximum number of ports per neighbor -- change if you expect more
  */
 #define PN_MAX_PORTS_NBR           5
+#endif
 
 /* Peer group and node identifier length */
 #define PN_PGID_LEN   14
 #define PN_NODEID_LEN 22
 
+#if 0
 /* maximum number of qos classes */
 #define PN_NUM_QOS_CLASSES        5
 
@@ -1778,7 +881,7 @@
 #define AM_OTD_ETOEF5_0         0X00      /* 0% of FPCR/BPCR (CLP=0+1) */
 #define AM_OTD_ETOEF5_01        0x01      /* 0.1% of FPCR/BPCR (CLP=0+1) */
 #define AM_OTD_ETOEF5_1         0x04      /* 1% of FPCR/BPCR (CLP=0+1) */
- 
+#endif
 #endif /* CMFILE_REORG_1 */
 
 /* degines for management confirms */
@@ -1805,10 +908,11 @@
 #define LCM_REASON_INVALID_PAR_VAL      13   /* invalid parameter value */
 #define LCM_REASON_QINIT_FAIL           15   /* queue initialization failed */
 #define LCM_REASON_NEG_CFM              16   /* negative confirmation */
+#define LCM_REASON_HASHING_FAILED       20    /* Hashing failed */
+#if 0
 #define LCM_REASON_UPDTMR_EXPIRED       17   /* update timer expired */
 #define LCM_REASON_MISC_FAILURE         18    /* miscellaneous failures */
 #define LCM_REASON_EXCEED_CONF_VAL      19   /* Exceeds configured value */
-#define LCM_REASON_HASHING_FAILED       20    /* Hashing failed */
 #define LCM_REASON_PEERCFG_NOT_DONE     21   /* swft -peer sap not configured */
 #define LCM_REASON_PRTLYRCFG_NOT_DONE   22   /* swft -portable lyr not configured */
 /* common Distributed FT/HA related failure reasons */      
@@ -1821,8 +925,7 @@
 #define LCM_REASON_INV_DIST_QUAL        29   /* Inv. qual. of dist type*/
 #define LCM_REASON_NAK_RCVD             30   /* Got a nak failure */
 #define LCM_REASON_TIMEOUT              31   /* Got a timeout failure  */
-#define LCM_REASON_PURE_FTHA            32   /* A req for Dist FTHA is recv 
-                                              * by a Pure FTHA mod */
+#define LCM_REASON_PURE_FTHA            32   /* A req for Dist FTHA is recv by a Pure FTHA mod */
 #define LCM_REASON_DIST_FTHA            33   /* A req for Pure FTHA is recv 
                                               * by a Dist FTHA mod */
 #define LCM_REASON_INV_KEY              34   /* Invalid key */
@@ -1841,13 +944,13 @@
 #define LCM_REASON_DFL_SPC_DEL_NOT_ALLOWED    44  /* control request has got default spcs that configured in the network */
 #define LCM_REASON_NOTHING_TO_DELETE    45   /* control request has got zero spcs to delete */
 #define LCM_REASON_SPC_ALREADY_DELETED  46   /* spc's are already deleted */
-
 #define LCM_REASON_LYR_SPECIFIC         256   /* protocol specific reasons */
 
 /* gen_h_001.main_125- Addition - SUA support*/
 #define LCM_REASON_ASP_CONFIG          47   /* ASP Configuration Error */
 /* gen_h_001.main_142:Added new error type*/
 #define LCM_REASON_ULLOCK_INIT_FAILED  48   /* UL Lock creation Error */
+#endif
 
 /* category */
 #define LCM_CATEGORY_PROTOCOL           1     /* protocol related */
@@ -1862,24 +965,27 @@
 
 /* events */
 #define LCM_EVENT_UI_INV_EVT            1   /* upper interface invalid event */
+#define LCM_EVENT_BND_FAIL              8   /* Bind failure */
+#define LCM_EVENT_BND_OK                11  /* bind ok  */
+#define LCM_EVENT_SMEM_ALLOC_FAIL       12  /* static memory alloc fail */
+#define LCM_EVENT_DMEM_ALLOC_FAIL       13  /* Dynamic mmemory alloc fail */
+
+#if 0
 #define LCM_EVENT_LI_INV_EVT            2   /* lower interface invalid event */
 #define LCM_EVENT_PI_INV_EVT            3   /* peer interface invalid event */
 #define LCM_EVENT_INV_EVT               4   /* general invalid event */
 #define LCM_EVENT_INV_STATE             5   /* invalid internal state */
 #define LCM_EVENT_INV_TMR_EVT           6   /* invalid timer event */
 #define LCM_EVENT_MI_INV_EVT            7   /* mngmnt interface invalid event */
-#define LCM_EVENT_BND_FAIL              8   /* Bind failure */
 #define LCM_EVENT_NAK                   9   /* destination naked a request */
 #define LCM_EVENT_TIMEOUT               10  /* timeout when waiting for reply */
-#define LCM_EVENT_BND_OK                11  /* bind ok  */
-#define LCM_EVENT_SMEM_ALLOC_FAIL       12  /* static memory alloc fail */
-#define LCM_EVENT_DMEM_ALLOC_FAIL       13  /* Dynamic mmemory alloc fail */
 /*Alarms for distributed FTHA environment*/
 #define LCM_EVENT_SEQERR                14  /* seq error (standby) */
 #define LCM_EVENT_OOM                   15  /* board mem threshold exceeded */
 #define LCM_EVENT_UPDMSG_ERR            16  /* update message decode error */
 #define LCM_EVENT_HTBT_EXP              17  /* Heartbeat timer expiry */
 #define LCM_EVENT_TRANSLATION_FAILURE   18  /* primitive translation failure */
+#endif
 /*gen_h_001.main_137:Moved Events for alarm indication at various Dns Events to lso.h*/
 
 #define LCM_EVENT_LYR_SPECIFIC          256   /* protocol specific events */
@@ -1896,11 +1002,12 @@
 #define LCM_CAUSE_MGMT_INITIATED        8     /* mgmt initiated */
 #define LCM_CAUSE_INV_STATE             9     /* Invalid state */
 #define LCM_CAUSE_TMR_EXPIRED           10    /* Invalid state */
-#define LCM_CAUSE_INV_MSG_LENGTH        11    /* Invalid state */
 #define LCM_CAUSE_PROT_NOT_ACTIVE       12    /* protocol layer not active */
 #define LCM_CAUSE_INV_PAR_VAL           13    /* invalid parameter value */
 #define LCM_CAUSE_NEG_CFM               14    /* negative confirmation */
 #define LCM_CAUSE_MEM_ALLOC_FAIL        15    /* memory allocation failure */
+#if 0
+#define LCM_CAUSE_INV_MSG_LENGTH        11    /* Invalid state */
 #define LCM_CAUSE_HASH_FAIL             16    /* hashing failure */
 #define LCM_CAUSE_VERSION_MISMATCH      17    /* interface version mismatch */
 #define LCM_CAUSE_SWVER_NAVAIL          18    /* intf ver not found */
@@ -1908,8 +1015,10 @@
 #define LCM_CAUSE_INV_ACTION            20    /* Invalid Control Action */
 /* gen_h_001.main_129  - defined new cause */
 #define LCM_CAUSE_NETWK_INITIATED       21    /* user initiated */
+#endif
 #define LCM_CAUSE_LYR_SPECIFIC          256   /* protocol specific causes */
 
+#if 0
 /* Interface identifier names for rolling upgrade. Each of the product *
  * interface is given a unique number */
 /* Layer management interface identifiers */
@@ -2132,20 +1241,8 @@
 #define HWPIF   272     /* eGTP-C PSF peer interface ID     */
 /* gen_h_001.main_141: Added the interface version for PSF DIAMETER */
 #define JCPIF   273     /* PSF DIAMETER peer interface ID       */
+#endif
 
-/* Maximum no.of interfaces a product a support on the upper/lower interface */
-#define MAX_INTF                 2       /* Max intf to a usr/prov */
-
-/* defines for SCCP ISNI and INS routing */
-#define MAX_ISNI_NID     0x07      /* Maximum no. of NIDs is ISNI */
-#define MAX_INS_NID      0x02      /* Maximum no. of NIDs in INS */
-
-
-/* defines for mode */
-
-#define LOOPBACK_MODE        0       /* loopback mode */
-#define TESTING_MODE         1       /* testing mode */
-#define HARDWARE_MODE        2       /* hardware mode */
 
 /* bind status */
 #define CM_BND_OK            1       /* bind request OK */
