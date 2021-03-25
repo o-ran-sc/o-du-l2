@@ -18,7 +18,7 @@
 
 /********************************************************************20**
   
-     Name:    LTE-RLC Layer - Lower Interface Functions
+     Name:    NR RLC Layer - Lower Interface Functions
     
      Type:    C file
   

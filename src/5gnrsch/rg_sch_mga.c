@@ -42,8 +42,6 @@
 #include "rg_sch_err.h"
 #include "rg_sch.h"
 #include "rg_sch_cmn.h"
-#include "rl_interface.h"
-#include "rl_common.h"
 
 /* header/extern include files (.x) */
 #include "tfu.x"           /* RGU types */

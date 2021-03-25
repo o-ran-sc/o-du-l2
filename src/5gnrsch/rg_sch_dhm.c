@@ -44,8 +44,6 @@
 #include "rg_sch_inf.h"         /* typedefs for Scheduler */
 #include "rg_sch.h"
 #include "rg_sch_cmn.h"
-#include "rl_interface.h"
-#include "rl_common.h"
 
 /* header/extern include files (.x) */
 #include "lrg.x"

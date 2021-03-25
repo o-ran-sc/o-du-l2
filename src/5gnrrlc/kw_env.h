@@ -18,11 +18,11 @@
 
 /********************************************************************20**
   
-        Name:     LTE RLC file 
+        Name:     NR RLC file        
     
         Type:     C include file
   
-        Desc:     This file contains the constants required for LTE-RLC.
+        Desc:     This file contains the constants required for NR RLC.
                   The defines in this file need to be changed by the customer 
                   to reflect the software architecture needed to run under the 
                   target system hardware architecture.

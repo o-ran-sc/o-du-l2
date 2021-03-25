@@ -36,8 +36,6 @@
 #ifndef __RGH__
 #define __RGH__
 
-#include "rl_interface.h"
-#include "rl_common.h"
 
 
 #ifdef L2_OPTMZ

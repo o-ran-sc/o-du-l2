@@ -1166,12 +1166,11 @@
 #define STINST          183          /* IuUP Instance */
 
 /* gen_h_001.main_134 - lte rlc 2.1 */
-/* elements for LTE-RLC SAPs */
+/* elements for NR RLC SAPs */
 #define STCKWSAP        184          /*!< RLC Control SAP element. */
 #define STKWUSAP        185          /*!< RLC Data SAP element. */
 #define STRGUSAP        186          /*!< RLC MAC SAP element. */
 /* elements for LTE-PDCP SAPs */
-#define STCPJSAP        187          /*!< PDCP control SAP element. */
 #define STPJUSAP        188          /*!< PDCP control SAP element. */
 #ifdef RM_INTF
 #define STRMUSAP        189          /*!< LTE RRM control SAP element. */

@@ -18,7 +18,7 @@
 
 /********************************************************************20**
   
-        Name:     LTE RLC file 
+        Name:     NR RLC file         
     
         Type:     C include file
   
