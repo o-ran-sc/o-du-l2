@@ -792,14 +792,52 @@ uint8_t packDuMacUeCfgRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
 
    return ODU_POST_TASK(pst,mBuf);
 }
+/*******************************************************************
+*
+* @brief Pack and send UE delete response from MAC to DU APP
+*
+* @details
+*
+*    Function : packDuMacUeDeleteRsp 
+*
+*    Functionality:
+*       Pack and send UE  delete response from MAC to DU APP
+*
+* @params[in]
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t packDuMacUeDeleteRsp(Pst *pst, MacUeDeleteRsp *deleteRsp)
+{
+   Buffer *mBuf = NULLP;
 
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+      {
+         DU_LOG("\nERROR  --> MAC : Memory allocation failed at packDuMacUeDeleteRsp");
+         return RFAILED;
+      }
+      /* pack the address of the structure */
+      CMCHKPK(oduPackPointer,(PTR)deleteRsp, mBuf);
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  MAC: Only LWLC supported for packDuMacUeDeleteRsp");
+      return RFAILED;
+   }
+
+   return ODU_POST_TASK(pst,mBuf);
+
+}
 /*******************************************************************
  *
  * @brief Unpack UE Config Response from MAC to DU APP
  *
  * @details
  *
- *    Function : unpackDuMacUeCfgRsp
+ *    Function :unpackDuMacUeCfgRsp 
  *
  *    Functionality: Unpack UE Config Response from MAC to DU APP
  *
@@ -902,7 +940,115 @@ uint8_t unpackMacUeReconfigReq(DuMacUeReconfigReq func, Pst *pst, Buffer *mBuf)
 
    return RFAILED;
 }
+/*******************************************************************
+*
+* @brief Packs and Sends UE Delete Request from DUAPP to MAC
+*
+* @details
+*
+*    Function : packDuMacUeDeleteReq
+*
+*    Functionality:
+*       Packs and Sends UE Delete Request from DUAPP to MAC
+*
+*
+* @params[in] Post structure pointer
+*             MacUeCfg pointer
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t packDuMacUeDeleteReq(Pst *pst, MacUeDelete *ueCfg)
+{
+    Buffer *mBuf = NULLP;
+
+    if(pst->selector == ODU_SELECTOR_LWLC)
+    {
+       if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+       {
+          DU_LOG("\nERROR  --> MAC : Memory allocation failed at packDuMacUeDeleteReq");
+          return RFAILED;
+       }
+       /* pack the address of the structure */
+       CMCHKPK(oduPackPointer,(PTR)ueCfg, mBuf);
+    }
+    else
+    {
+       DU_LOG("\nERROR  -->  MAC: Only LWLC supported for packDuMacUeDeleteReq");
+       return RFAILED;
+    }
+
+    return ODU_POST_TASK(pst,mBuf);
+}
+/*******************************************************************
+*
+* @brief Unpacks UE Delete Request received from DU APP
+*
+* @details
+*
+*    Function : unpackMacUeReconfigReq
+*
+*    Functionality:
+*         Unpacks UE Delete Request received from DU APP
+*
+* @params[in] Pointer to Handler
+*             Post structure pointer
+*             Message Buffer
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t unpackMacUeDeleteReq(DuMacUeDeleteReq func, Pst *pst, Buffer *mBuf)
+{
+    if(pst->selector == ODU_SELECTOR_LWLC)
+    {
+       MacUeDelete *ueCfg;
+
+       /* unpack the address of the structure */
+       CMCHKUNPK(oduUnpackPointer, (PTR *)&ueCfg, mBuf);
+       ODU_PUT_MSG_BUF(mBuf);
+       return (*func)(pst, ueCfg);
+    }
+    else
+    {
+       /* Nothing to do for other selectors */
+       DU_LOG("\nERROR  -->  DU APP : Only LWLC supported for UE Delete Request ");
+       ODU_PUT_MSG_BUF(mBuf);
+    }
+
+    return RFAILED;
+}
+/*******************************************************************
+*
+* @brief Unpack UE Config Response from MAC to DU APP
+*
+* @details
+*
+*    Function :unpackDuMacUeDeleteRsp 
+*
+*    Functionality: Unpack UE Config Response from MAC to DU APP
+*
+* @params[in]
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t unpackDuMacUeDeleteRsp(MacDuUeDeleteRspFunc func, Pst *pst, Buffer *mBuf)
+{
+    if(pst->selector == ODU_SELECTOR_LWLC)
+    {
+       MacUeDeleteRsp *ueDeleteRsp = NULLP;
+
+       /* unpack the address of the structure */
+       CMCHKUNPK(oduUnpackPointer, (PTR *)&ueDeleteRsp, mBuf);
+       ODU_PUT_MSG_BUF(mBuf);
+       return (*func)(pst, ueDeleteRsp);
+    }
+
+    ODU_PUT_MSG_BUF(mBuf);
+    return RFAILED;
+}
 
 /**********************************************************************
-  End of file
- **********************************************************************/
+End of file
+**********************************************************************/

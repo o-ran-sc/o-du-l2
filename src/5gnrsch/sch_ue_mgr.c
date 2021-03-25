@@ -37,6 +37,12 @@ SchUeCfgRspFunc SchUeCfgRspOpts[] =
    packSchUeCfgRsp       /* LWLC */
 };
 
+SchUeDeleteRspFunc SchUeDeleteRspOpts[] =
+{
+    packSchUeDeleteRsp,      /* LC */
+    MacProcSchUeDeleteRsp,   /* TC */
+    packSchUeDeleteRsp       /* LWLC */
+};
 
 /*******************************************************************
  *
@@ -614,6 +620,222 @@ uint8_t MacSchModUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
       }
    }
    return ret;
+}
+/*******************************************************************
+*
+* @brief Fill and send UE delete response to MAC
+*
+* @details
+*
+*    Function :  SchSendUeDeleteRspToMac
+*
+*    Functionality: Fill and send UE delete response to MAC
+*
+* @params[in]
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t SchSendUeDeleteRspToMac(uint16_t event, SchUeDelete  *ueDelete, Inst inst,\
+SchMacRsp result, SchUeDeleteRsp  *delRsp)
+{
+    Pst rspPst;
+
+    delRsp->cellId = ueDelete->cellId;
+    delRsp->ueId = ueDelete->ueId;
+    delRsp->rsp = result;
+    delRsp->crnti = ueDelete->crnti;
+    
+    /* Filling response post */
+    memset(&rspPst, 0, sizeof(Pst));
+    FILL_PST_SCH_TO_MAC(rspPst, inst);
+    if(event == EVENT_UE_DELETE_REQ_TO_SCH)
+    {
+       rspPst.event = EVENT_UE_DELETE_RSP_TO_MAC;
+       DU_LOG("\nINFO   -->  SCH :  Sending UE Delete response to MAC");
+    }
+    SchUeDeleteRspOpts[rspPst.selector](&rspPst, delRsp);
+    return ROK;
+ }
+/*******************************************************************
+*
+* @brief Function to  delete SCH UeCb
+*
+* @details
+*
+*    Function : deleteSchUeCb 
+*
+*    Functionality: Function to delete SCH UeCb
+*
+* @params[in]
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+void deleteSchUeCb(SchUeCb *ueCb) 
+{
+   if(ueCb)
+   {
+      if(ueCb->ueCfg.ambrCfg)
+      {
+         SCH_FREE(ueCb->ueCfg.ambrCfg, sizeof(SchAmbrCfg));
+      }
+      if(ueCb->ueCfg.spCellCfgPres)
+      {
+      if(ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.pucchCfgPres == true)
+      {
+         SchPucchCfg *pucchCfg = &ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.pucchCfg;
+         if(pucchCfg->resrcSet)
+         {
+            SCH_FREE(pucchCfg->resrcSet,sizeof(SchPucchResrcSetCfg));
+         }
+         if(pucchCfg->resrc)
+         {
+            for(uint8_t arrIdx=0; arrIdx < pucchCfg->resrc->resrcToAddModListCount; arrIdx++)
+            {
+               if(pucchCfg->resrc->resrcToAddModList[arrIdx].SchPucchFormat.format0)
+               {
+                  SCH_FREE(pucchCfg->resrc->resrcToAddModList[arrIdx].SchPucchFormat.format0, sizeof(SchPucchFormat0));
+               }
+               if(pucchCfg->resrc->resrcToAddModList[arrIdx].SchPucchFormat.format1)
+               {
+                 SCH_FREE(pucchCfg->resrc->resrcToAddModList[arrIdx].SchPucchFormat.format1, sizeof(SchPucchFormat1));
+               }
+               if(pucchCfg->resrc->resrcToAddModList[arrIdx].SchPucchFormat.format2)
+               {
+                 SCH_FREE(pucchCfg->resrc->resrcToAddModList[arrIdx].SchPucchFormat.format2, sizeof(SchPucchFormat2_3));
+               }
+               if(pucchCfg->resrc->resrcToAddModList[arrIdx].SchPucchFormat.format3)
+               {
+                 SCH_FREE(pucchCfg->resrc->resrcToAddModList[arrIdx].SchPucchFormat.format3, sizeof(SchPucchFormat2_3));
+               }
+               if(pucchCfg->resrc->resrcToAddModList[arrIdx].SchPucchFormat.format4)
+               {
+                  SCH_FREE(pucchCfg->resrc->resrcToAddModList[arrIdx].SchPucchFormat.format4, sizeof(SchPucchFormat4));
+               }
+            }
+            SCH_FREE(pucchCfg->resrc, sizeof(SchPucchResrcCfg));
+         }
+         if(pucchCfg->format1)
+         {
+            SCH_FREE(pucchCfg->format1, sizeof(SchPucchFormatCfg));
+         }
+         if(pucchCfg->format2)
+         {
+             SCH_FREE(pucchCfg->format2, sizeof(SchPucchFormatCfg));
+         }
+         if(pucchCfg->format3)
+         {
+             SCH_FREE(pucchCfg->format3, sizeof(SchPucchFormatCfg));
+         }
+         if(pucchCfg->format4)
+         {
+            SCH_FREE(pucchCfg->format4, sizeof(SchPucchFormatCfg));
+         }
+         if(pucchCfg->schedReq)
+         {
+            SCH_FREE(pucchCfg->schedReq, sizeof(SchPucchSchedReqCfg));
+         }
+         if(pucchCfg->multiCsiCfg)
+         {
+            SCH_FREE(pucchCfg->multiCsiCfg, sizeof(SchPucchMultiCsiCfg));
+         }
+         if(pucchCfg->spatialInfo)
+         {
+            SCH_FREE(pucchCfg->spatialInfo, sizeof(SchPucchSpatialCfg));  
+         }
+         if(pucchCfg->dlDataToUlAck)
+         {
+            SCH_FREE(pucchCfg->dlDataToUlAck, sizeof(SchPucchDlDataToUlAck));
+         }
+         if(pucchCfg->powerControl)
+         {
+            SCH_FREE(pucchCfg->powerControl,sizeof(SchPucchPowerControl));
+         }
+      }
+         ueCb->ueCfg.spCellCfgPres = false;
+      }
+      if(ueCb->ueCfg.macCellGrpCfgPres)
+      {
+         memset(&ueCb->ueCfg.macCellGrpCfg , 0, sizeof(SchMacCellGrpCfg));
+         ueCb->ueCfg.macCellGrpCfgPres = false;
+      }
+      if(ueCb->ueCfg.phyCellGrpCfgPres)
+      {
+         memset(&ueCb->ueCfg.phyCellGrpCfg , 0, sizeof(SchPhyCellGrpCfg));
+         ueCb->ueCfg.phyCellGrpCfgPres = false;
+      }
+      ueCb->ueCfg.cellId = 0;
+      ueCb->ueCfg.crnti =0;
+      memset(&ueCb->ueCfg.dlModInfo, 0, sizeof(SchModulationInfo));
+      memset(&ueCb->ueCfg.ulModInfo, 0, sizeof(SchModulationInfo));
+   }
+}
+/*******************************************************************
+*
+* @brief Function to Modify Ue Delete request from MAC
+*
+* @details
+*
+*    Function : MacSchModUeDeleteReq
+*
+*    Functionality: Function to modify Ue Delete request from MAC
+*
+* @params[in]
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t MacSchUeDeleteReq(Pst *pst, SchUeDelete  *ueDelete)
+{
+    uint8_t ret = ROK, idx;
+    bool cellIdPres = false;
+    SchCellCb    *cellCb = NULLP;
+    SchUeCb      *ueCb = NULLP;
+    SchUeDeleteRsp  delRsp;
+    Inst         inst = pst->dstInst - 1;
+    
+    if(!ueDelete)
+    {
+       DU_LOG("\nERROR  -->  SCH : Ue Delete request failed at MacSchUeDeleteReq()");
+       return RFAILED;
+    }
+    DU_LOG("\nDEBUG  -->  SCH : Ue Delete request received for UE[%d]", ueDelete->ueId);
+    
+    for(idx = 0; idx < MAX_NUM_CELL; idx++)
+    {
+        cellCb = schCb[inst].cells[idx];
+        if(cellCb->cellId == ueDelete->cellId)
+        {
+           cellIdPres = true;
+           break;
+        }
+    }
+
+    if(cellIdPres != true)
+    {
+       DU_LOG("\nERROR  -->  SCH : cell Id is not available");
+       return RFAILED;
+    }
+    /* Search if UE already configured */
+    ueCb = &cellCb->ueCb[ueDelete->ueId-1];
+
+    if(!ueCb)
+    {
+       DU_LOG("\nERROR  -->  SCH : SchUeCb not found at MacSchUeDeleteReq() ");
+       return RFAILED;
+    }
+    if((ueCb->ueIdx == ueDelete->ueId) && (ueCb->state == SCH_UE_STATE_ACTIVE))
+    {
+        deleteSchUeCb(ueCb);
+        memset(&delRsp, 0, sizeof(SchUeDeleteRsp));
+        if(SchSendUeDeleteRspToMac(pst->event, ueDelete, inst, RSP_OK, &delRsp) != ROK)
+        {
+           DU_LOG("\nINFO   -->  SCH : Faied to send UE delete response ");
+           return RFAILED;
+        }
+    }
+    return ret;
 }
 
 /**********************************************************************
