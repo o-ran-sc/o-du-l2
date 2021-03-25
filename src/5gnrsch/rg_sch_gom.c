@@ -43,8 +43,6 @@ invoked by RRM towards MAC.
 #include "rg_sch_inf.h"
 #include "rg_sch.h"
 #include "rg_sch_err.h"
-#include "rl_interface.h"
-#include "rl_common.h"
 
 /* header/extern include files (.x) */
 #include "lrg.x"

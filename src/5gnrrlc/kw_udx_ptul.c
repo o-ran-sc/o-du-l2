@@ -18,7 +18,7 @@
 
 /************************************************************************
  
-     Name:     LTE-RLC ULDL Interface
+     Name:     NR RLC ULDL Interface
   
      Type:     C source file
   
