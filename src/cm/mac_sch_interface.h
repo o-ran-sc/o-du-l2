@@ -31,7 +31,8 @@
 #define EVENT_UCI_IND_TO_SCH         12
 #define EVENT_MODIFY_UE_CONFIG_REQ_TO_SCH 13
 #define EVENT_UE_RECONFIG_RSP_TO_MAC 14
-
+#define EVENT_UE_DELETE_REQ_TO_SCH   15
+#define EVENT_UE_DELETE_RSP_TO_MAC   16
 
 /*macros*/
 #define NO_SSB 0
@@ -120,6 +121,13 @@ typedef enum
    SR_PROHIBIT_MS64,
    SR_PROHIBIT_MS128
 }SchSrProhibitTimer;
+
+typedef enum
+{
+   NO_ERROR,
+   INVALID_CELLID,
+   INVALID_UEIDX
+}ErrorCause;
 
 typedef enum
 {
@@ -1452,6 +1460,21 @@ typedef struct schUeCfgRsp
    SchFailureCause cause;
 }SchUeCfgRsp;
 
+typedef struct schUeDelete
+{
+   uint16_t   cellId;
+   uint16_t   crnti;
+}SchUeDelete;
+
+typedef struct schUeDeleteRsp
+{
+    uint16_t   cellId;
+    uint16_t   crnti;
+    SchMacRsp  rsp;
+    ErrorCause cause;
+}SchUeDeleteRsp;
+
+
 typedef struct dataVolInfo
 {
    uint8_t  lcgId;
@@ -1538,6 +1561,13 @@ typedef uint8_t (*MacSchModUeConfigReqFunc) ARGS((
 typedef uint8_t (*SchUeReCfgRspFunc) ARGS((
 	 Pst         *pst,           /* Post structure */
 	 SchUeCfgRsp *cfgRsp));       /* Scheduler UE Cfg response */
+typedef uint8_t (*MacSchUeDeleteReqFunc) ARGS((
+   Pst         *pst,           /* Post structure */
+   SchUeDelete *schUeDel)); /*Scheduler UE Del*/
+
+typedef uint8_t (*SchUeDeleteRspFunc) ARGS((
+     Pst          *pst,           /* Post structure */
+     SchUeDeleteRsp *delRsp));       /* Scheduler UE delete response */
 
 /* function declarations */
 uint8_t packMacSchSlotInd(Pst *pst, SlotIndInfo *slotInd);
@@ -1558,10 +1588,6 @@ uint8_t packMacSchCrcInd(Pst *pst, CrcIndInfo *crcInd);
 uint8_t MacSchCrcInd(Pst *pst, CrcIndInfo *crcInd);
 uint8_t packMacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo);
 uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo);
-uint8_t packMacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfgToSch);
-uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfgToSch);
-uint8_t packSchUeCfgRsp(Pst *pst, SchUeCfgRsp *cfgRsp);
-uint8_t MacProcSchUeCfgRsp(Pst *pst, SchUeCfgRsp *cfgRsp);
 uint8_t MacSchSlotInd ARGS((Pst * pst, SlotIndInfo * slotInd));
 uint8_t packMacSchSlotInd(Pst * pst, SlotIndInfo * slotInd);
 uint8_t unpackMacSchSlotInd(MacSchSlotIndFunc func, Pst *pst, Buffer  *mBuf);
@@ -1569,10 +1595,18 @@ uint8_t packMacSchBsr(Pst *pst, UlBufferStatusRptInd *bsrInd);
 uint8_t MacSchBsr(Pst *pst, UlBufferStatusRptInd *bsrInd);
 uint8_t packMacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd);
 uint8_t MacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd);
+uint8_t packMacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfgToSch);
+uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfgToSch);
 uint8_t packMacSchModUeConfigReq(Pst *pst, SchUeCfg *ueCfgToSch);
 uint8_t MacSchModUeConfigReq(Pst *pst, SchUeCfg *ueCfgToSch);
+uint8_t packMacSchUeDeleteReq(Pst *pst,  SchUeDelete *schUeDel);
+uint8_t MacSchUeDeleteReq(Pst *pst, SchUeDelete  *ueDelete);
 uint8_t packSchUeReconfigRsp(Pst *pst, SchUeCfgRsp *cfgRsp);
 uint8_t MacProcSchUeReconfigRsp(Pst *pst, SchUeCfgRsp *cfgRsp);
+uint8_t packSchUeCfgRsp(Pst *pst, SchUeCfgRsp *cfgRsp);
+uint8_t MacProcSchUeCfgRsp(Pst *pst, SchUeCfgRsp *cfgRsp);
+uint8_t packSchUeDeleteRsp(Pst *pst, SchUeDeleteRsp  *delRsp);
+uint8_t MacProcSchUeDeleteRsp(Pst *pst, SchUeDeleteRsp *schCfgRsp);
 
 /**********************************************************************
   End of file

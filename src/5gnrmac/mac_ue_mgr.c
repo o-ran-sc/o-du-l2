@@ -36,11 +36,26 @@ MacSchAddUeConfigReqFunc macSchAddUeConfigReqOpts[] =
    packMacSchAddUeConfigReq     /* packing for light weight loosely coupled */
 };
 
+MacSchUeDeleteReqFunc macSchUeDeleteReqOpts[] =
+{
+    packMacSchUeDeleteReq,    /* packing for loosely coupled */
+    MacSchUeDeleteReq,        /* packing for tightly coupled */
+    packMacSchUeDeleteReq     /* packing for light weight loosely coupled */
+};
+
+
 MacDuUeCfgRspFunc macDuUeCfgRspOpts[] =
 {
    packDuMacUeCfgRsp,   /* packing for loosely coupled */
    DuProcMacUeCfgRsp,   /* packing for tightly coupled */
    packDuMacUeCfgRsp   /* packing for light weight loosly coupled */
+};
+
+MacDuUeDeleteRspFunc macDuUeDeleteRspOpts[] =
+{
+    packDuMacUeDeleteRsp,   /* packing for loosely coupled */
+    DuProcMacUeDeleteRsp,   /* packing for tightly coupled */
+    packDuMacUeDeleteRsp   /* packing for light weight loosly coupled */
 };
 
 MacSchModUeConfigReqFunc macSchModUeConfigReqOpts[] =
@@ -2400,6 +2415,455 @@ uint8_t MacProcUeReconfigReq(Pst *pst, MacUeCfg *ueCfg)
    }
    /* FREE shared memory */
    MAC_FREE_SHRABL_BUF(pst->region, pst->pool, ueCfg, sizeof(MacUeCfg));
+   return ROK;
+}
+
+/*******************************************************************
+*
+* @brief Fill and Send UE Delete response from MAC to DU APP
+*
+* @details
+*
+*    Function : MacSendUeDeleteRsp 
+*
+*    Functionality: Fill and Send UE Delete response from MAC to DUAPP
+*
+* @params[in] MAC UE delete result
+*             SCH UE delete response
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t MacSendUeDeleteRsp(UeDeleteStatus result, SchUeDeleteRsp *schDeleteRsp)
+{
+   MacUeDeleteRsp *deleteRsp;
+   Pst            rspPst;
+
+   MAC_ALLOC(deleteRsp, sizeof(MacUeDeleteRsp));
+   if(!deleteRsp)
+   {
+      DU_LOG("\nERROR  -->  MAC : Memory allocation for UE delete response failed");
+      return RFAILED;
+   }
+
+   /* Filling UE delete response */
+   deleteRsp->cellId = schDeleteRsp->cellId;
+   GET_UE_IDX(schDeleteRsp->crnti,deleteRsp->ueIdx);
+   deleteRsp->result = result;
+
+   /* Fill Post structure and send UE delete response*/
+   memset(&rspPst, 0, sizeof(Pst));
+   FILL_PST_MAC_TO_DUAPP(rspPst, EVENT_MAC_UE_DELETE_RSP);
+   return (*macDuUeDeleteRspOpts[rspPst.selector])(&rspPst, deleteRsp);
+}
+/*******************************************************************
+ *
+ * @brief Sends UE delete req to Scheduler
+ *
+ * @details
+ *
+ *    Function : sendUeDelToSch
+ *
+ *    Functionality: sends UE delete req to Scheduler
+ *
+ * @params[in] Pst and SchUeDelete
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t sendUeDelToSch(SchUeDelete *schUeDel)
+{
+   Pst schPst;
+   FILL_PST_MAC_TO_SCH(schPst, EVENT_UE_DELETE_REQ_TO_SCH);
+   return(*macSchUeDeleteReqOpts[schPst.selector])(&schPst, schUeDel);
+}
+/*******************************************************************
+*
+* @brief freeing the Pucch Resrc Cfg 
+*
+* @details
+*
+*    Function : deletePucchResourcesCfg 
+*
+*    Functionality: freeing the Pucch Resrc Cfg
+*
+* @params[in] PucchResrcCfg *resrcCfg
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+void deletePucchResourcesCfg(PucchResrcCfg *resrcCfg)
+{
+   uint8_t arrIdx;
+   for(arrIdx =0; arrIdx< resrcCfg->resrcToAddModListCount;arrIdx++)
+   {
+      if(resrcCfg->resrcToAddModList[arrIdx].PucchFormat.format0)
+      {
+         MAC_FREE(resrcCfg->resrcToAddModList[arrIdx].PucchFormat.format0, sizeof(PucchFormat0));
+      }
+      if(resrcCfg->resrcToAddModList[arrIdx].PucchFormat.format1)
+      {
+         MAC_FREE(resrcCfg->resrcToAddModList[arrIdx].PucchFormat.format1, sizeof(PucchFormat1));
+      }
+      if(resrcCfg->resrcToAddModList[arrIdx].PucchFormat.format2)
+      {
+         MAC_FREE(resrcCfg->resrcToAddModList[arrIdx].PucchFormat.format2, sizeof(PucchFormat2_3));
+      }
+      if(resrcCfg->resrcToAddModList[arrIdx].PucchFormat.format3)
+      {
+         MAC_FREE(resrcCfg->resrcToAddModList[arrIdx].PucchFormat.format3, sizeof(PucchFormat2_3));
+      }
+      if(resrcCfg->resrcToAddModList[arrIdx].PucchFormat.format4)
+      {
+         MAC_FREE(resrcCfg->resrcToAddModList[arrIdx].PucchFormat.format4, sizeof(PucchFormat4));
+      }
+   }
+
+}
+/*******************************************************************
+*
+* @brief Function to delete MAC Pdsch ServCellCfg
+*
+* @details
+*
+*    Function : deleteMacPdschServCellCfg
+*
+*    Functionality: Function to delete MAC Pdsch ServCellCfg
+*
+* @params[in] PdschServCellCfg *pdschServCellCfg
+* @return void
+*
+* ****************************************************************/
+void deleteMacPdschServCellCfg(PdschServCellCfg *pdschServCellCfg)
+{
+   if(pdschServCellCfg->maxMimoLayers)
+   {
+      MAC_FREE(pdschServCellCfg->maxMimoLayers, sizeof(uint8_t));
+   }
+   if(pdschServCellCfg->maxCodeBlkGrpPerTb)
+   {
+      MAC_FREE(pdschServCellCfg->maxCodeBlkGrpPerTb, sizeof(MaxCodeBlkGrpPerTB));
+   }
+   if(pdschServCellCfg->codeBlkGrpFlushInd)
+   {
+      MAC_FREE(pdschServCellCfg->codeBlkGrpFlushInd, sizeof(bool));
+   }
+   if(pdschServCellCfg->xOverhead)
+   {
+      MAC_FREE(pdschServCellCfg->xOverhead, sizeof(PdschXOverhead));
+   }
+}
+/*******************************************************************
+*
+* @brief Handles UE Delete requst from DU APP
+*
+* @details
+*
+*    Function : deleteMacUeCb 
+*
+*    Functionality: Handles UE Delete requst from DU APP
+*
+* @params[in] MacCellCb *cellCb,uint16_t ueIdx
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+void deleteMacUeCb(MacUeCb  *ueCb)
+{
+   MacUeCfg *ueCfg = NULLP;
+   ServCellCfgInfo *servCellCfg;
+   
+   if(ueCb->raCb)
+   {
+      if(ueCb->raCb->msg4Pdu)
+      {
+         MAC_FREE(ueCb->raCb->msg4Pdu, ueCb->raCb->msg4PduLen);
+      }
+      if(ueCb->raCb->msg4TxPdu)
+      {
+         MAC_FREE(ueCb->raCb->msg4TxPdu , ueCb->raCb->msg4TbSize);
+      }
+      MAC_FREE(ueCb->raCb, sizeof(MacRaCbInfo));
+   }
+   if(ueCb->cellCb)
+   {
+      if(ueCb->cellCb->ueCfgTmpData[ueCb->ueIdx-1])
+      {
+         ueCfg =ueCb->cellCb->ueCfgTmpData[ueCb->ueIdx-1]; 
+         if(ueCfg->ambrCfg)
+         {
+            MAC_FREE(ueCfg->ambrCfg, sizeof(AmbrCfg));
+         }
+         if(ueCfg->spCellCfgPres)
+         {
+            servCellCfg = &ueCfg->spCellCfg.servCellCfg;
+            if(servCellCfg->bwpInactivityTmr)
+            {
+               MAC_FREE(servCellCfg->bwpInactivityTmr, sizeof(uint8_t));
+            }
+            if(servCellCfg->initUlBwp.pucchPresent)
+            {
+               if(servCellCfg->initUlBwp.pucchCfg.resrcSet)
+               {
+                  MAC_FREE(servCellCfg->initUlBwp.pucchCfg.resrcSet, sizeof(PucchResrcSetCfg));
+               }
+               if(servCellCfg->initUlBwp.pucchCfg.resrc)
+               {
+                  deletePucchResourcesCfg(servCellCfg->initUlBwp.pucchCfg.resrc);
+                  MAC_FREE(servCellCfg->initUlBwp.pucchCfg.resrc, sizeof(PucchResrcCfg));
+               }
+               if(servCellCfg->initUlBwp.pucchCfg.format1)
+               {
+                  MAC_FREE(servCellCfg->initUlBwp.pucchCfg.format1, sizeof(PucchFormatCfg));
+               }
+               if(servCellCfg->initUlBwp.pucchCfg.format2)
+               {
+                  MAC_FREE(servCellCfg->initUlBwp.pucchCfg.format2, sizeof(PucchFormatCfg));
+               }
+               if(servCellCfg->initUlBwp.pucchCfg.format3)
+               {
+                  MAC_FREE(servCellCfg->initUlBwp.pucchCfg.format3, sizeof(PucchFormatCfg));
+               }
+               if(servCellCfg->initUlBwp.pucchCfg.format4)
+               {
+                  MAC_FREE(servCellCfg->initUlBwp.pucchCfg.format4, sizeof(PucchFormatCfg));
+               }
+               if(servCellCfg->initUlBwp.pucchCfg.schedReq)
+               {
+                  MAC_FREE(servCellCfg->initUlBwp.pucchCfg.schedReq, sizeof(PucchSchedReqCfg));
+               }
+               if(servCellCfg->initUlBwp.pucchCfg.multiCsiCfg)
+               {
+                  MAC_FREE(servCellCfg->initUlBwp.pucchCfg.multiCsiCfg, sizeof(PucchMultiCsiCfg));
+               }
+               if(servCellCfg->initUlBwp.pucchCfg.spatialInfo)
+               {
+                  MAC_FREE(servCellCfg->initUlBwp.pucchCfg.spatialInfo, sizeof(PucchSpatialCfg));
+               }
+               if(servCellCfg->initUlBwp.pucchCfg.dlDataToUlAck)
+               {
+                  MAC_FREE(servCellCfg->initUlBwp.pucchCfg.dlDataToUlAck , sizeof(PucchDlDataToUlAck));
+               }
+               if(servCellCfg->initUlBwp.pucchCfg.powerControl)
+               {
+                  MAC_FREE(servCellCfg->initUlBwp.pucchCfg.powerControl, sizeof(PucchPowerControl));
+               }
+               deleteMacPdschServCellCfg(&servCellCfg->pdschServCellCfg);
+            }
+         }
+         for(uint8_t idx=0 ;idx < ueCfg->numLcs; idx++)
+         {
+            if(ueCfg->lcCfgList[idx].drbQos)
+            {
+               MAC_FREE(ueCfg->lcCfgList[idx].drbQos, sizeof(DrbQosInfo));
+            }
+            if(ueCfg->lcCfgList[idx].snssai)
+            {
+              MAC_FREE(ueCfg->lcCfgList[idx].snssai, sizeof(Snssai));
+            }
+         }
+         MAC_FREE(ueCb->cellCb->ueCfgTmpData[ueCb->ueIdx-1],sizeof(MacUeCfg));
+      }
+   }
+}
+/*******************************************************************
+*
+* @brief  Processes UE delete response from scheduler
+*
+* @details
+*
+*    Function : MacProcSchUeCfgRsp
+*
+*    Functionality:
+*      Processes UE create delete from scheduler
+*
+* @params[in] Pst : Post structure
+*             schUeDelRsp : Scheduler UE delete respons
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t MacProcSchUeDeleteRsp(Pst *pst, SchUeDeleteRsp *schUeDelRsp)
+{
+   uint16_t ueIdx =0;
+   uint16_t cellIdx=0;
+   MacCellCb *cellCb= NULLP;
+   MacUeCb  *ueCb = NULLP;
+   UeDeleteStatus result = 0;
+   
+   if(schUeDelRsp)
+   {
+      if(schUeDelRsp->rsp == RSP_OK)
+      {
+         DU_LOG("\nINFO   -->  MAC : SCH UE Delete response for CRNTI[%d] is successful ", \
+               schUeDelRsp->crnti);
+         GET_CELL_IDX(schUeDelRsp->cellId, cellIdx);
+         cellCb = macCb.macCell[cellIdx];
+         if(cellCb)
+         {
+            GET_UE_IDX(schUeDelRsp->crnti, ueIdx);
+            ueCb = &cellCb->ueCb[ueIdx -1];
+            if(ueCb->crnti == schUeDelRsp->crnti)
+            {
+               deleteMacUeCb(ueCb);
+               memset(&ueCb[ueIdx-1], 0, sizeof(MacUeCb));
+               result = NO_FAILURE;
+               if(MacSendUeDeleteRsp(result, schUeDelRsp) != ROK)
+               {
+                  DU_LOG("\nERROR  -->  MAC: MacProcSchUeDeleteRsp(): Failed to send UE delete response");
+                  return RFAILED;
+               }
+               else
+               {
+                  DU_LOG("\nDEBUG  -->  MAC : UE Delete response sent successfully");
+                  return ROK;
+               }
+            }
+            else
+            {
+               result = UEIDX_INVALID;
+               if(MacSendUeDeleteRsp(result, schUeDelRsp) != ROK)
+               {
+                  DU_LOG("\nERROR  -->  MAC: MacProcSchUeDeleteRsp(): Failed to send UE delete response");
+                  return RFAILED;
+               }
+            }
+         }
+         else
+         {
+            result = CELLID_INVALID;
+            if(MacSendUeDeleteRsp(result, schUeDelRsp) != ROK)
+            {
+               DU_LOG("\nERROR  -->  MAC: MacProcSchUeDeleteRsp(): Failed to send UE delete response");  
+               return RFAILED;
+            }
+         }
+      }
+      else
+      {
+         if(schUeDelRsp->cause == INVALID_CELLID)
+           result = CELLID_INVALID;
+         else
+           result = UEIDX_INVALID;
+         if(MacSendUeDeleteRsp(result, schUeDelRsp) != ROK)
+         {
+            DU_LOG("\nERROR  -->  MAC: MacProcSchUeDeleteRsp(): Failed to send UE delete response");
+            return RFAILED;
+         }
+      }
+
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  MAC: MacProcSchUeDeleteRsp(): Failed to receive UE delete response by SCH");
+      return RFAILED;
+   }
+   return ROK;
+}
+/*******************************************************************
+*
+* @brief Sending UE Delete rsp to DU APP
+*
+* @details
+*
+*    Function : MacSendUeDeleteFailureRsp 
+*
+*    Functionality: Sending UE Delete rsp to DU APP
+*
+* @params[in] MacUeDelete *ueDelete
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t MacSendUeDeleteFailureRsp(MacUeDelete *ueDelete,UeDeleteStatus status)
+{
+   MacUeDeleteRsp *deleteRsp;
+   Pst            rspPst;
+   MAC_ALLOC(deleteRsp, sizeof(MacUeDeleteRsp));
+   if(!deleteRsp)
+   {
+      DU_LOG("\nERROR  -->  MAC : Memory allocation for UE delete response failed");
+      return RFAILED;
+   }
+   
+   /* Filling UE delete response */
+   deleteRsp->cellId = ueDelete->cellId;
+   deleteRsp->ueIdx  = ueDelete->ueIdx;
+   deleteRsp->result = status;
+
+   /* Fill Post structure and send UE delete response*/
+   memset(&rspPst, 0, sizeof(Pst));
+   FILL_PST_MAC_TO_DUAPP(rspPst, EVENT_MAC_UE_DELETE_RSP);
+   return (*macDuUeDeleteRspOpts[rspPst.selector])(&rspPst, deleteRsp);
+}
+/*******************************************************************
+ *
+ * @brief Handles UE Delete requst from DU APP
+ *
+ * @details
+ *
+ *    Function : MacProcUeDeleteReq
+ *
+ *    Functionality: Handles UE Delete requst from DU APP
+ *
+ * @params[in] Pst *pst, MacUeDelete *ueDelete
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t MacProcUeDeleteReq(Pst *pst, MacUeDelete *ueDelete)
+{
+   uint8_t ret = ROK;
+   uint8_t cellIdx=0;
+   MacUeCb  *ueCb = NULLP;
+   MacCellCb *cellCb = NULLP;
+   SchUeDelete schUeDel;
+
+   DU_LOG("\nINFO   -->  MAC : UE Delete Request received for ueIdx[%d]", ueDelete->ueIdx);
+
+   if(ueDelete)
+   {
+      GET_CELL_IDX(ueDelete->cellId, cellIdx);     
+      cellCb = macCb.macCell[cellIdx];
+      if(cellCb)
+      {
+         ueCb = &cellCb->ueCb[ueDelete->ueIdx-1];
+         if(ueCb->crnti == ueDelete->crnti)
+         {
+            memset(&schUeDel, 0, sizeof(SchUeDelete));
+            schUeDel.cellId =  ueDelete->cellId;
+            schUeDel.crnti  =  ueDelete->crnti;
+            /*Sending Del Req to SCH */
+            ret = sendUeDelToSch(&schUeDel);
+            if(ret != ROK)
+            {
+               DU_LOG("\nERROR  -->  MAC : MacProcUeDeleteReq(): Failed to send UE Delete Request to SCH");
+               ret = RFAILED;
+            }
+         }
+         else
+         {
+            DU_LOG("\nERROR  -->  MAC : MacProcUeDeleteReq(): CRNTI is not matched");
+            MacSendUeDeleteFailureRsp(ueDelete, UEIDX_INVALID);
+            ret = RFAILED;
+         }
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  MAC : MacProcUeDeleteReq(): Failed to find the MacUeCb of UeIdx = %d",ueDelete->ueIdx);
+         MacSendUeDeleteFailureRsp(ueDelete,CELLID_INVALID);
+         ret = RFAILED;
+      }
+      /* FREE shared memory */
+      MAC_FREE_SHRABL_BUF(pst->region, pst->pool, ueDelete, sizeof(MacUeDelete));
+      return ret;
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  MAC : MacProcUeDeleteReq(): MAC UE delete request processing failed");
+      return RFAILED;
+   }
    return ROK;
 }
 
