@@ -1,0 +1,696 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bccece22_68cafde4",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2481,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "since this flow is specific to ue delete only, no need to check pst-\u003eevent again",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "12d5ec6f_8670daa4",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2519,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "size : msg4PduLen",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6d9139e6_45000644",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2523,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "size : msg4TbSize",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "169f9b57_360243a4",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2543,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "check this only if pucch present",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b7ea1bad_21134f83",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2545,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "there is no pointer to be freed inside resrcSet-\u003eresrcSetToAddModList[]",
+      "range": {
+        "startLine": 2545,
+        "startChar": 72,
+        "endLine": 2545,
+        "endChar": 100
+      },
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2a01a02f_c956227e",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2547,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "parameters within resrc and resrcset is all mixed up. Please review the sequence properly",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "217d3646_17441c4b",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2645,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "rename schCfgRsp to schUeDelRsp",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9d556322_1c82c890",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2658,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "MacProcSchUeDeleteRsp() will be called only if pst-\u003eevent \u003d EVENT_UE_DELETE_RSP_TO_MAC. No need to check the event again",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "61c70658_18d422e5",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2666,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "Instead of passing 2 args, fetch ueCb here itself and pass only this to deleteMacUeCb.",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "75e9fb54_1fe5c373",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2676,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "DEBUG",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "272c3ddd_37f1dbe6",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2689,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "if sch Rsp \u003d\u003d NOK, send UE delete rsp to du app with failure status",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "33b64bcf_12b9b1ec",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2732,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "no need to pass pst",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "00713842_b2a7c478",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2749,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "As per AAD, in case of invalid cell id or ueIdx, send a UE delete response with failure status",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "57a8eb8b_6735f678",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 652,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "no need to check event again",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ca047d52_8c4f9649",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 655,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "debug",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5b90491c_934e4064",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 758,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "no need of doing memset to each parameter. do a ueCb memset altogether",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e8f30954_32d92425",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 788,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "function description incorrect",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e4cfb664_cbe1359d",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 817,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "in case of invalid cellid, send failure in ue delete response",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "960bc734_ea1229c7",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 825,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "for invalid ue idx also, send failure in ue delete response",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7eda3cdd_50c7a15a",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 832,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "1. This flow is for UE delete only, no need to check event again and again. Remove pst-\u003eevent\n2. delRsp can be created in SchSendUeDeleteRspToMac() itself.\n\nCODING GUIDELINE : we must try to pass minimum number of parameters into a function",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1def0770_588e32c2",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 834,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "ERROR",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ab326492_37aacb53",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "RSP",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8e84ab9c_aa310207",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1250,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "as per AAD, crnti is not needed in ue delete response",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b49dff06_90768063",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1364,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "keep all API for req together at one place and for rsp as well",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "65e59d10_ca669bfa",
+        "filename": "src/cm/mac_sch_interface.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 394,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "function description incorrect",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7538e672_a982add9",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1459,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "ue id not present in AAD",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d9d99c80_6b09a435",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1467,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "ueid and crnti not present in this API in AAD.",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "56c2d6ce_b899eb28",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1602,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "packMacSchUeDeleteReq declared twice",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d4377b2c_e3658291",
+        "filename": "src/du_app/du_f1ap_msg_hdl.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "since this is defined in du_ue_mgr.c, move its declaration to du_ue_mgr.h",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8a4df047_68feea45",
+        "filename": "src/du_app/du_mgr_ex_ms.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "use \"RSP\", not RES for response. Applicable everywhere",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f4d3acc0_e9a75f18",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2781,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "is this print needed?",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b22c5566_f43a528c",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2813,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "use term \"ueIdx\" everywhere instead of ueId",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d7aad11f_68a5ef10",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2819,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "move this inside if{ }",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9827582e_b31a919a",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2825,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "Avoid this calculation. Pass crnti as well in this function",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "845ae00a_b33d8817",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2827,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "only MAC, not MAC UL",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7a6d6fa4_e0eaa973",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2831,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "Print format:\nDU_LOG(\"\\nERROR  --\u003e  DU_APP: sendUeReCfgReqToMac(): Failed to send UE delete Req to MAC\")",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "86717dd2_733d9a16",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2837,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f0bd56de_e788b570",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2858,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "There is no parameter as ueId in our layers. To represent a UE, we either use rnti or ueIdx.\nPass RNTI to duProcUeDeleteReq and calculate ueIdx using GET_UE_IDX().",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e8352a8a_453c0a2e",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2866,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "\u0026duCb.actvCellLst[cellIdx]-\u003eueCb[ueId-1] will never be null.\nCheck if(duCb.actvCellLst[cellIdx]-\u003eueCb[ueIdx-1].crnti \u003d\u003d rnti)",
+      "range": {
+        "startLine": 2866,
+        "startChar": 9,
+        "endLine": 2866,
+        "endChar": 49
+      },
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0a283d6a_073deb95",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2868,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-03-25T13:40:43Z",
+      "side": 1,
+      "message": "pass ueIdx",
+      "revId": "1787d0dee8c6975c11cc4ec589b1e54a26dff9f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
