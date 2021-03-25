@@ -27,9 +27,6 @@
     File:   kw_udx_ul.c
  
 **********************************************************************/
-static const char* RLOG_MODULE_NAME="UDX";
-static int RLOG_MODULE_ID=262144;
-static int RLOG_FILE_ID=204;
 
 /** @file kw_udx_ul.c
 @brief  UDX Uplink Module 
@@ -122,7 +119,7 @@ uint8_t status
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (tRlcCb->init.cfgDone != TRUE)
    {
-      RLOG0(L_FATAL, "General configuration not done");
+      DU_LOG("\nERROR  -->  RLC_UL : General configuration not done");
       RLC_SEND_SAPID_ALARM(tRlcCb,suId, 
                           LKW_EVENT_LI_BND_CFM, LCM_CAUSE_INV_STATE);
 
@@ -131,7 +128,7 @@ uint8_t status
 
    if (suId < 0)
    {
-      RLOG0(L_ERROR, "Invalid suId");
+      DU_LOG("\nERROR  -->  RLC_UL : Invalid suId");
       RLC_SEND_SAPID_ALARM(tRlcCb,suId, 
                            LKW_EVENT_LI_BND_CFM, LCM_CAUSE_INV_SUID);
 
@@ -225,7 +222,7 @@ RlcCfgCfmInfo   *cfmInfo
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (suId < 0)
    {
-      RLOG0(L_ERROR, "Invalid suId");
+      DU_LOG("\nERROR  -->  RLC_UL : Invalid suId");
       RLC_SEND_SAPID_ALARM(tRlcCb,suId, 
                            LKW_EVENT_LI_BND_CFM, LCM_CAUSE_INV_SUID);
       RLC_FREE_SHRABL_BUF(pst->region,
@@ -238,7 +235,7 @@ RlcCfgCfmInfo   *cfmInfo
 
    if(ROK != rlcDbmFindUlTransaction(tRlcCb,cfmInfo->transId, &cfgTmpData))
    {
-      RLOG0(L_ERROR, "Invalid transId");
+      DU_LOG("\nERROR  -->  RLC_UL : Invalid transId");
       RLC_FREE_SHRABL_BUF(pst->region,
                          pst->pool,
 	                 cfmInfo,
@@ -259,7 +256,7 @@ RlcCfgCfmInfo   *cfmInfo
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if (cfgCfm == NULLP)
    {
-      RLOG0(L_FATAL, "Memory Allocation failed.");
+      DU_LOG("\nERROR  -->  RLC_UL : Memory Allocation failed.");
       RLC_FREE_SHRABL_BUF(pst->region,
                          pst->pool,
 	                 cfmInfo,
@@ -331,14 +328,14 @@ CmStatus   status
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (suId < 0)
    {
-      RLOG0(L_ERROR, "Invalid suId");
+      DU_LOG("\nERROR  -->  RLC_UL : Invalid suId");
       return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
    if(ROK != rlcDbmFindUlTransaction(tRlcCb, transId, &cfgTmpData))
    {
-      RLOG0(L_ERROR, "Invalid transId");
+      DU_LOG("\nERROR  -->  RLC_UL : Invalid transId");
       return  (RFAILED);
    }
 
@@ -396,7 +393,7 @@ CmLteRlcId   *rlcId
    rlcDbmFetchUlRbCbByRbId(tRlcCb, rlcId, &rbCb);
    if (rbCb == NULLP)
    {    
-      RLOG_ARG2(L_ERROR, DBG_UEID,rlcId->ueId, "CellId [%u]:RbId[%d] not found",
+      DU_LOG("\nERROR  -->  RLC_UL : CellId [%u]:RbId[%d] not found",
             rlcId->cellId,rlcId->rbId);
       return RFAILED;
    }
@@ -482,7 +479,7 @@ RlcCfgCfmInfo    *cfgCfm
                {
 		            RLC_CFG_FILL_CFG_CFM(entCfgCfm, entCfg->rbId, entCfg->rbType,
 				           CKW_CFG_CFM_NOK, CKW_CFG_REAS_INVALID_DIR);
-                  RLOG_ARG2(L_ERROR,DBG_UEID,cfg->ueId,"RBID[%d] direction[%d] is invalid",
+                  DU_LOG("\nDEBUG  -->  RLC_UL : RBID[%d] direction[%d] is invalid",
                          entCfg->rbId,entCfg->dir);
                }
                break;
@@ -553,7 +550,7 @@ RlcCfgCfmInfo    *cfgCfm
                RLC_CFG_FILL_CFG_CFM(entCfgCfm, entCfg->rbId, entCfg->rbType,
                                    CKW_CFG_CFM_NOK, CKW_CFG_REAS_INVALID_CFG);
 
-               RLOG0(L_ERROR,"Invalid configuration type");
+               DU_LOG("\nERROR  -->  RLC_UL : Invalid configuration type");
             }
       }
    }

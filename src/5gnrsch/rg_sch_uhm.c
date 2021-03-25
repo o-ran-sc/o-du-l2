@@ -774,8 +774,7 @@ S16 rgSCHUhmGetAvlHqProc(RgSchCellCb *cell,RgSchUeCb  *ue,RgSchUlHqProcCb  **hqP
 
    if (NULLP == tmp)
    {
-      //RLOG_ARG3(L_ERROR,DBG_CELLID,cell->cellId,
-       //                "rgSCHUhmGetAvlHqProc free %ld inUse %ld ue %d"
+       //DU_LOG("rgSCHUhmGetAvlHqProc free %ld inUse %ld ue %d"
         //                                   , hqE->free.count, hqE->inUse.count, ue->ueId);
       //DU_LOG("5GTF_ERROR rgSCHUhmGetAvlHqProc cellId %d  %ld inUse %ld ue %d"
                               //, cell->cellId, hqE->free.count, hqE->inUse.count, ue->ueId);

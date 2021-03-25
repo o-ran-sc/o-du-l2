@@ -36,9 +36,6 @@
         File:    kw_cfg_dl.c
 
 *********************************************************************21*/
-static const char* RLOG_MODULE_NAME="CFG";
-static int RLOG_MODULE_ID=2048;
-static int RLOG_FILE_ID=191;
 
 /** @file kw_cfg_dl.c
 @brief RLC Downlink Configuration Module
@@ -321,8 +318,7 @@ static S16 rlcAddToDlL2Meas(RlcCb *gCb, RlcDlRbCb *rlcRbCb,uint8_t cellId,uint8_
 static S16 rlcCfgFillDlRbCb(RlcCb *gCb,RlcDlRbCb *rbCb,RlcDlUeCb *ueCb,RlcEntCfgInfo *entCfg)
 {
 
-   RLOG_ARG3(L_DEBUG,DBG_RBID,entCfg->rbId,
-         "rlcCfgFillRbCb(ueId(%d),cellId(%d) rbType(%d))",
+   DU_LOG("\nDEBUG  -->  RLC_DL : rlcCfgFillRbCb(ueId(%d),cellId(%d) rbType(%d))",
                 rbCb->rlcId.ueId,
                 rbCb->rlcId.cellId, 
                 entCfg->rbType);
@@ -401,8 +397,7 @@ static S16 rlcCfgFillDlRbCb(RlcCb *gCb,RlcDlRbCb *rbCb,RlcDlUeCb *ueCb,RlcEntCfg
       }
       default:
       {
-         RLOG_ARG2(L_ERROR,DBG_RBID,entCfg->rbId, 
-                  "Invalid RB Mode ueId(%d),cellId(%d)",
+         DU_LOG("\nERROR  -->  RLC_DL : Invalid RB Mode ueId(%d),cellId(%d)",
                   rbCb->rlcId.ueId,
                   rbCb->rlcId.cellId);
          return RFAILED;
@@ -438,8 +433,7 @@ RlcEntCfgInfo   *entCfg
    
    if (rbCb->mode != entCfg->entMode)
    {
-      RLOG_ARG4(L_ERROR,DBG_RBID,rbCb->rlcId.rbId,
-            "RB Mode Mismatch : exp [%d] rcv [%d] UEID:%d CELLID:%d", 
+      DU_LOG("\nERROR  -->  RLC_DL : RB Mode Mismatch : exp [%d] rcv [%d] UEID:%d CELLID:%d", 
             rbCb->mode, 
             entCfg->entMode,
             rbCb->rlcId.ueId,
@@ -548,8 +542,7 @@ RlcEntCfgCfmInfo   *entCfm
    RlcDlRbCb     *rlcRbCb;         /* KW RB Control Block */
    uint8_t       reason;          /* Rb Identifier */
 
-   RLOG_ARG3(L_DEBUG,DBG_RBID,entCfg->rbId, 
-         "rlcCfgAddRb(cellId(%d),UEID:%d cfgType(%d))",
+   DU_LOG("\nDEBUG  -->  RLC_DL : rlcCfgAddRb(cellId(%d),UEID:%d cfgType(%d))",
                 cellId, 
                 ueId,
                 entCfg->cfgType);
@@ -559,8 +552,7 @@ RlcEntCfgCfmInfo   *entCfm
       /* Fill entCfm structure */
       RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, CKW_CFG_CFM_NOK,
                           CKW_CFG_REAS_CELL_UNKWN);
-      RLOG_ARG1(L_ERROR,DBG_RBID,entCfg->rbId,
-               "Add DLRb,CellId is 0 for UEID:%d",
+      DU_LOG("\nERROR  -->  RLC_DL : Add DLRb,CellId is 0 for UEID:%d",
                ueId);
       return RFAILED;
    }
@@ -581,8 +573,7 @@ RlcEntCfgCfmInfo   *entCfm
          RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, 
                              CKW_CFG_CFM_NOK,
                              CKW_CFG_REAS_RB_UNKWN);
-         RLOG_ARG3(L_ERROR,DBG_RBID,entCfg->rbId,
-                  "Invalid RbId ,Max is [%d] CELLID:%d UEID:%d",
+         DU_LOG("\nERROR  -->  RLC_DL : Invalid RbId ,Max is [%d] CELLID:%d UEID:%d",
                   RLC_MAX_RB_PER_CELL,
                   cellId,
                   ueId);
@@ -605,8 +596,7 @@ RlcEntCfgCfmInfo   *entCfm
                RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, 
                                    CKW_CFG_CFM_NOK,
                                    CKW_CFG_REAS_RB_PRSNT);
-               RLOG_ARG2(L_WARNING, DBG_CELLID,cellId, 
-                        "RbId [%d] already exists UEID:%d",
+               DU_LOG("\nERROR  -->  RLC_DL : RbId [%d] already exists UEID:%d",
                         entCfg->rbId,
                         ueId);
                return RFAILED;
@@ -621,8 +611,7 @@ RlcEntCfgCfmInfo   *entCfm
                RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, 
                                    CKW_CFG_CFM_NOK,
                                    CKW_CFG_REAS_CELL_CREAT_FAIL);
-               RLOG_ARG2(L_ERROR,DBG_CELLID,cellId,
-                        "cellCb Creation failed RBID:%d UEID:%d",
+               DU_LOG("\nERROR  -->  RLC_DL : cellCb Creation failed RBID:%d UEID:%d",
                         entCfg->rbId,
                         ueId);
                return RFAILED;
@@ -632,8 +621,7 @@ RlcEntCfgCfmInfo   *entCfm
          /* Validate LChId */
          if(entCfg->lCh[0].lChId <= 0)
          {
-            RLOG_ARG3(L_ERROR,DBG_LCID,entCfg->lCh[0].lChId ,
-                     "Invalid LcId CELLID:%d UEID:%d RBID:%d",
+            DU_LOG("\nERROR  -->  RLC_DL : Invalid LcId CELLID:%d UEID:%d RBID:%d",
                      cellId,
                      ueId,
                      entCfg->rbId);
@@ -647,8 +635,7 @@ RlcEntCfgCfmInfo   *entCfm
          RLC_ALLOC(gCb,rlcRbCb, sizeof (RlcDlRbCb));
          if (!rlcRbCb)
          {
-            RLOG_ARG2(L_FATAL,DBG_UEID,ueId,
-                     "Memory allocation failed for rbId:%d CELLID:%d",
+            DU_LOG("\nERROR  -->  RLC_DL : Memory allocation failed for rbId:%d CELLID:%d",
                      entCfg->rbId,
                      ueId);
             /* Fill entCfm structure */                           
@@ -678,8 +665,7 @@ RlcEntCfgCfmInfo   *entCfm
          /* Fill entCfm structure */
          RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, CKW_CFG_CFM_NOK,
                CKW_CFG_REAS_RB_UNKWN);
-         RLOG_ARG2(L_ERROR,DBG_RBID, entCfg->rbId,
-                  "Invalid RbId for RbType[%d] UEID:%d", 
+         DU_LOG("\nERROR  -->  RLC_DL : Invalid RbId for RbType[%d] UEID:%d", 
                   entCfg->rbType,
                   ueId);
          return RFAILED;
@@ -702,8 +688,7 @@ RlcEntCfgCfmInfo   *entCfm
                /* Fill entCfm structure */
                RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, CKW_CFG_CFM_NOK,
                      CKW_CFG_REAS_RB_PRSNT);
-               RLOG_ARG2(L_WARNING, DBG_UEID, ueId,
-                        "CellId[%u]:rbId [%d] already exists",
+               DU_LOG("\nERROR  -->  RLC_DL : CellId[%u]:rbId [%d] already exists",
                         cellId,
                         entCfg->rbId);
                return RFAILED;
@@ -717,8 +702,7 @@ RlcEntCfgCfmInfo   *entCfm
                /* Fill entCfm structure */
                RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, CKW_CFG_CFM_NOK,
                      CKW_CFG_REAS_UE_CREAT_FAIL);
-               RLOG_ARG2(L_WARNING, DBG_CELLID,cellId,
-                        "UeId [%u]:ueCb Creation Failed RBID:%d",
+               DU_LOG("\nERROR  -->  RLC_DL : UeId [%u]:ueCb Creation Failed RBID:%d",
                         ueId,
                         entCfg->rbId);
                return RFAILED;
@@ -743,8 +727,7 @@ RlcEntCfgCfmInfo   *entCfm
             /* Fill entCfm structure */                           
             RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType,CKW_CFG_CFM_NOK,
                                     CKW_CFG_REAS_RB_CREAT_FAIL); 
-            RLOG_ARG2(L_FATAL,DBG_UEID,ueId,
-                     "Memory allocation failed RBID:%d CELLID:%d",
+            DU_LOG("\nERROR  -->  RLC_DL : Memory allocation failed RBID:%d CELLID:%d",
                      entCfg->rbId,
                      cellId);
             return RFAILED; 
@@ -796,8 +779,7 @@ RlcEntCfgCfmInfo   *entCfm
 
       /* Delete RB CB created */
       RLC_FREE(gCb,rlcRbCb, sizeof(RlcDlRbCb));
-      RLOG_ARG2(L_ERROR,DBG_RBID, entCfg->rbId,
-               "Filling of RbCb failed UEID:%d CELLID:%d",
+      DU_LOG("\nERROR  -->  RLC_DL : Filling of RbCb failed UEID:%d CELLID:%d",
                ueId,
                cellId);
       return RFAILED;
@@ -865,8 +847,7 @@ RlcEntCfgCfmInfo   *entCfm
    RlcDlUeCb     *ueCb;     /* Ue Control Block */
    uint8_t       ret;
 
-   RLOG_ARG3(L_DEBUG,DBG_UEID,ueId,
-             "rlcCfgReCfgRb(cellId(%d), cfgType(%d)) RBID:%d",
+   DU_LOG("\nDEBUG  -->  RLC_DL : rlcCfgReCfgRb(cellId(%d), cfgType(%d)) RBID:%d",
             cellId, entCfg->cfgType,entCfg->rbId);
 
 
@@ -878,8 +859,7 @@ RlcEntCfgCfmInfo   *entCfm
          /* Fill entCfm structure */
          RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, CKW_CFG_CFM_NOK,
                              CKW_CFG_REAS_RB_UNKWN);
-         RLOG_ARG3(L_ERROR,DBG_RBID,entCfg->rbId,
-                  "Invalid RbId , Max is [%d] UEID:%d CELLID:%d",
+         DU_LOG("\nERROR  -->  RLC_DL : Invalid RbId , Max is [%d] UEID:%d CELLID:%d",
                   RLC_MAX_RB_PER_CELL,
                   ueId,
                   cellId);
@@ -892,8 +872,7 @@ RlcEntCfgCfmInfo   *entCfm
          /* Fill entCfm structure */
          RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, CKW_CFG_CFM_NOK,
                              CKW_CFG_REAS_CELL_UNKWN);
-         RLOG_ARG3(L_ERROR,DBG_CELLID,cellId,
-                  "CellCb not found ueId:%d RBID:%d CELLID:%d",
+         DU_LOG("\nERROR  -->  RLC_DL : CellCb not found ueId:%d RBID:%d CELLID:%d",
                   ueId,
                   entCfg->rbId,
                   cellId);
@@ -908,8 +887,7 @@ RlcEntCfgCfmInfo   *entCfm
          /* Fill entCfm structure */
          RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, CKW_CFG_CFM_NOK,
                CKW_CFG_REAS_RB_UNKWN);
-         RLOG_ARG2(L_ERROR,DBG_UEID,ueId,
-                  "CELLID:%d RBID:%d not found",
+         DU_LOG("\nERROR  -->  RLC_DL : CELLID:%d RBID:%d not found",
                   cellId,
                   entCfg->rbId);
          return RFAILED;
@@ -931,8 +909,7 @@ RlcEntCfgCfmInfo   *entCfm
                              CKW_CFG_CFM_NOK,
                              ret);
 
-         RLOG_ARG2(L_ERROR,DBG_UEID,ueId,
-                  "CELLID:%u RBID:%d updation failed",
+         DU_LOG("\nERROR  -->  RLC_DL : CELLID:%u RBID:%d updation failed",
                   cellId,
                   entCfg->rbId);
          memcpy(rbCb, &tRbCb, sizeof(RlcDlRbCb));
@@ -947,8 +924,7 @@ RlcEntCfgCfmInfo   *entCfm
          /* Fill entCfm structure */
          RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, CKW_CFG_CFM_NOK,
                CKW_CFG_REAS_RB_UNKWN);
-         RLOG_ARG3(L_ERROR,DBG_UEID,ueId,
-                  "CELLID:%d Invalid RBID:%d for RbType[%d]",
+         DU_LOG("\nERROR  -->  RLC_DL : CELLID:%d Invalid RBID:%d for RbType[%d]",
                   cellId,
                   entCfg->rbId,
                   entCfg->rbType);
@@ -961,8 +937,7 @@ RlcEntCfgCfmInfo   *entCfm
          /* Fill entCfm structure */
          RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, 
                              CKW_CFG_CFM_NOK, CKW_CFG_REAS_UE_UNKWN);
-         RLOG_ARG2(L_ERROR,DBG_CELLID, cellId,
-                  "UEID:%d UeCb not found RBID:%d",
+         DU_LOG("\nERROR  -->  RLC_DL : UEID:%d UeCb not found RBID:%d",
                   ueId,
                   entCfg->rbId);
          return (ret);
@@ -976,8 +951,7 @@ RlcEntCfgCfmInfo   *entCfm
          /* Fill entCfm structure */
          RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, CKW_CFG_CFM_NOK,
                CKW_CFG_REAS_RB_UNKWN);
-         RLOG_ARG2(L_ERROR, DBG_UEID,ueId, 
-                  "CELLID:%d RBID:%d not found",
+         DU_LOG("\nERROR  -->  RLC_DL : CELLID:%d RBID:%d not found",
                   cellId,
                   entCfg->rbId);
          return (ret);
@@ -995,8 +969,7 @@ RlcEntCfgCfmInfo   *entCfm
          /* Fill entCfm structure */
          RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, CKW_CFG_CFM_NOK,
                ret);
-         RLOG_ARG2(L_ERROR,DBG_UEID,ueId,
-                  "CELLID:%d RBID:%d updation failed",
+        DU_LOG("\nERROR  -->  RLC_DL : CELLID:%d RBID:%d updation failed",
                   cellId,
                   entCfg->rbId);
          memcpy(rbCb, &tRbCb, sizeof(RlcDlRbCb));
@@ -1056,8 +1029,7 @@ RlcEntCfgCfmInfo   *entCfm
    RlcDlCellCb   *cellCb;   /* UE Control Block */
    RlcDlRbCb     *rlcRbCb;   /* KW RB Control Block */
 
-   RLOG_ARG3(L_DEBUG,DBG_UEID,ueId, 
-            "rlcCfgDelRb(RBID(%d), cellId(%d), cfgType(%d))",
+   DU_LOG("\nDEBUG  -->  RLC_DL : rlcCfgDelRb(RBID(%d), cellId(%d), cfgType(%d))",
             entCfg->rbId, 
             cellId, 
             entCfg->cfgType);
@@ -1072,8 +1044,7 @@ RlcEntCfgCfmInfo   *entCfm
          /* Fill entCfm structure */
          RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, 
                              CKW_CFG_CFM_NOK, CKW_CFG_REAS_RB_UNKWN);
-         RLOG_ARG3(L_ERROR,DBG_RBID,entCfg->rbId ,
-                  "Invalid RbId, Max is [%d] UEID:%d CELLID:%d",
+         DU_LOG("\nERROR  -->  RLC_DL : Invalid RbId, Max is [%d] UEID:%d CELLID:%d",
                   RLC_MAX_RB_PER_CELL,
                   ueId,
                   cellId);
@@ -1086,8 +1057,7 @@ RlcEntCfgCfmInfo   *entCfm
          /* Fill entCfm structure */
          RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, 
                              CKW_CFG_CFM_NOK, CKW_CFG_REAS_RB_UNKWN);
-         RLOG_ARG2(L_ERROR,DBG_CELLID,cellId,
-                  "CellCb not found UEID:%d RBID:%d",
+         DU_LOG("\nERROR  -->  RLC_DL : CellCb not found UEID:%d RBID:%d",
                   ueId,
                   entCfg->rbId);
          return (ret);
@@ -1101,8 +1071,7 @@ RlcEntCfgCfmInfo   *entCfm
          /* Fill entCfm structure */
          RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, 
                              CKW_CFG_CFM_NOK, CKW_CFG_REAS_RB_UNKWN);
-         RLOG_ARG2(L_ERROR, DBG_UEID,ueId,
-                  "CellId[%u]:RbId[%d] not found",
+         DU_LOG("\nERROR  -->  RLC_DL : CellId[%u]:RbId[%d] not found",
                   cellId,
                   entCfg->rbId);
          return (ret);
@@ -1124,8 +1093,7 @@ RlcEntCfgCfmInfo   *entCfm
          /* Fill entCfm structure */
          RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, 
                              CKW_CFG_CFM_NOK, CKW_CFG_REAS_RB_UNKWN);
-         RLOG_ARG3(L_ERROR,DBG_RBID, entCfg->rbId,
-                  "Invalid RbId for RbType[%d] UEID:%d CELLID:%d", 
+         DU_LOG("\nERROR  -->  RLC_DL : Invalid RbId for RbType[%d] UEID:%d CELLID:%d", 
                   entCfg->rbType,
                   ueId,
                   cellId);
@@ -1139,8 +1107,7 @@ RlcEntCfgCfmInfo   *entCfm
          /* Fill entCfm structure */
          RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, 
                              CKW_CFG_CFM_NOK, CKW_CFG_REAS_UE_UNKWN);
-         RLOG_ARG2(L_ERROR,DBG_CELLID, cellId,
-                  "UeId [%d]: UeCb not found RBID:%d",
+          DU_LOG("\nERROR  -->  RLC_DL : UeId [%d]: UeCb not found RBID:%d",
                   ueId,
                   entCfg->rbId);
          return (ret);
@@ -1154,8 +1121,7 @@ RlcEntCfgCfmInfo   *entCfm
          /* Fill entCfm structure */
          RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, CKW_CFG_CFM_NOK,
                CKW_CFG_REAS_RB_UNKWN);
-         RLOG_ARG2(L_ERROR, DBG_UEID,ueId,
-                  "CellId[%u]:RbId[%d] not found",
+         DU_LOG("\nERROR  -->  RLC_DL : CellId[%u]:RbId[%d] not found",
                   cellId,
                   entCfg->rbId);
          return (ret);
@@ -1240,8 +1206,7 @@ RlcEntCfgCfmInfo   *entCfm
    RlcDlRbCb     *rbCb;   /* RB Control Block */
    CmLteRlcId   rlcId;   /* RLC Identifier */
 
-   RLOG_ARG3(L_DEBUG,DBG_RBID,entCfg->rbId,
-            "rlcCfgReEstDlRb(ueId(%d), cellId(%d), cfgType(%d))",
+   DU_LOG("\nDEBUG  -->  RLC_DL : rlcCfgReEstDlRb(ueId(%d), cellId(%d), cfgType(%d))",
             ueId, 
             cellId, 
             entCfg->cfgType);
@@ -1258,8 +1223,7 @@ RlcEntCfgCfmInfo   *entCfm
       /* Fill entCfm structure */
       RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, rlcId.rbType, CKW_CFG_CFM_NOK,
             CKW_CFG_REAS_RB_UNKWN);
-      RLOG_ARG2(L_ERROR, DBG_UEID,ueId,
-               "CellId[%u]:RbId[%d] not found",
+      DU_LOG("\nERROR  -->  RLC_DL : CellId[%u]:RbId[%d] not found",
                cellId,
                entCfg->rbId);
       return RFAILED;
@@ -1330,8 +1294,7 @@ RlcEntCfgCfmInfo   *entCfm
    S16        ret;     /* Return Value */
    RlcDlUeCb   *ueCb;   /* UE Control Block */
 
-   RLOG_ARG3(L_DEBUG,DBG_RBID,entCfg->rbId,
-             "rlcCfgDelUe(ueId(%d), cellId(%d), cfgType(%d))",
+   DU_LOG("\nDEBUG  -->  RLC_DL : rlcCfgDelUe(ueId(%d), cellId(%d), cfgType(%d))",
             ueId, 
             cellId, 
             entCfg->cfgType);
@@ -1344,8 +1307,7 @@ RlcEntCfgCfmInfo   *entCfm
       /* Fill entCfm structure */
       RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType,
           CKW_CFG_CFM_NOK, CKW_CFG_REAS_UE_UNKWN);
-      RLOG_ARG2(L_ERROR,DBG_RBID,entCfg->rbId,
-               "ueId(%d), cellId(%d)",
+      DU_LOG("\nERROR  -->  RLC_DL : ueId(%d), cellId(%d)",
                ueId, 
                cellId);
       return RFAILED;
@@ -1358,8 +1320,7 @@ RlcEntCfgCfmInfo   *entCfm
       /* Fill entCfm structure */
       RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType,
          CKW_CFG_CFM_NOK, CKW_CFG_REAS_UE_UNKWN);
-      RLOG_ARG2(L_ERROR,DBG_CELLID, cellId,
-               "UEID:%d UeCb not found RBID:%d",
+      DU_LOG("\nERROR  -->  RLC_DL : UEID:%d UeCb not found RBID:%d",
                ueId,
                entCfg->rbId);
       return RFAILED;
@@ -1411,8 +1372,7 @@ RlcEntCfgCfmInfo   *entCfm
    RlcDlCellCb   *cellCb;   /* UE Control Block */
    uint8_t       rbId;      /* RB Identifier */
 
-   RLOG_ARG2(L_DEBUG,DBG_RBID,entCfg->rbId,
-         "rlcCfgDelCell( cellId(%d), cfgType(%d)",
+   DU_LOG("\nDEBUG  -->  RLC_DL : rlcCfgDelCell( cellId(%d), cfgType(%d)",
          cellId, 
          entCfg->cfgType);
 
@@ -1425,8 +1385,7 @@ RlcEntCfgCfmInfo   *entCfm
       /* Fill entCfm structure */
       RLC_CFG_FILL_CFG_CFM(entCfm, rbId, entCfg->rbType, CKW_CFG_CFM_NOK,
             CKW_CFG_REAS_CELL_UNKWN);
-      RLOG_ARG1(L_DEBUG,DBG_RBID,entCfg->rbId,
-               "cellId is 0 (%d) ",
+      DU_LOG("\nERROR  -->  RLC_DL : cellId is 0 (%d) ",
                cellId);
       return RFAILED;
    }
@@ -1438,8 +1397,7 @@ RlcEntCfgCfmInfo   *entCfm
       /* Fill entCfm structure */
       RLC_CFG_FILL_CFG_CFM(entCfm, rbId, entCfg->rbType, CKW_CFG_CFM_NOK,
             CKW_CFG_REAS_CELL_UNKWN);
-      RLOG_ARG1(L_ERROR, DBG_CELLID,cellId,
-               "CellCb not found for RBID:%d",
+      DU_LOG("\nERROR  -->  RLC_DL : CellCb not found for RBID:%d",
                entCfg->rbId);
       return RFAILED;
    }
@@ -1492,8 +1450,7 @@ CmStatus    *status
    {
       status->reason = CKW_CFG_REAS_SAME_UEID;
       status->status = CKW_CFG_CFM_NOK; 
-      RLOG_ARG2(L_ERROR,DBG_CELLID,ueInfo->cellId,
-            "Old UeId[%d] same as new UeId[%d]",
+      DU_LOG("\nERROR  -->  RLC_DL : Old UeId[%d] same as new UeId[%d]",
             ueInfo->ueId,
             newUeInfo->ueId);
       return RFAILED;
@@ -1501,8 +1458,7 @@ CmStatus    *status
    
    if(ROK == rlcDbmFetchDlUeCb(gCb,newUeInfo->ueId, newUeInfo->cellId, &ueCb))
    {
-      RLOG_ARG1(L_ERROR, DBG_CELLID, newUeInfo->cellId, 
-            "NewUeId[%d]:ueCb already exists",
+      DU_LOG("\nERROR  -->  RLC_DL : NewUeId[%d]:ueCb already exists",
             newUeInfo->ueId);
       status->reason = CKW_CFG_REAS_UE_EXISTS;
       status->status = CKW_CFG_CFM_NOK;
@@ -1512,8 +1468,7 @@ CmStatus    *status
    if(ROK != rlcDbmFetchDlUeCb(gCb,ueInfo->ueId, ueInfo->cellId, &ueCb))
    {
 
-      RLOG_ARG1(L_ERROR,DBG_CELLID,ueInfo->cellId,
-            "UeId [%d]: UeCb not found",
+      DU_LOG("\nERROR  -->  RLC_DL : UeId [%d]: UeCb not found",
             ueInfo->ueId);
       status->reason = CKW_CFG_REAS_UE_UNKWN;
       status->status = CKW_CFG_CFM_NOK;
@@ -1525,8 +1480,7 @@ CmStatus    *status
 #endif   
    if(ROK != cmHashListDelete(&(gCb->u.dlCb->ueLstCp), (PTR) ueCb))
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,ueInfo->cellId,
-            "UeId[%u] HashList Deletion Failed",
+      DU_LOG("\nERROR  -->  RLC_DL : UeId[%u] HashList Deletion Failed",
             ueInfo->ueId);
       status->reason = CKW_CFG_REAS_UE_CREAT_FAIL;
       status->status = CKW_CFG_CFM_NOK;
@@ -1542,8 +1496,7 @@ CmStatus    *status
                               (uint16_t) sizeof(CmLteRnti)))
 
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,newUeInfo->cellId,
-            "UeId[%u] HashList Insertion Failed",
+      DU_LOG("\nERROR  -->  RLC_DL : UeId[%u] HashList Insertion Failed",
             newUeInfo->ueId);
       status->reason = CKW_CFG_REAS_UE_CREAT_FAIL;
       status->status = CKW_CFG_CFM_NOK;

@@ -48,8 +48,6 @@
 #ifdef LTE_L2_MEAS
 #include "rg_sch_cmn.h"    /* typedefs for Scheduler */
 #endif
-#include "rl_interface.h"
-#include "rl_common.h"
 
 /* header/extern include files (.x) */
 #include "rgr.x"           /* RGR Interface includes */

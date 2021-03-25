@@ -27,9 +27,6 @@
         File:    kw_ptui.c
   
 *********************************************************************21*/
-static const char* RLOG_MODULE_NAME="UIM";
-static int RLOG_MODULE_ID=2048;
-static int RLOG_FILE_ID=199;
 
 /** @file kw_ptui.c
 @brief RLC Upper Interface
@@ -406,7 +403,7 @@ SuId              suId,
 CmLteRlcId        rlcId
 )
 {
-   RLOG0(L_DEBUG, "In RlcUiKwuReEstCmpInd");
+   DU_LOG("\nINFO   --> RLC : In RlcUiKwuReEstCmpInd");
 
    /* jump to specific primitive depending on configured selector */
    (*kwUiKwuReEstCmpIndMt[pst->selector])(pst, suId, rlcId);
@@ -712,7 +709,7 @@ S16 rlcDlBatchProcSplit(Void)
       }
       else
       {
-         RLOG0(L_ERROR, "mBuf is NULL");
+         DU_LOG("\nERROR  --> RLC : mBuf is NULL");
          if(datReq->mBuf)
           cmUnpkKwuDatReq(rlcProcDlData, &datReq->pst, datReq->mBuf);
 

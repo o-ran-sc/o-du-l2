@@ -32,9 +32,6 @@
 @brief This module handles the configuration of SCH by RRC and RRM.
 */
 
-static const char* RLOG_MODULE_NAME="MAC";
-static int RLOG_FILE_ID=186;
-static int RLOG_MODULE_ID=4096;
 
 /* header include files -- defines (.h) */
 #include "common_def.h"
@@ -47,8 +44,6 @@ static int RLOG_MODULE_ID=4096;
 #include "rg_sch.h"
 #include "rg_sch_err.h"
 #include "rg_sch_cmn.h"
-#include "rl_interface.h"
-#include "rl_common.h"
 
 /* header/extern include files (.x) */
 #include "tfu.x"           /* TFU types */
@@ -1027,7 +1022,7 @@ RgSchErrInfo *errInfo
    if (((*cell) == NULLP) || 
        ((*cell)->cellId != ueCfg->cellId))
    {
-      RLOG_ARG1(L_ERROR,DBG_CRNTI,ueCfg->crnti,"Cell does not exist %d", 
+      DU_LOG("\nERROR  --> SCH : Cell does not exist %d", 
            ueCfg->cellId);
       return RFAILED;
    }
@@ -1037,14 +1032,14 @@ RgSchErrInfo *errInfo
     * in configuration is not amongst the C-RNTI'smanaged by scheduler */
    if ((rgSCHRamVldtUeCfg(*cell, ueCfg)) != ROK)
    {
-      RLOG_ARG1(L_ERROR,DBG_CRNTI,ueCfg->crnti,"CELLID:%d Preamble Id configuration"
+      DU_LOG("\nERROR  --> SCH : CELLID:%d Preamble Id configuration"
                "failed ",ueCfg->cellId);
       return RFAILED;
    }
    /* Check if Ue already configured */
    if (rgSCHDbmGetUeCb(*cell, ueCfg->crnti) != NULLP)
    {
-      RLOG_ARG1(L_ERROR,DBG_CRNTI,ueCfg->crnti,"CELLID:%d UEID already exists",
+      DU_LOG("\nERROR  --> SCH : CELLID:%d UEID already exists",
              ueCfg->cellId);
       return RFAILED;
    }
@@ -1052,7 +1047,7 @@ RgSchErrInfo *errInfo
    if ((ueCfg->txMode.pres == TRUE) && ((ueCfg->txMode.txModeEnum < RGR_UE_TM_1)
             || (ueCfg->txMode.txModeEnum > RGR_UE_TM_7)))
    {
-      RLOG_ARG2(L_ERROR,DBG_CRNTI,ueCfg->crnti,"CELLID:%d Invalid transmission mode for"
+      DU_LOG("\nERROR  --> SCH : CELLID:%d Invalid transmission mode for"
                " UE is %d", ueCfg->cellId,(uint8_t)ueCfg->txMode.txModeEnum);
       return RFAILED;
    }
@@ -1060,7 +1055,7 @@ RgSchErrInfo *errInfo
    /* Validate UE Category */
    if (ueCfg->ueCatEnum > CM_LTE_UE_CAT_8)
    {
-      RLOG_ARG2(L_ERROR,DBG_CRNTI,ueCfg->crnti,"CELLID:%d Invalid category for UE %d",
+      DU_LOG("\nERROR  --> SCH : CELLID:%d Invalid category for UE %d",
                ueCfg->cellId,(uint8_t)ueCfg->ueCatEnum);
       return RFAILED;
    }
@@ -1080,7 +1075,7 @@ RgSchErrInfo *errInfo
       if ((ueCfg->txMode.pres == TRUE) && 
             (ueCfg->txMode.txModeEnum > RGR_UE_TM_1))
       {
-         RLOG_ARG2(L_ERROR,DBG_CRNTI,ueCfg->crnti,"CELLID:%d Invalid transmission mode for"
+         DU_LOG("\nERROR  --> SCH : CELLID:%d Invalid transmission mode for"
                   " UE (%d) for the configured Cell Antenna Ports",ueCfg->cellId,
                   (uint8_t)ueCfg->txMode.txModeEnum);
          return RFAILED;
@@ -1089,7 +1084,7 @@ RgSchErrInfo *errInfo
    
    if ((rgSCHCfgVldtUeCqiModeCfg(*cell, &ueCfg->ueDlCqiCfg)) != ROK)
    {
-      RLOG_ARG1(L_ERROR,DBG_CRNTI,ueCfg->crnti, "CELLID:%d Invalid CQI Mode configuration",
+      DU_LOG("\nERROR  --> SCH : CELLID:%d Invalid CQI Mode configuration",
                 ueCfg->cellId);
       return RFAILED;
    }
@@ -1097,21 +1092,21 @@ RgSchErrInfo *errInfo
    /* Validate Max Uplink HARQ transmission value */
    if (ueCfg->ueUlHqCfg.maxUlHqTx < RGSCH_MIN_HQ_TX)
    {
-      RLOG_ARG2(L_ERROR,DBG_CRNTI,ueCfg->crnti,"CELLID:%d Invalid Uplink HARQ config for "
+      DU_LOG("\nERROR  --> SCH : CELLID:%d Invalid Uplink HARQ config for "
             "UE %d",ueCfg->cellId,ueCfg->ueUlHqCfg.maxUlHqTx);
       return RFAILED;
    }
 
    if (rgSCHCfgVldtUePwrCfg(*cell, &ueCfg->ueUlPwrCfg) != ROK)
    {
-      RLOG_ARG1(L_ERROR,DBG_CRNTI,ueCfg->crnti,"CELLID:%d Invalid PUSCH Group power"
+      DU_LOG("\nERROR  --> SCH : CELLID:%d Invalid PUSCH Group power"
            " configuration",ueCfg->cellId);
       return RFAILED;
    }
  
    if (rgSCHCfgVldtUeMeasGapAckNakRepCfg(*cell, ueCfg) != ROK)
    {
-      RLOG_ARG1(L_ERROR,DBG_CRNTI,ueCfg->crnti,"CELLID:%d Invalid MeasGap/AckNackRep"
+      DU_LOG("\nERROR  --> SCH : CELLID:%d Invalid MeasGap/AckNackRep"
             " configuration",ueCfg->cellId);
       return RFAILED;
    }
@@ -1123,7 +1118,7 @@ RgSchErrInfo *errInfo
        ||(ueCfg->ueSpsCfg.spsRnti == RGSCH_SI_RNTI) 
        ||(ueCfg->ueSpsCfg.spsRnti == RGSCH_P_RNTI))
    {
-      RLOG_ARG1(L_ERROR,DBG_CRNTI,ueCfg->crnti,"CELLID:%d Invalid SPS RNTI "
+      DU_LOG("\nERROR  --> SCH : CELLID:%d Invalid SPS RNTI "
                " in DL SPS Config",ueCfg->cellId);
       return RFAILED;
    }
@@ -1132,7 +1127,7 @@ RgSchErrInfo *errInfo
    {
       if (rgSCHCfgVldtUeDlSpsCfg(*cell, &ueCfg->ueSpsCfg.dlSpsCfg) != ROK)
       {
-         RLOG_ARG1(L_ERROR,DBG_CRNTI,ueCfg->crnti,"CELLID:%d Invalid DL SPS configuration"
+         DU_LOG("\nERROR  --> SCH : CELLID:%d Invalid DL SPS configuration"
                   " for the UE",ueCfg->cellId);
          return RFAILED;
       }
@@ -1142,7 +1137,7 @@ RgSchErrInfo *errInfo
    /* Validated Periodic CQI/PMI, RI , SRS and SR related UeCfg */
    if ( ROK != rgSCHCfgVldtCqiSrSrsUeCfg(*cell, ueCfg, errInfo))
    {
-      RLOG_ARG1(L_ERROR,DBG_CRNTI,ueCfg->crnti,"CELLID:%d Invalid Periodic CQI/SR/SRS"
+      DU_LOG("\nERROR  --> SCH : CELLID:%d Invalid Periodic CQI/SR/SRS"
                "configuration",ueCfg->cellId);
       return RFAILED;
    }
@@ -1151,7 +1146,7 @@ RgSchErrInfo *errInfo
    /* Validate DRX specific parameters */
    if ( ROK != rgSCHCfgVldtDrxUeCfg(*cell, &(ueCfg->ueDrxCfg)))
    {
-      RLOG_ARG1(L_ERROR,DBG_CRNTI,ueCfg->crnti,"CELLID:%d Invalid DRX configuration",
+      DU_LOG("\nERROR  --> SCH : CELLID:%d Invalid DRX configuration",
                 ueCfg->cellId);
       return RFAILED;
    }
@@ -1161,7 +1156,7 @@ RgSchErrInfo *errInfo
 #ifdef RGR_CQI_REPT
    if (ueCfg->ueCqiReptCfg.numColltdCqiRept > RGR_CQIRPTS_MAXN)
    {
-      RLOG_ARG2(L_ERROR,DBG_CRNTI,ueCfg->crnti,"CELLID:%d Invalid numColltdCqiRept,"
+      DU_LOG("\nERROR  --> SCH : CELLID:%d Invalid numColltdCqiRept,"
                "MAX supported %d",RGR_CQIRPTS_MAXN,ueCfg->cellId);
       return RFAILED;
    }
@@ -1173,7 +1168,7 @@ RgSchErrInfo *errInfo
           {
    	     if ( ROK != rgSCHCfgVldtEmtcUeCfg(*cell, &(ueCfg->emtcUeCfg)))
    	     {
-      	        	 RLOG_ARG2(L_ERROR,DBG_CRNTI,ueCfg->crnti,"CELLID:%d Invalid EMTC UE configurationfor crnti:%d",
+      	        	 DU_LOG("\nERROR  --> SCH : CELLID:%d Invalid EMTC UE configurationfor crnti:%d",
                   		  ueCfg->cellId, ueCfg->crnti);
       		         return RFAILED;
    	     }
@@ -1225,7 +1220,7 @@ RgSchErrInfo  *errInfo
    if (((*cell) == NULLP) ||
        ((*cell)->cellId != cellRecfg->cellId)) 
    {
-      RLOG_ARG0(L_ERROR,DBG_CELLID,cellRecfg->cellId,"Cell control block does not exist");
+      DU_LOG("\nERROR  --> SCH : Cell control block does not exist");
       return RFAILED;
    }
 
@@ -1234,7 +1229,7 @@ RgSchErrInfo  *errInfo
          ((cellRecfg->dlHqRecfg.maxDlHqTx < RGSCH_MIN_HQ_TX) ||
           (cellRecfg->dlHqRecfg.maxMsg4HqTx < RGSCH_MIN_HQ_TX)))
    {
-      RLOG_ARG2(L_ERROR,DBG_CELLID,cellRecfg->cellId,"Invalid Downlink HARQ configuration:"
+      DU_LOG("\nERROR  --> SCH : Invalid Downlink HARQ configuration:"
            " maxDlHqTx %d maxMsg4HqTx %d", cellRecfg->dlHqRecfg.maxDlHqTx,
             cellRecfg->dlHqRecfg.maxMsg4HqTx);
       return RFAILED;
@@ -1243,7 +1238,7 @@ RgSchErrInfo  *errInfo
          ((cellRecfg->cfiRecfg.cfi < RGSCH_MIN_CFI_VAL) ||
           (cellRecfg->cfiRecfg.cfi > RGSCH_MAX_CFI_VAL)))
    {
-      RLOG_ARG1(L_ERROR,DBG_CELLID,cellRecfg->cellId,"Invalid CFI configuration %d",
+      DU_LOG("\nERROR  --> SCH : Invalid CFI configuration %d",
                cellRecfg->cfiRecfg.cfi);
       return RFAILED;
    }
@@ -1257,7 +1252,7 @@ RgSchErrInfo  *errInfo
            (cellRecfg->pucchRecfg.deltaShift > RGSCH_PUCCH_MAXVAL_DS)) ||
           (cellRecfg->pucchRecfg.cyclicShift > RGSCH_PUCCH_MAXVAL_CS))
       {
-         RLOG_ARG4(L_ERROR,DBG_CELLID,cellRecfg->cellId,"Invalid PUCCH configuration: "
+         DU_LOG("\nERROR  --> SCH : Invalid PUCCH configuration: "
                "N2_RB %d N1_PUCCH %d deltaShift %d cyclicShift %d",
                cellRecfg->pucchRecfg.resourceSize,
                cellRecfg->pucchRecfg.n1PucchAn,
@@ -1270,7 +1265,7 @@ RgSchErrInfo  *errInfo
    {
       if (cellRecfg->srsRecfg.isSrsCfgSetup && cellRecfg->srsRecfg.srsBwEnum > RGR_SRS_BWCFG_7)
       {
-         RLOG_ARG1(L_ERROR,DBG_CELLID,cellRecfg->cellId,"Invalid SRS configuration: "
+         DU_LOG("\nERROR  --> SCH : Invalid SRS configuration: "
                "srsBw %d", (uint8_t)cellRecfg->srsRecfg.srsBwEnum);
          return RFAILED;
       }
@@ -1283,7 +1278,7 @@ RgSchErrInfo  *errInfo
          if(cellRecfg->srsRecfg.isSrsCfgSetup && cellRecfg->srsRecfg.srsSubFrameCfg > 14)
 #endif
          {
-            RLOG_ARG0(L_ERROR,DBG_CELLID,cellRecfg->cellId,"Invalid Subframe configuration ");
+            DU_LOG("\nERROR  --> SCH : Invalid Subframe configuration ");
             return RFAILED;
          }
 #endif
@@ -1302,12 +1297,12 @@ RgSchErrInfo  *errInfo
             (cellRecfg->rachRecfg.prachResource >
                (*cell)->bwCfg.ulTotalBw - RGSCH_NUM_RA_RB))
       {
-         RLOG_ARG3(L_ERROR,DBG_CELLID,cellRecfg->cellId,"Invalid RACH configuration:"
+         DU_LOG("\nERROR  --> SCH : Invalid RACH configuration:"
                " preamble Fmt %d raWinSize %d maxMsg3Tx %d",
                cellRecfg->rachRecfg.preambleFormat,
                cellRecfg->rachRecfg.raWinSize,
                cellRecfg->rachRecfg.maxMsg3Tx);
-         RLOG_ARG2(L_ERROR,DBG_CELLID,cellRecfg->cellId,"Invalid RACH configuration:"
+         DU_LOG("\nERROR  --> SCH : Invalid RACH configuration:"
                "numRaPreamble %d sizeRaPreambleGrpA %d",
                cellRecfg->rachRecfg.numRaPreamble,
                cellRecfg->rachRecfg.sizeRaPreambleGrpA);
@@ -1320,7 +1315,7 @@ RgSchErrInfo  *errInfo
    {
       if ((rgSCHCfgVldtRgrCellSiCfg(inst, &(cellRecfg->siReCfg))) != ROK)
       {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cellRecfg->cellId,"Validation for SI"
+         DU_LOG("\nERROR  --> SCH : Validation for SI"
                           "Re-configuration failed");
          return RFAILED;
       }
@@ -1340,7 +1335,7 @@ RgSchErrInfo  *errInfo
                (RGR_ENABLE == cellRecfg->rgrLteAdvCfg.sfrCfg.status)) || 
                ((*cell)->lteAdvCb.sfrCfg.status == RGR_ENABLE)))
          {
-            RLOG_ARG0(L_ERROR,DBG_CELLID,cellRecfg->cellId,"DSFR is enbaled"
+            DU_LOG("\nERROR  --> SCH : DSFR is enbaled"
                      "Without enabling SFR");
             return RFAILED;
          }
@@ -1348,7 +1343,7 @@ RgSchErrInfo  *errInfo
       if ((rgSCHCfgVldtRgrCellLteAdvCfg(inst, &(cellRecfg->rgrLteAdvCfg),
                                        (*cell)->bwCfg.dlTotalBw)) != ROK)
       {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cellRecfg->cellId,"Validation for Lte Adv"
+         DU_LOG("\nERROR  --> SCH : Validation for Lte Adv"
                   "Re-configuration failed");
          return RFAILED;
       }
@@ -1360,13 +1355,13 @@ RgSchErrInfo  *errInfo
    {
      if (cellRecfg->csgParamCfg.minDlResNonCsg > 100)
      {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cellRecfg->cellId,"Invalid Configuration "
+         DU_LOG("\nERROR  --> SCH : Invalid Configuration "
                "of minimum DL resources for NON-CSG");
          return RFAILED;
      }
      if (cellRecfg->csgParamCfg.minUlResNonCsg > 100)
      {
-         RLOG_ARG0(L_ERROR,DBG_CELLID,cellRecfg->cellId,"Invalid Configuration "
+         DU_LOG("\nERROR  --> SCH : Invalid Configuration "
                "of minimum UL resources for NON-CSG");
          return RFAILED;
      }
@@ -1414,7 +1409,7 @@ RgSchErrInfo *err
    RgrUePrdDlCqiCfg    *pCqiCfg;  
 #endif
 
-   RLOG0(L_INFO, "SCELL recfg received from APP \n");  
+   DU_LOG("\nINFO   --> SCH : SCELL recfg received from APP \n");  
 
    RGSCHDBGINFONEW(inst, (rgSchPBuf(inst), 
      "--------------------------------------------------------------------\n"
