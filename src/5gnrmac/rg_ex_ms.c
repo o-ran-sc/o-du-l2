@@ -127,7 +127,12 @@ Buffer  *mBuf                       /* message buffer       */
 	 /* Process Ue Reconfig Request */
 	 unpackMacUeReconfigReq(MacProcUeReconfigReq, pst, mBuf);
 	 break;
-      default:
+    case EVENT_MAC_UE_DELETE_REQ:
+    {
+       unpackMacUeDeleteReq(MacProcUeDeleteReq, pst, mBuf);
+       break;
+    }
+    default:
          RG_FREE_MSG(mBuf);
          break;
    }
