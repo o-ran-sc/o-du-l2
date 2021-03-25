@@ -202,7 +202,6 @@ du:
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/mac.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/sch.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/mt.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
-		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/rl.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/phy_stub.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 ifeq ($(O1_ENABLE),YES)
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/o1_client.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
@@ -223,7 +222,6 @@ clean_odu:
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/mac.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/sch.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/mt.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
-		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/rl.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/phy_stub.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 ifeq ($(O1_ENABLE),YES)
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/o1_client.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'

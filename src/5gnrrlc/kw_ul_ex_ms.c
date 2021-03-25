@@ -18,12 +18,12 @@
 
 /********************************************************************20**
   
-        Name:    LTE-RLC Layer - System Services Interface Functions
+        Name:    NR RLC Layer - System Services Interface Functions
     
         Type:    C file
   
         Desc:    C source code for the interface to System Services
-                  of LTE-RLC
+                  of NR RLC
  
         File:    kw_ul_ex_ms.c
   
@@ -96,16 +96,16 @@ S16 rlcUlInitExt()
  *    <b> Activates Initialization </b>
  *
  *    @b Description:
- *    This function is invoked by system services to initialize the LTE-RLC
+ *    This function is invoked by system services to initialize the NR RLC
  *    layer. This is an entry point used by LTE_RLC layer to initialize its
  *    global variables, before becoming operational.
  *
  *    Allowable values for parameters are specified in ssi.h.
  *
- *    @param[in] ent    - Specify the entity id of the LTE-RLC task.
- *    @param[in] inst   - Specify the entity id of the LTE-RLC task.
+ *    @param[in] ent    - Specify the entity id of the NR RLC task.
+ *    @param[in] inst   - Specify the entity id of the NR RLC task.
  *    @param[in] region - Specifies the memory region from which
- *                         LTE-RLC should allocate structures and buffers.
+ *                         NR RLC should allocate structures and buffers.
  *    @param[in] reason - Specifies the reason for calling this
  *                         initialization function.
  *
@@ -176,7 +176,7 @@ Reason reason               /* reason */
  *  <b> Activation Task </b>
  *
  *  @b Description:
- *  Processes events received for MLTE-RLC layer via System Services from
+ *  Processes events received for NR RLC layer via System Services from
  *  other layers.
  *
  *  @param[in] pst   - Pst Structure

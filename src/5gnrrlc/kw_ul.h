@@ -18,7 +18,7 @@
 
 /********************************************************************20**
   
-        Name:     LTE RLC file for uplink and non real time tasks 
+        Name:     NR RLC file for uplink and non real time tasks 
     
         Type:     C include file
   

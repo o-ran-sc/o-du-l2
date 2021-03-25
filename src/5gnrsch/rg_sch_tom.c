@@ -44,8 +44,6 @@ invoked by PHY towards scheduler.
 #include "rg_sch_inf.h"    /* defines and macros for MAC */
 #include "rg_sch.h"        /* defines and macros for MAC */
 #include "rg_sch_cmn.h"    /* typedefs for MAC */
-#include "rl_interface.h"
-#include "rl_common.h"
 
 
 /* header/extern include files (.x) */

@@ -50,8 +50,6 @@
 #include "rg_sch_inf.x"
 #include "rg_sch.x"
 #include "rg_sch_cmn.x"
-#include "rl_interface.h"
-#include "rl_common.h"
 
 
 /* local defines */
