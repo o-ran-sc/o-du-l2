@@ -11939,6 +11939,7 @@ uint8_t BuildAndSendUeContextModResp(uint8_t ueIdx, uint8_t cellId)
       break;
    }
    FreeUeContextModResp(f1apMsg);
+   //duProcUeDeleteReq(1,100);
    return ret;
 
 }
