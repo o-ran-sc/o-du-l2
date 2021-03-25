@@ -268,7 +268,28 @@ uint8_t packSchUeCfgRsp(Pst *pst, SchUeCfgRsp *cfgRsp)
 {
    return ROK;
 }
+/*******************************************************************
+*
+* @brief Packs and send UE delete response
+*
+* @details
+*
+*    Function : packSchUeDeleteRsp 
+*
+*    Functionality:
+*      Packs and send UE delete response
+*
+* @params[in] Post structure
+*             UE delete response
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
 
+uint8_t packSchUeDeleteRsp(Pst *pst, SchUeDeleteRsp  *delRsp)
+{
+   return ROK;
+}
 /*******************************************************************
  *
  * @brief Pack and Send BSR from MAC to SCH
@@ -354,6 +375,34 @@ uint8_t packMacSchModUeConfigReq(Pst *pst, SchUeCfg  *ueCfg)
       return RFAILED; 
    }
    return ROK;
+}
+/*******************************************************************
+*
+* @brief Pack and Send UE Delete Request from MAC to SCH
+*
+* @details
+*
+*    Function : packMacSchUeDeleteReq 
+*
+*    Functionality:
+*       Pack and Send  UE Delete Request from MAC to SCH
+*
+* @params[in]
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t packMacSchUeDeleteReq(Pst *pst,  SchUeDelete *schUeDel)
+{
+    if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LC))
+    {
+       /* TODO */
+    }
+    else
+    {
+       return RFAILED;
+    }
+    return ROK;
 }
 
 /**********************************************************************
