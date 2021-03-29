@@ -95,7 +95,7 @@ SchUeCb* schGetUeCb(SchCellCb *cellCb, uint16_t crnti);
 void schInitUlSlot(SchUlSlotInfo *schUlSlotInfo);
 void schInitDlSlot(SchDlSlotInfo *schDlSlotInfo);
 #ifdef NR_TDD
-SlotConfig schGetSlotFrmt(uint16_t slot, uint32_t slotBitMap);
+SlotConfig schGetSlotSymbFrmt(uint16_t slot, uint32_t bitMap);
 #endif
 
 /**********************************************************************

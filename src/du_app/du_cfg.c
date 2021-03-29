@@ -269,7 +269,6 @@ uint8_t readMacCfg()
    DU_ALLOC_SHRABL_BUF(duCfgParam.macCellCfg.sib1Cfg.sib1Pdu,duCfgParam.srvdCellLst[0].duSysInfo.sib1Len);
    memcpy(duCfgParam.macCellCfg.sib1Cfg.sib1Pdu, duCfgParam.srvdCellLst[0].duSysInfo.sib1Msg, \
 	 duCfgParam.srvdCellLst[0].duSysInfo.sib1Len);
-   duCfgParam.macCellCfg.sib1Cfg.sib1NewTxPeriod = SIB1_NEW_TX_PERIOD;
    duCfgParam.macCellCfg.sib1Cfg.sib1RepetitionPeriod = SIB1_REPETITION_PERIOD;
    duCfgParam.macCellCfg.sib1Cfg.coresetZeroIndex = CORESET_0_INDEX;
    duCfgParam.macCellCfg.sib1Cfg.searchSpaceZeroIndex = SEARCHSPACE_0_INDEX;

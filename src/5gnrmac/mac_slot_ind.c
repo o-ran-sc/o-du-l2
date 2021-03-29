@@ -61,48 +61,48 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
       GET_CELL_IDX(dlSchedInfo->cellId, cellIdx);
       if(dlSchedInfo->isBroadcastPres)
       {
-	 currDlSlot = &macCb.macCell[cellIdx]->\
-	    dlSlot[dlSchedInfo->schSlotValue.broadcastTime.slot];
-	 currDlSlot->dlInfo.isBroadcastPres = true;
-	 memcpy(&currDlSlot->dlInfo.brdcstAlloc, &dlSchedInfo->brdcstAlloc, sizeof(DlBrdcstAlloc));
+         currDlSlot = &macCb.macCell[cellIdx]->\
+                      dlSlot[dlSchedInfo->schSlotValue.broadcastTime.slot];
+         currDlSlot->dlInfo.isBroadcastPres = true;
+         memcpy(&currDlSlot->dlInfo.brdcstAlloc, &dlSchedInfo->brdcstAlloc, sizeof(DlBrdcstAlloc));
          currDlSlot->dlInfo.brdcstAlloc.sib1Alloc.sib1PdcchCfg.dci.pdschCfg = \
-	    &currDlSlot->dlInfo.brdcstAlloc.sib1Alloc.sib1PdschCfg;
+                                            &currDlSlot->dlInfo.brdcstAlloc.sib1Alloc.sib1PdschCfg;
       }
 
       if(dlSchedInfo->rarAlloc != NULLP)
       {
-	 currDlSlot = &macCb.macCell[cellIdx]->\
-	    dlSlot[dlSchedInfo->schSlotValue.rarTime.slot];
-	 currDlSlot->dlInfo.rarAlloc = dlSchedInfo->rarAlloc;
+         currDlSlot = &macCb.macCell[cellIdx]->\
+                      dlSlot[dlSchedInfo->schSlotValue.rarTime.slot];
+         currDlSlot->dlInfo.rarAlloc = dlSchedInfo->rarAlloc;
 
-	 /* MUXing of RAR */
-	 fillRarPdu(&currDlSlot->dlInfo.rarAlloc->rarInfo);
+         /* MUXing of RAR */
+         fillRarPdu(&currDlSlot->dlInfo.rarAlloc->rarInfo);
       }
 
       if(dlSchedInfo->dlMsgAlloc != NULLP)
       {
-	 currDlSlot = &macCb.macCell[cellIdx]->\
-	    dlSlot[dlSchedInfo->schSlotValue.dlMsgTime.slot];
-	 currDlSlot->dlInfo.dlMsgAlloc = dlSchedInfo->dlMsgAlloc; /* copy msg4 alloc pointer in MAC slot info */
+         currDlSlot = &macCb.macCell[cellIdx]->\
+                      dlSlot[dlSchedInfo->schSlotValue.dlMsgTime.slot];
+         currDlSlot->dlInfo.dlMsgAlloc = dlSchedInfo->dlMsgAlloc; /* copy msg4 alloc pointer in MAC slot info */
          currDlSlot->dlInfo.cellId = dlSchedInfo->cellId;
 
          /* Check if the downlink pdu is msg4 */
-	 if(dlSchedInfo->dlMsgAlloc->dlMsgInfo.isMsg4Pdu)
-	 {
-	    macCb.macCell[cellIdx]->macRaCb[0].msg4TbSize = dlSchedInfo->dlMsgAlloc->dlMsgPdschCfg.codeword[0].tbSize;
-	 }
-	 else
-	 {
-	    memcpy(&currDlSlot->dlInfo.schSlotValue, &dlSchedInfo->schSlotValue, sizeof(SchSlotValue));
-	    /* Send LC schedule result to RLC */
-	    sendSchedRptToRlc(currDlSlot->dlInfo, dlSchedInfo->schSlotValue.dlMsgTime);
-	 }
+         if(dlSchedInfo->dlMsgAlloc->dlMsgInfo.isMsg4Pdu)
+         {
+            macCb.macCell[cellIdx]->macRaCb[0].msg4TbSize = dlSchedInfo->dlMsgAlloc->dlMsgPdschCfg.codeword[0].tbSize;
+         }
+         else
+         {
+            memcpy(&currDlSlot->dlInfo.schSlotValue, &dlSchedInfo->schSlotValue, sizeof(SchSlotValue));
+            /* Send LC schedule result to RLC */
+            sendSchedRptToRlc(currDlSlot->dlInfo, dlSchedInfo->schSlotValue.dlMsgTime);
+         }
       }
 
       if(dlSchedInfo->ulGrant != NULLP)
       {
-	 currDlSlot = &macCb.macCell[cellIdx]->\
-	    dlSlot[dlSchedInfo->schSlotValue.ulDciTime.slot];
+         currDlSlot = &macCb.macCell[cellIdx]->\
+                      dlSlot[dlSchedInfo->schSlotValue.ulDciTime.slot];
          currDlSlot->dlInfo.ulGrant = dlSchedInfo->ulGrant;
       }
    }

@@ -23,7 +23,6 @@
 #define MAX_CRI_SIZE 6
 #define MAX_MAC_DL_PDU 16
 #define MAX_NUM_HARQ_PROC  16
-#define MAX_SLOT_SUPPORTED    10 /* numerology 0 15Khz */
 #define MAX_ZERO_CORR_CFG_IDX 16 /* max zero correlation config index */
 #define MAC_TQ_SIZE    10        /* Timing Queue Size */
 #define MAX_NUM_TIMER  1         /* MAX number of MAC timers */
@@ -182,8 +181,8 @@ struct macCellCb
    uint16_t    cellId;
    uint8_t     crntiMap;
    MacRaCbInfo macRaCb[MAX_NUM_UE];
-   MacDlSlot   dlSlot[MAX_SLOT_SUPPORTED];
-   MacUlSlot   ulSlot[MAX_SLOT_SUPPORTED];
+   MacDlSlot   dlSlot[MAX_SLOTS];
+   MacUlSlot   ulSlot[MAX_SLOTS];
    uint16_t    numActvUe;
    MacUeCfg    *ueCfgTmpData[MAX_NUM_UE];
    MacUeCb     ueCb[MAX_NUM_UE];

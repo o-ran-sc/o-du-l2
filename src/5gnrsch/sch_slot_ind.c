@@ -155,8 +155,8 @@ uint8_t schFillBoGrantDlSchedInfo(SchCellCb *cell, DlSchedInfo *dlSchedInfo, DlM
       SCH_ALLOC(dlMsgAlloc, sizeof(DlMsgAlloc));
       if(!dlMsgAlloc)
       {
-	 DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for ded DL msg alloc");
-	 return RFAILED;
+         DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for ded DL msg alloc");
+         return RFAILED;
       }
       memset(dlMsgAlloc, 0, sizeof(DlMsgAlloc));
       dlSchedInfo->dlMsgAlloc = dlMsgAlloc;
@@ -170,17 +170,17 @@ uint8_t schFillBoGrantDlSchedInfo(SchCellCb *cell, DlSchedInfo *dlSchedInfo, DlM
       dlMsgAlloc->numLc = 0;
       for(lcIdx = 0; lcIdx < MAX_NUM_LC; lcIdx++)
       {
-	 if(ueCb->dlInfo.dlLcCtxt[lcIdx].bo)
-	 {
-	    dlMsgAlloc->lcSchInfo[dlMsgAlloc->numLc].lcId = lcIdx;
+         if(ueCb->dlInfo.dlLcCtxt[lcIdx].bo)
+         {
+            dlMsgAlloc->lcSchInfo[dlMsgAlloc->numLc].lcId = lcIdx;
 
-	    /* calculation for BO includse RLC and MAC header size */
-	    dlMsgAlloc->lcSchInfo[dlMsgAlloc->numLc].schBytes = \
-	       ueCb->dlInfo.dlLcCtxt[lcIdx].bo + MAC_HDR_SIZE;
-	    accumalatedSize += dlMsgAlloc->lcSchInfo[dlMsgAlloc->numLc].schBytes;
-	    dlMsgAlloc->numLc++;
-	 }
-	 ueCb->dlInfo.dlLcCtxt[lcIdx].bo = 0;
+            /* calculation for BO includse RLC and MAC header size */
+            dlMsgAlloc->lcSchInfo[dlMsgAlloc->numLc].schBytes = \
+                                                                ueCb->dlInfo.dlLcCtxt[lcIdx].bo + MAC_HDR_SIZE;
+            accumalatedSize += dlMsgAlloc->lcSchInfo[dlMsgAlloc->numLc].schBytes;
+            dlMsgAlloc->numLc++;
+         }
+         ueCb->dlInfo.dlLcCtxt[lcIdx].bo = 0;
       }
 
       /* pdcch and pdsch data is filled */
@@ -225,9 +225,8 @@ uint8_t schFillBoGrantDlSchedInfo(SchCellCb *cell, DlSchedInfo *dlSchedInfo, DlM
  * ****************************************************************/
 uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
 {
-   uint8_t  ret = ROK;
-   uint8_t  ssb_rep, ueIdx, lcgIdx;
-   uint16_t slot, sfnSlot = 0;
+   uint8_t  ssb_rep, ueIdx, lcgIdx, ret = ROK;
+   uint16_t slot;
    DlSchedInfo dlSchedInfo;
    DlBrdcstAlloc *dlBrdcstAlloc = NULLP;
    RarAlloc   *rarAlloc = NULLP;
@@ -235,7 +234,9 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
    DlMsgAlloc *dlMsgAlloc = NULLP;
    SchCellCb  *cell = NULLP;
 
+
    memset(&dlSchedInfo,0,sizeof(DlSchedInfo));
+   dlSchedInfo.dlMsgAlloc = NULLP;
    schCalcSlotValues(*slotInd, &dlSchedInfo.schSlotValue);
    dlBrdcstAlloc = &dlSchedInfo.brdcstAlloc;
    dlBrdcstAlloc->ssbTrans = NO_SSB;
@@ -246,23 +247,26 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
    memcpy(&cell->slotInfo, slotInd, sizeof(SlotIndInfo));
    dlBrdcstAlloc->ssbIdxSupported = 1;
 
-   sfnSlot = dlSchedInfo.schSlotValue.broadcastTime.sfn * cell->numSlots +
-      dlSchedInfo.schSlotValue.broadcastTime.slot;
-
    slot = dlSchedInfo.schSlotValue.currentTime.slot;
 
    dlSchedInfo.cellId = cell->cellId;
 
    /* Identify SSB ocassion*/
-   if (sfnSlot % SCH_MIB_TRANS == 0)
+   if ((dlSchedInfo.schSlotValue.broadcastTime.sfn % SCH_MIB_TRANS == 0) && (dlSchedInfo.schSlotValue.broadcastTime.slot ==0))
    {
       dlBrdcstAlloc->ssbTrans = SSB_TRANSMISSION;
       if(!cell->firstSsbTransmitted)
          cell->firstSsbTransmitted = true;
    }
-   else if (cell->firstSsbTransmitted && (sfnSlot % ssb_rep == 0))
+   else if (cell->firstSsbTransmitted) 
    {
-      dlBrdcstAlloc->ssbTrans = SSB_REPEAT;
+      if((ssb_rep == 5) && ((dlSchedInfo.schSlotValue.broadcastTime.slot == 0 || dlSchedInfo.schSlotValue.broadcastTime.slot == 10)))
+         dlBrdcstAlloc->ssbTrans = SSB_REPEAT;
+      else
+      {
+         if((dlSchedInfo.schSlotValue.broadcastTime.sfn % (ssb_rep/10) == 0) && dlSchedInfo.schSlotValue.broadcastTime.slot == 0)
+            dlBrdcstAlloc->ssbTrans = SSB_REPEAT;
+      }
    }
    else
    {
@@ -270,20 +274,25 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
    }
 
    /* Identify SIB1 occasions */
-   if(sfnSlot % cell->cellCfg.sib1SchCfg.sib1NewTxPeriod == 0)
+   if((dlSchedInfo.schSlotValue.broadcastTime.sfn % SCH_SIB1_TRANS == 0) && (dlSchedInfo.schSlotValue.broadcastTime.slot ==0))
    {
       dlBrdcstAlloc->sib1Trans = SIB1_TRANSMISSION;
       if(!cell->firstSib1Transmitted)
          cell->firstSib1Transmitted = true;
    }
-   else if (cell->firstSib1Transmitted && (sfnSlot % cell->cellCfg.sib1SchCfg.sib1RepetitionPeriod == 0))
+   else if (cell->firstSib1Transmitted) 
    {
-      dlBrdcstAlloc->sib1Trans = SIB1_REPITITION;
+      if((dlSchedInfo.schSlotValue.broadcastTime.sfn % (cell->cellCfg.sib1SchCfg.sib1RepetitionPeriod/10) == 0) &&
+            (dlSchedInfo.schSlotValue.broadcastTime.slot == 0))
+      {
+         dlBrdcstAlloc->sib1Trans = SIB1_REPITITION;
+      }
    }
    else
    {
       /* not SIB1 occassion */
    }
+
 
    if(dlBrdcstAlloc->ssbTrans || dlBrdcstAlloc->sib1Trans)
    {
@@ -292,8 +301,8 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
       ret = schBroadcastAlloc(cell,dlBrdcstAlloc,slot);
       if(ret != ROK)
       {
-	 DU_LOG("\nERROR  -->  SCH : schBroadcastAlloc failed");
-	 return (ret);
+         DU_LOG("\nERROR  -->  SCH : schBroadcastAlloc failed");
+         return ret;
       }
    }
 
@@ -304,8 +313,8 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
       SCH_ALLOC(rarAlloc, sizeof(RarAlloc));
       if(!rarAlloc)
       {
-	 DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for RAR alloc");
-	 return RFAILED;
+         DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for RAR alloc");
+         return RFAILED;
       }
 
       dlSchedInfo.rarAlloc = rarAlloc;
@@ -332,8 +341,8 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
       SCH_ALLOC(msg4Alloc, sizeof(DlMsgAlloc));
       if(!msg4Alloc)
       {
-	 DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for msg4 alloc");
-	 return RFAILED;
+         DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for msg4 alloc");
+         return RFAILED;
       }
 
       dlSchedInfo.dlMsgAlloc = msg4Alloc;
@@ -369,28 +378,28 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
       for(lcgIdx=0; lcgIdx<MAX_NUM_LOGICAL_CHANNEL_GROUPS; lcgIdx++)
       {
         totDataReq+= ueCb->bsrInfo[lcgIdx].dataVol;
-	ueCb->bsrInfo[lcgIdx].dataVol = 0;
+        ueCb->bsrInfo[lcgIdx].dataVol = 0;
       }
       if(totDataReq > 0) /* UL grant must be provided for this UE in this slot */
       {
          SchPuschInfo schPuschInfo;
          memset(&schPuschInfo, 0, sizeof(SchPuschInfo));
 
-	 SCH_ALLOC(dciInfo, sizeof(DciInfo));
-	 if(!dciInfo)
-	 {
-	    DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for dciInfo alloc");
-	    return RFAILED;
-	 }
-	 memset(dciInfo,0,sizeof(DciInfo));
-	 /* update the SFN and SLOT */
-	 memcpy(&dlSchedInfo.schSlotValue.ulDciTime, slotInd, sizeof(SlotIndInfo));
-	 slot = dlSchedInfo.schSlotValue.ulDciTime.slot;
-	 /* Update PUSCH allocation */
-	 schFillPuschAlloc(ueCb, slot, totDataReq, &schPuschInfo);
-	 /* Fill DCI for UL grant */
-	 schFillUlDci(ueCb, schPuschInfo, dciInfo);
-	 memcpy(&dciInfo->slotIndInfo, &dlSchedInfo.schSlotValue.ulDciTime, sizeof(SlotIndInfo));
+         SCH_ALLOC(dciInfo, sizeof(DciInfo));
+         if(!dciInfo)
+         {
+            DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for dciInfo alloc");
+            return RFAILED;
+         }
+         memset(dciInfo,0,sizeof(DciInfo));
+         /* update the SFN and SLOT */
+         memcpy(&dlSchedInfo.schSlotValue.ulDciTime, slotInd, sizeof(SlotIndInfo));
+         slot = dlSchedInfo.schSlotValue.ulDciTime.slot;
+         /* Update PUSCH allocation */
+         schFillPuschAlloc(ueCb, slot, totDataReq, &schPuschInfo);
+         /* Fill DCI for UL grant */
+         schFillUlDci(ueCb, schPuschInfo, dciInfo);
+         memcpy(&dciInfo->slotIndInfo, &dlSchedInfo.schSlotValue.ulDciTime, sizeof(SlotIndInfo));
          dlSchedInfo.ulGrant = dciInfo;
       }
    }

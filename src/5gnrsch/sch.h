@@ -26,7 +26,8 @@
 #define SCH_MU4_NUM_SLOTS 50 
 #define SCH_MAX_SFN 1024
 #define MAX_NUM_RB 106 /* value for numerology 0 15Khz */
-#define SCH_MIB_TRANS 80 
+#define SCH_MIB_TRANS 8  /* MIB transmission as per 38.331 is every 80 ms */
+#define SCH_SIB1_TRANS 16 /* SIB1 transmission as per 38.331 is every 160 ms */
 #define SCH_NUM_SC_PRB 12 /* number of SCs in a PRB */
 #define SCH_MAX_SSB_BEAM 8 /* since we are supporting only SCS=15KHz and 30KHz */
 #define SCH_SYMBOL_PER_SLOT 14
@@ -100,6 +101,7 @@ typedef struct schDlSlotInfo
 {
    uint16_t  totalPrb;                          /*!< Number of RBs in the cell */
    uint16_t  assignedPrb[SCH_SYMBOL_PER_SLOT];  /*!< Num RBs and corresponding symbols allocated */
+   uint16_t  resAllocBitMap;                    /*!< Resource allocation bitmap */
    bool      ssbPres;                           /*!< Flag to determine if SSB is present in this slot */
    uint8_t   ssbIdxSupported;                   /*!< Max SSB index */
    SsbInfo   ssbInfo[MAX_SSB_IDX];              /*!< SSB info */
@@ -121,6 +123,7 @@ typedef struct schUlSlotInfo
 {
    uint16_t     totalPrb;  /*!< Number of RBs in the cell */
    uint16_t     assignedPrb[SCH_SYMBOL_PER_SLOT]; /*!< Num RBs and corresponding symbols allocated */
+   uint16_t     resAllocBitMap;                    /*!< Resource allocation bitmap */
    uint8_t      puschCurrentPrb; /* Current PRB for PUSCH allocation */
    bool         puschPres; /*!< PUSCH presence field */
    SchPuschInfo *schPuschInfo; /*!< PUSCH info */

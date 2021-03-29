@@ -24,7 +24,6 @@
 
 #define NUM_SSB		1	/* max value is 64 */
 #define SSB_MASK_SIZE	1	/* SSB mask size is 32bit for sub6 */
-#define SIB1_NEW_TX_PERIOD      160
 #define SIB1_REPETITION_PERIOD   20
 #define CORESET_0_INDEX      0
 #define CORESET_1_INDEX      1
@@ -544,7 +543,6 @@ typedef struct sib1CellCfg
 {
    uint8_t  *sib1Pdu;
    uint16_t sib1PduLen;
-   uint16_t sib1NewTxPeriod;
    uint16_t sib1RepetitionPeriod;
    uint8_t coresetZeroIndex;     /* derived from 4 LSB of pdcchSib1 present in MIB */
    uint8_t searchSpaceZeroIndex; /* derived from 4 MSB of pdcchSib1 present in MIB */

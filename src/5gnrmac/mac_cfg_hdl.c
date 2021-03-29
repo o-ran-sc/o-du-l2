@@ -218,7 +218,6 @@ uint8_t MacSchCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
 
    /* fill SIB1 scheduler parameters */
    schCellCfg.sib1SchCfg.sib1PduLen = macCellCfg->sib1Cfg.sib1PduLen;
-   schCellCfg.sib1SchCfg.sib1NewTxPeriod = macCellCfg->sib1Cfg.sib1NewTxPeriod;
    schCellCfg.sib1SchCfg.sib1RepetitionPeriod = macCellCfg->sib1Cfg.sib1RepetitionPeriod;
    schCellCfg.sib1SchCfg.coresetZeroIndex = macCellCfg->sib1Cfg.coresetZeroIndex;
    schCellCfg.sib1SchCfg.searchSpaceZeroIndex = macCellCfg->sib1Cfg.searchSpaceZeroIndex;
