@@ -54,6 +54,7 @@
 #include "cm_lib.x"
 #include "du_log.h"
 
+#define RADIO_FRAME_DURATION 10 /* Time duration of a radio frame in ms */
 /* MAX values */
 #define MAX_NUM_CELL 1
 #define MAX_NUM_UE   1

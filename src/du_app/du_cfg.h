@@ -65,7 +65,7 @@
 #define PLMN_MNC2 0
 #define PLMN_SIZE 3
 
-/* Spec 30.104 Table 5.4.2.3-1:Applicable NR-ARFCN per operating band in FR1 */
+/* Spec 38.104 Table 5.4.2.3-1:Applicable NR-ARFCN per operating band in FR1 */
 #define SUL_ARFCN 100
 #define SUL_BAND 2
 

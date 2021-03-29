@@ -908,6 +908,8 @@ uint8_t egtpDecodeHdr(Buffer *mBuf, EgtpMsg  *egtpMsg)
    ODU_REM_PRE_MSG(&tmpByte[1], mBuf);
    ODU_REM_PRE_MSG(&tmpByte[2], mBuf);
    msgLen = (tmpByte[1] << 8) | tmpByte[2];
+   UNUSED(msgLen);
+   UNUSED(version);
    //DU_LOG("\nDEBUG   -->  EGTP : msgLen %d", msgLen);
 
 

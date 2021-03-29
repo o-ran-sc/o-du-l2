@@ -62,7 +62,11 @@
 #define MAX_SR_BITS_IN_BYTES       1
 #define MAX_NUM_LOGICAL_CHANNEL_GROUPS 8
 /* can we have a common numslot numscs between mac sch */
+#ifdef NR_TDD
+#define MAX_SLOTS 20
+#else
 #define MAX_SLOTS 10
+#endif
 #define MAX_SFN   1024
 #define MAX_NUM_SR_CFG_PER_CELL_GRP 8   /* Max number of scheduling request config per cell group */
 #define MAX_NUM_TAGS 4                  /* Max number of timing advance groups */
@@ -444,7 +448,7 @@ typedef struct dmrsInfo
 typedef struct pdschFreqAlloc
 {
    uint8_t  resourceAllocType;
-   /* since we are using type-1, hence rbBitmap excluded */
+   /* since we are using type-1, rbBitmap excluded */
    FreqDomainAlloc freqAlloc;
    uint8_t  vrbPrbMapping;
 } PdschFreqAlloc;
@@ -530,7 +534,6 @@ typedef struct
 {
    /* parameters recieved from DU-APP */
    uint16_t sib1PduLen;
-   uint16_t sib1NewTxPeriod;
    uint16_t sib1RepetitionPeriod;
    uint8_t  coresetZeroIndex;     /* derived from 4 LSB of pdcchSib1 present in MIB */
    uint8_t  searchSpaceZeroIndex; /* derived from 4 MSB of pdcchSib1 present in MIB */

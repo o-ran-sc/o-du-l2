@@ -3899,7 +3899,7 @@ uint16_t fillUlTtiReq(SlotIndInfo currTimingInfo)
 
       /* add PHY delta */
       ADD_DELTA_TO_TIME(currTimingInfo,ulTtiReqTimingInfo,PHY_DELTA);
-      currUlSlot = &macCb.macCell[cellIdx]->ulSlot[ulTtiReqTimingInfo.slot % MAX_SLOT_SUPPORTED];
+      currUlSlot = &macCb.macCell[cellIdx]->ulSlot[ulTtiReqTimingInfo.slot % MAX_SLOTS];
 
       LWR_MAC_ALLOC(ulTtiElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_ul_tti_req_t)));
       if(ulTtiElem)
@@ -4201,7 +4201,7 @@ uint16_t fillUlDciReq(SlotIndInfo currTimingInfo)
    {
       GET_CELL_IDX(currTimingInfo.cellId, cellIdx);
       memcpy(&ulDciReqTimingInfo, &currTimingInfo, sizeof(SlotIndInfo));
-      currDlSlot = &macCb.macCell[cellIdx]->dlSlot[ulDciReqTimingInfo.slot % MAX_SLOT_SUPPORTED];
+      currDlSlot = &macCb.macCell[cellIdx]->dlSlot[ulDciReqTimingInfo.slot % MAX_SLOTS];
 
       if(currDlSlot->dlInfo.ulGrant != NULLP)
       {

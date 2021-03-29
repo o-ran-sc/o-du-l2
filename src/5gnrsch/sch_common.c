@@ -77,29 +77,30 @@ uint8_t schBroadcastAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc,
    SsbInfo ssbInfo;
 
    schDlSlotInfo = cell->schDlSlotInfo[slot];
+
    if(dlBrdcstAlloc->ssbTrans)
    {
       ssbStartPrb = cell->cellCfg.ssbSchCfg.ssbOffsetPointA; //+Kssb
       ssbStartSymb = cell->ssbStartSymbArr[dlBrdcstAlloc->ssbIdxSupported-1]; /*since we are
-										supporting only 1 ssb beam */
+                                                                                supporting only 1 ssb beam */
 
       /* Assign interface structure */
       for(idx=0; idx<dlBrdcstAlloc->ssbIdxSupported; idx++)
       {
-	 ssbInfo.ssbIdx              = idx;
-	 ssbInfo.fdAlloc.startPrb    = ssbStartPrb;
-	 ssbInfo.fdAlloc.numPrb      = SCH_SSB_NUM_PRB;
-	 ssbInfo.tdAlloc.startSymb   = ssbStartSymb;
-	 ssbInfo.tdAlloc.numSymb     = SCH_SSB_NUM_SYMB;
-	 dlBrdcstAlloc->ssbInfo[idx] = ssbInfo;
-	 schDlSlotInfo->ssbInfo[idx] = ssbInfo;
+         ssbInfo.ssbIdx              = idx;
+         ssbInfo.fdAlloc.startPrb    = ssbStartPrb;
+         ssbInfo.fdAlloc.numPrb      = SCH_SSB_NUM_PRB;
+         ssbInfo.tdAlloc.startSymb   = ssbStartSymb;
+         ssbInfo.tdAlloc.numSymb     = SCH_SSB_NUM_SYMB;
+         dlBrdcstAlloc->ssbInfo[idx] = ssbInfo;
+         schDlSlotInfo->ssbInfo[idx] = ssbInfo;
       }
 
       schDlSlotInfo->ssbPres = true;
       schDlSlotInfo->ssbIdxSupported = dlBrdcstAlloc->ssbIdxSupported;
       for(idx=ssbStartSymb; idx<ssbStartSymb+SCH_SSB_NUM_SYMB; idx++)
       {
-	 schDlSlotInfo->assignedPrb[idx] = ssbStartPrb + SCH_SSB_NUM_PRB + 1; /* +1 for kSsb */
+         schDlSlotInfo->assignedPrb[idx] = ssbStartPrb + SCH_SSB_NUM_PRB + 1; /* +1 for kSsb */
       }
    }
 
@@ -116,7 +117,7 @@ uint8_t schBroadcastAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc,
       numSib1Prb = schCalcNumPrb(tbSize,mcs,numPdschSymbols);
       for(idx=0; idx<SCH_SYMBOL_PER_SLOT; idx++)
       {
-	 schDlSlotInfo->assignedPrb[idx] = ssbStartPrb + SCH_SSB_NUM_PRB + 1 + numSib1Prb; /* 10 PRBs for sib1 */
+         schDlSlotInfo->assignedPrb[idx] = ssbStartPrb + SCH_SSB_NUM_PRB + 1 + numSib1Prb; /* 10 PRBs for sib1 */
       }
       memcpy(&dlBrdcstAlloc->sib1Alloc.bwp, &cell->cellCfg.sib1SchCfg.bwp, sizeof(BwpCfg)); 
       memcpy(&dlBrdcstAlloc->sib1Alloc.sib1PdcchCfg, &cell->cellCfg.sib1SchCfg.sib1PdcchCfg, sizeof(PdcchCfg)); 
