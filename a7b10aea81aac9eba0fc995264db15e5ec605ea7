@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "917d727d_72f79396",
+        "filename": "src/cm/gen.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1174,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-03-30T07:17:18Z",
+      "side": 1,
+      "message": "if these macros are not used, remove them",
+      "revId": "a7b10aea81aac9eba0fc995264db15e5ec605ea7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
