@@ -26,7 +26,7 @@
 #define DU_ID           1
 #define CU_ID           1
 #define CRNTI           17017
-#define CELL_INDEX      0
+#define CELL_INDEX    0
 
 void F1APMsgHdlr(Buffer *mBuf);
 uint8_t BuildAndSendF1SetupReq();
