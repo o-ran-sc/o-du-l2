@@ -1,0 +1,242 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dd1fe8ff_9bd21981",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 749,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T13:49:10Z",
+      "side": 1,
+      "message": "this is going to delete UE only from RLC UL. what about RLC DL?\n\nInstead of directly deleting from here, call the seed code function \"RlcProcCfgReq()\" with cfg type as CKW_CFG_DELETE_UE.\nREFER RlcProcUeCreateReq",
+      "revId": "a125155ebd9ce3c43533effda657b0217f422f6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "50648db2_fa20e751",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 804,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T13:49:10Z",
+      "side": 1,
+      "message": "sharable buffer",
+      "revId": "a125155ebd9ce3c43533effda657b0217f422f6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "626d36f3_37834501",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 817,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T13:49:10Z",
+      "side": 1,
+      "message": "Ue delete response must be sent from RLC UL to DUAPP only when RLC DL has send a UE delete response to RLC UL",
+      "revId": "a125155ebd9ce3c43533effda657b0217f422f6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "db8bbb59_7ffdd1b3",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 827,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T13:49:10Z",
+      "side": 1,
+      "message": "free this just after deleteRlcUeCb()",
+      "revId": "a125155ebd9ce3c43533effda657b0217f422f6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7547be44_80934aaa",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T13:49:10Z",
+      "side": 1,
+      "message": "SUCCESS, INVALID_CELLID, INVALID_UEID",
+      "revId": "a125155ebd9ce3c43533effda657b0217f422f6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "93536cd3_1d58f9d6",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2661,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T13:49:10Z",
+      "side": 1,
+      "message": "no need of this if check, since this condition is already being checked in for loop",
+      "revId": "a125155ebd9ce3c43533effda657b0217f422f6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "67afc5a0_bd3ac845",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2668,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T13:49:10Z",
+      "side": 1,
+      "message": "DU_FREE already has null check. no need of if check. applicable for all",
+      "revId": "a125155ebd9ce3c43533effda657b0217f422f6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8f4a1694_375f1afd",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2683,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T13:49:10Z",
+      "side": 1,
+      "message": "since lcCfg-\u003eu is union, make switch(rlcMode)",
+      "revId": "a125155ebd9ce3c43533effda657b0217f422f6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b00fb62e_e136476f",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2712,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T13:49:10Z",
+      "side": 1,
+      "message": "call this SUCCESS",
+      "revId": "a125155ebd9ce3c43533effda657b0217f422f6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "49780953_5f19b686",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2715,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T13:49:10Z",
+      "side": 1,
+      "message": "1. Calculate cellIdx\n2. check duCb.actvCellLst[cellIdx] !\u003d NULL before accessing ueCb",
+      "revId": "a125155ebd9ce3c43533effda657b0217f422f6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6c5848c4_3fa0e5f9",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2716,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T13:49:10Z",
+      "side": 1,
+      "message": "1. move memset within deleteDuRlcUeCfg\n2. Remember to free other pointers in ueCb and memset ueCb if mac ue del and rlc ue del is succcess",
+      "revId": "a125155ebd9ce3c43533effda657b0217f422f6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "97caf872_4e4e3a26",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2750,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T13:49:10Z",
+      "side": 1,
+      "message": "allocate sharable buffer",
+      "revId": "a125155ebd9ce3c43533effda657b0217f422f6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "04bee256_fe3b03fc",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2757,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T13:49:10Z",
+      "side": 1,
+      "message": "not needed",
+      "revId": "a125155ebd9ce3c43533effda657b0217f422f6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1a9ff3c1_3b96811d",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2790,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T13:49:10Z",
+      "side": 1,
+      "message": "uint8_t ueIdx\nApplicable everywhere",
+      "revId": "a125155ebd9ce3c43533effda657b0217f422f6d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
