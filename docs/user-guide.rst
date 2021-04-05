@@ -43,6 +43,7 @@ I. Execution - On locally compiling O-DU High Source Code
       |    cat /home/netconf/.ssh/id_dsa.pub > /home/netconf/.ssh/authorized_keys
 
       sysrepoctl -i ./yang/o-ran-sc-odu-alarm-v1.yang
+      sysrepoctl -i ./yang/o-ran-sc-odu-interface-v1.yang
 
    c. Navigate to O1 execution folder
 

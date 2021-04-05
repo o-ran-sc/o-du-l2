@@ -102,6 +102,13 @@
 #include "UPTransportLayerInformation.h"
 #include "GTPTunnel.h"
 
+#ifdef O1_ENABLE
+
+#include "Config.h"
+extern StartupConfig g_cfg;
+
+#endif
+
 DuCfgParams duCfgParam;
 
 /************************************************************************
@@ -7166,7 +7173,11 @@ uint8_t extractUpTnlInfo(uint8_t drbId, uint8_t configType,\
 
    upTnlInfo->drbId = drbId; 
    upTnlInfo->configType = configType;
+#ifdef O1_ENABLE
+   cmInetAddr((S8*)g_cfg.DU_IPV4_Addr, &ipv4_du);
+#else
    cmInetAddr((char *)DU_IP_V4_ADDR, &ipv4_du);
+#endif
 
    for(tnlIdx=0; tnlIdx < tnlInfo->list.count; tnlIdx++)
    {

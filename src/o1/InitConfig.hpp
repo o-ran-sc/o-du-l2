@@ -43,7 +43,7 @@
 #define DEFAULT_CU_PORT 38472
 
 #define DEFAULT_RIC_IPV4_ADDR "192.168.130.80"
-#define DEFAULT_RIC_PORT 36422
+#define DEFAULT_RIC_PORT 36421
 
 enum class Interface 
 { ODU,

@@ -54,6 +54,7 @@ Install the yang module
 -----------------------
 1. cd l2/build/o1/yang
    sysrepoctl -i o-ran-sc-odu-alarm-v1.yang
+   sysrepoctl -i o-ran-sc-odu-interface-v1.yang
 
 
 D. How to Clean and Build:
