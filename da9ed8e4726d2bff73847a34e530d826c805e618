@@ -1,0 +1,463 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "923c606c_db21d598",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2475,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T12:03:53Z",
+      "side": 1,
+      "message": "sendUeDelReqToSch",
+      "revId": "da9ed8e4726d2bff73847a34e530d826c805e618",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7fdbb78d_fb99fb23",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2521,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T12:03:53Z",
+      "side": 1,
+      "message": "PucchFormat is a union. Use switch(PucchFormat)",
+      "revId": "da9ed8e4726d2bff73847a34e530d826c805e618",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "802632dc_44bed26d",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2710,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T12:03:53Z",
+      "side": 1,
+      "message": "move inside deleteMacUeCb",
+      "revId": "da9ed8e4726d2bff73847a34e530d826c805e618",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1bc7469d_3f419031",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2711,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T12:03:53Z",
+      "side": 1,
+      "message": "use MAC_DU_APP_RSP_OK",
+      "revId": "da9ed8e4726d2bff73847a34e530d826c805e618",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "18cce19e_56d157dd",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2762,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T12:03:53Z",
+      "side": 1,
+      "message": "free schUeDelRsp",
+      "revId": "da9ed8e4726d2bff73847a34e530d826c805e618",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c0026d5b_d9b7e276",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2779,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T12:03:53Z",
+      "side": 1,
+      "message": "Why is both MacSendUeDeleteRsp and MacSendUeDeleteFailureRsp needed??\nMake one function for all failure and success cases: MacSendUeDeleteRsp(cellId, ueIdx, status)",
+      "revId": "da9ed8e4726d2bff73847a34e530d826c805e618",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8834c5e7_11acb0e2",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2836,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T12:03:53Z",
+      "side": 1,
+      "message": "fill of schUeDel inside sendUeDelToSch",
+      "revId": "da9ed8e4726d2bff73847a34e530d826c805e618",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cb2f9eb1_53b2b75c",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2848,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T12:03:53Z",
+      "side": 1,
+      "message": "just send MAC_DU_APP_RSP_NOK",
+      "revId": "da9ed8e4726d2bff73847a34e530d826c805e618",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d9a22ea4_b73affd7",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2855,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T12:03:53Z",
+      "side": 1,
+      "message": "send MAC_DU_APP_RSP_NOK",
+      "revId": "da9ed8e4726d2bff73847a34e530d826c805e618",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2c2f57ff_d2dbd031",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 700,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T12:03:53Z",
+      "side": 1,
+      "message": "use switch()",
+      "revId": "da9ed8e4726d2bff73847a34e530d826c805e618",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a78fd715_cee5c38c",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 818,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T12:03:53Z",
+      "side": 1,
+      "message": "memset ueCb at the end",
+      "revId": "da9ed8e4726d2bff73847a34e530d826c805e618",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "62753b54_2f63a9a1",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T12:03:53Z",
+      "side": 1,
+      "message": "we can just have 2 status i.e. failure and success. use MacRsp itself",
+      "revId": "da9ed8e4726d2bff73847a34e530d826c805e618",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4f1900f4_424a32ad",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1257,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T12:03:53Z",
+      "side": 1,
+      "message": "MacRsp status",
+      "revId": "da9ed8e4726d2bff73847a34e530d826c805e618",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "526bc818_98a8114a",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1355,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T12:03:53Z",
+      "side": 1,
+      "message": "where is this defined?",
+      "revId": "da9ed8e4726d2bff73847a34e530d826c805e618",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6466fd51_21494364",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2688,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T12:03:53Z",
+      "side": 1,
+      "message": "Call this deleteMacUeCfg",
+      "revId": "da9ed8e4726d2bff73847a34e530d826c805e618",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "825ad368_a94503da",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2698,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T12:03:53Z",
+      "side": 1,
+      "message": "Since macUeCfg is an interface structure. Please check if it was allocated DU memory or shareable memory. Free accordingly",
+      "revId": "da9ed8e4726d2bff73847a34e530d826c805e618",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dca5027f_b2b5f856",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2736,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T12:03:53Z",
+      "side": 1,
+      "message": "Since PucchFormat is a union, only one format will need to be freed. so use a switch(pucchFormat)",
+      "revId": "da9ed8e4726d2bff73847a34e530d826c805e618",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9a65108b_70a3323e",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2742,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T12:03:53Z",
+      "side": 1,
+      "message": "DU_FREE already has a null check before free. So above null check not needed.\nApplicable for MAC_FREE and SCH_FREE as well",
+      "revId": "da9ed8e4726d2bff73847a34e530d826c805e618",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "69c7d018_c546389d",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2789,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T12:03:53Z",
+      "side": 1,
+      "message": "UeCb.macUeCfg is not a pointer",
+      "revId": "da9ed8e4726d2bff73847a34e530d826c805e618",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4179dfc2_2e69363e",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2815,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T12:03:53Z",
+      "side": 1,
+      "message": "1. get cellIdx from cellId\n2. check if duCb.actvCellLst[cellIdx] is not null before accessing ueCb",
+      "revId": "da9ed8e4726d2bff73847a34e530d826c805e618",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c7e91233_1a00761f",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2816,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T12:03:53Z",
+      "side": 1,
+      "message": "1. Move this memset inside deleteMacUeCfg()\n2. Remember to memset ueCb once both mac and rlc ue delete is successful",
+      "revId": "da9ed8e4726d2bff73847a34e530d826c805e618",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9d053b3a_5ddc6fdf",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2820,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T12:03:53Z",
+      "side": 1,
+      "message": "\"ERROR  --\u003e  DU APP : DuProcMacUeDeleteRsp(): MAC UE Delete Response : FAILURE [UE IDX : %d]\"",
+      "revId": "da9ed8e4726d2bff73847a34e530d826c805e618",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f29294bf_5f8a190d",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2826,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T12:03:53Z",
+      "side": 1,
+      "message": "Mention the exact failure, say UE delete rsp null",
+      "revId": "da9ed8e4726d2bff73847a34e530d826c805e618",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e4da1781_1663cc23",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2829,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T12:03:53Z",
+      "side": 1,
+      "message": "free deleteRsp for both success and failure scenario",
+      "revId": "da9ed8e4726d2bff73847a34e530d826c805e618",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6e6f5141_9ab46347",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2854,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T12:03:53Z",
+      "side": 1,
+      "message": "allocate sharable buffer for interface msgs",
+      "revId": "da9ed8e4726d2bff73847a34e530d826c805e618",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "10db1eeb_5ba4d664",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2897,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T12:03:53Z",
+      "side": 1,
+      "message": "uint8_t ueIdx.\nApplicable everywhere",
+      "revId": "da9ed8e4726d2bff73847a34e530d826c805e618",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "969d0dcb_52628036",
+        "filename": "src/du_app/du_ue_mgr.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-05T12:03:53Z",
+      "side": 1,
+      "message": "cellId",
+      "revId": "da9ed8e4726d2bff73847a34e530d826c805e618",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
