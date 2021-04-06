@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "19c07e26_c1c6990d",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1329,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-04-06T08:44:57Z",
+      "side": 0,
+      "message": "for keeping all request and response together, but reverted the changes.",
+      "parentUuid": "52ed3111_eaf1da08",
+      "revId": "d75d1b078091768f45b83f2a745a25917e03b39d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "470a2fc8_cf569326",
         "filename": "src/cm/mac_sch_interface.h",
         "patchSetId": 2
@@ -33,6 +51,24 @@
       "revId": "d75d1b078091768f45b83f2a745a25917e03b39d",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a2cc58bd_51c17e0d",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1564,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-04-06T08:44:57Z",
+      "side": 0,
+      "message": "reverted the changes.",
+      "parentUuid": "470a2fc8_cf569326",
+      "revId": "d75d1b078091768f45b83f2a745a25917e03b39d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
