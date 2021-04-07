@@ -20,9 +20,6 @@
    YANG modules */
 
 #include "InitConfig.hpp"
-#include<string>
-#include <string.h>
-using namespace std;
 
 
 /* Default constructor */
@@ -54,9 +51,13 @@ InitConfig::~InitConfig()
 
 bool InitConfig::init(sysrepo::S_Session sess)
 {
-   O1_LOG("\nInitConfig::init started ");
    mSess =  sess;
-   getInterfaceConfig(sess);
+   InitConfig::InterfaceMap map;
+   if(!getInterfaceConfig(sess, map))
+   {
+      O1_LOG("\nInitConfig::getInterfaceConfig InitConfig data error ");
+      return false;
+   }
    return true;
 }
 
@@ -86,57 +87,45 @@ bool InitConfig::getCurrInterfaceConfig(StartupConfig & cfg)
       switch (it->first)
       {
          case Interface::ODU :
-            if(it->second.first != "0")
+            if(it->second.first != "")
                strcpy(cfg.DU_IPV4_Addr, it->second.first.c_str());
             else
-               strcpy(cfg.DU_IPV4_Addr, DEFAULT_DU_IPV4_ADDR);
-            //O1_LOG("\n InitConfig::getCurrInterfaceConfig cfg.DU_IPV4_Addr = \
-                       %s", cfg.DU_IPV4_Addr);
+               return false;
 
             if(it->second.second != 0)
                cfg.DU_Port = (uint16_t)it->second.second;
             else
-               cfg.DU_Port = (uint16_t) DEFAULT_DU_PORT;
-            //O1_LOG("\n InitConfig::getCurrInterfaceConfig cfg.DU_Port = %d", \
-                       cfg.DU_Port);
+               return false;
             break;
  
          case Interface::OCU :
            
-            if(it->second.first != "0")
+            if(it->second.first != "")
                strcpy(cfg.CU_IPV4_Addr, it->second.first.c_str());
             else
-               strcpy(cfg.CU_IPV4_Addr, DEFAULT_CU_IPV4_ADDR);
+               return false;
             
-            //O1_LOG("\n InitConfig::getCurrInterfaceConfig cfg.CU_IPV4_Addr = \
-                       %s", cfg.CU_IPV4_Addr);
           
             if(it->second.second != 0)
                cfg.CU_Port = (uint16_t) it->second.second;
             else
-               cfg.CU_Port = (uint16_t) DEFAULT_CU_PORT; 
+               return false;
          
-            //O1_LOG("\n InitConfig::getCurrInterfaceConfig cfg.CU_Port = %d", \
-                       cfg.CU_Port);
             break;
 
       	 case Interface::RIC :
 
-            if(it->second.first != "0")
+            if(it->second.first != "")
                strcpy(cfg.RIC_IPV4_Addr, it->second.first.c_str());
             else
-               strcpy(cfg.RIC_IPV4_Addr, DEFAULT_RIC_IPV4_ADDR);
+               return false;
                
-            //O1_LOG("\n InitConfig::getCurrInterfaceConfig cfg.RIC_IPV4_Addr = \
-                       %s", cfg.RIC_IPV4_Addr);
             
             if(it->second.second != 0)
                cfg.RIC_Port = (uint16_t) it->second.second;
             else
-               cfg.RIC_Port = (uint16_t) DEFAULT_RIC_PORT; 
+               return false;
 
-            //O1_LOG("\n InitConfig::getCurrInterfaceConfig cfg.RIC_Port = %d", \
-                       cfg.RIC_Port);
             break;
 
          default :
@@ -162,16 +151,25 @@ bool InitConfig::getCurrInterfaceConfig(StartupConfig & cfg)
  * @return reference of InterfaceMap
  *
  ******************************************************************/
-InitConfig::InterfaceMap InitConfig::getInterfaceConfig(sysrepo::S_Session sess)
+bool InitConfig::getInterfaceConfig(sysrepo::S_Session sess , InitConfig::InterfaceMap &map)
 {
-   O1_LOG("\nInitConfig::getInterfaceConfig started");
-   mInterfaceList.insert(std::make_pair(Interface::ODU, \
-                                        getInterfaceData(sess,Interface::ODU)));
-   mInterfaceList.insert(std::make_pair(Interface::OCU, \
-                                        getInterfaceData(sess,Interface::OCU)));
-   mInterfaceList.insert(std::make_pair(Interface::RIC, \
-                                        getInterfaceData(sess,Interface::RIC)));
-   return mInterfaceList;
+   InitConfig::Address oduAddr; 
+   InitConfig::Address ocuAddr; 
+   InitConfig::Address ricAddr; 
+   if(getInterfaceData(sess,Interface::ODU, oduAddr) && \
+      getInterfaceData(sess,Interface::OCU, ocuAddr) && \
+      getInterfaceData(sess,Interface::RIC, ricAddr))
+   {
+      mInterfaceList.insert(std::make_pair(Interface::ODU, oduAddr));
+      mInterfaceList.insert(std::make_pair(Interface::OCU, ocuAddr));
+      mInterfaceList.insert(std::make_pair(Interface::RIC, ricAddr));
+      map =  mInterfaceList; 
+      return true;
+   }
+   else
+   {
+      return false;
+   }
 }
 
 /*******************************************************************
@@ -189,13 +187,26 @@ InitConfig::InterfaceMap InitConfig::getInterfaceConfig(sysrepo::S_Session sess)
  * @return reference of Address
  *
  ******************************************************************/
-InitConfig::Address InitConfig::getInterfaceData(sysrepo::S_Session sess, \
-                                                 Interface inf)
+bool InitConfig::getInterfaceData(sysrepo::S_Session sess, \
+                                  Interface inf, InitConfig::Address & addr)
 {
-   O1_LOG("\nInitConfig::getInterfaceData started");
+   //O1_LOG("\nInitConfig::getInterfaceData started");
    string sInf = interfaceToString(inf);
-   return std::make_pair(getData(sess, getInterfaceXpath(sInf, IP_ADDRESS)), \
-	                 atoi(getData(sess, getInterfaceXpath(sInf, PORT)).c_str()));
+   string ip;
+   string port;
+
+   if(getData(sess, getInterfaceXpath(sInf, IP_ADDRESS), ip))
+   {
+      if(getData(sess, getInterfaceXpath(sInf, PORT), port))
+      {
+         addr = std::make_pair(ip, atoi(port.c_str()));
+         return true;
+      }
+      else
+         return false;
+   }
+   else
+      return false;
 }
 
 /*******************************************************************
@@ -236,7 +247,7 @@ char * InitConfig::getInterfaceXpath( string sInf, string param)
  *
  ******************************************************************/
 
-string InitConfig::getData(sysrepo::S_Session sess,char* xpath)
+bool InitConfig::getData(sysrepo::S_Session sess,char* xpath, string &val)
 {
    //O1_LOG("\nInitConfig::getData of xpath = %s", \
               xpath); //enable for debugging only
@@ -245,19 +256,21 @@ string InitConfig::getData(sysrepo::S_Session sess,char* xpath)
    auto value = sess->get_item(xpath);
    if (value == nullptr)
    {
+      O1_LOG("\nInitConfig::getData no data available at xpath= %s", \
+              xpath);
       //O1_LOG("\nget_item value are null for xpath = %s", \
                  xpath); //enable for debugging only
-      return "0";
+      return false;
    }
-   string mVal = value->val_to_string();
-   return mVal;
+   val = value->val_to_string();
+   return true;
 
    }
    catch (...)
    {
-      //O1_LOG("\nInitConfig::getData exception occured for block xpath= %s", \
-                xpath); //enable for debugging only
-      return "0";
+      O1_LOG("\nInitConfig::getData exception occured for xpath= %s", \
+              xpath);
+      return false; 
    }
 }
  

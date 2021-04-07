@@ -13,7 +13,7 @@ These layers primarily include NR MAC, NR Scheduler and NR RLC layers.
 
 O-DU modules are developed as shown in the below diagram.
 
-.. figure:: ODUArch.jpg
+.. figure:: ODUArchWithO1.jpg
   :width: 600
   :alt: Figure 1 O-DU High Architecture Diagram
 
@@ -107,17 +107,17 @@ O1 Module
 
   Figure 2 - O1 Architecture 
 
-As shown in figure 2 the O1 module in O-DU High runs a separate process and communicates with ODU-High process over a TCP interface. O1 module uses API calls for interacting with the Netconf server(Netopeer) and datastore(sysrepo) for providing the Netconf interface. 
+As shown in figure 2 the O1 module runs as a thread in O-DU High. Alarm communication happens over a Unix socket between the O1 and ODU threads. O1 module uses API calls for interacting with the Netconf server(Netopeer) and datastore(sysrepo) for providing the Netconf interface. 
 
 O1 architecture has following components:
 
-- Netconf Manager: Subscribe to Netconf YANG modules and events. Register callback handler methods.
+- Session Handler: Subscribe to Netconf YANG modules and events. Register callback handler methods.
 
 - Alarm Manager: Stores and manages(add/updated/delete) alarms.
 
-- TCP server: Receives the alarm messages sent from O-DU High over TCP socket.
+- Unix socket server: Receives the alarm messages sent from O-DU High thread over Unix socket.
 
-- TCP Client Alarm Interface : Integrates with O-DU High module and provides an interface for sending the alarm messages to O1 module over TCP socket.
+- Alarm Interface : Provides an interface to ODU-High threads for sending the alarm messages to O1 module over Unix socket.
 
 - Netopeer server: Serves the northbound SMO/OAM Netconf requests.
 
@@ -331,13 +331,13 @@ This section describes the *Health Status Retrieval* scenario of O-DU High healt
  
 As seen in the Figure 6,
 
-- On the cell state change from de-active to activate, ODU High process raises a cell up alarm message and sends it over the TCP socket using the TCP client Alarm Interface API.
+- On the cell state change from de-active to activate, DU-APP module raises a cell up alarm message and sends it over the Unix socket using the Alarm Interface API.
 
-- On other side a TCP server, running as a thread, in O1 module receives the cell up alarm message and it passes the alarm information to the Alarm Manager.
+- On other side a Unix socket server, running as a thread, in O1 module receives the cell up alarm message and it passes on the alarm information to the Alarm Manager.
 
 - Alarm Manager stores the alarm data in a list.
 
-- Whenever SMO/OAM requires the current alarm list, it sends a Netconf get request. The request is received by the Netopeer Server and a callback method, registered with the Netconf Manager, is invoked.
+- Whenever SMO/OAM requires the current alarm list, it sends a Netconf get request. The request is received by the Netopeer Server and a callback method, registered with the Session Handler, is invoked.
 
 - The callback function fetches the alarm list from Alarm Manager and sends it back to the client (SMO/OAM) via  Netconf interface. 
 

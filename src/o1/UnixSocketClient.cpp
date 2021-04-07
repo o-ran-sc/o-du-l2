@@ -1,6 +1,6 @@
 /*******************************************************************************
 ################################################################################
-#   Copyright (c) [2020] [HCL Technologies Ltd.]                               #
+#   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
 #                                                                              #
 #   Licensed under the Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
@@ -16,7 +16,9 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains functions to connect to TCP server and send massages */
+/* This file contains functions to connect to unix socket server and send/recv
+   messages 
+*/
 
 
 #include <stdio.h>
@@ -27,166 +29,162 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
+#include <sys/un.h>
 
-#include "TcpClient.h"
-#include "GlobalDefs.h"
-#include "ssi.h"
-
-static int s_sock;
-static struct sockaddr_in s_serverName;
-static uint16_t s_port;
-static const char* s_hostName = NULL;
+#include "UnixSocketClient.hpp"
+#include "GlobalDefs.hpp"
 
 
 /*******************************************************************
  *
- * @brief Initilize the sockadd_in structure
+ * @brief Constructor
  *
  * @details
  *
- *    Function : initSockaddr
+ *    Function : UnixSocketClient
  *
  *    Functionality:
- *      - Initilizes the sockadd_in structure
+ *      - Constructor intialization
  *
- * @params[in] void 
- * @return ROK     - success
- *         RFAILED - failure
+ * @params[in] socket path
+ * @return None
  ******************************************************************/
-static uint8_t initSockaddr()
+UnixSocketClient::UnixSocketClient(const string& path) 
+                                  : mSockPath(path)
 {
 
-   struct hostent *hostInfo;
-   struct sockaddr_in *name = &s_serverName;
-   bzero(&s_serverName, sizeof(s_serverName));
-   name->sin_family = AF_INET;
-   name->sin_port = htons (s_port);
-   hostInfo = gethostbyname (s_hostName);
-   if (hostInfo == NULL)
-   {
-      O1_LOG("\nO1 TcpClient : Unknown host %s", s_hostName);
-      return RFAILED;
-   }
-   name->sin_addr = *(struct in_addr *) hostInfo->h_addr;
-   return ROK;
 }
-
 
 /*******************************************************************
  *
- * @brief Open a TCP socket
+ * @brief Destructor
+ *
+ * @details
+ *
+ *    Function : ~UnixSocketClient
+ *
+ *    Functionality:
+ *      - Destructor
+ *
+ * @params[in] None
+ * @return None
+ ******************************************************************/
+ UnixSocketClient::~UnixSocketClient()
+ {
+
+ }
+
+/*******************************************************************
+ *
+ * @brief Open a Unix socket
  *
  * @details
  *
  *    Function : openSocket
  *
  *    Functionality:
- *      - Opens a TCP socket
+ *      - Opens a Unix socket
  *
- * @params[in] hostname, port 
- * @return ROK     - success
- *         RFAILED - failure
+ * @params[in] void 
+ * @return O1::SUCCESS - success
+ *         O1::FAILURE - failure
  ******************************************************************/
-uint8_t openSocket(const char* hostName, const uint16_t port)
+uint8_t UnixSocketClient::openSocket()
 {
    /* Create the socket. */
-   s_port = port;
-   s_hostName = hostName;
-   s_sock = socket (PF_INET, SOCK_STREAM, 0);
-   if (s_sock < 0)
+   mSock = socket (AF_UNIX, SOCK_STREAM, 0);
+   if (mSock < 0)
    {
-      O1_LOG("\nO1 TcpClient : Error opening socket");
-      return RFAILED;
+      O1_LOG("\nO1 UnixSocketClient : Error opening socket");
+      return O1::FAILURE;
    }
 
-   /* Init the sockaddr_in structure */
-   if (initSockaddr() == RFAILED)
-   {
-      return RFAILED;
-   }
+   /* Init the sockaddr_un structure */
+   mSockName.sun_family = AF_UNIX;
+   strcpy(mSockName.sun_path, mSockPath.c_str());
+
    /* Connect to the server */
-   if (0 > connect (s_sock,
-                   (struct sockaddr_in *)&s_serverName ,
-                   sizeof (s_serverName)))
+   if (0 > connect (mSock,
+                   (struct sockaddr *)&mSockName,
+                   sizeof (mSockName)))
    {
-      O1_LOG("\nO1 TcpClient : Error connecting");
-      return RFAILED;
+      O1_LOG("\nO1 UnixSocketClient : Error connecting");
+      return O1::FAILURE;
    }
 
-   return ROK;
+   return O1::SUCCESS;
 
 }
-
 /*******************************************************************
  *
- * @brief Send message over TCP socket
+ * @brief Send message over Unix socket
  *
  * @details
  *
  *    Function : sendData
  *
  *    Functionality:
- *      - Sends message over TCP socket
+ *      - Sends message over Unix socket
  *
  * @params[in] message, size of the message
  * @return Number of bytes sent
  *
  ******************************************************************/
-int sendData(void* data, const int size)
+int UnixSocketClient::sendData(void* data, const int size)
 {
-   int nbytes = write (s_sock, data, size);
+   int nbytes = write (mSock, data, size);
    if (nbytes < 0)
    {
-      O1_LOG("\nO1 TcpClient : Error writing. %d bytes sent", nbytes);
+      O1_LOG("\nO1 UnixSocketClient : Error writing. %d bytes sent", nbytes);
    }
    return nbytes;
 }
 
 /*******************************************************************
  *
- * @brief Recieve message over TCP socket
+ * @brief Recieve message over Unix socket
  *
  * @details
  *
  *    Function : receiveData
  *
  *    Functionality:
- *      - Recieves message over TCP socket
+ *      - Recieves message over Unix socket
  *
  * @params[in] message, size of the message
  * @return Number of bytes received
  *
  ******************************************************************/
-int receiveData(void* data, const int size)
+int UnixSocketClient::receiveData(void* data, const int size)
 {
-   int nbytes = read (s_sock, data, size);
+   int nbytes = read (mSock, data, size);
    if (nbytes < 0)
    {
-      O1_LOG("\nO1 TcpClient : Error reading. %d bytes sent", nbytes);
+      O1_LOG("\nO1 UnixSocketClient : Error reading. %d bytes sent", nbytes);
    }
    return nbytes;
 }
 
 /*******************************************************************
  *
- * @brief Close the TCP socket
+ * @brief Close the Unix socket
  *
  * @details
  *
  *    Function : closeSocket
  *
  *    Functionality:
- *      - Closes the TCP socket
+ *      - Closes the Unix socket
  *
- * @params[in] message, size of the message
- * @return ROK     - success
- *         RFAILED - failure
+ * @params[in] void
+ * @return O1::SUCCESS - success
+ *         O1::FAILURE - failure
  ******************************************************************/
-uint8_t closeSocket()
+uint8_t UnixSocketClient::closeSocket()
 {
-   if( close(s_sock) != 0 )
-      return RFAILED;
-   return ROK;
+   if( close(mSock) != 0 )
+      return O1::FAILURE;
+   return O1::SUCCESS;
 }
 
 /**********************************************************************

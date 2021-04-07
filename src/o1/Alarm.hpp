@@ -23,7 +23,7 @@
 
 #include <string>
 #include <string.h>
-#include "Alarm.h"
+#include "AlarmMessages.h"
 
 using std::string; 
 
