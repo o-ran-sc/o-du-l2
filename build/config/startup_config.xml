@@ -1,0 +1,19 @@
+<odu xmlns="urn:o-ran:odu:interface:1.0">
+<interfaces>
+<interface>
+<interface-name>odu</interface-name>
+<interface-address>192.168.130.81</interface-address>
+<port>38472</port>
+</interface>
+<interface>
+<interface-name>ocu</interface-name>
+<interface-address>192.168.130.82</interface-address>
+<port>38472</port>
+</interface>
+<interface>
+<interface-name>ric</interface-name>
+<interface-address>192.168.130.80</interface-address>
+<port>36422</port>
+</interface>
+</interfaces>
+</odu>

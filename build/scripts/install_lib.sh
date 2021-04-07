@@ -22,10 +22,10 @@
 #variable declaration
 CURRENT_PATH=`pwd`
 HOME="$CURRENT_PATH/../.."
-MAKE_PATH="$HOME/build/o1"
-NETCONF_PATH="$HOME/build/o1/netconf"
-SYSREPOCTL_PATH="$NETCONF_PATH/sysrepo/build/sysrepoctl"
-YANG_PATH="$HOME/build/o1/yang"
+NETCONF_PATH="$HOME/build/netconf"
+YANG_PATH="$HOME/build/yang"
+CONFIG_PATH="$HOME/build/config"
+STARTUP_CONFIG="startup_config.xml"
 
 INSTALL="netconf"
 CLEANUP="no"
@@ -50,11 +50,6 @@ log_success() {
 log()         {
    echo -e "$1 "
 }
-
-
-
-#functions definitions
-#TBD: install only mandatory packages
 
 #install pre-requisite packages
 
@@ -92,17 +87,6 @@ check_ret() {
 
 #install netconf  libraries
 install_netconf_lib() {
-
-   #with sudo we can not create new user so we need to create it manually using 
-   #root credentials.
-
-      #$SUDO adduser --system netconf && \
-      #      echo "netconf:netconf" | chpasswd
-
-      #$SUDO mkdir -p /home/netconf/.ssh && \
-      #      ssh-keygen -A && \
-      #      ssh-keygen -t dsa -P '' -f /home/netconf/.ssh/id_dsa && \
-      #      cat /home/netconf/.ssh/id_dsa.pub > /home/netconf/.ssh/authorized_keys
 
    if [[ "$CLEANUP" == "cleanup" ]]; then
       rm -rf $NETCONF_PATH
@@ -173,7 +157,9 @@ install_netconf_lib() {
 #install yang module
 
 install_yang_module() {
-   $SYSREPOCTL_PATH -i "$YANG_PATH/o-ran-sc-du-alarm-v1.yang"
+   sysrepoctl -i "$YANG_PATH/o-ran-sc-odu-alarm-v1.yang"
+   sysrepoctl -i "$YANG_PATH/o-ran-sc-odu-interface-v1.yang"
+   sysrepocfg --import="$CONFIG_PATH/$STARTUP_CONFIG" --datastore startup --module  o-ran-sc-odu-interface-v1
 }
 
 
@@ -216,7 +202,7 @@ main() {
 }
 
 #start execution / function calls
-if [[ "$#" -ge 2 ]] ; then
+if [[ "$#" -ge 3 ]] ; then
    log_error " NUMBER OF PARAMETER : $# "
    show_help
 fi

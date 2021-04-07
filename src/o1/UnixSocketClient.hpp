@@ -1,8 +1,8 @@
 /*******************************************************************************
 ################################################################################
-#   Copyright (c) [2020] [HCL Technologies Ltd.]                               #
+#   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
 #                                                                              #
-#   Licensed under the Apache License, Version 2.0 (the "License");            #
+#   Licensed under th`e Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
 #   You may obtain a copy of the License at                                    #
 #                                                                              #
@@ -16,22 +16,36 @@
 ################################################################################
 *******************************************************************************/
 
-/* Class for global defines and constants for O1 interface */
+/* This file contains functions to connect to a unix socket server and send/recv
+   messages 
+*/
 
-#ifndef __GLOBAL_DEFS_H__
-#define __GLOBAL_DEFS_H__
+#ifndef __UNIX_SOCKET_CLIENT_HPP__
+#define __UNIX_SOCKET_CLIENT_HPP__
 
-#include <syslog.h>
+#include <stdint.h>
+#include <string>
+#include <sys/un.h>
 
-#define O1_LOG(...) ({\
-		printf(__VA_ARGS__);\
-		syslog(LOG_DEBUG,__VA_ARGS__);\
-		})
+using std::string;
 
-#define TCP_PORT           8282
-#define TCP_SERVER_IP      "127.0.0.1"
-#define CELL_UP_ALARM_ID   1009
-#define CELL_DOWN_ALARM_ID 1010
+class UnixSocketClient
+{
+   private:
+
+   int mSock;
+   string mSockPath;
+   struct sockaddr_un mSockName;
+   
+   public:
+   UnixSocketClient(const string& path);
+   ~UnixSocketClient();
+   uint8_t openSocket();
+   int sendData(void*, const int);
+   int receiveData(void* data, const int size);
+   uint8_t closeSocket();
+
+};
 
 #endif
 

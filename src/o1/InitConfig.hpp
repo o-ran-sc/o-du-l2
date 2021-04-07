@@ -24,27 +24,20 @@
 #include <utility>
 #include <string>
 #include <iostream>
-#include "sysrepo-cpp/Session.hpp"
+#include <string.h>
 #include <map>
+#include "sysrepo-cpp/Session.hpp"
 #include "Singleton.hpp"
-#include "Config.h"
-
+#include "ConfigInterface.h"
 #include "GlobalDefs.hpp"
+
 #define IP_ADDRESS "interface-address" 
 #define PORT "port"
 #define INTERFACE_MODULE_NAME_ORAN "/o-ran-sc-odu-interface-v1:odu"
 #define MAX_XPATH 100
 #define NETCONF_STARTUP_CFG "/etc/netconf_startup.cfg"
 
-#define DEFAULT_DU_IPV4_ADDR "192.168.130.81"
-#define DEFAULT_DU_PORT 38472
-
-#define DEFAULT_CU_IPV4_ADDR "192.168.130.82"
-#define DEFAULT_CU_PORT 38472
-
-#define DEFAULT_RIC_IPV4_ADDR "192.168.130.80"
-#define DEFAULT_RIC_PORT 36421
-
+using namespace std;
 enum class Interface 
 { ODU,
   OCU,
@@ -75,10 +68,11 @@ class InitConfig : public Singleton<InitConfig>
       sysrepo::S_Session mSess;
       //string mVal;
       /* function to get the data of Interfaces param*/
-      InterfaceMap getInterfaceConfig(sysrepo::S_Session sess);
-      Address getInterfaceData(sysrepo::S_Session sess, Interface inf);
+      bool getInterfaceData(sysrepo::S_Session sess, \
+                            Interface inf, InitConfig::Address & addr);
+      bool getInterfaceConfig(sysrepo::S_Session sess , InitConfig::InterfaceMap &map);
       char * getInterfaceXpath( std::string sInf, std::string param);
-      std::string getData(sysrepo::S_Session sess,char* xpath);
+      bool getData(sysrepo::S_Session sess,char* xpath, string &val);
       std::string interfaceToString(Interface inf);
       bool printInterfaceConfig();
       bool writeInterfaceConfig();

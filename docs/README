@@ -3,8 +3,9 @@ A. Directory Structure :
 1. l2/build/ : contains files required to compile the code
    a. common : contains individual module's makefile
    b. odu    : contains main makefile to generate an executable binary
-   c. scripts: contains scripts for logging
-   d. o1     : contains main makefile to generate an executable binary
+   c. scripts: contains scripts for logging, installing netconf libraries and starting netopeer server
+   d. config : contains the configuration files
+   e. yang   : contains the YANG modules
 
 2. l2/docs/  : contains README and other configuration files for building docs
 	
@@ -32,12 +33,11 @@ B. Pre-requisite for Compilation :
    b. On CentOS : sudo yum install -y libpcap-devel
 
 
-C. Pre-requisite for running O1 module:
----------------------------------------
-Install netconf server
-----------------------
+C. Pre-requisite for O1 Interface (Required only if run with O1 interface enabled) 
+-----------------------------------------------------------------------------------
+1. Setup netconf server
 
-1.	Create new netconf user (login with root user and run following command)
+	Create new netconf user (login with root user and run following commands)
 	$adduser --system netconf && \
         echo "netconf:netconf" | chpasswd
 
@@ -45,16 +45,28 @@ Install netconf server
 	ssh-keygen -A && \
 	ssh-keygen -t dsa -P '' -f /home/netconf/.ssh/id_dsa && \
         cat /home/netconf/.ssh/id_dsa.pub > /home/netconf/.ssh/authorized_keys
-2.	Install netconf packages. 
-	$cd l2/build/o1/
+	Install netconf packages. 
+	$cd l2/build/scripts
 	$chmod +x install_lib.sh
-	$ ./install_lib.sh
+	$ ./install_lib.sh -c
 
-Install the yang module
------------------------
-1. cd l2/build/o1/yang
-   sysrepoctl -i o-ran-sc-odu-alarm-v1.yang
-   sysrepoctl -i o-ran-sc-odu-interface-v1.yang
+2. Start Netopeer2-server:
+   $cd l2/build/scripts
+   $./netopeer-server.sh start
+
+3. Install the yang modules
+   $cd l2/build/yang
+   $sysrepoctl -i o-ran-sc-odu-alarm-v1.yang
+   $sysrepoctl -i o-ran-sc-odu-interface-v1.yang
+
+4. Configure the startup IP and Port configurations for DU, CU and RIC
+
+   $cd l2/build/config
+
+   Open the startup_config.xml and edit the desired IP and Port for CU, DU and RIC.
+   Then load the configuration in the sysrepo running datastore using the command below
+
+   $sysrepocfg --import=startup_config.xml --datastore running --module  o-ran-sc-odu-interface-v1 
 
 
 D. How to Clean and Build:
@@ -86,57 +98,69 @@ D. How to Clean and Build:
 4. Cleaning ODU, CU Stub and RIC Stub:
       make clean_all
 
-5. Building ODU binary with O1 interface enabled:
+
+E. How to Clean and Build with O1 interface enabled (Requires pre-requisite steps in section C)
+------------------------------------------------------------------------------------------------
+
+1. Building ODU binary:
    a. Build folder
          cd l2/build/odu
-   b. Building ODU with O1 module enabled:
+   b. Building ODU binary
          make odu MACHINE=BIT64 MODE=FDD O1_ENABLE=YES
    c. Cleaning ODU binary
-         make clean_odu MACHINE=BIT64 MODE=FDD
+         make clean_odu MACHINE=BIT64 MODE=FDD O1_ENABLE=YES
 
-   d. Build folder
-         cd l2/build/o1
-   e. Building O1 binary
-         make o1 MACHINE=BIT64
-   f. Cleaning O1 binary
-         make clean_o1 
+2. Building CU Stub binary:
+   a. Build folder
+         cd l2/build/odu
+   b. Building CU Stub binary
+         make cu_stub NODE=TEST_STUB MACHINE=BIT64 MODE=FDD O1_ENABLE=YES
+   c. Cleaning CU Stub binary
+         make clean_cu NODE=TEST_STUB MACHINE=BIT64 MODE=FDD O1_ENABLE=YES
+
+3. Building RIC Stub binary:
+   a. Build folder
+         cd l2/build/odu
+   b. Building RIC Stub binary
+         make ric_stub NODE=TEST_STUB MACHINE=BIT64 MODE=FDD O1_ENABLE=YES
+   c. Cleaning RIC Stub binary
+         make clean_ric NODE=TEST_STUB MACHINE=BIT64 MODE=FDD O1_ENABLE=YES
+
+4. Cleaning ODU, CU Stub and RIC Stub:
+      make clean_all
 
 
-E. How to execute:
+F. How to execute:
 ------------------
 1. Assign virtual IP addresses as follows:
    a. ifconfig <interface name>:ODU "192.168.130.81"
    b. ifconfig <interface name>:CU_STUB "192.168.130.82"
    c. ifconfig <interface name>:RIC_STUB "192.168.130.80"
 
-2. Execute O1 (only if O-DU is built with O1 interface enabled):
-   a. O1 execution folder:
-      	cd l2/build/o1/bin/o1
-   b. Run O1 binary:
-      	./o1
+PS: If O1 interface is enabled, IP should match those configured in step C.4.
 
-3. Execute CU Stub:
+2. Execute CU Stub:
    a. CU execution folder:
       	cd l2/bin/cu_stub
    b. Run CU Stub binary:
       	./cu_stub
 
-4. Execute RIC Stub:
+3. Execute RIC Stub:
    a. RIC execution folder:
       	cd l2/bin/ric_stub
    b. Run RIC Stub binary:
       	./ric_stub
 
-5. Execute DU:
+4. Execute DU:
    a. DU execution folder:
       	cd l2/bin/odu
    b. Run ODU binary:
       	./odu
 
 PS: CU stub and RIC stub must be run (in no particular sequence) before ODU
-    If O1 module is enabled it must be run before ODU
 
-F. How to test with Intel L1:
+
+G. How to test with Intel L1:
 -----------------------------
 
 I. Compilation
@@ -201,7 +225,7 @@ II. Execution
           	./odu
 
 
-G. How to execute the Health Check : get alarm-list
+H. How to execute the Health Check : get alarm-list
 ----------------------------------------------------
    
    Steps:
@@ -217,7 +241,7 @@ G. How to execute the Health Check : get alarm-list
 
    Here are the steps as executed in the terminal 
 
-       netopeer2-cli
+      $netopeer2-cli
        > connect --login netconf
        Interactive SSH Authentication
        Type your password:

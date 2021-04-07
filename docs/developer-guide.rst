@@ -763,7 +763,9 @@ O1 uses GNU C++ language.
 ODU - O1 Communication 
 ^^^^^^^^^^^^^^^^^^^^^^
 
-O-DU High and O1 module communicate on a TCP socket.
+O1 module runs as a thread in O-DU High.
+
+Alarm communication between the threads happen on a Unix socket. 
 
 O-DU High sends alarm messages in the following structure using Alarm Interface APIs.
 

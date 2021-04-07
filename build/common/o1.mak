@@ -20,12 +20,11 @@ include ../common/rsys_fancy.mak
 include ../common/env.mak
 COLOR=$(COLOR_RED)
 
-ROOT_DIR=$(patsubst %/build/o1,%,$(BUILD_DIR))
-
 SRC_DIR=$(ROOT_DIR)/src/o1/
 CPP_SRCS=$(wildcard $(SRC_DIR)/*.cpp)
 CPP_OBJS=$(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(CPP_SRCS))
 
+PLTFRM_FLAGS=
 lib: $(LIB_DIR)/libo1.a
 include $(COM_BUILD_DIR)/compile.mak
 
@@ -33,7 +32,6 @@ L_OPTS=-lsysrepo -lyang
 L_OPTS+= -lsysrepo-cpp -lyang-cpp
 L_OPTS+= -lm -lpthread
 I_OPTS=-I$(ROOT_DIR)/src/o1/
-I_OPTS+=-I$(ROOT_DIR)/src/o1/o1_client
 
 #-------------------------------------------------------------#
 #Linker macros

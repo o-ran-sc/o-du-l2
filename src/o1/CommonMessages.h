@@ -1,6 +1,6 @@
 /*******************************************************************************
 ################################################################################
-#   Copyright (c) [2020] [HCL Technologies Ltd.]                               #
+#   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
 #                                                                              #
 #   Licensed under the Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
@@ -16,41 +16,32 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains TcpServer class that listens for Netconf Alarm messages
-   on a TCP socket from ODU. It calls the AlarmManager functions for raising 
-   or clearing the alarms based on the actions received  
-*/
- 
-#ifndef __TCP_SERVER_HPP__
-#define __TCP_SERVER_HPP__
-#include <string>
-#include <pthread.h>
+/* This file contains definitions of common message structures */
 
-using std::string;
-#define BUFLEN 512
+#ifndef __COMMON_MESSAGES_H__
+#define __COMMON_MESSAGES_H__
 
-class TcpServer
+
+typedef enum
 {
+   RAISE_ALARM,
+   CLEAR_ALARM,
+   GET_STARTUP_CONFIG
+}MsgAction;
 
-   private:
-   pthread_t mThreadId;
-   int mSock;
-   const int16_t mPort;
-   int readMessage(int);
-   int makeSocket();
-   bool run();
-   static void* task(void*);
+typedef enum
+{
+   ALARM,
+   CONFIGURATION
+}MsgType;
 
-   public:
-   bool start();
-   bool wait();
-   TcpServer(const uint16_t port) : mPort(port){};    
-   ~TcpServer();
-
-};
+typedef struct
+{
+   MsgType msgType;
+   MsgAction action;
+}MsgHeader;
 
 #endif
-
 
 /**********************************************************************
          End of file
