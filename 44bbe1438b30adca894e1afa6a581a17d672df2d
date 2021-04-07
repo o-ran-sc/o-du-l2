@@ -1,0 +1,378 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "19b5bed6_f5a77901",
+        "filename": "src/5gnrrlc/kw_udx_dl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-07T17:26:24Z",
+      "side": 1,
+      "message": "1. DEBUG print\n2. print cellId and ueId",
+      "revId": "44bbe1438b30adca894e1afa6a581a17d672df2d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f93f54e7_2c3d3a84",
+        "filename": "src/5gnrrlc/kw_udx_ul.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-07T17:26:24Z",
+      "side": 1,
+      "message": "remove commented line",
+      "revId": "44bbe1438b30adca894e1afa6a581a17d672df2d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "88f5367a_fe0c610a",
+        "filename": "src/5gnrrlc/kw_udx_ul.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 534,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-07T17:26:24Z",
+      "side": 1,
+      "message": "purpose of this break?  there is a break at #541 already",
+      "revId": "44bbe1438b30adca894e1afa6a581a17d672df2d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "71fa0462_9125ce26",
+        "filename": "src/5gnrrlc/kw_uim.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-07T17:26:24Z",
+      "side": 1,
+      "message": "break is present at #509 already. Why this break?",
+      "revId": "44bbe1438b30adca894e1afa6a581a17d672df2d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a7d88c41_43afc0f3",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 747,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-07T17:26:24Z",
+      "side": 1,
+      "message": "1. rename to fillRlcUeDelInfo since this function fills CFG specific to UE delete scenario\n2. Mention the same in the function description above to avoid any ambiguity",
+      "revId": "44bbe1438b30adca894e1afa6a581a17d672df2d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "37433456_8c618486",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 759,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-07T17:26:24Z",
+      "side": 1,
+      "message": "do we at all need to fill rbId/rbType? can we not just leave these values at 0.\nPlease check if these values are of any use for ue delete scenario?",
+      "revId": "44bbe1438b30adca894e1afa6a581a17d672df2d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aa06b679_875d50b2",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 782,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-07T17:26:24Z",
+      "side": 1,
+      "message": "return uint8_t",
+      "revId": "44bbe1438b30adca894e1afa6a581a17d672df2d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "476ab712_4d14453f",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 787,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-07T17:26:24Z",
+      "side": 1,
+      "message": "rename rlcUeCb to rlcCb. It is a global rlcCb structure, not specific to UE",
+      "revId": "44bbe1438b30adca894e1afa6a581a17d672df2d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "844c8dcc_2a87a14f",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 804,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-07T17:26:24Z",
+      "side": 1,
+      "message": "RlcProcCfgReq could fail also due to reasons other than \"invalid UeID\"",
+      "revId": "44bbe1438b30adca894e1afa6a581a17d672df2d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "08018e99_b15486dc",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 834,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-07T17:26:24Z",
+      "side": 1,
+      "message": "move this function below RlcProcUeDeleteReq\nTry keeping together all functions doing similar work",
+      "revId": "44bbe1438b30adca894e1afa6a581a17d672df2d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aabaec50_311fbf6c",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 855,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-07T17:26:24Z",
+      "side": 1,
+      "message": "DEBUG",
+      "revId": "44bbe1438b30adca894e1afa6a581a17d672df2d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d0580ce3_50455df0",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 860,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-07T17:26:24Z",
+      "side": 1,
+      "message": "free ueRsp",
+      "revId": "44bbe1438b30adca894e1afa6a581a17d672df2d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1f9a5b48_ed3bbe2b",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 891,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-07T17:26:24Z",
+      "side": 1,
+      "message": "rlcCb can be fetched in deleteRlcUeCb() itself. no need to pass from here",
+      "revId": "44bbe1438b30adca894e1afa6a581a17d672df2d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4c04c3d9_fec2474e",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 892,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-07T17:26:24Z",
+      "side": 1,
+      "message": "deleteRlcUeCb also returns RFAILED. Passing \"result\" into sendRlcUeDeleteRspToDu() is incorrect in that case",
+      "revId": "44bbe1438b30adca894e1afa6a581a17d672df2d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4af53278_e0ce9efb",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 902,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-07T17:26:24Z",
+      "side": 1,
+      "message": "In case of failure, error msg is already printed in sendRlcUeDeleteRspToDu. Do not repeat. J\njust say \"Sending ue delete respose\"",
+      "revId": "44bbe1438b30adca894e1afa6a581a17d672df2d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9ee4d7f3_9d356b06",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 908,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-07T17:26:24Z",
+      "side": 1,
+      "message": "free ueDelete before exiting this function in all possible cases",
+      "revId": "44bbe1438b30adca894e1afa6a581a17d672df2d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a6bed254_0a1e15c8",
+        "filename": "src/5gnrrlc/rlc_upr_inf_api.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-07T17:26:24Z",
+      "side": 1,
+      "message": "why commented?",
+      "revId": "44bbe1438b30adca894e1afa6a581a17d672df2d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "71b61405_5428f923",
+        "filename": "src/cm/du_app_rlc_inf.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 770,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-07T17:26:24Z",
+      "side": 1,
+      "message": "ueCfg?",
+      "revId": "44bbe1438b30adca894e1afa6a581a17d672df2d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e8335d18_b68ca1a4",
+        "filename": "src/cm/du_app_rlc_inf.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 847,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-07T17:26:24Z",
+      "side": 1,
+      "message": "cfgRsp? Please be careful about variable names. This error is observed repeatedly",
+      "revId": "44bbe1438b30adca894e1afa6a581a17d672df2d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b72057e5_cb33d7e5",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-07T17:26:24Z",
+      "side": 1,
+      "message": "ueCfgRsp?",
+      "revId": "44bbe1438b30adca894e1afa6a581a17d672df2d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "01c2513d_37087c4a",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2668,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-07T17:26:24Z",
+      "side": 1,
+      "message": "A lot of memory free is done as part of RLC and MAC/SCH UE delete, run Valgrind once on both changes",
+      "revId": "44bbe1438b30adca894e1afa6a581a17d672df2d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8a4c8687_50f2aa48",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2728,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-07T17:26:24Z",
+      "side": 1,
+      "message": "free delRsp",
+      "revId": "44bbe1438b30adca894e1afa6a581a17d672df2d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
