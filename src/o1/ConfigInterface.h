@@ -16,61 +16,43 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains definitions of startup configuration structure */
+/* This file contains C interface for ODU and stubs to get startup
+   configuration
+*/
 
-#include "Config.h"
-#include "ssi.h"
-#include "GlobalDefs.h"
-#include "TcpClient.h"
+#ifndef __CONFIG_INTERFACE_H__
+#define __CONFIG_INTERFACE_H__
 
-StartupConfig g_cfg;
+#include <stdint.h>
+#include <CommonMessages.h>
 
-/*******************************************************************
- *
- * @brief Get the startup config from Netconf
- *
- * @details
- *
- *    Function : getStartupConfig
- *
- *    Functionality:
- *      - Get the start up IP and port for DU,CU and RIC
- *
- * @params[in] pointer to StartupConfig
- * @return ROK     - success
- *         RFAILED - failure
- ******************************************************************/
-uint8_t getStartupConfig(StartupConfig *cfg)
+#define IPV4_LEN 16
+#define PORT_LEN 10
+
+#ifdef __cplusplus
+extern "C"
 {
-   O1_LOG("\nCONFIG : getStartupConfig ------ \n");
-   MsgHeader msg;
-   msg.msgType = CONFIGURATION;
-   msg.action = GET_STARTUP_CONFIG;
-   if (openSocket(TCP_SERVER_IP,TCP_PORT) == RFAILED)
-   {
-      return RFAILED;
-   }
-   if (sendData(&msg,sizeof(msg)) < 0 )
-   {
-      closeSocket();
-      return RFAILED;
-   }
-   if (receiveData(cfg, sizeof(StartupConfig)) < 0)
-   {
-      closeSocket();
-      return RFAILED;
-   }
-   O1_LOG("\nCONFIG : ip du %s\n",cfg->DU_IPV4_Addr );
-   O1_LOG("\nCONFIG : ip cu %s\n",cfg->CU_IPV4_Addr );
-   O1_LOG("\nCONFIG : ip ric %s\n",cfg->RIC_IPV4_Addr );
-   O1_LOG("\nCONFIG : port cu %hu\n",cfg->CU_Port);
-   O1_LOG("\nCONFIG : port du %hu\n",cfg->DU_Port);
-   O1_LOG("\nCONFIG : port ric %hu\n",cfg->RIC_Port);
+#endif
 
-   closeSocket();
-   return ROK;
+typedef struct
+{
+   char DU_IPV4_Addr[IPV4_LEN];
+   char CU_IPV4_Addr[IPV4_LEN];
+   char RIC_IPV4_Addr[IPV4_LEN];
+   uint16_t CU_Port;
+   uint16_t DU_Port;
+   uint16_t RIC_Port;
+}StartupConfig;
+
+
+uint8_t getStartupConfig(StartupConfig *cfg);
+uint8_t getStartupConfigForStub(StartupConfig *cfg);
+
+#ifdef __cplusplus
 }
+#endif
 
+#endif
 
 /**********************************************************************
          End of file

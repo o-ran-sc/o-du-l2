@@ -1,6 +1,6 @@
 /*******************************************************************************
 ################################################################################
-#   Copyright (c) [2020] [HCL Technologies Ltd.]                               #
+#   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
 #                                                                              #
 #   Licensed under the Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
@@ -16,31 +16,20 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains definitions of startup configuration structure */
+/* This file contains the C interface for ODU to start the O1 module */
 
-#ifndef __CONFIG_H__
-#define __CONFIG_H__
+#ifndef __O1_INTERFACE_H__
+#define __O1_INTERFACE_H__
 
-#include <stdint.h>
-#include <CommonMessages.h>
-
-#define IPV4_LEN 16
-#define PORT_LEN 10
-
-typedef struct
+#ifdef __cplusplus
+extern "C"
 {
-   char DU_IPV4_Addr[IPV4_LEN];
-   char CU_IPV4_Addr[IPV4_LEN];
-   char RIC_IPV4_Addr[IPV4_LEN];
-   uint16_t CU_Port;
-   uint16_t DU_Port;
-   uint16_t RIC_Port;
-}StartupConfig;
+#endif
+int start_O1_module(void);
 
-uint8_t getStartupConfig();
-
+#ifdef __cplusplus
+}
 #endif
 
-/**********************************************************************
-         End of file
-**********************************************************************/
+
+#endif

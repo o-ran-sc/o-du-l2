@@ -30,6 +30,12 @@
 #include "du_sctp.h"
 #include "du_egtp.h"
 
+#ifdef O1_ENABLE
+
+#include "O1Interface.h"
+
+#endif
+
 uint8_t rlcUlActvTsk (Pst *, Buffer *);
 uint8_t rlcUlActvInit (Ent, Inst, Region, Reason);
 uint8_t rlcDlActvTsk (Pst *, Buffer *);
@@ -432,6 +438,11 @@ void init_log()
 uint8_t tst(void)
 {
    init_log();
+
+#ifdef O1_ENABLE
+   if(start_O1_module() != ROK)
+      return RFAILED;
+#endif
 
    //Initialize TAPA layers
    if(duInit() != ROK)

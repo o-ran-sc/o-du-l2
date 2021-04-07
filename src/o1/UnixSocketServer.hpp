@@ -1,6 +1,6 @@
 /*******************************************************************************
 ################################################################################
-#   Copyright (c) [2020] [HCL Technologies Ltd.]                               #
+#   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
 #                                                                              #
 #   Licensed under the Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
@@ -16,52 +16,43 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains O1 main. 
-   Starts the Netopeer and TCP server
+/* This file contains UnixSocketServer class that listens for Netconf Alarm messages
+   on a Unix socket from ODU. It calls the AlarmManager functions for raising 
+   or clearing the alarms based on the actions received  
 */
+ 
+#ifndef __UNIX_SOCKET_SERVER_HPP__
+#define __UNIX_SOCKET_SERVER_HPP__
+#include <string>
+#include <pthread.h>
+#include "Thread.hpp"
 
-#include "NetconfManager.hpp"
-#include "TcpServer.hpp"
-#include <signal.h>
+using std::string;
+#define BUFLEN 512
 
-/********************************************************************** 
-   Description : Main function. Start of O1 module.
-   Params[In]  : None 
-   Return      : EXIT_SUCCESS 
-               : EXIT_FAILURE
-**********************************************************************/
-
-int main(int argc, char **argv)
+class UnixSocketServer : public Thread
 {
-   TcpServer tcpServer(O1::TCP_PORT);
-   /*SIGINT handling*/
-   //signal(SIGINT,  NetconfManager::sigintHandler);
-   /* Start Netconf server and subscribe to yang modules */
-   try
-   {
-      NetconfManager::instancePtr()->init();
-      O1_LOG("\nO1 O1_main : NetconfManager init successful");
 
-   }
-   catch( const std::exception& e ) 
-   {
-      O1_LOG("\nO1 O1_main : Exception : %s", e.what());
-      return EXIT_FAILURE;
-   }
-   /* Start the TCP Server to listen for alarm messages */
-   if( tcpServer.start() )
-   {
-      O1_LOG("\nO1 O1_main : TCP server started\n");
-      /* Wait for the TcpServer thread to end*/
-      tcpServer.wait();
-   }
-   else
-   {
-      O1_LOG("\nO1 O1_main : Failed to start TCP server");
-      return EXIT_FAILURE;
-   }
-   return EXIT_SUCCESS;
-}
+   private:
+   int mSock;
+   string mSockPath;
+   int readMessage(int);
+   int makeSocket();
+   
+   protected:
+   bool run();
+   bool mIsRunning;
+
+   public:
+   UnixSocketServer(const string& sockPath);    
+   ~UnixSocketServer();
+   bool isRunning() const;   
+   virtual void cleanUp(void);
+
+};
+
+#endif
+
 
 /**********************************************************************
          End of file

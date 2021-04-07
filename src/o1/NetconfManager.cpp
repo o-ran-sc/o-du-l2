@@ -119,11 +119,11 @@ void NetconfManager::sigintHandler(int signum)
 **********************************************************************/
 bool NetconfManager::init(void)
 {
-   if(startNetopeerServer())
+  /* if(startNetopeerServer())
    {
       O1_LOG("\nO1 NetconfManager : netopeer server started");
    }
-   
+   */
    try
    {
       mSessHndl = new SessionHandler;
@@ -132,9 +132,10 @@ bool NetconfManager::init(void)
 
       if( !mSessHndl->init())
       {
-         O1_LOG("\nO1 NetconfManager : SessionHandler init failed ");         
+         O1_LOG("\nO1 NetconfManager : SessionHandler init failed \n");         
          return false;
       }
+      return true;
    }
    catch( const std::exception& e ) 
    {
