@@ -97,17 +97,6 @@ Following libraries are required to compile and execute O-DU High:
    - Ubuntu : sudo apt-get install -y libpcap-dev
    - CentOS : sudo yum install -y libpcap-devel
 
-Following libraries are required to compile and execute O1 module:
- 
-- Netconf:
-   libssh, libyang, libnetconf2, sysrepo, netopeer2
-
-   Script is provided in the following folder to install these libraries
-
-   - Ubuntu :  
-   
-       | cd <O-DU High Directory>/l2/build/o1
-       | sudo ./install_lib.sh
 
 
 Cloning code
@@ -118,6 +107,62 @@ Cloning code
 - Clone code into <O-DU High Directory> 
 
   git clone "https://gerrit.o-ran-sc.org/r/o-du/l2"
+
+
+Setting up Netconf server
+-------------------------
+ 
+  Following steps are required to compile ODU with O1 interface enabled:
+
+- Install Netconf libraries:
+   
+   libssh, libyang, libnetconf2, sysrepo, netopeer2
+
+   Script is provided in the following folder to install these libraries
+
+   - Ubuntu :  
+   
+       | cd <O-DU High Directory>/l2/build/scripts
+       | sudo ./install_lib.sh -c
+
+- Start Netopeer2-server:
+       
+   - Ubuntu :  
+       | cd <O-DU High Directory>/l2/build/scripts
+       | sudo ./netopeer-server.sh start
+
+- Create a new netconf user
+      
+      Switch to root user and run following commands
+      
+   - Ubuntu :  
+   
+      | adduser --system netconf && \\
+      |    echo "netconf:netconf" | chpasswd
+
+      | mkdir -p /home/netconf/.ssh && \\
+      | ssh-keygen -A && \\
+      | ssh-keygen -t dsa -P '' -f /home/netconf/.ssh/id_dsa && \\
+      |    cat /home/netconf/.ssh/id_dsa.pub > /home/netconf/.ssh/authorized_keys
+
+- Install the YANG modules
+
+   - Ubuntu : 
+    
+      | cd <O-DU High Directory>/l2/build/yang
+      | sysrepoctl -i ./yang/o-ran-sc-odu-alarm-v1.yang
+      | sysrepoctl -i ./yang/o-ran-sc-odu-interface-v1.yang
+
+- Configure the startup IP and Port configurations for DU, CU and RIC
+
+   - Ubuntu : 
+    
+      | cd <O-DU High Directory>/l2/build/config
+      |
+      | Open the startup_config.xml and edit the desired IP and Port for CU, DU and RIC.
+      | Then load the configuration in the sysrepo running datastore using the command below
+      |
+      | sysrepocfg --import=startup_config.xml --datastore running --module  o-ran-sc-odu-interface-v1 
 
 Compilation
 ------------
@@ -133,13 +178,10 @@ Compilation
        make clean_odu MACHINE=BIT64 MODE=FDD
        
 
-   - Build O-DU High binary
+   - Compile O-DU High binary
    
        make odu MACHINE=BIT64 MODE=FDD
        
-       To build with O1 interface enabled:
-
-       make odu MACHINE=BIT64 MODE=FDD O1_ENABLE=YES
 
 - Build CU Stub :
 
@@ -151,7 +193,7 @@ Compilation
    
        make clean_cu NODE=TEST_STUB MACHINE=BIT64 MODE=FDD
 
-   - Build CU Stub binary
+   - Compile CU Stub binary
    
        make cu_stub NODE=TEST_STUB MACHINE=BIT64 MODE=FDD
 
@@ -165,35 +207,57 @@ Compilation
    
        make clean_ric NODE=TEST_STUB MACHINE=BIT64 MODE=FDD
 
-   - Build RIC Stub binary
+   - Compile RIC Stub binary
    
        make ric_stub NODE=TEST_STUB MACHINE=BIT64 MODE=FDD
 
-- Build O-DU High with O1 interface enabled:
 
-   - Navigate to o1 Build folder
-   
-       cd <O-DU High Directory>/l2/build/o1
+Compilation with O1 interface enabled
+--------------------------------------
 
-   - Clean O1 binary
-   
-       make clean_o1 MACHINE=BIT64
+- Build O-DU High:
 
-   - Build O1 binary
-   
-       make o1 MACHINE=BIT64
-
-   - Navigate to odu Build folder
+   - Navigate to Build folder
 
        cd <O-DU High Directory>/l2/build/odu
 
    - Clean O-DU High binary
 
-       make clean_odu MACHINE=BIT64 MODE=FDD
+       make clean_odu MACHINE=BIT64 MODE=FDD O1_ENABLE=YES
        
-   - Build O-DU High binary
+
+   - Compile O-DU High binary
    
        make odu MACHINE=BIT64 MODE=FDD O1_ENABLE=YES
+       
+
+- Build CU Stub :
+
+   - Navigate to Build folder
+   
+       cd <O-DU High Directory>/l2/build/odu
+
+   - Clean CU Stub binary
+   
+       make clean_cu NODE=TEST_STUB MACHINE=BIT64 MODE=FDD O1_ENABLE=YES
+
+   - Compile CU Stub binary
+   
+       make cu_stub NODE=TEST_STUB MACHINE=BIT64 MODE=FDD O1_ENABLE=YES
+
+- Build RIC Stub :
+
+   - Navigate to Build folder
+   
+       cd <O-DU High Directory>/l2/build/odu
+
+   - Clean RIC Stub binary
+   
+       make clean_ric NODE=TEST_STUB MACHINE=BIT64 MODE=FDD O1_ENABLE=YES
+
+   - Compile RIC Stub binary
+   
+       make ric_stub NODE=TEST_STUB MACHINE=BIT64 MODE=FDD O1_ENABLE=YES
 
 
 
@@ -205,4 +269,3 @@ The above generated images can be found at:
 
 - RIC Stub  - <O-DU High Directory>/l2/bin/ric_stub
 
-- O1        - <O-DU High Directory>/l2/build/o1/bin/o1

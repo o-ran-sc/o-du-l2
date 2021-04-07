@@ -20,9 +20,11 @@
 
 #include "GlobalDefs.hpp"
 
-const short O1::TCP_PORT = 8282;
 const int   O1::SUCCESS  = 0;
 const int   O1::FAILURE  = 1;
+const std::string O1::ALARM_SOCK_PATH("/tmp/alarmsock");
+const int O1::CPU_CORE = 22;
+
 
 /**********************************************************************
          End of file

@@ -1,6 +1,6 @@
 /*******************************************************************************
 ################################################################################
-#   Copyright (c) [2020] [HCL Technologies Ltd.]                               #
+#   Copyright (c) [2020-2021]      [HCL Technologies Ltd.]                     #
 #                                                                              #
 #   Licensed under the Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
@@ -16,33 +16,35 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains definitions of common message structures */
+/* This file contains C interfaces for ODU to raise and clear alarms */
 
-#ifndef __COMMON_MESSAGES_H__
-#define __COMMON_MESSAGES_H__
+#ifndef __ALARM_INTERFACE_H__
+#define __ALARM_INTERFACE_H__
 
+#include <stdint.h>
+#include "AlarmMessages.h"
 
-typedef enum
+#define CELL_UP_ALARM_ID   1009
+#define CELL_DOWN_ALARM_ID 1010
+#define BUFF_SIZE 20
+
+#ifdef __cplusplus
+extern "C"
 {
-   RAISE_ALARM,
-   CLEAR_ALARM,
-   GET_STARTUP_CONFIG
-}MsgAction;
+#endif
 
-typedef enum
-{
-   ALARM,
-   CONFIGURATION
-}MsgType;
+uint8_t raiseAlarm(AlarmRecord* alrm);
+uint8_t clearAlarm(AlarmRecord* alrm);
+uint8_t raiseCellAlrm(uint16_t alrmId, uint16_t cellId);
+uint8_t clearCellAlrm(uint16_t alrmId);
 
-typedef struct
-{
-   MsgType msgType;
-   MsgAction action;
-}MsgHeader;
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 
 /**********************************************************************
          End of file
 **********************************************************************/
+

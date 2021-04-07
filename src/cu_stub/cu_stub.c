@@ -24,9 +24,7 @@
 #include "du_log.h"
 
 #ifdef O1_ENABLE
-
-#include "Config.h"
-
+#include "ConfigInterface.h"
 #endif
 
 #define CU_ID 1
@@ -167,13 +165,13 @@ void readCuCfg()
    DU_LOG("\nDEBUG  -->  CU_STUB : Reading CU configurations");
 
 #ifdef O1_ENABLE
-   if( getStartupConfig(&g_cfg) != ROK )
+   if( getStartupConfigForStub(&g_cfg) != ROK )
    {
-      RETVALUE(RFAILED);
+      DU_LOG("\nError  -->  CU_STUB : Could not fetch startup "\
+             "configurations from Netconf interface\n");
+      exit(1);
    }
-   DU_LOG("\nReading CU configurations---");
-   DU_LOG("\nReading CU configurations g_cfg.DU_IPV4_Addr=%s", g_cfg.DU_IPV4_Addr);
-   DU_LOG("\nReading CU configurations g_cfg.CU_IPV4_Addr=%s", g_cfg.CU_IPV4_Addr);
+   
    cmInetAddr((S8*)g_cfg.DU_IPV4_Addr, &ipv4_du);
    cmInetAddr((S8*)g_cfg.CU_IPV4_Addr, &ipv4_cu);
 
