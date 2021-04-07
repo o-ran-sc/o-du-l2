@@ -1,6 +1,6 @@
 /*******************************************************************************
 ################################################################################
-#   Copyright (c) [2020] [HCL Technologies Ltd.]                               #
+#   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
 #                                                                              #
 #   Licensed under the Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
@@ -16,20 +16,36 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains functions to connect to a TCP server and send massages */
+/* This file contains the O1App class which is responsible for running/starting
+   all the O1 modules in a thread. It inherits the Thread class and Singleton
+   class.
+*/
 
-#ifndef __TCP_CLIENT_H__
-#define __TCP_CLIENT_H__
-#include <stdint.h>
-#include "ssi.h"
+#ifndef __O1_APP_HPP__
+#define __O1_APP_HPP__
 
-uint8_t openSocket(const char*, const uint16_t);
-int sendData(void*, const int);
-int receiveData(void* data, const int size);
-uint8_t closeSocket();
+#include "Singleton.hpp"
+#include "Thread.hpp"
+#include "UnixSocketServer.hpp"
+
+
+class O1App : public Singleton<O1App>, public Thread 
+{
+   friend Singleton<O1App>;
+   
+   private:
+   bool mStartupStatus;
+   UnixSocketServer mUxSocketServer;
+
+   protected:
+   bool run();
+
+   public:
+   O1App();
+   ~O1App();
+   bool getStartupStatus()const;
+   void cleanUp(void);
+};
+
 
 #endif
-
-/**********************************************************************
-         End of file
-**********************************************************************/

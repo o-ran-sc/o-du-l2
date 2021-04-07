@@ -1,6 +1,6 @@
 /*******************************************************************************
 ################################################################################
-#   Copyright (c) [2020] [HCL Technologies Ltd.]                               #
+#   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
 #                                                                              #
 #   Licensed under the Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
@@ -16,34 +16,33 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains definitions of common message structures */
+/* This file contains class for launching and managing POSIX threads */
 
-#ifndef __MESSAGE_H__
-#define __MESSAGE_H__
+#ifndef __THREAD_HPP__
+#define __THREAD_HPP__
 
-#include <string.h>
+#include <pthread.h>
 
-typedef enum
+class Thread
 {
-   RAISE_ALARM,
-   CLEAR_ALARM,
-   GET_STARTUP_CONFIG
-}MsgAction;
+   private:
+   pthread_t mThreadId;
+   static void* task(void*);
 
-typedef enum
-{
-   ALARM,
-   CONFIGURATION
-}MsgType;
+   protected:
+   virtual bool run() = 0;
 
-typedef struct
-{
-   MsgType msgType;
-   MsgAction action;
-}MsgHeader;
+   public:
+   Thread();
+   virtual ~Thread();
+   bool start();
+   bool stop();
+   virtual void cleanUp()=0;
+   bool setAffinity(int);
+   bool getAffinity();
+   bool join();
+};
+
+
 
 #endif
-
-/**********************************************************************
-         End of file
-**********************************************************************/

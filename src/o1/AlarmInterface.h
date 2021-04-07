@@ -1,6 +1,6 @@
 /*******************************************************************************
 ################################################################################
-#   Copyright (c) [2020] [HCL Technologies Ltd.]                               #
+#   Copyright (c) [2020-2021]      [HCL Technologies Ltd.]                     #
 #                                                                              #
 #   Licensed under the Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
@@ -16,62 +16,35 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains definitions of Alarm structure */
+/* This file contains interfaces to raise and clear alarms */
 
-#ifndef __ALARM_H__
-#define __ALARM_H__
+#ifndef __ALARM_INTERFACE_H__
+#define __ALARM_INTERFACE_H__
 
-#include <string.h>
-#include "CommonMessages.h"
-#define ALRM_ID_SIZE 10
-#define OBJ_INST_SIZE 15
-#define TEXT_SIZE 50
-#define DATE_TIME_SIZE 30
+#include <stdint.h>
+#include "AlarmMessages.h"
 
-typedef enum
+#define CELL_UP_ALARM_ID   1009
+#define CELL_DOWN_ALARM_ID 1010
+#define BUFF_SIZE 20
+
+#ifdef __cplusplus
+extern "C"
 {
-   CRITICAL = 3, 
-   MAJOR = 4,
-   MINOR = 5,
-   WARNING = 6,
-   INDETERMINATE = 7,
-   CLEARED = 8
-}SeverityLevel;
+#endif
 
-typedef enum
-{
-   COMMUNICATIONS_ALARM = 2,
-   QUALITY_OF_SERVICE_ALARM = 3,
-   PROCESSING_ERROR_ALARM = 4,
-   EQUIPMENT_ALARM = 5,
-   ENVIRONMENTAL_ALARM = 6,
-   INTEGRITY_VIOLATION = 7,
-   OPERATIONAL_VIOLATION = 8,
-   PHYSICAL_VIOLATION = 9,
-   SECURITY_SERVICE_OR_MECHANISM_VIOLATION = 10,
-   TIME_DOMAIN_VIOLATION = 11
-}EventType;
+uint8_t raiseAlarm(AlarmRecord* alrm);
+uint8_t clearAlarm(AlarmRecord* alrm);
+uint8_t raiseCellAlrm(uint16_t alrmId, uint16_t cellId);
+uint8_t clearCellAlrm(uint16_t alrmId);
 
-
-typedef struct
-{
-   MsgHeader msgHeader;
-   EventType eventType;
-   char objectClassObjectInstance[OBJ_INST_SIZE];
-   char alarmId[ALRM_ID_SIZE];
-   char alarmRaiseTime[DATE_TIME_SIZE];
-   char alarmChangeTime[DATE_TIME_SIZE];
-   char alarmClearTime[DATE_TIME_SIZE];
-   char probableCause[TEXT_SIZE];
-   SeverityLevel perceivedSeverity;
-   char rootCauseIndicator[TEXT_SIZE];	
-   char additionalText[TEXT_SIZE];
-   char additionalInfo[TEXT_SIZE];
-   char specificProblem[TEXT_SIZE];
-}AlarmRecord;
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 
 /**********************************************************************
          End of file
 **********************************************************************/
+

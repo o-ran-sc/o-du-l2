@@ -22,6 +22,9 @@
 #define __GLOBAL_DEFS_HPP__
 
 #include <syslog.h>
+#include <string>
+
+using std::string;
 
 #define O1_LOG(...) ( {\
 		printf(__VA_ARGS__);\
@@ -38,9 +41,9 @@
 class O1 
 {
    public:
-   static const short TCP_PORT;
    static const int   SUCCESS;
    static const int   FAILURE;
+   static const std::string ALARM_SOCK_PATH;
 };
 
 #endif
