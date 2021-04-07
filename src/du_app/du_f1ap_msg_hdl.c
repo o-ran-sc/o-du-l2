@@ -103,10 +103,8 @@
 #include "GTPTunnel.h"
 
 #ifdef O1_ENABLE
-
-#include "Config.h"
+#include "ConfigInterface.h"
 extern StartupConfig g_cfg;
-
 #endif
 
 DuCfgParams duCfgParam;

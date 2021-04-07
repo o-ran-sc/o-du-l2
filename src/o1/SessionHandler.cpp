@@ -50,15 +50,46 @@ bool SessionHandler::init()
 {
    try
    {
-      O1_LOG("\nO1 SessionHandler : Initialization done");
       mConn = createConnection();
-      O1_LOG("\nO1 SessionHandler : Initialization done");
-      mSess = createSession(mConn);
-      mSub  = createSubscribe(mSess);
-      O1_LOG("\nO1 SessionHandler : Initialization done");
-      //InitConfig initConf;
-      InitConfig::instance().init(mSess);
-      return true;
+      if(mConn != NULL)
+      {
+         O1_LOG("\nO1 SessionHandler : Connection created");
+         //removing nacm module temperary for auth issue resolve
+         //mConn.remove_module("ietf-netconf-acm");
+         mSess = createSession(mConn);
+         if(mSess != NULL)
+         {
+            O1_LOG("\nO1 SessionHandler : Session created");
+            mSub  = createSubscribe(mSess);
+            if(mSub != NULL)
+            {
+               O1_LOG("\nO1 SessionHandler : Subscription created");
+               if(InitConfig::instance().init(mSess))
+               {
+                  return true;
+               }
+               else
+               {
+                  return false;
+               }
+            }
+            else 
+            {
+               O1_LOG("\nO1 SessionHandler : Subscription failed");
+               return false;
+            }
+         }
+         else
+         {
+            O1_LOG("\nO1 SessionHandler : Session failed");
+            return false;
+         }
+      }
+      else
+      {
+         O1_LOG("\nO1 SessionHandler : connection failed");
+         return false;
+      }
    }
    catch( const std::exception& e )
    {

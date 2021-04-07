@@ -42,7 +42,6 @@
 
 #ifdef O1_ENABLE
 
-#include "GlobalDefs.h"
 #include "AlarmInterface.h"
 
 #endif 
