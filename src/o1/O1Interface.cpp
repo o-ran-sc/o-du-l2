@@ -1,6 +1,6 @@
 /*******************************************************************************
 ################################################################################
-#   Copyright (c) [2020] [HCL Technologies Ltd.]                               #
+#   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
 #                                                                              #
 #   Licensed under the Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
@@ -16,59 +16,84 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains definitions of startup configuration structure */
+/* This file contains the interfaces for ODU-High to interact with the 
+   O1 module  
+*/
 
-#include "Config.h"
-#include "ssi.h"
-#include "GlobalDefs.h"
-#include "TcpClient.h"
+#include "O1Interface.h"
+#include "O1App.hpp"
+#include "GlobalDefs.hpp"
+#include <signal.h>
+#include <unistd.h>
 
-StartupConfig g_cfg;
 
 /*******************************************************************
  *
- * @brief Get the startup config from Netconf
+ * @brief Wait for the O1 Module to start
  *
  * @details
  *
- *    Function : getStartupConfig
+ *    Function : check_O1_module_status
  *
  *    Functionality:
- *      - Get the start up IP and port for DU,CU and RIC
+ *      - Checks if the O1App has started
  *
- * @params[in] pointer to StartupConfig
- * @return ROK     - success
- *         RFAILED - failure
+ *
+ * @params[in] void
+ * @return O1::SUCCESS - success
+ *         O1::FAILURE - failure
  ******************************************************************/
-uint8_t getStartupConfig(StartupConfig *cfg)
-{
-   O1_LOG("\nCONFIG : getStartupConfig ------ \n");
-   MsgHeader msg;
-   msg.msgType = CONFIGURATION;
-   msg.action = GET_STARTUP_CONFIG;
-   if (openSocket(TCP_SERVER_IP,TCP_PORT) == RFAILED)
-   {
-      return RFAILED;
-   }
-   if (sendData(&msg,sizeof(msg)) < 0 )
-   {
-      closeSocket();
-      return RFAILED;
-   }
-   if (receiveData(cfg, sizeof(StartupConfig)) < 0)
-   {
-      closeSocket();
-      return RFAILED;
-   }
-   O1_LOG("\nCONFIG : ip du %s\n",cfg->DU_IPV4_Addr );
-   O1_LOG("\nCONFIG : ip cu %s\n",cfg->CU_IPV4_Addr );
-   O1_LOG("\nCONFIG : ip ric %s\n",cfg->RIC_IPV4_Addr );
-   O1_LOG("\nCONFIG : port cu %hu\n",cfg->CU_Port);
-   O1_LOG("\nCONFIG : port du %hu\n",cfg->DU_Port);
-   O1_LOG("\nCONFIG : port ric %hu\n",cfg->RIC_Port);
 
-   closeSocket();
-   return ROK;
+int static check_O1_module_status(void){
+   for( int i = 0; i < 5 ; i++)
+   {
+      if( O1App::instance().getStartupStatus() == true)
+      {
+         return O1::SUCCESS;
+      }
+      else
+      {
+         sleep(1);
+      }
+   }
+
+   return O1::FAILURE;
+}
+
+/*******************************************************************
+ *
+ * @brief Starts the O1 Module
+ *
+ * @details
+ *
+ *    Function : start_O1_module
+ *
+ *    Functionality:
+ *      - Starts the O1 module by instantiating the O1App instance
+ *        Invoked from the ODU-High main function
+ *
+ *
+ * @params[in] void
+ * @return O1::SUCCESS - success
+ *         O1::FAILURE - failure
+ ******************************************************************/
+
+int start_O1_module(void)
+{
+
+   if(O1App::instance().start() == false){
+         O1_LOG("\nO1 O1Interface : Start failed");
+      return O1::FAILURE;
+   }
+   
+   /* TO DO 
+   if(O1App::instance().setAffinity(0))
+   {
+      O1_LOG("\nO1 O1Interface : CPU affinity set" );
+      O1App::instance().getAffinity();
+   }
+   */
+   return check_O1_module_status();
 }
 
 

@@ -1,6 +1,6 @@
 /*******************************************************************************
 ################################################################################
-#   Copyright (c) [2020] [HCL Technologies Ltd.]                               #
+#   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
 #                                                                              #
 #   Licensed under the Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
@@ -16,33 +16,22 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains definitions of common message structures */
+/* This file contains the interfaces for ODU-High to interact with the 
+   O1 module  
+*/
 
-#ifndef __COMMON_MESSAGES_H__
-#define __COMMON_MESSAGES_H__
+#ifndef __O1_INTERFACE_H__
+#define __O1_INTERFACE_H__
 
-
-typedef enum
+#ifdef __cplusplus
+extern "C"
 {
-   RAISE_ALARM,
-   CLEAR_ALARM,
-   GET_STARTUP_CONFIG
-}MsgAction;
+#endif
+int start_O1_module(void);
 
-typedef enum
-{
-   ALARM,
-   CONFIGURATION
-}MsgType;
-
-typedef struct
-{
-   MsgType msgType;
-   MsgAction action;
-}MsgHeader;
-
+#ifdef __cplusplus
+}
 #endif
 
-/**********************************************************************
-         End of file
-**********************************************************************/
+
+#endif

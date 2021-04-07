@@ -138,6 +138,12 @@ ifeq ($(PHY), INTEL_L1)
         -lrte_gro -lrte_pmd_ark -lrte_pmd_i40e -lrte_pmd_sw_event
 endif
 
+ifeq ($(O1_ENABLE),YES)
+  L_OPTS+=-lsysrepo -lyang
+  L_OPTS+=-lsysrepo-cpp -lyang-cpp
+  L_OPTS+=-lstdc++
+endif
+
 # Export some of the flags expected from the command line.
 # # These macros are made available for the makefiles called from this makefile
 export BOARD
@@ -205,7 +211,7 @@ du:
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/rl.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/phy_stub.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 ifeq ($(O1_ENABLE),YES)
-		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/o1_client.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
+		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/o1.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CCPP1)'
 endif
 
 link_du: du
@@ -226,7 +232,7 @@ clean_odu:
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/rl.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/phy_stub.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 ifeq ($(O1_ENABLE),YES)
-		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/o1_client.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
+		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/o1.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CCPP1)'
 endif
 		$(Q)rm -rf $(OBJ_ROOT)/odu/*
 		$(Q)rm -rf $(LIB_ROOT)/odu/*
@@ -250,7 +256,7 @@ cu:
 	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/cm.mak OBJ_DIR=$(OBJ_ROOT)/cu_stub LIB_DIR=$(LIB_ROOT)/cu_stub LOG_DIR=$(LOG_ROOT)/cu_stub CC='$(CC1)'
 	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/mt.mak OBJ_DIR=$(OBJ_ROOT)/cu_stub LIB_DIR=$(LIB_ROOT)/cu_stub LOG_DIR=$(LOG_ROOT)/cu_stub CC='$(CC1)'
 ifeq ($(O1_ENABLE),YES)
-		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/o1_client.mak OBJ_DIR=$(OBJ_ROOT)/cu_stub LIB_DIR=$(LIB_ROOT)/cu_stub LOG_DIR=$(LOG_ROOT)/cu_stub CC='$(CC1)'
+		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/o1.mak OBJ_DIR=$(OBJ_ROOT)/cu_stub LIB_DIR=$(LIB_ROOT)/cu_stub LOG_DIR=$(LOG_ROOT)/cu_stub CC='$(CCPP1)'
 endif
 
 clean_cu:
@@ -261,7 +267,7 @@ clean_cu:
 	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/cm.mak clean OBJ_DIR=$(OBJ_ROOT)/cu_stub LIB_DIR=$(LIB_ROOT)/cu_stub LOG_DIR=$(LOG_ROOT)/cu_stub CC='$(CC1)'
 	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/mt.mak clean OBJ_DIR=$(OBJ_ROOT)/cu_stub LIB_DIR=$(LIB_ROOT)/cu_stub LOG_DIR=$(LOG_ROOT)/cu_stub CC='$(CC1)'
 ifeq ($(O1_ENABLE),YES)
-		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/o1_client.mak clean OBJ_DIR=$(OBJ_ROOT)/cu_stub LIB_DIR=$(LIB_ROOT)/cu_stub LOG_DIR=$(LOG_ROOT)/cu_stub CC='$(CC1)'
+		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/o1.mak clean OBJ_DIR=$(OBJ_ROOT)/cu_stub LIB_DIR=$(LIB_ROOT)/cu_stub LOG_DIR=$(LOG_ROOT)/cu_stub CC='$(CCPP1)'
 endif
 	 $(Q)rm -rf $(OBJ_ROOT)/cu_stub/*
 	 $(Q)rm -rf $(LIB_ROOT)/cu_stub/*
@@ -284,7 +290,7 @@ ric:
 	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/cm.mak OBJ_DIR=$(OBJ_ROOT)/ric_stub LIB_DIR=$(LIB_ROOT)/ric_stub LOG_DIR=$(LOG_ROOT)/ric_stub CC='$(CC1)'
 	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/mt.mak OBJ_DIR=$(OBJ_ROOT)/ric_stub LIB_DIR=$(LIB_ROOT)/ric_stub LOG_DIR=$(LOG_ROOT)/ric_stub CC='$(CC1)'
 ifeq ($(O1_ENABLE),YES)
-		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/o1_client.mak OBJ_DIR=$(OBJ_ROOT)/ric_stub LIB_DIR=$(LIB_ROOT)/ric_stub LOG_DIR=$(LOG_ROOT)/ric_stub CC='$(CC1)'
+		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/o1.mak OBJ_DIR=$(OBJ_ROOT)/ric_stub LIB_DIR=$(LIB_ROOT)/ric_stub LOG_DIR=$(LOG_ROOT)/ric_stub CC='$(CCPP1)'
 endif
 
 clean_ric:
@@ -295,7 +301,7 @@ clean_ric:
 	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/cm.mak clean OBJ_DIR=$(OBJ_ROOT)/ric_stub LIB_DIR=$(LIB_ROOT)/ric_stub LOG_DIR=$(LOG_ROOT)/ric_stub CC='$(CC1)'
 	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/mt.mak clean OBJ_DIR=$(OBJ_ROOT)/ric_stub LIB_DIR=$(LIB_ROOT)/ric_stub LOG_DIR=$(LOG_ROOT)/ric_stub CC='$(CC1)'
 ifeq ($(O1_ENABLE),YES)
-		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/o1_client.mak clean OBJ_DIR=$(OBJ_ROOT)/ric_stub LIB_DIR=$(LIB_ROOT)/ric_stub LOG_DIR=$(LOG_ROOT)/ric_stub CC='$(CC1)'
+		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/o1.mak clean OBJ_DIR=$(OBJ_ROOT)/ric_stub LIB_DIR=$(LIB_ROOT)/ric_stub LOG_DIR=$(LOG_ROOT)/ric_stub CC='$(CCPP1)'
 endif
 	 $(Q)rm -rf $(OBJ_ROOT)/ric_stub/*
 	 $(Q)rm -rf $(LIB_ROOT)/ric_stub/*

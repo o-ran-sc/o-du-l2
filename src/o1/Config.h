@@ -27,6 +27,11 @@
 #define IPV4_LEN 16
 #define PORT_LEN 10
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 typedef struct
 {
    char DU_IPV4_Addr[IPV4_LEN];
@@ -37,7 +42,12 @@ typedef struct
    uint16_t RIC_Port;
 }StartupConfig;
 
-uint8_t getStartupConfig();
+
+uint8_t getStartupConfig(StartupConfig *cfg);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 
