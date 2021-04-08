@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa61fade_f27ef3fd",
+        "filename": "Dockerfile",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-08T12:31:14Z",
+      "side": 1,
+      "message": "for TDD compilation with O1 enable",
+      "revId": "2da184d6f349435ad07d3ab20f7b6e3f53eecb90",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "668ed57b_829ba531",
+        "filename": "build/common/cu_stub.mak",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-08T12:31:14Z",
+      "side": 1,
+      "message": "needed for cu_stub compilation?",
+      "revId": "2da184d6f349435ad07d3ab20f7b6e3f53eecb90",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2b26fc22_0a452fb8",
+        "filename": "build/common/ric_stub.mak",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-08T12:31:14Z",
+      "side": 1,
+      "message": "needed for ric_stub compilation?",
+      "revId": "2da184d6f349435ad07d3ab20f7b6e3f53eecb90",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "62fc7035_6f1e3796",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-08T12:31:14Z",
+      "side": 1,
+      "message": "blank lines can be deleted",
+      "revId": "2da184d6f349435ad07d3ab20f7b6e3f53eecb90",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "27cbb993_f4469cf9",
+        "filename": "src/o1/O1Interface.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-08T12:31:14Z",
+      "side": 1,
+      "message": "Up to Core 15 used by Intel L1 and Core 16-21 used by Radisys threads. O1 thread to use core other than these",
+      "revId": "2da184d6f349435ad07d3ab20f7b6e3f53eecb90",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
