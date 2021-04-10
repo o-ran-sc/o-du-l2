@@ -203,7 +203,7 @@ void buildAndSendMuxPdu(SlotIndInfo currTimingInfo)
 
    GET_CELL_IDX(currTimingInfo.cellId, cellIdx);
 
-   ADD_DELTA_TO_TIME(currTimingInfo, muxTimingInfo, PHY_DELTA);
+   ADD_DELTA_TO_TIME(currTimingInfo, muxTimingInfo, PHY_DELTA_DL);
    currDlSlot = &macCb.macCell[cellIdx]->dlSlot[muxTimingInfo.slot];
    if(currDlSlot->dlInfo.dlMsgAlloc)
    {
@@ -314,9 +314,8 @@ uint8_t macProcSlotInd(SlotIndInfo slotInd)
    /* Trigger for DL TTI REQ */
    fillDlTtiReq(slotInd);
 
-   /* Trigger for UL TTI REQ */
-   fillUlTtiReq(slotInd);
-   
+   /* TODO : check if this too needs to be sent in sequence with Dl and Ul TTI req.
+    * If so , move trigger for fillUlDciReq to lower mac */
    /* Trigger for UL DCI REQ */
    fillUlDciReq(slotInd);
 
@@ -387,6 +386,16 @@ uint8_t fapiMacSlotInd(Pst *pst, SlotIndInfo *slotInd)
    /*stoping Task*/
    ODU_STOP_TASK(startTime, PID_MAC_TTI_IND);
    MAC_FREE_SHRABL_BUF(pst->region, pst->pool, slotInd, sizeof(SlotIndInfo));
+
+#ifdef INTEL_WLS_MEM
+   slotIndIdx++;
+   if(slotIndIdx > WLS_MEM_FREE_PRD)
+   {
+      slotIndIdx = 1;
+   }
+   freeWlsBlockList(slotIndIdx - 1);
+#endif
+
    return ret;
 }  /* fapiMacSlotInd */
 

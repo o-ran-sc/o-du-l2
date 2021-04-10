@@ -29,6 +29,10 @@
 #define CORESET_TYPE2 2
 #define CORESET_TYPE3 3
 
+#ifdef INTEL_WLS_MEM
+#define WLS_MEM_FREE_PRD       10        /* Free memory after 10 slot ind */
+#endif
+
 #define FILL_FAPI_LIST_ELEM(_currElem, _nextElem, _msgType, _numMsgInBlock, _alignOffset)\
 {\
    _currElem->msg_type             = (uint8_t) _msgType;\
@@ -47,6 +51,10 @@ typedef enum{
    C_RNTI_TYPE
 }RntiType;
 
+#ifdef INTEL_WLS_MEM
+uint8_t slotIndIdx;
+#endif
+
 uint8_t lwr_mac_procInvalidEvt(void *msg);
 uint8_t lwr_mac_procParamReqEvt(void *msg);
 uint8_t lwr_mac_procParamRspEvt(void *msg);
@@ -56,11 +64,10 @@ uint8_t lwr_mac_procStartReqEvt(void *msg);
 uint8_t lwr_mac_procStopReqEvt(void *msg);
 void sendToLowerMac(uint16_t, uint32_t, void *);
 void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg);
-uint16_t fillUlTtiReq(SlotIndInfo currTimingInfo);
 uint16_t fillDlTtiReq(SlotIndInfo currTimingInfo);
 uint16_t fillUlDciReq(SlotIndInfo currTimingInfo);
-
 typedef uint8_t (*lwrMacFsmHdlr)(void *);
+
 #endif
 
 /**********************************************************************

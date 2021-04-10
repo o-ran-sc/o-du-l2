@@ -63,7 +63,8 @@
 #define MAX_NUM_DRB  29   /* spec 38.331, maxDRB */
 
 /* 5G ORAN phy delay */
-#define PHY_DELTA 2
+#define PHY_DELTA_DL 1
+#define PHY_DELTA_UL 0
 
  /* SELECTORS */ 
 #define ODU_SELECTOR_LC 0

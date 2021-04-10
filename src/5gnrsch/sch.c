@@ -831,7 +831,7 @@ void fillSchSib1Cfg(uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg *sib1SchCfg,
    pdsch->dmrs.dmrsAddPos                    = DMRS_ADDITIONAL_POS;
 
    pdsch->pdschFreqAlloc.resourceAllocType   = 1; /* RAT type-1 RIV format */
-   pdsch->pdschFreqAlloc.freqAlloc.startPrb  = offset + SCH_SSB_NUM_PRB; /* the RB numbering starts from coreset0,
+   pdsch->pdschFreqAlloc.freqAlloc.startPrb  = offsetPointA + SCH_SSB_NUM_PRB + 1; /* the RB numbering starts from coreset0,
 									    and PDSCH is always above SSB */
    pdsch->pdschFreqAlloc.freqAlloc.numPrb    = schCalcNumPrb(tbSize,sib1SchCfg->sib1Mcs,numPdschSymbols);
    pdsch->pdschFreqAlloc.vrbPrbMapping       = 0; /* non-interleaved */
@@ -944,7 +944,7 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
       return RFAILED;
    }
 
-   slot = (cell->slotInfo.slot + SCHED_DELTA + PHY_DELTA + BO_DELTA) % cell->numSlots;
+   slot = (cell->slotInfo.slot + SCHED_DELTA + PHY_DELTA_DL + BO_DELTA) % cell->numSlots;
    schDlSlotInfo = cell->schDlSlotInfo[slot];
 
    SCH_ALLOC(schDlSlotInfo->dlMsgInfo, sizeof(DlMsgInfo));

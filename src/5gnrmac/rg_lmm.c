@@ -65,8 +65,8 @@
 #include "mac_sch_interface.h"
 #include "lwr_mac_upr_inf.h"
 #include "mac.h"
-#include "lwr_mac_phy.h"
 #include "lwr_mac_fsm.h"
+#include "lwr_mac_phy.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -258,8 +258,6 @@ RgMngmt  *cfg     /* config structure  */
 #ifdef INTEL_WLS_MEM
          /* Start WLS message receiver thread */
          LwrMacStartWlsRcvr();
-         /* Allocate memory for UL transmissions */
-         LwrMacEnqueueWlsBlock();
 #endif
 	 reason = rgLMMGenCfg(inst,&cfg->t.cfg); 
 	 break;

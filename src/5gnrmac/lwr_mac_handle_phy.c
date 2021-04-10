@@ -123,15 +123,6 @@ uint8_t procSlotInd(fapi_slot_ind_t *fapiSlotInd)
       DU_LOG("\nERROR  -->  LWR_MAC: Memory allocation failed in procSlotInd");
       ret = RFAILED;
    }
-
-#ifdef INTEL_WLS_MEM
-   slotIndIdx++;
-   if(slotIndIdx > WLS_MEM_FREE_PRD)
-   {
-      slotIndIdx = 1;
-   }
-   freeWlsBlockList(slotIndIdx - 1);
-#endif
    return ret;
 }
 
