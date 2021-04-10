@@ -113,10 +113,10 @@ void schCalcSlotValues(SlotIndInfo slotInd, SchSlotValue *schSlotValue)
     *        on PHY_DELTA + SCHED_DELTA + BO_DELTA                 *
     ****************************************************************/
 
-   ADD_DELTA_TO_TIME(slotInd, schSlotValue->currentTime, PHY_DELTA);
-   ADD_DELTA_TO_TIME(slotInd, schSlotValue->broadcastTime, PHY_DELTA + SCHED_DELTA);
-   ADD_DELTA_TO_TIME(slotInd, schSlotValue->rarTime, PHY_DELTA + SCHED_DELTA);
-   ADD_DELTA_TO_TIME(slotInd, schSlotValue->dlMsgTime, PHY_DELTA + SCHED_DELTA);
+   ADD_DELTA_TO_TIME(slotInd, schSlotValue->currentTime, PHY_DELTA_DL);
+   ADD_DELTA_TO_TIME(slotInd, schSlotValue->broadcastTime, PHY_DELTA_DL + SCHED_DELTA);
+   ADD_DELTA_TO_TIME(slotInd, schSlotValue->rarTime, PHY_DELTA_DL + SCHED_DELTA);
+   ADD_DELTA_TO_TIME(slotInd, schSlotValue->dlMsgTime, PHY_DELTA_DL + SCHED_DELTA);
 }
 
 /*******************************************************************

@@ -19,6 +19,7 @@
 /* This file is the entry point for Lower MAC */
 
 #include "common_def.h"
+#include "lwr_mac_fsm.h"
 #include "lwr_mac_phy.h"
 
 /**************************************************************************
@@ -79,7 +80,12 @@ uint8_t lwrMacActvTsk(Pst *pst, Buffer *mBuf)
 #ifdef INTEL_WLS_MEM
 	       case EVT_START_WLS_RCVR:
 		  {
-		     SPutMsg(mBuf);
+		     ODU_PUT_MSG_BUF(mBuf);
+
+		     /* Allocate memory for intial UL transmission */
+		     LwrMacEnqueueWlsBlock();
+
+		     /* Start thread to receive from L1 */
 		     DU_LOG("\nINFO  -->  LWR MAC: Starting WLS receiver thread");
 		     LwrMacRecvPhyMsg();
 		     break;

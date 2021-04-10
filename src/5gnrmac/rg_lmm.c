@@ -61,12 +61,11 @@
 #endif
 #include "ss_rbuf.h"
 #include "ss_rbuf.x"
-#include "lwr_mac.h"         /* MAC CL defines */
 #include "mac_sch_interface.h"
 #include "lwr_mac_upr_inf.h"
 #include "mac.h"
-#include "lwr_mac_phy.h"
 #include "lwr_mac_fsm.h"
+#include "lwr_mac_phy.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -77,7 +76,6 @@ Void rgGetSId ARGS((SystemId *s));
 #endif /* __cplusplus */
 
 /* Public variable declaration */
-LwrMacCb   lwrMacCb;
 MacCb  macCb;
 
 /* forward references */
@@ -186,19 +184,11 @@ Reason reason          /* reason */
    SAttachSRngBuf(SS_RNG_BUF_ULMAC_TO_ULRLC, SS_RBUF_ENT_ULRLC,SS_RNG_RX);
 #endif
 
-   /* Initializing CL control block */
-   memset(&lwrMacCb, 0, sizeof(LwrMacCb));
-   lwrMacCb.region = region;
-   lwrMacCb.pool = 0;
-   lwrMacCb.clCfgDone = TRUE;
-   lwrMacCb.numCell = 0;
-   lwrMacCb.phyState = PHY_STATE_IDLE; 
-
    /* Initialize Scheduler as well */
    schActvInit(ENTMAC, (DEFAULT_CELLS + SCH_INST_START), DFLT_REGION, PWR_UP);
 
    /* Initialize lower mac */
-   lwrMacLayerInit();
+   lwrMacLayerInit(region, 0);
 
    return ROK;
 
@@ -258,8 +248,6 @@ RgMngmt  *cfg     /* config structure  */
 #ifdef INTEL_WLS_MEM
          /* Start WLS message receiver thread */
          LwrMacStartWlsRcvr();
-         /* Allocate memory for UL transmissions */
-         LwrMacEnqueueWlsBlock();
 #endif
 	 reason = rgLMMGenCfg(inst,&cfg->t.cfg); 
 	 break;

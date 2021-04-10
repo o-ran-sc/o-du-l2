@@ -25,8 +25,8 @@
 #include "mac_sch_interface.h"
 #include "lwr_mac_upr_inf.h"
 #include "mac.h"
-#include "lwr_mac_phy.h"
 #include "lwr_mac_fsm.h"
+#include "lwr_mac_phy.h"
 #include "mac_utils.h"
 #include "lwr_mac_utils.h"
 #include "lwr_mac.h"
@@ -283,7 +283,7 @@ uint8_t LwrMacSendToL1(void *msg)
    {
       currMsg = (p_fapi_api_queue_elem_t)msg;
       msgLen = currMsg->msg_len + sizeof(fapi_api_queue_elem_t);
-      addWlsBlockToFree(currMsg, msgLen, (slotIndIdx-1));
+      addWlsBlockToFree(currMsg, msgLen, (lwrMacCb.phySlotIndCntr-1));
       if(currMsg->p_next == NULLP)
       {
 	 DU_LOG("\nERROR  -->  LWR MAC : There cannot be only one block to send");
@@ -303,7 +303,7 @@ uint8_t LwrMacSendToL1(void *msg)
       {
 	 /* Sending the next msg */
 	 msgLen = currMsg->msg_len + sizeof(fapi_api_queue_elem_t);
-	 addWlsBlockToFree(currMsg, msgLen, (slotIndIdx-1));
+	 addWlsBlockToFree(currMsg, msgLen, (lwrMacCb.phySlotIndCntr-1));
 	 if(currMsg->p_next != NULLP)
 	 {
 	    ret = WLS_Put(wlsHdlr, WLS_VA2PA(wlsHdlr, currMsg), msgLen, currMsg->msg_type, WLS_SG_NEXT);

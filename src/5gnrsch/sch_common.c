@@ -483,7 +483,7 @@ uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
    memset(&ulSchedInfo, 0, sizeof(UlSchedInfo));
 
    /* add PHY delta */
-   ADD_DELTA_TO_TIME(cell->slotInfo,ulTimingInfo,PHY_DELTA+SCHED_DELTA);
+   ADD_DELTA_TO_TIME(cell->slotInfo,ulTimingInfo,PHY_DELTA_UL+SCHED_DELTA);
 
    ulSchedInfo.cellId = cell->cellId;
    ulSchedInfo.slotIndInfo.cellId = ulSchedInfo.cellId;
@@ -491,7 +491,8 @@ uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
    ulSchedInfo.slotIndInfo.slot = ulTimingInfo.slot;
 
    /* Schedule resources for PRACH */
-   schPrachResAlloc(cell, &ulSchedInfo, ulTimingInfo);
+   if(cell->firstSib1Transmitted)
+    schPrachResAlloc(cell, &ulSchedInfo, ulTimingInfo);
 
    schUlSlotInfo = cell->schUlSlotInfo[ulTimingInfo.slot]; 
    if(schUlSlotInfo->schPuschInfo)
