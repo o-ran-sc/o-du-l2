@@ -7470,6 +7470,11 @@ void F1APMsgHdlr(Buffer *mBuf)
 		     DU_LOG("\nINFO  -->  F1AP : Received RRC delivery report");
 		     break;
 		  }
+        case InitiatingMessage__value_PR_UEContextReleaseRequest:
+        {
+           DU_LOG("\nINFO  -->  F1AP : Received UE Context Release Request");
+           break;
+        }
 	       default:
 		  {
 		     DU_LOG("\nERROR  -->  F1AP : Invalid type of intiating message [%d]",\

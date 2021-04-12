@@ -110,7 +110,6 @@ extern StartupConfig g_cfg;
 #endif
 
 DuCfgParams duCfgParam;
-
 /************************************************************************
  *
  * @brief Converts enum values into actual value of Poll retransmit timer
@@ -12287,6 +12286,199 @@ uint8_t procF1UeContextModificationReq(F1AP_PDU_t *f1apMsg)
    return ret; 
 }
 /*****************************************************************i
+*
+* @brief Free memory allocated for UE Context Release Request
+*
+* @details
+*
+*    Function : FreeUeContextReleaseReq
+*
+*    Functionality:
+*         - Free memory allocated for UE Context Release Request
+*
+* @params[in] F1AP_PDU_t *f1apMsg
+* @return void 
+*
+* *************************************************************/
+void FreeUeContextReleaseReq(F1AP_PDU_t *f1apMsg)
+{
+   uint8_t ieIdx;
+   UEContextReleaseRequest_t *ueReleaseReq = NULLP;
+   
+   if(f1apMsg)
+   {
+      if(f1apMsg->choice.initiatingMessage)
+      {
+         ueReleaseReq =&f1apMsg->choice.initiatingMessage->value.choice.UEContextReleaseRequest;
+         if(ueReleaseReq->protocolIEs.list.array)
+         {
+            for(ieIdx=0 ; ieIdx<ueReleaseReq->protocolIEs.list.count; ieIdx++)
+            {
+               DU_FREE(ueReleaseReq->protocolIEs.list.array[ieIdx], sizeof(UEContextModificationResponse_t));
+            }
+            DU_FREE(ueReleaseReq->protocolIEs.list.array, ueReleaseReq->protocolIEs.list.size);
+         }
+         DU_FREE(f1apMsg->choice.initiatingMessage, sizeof(InitiatingMessage_t));
+      }
+      DU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
+   }
+
+}
+/*****************************************************************i
+*
+* @brief Build and Send UE Context Release Request  
+*
+* @details
+*
+*    Function : BuildAndSendUeContextReleaseReq
+*
+*    Functionality:
+*         - Build and Send UE Context Release Request 
+*
+* @params[in]
+* @return ROK     - success
+*         RFAILED - failure
+*
+* *************************************************************/
+uint8_t BuildAndSendUeContextReleaseReq(uint8_t ueIdx, uint16_t cellId)
+{
+   uint8_t ieIdx =0;
+   uint8_t ret = RFAILED;
+   uint16_t cellIdx =0;
+   uint16_t crnti = 0;
+   uint8_t  elementCnt = 0;
+   uint32_t  gnbCuUeF1apId =0;   /* gNB-CU UE F1AP Id */
+   uint32_t  gnbDuUeF1apId =0;   /* gNB-DU UE F1AP Id */
+   asn_enc_rval_t encRetVal; 
+   F1AP_PDU_t *f1apMsg = NULLP;
+   UEContextReleaseRequest_t *ueReleaseReq = NULLP;
+
+   DU_LOG("\nINFO  --> Building the UE Context Release Request");
+   do
+   {
+      DU_ALLOC(f1apMsg, sizeof(F1AP_PDU_t));
+      if(f1apMsg == NULLP)
+      {
+         DU_LOG("\nERROR  -->  F1AP : BuildAndSendUeContextReleaseReq(): Memory allocation failed for f1apMsg");
+         break;
+      }
+
+      f1apMsg->present = F1AP_PDU_PR_initiatingMessage;
+      DU_ALLOC(f1apMsg->choice.initiatingMessage, sizeof(InitiatingMessage_t));
+      if(f1apMsg->choice.initiatingMessage == NULLP)
+      {
+         DU_LOG("\nERROR  -->  F1AP : BuildAndSendUeContextReleaseReq(): Memory allocation failed for\
+         initiatingMessage");   
+         break;
+      }
+      f1apMsg->choice.initiatingMessage->procedureCode = ProcedureCode_id_UEContextReleaseRequest;
+      f1apMsg->choice.initiatingMessage->criticality = Criticality_reject;
+      f1apMsg->choice.initiatingMessage->value.present = \
+      InitiatingMessage__value_PR_UEContextReleaseRequest;
+
+      ueReleaseReq = &f1apMsg->choice.initiatingMessage->value.choice.UEContextReleaseRequest;
+
+      elementCnt = 3;
+
+      ueReleaseReq->protocolIEs.list.count = elementCnt;
+      ueReleaseReq->protocolIEs.list.size = elementCnt * sizeof(UEContextReleaseRequest_t);
+
+      /* Initialize the F1Setup members */
+      DU_ALLOC(ueReleaseReq->protocolIEs.list.array,ueReleaseReq->protocolIEs.list.size);
+      if(ueReleaseReq->protocolIEs.list.array == NULLP)
+      {
+         DU_LOG("\nERROR  -->  F1AP : BuildAndSendUeContextReleaseReq(): Memory allocation failed for IE array");
+         break;
+      }
+      for(ieIdx=0; ieIdx<elementCnt; ieIdx++)
+      {
+         DU_ALLOC(ueReleaseReq->protocolIEs.list.array[ieIdx],\
+               sizeof(UEContextReleaseRequest_t));
+         if(ueReleaseReq->protocolIEs.list.array[ieIdx] == NULLP)
+         {
+            DU_LOG("\nERROR  -->  F1AP : BuildAndSendUeContextReleaseReq(): Memory allocation failed for IE elements");
+            break;
+         }
+      }
+     
+      /* Fetching Ue Cb Info*/
+      GET_CELL_IDX(cellId, cellIdx);
+      if(duCb.actvCellLst[cellIdx] == NULLP)
+      {
+         DU_LOG("\nERROR  -->  F1AP : BuildAndSendUeContextReleaseReq(): CellId doesnot persent");
+         break;
+      }
+      else
+      {
+         GET_CRNTI(crnti, ueIdx);
+         if(duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].crnti != crnti)
+         {
+            DU_LOG("\nERROR  -->  F1AP : BuildAndSendUeContextReleaseReq(): UEId doesnot persent");
+            break;
+         }
+         gnbDuUeF1apId = duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].gnbDuUeF1apId;
+         gnbCuUeF1apId = duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].gnbCuUeF1apId;
+      }
+
+      ieIdx=0; 
+      ueReleaseReq->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID; 
+      ueReleaseReq->protocolIEs.list.array[ieIdx]->criticality= Criticality_reject;
+      ueReleaseReq->protocolIEs.list.array[ieIdx]->value.present = \
+      UEContextReleaseRequestIEs__value_PR_GNB_CU_UE_F1AP_ID;
+      ueReleaseReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_CU_UE_F1AP_ID =gnbCuUeF1apId;
+      
+      ieIdx++;
+      ueReleaseReq->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID;
+      ueReleaseReq->protocolIEs.list.array[ieIdx]->criticality= Criticality_reject;
+      ueReleaseReq->protocolIEs.list.array[ieIdx]->value.present =\
+      UEContextReleaseRequestIEs__value_PR_GNB_DU_UE_F1AP_ID;
+      ueReleaseReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_UE_F1AP_ID =gnbDuUeF1apId;
+      
+      ieIdx++;
+      ueReleaseReq->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_Cause;
+      ueReleaseReq->protocolIEs.list.array[ieIdx]->criticality= Criticality_ignore;
+      ueReleaseReq->protocolIEs.list.array[ieIdx]->value.present =\
+      UEContextReleaseRequestIEs__value_PR_Cause;
+      ueReleaseReq->protocolIEs.list.array[ieIdx]->value.choice.Cause.present= Cause_PR_radioNetwork;
+      ueReleaseReq->protocolIEs.list.array[ieIdx]->value.choice.Cause.choice.radioNetwork =\
+      CauseRadioNetwork_ue_rejection;
+      
+      xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
+
+      /* Encode the F1SetupRequest type as APER */
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apMsg, PrepFinalEncBuf, encBuf);
+      /* Encode results */
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Could not encode UEContextReleaseRequest structure (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
+      }
+      else
+      {
+         DU_LOG("\nDEBUG   -->  F1AP : Created APER encoded buffer for UEContextReleaseRequest\n");
+         for(ieIdx=0; ieIdx< encBufSize; ieIdx++)
+         {
+            printf("%x",encBuf[ieIdx]);
+         }
+      }
+
+      /* Sending msg */
+      if(SendF1APMsg(DU_APP_MEM_REGION, DU_POOL) != ROK)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Sending UE Context Release Request failed");
+         break;
+      }
+      ret = ROK;
+      break;
+   }while(1);
+
+   FreeUeContextReleaseReq(f1apMsg);
+   return ret;
+}
+/**************************************************************
  *
  * @brief Handles received F1AP message and sends back response  
  *
