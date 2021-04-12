@@ -7427,93 +7427,98 @@ void F1APMsgHdlr(Buffer *mBuf)
    switch(f1apMsg->present)
    {
       case F1AP_PDU_PR_initiatingMessage:
-	 {
-	    switch(f1apMsg->choice.initiatingMessage->value.present)
-	    {
-	       case InitiatingMessage__value_PR_Reset:
-		  {
-		     DU_LOG("\nINFO  -->  F1AP : F1 reset request received ");
-		     BuildAndSendF1ResetAck();
-		     break;
-		  }
+         {
+            switch(f1apMsg->choice.initiatingMessage->value.present)
+            {
+               case InitiatingMessage__value_PR_Reset:
+                  {
+                     DU_LOG("\nINFO  -->  F1AP : F1 reset request received ");
+                     BuildAndSendF1ResetAck();
+                     break;
+                  }
 
-	       case InitiatingMessage__value_PR_F1SetupRequest:
-		  {
-		     DU_LOG("\nINFO  -->  F1AP : F1 setup request received");
-		     BuildAndSendF1SetupRsp();
-		     break;
-		  }
+               case InitiatingMessage__value_PR_F1SetupRequest:
+                  {
+                     DU_LOG("\nINFO  -->  F1AP : F1 setup request received");
+                     BuildAndSendF1SetupRsp();
+                     break;
+                  }
 
-	       case InitiatingMessage__value_PR_GNBDUConfigurationUpdate:
-		  {
-		     DU_LOG("\nINFO  -->  F1AP : GNB-DU config update received");
-		     BuildAndSendDUUpdateAck();
-		     DU_LOG("\nINFO  -->  F1AP : Sending F1 reset request");
-		     BuildAndSendF1ResetReq();
-		     break;
-		  }
-	       case InitiatingMessage__value_PR_InitialULRRCMessageTransfer:
-		  {
-		     DU_LOG("\nINFO  -->  F1AP : Received InitialULRRCMessageTransfer");
-		     procInitULRRCMsg(f1apMsg);
-		     break;
-		  }
-	       case InitiatingMessage__value_PR_ULRRCMessageTransfer:
-		  {
-		     DU_LOG("\nINFO  -->  F1AP : Received ULRRCMessageTransfer");
-		     procUlRrcMsg(f1apMsg);
-		     break;
-		  }
+               case InitiatingMessage__value_PR_GNBDUConfigurationUpdate:
+                  {
+                     DU_LOG("\nINFO  -->  F1AP : GNB-DU config update received");
+                     BuildAndSendDUUpdateAck();
+                     DU_LOG("\nINFO  -->  F1AP : Sending F1 reset request");
+                     BuildAndSendF1ResetReq();
+                     break;
+                  }
+               case InitiatingMessage__value_PR_InitialULRRCMessageTransfer:
+                  {
+                     DU_LOG("\nINFO  -->  F1AP : Received InitialULRRCMessageTransfer");
+                     procInitULRRCMsg(f1apMsg);
+                     break;
+                  }
+               case InitiatingMessage__value_PR_ULRRCMessageTransfer:
+                  {
+                     DU_LOG("\nINFO  -->  F1AP : Received ULRRCMessageTransfer");
+                     procUlRrcMsg(f1apMsg);
+                     break;
+                  }
 
-	       case InitiatingMessage__value_PR_RRCDeliveryReport:
-		  {
-		     DU_LOG("\nINFO  -->  F1AP : Received RRC delivery report");
-		     break;
-		  }
-	       default:
-		  {
-		     DU_LOG("\nERROR  -->  F1AP : Invalid type of intiating message [%d]",\
-		     f1apMsg->choice.initiatingMessage->value.present);
-		     return;
-		  }
-	    }/* End of switch(initiatingMessage) */
-	    break;
-	 }
+               case InitiatingMessage__value_PR_RRCDeliveryReport:
+                  {
+                     DU_LOG("\nINFO  -->  F1AP : Received RRC delivery report");
+                     break;
+                  }
+               case InitiatingMessage__value_PR_UEContextReleaseRequest:
+                  {
+                     DU_LOG("\nINFO  -->  F1AP : Received UE Context Release Request");
+                     break;
+                  }
+               default:
+                  {
+                     DU_LOG("\nERROR  -->  F1AP : Invalid type of intiating message [%d]",\
+                           f1apMsg->choice.initiatingMessage->value.present);
+                     return;
+                  }
+            }/* End of switch(initiatingMessage) */
+            break;
+         }
 
       case F1AP_PDU_PR_successfulOutcome:
-	 {
-	    switch(f1apMsg->choice.successfulOutcome->value.present)
-	    {
-	       case SuccessfulOutcome__value_PR_ResetAcknowledge:
-		  {
-		     DU_LOG("\nINFO  -->  F1Reset Acknowledgement is received successfully ");
-		     break;
-		  }
-	       case SuccessfulOutcome__value_PR_UEContextSetupResponse:
-		  {
-		     DU_LOG("\nINFO  -->  F1AP : UE ContextSetupResponse received");
-		     f1apMsgDb.dlRrcMsgCount++; /* keeping DL RRC Msg Count */
-		     break;
-		  }
-	       case SuccessfulOutcome__value_PR_UEContextModificationResponse:
-	          {
-		     DU_LOG("\nINFO  -->  F1AP : UE Context Modification Response received");
-		     break;
-		  }
-	       default:
-		  {
-		     DU_LOG("\nERROR  -->  F1AP : Invalid type of successful outcome message [%d]",\
-			   f1apMsg->choice.successfulOutcome->value.present);
-		     return;
-		  }
-	    }/* End of switch(successfulOutcome) */
-	    break;
-	 } 
+         {
+            switch(f1apMsg->choice.successfulOutcome->value.present)
+            {
+               case SuccessfulOutcome__value_PR_ResetAcknowledge:
+                  {
+                     DU_LOG("\nINFO  -->  F1Reset Acknowledgement is received successfully ");
+                     break;
+                  }
+               case SuccessfulOutcome__value_PR_UEContextSetupResponse:
+                  {
+                     DU_LOG("\nINFO  -->  F1AP : UE ContextSetupResponse received");
+                     f1apMsgDb.dlRrcMsgCount++; /* keeping DL RRC Msg Count */
+                     break;
+                  }
+               case SuccessfulOutcome__value_PR_UEContextModificationResponse:
+                  {
+                     DU_LOG("\nINFO  -->  F1AP : UE Context Modification Response received");
+                     break;
+                  }
+               default:
+                  {
+                     DU_LOG("\nERROR  -->  F1AP : Invalid type of successful outcome message [%d]",\
+                           f1apMsg->choice.successfulOutcome->value.present);
+                     return;
+                  }
+            }/* End of switch(successfulOutcome) */
+            break;
+         } 
       default:
-	 {
-	    DU_LOG("\nERROR  -->  F1AP : Invalid type of f1apMsg->present [%d]",f1apMsg->present);
-	    return;
-	 }
+         {
+            DU_LOG("\nERROR  -->  F1AP : Invalid type of f1apMsg->present [%d]",f1apMsg->present);
+            return;
+         }
    }/* End of switch(f1apMsg->present) */
 
 } /* End of F1APMsgHdlr */
