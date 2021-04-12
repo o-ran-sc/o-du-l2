@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dc701fee_50a58412",
+        "filename": "src/cm/gen.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 401,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-04-12T11:10:16Z",
+      "side": 1,
+      "message": "all macros from A can be removed instead of #if 0",
+      "revId": "614e47943e185f1bea01b57b76c674f05fb08205",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9fe8f22e_b629588f",
+        "filename": "src/cm/gen.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 549,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-04-12T11:10:16Z",
+      "side": 1,
+      "message": "remove everything under this block of #if 0 too",
+      "revId": "614e47943e185f1bea01b57b76c674f05fb08205",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e842a058_8a97974e",
+        "filename": "src/cm/gen.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 638,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-04-12T11:10:16Z",
+      "side": 1,
+      "message": "remove all macros under this #if 0",
+      "revId": "614e47943e185f1bea01b57b76c674f05fb08205",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "758b5763_13aa983b",
+        "filename": "src/cm/gen.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 685,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-04-12T11:10:16Z",
+      "side": 1,
+      "message": "remove all macros under this #if 0",
+      "revId": "614e47943e185f1bea01b57b76c674f05fb08205",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
