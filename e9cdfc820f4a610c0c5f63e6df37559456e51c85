@@ -1,0 +1,157 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cf2bb2f9_31cd1895",
+        "filename": "src/5gnrrlc/kw_udx_ul.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-14T11:35:24Z",
+      "side": 1,
+      "message": "Move declaration to rlc_mgr.h since it is defined in rlc_msg_hdl.c",
+      "revId": "e9cdfc820f4a610c0c5f63e6df37559456e51c85",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0585cd30_18ff890f",
+        "filename": "src/5gnrrlc/kw_udx_ul.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-14T11:35:24Z",
+      "side": 1,
+      "message": "rename to SendRlcUeCfgRspToDu to avoid ambiguity",
+      "revId": "e9cdfc820f4a610c0c5f63e6df37559456e51c85",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cd7d581f_52a35d02",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-14T11:35:24Z",
+      "side": 1,
+      "message": "this should be in rlc_upr_inf.c as it was in previous patch",
+      "revId": "e9cdfc820f4a610c0c5f63e6df37559456e51c85",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ddcf8baa_5c79e6a3",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 797,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-14T11:35:24Z",
+      "side": 1,
+      "message": "Param sequece : ueCb, rlcUeCfg",
+      "revId": "e9cdfc820f4a610c0c5f63e6df37559456e51c85",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ed0e51e7_df9f7fc6",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 860,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-14T11:35:24Z",
+      "side": 1,
+      "message": "instead of calling FILL_PST_RLC_TO_DUAPP everytime when sendRlcUeDeleteRspToDu() is called, move the macro inse sendRlcUeDeleteRspToDu() itself.",
+      "revId": "e9cdfc820f4a610c0c5f63e6df37559456e51c85",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "64b27d9f_1d8447db",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 861,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-14T11:35:24Z",
+      "side": 1,
+      "message": "mentioned in last review, RlcProcCfgReq could fail due to reasons other than Invald UeId as well.",
+      "revId": "e9cdfc820f4a610c0c5f63e6df37559456e51c85",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bda2c370_f95f2bfb",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 865,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-14T11:35:24Z",
+      "side": 1,
+      "message": "anyway RFAILED is returned in next line. no need of this one",
+      "revId": "e9cdfc820f4a610c0c5f63e6df37559456e51c85",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4e9a6b47_65d54ffa",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 892,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-14T11:35:24Z",
+      "side": 1,
+      "message": "free ueDelete",
+      "revId": "e9cdfc820f4a610c0c5f63e6df37559456e51c85",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0d3a7f2a_da8b8900",
+        "filename": "src/cm/du_app_rlc_inf.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 803,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-14T11:35:24Z",
+      "side": 1,
+      "message": "ueDelRsp",
+      "revId": "e9cdfc820f4a610c0c5f63e6df37559456e51c85",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
