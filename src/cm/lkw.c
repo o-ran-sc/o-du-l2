@@ -18,7 +18,7 @@
 
 /********************************************************************20**
   
-        Name:     LTE-RLC Layer 
+        Name:     NR RLC Layer 
     
         Type:     C source file
   

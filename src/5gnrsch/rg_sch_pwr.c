@@ -52,8 +52,6 @@
 #include "rg_sch_inf.x"    /* typedefs for Scheduler */
 #include "rg_sch.x"        /* typedefs for Scheduler */
 #include "rg_sch_cmn.x"
-#include "rl_interface.h"
-#include "rl_common.h"
 
 
 /* Current specs have 23 dBm as max tx power capability for UEs */

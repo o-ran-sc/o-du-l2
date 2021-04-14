@@ -46,8 +46,6 @@
 #include "rg_sch_err.h"    /* Scheduler error defines */
 #include "rg_sch.h"        /* Scheduler defines */
 #include "rg_sch_cmn.h"
-#include "rl_interface.h"
-#include "rl_common.h"
 
 /* header/extern include files (.x) */
 
