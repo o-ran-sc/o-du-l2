@@ -44,7 +44,30 @@
 #include "sch_utils.h"
 #include "math.h"
 
-/* spec-38.213 Table 13-1 */
+#ifdef NR_TDD
+/* spec-38.213 Table 13-4 for SCS=30KHz */
+/* Note: Picking Table 13-4 and not 13-6 since band supported is n78 and
+ * corresponding minimum B/W is 10 MHz */
+int8_t coresetIdxTable[MAX_CORESET_INDEX][4] = {
+{   1,   24,   2,   0}, /* index 0  */
+{   1,   24,   2,   1}, /* index 1  */
+{   1,   24,   2,   2}, /* index 2  */
+{   1,   24,   2,   3}, /* index 3  */
+{   1,   24,   2,   4}, /* index 4  */
+{   1,   24,   3,   0}, /* index 5  */
+{   1,   24,   3,   1}, /* index 6  */
+{   1,   24,   3,   2}, /* index 7  */
+{   1,   24,   3,   3}, /* index 8  */
+{   1,   24,   3,   4}, /* index 9  */
+{   1,   48,   1,  12}, /* index 10 */
+{   1,   48,   1,  14}, /* index 11 */
+{   1,   48,   1,  16}, /* index 12 */
+{   1,   48,   2,  12}, /* index 13 */
+{   1,   48,   2,  14}, /* index 14 */
+{   1,   48,   2,  16}, /* index 15 */
+};
+#else
+/* spec-38.213 Table 13-1 for SCS=15KHz */
 int8_t coresetIdxTable[MAX_CORESET_INDEX][4] = {
 {   1,   24,   2,   0}, /* index 0  */
 {   1,   24,   2,   2}, /* index 1  */
@@ -63,6 +86,7 @@ int8_t coresetIdxTable[MAX_CORESET_INDEX][4] = {
 {   1,   96,   3,  38}, /* index 14 */
 {   0,    0,   0,   0}, /* index 15 */
 };
+#endif
 
 /* spec-38.213 Table 13-11 */
 /* m value is scaled to 2, when using it in formula, divide by 2 */
@@ -514,8 +538,8 @@ uint16_t schCalcNumPrb(uint16_t tbSize, uint16_t mcs, uint8_t numSymbols)
 
    tbSize = tbSize * 8; //Calculate tbSize in bits
 
-   /* formula used for calculation of rbSize, 38.213 section 5.1.3.2 *
-    * Ninfo = Nre . R . Qm . v                                       *
+   /* formula used for calculation of rbSize, 38.214 section 5.1.3.2 *
+    * Ninfo = S . Nre . R . Qm . v                                       *
     * Nre' = Nsc . NsymPdsch - NdmrsSymb - Noh                       *
     * Nre = min(156,Nre') . nPrb                                     */
 
@@ -647,6 +671,14 @@ void schInitDlSlot(SchDlSlotInfo *schDlSlotInfo)
    {
       memset(&schDlSlotInfo->ssbInfo[itr], 0, sizeof(SsbInfo));
    }
+#if 0
+   //make allocation for SSB
+   if(cell->firstSsbTransmitted)
+   {
+      //TODO check if this slot and sfn are for ssb
+
+   }
+#endif
 }
 
 #ifdef NR_TDD

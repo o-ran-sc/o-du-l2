@@ -704,7 +704,7 @@ uint8_t schInitCellCb(Inst inst, SchCellCfg *schCellCfg)
  *              uint8_t offsetPointA : offset
  *  @return  void
  **/
-void fillSchSib1Cfg(uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg *sib1SchCfg, uint16_t pci, uint8_t offsetPointA)
+void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg *sib1SchCfg, uint16_t pci, uint8_t offsetPointA)
 {
    uint8_t coreset0Idx = 0;
    uint8_t searchSpace0Idx = 0;
@@ -720,6 +720,7 @@ void fillSchSib1Cfg(uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg *sib1SchCfg,
    uint8_t FreqDomainResource[6] = {0};
    uint16_t tbSize = 0;
    uint8_t numPdschSymbols = 12; /* considering pdsch region from 2 to 13 */
+   uint8_t ssbIdx = 0;
 
    PdcchCfg *pdcch = &(sib1SchCfg->sib1PdcchCfg);
    PdschCfg *pdsch = &(sib1SchCfg->sib1PdschCfg);
@@ -745,7 +746,8 @@ void fillSchSib1Cfg(uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg *sib1SchCfg,
     * [(O . 2^u + i . M )  ] mod numSlotsPerSubframe 
     * assuming u = 0, i = 0, numSlotsPerSubframe = 10
     * Also, from this configuration, coreset0 is only on even subframe */
-   slotIndex = ((oValue * 1) + (0 * mValue)) % numSlots; 
+   slotIndex = (int)((oValue*pow(2, mu)) + ceil(ssbIdx*mValue))%numSlots;
+//   slotIndex = ((oValue * 1) + (0 * mValue)) % numSlots; 
    sib1SchCfg->n0 = slotIndex;
 
    /* calculate the PRBs */
@@ -831,7 +833,7 @@ void fillSchSib1Cfg(uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg *sib1SchCfg,
    pdsch->dmrs.dmrsAddPos                    = DMRS_ADDITIONAL_POS;
 
    pdsch->pdschFreqAlloc.resourceAllocType   = 1; /* RAT type-1 RIV format */
-   pdsch->pdschFreqAlloc.freqAlloc.startPrb  = offset + SCH_SSB_NUM_PRB; /* the RB numbering starts from coreset0,
+   pdsch->pdschFreqAlloc.freqAlloc.startPrb  = offsetPointA + SCH_SSB_NUM_PRB + 1; /* the RB numbering starts from coreset0,
 									    and PDSCH is always above SSB */
    pdsch->pdschFreqAlloc.freqAlloc.numPrb    = schCalcNumPrb(tbSize,sib1SchCfg->sib1Mcs,numPdschSymbols);
    pdsch->pdschFreqAlloc.vrbPrbMapping       = 0; /* non-interleaved */
@@ -876,7 +878,7 @@ uint8_t SchHdlCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
    cellCb->macInst = pst->srcInst;
 
    /* derive the SIB1 config parameters */
-   fillSchSib1Cfg(schCellCfg->bandwidth, cellCb->numSlots,
+   fillSchSib1Cfg(schCellCfg->numerology, schCellCfg->bandwidth, cellCb->numSlots,
 	 &(schCellCfg->sib1SchCfg), schCellCfg->phyCellId,
 	 schCellCfg->ssbSchCfg.ssbOffsetPointA);
    memcpy(&cellCb->cellCfg, schCellCfg, sizeof(SchCellCfg));
