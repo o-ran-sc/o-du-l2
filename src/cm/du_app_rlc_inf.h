@@ -31,7 +31,8 @@
 #define EVENT_DL_RRC_MSG_RSP_TO_DU 217
 #define EVENT_DL_USER_DATA_TRANS_TO_RLC 218
 #define EVENT_UL_USER_DATA_TRANS_TO_DU 219
-
+#define EVENT_RLC_UE_DELETE_REQ 220
+#define EVENT_RLC_UE_DELETE_RSP 221
 
 #define RB_ID_SRB 0
 #define RB_ID_DRB 1
@@ -58,6 +59,13 @@ typedef enum
    TRANSMISSION_COMPLETE,
    TRANSMISSION_FAILED
 }DlMsgState;
+
+typedef enum
+{
+   SUCCESS            ,  /*!< No Failure */
+   INVALID_CELLID      ,  /*!< CellId not present */
+   INVALID_UEID        ,  /*!< UEId not present */
+}UeDeleteResult;
 
 typedef enum
 {
@@ -201,6 +209,19 @@ typedef struct rlcUeCfgRsp
    FailureReason  reason;
 }RlcUeCfgRsp;
 
+typedef struct rlcUeDelete
+{
+   uint16_t      cellId;
+   uint8_t       ueIdx;
+}RlcUeDelete;
+
+typedef struct rlcUeDeleteRsp
+{
+   uint16_t       cellId;
+   uint8_t        ueIdx;
+   UeDeleteResult result;
+}RlcUeDeleteRsp;
+
 /* UL RRC Message from RLC to DU APP */
 typedef struct ulRrcMsgInfo
 {
@@ -314,6 +335,14 @@ typedef uint8_t (*DuRlcDlUserDataToRlcFunc) ARGS((
    Pst           *pst,
    RlcDlUserDataInfo *dlDataMsg));
 
+typedef uint8_t (*RlcDuUeDeleteRsp) ARGS((
+   Pst          *pst,
+   RlcUeDeleteRsp  *ueDeleteRsp));
+
+typedef uint8_t (*DuRlcUeDeleteReq) ARGS((
+   Pst           *pst,
+   RlcUeDelete *ueDelete));
+
 /* Pack/Unpack function declarations */
 uint8_t packDuRlcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg);
 uint8_t unpackRlcUeCreateReq(DuRlcUeCreateReq func, Pst *pst, Buffer *mBuf);
@@ -344,6 +373,12 @@ uint8_t RlcProcUeReconfigReq(Pst *pst, RlcUeCfg *ueCfg);
 uint8_t DuProcRlcDlRrcMsgRsp(Pst *pst, RlcDlRrcMsgRsp *dlRrcMsg);
 uint8_t DuProcRlcUlUserDataTrans(Pst *pst, RlcUlUserDatInfo *ulUserData);
 uint8_t RlcProcDlUserDataTransfer(Pst *pst, RlcDlUserDataInfo *dlDataMsgInfo);
+uint8_t packDuRlcUeDeleteReq(Pst *pst, RlcUeDelete *ueDelete);
+uint8_t unpackRlcUeDeleteReq(DuRlcUeDeleteReq func, Pst *pst, Buffer *mBuf);
+uint8_t RlcProcUeDeleteReq(Pst *pst, RlcUeDelete *ueDelete);
+uint8_t DuProcRlcUeDeleteRsp(Pst *pst, RlcUeDeleteRsp *ueDeleteRsp);
+uint8_t packRlcDuUeDeleteRsp(Pst *pst, RlcUeDeleteRsp *ueDeleteRsp);
+uint8_t unpackRlcUeDeleteRsp(RlcDuUeDeleteRsp func, Pst *pst, Buffer *mBuf);
 
 #endif /* RLC_INF_H */
 

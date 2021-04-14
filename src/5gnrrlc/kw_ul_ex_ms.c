@@ -224,6 +224,11 @@ Buffer *mBuf            /* message buffer */
                      ret = unpackRlcUeReconfigReq(RlcProcUeReconfigReq, pst, mBuf);
                      break;
                   }
+               case EVENT_RLC_UE_DELETE_REQ:
+               {
+                  ret = unpackRlcUeDeleteReq(RlcProcUeDeleteReq, pst, mBuf);
+                  break;
+               }
 
                case LKW_EVT_STS_REQ:
                   {

@@ -43,6 +43,14 @@
 #include "du_app_rlc_inf.h"
 #include "rlc_utils.h"
 #include "rlc_upr_inf_api.h"
+
+RlcDuUeDeleteRsp rlcUeDeleteRspOpts[] =
+{
+  packRlcDuUeDeleteRsp,     /* 0 - loosely coupled */
+  DuProcRlcUeDeleteRsp,     /* 1 - tightly coupled */
+  packRlcDuUeDeleteRsp     /* 2 - LWLC loosely coupled */
+};
+
 /*******************************************************************
  *
  * @brief Fills RLC UL UE Cfg Rsp from RlcCRsp 
@@ -719,6 +727,170 @@ uint8_t RlcProcDlUserDataTransfer(Pst *pst, RlcDlUserDataInfo *dlDataMsgInfo)
    /* Free memory allocated by du app */
    RLC_SHRABL_STATIC_BUF_FREE(RLC_MEM_REGION_DL, RLC_POOL, datReqInfo, sizeof(RlcDatReqInfo));
    RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, dlDataMsgInfo, sizeof(RlcDlUserDataInfo));
+   return ROK;
+}
+/***********************************************************
+*
+* @brief
+*
+*        Handler for the ue delete response to DUAPP
+*
+* @b Description:
+*
+*        This function reports  ue delete response to DUAPP
+*
+*  @param[in] post  Post structure,uint8_t ueIdx, uint16_t cellId,
+*  UeDeleteResult result
+*
+*  @return  uint16_t
+*      -# ROK
+*      -# RFAILED
+*
+*************************************************************/
+uint8_t sendRlcUeDeleteRspToDu(Pst *pst, uint8_t ueIdx, uint16_t cellId, UeDeleteResult result)
+{
+   /* jump to specific primitive depending on configured selector */
+   uint8_t ret = ROK;
+   RlcUeDeleteRsp *ueDeleteRsp = NULLP;
+
+   RLC_ALLOC_SHRABL_BUF(pst->region, pst->pool, ueDeleteRsp, sizeof(RlcUeDeleteRsp));
+   if(!ueDeleteRsp)
+   {
+      DU_LOG("\nERROR  -->  RLC: sendRlcUeDeleteRspToDu(): Memory allocation failed ");
+      ret = RFAILED;
+   }
+   else
+   {
+      ueDeleteRsp->cellId = cellId;
+      ueDeleteRsp->ueIdx = ueIdx;
+      ueDeleteRsp->result = result;
+
+      ret =  (*rlcUeDeleteRspOpts[pst->selector])(pst, ueDeleteRsp);
+      if(ret == ROK)
+      {
+         DU_LOG("\nDEBUG  -->  RLC: UE Delete response send successfully");
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  RLC: SendRlcUeDeleteRspToDu():Failed to send UE Delete response to DU");
+         RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueDeleteRsp, sizeof(RlcUeDeleteRsp));
+         return RFAILED;
+      }
+   }
+   return ret;
+}
+
+/* ****************************************************************
+ *
+ * @brief filling RLC UE delete configuration
+ *
+ * @details
+ *
+ *    Function : fillRlcCfgInfo
+ *
+ *    Functionality: filling RLC UE delete configuration
+ *
+ *
+ * @params[in] RlcUlUeCb *ueCb, RlcCfgInfo *rlcUeCfg
+ *
+ * @return void
+ *
+ * ****************************************************************/
+void fillRlcUeDelInfo(RlcCfgInfo *rlcUeCfg, RlcUlUeCb *ueCb)
+{
+   uint8_t lcIdx;
+
+   rlcUeCfg->ueId    = ueCb->ueId;
+   rlcUeCfg->cellId  = ueCb->cellId;
+   rlcUeCfg->numEnt = 0;
+   for(lcIdx=0; lcIdx<RLC_MAX_LCH_PER_UE && rlcUeCfg->numEnt < 1; lcIdx++)
+   {
+      if(ueCb->lCh[lcIdx].ulRbCb != NULLP)
+      {
+         rlcUeCfg->entCfg[rlcUeCfg->numEnt].rbId    = 0;
+         rlcUeCfg->entCfg[rlcUeCfg->numEnt].rbType  = 0;
+         rlcUeCfg->entCfg[rlcUeCfg->numEnt].cfgType = CKW_CFG_DELETE_UE;
+         rlcUeCfg->numEnt++;
+      }
+   }
+}
+/*******************************************************************
+*
+* @brief Handles Ue delete Request from DU APP
+*
+* @details
+*
+*    Function : RlcProcUeDeleteReq
+*
+*    Functionality:
+*      Handles Ue delete Request from DU APP
+*
+* @params[in] Post structure pointer
+*             RlcUeCfg pointer
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t RlcProcUeDeleteReq(Pst *pst, RlcUeDelete *ueDelete)
+{
+   Pst nPst;
+   RlcCb *gRlcCb;
+   RlcCfgInfo *rlcUeCfg = NULLP;
+   RlcUlUeCb *ueCb = NULLP;
+
+   DU_LOG("\nDEBUG  -->  RLC: UE Delete request received. CellID[%d] UEIDX[%d]",ueDelete->cellId, ueDelete->ueIdx);
+
+   gRlcCb = RLC_GET_RLCCB(pst->dstInst);
+   rlcDbmFetchUlUeCb(gRlcCb,ueDelete->ueIdx, ueDelete->cellId, &ueCb);
+   if(ueCb != NULLP)
+   {
+      if(ueDelete->cellId == ueCb->cellId)
+      {
+         RLC_ALLOC(gRlcCb, rlcUeCfg, sizeof(RlcCfgInfo));
+         if(rlcUeCfg == NULLP)
+         {
+            DU_LOG("\nERROR  -->  RLC: deleteRlcUeCb(): Failed to allocate memory");
+            return RFAILED;
+         }
+         else
+         {
+            memset(rlcUeCfg, 0, sizeof(RlcCfgInfo));
+            fillRlcUeDelInfo(rlcUeCfg, ueCb);
+            if(RlcProcCfgReq(pst, rlcUeCfg) != ROK)
+            {
+               DU_LOG("\nERROR  -->  RLC: deleteRlcUeCb(): Failed to delete UE information");
+               FILL_PST_RLC_TO_DUAPP(nPst, RLC_UL_INST, EVENT_RLC_UE_DELETE_RSP);
+               if(sendRlcUeDeleteRspToDu(&nPst, ueDelete->ueIdx, ueDelete->cellId, INVALID_UEID) != ROK)
+               {
+                  DU_LOG("\nERROR  -->  RLC: RlcProcUeDeleteReq():Failed to send UE Delete response to DU");
+                  RLC_FREE_SHRABL_BUF(nPst.region, nPst.pool, ueDelete, sizeof(RlcUeDelete));
+                  return RFAILED;
+               }
+               return RFAILED;
+            }
+         }
+      }
+      else
+      {
+         FILL_PST_RLC_TO_DUAPP(nPst, RLC_UL_INST, EVENT_RLC_UE_DELETE_RSP);
+         if(sendRlcUeDeleteRspToDu(&nPst, ueDelete->ueIdx, ueDelete->cellId, INVALID_CELLID) != ROK)
+         {
+            DU_LOG("\nERROR  -->  RLC: RlcProcUeDeleteReq():Failed to send UE Delete response to DU");
+            RLC_FREE_SHRABL_BUF(nPst.region, nPst.pool, ueDelete, sizeof(RlcUeDelete));
+            return RFAILED;
+         }
+      }
+   }
+   else
+   {
+      FILL_PST_RLC_TO_DUAPP(nPst, RLC_UL_INST, EVENT_RLC_UE_DELETE_RSP);
+      if(sendRlcUeDeleteRspToDu(&nPst, ueDelete->ueIdx, ueDelete->cellId, INVALID_UEID) != ROK)
+      {
+         DU_LOG("\nERROR  -->  RLC: RlcProcUeDeleteReq():Failed to send UE Delete response to DU");
+         RLC_FREE_SHRABL_BUF(nPst.region, nPst.pool, ueDelete, sizeof(RlcUeDelete));
+         return RFAILED;
+      }
+   }
    return ROK;
 }
 /**********************************************************************

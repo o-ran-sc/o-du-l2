@@ -355,6 +355,107 @@ uint8_t packMacSchModUeConfigReq(Pst *pst, SchUeCfg  *ueCfg)
    }
    return ROK;
 }
+/*******************************************************************
+*
+* @brief Pack and Send Cell Delete Request from MAC to SCH
+*
+* @details
+*
+*    Function : packMacSchCellDeleteReq
+*
+*    Functionality:
+*       Pack and Send  Cell Delete Request from MAC to SCH
+*
+* @params[in] (Pst *pst,  SchCellDelete *schCellDelete
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t packMacSchCellDeleteReq(Pst *pst,  SchCellDelete *schCellDelete)
+{
+   if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LC))
+   {
+      /* TODO */
+   }
+   else
+   {
+      return RFAILED;
+   }
+   return ROK;
+}
+/*******************************************************************
+*
+* @brief Packs and send CELL delete response
+*
+* @details
+*
+*    Function : packSchCellDeleteRsp
+*
+*    Functionality:
+*      Packs and send CELL delete response
+*
+* @params[in] Post structure
+*              SchCellDeleteRsp  *schCellDeleteRsp
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+
+uint8_t packSchCellDeleteRsp(Pst *pst, SchCellDeleteRsp  *schCellDeleteRsp)
+{
+    return ROK;
+}
+/*******************************************************************
+*
+* @brief Pack and Send UE Delete Request from MAC to SCH
+*
+* @details
+*
+*    Function : packMacSchUeDeleteReq
+*
+*    Functionality:
+*       Pack and Send  UE Delete Request from MAC to SCH
+*
+* @params[in] Pst *pst,  SchUeDelete *schUeDelete
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t packMacSchUeDeleteReq(Pst *pst,  SchUeDelete *schUeDelete)
+{
+     if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LC))
+     {
+        /* TODO */
+     }
+     else
+     {
+        return RFAILED;
+     }
+     return ROK;
+}
+/*******************************************************************
+*
+* @brief Packs and send UE delete response
+*
+* @details
+*
+*    Function : packSchUeDeleteRsp
+*
+*    Functionality:
+*      Packs and send UE delete response
+*
+* @params[in] Pst *pst, SchUeDeleteRsp  *schUeDeleteRsp
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+
+uint8_t packSchUeDeleteRsp(Pst *pst, SchUeDeleteRsp  *schUeDeleteRsp)
+{
+   return ROK;
+}
 
 /**********************************************************************
   End of file

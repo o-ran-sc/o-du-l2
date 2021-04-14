@@ -31,6 +31,10 @@
 #define EVENT_UCI_IND_TO_SCH         12
 #define EVENT_MODIFY_UE_CONFIG_REQ_TO_SCH 13
 #define EVENT_UE_RECONFIG_RSP_TO_MAC 14
+#define EVENT_UE_DELETE_REQ_TO_SCH   15
+#define EVENT_UE_DELETE_RSP_TO_MAC   16
+#define EVENT_CELL_DELETE_REQ_TO_SCH   17
+#define EVENT_CELL_DELETE_RSP_TO_MAC   18
 
 
 /*macros*/
@@ -100,6 +104,13 @@
       toFill.sfn%=MAX_SFN;                                 \
    }                                                       \
 }
+
+typedef enum
+{
+    NOT_APPLICABLE,
+    INVALID_CELLID,
+    INVALID_UEIDX
+}ErrorCause;
 
 typedef enum
 {
@@ -1452,6 +1463,17 @@ typedef struct schUeCfgRsp
    SchFailureCause cause;
 }SchUeCfgRsp;
 
+typedef struct schCellDelete 
+{
+   uint16_t   cellId;
+}SchCellDelete;
+
+
+typedef struct schCellDeleteRsp
+{
+   uint16_t   cellId;
+   SchMacRsp  rsp;
+}SchCellDeleteRsp;
 typedef struct dataVolInfo
 {
    uint8_t  lcgId;
@@ -1475,6 +1497,22 @@ typedef struct srUciIndInfo
    uint8_t     numSrBits;
    uint8_t     srPayload[MAX_SR_BITS_IN_BYTES];
 }SrUciIndInfo;
+
+typedef struct schUeDelete
+{
+    uint16_t   cellId;
+    uint16_t   crnti;
+}SchUeDelete;
+
+
+typedef struct schUeDeleteRsp
+{
+     uint16_t   cellId;
+     uint16_t   crnti;
+     SchMacRsp  rsp;
+     ErrorCause cause;
+}SchUeDeleteRsp;
+
 
 /* function pointers */
 
@@ -1539,6 +1577,22 @@ typedef uint8_t (*SchUeReCfgRspFunc) ARGS((
 	 Pst         *pst,           /* Post structure */
 	 SchUeCfgRsp *cfgRsp));       /* Scheduler UE Cfg response */
 
+typedef uint8_t (*MacSchCellDeleteReqFunc) ARGS((
+Pst         *pst,           /* Post structure */
+SchCellDelete *schCellDelete)); /*Scheduler UE Del*/
+typedef uint8_t (*SchCellDeleteRspFunc) ARGS((
+Pst          *pst,           /* Post structure */
+SchCellDeleteRsp *schCellDeleteRsp));       /* Scheduler UE delete response */
+
+typedef uint8_t (*MacSchUeDeleteReqFunc) ARGS((
+Pst         *pst,           /* Post structure */
+SchUeDelete *schUeDelete)); /*Scheduler UE Del*/
+
+typedef uint8_t (*SchUeDeleteRspFunc) ARGS((
+Pst          *pst,           /* Post structure */
+SchUeDeleteRsp *schUeDeleteRsp));       /* Scheduler UE delete response */
+
+
 /* function declarations */
 uint8_t packMacSchSlotInd(Pst *pst, SlotIndInfo *slotInd);
 uint8_t packSchMacDlAlloc(Pst *pst, DlSchedInfo  *dlSchedInfo);
@@ -1573,6 +1627,14 @@ uint8_t packMacSchModUeConfigReq(Pst *pst, SchUeCfg *ueCfgToSch);
 uint8_t MacSchModUeConfigReq(Pst *pst, SchUeCfg *ueCfgToSch);
 uint8_t packSchUeReconfigRsp(Pst *pst, SchUeCfgRsp *cfgRsp);
 uint8_t MacProcSchUeReconfigRsp(Pst *pst, SchUeCfgRsp *cfgRsp);
+uint8_t packMacSchCellDeleteReq(Pst *pst,  SchCellDelete *schCellDelete);
+uint8_t MacSchCellDeleteReq(Pst *pst, SchCellDelete  *schCellDelete);
+uint8_t packSchCellDeleteRsp(Pst *pst, SchCellDeleteRsp  *schCellDeleteRsp);
+uint8_t MacProcSchCellDeleteRsp(Pst *pst, SchCellDeleteRsp *schCellDeleteRsp);
+uint8_t packMacSchUeDeleteReq(Pst *pst,  SchUeDelete *schUeDelete);
+uint8_t MacSchUeDeleteReq(Pst *pst, SchUeDelete  *schUeDelete);
+uint8_t packSchUeDeleteRsp(Pst *pst, SchUeDeleteRsp  *schUeDeleteRsp);
+uint8_t MacProcSchUeDeleteRsp(Pst *pst, SchUeDeleteRsp *schUeDeleteRsp);
 
 /**********************************************************************
   End of file
