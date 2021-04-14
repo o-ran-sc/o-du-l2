@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "24c86f64_75f005ce",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3167,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-04-14T12:37:46Z",
+      "side": 1,
+      "message": "It best we cross check this with Intel. At least add a comment that it may have to be modified",
+      "revId": "17ed719eb236ee4d717f48d09f833abfb68e4477",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d4beea61_84f986c6",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3221,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-04-14T12:37:46Z",
+      "side": 1,
+      "message": "same comment as above",
+      "revId": "17ed719eb236ee4d717f48d09f833abfb68e4477",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d2b6f351_b40492c5",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3480,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-04-14T12:37:46Z",
+      "side": 1,
+      "message": "Add a comment since Intel expects UL TTI as well",
+      "revId": "17ed719eb236ee4d717f48d09f833abfb68e4477",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0f1349f2_55e0b78e",
+        "filename": "src/5gnrmac/lwr_mac_fsm.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-04-14T12:37:46Z",
+      "side": 1,
+      "message": "is it required that this param be global? If yes, it must begin with a g.",
+      "revId": "17ed719eb236ee4d717f48d09f833abfb68e4477",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "770ec247_3236708a",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 391,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-04-14T12:37:46Z",
+      "side": 1,
+      "message": "can be rnamed to phySlotIndCntr",
+      "revId": "17ed719eb236ee4d717f48d09f833abfb68e4477",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0339463e_46f0b1a0",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-04-14T12:37:46Z",
+      "side": 1,
+      "message": "Add a comment stating that Intel requires 0-15 cores",
+      "revId": "17ed719eb236ee4d717f48d09f833abfb68e4477",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
