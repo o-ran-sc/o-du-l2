@@ -25,7 +25,11 @@
 #define SCH_MU3_NUM_SLOTS 40 
 #define SCH_MU4_NUM_SLOTS 50 
 #define SCH_MAX_SFN 1024
-#define MAX_NUM_RB 106 /* value for numerology 0 15Khz */
+#ifdef NR_TDD
+#define MAX_NUM_RB 275 /* value for numerology 1, 100 MHz */
+#else
+#define MAX_NUM_RB 106 /* value for numerology 0, 20 MHz */
+#endif
 #define SCH_MIB_TRANS 8  /* MIB transmission as per 38.331 is every 80 ms */
 #define SCH_SIB1_TRANS 16 /* SIB1 transmission as per 38.331 is every 160 ms */
 #define SCH_NUM_SC_PRB 12 /* number of SCs in a PRB */

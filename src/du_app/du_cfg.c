@@ -619,8 +619,12 @@ uint8_t readCfg()
 
    /* Mib Params */
    mib.sysFrmNum = SYS_FRAME_NUM;
+#ifdef NR_TDD
+   mib.subCarrierSpacingCommon = MIB__subCarrierSpacingCommon_scs30or120;
+#else
    mib.subCarrierSpacingCommon = MIB__subCarrierSpacingCommon_scs15or60;
-   mib.ssb_SubcarrierOffset = SSB_SC_OFFSET; 
+#endif
+   mib.ssb_SubcarrierOffset = SSB_SC_OFFSET; //Kssb
    mib.dmrs_TypeA_Position = MIB__dmrs_TypeA_Position_pos2;
    mib.controlResourceSetZero = CORESET_0_INDEX;
    mib.searchSpaceZero = SEARCHSPACE_0_INDEX;
