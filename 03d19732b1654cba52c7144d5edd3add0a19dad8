@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2b943e31_1a13898a",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 749,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-15T08:36:14Z",
+      "side": 1,
+      "message": "as per spec, we should use floor(ssbIdx*mValue)",
+      "revId": "03d19732b1654cba52c7144d5edd3add0a19dad8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1c93cc5a_0ee4f700",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 750,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-15T08:36:14Z",
+      "side": 1,
+      "message": "can we remove this?",
+      "revId": "03d19732b1654cba52c7144d5edd3add0a19dad8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
