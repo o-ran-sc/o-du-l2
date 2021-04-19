@@ -9291,7 +9291,7 @@ uint8_t procUeReCfgCellInfo(MacUeCfg *macUeCfg, void *cellInfo)
  * ****************************************************************/
 void duFillModulationDetails(MacUeCfg *ueCfg, MacUeCfg *oldUeCfg, void *ueCap)
 {
-   UE_NR_Capability_t *ueNrCap;
+   UE_NR_Capability_t *ueNrCap=NULLP;
 
    if(ueCap)
       ueNrCap = (UE_NR_Capability_t *)ueCap;
@@ -12639,7 +12639,81 @@ uint8_t BuildAndSendUeContextReleaseComplete(uint32_t  gnbCuUeF1apId, uint32_t  
    /*TODO: To add trigger for UE context release complete, once the operations of UE context
     * release command are done*/
 }
+/*******************************************************************
+*
+* @brief added free part for the memory allocated by aper_decoder 
+*
+* @details
+*
+*    Function : freeAperDecodeUeContextReleaseCommand 
+*
+*    Functionality: added free part for the memory allocated by aper_decoder
+*
+* @params[in] F1AP_PDU_t *f1apMsg
+* @return void
+*
+* ****************************************************************/
+void freeAperDecodeUeContextReleaseCommand(F1AP_PDU_t *f1apMsg)
+{
+   uint8_t ieIdx=0;
+   UEContextReleaseCommand_t *ueContextReleaseCommand = NULLP;
 
+   ueContextReleaseCommand = &f1apMsg->choice.initiatingMessage->value.choice.UEContextReleaseCommand;
+   
+   if(ueContextReleaseCommand->protocolIEs.list.array)
+   {
+      for(ieIdx=0; ieIdx < ueContextReleaseCommand->protocolIEs.list.count; ieIdx++)
+      {
+         if(ueContextReleaseCommand->protocolIEs.list.array[ieIdx])
+         {
+            switch(ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->id)
+            {
+               case ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID:
+                  break;
+               case ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID:
+                  break;
+               case ProtocolIE_ID_id_Cause:
+                  break;
+               case ProtocolIE_ID_id_RRCContainer:
+               {
+                  if(ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.buf)
+                  {
+                     free(ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.buf);
+                  }
+                  break;
+               }
+               default :
+                  DU_LOG("\nERROR  -->  F1AP: freeAperDecodeUeContextReleaseCommand():Invalid IE Received: %ld"\
+                       ,ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->id);
+                  break;
+            }
+         }
+         free(ueContextReleaseCommand->protocolIEs.list.array[ieIdx]);
+      }
+      free(ueContextReleaseCommand->protocolIEs.list.array);
+   }
+}
+/*******************************************************************
+*
+* @brief processing of UE Context Release Command
+*
+* @details
+*
+*    Function : procF1UeContextReleaseCommand 
+*
+*    Functionality: processing of UE Context Release Command
+*
+* @params[in] F1AP_PDU_t *f1apMsg
+* @return void
+*
+* ****************************************************************/
+uint8_t procF1UeContextReleaseCommand(F1AP_PDU_t *f1apMsg)
+{
+   /*TODO: processing of DL RRC Msg Transfer to RLC->SCH->MAC-LOWER-MAC->PHY, if RRC container is received */
+   
+   freeAperDecodeUeContextReleaseCommand(f1apMsg);
+   return ROK;
+}
 /**************************************************************
  *
  * @brief Handles received F1AP message and sends back response  
@@ -12763,6 +12837,11 @@ void F1APMsgHdlr(Buffer *mBuf)
                   {
                      procF1UeContextModificationReq(f1apMsg);
                      break;
+                  }
+               case InitiatingMessage__value_PR_UEContextReleaseCommand:
+                  {
+                      procF1UeContextReleaseCommand(f1apMsg);
+                      break;
                   }
                default:
                   {
