@@ -12597,6 +12597,10 @@ void F1APMsgHdlr(Buffer *mBuf)
                      procF1UeContextModificationReq(f1apMsg);
                      break;
                   }
+               case InitiatingMessage__value_PR_UEContextReleaseCommand:
+                  {
+                      break;
+                  }
                default:
                   {
                      DU_LOG("\nERROR  -->  F1AP : Invalid type of F1AP_PDU_PR_initiatingMessage [%d]",
