@@ -11950,7 +11950,6 @@ uint8_t BuildAndSendUeContextModResp(uint8_t ueIdx, uint8_t cellId)
    }
    FreeUeContextModResp(f1apMsg);
    return ret;
-
 }
 /*******************************************************************
  *
@@ -12473,6 +12472,171 @@ uint8_t BuildAndSendUeContextReleaseReq(uint16_t cellId, uint8_t ueIdx)
    FreeUeContextReleaseReq(f1apMsg);
    return ret;
 }
+/*****************************************************************i
+ *
+ * @brief Free memory allocated for UE Context Release Complete
+ *
+ * @details
+ *
+ *    Function : FreeUeContextReleaseComplete
+ *
+ *    Functionality:
+ *         - Free memory allocated for UE Context Release Complete
+ *
+ * @params[in] F1AP_PDU_t *f1apMsg
+ * @return void
+ *
+ * *************************************************************/
+void FreeUeContextReleaseComplete(F1AP_PDU_t *f1apMsg)
+{
+   uint8_t ieIdx;
+   UEContextReleaseComplete_t *ueReleaseComplete = NULLP;
+
+   if(f1apMsg)
+   {
+      if(f1apMsg->choice.successfulOutcome)
+      {
+         ueReleaseComplete =&f1apMsg->choice.successfulOutcome->value.choice.UEContextReleaseComplete;
+         if(ueReleaseComplete->protocolIEs.list.array)
+         {
+            for(ieIdx=0 ; ieIdx<ueReleaseComplete->protocolIEs.list.count; ieIdx++)
+            {
+               DU_FREE(ueReleaseComplete->protocolIEs.list.array[ieIdx], sizeof(UEContextReleaseComplete_t));
+            }
+            DU_FREE(ueReleaseComplete->protocolIEs.list.array, ueReleaseComplete->protocolIEs.list.size);
+         }
+         DU_FREE(f1apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcome_t));
+      }
+      DU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
+   }
+
+}
+/*****************************************************************i
+ *
+ * @brief Build and Send UE Context Release Complete
+ *
+ * @details
+ *
+ *    Function : BuildAndSendUeContextReleaseComplete
+ *
+ *    Functionality:
+ *         - Build and Send UE Context Release Complete
+ *
+ * @params[in]
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * *************************************************************/
+uint8_t BuildAndSendUeContextReleaseComplete(uint32_t  gnbCuUeF1apId, uint32_t  gnbDuUeF1apId)
+{
+   bool memAllocFail = false;
+   uint8_t ieIdx =0, ret = RFAILED, elementCnt = 0;
+   asn_enc_rval_t encRetVal;
+   F1AP_PDU_t *f1apMsg = NULLP;
+   UEContextReleaseComplete_t *ueReleaseComplete = NULLP;
+
+   DU_LOG("\nINFO  --> Building the UE Context Release Complete");
+   do
+   {
+      DU_ALLOC(f1apMsg, sizeof(F1AP_PDU_t));
+      if(f1apMsg == NULLP)
+      {
+         DU_LOG("\nERROR  -->  F1AP : BuildAndSendUeContextReleaseComplete(): Memory allocation failed for f1apMsg");
+         break;
+      }
+
+      f1apMsg->present = F1AP_PDU_PR_successfulOutcome;
+      DU_ALLOC(f1apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcome_t));
+      if(f1apMsg->choice.successfulOutcome == NULLP)
+      {
+         DU_LOG("\nERROR  -->  F1AP : BuildAndSendUeContextReleaseComplete(): Memory allocation failed for\
+               successfulOutcome");
+         break;
+      }
+      f1apMsg->choice.successfulOutcome->procedureCode = ProcedureCode_id_UEContextRelease;
+      f1apMsg->choice.successfulOutcome->criticality = Criticality_reject;
+      f1apMsg->choice.successfulOutcome->value.present = \
+      SuccessfulOutcome__value_PR_UEContextReleaseComplete;
+
+      ueReleaseComplete = &f1apMsg->choice.successfulOutcome->value.choice.UEContextReleaseComplete;
+
+      elementCnt = 2;
+      ueReleaseComplete->protocolIEs.list.count = elementCnt;
+      ueReleaseComplete->protocolIEs.list.size = elementCnt * sizeof(UEContextReleaseComplete_t *);
+
+      /* Initialize the UE Release Complete members */
+      DU_ALLOC(ueReleaseComplete->protocolIEs.list.array,ueReleaseComplete->protocolIEs.list.size);
+      if(ueReleaseComplete->protocolIEs.list.array == NULLP)
+      {
+         DU_LOG("\nERROR  -->  F1AP : BuildAndSendUeContextReleaseComplete(): Memory allocation failed for IE array");
+         break;
+      }
+      for(ieIdx=0; ieIdx<elementCnt; ieIdx++)
+      {
+         DU_ALLOC(ueReleaseComplete->protocolIEs.list.array[ieIdx],\
+               sizeof(UEContextReleaseComplete_t));
+         if(ueReleaseComplete->protocolIEs.list.array[ieIdx] == NULLP)
+         {
+            DU_LOG("\nERROR  -->  F1AP : BuildAndSendUeContextReleaseComplete(): Memory allocation failed for IE\
+            elements");
+            memAllocFail = true;
+            break;
+         }
+      }
+      if(memAllocFail == true)
+         break;
+
+
+      ieIdx=0;
+      ueReleaseComplete->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID;
+      ueReleaseComplete->protocolIEs.list.array[ieIdx]->criticality= Criticality_reject;
+      ueReleaseComplete->protocolIEs.list.array[ieIdx]->value.present = \
+      UEContextReleaseCompleteIEs__value_PR_GNB_CU_UE_F1AP_ID;
+      ueReleaseComplete->protocolIEs.list.array[ieIdx]->value.choice.GNB_CU_UE_F1AP_ID =gnbCuUeF1apId;
+
+      ieIdx++;
+      ueReleaseComplete->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID;
+      ueReleaseComplete->protocolIEs.list.array[ieIdx]->criticality= Criticality_reject;
+      ueReleaseComplete->protocolIEs.list.array[ieIdx]->value.present =\
+      UEContextReleaseCompleteIEs__value_PR_GNB_DU_UE_F1AP_ID;
+      ueReleaseComplete->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_UE_F1AP_ID =gnbDuUeF1apId;
+
+      xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
+
+      /* Encode the F1SetupComplete type as APER */
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apMsg, PrepFinalEncBuf, encBuf);
+      /* Encode results */
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Could not encode UEContextReleaseComplete structure (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
+      }
+      else
+      {
+         DU_LOG("\nDEBUG   -->  F1AP : Created APER encoded buffer for UEContextReleaseComplete\n");
+         for(ieIdx=0; ieIdx< encBufSize; ieIdx++)
+         {
+            printf("%x",encBuf[ieIdx]);
+         }
+      }
+
+      /* Sending msg */
+      if(sendF1APMsg() != ROK)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Sending UE Context Release Complete failed");
+         break;
+      }
+      ret = ROK;
+      break;
+   }while(true);
+
+   FreeUeContextReleaseComplete(f1apMsg);
+   return ret;
+}
+
 /**************************************************************
  *
  * @brief Handles received F1AP message and sends back response  
