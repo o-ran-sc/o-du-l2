@@ -7505,6 +7505,11 @@ void F1APMsgHdlr(Buffer *mBuf)
                      DU_LOG("\nINFO  -->  F1AP : UE Context Modification Response received");
                      break;
                   }
+               case SuccessfulOutcome__value_PR_UEContextReleaseComplete:
+                  {
+                      DU_LOG("\nINFO  -->  F1AP : UE Context release complete received");
+                      break;
+                  }
                default:
                   {
                      DU_LOG("\nERROR  -->  F1AP : Invalid type of successful outcome message [%d]",\
