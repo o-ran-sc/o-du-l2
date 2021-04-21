@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a9eabb8_e4db36bd",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2760,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-21T18:11:38Z",
+      "side": 1,
+      "message": "send result instead of cellId_invalid",
+      "revId": "3bfb8390d918603136dd898dba5e9f1c29ae6510",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
