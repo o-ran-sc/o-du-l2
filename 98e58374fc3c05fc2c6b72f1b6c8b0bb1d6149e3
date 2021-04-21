@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "82a8cafe_2c03e587",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 7416,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-04-21T08:40:09Z",
+      "side": 1,
+      "message": "all uint8_t variables can be clubbed in one line",
+      "revId": "98e58374fc3c05fc2c6b72f1b6c8b0bb1d6149e3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "768d3c59_3a961ee7",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 7554,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-04-21T08:40:09Z",
+      "side": 1,
+      "message": "same comment as above",
+      "revId": "98e58374fc3c05fc2c6b72f1b6c8b0bb1d6149e3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d093f435_7ebb13fc",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 7559,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-04-21T08:40:09Z",
+      "side": 1,
+      "message": "free aper decode memory allocated for Ue Context Release Request",
+      "revId": "98e58374fc3c05fc2c6b72f1b6c8b0bb1d6149e3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cfc024af_cf2b0341",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 12602,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-04-21T08:40:09Z",
+      "side": 1,
+      "message": "check if any aper decode memory de-allocation required.",
+      "revId": "98e58374fc3c05fc2c6b72f1b6c8b0bb1d6149e3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
