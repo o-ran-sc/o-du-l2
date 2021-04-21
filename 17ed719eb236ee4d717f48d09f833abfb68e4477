@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "b68f8035_05f71424",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3167,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-21T14:24:16Z",
+      "side": 1,
+      "message": "Checked the same in testmac and FAPI translator code",
+      "parentUuid": "24c86f64_75f005ce",
+      "revId": "17ed719eb236ee4d717f48d09f833abfb68e4477",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d4beea61_84f986c6",
         "filename": "src/5gnrmac/lwr_mac_fsm.c",
         "patchSetId": 1
@@ -33,6 +51,24 @@
       "revId": "17ed719eb236ee4d717f48d09f833abfb68e4477",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f1e5f49a_815792ad",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3221,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-21T14:24:16Z",
+      "side": 1,
+      "message": "Checked the same in testmac and FAPI translator code",
+      "parentUuid": "d4beea61_84f986c6",
+      "revId": "17ed719eb236ee4d717f48d09f833abfb68e4477",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "a0833b2e_fe455e23",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3480,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-21T14:24:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d2b6f351_b40492c5",
+      "revId": "17ed719eb236ee4d717f48d09f833abfb68e4477",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0f1349f2_55e0b78e",
         "filename": "src/5gnrmac/lwr_mac_fsm.h",
         "patchSetId": 1
@@ -67,6 +121,24 @@
       "revId": "17ed719eb236ee4d717f48d09f833abfb68e4477",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "45940dda_bce2062b",
+        "filename": "src/5gnrmac/lwr_mac_fsm.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-21T14:24:16Z",
+      "side": 1,
+      "message": "moved into lwrMaccb and renamed to phySlotIndCntr",
+      "parentUuid": "0f1349f2_55e0b78e",
+      "revId": "17ed719eb236ee4d717f48d09f833abfb68e4477",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "d9366630_0d0f08f5",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 391,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-21T14:24:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "770ec247_3236708a",
+      "revId": "17ed719eb236ee4d717f48d09f833abfb68e4477",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0339463e_46f0b1a0",
         "filename": "src/du_app/du_mgr_main.c",
         "patchSetId": 1
@@ -101,6 +191,24 @@
       "revId": "17ed719eb236ee4d717f48d09f833abfb68e4477",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6cc33247_76bdf95d",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-21T14:24:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0339463e_46f0b1a0",
+      "revId": "17ed719eb236ee4d717f48d09f833abfb68e4477",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
