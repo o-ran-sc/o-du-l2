@@ -24,6 +24,7 @@
 #include "du_app_mac_inf.h"
 #include "mac_sch_interface.h"
 #include "lwr_mac.h"
+#include "lwr_mac_fsm.h"
 #include "lwr_mac_phy.h"
 #ifdef INTEL_FAPI
 #include "fapi.h"

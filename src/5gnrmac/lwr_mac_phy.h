@@ -33,7 +33,6 @@ typedef enum
 }ErrorCode;
 
 #ifdef INTEL_WLS_MEM
-#define WLS_MEM_FREE_PRD       10        /* Free memory after 10 slot ind */
 #define LWR_MAC_WLS_BUF_SIZE   32000      /* Size of WLS memory block */
 #define EVT_START_WLS_RCVR     1
 
@@ -51,7 +50,10 @@ typedef enum
 /* free a static buffer from WLS memory*/
 #define WLS_MEM_FREE(_datPtr, _size)                         \
    if(_datPtr)                                               \
-      SPutSBufWls(0, 0, (Data *)_datPtr, _size);
+   {                                                         \
+      SPutSBufWls(0, 0, (Data *)_datPtr, _size);             \
+      _datPtr = NULLP;                                       \
+   }
 
 typedef struct wlsBlockToFree
 {
@@ -60,7 +62,6 @@ typedef struct wlsBlockToFree
 }WlsBlockToFree;
 
 CmLListCp wlsBlockToFreeList[WLS_MEM_FREE_PRD];
-uint8_t slotIndIdx;
 
 void freeWlsBlockList(uint8_t idx);
 void LwrMacEnqueueWlsBlock();

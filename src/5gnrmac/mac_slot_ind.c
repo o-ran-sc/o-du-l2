@@ -25,6 +25,7 @@
 #include "rlc_mac_inf.h"
 #include "mac.h"
 #include "mac_upr_inf_api.h"
+#include "lwr_mac.h"
 #include "lwr_mac_fsm.h"
 #include "mac_utils.h"
 
@@ -203,7 +204,7 @@ void buildAndSendMuxPdu(SlotIndInfo currTimingInfo)
 
    GET_CELL_IDX(currTimingInfo.cellId, cellIdx);
 
-   ADD_DELTA_TO_TIME(currTimingInfo, muxTimingInfo, PHY_DELTA);
+   ADD_DELTA_TO_TIME(currTimingInfo, muxTimingInfo, PHY_DELTA_DL);
    currDlSlot = &macCb.macCell[cellIdx]->dlSlot[muxTimingInfo.slot];
    if(currDlSlot->dlInfo.dlMsgAlloc)
    {
@@ -314,9 +315,8 @@ uint8_t macProcSlotInd(SlotIndInfo slotInd)
    /* Trigger for DL TTI REQ */
    fillDlTtiReq(slotInd);
 
-   /* Trigger for UL TTI REQ */
-   fillUlTtiReq(slotInd);
-   
+   /* TODO : check if this too needs to be sent in sequence with Dl and Ul TTI req.
+    * If so , move trigger for fillUlDciReq to lower mac */
    /* Trigger for UL DCI REQ */
    fillUlDciReq(slotInd);
 
@@ -345,7 +345,7 @@ uint8_t fapiMacSlotInd(Pst *pst, SlotIndInfo *slotInd)
    volatile uint32_t     startTime=0;
 
 #ifdef ODU_SLOT_IND_DEBUG_LOG
-   DU_LOG("\nDEBUG  -->  MAC : Slot Indication received");
+   DU_LOG("\nDEBUG  -->  MAC : Slot Indication received. [%d : %d]", slotInd->sfn, slotInd->slot);
 #endif
    /*starting Task*/
    ODU_START_TASK(&startTime, PID_MAC_TTI_IND);
@@ -387,6 +387,16 @@ uint8_t fapiMacSlotInd(Pst *pst, SlotIndInfo *slotInd)
    /*stoping Task*/
    ODU_STOP_TASK(startTime, PID_MAC_TTI_IND);
    MAC_FREE_SHRABL_BUF(pst->region, pst->pool, slotInd, sizeof(SlotIndInfo));
+
+#ifdef INTEL_WLS_MEM
+   lwrMacCb.phySlotIndCntr++;
+   if(lwrMacCb.phySlotIndCntr > WLS_MEM_FREE_PRD)
+   {
+      lwrMacCb.phySlotIndCntr = 1;
+   }
+   freeWlsBlockList(lwrMacCb.phySlotIndCntr - 1);
+#endif
+
    return ret;
 }  /* fapiMacSlotInd */
 

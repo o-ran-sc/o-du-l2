@@ -206,7 +206,7 @@ uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst)
    uint8_t  ret = ROK;
 
    /* RAR will sent with a delay of RAR_DELAY */
-   rarSlot = (rachInd->timingInfo.slot+RAR_DELAY+PHY_DELTA)%cell->numSlots;
+   rarSlot = (rachInd->timingInfo.slot+RAR_DELAY+PHY_DELTA_DL)%cell->numSlots;
 
    SchDlSlotInfo *schDlSlotInfo = cell->schDlSlotInfo[rarSlot]; /* RAR will sent in the next slot */
 

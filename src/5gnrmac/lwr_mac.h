@@ -66,6 +66,7 @@ typedef struct lwrMacGlobalCb
    Region          region;
    Pool            pool;
    bool            clCfgDone;   /* CL configuration done */
+   uint8_t         phySlotIndCntr;
    LwrMacCellCb    cellCb[MAX_NUM_CELL];   /* List of Cells configured */
    uint8_t         numCell;  /* Number of Cells configured */
    PhyState        phyState;    /* State of PHY */
@@ -273,7 +274,6 @@ LwrMacCellCb * lwrMacGetCellCb ARGS((uint16_t cellId));
 uint32_t reverseBits(uint32_t num, uint8_t numBits);
 void fillDlDciPayload(uint8_t *buf, uint8_t *bytePos, uint8_t *bitPos,\
       uint32_t val, uint8_t valSize);
-void lwrMacLayerInit();
 
 #endif
 

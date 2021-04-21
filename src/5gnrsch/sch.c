@@ -945,7 +945,7 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
       return RFAILED;
    }
 
-   slot = (cell->slotInfo.slot + SCHED_DELTA + PHY_DELTA + BO_DELTA) % cell->numSlots;
+   slot = (cell->slotInfo.slot + SCHED_DELTA + PHY_DELTA_DL + BO_DELTA) % cell->numSlots;
    schDlSlotInfo = cell->schDlSlotInfo[slot];
 
    SCH_ALLOC(schDlSlotInfo->dlMsgInfo, sizeof(DlMsgInfo));
