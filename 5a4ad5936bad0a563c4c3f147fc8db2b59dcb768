@@ -16,6 +16,24 @@
       "revId": "5a4ad5936bad0a563c4c3f147fc8db2b59dcb768",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "71c0eabc_4da10e72",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 12530,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-04-21T12:54:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "38de31b7_06911992",
+      "revId": "5a4ad5936bad0a563c4c3f147fc8db2b59dcb768",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
