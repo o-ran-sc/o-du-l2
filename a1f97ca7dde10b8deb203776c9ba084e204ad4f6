@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "0612da43_7805572c",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2482,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-04-21T12:01:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4511f9ab_66f1574b",
+      "revId": "a1f97ca7dde10b8deb203776c9ba084e204ad4f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a7541d3_ae3548ff",
         "filename": "src/5gnrmac/mac_ue_mgr.c",
         "patchSetId": 6
@@ -33,6 +51,24 @@
       "revId": "a1f97ca7dde10b8deb203776c9ba084e204ad4f6",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c141f2c6_19c7eb4f",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2723,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-04-21T12:01:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9a7541d3_ae3548ff",
+      "revId": "a1f97ca7dde10b8deb203776c9ba084e204ad4f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "035e3fb9_abe6ece6",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2764,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-04-21T12:01:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "66b76c28_93c0600f",
+      "revId": "a1f97ca7dde10b8deb203776c9ba084e204ad4f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dba6c49d_31429c69",
         "filename": "src/5gnrmac/mac_ue_mgr.c",
         "patchSetId": 6
@@ -67,6 +121,24 @@
       "revId": "a1f97ca7dde10b8deb203776c9ba084e204ad4f6",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c9e8a91d_5f0ad5f6",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2793,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-04-21T12:01:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dba6c49d_31429c69",
+      "revId": "a1f97ca7dde10b8deb203776c9ba084e204ad4f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "19c709d5_b658a578",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 674,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-04-21T12:01:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4c0a94c3_3fdf5047",
+      "revId": "a1f97ca7dde10b8deb203776c9ba084e204ad4f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2792b627_18da91a9",
         "filename": "src/5gnrsch/sch_ue_mgr.c",
         "patchSetId": 6
@@ -101,6 +191,24 @@
       "revId": "a1f97ca7dde10b8deb203776c9ba084e204ad4f6",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "45eccbb4_7eca2008",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 799,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-04-21T12:01:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2792b627_18da91a9",
+      "revId": "a1f97ca7dde10b8deb203776c9ba084e204ad4f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "61287dc2_a7971b2b",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 820,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-04-21T12:01:17Z",
+      "side": 1,
+      "message": "yes getSchCellCb is already exists but it  SchUeCfg *ueCfg information , but in ue delete we dont have any ueCfg information so not using that function.",
+      "parentUuid": "1cd3c84c_73c765b3",
+      "revId": "a1f97ca7dde10b8deb203776c9ba084e204ad4f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4b998dda_4a1b7d63",
         "filename": "src/5gnrsch/sch_ue_mgr.c",
         "patchSetId": 6
@@ -135,6 +261,24 @@
       "revId": "a1f97ca7dde10b8deb203776c9ba084e204ad4f6",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "919bb4f6_bd1da83c",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 847,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-04-21T12:01:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4b998dda_4a1b7d63",
+      "revId": "a1f97ca7dde10b8deb203776c9ba084e204ad4f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -155,6 +299,24 @@
     },
     {
       "key": {
+        "uuid": "46043677_f06f65af",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 848,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-04-21T12:01:17Z",
+      "side": 1,
+      "message": "removed, not allocating memory for schUeDelete.",
+      "parentUuid": "a944f7cd_711d8235",
+      "revId": "a1f97ca7dde10b8deb203776c9ba084e204ad4f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fd08f72c_e772defc",
         "filename": "src/du_app/du_f1ap_msg_hdl.h",
         "patchSetId": 6
@@ -166,6 +328,24 @@
       "writtenOn": "2021-04-15T06:18:25Z",
       "side": 1,
       "message": "this is declared in du_ue_mgr.h as well.\nKeep only in one header. Where is this function defined? keep in its corresponding header file",
+      "revId": "a1f97ca7dde10b8deb203776c9ba084e204ad4f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "52d9bb1b_9fdd36c5",
+        "filename": "src/du_app/du_f1ap_msg_hdl.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-04-21T12:01:17Z",
+      "side": 1,
+      "message": "removed.",
+      "parentUuid": "fd08f72c_e772defc",
       "revId": "a1f97ca7dde10b8deb203776c9ba084e204ad4f6",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
@@ -189,6 +369,24 @@
     },
     {
       "key": {
+        "uuid": "c5499a52_5cb9d6ee",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2678,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-04-21T12:01:17Z",
+      "side": 1,
+      "message": "it is belongs to resrcToAddModList. changed variable name.",
+      "parentUuid": "0ad71cbf_306ab523",
+      "revId": "a1f97ca7dde10b8deb203776c9ba084e204ad4f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2a4018f2_430eaf32",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 6
@@ -203,6 +401,24 @@
       "revId": "a1f97ca7dde10b8deb203776c9ba084e204ad4f6",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "25052866_10b2a840",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2754,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-04-21T12:01:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2a4018f2_430eaf32",
+      "revId": "a1f97ca7dde10b8deb203776c9ba084e204ad4f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
