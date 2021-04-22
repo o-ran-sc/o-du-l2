@@ -16,6 +16,24 @@
       "revId": "3bfb8390d918603136dd898dba5e9f1c29ae6510",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "17a02ac6_578e8de9",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2760,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-04-22T04:54:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9a9eabb8_e4db36bd",
+      "revId": "3bfb8390d918603136dd898dba5e9f1c29ae6510",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
