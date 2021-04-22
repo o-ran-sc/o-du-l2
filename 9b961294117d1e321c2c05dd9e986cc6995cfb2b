@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a8589e57_d556b5e0",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 2813,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-22T13:08:44Z",
+      "side": 1,
+      "message": "blank line before new func",
+      "revId": "9b961294117d1e321c2c05dd9e986cc6995cfb2b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "375e8425_e9ded580",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 2855,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-22T13:08:44Z",
+      "side": 1,
+      "message": "umUniDirUlCfg is being freed for RLC_UM_BI_DIRECTIONAL as well as RLC_UM_UNI_DIRECTIONAL_UL . Is this correct?",
+      "revId": "9b961294117d1e321c2c05dd9e986cc6995cfb2b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "19c2a1da_a2de482c",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 2866,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-22T13:08:44Z",
+      "side": 1,
+      "message": "blank line before new func",
+      "revId": "9b961294117d1e321c2c05dd9e986cc6995cfb2b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "843aebe7_bcaf168c",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 2910,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-22T13:08:44Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "9b961294117d1e321c2c05dd9e986cc6995cfb2b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b1e50dc4_bf97c7e5",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 2956,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-22T13:08:44Z",
+      "side": 1,
+      "message": "same",
+      "revId": "9b961294117d1e321c2c05dd9e986cc6995cfb2b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
