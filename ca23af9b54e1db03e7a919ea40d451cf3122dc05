@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "97f4a711_cd8b7c30",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 7497,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-04-22T07:43:20Z",
+      "side": 1,
+      "message": "for RRC release",
+      "revId": "ca23af9b54e1db03e7a919ea40d451cf3122dc05",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a5b0b427_7ee59638",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 12822,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-04-22T07:43:20Z",
+      "side": 1,
+      "message": "Add procF1UeContextReleaseCommand()\nand call freeApreDecode function inside that.\nAlso add a TODO: processing of DL RRC Msg Transfer to RLC-\u003eSCH-\u003eMAC-LOWER-MAC-\u003ePHY, if RRC container is received.",
+      "revId": "ca23af9b54e1db03e7a919ea40d451cf3122dc05",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
