@@ -24,17 +24,17 @@
  
     Desc:   Defines required by LTE MAC
  
-    File:   kw_udx.x
+    File:   rlc_dl_ul_inf.x
  
  
 **********************************************************************/
-/** @file kw_udx.x
+/** @file rlc_dl_ul_inf.x
 @brief This file contains basic data structures for the Uplink Downlink 
 interface.
 */
  
-#ifndef __UDX_X__
-#define __UDX_X__
+#ifndef __RLC_DL_UL_INF_X__
+#define __RLC_DL_UL_INF_X__
 
 #include "ckw.h"
 #include "ckw.x"
@@ -300,7 +300,7 @@ S16 rlcUlUdxL2MeasStopReq ARGS((Pst* pst, uint8_t measType));
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
-#endif /* __UDX_X__ */
+#endif /* __RLC_DL_UL_INF_X__ */
 
 
 /**********************************************************************

@@ -44,9 +44,9 @@
 #include "pju.h"           /* PJU defines */
 #include "lpj.h"           /* LPJ defines */
 #endif
-#include "kw_err.h"
-#include "kw_env.h"        /* RLC environment options */
-#include "kw.h"            /* RLC defines */
+#include "rlc_err.h"
+#include "rlc_env.h"        /* RLC environment options */
+#include "rlc_utils.h"            /* RLC defines */
 
 /* extern (.x) include files */
 #include "lkw.x"           /* LKW */
@@ -58,7 +58,7 @@
 #include "pju.x"           /* PJU defines */
 #include "lpj.x"           /* LPJ defines */
 #endif
-#include "kw.x"
+#include "rlc_utils.x"
 #include "ss_rbuf.h"
 #include "ss_rbuf.x"
 

@@ -32,8 +32,8 @@
 @brief RLC Product Structures, prototypes
 */
 
-#ifndef __KWX__
-#define __KWX__
+#ifndef __RLC_UTILS_X__
+#define __RLC_UTILS_X__
  
 #ifdef __cplusplus
 extern "C" {
@@ -659,7 +659,7 @@ Void rlcLmmSendAlarm ARGS ((RlcCb *gCb,
 }
 #endif /* __cplusplus */
 
-#endif /* __KWX__ */
+#endif /* __RLC_UTILS_X__ */
 
   
 /********************************************************************30**

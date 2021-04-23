@@ -31,11 +31,11 @@
                   --rlcUmUlReAssembleSdus
                   --kwUmmReEstablish 
 
-     File:     kw_umm_ul.c
+     File:     rlc_umm_ul.c
 
 **********************************************************************/
 /** 
- * @file kw_umm_ul.c
+ * @file rlc_umm_ul.c
  * @brief RLC Unacknowledged Mode uplink module
 */
 
@@ -46,11 +46,11 @@
 #include "kwu.h"                /* RLC service user */
 #include "lkw.h"                /* LM Interface */
 #include "rgu.h"                /* MAC layer */
-#include "kw_env.h"             /* RLC environment options */
+#include "rlc_env.h"             /* RLC environment options */
 
-#include "kw.h"                 /* RLC layer */
-#include "kw_err.h"
-#include "kw_ul.h"
+#include "rlc_utils.h"                 /* RLC layer */
+#include "rlc_err.h"
+#include "rlc_ul.h"
 
 
 /* header/extern include files (.x) */
@@ -60,8 +60,8 @@
 #include "lkw.x"                /* LM Interface */
 #include "rgu.x"                /* MAC later */
 
-#include "kw.x"                 /* RLC layer */
-#include "kw_ul.x"
+#include "rlc_utils.x"                 /* RLC layer */
+#include "rlc_ul.x"
 
 #define RLC_MODULE (RLC_DBGMASK_UM | RLC_DBGMASK_UL)
 

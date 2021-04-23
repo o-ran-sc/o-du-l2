@@ -27,15 +27,15 @@
                   to reflect the software architecture needed to run under the 
                   target system hardware architecture.
 
-        File:     kw_env.h
+        File:     rlc_env.h
   
 *********************************************************************21*/
-/** @file kw_env.h
+/** @file rlc_env.h
 @brief RLC Hash definitions
 */
 
-#ifndef __KWENVH__
-#define __KWENVH__
+#ifndef __RLC_ENV_H__
+#define __RLC_ENV_H__
 
 #define MAX_RLC_INSTANCES            2
 #define RLC_MAX_LI                       KWU_MAX_STA_IND_SDU
@@ -82,7 +82,7 @@
 #endif
 
 
-#endif /* __KWENVH__ */
+#endif /* __RLC_ENV_H__ */
   
 /********************************************************************30**
   

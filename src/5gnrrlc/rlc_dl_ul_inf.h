@@ -25,19 +25,19 @@
         Desc:    This file Contains the Data structures for and prototypes
                   UDX Interface
  
-        File:    kw_udx.h
+        File:    rlc_dl_ul_inf.h
   
 *********************************************************************21*/
 
-#ifndef __KW_UDX_H__
-#define __KW_UDX_H__
+#ifndef __RLC_DL_UL_INF_H__
+#define __RLC_DL_UL_INF_H__
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
 
-/** @file kw_udx.h
+/** @file rlc_dl_ul_inf.h
     @brief UDX Interface File (ckw.h)
 */
  

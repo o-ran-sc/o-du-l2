@@ -25,17 +25,17 @@
         Desc:    This file Contains the packing and unpacking functions for
                  UDX Interface
  
-        File:    kw_udx.c
+        File:    rlc_dl_ul_inf.c
   
 *********************************************************************21*/
 #include "common_def.h"
 #include "lkw.h"
-#include "kw_udx.h"           /* UDX defines */
-#include "kw.h"
+#include "rlc_dl_ul_inf.h"           /* UDX defines */
+#include "rlc_utils.h"
 
 /* extern (.x) include files */
 #include "lkw.x"
-#include "kw_udx.x"
+#include "rlc_dl_ul_inf.x"
 
 
 #ifdef LCUDX
@@ -1236,7 +1236,7 @@ S16 cmUnpkUdxStaPduReq(UdxStaPduReq func,Pst *pst,Buffer *mBuf)
 *
 *    Notes:   None
 *
-*    File:    kw_udx.c
+*    File:    rlc_dl_ul_inf.c
 *
 */
 S16 cmUnpkUdxStaProhTmrStart(UdxStaProhTmrStart func,Pst *pst,Buffer *mBuf)

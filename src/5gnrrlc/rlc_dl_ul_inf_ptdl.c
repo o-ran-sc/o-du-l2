@@ -24,11 +24,11 @@
   
      Desc:     C source code for INF Interface Module 
   
-     File:     kw_udx_ptdl.c
+     File:     rlc_dl_ul_inf_ptdl.c
   
 **********************************************************************/
 
-/** @file kw_udx_ptdl.c
+/** @file rlc_dl_ul_inf_ptdl.c
 */
 
 /* header include files (.h) */
@@ -37,12 +37,12 @@
 #include "ckw.h"           /* CKW defines */
 #include "kwu.h"           /* KWU defines */
 #include "rgu.h"           /* RGU defines */
-#include "kw_err.h"        /* Err defines */
-#include "kw_env.h"        /* RLC environment options */
+#include "rlc_err.h"        /* Err defines */
+#include "rlc_env.h"        /* RLC environment options */
 
-#include "kw.h"            /* RLC defines */
-#include "kw_udx.h"
-#include "kw_dl.h"
+#include "rlc_utils.h"            /* RLC defines */
+#include "rlc_dl_ul_inf.h"
+#include "rlc_dl.h"
 
 
 /* extern (.x) include files */
@@ -51,9 +51,9 @@
 #include "kwu.x"           /* KWU */
 #include "rgu.x"           /* RGU */
 
-#include "kw.x"
-#include "kw_udx.x"
-#include "kw_dl.x"
+#include "rlc_utils.x"
+#include "rlc_dl_ul_inf.x"
+#include "rlc_dl.x"
 
 
 #define UDX_MAX_SEL   3

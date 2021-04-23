@@ -49,13 +49,13 @@
 #include "ckw.h"           /* CKW defines */
 #include "kwu.h"           /* KWU defines */
 #include "rgu.h"           /* RGU defines */
-#include "kw_err.h"        /* Err defines */
-#include "kw_env.h"        /* RLC environment options */
+#include "rlc_err.h"        /* Err defines */
+#include "rlc_env.h"        /* RLC environment options */
 
-#include "kw.h"            /* RLC defines */
-#include "kw_dl.h"
-#include "kw_ul.h"
-#include "kw_udx.h"
+#include "rlc_utils.h"            /* RLC defines */
+#include "rlc_dl.h"
+#include "rlc_ul.h"
+#include "rlc_dl_ul_inf.h"
 
 /* extern (.x) include files */
 #include "lkw.x"           /* LKW */
@@ -63,10 +63,10 @@
 #include "kwu.x"           /* KWU */
 #include "rgu.x"           /* RGU */
 
-#include "kw.x"
-#include "kw_udx.x"
-#include "kw_dl.x"
-#include "kw_ul.x"
+#include "rlc_utils.x"
+#include "rlc_dl_ul_inf.x"
+#include "rlc_dl.x"
+#include "rlc_ul.x"
 
 #define RLC_MODULE RLC_DBGMASK_LMM
 

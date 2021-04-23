@@ -43,8 +43,8 @@
 #include "kwu.h"           /* KWU defines */
 #include "rgu.h"           /* RGU defines */
 
-#include "kw_env.h"        /* RLC environment options */
-#include "kw.h"            /* RLC defines */
+#include "rlc_env.h"        /* RLC environment options */
+#include "rlc_utils.h"            /* RLC defines */
 
 /* extern (.x) include files */
 #include "lkw.x"           /* LKW */
@@ -52,7 +52,7 @@
 #include "kwu.x"           /* KWU */
 #include "rgu.x"           /* RGU */
 
-#include "kw.x"
+#include "rlc_utils.x"
 
 /* local defines */
 #define MAXKWMI 2               /* max. layer management interfaces */

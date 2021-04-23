@@ -24,15 +24,15 @@
   
         Desc:     This file contain the hash definations for RLC 
  
-        File:     kw_err.h
+        File:     rlc_err.h
   
 *********************************************************************21*/
-/** @file kw_err.h
+/** @file rlc_err.h
 @brief RLC Hash definitions
 */
 
-#ifndef __KW_ERR_H__
-#define __KW_ERR_H__
+#ifndef __RLC_ERR_H__
+#define __RLC_ERR_H__
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
 #define RLCLOGERROR(cb,errCls, errCode, errVal, errDesc) \
@@ -357,7 +357,7 @@
 #define   EKW227      (ERRKW +  227)    /*     gp_pj_tmr.c: 576 */
 
 
-#endif /* __KW_ERR_H__ */
+#endif /* __RLC_ERR_H__ */
   
 /********************************************************************30**
   

@@ -25,16 +25,16 @@
         Desc:    This file contains all the data structures and 
                  prototypes for RLC in the uplink.
  
-        File:    kw_ul.x
+        File:    rlc_ul.x
   
 *********************************************************************21*/
 /** 
- * @file kw_ul.x
+ * @file rlc_ul.x
  * @brief RLC uplink structures, prototypes
 */
 
-#ifndef __KW_ULX__
-#define __KW_ULX__
+#ifndef __RLC_ULX__
+#define __RLC_ULX__
  
 #ifdef __cplusplus
 extern "C" {
@@ -643,7 +643,7 @@ uint8_t rlcProcDedLcUlData(Pst *pst, SuId suId, RguDDatIndInfo  *datInd);
 }
 #endif /* __cplusplus */
 
-#endif /* __KW_ULX__ */
+#endif /* __RLC_ULX__ */
 
   
 /********************************************************************30**

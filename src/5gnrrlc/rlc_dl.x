@@ -25,16 +25,16 @@
         Desc:    This file contains all the data structures and 
                  prototypes for RLC.
  
-        File:    kw_dl.x
+        File:    rlc_dl.x
   
 *********************************************************************21*/
 /** 
- * @file kw_dl.x
+ * @file rlc_dl.x
  * @brief RLC downlink structures, prototypes
 */
 
-#ifndef __KW_DLX__
-#define __KW_DLX__
+#ifndef __RLC_DLX__
+#define __RLC_DLX__
  
 #ifdef __cplusplus
 extern "C" {
@@ -840,7 +840,7 @@ Void rlcUtlFreeDlMem ARGS(( Void));
 }
 #endif /* __cplusplus */
 
-#endif /* __KW_DLX__ */
+#endif /* __RLC_DLX__ */
 
   
 /********************************************************************30**

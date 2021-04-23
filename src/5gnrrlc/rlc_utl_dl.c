@@ -32,11 +32,11 @@
                   --rlcUtlSendUlDataToDu 
                   --kwUtlShutDown
 
-     File:     kw_utl_dl.c
+     File:     rlc_utl_dl.c
 
 **********************************************************************/
 
-/** @file kw_utl_dl.c
+/** @file rlc_utl_dl.c
 @brief RLC Utility Module 
 */
 
@@ -52,11 +52,11 @@
 #include "lkw.h"           /* LKW defines */
 #include "rgu.h"           /* RGU defiens */
 
-#include "kw_env.h"        /* RLC environment options */
-#include "kw.h"            /* RLC defines */
-#include "kw_err.h"        /* Error defines */
-#include "kw_udx.h"
-#include "kw_dl.h"
+#include "rlc_env.h"        /* RLC environment options */
+#include "rlc_utils.h"            /* RLC defines */
+#include "rlc_err.h"        /* Error defines */
+#include "rlc_dl_ul_inf.h"
+#include "rlc_dl.h"
 
 /* extern (.x) include files */
 #include "ckw.x"           /* CKW includes */
@@ -64,11 +64,10 @@
 #include "lkw.x"           /* LKW inlcudes */
 #include "rgu.x"           /* RGU includes */
 
-#include "kw.x"            /* RLC includes */
-#include "kw_udx.x"        /* UDX interface includes */
-#include "kw_dl.x"         /* RLC downlink includes */
+#include "rlc_utils.x"            /* RLC includes */
+#include "rlc_dl_ul_inf.x"        /* UDX interface includes */
+#include "rlc_dl.x"         /* RLC downlink includes */
 
-#include "rlc_utils.h"
 #include "rlc_mac_inf.h"
 #include "du_app_rlc_inf.h"
 #include "rlc_lwr_inf_api.h"

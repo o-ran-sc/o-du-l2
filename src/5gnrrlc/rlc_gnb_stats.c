@@ -34,10 +34,10 @@
 #include "ckw.h"           /* CKW defines */
 #include "kwu.h"           /* KWU defines */
 #include "rgu.h"           /* RGU defines */
-#include "kw_err.h"        /* RLC error options */
-#include "kw_env.h"        /* RLC environment options */
-#include "kw.h"            /* RLC defines */
-#include "kw_ul.h"
+#include "rlc_err.h"        /* RLC error options */
+#include "rlc_env.h"        /* RLC environment options */
+#include "rlc_utils.h"            /* RLC defines */
+#include "rlc_ul.h"
 
 /* extern (.x) include files */
 #include "lkw.x"           /* LKW */
@@ -45,8 +45,8 @@
 #include "kwu.x"           /* KWU */
 #include "rgu.x"           /* RGU */
 
-#include "kw.x"
-#include "kw_ul.x"
+#include "rlc_utils.x"
+#include "rlc_ul.x"
 #ifdef TENB_STATS
 #include "l2_tenb_stats.x"    /* Total EnodeB Stats declarations */
 #endif

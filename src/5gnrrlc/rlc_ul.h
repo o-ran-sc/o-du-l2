@@ -25,16 +25,16 @@
         Desc:     This file contains helper macros for RLC uplink
                   and non real time tasks
  
-        File:     kw_ul.h
+        File:     rlc_ul.h
 
 *********************************************************************21*/
 /** 
- * @file kw_ul.h
+ * @file rlc_ul.h
  * @brief RLC uplink helper macros
 */
 
-#ifndef __KW_ULH__
-#define __KW_ULH__
+#ifndef __RLC_ULH__
+#define __RLC_ULH__
 
 /**
  * @def RLC_MEAS_IS_UL_IP_MEAS_ON_FOR_RB
@@ -52,7 +52,7 @@
      ((_rbCb->rlcId.rbType == CM_LTE_DRB) && \
      (_gCb->u.ulCb->rlcL2Cb.measOn[_rbCb->qci] & LKW_L2MEAS_UL_IP) && \
      (_rbCb->rbL2Cb.measOn & LKW_L2MEAS_UL_IP))
-#endif /* __KW_ULH__ */
+#endif /* __RLC_ULH__ */
   
 /********************************************************************30**
   

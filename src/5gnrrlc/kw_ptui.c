@@ -40,9 +40,9 @@
 #include "kwu.h"           /* KWU defines */
 #include "rgu.h"           /* RGU defines */
 
-#include "kw_err.h"
-#include "kw_env.h"        /* RLC environment options */
-#include "kw.h"            /* RLC defines */
+#include "rlc_err.h"
+#include "rlc_env.h"        /* RLC environment options */
+#include "rlc_utils.h"            /* RLC defines */
 
 /* extern (.x) include files */
 #include "lkw.x"           /* LKW */
@@ -53,7 +53,7 @@
 #include "ss_rbuf.h"
 #include "ss_rbuf.x"
 #endif
-#include "kw.x"
+#include "rlc_utils.x"
 #if defined(L2_L3_SPLIT) && defined(ICC_RECV_TSK_RBUF)
 #include "mt_plat_t33.h"
 #include "mt_plat_t33.x"

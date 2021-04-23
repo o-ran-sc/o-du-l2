@@ -25,15 +25,15 @@
         Desc:     This file contains helper macros for RLC downlink
                   and non real time task
  
-        File:     kw_dl.h
+        File:     rlc_dl.h
   
 *********************************************************************21*/
-/** @file kw_dl.h
+/** @file rlc_dl.h
 @brief RLC Downlink helper macros 
 */
 
-#ifndef __KW_DLH__
-#define __KW_DLH__
+#ifndef __RLC_DLH__
+#define __RLC_DLH__
 #define RLC_DL_INST 1
 #define RLC_MAX_RNG_DEQ_INDX 8
 
@@ -168,7 +168,7 @@
 #endif
 
 
-#endif /* __KW_DLH__ */
+#endif /* __RLC_DLH__ */
   
 /********************************************************************30**
   
