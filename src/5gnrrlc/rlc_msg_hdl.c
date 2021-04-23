@@ -22,26 +22,25 @@
 #include "lkw.h"           /* LKW defines */
 #include "ckw.h"           /* CKW defines */
 #include "kwu.h"           /* KWU defines */
-#include "kw_env.h"        /* RLC environment options */
-#include "kw.h"            /* RLC defines */
-#include "kw_udx.h"
-#include "kw_ul.h"
-#include "kw_dl.h"
+#include "rlc_env.h"        /* RLC environment options */
+#include "rlc_utils.h"            /* RLC defines */
+#include "rlc_dl_ul_inf.h"
+#include "rlc_ul.h"
+#include "rlc_dl.h"
 
 /* header/extern include files (.x) */
 #include "rgu.x"           
 #include "lkw.x"           /* LKW */
 #include "ckw.x"           /* CKW */
 #include "kwu.x"           /* KWU */
-#include "kw_err.h"
-#include "kw.x"
-#include "kw_udx.x"
-#include "kw_dl.x"
-#include "kw_ul.x"
+#include "rlc_err.h"
+#include "rlc_utils.x"
+#include "rlc_dl_ul_inf.x"
+#include "rlc_dl.x"
+#include "rlc_ul.x"
 
 #include "rlc_mac_inf.h"
 #include "du_app_rlc_inf.h"
-#include "rlc_utils.h"
 #include "rlc_upr_inf_api.h"
 
 /*******************************************************************
