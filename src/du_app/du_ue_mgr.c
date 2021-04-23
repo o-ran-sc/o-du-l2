@@ -1166,7 +1166,6 @@ uint8_t fillMacUeCfg(uint16_t cellId, uint8_t ueIdx, uint16_t crnti, \
             }
          }
          ret = fillAmbr(&macUeCfg->ambrCfg, ueCfgDb->ambrCfg);
-
          duFillModulationDetails(macUeCfg, duMacDb, ueCfgDb->ueNrCapability);
       }
 
