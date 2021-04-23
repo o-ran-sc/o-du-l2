@@ -1705,7 +1705,10 @@ uint8_t duUpdateMacCfg(MacUeCfg *macUeCfg, F1UeContextSetupDb *f1UeDb)
 
       GET_CELL_IDX(macUeCfg->cellId, cellIdx);
       oldMacUeCfg = &duCb.actvCellLst[cellIdx]->ueCb[macUeCfg->ueIdx-1].macUeCfg;
-      duFillModulationDetails(macUeCfg, oldMacUeCfg, f1UeDb->duUeCfg.ueNrCapability);
+      if(f1UeDb->duUeCfg.ueNrCapability != NULLP)
+      {
+         duFillModulationDetails(macUeCfg, oldMacUeCfg, f1UeDb->duUeCfg.ueNrCapability);
+      }
    }
 
    /* Filling LC Context */
