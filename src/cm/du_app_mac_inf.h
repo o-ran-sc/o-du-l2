@@ -76,6 +76,8 @@
 #define EVENT_MAC_UE_RECONFIG_RSP    211
 #define EVENT_MAC_UE_DELETE_REQ      212
 #define EVENT_MAC_UE_DELETE_RSP      213
+#define EVENT_MAC_CELL_DELETE_REQ    214
+#define EVENT_MAC_CELL_DELETE_RSP    215
 
 #define BSR_PERIODIC_TIMER_SF_10 10
 #define BSR_RETX_TIMER_SF_320 320
@@ -93,6 +95,12 @@ typedef enum
    CELLID_INVALID,
    UEIDX_INVALID
 }UeDeleteStatus;
+
+typedef enum
+{
+   SUCCESSFUL_RSP,
+   CELL_ID_INVALID
+}CellDeleteStatus;
 
 typedef enum
 {
@@ -1255,6 +1263,18 @@ typedef struct ueDeleteRsp
    UeDeleteStatus result;
 }MacUeDeleteRsp;
 
+typedef struct macCellDelete
+{
+   uint16_t cellId;
+}MacCellDelete;
+
+typedef struct macCellDeleteRsp
+{
+   uint16_t cellId;
+   CellDeleteStatus result;
+}
+MacCellDeleteRsp;
+
 /* Functions for slot Ind from MAC to DU APP*/
 typedef uint8_t (*DuMacCellUpInd) ARGS((
 	 Pst       *pst,
@@ -1317,14 +1337,25 @@ typedef uint8_t (*DuMacUeReconfigReq) ARGS((
 	 Pst           *pst,
 	 MacUeCfg      *ueCfg ));
 
+/* UE Delete Request from DU APP to MAC*/
 typedef uint8_t (*DuMacUeDeleteReq) ARGS((
      Pst           *pst,
      MacUeDelete   *ueDel ));
 
+/* UE Delete Response from MAC to DU APP*/
 typedef uint8_t (*MacDuUeDeleteRspFunc) ARGS((
      Pst            *pst,
      MacUeDeleteRsp *deleteRsp));
 
+/* Cell Delete Request from DU APP to MAC*/
+typedef uint8_t (*DuMacCellDeleteReq) ARGS((
+     Pst           *pst,
+     MacCellDelete *cellDelete ));
+
+/* Cell Delete Response from MAC to DU APP*/
+typedef uint8_t (*MacDuCellDeleteRspFunc) ARGS((
+     Pst            *pst,
+     MacCellDeleteRsp *cellDeleteRsp));
 
 uint8_t packMacCellUpInd(Pst *pst, OduCellId *cellId);
 uint8_t unpackMacCellUpInd(DuMacCellUpInd func, Pst *pst, Buffer *mBuf);
@@ -1366,6 +1397,13 @@ uint8_t unpackMacUeDeleteReq(DuMacUeDeleteReq func, Pst *pst, Buffer *mBuf);
 uint8_t packDuMacUeDeleteRsp(Pst *pst, MacUeDeleteRsp *deleteRsp);
 uint8_t DuProcMacUeDeleteRsp(Pst *pst, MacUeDeleteRsp *deleteRsp);
 uint8_t unpackDuMacUeDeleteRsp(MacDuUeDeleteRspFunc func, Pst *pst, Buffer *mBuf);
+uint8_t packDuMacCellDeleteReq(Pst *pst, MacCellDelete *cellDelete);
+uint8_t MacProcCellDeleteReq(Pst *pst, MacCellDelete *cellDelete);
+uint8_t unpackMacCellDeleteReq(DuMacCellDeleteReq func, Pst *pst, Buffer *mBuf);
+uint8_t packDuMacCellDeleteRsp(Pst *pst, MacCellDeleteRsp *cellDeleteRsp);
+uint8_t DuProcMacCellDeleteRsp(Pst *pst, MacCellDeleteRsp *cellDeleteRsp);
+uint8_t unpackDuMacCellDeleteRsp(MacDuCellDeleteRspFunc func, Pst *pst, Buffer *mBuf);
+
 #endif
 
 
