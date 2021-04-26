@@ -234,6 +234,7 @@ typedef struct schCellCb
    uint8_t       numSlotsInPeriodicity;             /*!< number of slots in configured periodicity and SCS */
    uint32_t      slotFrmtBitMap;                    /*!< 2 bits must be read together to determine D/U/S slots. 00-D, 01-U, 10-S */
    uint32_t      symbFrmtBitMap;                    /*!< 2 bits must be read together to determine D/U/S symbols. 00-D, 01-U, 10-S */
+   SlotConfig    slotCfg[MAX_TDD_PERIODICITY_SLOTS][MAX_SYMB_PER_SLOT];
 #endif
 }SchCellCb;
 
