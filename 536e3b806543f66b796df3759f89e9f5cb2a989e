@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a937f4af_25f32395",
+        "filename": "src/5gnrrlc/kw_lim.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-04-26T09:17:34Z",
+      "side": 1,
+      "message": "rename file as rlc_lwr_inf_mgr.c",
+      "revId": "536e3b806543f66b796df3759f89e9f5cb2a989e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "22a31a25_e43870e6",
+        "filename": "src/5gnrrlc/kw_lmm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-04-26T09:17:34Z",
+      "side": 1,
+      "message": "rename as rlc_layer_mgr.c",
+      "revId": "536e3b806543f66b796df3759f89e9f5cb2a989e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5764b82b_8cff14d7",
+        "filename": "src/5gnrrlc/kw_uim.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-04-26T09:17:34Z",
+      "side": 1,
+      "message": "rename file as rlc_upr_inf_mgr.c",
+      "revId": "536e3b806543f66b796df3759f89e9f5cb2a989e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
