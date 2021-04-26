@@ -10622,6 +10622,8 @@ uint8_t BuildAndSendUeCtxtRsp(uint8_t ueIdx, uint8_t cellId)
 
    GET_CELL_IDX(cellId, cellIdx);
    actionType = duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].f1UeDb->actionType;
+   duCb.actvCellLst[cellIdx]->ueCb[ueIdx -1].macUeCfg.macUeCfgState = 0;
+   duCb.actvCellLst[cellIdx]->ueCb[ueIdx -1].rlcUeCfg.rlcUeCfgState = 0;
 
    switch(actionType)
    {

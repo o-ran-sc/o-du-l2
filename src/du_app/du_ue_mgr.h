@@ -28,7 +28,9 @@ uint8_t duBuildAndSendUeCreateReqToMac(uint16_t cellId, uint8_t ueIdx,\
 uint8_t duBuildAndSendUeCreateReqToRlc(uint16_t cellId, uint8_t ueIdx, RlcUeCfg *duRlcUeCfg);
 uint8_t duCreateUeCb(UeCcchCtxt *ueCcchCtxt, uint32_t gnbCuUeF1apId);
 uint8_t duProcUlCcchInd(UlCcchIndInfo *ulCcchIndInfo);
-uint8_t duProcUeDeleteReq(uint16_t cellId, uint16_t crnti);
+uint8_t duProcUeDeleteReq(uint16_t cellId);
+void deleteRlcUeCfg(RlcBearerCfg *lcCfg, uint8_t  numLcs);
+void deleteF1UeContextSetupDb(F1UeContextSetupDb *f1UeDb);
 #endif
 
 /**********************************************************************

@@ -132,6 +132,11 @@ Buffer  *mBuf                       /* message buffer       */
        unpackMacUeDeleteReq(MacProcUeDeleteReq, pst, mBuf);
        break;
     }
+    case EVENT_MAC_CELL_DELETE_REQ:
+    {
+       unpackMacCellDeleteReq(MacProcCellDeleteReq, pst, mBuf);
+       break;
+    }
     default:
          RG_FREE_MSG(mBuf);
          break;

@@ -178,6 +178,7 @@
 typedef enum
 {
    UE_CFG_INACTIVE,
+   UE_CFG_DELETE,
    UE_CREATE_COMPLETE,
    UE_RECFG_COMPLETE
 }UeCfgState;
