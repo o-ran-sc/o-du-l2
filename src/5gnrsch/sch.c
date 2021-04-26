@@ -417,7 +417,7 @@ void schInitTddSlotCfg(SchCellCb *cell, SchCellCfg *schCellCfg)
 
    periodicityInMicroSec = schGetPeriodicityInMsec(schCellCfg->tddCfg.tddPeriod);
    cell->numSlotsInPeriodicity = (periodicityInMicroSec * pow(2, schCellCfg->numerology))/1000;
-cell->slotFrmtBitMap = 0;
+   cell->slotFrmtBitMap = 0;
    cell->symbFrmtBitMap = 0;
    slotBitPos = (cell->numSlotsInPeriodicity*2)-1; /* considering 2 bits to represent a slot */
    symbBitPos = (MAX_SYMB_PER_SLOT*2)-1; /* considering 2 bits to represent a symbol */
@@ -921,6 +921,9 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
    uint8_t  lcId = 0;
    uint16_t ueIdx = 0;
    uint16_t slot;
+#ifdef NR_TDD
+   uint16_t slotIdx = 0;
+#endif
    SchUeCb *ueCb = NULLP;
    SchCellCb *cell = NULLP;
    SchDlSlotInfo *schDlSlotInfo = NULLP;
@@ -946,6 +949,18 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
    }
 
    slot = (cell->slotInfo.slot + SCHED_DELTA + PHY_DELTA_DL + BO_DELTA) % cell->numSlots;
+#ifdef NR_TDD
+   while(schGetSlotSymbFrmt(cell->slotFrmtBitMap, slot) != DL_SLOT)
+   {
+      slot = (slot + 1)%cell->numSlots;
+      slotIdx++;
+      if(slotIdx==cell->numSlots)
+      {
+          DU_LOG("\nERROR  -->  SCH : No DL Slot available");
+          return RFAILED;
+      }
+   }
+#endif
    schDlSlotInfo = cell->schDlSlotInfo[slot];
 
    SCH_ALLOC(schDlSlotInfo->dlMsgInfo, sizeof(DlMsgInfo));
