@@ -415,9 +415,10 @@ void schInitTddSlotCfg(SchCellCb *cell, SchCellCfg *schCellCfg)
    uint32_t slotBitPos, symbBitPos, bitMask;
    int8_t slotIdx, symbIdx;
 
+   memcpy(cell->slotCfg, schCellCfg->tddCfg.slotCfg, MAX_TDD_PERIODICITY_SLOTS*MAX_SYMB_PER_SLOT*sizeof(SlotConfig));
    periodicityInMicroSec = schGetPeriodicityInMsec(schCellCfg->tddCfg.tddPeriod);
    cell->numSlotsInPeriodicity = (periodicityInMicroSec * pow(2, schCellCfg->numerology))/1000;
-cell->slotFrmtBitMap = 0;
+   cell->slotFrmtBitMap = 0;
    cell->symbFrmtBitMap = 0;
    slotBitPos = (cell->numSlotsInPeriodicity*2)-1; /* considering 2 bits to represent a slot */
    symbBitPos = (MAX_SYMB_PER_SLOT*2)-1; /* considering 2 bits to represent a symbol */
