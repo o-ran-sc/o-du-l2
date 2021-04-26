@@ -405,6 +405,55 @@ uint8_t packSchUeDeleteRsp(Pst *pst, SchUeDeleteRsp  *delRsp)
    return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Pack and Send Cell Delete Request from MAC to SCH
+ *
+ * @details
+ *
+ *    Function : packMacSchCellDeleteReq
+ *
+ *    Functionality:
+ *       Pack and Send  Cell Delete Request from MAC to SCH
+ *
+ * @params[in] Pst *pst,  SchCellDelete *schCellDelete
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packMacSchCellDeleteReq(Pst *pst,  SchCellDelete *schCellDelete)
+{
+   if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LC))
+   {
+      /* TODO */
+   }
+   else
+   {
+      return RFAILED;
+   }
+   return ROK;
+}
+/*******************************************************************
+ *
+ * @brief Packs and send CELL delete response
+ *
+ * @details
+ *
+ *    Function : packSchCellDeleteRsp
+ *
+ *    Functionality:
+ * * @params[in] Post structure, SchCellDeleteRsp schCellDeleteRsp
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ *
+ * ****************************************************************/
+
+uint8_t packSchCellDeleteRsp(Pst *pst, SchCellDeleteRsp  *schCellDeleteRsp)
+{
+   return ROK;
+}
 /**********************************************************************
   End of file
  **********************************************************************/

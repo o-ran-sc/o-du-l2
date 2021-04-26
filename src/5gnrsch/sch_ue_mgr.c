@@ -39,11 +39,17 @@ SchUeCfgRspFunc SchUeCfgRspOpts[] =
 
 SchUeDeleteRspFunc SchUeDeleteRspOpts[] =
 {
-    packSchUeDeleteRsp,      /* LC */
-    MacProcSchUeDeleteRsp,   /* TC */
-    packSchUeDeleteRsp       /* LWLC */
+   packSchUeDeleteRsp,      /* LC */
+   MacProcSchUeDeleteRsp,   /* TC */
+   packSchUeDeleteRsp       /* LWLC */
 };
 
+SchCellDeleteRspFunc SchCellDeleteRspOpts[]=
+{
+   packSchCellDeleteRsp,      /* LC */
+   MacProcSchCellDeleteRsp,   /* TC */
+   packSchCellDeleteRsp       /* LWLC */
+};
 /*******************************************************************
  *
  * @brief Fill and send UE cfg response to MAC
@@ -844,6 +850,156 @@ uint8_t MacSchUeDeleteReq(Pst *pst, SchUeDelete  *ueDelete)
     return ret;
 }
 
+/*******************************************************************
+ *
+ * @brief Fill and send Cell delete response to MAC
+ *
+ * @details
+ *
+ *    Function :  SchSendCellDeleteRspToMac
+ *
+ *    Functionality: Fill and send Cell delete response to MAC
+ *
+ * @params[in] SchCellDelete  *ueDelete, Inst inst, SchMacRsp result
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t SchSendCellDeleteRspToMac(SchCellDelete  *ueDelete, Inst inst, SchMacRsp result)
+{
+   Pst rspPst;
+   uint8_t ret=0;
+   
+   SchCellDeleteRsp  delRsp;
+
+   DU_LOG("\nINFO   --> SCH : Filling cell delete response");
+   memset(&delRsp, 0, sizeof(SchCellDeleteRsp));
+   delRsp.cellId = ueDelete->cellId;
+   delRsp.rsp = result;
+
+   /* Filling response post */
+   memset(&rspPst, 0, sizeof(Pst));
+   FILL_PST_SCH_TO_MAC(rspPst, inst);
+   rspPst.event = EVENT_CELL_DELETE_RSP_TO_MAC;
+   ret =  SchCellDeleteRspOpts[rspPst.selector](&rspPst, &delRsp);
+   if(ret == RFAILED)
+   {
+      DU_LOG("\nERROR  -->  SCH : SchSendCellDeleteRspToMac(): failed to send the cell delete response");
+      return ret;
+   }
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Function for cellCb Delete 
+ *
+ * @details
+ *
+ *    Function : deleteSchCellCb 
+ *
+ *    Functionality: Function for cellCb Delete 
+ *
+ * @params[in] SchCellDelete  *cellDelete
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void deleteSchCellCb(SchCellCb *cellCb)
+{
+   uint8_t idx=0;
+   SchUeCb  *ueCb = NULLP;
+   if(cellCb->schDlSlotInfo)
+   {
+      for(idx=0; idx<cellCb->numSlots; idx++)
+      {
+         if(cellCb->schDlSlotInfo[idx])
+         {
+            SCH_FREE(cellCb->schDlSlotInfo[idx]->rarInfo, sizeof(RarInfo));
+            if(cellCb->schDlSlotInfo[idx]->dlMsgInfo)
+            {
+               SCH_FREE(cellCb->schDlSlotInfo[idx]->dlMsgInfo->dlMsgPdu,\
+                     cellCb->schDlSlotInfo[idx]->dlMsgInfo->dlMsgPduLen);
+               SCH_FREE(cellCb->schDlSlotInfo[idx]->dlMsgInfo, sizeof(DlMsgInfo));
+            }
+            SCH_FREE(cellCb->schDlSlotInfo[idx], sizeof(SchDlSlotInfo));
+         }
+      }
+      SCH_FREE(cellCb->schDlSlotInfo, sizeof(SchDlSlotInfo));
+   }
+   if(cellCb->schUlSlotInfo)
+   {
+      for(idx=0; idx<cellCb->numSlots; idx++)
+      {
+         if(cellCb->schUlSlotInfo[idx])
+         {
+            SCH_FREE(cellCb->schUlSlotInfo[idx]->schPuschInfo,sizeof(SchPuschInfo));
+            SCH_FREE(cellCb->schUlSlotInfo[idx], sizeof(SchUlSlotInfo));  
+         }
+      }
+      SCH_FREE(cellCb->schUlSlotInfo, sizeof(SchUlSlotInfo));
+   }
+
+   for(idx=0; idx<cellCb->numActvUe; idx++)
+   {
+      ueCb = &cellCb->ueCb[idx];
+      deleteSchUeCb(ueCb);
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Function for cell Delete request from MAC to SCH
+ *
+ * @details
+ *
+ *    Function : MacSchCellDeleteReq
+ *
+ *    Functionality: Function for cell Delete request from MAC to SCH
+ *
+ * @params[in] Pst *pst, SchCellDelete  *cellDelete
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t MacSchCellDeleteReq(Pst *pst, SchCellDelete  *cellDelete)
+{
+   uint8_t   cellIdx=0, ret = RFAILED;
+   SchCellCb *cellCb = NULLP;
+   Inst      inst = pst->dstInst - 1;
+   SchMacRsp result= RSP_OK;
+
+   if(!cellDelete)
+   {
+      DU_LOG("\nERROR  -->  SCH : MacSchCellDeleteReq(): Ue Delete request failed");
+   }
+   else
+   {
+      GET_CELL_IDX(cellDelete->cellId, cellIdx);
+      cellCb = schCb[inst].cells[cellIdx];
+      if(cellCb == NULLP)
+      { 
+         DU_LOG("\nERROR  -->  SCH : MacSchCellDeleteReq(): cell Id is not available");
+         result = RSP_NOK;
+      }
+      else
+      {
+         deleteSchCellCb(cellCb);
+         result = RSP_OK;
+         ret = ROK;
+         DU_LOG("\nINFO   -->  SCH : Sending cell delete response to MAC");
+      }
+
+      if(SchSendCellDeleteRspToMac(cellDelete, inst, result)!=ROK)
+      {
+         DU_LOG("\nERROR  -->  SCH : MacSchCellDeleteReq(): failed to send cell delete response");
+         ret =  RFAILED;
+      }
+
+   }
+   return ret;   
+}
 /**********************************************************************
   End of file
  **********************************************************************/
