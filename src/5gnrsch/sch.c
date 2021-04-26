@@ -412,15 +412,12 @@ uint16_t schGetPeriodicityInMsec(DlUlTxPeriodicity tddPeriod)
 void schInitTddSlotCfg(SchCellCb *cell, SchCellCfg *schCellCfg)
 {
    uint16_t periodicityInMicroSec = 0;
-   uint32_t slotBitPos, symbBitPos, bitMask;
    int8_t slotIdx, symbIdx;
 
    periodicityInMicroSec = schGetPeriodicityInMsec(schCellCfg->tddCfg.tddPeriod);
    cell->numSlotsInPeriodicity = (periodicityInMicroSec * pow(2, schCellCfg->numerology))/1000;
-cell->slotFrmtBitMap = 0;
+   cell->slotFrmtBitMap = 0;
    cell->symbFrmtBitMap = 0;
-   slotBitPos = (cell->numSlotsInPeriodicity*2)-1; /* considering 2 bits to represent a slot */
-   symbBitPos = (MAX_SYMB_PER_SLOT*2)-1; /* considering 2 bits to represent a symbol */
    for(slotIdx = cell->numSlotsInPeriodicity-1; slotIdx >= 0; slotIdx--)
    {
       symbIdx = 0;
@@ -433,23 +430,13 @@ cell->slotFrmtBitMap = 0;
             case DL_SLOT:
             {
                /*BitMap to be set to 00 */
-               bitMask = 1<<slotBitPos;
-               cell->slotFrmtBitMap = (cell->slotFrmtBitMap & ~(bitMask)) | ((0<<slotBitPos) & bitMask);
-               slotBitPos--;
-               bitMask = 1<<slotBitPos;
-               cell->slotFrmtBitMap = (cell->slotFrmtBitMap & ~(bitMask)) | ((0<<slotBitPos) & bitMask);
-               slotBitPos--;
+               cell->slotFrmtBitMap = (cell->slotFrmtBitMap<<2);
                break;
             }
             case UL_SLOT:
             {
                /*BitMap to be set to 01 */
-               bitMask = 1<<slotBitPos;
-               cell->slotFrmtBitMap = (cell->slotFrmtBitMap & ~(bitMask)) | ((0<<slotBitPos) & bitMask);
-               slotBitPos--;
-               bitMask = 1<<slotBitPos;
-               cell->slotFrmtBitMap = (cell->slotFrmtBitMap & ~(bitMask)) | ((1<<slotBitPos) & bitMask);
-               slotBitPos--;
+               cell->slotFrmtBitMap = ((cell->slotFrmtBitMap<<2) | (UL_SLOT));
                break;
             }
             default:
@@ -458,12 +445,8 @@ cell->slotFrmtBitMap = 0;
          continue;
       }
       /* slot config is flexible. First set slotBitMap to 10 */
-      bitMask = 1<<slotBitPos;
-      cell->slotFrmtBitMap = (cell->slotFrmtBitMap & ~(bitMask)) | ((1<<slotBitPos) & bitMask);
-      slotBitPos--;
-      bitMask = 1<<slotBitPos;
-      cell->slotFrmtBitMap = (cell->slotFrmtBitMap & ~(bitMask)) | ((0<<slotBitPos) & bitMask);
-      slotBitPos--;
+      cell->slotFrmtBitMap = ((cell->slotFrmtBitMap<<2) | (FLEXI_SLOT));
+
       /* Now set symbol bitmap */ 
       for(symbIdx = MAX_SYMB_PER_SLOT-1; symbIdx >= 0; symbIdx--)
       {
@@ -472,34 +455,19 @@ cell->slotFrmtBitMap = 0;
             case DL_SLOT:
             {
                /*symbol BitMap to be set to 00 */
-               bitMask = 1<<symbBitPos;
-               cell->symbFrmtBitMap = (cell->symbFrmtBitMap & ~(bitMask)) | ((0<<symbBitPos) & bitMask);
-               symbBitPos--;
-               bitMask = 1<<symbBitPos;
-               cell->symbFrmtBitMap = (cell->symbFrmtBitMap & ~(bitMask)) | ((0<<symbBitPos) & bitMask);
-               symbBitPos--;
+               cell->symbFrmtBitMap = (cell->symbFrmtBitMap<<2);
                break;
             }
             case UL_SLOT:
             {
                /*symbol BitMap to be set to 01 */
-               bitMask = 1<<symbBitPos;
-               cell->symbFrmtBitMap = (cell->symbFrmtBitMap & ~(bitMask)) | ((0<<symbBitPos) & bitMask);
-               symbBitPos--;
-               bitMask = 1<<symbBitPos;
-               cell->symbFrmtBitMap = (cell->symbFrmtBitMap & ~(bitMask)) | ((1<<symbBitPos) & bitMask);
-               symbBitPos--;
+               cell->symbFrmtBitMap = ((cell->symbFrmtBitMap<<2) | (UL_SLOT));
                break;
             }
             case FLEXI_SLOT:
             {
                /*symbol BitMap to be set to 10 */
-               bitMask = 1<<symbBitPos;
-               cell->symbFrmtBitMap = (cell->symbFrmtBitMap & ~(bitMask)) | ((1<<symbBitPos) & bitMask);
-               symbBitPos--;
-               bitMask = 1<<symbBitPos;
-               cell->symbFrmtBitMap = (cell->symbFrmtBitMap & ~(bitMask)) | ((0<<symbBitPos) & bitMask);
-               symbBitPos--;
+               cell->symbFrmtBitMap = ((cell->symbFrmtBitMap<<2) | (FLEXI_SLOT));
                break;
             }
             default:
@@ -507,7 +475,6 @@ cell->slotFrmtBitMap = 0;
          }
       }
    }
-
 }
 #endif
 
@@ -922,6 +889,9 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
    uint8_t  lcId = 0;
    uint16_t ueIdx = 0;
    uint16_t slot;
+#ifdef NR_TDD
+   uint16_t slotIdx = 0;
+#endif
    SchUeCb *ueCb = NULLP;
    SchCellCb *cell = NULLP;
    SchDlSlotInfo *schDlSlotInfo = NULLP;
@@ -947,6 +917,18 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
    }
 
    slot = (cell->slotInfo.slot + SCHED_DELTA + PHY_DELTA_DL + BO_DELTA) % cell->numSlots;
+#ifdef NR_TDD
+   while(schGetSlotSymbFrmt(cell->slotFrmtBitMap, slot) != DL_SLOT)
+   {
+      slot = (slot + 1)%cell->numSlots;
+      slotIdx++;
+      if(slotIdx==cell->numSlots)
+      {
+          DU_LOG("\nERROR  -->  SCH : No DL Slot available");
+          return RFAILED;
+      }
+   }
+#endif
    schDlSlotInfo = cell->schDlSlotInfo[slot];
 
    SCH_ALLOC(schDlSlotInfo->dlMsgInfo, sizeof(DlMsgInfo));
