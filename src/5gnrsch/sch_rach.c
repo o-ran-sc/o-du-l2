@@ -106,14 +106,13 @@ void createSchRaCb(uint16_t tcrnti, Inst schInst)
  *  @return  void
  **/
 uint8_t schAllocMsg3Pusch(Inst schInst, uint16_t slot, uint16_t crnti, \
-   uint16_t *msg3StartRb, uint8_t *msg3NumRb)
+   uint16_t *msg3StartRb, uint8_t *msg3NumRb, uint16_t msg3SlotAlloc)
 {
    SchCellCb      *cell         = NULLP;
    SchUlSlotInfo  *schUlSlotInfo    = NULLP;
-   uint8_t    puschMu       = 0;
-   uint8_t    msg3SlotAlloc = 0;
-   uint8_t    delta         = 0;
-   uint8_t    k2            = 0; 
+//   uint8_t    puschMu       = 0;
+//   uint8_t    delta         = 0;
+//   uint8_t    k2            = 0;
    uint8_t    startSymb     = 0;
    uint8_t    symbLen       = 0; 
    uint8_t    startRb       = 0;
@@ -125,14 +124,16 @@ uint8_t schAllocMsg3Pusch(Inst schInst, uint16_t slot, uint16_t crnti, \
 
    cell = schCb[schInst].cells[schInst];
    //	puschMu = cell->cellCfg.puschMu;
-   delta = puschDeltaTable[puschMu];
-   k2 = cell->cellCfg.schInitialUlBwp.puschCommon.k2;
+   //delta = puschDeltaTable[puschMu];
+   //k2 = cell->cellCfg.schInitialUlBwp.puschCommon.k2;
    startSymb = cell->cellCfg.schInitialUlBwp.puschCommon.startSymbol;
    symbLen = cell->cellCfg.schInitialUlBwp.puschCommon.lengthSymbol;
 
+#if 0
    /* Slot allocation for msg3 based on 38.214 section 6.1.2.1 */
    msg3SlotAlloc = slot + k2 + delta;
    msg3SlotAlloc = msg3SlotAlloc % cell->numSlots; 
+#endif
 
    startRb = cell->schUlSlotInfo[msg3SlotAlloc]->puschCurrentPrb;
    tbSize = schCalcTbSize(8); /* 6 bytes msg3  and 2 bytes header */
@@ -204,9 +205,42 @@ uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst)
    uint16_t msg3StartRb;
    uint8_t  msg3NumRb;
    uint8_t  ret = ROK;
+   uint8_t delta = 0;
+   uint8_t k2 = 0; 
+   uint8_t puschMu = 0;
+   uint16_t msg3Slot;
 
+   puschMu = 1;//cell->cellCfg.puschMu;
+   delta = puschDeltaTable[puschMu];
+   k2 = cell->cellCfg.schInitialUlBwp.puschCommon.k2;
    /* RAR will sent with a delay of RAR_DELAY */
    rarSlot = (rachInd->timingInfo.slot+RAR_DELAY+PHY_DELTA_DL)%cell->numSlots;
+#ifdef NR_TDD
+
+   uint16_t counter;
+   for(counter=0; counter<cell->numSlots;counter++)
+   {
+      msg3Slot = (rarSlot+delta+k2)%cell->numSlots;
+
+//    if((DL_SLOT != schGetSlotSymbFrmt(rarSlot, cell->slotFrmtBitMap)) && (UL_SLOT != schGetSlotSymbFrmt(msg3Slot, cell->slotFrmtBitMap)))
+      if(((DL_SLOT!=cell->slotCfg[rarSlot][0])&&(DL_SLOT!=cell->slotCfg[rarSlot][MAX_SYMB_PER_SLOT-1]))&&\
+          ((UL_SLOT!=cell->slotCfg[msg3Slot][0])&&(UL_SLOT!=cell->slotCfg[msg3Slot][MAX_SYMB_PER_SLOT-1])))
+      {
+         rarSlot = (rarSlot+1)%cell->numSlots;
+         continue;
+      }
+      break;
+   }
+   if(counter>=cell->numSlots)
+   {
+       DU_LOG("\nERROR  -->  SCH : NO Slot for Msg2 with Msg3 Grant\n");
+       return RFAILED;
+   }
+#else
+   /* Slot allocation for msg3 based on 38.214 section 6.1.2.1 */
+   msg3Slot = rarSlot + k2 + delta;
+   msg3Slot = msg3Slot % cell->numSlots; 
+#endif
 
    SchDlSlotInfo *schDlSlotInfo = cell->schDlSlotInfo[rarSlot]; /* RAR will sent in the next slot */
 
@@ -227,7 +261,7 @@ uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst)
    createSchRaCb(rachInd->crnti,schInst);
 
    /* allocate resources for msg3 */
-   ret = schAllocMsg3Pusch(schInst, rarSlot, rachInd->crnti, &msg3StartRb, &msg3NumRb);
+   ret = schAllocMsg3Pusch(schInst, rarSlot, rachInd->crnti, &msg3StartRb, &msg3NumRb, msg3Slot);
    if(ret == ROK)
    {
       /* fill RAR info */
