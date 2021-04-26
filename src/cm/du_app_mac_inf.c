@@ -1050,6 +1050,160 @@ uint8_t unpackDuMacUeDeleteRsp(MacDuUeDeleteRspFunc func, Pst *pst, Buffer *mBuf
     return RFAILED;
 }
 
+/*******************************************************************
+ *
+ * @brief Unpacks Cell Delete Request received from DU APP
+ *
+ * @details
+ *
+ *    Function : unpackMacCellDeleteReq
+ *
+ *    Functionality:
+ *         Unpacks Cell Delete Request received from DU APP
+ *
+ * @params[in] Pointer to Handler
+ *             Post structure pointer
+ *             Message Buffer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t unpackMacCellDeleteReq(DuMacCellDeleteReq func, Pst *pst, Buffer *mBuf)
+{
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      MacCellDelete *cellDelete=NULLP;
+
+      /* unpack the address of the structure */
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&cellDelete, mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
+      return (*func)(pst, cellDelete);
+   }
+   else
+   {
+      /* Nothing to do for other
+       * selectors */
+      DU_LOG("\nERROR  -->  DU APP : unpackMacCellDeleteReq(): Only LWLC supported for CELL Delete Request ");
+      ODU_PUT_MSG_BUF(mBuf);
+   }
+
+   return RFAILED;
+}
+
+/*******************************************************************
+ *
+ * @brief Pack and send Cell delete request to MAC
+ *
+ * @details
+ *
+ *    Function : packDuMacCellDeleteReq
+ *
+ *    Functionality:
+ *       Pack and send Cell delete request to MAC
+ *
+ * @params[in] Post structure
+ *             MacCellDelete *cellDelete;
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t packDuMacCellDeleteReq(Pst *pst, MacCellDelete *cellDelete)
+{
+   Buffer *mBuf = NULLP;
+
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+      {
+         DU_LOG("\nERROR  --> MAC : packDuMacCellDeleteReq(): Memory allocation failed ");
+         return RFAILED;
+      }
+      CMCHKPK(oduPackPointer,(PTR)cellDelete, mBuf);
+      return ODU_POST_TASK(pst,mBuf);
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  MAC: packDuMacCellDeleteReq(): Only LWLC supported ");
+   }
+   return RFAILED;
+}
+
+/*******************************************************************
+ *
+ * @brief Pack and send CELL delete response from MAC to DU APP
+ *
+ * @details
+ *
+ *    Function : packDuMacCellDeleteRsp
+ *
+ *    Functionality:
+ *       Pack and send CELL  delete response from MAC to DU APP
+ *
+ * @params[in] Pst *pst, MacCellDeleteRsp *deleteRsp
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t packDuMacCellDeleteRsp(Pst *pst, MacCellDeleteRsp *cellDeleteRsp)
+{
+   Buffer *mBuf = NULLP;
+
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+      {
+         DU_LOG("\nERROR  --> MAC : packDuMacCellDeleteRsp(): Memory allocation failed ");
+         return RFAILED;
+      }
+      CMCHKPK(oduPackPointer,(PTR)cellDeleteRsp, mBuf);
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  MAC: packDuMacCellDeleteRsp(): Only LWLC supported ");
+      return RFAILED;
+   }
+
+   return ODU_POST_TASK(pst,mBuf);
+
+}
+
+/*******************************************************************
+ *
+ * @brief Unpack cell delete response from MAC to DU APP
+ *
+ * @details
+ *
+ *    Function : unpackDuMacCellDeleteRsp
+ *
+ *    Functionality: Unpack cell delete response from MAC to DU APP
+ *
+ * @params[in] MacDuCellDeleteRspFunc func, Pst *pst, Buffer *mBuf
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t unpackDuMacCellDeleteRsp(MacDuCellDeleteRspFunc func, Pst *pst, Buffer *mBuf)
+{
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      MacCellDeleteRsp *cellDeleteRsp = NULLP;
+
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&cellDeleteRsp, mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
+      return (*func)(pst, cellDeleteRsp);
+   }
+   else
+   {  
+      DU_LOG("\nERROR  -->  DU APP : unpackDuMacCellDeleteRsp(): Only LWLC supported ");
+      ODU_PUT_MSG_BUF(mBuf);
+   }
+   return RFAILED;
+}
+
 /**********************************************************************
-End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/
