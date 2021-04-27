@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b2c9f812_88b171cf",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3171,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-04-27T14:30:17Z",
+      "side": 1,
+      "message": "As this is a pending task, add a TODO instead of comment",
+      "revId": "0a5c3be235b583f6caf8ae02f47cbaa41e094363",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ab72ab58_b903ecbe",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3176,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-04-27T14:30:17Z",
+      "side": 1,
+      "message": "what is the issue faced, if we remove sleep here ?",
+      "revId": "0a5c3be235b583f6caf8ae02f47cbaa41e094363",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8c4b93a5_a55e140d",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3192,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-04-27T14:30:17Z",
+      "side": 1,
+      "message": "this should be ueId.\nIn our code ueId starts from 1. and ueIdx starts from 0.",
+      "revId": "0a5c3be235b583f6caf8ae02f47cbaa41e094363",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2ffa5d99_15e029f5",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3195,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-04-27T14:30:17Z",
+      "side": 1,
+      "message": "error log is wrong. And also specify cellId, ueId for which it failed for",
+      "revId": "0a5c3be235b583f6caf8ae02f47cbaa41e094363",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c7e66dd2_ece0b8d6",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3201,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-04-27T14:30:17Z",
+      "side": 1,
+      "message": "This print should come only if we have sent Cell Delete Request to MAC.",
+      "revId": "0a5c3be235b583f6caf8ae02f47cbaa41e094363",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "038460cf_f662185c",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3210,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-04-27T14:30:17Z",
+      "side": 1,
+      "message": "\"cell Id %d\"\nSince we are trying to find cellIdx based on the cellId received, in error prints we can specify the cellId as well.",
+      "revId": "0a5c3be235b583f6caf8ae02f47cbaa41e094363",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
