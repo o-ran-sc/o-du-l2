@@ -1,0 +1,9 @@
+Verified+1: ORAN Jobbuilder <releng+oran-jobbuilder@linuxfoundation.org>
+Verified+1: Sphoorthi Dayanand <sphoorthi.dayanand@radisys.com>
+Code-Review+2: Harshita Lal <harshita.lal@radisys.com>
+Code-Review+2: Sphoorthi Dayanand <sphoorthi.dayanand@radisys.com>
+Submitted-by: Sphoorthi Dayanand <sphoorthi.dayanand@radisys.com>
+Submitted-at: Tue, 27 Apr 2021 10:11:39 +0000
+Reviewed-on: https://gerrit.o-ran-sc.org/r/c/o-du/l2/+/5781
+Project: o-du/l2
+Branch: refs/heads/master
