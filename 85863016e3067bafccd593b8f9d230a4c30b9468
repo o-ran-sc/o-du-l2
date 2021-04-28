@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "bad573c2_bb986ec3",
+        "filename": "src/5gnrrlc/kw.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 446,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-28T09:34:04Z",
+      "side": 1,
+      "message": "This macro tells that max number of timers present as part of throughput calculation feature. So far I have added only one time i.e. for periodicity.\nline #458 : EVENT_RLC_THROUGHPUT_TMR : this is the name of that one timer",
+      "parentUuid": "4bab1849_2025e68d",
+      "revId": "85863016e3067bafccd593b8f9d230a4c30b9468",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3010001b_0085584f",
         "filename": "src/5gnrrlc/kw.x",
         "patchSetId": 1
@@ -33,6 +51,24 @@
       "revId": "85863016e3067bafccd593b8f9d230a4c30b9468",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "097f8e11_2dfd2d7f",
+        "filename": "src/5gnrrlc/kw.x",
+        "patchSetId": 1
+      },
+      "lineNbr": 596,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-28T09:34:04Z",
+      "side": 1,
+      "message": "when throughput timer expires, the timer module returns an instance of this rlcThpt structure.\nTo restart timer, rlcCb is needed which is fetched using RLC_GET_RLCCB(rlcThpt-\u003einst)",
+      "parentUuid": "3010001b_0085584f",
+      "revId": "85863016e3067bafccd593b8f9d230a4c30b9468",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "5a9c8c8e_9f0e88fe",
+        "filename": "src/5gnrrlc/kw.x",
+        "patchSetId": 1
+      },
+      "lineNbr": 597,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-28T09:34:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d93e629d_58e415a5",
+      "revId": "85863016e3067bafccd593b8f9d230a4c30b9468",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1eb558ac_55a86a83",
         "filename": "src/5gnrrlc/kw_tmr.c",
         "patchSetId": 1
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "1ac11edd_f8ac11eb",
+        "filename": "src/5gnrrlc/kw_tmr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-28T09:34:04Z",
+      "side": 1,
+      "message": "~6100 bits/second",
+      "parentUuid": "1eb558ac_55a86a83",
+      "revId": "85863016e3067bafccd593b8f9d230a4c30b9468",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9db5753d_04140f75",
         "filename": "src/du_app/du_cfg.h",
         "patchSetId": 1
@@ -84,6 +156,24 @@
       "revId": "85863016e3067bafccd593b8f9d230a4c30b9468",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "21020e33_85e7097f",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-04-28T09:34:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9db5753d_04140f75",
+      "revId": "85863016e3067bafccd593b8f9d230a4c30b9468",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": false
     }
   ]
 }
