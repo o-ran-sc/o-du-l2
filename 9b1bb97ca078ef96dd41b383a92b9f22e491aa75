@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "044a1e6d_6a991442",
+        "filename": "src/5gnrrlc/rlc_dl_ex_ms.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-04-29T12:19:24Z",
+      "side": 1,
+      "message": "name all ex_ms.c files in our repo to \u003clayer\u003e_msg_router.c",
+      "revId": "9b1bb97ca078ef96dd41b383a92b9f22e491aa75",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bfa5d6ee_d146729b",
+        "filename": "src/5gnrrlc/rlc_gnb_stats.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-04-29T12:19:24Z",
+      "side": 1,
+      "message": "drop \"gnb\" as part of this file name",
+      "revId": "9b1bb97ca078ef96dd41b383a92b9f22e491aa75",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d4f732c_21505223",
+        "filename": "src/5gnrrlc/rlc_ul.x",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-04-29T12:19:24Z",
+      "side": 1,
+      "message": "club all .x and .h files. Remove .x files",
+      "revId": "9b1bb97ca078ef96dd41b383a92b9f22e491aa75",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1bff63b5_097c4c33",
+        "filename": "src/5gnrrlc/rlc_utils.x",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-04-29T12:19:24Z",
+      "side": 1,
+      "message": "move this into corresponding .h file and delete this file",
+      "revId": "9b1bb97ca078ef96dd41b383a92b9f22e491aa75",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
