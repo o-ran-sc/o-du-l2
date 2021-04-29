@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f317643f_6940c525",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 958,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-04-29T07:59:32Z",
+      "side": 1,
+      "message": "I think it should be Slot",
+      "range": {
+        "startLine": 958,
+        "startChar": 44,
+        "endLine": 958,
+        "endChar": 48
+      },
+      "revId": "fe14f2d572900bd7589d84d3a894caa84a239ecb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "100ecc2d_31a0bb8b",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-04-29T07:59:32Z",
+      "side": 1,
+      "message": "cann\u0027t we remove all these commented lines.",
+      "revId": "fe14f2d572900bd7589d84d3a894caa84a239ecb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1131e423_bef6f8d3",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-04-29T07:59:32Z",
+      "side": 1,
+      "message": "initialize all variables",
+      "revId": "fe14f2d572900bd7589d84d3a894caa84a239ecb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8021274_e5a8d716",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-04-29T07:59:32Z",
+      "side": 1,
+      "message": "cell-\u003ecellCfg.puschMu -\u003ethere is no member called puschMu present in cellCfg.\nRather than hardcoding, a macro can be created for puschMu.",
+      "revId": "fe14f2d572900bd7589d84d3a894caa84a239ecb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dadc77f4_d3a08110",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-04-29T07:59:32Z",
+      "side": 1,
+      "message": "Do we need this comment.",
+      "revId": "fe14f2d572900bd7589d84d3a894caa84a239ecb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
