@@ -75,7 +75,8 @@ typedef enum
 {
    UE_CTXT_UNKNOWN,
    UE_CTXT_SETUP,
-   UE_CTXT_MOD
+   UE_CTXT_MOD,
+   UE_CTXT_RELEASE
 }UeCtxtActionType;
 
 /** F1AP Msg IE **/

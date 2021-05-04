@@ -231,47 +231,50 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcData *dlData)
    }
 
    /* Store DL data in the scheduled slot */
-   currDlSlot = &macCb.macCell[dlData->cellId -1]->dlSlot[dlData->slotInfo.slot];
-   if(currDlSlot)
+   if(macCb.macCell[dlData->cellId -1] !=NULLP)
    {
-      if(currDlSlot->dlInfo.dlMsgAlloc)
+      currDlSlot = &macCb.macCell[dlData->cellId -1]->dlSlot[dlData->slotInfo.slot];
+      if(currDlSlot)
       {
-	 tbSize = currDlSlot->dlInfo.dlMsgAlloc->dlMsgPdschCfg.codeword[0].tbSize;
-	 MAC_ALLOC(txPdu, tbSize);
-	 if(!txPdu)
-	 {
-	    DU_LOG("\nERROR  -->  MAC : Memory allocation failed in MacProcRlcDlData");
-	    return RFAILED;
-	 }
-	 macMuxPdu(&macDlData, NULLP, txPdu, tbSize);
+         if(currDlSlot->dlInfo.dlMsgAlloc)
+         {
+            tbSize = currDlSlot->dlInfo.dlMsgAlloc->dlMsgPdschCfg.codeword[0].tbSize;
+            MAC_ALLOC(txPdu, tbSize);
+            if(!txPdu)
+            {
+               DU_LOG("\nERROR  -->  MAC : Memory allocation failed in MacProcRlcDlData");
+               return RFAILED;
+            }
+            macMuxPdu(&macDlData, NULLP, txPdu, tbSize);
 
-	 currDlSlot->dlInfo.dlMsgAlloc->dlMsgInfo.dlMsgPduLen = tbSize;
-	 currDlSlot->dlInfo.dlMsgAlloc->dlMsgInfo.dlMsgPdu = txPdu;
+            currDlSlot->dlInfo.dlMsgAlloc->dlMsgInfo.dlMsgPduLen = tbSize;
+            currDlSlot->dlInfo.dlMsgAlloc->dlMsgInfo.dlMsgPdu = txPdu;
+         }
       }
-   }
 
-   for(lcIdx = 0; lcIdx < dlData->numLc; lcIdx++)
-   {
-      if(dlData->boStatus[lcIdx].bo)
+      for(lcIdx = 0; lcIdx < dlData->numLc; lcIdx++)
       {
-         memset(&dlBoInfo, 0, sizeof(DlRlcBoInfo));
-         dlBoInfo.cellId = dlData->boStatus[lcIdx].cellId;
-         GET_CRNTI(dlBoInfo.crnti, dlData->boStatus[lcIdx].ueIdx);
-         dlBoInfo.lcId = dlData->boStatus[lcIdx].lcId;
-         dlBoInfo.dataVolume = dlData->boStatus[lcIdx].bo;
-         sendDlRlcBoInfoToSch(&dlBoInfo);
+         if(dlData->boStatus[lcIdx].bo)
+         {
+            memset(&dlBoInfo, 0, sizeof(DlRlcBoInfo));
+            dlBoInfo.cellId = dlData->boStatus[lcIdx].cellId;
+            GET_CRNTI(dlBoInfo.crnti, dlData->boStatus[lcIdx].ueIdx);
+            dlBoInfo.lcId = dlData->boStatus[lcIdx].lcId;
+            dlBoInfo.dataVolume = dlData->boStatus[lcIdx].bo;
+            sendDlRlcBoInfoToSch(&dlBoInfo);
+         }
       }
-   }
 
-   /* Free memory */
-   for(pduIdx = 0; pduIdx < dlData->numPdu; pduIdx++)
-   {
-      MAC_FREE_SHRABL_BUF(pstInfo->region, pstInfo->pool, dlData->pduInfo[pduIdx].pduBuf,\
-         dlData->pduInfo[pduIdx].pduLen);
+      /* Free memory */
+      for(pduIdx = 0; pduIdx < dlData->numPdu; pduIdx++)
+      {
+         MAC_FREE_SHRABL_BUF(pstInfo->region, pstInfo->pool, dlData->pduInfo[pduIdx].pduBuf,\
+               dlData->pduInfo[pduIdx].pduLen);
+      }
    }
    if(pstInfo->selector == ODU_SELECTOR_LWLC)
    {
-     MAC_FREE_SHRABL_BUF(pstInfo->region, pstInfo->pool, dlData, sizeof(RlcData));
+      MAC_FREE_SHRABL_BUF(pstInfo->region, pstInfo->pool, dlData, sizeof(RlcData));
    }
    return ROK;
 }

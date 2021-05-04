@@ -1707,7 +1707,10 @@ uint8_t duUpdateMacCfg(MacUeCfg *macUeCfg, F1UeContextSetupDb *f1UeDb)
 
       GET_CELL_IDX(macUeCfg->cellId, cellIdx);
       oldMacUeCfg = &duCb.actvCellLst[cellIdx]->ueCb[macUeCfg->ueIdx-1].macUeCfg;
-      duFillModulationDetails(macUeCfg, oldMacUeCfg, f1UeDb->duUeCfg.ueNrCapability);
+      if(f1UeDb->duUeCfg.ueNrCapability != NULLP)
+      {
+         duFillModulationDetails(macUeCfg, oldMacUeCfg, f1UeDb->duUeCfg.ueNrCapability);
+      }
    }
 
    /* Filling LC Context */
@@ -2497,6 +2500,15 @@ uint8_t DuProcRlcDlRrcMsgRsp(Pst *pst, RlcDlRrcMsgRsp *dlRrcMsg)
             if(ret == RFAILED)
                DU_LOG("\nERROR  -->  DU APP : Failed to process UE Context Mod Request in DuProcRlcDlRrcMsgRsp()");
          }
+         if(ueCb->f1UeDb->actionType == UE_CTXT_RELEASE)
+         {
+            ret = duProcUeDeleteReq(dlRrcMsg->cellId);
+            if(ret == RFAILED)
+            {
+               DU_LOG("\nERROR  -->  DU APP : Failed to process UE Context Release Request in DuProcRlcDlRrcMsgRsp()");
+            }
+
+         }
       }
    }
    else
@@ -2818,13 +2830,12 @@ uint8_t  deleteUeCfg(uint16_t cellIdx, uint8_t ueIdx)
       }
       else
       {
-         DU_LOG("INFO  --> DU APP : deleteUeCfg(): MAC or RLC UE configuration state not UE_DELETE_COMPLETE");
          return RFAILED;
       }
    }
    else
    {
-      DU_LOG("ERROR  --> DU APP : deleteUeCfg(): CellIdx[%d] is not found", cellIdx);
+      DU_LOG("\nERROR  --> DU APP : deleteUeCfg(): CellIdx[%d] is not found", cellIdx);
       return RFAILED;
    }
    return ROK;
@@ -2867,7 +2878,7 @@ uint8_t DuProcMacUeDeleteRsp(Pst *pst, MacUeDeleteRsp *deleteRsp)
             gnbDuUeF1apId = duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].gnbCuUeF1apId;
             if(deleteUeCfg(cellIdx, ueIdx) == ROK)
             {
-                 ret = BuildAndSendUeContextReleaseComplete(gnbCuUeF1apId, gnbDuUeF1apId);
+                 ret = BuildAndSendUeContextReleaseComplete(deleteRsp->cellId,gnbCuUeF1apId, gnbDuUeF1apId);
                  if(ret !=ROK)
                  {   
                     DU_LOG("\nERROR  -->  DU APP : DuProcMacUeDeleteRsp(): failed to send UE context release complete");
@@ -2930,7 +2941,7 @@ uint8_t DuProcRlcUeDeleteRsp(Pst *pst, RlcUeDeleteRsp *delRsp)
             gnbDuUeF1apId = duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].gnbCuUeF1apId;
             if(deleteUeCfg(cellIdx, ueIdx) == ROK)
             {
-                ret = BuildAndSendUeContextReleaseComplete(gnbCuUeF1apId, gnbDuUeF1apId);
+                ret = BuildAndSendUeContextReleaseComplete(delRsp->cellId, gnbCuUeF1apId, gnbDuUeF1apId);
                 if(ret != ROK)
                 {
                    DU_LOG("\nERROR  -->  DU APP : DuProcMacUeDeleteRsp(): failed to send UE context release complete");
@@ -3064,7 +3075,7 @@ uint8_t duProcUeDeleteReq(uint16_t cellId)
    uint8_t  ueIdx = 0, ueId =0;
    uint16_t cellIdx = 0, crnti   = 0;
 
-   DU_LOG("\nDEBUG   -->  DU_APP: Processing UE Delete Request ");
+   DU_LOG("\nDEBUG  -->  DU_APP: Processing UE Delete Request ");
    GET_CELL_IDX(cellId, cellIdx);
    GET_CRNTI(crnti,ueIdx);
 
@@ -3308,28 +3319,37 @@ uint8_t sendCellDeleteReqToMac(uint16_t cellId)
 uint8_t duProcCellDeleteReq(uint16_t cellId)
 {
    uint16_t cellIdx = 0;
-   
+
    DU_LOG("\nINFO   -->  DU APP : Processing Cell Delete Request ");
    GET_CELL_IDX(cellId, cellIdx);
 
    if(duCb.actvCellLst[cellIdx] != NULLP)
    {
-      if(duBuildAndSendMacCellStop() == RFAILED)
+      if(duCb.actvCellLst[cellIdx]->cellId == cellId)
       {
-         DU_LOG("\nERROR  -->  DU APP : duProcCellDeleteReq(): Failed to process Cell delete req for cellId[%d]",cellId);
-         return RFAILED;
+         if(duBuildAndSendMacCellStop() == RFAILED)
+         {
+            DU_LOG("\nERROR  -->  DU APP : duProcCellDeleteReq(): Failed to process Cell delete req for\
+            cellId[%d]",cellId);
+            return RFAILED;
+         }
+
+         if(duCb.actvCellLst[cellIdx]->numActvUes)
+         {
+            DU_LOG("\nERROR  -->  DU APP : duProcCellDeleteReq(): Active UEs present Failed to process cell Delete\
+                  Req for cellID[%d]", cellId);
+            return RFAILED;
+         }
+         if(sendCellDeleteReqToMac(cellId) == RFAILED)
+         {
+            DU_LOG("\nERROR  -->  DU APP : duProcCellDeleteReq(): Failed to build and send Cell delete req for MAC for\
+                  cellId[%d]",cellId);
+            return RFAILED;
+         }
       }
-      
-      if(duCb.actvCellLst[cellIdx]->numActvUes)
+      else
       {
-         DU_LOG("\nERROR  -->  DU APP : duProcCellDeleteReq(): Active UEs present Failed to process cell Delete\
-         Req for cellID[%d]", cellId);
-         return RFAILED;
-      }
-      if(sendCellDeleteReqToMac(cellId) == RFAILED)
-      {
-         DU_LOG("\nERROR  -->  DU APP : duProcCellDeleteReq(): Failed to build and send Cell delete req for MAC for\
-         cellId[%d]",cellId);
+         DU_LOG("\nERROR  -->  DU APP : duProcCellDeleteReq(): CellId[%d] is not found", cellId);
          return RFAILED;
       }
    }
@@ -3340,6 +3360,59 @@ uint8_t duProcCellDeleteReq(uint16_t cellId)
    }
 
    return ROK;
+}
+/*******************************************************************
+*
+* @brief Du process Ue Context Release Command
+*
+* @details
+*
+*    Function : duProcUeContextReleaseCommand 
+*
+*    Functionality: Du process Ue Context Release Command 
+*
+* @params[in] DuUeCb *duUeCb 
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t duProcUeContextReleaseCommand(DuUeCb *duUeCb)
+{
+   uint8_t ret =ROK, ueIdx=0;
+   uint16_t cellId=0, cellIdx = 0;
+   if(duUeCb != NULLP)
+   {
+      if(duUeCb->f1UeDb != NULLP)
+      {
+         cellId = duCb.actvCellLst[duUeCb->f1UeDb->cellIdx]->cellId;
+         GET_CELL_IDX(cellId, cellIdx);
+         /* Send DL RRC msg for RRC release */
+         if(duUeCb->f1UeDb->dlRrcMsg)
+         {
+            if(duUeCb->f1UeDb->dlRrcMsg->rrcMsgPdu != NULLP)
+            {
+               ret = duBuildAndSendDlRrcMsgToRlc(cellId, duCb.actvCellLst[cellIdx]->ueCb[ueIdx].rlcUeCfg,\
+                     duUeCb->f1UeDb->dlRrcMsg);
+               if(ret == RFAILED)
+               {
+                  DU_LOG("\nERROR  -->  DU APP : duProcUeContextReleaseCommand() : Failed to send DL RRC msg");
+                  DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, duUeCb->f1UeDb->dlRrcMsg->rrcMsgPdu,\
+                        duUeCb->f1UeDb->dlRrcMsg->rrcMsgSize);
+                  DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, duUeCb->f1UeDb->dlRrcMsg, sizeof(F1DlRrcMsg));
+               }
+            }
+         }
+         else
+         {
+            ret = duProcUeDeleteReq(cellId);
+            if(ret == RFAILED)
+            {
+               DU_LOG("\nERROR  -->  DU APP : duProcUeContextReleaseCommand(): Failed to send DL RRC msg");
+            }
+         }
+      }
+   }
+   return ret;
 }
 
 /**********************************************************************
