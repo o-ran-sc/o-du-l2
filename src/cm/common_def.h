@@ -223,6 +223,12 @@ typedef enum
    SCS_240KHZ
 }SCS;
 
+typedef enum
+{
+   CELL_UP,
+   CELL_DOWN
+}OduCellStatus;
+
 typedef struct slotIndInfo
 {
    uint16_t cellId;
@@ -250,7 +256,7 @@ typedef struct tddCfg
 }TDDCfg;
 #endif
 
-
+OduCellStatus gCellStatus;
 uint64_t gSlotCount;
 uint64_t gDlDataRcvdCnt;   /* Number of DL data received at EGTP */
 

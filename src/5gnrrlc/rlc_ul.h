@@ -295,6 +295,19 @@ typedef struct rlcUlLch
    RlcUlRbCb *ulRbCb;   /**< Pointer to Uplink RbCb */
 }RlcUlLch;                                  
 
+/**
+* @brief  Structure to hold ue delete information 
+*
+* @details
+*    - pst      :  Pst 
+*    - ueDelTmr :  Ue delete timer
+*/
+typedef struct rlcUeDeleteInfo
+{
+   Pst        pst;        /*Pst */ 
+   CmTimer    ueDelTmr;   /*Ue delete timer*/
+}RlcUeDeleteInfo;
+
 /** 
  * @brief  Structure to hold uplink information about the Cells
  *
@@ -329,17 +342,18 @@ typedef struct rlcUlCellCb
 struct rlcUlUeCb
 {
    CmHashListEnt   ueHlEnt;                   /**< Hash list entry for UeCb */
-   CmLteRnti     ueId;     /*!< UE Id */
-   CmLteCellId   cellId;   /*!< Cell Id */
-   RlcUlRbCb        *srbCb[RLC_MAX_SRB_PER_UE]; /**< SRB RbCbs within an UE */ 
-   RlcUlRbCb        *drbCb[RLC_MAX_DRB_PER_UE]; /**< DRB RbCbs within an UE */ 
-   RlcUlLch         lCh[RLC_MAX_LCH_PER_UE];    /**< Logical channels of an UE*/
+   CmLteRnti       ueId;     /*!< UE Id */
+   CmLteCellId     cellId;   /*!< Cell Id */
+   RlcUlRbCb       *srbCb[RLC_MAX_SRB_PER_UE]; /**< SRB RbCbs within an UE */ 
+   RlcUlRbCb       *drbCb[RLC_MAX_DRB_PER_UE]; /**< DRB RbCbs within an UE */ 
+   RlcUlLch        lCh[RLC_MAX_LCH_PER_UE];    /**< Logical channels of an UE*/
 /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
-   uint32_t             firstPacketTTI;            /*!< is first packet of the burst */
-   uint16_t             numActRb[LKW_MAX_QCI];     /**< number of RBs Active */
-   Bool              isUlBurstActive;   /*!<Has the Burst started for UL IP Thrpt meas */
+   uint32_t        firstPacketTTI;            /*!< is first packet of the burst */
+   uint16_t        numActRb[LKW_MAX_QCI];     /**< number of RBs Active */
+   Bool            isUlBurstActive;   /*!<Has the Burst started for UL IP Thrpt meas */
 #endif /* LTE_L2_MEAS */
+   RlcUeDeleteInfo ueDeleteInfo;    /*!<Ue Delete Info */
 };
 
 /** 

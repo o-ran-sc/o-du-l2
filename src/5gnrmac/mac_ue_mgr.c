@@ -2462,7 +2462,7 @@ uint8_t MacSendUeDeleteRsp(uint16_t cellId, uint16_t crnti, UeDeleteStatus resul
 
    /* Filling UE delete response */
    deleteRsp->cellId = cellId;
-   GET_UE_IDX(crnti,deleteRsp->ueIdx);
+   GET_UE_IDX(crnti,deleteRsp->ueId);
    deleteRsp->result = result;
 
    /* Fill Post structure and send UE delete response*/
@@ -2746,7 +2746,7 @@ uint8_t MacProcUeDeleteReq(Pst *pst, MacUeDelete *ueDelete)
    MacUeCb  *ueCb = NULLP;
    MacCellCb *cellCb = NULLP;
 
-   DU_LOG("\nINFO   -->  MAC : UE Delete Request received for ueIdx[%d]", ueDelete->ueIdx);
+   DU_LOG("\nINFO   -->  MAC : UE Delete Request received for ueId[%d]", ueDelete->ueId);
 
    if(ueDelete)
    {
@@ -2754,7 +2754,7 @@ uint8_t MacProcUeDeleteReq(Pst *pst, MacUeDelete *ueDelete)
       cellCb = macCb.macCell[cellIdx];
       if(cellCb)
       {
-         ueCb = &cellCb->ueCb[ueDelete->ueIdx-1];
+         ueCb = &cellCb->ueCb[ueDelete->ueId-1];
          if(ueCb->crnti == ueDelete->crnti)
          {
             ret = sendUeDelReqToSch(pst, ueDelete);
@@ -2772,7 +2772,7 @@ uint8_t MacProcUeDeleteReq(Pst *pst, MacUeDelete *ueDelete)
       }
       else
       {
-         DU_LOG("\nERROR  -->  MAC : MacProcUeDeleteReq(): Failed to find the MacUeCb of UeIdx = %d",ueDelete->ueIdx);
+         DU_LOG("\nERROR  -->  MAC : MacProcUeDeleteReq(): Failed to find the MacUeCb of UeIdx = %d",ueDelete->ueId);
          result = CELLID_INVALID;
       }
 
