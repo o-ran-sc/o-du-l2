@@ -241,6 +241,11 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
    dlBrdcstAlloc->sib1Trans = NO_SIB1;
 
    cell = schCb[schInst].cells[schInst];
+   if(cell == NULLP)
+   {
+      DU_LOG("\nERROR  -->  SCH : Cell Does not exist");
+      return RFAILED;
+   }
    ssb_rep = cell->cellCfg.ssbSchCfg.ssbPeriod;
    memcpy(&cell->slotInfo, slotInd, sizeof(SlotIndInfo));
    dlBrdcstAlloc->ssbIdxSupported = 1;

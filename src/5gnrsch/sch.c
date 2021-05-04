@@ -900,12 +900,18 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
    DU_LOG("\nDEBUG  -->  SCH : Received RLC BO Status indication");
    cell = schCb[inst].cells[inst];
 
+   if(cell == NULLP)
+   {
+      DU_LOG("\nERROR  -->  SCH : MacSchDlRlcBoInfo(): Cell does not exists");
+      return RFAILED;
+   }
+
    GET_UE_IDX(dlBoInfo->crnti, ueIdx);
    ueCb = &cell->ueCb[ueIdx-1];
    lcId  = dlBoInfo->lcId;
 
    if(lcId == SRB1_LCID || lcId == SRB2_LCID || lcId == SRB3_LCID || \
-      (lcId >= MIN_DRB_LCID && lcId <= MAX_DRB_LCID))
+         (lcId >= MIN_DRB_LCID && lcId <= MAX_DRB_LCID))
    {
       SET_ONE_BIT(ueIdx, cell->boIndBitMap);
       ueCb->dlInfo.dlLcCtxt[lcId].bo = dlBoInfo->dataVolume;
@@ -924,20 +930,27 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
       slotIdx++;
       if(slotIdx==cell->numSlots)
       {
-          DU_LOG("\nERROR  -->  SCH : No DL Slot available");
-          return RFAILED;
+         DU_LOG("\nERROR  -->  SCH : No DL Slot available");
+         return RFAILED;
       }
    }
 #endif
+
    schDlSlotInfo = cell->schDlSlotInfo[slot];
 
+   if(schDlSlotInfo == NULLP)
+   {
+      DU_LOG("\nERROR  -->  SCH : MacSchDlRlcBoInfo(): schDlSlotInfo does not exists");
+      return RFAILED;
+   }
    SCH_ALLOC(schDlSlotInfo->dlMsgInfo, sizeof(DlMsgInfo));
-   if(!schDlSlotInfo->dlMsgInfo)
+   if(schDlSlotInfo->dlMsgInfo == NULLP)
    {
       DU_LOG("\nERROR  -->  SCH : Memory allocation failed for dlMsgInfo");
       schDlSlotInfo = NULL;
       return RFAILED;
    }
+   
    schDlSlotInfo->dlMsgInfo->crnti = dlBoInfo->crnti;
    schDlSlotInfo->dlMsgInfo->ndi = 1;
    schDlSlotInfo->dlMsgInfo->harqProcNum = 0;

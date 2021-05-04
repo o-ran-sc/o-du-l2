@@ -380,8 +380,7 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
 uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
 {
    uint8_t           numPdu = 0;
-   uint16_t          ueIdx;
-   uint16_t          actvUeIdx;
+   uint16_t          ueId;
    RlcDlUeCb         *ueCb;         /* UE control block */
    uint32_t          count;         /* Loop Counter */
    uint32_t          numTb;         /* Number of Tbs */
@@ -420,8 +419,8 @@ uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
    {
       staInd = &staIndInfo->staInd[idx];
       /* Fetch Ue control block */
-      GET_UE_IDX(staInd->rnti, ueIdx);
-      if(ROK != rlcDbmFetchDlUeCb(gCb, ueIdx, staIndInfo->cellId,&ueCb))
+      GET_UE_IDX(staInd->rnti, ueId);
+      if(ROK != rlcDbmFetchDlUeCb(gCb, ueId, staIndInfo->cellId,&ueCb))
       {
          /* Fetch UeCb failed */
          DU_LOG("\nERROR  -->  RLC_DL : rlcUtlSendToMac: UeId[%u]:ueCb not found",
@@ -430,13 +429,6 @@ uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
          continue; 
       }
       
-      /* Find ueIdx for throughput calculation */
-      for(actvUeIdx = 0; actvUeIdx < gCb->rlcThpt.numActvUe; actvUeIdx++)
-      {
-         if(gCb->rlcThpt.thptPerUe[actvUeIdx].ueIdx == ueIdx)
-            break;
-      }
-
       /* kw002.201 Removed the allocation of RlcDatReq */
       /* kw004.201 Used SSI function to initialize the variable */
       memset(&datReq, 0, sizeof(RlcDatReq) ); 
@@ -468,7 +460,8 @@ uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
             if (rbCb && (!rlcDlUtlIsReestInProgress(rbCb)))
             { 
                /* Cosider buffer size for throughput calculation */
-               gCb->rlcThpt.thptPerUe[actvUeIdx].dataVol += staIndTb->lchStaInd[count].totBufSize;
+               if(gCb->rlcThpt.thptPerUe[ueId-1].ueId == ueId)
+                  gCb->rlcThpt.thptPerUe[ueId-1].dataVol += staIndTb->lchStaInd[count].totBufSize;
 
                staIndSz += staIndTb->lchStaInd[count].totBufSize;
                datReq.pduSz = staIndTb->lchStaInd[count].totBufSize;

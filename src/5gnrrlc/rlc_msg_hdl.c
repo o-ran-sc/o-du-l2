@@ -730,13 +730,13 @@ uint8_t RlcProcDlUserDataTransfer(Pst *pst, RlcDlUserDataInfo *dlDataMsgInfo)
  *    Functionality:
  *      sending UE delete response to DU 
  *
- * @params[in] uint8_t ueIdx, uint8_t cellId, UeDeleteResult result 
+ * @params[in] uint8_t cellId, uint8_t ueIdx, UeDeleteResult result 
  *
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t sendRlcUeDeleteRspToDu(uint8_t ueIdx, uint16_t cellId, UeDeleteResult result)
+uint8_t sendRlcUeDeleteRspToDu(uint16_t cellId,uint8_t ueId, UeDeleteResult result)
 {
    Pst pst;  
    RlcUeDeleteRsp *ueDeleteRsp = NULLP;
@@ -752,7 +752,7 @@ uint8_t sendRlcUeDeleteRspToDu(uint8_t ueIdx, uint16_t cellId, UeDeleteResult re
    else
    {
       ueDeleteRsp->cellId = cellId;
-      ueDeleteRsp->ueIdx = ueIdx;
+      ueDeleteRsp->ueId = ueId;
       ueDeleteRsp->result = result;
   
       if(rlcSendUeDeleteRspToDu(&pst, ueDeleteRsp) == ROK)
@@ -767,41 +767,6 @@ uint8_t sendRlcUeDeleteRspToDu(uint8_t ueIdx, uint16_t cellId, UeDeleteResult re
       }
    }
    return ROK;
-}
-
-/* ****************************************************************
-*
-* @brief filling RLC UE delete configuration  
-*
-* @details
-*
-*    Function : fillRlcCfgInfo 
-*
-*    Functionality: filling RLC UE delete configuration
-*
-* @params[in] RlcUlUeCb *ueCb, RlcCfgInfo *rlcUeCfg
-*
-* @return void
-*
-* ****************************************************************/
-
-void fillRlcUeDelInfo(RlcUlUeCb *ueCb, RlcCfgInfo *rlcUeCfg)
-{
-   uint8_t lcIdx;
-   
-   rlcUeCfg->ueId    = ueCb->ueId;
-   rlcUeCfg->cellId  = ueCb->cellId;
-   rlcUeCfg->numEnt = 0;
-   for(lcIdx=0; lcIdx<RLC_MAX_LCH_PER_UE && rlcUeCfg->numEnt < 1; lcIdx++)
-   {
-      if(ueCb->lCh[lcIdx].ulRbCb != NULLP)
-      {
-         rlcUeCfg->entCfg[rlcUeCfg->numEnt].rbId    = 0;
-         rlcUeCfg->entCfg[rlcUeCfg->numEnt].rbType  = 0;
-         rlcUeCfg->entCfg[rlcUeCfg->numEnt].cfgType = CKW_CFG_DELETE_UE;
-         rlcUeCfg->numEnt++;
-      }
-   }
 }
 
 /*******************************************************************
@@ -826,35 +791,23 @@ uint8_t RlcProcUeDeleteReq(Pst *pst, RlcUeDelete *ueDelete)
 {
    uint8_t ret = ROK;
    RlcCb *gRlcCb = NULLP;
-   RlcCfgInfo *rlcUeCfg = NULLP;
    RlcUlUeCb *ueCb = NULLP;
    UeDeleteResult result=SUCCESSFUL;
 
-   DU_LOG("\nDEBUG  -->  RLC: UE Delete request received. CellID[%d] UEIDX[%d]",ueDelete->cellId, ueDelete->ueIdx);
+   DU_LOG("\nDEBUG  -->  RLC: UE Delete request received. CellID[%d] UEID[%d]",ueDelete->cellId, ueDelete->ueId);
 
    if(ueDelete != NULLP)
    {
       gRlcCb = RLC_GET_RLCCB(pst->dstInst);
-      rlcDbmFetchUlUeCb(gRlcCb,ueDelete->ueIdx, ueDelete->cellId, &ueCb);
+      rlcDbmFetchUlUeCb(gRlcCb,ueDelete->ueId, ueDelete->cellId, &ueCb);
       if(ueCb != NULLP)
       {
          if(ueDelete->cellId == ueCb->cellId)
          {
-            RLC_ALLOC(gRlcCb, rlcUeCfg, sizeof(RlcCfgInfo));
-            if(rlcUeCfg == NULLP)
+            memcpy(&ueCb->ueDeleteInfo.pst, pst, sizeof(Pst));
+            if((rlcChkTmr(gRlcCb, (PTR)ueCb, EVENT_RLC_UE_DELETE_TMR)) == FALSE)
             {
-               DU_LOG("\nERROR  -->  RLC: deleteRlcUeCb(): Failed to allocate memory");
-               ret = RFAILED;
-            }
-            else
-            {
-               memset(rlcUeCfg, 0, sizeof(RlcCfgInfo));
-               fillRlcUeDelInfo(ueCb, rlcUeCfg);
-               if(RlcProcCfgReq(pst, rlcUeCfg) != ROK)
-               {
-                  DU_LOG("\nERROR  -->  RLC: deleteRlcUeCb(): Failed to delete UE information");
-                  result = INVALID_UEID;
-               }
+               rlcStartTmr(gRlcCb,(PTR)ueCb, EVENT_RLC_UE_DELETE_TMR);
             }
          }
          else
@@ -869,7 +822,7 @@ uint8_t RlcProcUeDeleteReq(Pst *pst, RlcUeDelete *ueDelete)
 
       if(result != SUCCESSFUL)
       {
-         ret = sendRlcUeDeleteRspToDu(ueDelete->ueIdx, ueDelete->cellId, result);
+         ret = sendRlcUeDeleteRspToDu(ueDelete->cellId, ueDelete->ueId, result);
          if(ret != ROK)
          {
             DU_LOG("\nERROR  -->  RLC: RlcProcUeDeleteReq():Failed to send UE Delete response to DU");

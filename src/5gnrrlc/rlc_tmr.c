@@ -48,10 +48,13 @@
 #include "kwu.x"           /* KWU */
 #include "rgu.x"           /* RGU */
 
+#include "du_app_rlc_inf.h"
 #include "rlc_utils.h"            /* RLC defines */
 #include "rlc_dl_ul_inf.h"
 #include "rlc_dl.h"
 #include "rlc_ul.h"
+#include "rlc_mgr.h"
+
 /** 
  * @file gp_tmr.c
  * @brief RLC Timer Module
@@ -81,7 +84,6 @@
 
 /* private function declarations */
 static Void rlcBndTmrExpiry(PTR cb);
-void rlcThptTmrExpiry(PTR cb);
 
 /**
  * @brief Handler to start timer
@@ -183,6 +185,14 @@ void rlcStartTmr(RlcCb *gCb, PTR cb, int16_t tmrEvnt)
          arg.max = RLC_MAX_THPT_TMR; 
          break;
       }
+      case EVENT_RLC_UE_DELETE_TMR:
+      {
+         RlcUlUeCb *ulUeCb = (RlcUlUeCb*)cb;
+         RLC_TMR_CALCUATE_WAIT(arg.wait, RLC_UE_DELETE_WAIT_TIME, gCb->genCfg.timeRes);
+         arg.timers = &ulUeCb->ueDeleteInfo.ueDelTmr;
+         arg.max = RLC_MAX_UE_TMR;
+         break;
+      }
       default:
       {
          DU_LOG("\nERROR  -->  RLC : rlcStartTmr: Invalid tmr Evnt [%d]", tmrEvnt);
@@ -270,6 +280,11 @@ void rlcStopTmr(RlcCb *gCb, PTR cb, uint8_t tmrType)
          arg.timers   = &((RlcThpt *)cb)->thptTmr;
          arg.max  = RLC_MAX_THPT_TMR;
       }
+      case EVENT_RLC_UE_DELETE_TMR:
+      {
+         arg.timers   = &((RlcUlUeCb*)cb)->ueDeleteInfo.ueDelTmr;
+         arg.max  = EVENT_RLC_UE_DELETE_TMR;
+      }
       default:
       {
          DU_LOG("\nERROR  -->  RLC : rlcStopTmr: Invalid tmr Evnt[%d]", tmrType);
@@ -348,6 +363,11 @@ Void rlcTmrExpiry(PTR cb,S16 tmrEvnt)
          rlcThptTmrExpiry(cb);
          break;
       }
+      case EVENT_RLC_UE_DELETE_TMR:
+      {
+         rlcUeDeleteTmrExpiry(cb);
+         break;
+      }
       default:
       {
          break;
@@ -401,6 +421,10 @@ bool rlcChkTmr(RlcCb *gCb, PTR cb, int16_t tmrEvnt)
       {
          return (((RlcThpt *)cb)->thptTmr.tmrEvnt == EVENT_RLC_THROUGHPUT_TMR);
       }
+      case EVENT_RLC_UE_DELETE_TMR:
+      {
+         return (((RlcUlUeCb *)cb)->ueDeleteInfo.ueDelTmr.tmrEvnt == EVENT_RLC_UE_DELETE_TMR);
+      }
       default:
       {
          DU_LOG("\nERROR  -->  RLC : rlcChkTmr: Invalid tmr Evnt [%d]", tmrEvnt);
@@ -414,17 +438,17 @@ bool rlcChkTmr(RlcCb *gCb, PTR cb, int16_t tmrEvnt)
  * @brief Handler to do processing on expiry of the bind timer
  *
  * @details
- *    This function processes the RLC bind timer expiry. If the number of 
- *    retries is less than the maximum retry counter, bind request is sent 
+ *    This function processes the RLC bind timer expiry. If the number of
+ *    retries is less than the maximum retry counter, bind request is sent
  *    again, else an alarm is raised to the layer manager.
- *       
+ *
  * @param[in] cb  Pointer to the Rgu sap
  *
  * @return  Void
 */
 static Void rlcBndTmrExpiry(PTR cb)
 {
-   RlcRguSapCb *rguSapCb; 
+   RlcRguSapCb *rguSapCb;
 
    rguSapCb = (RlcRguSapCb *) cb;
 
@@ -434,9 +458,9 @@ static Void rlcBndTmrExpiry(PTR cb)
       {
          /* start timer to wait for bind confirm */
          rlcStartTmr(RLC_GET_RLCCB(rguSapCb->pst.srcInst),
-                    (PTR)rguSapCb, 
+                    (PTR)rguSapCb,
                     EVENT_RLC_WAIT_BNDCFM);
-         
+
          /* Send bind request */
          rguSapCb->retryCnt++;
          RlcLiRguBndReq (&rguSapCb->pst, rguSapCb->suId, rguSapCb->spId);
@@ -449,17 +473,17 @@ static Void rlcBndTmrExpiry(PTR cb)
          /* Send alarm to the layer manager */
 #ifdef LTE_L2_MEAS
          rlcLmmSendAlarm(RLC_GET_RLCCB(rguSapCb->pst.srcInst),
-                        LCM_CATEGORY_INTERFACE, 
+                        LCM_CATEGORY_INTERFACE,
                         LCM_EVENT_BND_FAIL,
-                        LCM_CAUSE_TMR_EXPIRED, 
-                        0, 
-                        0, 
+                        LCM_CAUSE_TMR_EXPIRED,
+                        0,
+                        0,
                         0);
 #else
          rlcLmmSendAlarm(RLC_GET_RLCCB(rguSapCb->pst.srcInst),
-                        LCM_CATEGORY_INTERFACE, 
+                        LCM_CATEGORY_INTERFACE,
                         LCM_EVENT_BND_FAIL,
-                        LCM_CAUSE_TMR_EXPIRED, 
+                        LCM_CAUSE_TMR_EXPIRED,
                         0, /* suId */
                         0 /* ueId */);
 #endif
@@ -484,22 +508,36 @@ void rlcThptTmrExpiry(PTR cb)
    uint16_t  ueIdx;
    long double tpt;
    RlcThpt *rlcThptCb = (RlcThpt*)cb; 
+   
+   /* If cell is not up, throughput details cannot be printed */
+   if(gCellStatus != CELL_UP)
+   {
+      /* Restart timer */
+      rlcStartTmr(RLC_GET_RLCCB(rlcThptCb->inst), (PTR)rlcThptCb, EVENT_RLC_THROUGHPUT_TMR);
+      return;
+   }
 
-   /* Print throughput */
+   /* If cell is up, print throughout for each UE attached to the cell */
    DU_LOG("\n===================== DL Throughput ==============================");
    DU_LOG("\nNumber of UEs : %d", rlcThptCb->numActvUe);
-   for(ueIdx = 0; ueIdx < rlcThptCb->numActvUe; ueIdx++)
+   if(rlcThptCb->numActvUe)
    {
-      /* Spec 28.552, section 5.1.1.3 : 
-       * Throughput in kilobits/sec = (dataVol in kiloBits * 1000)/time in milligseconds
-       * 
-       * Since our dataVol is in bytes, multiplying 0.008 to covert into kilobits i.e. 
-       * Throughput[kbits/sec] = (dataVol * 0.008 * 1000)/time in ms
-       */
-      tpt = (double)(rlcThptCb->thptPerUe[ueIdx].dataVol * 8)/(double)ODU_THROUGHPUT_PRINT_TIME_INTERVAL;
+      for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
+      {
+         if(rlcThptCb->thptPerUe[ueIdx].ueId)
+         {
+            /* Spec 28.552, section 5.1.1.3 : 
+             * Throughput in kilobits/sec = (dataVol in kiloBits * 1000)/time in milligseconds
+             * 
+             * Since our dataVol is in bytes, multiplying 0.008 to covert into kilobits i.e. 
+             * Throughput[kbits/sec] = (dataVol * 0.008 * 1000)/time in ms
+             */
+             tpt = (double)(rlcThptCb->thptPerUe[ueIdx].dataVol * 8)/(double)ODU_THROUGHPUT_PRINT_TIME_INTERVAL;
       
-      DU_LOG("\nUE Id : %d   DL Tpt : %.2Lf", rlcThptCb->thptPerUe[ueIdx].ueIdx, tpt);
-      rlcThptCb->thptPerUe[ueIdx].dataVol = 0;
+             DU_LOG("\nUE Id : %d   DL Tpt : %.2Lf", rlcThptCb->thptPerUe[ueIdx].ueId, tpt);
+             rlcThptCb->thptPerUe[ueIdx].dataVol = 0;
+         }
+      }
    }
    DU_LOG("\n==================================================================");
 
@@ -509,6 +547,75 @@ void rlcThptTmrExpiry(PTR cb)
    return;
 }
 
+/**
+*
+* @brief filling RLC UE delete configuration
+*
+* @details
+*    filling RLC UE delete configuration
+*
+* @params[in] RlcUlUeCb *ueCb, RlcCfgInfo *rlcUeCfg
+*
+* @return void
+*
+*/
+
+void fillRlcUeDelInfo(RlcUlUeCb *ueCb, RlcCfgInfo *rlcUeCfg)
+{
+   uint8_t lcIdx;
+
+   rlcUeCfg->ueId    = ueCb->ueId;
+   rlcUeCfg->cellId  = ueCb->cellId;
+   rlcUeCfg->numEnt = 0;
+   for(lcIdx=0; lcIdx<RLC_MAX_LCH_PER_UE && rlcUeCfg->numEnt < 1; lcIdx++)
+   {
+      if(ueCb->lCh[lcIdx].ulRbCb != NULLP)
+      {
+         rlcUeCfg->entCfg[rlcUeCfg->numEnt].rbId    = 0;
+         rlcUeCfg->entCfg[rlcUeCfg->numEnt].rbType  = 0;
+         rlcUeCfg->entCfg[rlcUeCfg->numEnt].cfgType = CKW_CFG_DELETE_UE;
+         rlcUeCfg->numEnt++;
+      }
+   }
+}
+
+/**
+* @brief Handler to do processing on expiry of the UE delete timer
+*
+* @details
+*    This function processes the RLC UE delete timer expiry.
+*
+* @param[in] cb  Pointer to the RlcUlUeCb  
+*
+* @return  uint8_t
+*/
+
+uint8_t rlcUeDeleteTmrExpiry(PTR cb)
+{
+   RlcCb *gRlcCb = NULLP;
+   RlcCfgInfo *rlcUeCfg = NULLP;
+   RlcUlUeCb *ueCb = (RlcUlUeCb*)cb;
+
+   gRlcCb = RLC_GET_RLCCB(ueCb->ueDeleteInfo.pst.dstInst);
+   RLC_ALLOC(gRlcCb, rlcUeCfg, sizeof(RlcCfgInfo));
+   if(rlcUeCfg == NULLP)
+   {
+      DU_LOG("\nERROR  -->  RLC: rlcUeDeleteTmrExpiry(): Failed to allocate memory");
+      return RFAILED;
+   }
+   memset(rlcUeCfg, 0, sizeof(RlcCfgInfo));
+   fillRlcUeDelInfo(ueCb, rlcUeCfg);
+   if(RlcProcCfgReq(&ueCb->ueDeleteInfo.pst, rlcUeCfg) != ROK)
+   {
+      DU_LOG("\nERROR  -->  RLC: rlcUeDeleteTmrExpiry(): Failed to delete UE");
+      if(sendRlcUeDeleteRspToDu(rlcUeCfg->cellId, rlcUeCfg->ueId, INVALID_UEID) != ROK)
+      {
+         DU_LOG("ERROR  --> RLC: rlcUeDeleteTmrExpiry(): Failed to send UE delete response ");
+         return RFAILED;
+      }
+   }
+   return ROK;
+}
   
 /********************************************************************30**
   
