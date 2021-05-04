@@ -212,13 +212,13 @@ typedef struct rlcUeCfgRsp
 typedef struct rlcUeDelete
 {
    uint16_t      cellId;
-   uint8_t       ueIdx;
+   uint8_t       ueId;
 }RlcUeDelete;
 
 typedef struct rlcUeDeleteRsp
 {
    uint16_t       cellId;
-   uint8_t        ueIdx;
+   uint8_t        ueId;
    UeDeleteResult result;
 }RlcUeDeleteRsp;
 
