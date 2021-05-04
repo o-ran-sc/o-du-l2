@@ -707,6 +707,16 @@ RlcEntCfgCfmInfo   *entCfm
                         entCfg->rbId);
                return RFAILED;
             }
+            /* Start throughput calculation for this UE */
+            gCb->rlcThpt.thptPerUe[gCb->rlcThpt.numActvUe].ueIdx = ueId;
+            gCb->rlcThpt.thptPerUe[gCb->rlcThpt.numActvUe].dataVol = 0;
+            gCb->rlcThpt.numActvUe++;
+            
+            if((rlcChkTmr(gCb, (PTR)(&gCb->rlcThpt), EVENT_RLC_THROUGHPUT_TMR)) == FALSE)
+            {
+               printf("\nHLAL Starting Throughput timer");
+               rlcStartTmr(gCb, (PTR)(&gCb->rlcThpt), EVENT_RLC_THROUGHPUT_TMR);
+            }
          }
 
          /* Validate LChId for UM and AM modes */

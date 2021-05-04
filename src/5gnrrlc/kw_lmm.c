@@ -176,6 +176,11 @@ static S16 rlcLmmGenCfg(RlcCb  *gCb,RlcGenCfg *cfg)
    rlcTqCp->tmrLen = RLC_TMR_LEN;
    rlcTqCp->nxtEnt = 0;
 
+   gCb->rlcThpt.inst = gCb->init.inst;
+   gCb->rlcThpt.thptTmr.tmrEvnt = TMR_NONE;
+   gCb->rlcThpt.numActvUe = 0;
+   memset(gCb->rlcThpt.thptPerUe, 0, MAX_NUM_UE * sizeof(RlcThptPerUe));
+
    if(gCb->genCfg.rlcMode == LKW_RLC_MODE_DL)
    {
       RLC_ALLOC(gCb,gCb->u.dlCb, sizeof (RlcDlCb));

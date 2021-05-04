@@ -197,7 +197,7 @@ uint8_t duBuildAndSendDlUserDataToRlc(uint16_t msgLen, EgtpMsg *egtpMsg)
    if(ret != ROK)
    {
       DU_LOG("\nERROR  -->  DU_APP : Failed to send User Data to RLC in duHdlEgtpDlData()");
-      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, dlDataMsgInfo->dlMsg, msgLen);
+      ODU_PUT_MSG_BUF(dlDataMsgInfo->dlMsg);
       DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, dlDataMsgInfo, sizeof(RlcDlUserDataInfo));
    }
    return ret;
@@ -1685,7 +1685,8 @@ uint8_t duBuildAndSendUeCreateReqToMac(uint16_t cellId, uint8_t ueIdx,\
  * ****************************************************************/
 uint8_t duUpdateMacCfg(MacUeCfg *macUeCfg, F1UeContextSetupDb *f1UeDb) 
 {
-   uint8_t ret, lcIdx, dbIdx, numLcs, lcDelIdx;
+   uint8_t ret, lcIdx, dbIdx, numLcs, lcDelIdx, cellIdx;
+   MacUeCfg *oldMacUeCfg;
    ret = ROK;
 
    /*Filling Cell Group Cfg*/
@@ -1703,7 +1704,12 @@ uint8_t duUpdateMacCfg(MacUeCfg *macUeCfg, F1UeContextSetupDb *f1UeDb)
 	       NULL, &macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg);
       }
       ret = fillAmbr(&macUeCfg->ambrCfg, f1UeDb->duUeCfg.ambrCfg);
+
+      GET_CELL_IDX(macUeCfg->cellId, cellIdx);
+      oldMacUeCfg = &duCb.actvCellLst[cellIdx]->ueCb[macUeCfg->ueIdx-1].macUeCfg;
+      duFillModulationDetails(macUeCfg, oldMacUeCfg, f1UeDb->duUeCfg.ueNrCapability);
    }
+
    /* Filling LC Context */
    for(dbIdx = 0; (dbIdx < f1UeDb->duUeCfg.numMacLcs && ret == ROK); dbIdx++)
    {

@@ -96,6 +96,8 @@
 #define TOTAL_PRB_20MHZ_MU0 106
 #define TOTAL_PRB_100MHZ_MU1 273
 
+#define ODU_THROUGHPUT_PRINT_TIME_INTERVAL  5 /* in milliseconds */
+
 /* Defining macros for common utility functions */
 #define ODU_GET_MSG_BUF SGetMsg
 #define ODU_PUT_MSG_BUF SPutMsg

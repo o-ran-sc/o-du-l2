@@ -385,6 +385,7 @@ uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
 {
    uint8_t           numPdu = 0;
    uint16_t          ueIdx;
+   uint16_t          actvUeIdx;
    RlcDlUeCb         *ueCb;         /* UE control block */
    uint32_t          count;         /* Loop Counter */
    uint32_t          numTb;         /* Number of Tbs */
@@ -432,6 +433,14 @@ uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
          /* If ueCb is not found for current rnti then continue to look for next rnti*/
          continue; 
       }
+      
+      /* Find ueIdx for throughput calculation */
+      for(actvUeIdx = 0; actvUeIdx < gCb->rlcThpt.numActvUe; actvUeIdx++)
+      {
+         if(gCb->rlcThpt.thptPerUe[actvUeIdx].ueIdx == ueIdx)
+            break;
+      }
+
       /* kw002.201 Removed the allocation of RlcDatReq */
       /* kw004.201 Used SSI function to initialize the variable */
       memset(&datReq, 0, sizeof(RlcDatReq) ); 
@@ -462,7 +471,9 @@ uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
 
             if (rbCb && (!rlcDlUtlIsReestInProgress(rbCb)))
             { 
-//Debug
+               /* Cosider buffer size for throughput calculation */
+               gCb->rlcThpt.thptPerUe[actvUeIdx].dataVol += staIndTb->lchStaInd[count].totBufSize;
+
                staIndSz += staIndTb->lchStaInd[count].totBufSize;
                datReq.pduSz = staIndTb->lchStaInd[count].totBufSize;
 #ifdef LTE_L2_MEAS            

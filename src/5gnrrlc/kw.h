@@ -440,6 +440,7 @@
 #define RLC_TMR_LEN                     10
 #define RLC_MAX_UM_TMR                  1
 #define RLC_MAX_AM_TMR                  3
+#define RLC_MAX_THPT_TMR                1
 
 /* Timer events */
 #define EVENT_RLC_UMUL_REASSEMBLE_TMR     1
@@ -451,6 +452,7 @@
 #ifdef LTE_L2_MEAS
 #define EVENT_RLC_L2_TMR                  6
 #endif /* LTE_L2_MEAS */
+#define EVENT_RLC_THROUGHPUT_TMR          7
 
 /*******************************************************************************
  *                              DBM Defines 
