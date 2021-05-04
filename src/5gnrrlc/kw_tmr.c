@@ -490,22 +490,36 @@ void rlcThptTmrExpiry(PTR cb)
    uint16_t  ueIdx;
    long double tpt;
    RlcThpt *rlcThptCb = (RlcThpt*)cb; 
+   
+   /* If cell is not up, throughput details cannot be printed */
+   if(gCellStatus != CELL_UP)
+   {
+      /* Restart timer */
+      rlcStartTmr(RLC_GET_RLCCB(rlcThptCb->inst), (PTR)rlcThptCb, EVENT_RLC_THROUGHPUT_TMR);
+      return;
+   }
 
-   /* Print throughput */
+   /* If cell is up, print throughout for each UE attached to the cell */
    DU_LOG("\n===================== DL Throughput ==============================");
    DU_LOG("\nNumber of UEs : %d", rlcThptCb->numActvUe);
-   for(ueIdx = 0; ueIdx < rlcThptCb->numActvUe; ueIdx++)
+   if(rlcThptCb->numActvUe)
    {
-      /* Spec 28.552, section 5.1.1.3 : 
-       * Throughput in kilobits/sec = (dataVol in kiloBits * 1000)/time in milligseconds
-       * 
-       * Since our dataVol is in bytes, multiplying 0.008 to covert into kilobits i.e. 
-       * Throughput[kbits/sec] = (dataVol * 0.008 * 1000)/time in ms
-       */
-      tpt = (double)(rlcThptCb->thptPerUe[ueIdx].dataVol * 8)/(double)ODU_THROUGHPUT_PRINT_TIME_INTERVAL;
+      for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
+      {
+         if(rlcThptCb->thptPerUe[ueIdx].ueIdx)
+         {
+            /* Spec 28.552, section 5.1.1.3 : 
+             * Throughput in kilobits/sec = (dataVol in kiloBits * 1000)/time in milligseconds
+             * 
+             * Since our dataVol is in bytes, multiplying 0.008 to covert into kilobits i.e. 
+             * Throughput[kbits/sec] = (dataVol * 0.008 * 1000)/time in ms
+             */
+             tpt = (double)(rlcThptCb->thptPerUe[ueIdx].dataVol * 8)/(double)ODU_THROUGHPUT_PRINT_TIME_INTERVAL;
       
-      DU_LOG("\nUE Id : %d   DL Tpt : %.2Lf", rlcThptCb->thptPerUe[ueIdx].ueIdx, tpt);
-      rlcThptCb->thptPerUe[ueIdx].dataVol = 0;
+             DU_LOG("\nUE Id : %d   DL Tpt : %.2Lf", rlcThptCb->thptPerUe[ueIdx].ueIdx, tpt);
+             rlcThptCb->thptPerUe[ueIdx].dataVol = 0;
+         }
+      }
    }
    DU_LOG("\n==================================================================");
 

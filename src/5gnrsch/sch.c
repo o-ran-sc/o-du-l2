@@ -928,44 +928,59 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
    Inst  inst = pst->dstInst-SCH_INST_START;
    DU_LOG("\nDEBUG  -->  SCH : Received RLC BO Status indication");
    cell = schCb[inst].cells[inst];
-
-   GET_UE_IDX(dlBoInfo->crnti, ueIdx);
-   ueCb = &cell->ueCb[ueIdx-1];
-   lcId  = dlBoInfo->lcId;
-
-   if(lcId == SRB1_LCID || lcId == SRB2_LCID || lcId == SRB3_LCID || \
-      (lcId >= MIN_DRB_LCID && lcId <= MAX_DRB_LCID))
+   
+   if(cell != NULLP)
    {
-      SET_ONE_BIT(ueIdx, cell->boIndBitMap);
-      ueCb->dlInfo.dlLcCtxt[lcId].bo = dlBoInfo->dataVolume;
+      GET_UE_IDX(dlBoInfo->crnti, ueIdx);
+      ueCb = &cell->ueCb[ueIdx-1];
+      lcId  = dlBoInfo->lcId;
+
+      if(lcId == SRB1_LCID || lcId == SRB2_LCID || lcId == SRB3_LCID || \
+            (lcId >= MIN_DRB_LCID && lcId <= MAX_DRB_LCID))
+      {
+         SET_ONE_BIT(ueIdx, cell->boIndBitMap);
+         ueCb->dlInfo.dlLcCtxt[lcId].bo = dlBoInfo->dataVolume;
+      }
+      else if(lcId != SRB0_LCID)
+      {
+         DU_LOG("\nERROR  -->  SCH : Invalid LC Id %d in MacSchDlRlcBoInfo", lcId);
+         return RFAILED;
+      }
+
+      slot = (cell->slotInfo.slot + SCHED_DELTA + PHY_DELTA_DL + BO_DELTA) % cell->numSlots;
+      schDlSlotInfo = cell->schDlSlotInfo[slot];
+      
+      if(schDlSlotInfo != NULLP)
+      {
+         SCH_ALLOC(schDlSlotInfo->dlMsgInfo, sizeof(DlMsgInfo));
+         if(!schDlSlotInfo->dlMsgInfo)
+         {
+            DU_LOG("\nERROR  -->  SCH : Memory allocation failed for dlMsgInfo");
+            schDlSlotInfo = NULL;
+            return RFAILED;
+         }
+         schDlSlotInfo->dlMsgInfo->crnti = dlBoInfo->crnti;
+         schDlSlotInfo->dlMsgInfo->ndi = 1;
+         schDlSlotInfo->dlMsgInfo->harqProcNum = 0;
+         schDlSlotInfo->dlMsgInfo->dlAssignIdx = 0;
+         schDlSlotInfo->dlMsgInfo->pucchTpc = 0;
+         schDlSlotInfo->dlMsgInfo->pucchResInd = 0;
+         schDlSlotInfo->dlMsgInfo->harqFeedbackInd = 0;
+         schDlSlotInfo->dlMsgInfo->dciFormatId = 1;
+         if(lcId == SRB0_LCID)
+            schDlSlotInfo->dlMsgInfo->isMsg4Pdu = true;
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  SCH : MacSchDlRlcBoInfo(): schDlSlotInfo does not exists");
+         return RFAILED;
+      }
    }
-   else if(lcId != SRB0_LCID)
+   else
    {
-      DU_LOG("\nERROR  -->  SCH : Invalid LC Id %d in MacSchDlRlcBoInfo", lcId);
+      DU_LOG("\nERROR  -->  SCH : MacSchDlRlcBoInfo(): Cell does not exists");
       return RFAILED;
    }
-
-   slot = (cell->slotInfo.slot + SCHED_DELTA + PHY_DELTA_DL + BO_DELTA) % cell->numSlots;
-   schDlSlotInfo = cell->schDlSlotInfo[slot];
-
-   SCH_ALLOC(schDlSlotInfo->dlMsgInfo, sizeof(DlMsgInfo));
-   if(!schDlSlotInfo->dlMsgInfo)
-   {
-      DU_LOG("\nERROR  -->  SCH : Memory allocation failed for dlMsgInfo");
-      schDlSlotInfo = NULL;
-      return RFAILED;
-   }
-   schDlSlotInfo->dlMsgInfo->crnti = dlBoInfo->crnti;
-   schDlSlotInfo->dlMsgInfo->ndi = 1;
-   schDlSlotInfo->dlMsgInfo->harqProcNum = 0;
-   schDlSlotInfo->dlMsgInfo->dlAssignIdx = 0;
-   schDlSlotInfo->dlMsgInfo->pucchTpc = 0;
-   schDlSlotInfo->dlMsgInfo->pucchResInd = 0;
-   schDlSlotInfo->dlMsgInfo->harqFeedbackInd = 0;
-   schDlSlotInfo->dlMsgInfo->dciFormatId = 1;
-   if(lcId == SRB0_LCID)
-      schDlSlotInfo->dlMsgInfo->isMsg4Pdu = true;
-
    return ROK;
 }
 

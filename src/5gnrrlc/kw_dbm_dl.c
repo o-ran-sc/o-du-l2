@@ -470,6 +470,9 @@ Void rlcDbmDelDlUeCb(RlcCb *gCb,RlcDlUeCb *ueCb,Bool abortFlag)
       DU_LOG("\nERROR  -->  RLC_DL : UeId[%u] HashList Insertion Failed",
             ueCb->ueId);
    }
+   memset(&gCb->rlcThpt.thptPerUe[ueCb->ueId -1], 0, sizeof(RlcThptPerUe));
+   gCb->rlcThpt.numActvUe--;
+   
    /* kw005.201 ccpu00117318, updating the statistics */
    gCb->genSts.numUe--;
    

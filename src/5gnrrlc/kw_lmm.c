@@ -396,6 +396,17 @@ static S16 rlcLmmGenCfg(RlcCb  *gCb,RlcGenCfg *cfg)
 
    gCb->init.cfgDone = TRUE;
 
+   /* TODO : make this generic for DL and UL after support for UL throughput calculation is added */
+   if(gCb->genCfg.rlcMode == LKW_RLC_MODE_DL)
+   {
+      /* Starting timer to print throughput */
+      if((rlcChkTmr(gCb, (PTR)(&gCb->rlcThpt), EVENT_RLC_THROUGHPUT_TMR)) == FALSE)
+      {
+         DU_LOG("\nINFO   --> RLC : Starting Throughput timer");
+         rlcStartTmr(gCb, (PTR)(&gCb->rlcThpt), EVENT_RLC_THROUGHPUT_TMR);
+      }
+   }
+
    return (LCM_REASON_NOT_APPL);
 } 
 

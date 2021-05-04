@@ -199,6 +199,7 @@ uint8_t duHandleCellUpInd(Pst *pst, OduCellId *cellId)
    {
       DU_LOG("\nINFO   -->  DU APP : 5G-NR Cell %d is UP", cellId->cellId);
       cellCb->cellStatus = ACTIVATED;
+      gCellStatus = CELL_UP;
 
 #ifdef O1_ENABLE
       DU_LOG("\nINFO   -->  DU APP : Raise cell UP alarm for cell id=%d", cellId->cellId);
