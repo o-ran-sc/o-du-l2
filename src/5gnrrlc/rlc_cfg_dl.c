@@ -706,15 +706,9 @@ RlcEntCfgCfmInfo   *entCfm
                return RFAILED;
             }
             /* Start throughput calculation for this UE */
-            gCb->rlcThpt.thptPerUe[gCb->rlcThpt.numActvUe].ueIdx = ueId;
-            gCb->rlcThpt.thptPerUe[gCb->rlcThpt.numActvUe].dataVol = 0;
+            gCb->rlcThpt.thptPerUe[ueId -1].ueId  = ueId;
+            gCb->rlcThpt.thptPerUe[ueId -1].dataVol = 0;
             gCb->rlcThpt.numActvUe++;
-            
-            if((rlcChkTmr(gCb, (PTR)(&gCb->rlcThpt), EVENT_RLC_THROUGHPUT_TMR)) == FALSE)
-            {
-               printf("\nHLAL Starting Throughput timer");
-               rlcStartTmr(gCb, (PTR)(&gCb->rlcThpt), EVENT_RLC_THROUGHPUT_TMR);
-            }
          }
 
          /* Validate LChId for UM and AM modes */

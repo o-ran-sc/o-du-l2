@@ -39,6 +39,7 @@ extern "C" {
 #endif /* __cplusplus */
 
 #include "du_log.h"
+#include "du_app_rlc_inf.h"
  
 
 #define EKWxxx 1
@@ -421,10 +422,11 @@ extern "C" {
 #define RLC_MAX_UM_TMR                  1
 #define RLC_MAX_AM_TMR                  3
 #define RLC_MAX_THPT_TMR                1
+#define RLC_MAX_UE_TMR                  1
 
 /* Timer events */
 #define EVENT_RLC_UMUL_REASSEMBLE_TMR     1
-#define EVENT_RLC_AMUL_REASSEMBLE_TMR          2
+#define EVENT_RLC_AMUL_REASSEMBLE_TMR     2
 #define EVENT_RLC_AMUL_STA_PROH_TMR       3
 #define EVENT_RLC_AMDL_POLL_RETX_TMR      4
 #define EVENT_RLC_WAIT_BNDCFM             5
@@ -433,6 +435,8 @@ extern "C" {
 #define EVENT_RLC_L2_TMR                  6
 #endif /* LTE_L2_MEAS */
 #define EVENT_RLC_THROUGHPUT_TMR          7
+#define EVENT_RLC_UE_DELETE_TMR           8
+#define ODU_UE_DELETE_WAIT_TIME           2 /*in milliseconds */
 
 /*******************************************************************************
  *                              DBM Defines 
@@ -1672,7 +1676,7 @@ typedef struct rlcUlCb
 
 typedef struct rlcThptPerUe
 {
-   uint16_t ueIdx;
+   uint16_t ueId;
    uint64_t dataVol;
 }RlcThptPerUe;
 
@@ -1738,6 +1742,7 @@ void rlcStopTmr  ARGS((RlcCb *gCb, PTR cb, uint8_t tmrType));
 
 bool rlcChkTmr ARGS((RlcCb *gCb,PTR cb, S16 tmrEvnt));
 
+uint8_t sendRlcUeDeleteRspToDu(uint8_t ueIdx, uint16_t cellId, UeDeleteResult result);
 #ifdef LTE_L2_MEAS
 Void rlcLmmSendAlarm ARGS (( RlcCb *gCb,
                                    uint16_t category, 

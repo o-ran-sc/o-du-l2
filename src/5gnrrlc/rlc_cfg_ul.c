@@ -639,6 +639,7 @@ RlcUlCfgTmpData   *cfgTmpData
                   return RFAILED;
                }
                rlcDbmAddUlUeCb(gCb, cfgTmpData->ueId, cfgTmpData->cellId, cfgTmpData->ueCb);
+               cfgTmpData->ueCb->ueDeleteInfo.ueDelTmr.tmrEvnt = TMR_NONE;
             }
             else
             {

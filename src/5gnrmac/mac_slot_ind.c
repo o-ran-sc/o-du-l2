@@ -303,7 +303,13 @@ uint8_t macProcSlotInd(SlotIndInfo slotInd)
    uint16_t  cellIdx = 0;
 
    GET_CELL_IDX(slotInd.cellId, cellIdx);
-
+   
+   if(macCb.macCell[cellIdx] == NULLP)
+   {
+      DU_LOG("ERROR  --> MAC : macProcSlotInd(): sfn[%d] and slot[%d] does not exist",\
+      slotInd.sfn,slotInd.slot);
+      return RFAILED;
+   }
    /* Store current time info */
    macCb.macCell[cellIdx]->currTime.cellId = slotInd.cellId;
    macCb.macCell[cellIdx]->currTime.slot = slotInd.slot;
