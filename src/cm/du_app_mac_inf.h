@@ -1252,14 +1252,14 @@ typedef struct ueCfgRsp
 typedef struct ueDelete
 {
     uint16_t cellId;
-    uint8_t  ueIdx;
+    uint8_t  ueId;
     uint16_t crnti;
 }MacUeDelete;
 
 typedef struct ueDeleteRsp
 {
    uint16_t cellId;
-   uint8_t  ueIdx;
+   uint8_t  ueId;
    UeDeleteStatus result;
 }MacUeDeleteRsp;
 

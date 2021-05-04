@@ -75,7 +75,8 @@ typedef enum
 {
    UE_CTXT_UNKNOWN,
    UE_CTXT_SETUP,
-   UE_CTXT_MOD
+   UE_CTXT_MOD,
+   UE_CTXT_RELEASE
 }UeCtxtActionType;
 
 /** F1AP Msg IE **/
@@ -260,7 +261,7 @@ uint8_t duSendEgtpTnlMgmtReq(uint8_t action, uint32_t teIdMod, GtpTnlCfg *tnlInf
 uint8_t duSendEgtpDatInd(Buffer *mBuf);
 uint8_t duHdlSchCfgComplete(Pst *pst, RgMngmt *cfm);
 uint8_t duBuildAndSendMacCellStart();
-uint8_t duBuildAndSendMacCellStop();
+uint8_t duBuildAndSendMacCellStop(uint16_t cellId);
 #endif
 
 /**********************************************************************
