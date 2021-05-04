@@ -96,7 +96,7 @@
 #define TOTAL_PRB_100MHZ_MU1 273
 
 #define ODU_THROUGHPUT_PRINT_TIME_INTERVAL  5 /* in milliseconds */
-
+#define ODU_UE_DELETE_PRINT_TIME_INTERVAL   2 /*in milliseconds */
 /* Defining macros for common utility functions */
 #define ODU_GET_MSG_BUF SGetMsg
 #define ODU_PUT_MSG_BUF SPutMsg
@@ -223,6 +223,12 @@ typedef enum
    SCS_240KHZ
 }SCS;
 
+typedef enum
+{
+   CELL_UP,
+   CELL_DOWN
+}OduCellStatus;
+
 typedef struct slotIndInfo
 {
    uint16_t cellId;
@@ -250,7 +256,7 @@ typedef struct tddCfg
 }TDDCfg;
 #endif
 
-
+OduCellStatus gCellStatus;
 uint64_t gSlotCount;
 uint64_t gDlDataRcvdCnt;   /* Number of DL data received at EGTP */
 

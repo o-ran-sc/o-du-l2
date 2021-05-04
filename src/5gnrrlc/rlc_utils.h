@@ -421,10 +421,11 @@ extern "C" {
 #define RLC_MAX_UM_TMR                  1
 #define RLC_MAX_AM_TMR                  3
 #define RLC_MAX_THPT_TMR                1
+#define RLC_MAX_UE_DELETE_TMR           1
 
 /* Timer events */
 #define EVENT_RLC_UMUL_REASSEMBLE_TMR     1
-#define EVENT_RLC_AMUL_REASSEMBLE_TMR          2
+#define EVENT_RLC_AMUL_REASSEMBLE_TMR     2
 #define EVENT_RLC_AMUL_STA_PROH_TMR       3
 #define EVENT_RLC_AMDL_POLL_RETX_TMR      4
 #define EVENT_RLC_WAIT_BNDCFM             5
@@ -433,6 +434,7 @@ extern "C" {
 #define EVENT_RLC_L2_TMR                  6
 #endif /* LTE_L2_MEAS */
 #define EVENT_RLC_THROUGHPUT_TMR          7
+#define EVENT_RLC_UE_DELETE_TMR           8
 
 /*******************************************************************************
  *                              DBM Defines 

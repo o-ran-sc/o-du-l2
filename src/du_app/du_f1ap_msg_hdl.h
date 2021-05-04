@@ -52,6 +52,8 @@ uint8_t BuildAndSendUeContextModResp(uint8_t ueIdx, uint8_t cellId);
 uint8_t duBuildAndSendUeContextModReq(uint16_t cellId, uint16_t crnti, DuUeCfg *duUeCfg);
 uint8_t BuildAndSendUeContextReleaseReq(uint16_t cellId, uint8_t ueIdx);
 uint8_t BuildAndSendUeContextReleaseComplete(uint32_t  gnbCuUeF1apId, uint32_t  gnbDuUeF1apId);
+uint8_t duProcCellDeleteReq(uint16_t cellId); 
+uint8_t duProcUeContextReleaseCommand(DuUeCb *duUeCb);
 /**********************************************************************
          End of file
 **********************************************************************/

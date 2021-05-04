@@ -365,6 +365,7 @@ uint8_t duProcCfgComplete()
 	 }
 	 cell->cellInfo.maxUe = duCfgParam.maxUe;
 	 cell->cellStatus = CELL_OUT_OF_SERVICE;
+    gCellStatus = CELL_DOWN;
 
 	 duCb.cfgCellLst[duCb.numCfgCells] = cell;
 	 duCb.numCfgCells++;
@@ -1558,26 +1559,38 @@ uint8_t duBuildAndSendMacCellStart()
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t duBuildAndSendMacCellStop()
+uint8_t duBuildAndSendMacCellStop(uint16_t cellId)
 {
    Pst pst;
-   OduCellId *cellId = NULL;
-
+   uint16_t cellIdx=0;
+   OduCellId *oduCellId = NULL;
+   
    DU_LOG("\nINFO   -->  DU APP : Building and Sending cell stop request to MAC");
 
-   /* Send Cell Stop Request to MAC */
-   DU_ALLOC_SHRABL_BUF(cellId, sizeof(OduCellId));
-   if(!cellId)
+   GET_CELL_IDX(cellId, cellIdx);
+   if(duCb.actvCellLst[cellIdx] != NULLP)
    {
-      DU_LOG("\nERROR  -->  DU APP : Memory alloc failed while building cell stop request");
+      /* Send Cell Stop Request to MAC */
+      DU_ALLOC_SHRABL_BUF(oduCellId, sizeof(OduCellId));
+      if(!oduCellId)
+      {
+         DU_LOG("\nERROR  -->  DU APP : duBuildAndSendMacCellStop():  Memory allocation failed ");
+         return RFAILED;
+      }
+
+      oduCellId->cellId = duCb.actvCellLst[cellIdx]->cellId;
+
+      /* Fill Pst */
+      FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_CELL_STOP);
+
+      return (*packMacCellStopOpts[pst.selector])(&pst, oduCellId);
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  DU APP : duBuildAndSendMacCellStop(): cellId[%d] doesnot exists", cellId);
       return RFAILED;
    }
-   cellId->cellId = duCb.actvCellLst[0]->cellId;
-
-   /* Fill Pst */
-   FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_CELL_STOP);
-
-   return (*packMacCellStopOpts[pst.selector])(&pst, cellId);
+   return ROK;
 }
 
 /*******************************************************************
