@@ -170,10 +170,11 @@ typedef struct rlcEntCfgCfmInfo
    Configuration Confirmation Informatin RLC to RRC */
 typedef struct rlcCfgCfmInfo
 {
-   uint32_t                  transId;             /*!< Transaction Id */
+   uint32_t             transId;             /*!< Transaction Id */
+   CmTimer              ueDelTmr;            /*!< UE delete timer */
    CmLteRnti            ueId;                /*!< UE ID */
    CmLteCellId          cellId;              /*!< Cell ID */
-   uint8_t                   numEnt;              /*!< Number of entities configured */
+   uint8_t              numEnt;              /*!< Number of entities configured */
    RlcEntCfgCfmInfo     entCfgCfm[CKW_MAX_ENT_CFG];   /*!< Array of Entity cfg
                                                          confiramations */
 }RlcCfgCfmInfo;

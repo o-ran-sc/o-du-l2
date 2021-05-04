@@ -736,7 +736,7 @@ uint8_t RlcProcDlUserDataTransfer(Pst *pst, RlcDlUserDataInfo *dlDataMsgInfo)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t sendRlcUeDeleteRspToDu(uint8_t ueIdx, uint16_t cellId, UeDeleteResult result)
+uint8_t sendRlcUeDeleteRspToDu(uint8_t ueId, uint16_t cellId, UeDeleteResult result)
 {
    Pst pst;  
    RlcUeDeleteRsp *ueDeleteRsp = NULLP;
@@ -752,7 +752,7 @@ uint8_t sendRlcUeDeleteRspToDu(uint8_t ueIdx, uint16_t cellId, UeDeleteResult re
    else
    {
       ueDeleteRsp->cellId = cellId;
-      ueDeleteRsp->ueIdx = ueIdx;
+      ueDeleteRsp->ueId = ueId;
       ueDeleteRsp->result = result;
   
       if(rlcSendUeDeleteRspToDu(&pst, ueDeleteRsp) == ROK)
@@ -830,12 +830,12 @@ uint8_t RlcProcUeDeleteReq(Pst *pst, RlcUeDelete *ueDelete)
    RlcUlUeCb *ueCb = NULLP;
    UeDeleteResult result=SUCCESSFUL;
 
-   DU_LOG("\nDEBUG  -->  RLC: UE Delete request received. CellID[%d] UEIDX[%d]",ueDelete->cellId, ueDelete->ueIdx);
+   DU_LOG("\nDEBUG  -->  RLC: UE Delete request received. CellID[%d] UEID[%d]",ueDelete->cellId, ueDelete->ueId);
 
    if(ueDelete != NULLP)
    {
       gRlcCb = RLC_GET_RLCCB(pst->dstInst);
-      rlcDbmFetchUlUeCb(gRlcCb,ueDelete->ueIdx, ueDelete->cellId, &ueCb);
+      rlcDbmFetchUlUeCb(gRlcCb,ueDelete->ueId, ueDelete->cellId, &ueCb);
       if(ueCb != NULLP)
       {
          if(ueDelete->cellId == ueCb->cellId)
@@ -869,7 +869,7 @@ uint8_t RlcProcUeDeleteReq(Pst *pst, RlcUeDelete *ueDelete)
 
       if(result != SUCCESSFUL)
       {
-         ret = sendRlcUeDeleteRspToDu(ueDelete->ueIdx, ueDelete->cellId, result);
+         ret = sendRlcUeDeleteRspToDu(ueDelete->ueId, ueDelete->cellId, result);
          if(ret != ROK)
          {
             DU_LOG("\nERROR  -->  RLC: RlcProcUeDeleteReq():Failed to send UE Delete response to DU");

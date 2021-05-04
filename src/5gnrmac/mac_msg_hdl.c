@@ -213,11 +213,11 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcData *dlData)
    uint8_t   pduIdx =0;
    uint8_t   lcIdx = 0;
    uint8_t   *txPdu =NULLP;
-   uint16_t  tbSize =0;
+   uint16_t  tbSize =0,cellIdx=0;
    MacDlData macDlData;
    MacDlSlot *currDlSlot = NULLP;
    DlRlcBoInfo dlBoInfo;
-  
+
    memset(&macDlData , 0, sizeof(MacDlData));
    DU_LOG("\nDEBUG  -->  MAC: Received DL data for sfn=%d slot=%d numPdu= %d", \
       dlData->slotInfo.sfn, dlData->slotInfo.slot, dlData->numPdu);
@@ -230,24 +230,27 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcData *dlData)
       macDlData.pduInfo[pduIdx].dlPdu = dlData->pduInfo[pduIdx].pduBuf;
    }
 
+   GET_CELL_IDX(dlData->cellId, cellIdx);
    /* Store DL data in the scheduled slot */
-   currDlSlot = &macCb.macCell[dlData->cellId -1]->dlSlot[dlData->slotInfo.slot];
-   if(currDlSlot)
+   if(macCb.macCell[cellIdx] ==NULLP)
    {
-      if(currDlSlot->dlInfo.dlMsgAlloc)
+      DU_LOG("\nERROR  -->  MAC : MacProcRlcDlData(): macCell does not exists");
+      return RFAILED;
+   }
+   currDlSlot = &macCb.macCell[cellIdx]->dlSlot[dlData->slotInfo.slot];
+   if(currDlSlot->dlInfo.dlMsgAlloc)
+   {
+      tbSize = currDlSlot->dlInfo.dlMsgAlloc->dlMsgPdschCfg.codeword[0].tbSize;
+      MAC_ALLOC(txPdu, tbSize);
+      if(!txPdu)
       {
-	 tbSize = currDlSlot->dlInfo.dlMsgAlloc->dlMsgPdschCfg.codeword[0].tbSize;
-	 MAC_ALLOC(txPdu, tbSize);
-	 if(!txPdu)
-	 {
-	    DU_LOG("\nERROR  -->  MAC : Memory allocation failed in MacProcRlcDlData");
-	    return RFAILED;
-	 }
-	 macMuxPdu(&macDlData, NULLP, txPdu, tbSize);
-
-	 currDlSlot->dlInfo.dlMsgAlloc->dlMsgInfo.dlMsgPduLen = tbSize;
-	 currDlSlot->dlInfo.dlMsgAlloc->dlMsgInfo.dlMsgPdu = txPdu;
+         DU_LOG("\nERROR  -->  MAC : Memory allocation failed in MacProcRlcDlData");
+         return RFAILED;
       }
+      macMuxPdu(&macDlData, NULLP, txPdu, tbSize);
+
+      currDlSlot->dlInfo.dlMsgAlloc->dlMsgInfo.dlMsgPduLen = tbSize;
+      currDlSlot->dlInfo.dlMsgAlloc->dlMsgInfo.dlMsgPdu = txPdu;
    }
 
    for(lcIdx = 0; lcIdx < dlData->numLc; lcIdx++)
@@ -267,11 +270,11 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcData *dlData)
    for(pduIdx = 0; pduIdx < dlData->numPdu; pduIdx++)
    {
       MAC_FREE_SHRABL_BUF(pstInfo->region, pstInfo->pool, dlData->pduInfo[pduIdx].pduBuf,\
-         dlData->pduInfo[pduIdx].pduLen);
+            dlData->pduInfo[pduIdx].pduLen);
    }
    if(pstInfo->selector == ODU_SELECTOR_LWLC)
    {
-     MAC_FREE_SHRABL_BUF(pstInfo->region, pstInfo->pool, dlData, sizeof(RlcData));
+      MAC_FREE_SHRABL_BUF(pstInfo->region, pstInfo->pool, dlData, sizeof(RlcData));
    }
    return ROK;
 }
@@ -478,10 +481,13 @@ uint8_t MacProcCellStop(Pst *pst, OduCellId  *cellId)
 
    DU_LOG("\nINFO  -->  MAC : Sending cell stop request to Lower Mac");
    GET_CELL_IDX(cellId->cellId, cellIdx);
-   slotInfo.cellId = cellId->cellId;
-   slotInfo.sfn = macCb.macCell[cellIdx]->currTime.sfn;
-   slotInfo.slot = macCb.macCell[cellIdx]->currTime.slot;
-   sendToLowerMac(FAPI_STOP_REQUEST, 0, &slotInfo);
+   if(macCb.macCell[cellIdx])
+   {
+      slotInfo.cellId = cellId->cellId;
+      slotInfo.sfn = macCb.macCell[cellIdx]->currTime.sfn;
+      slotInfo.slot = macCb.macCell[cellIdx]->currTime.slot;
+      sendToLowerMac(FAPI_STOP_REQUEST, 0, &slotInfo);
+   }
 #endif
 
    MAC_FREE_SHRABL_BUF(pst->region, pst->pool, cellId, \

@@ -270,12 +270,7 @@ RlcCfgCfmInfo   *cfmInfo
    }
    else if (tRlcCb->u.ulCb->rlcUlUdxEventType == EVENT_RLC_UE_DELETE_REQ)
    {
-      FILL_PST_RLC_TO_DUAPP(rspPst, RLC_UL_INST, EVENT_RLC_UE_DELETE_RSP);
-      if(sendRlcUeDeleteRspToDu(cfgCfm->ueId, cfgCfm->cellId, SUCCESSFUL) != ROK)
-      {
-         DU_LOG("ERROR  --> RLC_UL: rlcUlUdxCfgCfm(): Failed to send UE delete response ");
-         return RFAILED;
-      }
+      rlcStartTmr(tRlcCb,(PTR)cfgCfm, EVENT_RLC_UE_DELETE_TMR);
    }
 
    /* free the memory from DL */

@@ -52,6 +52,7 @@
 #include "rlc_dl_ul_inf.h"
 #include "rlc_dl.h"
 #include "rlc_ul.h"
+#include "du_app_rlc_inf.h"
 /** 
  * @file gp_tmr.c
  * @brief RLC Timer Module
@@ -82,7 +83,7 @@
 /* private function declarations */
 static Void rlcBndTmrExpiry(PTR cb);
 void rlcThptTmrExpiry(PTR cb);
-
+uint8_t  rlcUeDeleteTmrExpiry(PTR cb);
 /**
  * @brief Handler to start timer
  *       
@@ -181,6 +182,15 @@ void rlcStartTmr(RlcCb *gCb, PTR cb, int16_t tmrEvnt)
          RLC_TMR_CALCUATE_WAIT(arg.wait, ODU_THROUGHPUT_PRINT_TIME_INTERVAL, gCb->genCfg.timeRes);
          arg.timers = &thptCb->thptTmr;
          arg.max = RLC_MAX_THPT_TMR; 
+         break;
+      }
+      case EVENT_RLC_UE_DELETE_TMR:
+      {
+         RlcCfgCfmInfo *cfgCfmInfoCb = (RlcCfgCfmInfo*)cb;
+         cfgCfmInfoCb->ueDelTmr.tmrEvnt = TMR_NONE;
+         RLC_TMR_CALCUATE_WAIT(arg.wait, ODU_UE_DELETE_WAIT_TIME, gCb->genCfg.timeRes);
+         arg.timers = &cfgCfmInfoCb->ueDelTmr;
+         arg.max = RLC_MAX_UE_TMR;
          break;
       }
       default:
@@ -348,6 +358,11 @@ Void rlcTmrExpiry(PTR cb,S16 tmrEvnt)
          rlcThptTmrExpiry(cb);
          break;
       }
+      case EVENT_RLC_UE_DELETE_TMR:
+      {
+         rlcUeDeleteTmrExpiry(cb);
+         break;
+      }
       default:
       {
          break;
@@ -484,22 +499,36 @@ void rlcThptTmrExpiry(PTR cb)
    uint16_t  ueIdx;
    long double tpt;
    RlcThpt *rlcThptCb = (RlcThpt*)cb; 
+   
+   /* If cell is not up, throughput details cannot be printed */
+   if(gCellStatus != CELL_UP)
+   {
+      /* Restart timer */
+      rlcStartTmr(RLC_GET_RLCCB(rlcThptCb->inst), (PTR)rlcThptCb, EVENT_RLC_THROUGHPUT_TMR);
+      return;
+   }
 
-   /* Print throughput */
+   /* If cell is up, print throughout for each UE attached to the cell */
    DU_LOG("\n===================== DL Throughput ==============================");
    DU_LOG("\nNumber of UEs : %d", rlcThptCb->numActvUe);
-   for(ueIdx = 0; ueIdx < rlcThptCb->numActvUe; ueIdx++)
+   if(rlcThptCb->numActvUe)
    {
-      /* Spec 28.552, section 5.1.1.3 : 
-       * Throughput in kilobits/sec = (dataVol in kiloBits * 1000)/time in milligseconds
-       * 
-       * Since our dataVol is in bytes, multiplying 0.008 to covert into kilobits i.e. 
-       * Throughput[kbits/sec] = (dataVol * 0.008 * 1000)/time in ms
-       */
-      tpt = (double)(rlcThptCb->thptPerUe[ueIdx].dataVol * 8)/(double)ODU_THROUGHPUT_PRINT_TIME_INTERVAL;
+      for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
+      {
+         if(rlcThptCb->thptPerUe[ueIdx].ueIdx)
+         {
+            /* Spec 28.552, section 5.1.1.3 : 
+             * Throughput in kilobits/sec = (dataVol in kiloBits * 1000)/time in milligseconds
+             * 
+             * Since our dataVol is in bytes, multiplying 0.008 to covert into kilobits i.e. 
+             * Throughput[kbits/sec] = (dataVol * 0.008 * 1000)/time in ms
+             */
+             tpt = (double)(rlcThptCb->thptPerUe[ueIdx].dataVol * 8)/(double)ODU_THROUGHPUT_PRINT_TIME_INTERVAL;
       
-      DU_LOG("\nUE Id : %d   DL Tpt : %.2Lf", rlcThptCb->thptPerUe[ueIdx].ueIdx, tpt);
-      rlcThptCb->thptPerUe[ueIdx].dataVol = 0;
+             DU_LOG("\nUE Id : %d   DL Tpt : %.2Lf", rlcThptCb->thptPerUe[ueIdx].ueIdx, tpt);
+             rlcThptCb->thptPerUe[ueIdx].dataVol = 0;
+         }
+      }
    }
    DU_LOG("\n==================================================================");
 
@@ -508,7 +537,29 @@ void rlcThptTmrExpiry(PTR cb)
 
    return;
 }
+/**
+* @brief Handler to do processing on expiry of the UE delete timer
+*
+* @details
+*    This function processes the RLC UE delete timer expiry.
+*
+* @param[in] cb  Pointer to the RLC Cfg struct
+*
+* @return  uint8_t
+*/
 
+uint8_t rlcUeDeleteTmrExpiry(PTR cb)
+{
+    RlcCfgCfmInfo *cfgCfm = (RlcCfgCfmInfo*)cb;
+    
+    if(sendRlcUeDeleteRspToDu(cfgCfm->ueId, cfgCfm->cellId, SUCCESSFUL) != ROK)
+    {
+       DU_LOG("ERROR  --> RLC_UL: rlcUlUdxCfgCfm(): Failed to send UE delete response ");
+       return RFAILED;
+    }
+
+    return ROK;
+}
   
 /********************************************************************30**
   
