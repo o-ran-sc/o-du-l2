@@ -181,6 +181,7 @@ void schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotIndInfo pra
    uint8_t  prachOcas = 0;
    uint8_t  dataType = 0;
    uint8_t  idx = 0;
+   uint8_t  subFrame = 0;
    SchUlSlotInfo *schUlSlotInfo = NULLP;
 
    puschScs      = cell->cellCfg.schInitialUlBwp.bwp.scs;
@@ -194,45 +195,59 @@ void schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotIndInfo pra
 
    if((prachOccasionTimingInfo.sfn%x) == y)
    {
+#ifdef NR_TDD
+      subFrame = prachOccasionTimingInfo.slot/2;
+#else
+      subFrame = prachOccasionTimingInfo.slot;
+#endif
       /* check for subFrame number */
-      if ((1 << prachOccasionTimingInfo.slot) & prachSubframe)
+      if ((1 << subFrame) & prachSubframe)
       {
-	 /* prach ocassion present in this subframe */
+         /* prach ocassion present in this subframe */
+#ifdef NR_TDD
+         if(UL_SLOT != schGetSlotSymbFrmt(prachOccasionTimingInfo.slot, cell->slotFrmtBitMap))
+         {
+            DU_LOG("\nERROR  --> SCH : PrachCfgIdx %d doesn't support UL slot", prachCfgIdx);
+         }
+         else
+#endif
+         {
+            prachFormat      = prachCfgIdxTable[prachCfgIdx][0];
+            prachStartSymbol = prachCfgIdxTable[prachCfgIdx][4];
+            prachOcas        = prachCfgIdxTable[prachCfgIdx][6];
 
-	 prachFormat      = prachCfgIdxTable[prachCfgIdx][0];
-	 prachStartSymbol = prachCfgIdxTable[prachCfgIdx][4];
-	 prachOcas        = prachCfgIdxTable[prachCfgIdx][6];
-
-	 /* freq domain resource determination for RACH*/
-	 freqStart = cell->cellCfg.schRachCfg.msg1FreqStart;
-	 /* numRa determined as 𝑛 belonging {0,1,.., M − 1}, 
-	  * where M is given by msg1Fdm */
-	 numRa = (cell->cellCfg.schRachCfg.msg1Fdm - 1);
-	 for(idx=0; idx<MAX_RACH_NUM_RB_IDX; idx++)
-	 {
-	    if(numRbForPrachTable[idx][0] == cell->cellCfg.schRachCfg.rootSeqLen)
-	    {
-	       if(numRbForPrachTable[idx][1] == cell->cellCfg.schRachCfg.prachSubcSpacing)
-	       {
-		  if(numRbForPrachTable[idx][2] == puschScs)
-		  {
-		     break;
-		  }
-	       }
-	    }
-	 }
-	 numPrachRb = numRbForPrachTable[idx][3];
-	 dataType |= SCH_DATATYPE_PRACH;
-	 /* Considering first slot in the frame for PRACH */
-	 idx = 0;
-	 schUlSlotInfo->assignedPrb[idx] = freqStart+numPrachRb;
+            /* freq domain resource determination for RACH*/
+            freqStart = cell->cellCfg.schRachCfg.msg1FreqStart;
+            /* numRa determined as 𝑛 belonging {0,1,.., M − 1}, 
+             * where M is given by msg1Fdm */
+            numRa = (cell->cellCfg.schRachCfg.msg1Fdm - 1);
+            for(idx=0; idx<MAX_RACH_NUM_RB_IDX; idx++)
+            {
+               if(numRbForPrachTable[idx][0] == cell->cellCfg.schRachCfg.rootSeqLen)
+               {
+                  if(numRbForPrachTable[idx][1] == cell->cellCfg.schRachCfg.prachSubcSpacing)
+                  {
+                     if(numRbForPrachTable[idx][2] == puschScs)
+                     {
+                        break;
+                     }
+                  }
+               }
+            }
+            numPrachRb = numRbForPrachTable[idx][3];
+            dataType |= SCH_DATATYPE_PRACH;
+            /* Considering first slot in the frame for PRACH */
+            idx = 0;
+            schUlSlotInfo->assignedPrb[idx] = freqStart+numPrachRb;
+         }
+         ulSchedInfo->dataType = dataType;
+         /* prach info */
+         ulSchedInfo->prachSchInfo.numPrachOcas   = prachOcas;
+         ulSchedInfo->prachSchInfo.prachFormat    = prachFormat;
+         ulSchedInfo->prachSchInfo.numRa          = numRa;
+         ulSchedInfo->prachSchInfo.prachStartSymb = prachStartSymbol;
+         DU_LOG("\nINFO  --> SCH : RACH occassion set for slot %d", prachOccasionTimingInfo.slot);
       }
-      ulSchedInfo->dataType = dataType;
-      /* prach info */
-      ulSchedInfo->prachSchInfo.numPrachOcas   = prachOcas;
-      ulSchedInfo->prachSchInfo.prachFormat    = prachFormat;
-      ulSchedInfo->prachSchInfo.numRa          = numRa;
-      ulSchedInfo->prachSchInfo.prachStartSymb = prachStartSymbol;
    }
 }
 
