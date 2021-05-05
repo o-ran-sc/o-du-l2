@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "080cdc10_c23886bf",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 953,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-05-05T01:47:54Z",
+      "side": 1,
+      "message": "If a DL slot is not available in the current sub frame, we are not scheduling msg4 at all. This needs to be corrected. We have to schedule in next subframe",
+      "revId": "2b69a0be95fceb7b14ce408d50a432bf74f2bf7b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd3bee70_5b6961a5",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-05-05T01:47:54Z",
+      "side": 1,
+      "message": "schCalcTbSize and schCalcNumPrb must also be verified for new configuration. Testing must be completed using phy stub.",
+      "revId": "2b69a0be95fceb7b14ce408d50a432bf74f2bf7b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dfa9ae4a_a26d7ab2",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-05-05T01:47:54Z",
+      "side": 1,
+      "message": "if conditions at 212 dont satisfy, we have to schedule in net subframe. We cannot drop rar and msg3",
+      "revId": "2b69a0be95fceb7b14ce408d50a432bf74f2bf7b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dfb8a5ec_53504b02",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-05-05T01:47:54Z",
+      "side": 1,
+      "message": "spec reference to be mentioned in TDD case as well",
+      "revId": "2b69a0be95fceb7b14ce408d50a432bf74f2bf7b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}

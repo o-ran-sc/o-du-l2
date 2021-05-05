@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b38a49a_161dfd3d",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 952,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-05-05T01:47:54Z",
+      "side": 1,
+      "message": "coding convention: constant on RHS",
+      "revId": "f10092e1e8aad6a85cf7d38260e6d6b588a275af",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
