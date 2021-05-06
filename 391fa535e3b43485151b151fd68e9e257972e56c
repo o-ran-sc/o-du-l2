@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ccbac94a_5dffc813",
+        "filename": "docs/ODU-O1-Arch.jpg",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-05-06T14:43:28Z",
+      "side": 1,
+      "message": "1. This image is slightly misleading since ODU-High contains other modules other than DU APP as well.\n2. ODU-High to be renamed as O-DU High",
+      "revId": "391fa535e3b43485151b151fd68e9e257972e56c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "373812ac_117f7099",
+        "filename": "docs/installation-guide.rst",
+        "patchSetId": 5
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-05-06T14:43:28Z",
+      "side": 1,
+      "message": "Can be changed to compile? In order to make it look different from line #234. Same comment for all build instructions",
+      "revId": "391fa535e3b43485151b151fd68e9e257972e56c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db1d162d_1a91a474",
+        "filename": "docs/overview.rst",
+        "patchSetId": 5
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-05-06T14:43:28Z",
+      "side": 1,
+      "message": "no need to change the name. O1 is part of O-DU High",
+      "revId": "391fa535e3b43485151b151fd68e9e257972e56c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
