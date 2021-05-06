@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be55147b_09fde77a",
+        "filename": "src/5gnrrlc/rlc_utils.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-05-06T11:55:10Z",
+      "side": 1,
+      "message": "we dont run mccabe or coverity. Do we need code in this flag??",
+      "revId": "8897fd3a94528264c281bf1a072b7ad5d97281f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bbedcc25_8c492c9f",
+        "filename": "src/5gnrrlc/rlc_utils.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-05-06T11:55:10Z",
+      "side": 1,
+      "message": "replace RMV with REMOVE. Assuming RMV is short for REMOVE",
+      "revId": "8897fd3a94528264c281bf1a072b7ad5d97281f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd863526_a7dbb431",
+        "filename": "src/5gnrrlc/rlc_utils.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-05-06T11:55:10Z",
+      "side": 1,
+      "message": "again, no XEON target in our case",
+      "revId": "8897fd3a94528264c281bf1a072b7ad5d97281f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86e176f3_3e689e92",
+        "filename": "src/5gnrrlc/rlc_utils.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 1017,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-05-06T11:55:10Z",
+      "side": 1,
+      "message": "better to check through all macros in this file. Looks like most of them are unused and not applicable",
+      "revId": "8897fd3a94528264c281bf1a072b7ad5d97281f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
