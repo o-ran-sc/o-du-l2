@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7e2e6ce_2814b7b0",
+        "filename": "docs/ODU-O1-Arch.jpg",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2021-05-07T04:43:23Z",
+      "side": 1,
+      "message": "DONE",
+      "parentUuid": "ccbac94a_5dffc813",
+      "revId": "391fa535e3b43485151b151fd68e9e257972e56c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "373812ac_117f7099",
@@ -35,6 +53,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "05bb4379_1434f10c",
+        "filename": "docs/installation-guide.rst",
+        "patchSetId": 5
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2021-05-07T04:43:23Z",
+      "side": 1,
+      "message": "DONE",
+      "parentUuid": "373812ac_117f7099",
+      "revId": "391fa535e3b43485151b151fd68e9e257972e56c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "db1d162d_1a91a474",
@@ -48,6 +84,24 @@
       "writtenOn": "2021-05-06T14:43:28Z",
       "side": 1,
       "message": "no need to change the name. O1 is part of O-DU High",
+      "revId": "391fa535e3b43485151b151fd68e9e257972e56c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be5ea1f7_ac1f0a34",
+        "filename": "docs/overview.rst",
+        "patchSetId": 5
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2021-05-07T04:43:23Z",
+      "side": 1,
+      "message": "DONE",
+      "parentUuid": "db1d162d_1a91a474",
       "revId": "391fa535e3b43485151b151fd68e9e257972e56c",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
