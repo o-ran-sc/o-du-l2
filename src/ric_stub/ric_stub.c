@@ -23,7 +23,7 @@
 #include "du_log.h"
 
 #ifdef O1_ENABLE
-#include "Config.h"
+#include "ConfigInterface.h"
 #endif
 
 #define RIC_ID 1
@@ -51,9 +51,7 @@
 #define PLMN_MNC2 0
 
 #ifdef O1_ENABLE
-
 extern StartupConfig g_cfg;
-
 #endif
 
 /*******************************************************************
@@ -137,10 +135,13 @@ void readRicCfg()
    DU_LOG("\nINFO  --> RIC : Reading RIC configurations");
 
 #ifdef O1_ENABLE
-   if( getStartupConfig(&g_cfg) != ROK )
+   if( getStartupConfigForStub(&g_cfg) != ROK )
    {
-      RETVALUE(RFAILED);
+      DU_LOG("\nError  -->  RIC : Could not fetch startup "\
+             "configurations from Netconf interface\n");
+      exit(1);
    }
+
    cmInetAddr((S8*)g_cfg.DU_IPV4_Addr,  &ipv4_du);
    cmInetAddr((S8*)g_cfg.RIC_IPV4_Addr, &ipv4_ric);
 

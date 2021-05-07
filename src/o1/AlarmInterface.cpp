@@ -1,6 +1,6 @@
 /*******************************************************************************
 ################################################################################
-#   Copyright (c) [2020] [HCL Technologies Ltd.]                               #
+#   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
 #                                                                              #
 #   Licensed under the Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
@@ -16,11 +16,13 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains interfaces to raise and clear alarms */
+/* This file contains C interfaces for ODU to raise and clear alarms */
 
+#include <stdio.h>
+#include <time.h>
+#include "GlobalDefs.hpp"
 #include "AlarmInterface.h"
-#include "TcpClient.h"
-
+#include "UnixSocketClient.hpp"
 
 /*******************************************************************
  *
@@ -32,27 +34,29 @@
  *
  *    Functionality:
  *      - Raise an alarm by sending alarm info to O1 module over
- *        TCP socket with action set to RAISE
+ *        Unix socket with action set to RAISE
  *
  * @params[in] alarm information  
- * @return ROK     - success
- *         RFAILED - failure
+ * @return O1::SUCCESS - success
+ *         O1::FAILURE - failure
  ******************************************************************/
 uint8_t raiseAlarm(AlarmRecord* alrm)
 {
-   if (openSocket(TCP_SERVER_IP,TCP_PORT) == RFAILED)
+
+   UnixSocketClient uxClient(O1::ALARM_SOCK_PATH);
+   if (uxClient.openSocket() == O1::FAILURE)
    {
-      return RFAILED;
+      return O1::FAILURE;
    }
    alrm->msgHeader.msgType = ALARM;
    alrm->msgHeader.action = RAISE_ALARM;
-   if (sendData(alrm,sizeof(AlarmRecord)) < 0 )
+   if (uxClient.sendData(alrm,sizeof(AlarmRecord)) < 0 )
    {
-      closeSocket();
-      return RFAILED;
+      uxClient.closeSocket();
+      return O1::FAILURE;
    }
-   closeSocket();
-   return ROK;
+   uxClient.closeSocket();
+   return O1::SUCCESS;
 }
 
 /*******************************************************************
@@ -65,28 +69,29 @@ uint8_t raiseAlarm(AlarmRecord* alrm)
  *
  *    Functionality:
  *      - Clears an alarm raised earlier by sending the alrm
- *        information to O1 module over TCP socket with action
+ *        information to O1 module over Unix socket with action
  *        set to CLEAR
  *
  * @params[in] alarm information  
- * @return ROK     - success
- *         RFAILED - failure
+ * @return O1::SUCCESS - success
+ *         O1::FAILURE - failure
  ******************************************************************/
 uint8_t clearAlarm(AlarmRecord* alrm)
 {
-   if (openSocket(TCP_SERVER_IP,TCP_PORT) == RFAILED)
+   UnixSocketClient uxClient(O1::ALARM_SOCK_PATH);
+   if (uxClient.openSocket() == O1::FAILURE)
    {
-      return RFAILED;
+      return O1::FAILURE;
    }
    alrm->msgHeader.msgType = ALARM;
    alrm->msgHeader.action = CLEAR_ALARM;
-   if (sendData(alrm,sizeof(AlarmRecord)) < 0)
+   if (uxClient.sendData(alrm,sizeof(AlarmRecord)) < 0)
    {
-      closeSocket();
-      return RFAILED;
+      uxClient.closeSocket();
+      return O1::FAILURE;
    }
-   closeSocket();
-   return ROK;
+   uxClient.closeSocket();
+   return O1::SUCCESS;
 }
 
 
@@ -103,8 +108,8 @@ uint8_t clearAlarm(AlarmRecord* alrm)
  *        the alarm
  *
  * @params[in] alarm Id, cell Id  
- * @return ROK     - success
- *         RFAILED - failure
+ * @return O1::SUCCESS - success
+ *         O1::FAILURE - failure
  ******************************************************************/
 uint8_t raiseCellAlrm(uint16_t alrmId, uint16_t cellId)
 {
@@ -153,8 +158,8 @@ uint8_t raiseCellAlrm(uint16_t alrmId, uint16_t cellId)
  *      - Clears the cell specific alarm using alarm id
  *
  * @params[in] alarm Id  
- * @return ROK     - success
- *         RFAILED - failure
+ * @return O1::SUCCESS - success
+ *         O1::FAILURE - failure
  ******************************************************************/
 uint8_t clearCellAlrm(uint16_t alrmId)
 {

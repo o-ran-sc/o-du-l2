@@ -24,36 +24,10 @@ I. Execution - On locally compiling O-DU High Source Code
    b. ifconfig <interface name>:CU_STUB "192.168.130.82"
    c. ifconfig <interface name>:RIC_STUB "192.168.130.80"
 
-2. Execute O1 (only if O-DU is built with O1 interface enabled):
+PS: If O1 interface is enabled, IPs should match those configured in "startup_config.xml"
+    ( Refer Installation Guide - "Setting up Netconf server" )
 
-   a. Navigate to O1 build folder
-
-      - cd <O-DU High Directory>/l2/build/o1
- 
-   b. Create a new netconf user and install the YANG module
-      
-      Switch to root user and run following commands
-      
-      | adduser --system netconf && \\
-      |    echo "netconf:netconf" | chpasswd
-
-      | mkdir -p /home/netconf/.ssh && \\
-      | ssh-keygen -A && \\
-      | ssh-keygen -t dsa -P '' -f /home/netconf/.ssh/id_dsa && \\
-      |    cat /home/netconf/.ssh/id_dsa.pub > /home/netconf/.ssh/authorized_keys
-
-      sysrepoctl -i ./yang/o-ran-sc-odu-alarm-v1.yang
-      sysrepoctl -i ./yang/o-ran-sc-odu-interface-v1.yang
-
-   c. Navigate to O1 execution folder
-
-      - cd <O-DU High Directory>/l2/build/o1/bin/o1
-
-   d. Run O1 binary
-      
-      - ./o1
-
-3. Execute CU Stub:
+2. Execute CU Stub:
 
    a. Navigate to CU execution folder
 
@@ -63,7 +37,7 @@ I. Execution - On locally compiling O-DU High Source Code
 
       - ./cu_stub
 
-4. Execute RIC Stub:
+3. Execute RIC Stub:
 
    a. Navigate to RIC execution folder
 
@@ -73,7 +47,7 @@ I. Execution - On locally compiling O-DU High Source Code
 
       - ./ric_stub
 
-5. Execute O-DU High:
+4. Execute O-DU High:
 
    a. Navigate to ODU execution folder
 
@@ -83,7 +57,7 @@ I. Execution - On locally compiling O-DU High Source Code
 
       - ./odu
 
-PS: CU stub and RIC stub must be run (in no particular sequence) before ODU. If O-DU High is built with O1 interface enabled, the O1 binary must be run before all other binaries.
+PS: CU stub and RIC stub must be run (in no particular sequence) before ODU. 
 
 II. Execution - Using Docker Images
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

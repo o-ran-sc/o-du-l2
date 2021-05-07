@@ -1,6 +1,6 @@
 /*******************************************************************************
 ################################################################################
-#   Copyright (c) [2020] [HCL Technologies Ltd.]                               #
+#   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
 #                                                                              #
 #   Licensed under the Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
@@ -16,15 +16,15 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains TcpServer class that listens for Netconf Alarm messages
-   on a TCP socket from ODU. It calls the AlarmManager functions for raising 
-   or clearing the alarms based on the actions received 
+/* This file contains UnixSocketServer class that listens for Netconf Alarm 
+   messages on a Unix socket from ODU. It calls the AlarmManager functions
+   for raising or clearing the alarms based on the actions received 
 */
 
-#include "TcpServer.hpp"
+#include "UnixSocketServer.hpp"
 #include "Alarm.hpp"
 #include "AlarmManager.hpp"
-#include "Config.h"
+#include "ConfigInterface.h"
 #include "GlobalDefs.hpp"
 #include <iostream>
 #include <cstdio>
@@ -36,13 +36,49 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <arpa/inet.h>
+#include <sys/un.h>
 #include "InitConfig.hpp"
+
 
 using std::map;
 using std::pair;
 
-/* Destructor */
-TcpServer::~TcpServer()
+/*******************************************************************
+ *
+ * @brief Constructor
+ *
+ * @details
+ *
+ *    Function : UnixSocketServer
+ *
+ *    Functionality:
+ *      - Constructor intialization
+ *
+ * @params[in] socket path
+ * @return None
+ ******************************************************************/
+UnixSocketServer::UnixSocketServer(const string& sockPath)
+                                   : mSockPath(sockPath),
+                                     mIsRunning(false)
+{
+
+}  
+  
+/*******************************************************************
+ *
+ * @brief Destructor
+ *
+ * @details
+ *
+ *    Function : ~UnixSocketServer
+ *
+ *    Functionality:
+ *      - Destructor
+ *
+ * @params[in] None
+ * @return None
+ ******************************************************************/
+UnixSocketServer::~UnixSocketServer()
 {
 
 }
@@ -63,7 +99,7 @@ TcpServer::~TcpServer()
  * @return No. of bytes read
  *
  ******************************************************************/
-int TcpServer::readMessage(int fd)
+int UnixSocketServer::readMessage(int fd)
 {
    AlarmRecord *alrmRec = NULL;
    char recvBuf[BUFLEN];
@@ -76,23 +112,27 @@ int TcpServer::readMessage(int fd)
    {
       MsgHeader *msgHdr = (MsgHeader*)recvBuf;
 
-      O1_LOG("\nO1 TcpServer :\nBuf size %ld", sizeof(recvBuf));
-      O1_LOG("\nO1 TcpServer :\nMsgType %d",msgHdr->msgType);
-      O1_LOG("\nO1 TcpServer :\nAction %d",msgHdr->action);
+      O1_LOG("\nO1 UnixSocketServer :\nMsgType %d",msgHdr->msgType);
       
       if ( msgHdr->msgType == ALARM ){
          uint16_t alrmId;
          alrmRec = (AlarmRecord*) recvBuf;
-         O1_LOG("\nO1 TcpServer :\nAction %d\nalarm ID %s\n%d\n%s\n%d\n%s\n%s\nbytes %d",
-                     alrmRec->msgHeader.action,
-                     alrmRec->alarmId,
-                     alrmRec->perceivedSeverity,
-                     alrmRec->additionalText,
-                     alrmRec->eventType,
-                     alrmRec->specificProblem,
-                     alrmRec->additionalInfo,
-                     nbytes
-                     );
+         O1_LOG("\nO1 UnixSocketServer :\n"
+                   "Action %d\n"
+                   "Alarm ID %s\n" 
+                   "Severity %d\n" 
+                   "Additional Text %s\n"
+                   "Specific Problem %s\n"
+                   "Additional Info %s\n"
+                   "Alarm Raise Time %s\n",
+                   alrmRec->msgHeader.action,
+                   alrmRec->alarmId,
+                   alrmRec->perceivedSeverity,
+                   alrmRec->additionalText,
+                   alrmRec->specificProblem,
+                   alrmRec->additionalInfo,
+                   alrmRec->alarmRaiseTime
+                );
       
          /*Fill the alarm structure */
          sscanf(alrmRec->alarmId,"%hu",&alrmId);
@@ -109,41 +149,64 @@ int TcpServer::readMessage(int fd)
          case RAISE_ALARM: 
                      if(AlarmManager::instance().raiseAlarm(alrm))
                      {
-                        O1_LOG("\nO1 TcpServer : Alarm raised for alarm Id %s", alrmRec->alarmId);
+                        O1_LOG("\nO1 UnixSocketServer : "
+                               "Alarm raised for alarm Id %s",
+                                alrmRec->alarmId);
                      }
                      else
                      {
-                        O1_LOG("\nO1 TcpServer : Error in raising alarm for alrm Id %s", alrmRec->alarmId);
+                        O1_LOG("\nO1 UnixSocketServer : "
+                               "Error in raising alarm for alrm Id %s",
+                                alrmRec->alarmId);
                      }
                      break;  
          case CLEAR_ALARM: 
                      if(AlarmManager::instance().clearAlarm(alrm))
                      {
-                        O1_LOG("\nO1 TcpServer : Alarm cleared for alarm Id %s", alrmRec->alarmId);
+                        O1_LOG("\nO1 UnixSocketServer : "
+                               "Alarm cleared for alarm Id %s",
+                                alrmRec->alarmId);
                      }
                      else
                      {
-                        O1_LOG("\nO1 TcpServer : Error in clearing alarm for alarm Id %s", alrmRec->alarmId);
+                        O1_LOG("\nO1 UnixSocketServer : "
+                               "Error in clearing alarm for alarm Id %s",
+                                alrmRec->alarmId);
                      }
                      break;
+#if 0
          case GET_STARTUP_CONFIG:
                      {
                         StartupConfig cfg;
 			               InitConfig::instance().getCurrInterfaceConfig(cfg);
-                        O1_LOG("\nO1 TcpServer : cfg.DU_IPV4_Addr [%s]", cfg.DU_IPV4_Addr);
-                        O1_LOG("\nO1 TcpServer : cfg.DU_Port [%d]", cfg.DU_Port);
-                        O1_LOG("\nO1 TcpServer : cfg.CU_IPV4_Addr [%s]", cfg.CU_IPV4_Addr);
-                        O1_LOG("\nO1 TcpServer : cfg.CU_Port [%d]", cfg.CU_Port);
-                        O1_LOG("\nO1 TcpServer : cfg.RIC_IPV4_Addr [%s]", cfg.RIC_IPV4_Addr);
-                        O1_LOG("\nO1 TcpServer : cfg.RIC_Port [%d]", cfg.RIC_Port);
+                        O1_LOG("\nO1 UnixSocketServer : "
+                               "cfg.DU_IPV4_Addr [%s]",
+                                cfg.DU_IPV4_Addr);
+                        O1_LOG("\nO1 UnixSocketServer : "
+                               "cfg.DU_Port [%d]", 
+                                cfg.DU_Port);
+                        O1_LOG("\nO1 UnixSocketServer : "
+                               "cfg.CU_IPV4_Addr [%s]", 
+                                cfg.CU_IPV4_Addr);
+                        O1_LOG("\nO1 UnixSocketServer : "
+                               "cfg.CU_Port [%d]", 
+                                cfg.CU_Port);
+                        O1_LOG("\nO1 UnixSocketServer : "
+                               "cfg.RIC_IPV4_Addr [%s]", 
+                                cfg.RIC_IPV4_Addr);
+                        O1_LOG("\nO1 UnixSocketServer : "
+                               "cfg.RIC_Port [%d]", 
+                                cfg.RIC_Port);
                         if (write (fd, &cfg, sizeof(cfg)) < 0)
                         {
-                           O1_LOG("\nO1 TcpServer : Error sending startup configuration \n");
+                           O1_LOG("\nO1 UnixSocketServer : "
+                                  "Error sending startup configuration \n");
                         }
                         break; 
                      }
+#endif
          default:    
-                     O1_LOG("\nO1 TcpServer : No action performed"); 
+                     O1_LOG("\nO1 UnixSocketServer : No action performed"); 
                      break;
       }
 
@@ -154,38 +217,46 @@ int TcpServer::readMessage(int fd)
 
 /*******************************************************************
  *
- * @brief Open a TCP socket and bind on the port
+ * @brief Open a Unix socket and bind on the port
  *
  * @details
  *
  *    Function : makeSocket
  *
  *    Functionality:
- *      -  Opens a TCP socket and bind on the port
+ *      -  Opens a Unix socket and bind on the port
  *
  * @params[in] void
  * @return O1:SUCCESS - success
  *         O1:FAILURE - failure
  ******************************************************************/
-int TcpServer::makeSocket() 
+
+int UnixSocketServer::makeSocket() 
 {
-   struct sockaddr_in name;
+   struct sockaddr_un name;
    /* Create the socket. */
-   mSock = socket (PF_INET, SOCK_STREAM, 0);
+   mSock = socket (AF_UNIX, SOCK_STREAM, 0);
    if (mSock < 0)
    {
-      O1_LOG("\nO1 TcpServer : Socket error");
+      O1_LOG("\nO1 UnixSocketServer : Socket error");
       return O1::FAILURE;
    }
    /* Give the socket a name. */
    bzero(&name, sizeof(name));
-   name.sin_family = AF_INET;
-   name.sin_port = htons (mPort);
-   name.sin_addr.s_addr = htonl (INADDR_ANY);
+   name.sun_family = AF_UNIX;
+
+   /* Remove the socket file if it already exists */ 
+   if ( unlink(mSockPath.c_str()) == 0)
+   {
+      O1_LOG("\nO1 UnixSocketServer : "
+             "Removing the existing socket path %s",
+              mSockPath.c_str());
+   }        
+   strcpy(name.sun_path, mSockPath.c_str());
    if (bind (mSock, (struct sockaddr *) &name, sizeof (name)) < 0)
    {
       close(mSock);
-      O1_LOG("\nO1 TcpServer : Bind error");
+      O1_LOG("\nO1 UnixSocketServer : Bind error");
       return O1::FAILURE;
    }
    return O1::SUCCESS;
@@ -194,57 +265,37 @@ int TcpServer::makeSocket()
 
 /*******************************************************************
  *
- * @brief Start TCP server in thread
- *
- * @details
- *
- *    Function : start
- *
- *    Functionality:
- *      -  Start TCP server in thread
- *
- * @params[in] void
- * @return true  - success
- *         false - failure
- ******************************************************************/
-bool TcpServer::start()
-{
-   return (pthread_create(&mThreadId, NULL, task, this) == 0);
-}
-
-/*******************************************************************
- *
- * @brief A TCP server to handle multiple connection
+ * @brief A Unix server to handle multiple connection
  *
  * @details
  *
  *    Function : run
  *
  *    Functionality:
- *      -  A TCP server to handle multiple connection 
+ *      -  A Unix server to handle multiple connection 
  *         Uses select multiplexing
  *
  * @params[in] void
  * @return true  - success
  *         false - failure
  ******************************************************************/
-bool TcpServer::run()
+bool UnixSocketServer::run()
 {
 
    fd_set active_fd_set, read_fd_set;
    int i;
-   struct sockaddr_in clientName;
+   struct sockaddr_un clientName;
    socklen_t size;
-   bool ret = true;;
+   mIsRunning = true;
 
    /* Create the socket and set it up to accept connections. */
    if( makeSocket() == O1::SUCCESS )
    {
       if (listen (mSock, 1) < 0)
       {
-         O1_LOG("\nO1 TcpServer : Listen error");
+         O1_LOG("\nO1 UnixSocketServer : Listen error");
          close(mSock);
-         ret = false;
+         mIsRunning = false;
       }
       else
       {
@@ -258,9 +309,9 @@ bool TcpServer::run()
             read_fd_set = active_fd_set;
             if (select (FD_SETSIZE, &read_fd_set, NULL, NULL, NULL) < 0)
             {
-               O1_LOG("\nO1 TcpServer : Select error");
+               O1_LOG("\nO1 UnixSocketServer : Select error");
                close(mSock);
-               ret = false;
+               mIsRunning = false;
                break;
             }
 
@@ -278,14 +329,12 @@ bool TcpServer::run()
                       newFd = accept(mSock,(struct sockaddr *) &clientName,&size);
                       if (newFd < 0)
                       {
-                         O1_LOG("\nO1 TcpServer : Accept error");
+                         O1_LOG("\nO1 UnixSocketServer : Accept error");
                          close(mSock);
-                         ret = false;
+                         mIsRunning = false;
                          break;
                       }
-                      O1_LOG("\nO1 TcpServer : Connected from host %s, port %hd.\n",
-      		          inet_ntoa (clientName.sin_addr),
-      		          ntohs (clientName.sin_port));
+                      O1_LOG("\nO1 UnixSocketServer : Connected from client\n");
                       FD_SET (newFd, &active_fd_set);
                    }      
                    else
@@ -304,57 +353,51 @@ bool TcpServer::run()
    } /* outer if ends */
    else
    {
-      ret = false;
+      mIsRunning = false;
    }
-   return ret;
+   return mIsRunning;
 }
 
 
 /*******************************************************************
  *
- * @brief Static function for launching a TCP server instance
- *        in a thread
+ * @brief Clean up open socket
  *
  * @details
  *
- *    Function : task
+ *    Function : cleanUp
  *
  *    Functionality:
- *      - Static function for launching a TCP server instance
- *        in a thread
- *
- * @params[in] TcpServer instance
- * @return void
- ******************************************************************/
-void* TcpServer::task(void *args)
-{
-   TcpServer *tcpServer = (TcpServer*)args;
-   tcpServer->run();
-   return NULL;
-}
-
-
-/*******************************************************************
- *
- * @brief Wait for the thread to complete in the parent process
- *
- * @details
- *
- *    Function : wait
- *
- *    Functionality:
- *      - Waits for the thread to complete in the parent process
+ *      -  Performs any clean ups before stopping the thread
  *
  * @params[in] void
- * @return true   : success
- *          false : failure
+ * @return void
  ******************************************************************/
-bool TcpServer::wait()
+void UnixSocketServer::cleanUp(void)
 {
-    return (pthread_join(mThreadId,NULL) == 0);
+   close(mSock);
+   O1_LOG("\nO1 UnixSocketServer : Cleaning up Closing socket \n");
 }
 
-
+/*******************************************************************
+ *
+ * @brief Check if the server is running
+ *
+ * @details
+ *
+ *    Function : isRunning
+ *
+ *    Functionality:
+ *      -  Returns the running status of the server
+ *
+ * @params[in] void
+ * @return true : running
+ *         false: not running
+ ******************************************************************/
+bool UnixSocketServer::isRunning() const
+{
+   return mIsRunning;
+}
 
 /**********************************************************************
          End of file
