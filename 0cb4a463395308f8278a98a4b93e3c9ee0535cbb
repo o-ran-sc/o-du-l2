@@ -16,6 +16,24 @@
       "message": "better to add either all components of o-du or add an arrangement indicating other o-du high submodules",
       "revId": "0cb4a463395308f8278a98a4b93e3c9ee0535cbb",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d21f65b0_b11fd737",
+        "filename": "docs/ODU-O1-Arch.jpg",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2021-05-07T11:15:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ab772ef0_88358bd1",
+      "revId": "0cb4a463395308f8278a98a4b93e3c9ee0535cbb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
