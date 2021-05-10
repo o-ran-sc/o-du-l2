@@ -9291,7 +9291,13 @@ void duFillModulationDetails(MacUeCfg *ueCfg, MacUeCfg *oldUeCfg, void *ueCap)
 {
    UE_NR_Capability_t *ueNrCap=NULLP;
 
-   if(ueCap)
+   if(!ueCap)
+   {
+      memcpy(&ueCfg->dlModInfo, &oldUeCfg->dlModInfo, sizeof(ModulationInfo));     
+      memcpy(&ueCfg->ulModInfo, &oldUeCfg->ulModInfo, sizeof(ModulationInfo));
+   }
+   else
+   {
       ueNrCap = (UE_NR_Capability_t *)ueCap;
 
    /* Filling DL modulation info */
@@ -9376,6 +9382,7 @@ void duFillModulationDetails(MacUeCfg *ueCfg, MacUeCfg *oldUeCfg, void *ueCap)
    else
    {
       memcpy(&ueCfg->ulModInfo, &oldUeCfg->ulModInfo, sizeof(ModulationInfo));
+   }
    }
 }
 
