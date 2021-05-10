@@ -191,6 +191,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0120f1bc_c8558cb6",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-05-10T07:25:35Z",
+      "side": 1,
+      "message": "Okay, it should be 2 only.",
+      "parentUuid": "ce31b4b2_71fbd5c4",
+      "range": {
+        "startLine": 254,
+        "startChar": 6,
+        "endLine": 254,
+        "endChar": 7
+      },
+      "revId": "beff15fe5823b7d2ae2d5bd333d3f403ad55d27e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "474916b7_f9358c74",
         "filename": "src/5gnrsch/sch_utils.c",
         "patchSetId": 1

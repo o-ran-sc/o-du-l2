@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08e53b9d_13d02ad8",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-05-10T07:25:35Z",
+      "side": 1,
+      "message": "7",
+      "range": {
+        "startLine": 230,
+        "startChar": 21,
+        "endLine": 230,
+        "endChar": 22
+      },
+      "revId": "573315c4787acc7bcbe69ed5e6253a12b0556fd3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a8de050_248352ac",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-05-10T07:25:35Z",
+      "side": 1,
+      "message": "7",
+      "range": {
+        "startLine": 231,
+        "startChar": 20,
+        "endLine": 231,
+        "endChar": 21
+      },
+      "revId": "573315c4787acc7bcbe69ed5e6253a12b0556fd3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e94f2ad1_46d736eb",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-05-10T07:25:35Z",
+      "side": 1,
+      "message": "2",
+      "range": {
+        "startLine": 374,
+        "startChar": 24,
+        "endLine": 374,
+        "endChar": 25
+      },
+      "revId": "573315c4787acc7bcbe69ed5e6253a12b0556fd3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2217196e_7d50ce6b",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-05-10T07:25:35Z",
+      "side": 1,
+      "message": "1",
+      "range": {
+        "startLine": 380,
+        "startChar": 24,
+        "endLine": 380,
+        "endChar": 25
+      },
+      "revId": "573315c4787acc7bcbe69ed5e6253a12b0556fd3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
