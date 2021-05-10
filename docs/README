@@ -39,7 +39,7 @@ C. Pre-requisite for O1 Interface (Required only if run with O1 interface enable
 
 	Create new netconf user (login with root user and run following commands)
 	$adduser --system netconf && \
-        echo "netconf:netconf" | chpasswd
+        echo "netconf:netconf!" | chpasswd
 
 	$mkdir -p /home/netconf/.ssh && \
 	ssh-keygen -A && \
@@ -235,7 +235,7 @@ H. How to execute the Health Check : get alarm-list
    2. Connect to the server with 
 
         user: netconf
-        pwd:  netconf
+        pwd:  netconf!
 
    3. Send a Netconf get request for alarms xpath
 
