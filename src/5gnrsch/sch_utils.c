@@ -640,7 +640,7 @@ void schInitUlSlot(SchUlSlotInfo *schUlSlotInfo)
    {
       schUlSlotInfo->assignedPrb[itr] = 0;
    }
-   schUlSlotInfo->resAllocBitMap = 0;
+   memset(schUlSlotInfo->resAllocBitMap, 0, SCH_SYMBOL_PER_SLOT*2);
    schUlSlotInfo->puschCurrentPrb = PUSCH_START_RB;
    schUlSlotInfo->schPuschInfo = NULLP;
 
@@ -666,7 +666,7 @@ void schInitDlSlot(SchDlSlotInfo *schDlSlotInfo)
    {
       schDlSlotInfo->assignedPrb[itr] = 0;
    }
-   schDlSlotInfo->resAllocBitMap = 0; 
+   memset(schDlSlotInfo->resAllocBitMap, 0, SCH_SYMBOL_PER_SLOT*2);
    for(uint8_t itr=0; itr<MAX_SSB_IDX; itr++)
    {
       memset(&schDlSlotInfo->ssbInfo[itr], 0, sizeof(SsbInfo));
@@ -715,6 +715,61 @@ SlotConfig schGetSlotSymbFrmt(uint16_t slot, uint32_t bitMap)
 }
 
 #endif
+bool fillResourceBitmap(uint32_t *bitmap, uint16_t startPrb, uint16_t numPrb)
+{
+   uint16_t idx = startPrb/32;
+   uint16_t offsetInFirstIdx = startPrb%32;
+   uint32_t prbInFirstIdx = (numPrb>=(32-offsetInFirstIdx))?(32-offsetInFirstIdx):numPrb;
+   uint32_t mask = 0xFFFFFFFF;
+   uint32_t bitmapBackup[9];
+   memcpy(bitmapBackup, bitmap, sizeof(bitmapBackup));
+   if(startPrb+numPrb>275)
+   {
+      return RFAILED;
+   }
+   numPrb = numPrb - prbInFirstIdx;
+
+   mask = mask>>(32-prbInFirstIdx);
+   mask = mask<<offsetInFirstIdx;
+
+   if(!(bitmap[idx]&mask))
+   {
+      bitmap[idx] = bitmap[idx] | mask;
+      idx++;
+      while(numPrb>32)
+      {
+         if(bitmap[idx])
+         {
+            memcpy(bitmap, bitmapBackup, sizeof(bitmapBackup));
+            return RFAILED;
+         }
+         bitmap[idx] = 0xFFFFFFFF;
+         idx++;
+         numPrb = numPrb - 32;
+      }
+      if(numPrb)
+      {
+         mask = 0xFFFFFFFF;
+         mask = mask>>(32-numPrb);
+         if(!(bitmap[idx]&mask))
+         {
+            bitmap[idx] = bitmap[idx] | mask;
+         }
+         else
+         {
+            memcpy(bitmap, bitmapBackup, sizeof(bitmapBackup));
+            return RFAILED;
+         }
+      }
+   }
+   else
+   {
+      memcpy(bitmap, bitmapBackup, sizeof(bitmapBackup));
+      return RFAILED;
+   }
+   return ROK;
+}
+
 /**********************************************************************
          End of file
 **********************************************************************/

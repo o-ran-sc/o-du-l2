@@ -105,7 +105,8 @@ typedef struct schDlSlotInfo
 {
    uint16_t  totalPrb;                          /*!< Number of RBs in the cell */
    uint16_t  assignedPrb[SCH_SYMBOL_PER_SLOT];  /*!< Num RBs and corresponding symbols allocated */
-   uint16_t  resAllocBitMap;                    /*!< Resource allocation bitmap */
+   uint32_t  resAllocBitMap[SCH_SYMBOL_PER_SLOT][9]; /*!< Resource allocation bitmap.
+                                                      *Array size to accomodate 275 PRBs bitmap 9 = (275(max PRBs) + 31)/32*/
    bool      ssbPres;                           /*!< Flag to determine if SSB is present in this slot */
    uint8_t   ssbIdxSupported;                   /*!< Max SSB index */
    SsbInfo   ssbInfo[MAX_SSB_IDX];              /*!< SSB info */
@@ -127,7 +128,8 @@ typedef struct schUlSlotInfo
 {
    uint16_t     totalPrb;  /*!< Number of RBs in the cell */
    uint16_t     assignedPrb[SCH_SYMBOL_PER_SLOT]; /*!< Num RBs and corresponding symbols allocated */
-   uint16_t     resAllocBitMap;                    /*!< Resource allocation bitmap */
+   uint32_t     resAllocBitMap[SCH_SYMBOL_PER_SLOT][9]; /*!< Resource allocation bitmap.
+                                                      *Array size to accomodate 275 PRBs bitmap 9 = (275(max PRBs) + 31)/32*/
    uint8_t      puschCurrentPrb; /* Current PRB for PUSCH allocation */
    bool         puschPres; /*!< PUSCH presence field */
    SchPuschInfo *schPuschInfo; /*!< PUSCH info */

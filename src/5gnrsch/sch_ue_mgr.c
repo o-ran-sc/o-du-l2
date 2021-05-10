@@ -441,6 +441,16 @@ uint8_t schFillPuschAlloc(SchUeCb *ueCb, uint16_t pdcchSlot, uint32_t dataVol, S
   startRb = cellCb->schUlSlotInfo[puschSlot]->puschCurrentPrb;
   tbSize  = schCalcTbSize(dataVol + buffer); /*  2 bytes header + some buffer */
   numRb   = schCalcNumPrb(tbSize, ueCb->ueCfg.ulModInfo.mcsIndex, numPdschSymbols);
+
+  for(idx=startSymb; idx<symbLen; idx++)
+  {
+     if(!fillResourceBitmap(cellCb->schUlSlotInfo[puschSlot]->resAllocBitMap[idx], startRb, numRb))
+     {
+         /*ResourceAllocation failed*/
+         return RFAILED;
+     }
+  }
+  
   /* increment PUSCH PRB */
 
   cellCb->schUlSlotInfo[puschSlot]->puschCurrentPrb += numRb;

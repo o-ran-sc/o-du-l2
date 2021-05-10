@@ -140,13 +140,20 @@ uint8_t schAllocMsg3Pusch(Inst schInst, uint16_t slot, uint16_t crnti, \
 
    /* allocating 1 extra RB for now */
    numRb++;
-   /* increment PUSCH PRB */
-   cell->schUlSlotInfo[msg3SlotAlloc]->puschCurrentPrb += numRb;
 
    for(idx=startSymb; idx<symbLen; idx++)
    {
       cell->schUlSlotInfo[msg3SlotAlloc]->assignedPrb[idx] = startRb + numRb;
+      if(!fillResourceBitmap(cell->schUlSlotInfo[msg3SlotAlloc]->resAllocBitMap[idx], startRb, numRb))
+      {
+         /*ResourceAllocation failed*/
+         return RFAILED;
+      }
    }
+
+   /* increment PUSCH PRB */
+   cell->schUlSlotInfo[msg3SlotAlloc]->puschCurrentPrb += numRb;
+
    schUlSlotInfo = cell->schUlSlotInfo[msg3SlotAlloc];
 
    SCH_ALLOC(schUlSlotInfo->schPuschInfo, sizeof(SchPuschInfo));
