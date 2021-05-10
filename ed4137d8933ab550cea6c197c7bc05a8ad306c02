@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5665ced4_00855eab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-05-10T09:16:33Z",
+      "side": 1,
+      "message": "Hi,\n\nCode changes made to generate following PNF Registration request. Please review the code and share your comments.\n\nVES PNF Request :--\n\n{\n        \"event\":        {\n                \"commonEventHeader\":    {\n                        \"domain\":       \"pnfRegistration\",\n                        \"eventId\":      \"PRTNILACQ01M017DEV01_7200DEV\",\n                        \"eventName\":    \"pnfRegistration_EventType5G\",\n                        \"eventType\":    \"EventType5G\",\n                        \"sequence\":     0,\n                        \"priority\":     \"Low\",\n                        \"reportingEntityId\":    \"\",\n                        \"reportingEntityName\":  \"ODU\",\n                        \"sourceId\":     \"\",\n                        \"sourceName\":   \"ODU-High\",\n                        \"startEpochMicrosec\":   1620636953702,\n                        \"lastEpochMicrosec\":    1620636953702,\n                        \"nfNamingCode\": \"7DEV\",\n                        \"nfVendorName\": \"VENDORB\",\n                        \"timeZoneOffset\":       \"+00:00\",\n                        \"version\":      \"4.0.1\",\n                        \"vesEventListenerVersion\":      \"7.0.1\"\n                },\n                \"pnfRegistrationFields\":        {\n                        \"pnfRegistrationFieldsVersion\": \"2.1\",\n                        \"lastServiceDate\":      \"2021-05-10\",\n                        \"macAddress\":   \"02:42:f7:d4:62:ce\",\n                        \"manufactureDate\":      \"2021-05-10\",\n                        \"modelNumber\":  \"7200DEV\",\n                        \"oamV4IpAddress\":       \"10.0.2.132\",\n                        \"oamV6IpAddress\":       \"0:0:0:0:0:ffff:a0a:013\",\n                        \"serialNumber\": \"VENDORB-7DEV-192.168.56.101-7200DEV\",\n                        \"softwareVersion\":      \"2.3.5\",\n                        \"unitFamily\":   \"VENDORB-7DEV\",\n                        \"unitType\":     \"7DEV\",\n                        \"vendorName\":   \"VENDORB\",\n                        \"additionalFields\":     {\n                                \"oamPort\":      \"830\",\n                                \"protocol\":     \"SSH\",\n                                \"username\":     \"netconf\",\n                                \"password\":     \"netconf!\",\n                                \"reconnectOnChangedSchema\":     \"false\",\n                                \"sleep-factor\": \"1.5\",\n                                \"tcpOnly\":      \"false\",\n                                \"connectionTimeout\":    \"20000\",\n                                \"maxConnectionAttempts\":        \"100\",\n                                \"betweenAttemptsTimeout\":       \"2000\",\n                                \"keepaliveDelay\":       \"120\"\n                        }\n                }\n        }\n}",
+      "revId": "ed4137d8933ab550cea6c197c7bc05a8ad306c02",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
