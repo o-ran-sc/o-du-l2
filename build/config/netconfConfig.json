@@ -1,0 +1,9 @@
+{
+    "NetconfServer": {
+        "NetconfServerIpv4": "10.0.2.132",
+        "NetconfServerIpv6": "0:0:0:0:0:ffff:a0a:013",
+        "NetconfPort": "830",
+        "NetconfUsername": "netconf",
+        "NetconfPassword": "netconf!"
+    }
+}

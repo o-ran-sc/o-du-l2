@@ -215,7 +215,7 @@ To execute the get alarm-list flow, following steps are required to be executed:
    2. Connect to the server with 
 
       | user: netconf
-      | pwd:  netconf
+      | pwd:  netconf!
 
    3. Send a Netconf get request for alarms xpath
 
