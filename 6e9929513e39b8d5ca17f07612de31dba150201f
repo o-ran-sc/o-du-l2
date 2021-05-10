@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36cb4e5e_86672d6f",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1710,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-05-10T12:48:53Z",
+      "side": 1,
+      "message": "remove the null check",
+      "revId": "6e9929513e39b8d5ca17f07612de31dba150201f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
