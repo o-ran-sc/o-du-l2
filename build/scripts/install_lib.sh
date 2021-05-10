@@ -105,6 +105,28 @@ install_netconf_lib() {
 
    check_ret "LIBSSH" "$?"
 
+   #cJSON
+   cd $NETCONF_PATH && \
+      git clone --single-branch --branch v1.7.14 https://github.com/DaveGamble/cJSON.git && \
+      cd cJSON && \
+      mkdir build && cd build && \
+      cmake .. -DENABLE_CJSON_UTILS=On -DENABLE_CJSON_TEST=Off && \
+      make -j4 && \
+      $SUDO make install && \
+      $SUDO ldconfig
+   check_ret "LIBJSON" "$?"
+
+   #CURL
+   cd $NETCONF_PATH && \
+      git clone --single-branch --branch curl-7_72_0 https://github.com/curl/curl.git &&\
+      cd curl && \
+      mkdir build && cd build && \
+      cmake -DBUILD_TESTING=OFF .. && \
+      make -j4 && \
+      $SUDO make install && \
+      $SUDO ldconfig
+   check_ret "LIBCURL" "$?"
+
    # libyang
    cd $NETCONF_PATH && \
       git clone -b v1.0.184 --depth 1 https://github.com/CESNET/libyang.git && \
