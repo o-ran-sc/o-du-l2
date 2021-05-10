@@ -1,0 +1,8 @@
+{
+    "NetconfServer": {
+        "NetconfServerIp": "10.0.2.132",
+        "NetconfPort": "830",
+        "NetconfUsername": "netconf",
+        "NetconfPassword": "netconf!"
+    }
+}

@@ -20,7 +20,7 @@ include ../common/rsys_fancy.mak
 include ../common/env.mak
 COLOR=$(COLOR_RED)
 
-SRC_DIR=$(ROOT_DIR)/src/o1/
+SRC_DIR=$(ROOT_DIR)/src/o1/ves
 CPP_SRCS=$(wildcard $(SRC_DIR)/*.cpp)
 CPP_OBJS=$(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(CPP_SRCS))
 
@@ -31,8 +31,9 @@ include $(COM_BUILD_DIR)/compile.mak
 L_OPTS=-lsysrepo -lyang
 L_OPTS+= -lsysrepo-cpp -lyang-cpp
 L_OPTS+= -lm -lpthread
-I_OPTS=-I$(ROOT_DIR)/src/o1/
-I_OPTS+=-I$(ROOT_DIR)/src/o1/ves/
+L_OPTS+= -lnetconf2 -lcjson -lcurl
+I_OPTS=-I$(ROOT_DIR)/src/o1/ves
+I_OPTS+=-I$(ROOT_DIR)/src/o1
 
 #-------------------------------------------------------------#
 #Linker macros
@@ -47,8 +48,9 @@ $(LIB_DIR)/libo1.a:$(CPP_OBJS)
 #-------------------------------------------------------------#
 clean:
 		  @echo -e "$(COLOR_RED)Cleaning O1$(REVERT_COLOR)"
-		  $(Q)\rm -f $(LIB_DIR)/libo1.a $(CPP_OBJS) 
+		  $(Q)\rm -f $(LIB_DIR)/libo1.a $(CPP_OBJS)
 
 #**********************************************************************
 #         End of file
 #**********************************************************************
+
