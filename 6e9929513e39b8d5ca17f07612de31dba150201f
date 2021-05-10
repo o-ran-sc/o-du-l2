@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a175e7ed_3a70891c",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 12644,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-05-10T15:18:19Z",
+      "side": 1,
+      "message": "can submit if the sleep issue gets resolved",
+      "revId": "6e9929513e39b8d5ca17f07612de31dba150201f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "36cb4e5e_86672d6f",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 2
