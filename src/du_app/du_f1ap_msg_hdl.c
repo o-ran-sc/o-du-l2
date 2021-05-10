@@ -9291,91 +9291,98 @@ void duFillModulationDetails(MacUeCfg *ueCfg, MacUeCfg *oldUeCfg, void *ueCap)
 {
    UE_NR_Capability_t *ueNrCap=NULLP;
 
-   if(ueCap)
+   if(!ueCap)
+   {
+      memcpy(&ueCfg->dlModInfo, &oldUeCfg->dlModInfo, sizeof(ModulationInfo));     
+      memcpy(&ueCfg->ulModInfo, &oldUeCfg->ulModInfo, sizeof(ModulationInfo));
+   }
+   else
+   {
       ueNrCap = (UE_NR_Capability_t *)ueCap;
 
-   /* Filling DL modulation info */
-   if(ueNrCap->featureSets && ueNrCap->featureSets->featureSetsDownlinkPerCC && \
+      /* Filling DL modulation info */
+      if(ueNrCap->featureSets && ueNrCap->featureSets->featureSetsDownlinkPerCC && \
          ueNrCap->featureSets->featureSetsDownlinkPerCC->list.array[0] && \
          ueNrCap->featureSets->featureSetsDownlinkPerCC->list.array[0]->supportedModulationOrderDL)
-   {
-      switch(*(ueNrCap->featureSets->featureSetsDownlinkPerCC->list.array[0]->supportedModulationOrderDL))
       {
-         case ModulationOrder_qpsk:
-            {
-               ueCfg->dlModInfo.modOrder = MOD_ORDER_QPSK;
-               break;
-            }
-         case ModulationOrder_qam16:
-            {
-               ueCfg->dlModInfo.modOrder = MOD_ORDER_QAM16;
-               break;
-            }
-         case ModulationOrder_qam64:
-            {
-               ueCfg->dlModInfo.modOrder = MOD_ORDER_QAM64;
-               ueCfg->dlModInfo.mcsIndex = PDSCH_MCS_INDEX;
-               ueCfg->dlModInfo.mcsTable = MCS_TABLE_QAM64;
-               break;
-            }
-         case ModulationOrder_qam256:
-            {
-               ueCfg->dlModInfo.modOrder = MOD_ORDER_QAM256;
-               break;
-            }
-         default:
-            {
-               DU_LOG("\nERROR  -->  DU APP: Incorrect downlink modulation order received. Reatining old modulation configuration");
-               memcpy(&ueCfg->dlModInfo, &oldUeCfg->dlModInfo, sizeof(ModulationInfo));
-               break;
-            }
+         switch(*(ueNrCap->featureSets->featureSetsDownlinkPerCC->list.array[0]->supportedModulationOrderDL))
+         {
+            case ModulationOrder_qpsk:
+               {
+                  ueCfg->dlModInfo.modOrder = MOD_ORDER_QPSK;
+                  break;
+               }
+            case ModulationOrder_qam16:
+               {
+                  ueCfg->dlModInfo.modOrder = MOD_ORDER_QAM16;
+                  break;
+               }
+            case ModulationOrder_qam64:
+               {
+                  ueCfg->dlModInfo.modOrder = MOD_ORDER_QAM64;
+                  ueCfg->dlModInfo.mcsIndex = PDSCH_MCS_INDEX;
+                  ueCfg->dlModInfo.mcsTable = MCS_TABLE_QAM64;
+                  break;
+               }
+            case ModulationOrder_qam256:
+               {
+                  ueCfg->dlModInfo.modOrder = MOD_ORDER_QAM256;
+                  break;
+               }
+            default:
+               {
+                  DU_LOG("\nERROR  -->  DU APP: Incorrect downlink modulation order received. Reatining old modulation configuration");
+                  memcpy(&ueCfg->dlModInfo, &oldUeCfg->dlModInfo, sizeof(ModulationInfo));
+                  break;
+               }
+         }
       }
-   }
-   else
-   {
-      memcpy(&ueCfg->dlModInfo, &oldUeCfg->dlModInfo, sizeof(ModulationInfo));
-   }
+      else
+      {
+         memcpy(&ueCfg->dlModInfo, &oldUeCfg->dlModInfo, sizeof(ModulationInfo));
+      }
 
-   /* Filling UL modulation info */
-   if(ueNrCap->featureSets && ueNrCap->featureSets->featureSetsUplinkPerCC && \
+      /* Filling UL modulation info */
+      if(ueNrCap->featureSets && ueNrCap->featureSets->featureSetsUplinkPerCC && \
          ueNrCap->featureSets->featureSetsUplinkPerCC->list.array[0] && \
          ueNrCap->featureSets->featureSetsUplinkPerCC->list.array[0]->supportedModulationOrderUL)
-   {
-      switch(*(ueNrCap->featureSets->featureSetsUplinkPerCC->list.array[0]->supportedModulationOrderUL))
       {
-         case ModulationOrder_qpsk:
-            {
-               ueCfg->ulModInfo.modOrder = MOD_ORDER_QPSK;
-               break;
-            }
-         case ModulationOrder_qam16:
-            {
-               ueCfg->ulModInfo.modOrder = MOD_ORDER_QAM16;
-               ueCfg->ulModInfo.mcsIndex = PUSCH_MCS_INDEX;
-               ueCfg->ulModInfo.mcsTable = MCS_TABLE_QAM64;
-               break;
-            }
-         case ModulationOrder_qam64:
-            {
-               ueCfg->ulModInfo.modOrder = MOD_ORDER_QAM64;
-               break;
-            }
-         case ModulationOrder_qam256:
-            {
-               ueCfg->ulModInfo.modOrder = MOD_ORDER_QAM256;
-               break;
-            }
-         default:
-            {
-               DU_LOG("\nERROR  -->  DU APP: Incorrect uplink modulation order received. Reatining old modulation configuration");
-               memcpy(&ueCfg->ulModInfo, &oldUeCfg->ulModInfo, sizeof(ModulationInfo));
-               break;
-            }
+         switch(*(ueNrCap->featureSets->featureSetsUplinkPerCC->list.array[0]->supportedModulationOrderUL))
+         {
+            case ModulationOrder_qpsk:
+               {
+                  ueCfg->ulModInfo.modOrder = MOD_ORDER_QPSK;
+                  break;
+               }
+            case ModulationOrder_qam16:
+               {
+                  ueCfg->ulModInfo.modOrder = MOD_ORDER_QAM16;
+                  ueCfg->ulModInfo.mcsIndex = PUSCH_MCS_INDEX;
+                  ueCfg->ulModInfo.mcsTable = MCS_TABLE_QAM64;
+                  break;
+               }
+            case ModulationOrder_qam64:
+               {
+                  ueCfg->ulModInfo.modOrder = MOD_ORDER_QAM64;
+                  break;
+               }
+            case ModulationOrder_qam256:
+               {
+                  ueCfg->ulModInfo.modOrder = MOD_ORDER_QAM256;
+                  break;
+               }
+            default:
+               {
+                  DU_LOG("\nERROR  -->  DU APP: Incorrect uplink modulation order received. Reatining old modulation configuration");
+                  memcpy(&ueCfg->ulModInfo, &oldUeCfg->ulModInfo, sizeof(ModulationInfo));
+                  break;
+               }
+         }
       }
-   }
-   else
-   {
-      memcpy(&ueCfg->ulModInfo, &oldUeCfg->ulModInfo, sizeof(ModulationInfo));
+      else
+      {
+         memcpy(&ueCfg->ulModInfo, &oldUeCfg->ulModInfo, sizeof(ModulationInfo));
+      }
    }
 }
 
