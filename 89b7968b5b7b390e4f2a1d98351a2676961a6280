@@ -16,6 +16,24 @@
       "message": "better to use if/else instead of returning from void function.\nAnother option is to change the return type of the function",
       "revId": "89b7968b5b7b390e4f2a1d98351a2676961a6280",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ae81687_8e5683e8",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 9298,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-05-10T15:10:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "14979509_855aa5fb",
+      "revId": "89b7968b5b7b390e4f2a1d98351a2676961a6280",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
