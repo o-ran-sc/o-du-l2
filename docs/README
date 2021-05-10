@@ -39,7 +39,7 @@ C. Pre-requisite for O1 Interface (Required only if run with O1 interface enable
 
 	Create new netconf user (login with root user and run following commands)
 	$adduser --system netconf && \
-        echo "netconf:netconf" | chpasswd
+        echo "netconf:netconf!" | chpasswd
 
 	$mkdir -p /home/netconf/.ssh && \
 	ssh-keygen -A && \
@@ -67,6 +67,18 @@ C. Pre-requisite for O1 Interface (Required only if run with O1 interface enable
    Then load the configuration in the sysrepo running datastore using the command below
 
    $sysrepocfg --import=startup_config.xml --datastore running --module  o-ran-sc-odu-interface-v1 
+
+5. Configure the netconf server details for VES PNF Event
+
+   $cd l2/build/config
+
+   Open the netconfConfig.xml and edit the desired MAC address, IP, Port, Username and Password for VES PNF Registration.
+
+6. Configure the VES server details to send VES Events
+
+   $cd l2/build/config
+
+   Open the vesConfig.xml and edit the desired IP, Port, Username and Password to send VES Event.
 
 
 D. How to Clean and Build:
@@ -235,7 +247,7 @@ H. How to execute the Health Check : get alarm-list
    2. Connect to the server with 
 
         user: netconf
-        pwd:  netconf
+        pwd:  netconf!
 
    3. Send a Netconf get request for alarms xpath
 

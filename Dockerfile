@@ -4,7 +4,7 @@ FROM nexus3.o-ran-sc.org:10002/o-ran-sc/bldr-ubuntu18-c-go:1.9.0
 # add netconf user
 RUN \
       adduser --system netconf && \
-      echo "netconf:netconf" | chpasswd
+      echo "netconf:netconf!" | chpasswd
 
 # generate ssh keys for netconf user
 RUN \
