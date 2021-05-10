@@ -27,6 +27,8 @@
 #include "ConfigInterface.h"
 #include <unistd.h>
 
+#include "VesUtils.hpp"
+#include "VesEventHandler.hpp"
 /*******************************************************************
  *
  * @brief Constructor
@@ -89,6 +91,15 @@ bool O1App::run()
 {
     
    SessionHandler sessHdlr;
+   /*send ves PNF registration request*/
+   VesEventHandler vesEvtHdr;
+   printf("sending VES Event \n");
+   if(!vesEvtHdr.sendVesEvent(VesEventType::pnfRegistration))
+   {
+      printf("error in sending VES Request\n");
+      return false;
+   }
+
    /* Start Netconf session and subscribe to yang modules */
    try
    {
