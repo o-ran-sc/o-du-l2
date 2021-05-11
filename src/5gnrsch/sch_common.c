@@ -100,7 +100,11 @@ uint8_t schBroadcastAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc,
       schDlSlotInfo->ssbIdxSupported = dlBrdcstAlloc->ssbIdxSupported;
       for(idx=ssbStartSymb; idx<ssbStartSymb+SCH_SSB_NUM_SYMB; idx++)
       {
-         schDlSlotInfo->assignedPrb[idx] = ssbStartPrb + SCH_SSB_NUM_PRB + 1; /* +1 for kSsb */
+         if(fillResourceBitmap(schDlSlotInfo->resAllocBitMap[idx], ssbStartPrb, SCH_SSB_NUM_PRB + 1))/* +1 for kSsb */
+         {
+            /*ResourceAllocation failure
+            return RFAILED;*/
+         }
       }
    }
 
@@ -117,7 +121,11 @@ uint8_t schBroadcastAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc,
       numSib1Prb = schCalcNumPrb(tbSize,mcs,numPdschSymbols);
       for(idx=0; idx<SCH_SYMBOL_PER_SLOT; idx++)
       {
-         schDlSlotInfo->assignedPrb[idx] = ssbStartPrb + SCH_SSB_NUM_PRB + 1 + numSib1Prb; /* 10 PRBs for sib1 */
+         if(fillResourceBitmap(schDlSlotInfo->resAllocBitMap[idx], ssbStartPrb, SCH_SSB_NUM_PRB + 1 + numSib1Prb)) /* 10 PRBs for sib1 */
+         {
+            /*ResourceAllocation failure
+            return RFAILED;*/
+         }
       }
       memcpy(&dlBrdcstAlloc->sib1Alloc.bwp, &cell->cellCfg.sib1SchCfg.bwp, sizeof(BwpCfg)); 
       memcpy(&dlBrdcstAlloc->sib1Alloc.sib1PdcchCfg, &cell->cellCfg.sib1SchCfg.sib1PdcchCfg, sizeof(PdcchCfg)); 
@@ -164,9 +172,10 @@ int sendUlSchInfoToMac(UlSchedInfo *ulSchedInfo, Inst inst)
  *     
  *  @param[in]  SchCellCb *cell, cell cb
  *  @param[in]  UlSchedInfo *ulSchedInfo, UL scheduling info
- *  @return  void
+ *  @return ROK     - success
+ *          RFAILED - failure
  **/
-void schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotIndInfo prachOccasionTimingInfo)
+uint8_t schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotIndInfo prachOccasionTimingInfo)
 {
    uint8_t  puschScs;
    uint8_t  numPrachRb = 0;
@@ -197,35 +206,39 @@ void schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotIndInfo pra
       /* check for subFrame number */
       if ((1 << prachOccasionTimingInfo.slot) & prachSubframe)
       {
-	 /* prach ocassion present in this subframe */
+         /* prach ocassion present in this subframe */
 
-	 prachFormat      = prachCfgIdxTable[prachCfgIdx][0];
-	 prachStartSymbol = prachCfgIdxTable[prachCfgIdx][4];
-	 prachOcas        = prachCfgIdxTable[prachCfgIdx][6];
+         prachFormat      = prachCfgIdxTable[prachCfgIdx][0];
+         prachStartSymbol = prachCfgIdxTable[prachCfgIdx][4];
+         prachOcas        = prachCfgIdxTable[prachCfgIdx][6];
 
-	 /* freq domain resource determination for RACH*/
-	 freqStart = cell->cellCfg.schRachCfg.msg1FreqStart;
-	 /* numRa determined as 𝑛 belonging {0,1,.., M − 1}, 
-	  * where M is given by msg1Fdm */
-	 numRa = (cell->cellCfg.schRachCfg.msg1Fdm - 1);
-	 for(idx=0; idx<MAX_RACH_NUM_RB_IDX; idx++)
-	 {
-	    if(numRbForPrachTable[idx][0] == cell->cellCfg.schRachCfg.rootSeqLen)
-	    {
-	       if(numRbForPrachTable[idx][1] == cell->cellCfg.schRachCfg.prachSubcSpacing)
-	       {
-		  if(numRbForPrachTable[idx][2] == puschScs)
-		  {
-		     break;
-		  }
-	       }
-	    }
-	 }
-	 numPrachRb = numRbForPrachTable[idx][3];
-	 dataType |= SCH_DATATYPE_PRACH;
-	 /* Considering first slot in the frame for PRACH */
-	 idx = 0;
-	 schUlSlotInfo->assignedPrb[idx] = freqStart+numPrachRb;
+            /* freq domain resource determination for RACH*/
+         freqStart = cell->cellCfg.schRachCfg.msg1FreqStart;
+         /* numRa determined as 𝑛 belonging {0,1,.., M − 1}, 
+          * where M is given by msg1Fdm */
+         numRa = (cell->cellCfg.schRachCfg.msg1Fdm - 1);
+         for(idx=0; idx<MAX_RACH_NUM_RB_IDX; idx++)
+         {
+            if(numRbForPrachTable[idx][0] == cell->cellCfg.schRachCfg.rootSeqLen)
+            {
+               if(numRbForPrachTable[idx][1] == cell->cellCfg.schRachCfg.prachSubcSpacing)
+               {
+                  if(numRbForPrachTable[idx][2] == puschScs)
+                  {
+                     break;
+                  }
+               }
+            }
+         }
+         numPrachRb = numRbForPrachTable[idx][3];
+         dataType |= SCH_DATATYPE_PRACH;
+         /* Considering first slot in the frame for PRACH */
+         idx = 0;
+         if(fillResourceBitmap(schUlSlotInfo->resAllocBitMap[idx], freqStart, numPrachRb))
+         {
+            DU_LOG("\nERROR  -->  SCH : Resource allocation failure for PRACH start RB %d num of RB %d\n", freqStart, numPrachRb);
+            return RFAILED;
+         }
       }
       ulSchedInfo->dataType = dataType;
       /* prach info */
@@ -234,6 +247,7 @@ void schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotIndInfo pra
       ulSchedInfo->prachSchInfo.numRa          = numRa;
       ulSchedInfo->prachSchInfo.prachStartSymb = prachStartSymbol;
    }
+   return ROK;
 }
 
 
@@ -492,7 +506,8 @@ uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
 
    /* Schedule resources for PRACH */
    if(cell->firstSib1Transmitted)
-    schPrachResAlloc(cell, &ulSchedInfo, ulTimingInfo);
+      if(schPrachResAlloc(cell, &ulSchedInfo, ulTimingInfo) != ROK)
+         DU_LOG("\nERROR  -->  SCH : PRACH scheduling failure\n");
 
    schUlSlotInfo = cell->schUlSlotInfo[ulTimingInfo.slot]; 
    if(schUlSlotInfo->schPuschInfo)

@@ -97,6 +97,7 @@ void schInitDlSlot(SchDlSlotInfo *schDlSlotInfo);
 #ifdef NR_TDD
 SlotConfig schGetSlotSymbFrmt(uint16_t slot, uint32_t bitMap);
 #endif
+bool fillResourceBitmap(uint64_t *bitmap, uint16_t startPrb, uint16_t numPrb);
 
 /**********************************************************************
   End of file
