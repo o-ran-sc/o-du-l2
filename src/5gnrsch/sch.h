@@ -46,8 +46,8 @@
 #define SI_RNTI 0xFFFF
 #define P_RNTI  0xFFFE
 #define DMRS_MAP_TYPE_A 1
-#define NUM_DMRS_SYMBOLS 12
-#define DMRS_ADDITIONAL_POS 2
+#define NUM_DMRS_SYMBOLS 1
+#define DMRS_ADDITIONAL_POS 0
 #define SCH_DEFAULT_K1 1
 #define SCH_TQ_SIZE 10
 
@@ -55,6 +55,7 @@
 #define CRC_PASSED 1
 
 #define MAC_HDR_SIZE  3   /* 3 bytes of MAC Header */
+#define TX_PAYLOAD_HDR_LEN 32 /* Payload header length */
 #define UL_GRANT_SIZE 224
 
 typedef struct schCellCb SchCellCb;

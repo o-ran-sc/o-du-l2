@@ -29,6 +29,8 @@
 #define CORESET_TYPE2 2
 #define CORESET_TYPE3 3
 
+#define TX_PAYLOAD_HDR_LEN 32
+
 #ifdef INTEL_WLS_MEM
 #define WLS_MEM_FREE_PRD       10        /* Free memory after 10 slot ind */
 #endif
