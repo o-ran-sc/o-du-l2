@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f69342ea_cecac27b",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 557,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-05-11T12:12:09Z",
+      "side": 1,
+      "message": "Add function descriptor.",
+      "range": {
+        "startLine": 557,
+        "startChar": 0,
+        "endLine": 557,
+        "endChar": 8
+      },
+      "revId": "ce58a49eabb12f756062d84ed5c58233b468b8ad",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd96c7e6_3ca297b3",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 595,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-05-11T12:12:09Z",
+      "side": 1,
+      "message": "remove if not needed.",
+      "range": {
+        "startLine": 595,
+        "startChar": 14,
+        "endLine": 595,
+        "endChar": 27
+      },
+      "revId": "ce58a49eabb12f756062d84ed5c58233b468b8ad",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa96fd2e_c1ad06bf",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 597,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-05-11T12:12:09Z",
+      "side": 1,
+      "message": "correct the document reference number 38.214.",
+      "range": {
+        "startLine": 597,
+        "startChar": 0,
+        "endLine": 597,
+        "endChar": 70
+      },
+      "revId": "ce58a49eabb12f756062d84ed5c58233b468b8ad",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f90ee9cb_97ed3b9d",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-05-11T12:12:09Z",
+      "side": 1,
+      "message": "nInfo \u003c\u003d 3824",
+      "range": {
+        "startLine": 611,
+        "startChar": 11,
+        "endLine": 611,
+        "endChar": 12
+      },
+      "revId": "ce58a49eabb12f756062d84ed5c58233b468b8ad",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
