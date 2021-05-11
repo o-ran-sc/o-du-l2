@@ -86,6 +86,9 @@ ifeq ($(PHY), INTEL_L1)
 	PLTFRM_FLAGS+=-DSS_USE_WLS_MEM -DINTEL_WLS_MEM -DDEBUG_MODE
 ifeq ($(PHY_MODE),TIMER)
 	PLTFRM_FLAGS+=-DINTEL_TIMER_MODE
+else
+   #TODO: Remove below flag for testing RACH.indication onward
+   PLTFRM_FLAGS+=-DTEMP_INTG_FLAG
 endif
 endif
 
