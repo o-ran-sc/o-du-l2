@@ -37,6 +37,57 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8a48cd23_9bf41121",
+        "filename": "src/5gnrmac/lwr_mac_fsm.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-05-11T11:56:52Z",
+      "side": 1,
+      "message": "this will be used in sch as well. So, the reference must not lie in this file.",
+      "revId": "5bb9d775eb5e82b945abcc04d5322e4d84b3301e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6138a685_7043bcfd",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 840,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-05-11T11:56:52Z",
+      "side": 1,
+      "message": "PDSCH DMRS",
+      "revId": "5bb9d775eb5e82b945abcc04d5322e4d84b3301e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "768c629c_1ff003a1",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-05-11T11:56:52Z",
+      "side": 1,
+      "message": "repetition of same macro. add in common place",
+      "revId": "5bb9d775eb5e82b945abcc04d5322e4d84b3301e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f3bf4756_f5faddff",
         "filename": "src/5gnrsch/sch_utils.c",
         "patchSetId": 1
