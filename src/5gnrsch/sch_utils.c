@@ -553,6 +553,18 @@ uint16_t schCalcNumPrb(uint16_t tbSize, uint16_t mcs, uint8_t numSymbols)
    numPrb = ceil((float)nre / nreDash);   
    return numPrb;
 }
+
+uint16_t logBaseTwo(uint32_t n)
+{
+   uint16_t ret=0;
+   while(n)
+   {
+      ret++;
+      n = n>>1;
+   }
+   return ret-1;
+}
+
 /**
 * @brief calculation of transport block size.
 *
@@ -569,36 +581,63 @@ uint16_t schCalcNumPrb(uint16_t tbSize, uint16_t mcs, uint8_t numSymbols)
 **/
 uint16_t schCalcTbSizeFromNPrb(uint16_t numPrb, uint16_t mcs, uint8_t numSymbols)
 {   
-   uint16_t tbSize = 0;
+   uint32_t tbSize = 0;
    uint16_t tbsIndex = 0;
-   uint16_t nre = 0;
-   uint16_t nreDash = 0;
+   uint32_t nre = 0;
+   uint32_t nreDash = 0;
    uint8_t  qm     = mcsTable[mcs][1];
    uint16_t rValue = mcsTable[mcs][2];
-   uint8_t  numLayer = 1;       /* v value */
+   uint32_t nInfo = 0;
+   const uint8_t  numLayer = 1;
+   const uint16_t numRbSc = 12;
+   const uint16_t numDmrsRes = 12;
+   const uint16_t Sf = 1;
+//   uint16_t numPrbOvrHead = 0;
    
-   /* formula used for calculation of rbSize, 38.213 section 5.1.3.2 *
-   * Ninfo = Nre . R . Qm . v   where [ NInfo is tbSize]                *
+  /* formula used for calculation of rbSize, 38.214 section 5.1.3.2  *
+   * Ninfo = Nre . R . Qm . v   where [ NInfo is tbSize]             *
    * Nre' = Nsc . NsymPdsch - NdmrsSymb - Noh                        *
    * Nre = min(156,Nre') . nPrb                                      */
-   
-   nreDash = ceil( (12 * numSymbols) - NUM_DMRS_SYMBOLS - 0);
-  
-   if(nreDash > 156)
-      nreDash = 156;
 
+   nreDash = MIN(156, ceil( (numRbSc * numSymbols) - numDmrsRes - 0));
    nre = nreDash * numPrb;
-   tbSize = ceil(nre * qm * numLayer * rValue/1024.0);
-   tbSize = ceil(tbSize/8.0);
-   
-   while(tbSize > tbSizeTable[tbsIndex])
+   nInfo = ceil(nre * qm * numLayer * rValue/(1024.0 * sf));
+
+   if(nInfo < 3824)
    {
-      tbsIndex++;
+      uint32_t n = MAX(3, logBaseTwo(nInfo) - 6);
+      uint32_t nInfoDash = MAX(24, (1<<n)*(nInfo/(1<<n)));
+      while(nInfoDash > tbSizeTable[tbsIndex])
+      {
+         tbsIndex++;
+      }
+      tbSize = tbSizeTable[tbsIndex];
+      return tbSize;
    }
-   tbSize = tbSizeTable[tbsIndex];
+   else
+   {
+      uint32_t n = logBaseTwo(nInfo - 24) - 5;
+      uint32_t nInfoDash = MAX(3840, (1<<n)*ceil((nInfo - 24)/(1<<n)));
 
+      if(rValue<256)
+      {
+         uint32_t c = ceil((nInfoDash + 24)/3816);
+         tbSize = 8 * c * ceil((nInfoDash + 24)/(8 * c)) - 24;
+      }
+      else
+      {
+         if(nInfoDash > 8424)
+         {
+            uint32_t c = ceil((nInfoDash + 24)/8424);
+            tbSize = 8 * c * ceil((nInfoDash + 24)/(8 * c)) - 24;
+         }
+         else
+         {
+            tbSize = 8 * ceil((nInfoDash + 24)/(8)) - 24;
+         }
+      }
+   }
    return tbSize;
-
 }
 /**
  * @brief fetching ueCb from cellCb
