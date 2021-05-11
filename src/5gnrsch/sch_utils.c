@@ -636,11 +636,7 @@ void schInitUlSlot(SchUlSlotInfo *schUlSlotInfo)
 {
    memset(schUlSlotInfo, 0, sizeof(SchUlSlotInfo));
    schUlSlotInfo->totalPrb = MAX_NUM_RB;
-   for(uint8_t itr=0; itr<SCH_SYMBOL_PER_SLOT; itr++)
-   {
-      schUlSlotInfo->assignedPrb[itr] = 0;
-   }
-   schUlSlotInfo->resAllocBitMap = 0;
+   memset(schUlSlotInfo->resAllocBitMap, 0, SCH_SYMBOL_PER_SLOT*sizeof(uint64)*5);
    schUlSlotInfo->puschCurrentPrb = PUSCH_START_RB;
    schUlSlotInfo->schPuschInfo = NULLP;
 
@@ -662,11 +658,7 @@ void schInitDlSlot(SchDlSlotInfo *schDlSlotInfo)
 {
    memset(schDlSlotInfo, 0, sizeof(SchDlSlotInfo));
    schDlSlotInfo->totalPrb = MAX_NUM_RB;
-   for(uint8_t itr=0; itr<SCH_SYMBOL_PER_SLOT; itr++)
-   {
-      schDlSlotInfo->assignedPrb[itr] = 0;
-   }
-   schDlSlotInfo->resAllocBitMap = 0; 
+   memset(schDlSlotInfo->resAllocBitMap, 0, SCH_SYMBOL_PER_SLOT*sizeof(uint64)*5);
    for(uint8_t itr=0; itr<MAX_SSB_IDX; itr++)
    {
       memset(&schDlSlotInfo->ssbInfo[itr], 0, sizeof(SsbInfo));
@@ -715,6 +707,61 @@ SlotConfig schGetSlotSymbFrmt(uint16_t slot, uint32_t bitMap)
 }
 
 #endif
+bool fillResourceBitmap(uint64_t *bitmap, uint16_t startPrb, uint16_t numPrb)
+{
+   uint16_t idx = startPrb/RES_ALLOC_IDX_LEN;
+   uint16_t offsetInFirstIdx = startPrb%RES_ALLOC_IDX_LEN;
+   uint32_t prbInFirstIdx = (numPrb>=(RES_ALLOC_IDX_LEN-offsetInFirstIdx))?(RES_ALLOC_IDX_LEN-offsetInFirstIdx):numPrb;
+   const uint64_t mask64bitOn = 0xFFFFFFFFFFFFFFFF; 
+   uint64_t mask = mask64bitOn;
+   uint32_t bitmapBackup[MAX_RES_ALLOC_IDX];
+   memcpy(bitmapBackup, bitmap, sizeof(bitmapBackup));
+   if(startPrb+numPrb>MAX_NUM_RB)
+   {
+      return RFAILED;
+   }
+   numPrb = numPrb - prbInFirstIdx;
+
+   mask = mask>>(RES_ALLOC_IDX_LEN-prbInFirstIdx);
+   mask = mask<<offsetInFirstIdx;
+
+   if(!(bitmap[idx]&mask))
+   {
+      bitmap[idx] = bitmap[idx] | mask;
+      idx++;
+      while(numPrb>RES_ALLOC_IDX_LEN)
+      {
+         if(bitmap[idx])
+         {
+            memcpy(bitmap, bitmapBackup, sizeof(bitmapBackup));
+            return RFAILED;
+         }
+         bitmap[idx] = mask64bitOn;
+         idx++;
+         numPrb = numPrb - RES_ALLOC_IDX_LEN;
+      }
+      if(numPrb)
+      {
+         mask = mask64bitOn;
+         mask = mask>>(RES_ALLOC_IDX_LEN-numPrb);
+         if(!(bitmap[idx]&mask))
+         {
+            bitmap[idx] = bitmap[idx] | mask;
+         }
+         else
+         {
+            memcpy(bitmap, bitmapBackup, sizeof(bitmapBackup));
+            return RFAILED;
+         }
+      }
+   }
+   else
+   {
+      return RFAILED;
+   }
+   return ROK;
+}
+
 /**********************************************************************
          End of file
 **********************************************************************/

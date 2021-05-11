@@ -57,6 +57,9 @@
 #define MAC_HDR_SIZE  3   /* 3 bytes of MAC Header */
 #define UL_GRANT_SIZE 224
 
+#define RES_ALLOC_IDX_LEN 64
+#define MAX_RES_ALLOC_IDX ((MAX_NUM_RB + RES_ALLOC_IDX_LEN - 1)/RES_ALLOC_IDX_LEN)
+
 typedef struct schCellCb SchCellCb;
 typedef struct schUeCb SchUeCb;
 
@@ -104,8 +107,7 @@ typedef struct schGenCb
 typedef struct schDlSlotInfo
 {
    uint16_t  totalPrb;                          /*!< Number of RBs in the cell */
-   uint16_t  assignedPrb[SCH_SYMBOL_PER_SLOT];  /*!< Num RBs and corresponding symbols allocated */
-   uint16_t  resAllocBitMap;                    /*!< Resource allocation bitmap */
+   uint64_t  resAllocBitMap[SCH_SYMBOL_PER_SLOT][MAX_RES_ALLOC_IDX]; /*!< Resource allocation bitmap. */
    bool      ssbPres;                           /*!< Flag to determine if SSB is present in this slot */
    uint8_t   ssbIdxSupported;                   /*!< Max SSB index */
    SsbInfo   ssbInfo[MAX_SSB_IDX];              /*!< SSB info */
@@ -126,8 +128,7 @@ typedef struct schRaCb
 typedef struct schUlSlotInfo
 {
    uint16_t     totalPrb;  /*!< Number of RBs in the cell */
-   uint16_t     assignedPrb[SCH_SYMBOL_PER_SLOT]; /*!< Num RBs and corresponding symbols allocated */
-   uint16_t     resAllocBitMap;                    /*!< Resource allocation bitmap */
+   uint64_t     resAllocBitMap[SCH_SYMBOL_PER_SLOT][MAX_RES_ALLOC_IDX]; /*!< Resource allocation bitmap. */
    uint8_t      puschCurrentPrb; /* Current PRB for PUSCH allocation */
    bool         puschPres; /*!< PUSCH presence field */
    SchPuschInfo *schPuschInfo; /*!< PUSCH info */
