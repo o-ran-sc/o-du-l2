@@ -161,6 +161,26 @@ F64 cmLog10(F64 x)
 } /* end of cmLog10 */
 #endif /* SS_FLOAT */
 
+/*
+*
+*       Fun:   cmLog
+*
+*       Desc:  common primitive for computing the base 2 logrithm of x.
+*
+*       Ret:   log2(x)
+*
+*       Notes: None
+*
+*       File:  cm_math.c
+*
+*/
+uint32_t cmLog2(uint32_t x)
+{
+#if (defined(SUNOS)|| defined(WIN32)|| defined(WIN2K)|| defined (SS_LINUX))
+   return ((uint32_t) log2((x)));
+#endif
+}
+
 /**********************************************************************
          End of file
 **********************************************************************/
