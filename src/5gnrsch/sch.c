@@ -719,7 +719,7 @@ void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg 
    uint8_t slotIndex = 0;
    uint8_t FreqDomainResource[6] = {0};
    uint16_t tbSize = 0;
-   uint8_t numPdschSymbols = 12; /* considering pdsch region from 2 to 13 */
+   uint8_t numPdschSymbols = 11; /* considering pdsch region from symbols 3 to 13 */
    uint8_t ssbIdx = 0;
 
    PdcchCfg *pdcch = &(sib1SchCfg->sib1PdcchCfg);
@@ -814,14 +814,14 @@ void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg 
       pdsch->codeword[cwCount].mcsIndex = sib1SchCfg->sib1Mcs;
       pdsch->codeword[cwCount].mcsTable = 0; /* notqam256 */
       pdsch->codeword[cwCount].rvIndex = 0;
-      tbSize = schCalcTbSize(sib1SchCfg->sib1PduLen);
+      tbSize = schCalcTbSize(sib1SchCfg->sib1PduLen + TX_PAYLOAD_HDR_LEN);
       pdsch->codeword[cwCount].tbSize = tbSize;
    }
    pdsch->dataScramblingId                   = pci;
    pdsch->numLayers                          = 1;
    pdsch->transmissionScheme                 = 0;
    pdsch->refPoint                           = 0;
-   pdsch->dmrs.dlDmrsSymbPos                 = 2;
+   pdsch->dmrs.dlDmrsSymbPos                 = 4;
    pdsch->dmrs.dmrsConfigType                = 0; /* type-1 */
    pdsch->dmrs.dlDmrsScramblingId            = pci;
    pdsch->dmrs.scid                          = 0;
@@ -837,7 +837,8 @@ void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg 
    pdsch->pdschFreqAlloc.freqAlloc.numPrb    = schCalcNumPrb(tbSize,sib1SchCfg->sib1Mcs,numPdschSymbols);
    pdsch->pdschFreqAlloc.vrbPrbMapping       = 0; /* non-interleaved */
    pdsch->pdschTimeAlloc.rowIndex            = 1;
-   pdsch->pdschTimeAlloc.timeAlloc.startSymb = 2; /* spec-38.214, Table 5.1.2.1-1 */
+   /* This is Intel's requirement. PDSCH should start after PDSCH DRMS symbol */
+   pdsch->pdschTimeAlloc.timeAlloc.startSymb = 3; /* spec-38.214, Table 5.1.2.1-1 */
    pdsch->pdschTimeAlloc.timeAlloc.numSymb   = numPdschSymbols;
    pdsch->beamPdschInfo.numPrgs              = 1;
    pdsch->beamPdschInfo.prgSize              = 1;

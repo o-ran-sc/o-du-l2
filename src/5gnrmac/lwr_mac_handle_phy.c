@@ -180,6 +180,7 @@ uint8_t procStopInd()
  * ****************************************************************/
 uint8_t procRachInd(fapi_rach_indication_t  *fapiRachInd)
 {
+#ifndef INTEL_RADIO_MODE
    Pst          pst;
    uint8_t      pduIdx;
    uint8_t      prmbleIdx;
@@ -217,7 +218,9 @@ uint8_t procRachInd(fapi_rach_indication_t  *fapiRachInd)
    /* Fill post and sent to MAC */
    FILL_PST_LWR_MAC_TO_MAC(pst, EVENT_RACH_IND_TO_MAC);
    return (*sendRachIndOpts[pst.selector])(&pst, rachInd);
-
+#else
+   return ROK;
+#endif
 }/* handleRachInd */
 
 /*******************************************************************

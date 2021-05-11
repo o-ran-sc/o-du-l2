@@ -535,6 +535,7 @@ uint16_t schCalcNumPrb(uint16_t tbSize, uint16_t mcs, uint8_t numSymbols)
    uint8_t  qm     = mcsTable[mcs][1];
    uint16_t rValue = mcsTable[mcs][2];
    uint8_t  numLayer = 1;       /* v value */
+   uint8_t  numDmrsRePerPrb = 12;
 
    tbSize = tbSize * 8; //Calculate tbSize in bits
 
@@ -545,7 +546,7 @@ uint16_t schCalcNumPrb(uint16_t tbSize, uint16_t mcs, uint8_t numSymbols)
 
    nre = ceil( (float)tbSize * 1024 / (qm * rValue * numLayer));
 
-   nreDash = ceil( (12 * numSymbols) - NUM_DMRS_SYMBOLS - 0);
+   nreDash = ceil( (12 * numSymbols) - numDmrsRePerPrb - 0);
 
    if (nreDash > 156)
       nre = 156;
