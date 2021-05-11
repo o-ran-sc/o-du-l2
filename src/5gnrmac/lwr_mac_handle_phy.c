@@ -180,6 +180,9 @@ uint8_t procStopInd()
  * ****************************************************************/
 uint8_t procRachInd(fapi_rach_indication_t  *fapiRachInd)
 {
+/* TODO : Remove the following #ifndef TEMP_INTG_FLAG, when testing 
+ * RACH.indication in radio mode integration */
+#ifndef TEMP_INTG_FLAG
    Pst          pst;
    uint8_t      pduIdx;
    uint8_t      prmbleIdx;
@@ -217,7 +220,9 @@ uint8_t procRachInd(fapi_rach_indication_t  *fapiRachInd)
    /* Fill post and sent to MAC */
    FILL_PST_LWR_MAC_TO_MAC(pst, EVENT_RACH_IND_TO_MAC);
    return (*sendRachIndOpts[pst.selector])(&pst, rachInd);
-
+#else
+   return ROK;
+#endif
 }/* handleRachInd */
 
 /*******************************************************************
