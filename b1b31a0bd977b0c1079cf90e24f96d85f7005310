@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1d4f487_45453ced",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 824,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-05-12T02:06:55Z",
+      "side": 1,
+      "message": "add comment what 4 means",
+      "revId": "b1b31a0bd977b0c1079cf90e24f96d85f7005310",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
