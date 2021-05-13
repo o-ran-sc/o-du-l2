@@ -16,6 +16,75 @@
       "message": "Hi,\n\nI have made the code changes to support VES PNF Registration request. Following Pnf Registration Request will be created and sent to SMO. Please review the code and share your comments.\n\n{\n        \"event\":        {\n                \"commonEventHeader\":    {\n                        \"domain\":       \"pnfRegistration\",\n                        \"eventId\":      \"PRTNILACQ01M017DEV01_7200DEV\",\n                        \"eventName\":    \"pnfRegistration_EventType5G\",\n                        \"eventType\":    \"EventType5G\",\n                        \"sequence\":     0,\n                        \"priority\":     \"Low\",\n                        \"reportingEntityId\":    \"\",\n                        \"reportingEntityName\":  \"ODU\",\n                        \"sourceId\":     \"\",\n                        \"sourceName\":   \"ODU-High\",\n                        \"startEpochMicrosec\":   1620799545418,\n                        \"lastEpochMicrosec\":    1620799545418,\n                        \"nfNamingCode\": \"7DEV\",\n                        \"nfVendorName\": \"VENDORB\",\n                        \"timeZoneOffset\":       \"+00:00\",\n                        \"version\":      \"4.0.1\",\n                        \"vesEventListenerVersion\":      \"7.0.1\"\n                },\n                \"pnfRegistrationFields\":        {\n                        \"pnfRegistrationFieldsVersion\": \"2.1\",\n                        \"lastServiceDate\":      \"2021-05-12\",\n                        \"macAddress\":   \"02:42:f7:d4:62:ce\",\n                        \"manufactureDate\":      \"2021-05-12\",\n                        \"modelNumber\":  \"7200DEV\",\n                        \"oamV4IpAddress\":       \"10.0.2.132\",\n                        \"oamV6IpAddress\":       \"0:0:0:0:0:ffff:a0a:013\",\n                        \"serialNumber\": \"VENDORB-7DEV-192.168.56.101-7200DEV\",\n                        \"softwareVersion\":      \"2.3.5\",\n                        \"unitFamily\":   \"VENDORB-7DEV\",\n                        \"unitType\":     \"7DEV\",\n                        \"vendorName\":   \"VENDORB\",\n                        \"additionalFields\":     {\n                                \"oamPort\":      \"830\",\n                                \"protocol\":     \"SSH\",\n                                \"username\":     \"netconf\",\n                                \"password\":     \"netconf!\",\n                                \"reconnectOnChangedSchema\":     \"false\",\n                                \"sleep-factor\": \"1.5\",\n                                \"tcpOnly\":      \"false\",\n                                \"connectionTimeout\":    \"20000\",\n                                \"maxConnectionAttempts\":        \"100\",\n                                \"betweenAttemptsTimeout\":       \"2000\",\n                                \"keepaliveDelay\":       \"120\"\n                        }\n                }\n        }\n}\n \nRegards,\nHariom",
       "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63f4cc82_b999e4d1",
+        "filename": "src/o1/O1App.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2021-05-13T03:08:06Z",
+      "side": 1,
+      "message": "printfs to be replaced with O1_LOG",
+      "range": {
+        "startLine": 99,
+        "startChar": 6,
+        "endLine": 99,
+        "endChar": 47
+      },
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0224b301_3362a43c",
+        "filename": "src/o1/ves/PnfRegistration.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2021-05-13T03:08:06Z",
+      "side": 1,
+      "message": "This should be protected",
+      "range": {
+        "startLine": 43,
+        "startChar": 6,
+        "endLine": 43,
+        "endChar": 32
+      },
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5be39c72_e72dad76",
+        "filename": "src/o1/ves/VesEvent.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2021-05-13T03:08:06Z",
+      "side": 1,
+      "message": "Can this not be set once? Probably move it to prepare(). This can be an overhead while sending multiple requests.",
+      "range": {
+        "startLine": 119,
+        "startChar": 0,
+        "endLine": 122,
+        "endChar": 4
+      },
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
