@@ -58,6 +58,23 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "62fd6289_8731992a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000382
+      },
+      "writtenOn": "2021-05-13T21:48:15Z",
+      "side": 1,
+      "message": "Hi Hairom, thanks for submitting this request. Can you start by removing all blank spaces in the files.",
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "738d17fa_76fc795a",
