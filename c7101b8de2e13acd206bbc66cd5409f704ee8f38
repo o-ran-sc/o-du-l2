@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "561780f1_ee419f60",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000060
+      },
+      "writtenOn": "2021-05-13T06:44:23Z",
+      "side": 1,
+      "message": "Please use an exta line for this issue-id according to the example at https://wiki.o-ran-sc.org/display/ORAN/O-RAN+Developer\u0027s+Guide+to+CI+Resources+and+Processes+at+the+LF#ORANDeveloper\u0027sGuidetoCIResourcesandProcessesattheLF-Writegoodgitcommitmessages",
+      "range": {
+        "startLine": 7,
+        "startChar": 37,
+        "endLine": 7,
+        "endChar": 38
+      },
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "caee5cf5_a1ce338f",
@@ -14,6 +37,57 @@
       "writtenOn": "2021-05-12T06:29:33Z",
       "side": 1,
       "message": "Hi,\n\nI have made the code changes to support VES PNF Registration request. Following Pnf Registration Request will be created and sent to SMO. Please review the code and share your comments.\n\n{\n        \"event\":        {\n                \"commonEventHeader\":    {\n                        \"domain\":       \"pnfRegistration\",\n                        \"eventId\":      \"PRTNILACQ01M017DEV01_7200DEV\",\n                        \"eventName\":    \"pnfRegistration_EventType5G\",\n                        \"eventType\":    \"EventType5G\",\n                        \"sequence\":     0,\n                        \"priority\":     \"Low\",\n                        \"reportingEntityId\":    \"\",\n                        \"reportingEntityName\":  \"ODU\",\n                        \"sourceId\":     \"\",\n                        \"sourceName\":   \"ODU-High\",\n                        \"startEpochMicrosec\":   1620799545418,\n                        \"lastEpochMicrosec\":    1620799545418,\n                        \"nfNamingCode\": \"7DEV\",\n                        \"nfVendorName\": \"VENDORB\",\n                        \"timeZoneOffset\":       \"+00:00\",\n                        \"version\":      \"4.0.1\",\n                        \"vesEventListenerVersion\":      \"7.0.1\"\n                },\n                \"pnfRegistrationFields\":        {\n                        \"pnfRegistrationFieldsVersion\": \"2.1\",\n                        \"lastServiceDate\":      \"2021-05-12\",\n                        \"macAddress\":   \"02:42:f7:d4:62:ce\",\n                        \"manufactureDate\":      \"2021-05-12\",\n                        \"modelNumber\":  \"7200DEV\",\n                        \"oamV4IpAddress\":       \"10.0.2.132\",\n                        \"oamV6IpAddress\":       \"0:0:0:0:0:ffff:a0a:013\",\n                        \"serialNumber\": \"VENDORB-7DEV-192.168.56.101-7200DEV\",\n                        \"softwareVersion\":      \"2.3.5\",\n                        \"unitFamily\":   \"VENDORB-7DEV\",\n                        \"unitType\":     \"7DEV\",\n                        \"vendorName\":   \"VENDORB\",\n                        \"additionalFields\":     {\n                                \"oamPort\":      \"830\",\n                                \"protocol\":     \"SSH\",\n                                \"username\":     \"netconf\",\n                                \"password\":     \"netconf!\",\n                                \"reconnectOnChangedSchema\":     \"false\",\n                                \"sleep-factor\": \"1.5\",\n                                \"tcpOnly\":      \"false\",\n                                \"connectionTimeout\":    \"20000\",\n                                \"maxConnectionAttempts\":        \"100\",\n                                \"betweenAttemptsTimeout\":       \"2000\",\n                                \"keepaliveDelay\":       \"120\"\n                        }\n                }\n        }\n}\n \nRegards,\nHariom",
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a79dae5b_21543620",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000060
+      },
+      "writtenOn": "2021-05-13T06:44:23Z",
+      "side": 1,
+      "message": "Please consider my comments more as questions and guidance for future enhancements. ",
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "738d17fa_76fc795a",
+        "filename": "build/config/netconfConfig.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000060
+      },
+      "writtenOn": "2021-05-13T06:44:23Z",
+      "side": 1,
+      "message": "Just questions: What happens if the IP address of the VM is changed? Is it possible to add an IPv6 address?",
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15a371b2_7451a222",
+        "filename": "build/config/smoConfig.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000060
+      },
+      "writtenOn": "2021-05-13T06:44:23Z",
+      "side": 1,
+      "message": "SMO has several IP-Addresses - I suggest to call the json object vesConfig.",
       "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -66,6 +140,63 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "aa498422_412e99ea",
+        "filename": "src/o1/ves/VesCommonHeader.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1000060
+      },
+      "writtenOn": "2021-05-13T06:44:23Z",
+      "side": 1,
+      "message": "the VES domain is called \u0027fault\u0027 - you may want to you \u0027fault\u0027?",
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c13d9f8c_af938ccb",
+        "filename": "src/o1/ves/VesCommonHeader.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1000060
+      },
+      "writtenOn": "2021-05-13T06:44:23Z",
+      "side": 1,
+      "message": "Another interesting ves:domain is \u0027heartbeat\u0027. Heartbeat helps a lot to debug the environment and is part of the C-Release Healthcheck use-case.",
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a128d2e2_b3228222",
+        "filename": "src/o1/ves/VesCommonHeader.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1000060
+      },
+      "writtenOn": "2021-05-13T06:44:23Z",
+      "side": 1,
+      "message": "Sorry, I have guided you in the wrong direction - please ensure that the time represents µs (microseconds) as specified.",
+      "range": {
+        "startLine": 187,
+        "startChar": 11,
+        "endLine": 187,
+        "endChar": 21
+      },
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5be39c72_e72dad76",
         "filename": "src/o1/ves/VesEvent.cpp",
         "patchSetId": 3
@@ -83,6 +214,74 @@
         "endLine": 122,
         "endChar": 4
       },
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5122c142_edf99052",
+        "filename": "src/o1/ves/VesUtils.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000060
+      },
+      "writtenOn": "2021-05-13T06:44:23Z",
+      "side": 1,
+      "message": "Please make the EVENT_ID dynamic.\nFor pnfRegistretion and heartbeat the value can be the same as the sourceName.\nFor fault (alarmNotification) the value should be the concatenation for sourceName, alarmInterfaceA and alarmCondition (e.g. O-RAN-FH-IPv6-01_LP-MWPS-RADIO_lossOfSignal)\n\nSimilar comment for other defines too. I\u0027m going to send you example json by email.",
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81fb2c23_5d0cf7b9",
+        "filename": "src/o1/ves/VesUtils.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000060
+      },
+      "writtenOn": "2021-05-13T06:44:23Z",
+      "side": 1,
+      "message": "I suggest to use the latest VES header version 7.2.1",
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "232b0c4f_5cac66cf",
+        "filename": "src/o1/ves/VesUtils.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000060
+      },
+      "writtenOn": "2021-05-13T06:44:23Z",
+      "side": 1,
+      "message": "ok for D-Release - for long term O-RAN targets TLS.",
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3c68df8_ad6da9f4",
+        "filename": "src/o1/ves/VesUtils.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000060
+      },
+      "writtenOn": "2021-05-13T06:44:23Z",
+      "side": 1,
+      "message": "netconf! (exclamation mark) to be aligned with to O-RAN SFG password rules.",
       "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
