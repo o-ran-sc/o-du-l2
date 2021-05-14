@@ -46,8 +46,8 @@
 #define SI_RNTI 0xFFFF
 #define P_RNTI  0xFFFE
 #define DMRS_MAP_TYPE_A 1
-#define NUM_DMRS_SYMBOLS 12
-#define DMRS_ADDITIONAL_POS 2
+#define NUM_DMRS_SYMBOLS 1
+#define DMRS_ADDITIONAL_POS 0
 #define SCH_DEFAULT_K1 1
 #define SCH_TQ_SIZE 10
 

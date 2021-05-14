@@ -92,6 +92,8 @@
 #define MAX_NUM_DL_DATA_TO_UL_ACK 15
 #define SD_SIZE   3
 
+#define TX_PAYLOAD_HDR_LEN 32           /* Intel L1 requires adding a 32 byte header to transmitted payload */
+
 #define ADD_DELTA_TO_TIME(crntTime, toFill, incr)          \
 {                                                          \
    if ((crntTime.slot + incr) > (MAX_SLOTS - 1))           \
