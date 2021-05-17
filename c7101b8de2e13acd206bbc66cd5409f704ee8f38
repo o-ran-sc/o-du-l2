@@ -134,6 +134,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "11af92ef_ec8decd4",
+        "filename": "src/o1/O1App.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000382
+      },
+      "writtenOn": "2021-05-17T05:36:44Z",
+      "side": 1,
+      "message": "Can we get rid of these blank spaces.",
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01440413_8d3d63d9",
+        "filename": "src/o1/ves/HttpClient.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000382
+      },
+      "writtenOn": "2021-05-17T05:36:44Z",
+      "side": 1,
+      "message": "If there is no plan to define a default, overloaded constructor or a default destructor, then these \"blank\" functions should be moved into the header/class definition itself.",
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0224b301_3362a43c",
         "filename": "src/o1/ves/PnfRegistration.hpp",
         "patchSetId": 3
@@ -271,6 +305,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7334e4f0_af53fefe",
+        "filename": "src/o1/ves/VesUtils.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000382
+      },
+      "writtenOn": "2021-05-17T05:36:44Z",
+      "side": 1,
+      "message": "I do not understand why these values are hardcoded.",
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2ed1618_2577a191",
+        "filename": "src/o1/ves/VesUtils.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000382
+      },
+      "writtenOn": "2021-05-17T05:36:44Z",
+      "side": 1,
+      "message": "And why is it assumed that the NETCONF Server IP address is the local loopback address??",
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "232b0c4f_5cac66cf",
         "filename": "src/o1/ves/VesUtils.hpp",
         "patchSetId": 3
@@ -282,6 +350,24 @@
       "writtenOn": "2021-05-13T06:44:23Z",
       "side": 1,
       "message": "ok for D-Release - for long term O-RAN targets TLS.",
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58941d79_e99b645c",
+        "filename": "src/o1/ves/VesUtils.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000382
+      },
+      "writtenOn": "2021-05-17T05:36:44Z",
+      "side": 1,
+      "message": "Hi Martin, NETCONF as a protocol supports both SSH and TLS. Is there a particular reason O-RAN is choosing not to allow SSH?",
+      "parentUuid": "232b0c4f_5cac66cf",
       "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
