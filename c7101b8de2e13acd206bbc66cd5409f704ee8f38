@@ -132,6 +132,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b9ef837_1d348579",
+        "filename": "src/o1/O1App.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-05-17T15:19:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "63f4cc82_b999e4d1",
+      "range": {
+        "startLine": 99,
+        "startChar": 6,
+        "endLine": 99,
+        "endChar": 47
+      },
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "11af92ef_ec8decd4",
@@ -179,6 +203,30 @@
       "writtenOn": "2021-05-13T03:08:06Z",
       "side": 1,
       "message": "This should be protected",
+      "range": {
+        "startLine": 43,
+        "startChar": 6,
+        "endLine": 43,
+        "endChar": 32
+      },
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30901a4e_becf0027",
+        "filename": "src/o1/ves/PnfRegistration.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-05-17T15:19:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0224b301_3362a43c",
       "range": {
         "startLine": 43,
         "startChar": 6,
@@ -259,6 +307,30 @@
       "writtenOn": "2021-05-13T03:08:06Z",
       "side": 1,
       "message": "Can this not be set once? Probably move it to prepare(). This can be an overhead while sending multiple requests.",
+      "range": {
+        "startLine": 119,
+        "startChar": 0,
+        "endLine": 122,
+        "endChar": 4
+      },
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ec38853_3ad124ac",
+        "filename": "src/o1/ves/VesEvent.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-05-17T15:19:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5be39c72_e72dad76",
       "range": {
         "startLine": 119,
         "startChar": 0,
