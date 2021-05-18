@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "6c3949c5_4af278e2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-05-18T14:03:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "561780f1_ee419f60",
+      "range": {
+        "startLine": 7,
+        "startChar": 37,
+        "endLine": 7,
+        "endChar": 38
+      },
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "caee5cf5_a1ce338f",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 3
@@ -75,6 +99,42 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a1bd6e1_93ecef8a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-05-18T14:03:40Z",
+      "side": 1,
+      "message": "Sure, I\u0027ll take care these comments in future enhancements.",
+      "parentUuid": "a79dae5b_21543620",
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ed1f926_3df6011c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-05-18T14:03:40Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "62fd6289_8731992a",
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "738d17fa_76fc795a",
@@ -92,6 +152,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e330e7d0_bdbb1add",
+        "filename": "build/config/netconfConfig.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-05-18T14:03:40Z",
+      "side": 1,
+      "message": "added one more parameter \"NetconfServerIpv6\" in netconfConfig.json file. need to be tested.",
+      "parentUuid": "738d17fa_76fc795a",
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "15a371b2_7451a222",
@@ -105,6 +183,24 @@
       "writtenOn": "2021-05-13T06:44:23Z",
       "side": 1,
       "message": "SMO has several IP-Addresses - I suggest to call the json object vesConfig.",
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc9970d8_6bbce8b6",
+        "filename": "build/config/smoConfig.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-05-18T14:03:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "15a371b2_7451a222",
       "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -173,6 +269,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eecb8030_f9c3f3a0",
+        "filename": "src/o1/O1App.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-05-18T14:03:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "11af92ef_ec8decd4",
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "01440413_8d3d63d9",
@@ -186,6 +300,24 @@
       "writtenOn": "2021-05-17T05:36:44Z",
       "side": 1,
       "message": "If there is no plan to define a default, overloaded constructor or a default destructor, then these \"blank\" functions should be moved into the header/class definition itself.",
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "721d6486_e9ee1535",
+        "filename": "src/o1/ves/HttpClient.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-05-18T14:03:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "01440413_8d3d63d9",
       "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -254,6 +386,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b20e8297_f6570561",
+        "filename": "src/o1/ves/VesCommonHeader.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-05-18T14:03:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aa498422_412e99ea",
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c13d9f8c_af938ccb",
@@ -271,6 +421,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d438a66d_04f4bf08",
+        "filename": "src/o1/ves/VesCommonHeader.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-05-18T14:03:40Z",
+      "side": 1,
+      "message": "Added Heartbeat case also. Supporting functions are not available yet as it is not implemented in O-DU high.",
+      "parentUuid": "c13d9f8c_af938ccb",
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a128d2e2_b3228222",
@@ -284,6 +452,30 @@
       "writtenOn": "2021-05-13T06:44:23Z",
       "side": 1,
       "message": "Sorry, I have guided you in the wrong direction - please ensure that the time represents µs (microseconds) as specified.",
+      "range": {
+        "startLine": 187,
+        "startChar": 11,
+        "endLine": 187,
+        "endChar": 21
+      },
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3670bcc_df3d3758",
+        "filename": "src/o1/ves/VesCommonHeader.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-05-18T14:03:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a128d2e2_b3228222",
       "range": {
         "startLine": 187,
         "startChar": 11,
@@ -358,6 +550,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "969b5179_dca4ddb7",
+        "filename": "src/o1/ves/VesUtils.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-05-18T14:03:40Z",
+      "side": 1,
+      "message": "Now EVENT_ID is being created with combination of sourceName_modelNumber (i.e. ODU-High_007DEV) as mentioned in sample json files.\nSimilarly updated other parameters. As we are only supporting PNF Registration Ves Event as of now, so functions need to updated when other message support will be added.",
+      "parentUuid": "5122c142_edf99052",
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "81fb2c23_5d0cf7b9",
@@ -371,6 +581,24 @@
       "writtenOn": "2021-05-13T06:44:23Z",
       "side": 1,
       "message": "I suggest to use the latest VES header version 7.2.1",
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d86430ee_6da342f6",
+        "filename": "src/o1/ves/VesUtils.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-05-18T14:03:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "81fb2c23_5d0cf7b9",
       "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -392,6 +620,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b23b863c_aacb300d",
+        "filename": "src/o1/ves/VesUtils.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-05-18T14:03:40Z",
+      "side": 1,
+      "message": "I was initially used for testing and missed to cleanup. \nStill we are using following parameters as macro.\n\n#define UNIT_TYPE_7DEV \"7DEV\"\n#define VENDER_NAME_VENDORB \"VENDORB\"\n#define MODEL_NUMBER_007_DEV \"007DEV\"\n\nWe are planning to remove rest of the macros as well in next release.",
+      "parentUuid": "7334e4f0_af53fefe",
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d2ed1618_2577a191",
@@ -405,6 +651,24 @@
       "writtenOn": "2021-05-17T05:36:44Z",
       "side": 1,
       "message": "And why is it assumed that the NETCONF Server IP address is the local loopback address??",
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a3c6415_5ac9a2c5",
+        "filename": "src/o1/ves/VesUtils.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-05-18T14:03:40Z",
+      "side": 1,
+      "message": "Missed to cleanup this as well. Currently we are reading IP,PORT. UserName, Password from config file.",
+      "parentUuid": "d2ed1618_2577a191",
       "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -446,6 +710,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a68c4671_b619aa15",
+        "filename": "src/o1/ves/VesUtils.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-05-18T14:03:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "58941d79_e99b645c",
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c3c68df8_ad6da9f4",
         "filename": "src/o1/ves/VesUtils.hpp",
         "patchSetId": 3
@@ -457,6 +739,24 @@
       "writtenOn": "2021-05-13T06:44:23Z",
       "side": 1,
       "message": "netconf! (exclamation mark) to be aligned with to O-RAN SFG password rules.",
+      "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e65ff8b_c0c3ba56",
+        "filename": "src/o1/ves/VesUtils.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-05-18T14:03:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c3c68df8_ad6da9f4",
       "revId": "c7101b8de2e13acd206bbc66cd5409f704ee8f38",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
