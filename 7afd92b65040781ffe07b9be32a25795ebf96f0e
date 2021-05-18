@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "84ff358e_ac395879",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2021-05-18T10:43:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d5f837c2_160f1ca1",
+      "revId": "7afd92b65040781ffe07b9be32a25795ebf96f0e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fdafeac2_b758ba4f",
@@ -35,6 +53,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c383f868_78cdc47b",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 610,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2021-05-18T10:43:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fdafeac2_b758ba4f",
+      "revId": "7afd92b65040781ffe07b9be32a25795ebf96f0e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ae9370cc_a24e1050",
@@ -48,6 +84,24 @@
       "writtenOn": "2021-05-18T04:05:11Z",
       "side": 1,
       "message": "these macros arent\u0027 used earlier for other such generic functions. Either add everywhere or remove everywhere",
+      "revId": "7afd92b65040781ffe07b9be32a25795ebf96f0e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea1c1050_278159d2",
+        "filename": "src/cm/cm_math.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2021-05-18T10:43:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ae9370cc_a24e1050",
       "revId": "7afd92b65040781ffe07b9be32a25795ebf96f0e",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
