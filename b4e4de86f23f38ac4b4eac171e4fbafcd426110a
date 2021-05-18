@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ede34611_308633cc",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2021-05-18T04:04:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "33d6fd1a_27b718fb",
+      "revId": "b4e4de86f23f38ac4b4eac171e4fbafcd426110a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ffd90370_c7b4814d",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-05-13T14:21:46Z",
       "side": 1,
       "message": "same comment as above",
+      "revId": "b4e4de86f23f38ac4b4eac171e4fbafcd426110a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4185fd5d_c8a3cc6a",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2021-05-18T04:04:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ffd90370_c7b4814d",
       "revId": "b4e4de86f23f38ac4b4eac171e4fbafcd426110a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -52,6 +88,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6c28c7d_af4fa098",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2021-05-18T04:04:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "130785af_2756a85b",
+      "revId": "b4e4de86f23f38ac4b4eac171e4fbafcd426110a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "50dc2fdd_417aa10a",
@@ -65,6 +119,24 @@
       "writtenOn": "2021-05-13T14:21:46Z",
       "side": 1,
       "message": "add error log.\nAlso, add appropriate checks in caller of this function on receiving RFAILED",
+      "revId": "b4e4de86f23f38ac4b4eac171e4fbafcd426110a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e5c1ba2_26e2fcd1",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2021-05-18T04:04:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "50dc2fdd_417aa10a",
       "revId": "b4e4de86f23f38ac4b4eac171e4fbafcd426110a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -86,6 +158,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cb6d142_8b361838",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2021-05-18T04:04:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d0a8d7ea_b1914f2d",
+      "revId": "b4e4de86f23f38ac4b4eac171e4fbafcd426110a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a85ce138_cfbf1c34",
@@ -99,6 +189,24 @@
       "writtenOn": "2021-05-13T14:21:46Z",
       "side": 1,
       "message": "must be done only if resource allocation is successful.",
+      "revId": "b4e4de86f23f38ac4b4eac171e4fbafcd426110a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51f850c2_2aeb41a6",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2021-05-18T04:04:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a85ce138_cfbf1c34",
       "revId": "b4e4de86f23f38ac4b4eac171e4fbafcd426110a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -120,6 +228,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb13cdef_b3b313bd",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 449,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2021-05-18T04:04:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e686ebec_c5a4cdd0",
+      "revId": "b4e4de86f23f38ac4b4eac171e4fbafcd426110a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "801295e9_9f65d4bc",
@@ -133,6 +259,24 @@
       "writtenOn": "2021-05-13T14:21:46Z",
       "side": 1,
       "message": "This may not initialize the entire array",
+      "revId": "b4e4de86f23f38ac4b4eac171e4fbafcd426110a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b25857c_5c8e7c99",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 643,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2021-05-18T04:04:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "801295e9_9f65d4bc",
       "revId": "b4e4de86f23f38ac4b4eac171e4fbafcd426110a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -167,6 +311,24 @@
       "writtenOn": "2021-05-13T14:21:46Z",
       "side": 1,
       "message": "it must be 273. Also, there is an existing variable/macro to determine number of PRBs for current configuration.\nWe need to make this function generic",
+      "revId": "b4e4de86f23f38ac4b4eac171e4fbafcd426110a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e352cbd_a80dc7c2",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 726,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2021-05-18T04:04:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "23fb583b_384cce55",
       "revId": "b4e4de86f23f38ac4b4eac171e4fbafcd426110a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
