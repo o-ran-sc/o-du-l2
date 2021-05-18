@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "184def99_757fb7d2",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 704,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-05-18T03:56:55Z",
+      "side": 1,
+      "message": "below code must be in #if 0. not this in #1",
+      "revId": "d8b710548640b81bfff5b7a0ba001786c61e8760",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
