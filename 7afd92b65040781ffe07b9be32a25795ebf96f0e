@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5f837c2_160f1ca1",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-05-18T04:05:11Z",
+      "side": 1,
+      "message": "can we not multiply by 2, to increase readability",
+      "revId": "7afd92b65040781ffe07b9be32a25795ebf96f0e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdafeac2_b758ba4f",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 610,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-05-18T04:05:11Z",
+      "side": 1,
+      "message": "confirm naming convention",
+      "revId": "7afd92b65040781ffe07b9be32a25795ebf96f0e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae9370cc_a24e1050",
+        "filename": "src/cm/cm_math.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-05-18T04:05:11Z",
+      "side": 1,
+      "message": "these macros arent\u0027 used earlier for other such generic functions. Either add everywhere or remove everywhere",
+      "revId": "7afd92b65040781ffe07b9be32a25795ebf96f0e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
