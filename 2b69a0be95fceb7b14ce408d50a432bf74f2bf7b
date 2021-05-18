@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "92cf87db_7bda7476",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 953,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2021-05-18T10:42:22Z",
+      "side": 1,
+      "message": "Discussed, change not needed as loop will take care of this.",
+      "parentUuid": "080cdc10_c23886bf",
+      "revId": "2b69a0be95fceb7b14ce408d50a432bf74f2bf7b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fd3bee70_5b6961a5",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-05-05T01:47:54Z",
       "side": 1,
       "message": "schCalcTbSize and schCalcNumPrb must also be verified for new configuration. Testing must be completed using phy stub.",
+      "revId": "2b69a0be95fceb7b14ce408d50a432bf74f2bf7b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7303e9e1_920ac38f",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2021-05-18T10:42:22Z",
+      "side": 1,
+      "message": "TBS calculation part to be taken separately.",
+      "parentUuid": "fd3bee70_5b6961a5",
       "revId": "2b69a0be95fceb7b14ce408d50a432bf74f2bf7b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -52,6 +88,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b48fcae0_0d360f2a",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2021-05-18T10:42:22Z",
+      "side": 1,
+      "message": "Discussed, change not needed as loop will take care of this.",
+      "parentUuid": "dfa9ae4a_a26d7ab2",
+      "revId": "2b69a0be95fceb7b14ce408d50a432bf74f2bf7b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dfb8a5ec_53504b02",
@@ -65,6 +119,24 @@
       "writtenOn": "2021-05-05T01:47:54Z",
       "side": 1,
       "message": "spec reference to be mentioned in TDD case as well",
+      "revId": "2b69a0be95fceb7b14ce408d50a432bf74f2bf7b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d9d6775_e3c14bc0",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2021-05-18T10:42:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dfb8a5ec_53504b02",
       "revId": "2b69a0be95fceb7b14ce408d50a432bf74f2bf7b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
