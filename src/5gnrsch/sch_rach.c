@@ -157,7 +157,7 @@ uint8_t schAllocMsg3Pusch(Inst schInst, uint16_t slot, uint16_t crnti, \
    }
    tbSize = 0;  /* since nPrb has been incremented, recalculating tbSize */
    tbSize = schCalcTbSizeFromNPrb(numRb, mcs, numPdschSymbols);
-
+   tbSize = tbSize/8;/*bits to byte conversion*/
    schUlSlotInfo->schPuschInfo->crnti             = crnti;
    schUlSlotInfo->schPuschInfo->harqProcId        = SCH_HARQ_PROC_ID;
    schUlSlotInfo->schPuschInfo->resAllocType      = SCH_ALLOC_TYPE_1;
