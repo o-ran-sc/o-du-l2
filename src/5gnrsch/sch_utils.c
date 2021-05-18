@@ -1015,10 +1015,13 @@ void schInitDlSlot(SchDlSlotInfo *schDlSlotInfo)
  **/
 SlotConfig schGetSlotSymbFrmt(uint16_t slot, uint32_t bitMap)
 {
+   uint32_t offset = (slot)*2;
+   return (bitMap & 0x3<<offset)>>offset;
+#if 0
    SlotConfig slotFrmt;
    int mask1 = 0, mask2 = 0;
 
-   slot = (slot%10)*2;
+   slot = (slot%n)*2;//n num of slots in defined periodicity or num of symbols
    mask1 = 1<<(slot);
    mask2 = 1<<(slot+1);
    slotFrmt = ((mask1 & bitMap)>>slot) + (2*((mask2 & bitMap)>>(slot+1)));
@@ -1026,6 +1029,7 @@ SlotConfig schGetSlotSymbFrmt(uint16_t slot, uint32_t bitMap)
    //printf("\n\n\n\n*****FormatType:%d Slot:%d****\n\n\n\n", slotFrmt, slot/2);
 
    return slotFrmt;
+#endif
 }
 
 #endif
