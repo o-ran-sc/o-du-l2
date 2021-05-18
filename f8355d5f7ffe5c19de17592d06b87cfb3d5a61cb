@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9627b75_a9d916f6",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 557,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2021-05-18T04:04:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8f97a3aa_5bdd2696",
+      "revId": "f8355d5f7ffe5c19de17592d06b87cfb3d5a61cb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7f0010d8_3166e11b",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-05-12T12:28:35Z",
       "side": 1,
       "message": "NUM_DMRS_SYMBOLS is not the apt name for this macro, though the value is 12",
+      "revId": "f8355d5f7ffe5c19de17592d06b87cfb3d5a61cb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e271203_c625d98c",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 593,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2021-05-18T04:04:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7f0010d8_3166e11b",
       "revId": "f8355d5f7ffe5c19de17592d06b87cfb3d5a61cb",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -52,6 +88,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f541da1f_dde109d4",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 602,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2021-05-18T04:04:16Z",
+      "side": 1,
+      "message": "same macro has been used.",
+      "parentUuid": "59628f1f_4d2377b8",
+      "revId": "f8355d5f7ffe5c19de17592d06b87cfb3d5a61cb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eb354840_aebe98ec",
@@ -65,6 +119,24 @@
       "writtenOn": "2021-05-12T12:28:35Z",
       "side": 1,
       "message": "can we not declare a variable for scaling factor directly. So, the multiplication would be straight forward, and if/else can be avoided",
+      "revId": "f8355d5f7ffe5c19de17592d06b87cfb3d5a61cb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9f2239f_2be6c038",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 604,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2021-05-18T04:04:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eb354840_aebe98ec",
       "revId": "f8355d5f7ffe5c19de17592d06b87cfb3d5a61cb",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -86,6 +158,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6067ff87_ec767162",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 620,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2021-05-18T04:04:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "79db1e27_7822d15b",
+      "revId": "f8355d5f7ffe5c19de17592d06b87cfb3d5a61cb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "39c1f486_e6ca708f",
@@ -99,6 +189,24 @@
       "writtenOn": "2021-05-12T12:28:35Z",
       "side": 1,
       "message": "move declarations to beginning of function.\navoid magic numbers, give spec reference with section",
+      "revId": "f8355d5f7ffe5c19de17592d06b87cfb3d5a61cb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ecee9355_83ea3bf0",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 624,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2021-05-18T04:04:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "39c1f486_e6ca708f",
       "revId": "f8355d5f7ffe5c19de17592d06b87cfb3d5a61cb",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
