@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96cfd98e_c48497fe",
+        "filename": "src/cm/cm_math.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-05-24T15:37:19Z",
+      "side": 1,
+      "message": "by definition ssi, declarations must go to .x file. We could consider clubbing cm_math.h and cm_math.x into cm_math.h",
+      "revId": "38dda1e355ac66399aadc793792a39504ded05c5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
