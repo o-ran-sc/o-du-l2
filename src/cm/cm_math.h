@@ -31,6 +31,19 @@
 #ifndef __CMMATHH__
 #define __CMMATHH__
 
+#ifdef SS_FLOAT
+
+/* Math library function prototypes */
+uint32_t cmAbs ARGS((F64 val));
+F64 cmPow ARGS((F64 x, F64 y));
+F64 cmFloor ARGS((F64 x));
+F64 cmLog ARGS((F64 x));
+F64 cmLog10 ARGS((F64 x));
+
+#endif
+
+float cmLog2(uint32_t x);
+
 #endif /* __CMMATHH__ */
 
  

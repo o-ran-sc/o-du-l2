@@ -40,12 +40,8 @@
 #include "ssi.h"                /* system services interface */
 
 #include "cm_math.h"
-#include "cm_math.x"
-
 #include <stdlib.h>
-
 #include <math.h>
-
 
 #ifdef SS_FLOAT
 /*

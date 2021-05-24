@@ -24,14 +24,15 @@
 #include <string.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <math.h>
 
 #include "cm_mem.h"
-#include "cm_math.h"
 #include "envopt.h"
 #include "envdep.h"
 #include "envind.h"
 #include "gen.h" 
 #include "ssi.h" 
+#include "cm_math.h"
 #include "cm5.h"
 #include "cm_tkns.h"
 #include "cm_mblk.h"
@@ -43,7 +44,6 @@
 #include "cm.h"
 #include "gen.x"           /* general */
 #include "ssi.x"           /* system services */
-#include "cm_math.x"
 #include "cm_tpt.x"
 #include "cm_tkns.x" 
 #include "cm_mblk.x"
