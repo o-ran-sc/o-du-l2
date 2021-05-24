@@ -766,7 +766,7 @@ MtMemCfg mtMemoCfg =
 	 }
       },
       {
-	 SS_DFLT_REGION + 5,                         /* region id */
+	 SS_DFLT_REGION + 6,                         /* region id */
 	 MT_MAX_BKTS,                            /* number of buckets */
 	 MT_HEAP_SIZE,                           /* heap size */
 	 {

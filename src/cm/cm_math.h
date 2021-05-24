@@ -31,6 +31,8 @@
 #ifndef __CMMATHH__
 #define __CMMATHH__
 
+float cmLog2(uint32_t x);
+
 #endif /* __CMMATHH__ */
 
  
