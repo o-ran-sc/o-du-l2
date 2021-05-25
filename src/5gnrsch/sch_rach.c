@@ -279,7 +279,8 @@ uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst)
  *  @param[in]  offset to pointA to determine freq alloc
  *  @return  ROK
  **/
-uint8_t schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t offsetPointA)
+uint8_t schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t offsetPointA, \
+bool ssbPresent, bool sib1Present)
 {
    Inst inst = 0;
    uint8_t coreset0Idx = 0;
@@ -289,14 +290,13 @@ uint8_t schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t of
    uint8_t offset = 0;
    uint8_t FreqDomainResource[6] = {0};
    uint16_t tbSize = 0;
-   uint8_t numPdschSymbols = 12; /* considering pdsch region from 2 to 13 */
    uint8_t mcs = 4;  /* MCS fixed to 4 */
 
    SchBwpDlCfg *initialBwp = &schCb[inst].cells[inst]->cellCfg.schInitialDlBwp;
-
    PdcchCfg *pdcch = &rarAlloc->rarPdcchCfg;
    PdschCfg *pdsch = &rarAlloc->rarPdschCfg;
    BwpCfg *bwp = &rarAlloc->bwp;
+   FreqDomainAlloc *sib1PdschFreqAlloc = NULL;
 
    coreset0Idx     = initialBwp->pdcchCommon.commonSearchSpace.coresetId;
 
@@ -363,14 +363,16 @@ uint8_t schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t of
       pdsch->codeword[cwCount].mcsIndex = mcs; /* mcs configured to 4 */
       pdsch->codeword[cwCount].mcsTable = 0;   /* notqam256 */
       pdsch->codeword[cwCount].rvIndex = 0;
-      tbSize = schCalcTbSize(10); /* 8 bytes RAR and 2 bytes padding */
+      /* As per spec 38.321, sections 6.1.5 and 6.2.3, RAR PDU is 8 bytes long.
+       * Adding 2 bytes of padding and 32 bytes of FAPI payload header */
+      tbSize = schCalcTbSize(10 + TX_PAYLOAD_HDR_LEN);
       pdsch->codeword[cwCount].tbSize = tbSize;
    }
    pdsch->dataScramblingId = pci;
    pdsch->numLayers = 1;
    pdsch->transmissionScheme = 0;
    pdsch->refPoint = 0;
-   pdsch->dmrs.dlDmrsSymbPos = 2;
+   pdsch->dmrs.dlDmrsSymbPos = 4;  /* Bitmap value 00000000000100 i.e. using 3rd symbol for PDSCH DMRS */
    pdsch->dmrs.dmrsConfigType = 0; /* type-1 */
    pdsch->dmrs.dlDmrsScramblingId = pci;
    pdsch->dmrs.scid = 0;
@@ -380,8 +382,20 @@ uint8_t schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t of
    pdsch->dmrs.nrOfDmrsSymbols  = NUM_DMRS_SYMBOLS;
    pdsch->dmrs.dmrsAddPos       = DMRS_ADDITIONAL_POS;
    pdsch->pdschFreqAlloc.resourceAllocType = 1; /* RAT type-1 RIV format */
-   pdsch->pdschFreqAlloc.freqAlloc.startPrb = offset + SCH_SSB_NUM_PRB; /* the RB numbering starts from coreset0, and PDSCH is always above SSB */ 
-   pdsch->pdschFreqAlloc.freqAlloc.numPrb = schCalcNumPrb(tbSize,mcs,numPdschSymbols);
+   /* The RB numbering starts from coreset0 */ 
+   pdsch->pdschFreqAlloc.freqAlloc.startPrb = SCH_PDSCH_START_PRB;
+   if(ssbPresent)
+   {
+      /* PDSCH is always above SSB */
+      pdsch->pdschFreqAlloc.freqAlloc.startPrb = offsetPointA + SCH_SSB_NUM_PRB + 1;
+   }
+   if(sib1Present)
+   {
+      /* Must not overlap with SIB1 */
+      sib1PdschFreqAlloc = &schCb[inst].cells[inst]->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc;
+      pdsch->pdschFreqAlloc.freqAlloc.startPrb = sib1PdschFreqAlloc->startPrb + sib1PdschFreqAlloc->numPrb + 1; 
+   }
+   pdsch->pdschFreqAlloc.freqAlloc.numPrb = schCalcNumPrb(tbSize, mcs, initialBwp->pdschCommon.lengthSymbol);
    pdsch->pdschFreqAlloc.vrbPrbMapping = 0; /* non-interleaved */
    pdsch->pdschTimeAlloc.timeAlloc.startSymb = initialBwp->pdschCommon.startSymbol;
    pdsch->pdschTimeAlloc.timeAlloc.numSymb = initialBwp->pdschCommon.lengthSymbol;

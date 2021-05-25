@@ -50,8 +50,6 @@ SchMacDlAllocFunc schMacDlAllocOpts[] =
 };
 
 SchCb schCb[SCH_MAX_INST];
-int schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t
-      offsetPointA);
 
 /*******************************************************************
  *
@@ -323,7 +321,9 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
       schFillRar(rarAlloc,
 	    cell->schDlSlotInfo[slot]->rarInfo->raRnti,
 	    cell->cellCfg.phyCellId,
-	    cell->cellCfg.ssbSchCfg.ssbOffsetPointA);
+	    cell->cellCfg.ssbSchCfg.ssbOffsetPointA,
+       dlBrdcstAlloc->ssbTrans,
+       dlBrdcstAlloc->sib1Trans);
 
       SCH_FREE(cell->schDlSlotInfo[slot]->rarInfo,sizeof(RarAlloc));
       cell->schDlSlotInfo[slot]->rarInfo = NULLP;
@@ -349,7 +349,7 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
 	    sizeof(DlMsgInfo));
 
       /* pdcch and pdsch data is filled */
-      schDlRsrcAllocMsg4(msg4Alloc, cell, dlSchedInfo.schSlotValue.dlMsgTime.slot); 
+      schDlRsrcAllocMsg4(msg4Alloc, cell, dlSchedInfo.schSlotValue.dlMsgTime.slot, dlBrdcstAlloc->ssbTrans, dlBrdcstAlloc->sib1Trans); 
 
       /* PUCCH resource */
       schAllocPucchResource(cell, msg4Alloc->dlMsgInfo.crnti, dlSchedInfo.schSlotValue.dlMsgTime.slot);
