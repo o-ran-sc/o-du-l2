@@ -87,6 +87,30 @@
       },
       "revId": "1abb4c7602549fc273cc7ef164f33800f93abfbc",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4817c404_e1abb4e4",
+        "filename": "src/o1/ves/VesCommonHeader.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-05-25T11:09:40Z",
+      "side": 1,
+      "message": "In the VesUtils.hpp we have defined VesEventType enum class which is following.\nenum class VesEventType\n{\n   PNF_REGISTRATION,\n   FAULT_NOTIFICATION,\n   PM_NOTIFICATION,\n   HEARTBEAT\n};\n\nIn the prepare method of the VesCommonHeader class mEventType value getting updated as VesEventType::PNF_REGISTRATION.  \nIn the getEventId we are first checking the mEventType in switch and if the case is VesEventType::PNF_REGISTRATION then we are preparing the value with combination of Source Name and model number as mentioned in the example of PnfRegistration example.\n\nI hope this answer your query. If there is anything still misleading then please let me know.",
+      "parentUuid": "80079c7e_d695c3fb",
+      "range": {
+        "startLine": 138,
+        "startChar": 3,
+        "endLine": 150,
+        "endChar": 4
+      },
+      "revId": "1abb4c7602549fc273cc7ef164f33800f93abfbc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
