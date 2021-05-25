@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c775ee34_5f63cb1d",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-05-25T07:02:53Z",
+      "side": 1,
+      "message": "can we not directly add math.h in cm_math.h? Including math.h defeats the purpose of having a wrapper file",
+      "revId": "451cda12ced22117c427816f458daf16d0e5949d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
