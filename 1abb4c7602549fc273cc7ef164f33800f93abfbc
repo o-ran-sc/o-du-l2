@@ -111,6 +111,30 @@
       },
       "revId": "1abb4c7602549fc273cc7ef164f33800f93abfbc",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae65a390_cea7cf89",
+        "filename": "src/o1/ves/VesCommonHeader.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1001000
+      },
+      "writtenOn": "2021-05-25T11:56:36Z",
+      "side": 1,
+      "message": "Ah! I got it. I missed the line mEventType \u003d type; in prepare(). Thanks for your explanation.",
+      "parentUuid": "4817c404_e1abb4e4",
+      "range": {
+        "startLine": 138,
+        "startChar": 3,
+        "endLine": 150,
+        "endChar": 4
+      },
+      "revId": "1abb4c7602549fc273cc7ef164f33800f93abfbc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
