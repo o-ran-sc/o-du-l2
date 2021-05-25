@@ -556,7 +556,7 @@ uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t schDlRsrcAllocMsg4(DlMsgAlloc *msg4Alloc, SchCellCb *cell, uint16_t slot)
+uint8_t schDlRsrcAllocMsg4(DlMsgAlloc *msg4Alloc, SchCellCb *cell, uint16_t slot, bool ssbPresent, bool sib1Present)
 {
    uint8_t coreset0Idx = 0;
    uint8_t numRbs = 0;
@@ -566,9 +566,10 @@ uint8_t schDlRsrcAllocMsg4(DlMsgAlloc *msg4Alloc, SchCellCb *cell, uint16_t slot
    uint8_t offsetPointA;
    uint8_t FreqDomainResource[6] = {0};
    uint16_t tbSize = 0;
-   uint8_t numPdschSymbols = 12; /* considering pdsch region from 2 to 13 */
-   uint8_t mcs = 4;  /* MCS fixed to 4 */
+   uint8_t numPdschSymbols = 11;            /* considering pdsch region from 3 to 13 */
+   uint8_t mcs = 4;                         /* MCS fixed to 4 */
    SchBwpDlCfg *initialBwp;
+   FreqDomainAlloc *sib1PdschFreqAlloc = NULL;
 
    PdcchCfg *pdcch = &msg4Alloc->dlMsgPdcchCfg;
    PdschCfg *pdsch = &msg4Alloc->dlMsgPdschCfg;
@@ -640,16 +641,14 @@ uint8_t schDlRsrcAllocMsg4(DlMsgAlloc *msg4Alloc, SchCellCb *cell, uint16_t slot
       pdsch->codeword[cwCount].mcsIndex = mcs; /* mcs configured to 4 */
       pdsch->codeword[cwCount].mcsTable = 0; /* notqam256 */
       pdsch->codeword[cwCount].rvIndex = 0;
-      /* 38.214: Table 5.1.3.2-1,  divided by 8 to get the value in bytes */
-      /* TODO : Calculate tbSize based of DL CCCH msg size */
-      tbSize = schCalcTbSize(2664/8); /* send this value to the func in bytes when considering msg4 size */
+      tbSize = schCalcTbSize(msg4Alloc->dlMsgInfo.dlMsgPduLen + TX_PAYLOAD_HDR_LEN); /* MSG4 size + FAPI header size*/
       pdsch->codeword[cwCount].tbSize = tbSize;
    }
    pdsch->dataScramblingId = cell->cellCfg.phyCellId;
    pdsch->numLayers = 1;
    pdsch->transmissionScheme = 0;
    pdsch->refPoint = 0;
-   pdsch->dmrs.dlDmrsSymbPos = 2;
+   pdsch->dmrs.dlDmrsSymbPos = 4; /* Bitmap value 00000000000100 i.e. using 3rd symbol for PDSCH DMRS */
    pdsch->dmrs.dmrsConfigType = 0; /* type-1 */
    pdsch->dmrs.dlDmrsScramblingId = cell->cellCfg.phyCellId;
    pdsch->dmrs.scid = 0;
@@ -659,12 +658,23 @@ uint8_t schDlRsrcAllocMsg4(DlMsgAlloc *msg4Alloc, SchCellCb *cell, uint16_t slot
    pdsch->dmrs.nrOfDmrsSymbols  = NUM_DMRS_SYMBOLS;
    pdsch->dmrs.dmrsAddPos       = DMRS_ADDITIONAL_POS;
    pdsch->pdschFreqAlloc.resourceAllocType = 1; /* RAT type-1 RIV format */
-   /* the RB numbering starts from coreset0, and PDSCH is always above SSB */
-   pdsch->pdschFreqAlloc.freqAlloc.startPrb = offset + SCH_SSB_NUM_PRB;
-   pdsch->pdschFreqAlloc.freqAlloc.numPrb = schCalcNumPrb(tbSize,mcs,numPdschSymbols);
+   /* The RB numbering starts from coreset0 */ 
+   pdsch->pdschFreqAlloc.freqAlloc.startPrb = 1;
+   if(ssbPresent)
+   {
+      /* PDSCH is always above SSB */
+      pdsch->pdschFreqAlloc.freqAlloc.startPrb = offsetPointA + SCH_SSB_NUM_PRB + 1;
+   }
+   if(sib1Present)
+   {
+      /* Must not overlap with SIB1 */
+      sib1PdschFreqAlloc = &cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc;
+      pdsch->pdschFreqAlloc.freqAlloc.startPrb = sib1PdschFreqAlloc->startPrb + sib1PdschFreqAlloc->numPrb + 1; 
+   }
+   pdsch->pdschFreqAlloc.freqAlloc.numPrb = schCalcNumPrb(tbSize, mcs, numPdschSymbols);
    pdsch->pdschFreqAlloc.vrbPrbMapping = 0; /* non-interleaved */
-   pdsch->pdschTimeAlloc.timeAlloc.startSymb = 2; /* spec-38.214, Table 5.1.2.1-1 */
-   pdsch->pdschTimeAlloc.timeAlloc.numSymb = 12;
+   pdsch->pdschTimeAlloc.timeAlloc.startSymb = 3; /* spec-38.214, Table 5.1.2.1-1 */
+   pdsch->pdschTimeAlloc.timeAlloc.numSymb = numPdschSymbols;
    pdsch->beamPdschInfo.numPrgs = 1;
    pdsch->beamPdschInfo.prgSize = 1;
    pdsch->beamPdschInfo.digBfInterfaces = 0;
@@ -731,7 +741,6 @@ uint8_t schDlRsrcAllocDlMsg(DlMsgAlloc *dlMsgAlloc, SchCellCb *cell, uint16_t cr
 {
    uint8_t ueIdx;
    uint16_t tbSize = 0;
-   uint8_t numPdschSymbols = 12; /* considering pdsch region from 2 to 13 */
    PdcchCfg *pdcch = NULLP;
    PdschCfg *pdsch = NULLP;
    BwpCfg *bwp = NULLP;
@@ -794,7 +803,7 @@ uint8_t schDlRsrcAllocDlMsg(DlMsgAlloc *dlMsgAlloc, SchCellCb *cell, uint16_t cr
       pdsch->codeword[cwCount].mcsIndex = ueCb.ueCfg.dlModInfo.mcsIndex;
       pdsch->codeword[cwCount].mcsTable = ueCb.ueCfg.dlModInfo.mcsTable;
       pdsch->codeword[cwCount].rvIndex = 0;
-      tbSize = schCalcTbSize(*accumalatedSize);
+      tbSize = schCalcTbSize(*accumalatedSize + TX_PAYLOAD_HDR_LEN);
       if(tbSize < *accumalatedSize)
          *accumalatedSize = tbSize;
       pdsch->codeword[cwCount].tbSize = tbSize;
@@ -803,7 +812,7 @@ uint8_t schDlRsrcAllocDlMsg(DlMsgAlloc *dlMsgAlloc, SchCellCb *cell, uint16_t cr
    pdsch->numLayers = 1;
    pdsch->transmissionScheme = 0;
    pdsch->refPoint = 0;
-   pdsch->dmrs.dlDmrsSymbPos = 2;
+   pdsch->dmrs.dlDmrsSymbPos = 4; /* Bitmap value 00000000000100 i.e. using 3rd symbol for PDSCH DMRS */
    pdsch->dmrs.dmrsConfigType = 0; /* type-1 */
    pdsch->dmrs.dlDmrsScramblingId = cell->cellCfg.phyCellId;
    pdsch->dmrs.scid = 0;
@@ -814,7 +823,8 @@ uint8_t schDlRsrcAllocDlMsg(DlMsgAlloc *dlMsgAlloc, SchCellCb *cell, uint16_t cr
    pdsch->dmrs.dmrsAddPos       = pdschCfg.dmrsDlCfgForPdschMapTypeA.addPos;
    pdsch->pdschFreqAlloc.resourceAllocType = 1; /* RAT type-1 RIV format */
    pdsch->pdschFreqAlloc.freqAlloc.startPrb = 1;
-   pdsch->pdschFreqAlloc.freqAlloc.numPrb = schCalcNumPrb(tbSize, ueCb.ueCfg.dlModInfo.mcsIndex, numPdschSymbols);
+   pdsch->pdschFreqAlloc.freqAlloc.numPrb = schCalcNumPrb(tbSize, ueCb.ueCfg.dlModInfo.mcsIndex, \
+		   pdschCfg.timeDomRsrcAllociList[0].symbolLength);
    pdsch->pdschFreqAlloc.vrbPrbMapping = 0; /* non-interleaved */
    pdsch->pdschTimeAlloc.timeAlloc.startSymb = pdschCfg.timeDomRsrcAllociList[0].startSymbol;
    pdsch->pdschTimeAlloc.timeAlloc.numSymb = pdschCfg.timeDomRsrcAllociList[0].symbolLength;

@@ -947,8 +947,10 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
    schDlSlotInfo->dlMsgInfo->harqFeedbackInd = 0;
    schDlSlotInfo->dlMsgInfo->dciFormatId = 1;
    if(lcId == SRB0_LCID)
+   {
       schDlSlotInfo->dlMsgInfo->isMsg4Pdu = true;
-
+      schDlSlotInfo->dlMsgInfo->dlMsgPduLen = dlBoInfo->dataVolume;
+   }
    return ROK;
 }
 

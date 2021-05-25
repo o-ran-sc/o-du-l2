@@ -258,7 +258,7 @@ short int schActvTmr(Ent ent,Inst inst);
 uint8_t schBroadcastAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc,uint16_t slot);
 uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst inst);
 uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst);
-uint8_t schDlRsrcAllocMsg4(DlMsgAlloc *msg4Alloc, SchCellCb *cell, uint16_t slot);
+uint8_t schDlRsrcAllocMsg4(DlMsgAlloc *msg4Alloc, SchCellCb *cell, uint16_t slot, bool ssbPresent, bool sib1Present);
 uint16_t schCalcTbSize(uint32_t payLoadSize);
 uint16_t schCalcNumPrb(uint16_t tbSize, uint16_t mcs, uint8_t numSymbols);
 uint16_t schAllocPucchResource(SchCellCb *cell, uint16_t crnti, uint16_t slot);
@@ -268,6 +268,7 @@ uint8_t schFillPuschAlloc(SchUeCb *ueCb, uint16_t pdcchSlot, uint32_t dataVol, S
 uint8_t schDlRsrcAllocDlMsg(DlMsgAlloc *dlMsgAlloc, SchCellCb *cell, uint16_t crnti,
    uint32_t *accumalatedSize, uint16_t slot);
 uint16_t schAccumalateLcBoSize(SchCellCb *cell, uint16_t ueIdx);
+uint8_t schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t offsetPointA, bool ssbPresent, bool sib1Present);
 
 /**********************************************************************
   End of file

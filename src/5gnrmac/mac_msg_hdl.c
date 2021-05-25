@@ -525,7 +525,8 @@ uint8_t MacProcDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo)
    if(dlCcchIndInfo->msgType == RRC_SETUP)
    {
       dlBoInfo.lcId = SRB0_LCID;    // SRB ID 0 for msg4
-      dlBoInfo.dataVolume = dlCcchIndInfo->dlCcchMsgLen;
+      /* (MSG4 pdu + 3 bytes sub-header) + (Contention resolution id MAC CE + 1b byte sub-header) */
+      dlBoInfo.dataVolume = (dlCcchIndInfo->dlCcchMsgLen + 3) + (MAX_CRI_SIZE + 1);
 
       /* storing Msg4 Pdu in raCb */
       GET_UE_IDX(dlBoInfo.crnti, ueIdx);
