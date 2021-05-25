@@ -149,8 +149,8 @@
 
 /* MACRO Ddefine for PDSCH Configuration */
 #define PDSCH_K0  0
-#define PDSCH_START_SYMBOL  2
-#define PDSCH_LENGTH_SYMBOL 12
+#define PDSCH_START_SYMBOL  3
+#define PDSCH_LENGTH_SYMBOL 11
 #define PDSCH_RES_ALLOC_TYPE       1          /* Resource allocation type */
 #define PDSCH_MAX_CODEWORD_SCH_BY_DCI 0       /* Max num of codewords scheduled by DCI */
 #define PDSCH_RBG_SIZE   0                    /* 0: config1 */
@@ -158,8 +158,8 @@
 
 /* MACRO Define for PUSCH Configuration */
 #define PUSCH_K2  3
-#define PUSCH_START_SYMBOL  0
-#define PUSCH_LENGTH_SYMBOL 14
+#define PUSCH_START_SYMBOL  3
+#define PUSCH_LENGTH_SYMBOL 11
 
 #define PUSCH_MSG3_DELTA_PREAMBLE 0
 #define PUSCH_P0_NOMINAL_WITH_GRANT -70
