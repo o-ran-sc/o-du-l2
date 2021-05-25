@@ -422,13 +422,12 @@ uint8_t schFillPuschAlloc(SchUeCb *ueCb, uint16_t pdcchSlot, uint32_t dataVol, S
   uint16_t puschSlot      = 0;
   uint16_t startRb        = 0;
   uint8_t  numRb          = 0;
-  uint8_t  numPdschSymbols= 14;
   uint16_t tbSize         = 0;
   uint8_t  buffer         = 5;
   uint8_t  idx            = 0;
   SchCellCb *cellCb       = ueCb->cellCb;
   SchUlSlotInfo *schUlSlotInfo = NULLP;
-  uint8_t k2=0, startSymb=0 , symbLen=0;
+  uint8_t k2=0, startSymb=0 , symbLen=11;
   
   if(ueCb->ueCfg.spCellCfgPres == true)
   {
@@ -440,7 +439,7 @@ uint8_t schFillPuschAlloc(SchUeCb *ueCb, uint16_t pdcchSlot, uint32_t dataVol, S
 
   startRb = cellCb->schUlSlotInfo[puschSlot]->puschCurrentPrb;
   tbSize  = schCalcTbSize(dataVol + buffer); /*  2 bytes header + some buffer */
-  numRb   = schCalcNumPrb(tbSize, ueCb->ueCfg.ulModInfo.mcsIndex, numPdschSymbols);
+  numRb   = schCalcNumPrb(tbSize, ueCb->ueCfg.ulModInfo.mcsIndex, symbLen);
   /* increment PUSCH PRB */
 
   cellCb->schUlSlotInfo[puschSlot]->puschCurrentPrb += numRb;

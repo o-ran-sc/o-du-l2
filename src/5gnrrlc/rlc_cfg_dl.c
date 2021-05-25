@@ -712,7 +712,6 @@ RlcEntCfgCfmInfo   *entCfm
             
             if((rlcChkTmr(gCb, (PTR)(&gCb->rlcThpt), EVENT_RLC_THROUGHPUT_TMR)) == FALSE)
             {
-               printf("\nHLAL Starting Throughput timer");
                rlcStartTmr(gCb, (PTR)(&gCb->rlcThpt), EVENT_RLC_THROUGHPUT_TMR);
             }
          }

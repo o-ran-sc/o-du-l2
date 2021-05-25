@@ -3225,7 +3225,7 @@ uint8_t BuildTCIStatesToAddModList(struct PDSCH_Config__tci_StatesToAddModList *
 
    timeDomAlloc->k0 = NULLP;
    timeDomAlloc->mappingType = PDSCH_MAPPING_TYPE_A;
-   timeDomAlloc->startSymbolAndLength = 53;
+   timeDomAlloc->startSymbolAndLength = 66;
 
    return ROK;
 }
@@ -3567,7 +3567,7 @@ uint8_t BuildInitialDlBWP(BWP_DownlinkDedicated_t *dlBwp)
    }
    *(timeDomAlloc->k2) = PUSCH_K2;
    timeDomAlloc->mappingType = PUSCH_MAPPING_TYPE_A;
-   timeDomAlloc->startSymbolAndLength = 27; 
+   timeDomAlloc->startSymbolAndLength = 66; 
    return ROK;
 }
 
