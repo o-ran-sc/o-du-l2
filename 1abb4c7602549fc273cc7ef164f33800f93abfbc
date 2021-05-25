@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "269aeab6_73ec1440",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-05-25T05:56:08Z",
+      "side": 1,
+      "message": "Hi Santanu,\n\nThank you for your comment.\nWe have designed VesCommonHeader class to create all parameters of common header. As parameters value of common header depend on the event type so we are using mEventType as a member variable to distinguish the event type and create values of the parameters accordingly.\n\nRegards,\nHariom",
+      "revId": "1abb4c7602549fc273cc7ef164f33800f93abfbc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d350c8a8_7cbd5b10",
@@ -14,6 +31,30 @@
       "writtenOn": "2021-05-24T05:29:17Z",
       "side": 1,
       "message": "What\u0027s the use of \"mEventType\"?",
+      "range": {
+        "startLine": 138,
+        "startChar": 3,
+        "endLine": 150,
+        "endChar": 4
+      },
+      "revId": "1abb4c7602549fc273cc7ef164f33800f93abfbc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8aa7f263_572e5f78",
+        "filename": "src/o1/ves/VesCommonHeader.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-05-25T05:56:08Z",
+      "side": 1,
+      "message": "We have designed VesCommonHeader class to create all parameters of common header. As parameters value of common header depend on the event type so we are using mEventType as a member variable to distinguish the event type and create values  of the parameters.",
+      "parentUuid": "d350c8a8_7cbd5b10",
       "range": {
         "startLine": 138,
         "startChar": 3,
