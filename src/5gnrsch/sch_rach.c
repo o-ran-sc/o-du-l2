@@ -289,10 +289,11 @@ uint8_t schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t of
    uint8_t offset = 0;
    uint8_t FreqDomainResource[6] = {0};
    uint16_t tbSize = 0;
-   uint8_t numPdschSymbols = 12; /* considering pdsch region from 2 to 13 */
    uint8_t mcs = 4;  /* MCS fixed to 4 */
 
    SchBwpDlCfg *initialBwp = &schCb[inst].cells[inst]->cellCfg.schInitialDlBwp;
+   uint8_t sib1PdschStartPrb = schCb[inst].cells[inst]->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.startPrb;
+   uint8_t sib1PdschNumPrb = schCb[inst].cells[inst]->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.numPrb;
 
    PdcchCfg *pdcch = &rarAlloc->rarPdcchCfg;
    PdschCfg *pdsch = &rarAlloc->rarPdschCfg;
@@ -363,14 +364,14 @@ uint8_t schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t of
       pdsch->codeword[cwCount].mcsIndex = mcs; /* mcs configured to 4 */
       pdsch->codeword[cwCount].mcsTable = 0;   /* notqam256 */
       pdsch->codeword[cwCount].rvIndex = 0;
-      tbSize = schCalcTbSize(10); /* 8 bytes RAR and 2 bytes padding */
+      tbSize = schCalcTbSize(10 + TX_PAYLOAD_HDR_LEN); /* 8 bytes RAR + 2 bytes padding  + 32 bytes of FAPI payload header*/
       pdsch->codeword[cwCount].tbSize = tbSize;
    }
    pdsch->dataScramblingId = pci;
    pdsch->numLayers = 1;
    pdsch->transmissionScheme = 0;
    pdsch->refPoint = 0;
-   pdsch->dmrs.dlDmrsSymbPos = 2;
+   pdsch->dmrs.dlDmrsSymbPos = 4;  /* Bitmap value 00000000000100 i.e. using 3rd symbol for PDSCH DMRS */
    pdsch->dmrs.dmrsConfigType = 0; /* type-1 */
    pdsch->dmrs.dlDmrsScramblingId = pci;
    pdsch->dmrs.scid = 0;
@@ -380,8 +381,9 @@ uint8_t schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t of
    pdsch->dmrs.nrOfDmrsSymbols  = NUM_DMRS_SYMBOLS;
    pdsch->dmrs.dmrsAddPos       = DMRS_ADDITIONAL_POS;
    pdsch->pdschFreqAlloc.resourceAllocType = 1; /* RAT type-1 RIV format */
-   pdsch->pdschFreqAlloc.freqAlloc.startPrb = offset + SCH_SSB_NUM_PRB; /* the RB numbering starts from coreset0, and PDSCH is always above SSB */ 
-   pdsch->pdschFreqAlloc.freqAlloc.numPrb = schCalcNumPrb(tbSize,mcs,numPdschSymbols);
+   /* the RB numbering starts from coreset0, and PDSCH is always above SSB and must not overlap SIB1*/ 
+   pdsch->pdschFreqAlloc.freqAlloc.startPrb = sib1PdschStartPrb + sib1PdschNumPrb + 1; 
+   pdsch->pdschFreqAlloc.freqAlloc.numPrb = schCalcNumPrb(tbSize, mcs, initialBwp->pdschCommon.lengthSymbol);
    pdsch->pdschFreqAlloc.vrbPrbMapping = 0; /* non-interleaved */
    pdsch->pdschTimeAlloc.timeAlloc.startSymb = initialBwp->pdschCommon.startSymbol;
    pdsch->pdschTimeAlloc.timeAlloc.numSymb = initialBwp->pdschCommon.lengthSymbol;

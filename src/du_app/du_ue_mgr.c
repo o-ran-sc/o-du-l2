@@ -1131,12 +1131,21 @@ uint8_t fillMacUeCfg(uint16_t cellId, uint8_t ueIdx, uint16_t crnti, \
       macUeCfg->cellId       = cellId;
       macUeCfg->ueIdx        = ueIdx;
       macUeCfg->crnti        = crnti;
+
+      macUeCfg->macCellGrpCfgPres = true;
       fillDefaultMacCellGrpInfo(&macUeCfg->macCellGrpCfg);
+
+      macUeCfg->phyCellGrpCfgPres = true;
       fillDefaultPhyCellGrpInfo(&macUeCfg->phyCellGrpCfg);
+
+      macUeCfg->spCellCfgPres = true;
       fillDefaultSpCellGrpInfo(&macUeCfg->spCellCfg);
+
       macUeCfg->ambrCfg = NULLP;
-      fillMacSrb1LcCfg(&macUeCfg->lcCfgList[0]);
+
       fillDefaultModulation(macUeCfg);
+
+      fillMacSrb1LcCfg(&macUeCfg->lcCfgList[0]);
       macUeCfg->numLcs++;
    }
    else

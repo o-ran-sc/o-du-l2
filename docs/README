@@ -182,7 +182,8 @@ I. Compilation
       c. Build folder
                 cd l2/build/odu
       d. Build ODU Binary:
-                make odu PHY=INTEL_L1 PHY_MODE=TIMER MACHINE=BIT64 MODE=FDD
+		i.  Timer Mode : make odu PHY=INTEL_L1 PHY_MODE=TIMER MACHINE=BIT64 MODE=FDD
+		ii. Radio Mode : make odu PHY=INTEL_L1 MACHINE=BIT64 MODE=FDD
 
    2. Build CU Stub and RIC Stub:
       a. Execute steps in sections D.2 and D.3.
@@ -194,7 +195,9 @@ II. Execution
                 source ./setupenv.sh
        b. Run L1 binary :
                 cd <intel_directory>/FlexRAN/l1/bin/nr5g/gnb/l1
-                To run in timer mode : ./l1.sh -e
+                To run 
+			i.  In timer mode : ./l1.sh -e
+                	ii. In radio mode : ./l1.sh -xran
                 L1 is up when console prints follow:
 
                    Non BBU threads in application

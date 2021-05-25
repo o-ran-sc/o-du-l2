@@ -227,7 +227,6 @@ void LwrMacRecvPhyMsg()
 	    continue;
 	 }
 
-	 DU_LOG("\nDEBUG  -->  LWR_MAC : numMsgToGet %d", numMsgToGet);
 	 while(numMsgToGet--)
 	 {
 	    currElem = NULLP;

@@ -180,9 +180,6 @@ uint8_t procStopInd()
  * ****************************************************************/
 uint8_t procRachInd(fapi_rach_indication_t  *fapiRachInd)
 {
-/* TODO : Remove the following #ifndef TEMP_INTG_FLAG, when testing 
- * RACH.indication in radio mode integration */
-#ifndef TEMP_INTG_FLAG
    Pst          pst;
    uint8_t      pduIdx;
    uint8_t      prmbleIdx;
@@ -192,8 +189,13 @@ uint8_t procRachInd(fapi_rach_indication_t  *fapiRachInd)
    MAC_ALLOC_SHRABL_BUF(rachInd, sizeof(RachInd));
    if(!rachInd)
    {
-      DU_LOG("\nERROR  -->  LWR_MAC: Memory Allocation failed in procRachInd");
+      DU_LOG("\nERROR  -->  LWR_MAC : Memory Allocation failed in procRachInd");
       return RFAILED;
+   }
+   if(!fapiRachInd->numPdus)
+   {
+      DU_LOG("\nDEBUG  -->  LWR_MAC : No PDU in RACH.indication at [%d, %d]", fapiRachInd->sfn, fapiRachInd->slot);
+      return ROK;
    }
 
    rachInd->cellId = lwrMacCb.cellCb[0].cellId;
@@ -220,9 +222,6 @@ uint8_t procRachInd(fapi_rach_indication_t  *fapiRachInd)
    /* Fill post and sent to MAC */
    FILL_PST_LWR_MAC_TO_MAC(pst, EVENT_RACH_IND_TO_MAC);
    return (*sendRachIndOpts[pst.selector])(&pst, rachInd);
-#else
-   return ROK;
-#endif
 }/* handleRachInd */
 
 /*******************************************************************
@@ -253,8 +252,13 @@ uint8_t procCrcInd(fapi_crc_ind_t  *fapiCrcInd)
    MAC_ALLOC_SHRABL_BUF(crcInd, sizeof(CrcInd));
    if(!crcInd)
    {
-      DU_LOG("\nERROR  -->  LWR_MAC: Memory Allocation failed in procCrcInd");
+      DU_LOG("\nERROR  -->  LWR_MAC : Memory Allocation failed in procCrcInd");
       return RFAILED;
+   }
+   if(!fapiCrcInd->numCrcs)
+   {
+      DU_LOG("\nDEBUG  --> LWR_MAC : No CRC PDUs in CRC.indication at [%d, %d]", fapiCrcInd->sfn, fapiCrcInd->slot);
+      return ROK;
    }
 
    crcInd->cellId = lwrMacCb.cellCb[0].cellId;
@@ -312,8 +316,13 @@ uint8_t procRxDataInd(fapi_rx_data_indication_t  *fapiRxDataInd)
    MAC_ALLOC_SHRABL_BUF(rxDataInd, sizeof(RxDataInd));
    if(!rxDataInd)
    {
-      DU_LOG("\nERROR  -->  LWR_MAC: Memory Allocation failed in procRxDataInd");
+      DU_LOG("\nERROR  -->  LWR_MAC : Memory Allocation failed in procRxDataInd");
       return RFAILED;
+   }
+   if(!fapiRxDataInd->numPdus)
+   {
+      DU_LOG("\nDEBUG  -->  LWR_MAC : No PDU in RX_Data.indication at [%d, %d]", fapiRxDataInd->sfn, fapiRxDataInd->slot);
+      return ROK;
    }
 
    rxDataInd->cellId = lwrMacCb.cellCb[0].cellId;
