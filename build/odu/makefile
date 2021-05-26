@@ -144,6 +144,7 @@ endif
 ifeq ($(O1_ENABLE),YES)
   L_OPTS+=-lsysrepo -lyang
   L_OPTS+=-lsysrepo-cpp -lyang-cpp
+L_OPTS+= -lnetconf2 -lcjson -lcurl
   L_OPTS+=-lstdc++
 endif
 
@@ -214,6 +215,7 @@ du:
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/phy_stub.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 ifeq ($(O1_ENABLE),YES)
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/o1.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CCPP1)'
+		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/ves.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CCPP1)'
 endif
 
 link_du: du
@@ -234,6 +236,7 @@ clean_odu:
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/phy_stub.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 ifeq ($(O1_ENABLE),YES)
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/o1.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CCPP1)'
+		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/ves.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CCPP1)'
 endif
 		$(Q)rm -rf $(OBJ_ROOT)/odu/*
 		$(Q)rm -rf $(LIB_ROOT)/odu/*
@@ -258,6 +261,7 @@ cu:
 	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/mt.mak OBJ_DIR=$(OBJ_ROOT)/cu_stub LIB_DIR=$(LIB_ROOT)/cu_stub LOG_DIR=$(LOG_ROOT)/cu_stub CC='$(CC1)'
 ifeq ($(O1_ENABLE),YES)
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/o1.mak OBJ_DIR=$(OBJ_ROOT)/cu_stub LIB_DIR=$(LIB_ROOT)/cu_stub LOG_DIR=$(LOG_ROOT)/cu_stub CC='$(CCPP1)'
+		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/ves.mak OBJ_DIR=$(OBJ_ROOT)/cu_stub LIB_DIR=$(LIB_ROOT)/cu_stub LOG_DIR=$(LOG_ROOT)/cu_stub CC='$(CCPP1)'
 endif
 
 clean_cu:
@@ -269,6 +273,7 @@ clean_cu:
 	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/mt.mak clean OBJ_DIR=$(OBJ_ROOT)/cu_stub LIB_DIR=$(LIB_ROOT)/cu_stub LOG_DIR=$(LOG_ROOT)/cu_stub CC='$(CC1)'
 ifeq ($(O1_ENABLE),YES)
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/o1.mak clean OBJ_DIR=$(OBJ_ROOT)/cu_stub LIB_DIR=$(LIB_ROOT)/cu_stub LOG_DIR=$(LOG_ROOT)/cu_stub CC='$(CCPP1)'
+		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/ves.mak clean OBJ_DIR=$(OBJ_ROOT)/cu_stub LIB_DIR=$(LIB_ROOT)/cu_stub LOG_DIR=$(LOG_ROOT)/cu_stub CC='$(CCPP1)'
 endif
 	 $(Q)rm -rf $(OBJ_ROOT)/cu_stub/*
 	 $(Q)rm -rf $(LIB_ROOT)/cu_stub/*
@@ -292,6 +297,7 @@ ric:
 	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/mt.mak OBJ_DIR=$(OBJ_ROOT)/ric_stub LIB_DIR=$(LIB_ROOT)/ric_stub LOG_DIR=$(LOG_ROOT)/ric_stub CC='$(CC1)'
 ifeq ($(O1_ENABLE),YES)
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/o1.mak OBJ_DIR=$(OBJ_ROOT)/ric_stub LIB_DIR=$(LIB_ROOT)/ric_stub LOG_DIR=$(LOG_ROOT)/ric_stub CC='$(CCPP1)'
+		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/ves.mak OBJ_DIR=$(OBJ_ROOT)/ric_stub LIB_DIR=$(LIB_ROOT)/ric_stub LOG_DIR=$(LOG_ROOT)/ric_stub CC='$(CCPP1)'
 endif
 
 clean_ric:
@@ -303,6 +309,7 @@ clean_ric:
 	 $(Q)$(MAKE) -f $(COM_BUILD_DIR)/mt.mak clean OBJ_DIR=$(OBJ_ROOT)/ric_stub LIB_DIR=$(LIB_ROOT)/ric_stub LOG_DIR=$(LOG_ROOT)/ric_stub CC='$(CC1)'
 ifeq ($(O1_ENABLE),YES)
 		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/o1.mak clean OBJ_DIR=$(OBJ_ROOT)/ric_stub LIB_DIR=$(LIB_ROOT)/ric_stub LOG_DIR=$(LOG_ROOT)/ric_stub CC='$(CCPP1)'
+		$(Q)$(MAKE) -f $(COM_BUILD_DIR)/ves.mak clean OBJ_DIR=$(OBJ_ROOT)/ric_stub LIB_DIR=$(LIB_ROOT)/ric_stub LOG_DIR=$(LOG_ROOT)/ric_stub CC='$(CCPP1)'
 endif
 	 $(Q)rm -rf $(OBJ_ROOT)/ric_stub/*
 	 $(Q)rm -rf $(LIB_ROOT)/ric_stub/*
@@ -323,6 +330,7 @@ copy_build: link_du
 			$(Q)cp -f ./obj/odu/odu ./bin/odu
 			$(Q)cp -rf ./bin/odu $(ROOT_DIR)/bin/
 			$(Q)cp -f ../scripts/odu_script.sh $(ROOT_DIR)/bin/odu
+			$(Q)cp -rf ../config/ $(ROOT_DIR)/bin/odu
 			$(Q)cp -f ./lib/odu/*.a $(ROOT_DIR)/libs/
 		   $(Q)echo -e "***** BUILD COMPLETE *****"
 

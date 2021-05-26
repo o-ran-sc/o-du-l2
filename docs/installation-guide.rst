@@ -138,7 +138,7 @@ Setting up Netconf server
    - Ubuntu :  
    
       | adduser --system netconf && \\
-      |    echo "netconf:netconf" | chpasswd
+      |    echo "netconf:netconf!" | chpasswd
 
       | mkdir -p /home/netconf/.ssh && \\
       | ssh-keygen -A && \\
