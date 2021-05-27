@@ -152,6 +152,7 @@ Setting up Netconf server
       | cd <O-DU High Directory>/l2/build/yang
       | sysrepoctl -i ./yang/o-ran-sc-odu-alarm-v1.yang
       | sysrepoctl -i ./yang/o-ran-sc-odu-interface-v1.yang
+      | sysrepoctl -i ./yang/o-ran-sc-du-hello-world.yang
 
 - Configure the startup IP and Port configurations for DU, CU and RIC
 
