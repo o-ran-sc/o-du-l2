@@ -21,9 +21,35 @@
 #ifndef __O1_INTERFACE_H__
 #define __O1_INTERFACE_H__
 
+#include <stdint.h>
+
 #ifdef __cplusplus
 extern "C"
 {
+#endif
+
+typedef enum {
+   INACTIVE,
+   ACTIVE,
+   IDLE
+}CellState;
+
+typedef enum {
+   DISABLED,
+   ENABLED
+}OpState;
+
+typedef enum {
+   LOCKED,
+   UNLOCKED,
+   SHUTTING_DOWN
+}AdminState;
+
+#ifndef ODU_TEST_STUB
+bool updateCellOpState(uint16_t cellId, OpState opState, CellState cellState);
+
+//Defined in odu high
+bool updateAdminState(uint16_t cellId, AdminState adminState);
 #endif
 int start_O1_module(void);
 

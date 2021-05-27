@@ -86,6 +86,41 @@ uint8_t duAppInit(SSTskId sysTskId)
 
 /*******************************************************************
  *
+ * @brief Update the admin state as per OAM request
+ *
+ * @details
+ *
+ *    Function : updateAdminState
+ *
+ *    Functionality:
+ *       - Update the admin state as per OAM request
+ *
+ * @params[in] cellId and updated value of admin state
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+#ifdef O1_ENABLE
+bool updateAdminState(uint16_t cellId, AdminState newAdminState)
+{
+   /*updateCellOpState is called just for the testing
+     need to be updated after integration*/
+   updateCellOpState(1, ENABLED, ACTIVE);
+   DU_LOG("\nINFO   -->  DU_APP : changeDuRuConnection called" );
+   if(newAdminState == UNLOCKED)
+   {
+      updateCellOpState(cellId, ENABLED, ACTIVE);
+   }
+   else
+   {
+      updateCellOpState(cellId, DISABLED, INACTIVE);
+   }
+   return true;
+}
+#endif
+
+/*******************************************************************
+ *
  * @brief Initializes EGTP
  *
  * @details
@@ -443,8 +478,10 @@ uint8_t tst(void)
 #ifdef O1_ENABLE
    if(start_O1_module() != ROK)
       return RFAILED;
+   /*updateCellOpState is called just for the testing
+     need to be updated after integration*/
+   updateCellOpState(1, ENABLED, ACTIVE);
 #endif
-
    //Initialize TAPA layers
    if(duInit() != ROK)
    {

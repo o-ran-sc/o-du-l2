@@ -21,6 +21,7 @@
 #include "O1Interface.h"
 #include "O1App.hpp"
 #include "GlobalDefs.hpp"
+#include "CellOpState.hpp"
 #include <signal.h>
 #include <unistd.h>
 
@@ -92,7 +93,30 @@ int start_O1_module(void)
    return check_O1_module_status();
 }
 
+/*******************************************************************
+ *
+ * @brief update cell and operational state in the map
+ *
+ * @details
+ *
+ *    Function : updateCellOpState
+ *
+ *    Functionality:
+ *      - update cell and operational state in the map using cellId
+ *        as key
+ *
+ *
+ * @params[in] cellId, opState, cellState
+ * @return cell operational in string form
+ ******************************************************************/
 
+bool updateCellOpState(uint16_t cellId, OpState opState, CellState cellState)
+{
+   O1_LOG("\nO1 O1Interface : updateCellOpState called with cellId=%d, \
+opState=%d, cellState=%d ", cellId, opState, cellState );
+   return CellOpState::instance().updateCellOpState(cellId, \
+                                            opState, cellState);
+}
 /**********************************************************************
          End of file
 **********************************************************************/
