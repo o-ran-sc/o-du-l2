@@ -44,10 +44,28 @@ typedef struct
    uint16_t RIC_Port;
 }StartupConfig;
 
+typedef enum {
+   INACTIVE,
+   ACTIVE,
+   IDLE
+}CellState;
+
+typedef enum {
+   DISABLED,
+   ENABLED
+}OpState;
+
 
 uint8_t getStartupConfig(StartupConfig *cfg);
 uint8_t getStartupConfigForStub(StartupConfig *cfg);
+#ifndef ODU_TEST_STUB
+bool updateCellOpState(uint16_t cellId, OpState opState, \
+                             CellState cellState);
 
+//Defined in odu high
+bool bringCellUp(uint16_t cellId);
+bool bringCellDown(uint16_t cellId);
+#endif //ODU_TEST_STUB
 #ifdef __cplusplus
 }
 #endif

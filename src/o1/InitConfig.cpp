@@ -35,6 +35,64 @@ InitConfig::~InitConfig()
 
 /*******************************************************************
  *
+ * @brief Disable NACM
+ *
+ * @details
+ *
+ *    Function : disableNacm
+ *
+ *    Functionality:
+ *      - disable default netconf NACM module
+ *
+ * @params[in] S_Session shared pointer
+ * @return bool
+ *
+ ******************************************************************/
+
+bool InitConfig::disableNacm(sysrepo::S_Session sess)
+{
+   try {
+      sysrepo::Logs log;
+      log.set_stderr(SR_LL_DBG);
+
+      char xpath[MAX_XPATH];
+      sprintf(xpath, "%s/enable-nacm", IETF_NACM_MODULE_PATH);
+
+      auto value = sess->get_item(xpath);
+      if (value == nullptr)
+      {
+         O1_LOG("\nValue on xpath: %s not found\n", value->xpath());
+         return false;
+      }
+
+      O1_LOG("\nValue on xpath: %s = %s", value->xpath(), \
+             (value->data()->get_bool() ? "true" : "false"));
+
+      string valFalse = "false";
+      sysrepo::S_Val nacmValue(new sysrepo::Val(valFalse.c_str()));
+      sess->set_item(xpath, nacmValue);
+
+      sess->apply_changes();
+
+      value = sess->get_item(xpath);
+      if (value == nullptr)
+      {
+         O1_LOG("\nValue on xpath: %s not found\n", value->xpath());
+         return false;
+      }
+
+      O1_LOG("\nValue on xpath: %s = %s", value->xpath(), \
+               (value->data()->get_bool() ? "true" : "false"));
+   }
+   catch( const std::exception& e ) {
+      cout << e.what() << endl;
+   }
+
+return true;
+}
+
+/*******************************************************************
+ *
  * @brief Initialize Configuration
  *
  * @details
@@ -53,6 +111,11 @@ bool InitConfig::init(sysrepo::S_Session sess)
 {
    mSess =  sess;
    InitConfig::InterfaceMap map;
+   if (!disableNacm(sess))
+   {
+      O1_LOG("\nInitConfig:: Could not disable NACM module");
+      return false;
+   }
    if(!getInterfaceConfig(sess, map))
    {
       O1_LOG("\nInitConfig::getInterfaceConfig InitConfig data error ");

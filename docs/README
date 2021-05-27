@@ -58,6 +58,7 @@ C. Pre-requisite for O1 Interface (Required only if run with O1 interface enable
    $cd l2/build/yang
    $sysrepoctl -i o-ran-sc-odu-alarm-v1.yang
    $sysrepoctl -i o-ran-sc-odu-interface-v1.yang
+   $sysrepoctl -i o-ran-sc-du-hello-world.yang
 
 4. Configure the startup IP and Port configurations for DU, CU and RIC
 

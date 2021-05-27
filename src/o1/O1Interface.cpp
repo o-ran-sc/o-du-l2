@@ -21,6 +21,7 @@
 #include "O1Interface.h"
 #include "O1App.hpp"
 #include "GlobalDefs.hpp"
+#include "CellOpStateCb.hpp"
 #include <signal.h>
 #include <unistd.h>
 
@@ -92,7 +93,22 @@ int start_O1_module(void)
    return check_O1_module_status();
 }
 
-
+/*******************************************************************
+ *
+ * @brief Update the admin state as per OAM request
+ *
+ * @details
+ *
+ *    Function : updateAdminState
+ *
+ *    Functionality:
+ *       - Update the admin state as per OAM request
+ *
+ * @params[in] cellId and updated value of admin state
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
 /**********************************************************************
          End of file
 **********************************************************************/

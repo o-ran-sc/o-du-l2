@@ -43,6 +43,7 @@
 #ifdef O1_ENABLE
 
 #include "AlarmInterface.h"
+#include "ConfigInterface.h"
 
 #endif 
 
@@ -1616,6 +1617,7 @@ uint8_t duHandleStopInd(Pst *pst, OduCellId *cellId)
 #ifdef O1_ENABLE
       DU_LOG("\nINFO   -->  DU APP : Raise cell down alarm for cell id=%d", cellId->cellId);
       raiseCellAlrm(CELL_DOWN_ALARM_ID, cellId->cellId);
+      updateCellOpState(cellId->cellId, DISABLED, INACTIVE);
 #endif
    }
 

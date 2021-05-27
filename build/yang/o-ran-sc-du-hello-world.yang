@@ -1,0 +1,275 @@
+module o-ran-sc-du-hello-world {
+  yang-version 1.1;
+  namespace "urn:o-ran-sc:yang:o-ran-sc-du-hello-world";
+  prefix duhw;
+
+  organization
+    "O-RAN Software Community";
+  contact
+    "www.o-ran-sc.org";
+  description
+    "This module contains the O-RAN Software Community Distributed Unit
+     API description. This schema was created to support the
+     O-RAN-SC D-Release RSAC use case.
+     This standalone model is the absolute minimum and therefore
+     called 'hello-world'.
+
+     Copyright 2021 the O-RAN Software Community.
+
+     Licensed under the Apache License, Version 2.0 (the 'License');
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an 'AS IS' BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.";
+
+  revision 2021-04-08 {
+    description
+      "Updates based on the RSAC call 2021-04-08.";
+    reference
+      "https://wiki.o-ran-sc.org/pages/viewpage.action?pageId=20878423";
+  }
+  revision 2021-03-06 {
+    description
+      "initial revision";
+    reference
+      "https://wiki.o-ran-sc.org/pages/viewpage.action?pageId=20878423";
+  }
+
+  // TypeDefinitions
+
+  typedef connection-status {
+    type enumeration {
+      enum disconnected {
+        value 0;
+        description
+          "The connection to the remote network function is not established.";
+      }
+      enum connecting {
+        value 1;
+        description
+          "The system is about to connect to the remote network function.";
+      }
+      enum connected {
+        value 2;
+        description
+          "The system is connected to the remote network function.";
+      }
+      enum disconnecting {
+        value 3;
+        description
+          "The system is about to disconnect from the remote network
+           function.";
+      }
+      enum unable-to-connect {
+        value 4;
+        description
+          "This value is reported, when the system tried several times
+           to connect and finally gave up.";
+      }
+    }
+    description
+      "A non extensible enumeration representing a connection status.";
+  }
+
+  typedef o-ru-reference {
+    type leafref {
+      path "/network-function/du-to-ru-connection/name";
+    }
+    description
+      "A reference to a remote network function representing an O-RU.";
+  }
+
+  // Abstract object classes - groupings
+
+  grouping connection-grp {
+    description
+      "An abstract object class representing a connection or link to an
+       external component.";
+    leaf name {
+      type string;
+      description
+        "It is proposed to use the network unique identifier of the remote
+         network function.
+         Note: After discussion the string was not restricted by a 'length'
+         statement of a 'pattern' statement. Please avoid leading and ending
+         spaces and consecutive spaces and any character outside of UTF-8-";
+    }
+    leaf operational-state {
+      type enumeration {
+        enum DISABLED {
+          description
+            "The resource is not functional.";
+        }
+        enum ENABLED {
+          description
+            "The resource is functional.";
+        }
+      }
+      config false;
+      description
+        "Operational state of a connection. Indicates
+         whether the resource is functional (ENABLED) or not (DISABLED).";
+      reference
+        "3GPP TS 28.625 and ITU-T X.731";
+    }
+    leaf administrative-state {
+      type enumeration {
+        enum LOCKED {
+          description
+            "LOCKED refers to a situation which is NOT considered as
+             ‘normal operation'. Therefore, the O-DU will shut down the
+             connection to the related O-RU, when the value is set to LOCKED.";
+        }
+        enum UNLOCKED {
+          description
+            "UNLOCKED refers to a situation which is considered as
+             'normal operation'. Therefore, the O-DU will establish the
+             connection to the related O-RU, when the value is set to UNLOCKED.";
+        }
+        enum SHUTTING_DOWN {
+          description
+            "This value should not be used. At least the system
+             behavior is not defined.";
+        }
+      }
+      default "LOCKED";
+      description
+        "Administrative state of a connection.";
+      reference
+        "3GPP TS 28.625 and ITU-T X.731";
+    }
+    leaf cell-state {
+      type enumeration {
+        enum IDLE {
+          description
+            "Indicates whether the O-RU is not in use.";
+        }
+        enum INACTIVE {
+          description
+            "Indicates whether the O-RU is in use but not
+             configured to carry traffic.";
+        }
+        enum ACTIVE {
+          description
+            "Indicates whether the O-RU is in use and
+             configured to carry traffic.";
+        }
+      }
+      config false;
+      description
+        "Cell state of the O-RU instance.";
+      reference
+        "3GPP TS 28.625";
+    }
+    leaf status {
+      type connection-status;
+      default "disconnected";
+      config false;
+      description
+        "The value represents the connection status. ";
+    }
+  }
+
+  grouping network-function-grp {
+    description
+      "An abstract object class grouping the O-RAN-SC-DU parameters with
+       focus on RSAC D-release Closed-Loop use case.";
+    list du-to-ru-connection {
+      key "name";
+      description
+        "A list of connection objects to O-RAN-SC radio units.";
+      uses connection-grp;
+    }
+  }
+
+  grouping rpc-output {
+    description
+      "A generic RPC output syntax.";
+    leaf response-status {
+      type enumeration {
+        enum ok {
+          value 200;
+          description
+            "The system has successfully performed that request.";
+        }
+        enum accepted {
+          value 202;
+          description
+            "The system has received and accepted the request. It continues
+             processing the request. The final status of the processing
+             procedures are reported by a notification service. This response
+             status is typically for long running transactions.";
+        }
+        enum internal-server-error {
+          value 500;
+          description
+            "The request cannot be performed.";
+        }
+      }
+      mandatory true;
+      description
+        "The response status related to the corresponding request.
+         Its values are inspired by HTTP response status codes.";
+      reference
+        "RFC 7231 – Response Status Codes - Section 6.3.4";
+    }
+    leaf message {
+      type string;
+      description
+        "A human readable text complementary to the response status. ";
+    }
+  }
+
+  // Data nodes
+
+  container network-function {
+    description
+      "The root container for the configuration and operational data.
+       The object implements the 'network-function-grp'";
+    uses network-function-grp;
+  }
+
+  // Remote procedure calls - actions on root level
+
+  rpc connect {
+    status deprecated;
+    description
+      "An action to establish the connection to a remote network function.";
+    input {
+      leaf remote-network-function {
+        type o-ru-reference;
+        mandatory true;
+        description
+          "An reference to a remote network function - an O-RU - to which
+           a connection should be established.";
+      }
+    }
+    output {
+      uses rpc-output;
+    }
+  }
+
+  rpc disconnect {
+    status deprecated;
+    description
+      "An action to destroy the connection to a remote network function.";
+    input {
+      leaf remote-network-function {
+        type o-ru-reference;
+        mandatory true;
+        description
+          "An reference to a remote network function - an O-RU - to which
+           the connection should be destroyed.";
+      }
+    }
+    output {
+      uses rpc-output;
+    }
+  }
+}

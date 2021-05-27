@@ -35,7 +35,9 @@ using std::string;
 #define ALARM_MODULE_PATH_3GPP "/_3gpp-common-fm:AlarmListGrp"
 #define ALARM_MODULE_NAME_ORAN "o-ran-sc-odu-alarm-v1"
 #define ALARM_MODULE_PATH_ORAN "/o-ran-sc-odu-alarm-v1:odu"
-
+#define CELL_STATE_MODULE_NAME "o-ran-sc-du-hello-world"
+#define CELL_STATE_MODULE_PATH "/o-ran-sc-du-hello-world:network-function"
+#define IETF_NACM_MODULE_PATH "/ietf-netconf-acm:nacm"
 #define MAX_ALARM_ID_LEN 10
 
 class O1 
