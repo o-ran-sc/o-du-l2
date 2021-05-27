@@ -147,22 +147,50 @@ Setting up Netconf server
 
 - Install the YANG modules
 
-   - Ubuntu : 
-    
+   - Ubuntu :
+
       | cd <O-DU High Directory>/l2/build/yang
       | sysrepoctl -i ./yang/o-ran-sc-odu-alarm-v1.yang
       | sysrepoctl -i ./yang/o-ran-sc-odu-interface-v1.yang
+      | sysrepoctl -i ./yang/o-ran-sc-du-hello-world.yang
 
 - Configure the startup IP and Port configurations for DU, CU and RIC
 
-   - Ubuntu : 
+   - Ubuntu :
     
       | cd <O-DU High Directory>/l2/build/config
       |
       | Open the startup_config.xml and edit the desired IP and Port for CU, DU and RIC.
       | Then load the configuration in the sysrepo running datastore using the command below
       |
-      | sysrepocfg --import=startup_config.xml --datastore running --module  o-ran-sc-odu-interface-v1 
+      | sysrepocfg --import=startup_config.xml --datastore running --module  o-ran-sc-odu-interface-v1
+
+- Configure the netconf server details for VES PNF Event
+
+   - Ubuntu :
+
+      | cd <O-DU High Directory>/l2/build/config
+      |
+      | Open the netconfConfig.json and edit the desired MAC address, IP, Port, Username and Password for VES PNF Registration.
+
+-  Configure the VES server details to send VES Events
+
+   - Ubuntu :
+
+      | cd <O-DU High Directory>/l2/build/config
+      |
+      |  Open the vesConfig.json and edit the desired IP, Port, Username and Password to send VES Event.
+
+- Configure the nacm module to provide access to new user
+
+   - Ubuntu :
+
+      | cd <O-DU High Directory>/l2/build/config
+      |
+      | Open the nacm_config.xml and edit the desired user-name to provide the access to that user.
+      |
+      | $sysrepocfg --import=nacm_config.xml --datastore running --module  ietf-netconf-acm
+
 
 Compilation
 ------------

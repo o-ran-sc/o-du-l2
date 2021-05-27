@@ -33,6 +33,7 @@
 #ifdef O1_ENABLE
 
 #include "O1Interface.h"
+#include "ConfigInterface.h"
 
 #endif
 
@@ -83,6 +84,52 @@ uint8_t duAppInit(SSTskId sysTskId)
    to %d sys task", sysTskId);
    return ROK;
 }
+
+#ifdef O1_ENABLE
+/*******************************************************************
+ *
+ * @brief Bring the cell Up
+ *
+ * @details
+ *
+ *    Function : bringCellUp
+ *
+ *    Functionality:
+ *       - Bring the cell Up when requested from OAM
+ *
+ * @params[in] Cell Id
+ * @return true     - success
+ *         false    - failure
+ *
+ * ****************************************************************/
+
+bool bringCellUp(uint16_t cellId)
+{
+   return true;
+}
+
+/*******************************************************************
+ *
+ * @brief Bring the cell Down
+ *
+ * @details
+ *
+ *    Function : bringCellDown
+ *
+ *    Functionality:
+ *       - Bring the cell Down when requested from OAM
+ *
+ * @params[in] Cell Id
+ * @return true     - success
+ *         false    - failure
+ *
+ * ****************************************************************/
+
+bool bringCellDown(uint16_t cellId)
+{
+   return true;
+}
+#endif
 
 /*******************************************************************
  *
@@ -444,7 +491,6 @@ uint8_t tst(void)
    if(start_O1_module() != ROK)
       return RFAILED;
 #endif
-
    //Initialize TAPA layers
    if(duInit() != ROK)
    {

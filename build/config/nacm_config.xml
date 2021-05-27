@@ -1,0 +1,25 @@
+<nacm xmlns="urn:ietf:params:xml:ns:yang:ietf-netconf-acm">
+  <enable-nacm>true</enable-nacm>
+  <read-default>permit</read-default>
+  <write-default>deny</write-default>
+  <exec-default>permit</exec-default>
+  <enable-external-groups>true</enable-external-groups>
+  <groups>
+    <group>
+      <name>sudo</name>
+      <user-name>netconf</user-name>
+    </group>
+  </groups>
+  <rule-list>
+    <name>sudo-rules</name>
+    <group>sudo</group>
+    <rule>
+      <name>allow-all-sudo</name>
+      <module-name>*</module-name>
+      <path>/</path>
+      <access-operations>*</access-operations>
+      <action>permit</action>
+      <comment>Corresponds all the rules under the sudo group as defined in O-RAN.WG4.MP.0-v05.00</comment>
+    </rule>
+  </rule-list>
+</nacm>

@@ -60,6 +60,7 @@ class InitConfig : public Singleton<InitConfig>
       ~InitConfig();
       bool init(sysrepo::S_Session sess);
       bool getCurrInterfaceConfig(StartupConfig & cfg);
+      bool disableNacm(sysrepo::S_Session sess);
 
    private:
 
