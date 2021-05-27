@@ -32,9 +32,10 @@
 #include "du_cell_mgr.h"
 
 #ifdef O1_ENABLE
- 
+
 #include "AlarmInterface.h"
-  
+#include "ConfigInterface.h"
+
 #endif
 
 /*******************************************************************
@@ -203,6 +204,7 @@ uint8_t duHandleCellUpInd(Pst *pst, OduCellId *cellId)
 #ifdef O1_ENABLE
       DU_LOG("\nINFO   -->  DU APP : Raise cell UP alarm for cell id=%d", cellId->cellId);
       raiseCellAlrm(CELL_UP_ALARM_ID, cellId->cellId);
+      setCellOpState(cellId->cellId, ENABLED, ACTIVE);
 #endif
    }
 

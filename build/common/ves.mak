@@ -41,14 +41,14 @@ I_OPTS+=-I$(ROOT_DIR)/src/o1
 
 $(LIB_DIR)/libo1.a:$(CPP_OBJS)
 		  @echo -e "Creating Archive $(COLOR) $@ $(REVERT_COLOR)"
-		  $(Q)ar -cr $(LIB_DIR)/libo1.a $(CPP_OBJS)
+		  $(Q)ar -cr $(LIB_DIR)/libves.a $(CPP_OBJS)
 
 #-------------------------------------------------------------#
 #Clean macros
 #-------------------------------------------------------------#
 clean:
 		  @echo -e "$(COLOR_RED)Cleaning O1$(REVERT_COLOR)"
-		  $(Q)\rm -f $(LIB_DIR)/libo1.a $(CPP_OBJS)
+		  $(Q)\rm -f $(LIB_DIR)/libves.a $(CPP_OBJS)
 
 #**********************************************************************
 #         End of file
