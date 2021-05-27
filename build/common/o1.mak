@@ -25,6 +25,10 @@ CPP_SRCS=$(wildcard $(SRC_DIR)/*.cpp)
 CPP_OBJS=$(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(CPP_SRCS))
 
 PLTFRM_FLAGS=
+ifeq ($(NODE),TEST_STUB)
+PLTFRM_FLAGS+=-DODU_TEST_STUB
+endif
+
 lib: $(LIB_DIR)/libo1.a
 include $(COM_BUILD_DIR)/compile.mak
 

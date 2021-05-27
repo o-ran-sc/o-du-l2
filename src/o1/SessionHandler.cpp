@@ -24,7 +24,7 @@
 #include "sysrepo.h"
 #include "SessionHandler.hpp"
 #include "InitConfig.hpp"
-#include <iostream>
+#include "NrCellCb.hpp"
 
 using namespace std;
 /* Default constructor */
@@ -155,6 +155,15 @@ bool SessionHandler::subscribeModule(sysrepo::S_Subscribe subscrb)
    subscrb->oper_get_items_subscribe(ALARM_MODULE_NAME_ORAN, \
                                      ALARM_MODULE_PATH_ORAN, \
                                      alarmOranCb);
+
+   sysrepo::S_Callback nrCellCb(new NrCellCb());
+
+   subscrb->oper_get_items_subscribe(CELL_STATE_MODULE_NAME, \
+                                     CELL_STATE_MODULE_PATH, \
+                                     nrCellCb);
+   subscrb->module_change_subscribe(CELL_STATE_MODULE_NAME, nrCellCb);
+
+
    return true;
 }
 

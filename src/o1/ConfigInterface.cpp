@@ -25,6 +25,7 @@
 #include "UnixSocketClient.hpp"
 #include "SessionHandler.hpp"
 #include "InitConfig.hpp"
+#include "NrCellList.hpp"
 
 StartupConfig g_cfg;
 
@@ -145,6 +146,30 @@ uint8_t getStartupConfigForStub(StartupConfig *cfg)
    return O1::FAILURE;
 }
 
+/*******************************************************************
+ *
+ * @brief update cell and operational state
+ *
+ * @details
+ *
+ *    Function : setCellOpState
+ *
+ *    Functionality:
+ *      - send update of cell and operational state to it's handler
+ *
+ *
+ * @params[in] cellId, opState, cellState
+ * @return cell operational in string form
+ ******************************************************************/
+
+
+bool setCellOpState(uint16_t cellId, OpState opState, CellState cellState)
+{
+   O1_LOG("\nO1  ConfigInterface: Setting cellId = %d, opState=%d, \
+cellState=%d\n", cellId, opState, cellState);
+   return NrCellList::instance().setCellOpState(cellId, opState, \
+                                                      cellState);
+}
 
 /**********************************************************************
          End of file
