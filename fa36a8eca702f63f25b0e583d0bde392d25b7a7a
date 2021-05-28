@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "11ec4364_5198f5a6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-05-28T12:14:21Z",
+      "side": 1,
+      "message": "Hi,\n\nI have made the changes of edit-config for CLA use case. Please review and share your comments.\n\nRegards,\nHariom",
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
