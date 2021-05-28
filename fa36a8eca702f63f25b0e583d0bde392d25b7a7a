@@ -16,6 +16,184 @@
       "message": "Hi,\n\nI have made the changes of edit-config for CLA use case. Please review and share your comments.\n\nRegards,\nHariom",
       "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c878662_00b2af49",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2021-05-28T14:43:30Z",
+      "side": 1,
+      "message": "Please see my comments mostly related to coding conventions and design...",
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b73aab1_a3ed4481",
+        "filename": "src/o1/CellOpStateCb.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2021-05-28T14:43:30Z",
+      "side": 1,
+      "message": "wording need to be precise",
+      "range": {
+        "startLine": 403,
+        "startChar": 32,
+        "endLine": 403,
+        "endChar": 69
+      },
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f65f825a_c7fb83f6",
+        "filename": "src/o1/CellOpStateCb.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2021-05-28T14:43:30Z",
+      "side": 1,
+      "message": "Naming normally should not have \"Struct\". Can we remove this?",
+      "range": {
+        "startLine": 40,
+        "startChar": 15,
+        "endLine": 40,
+        "endChar": 32
+      },
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdf6ceec_0921bf3a",
+        "filename": "src/o1/CellOpStateCb.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2021-05-28T14:43:30Z",
+      "side": 1,
+      "message": "indentations needs to be take care of",
+      "range": {
+        "startLine": 44,
+        "startChar": 1,
+        "endLine": 44,
+        "endChar": 5
+      },
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31dc7b3f_21be65d7",
+        "filename": "src/o1/CellOpStateCb.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2021-05-28T14:43:30Z",
+      "side": 1,
+      "message": "Why do we need this to be Singleton? Callback classes should avoid this. Can you check?",
+      "range": {
+        "startLine": 46,
+        "startChar": 29,
+        "endLine": 46,
+        "endChar": 38
+      },
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87bdc4d2_be50771a",
+        "filename": "src/o1/CellOpStateCb.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2021-05-28T14:43:30Z",
+      "side": 1,
+      "message": "Can we rename this to setCellOpState?",
+      "range": {
+        "startLine": 63,
+        "startChar": 11,
+        "endLine": 63,
+        "endChar": 28
+      },
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fc6b22a_d2bfbcc6",
+        "filename": "src/o1/CellOpStateCb.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2021-05-28T14:43:30Z",
+      "side": 1,
+      "message": "Can we rename this to setAdminState?",
+      "range": {
+        "startLine": 66,
+        "startChar": 11,
+        "endLine": 66,
+        "endChar": 27
+      },
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c84971b_cf22b585",
+        "filename": "src/o1/ConfigInterface.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2021-05-28T14:43:30Z",
+      "side": 1,
+      "message": "Can we change this to setCellOpState?",
+      "range": {
+        "startLine": 166,
+        "startChar": 5,
+        "endLine": 166,
+        "endChar": 22
+      },
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
