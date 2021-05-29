@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "443077fd_556f6953",
+        "filename": "docs/README",
+        "patchSetId": 1
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-05-29T08:42:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "50a8614c_8438f3a7",
+      "revId": "c3c17f12bb88ae771fd4d689e19d3c3260addff4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cd3a7d15_8a1b4f3b",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-05-25T15:49:39Z",
       "side": 1,
       "message": "Add steps to follow Intel documentation link as well.",
+      "revId": "c3c17f12bb88ae771fd4d689e19d3c3260addff4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0be67d9_7eb0520c",
+        "filename": "docs/README",
+        "patchSetId": 1
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-05-29T08:42:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd3a7d15_8a1b4f3b",
       "revId": "c3c17f12bb88ae771fd4d689e19d3c3260addff4",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -52,6 +88,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "330c30d2_1e53db22",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 649,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-05-29T08:42:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "86a42775_77c700e2",
+      "revId": "c3c17f12bb88ae771fd4d689e19d3c3260addff4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b6897f9c_7ef5c600",
@@ -65,6 +119,24 @@
       "writtenOn": "2021-05-25T15:49:39Z",
       "side": 1,
       "message": "First, we need to check if there is an overlap or not. Since, the bitmap changes are not in yet, at least check for SSB/SIB1 occurrence.",
+      "revId": "c3c17f12bb88ae771fd4d689e19d3c3260addff4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f49b4b9_644bbf8a",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 668,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-05-29T08:42:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b6897f9c_7ef5c600",
       "revId": "c3c17f12bb88ae771fd4d689e19d3c3260addff4",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -86,6 +158,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4e835d9_399f7289",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-05-29T08:42:50Z",
+      "side": 1,
+      "message": "RAR is a fixed length pdu of 7 bytes along with 1 byte of MAC sub-header. Added the spec reference.\nIts size is independent of the duplex mode",
+      "parentUuid": "5f9b272c_efdde0ef",
+      "revId": "c3c17f12bb88ae771fd4d689e19d3c3260addff4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "07ca6ce8_46900ffc",
@@ -99,6 +189,24 @@
       "writtenOn": "2021-05-25T15:49:39Z",
       "side": 1,
       "message": "same comment as earlier, at least check if SSB/SIB1 exists at the same point",
+      "revId": "c3c17f12bb88ae771fd4d689e19d3c3260addff4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81981afc_89522ad5",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 385,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-05-29T08:42:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07ca6ce8_46900ffc",
       "revId": "c3c17f12bb88ae771fd4d689e19d3c3260addff4",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -122,6 +230,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1751e6d8_b8980760",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-05-29T08:42:50Z",
+      "side": 1,
+      "message": "since DMRS is at symbol 2, PUSCH is from symbol 3 to 13.\nYet to make changes to allocate symbol 0 and 1 to PUCCH",
+      "parentUuid": "58827e64_72c6b6db",
+      "revId": "c3c17f12bb88ae771fd4d689e19d3c3260addff4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "713f86c6_98276e69",
         "filename": "src/du_app/du_cfg.h",
         "patchSetId": 1
@@ -133,6 +259,24 @@
       "writtenOn": "2021-05-25T15:49:39Z",
       "side": 1,
       "message": "why not 1?",
+      "revId": "c3c17f12bb88ae771fd4d689e19d3c3260addff4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ceaaf8c0_4eecb6f0",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-05-29T08:42:50Z",
+      "side": 1,
+      "message": "since DMRS is at symbol 2, PUSCH is from symbol 3 to 13",
+      "parentUuid": "713f86c6_98276e69",
       "revId": "c3c17f12bb88ae771fd4d689e19d3c3260addff4",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -150,6 +294,24 @@
       "writtenOn": "2021-05-25T15:49:39Z",
       "side": 1,
       "message": "make the boolean true within the function. Same comment for all below lines",
+      "revId": "c3c17f12bb88ae771fd4d689e19d3c3260addff4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da214636_2e75ab3c",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1136,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-05-29T08:42:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6be5a3ed_0d097180",
       "revId": "c3c17f12bb88ae771fd4d689e19d3c3260addff4",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
