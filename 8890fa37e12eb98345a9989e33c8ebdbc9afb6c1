@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0ce1f44_6fc389ae",
+        "filename": "build/odu/makefile",
+        "patchSetId": 3
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-05-30T16:12:09Z",
+      "side": 1,
+      "message": "needs to confirm.",
+      "parentUuid": "53752402_f8558b6c",
+      "revId": "8890fa37e12eb98345a9989e33c8ebdbc9afb6c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9d59fdc4_cfa69cda",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-05-29T10:01:01Z",
       "side": 1,
       "message": "fetch cellIdx from cell id and use this cellIdx everywhere",
+      "revId": "8890fa37e12eb98345a9989e33c8ebdbc9afb6c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43d9c312_be11a4d2",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-05-30T16:12:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9d59fdc4_cfa69cda",
       "revId": "8890fa37e12eb98345a9989e33c8ebdbc9afb6c1",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -52,6 +88,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e808f31_e8ca5096",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-05-30T16:12:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f9a6023b_ea16ff39",
+      "revId": "8890fa37e12eb98345a9989e33c8ebdbc9afb6c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8208813f_f0b2499a",
@@ -65,6 +119,24 @@
       "writtenOn": "2021-05-29T10:01:01Z",
       "side": 1,
       "message": "currDlSlot is fetched using \u0026dlSlot[]. It will never be null. Hence this check can be removed",
+      "revId": "8890fa37e12eb98345a9989e33c8ebdbc9afb6c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "389a6946_e3702384",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-05-30T16:12:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8208813f_f0b2499a",
       "revId": "8890fa37e12eb98345a9989e33c8ebdbc9afb6c1",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -86,6 +158,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "87f0fd8b_01833835",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-05-30T16:12:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bdbe8ac8_96018da9",
+      "revId": "8890fa37e12eb98345a9989e33c8ebdbc9afb6c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d9c9f988_91d530fe",
@@ -99,6 +189,24 @@
       "writtenOn": "2021-05-29T10:01:01Z",
       "side": 1,
       "message": "move this declaration to appropriate header file",
+      "revId": "8890fa37e12eb98345a9989e33c8ebdbc9afb6c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7cd1056_6038cc76",
+        "filename": "src/5gnrrlc/rlc_tmr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-05-30T16:12:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d9c9f988_91d530fe",
       "revId": "8890fa37e12eb98345a9989e33c8ebdbc9afb6c1",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -126,6 +234,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b397e2b_1e967532",
+        "filename": "src/5gnrrlc/rlc_tmr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-05-30T16:12:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9b3b0370_b545ee11",
+      "range": {
+        "startLine": 192,
+        "startChar": 41,
+        "endLine": 192,
+        "endChar": 74
+      },
+      "revId": "8890fa37e12eb98345a9989e33c8ebdbc9afb6c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ba225842_0760c529",
@@ -139,6 +271,24 @@
       "writtenOn": "2021-05-29T10:01:01Z",
       "side": 1,
       "message": "where is UE deleted? Isnt it expected to delete UE after expiry of timer?",
+      "revId": "8890fa37e12eb98345a9989e33c8ebdbc9afb6c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12c8362b_d1d6a6c0",
+        "filename": "src/5gnrrlc/rlc_tmr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 556,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-05-30T16:12:09Z",
+      "side": 1,
+      "message": "the UE delete starts once we\u0027ll receive the successful dlrrc rsp. this timer is added to complete the other process of call flow.",
+      "parentUuid": "ba225842_0760c529",
       "revId": "8890fa37e12eb98345a9989e33c8ebdbc9afb6c1",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -160,6 +310,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4e83e66_44183602",
+        "filename": "src/5gnrrlc/rlc_utils.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 424,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-05-30T16:12:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "06584e89_d27c78eb",
+      "revId": "8890fa37e12eb98345a9989e33c8ebdbc9afb6c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ee2b08b6_6041561f",
@@ -173,6 +341,24 @@
       "writtenOn": "2021-05-29T10:01:01Z",
       "side": 1,
       "message": "instead of making a big if{} block and then a small else,\nfirst check if(cell \u003d\u003d NULL) return RFAILED; \nand then keep the rest of the code as it is.",
+      "revId": "8890fa37e12eb98345a9989e33c8ebdbc9afb6c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43e11155_870a28c4",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 903,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-05-30T16:12:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ee2b08b6_6041561f",
       "revId": "8890fa37e12eb98345a9989e33c8ebdbc9afb6c1",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -194,6 +380,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf644a8d_627ec717",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 937,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-05-30T16:12:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0f495e98_f4139ccf",
+      "revId": "8890fa37e12eb98345a9989e33c8ebdbc9afb6c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6858fa24_162a3228",
@@ -207,6 +411,24 @@
       "writtenOn": "2021-05-29T10:01:01Z",
       "side": 1,
       "message": "1. We use \"Rsp\" for response. Keep this convention everywhere\n2. Also, change sequence of param to: cellId, ueIdx. Applicable to BuildAndSendUeContextSetupRsp as well",
+      "revId": "8890fa37e12eb98345a9989e33c8ebdbc9afb6c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "766b2d06_71ee87c0",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 10640,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-05-30T16:12:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6858fa24_162a3228",
       "revId": "8890fa37e12eb98345a9989e33c8ebdbc9afb6c1",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -228,6 +450,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d8456c4_6de0e934",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 12655,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-05-30T16:12:09Z",
+      "side": 1,
+      "message": "true, BuildAndSendUeContextReleaseComplete() is handling only one UE.\nBut right now in our code we are deleting all the UEs then sending Release Complete.\nso added trigger here.",
+      "parentUuid": "9783857c_3039d6f2",
+      "revId": "8890fa37e12eb98345a9989e33c8ebdbc9afb6c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0fc2e6e7_652e0f00",
@@ -241,6 +481,24 @@
       "writtenOn": "2021-05-29T10:01:01Z",
       "side": 1,
       "message": "revert",
+      "revId": "8890fa37e12eb98345a9989e33c8ebdbc9afb6c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a9c4705_baeb31b2",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 12662,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-05-30T16:12:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0fc2e6e7_652e0f00",
       "revId": "8890fa37e12eb98345a9989e33c8ebdbc9afb6c1",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -262,6 +520,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b71b1a53_acb2c76d",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-05-30T16:12:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1cb0b1c7_77dbd06f",
+      "revId": "8890fa37e12eb98345a9989e33c8ebdbc9afb6c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ef966e6a_9c5eafe3",
@@ -275,6 +551,24 @@
       "writtenOn": "2021-05-29T10:01:01Z",
       "side": 1,
       "message": "remove null check. Fix for this is merged in latest repo",
+      "revId": "8890fa37e12eb98345a9989e33c8ebdbc9afb6c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a29b30cd_c97acb30",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1707,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-05-30T16:12:09Z",
+      "side": 1,
+      "message": "removed.",
+      "parentUuid": "ef966e6a_9c5eafe3",
       "revId": "8890fa37e12eb98345a9989e33c8ebdbc9afb6c1",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -296,6 +590,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dafcdc77_4efd4f90",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3077,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-05-30T16:12:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3107a089_e9b71aa7",
+      "revId": "8890fa37e12eb98345a9989e33c8ebdbc9afb6c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "16385d21_6959acd2",
@@ -309,6 +621,24 @@
       "writtenOn": "2021-05-29T10:01:01Z",
       "side": 1,
       "message": "passing ueId in sendUeDeleteReqToMac but ueIdx in sendUeDeleteReqToRlc.\nCode is not consistent at all when it comes to use of ueId and ueIdx.\nRecheck all code flow.",
+      "revId": "8890fa37e12eb98345a9989e33c8ebdbc9afb6c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fce0a76_1eb3dfd3",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3079,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-05-30T16:12:09Z",
+      "side": 1,
+      "message": "used only ueId, naming convention is wrong it should be ueId only , changed now.",
+      "parentUuid": "16385d21_6959acd2",
       "revId": "8890fa37e12eb98345a9989e33c8ebdbc9afb6c1",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -330,6 +660,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "87a615eb_0eff4d81",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3328,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-05-30T16:12:09Z",
+      "side": 1,
+      "message": "changed. cell will not stop only if there is any active UE available.",
+      "parentUuid": "698a0b6f_1bee708c",
+      "revId": "8890fa37e12eb98345a9989e33c8ebdbc9afb6c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6a56c340_72c2e130",
@@ -343,6 +691,24 @@
       "writtenOn": "2021-05-29T10:01:01Z",
       "side": 1,
       "message": "same comment, check negative scenario first and return RFAILED.\nThis will avoid creating a big if{} block",
+      "revId": "8890fa37e12eb98345a9989e33c8ebdbc9afb6c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed18892c_65024c8b",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3341,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-05-30T16:12:09Z",
+      "side": 1,
+      "message": "sure.",
+      "parentUuid": "6a56c340_72c2e130",
       "revId": "8890fa37e12eb98345a9989e33c8ebdbc9afb6c1",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -364,6 +730,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "48b6b616_38e6ae37",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3374,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-05-30T16:12:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "253a835f_53d9553d",
+      "revId": "8890fa37e12eb98345a9989e33c8ebdbc9afb6c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "624832b3_290727a5",
@@ -381,6 +765,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "35a8af25_9cb14a28",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3398,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-05-30T16:12:09Z",
+      "side": 1,
+      "message": "if dlrrc \u003d\u003d present then UE delete req will be called once dlrrc rsp is received.\nelse if dlrrc !\u003d  present  then UE delete req will called.",
+      "parentUuid": "624832b3_290727a5",
+      "revId": "8890fa37e12eb98345a9989e33c8ebdbc9afb6c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7adf4836_4c4be507",
@@ -394,6 +796,24 @@
       "writtenOn": "2021-05-29T10:01:01Z",
       "side": 1,
       "message": "is ueIdx or ueId being passed in these functions? please name correctly since the use of ueIdx and ueId is different.",
+      "revId": "8890fa37e12eb98345a9989e33c8ebdbc9afb6c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "36aab5eb_79798ae4",
+        "filename": "src/du_app/du_ue_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-05-30T16:12:09Z",
+      "side": 1,
+      "message": "passing ueId. since ueId is being used in whole flow so changed at many places.",
+      "parentUuid": "7adf4836_4c4be507",
       "revId": "8890fa37e12eb98345a9989e33c8ebdbc9afb6c1",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
