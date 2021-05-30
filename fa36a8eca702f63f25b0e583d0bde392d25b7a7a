@@ -54,6 +54,108 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0dfb86b0_0c5bffa4",
+        "filename": "build/yang/o-ran-sc-du-hello-world.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000382
+      },
+      "writtenOn": "2021-05-30T21:36:02Z",
+      "side": 1,
+      "message": "No need for the -grp suffix.",
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22d07787_b113cd88",
+        "filename": "build/yang/o-ran-sc-du-hello-world.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000382
+      },
+      "writtenOn": "2021-05-30T21:36:02Z",
+      "side": 1,
+      "message": "Please avoid use of all caps. Refer to https://datatracker.ietf.org/doc/html/rfc8407#section-4.3.1 for naming convention.",
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9ae43c3_3cf493fc",
+        "filename": "build/yang/o-ran-sc-du-hello-world.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1000382
+      },
+      "writtenOn": "2021-05-30T21:36:02Z",
+      "side": 1,
+      "message": "Please avoid use of all caps. Refer to https://datatracker.ietf.org/doc/html/rfc8407#section-4.3.1 for naming convention.",
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "838c9159_1ddd2c60",
+        "filename": "build/yang/o-ran-sc-du-hello-world.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000382
+      },
+      "writtenOn": "2021-05-30T21:36:02Z",
+      "side": 1,
+      "message": "Please avoid use of all caps. Refer to https://datatracker.ietf.org/doc/html/rfc8407#section-4.3.1 for naming convention.",
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bff98a06_b4869704",
+        "filename": "build/yang/o-ran-sc-du-hello-world.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1000382
+      },
+      "writtenOn": "2021-05-30T21:36:02Z",
+      "side": 1,
+      "message": "If a grouping is used only once, and only in this module, please remove the grouping and inline the contents of the grouping here.",
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "194dafc2_733ba703",
+        "filename": "docs/installation-guide.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1000382
+      },
+      "writtenOn": "2021-05-30T21:36:02Z",
+      "side": 1,
+      "message": "Please remove these spaces.",
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0b73aab1_a3ed4481",
         "filename": "src/o1/CellOpStateCb.cpp",
         "patchSetId": 3
@@ -209,6 +311,23 @@
         "endLine": 166,
         "endChar": 22
       },
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81513d5b_ac53cc80",
+        "filename": "src/o1/InitConfig.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000382
+      },
+      "writtenOn": "2021-05-30T21:36:02Z",
+      "side": 1,
+      "message": "I am not sure disabling NACM is a good idea. Basically, you are punching a big hole in your security envelope when you do that. What is the reason to disable?",
       "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
