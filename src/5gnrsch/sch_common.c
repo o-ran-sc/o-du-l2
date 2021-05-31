@@ -205,7 +205,8 @@ void schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotIndInfo pra
       {
          /* prach ocassion present in this subframe */
 #ifdef NR_TDD
-         if(UL_SLOT != schGetSlotSymbFrmt(prachOccasionTimingInfo.slot, cell->slotFrmtBitMap))
+         if(UL_SLOT != schGetSlotSymbFrmt(prachOccasionTimingInfo.slot%cell->numSlotsInPeriodicity,\
+         cell->slotFrmtBitMap))
          {
             DU_LOG("\nERROR  --> SCH : PrachCfgIdx %d doesn't support UL slot", prachCfgIdx);
          }
