@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8cbd5ba0_f4229369",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 662,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-05-31T12:24:21Z",
+      "side": 1,
+      "message": "1 may be too ideal a number. Consider,  after 5 or 10",
+      "revId": "bbce83855aaaf6ad101ac65f1cd100e3e00667ca",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4130f018_e23288d6",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-05-31T12:24:21Z",
+      "side": 1,
+      "message": "same comment as earlier",
+      "revId": "bbce83855aaaf6ad101ac65f1cd100e3e00667ca",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4eeee7e_7d881081",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 789,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-05-31T12:24:21Z",
+      "side": 1,
+      "message": "this can be set in the caller itself. No need to assign true in every function. Other booleans like phyCellGrpCfgPres which are specific to the function, must be set in respective functions",
+      "revId": "bbce83855aaaf6ad101ac65f1cd100e3e00667ca",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
