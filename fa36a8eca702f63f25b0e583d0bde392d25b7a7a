@@ -52,6 +52,23 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0442ed4_2bd49ba1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-05-31T07:44:12Z",
+      "side": 1,
+      "message": "Hi,\n\n@Martin Skorupski : Mahesh has provided comments for o-ran-sc-du-hello-world.yang file. This is already checked in under following Gerrit review in OAM which we are using. We will have to commit the changes there.\nhttps://gerrit.o-ran-sc.org/r/c/scp/oam/modeling/+/5870\n\n@\u0027Alex Stancu\u0027 : Could you please guide me how you have handled NACM setting in O1 simulator.\n\nRegards,\nHariom",
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0dfb86b0_0c5bffa4",
@@ -65,6 +82,24 @@
       "writtenOn": "2021-05-30T21:36:02Z",
       "side": 1,
       "message": "No need for the -grp suffix.",
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c252b34_0c83b012",
+        "filename": "build/yang/o-ran-sc-du-hello-world.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-05-31T07:44:12Z",
+      "side": 1,
+      "message": "Using OAM yang file.",
+      "parentUuid": "0dfb86b0_0c5bffa4",
       "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -88,6 +123,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e5f2acbc_da34e67e",
+        "filename": "build/yang/o-ran-sc-du-hello-world.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-05-31T07:44:12Z",
+      "side": 1,
+      "message": "Using OAM yang file.",
+      "parentUuid": "22d07787_b113cd88",
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b9ae43c3_3cf493fc",
         "filename": "build/yang/o-ran-sc-du-hello-world.yang",
         "patchSetId": 3
@@ -99,6 +152,24 @@
       "writtenOn": "2021-05-30T21:36:02Z",
       "side": 1,
       "message": "Please avoid use of all caps. Refer to https://datatracker.ietf.org/doc/html/rfc8407#section-4.3.1 for naming convention.",
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c7fec46_b8e11d8e",
+        "filename": "build/yang/o-ran-sc-du-hello-world.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-05-31T07:44:12Z",
+      "side": 1,
+      "message": "Using OAM yang file.",
+      "parentUuid": "b9ae43c3_3cf493fc",
       "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -122,6 +193,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f46b4790_4f85dbe2",
+        "filename": "build/yang/o-ran-sc-du-hello-world.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-05-31T07:44:12Z",
+      "side": 1,
+      "message": "Using OAM yang file.",
+      "parentUuid": "838c9159_1ddd2c60",
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bff98a06_b4869704",
         "filename": "build/yang/o-ran-sc-du-hello-world.yang",
         "patchSetId": 3
@@ -133,6 +222,24 @@
       "writtenOn": "2021-05-30T21:36:02Z",
       "side": 1,
       "message": "If a grouping is used only once, and only in this module, please remove the grouping and inline the contents of the grouping here.",
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb068bb7_1454a413",
+        "filename": "build/yang/o-ran-sc-du-hello-world.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-05-31T07:44:12Z",
+      "side": 1,
+      "message": "Using OAM yang file.",
+      "parentUuid": "bff98a06_b4869704",
       "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -328,6 +435,24 @@
       "writtenOn": "2021-05-30T21:36:02Z",
       "side": 1,
       "message": "I am not sure disabling NACM is a good idea. Basically, you are punching a big hole in your security envelope when you do that. What is the reason to disable?",
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4aeab71_eaf89534",
+        "filename": "src/o1/InitConfig.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-05-31T07:44:12Z",
+      "side": 1,
+      "message": "You are correct but currently we are not handling the NACM configuration. During the edit-config we are getting access denied by the server for the “netconf” user we created due to NACM. So for time being we are disabling NACM.\n\n@\u0027Alex Stancu\u0027 : Could you please guide me how you have handled NACM setting in O1 simulator.",
+      "parentUuid": "81513d5b_ac53cc80",
       "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
