@@ -177,12 +177,6 @@ uint8_t duBuildAndSendDlUserDataToRlc(uint16_t msgLen, EgtpMsg *egtpMsg)
       return RFAILED;
    }
    memset(dlDataMsgInfo, 0, sizeof(RlcDlUserDataInfo));
-   if(ODU_GET_MSG_BUF(DU_APP_MEM_REGION, DU_POOL, &dlDataMsgInfo->dlMsg) != ROK)
-   {
-      DU_LOG("\nERROR  -->  DU_APP : Memory allocation failed for dlMsg in duHdlEgtpDlData()");
-      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, dlDataMsgInfo, sizeof(RlcDlUserDataInfo));
-      return RFAILED;
-   }
    dlDataMsgInfo->dlMsg = egtpMsg->msg;
    dlDataMsgInfo->msgLen = msgLen;
 
