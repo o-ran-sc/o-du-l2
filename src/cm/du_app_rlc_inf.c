@@ -650,18 +650,11 @@ uint8_t unpackRlcUlUserDataToDu(RlcUlUserDataToDuFunc func, Pst *pst, Buffer *mB
  * ****************************************************************/
 uint8_t packRlcDlUserDataToRlc(Pst *pst, RlcDlUserDataInfo *dlUserData)
 {
-   Buffer *mBuf = NULLP;
-
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
-      {
-         DU_LOG("\nERROR  -->  RLC DL: Memory allocation failed at packRlcDlUserDataToRlc");
-         return RFAILED;
-      }
       /* pack the address of the structure */
-      CMCHKPK(oduPackPointer,(PTR)dlUserData, mBuf);
-      return ODU_POST_TASK(pst,mBuf);
+      CMCHKPK(oduPackPointer,(PTR)dlUserData, dlUserData->dlMsg);
+      return ODU_POST_TASK(pst,dlUserData->dlMsg);
    }
    else
    {
@@ -693,7 +686,6 @@ uint8_t unpackRlcDlUserDataToRlc(DuRlcDlUserDataToRlcFunc func, Pst *pst, Buffer
       RlcDlUserDataInfo *dlUserData;
       /* unpack the address of the structure */
       CMCHKUNPK(oduUnpackPointer, (PTR *)&dlUserData, mBuf);
-      ODU_PUT_MSG_BUF(mBuf);
       return (*func)(pst, dlUserData);
    }
    else
