@@ -665,15 +665,14 @@ S16 BuildAndSendF1SetupRsp()
  *    Functionality: Constructs the DU Update Acknowledge message and sends
  *                   it to the DU through SCTP.
  *
- * @params[in] void **buf,Buffer to which encoded pattern is written into
- * @params[in] int *size,size of buffer
+ * @params[in] bool cellToDelete 
  *
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
 
-S16 BuildAndSendDUUpdateAck()
+S16 BuildAndSendDUUpdateAck(bool cellToDelete)
 {
    uint8_t   idx;
    uint8_t   elementCnt;
@@ -725,10 +724,10 @@ S16 BuildAndSendDUUpdateAck()
       CU_ALLOC(gNBDuCfgAck->protocolIEs.list.array[idx], sizeof(GNBDUConfigurationUpdateAcknowledgeIEs_t));
       if(gNBDuCfgAck->protocolIEs.list.array[idx] == NULLP)
       {
-	 CU_FREE(gNBDuCfgAck->protocolIEs.list.array, elementCnt * sizeof(GNBDUConfigurationUpdateAcknowledgeIEs_t *));
-	 CU_FREE(f1apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcome_t));
-	 CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
-	 return RFAILED;
+         CU_FREE(gNBDuCfgAck->protocolIEs.list.array, elementCnt * sizeof(GNBDUConfigurationUpdateAcknowledgeIEs_t *));
+         CU_FREE(f1apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcome_t));
+         CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
+         return RFAILED;
       }
    }
 
@@ -758,7 +757,8 @@ S16 BuildAndSendDUUpdateAck()
    /* Checking encode results */
    if(enRetVal.encoded == ENCODE_FAIL) 
    {
-      DU_LOG("\nERROR  -->  F1AP : Could not encode DUConfigUpdateAcknowledge structure (at %s)",enRetVal.failed_type ? enRetVal.failed_type->name : "unknown");
+      DU_LOG("\nERROR  -->  F1AP : Could not encode DUConfigUpdateAcknowledge structure (at %s)",\
+      enRetVal.failed_type ? enRetVal.failed_type->name : "unknown");
       return RFAILED; 
    } 
    else 
@@ -766,7 +766,7 @@ S16 BuildAndSendDUUpdateAck()
       DU_LOG("\nDEBUG  -->  F1AP : Created APER encoded buffer for DuConfigUpdateAcknowledge\n");  
       for(int i=0; i< encBufSize; i++)
       {
-	 DU_LOG("%x",encBuf[i]);
+         DU_LOG("%x",encBuf[i]);
       } 
    }
 
@@ -777,6 +777,15 @@ S16 BuildAndSendDUUpdateAck()
       return RFAILED;
    }
 
+   if(cellToDelete == false)
+   {
+      DU_LOG("\nINFO  -->  F1AP : Sending F1 reset request");
+      BuildAndSendF1ResetReq();
+   }
+   else
+   {
+      DU_LOG("\nINFO  -->  F1AP : Proceeding for UE and Cell Delete");
+   }
    return ROK;
 
 }/* End of BuildAndSendDUUpdateAck*/
@@ -7599,6 +7608,50 @@ uint8_t procUeContextReleaseReq(F1AP_PDU_t *f1apMsg)
    return ROK;
 }
 /*******************************************************************
+*
+* @brief processing of Gnb-DU config update 
+*
+* @details
+*
+*    Function : procGnbDuUpdate 
+*
+*    Functionality:
+*         - processing of Gnb-DU config update 
+*
+* @params[in] F1AP_PDU_t *f1apMsg
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t procGnbDuUpdate(F1AP_PDU_t *f1apMsg)
+{
+   bool cellToDelete = false;
+   uint8_t ieIdx = 0;
+   GNBDUConfigurationUpdate_t *duCfgUpdate = NULLP;
+
+   duCfgUpdate = &f1apMsg->choice.initiatingMessage->value.choice.GNBDUConfigurationUpdate;
+
+   for(ieIdx=0; ieIdx < duCfgUpdate->protocolIEs.list.count; ieIdx++)
+   {
+      switch(duCfgUpdate->protocolIEs.list.array[ieIdx]->id)
+      {
+         case ProtocolIE_ID_id_TransactionID:
+            break;
+         case ProtocolIE_ID_id_Served_Cells_To_Modify_List:
+            break;
+         case ProtocolIE_ID_id_Served_Cells_To_Delete_List:
+            {
+               cellToDelete = true;
+               break;
+            }
+         case ProtocolIE_ID_id_gNB_DU_ID:
+            break;
+      }
+   }
+   BuildAndSendDUUpdateAck(cellToDelete);
+   return ROK;
+}
+/*******************************************************************
  *
  * @brief Handles received F1AP message and sends back response  
  *
@@ -7687,9 +7740,7 @@ void F1APMsgHdlr(Buffer *mBuf)
                case InitiatingMessage__value_PR_GNBDUConfigurationUpdate:
                   {
                      DU_LOG("\nINFO  -->  F1AP : GNB-DU config update received");
-                     BuildAndSendDUUpdateAck();
-                     DU_LOG("\nINFO  -->  F1AP : Sending F1 reset request");
-                     BuildAndSendF1ResetReq();
+                     procGnbDuUpdate(f1apMsg);
                      break;
                   }
                case InitiatingMessage__value_PR_InitialULRRCMessageTransfer:

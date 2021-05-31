@@ -1479,6 +1479,7 @@ uint8_t  duHandleMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm)
    }
    if(macCellCfgCfm->rsp == ROK)
    {
+      gcellToDelete = FALSE;
       /* Build and send GNB-DU config update */
       ret = BuildAndSendDUConfigUpdate();
 
