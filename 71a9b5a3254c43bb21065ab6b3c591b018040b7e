@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23fe4ec2_db22b0e0",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 825,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-06-01T12:29:46Z",
+      "side": 1,
+      "message": "macro missing",
+      "revId": "71a9b5a3254c43bb21065ab6b3c591b018040b7e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b92f628a_cbe6929d",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 1000285
+      },
+      "writtenOn": "2021-06-01T12:29:46Z",
+      "side": 1,
+      "message": "SCH_RAR_PAYLOAD_SIZE",
+      "revId": "71a9b5a3254c43bb21065ab6b3c591b018040b7e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
