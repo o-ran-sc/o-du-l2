@@ -1,0 +1,293 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c596e5e0_616840a7",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-02T07:53:12Z",
+      "side": 1,
+      "message": "sfn slot does exist. Correct the error msg",
+      "revId": "8046c0b8cc6fb32c49745a8b2925d2569c657a11",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d9cef6c_90166b0b",
+        "filename": "src/5gnrrlc/rlc_cfg_dl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 709,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-02T07:53:12Z",
+      "side": 1,
+      "message": "rename ueIdx to ueId",
+      "revId": "8046c0b8cc6fb32c49745a8b2925d2569c657a11",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9760cee_b3d5ee6d",
+        "filename": "src/5gnrrlc/rlc_layer_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 401,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-02T07:53:12Z",
+      "side": 1,
+      "message": "RLC_DL",
+      "revId": "8046c0b8cc6fb32c49745a8b2925d2569c657a11",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ad67201_55443a00",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 843,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-02T07:53:12Z",
+      "side": 1,
+      "message": "check if timer is already running for this UE. If not, then start timer",
+      "revId": "8046c0b8cc6fb32c49745a8b2925d2569c657a11",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c33818e7_6b98a535",
+        "filename": "src/5gnrrlc/rlc_tmr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-02T07:53:12Z",
+      "side": 1,
+      "message": "move to appropriate header file",
+      "revId": "8046c0b8cc6fb32c49745a8b2925d2569c657a11",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c5f9f8f_3805b295",
+        "filename": "src/5gnrrlc/rlc_tmr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-02T07:53:12Z",
+      "side": 1,
+      "message": "TMR_NONE must be set initially when UE is created",
+      "revId": "8046c0b8cc6fb32c49745a8b2925d2569c657a11",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "475a84b3_b1fac266",
+        "filename": "src/5gnrrlc/rlc_tmr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 566,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-02T07:53:12Z",
+      "side": 1,
+      "message": "move this function definition in this file itself",
+      "revId": "8046c0b8cc6fb32c49745a8b2925d2569c657a11",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fa79ded_77d08351",
+        "filename": "src/5gnrrlc/rlc_ul.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-02T07:53:12Z",
+      "side": 1,
+      "message": "move to end of structure.",
+      "revId": "8046c0b8cc6fb32c49745a8b2925d2569c657a11",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f46c8df2_d4d83edd",
+        "filename": "src/5gnrrlc/rlc_utils.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 425,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-02T07:53:12Z",
+      "side": 1,
+      "message": "identation",
+      "revId": "8046c0b8cc6fb32c49745a8b2925d2569c657a11",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6135b5dc_fbadec99",
+        "filename": "src/5gnrrlc/rlc_utl_dl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 464,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-02T07:53:12Z",
+      "side": 1,
+      "message": "ueId",
+      "revId": "8046c0b8cc6fb32c49745a8b2925d2569c657a11",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6a14aaa_3f28ceda",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-02T07:53:12Z",
+      "side": 1,
+      "message": "Why is this timer defined in common file? Is it meant to be used in other layers too?",
+      "revId": "8046c0b8cc6fb32c49745a8b2925d2569c657a11",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a2f00c5_a1472aaf",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 12542,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-02T07:53:12Z",
+      "side": 1,
+      "message": "why is cellId hardcoded here?",
+      "revId": "8046c0b8cc6fb32c49745a8b2925d2569c657a11",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f379fb2b_1702826a",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 12655,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-02T07:53:12Z",
+      "side": 1,
+      "message": "make sure to change the trigger for cellDeleteReq in next commit",
+      "revId": "8046c0b8cc6fb32c49745a8b2925d2569c657a11",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8eb79ea_83c9cd07",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2499,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-02T07:53:12Z",
+      "side": 1,
+      "message": "follow naming convention",
+      "revId": "8046c0b8cc6fb32c49745a8b2925d2569c657a11",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2e84c45_34a171d7",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 3067,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-02T07:53:12Z",
+      "side": 1,
+      "message": "what is the purpose of this?",
+      "revId": "8046c0b8cc6fb32c49745a8b2925d2569c657a11",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38f34852_94bad5f0",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 3331,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-02T07:53:12Z",
+      "side": 1,
+      "message": "should there first be a cell stop from Du to MAc and then a cell delete req from du to mac?\nCan we send only cell delete req to MAC, and mac can internally stop cell and then delete it.\n\nWhat does AAD say about this?",
+      "revId": "8046c0b8cc6fb32c49745a8b2925d2569c657a11",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "766ede5e_64c4fff6",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 3378,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-02T07:53:12Z",
+      "side": 1,
+      "message": "dont fetch cellidx again. already present in f1UeDb",
+      "revId": "8046c0b8cc6fb32c49745a8b2925d2569c657a11",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
