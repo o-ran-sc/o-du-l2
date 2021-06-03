@@ -1,0 +1,310 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64cf7bdd_dfa81131",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-03T08:13:17Z",
+      "side": 1,
+      "message": "SFN slot exists, cell doesn\u0027t exist.",
+      "revId": "a5066acc2484dfd1675078cb2be3433d68d064ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e78e9a9_c4df0f92",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 808,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-03T08:13:17Z",
+      "side": 1,
+      "message": "check if timer is already running for this UE. If not, then start timer",
+      "revId": "a5066acc2484dfd1675078cb2be3433d68d064ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "125bc91b_e08eac46",
+        "filename": "src/5gnrrlc/rlc_tmr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 600,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-03T08:13:17Z",
+      "side": 1,
+      "message": "\"failed to delete UE\" is fine",
+      "revId": "a5066acc2484dfd1675078cb2be3433d68d064ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efe3f0af_933098df",
+        "filename": "src/5gnrrlc/rlc_tmr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 604,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-03T08:13:17Z",
+      "side": 1,
+      "message": "free rlcUeCfg",
+      "revId": "a5066acc2484dfd1675078cb2be3433d68d064ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd953303_75b77990",
+        "filename": "src/5gnrrlc/rlc_utils.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-03T08:13:17Z",
+      "side": 1,
+      "message": "dont add a header file inside another header file",
+      "revId": "a5066acc2484dfd1675078cb2be3433d68d064ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5004433c_e97af046",
+        "filename": "src/5gnrrlc/rlc_utils.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-03T08:13:17Z",
+      "side": 1,
+      "message": "1.since this is specific to RLC, dont call it as ODU_* timer\n2. Add comment like \"Wait timer for RLC Timers */\n3. Add blank line",
+      "revId": "a5066acc2484dfd1675078cb2be3433d68d064ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c973b2e1_11684e99",
+        "filename": "src/5gnrrlc/rlc_utils.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 1745,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-03T08:13:17Z",
+      "side": 1,
+      "message": "multiple declarations\nkeep in rlc_mgr.h, remove from rlc_utils.h",
+      "revId": "a5066acc2484dfd1675078cb2be3433d68d064ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4357a971_33a4c076",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 10624,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-03T08:13:17Z",
+      "side": 1,
+      "message": "sequence of params",
+      "revId": "a5066acc2484dfd1675078cb2be3433d68d064ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ee5b78f_509907fa",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 12752,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-03T08:13:17Z",
+      "side": 1,
+      "message": "add blank line after each case to increase readability",
+      "revId": "a5066acc2484dfd1675078cb2be3433d68d064ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7ecb051_2e54707c",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2866,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-03T08:13:17Z",
+      "side": 1,
+      "message": "ret \u003d RFAILED",
+      "revId": "a5066acc2484dfd1675078cb2be3433d68d064ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51c85824_a909227e",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2975,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-03T08:13:17Z",
+      "side": 1,
+      "message": "remove comment",
+      "revId": "a5066acc2484dfd1675078cb2be3433d68d064ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4073e8e0_80d76786",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3061,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-03T08:13:17Z",
+      "side": 1,
+      "message": "remove this line. not used.",
+      "revId": "a5066acc2484dfd1675078cb2be3433d68d064ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c614a491_d20bd63e",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3314,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-03T08:13:17Z",
+      "side": 1,
+      "message": "print cellId, current cell status, expected cell status",
+      "revId": "a5066acc2484dfd1675078cb2be3433d68d064ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3789451_333f19d6",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3320,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-03T08:13:17Z",
+      "side": 1,
+      "message": "Break into 2 sentences\n\"Active UEs still present in Cell Id[%d]. Failed to delete cell.\"",
+      "revId": "a5066acc2484dfd1675078cb2be3433d68d064ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "991c474d_0a3c3131",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3327,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-03T08:13:17Z",
+      "side": 1,
+      "message": "Failed to build and send cell stop request to MAC. CellId [%d]\"",
+      "revId": "a5066acc2484dfd1675078cb2be3433d68d064ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1c7ed54_f374f7ab",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3334,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-03T08:13:17Z",
+      "side": 1,
+      "message": "Failed to send cell delete request to MAC. CellId [%d]\"",
+      "revId": "a5066acc2484dfd1675078cb2be3433d68d064ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3cc09d31_f915b71c",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3371,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-03T08:13:17Z",
+      "side": 1,
+      "message": "can cellId be accessed from DuUeCb?",
+      "revId": "a5066acc2484dfd1675078cb2be3433d68d064ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97484cdb_dc6a438c",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3393,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-03T08:13:17Z",
+      "side": 1,
+      "message": "Failed to build and send Ue Delete request",
+      "revId": "a5066acc2484dfd1675078cb2be3433d68d064ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
