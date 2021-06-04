@@ -722,14 +722,21 @@ void fillDefaultInitUlBwp(InitialUlBwp *initUlBwp)
  *
  *    Functionality: Fills Sp Cell Group Info
  *
- * @params[in]  SpCellCfg *spCell
+ * @params[in]  MacUeCfg *macUeCfg
  * @return void
  *
  *****************************************************************/
-void fillDefaultSpCellGrpInfo(SpCellCfg *spCell)
+void fillDefaultSpCellGrpInfo(MacUeCfg *macUeCfg)
 {
+   SpCellCfg *spCell = NULL;
+
+   if(macUeCfg)
+      spCell = &macUeCfg->spCellCfg;
+
    if(spCell)
    {
+      macUeCfg->spCellCfgPres = true;
+
       spCell->servCellIdx = SERV_CELL_IDX;
       /* Filling Initial Dl Bwp */
       fillDefaultInitDlBwp(&spCell->servCellCfg.initDlBwp);
@@ -765,14 +772,20 @@ void fillDefaultSpCellGrpInfo(SpCellCfg *spCell)
  *
  *    Functionality: Fills Physical Cell Group Info
  *
- * @params[in]  PhyCellGrpCfg *cellGrp
+ * @params[in]  MacUeCfg *macUeCfg
  * @return void
  *
  *****************************************************************/
-void fillDefaultPhyCellGrpInfo(PhyCellGrpCfg *cellGrp)
+void fillDefaultPhyCellGrpInfo(MacUeCfg *macUeCfg)
 {
+   PhyCellGrpCfg *cellGrp = NULL;
+
+   if(macUeCfg)
+      cellGrp = &macUeCfg->phyCellGrpCfg;
+
    if(cellGrp)
    {
+      macUeCfg->phyCellGrpCfgPres = true;
       cellGrp->pdschHarqAckCodebook = PDSCH_HARQ_ACK_CODEBOOK_DYNAMIC;
       cellGrp->pNrFr1 = P_NR_FR1;
    }
@@ -792,16 +805,22 @@ void fillDefaultPhyCellGrpInfo(PhyCellGrpCfg *cellGrp)
  *
  *    Functionality: Fills Mac Cell Group Info
  *
- * @params[in]  MacCellGrpCfg *cellGrp
+ * @params[in]  MacUeCfg *macUeCfg
  * @return void
  *
  *****************************************************************/
-void fillDefaultMacCellGrpInfo(MacCellGrpCfg *cellGrp)
+void fillDefaultMacCellGrpInfo(MacUeCfg *macUeCfg)
 {
    uint8_t idx;
+   MacCellGrpCfg *cellGrp = NULL;
+
+   if(macUeCfg)
+      cellGrp = &macUeCfg->macCellGrpCfg;
 
    if(cellGrp)
    {
+      macUeCfg->macCellGrpCfgPres = true;
+
       /* Filling Scheduling Request Config */
       cellGrp->schReqCfg.addModListCount = 1;
       if(cellGrp->schReqCfg.addModListCount <= MAX_NUM_SR_CFG_PER_CELL_GRP)
@@ -1125,12 +1144,13 @@ uint8_t fillMacUeCfg(uint16_t cellId, uint8_t ueIdx, uint16_t crnti, \
       macUeCfg->cellId       = cellId;
       macUeCfg->ueIdx        = ueIdx;
       macUeCfg->crnti        = crnti;
-      fillDefaultMacCellGrpInfo(&macUeCfg->macCellGrpCfg);
-      fillDefaultPhyCellGrpInfo(&macUeCfg->phyCellGrpCfg);
-      fillDefaultSpCellGrpInfo(&macUeCfg->spCellCfg);
+
+      fillDefaultMacCellGrpInfo(macUeCfg);
+      fillDefaultPhyCellGrpInfo(macUeCfg);
+      fillDefaultSpCellGrpInfo(macUeCfg);
       macUeCfg->ambrCfg = NULLP;
-      fillMacSrb1LcCfg(&macUeCfg->lcCfgList[0]);
       fillDefaultModulation(macUeCfg);
+      fillMacSrb1LcCfg(&macUeCfg->lcCfgList[0]);
       macUeCfg->numLcs++;
    }
    else

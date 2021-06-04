@@ -83,31 +83,47 @@ C. Pre-requisite for O1 Interface (Required only if run with O1 interface enable
 
 D. How to Clean and Build:
 --------------------------
-1. Building ODU binary:
+1. Build commands:
+   a. odu       - Builds all components of ODU
+   b. cu_stub   - Builds all CU Stub
+   c. ric_stub  - Builds all RIC_Stub
+   d. clean_odu - clean up ODU
+   e. clean_cu  - clean up CU Stub
+   f. clean_ric - clean up RIC Stub
+   g. clean_all - cleanup everything
+   h. options:
+      i.   MACHINE=BIT64/BIT32 - Specify underlying machine type. Default is BIT32
+      ii.  NODE=TEST_STUB      - Specify if it is a test node. Mandatory for cu_stub/ric_stub. Must not be used for odu
+      iii. MODE=FDD/TDD        - Specify duplex mode. Default is FDD
+      iv.  PHY=INTEL_L1        - Specify type of phy. If not specified, PHY stub is used
+      v.   PHY_MODE=TIMER      - Specify mode of phy. Used only if PHY=INTEL_L1. Default is radio mode
+      vi.  O1_ENABLE=YES       - Specify if O1 interface is enabled. If not specified, it is disabled 
+
+2. Building ODU binary:
    a. Build folder
          cd l2/build/odu
    b. Building ODU binary
-         make odu MACHINE=BIT64 MODE=FDD
+         make odu MACHINE=<refer section D.1.h>  MODE=<refer section D.1.h>
    c. Cleaning ODU binary
-         make clean_odu MACHINE=BIT64 MODE=FDD
+         make clean_odu MACHINE=<refer section D.1.h> MODE=<refer section D.1.h>
 
-2. Building CU Stub binary:
+3. Building CU Stub binary:
    a. Build folder
          cd l2/build/odu
    b. Building CU Stub binary
-         make cu_stub NODE=TEST_STUB MACHINE=BIT64 MODE=FDD
+         make cu_stub NODE=<refer section D.1.h> MACHINE=<refer section D.1.h> MODE=<refer section D.1.h>
    c. Cleaning CU Stub binary
-         make clean_cu NODE=TEST_STUB MACHINE=BIT64 MODE=FDD
+         make clean_cu NODE=<refer section D.1.h> MACHINE=<refer section D.1.h> MODE=<refer section D.1.h>
 
-3. Building RIC Stub binary:
+4. Building RIC Stub binary:
    a. Build folder
          cd l2/build/odu
    b. Building RIC Stub binary
-         make ric_stub NODE=TEST_STUB MACHINE=BIT64 MODE=FDD
+         make ric_stub NODE=<refer section D.1.h> MACHINE=<refer section D.1.h> MODE=<refer section D.1.h>
    c. Cleaning RIC Stub binary
-         make clean_ric NODE=TEST_STUB MACHINE=BIT64 MODE=FDD
+         make clean_ric NODE=<refer section D.1.h> MACHINE=<refer section D.1.h> MODE=<refer section D.1.h>
 
-4. Cleaning ODU, CU Stub and RIC Stub:
+5. Cleaning ODU, CU Stub and RIC Stub:
       make clean_all
 
 
@@ -118,25 +134,25 @@ E. How to Clean and Build with O1 interface enabled (Requires pre-requisite step
    a. Build folder
          cd l2/build/odu
    b. Building ODU binary
-         make odu MACHINE=BIT64 MODE=FDD O1_ENABLE=YES
+         make odu MACHINE=<refer section D.1.h> MODE=<refer section D.1.h> O1_ENABLE=<refer section D.1.h>
    c. Cleaning ODU binary
-         make clean_odu MACHINE=BIT64 MODE=FDD O1_ENABLE=YES
+         make clean_odu MACHINE=<refer section D.1.h> MODE=<refer section D.1.h> O1_ENABLE=<refer section D.1.h>
 
 2. Building CU Stub binary:
    a. Build folder
          cd l2/build/odu
    b. Building CU Stub binary
-         make cu_stub NODE=TEST_STUB MACHINE=BIT64 MODE=FDD O1_ENABLE=YES
+         make cu_stub NODE=<refer section D.1.h> MACHINE=<refer section D.1.h> MODE=<refer section D.1.h> O1_ENABLE=<refer section D.1.h>
    c. Cleaning CU Stub binary
-         make clean_cu NODE=TEST_STUB MACHINE=BIT64 MODE=FDD O1_ENABLE=YES
+         make clean_cu NODE=<refer section D.1.h> MACHINE=<refer section D.1.h> MODE=<refer section D.1.h> O1_ENABLE=<refer section D.1.h>
 
 3. Building RIC Stub binary:
    a. Build folder
          cd l2/build/odu
    b. Building RIC Stub binary
-         make ric_stub NODE=TEST_STUB MACHINE=BIT64 MODE=FDD O1_ENABLE=YES
+         make ric_stub NODE=<refer section D.1.h> MACHINE=<refer section D.1.h> MODE=<refer section D.1.h> O1_ENABLE=<refer section D.1.h>
    c. Cleaning RIC Stub binary
-         make clean_ric NODE=TEST_STUB MACHINE=BIT64 MODE=FDD O1_ENABLE=YES
+         make clean_ric NODE=<refer section D.1.h> MACHINE=<refer section D.1.h> MODE=<refer section D.1.h> O1_ENABLE=<refer section D.1.h>
 
 4. Cleaning ODU, CU Stub and RIC Stub:
       make clean_all
@@ -194,19 +210,24 @@ I. Compilation
       c. Build folder
                 cd l2/build/odu
       d. Build ODU Binary:
-                make odu PHY=INTEL_L1 PHY_MODE=TIMER MACHINE=BIT64 MODE=FDD
+		          make odu PHY=<refer section D.1.h> PHY_MODE=<refer section D.1.h> MACHINE=<refer section D.1.h> MODE=<refer section D.1.h>
 
    2. Build CU Stub and RIC Stub:
-      a. Execute steps in sections D.2 and D.3.
+      a. Execute steps in sections D.3 and D.4
 
 II. Execution
-    1. Execute L1:
+    1. Refer to below link for assumptions, dependencies, pre-requisites etc for ODU-Low execution
+       https://docs.o-ran-sc.org/projects/o-ran-sc-o-du-phy/en/latest/
+
+    2. Execute L1:
        a. Setup environment:
                 cd <intel_directory>/phy/
                 source ./setupenv.sh
        b. Run L1 binary :
                 cd <intel_directory>/FlexRAN/l1/bin/nr5g/gnb/l1
-                To run in timer mode : ./l1.sh -e
+                To run 
+			i.  In timer mode : ./l1.sh -e
+                	ii. In radio mode : ./l1.sh -xran
                 L1 is up when console prints follow:
 
                    Non BBU threads in application
@@ -217,7 +238,7 @@ II. Execution
                  
                    PHY>welcome to application console
 
-    2. Execute FAPI Translator:
+    3. Execute FAPI Translator:
        a. Setup environment:
                 cd <intel_directory>/phy/
                 source ./setupenv.sh
@@ -225,10 +246,10 @@ II. Execution
                 cd <intel_directory>/phy/fapi_5g/bin/
                 ./oran_5g_fapi --cfg=oran_5g_fapi.cfg
 
-    3. Execute CU Stub and RIC Stub:
+    4. Execute CU Stub and RIC Stub:
        a. Run steps in sections E.1-E.3
 
-    4. Execute DU:
+    5. Execute DU:
        a. DU execution folder
           	cd l2/bin/odu
        b. Export WLS library path
