@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "addaa635_5815e042",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-06-04T13:48:23Z",
+      "side": 1,
+      "message": "Hi,\n\nI have incorporated review comments.\nPlease have a look and the provide +1.\n\nRegards,\nHariom",
+      "revId": "3237f03c94d26ac4789dc0f18922ae7cfb9a3c99",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}

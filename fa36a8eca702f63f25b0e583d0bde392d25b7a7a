@@ -104,6 +104,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "075efc2d_81a99bb4",
+        "filename": "build/yang/o-ran-sc-du-hello-world.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-06-04T13:48:23Z",
+      "side": 1,
+      "message": "As agreed. We will take care these in E-Release.",
+      "parentUuid": "3c252b34_0c83b012",
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "22d07787_b113cd88",
@@ -135,6 +153,24 @@
       "side": 1,
       "message": "Using OAM yang file.",
       "parentUuid": "22d07787_b113cd88",
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0eed4735_765d3462",
+        "filename": "build/yang/o-ran-sc-du-hello-world.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-06-04T13:48:23Z",
+      "side": 1,
+      "message": "As agreed. We will take care these in E-Release.",
+      "parentUuid": "e5f2acbc_da34e67e",
       "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -174,6 +210,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "98a6c772_6c9988b4",
+        "filename": "build/yang/o-ran-sc-du-hello-world.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-06-04T13:48:23Z",
+      "side": 1,
+      "message": "As agreed. We will take care these in E-Release.",
+      "parentUuid": "7c7fec46_b8e11d8e",
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "838c9159_1ddd2c60",
@@ -209,6 +263,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3e86f30_ed439273",
+        "filename": "build/yang/o-ran-sc-du-hello-world.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-06-04T13:48:23Z",
+      "side": 1,
+      "message": "As agreed. We will take care these in E-Release.",
+      "parentUuid": "f46b4790_4f85dbe2",
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bff98a06_b4869704",
@@ -240,6 +312,24 @@
       "side": 1,
       "message": "Using OAM yang file.",
       "parentUuid": "bff98a06_b4869704",
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12c78e32_c001d464",
+        "filename": "build/yang/o-ran-sc-du-hello-world.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-06-04T13:48:23Z",
+      "side": 1,
+      "message": "As agreed. We will take care these in E-Release.",
+      "parentUuid": "bb068bb7_1454a413",
       "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -284,6 +374,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d87b82b_ba477823",
+        "filename": "src/o1/CellOpStateCb.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-06-04T13:48:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0b73aab1_a3ed4481",
+      "range": {
+        "startLine": 403,
+        "startChar": 32,
+        "endLine": 403,
+        "endChar": 69
+      },
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f65f825a_c7fb83f6",
@@ -297,6 +411,30 @@
       "writtenOn": "2021-05-28T14:43:30Z",
       "side": 1,
       "message": "Naming normally should not have \"Struct\". Can we remove this?",
+      "range": {
+        "startLine": 40,
+        "startChar": 15,
+        "endLine": 40,
+        "endChar": 32
+      },
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1f31696_6a3296b3",
+        "filename": "src/o1/CellOpStateCb.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-06-04T13:48:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f65f825a_c7fb83f6",
       "range": {
         "startLine": 40,
         "startChar": 15,
@@ -330,6 +468,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "77624294_69d0e391",
+        "filename": "src/o1/CellOpStateCb.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-06-04T13:48:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cdf6ceec_0921bf3a",
+      "range": {
+        "startLine": 44,
+        "startChar": 1,
+        "endLine": 44,
+        "endChar": 5
+      },
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "31dc7b3f_21be65d7",
@@ -343,6 +505,30 @@
       "writtenOn": "2021-05-28T14:43:30Z",
       "side": 1,
       "message": "Why do we need this to be Singleton? Callback classes should avoid this. Can you check?",
+      "range": {
+        "startLine": 46,
+        "startChar": 29,
+        "endLine": 46,
+        "endChar": 38
+      },
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa16cea1_7223e874",
+        "filename": "src/o1/CellOpStateCb.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-06-04T13:48:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "31dc7b3f_21be65d7",
       "range": {
         "startLine": 46,
         "startChar": 29,
@@ -376,6 +562,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "55d447b5_6eff3e22",
+        "filename": "src/o1/CellOpStateCb.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-06-04T13:48:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "87bdc4d2_be50771a",
+      "range": {
+        "startLine": 63,
+        "startChar": 11,
+        "endLine": 63,
+        "endChar": 28
+      },
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0fc6b22a_d2bfbcc6",
@@ -399,6 +609,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2625c187_fc0098cc",
+        "filename": "src/o1/CellOpStateCb.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-06-04T13:48:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0fc6b22a_d2bfbcc6",
+      "range": {
+        "startLine": 66,
+        "startChar": 11,
+        "endLine": 66,
+        "endChar": 27
+      },
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c84971b_cf22b585",
@@ -412,6 +646,30 @@
       "writtenOn": "2021-05-28T14:43:30Z",
       "side": 1,
       "message": "Can we change this to setCellOpState?",
+      "range": {
+        "startLine": 166,
+        "startChar": 5,
+        "endLine": 166,
+        "endChar": 22
+      },
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea0d9f7a_5b3da73c",
+        "filename": "src/o1/ConfigInterface.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-06-04T13:48:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c84971b_cf22b585",
       "range": {
         "startLine": 166,
         "startChar": 5,
@@ -453,6 +711,24 @@
       "side": 1,
       "message": "You are correct but currently we are not handling the NACM configuration. During the edit-config we are getting access denied by the server for the “netconf” user we created due to NACM. So for time being we are disabling NACM.\n\n@\u0027Alex Stancu\u0027 : Could you please guide me how you have handled NACM setting in O1 simulator.",
       "parentUuid": "81513d5b_ac53cc80",
+      "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfd2c54e_977c160b",
+        "filename": "src/o1/InitConfig.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-06-04T13:48:23Z",
+      "side": 1,
+      "message": "Now we are removed the disabling part and using config file to upload the NACM configuration. Probably in the next patch we will add the NACM configuration support properly.",
+      "parentUuid": "d4aeab71_eaf89534",
       "revId": "fa36a8eca702f63f25b0e583d0bde392d25b7a7a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
