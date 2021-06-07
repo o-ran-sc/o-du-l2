@@ -283,7 +283,7 @@ link_cu:
 		$(L_OPTS) -L$(LIB_ROOT)/cu_stub -L$(ROOT_DIR)/libs/cu_stub
 		$(Q)cp -f ./obj/cu_stub/cu_stub ./bin/cu_stub
 		$(Q)cp -rf ./bin/cu_stub $(ROOT_DIR)/bin/
-		$(Q)cp -f ../scripts/cu_script.sh $(ROOT_DIR)/bin/cu_stub
+		$(Q)cp -f ../scripts/start_cu_stub_logging.sh $(ROOT_DIR)/bin/cu_stub
 		$(Q)echo -e "***** CU STUB BUILD COMPLETE *****"
 
 ric: 
@@ -320,19 +320,19 @@ link_ric:
 		$(L_OPTS) -L$(LIB_ROOT)/ric_stub -L$(ROOT_DIR)/libs/ric_stub
 		$(Q)cp -f ./obj/ric_stub/ric_stub ./bin/ric_stub
 		$(Q)cp -rf ./bin/ric_stub $(ROOT_DIR)/bin/
+		$(Q)cp -f ../scripts/start_ric_stub_logging.sh $(ROOT_DIR)/bin/ric_stub
 		$(Q)echo -e "***** RIC STUB BUILD COMPLETE *****"
 
 
 copy_build: link_du
 			$(Q)cp -f ./obj/odu/odu ./bin/odu
 			$(Q)cp -rf ./bin/odu $(ROOT_DIR)/bin/
-			$(Q)cp -f ../scripts/odu_script.sh $(ROOT_DIR)/bin/odu
+			$(Q)cp -f ../scripts/start_du_logging.sh $(ROOT_DIR)/bin/odu
 			$(Q)cp -rf ../config/ $(ROOT_DIR)/bin/odu
 			$(Q)cp -f ./lib/odu/*.a $(ROOT_DIR)/libs/
 		   $(Q)echo -e "***** BUILD COMPLETE *****"
 
 odu: prepare_dirs copy_build
-
 cu_stub: prepare_cu_dirs cu link_cu
 ric_stub: prepare_ric_dirs ric link_ric
 

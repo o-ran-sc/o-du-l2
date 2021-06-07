@@ -123,7 +123,7 @@ Setting up Netconf server
    - Ubuntu :  
    
        | cd <O-DU High Directory>/l2/build/scripts
-       | sudo ./install_lib.sh -c
+       | sudo ./install_lib_O1.sh -c
 
 - Start Netopeer2-server:
        
