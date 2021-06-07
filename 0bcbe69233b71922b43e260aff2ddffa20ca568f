@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b72d1cbe_f3d73973",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2021-06-07T06:14:01Z",
+      "side": 1,
+      "message": "Few more comments from my side",
+      "revId": "0bcbe69233b71922b43e260aff2ddffa20ca568f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "452c3cbf_b0abf2d0",
+        "filename": "build/common/ves.mak",
+        "patchSetId": 6
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2021-06-07T06:14:01Z",
+      "side": 1,
+      "message": "Please follow the library name convention. It can be libves.a",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 43
+      },
+      "revId": "0bcbe69233b71922b43e260aff2ddffa20ca568f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "107780f9_eebf5994",
+        "filename": "build/common/ves.mak",
+        "patchSetId": 6
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2021-06-07T06:14:01Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 43
+      },
+      "revId": "0bcbe69233b71922b43e260aff2ddffa20ca568f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "075df8c1_4aee7b4d",
+        "filename": "src/o1/NrCellList.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2021-06-07T06:14:01Z",
+      "side": 1,
+      "message": "bringCellUp and bringCellDown can be called from NrCellCB, this class should be meant only for storing and fetching the cell information for each cell",
+      "range": {
+        "startLine": 81,
+        "startChar": 1,
+        "endLine": 92,
+        "endChar": 4
+      },
+      "revId": "0bcbe69233b71922b43e260aff2ddffa20ca568f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62da9f67_359ad68a",
+        "filename": "src/o1/NrCellList.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2021-06-07T06:14:01Z",
+      "side": 1,
+      "message": "should return a const reference to map so that the private map\ncannot be modified outside the class",
+      "range": {
+        "startLine": 43,
+        "startChar": 6,
+        "endLine": 43,
+        "endChar": 60
+      },
+      "revId": "0bcbe69233b71922b43e260aff2ddffa20ca568f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
