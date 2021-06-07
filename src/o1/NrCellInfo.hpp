@@ -1,6 +1,6 @@
 /*******************************************************************************
 ################################################################################
-#   Copyright (c) [2020] [HCL Technologies Ltd.]                               #
+#   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
 #                                                                              #
 #   Licensed under the Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
@@ -16,38 +16,45 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains global definitions for O1 interface modules */
+/* This file contains parameters list of a cell for CLA use case*/
 
-#ifndef __GLOBAL_DEFS_HPP__
-#define __GLOBAL_DEFS_HPP__
+#ifndef __NR_CELL_INFO_HPP__
+#define __NR_CELL_INFO_HPP__
 
-#include <syslog.h>
-#include <string>
+#include <string.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include "sysrepo-cpp/Session.hpp"
+#include "ConfigInterface.h"
+#include "GlobalDefs.hpp"
+#include "Singleton.hpp"
+#include "NrCellInfo.hpp"
 
-using std::string;
 
-#define O1_LOG(...) ( {\
-		printf(__VA_ARGS__);\
-		syslog(LOG_DEBUG,__VA_ARGS__);\
-		} )
-
-#define ALARM_MODULE_NAME_3GPP "_3gpp-common-fm"
-#define ALARM_MODULE_PATH_3GPP "/_3gpp-common-fm:AlarmListGrp"
-#define ALARM_MODULE_NAME_ORAN "o-ran-sc-odu-alarm-v1"
-#define ALARM_MODULE_PATH_ORAN "/o-ran-sc-odu-alarm-v1:odu"
-#define CELL_STATE_MODULE_NAME "o-ran-sc-du-hello-world"
-#define CELL_STATE_MODULE_PATH "/o-ran-sc-du-hello-world:network-function"
-#define IETF_NACM_MODULE_NAME "ietf-netconf-acm"
-#define IETF_NACM_MODULE_PATH "/ietf-netconf-acm:nacm"
-#define MAX_ALARM_ID_LEN 10
-
-class O1 
+typedef enum AdminState{
+   LOCKED,
+   UNLOCKED,
+   SHUTTING_DOWN
+}adminState;
+      
+class NrCellInfo
 {
    public:
-   static const int   SUCCESS;
-   static const int   FAILURE;
-   static const string ALARM_SOCK_PATH;
-   static const int CPU_CORE;
+      inline void setCellId(uint16_t id) { mCellId = id;}
+      inline void setOpState(OpState state) { mOpState = state;}
+      inline void setCellState( CellState state) { mCellState = state;} 
+      inline uint16_t getCellId() const {return mCellId;}
+      inline OpState getOpState() const { return mOpState;}
+      inline CellState getCellState() const { return mCellState;}
+ 
+      string enumToOperationalStateString(OpState val);
+      string enumToCellStateString(CellState val);
+      AdminState adminStateToEnum(string val);
+
+   private:
+      uint16_t mCellId;
+      OpState mOpState;
+      CellState mCellState;
 };
 
 #endif
