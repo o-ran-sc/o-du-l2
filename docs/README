@@ -47,8 +47,8 @@ C. Pre-requisite for O1 Interface (Required only if run with O1 interface enable
         cat /home/netconf/.ssh/id_dsa.pub > /home/netconf/.ssh/authorized_keys
 	Install netconf packages. 
 	$cd l2/build/scripts
-	$chmod +x install_lib.sh
-	$ ./install_lib.sh -c
+	$chmod +x install_lib_O1.sh
+	$ ./install_lib_O1.sh -c
 
 2. Start Netopeer2-server:
    $cd l2/build/scripts
