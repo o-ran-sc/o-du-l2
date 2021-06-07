@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fc82434_fb70509f",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-07T06:25:15Z",
+      "side": 1,
+      "message": "Just say \"Cell [%d] does not exist. Error occurred at SFN [%d] Slot [%d]\"",
+      "revId": "dfa354527d4a9708c92265696c9ad9638c790cfb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7cd04e7_a066143d",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 739,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-07T06:25:15Z",
+      "side": 1,
+      "message": "sequence of param : cellId, ueId, result",
+      "revId": "dfa354527d4a9708c92265696c9ad9638c790cfb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abba694f_c226a824",
+        "filename": "src/5gnrrlc/rlc_tmr.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-07T06:25:15Z",
+      "side": 1,
+      "message": "Can all the above declarations be moved to a header file?",
+      "revId": "dfa354527d4a9708c92265696c9ad9638c790cfb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "acbb9c5a_9294f894",
+        "filename": "src/5gnrrlc/rlc_tmr.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 615,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-07T06:25:15Z",
+      "side": 1,
+      "message": "Check if rlcUeCfg is being freed in RlcProcCfgReq() in both failure and success cases.\nIf so, then you must not free here again.",
+      "revId": "dfa354527d4a9708c92265696c9ad9638c790cfb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ad2759d_fc118ebe",
+        "filename": "src/5gnrrlc/rlc_utils.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-07T06:25:15Z",
+      "side": 1,
+      "message": "Wait time*",
+      "revId": "dfa354527d4a9708c92265696c9ad9638c790cfb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4fb82e2_e408389c",
+        "filename": "src/5gnrrlc/rlc_utils.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 440,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-07T06:25:15Z",
+      "side": 1,
+      "message": "Is 1ms sufficient? Discuss.",
+      "revId": "dfa354527d4a9708c92265696c9ad9638c790cfb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8362a5fd_a6d77969",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 12648,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-07T06:25:15Z",
+      "side": 1,
+      "message": "\"Proc\" term is used when a msg is received and being processed.\nHere you are sending Cell delete request, not processing it.\nProcessing will be done by receiver i.e. MAC and SCH in this case.\nCall this function something like duSendCellDeletReq or duCellDeleteReq\n\nRemember this convention when naming any function",
+      "revId": "dfa354527d4a9708c92265696c9ad9638c790cfb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "545de524_16ca9cbe",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 3383,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-07T06:25:15Z",
+      "side": 1,
+      "message": "say ueCb is null",
+      "revId": "dfa354527d4a9708c92265696c9ad9638c790cfb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}

@@ -596,6 +596,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "069e6dab_610ca684",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3371,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-07T06:25:15Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a7227310_72ff198f",
+      "revId": "a5066acc2484dfd1675078cb2be3433d68d064ec",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "97484cdb_dc6a438c",
