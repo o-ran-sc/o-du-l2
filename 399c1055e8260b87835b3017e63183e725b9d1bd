@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "050e9f36_165e8564",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-06-07T11:30:14Z",
+      "side": 1,
+      "message": "Hi,\n\nI have incorporated the changes.Please have a look and provide go ahead.\n\nRegards,\nHariom",
+      "revId": "399c1055e8260b87835b3017e63183e725b9d1bd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
