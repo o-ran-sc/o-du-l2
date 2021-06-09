@@ -1,0 +1,180 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2871c66_ea44b574",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-09T13:11:38Z",
+      "side": 1,
+      "message": "Is this parameter being used in multiple layers? I could see it being used only in du_app. Remove from common_def.h",
+      "revId": "3f7bf1ce8397bb10b79f1ec2d9df07e8c587d11e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7877e1ba_ac92e689",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 7652,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-09T13:11:38Z",
+      "side": 1,
+      "message": "instead of passing cellToBeDeleted into BuildAndSendDUUpdateAck(), here itself check if cellToBeDeleted\u003d\u003d false then send f1 reset",
+      "revId": "3f7bf1ce8397bb10b79f1ec2d9df07e8c587d11e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a96fcaa_f791f7a3",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2499,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-09T13:11:38Z",
+      "side": 1,
+      "message": "add blank line where necessary",
+      "revId": "3f7bf1ce8397bb10b79f1ec2d9df07e8c587d11e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ddbd8da_60cd85a0",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2516,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-09T13:11:38Z",
+      "side": 1,
+      "message": "fillCellToDeleteItem",
+      "range": {
+        "startLine": 2516,
+        "startChar": 6,
+        "endLine": 2516,
+        "endChar": 22
+      },
+      "revId": "3f7bf1ce8397bb10b79f1ec2d9df07e8c587d11e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e9a1982_a77fd6bd",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2518,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-09T13:11:38Z",
+      "side": 1,
+      "message": "return RFAILED",
+      "revId": "3f7bf1ce8397bb10b79f1ec2d9df07e8c587d11e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d37d4b0f_d6af03dd",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2596,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-09T13:11:38Z",
+      "side": 1,
+      "message": "break from while loop if array allocation fails",
+      "revId": "3f7bf1ce8397bb10b79f1ec2d9df07e8c587d11e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c158722d_6045ad39",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 11723,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-09T13:11:38Z",
+      "side": 1,
+      "message": "add reason for commenting this",
+      "revId": "3f7bf1ce8397bb10b79f1ec2d9df07e8c587d11e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f5d51d6_3644a032",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 13036,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-09T13:11:38Z",
+      "side": 1,
+      "message": "dont pass crnti separately.\nIt can be extracted from ueCb when required.",
+      "revId": "3f7bf1ce8397bb10b79f1ec2d9df07e8c587d11e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afe97257_0e9173c6",
+        "filename": "src/du_app/du_f1ap_msg_hdl.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-09T13:11:38Z",
+      "side": 1,
+      "message": "Is crnti needed to be passed separately?\nIs it not present within ueCb?",
+      "revId": "3f7bf1ce8397bb10b79f1ec2d9df07e8c587d11e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "211b804f_fd4485d6",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3083,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-09T13:11:38Z",
+      "side": 1,
+      "message": "remove loop",
+      "revId": "3f7bf1ce8397bb10b79f1ec2d9df07e8c587d11e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
