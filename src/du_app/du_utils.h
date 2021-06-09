@@ -127,9 +127,7 @@
 }
 
 
-void fillStartSymbolAndLen(uint8_t numRsrcAlloc, PdschConfig *pdschCfg, PuschCfg *puschCfg)
-;
-
+void fillStartSymbolAndLen(uint8_t numRsrcAlloc, PdschConfig *pdschCfg, PuschCfg *puschCfg);
 /**********************************************************************
          End of file
 **********************************************************************/

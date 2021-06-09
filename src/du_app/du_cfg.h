@@ -300,6 +300,12 @@ typedef enum
 
 typedef enum
 {
+   SERV_CELL_TO_MODIFY,
+   SERV_CELL_TO_DELETE
+}ServCellAction;
+
+typedef enum
+{
    UNSPECIFIED,
    RL_FAILURE_RLC,
    INVALID_CU_UE_F1AP_ID,
