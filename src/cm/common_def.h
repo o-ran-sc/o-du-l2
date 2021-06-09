@@ -257,6 +257,7 @@ typedef struct tddCfg
 #endif
 
 OduCellStatus gCellStatus;
+bool     gCellToBeDelete;
 uint64_t gSlotCount;
 uint64_t gDlDataRcvdCnt;   /* Number of DL data received at EGTP */
 

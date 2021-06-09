@@ -2510,7 +2510,7 @@ uint8_t DuProcRlcDlRrcMsgRsp(Pst *pst, RlcDlRrcMsgRsp *dlRrcMsg)
          }
          if(ueCb->f1UeDb->actionType == UE_CTXT_RELEASE)
          {
-            ret = duBuildAndSendUeDeleteReq(dlRrcMsg->cellId);
+            ret = duBuildAndSendUeDeleteReq(dlRrcMsg->cellId,dlRrcMsg->crnti);
             if(ret == RFAILED)
             {
                DU_LOG("\nERROR  -->  DU APP : Failed to process UE Context Release Request in DuProcRlcDlRrcMsgRsp()");
@@ -3070,10 +3070,10 @@ uint8_t sendUeDeleteReqToRlc(uint16_t cellId, uint8_t ueId)
  *
  * ****************************************************************/
 
-uint8_t duBuildAndSendUeDeleteReq(uint16_t cellId)
+uint8_t duBuildAndSendUeDeleteReq(uint16_t cellId, uint16_t crnti)
 {
    uint8_t  ueIdx = 0, ueId =0;
-   uint16_t cellIdx = 0, crnti   = 0;
+   uint16_t cellIdx = 0;
 
    DU_LOG("\nDEBUG  -->  DU_APP: Processing UE Delete Request ");
    GET_CELL_IDX(cellId, cellIdx);
@@ -3082,7 +3082,12 @@ uint8_t duBuildAndSendUeDeleteReq(uint16_t cellId)
    {
       for(ueIdx =0;ueIdx< duCb.actvCellLst[cellIdx]->numActvUes; ueIdx++)
       {
-         crnti = duCb.actvCellLst[cellIdx]->ueCb[ueIdx].crnti;
+         if(crnti != duCb.actvCellLst[cellIdx]->ueCb[ueIdx].crnti)
+         {
+            DU_LOG("\nERROR  -->  DU APP : duBuildAndSendUeDeleteReq(): Crnti does not exist");
+            return RFAILED;
+         }
+
          GET_UE_IDX(crnti,ueId);
          if(sendUeDeleteReqToMac(cellId, ueId, crnti) == RFAILED)
          {
@@ -3374,7 +3379,7 @@ uint8_t duSendCellDeletReq(uint16_t cellId)
 *         RFAILED - failure
 *
 * ****************************************************************/
-uint8_t duProcUeContextReleaseCommand(DuUeCb *duUeCb)
+uint8_t duProcUeContextReleaseCommand(DuUeCb *duUeCb, uint16_t crnti)
 {
    uint8_t ret =ROK, ueIdx=0;
    uint16_t cellId=0;
@@ -3408,7 +3413,7 @@ uint8_t duProcUeContextReleaseCommand(DuUeCb *duUeCb)
    }
    else
    {
-      ret = duBuildAndSendUeDeleteReq(cellId);
+      ret = duBuildAndSendUeDeleteReq(cellId,crnti);
       if(ret == RFAILED)
       {
          DU_LOG("\nERROR  -->  DU APP : duProcUeContextReleaseCommand(): Failed to build and send Ue Delete request");
