@@ -22,7 +22,6 @@
 
 uint8_t duBuildAndSendMacCellCfg(uint16_t cellId);
 uint8_t duProcCellsToBeActivated(uint8_t *plmnStr, uint16_t nci, uint16_t nRPci);
-void duProcGnbDuCfgUpdAckMsg();
 void duProcF1SetupRsp();
 uint8_t duGetCellCb(uint16_t cellId, DuCellCb **cellCb);
 #endif

@@ -22,6 +22,7 @@
 #include "legtp.h"
 #include "lkw.x"
 #include "lrg.x"
+#include "F1AP-PDU.h"
 #include "du_app_mac_inf.h"
 #include "du_cfg.h"
 #include "du_app_rlc_inf.h"
@@ -91,7 +92,6 @@
 #include "SchedulingRequestResourceConfig.h"
 #include<ProtocolIE-Field.h>
 #include "ProtocolExtensionField.h"
-#include "F1AP-PDU.h"
 #include "odu_common_codec.h"
 #include "du_mgr.h"
 #include "du_cell_mgr.h"
@@ -108,6 +108,7 @@ extern StartupConfig g_cfg;
 #endif
 
 DuCfgParams duCfgParam;
+
 /************************************************************************
  *
  * @brief Converts enum values into actual value of Poll retransmit timer
@@ -595,6 +596,109 @@ int16_t getStatProhTmr(uint8_t statProhTmrCfg)
       }
    }
    return statProhTmr; 
+}
+
+/*******************************************************************
+*
+* @brief Adding F1AP pdu to reserved pdu list
+*
+* @details
+*
+*    Function : addToReservedF1apPduList 
+*
+*    Functionality: Adding F1AP pdu to reserved pdu list.
+*     These pdu are awaiting aknowledgment from CU
+*
+* @params[in] uint8_t transId, F1AP_PDU_t *f1apMsg
+*
+* @return ROK - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+
+void addToReservedF1apPduList(uint8_t transId, F1AP_PDU_t *f1apPdu)
+{
+   CmLList         *node = NULLP;
+   ReservedF1apPduInfo *pduInfo = NULLP;
+   DU_ALLOC(pduInfo, sizeof(ReservedF1apPduInfo));
+   if(pduInfo)
+   {
+      DU_ALLOC(node, sizeof(CmLList));
+      if(node)
+      {
+         pduInfo->transId = transId;
+         pduInfo->f1apMsg = (void*) f1apPdu;
+
+         node->node = (PTR)pduInfo;
+         cmLListAdd2Tail(&duCb.reservedF1apPduList, node);
+      }
+   }
+}
+
+/*******************************************************************
+*
+* @brief searching for F1AP pdu from ReservedF1apPduList 
+*
+* @details
+*
+*    Function : searchFromReservedF1apPduList 
+*
+*    Functionality: searching for F1AP pdu information
+*
+* @params[in] uint8_t transId
+*
+* @return pointer to F1AP_PDU_t
+*
+* ****************************************************************/
+
+CmLList *searchFromReservedF1apPduList(uint8_t transId)
+{
+   CmLList         *node;
+   ReservedF1apPduInfo *f1apPdu;
+   if(duCb.reservedF1apPduList.count)
+   {
+      CM_LLIST_FIRST_NODE(&duCb.reservedF1apPduList, node);
+      while(node)
+      {
+         f1apPdu = (ReservedF1apPduInfo*)node->node;
+         if(f1apPdu->transId == transId)
+         {
+            return node;
+         }
+         node = node->next;
+      }
+   }
+   return NULL;
+}
+
+/*******************************************************************
+*
+* @brief deleting F1AP pdu information from ReservedF1apPduList
+*
+* @details
+*
+*    Function : deleteFromReservedF1apPduList 
+*
+*    Functionality: deleting pdu information from ReservedF1apPduList
+*
+* @params[in] CmLList *node 
+*
+* @return void 
+*
+* ****************************************************************/
+
+void deleteFromReservedF1apPduList(CmLList *node)
+{
+   ReservedF1apPduInfo *f1apPdu;
+
+   if(node != NULL)
+   {
+      f1apPdu = (ReservedF1apPduInfo *)node->node;
+      cmLListDelFrm(&duCb.reservedF1apPduList, node);
+      DU_FREE(f1apPdu, sizeof(ReservedF1apPduInfo));
+      DU_FREE(node, sizeof(CmLList));
+      node = NULL;
+   }
 }
 
 /*******************************************************************
@@ -1710,6 +1814,203 @@ uint8_t BuildAndSendF1SetupReq()
 
 /*******************************************************************
  *
+ * @brief Deallocating memory allocated for Served_Cells_To_Modify_Item_t
+ *
+ * @details
+ *
+ *    Function : freeCellsToModifyItem 
+ *
+ *    Functionality: Deallocating memory of variables allocated in
+ *                    BuildAndSendDUConfigUpdate function
+ *
+ * @params[in]  Served_Cells_To_Modify_Item_t *modifyItem
+ *
+ * @return ROK     - void
+ *
+ * ****************************************************************/
+
+void freeCellsToModifyItem(Served_Cells_To_Modify_Item_t *modifyItem)
+{
+   uint8_t arrIdx=0,i=0;
+   if(modifyItem->oldNRCGI.pLMN_Identity.buf != NULLP)
+   {
+      if(modifyItem->oldNRCGI.nRCellIdentity.buf != NULLP)
+      {
+         if(modifyItem->served_Cell_Information.nRCGI.pLMN_Identity.buf != NULLP)
+         {
+            if(modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.buf
+                  != NULLP)
+            {
+               if(modifyItem->served_Cell_Information.servedPLMNs.list.array\
+                     != NULLP)
+               {
+                  if(!modifyItem->served_Cell_Information.servedPLMNs.list.array[arrIdx])
+                  {
+                     if(modifyItem->served_Cell_Information.servedPLMNs.list.\
+                           array[arrIdx]->pLMN_Identity.buf != NULLP)
+                     {
+                        if(modifyItem->served_Cell_Information.servedPLMNs.list.\
+                              array[arrIdx]->iE_Extensions!= NULLP)
+                        {
+                           if(modifyItem->served_Cell_Information.servedPLMNs.list.\
+                                 array[arrIdx]->iE_Extensions->list.array != NULLP)
+                           {
+                              if(modifyItem->served_Cell_Information.servedPLMNs.list.\
+                                    array[arrIdx]->iE_Extensions->list.array[arrIdx])
+                              {
+                                 if(modifyItem->served_Cell_Information.servedPLMNs.list.array[arrIdx]->\
+                                       iE_Extensions->list.array[arrIdx]->extensionValue.choice.SliceSupportList.\
+                                       list.array !=NULLP)
+                                 {
+                                    if(modifyItem->served_Cell_Information.servedPLMNs.list.array[arrIdx]->\
+                                          iE_Extensions->list.array[arrIdx]->extensionValue.choice.SliceSupportList.\
+                                          list.array[arrIdx]!=NULLP)
+                                    {
+                                       if(modifyItem->served_Cell_Information.servedPLMNs.list.array[arrIdx]->\
+                                             iE_Extensions->list.array[arrIdx]->extensionValue.choice.SliceSupportList.\
+                                             list.array[arrIdx]->sNSSAI.sST.buf!=NULLP)
+                                       {
+                                          if(modifyItem->served_Cell_Information.servedPLMNs.list.array[arrIdx]->\
+                                                iE_Extensions->list.array[arrIdx]->extensionValue.choice.\
+                                                SliceSupportList.\
+                                                list.array[arrIdx]->sNSSAI.sD != NULLP)
+                                          {
+                                             if(modifyItem->served_Cell_Information.servedPLMNs.list.array[arrIdx]->\
+                                                   iE_Extensions->list.array[arrIdx]->extensionValue.\
+                                                   choice.SliceSupportList.\
+                                                   list.array[arrIdx]->sNSSAI.sD->buf!=NULLP)
+                                             {
+                                                if(modifyItem->served_Cell_Information.nR_Mode_Info.choice.fDD
+                                                      !=NULLP)
+                                                {
+                                                   if(modifyItem->served_Cell_Information.nR_Mode_Info.choice.\
+                                                         fDD->uL_NRFreqInfo.freqBandListNr.list.array!=NULLP)
+                                                   {
+                                                      if(modifyItem->served_Cell_Information.nR_Mode_Info.choice.\
+                                                            fDD->uL_NRFreqInfo.freqBandListNr.list.array[arrIdx]!=NULLP)
+                                                      {
+                                                         if(modifyItem->served_Cell_Information.nR_Mode_Info.choice.\
+                                                               fDD->dL_NRFreqInfo.freqBandListNr.list.array !=NULLP)
+                                                         {
+                                                            if(modifyItem->served_Cell_Information.nR_Mode_Info.\
+                                                                  choice.fDD->dL_NRFreqInfo.freqBandListNr.list.\
+                                                                  array[arrIdx]!= NULLP)
+                                                            {
+                                                               if(modifyItem->served_Cell_Information.\
+                                                                     measurementTimingConfiguration.buf !=NULLP)
+                                                               {
+                                                                  DU_FREE(modifyItem->served_Cell_Information.\
+                                                                        measurementTimingConfiguration.\
+                                                                        buf,modifyItem->served_Cell_Information.\
+                                                                        measurementTimingConfiguration.size);
+                                                               }
+                                                               DU_FREE(modifyItem->served_Cell_Information.\
+                                                                     nR_Mode_Info.choice.fDD->dL_NRFreqInfo.\
+                                                                     freqBandListNr.\
+                                                                     list.array[arrIdx],sizeof(FreqBandNrItem_t));
+                                                            }
+                                                            DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info\
+                                                                  .choice.fDD->dL_NRFreqInfo.freqBandListNr.list.array,\
+                                                                  modifyItem->served_Cell_Information.nR_Mode_Info.\
+                                                                  choice.fDD->dL_NRFreqInfo.freqBandListNr.list.size);
+                                                         }
+                                                         DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.\
+                                                               choice.fDD->uL_NRFreqInfo.freqBandListNr.list.\
+                                                               array[arrIdx],sizeof(FreqBandNrItem_t));
+                                                      }
+                                                      DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.\
+                                                            choice.\
+                                                            fDD->uL_NRFreqInfo.freqBandListNr.list.\
+                                                            array,modifyItem->served_Cell_Information.nR_Mode_Info.\
+                                                            choice.fDD->uL_NRFreqInfo.freqBandListNr.list.size);
+                                                   }
+                                                   DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.choice.\
+                                                         fDD,sizeof(FDD_Info_t));
+                                                }
+                                                DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
+                                                      array[arrIdx]->iE_Extensions->list.array[arrIdx]->extensionValue.\
+                                                      choice.SliceSupportList.\
+                                                      list.array[arrIdx]->sNSSAI.sD->buf,modifyItem->\
+                                                      served_Cell_Information.\
+                                                      servedPLMNs.list.array[arrIdx]->iE_Extensions->list.\
+                                                      array[arrIdx]->\
+                                                      extensionValue.choice.SliceSupportList.list.array[arrIdx]->\
+                                                      sNSSAI.sD->size);
+
+                                             }
+                                             DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
+                                                   array[arrIdx]->\
+                                                   iE_Extensions->list.array[arrIdx]->extensionValue.choice.\
+                                                   SliceSupportList.\
+                                                   list.array[arrIdx]->sNSSAI.sD,sizeof(OCTET_STRING_t));
+                                          }
+                                          DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[arrIdx]->\
+                                                iE_Extensions->list.array[arrIdx]->extensionValue.choice.\
+                                                SliceSupportList.\
+                                                list.array[arrIdx]->sNSSAI.sST.buf,modifyItem->served_Cell_Information.\
+                                                servedPLMNs.\
+                                                list.array[arrIdx]->iE_Extensions->list.array[arrIdx]->\
+                                                extensionValue.choice.\
+                                                SliceSupportList.list.array[arrIdx]->sNSSAI.sST.size);
+                                       }
+                                       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[arrIdx]->\
+                                             iE_Extensions->list.array[arrIdx]->extensionValue.choice.SliceSupportList.\
+                                             list.array[arrIdx],sizeof(SliceSupportItem_t));
+                                    }
+                                    DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[arrIdx]->\
+                                          iE_Extensions->list.array[arrIdx]->extensionValue.choice.SliceSupportList.\
+                                          list.array,\
+                                          modifyItem->served_Cell_Information.servedPLMNs.list.array[arrIdx]->\
+                                          iE_Extensions->list.array[arrIdx]->extensionValue.choice.\
+                                          SliceSupportList.list.size);
+                                 }
+                              }
+                              for(i=0;i<modifyItem->served_Cell_Information.servedPLMNs.list.\
+                                    array[arrIdx]->iE_Extensions->list.count;i++)
+                              {
+                                 DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
+                                       array[arrIdx]->iE_Extensions->list.array[i],\
+                                       sizeof(ServedPLMNs_ItemExtIEs_t ));
+                              }
+                              DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
+                                    array[arrIdx]->iE_Extensions->list.array,modifyItem->served_Cell_Information.\
+                                    servedPLMNs.list.array[arrIdx]->iE_Extensions->list.size);
+                           }
+                           DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
+                                 array[arrIdx]->iE_Extensions,sizeof(ProtocolExtensionContainer_4624P3_t));
+                        }
+                        DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
+                              array[arrIdx]->pLMN_Identity.buf,
+                              modifyItem->served_Cell_Information.servedPLMNs.list.array[arrIdx]->pLMN_Identity.size);
+                     }
+                  }
+                  for(i=0;i<modifyItem->served_Cell_Information.servedPLMNs.list.count;i++)
+                  {
+                     if(modifyItem->served_Cell_Information.servedPLMNs.list.array[i]
+                           != NULLP)
+                     {
+                        DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[i],\
+                              sizeof(ServedPLMNs_Item_t));
+                     }
+                  }
+                  DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array,\
+                        modifyItem->served_Cell_Information.servedPLMNs.list.size);
+               }
+               DU_FREE(modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.buf,\
+                     modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.size);
+            }
+            DU_FREE(modifyItem->served_Cell_Information.nRCGI.pLMN_Identity.buf,\
+                  modifyItem->served_Cell_Information.nRCGI.pLMN_Identity.size);
+         }
+         DU_FREE(modifyItem->oldNRCGI.nRCellIdentity.buf,\
+               modifyItem->oldNRCGI.nRCellIdentity.size);
+      }
+      DU_FREE(modifyItem->oldNRCGI.pLMN_Identity.buf,\
+            modifyItem->oldNRCGI.pLMN_Identity.size);  
+   }
+}
+/*******************************************************************
+ *
  * @brief Deallocating memory of BuildAndSendDUConfigUpdate
  *
  * @details
@@ -1726,231 +2027,93 @@ uint8_t BuildAndSendF1SetupReq()
  * ****************************************************************/
 void FreeDUConfigUpdate(F1AP_PDU_t *f1apDuCfg)
 {
-   uint8_t  i;
-   uint8_t  idx;
+   uint8_t  ieIdx=0, cellModifyIdx=0, cellDeleteIdx=0;
    GNBDUConfigurationUpdate_t *duCfgUpdate = NULLP;
-   Served_Cells_To_Modify_List_t  *cellsToModify;
-   Served_Cells_To_Modify_Item_t *modifyItem;
-   idx=0;
-   i=1;
+   Served_Cells_To_Modify_List_t  *cellsToModify=NULLP;
+   Served_Cells_To_Delete_List_t  *cellsToDelete=NULLP;
+   Served_Cells_To_Delete_Item_t  *deleteItem = NULLP;
+   Served_Cells_To_Delete_ItemIEs_t *deleteItemIe = NULLP;
+
    if(f1apDuCfg != NULLP)
    {
       if(f1apDuCfg->choice.initiatingMessage != NULLP)
       {
-	 duCfgUpdate = &f1apDuCfg->choice.initiatingMessage->\
-		       value.choice.GNBDUConfigurationUpdate;
-	 if(duCfgUpdate->protocolIEs.list.array != NULLP)
-	 {
-	    if(duCfgUpdate->protocolIEs.list.array[i] != NULLP)
-	    {
-	       cellsToModify = &duCfgUpdate->protocolIEs.list.array[i]->\
-			       value.choice.Served_Cells_To_Modify_List;
-	       if(cellsToModify->list.array != NULLP)
-	       {
-		  if(cellsToModify->list.array[idx] != NULLP)
-		  {
-		     modifyItem=&cellsToModify->list.array[idx]->value.choice.\
-				Served_Cells_To_Modify_Item;
-		     if(modifyItem->oldNRCGI.pLMN_Identity.buf != NULLP)
-		     {
-			if(modifyItem->oldNRCGI.nRCellIdentity.buf != NULLP)
-			{
-			   if(modifyItem->served_Cell_Information.nRCGI.pLMN_Identity.buf != NULLP)
-			   {
-			      if(modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.buf
-				    != NULLP)
-			      { 
-				 if(modifyItem->served_Cell_Information.servedPLMNs.list.array\
-				       != NULLP)
-				 {
-				    if(!modifyItem->served_Cell_Information.servedPLMNs.list.array[idx])
-				    {
-				       if(modifyItem->served_Cell_Information.servedPLMNs.list.\
-					     array[idx]->pLMN_Identity.buf != NULLP)
-				       {
-					  if(modifyItem->served_Cell_Information.servedPLMNs.list.\
-						array[idx]->iE_Extensions!= NULLP)
-					  {
-					     if(modifyItem->served_Cell_Information.servedPLMNs.list.\
-						   array[idx]->iE_Extensions->list.array != NULLP)
-					     {
-						if(modifyItem->served_Cell_Information.servedPLMNs.list.\
-						      array[idx]->iE_Extensions->list.array[idx])
-						{
-						   if(modifyItem->served_Cell_Information.servedPLMNs.list.array[idx]->\
-							 iE_Extensions->list.array[idx]->extensionValue.choice.SliceSupportList.\
-							 list.array !=NULLP)
-						   {
-						      if(modifyItem->served_Cell_Information.servedPLMNs.list.array[idx]->\
-							    iE_Extensions->list.array[idx]->extensionValue.choice.SliceSupportList.\
-							    list.array[idx]!=NULLP)
-						      {   
-							 if(modifyItem->served_Cell_Information.servedPLMNs.list.array[idx]->\
-							       iE_Extensions->list.array[idx]->extensionValue.choice.SliceSupportList.\
-							       list.array[idx]->sNSSAI.sST.buf!=NULLP)
-							 {
-							    if(modifyItem->served_Cell_Information.servedPLMNs.list.array[idx]->\
-								  iE_Extensions->list.array[idx]->extensionValue.choice.SliceSupportList.\
-								  list.array[idx]->sNSSAI.sD != NULLP)
-							    { 
-							       if(modifyItem->served_Cell_Information.servedPLMNs.list.array[idx]->\
-								     iE_Extensions->list.array[idx]->extensionValue.choice.SliceSupportList.\
-								     list.array[idx]->sNSSAI.sD->buf!=NULLP)
-							       {
-								  if(modifyItem->served_Cell_Information.nR_Mode_Info.choice.fDD
-									!=NULLP)
-								  {
-								     if(modifyItem->served_Cell_Information.nR_Mode_Info.choice.\
-									   fDD->uL_NRFreqInfo.freqBandListNr.list.array!=NULLP)
-								     {
-									if(modifyItem->served_Cell_Information.nR_Mode_Info.choice.\
-									      fDD->uL_NRFreqInfo.freqBandListNr.list.array[idx]!=NULLP)
-									{
-									   if(modifyItem->served_Cell_Information.nR_Mode_Info.choice.\
-										 fDD->dL_NRFreqInfo.freqBandListNr.list.array !=NULLP)
-									   {
-									      if(modifyItem->served_Cell_Information.nR_Mode_Info.\
-										    choice.fDD->dL_NRFreqInfo.freqBandListNr.list.\
-										    array[idx]!= NULLP)
-									      {
-										 if(modifyItem->served_Cell_Information.\
-										       measurementTimingConfiguration.buf !=NULLP)
-										 {
-										    idx=2;
-										    if(duCfgUpdate->protocolIEs.list.array[idx]->value.\
-											  choice.GNB_DU_ID.buf!=NULLP)
-										    {
-										       DU_FREE(duCfgUpdate->protocolIEs.list.\
-											     array[idx]->value.choice.GNB_DU_ID.buf,\
-											     duCfgUpdate->protocolIEs.list.array[idx]->\
-											     value.choice.GNB_DU_ID.size);
-										    }
-										    idx=0;
-										    DU_FREE(modifyItem->served_Cell_Information.\
-											  measurementTimingConfiguration.\
-											  buf,modifyItem->served_Cell_Information.\
-											  measurementTimingConfiguration.size);
-										 }
-										 DU_FREE(modifyItem->served_Cell_Information.\
-										       nR_Mode_Info.choice.fDD->dL_NRFreqInfo.freqBandListNr.\
-										       list.array[idx],sizeof(FreqBandNrItem_t));
-									      }
-									      DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info\
-										    .choice.fDD->dL_NRFreqInfo.freqBandListNr.list.array,\
-										    modifyItem->served_Cell_Information.nR_Mode_Info.\
-										    choice.fDD->dL_NRFreqInfo.freqBandListNr.list.size);
-									   }
-									   DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.\
-										 choice.fDD->uL_NRFreqInfo.freqBandListNr.list.\
-										 array[idx],sizeof(FreqBandNrItem_t));
-									}
-									DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.\
-									      choice.\
-									      fDD->uL_NRFreqInfo.freqBandListNr.list.\
-									      array,modifyItem->served_Cell_Information.nR_Mode_Info.choice.\
-									      fDD->uL_NRFreqInfo.freqBandListNr.list.size);
-								     }
-								     DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.choice.\
-									   fDD,sizeof(FDD_Info_t));
-								  }
-								  DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
-									array[idx]->iE_Extensions->list.array[idx]->extensionValue.choice.\
-									SliceSupportList.\
-									list.array[idx]->sNSSAI.sD->buf,modifyItem->served_Cell_Information.\
-									servedPLMNs.list.array[idx]->iE_Extensions->list.array[idx]->\
-									extensionValue.choice.SliceSupportList.list.array[idx]->\
-									sNSSAI.sD->size);
+         duCfgUpdate = &f1apDuCfg->choice.initiatingMessage->\
+                       value.choice.GNBDUConfigurationUpdate;
+         if(duCfgUpdate->protocolIEs.list.array != NULLP)
+         {
+            for(ieIdx=0; ieIdx<duCfgUpdate->protocolIEs.list.count; ieIdx++)
+            {
+               if(duCfgUpdate->protocolIEs.list.array[ieIdx] != NULLP)
+               {
+                  switch(duCfgUpdate->protocolIEs.list.array[ieIdx]->id)
+                  {
+                     case ProtocolIE_ID_id_TransactionID: 
+                        break;
+                     case ProtocolIE_ID_id_Served_Cells_To_Modify_List:
+                        {
+                           cellsToModify = &duCfgUpdate->protocolIEs.list.array[ieIdx]->\
+                                           value.choice.Served_Cells_To_Modify_List;
+                           if(cellsToModify->list.array != NULLP)
+                           {
+                              for(cellModifyIdx=0; cellModifyIdx<cellsToModify->list.count ;cellModifyIdx++)
+                              {
+                                 if(cellsToModify->list.array[ieIdx] != NULLP)
+                                 {
+                                    freeCellsToModifyItem(&cellsToModify->list.array[cellModifyIdx]->value.choice.\
+                                          Served_Cells_To_Modify_Item);
+                                    DU_FREE(cellsToModify->list.array[cellModifyIdx],\
+                                          sizeof(Served_Cells_To_Modify_ItemIEs_t));
+                                 }
+                                 DU_FREE(cellsToModify->list.array,cellsToModify->list.size);
+                              }
+                           }
+                           break;
+                        }
+                     case ProtocolIE_ID_id_Served_Cells_To_Delete_List:
+                        {
+                           cellsToDelete = &duCfgUpdate->protocolIEs.list.array[ieIdx]->\
+                                           value.choice.Served_Cells_To_Delete_List;
+                           if(cellsToDelete->list.array != NULLP)
+                           {
+                              for(cellDeleteIdx=0; cellDeleteIdx<cellsToDelete->list.count ;cellDeleteIdx++)
+                              {
+                                 if(cellsToDelete->list.array[ieIdx] != NULLP)
+                                 {
+                                    deleteItemIe = ((Served_Cells_To_Delete_ItemIEs_t*)\
+                                    cellsToDelete->list.array[ieIdx]);
+                                    deleteItem=&deleteItemIe->value.choice.Served_Cells_To_Delete_Item;
+                                    DU_FREE(deleteItem->oldNRCGI.pLMN_Identity.buf,\
+                                       deleteItem->oldNRCGI.pLMN_Identity.size); 
+                                    DU_FREE(deleteItem->oldNRCGI.nRCellIdentity.buf,\
+                                       deleteItem->oldNRCGI.nRCellIdentity.size);
+                                    DU_FREE(cellsToDelete->list.array[cellDeleteIdx],\
+                                          sizeof(Served_Cells_To_Delete_ItemIEs_t));
+                                 }
+                                 DU_FREE(cellsToDelete->list.array,cellsToDelete->list.size);
+                              }
+                           }
 
-							       }
-							       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
-								     array[idx]->\
-								     iE_Extensions->list.array[idx]->extensionValue.choice.SliceSupportList.\
-								     list.array[idx]->sNSSAI.sD,sizeof(OCTET_STRING_t));
-							    }
-							    DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[idx]->\
-								  iE_Extensions->list.array[idx]->extensionValue.choice.SliceSupportList.\
-								  list.array[idx]->sNSSAI.sST.buf,modifyItem->served_Cell_Information.\
-								  servedPLMNs.\
-								  list.array[idx]->iE_Extensions->list.array[idx]->extensionValue.choice.\
-								  SliceSupportList.list.array[idx]->sNSSAI.sST.size);
-							 }
-							 DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[idx]->\
-							       iE_Extensions->list.array[idx]->extensionValue.choice.SliceSupportList.\
-							       list.array[idx],sizeof(SliceSupportItem_t));
-						      }
-						      DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[idx]->\
-							    iE_Extensions->list.array[idx]->extensionValue.choice.SliceSupportList.\
-							    list.array,\
-							    modifyItem->served_Cell_Information.servedPLMNs.list.array[idx]->\
-							    iE_Extensions->list.array[idx]->extensionValue.choice.SliceSupportList.list.size);
-						   }
-						}
-						for(i=0;i<modifyItem->served_Cell_Information.servedPLMNs.list.\
-						      array[idx]->iE_Extensions->list.count;i++)
-						{
-						   DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
-							 array[idx]->iE_Extensions->list.array[i],\
-							 sizeof(ServedPLMNs_ItemExtIEs_t ));
-						}
-						DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
-						      array[idx]->iE_Extensions->list.array,modifyItem->served_Cell_Information.servedPLMNs.
-						      list.array[idx]->iE_Extensions->list.size);
-					     }
-					     DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
-						   array[idx]->iE_Extensions,sizeof(ProtocolExtensionContainer_4624P3_t));
-					  }
-					  DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.\
-						array[idx]->pLMN_Identity.buf,
-						modifyItem->served_Cell_Information.servedPLMNs.list.array[idx]->pLMN_Identity.size);
-				       }
-				    }
-				    for(i=0;i<modifyItem->served_Cell_Information.servedPLMNs.list.count;i++)
-				    {
-				       if(modifyItem->served_Cell_Information.servedPLMNs.list.array[i]
-					     != NULLP)
-				       {
-					  DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[i],\
-						sizeof(ServedPLMNs_Item_t));
-				       }
-				    }
-				    DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array,\
-					  modifyItem->served_Cell_Information.servedPLMNs.list.size);
-				 }
-				 DU_FREE(modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.buf,\
-				       modifyItem->served_Cell_Information.nRCGI.nRCellIdentity.size);		
-			      }
-			      DU_FREE(modifyItem->served_Cell_Information.nRCGI.pLMN_Identity.buf,\
-				    modifyItem->served_Cell_Information.nRCGI.pLMN_Identity.size);
-			   }
-			   DU_FREE(modifyItem->oldNRCGI.nRCellIdentity.buf,\
-				 modifyItem->oldNRCGI.nRCellIdentity.size);
-			}
-			DU_FREE(modifyItem->oldNRCGI.pLMN_Identity.buf,\
-			      modifyItem->oldNRCGI.pLMN_Identity.size);
-		     }
-		  }
-		  for(i=0; i<cellsToModify->list.count ;i++)
-		  {
-		     if(cellsToModify->list.array[i] != NULLP)
-		     {
-			DU_FREE(cellsToModify->list.array[i],\
-			      sizeof(Served_Cells_To_Modify_ItemIEs_t));
-		     } 
-		  }
-		  DU_FREE(cellsToModify->list.array,cellsToModify->list.size);
-	       }
-	    }
-	    for(i=0;i<duCfgUpdate->protocolIEs.list.count;i++)
-	    {
-	       if(duCfgUpdate->protocolIEs.list.array[i] !=NULLP)
-	       {
-		  DU_FREE(duCfgUpdate->protocolIEs.list.array[i],\
-			sizeof(GNBDUConfigurationUpdateIEs_t));
-	       }
-	    }
-	    DU_FREE(duCfgUpdate->protocolIEs.list.array,duCfgUpdate->protocolIEs.list.size);
-	 }
-	 DU_FREE(f1apDuCfg->choice.initiatingMessage,sizeof(InitiatingMessage_t));
+                           break;
+                        }
+                     case GNBDUConfigurationUpdateIEs__value_PR_GNB_DU_ID:
+                        {
+                           if(duCfgUpdate->protocolIEs.list.array[ieIdx]->value.\
+                                 choice.GNB_DU_ID.buf!=NULLP)
+                           {
+                              DU_FREE(duCfgUpdate->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_ID.buf,\
+                                    duCfgUpdate->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_ID.size);
+                           }
+                           break;
+                        }
+                  }
+                  DU_FREE(duCfgUpdate->protocolIEs.list.array[ieIdx],\
+                        sizeof(GNBDUConfigurationUpdateIEs_t));
+               }
+            }
+            DU_FREE(duCfgUpdate->protocolIEs.list.array,duCfgUpdate->protocolIEs.list.size);
+         }
+         DU_FREE(f1apDuCfg->choice.initiatingMessage,sizeof(InitiatingMessage_t));
       }
       DU_FREE(f1apDuCfg, (Size)sizeof(F1AP_PDU_t));
    }
@@ -2363,6 +2526,111 @@ uint8_t buildServCellToModList(Served_Cells_To_Modify_List_t *cellsToModify)
    else
       return ROK;
 }
+/*******************************************************************
+ *
+ * @brief filling the DeleteItemList
+ *
+ * @details
+ *
+ *    Function : fillCellToDeleteItem 
+ *
+ *    Functionality: Filling the DeleteItemIe 
+ *
+ * @params[in] Pointer to Served_Cells_To_Delete_ItemIEs_t 
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ *****************************************************************/
+uint8_t fillCellToDeleteItem(struct Served_Cells_To_Delete_ItemIEs *deleteItemIe)
+{
+   uint8_t arrIdx;
+   Served_Cells_To_Delete_Item_t *deleteItem=NULLP;
+   
+   deleteItemIe->id = ProtocolIE_ID_id_Served_Cells_To_Delete_Item;
+   deleteItemIe->criticality = Criticality_reject;
+   deleteItemIe->value.present =\
+   Served_Cells_To_Delete_ItemIEs__value_PR_Served_Cells_To_Delete_Item;
+   deleteItem=&deleteItemIe->value.choice.Served_Cells_To_Delete_Item;
+
+   /*pLMN_Identity*/
+   deleteItem->oldNRCGI.pLMN_Identity.size = 3*sizeof(uint8_t);
+   DU_ALLOC(deleteItem->oldNRCGI.pLMN_Identity.buf,deleteItem->oldNRCGI.pLMN_Identity.size);
+   if(deleteItem->oldNRCGI.pLMN_Identity.buf == NULLP)
+   {
+      DU_LOG("ERROR  --> F1AP: fillCellToDeleteItem(): Failed to allocate the memory");
+      return RFAILED;
+   }
+   buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn,\
+         deleteItem->oldNRCGI.pLMN_Identity.buf);
+
+   /*nRCellIdentity*/
+   deleteItem->oldNRCGI.nRCellIdentity.size = 5*sizeof(uint8_t);
+   DU_ALLOC(deleteItem->oldNRCGI.nRCellIdentity.buf,\
+         deleteItem->oldNRCGI.nRCellIdentity.size);
+   if(deleteItem->oldNRCGI.nRCellIdentity.buf == NULLP)
+   {
+      DU_LOG("ERROR  --> F1AP: fillCellToDeleteItem(): Failed to allocate the memory");
+      return RFAILED;
+   }
+   for(arrIdx = 0; arrIdx < deleteItem->oldNRCGI.nRCellIdentity.size-1; arrIdx++)
+   {
+      deleteItem->oldNRCGI.nRCellIdentity.buf[arrIdx] = 0;
+   }
+   deleteItem->oldNRCGI.nRCellIdentity.buf[4] = 16;
+   deleteItem->oldNRCGI.nRCellIdentity.bits_unused = 4;
+   return ROK;
+} 
+/*******************************************************************
+ *
+ * @brief Builds ServCellToDeleteList
+ *
+ * @details
+ *
+ *    Function : buildServCellToDeleteList
+ *
+ *    Functionality: Builds the serv cell to delete List
+ *
+ * @params[in] Pointer to Served_Cells_To_Delete_List_t *
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ *****************************************************************/
+ 
+uint8_t buildServCellToDeleteList(Served_Cells_To_Delete_List_t *cellsToDelete)
+{
+   uint8_t ieListCnt, arrIdx;
+   
+   ieListCnt = 1;
+   cellsToDelete->list.count = ieListCnt;
+   cellsToDelete->list.size = ieListCnt*sizeof(Served_Cells_To_Delete_ItemIEs_t *);
+   
+   DU_ALLOC(cellsToDelete->list.array,cellsToDelete->list.size);
+   if(cellsToDelete->list.array == NULLP)
+   {
+      DU_LOG("\nERROR  --> F1AP : buildServCellToDeleteList(): Memory allocation failed");
+      return RFAILED;
+   }
+   
+   for(arrIdx=0; arrIdx< ieListCnt; arrIdx++)
+   {
+      DU_ALLOC(cellsToDelete->list.array[arrIdx],sizeof(Served_Cells_To_Delete_ItemIEs_t));
+      if(cellsToDelete->list.array[arrIdx] == NULLP)
+      {
+         DU_LOG("\nERROR  --> F1AP : buildServCellToDeleteList(): Memory allocation failed");
+         return RFAILED;
+      }
+   }
+   
+   arrIdx=0;
+   if(fillCellToDeleteItem((Served_Cells_To_Delete_ItemIEs_t*)cellsToDelete->list.array[arrIdx]) !=ROK)
+   {
+      DU_LOG("\nERROR  -->  F1AP: buildServCellToDeleteList(): failed to fill Served_Cells_To_Delete_ItemIEs");
+      return RFAILED;
+   }
+   return ROK;
+}
 
 /*******************************************************************
  *
@@ -2382,12 +2650,14 @@ uint8_t buildServCellToModList(Served_Cells_To_Modify_List_t *cellsToModify)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildAndSendDUConfigUpdate()
+uint8_t BuildAndSendDUConfigUpdate(ServCellAction servCellAction)
 {
-   uint8_t ret, ieIdx, elementCnt;
+   uint8_t ret =0, ieIdx=0, elementCnt=0;
+   bool memAlloctionFailure = false;
    F1AP_PDU_t                 *f1apDuCfg = NULLP;
    GNBDUConfigurationUpdate_t *duCfgUpdate = NULLP;
    asn_enc_rval_t encRetVal;     /* Encoder return value */
+   
    memset(&encRetVal, 0, sizeof(asn_enc_rval_t));
    ret= RFAILED;
 
@@ -2398,78 +2668,106 @@ uint8_t BuildAndSendDUConfigUpdate()
       DU_ALLOC(f1apDuCfg, sizeof(F1AP_PDU_t));
       if(f1apDuCfg == NULLP)
       {
-	 DU_LOG("\nERROR  -->  F1AP : Memory allocation for F1AP-PDU failed");
-	 break;
+         DU_LOG("\nERROR  -->  F1AP : BuildAndSendDUConfigUpdate(): Memory allocation for F1AP-PDU failed");
+         break;
       }
 
       f1apDuCfg->present = F1AP_PDU_PR_initiatingMessage;
       DU_ALLOC(f1apDuCfg->choice.initiatingMessage,sizeof(InitiatingMessage_t));
       if(f1apDuCfg->choice.initiatingMessage == NULLP)
       {
-	 DU_LOG("\nERROR  -->  F1AP : Memory allocation for F1AP-PDU failed");
-	 break;
+         DU_LOG("\nERROR  -->  F1AP : BuildAndSendDUConfigUpdate(): Memory allocation for F1AP-PDU failed");
+         break;
       }
 
       f1apDuCfg->choice.initiatingMessage->procedureCode = \
-							   ProcedureCode_id_gNBDUConfigurationUpdate;
+                                                           ProcedureCode_id_gNBDUConfigurationUpdate;
       f1apDuCfg->choice.initiatingMessage->criticality = Criticality_reject;
       f1apDuCfg->choice.initiatingMessage->value.present = \
-							   InitiatingMessage__value_PR_GNBDUConfigurationUpdate;
+                                                           InitiatingMessage__value_PR_GNBDUConfigurationUpdate;
       duCfgUpdate = &f1apDuCfg->choice.initiatingMessage->value.\
-		    choice.GNBDUConfigurationUpdate;
+                    choice.GNBDUConfigurationUpdate;
       elementCnt = 3;
       duCfgUpdate->protocolIEs.list.count = elementCnt;
       duCfgUpdate->protocolIEs.list.size = \
-					   elementCnt * sizeof(GNBDUConfigurationUpdateIEs_t*);
+                                           elementCnt * sizeof(GNBDUConfigurationUpdateIEs_t*);
 
       /* Initialize the F1Setup members */
       DU_ALLOC(duCfgUpdate->protocolIEs.list.array,duCfgUpdate->protocolIEs.list.size);
       if(duCfgUpdate->protocolIEs.list.array == NULLP)
       {
-	 DU_LOG("ERROR  -->  F1AP : Memory allocation for F1RequestIEs failed");
-	 break;
+         DU_LOG("ERROR  -->  F1AP : BuildAndSendDUConfigUpdate(): Memory allocation failed");
+         break;
       }
       for(ieIdx=0; ieIdx<elementCnt; ieIdx++)
       {
-	 DU_ALLOC(duCfgUpdate->protocolIEs.list.array[ieIdx],sizeof(GNBDUConfigurationUpdateIEs_t));
-	 if(duCfgUpdate->protocolIEs.list.array[ieIdx] == NULLP)
-	 {
-	    break;
-	 }
+         DU_ALLOC(duCfgUpdate->protocolIEs.list.array[ieIdx],sizeof(GNBDUConfigurationUpdateIEs_t));
+         if(duCfgUpdate->protocolIEs.list.array[ieIdx] == NULLP)
+         {
+            DU_LOG("ERROR  -->  F1AP : BuildAndSendDUConfigUpdate(): Memory allocation failed");
+            memAlloctionFailure = true;
+            break;
+         }
       }
-
+      
+      if(memAlloctionFailure == true)
+      {
+         break;
+      }
       /*TransactionID*/
       ieIdx = 0;
       duCfgUpdate->protocolIEs.list.array[ieIdx]->id=ProtocolIE_ID_id_TransactionID;
       duCfgUpdate->protocolIEs.list.array[ieIdx]->criticality= Criticality_reject;
       duCfgUpdate->protocolIEs.list.array[ieIdx]->value.present = \
-         GNBDUConfigurationUpdateIEs__value_PR_TransactionID;
+      GNBDUConfigurationUpdateIEs__value_PR_TransactionID;
       duCfgUpdate->protocolIEs.list.array[ieIdx]->value.choice.TransactionID = TRANS_ID;
-
-      /*Served Cell to Modify */
+      
       ieIdx++;
-      duCfgUpdate->protocolIEs.list.array[ieIdx]->id = \
-						      ProtocolIE_ID_id_Served_Cells_To_Modify_List;
-      duCfgUpdate->protocolIEs.list.array[ieIdx]->criticality =Criticality_reject;
-      duCfgUpdate->protocolIEs.list.array[ieIdx]->value.present = \
-	 GNBDUConfigurationUpdateIEs__value_PR_Served_Cells_To_Modify_List;
-      if(buildServCellToModList(&duCfgUpdate->protocolIEs.list.array[ieIdx]->value.choice.\
-	 Served_Cells_To_Modify_List))
-         break;
-
+      if(servCellAction == SERV_CELL_TO_MODIFY)
+      {
+         /*Served Cell to Modify */
+         duCfgUpdate->protocolIEs.list.array[ieIdx]->id = \
+         ProtocolIE_ID_id_Served_Cells_To_Modify_List;
+         duCfgUpdate->protocolIEs.list.array[ieIdx]->criticality =Criticality_reject;
+         duCfgUpdate->protocolIEs.list.array[ieIdx]->value.present = \
+         GNBDUConfigurationUpdateIEs__value_PR_Served_Cells_To_Modify_List;
+         if(buildServCellToModList(&duCfgUpdate->protocolIEs.list.array[ieIdx]->value.choice.\
+                  Served_Cells_To_Modify_List))
+         {
+            DU_LOG("ERROR  --> DU APP : BuildAndSendDUConfigUpdate(): failed to build ServCellToModList");
+            break;
+         }
+      }
+      else
+      {
+         /*Served Cell to Delete */ 
+         duCfgUpdate->protocolIEs.list.array[ieIdx]->id = \
+         ProtocolIE_ID_id_Served_Cells_To_Delete_List;
+         duCfgUpdate->protocolIEs.list.array[ieIdx]->criticality =Criticality_reject;
+         duCfgUpdate->protocolIEs.list.array[ieIdx]->value.present = \
+         GNBDUConfigurationUpdateIEs__value_PR_Served_Cells_To_Delete_List;
+         if(buildServCellToDeleteList(&duCfgUpdate->protocolIEs.list.array[ieIdx]->value.choice.\
+         Served_Cells_To_Delete_List)!=ROK)
+         {
+            DU_LOG("ERROR  --> DU APP : BuildAndSendDUConfigUpdate(): failed to build ServCellToDeleteList");
+            break;
+         }
+         
+      }
       // NOTE :GNB DU SYS INFO:MIB AND SIB1 INFORMATION TO BE BUILT AND FILLED HERE
       /*GNB DU ID */
       ieIdx++;
       duCfgUpdate->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_gNB_DU_ID;
       duCfgUpdate->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
       duCfgUpdate->protocolIEs.list.array[ieIdx]->value.present = \
-	GNBDUConfigurationUpdateIEs__value_PR_GNB_DU_ID;
+      GNBDUConfigurationUpdateIEs__value_PR_GNB_DU_ID;
       duCfgUpdate->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_ID.size = sizeof(uint8_t);
       DU_ALLOC(duCfgUpdate->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_ID.buf,\
-	    duCfgUpdate->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_ID.size);
+            duCfgUpdate->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_ID.size);
       if(duCfgUpdate->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_ID.buf == NULLP)
       {
-	 break;
+         DU_LOG("ERROR  --> DU APP : BuildAndSendDUConfigUpdate(): Memory allocation failed for GNB_DU_ID");
+         break;
       }
       duCfgUpdate->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_ID.buf[0] = duCfgParam.duId;
 
@@ -2483,30 +2781,30 @@ uint8_t BuildAndSendDUConfigUpdate()
       /* Checking encode results */
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-	 DU_LOG("ERROR  -->  F1AP : Could not encode DUConfigUpdate structure (at %s)\n",\
-	 encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
-	 break;
+         DU_LOG("ERROR  -->  F1AP : Could not encode DUConfigUpdate structure (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
       }
       else
       {
-	 DU_LOG("\nDEBUG   -->  F1AP : Created APER encoded buffer for DUConfigUpdate\n");
-	 for(ieIdx =0; ieIdx < encBufSize; ieIdx++)
-	 {
-	    printf("%x",encBuf[ieIdx]);
-	 }
+         DU_LOG("\nDEBUG   -->  F1AP : Created APER encoded buffer for DUConfigUpdate\n");
+         for(ieIdx =0; ieIdx < encBufSize; ieIdx++)
+         {
+            printf("%x",encBuf[ieIdx]);
+         }
       }
       /* Sending msg */
       if(sendF1APMsg() != ROK)
       {
-	 DU_LOG("\nERROR  -->  F1AP : Sending GNB-DU Config Update failed");
-	 break;
+         DU_LOG("\nERROR  -->  F1AP : Sending GNB-DU Config Update failed");
+         break;
       }
 
       ret = ROK;
       break;
    }
-   FreeDUConfigUpdate(f1apDuCfg);
-
+  
+   addToReservedF1apPduList(TRANS_ID,f1apDuCfg);
    return ret;
 }
 
@@ -11484,6 +11782,99 @@ void freeAperDecodeGnbDuAck(GNBDUConfigurationUpdateAcknowledge_t *gnbDuAck)
       free(gnbDuAck->protocolIEs.list.array);
    }
 }
+
+/*******************************************************************
+*
+* @brief Building  result of gnb-du config update ack output
+*
+* @details
+*
+*    Function : duProcGnbDuCfgUpdAckMsg 
+*
+*    Functionality: 
+*        Building output of gnb-du config update ack 
+*
+* @params[in] transId
+* @return void
+*
+* ****************************************************************/
+
+uint8_t duProcGnbDuCfgUpdAckMsg(uint8_t transId)
+{
+   uint8_t ueId =0 , ueIdx =0, ieIdx=0,arrIdx=0;
+   uint8_t cellId =0, cellIdx =0, crnti=0;
+   CmLList *f1apPduNode;
+   ReservedF1apPduInfo *f1apPduInfo;
+   F1AP_PDU_t *f1apMsgPdu = NULLP;
+   GNBDUConfigurationUpdate_t *gnbDuConfigUpdate = NULLP;
+   BIT_STRING_t *cellIdentity;
+   struct Served_Cells_To_Delete_ItemIEs *deleteItemIe;
+   Served_Cells_To_Delete_List_t *cellsToDelete;
+   Served_Cells_To_Delete_Item_t *deleteItem=NULLP;
+
+   DU_LOG("\nINFO   -->  DU APP: GNB-DU config update Ack received ");
+   f1apPduNode = searchFromReservedF1apPduList(transId);
+   f1apPduInfo = (ReservedF1apPduInfo *)f1apPduNode->node;
+   f1apMsgPdu = (F1AP_PDU_t *)f1apPduInfo->f1apMsg;
+
+   if(f1apMsgPdu)
+   {
+      if(f1apMsgPdu->choice.initiatingMessage)
+      {
+         gnbDuConfigUpdate = &f1apMsgPdu->choice.initiatingMessage->value.choice.GNBDUConfigurationUpdate;
+         for(ieIdx=0; ieIdx < gnbDuConfigUpdate->protocolIEs.list.count; ieIdx++)
+         {
+            switch(gnbDuConfigUpdate->protocolIEs.list.array[ieIdx]->id)
+            {
+               case ProtocolIE_ID_id_Served_Cells_To_Delete_List:
+               {
+                  cellsToDelete = &gnbDuConfigUpdate->protocolIEs.list.array[ieIdx]->value.choice.\
+                  Served_Cells_To_Delete_List;
+                  if(cellsToDelete->list.array)
+                  {
+                     if(cellsToDelete->list.array[arrIdx])
+                     {
+                        deleteItemIe = (Served_Cells_To_Delete_ItemIEs_t*)cellsToDelete->list.array[arrIdx];
+                        deleteItem=&deleteItemIe->value.choice.Served_Cells_To_Delete_Item;
+                        if(deleteItem->oldNRCGI.nRCellIdentity.buf)
+                        {
+                           cellIdentity = &deleteItem->oldNRCGI.nRCellIdentity;
+                           bitStringToInt(cellIdentity, &cellId);
+                        }
+                     }
+                  }
+
+                  GET_CELL_IDX(cellId, cellIdx);
+                  if(duCb.actvCellLst[cellIdx] != NULLP)
+                  {
+                     for(ueIdx = 0; ueIdx < duCb.numUe; ueIdx++)
+                     {
+                        crnti = duCb.actvCellLst[cellIdx]->ueCb[ueIdx].crnti;
+                        GET_UE_IDX(crnti,ueId);
+                        BuildAndSendUeContextReleaseReq(cellId, ueId);
+                     }
+                  }
+                  else
+                  {
+                     DU_LOG("ERROR  --> DU_APP : duProcGnbDuCfgUpdAckMsg(): CellId [%d] not found", cellId);
+                     return RFAILED;
+                  }
+
+                  break;
+               }
+
+               default:
+                  break;
+            }
+         }
+      }
+   }
+   
+   FreeDUConfigUpdate(f1apMsgPdu);
+   deleteFromReservedF1apPduList(f1apPduNode);
+   return ROK;
+}
+
 /*******************************************************************
 *
 * @brief Processes GNB DU config update ack
@@ -11500,28 +11891,40 @@ void freeAperDecodeGnbDuAck(GNBDUConfigurationUpdateAcknowledge_t *gnbDuAck)
 * ****************************************************************/
 uint8_t procF1GNBDUCfgUpdAck(F1AP_PDU_t *f1apMsg)
 {
-   uint8_t ieIdx;
+   uint8_t ieIdx=0,transId=0;
    GNBDUConfigurationUpdateAcknowledge_t *gnbDuAck = NULLP;
-   
+
    DU_LOG("\nINFO   -->  F1AP : GNB-DU config update acknowledgment");
    gnbDuAck = &f1apMsg->choice.successfulOutcome->value.choice.GNBDUConfigurationUpdateAcknowledge;
-   
+
    for(ieIdx=0; ieIdx < gnbDuAck->protocolIEs.list.count; ieIdx++)
    {
       switch(gnbDuAck->protocolIEs.list.array[ieIdx]->id)
       {
          case ProtocolIE_ID_id_TransactionID:
-	    break;
+            {
+               transId = gnbDuAck->protocolIEs.list.array[ieIdx]->value.choice.TransactionID;
+               break;
+            }
          case ProtocolIE_ID_id_Cells_to_be_Activated_List:
-	    break;
+            {
+               break;
+            }
          default :
-            DU_LOG("\nERROR  -->  F1AP: Invalid IE Received: %ld, at procF1GNBDUCfgUpdAck()", \
-	    gnbDuAck->protocolIEs.list.array[ieIdx]->id);
-	    break;
+            {
+               DU_LOG("\nERROR  -->  F1AP: procF1GNBDUCfgUpdAck(): Invalid IE Received: %ld", \
+                     gnbDuAck->protocolIEs.list.array[ieIdx]->id);
+               break;
+            }
       }
    }
-   duProcGnbDuCfgUpdAckMsg();
+   
+   duProcGnbDuCfgUpdAckMsg(transId);
+    
 #if 0
+   /* presently we are not supporting F1 Reset from DU to CU , we are only
+    * supporting F1 Reset from CU to DU */
+
    if(BuildAndSendF1ResetReq() != ROK)
    {
       return RFAILED;

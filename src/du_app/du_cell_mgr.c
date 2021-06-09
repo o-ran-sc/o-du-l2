@@ -114,25 +114,6 @@ void duProcF1SetupRsp()
 }
 
 /*******************************************************************
- *
- * @brief Handles GNB DU Cfg Update Ack received in F1AP
- *
- * @details
- *
- *    Function : duProcGnbDuCfgUpdAckMsg
- *
- *    Functionality:
- *      - Handles GNB DU Cfg Update Ack received in F1AP
- *
- * @params[in] Pointer to F1GnbDuCfgUpdAck
- * @return void
- *  
- ******************************************************************/
-void duProcGnbDuCfgUpdAckMsg()
-{
-   DU_LOG("\nINFO   -->  DU APP: GNB-DU config update Ack received ");
-}
-/*******************************************************************
 *
 * @brief Returns cellCb based on cell ID
 *

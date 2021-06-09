@@ -96,7 +96,7 @@ uint8_t duActvInit(Ent entity, Inst inst, Region region, Reason reason)
    memset(duCb.ueCcchCtxt, 0, MAX_NUM_UE * sizeof(UeCcchCtxt));
    duCb.numCfgCells  = 0;
    duCb.numActvCells = 0;
-
+   cmLListInit(&duCb.reservedF1apPduList);
    ODU_SET_PROC_ID(DU_PROC);
 
    return ROK;

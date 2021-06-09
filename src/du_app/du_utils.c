@@ -180,3 +180,8 @@ void fillStartSymbolAndLen(uint8_t numRsrcAlloc, PdschConfig *pdschCfg, PuschCfg
       }
    }
 }
+
+/**********************************************************************
+End of file
+**********************************************************************/
+
