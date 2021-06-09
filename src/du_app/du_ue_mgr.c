@@ -2510,7 +2510,7 @@ uint8_t DuProcRlcDlRrcMsgRsp(Pst *pst, RlcDlRrcMsgRsp *dlRrcMsg)
          }
          if(ueCb->f1UeDb->actionType == UE_CTXT_RELEASE)
          {
-            ret = duBuildAndSendUeDeleteReq(dlRrcMsg->cellId);
+            ret = duBuildAndSendUeDeleteReq(dlRrcMsg->cellId,dlRrcMsg->crnti);
             if(ret == RFAILED)
             {
                DU_LOG("\nERROR  -->  DU APP : Failed to process UE Context Release Request in DuProcRlcDlRrcMsgRsp()");
@@ -3070,25 +3070,27 @@ uint8_t sendUeDeleteReqToRlc(uint16_t cellId, uint8_t ueId)
  *
  * ****************************************************************/
 
-uint8_t duBuildAndSendUeDeleteReq(uint16_t cellId)
+uint8_t duBuildAndSendUeDeleteReq(uint16_t cellId, uint16_t crnti)
 {
-   uint8_t  ueIdx = 0, ueId =0;
-   uint16_t cellIdx = 0, crnti   = 0;
+   uint8_t  ueId =0;
+   uint16_t cellIdx = 0;
 
    DU_LOG("\nDEBUG  -->  DU_APP: Processing UE Delete Request ");
    GET_CELL_IDX(cellId, cellIdx);
+   GET_UE_IDX(crnti, ueId);
 
    if(duCb.actvCellLst[cellIdx] != NULLP)
    {
-      for(ueIdx =0;ueIdx< duCb.actvCellLst[cellIdx]->numActvUes; ueIdx++)
+      if(crnti != duCb.actvCellLst[cellIdx]->ueCb[ueId - 1].crnti)
       {
-         crnti = duCb.actvCellLst[cellIdx]->ueCb[ueIdx].crnti;
-         GET_UE_IDX(crnti,ueId);
-         if(sendUeDeleteReqToMac(cellId, ueId, crnti) == RFAILED)
-         {
-            DU_LOG("\nERROR  -->  DU APP : duBuildAndSendUeDeleteReq(): Failed to build UE  delete req for MAC ");
-            return RFAILED;
-         }
+         DU_LOG("\nERROR  -->  DU APP : duBuildAndSendUeDeleteReq(): Crnti does not exist");
+         return RFAILED;
+      }
+
+      if(sendUeDeleteReqToMac(cellId, ueId, crnti) == RFAILED)
+      {
+         DU_LOG("\nERROR  -->  DU APP : duBuildAndSendUeDeleteReq(): Failed to build UE  delete req for MAC ");
+         return RFAILED;
       }
    }
    else
@@ -3377,7 +3379,7 @@ uint8_t duSendCellDeletReq(uint16_t cellId)
 uint8_t duProcUeContextReleaseCommand(DuUeCb *duUeCb)
 {
    uint8_t ret =ROK, ueIdx=0;
-   uint16_t cellId=0;
+   uint16_t cellId=0,crnti =0;
    if(duUeCb == NULLP)
    {
       DU_LOG("\nERROR  -->  DU APP : duProcUeContextReleaseCommand() : duUeCb is null");
@@ -3390,6 +3392,7 @@ uint8_t duProcUeContextReleaseCommand(DuUeCb *duUeCb)
    }
    
    cellId = duCb.actvCellLst[duUeCb->f1UeDb->cellIdx]->cellId;
+   crnti = duUeCb->crnti;
    /* Send DL RRC msg for RRC release */
    if(duUeCb->f1UeDb->dlRrcMsg)
    {
@@ -3408,7 +3411,7 @@ uint8_t duProcUeContextReleaseCommand(DuUeCb *duUeCb)
    }
    else
    {
-      ret = duBuildAndSendUeDeleteReq(cellId);
+      ret = duBuildAndSendUeDeleteReq(cellId,crnti);
       if(ret == RFAILED)
       {
          DU_LOG("\nERROR  -->  DU APP : duProcUeContextReleaseCommand(): Failed to build and send Ue Delete request");

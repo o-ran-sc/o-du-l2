@@ -1220,12 +1220,23 @@ typedef struct duCfgParams
    Sib1Params         sib1Params;                 /* SIB1 Params */
 }DuCfgParams;
 
+typedef struct f1apPduInfo
+{
+   uint8_t transId;
+   void    *f1apMsg;
+   struct f1apPduInfo *next;
+}F1apPduInfo;
+
 /*function declarations */
 void FillSlotConfig();
 uint8_t readClCfg();
 uint8_t readCfg();
 uint8_t duReadCfg(); 
 uint16_t calcSliv(uint8_t startSymbol, uint8_t lengthSymbol);
+
+/* DU_APP Global Variable */
+bool gCellToBeDeleted;
+F1apPduInfo *f1apPduInfoList;
 
 #endif /* __DU_CONFIG_H__ */
 
