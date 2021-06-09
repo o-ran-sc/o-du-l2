@@ -17,8 +17,15 @@
  *******************************************************************************/
 /* Utility definitions to be used in du app */
 #include "common_def.h"
+#include "lrg.h"
+#include "lkw.x"
+#include "lrg.x"
 #include "du_app_mac_inf.h"
+#include "du_app_rlc_inf.h"
+#include "F1AP-PDU.h"
+#include "du_cfg.h"
 #include "du_utils.h"
+#include "du_mgr.h"
 
 /* Spec Ref-38.214-Table 5.1.2.1-1 */
 uint8_t slivCfgIdxTable[MAX_SLIV_CONFIG_IDX][3] = {
@@ -180,3 +187,132 @@ void fillStartSymbolAndLen(uint8_t numRsrcAlloc, PdschConfig *pdschCfg, PuschCfg
       }
    }
 }
+
+/*******************************************************************
+*
+* @brief filling for F1AP pdu information
+*
+* @details
+*
+*    Function : fillReservedF1apPduInfo
+*
+*    Functionality: filling for F1AP pdu information
+*
+* @params[in] uint8_t transId, F1AP_PDU_t *f1apMsg
+*
+* @return ROK - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+
+uint8_t fillReservedF1apPduInfo(uint8_t transId, F1AP_PDU_t *f1apMsg)
+{
+   ReservedF1apPduInfo *f1apPdu = NULLP, *temp = NULLP;
+   
+   DU_ALLOC(f1apPdu, sizeof(ReservedF1apPduInfo));
+   if(f1apPdu == NULLP)
+   {
+      DU_LOG("\nERROR  --> F1AP : fillReservedF1apPduInfo(): Memory allocation failed");
+      return RFAILED;
+   }
+   
+   f1apPdu->transId = transId;
+   f1apPdu->f1apMsg = f1apMsg;
+   if(duCb.reseveF1apPduList == NULLP)
+   {
+      f1apPdu->next = NULLP;
+      duCb.reseveF1apPduList = f1apPdu;
+   }
+   else
+   {
+      temp = duCb.reseveF1apPduList;
+      while(temp->next != NULLP)
+      {
+         temp = temp->next;
+      }
+      temp->next = f1apPdu;
+      f1apPdu->next = NULLP;
+   }
+   return ROK;
+}
+
+/*******************************************************************
+*
+* @brief searching for F1AP pdu information
+*
+* @details
+*
+*    Function : searchReservedF1apPduInfo
+*
+*    Functionality: searching for F1AP pdu information
+*
+* @params[in] uint8_t transId
+*
+* @return pointer to F1AP_PDU_t
+*
+* ****************************************************************/
+
+F1AP_PDU_t *searchReservedF1apPduInfo(uint8_t transId)
+{
+   ReservedF1apPduInfo *pdu=NULLP;
+
+   pdu = duCb.reseveF1apPduList;
+   if(pdu == NULLP)
+   {
+      DU_LOG("\nERROR  -->  F1AP: searchReservedF1apPduInfo(): F1AP Pending PDU list empty");
+      return NULL;
+   }
+
+   while(pdu != NULLP)
+   {
+      if(pdu->transId == transId)
+      {
+         return pdu->f1apMsg;
+      }
+      pdu = pdu->next;
+   }
+   return NULL;
+}
+
+/*******************************************************************
+ *
+ * @brief deleting for F1AP pdu information
+ *
+ * @details
+ *
+ *    Function : deleteReservedF1apPduInfo
+ *
+ *    Functionality: deleting for F1AP pdu information
+ *
+ * @params[in] uint8_t transId
+ *
+ * @return pointer to F1AP_PDU_t
+ *
+ * ****************************************************************/
+
+void deleteReservedF1apPduInfo(uint8_t transId)
+{
+   ReservedF1apPduInfo *temp = duCb.reseveF1apPduList, *prev=NULL;
+
+   if (temp != NULL && temp->transId == transId)
+   {
+      duCb.reseveF1apPduList = temp->next;
+      DU_FREE(temp, sizeof(ReservedF1apPduInfo));;
+   }
+
+   while (temp != NULL && temp->transId != transId)
+   {
+      prev = temp;
+      temp = temp->next;
+   }
+   if (temp != NULL)
+   {
+      prev->next = temp->next;
+      DU_FREE(temp, sizeof(ReservedF1apPduInfo));
+   }
+}
+
+/**********************************************************************
+End of file
+**********************************************************************/
+

@@ -24,6 +24,7 @@
 #include "lkw.x"
 #include "cm_inet.h"
 #include "cm_inet.x"
+#include "F1AP-PDU.h"
 #include "du_app_mac_inf.h"
 #include "du_cfg.h"
 #include "du_sctp.h"

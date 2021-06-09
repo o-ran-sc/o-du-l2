@@ -1471,18 +1471,20 @@ uint8_t  duHandleMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm)
 {
    uint8_t  actvCellIdx  = 0;
    uint8_t  ret          = ROK;
+   ServCellAction servCellAction;
 
    for(actvCellIdx = 0; actvCellIdx < MAX_NUM_CELL; actvCellIdx++)
    {
       if(macCellCfgCfm->cellId == duCb.actvCellLst[actvCellIdx]->cellId)
       {
-	 duCb.actvCellLst[actvCellIdx]->duMacCellCfg = NULLP;
+         duCb.actvCellLst[actvCellIdx]->duMacCellCfg = NULLP;
       }
    }
    if(macCellCfgCfm->rsp == ROK)
    {
+      servCellAction = SERVCELLTOMODIY;
       /* Build and send GNB-DU config update */
-      ret = BuildAndSendDUConfigUpdate();
+      ret = BuildAndSendDUConfigUpdate(servCellAction);
 
       /* Build and Send Cell Start Req to MAC */
       ret = duBuildAndSendMacCellStart();

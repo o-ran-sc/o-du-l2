@@ -24,6 +24,7 @@
 #include "lkw.x"
 #include "rgr.h"
 #include "rgr.x"
+#include "F1AP-PDU.h"
 #include "du_app_mac_inf.h"
 #include "du_app_rlc_inf.h"
 #include "du_cfg.h"
@@ -113,25 +114,6 @@ void duProcF1SetupRsp()
    duCb.f1Status = TRUE; //Set F1 status as true
 }
 
-/*******************************************************************
- *
- * @brief Handles GNB DU Cfg Update Ack received in F1AP
- *
- * @details
- *
- *    Function : duProcGnbDuCfgUpdAckMsg
- *
- *    Functionality:
- *      - Handles GNB DU Cfg Update Ack received in F1AP
- *
- * @params[in] Pointer to F1GnbDuCfgUpdAck
- * @return void
- *  
- ******************************************************************/
-void duProcGnbDuCfgUpdAckMsg()
-{
-   DU_LOG("\nINFO   -->  DU APP: GNB-DU config update Ack received ");
-}
 /*******************************************************************
 *
 * @brief Returns cellCb based on cell ID

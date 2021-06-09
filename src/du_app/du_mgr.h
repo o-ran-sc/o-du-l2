@@ -189,6 +189,12 @@ typedef struct ueCcchCtxt
    uint16_t cellId;        /* Cell Id */
 }UeCcchCtxt;
 
+typedef struct reservedF1apPduInfo
+{
+   uint8_t transId;               /* trans Id */
+   void    *f1apMsg;              /* msg structure */
+   struct reservedF1apPduInfo *next; /*next pointer */
+}ReservedF1apPduInfo;
 
 /* DU APP DB */
 typedef struct duCb
@@ -206,6 +212,7 @@ typedef struct duCb
    UeCcchCtxt     ueCcchCtxt[MAX_NUM_UE]; /* mapping of gnbDuUeF1apId to CRNTI required for CCCH processing*/
    uint8_t       numDrb;           /* current number of DRbs*/
    UpTnlCfg*     upTnlCfg[MAX_NUM_DRB]; /* tunnel info for every Drb */
+   ReservedF1apPduInfo *reseveF1apPduList; /*storing F1AP pdu infomation and transId */
 }DuCb;
 
 

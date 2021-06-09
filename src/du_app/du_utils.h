@@ -127,9 +127,10 @@
 }
 
 
-void fillStartSymbolAndLen(uint8_t numRsrcAlloc, PdschConfig *pdschCfg, PuschCfg *puschCfg)
-;
-
+void fillStartSymbolAndLen(uint8_t numRsrcAlloc, PdschConfig *pdschCfg, PuschCfg *puschCfg);
+void deleteReservedF1apPduInfo(uint8_t transId);
+uint8_t fillReservedF1apPduInfo(uint8_t transId, F1AP_PDU_t *f1apMsg);
+F1AP_PDU_t *searchReservedF1apPduInfo(uint8_t transId);
 /**********************************************************************
          End of file
 **********************************************************************/

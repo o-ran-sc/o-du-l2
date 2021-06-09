@@ -22,6 +22,7 @@
 #include "lkw.x"
 #include "lrg.x"
 #include "legtp.h"
+#include "F1AP-PDU.h"
 #include "du_app_mac_inf.h"
 #include "du_cfg.h"
 #include "du_utils.h"

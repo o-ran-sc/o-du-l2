@@ -300,6 +300,12 @@ typedef enum
 
 typedef enum
 {
+   SERVCELLTOMODIY,
+   SERVCELLTODELETE
+}ServCellAction;
+
+typedef enum
+{
    UNSPECIFIED,
    RL_FAILURE_RLC,
    INVALID_CU_UE_F1AP_ID,

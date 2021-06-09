@@ -25,6 +25,7 @@
 #include "du_cfg.h"
 #include "du_mgr.h"
 #include "du_mgr_main.h"
+#include "F1AP-PDU.h"
 #include "du_utils.h"
 #include "GlobalE2node-gNB-ID.h"
 #include<ProtocolIE-FieldE2.h>
