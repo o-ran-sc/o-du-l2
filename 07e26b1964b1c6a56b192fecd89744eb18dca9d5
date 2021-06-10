@@ -1,0 +1,373 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2953106f_4ce971f7",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1228,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-10T15:02:04Z",
+      "side": 1,
+      "message": "rename to pendingF1apMsgList",
+      "revId": "07e26b1964b1c6a56b192fecd89744eb18dca9d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0a12706_46c68c8e",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1238,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-10T15:02:04Z",
+      "side": 1,
+      "message": "is this still needed ?",
+      "revId": "07e26b1964b1c6a56b192fecd89744eb18dca9d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5876c7e_e16de5fd",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1239,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-10T15:02:04Z",
+      "side": 1,
+      "message": "move this inside duCb\n\nCoding guideline : we should always try not to use global variable unless absolutely necessary",
+      "revId": "07e26b1964b1c6a56b192fecd89744eb18dca9d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab297be0_f58aee87",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1728,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-10T15:02:04Z",
+      "side": 1,
+      "message": "move to du_utils",
+      "revId": "07e26b1964b1c6a56b192fecd89744eb18dca9d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a23f3a2_2842fc1a",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2593,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-10T15:02:04Z",
+      "side": 1,
+      "message": "add 2 parameters, action, cellId",
+      "revId": "07e26b1964b1c6a56b192fecd89744eb18dca9d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de877e3b_719bd821",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2666,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-10T15:02:04Z",
+      "side": 1,
+      "message": "dont use gCellToBeDeleted",
+      "revId": "07e26b1964b1c6a56b192fecd89744eb18dca9d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a9af77a_c1815ef5",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 11747,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-10T15:02:04Z",
+      "side": 1,
+      "message": "move searchF1apPduInfo and deletF1apPduInfo to du_utils",
+      "range": {
+        "startLine": 11747,
+        "startChar": 12,
+        "endLine": 11747,
+        "endChar": 29
+      },
+      "revId": "07e26b1964b1c6a56b192fecd89744eb18dca9d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00fd6c99_68951bf4",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 11755,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-10T15:02:04Z",
+      "side": 1,
+      "message": "F1AP Pending PDU list empty",
+      "revId": "07e26b1964b1c6a56b192fecd89744eb18dca9d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "392193a1_72e48558",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 11764,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-10T15:02:04Z",
+      "side": 1,
+      "message": "return pdu",
+      "revId": "07e26b1964b1c6a56b192fecd89744eb18dca9d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f42e461_335daa75",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 11769,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-10T15:02:04Z",
+      "side": 1,
+      "message": "pduInfoPresent not needed",
+      "range": {
+        "startLine": 11769,
+        "startChar": 6,
+        "endLine": 11769,
+        "endChar": 20
+      },
+      "revId": "07e26b1964b1c6a56b192fecd89744eb18dca9d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ff1f0e9_af2b42bb",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 11812,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-10T15:02:04Z",
+      "side": 1,
+      "message": "dont free pdu here. This is a common function",
+      "revId": "07e26b1964b1c6a56b192fecd89744eb18dca9d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "444b9dfa_d3a1bc95",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 11853,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-10T15:02:04Z",
+      "side": 1,
+      "message": "remove this case",
+      "revId": "07e26b1964b1c6a56b192fecd89744eb18dca9d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de73ab66_02e467f5",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 11857,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-10T15:02:04Z",
+      "side": 1,
+      "message": "param not needed",
+      "revId": "07e26b1964b1c6a56b192fecd89744eb18dca9d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1453762_b00abccd",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 11863,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-10T15:02:04Z",
+      "side": 1,
+      "message": "fetch cell id for cell to be deleted",
+      "revId": "07e26b1964b1c6a56b192fecd89744eb18dca9d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa851de2_9b14eb1a",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 11867,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-10T15:02:04Z",
+      "side": 1,
+      "message": "remove case",
+      "revId": "07e26b1964b1c6a56b192fecd89744eb18dca9d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e80086e_df992597",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 11881,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-10T15:02:04Z",
+      "side": 1,
+      "message": "remove above modify part",
+      "revId": "07e26b1964b1c6a56b192fecd89744eb18dca9d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c08a55ff_daf2917b",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 11883,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-10T15:02:04Z",
+      "side": 1,
+      "message": "cellToDeletePres not needed",
+      "revId": "07e26b1964b1c6a56b192fecd89744eb18dca9d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68a145f2_97770a6d",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 11885,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-10T15:02:04Z",
+      "side": 1,
+      "message": "deletion should happen only for cell id present in served_cell_to_delete_list",
+      "revId": "07e26b1964b1c6a56b192fecd89744eb18dca9d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c667eae_da92eb13",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 11895,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-10T15:02:04Z",
+      "side": 1,
+      "message": "move this part of code inside \"case ProtocolIE_ID_id_Served_Cells_To_Delete_List:\"",
+      "revId": "07e26b1964b1c6a56b192fecd89744eb18dca9d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d91fb502_70f63d72",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 11904,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-10T15:02:04Z",
+      "side": 1,
+      "message": "free f1apMsgPdu here",
+      "revId": "07e26b1964b1c6a56b192fecd89744eb18dca9d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a8f502a_cd3e3a59",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 11952,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-06-10T15:02:04Z",
+      "side": 1,
+      "message": "1. all the processing should be done in duProcGnbDuCfgUpdAckMsg()\n2. only transId need to be passed.",
+      "revId": "07e26b1964b1c6a56b192fecd89744eb18dca9d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
