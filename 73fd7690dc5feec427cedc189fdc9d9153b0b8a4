@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5be5f12b_628037a0",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-06-11T14:55:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cbb629ff_e512c748",
+      "revId": "73fd7690dc5feec427cedc189fdc9d9153b0b8a4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b6becf26_4cf4715e",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-06-11T12:51:16Z",
       "side": 1,
       "message": "not needed",
+      "revId": "73fd7690dc5feec427cedc189fdc9d9153b0b8a4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fc4b40f_2cdbd900",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-06-11T14:55:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b6becf26_4cf4715e",
       "revId": "73fd7690dc5feec427cedc189fdc9d9153b0b8a4",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -52,6 +88,42 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c397b17_b63037a2",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-06-11T14:55:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8f3c3bdf_0d7ca781",
+      "revId": "73fd7690dc5feec427cedc189fdc9d9153b0b8a4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f02e0cdc_5272e21f",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-06-11T14:55:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8f3c3bdf_0d7ca781",
+      "revId": "73fd7690dc5feec427cedc189fdc9d9153b0b8a4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e4058679_69f2219d",
@@ -65,6 +137,24 @@
       "writtenOn": "2021-06-11T12:51:16Z",
       "side": 1,
       "message": "not needed",
+      "revId": "73fd7690dc5feec427cedc189fdc9d9153b0b8a4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91925822_ec2cfeef",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-06-11T14:55:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4058679_69f2219d",
       "revId": "73fd7690dc5feec427cedc189fdc9d9153b0b8a4",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -86,6 +176,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e64b5b7_47ab57bd",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-06-11T14:55:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "68e289b5_84632971",
+      "revId": "73fd7690dc5feec427cedc189fdc9d9153b0b8a4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3a19ae29_88cef8a1",
@@ -99,6 +207,24 @@
       "writtenOn": "2021-06-11T12:51:16Z",
       "side": 1,
       "message": "add error print",
+      "revId": "73fd7690dc5feec427cedc189fdc9d9153b0b8a4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c52a105e_81028540",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2508,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-06-11T14:55:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3a19ae29_88cef8a1",
       "revId": "73fd7690dc5feec427cedc189fdc9d9153b0b8a4",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -126,6 +252,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "042ac8a1_39593aa9",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2516,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-06-11T14:55:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "307ec65f_e893196c",
+      "range": {
+        "startLine": 2516,
+        "startChar": 9,
+        "endLine": 2516,
+        "endChar": 16
+      },
+      "revId": "73fd7690dc5feec427cedc189fdc9d9153b0b8a4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "11f38af3_cb9d3ad8",
@@ -139,6 +289,24 @@
       "writtenOn": "2021-06-11T12:51:16Z",
       "side": 1,
       "message": "failed to fill served_cell_to_delete_item_ie",
+      "revId": "73fd7690dc5feec427cedc189fdc9d9153b0b8a4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d28a2eff_2f4ebf79",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2523,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-06-11T14:55:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "11f38af3_cb9d3ad8",
       "revId": "73fd7690dc5feec427cedc189fdc9d9153b0b8a4",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -160,6 +328,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a2add14_8fddc959",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 11754,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-06-11T14:55:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4e202ac5_dac28697",
+      "revId": "73fd7690dc5feec427cedc189fdc9d9153b0b8a4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "450f4241_1fe011fb",
@@ -173,6 +359,24 @@
       "writtenOn": "2021-06-11T12:51:16Z",
       "side": 1,
       "message": "Add a comment explaining the purpose of this structure",
+      "revId": "73fd7690dc5feec427cedc189fdc9d9153b0b8a4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67c52f69_09b3a7cf",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-06-11T14:55:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "450f4241_1fe011fb",
       "revId": "73fd7690dc5feec427cedc189fdc9d9153b0b8a4",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -194,6 +398,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4996f577_8ecff4ca",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-06-11T14:55:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "931691c3_fefc7536",
+      "revId": "73fd7690dc5feec427cedc189fdc9d9153b0b8a4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "27895de8_a6a38639",
@@ -207,6 +429,24 @@
       "writtenOn": "2021-06-11T12:51:16Z",
       "side": 1,
       "message": "can do without servCellAction",
+      "revId": "73fd7690dc5feec427cedc189fdc9d9153b0b8a4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff6db656_d073a944",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1487,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-06-11T14:55:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "27895de8_a6a38639",
       "revId": "73fd7690dc5feec427cedc189fdc9d9153b0b8a4",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -228,6 +468,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "13d75c1f_8888165e",
+        "filename": "src/du_app/du_sctp.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-06-11T14:55:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eeafb3bc_3e9ab66c",
+      "revId": "73fd7690dc5feec427cedc189fdc9d9153b0b8a4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b3ab0f95_f7da33e2",
@@ -241,6 +499,24 @@
       "writtenOn": "2021-06-11T12:51:16Z",
       "side": 1,
       "message": "not needed",
+      "revId": "73fd7690dc5feec427cedc189fdc9d9153b0b8a4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "189e9707_39754236",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-06-11T14:55:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b3ab0f95_f7da33e2",
       "revId": "73fd7690dc5feec427cedc189fdc9d9153b0b8a4",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -262,6 +538,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "33939b41_1150873e",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-06-11T14:55:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "48f5dec3_00433761",
+      "revId": "73fd7690dc5feec427cedc189fdc9d9153b0b8a4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e31d8476_baa4d2c6",
@@ -275,6 +569,24 @@
       "writtenOn": "2021-06-11T12:51:16Z",
       "side": 1,
       "message": "CRNTI [%d] not found",
+      "revId": "73fd7690dc5feec427cedc189fdc9d9153b0b8a4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f4d5159_cc07b3db",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3087,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-06-11T14:55:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e31d8476_baa4d2c6",
       "revId": "73fd7690dc5feec427cedc189fdc9d9153b0b8a4",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -296,6 +608,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f3fde87_8a9df481",
+        "filename": "src/du_app/du_utils.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-06-11T14:55:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8fa78b12_80e77b1f",
+      "revId": "73fd7690dc5feec427cedc189fdc9d9153b0b8a4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7ebd0211_f65620aa",
@@ -309,6 +639,24 @@
       "writtenOn": "2021-06-11T12:51:16Z",
       "side": 1,
       "message": "lets use the cm functions for linked list",
+      "revId": "73fd7690dc5feec427cedc189fdc9d9153b0b8a4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "972a7c93_74677288",
+        "filename": "src/du_app/du_utils.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-06-11T14:55:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7ebd0211_f65620aa",
       "revId": "73fd7690dc5feec427cedc189fdc9d9153b0b8a4",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -330,6 +678,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c94bd9d5_f24e96b9",
+        "filename": "src/du_app/du_utils.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-06-11T14:55:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a5027e7_ea885c31",
+      "revId": "73fd7690dc5feec427cedc189fdc9d9153b0b8a4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fd77a001_16d5bfa8",
@@ -343,6 +709,24 @@
       "writtenOn": "2021-06-11T12:51:16Z",
       "side": 1,
       "message": "return void *\ntypecast to (F1AP_PDU_t *) in the caller",
+      "revId": "73fd7690dc5feec427cedc189fdc9d9153b0b8a4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a53be58_7f73d9d8",
+        "filename": "src/du_app/du_utils.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-06-11T14:55:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fd77a001_16d5bfa8",
       "revId": "73fd7690dc5feec427cedc189fdc9d9153b0b8a4",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
