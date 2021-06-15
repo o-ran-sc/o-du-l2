@@ -7655,6 +7655,10 @@ uint8_t procGnbDuUpdate(F1AP_PDU_t *f1apMsg)
          return RFAILED;
       }
    }
+   else
+   {
+      memset(&f1apMsgDb, 0, sizeof(F1apMsgDb));
+   }
 
    return ROK;
 }

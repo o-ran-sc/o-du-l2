@@ -66,7 +66,7 @@
    if(_datPtr)                                                  \
    {                                                            \
       SPutSBuf(SCH_MEM_REGION, SCH_POOL,                        \
-            (Data *)_datPtr, _size);                            \
+            (Data *)_datPtr,(Size) _size);                            \
       _datPtr = NULLP;                                          \
    }                                                            \
 }

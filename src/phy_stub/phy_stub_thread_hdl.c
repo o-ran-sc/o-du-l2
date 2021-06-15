@@ -29,6 +29,7 @@
 uint8_t l1SendUlUserData();
 uint8_t l1SendStatusPdu();
 uint16_t l1BuildAndSendSlotIndication();
+uint16_t l1BuildAndSendStopInd();
 pthread_t thread = 0;
 
 /*******************************************************************
@@ -105,7 +106,6 @@ void GenerateTicks()
 void l1HdlSlotIndicaion(bool stopSlotInd)
 {
    Pst pst;
-   int ret;
    Buffer *mBuf = NULLP;
 
    if(!stopSlotInd)

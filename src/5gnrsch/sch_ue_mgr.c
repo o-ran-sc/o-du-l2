@@ -234,12 +234,8 @@ uint8_t fillSchUeCb(SchUeCb *ueCb, SchUeCfg *ueCfg)
       ueCb->ueCfg.spCellCfgPres = true;
    }
    ueCb->state = SCH_UE_STATE_ACTIVE;
-   if(ueCfg->ambrCfg != NULLP)
-   {
-      SCH_ALLOC(ueCb->ueCfg.ambrCfg , sizeof(SchAmbrCfg));
-      memcpy(&ueCb->ueCfg.ambrCfg->ulBr , &ueCfg->ambrCfg->ulBr, sizeof(SchAmbrCfg));
-   }
    
+   ueCb->ueCfg.ambrCfg =  ueCfg->ambrCfg;
    memcpy(&ueCb->ueCfg.dlModInfo,  &ueCfg->dlModInfo , sizeof(SchModulationInfo));
    memcpy(&ueCb->ueCfg.ulModInfo,  &ueCfg->ulModInfo , sizeof(SchModulationInfo));
 
@@ -917,17 +913,10 @@ void deleteSchCellCb(SchCellCb *cellCb)
       {
          if(cellCb->schDlSlotInfo[idx])
          {
-            SCH_FREE(cellCb->schDlSlotInfo[idx]->rarInfo, sizeof(RarInfo));
-            if(cellCb->schDlSlotInfo[idx]->dlMsgInfo)
-            {
-               SCH_FREE(cellCb->schDlSlotInfo[idx]->dlMsgInfo->dlMsgPdu,\
-                     cellCb->schDlSlotInfo[idx]->dlMsgInfo->dlMsgPduLen);
-               SCH_FREE(cellCb->schDlSlotInfo[idx]->dlMsgInfo, sizeof(DlMsgInfo));
-            }
             SCH_FREE(cellCb->schDlSlotInfo[idx], sizeof(SchDlSlotInfo));
          }
       }
-      SCH_FREE(cellCb->schDlSlotInfo, sizeof(SchDlSlotInfo));
+      SCH_FREE(cellCb->schDlSlotInfo, cellCb->numSlots *sizeof(SchDlSlotInfo*));
    }
    if(cellCb->schUlSlotInfo)
    {
@@ -935,14 +924,13 @@ void deleteSchCellCb(SchCellCb *cellCb)
       {
          if(cellCb->schUlSlotInfo[idx])
          {
-            SCH_FREE(cellCb->schUlSlotInfo[idx]->schPuschInfo,sizeof(SchPuschInfo));
             SCH_FREE(cellCb->schUlSlotInfo[idx], sizeof(SchUlSlotInfo));  
          }
       }
-      SCH_FREE(cellCb->schUlSlotInfo, sizeof(SchUlSlotInfo));
+      SCH_FREE(cellCb->schUlSlotInfo,  cellCb->numSlots * sizeof(SchUlSlotInfo*));
    }
-   SCH_FREE(cellCb->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg, sizeof(PdschCfg));
    memset(cellCb, 0, sizeof(SchCellCb));
+
 }
 
 /*******************************************************************
