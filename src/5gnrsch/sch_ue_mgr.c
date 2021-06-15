@@ -927,7 +927,7 @@ void deleteSchCellCb(SchCellCb *cellCb)
             SCH_FREE(cellCb->schDlSlotInfo[idx], sizeof(SchDlSlotInfo));
          }
       }
-      SCH_FREE(cellCb->schDlSlotInfo, sizeof(SchDlSlotInfo));
+      SCH_FREE(cellCb->schDlSlotInfo, cellCb->numSlots *sizeof(SchDlSlotInfo*));
    }
    if(cellCb->schUlSlotInfo)
    {
@@ -939,10 +939,10 @@ void deleteSchCellCb(SchCellCb *cellCb)
             SCH_FREE(cellCb->schUlSlotInfo[idx], sizeof(SchUlSlotInfo));  
          }
       }
-      SCH_FREE(cellCb->schUlSlotInfo, sizeof(SchUlSlotInfo));
+      SCH_FREE(cellCb->schUlSlotInfo,  cellCb->numSlots * sizeof(SchUlSlotInfo*));
    }
-   SCH_FREE(cellCb->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg, sizeof(PdschCfg));
    memset(cellCb, 0, sizeof(SchCellCb));
+
 }
 
 /*******************************************************************

@@ -68,7 +68,8 @@ typedef enum
 typedef enum
 {
    UE_INACTIVE,
-   UE_ACTIVE
+   UE_ACTIVE,
+   UE_DELETION_IN_PROGRESS
 }UeState;
 
 typedef enum
@@ -160,13 +161,14 @@ typedef struct duUeCb
 
 typedef struct duCellCb
 {
-   uint16_t       cellId;           /* Internal cell Id */
-   CellCfgParams  cellInfo;         /* Cell info */
+   uint16_t       cellId;                 /* Internal cell Id */
+   CellCfgParams  cellInfo;               /* Cell info */
    /* pointer to store the address of macCellCfg params used to send du-app to MAC */
-   MacCellCfg    *duMacCellCfg;
-   CellStatus     cellStatus;       /* Cell status */
-   uint32_t       numActvUes;       /* Total Active UEs */
-   DuUeCb         ueCb[MAX_NUM_UE];  /* UE CONTEXT */
+   MacCellCfg     *duMacCellCfg;
+   CellStatus     cellStatus;             /* Cell status */
+   uint32_t       gnbDuUeF1apIdGenerator; /* Generating Du Ue F1ap Id */
+   uint32_t       numActvUes;             /* Total Active UEs */
+   DuUeCb         ueCb[MAX_NUM_UE];       /* UE CONTEXT */
 }DuCellCb;
 
 typedef struct duLSapCb
@@ -200,20 +202,19 @@ typedef struct reservedF1apPduInfo
 /* DU APP DB */
 typedef struct duCb
 {
-   Mem           mem;    /* Memory configs */
-   TskInit       init;   /* DU Init */
-   //DuLSapCb      **macSap;  /* MAC SAP */
-   bool          f1Status; /* Status of F1 connection */
-   bool          e2Status; /* Status of E2 connection */
-   uint8_t       numCfgCells; 
-   DuCellCb*     cfgCellLst[MAX_NUM_CELL];     /* List of cells at DU APP of type DuCellCb */
-   uint8_t       numActvCells;
-   DuCellCb*     actvCellLst[MAX_NUM_CELL];    /* List of cells activated/to be activated of type DuCellCb */
-   uint32_t       numUe;            /* current number of UEs */
-   UeCcchCtxt     ueCcchCtxt[MAX_NUM_UE]; /* mapping of gnbDuUeF1apId to CRNTI required for CCCH processing*/
-   uint8_t       numDrb;           /* current number of DRbs*/
-   UpTnlCfg*     upTnlCfg[MAX_NUM_DRB]; /* tunnel info for every Drb */
-   CmLListCp     reservedF1apPduList; /*storing F1AP pdu infomation and transId */
+   Mem           mem;                       /* Memory configs */
+   TskInit       init;                      /* DU Init */
+   bool          f1Status;                  /* Status of F1 connection */
+   bool          e2Status;                  /* Status of E2 connection */
+   uint8_t       numCfgCells;               /* number of configured cells */ 
+   DuCellCb*     cfgCellLst[MAX_NUM_CELL];  /* List of cells at DU APP of type DuCellCb */
+   uint8_t       numActvCells;              /* Number of active cells */
+   DuCellCb*     actvCellLst[MAX_NUM_CELL]; /* List of cells activated/to be activated of type DuCellCb */
+   uint32_t      numUe;                     /* current number of UEs */
+   UeCcchCtxt    ueCcchCtxt[MAX_NUM_UE];    /* mapping of gnbDuUeF1apId to CRNTI required for CCCH processing*/
+   uint8_t       numDrb;                    /* current number of DRbs*/
+   UpTnlCfg*     upTnlCfg[MAX_NUM_DRB];     /* tunnel info for every Drb */
+   CmLListCp     reservedF1apPduList;       /*storing F1AP pdu infomation and transId */
 }DuCb;
 
 
