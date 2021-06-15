@@ -330,7 +330,7 @@ uint8_t duBuildRlcUsapCfg(uint8_t elemId, Ent ent, Inst inst)
 uint8_t duProcCfgComplete()
 {
    uint8_t         ret = ROK;
-   static uint16_t cellId = 0;
+   uint16_t        cellId = 0;
    uint16_t        idx;
    for(idx=0; idx< DEFAULT_CELLS; idx++)
    {
@@ -352,7 +352,7 @@ uint8_t duProcCfgComplete()
          cell->cellInfo.nrEcgi.plmn.mcc[2] = PLMN_MCC2;
          cell->cellInfo.nrEcgi.plmn.mnc[0] = PLMN_MNC0;
          cell->cellInfo.nrEcgi.plmn.mnc[1] = PLMN_MNC1;
-         cell->cellInfo.nrEcgi.cellId = NR_CELL_ID;
+         cell->cellInfo.nrEcgi.cellId = cell->cellId;
          cell->cellInfo.nrPci = NR_PCI; 
          cell->cellInfo.fiveGsTac = DU_TAC;
          memset(&cell->cellInfo.plmn[idx1], 0, sizeof(Plmn));

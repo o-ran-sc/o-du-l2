@@ -11841,7 +11841,7 @@ uint8_t duProcGnbDuCfgUpdAckMsg(uint8_t transId)
                   GET_CELL_IDX(cellId, cellIdx);
                   if(duCb.actvCellLst[cellIdx] != NULLP)
                   {
-                     for(ueIdx = 0; ueIdx < duCb.numUe; ueIdx++)
+                     for(ueIdx = 0; ueIdx < duCb.actvCellLst[cellIdx]->numActvUes; ueIdx++)
                      {
                         crnti = duCb.actvCellLst[cellIdx]->ueCb[ueIdx].crnti;
                         GET_UE_IDX(crnti,ueId);
@@ -12647,7 +12647,7 @@ uint8_t procF1UeContextModificationReq(F1AP_PDU_t *f1apMsg)
             {
                for(cellIdx = 0; cellIdx < duCb.numActvCells; cellIdx++)
                {
-                  for(ueIdx = 0; ueIdx < duCb.numUe; ueIdx++)
+                  for(ueIdx = 0; ueIdx < duCb.actvCellLst[cellIdx]->numActvUes; ueIdx++)
                   {
                      if((duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbDuUeF1apId == gnbDuUeF1apId)&&\
                            (duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbCuUeF1apId == gnbCuUeF1apId))
@@ -13164,7 +13164,7 @@ uint8_t procF1UeContextReleaseCommand(F1AP_PDU_t *f1apMsg)
                   {
                      for(cellIdx = 0; cellIdx < duCb.numActvCells; cellIdx++)
                      {
-                        for(ueIdx = 0; ueIdx < duCb.numUe; ueIdx++)
+                        for(ueIdx = 0; ueIdx < duCb.actvCellLst[cellIdx]->numActvUes; ueIdx++)
                         {
                            if((duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbDuUeF1apId == gnbDuUeF1apId)&&\
                                  (duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbCuUeF1apId == gnbCuUeF1apId))

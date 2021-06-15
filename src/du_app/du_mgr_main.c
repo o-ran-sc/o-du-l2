@@ -105,6 +105,8 @@ uint8_t duAppInit(SSTskId sysTskId)
 
 bool bringCellUp(uint16_t cellId)
 {
+   duProcCfgComplete();
+   BuildAndSendF1SetupReq();
    return true;
 }
 
@@ -127,6 +129,7 @@ bool bringCellUp(uint16_t cellId)
 
 bool bringCellDown(uint16_t cellId)
 {
+   BuildAndSendDUConfigUpdate(SERV_CELL_TO_DELETE);
    return true;
 }
 #endif

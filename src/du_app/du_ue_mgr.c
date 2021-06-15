@@ -34,6 +34,11 @@
 #include "du_f1ap_msg_hdl.h"
 #include "du_ue_mgr.h"
 
+#ifdef O1_ENABLE
+#include "AlarmInterface.h"
+#include "ConfigInterface.h"
+#endif
+
 DuMacDlCcchInd packMacDlCcchIndOpts[] =
 {
    packMacDlCcchInd,           /* Loose coupling */
@@ -481,7 +486,8 @@ uint8_t duProcDlRrcMsg(F1DlRrcMsg *dlRrcMsg)
  * ****************************************************************/
 uint32_t genGnbDuUeF1apId()
 {
-   static uint32_t gnbDuUeF1apId = 0;
+   //static uint32_t gnbDuUeF1apId = 0;
+   uint32_t gnbDuUeF1apId = 0;
 
    return ++gnbDuUeF1apId;
 }
@@ -1615,6 +1621,7 @@ uint8_t duCreateUeCb(UeCcchCtxt *ueCcchCtxt, uint32_t gnbCuUeF1apId)
 
 	 duCb.actvCellLst[cellIdx]->numActvUes++;
 	 memset(ueCcchCtxt, 0, sizeof(UeCcchCtxt));
+    duCb.numUe--;
       }
    }
    return ret;
@@ -2022,19 +2029,18 @@ uint8_t duProcEgtpTunnelCfg(uint8_t ueCbIdx, UpTnlCfg *duTnlCfg, UpTnlCfg *f1Tnl
    {
       if(duSendEgtpTnlMgmtReq(EGTP_TNL_MGMT_DEL, duTnlCfg->tnlCfg1->teId, f1TnlCfg->tnlCfg1) == ROK)
       {	   
-	 /* Free memory at drbIdx */
-	 DU_FREE(duTnlCfg->tnlCfg1, sizeof(GtpTnlCfg));
-	 DU_FREE(duTnlCfg, sizeof(UpTnlCfg));
-	 duCb.numDrb--;
-	 for(delIdx = ueCbIdx; delIdx < duCb.numDrb; delIdx++)
-	 {
-	    /* moving all elements one index ahead */
-	    ret = fillTnlCfgToAddMod(&duCb.upTnlCfg[delIdx], duCb.upTnlCfg[delIdx+1]);
-	    if(ret != ROK)
-	    {
-	       return ret;
-	    }
-	 }
+         /* Free memory at drbIdx */
+         DU_FREE(duTnlCfg->tnlCfg1, sizeof(GtpTnlCfg));
+         duCb.numDrb--;
+         for(delIdx = ueCbIdx; delIdx < duCb.numDrb; delIdx++)
+         {
+            /* moving all elements one index ahead */
+            ret = fillTnlCfgToAddMod(&duCb.upTnlCfg[delIdx], duCb.upTnlCfg[delIdx+1]);
+            if(ret != ROK)
+            {
+               return ret;
+            }
+         }
       }   
    }
    return ret;
@@ -2152,7 +2158,7 @@ uint8_t duUpdateDuUeCbCfg(uint8_t ueIdx, uint8_t cellId)
 	    if(duUpdateTunnelCfgDb(ueIdx, cellId, &ueCb->f1UeDb->duUeCfg) != ROK)
 	    {
                DU_LOG("\nERROR  -->  DU_APP : Failed to establish tunnel in duUpdateDuUeCbCfg()");
-	       return RFAILED;
+	            return RFAILED;
 	    }
 	 }
       }
@@ -2820,7 +2826,9 @@ void deleteMacUeCfg(MacUeCfg *ueCfg)
 * ****************************************************************/
 uint8_t  deleteUeCfg(uint16_t cellIdx, uint8_t ueIdx)
 {
+   uint8_t tnlIdx = 0;
    DuUeCb *ueCb = NULLP;
+   
    if(duCb.actvCellLst[cellIdx] != NULLP)
    {
       if((duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].macUeCfg.macUeCfgState == UE_DELETE_COMPLETE)\
@@ -2832,6 +2840,16 @@ uint8_t  deleteUeCfg(uint16_t cellIdx, uint8_t ueIdx)
          if(ueCb->f1UeDb !=NULLP)
          {
             freeF1UeDb(ueCb->f1UeDb);
+         }
+         for(tnlIdx = 0; tnlIdx < duCb.numDrb; )
+         {
+            if(duCb.upTnlCfg[tnlIdx]->ueIdx == ueIdx)
+            {
+               duCb.upTnlCfg[tnlIdx]->configType = CONFIG_DEL;
+               duProcEgtpTunnelCfg(tnlIdx, duCb.upTnlCfg[tnlIdx], duCb.upTnlCfg[tnlIdx]);
+            }
+            else
+               tnlIdx++;
          }
          duCb.actvCellLst[cellIdx]->numActvUes--;
          memset(ueCb, 0, sizeof(DuUeCb));
@@ -3224,7 +3242,15 @@ uint8_t DuProcMacCellDeleteRsp(Pst *pst, MacCellDeleteRsp *deleteRsp)
          {
             deleteDuCellCb(duCb.actvCellLst[cellIdx]);
             gCellStatus = CELL_DOWN;
+
+#ifdef O1_ENABLE
+            DU_LOG("\nINFO   -->  DU APP : Raise cell down alarm for cell id=%d", deleteRsp->cellId);
+            raiseCellAlrm(CELL_DOWN_ALARM_ID, deleteRsp->cellId);
+            setCellOpState(deleteRsp->cellId, DISABLED, INACTIVE);
+#endif
+
             duCb.numActvCells--;
+            duCb.numCfgCells--;
             DU_FREE(duCb.actvCellLst[cellIdx], sizeof(DuCellCb));
          }
          else
