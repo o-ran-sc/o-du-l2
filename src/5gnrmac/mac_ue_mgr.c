@@ -64,20 +64,6 @@ MacDuUeDeleteRspFunc macDuUeDeleteRspOpts[] =
    packDuMacUeDeleteRsp   /* packing for light weight loosly coupled */
 };
 
-MacSchCellDeleteReqFunc macSchCellDeleteReqOpts[]=
-{
-   packMacSchCellDeleteReq,    /* packing for loosely coupled */
-   MacSchCellDeleteReq,        /* packing for tightly coupled */
-   packMacSchCellDeleteReq     /* packing for light weight loosely coupled */
-};
-
-MacDuCellDeleteRspFunc macDuCellDeleteRspOpts[] =
-{
-   packDuMacCellDeleteRsp,   /* packing for loosely coupled */
-   DuProcMacCellDeleteRsp,   /* packing for tightly coupled */
-   packDuMacCellDeleteRsp   /* packing for light weight loosly coupled */
-};
-
 /*******************************************************************
  *
  * @brief Fills mac cell group config to be sent to scheduler
@@ -199,7 +185,7 @@ uint8_t fillPdschServCellCfg(PdschServCellCfg macPdschCfg, SchPdschServCellCfg *
    {
       if(!schPdschCfg->maxMimoLayers)
       {
-         MAC_ALLOC_SHRABL_BUF(schPdschCfg->maxMimoLayers, sizeof(uint8_t));
+         MAC_ALLOC(schPdschCfg->maxMimoLayers, sizeof(uint8_t));
 	 if(!schPdschCfg->maxMimoLayers)
 	 {
             DU_LOG("\nERROR  -->  MAC :Memory Alloc MimoLayers Failed at fillPdschServCellCfg()");
@@ -220,7 +206,7 @@ uint8_t fillPdschServCellCfg(PdschServCellCfg macPdschCfg, SchPdschServCellCfg *
    {
       if(!schPdschCfg->maxCodeBlkGrpPerTb)
       {
-         MAC_ALLOC_SHRABL_BUF(schPdschCfg->maxCodeBlkGrpPerTb, sizeof(SchMaxCodeBlkGrpPerTB));
+         MAC_ALLOC(schPdschCfg->maxCodeBlkGrpPerTb, sizeof(SchMaxCodeBlkGrpPerTB));
 	 if(!schPdschCfg->maxCodeBlkGrpPerTb)
 	 {
             DU_LOG("\nERROR  -->  MAC :Memory Alloc for code Block Failed at fillPdschServCellCfg()");
@@ -238,7 +224,7 @@ uint8_t fillPdschServCellCfg(PdschServCellCfg macPdschCfg, SchPdschServCellCfg *
    {
       if(!schPdschCfg->codeBlkGrpFlushInd)
       {
-         MAC_ALLOC_SHRABL_BUF(schPdschCfg->codeBlkGrpFlushInd, sizeof(bool));
+         MAC_ALLOC(schPdschCfg->codeBlkGrpFlushInd, sizeof(bool));
 	 if(!schPdschCfg->codeBlkGrpFlushInd)
 	 {
             DU_LOG("\nERROR  -->  MAC :Memory Alloc for Flush Ind Failed at fillPdschServCellCfg()");
@@ -256,7 +242,7 @@ uint8_t fillPdschServCellCfg(PdschServCellCfg macPdschCfg, SchPdschServCellCfg *
    {
       if(!schPdschCfg->xOverhead)
       {
-         MAC_ALLOC_SHRABL_BUF(schPdschCfg->xOverhead, sizeof(SchPdschXOverhead));
+         MAC_ALLOC(schPdschCfg->xOverhead, sizeof(SchPdschXOverhead));
 	 if(!schPdschCfg->xOverhead)
 	 {
             DU_LOG("\nERROR  -->  MAC :Memory Alloc for xOverHead Failed at fillPdschServCellCfg()");
@@ -2526,96 +2512,6 @@ void deletePucchResourcesCfg(PucchResrcCfg *resrcCfg)
 
 /*******************************************************************
 *
-* @brief Function to delete MAC Pdsch ServCellCfg
-*
-* @details
-*
-*    Function : deleteMacPdschServCellCfg
-*
-*    Functionality: Function to delete MAC Pdsch ServCellCfg
-*
-* @params[in] PdschServCellCfg *pdschServCellCfg
-* @return void
-*
-* ****************************************************************/
-
-void deleteMacPdschServCellCfg(PdschServCellCfg *pdschServCellCfg)
-{
-   MAC_FREE(pdschServCellCfg->maxMimoLayers, sizeof(uint8_t));
-   MAC_FREE(pdschServCellCfg->maxCodeBlkGrpPerTb, sizeof(MaxCodeBlkGrpPerTB));
-   MAC_FREE(pdschServCellCfg->codeBlkGrpFlushInd, sizeof(bool));
-   MAC_FREE(pdschServCellCfg->xOverhead, sizeof(PdschXOverhead));
-}
-
-/*******************************************************************
-*
-* @brief Handles UE Delete requst from DU APP
-*
-* @details
-*
-*    Function : deleteMacUeCb 
-*
-*    Functionality: Handles UE Delete requst from DU APP
-*
-* @params[in] MacCellCb *cellCb,uint16_t ueIdx
-* @return ROK     - success
-*         RFAILED - failure
-*
-* ****************************************************************/
-
-void deleteMacUeCb(MacUeCb  *ueCb)
-{
-   MacUeCfg *ueCfg = NULLP;
-   ServCellCfgInfo *servCellCfg;
-   
-   if(ueCb->cellCb)
-   {
-      MAC_FREE(ueCb->cellCb->macRaCb[ueCb->ueIdx-1].msg4Pdu,  ueCb->cellCb->macRaCb[ueCb->ueIdx-1].msg4PduLen);
-      MAC_FREE(ueCb->cellCb->macRaCb[ueCb->ueIdx-1].msg4TxPdu, ueCb->cellCb->macRaCb[ueCb->ueIdx-1].msg4TbSize);
-      
-      if(ueCb->cellCb->ueCfgTmpData[ueCb->ueIdx-1])
-      {
-         ueCfg =ueCb->cellCb->ueCfgTmpData[ueCb->ueIdx-1]; 
-         MAC_FREE(ueCfg->ambrCfg, sizeof(AmbrCfg));
-         if(ueCfg->spCellCfgPres)
-         {
-            servCellCfg = &ueCfg->spCellCfg.servCellCfg;
-            MAC_FREE(servCellCfg->bwpInactivityTmr, sizeof(uint8_t));
-            
-            if(servCellCfg->initUlBwp.pucchPresent)
-            {
-               MAC_FREE(servCellCfg->initUlBwp.pucchCfg.resrcSet, sizeof(PucchResrcSetCfg));
-               
-               if(servCellCfg->initUlBwp.pucchCfg.resrc)
-               {
-                  deletePucchResourcesCfg(servCellCfg->initUlBwp.pucchCfg.resrc);
-                  MAC_FREE(servCellCfg->initUlBwp.pucchCfg.resrc, sizeof(PucchResrcCfg));
-               }
-               MAC_FREE(servCellCfg->initUlBwp.pucchCfg.format1, sizeof(PucchFormatCfg));
-               MAC_FREE(servCellCfg->initUlBwp.pucchCfg.format2, sizeof(PucchFormatCfg));
-               MAC_FREE(servCellCfg->initUlBwp.pucchCfg.format3, sizeof(PucchFormatCfg));
-               MAC_FREE(servCellCfg->initUlBwp.pucchCfg.format4, sizeof(PucchFormatCfg));
-               MAC_FREE(servCellCfg->initUlBwp.pucchCfg.schedReq, sizeof(PucchSchedReqCfg));
-               MAC_FREE(servCellCfg->initUlBwp.pucchCfg.multiCsiCfg, sizeof(PucchMultiCsiCfg));
-               MAC_FREE(servCellCfg->initUlBwp.pucchCfg.spatialInfo, sizeof(PucchSpatialCfg));
-               MAC_FREE(servCellCfg->initUlBwp.pucchCfg.dlDataToUlAck , sizeof(PucchDlDataToUlAck));
-               MAC_FREE(servCellCfg->initUlBwp.pucchCfg.powerControl, sizeof(PucchPowerControl));
-               deleteMacPdschServCellCfg(&servCellCfg->pdschServCellCfg);
-            }
-         }
-         for(uint8_t idx=0 ;idx < ueCfg->numLcs; idx++)
-         {
-            MAC_FREE(ueCfg->lcCfgList[idx].drbQos, sizeof(DrbQosInfo));
-            MAC_FREE(ueCfg->lcCfgList[idx].snssai, sizeof(Snssai));
-         }
-         MAC_FREE(ueCb->cellCb->ueCfgTmpData[ueCb->ueIdx-1],sizeof(MacUeCfg));
-      }
-   }
-   memset(ueCb, 0, sizeof(MacUeCb));
-}
-
-/*******************************************************************
-*
 * @brief  Processes UE delete response from scheduler
 *
 * @details
@@ -2650,7 +2546,7 @@ uint8_t MacProcSchUeDeleteRsp(Pst *pst, SchUeDeleteRsp *schUeDelRsp)
             GET_UE_IDX(schUeDelRsp->crnti, ueIdx);
             if(macCb.macCell[cellIdx]->ueCb[ueIdx -1].crnti == schUeDelRsp->crnti)
             {
-               deleteMacUeCb(&macCb.macCell[cellIdx]->ueCb[ueIdx -1]);
+               memset(&macCb.macCell[cellIdx]->ueCb[ueIdx -1], 0, sizeof(MacUeCb));
                macCb.macCell[cellIdx]->numActvUe--;
                result = SUCCESS;
                ret = ROK;
@@ -2786,252 +2682,6 @@ uint8_t MacProcUeDeleteReq(Pst *pst, MacUeDelete *ueDelete)
    else
    {
       DU_LOG("\nERROR  -->  MAC : MacProcUeDeleteReq(): MAC UE delete request processing failed");
-      ret = RFAILED;
-   }
-   return ret;
-}
-
-/*******************************************************************
- *
- * @brief Fill and Send Cell Delete response from MAC to DU APP
- *
- * @details
- *
- *    Function : MacSendCellDeleteRsp
- *
- *    Functionality: Fill and Send Cell Delete response from MAC to DUAPP
- *
- * @params[in] MAC Cell delete result
- *             SCH Cell delete response
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-uint8_t MacSendCellDeleteRsp(CellDeleteStatus result, uint8_t cellId)
-{
-   MacCellDeleteRsp *deleteRsp=NULLP;
-   Pst            rspPst;
-
-   MAC_ALLOC_SHRABL_BUF(deleteRsp, sizeof(MacCellDeleteRsp));
-   if(!deleteRsp)
-   {
-      DU_LOG("\nERROR  -->  MAC : MacSendCellDeleteRsp(): Memory allocation for Cell delete response failed");
-      return RFAILED;
-   }
-
-   /* Filling CELL delete response */
-   deleteRsp->cellId = cellId;
-   deleteRsp->result = result;
-
-   /* Fill Post structure and send CELL delete response*/
-   memset(&rspPst, 0, sizeof(Pst));
-   FILL_PST_MAC_TO_DUAPP(rspPst, EVENT_MAC_CELL_DELETE_RSP);
-   return (*macDuCellDeleteRspOpts[rspPst.selector])(&rspPst, deleteRsp);
-}
-
-/*******************************************************************
- *
- * @brief  delete MAC CellCb information
- *
- * @details
- *
- *    Function : deleteMacCellCb 
- *
- *    Functionality:
- *      delete MAC CellCb information
- *
- * @params[in] MacCellCb * cellCb 
- *             
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-void deleteMacCellCb(MacCellCb * cellCb)
-{
-   uint8_t idx;
-   for(idx=0; idx<MAX_SLOTS; idx++)  
-   {
-      MAC_FREE(cellCb->dlSlot[idx].dlInfo.rarAlloc, sizeof(RarAlloc));
-      if(cellCb->dlSlot[idx].dlInfo.ulGrant)
-      {
-         MAC_FREE(cellCb->dlSlot[idx].dlInfo.ulGrant->dciInfo.pdschCfg, sizeof(PdschCfg));
-         MAC_FREE(cellCb->dlSlot[idx].dlInfo.ulGrant, sizeof(DciInfo));
-      }
-      if(cellCb->dlSlot[idx].dlInfo.dlMsgAlloc)
-      {
-         MAC_FREE(cellCb->dlSlot[idx].dlInfo.dlMsgAlloc->dlMsgInfo.dlMsgPdu,\
-               cellCb->dlSlot[idx].dlInfo.dlMsgAlloc->dlMsgInfo.dlMsgPduLen);
-         MAC_FREE(cellCb->dlSlot[idx].dlInfo.dlMsgAlloc, sizeof(DlMsgAlloc));
-      }
-   }
-
-   memset(cellCb, 0, sizeof(MacCellCb));
-}
-
-/*******************************************************************
- *
- * @brief  Processes CELL delete response from scheduler
- *
- * @details
- *
- *    Function : MacProcSchCellDeleteRsp 
- *
- *    Functionality:
- *      Processes CELL delete from scheduler
- *
- * @params[in] Pst : Post structure
- *             schCellDelRsp : Scheduler CELL delete respons
- * @return ROK     - success
- *         RFAILED - failure
- *
- * * ****************************************************************/
-uint8_t MacProcSchCellDeleteRsp(Pst *pst, SchCellDeleteRsp *schCellDelRsp)
-{
-   uint8_t  ret = ROK;
-   uint16_t cellIdx=0;
-   CellDeleteStatus status;
-   
-   if(schCellDelRsp)
-   {
-      if(schCellDelRsp->rsp == RSP_OK)
-      {
-         DU_LOG("\nINFO   -->  MAC : SCH CELL Delete response for cellId[%d] is successful ", \
-         schCellDelRsp->cellId);
-         GET_CELL_IDX(schCellDelRsp->cellId, cellIdx);
-         if(macCb.macCell[cellIdx]) 
-         {
-            if(macCb.macCell[cellIdx]->cellId == schCellDelRsp->cellId)
-            {
-               deleteMacCellCb(macCb.macCell[cellIdx]);
-               status  = SUCCESSFUL_RSP;
-               MAC_FREE(macCb.macCell[cellIdx], sizeof(MacCellCb));
-            }
-            else
-            {
-                DU_LOG("ERROR  -->  MAC : MacProcSchCellDeleteRsp(): CellId[%d] does not exists", schCellDelRsp->cellId);
-                status = CELL_ID_INVALID;
-                ret = RFAILED;
-            }
-         }
-         else
-         {
-            DU_LOG("ERROR  -->  MAC : MacProcSchCellDeleteRsp(): CellId[%d] does not exists", schCellDelRsp->cellId);
-            status = CELL_ID_INVALID;
-            ret = RFAILED;
-         }
-      }
-      else
-      {
-         DU_LOG("ERROR  -->  MAC : MacProcSchCellDeleteRsp(): CellId[%d] does not exists", schCellDelRsp->cellId);
-         status = CELL_ID_INVALID;
-         ret = RFAILED;
-      }
-      if(MacSendCellDeleteRsp(status, schCellDelRsp->cellId) != ROK)
-      {
-         DU_LOG("\nERROR  -->  MAC: MacProcSchCellDeleteRsp(): Failed to send CELL delete response");
-         ret = RFAILED;
-      }
-
-   }
-   else
-   {
-      DU_LOG("\nERROR  -->  MAC: MacProcSchCellDeleteRsp(): schCellDelRsp is NULL");
-      ret = RFAILED;
-   }
-   return ret;
-}
-
-/*******************************************************************
- *
- * @brief Sends Cell delete req to Scheduler
- *
- * @details
- *
- *    Function : sendCellDelReqToSch
- *
- *    Functionality: sends Cell delete req to Scheduler
- *
- * @params[in]  SchCellDelete *schCellDel
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-
-uint8_t sendCellDelReqToSch(SchCellDelete *schCellDel)
-{
-   Pst schPst;
-   FILL_PST_MAC_TO_SCH(schPst, EVENT_CELL_DELETE_REQ_TO_SCH);
-   return(*macSchCellDeleteReqOpts[schPst.selector])(&schPst, schCellDel);
-}
-
-/*******************************************************************
- *
- * @brief Handles CELL Delete requst from DU APP
- *
- * @details
- *
- *    Function : MacProcCellDeleteReq
- *
- *    Functionality: Handles CELL Delete requst from DU APP
- *
- * @params[in] Pst *pst, MacCellDelete *cellDelete
- * @return ROK     - success
- *         RFAILED - failure
- *
- *
- * ****************************************************************/
-uint8_t MacProcCellDeleteReq(Pst *pst, MacCellDelete *cellDelete)
-{
-   uint8_t ret = ROK, cellIdx=0;
-   SchCellDelete schCellDelete;
-
-   DU_LOG("\nINFO   -->  MAC : Cell Delete Request received for cellId[%d]", cellDelete->cellId);
-
-   if(cellDelete)
-   {
-      GET_CELL_IDX(cellDelete->cellId, cellIdx);
-      if(macCb.macCell[cellIdx])
-      {
-         if(macCb.macCell[cellIdx]->cellId == cellDelete->cellId)
-         {
-            memset(&schCellDelete, 0, sizeof(SchCellDelete));
-            schCellDelete.cellId =  cellDelete->cellId;
-            ret = sendCellDelReqToSch(&schCellDelete);
-            if(ret != ROK)
-            {
-               DU_LOG("\nERROR  -->  MAC : MacProcCellDeleteReq(): Failed to send UE Delete Request to SCH");
-               ret = RFAILED;
-            }
-         }
-         else
-         {
-            DU_LOG("\nERROR  -->  MAC : MacProcCellDeleteReq(): Failed to find the MacUeCb of CellId = %d",\
-            cellDelete->cellId);
-            ret = RFAILED;
-         }
-      }
-      else
-      {
-         DU_LOG("\nERROR  -->  MAC : MacProcCellDeleteReq(): Failed to find the MacUeCb of CellId = %d",\
-               cellDelete->cellId);
-         ret = RFAILED;
-      }
-
-      if(ret == RFAILED)
-      {
-          DU_LOG("\nERROR  -->  MAC : MacProcCellDeleteReq(): Sending failure response to DU");
-          if(MacSendCellDeleteRsp(CELL_ID_INVALID, cellDelete->cellId) != ROK)
-          {
-             DU_LOG("\nERROR  -->  MAC : MacProcCellDeleteReq(): failed to send cell delete rsp for cellID[%d]",\
-             cellDelete->cellId);
-          }
-
-      }
-      MAC_FREE_SHRABL_BUF(pst->region, pst->pool, cellDelete, sizeof(MacCellDelete));
-   }
-   else
-   {
-      DU_LOG("\nERROR  -->  MAC : MacProcCellDeleteReq(): Received MacCellDelete is NULL");
       ret = RFAILED;
    }
    return ret;

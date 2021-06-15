@@ -492,7 +492,7 @@ uint8_t unpackMacStopInd(DuMacStopInd func, Pst *pst, Buffer *mBuf)
 {
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      OduCellId *cellId;
+      OduCellId *cellId=NULLP;
       /* unpack the address of the structure */
       CMCHKUNPK(oduUnpackPointer, (PTR *)&cellId, mBuf);
       ODU_PUT_MSG_BUF(mBuf);

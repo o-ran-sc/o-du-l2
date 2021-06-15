@@ -55,7 +55,10 @@ uint8_t sctpActvInit(Ent entity, Inst inst, Region region, Reason reason)
    DU_LOG("\n\nDEBUG  -->  SCTP : Initializing");
    ODU_SET_PROC_ID(DU_PROC);
    connUp = FALSE;
+   
+   memset(&f1Params, 0, sizeof(DuSctpDestCb));
    f1Params.assocId = -1;
+   memset(&ricParams, 0, sizeof(DuSctpDestCb));
    ricParams.assocId = -1;
    nonblocking = FALSE;
    return ROK;

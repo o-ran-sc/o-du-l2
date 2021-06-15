@@ -1134,6 +1134,19 @@ S16 l1HdlStopReq(uint32_t msgLen, void *msg)
    if(lwrMacCb.phyState == PHY_STATE_RUNNING)
    {
       l1HdlSlotIndicaion(TRUE);
+
+      /* Initialize all global variables */
+      sfnValue = 0;
+      slotValue = 0;
+      rachIndSent = false;
+      msg3Sent = false;
+      msg5ShortBsrSent = false;
+      msg5Sent = false;
+      dlDedMsg = false;
+      msgSecurityModeComp =  false;
+      msgRrcReconfiguration  =  false;
+      msgRegistrationComp    = false;
+
       DU_LOG("\nINFO   -->  PHY_STUB: Slot Indication is stopped successfully");
       MAC_FREE(msg, msgLen);
    }
