@@ -38,6 +38,13 @@
 
 #endif
 
+DuMacCellDeleteReq packMacCellDeleteReqOpts[] =
+{
+   packDuMacCellDeleteReq,       /* Loose coupling */
+   MacProcCellDeleteReq,         /* TIght coupling */
+   packDuMacCellDeleteReq        /* Light weight-loose coupling */
+};
+
 /*******************************************************************
  *
  * @brief Processes cells to be activated
@@ -192,6 +199,175 @@ uint8_t duHandleCellUpInd(Pst *pst, OduCellId *cellId)
 
    if((pst->selector == ODU_SELECTOR_LWLC) || (pst->selector == ODU_SELECTOR_TC))
       DU_FREE_SHRABL_BUF(pst->region, pst->pool, cellId, sizeof(OduCellId));
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Handle Cell delete response from MAC
+ *
+ * @details
+ *
+ *    Function : DuProcMacCellDeleteRsp
+ *
+ *    Functionality: Handle Cell delete response from MAC
+ *
+ * @params[in] Pointer to MacCellDeleteRsp and Pst
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t DuProcMacCellDeleteRsp(Pst *pst, MacCellDeleteRsp *deleteRsp)
+{
+   uint8_t ret = ROK;
+   uint16_t cellIdx=0;
+   if(deleteRsp)
+   {
+      if(deleteRsp->result == SUCCESSFUL_RSP)
+      {
+         GET_CELL_IDX(deleteRsp->cellId, cellIdx);
+         DU_LOG("\nINFO   -->  DU APP : MAC CELL Delete Response : SUCCESS [CELL IDX : %d]", deleteRsp->cellId);
+         if(duCb.actvCellLst[cellIdx]->cellId == deleteRsp->cellId)
+         {
+            memset(duCb.actvCellLst[cellIdx], 0, sizeof(DuCellCb));
+            gCellStatus = CELL_DOWN;
+
+#ifdef O1_ENABLE
+            DU_LOG("\nINFO   -->  DU APP : Raise cell down alarm for cell id=%d", deleteRsp->cellId);
+            raiseCellAlrm(CELL_DOWN_ALARM_ID, deleteRsp->cellId);
+            setCellOpState(deleteRsp->cellId, DISABLED, INACTIVE);
+#endif
+
+            duCb.numActvCells--;
+            duCb.numCfgCells--;
+            DU_FREE(duCb.actvCellLst[cellIdx], sizeof(DuCellCb));
+         }
+         else
+         {
+            DU_LOG("\nERROR  -->  DU APP : DuProcMacCellDeleteRsp(): CellId [%d] doesnot exist", deleteRsp->cellId);
+            ret = RFAILED;
+         }
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  DU APP : DuProcMacCellDeleteRsp(): MAC CELL Delete Response : FAILED\
+         [CELL IDX : %d]", deleteRsp->cellId);
+         ret = RFAILED;
+      }
+      DU_FREE_SHRABL_BUF(pst->region, pst->pool, deleteRsp, sizeof(MacCellDeleteRsp));
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  DU APP : DuProcMacCellDeleteRsp(): Received MAC cell delete response is NULL");
+      ret = RFAILED;
+   }
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Sending Cell Delete Req To Mac
+ *
+ * @details
+ *
+ *    Function : sendCellDeleteReqToMac
+ *
+ *    Functionality:
+ *     sending Cell Delete Req To Mac
+ *
+ *  @params[in]    uint16_t cellId
+ *  @return ROK     - success
+ *          RFAILED - failure
+ *
+ *
+ *****************************************************************/
+
+uint8_t sendCellDeleteReqToMac(uint16_t cellId)
+{
+   Pst pst;
+   uint8_t ret=ROK;
+   MacCellDelete *cellDelete = NULLP;
+   
+   DU_ALLOC(cellDelete, sizeof(MacCellDelete));
+   if(cellDelete)
+   {
+      cellDelete->cellId = cellId;
+      FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_CELL_DELETE_REQ);
+
+      DU_LOG("\nINFO   -->  DU APP : Sending Cell Delete Request to MAC");  
+      /* Processing one Cell at a time to MAC */
+      ret = (*packMacCellDeleteReqOpts[pst.selector])(&pst, cellDelete);
+      if(ret == RFAILED)
+      {
+         DU_LOG("\nERROR  -->  DU APP : sendCellDeleteReqToMac(): Failed to send Cell delete Req to MAC");
+         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cellDelete, sizeof(MacCellDelete));
+      }
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->   DU APP : sendCellDeleteReqToMac(): Failed to allocate memory"); 
+      ret = RFAILED;
+   }
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief DU preocess Cell Delete Req to MAC 
+ *
+ * @details
+ *
+ *    Function : duSendCellDeletReq 
+ *
+ *    Functionality: DU process Cell Delete Req to MAC 
+ *
+ * @params[in] uint16_t cellId
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t duSendCellDeletReq(uint16_t cellId)
+{
+   uint16_t cellIdx = 0;
+   DU_LOG("\nINFO   -->  DU APP : Processing Cell Delete Request ");
+   GET_CELL_IDX(cellId, cellIdx);
+
+   if(duCb.actvCellLst[cellIdx] == NULLP)
+   {
+      DU_LOG("\nERROR  -->  DU APP : duSendCellDeletReq(): CellId[%d] is not found", cellId);
+      return RFAILED;
+   }
+   
+   if(duCb.actvCellLst[cellIdx]->cellId != cellId)
+   {
+      DU_LOG("\nERROR  -->  DU APP : duSendCellDeletReq(): CellId[%d] is not found", cellId);
+      return RFAILED;
+
+   }  
+   
+   if(duCb.actvCellLst[cellIdx]->cellStatus != DELETION_IN_PROGRESS)
+   {
+      DU_LOG("\nERROR  -->  DU APP : duSendCellDeletReq(): CellStatus[%d] of cellId[%d] is not correct.\
+      Expected CellStatus is DELETION_IN_PROGRESS",duCb.actvCellLst[cellIdx]->cellStatus, cellId);
+      return RFAILED;  
+   }
+
+   if(duCb.actvCellLst[cellIdx]->numActvUes)
+   {
+      DU_LOG("\nERROR  -->  DU APP : duSendCellDeletReq(): Active UEs still present in cellId[%d].\
+      Failed to delete cell", cellId);
+      return RFAILED;
+   }
+
+   if(duBuildAndSendMacCellStop(cellId) == RFAILED)
+   {
+      DU_LOG("\nERROR  -->  DU APP : duSendCellDeletReq(): Failed to build and send cell stop request to MAC for\
+            cellId[%d]",cellId);
+      return RFAILED;
+   }
+
    return ROK;
 }
 

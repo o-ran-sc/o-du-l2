@@ -437,7 +437,7 @@ extern "C" {
 #define EVENT_RLC_UE_DELETE_TMR           8
 
 /* Wait time for RLC Timers */
-#define RLC_UE_DELETE_WAIT_TIME           1 /*in milliseconds */
+#define RLC_UE_DELETE_WAIT_TIME           5 /*in milliseconds */
 
 /*******************************************************************************
  *                              DBM Defines 
