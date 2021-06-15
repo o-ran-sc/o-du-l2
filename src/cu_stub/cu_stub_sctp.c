@@ -525,10 +525,11 @@ S16 processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, uint32_t *t
  * ****************************************************************/
 S16 sctpSend(Buffer *mBuf)
 {
-   uint8_t          ret;
-   MsgLen           len;          /* number of actually sent octets */
+   uint8_t          ret = ROK;
+   MsgLen           len = 0;          /* number of actually sent octets */
    CmInetMemInfo    memInfo;                        
-   
+  
+   memset(&memInfo , 0, sizeof(CmInetMemInfo));
    memInfo.region = CU_APP_MEM_REG;               
    memInfo.pool   = CU_POOL;
 

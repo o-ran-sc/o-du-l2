@@ -1272,8 +1272,7 @@ typedef struct macCellDeleteRsp
 {
    uint16_t cellId;
    CellDeleteStatus result;
-}
-MacCellDeleteRsp;
+}MacCellDeleteRsp;
 
 /* Functions for slot Ind from MAC to DU APP*/
 typedef uint8_t (*DuMacCellUpInd) ARGS((

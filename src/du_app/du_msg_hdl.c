@@ -62,6 +62,7 @@ uint8_t egtpHdlDatInd(EgtpMsg egtpMsg);
 uint8_t BuildAndSendDUConfigUpdate();
 uint16_t getTransId();
 uint8_t cmPkLrgSchCfgReq(Pst * pst,RgMngmt * cfg);
+uint8_t sendCellDeleteReqToMac(uint16_t cellId);
 
 packMacCellCfgReq packMacCellCfgOpts[] =
 {
@@ -329,7 +330,7 @@ uint8_t duBuildRlcUsapCfg(uint8_t elemId, Ent ent, Inst inst)
 uint8_t duProcCfgComplete()
 {
    uint8_t         ret = ROK;
-   static uint16_t cellId = 0;
+   uint16_t        cellId = 0;
    uint16_t        idx;
    for(idx=0; idx< DEFAULT_CELLS; idx++)
    {
@@ -351,7 +352,7 @@ uint8_t duProcCfgComplete()
          cell->cellInfo.nrEcgi.plmn.mcc[2] = PLMN_MCC2;
          cell->cellInfo.nrEcgi.plmn.mnc[0] = PLMN_MNC0;
          cell->cellInfo.nrEcgi.plmn.mnc[1] = PLMN_MNC1;
-         cell->cellInfo.nrEcgi.cellId = NR_CELL_ID;
+         cell->cellInfo.nrEcgi.cellId = cell->cellId;
          cell->cellInfo.nrPci = NR_PCI; 
          cell->cellInfo.fiveGsTac = DU_TAC;
          memset(&cell->cellInfo.plmn[idx1], 0, sizeof(Plmn));
@@ -366,7 +367,7 @@ uint8_t duProcCfgComplete()
          cell->cellInfo.maxUe = duCfgParam.maxUe;
          cell->cellStatus = CELL_OUT_OF_SERVICE;
          gCellStatus = CELL_DOWN;
-
+         cell->gnbDuUeF1apIdGenerator = 0;
          duCb.cfgCellLst[duCb.numCfgCells] = cell;
          duCb.numCfgCells++;
       }
@@ -1577,7 +1578,7 @@ uint8_t duBuildAndSendMacCellStop(uint16_t cellId)
          DU_LOG("\nERROR  -->  DU APP : duBuildAndSendMacCellStop():  Memory allocation failed ");
          return RFAILED;
       }
-
+      memset(oduCellId, 0, sizeof(OduCellId));
       oduCellId->cellId = duCb.actvCellLst[cellIdx]->cellId;
 
       /* Fill Pst */
@@ -1621,10 +1622,16 @@ uint8_t duHandleStopInd(Pst *pst, OduCellId *cellId)
    if(duGetCellCb(cellId->cellId, &cellCb) != ROK)
       return RFAILED;
 
-   if((cellCb->cellStatus == ACTIVATED))
+   if((cellCb->cellStatus == ACTIVATED) || (cellCb->cellStatus == DELETION_IN_PROGRESS))
    {
       DU_LOG("\nINFO   -->  DU APP : 5G-NR Cell %d is DOWN", cellId->cellId);
-      cellCb->cellStatus = DELETION_IN_PROGRESS;
+      if(sendCellDeleteReqToMac(cellId->cellId) == RFAILED)
+      {
+         DU_LOG("\nERROR  -->  DU APP : duHandleStopInd(): Failed to send Cell delete req to MAC for\
+               cellId[%d]", cellId->cellId);
+         return RFAILED;
+      }
+
 
 #ifdef O1_ENABLE
       DU_LOG("\nINFO   -->  DU APP : Raise cell down alarm for cell id=%d", cellId->cellId);
