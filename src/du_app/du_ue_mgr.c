@@ -34,6 +34,11 @@
 #include "du_f1ap_msg_hdl.h"
 #include "du_ue_mgr.h"
 
+#ifdef O1_ENABLE
+#include "AlarmInterface.h"
+#include "ConfigInterface.h"
+#endif
+
 DuMacDlCcchInd packMacDlCcchIndOpts[] =
 {
    packMacDlCcchInd,           /* Loose coupling */
@@ -95,13 +100,6 @@ DuRlcUeDeleteReq packRlcUeDeleteReqOpts[] =
    packDuRlcUeDeleteReq,       /* Loose coupling */
    RlcProcUeDeleteReq,         /* TIght coupling */
    packDuRlcUeDeleteReq        /* Light weight-loose coupling */
-};
-
-DuMacCellDeleteReq packMacCellDeleteReqOpts[] =
-{
-   packDuMacCellDeleteReq,       /* Loose coupling */
-   MacProcCellDeleteReq,         /* TIght coupling */
-   packDuMacCellDeleteReq        /* Light weight-loose coupling */
 };
 
 /*******************************************************************
@@ -479,11 +477,20 @@ uint8_t duProcDlRrcMsg(F1DlRrcMsg *dlRrcMsg)
  * @return gnbDuF1apId
  *
  * ****************************************************************/
-uint32_t genGnbDuUeF1apId()
+int32_t genGnbDuUeF1apId(uint8_t cellId)
 {
-   static uint32_t gnbDuUeF1apId = 0;
+    uint8_t cellIdx =0;
 
-   return ++gnbDuUeF1apId;
+    GET_CELL_IDX(cellId, cellIdx);
+    if(duCb.actvCellLst[cellIdx])
+    {
+       return  ++duCb.actvCellLst[cellIdx]->gnbDuUeF1apIdGenerator;
+    }
+    else
+    {
+       DU_LOG("ERROR  --> DU_APP : genGnbDuUeF1apId(): CellId[%d] does not exist", cellId);
+    }
+    return -1;
 }
 
 /******************************************************************
@@ -505,12 +512,18 @@ uint8_t duProcUlCcchInd(UlCcchIndInfo *ulCcchIndInfo)
 {
 
    uint8_t ret = ROK;
-   uint32_t gnbDuUeF1apId = 0;
+   int32_t gnbDuUeF1apId = 0;
 
-   gnbDuUeF1apId = genGnbDuUeF1apId();
+   gnbDuUeF1apId = genGnbDuUeF1apId(ulCcchIndInfo->cellId);
+   
+   if(gnbDuUeF1apId == -1)
+   {
+      DU_LOG("ERROR  --> DU_APP : duProcUlCcchInd(): Received cellId[%d] does not exist", ulCcchIndInfo->cellId);
+      return RFAILED;
+   }
 
    /* Store Ue mapping */
-   duCb.ueCcchCtxt[duCb.numUe].gnbDuUeF1apId = gnbDuUeF1apId;
+   duCb.ueCcchCtxt[duCb.numUe].gnbDuUeF1apId = (uint32_t)gnbDuUeF1apId;
    duCb.ueCcchCtxt[duCb.numUe].crnti         = ulCcchIndInfo->crnti;
    duCb.ueCcchCtxt[duCb.numUe].cellId        = ulCcchIndInfo->cellId;
 
@@ -945,7 +958,7 @@ uint8_t fillMacLcCfgToAddMod(LcCfg *lcCfg, LcCfg *ueSetReqDb)
       {
          DU_ALLOC_SHRABL_BUF(lcCfg->drbQos, sizeof(DrbQosInfo));
          if(!lcCfg->drbQos)
-         {
+         { 
             DU_LOG("\nERROR  -->  DU APP : Memory Alloc failed at drQos at fillMacLcCfgToAddMod()");
             return RFAILED;
          }
@@ -1615,6 +1628,7 @@ uint8_t duCreateUeCb(UeCcchCtxt *ueCcchCtxt, uint32_t gnbCuUeF1apId)
 
 	 duCb.actvCellLst[cellIdx]->numActvUes++;
 	 memset(ueCcchCtxt, 0, sizeof(UeCcchCtxt));
+    duCb.numUe--;
       }
    }
    return ret;
@@ -2022,19 +2036,18 @@ uint8_t duProcEgtpTunnelCfg(uint8_t ueCbIdx, UpTnlCfg *duTnlCfg, UpTnlCfg *f1Tnl
    {
       if(duSendEgtpTnlMgmtReq(EGTP_TNL_MGMT_DEL, duTnlCfg->tnlCfg1->teId, f1TnlCfg->tnlCfg1) == ROK)
       {	   
-	 /* Free memory at drbIdx */
-	 DU_FREE(duTnlCfg->tnlCfg1, sizeof(GtpTnlCfg));
-	 DU_FREE(duTnlCfg, sizeof(UpTnlCfg));
-	 duCb.numDrb--;
-	 for(delIdx = ueCbIdx; delIdx < duCb.numDrb; delIdx++)
-	 {
-	    /* moving all elements one index ahead */
-	    ret = fillTnlCfgToAddMod(&duCb.upTnlCfg[delIdx], duCb.upTnlCfg[delIdx+1]);
-	    if(ret != ROK)
-	    {
-	       return ret;
-	    }
-	 }
+         /* Free memory at drbIdx */
+         DU_FREE(duTnlCfg->tnlCfg1, sizeof(GtpTnlCfg));
+         duCb.numDrb--;
+         for(delIdx = ueCbIdx; delIdx < duCb.numDrb; delIdx++)
+         {
+            /* moving all elements one index ahead */
+            ret = fillTnlCfgToAddMod(&duCb.upTnlCfg[delIdx], duCb.upTnlCfg[delIdx+1]);
+            if(ret != ROK)
+            {
+               return ret;
+            }
+         }
       }   
    }
    return ret;
@@ -2152,7 +2165,7 @@ uint8_t duUpdateDuUeCbCfg(uint8_t ueIdx, uint8_t cellId)
 	    if(duUpdateTunnelCfgDb(ueIdx, cellId, &ueCb->f1UeDb->duUeCfg) != ROK)
 	    {
                DU_LOG("\nERROR  -->  DU_APP : Failed to establish tunnel in duUpdateDuUeCbCfg()");
-	       return RFAILED;
+	            return RFAILED;
 	    }
 	 }
       }
@@ -2502,20 +2515,21 @@ uint8_t DuProcRlcDlRrcMsgRsp(Pst *pst, RlcDlRrcMsgRsp *dlRrcMsg)
             if(ret == RFAILED)
                DU_LOG("\nERROR  -->  DU APP : Failed to process UE Context Setup Request in DuProcRlcDlRrcMsgRsp()");
          }
+         
          if(ueCb->f1UeDb->actionType == UE_CTXT_MOD)
          {
             ret = duBuildAndSendUeContextModReq(dlRrcMsg->cellId, dlRrcMsg->crnti, &ueCb->f1UeDb->duUeCfg);
             if(ret == RFAILED)
                DU_LOG("\nERROR  -->  DU APP : Failed to process UE Context Mod Request in DuProcRlcDlRrcMsgRsp()");
          }
-         if(ueCb->f1UeDb->actionType == UE_CTXT_RELEASE)
+
+         if(ueCb->f1UeDb->actionType == UE_CTXT_RELEASE && ueCb->ueState == UE_ACTIVE)
          {
             ret = duBuildAndSendUeDeleteReq(dlRrcMsg->cellId,dlRrcMsg->crnti);
             if(ret == RFAILED)
             {
                DU_LOG("\nERROR  -->  DU APP : Failed to process UE Context Release Request in DuProcRlcDlRrcMsgRsp()");
             }
-
          }
       }
    }
@@ -2717,88 +2731,16 @@ void deletePdschServCellCfg(PdschServCellCfg *pdschServCellCfg)
 
 void deleteMacUeCfg(MacUeCfg *ueCfg)
 {
-   uint8_t lcCfgIdx;
-   uint8_t resrcIdx;
-   ServCellCfgInfo *servCellCfg;
-   PucchResrcInfo *resrcToAddModList;
-
-   if(ueCfg)
+   uint8_t lcCfgIdx=0;
+   
+   DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL,ueCfg->ambrCfg, sizeof(AmbrCfg));
+   if(ueCfg->spCellCfgPres)
    {
-      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL,ueCfg->ambrCfg, sizeof(AmbrCfg));
-      if(ueCfg->spCellCfgPres)
-      {
-         servCellCfg = &ueCfg->spCellCfg.servCellCfg;
-         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL,servCellCfg->bwpInactivityTmr, sizeof(uint8_t));
-         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL,servCellCfg->initUlBwp.pucchCfg.resrcSet,\
-         sizeof(PucchResrcSetCfg));
-         if(servCellCfg->initUlBwp.pucchCfg.resrc)
-         {
-            /*freeing the PucchResrcCfg*/
-            for(resrcIdx= 0; resrcIdx< servCellCfg->initUlBwp.pucchCfg.resrc->resrcToAddModListCount; resrcIdx++)
-            {
-               resrcToAddModList=&servCellCfg->initUlBwp.pucchCfg.resrc->resrcToAddModList[resrcIdx];
-               switch(resrcToAddModList->pucchFormat)
-               {
-                  case PUCCH_FORMAT_0:
-                     {
-                        DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL,resrcToAddModList->PucchFormat.format0 ,\
-                        sizeof(PucchFormat0));
-                        break;
-                     }
-                  case PUCCH_FORMAT_1:
-                     {
-                        DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL,resrcToAddModList->PucchFormat.format1 ,\
-                        sizeof(PucchFormat1));
-                        break;
-                     }
-                  case PUCCH_FORMAT_2:
-                     {
-                        DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL,resrcToAddModList->PucchFormat.format2 ,\
-                        sizeof(PucchFormat2_3));
-                        break;
-                     }
-                  case PUCCH_FORMAT_3:
-                     {
-                        DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL,resrcToAddModList->PucchFormat.format3 ,\
-                        sizeof(PucchFormat2_3));
-                        break;
-                     }
-                  case PUCCH_FORMAT_4:
-                     {
-                        DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL,resrcToAddModList->PucchFormat.format4 ,\
-                        sizeof(PucchFormat4));
-                        break;
-                     }
-               }
-            }
-            DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL,servCellCfg->initUlBwp.pucchCfg.resrc,\
-            sizeof(PucchResrcCfg));
-         }
-         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL,servCellCfg->initUlBwp.pucchCfg.format1,\
-         sizeof(PucchFormatCfg));
-         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL,servCellCfg->initUlBwp.pucchCfg.format2,\
-         sizeof(PucchFormatCfg));
-         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL,servCellCfg->initUlBwp.pucchCfg.format3,\
-         sizeof(PucchFormatCfg));
-         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL,servCellCfg->initUlBwp.pucchCfg.format4,\
-         sizeof(PucchFormatCfg));
-         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL,servCellCfg->initUlBwp.pucchCfg.schedReq,\
-         sizeof(PucchSchedReqCfg));
-         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL,servCellCfg->initUlBwp.pucchCfg.multiCsiCfg,\
-         sizeof(PucchMultiCsiCfg));
-         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL,servCellCfg->initUlBwp.pucchCfg.spatialInfo,\
-         sizeof(PucchSpatialCfg));
-         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL,servCellCfg->initUlBwp.pucchCfg.dlDataToUlAck ,\
-         sizeof(PucchDlDataToUlAck));
-         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL,servCellCfg->initUlBwp.pucchCfg.powerControl,\
-         sizeof(PucchPowerControl));
-         deletePdschServCellCfg(&servCellCfg->pdschServCellCfg);
-      }
-      for(lcCfgIdx=0; lcCfgIdx< ueCfg->numLcs; lcCfgIdx++)
-      {
-         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL,ueCfg->lcCfgList[lcCfgIdx].drbQos, sizeof(DrbQosInfo));
-         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL,ueCfg->lcCfgList[lcCfgIdx].snssai, sizeof(Snssai));
-      }
+      freeUeReCfgCellGrpInfo(ueCfg);
+   }
+   for(lcCfgIdx=0; lcCfgIdx< ueCfg->numLcs; lcCfgIdx++)
+   {
+      freeMacLcCfg(&ueCfg->lcCfgList[lcCfgIdx]);
    }
    memset(ueCfg, 0, sizeof(MacUeCfg));
 }
@@ -2820,7 +2762,9 @@ void deleteMacUeCfg(MacUeCfg *ueCfg)
 * ****************************************************************/
 uint8_t  deleteUeCfg(uint16_t cellIdx, uint8_t ueIdx)
 {
+   uint8_t tnlIdx = 0;
    DuUeCb *ueCb = NULLP;
+   
    if(duCb.actvCellLst[cellIdx] != NULLP)
    {
       if((duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].macUeCfg.macUeCfgState == UE_DELETE_COMPLETE)\
@@ -2832,6 +2776,16 @@ uint8_t  deleteUeCfg(uint16_t cellIdx, uint8_t ueIdx)
          if(ueCb->f1UeDb !=NULLP)
          {
             freeF1UeDb(ueCb->f1UeDb);
+         }
+         for(tnlIdx = 0; tnlIdx < duCb.numDrb; )
+         {
+            if(duCb.upTnlCfg[tnlIdx]->ueIdx == ueIdx)
+            {
+               duCb.upTnlCfg[tnlIdx]->configType = CONFIG_DEL;
+               duProcEgtpTunnelCfg(tnlIdx, duCb.upTnlCfg[tnlIdx], duCb.upTnlCfg[tnlIdx]);
+            }
+            else
+               tnlIdx++;
          }
          duCb.actvCellLst[cellIdx]->numActvUes--;
          memset(ueCb, 0, sizeof(DuUeCb));
@@ -2868,9 +2822,10 @@ uint8_t  deleteUeCfg(uint16_t cellIdx, uint8_t ueIdx)
 
 uint8_t DuProcMacUeDeleteRsp(Pst *pst, MacUeDeleteRsp *deleteRsp)
 {
-   uint8_t  ret =ROK;
+   uint8_t  ret =ROK,ueId=0;
    uint16_t cellIdx=0;
-
+   uint32_t gnbCuUeF1apId =0 , gnbDuUeF1apId =0;
+   
    if(deleteRsp)
    {
       if(deleteRsp->result == SUCCESS)
@@ -2880,11 +2835,18 @@ uint8_t DuProcMacUeDeleteRsp(Pst *pst, MacUeDeleteRsp *deleteRsp)
          if(duCb.actvCellLst[cellIdx])
          {
             duCb.actvCellLst[cellIdx]->ueCb[deleteRsp->ueId -1].macUeCfg.macUeCfgState = UE_DELETE_COMPLETE;
-            if(sendUeDeleteReqToRlc(deleteRsp->cellId, deleteRsp->ueId) == RFAILED)
+            ueId = deleteRsp->ueId;
+            gnbCuUeF1apId = duCb.actvCellLst[cellIdx]->ueCb[ueId-1].gnbDuUeF1apId;
+            gnbDuUeF1apId = duCb.actvCellLst[cellIdx]->ueCb[ueId-1].gnbCuUeF1apId;
+            if(deleteUeCfg(cellIdx, ueId) == ROK)
             {
-               DU_LOG("\nERROR  -->  DU APP : DuProcMacUeDeleteRsp():Failed to build UE  delete req for RLC ");
-               ret = RFAILED;
+               ret = BuildAndSendUeContextReleaseComplete(deleteRsp->cellId, gnbCuUeF1apId, gnbDuUeF1apId);
+               if(ret != ROK)
+               {
+                  DU_LOG("\nERROR  -->  DU APP : DuProcMacUeDeleteRsp(): failed to send UE context release complete");
+               }
             }
+
          }
       }
       else
@@ -2924,7 +2886,7 @@ uint8_t DuProcMacUeDeleteRsp(Pst *pst, MacUeDeleteRsp *deleteRsp)
 uint8_t DuProcRlcUeDeleteRsp(Pst *pst, RlcUeDeleteRsp *delRsp)
 {
    uint8_t  ueId = 0, ret = ROK;
-   uint16_t cellIdx = 0;
+   uint16_t cellIdx = 0,crnti;
    uint32_t gnbCuUeF1apId=0, gnbDuUeF1apId =0;   
 
    if(delRsp)
@@ -2938,16 +2900,13 @@ uint8_t DuProcRlcUeDeleteRsp(Pst *pst, RlcUeDeleteRsp *delRsp)
          if(duCb.actvCellLst[cellIdx]!=NULLP)
          {
             duCb.actvCellLst[cellIdx]->ueCb[ueId-1].rlcUeCfg.rlcUeCfgState = UE_DELETE_COMPLETE;
-            gnbCuUeF1apId = duCb.actvCellLst[cellIdx]->ueCb[ueId-1].gnbDuUeF1apId;
-            gnbDuUeF1apId = duCb.actvCellLst[cellIdx]->ueCb[ueId-1].gnbCuUeF1apId;
-            if(deleteUeCfg(cellIdx, ueId) == ROK)
+            GET_CRNTI(crnti, ueId);
+            if(sendUeDeleteReqToMac(delRsp->cellId, ueId, crnti) == RFAILED)
             {
-               ret = BuildAndSendUeContextReleaseComplete(delRsp->cellId, gnbCuUeF1apId, gnbDuUeF1apId);
-               if(ret != ROK)
-               {
-                  DU_LOG("\nERROR  -->  DU APP : DuProcMacUeDeleteRsp(): failed to send UE context release complete");
-               }
+               DU_LOG("\nERROR  -->  DU APP : duBuildAndSendUeDeleteReq(): Failed to build UE  delete req for MAC ");
+               return RFAILED;
             }
+
          }
       }
       else
@@ -3087,9 +3046,10 @@ uint8_t duBuildAndSendUeDeleteReq(uint16_t cellId, uint16_t crnti)
          return RFAILED;
       }
 
-      if(sendUeDeleteReqToMac(cellId, ueId, crnti) == RFAILED)
+      duCb.actvCellLst[cellIdx]->ueCb[ueId - 1].ueState = UE_DELETION_IN_PROGRESS; 
+      if(sendUeDeleteReqToRlc(cellId, ueId) == RFAILED)
       {
-         DU_LOG("\nERROR  -->  DU APP : duBuildAndSendUeDeleteReq(): Failed to build UE  delete req for MAC ");
+         DU_LOG("\nERROR  -->  DU APP : DuProcMacUeDeleteRsp():Failed to build UE  delete req for RLC ");
          return RFAILED;
       }
    }
@@ -3158,210 +3118,6 @@ void deleteRlcUeCfg(RlcUeCfg *ueCfg)
 }
 
 /*******************************************************************
- *
- * @brief Delete DU CellCb information 
- *
- * @details
- *
- *    Function : deleteDuCellCb
- *
- *    Functionality: Delete DU CellCb information
- *
- * @params[in] DuCellCb *cellCb
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-
-void deleteDuCellCb(DuCellCb *cellCb)
-{
-
-   if(cellCb->duMacCellCfg)
-   {
-      if(cellCb->duMacCellCfg->prachCfg.fdm[0].unsuedRootSeq)
-      {
-         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cellCb->duMacCellCfg->prachCfg.fdm[0].unsuedRootSeq,\
-               cellCb->duMacCellCfg->prachCfg.fdm[0].numUnusedRootSeq);
-      }
-      if(cellCb->duMacCellCfg->sib1Cfg.sib1Pdu)
-      {
-         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL,cellCb->duMacCellCfg->sib1Cfg.sib1Pdu,\
-               cellCb->duMacCellCfg->sib1Cfg.sib1PduLen);
-      }
-      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cellCb->duMacCellCfg, sizeof(MacCellCfg));
-   }
-   memset(cellCb, 0, sizeof(DuCellCb));
-
-}
-
-/*******************************************************************
- *
- * @brief Handle Cell delete response from MAC
- *
- * @details
- *
- *    Function : DuProcMacCellDeleteRsp
- *
- *    Functionality: Handle Cell delete response from MAC
- *
- * @params[in] Pointer to MacCellDeleteRsp and Pst
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-
-uint8_t DuProcMacCellDeleteRsp(Pst *pst, MacCellDeleteRsp *deleteRsp)
-{
-   uint8_t ret = ROK;
-   uint16_t cellIdx=0;
-   if(deleteRsp)
-   {
-      if(deleteRsp->result == SUCCESSFUL_RSP)
-      {
-         GET_CELL_IDX(deleteRsp->cellId, cellIdx);
-         DU_LOG("\nINFO   -->  DU APP : MAC CELL Delete Response : SUCCESS [CELL IDX : %d]", deleteRsp->cellId);
-         if(duCb.actvCellLst[cellIdx]->cellId == deleteRsp->cellId)
-         {
-            deleteDuCellCb(duCb.actvCellLst[cellIdx]);
-            gCellStatus = CELL_DOWN;
-            duCb.numActvCells--;
-            DU_FREE(duCb.actvCellLst[cellIdx], sizeof(DuCellCb));
-         }
-         else
-         {
-            DU_LOG("\nERROR  -->  DU APP : DuProcMacCellDeleteRsp(): CellId [%d] doesnot exist", deleteRsp->cellId);
-            ret = RFAILED;
-         }
-      }
-      else
-      {
-         DU_LOG("\nERROR  -->  DU APP : DuProcMacCellDeleteRsp(): MAC CELL Delete Response : FAILED\
-         [CELL IDX : %d]", deleteRsp->cellId);
-         ret = RFAILED;
-      }
-      DU_FREE_SHRABL_BUF(pst->region, pst->pool, deleteRsp, sizeof(MacCellDeleteRsp));
-   }
-   else
-   {
-      DU_LOG("\nERROR  -->  DU APP : DuProcMacCellDeleteRsp(): Received MAC cell delete response is NULL");
-      ret = RFAILED;
-   }
-   return ret;
-}
-
-/*******************************************************************
- *
- * @brief Sending Cell Delete Req To Mac
- *
- * @details
- *
- *    Function : sendCellDeleteReqToMac
- *
- *    Functionality:
- *     sending Cell Delete Req To Mac
- *
- *  @params[in]    uint16_t cellId
- *  @return ROK     - success
- *          RFAILED - failure
- *
- *
- *****************************************************************/
-
-uint8_t sendCellDeleteReqToMac(uint16_t cellId)
-{
-   Pst pst;
-   uint8_t ret=ROK;
-   MacCellDelete *cellDelete = NULLP;
-   
-   DU_ALLOC(cellDelete, sizeof(MacCellDelete));
-   if(cellDelete)
-   {
-      cellDelete->cellId = cellId;
-      FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_CELL_DELETE_REQ);
-
-      DU_LOG("\nINFO   -->  DU APP : Sending Cell Delete Request to MAC");  
-      /* Processing one Cell at a time to MAC */
-      ret = (*packMacCellDeleteReqOpts[pst.selector])(&pst, cellDelete);
-      if(ret == RFAILED)
-      {
-         DU_LOG("\nERROR  -->  DU APP : sendCellDeleteReqToMac(): Failed to send Cell delete Req to MAC");
-         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cellDelete, sizeof(MacCellDelete));
-      }
-   }
-   else
-   {
-      DU_LOG("\nERROR  -->   DU APP : sendCellDeleteReqToMac(): Failed to allocate memory"); 
-      ret = RFAILED;
-   }
-   return ret;
-}
-
-/*******************************************************************
- *
- * @brief DU preocess Cell Delete Req to MAC 
- *
- * @details
- *
- *    Function : duSendCellDeletReq 
- *
- *    Functionality: DU process Cell Delete Req to MAC 
- *
- * @params[in] uint16_t cellId
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-
-uint8_t duSendCellDeletReq(uint16_t cellId)
-{
-   uint16_t cellIdx = 0;
-   DU_LOG("\nINFO   -->  DU APP : Processing Cell Delete Request ");
-   GET_CELL_IDX(cellId, cellIdx);
-
-   if(duCb.actvCellLst[cellIdx] == NULLP)
-   {
-      DU_LOG("\nERROR  -->  DU APP : duSendCellDeletReq(): CellId[%d] is not found", cellId);
-      return RFAILED;
-   }
-   
-   if(duCb.actvCellLst[cellIdx]->cellId != cellId)
-   {
-      DU_LOG("\nERROR  -->  DU APP : duSendCellDeletReq(): CellId[%d] is not found", cellId);
-      return RFAILED;
-
-   }  
-   
-   if(duCb.actvCellLst[cellIdx]->cellStatus != DELETION_IN_PROGRESS)
-   {
-      DU_LOG("\nERROR  -->  DU APP : duSendCellDeletReq(): CellStatus[%d] of cellId[%d] is not correct.\
-      Expected CellStatus is DELETION_IN_PROGRESS",duCb.actvCellLst[cellIdx]->cellStatus, cellId);
-      return RFAILED;  
-   }
-
-   if(duCb.actvCellLst[cellIdx]->numActvUes)
-   {
-      DU_LOG("\nERROR  -->  DU APP : duSendCellDeletReq(): Active UEs still present in cellId[%d].\
-      Failed to delete cell", cellId);
-      return RFAILED;
-   }
-
-   if(duBuildAndSendMacCellStop(cellId) == RFAILED)
-   {
-      DU_LOG("\nERROR  -->  DU APP : duSendCellDeletReq(): Failed to build and send cell stop request to MAC for\
-            cellId[%d]",cellId);
-      return RFAILED;
-   }
-
-   if(sendCellDeleteReqToMac(cellId) == RFAILED)
-   {
-      DU_LOG("\nERROR  -->  DU APP : duSendCellDeletReq(): Failed to send Cell delete req to MAC for\
-            cellId[%d]",cellId);
-      return RFAILED;
-   }
-
-   return ROK;
-}
-/*******************************************************************
 *
 * @brief Du process Ue Context Release Command
 *
@@ -3417,6 +3173,7 @@ uint8_t duProcUeContextReleaseCommand(DuUeCb *duUeCb)
          DU_LOG("\nERROR  -->  DU APP : duProcUeContextReleaseCommand(): Failed to build and send Ue Delete request");
       }
    }
+
    return ret;
 }
 

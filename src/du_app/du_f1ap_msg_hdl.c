@@ -7797,7 +7797,7 @@ void freeMacPdschServCellInfo(PdschServCellCfg *pdsch)
 {
    if(pdsch->xOverhead)
    {
-      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, pdsch->xOverhead, sizeof(uint8_t));
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, pdsch->xOverhead, sizeof(PdschXOverhead));
    }
    if(pdsch->codeBlkGrpFlushInd)
    {
@@ -7805,7 +7805,7 @@ void freeMacPdschServCellInfo(PdschServCellCfg *pdsch)
    }
    if(pdsch->maxCodeBlkGrpPerTb)
    {
-      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, pdsch->maxCodeBlkGrpPerTb, sizeof(uint8_t));
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, pdsch->maxCodeBlkGrpPerTb, sizeof(MaxCodeBlkGrpPerTB));
    }
    if(pdsch->maxMimoLayers)
    {
@@ -8210,7 +8210,7 @@ uint8_t extractPdschServingCellCfg(PDSCH_ServingCellConfig_t *cuPdschSrvCellCfg,
 	 }
 	 else
 	 {
-            DU_ALLOC_SHRABL_BUF(macUePdschSrvCellCfg->maxCodeBlkGrpPerTb, sizeof(uint8_t));
+            DU_ALLOC_SHRABL_BUF(macUePdschSrvCellCfg->maxCodeBlkGrpPerTb, sizeof(MaxCodeBlkGrpPerTB));
             if(macUePdschSrvCellCfg->maxCodeBlkGrpPerTb)
 	    {
                *(macUePdschSrvCellCfg->maxCodeBlkGrpPerTb)  = \
@@ -8229,7 +8229,7 @@ uint8_t extractPdschServingCellCfg(PDSCH_ServingCellConfig_t *cuPdschSrvCellCfg,
 	 }
 	 else
 	 {
-            DU_ALLOC_SHRABL_BUF(macUePdschSrvCellCfg->maxCodeBlkGrpPerTb, sizeof(bool));
+            DU_ALLOC_SHRABL_BUF(macUePdschSrvCellCfg->codeBlkGrpFlushInd , sizeof(bool));
             if(macUePdschSrvCellCfg->codeBlkGrpFlushInd)
 	    {
                *(macUePdschSrvCellCfg->codeBlkGrpFlushInd)  = \
@@ -8278,7 +8278,7 @@ uint8_t extractPdschServingCellCfg(PDSCH_ServingCellConfig_t *cuPdschSrvCellCfg,
       }
       else
       {
-         DU_ALLOC_SHRABL_BUF(macUePdschSrvCellCfg->xOverhead, sizeof(uint8_t));
+         DU_ALLOC_SHRABL_BUF(macUePdschSrvCellCfg->xOverhead, sizeof(PdschXOverhead));
          if(macUePdschSrvCellCfg->xOverhead)
          {
             *(macUePdschSrvCellCfg->xOverhead)  = *(cuPdschSrvCellCfg->xOverhead);
@@ -11795,15 +11795,16 @@ void freeAperDecodeGnbDuAck(GNBDUConfigurationUpdateAcknowledge_t *gnbDuAck)
 
 uint8_t duProcGnbDuCfgUpdAckMsg(uint8_t transId)
 {
-   uint8_t ueId =0 , ueIdx =0, ieIdx=0,arrIdx=0;
-   uint8_t cellId =0, cellIdx =0, crnti=0;
-   CmLList *f1apPduNode;
-   ReservedF1apPduInfo *f1apPduInfo;
+   uint8_t  ieIdx=0, arrIdx=0;
+   uint8_t  ueId =0 , ueIdx =0;
+   uint16_t cellId =0, cellIdx =0, crnti=0;
+   CmLList *f1apPduNode = NULLP;
+   ReservedF1apPduInfo *f1apPduInfo =NULLP;
    F1AP_PDU_t *f1apMsgPdu = NULLP;
    GNBDUConfigurationUpdate_t *gnbDuConfigUpdate = NULLP;
-   BIT_STRING_t *cellIdentity;
-   struct Served_Cells_To_Delete_ItemIEs *deleteItemIe;
-   Served_Cells_To_Delete_List_t *cellsToDelete;
+   BIT_STRING_t *cellIdentity=NULLP;
+   struct Served_Cells_To_Delete_ItemIEs *deleteItemIe=NULLP;
+   Served_Cells_To_Delete_List_t *cellsToDelete=NULLP;
    Served_Cells_To_Delete_Item_t *deleteItem=NULLP;
 
    DU_LOG("\nINFO   -->  DU APP: GNB-DU config update Ack received ");
@@ -11841,7 +11842,7 @@ uint8_t duProcGnbDuCfgUpdAckMsg(uint8_t transId)
                   GET_CELL_IDX(cellId, cellIdx);
                   if(duCb.actvCellLst[cellIdx] != NULLP)
                   {
-                     for(ueIdx = 0; ueIdx < duCb.numUe; ueIdx++)
+                     for(ueIdx = 0; ueIdx < duCb.actvCellLst[cellIdx]->numActvUes; ueIdx++)
                      {
                         crnti = duCb.actvCellLst[cellIdx]->ueCb[ueIdx].crnti;
                         GET_UE_IDX(crnti,ueId);
@@ -12647,7 +12648,7 @@ uint8_t procF1UeContextModificationReq(F1AP_PDU_t *f1apMsg)
             {
                for(cellIdx = 0; cellIdx < duCb.numActvCells; cellIdx++)
                {
-                  for(ueIdx = 0; ueIdx < duCb.numUe; ueIdx++)
+                  for(ueIdx = 0; ueIdx < duCb.actvCellLst[cellIdx]->numActvUes; ueIdx++)
                   {
                      if((duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbDuUeF1apId == gnbDuUeF1apId)&&\
                            (duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbCuUeF1apId == gnbCuUeF1apId))
@@ -13164,7 +13165,7 @@ uint8_t procF1UeContextReleaseCommand(F1AP_PDU_t *f1apMsg)
                   {
                      for(cellIdx = 0; cellIdx < duCb.numActvCells; cellIdx++)
                      {
-                        for(ueIdx = 0; ueIdx < duCb.numUe; ueIdx++)
+                        for(ueIdx = 0; ueIdx < duCb.actvCellLst[cellIdx]->numActvUes; ueIdx++)
                         {
                            if((duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbDuUeF1apId == gnbDuUeF1apId)&&\
                                  (duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbCuUeF1apId == gnbCuUeF1apId))
