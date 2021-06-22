@@ -92,7 +92,9 @@
 #define MAX_NUM_DL_DATA_TO_UL_ACK 15
 #define SD_SIZE   3
 
+#define RAR_PAYLOAD_SIZE 10             /* As per spec 38.321, sections 6.1.5 and 6.2.3, RAR PDU is 8 bytes long and 2 bytes of padding */
 #define TX_PAYLOAD_HDR_LEN 32           /* Intel L1 requires adding a 32 byte header to transmitted payload */
+
 
 #define ADD_DELTA_TO_TIME(crntTime, toFill, incr)          \
 {                                                          \
@@ -716,7 +718,7 @@ typedef struct rarInfo
    uint16_t        ta;
    FreqDomainAlloc msg3FreqAlloc;
    uint16_t        tcrnti;
-   uint8_t         rarPdu[8];
+   uint8_t         rarPdu[RAR_PAYLOAD_SIZE];
    uint8_t         rarPduLen;
 }RarInfo;
 

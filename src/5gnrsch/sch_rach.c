@@ -364,7 +364,7 @@ bool ssbPresent, bool sib1Present)
       pdsch->codeword[cwCount].mcsTable = 0;   /* notqam256 */
       pdsch->codeword[cwCount].rvIndex = 0;
       /* RAR PDU length and FAPI payload header length */
-      tbSize = schCalcTbSize(SCH_RAR_PAYLOAD_SIZE + TX_PAYLOAD_HDR_LEN);
+      tbSize = schCalcTbSize(RAR_PAYLOAD_SIZE + TX_PAYLOAD_HDR_LEN);
       pdsch->codeword[cwCount].tbSize = tbSize;
    }
    pdsch->dataScramblingId = pci;

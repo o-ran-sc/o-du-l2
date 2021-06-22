@@ -210,10 +210,10 @@ uint8_t fapiMacRxDataInd(Pst *pst, RxDataInd *rxDataInd)
  * ****************************************************************/
 uint8_t MacProcRlcDlData(Pst* pstInfo, RlcData *dlData)
 {
-   uint8_t   pduIdx =0;
+   uint8_t   pduIdx = 0;
    uint8_t   lcIdx = 0;
-   uint8_t   *txPdu =NULLP;
-   uint16_t  tbSize =0,cellIdx=0;
+   uint8_t   *txPdu = NULLP;
+   uint16_t  cellIdx = 0, txPduLen = 0;
    MacDlData macDlData;
    MacDlSlot *currDlSlot = NULLP;
    DlRlcBoInfo dlBoInfo;
@@ -240,16 +240,16 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcData *dlData)
    currDlSlot = &macCb.macCell[cellIdx]->dlSlot[dlData->slotInfo.slot];
    if(currDlSlot->dlInfo.dlMsgAlloc)
    {
-      tbSize = currDlSlot->dlInfo.dlMsgAlloc->dlMsgPdschCfg.codeword[0].tbSize;
-      MAC_ALLOC(txPdu, tbSize);
+      txPduLen = currDlSlot->dlInfo.dlMsgAlloc->dlMsgPdschCfg.codeword[0].tbSize - TX_PAYLOAD_HDR_LEN;
+      MAC_ALLOC(txPdu, txPduLen);
       if(!txPdu)
       {
          DU_LOG("\nERROR  -->  MAC : Memory allocation failed in MacProcRlcDlData");
          return RFAILED;
       }
-      macMuxPdu(&macDlData, NULLP, txPdu, tbSize);
+      macMuxPdu(&macDlData, NULLP, txPdu, txPduLen);
 
-      currDlSlot->dlInfo.dlMsgAlloc->dlMsgInfo.dlMsgPduLen = tbSize;
+      currDlSlot->dlInfo.dlMsgAlloc->dlMsgInfo.dlMsgPduLen = txPduLen;
       currDlSlot->dlInfo.dlMsgAlloc->dlMsgInfo.dlMsgPdu = txPdu;
    }
 
@@ -531,7 +531,7 @@ uint8_t MacProcDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo)
    if(dlCcchIndInfo->msgType == RRC_SETUP)
    {
       dlBoInfo.lcId = SRB0_LCID;    // SRB ID 0 for msg4
-      /* (MSG4 pdu + 3 bytes sub-header) + (Contention resolution id MAC CE + 1b byte sub-header) */
+      /* (MSG4 pdu + 3 bytes sub-header) + (Contention resolution id MAC CE + 1 byte sub-header) */
       dlBoInfo.dataVolume = (dlCcchIndInfo->dlCcchMsgLen + 3) + (MAX_CRI_SIZE + 1);
 
       /* storing Msg4 Pdu in raCb */

@@ -97,8 +97,6 @@ void packBytes(uint8_t *buf, uint16_t *bytePos, uint8_t *bitPos, uint32_t val, u
 void fillRarPdu(RarInfo *rarInfo)
 {
    uint8_t   *rarPdu = rarInfo->rarPdu;
-   uint16_t  totalBits = 0;
-   uint8_t   numBytes = 0;
    uint16_t  bytePos= 0;
    uint8_t   bitPos = 0;
 
@@ -137,23 +135,10 @@ void fillRarPdu(RarInfo *rarInfo)
    timeAdv = rarInfo->ta;
    ulGrant = 0; /* this will be done when implementing msg3 */ 
    tmpCrnti = rarInfo->tcrnti;
-
-   /* Calulating total number of bytes in buffer */
-   totalBits = EBitSize + TBitSize + rapidSize + RBitSize + timeAdvSize \
-	       + ulGrantSize + tmpCrntiSize;
-
-   /* add padding size */
-   totalBits += RBitSize*2 + paddingLcidSize + paddingSize;
-
-   /* Calulating total number of bytes in buffer */
-   numBytes = totalBits/8;
-   if(totalBits % 8)
-      numBytes += 1;
-
-   rarInfo->rarPduLen = numBytes;
+   rarInfo->rarPduLen = RAR_PAYLOAD_SIZE;
 
    /* Initialize buffer */
-   for(bytePos = 0; bytePos < numBytes; bytePos++)
+   for(bytePos = 0; bytePos < rarInfo->rarPduLen; bytePos++)
       rarPdu[bytePos] = 0;
 
    bytePos = 0;
