@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e36261a5_5a1cbd85",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-06-22T12:19:07Z",
+      "side": 1,
+      "message": "macCb.macCell[cellIdx] is a pointer , can we include a check.",
+      "revId": "2e511e63801a90be43c8b3dcad35a7b048b9a896",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
