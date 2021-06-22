@@ -51,7 +51,6 @@
 #define DMRS_ADDITIONAL_POS 0
 #define SCH_DEFAULT_K1 1
 #define SCH_TQ_SIZE 10
-#define SCH_RAR_PAYLOAD_SIZE 10 /* As per spec 38.321, sections 6.1.5 and 6.2.3, RAR PDU is 8 bytes long and 2 bytes of padding */
 
 #define CRC_FAILED 0
 #define CRC_PASSED 1
