@@ -45,6 +45,10 @@ uint8_t rgActvTsk (Pst *, Buffer *);
 uint8_t rgActvInit (Ent, Inst, Region, Reason);
 uint8_t lwrMacActvTsk(Pst *, Buffer *);
 uint8_t lwrMacActvInit(Ent, Inst, Region, Reason);
+#ifndef INTEL_WLS_MEM
+uint8_t phyStubActvTsk(Pst *, Buffer *);
+uint8_t phyStubActvInit(Ent, Inst, Region, Reason);
+#endif
 
 /* Global variable */
 DuCfgParams duCfgParam;
@@ -105,6 +109,8 @@ uint8_t duAppInit(SSTskId sysTskId)
 
 bool bringCellUp(uint16_t cellId)
 {
+   duProcCfgComplete();
+   BuildAndSendF1SetupReq();
    return true;
 }
 
@@ -127,6 +133,7 @@ bool bringCellUp(uint16_t cellId)
 
 bool bringCellDown(uint16_t cellId)
 {
+   BuildAndSendDUConfigUpdate(SERV_CELL_TO_DELETE);
    return true;
 }
 #endif
@@ -318,6 +325,44 @@ uint8_t lwrMacInit(SSTskId sysTskId)
    return ROK;
 }
 
+#ifndef INTEL_WLS_MEM
+/*******************************************************************
+ *
+ * @brief Initializes Phy stub slot indication generator task
+ *
+ * @details
+ *
+ *    Function : phyStubInit
+ *
+ *    Functionality:
+ *       - Registers and attaches TAPA tasks for Phy stub's slot
+ *       indication generator
+ *
+ * @params[in] system task ID
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t phyStubInit(SSTskId sysTskId)
+{
+   /* Register PHY stub slot indication TAPA Task */
+   if(ODU_REG_TTSK((Ent)ENTPHYSTUB, (Inst)0, (Ttype)TTNORM, (Prior)PRIOR0,
+            phyStubActvInit, (ActvTsk)phyStubActvTsk) != ROK)
+   {
+      return RFAILED;
+   }
+   /* Attach Phy stub slot indication TAPA Task */
+   if (ODU_ATTACH_TTSK((Ent)ENTPHYSTUB, (Inst)0, sysTskId)!= ROK)
+   {
+      return RFAILED;
+   }
+
+   DU_LOG("\nINFO   -->  DU_APP : PHY stub slot indication TAPA task created and registered to %d sys task",
+         sysTskId);
+   return ROK;
+}
+#endif
+
 /*******************************************************************
  *
  * @brief Initializes system and TAPA tasks
@@ -337,7 +382,7 @@ uint8_t lwrMacInit(SSTskId sysTskId)
 uint8_t commonInit()
 {
    /* Declare system task Ids */
-   SSTskId du_app_stsk, egtp_stsk, sctp_stsk, rlc_ul_stsk, rlc_mac_cl_stsk, lwr_mac_stsk;
+   SSTskId du_app_stsk, egtp_stsk, sctp_stsk, rlc_ul_stsk, rlc_mac_cl_stsk, lwr_mac_stsk, phy_stub_slot_ind_stsk;
 
    pthread_attr_t attr;
 
@@ -394,6 +439,16 @@ uint8_t commonInit()
    }
    ODU_SET_THREAD_AFFINITY(&lwr_mac_stsk, SS_AFFINITY_MODE_EXCL, 21, 0);
 
+#ifndef INTEL_WLS_MEM
+   /* system task for phy stub's slot indication generator thread */
+   if(ODU_CREATE_TASK(PRIOR0, &phy_stub_slot_ind_stsk) != ROK)
+   {
+      DU_LOG("\nERROR  -->  DU_APP : System Task creation for Phy stub slot indication generator failed. MAX STSK [%d]", SS_MAX_STSKS);
+      return RFAILED;
+   }
+
+#endif
+
    /* Create TAPA tasks */
    if(duAppInit(du_app_stsk) != ROK)
    {
@@ -430,6 +485,14 @@ uint8_t commonInit()
       DU_LOG("\nERROR  -->  DU_APP : Lower MAC Tapa Task initialization failed");
       return RFAILED;
    }
+
+#ifndef INTEL_WLS_MEM
+   if(phyStubInit(phy_stub_slot_ind_stsk) != ROK)
+   {
+      DU_LOG("\nERROR  -->  DU_APP : PHY stub slot indication Tapa Task initialization failed");
+      return RFAILED;
+   }
+#endif
 
    return ROK;
 }

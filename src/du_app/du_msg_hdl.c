@@ -36,7 +36,6 @@
 #include "du_ue_mgr.h"
 #include "lsctp.h"
 #include "legtp.h"
-#include "lphy_stub.h"
 #include "du_utils.h"
 #include "du_cell_mgr.h" 
 

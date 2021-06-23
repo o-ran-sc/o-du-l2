@@ -19,8 +19,12 @@
 /* This file handles slot indication */
 
 #include "common_def.h"
-#include "lphy_stub.h"
-#include "du_log.h"
+#include "phy_stub_utils.h"
+#ifdef INTEL_FAPI
+#include "fapi.h"
+#include "fapi_vendor_extension.h"
+#endif
+#include "phy_stub.h"
 
 uint8_t l1SendUlUserData();
 uint8_t l1SendStatusPdu();
@@ -42,7 +46,7 @@ pthread_t thread = 0;
  *         RFAILED - failure
  *
  * ****************************************************************/
-void *GenerateTicks(void *arg)
+void GenerateTicks()
 {
 #ifdef NR_TDD
    int     milisec = 0.5;        /* 0.5ms */
@@ -51,16 +55,36 @@ void *GenerateTicks(void *arg)
 #endif
    struct timespec req = {0};
 
+   slotIndicationStarted = true;
    req.tv_sec = 0;
    req.tv_nsec = milisec * 1000000L;
 
-   while(1)
+   DU_LOG("\nPHY_STUB : GenerateTicks : Starting to generate slot indications");
+
+   while(slotIndicationStarted)
    {
       clock_nanosleep(CLOCK_REALTIME, 0, &req, NULL); 
       /* Send Slot indication indication to lower mac */
       l1BuildAndSendSlotIndication();
    }
-   return((void *)NULLP);
+
+   DU_LOG("\nINFO  --> PHY_STUB : Slot indication stopped");
+
+   /* Initialize all global variables */
+   sfnValue = 0;
+   slotValue = 0;
+   rachIndSent = false;
+   msg3Sent = false;
+   msg5ShortBsrSent = false;
+   msg5Sent = false;
+   dlDedMsg = false;
+   msgSecurityModeComp =  false;
+   msgRrcReconfiguration  =  false;
+   msgRegistrationComp    = false;
+
+   /* Send Stop indication to MAC */
+   sleep(1);
+   l1BuildAndSendStopInd();
 }
 
 /*******************************************************************
@@ -80,23 +104,21 @@ void *GenerateTicks(void *arg)
  * ****************************************************************/
 void l1HdlSlotIndicaion(bool stopSlotInd)
 {
+   Pst pst;
    int ret;
+   Buffer *mBuf = NULLP;
 
    if(!stopSlotInd)
    {
-      ret = pthread_create(&thread, NULL, GenerateTicks, NULL);
-      if(ret)
-      {
-         DU_LOG("\nERROR  -->  PHY_STUB: Unable to create thread");
-      }
+      DU_LOG("\nPHY_STUB: Sending start slot indication event to self");
+      memset(&pst, 0, sizeof(Pst));
+      FILL_PST_PHY_TO_PHY(pst, EVT_PHY_START_SLOT_IND);
+      ODU_GET_MSG_BUF(pst.region, pst.pool, &mBuf);
+      ODU_POST_TASK(&pst, mBuf);
    }
    else
    {
-      ret = pthread_cancel(thread);
-      if(ret)
-      {
-         DU_LOG("\nERROR  -->  PHY_STUB: Unable to stop thread");
-      }
+      slotIndicationStarted = false;
    }
 }
 

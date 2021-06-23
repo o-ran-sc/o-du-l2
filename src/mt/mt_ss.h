@@ -63,7 +63,11 @@
 #define SS_MAX_STSKS                    5 
 #endif
 #else 
+#ifndef INTEL_WLS_MEM
+#define SS_MAX_STSKS                    8
+#else
 #define SS_MAX_STSKS                    7 
+#endif
 #endif 
 #endif /* SS_MULTICORE_SUPPORT */
 

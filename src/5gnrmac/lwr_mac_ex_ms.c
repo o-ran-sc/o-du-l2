@@ -19,8 +19,16 @@
 /* This file is the entry point for Lower MAC */
 
 #include "common_def.h"
+#include "mac_utils.h"
 #include "lwr_mac_fsm.h"
 #include "lwr_mac_phy.h"
+#ifdef INTEL_FAPI
+#include "fapi.h"
+#include "fapi_vendor_extension.h"
+#endif
+#ifndef INTEL_WLS_MEM
+#include "lwr_mac_phy_stub_inf.h"
+#endif
 
 /**************************************************************************
  * @brief Task Initiation callback function. 
@@ -74,38 +82,75 @@ uint8_t lwrMacActvTsk(Pst *pst, Buffer *mBuf)
    switch(pst->srcEnt)
    {
       case ENTLWRMAC:
-	 {
-	    switch(pst->event)
-	    {
+         {
+            switch(pst->event)
+            {
 #ifdef INTEL_WLS_MEM
-	       case EVT_START_WLS_RCVR:
-		  {
-		     ODU_PUT_MSG_BUF(mBuf);
+               case EVT_START_WLS_RCVR:
+                  {
+                     ODU_PUT_MSG_BUF(mBuf);
 
-		     /* Allocate memory for intial UL transmission */
-		     LwrMacEnqueueWlsBlock();
+                     /* Allocate memory for intial UL transmission */
+                     LwrMacEnqueueWlsBlock();
 
-		     /* Start thread to receive from L1 */
-		     DU_LOG("\nINFO  -->  LWR MAC: Starting WLS receiver thread");
-		     LwrMacRecvPhyMsg();
-		     break;
-		  }
+                     /* Start thread to receive from L1 */
+                     DU_LOG("\nINFO  -->  LWR MAC: Starting WLS receiver thread");
+                     LwrMacRecvPhyMsg();
+                     break;
+                  }
 #endif
-	       default:
-		  {
-		     SPutMsg(mBuf);
-		     DU_LOG("\nERROR  -->  LWR MAC: Invalid event %d received", pst->event);
-		     ret = RFAILED;
-		  }
-	    }
-	    break;
-	 }
+               default:
+                  {
+                     SPutMsg(mBuf);
+                     DU_LOG("\nERROR  -->  LWR MAC: Invalid event %d received", pst->event);
+                     ret = RFAILED;
+                  }
+            }
+            break;
+         }
+
+#ifndef INTEL_WLS_MEM
+      case ENTPHYSTUB:
+         {
+            switch(pst->event)
+            {
+               case EVT_PHY_STUB_SLOT_IND:
+                  {
+                     fapi_slot_ind_t *slotIndMsg;
+
+                     CMCHKUNPK(oduUnpackPointer, (PTR *)&slotIndMsg, mBuf);
+                     ODU_PUT_MSG_BUF(mBuf);
+
+                     procPhyMessages(slotIndMsg->header.msg_id, sizeof(fapi_slot_ind_t), (void*)slotIndMsg);
+                     MAC_FREE_SHRABL_BUF(pst->region, pst->pool, slotIndMsg, sizeof(fapi_slot_ind_t));
+                     break;
+                  }
+
+               case EVT_PHY_STUB_STOP_IND:
+                 {
+                    fapi_stop_ind_t *stopIndMsg;
+                    CMCHKUNPK(oduUnpackPointer, (PTR *)&stopIndMsg, mBuf);
+                    ODU_PUT_MSG_BUF(mBuf);
+
+                    procPhyMessages(stopIndMsg->header.msg_id, sizeof(fapi_stop_ind_t), (void*)stopIndMsg);
+                    MAC_FREE_SHRABL_BUF(pst->region, pst->pool, stopIndMsg, sizeof(fapi_stop_ind_t));
+                    break;
+                 }
+               default:
+                  {
+                     DU_LOG("\nERROR  -->  LWR_MAC: Invalid event %d received from PHY STUB", pst->event);
+                  }
+            }
+            break;
+         }
+#endif
+
       default:
-	 {
-	    SPutMsg(mBuf);
-	    DU_LOG("\nERROR  -->  LWR MAC: Message from invalid source entity %d", pst->srcEnt);
-	    ret = RFAILED;
-	 }
+         {
+            SPutMsg(mBuf);
+            DU_LOG("\nERROR  -->  LWR MAC: Message from invalid source entity %d", pst->srcEnt);
+            ret = RFAILED;
+         }
    }
    return ret;
 }
