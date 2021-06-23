@@ -30,10 +30,11 @@
 #include "fapi.h"
 #include "fapi_vendor_extension.h"
 #endif
-#include "lphy_stub.h"
 #include "lwr_mac_upr_inf.h"
 #include "mac_utils.h"
 #include "phy_stub.h"
+#include "phy_stub_utils.h"
+#include "lwr_mac_phy_stub_inf.h"
 
 /*******************************************************************
  *
@@ -244,6 +245,15 @@ void l1HdlParamReq(uint32_t msgLen, void *msg)
 
 void l1HdlConfigReq(uint32_t msgLen, void *msg)
 {
+   rachIndSent = false;
+   msg3Sent = false;
+   msg5ShortBsrSent = false;
+   msg5Sent = false;
+   dlDedMsg = false;
+   msgSecurityModeComp =  false;
+   msgRrcReconfiguration  =  false;
+   msgRegistrationComp    = false;
+
 #ifdef INTEL_FAPI
    p_fapi_api_queue_elem_t configReqElem = (p_fapi_api_queue_elem_t)msg;
    fapi_config_req_t *configReq = (fapi_config_req_t *)(configReqElem +1);
@@ -639,10 +649,13 @@ uint16_t l1BuildAndSendRachInd(uint16_t slot, uint16_t sfn)
  * ****************************************************************/
 uint16_t l1BuildAndSendSlotIndication()
 {
+   Pst pst;
+   Buffer *mBuf;
+
 #ifdef INTEL_FAPI
    fapi_slot_ind_t *slotIndMsg;
 
-   MAC_ALLOC(slotIndMsg, sizeof(fapi_slot_ind_t));
+   MAC_ALLOC_SHRABL_BUF(slotIndMsg, sizeof(fapi_slot_ind_t));
    if(!slotIndMsg)
    {
       DU_LOG("\nERROR  -->  PHY_STUB: Memory allocation failed for slot Indication Message");
@@ -655,24 +668,36 @@ uint16_t l1BuildAndSendSlotIndication()
       slotIndMsg->slot = slotValue;
 
 #ifdef ODU_SLOT_IND_DEBUG_LOG
-      DU_LOG("\n\nDEBUG  -->  PHY_STUB: SLOT indication [%d:%d]",sfnValue,slotValue);
+      DU_LOG("\n\nDEBUG  -->  PHY_STUB: Sending Slot Indication [%d : %d] to MAC", sfnValue, slotValue);
 #endif
+
       /* increment for the next TTI */
       slotValue++;
       if(sfnValue >= MAX_SFN_VALUE && slotValue > MAX_SLOT_VALUE)
       {
-	 sfnValue = 0;
-	 slotValue = 0;
+         sfnValue = 0;
+         slotValue = 0;
       }
       else if(slotValue > MAX_SLOT_VALUE)
       {
-	 sfnValue++;
-	 slotValue = 0;
+         sfnValue++;
+         slotValue = 0;
       }
       fillMsgHeader(&slotIndMsg->header, FAPI_SLOT_INDICATION, \
-	    sizeof(fapi_slot_ind_t) - sizeof(fapi_msg_t));
-      procPhyMessages(slotIndMsg->header.msg_id, sizeof(fapi_slot_ind_t), (void*)slotIndMsg);
-      MAC_FREE(slotIndMsg, sizeof(fapi_slot_ind_t));
+            sizeof(fapi_slot_ind_t) - sizeof(fapi_msg_t));
+
+      memset(&pst, 0, sizeof(Pst));
+      FILL_PST_PHY_STUB_TO_LWR_MAC(pst, EVT_PHY_STUB_SLOT_IND);
+
+      ODU_GET_MSG_BUF(pst.region, pst.pool, &mBuf);
+      if(!mBuf)
+      {
+         DU_LOG("\nERROR  --> PHY_STUB: Failed to allocate memory for slot indication buffer");
+         MAC_FREE_SHRABL_BUF(pst.region, pst.pool, slotIndMsg, sizeof(fapi_slot_ind_t));
+         return RFAILED;
+      }
+      CMCHKPK(oduPackPointer, (PTR)slotIndMsg, mBuf);
+      ODU_POST_TASK(&pst, mBuf);
    }
 #endif
    return ROK;
@@ -1053,10 +1078,12 @@ S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
 uint16_t l1BuildAndSendStopInd()
 {
 #ifdef INTEL_FAPI
+   Pst pst;
+   Buffer *mBuf = NULLP;
    fapi_stop_ind_t *stopIndMsg = NULLP;
    uint32_t msgLen = 0;
 
-   MAC_ALLOC(stopIndMsg, sizeof(fapi_stop_ind_t));
+   MAC_ALLOC_SHRABL_BUF(stopIndMsg, sizeof(fapi_stop_ind_t));
    if(!stopIndMsg)
    {
       DU_LOG("\nERROR  -->  PHY_STUB: Memory allocation failed for stop Indication Message");
@@ -1066,9 +1093,18 @@ uint16_t l1BuildAndSendStopInd()
    {
       fillMsgHeader(&stopIndMsg->header, FAPI_STOP_INDICATION, msgLen);
       DU_LOG("\n\nINFO   -->  PHY_STUB: Processing Stop indication to MAC");
-      procPhyMessages(stopIndMsg->header.msg_id,\
-	    sizeof(fapi_stop_ind_t), (void*)stopIndMsg);
-      MAC_FREE(stopIndMsg, sizeof(fapi_stop_ind_t));
+
+      memset(&pst, 0, sizeof(Pst));
+      FILL_PST_PHY_STUB_TO_LWR_MAC(pst, EVT_PHY_STUB_STOP_IND);
+      ODU_GET_MSG_BUF(pst.region, pst.pool, &mBuf);
+      if(!mBuf)
+      {
+         DU_LOG("\nERROR  --> PHY_STUB: Failed to allocate memory for slot indication buffer");
+         MAC_FREE_SHRABL_BUF(pst.region, pst.pool, stopIndMsg, sizeof(fapi_stop_ind_t));
+         return RFAILED;
+      }
+      CMCHKPK(oduPackPointer, (PTR)stopIndMsg, mBuf);
+      ODU_POST_TASK(&pst, mBuf);
    }
 #endif
    return ROK;
@@ -1099,7 +1135,6 @@ S16 l1HdlStopReq(uint32_t msgLen, void *msg)
    {
       l1HdlSlotIndicaion(TRUE);
       DU_LOG("\nINFO   -->  PHY_STUB: Slot Indication is stopped successfully");
-      l1BuildAndSendStopInd();
       MAC_FREE(msg, msgLen);
    }
    else

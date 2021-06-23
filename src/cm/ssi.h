@@ -1338,7 +1338,11 @@
 #define ENTUZ       0xd2             /* S1AP User */
 /* ssi_h_001.main_134 : Adtion for eGTP protocol */
 #define ENTEG       0xd3            /*  EGTP Layer */
+#ifndef INTEL_WLS_MEM
+#define ENTPHYSTUB  0xd4
+#else
 #define ENTEU       0xd4            /* EGTP USER */
+#endif
 /* ssi_h_001.main_135 : addition of LTE related entities */
 #define ENTLWRMAC       0xd5             /* LTE-PHY */
 #define ENTMAC       0xd6             /* LTE-MAC */

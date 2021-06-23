@@ -116,6 +116,7 @@ uint8_t procSlotInd(fapi_slot_ind_t *fapiSlotInd)
       slotInd->slot = fapiSlotInd->slot;
 
       FILL_PST_LWR_MAC_TO_MAC(pst, EVENT_SLOT_IND_TO_MAC);
+      pst.selector = ODU_SELECTOR_LWLC;
       ret = (*sendSlotIndOpts[pst.selector])(&pst, slotInd);
    }
    else
@@ -159,6 +160,7 @@ uint8_t procStopInd()
    DU_LOG("\nINFO  -->  LWR_MAC: PHY has moved to configured state");
 
    FILL_PST_LWR_MAC_TO_MAC(pst, EVENT_STOP_IND_TO_MAC);
+   pst.selector = ODU_SELECTOR_LWLC; 
    return (*sendStopIndOpts[pst.selector])(&pst, cellId);
 }
 
