@@ -74,6 +74,7 @@ char encBuf[ENC_BUF_MAX_LEN];
      8   UL    UL    UL    UL    UL    UL    UL    UL    UL    UL    UL    UL    UL    UL
      9   UL    UL    UL    UL    UL    UL    UL    UL    UL    UL    UL    UL    UL    UL  
  */
+
 #ifdef NR_TDD
 /*******************************************************************
  *
