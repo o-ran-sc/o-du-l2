@@ -477,16 +477,12 @@ uint8_t MacProcCellStop(Pst *pst, OduCellId  *cellId)
 {
 #ifdef INTEL_FAPI
    uint16_t      cellIdx; 
-   SlotIndInfo   slotInfo;
 
    DU_LOG("\nINFO  -->  MAC : Sending cell stop request to Lower Mac");
    GET_CELL_IDX(cellId->cellId, cellIdx);
    if(macCb.macCell[cellIdx])
    {
-      slotInfo.cellId = cellId->cellId;
-      slotInfo.sfn = macCb.macCell[cellIdx]->currTime.sfn;
-      slotInfo.slot = macCb.macCell[cellIdx]->currTime.slot;
-      sendToLowerMac(FAPI_STOP_REQUEST, 0, &slotInfo);
+      macCb.macCell[cellIdx]->state = CELL_STATE_DELETION_IN_PROGRESS;
    }
 #endif
 

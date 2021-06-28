@@ -326,11 +326,6 @@ uint8_t macProcSlotInd(SlotIndInfo slotInd)
    /* Trigger for DL TTI REQ */
    fillDlTtiReq(slotInd);
 
-   /* TODO : check if this too needs to be sent in sequence with Dl and Ul TTI req.
-    * If so , move trigger for fillUlDciReq to lower mac */
-   /* Trigger for UL DCI REQ */
-   fillUlDciReq(slotInd);
-
    return ROK;
 }  /* macProcSlotInd */
 
@@ -353,6 +348,7 @@ uint8_t macProcSlotInd(SlotIndInfo slotInd)
 uint8_t fapiMacSlotInd(Pst *pst, SlotIndInfo *slotInd)
 {
    uint8_t               ret = ROK;
+   uint16_t              cellIdx;
    volatile uint32_t     startTime=0;
 
 #ifdef ODU_SLOT_IND_DEBUG_LOG
@@ -361,6 +357,12 @@ uint8_t fapiMacSlotInd(Pst *pst, SlotIndInfo *slotInd)
    /*starting Task*/
    ODU_START_TASK(&startTime, PID_MAC_TTI_IND);
    gSlotCount++;
+
+   if(gSlotCount == 1)
+   {
+	   GET_CELL_IDX(slotInd->cellId, cellIdx);
+	   macCb.macCell[cellIdx]->state = CELL_STATE_UP;
+   }
 
 /* When testing L2 with Intel-L1, any changes specific to 
  * timer mode testing must be guarded under INTEL_TIMER_MODE*/

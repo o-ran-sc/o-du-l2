@@ -11842,13 +11842,21 @@ uint8_t duProcGnbDuCfgUpdAckMsg(uint8_t transId)
                   GET_CELL_IDX(cellId, cellIdx);
                   if(duCb.actvCellLst[cellIdx] != NULLP)
                   {
-                     for(ueIdx = 0; ueIdx < duCb.actvCellLst[cellIdx]->numActvUes; ueIdx++)
-                     {
-                        crnti = duCb.actvCellLst[cellIdx]->ueCb[ueIdx].crnti;
-                        GET_UE_IDX(crnti,ueId);
-                        BuildAndSendUeContextReleaseReq(cellId, ueId);
-                     }
-                  }
+                     if(duCb.actvCellLst[cellIdx]->numActvUes == 0)
+		     {
+			     duCb.actvCellLst[cellId-1]->cellStatus = DELETION_IN_PROGRESS;
+			     duSendCellDeletReq(cellId);
+		     }
+		     else
+		     {
+			     for(ueIdx = 0; ueIdx < duCb.actvCellLst[cellIdx]->numActvUes; ueIdx++)
+			     {
+				     crnti = duCb.actvCellLst[cellIdx]->ueCb[ueIdx].crnti;
+				     GET_UE_IDX(crnti,ueId);
+				     BuildAndSendUeContextReleaseReq(cellId, ueId);
+			     }
+		     }
+		  }
                   else
                   {
                      DU_LOG("ERROR  --> DU_APP : duProcGnbDuCfgUpdAckMsg(): CellId [%d] not found", cellId);

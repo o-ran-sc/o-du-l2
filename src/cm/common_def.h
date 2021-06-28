@@ -57,6 +57,7 @@
 /* MAX values */
 #define MAX_NUM_CELL 1
 #define MAX_NUM_UE   1
+#define MAX_NUM_UE_PER_TTI 1
 #define MAX_NUM_LC   11
 #define MAX_NUM_SRB  3    /* Max. no of Srbs */
 #define MAX_NUM_DRB  29   /* spec 38.331, maxDRB */

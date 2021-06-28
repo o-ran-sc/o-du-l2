@@ -57,11 +57,9 @@ uint8_t lwr_mac_procParamRspEvt(void *msg);
 uint8_t lwr_mac_procConfigReqEvt(void *msg);
 uint8_t lwr_mac_procConfigRspEvt(void *msg);
 uint8_t lwr_mac_procStartReqEvt(void *msg);
-uint8_t lwr_mac_procStopReqEvt(void *msg);
 void sendToLowerMac(uint16_t, uint32_t, void *);
 void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg);
 uint16_t fillDlTtiReq(SlotIndInfo currTimingInfo);
-uint16_t fillUlDciReq(SlotIndInfo currTimingInfo);
 typedef uint8_t (*lwrMacFsmHdlr)(void *);
 void lwrMacLayerInit(Region region, Pool pool);
 
