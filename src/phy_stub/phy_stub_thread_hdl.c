@@ -66,7 +66,11 @@ void GenerateTicks()
    {
       clock_nanosleep(CLOCK_REALTIME, 0, &req, NULL); 
       /* Send Slot indication indication to lower mac */
-      l1BuildAndSendSlotIndication();
+      if(l1BuildAndSendSlotIndication() != ROK)
+      {
+         DU_LOG("\nERROR  --> PHY_STUB : GenerateTicks(): Failed to build and send Slot Indication");
+         return;
+      }
    }
 
    DU_LOG("\nINFO  --> PHY_STUB : Slot indication stopped");

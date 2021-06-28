@@ -684,7 +684,8 @@ void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg 
    uint8_t mValue = 0;
    uint8_t firstSymbol = 0; /* need to calculate using formula mentioned in 38.213 */
    uint8_t slotIndex = 0;
-   uint8_t FreqDomainResource[6] = {0};
+   /* TODO : This should be filled through freqDomRscAllocType0() */
+   uint8_t FreqDomainResource[6] = {15, 0, 0, 0, 0, 0};
    uint16_t tbSize = 0;
    uint8_t numPdschSymbols = 11; /* considering pdsch region from symbols 3 to 13 */
    uint8_t ssbIdx = 0;
@@ -717,7 +718,7 @@ void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg 
    sib1SchCfg->n0 = slotIndex;
 
    /* calculate the PRBs */
-   freqDomRscAllocType0(((offsetPointA-offset)/6), (numRbs/6), FreqDomainResource);
+   //freqDomRscAllocType0(((offsetPointA-offset)/6), (numRbs/6), FreqDomainResource);
 
    /* fill BWP */
    switch(bandwidth)
@@ -793,7 +794,7 @@ void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg 
    pdsch->dmrs.dlDmrsScramblingId            = pci;
    pdsch->dmrs.scid                          = 0;
    pdsch->dmrs.numDmrsCdmGrpsNoData          = 1;
-   pdsch->dmrs.dmrsPorts                     = 0;
+   pdsch->dmrs.dmrsPorts                     = 0x0001;
    pdsch->dmrs.mappingType                   = DMRS_MAP_TYPE_A; /* Type-A */
    pdsch->dmrs.nrOfDmrsSymbols               = NUM_DMRS_SYMBOLS;
    pdsch->dmrs.dmrsAddPos                    = DMRS_ADDITIONAL_POS;
