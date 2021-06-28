@@ -54,6 +54,13 @@ typedef struct macCellCb MacCellCb;
 
 typedef enum
 {
+   CELL_STATE_UP,
+   CELL_STATE_DELETION_IN_PROGRESS,
+   CELL_STATE_DOWN
+}CellState;	   
+
+typedef enum
+{
    UE_STATE_INACTIVE,
    UE_STATE_ACTIVE
 }UeState;
@@ -179,6 +186,7 @@ typedef struct macUeCb
 struct macCellCb
 {
    uint16_t    cellId;
+   CellState   state;
    uint8_t     crntiMap;
    MacRaCbInfo macRaCb[MAX_NUM_UE];
    MacDlSlot   dlSlot[MAX_SLOTS];
