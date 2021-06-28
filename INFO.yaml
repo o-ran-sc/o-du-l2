@@ -54,6 +54,11 @@ committers:
       company: 'hcl'
       id: 'HariomGupta'
       timezone: 'Asia/Kolkata'
+    - name: 'Ankit Barve'
+      email: 'anbarve@radisys.com'
+      company: 'Radisys'
+      id: 'barveankit'
+      timezone: 'Asia/Kolkata'
 tsc:
     # yamllint disable rule:line-length
     approval: 'missing'
