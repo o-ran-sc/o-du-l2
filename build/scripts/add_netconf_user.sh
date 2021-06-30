@@ -1,4 +1,3 @@
-/*******************************************************************************
 ################################################################################
 #   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
 #                                                                              #
@@ -14,49 +13,13 @@
 #   See the License for the specific language governing permissions and        #
 #   limitations under the License.                                             #
 ################################################################################
-*******************************************************************************/
+# This script will add new netconf user
+#!/bin/bash
 
-/* This file contains Base call functions to support send VES Event*/
+adduser --system netconf && \
+   echo "netconf:netconf!" | chpasswd
 
-
-#ifndef __VES_EVENT_HPP__
-#define __VES_EVENT_HPP__
-
-#include <iostream>
-#include <string>
-#include <cjson/cJSON.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include "VesUtils.hpp"
-#include "VesCommonHeader.hpp"
-#include "HttpClient.hpp"
-
-using namespace std;
-
-class VesEvent{
-
-   public:
-      VesEvent();
-      ~VesEvent();
-      bool prepare();
-      bool send();
-
-   protected:
-      virtual bool prepareEventFields() = 0;
-      VesEventType mVesEventType;
-      cJSON* mVesEventFields;
-
-   private:
-      bool readConfigFile();
-      char * mSendData;
-      HttpClient *mHttpClient;
-      string mVesServerIp;
-      string mVesServerPort;
-      string mVesServerUsername;
-      string mVesServerPassword;
-};
-
-#endif
-/**********************************************************************
-  End of file
- **********************************************************************/
+mkdir -p /home/netconf/.ssh && \
+   ssh-keygen -A && \
+   ssh-keygen -t dsa -P '' -f /home/netconf/.ssh/id_dsa && \
+   cat /home/netconf/.ssh/id_dsa.pub > /home/netconf/.ssh/authorized_keys

@@ -16,43 +16,33 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains functions to support Json related operation (read/write)*/
+/* This file contains the class which runs as a thread to send the PNF
+   registration message.
+*/
 
-#ifndef __JSON_HELPER_HPP__
-#define __JSON_HELPER_HPP__
 
-#include <iostream>
-#include <stdlib.h>
-#include <assert.h>
-#include <cjson/cJSON.h>
-#include <string>
+#include "PnfRegistrationThread.hpp"
+#include "VesUtils.hpp"
+#include "VesEventHandler.hpp"
 
-class JsonHelper
+#include <unistd.h>
+
+
+bool PnfRegistrationThread::run()
 {
 
-   public:
-      /* Default constructor/Destructor */
-      JsonHelper(){}
-      ~JsonHelper(){}
-      static cJSON * createNode();
-      static cJSON* addNodeToObject(cJSON * parent, const char * nodeName, \
-                                  const char* value);
-      static cJSON* addNodeToObject(cJSON * parent, \
-                                  const char * nodeName, double value);
-
-      static void deleteNode(cJSON * node);
-      static cJSON_bool addJsonNodeToObject(cJSON * parent, \
-                             const char * nodeName, cJSON * node);
-      static cJSON* read(const char * fileName);
-      static std::string getValue(cJSON *json, const char *node);
-      static cJSON * getNode(cJSON *json, const char *node);
-      static char *printUnformatted(cJSON * node);
-      static char *print(cJSON * node);
-      static const char *getError();
-
-};
-
-#endif
-/**********************************************************************
-  End of file
- **********************************************************************/
+   const int N_RETRY = 2;
+   const int SLEEP_INTERVAL = 10;
+   /* Prepare VES PNF registration request */
+   VesEventHandler vesEvtHdr;
+   if(vesEvtHdr.prepare(VesEventType::PNF_REGISTRATION))
+   {
+      /* Send VES PNF registration request */
+      for( int i = 0; i < N_RETRY; i++)
+      {
+         O1_LOG("\nO1 O1Interface : Sending PNF registration. Attempt %d\n", i );
+         sleep(SLEEP_INTERVAL);
+         vesEvtHdr.send();
+      }
+   }
+}
