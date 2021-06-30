@@ -112,84 +112,50 @@ Cloning code
 Setting up Netconf server
 -------------------------
  
-  Following steps are required to compile ODU with O1 interface enabled:
+  Following steps are required to compile and run ODU with O1 interface enabled.
+  This requires SMO components (OAM and VES collector) to be running.
+
+- Create a new netconf user
+
+      Switch to root user or use sudo and run following commands
+
+   - Ubuntu :
+      | cd <O-DU High Directory>/l2/build/scripts
+      | sudo ./add_netconf_user.sh
 
 - Install Netconf libraries:
-   
+
    libssh, libyang, libnetconf2, sysrepo, netopeer2
 
    Script is provided in the following folder to install these libraries
 
-   - Ubuntu :  
-   
+   - Ubuntu :
        | cd <O-DU High Directory>/l2/build/scripts
        | sudo ./install_lib_O1.sh -c
 
+- Install the YANG modules and load initial configuration
+
+    - Navigate to config folder and update the desired initial configuration
+
+   - Ubuntu :
+       | cd <O-DU High Directory>/l2/build/config
+
+      | Open the startup_config.xml and edit the desired IP and Port for CU, DU and RIC.
+      | Open the nacm_config.xml and edit the desired user name to provide the access to that user.
+      | Open the netconf_server_ipv6.xml and edit the desired netconf server configuration.
+      | Open the vesConfig.json and edit the details of VES collector.
+      | Open the netconfConfig.json and edit the details of Netopeer server.
+      | Install the yang modules and load initial configuration.
+
+   - Ubuntu :
+       | cd <O-DU High Directory>/l2/build/scripts
+       | sudo ./load_yang.sh
+
 - Start Netopeer2-server:
-       
-   - Ubuntu :  
+
+   - Ubuntu :
        | cd <O-DU High Directory>/l2/build/scripts
        | sudo ./netopeer-server.sh start
-
-- Create a new netconf user
-      
-      Switch to root user and run following commands
-      
-   - Ubuntu :  
-   
-      | adduser --system netconf && \\
-      |    echo "netconf:netconf!" | chpasswd
-
-      | mkdir -p /home/netconf/.ssh && \\
-      | ssh-keygen -A && \\
-      | ssh-keygen -t dsa -P '' -f /home/netconf/.ssh/id_dsa && \\
-      |    cat /home/netconf/.ssh/id_dsa.pub > /home/netconf/.ssh/authorized_keys
-
-- Install the YANG modules
-
-   - Ubuntu :
-
-      | cd <O-DU High Directory>/l2/build/yang
-      | sysrepoctl -i ./yang/o-ran-sc-odu-alarm-v1.yang
-      | sysrepoctl -i ./yang/o-ran-sc-odu-interface-v1.yang
-      | sysrepoctl -i ./yang/o-ran-sc-du-hello-world.yang
-
-- Configure the startup IP and Port configurations for DU, CU and RIC
-
-   - Ubuntu :
-
-      | cd <O-DU High Directory>/l2/build/config
-      |
-      | Open the startup_config.xml and edit the desired IP and Port for CU, DU and RIC.
-      | Then load the configuration in the sysrepo running datastore using the command below
-      |
-      | sysrepocfg --import=startup_config.xml --datastore running --module  o-ran-sc-odu-interface-v1
-
-- Configure the netconf server details for VES PNF Event
-
-   - Ubuntu :
-
-      | cd <O-DU High Directory>/l2/build/config
-      |
-      | Open the netconfConfig.json and edit the desired MAC address, IP, Port, Username and Password for VES PNF Registration.
-
--  Configure the VES server details to send VES Events
-
-   - Ubuntu :
-
-      | cd <O-DU High Directory>/l2/build/config
-      |
-      |  Open the vesConfig.json and edit the desired IP, Port, Username and Password to send VES Event.
-
-- Configure the nacm module to provide access to new user
-
-   - Ubuntu :
-
-      | cd <O-DU High Directory>/l2/build/config
-      |
-      | Open the nacm_config.xml and edit the desired user-name to provide the access to that user.
-      |
-      | $sysrepocfg --import=nacm_config.xml --datastore running --module  ietf-netconf-acm
 
 
 Compilation

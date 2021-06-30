@@ -1,4 +1,3 @@
-/*******************************************************************************
 ################################################################################
 #   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
 #                                                                              #
@@ -14,38 +13,27 @@
 #   See the License for the specific language governing permissions and        #
 #   limitations under the License.                                             #
 ################################################################################
-*******************************************************************************/
-
-/* This file contains the O1App class which is responsible for running/starting
-   all the O1 modules in a thread. It inherits the Thread class and Singleton
-   class.
-*/
-
-#ifndef __O1_APP_HPP__
-#define __O1_APP_HPP__
-
-#include "Singleton.hpp"
-#include "Thread.hpp"
-#include "UnixSocketServer.hpp"
+# This script is used to install yang module and load initial configuration
+#!/bin/bash
 
 
-class O1App : public Singleton<O1App>, public Thread 
-{
-   friend Singleton<O1App>;
-   
-   private:
-   bool mStartupStatus;
-   UnixSocketServer mUxSocketServer;
+CURRENT_DIR=$PWD
+ROOT_DIR=$CURRENT_DIR/../../
 
-   protected:
-   O1App();
-   ~O1App();
-   bool run();
+#load yand models
+echo "### loading yang model ###"
+sysrepoctl -i $ROOT_DIR/build/yang/o-ran-sc-odu-alarm-v1.yang
+sysrepoctl -i $ROOT_DIR/build/yang/o-ran-sc-du-hello-world.yang
+sysrepoctl -i $ROOT_DIR/build/yang/o-ran-sc-odu-interface-v1.yang
+echo "### loading yang model Done###"
 
-   public:
-   bool getStartupStatus()const;
-   void cleanUp(void);
-};
+#load initial configuration
+echo "### loading initial configuration ###"
+sysrepocfg --import=$ROOT_DIR/bin/odu/config/startup_config.xml -v 3 --datastore running --module  o-ran-sc-odu-interface-v1
+sysrepocfg --import=$ROOT_DIR/bin/odu/config/nacm_config.xml -v 3 --datastore running --module  ietf-netconf-acm
+sysrepocfg --import=$ROOT_DIR/bin/odu/config/netconf_server_ipv6.xml -v 3 --datastore running --module  ietf-netconf-server
+echo "### loading initial configuration done ###"
 
-
-#endif
+################################################################################
+#                              End of file                                     #
+################################################################################

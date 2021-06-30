@@ -54,7 +54,7 @@ int NrCellCb::oper_get_items(sysrepo::S_Session session, \
                                        libyang::S_Data_Node &parent, \
                                        void *private_data)
 {
-   O1_LOG("O1 NrCellCb : Callback called for path=%s on get request", path);
+   O1_LOG("\nO1 NrCellCb : Callback called for path=%s on get request", path);
    libyang::S_Context ctx = session->get_context();
    libyang::S_Module mod = ctx->get_module(module_name);
 
@@ -76,7 +76,7 @@ int NrCellCb::oper_get_items(sysrepo::S_Session session, \
    std::map<uint16_t, NrCellInfo>::const_iterator it;
    for(it = cellOpStateMap.begin(); it !=cellOpStateMap.end(); it++)
    {
-      O1_LOG("\nO1 NrCellCb : cellId = %d, opState=%d, cellState=%d\n", \
+      O1_LOG("\nO1 NrCellCb : cellId = %d, opState=%d, cellState=%d", \
               it->first, (int) it->second.getOpState(), (int) it->second.getCellState());
       name.reset(new libyang::Data_Node(connection, mod, "name", \
                  to_string(it->first).c_str()));
@@ -109,31 +109,31 @@ void NrCellCb::printChange(sysrepo::S_Change change) {
    switch(change->oper()) {
       case SR_OP_CREATED:
          if (nullptr != change->new_val()) {
-            O1_LOG("O1 NrCellCb : CREATED: %s", \
+            O1_LOG("\nO1 NrCellCb : CREATED: %s", \
                     change->new_val()->to_string().c_str());
          }
          break;
       case SR_OP_DELETED:
          if (nullptr != change->old_val()) {
-             O1_LOG("O1 NrCellCb : DELETED:  %s", \
+             O1_LOG("\nO1 NrCellCb : DELETED:  %s", \
                      change->old_val()->to_string().c_str());
          }
          break;
       case SR_OP_MODIFIED:
          if (nullptr != change->old_val() && nullptr != change->new_val()) {
-            O1_LOG("O1 NrCellCb : MODIFIED: old value %s :new value %s", \
+            O1_LOG("\nO1 NrCellCb : MODIFIED: old value %s :new value %s", \
                     change->old_val()->to_string().c_str(), \
                     change->new_val()->to_string().c_str());
         }
         break;
      case SR_OP_MOVED:
         if (nullptr != change->old_val() && nullptr != change->new_val()) {
-           O1_LOG("O1 NrCellCb : MOVED: %s :after %s ", \
+           O1_LOG("\nO1 NrCellCb : MOVED: %s :after %s ", \
                     change->new_val()->xpath(), \
                     change->old_val()->xpath());
         }
         else if (nullptr != change->new_val()) {
-           O1_LOG("O1 NrCellCb : MOVED: %s : first\n", \
+           O1_LOG("\nO1 NrCellCb : MOVED: %s : first", \
                    change->new_val()->xpath());
         }
         break;
@@ -199,7 +199,7 @@ int NrCellCb::module_change(sysrepo::S_Session sess, \
    char change_path[MAX_LEN];
 
    try {
-      O1_LOG("O1 NrCellCb : Notification %s\n", evToStr(event));
+      O1_LOG("\nO1 NrCellCb : Notification %s", evToStr(event));
       if (SR_EV_CHANGE == event)
       {
          NrCellList & cellList  = NrCellList::instance();
@@ -212,15 +212,15 @@ int NrCellCb::module_change(sysrepo::S_Session sess, \
          //printChange(change); //enable only for debugging
          if(nullptr != change->new_val())
          {
-            O1_LOG("O1 NrCellCb : Parameter value has been \
-changed val=%s\n", change->new_val()->val_to_string().c_str());
+            O1_LOG("\nO1 NrCellCb : Parameter value has been \
+changed val=%s", change->new_val()->val_to_string().c_str());
             std::map<uint16_t, NrCellInfo>::const_iterator it;
             for(it = cellOpStateMap.begin(); it !=cellOpStateMap.end(); it++)
             {
                stringstream xpath;
                xpath << CELL_STATE_MODULE_PATH << "/du-to-ru-connection[name='" \
                << it->first << "']/administrative-state";
-               O1_LOG("O1 NrCellCb : created xpath = %s", \
+               O1_LOG("\nO1 NrCellCb : created xpath = %s", \
                       xpath.str().c_str());
 
                if((change->new_val()->to_string().find(xpath.str().c_str()) != \
@@ -229,11 +229,11 @@ changed val=%s\n", change->new_val()->val_to_string().c_str());
                   printChange(change);
                   string val = change->new_val()->val_to_string();
                   AdminState newVal = cellInfo.adminStateToEnum(val);
-                  O1_LOG("O1 NrCellCb : Update admin state \
-cellId =%d with admin-state value=%s\n", it->first, val.c_str());
+                  O1_LOG("\nO1 NrCellCb : Update admin state \
+cellId =%d with admin-state value=%s", it->first, val.c_str());
                  if(!setAdminState(it->first, newVal)) {
-                    O1_LOG("O1 NrCellCb : Could not change \
-parameter value =%s\n", change->new_val()->val_to_string().c_str());
+                    O1_LOG("\nO1 NrCellCb : Could not change \
+parameter value =%s", change->new_val()->val_to_string().c_str());
                     return SR_ERR_INTERNAL;
                  }
                }
@@ -243,7 +243,7 @@ parameter value =%s\n", change->new_val()->val_to_string().c_str());
    }//if evToStr(event) check
    }
    catch( const std::exception& e ) {
-      O1_LOG("exception : %s\n", e.what());
+      O1_LOG("\nO1 NrCellCb exception : %s\n", e.what());
    }
    return SR_ERR_OK;
 }
@@ -287,4 +287,3 @@ bool NrCellCb::setAdminState(uint16_t cellId, AdminState newAdminState)
 /**********************************************************************
          End of file
 **********************************************************************/
-

@@ -16,35 +16,28 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains the O1App class which is responsible for running/starting
-   all the O1 modules in a thread. It inherits the Thread class and Singleton
-   class.
+/* This file contains the class which runs as a thread to send the PNF
+   registration message.
 */
 
-#ifndef __O1_APP_HPP__
-#define __O1_APP_HPP__
+#ifndef __PNF_REGISTRATION_THREAD_HPP__
+#define __PNF_REGISTRATION_THREAD_HPP__
 
-#include "Singleton.hpp"
 #include "Thread.hpp"
-#include "UnixSocketServer.hpp"
+#include "Singleton.hpp"
 
 
-class O1App : public Singleton<O1App>, public Thread 
+class PnfRegistrationThread : public Singleton<PnfRegistrationThread>, public Thread
 {
-   friend Singleton<O1App>;
-   
-   private:
-   bool mStartupStatus;
-   UnixSocketServer mUxSocketServer;
+   friend Singleton<PnfRegistrationThread>;
 
    protected:
-   O1App();
-   ~O1App();
+   PnfRegistrationThread(){}
+   ~PnfRegistrationThread(){}
    bool run();
 
    public:
-   bool getStartupStatus()const;
-   void cleanUp(void);
+   void cleanUp(void){}
 };
 
 
