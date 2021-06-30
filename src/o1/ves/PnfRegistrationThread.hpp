@@ -16,43 +16,29 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains functions to support Json related operation (read/write)*/
+/* This file contains the class which runs as a thread to send the PNF  
+   registration message.
+*/
 
-#ifndef __JSON_HELPER_HPP__
-#define __JSON_HELPER_HPP__
+#ifndef __PNF_REGISTRATION_THREAD_HPP__
+#define __PNF_REGISTRATION_THREAD_HPP__
 
-#include <iostream>
-#include <stdlib.h>
-#include <assert.h>
-#include <cjson/cJSON.h>
-#include <string>
+#include "Thread.hpp"
+#include "Singleton.hpp"
 
-class JsonHelper
+
+class PnfRegistrationThread : public Singleton<PnfRegistrationThread>, public Thread 
 {
+   friend Singleton<PnfRegistrationThread>;
+
+   protected:
+   bool run();
 
    public:
-      /* Default constructor/Destructor */
-      JsonHelper(){}
-      ~JsonHelper(){}
-      static cJSON * createNode();
-      static cJSON* addNodeToObject(cJSON * parent, const char * nodeName, \
-                                  const char* value);
-      static cJSON* addNodeToObject(cJSON * parent, \
-                                  const char * nodeName, double value);
-
-      static void deleteNode(cJSON * node);
-      static cJSON_bool addJsonNodeToObject(cJSON * parent, \
-                             const char * nodeName, cJSON * node);
-      static cJSON* read(const char * fileName);
-      static std::string getValue(cJSON *json, const char *node);
-      static cJSON * getNode(cJSON *json, const char *node);
-      static char *printUnformatted(cJSON * node);
-      static char *print(cJSON * node);
-      static const char *getError();
-
+   PnfRegistrationThread(){}
+   ~PnfRegistrationThread(){}
+   void cleanUp(void){}
 };
 
+
 #endif
-/**********************************************************************
-  End of file
- **********************************************************************/

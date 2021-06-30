@@ -1,4 +1,3 @@
-/*******************************************************************************
 ################################################################################
 #   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
 #                                                                              #
@@ -14,49 +13,18 @@
 #   See the License for the specific language governing permissions and        #
 #   limitations under the License.                                             #
 ################################################################################
-*******************************************************************************/
+# This script is used to clean-up sysrepo databas
+#!/bin/bash
 
-/* This file contains Base call functions to support send VES Event*/
+CURRENT_DIR=$PWD
+ROOT_DIR=$CURRENT_DIR/../..
 
+if [ "$1" = "cleanup" ]; then
+   kill -9 `pidof netopeer2-server`
+   cd $ROOT_DIR/build/netconf/sysrepo/build/
+   make sr_clean
+   cd $ROOT_DIR/build/netconf/Netopeer2/build/
+   make rebuild_cache
+   cd $CURRENT_DIR
+fi
 
-#ifndef __VES_EVENT_HPP__
-#define __VES_EVENT_HPP__
-
-#include <iostream>
-#include <string>
-#include <cjson/cJSON.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include "VesUtils.hpp"
-#include "VesCommonHeader.hpp"
-#include "HttpClient.hpp"
-
-using namespace std;
-
-class VesEvent{
-
-   public:
-      VesEvent();
-      ~VesEvent();
-      bool prepare();
-      bool send();
-
-   protected:
-      virtual bool prepareEventFields() = 0;
-      VesEventType mVesEventType;
-      cJSON* mVesEventFields;
-
-   private:
-      bool readConfigFile();
-      char * mSendData;
-      HttpClient *mHttpClient;
-      string mVesServerIp;
-      string mVesServerPort;
-      string mVesServerUsername;
-      string mVesServerPassword;
-};
-
-#endif
-/**********************************************************************
-  End of file
- **********************************************************************/

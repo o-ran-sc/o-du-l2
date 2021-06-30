@@ -1,4 +1,3 @@
-/*******************************************************************************
 ################################################################################
 #   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
 #                                                                              #
@@ -14,49 +13,23 @@
 #   See the License for the specific language governing permissions and        #
 #   limitations under the License.                                             #
 ################################################################################
-*******************************************************************************/
+# This script is used to install yang module and load initial configuration
+#!/bin/bash
 
-/* This file contains Base call functions to support send VES Event*/
 
+CURRENT_DIR=$PWD
+ROOT_DIR=$CURRENT_DIR/../../
 
-#ifndef __VES_EVENT_HPP__
-#define __VES_EVENT_HPP__
+#load yand models
+echo "### loading yang model ###"
+sysrepoctl -i $ROOT_DIR/build/yang/o-ran-sc-odu-alarm-v1.yang
+sysrepoctl -i $ROOT_DIR/build/yang/o-ran-sc-du-hello-world.yang
+sysrepoctl -i $ROOT_DIR/build/yang/o-ran-sc-odu-interface-v1.yang
+echo "### loading yang model Done###"
 
-#include <iostream>
-#include <string>
-#include <cjson/cJSON.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include "VesUtils.hpp"
-#include "VesCommonHeader.hpp"
-#include "HttpClient.hpp"
-
-using namespace std;
-
-class VesEvent{
-
-   public:
-      VesEvent();
-      ~VesEvent();
-      bool prepare();
-      bool send();
-
-   protected:
-      virtual bool prepareEventFields() = 0;
-      VesEventType mVesEventType;
-      cJSON* mVesEventFields;
-
-   private:
-      bool readConfigFile();
-      char * mSendData;
-      HttpClient *mHttpClient;
-      string mVesServerIp;
-      string mVesServerPort;
-      string mVesServerUsername;
-      string mVesServerPassword;
-};
-
-#endif
-/**********************************************************************
-  End of file
- **********************************************************************/
+#load initial configuration
+echo "### loading initial configuration ###"
+sysrepocfg --import=$ROOT_DIR/bin/odu/config/startup_config.xml -v 3 --datastore running --module  o-ran-sc-odu-interface-v1
+sysrepocfg --import=$ROOT_DIR/bin/odu/config/nacm_config.xml -v 3 --datastore running --module  ietf-netconf-acm
+sysrepocfg --import=$ROOT_DIR/bin/odu/config/netconf_server_ipv6.xml -v 3 --datastore running --module  ietf-netconf-server
+echo "### loading initial configuration done ###"

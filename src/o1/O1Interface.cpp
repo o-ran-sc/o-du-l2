@@ -21,6 +21,8 @@
 #include "O1Interface.h"
 #include "O1App.hpp"
 #include "GlobalDefs.hpp"
+#include "PnfRegistrationThread.hpp"
+
 #include <signal.h>
 #include <unistd.h>
 
@@ -43,7 +45,11 @@
  ******************************************************************/
 
 int static check_O1_module_status(void){
-   for( int i = 0; i < 5 ; i++)
+
+   const int N_RETRY = 5;
+   const int SLEEP_INTERVAL = 1;
+
+   for( int i = 0; i < N_RETRY; i++)
    {
       if( O1App::instance().getStartupStatus() == true)
       {
@@ -51,7 +57,7 @@ int static check_O1_module_status(void){
       }
       else
       {
-         sleep(1);
+         sleep(SLEEP_INTERVAL);
       }
    }
 
@@ -80,16 +86,26 @@ int start_O1_module(void)
 {
 
    if(O1App::instance().start() == false){
-         O1_LOG("\nO1 O1Interface : Failed to start");
+      O1_LOG("\nO1 O1Interface : Failed to start");
       return O1::FAILURE;
    }
    
    if(O1App::instance().setAffinity(O1::CPU_CORE))
    {
-      O1_LOG("\nO1 O1Interface : CPU affinity set " );
+      O1_LOG("\nO1 O1Interface : CPU affinity set for O1App thread to" );
       O1App::instance().printAffinity();
    }
    return check_O1_module_status();
+}
+
+void sendPnfRegistration(void)
+{
+   PnfRegistrationThread::instance().start();
+   if(PnfRegistrationThread::instance().setAffinity(O1::CPU_CORE))
+   {
+      O1_LOG("\nO1 O1Interface : CPU affinity set for PnfRegistration thread to " );
+      PnfRegistrationThread::instance().printAffinity();
+   }
 }
 
 
