@@ -89,28 +89,28 @@ bool HttpClient::prepareHttpHeader(struct curl_slist *header, CURL *curl)
 
    if(!setUserPassword(curl))
    {
-      O1_LOG("O1 VES : unable to set user:password \n");
+      O1_LOG("\nO1 HttpClient : unable to set user:password");
       curl_slist_free_all(header);
    }
    setCurlOptions(curl);
 
    header = curl_slist_append(header, "Content-Type: application/json");
    if(!header) {
-       O1_LOG("O1 VES : curl_slist_append failed\n");
+       O1_LOG("\nO1 HttpClient : curl_slist_append failed");
        curl_easy_cleanup(curl);
        return false;
    }
 
     header = curl_slist_append(header, "Accept: application/json");
     if(!header) {
-        O1_LOG("O1 VES : curl_slist_append failed\n");
+        O1_LOG("\nO1 HttpClient : curl_slist_append failed");
         curl_easy_cleanup(curl);
         return false;
     }
     curl_easy_setopt(curl, CURLOPT_HTTPHEADER, header);
     if(!createUrl(curl))
     {
-        O1_LOG("O1 VES : could not create URL\n");
+        O1_LOG("\nO1 HttpClient : could not create URL");
         return false;
     }
    return true;
@@ -142,7 +142,7 @@ bool HttpClient::setUserPassword(CURL *curl)
    if((mServerUsername.c_str()) && (mServerPassword.c_str())) {
       asprintf(&credentials, "%s:%s", mServerUsername.c_str(), mServerPassword.c_str());
       if(credentials == 0) {
-         O1_LOG("O1 VES : credentials is blank\n");
+         O1_LOG("\nO1 HttpClient : Credential is blank");
          curl_easy_cleanup(curl);
          return false;
       }
@@ -181,7 +181,7 @@ bool HttpClient::createUrl(CURL *curl)
    if((mServerIp.c_str()) && (mServerPort.c_str())) {
       oss <<"https://"<<mServerIp<<":"<<mServerPort<<"/eventListener/v7";
       string url = oss.str();
-      O1_LOG("O1 VES : URL=%s\n", url.c_str());
+      O1_LOG("\nO1 HttpClient : URL=%s", url.c_str());
       curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
       return true;
    }
@@ -224,7 +224,7 @@ bool HttpClient::sendHttpRequest(struct curl_slist *header, CURL *curl)
     curl_slist_free_all(header);
 
     if(res != CURLE_OK) {
-        O1_LOG("O1 VES : could not send data , received error: %s\n", \
+        O1_LOG("\nO1 HttpClient : Could not send data, error: %s", \
                curl_easy_strerror(res));
         curl_easy_cleanup(curl);
         return false;
@@ -272,24 +272,24 @@ bool HttpClient::send(const char *sendData)
 
    CURL *curl = curl_easy_init();
    if(curl == 0) {
-       O1_LOG("O1 VES : could not initialize CURL\n");
+       O1_LOG("\nO1 HttpClient : could not initialize CURL");
        return false;
    }
 
    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, sendMsg);
    if(!prepareHttpHeader(header, curl))
    {
-      O1_LOG("O1 VES : could not prepare HTTP header\n");
+      O1_LOG("\nO1 HttpClient : could not prepare HTTP header");
       curl_easy_cleanup(curl);
       return false;
    }
    else if(!sendHttpRequest(header, curl))
    {
-      O1_LOG("O1 VES : could not send HTTP request\n");
+      O1_LOG("\nO1 HttpClient : could not send HTTP request");
       return false;
    }
-    curl_easy_cleanup(curl);
-    return true;
+   curl_easy_cleanup(curl);
+   return true;
 }
 
 /*******************************************************************
@@ -310,13 +310,13 @@ bool HttpClient::send(const char *sendData)
  ******************************************************************/
 
 size_t HttpClient::writeCb(void *data, size_t size, size_t nmemb, void *userp) {
-    O1_LOG("O1 VES : write Callback called\n");
+    O1_LOG("\nO1 HttpClient : write Callback called");
     size_t realsize = size * nmemb;
     struct response *mem = (struct response *)userp;
 
     char *ptr = (char *) realloc(mem->res, mem->size + realsize + 1);
     if(ptr == NULL) {
-        O1_LOG("O1 VES : realloc failed");
+        O1_LOG("\nO1 HttpClient : realloc failed");
         return 0;
     }
 

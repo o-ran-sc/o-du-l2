@@ -111,13 +111,15 @@ As shown in figure 2 the O1 module runs as a thread in O-DU High. Alarm communic
 
 O1 architecture has following components:
 
-- Session Handler: Subscribe to Netconf YANG modules and events. Register callback handler methods.
+- Netconf Session Handler: Subscribe to Netconf YANG modules and events. Register callback handler methods.
+
+- VES Agent : Sends the VES events to SMO
 
 - Alarm Manager: Stores and manages(add/updated/delete) alarms.
 
-- Unix socket server: Receives the alarm messages sent from O-DU High thread over Unix socket.
-
 - Alarm Interface : Provides an interface to O-DU High threads for sending the alarm messages to O1 module over Unix socket.
+
+- Config Interface : Interface to handle the configurations sent from SMO to the stack
 
 - Netopeer server: Serves the northbound SMO/OAM Netconf requests.
 
