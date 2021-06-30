@@ -563,7 +563,13 @@ uint8_t tst(void)
    //Read all the configs from du_utils.c into duCfgParams
    duReadCfg();
 
+#ifdef O1_ENABLE
+   //Send VES PNF registration message to SMO
+   sendPnfRegistration();
+#endif
+
    return ROK;
+
 }/* end of main()*/
 
 /**********************************************************************

@@ -48,7 +48,7 @@ AdminState NrCellInfo::adminStateToEnum(string val)
    else if(val ==  "SHUTTING_DOWN")
       ret = SHUTTING_DOWN;
    else
-      O1_LOG("O1 NrCellInfo : %s admin state not handled\n", \
+      O1_LOG("\nO1 NrCellInfo : %s admin state not handled", \
               val.c_str());
 
    return ret;
@@ -86,7 +86,7 @@ string NrCellInfo::enumToCellStateString(CellState val)
          ret = "IDLE";
          break;
       default :
-         O1_LOG("O1 NrCellInfo : %d cell state not handled\n", val);
+         O1_LOG("\nO1 NrCellInfo : %d cell state not handled", val);
 
    }
    return ret;
@@ -120,7 +120,7 @@ string NrCellInfo::enumToOperationalStateString(OpState val)
          ret = "ENABLED";
          break;
       default :
-         O1_LOG("O1 NrCellInfo : %d operational state not handled\n", val);
+         O1_LOG("\nO1 NrCellInfo : %d operational state not handled", val);
 
    }
    return ret;

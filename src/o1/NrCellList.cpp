@@ -49,7 +49,7 @@ bool NrCellList::setCellOpState(uint16_t cellId, \
                                 CellState cellState)
 {
    O1_LOG("\nO1 NrCellList : Setting cellId = %d, opState=%d, \
-cellState=%d\n", cellId, opState, cellState);
+cellState=%d", cellId, opState, cellState);
    NrCellInfo cellInfo ;
    cellInfo.setCellId( cellId);
    cellInfo.setOpState(opState);

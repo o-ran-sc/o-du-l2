@@ -16,36 +16,33 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains the O1App class which is responsible for running/starting
-   all the O1 modules in a thread. It inherits the Thread class and Singleton
-   class.
+/* This file contains the class which runs as a thread to send the PNF
+   registration message.
 */
 
-#ifndef __O1_APP_HPP__
-#define __O1_APP_HPP__
 
-#include "Singleton.hpp"
-#include "Thread.hpp"
-#include "UnixSocketServer.hpp"
+#include "PnfRegistrationThread.hpp"
+#include "VesUtils.hpp"
+#include "VesEventHandler.hpp"
+
+#include <unistd.h>
 
 
-class O1App : public Singleton<O1App>, public Thread 
+bool PnfRegistrationThread::run()
 {
-   friend Singleton<O1App>;
-   
-   private:
-   bool mStartupStatus;
-   UnixSocketServer mUxSocketServer;
 
-   protected:
-   O1App();
-   ~O1App();
-   bool run();
-
-   public:
-   bool getStartupStatus()const;
-   void cleanUp(void);
-};
-
-
-#endif
+   const int N_RETRY = 2;
+   const int RETRY_DELAY = 10;
+   /* Prepare VES PNF registration request */
+   VesEventHandler vesEvtHdr;
+   if(vesEvtHdr.prepare(VesEventType::PNF_REGISTRATION))
+   {
+      /* Send VES PNF registration request */
+      for( int i = 0; i < N_RETRY; i++)
+      {
+         sleep(RETRY_DELAY);
+         O1_LOG("\nO1 O1Interface : Sending PNF registration. Attempt %d\n", i );
+         vesEvtHdr.send();
+      }
+   }
+}
