@@ -32,9 +32,13 @@ class VesEventHandler
 
    public:
       /* Default constructor/Destructor*/
-      VesEventHandler(){}
-      ~VesEventHandler(){}
-      bool send(VesEventType evtType);
+      VesEventHandler();
+      ~VesEventHandler();
+      bool prepare(VesEventType evtType);
+      bool send();
+
+   private:
+      VesEvent *mVesEvent;
 
 };
 

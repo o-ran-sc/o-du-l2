@@ -1,4 +1,3 @@
-/*******************************************************************************
 ################################################################################
 #   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
 #                                                                              #
@@ -14,38 +13,13 @@
 #   See the License for the specific language governing permissions and        #
 #   limitations under the License.                                             #
 ################################################################################
-*******************************************************************************/
+# This script will add new netconf user
+#!/bin/bash
 
-/* This file contains the O1App class which is responsible for running/starting
-   all the O1 modules in a thread. It inherits the Thread class and Singleton
-   class.
-*/
+adduser --system netconf && \
+   echo "netconf:netconf!" | chpasswd
 
-#ifndef __O1_APP_HPP__
-#define __O1_APP_HPP__
-
-#include "Singleton.hpp"
-#include "Thread.hpp"
-#include "UnixSocketServer.hpp"
-
-
-class O1App : public Singleton<O1App>, public Thread 
-{
-   friend Singleton<O1App>;
-   
-   private:
-   bool mStartupStatus;
-   UnixSocketServer mUxSocketServer;
-
-   protected:
-   O1App();
-   ~O1App();
-   bool run();
-
-   public:
-   bool getStartupStatus()const;
-   void cleanUp(void);
-};
-
-
-#endif
+mkdir -p /home/netconf/.ssh && \
+   ssh-keygen -A && \
+   ssh-keygen -t dsa -P '' -f /home/netconf/.ssh/id_dsa && \
+   cat /home/netconf/.ssh/id_dsa.pub > /home/netconf/.ssh/authorized_keys

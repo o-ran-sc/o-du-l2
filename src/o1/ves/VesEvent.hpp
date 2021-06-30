@@ -47,9 +47,7 @@ class VesEvent{
       cJSON* mVesEventFields;
 
    private:
-      //Member variable
       bool readConfigFile();
-      bool getVesCollectorDetails();
       char * mSendData;
       HttpClient *mHttpClient;
       string mVesServerIp;

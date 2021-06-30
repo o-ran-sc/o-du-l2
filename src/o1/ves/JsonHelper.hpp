@@ -44,7 +44,7 @@ class JsonHelper
       static cJSON_bool addJsonNodeToObject(cJSON * parent, \
                              const char * nodeName, cJSON * node);
       static cJSON* read(const char * fileName);
-      static char* getValue(cJSON *json, const char *node);
+      static std::string getValue(cJSON *json, const char *node);
       static cJSON * getNode(cJSON *json, const char *node);
       static char *printUnformatted(cJSON * node);
       static char *print(cJSON * node);

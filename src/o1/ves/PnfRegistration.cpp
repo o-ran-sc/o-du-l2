@@ -88,7 +88,7 @@ string PnfRegistration::getNetconfMacAddr()
       return mNetconfMacAddr;
    }
    else {
-      O1_LOG("O1 VES : could not get Netconf Mac Address\n");
+      O1_LOG("\nO1 PnfRegistration : could not get Netconf Mac Address");
       return "";
    }
 }
@@ -116,7 +116,7 @@ string PnfRegistration::getNetconfV4ServerIP()
       return mNetconfIpv4;
    }
    else {
-      O1_LOG("O1 VES : could not get Netconf IPv4 ip\n");
+      O1_LOG("\nO1 PnfRegistration : could not get Netconf IPv4 ip");
       return "";
    }
 }
@@ -144,7 +144,7 @@ string PnfRegistration::getNetconfPort()
       return mNetconfPort;
    }
    else {
-      O1_LOG("O1 VES : Could not get Netconf Port number\n");
+      O1_LOG("\nO1 PnfRegistration : Could not get Netconf Port number");
       return NETCONF_DEFAULT_PORT;
    }
 }
@@ -173,7 +173,7 @@ string PnfRegistration::getUsername()
       return mNetconfUsername;
    }
    else {
-      O1_LOG("O1 VES : could not get Netconf username\n");
+      O1_LOG("\nO1 PnfRegistration : could not get Netconf username");
       return "";
    }
 }
@@ -201,7 +201,7 @@ string PnfRegistration::getPassword()
       return mNetconfPassword;
    }
    else {
-      O1_LOG("O1 VES : could not get Netconf password\n");
+      O1_LOG("\nO1 PnfRegistration : could not get Netconf password");
       return "";
    }
 }
@@ -228,7 +228,7 @@ string PnfRegistration::getNetconfV6ServerIP()
       return mNetconfIpv6;
    }
    else {
-      O1_LOG("O1 VES : could not get Netconf IPv6 ip\n");
+      O1_LOG("\nO1 PnfRegistration : could not get Netconf IPv6 ip");
       return "";
    }
 }
@@ -309,8 +309,8 @@ bool PnfRegistration::prepareEventFields()
    cJSON* pnfFields = this->mVesEventFields;
    if(!readConfigFile())
    {
-      O1_LOG("O1 VES : config file reading failed\n");
-      //return false;
+      O1_LOG("\nO1 PnfRegistration : Failed to read config file");
+      return false;
    }
    if(JsonHelper::addNodeToObject(pnfFields, "pnfRegistrationFieldsVersion", \
                                        PNF_REGISTRATION_VERSION_2_1) == 0) {
@@ -336,9 +336,10 @@ bool PnfRegistration::prepareEventFields()
                                        getNetconfV4ServerIP().c_str()) == 0) {
       ret = false;
    }
-   else if(JsonHelper::addNodeToObject(pnfFields, "oamV6IpAddress", \
-                                       getNetconfV6ServerIP().c_str()) == 0) {
-      ret = false;
+   else if(getNetconfV6ServerIP() != "" && (JsonHelper::addNodeToObject( \
+				       pnfFields, "oamV6IpAddress", \
+                                       getNetconfV6ServerIP().c_str()) == 0)) {
+         ret = false;
    }
    else if(JsonHelper::addNodeToObject(pnfFields, "serialNumber", \
                                        getSerialNumber().c_str()) == 0) {
@@ -364,29 +365,26 @@ bool PnfRegistration::prepareEventFields()
    {
       cJSON *addFields = JsonHelper::createNode();
       if(addFields == 0) {
-         O1_LOG("O1 VES : could not create additional fields JSON object\n");
+         O1_LOG("\nO1 PnfRegistration : could not create additional fields JSON object");
          return false;
       }
 
       if(prepareAdditionalFields(addFields))
       {
-         O1_LOG("O1 VES : PNF parameter prepration done adding additional parameters \
-if required \n");
-      if(addFields == 0) {
-         O1_LOG("O1 VES : could not prepare additional fields cJSON object\n");
-         JsonHelper::deleteNode(pnfFields);
-         return false;
+         if(addFields == 0) {
+            O1_LOG("\nO1 PnfRegistration : could not prepare additional fields cJSON object");
+            JsonHelper::deleteNode(pnfFields);
+            return false;
          }
 
-      if(JsonHelper::addJsonNodeToObject(pnfFields, "additionalFields", \
+         if(JsonHelper::addJsonNodeToObject(pnfFields, "additionalFields", \
                                addFields) == 0) {
-         O1_LOG("O1 VES : could not add additional fileds\n");
-         JsonHelper::deleteNode(pnfFields);
-         return false;
+            O1_LOG("\nO1 PnfRegistration : could not add additional fields");
+            JsonHelper::deleteNode(pnfFields);
+            return false;
          }
-       }
-       O1_LOG("O1 VES : Preparation on PNF registration additional fields done \
-successfully \n");
+      }
+      O1_LOG("\nO1 PnfRegistration : Event fields prepared for PNF registration");
    }
    return ret;
 }
@@ -455,7 +453,7 @@ bool PnfRegistration::prepareAdditionalFields(cJSON *addFields)
                                        KEEPALIVE_DELAY_120) == 0) {
       ret = false;
    }
-   O1_LOG("O1 VES : additonal field preparation of PNF done successfully \n");
+   O1_LOG("\nO1 PnfRegistration : Additional fields prepared for PNF registration");
    return ret;
 }
 
@@ -480,14 +478,14 @@ bool PnfRegistration::readConfigFile()
 {
    cJSON *json = JsonHelper::read(NETCONF_CONFIG);
    if(json == NULL) {
-       O1_LOG("O1 VES : Config file reading error is  :%s\n", JsonHelper::getError());
+       O1_LOG("\nO1 PnfRegistration : Config file reading error is  :%s", JsonHelper::getError());
     return false;
     }
     else {
        cJSON *rootNode = NULL;
        rootNode = JsonHelper::getNode(json, "NetconfServer");
        if(rootNode) {
-          O1_LOG("O1 VES : Reading NetconfServer config file\n");
+          O1_LOG("\nO1 PnfRegistration : Reading NetconfServer config file");
           mNetconfMacAddr = JsonHelper::getValue(rootNode, "MacAddress");
           mNetconfIpv4 = JsonHelper::getValue(rootNode, "NetconfServerIpv4");
           mNetconfIpv6 = JsonHelper::getValue(rootNode, "NetconfServerIpv6");
@@ -496,7 +494,7 @@ bool PnfRegistration::readConfigFile()
           mNetconfPassword = JsonHelper::getValue(rootNode, "NetconfPassword");
       }
       else {
-         O1_LOG("O1 VES : smoConfig Object is not availbale in config file\n");
+         O1_LOG("\nO1 PnfRegistration : smoConfig Object is not available in config file");
          return false;
       }
    }

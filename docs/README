@@ -37,58 +37,31 @@ C. Pre-requisite for O1 Interface (Required only if run with O1 interface enable
 -----------------------------------------------------------------------------------
 1. Setup netconf server
 
-	Create new netconf user (login with root user and run following commands)
-	$adduser --system netconf && \
-        echo "netconf:netconf!" | chpasswd
+    a. Add new netconf user (login with root user or use sudo and run following script)
+       $cd l2/build/scripts
+       $sudo ./add_netconf_user.sh
 
-	$mkdir -p /home/netconf/.ssh && \
-	ssh-keygen -A && \
-	ssh-keygen -t dsa -P '' -f /home/netconf/.ssh/id_dsa && \
-        cat /home/netconf/.ssh/id_dsa.pub > /home/netconf/.ssh/authorized_keys
-	Install netconf packages. 
-	$cd l2/build/scripts
-	$chmod +x install_lib_O1.sh
-	$ ./install_lib_O1.sh -c
+    b. Install netconf packages.
+       $chmod +x install_lib_O1.sh
+       $sudo ./install_lib_O1.sh -c
 
-2. Start Netopeer2-server:
+2. Update the configuration according to your setup.
+
+   $cd l2/build/config
+
+   a. Open the startup_config.xml and edit the desired IP and Port for CU, DU and RIC.
+   b. Open the nacm_config.xml and edit the desired user-name to provide the access to that user.
+   c. Open the netconf_server_ipv6.xml and edit the desired netconf server configuration.
+   d. Open the netconfConfig.json and edit the desired MAC address, IP, Port, Username and Password of netopeer server for VES PNF Registration.
+   e. Open the vesConfig.json and edit the desired IP, Port, Username and Password to send VES Event.
+
+3. Install the yang modules and load initial configuration
    $cd l2/build/scripts
-   $./netopeer-server.sh start
+   $sudo ./load_yang.sh
 
-3. Install the yang modules
-   $cd l2/build/yang
-   $sysrepoctl -i o-ran-sc-odu-alarm-v1.yang
-   $sysrepoctl -i o-ran-sc-odu-interface-v1.yang
-   $sysrepoctl -i o-ran-sc-du-hello-world.yang
-
-4. Configure the startup IP and Port configurations for DU, CU and RIC
-
-   $cd l2/build/config
-
-   Open the startup_config.xml and edit the desired IP and Port for CU, DU and RIC.
-   Then load the configuration in the sysrepo running datastore using the command below
-
-   $sysrepocfg --import=startup_config.xml --datastore running --module  o-ran-sc-odu-interface-v1 
-
-5. Configure the netconf server details for VES PNF Event
-
-   $cd l2/build/config
-
-   Open the netconfConfig.json and edit the desired MAC address, IP, Port, Username and Password for VES PNF Registration.
-
-6. Configure the VES server details to send VES Events
-
-   $cd l2/build/config
-
-   Open the vesConfig.json and edit the desired IP, Port, Username and Password to send VES Event.
-
-7. Configure the nacm module to provide access to new user
-
-   $cd l2/build/config
-
-   Open the nacm_config.xml and edit the desired user-name to provide the access to that user.
-
-   $sysrepocfg --import=nacm_config.xml --datastore running --module  ietf-netconf-acm
-
+4. Start Netopeer2-server:
+   $cd l2/build/scripts
+   $sudo ./netopeer-server.sh start
 
 
 D. How to Clean and Build:
@@ -175,7 +148,7 @@ F. How to execute:
    b. ifconfig <interface name>:CU_STUB "192.168.130.82"
    c. ifconfig <interface name>:RIC_STUB "192.168.130.80"
 
-PS: If O1 interface is enabled, IP should match those configured in step C.4.
+PS: If O1 interface is enabled, IP should match those configured in step C.2.a.
 
 2. Execute CU Stub:
    a. CU execution folder:
@@ -304,4 +277,12 @@ H. How to execute the Health Check : get alarm-list
        </odu>
 
    The XML output is a list of active alarms in the O-DU High system.
+
+
+G. Troubleshooting Netconf server issues
+----------------------------------------
+   Troubleshoot :
+   $cd l2/build/scripts
+   $sudo ./troubleshoot_netconf.sh cleanup
+   execute section C.3, C.4 again
 

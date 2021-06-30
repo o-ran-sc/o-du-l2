@@ -107,7 +107,7 @@ string VesCommonHeader::getEventTypeToStr()
          str = "heartbeat";
          break;
       default:
-         O1_LOG("O1 VES : VES msg Type is not avilable\n");
+         O1_LOG("\nO1 VesCommonHeader : VES msg Type not supported");
          break;
    }
    return str;
@@ -144,8 +144,8 @@ string VesCommonHeader::getEventId()
          evntId = getEventTypeToStr() + "_" + getCurrentTime();
          break;
       default:
-         O1_LOG("O1 VES : this VES msg Type support in getEventId is \
-not available\n");
+         O1_LOG("\nO1 VesCommonHeader : this VES msg Type support in getEventId is \
+not available");
          break;
    }
    return evntId;
@@ -184,8 +184,8 @@ string VesCommonHeader::getEventType()
          evntType = EVENT_TYPE_ORAN_COMPONENET;
          break;
       default:
-         O1_LOG("O1 VES : this VES msg Type support in getEvenType is \
-not available\n");
+         O1_LOG("\nO1 VesCommonHeader : this VES msg Type support in getEvenType is \
+not available");
          break;
    }
    return evntType;
@@ -223,8 +223,8 @@ string VesCommonHeader::getPriority()
          evntId = PRIORITY_LOW;
          break;
       default:
-         O1_LOG("O1 VES : This VES msg Type support in getPriority is \
-not available\n");
+         O1_LOG("\nO1 VesCommonHeader : This VES msg Type support in getPriority is \
+not available");
          break;
    }
    return evntId;
@@ -263,8 +263,8 @@ string VesCommonHeader::getEventName()
          evntName = getEventTypeToStr() + "_" + EVENT_TYPE_ORAN_COMPONENET;
          break;
       default:
-         O1_LOG("O1 VES : This VES msg Type support in getEventName is \
-not available\n");
+         O1_LOG("\nO1 VesCommonHeader : This VES msg Type support in getEventName is \
+not available");
          break;
    }
    return evntName;
@@ -298,8 +298,8 @@ string VesCommonHeader::getReportingEntityName()
          evntName = getSourceName();
          break;
       default:
-         O1_LOG("O1 VES : This VES msg Type support in \
-getReportingEntityName is not available\n");
+         O1_LOG("\nO1 VesCommonHeader : This VES msg Type support in \
+getReportingEntityName is not available");
          break;
    }
    return evntName;
@@ -424,7 +424,6 @@ string VesCommonHeader::getCurrentTime()
 bool VesCommonHeader::prepare(cJSON *commonHeader, \
                               VesEventType type)
 {
-   O1_LOG("O1 VES : createCommonHeader fuction started\n");
    bool ret=true;
    string typeStr;
    string evntId;
@@ -518,7 +517,7 @@ bool VesCommonHeader::prepare(cJSON *commonHeader, \
    }
    else
    {
-      O1_LOG("O1 VES : VES common Header prepared successfully \n");
+      O1_LOG("\nO1 VesCommonHeader : VES common Header prepared");
    }
    return ret;
 
