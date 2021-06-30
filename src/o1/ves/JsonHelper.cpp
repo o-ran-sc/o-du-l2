@@ -223,15 +223,15 @@ const char *JsonHelper::getError()
  *
  * ****************************************************************/
 
-char* JsonHelper::getValue(cJSON *json, const char *node)
+string JsonHelper::getValue(cJSON *json, const char *node)
 {
    cJSON *object;
-   char * value = NULL;
+   string value = "";
    object = cJSON_GetObjectItem(json, node);
    if(object)
    {
       value = object->valuestring;
-      O1_LOG("O1 VES : [ %s] : [%s]\n",node, value );
+      O1_LOG("O1 VES : [ %s] : [%s]\n",node, value.c_str() );
    }
    else
       O1_LOG("O1 VES : node [ %s] not found\n",node);
@@ -283,16 +283,16 @@ cJSON* JsonHelper::read(const char * fileName)
    std::fstream fs(fileName, std::ios::in | std::ios::binary);
 
    if (!fs) {
-       O1_LOG("O1 VES : json can NOT open file %s\n", fileName);
-        return NULL;
+      O1_LOG("\nO1 JsonHelper : Cannot open file %s", fileName);
+      return NULL;
    }
 
    std::stringstream iss;
 
    iss << fs.rdbuf();
 
-    cJSON *json = cJSON_Parse(iss.str().c_str());
-    return json;
+   cJSON *json = cJSON_Parse(iss.str().c_str());
+   return json;
 }
 
 /**********************************************************************

@@ -25,8 +25,8 @@
 #include "GlobalDefs.hpp"
 
 //config file path
-#define NETCONF_CONFIG "config/netconfConfig.json"
-#define VES_CONFIG "config/vesConfig.json"
+#define NETCONF_CONFIG "../config/netconfConfig.json"
+#define VES_CONFIG "../config/vesConfig.json"
 
 //Common Header Macros
 

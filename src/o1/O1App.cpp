@@ -29,6 +29,8 @@
 
 #include "VesUtils.hpp"
 #include "VesEventHandler.hpp"
+
+
 /*******************************************************************
  *
  * @brief Constructor
@@ -89,16 +91,12 @@ O1App::~O1App()
 
 bool O1App::run()
 {
-    
+   const int SLEEP_INTERVAL = 2;
+   const int DEFAUL_CELL_ID = 1
    SessionHandler sessHdlr;
-   /*send ves PNF registration request*/
-   VesEventHandler vesEvtHdr;
-   O1_LOG("\nO1 O1App : Sending VES Event");
-   if(!vesEvtHdr.send(VesEventType::PNF_REGISTRATION))
-   {
-      O1_LOG("\nO1 O1App : Could not send VES Request");
-      return false;
-   }
+
+   /*setting default cell state disabled*/
+   setCellOpState(DEFAUL_CELL_ID, DISABLED, INACTIVE);
 
    /* Start Netconf session and subscribe to yang modules */
    try
@@ -121,19 +119,19 @@ bool O1App::run()
       
       if(mUxSocketServer.setAffinity(O1::CPU_CORE))
       {
-         O1_LOG("\nO1 O1App : CPU affinity set " );
+         O1_LOG("\nO1 O1App : CPU affinity set for UnixSocketServer thread to " );
          mUxSocketServer.printAffinity();
       }
       
-      sleep(2);
+      sleep(SLEEP_INTERVAL);
       if( mUxSocketServer.isRunning() )  
       {
          mStartupStatus = true;
-         O1_LOG("\nO1 O1App : Unix Socket server started\n");
+         O1_LOG("\nO1 O1App : Unix Socket server started");
       }
       else
       {
-         O1_LOG("\nO1 O1App : Unix Socket server failed to start\n");
+         O1_LOG("\nO1 O1App : Unix Socket server failed to start");
          return false;
       }
       /* Wait for the Unix Socket Server thread to end*/
@@ -141,7 +139,7 @@ bool O1App::run()
    }
    else
    {
-      O1_LOG("\nO1 O1App : Unix Socket server failed to start\n");
+      O1_LOG("\nO1 O1App : Unix Socket server failed to start");
       return false;
    }
    return true;

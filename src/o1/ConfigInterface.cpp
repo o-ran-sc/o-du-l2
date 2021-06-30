@@ -88,35 +88,6 @@ uint8_t getStartupConfig(StartupConfig *cfg)
  ******************************************************************/
 uint8_t getStartupConfigForStub(StartupConfig *cfg)
 {
-#if 0
-   UnixSocketClient uxClient(O1::ALARM_SOCK_PATH);
-   O1_LOG("\nO1 CONFIG : getStartupConfig ------ \n");
-   MsgHeader msg;
-   msg.msgType = CONFIGURATION;
-   msg.action = GET_STARTUP_CONFIG;
-   if (uxClient.openSocket() == O1::FAILURE)
-   {
-      return O1::FAILURE;
-   }
-   if (uxClient.sendData(&msg,sizeof(msg)) < 0 )
-   {
-      uxClient.closeSocket();
-      return O1::FAILURE;
-   }
-   if (uxClient.receiveData(cfg, sizeof(StartupConfig)) < 0)
-   {
-      uxClient.closeSocket();
-      return O1::FAILURE;
-   }
-   O1_LOG("\nO1 CONFIG : ip du %s\n",cfg->DU_IPV4_Addr );
-   O1_LOG("\nO1 CONFIG : ip cu %s\n",cfg->CU_IPV4_Addr );
-   O1_LOG("\nO1 CONFIG : ip ric %s\n",cfg->RIC_IPV4_Addr );
-   O1_LOG("\nO1 CONFIG : port cu %hu\n",cfg->CU_Port);
-   O1_LOG("\nO1 CONFIG : port du %hu\n",cfg->DU_Port);
-   O1_LOG("\nO1 CONFIG : port ric %hu\n",cfg->RIC_Port);
-
-   uxClient.closeSocket();
-#endif
    SessionHandler sessHdlr;
    if ( sessHdlr.init() )
    {
@@ -166,7 +137,7 @@ uint8_t getStartupConfigForStub(StartupConfig *cfg)
 bool setCellOpState(uint16_t cellId, OpState opState, CellState cellState)
 {
    O1_LOG("\nO1  ConfigInterface: Setting cellId = %d, opState=%d, \
-cellState=%d\n", cellId, opState, cellState);
+cellState=%d", cellId, opState, cellState);
    return NrCellList::instance().setCellOpState(cellId, opState, \
                                                       cellState);
 }
