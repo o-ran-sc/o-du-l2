@@ -806,7 +806,7 @@ uint8_t schDlRsrcAllocDlMsg(DlMsgAlloc *dlMsgAlloc, SchCellCb *cell, uint16_t cr
       pdsch->codeword[cwCount].rvIndex = 0;
       tbSize = schCalcTbSize(*accumalatedSize + TX_PAYLOAD_HDR_LEN);
       if(tbSize < *accumalatedSize)
-         *accumalatedSize = tbSize;
+         *accumalatedSize = tbSize - TX_PAYLOAD_HDR_LEN;
       pdsch->codeword[cwCount].tbSize = tbSize;
    }
    pdsch->dataScramblingId = cell->cellCfg.phyCellId;

@@ -11795,7 +11795,7 @@ void freeAperDecodeGnbDuAck(GNBDUConfigurationUpdateAcknowledge_t *gnbDuAck)
 
 uint8_t duProcGnbDuCfgUpdAckMsg(uint8_t transId)
 {
-   uint8_t  ieIdx=0, arrIdx=0;
+   uint8_t  ieIdx=0, arrIdx=0,ret=ROK;
    uint8_t  ueId =0 , ueIdx =0;
    uint16_t cellId =0, cellIdx =0, crnti=0;
    CmLList *f1apPduNode = NULLP;
@@ -11822,41 +11822,58 @@ uint8_t duProcGnbDuCfgUpdAckMsg(uint8_t transId)
             switch(gnbDuConfigUpdate->protocolIEs.list.array[ieIdx]->id)
             {
                case ProtocolIE_ID_id_Served_Cells_To_Delete_List:
-               {
-                  cellsToDelete = &gnbDuConfigUpdate->protocolIEs.list.array[ieIdx]->value.choice.\
-                  Served_Cells_To_Delete_List;
-                  if(cellsToDelete->list.array)
                   {
-                     if(cellsToDelete->list.array[arrIdx])
+                     cellsToDelete = &gnbDuConfigUpdate->protocolIEs.list.array[ieIdx]->value.choice.\
+                                     Served_Cells_To_Delete_List;
+                     if(cellsToDelete->list.array)
                      {
-                        deleteItemIe = (Served_Cells_To_Delete_ItemIEs_t*)cellsToDelete->list.array[arrIdx];
-                        deleteItem=&deleteItemIe->value.choice.Served_Cells_To_Delete_Item;
-                        if(deleteItem->oldNRCGI.nRCellIdentity.buf)
+                        if(cellsToDelete->list.array[arrIdx])
                         {
-                           cellIdentity = &deleteItem->oldNRCGI.nRCellIdentity;
-                           bitStringToInt(cellIdentity, &cellId);
+                           deleteItemIe = (Served_Cells_To_Delete_ItemIEs_t*)cellsToDelete->list.array[arrIdx];
+                           deleteItem=&deleteItemIe->value.choice.Served_Cells_To_Delete_Item;
+                           if(deleteItem->oldNRCGI.nRCellIdentity.buf)
+                           {
+                              cellIdentity = &deleteItem->oldNRCGI.nRCellIdentity;
+                              bitStringToInt(cellIdentity, &cellId);
+                           }
                         }
                      }
-                  }
 
-                  GET_CELL_IDX(cellId, cellIdx);
-                  if(duCb.actvCellLst[cellIdx] != NULLP)
-                  {
-                     for(ueIdx = 0; ueIdx < duCb.actvCellLst[cellIdx]->numActvUes; ueIdx++)
+                     GET_CELL_IDX(cellId, cellIdx);
+                     if(duCb.actvCellLst[cellIdx] != NULLP)
                      {
-                        crnti = duCb.actvCellLst[cellIdx]->ueCb[ueIdx].crnti;
-                        GET_UE_IDX(crnti,ueId);
-                        BuildAndSendUeContextReleaseReq(cellId, ueId);
+                        if(duCb.actvCellLst[cellIdx]->numActvUes == 0)
+                        {
+                           duCb.actvCellLst[cellId-1]->cellStatus = DELETION_IN_PROGRESS;
+                           ret = duSendCellDeletReq(cellId);
+                           if(ret == RFAILED)
+                           {
+                              DU_LOG("ERROR  --> DU_APP : duProcGnbDuCfgUpdAckMsg(): Failed to send cell delete\
+                              request for cellId[%d]", cellId);
+                           }
+                        }
+                        else
+                        {
+                           for(ueIdx = 0; ueIdx < duCb.actvCellLst[cellIdx]->numActvUes; ueIdx++)
+                           {
+                              crnti = duCb.actvCellLst[cellIdx]->ueCb[ueIdx].crnti;
+                              GET_UE_IDX(crnti,ueId);
+                              ret = BuildAndSendUeContextReleaseReq(cellId, ueId);
+                              if(ret == RFAILED)
+                              {
+                                 DU_LOG("ERROR  --> DU_APP : duProcGnbDuCfgUpdAckMsg(): Failed to build and send UE delete\
+                                 request for cellId[%d]", cellId);
+                              }
+                           }
+                        }
                      }
+                     else
+                     {
+                        DU_LOG("ERROR  --> DU_APP : duProcGnbDuCfgUpdAckMsg(): CellId [%d] not found", cellId);
+                        ret = RFAILED;
+                     }
+                     break;
                   }
-                  else
-                  {
-                     DU_LOG("ERROR  --> DU_APP : duProcGnbDuCfgUpdAckMsg(): CellId [%d] not found", cellId);
-                     return RFAILED;
-                  }
-
-                  break;
-               }
 
                default:
                   break;
@@ -11867,7 +11884,7 @@ uint8_t duProcGnbDuCfgUpdAckMsg(uint8_t transId)
    
    FreeDUConfigUpdate(f1apMsgPdu);
    deleteFromReservedF1apPduList(f1apPduNode);
-   return ROK;
+   return ret;
 }
 
 /*******************************************************************
