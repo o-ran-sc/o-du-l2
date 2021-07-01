@@ -1547,32 +1547,32 @@ void l1ProcessFapiRequest(uint8_t msgType, uint32_t msgLen, void *msg)
    {
 #ifdef INTEL_FAPI
       case FAPI_PARAM_REQUEST:
-	 l1HdlParamReq(msgLen, msg);
-	 break;
+         l1HdlParamReq(msgLen, msg);
+         break;
       case FAPI_CONFIG_REQUEST:
-	 l1HdlConfigReq(msgLen, msg);
-	 break;
+         l1HdlConfigReq(msgLen, msg);
+         break;
       case FAPI_START_REQUEST:
-	 l1HdlStartReq(msgLen, msg);
-	 break;
+         l1HdlStartReq(msgLen, msg);
+         break;
       case FAPI_DL_TTI_REQUEST:
-	 l1HdlDlTtiReq(msgLen, msg);
-	 break;
+         l1HdlDlTtiReq(msgLen, msg);
+         break;
       case FAPI_TX_DATA_REQUEST:
-	 l1HdlTxDataReq(msgLen, msg);
-	 break;
+         l1HdlTxDataReq(msgLen, msg);
+         break;
       case FAPI_UL_TTI_REQUEST:
-	 l1HdlUlTtiReq(msgLen, msg);
-	 break;
+         l1HdlUlTtiReq(msgLen, msg);
+         break;
       case FAPI_STOP_REQUEST:
-	 l1HdlStopReq(msgLen, msg);
-	 break;
+         l1HdlStopReq(msgLen, msg);
+         break;
       case FAPI_UL_DCI_REQUEST:
-	 l1HdlUlDciReq(msgLen, msg);
-	 break;
+         l1HdlUlDciReq(msgLen, msg);
+         break;
       default:
-	 DU_LOG("\nERROR  -->  PHY_STUB: Invalid message type[%x] received at PHY", msgType);
-	 break;
+         DU_LOG("\nERROR  -->  PHY_STUB: Invalid message type[%x] received at PHY", msgType);
+         break;
 #endif
    }
 }

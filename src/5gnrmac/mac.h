@@ -55,8 +55,8 @@ typedef struct macCellCb MacCellCb;
 typedef enum
 {
    CELL_STATE_UP,
-   CELL_STATE_DELETION_IN_PROGRESS,
-   CELL_STATE_DOWN
+   CELL_TO_BE_STOPPED,
+   CELL_STOP_IN_PROGRESS,
 }CellState;	   
 
 typedef enum
