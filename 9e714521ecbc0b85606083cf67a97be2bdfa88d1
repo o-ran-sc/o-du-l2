@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fda364d_11adf892",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 11848,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-01T07:29:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ffe63b36_3a405df1",
+      "range": {
+        "startLine": 11848,
+        "startChar": 8,
+        "endLine": 11848,
+        "endChar": 26
+      },
+      "revId": "9e714521ecbc0b85606083cf67a97be2bdfa88d1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "995fb1f7_e0b0991e",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-06-30T05:18:23Z",
       "side": 1,
       "message": "this function return RFAILED/ROK , so please add a check.",
+      "range": {
+        "startLine": 11856,
+        "startChar": 9,
+        "endLine": 11856,
+        "endChar": 40
+      },
+      "revId": "9e714521ecbc0b85606083cf67a97be2bdfa88d1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5af15606_997750b9",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 11856,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-01T07:29:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "995fb1f7_e0b0991e",
       "range": {
         "startLine": 11856,
         "startChar": 9,
