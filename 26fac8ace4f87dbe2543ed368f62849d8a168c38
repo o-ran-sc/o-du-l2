@@ -16,6 +16,23 @@
       "message": "Hi,\n\nWe have made changes for following.\n\n1. Updated script to make o1 installation easy.\n2. Sending Pnf Registration after O-DU high stack is up (Suggested by Martin).\n3. Updated docs.\n\nPlease review and share you comments.\n\nRegards,\nHariom ",
       "revId": "26fac8ace4f87dbe2543ed368f62849d8a168c38",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6486c065_7c28224b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-07-01T11:35:03Z",
+      "side": 1,
+      "message": "Hi, \n\nWe have made the code changes for following. \n\n1. Updated script to make o1 installation easy. \n2. Sending Pnf Registration after O-DU high stack is up. (Suggested by Martin)\n3. Updated docs.\n4. Updated logs for more readability\n\nPlease review and share your comments. \n\nRegards,\nHariom\n",
+      "revId": "26fac8ace4f87dbe2543ed368f62849d8a168c38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
