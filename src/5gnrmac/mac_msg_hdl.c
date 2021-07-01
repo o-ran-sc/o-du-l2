@@ -482,7 +482,7 @@ uint8_t MacProcCellStop(Pst *pst, OduCellId  *cellId)
    GET_CELL_IDX(cellId->cellId, cellIdx);
    if(macCb.macCell[cellIdx])
    {
-      macCb.macCell[cellIdx]->state = CELL_STATE_DELETION_IN_PROGRESS;
+      macCb.macCell[cellIdx]->state = CELL_TO_BE_STOPPED;
    }
 #endif
 
