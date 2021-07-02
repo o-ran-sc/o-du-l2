@@ -25,14 +25,53 @@
 
 /*******************************************************************
  *
- * @brief prepare and send  Ves Message
+ * @brief Constructor
  *
  * @details
  *
- *    Function : sendVesEvent
+ *    Function : VesEventHandler
  *
  *    Functionality:
- *      - prepare VES event and send to oam
+ *      - Constructor intialization
+ *
+ * @params[in] NULL
+ * @return None
+ ******************************************************************/
+VesEventHandler::VesEventHandler() : mVesEvent(NULL)
+{
+
+}
+
+/*******************************************************************
+ *
+ * @brief Destructor
+ *
+ * @details
+ *
+ *    Function : ~VesEventHandler
+ *
+ *    Functionality:
+ *      - Destructor
+ *
+ * @params[in] None
+ * @return None
+ ******************************************************************/
+VesEventHandler::~VesEventHandler()
+{
+   if( mVesEvent != NULL )
+      delete mVesEvent;
+}
+
+/*******************************************************************
+ *
+ * @brief Prepare VES Message
+ *
+ * @details
+ *
+ *    Function : prepare
+ *
+ *    Functionality:
+ *      - prepare VES event
  *
  * @params[in] void
  * @return true     - success
@@ -40,46 +79,63 @@
  *
  * ****************************************************************/
 
-bool VesEventHandler::send(VesEventType evtType)
+bool VesEventHandler::prepare(VesEventType evtType)
 {
    //check event type and call funtions accordingly
    bool ret = true;
-   //char *sendData;
-   O1_LOG("O1 VES : sendVesEvent started\n");
-   VesEvent *vesEvent;
-   //common header
    switch(evtType)
    {
       case VesEventType::PNF_REGISTRATION:
          {
-            O1_LOG("O1 VES : send PNP registration\n");
-            vesEvent = new PnfRegistration;
+            O1_LOG("\nO1 VesEventHandler : Preparing PNF registration");
+            mVesEvent = new PnfRegistration;
             break;
          }
       case VesEventType::FAULT_NOTIFICATION:
-         O1_LOG("O1 VES : send VES fault notification\n");
+         O1_LOG("\nO1 VesEventHandler : Preparing VES fault notification");
          break;
       case VesEventType::PM_NOTIFICATION:
-         O1_LOG("O1 VES : send VES pm notification\n");
+         O1_LOG("\nO1 VesEventHandler : Preparing VES pm notification");
          break;
       case VesEventType::HEARTBEAT:
-         O1_LOG("O1 VES : send VES heartbeat \n");
+         O1_LOG("\nO1 VesEventHandler : Preparing VES heartbeat");
          break;
       default:
-         O1_LOG("O1 VES : send VES msg Type is not avilable\n");
+         O1_LOG("\nO1 VesEventHandler : VES msg Type is not available");
          ret = false;
          break;
    }
-   if(!vesEvent->prepare()) {
-      O1_LOG("O1 VES : could not send VES Event\n");
+   if(!mVesEvent->prepare()) {
+      O1_LOG("\nO1 VesEventHandler : Failed to prepare VES message");
       ret = false;
    }
-   else if (!vesEvent->send()) {
-      O1_LOG("O1 VES : could not send VES Event\n");
-      ret = false;
-   }
-   delete vesEvent;
    return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Send Ves Message
+ *
+ * @details
+ *
+ *    Function : send
+ *
+ *    Functionality:
+ *      - Send VES event to SMO
+ *
+ * @params[in] void
+ * @return true     - success
+ *         false    - failure
+ *
+ * ****************************************************************/
+
+bool VesEventHandler::send()
+{
+   if (!mVesEvent->send()) {
+      O1_LOG("\nO1 VesEventHandler : Failed to send VES event");
+      return false;
+   }
+   return true;
 }
 /**********************************************************************
   End of file

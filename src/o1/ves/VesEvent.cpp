@@ -60,9 +60,8 @@ VesEvent::~VesEvent()
 bool VesEvent::prepare()
 {
 
-   O1_LOG("O1 VES : prepare PNF Registration start\n");
-   if(!getVesCollectorDetails()) {
-      O1_LOG("O1 VES : Could not get successfully details of Ves Collector\n");
+   if(!readConfigFile()) {
+      O1_LOG("\nO1 VesEvent : Could not get SMO details");
       return false;
    }
 
@@ -71,26 +70,26 @@ bool VesEvent::prepare()
 
    cJSON *rootNode = JsonHelper::createNode();
    if(rootNode == 0) {
-       O1_LOG("O1 VES : could not create cJSON root Node object\n");
+       O1_LOG("\nO1 VesEvent : could not create cJSON root Node object");
        return false;
    }
 
    cJSON *event = JsonHelper::createNode();
    if(event == 0) {
-      O1_LOG("O1 VES : could not create event cJSON object\n");
+      O1_LOG("\nO1 VesEvent : could not create event cJSON object");
       JsonHelper::deleteNode(rootNode);
       return false;
    }
 
    if(JsonHelper::addJsonNodeToObject(rootNode, "event", event) == 0) {
-      O1_LOG("O1 VES : could not add event Object\n");
+      O1_LOG("\nO1 VesEvent : could not add event Object");
       JsonHelper::deleteNode(rootNode);
       return false;
    }
 
    cJSON *commHdrNode = JsonHelper::createNode();
    if(commHdrNode == 0) {
-      O1_LOG("O1 VES : could not create common header Node JSON object");
+      O1_LOG("\nO1 VesEvent : could not create common header Node JSON object");
       return false;
    }
 
@@ -100,7 +99,7 @@ bool VesEvent::prepare()
    {
        if(JsonHelper::addJsonNodeToObject(event, "commonEventHeader", \
                                 commHdrNode) == 0) {
-       O1_LOG("O1 VES : could not add commonEventHeader object\n");
+       O1_LOG("\nO1 VesEvent : could not add commonEventHeader object");
        JsonHelper::deleteNode(rootNode);
        return false;
       }
@@ -109,29 +108,29 @@ bool VesEvent::prepare()
          //add header into the message and create pnfFields
          mVesEventFields = JsonHelper::createNode();
          if(mVesEventFields == 0) {
-            O1_LOG("O1 VES : could not create Ves Event Fields JSON object\n");
+            O1_LOG("\nO1 VesEvent : could not create Ves Event Fields JSON object");
             return false;
          }
 
          if(!prepareEventFields()) {
-         O1_LOG("O1 VES : could not prepare Ves Event Fields Node \n");
+         O1_LOG("\nO1 VesEvent : could not prepare Ves Event Fields Node");
          JsonHelper::deleteNode(rootNode);
          return false;
          }
 
          if(JsonHelper::addJsonNodeToObject(event, "pnfRegistrationFields", mVesEventFields) == 0) {
-            O1_LOG("O1 VES : could not add mVesEventFields object\n");
+            O1_LOG("\nO1 VesEvent : could not add mVesEventFields object");
             JsonHelper::deleteNode(rootNode);
             return false;
          }
 
       mSendData = JsonHelper::printUnformatted(rootNode);
-      O1_LOG("O1 VES : final ves request : -- \n%s\n", JsonHelper::print(rootNode));
+      O1_LOG("\nO1 VesEvent : VES request : -- \n%s\n", JsonHelper::print(rootNode));
       }
    }
    else
    {
-      O1_LOG("O1 VES : preparePnfRegistration common header preparation failed\n");
+      O1_LOG("\nO1 VesEvent : Failed to prepare preparePnfRegistration common header");
       JsonHelper::deleteNode(rootNode);
       return false;
    }
@@ -141,29 +140,6 @@ bool VesEvent::prepare()
 bool VesEvent::send()
 {
    return mHttpClient->send(mSendData);
-}
-
-/*******************************************************************
- *
- * @brief Gets the Ves Collector Server details
- *
- * @details
- *
- *    Function : getVesCollectorDetails
- *
- *    Functionality:
- *      - Gets the Ves Collector Server details by reading config file
- *
- * @params[in] IN   - pointer to pnfFields
- * @return true     - success
- *         false    - failure
- *
- * ****************************************************************/
-
-
-bool VesEvent::getVesCollectorDetails()
-{
-   return readConfigFile();
 }
 
 /*******************************************************************
@@ -187,21 +163,21 @@ bool VesEvent::readConfigFile()
 {
    cJSON *json = JsonHelper::read(VES_CONFIG);
    if(json == NULL) {
-       O1_LOG("O1 VES : Config file reading error is  :%s\n", JsonHelper::getError());
-    return false;
+       O1_LOG("\nO1 VesEvent : Error reading config file  :%s", JsonHelper::getError());
+       return false;
    }
    else {
       cJSON *rootNode = NULL;
       rootNode = JsonHelper::getNode(json, "vesConfig");
       if(rootNode) {
-         O1_LOG("O1 VES : Reading smoConfig.json file\n");
+         O1_LOG("\nO1 VesEvent : Reading smoConfig.json file\n");
          mVesServerIp = JsonHelper::getValue(rootNode, "vesV4IpAddress");
          mVesServerPort = JsonHelper::getValue(rootNode, "vesPort");
          mVesServerUsername = JsonHelper::getValue(rootNode, "username");
          mVesServerPassword = JsonHelper::getValue(rootNode, "password");
       }
       else {
-         O1_LOG("O1 VES : smoConfig Object is not availbale in config file\n");
+         O1_LOG("\nO1 VesEvent : smoConfig Object is not available in config file");
          return false;
       }
    }

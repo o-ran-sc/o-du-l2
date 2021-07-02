@@ -26,6 +26,7 @@ extern "C"
 {
 #endif
 int start_O1_module(void);
+void sendPnfRegistration(void);
 
 #ifdef __cplusplus
 }
