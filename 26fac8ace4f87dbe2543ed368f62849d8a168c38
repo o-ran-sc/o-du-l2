@@ -52,6 +52,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f43fc49c_b18fa942",
+        "filename": "build/scripts/add_netconf_user.sh",
+        "patchSetId": 5
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-07-02T10:10:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e740ef9d_52bb3ae4",
+      "revId": "26fac8ace4f87dbe2543ed368f62849d8a168c38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6f22b9c7_c36a41b3",
@@ -69,6 +87,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "21dec921_84cd5c1d",
+        "filename": "docs/installation-guide.rst",
+        "patchSetId": 5
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-07-02T10:10:17Z",
+      "side": 1,
+      "message": "We are doing it. We will commit CentOS changes if any require in different bug.",
+      "parentUuid": "6f22b9c7_c36a41b3",
+      "revId": "26fac8ace4f87dbe2543ed368f62849d8a168c38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3e53848b_cb04586b",
@@ -82,6 +118,24 @@
       "writtenOn": "2021-07-01T14:47:26Z",
       "side": 1,
       "message": "add function description",
+      "revId": "26fac8ace4f87dbe2543ed368f62849d8a168c38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93fe11c6_60621877",
+        "filename": "src/o1/O1Interface.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-07-02T10:10:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3e53848b_cb04586b",
       "revId": "26fac8ace4f87dbe2543ed368f62849d8a168c38",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
