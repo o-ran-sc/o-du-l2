@@ -280,7 +280,7 @@ uint8_t duBuildAndSendDlCcchInd(uint16_t *cellId, uint16_t *crnti, \
    {
       dlCcchIndInfo->dlCcchMsg[idx2] = dlCcchMsg[idx2];
    }
-   DU_FREE(dlCcchMsg, dlCcchMsgSize);
+   DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, dlCcchMsg, dlCcchMsgSize);
 
    /* Fill Pst */
    FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_DL_CCCH_IND);

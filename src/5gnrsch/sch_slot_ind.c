@@ -330,7 +330,7 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
        dlBrdcstAlloc->ssbTrans,
        dlBrdcstAlloc->sib1Trans);
 
-      SCH_FREE(cell->schDlSlotInfo[slot]->rarInfo,sizeof(RarAlloc));
+      SCH_FREE(cell->schDlSlotInfo[slot]->rarInfo,sizeof(RarInfo));
       cell->schDlSlotInfo[slot]->rarInfo = NULLP;
    }
 

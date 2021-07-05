@@ -7085,10 +7085,10 @@ void freeF1UeDb(F1UeContextSetupDb *f1UeDb)
    {
       if(f1UeDb->dlRrcMsg->rrcMsgPdu)
       {
-         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL,\
-	    f1UeDb->dlRrcMsg->rrcMsgPdu, f1UeDb->dlRrcMsg->rrcMsgSize);
+        //DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL,\
+	       f1UeDb->dlRrcMsg->rrcMsgPdu, f1UeDb->dlRrcMsg->rrcMsgSize);
       }
-      memset(f1UeDb->dlRrcMsg, 0, sizeof(F1DlRrcMsg));
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, f1UeDb->dlRrcMsg, sizeof(F1DlRrcMsg));
    }
    freeDuUeCfg(&f1UeDb->duUeCfg);
    memset(f1UeDb, 0, sizeof(F1UeContextSetupDb));
@@ -12053,7 +12053,7 @@ uint8_t procF1DlRrcMsgTrans(F1AP_PDU_t *f1apMsg)
 	       if(f1DlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.size > 0)
 	       {
 		  dlMsg.rrcMsgSize = f1DlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.size;
-		  DU_ALLOC(dlMsg.rrcMsgPdu, dlMsg.rrcMsgSize);
+		  DU_ALLOC_SHRABL_BUF(dlMsg.rrcMsgPdu, dlMsg.rrcMsgSize);
 		  if(dlMsg.rrcMsgPdu)
 		  {
 		     memcpy(dlMsg.rrcMsgPdu, f1DlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf,\

@@ -177,12 +177,6 @@ uint8_t MacProcCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
    }
    else
    {
-      if(macCellCfg->prachCfg.fdm[0].numUnusedRootSeq != 0)
-      {
-	 MAC_FREE_SHRABL_BUF(pst->region, pst->pool, macCellCfg->prachCfg.fdm[0].unsuedRootSeq,
-	       macCellCfg->prachCfg.fdm[0].numUnusedRootSeq* sizeof(uint8_t));
-      }
-      MAC_FREE_SHRABL_BUF(pst->region, pst->pool, macCellCfg->sib1Cfg.sib1Pdu, macCellCfg->sib1Cfg.sib1PduLen);
       MAC_FREE_SHRABL_BUF(pst->region, pst->pool, macCellCfg ,sizeof(MacCellCfg));
    }
    return ret;

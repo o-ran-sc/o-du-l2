@@ -132,9 +132,9 @@ uint8_t unpackRxData(uint16_t cellId, SlotIndInfo slotInfo, RxDataIndPdu *rxData
 	       if(macCb.macCell[cellIdx]->macRaCb[ueIdx].crnti == rxDataIndPdu->rnti)
 	       {
 	          MAC_FREE(macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4Pdu, \
-		     macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4PduLen);
-                  MAC_FREE(macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4TxPdu, \
-                      macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4TbSize);
+		          macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4PduLen);
+             MAC_FREE(macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4TxPdu, \
+                      macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4TbSize - TX_PAYLOAD_HDR_LEN);
 	          memset(&macCb.macCell[cellIdx]->macRaCb[ueIdx], 0, sizeof(MacRaCbInfo));
 	       }
 
