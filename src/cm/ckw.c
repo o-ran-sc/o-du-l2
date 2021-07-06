@@ -533,7 +533,7 @@ RlcCfgCfmInfo     *cfgCfmInfo
                 return ( ret1 );
              }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-             if (SPutSBuf(pst->region, pst->pool, (Data *)cfgCfmInfo,
+             if (SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgCfmInfo,
                       sizeof(RlcCfgCfmInfo)) != ROK)
              {
                 SPutMsg(mBuf);
@@ -618,14 +618,14 @@ CkwUeInfo *newUeInfo
     }
 
     CMCHKPK(cmPkCkwUeInfo, newUeInfo, mBuf);
-    if (SPutSBuf(pst->region, pst->pool, (Data *)newUeInfo,
+    if (SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)newUeInfo,
              sizeof(CkwUeInfo)) != ROK)
     {
        SPutMsg(mBuf);
        return RFAILED;
     }
     CMCHKPK(cmPkCkwUeInfo, ueInfo, mBuf);
-    if (SPutSBuf(pst->region, pst->pool, (Data *)ueInfo,
+    if (SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)ueInfo,
              sizeof(CkwUeInfo)) != ROK)
     {
        SPutMsg(mBuf);
@@ -681,7 +681,7 @@ CmStatus    status
     
     CMCHKPK(cmPkCmStatus, &status, mBuf); 
     CMCHKPK(cmPkCkwUeInfo, ueInfo, mBuf);
-    if (SPutSBuf(pst->region, pst->pool, (Data *)ueInfo,
+    if (SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)ueInfo,
              sizeof(CkwUeInfo)) != ROK)
     {
        SPutMsg(mBuf);
@@ -1127,7 +1127,7 @@ Buffer            *mBuf
     RlcCfgCfmInfo  *cfgCfmInfo = NULLP;
     
 
-    if((ret1 = SGetSBuf(pst->region, pst->pool, (Data **)&cfgCfmInfo,\
+    if((ret1 = SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&cfgCfmInfo,\
                 sizeof(RlcCfgCfmInfo))) != ROK)
     {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -1227,7 +1227,7 @@ Buffer            *mBuf
     CMCHKUNPK(SUnpkS16, &(spId), mBuf);
     CMCHKUNPKLOG(oduPackUInt32, &transId, mBuf, ECKW037, pst);
 
-    if((ret1 = SGetSBuf(pst->region, pst->pool, (Data **)&ueInfo,\
+    if((ret1 = SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&ueInfo,\
                 sizeof(CkwUeInfo))) != ROK)
     {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -1254,7 +1254,7 @@ Buffer            *mBuf
     }
 #endif /* ERRCLASS & ERRCLS_DEBUG */
 
-    if((ret1 = SGetSBuf(pst->region, pst->pool, (Data **)&newUeInfo,\
+    if((ret1 = SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&newUeInfo,\
                 sizeof(CkwUeInfo))) != ROK)
     {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -1319,7 +1319,7 @@ Buffer            *mBuf
     CMCHKUNPK(SUnpkS16, &suId, mBuf);
     CMCHKUNPKLOG(oduPackUInt32, &transId, mBuf, ECKW042, pst);
 
-    if((ret1 = SGetSBuf(pst->region, pst->pool, (Data **)&ueInfo,\
+    if((ret1 = SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&ueInfo,\
                 sizeof(CkwUeInfo))) != ROK)
     {
 #if (ERRCLASS & ERRCLS_ADD_RES)

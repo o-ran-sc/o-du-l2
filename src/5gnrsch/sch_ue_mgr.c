@@ -233,9 +233,13 @@ uint8_t fillSchUeCb(SchUeCb *ueCb, SchUeCfg *ueCfg)
       memcpy(&ueCb->ueCfg.spCellCfg , &ueCfg->spCellCfg, sizeof(SchSpCellCfg));
       ueCb->ueCfg.spCellCfgPres = true;
    }
+
    ueCb->state = SCH_UE_STATE_ACTIVE;
-   
-   ueCb->ueCfg.ambrCfg =  ueCfg->ambrCfg;
+   if(ueCfg->ambrCfg)
+   {
+      SCH_FREE(ueCb->ueCfg.ambrCfg, sizeof(SchAmbrCfg));
+      ueCb->ueCfg.ambrCfg =  ueCfg->ambrCfg;
+   }
    memcpy(&ueCb->ueCfg.dlModInfo,  &ueCfg->dlModInfo , sizeof(SchModulationInfo));
    memcpy(&ueCb->ueCfg.ulModInfo,  &ueCfg->ulModInfo , sizeof(SchModulationInfo));
 
@@ -274,6 +278,10 @@ uint8_t fillSchUeCb(SchUeCb *ueCb, SchUeCfg *ueCfg)
             }
          }/*End of inner for loop */
       }
+
+      SCH_FREE(ueCfg->schLcCfg[lcIdx].drbQos, sizeof(SchDrbQosInfo));
+      SCH_FREE(ueCfg->schLcCfg[lcIdx].snssai, sizeof(SchSnssai));
+
    }/* End of outer for loop */
    return ROK;
 }

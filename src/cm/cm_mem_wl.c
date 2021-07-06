@@ -119,7 +119,7 @@ S32 clusterMode;
 #endif
 
 #include "cm_lte.x"
-
+#include "du_log.h"
 
 /* local defines */
 /*ccpu00142274 - UL mem based flow control changes */
@@ -1743,7 +1743,7 @@ PTR              ptr
       return RFAILED;
    }
    SUnlock(&memDoubleFreeLock);
-   SPutSBuf(regionCb->region, 0, (Data *)memNode, sizeof(CmMemDoubleFree));
+   SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,regionCb->region, 0, (Data *)memNode, sizeof(CmMemDoubleFree));
 
    return ROK;
 }
@@ -1774,7 +1774,7 @@ PTR              ptr
 
    CmMemDoubleFree   *memNode;
 
-   SGetSBuf(regionCb->region, 0, (Data **)&memNode, sizeof(CmMemDoubleFree));
+   SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,regionCb->region, 0, (Data **)&memNode, sizeof(CmMemDoubleFree));
    if(memNode == NULLP)
    {
        return RFAILED;
@@ -1822,7 +1822,6 @@ Data  **ptr          /* Reference to pointer for which need to be allocate */
 )
 {
    S16 ret;
-
 
    if((SLock(&dynAllocFreeLock)) != ROK)
    {
@@ -1883,6 +1882,8 @@ Data  **ptr          /* Reference to pointer for which need to be allocate */
    /* error check on parameters */
    if ((regCb == NULLP) || (size == NULLP) || !(*size) || (ptr == NULLP))
    {
+      DU_LOG("\nERROR  --> CM: cmDynAlloc(): Received memory region[%p] or size[%p] or value of size[%d], or block[%p]\
+      is invalid", regCb, size, *size, ptr);
       return RFAILED;
    }
 #endif
@@ -1914,14 +1915,15 @@ Data  **ptr          /* Reference to pointer for which need to be allocate */
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       if (regCb->mapTbl[idx].bktIdx == 0xFF)
-      { 
-         printf("Failed to get the buffer of size %d\n", *size);
+      {
+         DU_LOG("\nERROR  --> CM: cmDynAlloc(): Failed to get the buffer of size %d\n", *size);
          /* Some fatal error in the map table initialization. */
          return RFAILED;
       }
 #endif
      if (idx > 512)
      {
+         DU_LOG("\nERROR  --> CM: cmDynAlloc(): idx value is greater than 512");
          return RFAILED;
      }
       /* Dequeue the memory block and return it to the user */
@@ -1943,9 +1945,9 @@ Data  **ptr          /* Reference to pointer for which need to be allocate */
       if(dynMemElem == NULLP)
       {
 #ifndef ALIGN_64BIT
-         printf("Failed to get the buffer of size %ld\n", *size);
+         DU_LOG("\nERROR  --> CM: cmDynAlloc(): Failed to get the buffer of size %ld\n", *size);
 #else
-         printf("Failed to get the buffer of size %d\n", *size);
+         printf("\nERROR  --> CM: cmDynAlloc(): Failed to get the buffer of size %d\n", *size);
 #endif
          return RFAILED;
       }
@@ -1961,6 +1963,7 @@ Data  **ptr          /* Reference to pointer for which need to be allocate */
       *ptr = dynMemElem->nextBktPtr;
       if (*ptr == NULLP)
       {
+        DU_LOG("\nERROR  --> CM: cmDynAlloc(): nextBktPtr is null");
         return RFAILED;
       }
       dynMemElem->nextBktPtr = *((CmMmEntry **)(*ptr));
@@ -2002,9 +2005,9 @@ Data  **ptr          /* Reference to pointer for which need to be allocate */
 
    /* If the size is not matching, return failure to caller */
 #ifndef ALIGN_64BIT
-   printf("Failed to get the buffer of size %ld\n", *size);
+   DU_LOG("\nERROR  --> CM : cmDynAlloc(): Failed to get the buffer of size %ld\n", *size);
 #else
-   printf("Failed to get the buffer of size %d\n", *size);
+   DU_LOG("\nERROR  --> CM: cmDynAlloc(): Failed to get the buffer of size %d\n", *size);
 #endif
    return RFAILED;
    
@@ -2019,7 +2022,10 @@ Data  **ptr          /* Reference to pointer for which need to be allocate */
    *ptr = (Data *)malloc(*size);
 
    if ( (*ptr) == NULLP)
-       return RFAILED;
+   {
+       DU_LOG("\nERROR  --> CM : cmDynAlloc(): Data ptr is null");
+       return RFAILED; 
+   }
    /* avail_size -= *size; */
    return ROK;
 #endif /* USE_PURE */
@@ -2171,6 +2177,8 @@ Data  **ptr
    /* error check on parameters */
    if ((regCb == NULLP) || (size == NULLP) || !(*size) || (ptr == NULLP))
    {
+      DU_LOG("\nERROR  --> CM : cmAlloc(): Received memory region[%p] or size[%p] or value of size[%d] or block[%p] is\
+      invalid", regCb, size, *size, ptr);
       return RFAILED;
    }
 #endif
@@ -2180,6 +2188,7 @@ Data  **ptr
 #if (ERRCLASS & ERRCLS_INT_PAR)
       if ((memType != CMM_STATIC_MEM_FLAG) && (memType != CMM_DYNAMIC_MEM_FLAG))
       {
+         DU_LOG("\nERROR  --> CM : cmAlloc(): memType[%d] is invalid",memType);
          return RFAILED;
       }
 #endif /* (ERRCLASS & ERRCLS_INT_PAR) */
@@ -2224,6 +2233,7 @@ Data  **ptr
       if (regCb->mapTbl[idx].bktIdx == 0xFF)
       { 
          /* Some fatal error in the map table initialization. */
+         DU_LOG("\nERROR  --> CM : cmAlloc(): bktIdx is invalid");
          return RFAILED;
       }
 #endif
@@ -2312,6 +2322,7 @@ Data  **ptr
 #else
                   (Void) SUnlock(&(bkt->bktLock));
 #endif
+                  DU_LOG("\nERROR  --> CM : cmAlloc(): Sanity check returns failure");
                   /* return RFAILED */
                   return RFAILED;
                }
@@ -2509,6 +2520,7 @@ Data  **ptr
    }
 
    /* No memory available */
+   DU_LOG("\nERROR  --> CM : cmAlloc(): No memory available in heap");
    return RFAILED;
 #else /* use pure is on */
 /*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
@@ -2519,7 +2531,10 @@ Data  **ptr
    *ptr = (Data*) malloc(*size);
 #endif
    if ( (*ptr) == NULLP)
+   {
+       DU_LOG("\nERROR  --> CM : cmAlloc(): ptr is null");
        return RFAILED;
+   }
    avail_size -= *size;
    return ROK;
 #endif /* USE_PURE */
@@ -2681,7 +2696,7 @@ Size    size        /* Size of the block */
 )
 {
    S16 ret;
-
+   
    if((SLock(&dynAllocFreeLock)) != ROK)
    {
       printf("dynAllocWithLock: Failed to get the DYN lock\n");
@@ -2749,6 +2764,7 @@ Size    size        /* Size of the block */
    /* error check on parameters */
    if ((regCb == NULLP) || (!size) || (ptr == NULLP))
    {
+      DU_LOG("\nERROR --> CM : cmDynFree(): Received memory region[%p] or size[%p] or block[%p] is invalid",regCb,size,ptr);
       return RFAILED;
    }
 
@@ -2756,12 +2772,14 @@ Size    size        /* Size of the block */
    if (ptr >= ((CmMmRegCb *)regCb)->regInfo.start +
                ((CmMmRegCb *)regCb)->regInfo.size) 
    {
+      DU_LOG("\nERROR --> CM : cmDynFree(): Memory block[%p] not from region[%d]", ptr, ((CmMmRegCb *)regCb)->region);
       return RFAILED;
    }
 	/* cm_mem_c_001.main_20 Addition */
 	if (ptr < regCb->regInfo.start)
 	{
-	  return RFAILED;
+	   DU_LOG("\nERROR --> CM : cmDynFree(): Memory block[%p] not from region[%d]", ptr, ((CmMmRegCb *)regCb)->region);
+      return RFAILED;
 	}
 
 #endif
@@ -2778,6 +2796,7 @@ Size    size        /* Size of the block */
 #if (ERRCLASS & ERRCLS_DEBUG)
    if (regCb->mapTbl[idx].bktIdx == 0xFF)
    { 
+      DU_LOG("\nERROR --> CM : cmDynFree(): bktIdx is not valid");
       /* Some fatal error in the map table initialization. */
       return RFAILED;
    }
@@ -2796,13 +2815,13 @@ Size    size        /* Size of the block */
 #ifdef SS_MEM_WL_DEBUG
    if (size > bkt->size)
    {
-      printf("Size = %d bucket size = %d\n", size, bkt->size);
+      DU_LOG("Size = %d bucket size = %d\n", size, bkt->size);
       exit(-1);
       bkt = &(regCb->bktTbl[bktIdx = regCb->mapTbl[++idx].bktIdx]);
    }
    if(size > bkt->size)
    {
-      printf("2nd time Size = %d bucket size = %d\n", size, bkt->size);
+      DU_LOG("2nd time Size = %d bucket size = %d\n", size, bkt->size);
       exit(-1);
       uint8_t *tmpptr = NULLP;
       printf("Bucket Size wrong \n");
@@ -2815,6 +2834,7 @@ Size    size        /* Size of the block */
    /* Check if the bucket index, if its not valid, return failure */
    if(dynMemElem == NULLP)
    {
+      DU_LOG("\nERROR --> CM : cmDynFree(): dynMemElem is null");
       return RFAILED;
    }
 
@@ -2857,7 +2877,6 @@ Size    size        /* Size of the block */
 
    memset(ptr, (regCb->region+1), bkt->size); 
 #endif
-
    /* Get the bucket node from the index returned and allocate the memory */
    *((CmMmEntry **)ptr) =  dynMemElem->nextBktPtr;
    dynMemElem->nextBktPtr = ptr;
@@ -2965,6 +2984,7 @@ Size    size
    /* error check on parameters */
    if ((regCb == NULLP) || (!size) || (ptr == NULLP))
    {
+      DU_LOG("\nERROR --> CM : cmFree(): Received memory region[%p] or size[%p] or block[%p] is invalid",regCb,size,ptr);
       return RFAILED;
    }
 
@@ -2972,11 +2992,13 @@ Size    size
    if (ptr >= ((CmMmRegCb *)regCb)->regInfo.start +
                ((CmMmRegCb *)regCb)->regInfo.size) 
    {
+      DU_LOG("\nERROR --> CM : cmFree(): Memory block[%p] not from region[%d]",ptr,regCb.region);
       return RFAILED;
    }
 	/* cm_mem_c_001.main_20 Addition */
 	if (ptr < regCb->regInfo.start)
 	{
+     DU_LOG("\nERROR --> CM : cmFree(): Memory block[%p] not from region[%d]",ptr,regCb.region);
 	  return RFAILED;
 	}
 
@@ -3002,6 +3024,7 @@ Size    size
       if (regCb->mapTbl[idx].bktIdx == 0xFF)
       { 
          /* Some fatal error in the map table initialization. */
+         DU_LOG("\nERROR --> CM : cmFree(): Invalid bktIdx");
          return RFAILED;
       }
 #endif
@@ -3085,6 +3108,7 @@ Size    size
 #endif
 
                 /* handle RTRAMPLINGNOK in SFree/SPutSBuf */
+                DU_LOG("\nERROR  --> CM : cmFree(): Sanity check returns failure");    
                 return (RTRAMPLINGNOK);
            }
       }
@@ -3117,6 +3141,7 @@ Size    size
 #endif
 
           /* handle RDBLFREE in SFree/SPutSBuf */
+          DU_LOG("\nERROR  --> CM : cmFree(): Memory block is already freed");    
           return (RDBLFREE);
       }
       if (CMM_IS_STATIC(ptrHdr->memFlags))
@@ -3173,6 +3198,7 @@ Size    size
 #endif
 
             /* handle RTRAMPLINGNOK in SFree/SPutSBuf */
+            DU_LOG("\nERROR  --> CM : cmFree(): Sanity check returns failure");    
             return (RTRAMPLINGNOK);
          }
       }
@@ -4727,7 +4753,7 @@ Void SFlushLkInfo (Void)
 #else
                 free(funcNm[i]); 
 #endif
-				    /* SPutSBuf(DFLT_REGION, DFLT_POOL, funcNm[i], sizeof(uint32_t) * CM_MAX_STACK_TRACE); */
+				    /* SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,DFLT_REGION, DFLT_POOL, funcNm[i], sizeof(uint32_t) * CM_MAX_STACK_TRACE); */
              }
 #endif /* SS_MEM_LEAK_SOl */
 /*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
@@ -4792,7 +4818,7 @@ uint16_t    bktIdx
 #else
    funcNm = (S8 **)calloc(1, (sizeof(uint32_t) * CM_MAX_STACK_TRACE));
 #endif
-	/* SGetSBuf(DFLT_REGION, DFLT_POOL, &funcNm, sizeof(uint32_t) * CM_MAX_STACK_TRACE); */
+	/* SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,DFLT_REGION, DFLT_POOL, &funcNm, sizeof(uint32_t) * CM_MAX_STACK_TRACE); */
    traceSize = backtrace((Void **)funcNm, CM_MAX_STACK_TRACE);
 #else /* SS_MEM_LEAK_SOL */
    traceSize = backtrace(trace, CM_MAX_STACK_TRACE);
@@ -4809,7 +4835,7 @@ uint16_t    bktIdx
 #else
    allocInfo = (MemAllocInfo *)calloc(1, sizeof(MemAllocInfo)); 
 #endif
-	/* SGetSBuf(DFLT_REGION, DFLT_POOL, &allocInfo,  sizeof(MemAllocInfo)); */
+	/* SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,DFLT_REGION, DFLT_POOL, &allocInfo,  sizeof(MemAllocInfo)); */
    allocInfo->memAddr    = addr;
    allocInfo->reqSz      = reqSz;
    allocInfo->allocSz    = allocSz;
@@ -5179,7 +5205,7 @@ Void      *arg
 #else
     buffer = (S8 *)calloc(1, 510); 
 #endif
-	 /* SGetSBuf(DFLT_REGION, DFLT_POOL, &buffer, 510); */
+	 /* SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,DFLT_REGION, DFLT_POOL, &buffer, 510); */
     (void) cmAddrToSymStr((void *)pc, buffer, 505);
     bt->bt_buffer[bt->bt_actcount++] = (S8 *)buffer;
 
@@ -5418,7 +5444,7 @@ Pool         pool          /* memory pool to allocate bins */
    /* allocate memory for bins */
    if (nmbBins)
    {
-      if (SGetSBuf(region, pool, (Data **) &hashListCp->hashList,
+      if (SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,region, pool, (Data **) &hashListCp->hashList,
                (Size)(nmbBins * sizeof(CmMmHashListEnt))) != ROK)
       return RFAILED;
 
@@ -5465,7 +5491,7 @@ Pool         pool          /* memory pool to allocate bins */
 
    /* deallocate memory for bins */
    if (hashListCp->numOfbins)
-      (Void) SPutSBuf(region, pool,
+      (Void) SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,region, pool,
                       (Data *) hashListCp->hashList,
                       (Size) (hashListCp->numOfbins * sizeof(CmMmHashListEnt)));
 

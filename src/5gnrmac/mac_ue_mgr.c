@@ -1502,21 +1502,21 @@ uint8_t fillLogicalChannelCfg(SchLcCfg *schLcCfg, LcCfg *macLcCfg)
 
    if(macLcCfg->drbQos)
    {
-     if(!schLcCfg->drbQos)
-     {
-        MAC_ALLOC(schLcCfg->drbQos, sizeof(SchDrbQosInfo));
-	if(!schLcCfg->drbQos)
-        {
-           DU_LOG("\nERROR  -->  MAC : Memory alloc failed at drbQos at fillLogicalChannelCfg()");
-	   ret = RFAILED;
-	}
-     }
-     if(ret == ROK)
-     {
-        fillSchDrbQosInfo(macLcCfg->drbQos, schLcCfg->drbQos);
-     }
-     else
-        return ret;
+      if(!schLcCfg->drbQos)
+      {
+         MAC_ALLOC(schLcCfg->drbQos, sizeof(SchDrbQosInfo));
+         if(!schLcCfg->drbQos)
+         {
+            DU_LOG("\nERROR  -->  MAC : Memory alloc failed at drbQos at fillLogicalChannelCfg()");
+            ret = RFAILED;
+         }
+      }
+      if(ret == ROK)
+      {
+         fillSchDrbQosInfo(macLcCfg->drbQos, schLcCfg->drbQos);
+      }
+      else
+         return ret;
    }
    else
    {
@@ -1541,20 +1541,9 @@ uint8_t fillLogicalChannelCfg(SchLcCfg *schLcCfg, LcCfg *macLcCfg)
             schLcCfg->snssai->sst = macLcCfg->snssai->sst;
             for(sdIdx = 0; sdIdx < SD_SIZE; sdIdx++)
             {
-              schLcCfg->snssai->sd[sdIdx] = macLcCfg->snssai->sd[sdIdx];
+               schLcCfg->snssai->sd[sdIdx] = macLcCfg->snssai->sd[sdIdx];
             }
          }
-	 else
-	 {
-            schLcCfg->snssai = NULLP;
-            /*Freeing the previously allocated buffer in case of failure */
-            if(schLcCfg->drbQos)
-            {
-               MAC_FREE(schLcCfg->drbQos, sizeof(SchDrbQosInfo));
-	       schLcCfg->drbQos = NULLP;
-            }
-	    return ret;
-	 }
       }
       else
       {
@@ -1664,8 +1653,9 @@ uint8_t fillSchUeCfg(Pst *pst, SchUeCfg *schUeCfg, MacUeCfg *ueCfg)
       schUeCfg->ambrCfg->ulBr = ueCfg->ambrCfg->ulBr;
    }
    else
+   {
       schUeCfg->ambrCfg = NULLP;
-
+   }
    /* Fill DL modulation infor */
    schUeCfg->dlModInfo.modOrder = ueCfg->dlModInfo.modOrder;
    schUeCfg->dlModInfo.mcsIndex = ueCfg->dlModInfo.mcsIndex;

@@ -41,6 +41,7 @@
 #include "tfu.h"           /* TFU Interface defines */
 #include "rg_sch_inf.h"    /* RGR Interface defines */
 #include "lrg.h"           /* LRG Interface defines */
+#include  "mac_utils.h"
 
 #include "rg_prg.h"        /* PRG(MAC-MAC) Interface includes */
 #include "rg.h"            /* MAC defines */
@@ -127,7 +128,8 @@ Size    size                /* size */
    }
 
    /* allocate buffer */
-   if (SGetStaticBuffer(rgCb[inst].rgInit.region, rgCb[inst].rgInit.pool, pData, size, 0) != ROK)
+   MAC_ALLOC_SHRABL_BUF(pData, size);
+   if(pData == NULLP)
    {
      dgn.type = LRG_USTA_DGNVAL_MEM;
      dgn.u.mem.region = rgCb[inst].rgInit.region;
@@ -140,10 +142,10 @@ Size    size                /* size */
    }
 
 #ifndef ALIGN_64BIT
-   DU_LOG("\nDEBUG  -->  MAC : SGetSBuf(Region (%d), Pool (%d), Size (%ld)), Data (0x%p))\n",
+   DU_LOG("\nDEBUG  -->  MAC : MAC_ALLOC(Region (%d), Pool (%d), Size (%ld)), Data (0x%p))\n",
              rgCb[inst].rgInit.region, rgCb[inst].rgInit.pool, size, *pData);
 #else
-   DU_LOG("\nDEBUG  -->  MAC : SGetSBuf(Region (%d), Pool (%d), Size (%d)), Data (0x%p))\n",
+   DU_LOG("\nDEBUG  -->  MAC : MAC_ALLOC(Region (%d), Pool (%d), Size (%d)), Data (0x%p))\n",
              rgCb[inst].rgInit.region, rgCb[inst].rgInit.pool, size, *pData);
 #endif
 
@@ -193,7 +195,8 @@ Size    size                /* size */
 #ifdef MS_MBUF_CORRUPTION /* Should be enabled when debugging mbuf corruption */
    MS_BUF_ADD_ALLOC_CALLER();
 #endif /* */
-   if (SGetSBuf(rgCb[inst].rgInit.region, rgCb[inst].rgInit.pool, pData, size) != ROK)
+   MAC_ALLOC(pData, size);
+   if(pData == NULLP)
    {
      dgn.type = LRG_USTA_DGNVAL_MEM;
      dgn.u.mem.region = rgCb[inst].rgInit.region;
@@ -244,9 +247,9 @@ Size size            /* size */
    }
 
    /* Deallocate buffer */
-   ret = SPutStaticBuffer(rgCb[inst].rgInit.region, rgCb[inst].rgInit.pool, *data, size, SS_SHARABLE_MEMORY);
-
-   if (ret != ROK)
+   MAC_FREE_SHRABL_BUF(rgCb[inst].rgInit.region, rgCb[inst].rgInit.pool, *data, size);
+   
+   if (data != NULLP)
    {
       return;
    }
@@ -295,9 +298,9 @@ Size size            /* size */
    MS_BUF_ADD_CALLER();
 #endif /* */
    /* Deallocate buffer */
-   ret = SPutSBuf(rgCb[inst].rgInit.region, rgCb[inst].rgInit.pool, *data, size);
+   MAC_FREE(data, size);
 
-   if (ret != ROK)
+   if (data != NULLP)
    {
       DU_LOG("\nERROR  -->  MAC : rgFreeSBuf failed.\n");
       return;
@@ -337,7 +340,7 @@ Buffer  **mBuf            /* Message Buffer pointer be returned */
 #ifdef MS_MBUF_CORRUPTION /* Should be enabled when debugging mbuf corruption */
    MS_BUF_ADD_ALLOC_CALLER();
 #endif /* */
-   ret = SGetMsg(RG_GET_MEM_REGION(rgCb[inst]), RG_GET_MEM_POOL(rgCb[inst]), mBuf);
+   ret = ODU_GET_MSG_BUF(RG_GET_MEM_REGION(rgCb[inst]), RG_GET_MEM_POOL(rgCb[inst]), mBuf);
 
    if (ROK != ret) 
    {
