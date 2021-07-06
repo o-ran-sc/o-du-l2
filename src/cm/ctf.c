@@ -390,12 +390,12 @@ CtfCfgReqInfo *cfgReqInfo
    /* ctf_c_001.main_4: Added support for vendor specific parameters */
 #ifdef CTF_VER3
    if(cfgReqInfo->vendorParams.paramBuffer != NULLP) {
-      SPutSBuf(pst->region, pst->pool, 
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, 
                    (Data *)cfgReqInfo->vendorParams.paramBuffer,
                    cfgReqInfo->vendorParams.buffLen);
    }
 #endif
-   SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CtfCfgReqInfo)); 
+   SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CtfCfgReqInfo)); 
    return ROK;
 }
 
@@ -598,7 +598,7 @@ CtfKdfReqInfo* kdfReqInfo
          (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ECTF016, (ErrVal)0, (Txt*)&"Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)kdfReqInfo, sizeof(CtfKdfReqInfo));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)kdfReqInfo, sizeof(CtfKdfReqInfo));
       return RFAILED;
    }
    if (pst->selector == ODU_SELECTOR_LC) {
@@ -609,7 +609,7 @@ CtfKdfReqInfo* kdfReqInfo
             (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ECTF017, (ErrVal)0, (Txt*)&"Packing failed");
 #endif
-         SPutSBuf(pst->region, pst->pool, (Data *)kdfReqInfo, sizeof(CtfKdfReqInfo));
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)kdfReqInfo, sizeof(CtfKdfReqInfo));
          SPutMsg(mBuf);
          return RFAILED;
       }
@@ -623,7 +623,7 @@ CtfKdfReqInfo* kdfReqInfo
          (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ECTF019, (ErrVal)0, (Txt*)&"Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)kdfReqInfo, sizeof(CtfKdfReqInfo));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)kdfReqInfo, sizeof(CtfKdfReqInfo));
       SPutMsg(mBuf);
       return RFAILED;
    }
@@ -634,12 +634,12 @@ CtfKdfReqInfo* kdfReqInfo
          (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ECTF020, (ErrVal)0, (Txt*)&"Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)kdfReqInfo, sizeof(CtfKdfReqInfo));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)kdfReqInfo, sizeof(CtfKdfReqInfo));
       SPutMsg(mBuf);
       return RFAILED;
    }
    if (pst->selector != ODU_SELECTOR_LWLC) {
-      if (SPutSBuf(pst->region, pst->pool, (Data *)kdfReqInfo, sizeof(CtfKdfReqInfo)) != ROK) {
+      if (SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)kdfReqInfo, sizeof(CtfKdfReqInfo)) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -804,7 +804,7 @@ CtfCnmCellSyncReq * cfgReqInfo
          (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ECTF016, (ErrVal)0, (Txt*)&"Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CtfCnmCellSyncReq));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CtfCnmCellSyncReq));
       return RFAILED;
    }
    if (pst->selector == ODU_SELECTOR_LC) {
@@ -815,7 +815,7 @@ CtfCnmCellSyncReq * cfgReqInfo
             (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ECTF017, (ErrVal)0, (Txt*)&"Packing failed");
 #endif
-         SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CtfCnmCellSyncReq));
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CtfCnmCellSyncReq));
          SPutMsg(mBuf);
          return RFAILED;
       }
@@ -829,7 +829,7 @@ CtfCnmCellSyncReq * cfgReqInfo
             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ECTF018, (ErrVal)0, "Packing failed");
 #endif
-         SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CtfCnmCellSyncReq));
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CtfCnmCellSyncReq));
          SPutMsg(mBuf);
          return RFAILED;
       }
@@ -842,7 +842,7 @@ CtfCnmCellSyncReq * cfgReqInfo
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ECTF019, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CtfCnmCellSyncReq));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CtfCnmCellSyncReq));
       SPutMsg(mBuf);
       return RFAILED;
    }
@@ -853,12 +853,12 @@ CtfCnmCellSyncReq * cfgReqInfo
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ECTF020, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CtfCnmCellSyncReq));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CtfCnmCellSyncReq));
       SPutMsg(mBuf);
       return RFAILED;
    }
    if (pst->selector != ODU_SELECTOR_LWLC) {
-      SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CtfCnmCellSyncReq));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CtfCnmCellSyncReq));
    }
    pst->event = (Event)EVTCTFCNMSYNCREQ;
    return (SPstTsk(pst,mBuf));
@@ -911,7 +911,7 @@ Buffer *mBuf
       return RFAILED;
    }
    if (pst->selector != ODU_SELECTOR_LWLC) {
-      if ((SGetSBuf(pst->region, pst->pool, (Data **)&SyncReqMsg, sizeof(CtfCnmCellSyncReq))) != ROK) {
+      if ((SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&SyncReqMsg, sizeof(CtfCnmCellSyncReq))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -930,7 +930,7 @@ Buffer *mBuf
    }
   else if (pst->selector == ODU_SELECTOR_LC)
       if (cmUnpkCtfCtfCnmCellSyncReq(SyncReqMsg, mBuf) != ROK) {
-      SPutSBuf(pst->region, pst->pool, (Data *)SyncReqMsg, sizeof(CtfCnmCellSyncReq));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)SyncReqMsg, sizeof(CtfCnmCellSyncReq));
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -980,7 +980,7 @@ CtfCnmInitSyncReq * cfgReqInfo
          (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ECTF016, (ErrVal)0, (Txt*)&"Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CtfCnmInitSyncReq));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CtfCnmInitSyncReq));
       return RFAILED;
    }
    if (pst->selector == ODU_SELECTOR_LC) {
@@ -991,7 +991,7 @@ CtfCnmInitSyncReq * cfgReqInfo
             (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ECTF017, (ErrVal)0, (Txt*)&"Packing failed");
 #endif
-         SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CtfCnmInitSyncReq));
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CtfCnmInitSyncReq));
          SPutMsg(mBuf);
          return RFAILED;
       }
@@ -1005,7 +1005,7 @@ CtfCnmInitSyncReq * cfgReqInfo
             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ECTF018, (ErrVal)0, "Packing failed");
 #endif
-         SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CtfCnmInitSyncReq));
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CtfCnmInitSyncReq));
          SPutMsg(mBuf);
          return RFAILED;
       }
@@ -1018,7 +1018,7 @@ CtfCnmInitSyncReq * cfgReqInfo
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ECTF019, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CtfCnmInitSyncReq));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CtfCnmInitSyncReq));
       SPutMsg(mBuf);
       return RFAILED;
    }
@@ -1029,12 +1029,12 @@ CtfCnmInitSyncReq * cfgReqInfo
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ECTF020, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CtfCnmInitSyncReq));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CtfCnmInitSyncReq));
       SPutMsg(mBuf);
       return RFAILED;
    }
    if (pst->selector != ODU_SELECTOR_LWLC) {
-      SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CtfCnmInitSyncReq));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(CtfCnmInitSyncReq));
    }
    pst->event = (Event)EVTCTFCNMINITSYNCREQ;
    return (SPstTsk(pst,mBuf));
@@ -1089,7 +1089,7 @@ Buffer *mBuf
       return RFAILED;
    }
    if (pst->selector != ODU_SELECTOR_LWLC) {
-      if ((SGetSBuf(pst->region, pst->pool, (Data **)&syncReqInfo, sizeof(CtfCnmInitSyncReq))) != ROK) {
+      if ((SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&syncReqInfo, sizeof(CtfCnmInitSyncReq))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -1108,7 +1108,7 @@ Buffer *mBuf
    }
   else if (pst->selector == ODU_SELECTOR_LC)
       if (cmUnpkCtfsyncReqInfo(syncReqInfo, mBuf) != ROK) {
-      SPutSBuf(pst->region, pst->pool, (Data *)syncReqInfo, sizeof(CtfCnmInitSyncReq));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)syncReqInfo, sizeof(CtfCnmInitSyncReq));
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -1210,7 +1210,7 @@ CtfCnmInitSyncRsp * cfgRspInfo
          (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ECTF016, (ErrVal)0, (Txt*)&"Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)cfgRspInfo, sizeof(CtfCnmInitSyncRsp));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgRspInfo, sizeof(CtfCnmInitSyncRsp));
       return RFAILED;
    }
    if (pst->selector == ODU_SELECTOR_LC) {
@@ -1221,7 +1221,7 @@ CtfCnmInitSyncRsp * cfgRspInfo
             (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ECTF017, (ErrVal)0, (Txt*)&"Packing failed");
 #endif
-         SPutSBuf(pst->region, pst->pool, (Data *)cfgRspInfo, sizeof(CtfCnmInitSyncRsp));
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgRspInfo, sizeof(CtfCnmInitSyncRsp));
          SPutMsg(mBuf);
          return RFAILED;
       }
@@ -1235,7 +1235,7 @@ CtfCnmInitSyncRsp * cfgRspInfo
             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ECTF018, (ErrVal)0, "Packing failed");
 #endif
-         SPutSBuf(pst->region, pst->pool, (Data *)cfgRspInfo, sizeof(CtfCnmInitSyncRsp));
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgRspInfo, sizeof(CtfCnmInitSyncRsp));
          SPutMsg(mBuf);
          return RFAILED;
       }
@@ -1248,7 +1248,7 @@ CtfCnmInitSyncRsp * cfgRspInfo
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ECTF019, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)cfgRspInfo, sizeof(CtfCnmInitSyncRsp));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgRspInfo, sizeof(CtfCnmInitSyncRsp));
       SPutMsg(mBuf);
       return RFAILED;
    }
@@ -1259,12 +1259,12 @@ CtfCnmInitSyncRsp * cfgRspInfo
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ECTF020, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)cfgRspInfo, sizeof(CtfCnmInitSyncRsp));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgRspInfo, sizeof(CtfCnmInitSyncRsp));
       SPutMsg(mBuf);
       return RFAILED;
    }
    if (pst->selector != ODU_SELECTOR_LWLC) {
-      SPutSBuf(pst->region, pst->pool, (Data *)cfgRspInfo, sizeof(CtfCnmInitSyncRsp));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgRspInfo, sizeof(CtfCnmInitSyncRsp));
    }
    pst->event = (Event)EVTCTFCNMINITSYNCRSP;
    return (SPstTsk(pst,mBuf));
@@ -1370,7 +1370,7 @@ Buffer *mBuf
       return RFAILED;
    }
    if (pst->selector != ODU_SELECTOR_LWLC) {
-      if((SGetSBuf(pst->region, pst->pool, (Data **)&syncRspInfo, sizeof(CtfCnmInitSyncRsp))) != ROK) {
+      if((SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&syncRspInfo, sizeof(CtfCnmInitSyncRsp))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -1389,7 +1389,7 @@ Buffer *mBuf
    }
   else if (pst->selector == ODU_SELECTOR_LC)
       if(cmUnpkCtfCnmInitSyncRspMsg(syncRspInfo, mBuf) != ROK) {
-      SPutSBuf(pst->region, pst->pool, (Data *)syncRspInfo, sizeof(CtfCnmInitSyncRsp));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)syncRspInfo, sizeof(CtfCnmInitSyncRsp));
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -1449,7 +1449,7 @@ CtfCnmCellSyncRsp * cfgRspInfo
          (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ECTF016, (ErrVal)0, (Txt*)&"Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)cfgRspInfo, sizeof(CtfCnmCellSyncRsp));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgRspInfo, sizeof(CtfCnmCellSyncRsp));
       return RFAILED;
    }
    if (pst->selector == ODU_SELECTOR_LC) {
@@ -1460,7 +1460,7 @@ CtfCnmCellSyncRsp * cfgRspInfo
             (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ECTF017, (ErrVal)0, (Txt*)&"Packing failed");
 #endif
-         SPutSBuf(pst->region, pst->pool, (Data *)cfgRspInfo, sizeof(CtfCnmCellSyncRsp));
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgRspInfo, sizeof(CtfCnmCellSyncRsp));
          SPutMsg(mBuf);
          return RFAILED;
       }
@@ -1474,7 +1474,7 @@ CtfCnmCellSyncRsp * cfgRspInfo
             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ECTF018, (ErrVal)0, "Packing failed");
 #endif
-         SPutSBuf(pst->region, pst->pool, (Data *)cfgRspInfo, sizeof(CtfCnmCellSyncRsp));
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgRspInfo, sizeof(CtfCnmCellSyncRsp));
          SPutMsg(mBuf);
          return RFAILED;
       }
@@ -1487,7 +1487,7 @@ CtfCnmCellSyncRsp * cfgRspInfo
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ECTF019, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)cfgRspInfo, sizeof(CtfCnmCellSyncRsp));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgRspInfo, sizeof(CtfCnmCellSyncRsp));
       SPutMsg(mBuf);
       return RFAILED;
    }
@@ -1498,12 +1498,12 @@ CtfCnmCellSyncRsp * cfgRspInfo
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ECTF020, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)cfgRspInfo, sizeof(CtfCnmCellSyncRsp));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgRspInfo, sizeof(CtfCnmCellSyncRsp));
       SPutMsg(mBuf);
       return RFAILED;
    }
    if (pst->selector != ODU_SELECTOR_LWLC) {
-      SPutSBuf(pst->region, pst->pool, (Data *)cfgRspInfo, sizeof(CtfCnmCellSyncRsp));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgRspInfo, sizeof(CtfCnmCellSyncRsp));
    }
    pst->event = (Event)EVTCTFCNMSYNCRSP;
    return (SPstTsk(pst,mBuf));
@@ -1570,7 +1570,7 @@ Buffer *mBuf
       return RFAILED;
    }
    if (pst->selector != ODU_SELECTOR_LWLC) {
-      if ((SGetSBuf(pst->region, pst->pool, (Data **)&syncRspMsg, sizeof(CtfCnmCellSyncRsp))) != ROK) {
+      if ((SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&syncRspMsg, sizeof(CtfCnmCellSyncRsp))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -1589,7 +1589,7 @@ Buffer *mBuf
    }
   else if (pst->selector == ODU_SELECTOR_LC)
       if (cmUnpkCtfCnmSyncRspMsg(syncRspMsg, mBuf) != ROK) {
-      SPutSBuf(pst->region, pst->pool, (Data *)syncRspMsg, sizeof(CtfCnmCellSyncRsp));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)syncRspMsg, sizeof(CtfCnmCellSyncRsp));
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -1650,7 +1650,7 @@ CtfCnmCellSyncInd * cfgIndInfo
          (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ECTF016, (ErrVal)0, (Txt*)&"Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)cfgIndInfo, sizeof(CtfCnmCellSyncInd));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgIndInfo, sizeof(CtfCnmCellSyncInd));
       return RFAILED;
    }
    if (pst->selector == ODU_SELECTOR_LC) {
@@ -1661,7 +1661,7 @@ CtfCnmCellSyncInd * cfgIndInfo
             (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ECTF017, (ErrVal)0, (Txt*)&"Packing failed");
 #endif
-         SPutSBuf(pst->region, pst->pool, (Data *)cfgIndInfo, sizeof(CtfCnmCellSyncInd));
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgIndInfo, sizeof(CtfCnmCellSyncInd));
          SPutMsg(mBuf);
          return RFAILED;
       }
@@ -1675,7 +1675,7 @@ CtfCnmCellSyncInd * cfgIndInfo
             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ECTF018, (ErrVal)0, "Packing failed");
 #endif
-         SPutSBuf(pst->region, pst->pool, (Data *)cfgIndInfo, sizeof(CtfCnmCellSyncInd));
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgIndInfo, sizeof(CtfCnmCellSyncInd));
          SPutMsg(mBuf);
          return RFAILED;
       }
@@ -1688,7 +1688,7 @@ CtfCnmCellSyncInd * cfgIndInfo
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ECTF019, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)cfgIndInfo, sizeof(CtfCnmCellSyncInd));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgIndInfo, sizeof(CtfCnmCellSyncInd));
       SPutMsg(mBuf);
       return RFAILED;
    }
@@ -1699,12 +1699,12 @@ CtfCnmCellSyncInd * cfgIndInfo
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ECTF020, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)cfgIndInfo, sizeof(CtfCnmCellSyncInd));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgIndInfo, sizeof(CtfCnmCellSyncInd));
       SPutMsg(mBuf);
       return RFAILED;
    }
    if (pst->selector != ODU_SELECTOR_LWLC) {
-      SPutSBuf(pst->region, pst->pool, (Data *)cfgIndInfo, sizeof(CtfCnmCellSyncInd));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgIndInfo, sizeof(CtfCnmCellSyncInd));
    }
    pst->event = (Event)EVTCTFCNMSYNCIND;
    return (SPstTsk(pst,mBuf));
@@ -1772,7 +1772,7 @@ Buffer *mBuf
       return RFAILED;
    }
    if (pst->selector != ODU_SELECTOR_LWLC) {
-      if ((SGetSBuf(pst->region, pst->pool, (Data **)&syncIndMsg, sizeof(CtfCnmCellSyncInd))) != ROK) {
+      if ((SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&syncIndMsg, sizeof(CtfCnmCellSyncInd))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -1791,7 +1791,7 @@ Buffer *mBuf
    }
   else if (pst->selector == ODU_SELECTOR_LC)
       if (cmUnpkCtfCnmSyncIndMsg(syncIndMsg, mBuf) != ROK) {
-      SPutSBuf(pst->region, pst->pool, (Data *)syncIndMsg, sizeof(CtfCnmCellSyncInd));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)syncIndMsg, sizeof(CtfCnmCellSyncInd));
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -2105,7 +2105,7 @@ Buffer *mBuf
    }
    
    if (pst->selector != ODU_SELECTOR_LWLC) {
-      if ((SGetSBuf(pst->region, pst->pool, (Data **)&kdfReqInfo, sizeof(CtfKdfReqInfo))) != ROK) {
+      if ((SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&kdfReqInfo, sizeof(CtfKdfReqInfo))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -2126,7 +2126,7 @@ Buffer *mBuf
    }
    else if (pst->selector == ODU_SELECTOR_LC) 
       if (cmUnpkCtfKdfReqInfo(kdfReqInfo, mBuf) != ROK) {
-      SPutSBuf(pst->region, pst->pool, (Data *)kdfReqInfo, sizeof(CtfKdfReqInfo));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)kdfReqInfo, sizeof(CtfKdfReqInfo));
       SPutMsg(mBuf);
 	  #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -2191,7 +2191,7 @@ Buffer *mBuf
       return RFAILED;
    }
    if (pst->selector != ODU_SELECTOR_LWLC) {
-      if ((SGetSBuf(pst->region, pst->pool, (Data **)&cfgReqInfo, sizeof(CtfCfgReqInfo))) != ROK) {
+      if ((SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&cfgReqInfo, sizeof(CtfCfgReqInfo))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -2412,7 +2412,7 @@ uint8_t status
          (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ECTF026, (ErrVal)0, (Txt*)&"Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)kdfCfmInfo, sizeof(CtfKdfCfmInfo));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)kdfCfmInfo, sizeof(CtfKdfCfmInfo));
       return RFAILED;
    }
 
@@ -2423,7 +2423,7 @@ uint8_t status
          (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ECTF027, (ErrVal)0, (Txt*)&"Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)kdfCfmInfo, sizeof(CtfKdfCfmInfo));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)kdfCfmInfo, sizeof(CtfKdfCfmInfo));
       SPutMsg(mBuf);
       return RFAILED;
    }
@@ -2435,7 +2435,7 @@ uint8_t status
          (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ECTF028, (ErrVal)0, (Txt*)&"Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)kdfCfmInfo, sizeof(CtfKdfCfmInfo));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)kdfCfmInfo, sizeof(CtfKdfCfmInfo));
       SPutMsg(mBuf);
       return RFAILED;
    }
@@ -2447,7 +2447,7 @@ uint8_t status
          (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ECTF028, (ErrVal)0, (Txt*)&"Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)kdfCfmInfo, sizeof(CtfKdfCfmInfo));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)kdfCfmInfo, sizeof(CtfKdfCfmInfo));
       SPutMsg(mBuf);
       return RFAILED;
    }
@@ -2459,12 +2459,12 @@ uint8_t status
          (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ECTF029, (ErrVal)0, (Txt*)&"Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)kdfCfmInfo, sizeof(CtfKdfCfmInfo));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)kdfCfmInfo, sizeof(CtfKdfCfmInfo));
       SPutMsg(mBuf);
       return RFAILED;
    }
 
-   if (SPutSBuf(pst->region, pst->pool, (Data *)kdfCfmInfo, sizeof(CtfKdfCfmInfo)) != ROK) 
+   if (SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)kdfCfmInfo, sizeof(CtfKdfCfmInfo)) != ROK) 
    {
 #if (ERRCLASS & ERRCLS_ADD_RES)
    /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -2975,8 +2975,8 @@ CtfUeInfo * newUeInfo
          (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ECTF033, (ErrVal)0, (Txt*)&"Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
-      SPutSBuf(pst->region, pst->pool, (Data *)newUeInfo, sizeof(CtfUeInfo));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)newUeInfo, sizeof(CtfUeInfo));
       return RFAILED;
    }
    if (pst->selector == ODU_SELECTOR_LC) {
@@ -2987,8 +2987,8 @@ CtfUeInfo * newUeInfo
             (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ECTF034, (ErrVal)0, (Txt*)&"Packing failed");
 #endif
-         SPutSBuf(pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
-         SPutSBuf(pst->region, pst->pool, (Data *)newUeInfo, sizeof(CtfUeInfo));
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)newUeInfo, sizeof(CtfUeInfo));
          SPutMsg(mBuf);
          return RFAILED;
       }
@@ -3001,8 +3001,8 @@ CtfUeInfo * newUeInfo
             (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ECTF035, (ErrVal)0, (Txt*)&"Packing failed");
 #endif
-         SPutSBuf(pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
-         SPutSBuf(pst->region, pst->pool, (Data *)newUeInfo, sizeof(CtfUeInfo));
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)newUeInfo, sizeof(CtfUeInfo));
          SPutMsg(mBuf);
          return RFAILED;
       }
@@ -3015,8 +3015,8 @@ CtfUeInfo * newUeInfo
             (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ECTF036, (ErrVal)0, (Txt*)&"Packing failed");
 #endif
-         SPutSBuf(pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
-         SPutSBuf(pst->region, pst->pool, (Data *)newUeInfo, sizeof(CtfUeInfo));
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)newUeInfo, sizeof(CtfUeInfo));
          SPutMsg(mBuf);
          return RFAILED;
       }
@@ -3029,8 +3029,8 @@ CtfUeInfo * newUeInfo
             (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ECTF037, (ErrVal)0, (Txt*)&"Packing failed");
 #endif
-         SPutSBuf(pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
-         SPutSBuf(pst->region, pst->pool, (Data *)newUeInfo, sizeof(CtfUeInfo));
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)newUeInfo, sizeof(CtfUeInfo));
          SPutMsg(mBuf);
          return RFAILED;
       }
@@ -3042,8 +3042,8 @@ CtfUeInfo * newUeInfo
          (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ECTF038, (ErrVal)0, (Txt*)&"Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
-      SPutSBuf(pst->region, pst->pool, (Data *)newUeInfo, sizeof(CtfUeInfo));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)newUeInfo, sizeof(CtfUeInfo));
       SPutMsg(mBuf);
       return RFAILED;
    }
@@ -3054,13 +3054,13 @@ CtfUeInfo * newUeInfo
          (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ECTF039, (ErrVal)0, (Txt*)&"Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
-      SPutSBuf(pst->region, pst->pool, (Data *)newUeInfo, sizeof(CtfUeInfo));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)newUeInfo, sizeof(CtfUeInfo));
       SPutMsg(mBuf);
       return RFAILED;
    }
    if (pst->selector != ODU_SELECTOR_LWLC) {
-      if (SPutSBuf(pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo)) != ROK) {
+      if (SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo)) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -3070,7 +3070,7 @@ CtfUeInfo * newUeInfo
          SPutMsg(mBuf);
          return RFAILED;
       }
-      if (SPutSBuf(pst->region, pst->pool, (Data *)newUeInfo, sizeof(CtfUeInfo)) != ROK) {
+      if (SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)newUeInfo, sizeof(CtfUeInfo)) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -3135,7 +3135,7 @@ Buffer *mBuf
       return RFAILED;
    }
    if (pst->selector != ODU_SELECTOR_LWLC) {
-      if ((SGetSBuf(pst->region, pst->pool, (Data **)&ueInfo, sizeof(CtfUeInfo))) != ROK) {
+      if ((SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&ueInfo, sizeof(CtfUeInfo))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -3154,7 +3154,7 @@ Buffer *mBuf
    }
    else if (pst->selector == ODU_SELECTOR_LC) 
       if (cmUnpkCtfUeInfo(ueInfo, mBuf) != ROK) {
-      SPutSBuf(pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -3165,7 +3165,7 @@ Buffer *mBuf
       return RFAILED;
    }
    if (pst->selector != ODU_SELECTOR_LWLC) {
-      if ((SGetSBuf(pst->region, pst->pool, (Data **)&newUeInfo, sizeof(CtfUeInfo))) != ROK) {
+      if ((SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&newUeInfo, sizeof(CtfUeInfo))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -3173,7 +3173,7 @@ Buffer *mBuf
             (ErrVal)ECTF046, (ErrVal)0, (Txt*)&"Packing failed");
 #endif
          SPutMsg(mBuf);
-         SPutSBuf(pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
          return RFAILED;
       }
    }
@@ -3185,8 +3185,8 @@ Buffer *mBuf
    }
    else if (pst->selector == ODU_SELECTOR_LC) 
       if (cmUnpkCtfUeInfo(newUeInfo, mBuf) != ROK) {
-      SPutSBuf(pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
-      SPutSBuf(pst->region, pst->pool, (Data *)newUeInfo, sizeof(CtfUeInfo));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)newUeInfo, sizeof(CtfUeInfo));
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -3234,7 +3234,7 @@ CmStatus status
          (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ECTF048, (ErrVal)0, (Txt*)&"Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
       return RFAILED;
    }
    if (cmPkCmStatus(&status, mBuf) != ROK) {
@@ -3244,7 +3244,7 @@ CmStatus status
          (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ECTF049, (ErrVal)0, (Txt*)&"Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
       SPutMsg(mBuf);
       return RFAILED;
    }
@@ -3256,7 +3256,7 @@ CmStatus status
             (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ECTF050, (ErrVal)0, (Txt*)&"Packing failed");
 #endif
-         SPutSBuf(pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
          SPutMsg(mBuf);
          return RFAILED;
       }
@@ -3269,7 +3269,7 @@ CmStatus status
             (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ECTF051, (ErrVal)0, (Txt*)&"Packing failed");
 #endif
-         SPutSBuf(pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
          SPutMsg(mBuf);
          return RFAILED;
       }
@@ -3281,7 +3281,7 @@ CmStatus status
          (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ECTF052, (ErrVal)0, (Txt*)&"Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
       SPutMsg(mBuf);
       return RFAILED;
    }
@@ -3292,12 +3292,12 @@ CmStatus status
          (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ECTF053, (ErrVal)0, (Txt*)&"Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
       SPutMsg(mBuf);
       return RFAILED;
    }
    if (pst->selector != ODU_SELECTOR_LWLC) {
-      if (SPutSBuf(pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo)) != ROK) {
+      if (SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo)) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -3362,7 +3362,7 @@ Buffer *mBuf
       return RFAILED;
    }
    if (pst->selector != ODU_SELECTOR_LWLC) {
-      if ((SGetSBuf(pst->region, pst->pool, (Data **)&ueInfo, sizeof(CtfUeInfo))) != ROK) {
+      if ((SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&ueInfo, sizeof(CtfUeInfo))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -3381,7 +3381,7 @@ Buffer *mBuf
    }
    else if (pst->selector == ODU_SELECTOR_LC) 
       if (cmUnpkCtfUeInfo(ueInfo, mBuf) != ROK) {
-      SPutSBuf(pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -3392,7 +3392,7 @@ Buffer *mBuf
       return RFAILED;
    }
    if (cmUnpkCmStatus(&status, mBuf) != ROK) {
-      SPutSBuf(pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)ueInfo, sizeof(CtfUeInfo));
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -4427,7 +4427,7 @@ Buffer *mBuf
    CMCHKUNPK(oduPackUInt16, &param->buffLen, mBuf);
 
    if(param->buffLen != 0) {
-      if ((SGetSBuf(pst->region, pst->pool, (Data **)&param->paramBuffer, param->buffLen)) != ROK) {
+      if ((SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&param->paramBuffer, param->buffLen)) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
                (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
@@ -6982,7 +6982,7 @@ CtfPeriodicRemCellSearchRsp *CellCfgRsp
          (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ECTF016, (ErrVal)0, (Txt*)&"Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)CellCfgRsp,
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)CellCfgRsp,
             sizeof(CtfPeriodicRemCellSearchRsp));
       return RFAILED;
    }
@@ -6994,7 +6994,7 @@ CtfPeriodicRemCellSearchRsp *CellCfgRsp
             (Txt*)&__FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ECTF017, (ErrVal)0, (Txt*)&"Packing failed");
 #endif
-         SPutSBuf(pst->region, pst->pool, (Data *)CellCfgRsp,
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)CellCfgRsp,
                sizeof(CtfPeriodicRemCellSearchRsp));
          SPutMsg(mBuf);
          return RFAILED;
@@ -7009,7 +7009,7 @@ CtfPeriodicRemCellSearchRsp *CellCfgRsp
             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ECTF018, (ErrVal)0, "Packing failed");
 #endif
-         SPutSBuf(pst->region, pst->pool, (Data *)CellCfgRsp,
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)CellCfgRsp,
                sizeof(CtfPeriodicRemCellSearchRsp));
          SPutMsg(mBuf);
          return RFAILED;
@@ -7023,7 +7023,7 @@ CtfPeriodicRemCellSearchRsp *CellCfgRsp
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ECTF019, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)CellCfgRsp,
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)CellCfgRsp,
             sizeof(CtfPeriodicRemCellSearchRsp));
       SPutMsg(mBuf);
       return RFAILED;
@@ -7035,13 +7035,13 @@ CtfPeriodicRemCellSearchRsp *CellCfgRsp
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ECTF020, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)CellCfgRsp,
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)CellCfgRsp,
             sizeof(CtfPeriodicRemCellSearchRsp));
       SPutMsg(mBuf);
       return RFAILED;
    }
    if (pst->selector != ODU_SELECTOR_LWLC) {
-      SPutSBuf(pst->region, pst->pool, (Data *)CellCfgRsp,
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)CellCfgRsp,
             sizeof(CtfPeriodicRemCellSearchRsp));
    }
    pst->event = (Event)EVTCTFPREMCELLSRCHRSP;
@@ -7124,7 +7124,7 @@ Buffer *mBuf
       return RFAILED;
    }
    if (pst->selector != ODU_SELECTOR_LWLC) {
-      if ((SGetSBuf(pst->region, pst->pool, (Data **)&CellSrchRsp,
+      if ((SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&CellSrchRsp,
                   sizeof(CtfPeriodicRemCellSearchRsp))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       /* ctf_c_001.main_3 Compilation warning fix with g++ */
@@ -7144,7 +7144,7 @@ Buffer *mBuf
    }
   else if (pst->selector == ODU_SELECTOR_LC)
       if (cmUnpkCtfPerRemCellSrch(CellSrchRsp, mBuf) != ROK) {
-      SPutSBuf(pst->region, pst->pool, (Data *)CellSrchRsp,
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)CellSrchRsp,
             sizeof(CtfPeriodicRemCellSearchRsp));
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)

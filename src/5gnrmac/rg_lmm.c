@@ -45,6 +45,7 @@
 #include "rgr.h"           /* LRG Interface defines */
 #include "rg.h"            /* MAC defines */
 #include "rg_err.h"        /* MAC error defines */
+#include "mac_utils.h"
 
 /* header/extern include files (.x) */
 #include "crg.x"           /* CRG Interface includes */
@@ -483,7 +484,7 @@ RgMngmt  *sta     /* status structure  */
 
    if (sta->t.ssta.s.sysId.ptNmb != NULLP)
    {
-      SPutSBuf(pst->region, pst->pool, (Data *)sta->t.ssta.s.sysId.ptNmb, LRG_MAX_PT_NUM_SIZE);
+      MAC_FREE(sta->t.ssta.s.sysId.ptNmb, LRG_MAX_PT_NUM_SIZE);
    }
    
    memset(&cfm, 0, sizeof(RgMngmt));
@@ -496,9 +497,8 @@ RgMngmt  *sta     /* status structure  */
    if(rgCb[inst].rgInit.cfgDone != TRUE) 
    {
       SGetDateTime(&cfm.t.ssta.dt);
-      if (SGetSBuf(cfmPst.region, cfmPst.pool, 
-	       (Data **)&(cfm.t.ssta.s.sysId.ptNmb), LRG_MAX_PT_NUM_SIZE)
-	    != ROK)
+      MAC_ALLOC(cfm.t.ssta.s.sysId.ptNmb, LRG_MAX_PT_NUM_SIZE);
+	   if(cfm.t.ssta.s.sysId.ptNmb == NULLP)
       {
 	 DU_LOG("\nERROR  -->  MAC : Memory Unavailable for Confirmation");
 	 return ROK;
@@ -517,9 +517,8 @@ RgMngmt  *sta     /* status structure  */
    {
       case STGEN:
          SGetDateTime(&cfm.t.ssta.dt);
-         if (SGetSBuf(cfmPst.region, cfmPst.pool, 
-             (Data **)&(cfm.t.ssta.s.sysId.ptNmb), LRG_MAX_PT_NUM_SIZE)
-            != ROK)
+         MAC_ALLOC(cfm.t.ssta.s.sysId.ptNmb, LRG_MAX_PT_NUM_SIZE);
+         if(cfm.t.ssta.s.sysId.ptNmb  == NULLP)
          {
             DU_LOG("\nERROR  -->  MAC : Memory Unavailable for Confirmation");
             return ROK;
@@ -850,10 +849,8 @@ RgCfg *cfg            /* Configuaration information */
    }
 
    /* allocate RGR saps */
-   if (SGetSBuf(rgCb[inst].rgInit.region,
-	    rgCb[inst].rgInit.pool,
-	    (Data **)&rgCb[inst].rguSap,
-	    (sizeof(RgUpSapCb) * cfg->s.genCfg.numRguSaps)) != ROK)
+   MAC_ALLOC(rgCb[inst].rguSap, sizeof(RgUpSapCb) * cfg->s.genCfg.numRguSaps);
+   if(rgCb[inst].rguSap == NULLP)
    {
       DU_LOG("\nERROR  -->  MAC : rgGenCfg(): Failed to allocate mem for RGU SAP's.\n");
       return RFAILED;
@@ -880,9 +877,7 @@ RgCfg *cfg            /* Configuaration information */
 
       DU_LOG("\nERROR  -->  MAC : Failed to register timer");
 
-      SPutSBuf(rgCb[inst].rgInit.region,
-	    rgCb[inst].rgInit.pool,
-	    (Data *)rgCb[inst].rguSap,
+      MAC_FREE(rgCb[inst].rguSap,
 	    (sizeof(RgUpSapCb) * cfg->s.genCfg.numRguSaps));
 
       return (LCM_REASON_MEM_NOAVAIL);
@@ -945,9 +940,7 @@ static Void rgLMMShutdown(Inst inst)
    }
 
    /* Deleting the RGU SAPs */
-   SPutSBuf(rgCb[inst].rgInit.region,
-	 rgCb[inst].rgInit.pool,
-	 (Data *)rgCb[inst].rguSap,
+    MAC_FREE(rgCb[inst].rguSap,
 	 (sizeof(RgUpSapCb) * rgCb[inst].numRguSaps));
    rgCb[inst].rguSap = NULLP;
 
@@ -1617,7 +1610,7 @@ uint8_t event            /* event */
 	    return;
 	 }
 
-	 if (SGetMsg(pst.region, pst.pool, &dstMbuf) != ROK)
+	 if (ODU_GET_MSG_BUF(pst.region, pst.pool, &dstMbuf) != ROK)
 	 {
 	    DU_LOG("\nERROR  -->  MAC : dstMbuf Allocation Failed");
 	    return;

@@ -109,6 +109,7 @@ extern "C" {
  if (SGetSBuf(_cb->init.region, _cb->init.pool, (Data **)&_buf,      \
                 (Size) _size) == ROK)                                \
    {                                                                 \
+ printf("\nRLC_ALLOC=== %s +%d, %s, %d, %p\n",__FILE__,__LINE__,__FUNCTION__,_size, _buf);\
       memset((_buf), 0, _size);                              \
    }                                                                 \
    else                                                              \
@@ -119,6 +120,7 @@ extern "C" {
 
 #define RLC_FREE(_cb,_buf, _size)                          \
 {                                                         \
+ printf("\nRLC_FREE=== %s +%d, %s, %d, %p\n",__FILE__,__LINE__,__FUNCTION__,_size, _buf);\
    if (_buf != NULLP)                                     \
    {                                                      \
       (Void) SPutSBuf(_cb->init.region, _cb->init.pool,   \
@@ -129,6 +131,7 @@ extern "C" {
 
 #define RLC_FREE_SHRABL_BUF(_region, _pool,_buf, _size)    \
 {                                                         \
+ printf("\nRLC_FREE_SHRABL_BUF=== %s +%d, %s, %d, %p\n",__FILE__,__LINE__,__FUNCTION__,_size, _buf);\
    if (_buf != NULLP)                                     \
    {                                                      \
       (Void) SPutStaticBuffer(_region, _pool,             \
@@ -139,15 +142,25 @@ extern "C" {
 
 #define RLC_FREE_SHRABL_BUF_WC(_region, _pool,_buf, _size) \
 {                                                         \
+ printf("\nRLC_FREE_SHRABL_BUF_WC=== %s +%d, %s, %d, %p\n",__FILE__,__LINE__,__FUNCTION__,_size, _buf);\
+ if (_buf != NULLP){\
   (Void) SPutStaticBuffer(_region, _pool,                 \
         (Data *) _buf, (Size) _size, 0);                 \
-  _buf = NULLP;                                       \
+  _buf = NULLP;      \
+  }\
 }
 
 #define RLC_ALLOC_SHRABL_BUF_WC(_region, _pool,_buf, _size)           \
 {                                                                    \
- SGetStaticBuffer(_region, _pool, (Data **)&_buf,                    \
-                (Size) _size, 0);                                    \
+ if(SGetStaticBuffer(_region, _pool, (Data **)&_buf,                    \
+                (Size) _size, 0)==ROK)                                    \
+                {\
+ printf("\nRLC_ALLOC_SHRABL_BUF_WC=== %s +%d, %s, %d, %p\n",__FILE__,__LINE__,__FUNCTION__,_size, _buf);\
+ }\
+ else\
+ {\
+    (_buf) = NULLP;\
+ }\
 }
 
 #define RLC_ALLOC_SHRABL_BUF(_region, _pool,_buf, _size)              \
@@ -155,6 +168,7 @@ extern "C" {
  if (SGetStaticBuffer(_region, _pool, (Data **)&_buf,                \
                 (Size) _size, 0) == ROK)                                \
    {                                                                 \
+ printf("\nRLC_ALLOC_SHRABL_BUF=== %s +%d, %s, %d, %p\n",__FILE__,__LINE__,__FUNCTION__,_size, _buf);\
       memset((_buf), 0, _size);                              \
    }                                                                 \
    else                                                              \
@@ -164,13 +178,19 @@ extern "C" {
 }
 
 #define RLC_ALLOC_WC(_cb,_buf, _size)  \
-           SGetSBuf(_cb->init.region, _cb->init.pool, (Data **)&_buf, (Size) _size)     
+{\
+           if(SGetSBuf(_cb->init.region, _cb->init.pool, (Data **)&_buf, (Size) _size) == ROK)\
+           {\
+           printf("\nRLC_ALLOC_WC=== %s +%d, %s, %d, %p\n",__FILE__,__LINE__,__FUNCTION__,_size, _buf);\
+           }\
+}
 
 #define RLC_REMOVE_SDU(_cb,_sduQ,_sdu)              \
 {                                               \
+ printf("\nRLC_REMOVE_SDU=== %s +%d, %s,%p\n",__FILE__,__LINE__,__FUNCTION__,_sdu->mBuf);\
    if(_sdu->mBuf)                               \
    {                                            \
-      SPutMsg(_sdu->mBuf);    \
+      ODU_PUT_MSG_BUF(_sdu->mBuf);    \
    }                                            \
    cmLListDelFrm(_sduQ,&_sdu->lstEnt);          \
    RLC_FREE(_cb,_sdu, sizeof(RlcSdu));            \
@@ -179,6 +199,7 @@ extern "C" {
 /* kw002.201 Freeing from region of pst */
 #define RLC_PST_FREE(_region, _pool, _buf, _size)          \
 {                                                         \
+ printf("\nRLC_PST_FREE=== %s +%d, %s, %d, %p\n",__FILE__,__LINE__,__FUNCTION__,_size, _buf);\
    if (_buf != NULLP)                                     \
    {                                                      \
       (Void) SPutSBuf(_region, _pool,                     \
@@ -228,6 +249,7 @@ extern "C" {
 
 #define RLC_SHRABL_STATIC_BUF_FREE(_region, _pool, _buf, _size)     \
 {                                                                  \
+ printf("\nRLC_SHRABL_STATIC_BUF_FREE=== %s +%d, %s, %d, %p\n",__FILE__,__LINE__,__FUNCTION__,_size, _buf);\
    if (_buf != NULLP)                                              \
    {                                                               \
       (Void) SPutStaticBuffer(_region, _pool,                      \
@@ -240,6 +262,7 @@ extern "C" {
 {                                                                        \
  SGetStaticBuffer(_region, _pool, (Data **)&_buf,      \
                 (Size) _size, 0);                                        \
+ printf("\nRLC_SHRABL_STATIC_BUF_ALLOC=== %s +%d, %s, %d, %p\n",__FILE__,__LINE__,__FUNCTION__,_size, _buf);\
 }
 #endif
 

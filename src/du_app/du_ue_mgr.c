@@ -14,7 +14,7 @@
 #   See the License for the specific language governing permissions and        #
 #   limitations under the License.                                             #
 ################################################################################
- *******************************************************************************/
+*******************************************************************************/
 /* This file contains UE management handling functionality for DU APP */
 #include "common_def.h"
 #include "lrg.h"
@@ -946,69 +946,73 @@ void fillMacSrb1LcCfg(LcCfg *macLcCfg)
  *
  *****************************************************************/
 
-uint8_t fillMacLcCfgToAddMod(LcCfg *lcCfg, LcCfg *ueSetReqDb)
+uint8_t fillMacLcCfgToAddMod(LcCfg *macLcCfgToSend, LcCfg *ueLcCfgDb, LcCfg *oldLcCfg, Bool toUpdate)
 {
-   uint8_t ret = ROK; 
-   lcCfg->lcId = ueSetReqDb->lcId;
-   lcCfg->configType = ueSetReqDb->configType;
-   /* Filling DRBQOS */
-   if(ueSetReqDb->drbQos)
+   if(!toUpdate)
    {
-      if(!lcCfg->drbQos)
+      if(macLcCfgToSend)
       {
-         DU_ALLOC_SHRABL_BUF(lcCfg->drbQos, sizeof(DrbQosInfo));
-         if(!lcCfg->drbQos)
-         { 
-            DU_LOG("\nERROR  -->  DU APP : Memory Alloc failed at drQos at fillMacLcCfgToAddMod()");
-            return RFAILED;
-         }
-      }
-      if(ret == ROK)
-      {
-         memcpy(lcCfg->drbQos, ueSetReqDb->drbQos, sizeof(DrbQosInfo));
+         macLcCfgToSend->lcId = ueLcCfgDb->lcId;
+         macLcCfgToSend->configType = ueLcCfgDb->configType;
+
+         if(ueLcCfgDb->drbQos)
+            macLcCfgToSend->drbQos = ueLcCfgDb->drbQos;
+         else if(oldLcCfg)
+            macLcCfgToSend->drbQos = oldLcCfg->drbQos;
+         else
+            macLcCfgToSend->drbQos = NULL;
+
+         if(ueLcCfgDb->snssai)
+            macLcCfgToSend->snssai = ueLcCfgDb->snssai;
+         else if(oldLcCfg)
+            macLcCfgToSend->snssai = oldLcCfg->snssai;
+         else
+            macLcCfgToSend->snssai = NULL;
+
+         macLcCfgToSend->ulLcCfgPres = ueLcCfgDb->ulLcCfgPres;
+         memcpy(&macLcCfgToSend->ulLcCfg, &ueLcCfgDb->ulLcCfg, sizeof(UlLcCfg));
+         memcpy(&macLcCfgToSend->dlLcCfg, &ueLcCfgDb->dlLcCfg, sizeof(DlLcCfg));
       }
    }
    else
    {
-      lcCfg->drbQos = NULLP;
-   }
+      oldLcCfg->lcId = ueLcCfgDb->lcId;
+      oldLcCfg->configType = ueLcCfgDb->configType;
 
-   if(ret == ROK)
-   {
-      if(ueSetReqDb->snssai)
+      if(ueLcCfgDb->drbQos)
       {
-         if(!lcCfg->snssai)
+         if(oldLcCfg->drbQos)
+            DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, oldLcCfg->drbQos, sizeof(DrbQosInfo));
+
+         DU_ALLOC_SHRABL_BUF(oldLcCfg->drbQos, sizeof(DrbQosInfo));
+         if(oldLcCfg->drbQos == NULL)
          {
-            DU_ALLOC_SHRABL_BUF(lcCfg->snssai, sizeof(Snssai));
-            if(!lcCfg->snssai)
-            {
-               DU_LOG("\nERROR  -->  DU APP : Memory Alloc failed at snnsai at fillMacLcCfgToAddMod()");
-               ret = RFAILED;
-            }
+            DU_LOG("\nERROR  -->  DU APP : Memory Alloc Failed at fillMacLcCfgToAddMod()");
+            return RFAILED;
          }
-         if(ret == ROK)
-         {
-            /* Filling SNSSAI */
-            memcpy(lcCfg->snssai, ueSetReqDb->snssai, sizeof(Snssai));
-         }
-	 else
-	 {
-            lcCfg->snssai = NULLP;
-            if(lcCfg->drbQos)
-            {
-               DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, lcCfg->drbQos, sizeof(DrbQosInfo));
-               lcCfg->drbQos = NULLP;
-            }
-	    return ret;
-	 }
+         memcpy(oldLcCfg->drbQos, ueLcCfgDb->drbQos, sizeof(DrbQosInfo));
       }
-      else
-         lcCfg->snssai = NULLP;
+
+      if(ueLcCfgDb->snssai)
+      {
+         if(oldLcCfg->snssai)
+            DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, oldLcCfg->snssai, sizeof(Snssai));
+
+         DU_ALLOC_SHRABL_BUF(oldLcCfg->snssai, sizeof(Snssai));
+         if(oldLcCfg->snssai == NULL)
+         {
+            DU_LOG("\nERROR  -->  DU APP : Memory Alloc Failed at fillMacLcCfgToAddMod()");
+            DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, oldLcCfg->drbQos, sizeof(DrbQosInfo));
+            return RFAILED;
+         }
+         memcpy(oldLcCfg->snssai, ueLcCfgDb->snssai, sizeof(Snssai));
+      }
+
+      oldLcCfg->ulLcCfgPres = ueLcCfgDb->ulLcCfgPres;
+      memcpy(&oldLcCfg->ulLcCfg, &ueLcCfgDb->ulLcCfg, sizeof(UlLcCfg));
+      memcpy(&oldLcCfg->dlLcCfg, &ueLcCfgDb->dlLcCfg, sizeof(DlLcCfg));
    }
-   lcCfg->ulLcCfgPres = ueSetReqDb->ulLcCfgPres;
-   memcpy(&lcCfg->ulLcCfg, &ueSetReqDb->ulLcCfg, sizeof(UlLcCfg));
-   memcpy(&lcCfg->dlLcCfg, &ueSetReqDb->dlLcCfg, sizeof(DlLcCfg));
-   return ret;
+   return ROK;
 }
 
 /******************************************************************
@@ -1026,26 +1030,39 @@ uint8_t fillMacLcCfgToAddMod(LcCfg *lcCfg, LcCfg *ueSetReqDb)
  *
  *****************************************************************/
 
-uint8_t fillAmbr(AmbrCfg **macAmbr, AmbrCfg *ueDbAmbr)
+uint8_t fillAmbr(AmbrCfg **macAmbrCfgToSend, AmbrCfg *ueDbAmbr, AmbrCfg **oldMacAmbrCfg, Bool toUpdate)
 {
-   if(ueDbAmbr)
+   if(!toUpdate)
    {
-      if(*macAmbr == NULLP)
+      if(ueDbAmbr)
       {
-         DU_ALLOC_SHRABL_BUF(*macAmbr, sizeof(AmbrCfg));
-         if(*macAmbr == NULLP)
+         if(macAmbrCfgToSend && *macAmbrCfgToSend)
+         {
+            *macAmbrCfgToSend = ueDbAmbr;
+         }
+      }
+      else
+         *macAmbrCfgToSend = *oldMacAmbrCfg;       
+   }
+   else
+   {
+      if(ueDbAmbr)
+      {
+         if(*oldMacAmbrCfg)
+         {
+            DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, *oldMacAmbrCfg, sizeof(AmbrCfg));
+         }
+         DU_ALLOC_SHRABL_BUF(*oldMacAmbrCfg, sizeof(AmbrCfg));
+         if(*oldMacAmbrCfg == NULLP)
          {
             DU_LOG("\nERROR  -->  DU APP : Memory Alloc Failed at fillAmbr()");
             return RFAILED;
          }
+         memset(*oldMacAmbrCfg, 0, sizeof(AmbrCfg));
+         (*oldMacAmbrCfg)->ulBr = ueDbAmbr->ulBr;
       }
-      memset(*macAmbr, 0, sizeof(AmbrCfg));
-      (*macAmbr)->ulBr = ueDbAmbr->ulBr;
    }
-   else
-   {
-      *macAmbr = NULLP;
-   }
+
    return ROK;
 }
 
@@ -1192,7 +1209,7 @@ uint8_t fillMacUeCfg(uint16_t cellId, uint8_t ueIdx, uint16_t crnti, \
                      NULL, &macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg);
             }
          }
-         ret = fillAmbr(&macUeCfg->ambrCfg, ueCfgDb->ambrCfg);
+         ret = fillAmbr(&macUeCfg->ambrCfg, ueCfgDb->ambrCfg , &duMacDb->ambrCfg, FALSE);
          duFillModulationDetails(macUeCfg, duMacDb, ueCfgDb->ueNrCapability);
       }
 
@@ -1214,7 +1231,7 @@ uint8_t fillMacUeCfg(uint16_t cellId, uint8_t ueIdx, uint16_t crnti, \
                      (ueCfgDb->macLcCfg[dbIdx].configType == CONFIG_MOD))
                {
                   ueCfgDb->macLcCfg[dbIdx].configType = CONFIG_MOD;
-                  ret = fillMacLcCfgToAddMod(&macUeCfg->lcCfgList[dbIdx], &ueCfgDb->macLcCfg[dbIdx]);
+                  ret = fillMacLcCfgToAddMod(&macUeCfg->lcCfgList[dbIdx], &ueCfgDb->macLcCfg[dbIdx], &duMacDb->lcCfgList[lcIdx], FALSE);
                }
             }
             else
@@ -1223,7 +1240,7 @@ uint8_t fillMacUeCfg(uint16_t cellId, uint8_t ueIdx, uint16_t crnti, \
          if(!lcIdFound)
          {
             /* ADD/DEL CONFIG */
-            ret = fillMacLcCfgToAddMod(&macUeCfg->lcCfgList[dbIdx], &ueCfgDb->macLcCfg[dbIdx]);
+            ret = fillMacLcCfgToAddMod(&macUeCfg->lcCfgList[dbIdx], &ueCfgDb->macLcCfg[dbIdx], NULL, FALSE);
          }
          if(ret == ROK)
          {
@@ -1714,6 +1731,9 @@ uint8_t duUpdateMacCfg(MacUeCfg *macUeCfg, F1UeContextSetupDb *f1UeDb)
    MacUeCfg *oldMacUeCfg;
    ret = ROK;
 
+   GET_CELL_IDX(macUeCfg->cellId, cellIdx);
+   oldMacUeCfg = &duCb.actvCellLst[cellIdx]->ueCb[macUeCfg->ueIdx-1].macUeCfg;
+
    /*Filling Cell Group Cfg*/
    ret =  procUeReCfgCellInfo(macUeCfg, f1UeDb->duUeCfg.cellGrpCfg);
    if(ret == ROK)
@@ -1728,10 +1748,7 @@ uint8_t duUpdateMacCfg(MacUeCfg *macUeCfg, F1UeContextSetupDb *f1UeDb)
          fillStartSymbolAndLen(macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg.numTimeDomRsrcAlloc,\
 	       NULL, &macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg);
       }
-      ret = fillAmbr(&macUeCfg->ambrCfg, f1UeDb->duUeCfg.ambrCfg);
-
-      GET_CELL_IDX(macUeCfg->cellId, cellIdx);
-      oldMacUeCfg = &duCb.actvCellLst[cellIdx]->ueCb[macUeCfg->ueIdx-1].macUeCfg;
+      ret = fillAmbr(NULL, f1UeDb->duUeCfg.ambrCfg, &oldMacUeCfg->ambrCfg, true);
       duFillModulationDetails(macUeCfg, oldMacUeCfg, f1UeDb->duUeCfg.ueNrCapability);
    }
 
@@ -1745,7 +1762,7 @@ uint8_t duUpdateMacCfg(MacUeCfg *macUeCfg, F1UeContextSetupDb *f1UeDb)
 	 {
 	    if(f1UeDb->duUeCfg.macLcCfg[dbIdx].configType == CONFIG_MOD)
 	    {
-	       ret = fillMacLcCfgToAddMod(&macUeCfg->lcCfgList[lcIdx],&f1UeDb->duUeCfg.macLcCfg[dbIdx]);
+	       ret = fillMacLcCfgToAddMod(NULL, &f1UeDb->duUeCfg.macLcCfg[dbIdx], &macUeCfg->lcCfgList[lcIdx], true);
 	    }
 	    else if(f1UeDb->duUeCfg.macLcCfg[dbIdx].configType == CONFIG_DEL)
 	    {
@@ -1755,7 +1772,7 @@ uint8_t duUpdateMacCfg(MacUeCfg *macUeCfg, F1UeContextSetupDb *f1UeDb)
 	       for(lcDelIdx = lcIdx; lcDelIdx < macUeCfg->numLcs; lcDelIdx++)
 	       {
 	          /* moving all elements one index ahead */
-		  ret = fillMacLcCfgToAddMod(&macUeCfg->lcCfgList[lcDelIdx], &macUeCfg->lcCfgList[lcDelIdx+1]);
+		  ret = fillMacLcCfgToAddMod(NULL,  &macUeCfg->lcCfgList[lcDelIdx+1], &macUeCfg->lcCfgList[lcDelIdx], true);
 	          freeMacLcCfg(&macUeCfg->lcCfgList[lcDelIdx+1]);
 		  if(ret == RFAILED)
 		  {
@@ -1768,7 +1785,7 @@ uint8_t duUpdateMacCfg(MacUeCfg *macUeCfg, F1UeContextSetupDb *f1UeDb)
       } 
       if(f1UeDb->duUeCfg.macLcCfg[dbIdx].configType == CONFIG_ADD)
       {
-	 ret = fillMacLcCfgToAddMod(&macUeCfg->lcCfgList[numLcs], &f1UeDb->duUeCfg.macLcCfg[dbIdx]);
+	 ret = fillMacLcCfgToAddMod(NULL, &f1UeDb->duUeCfg.macLcCfg[dbIdx], &macUeCfg->lcCfgList[numLcs], true);
 	 if(ret == RFAILED)
 	 {
 	    DU_LOG("\nERROR  -->  DU APP : Failed to add LC at Idx %d in duUpdateMacCfg()", numLcs);
@@ -1951,6 +1968,12 @@ uint8_t duUpdateRlcLcCfg(RlcUeCfg *rlcUeCfg, F1UeContextSetupDb *f1UeDb)
  * ****************************************************************/
 uint8_t fillTnlCfgToAddMod(UpTnlCfg **ueCbTnlCfg, UpTnlCfg *f1TnlCfg)
 {
+   if(*ueCbTnlCfg)
+   {
+      DU_FREE((*ueCbTnlCfg)->tnlCfg1, sizeof(GtpTnlCfg));
+      DU_FREE(*ueCbTnlCfg, sizeof(UpTnlCfg));
+   }
+
    if(*ueCbTnlCfg == NULLP)
    {
       /* copying to DuCb Tnl Cfg */
@@ -2015,21 +2038,21 @@ uint8_t duProcEgtpTunnelCfg(uint8_t ueCbIdx, UpTnlCfg *duTnlCfg, UpTnlCfg *f1Tnl
    {
       if(duSendEgtpTnlMgmtReq(EGTP_TNL_MGMT_ADD, NULLP, f1TnlCfg->tnlCfg1) == ROK)
       {
-	 if(fillTnlCfgToAddMod(&duCb.upTnlCfg[duCb.numDrb], f1TnlCfg) == ROK)
-	 {
-	    duCb.numDrb++;
-	    ret = ROK;
-	 }
+         if(fillTnlCfgToAddMod(&duCb.upTnlCfg[duCb.numDrb], f1TnlCfg) == ROK)
+         {
+            duCb.numDrb++;
+            ret = ROK;
+         }
       }      
    }
    else if(f1TnlCfg->configType == CONFIG_MOD)
    {
       if(duSendEgtpTnlMgmtReq(EGTP_TNL_MGMT_MOD, duTnlCfg->tnlCfg1->teId, f1TnlCfg->tnlCfg1) == ROK)
       {
-	 if(fillTnlCfgToAddMod(&duTnlCfg, f1TnlCfg) == ROK)
-	 {
-	    ret = ROK;
-	 }
+         if(fillTnlCfgToAddMod(&duTnlCfg, f1TnlCfg) == ROK)
+         {
+            ret = ROK;
+         }
       }   
    }
    else if(f1TnlCfg->configType == CONFIG_DEL)
@@ -2037,7 +2060,6 @@ uint8_t duProcEgtpTunnelCfg(uint8_t ueCbIdx, UpTnlCfg *duTnlCfg, UpTnlCfg *f1Tnl
       if(duSendEgtpTnlMgmtReq(EGTP_TNL_MGMT_DEL, duTnlCfg->tnlCfg1->teId, f1TnlCfg->tnlCfg1) == ROK)
       {	   
          /* Free memory at drbIdx */
-         DU_FREE(duTnlCfg->tnlCfg1, sizeof(GtpTnlCfg));
          duCb.numDrb--;
          for(delIdx = ueCbIdx; delIdx < duCb.numDrb; delIdx++)
          {
@@ -2047,6 +2069,11 @@ uint8_t duProcEgtpTunnelCfg(uint8_t ueCbIdx, UpTnlCfg *duTnlCfg, UpTnlCfg *f1Tnl
             {
                return ret;
             }
+         }
+         if(duCb.upTnlCfg[delIdx])
+         {
+            DU_FREE(duCb.upTnlCfg[delIdx]->tnlCfg1, sizeof(GtpTnlCfg));
+            DU_FREE(duCb.upTnlCfg[delIdx], sizeof(UpTnlCfg));
          }
       }   
    }
@@ -2501,31 +2528,39 @@ uint8_t duBuildAndSendUeContextSetupReq(uint16_t cellId, uint16_t crnti, DuUeCfg
 uint8_t DuProcRlcDlRrcMsgRsp(Pst *pst, RlcDlRrcMsgRsp *dlRrcMsg)
 {
    uint8_t ret = ROK, ueIdx = 0;
+   uint16_t cellId, crnti;
    DuUeCb *ueCb = NULLP;
+   DlMsgState state;
 
-   if(dlRrcMsg->state == TRANSMISSION_COMPLETE)
+   state = dlRrcMsg->state;
+   cellId = dlRrcMsg->cellId;
+   crnti = dlRrcMsg->crnti;
+   DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, dlRrcMsg, sizeof(RlcDlRrcMsgRsp));
+
+   if(state == TRANSMISSION_COMPLETE)
    {
-      GET_UE_IDX(dlRrcMsg->crnti, ueIdx);
-      ueCb = &duCb.actvCellLst[dlRrcMsg->cellId -1]->ueCb[ueIdx -1];
+      GET_UE_IDX(crnti, ueIdx);
+      ueCb = &duCb.actvCellLst[cellId -1]->ueCb[ueIdx -1];
+
       if(ueCb->f1UeDb && ueCb->f1UeDb->dlRrcMsgPres)
       {
          if(ueCb->f1UeDb->actionType == UE_CTXT_SETUP)
          {
-            ret = duBuildAndSendUeContextSetupReq(dlRrcMsg->cellId, dlRrcMsg->crnti, &ueCb->f1UeDb->duUeCfg);
+            ret = duBuildAndSendUeContextSetupReq(cellId, crnti, &ueCb->f1UeDb->duUeCfg);
             if(ret == RFAILED)
                DU_LOG("\nERROR  -->  DU APP : Failed to process UE Context Setup Request in DuProcRlcDlRrcMsgRsp()");
          }
          
          if(ueCb->f1UeDb->actionType == UE_CTXT_MOD)
          {
-            ret = duBuildAndSendUeContextModReq(dlRrcMsg->cellId, dlRrcMsg->crnti, &ueCb->f1UeDb->duUeCfg);
+            ret = duBuildAndSendUeContextModReq(cellId, crnti, &ueCb->f1UeDb->duUeCfg);
             if(ret == RFAILED)
                DU_LOG("\nERROR  -->  DU APP : Failed to process UE Context Mod Request in DuProcRlcDlRrcMsgRsp()");
          }
 
          if(ueCb->f1UeDb->actionType == UE_CTXT_RELEASE && ueCb->ueState == UE_ACTIVE)
          {
-            ret = duBuildAndSendUeDeleteReq(dlRrcMsg->cellId,dlRrcMsg->crnti);
+            ret = duBuildAndSendUeDeleteReq(cellId, crnti);
             if(ret == RFAILED)
             {
                DU_LOG("\nERROR  -->  DU APP : Failed to process UE Context Release Request in DuProcRlcDlRrcMsgRsp()");
@@ -2536,7 +2571,6 @@ uint8_t DuProcRlcDlRrcMsgRsp(Pst *pst, RlcDlRrcMsgRsp *dlRrcMsg)
    else
       DU_LOG("\nERROR  -->  DU APP : Failed to transmit DL RRC Msg");
 
-   DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, dlRrcMsg, sizeof(RlcDlRrcMsgRsp));
    return ret;
 }
 /*******************************************************************

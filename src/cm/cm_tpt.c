@@ -1215,7 +1215,7 @@ Mem         *memInfo     /* meminfo to allocate for Route hdr */
    /* unpack reserve byte & strict/loose bit map */
    CMCHKUNPK(oduPackUInt32, &unpkParam->slMap, mBuf);
    
-   retVal = SGetSBuf(memInfo->region,    
+   retVal = SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,memInfo->region,    
                   memInfo->pool,                     
                  (Data **)&unpkParam->ipv6Addrs, 
                  (unpkParam->numAddrs * 16));
@@ -1369,7 +1369,7 @@ Mem               *memInfo   /* meminfo to allocate mem for dest opt */
    CMCHKUNPK(oduPackUInt8, &unpkParam->length, mBuf);
 
    /* allocate static memory to hold the unpacked values */
-   retVal = SGetSBuf(memInfo->region,                   
+   retVal = SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,memInfo->region,                   
                   memInfo->pool,                     
                   (Data **)&unpkParam->value, (Size)unpkParam->length);
    if (retVal != ROK)
@@ -1415,7 +1415,7 @@ Mem               *memInfo    /* meminfo to allocate mem for dest opts */
    if (unpkParam->numDestOpts)
    {
       /* allocate mem to hold all dest options */
-      retVal = SGetSBuf(memInfo->region,    
+      retVal = SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,memInfo->region,    
                      memInfo->pool,                     
                      (Data **)&unpkParam->destOpts, 
                      (unpkParam->numDestOpts * sizeof(CmIpv6DestOptsHdr)));
@@ -1532,7 +1532,7 @@ Mem          *memInfo   /* meminfo to allocate mem for HBH opt */
    /* allocate static memory to hold the unpacked values */
    if (unpkParam->length)
    {
-      retVal = SGetSBuf(memInfo->region,                   
+      retVal = SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,memInfo->region,                   
                      memInfo->pool,                     
                      (Data **)&unpkParam->value, (Size)unpkParam->length); 
       if (retVal != ROK)
@@ -1576,7 +1576,7 @@ Mem             *memInfo     /* meminfo to allocate space for HBH opt */
    if (unpkParam->numHBHOpts)
    {
       /*  allocate space for all HBH options */
-      retVal = SGetSBuf(memInfo->region,    
+      retVal = SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,memInfo->region,    
                      memInfo->pool,                     
                      (Data **)&unpkParam->hbhOpts, 
                      (unpkParam->numHBHOpts * sizeof(CmIpv6HBHHdr)));

@@ -38,6 +38,7 @@
 #include "lrg.h"
 #include "rgr.h"
 #include "tfu.h"
+#include "sch_utils.h"
 #include "rg_env.h"
 #include "rg_sch_err.h"
 #include "rg_sch_inf.h"
@@ -3989,8 +3990,8 @@ Size    size                /* size */
 #ifdef MS_MBUF_CORRUPTION /* Should be enabled when debugging mbuf corruption */
    MS_BUF_ADD_ALLOC_CALLER();
 #endif /* */
-   if (SGetSBuf(rgSchCb[inst].rgSchInit.region, rgSchCb[inst].rgSchInit.pool,
-                      pData, size) != ROK)
+   SCH_ALLOC(pData, size);
+   if(pData == NULLP)
    {
      RgUstaDgn dgn;      /* Alarm diagnostics structure */
      dgn.type = LRG_USTA_DGNVAL_MEM;
@@ -4045,10 +4046,9 @@ Size size           /* size */
    MS_BUF_ADD_CALLER();
 #endif /* */
    /* Deallocate buffer */
-   ret = SPutSBuf(rgSchCb[inst].rgSchInit.region,
-                  rgSchCb[inst].rgSchInit.pool, (*data), size);
+                SCH_FREE((*data), size);
 
-   if (ret != ROK)
+   if (data ==NULLP)
    {
       DU_LOG("\nERROR  -->  SCH : rgSCHUtlFreeSBuf failed");
       return;
@@ -4085,7 +4085,7 @@ Void rgSCHUtlFreeWarningSiSeg(Region reg,Pool pool,CmLListCp *siPduLst)
       pdu = (Buffer *)node->node;
       cmLListDelFrm(siPduLst, node);
       RGSCH_FREE_MSG(pdu);
-      SPutSBuf(reg, pool, (Data *)node,sizeof(CmLList));
+      SCH_FREE(node,sizeof(CmLList));
       node = NULLP;
    }
 
@@ -8331,10 +8331,10 @@ S16 rgSCHUtlUpdAvgPrbUsage(RgSchCellCb  *cell)
      numUlSf = cell->prbUsage.rprtPeriod;
 #endif
 
-   if(SGetSBuf(cell->rgmSap->sapCfg.sapPst.region, 
-               cell->rgmSap->sapCfg.sapPst.pool, (Data**)&prbRprtInd, 
-               sizeof(RgmPrbRprtInd)) != ROK)
+    SCH_ALLOC(prbRprtInd, sizeof(RgmPrbRprtInd));
+    if(prbRprtInd == NULLP)
    {
+      DU_LOG("\nERROR  --> SCH : Failed to allocate memory for prbRprtInd");
       return RFAILED;
    }
 
