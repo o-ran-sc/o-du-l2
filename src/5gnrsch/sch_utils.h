@@ -45,13 +45,24 @@
 }
 
 /* allocate and zero out a static buffer */
+#ifdef ODU_MEMORY_DEBUG_LOG
+#define SCH_MEM_LOG(_macro, _file, _line, _func, _size, _datPtr)\
+{\
+   printf("\n%s=== %s +%d, %s, %d, %p\n",           \
+         _macro, _file, _line, _func, _size, _datPtr); \
+}
+#else
+#define SCH_MEM_LOG(_macro, _file, _line, _func, _size, _dataPtr) {}
+#endif
+
 #define SCH_ALLOC(_datPtr, _size)                               \
 {                                                               \
    uint8_t _ret;                                                    \
    _ret = SGetSBuf(SCH_MEM_REGION, SCH_POOL,                    \
           (Data **)&_datPtr, _size);                             \
    if(_ret == ROK)                                              \
-   {                                                            \
+   {  \
+      SCH_MEM_LOG("SCH_ALLOC", __FILE__, __LINE__, __FUNCTION__, _size, _datPtr);\
       memset(_datPtr, 0, _size);                         \
    }                                                            \
    else                                                         \
@@ -64,7 +75,8 @@
 #define SCH_FREE(_datPtr, _size)                                \
 {                                                               \
    if(_datPtr)                                                  \
-   {                                                            \
+   {\
+      SCH_MEM_LOG("SCH_FREE", __FILE__, __LINE__, __FUNCTION__, _size, _datPtr);\
       SPutSBuf(SCH_MEM_REGION, SCH_POOL,                        \
             (Data *)_datPtr,(Size) _size);                            \
       _datPtr = NULLP;                                          \
@@ -91,9 +103,6 @@ void freqDomRscAllocType0(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDoma
 uint16_t schCalcTbSize(uint32_t payLoadSize);
 uint16_t schCalcNumPrb(uint16_t tbSize, uint16_t mcs, uint8_t numSymbols);
 uint16_t schCalcTbSizeFromNPrb(uint16_t numPrb, uint16_t mcs, uint8_t numSymbols);
-SchUeCb* schGetUeCb(SchCellCb *cellCb, uint16_t crnti);
-void schInitUlSlot(SchUlSlotInfo *schUlSlotInfo);
-void schInitDlSlot(SchDlSlotInfo *schDlSlotInfo);
 #ifdef NR_TDD
 SlotConfig schGetSlotSymbFrmt(uint16_t slot, uint32_t bitMap);
 #endif

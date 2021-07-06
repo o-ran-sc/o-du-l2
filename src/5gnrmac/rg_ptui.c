@@ -1490,7 +1490,7 @@ static S16 RgUiRguDDatIndRbuf(RguDDatIndInfo  *datInd)
             {
                if(datInd->lchData[i].pdu.mBuf[j])
                {
-                  SPutMsg(datInd->lchData[i].pdu.mBuf[j]);
+                  ODU_PUT_MSG_BUF(datInd->lchData[i].pdu.mBuf[j]);
                }
             }
          }

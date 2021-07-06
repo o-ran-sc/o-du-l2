@@ -140,7 +140,128 @@ uint8_t buildPlmnId(Plmn plmn, uint8_t *buf)
    return ROK;
 }
 
+/*******************************************************************
+*
+* @brief  SGetSBuf with debug logs
+*
+* @details
+*
+*    Function : SGetSBufNewForDebug
+*
+*    Functionality: SGetSBuf with debug logs
+*
+* @params[in] file name, fun name, region, pool, data ptr, size
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t SGetSBufNewForDebug(char *file, char *func, char *line, Region region, Pool pool, Data **ptr, Size size)
+{
+   if(SGetSBuf(region, pool, ptr, size) == ROK)
+   {
+#ifdef ODU_MEMORY_DEBUG_LOG
+      printf("\nCM_ALLOC=== SGetSBufNewForDebug %s +%d, %s, %d, %p\n",\
+         file, line, func, size, *ptr);
+#endif
+      return ROK;
+   }
+   else
+      return RFAILED;
+}
 
+/*******************************************************************
+*
+* @brief  SPutSBuf with debug logs
+*
+* @details
+*
+*    Function : SPutSBufNewForDebug
+*
+*    Functionality: SPutSBuf with debug logs
+*
+* @params[in] file name, fun name, region, pool, data ptr, size
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t SPutSBufNewForDebug(char *file, char *func, char *line, Region region, Pool pool, Data *ptr, Size size)
+{
+   if(SPutSBuf(region, pool, ptr, size) == ROK)
+   {
+#ifdef ODU_MEMORY_DEBUG_LOG
+      printf("\nCM_FREE=== SPutSBufNewForDebug %s +%d, %s, %d, %p\n",\
+         file, line, func, size, ptr);
+#endif
+      return ROK;
+   }
+   else
+      return RFAILED;
+}
+
+
+/*******************************************************************
+*
+* @brief  SGetStaticBuf with debug logs
+*
+* @details
+*
+*    Function : SGetStaticBufNewForDebug
+*
+*    Functionality: SGetStaticBuf with debug logs
+*
+* @params[in] file name, fun name, region, pool, data ptr, size, memType
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t SGetStaticBufNewForDebug(char *file, char *func, char *line, \
+Region region, Pool pool, Data **ptr, Size size, uint8_t memType)
+{
+   if(SGetStaticBuffer(region, pool, ptr, size, memType) == ROK)
+   {
+#ifdef ODU_MEMORY_DEBUG_LOG
+      printf("\nCM_ALLOC=== SGetStaticBufNewForDebug %s +%d, %s, %d, %p\n",\
+         file, line, func, size, *ptr);
+#endif
+      return ROK;
+   }
+   else
+      return RFAILED;
+}
+
+/*******************************************************************
+*
+* @brief  SPutStaticBuf with debug logs
+*
+* @details
+*
+*    Function : SPutStaticBufNewForDebug 
+*
+*    Functionality: SPutStaticBuf with debug logs
+*
+* @params[in] file name, fun name, region, pool, data ptr, size, memType
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t SPutStaticBufNewForDebug(char *file, char *func, char *line, \
+Region region, Pool pool, Data *ptr, Size size, uint8_t memType)
+{
+   if(SPutStaticBuffer(region, pool, ptr, size, memType) == ROK)
+   {
+#ifdef ODU_MEMORY_DEBUG_LOG
+      printf("\nCM_FREE=== SPutStaticBufNewForDebug %s +%d, %s, %d, %p\n",\
+         file, line, func, size, ptr);
+#endif
+      return ROK;
+   }
+   else
+      return RFAILED;
+}
 /**********************************************************************
          End of file
 **********************************************************************/
