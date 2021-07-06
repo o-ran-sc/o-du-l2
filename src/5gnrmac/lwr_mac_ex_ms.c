@@ -101,7 +101,7 @@ uint8_t lwrMacActvTsk(Pst *pst, Buffer *mBuf)
 #endif
                default:
                   {
-                     SPutMsg(mBuf);
+                     ODU_PUT_MSG_BUF(mBuf);
                      DU_LOG("\nERROR  -->  LWR MAC: Invalid event %d received", pst->event);
                      ret = RFAILED;
                   }
@@ -147,7 +147,7 @@ uint8_t lwrMacActvTsk(Pst *pst, Buffer *mBuf)
 
       default:
          {
-            SPutMsg(mBuf);
+            ODU_PUT_MSG_BUF(mBuf);
             DU_LOG("\nERROR  -->  LWR MAC: Message from invalid source entity %d", pst->srcEnt);
             ret = RFAILED;
          }

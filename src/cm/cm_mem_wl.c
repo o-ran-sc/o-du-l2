@@ -1743,7 +1743,7 @@ PTR              ptr
       return RFAILED;
    }
    SUnlock(&memDoubleFreeLock);
-   SPutSBuf(regionCb->region, 0, (Data *)memNode, sizeof(CmMemDoubleFree));
+   SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,regionCb->region, 0, (Data *)memNode, sizeof(CmMemDoubleFree));
 
    return ROK;
 }
@@ -1774,7 +1774,7 @@ PTR              ptr
 
    CmMemDoubleFree   *memNode;
 
-   SGetSBuf(regionCb->region, 0, (Data **)&memNode, sizeof(CmMemDoubleFree));
+   SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,regionCb->region, 0, (Data **)&memNode, sizeof(CmMemDoubleFree));
    if(memNode == NULLP)
    {
        return RFAILED;
@@ -1823,7 +1823,7 @@ Data  **ptr          /* Reference to pointer for which need to be allocate */
 {
    S16 ret;
 
-
+  // printf("\n=========== cmDynAllocWithLock ");
    if((SLock(&dynAllocFreeLock)) != ROK)
    {
       printf("cmDynAllocWithLock: Failed to get the dyn lock\n");
@@ -1883,6 +1883,7 @@ Data  **ptr          /* Reference to pointer for which need to be allocate */
    /* error check on parameters */
    if ((regCb == NULLP) || (size == NULLP) || !(*size) || (ptr == NULLP))
    {
+      printf("=============== %d %s\n",__LINE__,__FUNCTION__);
       return RFAILED;
    }
 #endif
@@ -1914,7 +1915,8 @@ Data  **ptr          /* Reference to pointer for which need to be allocate */
 
 #if (ERRCLASS & ERRCLS_DEBUG)
       if (regCb->mapTbl[idx].bktIdx == 0xFF)
-      { 
+      {
+         printf("=============== %d %s\n",__LINE__,__FUNCTION__);
          printf("Failed to get the buffer of size %d\n", *size);
          /* Some fatal error in the map table initialization. */
          return RFAILED;
@@ -1922,6 +1924,7 @@ Data  **ptr          /* Reference to pointer for which need to be allocate */
 #endif
      if (idx > 512)
      {
+         printf("=============== %d %s\n",__LINE__,__FUNCTION__);
          return RFAILED;
      }
       /* Dequeue the memory block and return it to the user */
@@ -1947,6 +1950,7 @@ Data  **ptr          /* Reference to pointer for which need to be allocate */
 #else
          printf("Failed to get the buffer of size %d\n", *size);
 #endif
+         printf("=============== %d %s\n",__LINE__,__FUNCTION__);
          return RFAILED;
       }
 
@@ -1959,8 +1963,10 @@ Data  **ptr          /* Reference to pointer for which need to be allocate */
 #endif
       /* Get the bucket node from the index returned and allocate the memory */
       *ptr = dynMemElem->nextBktPtr;
+      //printf("\n=========== cmDynAlloc ptr %p region %d",*ptr,regCb->region);
       if (*ptr == NULLP)
       {
+         printf("\n=============== %d %s\n",__LINE__,__FUNCTION__);
         return RFAILED;
       }
       dynMemElem->nextBktPtr = *((CmMmEntry **)(*ptr));
@@ -2006,6 +2012,7 @@ Data  **ptr          /* Reference to pointer for which need to be allocate */
 #else
    printf("Failed to get the buffer of size %d\n", *size);
 #endif
+         printf("=============== %d %s\n",__LINE__,__FUNCTION__);
    return RFAILED;
    
 #else /* use pure is on */
@@ -2019,7 +2026,9 @@ Data  **ptr          /* Reference to pointer for which need to be allocate */
    *ptr = (Data *)malloc(*size);
 
    if ( (*ptr) == NULLP)
-       return RFAILED;
+   {
+         printf("=============== %d %s\n",__LINE__,__FUNCTION__);
+       return RFAILED; }
    /* avail_size -= *size; */
    return ROK;
 #endif /* USE_PURE */
@@ -2681,7 +2690,8 @@ Size    size        /* Size of the block */
 )
 {
    S16 ret;
-
+   
+   //printf("\n################## cmDynFreeWithLock #####");
    if((SLock(&dynAllocFreeLock)) != ROK)
    {
       printf("dynAllocWithLock: Failed to get the DYN lock\n");
@@ -2857,7 +2867,7 @@ Size    size        /* Size of the block */
 
    memset(ptr, (regCb->region+1), bkt->size); 
 #endif
-
+   //printf("\n=========== CmDynFree ptr %p , region %d",ptr, regCb->region);
    /* Get the bucket node from the index returned and allocate the memory */
    *((CmMmEntry **)ptr) =  dynMemElem->nextBktPtr;
    dynMemElem->nextBktPtr = ptr;
@@ -4727,7 +4737,7 @@ Void SFlushLkInfo (Void)
 #else
                 free(funcNm[i]); 
 #endif
-				    /* SPutSBuf(DFLT_REGION, DFLT_POOL, funcNm[i], sizeof(uint32_t) * CM_MAX_STACK_TRACE); */
+				    /* SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,DFLT_REGION, DFLT_POOL, funcNm[i], sizeof(uint32_t) * CM_MAX_STACK_TRACE); */
              }
 #endif /* SS_MEM_LEAK_SOl */
 /*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
@@ -4792,7 +4802,7 @@ uint16_t    bktIdx
 #else
    funcNm = (S8 **)calloc(1, (sizeof(uint32_t) * CM_MAX_STACK_TRACE));
 #endif
-	/* SGetSBuf(DFLT_REGION, DFLT_POOL, &funcNm, sizeof(uint32_t) * CM_MAX_STACK_TRACE); */
+	/* SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,DFLT_REGION, DFLT_POOL, &funcNm, sizeof(uint32_t) * CM_MAX_STACK_TRACE); */
    traceSize = backtrace((Void **)funcNm, CM_MAX_STACK_TRACE);
 #else /* SS_MEM_LEAK_SOL */
    traceSize = backtrace(trace, CM_MAX_STACK_TRACE);
@@ -4809,7 +4819,7 @@ uint16_t    bktIdx
 #else
    allocInfo = (MemAllocInfo *)calloc(1, sizeof(MemAllocInfo)); 
 #endif
-	/* SGetSBuf(DFLT_REGION, DFLT_POOL, &allocInfo,  sizeof(MemAllocInfo)); */
+	/* SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,DFLT_REGION, DFLT_POOL, &allocInfo,  sizeof(MemAllocInfo)); */
    allocInfo->memAddr    = addr;
    allocInfo->reqSz      = reqSz;
    allocInfo->allocSz    = allocSz;
@@ -5179,7 +5189,7 @@ Void      *arg
 #else
     buffer = (S8 *)calloc(1, 510); 
 #endif
-	 /* SGetSBuf(DFLT_REGION, DFLT_POOL, &buffer, 510); */
+	 /* SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,DFLT_REGION, DFLT_POOL, &buffer, 510); */
     (void) cmAddrToSymStr((void *)pc, buffer, 505);
     bt->bt_buffer[bt->bt_actcount++] = (S8 *)buffer;
 
@@ -5418,7 +5428,7 @@ Pool         pool          /* memory pool to allocate bins */
    /* allocate memory for bins */
    if (nmbBins)
    {
-      if (SGetSBuf(region, pool, (Data **) &hashListCp->hashList,
+      if (SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,region, pool, (Data **) &hashListCp->hashList,
                (Size)(nmbBins * sizeof(CmMmHashListEnt))) != ROK)
       return RFAILED;
 
@@ -5465,7 +5475,7 @@ Pool         pool          /* memory pool to allocate bins */
 
    /* deallocate memory for bins */
    if (hashListCp->numOfbins)
-      (Void) SPutSBuf(region, pool,
+      (Void) SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,region, pool,
                       (Data *) hashListCp->hashList,
                       (Size) (hashListCp->numOfbins * sizeof(CmMmHashListEnt)));
 

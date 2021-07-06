@@ -65,8 +65,10 @@ uint8_t SendRlcUeCfgRspToDu(Pst *pst, RlcCfgCfmInfo *cfgRsp)
 {
    /* jump to specific primitive depending on configured selector */
    uint8_t ret = ROK;
+   RlcCb   *gCb;
    RlcUeCfgRsp *ueRsp = NULLP;
 
+   gCb = RLC_GET_RLCCB(pst->srcInst);
    RLC_ALLOC_SHRABL_BUF(pst->region, pst->pool, ueRsp, sizeof(RlcUeCfgRsp));
    if(!ueRsp)
    {  
@@ -92,6 +94,7 @@ uint8_t SendRlcUeCfgRspToDu(Pst *pst, RlcCfgCfmInfo *cfgRsp)
          RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueRsp, sizeof(RlcUeCfgRsp));
       }
    }
+   RLC_FREE(gCb, cfgRsp, sizeof(RlcCfgCfmInfo));
    return ret;
 } /* end of SendRlcUeCfgRspToDu */
 

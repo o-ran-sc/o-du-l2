@@ -1610,7 +1610,7 @@ uint8_t MacProcSchCellCfg(Pst *pst, SchCellCfg  *schCellCfg);
 uint8_t MacProcSchCellCfgCfm(Pst *pst, SchCellCfgCfm  *schCellCfgCfm);
 uint8_t SchHdlCellCfgReq(Pst *pst, SchCellCfg *schCellCfg);
 uint8_t schActvInit(Ent entity, Inst instId, Region region, Reason reason);
-uint8_t SchSendCfgCfm(Pst *pst, RgMngmt *cfm);
+//uint8_t SchSendCfgCfm(Pst *pst, RgMngmt *cfm);
 uint8_t MacProcUlSchInfo(Pst *pst, UlSchedInfo *ulSchedInfo);
 uint8_t packMacSchRachInd(Pst *pst, RachIndInfo *rachInd);
 uint8_t MacSchRachInd(Pst *pst, RachIndInfo *rachInd);

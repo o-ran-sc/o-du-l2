@@ -1538,7 +1538,7 @@ void FreeServedCellList( GNB_DU_Served_Cells_List_t *duServedCell)
 				    * sizeof(uint8_t));
 			   }
 			   DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[plmnidx],\
-				 sizeof(ServedPLMNs_Item_t *));
+				 sizeof(ServedPLMNs_Item_t));
 			}
 			DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array,\
 			      sizeof(ServedPLMNs_Item_t *));
@@ -1616,7 +1616,6 @@ void FreeF1SetupReq(F1AP_PDU_t *f1apMsg)
 			break;
 		  }
 	       }
-	       break;
 	    }
 	    for(ieIdx2=0; ieIdx2< ieIdx; ieIdx2++)
 	    {
@@ -10930,6 +10929,9 @@ uint8_t BuildAndSendUeCtxtRsp(uint8_t cellId, uint8_t ueIdx)
       case UE_CTXT_MOD:
          {
             BuildAndSendUeContextModRsp(cellId, ueIdx);
+#ifndef UEATTACHENABLE
+            BuildAndSendDUConfigUpdate(SERV_CELL_TO_DELETE);
+#endif
             break;
          }
       default:

@@ -44,7 +44,7 @@
 #include "rg_env.h"       /* MAC environmental includes*/
 #include "rg.h"           /* MAC includes*/
 #include "rg_err.h"       /* MAC error includes*/
-
+#include "mac_utils.h" 
 /* header/extern include files (.x) */
 #include "rgu.x"           /* RGU types */
 #include "tfu.x"           /* RGU types */
@@ -688,8 +688,11 @@ RgErrInfo   *errInfo
   
    pst = &rgCb[inst].rguSap[rguDlSapId].sapCfg.sapPst;
    /* Allocate a buffer for flowCntrlInd.*/
-   SGetSBuf(pst->region, pst->pool, (Data **)&cell->flowCntrlInd, 
-              sizeof(RguFlowCntrlInd));
+   MAC_ALLOC(cell->flowCntrlInd, sizeof(RguFlowCntrlInd));
+   if(cell->flowCntrlInd == NULLP)
+   {
+      return RFAILED;
+   }
    return ROK;
 }  /* rgCFGCrgCellCfg */
 

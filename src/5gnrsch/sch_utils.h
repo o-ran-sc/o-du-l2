@@ -52,6 +52,7 @@
           (Data **)&_datPtr, _size);                             \
    if(_ret == ROK)                                              \
    {                                                            \
+   printf("\nSCH_ALLOC=== %s +%d, %s, %d, %p\n",__FILE__,__LINE__,__FUNCTION__,_size, _datPtr);\
       memset(_datPtr, 0, _size);                         \
    }                                                            \
    else                                                         \
@@ -63,6 +64,7 @@
 /* free a static buffer */
 #define SCH_FREE(_datPtr, _size)                                \
 {                                                               \
+   printf("\nSCH_FREE=== %s +%d, %s, %d, %p\n",__FILE__,__LINE__,__FUNCTION__,_size, _datPtr);\
    if(_datPtr)                                                  \
    {                                                            \
       SPutSBuf(SCH_MEM_REGION, SCH_POOL,                        \
@@ -91,9 +93,6 @@ void freqDomRscAllocType0(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDoma
 uint16_t schCalcTbSize(uint32_t payLoadSize);
 uint16_t schCalcNumPrb(uint16_t tbSize, uint16_t mcs, uint8_t numSymbols);
 uint16_t schCalcTbSizeFromNPrb(uint16_t numPrb, uint16_t mcs, uint8_t numSymbols);
-SchUeCb* schGetUeCb(SchCellCb *cellCb, uint16_t crnti);
-void schInitUlSlot(SchUlSlotInfo *schUlSlotInfo);
-void schInitDlSlot(SchDlSlotInfo *schDlSlotInfo);
 #ifdef NR_TDD
 SlotConfig schGetSlotSymbFrmt(uint16_t slot, uint32_t bitMap);
 #endif

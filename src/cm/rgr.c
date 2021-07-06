@@ -403,7 +403,7 @@ Buffer *mBuf
 #endif
       return RFAILED;
    }
-   if ((SGetSBuf(pst->region, pst->pool, (Data **)&cfgReqInfo,sizeof(RgrCfgReqInfo))) != ROK) {
+   if ((SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&cfgReqInfo,sizeof(RgrCfgReqInfo))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
@@ -415,7 +415,7 @@ Buffer *mBuf
    memset(cfgReqInfo, 0, sizeof(RgrCfgReqInfo));
    if (pst->selector == ODU_SELECTOR_LC) 
       if (cmUnpkRgrCfgReqInfo(cfgReqInfo, mBuf) != ROK) {
-         SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(RgrCfgReqInfo));
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgReqInfo, sizeof(RgrCfgReqInfo));
          SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -521,7 +521,7 @@ RgrTtiIndInfo *ttiInd
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR026, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)ttiInd, sizeof(RgrTtiIndInfo));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)ttiInd, sizeof(RgrTtiIndInfo));
       SPutMsg(mBuf);
       return RFAILED;
    }
@@ -531,11 +531,11 @@ RgrTtiIndInfo *ttiInd
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR027, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)ttiInd, sizeof(RgrTtiIndInfo));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)ttiInd, sizeof(RgrTtiIndInfo));
       SPutMsg(mBuf);
       return RFAILED;
    }
-   SPutSBuf(pst->region, pst->pool, (Data *)ttiInd, sizeof(RgrTtiIndInfo));
+   SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)ttiInd, sizeof(RgrTtiIndInfo));
    pst->event = (Event) EVTRGRTTIIND;
    return (SPstTsk(pst,mBuf));
 }
@@ -576,7 +576,7 @@ Buffer *mBuf
 #endif
       return RFAILED;
    }
-   if ((SGetSBuf(pst->region, pst->pool, (Data **)&ttiInd, sizeof(RgrTtiIndInfo))) != ROK) 
+   if ((SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&ttiInd, sizeof(RgrTtiIndInfo))) != ROK) 
    {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -589,7 +589,7 @@ Buffer *mBuf
  
    if (cmUnpkRgrTtiIndInfo(ttiInd, mBuf) != ROK) {
       /*ccpu00114888- Memory Leak issue- Start*/
-      SPutSBuf(pst->region, pst->pool, (Data *)ttiInd, 
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)ttiInd, 
             sizeof(RgrTtiIndInfo));
       /*ccpu00114888- Memory Leak issue- End*/
       SPutMsg(mBuf);
@@ -7765,7 +7765,7 @@ RgrSiCfgReqInfo * cfgReqInfo
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR045, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, 
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgReqInfo, 
                  sizeof(RgrSiCfgReqInfo));
       return RFAILED;
    }
@@ -7775,7 +7775,7 @@ RgrSiCfgReqInfo * cfgReqInfo
             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ERGR046, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, 
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgReqInfo, 
                 sizeof(RgrSiCfgReqInfo));
       SPutMsg(mBuf);
       return RFAILED;
@@ -7786,7 +7786,7 @@ RgrSiCfgReqInfo * cfgReqInfo
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR047, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, 
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgReqInfo, 
                sizeof(RgrSiCfgReqInfo));
       SPutMsg(mBuf);
       return RFAILED;
@@ -7797,12 +7797,12 @@ RgrSiCfgReqInfo * cfgReqInfo
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR048, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, 
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgReqInfo, 
                sizeof(RgrSiCfgReqInfo));
       SPutMsg(mBuf);
       return RFAILED;
    }
-   if (SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, 
+   if (SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgReqInfo, 
                sizeof(RgrSiCfgReqInfo)) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -7863,7 +7863,7 @@ Buffer *mBuf
 #endif
       return RFAILED;
    }
-   if ((SGetSBuf(pst->region, pst->pool, (Data **)&cfgReqInfo,
+   if ((SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&cfgReqInfo,
             sizeof(RgrSiCfgReqInfo))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -7876,7 +7876,7 @@ Buffer *mBuf
    memset(cfgReqInfo, 0, sizeof(RgrSiCfgReqInfo));
    if (pst->selector == ODU_SELECTOR_LC) 
       if (cmUnpkRgrSiCfgReqInfo(cfgReqInfo, mBuf) != ROK) {
-         SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, 
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)cfgReqInfo, 
                           sizeof(RgrSiCfgReqInfo));
          SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -8028,7 +8028,7 @@ RgrWarningSiCfgReqInfo * warningSiCfgReqInfo
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR061, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)warningSiCfgReqInfo, 
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)warningSiCfgReqInfo, 
                  sizeof(RgrWarningSiCfgReqInfo));
       return RFAILED;
    }
@@ -8040,7 +8040,7 @@ RgrWarningSiCfgReqInfo * warningSiCfgReqInfo
             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ERGR062, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)warningSiCfgReqInfo, 
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)warningSiCfgReqInfo, 
                 sizeof(RgrWarningSiCfgReqInfo));
       SPutMsg(mBuf);
       return RFAILED;
@@ -8053,7 +8053,7 @@ RgrWarningSiCfgReqInfo * warningSiCfgReqInfo
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR063, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)warningSiCfgReqInfo, 
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)warningSiCfgReqInfo, 
                sizeof(RgrWarningSiCfgReqInfo));
       SPutMsg(mBuf);
       return RFAILED;
@@ -8066,7 +8066,7 @@ RgrWarningSiCfgReqInfo * warningSiCfgReqInfo
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR064, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)warningSiCfgReqInfo, 
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)warningSiCfgReqInfo, 
                sizeof(RgrWarningSiCfgReqInfo));
       SPutMsg(mBuf);
       return RFAILED;
@@ -8074,7 +8074,7 @@ RgrWarningSiCfgReqInfo * warningSiCfgReqInfo
 
    /* if the application wants to retain this structure, the below 
     * code should be removed */
-   if (SPutSBuf(pst->region, pst->pool, (Data *)warningSiCfgReqInfo, 
+   if (SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)warningSiCfgReqInfo, 
                sizeof(RgrWarningSiCfgReqInfo)) != ROK) 
    {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -8141,7 +8141,7 @@ Buffer *mBuf
       return RFAILED;
    }
 
-   if ((SGetSBuf(pst->region, pst->pool, (Data **)&warningSiCfgReqInfo,
+   if ((SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&warningSiCfgReqInfo,
             sizeof(RgrWarningSiCfgReqInfo))) != ROK) 
    {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -8158,7 +8158,7 @@ Buffer *mBuf
    {
       if (cmUnpkRgrWarningSiCfgReqInfo(pst, warningSiCfgReqInfo, mBuf) != ROK) 
       {
-         SPutSBuf(pst->region, pst->pool, (Data *)warningSiCfgReqInfo, 
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)warningSiCfgReqInfo, 
                           sizeof(RgrWarningSiCfgReqInfo));
          SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -8227,7 +8227,7 @@ Buffer *mBuf
          SPutMsg(pdu->pdu);
       }
       cmLListDelFrm(&param->siPduLst, node);
-      SPutSBuf(pst->region, pst->pool, (Data *)node, sizeof(RgrSegmentInfo));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)node, sizeof(RgrSegmentInfo));
       node= prevNode;
    }
    CMCHKPK(oduUnpackUInt32, count, mBuf);
@@ -8288,7 +8288,7 @@ Buffer *mBuf
       {
          return RFAILED;
       }
-      if ((SGetSBuf(pst->region, pst->pool, (Data **)&node,
+      if ((SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&node,
                   sizeof(CmLList))) != ROK)
          return RFAILED;
       node->node = (PTR)pdu;
@@ -8618,7 +8618,7 @@ RgrLoadInfReqInfo * loadInfReq
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR045, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)loadInfReq, 
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)loadInfReq, 
                  sizeof(RgrLoadInfReqInfo));
       return RFAILED;
    }
@@ -8628,7 +8628,7 @@ RgrLoadInfReqInfo * loadInfReq
             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ERGR046, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)loadInfReq, 
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)loadInfReq, 
                 sizeof(RgrLoadInfReqInfo));
       SPutMsg(mBuf);
       return RFAILED;
@@ -8639,7 +8639,7 @@ RgrLoadInfReqInfo * loadInfReq
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR047, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)loadInfReq, 
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)loadInfReq, 
                sizeof(RgrLoadInfReqInfo));
       SPutMsg(mBuf);
       return RFAILED;
@@ -8650,12 +8650,12 @@ RgrLoadInfReqInfo * loadInfReq
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR048, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)loadInfReq, 
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)loadInfReq, 
                sizeof(RgrLoadInfReqInfo));
       SPutMsg(mBuf);
       return RFAILED;
    }
-   if (SPutSBuf(pst->region, pst->pool, (Data *)loadInfReq, 
+   if (SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)loadInfReq, 
                sizeof(RgrLoadInfReqInfo)) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -8718,7 +8718,7 @@ Buffer *mBuf
       return RFAILED;
    }
 
-   if ((SGetSBuf(pst->region, pst->pool, (Data **)&loadInfReq,
+   if ((SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&loadInfReq,
             sizeof(RgrLoadInfReqInfo))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -8733,7 +8733,7 @@ Buffer *mBuf
 
    if (pst->selector == ODU_SELECTOR_LC) 
       if (cmUnpkRgrLoadInfReqInfo(loadInfReq, mBuf) != ROK) {
-         SPutSBuf(pst->region, pst->pool, (Data *)loadInfReq, 
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)loadInfReq, 
                           sizeof(RgrLoadInfReqInfo));
          SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -8900,7 +8900,7 @@ RgrStaIndInfo* staInd
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR054, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)staInd, 
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)staInd, 
                sizeof(RgrStaIndInfo));
       return RFAILED;
    }
@@ -8912,7 +8912,7 @@ RgrStaIndInfo* staInd
             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ERGR055, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)staInd, sizeof(RgrStaIndInfo));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)staInd, sizeof(RgrStaIndInfo));
       SPutMsg(mBuf);
       return RFAILED;
    }
@@ -8924,13 +8924,13 @@ RgrStaIndInfo* staInd
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR056, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)staInd, 
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)staInd, 
                   sizeof(RgrStaIndInfo));
       SPutMsg(mBuf);
       return RFAILED;
    }
 
-   if (SPutSBuf(pst->region, pst->pool, (Data *)staInd, 
+   if (SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)staInd, 
                   sizeof(RgrStaIndInfo)) != ROK) 
    {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -8983,7 +8983,7 @@ Buffer *mBuf
       return RFAILED;
    }
 
-   if ((SGetSBuf(pst->region, pst->pool, (Data **)&staInd,
+   if ((SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&staInd,
                  sizeof(RgrStaIndInfo))) != ROK)
    {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -8997,7 +8997,7 @@ Buffer *mBuf
 
    if (cmUnpkRgrStaIndInfo(staInd, mBuf) != ROK)
    {
-      SPutSBuf(pst->region, pst->pool, (Data *)staInd,
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)staInd,
              sizeof(RgrStaIndInfo));
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -9299,7 +9299,7 @@ RgrLoadInfIndInfo* loadInfInd
             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ERGR054, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)loadInfInd,
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)loadInfInd,
             sizeof(RgrLoadInfIndInfo));
       return RFAILED;
    }
@@ -9311,7 +9311,7 @@ RgrLoadInfIndInfo* loadInfInd
             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ERGR055, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)loadInfInd,
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)loadInfInd,
             sizeof(RgrLoadInfIndInfo));
       SPutMsg(mBuf);
 
@@ -9325,13 +9325,13 @@ RgrLoadInfIndInfo* loadInfInd
             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ERGR056, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)loadInfInd,
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)loadInfInd,
             sizeof(RgrLoadInfIndInfo));
       SPutMsg(mBuf);
       return RFAILED;
    }
 
-   if (SPutSBuf(pst->region, pst->pool, (Data *)loadInfInd,
+   if (SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)loadInfInd,
                   sizeof(RgrLoadInfIndInfo)) != ROK)
    {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -9383,7 +9383,7 @@ Buffer *mBuf
       return RFAILED;
    }
 
-   if ((SGetSBuf(pst->region, pst->pool, (Data **)&loadInfInd,
+   if ((SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&loadInfInd,
                  sizeof(RgrLoadInfIndInfo))) != ROK)
    {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -9398,7 +9398,7 @@ Buffer *mBuf
    /* dsfr_pal_fixes ** 22-March-2013 ** SKS */
    if (cmUnpkRgrLoadInfIndInfo(loadInfInd, pst, mBuf) != ROK)
    {
-      SPutSBuf(pst->region, pst->pool, (Data *)loadInfInd,
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)loadInfInd,
              sizeof(RgrLoadInfIndInfo));
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -9504,7 +9504,7 @@ Buffer *mBuf
          /* Length */
          CMCHKUNPK(oduPackUInt16, &tknStr->len, mBuf);
 
-         if ((SGetSBuf(pst->region, pst->pool, (Data **)&tknStr->val,tknStr->len)) != ROK) {
+         if ((SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&tknStr->val,tknStr->len)) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
             SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
                __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
@@ -10026,7 +10026,7 @@ RgrUeStaIndInfo* ueStaInd
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR054, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)ueStaInd, 
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)ueStaInd, 
                sizeof(RgrUeStaIndInfo));
       return RFAILED;
    }
@@ -10038,7 +10038,7 @@ RgrUeStaIndInfo* ueStaInd
             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ERGR055, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)ueStaInd, 
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)ueStaInd, 
                sizeof(RgrUeStaIndInfo));
       SPutMsg(mBuf);
       return RFAILED;
@@ -10051,13 +10051,13 @@ RgrUeStaIndInfo* ueStaInd
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
          (ErrVal)ERGR056, (ErrVal)0, "Packing failed");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)ueStaInd, 
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)ueStaInd, 
                   sizeof(RgrUeStaIndInfo));
       SPutMsg(mBuf);
       return RFAILED;
    }
 
-   if (SPutSBuf(pst->region, pst->pool, (Data *)ueStaInd, 
+   if (SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)ueStaInd, 
                   sizeof(RgrUeStaIndInfo)) != ROK) 
    {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -10110,7 +10110,7 @@ Buffer *mBuf
       return RFAILED;
    }
 
-   if ((SGetSBuf(pst->region, pst->pool, (Data **)&ueStaInd,
+   if ((SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&ueStaInd,
                  sizeof(RgrUeStaIndInfo))) != ROK)
    {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -10124,7 +10124,7 @@ Buffer *mBuf
 
    if (cmUnpkRgrUeStaIndInfo(ueStaInd, mBuf) != ROK)
    {
-      SPutSBuf(pst->region, pst->pool, (Data *)ueStaInd,
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)ueStaInd,
              sizeof(RgrUeStaIndInfo));
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)

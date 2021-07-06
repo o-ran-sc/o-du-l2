@@ -222,6 +222,7 @@ uint8_t DuProcMacCellDeleteRsp(Pst *pst, MacCellDeleteRsp *deleteRsp)
 {
    uint8_t ret = ROK;
    uint16_t cellIdx=0;
+   static uint8_t counter=0;
    if(deleteRsp)
    {
       if(deleteRsp->result == SUCCESSFUL_RSP)
@@ -242,6 +243,12 @@ uint8_t DuProcMacCellDeleteRsp(Pst *pst, MacCellDeleteRsp *deleteRsp)
             duCb.numActvCells--;
             duCb.numCfgCells--;
             DU_FREE(duCb.actvCellLst[cellIdx], sizeof(DuCellCb));
+if(counter<1)
+{
+            duProcCfgComplete();
+            BuildAndSendF1SetupReq();
+            counter++;
+}
 
          }
          else
