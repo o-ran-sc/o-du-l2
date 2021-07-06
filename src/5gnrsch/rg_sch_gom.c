@@ -43,6 +43,7 @@ invoked by RRM towards MAC.
 #include "rg_sch_inf.h"
 #include "rg_sch.h"
 #include "rg_sch_err.h"
+#include "sch_utils.h"
 
 /* header/extern include files (.x) */
 #include "lrg.x"
@@ -50,6 +51,7 @@ invoked by RRM towards MAC.
 #include "tfu.x"
 #include "rg_sch_inf.x"
 #include "rg_sch.x"
+#include "mac_sch_interface.h"
 
 /* local defines */
 static S16 rgSCHGomHndlCfgReq ARGS((RgSchCb *instCb, SpId spId,
@@ -151,7 +153,7 @@ S16 rgSCHGomHndlCfg(Pst *pst,RgSchCb  *instCb,RgrCfgTransId transId,RgrCfgReqInf
    {
       DU_LOG("\nERROR  -->  SCH : Action.Config Type Error");
 
-      SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, 
+      SCH_FREE(cfgReqInfo, 
             (Size)sizeof(*cfgReqInfo));
       cfgReqInfo = NULLP;
       schSendCfgCfm(pst->region, pst->pool, transId, cfmStatus); 
@@ -165,7 +167,7 @@ S16 rgSCHGomHndlCfg(Pst *pst,RgSchCb  *instCb,RgrCfgTransId transId,RgrCfgReqInf
          DU_LOG("\nERROR  -->  SCH : Cell with Id %d already exists "
            "on sap %d", instCb->rgrSap[spId].cell->cellId, spId);  
 
-         SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, 
+         SCH_FREE(cfgReqInfo, 
                (Size)sizeof(*cfgReqInfo));
          cfgReqInfo = NULLP;
          schSendCfgCfm(pst->region, pst->pool, transId, cfmStatus); 
@@ -180,7 +182,7 @@ S16 rgSCHGomHndlCfg(Pst *pst,RgSchCb  *instCb,RgrCfgTransId transId,RgrCfgReqInf
          DU_LOG("\nERROR  -->  SCH : rgSCHGomHndlCfg: Enqueuing CfgReq "
               "Failed ");
 
-         SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, 
+         SCH_FREE(cfgReqInfo, 
                (Size)sizeof(*cfgReqInfo));
          cfgReqInfo = NULLP;
          schSendCfgCfm(pst->region, pst->pool, transId, cfmStatus); 
@@ -189,7 +191,7 @@ S16 rgSCHGomHndlCfg(Pst *pst,RgSchCb  *instCb,RgrCfgTransId transId,RgrCfgReqInf
 
       return ROK;
    }
-   SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo, 
+   SCH_FREE(cfgReqInfo, 
          (Size)sizeof(*cfgReqInfo));
    cfgReqInfo = NULLP;
    schSendCfgCfm(pst->region, pst->pool, transId, cfmStatus); 
@@ -282,7 +284,7 @@ printf("\nDEBUG  -->  SCH: AT MAC rgSCHGomCfgReq \n");
       cfmStatus = RGR_CFG_CFM_NOK;
    }
 
-   SPutSBuf(reg, pool, (Data *)cfgReqInfo, 
+   SCH_FREE(cfgReqInfo, 
          (Size)sizeof(*cfgReqInfo));
    cfgReqInfo = NULLP;
 #ifdef EMTC_ENABLE
@@ -980,7 +982,7 @@ S16 rgSCHGomHndlSiCfg(Region reg,Pool pool,RgSchCb *instCb,SpId spId,RgrCfgTrans
    {
       DU_LOG("\nERROR  -->  SCH : Cell Control block does not exist");
       RGSCH_FREE_MSG(cfgReqInfo->pdu);
-      SPutSBuf(reg, pool, (Data *)cfgReqInfo, (Size)sizeof(*cfgReqInfo)); 
+      SCH_FREE(cfgReqInfo, (Size)sizeof(*cfgReqInfo)); 
       cfgReqInfo = NULLP;
       rgSCHUtlRgrSiCfgCfm(instCb->rgSchInit.inst, spId, transId, cfmStatus); 
       return RFAILED;
@@ -993,7 +995,7 @@ S16 rgSCHGomHndlSiCfg(Region reg,Pool pool,RgSchCb *instCb,SpId spId,RgrCfgTrans
       DU_LOG("\nERROR  -->  SCH : Rgr SI configuration "
                "validation FAILED");
       RGSCH_FREE_MSG(cfgReqInfo->pdu);
-      SPutSBuf(reg, pool, (Data *)cfgReqInfo, (Size)sizeof(*cfgReqInfo)); 
+      SCH_FREE(cfgReqInfo, (Size)sizeof(*cfgReqInfo)); 
       cfgReqInfo = NULLP;
       rgSCHUtlRgrSiCfgCfm(instCb->rgSchInit.inst, spId, transId, cfmStatus); 
       return RFAILED;
@@ -1012,7 +1014,7 @@ S16 rgSCHGomHndlSiCfg(Region reg,Pool pool,RgSchCb *instCb,SpId spId,RgrCfgTrans
             RGSCH_FREE_MSG(cell->siCb.newSiInfo.siInfo[cfgReqInfo->siId-1].si);
             cell->siCb.newSiInfo.siInfo[cfgReqInfo->siId-1].si = NULLP;
          }
-         SPutSBuf(reg, pool, (Data *)cfgReqInfo, (Size)sizeof(*cfgReqInfo));
+         SCH_FREE(cfgReqInfo, (Size)sizeof(*cfgReqInfo));
          cfgReqInfo = NULLP;   
          cfmStatus = RGR_CFG_CFM_OK;
          rgSCHUtlRgrSiCfgCfm(instCb->rgSchInit.inst, spId, transId, cfmStatus);
@@ -1020,7 +1022,7 @@ S16 rgSCHGomHndlSiCfg(Region reg,Pool pool,RgSchCb *instCb,SpId spId,RgrCfgTrans
        }
        else
        {
-          SPutSBuf(reg, pool, (Data *)cfgReqInfo, (Size)sizeof(*cfgReqInfo));
+          SCH_FREE(cfgReqInfo, (Size)sizeof(*cfgReqInfo));
           cfgReqInfo = NULLP;
           rgSCHUtlRgrSiCfgCfm(instCb->rgSchInit.inst, spId, transId, cfmStatus);
           return RFAILED; 
@@ -1048,11 +1050,12 @@ S16 rgSCHGomHndlSiCfg(Region reg,Pool pool,RgSchCb *instCb,SpId spId,RgrCfgTrans
          /* need to add padding bytes */
          nmPadBytes = (tbSz - (msgLen*8))/8;
 
-         if ( SGetSBuf(reg,pool,&padding,nmPadBytes) != ROK)
+         SCH_ALLOC(padding,nmPadBytes);
+         if(padding == NULLP)
          {
             DU_LOG("\nERROR  -->  SCH : Rgr SI configuration "
-                     "SGetSBuf failed for padding failed");
-            SPutSBuf(reg, pool, (Data *)cfgReqInfo, (Size)sizeof(*cfgReqInfo)); 
+                     " failed to allocate memory for padding");
+            SCH_FREE(cfgReqInfo, (Size)sizeof(*cfgReqInfo)); 
             cfgReqInfo = NULLP;
             rgSCHUtlRgrSiCfgCfm(instCb->rgSchInit.inst, spId, transId, 
                                                            cfmStatus); 
@@ -1068,15 +1071,15 @@ S16 rgSCHGomHndlSiCfg(Region reg,Pool pool,RgSchCb *instCb,SpId spId,RgrCfgTrans
          {
             DU_LOG("\nERROR  -->  SCH : Rgr SI configuration "
                      "Failed to add padding bytes");
-            SPutSBuf(reg, pool, (Data *)cfgReqInfo, (Size)sizeof(*cfgReqInfo)); 
+            SCH_FREE(cfgReqInfo, (Size)sizeof(*cfgReqInfo)); 
             cfgReqInfo = NULLP;
-            SPutSBuf(reg, pool, (Data* )padding,(Size)nmPadBytes);
+            SCH_FREE(padding,(Size)nmPadBytes);
             padding = NULLP;
             rgSCHUtlRgrSiCfgCfm(instCb->rgSchInit.inst, spId, transId, 
                                                             cfmStatus); 
             return RFAILED;
          }
-         SPutSBuf(reg, pool, (Data* )padding,(Size)nmPadBytes);
+         SCH_FREE(padding,(Size)nmPadBytes);
          padding = NULLP;
       }/* if (tbSz != ...*/
    }/* if (RGR_SI_CFG_TYPE_SI...*/
@@ -1100,7 +1103,7 @@ S16 rgSCHGomHndlSiCfg(Region reg,Pool pool,RgSchCb *instCb,SpId spId,RgrCfgTrans
                DU_LOG("\nERROR  -->  SCH : Failed to get MCS and NPRB" 
                      "value");
                RGSCH_FREE_MSG(cfgReqInfo->pdu);
-               SPutSBuf(reg, pool, (Data *)cfgReqInfo, (Size)sizeof(*cfgReqInfo)); 
+               SCH_FREE(cfgReqInfo, (Size)sizeof(*cfgReqInfo)); 
                cfgReqInfo = NULLP;
                rgSCHUtlRgrSiCfgCfm(instCb->rgSchInit.inst, spId, transId, 
                      cfmStatus); 
@@ -1122,7 +1125,7 @@ S16 rgSCHGomHndlSiCfg(Region reg,Pool pool,RgSchCb *instCb,SpId spId,RgrCfgTrans
             DU_LOG("\nERROR  -->  SCH : Failed to get MCS and NPRB" 
                      "value");
             RGSCH_FREE_MSG(cfgReqInfo->pdu);
-            SPutSBuf(reg, pool, (Data *)cfgReqInfo, (Size)sizeof(*cfgReqInfo)); 
+            SCH_FREE(cfgReqInfo, (Size)sizeof(*cfgReqInfo)); 
             cfgReqInfo = NULLP;
             rgSCHUtlRgrSiCfgCfm(instCb->rgSchInit.inst, spId, transId, 
                                                                  cfmStatus); 
@@ -1143,7 +1146,7 @@ S16 rgSCHGomHndlSiCfg(Region reg,Pool pool,RgSchCb *instCb,SpId spId,RgrCfgTrans
             DU_LOG("\nERROR  -->  SCH : Failed to get MCS and NPRB" 
                      "value");
             RGSCH_FREE_MSG(cfgReqInfo->pdu);
-            SPutSBuf(reg, pool, (Data *)cfgReqInfo, (Size)sizeof(*cfgReqInfo)); 
+            SCH_FREE(cfgReqInfo, (Size)sizeof(*cfgReqInfo)); 
             cfgReqInfo = NULLP;
             rgSCHUtlRgrSiCfgCfm(instCb->rgSchInit.inst, spId, transId, 
                                                                  cfmStatus); 
@@ -1191,7 +1194,7 @@ S16 rgSCHGomHndlSiCfg(Region reg,Pool pool,RgSchCb *instCb,SpId spId,RgrCfgTrans
             DU_LOG("\nERROR  -->  SCH : Failed to get MCS and NPRB" 
                      "value");
             RGSCH_FREE_MSG(cfgReqInfo->pdu);
-            SPutSBuf(reg, pool, (Data *)cfgReqInfo, (Size)sizeof(*cfgReqInfo)); 
+            SCH_FREE(cfgReqInfo, (Size)sizeof(*cfgReqInfo)); 
             cfgReqInfo = NULLP;
             rgSCHUtlRgrSiCfgCfm(instCb->rgSchInit.inst, spId, transId, 
                                                                  cfmStatus); 
@@ -1207,7 +1210,7 @@ S16 rgSCHGomHndlSiCfg(Region reg,Pool pool,RgSchCb *instCb,SpId spId,RgrCfgTrans
          DU_LOG("\nERROR  -->  SCH : Invalid cfgType "
                   "parameter value");
          RGSCH_FREE_MSG(cfgReqInfo->pdu);
-         SPutSBuf(reg, pool, (Data *)cfgReqInfo, 
+         SCH_FREE(cfgReqInfo, 
                (Size)sizeof(*cfgReqInfo)); 
          cfgReqInfo = NULLP;
          rgSCHUtlRgrSiCfgCfm(instCb->rgSchInit.inst, spId, transId, 
@@ -1215,7 +1218,7 @@ S16 rgSCHGomHndlSiCfg(Region reg,Pool pool,RgSchCb *instCb,SpId spId,RgrCfgTrans
          return RFAILED;
    }
 
-   SPutSBuf(reg, pool, (Data *)cfgReqInfo, (Size)sizeof(*cfgReqInfo)); 
+   SCH_FREE(cfgReqInfo, (Size)sizeof(*cfgReqInfo)); 
    cfgReqInfo = NULLP;
    cfmStatus = RGR_CFG_CFM_OK;
    rgSCHUtlRgrSiCfgCfm(instCb->rgSchInit.inst, spId, transId, cfmStatus); 
@@ -1291,7 +1294,7 @@ RgrWarningSiCfgReqInfo *warningSiCfgReqInfo
       DU_LOG("\nERROR  -->  SCH : Warning SI Cfg Failed for siId = %d"
                 "warning cellID:%d",warningSiCfgReqInfo->siId,warningSiCfgReqInfo->cellId);
       rgSCHUtlFreeWarningSiSeg(reg, pool, &warningSiCfgReqInfo->siPduLst);
-      SPutSBuf(reg, pool, (Data *)warningSiCfgReqInfo, 
+      SCH_FREE(warningSiCfgReqInfo, 
             sizeof(RgrWarningSiCfgReqInfo)); 
       warningSiCfgReqInfo = NULLP;
       rgSCHUtlRgrWarningSiCfgCfm(instCb->rgSchInit.inst, spId, siId, transId, 
@@ -1343,7 +1346,7 @@ RgrWarningSiCfgReqInfo *warningSiCfgReqInfo
                            "for siId = %d", warningSiCfgReqInfo->siId);
                      rgSCHUtlFreeWarningSiSeg(reg, pool, 
                            &warningSiCfgReqInfo->siPduLst);
-                     SPutSBuf(reg, pool, (Data *)warningSiCfgReqInfo, 
+                     SCH_FREE(warningSiCfgReqInfo, 
                            sizeof(RgrWarningSiCfgReqInfo)); 
                      warningSiCfgReqInfo = NULLP;
                      rgSCHUtlRgrWarningSiCfgCfm(instCb->rgSchInit.inst, spId,
@@ -1368,7 +1371,7 @@ RgrWarningSiCfgReqInfo *warningSiCfgReqInfo
             {
                node = warningSiCfgReqInfo->siPduLst.first;
                cmLListDelFrm(&(warningSiCfgReqInfo->siPduLst), node);
-               SPutSBuf(reg, pool, (Data *)node,sizeof(CmLList));
+               SCH_FREE(node,sizeof(CmLList));
                node = NULLP;
             } 
 
@@ -1397,7 +1400,7 @@ RgrWarningSiCfgReqInfo *warningSiCfgReqInfo
    {
       DU_LOG("\nDEBUG  -->  SCH : No SI Index is free");
       rgSCHUtlFreeWarningSiSeg(reg, pool, &warningSiCfgReqInfo->siPduLst);
-      SPutSBuf(reg, pool, (Data *)warningSiCfgReqInfo, 
+      SCH_FREE(warningSiCfgReqInfo, 
             sizeof(RgrWarningSiCfgReqInfo)); 
       warningSiCfgReqInfo = NULLP;
       rgSCHUtlRgrWarningSiCfgCfm(instCb->rgSchInit.inst, spId, siId, transId, 
@@ -1405,7 +1408,7 @@ RgrWarningSiCfgReqInfo *warningSiCfgReqInfo
       return RFAILED;
    }
 
-   SPutSBuf(reg, pool, (Data *)warningSiCfgReqInfo, 
+   SCH_FREE(warningSiCfgReqInfo, 
          sizeof(RgrWarningSiCfgReqInfo)); 
    warningSiCfgReqInfo = NULLP;
    return ROK;
@@ -1546,14 +1549,14 @@ S16 rgSCHGomHndlLoadInf(Region reg,Pool pool,RgSchCb *instCb,SpId spId,RgrCfgTra
    {
       DU_LOG("\nERROR  -->  SCH : Cell Control block does not exist"
              "for load cellId:%d",loadInfReq->cellId);
-      SPutSBuf(reg, pool, (Data *)loadInfReq, (Size)sizeof(*loadInfReq));
+      SCH_FREE(loadInfReq, (Size)sizeof(*loadInfReq));
       return RFAILED;
    }
 
    if (cell->lteAdvCb.dsfrCfg.status == RGR_DISABLE)
    {
       DU_LOG("\nERROR  -->  SCH : rgSCHGomHndlLoadInf(): DSFR Feature not enabled");
-      SPutSBuf(reg, pool, (Data *)loadInfReq, (Size)sizeof(*loadInfReq));
+      SCH_FREE(loadInfReq, (Size)sizeof(*loadInfReq));
       return RFAILED;
    }
    /* Validate the received LOAD INF Configuration */
@@ -1562,7 +1565,7 @@ S16 rgSCHGomHndlLoadInf(Region reg,Pool pool,RgSchCb *instCb,SpId spId,RgrCfgTra
    {
       DU_LOG("\nERROR  -->  SCH : Rgr LOAD INF Configuration "
                "validation FAILED");
-      SPutSBuf(reg, pool, (Data *)loadInfReq, (Size)sizeof(*loadInfReq));
+      SCH_FREE(loadInfReq, (Size)sizeof(*loadInfReq));
       return RFAILED;
    }
    /* Update the RNTP info rcvd in the respective cell centre pool so that Phigh can be
@@ -1575,7 +1578,7 @@ S16 rgSCHGomHndlLoadInf(Region reg,Pool pool,RgSchCb *instCb,SpId spId,RgrCfgTra
       }
    }
 
-   SPutSBuf(reg, pool, (Data *)loadInfReq, (Size)sizeof(*loadInfReq));
+   SCH_FREE(loadInfReq, (Size)sizeof(*loadInfReq));
 
 
    return ROK;

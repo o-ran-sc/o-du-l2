@@ -90,7 +90,7 @@
 {\
    if (NULLP != (_buf)) \
    { \
-      SPutMsg((_buf)); \
+      ODU_PUT_MSG_BUF((_buf)); \
       _buf = NULLP; \
    } \
 }

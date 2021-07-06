@@ -284,20 +284,20 @@ RgmPrbRprtCfg  * prbRprtCfg
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
    {
-      SPutSBuf(pst->region, pst->pool, (Data *)prbRprtCfg, sizeof(RgmPrbRprtCfg));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)prbRprtCfg, sizeof(RgmPrbRprtCfg));
       return RFAILED;
    }
 
     if(oduPackPointer((PTR)prbRprtCfg, mBuf) != ROK)
     {
        SPutMsg(mBuf); 
-       SPutSBuf(pst->region, pst->pool, (Data*)prbRprtCfg, len);
+       SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data*)prbRprtCfg, len);
        return RFAILED;
     }
 
    if (SPkS16(spId, mBuf) != ROK) 
    {
-      SPutSBuf(pst->region, pst->pool, (Data *)prbRprtCfg, sizeof(RgmPrbRprtCfg));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)prbRprtCfg, sizeof(RgmPrbRprtCfg));
       SPutMsg(mBuf);
       return RFAILED;
    }
@@ -341,7 +341,7 @@ Buffer *mBuf
    if (oduUnpackPointer((PTR *)&prbRprtCfg, mBuf) != ROK)
    {
       SPutMsg(mBuf);
-      SPutSBuf(pst->region, pst->pool, (Data *)prbRprtCfg, sizeof(RgmPrbRprtCfg));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)prbRprtCfg, sizeof(RgmPrbRprtCfg));
       return RFAILED;
    }
 
@@ -376,20 +376,20 @@ RgmPrbRprtInd  * prbRprtInd
 
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-      SPutSBuf(pst->region, pst->pool, (Data *)prbRprtInd, sizeof(RgmPrbRprtInd));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)prbRprtInd, sizeof(RgmPrbRprtInd));
       return RFAILED;
    }
 
    if(oduPackPointer((PTR)prbRprtInd, mBuf) != ROK)
    {
-      SPutSBuf(pst->region, pst->pool, (Data *)prbRprtInd, sizeof(RgmPrbRprtInd));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)prbRprtInd, sizeof(RgmPrbRprtInd));
       SPutMsg(mBuf);
       return RFAILED;
    }
 
    if (SPkS16(suId, mBuf) != ROK) 
    {
-      SPutSBuf(pst->region, pst->pool, (Data *)prbRprtInd, sizeof(RgmPrbRprtInd));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)prbRprtInd, sizeof(RgmPrbRprtInd));
       SPutMsg(mBuf);
       return RFAILED;
    }
@@ -433,7 +433,7 @@ Buffer *mBuf
    if (oduUnpackPointer((PTR *)&prbRprtInd, mBuf) != ROK) 
    {
       SPutMsg(mBuf);
-      SPutSBuf(pst->region, pst->pool, (Data *)prbRprtInd, sizeof(RgmPrbRprtInd));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)prbRprtInd, sizeof(RgmPrbRprtInd));
       return RFAILED;
    }
 
@@ -780,25 +780,25 @@ RgmPrbRprtCfg  * prbRprtCfg
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
    {
-      SPutSBuf(pst->region, pst->pool, (Data *)prbRprtCfg, sizeof(RgmPrbRprtCfg));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)prbRprtCfg, sizeof(RgmPrbRprtCfg));
       return RFAILED;
    }
 
     if(cmPkCfgPrbRprt(prbRprtCfg, mBuf) != ROK)
     {
        SPutMsg(mBuf); 
-       SPutSBuf(pst->region, pst->pool, (Data*)prbRprtCfg, len);
+       SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data*)prbRprtCfg, len);
        return RFAILED;
     }
 
    if (SPkS16(spId, mBuf) != ROK) 
    {
-      SPutSBuf(pst->region, pst->pool, (Data *)prbRprtCfg, sizeof(RgmPrbRprtCfg));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)prbRprtCfg, sizeof(RgmPrbRprtCfg));
       SPutMsg(mBuf);
       return RFAILED;
    }
 
-   SPutSBuf(pst->region, pst->pool, (Data *)prbRprtCfg, sizeof(RgmPrbRprtCfg));
+   SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)prbRprtCfg, sizeof(RgmPrbRprtCfg));
 
    pst->event = (Event) EVTRGMCFGPRBRPRT;
    return (SPstTsk(pst,mBuf));
@@ -829,7 +829,7 @@ Buffer *mBuf
    SpId spId;
    RgmPrbRprtCfg *prbRprtCfg;
 
-   if ((SGetSBuf(pst->region, pst->pool, (Data **)&prbRprtCfg, sizeof(RgmPrbRprtCfg))) != ROK)
+   if ((SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&prbRprtCfg, sizeof(RgmPrbRprtCfg))) != ROK)
       {
          SPutMsg(mBuf);
          return RFAILED;
@@ -995,25 +995,25 @@ RgmPrbRprtInd  * prbRprtInd
 
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-      SPutSBuf(pst->region, pst->pool, (Data *)prbRprtInd, sizeof(RgmPrbRprtInd));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)prbRprtInd, sizeof(RgmPrbRprtInd));
       return RFAILED;
    }
 
    if(cmPkPrbRprtInd(prbRprtInd, mBuf) != ROK)
    {
-      SPutSBuf(pst->region, pst->pool, (Data *)prbRprtInd, sizeof(RgmPrbRprtInd));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)prbRprtInd, sizeof(RgmPrbRprtInd));
       SPutMsg(mBuf);
       return RFAILED;
    }
 
    if (SPkS16(suId, mBuf) != ROK) 
    {
-      SPutSBuf(pst->region, pst->pool, (Data *)prbRprtInd, sizeof(RgmPrbRprtInd));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)prbRprtInd, sizeof(RgmPrbRprtInd));
       SPutMsg(mBuf);
       return RFAILED;
    }
 
-   SPutSBuf(pst->region, pst->pool, (Data *)prbRprtInd, sizeof(RgmPrbRprtInd));
+   SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)prbRprtInd, sizeof(RgmPrbRprtInd));
 
    pst->event = (Event) EVTRGMPRBRPRTIND;
    return (SPstTsk(pst,mBuf));
@@ -1132,25 +1132,25 @@ RgmTransModeInd *transModeInd
 
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-      SPutSBuf(pst->region, pst->pool, (Data *)transModeInd, sizeof(RgmTransModeInd));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)transModeInd, sizeof(RgmTransModeInd));
       return RFAILED;
    }
 
    if(cmPkTransModeInd(transModeInd, mBuf) != ROK)
    {
-      SPutSBuf(pst->region, pst->pool, (Data *)transModeInd, sizeof(RgmTransModeInd));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)transModeInd, sizeof(RgmTransModeInd));
       SPutMsg(mBuf);
       return RFAILED;
    }
 
    if (SPkS16(suId, mBuf) != ROK) 
    {
-      SPutSBuf(pst->region, pst->pool, (Data *)transModeInd, sizeof(RgmTransModeInd));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)transModeInd, sizeof(RgmTransModeInd));
       SPutMsg(mBuf);
       return RFAILED;
    }
 
-   SPutSBuf(pst->region, pst->pool, (Data *)transModeInd, sizeof(RgmTransModeInd));
+   SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)transModeInd, sizeof(RgmTransModeInd));
 
    pst->event = (Event) EVTRGMTRANSMODEIND;
    return (SPstTsk(pst,mBuf));

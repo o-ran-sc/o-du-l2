@@ -48,7 +48,7 @@
 #ifdef LTE_L2_MEAS
 #include "rg_sch_cmn.h"    /* typedefs for Scheduler */
 #endif
-
+#include "sch_utils.h"
 /* header/extern include files (.x) */
 #include "rgr.x"           /* RGR Interface includes */
 #include "rgm.x"           /* RGM Interface includes */
@@ -357,29 +357,21 @@ static Void rgSCHLmmShutdown(Inst inst)
    }
    /* Free the memory held by the scheduler instance */
    /* Deallocate RGR saps */
-   SPutSBuf(rgSchCb[inst].rgSchInit.region,
-                rgSchCb[inst].rgSchInit.pool,
-                (Data *)rgSchCb[inst].rgrSap,
+   SCH_FREE(rgSchCb[inst].rgrSap,
                 (sizeof(RgSchUpSapCb) * rgSchCb[inst].numSaps));
    rgSchCb[inst].rgrSap = NULLP;
    /* Deallocate RGM saps */
-   SPutSBuf(rgSchCb[inst].rgSchInit.region,
-                rgSchCb[inst].rgSchInit.pool,
-                (Data *)rgSchCb[inst].rgmSap,
+   SCH_FREE(rgSchCb[inst].rgmSap,
                 (sizeof(RgSchUpSapCb) * rgSchCb[inst].numSaps));
    rgSchCb[inst].rgmSap = NULLP;
 
    /* Deallocate TFU saps */
-   SPutSBuf(rgSchCb[inst].rgSchInit.region,
-                rgSchCb[inst].rgSchInit.pool,
-                (Data *)rgSchCb[inst].tfuSap,
+   SCH_FREE(rgSchCb[inst].tfuSap,
                 (sizeof(RgSchLowSapCb) * rgSchCb[inst].numSaps));
    rgSchCb[inst].tfuSap = NULLP;
 
    /* Deallocate bndCfmResponses */
-   SPutSBuf(rgSchCb[inst].rgSchInit.region,
-                rgSchCb[inst].rgSchInit.pool,
-                (Data *)rgSchCb[inst].genCfg.bndCfmResp,
+   SCH_FREE(rgSchCb[inst].genCfg.bndCfmResp,
                 (sizeof(RgSchLmResponse) * rgSchCb[inst].numSaps));
    rgSchCb[inst].genCfg.bndCfmResp = NULLP;
    /* De-register the Timer Service */
