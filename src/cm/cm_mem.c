@@ -4882,7 +4882,7 @@ uint16_t    bktIdx
 #else
    funcNm = (S8 **)calloc(1, (sizeof(uint32_t) * CM_MAX_STACK_TRACE));
 #endif
-	/* SGetSBuf(DFLT_REGION, DFLT_POOL, &funcNm, sizeof(uint32_t) * CM_MAX_STACK_TRACE); */
+	/* SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,DFLT_REGION, DFLT_POOL, &funcNm, sizeof(uint32_t) * CM_MAX_STACK_TRACE); */
    traceSize = backtrace((Void **)funcNm, CM_MAX_STACK_TRACE);
 #else /* SS_MEM_LEAK_SOL */
 #ifndef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL2
@@ -4905,7 +4905,7 @@ uint16_t    bktIdx
    allocInfo = (MemAllocInfo *)calloc(1, sizeof(MemAllocInfo));  
 #endif
 #endif
-	/* SGetSBuf(DFLT_REGION, DFLT_POOL, &allocInfo,  sizeof(MemAllocInfo)); */
+	/* SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,DFLT_REGION, DFLT_POOL, &allocInfo,  sizeof(MemAllocInfo)); */
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL2
    /* check if hashListCp is initialised yet */
    if ( regCb->brdcmSsiLstCp.nmbBins == 0)
@@ -5238,7 +5238,7 @@ Void SFlushLkInfo (Void)
 #else
                 free(funcNm[i]); 
 #endif
-				    /* SPutSBuf(DFLT_REGION, DFLT_POOL, funcNm[i], sizeof(uint32_t) * CM_MAX_STACK_TRACE); */
+				    /* SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,DFLT_REGION, DFLT_POOL, funcNm[i], sizeof(uint32_t) * CM_MAX_STACK_TRACE); */
              }
 #endif /* SS_MEM_LEAK_SOl */
 /*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
@@ -5459,7 +5459,7 @@ S32 cmLeakCallBack(uintptr_t pc,S32  sigNo, Void *arg)
 #else
     buffer = (S8 *)calloc(1, 510); 
 #endif
-	 /* SGetSBuf(DFLT_REGION, DFLT_POOL, &buffer, 510); */
+	 /* SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,DFLT_REGION, DFLT_POOL, &buffer, 510); */
     (void) cmAddrToSymStr((void *)pc, buffer, 505);
     bt->bt_buffer[bt->bt_actcount++] = (S8 *)buffer;
 
@@ -5670,7 +5670,7 @@ Pool         pool          /* memory pool to allocate bins */
    /* allocate memory for bins */
    if (nmbBins)
    {
-      if (SGetSBuf(region, pool, (Data **) &hashListCp->hashList,
+      if (SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,region, pool, (Data **) &hashListCp->hashList,
                (Size)(nmbBins * sizeof(CmMmHashListEnt))) != ROK)
       return RFAILED;
 
@@ -5717,7 +5717,7 @@ Pool   pool          /* memory pool to allocate bins */
 
    /* deallocate memory for bins */
    if (hashListCp->numOfbins)
-      (Void) SPutSBuf(region, pool,
+      (Void) SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,region, pool,
                       (Data *) hashListCp->hashList,
                       (Size) (hashListCp->numOfbins * sizeof(CmMmHashListEnt)));
 

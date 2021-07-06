@@ -62,7 +62,7 @@
 S16 cmPkMacSchUeDelInd(Pst* pst,RgInfUeDelInd*  ueDelInd)
 {
    Buffer *mBuf = NULLP;
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
+   if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK) 
    {
       return RFAILED;
    }
@@ -129,7 +129,7 @@ S16 cmPkMacSchDedBoUpdtReq(Pst* pst,RgInfDedBoRpt* boRpt)
 {
    Buffer *mBuf = NULLP;
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
+   if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK) {
       return RFAILED;
    }
 
@@ -192,7 +192,7 @@ S16 cmPkMacSchCmnBoUpdtReq(Pst* pst,RgInfCmnBoRpt* boRpt)
 {
    Buffer *mBuf = NULLP;
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
+   if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK) {
       return RFAILED;
    }
 
@@ -255,7 +255,7 @@ S16 cmPkMacSchSfRecpInd(Pst* pst,RgInfSfDatInd*  datInd)
 {
    Buffer *mBuf = NULLP;
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
+   if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK) {
       return RFAILED;
    }
 
@@ -316,7 +316,7 @@ S16 cmPkMacSchSpsRelInd(Pst* pst,RgInfSpsRelInfo* relInfo)
 {
    Buffer *mBuf = NULLP;
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
+   if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK) {
       return RFAILED;
    }
 
@@ -378,7 +378,7 @@ S16 cmPkSchMacSfAllocReq(Pst* pst,RgInfSfAlloc* resAllocReq)
 {
    Buffer *mBuf = NULLP;
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
+   if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK) {
       return RFAILED;
    }
 
@@ -436,7 +436,7 @@ S16 cmPkSchMacRstHqEntReq(Pst*  pst,RgInfResetHqEnt* hqEntInfo)
 {
    Buffer *mBuf = NULLP;
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
+   if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK) {
       return RFAILED;
    }
 
@@ -494,7 +494,7 @@ S16 cmPkSchMacRlsHqReq(Pst* pst,RgInfRlsHqInfo* sfHqInfo)
 {
    Buffer *mBuf = NULLP;
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
+   if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK) {
       return RFAILED;
    }
 
@@ -553,7 +553,7 @@ S16 cmPkSchMacRlsRntiReq(Pst* pst,RgInfRlsRnti* rlsRnti)
 {
    Buffer *mBuf = NULLP;
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
+   if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK) {
       return RFAILED;
    }
 
@@ -616,7 +616,7 @@ S16 cmPkSchMacCellRegReq(Pst* pst,RgInfCellReg* regReq)
 {
    Buffer *mBuf = NULLP;
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
+   if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK) {
       return RFAILED;
    }
 
@@ -677,7 +677,7 @@ S16 cmPkSchMacLcgRegReq(Pst* pst,RgInfLcgRegReq *lcgRegReq)
 {
    Buffer *mBuf = NULLP;
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
+   if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK) {
       return RFAILED;
    }
 
@@ -736,7 +736,7 @@ S16 cmPkSchMacSpsLcRegReq(Pst*  pst,RgInfSpsLcInfo *lcInfo)
 {
    Buffer *mBuf = NULLP;
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
+   if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK) {
       return RFAILED;
    }
 
@@ -766,7 +766,7 @@ S16 cmPkSchMacUlSpsResetReq(Pst*  pst,RgInfUlSpsReset  *ulSpsResetInfo)
 {
    Buffer *mBuf = NULLP;
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
+   if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK) {
       return RFAILED;
    }
 
@@ -855,7 +855,7 @@ S16 cmPkSchMacSpsLcDeregReq(Pst* pst,CmLteCellId cellId,CmLteRnti  crnti)
 {
    Buffer *mBuf = NULLP;
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
+   if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK) {
       return RFAILED;
    }
 
@@ -910,7 +910,7 @@ S16 cmPkSchMacL2MeasReq(Pst* pst,RgInfL2MeasReq  *measInfo)
 {
    Buffer *mBuf = NULLP;
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
+   if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK) {
       return RFAILED;
    }
    if(SAddPstMsgMult((Data *)measInfo, sizeof(RgInfL2MeasReq), mBuf) != ROK)
@@ -939,12 +939,12 @@ S16 cmPkSchMacL2MeasStopReq(Pst*  pst,RgInfL2MeasStopReq *measInfo)
 {
    Buffer *mBuf = NULLP;
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
+   if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK) {
        return RFAILED;
   }
    if(SAddPstMsgMult((Data *)measInfo, sizeof(RgInfL2MeasStopReq), mBuf) != ROK)
    {
-      SPutMsg(mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
       return RFAILED;
    }
 
@@ -967,13 +967,13 @@ S16 cmPkSchMacL2MeasSendReq(Pst* pst,RgInfL2MeasSndReq *measInfo)
 {
    Buffer *mBuf = NULLP;
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
+   if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK) {
        return RFAILED;
   }
 
    if(SAddPstMsgMult((Data *)measInfo, sizeof(RgInfL2MeasSndReq), mBuf) != ROK)
    {
-      SPutMsg(mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
       return RFAILED;
    }
 
@@ -1027,11 +1027,11 @@ S16 cmUnpkSchMacL2MeasStopReq(L2MeasStopReq func,Pst *pst,Buffer *mBuf)
 
    if(SRemPreMsgMult((Data *)&measInfo, sizeof(RgInfL2MeasStopReq), mBuf) != ROK)
    {
-      SPutMsg(mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
       return RFAILED;
    }
 
-   SPutMsg(mBuf);
+   ODU_PUT_MSG_BUF(mBuf);
    return ((*func)(pst, &measInfo));
 } /* end of cmUnpkSchMacL2MeasReq */
 /**
@@ -1053,11 +1053,11 @@ S16 cmUnpkSchMacL2MeasSendReq(L2MeasSendReq  func,Pst *pst,Buffer *mBuf)
 
  if(SRemPreMsgMult((Data *)&measInfo, sizeof(RgInfL2MeasSndReq), mBuf) != ROK)  
    {
-      SPutMsg(mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
       return RFAILED;
    }
 
-   SPutMsg(mBuf);
+   ODU_PUT_MSG_BUF(mBuf);
    return ((*func)(pst, &measInfo));
 } /* end of cmUnpkSchMacL2MeasSendReq*/
 
@@ -1077,7 +1077,7 @@ S16 cmPkMacSchL2MeasCfm(Pst*  pst,RgInfL2MeasCfm *measCfm)
 {
    Buffer *mBuf = NULLP;
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
+   if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK) {
       return RFAILED;
    }
 
@@ -1108,13 +1108,13 @@ S16 cmPkMacSchL2MeasStopCfm(Pst*  pst,RgInfL2MeasCfm  *measCfm)
 {
    Buffer *mBuf = NULLP;
 
- if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
+ if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK) {
       return RFAILED;
    }
 
    if(SAddPstMsgMult((Data *)measCfm, sizeof(RgInfL2MeasCfm), mBuf) != ROK)
    {
-      SPutMsg(mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
       return RFAILED;
    }
 
@@ -1167,11 +1167,11 @@ S16 cmUnpkMacSchL2MeasStopCfm(L2MeasCfm func,Pst *pst,Buffer  *mBuf)
 
    if(SRemPreMsgMult((Data *)&measCfm, sizeof(RgInfL2MeasCfm), mBuf) != ROK)
    {
-      SPutMsg(mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
       return RFAILED;
    }
 
-   SPutMsg(mBuf);
+   ODU_PUT_MSG_BUF(mBuf);
    return ((*func)(pst, &measCfm));
 } /* end of cmUnpkMacSchL2MeasStopCfm */
 

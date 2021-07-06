@@ -26,7 +26,7 @@
 {                                                            \
    if (_buf != NULLP)                                        \
    {                                                         \
-      (Void) SPutStaticBuffer(_region, _pool,                \
+      (Void) SPutStaticBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,_region, _pool,                \
              (Data *) _buf, (Size) _size, 0);                \
        _buf = NULLP;                                         \
    }                                                         \

@@ -270,7 +270,7 @@ Void rgDHMFreeTbBufs(Inst inst)
    while (start != end)
    {
       start--;
-      SPutMsg(rgCbP->bufToFree[start]);
+      ODU_PUT_MSG_BUF(rgCbP->bufToFree[start]);
    }
    rgCbP->bufCnt = end;
    return;
@@ -285,7 +285,7 @@ Void rgDHMFreeAllTbBufs(Inst inst)
    while (start != end)
    {
       start--;
-      SPutMsg(rgCbP->bufToFree[start]);
+      ODU_PUT_MSG_BUF(rgCbP->bufToFree[start]);
    }
    rgCbP->bufCnt = end;
    return;

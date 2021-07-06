@@ -53,8 +53,7 @@ typedef struct tSL2UeStatsCb
 }TSL2UeStatsCb;
 
 Void TSL2AllocStatsMem ARGS((
- Region region,
- Pool   pool
+  Inst inst
 ));
 TSL2UeStatsCb* TSL2AllocUeStatsBlk ARGS((
  uint16_t   rnti
