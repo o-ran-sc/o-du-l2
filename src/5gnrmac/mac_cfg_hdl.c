@@ -470,8 +470,9 @@ uint8_t MacProcSchCellDeleteRsp(Pst *pst, SchCellDeleteRsp *schCellDelRsp)
          {
             if(macCb.macCell[cellIdx]->cellId == schCellDelRsp->cellId)
             {
-               memset(macCb.macCell[cellIdx], 0, sizeof(MacCellCb));
                status  = SUCCESSFUL_RSP;
+               MAC_FREE(macCb.macCell[cellIdx]->macCellCfg.sib1Cfg.sib1Pdu, \
+                  macCb.macCell[cellIdx]->macCellCfg.sib1Cfg.sib1PduLen);
                MAC_FREE(macCb.macCell[cellIdx], sizeof(MacCellCb));
             }
             else

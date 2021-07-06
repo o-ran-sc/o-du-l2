@@ -222,6 +222,7 @@ uint8_t DuProcMacCellDeleteRsp(Pst *pst, MacCellDeleteRsp *deleteRsp)
 {
    uint8_t ret = ROK;
    uint16_t cellIdx=0;
+   
    if(deleteRsp)
    {
       if(deleteRsp->result == SUCCESSFUL_RSP)

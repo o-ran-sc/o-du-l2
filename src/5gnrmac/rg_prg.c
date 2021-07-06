@@ -69,7 +69,7 @@ S16 cmPkPrgPMacSMacUeSCellCfgReq(Pst  *pst,RgPrgUeSCellCfgInfo   *ueSCellCfgInfo
 {
    Buffer *mBuf = NULLP;
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
+   if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK) 
    {
       return RFAILED;
    }
@@ -129,7 +129,7 @@ S16 cmPkPrgSMacPMacCfgCfm(Pst *pst,RgPrgCfgCfmInfo   *cfgCfm)
 {
    Buffer *mBuf = NULLP;
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
+   if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK) 
    {
       return RFAILED;
    }
@@ -215,7 +215,7 @@ S16 cmPkPrgPMacSMacUeSCellDelReq(Pst *pst,RgPrgUeSCellDelInfo   *ueSCellDelInfo)
 {
    Buffer *mBuf = NULLP;
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
+   if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK) 
    {
       return RFAILED;
    }
@@ -282,7 +282,7 @@ S16 cmPkPrgPMacSMacUeSCellLchAddReq(Pst *pst,RgPrgUeSCellLchAddInfo   *lchCfgInf
 {
    Buffer *mBuf = NULLP;
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
+   if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK) 
    {
       return RFAILED;
    }
@@ -348,7 +348,7 @@ S16 cmPkPrgPMacSMacUeSCellLchDelReq(Pst *pst,RgPrgUeSCellLchDelInfo *delLcCb)
 {
    Buffer *mBuf = NULLP;
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
+   if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK) 
    {
       return RFAILED;
    }
@@ -382,7 +382,7 @@ S16 cmPkPrgPMacSMacUeSCellLchModReq(Pst  *pst,RgPrgUeSCellLchModInfo  *lchCfgInf
 {
    Buffer *mBuf = NULLP;
 
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
+   if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK) 
    {
       return RFAILED;
    }

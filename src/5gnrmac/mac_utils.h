@@ -22,15 +22,26 @@
 #define MAC_MEM_REGION   4
 #define MAC_POOL         1
 
+#ifdef ODU_MEMORY_DEBUG_LOG
+#define MAC_MEM_LOG(_macro, _file, _line, _func, _size, _datPtr)\
+{\
+   printf("\n%s=== %s +%d, %s, %d, %p\n",           \
+      _macro, _file, _line, _func, _size, _datPtr); \
+}
+#else
+#define MAC_MEM_LOG(_macro, _file, _line, _func, _size, _dataPtr) {}
+#endif
+
 /* allocate and zero out a MAC static buffer */
 #define MAC_ALLOC(_datPtr, _size)                            \
 {                                                            \
    uint8_t _ret;                                             \
    _ret = SGetSBuf(MAC_MEM_REGION, MAC_POOL,                 \
-	 (Data **)&_datPtr, _size);                          \
+	 (Data **)&_datPtr, _size);                               \
    if(_ret == ROK)                                           \
    {                                                         \
-      memset(_datPtr, 0, _size);                \
+      memset(_datPtr, 0, _size);                             \
+      MAC_MEM_LOG("MAC_ALLOC", __FILE__, __LINE__, __FUNCTION__, _size, _datPtr);\
    }                                                         \
    else                                                      \
    {                                                         \
@@ -43,9 +54,10 @@
 {                                                            \
    if(_datPtr)                                               \
    {                                                         \
+      MAC_MEM_LOG("MAC_FREE", __FILE__, __LINE__, __FUNCTION__, _size, _datPtr);\
       SPutSBuf(MAC_MEM_REGION, MAC_POOL,                     \
-	    (Data *)_datPtr, _size);                         \
-      _datPtr = NULLP;                                      \
+	    (Data *)_datPtr, _size);                              \
+      _datPtr = NULLP;                                       \
    }                                                         \
 }
 
@@ -54,9 +66,10 @@
 #define MAC_ALLOC_SHRABL_BUF(_buf, _size)                    \
 {                                                            \
    if(SGetStaticBuffer(MAC_MEM_REGION, MAC_POOL,             \
-	    (Data **)&_buf, (Size) _size, 0) == ROK)         \
+	    (Data **)&_buf, (Size) _size, 0) == ROK)              \
    {                                                         \
-      memset((_buf), 0, _size);                 \
+      MAC_MEM_LOG("MAC_ALLOC_SHRABL_BUF", __FILE__, __LINE__, __FUNCTION__, _size, _buf);\
+      memset((_buf), 0, _size);                              \
    }                                                         \
    else                                                      \
    {                                                         \
@@ -69,6 +82,7 @@
 {                                                            \
    if (_buf != NULLP)                                        \
    {                                                         \
+      MAC_MEM_LOG("MAC_FREE_SHRABL_BUF", __FILE__, __LINE__, __FUNCTION__, _size, _buf);\
       (Void) SPutStaticBuffer(_region, _pool,                \
 	    (Data *) _buf, (Size) _size, 0);                 \
       _buf = NULLP;                                          \

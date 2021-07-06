@@ -47,6 +47,7 @@ manages Pst and Sap related information for upper interface APIs.
 #include "rg_env.h"        /* customizable defines and macros for MAC */
 #include "rg.h"            /* defines and macros for MAC */
 #include "rg_err.h"        /* RG error defines */
+#include "mac_utils.h"
 
 /* header/extern include files (.x) */
 
@@ -360,8 +361,7 @@ S16 RgUiRguDDatReq(Pst *pst,SpId spId,RguDDatReqInfo  *datReq)
 
    /* Call Ownership module for further processing */
    ret = rgROMDedDatReq(inst,datReq);
-    SPutStaticBuffer(pst->region, pst->pool, (Data *)datReq,sizeof(RguDDatReqInfo), SS_SHARABLE_MEMORY);
-   datReq = NULLP;
+   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, datReq,sizeof(RguDDatReqInfo));
    return (ret);
 }  /* RgUiRguDDatReq */
 
@@ -441,8 +441,7 @@ RguCDatReqInfo  *datReq
    {
       RG_DROP_RGUCDATREQ_MBUF(datReq);
    }
-   ret = SPutStaticBuffer(pst->region, pst->pool,(Data *)datReq,sizeof(RguCDatReqInfo) , SS_SHARABLE_MEMORY);
-   datReq = NULLP;
+   MAC_FREE_SHRABL_BUF(pst->region, pst->pool,datReq,sizeof(RguCDatReqInfo));
    return (ret);
 }  /* RgUiRguCDatReq */
 
@@ -561,8 +560,7 @@ RguCStaRspInfo  *staRsp
       return (ret);
    }
 
-   ret = SPutStaticBuffer(pst->region, pst->pool, (Data *)staRsp,sizeof(RguCStaRspInfo) , SS_SHARABLE_MEMORY);
-   staRsp = NULLP;
+   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, staRsp,sizeof(RguCStaRspInfo));
    return (ret);
 }  /* RgUiRguCStaRsp */
 
@@ -634,8 +632,7 @@ RguL2MUlThrpMeasReqInfo  *measReq
       DU_LOG("\nERROR  -->  MAC : Processing Of Meas Request Failed");
    }
 
-  SPutStaticBuffer(pst->region, pst->pool, (Data *)measReq,sizeof(RguL2MUlThrpMeasReqInfo) , SS_SHARABLE_MEMORY);
-   measReq= NULLP;
+   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, (Data *)measReq,sizeof(RguL2MUlThrpMeasReqInfo));
    return (ret);
 }  /* RgUiRguL2MUlThrpMeasReq */
 #endif
@@ -1038,12 +1035,10 @@ CrgCfgReqInfo *cfgReqInfo
            DU_LOG("\nERROR  -->  MAC : Invalid SAP State:%d RgUiCrgCfgReq failed",
                   rgCb[inst].crgSap.sapSta.sapState);
 #endif
-         SPutSBuf (pst->region, pst->pool, (Data *)cfgReqInfo,
-               sizeof(CrgCfgReqInfo));
-         cfgReqInfo = NULLP;
+           MAC_FREE(cfgReqInfo, sizeof(CrgCfgReqInfo));
 
-            rgUIMCrgCfgCfm(inst,transId, cfmStatus);
-            return RFAILED;
+           rgUIMCrgCfgCfm(inst,transId, cfmStatus);
+           return RFAILED;
       }
    }
    else
@@ -1052,16 +1047,12 @@ CrgCfgReqInfo *cfgReqInfo
       DU_LOG("\nERROR  -->  MAC : Invalid SAP Id:%d RgUiCrgCfgReq failed",
             rgCb[inst].crgSap.sapCfg.spId);
 #endif
-      SPutSBuf (pst->region, pst->pool, (Data *)cfgReqInfo,
-            sizeof(CrgCfgReqInfo));
-      cfgReqInfo = NULLP;
+      MAC_FREE(cfgReqInfo, sizeof(CrgCfgReqInfo));
       rgUIMCrgCfgCfm(inst,transId, cfmStatus); 
       return RFAILED;
    }
    ret = rgCOMCfgReq(inst,transId, cfgReqInfo);
-   SPutSBuf (pst->region, pst->pool, (Data *)cfgReqInfo,
-         sizeof(CrgCfgReqInfo));
-   cfgReqInfo = NULLP;
+   MAC_FREE(cfgReqInfo, sizeof(CrgCfgReqInfo));
    if (ret != ROK)
    {
       DU_LOG("\nERROR  -->  MAC : Configuration Request Handling Failed ");

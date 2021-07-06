@@ -2348,7 +2348,7 @@ uint32_t        context       /* value to be passed back, if error occurs */
    {
       return RFAILED;
    }
-   ret = SGetSBuf(info->region, info->pool, &sendBuf, bufLen);                  
+   ret = SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, &sendBuf, bufLen);                  
    if (ret != ROK)
    {
       return (ROUTRES);
@@ -2356,7 +2356,7 @@ uint32_t        context       /* value to be passed back, if error occurs */
    ret = SCpyMsgFix(mBuf, 0, bufLen, sendBuf, &msgLen);
    if ((ret != ROK) || (msgLen != bufLen)) 
    {
-      SPutSBuf(info->region, info->pool, sendBuf, bufLen);       
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, sendBuf, bufLen);       
       return RFAILED;
    }
 
@@ -2367,7 +2367,7 @@ uint32_t        context       /* value to be passed back, if error occurs */
       {
          if (sockFd->protType == AF_INET)
          {
-            SPutSBuf(info->region, info->pool, sendBuf, bufLen);       
+            SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, sendBuf, bufLen);       
 #ifdef CMINETDBG
 #ifndef ALIGN_64BIT
             /* cm_inet_c_001.main_54: CMINETLOGERROR added insted of SDisp */
@@ -2476,7 +2476,7 @@ uint32_t        context       /* value to be passed back, if error occurs */
          ppId, flags, strmId, ttl, context);
    if (ret == INET_ERR)
    {
-      SPutSBuf(info->region, info->pool, sendBuf, bufLen);       
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, sendBuf, bufLen);       
 #ifdef CMINETDBG
 #ifndef ALIGN_64BIT
       /* cm_inet_c_001.main_54: CMINETLOGERROR added insted of SDisp */
@@ -2507,7 +2507,7 @@ uint32_t        context       /* value to be passed back, if error occurs */
    *len = (MsgLen)ret; 
 
    /* cleanup */
-   SPutSBuf(info->region, info->pool, sendBuf, bufLen);       
+   SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, sendBuf, bufLen);       
 
    return ROK;
 }
@@ -2574,7 +2574,7 @@ CmInetSctpNotification *ntfy        /* notification parameters */
    buflen = CM_INET_MAX_MSG_LEN;
 
    /* allocate flat receive buffer */
-   ret = SGetSBuf(meminfo->region, meminfo->pool, &recvbuf, buflen);
+   ret = SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,meminfo->region, meminfo->pool, &recvbuf, buflen);
    if (ret != ROK)
    {
 #ifdef CMINETDBG
@@ -2597,7 +2597,7 @@ CmInetSctpNotification *ntfy        /* notification parameters */
    if (ret == INET_ERR)
    {
       /* cleanup */
-      SPutSBuf(meminfo->region, meminfo->pool, recvbuf, buflen);       
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,meminfo->region, meminfo->pool, recvbuf, buflen);       
 #ifdef CMINETDBG
 #ifndef ALIGN_64BIT
       /* cm_inet_c_001.main_54: CMINETLOGERROR added insted of SDisp */
@@ -2771,7 +2771,7 @@ CmInetSctpNotification *ntfy        /* notification parameters */
             /* cm_inet_c_001.main_46: Allocate memory for data before copying */
             datlen = cmStrlen(sctpNtfy->sn_remote_error.sre_data) + 1;
 
-            ret = SGetSBuf( meminfo->region, meminfo->pool, \
+            ret = SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__, meminfo->region, meminfo->pool, \
                   &ntfy->u.remoteErr.data, datlen );
             if( ret != ROK )
             {
@@ -2791,7 +2791,7 @@ CmInetSctpNotification *ntfy        /* notification parameters */
             /* cm_inet_c_001.main_46: Allocate memory for data before copying */
             datlen = cmStrlen(sctpNtfy->sn_send_failed.ssf_data) + 1;
 
-            ret = SGetSBuf( meminfo->region, meminfo->pool, \
+            ret = SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__, meminfo->region, meminfo->pool, \
                   &ntfy->u.sndFailed.data, datlen );
             if( ret != ROK )
             {
@@ -2849,7 +2849,7 @@ CmInetSctpNotification *ntfy        /* notification parameters */
       ret = SGetMsg(meminfo->region, meminfo->pool, mBuf);
       if (ret != ROK)
       {
-         SPutSBuf(meminfo->region, meminfo->pool, recvbuf, buflen);
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,meminfo->region, meminfo->pool, recvbuf, buflen);
          return RFAILED;
       }
 
@@ -2857,13 +2857,13 @@ CmInetSctpNotification *ntfy        /* notification parameters */
       if (ret != ROK)
       {
          SPutMsg(*mBuf);
-         SPutSBuf(meminfo->region, meminfo->pool, recvbuf, buflen);
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,meminfo->region, meminfo->pool, recvbuf, buflen);
          return RFAILED;
       }
    }
 
    /* cleanup */
-   SPutSBuf(meminfo->region, meminfo->pool, recvbuf, buflen);       
+   SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,meminfo->region, meminfo->pool, recvbuf, buflen);       
 
    return ROK;
 }
@@ -4124,7 +4124,7 @@ S16             flags           /* additional control flags, unused */
    {
       return RFAILED;
    }
-   ret = SGetSBuf(info->region, info->pool, &sendBuf, bufLen);                  
+   ret = SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, &sendBuf, bufLen);                  
    if (ret != ROK)
    {
       return (ROUTRES);
@@ -4133,7 +4133,7 @@ S16             flags           /* additional control flags, unused */
    if ((ret != ROK) || (msgLen != bufLen)) 
    {
       /* cleanup */
-      SPutSBuf(info->region, info->pool, sendBuf, bufLen);       
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, sendBuf, bufLen);       
       return RFAILED;
    }
 
@@ -4166,7 +4166,7 @@ S16             flags           /* additional control flags, unused */
    if (ret == INET_ERR)
    {
       /* cleanup */
-      SPutSBuf(info->region, info->pool, sendBuf, bufLen);      
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, sendBuf, bufLen);      
 
       if(INET_ERR_CODE == ERR_AGAIN)
       {
@@ -4223,12 +4223,12 @@ S16             flags           /* additional control flags, unused */
    if (ret < bufLen) 
    {   
       /* cleanup */
-      SPutSBuf(info->region, info->pool, sendBuf, bufLen);      
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, sendBuf, bufLen);      
       return (RWOULDBLOCK);
    }
 
    /* cleanup */
-   SPutSBuf(info->region, info->pool, sendBuf, bufLen);      
+   SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, sendBuf, bufLen);      
 
 #else /* end of Win NT/flat buffer specific part */
    ret = SFndLenMsg(mBuf, &msgLen);
@@ -4615,7 +4615,7 @@ S16             flags           /* additional control flags, unused */
    {
       return RFAILED;
    }
-   ret = SGetSBuf(info->region, info->pool, &sendBuf, bufLen);                  
+   ret = SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, &sendBuf, bufLen);                  
    if (ret != ROK)
    {
       return (ROUTRES);
@@ -4624,7 +4624,7 @@ S16             flags           /* additional control flags, unused */
    if ((ret != ROK) || (msgLen != bufLen)) 
    {
       /* cleanup */
-      SPutSBuf(info->region, info->pool, sendBuf, bufLen);       
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, sendBuf, bufLen);       
       return RFAILED;
    }
 
@@ -4657,7 +4657,7 @@ S16             flags           /* additional control flags, unused */
    if (ret == INET_ERR)
    {
       /* cleanup */
-      SPutSBuf(info->region, info->pool, sendBuf, bufLen);      
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, sendBuf, bufLen);      
 
       if(INET_ERR_CODE == ERR_AGAIN)
       {
@@ -4714,12 +4714,12 @@ S16             flags           /* additional control flags, unused */
    if (ret < bufLen) 
    {   
       /* cleanup */
-      SPutSBuf(info->region, info->pool, sendBuf, bufLen);      
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, sendBuf, bufLen);      
       return (RWOULDBLOCK);
    }
 
    /* cleanup */
-   SPutSBuf(info->region, info->pool, sendBuf, bufLen);      
+   SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, sendBuf, bufLen);      
 
 #else /* end of Win NT/flat buffer specific part */
    ret = SFndLenMsg(mBuf, &msgLen);
@@ -5391,7 +5391,7 @@ CmInetMemInfo   *info            /* Memory information */
    }
 
    /* allocate mem needed to hold all HBH/Dest options */
-   ret = SGetSBuf(info->region, info->pool, 
+   ret = SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, 
          (Data **)&hbhOptsArr->hbhOpts, 
          (Size)((sizeof(CmInetIpv6HBHHdr)) * numOpts)); 
    if (ret != ROK)
@@ -5460,7 +5460,7 @@ CmInetMemInfo   *info            /* Memory information */
       {   
          /* take care of all other options having valid value field
           * such as Router Alert, PADN >= 3 bytes and Jumbo */
-         ret = SGetSBuf(info->region, info->pool, 
+         ret = SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, 
                (Data **)&hbhOptsArr->hbhOpts[optsIdx].value, 
                (Size)hbhOptsArr->hbhOpts[optsIdx].length);
          if (ret != ROK)
@@ -5483,7 +5483,7 @@ CmInetMemInfo   *info            /* Memory information */
                   snprintf(prntBuf, CMINET_PRNT_BUF_SIZE, "SPutSBuf call 1 in BuildRecvHopOptsArr\n");
                   CMINETLOGERROR(ERRCLS_INT_PAR, ECMINET030, 0, prntBuf);
 #endif /* CMINETDBG */                  
-                  SPutSBuf(info->region, info->pool, 
+                  SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, 
                         (Data *)hbhOptsArr->hbhOpts[optsIdx - 1].value,
                         (Size)hbhOptsArr->hbhOpts[optsIdx - 1].length);
                }
@@ -5497,7 +5497,7 @@ CmInetMemInfo   *info            /* Memory information */
             snprintf(prntBuf, CMINET_PRNT_BUF_SIZE, "SPutSBuf call 2 in BuildRecvHopOptsArr\n");
             CMINETLOGERROR(ERRCLS_DEBUG, ECMINET031, 0, prntBuf);
 #endif /* CMINETDBG */            
-            SPutSBuf(info->region, info->pool, 
+            SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, 
                   (Data *)hbhOptsArr->hbhOpts, numOpts * sizeof(CmInetIpv6HBHHdr));
             hbhOptsArr->numHBHOpts = 0;
             hbhOptsArr->hbhOpts = NULLP;
@@ -5580,7 +5580,7 @@ CmInetMemInfo   *info      /* Memory information */
    /* subtract 8 bytes for Next Hdr, Hdr Ext Len, .... + SL bit map */
    rtOptsArr->numAddrs = (rtDataLen - 8)/16;
 
-   ret = SGetSBuf(info->region, info->pool, 
+   ret = SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, 
          (Data **)&rtOptsArr->ipv6Addrs, 
          (Size)rtOptsArr->numAddrs * 16);
    if (ret != ROK)
@@ -5935,7 +5935,7 @@ S32              flags          /* additional control flags */
       }
 
       /* allocate flat receive buffer */
-      ret = SGetSBuf(info->region, info->pool, &recvBuf, bufLen);
+      ret = SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, &recvBuf, bufLen);
       if (ret != ROK)
       {
          return (ROUTRES);
@@ -5983,7 +5983,7 @@ S32              flags          /* additional control flags */
          {
             /* cleanup */
             /* moved cleanup here */
-            SPutSBuf(info->region, info->pool, recvBuf, bufLen); 
+            SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, recvBuf, bufLen); 
 
             /*  added check ERR_WOULDBLOCK */
             if ((INET_ERR_CODE == ERR_AGAIN) ||
@@ -6054,7 +6054,7 @@ S32              flags          /* additional control flags */
          if ((sockFd->type == CM_INET_DGRAM) && (*len == 0))
 #endif
          {
-            SPutSBuf(info->region, info->pool, recvBuf, bufLen);
+            SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, recvBuf, bufLen);
             return (ROKDNA);
          }
 
@@ -6086,7 +6086,7 @@ S32              flags          /* additional control flags */
             CMINETLOGERROR(ERRCLS_INT_PAR, ECMINET068, 0, prntBuf);
 #endif /*ALIGN_64BIT*/
 #endif
-            SPutSBuf(info->region, info->pool, recvBuf, bufLen);
+            SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, recvBuf, bufLen);
             return (ROKDNA);
          }
 
@@ -6095,7 +6095,7 @@ S32              flags          /* additional control flags */
       if (ret != ROK)
       {
          /* cleanup */
-         SPutSBuf(info->region, info->pool, recvBuf, bufLen);       
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, recvBuf, bufLen);       
          return (ret);
       }
 
@@ -6123,7 +6123,7 @@ S32              flags          /* additional control flags */
 
       if (ret != ROK)
       {
-         SPutSBuf(info->region, info->pool, recvBuf, bufLen);    
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, recvBuf, bufLen);    
          SPutMsg(mBuf); 
          return (ret);
       }
@@ -6157,7 +6157,7 @@ S32              flags          /* additional control flags */
       }   
 
       /* cleanup */
-      SPutSBuf(info->region, info->pool, recvBuf, bufLen);      
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, recvBuf, bufLen);      
 
 #else  /* end of Win NT/flat buffer specific part */
 
@@ -6173,7 +6173,7 @@ S32              flags          /* additional control flags */
          /* allocate gather vector, it's a dynamic array */    
          numDBufs =  CM_INET_MAX_DBUF;
 
-         ret = SGetSBuf(info->region, info->pool, (Data**)&dBufs, 
+         ret = SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, (Data**)&dBufs, 
                numDBufs*sizeof(Buffer*));
          if (ret != ROK)
          {
@@ -6209,11 +6209,11 @@ S32              flags          /* additional control flags */
                   for (i = 0; i < msg.msg_iovlen; i++)
                      SPutDBuf(info->region, info->pool, dBufs[i]);   
 
-                  SPutSBuf(info->region, info->pool, (Data*)dBufs, 
+                  SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, (Data*)dBufs, 
                         numDBufs * sizeof(Buffer*)); 
 
                   /* allocate flat receive buffer */
-                  ret = SGetSBuf(info->region, info->pool, &recvBuf, bufLen);
+                  ret = SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, &recvBuf, bufLen);
                   if (ret != ROK)
                      return (ROUTRES);
 
@@ -6233,7 +6233,7 @@ S32              flags          /* additional control flags */
             }
             else
             {
-               SPutSBuf(info->region, info->pool, (Data*)dBufs, 
+               SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, (Data*)dBufs, 
                      numDBufs*sizeof(Buffer*)); 
                return (ret);
             }
@@ -6277,7 +6277,7 @@ S32              flags          /* additional control flags */
             /* Moved up the cleanup precedures here before returning */
             /* Cleanup flat buffer if allocated */
             if (allocFlatBuf)
-               SPutSBuf(info->region, info->pool, recvBuf, bufLen);
+               SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, recvBuf, bufLen);
             else
             {
                /* cleanup */
@@ -6290,7 +6290,7 @@ S32              flags          /* additional control flags */
 
                   SPutDBuf(info->region, info->pool, dBufs[i]);   
                }
-               SPutSBuf(info->region, info->pool, (Data*)dBufs, 
+               SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, (Data*)dBufs, 
                      numDBufs*sizeof(Buffer*)); 
             }
 
@@ -6518,7 +6518,7 @@ S32              flags          /* additional control flags */
             if (ret != ROK)
             {
                /* cleanup */
-               SPutSBuf(info->region, info->pool, recvBuf, bufLen);       
+               SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, recvBuf, bufLen);       
                return (ret);
             }
 
@@ -6528,7 +6528,7 @@ S32              flags          /* additional control flags */
                ret = SAddPstMsgMult(recvBuf, recvLen, tempMsg);        
                if (ret != ROK)
                {
-                  SPutSBuf(info->region, info->pool, recvBuf, bufLen);    
+                  SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, recvBuf, bufLen);    
                   SPutMsg(tempMsg); 
                   return (ret);
                }
@@ -6536,7 +6536,7 @@ S32              flags          /* additional control flags */
 
             *mPtr = tempMsg;
 
-            SPutSBuf(info->region, info->pool, recvBuf, bufLen);    
+            SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, recvBuf, bufLen);    
             /* cm_inet_c_001.main_48 :flat buffers are allocated 
              * for non -TCP sockets. On these sockets we can receive 
              * only one message at a time 
@@ -6555,7 +6555,7 @@ S32              flags          /* additional control flags */
                 * mBuf */
                if (*mPtr != NULLP)
                   SPutMsg(*mPtr);
-               SPutSBuf(info->region, info->pool, (Data*)dBufs, 
+               SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, (Data*)dBufs, 
                      numDBufs*sizeof(Buffer*)); 
                return (ret);
             }
@@ -6575,14 +6575,14 @@ S32              flags          /* additional control flags */
                /* cleanup */
                SPutMsg(*mPtr);
                SPutMsg(tempMsg);
-               SPutSBuf(info->region, info->pool, (Data*)dBufs, 
+               SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, (Data*)dBufs, 
                      numDBufs*sizeof(Buffer*)); 
                return RFAILED;
             }
             SPutMsg(tempMsg);
          }
 
-         SPutSBuf(info->region, info->pool, (Data*)dBufs, 
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, (Data*)dBufs, 
                numDBufs*sizeof(Buffer*)); 
 
          /* 
@@ -7012,7 +7012,7 @@ Data            *data           /* read data */
       if ((MsgLen)pendLen >= bufLen)
       {        
          /* allocate receive buffer (flat structure) */
-         ret = SGetSBuf(info->region, info->pool, &recvBuf, bufLen);                  
+         ret = SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, &recvBuf, bufLen);                  
          if (ret != ROK)
          {
             return (ROUTRES);
@@ -7053,7 +7053,7 @@ Data            *data           /* read data */
          {
             /* cleanup */
             /* moved cleanup here */
-            SPutSBuf(info->region, info->pool, recvBuf, bufLen); 
+            SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, recvBuf, bufLen); 
 
             /* added check ERR_WOULDBLOCK */
             if ((INET_ERR_CODE == ERR_AGAIN) ||
@@ -7092,7 +7092,7 @@ Data            *data           /* read data */
          if (recvLen < (S32)bufLen)  /* maybe happen */
          {
             /* cleanup */
-            SPutSBuf(info->region, info->pool, recvBuf, bufLen);                            
+            SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, recvBuf, bufLen);                            
             return (ROKDNA);
          } 
 
@@ -7131,7 +7131,7 @@ Data            *data           /* read data */
          }   
 
          /* cleanup */
-         SPutSBuf(info->region, info->pool, recvBuf, bufLen);                            
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,info->region, info->pool, recvBuf, bufLen);                            
       }
       else
       {

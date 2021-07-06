@@ -262,9 +262,7 @@ static S16 rlcLmmGenCfg(RlcCb  *gCb,RlcGenCfg *cfg)
       rlcUtlInitToBeFreed(gCb, &(gCb->u.dlCb->toBeFreed));
       rlcUtlInitializeSelfPst(gCb);
 
-      if(SGetMsg(gCb->init.region, 
-                 gCb->init.pool,
-                 &(gCb->u.dlCb->selfPstMBuf)) != ROK)
+      if(ODU_GET_MSG_BUF(gCb->init.region, gCb->init.pool, &(gCb->u.dlCb->selfPstMBuf)) != ROK)
       {
          RLC_FREE(gCb,gCb->u.dlCb->udxDlSap, rlcSapSize);
          RLC_FREE(gCb,gCb->u.dlCb->rlcKwuDlSap, rlcSapSize);
@@ -1524,7 +1522,7 @@ static Void rlcLmmCleanGblRsrcs(RlcCb *gCb)
             {
                if (gCb->u.dlCb->selfPstMBuf != NULL)
                {
-                  SPutMsg(gCb->u.dlCb->selfPstMBuf);
+                  ODU_PUT_MSG_BUF(gCb->u.dlCb->selfPstMBuf);
                }
                RLC_FREE(gCb,gCb->u.dlCb, sizeof (RlcDlCb));
             }
@@ -2226,7 +2224,7 @@ S16 rlcLmmSendTrc(RlcCb *gCb,Event event,Buffer *mBuf)
               return RFAILED;
            }
 
-           if (SGetMsg(pst.region, pst.pool, &dstMbuf) != ROK)
+           if (ODU_GET_MSG_BUF(pst.region, pst.pool, &dstMbuf) != ROK)
            {
               DU_LOG("\nERROR  --> RLC : Memory Allocation failed");   
               return RFAILED;
