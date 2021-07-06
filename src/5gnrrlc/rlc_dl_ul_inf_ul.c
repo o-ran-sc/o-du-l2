@@ -274,15 +274,14 @@ RlcCfgCfmInfo   *cfmInfo
       if(sendRlcUeDeleteRspToDu(cfgCfm->cellId, cfgCfm->ueId, SUCCESSFUL) != ROK)
       {
          DU_LOG("ERROR  --> RLC_UL: rlcUlUdxCfgCfm(): Failed to send UE delete response ");
+         RLC_FREE(tRlcCb, cfgCfm, sizeof(RlcCfgCfmInfo));
          return RFAILED;
       }
+      RLC_FREE(tRlcCb, cfgCfm, sizeof(RlcCfgCfmInfo));
    }
 
    /* free the memory from DL */
-   RLC_FREE_SHRABL_BUF(pst->region,
-                      pst->pool,
-		      cfmInfo,
-		      sizeof(RlcCfgCfmInfo));
+   RLC_FREE_SHRABL_BUF(pst->region, pst->pool, cfmInfo, sizeof(RlcCfgCfmInfo));
 
    /* free the cfgInfo that came from LM */
    RLC_PST_FREE(pst->region, pst->pool, cfgTmpData->cfgInfo, sizeof(RlcCfgInfo));

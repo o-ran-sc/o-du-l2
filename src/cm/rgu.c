@@ -453,7 +453,7 @@ RguL2MUlThrpMeasReqInfo* measReq
           __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
           (ErrVal)ERGU049, (ErrVal)0, "Packing failed");
 #endif      
-      SPutSBuf(pst->region, pst->pool, (Data *)measReq, sizeof(RguL2MUlThrpMeasReqInfo));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)measReq, sizeof(RguL2MUlThrpMeasReqInfo));
       return RFAILED;
    }
    if (pst->selector == ODU_SELECTOR_LWLC)
@@ -468,12 +468,12 @@ RguL2MUlThrpMeasReqInfo* measReq
              __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
              (ErrVal)ERGU050, (ErrVal)0, "Packing failed");
 #endif      
-         SPutSBuf(pst->region, pst->pool, (Data *)measReq, 
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)measReq, 
                                     sizeof(RguL2MUlThrpMeasReqInfo));
          SPutMsg(mBuf);
          return RFAILED;
       }
-      if (SPutSBuf(pst->region, pst->pool, (Data *)measReq, 
+      if (SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)measReq, 
                            sizeof(RguL2MUlThrpMeasReqInfo)) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -494,7 +494,7 @@ RguL2MUlThrpMeasReqInfo* measReq
 #endif      
       if (measReq != NULLP)
       {
-         SPutSBuf(pst->region, pst->pool, (Data *)measReq,
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)measReq,
                              sizeof(RguL2MUlThrpMeasReqInfo));
       }
       SPutMsg(mBuf);
@@ -547,7 +547,7 @@ Buffer *mBuf
    }
    else 
    {
-      if ((SGetSBuf(pst->region, pst->pool, (Data **)&measReq,
+      if ((SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&measReq,
                               sizeof(RguL2MUlThrpMeasReqInfo))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -564,7 +564,7 @@ Buffer *mBuf
              (ErrVal)ERGU055, (ErrVal)0, "UnPacking failed");
 #endif      
          SPutMsg(mBuf);
-         SPutSBuf(pst->region, pst->pool, (Data *)measReq, 
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)measReq, 
                                 sizeof(RguL2MUlThrpMeasReqInfo));
          return RFAILED;
       }
@@ -605,9 +605,9 @@ RguHarqStatusInd  *harqStatusInd
    RguHarqStatusInd *harqStaInd = NULL;
 
 #ifdef XEON_SPECIFIC_CHANGES
-   if (SGetSBuf(pst->region, pst->pool, (Data **)&harqStaInd, sizeof(RguHarqStatusInd)) != ROK)
+   if (SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&harqStaInd, sizeof(RguHarqStatusInd)) != ROK)
 #else      
-   if ((SGetStaticBuffer(pst->region, pst->pool, 
+   if ((SGetStaticBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, 
                (Data **)&harqStaInd, sizeof(RguHarqStatusInd),0)) != ROK)
 #endif      
    {
@@ -628,9 +628,9 @@ RguHarqStatusInd  *harqStatusInd
             (ErrVal)ERGU070, (ErrVal)0, "Packing failed");
 #endif
 #ifdef XEON_SPECIFIC_CHANGES
-      SPutSBuf(pst->region, pst->pool, (Data *)harqStaInd, sizeof(RguHarqStatusInd));
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)harqStaInd, sizeof(RguHarqStatusInd));
 #else      
-      SPutStaticBuffer(pst->region, pst->pool, (Data *)harqStaInd, sizeof(RguHarqStatusInd), 0);
+      SPutStaticBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)harqStaInd, sizeof(RguHarqStatusInd), 0);
 #endif      
       return RFAILED;
    }
@@ -660,21 +660,21 @@ RguHarqStatusInd  *harqStatusInd
           (ErrVal)ERGU071, (ErrVal)0, "Packing failed");
 #endif
 #ifdef XEON_SPECIFIC_CHANGES
-      SPutSBuf(pst->region, pst->pool, (Data *)harqStaInd,
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)harqStaInd,
               sizeof(RguHarqStatusInd));
 #else      
-      SPutStaticBuffer(pst->region, pst->pool, (Data *)harqStaInd, sizeof(RguHarqStatusInd), 0);
+      SPutStaticBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)harqStaInd, sizeof(RguHarqStatusInd), 0);
 #endif      
       SPutMsg(mBuf);
       return RFAILED;
    }
 #ifdef XEON_SPECIFIC_CHANGES
-   if (SPutSBuf(pst->region, pst->pool, (Data *)harqStaInd,
+   if (SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)harqStaInd,
             sizeof(RguHarqStatusInd)) != ROK) {
 #else   
    if (pst->selector != ODU_SELECTOR_LWLC)
    {
-      if(SPutStaticBuffer(pst->region, pst->pool, (Data *)harqStaInd, 
+      if(SPutStaticBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)harqStaInd, 
                sizeof(RguHarqStatusInd), 0) != ROK)
       {
 #endif         
@@ -729,7 +729,7 @@ Buffer *mBuf
       return RFAILED;
    }
 #ifdef XEON_SPECIFIC_CHANGES
-   if ((SGetSBuf(pst->region, pst->pool, (Data **)&hqStaInd, 
+   if ((SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&hqStaInd, 
         sizeof(RguHarqStatusInd))) != ROK) {
 #else   
    if (pst->selector == ODU_SELECTOR_LWLC)
@@ -738,7 +738,7 @@ Buffer *mBuf
    }  
    else
    {   
-      if ((SGetStaticBuffer(pst->region, pst->pool, 
+      if ((SGetStaticBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, 
                   (Data **)&hqStaInd, sizeof(RguHarqStatusInd),0)) != ROK)
       {
 #endif         
@@ -767,9 +767,9 @@ Buffer *mBuf
    SPutMsg(mBuf);
    (*func)(pst, suId, hqStaInd);
 #ifdef XEON_SPECIFIC_CHANGES
-   SPutSBuf(pst->region, pst->pool, (Data *)hqStaInd, sizeof(RguHarqStatusInd));
+   SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)hqStaInd, sizeof(RguHarqStatusInd));
 #else   
-   SPutStaticBuffer(pst->region, pst->pool, (Data *)hqStaInd, sizeof(RguHarqStatusInd), 0);
+   SPutStaticBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)hqStaInd, sizeof(RguHarqStatusInd), 0);
 #endif   
    return ROK;
 }
@@ -972,7 +972,7 @@ Buffer *mBuf
    }
    else 
    {
-      if ((SGetSBuf(pst->region, pst->pool, (Data **)&flowCntrlInd, sizeof(RguFlowCntrlInd))) != ROK) {
+      if ((SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&flowCntrlInd, sizeof(RguFlowCntrlInd))) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)      
          SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
@@ -988,7 +988,7 @@ Buffer *mBuf
              (ErrVal)ERGU082, (ErrVal)0, "UnPacking failed");
 #endif      
          SPutMsg(mBuf);
-         SPutSBuf(pst->region, pst->pool, (Data *)flowCntrlInd, sizeof(RguFlowCntrlInd));
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)flowCntrlInd, sizeof(RguFlowCntrlInd));
          return RFAILED;
       }
    }

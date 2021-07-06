@@ -172,7 +172,7 @@ Reason reason               /* reason */
    {
       Buffer *mBuf = NULL;
       Buffer *bufPtr = NULL;
-      SGetMsg(1, 0 , &mBuf);
+      ODU_GET_MSG_BUF(1, 0 , &mBuf);
       ssGetDBufOfSize(1 , 1800, &bufPtr);
       SUpdMsg(mBuf, bufPtr, 0);
       rlcAmmStaPduList[i] = (uint32_t)mBuf; 

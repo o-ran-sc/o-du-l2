@@ -141,6 +141,56 @@ uint8_t buildPlmnId(Plmn plmn, uint8_t *buf)
 }
 
 
+int SGetSBufNewForDebug(char *file, char *func, char *line, Region region, Pool pool, Data **ptr, Size size)
+{
+   if(SGetSBuf(region, pool, ptr, size) == ROK)
+   {
+      printf("\nCM_ALLOC=== SGetSBufNewForDebug %s +%d, %s, %d, %p\n",\
+         file, line, func, size, *ptr);
+      return ROK;
+   }
+   else
+      return RFAILED;
+}
+
+
+int SPutSBufNewForDebug(char *file, char *func, char *line, Region region, Pool pool, Data *ptr, Size size)
+{
+   if(SPutSBuf(region, pool, ptr, size) == ROK)
+   {
+      printf("\nCM_FREE=== SPutSBufNewForDebug %s +%d, %s, %d, %p\n",\
+         file, line, func, size, ptr);
+      return ROK;
+   }
+   else
+      return RFAILED;
+}
+
+int SGetStaticBufNewForDebug(char *file, char *func, char *line, \
+Region region, Pool pool, Data **ptr, Size size, uint8_t memType)
+{
+   if(SGetStaticBuffer(region, pool, ptr, size, memType) == ROK)
+   {
+      printf("\nCM_ALLOC=== SGetStaticBufNewForDebug %s +%d, %s, %d, %p\n",\
+         file, line, func, size, *ptr);
+      return ROK;
+   }
+   else
+      return RFAILED;
+}
+
+int SPutStaticBufNewForDebug(char *file, char *func, char *line, \
+Region region, Pool pool, Data *ptr, Size size, uint8_t memType)
+{
+   if(SPutStaticBuffer(region, pool, ptr, size, memType) == ROK)
+   {
+      printf("\nCM_FREE=== SPutStaticBufNewForDebug %s +%d, %s, %d, %p\n",\
+         file, line, func, size, ptr);
+      return ROK;
+   }
+   else
+      return RFAILED;
+}
 /**********************************************************************
          End of file
 **********************************************************************/

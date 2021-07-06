@@ -126,7 +126,8 @@ uint8_t duActvInit(Ent entity, Inst inst, Region region, Reason reason)
 uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
 {
    uint8_t ret = ROK;
-
+   if(duCb.actvCellLst[0])
+   DU_LOG("#########################%p srcEnt %d event %d",duCb.actvCellLst[0]->ueCb[0].macUeCfg.ambrCfg, pst->srcEnt , pst->event);
    switch(pst->srcEnt)
    {
       case ENTDUAPP:
