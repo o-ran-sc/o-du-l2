@@ -1481,7 +1481,7 @@ S16 rlcUtlDlFreeRlcRBuf(Void)
       kwuDatReqDetl = (KwuDatReqDetl *)elmIndx;
       SRngIncrRIndx(SS_RNG_BUF_DLPDCP_TO_DLRLC);
       SsRngInfoTbl[SS_RNG_BUF_DLPDCP_TO_DLRLC].nPktProc++;
-      SPutMsg(kwuDatReqDetl->mBuf);
+      ODU_PUT_MSG_BUF(kwuDatReqDetl->mBuf);
       elmIndx = NULLP;
       kwuDatReqDetl = NULLP;
       if((elmIndx = SRngGetRIndx(SS_RNG_BUF_DLPDCP_TO_DLRLC)) == NULLP)

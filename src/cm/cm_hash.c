@@ -826,11 +826,11 @@ Pool         pool          /* memory pool to allocate bins */
    if (nmbBins)
    {
 #ifndef CM_MT_HASH_BIN
-      if (SGetSBuf(region, pool, (Data **) &hashListCp->hl, 
+      if (SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,region, pool, (Data **) &hashListCp->hl, 
                    (Size) (nmbBins * sizeof(CmListEnt))) != ROK)
          return RFAILED;
 #else
-      if (SGetSBuf(region, pool, (Data **) &hashListCp->hl, 
+      if (SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,region, pool, (Data **) &hashListCp->hl, 
                    (Size) (nmbBins * sizeof(CmListBinEnt))) != ROK)
          return RFAILED;
 #endif
@@ -903,11 +903,11 @@ CmHashListCp *hashListCp   /* hash list to deinitialize */
    /* deallocate memory for bins */
    if (hashListCp->nmbBins)
 #ifndef CM_MT_HASH_BIN
-      (Void) SPutSBuf(hashListCp->region, hashListCp->pool, 
+      (Void) SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,hashListCp->region, hashListCp->pool, 
                       (Data *) hashListCp->hl, 
                       (Size) (hashListCp->nmbBins * sizeof(CmListEnt)));
 #else
-      (Void) SPutSBuf(hashListCp->region, hashListCp->pool, 
+      (Void) SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,hashListCp->region, hashListCp->pool, 
                       (Data *) hashListCp->hl, 
                       (Size) (hashListCp->nmbBins * sizeof(CmListBinEnt)));
 #endif

@@ -2950,15 +2950,6 @@ RlcSn          sn
    while(txBuf->pduLst.first)
    {
       RlcDlPduInfo *pduInfo = (RlcDlPduInfo *)(txBuf->pduLst.first->node);
-      RLC_ALLOC_WC(gCb,*retx, sizeof(RlcRetx));
-
-#if (ERRCLASS & ERRCLS_ADD_RES)
-      if (*retx == NULLP)
-      {
-	      DU_LOG("\nERROR  -->  RLC_DL : Memory allocation failed");
-	      return;
-      }
-#endif /* ERRCLASS & ERRCLS_RES */
 
       /* Move Sdu byte segment from TX buf to retx buf*/
       rlcAmmDlMoveSduByteSegFrmTxtoRetxBuffer(gCb, 
@@ -3295,7 +3286,7 @@ static void rlcAmmCreateStatusPdu(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReq *rlcDat
 
 
 #ifndef L2_OPTMZ
-    SGetMsg(RLC_GET_MEM_REGION(gCb), RLC_GET_MEM_POOL(gCb),&mBuf);
+    ODU_GET_MSG_BUF(RLC_MEM_REGION_DL, RLC_POOL, &mBuf);
 #else
     mBuf = (Buffer *)rlcAmmStaPduList[rlcAmmStaPduListCnt++];
     SResetMBuf(mBuf);
