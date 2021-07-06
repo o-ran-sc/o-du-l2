@@ -187,7 +187,7 @@ uint8_t cmPkRlcDatReq(Pst * pst,RlcDatReqInfo* datReq,Buffer * mBuf)
               * the contents and pass the pointer of the allocated memory. The
               * subsequent free would be done during the Unpack function of the
               * primitive. */
-            if((ret1 = SGetStaticBuffer(pst->region, pst->pool, (Data **)&datReqInfo,
+            if((ret1 = SGetStaticBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&datReqInfo,
                         sizeof(RlcDatReqInfo),SS_SHARABLE_MEMORY)) != ROK)
             {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -226,7 +226,7 @@ uint8_t cmPkRlcDatReq(Pst * pst,RlcDatReqInfo* datReq,Buffer * mBuf)
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
            if(pst->srcEnt == ENTNH)
            {
-              if (SPutStaticBuffer(pst->region, pst->pool, (Data *)datReq,
+              if (SPutStaticBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)datReq,
                        sizeof(RlcDatReqInfo),SS_SHARABLE_MEMORY) != ROK)
               {
                  SPutMsg(mBuf);
@@ -316,7 +316,7 @@ uint8_t cmPkRlcDatReq(Pst * pst,RlcDatReqInfo* datReq,Buffer * mBuf)
       ret1 = SPstTsk(pst,mBuf);
       if(pst->selector == ODU_SELECTOR_LC)
       {
-         if (SPutStaticBuffer(pst->region, pst->pool, (Data *)datReq,
+         if (SPutStaticBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)datReq,
                   sizeof(RlcDatReqInfo),SS_SHARABLE_MEMORY) != ROK)
          {
             SPutMsg(mBuf);
@@ -370,7 +370,7 @@ uint8_t cmPkKwuDatInd(Pst * pst,KwuDatIndInfo* datInd,Buffer * mBuf)
               * the contents and pass the pointer of the allocated memory. The
               * subsequent free would be done during the Unpack function of the
               * primitive. */
-            if((ret1 = SGetStaticBuffer(pst->region, pst->pool, (Data **)&datIndInfo,
+            if((ret1 = SGetStaticBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&datIndInfo,
                         sizeof(KwuDatIndInfo),SS_SHARABLE_MEMORY)) != ROK)
             {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -471,7 +471,7 @@ S16 cmPkKwuDatCfm(Pst * pst,SuId suId,KwuDatCfmInfo* datCfm)
 #else
             cmPkKwuDatCfmInfo( (datCfm), mBuf);
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-            if (SPutStaticBuffer(pst->region, pst->pool, (Data *)datCfm,
+            if (SPutStaticBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)datCfm,
                      sizeof(KwuDatCfmInfo),SS_SHARABLE_MEMORY) != ROK)
             {
                SPutMsg(mBuf);
@@ -518,7 +518,7 @@ S16 cmPkKwuDiscSduReq(Pst * pst,SpId spId,KwuDiscSduInfo* discSdu)
              * the contents and pass the pointer of the allocated memory. The
              * subsequent free would be done during the Unpack function of the
              * primitive. */
-           if((ret1 = SGetStaticBuffer(pst->region, pst->pool, (Data **)&discSduInfo,
+           if((ret1 = SGetStaticBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&discSduInfo,
                        sizeof(KwuDiscSduInfo),SS_SHARABLE_MEMORY)) != ROK)
            {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -633,7 +633,7 @@ S16 cmPkKwuStaInd(Pst * pst,SuId suId,KwuStaIndInfo* staInd)
 #else
              cmPkKwuStaIndInfo( (staInd), mBuf);
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-             if (SPutStaticBuffer(pst->region, pst->pool, (Data *)staInd,
+             if (SPutStaticBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)staInd,
                       sizeof(KwuStaIndInfo),SS_SHARABLE_MEMORY) != ROK)
              {
                 SPutMsg(mBuf);
@@ -740,7 +740,7 @@ S16 cmPkKwuDiscSduCfm(Pst *pst,SpId spId,KwuDiscSduInfo *discCfmSdu)
 #else
             cmPkKwuDiscSduInfo((discCfmSdu), mBuf);
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-            if (SPutStaticBuffer(pst->region, pst->pool, (Data *)discCfmSdu,
+            if (SPutStaticBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)discCfmSdu,
                      sizeof(KwuDiscSduInfo),SS_SHARABLE_MEMORY) != ROK)
             {
                SPutMsg(mBuf);
@@ -773,7 +773,7 @@ S16 cmPkKwuFlowCntrlInd(Pst *pst,SuId suId,KwuFlowCntrlIndInfo *flowCntrlIndInfo
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) 
    {
-      SPutStaticBuffer(pst->region, 
+      SPutStaticBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, 
                pst->pool, 
                (Data *)flowCntrlIndInfo,
                sizeof(KwuFlowCntrlIndInfo),0);
@@ -786,7 +786,7 @@ S16 cmPkKwuFlowCntrlInd(Pst *pst,SuId suId,KwuFlowCntrlIndInfo *flowCntrlIndInfo
       {
          cmPkKwuFlowCntrlIndInfo((flowCntrlIndInfo), mBuf);
 
-         if (SPutStaticBuffer(pst->region, 
+         if (SPutStaticBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, 
                       pst->pool, 
                       (Data *)flowCntrlIndInfo,
                       sizeof(KwuFlowCntrlIndInfo),0) != ROK)
@@ -844,7 +844,7 @@ S16 cmPkKwuDatAckInd(Pst * pst,SuId suId,KwuDatAckInfo* datInd)
       return ( ret1 );
    }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-   if (SPutStaticBuffer(pst->region, pst->pool, (Data *)datInd,
+   if (SPutStaticBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)datInd,
             sizeof(KwuDatAckInfo),SS_SHARABLE_MEMORY) != ROK)
    {
       SPutMsg(mBuf);
@@ -986,7 +986,7 @@ S16 cmUnpkKwuDatReq(KwuDatReq func,Pst *pst,Buffer *mBuf)
     * free the memory here. */
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      retVal = SPutStaticBuffer(pst->region, pst->pool, (Data *)datReq,
+      retVal = SPutStaticBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)datReq,
             sizeof(RlcDatReqInfo),SS_SHARABLE_MEMORY);
    }
    return (retVal);
@@ -1026,7 +1026,7 @@ uint8_t cmUnpkKwuDatInd(KwuDatInd func,Pst *pst,Buffer *mBuf)
              * doesn't free any memory */
             if(pst->dstEnt != ENTPJ)
             {
-               if((ret1 = SGetStaticBuffer(pst->region, pst->pool, (Data **)&datInd,
+               if((ret1 = SGetStaticBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&datInd,
                            sizeof(KwuDatIndInfo),SS_SHARABLE_MEMORY)) != ROK)
                {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -1070,7 +1070,7 @@ uint8_t cmUnpkKwuDatInd(KwuDatInd func,Pst *pst,Buffer *mBuf)
      * free the memory here. */
     if((pst->selector == ODU_SELECTOR_LWLC) && (pst->dstEnt == ENTPJ))
     {
-       retVal = SPutStaticBuffer(pst->region, pst->pool, (Data *)datInd,
+       retVal = SPutStaticBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)datInd,
                 sizeof(KwuDatIndInfo),SS_SHARABLE_MEMORY);
     }
     return (retVal);
@@ -1113,7 +1113,7 @@ S16 cmUnpkKwuDatCfm(KwuDatCfm func,Pst *pst,Buffer *mBuf)
          break;
       case ODU_SELECTOR_LC:
          {
-            if((ret1 = SGetStaticBuffer(pst->region, pst->pool, (Data **)&datCfm,\
+            if((ret1 = SGetStaticBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&datCfm,\
                         sizeof(KwuDatCfmInfo),SS_SHARABLE_MEMORY)) != ROK)
             {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -1174,7 +1174,7 @@ S16 cmUnpkKwuDiscSduReq(KwuDiscSduReq func,Pst *pst,Buffer *mBuf)
          break;
       case ODU_SELECTOR_LC:
          {
-            if((ret1 = SGetStaticBuffer(pst->region, pst->pool, (Data **)&discSdu,\
+            if((ret1 = SGetStaticBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&discSdu,\
                         sizeof(KwuDiscSduInfo),SS_SHARABLE_MEMORY)) != ROK)
             {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -1249,7 +1249,7 @@ S16 cmUnpkKwuStaInd(KwuStaInd func,Pst *pst,Buffer *mBuf)
          break;
       case ODU_SELECTOR_LC:
          {
-            if((ret1 = SGetStaticBuffer(pst->region, pst->pool, (Data **)&staInd,\
+            if((ret1 = SGetStaticBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&staInd,\
                         sizeof(KwuStaIndInfo),SS_SHARABLE_MEMORY)) != ROK)
             {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -1349,7 +1349,7 @@ S16 cmUnpkKwuDiscSduCfm(KwuDiscSduCfm  func,Pst *pst,Buffer *mBuf)
          break;
       case ODU_SELECTOR_LC:
          {
-            if((ret1 = SGetStaticBuffer(pst->region, pst->pool, (Data **)&discSdu,\
+            if((ret1 = SGetStaticBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&discSdu,\
                         sizeof(KwuDiscSduInfo),SS_SHARABLE_MEMORY)) != ROK)
             {
 #if (ERRCLASS & ERRCLS_ADD_RES)
@@ -1400,7 +1400,7 @@ S16 cmUnpkKwuFlowCntrlInd(KwuFlowCntrlInd func,Pst *pst,Buffer *mBuf)
 #ifdef LCKWU
       case ODU_SELECTOR_LC:
       {
-         if(SGetStaticBuffer(pst->region, 
+         if(SGetStaticBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, 
                      pst->pool, 
                      (Data **)&flowCntrlInfo,
                      sizeof(KwuFlowCntrlIndInfo),0) != ROK)
@@ -1444,7 +1444,7 @@ S16 cmUnpkKwuDatAckInd(KwuDatAckInd func,Pst *pst,Buffer *mBuf)
     KwuDatAckInfo *datInd = NULLP;
     
 
-    if((ret1 = SGetStaticBuffer(pst->region, pst->pool, (Data **)&datInd,\
+    if((ret1 = SGetStaticBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&datInd,\
                 sizeof(KwuDatAckInfo),SS_SHARABLE_MEMORY)) != ROK)
     {
 #if (ERRCLASS & ERRCLS_ADD_RES)

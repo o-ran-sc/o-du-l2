@@ -244,9 +244,7 @@ uint32_t macHeader[2];
 
 /* Free shared memory, received through LWLC */
 #define MAC_FREE_MEM(_region, _pool, _datPtr, _size)         \
-   if(_datPtr)                                               \
-       SPutSBuf(_region, _pool,(Data *)_datPtr, _size);      \
-   _datPtr = NULL;
+       MAC_FREE(_datPtr, _size);      \
 
 #define RG_LCG_ISCFGD(lcg) ((lcg)->lcgId != RG_INVALID_LCG_ID)
 /* Corrected the check for dlCcchId */

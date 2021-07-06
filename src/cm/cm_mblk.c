@@ -117,10 +117,10 @@ Ptr             *ptr         /* Location to place allocated event ptr */
   /* Allocate memory for the first Memory Chunk */
   /* Allocated memory should be maxBlkSize + sizeof(CmMemList) */
 #ifdef SS_LOCKLESS_MEMORY
-   if(SGetStaticBuffer(sMem->region, sMem->pool, (Data **)&allocPtr,
+   if(SGetStaticBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,sMem->region, sMem->pool, (Data **)&allocPtr,
                        (Size)(maxBlkSize + sizeof(CmMemList)), 0) != ROK)
 #else
-  if (SGetSBuf(sMem->region, sMem->pool, 
+  if (SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,sMem->region, sMem->pool, 
                (Data **)&allocPtr, 
                (Size)(maxBlkSize + sizeof(CmMemList))) != ROK)
 #endif /* SS_LOCKLESS_MEMORY */
@@ -271,11 +271,11 @@ Ptr           *allocPtr  /* location to place pointer */
   /* Allocate buffer */
   /* cm_mblk_c_001.101: use blkSize instead of cb->maxSize */
 #ifdef SS_LOCKLESS_MEMORY
-   if(SGetStaticBuffer(cb->sMem.region, cb->sMem.pool, 
+   if(SGetStaticBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,cb->sMem.region, cb->sMem.pool, 
                        (Data **)&(cb->initPtr),
                        (Size)(blkSize + sizeof(CmMemList)), 0) != ROK)
 #else
-  if (SGetSBuf(cb->sMem.region, cb->sMem.pool, 
+  if (SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,cb->sMem.region, cb->sMem.pool, 
               (Data **)&(cb->initPtr),
               (Size)(blkSize + sizeof(CmMemList)) )  != ROK)
 #endif /* SS_LOCKLESS_MEMORY */
@@ -355,10 +355,10 @@ Ptr             *ptr         /* Location to place allocated event ptr */
   /* Allocate memory for the first Memory Chunk */
   /* Allocated memory should be maxBlkSize + sizeof(CmMemList) */
 #ifdef SS_LOCKLESS_MEMORY
-   if(SGetStaticBuffer(sMem->region, sMem->pool, (Data **)&allocPtr,
+   if(SGetStaticBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,sMem->region, sMem->pool, (Data **)&allocPtr,
                        (Size)(maxBlkSize + sizeof(CmMemList)), 0) != ROK)
 #else
-  if (SGetSBuf(sMem->region, sMem->pool, 
+  if (SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,sMem->region, sMem->pool, 
                (Data **)&allocPtr, 
                (Size)(maxBlkSize + sizeof(CmMemList))) != ROK)
 #endif /* SS_LOCKLESS_MEMORY */
@@ -479,11 +479,11 @@ Ptr           *allocPtr  /* location to place pointer */
   /* Allocate buffer */
   /* cm_mblk_c_001.101: use blkSize instead of cb->maxSize */
 #ifdef SS_LOCKLESS_MEMORY
-   if(SGetStaticBuffer(cb->sMem.region, cb->sMem.pool, 
+   if(SGetStaticBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,cb->sMem.region, cb->sMem.pool, 
                        (Data **)&(cb->initPtr),
                        (Size)(blkSize + sizeof(CmMemList)), 0) != ROK)
 #else
-  if (SGetSBuf(cb->sMem.region, cb->sMem.pool, 
+  if (SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,cb->sMem.region, cb->sMem.pool, 
               (Data **)&(cb->initPtr),
               (Size)(blkSize + sizeof(CmMemList)) )  != ROK)
 #endif /* SS_LOCKLESS_MEMORY */
@@ -578,10 +578,10 @@ Ptr    memPtr      /* Link List CP */
     if( node )
     {
 #ifdef SS_LOCKLESS_MEMORY
-       SPutStaticBuffer(sMem.region, sMem.pool,
+       SPutStaticBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,sMem.region, sMem.pool,
                         (Data *)node, (node->size + sizeof(CmMemList)), 0);
 #else
-       SPutSBuf(sMem.region,sMem.pool, 
+       SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,sMem.region,sMem.pool, 
                 (Data *)node, (node->size + sizeof(CmMemList)));
 #endif /* SS_LOCKLESS_MEMORY */
     }

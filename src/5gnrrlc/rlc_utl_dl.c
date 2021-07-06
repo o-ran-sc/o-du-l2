@@ -341,7 +341,7 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
          dlRrcMsgRsp->state = TRANSMISSION_COMPLETE;
 
       FILL_PST_RLC_TO_DUAPP(pst, RLC_DL_INST, EVENT_DL_RRC_MSG_RSP_TO_DU);
-      if(lcId >= SRB1_LCID && lcId <= SRB3_LCID) /* Valid for all RRC messages i.e. SRB1, SRB2, SRB3 */
+      if(lcId >= SRB1_LCID && lcId <= SRB3_LCID) /* Valid for all RRC messages i.e.SRB0, SRB1, SRB2, SRB3 */
       {
          if(rlcSendDlRrcMsgRspToDu(&pst, dlRrcMsgRsp) != ROK)
          {
@@ -426,7 +426,8 @@ uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
          DU_LOG("\nERROR  -->  RLC_DL : rlcUtlSendToMac: UeId[%u]:ueCb not found",
             staInd->rnti);
          /* If ueCb is not found for current rnti then continue to look for next rnti*/
-         continue; 
+         RLC_FREE_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL, datReqInfo,sizeof(RguDDatReqInfo));
+         return; 
       }
       
       /* kw002.201 Removed the allocation of RlcDatReq */
@@ -1127,11 +1128,7 @@ Void rlcUtlFreeDlMemory(RlcCb *gCb)
 
    /* Free from the ReTx list */
    lst  = &pToBeFreed->reTxLst;
-#ifndef L2_OPTMZ
-   while((lst->first) && toBeFreed && (pToBeFreed->reTxLst.count > 100))
-#else
    while((lst->first) && toBeFreed)
-#endif
    {
       RlcRetx* seg = (RlcRetx *)(lst->first->node);
       cmLListDelFrm(lst, lst->first);
@@ -1142,11 +1139,7 @@ Void rlcUtlFreeDlMemory(RlcCb *gCb)
 
    /* Free from the Tx list */
    lst  = &pToBeFreed->txLst;
-#ifndef L2_OPTMZ
-   while((lst->first) && toBeFreed && (pToBeFreed->txLst.count > 100))
-#else
    while((lst->first) && toBeFreed)
-#endif
    {
       RlcTx* pdu = (RlcTx *)(lst->first->node);
       cmLListDelFrm(lst, lst->first);
@@ -1164,11 +1157,7 @@ Void rlcUtlFreeDlMemory(RlcCb *gCb)
 
    /* Free from the SDU queue */
    lst  = &pToBeFreed->sduLst;
-#ifndef L2_OPTMZ
-   while((lst->first) && toBeFreed && (pToBeFreed->sduLst.count > 100))
-#else
    while((lst->first) && toBeFreed)
-#endif
    {
       RlcSdu* sdu = (RlcSdu *)(lst->first->node);
       RLC_REMOVE_SDU(gCb, lst, sdu);
@@ -1177,11 +1166,7 @@ Void rlcUtlFreeDlMemory(RlcCb *gCb)
 
    /* Free from the RBs */
    lst  = &pToBeFreed->rbLst;
-#ifndef L2_OPTMZ
-   while((lst->first) && toBeFreed && (pToBeFreed->rbLst.count > 100))
-#else
    while((lst->first) && toBeFreed)
-#endif
    {
       RlcDlRbCb* rbCb = (RlcDlRbCb *)(lst->first->node);
       Bool moreToBeFreed = rlcUtlFreeDlAmRbMemory(gCb, rbCb,&toBeFreed);
@@ -1390,11 +1375,10 @@ RlcL2MeasTb * rlcUtlGetCurMeasTb(RlcCb *gCb,RlcDlRbCb *rbCb)
    if((curL2MeasTb = rbCb->ueCb->l2MeasTbCb[rbCb->ueCb->tbIdx]) == NULLP)
       {
          /* Intentionally avoiding the RLC_ALLOC macro to avoid  memset */
-         if (SGetSBuf(gCb->init.region,
-                  gCb->init.pool,
-                  (Data **)&curL2MeasTb,
-                  (Size)sizeof(RlcL2MeasTb)) != ROK)
+         RLC_ALLOC(gCb, curL2MeasTb, (Size)sizeof(RlcL2MeasTb));
+         if(curL2MeasTb == NULLP)
          {
+            DU_LOG("ERROR  --> RLC_DL :  rlcUtlGetCurMeasTb(): Memory allocation failed");
             return (NULLP);
          }
          rbCb->ueCb->l2MeasTbCb[rbCb->ueCb->tbIdx] = curL2MeasTb;

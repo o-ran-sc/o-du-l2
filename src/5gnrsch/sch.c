@@ -239,7 +239,7 @@ uint8_t SchProcGenCfgReq(Pst *pst, RgMngmt *cfg)
    cfm.cfm.reason = reason;
 
    SchSendCfgCfm(&cfmPst, &cfm);
-   /*   SPutSBuf(pst->region, pst->pool, (Data *)cfg, sizeof(RgMngmt)); */
+   /*   SCH_FREE(pst->region, pst->pool, (Data *)cfg, sizeof(RgMngmt)); */
 
    return ROK;
 }/*-- SchProcGenCfgReq --*/

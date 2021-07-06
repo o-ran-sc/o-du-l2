@@ -140,7 +140,120 @@ uint8_t buildPlmnId(Plmn plmn, uint8_t *buf)
    return ROK;
 }
 
+/*******************************************************************
+*
+* @brief  function for adding debug print in SGetSBuf 
+*
+* @details
+*
+*    Function : SGetSBufNewForDebug
+*
+*    Functionality: function for adding debug print in SGetSBuf
+*
+* @params[in] file name, fun name, region, pool, data ptr, size
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t SGetSBufNewForDebug(char *file, char *func, char *line, Region region, Pool pool, Data **ptr, Size size)
+{
+   if(SGetSBuf(region, pool, ptr, size) == ROK)
+   {
+      printf("\nCM_ALLOC=== SGetSBufNewForDebug %s +%d, %s, %d, %p\n",\
+         file, line, func, size, *ptr);
+      return ROK;
+   }
+   else
+      return RFAILED;
+}
 
+/*******************************************************************
+*
+* @brief  function for adding debug print in SPutSBuf
+*
+* @details
+*
+*    Function : SPutSBufNewForDebug
+*
+*    Functionality: function for adding debug print in SPutSBuf
+*
+* @params[in] file name, fun name, region, pool, data ptr, size
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t SPutSBufNewForDebug(char *file, char *func, char *line, Region region, Pool pool, Data *ptr, Size size)
+{
+   if(SPutSBuf(region, pool, ptr, size) == ROK)
+   {
+      printf("\nCM_FREE=== SPutSBufNewForDebug %s +%d, %s, %d, %p\n",\
+         file, line, func, size, ptr);
+      return ROK;
+   }
+   else
+      return RFAILED;
+}
+
+
+/*******************************************************************
+*
+* @brief  function for adding debug print in SGetStaticBuf
+*
+* @details
+*
+*    Function : SGetStaticBufNewForDebug
+*
+*    Functionality: function for adding debug print in SGetStaticBuf
+*
+* @params[in] file name, fun name, region, pool, data ptr, size, memType
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t SGetStaticBufNewForDebug(char *file, char *func, char *line, \
+Region region, Pool pool, Data **ptr, Size size, uint8_t memType)
+{
+   if(SGetStaticBuffer(region, pool, ptr, size, memType) == ROK)
+   {
+      printf("\nCM_ALLOC=== SGetStaticBufNewForDebug %s +%d, %s, %d, %p\n",\
+         file, line, func, size, *ptr);
+      return ROK;
+   }
+   else
+      return RFAILED;
+}
+
+/*******************************************************************
+*
+* @brief  function for adding debug print in SPutStaticBuf
+*
+* @details
+*
+*    Function : SPutStaticBufNewForDebug 
+*
+*    Functionality: function for adding debug print in SPutStaticBuf
+*
+* @params[in] file name, fun name, region, pool, data ptr, size, memType
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t SPutStaticBufNewForDebug(char *file, char *func, char *line, \
+Region region, Pool pool, Data *ptr, Size size, uint8_t memType)
+{
+   if(SPutStaticBuffer(region, pool, ptr, size, memType) == ROK)
+   {
+      printf("\nCM_FREE=== SPutStaticBufNewForDebug %s +%d, %s, %d, %p\n",\
+         file, line, func, size, ptr);
+      return ROK;
+   }
+   else
+      return RFAILED;
+}
 /**********************************************************************
          End of file
 **********************************************************************/
