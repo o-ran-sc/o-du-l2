@@ -44,7 +44,6 @@
 #include "rg_sch_inf.h"
 #include "rg_sch.h"
 #include "rg_sch_cmn.h"
-
 /* header/extern include files (.x) */
 #include "tfu.x"           /* TFU types */
 #include "lrg.x"           /* layer management typedefs for MAC */
@@ -53,6 +52,7 @@
 #include "rg_sch_inf.x"    /* typedefs for Scheduler */
 #include "rg_sch.x"        /* typedefs for Scheduler */
 #include "rg_sch_cmn.x"    /* typedefs for Scheduler */
+#include "sch_utils.h"
 #ifdef MAC_SCH_STATS
 #include "lrg.x"            /* Stats Structures */
 #endif /* MAC_SCH_STATS */
@@ -28098,10 +28098,10 @@ uint8_t        newTxMode
    if(!(ueDl->mimoInfo.forceTD & RG_SCH_CMN_TD_TXMODE_RECFG))
    {
       /* Mem Alloc */
-      if(SGetSBuf(cell->rgmSap->sapCfg.sapPst.region,
-               cell->rgmSap->sapCfg.sapPst.pool, (Data**)&txModeChgInd,
-               sizeof(RgmTransModeInd)) != ROK)
+      SCH_ALLOC(txModeChgInd, sizeof(RgmTransModeInd));
+      if(txModeChgInd == NULLP)
       {
+         DU_LOG("ERROR  --> SCH : rgSCHCmnSendTxModeInd(): Memory allocation failed");
          return;
       }
       RG_SCH_FILL_RGM_TRANSMODE_IND(ue->ueId, cell->cellId, newTxMode, txModeChgInd);

@@ -161,7 +161,7 @@ Reason reason               /* reason */
    kwInitExt();
    */
 #ifdef TENB_STATS 
-   TSL2AllocStatsMem(tRlcCb->init.region, tRlcCb->init.pool); 
+   TSL2AllocStatsMem(tRlcCb->init.inst); 
 #endif
 
    return ROK;

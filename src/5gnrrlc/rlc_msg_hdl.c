@@ -245,10 +245,10 @@ uint8_t RlcProcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg)
 {
    uint8_t ret = ROK;
    RlcCfgInfo *rlcUeCfg = NULLP;
+   RlcCb *gCb;
 
-   RlcCb *rlcUeCb = NULLP;
-   rlcUeCb = RLC_GET_RLCCB(pst->dstInst);
-   RLC_ALLOC(rlcUeCb, rlcUeCfg, sizeof(RlcCfgInfo));
+   gCb = RLC_GET_RLCCB(pst->dstInst);
+   RLC_ALLOC(gCb, rlcUeCfg, sizeof(RlcCfgInfo));
    if(rlcUeCfg == NULLP)
    {
       DU_LOG("\nERROR  -->  RLC: Failed to allocate memory at RlcProcUeCreateReq()");

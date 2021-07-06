@@ -48,6 +48,7 @@
    int _ret;                                                    \
    _ret = SGetSBuf(DU_APP_MEM_REGION, DU_POOL,                  \
                     (Data **)&_datPtr, _size);                  \
+   printf("\nDU_ALLOC=== %s +%d, %s, %d, %p\n",__FILE__,__LINE__,__FUNCTION__,_size, _datPtr);\
    if(_ret == ROK)                                              \
       memset(_datPtr, 0, _size);                         \
    else                                                         \
@@ -57,6 +58,7 @@
 /* free a static buffer */
 #define DU_FREE(_datPtr, _size)                                 \
 {                                                               \
+   printf("\nDU_FREE=== %s +%d, %s, %d, %p\n",__FILE__,__LINE__,__FUNCTION__,_size, _datPtr);\
    if(_datPtr != NULLP)                                                  \
    {                                                            \
       SPutSBuf(DU_APP_MEM_REGION, DU_POOL,                      \
@@ -71,6 +73,7 @@
    if(SGetStaticBuffer(DU_APP_MEM_REGION, DU_POOL,           \
       (Data **)&_buf, (Size) _size, 0) == ROK)               \
    {                                                         \
+   printf("\nDU_ALLOC_SHRABL_BUF=== %s +%d, %s, %d, %p\n",__FILE__,__LINE__,__FUNCTION__,_size, _buf);\
       memset((_buf), 0, _size);                      \
    }                                                         \
    else                                                      \
@@ -82,6 +85,7 @@
 /* Free shared memory, received through LWLC */
 #define DU_FREE_SHRABL_BUF(_region, _pool,_buf, _size)          \
 {                                                               \
+   printf("\nDU_FREE_SHRABL_BUF=== %s +%d, %s, %d, %p\n",__FILE__,__LINE__,__FUNCTION__,_size, _buf);\
    if (_buf != NULLP)                                           \
    {                                                            \
       (Void) SPutStaticBuffer(_region, _pool,                   \

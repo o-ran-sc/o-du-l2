@@ -27,10 +27,12 @@
 {                                                            \
    uint8_t _ret;                                             \
    _ret = SGetSBuf(MAC_MEM_REGION, MAC_POOL,                 \
-	 (Data **)&_datPtr, _size);                          \
+	 (Data **)&_datPtr, _size);                               \
    if(_ret == ROK)                                           \
    {                                                         \
-      memset(_datPtr, 0, _size);                \
+      memset(_datPtr, 0, _size);                             \
+      printf("\nMAC_ALLOC=== %s +%d, %s, %d, %p\n",          \
+      __FILE__,__LINE__,__FUNCTION__,_size, _datPtr);        \
    }                                                         \
    else                                                      \
    {                                                         \
@@ -41,11 +43,13 @@
 /* free a static buffer */
 #define MAC_FREE(_datPtr, _size)                             \
 {                                                            \
+   printf("\nMAC_FREE=== %s +%d, %s, %d, %p\n",              \
+   __FILE__,__LINE__,__FUNCTION__,_size, _datPtr);           \
    if(_datPtr)                                               \
    {                                                         \
       SPutSBuf(MAC_MEM_REGION, MAC_POOL,                     \
-	    (Data *)_datPtr, _size);                         \
-      _datPtr = NULLP;                                      \
+	    (Data *)_datPtr, _size);                              \
+      _datPtr = NULLP;                                       \
    }                                                         \
 }
 
@@ -54,9 +58,11 @@
 #define MAC_ALLOC_SHRABL_BUF(_buf, _size)                    \
 {                                                            \
    if(SGetStaticBuffer(MAC_MEM_REGION, MAC_POOL,             \
-	    (Data **)&_buf, (Size) _size, 0) == ROK)         \
+	    (Data **)&_buf, (Size) _size, 0) == ROK)              \
    {                                                         \
-      memset((_buf), 0, _size);                 \
+      printf("\nMAC_ALLOC_SHRABL_BUF==== %s +%d, %s, %d, %p\n", \
+      __FILE__,__LINE__,__FUNCTION__,_size, _buf);           \
+      memset((_buf), 0, _size);                              \
    }                                                         \
    else                                                      \
    {                                                         \
@@ -67,6 +73,8 @@
 /* Free shared memory, received through LWLC */
 #define MAC_FREE_SHRABL_BUF(_region, _pool,_buf, _size)      \
 {                                                            \
+   printf("\nMAC_FREE_SHRABL_BUF==== %s +%d, %s, %d, %p\n",  \
+   __FILE__,__LINE__,__FUNCTION__,_size, _buf);              \
    if (_buf != NULLP)                                        \
    {                                                         \
       (Void) SPutStaticBuffer(_region, _pool,                \

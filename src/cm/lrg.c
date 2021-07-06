@@ -2327,7 +2327,7 @@ Buffer *mBuf
                CMCHKPK(cmPkSystemId, &param->s.sysId, mBuf);
                if (param->s.sysId.ptNmb != NULLP)
                {
-                  SPutSBuf(pst->region, pst->pool, 
+                  SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, 
                         (Data *)param->s.sysId.ptNmb, LRG_MAX_PT_NUM_SIZE);
                }
             }
@@ -2335,7 +2335,7 @@ Buffer *mBuf
             if (param->s.sysId.ptNmb != NULLP)
             {
                  CMCHKPK(cmPkSystemId, &param->s.sysId, mBuf);
-                 SPutSBuf(pst->region, pst->pool, (Data *)param->s.sysId.ptNmb, LRG_MAX_PT_NUM_SIZE);
+                 SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)param->s.sysId.ptNmb, LRG_MAX_PT_NUM_SIZE);
             }
 
 #endif /*end of LRG_V1 */
@@ -2383,7 +2383,7 @@ Buffer *mBuf
             if (pst->event == EVTLRGSSTACFM)
             {
                /* After Merging */
-               if((SGetSBuf(pst->region, pst->pool, (Data **)&param->s.sysId.ptNmb,
+               if((SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&param->s.sysId.ptNmb,
                            LRG_MAX_PT_NUM_SIZE)) != ROK){
 #if (ERRCLASS & ERRCLS_ADD_RES)
                   SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,

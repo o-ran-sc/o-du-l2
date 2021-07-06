@@ -103,14 +103,14 @@ S16 cmPkUdxBndReq(Pst *pst,SuId suId,SpId spId)
     Buffer *mBuf;
     mBuf = NULLP;
 
-    if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
+    if((ret1 = ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf)) != ROK)
     {
 #if (ERRCLASS & ERRCLS_ADD_RES)
        if(ret1 != ROK)
        {
           SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
                 __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-               (ErrVal)EUDXXXX, (ErrVal)0, "SGetMsg() failed");
+               (ErrVal)EUDXXXX, (ErrVal)0, "ODU_GET_MSG_BUF() failed");
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
        return (ret1);
@@ -141,14 +141,14 @@ S16 cmPkUdxUbndReq(Pst *pst,SpId spId,Reason reason)
     Buffer *mBuf;
     mBuf = NULLP;
 
-    if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
+    if((ret1 = ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf)) != ROK)
     {
 #if (ERRCLASS & ERRCLS_ADD_RES)
        if(ret1 != ROK)
        {
           SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
                 __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-               (ErrVal)EUDXXXX, (ErrVal)0, "SGetMsg() failed");
+               (ErrVal)EUDXXXX, (ErrVal)0, "ODU_GET_MSG_BUF() failed");
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
        return (ret1);
@@ -179,14 +179,14 @@ S16 cmPkUdxBndCfm(Pst *pst,SuId suId,uint8_t status)
     Buffer *mBuf;
     mBuf = NULLP;
 
-    if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
+    if((ret1 = ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf)) != ROK)
     {
 #if (ERRCLASS & ERRCLS_ADD_RES)
        if(ret1 != ROK)
        {
           SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
                 __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-               (ErrVal)EUDXXXX, (ErrVal)0, "SGetMsg() failed");
+               (ErrVal)EUDXXXX, (ErrVal)0, "ODU_GET_MSG_BUF() failed");
        }
 
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
@@ -219,14 +219,14 @@ S16 cmPkUdxCfgReq(Pst *pst,SpId  spId,RlcCfgInfo *cfgInfo)
     Buffer *mBuf;
     mBuf = NULLP;
 
-    if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
+    if((ret1 = ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf)) != ROK)
     {
 #if (ERRCLASS & ERRCLS_ADD_RES)
        if(ret1 != ROK)
        {
           SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
                 __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-               (ErrVal)EUDXXXX, (ErrVal)0, "SGetMsg() failed");
+               (ErrVal)EUDXXXX, (ErrVal)0, "ODU_GET_MSG_BUF() failed");
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
        return (ret1);
@@ -276,14 +276,14 @@ S16 cmPkUdxCfgCfm(Pst *pst,SuId suId,RlcCfgCfmInfo  *cfgCfmInfo)
     Buffer *mBuf;
     mBuf = NULLP;
 
-    if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
+    if((ret1 = ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf)) != ROK)
     {
 #if (ERRCLASS & ERRCLS_ADD_RES)
        if(ret1 != ROK)
        {
           SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
                 __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-               (ErrVal)EUDXXXX, (ErrVal)0, "SGetMsg() failed");
+               (ErrVal)EUDXXXX, (ErrVal)0, "ODU_GET_MSG_BUF() failed");
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
        return (ret1);
@@ -297,8 +297,7 @@ S16 cmPkUdxCfgCfm(Pst *pst,SuId suId,RlcCfgCfmInfo  *cfgCfmInfo)
              cmPkUdxStruct((uint8_t *)cfgCfmInfo, sizeof(RlcCfgCfmInfo),mBuf);
              /* Need to free the cfgCfmInfo here as it is allocated 
                                         buffer call SPutStaticBuffer */
-             SPutStaticBuffer(pst->region,pst->pool,(Data *) cfgCfmInfo,
-                          sizeof(RlcCfgCfmInfo),0);
+             RLC_FREE_SHRABL_BUF(pst->region, pst->pool, cfgCfmInfo, sizeof(RlcCfgCfmInfo));
              break;
           }
         case UDX_SEL_LWLC:
@@ -342,14 +341,14 @@ CkwUeInfo  *newUeInfo
     Buffer *mBuf = NULLP;
 
 
-    if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
+    if((ret1 = ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf)) != ROK)
     {
 #if (ERRCLASS & ERRCLS_ADD_RES)
        if(ret1 != ROK)
        {
           SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
                 __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-               (ErrVal)EUDXXXX, (ErrVal)0, "SGetMsg() failed");
+               (ErrVal)EUDXXXX, (ErrVal)0, "ODU_GET_MSG_BUF() failed");
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
 
@@ -405,14 +404,14 @@ S16 cmPkUdxUeIdChgCfm(Pst *pst,SuId suId,uint32_t transId,CmStatus status)
     S16    ret1;
     Buffer *mBuf = NULLP;
 
-    if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
+    if((ret1 = ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf)) != ROK)
     {
 #if (ERRCLASS & ERRCLS_ADD_RES)
        if(ret1 != ROK)
        {
           SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
                 __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-               (ErrVal)EUDXXXX, (ErrVal)0, "SGetMsg() failed");
+               (ErrVal)EUDXXXX, (ErrVal)0, "ODU_GET_MSG_BUF() failed");
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
 
@@ -446,14 +445,14 @@ S16 cmPkUdxStaUpdCfm(Pst *pst,SuId suId,CmLteRlcId *rlcId,RlcUdxBufLst *pStaPdu)
     S16    ret1;
     Buffer *mBuf = NULLP;
 
-    if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
+    if((ret1 = ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf)) != ROK)
     {
 #if (ERRCLASS & ERRCLS_ADD_RES)
        if(ret1 != ROK)
        {
           SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
                 __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-               (ErrVal)EUDXXXX, (ErrVal)0, "SGetMsg() failed");
+               (ErrVal)EUDXXXX, (ErrVal)0, "ODU_GET_MSG_BUF() failed");
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
 
@@ -500,14 +499,14 @@ S16 cmPkUdxStaProhTmrStart(Pst *pst,SpId spId,CmLteRlcId *rlcId)
     S16    ret1;
     Buffer *mBuf = NULLP;
 
-    if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
+    if((ret1 = ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf)) != ROK)
     {
 #if (ERRCLASS & ERRCLS_ADD_RES)
        if(ret1 != ROK)
        {
           SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
                 __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-               (ErrVal)EUDXXXX, (ErrVal)0, "SGetMsg() failed");
+               (ErrVal)EUDXXXX, (ErrVal)0, "ODU_GET_MSG_BUF() failed");
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
 
@@ -552,14 +551,14 @@ S16 cmPkUdxStaUpdReq(Pst *pst,SpId spId,CmLteRlcId *rlcId,RlcUdxStaPdu *pStaPdu)
     S16    ret1;
     Buffer *mBuf = NULLP;
 
-    if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
+    if((ret1 = ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf)) != ROK)
     {
 #if (ERRCLASS & ERRCLS_ADD_RES)
        if(ret1 != ROK)
        {
           SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
                 __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-               (ErrVal)EUDXXXX, (ErrVal)0, "SGetMsg() failed");
+               (ErrVal)EUDXXXX, (ErrVal)0, "ODU_GET_MSG_BUF() failed");
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
 
@@ -572,8 +571,7 @@ S16 cmPkUdxStaUpdReq(Pst *pst,SpId spId,CmLteRlcId *rlcId,RlcUdxStaPdu *pStaPdu)
        {
          cmPkUdxStruct((uint8_t *)pStaPdu, sizeof(RlcUdxStaPdu),mBuf);
          cmPkUdxStruct((uint8_t *)rlcId, sizeof(CmLteRlcId),mBuf);
-         SPutStaticBuffer(pst->region,pst->pool,(Data *) pStaPdu,
-                          sizeof(RlcUdxStaPdu),0);
+         RLC_FREE_SHRABL_BUF(pst->region,pst->pool, pStaPdu, sizeof(RlcUdxStaPdu));
 
          break;
        }
@@ -609,14 +607,14 @@ S16 cmPkUdxStaPduReq(Pst *pst,SpId spId,CmLteRlcId *rlcId,RlcUdxDlStaPdu *pStaPd
     S16    ret1;
     Buffer *mBuf = NULLP;
 
-    if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
+    if((ret1 = ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf)) != ROK)
     {
 #if (ERRCLASS & ERRCLS_ADD_RES)
        if(ret1 != ROK)
        {
           SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
                 __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-               (ErrVal)EUDXXXX, (ErrVal)0, "SGetMsg() failed");
+               (ErrVal)EUDXXXX, (ErrVal)0, "ODU_GET_MSG_BUF() failed");
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
 
@@ -630,8 +628,7 @@ S16 cmPkUdxStaPduReq(Pst *pst,SpId spId,CmLteRlcId *rlcId,RlcUdxDlStaPdu *pStaPd
          cmPkUdxStruct((uint8_t *)pStaPdu, sizeof(RlcUdxDlStaPdu),mBuf);
          cmPkUdxStruct((uint8_t *)rlcId, sizeof(CmLteRlcId),mBuf);
          /* Free status Pdu here for LC */
-         SPutStaticBuffer(pst->region,pst->pool,(Data *) pStaPdu,
-                          sizeof(RlcUdxDlStaPdu),0);
+         RLC_FREE_SHRABL_BUF(pst->region,pst->pool, pStaPdu, sizeof(RlcUdxDlStaPdu));
          break;
        }
        case UDX_SEL_LWLC:
@@ -664,14 +661,14 @@ S16 cmPkUdxL2MeasReq(Pst  *pst,RlcL2MeasReqEvt *measReqEvt)
     S16    ret1;
     Buffer *mBuf = NULLP;
 
-    if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
+    if((ret1 = ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf)) != ROK)
     {
 #if (ERRCLASS & ERRCLS_ADD_RES)
        if(ret1 != ROK)
        {
           SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
                 __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-               (ErrVal)EUDXXXX, (ErrVal)0, "SGetMsg() failed");
+               (ErrVal)EUDXXXX, (ErrVal)0, "ODU_GET_MSG_BUF() failed");
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
 
@@ -712,14 +709,14 @@ S16 cmPkUdxL2MeasSendReq(Pst  *pst,uint8_t measType)
     S16    ret1;
     Buffer *mBuf = NULLP;
 
-    if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
+    if((ret1 = ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf)) != ROK)
     {
 #if (ERRCLASS & ERRCLS_ADD_RES)
        if(ret1 != ROK)
        {
           SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
                 __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-               (ErrVal)EUDXXXX, (ErrVal)0, "SGetMsg() failed");
+               (ErrVal)EUDXXXX, (ErrVal)0, "ODU_GET_MSG_BUF() failed");
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
 
@@ -756,14 +753,14 @@ S16 cmPkUdxL2MeasStopReq(Pst *pst,uint8_t measType)
     S16    ret1;
     Buffer *mBuf = NULLP;
 
-    if((ret1 = SGetMsg(pst->region, pst->pool, &mBuf)) != ROK)
+    if((ret1 = ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf)) != ROK)
     {
 #if (ERRCLASS & ERRCLS_ADD_RES)
        if(ret1 != ROK)
        {
           SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
                 __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-               (ErrVal)EUDXXXX, (ErrVal)0, "SGetMsg() failed");
+               (ErrVal)EUDXXXX, (ErrVal)0, "ODU_GET_MSG_BUF() failed");
        }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
 
@@ -809,7 +806,7 @@ S16 cmUnpkUdxBndReq(UdxBndReq func,Pst  *pst,Buffer *mBuf)
     
     CMCHKUNPKLOG(SUnpkS16, &suId, mBuf, EUDXXXX, pst);
     CMCHKUNPKLOG(SUnpkS16, &spId, mBuf, EUDXXXX, pst);
-    SPutMsg(mBuf);
+    ODU_PUT_MSG_BUF(mBuf);
 
     return ((*func)(pst, suId, spId));
 } /*end of function cmUnpkUdxBndReq*/
@@ -834,7 +831,7 @@ S16 cmUnpkUdxUbndReq(UdxUbndReq func,Pst *pst,Buffer *mBuf)
     
     CMCHKUNPKLOG(SUnpkS16, &spId, mBuf, EUDXXXX, pst);
     CMCHKUNPKLOG(SUnpkS16, &reason, mBuf, EUDXXXX, pst);
-    SPutMsg(mBuf);
+    ODU_PUT_MSG_BUF(mBuf);
     return ((*func)(pst, spId, reason));
 } /*end of function cmUnpkUdxUbndReq*/
 
@@ -858,7 +855,7 @@ S16 cmUnpkUdxBndCfm(UdxBndCfm func,Pst *pst,Buffer *mBuf)
     
     CMCHKUNPKLOG(SUnpkS16, &suId, mBuf, EUDXXXX, pst);
     CMCHKUNPKLOG(oduPackUInt8, &status, mBuf, EUDXXXX, pst);
-    SPutMsg(mBuf);
+    ODU_PUT_MSG_BUF(mBuf);
 
     return ((*func)(pst, suId, status));
 } /*end of function cmUnpkUdxBndCfm*/
@@ -896,7 +893,7 @@ S16 cmUnpkUdxCfgReq(UdxCfgReq func,Pst  *pst,Buffer *mBuf)
           ret1 = cmUnpkUdxStruct(mBuf,0,(uint8_t *)&tmpCfgInfo,sizeof(RlcCfgInfo));
           if(ret1 != ROK)
           {
-             SPutMsg(mBuf);
+             ODU_PUT_MSG_BUF(mBuf);
              SLogError(pst->dstEnt, pst->dstInst, pst->dstProcId,
                    __FILE__, __LINE__, (ErrCls)ERRCLS_DEBUG,
                   (ErrVal)EUDXXXX, (ErrVal)ret1, "Unpacking failure");
@@ -915,7 +912,7 @@ S16 cmUnpkUdxCfgReq(UdxCfgReq func,Pst  *pst,Buffer *mBuf)
        }
 #endif /* LCUDX */
     }
-    SPutMsg(mBuf);
+    ODU_PUT_MSG_BUF(mBuf);
 
     return ((*func)(pst, spId, cfgInfo));
 } /* cmUnpkUdxCfgReq */
@@ -947,25 +944,25 @@ S16 cmUnpkUdxCfgCfm(UdxCfgCfm func,Pst  *pst,Buffer *mBuf)
 #ifdef LCUDX
        case UDX_SEL_LC:
        {
-           if((ret1 = SGetStaticBuffer(pst->region, pst->pool, (Data **)&cfgCfmInfo,\
-                       sizeof(RlcCfgCfmInfo),0)) != ROK)
+           RLC_ALLOC_SHRABL_BUF(pst->region, pst->pool, cfgCfmInfo, sizeof(RlcCfgCfmInfo))
+           if(cfgCfmInfo == NULL)
            {
 #if (ERRCLASS & ERRCLS_ADD_RES)
-              if(ret1 != ROK)
+              if(cfgCfmInfo == NULL)
               {
                  SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
                        __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-                      (ErrVal)EUDXXXX, (ErrVal)0, "SGetMsg() failed");
+                      (ErrVal)EUDXXXX, (ErrVal)0, "ODU_GET_MSG_BUF() failed");
               }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-              return (ret1);
+              return (RFAILED);
            }
 
           ret1 = cmUnpkUdxStruct(mBuf,0,(uint8_t *)cfgCfmInfo, sizeof(RlcCfgCfmInfo));
 #if(ERRCLASS & ERRCLS_DEBUG)
           if(ret1 != ROK)
           {
-             SPutMsg(mBuf);
+             ODU_PUT_MSG_BUF(mBuf);
              SLogError(pst->dstEnt, pst->dstInst, pst->dstProcId,
                    __FILE__, __LINE__, (ErrCls)ERRCLS_DEBUG,
                   (ErrVal)EUDXXXX, (ErrVal)ret1, "Unpacking failure");
@@ -981,7 +978,7 @@ S16 cmUnpkUdxCfgCfm(UdxCfgCfm func,Pst  *pst,Buffer *mBuf)
        }
 #endif /* LCUDX */
     }
-    SPutMsg(mBuf);
+    ODU_PUT_MSG_BUF(mBuf);
 
     return ((*func)(pst, suId, cfgCfmInfo));
 } /* cmUnpkUdxCfgCfm */
@@ -1037,7 +1034,7 @@ S16 cmUnpkUdxUeIdChgReq(UdxUeIdChgReq func,Pst *pst,Buffer *mBuf)
 
 #endif /* LCUDX */
     }
-    SPutMsg(mBuf);
+    ODU_PUT_MSG_BUF(mBuf);
 
     return ((*func)(pst, spId, transId, ueInfo, newUeInfo));
 
@@ -1069,7 +1066,7 @@ S16 cmUnpkUdxUeIdChgCfm(UdxUeIdChgCfm func,Pst  *pst,Buffer *mBuf)
 
     CMCHKUNPK(cmUnpkCmStatus, &status, mBuf);
 
-    SPutMsg(mBuf);
+    ODU_PUT_MSG_BUF(mBuf);
 
     return ((*func)(pst, suId, transId, status));
 
@@ -1109,7 +1106,7 @@ S16 cmUnpkUdxStaUpdCfm(UdxStaUpdCfm func,Pst *pst,Buffer *mBuf)
        }
     } 
 
-    SPutMsg(mBuf);
+    ODU_PUT_MSG_BUF(mBuf);
 
     return ((*func)(pst, suId, rlcId, pBufLst));
 
@@ -1133,7 +1130,6 @@ S16 cmUnpkUdxStaUpdReq(UdxStaUpdReq func,Pst *pst,Buffer *mBuf)
     SpId      spId = 0;
     CmLteRlcId *rlcId = NULLP; /* KW_FIX */ 
     RlcUdxStaPdu *pStaPdu = NULLP; /* KW_FIX */
-    S16 ret1;
     CmLteRlcId tmpRlcId;
     
     CMCHKUNPK(SUnpkS16, &spId, mBuf);
@@ -1141,21 +1137,21 @@ S16 cmUnpkUdxStaUpdReq(UdxStaUpdReq func,Pst *pst,Buffer *mBuf)
     {
        case UDX_SEL_LC:
        {
-           if((ret1 = SGetStaticBuffer(pst->region, pst->pool, (Data **)&pStaPdu,
-                       sizeof(RlcUdxStaPdu),0)) != ROK)
+           RLC_ALLOC_SHRABL_BUF(pst->region, pst->pool, pStaPdu, sizeof(RlcUdxStaPdu))
+           if(pStaPdu == NULLP)
            {
 #if (ERRCLASS & ERRCLS_ADD_RES)
-              if(ret1 != ROK)
+              if(pStaPdu == NULLP)
               {
                  SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
                        __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-                      (ErrVal)EUDXXXX, (ErrVal)0, "SGetMsg() failed");
+                      (ErrVal)EUDXXXX, (ErrVal)0, "ODU_GET_MSG_BUF() failed");
               }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-              return (ret1);
+              return (RFAILED);
            }
-          ret1 = cmUnpkUdxStruct(mBuf,0,(uint8_t *)pStaPdu, sizeof(RlcUdxStaPdu));
-          ret1 = cmUnpkUdxStruct(mBuf,sizeof(RlcUdxStaPdu),(uint8_t *)&tmpRlcId,sizeof(CmLteRlcId));
+           cmUnpkUdxStruct(mBuf,0,(uint8_t *)pStaPdu, sizeof(RlcUdxStaPdu));
+           cmUnpkUdxStruct(mBuf,sizeof(RlcUdxStaPdu),(uint8_t *)&tmpRlcId,sizeof(CmLteRlcId));
           rlcId = &tmpRlcId; 
           break;
        }
@@ -1167,7 +1163,7 @@ S16 cmUnpkUdxStaUpdReq(UdxStaUpdReq func,Pst *pst,Buffer *mBuf)
        }
     } 
 
-    SPutMsg(mBuf);
+    ODU_PUT_MSG_BUF(mBuf);
 
     return ((*func)(pst, spId, rlcId, pStaPdu));
 
@@ -1188,7 +1184,6 @@ S16 cmUnpkUdxStaUpdReq(UdxStaUpdReq func,Pst *pst,Buffer *mBuf)
 */
 S16 cmUnpkUdxStaPduReq(UdxStaPduReq func,Pst *pst,Buffer *mBuf)
 {
-    S16       ret1;
     SpId      spId = 0;
     CmLteRlcId tmpRlcId;
     CmLteRlcId *rlcId = NULLP;  /* KW_FIX */
@@ -1199,22 +1194,22 @@ S16 cmUnpkUdxStaPduReq(UdxStaPduReq func,Pst *pst,Buffer *mBuf)
     {
        case UDX_SEL_LC:
        {
-           if((ret1 = SGetStaticBuffer(pst->region, pst->pool, (Data **)&pStaPdu,
-                       sizeof(RlcUdxDlStaPdu),0)) != ROK)
+           RLC_ALLOC_SHRABL_BUF(pst->region, pst->pool, pStaPdu, sizeof(RlcUdxDlStaPdu))
+           if(pStaPdu == NULLP)
            {
 #if (ERRCLASS & ERRCLS_ADD_RES)
-              if(ret1 != ROK)
+              if(pStaPdu == NULLP)
               {
                  SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
                        __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-                      (ErrVal)EUDXXXX, (ErrVal)0, "SGetMsg() failed");
+                      (ErrVal)EUDXXXX, (ErrVal)0, "ODU_GET_MSG_BUF() failed");
               }
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
-              return (ret1);
+              return (RFAILED);
            }
-          ret1 = cmUnpkUdxStruct(mBuf,0, (uint8_t *)pStaPdu, sizeof(RlcUdxDlStaPdu));
-          ret1 = cmUnpkUdxStruct(mBuf,sizeof(RlcUdxDlStaPdu),(uint8_t *)&tmpRlcId,sizeof(CmLteRlcId));
-          rlcId = &tmpRlcId; 
+           cmUnpkUdxStruct(mBuf,0, (uint8_t *)pStaPdu, sizeof(RlcUdxDlStaPdu));
+           cmUnpkUdxStruct(mBuf,sizeof(RlcUdxDlStaPdu),(uint8_t *)&tmpRlcId,sizeof(CmLteRlcId));
+           rlcId = &tmpRlcId; 
            break;
        }
        case UDX_SEL_LWLC:
@@ -1225,7 +1220,7 @@ S16 cmUnpkUdxStaPduReq(UdxStaPduReq func,Pst *pst,Buffer *mBuf)
        }
     } 
 
-    SPutMsg(mBuf);
+    ODU_PUT_MSG_BUF(mBuf);
     return ((*func)(pst, spId, rlcId, pStaPdu));
 
 } /* cmUnpkUdxUeIdChgCfm */
@@ -1265,7 +1260,7 @@ S16 cmUnpkUdxStaProhTmrStart(UdxStaProhTmrStart func,Pst *pst,Buffer *mBuf)
        }
     } 
 
-    SPutMsg(mBuf);
+    ODU_PUT_MSG_BUF(mBuf);
 
     return ((*func)(pst, spId, rlcId));
 
@@ -1303,7 +1298,7 @@ S16 cmUnpkUdxL2MeasReq(UdxL2MeasReq func,Pst *pst,Buffer *mBuf)
        }
     }
 
-    SPutMsg(mBuf);
+    ODU_PUT_MSG_BUF(mBuf);
 
     return ((*func)(pst, measReqEvt));
 } /* cmUnpkUdxL2MeasReq */
@@ -1332,7 +1327,7 @@ S16 cmUnpkUdxL2MeasSendReq(UdxL2MeasSendReq func,Pst *pst,Buffer *mBuf)
        }
     }
 
-    SPutMsg(mBuf);
+    ODU_PUT_MSG_BUF(mBuf);
 
     return ((*func)(pst, measType));
 } /* cmUnpkUdxL2MeasReq */
@@ -1361,7 +1356,7 @@ S16 cmUnpkUdxL2MeasStopReq(UdxL2MeasStopReq func,Pst *pst,Buffer *mBuf)
        }
     }
 
-    SPutMsg(mBuf);
+    ODU_PUT_MSG_BUF(mBuf);
 
     return ((*func)(pst, measType));
 } /* cmUnpkUdxL2MeasStopReq */

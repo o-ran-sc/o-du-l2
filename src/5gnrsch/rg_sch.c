@@ -44,6 +44,7 @@
 #include "rg_sch.h"
 #include "rg_sch_err.h"
 #include "rg_sch_cmn.h"
+#include "sch_utils.h"
 
 /* header/extern include files (.x) */
 #include "tfu.x"           /* TFU types */
@@ -53,6 +54,7 @@
 #include "rg_sch_inf.x"         /* typedefs for Scheduler */
 #include "rg_sch.x"        /* typedefs for Scheduler */
 #include "rg_sch_cmn.x"
+#include "mac_sch_interface.h"
 
 #ifdef EMTC_ENABLE
 S16 rgEmtcMacSchUeDelInd ARGS((RgSchCellCb *cell,RgInfUeDelInd *ueDelInd));
@@ -111,11 +113,11 @@ RgMngmt  *cntrl   /* control structure  */
    SchFillCfmPst(pst, &cfmPst, cntrl);
 
    /* Initialize the cfg cfm structure 
-   if (SGetSBuf(cfmPst.region, cfmPst.pool, (Data **)&cfm, sizeof(RgMngmt))
-      != ROK)
+   SCH_ALLOC(cfm, sizeof(RgMngmt));
+   if(cfm   == NULLP)
    {
       DU_LOG("\nERROR  -->  SCH : Memory Unavailable for Confirmation");
-      SPutSBuf(pst->region, pst->pool, (Data *)cntrl, sizeof(RgMngmt));
+      SCH_FREE(pst->region, pst->pool, cntrl, sizeof(RgMngmt));
       return ROK;
    } */
    memset(&cfm, 0, sizeof(RgMngmt));
@@ -137,7 +139,7 @@ RgMngmt  *cntrl   /* control structure  */
       cfm.hdr.elmId.elmnt = cntrl->hdr.elmId.elmnt;
       RgMiLrgSchCntrlCfm(&cfmPst, &cfm);
       DU_LOG("\nERROR  -->  SCH : Gen Cfg not done.");
-      /*      SPutSBuf(pst->region, pst->pool, (Data *)cntrl, sizeof(RgMngmt)); */
+      /*      SCH_FREE(pst->region, pst->pool, cntrl, sizeof(RgMngmt)); */
       return ROK;
    }
 
@@ -159,7 +161,7 @@ RgMngmt  *cntrl   /* control structure  */
                   cntrl->hdr.elmId.elmnt);
          break;
    }
-   /*   SPutSBuf(pst->region, pst->pool, (Data *)cntrl, sizeof(RgMngmt)); */
+   /*   SCH_FREE(pst->region, pst->pool, cntrl, sizeof(RgMngmt)); */
    return (ret);
 }/*-- RgMiLrgSchCntrlReq --*/
 
@@ -587,8 +589,7 @@ S16 RgUiRgrSiCfgReq(Pst *pst, SpId  spId,RgrCfgTransId transId,RgrSiCfgReqInfo *
 #if (ERRCLASS & ERRCLS_ADD_RES)      
          DU_LOG("\nERROR  -->  SCH : Invalid SAP State: RgUiRgrSiCfgReq failed\n");
 #endif
-         SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo,
-                                          (Size)sizeof(*cfgReqInfo));
+         SCH_FREE(cfgReqInfo, (Size)sizeof(*cfgReqInfo));
          rgSCHUtlRgrSiCfgCfm(instId, spId, transId, cfmStatus); 
          return RFAILED;
       }
@@ -598,8 +599,7 @@ S16 RgUiRgrSiCfgReq(Pst *pst, SpId  spId,RgrCfgTransId transId,RgrSiCfgReqInfo *
 #if (ERRCLASS & ERRCLS_ADD_RES)      
       DU_LOG("\nERROR  -->  SCH : Invalid SAP Id:RgUiRgrSiCfgReq failed\n");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)cfgReqInfo,
-                                   (Size)sizeof(*cfgReqInfo));
+      SCH_FREE(cfgReqInfo, (Size)sizeof(*cfgReqInfo));
       rgSCHUtlRgrSiCfgCfm(instId, spId, transId, cfmStatus); 
       return RFAILED;
    }
@@ -682,8 +682,7 @@ S16 RgUiRgrWarningSiCfgReq(Pst *pst, SpId spId,RgrCfgTransId transId,RgrWarningS
 #endif
          rgSCHUtlFreeWarningSiSeg(pst->region, pst->pool, 
                &warningSiCfgReqInfo->siPduLst);
-         SPutSBuf(pst->region, pst->pool, (Data *)warningSiCfgReqInfo,
-               sizeof(RgrWarningSiCfgReqInfo));
+         SCH_FREE(warningSiCfgReqInfo, sizeof(RgrWarningSiCfgReqInfo));
          rgSCHUtlRgrWarningSiCfgCfm(instId, spId, warningSiCfgReqInfo->siId, 
                transId, cfmStatus);
          return RFAILED;
@@ -696,8 +695,7 @@ S16 RgUiRgrWarningSiCfgReq(Pst *pst, SpId spId,RgrCfgTransId transId,RgrWarningS
 #endif
       rgSCHUtlFreeWarningSiSeg(pst->region, pst->pool, 
             &warningSiCfgReqInfo->siPduLst);
-      SPutSBuf(pst->region, pst->pool, (Data *)warningSiCfgReqInfo,
-            sizeof(RgrWarningSiCfgReqInfo));
+      SCH_FREE(warningSiCfgReqInfo,sizeof(RgrWarningSiCfgReqInfo));
       rgSCHUtlRgrWarningSiCfgCfm(instId, spId, warningSiCfgReqInfo->siId, 
             transId, cfmStatus);
       return RFAILED;
@@ -825,8 +823,7 @@ S16 RgUiRgrLoadInfReq(Pst *pst, SpId spId, RgrCfgTransId  transId,RgrLoadInfReqI
 #if (ERRCLASS & ERRCLS_ADD_RES)
          DU_LOG("\nERROR  -->  SCH : Invalid SAP State: RgUiRgrLoadInfReq failed\n");
 #endif
-         SPutSBuf(pst->region, pst->pool, (Data *)loadInfReq,
-               (Size)sizeof(*loadInfReq));
+         SCH_FREE(loadInfReq, (Size)sizeof(*loadInfReq));
          return RFAILED;
       }
    }
@@ -835,8 +832,7 @@ S16 RgUiRgrLoadInfReq(Pst *pst, SpId spId, RgrCfgTransId  transId,RgrLoadInfReqI
 #if (ERRCLASS & ERRCLS_ADD_RES)
       DU_LOG("\nERROR  -->  SCH : Invalid SAP Id:RgUiRgrLoadInfReq failed\n");
 #endif
-      SPutSBuf(pst->region, pst->pool, (Data *)loadInfReq,
-            (Size)sizeof(*loadInfReq));
+      SCH_FREE(loadInfReq, (Size)sizeof(*loadInfReq));
       return RFAILED;
    }
 
@@ -1648,7 +1644,7 @@ S16 RgLiTfuRaReqInd(Pst *pst,SuId suId, TfuRaReqIndInfo *raReqInd)
    ret = rgSCHTomRaReqInd(rgSchCb[inst].tfuSap[suId].cell, raReqInd);
    /* Free up the memory for the request structure */
    RGSCH_FREE_MEM(raReqInd);
-   /*SPutSBuf (pst->region, pst->pool, (Data *)raReqInd,
+   /*SCH_FREE(pst->region, pst->pool, (Data *)raReqInd,
          sizeof(TfuRaReqIndInfo)); */
    return (ret);
 }  /* RgLiTfuRaReqInd */
@@ -2270,7 +2266,7 @@ S16 RgUiRgmCfgPrbRprt(Pst   *pst, SpId  spId,RgmPrbRprtCfg *prbRprtCfg)
 	     prbUsage->prbRprtEnabld,prbUsage->rprtPeriod);
 
    /* ccpu00134393 : mem leak fix */
-      SPutSBuf(pst->region, pst->pool, (Data *)prbRprtCfg, sizeof(RgmPrbRprtCfg));
+      SCH_FREE(prbRprtCfg, sizeof(RgmPrbRprtCfg));
   
    return ROK;
 }

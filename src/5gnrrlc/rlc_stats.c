@@ -68,21 +68,23 @@ CmLListCp        inUseL2UeStatsLst;/*!< In Use Pool of UE stats Blocks */
 *
 *
 */
-Void TSL2AllocStatsMem(Region region,Pool pool)
+Void TSL2AllocStatsMem(Inst inst)
 {
    uint32_t cnt=0;
+   RlcCb *gCb;
 
+   gCb = RLC_GET_RLCCB(inst);
    cmLListInit(&inUseL2UeStatsLst);     
    cmLListInit(&freeL2UeStatsLst);      
    for (cnt=0; cnt < L2_STATS_MAX_CELLS; cnt++)
    {
       if(NULL == l2CellStats[cnt])
       {
-	 if (SGetSBuf(region, pool, (Data **)&l2CellStats[cnt],
-		  (Size)sizeof (TSL2CellStatsCb)) != ROK)
-	 {
-	    DU_LOG("\nERROR  -->  RLC : STATS Unexpected MEM Alloc Failure\n");
-	 }
+         RLC_ALLOC(gCb, l2CellStats[cnt], (Size)sizeof (TSL2CellStatsCb));
+         if(l2CellStats[cnt] == NULL)
+         {
+            DU_LOG("\nERROR  -->  RLC : STATS Unexpected MEM Alloc Failure\n");
+         }
       }
       memset(l2CellStats[cnt], 0x00, sizeof(TSL2CellStatsCb));
    }
@@ -92,11 +94,11 @@ Void TSL2AllocStatsMem(Region region,Pool pool)
       TSL2UeStatsCb *statsCb = l2UeStats[cnt];
       if(NULL == statsCb)
       {
-	 if (SGetSBuf(region, pool, (Data **)&statsCb,
-		  (Size)sizeof (TSL2UeStatsCb)) != ROK)
-	 {
-	    DU_LOG("\nERROR  -->   RLC : STATS Unexpected MEM Alloc Failure at %d\n", (int)cnt);
-	 }
+         RLC_ALLOC(gCb, statsCb, (Size)sizeof (TSL2UeStatsCb));
+         if(NULL == statsCb)        
+         {
+            DU_LOG("\nERROR  -->   RLC : STATS Unexpected MEM Alloc Failure at %d\n", (int)cnt);
+         }
       }
       memset(statsCb, 0x00, sizeof(TSL2UeStatsCb));
       statsCb->lnk.node = (PTR)statsCb;
