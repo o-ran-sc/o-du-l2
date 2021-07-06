@@ -1520,6 +1520,10 @@ uint8_t fillLogicalChannelCfg(SchLcCfg *schLcCfg, LcCfg *macLcCfg)
    }
    else
    {
+      if(schLcCfg->drbQos)
+      {
+         MAC_FREE(schLcCfg->drbQos, sizeof(SchDrbQosInfo));
+      }
       schLcCfg->drbQos = NULLP;
    }
 
@@ -1546,6 +1550,10 @@ uint8_t fillLogicalChannelCfg(SchLcCfg *schLcCfg, LcCfg *macLcCfg)
          }
 	 else
 	 {
+            if (schLcCfg->snssai)
+            {
+               MAC_FREE(schLcCfg->snssai, sizeof(SchSnssai));
+            }
             schLcCfg->snssai = NULLP;
             /*Freeing the previously allocated buffer in case of failure */
             if(schLcCfg->drbQos)
@@ -1558,6 +1566,10 @@ uint8_t fillLogicalChannelCfg(SchLcCfg *schLcCfg, LcCfg *macLcCfg)
       }
       else
       {
+            if (schLcCfg->snssai)
+            {
+               MAC_FREE(schLcCfg->snssai, sizeof(SchSnssai));
+            }
          schLcCfg->snssai = NULLP;
       }
    }
@@ -1664,8 +1676,11 @@ uint8_t fillSchUeCfg(Pst *pst, SchUeCfg *schUeCfg, MacUeCfg *ueCfg)
       schUeCfg->ambrCfg->ulBr = ueCfg->ambrCfg->ulBr;
    }
    else
+   {
+      DU_LOG("\nPBORLA MAC: before %d %p", __LINE__, schUeCfg->ambrCfg);
       schUeCfg->ambrCfg = NULLP;
-
+      DU_LOG("\nPBORLA MAC: after %d %p", __LINE__, schUeCfg->ambrCfg);
+   }
    /* Fill DL modulation infor */
    schUeCfg->dlModInfo.modOrder = ueCfg->dlModInfo.modOrder;
    schUeCfg->dlModInfo.mcsIndex = ueCfg->dlModInfo.mcsIndex;

@@ -245,7 +245,7 @@ uint32_t macHeader[2];
 /* Free shared memory, received through LWLC */
 #define MAC_FREE_MEM(_region, _pool, _datPtr, _size)         \
    if(_datPtr)                                               \
-       SPutSBuf(_region, _pool,(Data *)_datPtr, _size);      \
+       MAC_FREE(_datPtr, _size);      \
    _datPtr = NULL;
 
 #define RG_LCG_ISCFGD(lcg) ((lcg)->lcgId != RG_INVALID_LCG_ID)
@@ -408,7 +408,7 @@ toFill.slot = (RG_NUM_SUB_FRAMES_5G + crntTime.slot - (dcr)) % (RG_NUM_SUB_FRAME
 {\
    if (NULLP != (_buf)) \
    { \
-      SPutMsg((_buf)); \
+      ODU_PUT_MSG_BUF((_buf)); \
       _buf = NULLP; \
    } \
 }
@@ -437,7 +437,7 @@ toFill.slot = (RG_NUM_SUB_FRAMES_5G + crntTime.slot - (dcr)) % (RG_NUM_SUB_FRAME
       {\
           if(_tb->lchInfo[lchIdx].mBuf[pduIdx] != NULL)\
           {\
-            SPutMsg(_tb->lchInfo[lchIdx].mBuf[pduIdx]);\
+            ODU_PUT_MSG_BUF(_tb->lchInfo[lchIdx].mBuf[pduIdx]);\
             _tb->lchInfo[lchIdx].freeBuff = FALSE;\
           }\
           _tb->lchInfo[lchIdx].mBuf[pduIdx] = NULL;\
@@ -461,7 +461,7 @@ toFill.slot = (RG_NUM_SUB_FRAMES_5G + crntTime.slot - (dcr)) % (RG_NUM_SUB_FRAME
       {\
           if(_tb->lchInfo[lchIdx].freeBuff == TRUE)\
           {\
-            SPutMsg(_tb->lchInfo[lchIdx].mBuf[pduIdx]);\
+            ODU_PUT_MSG_BUF(_tb->lchInfo[lchIdx].mBuf[pduIdx]);\
             _tb->lchInfo[lchIdx].freeBuff = FALSE;\
           }\
           _tb->lchInfo[lchIdx].mBuf[pduIdx] = NULL;\

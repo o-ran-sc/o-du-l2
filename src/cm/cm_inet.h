@@ -404,10 +404,10 @@
           numOpts > 0; numOpts--) \
       { \
          if (_hdrParmIpv6->ipv6ExtHdr.hbhOptsArr.hbhOpts[numOpts - 1].length) \
-            SPutSBuf(_region, _pool, (Data *)_hdrParmIpv6->ipv6ExtHdr. \
+            SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,_region, _pool, (Data *)_hdrParmIpv6->ipv6ExtHdr. \
                  hbhOptsArr.hbhOpts[numOpts - 1].value, (Size)(_hdrParmIpv6-> \
                  ipv6ExtHdr.hbhOptsArr.hbhOpts[numOpts - 1].length)); \
-            SPutSBuf(_region, _pool, (Data *)&_hdrParmIpv6->ipv6ExtHdr. \
+            SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,_region, _pool, (Data *)&_hdrParmIpv6->ipv6ExtHdr. \
                  hbhOptsArr.hbhOpts[numOpts - 1], \
                  (Size)sizeof(CmInetIpv6HBHHdr)); \
       } \
@@ -417,17 +417,17 @@
       for(numOpts = _hdrParmIpv6->ipv6ExtHdr.destOptsArr.numDestOpts; \
           numOpts > 0; numOpts--) \
       { \
-         SPutSBuf(_region, _pool, (Data *)_hdrParmIpv6->ipv6ExtHdr. \
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,_region, _pool, (Data *)_hdrParmIpv6->ipv6ExtHdr. \
                 destOptsArr.destOpts[numOpts - 1].value, (Size)(_hdrParmIpv6-> \
                 ipv6ExtHdr.destOptsArr.destOpts[numOpts - 1].length)); \
-         SPutSBuf(_region, _pool, (Data *)&_hdrParmIpv6->ipv6ExtHdr. \
+         SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,_region, _pool, (Data *)&_hdrParmIpv6->ipv6ExtHdr. \
                 destOptsArr.destOpts[numOpts - 1], \
                 (Size)sizeof(CmInetIpv6DestOptsHdr)); \
       } \
    } \
    if( _hdrParmIpv6->ipv6ExtHdr.rtOptsPrsnt) \
    { \
-      SPutSBuf(_region, _pool, \
+      SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,_region, _pool, \
                (Data *)_hdrParmIpv6->ipv6ExtHdr.rtOptsArr.ipv6Addrs, \
                (Size)(_hdrParmIpv6->ipv6ExtHdr.rtOptsArr.numAddrs * 16)); \
    } \

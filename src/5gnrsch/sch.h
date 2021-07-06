@@ -255,6 +255,10 @@ typedef struct schCb
 SchCb schCb[SCH_MAX_INST];
 
 /* function declarations */
+SchUeCb* schGetUeCb(SchCellCb *cellCb, uint16_t crnti);
+void schInitUlSlot(SchUlSlotInfo *schUlSlotInfo);
+void schInitDlSlot(SchDlSlotInfo *schDlSlotInfo);
+uint8_t SchSendCfgCfm(Pst *pst, RgMngmt *cfm);
 short int schActvTmr(Ent ent,Inst inst);
 uint8_t schBroadcastAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc,uint16_t slot);
 uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst inst);
