@@ -28,7 +28,7 @@ level as follows:
 
 - Thread 1: O-DU thread
 
-- Thread 2: DU APP inclusive of Config Handler, DU Manager, UE Manager, EGTP Handler and ASN.1 Codecs
+- Thread 2: DU APP inclusive of Config Handler, DU Manager, UE Manager, and ASN.1 Codecs
 
 - Thread 3: 5G NR RLC DL and MAC (inclusive of 5G NR SCH and Lower MAC)
 
@@ -38,6 +38,9 @@ level as follows:
 
 - Thread 6: Lower MAC Handler
 
+- Thread 7: EGTP Handler
+
+- Thread 8: O1
 
 O-DU High Modules
 --------------------------
@@ -154,6 +157,10 @@ As shown in Figure 3, O-DU High interfaces with the following modules:
   - UE Context Management 
 
     - UE Context Setup
+
+    - UE Context Modification
+
+    - UE Context Release
 
   - RRC Message Transfer
 		
@@ -317,6 +324,36 @@ Figure 5 below depicts the above call flow, inclusive of all interfaces:
 
   Figure 5 - UE Attach Flow
 
+- UE Release Signalling flow
+
+  - RRC Release
+
+Closed Loop Automation Procedure
+-----------------------------------
+
+This section describes the closed loop automation procedure within O-DU High.
+
+.. figure:: CLA_call_flow.png
+  :width: 720
+  :alt: Closed Loop Automation Procedure
+
+  Figure 6 - O-DU High Closed Loop Automation Procedure
+
+
+1. SMO commands ODU-High to bring the cell down via O1 interface.
+
+2. DU-APP module of ODU-High sends GNB-DU configuration update message to O-CU. It contains the details of cell to be deleted. O-CU acknowledges this message by sending GNB-DU configuration update acknowledgment.
+
+3. For each UE, DU APP sends UE Context Release Request to O-CU with information about the to be released. O-CU responds with UE Context Release request. It contains the RRC release message. O-DU high sends this RRC Release message to UE.
+   
+4. DU APP then sends UE delete request to MAC and RLC. Once a confirmation is received from both MAC and RLC, DU APP deletes UE from its own database as well.
+
+4. Once all UEs are released, O-DU High sends STOP.Request to L1. L1 responds with stop indication.
+
+5. Once cell has stopped, DU APP sends cell delete request to MAC. On receiving confimation from MAC, DU APP deletes cell information from its own database as well and sends UE Context Release Complete.
+
+6. On receiving cell bring up command from SMO, the complete Cell bring up and UE attach procedure will be repeated (as explained in above sections)
+
 
 O1 Netconf get-alarm list procedure
 -----------------------------------
@@ -328,10 +365,9 @@ This section describes the *Health Status Retrieval* scenario of O-DU High healt
   :width: 869
   :alt: Figure 6 O1 get alarm-list flow  
 
-  Figure 6 - O1 get alarm-list flow
+  Figure 7 - O1 get alarm-list flow
 
- 
-As seen in the Figure 6,
+As seen in the Figure 7,
 
 - On the cell state change from de-active to activate, DU APP module raises a cell up alarm message and sends it over the Unix socket using the Alarm Interface API.
 

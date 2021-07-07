@@ -6,7 +6,7 @@
 API-Docs
 **********
 
-This is the API-docs for Cherry relase o-du/l2.
+This is the API-docs for D relase o-du/l2.
 
 .. contents::
    :depth: 3
@@ -16,7 +16,7 @@ This is the API-docs for Cherry relase o-du/l2.
 Introduction
 -----------------
 This document lists the APIs implemented between various modules of ODU-High and their functionality.
-These are in line with ORAN-WG8.AAD-v2.05.00, hereafter referred to as AAD Spec.
+These are in line with ORAN-WG8.AAD-v3.00.00, hereafter referred to as AAD Spec.
 
 API Functions
 -------------
@@ -34,6 +34,7 @@ API Functions
    B. MAC to RLC
 
       a. Data Transfer(UL) : Transfers UL data to RLC as per Section 9.2.1.2 of the AAD Spec
+
       b. Schedule Result Reporting (DL) : Reports DL schedule result to RLC as per Section 9.2.1.3 of the AAD Spec
 
 2. MAC-Scheduler Interface
@@ -61,6 +62,12 @@ API Functions
 
       g. UL Buffer Status Report Indication : On reception and decoding of received BSR from the UE, MAC provides SCH
          buffer status report for UL scheduling, as per Section 9.2.2.2.16 of the AAD Spec
+
+      h. UE Delete Request : MAC receives UE delete request and forwards the request to SCH as per Section 9.2.2.2.5 
+         of the AAD spec.
+
+      i. Cell Delete Request :  MAC receives UE delete request and forwards the request to SCH as per Section 9.2.2.2.2
+         of the AAD spec.
 	 
    B. Scheduler to MAC
 
@@ -85,6 +92,10 @@ API Functions
       g. Downlink Broadcast Allocation - Provides DCI and DL data scheduling information for SIB1 for a given slot for
          Broadcast Channel, as per Section 9.2.2.3.9 of the AAD Spec.
 
+      h. UE Delete Response - Response to UE delete request from MAC, as per Section 9.2.2.3.4
+
+      i. Cell Delete Response - Response to Cell delete response from MAC, as per Section 9.2.2.3.2
+
 3. DU APP - MAC Interface
 
    - AAD Spec : section 9.2.3
@@ -101,6 +112,10 @@ API Functions
 
       d. DL CCCH Indication - Sends DL CCCH Message to MAC to be sent to UE, as per Section 9.2.3.16 of the AAD Spec.
 
+      e. Cell Stop - Commands MAC to stop cell at L1, as per Section 9.2.3.2 of the AAD spec.
+
+      f. UE Delete Request - Deletes UE information at MAC as per Section 9.2.3.7  of the AAD Spec.
+
    B. MAC to DU APP
 
       a. UE Create Response - Response to UE Create Request from DU Manager as per Section 9.2.3.4 of the AAD Spec.
@@ -110,6 +125,8 @@ API Functions
 
       c. UL-CCCH Indication - Sends the UL CCCH Message received from UE to DU APP as per Section 9.2.3.15 of AAD Spec.
 
+      d. UE Delete Response - Response to UE Delete Request from DU Manager as per Section 9.2.3.8 of the AAD Spec.
+
 4. DU APP - RLC Interface
 
    - AAD Spec : section 9.2.4
@@ -118,18 +135,27 @@ API Functions
 
       a. UE Create - Adds UE associated RLC entity and related information as per Section 9.2.4.1 of the AAD Spec.
 
-      b. UE Reconfiguration - Reconfigures the UE associated RLC entity previously added at RLC, as per Section 9.2.4.1
+      b. UE Reconfiguration - Reconfigures the UE associated RLC entity previously added at RLC, as per Section 9.2.4.3
          of the AAD Spec.
 
-      c. DL RRC Message Transfer - Requests RLC to deliver RRC message from CU to the UE, as per Section 9.2.4.3 of the
+      c. DL RRC Message Transfer - Requests RLC to deliver RRC message from CU to the UE, as per Section 9.2.4.7 of the
+         AAD Spec.
+
+      d. UE Delete Request - Deletes UE associated RLC entity and related information as per Section 9.2.4.5 of the 
          AAD Spec.
 
    B. RLC to DU APP
 
-      a. UL RRC Message Tranfer - Delivers RRC Message from UE to CU as per Section 9.2.4.4 of the AAD spec.
+      a. UE Create Response - Response to UE Create Request from DU APP, as per Section 9.2.4.3
 
-      b. RRC Message Delivery Report - Informs DU Manager on failed/successful delivery of a DL RRC message to UE, as
-         per Section 9.2.4.5 of the AAD Spec.
+      b. UE Reconfiguration Response - Response to UE Recofiguration Request from DU APP, as per Section 9.2.4.4
+
+      c. UL RRC Message Tranfer - Delivers RRC Message from UE to CU as per Section 9.2.4.8 of the AAD spec.
+
+      d. RRC Message Delivery Report - Informs DU Manager on failed/successful delivery of a DL RRC message to UE, as
+         per Section 9.2.4.9 of the AAD Spec.
+
+      e. UE Delete Response - Response to UE Delete Request from DU APP, as per section 9.2.4.6
 
 Additional APIs
 ----------------
@@ -140,21 +166,23 @@ Additional APIs
      
       a. Cell Configuration Request - Configures cell information at MAC
 
+      b. Cell Delete Request - Deletes cell information at MAC
+
    B. MAC to DU APP
 
       a. Cell Configuration Response - Response to Cell Configuration Request from DU APP
+
+      b. Cell Delete Response - Response to Cell Delet request from DU APP
 
 2. DU APP - RLC Interface
 
    A. RLC to DU APP
 
-      a. UE Create Response - Response to UE Create Request from DU APP
-
-      b. UE Reconfiguration Response - Response to UE Recofiguration Request from DU APP
-
       c. DL RRC Message Response - Informs DU APP if a DL RRC Message was successfuly processed at RLC and sent to MAC.
 
 3. DU APP - O1 Interface
 
-   a. DU sends alarms to O1 for cell up and cell down events using the alarm interface API
-   
+   a. Bring cell up - Informs DU to bring a specific cell up
+   b. Bring cell down - Informs DU to bring specific cell up
+   c. Set the cell operational state - Sets the cell state to ACTIVE/INACTIVE
+   d. Raise a cell alarm - Raise an alarm when the cell is ACTIVE/INACTIV

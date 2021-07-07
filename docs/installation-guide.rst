@@ -24,6 +24,10 @@ Version history
 | **Date**           | **Ver.**           | **Author**         | **Comment**        |
 |                    |                    |                    |                    |
 +--------------------+--------------------+--------------------+--------------------+
+| 2021-07-07         |  2.0.0             |  Radisys,          |  D Release         |
+|                    |                    |  HCL Technologies  |                    |
+|                    |                    |  Ltd.              |                    |
++--------------------+--------------------+--------------------+--------------------+
 | 2020-12-04         |  1.0.1             |  HCL Technologies  |  Cherry Release    |
 |                    |                    |  Ltd.              |                    |
 +--------------------+--------------------+--------------------+--------------------+
@@ -109,11 +113,10 @@ Cloning code
   git clone "https://gerrit.o-ran-sc.org/r/o-du/l2"
 
 
-Setting up Netconf server
--------------------------
+Setting up Netconf server (Only if O1 interface enabled)
+--------------------------------------------------------
  
   Following steps are required to compile and run ODU with O1 interface enabled.
-  This requires SMO components (OAM and VES collector) to be running.
 
 - Create a new netconf user
 

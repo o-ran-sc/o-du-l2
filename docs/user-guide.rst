@@ -130,7 +130,7 @@ II. Compilation
 
       d. Build ODU Binary:
            
-         - make odu PHY=INTEL_L1 PHY_MODE=TIMER MACHINE=BIT64 MODE=FDD
+         - make odu PHY=INTEL_L1 MACHINE=BIT64 MODE=FDD
 
 
 III. Execution
@@ -146,7 +146,7 @@ III. Execution
       b. Run O-DU Low binary :
       
          - cd <O-DU Low Directory>/FlexRAN/l1/bin/nr5g/gnb/l1
-         - To run in timer mode : ./l1.sh -e
+         - To run in radio mode : ./l1.sh -xran
          - L1 is up when following prints are seen on console:
 
 		| Non BBU threads in application
@@ -194,7 +194,7 @@ C. Message Flow:
 O-DU High opens WLS interface during bring up. Message exchanges can begin once the interface is ready.
 Following diagram shows P5 messages exchanged with O-DU Low in timer mode.
 
-.. figure:: O-DU_High_Low_Flow.jpg
+.. figure:: O-DU_High_Low_Flow.PNG
   :width: 600
   :alt: Figure 7 O-DU High - O-DU Low Message Flow Diagram
 
@@ -241,5 +241,3 @@ Here are the steps as executed in the terminal
      |  </odu>
 
 The XML output is a list of active alarms in the O-DU High system.
-
-Note: Integration with SMO/OAM is not yet done so a Netconf CLI client(netopeer2-cli) is used to connect to the Netconf server and send the get request.
