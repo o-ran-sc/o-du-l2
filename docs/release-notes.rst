@@ -6,7 +6,7 @@ Release-Notes
 **************
 
 
-This document provides the release notes for Cherry Release of O-DU-L2.
+This document provides the release notes for D Release of O-DU-L2.
 
 .. contents::
    :depth: 3
@@ -19,6 +19,9 @@ Version history
 +--------------------+--------------------+--------------------+--------------------+
 | **Date**           | **Ver.**           | **Author**         | **Comment**        |
 |                    |                    |                    |                    |
++--------------------+--------------------+--------------------+--------------------+
+| 2021-07-07         | 4.0.0              | Radisys, HCL       | D Release          |
+|                    |                    | Technologies Ltd.  |                    |
 +--------------------+--------------------+--------------------+--------------------+
 | 2020-12-04         | 3.0.0              | Radisys, HCL       | Cherry Release     |
 |                    |                    | Technologies Ltd.  |                    |
@@ -33,6 +36,20 @@ Version history
 
 Summary
 -------
+
+D
+^^^^^^^^
+This release contains the following:
+
+ - UL/DL Data transmission on FDD/Mu0/20MHz.
+
+ - Support for static TDD at O-DU High on 100 MHz Bandwidth, numerology 1.
+
+ - Support for Closed Loop automation use case at O-DU High.
+
+ - O-DU low – O-DU high pairwise testing in Radio mode (Broadcast message successfully received at O-DU Low).
+
+ - O1:TBD
 
 Cherry
 ^^^^^^^^
@@ -96,10 +113,31 @@ This release contains the following:
 Release Data
 ------------
 
+D
+^^^^^^ 
++--------------------------------------+--------------------------------------+
+| **Project**                          | ODUHIGH                              |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Repo/commit-ID**                   | o-du/l2/                             |
+|                                      |                                      |
+|                                      |                                      |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Release designation**              | D Release                            |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Release date**                     | 2021-07-07                           |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Purpose of the delivery**          | D Release                            |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+
 Cherry
 ^^^^^^ 
 +--------------------------------------+--------------------------------------+
-| **Project**                          | ODUHIGH	                      |
+| **Project**                          | ODUHIGH                              |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
 | **Repo/commit-ID**                   | o-du/l2/                             |
@@ -113,14 +151,14 @@ Cherry
 | **Release date**                     | 2020-12-04                           |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| **Purpose of the delivery**          | Cherry Release               	      |
+| **Purpose of the delivery**          | Cherry Release                       |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
 
 Bronze
 ^^^^^^ 
 +--------------------------------------+--------------------------------------+
-| **Project**                          | ODUHIGH	                      |
+| **Project**                          | ODUHIGH                              |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
 | **Repo/commit-ID**                   | o-du/l2/                             |
@@ -134,7 +172,7 @@ Bronze
 | **Release date**                     | 2020-06-17                           |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| **Purpose of the delivery**          | Bronze Release               	      |
+| **Purpose of the delivery**          | Bronze Release                       |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
 
@@ -166,6 +204,35 @@ Feature Additions
 
 **JIRA BACK-LOG:**
 
+D
+^^^^^^^
+
++-----------------------------------------------+-----------------------------------------------+
+| **JIRA REFERENCE**                            | **SLOGAN**                                    |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-264  | Support for Mu1                               |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-265  | Support for 100 MHz                           |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-266  | Support for TDD mode                          |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-267  | Integration with O-DU Low in Radio mode       |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-268  | Integration with O-CU                         |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-269  | Support for E2E testing                       |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-299  | Closed Loop Automation use-case               |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+
 Cherry
 ^^^^^^^
 
@@ -174,37 +241,37 @@ Cherry
 |                                               |                                               |
 +-----------------------------------------------+-----------------------------------------------+
 | https://jira.o-ran-sc.org/browse/ODUHIGH-10   | UE attach procedure with basic scheduling     |
-|                                               | 				                |
+|                                               |                                               |
 +-----------------------------------------------+-----------------------------------------------+
-| https://jira.o-ran-sc.org/browse/ODUHIGH-188  | Support for all short PRACH formats	        |
-|                                               | 				                |
+| https://jira.o-ran-sc.org/browse/ODUHIGH-188  | Support for all short PRACH formats           |
+|                                               |                                               |
 +-----------------------------------------------+-----------------------------------------------+
-| https://jira.o-ran-sc.org/browse/ODUHIGH-191  | Explore O1 interface	                        |
-|                                               | 				                |
+| https://jira.o-ran-sc.org/browse/ODUHIGH-191  | Explore O1 interface                          |
+|                                               |                                               |
 +-----------------------------------------------+-----------------------------------------------+
 | https://jira.o-ran-sc.org/browse/ODUHIGH-189  | Integration with O-DU Low                     |
-|                                               | 				                |
+|                                               |                                               |
 +-----------------------------------------------+-----------------------------------------------+
 | https://jira.o-ran-sc.org/browse/ODUHIGH-184  | UE UL Data path                               |
-|                                               | 				                |
+|                                               |                                               |
 +-----------------------------------------------+-----------------------------------------------+
 | https://jira.o-ran-sc.org/browse/ODUHIGH-185  | UE DL Data path                               |
-|                                               | 				                |
+|                                               |                                               |
 +-----------------------------------------------+-----------------------------------------------+
 | https://jira.o-ran-sc.org/browse/ODUHIGH-186  | Applying 64 QAM Modulation in DL              |
-|                                               | 				                |
+|                                               |                                               |
 +-----------------------------------------------+-----------------------------------------------+
 | https://jira.o-ran-sc.org/browse/ODUHIGH-187  | Applying 16 QAM Modulation in UL              |
-|                                               | 				                |
+|                                               |                                               |
 +-----------------------------------------------+-----------------------------------------------+
 | https://jira.o-ran-sc.org/browse/ODUHIGH-190  | Integration with VIAVI Software               |
-|                                               | 				                |
+|                                               |                                               |
 +-----------------------------------------------+-----------------------------------------------+
 | https://jira.o-ran-sc.org/browse/ODUHIGH-214  | get-AlarmList implementation on O1 interface  |
-|                                               | 				                |
+|                                               |                                               |
 +-----------------------------------------------+-----------------------------------------------+
 | https://jira.o-ran-sc.org/browse/ODUHIGH-196  | CM Support on O1 interface                    |
-|                                               | 				                |
+|                                               |                                               |
 +-----------------------------------------------+-----------------------------------------------+
 
 Previous Releases
@@ -215,26 +282,26 @@ Previous Releases
 | **JIRA REFERENCE**                          | **SLOGAN**                                      |
 |                                             |                                                 |
 +---------------------------------------------+-------------------------------------------------+
-| https://jira.o-ran-sc.org/browse/ODUHIGH-1  |	F1-C enhancement                                |
-|                                             | 				                |
+| https://jira.o-ran-sc.org/browse/ODUHIGH-1  | F1-C enhancement                                |
+|                                             |                                                 |
 +---------------------------------------------+-------------------------------------------------+
-| https://jira.o-ran-sc.org/browse/ODUHIGH-5  |	F1-U implementation                             |
-|                                             | 				                |
+| https://jira.o-ran-sc.org/browse/ODUHIGH-5  | F1-U implementation                             |
+|                                             |                                                 |
 +---------------------------------------------+-------------------------------------------------+
-| https://jira.o-ran-sc.org/browse/ODUHIGH-11 |	E2 implementation                               |
-|                                             | 				                |
+| https://jira.o-ran-sc.org/browse/ODUHIGH-11 | E2 implementation                               |
+|                                             |                                                 |
 +---------------------------------------------+-------------------------------------------------+
-| https://jira.o-ran-sc.org/browse/ODUHIGH-9  |	Cell broadcast procedure                        |
-|                                             | 				                |
+| https://jira.o-ran-sc.org/browse/ODUHIGH-9  | Cell broadcast procedure                        |
+|                                             |                                                 |
 +---------------------------------------------+-------------------------------------------------+
-| https://jira.o-ran-sc.org/browse/ODUHIGH-10 |	UE attach procedure till msg-4                  |
-|                                             | 				                |
+| https://jira.o-ran-sc.org/browse/ODUHIGH-10 | UE attach procedure till msg-4                  |
+|                                             |                                                 |
 +---------------------------------------------+-------------------------------------------------+
-| https://jira.o-ran-sc.org/browse/ODUHIGH-8  |	FAPI interface implementation                   |
-|                                             | 				                |
+| https://jira.o-ran-sc.org/browse/ODUHIGH-8  | FAPI interface implementation                   |
+|                                             |                                                 |
 +---------------------------------------------+-------------------------------------------------+
-| https://jira.o-ran-sc.org/browse/ODUHIGH-27 |	RLC layer interface enhancements                |
-|                                             | 				                |
+| https://jira.o-ran-sc.org/browse/ODUHIGH-27 | RLC layer interface enhancements                |
+|                                             |                                                 |
 +---------------------------------------------+-------------------------------------------------+
 
 Bug Corrections
