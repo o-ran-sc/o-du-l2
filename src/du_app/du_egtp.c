@@ -63,6 +63,102 @@ uint8_t egtpActvInit(Ent entity, Inst inst, Region region, Reason reason)
   return ROK;
 }
 
+/**************************************************************************
+* @brief Function prints the src dest and msg reached to egtp.
+*
+* @details
+*
+*      Function : callFlowEgtpActvTsk 
+*
+*      Functionality:
+*           Function prints the src dest and msg reached to egtp.
+*
+* @param[in]  Pst     *pst, Post structure of the primitive.
+*
+* @return void 
+*
+***************************************************************************/
+
+void callFlowEgtpActvTsk(Pst *pst)
+{
+
+   char sourceTask[50];
+   char destTask[50]="ENTEGTP";
+   char message[100];
+
+   switch(pst->srcEnt)
+   {
+      case ENTDUAPP:
+         {
+            strcpy(sourceTask,"ENTDUAPP");
+            switch(pst->event)
+            {
+               case EVTCFGREQ:
+                  {
+                     strcpy(message,"EVTCFGREQ");
+                     break;
+                  }
+               case EVTSRVOPENREQ:
+                  {
+                     strcpy(message,"EVTSRVOPENREQ");
+                     break;
+                  }
+               case EVTTNLMGMTREQ:
+                  {
+                     strcpy(message,"EVTTNLMGMTREQ");
+                     break;
+                  }
+               default:
+                  {
+                     strcpy(message,"Invalid Msg");
+                     break;
+                  }
+            }
+            break;
+         }
+      case ENTEGTP:
+         {
+            strcpy(sourceTask,"ENTEGTP");
+            switch(pst->event)
+            {
+               case EVTSTARTPOLL:
+                  {
+                     strcpy(message,"EVTSTARTPOLL");
+                     break;
+                  }
+               default:
+                  {
+                     strcpy(message,"Invalid Msg");
+                     break;
+                  }
+            }
+            break;
+         }
+      case ENTRLC:
+         {
+            strcpy(sourceTask,"ENTRLC");
+            switch(pst->event)
+            {
+               case EVTDATIND:
+                  {
+                     strcpy(message,"EVTDATIND");
+                     break;
+                  }
+               default:
+                  {
+                     strcpy(message,"Invalid Msg");
+                     break;
+                  }
+            }
+            break;
+         }
+      default:
+         {
+             strcpy(sourceTask,"Invalid Src");
+         }
+   }
+   DU_LOG("\nCall Flow: %s -> %s:%s\n",sourceTask,destTask,message);
+}
 
 /**************************************************************************
  * @brief Task Activation callback function. 
@@ -86,6 +182,10 @@ uint8_t egtpActvInit(Ent entity, Inst inst, Region region, Reason reason)
 uint8_t egtpActvTsk(Pst *pst, Buffer *mBuf)
 {
    uint8_t ret = ROK;
+  
+#ifdef CALLFLOW_DEBUG
+   callFlowEgtpActvTsk(pst);
+#endif
 
    switch(pst->srcEnt)
    {
@@ -375,6 +475,9 @@ uint8_t egtpSrvOpenPrc(uint8_t sockType, EgtpTptSrvr *server)
  * ***************************************************************************/
 uint8_t egtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt)
 {
+#ifdef CALLFLOW_DEBUG
+   DU_LOG("\nCall Flow: ENTDUAPP -> ENTEGTP:TNL_MGMT\n");
+#endif
    uint8_t ret = ROK;
 
    DU_LOG("\nDEBUG   -->  EGTP : Received tunnel management request");
@@ -560,6 +663,10 @@ uint8_t egtpTnlDel(EgtpTnlEvt tnlEvt)
  * ****************************************************************/
 uint8_t egtpHdlDatInd(EgtpMsg egtpMsg)
 {
+#ifdef CALLFLOW_DEBUG
+   DU_LOG("\nCall Flow: ENTDUAPP -> ENTEGTP:DATA_IND\n");
+#endif
+
    EgtpTeIdCb  *teidCb = NULLP;
    uint16_t    tPduSize;
    uint8_t     hdrLen;

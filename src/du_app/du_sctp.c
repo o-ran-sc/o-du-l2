@@ -66,6 +66,44 @@ uint8_t sctpActvInit(Ent entity, Inst inst, Region region, Reason reason)
 }
 
 /**************************************************************************
+* @brief Function prints src, dest, msg infor about all the msgs that received.
+*
+* @details
+*
+*     Function : callFlowSctpActvTsk
+*
+*     Function prints src, dest, msg infor about all the msgs that received
+*
+*  @param[in]  Pst     *pst, Post structure of the primitive.
+*
+*  @return  void
+***************************************************************************/
+uint8_t callFlowSctpActvTsk(Pst *pst)
+{
+   char sourceTask[50];
+   char destTask[50]="ENTSCTP";
+   char message[100];
+
+   switch(pst->srcEnt)
+   {
+      case ENTDUAPP:
+         {
+            strcpy(sourceTask,"ENTDUAPP");
+            switch(pst->event)
+            {
+               case EVTSTARTPOLL:
+                  {
+                     strcpy(message,"EVTSTARTPOLL");
+                     break;
+                  }
+            }
+            break;
+         }
+   }
+   DU_LOG("\nCall Flow: %s -> %s:%s\n",sourceTask,destTask,message);
+}
+
+/**************************************************************************
  * @brief Task Activation callback function. 
  *
  * @details
@@ -86,6 +124,12 @@ uint8_t sctpActvInit(Ent entity, Inst inst, Region region, Reason reason)
  ***************************************************************************/
 uint8_t sctpActvTsk(Pst *pst, Buffer *mBuf)
 {
+
+#ifdef CALLFLOW_DEBUG
+   callFlowSctpActvTsk(pst);
+#endif
+
+
    switch(pst->srcEnt)
    {
       case ENTDUAPP:
@@ -770,6 +814,17 @@ uint8_t sctpSend(Buffer *mBuf, uint8_t itfType)
    
    memInfo.region = DU_APP_MEM_REGION;               
    memInfo.pool   = DU_POOL;
+   
+#ifdef CALLFLOW_DEBUG
+   if(itfType == F1_INTERFACE)
+   {
+      DU_LOG("\nCall Flow: ENTDUAPP -> ENTSCTP:F1_INTERFACE\n");
+   }
+   else
+   {
+      DU_LOG("\nCall Flow: ENTDUAPP -> ENTSCTP:E2_INTERFACE\n");
+   }
+#endif
 
    if(itfType == F1_INTERFACE)
    {

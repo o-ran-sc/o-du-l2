@@ -49,7 +49,50 @@ uint8_t phyStubActvInit(Ent ent, Inst inst, Region reg, Reason reason)
    return ROK;
 }
 
+/**************************************************************************
+* @brief Function prints the src dest and msg reached to egtp.
+*
+* @details
+*
+*      Function : callFlowPhyStubActvTsk 
+*
+*      Functionality:
+*           Function prints the src dest and msg reached to egtp.
+*
+* @param[in]  Pst     *pst, Post structure of the primitive.
+*
+* @return void
+*
+***************************************************************************/
 
+void  callFlowPhyStubActvTsk(Pst *pst)
+{
+   char sourceTask[50];
+   char destTask[50]="ENTPHYSTUB";
+   char message[100];
+
+   switch(pst->srcEnt)
+   {
+      case ENTPHYSTUB:
+      {
+         strcpy(sourceTask,"ENTPHYSTUB");
+         switch(pst->event)
+         {
+            case EVT_PHY_START_SLOT_IND:
+               {
+                  strcpy(message,"EVT_PHY_START_SLOT_IND");
+                  break;
+               }
+            default:
+               {
+                  strcpy(message,"Invalid");
+                  break;
+               }
+         }
+      }
+   }
+   DU_LOG("\nCall Flow: %s -> %s:%s\n",sourceTask,destTask,message);
+}
 /*******************************************************************
 *
 * @brief Receives messages for Phy stub slot indication generator task
@@ -69,6 +112,11 @@ uint8_t phyStubActvInit(Ent ent, Inst inst, Region reg, Reason reason)
 uint8_t phyStubActvTsk(Pst *pst, Buffer *mBuf)
 {
    DU_LOG("\nPHY_STUB: Received Event [%d]", pst->event);
+   
+#ifdef CALLFLOW_DEBUG   
+   callFlowPhyStubActvTsk(pst);
+#endif
+
    switch(pst->srcEnt)
    {
       case ENTPHYSTUB:

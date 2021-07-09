@@ -3326,6 +3326,10 @@ uint8_t fillDlMsgTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, DlMsg
  * ****************************************************************/
 uint16_t fillDlTtiReq(SlotIndInfo currTimingInfo)
 {
+#ifdef CALLFLOW_DEBUG
+   DU_LOG("\nCall Flow: ENTMAC -> ENTLWRMAC:DL_TTI\n");
+#endif
+
 #ifdef INTEL_FAPI
    uint8_t idx =0;
    uint8_t nPdu = 0;
@@ -3918,6 +3922,10 @@ void fillPucchPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, MacCellCfg *macCellCfg,\
  ******************************************************************/
 uint16_t fillUlTtiReq(SlotIndInfo currTimingInfo, p_fapi_api_queue_elem_t prevElem)
 {
+#ifdef CALLFLOW_DEBUG
+   DU_LOG("\nCall Flow: ENTMAC -> ENTLWRMAC:UL_TTI\n");
+#endif
+
 #ifdef INTEL_FAPI
    uint16_t   cellIdx =0;
    uint8_t    pduIdx = -1;
@@ -4013,6 +4021,9 @@ uint16_t fillUlTtiReq(SlotIndInfo currTimingInfo, p_fapi_api_queue_elem_t prevEl
  ******************************************************************/
 void fillUlDciPdu(fapi_dl_dci_t *ulDciPtr, DciInfo *schDciInfo)
 {
+#ifdef CALLFLOW_DEBUG
+   DU_LOG("\nCall Flow: ENTMAC -> ENTLWRMAC:UL_DCI\n");
+#endif
    if(ulDciPtr != NULLP)
    {
       uint8_t numBytes =0;
@@ -4303,6 +4314,57 @@ lwrMacFsmHdlr fapiEvtHdlr[MAX_STATE][MAX_EVENT] =
 
 /*******************************************************************
  *
+ * @brief prints src, dest, msg info about all the msgs received 
+ *
+ * @details
+ *
+ *    Function : callFlowMacToLwrMac 
+ *
+ *    Functionality:
+ *         -prints src, dest, msg info about all the msgs received
+ *
+ * @params[in] Message Type
+ *
+ * @return void
+ *
+ ******************************************************************/
+void callFlowMacToLwrMac(uint16_t msgType)
+{
+   char message[100];
+
+   switch(msgType)
+   {
+#ifdef INTEL_TIMER_MODE
+      case UL_IQ_SAMPLE:
+      strcpy(message,"UL_IQ_SAMPLE");
+      break;
+#endif
+      case PARAM_REQUEST:
+      strcpy(message,"PARAM_REQUEST");
+      break;
+      case PARAM_RESPONSE:
+      strcpy(message,"PARAM_RESPONSE");
+      break;
+      case CONFIG_REQUEST:
+      strcpy(message,"CONFIG_REQUEST");
+      break;
+      case CONFIG_RESPONSE:
+      strcpy(message,"CONFIG_RESPONSE");
+      break;
+      case START_REQUEST:
+      strcpy(message,"START_REQUEST");
+      break;
+      case STOP_REQUEST:
+      strcpy(message,"STOP_REQUEST");
+      break;
+      case MAX_EVENT:
+      strcpy(message,"MAX_EVENT");
+      break;
+   }
+   DU_LOG("\nCall Flow: ENTMAC -> ENTLWRMAC:%s\n",message);
+}
+/*******************************************************************
+ *
  * @brief Sends message to LWR_MAC Fsm Event Handler
  *
  * @details
@@ -4321,6 +4383,9 @@ lwrMacFsmHdlr fapiEvtHdlr[MAX_STATE][MAX_EVENT] =
  ******************************************************************/
 void sendToLowerMac(uint16_t msgType, uint32_t msgLen, void *msg)
 {
+#ifdef CALLFLOW_DEBUG
+   callFlowMacToLwrMac(msgType);
+#endif
    lwrMacCb.event = msgType;
    fapiEvtHdlr[lwrMacCb.phyState][lwrMacCb.event](msg);
 }

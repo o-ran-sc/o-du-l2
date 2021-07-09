@@ -1034,6 +1034,10 @@ uint8_t duFillEgtpPst(Pst *pst, Event event)
 
 uint8_t duBuildEgtpCfgReq()
 {
+#ifdef CALLFLOW_DEBUG
+   DU_LOG("\nCall Flow: ENTDUAPP -> ENTEGTP:CFG_REQUEST\n");
+#endif
+
    Pst pst;
    EgtpConfig egtpCfg;
 
@@ -1104,6 +1108,10 @@ uint8_t duHdlEgtpCfgComplete(CmStatus cfm)
 uint8_t duSendEgtpSrvOpenReq()
 {
    Pst pst;
+
+#ifdef CALLFLOW_DEBUG
+   DU_LOG("\nCall Flow: ENTDUAPP -> ENTEGTP:OPEN_SERVER_REQUEST\n");
+#endif
 
    DU_LOG("\nDEBUG   -->  DU_APP : Sending EGTP server open request");
 
