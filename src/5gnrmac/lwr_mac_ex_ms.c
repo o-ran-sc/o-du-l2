@@ -56,6 +56,84 @@ uint8_t lwrMacActvInit(Ent entity, Inst inst, Region region, Reason reason)
 }
 
 /**************************************************************************
+* @brief function prints src, dest, msg info about all the msgs received 
+*
+* @details
+*
+*     Function : callFlowlwrMacActvTsk 
+*
+*     Functionality:
+*          function prints src, dest, msg info about all the msgs received
+*
+* @param[in]  Pst *pst
+*
+* @return void 
+***************************************************************************/
+
+void callFlowlwrMacActvTsk(Pst *pst)
+{
+   char sourceTask[50];
+   char destTask[50]="ENTLWRMAC";
+   char message[100];
+
+   switch(pst->srcEnt)
+   {
+      case ENTLWRMAC:
+         {
+            strcpy(sourceTask,"ENTLWRMAC");
+            switch(pst->event)
+            {
+#ifdef INTEL_WLS_MEM
+               case EVT_START_WLS_RCVR:
+                  {
+                     strcpy(message,"EVT_START_WLS_RCVR");
+                     break;
+                  }
+#endif
+               default:
+                  {
+                     strcpy(message,"Invalid");
+                     break;
+                  }
+            }
+            break;
+         }
+
+#ifndef INTEL_WLS_MEM
+      case ENTPHYSTUB:
+         {
+            strcpy(sourceTask,"ENTPHYSTUB");
+            switch(pst->event)
+            {
+               case EVT_PHY_STUB_SLOT_IND:
+                  {
+                     strcpy(message,"EVT_PHY_STUB_SLOT_IND");
+                     break;
+                  }
+
+               case EVT_PHY_STUB_STOP_IND:
+                 {
+                    strcpy(message,"EVT_PHY_STUB_STOP_IND");
+                    break;
+                 }
+               default:
+                  {
+                     strcpy(message,"Invalid");
+                     break;
+                  }
+            }
+            break;
+         }
+#endif
+
+      default:
+         {
+            strcpy(sourceTask,"Invalid Src");
+         }
+   }
+   DU_LOG("\nCall Flow: %s -> %s:%s\n",sourceTask,destTask,message);
+}
+/**************************************************************************
  * @brief Task Activation callback function. 
  *
  * @details
@@ -79,6 +157,10 @@ uint8_t lwrMacActvTsk(Pst *pst, Buffer *mBuf)
 {
    uint8_t ret = ROK;
 
+#ifdef CALLFLOW_DEBUG
+   callFlowlwrMacActvTsk(pst);
+#endif
+   
    switch(pst->srcEnt)
    {
       case ENTLWRMAC:

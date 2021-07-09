@@ -57,6 +57,9 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
    uint16_t  cellIdx;
    MacDlSlot *currDlSlot = NULLP;
 
+#ifdef CALLFLOW_DEBUG
+   DU_LOG("\nCall Flow: ENTSCH -> ENTMAC:EVENT_DL_ALLOC\n");
+#endif
    if(dlSchedInfo != NULLP)
    {
       GET_CELL_IDX(dlSchedInfo->cellId, cellIdx);

@@ -1524,6 +1524,60 @@ uint8_t l1SendStatusPdu()
 
 /*******************************************************************
  *
+ * @brief Function prints the src dest and msg reached to L1 
+ *
+ * @details
+ *
+ *    Function :  callFlowFapiRequest
+ *
+ *    Functionality:
+ *       - function prints the src dest and msg reached to L1 
+ *
+ * @params[in] Message type
+ *
+ * @return void
+ *
+ * ****************************************************************/
+
+void callFlowFapiRequest(uint8_t msgType)
+{
+   char message[100];
+#ifdef INTEL_FAPI
+   switch(msgType)
+   {
+      case FAPI_PARAM_REQUEST:
+         strcpy(message,"FAPI_PARAM_REQUEST");
+         break;
+      case FAPI_CONFIG_REQUEST:
+         strcpy(message,"FAPI_CONFIG_REQUEST");
+         break;
+      case FAPI_START_REQUEST:
+         strcpy(message,"FAPI_START_REQUEST");
+         break;
+      case FAPI_DL_TTI_REQUEST:
+         strcpy(message,"FAPI_DL_TTI_REQUEST");
+         break;
+      case FAPI_TX_DATA_REQUEST:
+         strcpy(message,"FAPI_TX_DATA_REQUEST");
+         break;
+      case FAPI_UL_TTI_REQUEST:
+         strcpy(message,"FAPI_UL_TTI_REQUEST");
+         break;
+      case FAPI_STOP_REQUEST:
+         strcpy(message,"FAPI_STOP_REQUEST");
+         break;
+      case FAPI_UL_DCI_REQUEST:
+         strcpy(message,"FAPI_UL_DCI_REQUEST");
+         break;
+      default:
+         strcpy(message,"INVALID_MSG");
+         break;
+   }
+   DU_LOG("\nCall Flow: ENTLWRMAC -> ENTPHYSTUB:%s\n",message);
+#endif
+}
+/*******************************************************************
+ *
  * @brief Receives message from MAC
  *
  * @details
@@ -1543,6 +1597,10 @@ uint8_t l1SendStatusPdu()
 
 void l1ProcessFapiRequest(uint8_t msgType, uint32_t msgLen, void *msg)
 {
+#ifdef CALLFLOW_DEBUG
+   callFlowFapiRequest(msgType);
+#endif
+
    switch(msgType)
    {
 #ifdef INTEL_FAPI
