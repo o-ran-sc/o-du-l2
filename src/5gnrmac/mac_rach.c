@@ -127,6 +127,10 @@ uint8_t MacProcUlSchInfo(Pst *pst, UlSchedInfo *ulSchedInfo)
 {
    uint16_t  cellIdx;
 
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTSCH -> ENTMAC : EVENT_UL_SCH_INFO\n");
+#endif
+
    GET_CELL_IDX(ulSchedInfo->cellId, cellIdx);
    if(ulSchedInfo != NULLP)
    {

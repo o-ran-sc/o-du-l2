@@ -214,6 +214,11 @@ uint8_t duBuildAndSendDlUserDataToRlc(uint16_t msgLen, EgtpMsg *egtpMsg)
 uint8_t duHdlEgtpDlData(EgtpMsg  *egtpMsg)
 {
    uint16_t msgLen = 0;
+
+#ifdef CALL_FLOW_DEBUG_LOG
+    DU_LOG("\nCall Flow: ENTEGTP -> ENTDUAPP : EVENT_HDL_RECV_DL_DATA\n");
+#endif
+
    DU_LOG("\nDEBUG  --> DU_APP : Processing DL data in duHdlEgtpDlData()");
    
    if(!egtpMsg->msg)

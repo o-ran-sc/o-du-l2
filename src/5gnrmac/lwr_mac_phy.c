@@ -272,7 +272,48 @@ uint8_t LwrMacSendToL1(void *msg)
    uint8_t ret = ROK;
 #ifdef INTEL_FAPI
    uint16_t msgLen =0;
+   char message[100];
    p_fapi_api_queue_elem_t currMsg = NULLP;
+
+#ifdef CALL_FLOW_DEBUG_LOG   
+   currMsg = (p_fapi_api_queue_elem_t)msg;
+   while(currMsg)
+   {
+      switch(currMsg->msg_type)
+      {
+         case FAPI_PARAM_REQUEST:
+            strcpy(message, "FAPI_PARAM_REQUEST");
+            break;
+         case FAPI_CONFIG_REQUEST:
+            strcpy(message, "FAPI_CONFIG_REQUEST");
+            break;
+         case FAPI_START_REQUEST:
+            strcpy(message, "FAPI_START_REQUEST");
+            break;
+         case FAPI_DL_TTI_REQUEST:
+            strcpy(message, "FAPI_DL_TTI_REQUEST");
+            break;
+         case FAPI_TX_DATA_REQUEST:
+            strcpy(message, "FAPI_TX_DATA_REQUEST");
+            break;
+         case FAPI_UL_TTI_REQUEST:
+            strcpy(message, "FAPI_UL_TTI_REQUEST");
+            break;
+         case FAPI_STOP_REQUEST:
+            strcpy(message, "FAPI_STOP_REQUEST");
+            break;
+         case FAPI_UL_DCI_REQUEST:
+            strcpy(message, "FAPI_UL_DCI_REQUEST");
+            break;
+         default:
+            strcpy(message, "INVALID_MSG");
+            break;
+      }
+      DU_LOG("\nCall Flow: ENTLWRMAC -> PHY : %s\n",message);
+      currMsg = currMsg->p_next;
+   }
+#endif
+
 
 #ifdef INTEL_WLS_MEM
    void * wlsHdlr = NULLP;

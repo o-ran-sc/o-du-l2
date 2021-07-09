@@ -98,6 +98,9 @@ void lwrMacLayerInit(Region region, Pool pool)
  * ****************************************************************/
 uint8_t lwr_mac_procInvalidEvt(void *msg)
 {
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTMAC -> ENTLWRMAC : INVALID_EVENT\n");
+#endif
    DU_LOG("\nERROR  -->  LWR_MAC: Error Indication Event[%d] received in state [%d]", lwrMacCb.event, lwrMacCb.phyState);
    return ROK;
 }
@@ -1325,6 +1328,10 @@ void setMibPdu(uint8_t *mibPdu, uint32_t *val, uint16_t sfn)
 uint8_t lwr_mac_procParamReqEvt(void *msg)
 {
 #ifdef INTEL_FAPI
+#ifdef CALL_FLOW_DEBUG_LOG 
+   DU_LOG("\nCall Flow: ENTMAC -> ENTLWRMAC : PARAM_REQ\n");
+#endif
+
    /* startGuardTimer(); */
    fapi_param_req_t         *paramReq = NULL;
    fapi_msg_header_t        *msgHeader;
@@ -1987,6 +1994,9 @@ uint8_t lwr_mac_procIqSamplesReqEvt(void *msg)
 uint8_t lwr_mac_procConfigReqEvt(void *msg)
 {
 #ifdef INTEL_FAPI
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTMAC -> ENTLWRMAC : CONFIG_REQ\n");
+#endif
 #ifdef NR_TDD
    uint8_t slotIdx = 0; 
    uint8_t symbolIdx =0;
@@ -2279,6 +2289,9 @@ uint8_t lwr_mac_procConfigRspEvt(void *msg)
 uint8_t lwr_mac_procStartReqEvt(void *msg)
 {
 #ifdef INTEL_FAPI
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTMAC -> ENTLWRMAC : START_REQ\n");
+#endif
    fapi_msg_header_t *msgHeader;
    fapi_start_req_t *startReq;
    fapi_vendor_msg_t *vendorMsg;
@@ -2361,6 +2374,10 @@ uint8_t lwr_mac_procStartReqEvt(void *msg)
 uint8_t lwr_mac_procStopReqEvt(SlotIndInfo slotInfo, p_fapi_api_queue_elem_t  prevElem)
 {
 #ifdef INTEL_FAPI
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTMAC -> ENTLWRMAC : STOP_REQ\n");
+#endif
+
    fapi_stop_req_t   *stopReq;
    fapi_vendor_msg_t *vendorMsg;
    p_fapi_api_queue_elem_t  stopReqElem;
@@ -3326,6 +3343,10 @@ uint8_t fillDlMsgTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, DlMsg
  * ****************************************************************/
 uint16_t fillDlTtiReq(SlotIndInfo currTimingInfo)
 {
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTMAC -> ENTLWRMAC : DL_TTI_REQUEST\n");
+#endif
+
 #ifdef INTEL_FAPI
    uint8_t idx =0;
    uint8_t nPdu = 0;
@@ -3570,6 +3591,10 @@ uint16_t fillDlTtiReq(SlotIndInfo currTimingInfo)
 uint16_t sendTxDataReq(SlotIndInfo currTimingInfo, DlSchedInfo *dlInfo, p_fapi_api_queue_elem_t prevElem)
 {
 #ifdef INTEL_FAPI
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTMAC -> ENTLWRMAC : TX_DATA_REQ\n");
+#endif
+
    uint8_t nPdu = 0;
    uint16_t cellIdx;
    uint16_t pduIndex = 0;
@@ -3918,6 +3943,10 @@ void fillPucchPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, MacCellCfg *macCellCfg,\
  ******************************************************************/
 uint16_t fillUlTtiReq(SlotIndInfo currTimingInfo, p_fapi_api_queue_elem_t prevElem)
 {
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTMAC -> ENTLWRMAC : UL_TTI_REQUEST\n");
+#endif
+
 #ifdef INTEL_FAPI
    uint16_t   cellIdx =0;
    uint8_t    pduIdx = -1;
@@ -4013,6 +4042,9 @@ uint16_t fillUlTtiReq(SlotIndInfo currTimingInfo, p_fapi_api_queue_elem_t prevEl
  ******************************************************************/
 void fillUlDciPdu(fapi_dl_dci_t *ulDciPtr, DciInfo *schDciInfo)
 {
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTMAC -> ENTLWRMAC : UL_DCI_REQUEST\n");
+#endif
    if(ulDciPtr != NULLP)
    {
       uint8_t numBytes =0;
