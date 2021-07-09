@@ -66,6 +66,44 @@ uint8_t sctpActvInit(Ent entity, Inst inst, Region region, Reason reason)
 }
 
 /**************************************************************************
+* @brief Function prints src, dest, msg infor about all the msgs that received.
+*
+* @details
+*
+*     Function : callFlowSctpActvTsk
+*
+*     Function prints src, dest, msg infor about all the msgs that received
+*
+*  @param[in]  Pst     *pst, Post structure of the primitive.
+*
+*  @return  void
+***************************************************************************/
+uint8_t callFlowSctpActvTsk(Pst *pst)
+{
+   char sourceTask[50];
+   char destTask[50]="ENTSCTP";
+   char message[100];
+
+   switch(pst->srcEnt)
+   {
+      case ENTDUAPP:
+         {
+            strcpy(sourceTask,"ENTDUAPP");
+            switch(pst->event)
+            {
+               case EVTSTARTPOLL:
+                  {
+                     strcpy(message,"EVTSTARTPOLL");
+                     break;
+                  }
+            }
+            break;
+         }
+   }
+   DU_LOG("\nCall Flow: %s -> %s : %s\n", sourceTask, destTask, message);
+}
+
+/**************************************************************************
  * @brief Task Activation callback function. 
  *
  * @details
@@ -86,6 +124,12 @@ uint8_t sctpActvInit(Ent entity, Inst inst, Region region, Reason reason)
  ***************************************************************************/
 uint8_t sctpActvTsk(Pst *pst, Buffer *mBuf)
 {
+
+#ifdef CALL_FLOW_DEBUG_LOG
+   callFlowSctpActvTsk(pst);
+#endif
+
+
    switch(pst->srcEnt)
    {
       case ENTDUAPP:
@@ -155,6 +199,9 @@ uint8_t duSctpCfgReq(SctpParams sctpCfg)
    uint8_t  ret = ROK;
    CmStatus cfm;
 
+#ifdef CALL_FLOW_DEBUG_LOG
+    DU_LOG("\nCall Flow: ENTDUAPP -> ENTSCTP : EVENT_CFG_REQ_TO_SCTP\n");
+#endif
 /* Fill F1 Params */
    f1Params.destIpAddr.ipV4Pres  = sctpCfg.cuIpAddr.ipV4Pres;
    f1Params.destIpAddr.ipV4Addr  = sctpCfg.cuIpAddr.ipV4Addr;
@@ -339,6 +386,10 @@ uint8_t duSctpAssocReq(uint8_t itfType)
    CmStatus     cfm;
    DuSctpDestCb *paramPtr = NULLP;
 
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTDUAPP -> ENTSCTP : EVENT_ASSOC_REQ_TO_SCTP\n");
+#endif
+ 
    DU_ALLOC(paramPtr, sizeof(DuSctpDestCb));
    if(paramPtr == NULLP)
    {
@@ -640,6 +691,12 @@ uint8_t  processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, uint32
       }
       else
       {
+#ifdef CALL_FLOW_DEBUG_LOG
+         if(pollParams->port == f1Params.destPort)
+            DU_LOG("\nCall Flow: CU -> ENTSCTP : EVENT_SCTP_MSG\n");
+         else
+            DU_LOG("\nCall Flow: RIC -> ENTSCTP : EVENT_SCTP_MSG\n");
+#endif
          if((((pollParams->flag & CM_INET_SCTP_MSG_NOTIFICATION) != 0)) && ret == ROK)
          {
             if(pollParams->port == f1Params.destPort)
@@ -770,16 +827,33 @@ uint8_t sctpSend(Buffer *mBuf, uint8_t itfType)
    
    memInfo.region = DU_APP_MEM_REGION;               
    memInfo.pool   = DU_POOL;
+   
+#ifdef CALL_FLOW_DEBUG_LOG
+   if(itfType == F1_INTERFACE)
+   {
+      DU_LOG("\nCall Flow: ENTDUAPP -> ENTSCTP : EVENT_F1AP_MSG_TO_SCTP\n");
+   }
+   else
+   {
+      DU_LOG("\nCall Flow: ENTDUAPP -> ENTSCTP : EVENT_E2AP_MSG_TO_SCTP\n");
+   }
+#endif
 
    if(itfType == F1_INTERFACE)
    {
-      DU_LOG("\nDEBUG   -->  SCTP : sending the message to DuApp");
+      DU_LOG("\nDEBUG   -->  SCTP : sending the message to CU");
+#ifdef CALL_FLOW_DEBUG_LOG
+      DU_LOG("\nCall Flow: ENTSCTP -> CU : EVENT_F1AP_MSG_TO_CU\n");
+#endif
       ret = cmInetSctpSendMsg(&f1Params.sockFd, &f1Params.destIpNetAddr, f1Params.destPort, &memInfo, mBuf, &len, 0, FALSE, 0, 0/*SCT_PROTID_NONE*/, RWOULDBLOCK);
    }
 
    if(itfType == E2_INTERFACE)
    {
       DU_LOG("\nDEBUG   -->  SCTP : sending the message to ric");
+#ifdef CALL_FLOW_DEBUG_LOG
+      DU_LOG("\nCall Flow: ENTSCTP -> RIC : EVENT_E2AP_MSG_TO_RIC\n");
+#endif
       ret = cmInetSctpSendMsg(&ricParams.sockFd, &ricParams.destIpNetAddr, ricParams.destPort, &memInfo, mBuf, &len, 0, FALSE, 0, 0/*SCT_PROTID_NONE*/, RWOULDBLOCK);
    }
 

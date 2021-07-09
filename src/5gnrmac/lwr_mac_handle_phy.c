@@ -478,6 +478,63 @@ uint8_t procUciInd(fapi_uci_indication_t  *fapiUciInd)
 #endif /* FAPI */
 
 /*******************************************************************
+ * @brief Function prints src, dest, msg infor about all the msgs that
+ received.
+ *
+ * @details
+ *
+ *     Function :callFlowFromPhyToLwrMac 
+ *
+ *     Function call Flow From Phy To LwrMac
+ *
+ *  @param[in]  Pst     *pst, Post structure of the primitive.
+ *
+ *  @return  void
+ * ****************************************************************/
+void callFlowFromPhyToLwrMac(uint16_t msgId)
+{
+   char message[100];
+   switch(msgId)
+   {
+#ifdef INTEL_TIMER_MODE
+      case FAPI_VENDOR_EXT_UL_IQ_SAMPLES:
+         strcpy(message,"FAPI_VENDOR_EXT_UL_IQ_SAMPLES");
+         break;
+#endif
+      case FAPI_PARAM_RESPONSE:
+         strcpy(message,"FAPI_PARAM_RESPONSE");
+         break;
+      case FAPI_CONFIG_RESPONSE:
+         strcpy(message,"FAPI_CONFIG_RESPONSE");
+         break;
+      case FAPI_SLOT_INDICATION:
+         strcpy(message,"FAPI_SLOT_INDICATION");
+         break;
+      case FAPI_ERROR_INDICATION:
+         strcpy(message,"FAPI_ERROR_INDICATION");
+         break;
+      case FAPI_RX_DATA_INDICATION:
+         strcpy(message,"FAPI_RX_DATA_INDICATION");
+         break;
+      case FAPI_CRC_INDICATION:
+         strcpy(message,"FAPI_CRC_INDICATION");
+         break;
+      case FAPI_UCI_INDICATION:
+         strcpy(message,"FAPI_UCI_INDICATION");
+         break;
+      case FAPI_SRS_INDICATION:
+         strcpy(message,"FAPI_SRS_INDICATION");
+         break;
+      case FAPI_RACH_INDICATION:
+         strcpy(message,"FAPI_RACH_INDICATION");
+         break;
+      case FAPI_STOP_INDICATION:
+         strcpy(message,"FAPI_STOP_INDICATION");
+         break;
+   }
+   DU_LOG("\nCall Flow: PHY -> ENTLWRMAC : %s\n",message);
+}
+/*******************************************************************
  *
  * @brief Processes message from PHY
  *
@@ -499,6 +556,9 @@ void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
    fapi_msg_t *header = NULLP;
    header = (fapi_msg_t *)msg;
 
+#ifdef CALL_FLOW_DEBUG_LOG 
+   callFlowFromPhyToLwrMac(header->msg_id);
+#endif
    switch(header->msg_id)
    {
 #ifdef INTEL_TIMER_MODE
