@@ -188,6 +188,292 @@ Reason reason               /* reason */
    return ROK;
 } /* kwActvInit */
 
+/*
+*
+* @brief
+*
+* Function:
+*   name : callFlowRlcDlActvTsk
+*
+*  @b Description:
+*  Function used to print values of src, dest, message 
+*  received at the layer
+*
+*  @param[in] pst   - Pst Structure
+*
+*  @return void  
+*/
+void callFlowRlcDlActvTsk(Pst *pst)
+{
+   char sourceTask[50];
+   char destTask[50]="ENTMAC";
+   char message[100];
+   switch(pst->srcEnt)
+   {
+      case ENTDUAPP:
+         {
+            strcpy(sourceTask,"ENTDUAPP");
+            switch(pst->event)
+            {
+#ifdef LCLKW
+               case LKW_EVT_CFG_REQ:
+                  {
+                     strcpy(message,"LKW_EVT_CFG_REQ");
+                     break;
+                  }
+
+               case LKW_EVT_CNTRL_REQ:
+                  {
+                     strcpy(message,"LKW_EVT_CNTRL_REQ");
+                     break;
+                  }
+
+               case LKW_EVT_STS_REQ:
+                  {
+                     strcpy(message,"LKW_EVT_STS_REQ");
+                     break;
+                  }
+
+               case LKW_EVT_STA_REQ:
+                  {
+                     strcpy(message,"LKW_EVT_STA_REQ");
+                     break;
+                  }
+                  /* kw005.201 added support for L2 Measurement */
+#endif  /* LCLKW */
+
+#ifdef LCKWU
+               case KWU_EVT_DAT_REQ:              /* Data request */
+                  {
+                     strcpy(message,"KWU_EVT_DAT_REQ");
+                     break;
+                  }
+#endif /* LCKWU */
+
+               case EVENT_DL_RRC_MSG_TRANS_TO_RLC:
+                  {
+                     strcpy(message,"EVENT_DL_RRC_MSG_TRANS_TO_RLC");
+                     break;
+                  }
+               case EVENT_DL_USER_DATA_TRANS_TO_RLC:
+                  {
+                     strcpy(message,"EVENT_DL_USER_DATA_TRANS_TO_RLC");
+                     break;
+                  }
+               default:
+                  strcpy(message,"Invalid Event");
+                  break;
+            }
+            break;
+         }
+
+      case ENTRLC:
+         {
+
+            strcpy(sourceTask,"ENTRLC");
+            switch(pst->event)
+            {
+#ifdef LCUDX
+               case UDX_EVT_BND_REQ:              /* Bind request */
+                  {
+                     strcpy(message,"UDX_EVT_BND_REQ");
+                     break;
+                  }
+
+               case UDX_EVT_UBND_REQ:              /* Bind request */
+                  {
+                     strcpy(message,"UDX_EVT_UBND_REQ");
+                     break;
+                  }
+               case UDX_EVT_CFG_REQ:             /* Unbind request */
+                  {
+                     strcpy(message,"UDX_EVT_CFG_REQ");
+                     break;
+                  }
+
+               case UDX_EVT_UEIDCHG_REQ:              /* Configuration request */
+                  {
+                     strcpy(message,"UDX_EVT_UEIDCHG_REQ");
+                     break;
+                  }
+
+               case UDX_EVT_STA_UPD_REQ:              /* Configuration request */
+                  {
+                     strcpy(message,"UDX_EVT_STA_UPD_REQ");
+                     break;
+                  }
+
+               case UDX_EVT_STA_PDU_REQ:              /* Configuration request */
+                  {
+                     strcpy(message,"UDX_EVT_STA_PDU_REQ");
+                     break;
+                  }
+
+#ifdef LTE_L2_MEAS
+               case UDX_EVT_L2MEAS_REQ:
+                  {
+                     strcpy(message,"UDX_EVT_L2MEAS_REQ");
+                     break;
+                  }
+               case UDX_EVT_L2MEAS_SEND_REQ:
+                  {
+                     strcpy(message,"UDX_EVT_L2MEAS_SEND_REQ");
+                     break;
+                  }
+               case UDX_EVT_L2MEAS_STOP_REQ:
+                  {
+                     strcpy(message,"UDX_EVT_L2MEAS_STOP_REQ");
+                     break;
+                  }
+#endif
+
+#endif  /* LCCKW */
+               case UDX_EVT_DL_CLEANUP_MEM:
+                  {
+                  strcpy(message,"UDX_EVT_DL_CLEANUP_MEM");
+                     break;
+                  }
+               
+               default:
+                  strcpy(message,"Invalid Event");
+                  break;
+
+            }
+            break;
+         }
+
+      case ENTNH:
+         {
+            strcpy(sourceTask,"ENTNH");
+            switch(pst->event)
+            {
+#ifdef LCKWU
+               case KWU_EVT_BND_REQ:              /* Bind request */
+                  {
+                     strcpy(message,"KWU_EVT_BND_REQ");
+                     break;
+                  }
+
+               case KWU_EVT_UBND_REQ:             /* Unbind request */
+                  {
+                     strcpy(message,"KWU_EVT_UBND_REQ");
+                     break;
+                  }
+#ifdef L2_L3_SPLIT
+               case KWU_EVT_CPLANE_DAT_REQ:       /* C-Plane Data request */
+                  {
+                     strcpy(message,"KWU_EVT_CPLANE_DAT_REQ");
+                     break;
+                  }
+#else
+               case KWU_EVT_DAT_REQ:              /* Data request */
+                  {
+                     strcpy(message,"KWU_EVT_DAT_REQ");
+                     break;
+                  }
+#endif
+               case KWU_EVT_DISC_SDU_REQ:         /* Discard SDU request */
+                  {
+                     strcpy(message,"KWU_EVT_DISC_SDU_REQ");
+                     break;
+                  }
+
+#endif  /* LCKWU */
+               default:
+                  strcpy(message,"Invalid Event");
+                  break;
+
+            }
+            break;
+         }
+
+      case ENTMAC:
+         {
+            strcpy(sourceTask,"ENTMAC");
+            switch(pst->event)
+            {
+#ifdef LCRGU
+               case EVTRGUBNDCFM:     /* Bind request */
+                  {
+                     strcpy(message,"EVTRGUBNDCFM");
+                     break;
+                  }
+               case EVENT_SCHED_RESULT_TO_RLC: 
+                  {
+                     strcpy(message,"EVENT_SCHED_RESULT_TO_RLC");
+                     break;
+                  }
+                  /* kw005.201 added support for L2 Measurement */
+#ifdef LTE_L2_MEAS
+               case EVTRGUHQSTAIND:    /* Harq status indication */
+                  {
+                     strcpy(message,"EVTRGUHQSTAIND");
+                     break;
+                  }
+#endif
+               case EVTRGUFLOWCNTRLIND:
+                  {
+                     strcpy(message,"EVTRGUFLOWCNTRLIND");
+                     break;
+                  }   
+#endif  /* LCRGU */
+#ifdef RLC_STA_PROC_IN_MAC/* RLC Status PDU Processing */
+               case UDX_EVT_STA_UPD_REQ:              /* Configuration request */
+                  {
+                     strcpy(message,"UDX_EVT_STA_UPD_REQ");
+                     break;
+                  }
+#endif
+               default:
+                  strcpy(message,"Invalid Event");
+                  break;
+
+            }
+            break;
+         }
+#ifdef SS_RBUF 
+      case ENTLWRMAC:
+      {
+         strcpy(sourceTask,"ENTLWRMAC");
+         switch(pst->event)
+         {
+            case EVTCTFBTCHPROCTICK:
+               {
+                  strcpy(message,"EVTCTFBTCHPROCTICK");
+                  break;
+               }
+            default:
+               strcpy(message,"Invalid Event");
+               break;
+
+         }
+         break;
+      }
+#endif
+      case ENTYS:
+         {
+            strcpy(sourceTask,"ENTYS");
+            switch(pst->event)
+            {
+               case KWU_EVT_TTI_IND:
+                  {
+                     strcpy(message,"KWU_EVT_TTI_IND");
+                     break;
+                  }
+               default:
+                  strcpy(message,"Invalid Event");
+                  break;
+            }
+            break;
+         }
+
+      default:
+         {
+            strcpy(sourceTask,"Invalid Source Entity Id");
+         }
+    }
+   DU_LOG("\nCall Flow: %s -> %s : %s\n", sourceTask, destTask, message);
+}
 
 /**
  *
@@ -219,6 +505,10 @@ Buffer *mBuf            /* message buffer */
 
 #ifdef RLC_FREE_RING_BUF
    gRlcTId = pthread_self();
+#endif
+
+#ifdef CALL_FLOW_DEBUG_LOG
+   callFlowRlcDlActvTsk(pst);
 #endif
 
    switch(pst->srcEnt)

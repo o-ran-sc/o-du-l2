@@ -264,6 +264,10 @@ uint8_t MacSchSlotInd(Pst *pst, SlotIndInfo *slotInd)
 {
    Inst  inst = pst->dstInst-SCH_INST_START;
 
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_SLOT_IND_TO_SCH\n");
+#endif
+
    schProcessSlotInd(slotInd, inst);
 
    return ROK;
@@ -288,6 +292,11 @@ uint8_t MacSchSlotInd(Pst *pst, SlotIndInfo *slotInd)
 uint8_t MacSchRachInd(Pst *pst, RachIndInfo *rachInd)
 {
    Inst  inst = pst->dstInst-SCH_INST_START;
+
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_RACH_IND_TO_SCH\n");
+#endif
+
    DU_LOG("\nINFO  -->  SCH : Received Rach indication");
    schProcessRachInd(rachInd, inst);
    return ROK;
@@ -312,6 +321,10 @@ uint8_t MacSchRachInd(Pst *pst, RachIndInfo *rachInd)
  * ****************************************************************/
 uint8_t MacSchCrcInd(Pst *pst, CrcIndInfo *crcInd)
 {
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_CRC_IND_TO_SCH\n");
+#endif
+
    switch(crcInd->crcInd[0])
    {
       case CRC_FAILED:
@@ -841,6 +854,10 @@ uint8_t SchHdlCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
    Pst rspPst;
    Inst inst = pst->dstInst-1; 
 
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_SCH_CELL_CFG\n");
+#endif 
+
    schInitCellCb(inst, schCellCfg);
    cellCb = schCb[inst].cells[inst]; //cells is of MAX_CELLS, why inst
    cellCb->macInst = pst->srcInst;
@@ -864,7 +881,6 @@ uint8_t SchHdlCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
    schCellCfgCfm.rsp = RSP_OK;
 
    ret = (*SchCellCfgCfmOpts[rspPst.selector])(&rspPst, &schCellCfgCfm);
-
    return ret;
 
 }
@@ -896,8 +912,12 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
    SchUeCb *ueCb = NULLP;
    SchCellCb *cell = NULLP;
    SchDlSlotInfo *schDlSlotInfo = NULLP;
-
    Inst  inst = pst->dstInst-SCH_INST_START;
+
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_DL_RLC_BO_INFO_TO_SCH\n");
+#endif
+
    DU_LOG("\nDEBUG  -->  SCH : Received RLC BO Status indication");
    cell = schCb[inst].cells[inst];
 
@@ -992,6 +1012,10 @@ uint8_t MacSchBsr(Pst *pst, UlBufferStatusRptInd *bsrInd)
    SchUeCb        *ueCb         = NULLP;
    uint8_t        lcgIdx;
 
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_SHORT_BSR\n");
+#endif
+
    DU_LOG("\nDEBUG  -->  SCH : Received BSR");
    cellCb = schCb[schInst].cells[schInst];
    ueCb = schGetUeCb(cellCb, bsrInd->crnti);
@@ -1028,6 +1052,10 @@ uint8_t MacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
 
    SchUeCb   *ueCb; 
    SchCellCb *cellCb = schCb[inst].cells[inst];
+
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_UCI_IND_TO_SCH\n");
+#endif
 
    DU_LOG("\nDEBUG  -->  SCH : Received SR");
 
