@@ -841,6 +841,9 @@ uint8_t SchHdlCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
    Pst rspPst;
    Inst inst = pst->dstInst-1; 
 
+#ifdef CALLFLOW_DEBUG
+   DU_LOG("\nCall Flow: EVTMAC -> EVTSCH:EVENT_SCH_CELL_CFG\n");
+#endif   
    schInitCellCb(inst, schCellCfg);
    cellCb = schCb[inst].cells[inst]; //cells is of MAX_CELLS, why inst
    cellCb->macInst = pst->srcInst;
@@ -864,7 +867,6 @@ uint8_t SchHdlCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
    schCellCfgCfm.rsp = RSP_OK;
 
    ret = (*SchCellCfgCfmOpts[rspPst.selector])(&rspPst, &schCellCfgCfm);
-
    return ret;
 
 }

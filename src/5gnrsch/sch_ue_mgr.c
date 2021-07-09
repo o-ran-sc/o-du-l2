@@ -349,6 +349,10 @@ uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
    SchUeCfgRsp  cfgRsp;
    Inst         inst = pst->dstInst - 1;
    memset(&cfgRsp, 0, sizeof(SchUeCfgRsp));
+  
+#ifdef CALLFLOW_DEBUG
+   DU_LOG("\nCall Flow: EVTMAC -> EVTSCH:EVENT_ADD_UE_CONFIG_REQ_TO_SCH\n");
+#endif
 
    if(!ueCfg)
    {
@@ -587,6 +591,10 @@ uint8_t MacSchModUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
    SchUeCfgRsp  cfgRsp;
    Inst         inst = pst->dstInst - 1;
    memset(&cfgRsp, 0, sizeof(SchUeCfgRsp));
+  
+#ifdef CALLFLOW_DEBUG
+   DU_LOG("\nCall Flow: EVTMAC -> EVTSCH:EVENT_MODIFY_UE_CONFIG_REQ_TO_SCH\n");
+#endif
 
    if(!ueCfg)
    {
@@ -806,7 +814,11 @@ uint8_t MacSchUeDeleteReq(Pst *pst, SchUeDelete  *ueDelete)
     ErrorCause result;
     SchCellCb    *cellCb = NULLP;
     Inst         inst = pst->dstInst - 1;
-    
+   
+#ifdef CALLFLOW_DEBUG
+    DU_LOG("\nCall Flow: EVTMAC -> EVTSCH:EVENT_UE_DELETE_REQ_TO_SCH\n");
+#endif
+
     if(!ueDelete)
     {
        DU_LOG("\nERROR  -->  SCH : MacSchUeDeleteReq(): Ue Delete request failed");
@@ -954,6 +966,10 @@ uint8_t MacSchCellDeleteReq(Pst *pst, SchCellDelete  *cellDelete)
    uint8_t   cellIdx=0, ret = RFAILED;
    Inst      inst = pst->dstInst - 1;
    SchMacRsp result= RSP_OK;
+   
+#ifdef CALLFLOW_DEBUG
+   DU_LOG("\nCall Flow: EVTMAC -> EVTSCH:EVENT_CELL_DELETE_REQ_TO_SCH\n");
+#endif   
 
    if(!cellDelete)
    {
