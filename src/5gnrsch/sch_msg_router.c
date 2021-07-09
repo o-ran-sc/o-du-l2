@@ -53,8 +53,74 @@ registered with SSI during the LTE MAC Task initialization.
 #include "rg_sch.x"        /* typedefs for Scheduler */
 #include "mac_sch_interface.h"
 
+/*
+* @brief
+*
+* Function:
+*   name : callFlowSchActvTsk 
+*
+*  @b Description:
+*  Function used to print values of src, dest, message
+*  received at the layer
+*
+*  @param[in] pst   - Pst Structure
+*
+*  @return void
+*/
 
-
+void callFlowSchActvTsk(Pst *pst)    
+{
+   char sourceTask[50];
+   char destTask[50]="ENTSCH";
+   char message[100];
+
+   switch(pst->srcEnt)
+   {
+      case ENTMAC: /* When MAC sends a msg to Scheduler instance */
+         {
+            strcpy(sourceTask,"ENTMAC");
+            switch(pst->event)
+            {
+#ifdef LCSCH
+               case EVTINFDEDBOUPDTREQ:
+                  strcpy(message,"EVTINFDEDBOUPDTREQ");
+                  break;
+               case EVTINFCMNBOUPDTREQ:
+                  strcpy(message,"EVTINFCMNBOUPDTREQ");
+                  break;   
+               case EVTINFSFRECPIND:
+                  strcpy(message,"EVTINFSFRECPIND");
+                  break;
+                  /*Fix: start: Inform UE delete to scheduler*/
+               case EVTINFUEDELIND:
+                  strcpy(message,"EVTINFUEDELIND");
+                  break;
+                  /*Fix: end: Inform UE delete to scheduler*/
+#ifdef LTE_L2_MEAS
+               case EVTINFL2MEASCFM:
+                  strcpy(message,"EVTINFL2MEASCFM");
+                  break;
+               case EVTINFL2MEASSTOPCFM:
+                  strcpy(message,"EVTINFL2MEASSTOPCFM");
+                  break;
+#endif
+#endif            
+               case EVENT_SLOT_IND_TO_SCH:
+                  strcpy(message,"EVENT_SLOT_IND_TO_SCH");
+                  break;
+               default:
+                  strcpy(message,"Invalid Event");
+                  break;
+            }
+            break;
+         }
+      default:
+         strcpy(sourceTask,"Invalid Source Entity Id");
+         break;
+   }
+   DU_LOG("\nCall Flow: %s -> %s : %s\n", sourceTask, destTask, message);
+}
+
 /**
  * @brief Task Activation callback function. 
  *
@@ -79,6 +145,11 @@ Pst     *pst,                       /* post structure       */
 Buffer  *mBuf                       /* message buffer       */
 )
 {
+
+#ifdef CALL_FLOW_DEBUG_LOG
+   callFlowSchActvTsk(pst);
+#endif
+
    switch(pst->srcEnt)
    {
       /* The originator of this message is the stack manager,
