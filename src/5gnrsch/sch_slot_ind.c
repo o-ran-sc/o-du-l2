@@ -73,7 +73,7 @@ uint8_t sendDlAllocToMac(DlSchedInfo *dlSchedInfo, Inst inst)
 
    memset(&pst, 0, sizeof(Pst));
    FILL_PST_SCH_TO_MAC(pst, inst);
-   pst.event = EVENT_DL_ALLOC;
+   pst.event = EVENT_DL_SCH_INFO;
 
    return(*schMacDlAllocOpts[pst.selector])(&pst, dlSchedInfo);
 

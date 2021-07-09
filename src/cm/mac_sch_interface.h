@@ -19,7 +19,7 @@
 /* events */
 #define EVENT_SCH_CELL_CFG           1
 #define EVENT_SCH_CELL_CFG_CFM       2
-#define EVENT_DL_ALLOC               3 
+#define EVENT_DL_SCH_INFO            3 
 #define EVENT_UL_SCH_INFO            4 
 #define EVENT_RACH_IND_TO_SCH        5
 #define EVENT_CRC_IND_TO_SCH         6

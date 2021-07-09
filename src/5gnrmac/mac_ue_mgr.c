@@ -2298,6 +2298,21 @@ uint8_t MacProcSchUeCfgRsp(Pst *pst, SchUeCfgRsp *schCfgRsp)
    uint16_t cellIdx;
    MacUeCfg *ueCfg = NULLP;
 
+#ifdef CALL_FLOW_DEBUG_LOG
+   switch(pst->event)
+   {
+      case EVENT_UE_CONFIG_RSP_TO_MAC:
+         DU_LOG("\nCall Flow: ENTSCH -> ENTMAC : EVENT_UE_CONFIG_RSP_TO_MAC\n");
+         break;
+      case EVENT_UE_RECONFIG_RSP_TO_MAC:
+         DU_LOG("\nCall Flow: ENTSCH -> ENTMAC : EVENT_UE_RECONFIG_RSP_TO_MAC\n");
+         break;
+      default:
+         DU_LOG("\nCall Flow: ENTSCH -> ENTMAC : Invalid Event\n");
+         break;
+   }
+#endif
+   
    GET_CELL_IDX(schCfgRsp->cellId, cellIdx);
    ueCfg = getMacUeCfg(cellIdx, schCfgRsp->ueIdx);
    if(ueCfg == NULLP)
@@ -2309,55 +2324,54 @@ uint8_t MacProcSchUeCfgRsp(Pst *pst, SchUeCfgRsp *schCfgRsp)
    switch(pst->event)
    {
       case EVENT_UE_CONFIG_RSP_TO_MAC:
-      {
-         if(schCfgRsp->rsp != RSP_NOK)
-	 {
-            DU_LOG("\nINFO  -->  MAC: SCH UeConfigRsp for CRNTI[%d] is success in MacProcSchUeCfgRsp()", schCfgRsp->crnti);
-	    if(ret == ROK)
-	    {
-	       ret = procMacUeCfgData(pst, ueCfg);
-	       if(ret == ROK)
-	       {
-                  result = MAC_DU_APP_RSP_OK;
+         {
+            if(schCfgRsp->rsp != RSP_NOK)
+            {
+               DU_LOG("\nINFO  -->  MAC: SCH UeConfigRsp for CRNTI[%d] is success in MacProcSchUeCfgRsp()", schCfgRsp->crnti);
+               if(ret == ROK)
+               {
+                  ret = procMacUeCfgData(pst, ueCfg);
+                  if(ret == ROK)
+                  {
+                     result = MAC_DU_APP_RSP_OK;
+                  }
                }
-	    }
-	 }
-	 else
-	 {
-            DU_LOG("\nERROR  -->  MAC: SCH UeConfigRsp for CRNTI[%d] is failed in MacProcSchUeCfgRsp()", schCfgRsp->crnti);
-	 }
-         ret = MacSendUeCreateRsp(result, schCfgRsp);
-      }
-      break;
+            }
+            else
+            {
+               DU_LOG("\nERROR  -->  MAC: SCH UeConfigRsp for CRNTI[%d] is failed in MacProcSchUeCfgRsp()", schCfgRsp->crnti);
+            }
+            ret = MacSendUeCreateRsp(result, schCfgRsp);
+         }
+         break;
 
       case EVENT_UE_RECONFIG_RSP_TO_MAC:
-      {
-         if(schCfgRsp->rsp != RSP_NOK)
-	 {
-            DU_LOG("\nINFO  -->  MAC: SCH UeReconfigRsp for CRNTI[%d] is success in MacProcSchUeCfgRsp()", schCfgRsp->crnti);
-	    if(ret == ROK)
-	    {
-	       ret = procMacUeCfgData(pst, ueCfg);
-	       if(ret == ROK)
-	       {
-                  result = MAC_DU_APP_RSP_OK;
+         {
+
+            if(schCfgRsp->rsp != RSP_NOK)
+            {
+               DU_LOG("\nINFO  -->  MAC: SCH UeReconfigRsp for CRNTI[%d] is success in MacProcSchUeCfgRsp()",\
+                     schCfgRsp->crnti);
+               if(ret == ROK)
+               {
+                  ret = procMacUeCfgData(pst, ueCfg);
+                  if(ret == ROK)
+                  {
+                     result = MAC_DU_APP_RSP_OK;
+                  }
                }
-	    }
-	 }
-	 else
-	 {
-            DU_LOG("\nERROR  -->  MAC: SCH UeReconfigRsp for CRNTI[%d] is failed in MacProcSchUeCfgRsp()", schCfgRsp->crnti);
-	 }
-         ret = MacSendUeReconfigRsp(result, schCfgRsp);
-      }
-      break;
-      
-      default:
-      break;
+            }
+            else
+            {
+               DU_LOG("\nERROR  -->  MAC: SCH UeReconfigRsp for CRNTI[%d] is failed in MacProcSchUeCfgRsp()",\
+               schCfgRsp->crnti);
+            }
+            ret = MacSendUeReconfigRsp(result, schCfgRsp);
+         }
+         break;
    }
    MAC_FREE(ueCfg, sizeof(MacUeCfg));
    ueCfg = NULLP;
-   
    return ret; 
 }
 
@@ -2534,6 +2548,10 @@ uint8_t MacProcSchUeDeleteRsp(Pst *pst, SchUeDeleteRsp *schUeDelRsp)
    uint16_t cellIdx=0;
    uint8_t ret = RFAILED;
    UeDeleteStatus result;
+  
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTSCH -> ENTMAC : EVENT_UE_DELETE_RSP_TO_MAC\n");
+#endif   
    
    if(schUeDelRsp)
    {
