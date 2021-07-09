@@ -104,6 +104,250 @@ uint8_t duActvInit(Ent entity, Inst inst, Region region, Reason reason)
 }
 
 /**************************************************************************
+* @brief Function prints the src dest and msg reached to egtp.
+*
+* @details
+*
+*      Function : callFlowduActvTsk 
+*
+*      Functionality:
+*           Function prints the src dest and msg reached to egtp.
+*
+* @param[in]  Pst     *pst, Post structure of the primitive.
+*
+* @return void
+*
++***************************************************************************/
+
+void callFlowduActvTsk(Pst *pst)
+{
+   char sourceTask[50];
+   char destTask[50]="duActvTsk";
+   char message[100];
+   
+   switch(pst->srcEnt)
+   {
+      case ENTDUAPP:
+         {
+            strcpy(sourceTask,"ENTDUAPP");
+            switch(pst->event)
+            {
+               case EVTCFG:
+                  {
+                     strcpy(message,"EVTCFG");
+                     break;
+                  }
+               default:
+                  {
+                     strcpy(message,"Invalid");
+                     break;
+                  }
+            }
+
+            break;
+         }
+      case ENTRLC:
+         {
+            strcpy(sourceTask,"ENTRLC");
+            switch(pst->event)
+            {
+               case LKW_EVT_CFG_CFM:
+                  {
+                     strcpy(message,"LKW_EVT_CFG_CFM");
+                     break;
+                  }
+               case LKW_EVT_CNTRL_CFM:
+                  {
+                     strcpy(message,"LKW_EVT_CNTRL_CFM");
+                     break;
+                  }
+               case LKW_EVT_STA_IND:
+                  {
+                     strcpy(message,"LKW_EVT_STA_IND");
+                     break;
+                  }
+               case EVENT_RLC_UE_CREATE_RSP:
+                  {
+                     strcpy(message,"EVENT_RLC_UE_CREATE_RSP");
+                     break;
+                  }
+               case EVENT_RLC_UE_RECONFIG_RSP:
+                  {
+                     strcpy(message,"EVENT_RLC_UE_RECONFIG_RSP");
+                     break;
+                  }
+               case EVENT_RLC_UE_DELETE_RSP:
+                  {
+                     strcpy(message,"EVENT_RLC_UE_DELETE_RSP");
+                     break;
+                  }
+               case EVENT_UL_RRC_MSG_TRANS_TO_DU:
+                  {
+                     strcpy(message,"EVENT_UL_RRC_MSG_TRANS_TO_DU");
+                     break;
+                  }
+               case EVENT_RRC_DELIVERY_MSG_TRANS_TO_DU:
+                  {
+                     strcpy(message,"EVENT_RRC_DELIVERY_MSG_TRANS_TO_DU");
+                     break;
+                  }
+               case EVENT_DL_RRC_MSG_RSP_TO_DU:
+                  {
+                     strcpy(message,"EVENT_DL_RRC_MSG_RSP_TO_DU");
+                     break;
+                  }
+               case EVENT_UL_USER_DATA_TRANS_TO_DU:
+                  {
+                     strcpy(message,"EVENT_UL_USER_DATA_TRANS_TO_DU");
+                     break;
+                  }
+               default:
+                  {
+                     strcpy(message,"Invalid");
+                  }
+            }
+            break;
+         }
+      case ENTMAC:
+         {
+            strcpy(sourceTask,"ENTMAC");
+            switch(pst->event)
+            {
+               case EVTCFG:
+                  {
+                     strcpy(message,"EVTCFG");
+                     break;
+                  }
+               case EVTLRGCFGCFM:
+                  {
+                     strcpy(message,"EVTLRGCFGCFM");
+                     break;
+                  }
+               case EVTLRGCNTRLCFM:
+                  {
+                     strcpy(message,"EVTLRGCNTRLCFM");
+                     break;
+                  }
+               case EVTMACSCHGENCFGCFM:
+                  {
+                     strcpy(message,"EVTMACSCHGENCFGCFM");
+                     break;
+                  }
+               case EVENT_MAC_CELL_CONFIG_CFM:
+                  {
+                     strcpy(message,"EVENT_MAC_CELL_CONFIG_CFM");
+                     break;
+                  }
+               case EVENT_MAC_CELL_UP_IND:
+                  {
+                     strcpy(message,"EVENT_MAC_CELL_UP_IND");
+                     break;
+                  }
+               case EVENT_MAC_STOP_IND:
+                  {
+                     strcpy(message,"EVENT_MAC_STOP_IND");
+                     break;
+                  }
+               case EVENT_MAC_UL_CCCH_IND:
+                  {
+                     strcpy(message,"EVENT_MAC_UL_CCCH_IND");
+                     break;
+                  }
+               case EVENT_MAC_UE_CREATE_RSP:
+                  {
+                     strcpy(message,"EVENT_MAC_UE_CREATE_RSP");
+                     break;
+                  }
+               case EVENT_MAC_UE_RECONFIG_RSP:
+                  {
+                     strcpy(message,"EVENT_MAC_UE_RECONFIG_RSP");
+                     break;
+                  }
+               case EVENT_MAC_UE_DELETE_RSP:
+                  {
+                     strcpy(message,"EVENT_MAC_UE_DELETE_RSP");
+                     break;
+                  }
+               case EVENT_MAC_CELL_DELETE_RSP:
+                  {
+                     strcpy(message,"EVENT_MAC_CELL_DELETE_RSP");
+                     break;
+                  }
+               default:
+                  {
+                     strcpy(message,"Invalid");
+                     break;
+                  }
+            }
+
+            break;
+         }
+      case ENTSCTP:
+         {
+            strcpy(sourceTask,"ENTSCTP");
+            switch(pst->event)
+            {
+               case EVENT_CU_DATA:
+                  {
+                     strcpy(message,"EVENT_CU_DATA");
+                     break;
+                  }
+               case EVENT_SCTP_NTFY:
+                  {
+                     strcpy(message,"EVENT_SCTP_NTFY");
+                     break;
+                  }
+               case EVENT_RIC_DATA:
+                  {
+                     strcpy(message,"EVENT_RIC_DATA");
+                     break;
+                  }
+               default:
+                  {
+                     strcpy(message,"Invalid");
+                     break;
+                  }
+
+            }
+            break;
+         }
+      case ENTEGTP:
+         {
+            strcpy(sourceTask,"ENTEGTP");
+            switch(pst->event)
+            {
+               case EVTCFGCFM:
+                  {
+                     strcpy(message,"EVTCFGCFM");
+                     break;
+                  }
+               case EVTSRVOPENCFM:
+                  {
+                     strcpy(message,"EVTSRVOPENCFM");
+                     break;
+                  }
+               case EVTTNLMGMTCFM:
+                  {
+                     strcpy(message,"EVTTNLMGMTCFM");
+                     break;
+                  }
+               default:
+                  {
+                     strcpy(message,"Invalid");
+                     break;
+                  }
+            }
+            break;
+         }
+      default:
+         {
+            strcpy(sourceTask,"Invalid");
+            break;
+         }
+   }
+   DU_LOG("\nCall Flow: %s -> %s:%s\n",sourceTask,destTask,message);
+}
+/**************************************************************************
  * @brief Task Activation callback function. 
  *
  * @details
@@ -126,6 +370,10 @@ uint8_t duActvInit(Ent entity, Inst inst, Region region, Reason reason)
 uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
 {
    uint8_t ret = ROK;
+   
+#ifdef CALLFLOW_DEBUG   
+   callFlowduActvTsk(pst);
+#endif
 
    switch(pst->srcEnt)
    {

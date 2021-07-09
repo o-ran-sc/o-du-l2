@@ -391,7 +391,261 @@ Buffer  *mBuf                       /* message buffer       */
    }
 }
 
+/**
+* @brief Function prints src, dest, msg infor about all the msgs that received.
+*
+* @details
+*
+*     Function : callFlowRgActvTsk 
+*
+*     Function prints src, dest, msg infor about all the msgs that received
+*
+*  @param[in]  Pst     *pst, Post structure of the primitive.
+*
+*  @return  void
+**/
 
+void callFlowRgActvTsk(Pst *pst)
+{
+   char sourceTask[50];
+   char destTask[50]="RgActvTsk";
+   char message[100];
+
+   switch(pst->srcEnt)
+   {
+      case ENTDUAPP:
+         {
+            strcpy(sourceTask,"ENTDUAPP");
+            switch(pst->event)
+            {
+#ifdef LCRGMILRG
+               case EVTLRGCFGREQ:
+                  strcpy(message,"EVTLRGCFGREQ");
+                  break;
+               case EVTMACSCHGENCFGREQ:
+                  strcpy(message,"EVTMACSCHGENCFGREQ");
+                  break;
+               case EVTLRGCNTRLREQ:
+                  strcpy(message,"EVTLRGCNTRLREQ");
+                  break;
+               case EVTLRGSSTAREQ:
+                  strcpy(message,"EVTLRGSSTAREQ");
+                  break;
+               case EVTLRGSTSREQ:
+                  strcpy(message,"EVTLRGSTSREQ");
+                  break;
+#endif /* LCRGMILRG */
+               case EVENT_MAC_CELL_CONFIG_REQ:
+                  strcpy(message,"EVENT_MAC_CELL_CONFIG_REQ");
+                  break;
+               case EVENT_MAC_CELL_START:
+                  strcpy(message,"EVENT_MAC_CELL_START");
+                  break;
+               case EVENT_MAC_CELL_STOP:
+                  strcpy(message,"EVENT_MAC_CELL_STOP");
+                  break;
+               case EVENT_MAC_DL_CCCH_IND:
+                  strcpy(message,"EVENT_MAC_DL_CCCH_IND");
+                  break;
+               case EVENT_MAC_UE_CREATE_REQ:
+                  strcpy(message,"EVENT_MAC_UE_CREATE_REQ");
+                  break;
+               case EVENT_MAC_UE_RECONFIG_REQ:
+                  strcpy(message,"EVENT_MAC_UE_RECONFIG_REQ");
+                  break;
+               case EVENT_MAC_UE_DELETE_REQ:
+                  strcpy(message,"EVENT_MAC_UE_DELETE_REQ");
+                  break;
+               case EVENT_MAC_CELL_DELETE_REQ:
+                  strcpy(message,"EVENT_MAC_CELL_DELETE_REQ");
+                  break;
+               default:
+                  strcpy(message,"Invalid Msg");
+                  break;
+            }
+         }
+         break;
+      case ENTNH:
+         {
+            strcpy(sourceTask,"ENTNH");
+            switch(pst->event)
+            {
+#ifdef LCRGUICRG
+               case EVTCRGBNDREQ:
+                  strcpy(message,"EVTCRGBNDREQ");
+                  break;
+               case EVTCRGUBNDREQ:
+                  strcpy(message,"EVTCRGUBNDREQ");
+                  break;
+               case EVTCRGCFGREQ:
+                  strcpy(message,"EVTCRGCFGREQ");
+                  break;
+#endif
+               default:
+                  strcpy(message,"Invalid Msg");
+                  break;
+            }
+
+            break;
+         }
+      case ENTRLC:
+         { 
+            strcpy(sourceTask,"ENTRLC");
+            switch(pst->event)
+            {
+#ifdef LCRGUIRGU
+               case EVTRGUBNDREQ:
+                  strcpy(message,"EVTRGUBNDREQ");
+                  break;
+               case EVTRGUUBNDREQ:
+                  strcpy(message,"EVTRGUUBNDREQ");
+                  break;
+               case EVENT_DL_DATA_TO_MAC:
+                  strcpy(message,"EVENT_DL_DATA_TO_MAC");
+                  break;
+               case EVENT_BO_STATUS_TO_MAC:
+                  strcpy(message,"EVENT_BO_STATUS_TO_MAC");
+                  break;
+#ifdef LTE_L2_MEAS
+
+               case EVTRGUL2MULTHRPMEASREQ:
+                  strcpy(message,"EVTRGUL2MULTHRPMEASREQ");
+                  break;
+
+#endif
+#endif
+               default:
+                  strcpy(message,"Invalid Msg");
+                  break;
+            }
+
+            break;
+         }
+      case ENTLWRMAC:
+         {
+            strcpy(sourceTask,"ENTLWRMAC");
+            switch(pst->event)
+            {
+               case EVENT_SLOT_IND_TO_MAC:
+                  strcpy(message,"EVENT_SLOT_IND_TO_MAC");
+                  break;
+               case EVENT_STOP_IND_TO_MAC:
+                  strcpy(message,"EVENT_STOP_IND_TO_MAC");
+                  break;
+               case EVENT_RACH_IND_TO_MAC:
+                  strcpy(message,"EVENT_RACH_IND_TO_MAC");
+                  break;
+               case EVENT_CRC_IND_TO_MAC:
+                  strcpy(message,"EVENT_CRC_IND_TO_MAC");
+                  break;
+               case EVENT_RX_DATA_IND_TO_MAC:
+                  strcpy(message,"EVENT_RX_DATA_IND_TO_MAC");
+                  break;
+               case EVENT_UCI_IND_TO_MAC:
+                  strcpy(message,"EVENT_UCI_IND_TO_MAC");
+                  break;
+               default:
+                  strcpy(message,"Invalid Msg");
+                  break;
+            }
+
+            break;
+         }
+      case ENTMAC: /* When scheduler instance sends msg to MAC */
+         {
+            strcpy(sourceTask,"ENTMAC");
+            switch(pst->event)
+            {
+#ifdef LCRG
+               case EVTINFCELLREGREQ:
+                  strcpy(message,"EVTINFCELLREGREQ");
+                  break;
+               case EVTINFSFALLOCREQ:
+                  strcpy(message,"EVTINFSFALLOCREQ");
+                  break;
+               case EVTINFRLSHQREQ:
+                  strcpy(message,"EVTINFRLSHQREQ");
+                  break;
+               case EVTINFHQENTRESET:
+                  strcpy(message,"EVTINFHQENTRESET");
+                  break;
+               case EVTINFRLSRNTIREQ:
+                  strcpy(message,"EVTINFRLSRNTIREQ");
+                  break;
+#ifdef LTEMAC_SPS
+               case EVTINFSPSLCREG:
+                  strcpy(message,"EVTINFSPSLCREG");
+                  break;
+               case EVTINFSPSLCDEREG:
+                  strcpy(message,"EVTINFSPSLCDEREG");
+                  break;
+               case EVTINFSPSRESET:
+                  strcpy(message,"EVTINFSPSRESET");
+                  break;
+#endif /* LTEMAC_SPS */
+#ifdef LTE_L2_MEAS
+               case EVTINFL2MEASREQ:
+                  strcpy(message,"EVTINFL2MEASREQ");
+                  break;
+               case EVTINFL2MEASSENDREQ :
+                  strcpy(message,"EVTINFL2MEASSENDREQ");
+                  break;
+               case EVTINFL2MEASSTOPREQ:
+                  strcpy(message,"EVTINFL2MEASSTOPREQ");
+                  break;
+#endif/* LTE_L2_MEAS */
+               case EVTINFLCGREG:
+                  strcpy(message,"EVTINFLCGREG");
+                  break;
+#endif            
+#if defined(LTE_ADV) && defined(LCPRG)
+               case EVTPRGUESCELLCFGREQ:
+                  strcpy(message,"EVTPRGUESCELLCFGREQ");
+                  break;
+               case EVTPRGUESCELLCFGCFM:
+                  strcpy(message,"EVTPRGUESCELLCFGCFM");
+                  break;
+               case EVTPRGUESCELLLCHMODCFM:
+                  strcpy(message,"EVTPRGUESCELLLCHMODCFM");
+                  break;
+               case EVTPRGUESCELLLCHDELCFMDEL:
+                  strcpy(message,"EVTPRGUESCELLLCHDELCFMDEL");
+                  break;
+               case EVTPRGUESCELLLCHADDCFM:
+                  strcpy(message,"EVTPRGUESCELLLCHADDCFM");
+                  break;
+               case EVTPRGUESCELLDELREQ:
+                  strcpy(message,"EVTPRGUESCELLDELREQ");
+                  break;
+               case EVTPRGUESCELLLCHMODREQ:
+                  strcpy(message,"EVTPRGUESCELLLCHMODREQ");
+                  break;
+               case EVTPRGUESCELLLCHDELREQ:
+                  strcpy(message,"EVTPRGUESCELLLCHDELREQ");
+                  break;
+               case EVTPRGUESCELLLCHADDREQ:
+                  strcpy(message,"EVTPRGUESCELLLCHADDREQ");
+                  break;
+
+#endif
+               default:
+                  strcpy(message,"Invalid Msg");
+                  break;
+            }
+            break;
+         }
+
+      default:
+         {
+            strcpy(sourceTask,"Invalid Msg");
+            break;
+         }
+   }
+   DU_LOG("\nCall Flow: %s -> %s:%s\n",sourceTask,destTask,message);
+}
+
+
+/**********************************************************************
 
 /**
  * @brief Task Activation callback function. 
@@ -417,6 +671,11 @@ Pst     *pst,                       /* post structure       */
 Buffer  *mBuf                       /* message buffer       */
 )
 {
+
+#ifdef CALLFLOW_DEBUG
+   callFlowRgActvTsk(pst);
+#endif
+
    switch(pst->srcEnt)
    {
       /* The originator of this message is the stack manager,

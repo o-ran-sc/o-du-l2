@@ -53,8 +53,163 @@ registered with SSI during the LTE MAC Task initialization.
 #include "rg_sch.x"        /* typedefs for Scheduler */
 #include "mac_sch_interface.h"
 
+/*
+* @brief
+*
+* Function:
+*   name : callFlowSchActvTsk 
+*
+*  @b Description:
+*  Function used to print values of src, dest, message
+*  received at the layer
+*
+*  @param[in] pst   - Pst Structure
+*
+*  @return void
+*/
 
-
+void callFlowSchActvTsk(Pst *pst)    
+{
+   char sourceTask[50];
+   char destTask[50]="SchActvTsk";
+   char message[100];
+
+   switch(pst->srcEnt)
+   {
+      case ENTSM:
+         {
+            strcpy(sourceTask,"ENTSM");
+            switch(pst->event)
+            {
+#ifdef LCRGMILRG
+               case EVTMACSCHGENCFGREQ:
+                  strcpy(message,"EVTMACSCHGENCFGREQ");
+                  break;
+               case EVTLRGSCHCNTRLREQ:
+                  strcpy(message,"EVTLRGSCHCNTRLREQ");
+                  break;
+               case EVTLRGSCHSTAIND:
+                  strcpy(message,"EVTLRGSCHSTAIND");
+                  break;
+#ifdef LTE_L2_MEAS
+               case EVTLRGSCHL2MEASREQ:
+                  strcpy(message,"EVTLRGSCHL2MEASREQ");
+                  break;
+               case EVTLRGSCHL2MEASSTOPREQ:
+                  strcpy(message,"EVTLRGSCHL2MEASSTOPREQ");
+                  break;
+               case EVTLRGSCHL2MEASSENDREQ:
+                  strcpy(message,"EVTLRGSCHL2MEASSENDREQ");
+                  break;
+#endif
+#endif /* LCRGMILRG */
+               default:
+                  strcpy(message,"Invalid");
+                  break;
+            }
+            break;
+         }
+      case ENTNX:
+         {
+            strcpy(sourceTask,"ENTNX");
+            switch(pst->event)
+            {
+#ifdef LCRGUIRGR
+               case EVTRGRBNDREQ:
+                  strcpy(message,"EVTRGRBNDREQ");
+                  break;
+               case EVTRGRUBNDREQ:
+                  strcpy(message,"EVTRGRUBNDREQ");
+                  break;
+#ifdef RGR_SI_SCH
+               case EVTRGRSICFGREQ:
+                  strcpy(message,"EVTRGRSICFGREQ");
+                  break;
+               case EVTRGRWARNINGSICFGREQ:
+                  strcpy(message,"EVTRGRWARNINGSICFGREQ");
+                  break;
+
+               case EVTRGRWARNINGSISTOPREQ:
+                  strcpy(message,"EVTRGRWARNINGSISTOPREQ");
+                  break;
+#endif/*RGR_SI_SCH */
+                  /* LTE_ADV_FLAG_REMOVED_START */
+               case EVTRGRLOADINFREQ:
+                  strcpy(message,"EVTRGRLOADINFREQ");
+                  break;
+                  /* LTE_ADV_FLAG_REMOVED_END */
+#endif            
+               default:
+                  strcpy(message,"Invalid");
+                  break;
+            }
+            break;
+         }
+      case ENTMAC: /* When MAC sends a msg to Scheduler instance */
+         {
+            strcpy(sourceTask,"ENTMAC");
+            switch(pst->event)
+            {
+#ifdef LCSCH
+               case EVTINFDEDBOUPDTREQ:
+                  strcpy(message,"EVTINFDEDBOUPDTREQ");
+                  break;
+               case EVTINFCMNBOUPDTREQ:
+                  strcpy(message,"EVTINFCMNBOUPDTREQ");
+                  break;   
+               case EVTINFSFRECPIND:
+                  strcpy(message,"EVTINFSFRECPIND");
+                  break;
+                  /*Fix: start: Inform UE delete to scheduler*/
+               case EVTINFUEDELIND:
+                  strcpy(message,"EVTINFUEDELIND");
+                  break;
+                  /*Fix: end: Inform UE delete to scheduler*/
+#ifdef LTE_L2_MEAS
+               case EVTINFL2MEASCFM:
+                  strcpy(message,"EVTINFL2MEASCFM");
+                  break;
+               case EVTINFL2MEASSTOPCFM:
+                  strcpy(message,"EVTINFL2MEASSTOPCFM");
+                  break;
+#endif
+#endif            
+               case EVENT_SLOT_IND_TO_SCH:
+                  strcpy(message,"EVENT_SLOT_IND_TO_SCH");
+                  break;
+               default:
+                  strcpy(message,"Invalid");
+                  break;
+            }
+            break;
+         }
+      case ENTRM: /* When RRM sends msg to scheduler */
+         {
+            strcpy(sourceTask,"ENTRM");
+            switch(pst->event)
+            {
+               case EVTRGMBNDREQ:
+                  strcpy(message,"EVTRGMBNDREQ");
+                  break;
+               case EVTRGMUBNDREQ:
+                  strcpy(message,"EVTRGMUBNDREQ");
+                  break;
+               case EVTRGMCFGPRBRPRT:
+                  strcpy(message,"EVTRGMCFGPRBRPRT");
+                  break;
+               default:
+                  strcpy(message,"Invalid");
+                  break;
+            }
+            break;
+         }
+      default:
+         strcpy(sourceTask,"Invalid Src");
+         break;
+   }
+   DU_LOG("\nCall Flow: %s -> %s:%s\n",sourceTask,destTask,message);
+}
+
 /**
  * @brief Task Activation callback function. 
  *
@@ -79,6 +234,11 @@ Pst     *pst,                       /* post structure       */
 Buffer  *mBuf                       /* message buffer       */
 )
 {
+
+#ifdef CALLFLOW_DEBUG
+   callFlowSchActvTsk(pst);
+#endif
+
    switch(pst->srcEnt)
    {
       /* The originator of this message is the stack manager,

@@ -469,6 +469,10 @@ uint8_t MacProcSchCellDeleteRsp(Pst *pst, SchCellDeleteRsp *schCellDelRsp)
    uint8_t  ret = ROK;
    uint16_t cellIdx=0;
    CellDeleteStatus status;
+   
+#ifdef CALLFLOW_DEBUG
+   DU_LOG("\nCall Flow: SchActvTsk -> ENTMAC:EVENT_CELL_DELETE_RSP_TO_MAC\n");
+#endif  
 
    if(schCellDelRsp)
    {
