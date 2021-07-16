@@ -1,0 +1,276 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1eca6662_72c97155",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1525,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-16T10:59:34Z",
+      "side": 1,
+      "message": "This condition will never hit. Put gdb here and check",
+      "revId": "3ba909e2495f1b595ab135ca12aab186fcf2e35f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45aefaee_3b6d91d3",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1555,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-16T10:59:34Z",
+      "side": 1,
+      "message": "This condition will never hit. Put gdb here and check",
+      "revId": "3ba909e2495f1b595ab135ca12aab186fcf2e35f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ab1a9f7_c0a033e0",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1571,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-16T10:59:34Z",
+      "side": 1,
+      "message": "This condition will never hit. Put gdb here and check",
+      "revId": "3ba909e2495f1b595ab135ca12aab186fcf2e35f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60b7e72a_a9aa611b",
+        "filename": "src/5gnrmac/rg.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-16T10:59:34Z",
+      "side": 1,
+      "message": "remove if condition and null assignment, since it is already being done in MAC_FREE. This can written as :\ndefine MAC_FREE_MEM(_region, _pool, _datPtr, _size) MAC_FREE(_datPtr, _size)",
+      "revId": "3ba909e2495f1b595ab135ca12aab186fcf2e35f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5f51895_c5e9e7cc",
+        "filename": "src/5gnrmac/rg.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-16T10:59:34Z",
+      "side": 1,
+      "message": "we haven\u0027t yet checked if all memory alloc and dealloc is happening correctly in ODU_GET_MSG_BUF and ODU_PUT_MSG_BUF. Lets think on this front too.",
+      "revId": "3ba909e2495f1b595ab135ca12aab186fcf2e35f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3584690b_2c5756cf",
+        "filename": "src/5gnrmac/rg_lmm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 945,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-16T10:59:34Z",
+      "side": 1,
+      "message": "MAC_FREE macro already has null assignment within. This line can be removed.\nCheck all places for all free macros",
+      "revId": "3ba909e2495f1b595ab135ca12aab186fcf2e35f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d710fe14_2b34c24b",
+        "filename": "src/5gnrmac/rg_uim.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-16T10:59:34Z",
+      "side": 1,
+      "message": "if null assignment is already present in MAC_FREE_SHRABL_BUF, remove from here. Check at all instances",
+      "revId": "3ba909e2495f1b595ab135ca12aab186fcf2e35f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55e9ff36_1b1fd9d4",
+        "filename": "src/5gnrmac/rg_utl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-16T10:59:34Z",
+      "side": 1,
+      "message": "included twice?",
+      "revId": "3ba909e2495f1b595ab135ca12aab186fcf2e35f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69aeb747_bcaf6248",
+        "filename": "src/5gnrmac/rg_utl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-16T10:59:34Z",
+      "side": 1,
+      "message": "Replace SGetSBuf with macro name",
+      "revId": "3ba909e2495f1b595ab135ca12aab186fcf2e35f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "620ab53d_ab5bd887",
+        "filename": "src/5gnrrlc/rlc_utl_dl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-16T10:59:34Z",
+      "side": 1,
+      "message": "why is this change needed?",
+      "revId": "3ba909e2495f1b595ab135ca12aab186fcf2e35f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4cc236eb_81ef9f25",
+        "filename": "src/5gnrsch/rg_sch_utl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 4050,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-16T10:59:34Z",
+      "side": 1,
+      "message": "indentation",
+      "revId": "3ba909e2495f1b595ab135ca12aab186fcf2e35f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "303a3c16_7064b265",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-16T10:59:34Z",
+      "side": 1,
+      "message": "null check is present in SCH_FREE. need not be checked here",
+      "revId": "3ba909e2495f1b595ab135ca12aab186fcf2e35f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a645f61_f2770126",
+        "filename": "src/cm/cm_mem_wl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2022,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-16T10:59:34Z",
+      "side": 1,
+      "message": "are these braces needed?",
+      "revId": "3ba909e2495f1b595ab135ca12aab186fcf2e35f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b0ae62e_26a42fa3",
+        "filename": "src/cm/common_def.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-16T10:59:34Z",
+      "side": 1,
+      "message": "1. add function definition for all \n2. change return type to uint8_t for all",
+      "revId": "3ba909e2495f1b595ab135ca12aab186fcf2e35f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e99bb2f_f00d8a64",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-16T10:59:34Z",
+      "side": 1,
+      "message": "remove trigger",
+      "revId": "3ba909e2495f1b595ab135ca12aab186fcf2e35f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3938ce7_cc4fbba6",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 10812,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-16T10:59:34Z",
+      "side": 1,
+      "message": "remove trigger",
+      "revId": "3ba909e2495f1b595ab135ca12aab186fcf2e35f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
