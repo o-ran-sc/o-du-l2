@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5eba4a7f_4cb0b23c",
+        "filename": "src/cm/cm_mem_wl.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 1886,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-21T14:06:02Z",
+      "side": 1,
+      "message": "if size is null, *size would give seg fault\nuse if else condition",
+      "revId": "c458693b8e7a31bc2eb5b0670c0e2d3479eecb2f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2091b897_8e763597",
+        "filename": "src/cm/cm_mem_wl.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 2180,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-21T14:06:02Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "c458693b8e7a31bc2eb5b0670c0e2d3479eecb2f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
