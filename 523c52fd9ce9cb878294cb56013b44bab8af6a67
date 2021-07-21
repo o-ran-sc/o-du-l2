@@ -1,0 +1,310 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3404e8ad_842c1428",
+        "filename": "src/5gnrrlc/rlc_utl_dl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-21T07:33:37Z",
+      "side": 1,
+      "message": "remove SRB0 from comment",
+      "revId": "523c52fd9ce9cb878294cb56013b44bab8af6a67",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b327412_80354216",
+        "filename": "src/cm/cm_mem_wl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1885,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-21T07:33:37Z",
+      "side": 1,
+      "message": "cause could be any 4 of the above then why mention only one.",
+      "revId": "523c52fd9ce9cb878294cb56013b44bab8af6a67",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6aa6eac_15e7405a",
+        "filename": "src/cm/cm_mem_wl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2179,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-21T07:33:37Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "523c52fd9ce9cb878294cb56013b44bab8af6a67",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e95caef4_4de83e8d",
+        "filename": "src/cm/cm_mem_wl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2189,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-21T07:33:37Z",
+      "side": 1,
+      "message": "also print the value of memType",
+      "revId": "523c52fd9ce9cb878294cb56013b44bab8af6a67",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23698dfa_58a2d85b",
+        "filename": "src/cm/cm_mem_wl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2323,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-21T07:33:37Z",
+      "side": 1,
+      "message": "This is else case i.e. when cmMmBktSanityChk does not return RTRAMPLINGNOK\nwrite comment \u003e \"Sanity check returns failure\"",
+      "revId": "523c52fd9ce9cb878294cb56013b44bab8af6a67",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7f4c3b9_e02d16b9",
+        "filename": "src/cm/cm_mem_wl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2521,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-21T07:33:37Z",
+      "side": 1,
+      "message": "just write \"No memory available in heap\"",
+      "revId": "523c52fd9ce9cb878294cb56013b44bab8af6a67",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e076917_76276091",
+        "filename": "src/cm/cm_mem_wl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2765,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-21T07:33:37Z",
+      "side": 1,
+      "message": "this error can occur due to one of the 3 causes above, so why mention just one",
+      "revId": "523c52fd9ce9cb878294cb56013b44bab8af6a67",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93114d09_a0172392",
+        "filename": "src/cm/cm_mem_wl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2773,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-21T07:33:37Z",
+      "side": 1,
+      "message": "write \"memory block[%p] not from region[%d]\"",
+      "revId": "523c52fd9ce9cb878294cb56013b44bab8af6a67",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa13a72a_ea34c9b0",
+        "filename": "src/cm/cm_mem_wl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2779,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-21T07:33:37Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "523c52fd9ce9cb878294cb56013b44bab8af6a67",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45b13a69_591596e3",
+        "filename": "src/cm/cm_mem_wl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2816,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-21T07:33:37Z",
+      "side": 1,
+      "message": "this case is not an errror scenario. Remove print",
+      "revId": "523c52fd9ce9cb878294cb56013b44bab8af6a67",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74b3e808_7e90f774",
+        "filename": "src/cm/cm_mem_wl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2822,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-21T07:33:37Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "523c52fd9ce9cb878294cb56013b44bab8af6a67",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79c62a9a_0d235e3d",
+        "filename": "src/cm/cm_mem_wl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2846,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-21T07:33:37Z",
+      "side": 1,
+      "message": "lets not add error prints inside SS_MEM_WL_DEBUG flag. We are unclear on the processing happening inside this. also this flag is not currently enabled",
+      "revId": "523c52fd9ce9cb878294cb56013b44bab8af6a67",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1662ac5b_795d097e",
+        "filename": "src/cm/cm_mem_wl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2985,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-21T07:33:37Z",
+      "side": 1,
+      "message": "mention all possible causes of this failure",
+      "revId": "523c52fd9ce9cb878294cb56013b44bab8af6a67",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fe9245b_a817e388",
+        "filename": "src/cm/cm_mem_wl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2993,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-21T07:33:37Z",
+      "side": 1,
+      "message": "write comment that this ptr doesn not belong to this region. Print ptr and region values too",
+      "revId": "523c52fd9ce9cb878294cb56013b44bab8af6a67",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f61d0bc_9994ed3a",
+        "filename": "src/cm/cm_mem_wl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2999,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-21T07:33:37Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "523c52fd9ce9cb878294cb56013b44bab8af6a67",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c53dcde_a2151a2e",
+        "filename": "src/cm/cm_mem_wl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 3025,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-21T07:33:37Z",
+      "side": 1,
+      "message": "Incorrect. bktIdx is not null.\njust say Invalid bktIdx",
+      "revId": "523c52fd9ce9cb878294cb56013b44bab8af6a67",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a66abc7_7cd460e8",
+        "filename": "src/cm/cm_mem_wl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 3109,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-21T07:33:37Z",
+      "side": 1,
+      "message": "say : sanity check returns failure",
+      "revId": "523c52fd9ce9cb878294cb56013b44bab8af6a67",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e9d009a_e24629ce",
+        "filename": "src/cm/cm_mem_wl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 3199,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-21T07:33:37Z",
+      "side": 1,
+      "message": "say: sanity check returns failure",
+      "revId": "523c52fd9ce9cb878294cb56013b44bab8af6a67",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
