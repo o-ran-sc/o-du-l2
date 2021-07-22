@@ -400,7 +400,7 @@ uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
    uint8_t        snIdx1;
    uint8_t        snIdx2;
 #endif /* LTE_L2_MEAS */
-   uint32_t  idx;
+   uint32_t  idx, ueDataIdx = 0;
 
 //Debug
    uint32_t staIndSz=0,datIndSz = 0;
@@ -436,7 +436,7 @@ uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
       for (numTb = 0; numTb < staInd->nmbOfTbs; numTb++)
       {
          staIndTb = &(staInd->staIndTb[numTb]);
-         datReqTb = &(datReqInfo->datReq[idx].datReqTb[numTb]);
+         datReqTb = &(datReqInfo->datReq[ueDataIdx].datReqTb[numTb]);
 #ifdef LTE_L2_MEAS
          ueCb->tbIdx = (ueCb->tbIdx+1) % RLC_MAX_TB_PER_UE;
 #endif   
@@ -588,15 +588,24 @@ uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
          }
 #endif /* LTE_L2_MEAS */
       }
-      datReqInfo->datReq[idx].nmbOfTbs = staInd->nmbOfTbs;
-      datReqInfo->datReq[idx].transId = staInd->transId;
-      datReqInfo->datReq[idx].rnti    = staInd->rnti;
+      datReqInfo->datReq[ueDataIdx].nmbOfTbs = staInd->nmbOfTbs;
+      datReqInfo->datReq[ueDataIdx].transId = staInd->transId;
+      datReqInfo->datReq[ueDataIdx].rnti    = staInd->rnti;
+      ueDataIdx++;
    }
-   datReqInfo->cellId  = staIndInfo->cellId;
-   datReqInfo->nmbOfUeGrantPerTti = staIndInfo->nmbOfUeGrantPerTti;
 
-   rguSap = &(gCb->u.dlCb->rguDlSap[suId]);
-   rlcSendDedLcDlData(&rguSap->pst,rguSap->spId,datReqInfo); 
+   if(ueDataIdx > 0)
+   {
+      datReqInfo->cellId  = staIndInfo->cellId;
+      datReqInfo->nmbOfUeGrantPerTti = staIndInfo->nmbOfUeGrantPerTti;
+
+      rguSap = &(gCb->u.dlCb->rguDlSap[suId]);
+      rlcSendDedLcDlData(&rguSap->pst,rguSap->spId,datReqInfo); 
+   }
+   else
+   {
+      RLC_FREE_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL, datReqInfo,sizeof(RguDDatReqInfo));
+   }
    return ROK;
 }
 
@@ -1127,11 +1136,7 @@ Void rlcUtlFreeDlMemory(RlcCb *gCb)
 
    /* Free from the ReTx list */
    lst  = &pToBeFreed->reTxLst;
-#ifndef L2_OPTMZ
-   while((lst->first) && toBeFreed && (pToBeFreed->reTxLst.count > 100))
-#else
    while((lst->first) && toBeFreed)
-#endif
    {
       RlcRetx* seg = (RlcRetx *)(lst->first->node);
       cmLListDelFrm(lst, lst->first);
@@ -1142,11 +1147,7 @@ Void rlcUtlFreeDlMemory(RlcCb *gCb)
 
    /* Free from the Tx list */
    lst  = &pToBeFreed->txLst;
-#ifndef L2_OPTMZ
-   while((lst->first) && toBeFreed && (pToBeFreed->txLst.count > 100))
-#else
    while((lst->first) && toBeFreed)
-#endif
    {
       RlcTx* pdu = (RlcTx *)(lst->first->node);
       cmLListDelFrm(lst, lst->first);
@@ -1164,11 +1165,7 @@ Void rlcUtlFreeDlMemory(RlcCb *gCb)
 
    /* Free from the SDU queue */
    lst  = &pToBeFreed->sduLst;
-#ifndef L2_OPTMZ
-   while((lst->first) && toBeFreed && (pToBeFreed->sduLst.count > 100))
-#else
    while((lst->first) && toBeFreed)
-#endif
    {
       RlcSdu* sdu = (RlcSdu *)(lst->first->node);
       RLC_REMOVE_SDU(gCb, lst, sdu);
@@ -1177,11 +1174,7 @@ Void rlcUtlFreeDlMemory(RlcCb *gCb)
 
    /* Free from the RBs */
    lst  = &pToBeFreed->rbLst;
-#ifndef L2_OPTMZ
-   while((lst->first) && toBeFreed && (pToBeFreed->rbLst.count > 100))
-#else
    while((lst->first) && toBeFreed)
-#endif
    {
       RlcDlRbCb* rbCb = (RlcDlRbCb *)(lst->first->node);
       Bool moreToBeFreed = rlcUtlFreeDlAmRbMemory(gCb, rbCb,&toBeFreed);
@@ -1390,11 +1383,10 @@ RlcL2MeasTb * rlcUtlGetCurMeasTb(RlcCb *gCb,RlcDlRbCb *rbCb)
    if((curL2MeasTb = rbCb->ueCb->l2MeasTbCb[rbCb->ueCb->tbIdx]) == NULLP)
       {
          /* Intentionally avoiding the RLC_ALLOC macro to avoid  memset */
-         if (SGetSBuf(gCb->init.region,
-                  gCb->init.pool,
-                  (Data **)&curL2MeasTb,
-                  (Size)sizeof(RlcL2MeasTb)) != ROK)
+         RLC_ALLOC(gCb, curL2MeasTb, (Size)sizeof(RlcL2MeasTb));
+         if(curL2MeasTb == NULLP)
          {
+            DU_LOG("ERROR  --> RLC_DL :  rlcUtlGetCurMeasTb(): Memory allocation failed");
             return (NULLP);
          }
          rbCb->ueCb->l2MeasTbCb[rbCb->ueCb->tbIdx] = curL2MeasTb;

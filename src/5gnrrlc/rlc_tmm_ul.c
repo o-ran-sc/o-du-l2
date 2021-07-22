@@ -110,7 +110,7 @@ uint8_t rrcUeCapabilityInfo[] =
    datIndInfo->tCrnti = crnti;
    datIndInfo->isOutOfSeq = 16;
 
-   SGetMsg(DFLT_REGION, DFLT_POOL, (Buffer **) &pdu);
+   ODU_GET_MSG_BUF(DFLT_REGION, DFLT_POOL, (Buffer **) &pdu);
   
    SAddPstMsgMult(rrcConReq,6,pdu);
 
@@ -126,7 +126,7 @@ uint8_t rrcUeCapabilityInfo[] =
     pdcpId.rbId = 1;
     pdcpId.rbType = 0;
 #endif   
-    SGetMsg(DFLT_REGION, DFLT_POOL, (Buffer **) &pdu);
+    ODU_GET_MSG_BUF(DFLT_REGION, DFLT_POOL, (Buffer **) &pdu);
   
     SAddPstMsgMult(rrcConSetupComplete,34,pdu);
 
@@ -145,7 +145,7 @@ uint8_t rrcUeCapabilityInfo[] =
     pdcpId.rbId = 1;
     pdcpId.rbType = 0;
 #endif   
-    SGetMsg(DFLT_REGION, DFLT_POOL, (Buffer **) &pdu);
+    ODU_GET_MSG_BUF(DFLT_REGION, DFLT_POOL, (Buffer **) &pdu);
   
 #ifndef CA_PAL_5GTF 
     SAddPstMsgMult(rrcUeCapabilityInfo,12,pdu);
@@ -168,7 +168,7 @@ uint8_t rrcUeCapabilityInfo[] =
     pdcpId.rbType = 0;
 #endif
    
-    SGetMsg(DFLT_REGION, DFLT_POOL, (Buffer **) &pdu);
+    ODU_GET_MSG_BUF(DFLT_REGION, DFLT_POOL, (Buffer **) &pdu);
   
     SAddPstMsgMult(rrcSecurityModeComplete,2,pdu);
 
@@ -187,7 +187,7 @@ uint8_t rrcUeCapabilityInfo[] =
     pdcpId.rbType = 0;
 #endif
    
-    SGetMsg(DFLT_REGION, DFLT_POOL, (Buffer **) &pdu);
+    ODU_GET_MSG_BUF(DFLT_REGION, DFLT_POOL, (Buffer **) &pdu);
   
     SAddPstMsgMult(rrcReconfigComplete,2,pdu);
 
