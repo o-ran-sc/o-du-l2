@@ -66,6 +66,7 @@ typedef struct egtpParams
    uint16_t    localPort;
    SctpIpAddr  destIp;
    uint16_t    destPort;
+   uint32_t    currTunnelId;
    uint32_t    minTunnelId;
    uint32_t    maxTunnelId;
 }EgtpParams;

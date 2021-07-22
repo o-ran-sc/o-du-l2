@@ -54,6 +54,7 @@ MacSchSlotIndFunc macSchSlotIndOpts[] =
  **/
 uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
 {
+   uint8_t   ueIdx;
    uint16_t  cellIdx;
    MacDlSlot *currDlSlot = NULLP;
 
@@ -90,7 +91,10 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
          /* Check if the downlink pdu is msg4 */
          if(dlSchedInfo->dlMsgAlloc->dlMsgInfo.isMsg4Pdu)
          {
-            macCb.macCell[cellIdx]->macRaCb[0].msg4TbSize = dlSchedInfo->dlMsgAlloc->dlMsgPdschCfg.codeword[0].tbSize;
+            GET_UE_IDX(dlSchedInfo->dlMsgAlloc->dlMsgInfo.crnti, ueIdx);
+            ueIdx = ueIdx -1;
+            macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4TbSize = \
+               dlSchedInfo->dlMsgAlloc->dlMsgPdschCfg.codeword[0].tbSize;
          }
          else
          {
@@ -145,8 +149,8 @@ void fillMsg4Pdu(uint16_t cellId, DlMsgAlloc *msg4Alloc)
 
    if(macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4Pdu != NULLP)
    {
-      MAC_ALLOC(msg4DlData.pduInfo[ueIdx].dlPdu, macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4PduLen);
-      if(msg4DlData.pduInfo[ueIdx].dlPdu != NULLP)
+      MAC_ALLOC(msg4DlData.pduInfo[msg4DlData.numPdu].dlPdu, macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4PduLen);
+      if(msg4DlData.pduInfo[msg4DlData.numPdu].dlPdu != NULLP)
       {
          msg4TxPduLen = macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4TbSize - TX_PAYLOAD_HDR_LEN;
 
@@ -166,7 +170,8 @@ void fillMsg4Pdu(uint16_t cellId, DlMsgAlloc *msg4Alloc)
             DU_LOG("\nERROR  -->  MAC: Failed allocating memory for msg4TxPdu");
          }
          /* Free memory allocated */
-         MAC_FREE(msg4DlData.pduInfo[0].dlPdu, macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4PduLen);
+         MAC_FREE(msg4DlData.pduInfo[msg4DlData.numPdu-1].dlPdu, macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4PduLen);
+         msg4DlData.numPdu--;
       }
    }
 

@@ -78,14 +78,7 @@ void GenerateTicks()
    /* Initialize all global variables */
    sfnValue = 0;
    slotValue = 0;
-   rachIndSent = false;
-   msg3Sent = false;
-   msg5ShortBsrSent = false;
-   msg5Sent = false;
-   dlDedMsg = false;
-   msgSecurityModeComp =  false;
-   msgRrcReconfiguration  =  false;
-   msgRegistrationComp    = false;
+   memset(&ueDb, 0, sizeof(UeDb));
 
    /* Send Stop indication to MAC */
    sleep(1);
