@@ -54,6 +54,7 @@ MacSchSlotIndFunc macSchSlotIndOpts[] =
  **/
 uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
 {
+   uint8_t   ueIdx;
    uint16_t  cellIdx;
    MacDlSlot *currDlSlot = NULLP;
 
@@ -90,7 +91,10 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
          /* Check if the downlink pdu is msg4 */
          if(dlSchedInfo->dlMsgAlloc->dlMsgInfo.isMsg4Pdu)
          {
-            macCb.macCell[cellIdx]->macRaCb[0].msg4TbSize = dlSchedInfo->dlMsgAlloc->dlMsgPdschCfg.codeword[0].tbSize;
+            GET_UE_IDX(dlSchedInfo->dlMsgAlloc->dlMsgInfo.crnti, ueIdx);
+            ueIdx = ueIdx -1;
+            macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4TbSize = \
+               dlSchedInfo->dlMsgAlloc->dlMsgPdschCfg.codeword[0].tbSize;
          }
          else
          {
@@ -150,7 +154,7 @@ void fillMsg4Pdu(uint16_t cellId, DlMsgAlloc *msg4Alloc)
       {
          msg4TxPduLen = macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4TbSize - TX_PAYLOAD_HDR_LEN;
 
-         fillMsg4DlData(&msg4DlData, macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4PduLen, \
+         fillMsg4DlData(ueIdx, &msg4DlData, macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4PduLen, \
             macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4Pdu);
          fillMacCe(&macCeData, macCb.macCell[cellIdx]->macRaCb[ueIdx].msg3Pdu);
          /* Forming Mux Pdu */

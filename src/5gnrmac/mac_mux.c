@@ -212,14 +212,12 @@ void createMacRaCb(RachIndInfo *rachIndInfo)
  *             msg4Pdu pointer
  ************************************************/
 
-void fillMsg4DlData(MacDlData *dlData, uint16_t msg4PduLen, uint8_t *msg4Pdu)
+void fillMsg4DlData(uint8_t ueIdx, MacDlData *dlData, uint16_t msg4PduLen, uint8_t *msg4Pdu)
 {
-   uint8_t idx = 0;
-
    dlData->numPdu = 1;
-   dlData->pduInfo[idx].lcId = MAC_LCID_CCCH;
-   dlData->pduInfo[idx].pduLen = msg4PduLen;
-   memcpy(dlData->pduInfo[idx].dlPdu, msg4Pdu, msg4PduLen);
+   dlData->pduInfo[ueIdx].lcId = MAC_LCID_CCCH;
+   dlData->pduInfo[ueIdx].pduLen = msg4PduLen;
+   memcpy(dlData->pduInfo[ueIdx].dlPdu, msg4Pdu, msg4PduLen);
 }
 
 /*************************************************

@@ -216,7 +216,7 @@ MacCb macCb;
 short int macActvTmr(Ent ent,Inst inst);
 void fillRarPdu(RarInfo *rarInfo);
 void createMacRaCb(RachIndInfo *rachIndInfo);
-void fillMsg4DlData(MacDlData *dlData, uint16_t msg4PduLen, uint8_t *msg4Pdu);
+void fillMsg4DlData(uint8_t ueIdx, MacDlData *dlData, uint16_t msg4PduLen, uint8_t *msg4Pdu);
 void fillMacCe(MacCeInfo  *macCeData, uint8_t *msg3Pdu);
 void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint8_t *msg4TxPdu, uint16_t tbSize);
 uint8_t unpackRxData(uint16_t cellId, SlotIndInfo slotInfo, RxDataIndPdu *rxDataIndPdu);
