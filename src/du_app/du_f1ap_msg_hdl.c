@@ -10257,6 +10257,7 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
                         DU_LOG("\nERROR  -->  F1AP: Memory Alloc Failed at procF1UeContextSetupReq()");
                         ret = RFAILED;
                      }
+                     break;
                   }
                   else
                      ueCbFound = false;
@@ -12726,12 +12727,13 @@ uint8_t procF1UeContextModificationReq(F1AP_PDU_t *f1apMsg)
                               }
                            }
                         }
+                        break;
                      }
-                     else
-                     {
-                        DU_LOG("\nERROR  -->  DU APP : wrong values of gnbCuUeF1apId and gnbDuUeF1apId ");
-                        ret = RFAILED;
-                     }
+                  }
+                  if(ueIdx >= duCb.actvCellLst[cellIdx]->numActvUes)
+                  {
+                     DU_LOG("\nERROR  -->  DU APP : wrong values of gnbCuUeF1apId and gnbDuUeF1apId ");
+                     ret = RFAILED;
                   }
                }
                break;

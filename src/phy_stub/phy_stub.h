@@ -29,14 +29,30 @@
 bool     slotIndicationStarted;
 uint16_t sfnValue;
 uint16_t slotValue;
-bool     rachIndSent;
-bool     msg3Sent;
-bool     msg5ShortBsrSent;
-bool     msg5Sent;
-bool     dlDedMsg;
-bool     msgSecurityModeComp;
-bool 	   msgRrcReconfiguration;
-bool 	   msgRegistrationComp;
+
+/* UE specific information */
+typedef struct ueCb
+{
+   uint8_t  ueId;
+   uint16_t crnti;
+   bool     rachIndSent;
+   bool     msg3Sent;
+   bool     msg5ShortBsrSent;
+   bool     msg5Sent;
+   bool     dlDedMsg;
+   bool     msgSecurityModeComp;
+   bool 	   msgRrcReconfiguration;
+   bool 	   msgRegistrationComp;
+}UeCb;
+
+/* Database to store information for all UE */
+typedef struct ueDb
+{
+   uint8_t   numActvUe;
+   UeCb      ueCb[MAX_NUM_UE];
+}UeDb;
+
+UeDb ueDb;
 
 typedef enum
 {

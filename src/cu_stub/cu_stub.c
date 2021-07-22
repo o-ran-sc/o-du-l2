@@ -216,6 +216,7 @@ void readCuCfg()
    cuCfgParams.egtpParams.destIp.ipV4Addr = ipv4_du;
    cuCfgParams.egtpParams.destPort = DU_EGTP_PORT;
    cuCfgParams.egtpParams.minTunnelId = 0;
+   cuCfgParams.egtpParams.currTunnelId = cuCfgParams.egtpParams.minTunnelId;
    cuCfgParams.egtpParams.maxTunnelId = 10;
 
 } /* End of readCuCfg */
