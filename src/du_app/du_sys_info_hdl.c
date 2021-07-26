@@ -1151,7 +1151,7 @@ uint8_t BuildPdschCfgCommon(struct BWP_DownlinkCommon__pdsch_ConfigCommon *pdsch
 	    DU_LOG("\nERROR  -->  DU APP : PDCCH Config memory alloc failed");
 	    return RFAILED;
 	 }
-	 elementCnt = ODU_VALUE_ONE;
+	 elementCnt = duPdschCfg.numTimeDomRsrcAlloc;
 	 pdschSetup->pdsch_TimeDomainAllocationList->list.count = elementCnt;
 	 pdschSetup->pdsch_TimeDomainAllocationList->list.size =  elementCnt * sizeof(PDSCH_TimeDomainResourceAllocation_t *);
 
@@ -1174,21 +1174,22 @@ uint8_t BuildPdschCfgCommon(struct BWP_DownlinkCommon__pdsch_ConfigCommon *pdsch
 	    }
 	 }
 
-	 idx = 0;
-	 timeDomRsrcAllocInfo = pdschSetup->pdsch_TimeDomainAllocationList->list.array[idx];
+    for(idx = 0; idx < pdschSetup->pdsch_TimeDomainAllocationList->list.count; idx++)
+    {
+       timeDomRsrcAllocInfo = pdschSetup->pdsch_TimeDomainAllocationList->list.array[idx];
 
-	 /* K0 */
-	 DU_ALLOC(timeDomRsrcAllocInfo->k0, sizeof(long));
-	 if(!timeDomRsrcAllocInfo->k0)
-	 {
-	    DU_LOG("\nERROR  -->  DU APP : PDCCH Config memory alloc failed");
-	    return RFAILED;
-	 }
-	 *timeDomRsrcAllocInfo->k0 = duPdschCfg.k0;
+       /* K0 */
+       DU_ALLOC(timeDomRsrcAllocInfo->k0, sizeof(long));
+       if(!timeDomRsrcAllocInfo->k0)
+       {
+          DU_LOG("\nERROR  -->  DU APP : PDCCH Config memory alloc failed");
+          return RFAILED;
+       }
+       *timeDomRsrcAllocInfo->k0 = duPdschCfg.timeDomAlloc[idx].k0;
 
-	 timeDomRsrcAllocInfo->mappingType = duPdschCfg.mapType;
-	 timeDomRsrcAllocInfo->startSymbolAndLength = duPdschCfg.sliv;
-
+       timeDomRsrcAllocInfo->mappingType = duPdschCfg.timeDomAlloc[idx].mapType;
+       timeDomRsrcAllocInfo->startSymbolAndLength = duPdschCfg.timeDomAlloc[idx].sliv;
+    }
 	 break;
       }
       default:

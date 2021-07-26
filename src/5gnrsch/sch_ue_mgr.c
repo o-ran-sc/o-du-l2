@@ -761,12 +761,22 @@ void deleteSchPdschServCellCfg(SchPdschServCellCfg *pdschServCellCfg)
 * ****************************************************************/
 void deleteSchUeCb(SchUeCb *ueCb) 
 {
+   uint8_t timeDomRsrcIdx;
    SchPucchCfg *pucchCfg = NULLP;
+   SchPdschConfig *pdschCfg = NULLP;
+
    if(ueCb)
    {
       SCH_FREE(ueCb->ueCfg.ambrCfg, sizeof(SchAmbrCfg));
       if(ueCb->ueCfg.spCellCfgPres)
       {
+         if(ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdschCfgPres == true)
+         {
+            pdschCfg = &ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdschCfg;
+            for(timeDomRsrcIdx = 0; timeDomRsrcIdx < pdschCfg->numTimeDomRsrcAlloc; timeDomRsrcIdx++)
+               SCH_FREE(pdschCfg->timeDomRsrcAllociList[timeDomRsrcIdx].k0, sizeof(uint8_t));
+         }
+
          if(ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.pucchCfgPres == true)
          {
             pucchCfg = &ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.pucchCfg;

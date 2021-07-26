@@ -142,6 +142,8 @@ void FillSlotConfig()
 /* This function is used to fill up the cell configuration for CL */
 uint8_t readMacCfg()
 {
+   uint8_t idx;
+
    duCfgParam.macCellCfg.carrierId = CARRIER_IDX;
 
    /* Cell configuration */
@@ -300,13 +302,25 @@ uint8_t readMacCfg()
       candidate.aggLevel8	= 1;
    duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.
       candidate.aggLevel16	= 0;
-   duCfgParam.macCellCfg.initialDlBwp.pdschCommon.k0 = PDSCH_K0;
-   duCfgParam.macCellCfg.initialDlBwp.pdschCommon.mappingType = 
+
+   duCfgParam.macCellCfg.initialDlBwp.pdschCommon.numTimeDomAlloc = 2;
+   idx = 0;
+   duCfgParam.macCellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].k0 = PDSCH_K0_CFG1;
+   duCfgParam.macCellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].mappingType = 
       PDSCH_MAPPING_TYPE_A;
-   duCfgParam.macCellCfg.initialDlBwp.pdschCommon.startSymbol = 
+   duCfgParam.macCellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].startSymbol = 
       PDSCH_START_SYMBOL;
-   duCfgParam.macCellCfg.initialDlBwp.pdschCommon.lengthSymbol =
+   duCfgParam.macCellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].lengthSymbol =
       PDSCH_LENGTH_SYMBOL;
+   idx++;
+   duCfgParam.macCellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].k0 = PDSCH_K0_CFG2;
+   duCfgParam.macCellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].mappingType = 
+      PDSCH_MAPPING_TYPE_A;
+   duCfgParam.macCellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].startSymbol = 
+      PDSCH_START_SYMBOL;
+   duCfgParam.macCellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].lengthSymbol =
+      PDSCH_LENGTH_SYMBOL;
+
    /* ra-searchSpace ID is set to 1 */
    duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.raSearchSpaceId = SEARCHSPACE_1_INDEX;
 
@@ -461,10 +475,16 @@ uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
 
    /* Configuring PDSCH Config Common For SIB1 */
    pdschCfg.present = BWP_DownlinkCommon__pdsch_ConfigCommon_PR_setup;
-   pdschCfg.k0 = PDSCH_K0;
-   pdschCfg.mapType = \
+   pdschCfg.numTimeDomRsrcAlloc = 2;
+   pdschCfg.timeDomAlloc[0].k0 = PDSCH_K0_CFG1;
+   pdschCfg.timeDomAlloc[0].mapType = \
       PDSCH_TimeDomainResourceAllocation__mappingType_typeA;
-   pdschCfg.sliv = calcSliv(PDSCH_START_SYMBOL,PDSCH_LENGTH_SYMBOL);
+   pdschCfg.timeDomAlloc[0].sliv = calcSliv(PDSCH_START_SYMBOL,PDSCH_LENGTH_SYMBOL);
+   pdschCfg.timeDomAlloc[1].k0 = PDSCH_K0_CFG2;
+   pdschCfg.timeDomAlloc[1].mapType = \
+      PDSCH_TimeDomainResourceAllocation__mappingType_typeA;
+   pdschCfg.timeDomAlloc[1].sliv = calcSliv(PDSCH_START_SYMBOL,PDSCH_LENGTH_SYMBOL);
+
    srvCellCfgComm->dlCfg.pdschCfg = pdschCfg;
 
    /* Configuring BCCH Config for SIB1 */

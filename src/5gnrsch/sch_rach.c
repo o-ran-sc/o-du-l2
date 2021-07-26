@@ -394,10 +394,11 @@ bool ssbPresent, bool sib1Present)
       sib1PdschFreqAlloc = &schCb[inst].cells[inst]->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc;
       pdsch->pdschFreqAlloc.freqAlloc.startPrb = sib1PdschFreqAlloc->startPrb + sib1PdschFreqAlloc->numPrb + 1; 
    }
-   pdsch->pdschFreqAlloc.freqAlloc.numPrb = schCalcNumPrb(tbSize, mcs, initialBwp->pdschCommon.lengthSymbol);
+   pdsch->pdschFreqAlloc.freqAlloc.numPrb = schCalcNumPrb(tbSize, mcs, \
+      initialBwp->pdschCommon.timeDomRsrcAllocList[0].lengthSymbol);
    pdsch->pdschFreqAlloc.vrbPrbMapping = 0; /* non-interleaved */
-   pdsch->pdschTimeAlloc.timeAlloc.startSymb = initialBwp->pdschCommon.startSymbol;
-   pdsch->pdschTimeAlloc.timeAlloc.numSymb = initialBwp->pdschCommon.lengthSymbol;
+   pdsch->pdschTimeAlloc.timeAlloc.startSymb = initialBwp->pdschCommon.timeDomRsrcAllocList[0].startSymbol;
+   pdsch->pdschTimeAlloc.timeAlloc.numSymb = initialBwp->pdschCommon.timeDomRsrcAllocList[0].lengthSymbol;
    pdsch->beamPdschInfo.numPrgs = 1;
    pdsch->beamPdschInfo.prgSize = 1;
    pdsch->beamPdschInfo.digBfInterfaces = 0;

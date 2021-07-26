@@ -72,6 +72,7 @@
 #include "SRS-Resource.h"
 #include "SRS-ResourceSet.h"
 #include "SRS-Config.h"
+#include "PUCCH-Config.h"
 #include "BWP-UplinkDedicated.h"
 #include "PUSCH-ServingCellConfig.h"
 #include "UplinkConfig.h"
@@ -3195,7 +3196,7 @@ uint8_t BuildTCIStatesToAddModList(struct PDSCH_Config__tci_StatesToAddModList *
       return RFAILED;
    }
 
-   elementCnt = 1;
+   elementCnt = 2;
    timeDomAllocList->choice.setup->list.count = elementCnt;
    timeDomAllocList->choice.setup->list.size = \
 					       elementCnt * sizeof(struct PDSCH_TimeDomainResourceAllocation *);
@@ -3223,8 +3224,25 @@ uint8_t BuildTCIStatesToAddModList(struct PDSCH_Config__tci_StatesToAddModList *
 
    idx = 0;
    timeDomAlloc = timeDomAllocList->choice.setup->list.array[idx];
+   CU_ALLOC(timeDomAlloc->k0, sizeof(long));
+   if(!timeDomAlloc->k0)
+   {
+       DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildPdschTimeDomAllocList");
+       return RFAILED;
+   }
+   *(timeDomAlloc->k0) = 0;
+   timeDomAlloc->mappingType = PDSCH_MAPPING_TYPE_A;
+   timeDomAlloc->startSymbolAndLength = 66;
 
-   timeDomAlloc->k0 = NULLP;
+   idx++;
+   timeDomAlloc = timeDomAllocList->choice.setup->list.array[idx];
+   CU_ALLOC(timeDomAlloc->k0, sizeof(long));
+   if(!timeDomAlloc->k0)
+   {
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildPdschTimeDomAllocList");
+      return RFAILED;
+   }
+   *(timeDomAlloc->k0) = 1;
    timeDomAlloc->mappingType = PDSCH_MAPPING_TYPE_A;
    timeDomAlloc->startSymbolAndLength = 66;
 
@@ -3658,6 +3676,61 @@ uint8_t BuildBWPUlDedPuschCfg(PUSCH_Config_t *puschCfg)
 
 /*******************************************************************
  *
+ * @brief Builds BWP UL dedicated PUCCH Config
+ *
+ * @details
+ *
+ *    Function : BuildBWPUlDedPucchCfg
+ *
+ *    Functionality:
+ *      Builds BWP UL dedicated PUCCH Config
+ *
+ * @params[in] : PUCCH_Config_t *pucchCfg
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildBWPUlDedPucchCfg(PUCCH_Config_t *pucchCfg)
+{
+   uint8_t arrIdx, elementCnt;
+
+   CU_ALLOC(pucchCfg->dl_DataToUL_ACK, sizeof(struct PUCCH_Config__dl_DataToUL_ACK));
+   if(pucchCfg->dl_DataToUL_ACK == NULLP)
+   {
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildBWPUlDedPucchCfg");
+      return RFAILED;
+   }
+
+   elementCnt = 2;
+   pucchCfg->dl_DataToUL_ACK->list.count = elementCnt;
+   pucchCfg->dl_DataToUL_ACK->list.size = elementCnt * sizeof(long *);
+   CU_ALLOC(pucchCfg->dl_DataToUL_ACK->list.array, pucchCfg->dl_DataToUL_ACK->list.size);
+   if(pucchCfg->dl_DataToUL_ACK->list.array == NULLP)
+   {
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildBWPUlDedPucchCfg");
+      return RFAILED;
+   }
+
+   for(arrIdx = 0; arrIdx <  pucchCfg->dl_DataToUL_ACK->list.count; arrIdx++)
+   {
+      CU_ALLOC(pucchCfg->dl_DataToUL_ACK->list.array[arrIdx], sizeof(long));
+      if(pucchCfg->dl_DataToUL_ACK->list.array[arrIdx] == NULLP)
+      {
+          DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildBWPUlDedPucchCfg");
+          return RFAILED;
+      }
+   }
+
+   arrIdx = 0;
+   *(pucchCfg->dl_DataToUL_ACK->list.array[arrIdx++]) = 1;
+   *(pucchCfg->dl_DataToUL_ACK->list.array[arrIdx]) = 2;
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
  * @brief Fills SRS resource to add/modify list 
  *
  * @details
@@ -3930,6 +4003,27 @@ uint8_t BuildBWPUlDedSrsCfg(SRS_Config_t *srsCfg)
 uint8_t BuildInitialUlBWP(BWP_UplinkDedicated_t *ulBwp)
 {
    ulBwp->pucch_Config = NULLP;
+   ulBwp->pucch_Config = NULLP;
+   CU_ALLOC(ulBwp->pucch_Config, sizeof(struct BWP_UplinkDedicated__pucch_Config));
+   if(!ulBwp->pucch_Config)
+   {
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildInitialUlBWP");
+      return RFAILED;
+   }
+
+   ulBwp->pucch_Config->present = BWP_UplinkDedicated__pucch_Config_PR_setup;
+   ulBwp->pucch_Config->choice.setup = NULLP;
+   CU_ALLOC(ulBwp->pucch_Config->choice.setup, sizeof(PUCCH_Config_t));
+   if(!ulBwp->pucch_Config->choice.setup)
+   {
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildInitialUlBWP");
+      return RFAILED;
+   }
+
+   if(BuildBWPUlDedPucchCfg(ulBwp->pucch_Config->choice.setup) != ROK)
+   {
+      return RFAILED;
+   }
 
    /* Fill BWP UL dedicated PUSCH config */
    ulBwp->pusch_Config = NULLP;
