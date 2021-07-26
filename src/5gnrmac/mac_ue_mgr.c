@@ -1221,6 +1221,16 @@ uint8_t fillInitDlBwpPdschCfg(PdschConfig macPdschCfg, SchPdschConfig *schPdschC
 
    for(idx = 0; idx < schPdschCfg->numTimeDomRsrcAlloc; idx++)
    {
+      if(macPdschCfg.timeDomRsrcAllociList[idx].k0)
+      {
+         MAC_ALLOC(schPdschCfg->timeDomRsrcAllociList[idx].k0, sizeof(uint8_t));
+         if(!schPdschCfg->timeDomRsrcAllociList[idx].k0)
+         {
+            DU_LOG("\nERROR  -->  MAC : Memory allocation failed for K0 in fillInitDlBwpPdschCfg()");
+            return RFAILED;
+         }
+         *(schPdschCfg->timeDomRsrcAllociList[idx].k0) = *(macPdschCfg.timeDomRsrcAllociList[idx].k0);
+      }
       schPdschCfg->timeDomRsrcAllociList[idx].mappingType = \
          macPdschCfg.timeDomRsrcAllociList[idx].mappingType;
       schPdschCfg->timeDomRsrcAllociList[idx].startSymbol = \

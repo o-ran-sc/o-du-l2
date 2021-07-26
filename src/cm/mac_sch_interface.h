@@ -1051,6 +1051,7 @@ typedef struct schPdcchConfig
 /* PDSCH time domain resource allocation */
 typedef struct schPdschTimeDomRsrcAlloc
 {
+   uint8_t    *k0;
    SchTimeDomRsrcAllocMappingType    mappingType;
    uint8_t    startSymbol;
    uint8_t    symbolLength;

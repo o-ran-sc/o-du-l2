@@ -791,6 +791,7 @@ typedef struct pdcchConfig
 /* PDSCH time domain resource allocation */
 typedef struct pdschTimeDomRsrcAlloc
 {
+   uint8_t           *k0;
    CommonMappingType mappingType;
    uint8_t           startSymbol;
    uint8_t           symbolLength;
