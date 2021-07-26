@@ -610,12 +610,18 @@ typedef struct schPdcchCfgCmn
    uint8_t raSearchSpaceId;
 }SchPdcchCfgCmn;
 
-typedef struct schPdschCfgCmn
+typedef struct schPdschCfgCmnTimeDomRsrcAlloc
 {
    uint8_t k0;
    uint8_t mappingType;
    uint8_t startSymbol;
    uint8_t lengthSymbol;
+}SchPdschCfgCmnTimeDomRsrcAlloc;
+
+typedef struct schPdschCfgCmn
+{
+   uint8_t   numTimeDomAlloc;
+   SchPdschCfgCmnTimeDomRsrcAlloc timeDomRsrcAllocList[MAX_NUM_DL_ALLOC];
 }SchPdschCfgCmn;
 
 typedef struct schPucchCfgCmn
@@ -1051,6 +1057,7 @@ typedef struct schPdcchConfig
 /* PDSCH time domain resource allocation */
 typedef struct schPdschTimeDomRsrcAlloc
 {
+   uint8_t    *k0;
    SchTimeDomRsrcAllocMappingType    mappingType;
    uint8_t    startSymbol;
    uint8_t    symbolLength;

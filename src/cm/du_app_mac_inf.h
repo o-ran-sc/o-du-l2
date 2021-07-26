@@ -600,12 +600,19 @@ typedef struct pdcchConfigCommon
    uint8_t raSearchSpaceId;
 }PdcchConfigCommon;
 
-typedef struct pdschConfigCommon
+typedef struct pdschCfgCommTimeDomRsrcAlloc
 {
    uint8_t k0;
    uint8_t mappingType;
    uint8_t startSymbol;
    uint8_t lengthSymbol;
+}PdschCfgCommTimeDomRsrcAlloc;
+
+typedef struct pdschConfigCommon
+{
+   uint8_t  numTimeDomAlloc;
+   /* PDSCH time domain DL resource allocation list */
+   PdschCfgCommTimeDomRsrcAlloc   timeDomRsrcAllocList[MAX_NUM_DL_ALLOC]; 
 }PdschConfigCommon;
 
 typedef struct pucchConfigCommon
@@ -791,6 +798,7 @@ typedef struct pdcchConfig
 /* PDSCH time domain resource allocation */
 typedef struct pdschTimeDomRsrcAlloc
 {
+   uint8_t           *k0;
    CommonMappingType mappingType;
    uint8_t           startSymbol;
    uint8_t           symbolLength;

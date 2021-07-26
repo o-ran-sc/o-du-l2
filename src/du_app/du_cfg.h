@@ -148,7 +148,8 @@
 #define SIB1_VALUE_TAG 10
 
 /* MACRO Ddefine for PDSCH Configuration */
-#define PDSCH_K0  0
+#define PDSCH_K0_CFG1  0
+#define PDSCH_K0_CFG2  1
 #define PDSCH_START_SYMBOL  3
 #define PDSCH_LENGTH_SYMBOL 11
 #define PDSCH_RES_ALLOC_TYPE       1          /* Resource allocation type */
@@ -1086,12 +1087,18 @@ typedef struct pdcchCfgCommon
    long     raSearchSpc;           /* Id of search space for Random Access proc */
 }PdcchCfgCommon;
 
-typedef struct pdschCfgCommon
+typedef struct pdschTimeDomainRsrcAlloc
 {
-   uint8_t  present;
    long     k0;
    long     mapType;              /* Mapping Type */
    uint16_t sliv;  
+}PdschTimeDomainRsrcAlloc;
+
+typedef struct pdschCfgCommon
+{
+   uint8_t  present;
+   uint8_t  numTimeDomRsrcAlloc;
+   PdschTimeDomainRsrcAlloc timeDomAlloc[MAX_NUM_DL_ALLOC];
 }PdschCfgCommon;
 
 typedef struct bcchCfg
