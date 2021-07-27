@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d839ab8_e767d149",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1226,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-27T11:37:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "879e7778_d58cc8ec",
+      "range": {
+        "startLine": 1226,
+        "startChar": 32,
+        "endLine": 1226,
+        "endChar": 53
+      },
+      "revId": "969e27f4590eda06dd205714d5a3b254247f9ba2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f188b8b9_58a74a2d",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-07-27T05:54:44Z",
       "side": 1,
       "message": "free part of all modified functions are not available?",
+      "range": {
+        "startLine": 3227,
+        "startChar": 12,
+        "endLine": 3227,
+        "endChar": 24
+      },
+      "revId": "969e27f4590eda06dd205714d5a3b254247f9ba2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0494b11b_3e666d0d",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3227,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-27T11:37:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f188b8b9_58a74a2d",
       "range": {
         "startLine": 3227,
         "startChar": 12,
@@ -70,6 +118,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e2ac827_32dd42b3",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3693,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-27T11:37:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "72db1fce_81218e53",
+      "range": {
+        "startLine": 3693,
+        "startChar": 11,
+        "endLine": 3693,
+        "endChar": 12
+      },
+      "revId": "969e27f4590eda06dd205714d5a3b254247f9ba2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c2452912_31899e0b",
@@ -87,6 +159,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "27386854_788df2a3",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3795,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-27T11:37:12Z",
+      "side": 1,
+      "message": "will do the optimization as part of K2 changes",
+      "parentUuid": "c2452912_31899e0b",
+      "revId": "969e27f4590eda06dd205714d5a3b254247f9ba2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0216f404_e18b754c",
@@ -100,6 +190,30 @@
       "writtenOn": "2021-07-27T05:54:44Z",
       "side": 1,
       "message": "free part is missing?",
+      "range": {
+        "startLine": 4253,
+        "startChar": 8,
+        "endLine": 4253,
+        "endChar": 29
+      },
+      "revId": "969e27f4590eda06dd205714d5a3b254247f9ba2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce05b2c0_a6392ac7",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4253,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-27T11:37:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0216f404_e18b754c",
       "range": {
         "startLine": 4253,
         "startChar": 8,
