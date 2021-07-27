@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "879e7778_d58cc8ec",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1226,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-07-27T05:54:44Z",
+      "side": 1,
+      "message": "if we are adding any pointer in any function , we have to modify the ue delete and cell delete as well. correct?",
+      "range": {
+        "startLine": 1226,
+        "startChar": 32,
+        "endLine": 1226,
+        "endChar": 53
+      },
+      "revId": "969e27f4590eda06dd205714d5a3b254247f9ba2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f188b8b9_58a74a2d",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3227,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-07-27T05:54:44Z",
+      "side": 1,
+      "message": "free part of all modified functions are not available?",
+      "range": {
+        "startLine": 3227,
+        "startChar": 12,
+        "endLine": 3227,
+        "endChar": 24
+      },
+      "revId": "969e27f4590eda06dd205714d5a3b254247f9ba2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72db1fce_81218e53",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3693,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-07-27T05:54:44Z",
+      "side": 1,
+      "message": "unable to find out the free function for all new added function.",
+      "range": {
+        "startLine": 3693,
+        "startChar": 11,
+        "endLine": 3693,
+        "endChar": 12
+      },
+      "revId": "969e27f4590eda06dd205714d5a3b254247f9ba2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2452912_31899e0b",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3795,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-07-27T05:54:44Z",
+      "side": 1,
+      "message": "rather than writing code multiple time we can use loop",
+      "revId": "969e27f4590eda06dd205714d5a3b254247f9ba2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0216f404_e18b754c",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4253,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-07-27T05:54:44Z",
+      "side": 1,
+      "message": "free part is missing?",
+      "range": {
+        "startLine": 4253,
+        "startChar": 8,
+        "endLine": 4253,
+        "endChar": 29
+      },
+      "revId": "969e27f4590eda06dd205714d5a3b254247f9ba2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
