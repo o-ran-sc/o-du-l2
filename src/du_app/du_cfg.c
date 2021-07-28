@@ -333,15 +333,25 @@ uint8_t readMacCfg()
    duCfgParam.macCellCfg.initialUlBwp.bwp.scs = SCS_15KHZ; /* numerology is 0, 15Khz */
 #endif
    duCfgParam.macCellCfg.initialUlBwp.bwp.cyclicPrefix = NORMAL_CYCLIC_PREFIX;
-   duCfgParam.macCellCfg.initialUlBwp.puschCommon.k2 = PUSCH_K2;
-   duCfgParam.macCellCfg.initialUlBwp.puschCommon.mappingType = 
+   duCfgParam.macCellCfg.initialUlBwp.puschCommon.numTimeDomRsrcAlloc = 2;
+   duCfgParam.macCellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[0].k2 = PUSCH_K2_CFG1;
+   duCfgParam.macCellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[0].mappingType = 
       PUSCH_MAPPING_TYPE_A;
-   duCfgParam.macCellCfg.initialUlBwp.puschCommon.startSymbol = 
+   duCfgParam.macCellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[0].startSymbol = 
       PUSCH_START_SYMBOL;
-   duCfgParam.macCellCfg.initialUlBwp.puschCommon.lengthSymbol =
+   duCfgParam.macCellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[0].symbolLength =
+      PUSCH_LENGTH_SYMBOL;
+
+   duCfgParam.macCellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[1].k2 = PUSCH_K2_CFG2;
+   duCfgParam.macCellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[1].mappingType = 
+      PUSCH_MAPPING_TYPE_A;
+   duCfgParam.macCellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[1].startSymbol = 
+      PUSCH_START_SYMBOL;
+   duCfgParam.macCellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[1].symbolLength =
       PUSCH_LENGTH_SYMBOL;
 
    duCfgParam.macCellCfg.dmrsTypeAPos = DMRS_TYPE_A_POS; 
+
    /* fill PUCCH config common */
    duCfgParam.macCellCfg.initialUlBwp.pucchCommon.pucchResourceCommon = PUCCH_RSRC_COMMON;
    duCfgParam.macCellCfg.initialUlBwp.pucchCommon.pucchGroupHopping = PUCCH_GROUP_HOPPING;
@@ -534,10 +544,14 @@ uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
    srvCellCfgComm->ulCfg.rachCfg = rachCfg;
 
    /* Configuring PUSCH Config Common for SIB1 */
-   puschCfg.present = BWP_UplinkCommon__pusch_ConfigCommon_PR_setup;
-   puschCfg.k2 = PUSCH_K2;
-   puschCfg.mapType = PUSCH_TimeDomainResourceAllocation__mappingType_typeA;
-   puschCfg.sliv = calcSliv(PUSCH_START_SYMBOL,PUSCH_LENGTH_SYMBOL);
+   puschCfg.puschCfgPresent = BWP_UplinkCommon__pusch_ConfigCommon_PR_setup;
+   puschCfg.numTimeDomRsrcAlloc = 2;
+   puschCfg.timeDomAllocList[0].k2 = PUSCH_K2_CFG1;
+   puschCfg.timeDomAllocList[0].mapType = PUSCH_TimeDomainResourceAllocation__mappingType_typeA;
+   puschCfg.timeDomAllocList[0].sliv = calcSliv(PUSCH_START_SYMBOL,PUSCH_LENGTH_SYMBOL);
+   puschCfg.timeDomAllocList[1].k2 = PUSCH_K2_CFG2;
+   puschCfg.timeDomAllocList[1].mapType = PUSCH_TimeDomainResourceAllocation__mappingType_typeA;
+   puschCfg.timeDomAllocList[1].sliv = calcSliv(PUSCH_START_SYMBOL,PUSCH_LENGTH_SYMBOL);
    puschCfg.msg3DeltaPreamble = PUSCH_MSG3_DELTA_PREAMBLE;
    puschCfg.p0NominalWithGrant = PUSCH_P0_NOMINAL_WITH_GRANT;
    srvCellCfgComm->ulCfg.puschCfg = puschCfg;
