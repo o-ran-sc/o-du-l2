@@ -630,12 +630,19 @@ typedef struct schPucchCfgCmn
    uint8_t pucchGroupHopping;
 }SchPucchCfgCmn;
 
+/* PUSCH Time Domain Resource Allocation */
+typedef struct schPuschTimeDomRsrcAlloc
+{
+   uint8_t   k2;
+   SchTimeDomRsrcAllocMappingType   mappingType;
+   uint8_t   startSymbol;
+   uint8_t   symbolLength;
+}SchPuschTimeDomRsrcAlloc;
+
 typedef struct schPuschCfgCmn
 {
-   uint8_t k2;
-   uint8_t mappingType;
-   uint8_t startSymbol;
-   uint8_t lengthSymbol;
+   uint8_t                    numTimeDomRsrcAlloc;
+   SchPuschTimeDomRsrcAlloc   timeDomRsrcAllocList[MAX_NUM_UL_ALLOC]; /* PUSCH time domain UL resource allocation list */
 }SchPuschCfgCmn;
 
 typedef struct schBwpDlCfg
@@ -1295,15 +1302,6 @@ typedef struct SchDmrsUlCfg
    SchDmrsAdditionPosition    addPos;               /* DMRS additional position */
    SchTransPrecodDisabled     transPrecodDisabled;  /* Transform precoding disabled */
 }SchDmrsUlCfg;
-
-/* PUSCH Time Domain Resource Allocation */
-typedef struct schPuschTimeDomRsrcAlloc
-{
-   uint8_t   k2;
-   SchTimeDomRsrcAllocMappingType   mappingType;
-   uint8_t   startSymbol;
-   uint8_t   symbolLength;
-}SchPuschTimeDomRsrcAlloc;
 
 /* PUSCH Configuration */
 typedef struct schPuschCfg

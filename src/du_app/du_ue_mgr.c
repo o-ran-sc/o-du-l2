@@ -704,17 +704,25 @@ void fillDefaultInitUlBwp(InitialUlBwp *initUlBwp)
 	 initUlBwp->puschCfg.dmrsUlCfgForPuschMapTypeA.transPrecodDisabled. \
 	    scramblingId0 = SCRAMBLING_ID; 
 	 initUlBwp->puschCfg.resourceAllocType = RESOURCEALLOCATION_TYPE1;
-	 initUlBwp->puschCfg.numTimeDomRsrcAlloc = 1;
+	 initUlBwp->puschCfg.numTimeDomRsrcAlloc = 2;
 	 idx = 0;
 	 if(initUlBwp->puschCfg.numTimeDomRsrcAlloc <= MAX_NUM_UL_ALLOC)
 	 {
-	    initUlBwp->puschCfg.timeDomRsrcAllocList[idx].k2 = PUSCH_K2;
+	    initUlBwp->puschCfg.timeDomRsrcAllocList[idx].k2 = PUSCH_K2_CFG1;
 	    initUlBwp->puschCfg.timeDomRsrcAllocList[idx].mappingType =\
 	       MAPPING_TYPEA;
 	    initUlBwp->puschCfg.timeDomRsrcAllocList[idx].startSymbol = PUSCH_START_SYMBOL;
 	    initUlBwp->puschCfg.timeDomRsrcAllocList[idx].symbolLength = PUSCH_LENGTH_SYMBOL;
 	    initUlBwp->puschCfg.timeDomRsrcAllocList[idx].startSymbolAndLength =\
 	       calcSliv(PUSCH_START_SYMBOL, PUSCH_LENGTH_SYMBOL);
+
+       idx++;
+       initUlBwp->puschCfg.timeDomRsrcAllocList[idx].k2 = PUSCH_K2_CFG2;
+       initUlBwp->puschCfg.timeDomRsrcAllocList[idx].mappingType = MAPPING_TYPEA;
+       initUlBwp->puschCfg.timeDomRsrcAllocList[idx].startSymbol = PUSCH_START_SYMBOL;
+       initUlBwp->puschCfg.timeDomRsrcAllocList[idx].symbolLength = PUSCH_LENGTH_SYMBOL;
+       initUlBwp->puschCfg.timeDomRsrcAllocList[idx].startSymbolAndLength =\
+          calcSliv(PUSCH_START_SYMBOL, PUSCH_LENGTH_SYMBOL);
 	 }
 	 initUlBwp->puschCfg.transformPrecoder = TRANSFORM_PRECODER_DISABLED;
       }

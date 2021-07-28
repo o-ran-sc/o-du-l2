@@ -158,7 +158,9 @@
 #define PDSCH_NUM_HARQ_PROC 5
 
 /* MACRO Define for PUSCH Configuration */
-#define PUSCH_K2  3
+#define MAX_UL_ALLOC 16
+#define PUSCH_K2_CFG1  3
+#define PUSCH_K2_CFG2  4
 #define PUSCH_START_SYMBOL  3
 #define PUSCH_LENGTH_SYMBOL 11
 
@@ -1156,12 +1158,18 @@ typedef struct rachCfgCommon
    long   restrictedSetCfg;  /* Restricted set configuration */
 }RachCfgCommon;
 
-typedef struct  puschCfgCommon
+typedef struct puschCfgCmnTimeDomAlloc
 {
-   uint8_t  present;
    long     k2;
    long     mapType;
    uint16_t sliv;
+}PuschCfgCmnTimeDomAlloc;
+
+typedef struct  puschCfgCommon
+{
+   uint8_t  puschCfgPresent;
+   uint8_t  numTimeDomRsrcAlloc;
+   PuschCfgCmnTimeDomAlloc timeDomAllocList[MAX_UL_ALLOC];
    long     msg3DeltaPreamble;
    long     p0NominalWithGrant;
 }PuschCfgCommon;

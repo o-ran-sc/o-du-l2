@@ -113,7 +113,8 @@
 #define PDSCH_MAPPING_TYPE_B 1
 
 /* MACRO Define for PUSCH Configuration */
-#define PUSCH_K2  3
+#define PUSCH_K2_CFG1  3
+#define PUSCH_K2_CFG2  4
 
 #define PUSCH_MSG3_DELTA_PREAMBLE 0
 #define PUSCH_P0_NOMINAL_WITH_GRANT -70
@@ -3551,7 +3552,7 @@ uint8_t BuildInitialDlBWP(BWP_DownlinkDedicated_t *dlBwp)
       return RFAILED;
    }
 
-   elementCnt = 1;
+   elementCnt = 2;
    timeDomAllocList->choice.setup->list.count = elementCnt;
    timeDomAllocList->choice.setup->list.size = \
 					       elementCnt * sizeof(PUSCH_TimeDomainResourceAllocation_t *);
@@ -3584,9 +3585,22 @@ uint8_t BuildInitialDlBWP(BWP_DownlinkDedicated_t *dlBwp)
       DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildPuschTimeDomAllocList");
       return RFAILED;
    }
-   *(timeDomAlloc->k2) = PUSCH_K2;
+   *(timeDomAlloc->k2) = PUSCH_K2_CFG1;
    timeDomAlloc->mappingType = PUSCH_MAPPING_TYPE_A;
    timeDomAlloc->startSymbolAndLength = 66; 
+
+   idx++;
+   timeDomAlloc = timeDomAllocList->choice.setup->list.array[idx];
+   CU_ALLOC(timeDomAlloc->k2, sizeof(long));
+   if(!timeDomAlloc->k2)
+   {
+       DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildPuschTimeDomAllocList");
+       return RFAILED;
+   }
+   *(timeDomAlloc->k2) = PUSCH_K2_CFG2;
+   timeDomAlloc->mappingType = PUSCH_MAPPING_TYPE_A;
+   timeDomAlloc->startSymbolAndLength = 66;
+
    return ROK;
 }
 
