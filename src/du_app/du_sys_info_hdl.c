@@ -1797,7 +1797,7 @@ uint8_t BuildPuschCfgCommon(struct BWP_UplinkCommon__pusch_ConfigCommon *puschCf
 
    duPuschCfg = duCfgParam.sib1Params.srvCellCfgCommSib.ulCfg.puschCfg;
 
-   puschCfg->present = duPuschCfg.present;
+   puschCfg->present = duPuschCfg.puschCfgPresent;
    switch(puschCfg->present)
    {
       case BWP_UplinkCommon__pusch_ConfigCommon_PR_NOTHING:
@@ -1828,7 +1828,7 @@ uint8_t BuildPuschCfgCommon(struct BWP_UplinkCommon__pusch_ConfigCommon *puschCf
 	    DU_LOG("\nERROR  -->  DU APP : PUSCH Config memory alloc failed");
 	    return RFAILED;
 	 }
-	 elementCnt = ODU_VALUE_ONE;
+	 elementCnt = duPuschCfg.numTimeDomRsrcAlloc;
 	 setup->pusch_TimeDomainAllocationList->list.count = elementCnt;
 	 setup->pusch_TimeDomainAllocationList->list.size = \
 	 elementCnt * sizeof(PUSCH_TimeDomainResourceAllocation_t *);
@@ -1852,21 +1852,21 @@ uint8_t BuildPuschCfgCommon(struct BWP_UplinkCommon__pusch_ConfigCommon *puschCf
 	    }
 	 }
 
-	 idx = 0;
-	 timeDomRsrcAllocInfo = setup->pusch_TimeDomainAllocationList->list.array[idx];
+	 for(idx = 0; idx < elementCnt; idx++)
+    {
+       timeDomRsrcAllocInfo = setup->pusch_TimeDomainAllocationList->list.array[idx];
 
-	 /* K2 */
-	 DU_ALLOC(timeDomRsrcAllocInfo->k2, sizeof(long));
-	 if(!timeDomRsrcAllocInfo->k2)
-	 {
-	    DU_LOG("\nERROR  -->  DU APP : PUSCH Config memory alloc failed");
-	    return RFAILED;
-	 }
-	 *timeDomRsrcAllocInfo->k2 = duPuschCfg.k2;
-
-	 timeDomRsrcAllocInfo->mappingType = duPuschCfg.mapType;
-	 timeDomRsrcAllocInfo->startSymbolAndLength = duPuschCfg.sliv;
-
+       /* K2 */
+       DU_ALLOC(timeDomRsrcAllocInfo->k2, sizeof(long));
+       if(!timeDomRsrcAllocInfo->k2)
+       {
+          DU_LOG("\nERROR  -->  DU APP : PUSCH Config memory alloc failed");
+          return RFAILED;
+       }
+       *timeDomRsrcAllocInfo->k2 = duPuschCfg.timeDomAllocList[idx].k2;
+       timeDomRsrcAllocInfo->mappingType = duPuschCfg.timeDomAllocList[idx].mapType;
+       timeDomRsrcAllocInfo->startSymbolAndLength = duPuschCfg.timeDomAllocList[idx].sliv;
+    }
 	 /* Msg3 Delta Preamble */
 	 DU_ALLOC(setup->msg3_DeltaPreamble, sizeof(long));
 	 if(!setup->msg3_DeltaPreamble)

@@ -120,8 +120,8 @@ uint8_t schAllocMsg3Pusch(Inst schInst, uint16_t slot, uint16_t crnti, \
    uint16_t   tbSize         = 0;
 
    cell = schCb[schInst].cells[schInst];
-   startSymb = cell->cellCfg.schInitialUlBwp.puschCommon.startSymbol;
-   symbLen = cell->cellCfg.schInitialUlBwp.puschCommon.lengthSymbol;
+   startSymb = cell->cellCfg.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[0].startSymbol;
+   symbLen = cell->cellCfg.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[0].symbolLength;
 
    startRb = cell->schUlSlotInfo[msg3SlotAlloc]->puschCurrentPrb;
    tbSize = schCalcTbSize(8); /* 6 bytes msg3  and 2 bytes header */
@@ -203,7 +203,7 @@ uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst)
 
    //puschMu = cell->cellCfg.puschMu;
    delta = puschDeltaTable[puschMu];
-   k2 = cell->cellCfg.schInitialUlBwp.puschCommon.k2;
+   k2 = cell->cellCfg.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[0].k2;
    /* RAR will sent with a delay of RAR_DELAY */
    rarSlot = (rachInd->timingInfo.slot+RAR_DELAY+PHY_DELTA_DL)%cell->numSlots;
 #ifdef NR_TDD
