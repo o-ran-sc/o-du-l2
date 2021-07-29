@@ -213,7 +213,9 @@ void updateSchDlCb(uint8_t delIdx, SchDlCb *dlInfo)
 uint8_t fillSchUeCb(SchUeCb *ueCb, SchUeCfg *ueCfg)
 {
    uint8_t   lcIdx, ueLcIdx;
-  
+   SchPdschCfgCmn pdschCfg;
+   SchPucchDlDataToUlAck *dlDataToUlAck;
+
    ueCb->ueCfg.cellId = ueCfg->cellId;
    ueCb->ueCfg.crnti = ueCfg->crnti;
    if(ueCfg->macCellGrpCfgPres == true)
@@ -232,6 +234,13 @@ uint8_t fillSchUeCb(SchUeCb *ueCb, SchUeCfg *ueCfg)
    {
       memcpy(&ueCb->ueCfg.spCellCfg , &ueCfg->spCellCfg, sizeof(SchSpCellCfg));
       ueCb->ueCfg.spCellCfgPres = true;
+      dlDataToUlAck = ueCfg->spCellCfg.servCellCfg.initUlBwp.pucchCfg.dlDataToUlAck;
+      if(dlDataToUlAck)
+      {
+         BuildK0K1Table(ueCb->cellCb, &ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.k0K1InfoTbl, false, pdschCfg,\
+         ueCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfg, dlDataToUlAck->dlDataToUlAckListCount,\
+         dlDataToUlAck->dlDataToUlAckList);
+      }
    }
 
    ueCb->state = SCH_UE_STATE_ACTIVE;
