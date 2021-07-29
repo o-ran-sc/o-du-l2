@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5248be09_a1b74712",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-29T13:50:15Z",
+      "side": 1,
+      "message": "add comments to explain the each macro\nRename macros",
+      "revId": "8e7832f7765ca615c159a05a44e8c15d884b39bc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "175a1018_9beccfce",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-29T13:50:15Z",
+      "side": 1,
+      "message": "MAX_K1 8",
+      "revId": "8e7832f7765ca615c159a05a44e8c15d884b39bc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ecdb6228_a6117e45",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-29T13:50:15Z",
+      "side": 1,
+      "message": "MAX_K0 16",
+      "revId": "8e7832f7765ca615c159a05a44e8c15d884b39bc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67b85419_0bbbc058",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-29T13:50:15Z",
+      "side": 1,
+      "message": "160\nuse NUM instead of NO",
+      "revId": "8e7832f7765ca615c159a05a44e8c15d884b39bc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dff437e4_ac0da64c",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-07-29T13:50:15Z",
+      "side": 1,
+      "message": "store common table in common ul/dl bwp in cell\nstore dedicated table in dedicated ul/dp bwp in ue",
+      "revId": "8e7832f7765ca615c159a05a44e8c15d884b39bc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
