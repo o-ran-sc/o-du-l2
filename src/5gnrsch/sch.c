@@ -50,7 +50,6 @@
 
 SchCb schCb[SCH_MAX_INST];
 void SchFillCfmPst(Pst *reqPst,Pst *cfmPst,RgMngmt *cfm);
-
 /* local defines */
 SchCellCfgCfmFunc SchCellCfgCfmOpts[] = 
 {
@@ -857,6 +856,7 @@ uint8_t SchHdlCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
    SchCellCfgCfm schCellCfgCfm;
    Pst rspPst;
    Inst inst = pst->dstInst-1; 
+   SchPdschConfig pdschCfg;
 
 #ifdef CALL_FLOW_DEBUG_LOG
    DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_SCH_CELL_CFG\n");
@@ -872,6 +872,10 @@ uint8_t SchHdlCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
 	 schCellCfg->ssbSchCfg.ssbOffsetPointA);
    memcpy(&cellCb->cellCfg, schCellCfg, sizeof(SchCellCfg));
 
+   /* Fill K0 - K1 table for common cfg*/ 
+   BuildK0K1Table(cellCb, &cellCb->cellCfg.schInitialDlBwp.k0K1InfoTbl, true, cellCb->cellCfg.schInitialDlBwp.pdschCommon,
+   pdschCfg, DEFAULT_UL_ACK_LIST_COUNT, defaultUlAckTbl);
+   
    /* Initializing global variables */
    cellCb->actvUeBitMap = 0;
    cellCb->boIndBitMap = 0;
