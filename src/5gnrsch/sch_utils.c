@@ -765,6 +765,7 @@ uint8_t pucchResourceSet[MAX_PUCCH_RES_SET_IDX][4] = {
 { 1,   0, 14,  0 }, /* index 15 */
 };
 
+uint8_t defaultUlAckTbl[DEFAULT_UL_ACK_LIST_COUNT]= {1, 2, 3 , 4, 5, 6, 7, 8};
 /**
  * @brief frequency domain allocation function. 
  *
@@ -1032,6 +1033,69 @@ SlotConfig schGetSlotSymbFrmt(uint16_t slot, uint32_t bitMap)
 #endif
 }
 
+/**
+ * @brief Determine total length of configured slot pattern for specific 
+ *    periodicity for TDD
+ *
+ * @details
+ *
+ *     Function : calculateSlotPatternLength 
+ *      
+ *      Determine total length of configured slot pattern for specific periodicity based
+ *      on slot duration for TDD
+ *           
+ *  @param[in]  uint8_t scs, uint8_t periodicity 
+ *
+ *  @return uint8_t slotPatternLength 
+ **/
+
+uint8_t calculateSlotPatternLength(uint8_t scs, uint8_t periodicity)
+{
+   uint8_t slotPatternLength =0;
+   float   slotDuration = 0;
+   
+   /* Calculating the slot duration with the help of SCS.
+    * This will provides the slot duration in ms like 1, 0.5, 0.25, 0.125. 
+    * If scs value is SCS_30KHZ its enum value is 1, 
+    * slotDuration = pow(0.5, 1);
+    * slotDuration = 0.5 */
+
+   slotDuration = pow(0.5,scs);
+
+   /* Calculating length of pattern based on Transmission Periodicity. 
+    * If periodicity = TX_PRDCTY_MS_5,
+    * slotPatternLength = 5/0.5 
+    * slotPatternLength = 10 i.e. {length of slot pattern DDDDDDDFUU}*/
+
+   switch(periodicity)
+   {
+      case TX_PRDCTY_MS_0P5:
+         slotPatternLength = 0.5/slotDuration;
+         break;
+      case TX_PRDCTY_MS_0P625:
+         slotPatternLength = 0.625/slotDuration;
+         break;
+      case TX_PRDCTY_MS_1:
+         slotPatternLength = 1/slotDuration;
+         break;
+      case TX_PRDCTY_MS_1P25:
+         slotPatternLength = 1.25/slotDuration;
+         break;
+      case TX_PRDCTY_MS_2:
+         slotPatternLength = 2/slotDuration;
+         break;
+      case TX_PRDCTY_MS_2P5:
+         slotPatternLength = 2.5/slotDuration;
+         break;
+      case TX_PRDCTY_MS_5:
+         slotPatternLength = 5/slotDuration;
+         break;
+      case TX_PRDCTY_MS_10:
+         slotPatternLength = 10/slotDuration;
+         break;
+   }
+   return slotPatternLength;
+}
 #endif
 /**********************************************************************
          End of file
