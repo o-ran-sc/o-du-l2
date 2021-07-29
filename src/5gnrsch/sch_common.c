@@ -841,6 +841,218 @@ uint8_t schDlRsrcAllocDlMsg(DlMsgAlloc *dlMsgAlloc, SchCellCb *cell, uint16_t cr
    return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Fills k0 and k1 information table for FDD 
+ *
+ * @details
+ *
+ *    Function : fillK0K1TableForFdd
+ *
+ *    Functionality:
+ *      Fills k0 and k1 information table for FDD
+ *
+ * @params[in] SchCellCb *cell,SchK0K1TimingInfoTbl *k0K1InfoTbl,bool
+ * pdschCfgCmnPres,uint8_t numTimeDomAlloc, SchPdschCfgCmnTimeDomRsrcAlloc
+ * cmnTimeDomRsrcAllocList[], SchPdschTimeDomRsrcAlloc
+ * dedTimeDomRsrcAllocList[], uint8_t ulAckListCount, uint8_t *UlAckTbl
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void fillK0K1TableForFdd(SchCellCb *cell,SchK0K1TimingInfoTbl *k0K1InfoTbl,bool pdschCfgCmnPres,uint8_t numTimeDomAlloc,
+ SchPdschCfgCmnTimeDomRsrcAlloc cmnTimeDomRsrcAllocList[], SchPdschTimeDomRsrcAlloc dedTimeDomRsrcAllocList[],\
+ uint8_t ulAckListCount, uint8_t *UlAckTbl)
+{
+   uint8_t k0TmpVal = 0, k1TmpVal =0,ulAckArrIndex=0;
+   uint8_t slotIdx=0,k0Index=0,k1Index=0,numK0=0,numK1=0;   
+
+   memset(k0K1InfoTbl, 0, sizeof(SchK0K1TimingInfoTbl));
+   k0K1InfoTbl->tblSize = cell->numSlots;
+   
+   for(slotIdx = 0; slotIdx < cell->numSlots; slotIdx++)
+   {
+      numK0 = 0;
+      for(k0Index = 0; ((k0Index < numTimeDomAlloc) && (k0Index < MAX_K0));  k0Index++)
+      {
+         if(pdschCfgCmnPres == true)
+         {
+            k0TmpVal = cmnTimeDomRsrcAllocList[k0Index].k0;
+         }
+         else
+         {
+            if(dedTimeDomRsrcAllocList[k0Index].k0 != NULLP)
+            {
+               k0TmpVal = *(dedTimeDomRsrcAllocList[k0Index].k0);
+            }
+         }
+         if(k0TmpVal < 0)
+            k0TmpVal = 0;
+
+         numK1 = 0;
+         for(k1Index = 0; k1Index < ulAckListCount; k1Index++)
+         {
+            k1TmpVal = UlAckTbl[k1Index];
+            if(k1TmpVal <= MIN_K1)
+            {
+               continue;
+            }
+            k0K1InfoTbl->k0k1TimingInfo[slotIdx].k0Indexes[numK0].k1Indexes[numK1++] = k1Index;
+            /*TODO Store K1 index where harq feedback will be received in harq table 
+             * Current slot + k0 + k1 should UL/FX to send PUSCH/PUCCH hq
+             * feedback*/
+         }
+         if(numK1)
+         {
+            k0K1InfoTbl->k0k1TimingInfo[slotIdx].k0Indexes[numK0].numK1     = numK1;
+            k0K1InfoTbl->k0k1TimingInfo[slotIdx].k0Indexes[numK0].k0Index   = k0Index;
+            numK0++;
+         }
+      }
+      if(numK0)
+      {
+         k0K1InfoTbl->k0k1TimingInfo[slotIdx].numK0 = numK0;
+      }
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Fills k0 and k1 information table  
+ *
+ * @details
+ *
+ *    Function : fillK0K1Table
+ *
+ *    Functionality:
+ *       Fills K0 and k1 information table 
+ *
+ * @params[in] SchCellCb *cell,SchK0K1TimingInfoTbl *k0K1InfoTbl,bool
+ * pdschCfgCmnPres,uint8_t numTimeDomAlloc, SchPdschCfgCmnTimeDomRsrcAlloc
+ * cmnTimeDomRsrcAllocList[], SchPdschTimeDomRsrcAlloc
+ * dedTimeDomRsrcAllocList[], uint8_t ulAckListCount, uint8_t *UlAckTbl
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void fillK0K1Table(SchCellCb *cell,SchK0K1TimingInfoTbl *k0K1InfoTbl,bool pdschCfgCmnPres,uint8_t numTimeDomAlloc,\
+SchPdschCfgCmnTimeDomRsrcAlloc cmnTimeDomRsrcAllocList[],SchPdschTimeDomRsrcAlloc dedTimeDomRsrcAllocList[], uint8_t ulAckListCount, uint8_t *UlAckTbl)
+{
+
+#ifdef NR_TDD
+   SlotConfig  slotCfg;
+   bool ulSlotPresent = false;
+   uint8_t k0TmpVal = 0, k1TmpVal =0,tmpSlot=0,startSymbol=0,endSymbol=0,checkSymbol=0;
+   uint8_t slotIdx=0,k0Index=0,k1Index=0,numK0=0,numK1=0,ulAckArrIndex=0;   
+#endif
+   if(cell->cellCfg.dupMode == DUPLEX_MODE_FDD)
+   {
+      fillK0K1TableForFdd(cell, k0K1InfoTbl, pdschCfgCmnPres, numTimeDomAlloc, cmnTimeDomRsrcAllocList,\
+      dedTimeDomRsrcAllocList, ulAckListCount, UlAckTbl);
+   }
+   else
+   {
+#ifdef NR_TDD
+ 
+      memset(k0K1InfoTbl, 0, sizeof(SchK0K1TimingInfoTbl));
+      k0K1InfoTbl->tblSize = cell->numSlots;
+      
+      for(slotIdx = 0; slotIdx < cell->numSlots; slotIdx++)
+      {
+         slotCfg = schGetSlotSymbFrmt(slotIdx%MAX_NO_CONFIG_SLOTS, cell->slotFrmtBitMap);
+         if(slotCfg == UL_SLOT || slotCfg == FLEXI_SLOT)
+         {
+            continue;
+         }
+
+         numK0 = 0;
+         for(k0Index = 0; ((k0Index < numTimeDomAlloc) && (k0Index < MAX_K0)); k0Index++)
+         {
+            if(pdschCfgCmnPres == true)
+            {
+               k0TmpVal = cmnTimeDomRsrcAllocList[k0Index].k0;
+               startSymbol = cmnTimeDomRsrcAllocList[k0Index].startSymbol;
+               endSymbol = startSymbol + cmnTimeDomRsrcAllocList[k0Index].lengthSymbol;
+            }
+            else
+            {
+               if(dedTimeDomRsrcAllocList[k0Index].k0 != NULLP)
+               {
+                  k0TmpVal =  *(dedTimeDomRsrcAllocList[k0Index].k0);
+               }
+               startSymbol = dedTimeDomRsrcAllocList[k0Index].startSymbol;
+               endSymbol = startSymbol + dedTimeDomRsrcAllocList[k0Index].symbolLength;
+            }
+            
+            if(k0TmpVal<0)
+            {
+               k0TmpVal = 0;
+            }
+
+            tmpSlot = (slotIdx+k0TmpVal) % MAX_NO_CONFIG_SLOTS;
+            slotCfg = schGetSlotSymbFrmt(tmpSlot, cell->slotFrmtBitMap);
+            if(slotCfg == UL_SLOT)
+            {
+               continue;
+            }
+            if(slotCfg == FLEXI_SLOT)
+            {
+               for(checkSymbol = startSymbol; checkSymbol<endSymbol; checkSymbol ++)
+               {
+                  slotCfg = cell->cellCfg.tddCfg.slotCfg[tmpSlot][checkSymbol];
+                  if(slotCfg == UL_SLOT)
+                  {
+                     continue;
+                  }
+               }
+            }
+            numK1 = 0;
+            for(k1Index = 0; k1Index < ulAckListCount; k1Index++)
+            {
+               k1TmpVal = UlAckTbl[k1Index];
+               if(k1TmpVal > MIN_K1)
+               {
+                  tmpSlot = (slotIdx+k0TmpVal+k1TmpVal) % MAX_NO_CONFIG_SLOTS;
+                  slotCfg =  schGetSlotSymbFrmt(tmpSlot, cell->slotFrmtBitMap);
+                  if(slotCfg == DL_SLOT) 
+                  {
+                     continue;
+                  }   
+                  if(slotCfg == FLEXI_SLOT)
+                  {
+                     for(checkSymbol = 0; checkSymbol<SCH_SYMBOL_PER_SLOT;checkSymbol++)
+                     {
+                        if(cell->cellCfg.tddCfg.slotCfg[tmpSlot][checkSymbol] == UL_SLOT)
+                        {
+                           ulSlotPresent = true;
+                           break;
+                        }
+                     }
+                  }
+                  if(ulSlotPresent == true || slotCfg ==  UL_SLOT)
+                  {
+                     k0K1InfoTbl->k0k1TimingInfo[slotIdx].k0Indexes[numK0].k1Indexes[numK1++] = k1Index;
+                     /*TODO Store K1 index where harq feedback will be received
+                      * in harq table */
+                  }
+               }
+            }
+
+            if(numK1)
+            {
+               k0K1InfoTbl->k0k1TimingInfo[slotIdx].k0Indexes[numK0].numK1     = numK1;
+               k0K1InfoTbl->k0k1TimingInfo[slotIdx].k0Indexes[numK0].k0Index   = k0Index;
+               numK0++;
+            }
+         }
+         if(numK0)
+         {
+            k0K1InfoTbl->k0k1TimingInfo[slotIdx].numK0 = numK0;
+         }
+      }
+#endif
+   }
+}
 /**********************************************************************
   End of file
  **********************************************************************/

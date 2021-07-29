@@ -58,6 +58,13 @@
 #define MAC_HDR_SIZE  3   /* 3 bytes of MAC Header */
 #define UL_GRANT_SIZE 224
 
+#define MAX_K1  4
+#define MIN_K1  4
+#define MAX_K0  8
+#define MAX_K2 8
+#define DEFAULT_UL_ACK_LIST_COUNT 8
+#define MAX_NO_CONFIG_SLOTS 10
+
 typedef struct schCellCb SchCellCb;
 typedef struct schUeCb SchUeCb;
 
@@ -209,6 +216,37 @@ typedef struct schUeCb
    SchDlCb    dlInfo;
 }SchUeCb;
 
+typedef struct k0TimingInfo
+{
+   uint8_t k0Index; 
+   uint8_t numK1; 
+   uint8_t k1Indexes[MAX_K1]; 
+}K0TimingInfo;
+
+typedef struct k0K1TimingInfo
+{
+   uint8_t numK0; 
+   K0TimingInfo k0Indexes[MAX_K0]; 
+}SchK0K1TimingInfo;
+
+typedef struct k0K1TimingInfoTbl
+{
+   uint16_t tblSize; 
+   SchK0K1TimingInfo k0k1TimingInfo[MAX_NO_CONFIG_SLOTS]; 
+}SchK0K1TimingInfoTbl;
+
+typedef struct k2TimingInfo
+{
+   uint8_t numK2; 
+   uint8_t k2Indexes[MAX_K2]; 
+}SchK2TimingInfo;
+
+typedef struct k2TimingInfoTbl
+{
+   uint16_t tblSize; 
+   SchK2TimingInfo k2TimingInfo[MAX_NO_CONFIG_SLOTS]; 
+}SchK2TimingInfoTbl;
+
 /**
  * @brief
  * Cell Control block per cell.
@@ -236,6 +274,8 @@ typedef struct schCellCb
    uint32_t      slotFrmtBitMap;                    /*!< 2 bits must be read together to determine D/U/S slots. 00-D, 01-U, 10-S */
    uint32_t      symbFrmtBitMap;                    /*!< 2 bits must be read together to determine D/U/S symbols. 00-D, 01-U, 10-S */
 #endif
+   SchK0K1TimingInfoTbl k0K1InfoTbl;
+   SchK2TimingInfoTbl k2InfoTbl;
 }SchCellCb;
 
 /**
