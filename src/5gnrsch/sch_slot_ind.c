@@ -180,6 +180,12 @@ uint8_t schFillBoGrantDlSchedInfo(SchCellCb *cell, DlSchedInfo *dlSchedInfo, DlM
          }
          ueCb->dlInfo.dlLcCtxt[lcIdx].bo = 0;
       }
+      
+      if (!dlMsgAlloc->numLc)
+      {
+         DU_LOG("\nERROR  -->  SCH : No bo for any lcid\n");
+         return RFAILED;
+      }
 
       /* pdcch and pdsch data is filled */
       schDlRsrcAllocDlMsg(dlMsgAlloc, cell, crnti, &accumalatedSize, slot);
