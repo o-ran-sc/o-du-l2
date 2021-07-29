@@ -95,6 +95,11 @@
 #define RAR_PAYLOAD_SIZE 10             /* As per spec 38.321, sections 6.1.5 and 6.2.3, RAR PDU is 8 bytes long and 2 bytes of padding */
 #define TX_PAYLOAD_HDR_LEN 32           /* Intel L1 requires adding a 32 byte header to transmitted payload */
 
+#define MAX_NUM_CONFIG_SLOTS 160  /*Max number of slots as per the numerology*/
+#define DEFAULT_UL_ACK_LIST_COUNT 8  /* Max number of pusch time domain uplink allocation */
+#define MAX_NUM_K0_IDX 16 /* Max number of pdsch time domain downlink allocation */
+#define MAX_NUM_K1_IDX 8  /* As per spec 38.213 section 9.2.3 Max number of PDSCH-to-HARQ resource indication */
+#define MIN_NUM_K1_IDX 4  /* Min K1 values */
 
 #define ADD_DELTA_TO_TIME(crntTime, toFill, incr)          \
 {                                                          \
@@ -645,11 +650,31 @@ typedef struct schPuschCfgCmn
    SchPuschTimeDomRsrcAlloc   timeDomRsrcAllocList[MAX_NUM_UL_ALLOC]; /* PUSCH time domain UL resource allocation list */
 }SchPuschCfgCmn;
 
+typedef struct schK0TimingInfo
+{
+   uint8_t k0Index;
+   uint8_t numK1;
+   uint8_t k1Indexes[MAX_NUM_K1_IDX];
+}SchK0TimingInfo;
+
+typedef struct schK0K1TimingInfo
+{
+   uint8_t numK0;
+   SchK0TimingInfo k0Indexes[MAX_NUM_K0_IDX];
+}SchK0K1TimingInfo;
+
+typedef struct schK0K1TimingInfoTbl
+{
+   uint16_t tblSize;
+   SchK0K1TimingInfo k0k1TimingInfo[MAX_NUM_CONFIG_SLOTS];
+}SchK0K1TimingInfoTbl;
+
 typedef struct schBwpDlCfg
 {
    SchBwpParams   bwp;
    SchPdcchCfgCmn pdcchCommon;
    SchPdschCfgCmn pdschCommon;
+   SchK0K1TimingInfoTbl k0K1InfoTbl;
 }SchBwpDlCfg;
 
 typedef struct schBwpUlCfg
@@ -1110,6 +1135,7 @@ typedef struct schInitalDlBwp
    SchPdcchConfig   pdcchCfg;
    bool             pdschCfgPres;
    SchPdschConfig   pdschCfg;
+   SchK0K1TimingInfoTbl k0K1InfoTbl;
 }SchInitalDlBwp;
 
 /* BWP Downlink common */

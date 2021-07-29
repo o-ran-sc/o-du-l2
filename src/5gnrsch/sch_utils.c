@@ -765,6 +765,7 @@ uint8_t pucchResourceSet[MAX_PUCCH_RES_SET_IDX][4] = {
 { 1,   0, 14,  0 }, /* index 15 */
 };
 
+uint8_t defaultUlAckTbl[DEFAULT_UL_ACK_LIST_COUNT]= {1, 2, 3 , 4, 5, 6, 7, 8};
 /**
  * @brief frequency domain allocation function. 
  *
@@ -1032,6 +1033,54 @@ SlotConfig schGetSlotSymbFrmt(uint16_t slot, uint32_t bitMap)
 #endif
 }
 
+/**
+ * @brief determines total configured slots 
+ *
+ * @details
+ *
+ *     Function : calculateCfgSlot
+ *      
+ *      total configured slots
+ *           
+ *  @param[in]  uint8_t scs, uint8_t periodicity 
+ *
+ *  @return  TotalCfgSlots
+ **/
+uint8_t calculateCfgSlot(uint8_t scs, uint8_t periodicity)
+{
+   uint8_t cfgSlots =0;
+   float value = 0;
+   
+   value = pow(0.5,scs);
+   switch(periodicity)
+   {
+      case TX_PRDCTY_MS_0P5:
+         cfgSlots = 0.5/value;
+         break;
+      case TX_PRDCTY_MS_0P625:
+         cfgSlots = 0.625/value;
+         break;
+      case TX_PRDCTY_MS_1:
+         cfgSlots = 1/value;
+         break;
+      case TX_PRDCTY_MS_1P25:
+         cfgSlots = 1.25/value;
+         break;
+      case TX_PRDCTY_MS_2:
+         cfgSlots = 2/value;
+         break;
+      case TX_PRDCTY_MS_2P5:
+         cfgSlots = 2.5/value;
+         break;
+      case TX_PRDCTY_MS_5:
+         cfgSlots = 5/value;
+         break;
+      case TX_PRDCTY_MS_10:
+         cfgSlots = 10/value;
+         break;
+   }
+   return cfgSlots;
+}
 #endif
 /**********************************************************************
          End of file
