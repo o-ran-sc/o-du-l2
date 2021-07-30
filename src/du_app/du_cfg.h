@@ -295,6 +295,11 @@
 #define PDSCH_MCS_INDEX 20  /* For 64QAM, valid mcs index: 17-28 in 38.214  - Table 5.1.3.1-1*/
 #define PUSCH_MCS_INDEX 10  /* For 16QAM, valid mcs index: 10-16 in 38.214  - Table 5.1.3.1-1*/
 
+
+/*VALID Tunnel ID*/
+#define MIN_TEID 1
+#define MAX_TEID 10
+
 typedef enum
 {
    GNBDU,
