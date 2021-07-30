@@ -238,14 +238,56 @@ void readCuCfg()
 void *cuConsoleHandler(void *args)
 {
    char ch;
+   uint8_t drbId = 0;
+   uint8_t ret = ROK;
+
    while(true) 
    {
+
+      /*Add/create a DRB*/
+      if((ch = getchar()) == 'c')
+      {
+         EgtpTnlEvt tnlEvt;
+         DU_LOG("\nVS: EGTP : Enter DRB id\n");
+         scanf("%d",&drbId);
+         tnlEvt.action = EGTP_TNL_MGMT_ADD;
+         tnlEvt.lclTeid = drbId;
+         tnlEvt.remTeid = drbId;
+         ret = cuEgtpTnlMgmtReq(tnlEvt);
+         if(ret != ROK)
+         {
+             DU_LOG("\nERROR  -->  EGTP : Tunnel management request failed");
+        }
+        printf("\n");
+        continue;
+      }
+
       /* Send DL user data to CU when user enters 'd' on console */
       if((ch = getchar()) == 'd')
       {
+
+         uint8_t cnt =0;
+         DU_LOG("\nVS: EGTP : Enter DRB id\n");
+         scanf("%d",&drbId);
+         
+         /*For now, we are considering only Max 4 DRBs*/
+         if (drbId > 4)
+         {drbId = 1;}
          /* Start Pumping data from CU to DU */
-         DU_LOG("\nDEBUG  -->  EGTP: Sending DL User Data");
-         cuEgtpDatReq();      
+         DU_LOG("\nDEBUG  -->  EGTP: Sending DL User Data(drbId:%d)\n",drbId);
+         
+         while(cnt<2)
+         {
+           ret =  cuEgtpDatReq(drbId);      
+           if(ret != ROK)
+           {
+             DU_LOG("\n VS : Issue with drb=%d\n",drbId);
+             break;
+           }
+           cnt++;
+         }
+         printf("\n");
+         continue;
       } 
    }
 }

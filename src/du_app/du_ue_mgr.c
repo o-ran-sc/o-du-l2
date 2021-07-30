@@ -184,6 +184,7 @@ uint8_t duBuildAndSendDlUserDataToRlc(uint16_t msgLen, EgtpMsg *egtpMsg)
       /* Filling post structure and sending msg */ 
       FILL_PST_DUAPP_TO_RLC(pst, RLC_DL_INST, EVENT_DL_USER_DATA_TRANS_TO_RLC);
       DU_LOG("\nDEBUG  -->  DU_APP : Sending User Data Msg to RLC \n");
+      DU_LOG("\n VS: nPdu:%d, teId:%d\n",egtpMsg->msgHdr.nPdu.val, egtpMsg->msgHdr.teId);
       ret = (*duSendRlcDlUserDataToRlcOpts[pst.selector])(&pst, dlDataMsgInfo);
    }
    if(ret != ROK)
