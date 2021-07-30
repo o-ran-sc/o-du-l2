@@ -19,12 +19,13 @@
 /* This file contains all EGTP related functionality */
 
 #include "common_def.h"
+#include "cu_f1ap_msg_hdl.h"
 #include "cu_stub_egtp.h"
 #include "du_log.h"
 
 /* Global variable declaration */
 EgtpGlobalCb egtpCb;
-
+uint8_t gCntPdu[MAX_TEID+1];//Maintaining PDU count for each bearer 
 /**************************************************************************
  * @brief Task Initiation callback function. 
  *
@@ -49,6 +50,9 @@ S16 egtpActvInit()
 {
   DU_LOG("\n\nDEBUG  -->  EGTP : Initializing");
   memset (&egtpCb, 0, sizeof(EgtpGlobalCb));
+  
+  //Initializing with INVALID value
+  memset(gCntPdu, 0xFF , sizeof(uint8_t)*(MAX_TEID+1)); 
   protType = CM_INET_PROTO_UDP;
   return ROK;
 }
@@ -76,7 +80,6 @@ S16 egtpActvInit()
 uint8_t egtpInitReq()
 {
    uint8_t ret = ROK;
-   EgtpTnlEvt tnlEvt;
 
    ret = cuEgtpCfgReq();
    if(ret != ROK)
@@ -90,16 +93,6 @@ uint8_t egtpInitReq()
    {
        DU_LOG("\nERROR  -->  EGTP : Transport server open request failed");
        return (ret);
-   }
-
-   tnlEvt.action = EGTP_TNL_MGMT_ADD;
-   tnlEvt.lclTeid = 1;
-   tnlEvt.remTeid = 1;
-   ret = cuEgtpTnlMgmtReq(tnlEvt);
-   if(ret != ROK)
-   {
-      DU_LOG("\nERROR  -->  EGTP : Tunnel management request failed");
-      return RFAILED;
    }
 
    return ret;
@@ -309,9 +302,11 @@ S16 cuEgtpTnlAdd(EgtpTnlEvt tnlEvt)
    preDefHdr.teId = teidCb->remTeId;
    preDefHdr.extHdr.pdcpNmb.pres = FALSE;
    preDefHdr.extHdr.udpPort.pres = FALSE;
-   preDefHdr.nPdu.pres = FALSE;
-   
+   preDefHdr.nPdu.pres = TRUE; //Including nPdu when sending data
+   preDefHdr.nPdu.val = 0;
+
    cuEgtpEncodeHdr((uint8_t *)teidCb->preEncodedHdr.hdr, &preDefHdr, &(teidCb->preEncodedHdr.cnt));
+   gCntPdu[teidCb->remTeId] = 0;//Resetting the Cnt Value for this DRB which indicates its creation
 
 /*   SPutSBuf(CU_APP_MEM_REG, CU_POOL, (Data *)teidCb, (Size)sizeof(EgtpTeIdCb));*/
 
@@ -618,18 +613,25 @@ S16 cuEgtpDecodeHdr(Buffer *mBuf)
       ODU_REM_PRE_MSG(&extHdrType, mBuf);
    }
 
-   DU_LOG("\nDEBUG  -->  EGTP : Message Buffer after decoding header ");
+   DU_LOG("\nDEBUG  -->  EGTP : Message Buffer after decoding header [TEID:%d]",egtpMsg.msgHdr.teId);
    ODU_PRINT_MSG(mBuf, 0, 0);
 
    return ROK;
      
 } /* End of cuEgtpDecodeHdr */
 
-S16 cuEgtpDatReq()
+S16 cuEgtpDatReq(uint8_t teId)
 {
    uint8_t ret = ROK, cnt = 0;
    EgtpMsg  egtpMsg;
 
+   egtpMsg.msgHdr.teId = teId;
+   
+   if(gCntPdu[teId] == 0xFF) //DRB not created
+   {
+      DU_LOG("\nERROR  -->  EGTP : DRB  not created");
+      return RFAILED ;
+   }
    /* Build Application message that is supposed to come from app to egtp */
    ret = BuildAppMsg(&egtpMsg);
    if(ret != ROK)
@@ -645,14 +647,18 @@ S16 cuEgtpDatReq()
       DU_LOG("\nERROR  -->  EGTP : Failed to build EGTP Msg");
       return RFAILED;
    }
-   /* Send Message to peer */
-   while(cnt < 200)
+   cuEgtpSendMsg(egtpMsg.msg);
+
+  //Since Headers for each data needs updation thus cuEgtpDatReq to be called in
+  //loop
+  /* Send Message to peer 
+   while(cnt < 20)
    {
-      DU_LOG("\nDEBUG  -->  EGTP : Sending message[%d]", cnt+1);
-      cuEgtpSendMsg(egtpMsg.msg);
+      DU_LOG("\n VS: DEBUG  -->  EGTP : Sending message[%d],drbId:%d",gCntPdu[egtpMsg.msgHdr.teId],drbId);
+         cuEgtpDatReq(drbId);      
       cnt++;
       //sleep(1);
-   }
+   }*/
 
    ODU_PUT_MSG_BUF(egtpMsg.msg);
 
@@ -763,11 +769,14 @@ S16 BuildAppMsg(EgtpMsg  *egtpMsg)
    ret = ODU_ADD_PRE_MSG_MULT(revPkArray, (MsgLen)cnt, mBuf);
  
    egtpMsg->msgHdr.msgType = EGTPU_MSG_GPDU;
-   egtpMsg->msgHdr.nPdu.pres = FALSE;
+   egtpMsg->msgHdr.nPdu.pres = TRUE;
+
+   gCntPdu[egtpMsg->msgHdr.teId]++;
+   egtpMsg->msgHdr.nPdu.val = gCntPdu[egtpMsg->msgHdr.teId];
+
    egtpMsg->msgHdr.seqNum.pres = FALSE;
    egtpMsg->msgHdr.extHdr.udpPort.pres = FALSE;
    egtpMsg->msgHdr.extHdr.pdcpNmb.pres = FALSE;
-   egtpMsg->msgHdr.teId = 1;
    egtpMsg->msg = mBuf;
 
    return ret;
@@ -783,6 +792,7 @@ S16 BuildEgtpMsg(EgtpMsg *egtpMsg)
    EgtpMsgHdr   *msgHdr;
  
    cmHashListFind(&(egtpCb.dstCb.teIdLst), (uint8_t *)&(egtpMsg->msgHdr.teId), sizeof(uint32_t), 0, (PTR *)&teidCb);
+   DU_LOG("\nVS CU-STUB Tunnel id[%d] ", egtpMsg->msgHdr.teId);
    if(teidCb == NULLP)
    {
       DU_LOG("\nERROR  -->  EGTP : Tunnel id[%d] not configured", egtpMsg->msgHdr.teId);
@@ -830,10 +840,21 @@ S16 BuildEgtpMsg(EgtpMsg *egtpMsg)
       teidCb->preEncodedHdr.hdr[EGTP_MAX_HDR_LEN - 1] &= ~(EGTP_MASK_BIT2);
    }
 
+   /*Update the nPdU number*/
+   if(egtpMsg->msgHdr.nPdu.pres)
+   {
+      teidCb->preEncodedHdr.hdr[EGTP_MAX_HDR_LEN - 1] |= (EGTP_MASK_BIT1);
+      teidCb->preEncodedHdr.hdr[EGTP_MAX_HDR_LEN - 11] = egtpMsg->msgHdr.nPdu.val;
+   }
+   else
+   {
+      teidCb->preEncodedHdr.hdr[EGTP_MAX_HDR_LEN - 1] &= ~(EGTP_MASK_BIT1);
+   }
+
    ODU_ADD_PRE_MSG_MULT(&teidCb->preEncodedHdr.hdr[hdrLen], (EGTP_MAX_HDR_LEN - hdrLen), egtpMsg->msg);
 
-   DU_LOG("\nDEBUG  -->  EGTP : Sending message buffer");
-   ODU_PRINT_MSG(egtpMsg->msg, 0, 0);
+   //DU_LOG("\nDEBUG  -->  EGTP : Sending message buffer");
+//   ODU_PRINT_MSG(egtpMsg->msg, 0, 0);
 
    return ROK;
 }

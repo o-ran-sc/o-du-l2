@@ -58,7 +58,7 @@
 #define MAX_NUM_CELL 1
 #define MAX_NUM_UE   2
 #define MAX_NUM_UE_PER_TTI 1
-#define MAX_NUM_LC   11
+#define MAX_NUM_LC   32   /*Spec 38.331: Sec 6.4: maxLC-ID Keyword*/
 #define MAX_NUM_SRB  3    /* Max. no of Srbs */
 #define MAX_NUM_DRB  29   /* spec 38.331, maxDRB */
 
@@ -130,6 +130,10 @@
 #define MAX_TDD_PERIODICITY_SLOTS 160 
 #define MAX_SYMB_PER_SLOT 14 
 #endif
+
+/*VALID Tunnel ID*/
+#define MIN_TEID 1   /*[Spec 29.281,Sec 5.1]: All Zero TEIDs are never assigned for setting up GTP-U Tunnel*/
+#define MAX_TEID 10 /*[Spec 29.281]: Max limit is not mentioned but as per GTP-U Header Format, TEID occupies 4 octets */
 
 #define GET_UE_IDX( _crnti,_ueIdx)         \
 {                                          \
