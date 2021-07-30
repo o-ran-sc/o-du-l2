@@ -137,21 +137,28 @@ void l1HdlSlotIndicaion(bool stopSlotInd)
 void *l1ConsoleHandler(void *args)
 {
    char ch;
+   uint8_t drbIdx = 0;
+
    while(true)
    {
       /* Send UL user data to DU when user enters 'd' on console */
       if((ch = getchar()) == 'd')
       {
          /* Start Pumping data from PHY stub to DU */
-         DU_LOG("\nDEBUG  --> PHY STUB: Sending UL User Data");
-         l1SendUlUserData();
+         for(drbIdx = 0; drbIdx < NUM_DRB_TO_PUMP_DATA; drbIdx++) //Number of DRB times the loop will run
+         {
+            DU_LOG("\nDEBUG  --> PHY STUB: Sending UL User Data[DrbId:%d]",drbIdx);
+            l1SendUlUserData(drbIdx);
+         }
       }
       else if((ch = getchar()) == 'c')
       {
          /* Send Control PDU from PHY stub to DU */
-	 DU_LOG("\nDEBUG  --> PHY STUB: Sending Status PDU");
-	 l1SendStatusPdu();
+          DU_LOG("\nDEBUG  --> PHY STUB: Sending Status PDU");
+	       l1SendStatusPdu();
       }
+      DU_LOG("\n");
+      continue;
    }
 }
 

@@ -47,6 +47,8 @@
 #define EGTP_MASK_BIT7                   0x40
 #define EGTP_MASK_BIT8                   0x80
 
+#define NUM_DL_PACKETS 4
+
 uint8_t         sockType;
 uint8_t         protType;
 
@@ -123,6 +125,7 @@ typedef struct egtpGlobalCb
    EgtpParams   egtpCfg;         /* EGTP configuration */
    EgtpTptSrvr  recvTptSrvr;     /* Transport server for receiving UDP msg */
    EgtpDstCb    dstCb;           /* Destination endpoint */
+   uint8_t      gCntPdu[MAX_TEID+1]; /* Maintaining PDU count for each bearer */
 }EgtpGlobalCb;
 EgtpGlobalCb egtpCb;   /* EGTP global control block */
 
@@ -135,7 +138,7 @@ S16 cuEgtpTnlMod(EgtpTnlEvt tnlEvt);
 S16 cuEgtpTnlDel(EgtpTnlEvt tnlEvt);
 S16 cuEgtpEncodeHdr(uint8_t *preEncodedHdr, EgtpMsgHdr *preDefHdr, uint8_t *hdrIdx);
 S16 cuEgtpHdlRecvMsg(Buffer *mBuf);
-S16 cuEgtpDatReq();
+uint16_t cuEgtpDatReq(uint8_t teId);
 S16 BuildAppMsg(EgtpMsg  *egtpMsg);
 S16 BuildEgtpMsg(EgtpMsg *egtpMsg);
 S16 cuEgtpSendMsg(Buffer *mBuf);
