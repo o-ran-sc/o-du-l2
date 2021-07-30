@@ -47,6 +47,12 @@
 #define EGTP_MASK_BIT7                   0x40
 #define EGTP_MASK_BIT8                   0x80
 
+#define EGTP_NUMPDUS 4
+
+/*VALID Tunnel ID*/
+#define MIN_TEID 1   /*[Spec 29.281,Sec 5.1]: All Zero TEIDs are never assigned for setting up GTP-U Tunnel*/
+#define MAX_TEID 10 /*[Spec 29.281]: Max limit is not mentioned but as per GTP-U Header Format, TEID occupies 4 octets */
+
 uint8_t         sockType;
 uint8_t         protType;
 
@@ -123,6 +129,7 @@ typedef struct egtpGlobalCb
    EgtpParams   egtpCfg;         /* EGTP configuration */
    EgtpTptSrvr  recvTptSrvr;     /* Transport server for receiving UDP msg */
    EgtpDstCb    dstCb;           /* Destination endpoint */
+   uint8_t      gCntPdu[MAX_TEID+1]; //Maintaining PDU count for each bearer 
 }EgtpGlobalCb;
 EgtpGlobalCb egtpCb;   /* EGTP global control block */
 
@@ -135,7 +142,7 @@ S16 cuEgtpTnlMod(EgtpTnlEvt tnlEvt);
 S16 cuEgtpTnlDel(EgtpTnlEvt tnlEvt);
 S16 cuEgtpEncodeHdr(uint8_t *preEncodedHdr, EgtpMsgHdr *preDefHdr, uint8_t *hdrIdx);
 S16 cuEgtpHdlRecvMsg(Buffer *mBuf);
-S16 cuEgtpDatReq();
+uint16_t cuEgtpDatReq(uint8_t teId);
 S16 BuildAppMsg(EgtpMsg  *egtpMsg);
 S16 BuildEgtpMsg(EgtpMsg *egtpMsg);
 S16 cuEgtpSendMsg(Buffer *mBuf);

@@ -215,9 +215,9 @@ void readCuCfg()
    cuCfgParams.egtpParams.destIp.ipV4Pres = TRUE;
    cuCfgParams.egtpParams.destIp.ipV4Addr = ipv4_du;
    cuCfgParams.egtpParams.destPort = DU_EGTP_PORT;
-   cuCfgParams.egtpParams.minTunnelId = 0;
+   cuCfgParams.egtpParams.minTunnelId = MIN_TEID;
    cuCfgParams.egtpParams.currTunnelId = cuCfgParams.egtpParams.minTunnelId;
-   cuCfgParams.egtpParams.maxTunnelId = 10;
+   cuCfgParams.egtpParams.maxTunnelId = MAX_TEID;
 
 } /* End of readCuCfg */
 
@@ -239,14 +239,40 @@ void readCuCfg()
 void *cuConsoleHandler(void *args)
 {
    char ch;
+   uint8_t teId = 0;
+   uint8_t ret = ROK;
+
    while(true) 
    {
       /* Send DL user data to CU when user enters 'd' on console */
       if((ch = getchar()) == 'd')
       {
+
+         uint8_t cnt =0;
+         DU_LOG("\n EGTP --> : Enter TEID id(1..10) where DL Data to be sent\n");
+         scanf("%d",&teId);
+         
+         if(teId > MAX_TEID || teId < MIN_TEID)
+         {
+            DU_LOG("\nERROR  -->  EGTP : TEID(%x) OUT Of Range",teId);
+            printf("\n");
+            continue;
+         }
          /* Start Pumping data from CU to DU */
-         DU_LOG("\nDEBUG  -->  EGTP: Sending DL User Data");
-         cuEgtpDatReq();      
+         DU_LOG("\nDEBUG  -->  EGTP: Sending DL User Data(teId:%d)\n",teId);
+         
+         while(cnt < EGTP_NUMPDUS) //Number of PDUs to send
+         {
+           ret =  cuEgtpDatReq(teId);      
+           if(ret != ROK)
+           {
+             DU_LOG("\nERROR --> EGTP: Issue with teid=%d\n",teId);
+             break;
+           }
+           cnt++;
+         }
+         printf("\n");
+         continue;
       } 
    }
 }

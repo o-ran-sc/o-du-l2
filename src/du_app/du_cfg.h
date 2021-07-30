@@ -295,6 +295,9 @@
 #define PDSCH_MCS_INDEX 20  /* For 64QAM, valid mcs index: 17-28 in 38.214  - Table 5.1.3.1-1*/
 #define PUSCH_MCS_INDEX 10  /* For 16QAM, valid mcs index: 10-16 in 38.214  - Table 5.1.3.1-1*/
 
+/*VALID Tunnel ID*/
+#define MIN_TEID 1   /*[Spec 29.281,Sec 5.1]: All Zero TEIDs are never assigned for setting up GTP-U Tunnel*/
+#define MAX_TEID 10 /*[Spec 29.281]: Max limit is not mentioned but as per GTP-U Header Format, TEID occupies 4 octets */
 typedef enum
 {
    GNBDU,

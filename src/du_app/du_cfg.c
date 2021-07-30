@@ -466,6 +466,7 @@ uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
    pdcchCfg.searchSpcId = PDCCH_SEARCH_SPACE_ID;
    pdcchCfg.ctrlRsrcSetId = PDCCH_CTRL_RSRC_SET_ID;
    pdcchCfg.monitorSlotPrdAndOffPresent = \
+      
       SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl1;
    //pdcchCfg.monitorSlotPrdAndOff = \
    SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl1;
@@ -642,8 +643,8 @@ uint8_t readCfg()
    duCfgParam.egtpParams.destIp.ipV4Pres = TRUE;
    duCfgParam.egtpParams.destIp.ipV4Addr = ipv4_cu;
    duCfgParam.egtpParams.destPort = CU_EGTP_PORT;
-   duCfgParam.egtpParams.minTunnelId = 0;
-   duCfgParam.egtpParams.maxTunnelId = 10;
+   duCfgParam.egtpParams.minTunnelId = MIN_TEID;
+   duCfgParam.egtpParams.maxTunnelId = MAX_TEID;
 
    duCfgParam.maxUe = 32; //TODO: Check
    /* DU Info */	
