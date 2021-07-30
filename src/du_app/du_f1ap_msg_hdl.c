@@ -9925,10 +9925,10 @@ DRBs_ToBeSetupMod_Item_t *drbSetupModItem, LcCfg *macLcToAdd, RlcBearerCfg *rlcL
  *
  * ****************************************************************/
 
-uint8_t extractDrbListToSetup(uint8_t lcId, DRBs_ToBeSetup_List_t *drbCfg,DRBs_ToBeSetupMod_List_t *drbSetupModCfg,\
-uint8_t drbCount, DuUeCfg *ueCfgDb)
+uint8_t extractDrbListToSetup(DRBs_ToBeSetup_List_t *drbCfg,DRBs_ToBeSetupMod_List_t *drbSetupModCfg,\
+uint8_t drbCount, DuUeCfg *ueCfgDb, uint32_t *drbBitMap)
 {
-   uint8_t ret, drbIdx;
+   uint8_t ret, drbIdx, lcId = 0;
    DRBs_ToBeSetup_Item_t *drbItem = NULLP;
    DRBs_ToBeSetupMod_ItemIEs_t *drbSetupModItem = NULLP;
 
@@ -9951,7 +9951,15 @@ uint8_t drbCount, DuUeCfg *ueCfgDb)
          }
          memset(&ueCfgDb->macLcCfg[ueCfgDb->numMacLcs], 0, sizeof(LcCfg));
          memset(&ueCfgDb->rlcLcCfg[ueCfgDb->numRlcLcs], 0, sizeof(RlcBearerCfg));
-   
+
+         //MultiBearer: LCID will be generated uniquely for each DRB-ID
+         lcId = getDrbLcId(drbBitMap);
+         if(lcId == RFAILED)
+         {
+            DU_LOG("\nERROR  -->  F1AP :  InCorrect LCID extractDrbListToSetup()");
+            ret = RFAILED;
+            break;
+         }
          if(drbCfg != NULL)
          {
             drbItem = &drbCfg->list.array[drbIdx]->value.choice.DRBs_ToBeSetup_Item;
@@ -9978,6 +9986,9 @@ uint8_t drbCount, DuUeCfg *ueCfgDb)
          ueCfgDb->numRlcLcs++;
          ueCfgDb->numMacLcs++;
          ueCfgDb->numDrb++;
+ 
+         DU_LOG("\nVS DUAPP: extractDrbListToSetup:lcId:%x ,BitMap:%x, [RLC,MAC,NumDrb]:[%x,%x,%x]",\
+                            lcId,*drbBitMap, ueCfgDb->numRlcLcs, ueCfgDb->numMacLcs,  ueCfgDb->numDrb);
          if(ret == RFAILED)
          {
             DU_LOG("\nERROR  --> F1AP : Failed at extractDrbListToSetup()");
@@ -10312,17 +10323,15 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
             }
          case ProtocolIE_ID_id_DRBs_ToBeSetup_List:
             {
-               lcId = getDrbLcId(&duUeCb->drbBitMap);
-               if(lcId != RFAILED)
-               {
                   drbCfg = &ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.DRBs_ToBeSetup_List;
-                  if(extractDrbListToSetup(lcId, drbCfg, NULL, drbCfg->list.count, &duUeCb->f1UeDb->duUeCfg))
+
+                  //MultiBearer : LCID is removed as Unique LCID will be generated for each DRB.
+                  if(extractDrbListToSetup(drbCfg, NULL, drbCfg->list.count, &duUeCb->f1UeDb->duUeCfg, &duUeCb->drbBitMap))
                   {
                      DU_LOG("\nERROR  -->  DU APP : Failed at extractDrbListToSetup()");
                      //TODO: Update the failure cause in ue context Setup Response
                      ret = RFAILED;
                   }
-               }
                else 
                   ret = RFAILED;
                break;
@@ -12709,23 +12718,20 @@ uint8_t procF1UeContextModificationReq(F1AP_PDU_t *f1apMsg)
                      {
 
                         duUeCb = &duCb.actvCellLst[cellIdx]->ueCb[ueIdx];
-                        lcId = getDrbLcId(&duUeCb->drbBitMap);
-                        if(lcId != RFAILED)
-                        {
                            DU_ALLOC(duUeCb->f1UeDb, sizeof(F1UeContextSetupDb));
                            if(duUeCb->f1UeDb)
                            {
                               duUeCb->f1UeDb->actionType = UE_CTXT_MOD;
                               drbSetupModCfg = &ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.\
                               choice.DRBs_ToBeSetupMod_List;
-                              if(extractDrbListToSetup(lcId, NULL, drbSetupModCfg ,drbSetupModCfg->list.count, \
-                              &duUeCb->f1UeDb->duUeCfg))
+                              //MultiBearer : LCID is removed as Unique LCID will be generated for each DRB.
+                              if(extractDrbListToSetup(NULL, drbSetupModCfg ,drbSetupModCfg->list.count, \
+                              &duUeCb->f1UeDb->duUeCfg, &duUeCb->drbBitMap))
                               {
                                  DU_LOG("\nERROR  -->  DU APP : Failed at extractDrbListToSetup()");
                                  ret = RFAILED;
                               }
                            }
-                        }
                      }
                      else
                      {
