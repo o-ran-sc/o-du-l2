@@ -25,6 +25,7 @@
 #define MAX_SFN_VALUE    1023
 #define NR_PCI            1
 #define SLOT_DELAY       3
+#define NUMDRBS_TO_PUMP  2
 /*UE Ids for RACH IND*/
 #define UE_IDX_0     0
 #define UE_IDX_1     1
