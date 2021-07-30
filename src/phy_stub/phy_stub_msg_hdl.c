@@ -1319,7 +1319,7 @@ S16 l1HdlUlDciReq(uint16_t msgLen, void *msg)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t l1SendUlUserData()
+uint8_t l1SendUlUserData(uint8_t drbId)
 {
    uint8_t cnt = 0;
    fapi_rx_data_indication_t *rxDataInd;
@@ -1328,6 +1328,7 @@ uint8_t l1SendUlUserData()
    uint16_t byteIdx = 0;
    uint32_t msgLen = 0;
    uint8_t idx = 0;
+   uint8_t lcId = 0;
 
    MAC_ALLOC(rxDataInd, sizeof(fapi_rx_data_indication_t));
    if(!rxDataInd)
@@ -1377,7 +1378,8 @@ uint8_t l1SendUlUserData()
 
     /* Below ulMsg supports 12bit SN for UM mode */
                                /*  SI  SN */
-    uint8_t ulMsg[] = {4, msgLen,   0, 0, 0, 0, 0, 50, 0, 0, 0, 0, 0, 1, 0, 0, 192, 168, 130, 81, 192, 168, 130, 82, 84, 104,
+    lcId = 4 + drbId;
+    uint8_t ulMsg[] = {lcId, msgLen,   0, 0, 0, 0, 0, 50, 0, 0, 0, 0, 0, 1, 0, 0, 192, 168, 130, 81, 192, 168, 130, 82, 84, 104,
     105, 115, 32, 105, 115, 32, 69, 71, 84, 80, 32, 100, 97, 116, 97, 32, 102, 114, 111, 109, 32, 68, 85, 0, 0, 0, 0, 0};
     msgLen += 2;  /* 2bytes of header */
     memcpy(pdu, &ulMsg, msgLen);
@@ -1401,9 +1403,9 @@ uint8_t l1SendUlUserData()
    fillMsgHeader(&rxDataInd->header, FAPI_RX_DATA_INDICATION, msgLen);
 
     /* Send Message to peer */
-    while(cnt < 2)
+    while(cnt < 1)
     {
-       DU_LOG("\nDEBUG  -->  PHY STUB : Sending UL User Data[%d] at sfn %d slot %d", cnt+1, sfnValue, slotValue);
+       DU_LOG("\nDEBUG  -->  PHY STUB : Sending UL User Data[%d][LCID:%d] at sfn %d slot %d", cnt+1, lcId, sfnValue, slotValue);
        /* Sending Rx data indication to MAC */
        rxDataInd->sfn = sfnValue;
        rxDataInd->slot = slotValue;

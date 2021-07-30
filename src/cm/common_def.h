@@ -58,7 +58,7 @@
 #define MAX_NUM_CELL 1
 #define MAX_NUM_UE   2
 #define MAX_NUM_UE_PER_TTI 1
-#define MAX_NUM_LC   11
+#define MAX_NUM_LC   32   /*Always total of SRB and DRB; In 5g, Total LC supported = 32*/
 #define MAX_NUM_SRB  3    /* Max. no of Srbs */
 #define MAX_NUM_DRB  29   /* spec 38.331, maxDRB */
 
